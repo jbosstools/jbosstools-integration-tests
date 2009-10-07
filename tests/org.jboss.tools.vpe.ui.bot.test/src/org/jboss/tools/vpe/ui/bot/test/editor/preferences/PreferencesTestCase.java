@@ -21,7 +21,7 @@ public abstract class PreferencesTestCase extends VPEAutoTestCase{
 	protected static final String SHOW_RESOURCE_BUNDLES = "Show resource bundles usage as EL expressions";
 	protected static final String ASK_FOR_ATTRIBUTES = "Ask for tag attributes during tag insert";
 	protected static final String ASK_FOR_CONFIRM = "Ask for confirmation when closing Selection Bar";
-	protected static final String SELECT_DEFAULT_TAB = "Select the default active editor's tab for files that haven't been previously opened in the VPE";
+	protected static final String SELECT_DEFAULT_TAB = "Select the default active editor's tab";
 	protected static final String EDITOR_SPLITTING = "Visual/Source editors splitting";
 	protected static final String SHOW_TEXY_FORMAT = "Show text formatting bar";
 	protected static final String PREF_TOOLTIP = "Preferences";
@@ -90,7 +90,7 @@ public abstract class PreferencesTestCase extends VPEAutoTestCase{
 	
 	void setPreferencesToDefault() throws WidgetNotFoundException{
 		SWTBotCheckBox checkBox = bot.checkBox(SHOW_BORDER_FOR_UNKNOWN_TAGS);
-		if (checkBox.isChecked()) {
+		if (!checkBox.isChecked()) {
 			checkBox.click();
 		}
 		checkBox = bot.checkBox(SHOW_NON_VISUAL_TAGS);
@@ -117,9 +117,9 @@ public abstract class PreferencesTestCase extends VPEAutoTestCase{
 		if (!checkBox.isChecked()) {
 			checkBox.click();
 		}
-		SWTBotCombo combo = bot.comboBoxWithLabel("Select the default active editor's tab for files that haven't been previously opened in the VPE");
+		SWTBotCombo combo = bot.comboBoxWithLabel(SELECT_DEFAULT_TAB);
 		combo.setSelection("Visual/Source");
-		combo = bot.comboBoxWithLabel("Visual/Source editors splitting");
+		combo = bot.comboBoxWithLabel(EDITOR_SPLITTING);
 		combo.setSelection("Vertical splitting with Source Editor on the top");
 	}
 	

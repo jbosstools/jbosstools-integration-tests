@@ -6,12 +6,16 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Properties;
 import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.jboss.tools.jst.jsp.jspeditor.JSPMultiPageEditor;
+import org.jboss.tools.test.TestProperties;
+import org.jboss.tools.ui.bot.test.Activator;
 import org.jboss.tools.ui.bot.test.JBTSWTBotTestCase;
 import org.jboss.tools.ui.bot.test.SWTBotJSPMultiPageEditor;
 import org.jboss.tools.ui.bot.test.WidgetVariables;
@@ -47,15 +51,22 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase{
 	
 	static {
 		try {
-			InputStream is = Platform.getBundle(Activator.PLUGIN_ID).getResource(PROJECT_PROPERTIES).openStream();
-			projectProperties = new Properties();
-			projectProperties.load(is);
-		} catch (IOException e) {
-			fail("Can't load properties from " + PROJECT_PROPERTIES + " file");
-		} catch (IllegalStateException e) {
-			fail("Property file " + PROJECT_PROPERTIES + " was not found");
+			InputStream inputStream = VPEAutoTestCase.class.getResourceAsStream("/"+PROJECT_PROPERTIES);
+			projectProperties = new TestProperties();
+			projectProperties.load(inputStream);
+			inputStream.close();
+		} 
+		catch (IOException e) {
+			IStatus status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Can't load properties from " + PROJECT_PROPERTIES + " file", e);
+			Activator.getDefault().getLog().log(status);
+			e.printStackTrace();
 		}
-		JBOSS_EAP_HOME = System.getProperty("jbosstools.test.jboss.home",projectProperties.getProperty("JBossEap4.3"));
+		catch (IllegalStateException e) {
+			IStatus status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Property file " + PROJECT_PROPERTIES + " was not found", e);
+			Activator.getDefault().getLog().log(status);
+			e.printStackTrace();
+		}
+		JBOSS_EAP_HOME = projectProperties.getProperty("JBossEap4.3");
 		JBT_TEST_PROJECT_NAME = projectProperties.getProperty("JSFProjectName");
 	}
 	
