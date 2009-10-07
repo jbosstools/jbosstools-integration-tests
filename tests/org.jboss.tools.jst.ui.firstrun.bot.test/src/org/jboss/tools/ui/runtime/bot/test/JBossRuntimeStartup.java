@@ -11,7 +11,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.datatools.connectivity.ConnectionProfileConstants;
 import org.eclipse.datatools.connectivity.ConnectionProfileException;
@@ -47,6 +46,7 @@ public class JBossRuntimeStartup implements IStartup {
 	private static final String RUNTIME_PROPERTIES = "runtimePaths.properties";
 	
 	static{
+//		System.setProperty("jbosstools.test.jboss.home", "C:/jbdevstudio0609/jboss-eap/jboss-as");
 		try {
 			InputStream inputStream = JBossRuntimeStartup.class.getResourceAsStream("/"+RUNTIME_PROPERTIES);
 			properties = new TestProperties();

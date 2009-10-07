@@ -6,6 +6,7 @@ import java.util.Properties;
 import org.eclipse.core.runtime.ILogListener;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
@@ -18,11 +19,11 @@ public abstract class JBTSWTBotTestCase extends SWTBotTestCase implements
 	protected static final String BUILDING_WS = "Building workspace";
 	protected static final String VISUAL_UPDATE = "Visual Editor View Update";
 	protected static final String VISUAL_REFRESH = "Visual Editor Refresh";
+	private static Properties SWT_BOT_PROPERTIES;
 	private volatile Throwable exception;
 	public static final String PATH_TO_SWT_BOT_PROPERTIES = "SWTBot.properties";
-	private static Properties SWT_BOT_PROPERTIES;
 	protected SWTJBTBot bot = new SWTJBTBot();
-	private int sleepTime = 5000;
+	private static int sleepTime = 1000;
 	
 	/* (non-Javadoc)
 	 * This static block read properties from 
@@ -32,6 +33,27 @@ public abstract class JBTSWTBotTestCase extends SWTBotTestCase implements
 	 */
 	
 	static {
+		try {
+			InputStream inputStream = JBTSWTBotTestCase.class.getResourceAsStream("/"+PATH_TO_SWT_BOT_PROPERTIES);
+			SWT_BOT_PROPERTIES = new Properties();
+			SWT_BOT_PROPERTIES.load(inputStream);
+			SWTBotPreferences.PLAYBACK_DELAY = Long
+			.parseLong(SWT_BOT_PROPERTIES
+					.getProperty("SWTBotPreferences.PLAYBACK_DELAY"));
+			SWTBotPreferences.TIMEOUT = Long.parseLong(SWT_BOT_PROPERTIES
+			.getProperty("SWTBotPreferences.TIMEOUT"));
+			inputStream.close();
+		} 
+		catch (IOException e) {
+			IStatus status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Can't load properties from " + PATH_TO_SWT_BOT_PROPERTIES + " file", e);
+			Activator.getDefault().getLog().log(status);
+			e.printStackTrace();
+		}
+		catch (IllegalStateException e) {
+			IStatus status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Property file " + PATH_TO_SWT_BOT_PROPERTIES + " was not found", e);
+			Activator.getDefault().getLog().log(status);
+			e.printStackTrace();
+		}
 //		try {
 //			InputStream swtPreferenceIS = Platform.getBundle(Activator.PLUGIN_ID).getResource(PATH_TO_SWT_BOT_PROPERTIES)
 //					.openStream();
@@ -165,6 +187,7 @@ public abstract class JBTSWTBotTestCase extends SWTBotTestCase implements
 		} catch (WidgetNotFoundException e) {
 			bot.menu("Window").menu("Show View").menu("Other...").click();
 			SWTBotTree viewTree = bot.tree();
+			delay();
 			viewTree.expandNode("General")
 					.expandNode(WidgetVariables.ERROR_LOG).select();
 			bot.button("OK").click();
@@ -181,6 +204,7 @@ public abstract class JBTSWTBotTestCase extends SWTBotTestCase implements
 		} catch (WidgetNotFoundException e) {
 			bot.menu("Window").menu("Show View").menu("Other...").click();
 			SWTBotTree viewTree = bot.tree();
+			delay();
 			viewTree.expandNode("Java").expandNode(
 					WidgetVariables.PACKAGE_EXPLORER).select();
 			bot.button("OK").click();

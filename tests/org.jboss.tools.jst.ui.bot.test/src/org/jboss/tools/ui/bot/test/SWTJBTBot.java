@@ -1,13 +1,10 @@
 package org.jboss.tools.ui.bot.test;
 
-import static org.eclipse.swtbot.eclipse.finder.matchers.WidgetMatcherFactory.withPartId;
 import static org.eclipse.swtbot.eclipse.finder.matchers.WidgetMatcherFactory.withPartName;
 import static org.eclipse.swtbot.eclipse.finder.waits.Conditions.waitForEditor;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.waits.WaitForEditor;
 import org.eclipse.ui.IEditorReference;
-import org.eclipse.ui.IViewReference;
-import org.eclipse.ui.IWorkbenchPartReference;
 import org.hamcrest.Matcher;
 
 /**

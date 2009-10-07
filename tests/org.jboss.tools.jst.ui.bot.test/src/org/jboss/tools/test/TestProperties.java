@@ -7,21 +7,24 @@ import java.util.Properties;
 
 public class TestProperties extends Properties {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2611391472191407247L;
+
+
 	public TestProperties() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 
 	public TestProperties(Properties defaults) {
 		super(defaults);
-		// TODO Auto-generated constructor stub
 	}
 
 
 	@Override
 	public synchronized void load(InputStream inStream) throws IOException {
-		// TODO Auto-generated method stub
 		super.load(inStream);
 		substituteSystemProperties(this);
 	}
