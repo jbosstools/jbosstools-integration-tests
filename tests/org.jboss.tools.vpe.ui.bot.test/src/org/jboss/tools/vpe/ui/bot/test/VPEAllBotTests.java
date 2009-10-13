@@ -18,7 +18,7 @@ import org.jboss.tools.vpe.ui.bot.test.jbide.JBIDE4556Test;
 import org.jboss.tools.vpe.ui.bot.test.palette.CancelTagLibDefenitionTest;
 import org.jboss.tools.vpe.ui.bot.test.palette.ImportTagsFromTLDFileTest;
 
-public class VPEAllTests extends SWTBotTestCase{
+public class VPEAllBotTests extends SWTBotTestCase{
 	public static Test suite(){
 		TestSuite suite = new TestSuite("VPE All Tests");
 		suite.addTestSuite(CancelTagLibDefenitionTest.class);
