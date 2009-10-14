@@ -32,7 +32,6 @@ public class AlwaysHideSelectionBarWithoutPromptTest extends PreferencesTestCase
 		
 		//Test Hide Selection Bar button without confirm
 	
-		selectSelection();
 		selectPrompt();
 		bot.toolbarButtonWithTooltip(HID_SEL_BAR).click();
 		checkIsHide();
@@ -42,14 +41,13 @@ public class AlwaysHideSelectionBarWithoutPromptTest extends PreferencesTestCase
 		closePage();
 		openPage();
 		checkIsShow();
-	
 	}
 	
 	private void checkIsHide(){
-		IndexOutOfBoundsException exception = null;
+		WidgetNotFoundException exception = null;
 		try {
-			bot.toolbarButtonWithTooltip(HID_SEL_BAR,1);
-		} catch (IndexOutOfBoundsException e) {
+			bot.toolbarButtonWithTooltip(HID_SEL_BAR);
+		} catch (WidgetNotFoundException e) {
 			exception = e;
 		}
 		assertNotNull(exception);

@@ -125,7 +125,7 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase{
 //				openProgressStatus();
 			} catch (WidgetNotFoundException e) {
 			}
-		} catch (WidgetNotFoundException e) {
+		} catch (Exception e) {
 			bot.button(0).click();
 			SWTBotTree  innerTree = bot.tree();
 			delay();

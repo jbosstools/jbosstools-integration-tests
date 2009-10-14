@@ -35,7 +35,6 @@ public class ShowSelectionTagBarTest extends PreferencesTestCase{
 		bot.toolbarButtonWithTooltip(HID_SEL_BAR).click();
 		bot.shell("Confirm hide selection bar").activate();
 		bot.button("OK").click();
-		checkIsShow();
 		checkIsHide();
 	
 		//Test Show selection after reopen
@@ -54,10 +53,10 @@ public class ShowSelectionTagBarTest extends PreferencesTestCase{
 	}
 
 	private void checkIsHide(){
-		IndexOutOfBoundsException exception = null;
+		WidgetNotFoundException exception = null;
 		try {
-			bot.toolbarButtonWithTooltip(HID_SEL_BAR,1);
-		} catch (IndexOutOfBoundsException e) {
+			bot.toolbarButtonWithTooltip(HID_SEL_BAR);
+		} catch (WidgetNotFoundException e) {
 			exception = e;
 		}
 		assertNotNull(exception);
