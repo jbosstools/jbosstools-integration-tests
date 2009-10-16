@@ -143,10 +143,7 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase{
 			} catch (WidgetNotFoundException e2) {
 			}
 		}
-		try {
-			waitForBlockingJobsAcomplished(60*1000L, BUILDING_WS);
-		} catch (InterruptedException e) {
-		}
+		waitForBlockingJobsAcomplished(60*1000L, BUILDING_WS);
 		setException(null);
 	}
 	

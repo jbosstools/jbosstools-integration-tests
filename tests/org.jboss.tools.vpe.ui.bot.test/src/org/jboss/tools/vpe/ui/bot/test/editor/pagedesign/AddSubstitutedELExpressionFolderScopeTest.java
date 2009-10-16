@@ -89,10 +89,7 @@ public class AddSubstitutedELExpressionFolderScopeTest extends SubstitutedELTest
 		//Test close Design Options
 		
 		bot.button("OK").click();
-		try {
-			waitForBlockingJobsAcomplished(VISUAL_REFRESH,VISUAL_UPDATE);
-		} catch (InterruptedException e) {
-		}
+	//	waitForBlockingJobsAcomplished(VISUAL_REFRESH);
 		
 		//Check page content
 		
@@ -149,10 +146,7 @@ public class AddSubstitutedELExpressionFolderScopeTest extends SubstitutedELTest
 		.expandNode("WebContent").expandNode(TEST_FOLDER)
 		.getNode(TEST_PAGE_FOR_FOLDER+".jsp").doubleClick();
 		SWTBotEditor editor = bot.editorByTitle(TEST_PAGE_FOR_FOLDER+".jsp");
-		try {
-			waitForBlockingJobsAcomplished(VISUAL_REFRESH, VISUAL_UPDATE);
-		} catch (InterruptedException e) {
-		}
+	//	waitForBlockingJobsAcomplished(VISUAL_REFRESH);
 		
 		//Check page content
 		

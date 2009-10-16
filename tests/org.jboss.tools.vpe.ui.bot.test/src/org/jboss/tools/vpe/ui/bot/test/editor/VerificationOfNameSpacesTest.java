@@ -29,10 +29,7 @@ public class VerificationOfNameSpacesTest extends VPEEditorTestCase{
 		
 		getEditor().setText(testText);
 		getEditor().save();
-		try {
-			waitForBlockingJobsAcomplished("Save", VISUAL_REFRESH, VISUAL_UPDATE);
-		} catch (InterruptedException e) {
-		}
+		waitForBlockingJobsAcomplished(VISUAL_UPDATE);
 		performContentTestByDocument("VerificationOfNameSpaces.xml", bot.multiPageEditorByTitle(TEST_PAGE));
 	
 	}

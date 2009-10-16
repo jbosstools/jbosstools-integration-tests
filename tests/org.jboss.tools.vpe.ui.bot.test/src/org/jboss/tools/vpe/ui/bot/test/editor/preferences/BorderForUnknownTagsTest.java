@@ -46,10 +46,7 @@ public class BorderForUnknownTagsTest extends PreferencesTestCase{
 	}
 	
 	private void checkVPE(String testPage) throws Throwable{
-		try {
-			waitForBlockingJobsAcomplished(VISUAL_REFRESH, VISUAL_UPDATE);
-		} catch (InterruptedException e) {
-		}
+//		waitForBlockingJobsAcomplished(VISUAL_REFRESH);
 		performContentTestByDocument(testPage, bot.multiPageEditorByTitle(TEST_PAGE));
 	}
 
@@ -70,10 +67,6 @@ public class BorderForUnknownTagsTest extends PreferencesTestCase{
 		bot.menu("Edit").menu("Delete").click();
 		editor.setText(textEditor);
 		editor.save();
-		try {
-			waitForBlockingJobsAcomplished("Save");
-		} catch (InterruptedException e) {
-		}
 		super.tearDown();
 	}
 	

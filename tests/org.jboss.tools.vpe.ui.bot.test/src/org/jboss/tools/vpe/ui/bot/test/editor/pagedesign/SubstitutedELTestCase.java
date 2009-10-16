@@ -54,10 +54,7 @@ public abstract class SubstitutedELTestCase extends PageDesignTestCase{
 	
 	
 	void checkVPEForTestPage(String testPage) throws Throwable{
-		try {
-			waitForBlockingJobsAcomplished(VISUAL_REFRESH, VISUAL_UPDATE);
-		} catch (InterruptedException e) {
-		}
+	//	waitForBlockingJobsAcomplished(VISUAL_REFRESH);
 		performContentTestByDocument(testPage, bot.multiPageEditorByTitle(TEST_PAGE));
 	}
 	
@@ -101,10 +98,7 @@ public abstract class SubstitutedELTestCase extends PageDesignTestCase{
 		tree.expandNode(JBT_TEST_PROJECT_NAME)
 		.expandNode("WebContent").expandNode("pages").getNode("hello.jsp").doubleClick();
 		SWTBotEditor editor = bot.editorByTitle("hello.jsp");
-		try {
-			waitForBlockingJobsAcomplished(VISUAL_REFRESH, VISUAL_UPDATE);
-		} catch (InterruptedException e) {
-		}
+	//	waitForBlockingJobsAcomplished(VISUAL_REFRESH);
 		
 		//Check page content
 		

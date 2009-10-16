@@ -60,10 +60,7 @@ public abstract class VPEEditorTestCase extends VPEAutoTestCase{
 	}
 	
 	void checkVPE(String testPage) throws Throwable{
-		try {
-			waitForBlockingJobsAcomplished("Save", VISUAL_REFRESH, VISUAL_UPDATE);
-		} catch (InterruptedException e) {
-		}
+		waitForBlockingJobsAcomplished(VISUAL_UPDATE);
 		performContentTestByDocument(testPage, bot.multiPageEditorByTitle(TEST_PAGE));
 	}
 
@@ -77,10 +74,6 @@ public abstract class VPEEditorTestCase extends VPEAutoTestCase{
 		bot.menu("Edit").menu("Delete").click();
 		editor.setText(editorText);
 		editor.save();
-		try {
-			waitForBlockingJobsAcomplished("Save");
-		} catch (InterruptedException e) {
-		}
 		super.tearDown();
 	}
 
