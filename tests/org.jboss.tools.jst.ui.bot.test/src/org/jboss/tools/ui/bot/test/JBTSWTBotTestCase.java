@@ -21,6 +21,9 @@ public abstract class JBTSWTBotTestCase extends SWTBotTestCase implements
 	protected static final String BUILDING_WS = "Building workspace";
 	protected static final String VISUAL_UPDATE = "Visual Editor View Update";
 	protected static final String VISUAL_REFRESH = "Visual Editor Refresh";
+	protected static final String UPDATING_INDEXES = "Updating indexes";
+	protected static final String STARTING_JBOSS_EAP_43_RUNTIME = "Starting JBoss EAP 4.3 Runtime Serve";
+	protected static final String STOPPING_JBOSS_EAP_43_RUNTIME = "Stoppig JBoss EAP 4.3 Runtime Server";
 	private static Properties SWT_BOT_PROPERTIES;
 	private volatile Throwable exception;
 	public static final String PATH_TO_SWT_BOT_PROPERTIES = "SWTBot.properties";
@@ -226,7 +229,40 @@ public abstract class JBTSWTBotTestCase extends SWTBotTestCase implements
 			bot.button("OK").click();
 		}
 	}
+	
+	/**
+   * Open and activate Web Projects view if it hadn't been opened before
+   */
 
+  protected void openWebProjects() {
+    try {
+      bot.viewByTitle(WidgetVariables.WEB_PROJECTS).setFocus();
+    } catch (WidgetNotFoundException e) {
+      bot.menu("Window").menu("Show View").menu("Other...").click();
+      SWTBotTree viewTree = bot.tree();
+      delay();
+      viewTree.expandNode("Java").expandNode(
+          WidgetVariables.WEB_PROJECTS).select();
+      bot.button("OK").click();
+    }
+  }
+
+  /**
+   * Open and activate Server View if it hadn't been opened before
+   */
+
+  protected void openServerView() {
+    try {
+      bot.viewByTitle(WidgetVariables.SERVERS).setFocus();
+    } catch (WidgetNotFoundException e) {
+      bot.menu("Window").menu("Show View").menu("Other...").click();
+      SWTBotTree viewTree = bot.tree();
+      delay();
+      viewTree.expandNode("Server").expandNode(
+          WidgetVariables.SERVERS).select();
+      bot.button("OK").click();
+    }
+  }
 	// protected void openProgressStatus() {
 	// try {
 	// bot.viewByTitle(WidgetVariables.PROGRESS_STATUS);
