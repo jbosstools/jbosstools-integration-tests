@@ -20,5 +20,6 @@ Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Eclipse-RegisterBuddy: org.apache.log4j
 Export-Package: org.jboss.tools.ui.bot.ext,
  org.jboss.tools.ui.bot.ext.entity,
+ org.jboss.tools.ui.bot.ext.helper,
  org.jboss.tools.ui.bot.ext.types
 
