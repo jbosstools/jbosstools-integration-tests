@@ -263,6 +263,38 @@ public abstract class JBTSWTBotTestCase extends SWTBotTestCase implements
       bot.button("OK").click();
     }
   }
+  /**
+   * Open and activate Properties View if it hadn't been opened before
+   */
+
+  protected void openPropertiesView() {
+    try {
+      bot.viewByTitle(WidgetVariables.PROPERTIES).setFocus();
+    } catch (WidgetNotFoundException e) {
+      bot.menu("Window").menu("Show View").menu("Other...").click();
+      SWTBotTree viewTree = bot.tree();
+      delay();
+      viewTree.expandNode("General").expandNode(
+          WidgetVariables.PROPERTIES).select();
+      bot.button("OK").click();
+    }
+  }
+  /**
+   * Open and activate Outline View if it hadn't been opened before
+   */
+
+  protected void openOutlineView() {
+    try {
+      bot.viewByTitle(WidgetVariables.OUTLINE).setFocus();
+    } catch (WidgetNotFoundException e) {
+      bot.menu("Window").menu("Show View").menu("Other...").click();
+      SWTBotTree viewTree = bot.tree();
+      delay();
+      viewTree.expandNode("General").expandNode(
+          WidgetVariables.OUTLINE).select();
+      bot.button("OK").click();
+    }
+  }
 	// protected void openProgressStatus() {
 	// try {
 	// bot.viewByTitle(WidgetVariables.PROGRESS_STATUS);

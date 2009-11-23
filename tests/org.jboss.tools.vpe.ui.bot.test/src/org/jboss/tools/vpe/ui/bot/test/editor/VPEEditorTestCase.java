@@ -52,7 +52,7 @@ public abstract class VPEEditorTestCase extends VPEAutoTestCase{
 		return filePath;
 	}
 	
-	void openPage(){
+	protected void openPage(){
 		SWTBot innerBot = bot.viewByTitle(WidgetVariables.PACKAGE_EXPLORER).bot();
 		SWTBotTree tree = innerBot.tree();
 		tree.expandNode(JBT_TEST_PROJECT_NAME)
@@ -68,12 +68,13 @@ public abstract class VPEEditorTestCase extends VPEAutoTestCase{
 	protected void tearDown() throws Exception {
 
 		//Restore page state before tests
-
-		editor.setFocus();
-		bot.menu("Edit").menu("Select All").click();
-		bot.menu("Edit").menu("Delete").click();
-		editor.setText(editorText);
-		editor.save();
+    if (editor != null){
+      editor.setFocus();
+      bot.menu("Edit").menu("Select All").click();
+      bot.menu("Edit").menu("Delete").click();
+      editor.setText(editorText);
+      editor.save();
+    }
 		super.tearDown();
 	}
 

@@ -17,10 +17,17 @@ import org.jboss.tools.vpe.ui.bot.test.editor.preferences.ShowSelectionTagBarTes
 import org.jboss.tools.vpe.ui.bot.test.jbide.JBIDE4556Test;
 import org.jboss.tools.vpe.ui.bot.test.palette.CancelTagLibDefenitionTest;
 import org.jboss.tools.vpe.ui.bot.test.palette.ImportTagsFromTLDFileTest;
+import org.jboss.tools.vpe.ui.bot.test.smoke.EditorSynchronizationTest;
+import org.jboss.tools.vpe.ui.bot.test.smoke.JSPPageCreationTest;
+import org.jboss.tools.vpe.ui.bot.test.smoke.RenameFacesConfigFileTest;
+import org.jboss.tools.vpe.ui.bot.test.smoke.RenameJSPFileTest;
+import org.jboss.tools.vpe.ui.bot.test.smoke.RenameXHTMLFileTest;
+import org.jboss.tools.vpe.ui.bot.test.smoke.XHTMLPageCreationTest;
 
 public class VPEAllBotTests extends SWTBotTestCase{
 	public static Test suite(){
 		TestSuite suite = new TestSuite("VPE All Tests");
+		
 		suite.addTestSuite(CancelTagLibDefenitionTest.class);
 		suite.addTestSuite(ImportTagsFromTLDFileTest.class);
 		suite.addTestSuite(ToggleCommentTest.class);
@@ -34,6 +41,12 @@ public class VPEAllBotTests extends SWTBotTestCase{
 		suite.addTestSuite(AlwaysHideSelectionBarWithoutPromptTest.class);
 		suite.addTestSuite(ShowNonVisualTagsTest.class);
 		suite.addTestSuite(AddSubstitutedELExpressionFolderScopeTest.class);
+		suite.addTestSuite(EditorSynchronizationTest.class);
+		suite.addTestSuite(JSPPageCreationTest.class);
+		suite.addTestSuite(XHTMLPageCreationTest.class);
+		suite.addTestSuite(RenameFacesConfigFileTest.class);
+		suite.addTestSuite(RenameJSPFileTest.class);
+		suite.addTestSuite(RenameXHTMLFileTest.class);
 		return new TestSetup(suite);
 	}
 }

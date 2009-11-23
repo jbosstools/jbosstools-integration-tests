@@ -15,6 +15,8 @@ public class WidgetVariables {
 	public static final String PALETTE = "JBoss Tools Palette";
 	public static final String WEB_PROJECTS = "Web Projects";
 	public static final String SERVERS = "Servers";
+	public static final String PROPERTIES = "Properties";
+	public static final String OUTLINE = "Outline";
 	public static final String OK_BUTTON = "OK";
 	public static final String NEXT_BUTTON = "Next >";
 	public static final String BACK_BUTTON = "< Back";
