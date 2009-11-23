@@ -26,7 +26,7 @@ import org.hamcrest.Matcher;
 import org.jboss.tools.ui.bot.ext.entity.JavaClassEntity;
 import org.jboss.tools.ui.bot.ext.entity.JavaProjectEntity;
 import org.jboss.tools.ui.bot.ext.types.EntityType;
-import org.jboss.tools.ui.bot.ext.types.Label;
+import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.ext.types.PerspectiveType;
 import org.jboss.tools.ui.bot.ext.types.ViewType;
 
@@ -57,10 +57,10 @@ public class SWTEclipseExt {
 	 * @param type
 	 */
 	public void showView(ViewType type) {
-		bot.menu(Label.Menu.WINDOW).menu(Label.Menu.SHOW_VIEW).menu(
-				Label.Menu.OTHER).click();
+		bot.menu(IDELabel.Menu.WINDOW).menu(IDELabel.Menu.SHOW_VIEW).menu(
+				IDELabel.Menu.OTHER).click();
 		bot.tree().expandNode(type.getGroupLabel()).expandNode(type.getViewLabel()).select();
-		bot.button(Label.Button.OK).click();
+		bot.button(IDELabel.Button.OK).click();
 		
 		
 	}
@@ -74,18 +74,18 @@ public class SWTEclipseExt {
 		String perspectiveLabel = "";
 
 		if (type == PerspectiveType.JAVA) {
-			perspectiveLabel = Label.SelectPerspectiveDialog.JAVA;
+			perspectiveLabel = IDELabel.SelectPerspectiveDialog.JAVA;
 		}
 
-		bot.menu(Label.Menu.WINDOW).menu(Label.Menu.OPEN_PERSPECTIVE).menu(
-				Label.Menu.OTHER).click();
+		bot.menu(IDELabel.Menu.WINDOW).menu(IDELabel.Menu.OPEN_PERSPECTIVE).menu(
+				IDELabel.Menu.OTHER).click();
 		bot.table().select(perspectiveLabel);
 
 		// Another approach
 		// SWTBotShell openPerpectiveShell = bot.shell("Open Perspective");
 		// openPerpectiveShell.activate();
 
-		bot.button(Label.Button.OK).click();
+		bot.button(IDELabel.Button.OK).click();
 	}
 
 	/**
@@ -95,15 +95,15 @@ public class SWTEclipseExt {
 	public void createJavaProject(JavaProjectEntity entity) {
 		// NewWizard
 		createNew(EntityType.JAVA_PROJECT);
-		waitForShell(Label.Shell.NEW_JAVA_PROJECT);
+		waitForShell(IDELabel.Shell.NEW_JAVA_PROJECT);
 
 		// JavaProjectWizard
-		bot.textWithLabel(Label.JavaProjectWizard.PROJECT_NAME).setText(
+		bot.textWithLabel(IDELabel.JavaProjectWizard.PROJECT_NAME).setText(
 				entity.getProjectName());
-		bot.button(Label.Button.FINISH).click();
+		bot.button(IDELabel.Button.FINISH).click();
 
 		// Wait for shell closing JavaProjectWizard
-		waitForClosedShell(Label.Shell.NEW_JAVA_PROJECT);
+		waitForClosedShell(IDELabel.Shell.NEW_JAVA_PROJECT);
 		util.waitForNonIgnoredJobs();
 	}
 	
@@ -113,13 +113,13 @@ public class SWTEclipseExt {
 	 */
 	public void createJavaClass(JavaClassEntity entity) {
 		createNew(EntityType.JAVA_CLASS);
-		waitForShell(Label.Shell.NEW_JAVA_CLASS);
+		waitForShell(IDELabel.Shell.NEW_JAVA_CLASS);
 		
-		bot.textWithLabel(Label.NewClassCreationWizard.PACKAGE_NAME).setText(entity.getPackageName());	
-		bot.textWithLabel(Label.NewClassCreationWizard.CLASS_NAME).setText(entity.getClassName());
-		bot.button(Label.Button.FINISH).click();
+		bot.textWithLabel(IDELabel.NewClassCreationWizard.PACKAGE_NAME).setText(entity.getPackageName());	
+		bot.textWithLabel(IDELabel.NewClassCreationWizard.CLASS_NAME).setText(entity.getClassName());
+		bot.button(IDELabel.Button.FINISH).click();
 		
-		waitForClosedShell(Label.Shell.NEW_JAVA_CLASS);
+		waitForClosedShell(IDELabel.Shell.NEW_JAVA_CLASS);
 		util.waitForNonIgnoredJobs();
 	}
 	
@@ -130,7 +130,7 @@ public class SWTEclipseExt {
 	 */
 	public void removeFile(String projectName, String... path) {
 		// Open Package Explorer and aim the Project
-		SWTBot viewBot = bot.viewByTitle(Label.View.PACKAGE_EXPLORER).bot();
+		SWTBot viewBot = bot.viewByTitle(IDELabel.View.PACKAGE_EXPLORER).bot();
 		SWTBotTreeItem item = viewBot.tree().expandNode(projectName);
 
 		// Go through path 
@@ -140,7 +140,7 @@ public class SWTEclipseExt {
 
 		// Delete File
 		item.select().contextMenu("Delete").click();		
-		bot.button(Label.Button.OK).click();		
+		bot.button(IDELabel.Button.OK).click();		
 	}
 	
 
@@ -150,7 +150,7 @@ public class SWTEclipseExt {
 	 * @param path
 	 */
 	public void openFile(String projectName, String... path) {
-		SWTBot viewBot = bot.viewByTitle(Label.View.PACKAGE_EXPLORER).bot();
+		SWTBot viewBot = bot.viewByTitle(IDELabel.View.PACKAGE_EXPLORER).bot();
 		SWTBotTreeItem item = viewBot.tree().expandNode(projectName);
 		StringBuilder builder = new StringBuilder(projectName);
 		
@@ -177,11 +177,11 @@ public class SWTEclipseExt {
 		String groupLabel = entityType.getGroupLabel();
 		String entityLabel = entityType.getEntityLabel();
 		
-		bot.menu(Label.Menu.FILE).menu(Label.Menu.NEW).menu(Label.Menu.OTHER).click();
-		waitForShell(Label.Shell.NEW);
+		bot.menu(IDELabel.Menu.FILE).menu(IDELabel.Menu.NEW).menu(IDELabel.Menu.OTHER).click();
+		waitForShell(IDELabel.Shell.NEW);
 		
 		bot.tree().expandNode(groupLabel).select(entityLabel);
-		bot.button(Label.Button.NEXT).click();
+		bot.button(IDELabel.Button.NEXT).click();
 	}
 	
 	/**
@@ -225,7 +225,7 @@ public class SWTEclipseExt {
 	 * @param path
 	 */
 	public void openAsText(String projectName, String... path) {
-		SWTBot viewBot = bot.viewByTitle(Label.View.PACKAGE_EXPLORER).bot();
+		SWTBot viewBot = bot.viewByTitle(IDELabel.View.PACKAGE_EXPLORER).bot();
 		SWTBotTreeItem item = viewBot.tree().expandNode(projectName);
 		
 		// Go through path 

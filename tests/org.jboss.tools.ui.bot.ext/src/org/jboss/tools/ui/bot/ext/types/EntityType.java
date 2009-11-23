@@ -24,9 +24,9 @@ public enum EntityType {
 		
 		
 		switch (this) {
-		case HIBERNATE_MAPPING_FILE: groupLabel = Label.EntityGroup.HIBERNATE; break;
-		case JAVA_PROJECT: groupLabel = Label.EntityGroup.JAVA; break;
-		case JAVA_CLASS: groupLabel = Label.EntityGroup.JAVA; break;
+		case HIBERNATE_MAPPING_FILE: groupLabel = IDELabel.EntityGroup.HIBERNATE; break;
+		case JAVA_PROJECT: groupLabel = IDELabel.EntityGroup.JAVA; break;
+		case JAVA_CLASS: groupLabel = IDELabel.EntityGroup.JAVA; break;
 		default: fail("Unknown Entity Type");
 		}
 		
@@ -41,9 +41,9 @@ public enum EntityType {
 		String entityLabel = "";
 		
 		switch (this) {
-		case HIBERNATE_MAPPING_FILE: entityLabel = Label.EntityLabel.HIBERNATE_MAPPING_FILE; break;
-		case JAVA_PROJECT: entityLabel = Label.EntityLabel.JAVA_PROJECT; break;
-		case JAVA_CLASS: entityLabel = Label.EntityLabel.JAVA_CLASS; break;
+		case HIBERNATE_MAPPING_FILE: entityLabel = IDELabel.EntityLabel.HIBERNATE_MAPPING_FILE; break;
+		case JAVA_PROJECT: entityLabel = IDELabel.EntityLabel.JAVA_PROJECT; break;
+		case JAVA_CLASS: entityLabel = IDELabel.EntityLabel.JAVA_CLASS; break;
 		default: fail("Unknown Entity Type");
 		}		
 		

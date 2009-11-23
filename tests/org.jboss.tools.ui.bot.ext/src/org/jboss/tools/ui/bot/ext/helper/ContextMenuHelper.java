@@ -26,6 +26,8 @@ import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.results.VoidResult;
 import org.eclipse.swtbot.swt.finder.results.WidgetResult;
 import org.eclipse.swtbot.swt.finder.widgets.AbstractSWTBot;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.hamcrest.Matcher;
 
 /**
@@ -127,5 +129,23 @@ public class ContextMenuHelper {
     
     return result;
     
+  }
+  /**
+   * Executes proper steps to be able call getContextMenu on input treeItem
+   * @param tree
+   * @param treeItem
+   */
+  public static void prepareTreeItemForContextMenu(SWTBotTree tree , SWTBotTreeItem treeItem){
+    tree.setFocus();
+    treeItem.select();
+    treeItem.click();
+  }
+  /**
+   * Executes proper steps to be able call getContextMenu on first Tree Item within tree
+   * @param tree
+   */
+  public static void prepareTreeItemForContextMenu(SWTBotTree tree){
+    tree.setFocus();
+    tree.select(0);
   }
 } 

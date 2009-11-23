@@ -24,7 +24,7 @@ public enum ViewType {
 	public String getGroupLabel() {
 		String viewLabel = "";	
 		switch (this) {
-			case PROJECT_EXPLORER: viewLabel =  Label.ViewGroup.GENERAL; break;
+			case PROJECT_EXPLORER: viewLabel =  IDELabel.ViewGroup.GENERAL; break;
 			default: fail("Unknown View Type");
 		}
 		return viewLabel;	
@@ -33,7 +33,7 @@ public enum ViewType {
 	public String getViewLabel() {
 		String viewLabel = "";	
 		switch (this) {
-			case PROJECT_EXPLORER: viewLabel =  Label.View.PROJECT_EXPLORER; break;
+			case PROJECT_EXPLORER: viewLabel =  IDELabel.View.PROJECT_EXPLORER; break;
 			default: fail("Unknown View Type");
 		}
 		return viewLabel;
