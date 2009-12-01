@@ -18,13 +18,14 @@ import static org.junit.Assert.fail;
  *
  */
 public enum ViewType {
-	PROJECT_EXPLORER, WELCOME;
+	PACKAGE_EXPLORER, PROJECT_EXPLORER, WELCOME;
 	
 	
 	public String getGroupLabel() {
 		String viewLabel = "";	
 		switch (this) {
 			case PROJECT_EXPLORER: viewLabel =  IDELabel.ViewGroup.GENERAL; break;
+			case PACKAGE_EXPLORER: viewLabel = IDELabel.ViewGroup.JAVA; break;
 			default: fail("Unknown View Type");
 		}
 		return viewLabel;	
@@ -34,6 +35,7 @@ public enum ViewType {
 		String viewLabel = "";	
 		switch (this) {
 			case PROJECT_EXPLORER: viewLabel =  IDELabel.View.PROJECT_EXPLORER; break;
+			case PACKAGE_EXPLORER: viewLabel = IDELabel.View.PACKAGE_EXPLORER; break;
 			default: fail("Unknown View Type");
 		}
 		return viewLabel;

@@ -17,7 +17,8 @@ import static org.junit.Assert.fail;
  * @author jpeterka
  */
 public enum EntityType {
-	HIBERNATE_MAPPING_FILE, JAVA_PROJECT, JAVA_CLASS;
+	HIBERNATE_MAPPING_FILE, JAVA_PROJECT, JAVA_CLASS, HIBERNATE_REVERSE_FILE, HIBERNATE_CONSOLE, 
+	HIBERNATE_CONFIGURATION_FILE;
 		
 	public String getGroupLabel() {
 		String groupLabel = "";
@@ -26,7 +27,10 @@ public enum EntityType {
 		switch (this) {
 		case HIBERNATE_MAPPING_FILE: groupLabel = IDELabel.EntityGroup.HIBERNATE; break;
 		case JAVA_PROJECT: groupLabel = IDELabel.EntityGroup.JAVA; break;
-		case JAVA_CLASS: groupLabel = IDELabel.EntityGroup.JAVA; break;
+		case JAVA_CLASS: groupLabel = IDELabel.EntityGroup.JAVA; break;	
+		case HIBERNATE_REVERSE_FILE: groupLabel = IDELabel.EntityGroup.HIBERNATE; break;		
+		case HIBERNATE_CONFIGURATION_FILE: groupLabel = IDELabel.EntityGroup.HIBERNATE; break;
+		case HIBERNATE_CONSOLE: groupLabel = IDELabel.EntityGroup.HIBERNATE; break;
 		default: fail("Unknown Entity Type");
 		}
 		
@@ -42,6 +46,9 @@ public enum EntityType {
 		
 		switch (this) {
 		case HIBERNATE_MAPPING_FILE: entityLabel = IDELabel.EntityLabel.HIBERNATE_MAPPING_FILE; break;
+		case HIBERNATE_REVERSE_FILE: entityLabel = IDELabel.EntityLabel.HIBERNATE_REVERSE_FILE; break;
+		case HIBERNATE_CONFIGURATION_FILE: entityLabel = IDELabel.EntityLabel.HIBERNATE_CONFIGURATION_FILE; break;
+		case HIBERNATE_CONSOLE: entityLabel = IDELabel.EntityLabel.HIBERNATE_CONSOLE; break;
 		case JAVA_PROJECT: entityLabel = IDELabel.EntityLabel.JAVA_PROJECT; break;
 		case JAVA_CLASS: entityLabel = IDELabel.EntityLabel.JAVA_CLASS; break;
 		default: fail("Unknown Entity Type");

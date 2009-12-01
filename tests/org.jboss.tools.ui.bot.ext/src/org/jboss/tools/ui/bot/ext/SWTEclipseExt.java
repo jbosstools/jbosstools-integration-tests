@@ -14,13 +14,14 @@ package org.jboss.tools.ui.bot.ext;
 import static org.junit.Assert.assertEquals;
 
 import java.io.File;
-import java.util.logging.Logger;
 
+import org.apache.log4j.Logger;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swtbot.eclipse.finder.matchers.WidgetMatcherFactory;
 import org.eclipse.swtbot.eclipse.finder.waits.Conditions;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
 import org.eclipse.swtbot.swt.finder.SWTBot;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.hamcrest.Matcher;
 import org.jboss.tools.ui.bot.ext.entity.JavaClassEntity;
@@ -35,14 +36,14 @@ import org.jboss.tools.ui.bot.ext.types.ViewType;
  * @author jpeterka
  *
  */
-public class SWTEclipseExt {
+public class SWTEclipseExt extends SWTBotExt{
 
 	SWTBotExt bot = new SWTBotExt();
 	SWTUtilExt util = new SWTUtilExt();
-	Logger log = Logger.getLogger(SWTEclipseExt.class.getName());
+	Logger log = Logger.getLogger(SWTEclipseExt.class);
 
 	// ------------------------------------------------------------
-	// Additional missing or more advance methods
+	// View related methods
 	// ------------------------------------------------------------
 	/**
 	 * Close view by text
@@ -64,7 +65,9 @@ public class SWTEclipseExt {
 		
 		
 	}
-
+	// ------------------------------------------------------------
+	// Perspective related methods
+	// ------------------------------------------------------------
 	/**
 	 * Open Perspective
 	 * 
@@ -82,12 +85,15 @@ public class SWTEclipseExt {
 		bot.table().select(perspectiveLabel);
 
 		// Another approach
-		// SWTBotShell openPerpectiveShell = bot.shell("Open Perspective");
-		// openPerpectiveShell.activate();
+		 SWTBotShell openPerpectiveShell = bot.shell("Open Perspective");
+		 openPerpectiveShell.activate();
 
 		bot.button(IDELabel.Button.OK).click();
 	}
 
+	// ------------------------------------------------------------
+	// Create related methods
+	// ------------------------------------------------------------	
 	/**
 	 * Create Java Project desribed with propriate entity
 	 * @param entity
@@ -107,6 +113,9 @@ public class SWTEclipseExt {
 		util.waitForNonIgnoredJobs();
 	}
 	
+	// ------------------------------------------------------------
+	// Create related methods
+	// ------------------------------------------------------------		
 	/**
 	 * Create new Java Class described with JavaClassEntity
 	 * @param entity
@@ -164,6 +173,26 @@ public class SWTEclipseExt {
 		log.info("File Opened:" + builder.toString());
 	}
 	
+	// ------------------------------------------------------------
+	// Navigation related
+	// ------------------------------------------------------------		
+	/**
+	 * Select element in tree
+	 */
+	public void selectTreeLocation(String... path) {
+		SWTBotTreeItem item = null; 
+		// Go through path 
+		for ( String nodeName: path ) {
+			if ( item == null ) {
+				item = bot.tree().expandNode(nodeName);
+			} else {
+				item = item.expandNode(nodeName);	
+			}
+			log.info(nodeName);			
+		}
+		item.select();
+	}
+	
 	
 	// ------------------------------------------------------------
 	// Subroutines
@@ -192,6 +221,7 @@ public class SWTEclipseExt {
 		Matcher<Shell> matcher = WidgetMatcherFactory
 		.withText(shellName);
 		bot.waitUntil(Conditions.waitForShell(matcher));
+		
 	}
 	
 	/**
@@ -199,7 +229,14 @@ public class SWTEclipseExt {
 	 * @param shellName
 	 */
 	public void waitForClosedShell(String shellName) {
-		bot.waitWhile(Conditions.shellIsActive(shellName));	
+		bot.waitWhile(Conditions.shellIsActive(shellName));
+	}
+
+	public void waitForClosedShell(SWTBotShell shell) {
+		while (shell.isActive()) {
+			bot.sleep(200);
+			log.info("Waiting for closing shell...");
+		}
 	}
 	
 	/**
