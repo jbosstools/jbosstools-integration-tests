@@ -36,6 +36,8 @@ public class IDELabel {
 		public static final String JSP_FILE = "JSP...";
 		public static final String PROPERTIES = "Properties";
 		public static final String XHTML_FILE = "XHTML...";
+		public static final String HELP = "Help";
+		public static final String ABOUT_JBOSS_DEVELOPER_STUDIO = "About JBoss Developer Studio";
 	}
 
 	public class Button {
