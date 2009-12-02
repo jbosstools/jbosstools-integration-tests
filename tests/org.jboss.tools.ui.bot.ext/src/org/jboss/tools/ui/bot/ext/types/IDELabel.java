@@ -30,6 +30,12 @@ public class IDELabel {
 		public static final String TEXT_EDITOR = "Text Editor";
 		public static final String EDIT = "Edit";
 		public static final String SELECT_ALL = "Select All";
+		public static final String CLOSE = "Close";
+		public static final String OPEN = "Open";
+		public static final String RENAME = "Rename";
+		public static final String JSP_FILE = "JSP...";
+		public static final String PROPERTIES = "Properties";
+		public static final String XHTML_FILE = "XHTML...";
 	}
 
 	public class Button {
@@ -38,6 +44,9 @@ public class IDELabel {
 		public static final String CANCEL = "Cancel";
 		public static final String FINISH = "Finish";
 		public static final String OK = "OK";
+		public static final String YES = "Yes";
+		public static final String NO = "No";
+		public static final String CLOSE = "Close";
 	}
 
 	public class Shell {
@@ -45,6 +54,11 @@ public class IDELabel {
 		public static final String NEW_JAVA_CLASS = "New Java Class";
 		public static final String NEW_HIBERNATE_MAPPING_FILE = "New Hibernate XML Mapping file (hbm.xml)";
 		public static final String NEW = "New";
+		public static final String SAVE_RESOURCE = "Save";
+		public static final String RENAME_RESOURCE = "Rename";
+		public static final String NEW_JSP_FILE = "New JSP File";
+		public static final String PROPERTIES = "Properties";
+		public static final String NEW_XHTML_FILE = "New File XHTML";
 	}
 
 	public class EntityGroup {
@@ -119,5 +133,43 @@ public class IDELabel {
 	
 	public class HBConfigurationWizard {
 		public static final String FILE_NAME = "File name:";
+	}
+
+	public static class RenameResourceDialog {
+
+		public static final String NEW_NAME = "Rename Resource";
+		
+	}
+	
+	public static class WebProjectsTree {
+
+		public static final String WEB_CONTENT = "WebContent";
+		public static final String CONFIGURATION = "Configuration";
+		public static final String WEB_XML = "web.xml";
+		public static final String CONTEXT_PARAMS = "Context Params";
+		public static final String JAVAX_FACES_CONFIG_FILES = "javax.faces.CONFIG_FILES";
+		
+	}
+	
+	public static class NewJSPFileDialog {
+
+		public static final String NAME = "New File JSP";
+		public static final String TEMPLATE = "Template";
+		public static final String TEMPLATE_JSF_BASE_PAGE = "JSFBasePage";
+		
+	}
+	
+	public static class PropertiesDialog {
+
+		public static final String PARAM_VALUE = "Param-Value";
+		
+	}
+
+	public static final class NewXHTMLFileDialog {
+
+		public static final String NAME = "New XHTML";
+		public static final String TEMPLATE = "Template";
+		public static final String TEMPLATE_FACELET_FORM_XHTML = "FaceletForm.xhtml";
+		
 	}
 }
