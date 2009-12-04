@@ -38,6 +38,8 @@ public class IDELabel {
 		public static final String XHTML_FILE = "XHTML...";
 		public static final String HELP = "Help";
 		public static final String ABOUT_JBOSS_DEVELOPER_STUDIO = "About JBoss Developer Studio";
+		public static final String HIBERNATE_CODE_GENERATION = "Hibernate Code Generation...";
+		public static final String HIBERNATE_CODE_GENERATION_CONF = "Hibernate Code Generation Configurations...";
 	}
 
 	public class Button {
@@ -49,12 +51,16 @@ public class IDELabel {
 		public static final String YES = "Yes";
 		public static final String NO = "No";
 		public static final String CLOSE = "Close";
+		public static final String RUN = "Run";
 	}
 
 	public class Shell {
 		public static final String NEW_JAVA_PROJECT = "New Java Project";
 		public static final String NEW_JAVA_CLASS = "New Java Class";
-		public static final String NEW_HIBERNATE_MAPPING_FILE = "New Hibernate XML Mapping file (hbm.xml)";
+		// JBT
+		// public static final String NEW_HIBERNATE_MAPPING_FILE = "New Hibernate XML Mapping file (hbm.xml)";
+		// JBDS
+		public static final String NEW_HIBERNATE_MAPPING_FILE = "Create Hibernate XML Mapping file (hbm.xml)";		
 		public static final String NEW = "New";
 		public static final String SAVE_RESOURCE = "Save";
 		public static final String RENAME_RESOURCE = "Rename";
@@ -108,6 +114,8 @@ public class IDELabel {
 	public class SelectPerspectiveDialog {
 		public static final String JAVA = "Java";
 		public static final String HIBERNATE = "Hibernate";
+		public static final String SEAM = "Seam";
+		public static final String WEB_DEVELOPMENT = "Web Development";
 
 	}
 	/**
@@ -131,6 +139,15 @@ public class IDELabel {
 		public static final String CONNECTION_URL = "Connection URL:";
 		public static final String USERNAME = "Username:";
 		public static final String CREATE_CONSOLE_CONFIGURATION = "Create a console configuration";
+	}
+	
+	public class HBLaunchConfigurationDialog {
+
+		public static final String MAIN_TAB = "Main";
+		public static final String EXPORTERS_TAB = "Exporters";
+		public static final String REFRESH_TAB = "Refresh";
+		public static final String COMMON_TAB = "Common";
+		
 	}
 	
 	public class HBConfigurationWizard {

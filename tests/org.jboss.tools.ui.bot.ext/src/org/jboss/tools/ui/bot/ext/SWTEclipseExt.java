@@ -12,6 +12,7 @@
 package org.jboss.tools.ui.bot.ext;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 
@@ -76,10 +77,14 @@ public class SWTEclipseExt extends SWTBotExt{
 	public void openPerspective(PerspectiveType type) {
 		String perspectiveLabel = "";
 
-		if (type == PerspectiveType.JAVA) {
-			perspectiveLabel = IDELabel.SelectPerspectiveDialog.JAVA;
+		switch (type) {
+			case JAVA: perspectiveLabel = IDELabel.SelectPerspectiveDialog.JAVA; break;
+			case HIBERNATE: perspectiveLabel = IDELabel.SelectPerspectiveDialog.HIBERNATE;break;
+			case SEAM: perspectiveLabel = IDELabel.SelectPerspectiveDialog.SEAM;break;
+			case WEB_DEVELOPMENT:perspectiveLabel = IDELabel.SelectPerspectiveDialog.WEB_DEVELOPMENT; break;
+			default: fail("Unknown perspective to open");
 		}
-
+		
 		bot.menu(IDELabel.Menu.WINDOW).menu(IDELabel.Menu.OPEN_PERSPECTIVE).menu(
 				IDELabel.Menu.OTHER).click();
 		bot.table().select(perspectiveLabel);
