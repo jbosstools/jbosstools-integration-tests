@@ -16,6 +16,6 @@ package org.jboss.tools.ui.bot.ext.types;
  *
  */
 public enum PerspectiveType {
-	SEAM, JAVA, WEB_DEVELOPMENT, HIBERNATE;
+	SEAM, JAVA, WEB_DEVELOPMENT, HIBERNATE, DB_DEVELOPMENT;
 }
 

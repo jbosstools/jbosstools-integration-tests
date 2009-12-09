@@ -63,8 +63,6 @@ public class SWTEclipseExt extends SWTBotExt{
 				IDELabel.Menu.OTHER).click();
 		bot.tree().expandNode(type.getGroupLabel()).expandNode(type.getViewLabel()).select();
 		bot.button(IDELabel.Button.OK).click();
-		
-		
 	}
 	// ------------------------------------------------------------
 	// Perspective related methods
@@ -82,6 +80,7 @@ public class SWTEclipseExt extends SWTBotExt{
 			case HIBERNATE: perspectiveLabel = IDELabel.SelectPerspectiveDialog.HIBERNATE;break;
 			case SEAM: perspectiveLabel = IDELabel.SelectPerspectiveDialog.SEAM;break;
 			case WEB_DEVELOPMENT:perspectiveLabel = IDELabel.SelectPerspectiveDialog.WEB_DEVELOPMENT; break;
+			case DB_DEVELOPMENT: perspectiveLabel = IDELabel.SelectPerspectiveDialog.DB_DEVELOPMENT; break;
 			default: fail("Unknown perspective to open");
 		}
 		
@@ -183,8 +182,9 @@ public class SWTEclipseExt extends SWTBotExt{
 	// ------------------------------------------------------------		
 	/**
 	 * Select element in tree
+	 * @return 
 	 */
-	public void selectTreeLocation(String... path) {
+	public SWTBotTreeItem selectTreeLocation(String... path) {
 		SWTBotTreeItem item = null; 
 		// Go through path 
 		for ( String nodeName: path ) {
@@ -195,7 +195,7 @@ public class SWTEclipseExt extends SWTBotExt{
 			}
 			log.info(nodeName);			
 		}
-		item.select();
+		return item.select();
 	}
 	
 	
@@ -284,13 +284,14 @@ public class SWTEclipseExt extends SWTBotExt{
 	 * @param pluginId
 	 * @param path
 	 */
-	public void setClassContentFromResource(String pluginId, String... path) {		 
+	public void setClassContentFromResource(boolean save, String pluginId, String... path) {		 
 		SWTBotEclipseEditor editor;
 		editor = bot.editorByTitle(path[path.length - 1]).toTextEditor();
 		editor.selectRange(0, 0, editor.getLineCount());
 		File file = util.getResourceFile(pluginId, path);
 		String content = util.readTextFile(file);
 		editor.setText(content);
-		editor.save();	
+		if (save)
+			editor.save();	
 	}
 }

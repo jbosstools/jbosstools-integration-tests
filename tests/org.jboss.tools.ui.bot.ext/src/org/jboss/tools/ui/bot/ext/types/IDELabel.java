@@ -40,6 +40,7 @@ public class IDELabel {
 		public static final String ABOUT_JBOSS_DEVELOPER_STUDIO = "About JBoss Developer Studio";
 		public static final String HIBERNATE_CODE_GENERATION = "Hibernate Code Generation...";
 		public static final String HIBERNATE_CODE_GENERATION_CONF = "Hibernate Code Generation Configurations...";
+		public static final String RUN_AS = "Run As";
 	}
 
 	public class Button {
@@ -52,6 +53,7 @@ public class IDELabel {
 		public static final String NO = "No";
 		public static final String CLOSE = "Close";
 		public static final String RUN = "Run";
+		public static final String APPLY = "Apply";
 	}
 
 	public class Shell {
@@ -104,11 +106,13 @@ public class IDELabel {
 		public static final String WELCOME = "Welcome";
 		public static final String PROJECT_EXPLORER = "Project Explorer";
 		public static final String PACKAGE_EXPLORER = "Package Explorer";
+		public static final String DATA_SOURCE_EXPLORER = "Data Source Explorer";
 	}
 	
 	public class ViewGroup {
 		public static final String GENERAL = "General";
 		public static final String JAVA = "Java";
+		public static final String DATA_MANAGEMENT = "Data Management";
 	}
 
 	public class SelectPerspectiveDialog {
@@ -116,7 +120,7 @@ public class IDELabel {
 		public static final String HIBERNATE = "Hibernate";
 		public static final String SEAM = "Seam";
 		public static final String WEB_DEVELOPMENT = "Web Development";
-
+		public static final String DB_DEVELOPMENT = "Database Development";
 	}
 	/**
 	 * Hibernate Console Wizard (ConsoleConfigurationCreationWizard) Labels (

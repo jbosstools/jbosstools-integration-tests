@@ -302,4 +302,7 @@ public class SWTUtilExt extends SWTUtils {
 		log.error(msg);
 		fail(msg);
 	}
+	
+	
+	
 }
