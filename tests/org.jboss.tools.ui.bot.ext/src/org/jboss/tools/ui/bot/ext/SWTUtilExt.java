@@ -39,8 +39,12 @@ import org.osgi.framework.Bundle;
 public class SWTUtilExt extends SWTUtils {
 
 	private Logger log = Logger.getLogger(SWTUtilExt.class);
-	protected SWTBotExt bot = new SWTBotExt();
+	protected SWTBotExt bot;
 
+	public SWTUtilExt(SWTBotExt bot) {
+		this.bot = bot;
+	}
+	
 	// ------------------------------------------------------------
 	// Waiting methods
 	// ------------------------------------------------------------

@@ -37,12 +37,17 @@ import org.jboss.tools.ui.bot.ext.types.ViewType;
  * @author jpeterka
  *
  */
-public class SWTEclipseExt extends SWTBotExt{
+public class SWTEclipseExt {
 
-	SWTBotExt bot = new SWTBotExt();
-	SWTUtilExt util = new SWTUtilExt();
+	SWTBotExt bot;
+	SWTUtilExt util;
 	Logger log = Logger.getLogger(SWTEclipseExt.class);
-
+	
+	public SWTEclipseExt(SWTBotExt bot) {
+		this.bot = bot;
+		util = new SWTUtilExt(bot);
+	}
+	
 	// ------------------------------------------------------------
 	// View related methods
 	// ------------------------------------------------------------
@@ -58,11 +63,14 @@ public class SWTEclipseExt extends SWTBotExt{
 	 * 
 	 * @param type
 	 */
-	public void showView(ViewType type) {
+	public SWTBot showView(ViewType type) {
 		bot.menu(IDELabel.Menu.WINDOW).menu(IDELabel.Menu.SHOW_VIEW).menu(
 				IDELabel.Menu.OTHER).click();
 		bot.tree().expandNode(type.getGroupLabel()).expandNode(type.getViewLabel()).select();
 		bot.button(IDELabel.Button.OK).click();
+		
+		SWTBot viewBot = bot.viewByTitle(type.getViewLabel()).bot();
+		return viewBot;		
 	}
 	// ------------------------------------------------------------
 	// Perspective related methods
@@ -184,12 +192,22 @@ public class SWTEclipseExt extends SWTBotExt{
 	 * Select element in tree
 	 * @return 
 	 */
-	public SWTBotTreeItem selectTreeLocation(String... path) {
+	public SWTBotTreeItem selectTreeLocation(String... path) {		
+		return selectTreeLocation(bot, path);
+	}	
+	/**
+	 * Select element in tree with given bot
+	 * @return 
+	 */	
+	public SWTBotTreeItem selectTreeLocation(SWTBot bot, String... path) {
+
+		SWTBot viewBot = bot;
+		
 		SWTBotTreeItem item = null; 
 		// Go through path 
 		for ( String nodeName: path ) {
 			if ( item == null ) {
-				item = bot.tree().expandNode(nodeName);
+				item = viewBot.tree().expandNode(nodeName);
 			} else {
 				item = item.expandNode(nodeName);	
 			}
@@ -197,8 +215,7 @@ public class SWTEclipseExt extends SWTBotExt{
 		}
 		return item.select();
 	}
-	
-	
+		
 	// ------------------------------------------------------------
 	// Subroutines
 	// ------------------------------------------------------------

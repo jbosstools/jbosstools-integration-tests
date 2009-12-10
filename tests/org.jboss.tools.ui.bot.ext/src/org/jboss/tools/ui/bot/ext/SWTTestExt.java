@@ -24,8 +24,8 @@ public class SWTTestExt {
 
 	public static final Logger log = Logger.getLogger(SWTTestExt.class);
 	public static final SWTBotExt bot = new SWTBotExt();
-	public static final SWTUtilExt util = new SWTUtilExt();
-	public static final SWTEclipseExt eclipse = new SWTEclipseExt();
+	public static final SWTUtilExt util = new SWTUtilExt(bot);
+	public static final SWTEclipseExt eclipse = new SWTEclipseExt(bot);
 	
 	// Views
 	public static final PackageExplorer packageExplorer = new PackageExplorer();

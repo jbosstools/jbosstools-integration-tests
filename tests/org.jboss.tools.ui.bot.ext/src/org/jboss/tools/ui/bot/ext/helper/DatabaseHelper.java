@@ -19,30 +19,31 @@ import org.eclipse.datatools.connectivity.drivers.IPropertySet;
 import org.eclipse.datatools.connectivity.drivers.PropertySetImpl;
 import org.eclipse.datatools.connectivity.drivers.models.TemplateDescriptor;
 import org.jboss.tools.ui.bot.ext.Activator;
+import org.jboss.tools.ui.bot.ext.types.DriverEntity;
 
 public class DatabaseHelper {
 
-	
+		
 	/**
 	 * Create HSQLDB Driver 
 	 * @throws ConnectionProfileException
 	 * @return driver instance
 	 */
-	public static void createDriver(String path) throws ConnectionProfileException {
+	public static void createDriver(DriverEntity entity) throws ConnectionProfileException {
 		String driverPath;
 		try {
-			driverPath = new File(path).getCanonicalPath(); //$NON-NLS-1$
+			driverPath = new File(entity.getDrvPath()).getCanonicalPath(); //$NON-NLS-1$
 		} catch (IOException e) {
 			Activator.getDefault().getLog().log(new Status(IStatus.ERROR,
 					Activator.PLUGIN_ID, "Can't create driver", e));
 			return;
 		}
 
-		DriverInstance driver = DriverManager.getInstance().getDriverInstanceByName("Hypersonic DB");
+		DriverInstance driver = DriverManager.getInstance().getDriverInstanceByName(entity.getInstanceName());
 		if (driver == null) {
 			TemplateDescriptor descr = TemplateDescriptor.getDriverTemplateDescriptor("org.eclipse.datatools.enablement.hsqldb.1_8.driver");
-			IPropertySet instance = new PropertySetImpl("Hypersonic DB", "DriverDefn.Hypersonic DB");
-			instance.setName("Hypersonic DB");
+			IPropertySet instance = new PropertySetImpl(entity.getInstanceName(), "DriverDefn.Hypersonic DB");
+			instance.setName(entity.getInstanceName());
 			instance.setID("DriverDefn.Hypersonic DB");
 			Properties props = new Properties();
 
@@ -55,7 +56,7 @@ public class DatabaseHelper {
 				props.setProperty(id, value == null ? "" : value); //$NON-NLS-1$
 			}
 			//props.setProperty("org.eclipse.datatools.connectivity.db.URL", "jdbc:hsqldb:file:testdb"); //$NON-NLS-1$
-			props.setProperty("org.eclipse.datatools.connectivity.db.URL", "jdbc:hsqldb:hsql://localhost/xdb");
+			props.setProperty("org.eclipse.datatools.connectivity.db.URL", entity.getJdbcString());
 			props.setProperty(IDriverMgmtConstants.PROP_DEFN_TYPE, descr.getId());
 			props.setProperty(IDriverMgmtConstants.PROP_DEFN_JARLIST, driverPath);
 
@@ -65,7 +66,7 @@ public class DatabaseHelper {
 			DriverManager.getInstance().addDriverInstance(instance);
 		}
 
-		driver = DriverManager.getInstance().getDriverInstanceByName("Hypersonic DB");
+		driver = DriverManager.getInstance().getDriverInstanceByName(entity.getInstanceName());
 		if (driver != null && ProfileManager.getInstance().getProfileByName("DefaultDS") == null) { //$NON-NLS-1$
 			// create profile
 			Properties props = new Properties();
@@ -74,13 +75,13 @@ public class DatabaseHelper {
 			props.setProperty(IDBDriverDefinitionConstants.DRIVER_CLASS_PROP_ID, driver.getProperty(IDBDriverDefinitionConstants.DRIVER_CLASS_PROP_ID));
 			props.setProperty(IDBDriverDefinitionConstants.DATABASE_VENDOR_PROP_ID,	driver.getProperty(IDBDriverDefinitionConstants.DATABASE_VENDOR_PROP_ID));
 			props.setProperty(IDBDriverDefinitionConstants.DATABASE_VERSION_PROP_ID, driver.getProperty(IDBDriverDefinitionConstants.DATABASE_VERSION_PROP_ID));
-			props.setProperty(IDBDriverDefinitionConstants.DATABASE_NAME_PROP_ID, "Default"); //$NON-NLS-1$
+			props.setProperty(IDBDriverDefinitionConstants.DATABASE_NAME_PROP_ID, entity.getDatabaseName()); //$NON-NLS-1$
 			props.setProperty(IDBDriverDefinitionConstants.PASSWORD_PROP_ID, ""); //$NON-NLS-1$
 			props.setProperty(IDBConnectionProfileConstants.SAVE_PASSWORD_PROP_ID, "false"); //$NON-NLS-1$
 			props.setProperty(IDBDriverDefinitionConstants.USERNAME_PROP_ID, driver.getProperty(IDBDriverDefinitionConstants.USERNAME_PROP_ID));
 			props.setProperty(IDBDriverDefinitionConstants.URL_PROP_ID, driver.getProperty(IDBDriverDefinitionConstants.URL_PROP_ID));
 
-			ProfileManager.getInstance().createProfile("DefaultDS",	"Hypersonic embedded database", IDBConnectionProfileConstants.CONNECTION_PROFILE_ID, props, "", false); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			ProfileManager.getInstance().createProfile(entity.getProfileName(),	entity.getProfileDescription(), IDBConnectionProfileConstants.CONNECTION_PROFILE_ID, props, "", false); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		}
 	}
 }
