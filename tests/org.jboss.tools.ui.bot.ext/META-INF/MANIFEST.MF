@@ -25,4 +25,5 @@ Export-Package: org.jboss.tools.ui.bot.ext,
  org.jboss.tools.ui.bot.ext.helper,
  org.jboss.tools.ui.bot.ext.types,
  org.jboss.tools.ui.bot.ext.view
+Bundle-Vendor: %providerName
 
