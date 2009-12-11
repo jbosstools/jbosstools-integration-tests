@@ -145,7 +145,11 @@ public class ContextMenuHelper {
    * @param tree
    */
   public static void prepareTreeItemForContextMenu(SWTBotTree tree){
+    
     tree.setFocus();
-    tree.select(0);
+    if (tree.getAllItems().length > 0){
+      tree.select(0);
+    }
+    
   }
 } 
