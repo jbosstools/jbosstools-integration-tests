@@ -25,6 +25,7 @@ import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.swt.finder.utils.SWTUtils;
 import org.jboss.tools.ui.bot.ext.types.JobLists;
 import org.jboss.tools.ui.bot.ext.types.JobState;
@@ -39,9 +40,9 @@ import org.osgi.framework.Bundle;
 public class SWTUtilExt extends SWTUtils {
 
 	private Logger log = Logger.getLogger(SWTUtilExt.class);
-	protected SWTBotExt bot;
+	protected SWTWorkbenchBot bot;
 
-	public SWTUtilExt(SWTBotExt bot) {
+	public SWTUtilExt(SWTWorkbenchBot bot) {
 		this.bot = bot;
 	}
 	

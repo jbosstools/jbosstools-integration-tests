@@ -40,6 +40,8 @@ public class IDELabel {
 		public static final String ABOUT_JBOSS_DEVELOPER_STUDIO = "About JBoss Developer Studio";
 		public static final String HIBERNATE_CODE_GENERATION = "Hibernate Code Generation...";
 		public static final String HIBERNATE_CODE_GENERATION_CONF = "Hibernate Code Generation Configurations...";
+		public static final String REMOVE = "Remove";
+		public static final String IMPORT = "Import...";
 		public static final String RUN_AS = "Run As";
 	}
 
@@ -69,6 +71,8 @@ public class IDELabel {
 		public static final String NEW_JSP_FILE = "New JSP File";
 		public static final String PROPERTIES = "Properties";
 		public static final String NEW_XHTML_FILE = "New File XHTML";
+		public static final String IMPORT_JSF_PROJECT = "Import JSF Project";
+		public static final String IMPORT = "Import";
 	}
 
 	public class EntityGroup {
@@ -195,4 +199,36 @@ public class IDELabel {
 		public static final String TEMPLATE_FACELET_FORM_XHTML = "FaceletForm.xhtml";
 		
 	}
+	
+	public static final class ServerName {
+
+	  public static final String JBOSS_EAP_4_3_RUNTIME_SERVER = "JBoss EAP 4.3 Runtime Server";
+	  // Server with this Label is created during JBDS installation for bundled EAP
+	  public static final String JBOSS_EAP = "jboss-eap";
+	    
+	}
+	 
+   public static final class ServerRuntimeName {
+
+     public static final String JBOSS_EAP_4_3 = "JBoss EAP 4.3 Runtime";
+     // Server Runtime with this Label is created during JBDS installation for bundled EAP
+     public static final String JBOSS_EAP = "jboss-eap Runtime";
+
+   }
+	
+   public static final class ServerJobName {
+
+     public static final String STARTING_JBOSS_EAP_43_RUNTIME = "Starting JBoss EAP 4.3 Runtime Serve";
+     public static final String STOPPING_JBOSS_EAP_43_RUNTIME = "Stoppig JBoss EAP 4.3 Runtime Server";
+     public static final String STARTING_JBOSS_EAP = "Starting jboss-eap";
+     public static final String STOPPING_JBOSS_EAP = "Stopping jboss-eap";
+     
+   }
+   
+   public static class ImportJSFProjectDialog {
+
+     public static final String RUNTIME = "Runtime*";
+     public static final String CHOICE_LIST_IS_EMPTY = "Choice list is empty.";
+     
+   }
 }

@@ -22,8 +22,7 @@ public abstract class JBTSWTBotTestCase extends SWTBotTestCase implements
 	protected static final String VISUAL_UPDATE = "Visual Editor View Update";
 	protected static final String VISUAL_REFRESH = "Visual Editor Refresh";
 	protected static final String UPDATING_INDEXES = "Updating indexes";
-	protected static final String STARTING_JBOSS_EAP_43_RUNTIME = "Starting JBoss EAP 4.3 Runtime Serve";
-	protected static final String STOPPING_JBOSS_EAP_43_RUNTIME = "Stoppig JBoss EAP 4.3 Runtime Server";
+	
 	private static Properties SWT_BOT_PROPERTIES;
 	private volatile Throwable exception;
 	public static final String PATH_TO_SWT_BOT_PROPERTIES = "SWTBot.properties";
