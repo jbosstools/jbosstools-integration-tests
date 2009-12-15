@@ -33,9 +33,9 @@ public class IDELabel {
 		public static final String CLOSE = "Close";
 		public static final String OPEN = "Open";
 		public static final String RENAME = "Rename";
-		public static final String JSP_FILE = "JSP...";
+		public static final String JSP_FILE = "JSP File";
 		public static final String PROPERTIES = "Properties";
-		public static final String XHTML_FILE = "XHTML...";
+		public static final String XHTML_FILE = "XHTML File";
 		public static final String HELP = "Help";
 		public static final String ABOUT_JBOSS_DEVELOPER_STUDIO = "About JBoss Developer Studio";
 		public static final String HIBERNATE_CODE_GENERATION = "Hibernate Code Generation...";
@@ -66,9 +66,9 @@ public class IDELabel {
 		// JBDS
 		public static final String NEW_HIBERNATE_MAPPING_FILE = "Create Hibernate XML Mapping file (hbm.xml)";		
 		public static final String NEW = "New";
-		public static final String SAVE_RESOURCE = "Save";
-		public static final String RENAME_RESOURCE = "Rename";
-		public static final String NEW_JSP_FILE = "New JSP File";
+		public static final String SAVE_RESOURCE = "Save Resource";
+		public static final String RENAME_RESOURCE = "Rename Resource";
+		public static final String NEW_JSP_FILE = "New File JSP";
 		public static final String PROPERTIES = "Properties";
 		public static final String NEW_XHTML_FILE = "New File XHTML";
 		public static final String IMPORT_JSF_PROJECT = "Import JSF Project";
@@ -164,7 +164,7 @@ public class IDELabel {
 
 	public static class RenameResourceDialog {
 
-		public static final String NEW_NAME = "Rename Resource";
+		public static final String NEW_NAME = "New name:";
 		
 	}
 	
@@ -180,7 +180,7 @@ public class IDELabel {
 	
 	public static class NewJSPFileDialog {
 
-		public static final String NAME = "New File JSP";
+		public static final String NAME = "Name*";
 		public static final String TEMPLATE = "Template";
 		public static final String TEMPLATE_JSF_BASE_PAGE = "JSFBasePage";
 		
@@ -194,7 +194,7 @@ public class IDELabel {
 
 	public static final class NewXHTMLFileDialog {
 
-		public static final String NAME = "New XHTML";
+		public static final String NAME = "Name*";
 		public static final String TEMPLATE = "Template";
 		public static final String TEMPLATE_FACELET_FORM_XHTML = "FaceletForm.xhtml";
 		
