@@ -60,6 +60,7 @@ public class CheckRenaming {
       bot.sleep(sleepTime); 
       // Rename file
       new SWTBotMenu(ContextMenuHelper.getContextMenu(tree, IDELabel.Menu.RENAME, true)).click();
+      bot.sleep(sleepTime); 
       bot.shell(IDELabel.Shell.RENAME_RESOURCE).activate();
       bot.textWithLabel(IDELabel.RenameResourceDialog.NEW_NAME)
         .setText(newFileName);
