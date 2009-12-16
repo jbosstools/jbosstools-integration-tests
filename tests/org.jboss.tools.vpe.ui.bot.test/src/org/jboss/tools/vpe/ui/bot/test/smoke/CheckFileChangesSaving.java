@@ -41,6 +41,7 @@ public class CheckFileChangesSaving {
     editor.insertText(changeText);
     bot.sleep(sleepTime);
     bot.menu(IDELabel.Menu.FILE).menu(IDELabel.Menu.CLOSE).click();
+    bot.sleep(sleepTime);
     bot.shell(IDELabel.Shell.SAVE_RESOURCE).activate();
     bot.button(saveFile ? IDELabel.Button.YES : IDELabel.Button.NO).click();
     bot.sleep(sleepTime);
