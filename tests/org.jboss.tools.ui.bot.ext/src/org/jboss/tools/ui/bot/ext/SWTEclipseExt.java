@@ -18,10 +18,12 @@ import java.io.File;
 
 import org.apache.log4j.Logger;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.matchers.WidgetMatcherFactory;
 import org.eclipse.swtbot.eclipse.finder.waits.Conditions;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
 import org.eclipse.swtbot.swt.finder.SWTBot;
+import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.hamcrest.Matcher;
@@ -39,11 +41,11 @@ import org.jboss.tools.ui.bot.ext.types.ViewType;
  */
 public class SWTEclipseExt {
 
-	SWTBotExt bot;
+  SWTWorkbenchBot bot;
 	SWTUtilExt util;
 	Logger log = Logger.getLogger(SWTEclipseExt.class);
 	
-	public SWTEclipseExt(SWTBotExt bot) {
+	public SWTEclipseExt(SWTWorkbenchBot bot) {
 		this.bot = bot;
 		util = new SWTUtilExt(bot);
 	}
@@ -311,4 +313,30 @@ public class SWTEclipseExt {
 		if (save)
 			editor.save();	
 	}
+	/**
+	 * Check if JBoss Developer Studio Is Running
+	 * Dynamic version of isJBDSRun Method
+	 * @return
+	 */
+  public boolean isJBDSRun (){
+    return SWTEclipseExt.isJBDSRun(bot);
+  }
+  /**
+   * Check if JBoss Developer Studio Is Running
+   * @param bot
+   * @return
+   */
+	public static boolean isJBDSRun (SWTWorkbenchBot bot){
+	  boolean jbdsIsRunning = false;
+	  try{
+	    bot.menu(IDELabel.Menu.HELP).menu(IDELabel.Menu.ABOUT_JBOSS_DEVELOPER_STUDIO);
+	    jbdsIsRunning = true;
+	  }catch (WidgetNotFoundException wnfe){
+	    // do nothing
+	  }
+	  
+	  return jbdsIsRunning;
+	  
+	}
+
 }
