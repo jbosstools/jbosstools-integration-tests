@@ -152,4 +152,18 @@ public class ContextMenuHelper {
     }
     
   }
+  /**
+   * Executes proper steps to be able call getContextMenu on Tree Item within tree on specified position
+   * @param tree
+   * @param index - zero based index of Tree Item to be selected
+   */
+  public static void prepareTreeItemForContextMenu(SWTBotTree tree, int index){
+    
+    tree.setFocus();
+    SWTBotTreeItem[] treeItems = tree.getAllItems(); 
+    if (treeItems.length > 0){
+      ContextMenuHelper.prepareTreeItemForContextMenu(tree,treeItems[index]);
+    }
+    
+  }
 } 

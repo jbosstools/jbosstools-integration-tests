@@ -23,7 +23,6 @@ import org.eclipse.swtbot.eclipse.finder.matchers.WidgetMatcherFactory;
 import org.eclipse.swtbot.eclipse.finder.waits.Conditions;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
 import org.eclipse.swtbot.swt.finder.SWTBot;
-import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.hamcrest.Matcher;
@@ -35,19 +34,31 @@ import org.jboss.tools.ui.bot.ext.types.PerspectiveType;
 import org.jboss.tools.ui.bot.ext.types.ViewType;
 
 /**
- * Provieds Eclipse common operation based on SWTBot element operations
+ * Provides Eclipse common operation based on SWTBot element operations
  * @author jpeterka
  *
  */
 public class SWTEclipseExt {
 
-  SWTWorkbenchBot bot;
-	SWTUtilExt util;
-	Logger log = Logger.getLogger(SWTEclipseExt.class);
+  private SWTWorkbenchBot bot;
+  private SWTUtilExt swtUtilExt;
+  private Logger log = Logger.getLogger(SWTEclipseExt.class);
 	
-	public SWTEclipseExt(SWTWorkbenchBot bot) {
+	public SWTWorkbenchBot getBot() {
+    return bot;
+  }
+
+  public SWTUtilExt getSwtUtilExt() {
+    return swtUtilExt;
+  }
+
+  public Logger getLog() {
+    return log;
+  }
+
+  public SWTEclipseExt(SWTWorkbenchBot bot) {
 		this.bot = bot;
-		util = new SWTUtilExt(bot);
+		swtUtilExt = new SWTUtilExt(bot);
 	}
 	
 	// ------------------------------------------------------------
@@ -124,7 +135,7 @@ public class SWTEclipseExt {
 
 		// Wait for shell closing JavaProjectWizard
 		waitForClosedShell(IDELabel.Shell.NEW_JAVA_PROJECT);
-		util.waitForNonIgnoredJobs();
+		swtUtilExt.waitForNonIgnoredJobs();
 	}
 	
 	// ------------------------------------------------------------
@@ -143,7 +154,7 @@ public class SWTEclipseExt {
 		bot.button(IDELabel.Button.FINISH).click();
 		
 		waitForClosedShell(IDELabel.Shell.NEW_JAVA_CLASS);
-		util.waitForNonIgnoredJobs();
+		swtUtilExt.waitForNonIgnoredJobs();
 	}
 	
 	/**
@@ -270,8 +281,8 @@ public class SWTEclipseExt {
 	 * @param path
 	 */
 	public void assertSameContent(String pluginId, String projectName, String... path) {
-		File file = util.getResourceFile(pluginId, path);
-		String resourceContent = util.readTextFile(file);
+		File file = swtUtilExt.getResourceFile(pluginId, path);
+		String resourceContent = swtUtilExt.readTextFile(file);
 		
 		openAsText(projectName, path);
 		SWTBotEclipseEditor editor = bot.editorByTitle(path[path.length - 1]).toTextEditor();
@@ -307,36 +318,11 @@ public class SWTEclipseExt {
 		SWTBotEclipseEditor editor;
 		editor = bot.editorByTitle(path[path.length - 1]).toTextEditor();
 		editor.selectRange(0, 0, editor.getLineCount());
-		File file = util.getResourceFile(pluginId, path);
-		String content = util.readTextFile(file);
+		File file = swtUtilExt.getResourceFile(pluginId, path);
+		String content = swtUtilExt.readTextFile(file);
 		editor.setText(content);
 		if (save)
 			editor.save();	
-	}
-	/**
-	 * Check if JBoss Developer Studio Is Running
-	 * Dynamic version of isJBDSRun Method
-	 * @return
-	 */
-  public boolean isJBDSRun (){
-    return SWTEclipseExt.isJBDSRun(bot);
-  }
-  /**
-   * Check if JBoss Developer Studio Is Running
-   * @param bot
-   * @return
-   */
-	public static boolean isJBDSRun (SWTWorkbenchBot bot){
-	  boolean jbdsIsRunning = false;
-	  try{
-	    bot.menu(IDELabel.Menu.HELP).menu(IDELabel.Menu.ABOUT_JBOSS_DEVELOPER_STUDIO);
-	    jbdsIsRunning = true;
-	  }catch (WidgetNotFoundException wnfe){
-	    // do nothing
-	  }
-	  
-	  return jbdsIsRunning;
-	  
 	}
 
 }

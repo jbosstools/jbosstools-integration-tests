@@ -52,6 +52,8 @@ public class IDELabel {
 		public static final String DELETE = "Delete";
 		public static final String JBDS_REMOVE_JSF_CAPABILITIES = "Remove Red Hat Capabilities";
 		public static final String JBT_REMOVE_JSF_CAPABILITIES = "Remove JSF Capabilities";
+		public static final String START = "Start";
+		public static final String STOP = "Stop";
 		
 	}
 
@@ -83,6 +85,7 @@ public class IDELabel {
 		public static final String NEW_XHTML_FILE = "New File XHTML";
 		public static final String IMPORT_JSF_PROJECT = "Import JSF Project";
 		public static final String IMPORT = "Import";
+		public static final String DELETE_SERVER = "Delete Server";
 	}
 
 	public class EntityGroup {
@@ -121,12 +124,14 @@ public class IDELabel {
 		public static final String PROJECT_EXPLORER = "Project Explorer";
 		public static final String PACKAGE_EXPLORER = "Package Explorer";
 		public static final String DATA_SOURCE_EXPLORER = "Data Source Explorer";
+		public static final String SERVERS = "Servers";
 	}
 	
 	public class ViewGroup {
 		public static final String GENERAL = "General";
 		public static final String JAVA = "Java";
 		public static final String DATA_MANAGEMENT = "Data Management";
+		public static final String SERVER = "Server";
 	}
 
 	public class SelectPerspectiveDialog {
@@ -228,7 +233,7 @@ public class IDELabel {
 	
    public static final class ServerJobName {
 
-     public static final String STARTING_JBOSS_EAP_43_RUNTIME = "Starting JBoss EAP 4.3 Runtime Serve";
+     public static final String STARTING_JBOSS_EAP_43_RUNTIME = "Starting JBoss EAP 4.3 Runtime Server";
      public static final String STOPPING_JBOSS_EAP_43_RUNTIME = "Stoppig JBoss EAP 4.3 Runtime Server";
      public static final String STARTING_JBOSS_EAP = "Starting jboss-eap";
      public static final String STOPPING_JBOSS_EAP = "Stopping jboss-eap";

@@ -63,23 +63,37 @@ public class SWTUtilExt extends SWTUtils {
 
 	/**
 	 * Wait for all running jobs not named in JobList.ignoredJobs 
+	 * @param timeOut
 	 */
-	public void waitForNonIgnoredJobs() {
-		waitForAllExcept(JobLists.ignoredJobs);
+	public void waitForNonIgnoredJobs(long timeOut) {
+		waitForAllExcept(timeOut,JobLists.ignoredJobs);
 	}
+  /**
+   * Wait for all running jobs not named in JobList.ignoredJobs 
+   */
+  public void waitForNonIgnoredJobs() {
+    waitForAllExcept(TIMEOUT,JobLists.ignoredJobs);
+  }
 
 	/**
 	 * Wait for all running jobs
 	 */
-	public void waitForAll() {
-		waitForAllExcept(new String[0]);
+	public void waitForAll(long timeOut) {
+		waitForAllExcept(timeOut,new String[0]);
 	}
-
+  /**
+   * Wait for all running jobs
+   * @param timeOut
+   */
+  public void waitForAll() {
+    waitForAllExcept(TIMEOUT,new String[0]);
+  }
 	/**
 	 * Wait for all running jobs except named jobs
+	 * @param timeOut
 	 * @param jobNames
 	 */
-	public void waitForAllExcept(String... jobNames) {
+	public void waitForAllExcept(long timeOut,String... jobNames) {
 
 		// Find all jobs
 		Job[] jobs = Job.getJobManager().find(null);
@@ -101,7 +115,7 @@ public class SWTUtilExt extends SWTUtils {
 			names[i] = listNames.get(i);
 		}
 
-		waitForJobs(names);
+		waitForJobs(timeOut,names);
 	}
 
 	/**
@@ -142,8 +156,9 @@ public class SWTUtilExt extends SWTUtils {
 				}
 
 				long waitTime = System.currentTimeMillis() - startTime;
-				if ((System.currentTimeMillis() - startTime) > TIMEOUT) {
-					log.info("Waiting for job " + jobName + " TIMEOUT");
+				if ((System.currentTimeMillis() - startTime) > timeOut) {
+					log.info("Waiting for job " + jobName + " timeOut " 
+					  + timeOut + "s");
 					break;
 				}
 				log.info("Job \"" + jobName + "\" is running for " + waitTime
