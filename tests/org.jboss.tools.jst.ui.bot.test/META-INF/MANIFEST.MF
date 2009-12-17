@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: %pluginName
+Bundle-Name: JST UI SWTBot Tests
 Bundle-SymbolicName: org.jboss.tools.jst.ui.bot.test;singleton:=true
 Bundle-Version: 1.0.0
 Bundle-Activator: org.jboss.tools.ui.bot.test.Activator
@@ -19,4 +19,4 @@ Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Export-Package: org.jboss.tools.test,
  org.jboss.tools.ui.bot.test
-Bundle-Vendor: %providerName
+Bundle-Vendor: JBoss by Red Hat

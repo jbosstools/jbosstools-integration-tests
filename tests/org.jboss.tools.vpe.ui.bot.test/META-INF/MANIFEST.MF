@@ -1,10 +1,10 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: %pluginName
+Bundle-Name: VPE UI SWTBot Tests
 Bundle-SymbolicName: org.jboss.tools.vpe.ui.bot.test
 Bundle-Version: 1.0.0
 Bundle-Activator: org.jboss.tools.vpe.ui.bot.test.Activator
-Bundle-Vendor: %providerName
+Bundle-Vendor: JBoss by Red Hat
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.jboss.tools.jst.ui.bot.test;bundle-version="1.0.0",
