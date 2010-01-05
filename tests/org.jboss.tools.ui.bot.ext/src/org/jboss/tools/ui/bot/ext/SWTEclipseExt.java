@@ -15,6 +15,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import java.io.File;
+import java.util.Iterator;
 
 import org.apache.log4j.Logger;
 import org.eclipse.swt.widgets.Shell;
@@ -23,7 +24,10 @@ import org.eclipse.swtbot.eclipse.finder.matchers.WidgetMatcherFactory;
 import org.eclipse.swtbot.eclipse.finder.waits.Conditions;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
 import org.eclipse.swtbot.swt.finder.SWTBot;
+import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.hamcrest.Matcher;
 import org.jboss.tools.ui.bot.ext.entity.JavaClassEntity;
@@ -32,6 +36,7 @@ import org.jboss.tools.ui.bot.ext.types.EntityType;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.ext.types.PerspectiveType;
 import org.jboss.tools.ui.bot.ext.types.ViewType;
+import org.jboss.tools.ui.bot.ext.types.IDELabel.PreferencesDialog;
 
 /**
  * Provides Eclipse common operation based on SWTBot element operations
@@ -238,13 +243,23 @@ public class SWTEclipseExt {
 	 */
 	public void createNew(EntityType entityType) {
 		
-		String groupLabel = entityType.getGroupLabel();
-		String entityLabel = entityType.getEntityLabel();
-		
 		bot.menu(IDELabel.Menu.FILE).menu(IDELabel.Menu.NEW).menu(IDELabel.Menu.OTHER).click();
 		waitForShell(IDELabel.Shell.NEW);
-		
-		bot.tree().expandNode(groupLabel).select(entityLabel);
+
+		String entityLabel = entityType.getEntityLabel();
+		SWTBotTree tree = bot.tree();
+		Iterator<String> itGroupsNodes = entityType.getGroupsLabels().iterator();
+		// if there are group labels defined expand groups nodes
+		if (itGroupsNodes.hasNext()){
+		  SWTBotTreeItem groupTreeItem = tree.expandNode(itGroupsNodes.next());
+		  while (itGroupsNodes.hasNext()){
+		    groupTreeItem = groupTreeItem.expandNode(itGroupsNodes.next());
+		  }
+		  groupTreeItem.select(entityLabel);
+		}
+		else{
+		  tree.select(entityLabel); 
+		}
 		bot.button(IDELabel.Button.NEXT).click();
 	}
 	
@@ -324,5 +339,57 @@ public class SWTEclipseExt {
 		if (save)
 			editor.save();	
 	}
-
+  /**
+   * Define new Server Runtime only if it's not specified yet
+   * @param runtimeName
+   * @param runtimeGroup
+   * @param runtimeType
+   * @param runtimeHomeDir
+   */
+	public void addServerRuntime (String runtimeName, String runtimeGroup, 
+	  String runtimeType, String runtimeHomeDir){
+	  
+	  bot.menu(IDELabel.Menu.WINDOW).menu(IDELabel.Menu.PREFERENCES).click();
+	  bot.shell(IDELabel.Shell.PREFERENCES).activate();
+	  bot.tree().expandNode(IDELabel.PreferencesDialog.SERVER_GROUP)
+	    .select(PreferencesDialog.RUNTIME_ENVIRONMENTS);
+	  SWTBotTable tbRuntimeEnvironments = bot.table();
+	  boolean createRuntime = true;
+	  // first check if Environment doesn't exist
+	  int numRows = tbRuntimeEnvironments.rowCount();
+	  if (numRows > 0){
+	    int currentRow = 0;
+	    while (createRuntime && numRows < currentRow){
+	      if (tbRuntimeEnvironments.getTableItem(currentRow).getText(0).equalsIgnoreCase(runtimeName)){
+	        createRuntime = false;
+	      }
+	      else {
+	        currentRow++;
+	      }  
+	    }
+	  }
+	  // create Server Runtime
+	  if (createRuntime){
+	    bot.button(IDELabel.Button.ADD).click();
+	    bot.shell(IDELabel.Shell.NEW_SERVER_RUNTIME_ENVIRONMENT).activate();
+      bot.tree().expandNode(runtimeGroup).select(runtimeType);
+      bot.button("Next >").click();
+	    bot.textWithLabel(IDELabel.JBossServerRuntimeDialog.NAME).setText(runtimeName);
+	    bot.textWithLabel(IDELabel.JBossServerRuntimeDialog.HOME_DIRECTORY).setText(runtimeHomeDir);
+	    bot.button(IDELabel.Button.FINISH).click();
+	    bot.button(IDELabel.Button.OK).click();
+	  }
+	  
+	}
+	
+	public static boolean treeContainsItemWithLabel(SWTBotTree tree, String itemLabel){
+	  boolean containsItem = false;
+    try {
+      tree.getTreeItem(itemLabel);
+      containsItem = true;
+    } catch (WidgetNotFoundException e) {
+    }
+    return containsItem;
+	}
+	
 }

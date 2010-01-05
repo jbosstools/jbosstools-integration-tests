@@ -30,7 +30,7 @@ public class SWTTestExt {
 	// Views
 	public static final PackageExplorer packageExplorer = new PackageExplorer();
 	
-	private static Properties properties;
+	public static Properties properties;
 	
 	/**
 	 * Get properties for hibernate tests

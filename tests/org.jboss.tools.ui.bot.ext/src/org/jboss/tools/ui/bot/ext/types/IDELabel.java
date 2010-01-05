@@ -54,6 +54,8 @@ public class IDELabel {
 		public static final String JBT_REMOVE_JSF_CAPABILITIES = "Remove JSF Capabilities";
 		public static final String START = "Start";
 		public static final String STOP = "Stop";
+		public static final String STRUTS_PROJECT = "Struts Project";
+		public static final String PREFERENCES = "Preferences";
 		
 	}
 
@@ -68,6 +70,7 @@ public class IDELabel {
 		public static final String CLOSE = "Close";
 		public static final String RUN = "Run";
 		public static final String APPLY = "Apply";
+		public static final String ADD = "Add...";
 	}
 
 	public class Shell {
@@ -86,12 +89,18 @@ public class IDELabel {
 		public static final String IMPORT_JSF_PROJECT = "Import JSF Project";
 		public static final String IMPORT = "Import";
 		public static final String DELETE_SERVER = "Delete Server";
+		public static final String NEW_STRUTS_PROJECT = "New Struts Project";
+	  public static final String PREFERENCES = "Preferences";
+	  public static final String NEW_SERVER_RUNTIME_ENVIRONMENT = "New Server Runtime Environment";
+	  public static final String OPEN_ASSOCIATED_PERSPECTIVE = "Open Associated Perspective?";
 	}
 
 	public class EntityGroup {
 		public static final String HIBERNATE = "Hibernate";
 		public static final String JAVA = "Java";
 		public static final String SEAM = "Seam";
+		public static final String STRUTS = "Struts";
+		public static final String JBOSS_TOOLS_WEB = "JBoss Tools Web";
 	}
 	
 	public class EntityLabel {
@@ -102,6 +111,7 @@ public class IDELabel {
 		public static final String JAVA_PROJECT =  "Java Project";
 		public static final String SEAM_PROJECT = "Seam Web Project";
 		public static final String HIBERNATE_CONFIGURATION_FILE = "Hibernate Configuration File (cfg.xml)";
+		public static final String STRUTS_PROJECT = "Struts Project";
 	}
 
 	public class JavaProjectWizard {
@@ -125,6 +135,7 @@ public class IDELabel {
 		public static final String PACKAGE_EXPLORER = "Package Explorer";
 		public static final String DATA_SOURCE_EXPLORER = "Data Source Explorer";
 		public static final String SERVERS = "Servers";
+		public static final String WEB_PROJECTS = "Web Projects";
 	}
 	
 	public class ViewGroup {
@@ -132,6 +143,7 @@ public class IDELabel {
 		public static final String JAVA = "Java";
 		public static final String DATA_MANAGEMENT = "Data Management";
 		public static final String SERVER = "Server";
+		public static final String JBOSS_TOOLS_WEB = "JBoss Tools Web";
 	}
 
 	public class SelectPerspectiveDialog {
@@ -246,4 +258,37 @@ public class IDELabel {
      public static final String CHOICE_LIST_IS_EMPTY = "Choice list is empty.";
      
    }
+   
+   public class NewStrutsProjectDialog{
+     
+     public static final String NAME = "Project Name*";
+     public static final String TEMPLATE = "Template*";
+     public static final String TEMPLATE_KICK_START = "KickStart";
+     
+   }
+   
+   public static class PreferencesDialog {
+
+     public static final String SERVER_GROUP = "Server";
+     public static final String RUNTIME_ENVIRONMENTS = "Runtime Environments";
+     
+   }
+   
+   public static class JBossServerRuntimeDialog {
+
+     public static final String NAME = "Name";
+     public static final String HOME_DIRECTORY = "Home Directory";
+     
+   }
+   public static final class ServerGroup {
+
+     public static final String JBOSS_EAP_4_3 = "JBoss Enterprise Middleware";
+       
+   }
+   public static final class ServerType {
+
+     public static final String JBOSS_EAP_4_3 = "JBoss Enterprise Application Platform 4.3 Runtime";
+       
+   }
+
 }
