@@ -11,12 +11,15 @@
 
 package org.jboss.tools.ui.bot.ext;
 
+import static org.jboss.tools.ui.bot.ext.SWTTestExt.eclipse;
+
 import org.apache.log4j.Logger;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.ext.types.ViewType;
@@ -150,4 +153,40 @@ public class SWTJBTExt {
     bot.shell(IDELabel.Shell.DELETE_SERVER).activate();
     bot.button(IDELabel.Button.OK).click();
   }
+  /**
+   * Remove Project from all Servers
+   */
+  public void removeProjectFromServers(String projectName){
+    
+    eclipse.showView(ViewType.SERVERS);
+    
+    delay();
+    
+    SWTBotTree serverTree = bot.viewByTitle(IDELabel.View.SERVERS).bot().tree();
+    
+    // Expand All
+    for (SWTBotTreeItem serverTreeItem : serverTree.getAllItems()){
+      serverTreeItem.expand();
+      // if JSF Test Project is deployed to server remove it
+      int itemIndex = 0;
+      SWTBotTreeItem[] serverTreeItemChildren = serverTreeItem.getItems(); 
+      while (itemIndex < serverTreeItemChildren.length 
+        && !serverTreeItemChildren[itemIndex].getText().startsWith(projectName)){
+        itemIndex++;
+      }  
+      // Server Tree Item has Child with Text equal to JSF TEst Project
+      if (itemIndex < serverTreeItemChildren.length){
+        ContextMenuHelper.prepareTreeItemForContextMenu(serverTree,serverTreeItemChildren[itemIndex]);
+        new SWTBotMenu(ContextMenuHelper.getContextMenu(serverTree, IDELabel.Menu.REMOVE, false)).click();
+        bot.shell("Server").activate();
+        bot.button(IDELabel.Button.OK).click();
+      }  
+    }
+    delay();
+  }
+  
+  public void delay() {
+    bot.sleep(500);
+  }
+  
 }

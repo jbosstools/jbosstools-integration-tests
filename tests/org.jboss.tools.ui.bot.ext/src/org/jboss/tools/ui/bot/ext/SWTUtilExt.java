@@ -25,6 +25,7 @@ import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.swt.finder.utils.SWTUtils;
 import org.jboss.tools.ui.bot.ext.types.JobLists;
@@ -322,7 +323,33 @@ public class SWTUtilExt extends SWTUtils {
 		log.error(msg);
 		fail(msg);
 	}
-	
-	
-	
+	/**
+	 * Write all running processes names to log
+	 */
+	public void logAllRunningProcesses(){
+    Job[] jobs = Job.getJobManager().find(null);
+
+    for (Job job : jobs) {
+      log.info(job.getName());
+    }
+	}
+	/**
+   * Write all menu items of menu to log
+   * @param menu
+   */
+  public void logAllSubmenus(MenuItem menuItem){
+    
+    final MenuItem miTmp = menuItem;
+    
+    menuItem.getDisplay().asyncExec(new Runnable() {
+      public void run() {
+        int index = 0;
+        for (MenuItem miSubmenu : miTmp.getMenu().getItems()){
+          log.info(index++ + ": " + miSubmenu);
+        }
+        
+      }
+    });
+    
+  }
 }

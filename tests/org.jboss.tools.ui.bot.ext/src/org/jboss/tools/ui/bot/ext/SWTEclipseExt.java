@@ -381,7 +381,12 @@ public class SWTEclipseExt {
 	  }
 	  
 	}
-	
+	/**
+	 * Test if tree contains item with itemLabel
+	 * @param tree
+	 * @param itemLabel
+	 * @return
+	 */
 	public static boolean treeContainsItemWithLabel(SWTBotTree tree, String itemLabel){
 	  boolean containsItem = false;
     try {
@@ -390,6 +395,19 @@ public class SWTEclipseExt {
     } catch (WidgetNotFoundException e) {
     }
     return containsItem;
+	}
+	/**
+	 * if Open Associated Perspective Shell is opened close it 
+	 * and depend on switchPerspective parameter change current perspective
+	 * @param switchPerspective
+	 */
+	public void closeOpenAssociatedPerspectiveShellIfOpened(boolean switchPerspective){
+	  try{
+	    bot.shell(IDELabel.Shell.OPEN_ASSOCIATED_PERSPECTIVE).activate();
+	    bot.button(switchPerspective ? IDELabel.Button.YES : IDELabel.Button.NO).click();
+	  } catch (WidgetNotFoundException wnfe){
+	    // do nothing
+	  }
 	}
 	
 }
