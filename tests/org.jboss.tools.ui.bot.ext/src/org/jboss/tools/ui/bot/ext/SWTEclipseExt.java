@@ -264,7 +264,7 @@ public class SWTEclipseExt {
 	}
 	
 	/**
-	 * Wait for appereance shell of given name
+	 * Wait for appearance shell of given name
 	 * @param shellName
 	 */
 	public void waitForShell(String shellName) {		
@@ -359,8 +359,8 @@ public class SWTEclipseExt {
 	  int numRows = tbRuntimeEnvironments.rowCount();
 	  if (numRows > 0){
 	    int currentRow = 0;
-	    while (createRuntime && numRows < currentRow){
-	      if (tbRuntimeEnvironments.getTableItem(currentRow).getText(0).equalsIgnoreCase(runtimeName)){
+	    while (createRuntime && currentRow < numRows){
+	      if (tbRuntimeEnvironments.cell(currentRow, 0).equalsIgnoreCase(runtimeName)){
 	        createRuntime = false;
 	      }
 	      else {
@@ -377,9 +377,8 @@ public class SWTEclipseExt {
 	    bot.textWithLabel(IDELabel.JBossServerRuntimeDialog.NAME).setText(runtimeName);
 	    bot.textWithLabel(IDELabel.JBossServerRuntimeDialog.HOME_DIRECTORY).setText(runtimeHomeDir);
 	    bot.button(IDELabel.Button.FINISH).click();
-	    bot.button(IDELabel.Button.OK).click();
 	  }
-	  
+	  bot.button(IDELabel.Button.OK).click();
 	}
 	/**
 	 * Test if tree contains item with itemLabel
