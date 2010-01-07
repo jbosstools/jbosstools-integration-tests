@@ -99,6 +99,7 @@ public class SWTJBTExt {
    */
   public static void startApplicationServer(SWTWorkbenchBot bot , int index){
     SWTJBTExt.chooseServerPopupMenu(bot,index, IDELabel.Menu.START,45*1000L);
+    bot.sleep(10*1000L);
   }
   /**
    * Stops Application Server in Server View on position specified by index
