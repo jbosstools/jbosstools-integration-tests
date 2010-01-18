@@ -60,6 +60,8 @@ public class IDELabel {
     public static final String JBT_REMOVE_STRUTS_CAPABILITIES = "Remove Struts Capabilities";
     public static final String ADD_STRUTS_CAPABILITIES = "Add Struts Capabilities...";
     public static final String WEB_PROJECT_JBT_STRUTS = "JBoss Tools Struts";
+    public static final String RUN = "Run";
+    public static final String RUN_ON_SERVER = "Run on Server";
 		
 	}
 
@@ -75,6 +77,8 @@ public class IDELabel {
 		public static final String RUN = "Run";
 		public static final String APPLY = "Apply";
 		public static final String ADD = "Add...";
+		public static final String NEW = "New...";
+		public static final String CONTINUE = "Continue";
 	}
 
 	public class Shell {
@@ -97,6 +101,12 @@ public class IDELabel {
 	  public static final String PREFERENCES = "Preferences";
 	  public static final String NEW_SERVER_RUNTIME_ENVIRONMENT = "New Server Runtime Environment";
 	  public static final String OPEN_ASSOCIATED_PERSPECTIVE = "Open Associated Perspective?";
+	  public static final String DELETE_RESOURCES = "Delete Resources";
+	  public static final String IMPORT_STRUTS_PROJECT = "Import Struts Project";
+	  public static final String UNSUPPORTED_CONTENT_TYPE = "Unsupported Content Type";
+	  public static final String NEW_SERVER = "New Server";
+	  public static final String RUN_ON_SERVER = "Run On Server";
+	  public static final String WARNING = "Warning";
 	}
 
 	public class EntityGroup {
@@ -206,6 +216,11 @@ public class IDELabel {
 		public static final String WEB_XML = "web.xml";
 		public static final String CONTEXT_PARAMS = "Context Params";
 		public static final String JAVAX_FACES_CONFIG_FILES = "javax.faces.CONFIG_FILES";
+		public static final String DEFAULT = "default";
+		public static final String SERVLETS = "Servlets";
+		public static final String ACTION_STRUTS = "action:org.apache.struts.action.ActionServlet";
+		public static final String CONFIG = "config";
+		public static final String TAG_LIBRARIES = "Tag Libraries";
 		
 	}
 	
@@ -289,10 +304,14 @@ public class IDELabel {
      public static final String JBOSS_EAP_4_3 = "JBoss Enterprise Middleware";
        
    }
-   public static final class ServerType {
+   public static final class ServerRuntimeType {
 
      public static final String JBOSS_EAP_4_3 = "JBoss Enterprise Application Platform 4.3 Runtime";
        
    }
+   public static final class ServerType {
 
+     public static final String JBOSS_EAP_4_3 = "JBoss Enterprise Application Platform 4.3";
+       
+   }
 }

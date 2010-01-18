@@ -352,4 +352,22 @@ public class SWTUtilExt extends SWTUtils {
     });
     
   }
+  /**
+   * Returns Test Plugin Location within file system
+   * @param projectName
+   * @return
+   */
+  public static String getTestPluginLocation(String projectName){
+    
+    String[] parts = System.getProperty("eclipse.commands").split("\n");
+
+    int index = 0;
+    
+    for (index = 0;parts.length > index + 1 && !parts[index].equals("-data");index++){
+      // do nothing just go through
+    }
+    
+    return parts[index + 1] + File.separator + projectName; 
+    
+  }
 }

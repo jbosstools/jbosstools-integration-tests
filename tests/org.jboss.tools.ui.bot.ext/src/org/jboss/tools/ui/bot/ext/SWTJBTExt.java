@@ -13,15 +13,21 @@ package org.jboss.tools.ui.bot.ext;
 
 import static org.jboss.tools.ui.bot.ext.SWTTestExt.eclipse;
 
+import java.io.IOException;
+
 import org.apache.log4j.Logger;
+import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
+import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
+import org.eclipse.swtbot.swt.finder.results.WidgetResult;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
+import org.jboss.tools.ui.bot.ext.types.JobName;
 import org.jboss.tools.ui.bot.ext.types.ViewType;
 /**
  * Provides JBoss Tools common operations based on SWTBot element operations
@@ -156,6 +162,7 @@ public class SWTJBTExt {
   }
   /**
    * Remove Project from all Servers
+   * @param projectName
    */
   public void removeProjectFromServers(String projectName){
     
@@ -188,6 +195,110 @@ public class SWTJBTExt {
   
   public void delay() {
     bot.sleep(500);
+  }
+  /**
+   * Delete Project from workspace
+   * @param projectName
+   */
+  public void deleteProject(String projectName) {
+
+    removeProjectFromServers(projectName);
+    
+    SWTBot packageExplorer = eclipse.showView(ViewType.PACKAGE_EXPLORER);
+    delay();
+    SWTBotTree tree = packageExplorer.tree();
+    delay();
+    
+    ContextMenuHelper.prepareTreeItemForContextMenu(tree,
+      tree.getTreeItem(projectName));
+    new SWTBotMenu(ContextMenuHelper.getContextMenu(tree,
+      IDELabel.Menu.DELETE, false)).click();
+    bot.shell(IDELabel.Shell.DELETE_RESOURCES).activate();
+    bot.button(IDELabel.Button.OK).click();
+    
+    new SWTUtilExt(bot).waitForNonIgnoredJobs();
+    
+  }
+  /**
+   * Choose Run On Server menu for specified project
+   * @param bot
+   * @param projectName
+   */
+  public static void runProjectOnServer(SWTWorkbenchBot bot, String projectName){
+ 
+    SWTBotTree packageExplorerTree = eclipse.showView(ViewType.PACKAGE_EXPLORER).tree();
+
+    packageExplorerTree.setFocus();
+    SWTBotTreeItem packageExplorerTreeItem = packageExplorerTree
+        .getTreeItem(projectName);
+    
+    packageExplorerTreeItem.select();
+    packageExplorerTreeItem.click();
+    // Search for Menu Item with Run on Server substring within label
+    final SWTBotMenu menuRunAs = bot.menu(IDELabel.Menu.RUN).menu(IDELabel.Menu.RUN_AS);
+    final MenuItem menuItem = UIThreadRunnable
+      .syncExec(new WidgetResult<MenuItem>() {
+        @SuppressWarnings("unchecked")
+        public MenuItem run() {
+          int menuItemIndex = 0;
+          MenuItem menuItem = null;
+          final MenuItem[] menuItems = menuRunAs.widget.getMenu().getItems();
+          while (menuItem == null && menuItemIndex < menuItems.length){
+            if (menuItems[menuItemIndex].getText().indexOf("Run on Server") > - 1){
+              menuItem = menuItems[menuItemIndex];
+            }
+            else{
+              menuItemIndex++;
+            }
+          }
+        return menuItem;
+        }
+      });
+    if (menuItem != null){
+      new SWTBotMenu(menuItem).click();
+      bot.shell(IDELabel.Shell.RUN_ON_SERVER).activate();
+      bot.button(IDELabel.Button.FINISH).click();
+      SWTUtilExt swtUtil = new SWTUtilExt(bot);      
+      swtUtil.waitForJobs(10*1000L,JobName.BUILDING_WS);
+      swtUtil.waitForJobs(10*1000L,JobName.UPDATING_INDEXES);
+    }
+    else{
+      throw new WidgetNotFoundException("Unable to find Menu Item with Label 'Run on Server'");
+    }
+  }
+  /**
+   * Choose Run On Server menu for specified project
+   * @param projectName
+   */
+  public void runProjectOnServer(String projectName){
+    runProjectOnServer(bot,projectName);
+  }
+  /**
+   * Creates new Server within Server View when Wizard for new Project is called
+   * @param bot
+   * @param serverGroup
+   * @param serverType
+   */
+  public static void addServerToServerViewOnWizardPage (SWTWorkbenchBot bot,String serverGroup , String serverType){
+    // Check if there is defined Application Server if not create one
+    if (!SWTJBTExt.isServerDefinedInWebWizardPage(bot)){
+      // Specify Application Server for Deployment
+      bot.button(IDELabel.Button.NEW, 1).click();
+      bot.shell(IDELabel.Shell.NEW_SERVER).activate();
+      bot.tree().select(serverGroup);
+      bot.tree().expandNode(serverGroup)
+        .select(serverType);
+      bot.button(IDELabel.Button.FINISH).click();
+    }  
+    
+  }
+  /**
+   * Creates new Server within Server View when Wizard for new Project is called
+   * @param serverGroup
+   * @param serverType
+   */
+  public void addServerToServerViewOnWizardPage (String serverGroup , String serverType){
+    addServerToServerViewOnWizardPage (bot,serverGroup , serverType);
   }
   
 }

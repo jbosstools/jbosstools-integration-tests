@@ -408,5 +408,21 @@ public class SWTEclipseExt {
 	    // do nothing
 	  }
 	}
+	/**
+	 * Close Warning Window if is opened.
+	 * Press Continue or Cancel button dependent on pressContinueButton
+	 * @param pressContinueButton
+	 */
+  public void closeWarningWindowIfOpened(boolean pressContinueButton){
+    try{
+      bot.shell(IDELabel.Shell.WARNING).activate();
+      bot.button(pressContinueButton ? IDELabel.Button.CONTINUE : IDELabel.Button.CANCEL).click();
+    } catch (WidgetNotFoundException wnfe){
+      // do nothing
+    }
+  }
+	public static void closeWarningWindowIfOpened(SWTWorkbenchBot bot, boolean pressContinueButton){
+	  closeWarningWindowIfOpened(bot, pressContinueButton);
+	}
 	
 }
