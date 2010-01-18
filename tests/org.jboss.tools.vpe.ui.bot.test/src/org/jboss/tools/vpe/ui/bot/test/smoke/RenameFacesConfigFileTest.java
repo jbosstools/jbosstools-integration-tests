@@ -15,6 +15,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.jboss.tools.ui.bot.ext.helper.FileRenameHelper;
 import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.test.WidgetVariables;
@@ -49,8 +50,8 @@ public class RenameFacesConfigFileTest extends VPEEditorTestCase{
     SWTBotTree tree = webProjects.tree();
 
     tree.setFocus();
-    String checkResult = CheckRenaming.checkRenameJSPFile(bot, OLD_FACES_CONFIG_FILE_NAME, NEW_FACES_CONFIG_FILE_NAME,
-      JBT_TEST_PROJECT_NAME,IDELabel.WebProjectsTree.CONFIGURATION);
+    String checkResult = FileRenameHelper.checkFileRenamingWithinWebProjects(bot, OLD_FACES_CONFIG_FILE_NAME, NEW_FACES_CONFIG_FILE_NAME,
+      new String[]{JBT_TEST_PROJECT_NAME,IDELabel.WebProjectsTree.CONFIGURATION});
     assertNull(checkResult,checkResult);
     // web.xml file was properly modified
     SWTBotTreeItem configFilesTreeItem = tree
@@ -68,7 +69,7 @@ public class RenameFacesConfigFileTest extends VPEEditorTestCase{
     SWTBotTable propertiesTable = bot.table(); 
     String fullConfigFileName = propertiesTable.cell(propertiesTable.indexOf(IDELabel.PropertiesDialog.PARAM_VALUE, 0), 1);
     bot.button(IDELabel.Button.CLOSE).click();
-    assertTrue(NEW_FACES_CONFIG_FILE_NAME + "Name of " 
+    assertTrue(NEW_FACES_CONFIG_FILE_NAME + " Name of " 
         + OLD_FACES_CONFIG_FILE_NAME 
         + " file was not changed in web.xml file.",
       fullConfigFileName.endsWith(NEW_FACES_CONFIG_FILE_NAME));

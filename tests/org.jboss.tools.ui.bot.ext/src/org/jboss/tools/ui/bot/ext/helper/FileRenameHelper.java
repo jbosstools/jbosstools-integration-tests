@@ -8,26 +8,29 @@
  * Contributor:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.vpe.ui.bot.test.smoke;
+package org.jboss.tools.ui.bot.ext.helper;
 
+import static org.jboss.tools.ui.bot.ext.SWTTestExt.eclipse;
+
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
-import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
+import org.jboss.tools.ui.bot.ext.SWTUtilExt;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
-import org.jboss.tools.ui.bot.test.SWTJBTBot;
-import org.jboss.tools.ui.bot.test.WidgetVariables;
+import org.jboss.tools.ui.bot.ext.types.JobName;
+import org.jboss.tools.ui.bot.ext.types.ViewType;
 
 /**
  * Check Renaming Functionality within WebProjects View
- * Tests if file war properly renamed in WebProjects View
+ * Tests if file was properly renamed in WebProjects View
  * and Title of file in Editor was renamed also. 
  * @author Vladimir Pakan
  *
  */
-public class CheckRenaming {
+public class FileRenameHelper {
   private static final int sleepTime = 1000;
   /**
    * Check File Renaming
@@ -35,12 +38,14 @@ public class CheckRenaming {
    * @param oldFileName
    * @param newFileName
    * @param treePathItems
+   * @param fileTreeItemSuffix
    * @return
    */
-  public static String checkRenameJSPFile(SWTJBTBot bot , String oldFileName, String newFileName, String... treePathItems){
+  public static String checkFileRenamingWithinWebProjects(SWTWorkbenchBot bot , String oldFileName, String newFileName, 
+      String[] treePathItems , String fileTreeItemSuffix){
     
     bot.sleep(sleepTime);    
-    SWTBot webProjects = bot.viewByTitle(WidgetVariables.WEB_PROJECTS).bot();
+    SWTBot webProjects = eclipse.showView(ViewType.WEB_PROJECTS);
     SWTBotTree tree = webProjects.tree();
 
     tree.setFocus();
@@ -48,6 +53,14 @@ public class CheckRenaming {
     if (treePathItems != null && treePathItems.length > 0){
       SWTBotTreeItem parentTreeItem = tree.getTreeItem(treePathItems[0]);
       parentTreeItem.expand();
+      bot.sleep(1000);  
+      parentTreeItem.select();
+      bot.sleep(1000);
+      // Do not remove this part of code otherwise tree view is not populated properly
+      parentTreeItem.collapse();
+      bot.sleep(1000);  
+      parentTreeItem.expand();
+      bot.sleep(1000);
       int index = 1;
       while (treePathItems.length > index){
         parentTreeItem = parentTreeItem.getNode(treePathItems[index]);
@@ -55,7 +68,7 @@ public class CheckRenaming {
         index++;
       }
       // Open File
-      ContextMenuHelper.prepareTreeItemForContextMenu(tree , parentTreeItem.getNode(oldFileName));
+      ContextMenuHelper.prepareTreeItemForContextMenu(tree , parentTreeItem.getNode(oldFileName + fileTreeItemSuffix));
       new SWTBotMenu(ContextMenuHelper.getContextMenu(tree, IDELabel.Menu.OPEN, true)).click();
       bot.sleep(sleepTime); 
       // Rename file
@@ -65,18 +78,19 @@ public class CheckRenaming {
       bot.textWithLabel(IDELabel.RenameResourceDialog.NEW_NAME)
         .setText(newFileName);
       bot.button(IDELabel.Button.OK).click();
-      bot.sleep(sleepTime); 
+      bot.sleep(sleepTime);
+      new SWTUtilExt(bot).waitForJobs(JobName.UPDATING_INDEXES);
       // Check Results
       // File with Old Name doesn't exists within WebProjects View
       try{
-        parentTreeItem.getNode(oldFileName);
+        parentTreeItem.getNode(oldFileName + fileTreeItemSuffix);
         return "File " + oldFileName + " was not renamed to " + newFileName + ".";
       }catch (WidgetNotFoundException wnfe) {
         // do nothing 
       }
       // File with New Name exists within WebProjects View
       try{
-        parentTreeItem.getNode(newFileName);
+        parentTreeItem.getNode(newFileName + fileTreeItemSuffix);
       }catch (WidgetNotFoundException wnfe) {
         return "Renamed File " + newFileName + " was not found."; 
       }
@@ -94,5 +108,16 @@ public class CheckRenaming {
     return null;
     
   }
-
+  /**
+   * Check File Renaming
+   * @param bot
+   * @param oldFileName
+   * @param newFileName
+   * @param treePathItems
+   * @return
+   */
+  public static String checkFileRenamingWithinWebProjects(SWTWorkbenchBot bot , String oldFileName, String newFileName, 
+      String[] treePathItems){
+    return checkFileRenamingWithinWebProjects(bot, oldFileName, newFileName, treePathItems, "");
+  }
 }

@@ -12,6 +12,7 @@ package org.jboss.tools.vpe.ui.bot.test.smoke;
 
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
+import org.jboss.tools.ui.bot.ext.helper.FileRenameHelper;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.test.WidgetVariables;
 import org.jboss.tools.vpe.ui.bot.test.editor.VPEEditorTestCase;
@@ -48,9 +49,9 @@ public class RenameXHTMLFileTest extends VPEEditorTestCase {
     SWTBotTree tree = webProjects.tree();
 
     tree.setFocus();
-    String checkResult = CheckRenaming.checkRenameJSPFile(bot,
+    String checkResult = FileRenameHelper.checkFileRenamingWithinWebProjects(bot,
         XHTMLPageCreationTest.TEST_NEW_XHTML_FILE_NAME, NEW_XHTML_FILE_NAME,
-        JBT_TEST_PROJECT_NAME, IDELabel.WebProjectsTree.WEB_CONTENT);
+        new String[] {JBT_TEST_PROJECT_NAME, IDELabel.WebProjectsTree.CONFIGURATION});
     assertNull(checkResult, checkResult);
     
   }
