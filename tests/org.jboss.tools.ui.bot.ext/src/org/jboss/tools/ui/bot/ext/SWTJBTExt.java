@@ -259,8 +259,7 @@ public class SWTJBTExt {
       bot.shell(IDELabel.Shell.RUN_ON_SERVER).activate();
       bot.button(IDELabel.Button.FINISH).click();
       SWTUtilExt swtUtil = new SWTUtilExt(bot);      
-      swtUtil.waitForJobs(10*1000L,JobName.BUILDING_WS);
-      swtUtil.waitForJobs(10*1000L,JobName.UPDATING_INDEXES);
+      swtUtil.waitForAll(10*1000L);
     }
     else{
       throw new WidgetNotFoundException("Unable to find Menu Item with Label 'Run on Server'");
