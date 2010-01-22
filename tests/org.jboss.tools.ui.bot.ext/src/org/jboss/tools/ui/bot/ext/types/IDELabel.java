@@ -50,13 +50,11 @@ public class IDELabel {
 		public static final String CLOSE_PROJECT = "Close Project";
 		public static final String OPEN_PROJECT = "Open Project";
 		public static final String DELETE = "Delete";
-		public static final String JBDS_REMOVE_JSF_CAPABILITIES = "Remove Red Hat Capabilities";
 		public static final String JBT_REMOVE_JSF_CAPABILITIES = "Remove JSF Capabilities";
 		public static final String START = "Start";
 		public static final String STOP = "Stop";
 		public static final String STRUTS_PROJECT = "Struts Project";
 		public static final String PREFERENCES = "Preferences";
-    public static final String JBDS_REMOVE_STRUTS_CAPABILITIES = "Remove Red Hat Capabilities";
     public static final String JBT_REMOVE_STRUTS_CAPABILITIES = "Remove Struts Capabilities";
     public static final String ADD_STRUTS_CAPABILITIES = "Add Struts Capabilities...";
     public static final String WEB_PROJECT_JBT_STRUTS = "JBoss Tools Struts";

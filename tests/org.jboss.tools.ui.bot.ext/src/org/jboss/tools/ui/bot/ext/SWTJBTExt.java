@@ -13,8 +13,6 @@ package org.jboss.tools.ui.bot.ext;
 
 import static org.jboss.tools.ui.bot.ext.SWTTestExt.eclipse;
 
-import java.io.IOException;
-
 import org.apache.log4j.Logger;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
@@ -27,7 +25,6 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
-import org.jboss.tools.ui.bot.ext.types.JobName;
 import org.jboss.tools.ui.bot.ext.types.ViewType;
 /**
  * Provides JBoss Tools common operations based on SWTBot element operations
@@ -104,7 +101,7 @@ public class SWTJBTExt {
    * @param index - zero based Position of Server within Server Tree
    */
   public static void startApplicationServer(SWTWorkbenchBot bot , int index){
-    SWTJBTExt.chooseServerPopupMenu(bot,index, IDELabel.Menu.START,45*1000L);
+    SWTJBTExt.chooseServerPopupMenu(bot,index, IDELabel.Menu.START,120*1000L);
     bot.sleep(10*1000L);
   }
   /**
@@ -121,7 +118,7 @@ public class SWTJBTExt {
    * @param index - zero based Position of Server within Server Tree
    */
   public static void stopApplicationServer(SWTWorkbenchBot bot , int index){
-    SWTJBTExt.chooseServerPopupMenu(bot,index, IDELabel.Menu.STOP,10*1000L);
+    SWTJBTExt.chooseServerPopupMenu(bot,index, IDELabel.Menu.STOP,20*1000L);
   }
   /**
    * Choose Server Popup Menu with specified label on Server with position specified by index 
@@ -238,7 +235,6 @@ public class SWTJBTExt {
     final SWTBotMenu menuRunAs = bot.menu(IDELabel.Menu.RUN).menu(IDELabel.Menu.RUN_AS);
     final MenuItem menuItem = UIThreadRunnable
       .syncExec(new WidgetResult<MenuItem>() {
-        @SuppressWarnings("unchecked")
         public MenuItem run() {
           int menuItemIndex = 0;
           MenuItem menuItem = null;
