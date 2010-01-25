@@ -41,6 +41,7 @@ public class SWTTestExt {
 	}	
 	
 	// Wait Constants
+	public static int TIME_500MS = 500;
 	public static int TIME_1S = 1000;
 	public static int TIME_5S = 5000;
 	public static int TIME_10S = 10000;

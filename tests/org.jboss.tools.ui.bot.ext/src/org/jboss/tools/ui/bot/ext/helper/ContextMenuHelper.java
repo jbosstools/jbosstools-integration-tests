@@ -15,6 +15,8 @@ import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.withMn
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.instanceOf;
 
+import java.util.Arrays;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
@@ -166,4 +168,70 @@ public class ContextMenuHelper {
     }
     
   }
+  
+  /**
+   * Clicks the context menu matching the text.
+   *
+   * @param text
+   *          the text on the context menu.
+   * @throws WidgetNotFoundException
+   *           if the widget is not found.
+   */
+  public static void clickContextMenu(final AbstractSWTBot<?> bot,
+      final String... texts) {
+
+    // show
+    final MenuItem menuItem = UIThreadRunnable
+        .syncExec(new WidgetResult<MenuItem>() {
+          @SuppressWarnings("unchecked")
+		public MenuItem run() {
+            MenuItem menuItem = null;
+            Control control = (Control) bot.widget;
+            Menu menu = control.getMenu();
+            for (String text : texts) {
+              Matcher<?> matcher = allOf(instanceOf(MenuItem.class),
+                  withMnemonic(text));
+              menuItem = show(menu, matcher,false);
+              if (menuItem != null) {
+                menu = menuItem.getMenu();
+              } else {
+                hide(menu);
+                break;
+              }
+            }
+
+            return menuItem;
+          }
+        });
+    if (menuItem == null) {
+      throw new WidgetNotFoundException("Could not find menu: "
+          + Arrays.asList(texts));
+    }
+
+    // click
+    click(menuItem);
+
+    // hide
+    UIThreadRunnable.syncExec(new VoidResult() {
+      public void run() {
+        hide(menuItem.getParent());
+      }
+    });
+  }
+  
+  private static void click(final MenuItem menuItem) {
+	    final Event event = new Event();
+	    event.time = (int) System.currentTimeMillis();
+	    event.widget = menuItem;
+	    event.display = menuItem.getDisplay();
+	    event.type = SWT.Selection;
+
+	    UIThreadRunnable.asyncExec(menuItem.getDisplay(), new VoidResult() {
+	      public void run() {
+	        menuItem.notifyListeners(SWT.Selection, event);
+	      }
+	    });
+	  }
+
+
 } 

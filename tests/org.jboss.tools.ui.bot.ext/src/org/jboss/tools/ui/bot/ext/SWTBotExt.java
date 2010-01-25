@@ -14,11 +14,13 @@ import static org.junit.Assert.fail;
 
 import org.apache.log4j.Logger;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
+import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotButton;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCCombo;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
+import org.jboss.tools.ui.bot.ext.parts.SWTBotEditorExt;
 
 /**
  * Extended version of SWTWorkbenchBot, logging added
@@ -67,6 +69,11 @@ public class SWTBotExt extends SWTWorkbenchBot {
 	public SWTBotTable table() {
 		log.info("Table selected");
 		return super.table();
+	}
+	@Override
+	public SWTBotEditorExt editorByTitle(String fileName) {		
+		SWTBotEditor editor = super.editorByTitle(fileName);
+		return new SWTBotEditorExt(editor.toTextEditor().getReference(), (SWTWorkbenchBot)this);
 	}
 
 }
