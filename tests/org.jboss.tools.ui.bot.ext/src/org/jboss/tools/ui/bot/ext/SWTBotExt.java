@@ -36,7 +36,7 @@ public class SWTBotExt extends SWTWorkbenchBot {
 		log.error(msg);
 		fail(msg);
 	}
-
+	
 	// ------------------------------------------------------------
 	// SWTBot method wrapper ( for better logging mainly )
 	// ------------------------------------------------------------

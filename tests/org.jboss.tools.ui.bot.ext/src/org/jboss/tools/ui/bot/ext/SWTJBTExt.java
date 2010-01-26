@@ -33,7 +33,7 @@ import org.jboss.tools.ui.bot.ext.types.ViewType;
  */
 public class SWTJBTExt {
 
-  SWTWorkbenchBot bot;
+	SWTWorkbenchBot bot;
 	Logger log = Logger.getLogger(SWTJBTExt.class);
 	
 	public SWTJBTExt(SWTWorkbenchBot bot) {
@@ -128,7 +128,7 @@ public class SWTJBTExt {
    * @param timeOut
    */
   public static void chooseServerPopupMenu(SWTWorkbenchBot bot , int index, String menuLabel, long timeOut){
-    SWTEclipseExt swtEclipseExt = new SWTEclipseExt(bot);
+    SWTEclipseExt swtEclipseExt = new SWTEclipseExt();
     SWTBot servers = swtEclipseExt.showView(ViewType.SERVERS);
     SWTBotTree serverTree = servers.tree();
     
@@ -136,8 +136,7 @@ public class SWTJBTExt {
     
     new SWTBotMenu(ContextMenuHelper.getContextMenu(serverTree,
         menuLabel, false)).click();
-    swtEclipseExt.getSwtUtilExt().waitForAll(timeOut);
-    
+    SWTTestExt.util.waitForAll(timeOut);    
   }
   /**
    * Deletes Application Server in Server View on position specified by index
