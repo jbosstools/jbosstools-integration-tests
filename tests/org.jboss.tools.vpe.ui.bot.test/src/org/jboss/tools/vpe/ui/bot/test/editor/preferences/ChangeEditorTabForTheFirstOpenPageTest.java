@@ -12,26 +12,26 @@ public class ChangeEditorTabForTheFirstOpenPageTest extends PreferencesTestCase{
 		
 		bot.toolbarButtonWithTooltip(PREF_TOOLTIP).click();
 		bot.shell(PREF_FILTER_SHELL_TITLE).activate();
-		bot.comboBoxWithLabel(SELECT_DEFAULT_TAB).setSelection("Source");
-		bot.button("OK").click();
+		bot.comboBoxWithLabel(SELECT_DEFAULT_TAB).setSelection("Source"); //$NON-NLS-1$
+		bot.button("OK").click(); //$NON-NLS-1$
 		
 		//Create and open new page
 		
 		SWTBot innerBot = bot.viewByTitle(WidgetVariables.PACKAGE_EXPLORER).bot();
 	
-		innerBot.tree().expandNode(JBT_TEST_PROJECT_NAME).expandNode("WebContent")
-		.getNode("pages").select();
+		innerBot.tree().expandNode(JBT_TEST_PROJECT_NAME).expandNode("WebContent") //$NON-NLS-1$
+		.getNode("pages").select(); //$NON-NLS-1$
 		
-		bot.menu("File").menu("New").menu("JSP File").click();
-		bot.shell("New File JSP").activate();
-		bot.textWithLabel("Name*").setText("testPage");
-		bot.button("Finish").click();
+		bot.menu("File").menu("New").menu("JSP File").click(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		bot.shell("New File JSP").activate(); //$NON-NLS-1$
+		bot.textWithLabel("Name*").setText("testPage"); //$NON-NLS-1$ //$NON-NLS-2$
+		bot.button("Finish").click(); //$NON-NLS-1$
 		bot.viewByTitle(WidgetVariables.PACKAGE_EXPLORER).setFocus();
 		
 		//Check if the tab changed
 		WidgetNotFoundException exception = null;
 		try {
-			bot.toolbarButtonWithTooltip("Refresh").click();
+			bot.toolbarButtonWithTooltip("Refresh").click(); //$NON-NLS-1$
 		} catch (WidgetNotFoundException e) {
 			exception = e;
 		}
@@ -43,12 +43,12 @@ public class ChangeEditorTabForTheFirstOpenPageTest extends PreferencesTestCase{
 		
 		//Delete test page if it has been created
 		SWTBot innerBot = bot.viewByTitle(WidgetVariables.PACKAGE_EXPLORER).bot();
-		innerBot.tree().expandNode(JBT_TEST_PROJECT_NAME).expandNode("WebContent")
-		.expandNode("pages").getNode("testPage.jsp").select();
-		bot.menu("Edit").menu("Delete").click();
-		bot.shell("Confirm Delete").activate();
-		bot.button("OK").click();
-		bot.multiPageEditorByTitle(TEST_PAGE).selectTab("Visual/Source");
+		innerBot.tree().expandNode(JBT_TEST_PROJECT_NAME).expandNode("WebContent") //$NON-NLS-1$
+		.expandNode("pages").getNode("testPage.jsp").select();  //$NON-NLS-1$//$NON-NLS-2$
+		bot.menu("Edit").menu("Delete").click(); //$NON-NLS-1$ //$NON-NLS-2$
+		bot.shell("Confirm Delete").activate(); //$NON-NLS-1$
+		bot.button("OK").click(); //$NON-NLS-1$
+		bot.multiPageEditorByTitle(TEST_PAGE).selectTab("Visual/Source"); //$NON-NLS-1$
 		super.tearDown();
 	}
 	

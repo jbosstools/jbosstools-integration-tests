@@ -26,7 +26,7 @@ import org.jboss.tools.vpe.ui.bot.test.smoke.XHTMLPageCreationTest;
 
 public class VPEAllBotTests extends SWTBotTestCase{
 	public static Test suite(){
-		TestSuite suite = new TestSuite("VPE All Tests");
+		TestSuite suite = new TestSuite("VPE All Tests"); //$NON-NLS-1$
 		
 		suite.addTestSuite(CancelTagLibDefenitionTest.class);
 		suite.addTestSuite(ImportTagsFromTLDFileTest.class);

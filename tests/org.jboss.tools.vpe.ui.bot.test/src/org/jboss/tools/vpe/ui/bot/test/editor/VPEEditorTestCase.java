@@ -44,10 +44,10 @@ public abstract class VPEEditorTestCase extends VPEAutoTestCase{
 	
 	@Override
 	protected String getPathToResources(String testPage) throws IOException {
-		String filePath = FileLocator.toFileURL(Platform.getBundle(Activator.PLUGIN_ID).getEntry("/")).getFile()+"resources/editor/"+testPage;
+		String filePath = FileLocator.toFileURL(Platform.getBundle(Activator.PLUGIN_ID).getEntry("/")).getFile()+"resources/editor/"+testPage; //$NON-NLS-1$ //$NON-NLS-2$
 		File file = new File(filePath);
 		if (!file.isFile()) {
-			filePath = FileLocator.toFileURL(Platform.getBundle(Activator.PLUGIN_ID).getEntry("/")).getFile()+"editor/"+testPage;
+			filePath = FileLocator.toFileURL(Platform.getBundle(Activator.PLUGIN_ID).getEntry("/")).getFile()+"editor/"+testPage;  //$NON-NLS-1$//$NON-NLS-2$
 		}
 		return filePath;
 	}
@@ -56,7 +56,7 @@ public abstract class VPEEditorTestCase extends VPEAutoTestCase{
 		SWTBot innerBot = bot.viewByTitle(WidgetVariables.PACKAGE_EXPLORER).bot();
 		SWTBotTree tree = innerBot.tree();
 		tree.expandNode(JBT_TEST_PROJECT_NAME)
-		.expandNode("WebContent").expandNode("pages").getNode(TEST_PAGE).doubleClick();
+		.expandNode("WebContent").expandNode("pages").getNode(TEST_PAGE).doubleClick(); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
 	void checkVPE(String testPage) throws Throwable{
@@ -70,8 +70,8 @@ public abstract class VPEEditorTestCase extends VPEAutoTestCase{
 		//Restore page state before tests
     if (editor != null){
       editor.setFocus();
-      bot.menu("Edit").menu("Select All").click();
-      bot.menu("Edit").menu("Delete").click();
+      bot.menu("Edit").menu("Select All").click(); //$NON-NLS-1$ //$NON-NLS-2$
+      bot.menu("Edit").menu("Delete").click(); //$NON-NLS-1$ //$NON-NLS-2$
       editor.setText(editorText);
       editor.save();
     }

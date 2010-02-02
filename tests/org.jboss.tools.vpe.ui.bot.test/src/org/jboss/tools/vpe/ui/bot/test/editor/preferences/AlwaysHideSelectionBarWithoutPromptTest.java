@@ -4,7 +4,7 @@ import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 
 public class AlwaysHideSelectionBarWithoutPromptTest extends PreferencesTestCase{
 	
-	private static final String HID_SEL_BAR = "Hide selection bar";
+	private static final String HID_SEL_BAR = "Hide selection bar"; //$NON-NLS-1$
 	
 	public void testAlwaysHideSelectionBarWithoutPrompt(){
 		
@@ -67,14 +67,14 @@ public class AlwaysHideSelectionBarWithoutPromptTest extends PreferencesTestCase
 		bot.toolbarButtonWithTooltip(PREF_TOOLTIP).click();
 		bot.shell(PREF_FILTER_SHELL_TITLE).activate();
 		bot.checkBox(SHOW_SELECTION_TAG_BAR).click();
-		bot.button("OK").click();
+		bot.button("OK").click(); //$NON-NLS-1$
 	}
 	
 	private void selectPrompt(){
 		bot.toolbarButtonWithTooltip(PREF_TOOLTIP).click();
 		bot.shell(PREF_FILTER_SHELL_TITLE).activate();
 		bot.checkBox(ASK_FOR_CONFIRM).click();
-		bot.button("OK").click();
+		bot.button("OK").click(); //$NON-NLS-1$
 	}
 	
 }

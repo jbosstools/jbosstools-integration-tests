@@ -15,12 +15,12 @@ public class ShowResourceBundlesUsageasELexpressionsTest extends PreferencesTest
 		//Test check VPE content with resource bundles
 		
 		selectELExpressions();
-		checkVPE("ShowResourceBundlesUsageasELExpressions.xml");
+		checkVPE("ShowResourceBundlesUsageasELExpressions.xml"); //$NON-NLS-1$
 	
 		//Test check VPE content without resource bundles
 		
 		selectELExpressions();
-		checkVPE("HideResourceBundlesUsageasELExpressions.xml");
+		checkVPE("HideResourceBundlesUsageasELExpressions.xml"); //$NON-NLS-1$
 		
 	}
 	
@@ -30,8 +30,8 @@ public class ShowResourceBundlesUsageasELexpressionsTest extends PreferencesTest
 		//Restore page state before tests
 		
 		editor.setFocus();
-		bot.menu("Edit").menu("Select All").click();
-		bot.menu("Edit").menu("Delete").click();
+		bot.menu("Edit").menu("Select All").click(); //$NON-NLS-1$ //$NON-NLS-2$
+		bot.menu("Edit").menu("Delete").click(); //$NON-NLS-1$ //$NON-NLS-2$
 		editor.setText(textEditor);
 		editor.save();
 		super.tearDown();
@@ -46,7 +46,7 @@ public class ShowResourceBundlesUsageasELexpressionsTest extends PreferencesTest
 		bot.toolbarButtonWithTooltip(PREF_TOOLTIP).click();
 		bot.shell(PREF_FILTER_SHELL_TITLE).activate();
 		bot.checkBox(SHOW_RESOURCE_BUNDLES).click();
-		bot.button("OK").click();
+		bot.button("OK").click(); //$NON-NLS-1$
 	}
 	
 }

@@ -18,14 +18,14 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 public abstract class JBTSWTBotTestCase extends SWTBotTestCase implements
 		ILogListener {
 
-	protected static final String BUILDING_WS = "Building workspace";
-	protected static final String VISUAL_UPDATE = "Visual Editor View Update";
-	protected static final String VISUAL_REFRESH = "Visual Editor Refresh";
-	protected static final String UPDATING_INDEXES = "Updating indexes";
+	protected static final String BUILDING_WS = "Building workspace"; //$NON-NLS-1$
+	protected static final String VISUAL_UPDATE = "Visual Editor View Update"; //$NON-NLS-1$
+	protected static final String VISUAL_REFRESH = "Visual Editor Refresh"; //$NON-NLS-1$
+	protected static final String UPDATING_INDEXES = "Updating indexes"; //$NON-NLS-1$
 	
 	private static Properties SWT_BOT_PROPERTIES;
 	private volatile Throwable exception;
-	public static final String PATH_TO_SWT_BOT_PROPERTIES = "SWTBot.properties";
+	public static final String PATH_TO_SWT_BOT_PROPERTIES = "SWTBot.properties"; //$NON-NLS-1$
 	protected SWTJBTBot bot = new SWTJBTBot();
 	private static int sleepTime = 1000;
 
@@ -39,47 +39,28 @@ public abstract class JBTSWTBotTestCase extends SWTBotTestCase implements
 	static {
 		try {
 			InputStream inputStream = JBTSWTBotTestCase.class
-					.getResourceAsStream("/" + PATH_TO_SWT_BOT_PROPERTIES);
+					.getResourceAsStream("/" + PATH_TO_SWT_BOT_PROPERTIES); //$NON-NLS-1$
 			SWT_BOT_PROPERTIES = new Properties();
 			SWT_BOT_PROPERTIES.load(inputStream);
 			SWTBotPreferences.PLAYBACK_DELAY = Long
 					.parseLong(SWT_BOT_PROPERTIES
-							.getProperty("SWTBotPreferences.PLAYBACK_DELAY"));
+							.getProperty("SWTBotPreferences.PLAYBACK_DELAY")); //$NON-NLS-1$
 			SWTBotPreferences.TIMEOUT = Long.parseLong(SWT_BOT_PROPERTIES
-					.getProperty("SWTBotPreferences.TIMEOUT"));
+					.getProperty("SWTBotPreferences.TIMEOUT")); //$NON-NLS-1$
 			inputStream.close();
 		} catch (IOException e) {
 			IStatus status = new Status(IStatus.ERROR, Activator.PLUGIN_ID,
-					"Can't load properties from " + PATH_TO_SWT_BOT_PROPERTIES
-							+ " file", e);
+					"Can't load properties from " + PATH_TO_SWT_BOT_PROPERTIES //$NON-NLS-1$
+							+ " file", e); //$NON-NLS-1$
 			Activator.getDefault().getLog().log(status);
 			e.printStackTrace();
 		} catch (IllegalStateException e) {
 			IStatus status = new Status(IStatus.ERROR, Activator.PLUGIN_ID,
-					"Property file " + PATH_TO_SWT_BOT_PROPERTIES
-							+ " was not found", e);
+					"Property file " + PATH_TO_SWT_BOT_PROPERTIES //$NON-NLS-1$
+							+ " was not found", e); //$NON-NLS-1$
 			Activator.getDefault().getLog().log(status);
 			e.printStackTrace();
 		}
-		// try {
-		// InputStream swtPreferenceIS =
-		// Platform.getBundle(Activator.PLUGIN_ID).getResource(PATH_TO_SWT_BOT_PROPERTIES)
-		// .openStream();
-		// SWT_BOT_PROPERTIES = new Properties();
-		// SWT_BOT_PROPERTIES.load(swtPreferenceIS);
-		// SWTBotPreferences.PLAYBACK_DELAY = Long
-		// .parseLong(SWT_BOT_PROPERTIES
-		// .getProperty("SWTBotPreferences.PLAYBACK_DELAY"));
-		// SWTBotPreferences.TIMEOUT = Long.parseLong(SWT_BOT_PROPERTIES
-		// .getProperty("SWTBotPreferences.TIMEOUT"));
-		// swtPreferenceIS.close();
-		// } catch (IOException e) {
-		// fail("Can't load properties from " + PATH_TO_SWT_BOT_PROPERTIES +
-		// " file");
-		// } catch (IllegalStateException e) {
-		// fail("Property file " + PATH_TO_SWT_BOT_PROPERTIES +
-		// " was not found");
-		// }
 	}
 
 	public void logging(IStatus status, String plugin) {
@@ -87,7 +68,7 @@ public abstract class JBTSWTBotTestCase extends SWTBotTestCase implements
 		case IStatus.ERROR:
 			Throwable throwable = status.getException();
 			if (throwable == null) {
-				throwable = new Throwable(status.getMessage() + " in "
+				throwable = new Throwable(status.getMessage() + " in " //$NON-NLS-1$
 						+ status.getPlugin());
 			}
 			setException(throwable);
@@ -203,12 +184,12 @@ public abstract class JBTSWTBotTestCase extends SWTBotTestCase implements
 		try {
 			bot.viewByTitle(WidgetVariables.ERROR_LOG);
 		} catch (WidgetNotFoundException e) {
-			bot.menu("Window").menu("Show View").menu("Other...").click();
+			bot.menu("Window").menu("Show View").menu("Other...").click(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			SWTBotTree viewTree = bot.tree();
 			delay();
-			viewTree.expandNode("General")
+			viewTree.expandNode("General") //$NON-NLS-1$
 					.expandNode(WidgetVariables.ERROR_LOG).select();
-			bot.button("OK").click();
+			bot.button("OK").click(); //$NON-NLS-1$
 		}
 	}
 
@@ -220,12 +201,12 @@ public abstract class JBTSWTBotTestCase extends SWTBotTestCase implements
 		try {
 			bot.viewByTitle(WidgetVariables.PACKAGE_EXPLORER).setFocus();
 		} catch (WidgetNotFoundException e) {
-			bot.menu("Window").menu("Show View").menu("Other...").click();
+			bot.menu("Window").menu("Show View").menu("Other...").click(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			SWTBotTree viewTree = bot.tree();
 			delay();
-			viewTree.expandNode("Java").expandNode(
+			viewTree.expandNode("Java").expandNode( //$NON-NLS-1$
 					WidgetVariables.PACKAGE_EXPLORER).select();
-			bot.button("OK").click();
+			bot.button("OK").click(); //$NON-NLS-1$
 		}
 	}
 	
@@ -237,12 +218,12 @@ public abstract class JBTSWTBotTestCase extends SWTBotTestCase implements
     try {
       bot.viewByTitle(WidgetVariables.WEB_PROJECTS).setFocus();
     } catch (WidgetNotFoundException e) {
-      bot.menu("Window").menu("Show View").menu("Other...").click();
+      bot.menu("Window").menu("Show View").menu("Other...").click(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
       SWTBotTree viewTree = bot.tree();
       delay();
-      viewTree.expandNode("Java").expandNode(
+      viewTree.expandNode("Java").expandNode( //$NON-NLS-1$
           WidgetVariables.WEB_PROJECTS).select();
-      bot.button("OK").click();
+      bot.button("OK").click(); //$NON-NLS-1$
     }
   }
 
@@ -254,12 +235,12 @@ public abstract class JBTSWTBotTestCase extends SWTBotTestCase implements
     try {
       bot.viewByTitle(WidgetVariables.SERVERS).setFocus();
     } catch (WidgetNotFoundException e) {
-      bot.menu("Window").menu("Show View").menu("Other...").click();
+      bot.menu("Window").menu("Show View").menu("Other...").click(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
       SWTBotTree viewTree = bot.tree();
       delay();
-      viewTree.expandNode("Server").expandNode(
+      viewTree.expandNode("Server").expandNode( //$NON-NLS-1$
           WidgetVariables.SERVERS).select();
-      bot.button("OK").click();
+      bot.button("OK").click(); //$NON-NLS-1$
     }
   }
   /**
@@ -270,12 +251,12 @@ public abstract class JBTSWTBotTestCase extends SWTBotTestCase implements
     try {
       bot.viewByTitle(WidgetVariables.PROPERTIES).setFocus();
     } catch (WidgetNotFoundException e) {
-      bot.menu("Window").menu("Show View").menu("Other...").click();
+      bot.menu("Window").menu("Show View").menu("Other...").click(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
       SWTBotTree viewTree = bot.tree();
       delay();
-      viewTree.expandNode("General").expandNode(
+      viewTree.expandNode("General").expandNode( //$NON-NLS-1$
           WidgetVariables.PROPERTIES).select();
-      bot.button("OK").click();
+      bot.button("OK").click(); //$NON-NLS-1$
     }
   }
   /**
@@ -286,12 +267,12 @@ public abstract class JBTSWTBotTestCase extends SWTBotTestCase implements
     try {
       bot.viewByTitle(WidgetVariables.OUTLINE).setFocus();
     } catch (WidgetNotFoundException e) {
-      bot.menu("Window").menu("Show View").menu("Other...").click();
+      bot.menu("Window").menu("Show View").menu("Other...").click(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
       SWTBotTree viewTree = bot.tree();
       delay();
-      viewTree.expandNode("General").expandNode(
+      viewTree.expandNode("General").expandNode( //$NON-NLS-1$
           WidgetVariables.OUTLINE).select();
-      bot.button("OK").click();
+      bot.button("OK").click(); //$NON-NLS-1$
     }
   }
 	// protected void openProgressStatus() {
@@ -347,8 +328,8 @@ public abstract class JBTSWTBotTestCase extends SWTBotTestCase implements
 				if (!isRequiredProcessesStarted) {
 					long endTime = System.currentTimeMillis();
 					if (endTime - startTime > timeOut) {
-						System.out.println("Next processes are already started or finished: "+
-								runningProcessesToString(jobNames)+" called in " + getName() + " class");
+						System.out.println("Next processes are already started or finished: "+ //$NON-NLS-1$
+								runningProcessesToString(jobNames)+" called in " + getName() + " class"); //$NON-NLS-1$ //$NON-NLS-2$
 						return;
 					}
 				}
@@ -373,9 +354,9 @@ public abstract class JBTSWTBotTestCase extends SWTBotTestCase implements
 	}
 
 	private String runningProcessesToString (String ... processes){
-		String process = "";
+		String process = ""; //$NON-NLS-1$
 		for (String processRunning : processes) {
-			process = process + processRunning + ", ";
+			process = process + processRunning + ", "; //$NON-NLS-1$
 		}
 		return process;
 	}

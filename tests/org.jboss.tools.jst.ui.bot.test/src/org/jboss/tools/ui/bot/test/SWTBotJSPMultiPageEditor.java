@@ -10,6 +10,7 @@ import org.eclipse.ui.IEditorReference;
 import org.hamcrest.SelfDescribing;
 import org.jboss.tools.jst.jsp.jspeditor.JSPMultiPageEditor;
 import org.jboss.tools.jst.jsp.jspeditor.JSPMultiPageEditorPart;
+import org.jboss.tools.jst.ui.bot.test.utils.ImplementationChangedException;
 
 /**
  * This represents Eclipse JSPMultiPageEditor part
@@ -66,13 +67,13 @@ public class SWTBotJSPMultiPageEditor extends SWTBotEditor{
 		return jspMultiPageEditor;
 	}
 	
-	public void selectTab(final String tabLabel) throws WidgetNotFoundException{
+	public void selectTab(final String tabLabel) {
 		bot.getDisplay().syncExec(new Runnable() {
 			
 			public void run() {
 				Class<? extends JSPMultiPageEditorPart> cls = JSPMultiPageEditorPart.class;
 				try {
-					Field field = cls.getDeclaredField("container");
+					Field field = cls.getDeclaredField("container"); //$NON-NLS-1$
 					field.setAccessible(true);
 					CTabFolder tabFolder = (CTabFolder) field.get(jspMultiPageEditor);
 					CTabItem[] tabItems = tabFolder.getItems();
@@ -85,15 +86,15 @@ public class SWTBotJSPMultiPageEditor extends SWTBotEditor{
 						}
 					}
 					if (!isHasItem) {
-						throw new WidgetNotFoundException("Can't find a tab item with "+ tabLabel + " label");
+						throw new WidgetNotFoundException("Can't find a tab item with "+ tabLabel + " label"); //$NON-NLS-1$ //$NON-NLS-2$
 					}
 					tabFolder.setSelection(tabItems[pageIndex]);
 					jspMultiPageEditor.pageChange(pageIndex);
 				} catch (NoSuchFieldException e) {
-					e.printStackTrace();
+					throw new ImplementationChangedException(e);
 				}
 				catch (IllegalAccessException e) {
-					e.printStackTrace();
+					throw new ImplementationChangedException(e);
 				}
 			}
 

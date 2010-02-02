@@ -17,7 +17,7 @@ public class BorderForUnknownTagsTest extends PreferencesTestCase{
 		//Test insert unknown tag
 		
 		editor.navigateTo(12, 52);
-		editor.insertText("<tagunknown></tagunknown>");
+		editor.insertText("<tagunknown></tagunknown>"); //$NON-NLS-1$
 	
 		//Test default Show Border value
 		
@@ -27,21 +27,21 @@ public class BorderForUnknownTagsTest extends PreferencesTestCase{
 		if (!checkBox.isChecked()) {
 			checkBox.click();
 		}
-		bot.button("OK").click();
+		bot.button("OK").click(); //$NON-NLS-1$
 	
 		//Test check VPE content
 		
-		checkVPE("ShowBorderForUnknownTag.xml");
+		checkVPE("ShowBorderForUnknownTag.xml"); //$NON-NLS-1$
 		
 		//Test hide border for unknown tag
 		
 		selectBorder();
-		checkVPE("HideBorderForUnknownTag.xml");
+		checkVPE("HideBorderForUnknownTag.xml"); //$NON-NLS-1$
 		
 		//Test restore previous state
 		
 		selectBorder();
-		checkVPE("ShowBorderForUnknownTag.xml");
+		checkVPE("ShowBorderForUnknownTag.xml"); //$NON-NLS-1$
 		
 	}
 	
@@ -54,7 +54,7 @@ public class BorderForUnknownTagsTest extends PreferencesTestCase{
 		bot.toolbarButtonWithTooltip(PREF_TOOLTIP).click();
 		bot.shell(PREF_FILTER_SHELL_TITLE).activate();
 		bot.checkBox(SHOW_BORDER_FOR_UNKNOWN_TAGS).click();
-		bot.button("OK").click();
+		bot.button("OK").click(); //$NON-NLS-1$
 	}
 	
 	@Override
@@ -63,8 +63,8 @@ public class BorderForUnknownTagsTest extends PreferencesTestCase{
 		//Restore page state before tests
 		
 		editor.setFocus();
-		bot.menu("Edit").menu("Select All").click();
-		bot.menu("Edit").menu("Delete").click();
+		bot.menu("Edit").menu("Select All").click(); //$NON-NLS-1$ //$NON-NLS-2$
+		bot.menu("Edit").menu("Delete").click(); //$NON-NLS-1$ //$NON-NLS-2$
 		editor.setText(textEditor);
 		editor.save();
 		super.tearDown();

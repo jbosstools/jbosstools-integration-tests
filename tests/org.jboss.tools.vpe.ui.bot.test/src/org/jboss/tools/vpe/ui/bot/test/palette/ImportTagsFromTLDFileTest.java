@@ -9,13 +9,13 @@ import org.jboss.tools.vpe.ui.bot.test.VPEAutoTestCase;
 
 public class ImportTagsFromTLDFileTest extends VPEAutoTestCase{
 	
-	private static final String GROUP_NAME = "NewGroup";
+	private static final String GROUP_NAME = "NewGroup"; //$NON-NLS-1$
 	
 	public void testImportTagsFromTLDFile(){
 
 		//Test clear group
-		bot.toolbarButtonWithTooltip("Palette Editor").click();
-		bot.shell("Palette Editor").activate();
+		bot.toolbarButtonWithTooltip("Palette Editor").click(); //$NON-NLS-1$
+		bot.shell("Palette Editor").activate(); //$NON-NLS-1$
 		try {
 			bot.getDisplay().syncExec(new Runnable() {
 
@@ -23,7 +23,7 @@ public class ImportTagsFromTLDFileTest extends VPEAutoTestCase{
 					SWTBotTree tree = bot.tree();
 					delay();
 					try {
-						tree.expandNode("XStudio").expandNode("Palette").getNode(GROUP_NAME).select();
+						tree.expandNode("XStudio").expandNode("Palette").getNode(GROUP_NAME).select(); //$NON-NLS-1$ //$NON-NLS-2$
 						Display display = bot.getDisplay();
 						Event event = new Event();
 						event.type = SWT.KeyDown;
@@ -49,38 +49,38 @@ public class ImportTagsFromTLDFileTest extends VPEAutoTestCase{
 				
 			});
 			
-			bot.shell("Confirmation").activate();
-			bot.button("OK").click();
+			bot.shell("Confirmation").activate(); //$NON-NLS-1$
+			bot.button("OK").click(); //$NON-NLS-1$
 		} catch (WidgetNotFoundException e) {
 		}
-		bot.shell("Palette Editor").activate();
-		bot.button("OK").click();
+		bot.shell("Palette Editor").activate(); //$NON-NLS-1$
+		bot.button("OK").click(); //$NON-NLS-1$
 
 		//Test open import dialog
 
-		bot.toolbarButtonWithTooltip("Import").click();
-		bot.shell("Import Tags from TLD File").activate();
+		bot.toolbarButtonWithTooltip("Import").click(); //$NON-NLS-1$
+		bot.shell("Import Tags from TLD File").activate(); //$NON-NLS-1$
 		
 		//Test set tag lib
 		
-		bot.button("Browse...").click();
-		bot.shell("Edit TLD").activate();
+		bot.button("Browse...").click(); //$NON-NLS-1$
+		bot.shell("Edit TLD").activate(); //$NON-NLS-1$
 		SWTBotTree tree = bot.tree();
 		delay();
-		tree.expandNode(projectProperties.getProperty("JSFProjectName")).expandNode("c.tld [c]").select();
-		bot.button("OK").click();
+		tree.expandNode(projectProperties.getProperty("JSFProjectName")).expandNode("c.tld [c]").select(); //$NON-NLS-1$ //$NON-NLS-2$
+		bot.button("OK").click(); //$NON-NLS-1$
 
 		//Test set group
 		
-		bot.shell("Import Tags from TLD File").activate();
+		bot.shell("Import Tags from TLD File").activate(); //$NON-NLS-1$
 		bot.radio(1).click();
 		bot.text(4).setText(GROUP_NAME);
-		bot.button("OK").click();
+		bot.button("OK").click(); //$NON-NLS-1$
 
 		//Test if group is created
 		
-		bot.toolbarButtonWithTooltip("Palette Editor").click();
-		bot.shell("Palette Editor").activate();
+		bot.toolbarButtonWithTooltip("Palette Editor").click(); //$NON-NLS-1$
+		bot.shell("Palette Editor").activate(); //$NON-NLS-1$
 		try {
 			bot.getDisplay().syncExec(new Runnable() {
 
@@ -88,7 +88,7 @@ public class ImportTagsFromTLDFileTest extends VPEAutoTestCase{
 					SWTBotTree tree = bot.tree();
 					delay();
 					try {
-						tree.expandNode("XStudio").expandNode("Palette").getNode(GROUP_NAME).select();
+						tree.expandNode("XStudio").expandNode("Palette").getNode(GROUP_NAME).select(); //$NON-NLS-1$ //$NON-NLS-2$
 						Display display = bot.getDisplay();
 						Event event = new Event();
 						event.type = SWT.KeyDown;
@@ -114,12 +114,12 @@ public class ImportTagsFromTLDFileTest extends VPEAutoTestCase{
 				}
 				
 			});
-			bot.shell("Confirmation").activate();
-			bot.button("OK").click();
+			bot.shell("Confirmation").activate(); //$NON-NLS-1$
+			bot.button("OK").click(); //$NON-NLS-1$
 		} catch (WidgetNotFoundException e) {
 		}
-		bot.shell("Palette Editor").activate();
-		bot.button("OK").click();
+		bot.shell("Palette Editor").activate(); //$NON-NLS-1$
+		bot.button("OK").click(); //$NON-NLS-1$
 		
 	}
 	
@@ -133,17 +133,17 @@ public class ImportTagsFromTLDFileTest extends VPEAutoTestCase{
 	protected boolean isUnuseDialogOpened() {
 		boolean isOpened = false;
 		try {
-			bot.shell("Edit TLD").activate();
+			bot.shell("Edit TLD").activate(); //$NON-NLS-1$
 			isOpened = true;
 		} catch (WidgetNotFoundException e) {
 		}
 		try {
-			bot.shell("Import Tags from TLD File").activate();
+			bot.shell("Import Tags from TLD File").activate(); //$NON-NLS-1$
 			isOpened = true;
 		}catch (WidgetNotFoundException e) {
 		}
 		try {
-			bot.shell("Palette Editor").activate();
+			bot.shell("Palette Editor").activate(); //$NON-NLS-1$
 			isOpened = true;
 		} catch (WidgetNotFoundException e) {
 		}
@@ -153,15 +153,15 @@ public class ImportTagsFromTLDFileTest extends VPEAutoTestCase{
 	@Override
 	protected void closeUnuseDialogs() {
 		try {
-			bot.shell("Edit TLD").close();
+			bot.shell("Edit TLD").close(); //$NON-NLS-1$
 		} catch (WidgetNotFoundException e) {
 		}
 		try {
-			bot.shell("Import Tags from TLD File").close();
+			bot.shell("Import Tags from TLD File").close(); //$NON-NLS-1$
 		}catch (WidgetNotFoundException e) {
 		}
 		try {
-			bot.shell("Palette Editor").close();
+			bot.shell("Palette Editor").close(); //$NON-NLS-1$
 		} catch (WidgetNotFoundException e) {
 		}
 	}

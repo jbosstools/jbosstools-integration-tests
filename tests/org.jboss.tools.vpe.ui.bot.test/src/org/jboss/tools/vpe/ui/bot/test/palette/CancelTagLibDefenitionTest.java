@@ -16,38 +16,38 @@ public class CancelTagLibDefenitionTest extends VPEAutoTestCase{
 		
 		//Test open import dialog
 		
-		bot.viewByTitle("JBoss Tools Palette").setFocus();
-		bot.toolbarButtonWithTooltip("Import").click();
-		bot.shell("Import Tags from TLD File").activate();
+		bot.viewByTitle("JBoss Tools Palette").setFocus(); //$NON-NLS-1$
+		bot.toolbarButtonWithTooltip("Import").click(); //$NON-NLS-1$
+		bot.shell("Import Tags from TLD File").activate(); //$NON-NLS-1$
 		
 		//Test open edit TLD dialog
 		
-		bot.button("Browse...").click();
-		bot.shell("Edit TLD").activate();
+		bot.button("Browse...").click(); //$NON-NLS-1$
+		bot.shell("Edit TLD").activate(); //$NON-NLS-1$
 		
 		//Test cancel TLD
 		SWTBotTree tree = bot.tree();
 		delay();
-		tree.expandNode(projectProperties.getProperty("JSFProjectName")).expandNode("x-1_0-rt.tld [x_rt]").select();
-		bot.button("Cancel").click();
+		tree.expandNode(projectProperties.getProperty("JSFProjectName")).expandNode("x-1_0-rt.tld [x_rt]").select(); //$NON-NLS-1$ //$NON-NLS-2$
+		bot.button("Cancel").click(); //$NON-NLS-1$
 		
 		//Test check fields
 		
-		bot.shell("Import Tags from TLD File").activate();
-		assertEquals("", bot.textWithLabel("TLD File*").getText());
-		assertEquals("", bot.textWithLabel("Name*").getText());
-		assertEquals("", bot.textWithLabel("Default Prefix").getText());
-		assertEquals("", bot.textWithLabel("Library URI").getText());
-		bot.button("Cancel").click();
+		bot.shell("Import Tags from TLD File").activate(); //$NON-NLS-1$
+		assertEquals("", bot.textWithLabel("TLD File*").getText()); //$NON-NLS-1$ //$NON-NLS-2$
+		assertEquals("", bot.textWithLabel("Name*").getText()); //$NON-NLS-1$ //$NON-NLS-2$
+		assertEquals("", bot.textWithLabel("Default Prefix").getText()); //$NON-NLS-1$ //$NON-NLS-2$
+		assertEquals("", bot.textWithLabel("Library URI").getText()); //$NON-NLS-1$ //$NON-NLS-2$
+		bot.button("Cancel").click(); //$NON-NLS-1$
 	}
 	
 	protected void closeUnuseDialogs(){
 		try {
-			bot.shell("Edit TLD").close();
+			bot.shell("Edit TLD").close(); //$NON-NLS-1$
 		} catch (WidgetNotFoundException e) {
 		}
 		try {
-			bot.shell("Import Tags from TLD File").close();
+			bot.shell("Import Tags from TLD File").close(); //$NON-NLS-1$
 		} catch (WidgetNotFoundException e) {
 		}
 	}
@@ -55,12 +55,12 @@ public class CancelTagLibDefenitionTest extends VPEAutoTestCase{
 	protected boolean isUnuseDialogOpened(){
 		boolean isOpened = false;
 		try {
-			bot.shell("Edit TLD").activate();
+			bot.shell("Edit TLD").activate(); //$NON-NLS-1$
 			isOpened = true;
 		} catch (WidgetNotFoundException e) {
 		}
 		try {
-			bot.shell("Import Tags from TLD File").activate();
+			bot.shell("Import Tags from TLD File").activate(); //$NON-NLS-1$
 			isOpened = true;
 		}catch (WidgetNotFoundException e) {
 		}

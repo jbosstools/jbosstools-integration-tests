@@ -136,7 +136,7 @@ public class TestDomUtil {
 					+ modelNode.getNodeName() + "\""); //$NON-NLS-1$
 		}
 		
-		if ("#comment".equals(vpeNode.getNodeName())){
+		if ("#comment".equals(vpeNode.getNodeName())){ //$NON-NLS-1$
 			String vpeNodeValue = vpeNode.getNodeValue();
 			try {
 				vpeNodeValue = clearStringFromRSymbols(vpeNodeValue);
@@ -294,12 +294,12 @@ public class TestDomUtil {
 	}
 	
 	private static String clearStringFromRSymbols(String string){
-		int index = string.indexOf("\r");
+		int index = string.indexOf("\r"); //$NON-NLS-1$
 		while (index!=-1) {
 			String stringAfterSymbol = string.substring(index+1);
 			String stringBeforeSymbol = string.substring(0,index);
 			string = stringBeforeSymbol.concat(stringAfterSymbol);
-			index = string.indexOf("\r");
+			index = string.indexOf("\r"); //$NON-NLS-1$
 		}
 		return string;
 	}

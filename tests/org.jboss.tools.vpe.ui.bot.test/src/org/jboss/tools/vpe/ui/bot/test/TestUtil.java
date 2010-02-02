@@ -41,6 +41,6 @@ public class TestUtil {
      * @param t the t
      */
     public static void fail(Throwable t){
-        Assert.fail("Test case was fail "+t.getMessage()+":"+t);
+        Assert.fail("Test case was fail "+t.getMessage()+":"+t); //$NON-NLS-1$ //$NON-NLS-2$
     }
 }

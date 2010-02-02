@@ -18,26 +18,26 @@ public class ToggleCommentTest extends VPEEditorTestCase{
 		//Test toggle comment from Source menu
 		
 		getEditor().navigateTo(22,22);
-		bot.menu("Source").menu("Toggle Comment").click();
-		checkVPE("ToggleCommentTestToggle.xml");
+		bot.menu("Source").menu("Toggle Comment").click(); //$NON-NLS-1$ //$NON-NLS-2$
+		checkVPE("ToggleCommentTestToggle.xml"); //$NON-NLS-1$
 		
 		//Test untoggle comment from Source menu
 
 		getEditor().navigateTo(22,22);
-		bot.menu("Source").menu("Toggle Comment").click();
-		checkVPE("CommentTestUntoggle.xml");
+		bot.menu("Source").menu("Toggle Comment").click(); //$NON-NLS-1$ //$NON-NLS-2$
+		checkVPE("CommentTestUntoggle.xml"); //$NON-NLS-1$
 
 		//Test toggle comment with CTRL+SHIFT+C hot keys
 		
 		getEditor().navigateTo(22,22);
 		pressToggleCommentHotKeys();
-		checkVPE("ToggleCommentTestToggle.xml");
+		checkVPE("ToggleCommentTestToggle.xml"); //$NON-NLS-1$
 		
 		//Test untoggle comment with CTRL+SHIFT hot keys
 
 		getEditor().navigateTo(22,22);
 		pressToggleCommentHotKeys();
-		checkVPE("CommentTestUntoggle.xml");
+		checkVPE("CommentTestUntoggle.xml"); //$NON-NLS-1$
 		
 	}
 	

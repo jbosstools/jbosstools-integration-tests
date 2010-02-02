@@ -14,7 +14,7 @@ import org.jboss.tools.vpe.ui.bot.test.VPEAutoTestCase;
 
 public abstract class PageDesignTestCase extends VPEAutoTestCase{
 	
-	final static String PAGE_DESIGN = "Page Design Options";
+	final static String PAGE_DESIGN = "Page Design Options"; //$NON-NLS-1$
 
 	@Override
 	protected void closeUnuseDialogs() {
@@ -43,15 +43,15 @@ public abstract class PageDesignTestCase extends VPEAutoTestCase{
 		SWTBot innerBot = bot.viewByTitle(WidgetVariables.PACKAGE_EXPLORER).bot();
 		SWTBotTree tree = innerBot.tree();
 		tree.expandNode(JBT_TEST_PROJECT_NAME)
-		.expandNode("WebContent").expandNode("pages").getNode(TEST_PAGE).doubleClick();
+		.expandNode("WebContent").expandNode("pages").getNode(TEST_PAGE).doubleClick(); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
 	@Override
 	protected String getPathToResources(String testPage) throws IOException {
-		String filePath = FileLocator.toFileURL(Platform.getBundle(Activator.PLUGIN_ID).getEntry("/")).getFile()+"resources/pagedesign/"+testPage;
+		String filePath = FileLocator.toFileURL(Platform.getBundle(Activator.PLUGIN_ID).getEntry("/")).getFile()+"resources/pagedesign/"+testPage;  //$NON-NLS-1$//$NON-NLS-2$
 		File file = new File(filePath);
 		if (!file.isFile()) {
-			filePath = FileLocator.toFileURL(Platform.getBundle(Activator.PLUGIN_ID).getEntry("/")).getFile()+"pagedesign/"+testPage;
+			filePath = FileLocator.toFileURL(Platform.getBundle(Activator.PLUGIN_ID).getEntry("/")).getFile()+"pagedesign/"+testPage; //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		return filePath;
 	}

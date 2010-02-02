@@ -4,7 +4,7 @@ import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 
 public class ShowSelectionTagBarTest extends PreferencesTestCase{
 
-	private static final String HID_SEL_BAR = "Hide selection bar";
+	private static final String HID_SEL_BAR = "Hide selection bar"; //$NON-NLS-1$
 
 	public void testShowSelectionTagBar(){
 		
@@ -33,8 +33,8 @@ public class ShowSelectionTagBarTest extends PreferencesTestCase{
 		//Test Hide Selection Bar button with confirm
 		
 		bot.toolbarButtonWithTooltip(HID_SEL_BAR).click();
-		bot.shell("Confirm hide selection bar").activate();
-		bot.button("OK").click();
+		bot.shell("Confirm hide selection bar").activate(); //$NON-NLS-1$
+		bot.button("OK").click(); //$NON-NLS-1$
 		checkIsHide();
 	
 		//Test Show selection after reopen
@@ -49,7 +49,7 @@ public class ShowSelectionTagBarTest extends PreferencesTestCase{
 		bot.toolbarButtonWithTooltip(PREF_TOOLTIP).click();
 		bot.shell(PREF_FILTER_SHELL_TITLE).activate();
 		bot.checkBox(SHOW_SELECTION_TAG_BAR).click();
-		bot.button("OK").click();
+		bot.button("OK").click(); //$NON-NLS-1$
 	}
 
 	private void checkIsHide(){

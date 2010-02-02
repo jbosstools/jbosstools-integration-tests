@@ -10,8 +10,8 @@ import org.jboss.tools.ui.bot.test.WidgetVariables;
 
 public abstract class SubstitutedELTestCase extends PageDesignTestCase{
 	
-	static final String ADD_EL = "Add EL Reference";
-	static final String SUBSTITUTED_EL = "Substituted EL expressions";
+	static final String ADD_EL = "Add EL Reference"; //$NON-NLS-1$
+	static final String SUBSTITUTED_EL = "Substituted EL expressions"; //$NON-NLS-1$
 	private SWTBotEclipseEditor editor;
 	private String editorText;
 
@@ -54,7 +54,6 @@ public abstract class SubstitutedELTestCase extends PageDesignTestCase{
 	
 	
 	void checkVPEForTestPage(String testPage) throws Throwable{
-	//	waitForBlockingJobsAcomplished(VISUAL_REFRESH);
 		performContentTestByDocument(testPage, bot.multiPageEditorByTitle(TEST_PAGE));
 	}
 	
@@ -70,7 +69,7 @@ public abstract class SubstitutedELTestCase extends PageDesignTestCase{
 		bot.tabItem(SUBSTITUTED_EL).activate();
 		clearELTable(bot.table());
 		try {
-			bot.button("OK").click();
+			bot.button("OK").click(); //$NON-NLS-1$
 		} catch (WidgetNotFoundException e) {
 			bot.shell(PAGE_DESIGN).close();
 		}
@@ -81,7 +80,7 @@ public abstract class SubstitutedELTestCase extends PageDesignTestCase{
 		try {
 			while (true) {
 				table.select(0);
-				bot.button("Remove").click();
+				bot.button("Remove").click(); //$NON-NLS-1$
 			}
 		} catch (IllegalArgumentException e) {
 		}
@@ -96,14 +95,13 @@ public abstract class SubstitutedELTestCase extends PageDesignTestCase{
 		SWTBot innerBot = bot.viewByTitle(WidgetVariables.PACKAGE_EXPLORER).bot();
 		SWTBotTree tree = innerBot.tree();
 		tree.expandNode(JBT_TEST_PROJECT_NAME)
-		.expandNode("WebContent").expandNode("pages").getNode("hello.jsp").doubleClick();
-		SWTBotEditor editor = bot.editorByTitle("hello.jsp");
-	//	waitForBlockingJobsAcomplished(VISUAL_REFRESH);
+		.expandNode("WebContent").expandNode("pages").getNode("hello.jsp").doubleClick(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		SWTBotEditor editor = bot.editorByTitle("hello.jsp"); //$NON-NLS-1$
 		
 		//Check page content
 		
 		try {
-			performContentTestByDocument(testHelloPage, bot.multiPageEditorByTitle("hello.jsp"));
+			performContentTestByDocument(testHelloPage, bot.multiPageEditorByTitle("hello.jsp")); //$NON-NLS-1$
 		} catch (Throwable e) {
 			throw e;
 		}finally{

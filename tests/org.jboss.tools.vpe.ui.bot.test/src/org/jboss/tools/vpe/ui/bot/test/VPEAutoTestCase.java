@@ -32,8 +32,8 @@ import org.w3c.dom.Node;
 public abstract class VPEAutoTestCase extends JBTSWTBotTestCase{
 	
 	protected static Properties projectProperties;
-	protected static final String TEST_PAGE = "inputUserName.jsp";
-	protected static String PROJECT_PROPERTIES = "projectProperties.properties";
+	protected static final String TEST_PAGE = "inputUserName.jsp"; //$NON-NLS-1$
+	protected static String PROJECT_PROPERTIES = "projectProperties.properties"; //$NON-NLS-1$
 	
 	/**
 	 * Variable defines JBoss EAP 4.3 server location on a file system
@@ -51,23 +51,23 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase{
 	
 	static {
 		try {
-			InputStream inputStream = VPEAutoTestCase.class.getResourceAsStream("/"+PROJECT_PROPERTIES);
+			InputStream inputStream = VPEAutoTestCase.class.getResourceAsStream("/"+PROJECT_PROPERTIES); //$NON-NLS-1$
 			projectProperties = new TestProperties();
 			projectProperties.load(inputStream);
 			inputStream.close();
 		} 
 		catch (IOException e) {
-			IStatus status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Can't load properties from " + PROJECT_PROPERTIES + " file", e);
+			IStatus status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Can't load properties from " + PROJECT_PROPERTIES + " file", e); //$NON-NLS-1$ //$NON-NLS-2$
 			Activator.getDefault().getLog().log(status);
 			e.printStackTrace();
 		}
 		catch (IllegalStateException e) {
-			IStatus status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Property file " + PROJECT_PROPERTIES + " was not found", e);
+			IStatus status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Property file " + PROJECT_PROPERTIES + " was not found", e); //$NON-NLS-1$ //$NON-NLS-2$
 			Activator.getDefault().getLog().log(status);
 			e.printStackTrace();
 		}
-		JBOSS_EAP_HOME = projectProperties.getProperty("JBossEap4.3");
-		JBT_TEST_PROJECT_NAME = projectProperties.getProperty("JSFProjectName");
+		JBOSS_EAP_HOME = projectProperties.getProperty("JBossEap4.3"); //$NON-NLS-1$
+		JBT_TEST_PROJECT_NAME = projectProperties.getProperty("JSFProjectName"); //$NON-NLS-1$
 	}
 	
 	/**
@@ -105,41 +105,39 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase{
 	 */
 	
 	protected void createJSFProject(String jsfProjectName){
-		bot.menu("File").menu("New").menu("Other...").click();
-		bot.shell("New").activate();
+		bot.menu("File").menu("New").menu("Other...").click(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		bot.shell("New").activate(); //$NON-NLS-1$
 		SWTBotTree tree = bot.tree();
 		delay();
-		tree.expandNode("JBoss Tools Web").expandNode("JSF").select("JSF Project");
-		bot.button("Next >").click();
-		bot.textWithLabel("Project Name*").setText(jsfProjectName);
-		bot.comboBoxWithLabel("Template*").setSelection("JSFKickStartWithoutLibs");
-		bot.button("Next >").click();
+		tree.expandNode("JBoss Tools Web").expandNode("JSF").select("JSF Project"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		bot.button("Next >").click(); //$NON-NLS-1$
+		bot.textWithLabel("Project Name*").setText(jsfProjectName); //$NON-NLS-1$
+		bot.comboBoxWithLabel("Template*").setSelection("JSFKickStartWithoutLibs"); //$NON-NLS-1$ //$NON-NLS-2$
+		bot.button("Next >").click(); //$NON-NLS-1$
 		try {
-			bot.comboBoxWithLabel("Runtime*").setSelection("jboss-eap Runtime");
+			bot.comboBoxWithLabel("Runtime*").setSelection("jboss-eap Runtime"); //$NON-NLS-1$ //$NON-NLS-2$
 			delay();
-			bot.button("Finish").click();
+			bot.button("Finish").click(); //$NON-NLS-1$
 			try {
-				bot.button("Yes").click();
+				bot.button("Yes").click(); //$NON-NLS-1$
 				openErrorLog();
 				openPackageExplorer();
-//				openProgressStatus();
 			} catch (WidgetNotFoundException e) {
 			}
 		} catch (Exception e) {
 			bot.button(0).click();
 			SWTBotTree  innerTree = bot.tree();
 			delay();
-			innerTree.expandNode("JBoss Enterprise Middleware").select("JBoss Enterprise Application Platform 4.3 Runtime");
-			bot.button("Next >").click();
-			bot.textWithLabel("Home Directory").setText(JBOSS_EAP_HOME);
-			bot.button("Finish").click();
+			innerTree.expandNode("JBoss Enterprise Middleware").select("JBoss Enterprise Application Platform 4.3 Runtime"); //$NON-NLS-1$ //$NON-NLS-2$
+			bot.button("Next >").click(); //$NON-NLS-1$
+			bot.textWithLabel("Home Directory").setText(JBOSS_EAP_HOME); //$NON-NLS-1$
+			bot.button("Finish").click(); //$NON-NLS-1$
 			delay();
-			bot.button("Finish").click();
+			bot.button("Finish").click(); //$NON-NLS-1$
 			try {
-				bot.button("Yes").click();
+				bot.button("Yes").click(); //$NON-NLS-1$
 				openErrorLog();
 				openPackageExplorer();
-//				openProgressStatus();
 			} catch (WidgetNotFoundException e2) {
 			}
 		}
@@ -235,18 +233,18 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase{
 	}
 	
 	protected String getPathToResources(String testPage) throws IOException {
-		String filePath = FileLocator.toFileURL(Platform.getBundle(Activator.PLUGIN_ID).getEntry("/")).getFile()+"resources/"+testPage;
+		String filePath = FileLocator.toFileURL(Platform.getBundle(Activator.PLUGIN_ID).getEntry("/")).getFile()+"resources/"+testPage;  //$NON-NLS-1$//$NON-NLS-2$
 		File file = new File(filePath);
 		if (!file.isFile()) {
-			filePath = FileLocator.toFileURL(Platform.getBundle(Activator.PLUGIN_ID).getEntry("/")).getFile()+testPage;
+			filePath = FileLocator.toFileURL(Platform.getBundle(Activator.PLUGIN_ID).getEntry("/")).getFile()+testPage; //$NON-NLS-1$
 		}
 		return filePath;
 	}
 	
 	@Override
 	protected void activePerspective() {
-		if (!bot.perspectiveByLabel("Web Development").isActive()) {
-			bot.perspectiveByLabel("Web Development").activate();
+		if (!bot.perspectiveByLabel("Web Development").isActive()) { //$NON-NLS-1$
+			bot.perspectiveByLabel("Web Development").activate(); //$NON-NLS-1$
 		}
 	}
 	
@@ -254,12 +252,12 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase{
 		try {
 			bot.viewByTitle(WidgetVariables.PALETTE);
 		} catch (WidgetNotFoundException e) {
-			bot.menu("Window").menu("Show View").menu("Other...").click();
+			bot.menu("Window").menu("Show View").menu("Other...").click(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			SWTBotTree viewTree = bot.tree();
 			delay();
-			viewTree.expandNode("JBoss Tools Web").expandNode(
+			viewTree.expandNode("JBoss Tools Web").expandNode( //$NON-NLS-1$
 					WidgetVariables.PALETTE).select();
-			bot.button("OK").click();
+			bot.button("OK").click(); //$NON-NLS-1$
 		}
 	}
 	
@@ -308,8 +306,8 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase{
 	}
 	
 	private void compareDocuments (nsIDOMDocument visualDocument, Document xmlTestDocument) throws ComparisonException{
-		nsIDOMNode visualBodyNode = visualDocument.getElementsByTagName("BODY").item(0);
-		Node testBodyNode = xmlTestDocument.getElementsByTagName("BODY").item(0);
+		nsIDOMNode visualBodyNode = visualDocument.getElementsByTagName("BODY").item(0); //$NON-NLS-1$
+		Node testBodyNode = xmlTestDocument.getElementsByTagName("BODY").item(0); //$NON-NLS-1$
 		TestDomUtil.compareNodes(visualBodyNode, testBodyNode);
 	}
 	

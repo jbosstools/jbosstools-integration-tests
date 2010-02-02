@@ -33,12 +33,12 @@ public class TestProperties extends Properties {
 	public static void substituteSystemProperties(Properties projectProperties2) {
 		for (Object opject : projectProperties2.keySet()) {
 			String propertyValue = projectProperties2.get(opject).toString();
-			if(propertyValue.matches("\\$\\{.*")) {
+			if(propertyValue.matches("\\$\\{.*")) { //$NON-NLS-1$
 				Enumeration<?> names = System.getProperties().propertyNames();
 				
 				while(names.hasMoreElements()) {
 					String substitute = names.nextElement().toString();
-					String regexp = "\\$\\{" + substitute + "}";
+					String regexp = "\\$\\{" + substitute + "}"; //$NON-NLS-1$ //$NON-NLS-2$
 					if(propertyValue.matches(regexp)) {
 						projectProperties2.put(opject, propertyValue.replaceAll(regexp, System.getProperty(substitute)));
 					}
