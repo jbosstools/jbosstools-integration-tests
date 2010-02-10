@@ -23,6 +23,7 @@ import org.jboss.tools.vpe.ui.bot.test.smoke.RenameFacesConfigFileTest;
 import org.jboss.tools.vpe.ui.bot.test.smoke.RenameJSPFileTest;
 import org.jboss.tools.vpe.ui.bot.test.smoke.RenameXHTMLFileTest;
 import org.jboss.tools.vpe.ui.bot.test.smoke.XHTMLPageCreationTest;
+import org.jboss.tools.vpe.ui.bot.test.wizard.ImportUnknownTagsWizardTest;
 
 public class VPEAllBotTests extends SWTBotTestCase{
 	public static Test suite(){
@@ -47,6 +48,8 @@ public class VPEAllBotTests extends SWTBotTestCase{
 		suite.addTestSuite(RenameFacesConfigFileTest.class);
 		suite.addTestSuite(RenameJSPFileTest.class);
 		suite.addTestSuite(RenameXHTMLFileTest.class);
+		suite.addTestSuite(ImportUnknownTagsWizardTest.class);
+		
 		return new TestSetup(suite);
 	}
 }
