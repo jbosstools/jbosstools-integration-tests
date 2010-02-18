@@ -21,11 +21,13 @@ import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.results.WidgetResult;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.ext.types.ViewType;
+import org.jboss.tools.ui.bot.ext.types.IDELabel.PreferencesDialog;
 /**
  * Provides JBoss Tools common operations based on SWTBot element operations
  * @author Vladimir Pakan
@@ -294,5 +296,77 @@ public class SWTJBTExt {
   public void addServerToServerViewOnWizardPage (String serverGroup , String serverType){
     addServerToServerViewOnWizardPage (bot,serverGroup , serverType);
   }
-  
+  /**
+   * Returns true if runtimeName Server Runtime is defined
+   * @param runtimeName
+   * @return
+   */
+  public boolean isServerRuntimeDefined(String runtimeName){
+    return SWTJBTExt.isServerRuntimeDefined(bot,runtimeName);
+  }
+
+  /**
+   * Returns true if runtimeName Server Runtime is defined
+   * @param bot
+   * @param runtimeName
+   * @return
+   */
+  public static boolean isServerRuntimeDefined(SWTWorkbenchBot bot,String runtimeName){
+    
+    boolean serverRuntimeNotDefined = true;
+    
+    bot.menu(IDELabel.Menu.WINDOW).menu(IDELabel.Menu.PREFERENCES).click();
+    bot.shell(IDELabel.Shell.PREFERENCES).activate();
+    bot.tree().expandNode(IDELabel.PreferencesDialog.SERVER_GROUP).select(
+      PreferencesDialog.RUNTIME_ENVIRONMENTS);
+    
+    SWTBotTable tbRuntimeEnvironments = bot.table();
+    int numRows = tbRuntimeEnvironments.rowCount();
+    if (numRows > 0) {
+      int currentRow = 0;
+      while (serverRuntimeNotDefined && currentRow < numRows) {
+        if (tbRuntimeEnvironments.cell(currentRow, 0).equalsIgnoreCase(
+            runtimeName)) {
+          serverRuntimeNotDefined = false;
+        } else {
+          currentRow++;
+        }
+      }
+    }  
+   
+    bot.button(IDELabel.Button.OK).click();
+    
+    return !serverRuntimeNotDefined;
+      
+  }
+  /**
+   * Returns true if any Server Runtime is defined
+   * @param bot
+   * @return
+   */
+  public static boolean isServerRuntimeDefined(SWTWorkbenchBot bot){
+    
+    bot.menu(IDELabel.Menu.WINDOW).menu(IDELabel.Menu.PREFERENCES).click();
+    bot.shell(IDELabel.Shell.PREFERENCES).activate();
+    bot.tree().expandNode(IDELabel.PreferencesDialog.SERVER_GROUP).select(
+      PreferencesDialog.RUNTIME_ENVIRONMENTS);
+    boolean isServerRuntimeDefined = bot.table().rowCount() > 0;
+    
+    bot.button(IDELabel.Button.OK).click();
+    
+    return isServerRuntimeDefined;
+      
+  }
+
+  /**
+   * Returns true if any Server Runtime is defined
+   * @param bot
+   * @return
+   */
+  public boolean isServerRuntimeDefined(){
+    
+    return SWTJBTExt.isServerRuntimeDefined(bot);
+      
+  }
+
 }
