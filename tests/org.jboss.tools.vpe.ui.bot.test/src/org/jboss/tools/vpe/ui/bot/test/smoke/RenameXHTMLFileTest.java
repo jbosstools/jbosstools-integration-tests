@@ -37,7 +37,7 @@ public class RenameXHTMLFileTest extends VPEEditorTestCase {
   }
 
   /**
-   * Check renaming of faces-config.xml file
+   * Check renaming of XHTML file
    */
   private void checkRenameXHTMLFile() {
 
@@ -51,7 +51,7 @@ public class RenameXHTMLFileTest extends VPEEditorTestCase {
     tree.setFocus();
     String checkResult = FileRenameHelper.checkFileRenamingWithinWebProjects(bot,
         XHTMLPageCreationTest.TEST_NEW_XHTML_FILE_NAME, NEW_XHTML_FILE_NAME,
-        new String[] {JBT_TEST_PROJECT_NAME, IDELabel.WebProjectsTree.CONFIGURATION});
+        new String[] {JBT_TEST_PROJECT_NAME, IDELabel.WebProjectsTree.WEB_CONTENT});
     assertNull(checkResult, checkResult);
     
   }
