@@ -70,8 +70,7 @@ public class SWTBotExt extends SWTWorkbenchBot {
 		log.info("Table selected");
 		return super.table();
 	}
-	@Override
-	public SWTBotEditorExt editorByTitle(String fileName) {		
+	public SWTBotEditorExt swtBotEditorExtByTitle(String fileName) {		
 		SWTBotEditor editor = super.editorByTitle(fileName);
 		return new SWTBotEditorExt(editor.toTextEditor().getReference(), (SWTWorkbenchBot)this);
 	}
