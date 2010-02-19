@@ -13,6 +13,7 @@ package org.jboss.tools.ui.bot.ext;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
+import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
 import org.jboss.tools.ui.bot.ext.view.PackageExplorer;
 
 /**
@@ -20,7 +21,7 @@ import org.jboss.tools.ui.bot.ext.view.PackageExplorer;
  * @author jpeterka
  *
  */
-public class SWTTestExt {
+public class SWTTestExt extends SWTBotTestCase{
 
 	public static final Logger log = Logger.getLogger(SWTTestExt.class);
 	public static final SWTBotExt bot = new SWTBotExt();
