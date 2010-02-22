@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<vpe:templates>
+ <vpe:template-taglib prefix="lib" uri="someuri"/>
+ <vpe:template-taglib prefix="taglibName" uri="http://some/tag/uri"/>
+ <vpe:tag case-sensitive="no" name="taglibName:tagName">
+  <vpe:template children="yes" modify="no">
+   <vpe:any tag-for-display="b"/>
+  </vpe:template>
+ </vpe:tag>
+ <vpe:tag case-sensitive="no" name="lib:tag">
+  <vpe:template children="yes" modify="no">
+   <vpe:any style="s" tag-for-display="a" value="v"/>
+  </vpe:template>
+ </vpe:tag>
+</vpe:templates>
