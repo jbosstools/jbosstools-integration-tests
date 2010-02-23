@@ -65,11 +65,10 @@ public class ImportUnknownTagsWizardTest extends VPEAutoTestCase {
         taglib = bot.table().cell(1, 0);
         assertEquals("Wrong table value.", "taglibName:tagName", taglib); //$NON-NLS-1$  //$NON-NLS-2$
         /*
-         * Check that finish button is enabled
+         * Check that finish button is enabled and press it.
          */
         assertTrue("Finish button should be enabled.", //$NON-NLS-1$ 
-        		bot.button(WidgetVariables.FINISH_BUTTON).isEnabled());
-        bot.sleep(5000);
+        bot.button(WidgetVariables.FINISH_BUTTON).isEnabled());
         bot.button(WidgetVariables.FINISH_BUTTON).click();
         /*
          * Check that templates have been added to the preference page 
