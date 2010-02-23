@@ -17,11 +17,11 @@ import org.jboss.tools.vpe.editor.template.VpeTemplateManager;
 import org.jboss.tools.vpe.ui.bot.test.VPEAutoTestCase;
 import org.osgi.framework.Bundle;
 
-public class ExprotUnknownTagsWizardTest extends VPEAutoTestCase {
+public class ExportUnknownTagsWizardTest extends VPEAutoTestCase {
 
 	private final String STORED_TAGS_PATH = "storedTags.xml"; //$NON-NLS-1$
 	
-	public ExprotUnknownTagsWizardTest() {
+	public ExportUnknownTagsWizardTest() {
 	}
 
 	@Override
@@ -34,7 +34,7 @@ public class ExprotUnknownTagsWizardTest extends VPEAutoTestCase {
 		return false;
 	}
 	
-	public void _testExportWizard() throws Throwable {
+	public void testExportWizard() throws Throwable {
 		/*
 		 * Load templates and add them to the model 
 		 */

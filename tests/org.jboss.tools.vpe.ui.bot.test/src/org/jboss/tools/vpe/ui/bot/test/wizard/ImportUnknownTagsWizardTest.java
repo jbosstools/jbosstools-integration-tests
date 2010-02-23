@@ -38,7 +38,7 @@ public class ImportUnknownTagsWizardTest extends VPEAutoTestCase {
 		return false;
 	}
 
-	public void _testImportWizard() throws Throwable {
+	public void testImportWizard() throws Throwable {
 		/*
 		 * Open wizard page
 		 */
