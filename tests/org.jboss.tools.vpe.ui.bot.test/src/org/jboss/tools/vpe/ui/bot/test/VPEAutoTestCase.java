@@ -24,7 +24,9 @@ import org.jboss.tools.vpe.editor.VpeEditorPart;
 import org.jboss.tools.vpe.editor.mapping.VpeNodeMapping;
 import org.mozilla.interfaces.nsIDOMDocument;
 import org.mozilla.interfaces.nsIDOMElement;
+import org.mozilla.interfaces.nsIDOMNamedNodeMap;
 import org.mozilla.interfaces.nsIDOMNode;
+import org.mozilla.interfaces.nsIDOMNodeList;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -310,7 +312,44 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase{
 		Node testBodyNode = xmlTestDocument.getElementsByTagName("BODY").item(0); //$NON-NLS-1$
 		TestDomUtil.compareNodes(visualBodyNode, testBodyNode);
 	}
-	
+  /**
+   * For debug purposes. Displays formatted node
+   * @param node
+   */
+  private void displaynsIDOMNode(nsIDOMNode node) {
+    System.out.println("");
+    System.out.print("<" + node.getNodeName() + " ");
+
+    // compare node's attributes
+    if (node.getNodeType() == Node.ELEMENT_NODE) {
+      nsIDOMNamedNodeMap modelAttributes = node.getAttributes();
+      for (int i = 0; i < modelAttributes.getLength(); i++) {
+        nsIDOMNode modelAttr = modelAttributes.item(i);
+        System.out.print(modelAttr.getNodeName() + "=" + modelAttr.getNodeValue() + " ");
+      }
+    }
+    System.out.println(">");
+    if (node.getNodeValue() != null){
+      System.out.println(node.getNodeValue());
+    }
+    // compare children
+    nsIDOMNodeList children = node.getChildNodes();
+    for (int i = 0; i < children.getLength(); i++) {
+
+      nsIDOMNode child = children.item(i);
+
+      // leave out empty text nodes in test dom model
+      if ((child.getNodeType() == Node.TEXT_NODE)
+          && ((child.getNodeValue() == null) || (child.getNodeValue().trim()
+              .length() == 0)))
+        continue;
+
+      displaynsIDOMNode(child);
+
+    }
+    System.out.println("<" + node.getNodeName() + "/>");
+  }
+
 	/**
 	 * Try to close all unnecessary dialogs, that could prevent next tests fails
 	 */
