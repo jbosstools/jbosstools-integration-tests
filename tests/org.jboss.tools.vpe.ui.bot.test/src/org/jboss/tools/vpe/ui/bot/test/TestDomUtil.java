@@ -22,6 +22,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.jboss.tools.common.model.util.XMLUtil;
+import org.jboss.tools.ui.bot.ext.CompareUtils;
 import org.jboss.tools.vpe.editor.util.Constants;
 import org.mozilla.interfaces.nsIDOMAttr;
 import org.mozilla.interfaces.nsIDOMNamedNodeMap;
@@ -263,9 +264,17 @@ public class TestDomUtil {
 				
 				nsIDOMAttr vpeAttr = (nsIDOMAttr) vpeAttributes.getNamedItem(
 						name).queryInterface(nsIDOMAttr.NS_IDOMATTR_IID);
-
-					compareComplexStrings(modelAttr.getNodeValue().trim(),
-							vpeAttr.getNodeValue().trim());
+				
+        String modelAttribute = modelAttr.getNodeValue().trim();
+        String vpeAttribute = vpeAttr.getNodeValue().trim();
+				try{
+	        compareComplexStrings(modelAttribute,vpeAttribute);
+				} catch (ComparisonException ce){
+				  // Try to compare as list of parameters
+				  if (!CompareUtils.compareStyleAttributes(modelAttribute, vpeAttribute)){
+				    throw ce;
+				  }
+				}
 
 			}
 		}
