@@ -32,5 +32,6 @@ public class WidgetVariables {
 	public static final String REMOVE_BUTTON = "Remove";	 //$NON-NLS-1$
 	public static final String CSS_STYLE_DIALOG_TITLE = "CSS Style";	 //$NON-NLS-1$
 	public static final String CSS_SELECTOR_DIALOG_TITLE = "CSS Selector"; //$NON-NLS-1$
+	public static final String EDIT_STYLE_CLASS = "Edit StyleClass"; //$NON-NLS-1
 	
 }
