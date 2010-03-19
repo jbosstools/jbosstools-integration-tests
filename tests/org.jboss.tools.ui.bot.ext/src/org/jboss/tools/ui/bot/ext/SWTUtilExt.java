@@ -27,6 +27,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
+import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.utils.SWTUtils;
 import org.jboss.tools.ui.bot.ext.types.JobLists;
 import org.jboss.tools.ui.bot.ext.types.JobState;
@@ -369,5 +370,48 @@ public class SWTUtilExt extends SWTUtils {
     
     return parts[index + 1] + File.separator + projectName; 
     
+  }
+  /**
+   * Returns true if shell with shellTitle is active
+   * @param shellTitle
+   * @param bot
+   * @return
+   */
+  public static boolean isShellActive(String shellTitle, SWTWorkbenchBot bot){
+    boolean isShellActive = false;
+    try {
+      bot.shell(shellTitle).activate();
+      isShellActive = true;
+    } catch (WidgetNotFoundException e) {
+    }
+    return isShellActive;
+  }
+  /**
+   * Returns true if shell with shellTitle is active
+   * @param shellTitle
+   * @return
+   */
+  public boolean isShellActive(String shellTitle){
+    return SWTUtilExt.isShellActive(shellTitle,bot);
+  }
+  /**
+   * Closes shell with shellTitle if shell is active
+   * @param shellTitle
+   * @param bot
+   * @return
+   */
+  public static void closeShellWhenActive(String shellTitle, SWTWorkbenchBot bot){
+    try {
+      bot.shell(shellTitle).close();
+    } catch (WidgetNotFoundException e) {
+    }
+  }
+  /**
+   * Closes shell with shellTitle if shell is active
+   * @param shellTitle
+   * @return
+   */
+  public void closeShellWhenActive(String shellTitle){
+    SWTUtilExt.closeShellWhenActive(shellTitle,bot);
   }
 }
