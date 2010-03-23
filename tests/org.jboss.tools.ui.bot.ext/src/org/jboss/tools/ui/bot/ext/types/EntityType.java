@@ -21,7 +21,7 @@ import java.util.List;
  */
 public enum EntityType {
 	HIBERNATE_MAPPING_FILE, JAVA_PROJECT, JAVA_CLASS, HIBERNATE_REVERSE_FILE, HIBERNATE_CONSOLE, 
-	HIBERNATE_CONFIGURATION_FILE, STRUTS_PROJECT;
+	HIBERNATE_CONFIGURATION_FILE, STRUTS_PROJECT, JPA_PROJECT;
 		
 	public List<String> getGroupsLabels() {
 	  List<String> groupLabel = new LinkedList<String>();
@@ -34,6 +34,7 @@ public enum EntityType {
 		case HIBERNATE_CONFIGURATION_FILE: groupLabel.add(IDELabel.EntityGroup.HIBERNATE); break;
 		case HIBERNATE_CONSOLE: groupLabel.add(IDELabel.EntityGroup.HIBERNATE); break;
 		case STRUTS_PROJECT: groupLabel.add(IDELabel.EntityGroup.JBOSS_TOOLS_WEB); groupLabel.add(IDELabel.EntityGroup.STRUTS);break;
+		case JPA_PROJECT: groupLabel.add(IDELabel.EntityGroup.JPA);break;
 		default: fail("Unknown Entity Type");
 		}
 		
@@ -55,6 +56,7 @@ public enum EntityType {
 		case JAVA_PROJECT: entityLabel = IDELabel.EntityLabel.JAVA_PROJECT; break;
 		case JAVA_CLASS: entityLabel = IDELabel.EntityLabel.JAVA_CLASS; break;
 		case STRUTS_PROJECT: entityLabel = IDELabel.EntityLabel.STRUTS_PROJECT; break;
+		case JPA_PROJECT: entityLabel = IDELabel.EntityLabel.JPA_PROJECT; break;
 		default: fail("Unknown Entity Type");
 		}		
 		

@@ -11,7 +11,7 @@ import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorReference;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
-import org.jboss.tools.common.editor.ObjectMultiPageEditor;
+// import org.jboss.tools.common.editor.ObjectMultiPageEditor;
 
 /**
  * 
@@ -55,6 +55,7 @@ public class ObjectMultiPageEditorBot {
 	}
 	
 	public void selectPage(final String pageName) {
+		/*
 		//assertTrue(ref.getPart(true) instanceof Hibernate3CompoundEditor);
 		assertTrue(ref.getPart(true) instanceof ObjectMultiPageEditor);
 		
@@ -67,7 +68,8 @@ public class ObjectMultiPageEditorBot {
 			public void run() {
 				editor.selectPageByName(pageName);
 			}
-		});		
+		});
+		 */		
 	}
 }
 

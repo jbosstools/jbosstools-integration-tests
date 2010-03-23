@@ -125,6 +125,9 @@ public class SWTEclipseExt {
 		case DB_DEVELOPMENT:
 			perspectiveLabel = IDELabel.SelectPerspectiveDialog.DB_DEVELOPMENT;
 			break;
+		case JPA: 
+			perspectiveLabel = IDELabel.SelectPerspectiveDialog.JPA;
+			break;
 		default:
 			fail("Unknown perspective to open");
 		}
@@ -140,6 +143,7 @@ public class SWTEclipseExt {
 
 		bot.button(IDELabel.Button.OK).click();
 	}
+
 
 	// ------------------------------------------------------------
 	// Create related methods

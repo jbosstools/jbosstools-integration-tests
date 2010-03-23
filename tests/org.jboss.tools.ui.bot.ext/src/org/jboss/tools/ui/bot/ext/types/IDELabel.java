@@ -113,6 +113,7 @@ public class IDELabel {
 		public static final String SEAM = "Seam";
 		public static final String STRUTS = "Struts";
 		public static final String JBOSS_TOOLS_WEB = "JBoss Tools Web";
+		public static final String JPA = "JPA";
 	}
 	
 	public class EntityLabel {
@@ -124,6 +125,7 @@ public class IDELabel {
 		public static final String SEAM_PROJECT = "Seam Web Project";
 		public static final String HIBERNATE_CONFIGURATION_FILE = "Hibernate Configuration File (cfg.xml)";
 		public static final String STRUTS_PROJECT = "Struts Project";
+		public static final String JPA_PROJECT = "JPA Project";
 	}
 
 	public class JavaProjectWizard {
@@ -164,6 +166,7 @@ public class IDELabel {
 		public static final String SEAM = "Seam";
 		public static final String WEB_DEVELOPMENT = "Web Development";
 		public static final String DB_DEVELOPMENT = "Database Development";
+		public static final String JPA = "JPA";
 	}
 	/**
 	 * Hibernate Console Wizard (ConsoleConfigurationCreationWizard) Labels (
