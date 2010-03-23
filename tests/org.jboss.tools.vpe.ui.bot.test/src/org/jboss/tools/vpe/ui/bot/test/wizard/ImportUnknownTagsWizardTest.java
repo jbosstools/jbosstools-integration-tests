@@ -50,11 +50,7 @@ public class ImportUnknownTagsWizardTest extends VPEAutoTestCase {
 		/*
 		 * Load stored tags
 		 */
-		Bundle bundle = Platform.getBundle("org.jboss.tools.vpe.ui.bot.test"); //$NON-NLS-1$
-		URL url = bundle.getEntry("/resources"); //$NON-NLS-1$
-		url = FileLocator.resolve(url);
-		IPath path = new Path(url.getPath());
-		File file = path.append(STORED_TAGS_PATH).toFile();
+		File file = new File (getPathToResources(STORED_TAGS_PATH));
         assertTrue("File '" + file.getAbsolutePath() +"' does not exist.", file.exists()); //$NON-NLS-1$ //$NON-NLS-2$
         bot.text().setText(file.getAbsolutePath());
         /*
