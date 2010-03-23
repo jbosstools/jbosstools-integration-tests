@@ -29,7 +29,7 @@ public class DatabaseHelper {
 	 * @throws ConnectionProfileException
 	 * @return driver instance
 	 */
-	public static void createDriver(DriverEntity entity) throws ConnectionProfileException {
+	public static void createDriver(DriverEntity entity, String profileName) throws ConnectionProfileException {
 		String driverPath;
 		try {
 			driverPath = new File(entity.getDrvPath()).getCanonicalPath(); //$NON-NLS-1$
@@ -67,7 +67,7 @@ public class DatabaseHelper {
 		}
 
 		driver = DriverManager.getInstance().getDriverInstanceByName(entity.getInstanceName());
-		if (driver != null && ProfileManager.getInstance().getProfileByName("DefaultDS") == null) { //$NON-NLS-1$
+		if (driver != null && ProfileManager.getInstance().getProfileByName(profileName) == null) { //$NON-NLS-1$
 			// create profile
 			Properties props = new Properties();
 			props.setProperty(ConnectionProfileConstants.PROP_DRIVER_DEFINITION_ID, "DriverDefn.Hypersonic DB");
@@ -84,4 +84,14 @@ public class DatabaseHelper {
 			ProfileManager.getInstance().createProfile(entity.getProfileName(),	entity.getProfileDescription(), IDBConnectionProfileConstants.CONNECTION_PROFILE_ID, props, "", false); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		}
 	}
+	
+	/**
+   * Create HSQLDB Driver and default connection profile 
+   * @throws ConnectionProfileException
+   * @return driver instance
+   */
+  public static void createDriver(DriverEntity entity) throws ConnectionProfileException {
+    createDriver(entity,"DefaultDS");
+  }
+	
 }
