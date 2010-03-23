@@ -15,7 +15,7 @@ import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.jboss.tools.jst.jsp.jspeditor.JSPMultiPageEditor;
 import org.jboss.tools.test.TestProperties;
-import org.jboss.tools.ui.bot.test.Activator;
+import org.jboss.tools.vpe.ui.bot.test.Activator;
 import org.jboss.tools.ui.bot.test.JBTSWTBotTestCase;
 import org.jboss.tools.ui.bot.test.SWTBotJSPMultiPageEditor;
 import org.jboss.tools.ui.bot.test.WidgetVariables;
@@ -235,7 +235,14 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase{
 	}
 	
 	protected String getPathToResources(String testPage) throws IOException {
-		String filePath = FileLocator.toFileURL(Platform.getBundle(Activator.PLUGIN_ID).getEntry("/")).getFile()+"resources/"+testPage;  //$NON-NLS-1$//$NON-NLS-2$
+		String filePath = FileLocator
+		  .toFileURL(
+		     Platform.getBundle(Activator.PLUGIN_ID)
+		   .getEntry("/"))
+		   .getFile()+ 
+		   "resources/"
+		   +
+		   testPage;  //$NON-NLS-1$//$NON-NLS-2$
 		File file = new File(filePath);
 		if (!file.isFile()) {
 			filePath = FileLocator.toFileURL(Platform.getBundle(Activator.PLUGIN_ID).getEntry("/")).getFile()+testPage; //$NON-NLS-1$
