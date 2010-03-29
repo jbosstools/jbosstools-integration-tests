@@ -16,6 +16,7 @@ import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.widget
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
+import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.results.StringResult;
 
@@ -47,19 +48,24 @@ public class WidgetFinderHelper {
     
     String browserText = null;
     
-    SWTBotEditor editor = bot.editorByTitle(editorTitle);
-    
-    final Browser browser = browserInEditor(editor);
-    
-    browserText = UIThreadRunnable
-      .syncExec(new StringResult() {
-        public String run() {
-          return browser.getText();
+    try{
+      
+      SWTBotEditor editor = bot.editorByTitle(editorTitle);
+      final Browser browser = browserInEditor(editor);
+      
+      browserText = UIThreadRunnable
+        .syncExec(new StringResult() {
+          public String run() {
+            return browser.getText();
+        }
+      });
+      
+      if (closeEditor){
+        editor.close();    
       }
-    });
-    
-    if (closeEditor){
-      editor.close();    
+
+    } catch (WidgetNotFoundException wnfe){
+      // do nothing returns null
     }
     
     return browserText;
