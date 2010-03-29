@@ -160,9 +160,17 @@ public class SWTJBTExt {
   }
   /**
    * Remove Project from all Servers
-   * @param projectName
+   * @param projectName 
    */
   public void removeProjectFromServers(String projectName){
+    removeProjectFromServers(projectName, null);
+  }
+  /**
+   * Remove Project from all Servers
+   * @param projectName
+   * @param suffix
+   */
+  public void removeProjectFromServers(String projectName , String suffix){
     
     eclipse.showView(ViewType.SERVERS);
     
@@ -170,23 +178,32 @@ public class SWTJBTExt {
     
     SWTBotTree serverTree = bot.viewByTitle(IDELabel.View.SERVERS).bot().tree();
     
+    delay();
+    
     // Expand All
     for (SWTBotTreeItem serverTreeItem : serverTree.getAllItems()){
       serverTreeItem.expand();
       // if JSF Test Project is deployed to server remove it
-      int itemIndex = 0;
-      SWTBotTreeItem[] serverTreeItemChildren = serverTreeItem.getItems(); 
-      while (itemIndex < serverTreeItemChildren.length 
-        && !serverTreeItemChildren[itemIndex].getText().startsWith(projectName)){
-        itemIndex++;
-      }  
-      // Server Tree Item has Child with Text equal to JSF TEst Project
-      if (itemIndex < serverTreeItemChildren.length){
-        ContextMenuHelper.prepareTreeItemForContextMenu(serverTree,serverTreeItemChildren[itemIndex]);
-        new SWTBotMenu(ContextMenuHelper.getContextMenu(serverTree, IDELabel.Menu.REMOVE, false)).click();
-        bot.shell("Server").activate();
-        bot.button(IDELabel.Button.OK).click();
-      }  
+      SWTBotTreeItem[] serverTreeItemChildren = serverTreeItem.getItems();
+      if (serverTreeItemChildren != null && serverTreeItemChildren.length > 0){
+        int itemIndex = 0;
+        boolean found = false;
+        do{
+          String treeItemlabel = serverTreeItemChildren[itemIndex].getText();
+          found = treeItemlabel.startsWith(projectName)
+                  && (suffix == null || treeItemlabel.endsWith(suffix));
+        } while (!found && ++itemIndex < serverTreeItemChildren.length);
+        // Server Tree Item has Child with Text equal to JSF TEst Project
+        if (found){
+          log.info("Found project to be removed from server: " + serverTreeItemChildren[itemIndex].getText());
+          ContextMenuHelper.prepareTreeItemForContextMenu(serverTree,serverTreeItemChildren[itemIndex]);
+          new SWTBotMenu(ContextMenuHelper.getContextMenu(serverTree, IDELabel.Menu.REMOVE, false)).click();
+          bot.shell("Server").activate();
+          bot.button(IDELabel.Button.OK).click();
+          log.info("Removed project from server: " + serverTreeItemChildren[itemIndex].getText());
+          bot.sleep(10*1000L);
+        }  
+      }
     }
     delay();
   }
@@ -369,4 +386,9 @@ public class SWTJBTExt {
       
   }
 
+  public void removeSeamProjectFromServers(String projectName){
+    removeProjectFromServers(projectName);
+    removeProjectFromServers("/" + projectName,"-ds.xml");
+  }
+  
 }
