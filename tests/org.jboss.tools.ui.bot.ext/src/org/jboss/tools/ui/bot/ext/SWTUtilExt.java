@@ -189,7 +189,7 @@ public class SWTUtilExt extends SWTUtils {
 		return false;
 	}
 
-	private void printRunningJobs() {
+	public void printRunningJobs() {
 		Job[] jobs = Job.getJobManager().find(null);
 		for (Job job : jobs) {
 
