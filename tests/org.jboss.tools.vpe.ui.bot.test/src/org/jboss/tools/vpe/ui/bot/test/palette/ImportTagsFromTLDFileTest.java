@@ -14,6 +14,7 @@ public class ImportTagsFromTLDFileTest extends VPEAutoTestCase{
 	public void testImportTagsFromTLDFile(){
 
 		//Test clear group
+	  bot.viewByTitle("JBoss Tools Palette").setFocus(); //$NON-NLS-1$
 		bot.toolbarButtonWithTooltip("Palette Editor").click(); //$NON-NLS-1$
 		bot.shell("Palette Editor").activate(); //$NON-NLS-1$
 		try {
