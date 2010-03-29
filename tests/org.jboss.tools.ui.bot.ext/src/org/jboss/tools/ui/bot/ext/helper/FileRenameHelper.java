@@ -78,8 +78,7 @@ public class FileRenameHelper {
       bot.textWithLabel(IDELabel.RenameResourceDialog.NEW_NAME)
         .setText(newFileName);
       bot.button(IDELabel.Button.OK).click();
-      bot.sleep(sleepTime);
-      new SWTUtilExt(bot).waitForJobs(JobName.UPDATING_INDEXES);
+      new SWTUtilExt(bot).waitForAll(60 * 1000L);
       // Check Results
       // File with Old Name doesn't exists within WebProjects View
       try{
