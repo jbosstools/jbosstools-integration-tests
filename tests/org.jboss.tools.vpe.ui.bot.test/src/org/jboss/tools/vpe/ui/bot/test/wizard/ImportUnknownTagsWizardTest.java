@@ -10,16 +10,10 @@
 package org.jboss.tools.vpe.ui.bot.test.wizard;
 
 import java.io.File;
-import java.net.URL;
 
-import org.eclipse.core.runtime.FileLocator;
-import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.jboss.tools.ui.bot.test.WidgetVariables;
 import org.jboss.tools.vpe.ui.bot.test.VPEAutoTestCase;
-import org.osgi.framework.Bundle;
 
 public class ImportUnknownTagsWizardTest extends VPEAutoTestCase {
 
@@ -80,10 +74,12 @@ public class ImportUnknownTagsWizardTest extends VPEAutoTestCase {
 		/*
          * Check table values on the preferences page
          */
-        taglib = bot.table().cell(0, 0);
-        assertEquals("Wrong table value.", "taglibName:tagName", taglib); //$NON-NLS-1$  //$NON-NLS-2$
-        taglib = bot.table().cell(1, 0);
-        assertEquals("Wrong table value.", "lib:tag", taglib); //$NON-NLS-1$ //$NON-NLS-2$
+        String taglib00 = bot.table().cell(0, 0);
+        String taglib10 = bot.table().cell(1, 0);
+        bot.button(WidgetVariables.OK_BUTTON).click();
+        assertEquals("Wrong table value.", "taglibName:tagName", taglib00); //$NON-NLS-1$  //$NON-NLS-2$
+        assertEquals("Wrong table value.", "lib:tag", taglib10); //$NON-NLS-1$ //$NON-NLS-2$
+        
 	}
 	
 }
