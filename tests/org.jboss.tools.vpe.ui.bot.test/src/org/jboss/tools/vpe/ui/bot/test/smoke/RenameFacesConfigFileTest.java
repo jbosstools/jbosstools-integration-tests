@@ -53,6 +53,7 @@ public class RenameFacesConfigFileTest extends VPEEditorTestCase{
     String checkResult = FileRenameHelper.checkFileRenamingWithinWebProjects(bot, OLD_FACES_CONFIG_FILE_NAME, NEW_FACES_CONFIG_FILE_NAME,
       new String[]{JBT_TEST_PROJECT_NAME,IDELabel.WebProjectsTree.CONFIGURATION});
     assertNull(checkResult,checkResult);
+    delay();
     // web.xml file was properly modified
     SWTBotTreeItem configFilesTreeItem = tree
       .getTreeItem(JBT_TEST_PROJECT_NAME)
