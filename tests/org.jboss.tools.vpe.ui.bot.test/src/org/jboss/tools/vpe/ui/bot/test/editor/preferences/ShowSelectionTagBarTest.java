@@ -9,7 +9,7 @@ public class ShowSelectionTagBarTest extends PreferencesTestCase{
 	public void testShowSelectionTagBar(){
 		
 		//Test Hide Selection Bar
-		
+	  openPage();
 		selectSelection();
 		checkIsHide();
 		

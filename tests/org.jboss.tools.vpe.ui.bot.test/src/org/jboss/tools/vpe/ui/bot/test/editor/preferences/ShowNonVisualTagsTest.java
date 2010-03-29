@@ -3,7 +3,7 @@ package org.jboss.tools.vpe.ui.bot.test.editor.preferences;
 public class ShowNonVisualTagsTest extends PreferencesTestCase{
 	
 	public void testShowNonVisualTags() throws Throwable{
-		
+	  openPage();
 		checkVPE("DumpedTestPage.xml"); //$NON-NLS-1$
 		
 		//Test Show Non-Visual Tags

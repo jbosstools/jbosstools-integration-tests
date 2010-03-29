@@ -8,7 +8,8 @@ public class ShowResourceBundlesUsageasELexpressionsTest extends PreferencesTest
 	private static SWTBotEclipseEditor editor;
 
 	public void testShowResourceBundlesUsageasELexpressions() throws Throwable{
-		
+	  
+	  openPage();
 		editor = bot.editorByTitle(TEST_PAGE).toTextEditor();
 		textEditor = editor.getText();
 

@@ -9,7 +9,7 @@ public class ChangeEditorTabForTheFirstOpenPageTest extends PreferencesTestCase{
 	public void testChangeEditorTabForTheFirstOpenPage(){
 		
 		//Test set default source tab
-		
+	  openPage();
 		bot.toolbarButtonWithTooltip(PREF_TOOLTIP).click();
 		bot.shell(PREF_FILTER_SHELL_TITLE).activate();
 		bot.comboBoxWithLabel(SELECT_DEFAULT_TAB).setSelection("Source"); //$NON-NLS-1$

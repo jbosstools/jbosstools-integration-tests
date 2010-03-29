@@ -11,6 +11,7 @@ public class BorderForUnknownTagsTest extends PreferencesTestCase{
 	public void testBorderForUnknownTags() throws Throwable{
 		
 		//Test open page
+	  openPage();
 		editor = bot.editorByTitle(TEST_PAGE).toTextEditor();
 		textEditor = editor.getText();
 			

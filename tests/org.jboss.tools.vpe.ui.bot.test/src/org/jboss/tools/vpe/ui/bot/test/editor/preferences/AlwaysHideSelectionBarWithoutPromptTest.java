@@ -9,7 +9,7 @@ public class AlwaysHideSelectionBarWithoutPromptTest extends PreferencesTestCase
 	public void testAlwaysHideSelectionBarWithoutPrompt(){
 		
 		//Test Hide Selection Bar
-		
+	  openPage();
 		selectSelection();
 		checkIsHide();
 		
