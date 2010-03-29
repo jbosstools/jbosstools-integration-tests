@@ -16,6 +16,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.jboss.tools.jst.jsp.jspeditor.JSPMultiPageEditor;
 import org.jboss.tools.test.TestProperties;
 import org.jboss.tools.vpe.ui.bot.test.Activator;
+import org.jboss.tools.ui.bot.ext.SWTJBTExt;
 import org.jboss.tools.ui.bot.test.JBTSWTBotTestCase;
 import org.jboss.tools.ui.bot.test.SWTBotJSPMultiPageEditor;
 import org.jboss.tools.ui.bot.test.WidgetVariables;
@@ -97,7 +98,8 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase{
 	
 	@Override
 	protected void tearDown() throws Exception {
-		clearWorkbench();
+	  clearWorkbench();
+	  new SWTJBTExt(bot).removeProjectFromServers(JBT_TEST_PROJECT_NAME);
 		super.tearDown();
 	}
 	
