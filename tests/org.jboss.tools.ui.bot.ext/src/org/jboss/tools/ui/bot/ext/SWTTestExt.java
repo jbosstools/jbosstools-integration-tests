@@ -15,6 +15,8 @@ import java.util.Properties;
 import org.apache.log4j.Logger;
 import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
 import org.jboss.tools.ui.bot.ext.view.PackageExplorer;
+import org.jboss.tools.ui.bot.ext.view.ProjectExplorer;
+import org.jboss.tools.ui.bot.ext.view.ServersView;
 
 /**
  * Base class for SWTBot Tests using SWTBotExt
@@ -27,10 +29,13 @@ public class SWTTestExt extends SWTBotTestCase{
 	public static final SWTBotExt bot = new SWTBotExt();
 	public static final SWTEclipseExt eclipse = new SWTEclipseExt(bot);
 	public static final SWTUtilExt util = new SWTUtilExt(bot);
-
+	public static final SWTOpenExt open = new SWTOpenExt(bot);
+	public static final SWTJBTExt jbt = new SWTJBTExt(bot);
 	
 	// Views
 	public static final PackageExplorer packageExplorer = new PackageExplorer();
+	public static final ProjectExplorer projectExplorer = new ProjectExplorer();
+	public static final ServersView servers = new ServersView();
 	
 	public static Properties properties;
 	

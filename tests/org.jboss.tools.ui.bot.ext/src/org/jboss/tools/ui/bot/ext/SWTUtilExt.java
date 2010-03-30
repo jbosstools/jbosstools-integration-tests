@@ -29,6 +29,7 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.utils.SWTUtils;
+import org.jboss.tools.ui.bot.ext.parts.SWTBotBrowserExt;
 import org.jboss.tools.ui.bot.ext.types.JobLists;
 import org.jboss.tools.ui.bot.ext.types.JobState;
 import org.osgi.framework.Bundle;
@@ -56,6 +57,35 @@ public class SWTUtilExt extends SWTUtils {
 	final int TIMEOUT = 20000; // 10s
 	final int SLEEPTIME = 1000; // 0.5s
 
+	public void waitForBrowserLoadsPage(SWTBotBrowserExt browser) {
+		waitForBrowserLoadsPage(browser, TIMEOUT);
+	}
+	/**
+	 * waits until given browser finishes with loading page
+	 * @param browser
+	 * @param timeOut
+	 */
+	public void waitForBrowserLoadsPage(SWTBotBrowserExt browser, long timeOut) {
+
+		long startTime = System.currentTimeMillis();
+		while (true) {
+			if (browser.isPageLoaded()) {
+				log.info("Page load finished");
+				break;
+			}
+
+			long waitTime = System.currentTimeMillis() - startTime;
+			if ((System.currentTimeMillis() - startTime) > timeOut) {
+				log.info("Waiting for browser loading page " 
+				  + timeOut + "s");
+				break;
+			}
+			log.info("Browser is loading page for " + waitTime
+					/ 1000 + "s");
+			bot.sleep(SLEEPTIME);
+		}
+		
+	}
 	/**
 	 * Wait for named running jobs with defined TIMEOUT
 	 */

@@ -15,6 +15,6 @@ package org.jboss.tools.ui.bot.ext.types;
  **/
 public class JobLists {
 
-	public static String[] ignoredJobs = { "Usage Data Event consumer",
+	public static String[] ignoredJobs = { "Process Console Input Job", "Usage Data Event consumer",
 			"Updating indexes" };
 }

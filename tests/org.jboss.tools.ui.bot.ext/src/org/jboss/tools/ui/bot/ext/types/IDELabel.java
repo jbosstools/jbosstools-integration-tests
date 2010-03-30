@@ -55,11 +55,12 @@ public class IDELabel {
 		public static final String STOP = "Stop";
 		public static final String STRUTS_PROJECT = "Struts Project";
 		public static final String PREFERENCES = "Preferences";
-    public static final String JBT_REMOVE_STRUTS_CAPABILITIES = "Remove Struts Capabilities";
-    public static final String ADD_STRUTS_CAPABILITIES = "Add Struts Capabilities...";
-    public static final String WEB_PROJECT_JBT_STRUTS = "JBoss Tools Struts";
-    public static final String RUN = "Run";
-    public static final String RUN_ON_SERVER = "Run on Server";
+		public static final String JBT_REMOVE_STRUTS_CAPABILITIES = "Remove Struts Capabilities";
+    	public static final String ADD_STRUTS_CAPABILITIES = "Add Struts Capabilities...";
+    	public static final String WEB_PROJECT_JBT_STRUTS = "JBoss Tools Struts";
+    	public static final String RUN = "Run";
+    	public static final String RUN_ON_SERVER = "Run on Server";
+    	public static final String ADD_AND_REMOVE="Add and Remove...";
 		
 	}
 
@@ -303,16 +304,19 @@ public class IDELabel {
    public static final class ServerGroup {
 
      public static final String JBOSS_EAP_4_3 = "JBoss Enterprise Middleware";
+     public static final String JBOSS_EAP_5_0 = "JBoss Enterprise Middleware";
        
    }
    public static final class ServerRuntimeType {
 
      public static final String JBOSS_EAP_4_3 = "JBoss Enterprise Application Platform 4.3 Runtime";
+     public static final String JBOSS_EAP_5_0 = "JBoss Enterprise Application Platform 5.0 Runtime";
        
    }
    public static final class ServerType {
 
      public static final String JBOSS_EAP_4_3 = "JBoss Enterprise Application Platform 4.3";
+     public static final String JBOSS_EAP_5_0 = "JBoss Enterprise Application Platform 5.0";
        
    }
 }

@@ -13,6 +13,9 @@ package org.jboss.tools.ui.bot.ext;
 
 import static org.jboss.tools.ui.bot.ext.SWTTestExt.eclipse;
 
+import java.util.List;
+import java.util.Vector;
+
 import org.apache.log4j.Logger;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
@@ -24,6 +27,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.ext.types.ViewType;
@@ -35,10 +39,10 @@ import org.jboss.tools.ui.bot.ext.types.IDELabel.PreferencesDialog;
  */
 public class SWTJBTExt {
 
-	SWTWorkbenchBot bot;
+	SWTBotExt bot;
 	Logger log = Logger.getLogger(SWTJBTExt.class);
 	
-	public SWTJBTExt(SWTWorkbenchBot bot) {
+	public SWTJBTExt(SWTBotExt bot) {
 		this.bot = bot;
 	}
 	

@@ -34,6 +34,9 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.hamcrest.Matcher;
 import org.jboss.tools.ui.bot.ext.entity.JavaClassEntity;
 import org.jboss.tools.ui.bot.ext.entity.JavaProjectEntity;
+import org.jboss.tools.ui.bot.ext.gen.ActionItem;
+import org.jboss.tools.ui.bot.ext.gen.IServer;
+import org.jboss.tools.ui.bot.ext.gen.ActionItem.NewObject.ServerServer;
 import org.jboss.tools.ui.bot.ext.types.EntityType;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.ext.types.PerspectiveType;
@@ -48,6 +51,7 @@ import org.jboss.tools.ui.bot.ext.types.IDELabel.PreferencesDialog;
  */
 public class SWTEclipseExt {
 
+	private final SWTOpenExt open;
 	private SWTUtilExt util;
 	private SWTBotExt bot;
 	// private SWTUtilExt swtUtilExt;
@@ -64,10 +68,12 @@ public class SWTEclipseExt {
 	public SWTEclipseExt(SWTBotExt bot) {
 		this.bot = bot;
 		this.util = new SWTUtilExt(bot);
+		this.open = new SWTOpenExt(bot);
 	}
 	public SWTEclipseExt() {
 		this.bot = new SWTBotExt();
 		this.util = new SWTUtilExt(bot);
+		this.open = new SWTOpenExt(bot);
 	}
 
 	// ------------------------------------------------------------
@@ -388,7 +394,33 @@ public class SWTEclipseExt {
 		if (save)
 			editor.save();
 	}
-
+	/**
+	 * Replace editor content by content from resource
+	 * @param editor
+	 * @param pluginId
+	 * @param path
+	 */
+	public void setClassContentFromResource(SWTBotEditor editor, boolean save, String pluginId,
+			String... path) {
+		SWTBotEclipseEditor edit = editor.toTextEditor();
+		edit.selectRange(0, 0, edit.getText().length());
+		File file = util.getResourceFile(pluginId, path);
+		String content = util.readTextFile(file);
+		edit.setText(content);
+		if (save)
+			edit.save();
+	}
+	/**
+	 * adds server (Server runtime must be defined, the default selected runtime is used)
+	 * @param server to add ( for example {@link ActionItem.Server.JBossCommunityJBossAS50#LABEL} class)
+	 * @param serverName
+	 */
+	public void addServer(IServer server, String serverName) {
+		SWTBot wiz = open.newObject(ActionItem.NewObject.ServerServer.LABEL);
+		open.selectTreeNode(server);
+		wiz.textWithLabel(ServerServer.TEXT_SERVER_NAME).setText(serverName);
+		open.finish(wiz);
+	}
 	/**
 	 * Define new Server Runtime only if it's not specified yet
 	 * 
