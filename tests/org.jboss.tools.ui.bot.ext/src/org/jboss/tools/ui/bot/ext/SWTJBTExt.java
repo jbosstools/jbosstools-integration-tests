@@ -39,10 +39,10 @@ import org.jboss.tools.ui.bot.ext.types.IDELabel.PreferencesDialog;
  */
 public class SWTJBTExt {
 
-	SWTBotExt bot;
+	SWTWorkbenchBot bot;
 	Logger log = Logger.getLogger(SWTJBTExt.class);
 	
-	public SWTJBTExt(SWTBotExt bot) {
+	public SWTJBTExt(SWTWorkbenchBot bot) {
 		this.bot = bot;
 	}
 	
