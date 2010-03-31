@@ -13,12 +13,8 @@ package org.jboss.tools.ui.bot.ext;
 
 import static org.jboss.tools.ui.bot.ext.SWTTestExt.eclipse;
 
-import java.util.List;
-import java.util.Vector;
-
 import org.apache.log4j.Logger;
 import org.eclipse.swt.widgets.MenuItem;
-import org.eclipse.swt.widgets.Table;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
@@ -28,7 +24,6 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
-import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.ext.types.ViewType;
@@ -174,9 +169,9 @@ public class SWTJBTExt {
   /**
    * Remove Project from all Servers
    * @param projectName
-   * @param suffix
+   * @param stringToContain
    */
-  public void removeProjectFromServers(String projectName , String suffix){
+  public void removeProjectFromServers(String projectName , String stringToContain){
     
     eclipse.showView(ViewType.SERVERS);
     
@@ -198,7 +193,7 @@ public class SWTJBTExt {
         do{
           treeItemlabel = serverTreeItemChildren[itemIndex].getText();
           found = treeItemlabel.startsWith(projectName)
-                  && (suffix == null || treeItemlabel.endsWith(suffix));
+                  && (stringToContain == null || treeItemlabel.indexOf(stringToContain) >= 0);
         } while (!found && ++itemIndex < serverTreeItemChildren.length);
         // Server Tree Item has Child with Text equal to JSF TEst Project
         if (found){
