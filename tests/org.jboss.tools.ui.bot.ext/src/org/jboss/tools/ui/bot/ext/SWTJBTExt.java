@@ -18,6 +18,7 @@ import java.util.Vector;
 
 import org.apache.log4j.Logger;
 import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.swt.widgets.Table;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
@@ -137,11 +138,12 @@ public class SWTJBTExt {
     SWTEclipseExt swtEclipseExt = new SWTEclipseExt();
     SWTBot servers = swtEclipseExt.showView(ViewType.SERVERS);
     SWTBotTree serverTree = servers.tree();
-    
     ContextMenuHelper.prepareTreeItemForContextMenu(serverTree, index);
-    
-    new SWTBotMenu(ContextMenuHelper.getContextMenu(serverTree,
-        menuLabel, false)).click();
+    SWTTestExt.util.waitForAll(timeOut); 
+    SWTBotMenu menu = new SWTBotMenu(ContextMenuHelper.getContextMenu(serverTree,
+        menuLabel, false));
+    SWTTestExt.util.waitForAll(timeOut);
+    menu.click();
     SWTTestExt.util.waitForAll(timeOut);    
   }
   /**
@@ -192,19 +194,20 @@ public class SWTJBTExt {
       if (serverTreeItemChildren != null && serverTreeItemChildren.length > 0){
         int itemIndex = 0;
         boolean found = false;
+        String treeItemlabel = null;
         do{
-          String treeItemlabel = serverTreeItemChildren[itemIndex].getText();
+          treeItemlabel = serverTreeItemChildren[itemIndex].getText();
           found = treeItemlabel.startsWith(projectName)
                   && (suffix == null || treeItemlabel.endsWith(suffix));
         } while (!found && ++itemIndex < serverTreeItemChildren.length);
         // Server Tree Item has Child with Text equal to JSF TEst Project
         if (found){
-          log.info("Found project to be removed from server: " + serverTreeItemChildren[itemIndex].getText());
+          log.info("Found project to be removed from server: " + treeItemlabel);
           ContextMenuHelper.prepareTreeItemForContextMenu(serverTree,serverTreeItemChildren[itemIndex]);
           new SWTBotMenu(ContextMenuHelper.getContextMenu(serverTree, IDELabel.Menu.REMOVE, false)).click();
           bot.shell("Server").activate();
           bot.button(IDELabel.Button.OK).click();
-          log.info("Removed project from server: " + serverTreeItemChildren[itemIndex].getText());
+          log.info("Removed project from server: " + treeItemlabel);
           bot.sleep(10*1000L);
         }  
       }
@@ -394,5 +397,51 @@ public class SWTJBTExt {
     removeProjectFromServers(projectName);
     removeProjectFromServers("/" + projectName,"-ds.xml");
   }
-  
+  /**
+   * Returns string representing version of defined Server Runtime on rowIndex position in Defined Server Runtime table
+   * @param bot
+   * @param rowIndex
+   * @return null when no server runtime is specified, "unknown when not possible to determine server runtime version" or server runtime version
+   */
+  public static String getDefinedServerRuntimeVersion(SWTWorkbenchBot bot , int rowIndex){
+    
+    String result = null;
+    
+    bot.menu(IDELabel.Menu.WINDOW).menu(IDELabel.Menu.PREFERENCES).click();
+    bot.shell(IDELabel.Shell.PREFERENCES).activate();
+    bot.tree().expandNode(IDELabel.PreferencesDialog.SERVER_GROUP).select(
+      PreferencesDialog.RUNTIME_ENVIRONMENTS);
+    
+    SWTBotTable serverRuntimesTable = bot.table(); 
+    if (serverRuntimesTable.rowCount() > rowIndex){
+      String[] splitServerRuntimeType = serverRuntimesTable.cell(rowIndex, 1).split(" ");
+      int index = 0;
+      while (index < splitServerRuntimeType.length && result == null){
+        if (splitServerRuntimeType[index].length() > 0 &&
+            splitServerRuntimeType[index].charAt(0) >= '0' &&
+            splitServerRuntimeType[index].charAt(0) <= '9'){
+          result = splitServerRuntimeType[index].trim();
+        }
+        else{
+          index++;
+        }
+      }
+    }
+    
+    bot.button(IDELabel.Button.OK).click();
+    
+    return result;
+      
+  }
+
+  /**
+   * Returns string representing version of defined Server Runtime on index position in Defined Server Runtime table
+   * @param rowIndex
+   * @return null when no server runtime is specified, "unknown when not possible to determine server runtime version" or server runtime version
+   */
+  public String getDefinedServerRuntimeVersion(int index){
+    
+    return SWTJBTExt.getDefinedServerRuntimeVersion(bot,index);
+      
+  }
 }

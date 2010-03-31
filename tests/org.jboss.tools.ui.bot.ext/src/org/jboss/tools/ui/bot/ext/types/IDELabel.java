@@ -261,6 +261,7 @@ public class IDELabel {
      public static final String JBOSS_EAP_4_3 = "JBoss EAP 4.3 Runtime";
      // Server Runtime with this Label is created during JBDS installation for bundled EAP
      public static final String JBOSS_EAP = "jboss-eap Runtime";
+     public static final String JBOSS_EAP_5_0 = "JBoss EAP 5.0 Runtime";
 
    }
 	
