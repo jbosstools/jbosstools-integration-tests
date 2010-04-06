@@ -34,7 +34,9 @@ import org.jboss.tools.ui.bot.ext.types.IDELabel.PreferencesDialog;
  *
  */
 public class SWTJBTExt {
-
+  
+  private static final long DEFAULT_UI_TIMEOUT = 1000L;
+  
 	SWTWorkbenchBot bot;
 	Logger log = Logger.getLogger(SWTJBTExt.class);
 	
@@ -93,29 +95,59 @@ public class SWTJBTExt {
    * Starts Application Server in Server View on position specified by index
    * Dynamic version of startApplicationServer
    * @param index - zero based Position of Server within Server Tree
+   * @param uiTimeOut
    */
-  public void startApplicationServer(int index){
-    SWTJBTExt.startApplicationServer(bot, index);
+  public void startApplicationServer(int index, long uiTimeOut){
+    SWTJBTExt.startApplicationServer(bot, index, uiTimeOut);
   }
   /**
    * Starts Application Server in Server View on position specified by index
    * @param bot
    * @param index - zero based Position of Server within Server Tree
+   * @param uiTimeOut
+   */
+  public static void startApplicationServer(SWTWorkbenchBot bot , int index, long uiTimeOut){
+    SWTJBTExt.chooseServerPopupMenu(bot,index, IDELabel.Menu.START,120*1000L,uiTimeOut);
+    bot.sleep(10*1000L);
+  }
+  /**
+   * Starts Application Server in Server View on position specified by index
+   * Dynamic version of startApplicationServer with default UI TimeOut
+   * @param index - zero based Position of Server within Server Tree
+   */
+  public void startApplicationServer(int index){
+    SWTJBTExt.startApplicationServer(bot, index, SWTJBTExt.DEFAULT_UI_TIMEOUT);
+  }
+  /**
+   * Starts Application Server in Server View on position specified by index
+   * with default UI TimeOut
+   * @param bot
+   * @param index - zero based Position of Server within Server Tree
    */
   public static void startApplicationServer(SWTWorkbenchBot bot , int index){
-    SWTJBTExt.chooseServerPopupMenu(bot,index, IDELabel.Menu.START,120*1000L);
-    bot.sleep(10*1000L);
+    startApplicationServer(bot , index, SWTJBTExt.DEFAULT_UI_TIMEOUT);
+  }
+  /**
+   * Stops Application Server in Server View on position specified by index
+   * with default UI TimeOut
+   * Dynamic version of stopApplicationServer
+   * @param index - zero based Position of Server within Server Tree
+   */
+  public void stopApplicationServer(int index){
+    SWTJBTExt.stopApplicationServer(bot, index, SWTJBTExt.DEFAULT_UI_TIMEOUT);
   }
   /**
    * Stops Application Server in Server View on position specified by index
    * Dynamic version of stopApplicationServer
    * @param index - zero based Position of Server within Server Tree
+   * @param uiTimeOut
    */
-  public void stopApplicationServer(int index){
+  public void stopApplicationServer(int index,long uiTimeOut){
     SWTJBTExt.stopApplicationServer(bot, index);
   }
   /**
    * Stops Application Server in Server View on position specified by index
+   * with default UI TimeOut
    * @param bot
    * @param index - zero based Position of Server within Server Tree
    */
@@ -123,23 +155,44 @@ public class SWTJBTExt {
     SWTJBTExt.chooseServerPopupMenu(bot,index, IDELabel.Menu.STOP,20*1000L);
   }
   /**
+   * Stops Application Server in Server View on position specified by index
+   * @param bot
+   * @param index - zero based Position of Server within Server Tree
+   * @param iuTimeOut
+   */
+  public static void stopApplicationServer(SWTWorkbenchBot bot , int index,long uiTimeOut){
+    SWTJBTExt.chooseServerPopupMenu(bot,index, IDELabel.Menu.STOP,20*1000L,uiTimeOut);
+  }
+  /**
    * Choose Server Popup Menu with specified label on Server with position specified by index 
+   * @param bot
+   * @param index
+   * @param menuLabel
+   * @param timeOut
+   * @param uiTimeOut
+   */
+  public static void chooseServerPopupMenu(SWTWorkbenchBot bot , int index, String menuLabel, long timeOut, long uiTimeOut){
+    SWTEclipseExt swtEclipseExt = new SWTEclipseExt();
+    SWTBot servers = swtEclipseExt.showView(ViewType.SERVERS);
+    SWTBotTree serverTree = servers.tree();
+    ContextMenuHelper.prepareTreeItemForContextMenu(serverTree, index);
+    SWTTestExt.util.waitForAll(uiTimeOut); 
+    SWTBotMenu menu = new SWTBotMenu(ContextMenuHelper.getContextMenu(serverTree,
+        menuLabel, false));
+    SWTTestExt.util.waitForAll(uiTimeOut);
+    menu.click();
+    SWTTestExt.util.waitForAll(timeOut);    
+  }
+  /**
+   * Choose Server Popup Menu with specified label on Server with position specified by index
+   * with defaul UI TimeOut  
    * @param bot
    * @param index
    * @param menuLabel
    * @param timeOut
    */
   public static void chooseServerPopupMenu(SWTWorkbenchBot bot , int index, String menuLabel, long timeOut){
-    SWTEclipseExt swtEclipseExt = new SWTEclipseExt();
-    SWTBot servers = swtEclipseExt.showView(ViewType.SERVERS);
-    SWTBotTree serverTree = servers.tree();
-    ContextMenuHelper.prepareTreeItemForContextMenu(serverTree, index);
-    SWTTestExt.util.waitForAll(timeOut); 
-    SWTBotMenu menu = new SWTBotMenu(ContextMenuHelper.getContextMenu(serverTree,
-        menuLabel, false));
-    SWTTestExt.util.waitForAll(timeOut);
-    menu.click();
-    SWTTestExt.util.waitForAll(timeOut);    
+    chooseServerPopupMenu(bot,index,menuLabel,timeOut,SWTJBTExt.DEFAULT_UI_TIMEOUT);
   }
   /**
    * Deletes Application Server in Server View on position specified by index
