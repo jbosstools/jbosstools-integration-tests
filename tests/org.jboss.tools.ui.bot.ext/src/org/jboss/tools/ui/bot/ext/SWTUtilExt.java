@@ -444,4 +444,43 @@ public class SWTUtilExt extends SWTUtils {
   public void closeShellWhenActive(String shellTitle){
     SWTUtilExt.closeShellWhenActive(shellTitle,bot);
   }
+  /**
+   * Returns Properties which contains Virtual Machine arguments
+   * with name starting with "-D"
+   * @return
+   */
+  public static Properties parseEclipseVMArgs (){
+    
+    Properties vmArgsProps = new Properties();
+    
+    String vmArgs = System.getProperty("eclipse.vmargs");
+    
+    if (vmArgs != null){
+      for (String line : vmArgs.split("\n")){
+        if (line.startsWith("-D")){
+          String[] splitLine = line.split("=");
+          vmArgsProps.setProperty(splitLine[0], splitLine[1]);
+        }
+      }
+    }
+    
+    return vmArgsProps;
+    
+  }
+  /**
+   * Overrides propertyName property value within properties with value stored within vmargProperties with name vmargPropertyName
+   * @param properties
+   * @param propertyName
+   * @param vmargPropertyName
+   * @param vmargProperties
+   */
+  public static void overrideValueFromSystemProperty (Properties properties, String propertyName , 
+    String vmargPropertyName, Properties vmargProperties){
+    
+    String vmargProperty = vmargProperties.getProperty(vmargPropertyName);
+    if (vmargProperty != null){
+      properties.setProperty(propertyName, vmargProperty);
+    }
+    
+  }
 }
