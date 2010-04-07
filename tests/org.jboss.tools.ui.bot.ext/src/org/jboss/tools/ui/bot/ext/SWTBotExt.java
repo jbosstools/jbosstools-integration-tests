@@ -11,7 +11,6 @@
 package org.jboss.tools.ui.bot.ext;
 
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.widgetOfType;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.util.List;
@@ -50,7 +49,7 @@ public class SWTBotExt extends SWTWorkbenchBot {
 
 	@Override
 	public SWTBotMenu menu(String text) {
-		log.info("Menu \"" + text + "\" secleted");
+		log.info("Menu \"" + text + "\" selected");
 		return super.menu(text);
 	}
 

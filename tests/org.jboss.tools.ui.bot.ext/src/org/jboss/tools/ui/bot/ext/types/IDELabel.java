@@ -78,6 +78,8 @@ public class IDELabel {
 		public static final String ADD = "Add...";
 		public static final String NEW = "New...";
 		public static final String CONTINUE = "Continue";
+		public static final String REMOVE = "Remove";
+		public static final String EDIT = "Edit...";
 	}
 
 	public class Shell {
@@ -106,6 +108,8 @@ public class IDELabel {
 	  public static final String NEW_SERVER = "New Server";
 	  public static final String RUN_ON_SERVER = "Run On Server";
 	  public static final String WARNING = "Warning";
+	  public static final String DROOLS_RUNTIME = "Drools Runtime";
+	  public static final String NEW_DROOLS_PROJECT = "";
 	}
 
 	public class EntityGroup {
@@ -115,6 +119,7 @@ public class IDELabel {
 		public static final String STRUTS = "Struts";
 		public static final String JBOSS_TOOLS_WEB = "JBoss Tools Web";
 		public static final String JPA = "JPA";
+		public static final String DROOLS = "Drools";
 	}
 	
 	public class EntityLabel {
@@ -127,6 +132,7 @@ public class IDELabel {
 		public static final String HIBERNATE_CONFIGURATION_FILE = "Hibernate Configuration File (cfg.xml)";
 		public static final String STRUTS_PROJECT = "Struts Project";
 		public static final String JPA_PROJECT = "JPA Project";
+		public static final String DROOLS_PROJECT = "Drools Project";
 	}
 
 	public class JavaProjectWizard {
@@ -293,6 +299,8 @@ public class IDELabel {
 
      public static final String SERVER_GROUP = "Server";
      public static final String RUNTIME_ENVIRONMENTS = "Runtime Environments";
+     public static final String DROOLS_GROUP = "Drools";
+     public static final String INSTALLED_DROOLS_RUNTIMES = "Installed Drools Runtimes";     
      
    }
    
@@ -318,6 +326,19 @@ public class IDELabel {
 
      public static final String JBOSS_EAP_4_3 = "JBoss Enterprise Application Platform 4.3";
      public static final String JBOSS_EAP_5_0 = "JBoss Enterprise Application Platform 5.0";
+       
+   }
+   public static final class DroolsRuntimeDialog {
+
+     public static final String NAME = "Name: ";
+     public static final String PATH = "Path: ";
+     public static final int COLUMN_NAME_INDEX = 0;
+     public static final int COLUMN_LOCATION_INDEX = 1;
+       
+   }
+   public static final class NewDroolsProjectDialog {
+
+     public static final String NAME = "Project name:";
        
    }
 }

@@ -523,5 +523,44 @@ public class SWTEclipseExt {
 			boolean pressContinueButton) {
 		closeWarningWindowIfOpened(bot, pressContinueButton);
 	}
+  /**
+   * Returns true if table column specified by column parameter contains item
+   * @param table
+   * @param item
+   * @param column
+   * @return
+   */
+	public static boolean isItemInTableColumn (SWTBotTable table , String item, int column){
+	  boolean found = false;
+	  
+	  int rowIndex = 0;
+	  while (!found && rowIndex < table.rowCount()){
+	    if (table.cell(rowIndex, column).trim().equals(item.trim())){
+	      found = true;
+	    }
+	    else{
+	      rowIndex++; 
+	    }
+	  }
+	  return found;
+	}
+	
+  /**
+   * Hide Warning Message if displayed static version
+   */
+  public static void hideWarningIfDisplayed(SWTBotExt bot) {
+    try {
+      bot.shell(IDELabel.Shell.WARNING).activate();
+      bot.button(IDELabel.Button.OK).click();
+    } catch (WidgetNotFoundException wnfe) {
+      // do nothing
+    }
+  }
+  /**
+   * Hide Warning Message if displayed
+   */
+  public void hideWarningIfDisplayed() {
+    SWTEclipseExt.hideWarningIfDisplayed(bot);
+  }
 
 }
