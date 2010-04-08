@@ -18,6 +18,7 @@ import java.io.File;
 import java.util.Iterator;
 
 import org.apache.log4j.Logger;
+import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.matchers.WidgetMatcherFactory;
@@ -26,6 +27,8 @@ import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
+import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
+import org.eclipse.swtbot.swt.finder.results.WidgetResult;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
@@ -92,17 +95,25 @@ public class SWTEclipseExt {
 	 * @param type
 	 */
 	public SWTBot showView(ViewType type) {	
-		SWTBotMenu menu1 = bot.menu(IDELabel.Menu.WINDOW);
-		SWTBotMenu menu2 = menu1.menu(IDELabel.Menu.SHOW_VIEW);
-		menu2.menu(IDELabel.Menu.OTHER).click();
-
-		bot.tree().expandNode(type.getGroupLabel()).expandNode(
-				type.getViewLabel()).select();
-		bot.button(IDELabel.Button.OK).click();
-
-		SWTBot viewBot = bot.viewByTitle(type.getViewLabel()).bot();
-		return viewBot;
+		return SWTEclipseExt.showView(bot, type);
 	}
+	 /**
+   * Show view static version
+   * 
+   * @param type
+   */
+  public static SWTBot showView(SWTBotExt bot,ViewType type) { 
+    SWTBotMenu menu1 = bot.menu(IDELabel.Menu.WINDOW);
+    SWTBotMenu menu2 = menu1.menu(IDELabel.Menu.SHOW_VIEW);
+    menu2.menu(IDELabel.Menu.OTHER).click();
+
+    bot.tree().expandNode(type.getGroupLabel()).expandNode(
+        type.getViewLabel()).select();
+    bot.button(IDELabel.Button.OK).click();
+
+    SWTBot viewBot = bot.viewByTitle(type.getViewLabel()).bot();
+    return viewBot;
+  }
 
 	// ------------------------------------------------------------
 	// Perspective related methods
@@ -562,5 +573,91 @@ public class SWTEclipseExt {
   public void hideWarningIfDisplayed() {
     SWTEclipseExt.hideWarningIfDisplayed(bot);
   }
+  /**
+   * Returns true when projectName is present in Package Explorer
+   * @param projectName
+   * @return
+   */
+  public boolean isProjectInPackageExplorer(String projectName) {
+    return SWTEclipseExt.isProjectInPackageExplorer(bot,projectName);
+  }
+  /**
+   * Returns true when projectName is present in Package Explorer static version
+   * @param bot
+   * @param projectName
+   * @return
+   */
+  public static boolean isProjectInPackageExplorer(SWTBotExt bot,String projectName) {
+    boolean found = false;
+    
+    SWTBot innerBot = SWTEclipseExt.showView(bot,ViewType.PACKAGE_EXPLORER);
+    SWTBotTree tree = innerBot.tree();
+    try {
+      tree.getTreeItem(projectName);
+      found = true;
+    } catch (WidgetNotFoundException e) {
+    }
+    return found;
+  }
 
+  /**
+   * Returns Tree Item with specified label and located on path
+   * @param tree
+   * @param treeItemText
+   * @param path
+   * @return
+   */
+  public static SWTBotTreeItem getTreeItemOnPath(SWTBotTree tree,String treeItemText, String[] path) {
+    SWTBotTreeItem parentTreeItem = null;
+    SWTBotTreeItem treeItem = null;
+    if (path != null && path.length > 0){
+      parentTreeItem = tree.expandNode(path[0]);
+      for (int index = 1 ; index < path.length ; index++){
+        parentTreeItem = parentTreeItem.expandNode(path[index]);  
+      }
+      treeItem = parentTreeItem.getNode(treeItemText);
+    }
+    else{
+      treeItem = tree.getTreeItem(treeItemText);
+    }
+    return treeItem;
+  }
+  /**
+   * Choose Run As Java Application menu for specified Tree Item
+   * @param treeItem
+   */
+  public void runTreeItemAsJavaApplication(SWTBotTreeItem treeItem){
+    treeItem.select();
+    treeItem.click();
+    SWTEclipseExt.getMenuFromSubmenu(bot.menu(IDELabel.Menu.RUN).menu(IDELabel.Menu.RUN_AS),
+        IDELabel.Menu.RUN_AS_JAVA_APPLICATION).click();
+    System.out.println("stop");
+  }
+  /**
+   * Search for Menu Item with Run on Server substring within label 
+   * @param subMenu
+   * @return
+   */
+  public static SWTBotMenu getMenuFromSubmenu(SWTBotMenu subMenu, String menuLabelTextToContain){
+    final SWTBotMenu subMenuToSearch = subMenu;
+    final String stringToSearchFor = menuLabelTextToContain;
+    final MenuItem menuItem = UIThreadRunnable
+      .syncExec(new WidgetResult<MenuItem>() {
+        public MenuItem run() {
+          int menuItemIndex = 0;
+          MenuItem menuItem = null;
+          final MenuItem[] menuItems = subMenuToSearch.widget.getMenu().getItems();
+          while (menuItem == null && menuItemIndex < menuItems.length){
+            if (menuItems[menuItemIndex].getText().indexOf(stringToSearchFor) > - 1){
+              menuItem = menuItems[menuItemIndex];
+            }
+            else{
+              menuItemIndex++;
+            }
+          }
+        return menuItem;
+        }
+      });
+    return new SWTBotMenu(menuItem);
+  }
 }

@@ -483,4 +483,22 @@ public class SWTUtilExt extends SWTUtils {
     }
     
   }
+  /**
+   * Delete directory from directoryLocation
+   * @param directoryLocation
+   */
+  public static void deleteDirectory(String directoryLocation){
+    File directory = new File (directoryLocation);
+    if (directory.exists()){
+      if (directory.isDirectory()){
+        for (File childFile :directory.listFiles()) {
+          SWTUtilExt.deleteDirectory(childFile.getAbsolutePath());
+        }
+        directory.delete();
+      }
+      else{
+        directory.delete();
+      }
+    }
+  }
 }

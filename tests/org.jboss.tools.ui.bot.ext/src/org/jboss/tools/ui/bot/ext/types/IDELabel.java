@@ -56,12 +56,12 @@ public class IDELabel {
 		public static final String STRUTS_PROJECT = "Struts Project";
 		public static final String PREFERENCES = "Preferences";
 		public static final String JBT_REMOVE_STRUTS_CAPABILITIES = "Remove Struts Capabilities";
-    	public static final String ADD_STRUTS_CAPABILITIES = "Add Struts Capabilities...";
-    	public static final String WEB_PROJECT_JBT_STRUTS = "JBoss Tools Struts";
-    	public static final String RUN = "Run";
-    	public static final String RUN_ON_SERVER = "Run on Server";
-    	public static final String ADD_AND_REMOVE="Add and Remove...";
-		
+    public static final String ADD_STRUTS_CAPABILITIES = "Add Struts Capabilities...";
+    public static final String WEB_PROJECT_JBT_STRUTS = "JBoss Tools Struts";
+    public static final String RUN = "Run";
+    public static final String RUN_ON_SERVER = "Run on Server";
+    public static final String ADD_AND_REMOVE="Add and Remove...";
+    public static final String RUN_AS_JAVA_APPLICATION="Java Application";
 	}
 
 	public class Button {
