@@ -3,9 +3,12 @@ package org.jboss.tools.ui.bot.ext.generator;
 import java.io.File;
 import java.io.PrintWriter;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.Vector;
 
 public class ActionItemWriter {
 
@@ -105,7 +108,16 @@ public class ActionItemWriter {
 		pw.println();
 		writePrintMethod(pw, "");
 		for (String key : entityMap.keySet()) {
-			genLEClass(pw, key, entityMap.get(key), "\t");
+			// first remove possible duplicates
+			Set<LabelEntity> set =new HashSet<LabelEntity>();
+			for (LabelEntity ent : entityMap.get(key)) {
+				set.add(ent);
+			}
+			List<LabelEntity> list = new Vector<LabelEntity>();
+			for (LabelEntity le : set) {
+				list.add(le);
+			}
+			genLEClass(pw, key, list, "\t");
 			pw.println();
 		}
 		pw.println("}");

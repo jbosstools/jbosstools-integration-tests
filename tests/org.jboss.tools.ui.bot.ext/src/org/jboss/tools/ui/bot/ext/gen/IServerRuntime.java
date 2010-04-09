@@ -5,5 +5,5 @@ package org.jboss.tools.ui.bot.ext.gen;
 
 import org.jboss.tools.ui.bot.ext.gen.IActionItem;
 
-public interface IPerspective extends IActionItem {
+public interface IServerRuntime extends IActionItem {
 }

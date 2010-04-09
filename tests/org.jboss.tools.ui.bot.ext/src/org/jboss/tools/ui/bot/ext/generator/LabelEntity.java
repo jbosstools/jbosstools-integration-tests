@@ -34,7 +34,17 @@ public class LabelEntity {
 		sb.append(" " + getName());
 		return sb.toString();
 	}
-	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj.getClass().equals(this.getClass())) {
+			return ((LabelEntity)obj).getName().equals(this.getName());
+		}
+		return super.equals(obj);
+	}
+	@Override
+	public int hashCode() {
+		return getName().hashCode();
+	}
 	public Set<String> getTextFields() {
 		if (textFields==null) {
 			textFields=new HashSet<String>();

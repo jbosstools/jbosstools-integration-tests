@@ -17,7 +17,6 @@ import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
 import org.jboss.tools.ui.bot.ext.view.PackageExplorer;
 import org.jboss.tools.ui.bot.ext.view.ProjectExplorer;
 import org.jboss.tools.ui.bot.ext.view.ServersView;
-
 /**
  * Base class for SWTBot Tests using SWTBotExt
  * @author jpeterka
@@ -35,10 +34,8 @@ public class SWTTestExt extends SWTBotTestCase{
 	// Views
 	public static final PackageExplorer packageExplorer = new PackageExplorer();
 	public static final ProjectExplorer projectExplorer = new ProjectExplorer();
-	public static final ServersView servers = new ServersView();
-	
+	public static final ServersView servers = new ServersView();	
 	public static Properties properties;
-	
 	/**
 	 * Get properties for hibernate tests
 	 * @param key
@@ -46,11 +43,13 @@ public class SWTTestExt extends SWTBotTestCase{
 	public static String getProperty(String key) {
 		return util.getValue(properties,key);
 	}	
-	
+	static {
+		System.setProperty("org.eclipse.swtbot.playback.delay","10");
+	}
 	// Wait Constants
-	public static int TIME_500MS = 500;
-	public static int TIME_1S = 1000;
-	public static int TIME_5S = 5000;
-	public static int TIME_10S = 10000;
-	public static int TIME_20S = 20000;
+	public static int TIME_500MS = Timing.time500MS();
+	public static int TIME_1S = Timing.time1S();
+	public static int TIME_5S = Timing.time5S();
+	public static int TIME_10S = Timing.time10S();
+	public static int TIME_20S = Timing.time20S();
 }

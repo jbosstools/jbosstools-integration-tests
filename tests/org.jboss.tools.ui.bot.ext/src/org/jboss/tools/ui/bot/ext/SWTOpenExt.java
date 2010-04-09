@@ -86,6 +86,7 @@ public class SWTOpenExt {
 	 */
 	public SWTBotView viewSelect(IView view) {
 		SWTBotView v = bot.viewByTitle(view.getName());
+		v.show();
 		v.setFocus();
 		return v;
 
@@ -102,20 +103,26 @@ public class SWTOpenExt {
 			Iterator<String> iter = item.getGroupPath().iterator();
 			
 			if (iter.hasNext()) {
-				ti = bot.tree().expandNode(iter.next());
-				while (iter.hasNext()) {
-					String next = iter.next();
-					// expanding node is failing, so try to collapse and expand it again
-					try {
-					ti = ti.expandNode(next);
+				String next = iter.next();
+				ti = bot.tree().expandNode(next);				
+				try {
+					while (iter.hasNext()) {
+						next = iter.next();
+						// expanding node is failing, so try to collapse and expand it again					
+						ti.expand();
+						ti = ti.expandNode(next);										
 					}
-					catch (WidgetNotFoundException ex) {
-						log.warn("Tree item '"+next+"' was not found, trying to collapse and reexpand parent node");
-						ti.collapse();
-						ti.expandNode(next);
-					}
+				next = item.getName();	
+				ti.expandNode(next).select();
 				}
-				ti.expandNode(item.getName()).select();
+				catch (WidgetNotFoundException ex) {
+					log.warn("Tree item '"+next+"' was not found, trying to collapse and reexpand parent node");
+					ti.collapse();
+					ti.expand();
+					ti.select();
+					ti = ti.expandNode(next);
+					ti.select();
+				}
 			} else {
 				bot.tree().select(item.getName());
 			}

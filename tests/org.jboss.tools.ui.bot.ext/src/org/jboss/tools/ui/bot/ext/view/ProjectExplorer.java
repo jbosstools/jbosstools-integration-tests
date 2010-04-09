@@ -16,16 +16,23 @@ import java.util.List;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
+import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
+import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
+import org.eclipse.swtbot.swt.finder.results.WidgetResult;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
 import org.jboss.tools.ui.bot.ext.SWTOpenExt;
 import org.jboss.tools.ui.bot.ext.SWTUtilExt;
+import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem;
+import org.jboss.tools.ui.bot.ext.gen.ActionItem.View;
+import org.jboss.tools.ui.bot.ext.gen.ActionItem.NewObject.ServerServer;
+import org.jboss.tools.ui.bot.ext.gen.ActionItem.View.ServerServers;
 import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.ext.types.ViewType;
@@ -39,17 +46,83 @@ import org.jboss.tools.ui.bot.ext.types.ViewType;
 public class ProjectExplorer extends SWTBotExt {
 
 	Logger log = Logger.getLogger(ProjectExplorer.class);
-
+	private final SWTOpenExt open;
 	public ProjectExplorer() {
-
+		open = new SWTOpenExt(this);
 	}
 	/**
 	 * shows Project Explorer view
 	 */
 	public void show() {
-		new SWTOpenExt(this).viewOpen(ActionItem.View.GeneralProjectExplorer.LABEL);
+		open.viewOpen(ActionItem.View.GeneralProjectExplorer.LABEL);
 	}
-
+	public void removeProjectFromServers(String projectName){
+		
+		SWTBot bot = open.viewOpen(View.ServerServers.LABEL).bot();	    	    
+	    SWTBotTree serverTree = bot.tree();
+	    // Expand All
+	    for (SWTBotTreeItem serverTreeItem : serverTree.getAllItems()){
+	      serverTreeItem.expand();
+	      // if JSF Test Project is deployed to server remove it
+	      SWTBotTreeItem[] serverTreeItemChildren = serverTreeItem.getItems();
+	      if (serverTreeItemChildren != null && serverTreeItemChildren.length > 0){
+	        int itemIndex = 0;
+	        boolean found = false;
+	        do{
+	          String treeItemlabel = serverTreeItemChildren[itemIndex].getText();
+	          found = treeItemlabel.startsWith(projectName);
+	        } while (!found && ++itemIndex < serverTreeItemChildren.length);
+	        // Server Tree Item has Child with Text equal to JSF TEst Project
+	        if (found){
+	          log.info("Found project to be removed from server: " + serverTreeItemChildren[itemIndex].getText());
+	          ContextMenuHelper.prepareTreeItemForContextMenu(serverTree,serverTreeItemChildren[itemIndex]);
+	          new SWTBotMenu(ContextMenuHelper.getContextMenu(serverTree, IDELabel.Menu.REMOVE, false)).click();
+	          bot.shell("Server").activate();
+	          open.finish(this, IDELabel.Button.OK);
+	          log.info("Removed project from server: " + serverTreeItemChildren[itemIndex].getText());
+	        }  
+	      }
+	    }
+	  }
+	/**
+	 * runs given project on Server (uses default server, the first one) server MUST be running
+	 * @param projectName
+	 */
+	public void runOnServer(String projectName) {
+		SWTBot viewBot = viewByTitle(IDELabel.View.PROJECT_EXPLORER).bot();
+		SWTBotTreeItem item = viewBot.tree().expandNode(projectName);
+		ContextMenuHelper.prepareTreeItemForContextMenu(viewBot.tree(), item);
+		   final SWTBotMenu menuRunAs = viewBot.menu(IDELabel.Menu.RUN).menu(IDELabel.Menu.RUN_AS);
+		    final MenuItem menuItem = UIThreadRunnable
+		      .syncExec(new WidgetResult<MenuItem>() {
+		        public MenuItem run() {
+		          int menuItemIndex = 0;
+		          MenuItem menuItem = null;
+		          final MenuItem[] menuItems = menuRunAs.widget.getMenu().getItems();
+		          while (menuItem == null && menuItemIndex < menuItems.length){
+		            if (menuItems[menuItemIndex].getText().indexOf("Run on Server") > - 1){
+		              menuItem = menuItems[menuItemIndex];
+		            }
+		            else{
+		              menuItemIndex++;
+		            }
+		          }
+		        return menuItem;
+		        }
+		      });
+		    if (menuItem != null){
+		      new SWTBotMenu(menuItem).click();
+		      shell(IDELabel.Shell.RUN_ON_SERVER).activate();
+		      new SWTOpenExt(this).finish(this);
+		      SWTUtilExt swtUtil = new SWTUtilExt(this);
+		      swtUtil.waitForNonIgnoredJobs();
+		      swtUtil.waitForAll(Timing.time3S());
+		    }
+		    else{
+		      throw new WidgetNotFoundException("Unable to find Menu Item with Label 'Run on Server'");
+		    }
+		
+	}
 	public SWTBotEditor openFile(String projectName, String... path) {
 		SWTBot viewBot = viewByTitle(IDELabel.View.PROJECT_EXPLORER).bot();
 
@@ -78,6 +151,7 @@ public class ProjectExplorer extends SWTBotExt {
 		    }
 		    for (String proj : items) {
 		    	try {
+		    		viewBot.tree().expandNode(proj);
 		    		viewBot.tree().select(proj);
 		    		// try to select project in tree (in some cases, when one project is deleted, 
 		    		// the other item in tree (not being a project) is auto-deleted)

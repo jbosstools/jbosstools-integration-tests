@@ -1,13 +1,13 @@
- /*******************************************************************************
-  * Copyright (c) 2007-2009 Red Hat, Inc.
-  * Distributed under license by Red Hat, Inc. All rights reserved.
-  * This program is made available under the terms of the
-  * Eclipse Public License v1.0 which accompanies this distribution,
-  * and is available at http://www.eclipse.org/legal/epl-v10.html
-  *
-  * Contributor:
-  *     Red Hat, Inc. - initial API and implementation
-  ******************************************************************************/
+/*******************************************************************************
+ * Copyright (c) 2007-2009 Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributor:
+ *     Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/
 package org.jboss.tools.ui.bot.ext;
 
 import static org.junit.Assert.fail;
@@ -27,9 +27,12 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
+import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.utils.SWTUtils;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.jboss.tools.ui.bot.ext.parts.SWTBotBrowserExt;
+import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.ext.types.JobLists;
 import org.jboss.tools.ui.bot.ext.types.JobState;
 import org.osgi.framework.Bundle;
@@ -48,7 +51,7 @@ public class SWTUtilExt extends SWTUtils {
 	public SWTUtilExt(SWTWorkbenchBot bot) {
 		this.bot = bot;
 	}
-	
+
 	// ------------------------------------------------------------
 	// Waiting methods
 	// ------------------------------------------------------------
@@ -57,35 +60,81 @@ public class SWTUtilExt extends SWTUtils {
 	final int TIMEOUT = 20000; // 10s
 	final int SLEEPTIME = 1000; // 0.5s
 
-	public void waitForBrowserLoadsPage(SWTBotBrowserExt browser) {
-		waitForBrowserLoadsPage(browser, TIMEOUT);
-	}
 	/**
-	 * waits until given browser finishes with loading page
+	 * waits until given browser finishes loading web page (handling goRUL or
+	 * similar request)
+	 * 
 	 * @param browser
-	 * @param timeOut
+	 * @return true if browser finished before timeout, false otherwise
 	 */
-	public void waitForBrowserLoadsPage(SWTBotBrowserExt browser, long timeOut) {
+	public boolean waitForBrowserLoadsPage(SWTBotBrowserExt browser) {
+		return waitForBrowserLoadsPage(browser, TIMEOUT, null, null);
+	}
+/**
+ * waits until given browser finishes loading page, tests possibility of login dialog
+ * @param browser browser which loads page
+ * @param login if not null will be possibly used to fill login shell
+ * @param pass  if not null will be possibly used to fill login shell
+ * @return
+ */
+	public boolean waitForBrowserLoadsPage(SWTBotBrowserExt browser,
+			String login, String pass) {
+		return waitForBrowserLoadsPage(browser, TIMEOUT, login, pass);
+	}
+
+	/**
+	 * waits until given browser finishes with loading page, tests possibility of login dialog
+	 * 
+	 * @param browser
+	 *            browser which loads page
+	 * @param timeOut
+	 *            total timeout (when reached, false is returned)
+	 * @param login
+	 *            if not null will be possibly used to fill login shell
+	 * @param pass
+	 *            if not null will possibly be used to fill login shell
+	 */
+	public boolean waitForBrowserLoadsPage(SWTBotBrowserExt browser,
+			long timeOut, String login, String pass) {
 
 		long startTime = System.currentTimeMillis();
 		while (true) {
 			if (browser.isPageLoaded()) {
 				log.info("Page load finished");
-				break;
+				return true;
+			}
+			// explore active shell ( authentication window could appear )
+			SWTBotShell shell = bot.activeShell();
+			if (shell.getText().equalsIgnoreCase("Authentication required")) {
+				log.info("Page requies authentication");
+				if (login != null && pass != null) {
+					try {
+						shell.activate();
+						SWTBot lBot = shell.bot();
+						lBot.text(0).setText(login);
+						lBot.text(1).setText(pass);
+						lBot.button(IDELabel.Button.OK).click();
+						log.info("Authentication window filled");
+					} catch (WidgetNotFoundException ex) {
+						log.error("Error filling authentication window",ex);
+					}
+				} else {
+					log.error("No credentials provided");
+				}
 			}
 
 			long waitTime = System.currentTimeMillis() - startTime;
 			if ((System.currentTimeMillis() - startTime) > timeOut) {
-				log.info("Waiting for browser loading page " 
-				  + timeOut + "s");
-				break;
+				log.info("Browser did not load page for " + timeOut / 1000
+						+ "s");
+				return false;
 			}
-			log.info("Browser is loading page for " + waitTime
-					/ 1000 + "s");
+			log.info("Browser is loading page for " + waitTime / 1000 + "s");
 			bot.sleep(SLEEPTIME);
 		}
-		
+
 	}
+
 	/**
 	 * Wait for named running jobs with defined TIMEOUT
 	 */
@@ -94,38 +143,44 @@ public class SWTUtilExt extends SWTUtils {
 	}
 
 	/**
-	 * Wait for all running jobs not named in JobList.ignoredJobs 
+	 * Wait for all running jobs not named in JobList.ignoredJobs
+	 * 
 	 * @param timeOut
 	 */
 	public void waitForNonIgnoredJobs(long timeOut) {
-		waitForAllExcept(timeOut,JobLists.ignoredJobs);
+		waitForAllExcept(timeOut, JobLists.ignoredJobs);
 	}
-  /**
-   * Wait for all running jobs not named in JobList.ignoredJobs 
-   */
-  public void waitForNonIgnoredJobs() {
-    waitForAllExcept(TIMEOUT,JobLists.ignoredJobs);
-  }
+
+	/**
+	 * Wait for all running jobs not named in JobList.ignoredJobs
+	 */
+	public void waitForNonIgnoredJobs() {
+		waitForAllExcept(TIMEOUT, JobLists.ignoredJobs);
+	}
 
 	/**
 	 * Wait for all running jobs
 	 */
 	public void waitForAll(long timeOut) {
-		waitForAllExcept(timeOut,new String[0]);
+		waitForAllExcept(timeOut, new String[0]);
 	}
-  /**
-   * Wait for all running jobs
-   * @param timeOut
-   */
-  public void waitForAll() {
-    waitForAllExcept(TIMEOUT,new String[0]);
-  }
+
+	/**
+	 * Wait for all running jobs
+	 * 
+	 * @param timeOut
+	 */
+	public void waitForAll() {
+		waitForAllExcept(TIMEOUT, new String[0]);
+	}
+
 	/**
 	 * Wait for all running jobs except named jobs
+	 * 
 	 * @param timeOut
 	 * @param jobNames
 	 */
-	public void waitForAllExcept(long timeOut,String... jobNames) {
+	public void waitForAllExcept(long timeOut, String... jobNames) {
 
 		// Find all jobs
 		Job[] jobs = Job.getJobManager().find(null);
@@ -147,11 +202,12 @@ public class SWTUtilExt extends SWTUtils {
 			names[i] = listNames.get(i);
 		}
 
-		waitForJobs(timeOut,names);
+		waitForJobs(timeOut, names);
 	}
 
 	/**
 	 * Waits for selected job
+	 * 
 	 * @param timeOut
 	 * @param jobNames
 	 */
@@ -189,8 +245,8 @@ public class SWTUtilExt extends SWTUtils {
 
 				long waitTime = System.currentTimeMillis() - startTime;
 				if ((System.currentTimeMillis() - startTime) > timeOut) {
-					log.info("Waiting for job " + jobName + " timeOut " 
-					  + timeOut + "s");
+					log.info("Waiting for job " + jobName + " timeOut "
+							+ timeOut + "ms");
 					break;
 				}
 				log.info("Job \"" + jobName + "\" is running for " + waitTime
@@ -246,20 +302,20 @@ public class SWTUtilExt extends SWTUtils {
 
 		// Construct path
 		StringBuilder builder = new StringBuilder();
-		for (String fragment: path) {
+		for (String fragment : path) {
 			builder.append("/" + fragment);
 		}
-		
+
 		String filePath = "";
 		try {
 			filePath = FileLocator.toFileURL(
-					Platform.getBundle(pluginId).getEntry("/"))
-					.getFile() + "resources" + builder.toString();
+					Platform.getBundle(pluginId).getEntry("/")).getFile()
+					+ "resources" + builder.toString();
 			File file = new File(filePath);
 			if (!file.isFile()) {
 				filePath = FileLocator.toFileURL(
-						Platform.getBundle(pluginId).getEntry("/"))
-						.getFile() + builder.toString();
+						Platform.getBundle(pluginId).getEntry("/")).getFile()
+						+ builder.toString();
 			}
 		} catch (IOException ex) {
 			String message = filePath + " resource file not found";
@@ -282,27 +338,26 @@ public class SWTUtilExt extends SWTUtils {
 		StringBuilder contents = new StringBuilder();
 
 		try {
-			BufferedReader input =  new BufferedReader(new FileReader(file));
+			BufferedReader input = new BufferedReader(new FileReader(file));
 			try {
-				String line = null; //not declared within while loop
-				while (( line = input.readLine()) != null){
+				String line = null; // not declared within while loop
+				while ((line = input.readLine()) != null) {
 					contents.append(line);
 					contents.append(System.getProperty("line.separator"));
 				}
-			}
-			finally {
+			} finally {
 				input.close();
 			}
-		}
-		catch (IOException ex){
+		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
 
 		return contents.toString();
 	}
-	
+
 	/**
 	 * Loads project property file for particular test plugin
+	 * 
 	 * @param pluginId
 	 * @return
 	 */
@@ -312,10 +367,11 @@ public class SWTUtilExt extends SWTUtils {
 			log.info("Loading properties for " + pluginId);
 			// Read project properties
 			Bundle bundle = Platform.getBundle(pluginId);
-			InputStream is = bundle.getResource("project.properties").openStream();			
+			InputStream is = bundle.getResource("project.properties")
+					.openStream();
 			properties.load(is);
 			log.info("Properties for " + pluginId + " loaded:");
-		
+
 		} catch (Exception ex) {
 			logAndFail("Problem with loading properties file");
 		}
@@ -324,6 +380,7 @@ public class SWTUtilExt extends SWTUtils {
 
 	/**
 	 * Get value from property file with error logging
+	 * 
 	 * @param properties
 	 * @param key
 	 * @return
@@ -331,119 +388,135 @@ public class SWTUtilExt extends SWTUtils {
 	public String getValue(Properties properties, String key) {
 		String value = properties.getProperty(key);
 		if ((value == null) || value.equalsIgnoreCase("")) {
-			logAndFail("Missing property value for key \"" + key
-					+ "\"");
+			logAndFail("Missing property value for key \"" + key + "\"");
 		}
 		return value;
 	}
 
 	/**
 	 * Check Property values
+	 * 
 	 * @param properties
 	 * @param key
 	 */
 	public void checkAndLogValue(Properties properties, String key) {
 		log.info(key + "=" + getValue(properties, key));
 	}
-	
+
 	/**
-	 * Log and fail 
+	 * Log and fail
+	 * 
 	 * @param msg
 	 */
 	public void logAndFail(String msg) {
 		log.error(msg);
 		fail(msg);
 	}
+
 	/**
 	 * Write all running processes names to log
 	 */
-	public void logAllRunningProcesses(){
-    Job[] jobs = Job.getJobManager().find(null);
+	public void logAllRunningProcesses() {
+		Job[] jobs = Job.getJobManager().find(null);
 
-    for (Job job : jobs) {
-      log.info(job.getName());
-    }
+		for (Job job : jobs) {
+			log.info(job.getName());
+		}
 	}
-	/**
-   * Write all menu items of menu to log
-   * @param menu
-   */
-  public void logAllSubmenus(MenuItem menuItem){
-    
-    final MenuItem miTmp = menuItem;
-    
-    menuItem.getDisplay().asyncExec(new Runnable() {
-      public void run() {
-        int index = 0;
-        for (MenuItem miSubmenu : miTmp.getMenu().getItems()){
-          log.info(index++ + ": " + miSubmenu);
-        }
-        
-      }
-    });
-    
-  }
-  /**
-   * Returns Test Plugin Location within file system
-   * @param projectName
-   * @return
-   */
-  public static String getTestPluginLocation(String projectName){
-    
-    String[] parts = System.getProperty("eclipse.commands").split("\n");
 
-    int index = 0;
-    
-    for (index = 0;parts.length > index + 1 && !parts[index].equals("-data");index++){
-      // do nothing just go through
-    }
-    
-    return parts[index + 1] + File.separator + projectName; 
-    
-  }
-  /**
-   * Returns true if shell with shellTitle is active
-   * @param shellTitle
-   * @param bot
-   * @return
-   */
-  public static boolean isShellActive(String shellTitle, SWTWorkbenchBot bot){
-    boolean isShellActive = false;
-    try {
-      bot.shell(shellTitle).activate();
-      isShellActive = true;
-    } catch (WidgetNotFoundException e) {
-    }
-    return isShellActive;
-  }
-  /**
-   * Returns true if shell with shellTitle is active
-   * @param shellTitle
-   * @return
-   */
-  public boolean isShellActive(String shellTitle){
-    return SWTUtilExt.isShellActive(shellTitle,bot);
-  }
-  /**
-   * Closes shell with shellTitle if shell is active
-   * @param shellTitle
-   * @param bot
-   * @return
-   */
-  public static void closeShellWhenActive(String shellTitle, SWTWorkbenchBot bot){
-    try {
-      bot.shell(shellTitle).close();
-    } catch (WidgetNotFoundException e) {
-    }
-  }
-  /**
-   * Closes shell with shellTitle if shell is active
-   * @param shellTitle
-   * @return
-   */
-  public void closeShellWhenActive(String shellTitle){
-    SWTUtilExt.closeShellWhenActive(shellTitle,bot);
-  }
+	/**
+	 * Write all menu items of menu to log
+	 * 
+	 * @param menu
+	 */
+	public void logAllSubmenus(MenuItem menuItem) {
+
+		final MenuItem miTmp = menuItem;
+
+		menuItem.getDisplay().asyncExec(new Runnable() {
+			public void run() {
+				int index = 0;
+				for (MenuItem miSubmenu : miTmp.getMenu().getItems()) {
+					log.info(index++ + ": " + miSubmenu);
+				}
+
+			}
+		});
+
+	}
+
+	/**
+	 * Returns Test Plugin Location within file system
+	 * 
+	 * @param projectName
+	 * @return
+	 */
+	public static String getTestPluginLocation(String projectName) {
+
+		String[] parts = System.getProperty("eclipse.commands").split("\n");
+
+		int index = 0;
+
+		for (index = 0; parts.length > index + 1
+				&& !parts[index].equals("-data"); index++) {
+			// do nothing just go through
+		}
+
+		return parts[index + 1] + File.separator + projectName;
+
+	}
+
+	/**
+	 * Returns true if shell with shellTitle is active
+	 * 
+	 * @param shellTitle
+	 * @param bot
+	 * @return
+	 */
+	public static boolean isShellActive(String shellTitle, SWTWorkbenchBot bot) {
+		boolean isShellActive = false;
+		try {
+			bot.shell(shellTitle).activate();
+			isShellActive = true;
+		} catch (WidgetNotFoundException e) {
+		}
+		return isShellActive;
+	}
+
+	/**
+	 * Returns true if shell with shellTitle is active
+	 * 
+	 * @param shellTitle
+	 * @return
+	 */
+	public boolean isShellActive(String shellTitle) {
+		return SWTUtilExt.isShellActive(shellTitle, bot);
+	}
+
+	/**
+	 * Closes shell with shellTitle if shell is active
+	 * 
+	 * @param shellTitle
+	 * @param bot
+	 * @return
+	 */
+	public static void closeShellWhenActive(String shellTitle,
+			SWTWorkbenchBot bot) {
+		try {
+			bot.shell(shellTitle).close();
+		} catch (WidgetNotFoundException e) {
+		}
+	}
+
+	/**
+	 * Closes shell with shellTitle if shell is active
+	 * 
+	 * @param shellTitle
+	 * @return
+	 */
+	public void closeShellWhenActive(String shellTitle) {
+		SWTUtilExt.closeShellWhenActive(shellTitle, bot);
+	}
   /**
    * Returns Properties which contains Virtual Machine arguments
    * with name starting with "-D"

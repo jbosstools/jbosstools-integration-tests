@@ -48,7 +48,7 @@ public class ActionItemSniffer extends SWTTestExt {
 		shell.activate();
 
 		for (SWTBotTreeItem item : bot.tree().getAllItems()) {
-			getItems(item, stack, createNew);
+			getItems(item, stack, createNew, true);
 		}
 		bot.button("Cancel").click();
 		stack.clear();
@@ -72,7 +72,7 @@ public class ActionItemSniffer extends SWTTestExt {
 		shell = bot.shell("Show View");
 		shell.activate();
 		for (SWTBotTreeItem item : bot.tree().getAllItems()) {
-			getItems(item, stack, views);
+			getItems(item, stack, views, true);
 		}
 		bot.button("Cancel").click();
 		stack.clear();
@@ -83,7 +83,7 @@ public class ActionItemSniffer extends SWTTestExt {
 		shell = bot.shell("Import");
 		shell.activate();
 		for (SWTBotTreeItem item : bot.tree().getAllItems()) {
-			getItems(item, stack, imports);
+			getItems(item, stack, imports, true);
 		}
 		bot.button("Cancel").click();
 		stack.clear();
@@ -94,7 +94,7 @@ public class ActionItemSniffer extends SWTTestExt {
 		shell = bot.shell("Export");
 		shell.activate();
 		for (SWTBotTreeItem item : bot.tree().getAllItems()) {
-			getItems(item, stack, exports);
+			getItems(item, stack, exports, true);
 		}
 		bot.button("Cancel").click();
 		stack.clear();
@@ -105,8 +105,24 @@ public class ActionItemSniffer extends SWTTestExt {
 		shell = bot.shell("Preferences");
 		shell.activate();
 		for (SWTBotTreeItem item : bot.tree().getAllItems()) {
-			getItems(item, stack, preferences);
+			getItems(item, stack, preferences, false);
 		}
+		bot.button("Cancel").click();
+		stack.clear();
+		
+		List<LabelEntity> serverRuntimes = new Vector<LabelEntity>();
+		bot.menu("Window").menu("Preferences").click();
+		shell = bot.shell("Preferences");
+		shell.activate();
+		bot.tree().expandNode("Server").expandNode("Runtime Environments").select();
+		bot.button("Add...").click();
+		shell = bot.shell("New Server Runtime Environment");
+		shell.activate();
+		for (SWTBotTreeItem item : bot.tree().getAllItems()) {
+			getItems(item, stack, serverRuntimes, true);
+		}
+		fillEntityDetails(serverRuntimes, true);
+		bot.button("Cancel").click();
 		bot.button("Cancel").click();
 		stack.clear();
 		
@@ -117,7 +133,7 @@ public class ActionItemSniffer extends SWTTestExt {
 		bot.tree().expandNode("Server").select("Server");
 		bot.button("Next >").click();
 		for (SWTBotTreeItem item : bot.tree().getAllItems()) {
-			getItems(item, stack, servers);
+			getItems(item, stack, servers, true);
 		}
 		fillEntityDetails(servers, true);
 		bot.button("Cancel").click();
@@ -168,6 +184,7 @@ public class ActionItemSniffer extends SWTTestExt {
 		gen.getEntityMap().put("Import", imports);
 		gen.getEntityMap().put("Export", exports);
 		gen.getEntityMap().put("Preference", preferences);
+		gen.getEntityMap().put("ServerRuntime", serverRuntimes);
 		try {
 			gen.generateInterfaces();
 			gen.generateClasses();
@@ -272,7 +289,7 @@ public class ActionItemSniffer extends SWTTestExt {
 	}
 
 	public void getItems(SWTBotTreeItem item, Stack<SWTBotTreeItem> stack,
-			List<LabelEntity> entities) {
+			List<LabelEntity> entities, boolean leavesOnly) {
 		stack.push(item);
 		item.expand();
 		SWTBotTreeItem[] items = item.getItems();
@@ -281,7 +298,10 @@ public class ActionItemSniffer extends SWTTestExt {
 			createEntity(stack, entities);
 		} else {
 			for (SWTBotTreeItem i : items) {
-				getItems(i, stack, entities);
+				if (!leavesOnly) {
+					createEntity(stack, entities);
+				}
+				getItems(i, stack, entities, leavesOnly);
 			}
 		}
 		stack.pop();
@@ -298,7 +318,7 @@ public class ActionItemSniffer extends SWTTestExt {
 
 		} else {
 			for (SWTBotTreeItem i : items) {
-				getItems(i, stack, entities);
+				getItems(i, stack, entities, true);
 			}
 		}
 		stack.pop();

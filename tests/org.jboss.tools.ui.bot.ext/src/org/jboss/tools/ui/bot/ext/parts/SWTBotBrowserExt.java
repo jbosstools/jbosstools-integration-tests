@@ -143,7 +143,6 @@ public class SWTBotBrowserExt extends AbstractSWTBotControl<Browser> {
 		});
 
 	}
-	
 	/**
 	 * 
 	 * @return true by default or when page was completely loaded by browser 

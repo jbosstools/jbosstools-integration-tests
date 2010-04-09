@@ -16,6 +16,7 @@ import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.util.Iterator;
+import java.util.Properties;
 
 import org.apache.log4j.Logger;
 import org.eclipse.swt.widgets.MenuItem;
@@ -39,12 +40,14 @@ import org.jboss.tools.ui.bot.ext.entity.JavaClassEntity;
 import org.jboss.tools.ui.bot.ext.entity.JavaProjectEntity;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 import org.jboss.tools.ui.bot.ext.gen.IServer;
+import org.jboss.tools.ui.bot.ext.gen.IServerRuntime;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.NewObject.ServerServer;
 import org.jboss.tools.ui.bot.ext.types.EntityType;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.ext.types.PerspectiveType;
 import org.jboss.tools.ui.bot.ext.types.ViewType;
 import org.jboss.tools.ui.bot.ext.types.IDELabel.PreferencesDialog;
+import org.omg.CosNaming.NamingContextExtPackage.AddressHelper;
 
 /**
  * Provides Eclipse common operation based on SWTBot element operations
@@ -73,6 +76,7 @@ public class SWTEclipseExt {
 		this.util = new SWTUtilExt(bot);
 		this.open = new SWTOpenExt(bot);
 	}
+
 	public SWTEclipseExt() {
 		this.bot = new SWTBotExt();
 		this.util = new SWTUtilExt(bot);
@@ -94,26 +98,27 @@ public class SWTEclipseExt {
 	 * 
 	 * @param type
 	 */
-	public SWTBot showView(ViewType type) {	
+	public SWTBot showView(ViewType type) {
 		return SWTEclipseExt.showView(bot, type);
 	}
-	 /**
-   * Show view static version
-   * 
-   * @param type
-   */
-  public static SWTBot showView(SWTBotExt bot,ViewType type) { 
-    SWTBotMenu menu1 = bot.menu(IDELabel.Menu.WINDOW);
-    SWTBotMenu menu2 = menu1.menu(IDELabel.Menu.SHOW_VIEW);
-    menu2.menu(IDELabel.Menu.OTHER).click();
 
-    bot.tree().expandNode(type.getGroupLabel()).expandNode(
-        type.getViewLabel()).select();
-    bot.button(IDELabel.Button.OK).click();
+	/**
+	 * Show view static version
+	 * 
+	 * @param type
+	 */
+	public static SWTBot showView(SWTBotExt bot, ViewType type) {
+		SWTBotMenu menu1 = bot.menu(IDELabel.Menu.WINDOW);
+		SWTBotMenu menu2 = menu1.menu(IDELabel.Menu.SHOW_VIEW);
+		menu2.menu(IDELabel.Menu.OTHER).click();
 
-    SWTBot viewBot = bot.viewByTitle(type.getViewLabel()).bot();
-    return viewBot;
-  }
+		bot.tree().expandNode(type.getGroupLabel()).expandNode(
+				type.getViewLabel()).select();
+		bot.button(IDELabel.Button.OK).click();
+
+		SWTBot viewBot = bot.viewByTitle(type.getViewLabel()).bot();
+		return viewBot;
+	}
 
 	// ------------------------------------------------------------
 	// Perspective related methods
@@ -142,7 +147,7 @@ public class SWTEclipseExt {
 		case DB_DEVELOPMENT:
 			perspectiveLabel = IDELabel.SelectPerspectiveDialog.DB_DEVELOPMENT;
 			break;
-		case JPA: 
+		case JPA:
 			perspectiveLabel = IDELabel.SelectPerspectiveDialog.JPA;
 			break;
 		default:
@@ -160,7 +165,6 @@ public class SWTEclipseExt {
 
 		bot.button(IDELabel.Button.OK).click();
 	}
-
 
 	// ------------------------------------------------------------
 	// Create related methods
@@ -405,14 +409,16 @@ public class SWTEclipseExt {
 		if (save)
 			editor.save();
 	}
+
 	/**
 	 * Replace editor content by content from resource
+	 * 
 	 * @param editor
 	 * @param pluginId
 	 * @param path
 	 */
-	public void setClassContentFromResource(SWTBotEditor editor, boolean save, String pluginId,
-			String... path) {
+	public void setClassContentFromResource(SWTBotEditor editor, boolean save,
+			String pluginId, String... path) {
 		SWTBotEclipseEditor edit = editor.toTextEditor();
 		edit.selectRange(0, 0, edit.getText().length());
 		File file = util.getResourceFile(pluginId, path);
@@ -421,9 +427,14 @@ public class SWTEclipseExt {
 		if (save)
 			edit.save();
 	}
+
 	/**
-	 * adds server (Server runtime must be defined, the default selected runtime is used)
-	 * @param server to add ( for example {@link ActionItem.Server.JBossCommunityJBossAS50#LABEL} class)
+	 * adds server (Server runtime must be defined, the default selected runtime
+	 * is used)
+	 * 
+	 * @param server
+	 *            to add ( for example
+	 *            {@link ActionItem.Server.JBossCommunityJBossAS50#LABEL} class)
 	 * @param serverName
 	 */
 	public void addServer(IServer server, String serverName) {
@@ -432,6 +443,93 @@ public class SWTEclipseExt {
 		wiz.textWithLabel(ServerServer.TEXT_SERVER_NAME).setText(serverName);
 		open.finish(wiz);
 	}
+
+	/**
+	 * adds jboss server runtime only if it's not specified yet
+	 * 
+	 * @param runtime type of runtime
+	 * @param runtimeHome homedir of runtime
+	 * @param name for new runtime
+	 * @param jreToUse if null default jre for runtime is used, otherwise selects given jre name
+	 */
+	public void addJbossServerRuntime(IServerRuntime runtime,
+			String runtimeHome, String name, String jreToUse) {
+		Properties props = new Properties();
+		props
+				.put(IDELabel.JBossServerRuntimeDialog.HOME_DIRECTORY,
+						runtimeHome);
+		props.put(IDELabel.JBossServerRuntimeDialog.NAME, name);
+		addServerRuntime(runtime, props, jreToUse);
+	}
+
+	/**
+	 * adds server runtime only if it's not specified yet
+	 * 
+	 * @param runtime type of runtime
+	 * @param properties properties in form (text with label->value), will be filled in runtime form
+	 * @param jreToUse if null default jre for runtime is used, otherwise selects given jre name
+	 */
+	public void addServerRuntime(IServerRuntime runtime, Properties properties,
+			String jreToUse) {
+		SWTBot wiz = open
+				.preferenceOpen(ActionItem.Preference.ServerRuntimeEnvironments.LABEL);
+		
+		String runtimeName = properties.getProperty(
+				IDELabel.JBossServerRuntimeDialog.NAME, "eap");
+		SWTBotTable tbRuntimeEnvironments = bot.table();
+		boolean createRuntime = true;
+		// first check if Environment doesn't exist
+		int numRows = tbRuntimeEnvironments.rowCount();
+		if (numRows > 0) {
+			int currentRow = 0;
+			while (createRuntime && currentRow < numRows) {
+				if (tbRuntimeEnvironments.cell(currentRow, 0).equalsIgnoreCase(
+						runtimeName)) {
+					createRuntime = false;
+				} else {
+					currentRow++;
+				}
+			}
+		}
+		if (createRuntime) {
+			wiz.button(IDELabel.Button.ADD).click();
+			bot.shell(IDELabel.Shell.NEW_SERVER_RUNTIME_ENVIRONMENT).activate();
+			open.selectTreeNode(runtime);
+			bot.button(IDELabel.Button.NEXT).click();
+			for (Object key : properties.keySet()) {
+				bot.textWithLabel(key.toString()).setText(
+						properties.getProperty((String) (key).toString()));
+			}
+			if (jreToUse != null) {
+				bot.comboBox(0).setSelection(jreToUse);
+			}
+			open.finish(bot.activeShell().bot());
+			open.finish(wiz, IDELabel.Button.OK);
+		}
+
+	}
+
+	/**
+	 * adds given java to Installed JRE's
+	 * 
+	 * @param vmName
+	 *            name of newly added java runtime
+	 * @param jreHome
+	 *            path to jre
+	 */
+	public void addJavaVM(String vmName, String jreHome) {
+		SWTBot pref = open
+				.preferenceOpen(ActionItem.Preference.JavaInstalledJREs.LABEL);
+		pref.button(IDELabel.Button.ADD).click();
+		bot.shell("Add JRE").activate();
+		SWTBot add = bot.shell("Add JRE").bot();
+		add.button(IDELabel.Button.NEXT).click();
+		add.text(0).setText(jreHome);
+		add.text(1).setText(vmName);
+		open.finish(add);
+		open.finish(pref,IDELabel.Button.OK);
+	}
+
 	/**
 	 * Define new Server Runtime only if it's not specified yet
 	 * 
@@ -534,130 +632,149 @@ public class SWTEclipseExt {
 			boolean pressContinueButton) {
 		closeWarningWindowIfOpened(bot, pressContinueButton);
 	}
-  /**
-   * Returns true if table column specified by column parameter contains item
-   * @param table
-   * @param item
-   * @param column
-   * @return
-   */
-	public static boolean isItemInTableColumn (SWTBotTable table , String item, int column){
-	  boolean found = false;
-	  
-	  int rowIndex = 0;
-	  while (!found && rowIndex < table.rowCount()){
-	    if (table.cell(rowIndex, column).trim().equals(item.trim())){
-	      found = true;
-	    }
-	    else{
-	      rowIndex++; 
-	    }
-	  }
-	  return found;
-	}
-	
-  /**
-   * Hide Warning Message if displayed static version
-   */
-  public static void hideWarningIfDisplayed(SWTBotExt bot) {
-    try {
-      bot.shell(IDELabel.Shell.WARNING).activate();
-      bot.button(IDELabel.Button.OK).click();
-    } catch (WidgetNotFoundException wnfe) {
-      // do nothing
-    }
-  }
-  /**
-   * Hide Warning Message if displayed
-   */
-  public void hideWarningIfDisplayed() {
-    SWTEclipseExt.hideWarningIfDisplayed(bot);
-  }
-  /**
-   * Returns true when projectName is present in Package Explorer
-   * @param projectName
-   * @return
-   */
-  public boolean isProjectInPackageExplorer(String projectName) {
-    return SWTEclipseExt.isProjectInPackageExplorer(bot,projectName);
-  }
-  /**
-   * Returns true when projectName is present in Package Explorer static version
-   * @param bot
-   * @param projectName
-   * @return
-   */
-  public static boolean isProjectInPackageExplorer(SWTBotExt bot,String projectName) {
-    boolean found = false;
-    
-    SWTBot innerBot = SWTEclipseExt.showView(bot,ViewType.PACKAGE_EXPLORER);
-    SWTBotTree tree = innerBot.tree();
-    try {
-      tree.getTreeItem(projectName);
-      found = true;
-    } catch (WidgetNotFoundException e) {
-    }
-    return found;
-  }
 
-  /**
-   * Returns Tree Item with specified label and located on path
-   * @param tree
-   * @param treeItemText
-   * @param path
-   * @return
-   */
-  public static SWTBotTreeItem getTreeItemOnPath(SWTBotTree tree,String treeItemText, String[] path) {
-    SWTBotTreeItem parentTreeItem = null;
-    SWTBotTreeItem treeItem = null;
-    if (path != null && path.length > 0){
-      parentTreeItem = tree.expandNode(path[0]);
-      for (int index = 1 ; index < path.length ; index++){
-        parentTreeItem = parentTreeItem.expandNode(path[index]);  
-      }
-      treeItem = parentTreeItem.getNode(treeItemText);
-    }
-    else{
-      treeItem = tree.getTreeItem(treeItemText);
-    }
-    return treeItem;
-  }
-  /**
-   * Choose Run As Java Application menu for specified Tree Item
-   * @param treeItem
-   */
-  public void runTreeItemAsJavaApplication(SWTBotTreeItem treeItem){
-    treeItem.select();
-    treeItem.click();
-    SWTEclipseExt.getMenuFromSubmenu(bot.menu(IDELabel.Menu.RUN).menu(IDELabel.Menu.RUN_AS),
-        IDELabel.Menu.RUN_AS_JAVA_APPLICATION).click();
-    System.out.println("stop");
-  }
-  /**
-   * Search for Menu Item with Run on Server substring within label 
-   * @param subMenu
-   * @return
-   */
-  public static SWTBotMenu getMenuFromSubmenu(SWTBotMenu subMenu, String menuLabelTextToContain){
-    final SWTBotMenu subMenuToSearch = subMenu;
-    final String stringToSearchFor = menuLabelTextToContain;
-    final MenuItem menuItem = UIThreadRunnable
-      .syncExec(new WidgetResult<MenuItem>() {
-        public MenuItem run() {
-          int menuItemIndex = 0;
-          MenuItem menuItem = null;
-          final MenuItem[] menuItems = subMenuToSearch.widget.getMenu().getItems();
-          while (menuItem == null && menuItemIndex < menuItems.length){
-            if (menuItems[menuItemIndex].getText().indexOf(stringToSearchFor) > - 1){
-              menuItem = menuItems[menuItemIndex];
-            }
-            else{
-              menuItemIndex++;
-            }
-          }
-        return menuItem;
-        }
-      });
-    return new SWTBotMenu(menuItem);
-  }
+	/**
+	 * Returns true if table column specified by column parameter contains item
+	 * 
+	 * @param table
+	 * @param item
+	 * @param column
+	 * @return
+	 */
+	public static boolean isItemInTableColumn(SWTBotTable table, String item,
+			int column) {
+		boolean found = false;
+
+		int rowIndex = 0;
+		while (!found && rowIndex < table.rowCount()) {
+			if (table.cell(rowIndex, column).trim().equals(item.trim())) {
+				found = true;
+			} else {
+				rowIndex++;
+			}
+		}
+		return found;
+	}
+
+	/**
+	 * Hide Warning Message if displayed static version
+	 */
+	public static void hideWarningIfDisplayed(SWTBotExt bot) {
+		try {
+			bot.shell(IDELabel.Shell.WARNING).activate();
+			bot.button(IDELabel.Button.OK).click();
+		} catch (WidgetNotFoundException wnfe) {
+			// do nothing
+		}
+	}
+
+	/**
+	 * Hide Warning Message if displayed
+	 */
+	public void hideWarningIfDisplayed() {
+		SWTEclipseExt.hideWarningIfDisplayed(bot);
+	}
+
+	/**
+	 * Returns true when projectName is present in Package Explorer
+	 * 
+	 * @param projectName
+	 * @return
+	 */
+	public boolean isProjectInPackageExplorer(String projectName) {
+		return SWTEclipseExt.isProjectInPackageExplorer(bot, projectName);
+	}
+
+	/**
+	 * Returns true when projectName is present in Package Explorer static
+	 * version
+	 * 
+	 * @param bot
+	 * @param projectName
+	 * @return
+	 */
+	public static boolean isProjectInPackageExplorer(SWTBotExt bot,
+			String projectName) {
+		boolean found = false;
+
+		SWTBot innerBot = SWTEclipseExt
+				.showView(bot, ViewType.PACKAGE_EXPLORER);
+		SWTBotTree tree = innerBot.tree();
+		try {
+			tree.getTreeItem(projectName);
+			found = true;
+		} catch (WidgetNotFoundException e) {
+		}
+		return found;
+	}
+
+	/**
+	 * Returns Tree Item with specified label and located on path
+	 * 
+	 * @param tree
+	 * @param treeItemText
+	 * @param path
+	 * @return
+	 */
+	public static SWTBotTreeItem getTreeItemOnPath(SWTBotTree tree,
+			String treeItemText, String[] path) {
+		SWTBotTreeItem parentTreeItem = null;
+		SWTBotTreeItem treeItem = null;
+		if (path != null && path.length > 0) {
+			parentTreeItem = tree.expandNode(path[0]);
+			for (int index = 1; index < path.length; index++) {
+				parentTreeItem = parentTreeItem.expandNode(path[index]);
+			}
+			treeItem = parentTreeItem.getNode(treeItemText);
+		} else {
+			treeItem = tree.getTreeItem(treeItemText);
+		}
+		return treeItem;
+	}
+
+	/**
+	 * Choose Run As Java Application menu for specified Tree Item
+	 * 
+	 * @param treeItem
+	 */
+	public void runTreeItemAsJavaApplication(SWTBotTreeItem treeItem) {
+		treeItem.select();
+		treeItem.click();
+		SWTEclipseExt.getMenuFromSubmenu(
+				bot.menu(IDELabel.Menu.RUN).menu(IDELabel.Menu.RUN_AS),
+				IDELabel.Menu.RUN_AS_JAVA_APPLICATION).click();
+		System.out.println("stop");
+	}
+
+	/**
+	 * Search for Menu Item with Run on Server substring within label
+	 * 
+	 * @param subMenu
+	 * @return
+	 */
+	public static SWTBotMenu getMenuFromSubmenu(SWTBotMenu subMenu,
+			String menuLabelTextToContain) {
+		final SWTBotMenu subMenuToSearch = subMenu;
+		final String stringToSearchFor = menuLabelTextToContain;
+		final MenuItem menuItem = UIThreadRunnable
+				.syncExec(new WidgetResult<MenuItem>() {
+					public MenuItem run() {
+						int menuItemIndex = 0;
+						MenuItem menuItem = null;
+						final MenuItem[] menuItems = subMenuToSearch.widget
+								.getMenu().getItems();
+						while (menuItem == null
+								&& menuItemIndex < menuItems.length) {
+							if (menuItems[menuItemIndex].getText().indexOf(
+									stringToSearchFor) > -1) {
+								menuItem = menuItems[menuItemIndex];
+							} else {
+								menuItemIndex++;
+							}
+						}
+						return menuItem;
+					}
+				});
+		return new SWTBotMenu(menuItem);
+	}
 }
