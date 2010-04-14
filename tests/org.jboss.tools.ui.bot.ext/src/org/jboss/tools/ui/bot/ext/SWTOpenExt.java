@@ -1,7 +1,6 @@
 package org.jboss.tools.ui.bot.ext;
 
 import static org.eclipse.swtbot.swt.finder.waits.Conditions.shellCloses;
-import static org.eclipse.swtbot.swt.finder.waits.Conditions.waitForShell;
 
 import java.util.Iterator;
 
@@ -12,7 +11,6 @@ import org.eclipse.swtbot.eclipse.finder.waits.Conditions;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
-import org.eclipse.swtbot.swt.finder.waits.ICondition;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotButton;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
@@ -25,9 +23,7 @@ import org.jboss.tools.ui.bot.ext.gen.IImport;
 import org.jboss.tools.ui.bot.ext.gen.INewObject;
 import org.jboss.tools.ui.bot.ext.gen.IPerspective;
 import org.jboss.tools.ui.bot.ext.gen.IPreference;
-import org.jboss.tools.ui.bot.ext.gen.IServer;
 import org.jboss.tools.ui.bot.ext.gen.IView;
-import org.jboss.tools.ui.bot.ext.gen.ActionItem.NewObject.ServerServer;
 
 /**
  * this class represents
@@ -52,6 +48,7 @@ public class SWTOpenExt {
 		try {
 			viewObj = bot.viewByTitle(view.getName());
 			viewObj.setFocus();
+			viewObj.show();
 			return viewObj;
 		} catch (WidgetNotFoundException ex) {
 		}
@@ -62,6 +59,7 @@ public class SWTOpenExt {
 		bot.button("OK").click();
 		viewObj = bot.viewByTitle(view.getName());
 		viewObj.setFocus();
+		viewObj.show();
 		return viewObj;
 	}
 	/**
@@ -251,8 +249,18 @@ public class SWTOpenExt {
 				return;
 			} catch (TimeoutException ex) {
 				if (System.currentTimeMillis()-time>timeout) {
-					log.error("Shell '"+activeShellStr+"' probably hanged up (480s timeout), returning, expect upcomming errors");
-					return;
+					log.error("Shell '"+activeShellStr+"' probably hanged up (480s timeout), returning, forcing to close it, expect errors");
+					try {
+						bot.activeShell().close();
+						activeShell.close();
+						bot.waitUntil(shellCloses(activeShell));
+						log.info("Shell  '"+activeShellStr+"' was forced to close.");
+						return;
+					}
+					catch (Exception e) {
+						e.printStackTrace();
+					}
+					throw new WidgetNotFoundException("Shell '"+activeShellStr+"' did not close after timeout", ex);
 				}
 				log.warn("Shell '" + activeShellStr + "' is still opened");
 			}

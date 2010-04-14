@@ -17,6 +17,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.eclipse.swt.browser.Browser;
+import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
@@ -27,6 +28,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.jboss.tools.ui.bot.ext.parts.SWTBotBrowserExt;
 import org.jboss.tools.ui.bot.ext.parts.SWTBotEditorExt;
+import org.jboss.tools.ui.bot.ext.parts.SWTBotScaleExt;
 
 /**
  * Extended version of SWTWorkbenchBot, logging added
@@ -101,6 +103,20 @@ public class SWTBotExt extends SWTWorkbenchBot {
 		try {
 			List<Browser> bsrs = (List<Browser>) widgets(widgetOfType(Browser.class));
 			return new SWTBotBrowserExt(bsrs.get(0));
+		} catch (WidgetNotFoundException ex) {
+			throw new WidgetNotFoundException(
+					"Could not find widget of type Browser", ex);
+		}
+	}
+
+	public SWTBotScaleExt scale() {
+		return scale(0);
+	}
+	@SuppressWarnings("unchecked")
+	public SWTBotScaleExt scale(int index) {
+		try {
+			List<Scale> bsrs = (List<Scale>) widgets(widgetOfType(Scale.class));
+			return new SWTBotScaleExt(bsrs.get(0));
 		} catch (WidgetNotFoundException ex) {
 			throw new WidgetNotFoundException(
 					"Could not find widget of type Browser", ex);

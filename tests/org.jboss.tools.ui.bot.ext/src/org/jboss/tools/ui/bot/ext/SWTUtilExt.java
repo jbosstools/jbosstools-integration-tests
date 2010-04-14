@@ -27,6 +27,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
+import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.utils.SWTUtils;
@@ -134,7 +135,18 @@ public class SWTUtilExt extends SWTUtils {
 		}
 
 	}
-
+	/**
+	 * closes all editor tabs
+	 * @param save changes? 
+	 */
+	public void closeAllEditors(boolean save) {
+		for (SWTBotEditor e : bot.editors()) {
+			if (save) {
+				e.save();
+			}
+			e.close();
+		}
+	}
 	/**
 	 * Wait for named running jobs with defined TIMEOUT
 	 */

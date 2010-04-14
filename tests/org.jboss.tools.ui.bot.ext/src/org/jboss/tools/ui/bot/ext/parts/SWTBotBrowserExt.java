@@ -8,7 +8,6 @@ import java.util.regex.Pattern;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.browser.ProgressEvent;
 import org.eclipse.swt.browser.ProgressListener;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.results.VoidResult;
@@ -124,6 +123,21 @@ public class SWTBotBrowserExt extends AbstractSWTBotControl<Browser> {
 			}
 		});
 	}
+	public void forward() {
+		UIThreadRunnable.syncExec(new VoidResult() {
+			public void run() {
+				pl.setDone(false);
+				widget.addProgressListener(pl);
+				if (widget.isForwardEnabled()) {					
+					if (!widget.forward()) {
+						pl.setDone(true);
+						widget.removeProgressListener(pl);	
+					}
+				}
+
+			}
+		});
+	}
 	/**
 	 * loads given URI into browser, page is loaded asynchronously (see {@link #isPageLoaded()})
 	 * 
@@ -146,7 +160,8 @@ public class SWTBotBrowserExt extends AbstractSWTBotControl<Browser> {
 	/**
 	 * 
 	 * @return true by default or when page was completely loaded by browser 
-	 * = asynchronous page load invoked by {@link #goURL(String)} was finished 
+	 * i.e asynchronous page load invoked by {@link #goURL(String)} was finished
+	 * returns false only when browser is loading the page
 	 */
 	public boolean isPageLoaded() {
 		return pl.isDone();
