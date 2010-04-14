@@ -109,9 +109,7 @@ public abstract class ExplorerBase extends SWTBotExt {
 	 * @return editor with opened file
 	 */
 	public SWTBotEditor openFile(String projectName, String... path) {
-		SWTBot viewBot = viewByTitle(IDELabel.View.PROJECT_EXPLORER).bot();
-		viewByTitle(IDELabel.View.PROJECT_EXPLORER).show();
-		viewByTitle(IDELabel.View.PROJECT_EXPLORER).setFocus();
+		SWTBot viewBot = open.viewOpen(viewObject).bot();
 		SWTBotTree tree = viewBot.tree();
 		SWTBotTreeItem item = tree.expandNode(projectName);
 		StringBuilder builder = new StringBuilder(projectName);
@@ -130,7 +128,7 @@ public abstract class ExplorerBase extends SWTBotExt {
 	 * @param projectName
 	 */
 	public void runOnServer(String projectName) {
-		SWTBot viewBot = viewByTitle(viewObject.getName()).bot();
+		SWTBot viewBot = open.viewOpen(viewObject).bot();
 		SWTBotTreeItem item = viewBot.tree().expandNode(projectName);
 		ContextMenuHelper.prepareTreeItemForContextMenu(viewBot.tree(), item);
 		   final SWTBotMenu menuRunAs = viewBot.menu(IDELabel.Menu.RUN).menu(IDELabel.Menu.RUN_AS);
