@@ -60,7 +60,7 @@ public class SWTBotExt extends SWTWorkbenchBot {
 		log.info("Button \"" + text + "\" selected");
 		return super.button(text);
 	}
-
+	
 	@Override
 	public SWTBotTree tree() {
 		log.info("Tree selected");
@@ -77,6 +77,16 @@ public class SWTBotExt extends SWTWorkbenchBot {
 	public SWTBotTable table() {
 		log.info("Table selected");
 		return super.table();
+	}
+	
+	public void sleep(long ms, String msg) {
+		log.info("Bot sleeps for " + ms + " ms  " + msg);
+		super.sleep(ms);		
+	}
+	
+	@Override
+	public void sleep(long ms) {
+		sleep(ms,"");
 	}
 
 	public SWTBotEditorExt swtBotEditorExtByTitle(String fileName) {
@@ -122,5 +132,10 @@ public class SWTBotExt extends SWTWorkbenchBot {
 					"Could not find widget of type Browser", ex);
 		}
 	}
+	
+	public SWTBotButton clickButton(String text) {
+		return button(text).click();
+	}
+	
 
 }
