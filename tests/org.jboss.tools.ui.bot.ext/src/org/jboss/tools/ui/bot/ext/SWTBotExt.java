@@ -10,7 +10,9 @@
  ******************************************************************************/
 package org.jboss.tools.ui.bot.ext;
 
+import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.allOf;
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.widgetOfType;
+import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.withText;
 import static org.junit.Assert.fail;
 
 import java.util.List;
@@ -26,8 +28,10 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotCCombo;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
+import org.eclipse.ui.forms.widgets.Hyperlink;
 import org.jboss.tools.ui.bot.ext.parts.SWTBotBrowserExt;
 import org.jboss.tools.ui.bot.ext.parts.SWTBotEditorExt;
+import org.jboss.tools.ui.bot.ext.parts.SWTBotHyperlinkExt;
 import org.jboss.tools.ui.bot.ext.parts.SWTBotScaleExt;
 
 /**
@@ -132,7 +136,29 @@ public class SWTBotExt extends SWTWorkbenchBot {
 					"Could not find widget of type Browser", ex);
 		}
 	}
-	
+	@SuppressWarnings("unchecked")
+	public SWTBotHyperlinkExt hyperlink(String text) {
+		try {
+			List<Hyperlink> bsrs = (List<Hyperlink>) widgets(allOf(widgetOfType(Hyperlink.class),withText(text)));
+			return new SWTBotHyperlinkExt(bsrs.get(0));
+		} catch (WidgetNotFoundException ex) {
+			throw new WidgetNotFoundException(
+					"Could not find widget of type Hyperlink", ex);
+		}
+	}
+	@SuppressWarnings("unchecked")
+	public SWTBotHyperlinkExt hyperlink(int index) {
+		try {
+			List<Hyperlink> bsrs = (List<Hyperlink>) widgets(widgetOfType(Hyperlink.class));
+			return new SWTBotHyperlinkExt(bsrs.get(index));
+		} catch (WidgetNotFoundException ex) {
+			throw new WidgetNotFoundException(
+					"Could not find widget of type Hyperlink", ex);
+		}
+	}
+	public SWTBotHyperlinkExt hyperlink() {
+		return hyperlink(0);
+	}
 	public SWTBotButton clickButton(String text) {
 		return button(text).click();
 	}

@@ -24,7 +24,7 @@ import org.jboss.tools.ui.bot.ext.view.ServersView;
  */
 public class SWTTestExt extends SWTBotTestCase{
 
-	public static final Logger log = Logger.getLogger(SWTTestExt.class);
+	public static Logger log = Logger.getLogger(SWTTestExt.class);
 	public static final SWTBotExt bot = new SWTBotExt();
 	public static final SWTEclipseExt eclipse = new SWTEclipseExt(bot);
 	public static final SWTUtilExt util = new SWTUtilExt(bot);
@@ -35,6 +35,7 @@ public class SWTTestExt extends SWTBotTestCase{
 	public static final PackageExplorer packageExplorer = new PackageExplorer();
 	public static final ProjectExplorer projectExplorer = new ProjectExplorer();
 	public static final ServersView servers = new ServersView();	
+	
 	public static Properties properties;
 	/**
 	 * Get properties for hibernate tests
