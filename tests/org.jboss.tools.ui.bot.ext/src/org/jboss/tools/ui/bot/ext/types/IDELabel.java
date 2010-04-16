@@ -157,6 +157,7 @@ public class IDELabel {
 		public static final String DATA_SOURCE_EXPLORER = "Data Source Explorer";
 		public static final String SERVERS = "Servers";
 		public static final String WEB_PROJECTS = "Web Projects";
+		public static final String PROBLEMS = "Problems";
 	}
 	
 	public class ViewGroup {
@@ -341,4 +342,17 @@ public class IDELabel {
      public static final String NAME = "Project name:";
        
    }
-}
+   
+   public static class ProblemsTree {
+
+     public static final String WARNINGS = "Warnings";
+     public static final String ERRORS = "Errors";
+     
+   }
+   
+   public static class ConsoleView {
+
+     public static final String BUTTON_CLEAR_CONSOLE_TOOLTIP = "Clear Console";
+     
+   }
+ }

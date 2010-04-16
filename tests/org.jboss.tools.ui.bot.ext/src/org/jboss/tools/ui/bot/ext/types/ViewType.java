@@ -18,7 +18,7 @@ import static org.junit.Assert.fail;
  *
  */
 public enum ViewType {
-	PACKAGE_EXPLORER, PROJECT_EXPLORER, WELCOME, DATA_SOURCE_EXPLORER,SERVERS,WEB_PROJECTS;
+	PACKAGE_EXPLORER, PROJECT_EXPLORER, WELCOME, DATA_SOURCE_EXPLORER,SERVERS,WEB_PROJECTS,PROBLEMS;
 	
 	
 	public String getGroupLabel() {
@@ -29,6 +29,7 @@ public enum ViewType {
 			case DATA_SOURCE_EXPLORER: viewLabel = IDELabel.ViewGroup.DATA_MANAGEMENT; break;
 			case SERVERS: viewLabel = IDELabel.ViewGroup.SERVER; break;
 			case WEB_PROJECTS: viewLabel = IDELabel.ViewGroup.JBOSS_TOOLS_WEB; break;
+			case PROBLEMS: viewLabel = IDELabel.ViewGroup.GENERAL; break;
 			default: fail("Unknown View Type");
 		}
 		return viewLabel;	
@@ -42,6 +43,7 @@ public enum ViewType {
 			case DATA_SOURCE_EXPLORER: viewLabel = IDELabel.View.DATA_SOURCE_EXPLORER; break;
 			case SERVERS: viewLabel = IDELabel.View.SERVERS; break;
 			case WEB_PROJECTS: viewLabel = IDELabel.View.WEB_PROJECTS; break;
+			case PROBLEMS: viewLabel = IDELabel.View.PROBLEMS; break;
 			default: fail("Unknown View Type");
 		}
 		return viewLabel;

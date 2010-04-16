@@ -14,7 +14,9 @@ import java.util.Properties;
 
 import org.apache.log4j.Logger;
 import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
+import org.jboss.tools.ui.bot.ext.view.ConsoleView;
 import org.jboss.tools.ui.bot.ext.view.PackageExplorer;
+import org.jboss.tools.ui.bot.ext.view.ProblemsView;
 import org.jboss.tools.ui.bot.ext.view.ProjectExplorer;
 import org.jboss.tools.ui.bot.ext.view.ServersView;
 /**
@@ -34,7 +36,9 @@ public class SWTTestExt extends SWTBotTestCase{
 	// Views
 	public static final PackageExplorer packageExplorer = new PackageExplorer();
 	public static final ProjectExplorer projectExplorer = new ProjectExplorer();
-	public static final ServersView servers = new ServersView();	
+	public static final ServersView servers = new ServersView();
+	public static final ProblemsView problems = new ProblemsView();
+	public static final ConsoleView console = new ConsoleView();
 	
 	public static Properties properties;
 	/**

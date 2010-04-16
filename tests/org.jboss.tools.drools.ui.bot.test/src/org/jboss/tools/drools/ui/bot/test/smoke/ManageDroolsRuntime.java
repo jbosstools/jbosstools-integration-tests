@@ -11,6 +11,10 @@
 
 package org.jboss.tools.drools.ui.bot.test.smoke;
 
+import static org.jboss.tools.ui.bot.ext.SWTTestExt.bot;
+import static org.jboss.tools.ui.bot.ext.SWTTestExt.console;
+import static org.jboss.tools.ui.bot.ext.SWTTestExt.eclipse;
+
 import java.io.File;
 
 import org.jboss.tools.ui.bot.ext.SWTEclipseExt;
@@ -30,17 +34,17 @@ import org.drools.eclipse.util.DroolsRuntime;
  *
  */
 public class ManageDroolsRuntime extends SWTTestExt{
-  private String testDroolsRuntimeName = null;
-  private String testDroolsRuntimeLocation = null;
   /**
    * Test manage Drools Runtime
    */
   @Test
   public void testManageDroolsRuntime() {
     addDroolsRuntime(DroolsAllBotTests.DROOLS_RUNTIME_NAME,DroolsAllBotTests.DROOLS_RUNTIME_LOCATION);
-    editDroolsRuntime(testDroolsRuntimeName,testDroolsRuntimeLocation, "edited" , "testedit");
-    removeDroolsRuntime(testDroolsRuntimeName);
-    createDroolsRuntime(DroolsAllBotTests.DROOLS_RUNTIME_NAME,DroolsAllBotTests.DROOLS_RUNTIME_LOCATION);
+    editDroolsRuntime(DroolsAllBotTests.getTestDroolsRuntimeName(),
+      DroolsAllBotTests.getTestDroolsRuntimeLocation(),
+      "edited" , "testedit");
+    removeDroolsRuntime(DroolsAllBotTests.getTestDroolsRuntimeName());
+    createDroolsRuntime(DroolsAllBotTests.DROOLS_RUNTIME_NAME,DroolsAllBotTests.CREATE_DROOLS_RUNTIME_LOCATION);
   }
  /**
   * Adds Drools Runtime
@@ -63,13 +67,14 @@ public class ManageDroolsRuntime extends SWTTestExt{
     assertTrue("Drools Runtime with name [" + runtimeName + 
       "] and location [" + runtimeLocation +
       "] was not added properly.",droolsRuntimeAdded);
-    testDroolsRuntimeName = runtimeName;
-    testDroolsRuntimeLocation = runtimeLocation;
+    DroolsAllBotTests.setTestDroolsRuntimeName(runtimeName);
+    DroolsAllBotTests.setTestDroolsRuntimeLocation(runtimeLocation);
   }
   /**
    * Selects Drools Preferences within Preferences Dialog  
    */
   private void selectDroolsPreferences(){
+    jbt.delay();
     bot.menu(IDELabel.Menu.WINDOW).menu(IDELabel.Menu.PREFERENCES).click();
     bot.shell(IDELabel.Shell.PREFERENCES).activate();
     SWTBotTreeItem tiDroolsGroup = bot.tree().expandNode(IDELabel.PreferencesDialog.DROOLS_GROUP);
@@ -104,8 +109,8 @@ public class ManageDroolsRuntime extends SWTTestExt{
      assertTrue("Drools Runtime with name [" + runtimeName + 
        "] and location [" + runtimeLocation +
        "] was not renamed properly.",droolsRuntimeEdited);
-     testDroolsRuntimeName = editedDroolsRuntimeName;
-     testDroolsRuntimeLocation = editedDroolsRuntimeLocation;
+     DroolsAllBotTests.setTestDroolsRuntimeName(editedDroolsRuntimeName);
+     DroolsAllBotTests.setTestDroolsRuntimeLocation(editedDroolsRuntimeLocation);
    }
 
   /**
@@ -124,14 +129,14 @@ public class ManageDroolsRuntime extends SWTTestExt{
      assertTrue("Drools Runtime with name [" + runtimeName + 
        "] was not removed properly.",droolsRuntimeRemoved);
      // Remove temporary directory created within editDroolsRuntime() method
-     if (!testDroolsRuntimeLocation.equals(DroolsAllBotTests.DROOLS_RUNTIME_NAME)){
-       File tempDir = new File (testDroolsRuntimeLocation);
+     if (!DroolsAllBotTests.getTestDroolsRuntimeLocation().equals(DroolsAllBotTests.DROOLS_RUNTIME_NAME)){
+       File tempDir = new File (DroolsAllBotTests.getTestDroolsRuntimeLocation());
        if (tempDir.isDirectory()){
          tempDir.delete();  
        }
      }
-     testDroolsRuntimeName = null;
-     testDroolsRuntimeLocation = null;
+     DroolsAllBotTests.setTestDroolsRuntimeName(null);
+     DroolsAllBotTests.setTestDroolsRuntimeLocation(null);
    }
    /**
     * Creates Drools Runtime
@@ -139,29 +144,27 @@ public class ManageDroolsRuntime extends SWTTestExt{
     * @param runtimeLocation
     */
     private void createDroolsRuntime(String runtimeName, String runtimeLocation){
-      String newDroolsRuntimeLocation = runtimeLocation + File.separator + "drools";
-      new File(newDroolsRuntimeLocation).mkdir();
-      DroolsRuntimeManager.createDefaultRuntime(newDroolsRuntimeLocation);
+      DroolsRuntimeManager.createDefaultRuntime(runtimeLocation);
       DroolsRuntime droolsRuntime = new DroolsRuntime();
       droolsRuntime.setName(runtimeName);
-      droolsRuntime.setPath(newDroolsRuntimeLocation);
+      droolsRuntime.setPath(runtimeLocation);
       droolsRuntime.setDefault(true);
       DroolsRuntimeManager.setDroolsRuntimes(new DroolsRuntime[]{droolsRuntime});
       // Test if Drools runtime is defined
-      assertTrue("Drools Runtime was not properly created on location: " + newDroolsRuntimeLocation,
-        new File (newDroolsRuntimeLocation + File.separator + "drools-api.jar").exists());
+      assertTrue("Drools Runtime was not properly created on location: " + runtimeLocation,
+        new File (runtimeLocation + File.separator + "drools-api.jar").exists());
       selectDroolsPreferences();
       SWTBotTable table = bot.table();
       boolean droolsRuntimeCreated = 
         SWTEclipseExt.isItemInTableColumn(table,runtimeName,IDELabel.DroolsRuntimeDialog.COLUMN_NAME_INDEX)
-        && SWTEclipseExt.isItemInTableColumn(table,newDroolsRuntimeLocation,IDELabel.DroolsRuntimeDialog.COLUMN_LOCATION_INDEX);
+        && SWTEclipseExt.isItemInTableColumn(table,runtimeLocation,IDELabel.DroolsRuntimeDialog.COLUMN_LOCATION_INDEX);
       bot.button(IDELabel.Button.OK).click();
       SWTEclipseExt.hideWarningIfDisplayed(bot);
       assertTrue("Drools Runtime with name [" + runtimeName + 
-        "] and location [" + newDroolsRuntimeLocation +
+        "] and location [" + runtimeLocation +
         "] was not created properly.",droolsRuntimeCreated);
-      testDroolsRuntimeName = runtimeName;
-      testDroolsRuntimeLocation = newDroolsRuntimeLocation;
+      DroolsAllBotTests.setTestDroolsRuntimeName(runtimeName);
+      DroolsAllBotTests.setTestDroolsRuntimeLocation(runtimeLocation);
 
     }
   

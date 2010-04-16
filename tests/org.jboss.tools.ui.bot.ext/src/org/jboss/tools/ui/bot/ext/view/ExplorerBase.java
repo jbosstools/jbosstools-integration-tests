@@ -57,6 +57,7 @@ public abstract class ExplorerBase extends SWTBotExt {
 	   * @return
 	   */
 	  public SWTBotTreeItem selectTreeItem(String treeItemText, String[] path) {
+	    show();
 	    return SWTEclipseExt.getTreeItemOnPath(viewByTitle(viewObject.getName()).bot().tree(),
 	      treeItemText, path)
 	      .select();

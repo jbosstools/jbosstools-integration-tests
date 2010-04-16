@@ -10,11 +10,14 @@
  ******************************************************************************/
 package org.jboss.tools.drools.ui.bot.test;
 
+import java.io.File;
+
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.jboss.tools.drools.ui.bot.test.smoke.ManageDroolsRuntime;
 import org.jboss.tools.drools.ui.bot.test.smoke.ManageDroolsProject;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
+import org.jboss.tools.ui.bot.ext.SWTUtilExt;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -36,9 +39,34 @@ public class DroolsAllBotTests extends SWTTestExt {
   public static final String DROOLS_PROJECT_NAME = "droolsTest";
   public static final String DROOLS_RUNTIME_NAME = "Drools Test Runtime";
   public static String DROOLS_RUNTIME_LOCATION = null;
+  public static String CREATE_DROOLS_RUNTIME_LOCATION = null;
+  public static String SRC_MAIN_JAVA_TREE_NODE = "src/main/java";
+  public static String COM_SAMPLE_TREE_NODE = "com.sample";
+  public static String DROOLS_TEST_JAVA_TREE_NODE = "DroolsTest.java";
+  private static String testDroolsRuntimeName = null;
+  public static String getTestDroolsRuntimeName() {
+    return testDroolsRuntimeName;
+  }
+
+  public static void setTestDroolsRuntimeName(String testDroolsRuntimeName) {
+    DroolsAllBotTests.testDroolsRuntimeName = testDroolsRuntimeName;
+  }
+
+  public static String getTestDroolsRuntimeLocation() {
+    return testDroolsRuntimeLocation;
+  }
+
+  public static void setTestDroolsRuntimeLocation(String testDroolsRuntimeLocation) {
+    DroolsAllBotTests.testDroolsRuntimeLocation = testDroolsRuntimeLocation;
+  }
+
+  private static String testDroolsRuntimeLocation = null;
   @BeforeClass
   public static void setUpTest() {
-    DROOLS_RUNTIME_LOCATION = System.getProperty("java.io.tmpdir");
+    DroolsAllBotTests.DROOLS_RUNTIME_LOCATION = System.getProperty("java.io.tmpdir");
+    DroolsAllBotTests.CREATE_DROOLS_RUNTIME_LOCATION = DroolsAllBotTests.DROOLS_RUNTIME_LOCATION + File.separator + "drools";
+    // Create directory for Drools Runtime which will be created as a part of test
+    new File(DroolsAllBotTests.CREATE_DROOLS_RUNTIME_LOCATION).mkdir();
     properties = util.loadProperties(Activator.PLUGIN_ID);
     try{
       SWTBotView welcomeView = eclipse.getBot().viewByTitle(IDELabel.View.WELCOME);
@@ -51,7 +79,7 @@ public class DroolsAllBotTests extends SWTTestExt {
 
   @AfterClass
   public static void tearDownTest() {
-    // Ready for later usage
-  }
- 
+    // delete created drools runtime
+    SWTUtilExt.deleteDirectory(DroolsAllBotTests.CREATE_DROOLS_RUNTIME_LOCATION);
+  }   
 }

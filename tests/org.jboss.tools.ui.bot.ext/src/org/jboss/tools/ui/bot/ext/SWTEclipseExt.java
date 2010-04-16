@@ -16,6 +16,8 @@ import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
@@ -47,7 +49,6 @@ import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.ext.types.PerspectiveType;
 import org.jboss.tools.ui.bot.ext.types.ViewType;
 import org.jboss.tools.ui.bot.ext.types.IDELabel.PreferencesDialog;
-import org.omg.CosNaming.NamingContextExtPackage.AddressHelper;
 
 /**
  * Provides Eclipse common operation based on SWTBot element operations
@@ -61,13 +62,18 @@ public class SWTEclipseExt {
 	private SWTUtilExt util;
 	private SWTBotExt bot;
 	// private SWTUtilExt swtUtilExt;
-	private Logger log = Logger.getLogger(SWTEclipseExt.class);
+	private static Logger log = Logger.getLogger(SWTEclipseExt.class);
+	public static final long DEFAULT_UI_TIMEOUT = 1000L;
 
+	public enum StringConditionType {
+	  EQUALS, CONTAINS, STARTS_WITH;
+	}
+	
 	public SWTWorkbenchBot getBot() {
 		return bot;
 	}
 
-	public Logger getLog() {
+	public static Logger getLog() {
 		return log;
 	}
 
@@ -239,24 +245,7 @@ public class SWTEclipseExt {
 	 * @param path
 	 */
 	public SWTBotEditor openFile(String projectName, String... path) {
-		SWTBot viewBot = bot.viewByTitle(IDELabel.View.PACKAGE_EXPLORER).bot();
-		bot.viewByTitle(IDELabel.View.PACKAGE_EXPLORER).show();
-		bot.viewByTitle(IDELabel.View.PACKAGE_EXPLORER).setFocus();
-		SWTBotTree tree = viewBot.tree();
-		SWTBotTreeItem item = tree.expandNode(projectName);
-		StringBuilder builder = new StringBuilder(projectName);
-
-		// Go through path
-		for (String nodeName : path) {
-			item = item.expandNode(nodeName);
-			builder.append("/" + nodeName);
-		}
-
-		item.select().doubleClick();
-		log.info("File Opened:" + builder.toString());
-
-		SWTBotEditor editor = bot.activeEditor();
-		return editor;
+		return SWTEclipseExt.openFile(bot, projectName, path);
 	}
 
 	// ------------------------------------------------------------
@@ -276,7 +265,7 @@ public class SWTEclipseExt {
 	 * 
 	 * @return
 	 */
-	public SWTBotTreeItem selectTreeLocation(SWTBot bot, String... path) {
+	public static SWTBotTreeItem selectTreeLocation(SWTBot bot, String... path) {
 
 		SWTBot viewBot = bot;
 
@@ -347,7 +336,7 @@ public class SWTEclipseExt {
 
 	public void waitForClosedShell(SWTBotShell shell) {
 		while (shell.isActive()) {
-			bot.sleep(200);
+			bot.sleep(SWTEclipseExt.DEFAULT_UI_TIMEOUT);
 			log.info("Waiting for closing shell...");
 		}
 	}
@@ -743,7 +732,6 @@ public class SWTEclipseExt {
 		SWTEclipseExt.getMenuFromSubmenu(
 				bot.menu(IDELabel.Menu.RUN).menu(IDELabel.Menu.RUN_AS),
 				IDELabel.Menu.RUN_AS_JAVA_APPLICATION).click();
-		System.out.println("stop");
 	}
 
 	/**
@@ -777,4 +765,139 @@ public class SWTEclipseExt {
 				});
 		return new SWTBotMenu(menuItem);
 	}
+  /**
+   * Opens file from Package Explorer static version
+   * @param bot
+   * @param path
+   * @return SWTBotEditor
+   */
+  public static SWTBotEditor openFile(SWTBotExt bot, String projectName, String... path) {
+    SWTBot viewBot = bot.viewByTitle(IDELabel.View.PACKAGE_EXPLORER).bot();
+    bot.viewByTitle(IDELabel.View.PACKAGE_EXPLORER).show();
+    bot.viewByTitle(IDELabel.View.PACKAGE_EXPLORER).setFocus();
+    SWTBotTree tree = viewBot.tree();
+    SWTBotTreeItem item = tree.expandNode(projectName);
+    StringBuilder builder = new StringBuilder(projectName);
+
+    // Go through path
+    for (String nodeName : path) {
+      item = item.expandNode(nodeName);
+      builder.append("/" + nodeName);
+    }
+
+    item.select().doubleClick();
+    log.info("File Opened:" + builder.toString());
+
+    SWTBotEditor editor = bot.activeEditor();
+    return editor;
+  }
+
+  /**
+   * Collapse all expanded tree items
+   * @param tree
+   */
+  public static void collapseAll (SWTBotTree tree,SWTBotExt bot){
+    for (SWTBotTreeItem treeItem : tree.getAllItems()){
+      if (treeItem.isExpanded()){
+        treeItem.collapse();
+      }
+    }
+    bot.sleep(SWTEclipseExt.DEFAULT_UI_TIMEOUT);
+  }
+  /**
+   * Returns all tree items which are children of parent tree item
+   * @param bot
+   * @param tree
+   * @param parent
+   * @param expand
+   * @return
+   */
+  public static List<SWTBotTreeItem> getAllTreeItemsRecursive (SWTBotExt bot, SWTBotTree tree , SWTBotTreeItem parent, boolean expand){
+    
+    LinkedList<SWTBotTreeItem> treeItems = new LinkedList<SWTBotTreeItem>();
+    
+    if (parent != null){
+      if (expand) {
+        parent.expand();
+        bot.sleep(SWTEclipseExt.DEFAULT_UI_TIMEOUT);
+      }
+      
+      SWTBotTreeItem[] nodeChildren = parent.getItems();
+      if (nodeChildren != null){
+        for (SWTBotTreeItem child : nodeChildren){
+          if (child.getText().length() > 0){
+            treeItems.add(child);
+            treeItems.addAll(SWTEclipseExt.getAllTreeItemsRecursive(bot,tree,child,expand));
+          }
+        }
+      }
+    }
+    else{
+      treeItems = (LinkedList<SWTBotTreeItem>)SWTEclipseExt.getAllTreeItemsRecursive(bot, tree, expand);
+    }
+    
+    return treeItems;
+  }
+  /**
+   * Returns all tree items recursive
+   * @param bot
+   * @param tree
+   * @param expand
+   * @return
+   */
+  public static List<SWTBotTreeItem> getAllTreeItemsRecursive (SWTBotExt bot, SWTBotTree tree, boolean expand){
+
+    LinkedList<SWTBotTreeItem> treeItems = new LinkedList<SWTBotTreeItem>();
+    
+    SWTBotTreeItem[] nodeChildren = tree.getAllItems();
+    if (nodeChildren != null){
+      for (SWTBotTreeItem child : nodeChildren){
+        if (child.getText().length() > 0){
+          treeItems.add(child);
+          treeItems.addAll(SWTEclipseExt.getAllTreeItemsRecursive(bot,tree,child,expand));
+        }
+      }
+    }  
+    
+    return treeItems;
+  }
+  
+  public static String getFormattedTreeNodeText (SWTBotTree tree, SWTBotTreeItem item){
+    StringBuilder stringBuilder = new StringBuilder("");
+    
+    if (item != null){
+      for (int column = 0 ; column < tree.columnCount(); column++){
+        if (column > 0){
+          stringBuilder.append(" - ");
+        }
+        String columnText = item.cell(column);
+        if (columnText == null){
+          columnText = "<null>";
+        } else if (columnText == null){
+          columnText = "<empty>";
+        }
+        stringBuilder.append(columnText);
+      }
+    }
+    
+    return stringBuilder.toString();
+    
+  }
+
+  public static String getFormattedTreeNodesText (SWTBotTree tree, SWTBotTreeItem[] items){
+    StringBuilder stringBuilder = new StringBuilder("");
+    
+    if (items != null){
+      for (SWTBotTreeItem item : items){
+        if (stringBuilder.length() > 0){
+          stringBuilder.append("\n");
+        }
+        stringBuilder.append(SWTEclipseExt.getFormattedTreeNodeText(tree,item));
+      }
+    }
+    
+    return stringBuilder.toString();
+    
+  }
+  
 }
