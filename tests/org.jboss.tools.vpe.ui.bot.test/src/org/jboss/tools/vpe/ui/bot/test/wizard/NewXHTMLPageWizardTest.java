@@ -46,6 +46,7 @@ public class NewXHTMLPageWizardTest extends VPEAutoTestCase{
 		this.bot.textWithLabel("File name:").setText("test"); //$NON-NLS-1$ //$NON-NLS-2$
 		this.bot.button(WidgetVariables.NEXT_BUTTON).click();
 		this.bot.checkBox("Use XHTML Template").click(); //$NON-NLS-1$
+		this.bot.button(WidgetVariables.NEXT_BUTTON).click();
 		this.bot.button(WidgetVariables.FINISH_BUTTON).click();
 		assertEquals("Active Editor Title should be" ,"test.xhtml", this.bot.activeEditor().getTitle());  //$NON-NLS-1$ //$NON-NLS-2$
 	}
