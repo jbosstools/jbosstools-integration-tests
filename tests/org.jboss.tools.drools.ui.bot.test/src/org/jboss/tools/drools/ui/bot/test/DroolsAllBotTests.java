@@ -16,9 +16,11 @@ import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.jboss.tools.drools.ui.bot.test.smoke.ManageDroolsRuntime;
 import org.jboss.tools.drools.ui.bot.test.smoke.ManageDroolsProject;
+import org.jboss.tools.drools.ui.bot.test.smoke.ManageDroolsRules;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.SWTUtilExt;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
+import org.jboss.tools.ui.bot.ext.types.PerspectiveType;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
@@ -34,15 +36,19 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @RunWith(Suite.class)
 @SuiteClasses({ManageDroolsRuntime.class,
-  ManageDroolsProject.class})  
+  ManageDroolsProject.class,
+  ManageDroolsRules.class})  
 public class DroolsAllBotTests extends SWTTestExt {
   public static final String DROOLS_PROJECT_NAME = "droolsTest";
   public static final String DROOLS_RUNTIME_NAME = "Drools Test Runtime";
   public static String DROOLS_RUNTIME_LOCATION = null;
   public static String CREATE_DROOLS_RUNTIME_LOCATION = null;
   public static String SRC_MAIN_JAVA_TREE_NODE = "src/main/java";
+  public static String SRC_MAIN_RULES_TREE_NODE = "src/main/rules";
   public static String COM_SAMPLE_TREE_NODE = "com.sample";
   public static String DROOLS_TEST_JAVA_TREE_NODE = "DroolsTest.java";
+  public static final String TEST_DROOLS_RULE_NAME = "TestRule.drl";
+  public static final String SAMPLE_DROOLS_RULE_NAME = "Sample.drl";
   private static String testDroolsRuntimeName = null;
   public static String getTestDroolsRuntimeName() {
     return testDroolsRuntimeName;
@@ -74,7 +80,7 @@ public class DroolsAllBotTests extends SWTTestExt {
     } catch (WidgetNotFoundException wnfe){
       // Do nothing ignore this error
     }
-    	
+    eclipse.openPerspective(PerspectiveType.JAVA);	
   }
 
   @AfterClass

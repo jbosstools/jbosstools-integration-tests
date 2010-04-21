@@ -15,14 +15,18 @@ import java.io.File;
 
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.SWTEclipseExt;
+import org.jboss.tools.ui.bot.ext.helper.FileRenameHelper;
 import org.jboss.tools.ui.bot.ext.types.EntityType;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.ext.types.ViewType;
 import org.jboss.tools.ui.bot.ext.view.ProblemsView;
+import org.jboss.tools.ui.bot.test.WidgetVariables;
 import org.jboss.tools.drools.ui.bot.test.DroolsAllBotTests;
 import org.junit.Test;
+import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCheckBox;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 /**
  * Test managing of Drools Project
@@ -33,10 +37,14 @@ public class ManageDroolsProject extends SWTTestExt{
   /**
    * Test manage Drools project
    */
+  private static final String RENAMED_DROOLS_PROJECT = DroolsAllBotTests.DROOLS_PROJECT_NAME + "-renamed";
   @Test
   public void testManageDroolsProject() {
     createDroolsProject (DroolsAllBotTests.DROOLS_PROJECT_NAME);
     runNewDroolsProject (DroolsAllBotTests.DROOLS_PROJECT_NAME);
+    renameDroolsProject (DroolsAllBotTests.DROOLS_PROJECT_NAME, ManageDroolsProject.RENAMED_DROOLS_PROJECT);
+    deleteDroolsProject (ManageDroolsProject.RENAMED_DROOLS_PROJECT);
+    createDroolsProject (DroolsAllBotTests.DROOLS_PROJECT_NAME);
   }
   /**
    * Creates new Drools project
@@ -107,6 +115,42 @@ public class ManageDroolsProject extends SWTTestExt{
       "Console Text was: " + consoleText + "\n" +
       "Expected console text is: " + "Hello World\nGoodbye cruel world\n",
       "Hello World\nGoodbye cruel world\n".equals(consoleText));
+  }
+  /**
+   * Renames Drools project and check result
+   * @param droolsProjectName
+   * @param renamedProjectName
+   */
+  private void renameDroolsProject(String droolsProjectName, String renamedProjectName){
+    packageExplorer.show();
+    
+    bot.sleep(TIME_1S);
+    
+    SWTBot webProjects = bot.viewByTitle(WidgetVariables.PACKAGE_EXPLORER).bot();
+    SWTBotTree tree = webProjects.tree();
+
+    tree.setFocus();
+    String checkResult = FileRenameHelper.checkProjectRenamingWithinPackageExplorer(bot, 
+      DroolsAllBotTests.DROOLS_PROJECT_NAME, 
+      ManageDroolsProject.RENAMED_DROOLS_PROJECT,
+      IDELabel.Shell.RENAME_JAVA_PROJECT);
+    assertNull(checkResult,checkResult);
+  }
+  /**
+   * Deletes Drools project and check result
+   * @param droolsProjectName
+   */
+  private void deleteDroolsProject(String droolsProjectName){
+    
+    packageExplorer.deleteProject(droolsProjectName, true);
+    boolean notFound = false;
+    try{
+      packageExplorer.selectProject(droolsProjectName);
+    }catch (WidgetNotFoundException wnf){
+      notFound = true;
+    }
+    assertTrue("Drools project: " + droolsProjectName +
+      " was not deleted properly",notFound);
   }
 }
 

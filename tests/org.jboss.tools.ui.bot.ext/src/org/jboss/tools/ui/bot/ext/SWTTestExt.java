@@ -10,8 +10,6 @@
   ******************************************************************************/
 package org.jboss.tools.ui.bot.ext;
 
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Properties;
 import java.util.Vector;
@@ -19,9 +17,7 @@ import java.util.Vector;
 import org.apache.log4j.Logger;
 import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
 import org.jboss.tools.ui.bot.ext.config.ConfiguredState;
-import org.jboss.tools.ui.bot.ext.config.requirement.AddServer;
 import org.jboss.tools.ui.bot.ext.config.requirement.RequirementBase;
-import org.jboss.tools.ui.bot.ext.config.requirement.StartServer;
 import org.jboss.tools.ui.bot.ext.gen.IView;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.ext.view.ConsoleView;

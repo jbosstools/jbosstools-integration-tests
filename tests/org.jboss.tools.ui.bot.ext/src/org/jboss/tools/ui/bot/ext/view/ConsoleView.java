@@ -84,8 +84,9 @@ public class ConsoleView extends SWTBotExt {
     String prevConsoleText = getConsoleText();
     String consoleText = prevConsoleText;
     log.info("Waiting for console text with TimeOut: " + timeOut);
-    while ((estimatedTime <= timeOut)
+    while ((estimatedTime < timeOut)
       && (!quitWhenNoChange 
+        || estimatedTime == 0  
         || prevConsoleText == null
         || prevConsoleText.length() == 0
         || !prevConsoleText.equals(consoleText))){

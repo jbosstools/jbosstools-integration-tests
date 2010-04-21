@@ -17,6 +17,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -26,17 +27,22 @@ import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.swt.widgets.Widget;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
+import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.utils.SWTUtils;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarButton;
 import org.jboss.tools.ui.bot.ext.parts.SWTBotBrowserExt;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.ext.types.JobLists;
 import org.jboss.tools.ui.bot.ext.types.JobState;
 import org.osgi.framework.Bundle;
+import org.hamcrest.BaseMatcher;
+import org.hamcrest.Description;
 
 /**
  * Base class for all classes using SWTBot
@@ -48,6 +54,19 @@ public class SWTUtilExt extends SWTUtils {
 
 	private Logger log = Logger.getLogger(SWTUtilExt.class);
 	protected SWTWorkbenchBot bot;
+	
+	private static class AlwaysMatchMatcher<T extends Widget> extends BaseMatcher<T> {
+
+    public boolean matches(Object item) {
+      // Always returns true
+      return true;
+    }
+
+    public void describeTo(Description description) {
+      description.appendText("AlwaysMatchMatcher");
+    }
+	  
+	}
 
 	public SWTUtilExt(SWTWorkbenchBot bot) {
 		this.bot = bot;
@@ -586,4 +605,50 @@ public class SWTUtilExt extends SWTUtils {
       }
     }
   }
+  /**
+   * Display all active widgets
+   * @param bot
+   */
+  public static void displayAllBotWidgets (SWTBot bot){
+    List<?> widgets = bot.widgets(new SWTUtilExt.AlwaysMatchMatcher<Widget>());
+    for (Object object : widgets){
+      System.out.println(object + 
+        " Text: " + SWTUtilExt.invokeMethod(object, "getText") +
+        " Tooltip: " + SWTUtilExt.invokeMethod(object, "getToolTipText"));
+    }
+  }
+  /**
+   * Display all Toolbar Buttons of view
+   * @param view 
+   */
+  public static void displayAllToolbarButtons (SWTBotView view){
+    List<SWTBotToolbarButton> buttons = view.getToolbarButtons();
+    for (SWTBotToolbarButton button : buttons){
+      System.out.println("Button Tooltip: " + button.getToolTipText() +
+        " Text: " + button.getText());
+    }
+  }
+  /**
+   * Invoke method on object and returns result as String
+   * @param object
+   * @param method
+   * @return
+   */
+  public static String invokeMethod (Object object, String method){
+    
+    String result = "<null>";
+    
+    try {
+      result = SWTUtils.invokeMethod(object, "getText").toString();
+    } catch (NoSuchMethodException e) {
+      result = "<null>";
+    } catch (IllegalAccessException e) {
+      result = "<null>";
+    } catch (InvocationTargetException e) {
+      result = "<null>";
+    }
+    
+    return result;
+  }
+  
 }

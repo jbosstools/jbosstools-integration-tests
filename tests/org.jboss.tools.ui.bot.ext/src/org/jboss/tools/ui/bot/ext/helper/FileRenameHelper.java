@@ -19,8 +19,8 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.ui.bot.ext.SWTUtilExt;
+import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
-import org.jboss.tools.ui.bot.ext.types.JobName;
 import org.jboss.tools.ui.bot.ext.types.ViewType;
 
 /**
@@ -119,4 +119,51 @@ public class FileRenameHelper {
       String[] treePathItems){
     return checkFileRenamingWithinWebProjects(bot, oldFileName, newFileName, treePathItems, "");
   }
+  /**
+   * Check Project Renaming within Package Explorer
+   * @param bot
+   * @param oldProjectName
+   * @param newProjectName
+   * @return
+   */
+  public static String checkProjectRenamingWithinPackageExplorer(SWTWorkbenchBot bot , 
+    String oldProjectName, 
+    String newProjectName,
+    String renameShellTitle){
+    
+    bot.sleep(sleepTime);    
+    SWTBotTree tree = eclipse.showView(ViewType.PACKAGE_EXPLORER).tree();
+
+    tree.setFocus();
+    tree.getTreeItem(oldProjectName).select();
+    bot.sleep(Timing.time1S());  
+    // Rename project
+    bot.menu(IDELabel.Menu.FILE).
+      menu("Rename...")
+      .click();
+    bot.sleep(Timing.time1S()); 
+    bot.shell(renameShellTitle).activate();
+    bot.textWithLabel(IDELabel.RenameResourceDialog.NEW_NAME)
+      .setText(newProjectName);
+    bot.button(IDELabel.Button.OK).click();
+    new SWTUtilExt(bot).waitForAll(Timing.time10S());
+    // Check Results
+    // Project with Old Name doesn't exists within Package explorer
+    try{
+      tree.getTreeItem(oldProjectName);
+      return "Project " + oldProjectName + " was not renamed to " + newProjectName + ".";
+    }catch (WidgetNotFoundException wnfe) {
+      // do nothing 
+    }
+    // Project with New Name exists within Package Explorer
+    try{
+      tree.getTreeItem(newProjectName);
+    }catch (WidgetNotFoundException wnfe) {
+        return "Renamed Project " + newProjectName + " was not found."; 
+    }
+    
+  return null;
+    
+  }
+
 }

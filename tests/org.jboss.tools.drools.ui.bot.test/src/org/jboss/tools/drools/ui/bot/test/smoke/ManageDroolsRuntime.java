@@ -11,10 +11,6 @@
 
 package org.jboss.tools.drools.ui.bot.test.smoke;
 
-import static org.jboss.tools.ui.bot.ext.SWTTestExt.bot;
-import static org.jboss.tools.ui.bot.ext.SWTTestExt.console;
-import static org.jboss.tools.ui.bot.ext.SWTTestExt.eclipse;
-
 import java.io.File;
 
 import org.jboss.tools.ui.bot.ext.SWTEclipseExt;

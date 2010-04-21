@@ -156,6 +156,9 @@ public class SWTEclipseExt {
 		case JPA:
 			perspectiveLabel = IDELabel.SelectPerspectiveDialog.JPA;
 			break;
+		case DEBUG:
+      perspectiveLabel = IDELabel.SelectPerspectiveDialog.DEBUG;
+      break;		
 		default:
 			fail("Unknown perspective to open");
 		}
@@ -664,6 +667,24 @@ public class SWTEclipseExt {
 		closeWarningWindowIfOpened(bot, pressContinueButton);
 	}
 
+	 /**
+   * if Confirm Perspective Switch Shell is opened close it and depend on
+   * switchPerspective parameter change current perspective
+   * 
+   * @param switchPerspective
+   */
+  public void closeConfirmPerspectiveSwitchShellIfOpened(
+      boolean switchPerspective) {
+    try {
+      bot.shell(IDELabel.Shell.CONFIRM_PERSPECTIVE_SWITCH).activate();
+      bot.button(
+          switchPerspective ? IDELabel.Button.YES
+              : IDELabel.Button.NO).click();
+    } catch (WidgetNotFoundException wnfe) {
+      // do nothing
+    }
+  }
+	
 	/**
 	 * Returns true if table column specified by column parameter contains item
 	 * 
@@ -941,5 +962,16 @@ public class SWTEclipseExt {
     return stringBuilder.toString();
     
   }
-  
+  /**
+   * Choose Debug As Drools Application menu for specified Tree Item
+   * 
+   * @param treeItem
+   */
+  public void debugTreeItemAsDroolsApplication(SWTBotTreeItem treeItem) {
+    treeItem.select();
+    treeItem.click();
+    SWTEclipseExt.getMenuFromSubmenu(
+        bot.menu(IDELabel.Menu.RUN).menu(IDELabel.Menu.DEBUG_AS),
+        IDELabel.Menu.DEBUG_AS_DROOLS_APPLICATION).click();
+  }  
 }

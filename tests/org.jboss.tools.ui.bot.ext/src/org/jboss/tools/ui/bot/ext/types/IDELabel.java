@@ -62,6 +62,9 @@ public class IDELabel {
     public static final String RUN_ON_SERVER = "Run on Server";
     public static final String ADD_AND_REMOVE="Add and Remove...";
     public static final String RUN_AS_JAVA_APPLICATION="Java Application";
+    public static final String TOGGLE_BREAKPOINT="Toggle Breakpoint";
+    public static final String DEBUG_AS = "Debug As";
+    public static final String DEBUG_AS_DROOLS_APPLICATION = "Drools Application";
 	}
 
 	public class Button {
@@ -110,6 +113,9 @@ public class IDELabel {
 	  public static final String WARNING = "Warning";
 	  public static final String DROOLS_RUNTIME = "Drools Runtime";
 	  public static final String NEW_DROOLS_PROJECT = "";
+	  public static final String RENAME_COMPILATION_UNIT = "Rename Compilation Unit";
+	  public static final String RENAME_JAVA_PROJECT = "Rename Java Project";
+	  public static final String CONFIRM_PERSPECTIVE_SWITCH = "Confirm Perspective Switch";
 	  public static final String NEW_SEAM_RUNTIME = "New Seam Runtime";	
 	}
 
@@ -134,6 +140,7 @@ public class IDELabel {
 		public static final String STRUTS_PROJECT = "Struts Project";
 		public static final String JPA_PROJECT = "JPA Project";
 		public static final String DROOLS_PROJECT = "Drools Project";
+		public static final String DROOLS_RULE = "Rule Resource";
 	}
 
 	public class JavaProjectWizard {
@@ -159,6 +166,7 @@ public class IDELabel {
 		public static final String SERVERS = "Servers";
 		public static final String WEB_PROJECTS = "Web Projects";
 		public static final String PROBLEMS = "Problems";
+		public static final String DEBUG = "Debug";
 	}
 	
 	public class ViewGroup {
@@ -167,6 +175,7 @@ public class IDELabel {
 		public static final String DATA_MANAGEMENT = "Data Management";
 		public static final String SERVER = "Server";
 		public static final String JBOSS_TOOLS_WEB = "JBoss Tools Web";
+		public static final String DEBUG = "Debug";
 	}
 
 	public class SelectPerspectiveDialog {
@@ -176,6 +185,7 @@ public class IDELabel {
 		public static final String WEB_DEVELOPMENT = "Web Development";
 		public static final String DB_DEVELOPMENT = "Database Development";
 		public static final String JPA = "JPA";
+		public static final String DEBUG = "Debug";
 	}
 	/**
 	 * Hibernate Console Wizard (ConsoleConfigurationCreationWizard) Labels (
@@ -344,6 +354,13 @@ public class IDELabel {
        
    }
    
+   public static final class NewDroolsRuleDialog {
+
+     public static final String FILE_NAME = "File name:";
+     public static final String RULE_PACKAGE_NAME = "Rule package name:";
+       
+   }
+   
    public static class ProblemsTree {
 
      public static final String WARNINGS = "Warnings";
@@ -354,6 +371,13 @@ public class IDELabel {
    public static class ConsoleView {
 
      public static final String BUTTON_CLEAR_CONSOLE_TOOLTIP = "Clear Console";
+     
+   }
+   
+   public static class DebugView {
+
+     public static final String BUTTON_STEP_OVER_TOOLTIP = "Step Over (F6)";
+     public static final String BUTTON_RESUME_TOOLTIP = "Resume (F8)";
      
    }
  }
