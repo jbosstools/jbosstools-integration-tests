@@ -432,6 +432,48 @@ public class SWTEclipseExt {
 		wiz.textWithLabel(ServerServer.TEXT_SERVER_NAME).setText(serverName);
 		open.finish(wiz);
 	}
+	/**
+	 * adds seam runtime
+	 * @param name of newly added runtime
+	 * @param version seam version
+	 * @param seamHome path to seam home directory
+	 */
+	public void addSeamRuntime(String name, String version, String seamHome) {
+		SWTBot wiz = open.preferenceOpen(ActionItem.Preference.JBossToolsWebSeam.LABEL);
+		SWTBotTable tbRuntimeEnvironments = bot.table();
+		boolean createRuntime = true;
+		// first check if Environment doesn't exist
+		int numRows = tbRuntimeEnvironments.rowCount();
+		if (numRows > 0) {
+			int currentRow = 0;
+			while (createRuntime && currentRow < numRows) {
+				if (tbRuntimeEnvironments.cell(currentRow, 1).equalsIgnoreCase(
+						name)) {
+					createRuntime = false;
+				} else {
+					currentRow++;
+				}
+			}
+		}
+		if (createRuntime) {
+			wiz.button("Add").click();
+			bot.shell(IDELabel.Shell.NEW_SEAM_RUNTIME).activate();
+			bot.text(0).setText(seamHome);
+			bot.text(1).setText(name);
+			// find and select version
+			String[] versions = bot.comboBox().items();
+			int myIndex =0;
+			for (int index=0;index<versions.length;index++) {
+				if (version.equals(versions[index])) {
+					myIndex=index;
+					break;
+				}
+			}
+			bot.comboBox().setSelection(myIndex);
+			open.finish(bot.activeShell().bot());
+			open.finish(wiz, IDELabel.Button.OK);
+		}
+	}
 
 	/**
 	 * adds jboss server runtime only if it's not specified yet

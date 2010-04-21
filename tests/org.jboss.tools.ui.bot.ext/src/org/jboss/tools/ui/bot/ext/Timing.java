@@ -36,4 +36,7 @@ public class Timing {
 	public static int time(int milis) {
 		return (int) Math.round(milis*multiplier);
 	}
+	public static long time100S() {
+		return (int) Math.round(100*1000*multiplier);
+	}
 }

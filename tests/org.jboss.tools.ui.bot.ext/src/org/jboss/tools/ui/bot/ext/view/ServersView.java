@@ -81,13 +81,14 @@ public class ServersView extends SWTBotExt {
 	 * @param serverName
 	 */
 	public void startServer(String serverName) {
+		show();
 		SWTBot bot = open.viewSelect(ServerServers.LABEL).bot();
 		SWTBotTree tree = bot.tree();
 		SWTBotTreeItem server = findServerByName(tree,serverName);
 		if (server!=null) {
 			ContextMenuHelper.prepareTreeItemForContextMenu(tree, server);
 	        new SWTBotMenu(ContextMenuHelper.getContextMenu(tree, IDELabel.Menu.START, false)).click();
-		    new SWTUtilExt(this).waitForNonIgnoredJobs();
+		    new SWTUtilExt(this).waitForNonIgnoredJobs(Timing.time100S());
 		    new SWTUtilExt(this).waitForAll(Timing.time3S());
 	        
 		}

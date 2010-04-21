@@ -110,6 +110,7 @@ public class IDELabel {
 	  public static final String WARNING = "Warning";
 	  public static final String DROOLS_RUNTIME = "Drools Runtime";
 	  public static final String NEW_DROOLS_PROJECT = "";
+	  public static final String NEW_SEAM_RUNTIME = "New Seam Runtime";	
 	}
 
 	public class EntityGroup {
