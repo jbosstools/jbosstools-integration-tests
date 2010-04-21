@@ -88,7 +88,7 @@ public class AddServer extends RequirementBase {
 		fail("Unable to add server runtime, unparsable or not supported property value: "+TestConfigurator.getProperty(TestConfigurator.Keys.SERVER));
 	}
 	@Override
-	public boolean checkFullfilled() {
+	public boolean checkFulfilled() {
 		return SWTTestExt.configuredState.getServer().isConfigured;
 	}
 

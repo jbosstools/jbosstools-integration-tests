@@ -4,14 +4,16 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
-
 import org.jboss.tools.ui.bot.ext.Activator;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.config.Annotations.*;
 import org.jboss.tools.ui.bot.ext.config.requirement.AddSeam;
 import org.jboss.tools.ui.bot.ext.config.requirement.RequirementBase;
 import org.jboss.tools.ui.bot.ext.config.requirement.StartServer;
+import org.jboss.tools.ui.bot.ext.config.requirement.SwitchPerspective;
 
 public class TestConfigurator {
 	
@@ -112,30 +114,38 @@ public class TestConfigurator {
 		return new AddSeam();		
 	}
 	/**
-	 * returns true, if given class (Test) can run, this is done by exploring class'es
+	 * returns list of requirements if given class (Test) can run, all this is done by exploring class'es
 	 * annotations (see {@link SWTBotTestRequires}
+	 * if class cannot run returns null
 	 */
-	public static boolean canRunClass(Class<?> klass) {
+	public static List<RequirementBase> getClassRequirements(Class<?> klass) {
+		
 		SWTBotTestRequires requies = klass.getAnnotation(SWTBotTestRequires.class);	
 		// all not annotated classes can run
 		if (requies==null) { 
-			return true; 
+			return null; 
 			}
+		// internal list
+		List<RequirementBase> reqs = new ArrayList<RequirementBase>();
+		
 		if (requies.server().required()) {
 			RequirementBase req = getServerRequirement(requies.server());
 			if (req==null) {
-				return false;
+				return null;
 			}
-			SWTTestExt.beforeRequirements.add(req);
+			reqs.add(req);
 		}
 		if (requies.seam().required()) {
 			RequirementBase req = getSeamRequirement(requies.seam());
 			if (req==null) {
-				return false;
+				return null;
 			}
-			SWTTestExt.beforeRequirements.add(req);
+			reqs.add(req);
 		}
-		return true;
+		if (!"".equals(requies.perspective())) {
+			reqs.add(new SwitchPerspective(requies.perspective()));
+		}
+		return reqs;
 	}
 	/**
 	 * implements comparison of 2 params by given operator (in this order)

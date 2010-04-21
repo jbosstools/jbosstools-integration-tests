@@ -6,7 +6,7 @@ import org.jboss.tools.ui.bot.ext.config.TestConfigurator;
 public class AddSeam extends RequirementBase {
 
 	@Override
-	public boolean checkFullfilled() {
+	public boolean checkFulfilled() {
 		return SWTTestExt.configuredState.getSeam().isConfiured;
 	}
 

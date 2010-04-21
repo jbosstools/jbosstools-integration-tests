@@ -19,7 +19,7 @@ public class AddJRE extends RequirementBase {
 		this.version = version;
 	}
 	@Override
-	public boolean checkFullfilled() {
+	public boolean checkFulfilled() {
 		return SWTTestExt.configuredState.getJreList().contains(getAddedAsName());
 	}
 

@@ -14,7 +14,7 @@ public class StartServer extends RequirementBase {
 	}
 	
 	@Override
-	public boolean checkFullfilled() {
+	public boolean checkFulfilled() {
 		return SWTTestExt.configuredState.getServer().isRunning;
 	}
 

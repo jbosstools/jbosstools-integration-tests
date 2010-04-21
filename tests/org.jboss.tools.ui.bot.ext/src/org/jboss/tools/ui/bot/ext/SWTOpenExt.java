@@ -158,6 +158,7 @@ public class SWTOpenExt {
 		shell.activate();
 		bot.table().select(perspective.getName());
 		bot.button("OK").click();
+		log.info("Perspective switched to '"+perspective.getName()+"'");
 	}
 
 	/**

@@ -29,19 +29,20 @@ public abstract class RequirementBase {
 	 * fulfills this requirement. First fulfills the dependent ones, then this.
 	 * @throws RequirementNotFulfilledException
 	 */
-	public void fullfill() throws RequirementNotFulfilledException {
+	public void fulfill() throws RequirementNotFulfilledException {
 		log.info("Fulfilling requirement '"+this.getClass().getName()+"'");
 		try {
 		for (RequirementBase dep : getDependsOn()) {
-			dep.fullfill();
+			dep.fulfill();
 		}
-		if (!checkFullfilled()) {
+		if (!checkFulfilled()) {
 			handle();
-			if (!checkFullfilled()) {
-				throw new Exception("Requirement implementation error, checkFullfilled failed after calling handle();");
+			if (!checkFulfilled()) {
+				throw new Exception("Requirement implementation error, checkFulfilled() failed after calling handle();");
 			}
 		} 
 		} catch (Exception ex) {
+			log.info("Unable to fulfill requirement '"+this.getClass().getName()+"'");
 			throw new RequirementNotFulfilledException("Unable to fulfill requirement "+this.getClass().getCanonicalName(),ex);
 		}
 		log.info("Requirement '"+this.getClass().getName()+"' fulfilled");
@@ -51,10 +52,19 @@ public abstract class RequirementBase {
 	 * must return true if the Requirement is already fulfilled
 	 * @return
 	 */
-	public abstract boolean checkFullfilled();
+	public abstract boolean checkFulfilled();
 	/**
-	 * handles (should do everything to fulfill requirement), {@link RequirementBase#checkFullfilled()} 
+	 * handles (should do everything to fulfill requirement), {@link RequirementBase#checkFulfilled()} 
 	 * should return true after calling this method 
 	 */
 	public abstract void handle();
+	
+	@Override
+	public int hashCode() {
+		return getClass().hashCode();
+	}
+	@Override
+	public boolean equals(Object obj) { 
+		return this.getClass().equals(obj.getClass());
+	}
 }

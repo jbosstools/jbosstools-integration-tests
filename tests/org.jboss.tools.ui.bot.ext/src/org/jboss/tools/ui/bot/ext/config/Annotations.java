@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
 public class Annotations {
 	/**
 	 * annotation which defines requirement of whole test Class
-	 * by default all sub-annotations are optional and are 
+	 * by default all sub-annotations are optional and are disabled
 	 * @author lzoubek
 	 *
 	 */
@@ -22,6 +22,11 @@ public class Annotations {
 		 */
 		Server server() default @Server( required = false );
 		Seam seam() default @Seam( required = false );
+		/**
+		 * name of perspective to run within
+		 * @return
+		 */
+		String perspective() default "";
 	}
 	/**
 	 * Server requirement, by default matches all server types and versions
