@@ -17,6 +17,7 @@ import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.jboss.tools.drools.ui.bot.test.smoke.ManageDroolsRuntime;
 import org.jboss.tools.drools.ui.bot.test.smoke.ManageDroolsProject;
 import org.jboss.tools.drools.ui.bot.test.smoke.ManageDroolsRules;
+import org.jboss.tools.drools.ui.bot.test.smoke.DroolsRulesEditorTest;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.SWTUtilExt;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
@@ -29,7 +30,7 @@ import org.junit.runners.Suite.SuiteClasses;
 
 /**
  * 
- * This is struts swtbot testcase for JBoss Tools.
+ * This is Drools swtbot test case for JBoss Tools.
  * 
  * @author Vladimir Pakan
  * 
@@ -37,7 +38,8 @@ import org.junit.runners.Suite.SuiteClasses;
 @RunWith(Suite.class)
 @SuiteClasses({ManageDroolsRuntime.class,
   ManageDroolsProject.class,
-  ManageDroolsRules.class})  
+  ManageDroolsRules.class,
+  DroolsRulesEditorTest.class})  
 public class DroolsAllBotTests extends SWTTestExt {
   public static final String DROOLS_PROJECT_NAME = "droolsTest";
   public static final String DROOLS_RUNTIME_NAME = "Drools Test Runtime";

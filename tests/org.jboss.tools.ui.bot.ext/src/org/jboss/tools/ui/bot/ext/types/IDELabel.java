@@ -380,4 +380,11 @@ public class IDELabel {
      public static final String BUTTON_RESUME_TOOLTIP = "Resume (F8)";
      
    }
+   
+   public static class DroolsEditor {
+
+     public static final String TEXT_EDITOR_TAB = "Text Editor";
+     public static final String RETE_TREE_TAB = "Rete Tree";
+     
+   }
  }

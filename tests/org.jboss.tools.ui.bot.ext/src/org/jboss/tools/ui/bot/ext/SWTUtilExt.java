@@ -618,6 +618,19 @@ public class SWTUtilExt extends SWTUtils {
     }
   }
   /**
+   * Display all active widgets within parent widget
+   * @param bot
+   * @param parent
+   */
+  public static void displayAllBotWidgets (SWTBot bot, Widget parent){
+    List<?> widgets = bot.widgets(new SWTUtilExt.AlwaysMatchMatcher<Widget>(),parent);
+    for (Object object : widgets){
+      System.out.println(object + 
+        " Text: " + SWTUtilExt.invokeMethod(object, "getText") +
+        " Tooltip: " + SWTUtilExt.invokeMethod(object, "getToolTipText"));
+    }
+  }
+  /**
    * Display all Toolbar Buttons of view
    * @param view 
    */
@@ -639,7 +652,13 @@ public class SWTUtilExt extends SWTUtils {
     String result = "<null>";
     
     try {
-      result = SWTUtils.invokeMethod(object, "getText").toString();
+      Object oResult = SWTUtils.invokeMethod(object, "getText");
+      if (oResult != null){
+        result = oResult.toString();
+      }
+      else{
+        result = "<null>";
+      }
     } catch (NoSuchMethodException e) {
       result = "<null>";
     } catch (IllegalAccessException e) {

@@ -1,6 +1,8 @@
 private package org.jboss.tools.ui.bot.ext.parts;
 
 import static org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable.syncExec;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
@@ -16,11 +18,14 @@ import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.results.VoidResult;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
+import org.eclipse.ui.editors.text.TextEditor;
+import org.eclipse.ui.forms.editor.FormEditor;
 import org.eclipse.ui.texteditor.ITextEditor;
+import org.eclipse.swtbot.swt.finder.results.Result;
 
 /**
  * This provides working Content assist functionality. 
- * SWTBot (2.0.0#467) funcionality provided in SWTEclipseEditor doesn't work (at least on GTK linux) 
+ * SWTBot (2.0.0#467) functionality provided in SWTEclipseEditor doesn't work (at least on GTK linux) 
  * @author jpeterka
  *
  */
@@ -39,13 +44,15 @@ public class ContentAssistBot {
 	// ------------------------------------------------------------
 	// Constructor
 	// ------------------------------------------------------------
-	/**
-	 * Basic constructor
-	 */
-	public ContentAssistBot(SWTBotEditorExt editor) {
-		this.editor = editor;
-		this.bot = editor.bot();
-	}
+
+	 /**
+   * Basic constructor
+   */
+  public ContentAssistBot(SWTBotEditorExt editor) {
+    this.editor = editor;
+    this.bot = editor.bot();
+  }
+
 
 	// ------------------------------------------------------------
 	// Public
@@ -77,17 +84,26 @@ public class ContentAssistBot {
 	 * @param text
 	 */
 	public void logProposalList() {
-		SWTBotShell shell = openProposalList();
-		SWTBotTable table = getProposalTable(shell);
-		List<String> list = getTableItems(table);
+		List<String> list = getProposalList();
 		log.info("Proposal item list: " + list.size() + " item(s)");
 		for (int i = 0; i < list.size(); i++) {
 			log.info("Item i:" + list.get(i));
 		}
-		
-		shell.close();
 	}
-
+	/**
+   * Logs proposal list contents, usual for debug purposes
+   * 
+   * @param text
+   */
+  public List<String>getProposalList() {
+    List<String> result = null;
+    SWTBotShell shell = openProposalList();
+    SWTBotTable table = getProposalTable(shell);
+    result = getTableItems(table);
+    shell.close();
+    
+    return result;
+  }
 	// ------------------------------------------------------------
 	// Private
 	// ------------------------------------------------------------
@@ -97,8 +113,31 @@ public class ContentAssistBot {
 	private void invokeContentAssist() {
 		String actionId = "ContentAssistProposal";
 		//final IAction action = ((ITextEditor) partReference.getEditor(false)).getAction(actionId);
+		Object oEditor = editor.getReference().getEditor(false);
+		ITextEditor textEditor = null;
+    // When editor is instance of FormEditor we have to get editor from page specified by pageIndex
+		if (oEditor instanceof FormEditor){
+		  final FormEditor formEditor = (FormEditor)oEditor;
+		  textEditor = syncExec(new Result<ITextEditor>() {
+        public ITextEditor run() {
+          ITextEditor textEditor = null;
+          Object oEditor2 = formEditor.getActiveEditor();
+          if (oEditor2 instanceof TextEditor){
+            textEditor = (ITextEditor)oEditor2;
+          }
+          return textEditor;
+        }
+      });
+		  
+		}
+		else{
+		  textEditor = (ITextEditor)oEditor;
+		}
+/*
 		final IAction action = ((ITextEditor) editor.getReference().getEditor(
 				false)).getAction(actionId);
+*/				
+	  final IAction action = textEditor.getAction(actionId);
 		syncExec(new VoidResult() {
 			public void run() {
 				action.run();
@@ -188,5 +227,28 @@ public class ContentAssistBot {
 			}
 		}
 		return ccShell;
+	}
+	/**
+	 * Check if contentAssistItemLabel is present within Content Assist and 
+	 * choose it when applyContentAssist is true
+	 * @param contentAssistItemLabel
+	 * @param applyContentAssist
+	 */
+	public void checkContentAssist(String contentAssistItemLabel,boolean applyContentAssist){
+	  List<String> proposalList = getProposalList();
+	  
+	  assertNotNull("Editor Content Assist doesn't containt item with label: " + contentAssistItemLabel +
+	      ". It's null",
+	    proposalList);
+	  
+	  int itemIndex = proposalList.indexOf(contentAssistItemLabel);
+	  
+	  assertTrue("Editor Content Assist doesn't containt item with label: " + contentAssistItemLabel,
+	    itemIndex > -1);
+	  
+	  if (applyContentAssist){
+	    useProposal(itemIndex);
+	  }
+	  
 	}
 }
