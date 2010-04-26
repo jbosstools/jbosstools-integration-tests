@@ -141,6 +141,7 @@ public class IDELabel {
 		public static final String JPA_PROJECT = "JPA Project";
 		public static final String DROOLS_PROJECT = "Drools Project";
 		public static final String DROOLS_RULE = "Rule Resource";
+		public static final String GUIDED_DROOLS_RULE = "Guided Rule";
 	}
 
 	public class JavaProjectWizard {
@@ -386,5 +387,28 @@ public class IDELabel {
      public static final String TEXT_EDITOR_TAB = "Text Editor";
      public static final String RETE_TREE_TAB = "Rete Tree";
      
+   }
+   
+   public static final class NewGuidedDroolsRuleDialog {
+
+     public static final String FILE_NAME = "File name:";
+       
+   }
+   
+   public static final class GuidedDroolsRuleEditor {
+
+     public static final String WHEN_ADD_DIALOG_TITLE = "Add new condition to the rule";
+     public static final String WHEN_ADD_FACT_COMBO = "Fact";
+     public static final String ADD_FIELD_TO_THIS_CONDITION_TOOLTIP = "Add a field to this condition, or bind a varible to this fact.";
+     public static final String REMOVE_THIS_CONDITION_TOOLTIP = "Remove this condition.";
+     public static final String UPDATE_CONSTRAINTS_DIALOG_TITLE = "Update constraints";
+     public static final String ADD_RESTRICTION_ON_A_FIELD_COMBO_VALUE = "empty";
+     public static final String WHEN_COMBO_CONSTRAINTS_VALUE = "is equal to";
+     public static final String CHOOSE_VALUE_EDITOR_TYPE_TOOLTIP = "Choose value editor type";
+     public static final String SELECT_VALUE_EDITOR_TYPE_DIALOG_TITLE = "Select value editor type";
+     public static final String SELECT_VALUE_EDITOR_TYPE_COMBO_LABEL = "Field value:";
+     public static final String SELECT_VALUE_EDITOR_TYPE_COMBO_VALUE = "Literal value";
+     public static final String FIELD_VALUE_COMBO_VALUE = "true";
+       
    }
  }

@@ -31,6 +31,7 @@ Export-Package: org.jboss.tools.ui.bot.ext,
  org.jboss.tools.ui.bot.ext.helper,
  org.jboss.tools.ui.bot.ext.parts,
  org.jboss.tools.ui.bot.ext.types,
- org.jboss.tools.ui.bot.ext.view
+ org.jboss.tools.ui.bot.ext.view,
+ org.jboss.tools.ui.bot.ext.widgets
 Bundle-Vendor: JBoss by Red Hat
 Bundle-ClassPath: .

@@ -974,4 +974,44 @@ public class SWTEclipseExt {
         bot.menu(IDELabel.Menu.RUN).menu(IDELabel.Menu.DEBUG_AS),
         IDELabel.Menu.DEBUG_AS_DROOLS_APPLICATION).click();
   }  
+  /**
+   * Returns true if parentNode contains Tree Item with nodeLabel
+   * @param parentNode
+   * @param nodeLabel
+   * @return
+   */
+  public static boolean containsTreeItemWithLabel(SWTBotTreeItem parentNode, String nodeLabel){
+    boolean containsItem = true;
+    parentNode.expand();
+    try{
+      parentNode.getNode(nodeLabel);
+    } catch (WidgetNotFoundException wnfe){
+      containsItem = false;  
+    }
+    return containsItem;
+  }
+  /**
+   * Returns true if editor with editorLabel exists within bot
+   * static version
+   * @param bot
+   * @param editorLabel
+   * @return
+   */
+  public static boolean existEditorWithLabel(SWTBotExt bot, String editorLabel){
+    boolean editorExists = true;
+    try{
+      bot.editorByTitle(editorLabel);
+    } catch (WidgetNotFoundException wnfe){
+      editorExists = false;  
+    }
+    return editorExists;
+  }
+  /**
+   * Returns true if editor with editorLabel exists
+   * @param editorLabel
+   * @return
+   */
+  public boolean existEditorWithLabel(String editorLabel){
+    return SWTEclipseExt.existEditorWithLabel(bot, editorLabel);
+  }
 }
