@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: JBoss Tools SWTBot Extensions
 Bundle-SymbolicName: org.jboss.tools.ui.bot.ext
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 3.1.0.qualifier
 Bundle-Activator: org.jboss.tools.ui.bot.ext.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
