@@ -83,6 +83,7 @@ public class IDELabel {
 		public static final String CONTINUE = "Continue";
 		public static final String REMOVE = "Remove";
 		public static final String EDIT = "Edit...";
+		public static final String ADD_WITHOUT_DOTS = "Add";
 	}
 
 	public class Shell {
@@ -142,6 +143,7 @@ public class IDELabel {
 		public static final String DROOLS_PROJECT = "Drools Project";
 		public static final String DROOLS_RULE = "Rule Resource";
 		public static final String GUIDED_DROOLS_RULE = "Guided Rule";
+		public static final String DSL_DROOLS_FILE = "Domain Specific Language";
 	}
 
 	public class JavaProjectWizard {
@@ -410,5 +412,21 @@ public class IDELabel {
      public static final String SELECT_VALUE_EDITOR_TYPE_COMBO_VALUE = "Literal value";
      public static final String FIELD_VALUE_COMBO_VALUE = "true";
        
+   }
+   
+   public static final class NewDslDroolsFileDialog {
+
+     public static final String FILE_NAME = "File name:";
+       
+   }
+   
+   public static final class DslDroolsFileEditor {
+     
+     public static final String ADD_LANGUAGE_MAPPING_DIALOG_TITLE = "New language mapping";
+     public static final String LANGUAGE_EXPRESSION_TEXT_LABEL = "Language expression:";
+     public static final String RULE_MAPPING_TEXT_LABEL = "Rule mapping:";
+     public static final String SCOPE_COMBO_LABEL = "Scope:";
+     public static final String SCOPE_COMBO_VALUE = "condition";
+     
    }
  }
