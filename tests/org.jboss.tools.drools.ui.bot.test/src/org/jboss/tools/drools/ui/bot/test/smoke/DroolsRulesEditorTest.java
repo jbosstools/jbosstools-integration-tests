@@ -19,7 +19,6 @@ import org.jboss.tools.ui.bot.ext.parts.SWTBotEditorExt;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.drools.ui.bot.test.DroolsAllBotTests;
 import org.junit.Test;
-// import org.eclipse.ui.forms.editor.FormEditor;
 /**
  * Tests Drools Rule Editor
  * @author Vladimir Pakan
@@ -32,7 +31,7 @@ public class DroolsRulesEditorTest extends SWTTestExt{
   private static final String CONTENT_ASSIST_IMPORT = "import";
   private static final String CONTENT_ASSIST_MESSAGE = "Message";
   @Test
-  public void testManageDroolsProject() {
+  public void testDroolsRulesEditor() {
     codeCompletionCheck(DroolsAllBotTests.SAMPLE_DROOLS_RULE_NAME);
     reteViewCheck(DroolsAllBotTests.SAMPLE_DROOLS_RULE_NAME);
   }
