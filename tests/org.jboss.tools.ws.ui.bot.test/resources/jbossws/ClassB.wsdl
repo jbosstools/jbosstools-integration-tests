@@ -1,0 +1,45 @@
+<definitions name='ClassBService' targetNamespace='http://jbossws/' xmlns='http://schemas.xmlsoap.org/wsdl/' xmlns:soap='http://schemas.xmlsoap.org/wsdl/soap/' xmlns:tns='http://jbossws/' xmlns:xsd='http://www.w3.org/2001/XMLSchema'>
+ <types>
+  <xs:schema targetNamespace='http://jbossws/' version='1.0' xmlns:tns='http://jbossws/' xmlns:xs='http://www.w3.org/2001/XMLSchema'>
+   <xs:element name='method' type='tns:method'/>
+   <xs:element name='methodResponse' type='tns:methodResponse'/>
+   <xs:complexType name='method'>
+    <xs:sequence/>
+   </xs:complexType>
+   <xs:complexType name='methodResponse'>
+    <xs:sequence>
+     <xs:element name='return' type='xs:int'/>
+    </xs:sequence>
+   </xs:complexType>
+  </xs:schema>
+ </types>
+ <message name='ClassB_methodResponse'>
+  <part element='tns:methodResponse' name='methodResponse'></part>
+ </message>
+ <message name='ClassB_method'>
+  <part element='tns:method' name='method'></part>
+ </message>
+ <portType name='ClassB'>
+  <operation name='method' parameterOrder='method'>
+   <input message='tns:ClassB_method'></input>
+   <output message='tns:ClassB_methodResponse'></output>
+  </operation>
+ </portType>
+ <binding name='ClassBBinding' type='tns:ClassB'>
+  <soap:binding style='document' transport='http://schemas.xmlsoap.org/soap/http'/>
+  <operation name='method'>
+   <soap:operation soapAction=''/>
+   <input>
+    <soap:body use='literal'/>
+   </input>
+   <output>
+    <soap:body use='literal'/>
+   </output>
+  </operation>
+ </binding>
+ <service name='ClassBService'>
+  <port binding='tns:ClassBBinding' name='ClassBPort'>
+   <soap:address location='http://localhost:8080/JbossWS/ClassB'/>
+  </port>
+ </service>
+</definitions>
