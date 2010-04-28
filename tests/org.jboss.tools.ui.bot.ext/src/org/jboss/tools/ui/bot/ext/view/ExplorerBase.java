@@ -3,7 +3,6 @@ package org.jboss.tools.ui.bot.ext.view;
 import java.util.List;
 import java.util.Vector;
 
-import org.apache.log4j.Logger;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.SWTBot;
@@ -13,12 +12,9 @@ import org.eclipse.swtbot.swt.finder.results.WidgetResult;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
-import org.jboss.tools.ui.bot.ext.SWTBotExt;
 import org.jboss.tools.ui.bot.ext.SWTEclipseExt;
-import org.jboss.tools.ui.bot.ext.SWTOpenExt;
 import org.jboss.tools.ui.bot.ext.SWTUtilExt;
 import org.jboss.tools.ui.bot.ext.Timing;
-import org.jboss.tools.ui.bot.ext.gen.IView;
 import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 /**
@@ -26,22 +22,10 @@ import org.jboss.tools.ui.bot.ext.types.IDELabel;
  * @author lzoubek
  *
  */
-public abstract class ExplorerBase extends SWTBotExt {
-	/**
-	 * view object representing current view, MUST be defined in derived constructor (for use, see {@link SWTOpenExt#viewOpen(IView)}
-	 */
-	protected IView viewObject;
-	protected final SWTOpenExt open;
-	Logger log = Logger.getLogger(ExplorerBase.class);
+public abstract class ExplorerBase extends ViewBase {
+
 	public ExplorerBase() {
-		open = new SWTOpenExt(this);
-	}
-	
-	/**
-	 * shows Explorer view
-	 */
-	public void show() {
-		open.viewOpen(viewObject);
+
 	}
 	/*
 	 * Selects given project in Package Explorer
@@ -78,7 +62,8 @@ public abstract class ExplorerBase extends SWTBotExt {
 	    	 checkBox().click();
 	     }
 	     open.finish(this,IDELabel.Button.OK);
-	     new SWTUtilExt(this).waitForNonIgnoredJobs();	     
+	     new SWTUtilExt(this).waitForNonIgnoredJobs();
+	     new SWTUtilExt(this).waitForAll(Timing.time3S());
 	}
 	/**
 	 * deletes all projects from workspace

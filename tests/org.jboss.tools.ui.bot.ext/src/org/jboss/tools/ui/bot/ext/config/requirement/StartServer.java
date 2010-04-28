@@ -10,7 +10,7 @@ public class StartServer extends RequirementBase {
 
 	public StartServer() {
 		// define dependency
-		getDependsOn().add(new AddServer());
+		getDependsOn().add(createAddServer());
 	}
 	
 	@Override

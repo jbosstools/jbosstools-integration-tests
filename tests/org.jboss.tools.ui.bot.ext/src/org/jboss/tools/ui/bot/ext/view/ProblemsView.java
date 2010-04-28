@@ -10,9 +10,6 @@
   ******************************************************************************/
 package org.jboss.tools.ui.bot.ext.view;
 
-import org.jboss.tools.ui.bot.ext.SWTEclipseExt.StringConditionType;
-import org.jboss.tools.ui.bot.ext.gen.ActionItem.View.GeneralProblems;
-
 import java.util.LinkedList;
 
 import org.apache.log4j.Logger;
@@ -22,8 +19,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
 import org.jboss.tools.ui.bot.ext.SWTEclipseExt;
-import org.jboss.tools.ui.bot.ext.SWTOpenExt;
-import org.jboss.tools.ui.bot.ext.gen.IView;
+import org.jboss.tools.ui.bot.ext.SWTEclipseExt.StringConditionType;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.ext.types.ViewType;
 /**
@@ -31,25 +27,17 @@ import org.jboss.tools.ui.bot.ext.types.ViewType;
  * @author Vlado Pakan
  *
  */
-public class ProblemsView extends SWTBotExt {
-	protected IView viewObject;
-  protected final SWTOpenExt open;
+public class ProblemsView extends ViewBase {
+
   public static final int PROBLEMS_DESCRIPTION_COLUMN_INDEX = 0;
   public static final int PROBLEMS_RESOURCE_COLUMN_INDEX = 1;
   public static final int PROBLEMS_PATH_COLUMN_INDEX = 2;
   public static final int PROBLEMS_TYPE_COLUMN_INDEX = 4;
 	Logger log = Logger.getLogger(ProblemsView.class);
 	public ProblemsView() {
-	  viewObject = GeneralProblems.LABEL;
-		open = new SWTOpenExt(this);
+
 	}
-	
-	/**
-	 * shows Explorer view
-	 */
-	public void show() {
-		open.viewOpen(viewObject);
-	}
+
   /**
    * Returns all warnings nodes filtered by input parameters
    * @param bot

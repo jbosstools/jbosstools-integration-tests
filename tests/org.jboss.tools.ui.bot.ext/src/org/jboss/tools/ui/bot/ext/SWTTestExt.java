@@ -41,6 +41,11 @@ public class SWTTestExt extends SWTBotTestCase{
 	public static final ConsoleView console = new ConsoleView();
 	
 	// config & state
+	/**
+	 * represents state of configured stuff like server, runtimes etc
+	 * NOTE : this state can change right before test class is instantiated (because of possibly various requirements of tests defined by its annotations), 
+	 * please do not bind its properties, use them directly  
+	 */
 	public static final ConfiguredState configuredState = new ConfiguredState();
 	
 	public static Properties properties;

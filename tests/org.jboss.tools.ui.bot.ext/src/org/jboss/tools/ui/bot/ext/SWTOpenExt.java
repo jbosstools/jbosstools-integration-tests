@@ -76,19 +76,7 @@ public class SWTOpenExt {
 		}
 	}
 
-	/**
-	 * selects and returns given view, view must be opened
-	 * 
-	 * @param view
-	 * @return
-	 */
-	public SWTBotView viewSelect(IView view) {
-		SWTBotView v = bot.viewByTitle(view.getName());
-		v.show();
-		v.setFocus();
-		return v;
 
-	}
 
 	/**
 	 * selects given actionItem in bot's tree();

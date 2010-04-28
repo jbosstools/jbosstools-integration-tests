@@ -1,55 +1,46 @@
 package org.jboss.tools.ui.bot.ext.view;
 
-import org.apache.log4j.Logger;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotButton;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
-import org.jboss.tools.ui.bot.ext.SWTBotExt;
-import org.jboss.tools.ui.bot.ext.SWTOpenExt;
+import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.SWTUtilExt;
 import org.jboss.tools.ui.bot.ext.Timing;
-import org.jboss.tools.ui.bot.ext.gen.ActionItem;
-import org.jboss.tools.ui.bot.ext.gen.ActionItem.View;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.View.ServerServers;
 import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 
-public class ServersView extends SWTBotExt {
+public class ServersView extends ViewBase {
 
-	Logger log = Logger.getLogger(ProjectExplorer.class);
-	private final SWTOpenExt open;
 	public ServersView() {
-		open = new SWTOpenExt(this);
+		viewObject = ServerServers.LABEL;
 	}
-	/**
-	 * shows Project Explorer view
-	 */
-	public void show() {
-		open.viewOpen(ActionItem.View.ServerServers.LABEL);
-	}
-
 	/**
 	 * removes all projects from server with given name
 	 * @param serverName
 	 */
 	public void removeAllProjectsFromServer(String serverName) {
-		SWTBot bot = open.viewSelect(ServerServers.LABEL).bot();
-		SWTBotTree tree = bot.tree();
+		if (serverName==null) {
+			return;
+		}
+		SWTBotTree tree = show().bot().tree();
 		SWTBotTreeItem server = findServerByName(tree,serverName);
 		if (server!=null) {
 			ContextMenuHelper.prepareTreeItemForContextMenu(tree, server);
 	        new SWTBotMenu(ContextMenuHelper.getContextMenu(tree, IDELabel.Menu.ADD_AND_REMOVE, false)).click();
 	        try {
-	        	shell(IDELabel.Menu.ADD_AND_REMOVE).activate();
-		        SWTBotButton btRemoveAll=button("<< Remove All");		        
+	        	SWTBotShell shell = shell(IDELabel.Menu.ADD_AND_REMOVE);
+	        	shell.activate();
+		        SWTBotButton btRemoveAll=shell.bot().button("<< Remove All");		        
 		        if (btRemoveAll.isEnabled()) {
 		        	btRemoveAll.click();
 		        	log.info("Removing all projects from server '"+serverName+"'");
 		        }
-		        open.finish(this, IDELabel.Button.FINISH);
+		        open.finish(shell.bot(), IDELabel.Button.FINISH);
 		        new SWTUtilExt(this).waitForNonIgnoredJobs();
 		        new SWTUtilExt(this).waitForAll(Timing.time3S());
 	        } catch (WidgetNotFoundException ex) {
@@ -65,7 +56,7 @@ public class ServersView extends SWTBotExt {
 	 * @param serverName
 	 */
 	public void stopServer(String serverName) {
-		SWTBot bot = open.viewSelect(ServerServers.LABEL).bot();
+		SWTBot bot = open.viewOpen(ServerServers.LABEL).bot();
 		SWTBotTree tree = bot.tree();
 		SWTBotTreeItem server = findServerByName(tree,serverName);
 		if (server!=null) {
@@ -82,7 +73,7 @@ public class ServersView extends SWTBotExt {
 	 */
 	public void startServer(String serverName) {
 		show();
-		SWTBot bot = open.viewSelect(ServerServers.LABEL).bot();
+		SWTBot bot = open.viewOpen(ServerServers.LABEL).bot();
 		SWTBotTree tree = bot.tree();
 		SWTBotTreeItem server = findServerByName(tree,serverName);
 		if (server!=null) {
@@ -108,9 +99,8 @@ public class ServersView extends SWTBotExt {
 	 * @param projectName
 	 */
 	public void removeProjectFromServers(String projectName){
-		
-		SWTBot bot = open.viewOpen(View.ServerServers.LABEL).bot();	    	    
-	    SWTBotTree serverTree = bot.tree();
+		   	    
+	    SWTBotTree serverTree = show().bot().tree();
 	    // Expand All
 	    for (SWTBotTreeItem serverTreeItem : serverTree.getAllItems()){
 	      serverTreeItem.expand();
@@ -128,8 +118,9 @@ public class ServersView extends SWTBotExt {
 	          log.info("Found project to be removed from server: " + serverTreeItemChildren[itemIndex].getText());
 	          ContextMenuHelper.prepareTreeItemForContextMenu(serverTree,serverTreeItemChildren[itemIndex]);
 	          new SWTBotMenu(ContextMenuHelper.getContextMenu(serverTree, IDELabel.Menu.REMOVE, false)).click();
-	          bot.shell("Server").activate();
-	          open.finish(this, IDELabel.Button.OK);
+	          SWTBotShell shell = shell("Server");
+	          shell.activate();
+	          open.finish(shell.bot(), IDELabel.Button.OK);
 	          log.info("Removed project from server: " + serverTreeItemChildren[itemIndex].getText());
 	          new SWTUtilExt(this).waitForNonIgnoredJobs();	          
 	        } else {
@@ -139,7 +130,12 @@ public class ServersView extends SWTBotExt {
 	    }
 	  }
 	/**
-	 * removes project with given name from all servers
+	 * removes projects from pre-configured server
 	 * @param projectName
 	 */
+	public void removeAllProjectsFromServer() {
+		removeAllProjectsFromServer(SWTTestExt.configuredState.getServer().name);
+		
+	}
+
 }

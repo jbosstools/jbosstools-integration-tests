@@ -10,24 +10,18 @@
   ******************************************************************************/
 package org.jboss.tools.ui.bot.ext.view;
 
-import org.jboss.tools.ui.bot.ext.gen.ActionItem.View.GeneralConsole;
-
 import org.apache.log4j.Logger;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotButton;
-import org.jboss.tools.ui.bot.ext.SWTBotExt;
-import org.jboss.tools.ui.bot.ext.SWTOpenExt;
-import org.jboss.tools.ui.bot.ext.gen.IView;
+import org.jboss.tools.ui.bot.ext.gen.ActionItem.View.GeneralConsole;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 /**
  * Manage Console View related tasks
  * @author Vlado Pakan
  *
  */
-public class ConsoleView extends SWTBotExt {
-	protected IView viewObject;
-  protected final SWTOpenExt open;
+public class ConsoleView extends ViewBase {
   public static final int PROBLEMS_DESCRIPTION_COLUMN_INDEX = 0;
   public static final int PROBLEMS_RESOURCE_COLUMN_INDEX = 1;
   public static final int PROBLEMS_PATH_COLUMN_INDEX = 2;
@@ -35,15 +29,8 @@ public class ConsoleView extends SWTBotExt {
 	Logger log = Logger.getLogger(ConsoleView.class);
 	public ConsoleView() {
 	  viewObject = GeneralConsole.LABEL;
-		open = new SWTOpenExt(this);
 	}
-	
-	/**
-	 * shows Explorer view
-	 */
-	public void show() {
-		open.viewOpen(viewObject);
-	}
+
   /**
    * Returns actual console text
    * @return

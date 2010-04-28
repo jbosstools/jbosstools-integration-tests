@@ -5,19 +5,20 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Properties;
 import org.jboss.tools.ui.bot.ext.Activator;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
-import org.jboss.tools.ui.bot.ext.config.Annotations.*;
-import org.jboss.tools.ui.bot.ext.config.requirement.AddSeam;
+import org.jboss.tools.ui.bot.ext.config.Annotations.SWTBotTestRequires;
+import org.jboss.tools.ui.bot.ext.config.Annotations.Seam;
+import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
+import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
 import org.jboss.tools.ui.bot.ext.config.requirement.RequirementBase;
-import org.jboss.tools.ui.bot.ext.config.requirement.StartServer;
-import org.jboss.tools.ui.bot.ext.config.requirement.SwitchPerspective;
 
 public class TestConfigurator {
-	
-	
+
 	public class Keys {
 		public static final String SERVER = "SERVER";
 		public static final String SEAM = "SEAM";
@@ -63,8 +64,8 @@ public class TestConfigurator {
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
-		
-		//properties got loaded
+
+		// properties got loaded
 		try {
 			server = ServerBean.fromString(getProperty(Keys.SERVER));
 			seam = SeamBean.fromString(getProperty(Keys.SEAM));
@@ -75,9 +76,12 @@ public class TestConfigurator {
 	}
 
 	/**
-	 * returns null when given Server annotation does not match global test configuration 
-	 * (e.g. Test wants Server type EAP but we are running on JbossAS)
-	 * @param s Server annotation
+	 * returns null when given Server annotation does not match global test
+	 * configuration (e.g. Test wants Server type EAP but we are running on
+	 * JbossAS)
+	 * 
+	 * @param s
+	 *            Server annotation
 	 * @return StartServer requirement otherwise
 	 */
 	private static RequirementBase getServerRequirement(Server s) {
@@ -85,22 +89,27 @@ public class TestConfigurator {
 			return null;
 		}
 		if (!s.type().equals(ServerType.ALL)) {
-			if (s.type().equals(ServerType.EAP) && !server.type.equals(ServerBean.ServerType.EAP)) {
+			if (s.type().equals(ServerType.EAP)
+					&& !server.type.equals(ServerBean.ServerType.EAP)) {
 				return null;
 			}
-			if (s.type().equals(ServerType.JbossAS) && !server.type.equals(ServerBean.ServerType.JBOSS_AS)) {
+			if (s.type().equals(ServerType.JbossAS)
+					&& !server.type.equals(ServerBean.ServerType.JBOSS_AS)) {
 				return null;
 			}
 		}
-		
+
 		if (!matches(server.version, s.operator(), s.version())) {
 			return null;
 		}
-		return new StartServer();
+		return RequirementBase.createStartServer();
 	}
+
 	/**
-	 * returns null when given Seam annotation does not match global test configuration 
-	 * (e.g. Test wants Seam version 2.2 but we are running on 1.2)
+	 * returns null when given Seam annotation does not match global test
+	 * configuration (e.g. Test wants Seam version 2.2 but we are running on
+	 * 1.2)
+	 * 
 	 * @param s
 	 * @return AddSeam requirement otherwise
 	 */
@@ -111,62 +120,80 @@ public class TestConfigurator {
 		if (!matches(seam.version, s.operator(), s.version())) {
 			return null;
 		}
-		return new AddSeam();		
+		return RequirementBase.createAddSeam();
 	}
+
 	/**
-	 * returns list of requirements if given class (Test) can run, all this is done by exploring class'es
-	 * annotations (see {@link SWTBotTestRequires}
-	 * if class cannot run returns null
+	 * returns list of requirements if given class (Test) can run, all this is
+	 * done by exploring class'es annotations (see {@link SWTBotTestRequires} if
+	 * class cannot run returns null
 	 */
 	public static List<RequirementBase> getClassRequirements(Class<?> klass) {
-		
-		SWTBotTestRequires requies = klass.getAnnotation(SWTBotTestRequires.class);	
-		// all not annotated classes can run
-		if (requies==null) { 
-			return null; 
-			}
+
+		SWTBotTestRequires requies = klass
+				.getAnnotation(SWTBotTestRequires.class);
 		// internal list
 		List<RequirementBase> reqs = new ArrayList<RequirementBase>();
-		
+		// all not annotated classes can run
+		if (requies == null) {
+			return reqs;
+		}
 		if (requies.server().required()) {
 			RequirementBase req = getServerRequirement(requies.server());
-			if (req==null) {
+			if (req == null) {
 				return null;
 			}
 			reqs.add(req);
 		}
 		if (requies.seam().required()) {
 			RequirementBase req = getSeamRequirement(requies.seam());
-			if (req==null) {
+			if (req == null) {
 				return null;
 			}
 			reqs.add(req);
 		}
 		if (!"".equals(requies.perspective())) {
-			reqs.add(new SwitchPerspective(requies.perspective()));
+			reqs.add(RequirementBase.createSwitchPerspective(requies
+					.perspective()));
 		}
+		if (requies.clearWorkspace()) {
+			reqs.add(RequirementBase.createClearWorkspace());
+		}
+		if (requies.clearProjects()) {
+			reqs.add(RequirementBase.createClearProjects());
+		}
+		// sort requirements by priority
+		Collections.sort(reqs, new Comparator<RequirementBase>() {
+			public int compare(RequirementBase o1, RequirementBase o2) {
+				return o1.getPriority() - o2.getPriority();
+			}
+		});
+
 		return reqs;
 	}
+
 	/**
 	 * implements comparison of 2 params by given operator (in this order)
-	 * params are expected version strings (in form X.X or XX) 
-	 * if param1 or param2 is '*' true is returned
+	 * params are expected version strings (in form X.X or XX) if param1 or
+	 * param2 is '*' true is returned
+	 * 
 	 * @param param1
-	 * @param operator (=,<,>=<=,>=,!=)
+	 * @param operator
+	 *            (=,<,>=<=,>=,!=)
 	 * @param param2
 	 * 
 	 * @return
 	 */
-	public static boolean matches(String param1,String operator,String param2) {
-		if ("*".equals(param1)||"*".equals(param2)) {
+	public static boolean matches(String param1, String operator, String param2) {
+		if ("*".equals(param1) || "*".equals(param2)) {
 			return true;
 		}
 		if ("=".equals(operator)) {
-			return param1.equals(param2);			
+			return param1.equals(param2);
 		}
 		if ("!=".equals(operator)) {
-			return !param1.equals(param2);			
-		}		
+			return !param1.equals(param2);
+		}
 		int ver1 = versionToNumber(param1);
 		int ver2 = versionToNumber(param2);
 		if (">".equals(operator)) {
@@ -183,11 +210,13 @@ public class TestConfigurator {
 		}
 		return false;
 	}
+
 	private static int versionToNumber(String version) {
 		return Integer.parseInt(version.replaceAll("\\.", ""));
 	}
+
 	public static String getProperty(String key) {
 		return swtTestProperties.getProperty(key);
-		//return SWTTestExt.util.getValue(swtTestProperties, key);
+		// return SWTTestExt.util.getValue(swtTestProperties, key);
 	}
 }

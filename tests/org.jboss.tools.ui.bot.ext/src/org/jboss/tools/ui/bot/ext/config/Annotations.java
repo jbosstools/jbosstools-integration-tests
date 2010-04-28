@@ -10,7 +10,15 @@ import java.lang.annotation.Target;
 public class Annotations {
 	/**
 	 * annotation which defines requirement of whole test Class
-	 * by default all sub-annotations are optional and are disabled
+	 * by default all sub-annotations are optional and are disabled, please go through
+	 * documentation of all items.
+	 * <ul>
+	 * <li>{@link SWTBotTestRequires#clearProjects()}</li>
+	 * <li>{@link SWTBotTestRequires#clearWorkspace()}</li>
+	 * <li>{@link SWTBotTestRequires#perspective()}</li>
+	 * <li>{@link Server}</li>
+	 * <li>{@link Seam}</li>
+	 * </ul>
 	 * @author lzoubek
 	 *
 	 */
@@ -21,12 +29,28 @@ public class Annotations {
 		 * optionally require server
 		 */
 		Server server() default @Server( required = false );
+		/**
+		 * optionally require seam runtime
+		 * @return
+		 */
 		Seam seam() default @Seam( required = false );
 		/**
 		 * name of perspective to run within
 		 * @return
 		 */
 		String perspective() default "";
+		/**
+		 * my default workspace is cleaned before test (attempt to close all shells and editors, closes 'Welcome' view), 
+		 * setting this to false will disable this feature
+		 * @return
+		 */
+		boolean clearWorkspace() default true;
+		/**
+		 * by default all projects are undeployed from pre-configured server & deleted before test runs
+		 * setting this to false will disable this feature
+		 * @return
+		 */
+		boolean clearProjects() default true;
 	}
 	/**
 	 * Server requirement, by default matches all server types and versions

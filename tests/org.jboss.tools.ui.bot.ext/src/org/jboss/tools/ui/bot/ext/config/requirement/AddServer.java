@@ -25,7 +25,7 @@ public class AddServer extends RequirementBase {
 	public AddServer() {
 		String javaVer = getNeededJavaVersion(TestConfigurator.server.withJavaVersion);
 		if (javaVer!=null) {
-			AddJRE addJava = new AddJRE(javaVer);
+			AddJRE addJava = createAddJRE(javaVer);
 			getDependsOn().add(addJava);
 			javaName=addJava.getAddedAsName();
 		}

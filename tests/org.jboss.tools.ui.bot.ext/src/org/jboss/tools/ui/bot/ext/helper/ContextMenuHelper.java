@@ -16,6 +16,8 @@ import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.instanceOf;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.Vector;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Control;
@@ -49,6 +51,7 @@ public class ContextMenuHelper {
    */
   public static MenuItem getContextMenu(final AbstractSWTBot<?> bot,
       final String text, final boolean hideAfterwards) {
+	  final List<String> foundMenuItems = new Vector<String>();
     final MenuItem menuItem = UIThreadRunnable
         .syncExec(new WidgetResult<MenuItem>() {
           @SuppressWarnings("unchecked")
@@ -56,7 +59,7 @@ public class ContextMenuHelper {
             MenuItem menuItem = null;
             Menu menu = getWidgetMenu(bot.widget);
             Matcher<?> matcher = allOf(instanceOf(MenuItem.class),withMnemonic(text));
-            menuItem = show(menu, matcher, hideAfterwards);
+            menuItem = show(menu, matcher, hideAfterwards, foundMenuItems);
             if (menuItem != null) {
               menu = menuItem.getMenu();
             } else {
@@ -66,7 +69,7 @@ public class ContextMenuHelper {
           }
         });
     if (menuItem == null) {
-      throw new WidgetNotFoundException("Could not find menu: " + text);
+      throw new WidgetNotFoundException("Could not find menu: '" + text+"', found items :"+Arrays.toString(foundMenuItems.toArray()));
     }
     else{
       if (hideAfterwards){
@@ -86,14 +89,18 @@ public class ContextMenuHelper {
    * @param menu
    * @param matcher
    * @param hideAfterwards
+   * @param foundMenuItems list of menuItems found (useful for debugging), items found in menu are appended into given list, can be null
    * @return
    */
-  private static MenuItem show(final Menu menu, final Matcher<?> matcher, final boolean hideAfterwards) {
+  private static MenuItem show(final Menu menu, final Matcher<?> matcher, final boolean hideAfterwards, List<String> foundMenuItems) {
     if (menu != null) {
       menu.notifyListeners(SWT.Show, new Event());
       MenuItem[] items = menu.getItems();
       for (final MenuItem menuItem : items) {
-        if (matcher.matches(menuItem)) {
+    	  if (foundMenuItems!=null) {
+    		  foundMenuItems.add(menuItem.getText());
+    	  }
+    	  if (matcher.matches(menuItem)) {
           return menuItem;
         }
       }
@@ -191,7 +198,7 @@ public class ContextMenuHelper {
             for (String text : texts) {
               Matcher<?> matcher = allOf(instanceOf(MenuItem.class),
                   withMnemonic(text));
-              menuItem = show(menu, matcher,false);
+              menuItem = show(menu, matcher,false,null);
               if (menuItem != null) {
                 menu = menuItem.getMenu();
               } else {

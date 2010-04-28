@@ -17,6 +17,7 @@ public class SWTBotHyperlinkExt extends AbstractSWTBotControl<Hyperlink> {
 
 	/**
 	 * activates hyper-link by sending special key do widget
+	 * NOTE : this does not work well when SWTBot is running inside VNC
 	 * @return
 	 */
 	public AbstractSWTBot<Hyperlink> activate() {
