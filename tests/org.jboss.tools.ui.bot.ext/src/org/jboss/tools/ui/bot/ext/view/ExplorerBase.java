@@ -53,7 +53,7 @@ public abstract class ExplorerBase extends ViewBase {
 	 */
 	public void deleteProject(String projectName, boolean fileSystem) {
 		log.info("Deleting project '"+projectName+"'");
-		SWTBot viewBot = viewByTitle(viewObject.getName()).bot();
+		SWTBot viewBot = show().bot();
 		SWTBotTreeItem item = viewBot.tree().expandNode(projectName);
 		ContextMenuHelper.prepareTreeItemForContextMenu(viewBot.tree(), item);
 		new SWTBotMenu(ContextMenuHelper.getContextMenu(viewBot.tree(), IDELabel.Menu.DELETE, false)).click();
@@ -69,7 +69,7 @@ public abstract class ExplorerBase extends ViewBase {
 	 * deletes all projects from workspace
 	 */
 	public void deleteAllProjects() {
-		SWTBot viewBot = viewByTitle(viewObject.getName()).bot();
+		SWTBot viewBot = show().bot();
 		    List<String> items = new Vector<String>();
 		    for (SWTBotTreeItem ti : viewBot.tree().getAllItems()) {
 		    	items.add(ti.getText());
@@ -95,7 +95,7 @@ public abstract class ExplorerBase extends ViewBase {
 	 * @return editor with opened file
 	 */
 	public SWTBotEditor openFile(String projectName, String... path) {
-		SWTBot viewBot = open.viewOpen(viewObject).bot();
+		SWTBot viewBot = show().bot();
 		SWTBotTree tree = viewBot.tree();
 		SWTBotTreeItem item = tree.expandNode(projectName);
 		StringBuilder builder = new StringBuilder(projectName);
@@ -114,7 +114,7 @@ public abstract class ExplorerBase extends ViewBase {
 	 * @param projectName
 	 */
 	public void runOnServer(String projectName) {
-		SWTBot viewBot = open.viewOpen(viewObject).bot();
+		SWTBot viewBot = show().bot();
 		SWTBotTreeItem item = viewBot.tree().expandNode(projectName);
 		ContextMenuHelper.prepareTreeItemForContextMenu(viewBot.tree(), item);
 		   final SWTBotMenu menuRunAs = viewBot.menu(IDELabel.Menu.RUN).menu(IDELabel.Menu.RUN_AS);
@@ -155,7 +155,7 @@ public abstract class ExplorerBase extends ViewBase {
 	public boolean existsResource(String... resource) {
 		
 		try {
-			SWTBot viewBot = viewByTitle(viewObject.getName()).bot();
+			SWTBot viewBot = show().bot();
 			SWTBotTreeItem ancestor = viewBot.tree().getTreeItem(resource[0]);
 			viewBot.tree().expandNode(resource[0]);
 			for (int i=1;i<resource.length;i++) {
@@ -167,7 +167,6 @@ public abstract class ExplorerBase extends ViewBase {
 			return true;
 			}
 			catch (WidgetNotFoundException ex) {
-				ex.printStackTrace();
 				return false;
 			}
 	}

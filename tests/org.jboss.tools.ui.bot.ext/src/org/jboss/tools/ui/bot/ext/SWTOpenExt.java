@@ -237,6 +237,12 @@ public class SWTOpenExt {
 				log.info("OK, shell '"+activeShellStr+"' closed.");
 				return;
 			} catch (TimeoutException ex) {
+				String currentShellStr = bot.activeShell().getText();
+				if (!activeShellStr.equals(currentShellStr)) {
+					log.error("Unexpected shell '"+currentShellStr+"': ["+SWTUtilExt.getAllBotWidgetsAsText(bot)+"] appeared, when waiting for shell to close");
+					bot.activeShell().close();
+					log.info("Shell '"+currentShellStr+"' closed.");
+				}
 				if (System.currentTimeMillis()-time>timeout) {
 					log.error("Shell '"+activeShellStr+"' probably hanged up (480s timeout), returning, forcing to close it, expect errors");
 					try {

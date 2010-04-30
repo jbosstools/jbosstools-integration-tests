@@ -33,6 +33,8 @@ import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
+import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
+import org.eclipse.swtbot.swt.finder.results.Result;
 import org.eclipse.swtbot.swt.finder.utils.SWTUtils;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarButton;
@@ -606,6 +608,27 @@ public class SWTUtilExt extends SWTUtils {
     }
   }
   /**
+   * gets all active widgets as string 
+   * @param bot
+   * @return
+   */
+  public static String getAllBotWidgetsAsText(final SWTBot bot) {
+	  return UIThreadRunnable.syncExec(new Result<String>(){
+		public String run() {
+			StringBuilder sb = new StringBuilder();
+			List<?> widgets = bot.widgets(new SWTUtilExt.AlwaysMatchMatcher<Widget>());
+		    for (Object object : widgets){
+		    	String objectName = object.getClass().getSimpleName();
+		    	String text = SWTUtilExt.invokeMethod(object, "getText").trim();
+		    	if (!"".equals(text)) {
+		    		sb.append("{"+ objectName + "->"+text+"} ");
+		    	}
+		    }
+		  return sb.toString();
+		}});
+	  
+  }
+  /**
    * Display all active widgets
    * @param bot
    */
@@ -652,7 +675,7 @@ public class SWTUtilExt extends SWTUtils {
     String result = "<null>";
     
     try {
-      Object oResult = SWTUtils.invokeMethod(object, "getText");
+      Object oResult = SWTUtils.invokeMethod(object, method);
       if (oResult != null){
         result = oResult.toString();
       }
