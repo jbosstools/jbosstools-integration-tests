@@ -9,6 +9,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Properties;
+
+import org.apache.log4j.Logger;
 import org.jboss.tools.ui.bot.ext.Activator;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.config.Annotations.SWTBotTestRequires;
@@ -18,7 +20,8 @@ import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
 import org.jboss.tools.ui.bot.ext.config.requirement.RequirementBase;
 
 public class TestConfigurator {
-
+	private static final Logger log = Logger
+	.getLogger(TestConfigurator.class);
 	public class Keys {
 		public static final String SERVER = "SERVER";
 		public static final String SEAM = "SEAM";
@@ -41,9 +44,14 @@ public class TestConfigurator {
 			// try to load from file first
 			String propFile = System.getProperty(SWTBOT_TEST_PROPERTIES_FILE,
 					null);
-			if (propFile != null && new File(propFile).exists()) {
+			if (propFile != null) {
 				try {
+					if (new File(propFile).exists()) {
+						log.info("Loading exeternaly provided configuration file '"+propFile+"'");
 					swtTestProperties.load(new FileInputStream(propFile));
+					} else {
+						throw new IOException(SWTBOT_TEST_PROPERTIES_FILE+" "+propFile+" does not exist!");
+					}
 				} catch (FileNotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -53,6 +61,7 @@ public class TestConfigurator {
 				}
 			} else {
 				try {
+					log.info("Loading default configuration");
 					swtTestProperties.load(new FileInputStream(SWTTestExt.util
 							.getResourceFile(Activator.PLUGIN_ID,
 									"/SWTBotTest-default.properties")));
@@ -74,7 +83,29 @@ public class TestConfigurator {
 			e.printStackTrace();
 		}
 	}
-
+/**
+ * check config values if they seem to be valid (existing dirs)
+ * @throws FileNotFoundException 
+ */
+	public static boolean checkConfig()  {
+		try {
+		checkDirExists(getProperty(Keys.JAVA_HOME_15));
+		checkDirExists(getProperty(Keys.JAVA_HOME_16));
+		checkDirExists(seam.seamHome);
+		checkDirExists(server.runtimeHome);
+		return true;
+		}
+		catch (Exception ex) {
+			log.error(ex.getMessage()+ " incorrect configuration, set your custom properties file via 'swtbot.test.properties.file' java property");
+			return false;
+		}
+		
+	}
+	private static void checkDirExists(String dir) throws FileNotFoundException {
+		if (!new File(dir).exists() || !new File(dir).isDirectory()) {
+			throw new FileNotFoundException("File '"+dir+"' does not exist or is not directory");
+		}
+	}
 	/**
 	 * returns null when given Server annotation does not match global test
 	 * configuration (e.g. Test wants Server type EAP but we are running on

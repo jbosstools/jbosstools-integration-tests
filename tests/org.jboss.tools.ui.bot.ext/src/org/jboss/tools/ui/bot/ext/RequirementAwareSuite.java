@@ -40,7 +40,7 @@ public class RequirementAwareSuite extends Suite {
 			// adding ability to create screen shot (taken from SWTBotJunit4ClassRunner)
 			RunListener failureSpy = new ScreenshotCaptureListener();
 			notifier.removeListener(failureSpy);
-			notifier.addListener(failureSpy);
+			notifier.addListener(failureSpy);			
 			try {
 				super.run(notifier);
 			}
@@ -57,7 +57,7 @@ public class RequirementAwareSuite extends Suite {
 					r.fulfill();
 				}
 			} catch (Exception e) {
-				log.error("Fulfilling failed", e);
+				log.error("Fulfilling failed", e);				
 			}
 
 			return super.withBeforeClasses(statement);
@@ -73,11 +73,15 @@ public class RequirementAwareSuite extends Suite {
 			List<RequirementBase> reqs = TestConfigurator
 					.getClassRequirements(klass);
 			if (reqs != null) {
+				if (!TestConfigurator.checkConfig()) {
+					log.info("Skipping class '" + klass.getCanonicalName()+"' - incorrect configuration");
+					return null;
+				}
 				log.info("Returning runner for test class "
 						+ klass.getCanonicalName());
-				return new ReqAwareClassRunner(klass, reqs);
+				return new ReqAwareClassRunner(klass, reqs);				
 			}
-			log.info("Skipping test class " + klass.getCanonicalName());
+			log.info("Skipping class '" + klass.getCanonicalName() + "' - annotations do not met configuration");
 			return null;
 		}
 

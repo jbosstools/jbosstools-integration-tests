@@ -10,7 +10,7 @@ public class ClearWorkspace extends RequirementBase {
 	@Override
 	public boolean checkFulfilled() {
 		try {
-		return SWTTestExt.bot.shells().length>=2 && SWTTestExt.bot.editors().isEmpty() && !SWTTestExt.configuredState.isWelcomeViewVisible();
+		return SWTTestExt.bot.shells().length==2 && SWTTestExt.bot.editors().isEmpty() && !SWTTestExt.configuredState.isWelcomeViewVisible();
 		}
 		catch (Exception ex) {
 			log.error("Cannot determine, if all editors and shells are closed", ex);
