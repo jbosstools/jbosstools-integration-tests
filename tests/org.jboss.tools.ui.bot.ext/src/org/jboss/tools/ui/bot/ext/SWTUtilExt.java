@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.jobs.Job;
@@ -692,5 +693,36 @@ public class SWTUtilExt extends SWTUtils {
     
     return result;
   }
-  
+  /**
+   * Returns location of file within plugin 
+   * @param pluginId
+   * @param fileName
+   * @return
+   */
+  public static String getPathToFileWithinPlugin(String pluginId,
+      String fileName) {
+
+    String filePath = null;
+    try {
+      filePath = FileLocator.toFileURL(
+          Platform.getBundle(pluginId).getEntry("/")).getFile()
+          + fileName;
+    } catch (IOException e) {
+      // do nothing filePath is null
+      e.printStackTrace();
+    }
+
+    return filePath;
+  }
+  /**
+   * Returns path to project with projectName
+   * @param projectName
+   * @return
+   */
+  public static String getPathToProject(String projectName) {
+    return ResourcesPlugin.getWorkspace().getRoot().getLocation().toString() +
+      File.separator +
+      projectName;
+  }
+
 }

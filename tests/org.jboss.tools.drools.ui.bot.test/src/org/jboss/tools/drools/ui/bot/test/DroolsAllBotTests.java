@@ -14,12 +14,14 @@ import java.io.File;
 
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
+import org.jboss.tools.drools.ui.bot.test.smoke.DecisionTableTest;
 import org.jboss.tools.drools.ui.bot.test.smoke.DomainSpecificLanguageEditorTest;
 import org.jboss.tools.drools.ui.bot.test.smoke.GuidedDroolsRulesEditorTest;
 import org.jboss.tools.drools.ui.bot.test.smoke.ManageDroolsRuntime;
 import org.jboss.tools.drools.ui.bot.test.smoke.ManageDroolsProject;
 import org.jboss.tools.drools.ui.bot.test.smoke.ManageDroolsRules;
 import org.jboss.tools.drools.ui.bot.test.smoke.DroolsRulesEditorTest;
+import org.jboss.tools.drools.ui.bot.test.smoke.RuleFlowTest;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.SWTUtilExt;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
@@ -43,7 +45,9 @@ import org.junit.runners.Suite.SuiteClasses;
   ManageDroolsRules.class,
   DroolsRulesEditorTest.class,
   GuidedDroolsRulesEditorTest.class,
-  DomainSpecificLanguageEditorTest.class})  
+  DomainSpecificLanguageEditorTest.class,
+  RuleFlowTest.class,
+  DecisionTableTest.class})  
 public class DroolsAllBotTests extends SWTTestExt {
   public static final String DROOLS_PROJECT_NAME = "droolsTest";
   public static final String DROOLS_RUNTIME_NAME = "Drools Test Runtime";
@@ -57,6 +61,9 @@ public class DroolsAllBotTests extends SWTTestExt {
   public static final String SAMPLE_DROOLS_RULE_NAME = "Sample.drl";
   public static final String GUIDED_DROOLS_RULE_NAME = "GuidedRule.brl";
   public static final String DOMAIN_SPECIFIC_LANGUAGE_FILE_NAME = "DslTest.dsl";
+  public static final String RULE_FLOW_JAVA_TEST_FILE_NAME = "ProcessTest.java";
+  public static final String RULE_FLOW_RF_FILE_NAME = "ruleflow.rf";
+  public static final String DECISION_TABLE_JAVA_TEST_FILE_NAME = "DecisionTableTest.java";
   private static String testDroolsRuntimeName = null;
   public static String getTestDroolsRuntimeName() {
     return testDroolsRuntimeName;
