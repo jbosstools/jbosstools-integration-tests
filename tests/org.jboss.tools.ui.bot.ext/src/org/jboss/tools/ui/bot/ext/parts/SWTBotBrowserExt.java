@@ -10,6 +10,7 @@ import org.eclipse.swt.browser.ProgressEvent;
 import org.eclipse.swt.browser.ProgressListener;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
+import org.eclipse.swtbot.swt.finder.results.Result;
 import org.eclipse.swtbot.swt.finder.results.VoidResult;
 import org.eclipse.swtbot.swt.finder.widgets.AbstractSWTBotControl;
 import org.hamcrest.SelfDescribing;
@@ -122,6 +123,30 @@ public class SWTBotBrowserExt extends AbstractSWTBotControl<Browser> {
 
 			}
 		});
+	}
+	/**
+	 * executes script in browser
+	 * @param javaScript
+	 * @return true if script was successfully executed
+	 */
+	public boolean executeScript(final String javaScript) {
+		return UIThreadRunnable.syncExec(new Result<Boolean>() {
+			public Boolean run() {
+				return widget.execute(javaScript);
+			}
+		});
+
+	}
+	/**
+	 * executes script in browser asynchronously
+	 * @param javaScript
+	 */
+	public void executeScriptAsync(final String javaScript) {
+		UIThreadRunnable.asyncExec(new VoidResult(){
+
+			public void run() {
+				widget.execute(javaScript);
+			}});
 	}
 	public void forward() {
 		UIThreadRunnable.syncExec(new VoidResult() {
