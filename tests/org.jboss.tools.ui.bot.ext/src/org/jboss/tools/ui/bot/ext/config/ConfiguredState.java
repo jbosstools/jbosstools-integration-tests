@@ -9,21 +9,23 @@ import org.jboss.tools.ui.bot.ext.config.requirement.RequirementBase;
  * this class represents state of running test suite. Properties of this object
  * should be changed only by classed extending {@link RequirementBase} class.
  * 
- * @author lzoubek
+ * @author lzoubek@redhat.com
  * 
  */
 public class ConfiguredState {
 	private List<String> jreList = new Vector<String>();
 	private Server server = new Server();
 	private Seam seam = new Seam();
-	private boolean welcomeViewVisible = true;
+	private ESB esb = new ESB();
 
-	public boolean isWelcomeViewVisible() {
-		return welcomeViewVisible;
+	private boolean viewsPrepared = false;
+
+	public boolean isViewsPrepared() {
+		return viewsPrepared;
 	}
 
-	public void setWelcomeViewVisible(boolean welcomeViewVisible) {
-		this.welcomeViewVisible = welcomeViewVisible;
+	public void setViewsPrepared(boolean viewsPrepared) {
+		this.viewsPrepared = viewsPrepared;
 	}
 
 	/**
@@ -51,6 +53,15 @@ public class ConfiguredState {
 	 */
 	public Server getServer() {
 		return server;
+	}
+
+	/**
+	 * gets configured esb
+	 * 
+	 * @return
+	 */
+	public ESB getEsb() {
+		return esb;
 	}
 
 	public class Server {
@@ -84,6 +95,21 @@ public class ConfiguredState {
 	public class Seam {
 		/**
 		 * version of seam runtime
+		 */
+		public String version = null;
+		/**
+		 * is configured?
+		 */
+		public boolean isConfiured = false;
+		/**
+		 * name of added runtime
+		 */
+		public String name = null;
+	}
+
+	public class ESB {
+		/**
+		 * version of ESB runtime
 		 */
 		public String version = null;
 		/**
