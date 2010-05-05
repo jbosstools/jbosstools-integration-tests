@@ -90,18 +90,21 @@ public abstract class ExplorerBase extends ViewBase {
 	}
 	/**
 	 * opens file (selects in tree and doubleclicks)
+	 * @param timeOut
 	 * @param projectName
 	 * @param path to file
 	 * @return editor with opened file
 	 */
-	public SWTBotEditor openFile(String projectName, String... path) {
+	public SWTBotEditor openFile(int timeOut, String projectName, String... path) {
 		SWTBot viewBot = show().bot();
 		SWTBotTree tree = viewBot.tree();
 		SWTBotTreeItem item = tree.expandNode(projectName);
+		viewBot.sleep(timeOut);
 		StringBuilder builder = new StringBuilder(projectName);
 		// Go through path
 		for (String nodeName : path) {
 			item = item.expandNode(nodeName);
+			viewBot.sleep(timeOut);
 			builder.append("/" + nodeName);
 		}
 		item.select().doubleClick();
@@ -109,6 +112,15 @@ public abstract class ExplorerBase extends ViewBase {
 		SWTBotEditor editor = activeEditor();
 		return editor;
 	}
+	/**
+   * opens file (selects in tree and doubleclicks) with zero timeOut for expandNode() method
+   * @param projectName
+   * @param path to file
+   * @return editor with opened file
+   */
+  public SWTBotEditor openFile(String projectName, String... path) {
+    return openFile(0,projectName,path);
+  }
 	/**
 	 * runs given project on Server (uses default server, the first one) server MUST be running
 	 * @param projectName

@@ -8,12 +8,15 @@ import java.util.regex.Pattern;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.browser.ProgressEvent;
 import org.eclipse.swt.browser.ProgressListener;
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.results.Result;
 import org.eclipse.swtbot.swt.finder.results.VoidResult;
 import org.eclipse.swtbot.swt.finder.widgets.AbstractSWTBotControl;
 import org.hamcrest.SelfDescribing;
+import org.jboss.tools.ui.bot.ext.SWTUtilExt;
+import org.jboss.tools.ui.bot.ext.Timing;
 
 /**
  * browser component
@@ -201,5 +204,35 @@ public class SWTBotBrowserExt extends AbstractSWTBotControl<Browser> {
 			}
 		});
 	}
-
+  /**
+   * Click on the button generated via Java script on position specified by index 
+   * @param index
+   */
+	public void clickOnButtonViaJavaScript(int index,SWTWorkbenchBot bot){
+	  executeScriptAsync("document.getElementsByTagName('button')[" +
+	    index +
+	    "].click();");
+	  bot.sleep(Timing.time5S());
+	}
+	/**
+   * Click on the button generated via Java script with specified label
+   * @param label
+   */
+  public void clickOnButtonViaJavaScript(String label,SWTWorkbenchBot bot){
+    executeScriptAsync("var buttons = document.getElementsByTagName('button');" +
+      "for (var i=0; i <=(buttons.length-1); i++){" +
+      "if (buttons[i].innerHTML == \"" + label + "\") {" + 
+      " buttons[i].click();}" + "}");
+    bot.sleep(Timing.time5S());
+  }
+	/**
+	 * Navigate Browser to url and wait until page is completely loaded
+	 * @param url
+	 * @param bot
+	 */
+	public void loadUrlToBrowser(String url,SWTWorkbenchBot bot){
+	  goURL(url);
+	  new SWTUtilExt(bot).waitForBrowserLoadsPage(this);
+	  bot.sleep(Timing.time5S());
+	}
 }

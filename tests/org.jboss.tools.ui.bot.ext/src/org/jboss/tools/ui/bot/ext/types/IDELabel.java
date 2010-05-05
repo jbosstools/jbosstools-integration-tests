@@ -65,6 +65,7 @@ public class IDELabel {
     public static final String TOGGLE_BREAKPOINT="Toggle Breakpoint";
     public static final String DEBUG_AS = "Debug As";
     public static final String DEBUG_AS_DROOLS_APPLICATION = "Drools Application";
+    public static final String OPEN_GUVNOR_CONSOLE = "Open Guvnor Console";
 	}
 
 	public class Button {
@@ -171,6 +172,7 @@ public class IDELabel {
 		public static final String WEB_PROJECTS = "Web Projects";
 		public static final String PROBLEMS = "Problems";
 		public static final String DEBUG = "Debug";
+		public static final String GUVNOR_REPOSITORIES = "Guvnor Repositories";
 	}
 	
 	public class ViewGroup {
@@ -180,6 +182,7 @@ public class IDELabel {
 		public static final String SERVER = "Server";
 		public static final String JBOSS_TOOLS_WEB = "JBoss Tools Web";
 		public static final String DEBUG = "Debug";
+		public static final String GUVNOR = "Guvnor";
 	}
 
 	public class SelectPerspectiveDialog {
@@ -190,6 +193,7 @@ public class IDELabel {
 		public static final String DB_DEVELOPMENT = "Database Development";
 		public static final String JPA = "JPA";
 		public static final String DEBUG = "Debug";
+		public static final String GUVNOR_REPOSITORY_EXPLORING = "Guvnor Repository Exploring";
 	}
 	/**
 	 * Hibernate Console Wizard (ConsoleConfigurationCreationWizard) Labels (
@@ -428,6 +432,23 @@ public class IDELabel {
      public static final String RULE_MAPPING_TEXT_LABEL = "Rule mapping:";
      public static final String SCOPE_COMBO_LABEL = "Scope:";
      public static final String SCOPE_COMBO_VALUE = "condition";
+     
+   }
+   
+   public static final class GuvnorRepositories {
+     
+     public static final String ADD_GUVNOR_REPOSITORY_TOOLTIP = "Add a Guvnor respository connection";
+     public static final String REMOVE_GUVNOR_REPOSITORY_TOOLTIP = "Delete Guvnor repository connection";
+     public static final String REMOVE_GUVNOR_REPOSITORY_DIALOG_TITLE = "Remove repository connection";
+     public static final String GUVNOR_REPOSITORY_ROOT_TREE_ITEM = "http://localhost:8080/drools-guvnor/org.drools.guvnor.Guvnor/webdav";
+     public static final String PACKAGES_TREE_ITEM = "packages/";
+     public static final String MORTGAGE_TREE_ITEM = "mortgages/";
+   }
+   
+   public static final class GuvnorConsole {
+     
+     public static final String GUVNOR_CONSOLE_TITLE = "JBoss Guvnor";
+     public static final String BUTTON_YES_INSTALL_SAMPLES = "Yes, please install samples";
      
    }
  }

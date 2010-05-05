@@ -81,7 +81,10 @@ public class ServersView extends ViewBase {
 	        new SWTBotMenu(ContextMenuHelper.getContextMenu(tree, IDELabel.Menu.START, false)).click();
 		    new SWTUtilExt(this).waitForNonIgnoredJobs(Timing.time100S());
 		    new SWTUtilExt(this).waitForAll(Timing.time3S());
-	        
+		}
+		else{
+		  throw new RuntimeException("Unable to start server witn name: " + serverName +
+		    "\nThis server is not defined within Servers view");
 		}
 	}
 	

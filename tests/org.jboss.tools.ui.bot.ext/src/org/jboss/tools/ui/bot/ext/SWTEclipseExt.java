@@ -158,7 +158,10 @@ public class SWTEclipseExt {
 			break;
 		case DEBUG:
       perspectiveLabel = IDELabel.SelectPerspectiveDialog.DEBUG;
-      break;		
+      break;	
+		case GUVNOR_REPOSITORY_EXPLORING:
+      perspectiveLabel = IDELabel.SelectPerspectiveDialog.GUVNOR_REPOSITORY_EXPLORING;
+      break;
 		default:
 			fail("Unknown perspective to open");
 		}
@@ -430,6 +433,7 @@ public class SWTEclipseExt {
 	 * @param serverName
 	 */
 	public void addServer(IServer server, String serverName) {
+	  log.info("Adding server: " + serverName);
 		SWTBot wiz = open.newObject(ActionItem.NewObject.ServerServer.LABEL);
 		open.selectTreeNode(server);
 		wiz.textWithLabel(ServerServer.TEXT_SERVER_NAME).setText(serverName);
@@ -442,6 +446,9 @@ public class SWTEclipseExt {
 	 * @param seamHome path to seam home directory
 	 */
 	public void addSeamRuntime(String name, String version, String seamHome) {
+	  log.info("Adding Seam Runtime: " + name +
+	    "\nVersion: " + version +
+	    "\nHome: " + seamHome);
 		SWTBot wiz = open.preferenceOpen(ActionItem.Preference.JBossToolsWebSeam.LABEL);
 		SWTBotTable tbRuntimeEnvironments = bot.table();
 		boolean createRuntime = true;
@@ -505,6 +512,9 @@ public class SWTEclipseExt {
 	 */
 	public void addJbossServerRuntime(IServerRuntime runtime,
 			String runtimeHome, String name, String jreToUse) {
+    log.info("Adding JBoss Server Runtime: " + name +
+      "\nHome: " + runtimeHome +
+      "\nJRE: " + jreToUse);	  
 		Properties props = new Properties();
 		props
 				.put(IDELabel.JBossServerRuntimeDialog.HOME_DIRECTORY,
@@ -522,6 +532,8 @@ public class SWTEclipseExt {
 	 */
 	public void addServerRuntime(IServerRuntime runtime, Properties properties,
 			String jreToUse) {
+	  log.info("Addding Server Runtime: " + runtime.getName() +
+	    "\nJRE: " + jreToUse);
 		SWTBot wiz = open
 				.preferenceOpen(ActionItem.Preference.ServerRuntimeEnvironments.LABEL);
 		
@@ -569,6 +581,7 @@ public class SWTEclipseExt {
 	 *            path to jre
 	 */
 	public void addJavaVM(String vmName, String jreHome) {
+	  log.info("Adding Java Virtual Machine: " + vmName + "\nHome: " + jreHome);
 		SWTBot pref = open
 				.preferenceOpen(ActionItem.Preference.JavaInstalledJREs.LABEL);
 		pref.button(IDELabel.Button.ADD).click();
@@ -591,7 +604,10 @@ public class SWTEclipseExt {
 	 */
 	public void addServerRuntime(String runtimeName, String runtimeGroup,
 			String runtimeType, String runtimeHomeDir) {
-
+	  log.info("Adding Server Runtime: " + runtimeName +
+	    "\nRuntime Group: " + runtimeGroup +
+	    "\nRuntime Type: " + runtimeType +
+	    "\nHome: " + runtimeHomeDir);
 		bot.menu(IDELabel.Menu.WINDOW).menu(IDELabel.Menu.PREFERENCES).click();
 		bot.shell(IDELabel.Shell.PREFERENCES).activate();
 		bot.tree().expandNode(IDELabel.PreferencesDialog.SERVER_GROUP).select(

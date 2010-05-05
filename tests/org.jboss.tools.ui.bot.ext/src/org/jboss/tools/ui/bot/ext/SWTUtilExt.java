@@ -10,6 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.ui.bot.ext;
 
+import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.withTooltip;
 import static org.junit.Assert.fail;
 
 import java.io.BufferedReader;
@@ -19,6 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
@@ -46,6 +48,7 @@ import org.jboss.tools.ui.bot.ext.types.JobState;
 import org.osgi.framework.Bundle;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
+import org.hamcrest.Matcher;
 
 /**
  * Base class for all classes using SWTBot
@@ -662,8 +665,36 @@ public class SWTUtilExt extends SWTUtils {
     List<SWTBotToolbarButton> buttons = view.getToolbarButtons();
     for (SWTBotToolbarButton button : buttons){
       System.out.println("Button Tooltip: " + button.getToolTipText() +
-        " Text: " + button.getText());
+        " Text: " + button.getText() + 
+        " Class: " + button.getClass());
     }
+  }
+  /**
+   * Returns Toolbar Button of view with specified toolTip
+   * @param view 
+   * @param toolTip
+   */
+  public static SWTBotToolbarButton getViewToolbarButtonWithTooltip (SWTBotView view, String toolTip){
+    List<SWTBotToolbarButton> buttons = view.getToolbarButtons();
+    SWTBotToolbarButton result = null;
+    if (buttons != null){
+      Matcher<Widget> withTooltip = withTooltip(toolTip);
+      Iterator<SWTBotToolbarButton> iterator = buttons.iterator();
+      while (iterator.hasNext() && result == null){
+        SWTBotToolbarButton button = iterator.next();
+        if (withTooltip.matches(button)){
+          result = button;  
+        }
+      }
+    }  
+    
+    if (result == null){
+      throw new WidgetNotFoundException("Unable to find Toolbar Button with ToolTip " +
+        toolTip);      
+    }else{
+      return result;
+    }
+    
   }
   /**
    * Invoke method on object and returns result as String

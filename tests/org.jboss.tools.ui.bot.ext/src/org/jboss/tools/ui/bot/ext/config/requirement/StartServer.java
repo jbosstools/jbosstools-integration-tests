@@ -20,8 +20,9 @@ public class StartServer extends RequirementBase {
 
 	@Override
 	public void handle(){
-		SWTTestExt.servers.startServer(SWTTestExt.configuredState.getServer().name);
-		SWTTestExt.configuredState.getServer().isRunning = true;
-
+	  if (!SWTTestExt.configuredState.getServer().isRunning){
+	    SWTTestExt.servers.startServer(SWTTestExt.configuredState.getServer().name);
+	    SWTTestExt.configuredState.getServer().isRunning = true;
+	  }
 	}
 }

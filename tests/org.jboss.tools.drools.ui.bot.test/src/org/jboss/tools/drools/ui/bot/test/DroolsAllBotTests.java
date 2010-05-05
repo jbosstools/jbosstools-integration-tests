@@ -17,6 +17,7 @@ import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.jboss.tools.drools.ui.bot.test.smoke.DecisionTableTest;
 import org.jboss.tools.drools.ui.bot.test.smoke.DomainSpecificLanguageEditorTest;
 import org.jboss.tools.drools.ui.bot.test.smoke.GuidedDroolsRulesEditorTest;
+import org.jboss.tools.drools.ui.bot.test.smoke.GuvnorRepositoriesTest;
 import org.jboss.tools.drools.ui.bot.test.smoke.ManageDroolsRuntime;
 import org.jboss.tools.drools.ui.bot.test.smoke.ManageDroolsProject;
 import org.jboss.tools.drools.ui.bot.test.smoke.ManageDroolsRules;
@@ -47,7 +48,8 @@ import org.junit.runners.Suite.SuiteClasses;
   GuidedDroolsRulesEditorTest.class,
   DomainSpecificLanguageEditorTest.class,
   RuleFlowTest.class,
-  DecisionTableTest.class})  
+  DecisionTableTest.class,
+  GuvnorRepositoriesTest.class})  
 public class DroolsAllBotTests extends SWTTestExt {
   public static final String DROOLS_PROJECT_NAME = "droolsTest";
   public static final String DROOLS_RUNTIME_NAME = "Drools Test Runtime";
@@ -64,6 +66,7 @@ public class DroolsAllBotTests extends SWTTestExt {
   public static final String RULE_FLOW_JAVA_TEST_FILE_NAME = "ProcessTest.java";
   public static final String RULE_FLOW_RF_FILE_NAME = "ruleflow.rf";
   public static final String DECISION_TABLE_JAVA_TEST_FILE_NAME = "DecisionTableTest.java";
+  public static final String EAP_50_WITH_GUVNOR_PROPERTY_NAME= "jboss-eap5.0-with-drools-home";
   private static String testDroolsRuntimeName = null;
   public static String getTestDroolsRuntimeName() {
     return testDroolsRuntimeName;
