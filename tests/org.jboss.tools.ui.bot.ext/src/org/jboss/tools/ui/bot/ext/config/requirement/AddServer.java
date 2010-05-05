@@ -8,10 +8,12 @@ import org.jboss.tools.ui.bot.ext.gen.IServer;
 import org.jboss.tools.ui.bot.ext.gen.IServerRuntime;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.Server.JBossCommunityJBossAS42;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.Server.JBossCommunityJBossAS50;
+import org.jboss.tools.ui.bot.ext.gen.ActionItem.Server.JBossCommunityJBossAS60;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.Server.JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform43;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.Server.JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform50;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.ServerRuntime.JBossCommunityJBoss42Runtime;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.ServerRuntime.JBossCommunityJBoss50Runtime;
+import org.jboss.tools.ui.bot.ext.gen.ActionItem.ServerRuntime.JBossCommunityJBoss60Runtime;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.ServerRuntime.JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform43Runtime;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.ServerRuntime.JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform50Runtime;
 /**
@@ -25,7 +27,7 @@ public class AddServer extends RequirementBase {
 	public AddServer() {
 		String javaVer = getNeededJavaVersion(TestConfigurator.server.withJavaVersion);
 		if (javaVer!=null) {
-			AddJRE addJava = createAddJRE(javaVer);
+			AddJava addJava = createAddJRE(javaVer);
 			getDependsOn().add(addJava);
 			javaName=addJava.getAddedAsName();
 		}
@@ -73,12 +75,16 @@ public class AddServer extends RequirementBase {
 				return new ServerInfo(JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform50Runtime.LABEL,
 						JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform50.LABEL);
 			}
+			
 		} else if (TestConfigurator.Values.SERVER_TYPE_JBOSSAS.equals(serverType)) {
 			if ("4.2".equals(version)) {
 				return new ServerInfo(JBossCommunityJBoss42Runtime.LABEL,JBossCommunityJBossAS42.LABEL);				
 			}
 			if ("5.0".equals(version)) {
 				return new ServerInfo(JBossCommunityJBoss50Runtime.LABEL,JBossCommunityJBossAS50.LABEL);				
+			}
+			if ("6.0".equals(version)) {
+				return new ServerInfo(JBossCommunityJBoss60Runtime.LABEL,JBossCommunityJBossAS60.LABEL);				
 			}
 		}
 		failParsing();

@@ -477,7 +477,24 @@ public class SWTEclipseExt {
 			open.finish(wiz, IDELabel.Button.OK);
 		}
 	}
-
+	public void addESBRuntime(String name, String version, String runtimeHome ) {
+		SWTBot wiz = open.preferenceOpen(ActionItem.Preference.JBossToolsJBossESBRuntimes.LABEL);
+		wiz.button("Add").click();
+		bot.shell(IDELabel.Shell.NEW_ESB_RUNTIME).activate();
+		bot.text(0).setText(name);
+		bot.text(1).setText(runtimeHome);
+		String[] versions = bot.comboBox().items();
+		int myIndex =0;
+		for (int index=0;index<versions.length;index++) {
+			if (version.equals(versions[index])) {
+				myIndex=index;
+				break;
+			}
+		}
+		bot.comboBox().setSelection(myIndex);
+		open.finish(bot.activeShell().bot());
+		open.finish(wiz, IDELabel.Button.OK);
+	}
 	/**
 	 * adds jboss server runtime only if it's not specified yet
 	 * 

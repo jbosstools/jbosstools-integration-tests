@@ -117,7 +117,8 @@ public class IDELabel {
 	  public static final String RENAME_COMPILATION_UNIT = "Rename Compilation Unit";
 	  public static final String RENAME_JAVA_PROJECT = "Rename Java Project";
 	  public static final String CONFIRM_PERSPECTIVE_SWITCH = "Confirm Perspective Switch";
-	  public static final String NEW_SEAM_RUNTIME = "New Seam Runtime";	
+	  public static final String NEW_SEAM_RUNTIME = "New Seam Runtime";
+	  public static final String NEW_ESB_RUNTIME = "New JBoss ESB Runtime";	
 	}
 
 	public class EntityGroup {

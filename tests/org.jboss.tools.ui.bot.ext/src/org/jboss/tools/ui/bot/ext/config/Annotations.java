@@ -35,6 +35,11 @@ public class Annotations {
 		 */
 		Seam seam() default @Seam( required = false );
 		/**
+		 * optionally require ESB runtime
+		 * @return
+		 */
+		ESB esb() default @ESB( required = false);
+		/**
 		 * name of perspective to run within
 		 * @return
 		 */
@@ -93,12 +98,36 @@ public class Annotations {
 		 */
 		boolean required() default true;
 		/**
-		 * version of required server (use * for all)
+		 * version of required runtime (use * for all)
 		 * @return
 		 */
 		String version() default "*";
 		/**
-		 * defines operator on server, possible values (=,<,>=<=,>=,!=) default =
+		 * defines operator on runtime version, possible values (=,<,>=<=,>=,!=) default =
+		 * @return
+		 */
+		String operator() default "=";
+		
+	}
+	/**
+	 * 
+	 * @author lzoubek@redhat.com
+	 *
+	 */
+	@Retention(RetentionPolicy.RUNTIME)
+	public @interface ESB {
+		/**
+		 * true if ESB is required (default)
+		 * @return
+		 */
+		boolean required() default true;
+		/**
+		 * version of required runtime (use * for all)
+		 * @return
+		 */
+		String version() default "*";
+		/**
+		 * defines operator on runtime version, possible values (=,<,>=<=,>=,!=) default =
 		 * @return
 		 */
 		String operator() default "=";

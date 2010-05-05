@@ -24,11 +24,9 @@ public class PrepareViews extends RequirementBase {
 	public void handle() {		
 		SWTTestExt.open.viewClose(new IView(){
 			public List<String> getGroupPath() {
-				// TODO Auto-generated method stub
 				return new Vector<String>();
 			}
 			public String getName() {
-				// TODO Auto-generated method stub
 				return "Welcome";
 			}});
 		

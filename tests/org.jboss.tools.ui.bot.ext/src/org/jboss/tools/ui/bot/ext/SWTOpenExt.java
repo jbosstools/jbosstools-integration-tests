@@ -62,6 +62,7 @@ public class SWTOpenExt {
 		viewObj.show();
 		return viewObj;
 	}
+
 	/**
 	 * closes given view
 	 * 
@@ -76,8 +77,6 @@ public class SWTOpenExt {
 		}
 	}
 
-
-
 	/**
 	 * selects given actionItem in bot's tree();
 	 * 
@@ -87,22 +86,25 @@ public class SWTOpenExt {
 		SWTBotTreeItem ti = null;
 		try {
 			Iterator<String> iter = item.getGroupPath().iterator();
-			
+
 			if (iter.hasNext()) {
 				String next = iter.next();
-				ti = bot.tree().expandNode(next);				
+				ti = bot.tree().expandNode(next);
 				try {
 					while (iter.hasNext()) {
 						next = iter.next();
-						// expanding node is failing, so try to collapse and expand it again					
+						// expanding node is failing, so try to collapse and
+						// expand it again
 						ti.expand();
-						ti = ti.expandNode(next);										
+						ti = ti.expandNode(next);
 					}
-				next = item.getName();	
-				ti.expandNode(next).select();
-				}
-				catch (WidgetNotFoundException ex) {
-					log.warn("Tree item '"+next+"' was not found, trying to collapse and reexpand parent node");
+					next = item.getName();
+					ti.expandNode(next).select();
+				} catch (WidgetNotFoundException ex) {
+					log
+							.warn("Tree item '"
+									+ next
+									+ "' was not found, trying to collapse and reexpand parent node");
 					ti.collapse();
 					ti.expand();
 					ti.select();
@@ -113,9 +115,10 @@ public class SWTOpenExt {
 				bot.tree().select(item.getName());
 			}
 		} catch (WidgetNotFoundException ex) {
-			String exStr="Item '"+ ActionItem.getItemString(item)+ "' does not exist in tree";
-			if (ti!=null) {
-				exStr+=", last selected item was '"+ti.getText()+"'";
+			String exStr = "Item '" + ActionItem.getItemString(item)
+					+ "' does not exist in tree";
+			if (ti != null) {
+				exStr += ", last selected item was '" + ti.getText() + "'";
 			}
 			throw new WidgetNotFoundException(exStr, ex);
 		}
@@ -146,7 +149,7 @@ public class SWTOpenExt {
 		shell.activate();
 		bot.table().select(perspective.getName());
 		bot.button("OK").click();
-		log.info("Perspective switched to '"+perspective.getName()+"'");
+		log.info("Perspective switched to '" + perspective.getName() + "'");
 	}
 
 	/**
@@ -165,7 +168,7 @@ public class SWTOpenExt {
 		bot.button("Next >").click();
 		return bot;
 	}
-	
+
 	/**
 	 * Wait for appearance shell of given name
 	 * 
@@ -218,14 +221,28 @@ public class SWTOpenExt {
 		SWTBotButton btn = bot.button("Cancel");
 		btn.click();
 	}
+
 	/**
 	 * clicks given button on active shell and waits until shell disappears
-	 * @param bot 
+	 * 
+	 * @param bot
 	 * @param finishButtonText
 	 */
 	public void finish(SWTBot bot, String finishButtonText) {
-		long timeout =480*1000;
-		
+		finish(bot, finishButtonText,false);
+	}
+
+	/**
+	 * clicks given button on active shell and waits until shell disappears
+	 * 
+	 * @param bot
+	 * @param finishButtonText
+	 * @param autoCloseShells true if you want close all possibly risen shells when closing   
+	 */
+	public void finish(SWTBot bot, String finishButtonText,
+			boolean autoCloseShells) {
+		long timeout = 480 * 1000;
+
 		SWTBotShell activeShell = bot.activeShell();
 		String activeShellStr = bot.activeShell().getText();
 		bot.button(finishButtonText).click();
@@ -234,38 +251,58 @@ public class SWTOpenExt {
 			log.info("Waiting until shell '" + activeShellStr + "' closes");
 			try {
 				bot.waitUntil(shellCloses(activeShell));
-				log.info("OK, shell '"+activeShellStr+"' closed.");
+				log.info("OK, shell '" + activeShellStr + "' closed.");
 				return;
 			} catch (TimeoutException ex) {
-				String currentShellStr = bot.activeShell().getText();
-				if (!activeShellStr.equals(currentShellStr)) {
-					log.error("Unexpected shell '"+currentShellStr+"': ["+SWTUtilExt.getAllBotWidgetsAsText(bot)+"] appeared, when waiting for shell to close");
-					bot.activeShell().close();
-					log.info("Shell '"+currentShellStr+"' closed.");
+				if (autoCloseShells) {
+					String currentShellStr = bot.activeShell().getText();
+					if (!activeShellStr.equals(currentShellStr)) {
+						log
+								.error("Unexpected shell '"
+										+ currentShellStr
+										+ "': ["
+										+ SWTUtilExt
+												.getAllBotWidgetsAsText(bot)
+										+ "] appeared, when waiting for shell to close");
+						bot.activeShell().close();
+						log.info("Shell '" + currentShellStr + "' closed, clicking finish button again.");
+						bot.button(finishButtonText).click();
+					}
 				}
-				if (System.currentTimeMillis()-time>timeout) {
-					log.error("Shell '"+activeShellStr+"' probably hanged up (480s timeout), returning, forcing to close it, expect errors");
+				if (System.currentTimeMillis() - time > timeout) {
+					log
+							.error("Shell '"
+									+ activeShellStr
+									+ "' probably hanged up (480s timeout), returning, forcing to close it, expect errors");
 					try {
 						bot.activeShell().close();
 						activeShell.close();
 						bot.waitUntil(shellCloses(activeShell));
-						log.info("Shell  '"+activeShellStr+"' was forced to close.");
+						log.info("Shell  '" + activeShellStr
+								+ "' was forced to close.");
 						return;
-					}
-					catch (Exception e) {
+					} catch (Exception e) {
 						e.printStackTrace();
 					}
-					throw new WidgetNotFoundException("Shell '"+activeShellStr+"' did not close after timeout", ex);
+					throw new WidgetNotFoundException("Shell '"
+							+ activeShellStr + "' did not close after timeout",
+							ex);
 				}
 				log.warn("Shell '" + activeShellStr + "' is still opened");
 			}
 		}
 	}
+
 	/**
 	 * clicks 'Finish' button on active shell and waits until shell disappears
+	 * 
 	 * @param bot
 	 */
 	public void finish(SWTBot bot) {
-		finish(bot,"Finish");
+		finish(bot, "Finish",false);
+	}
+
+	public void finish(SWTBot bot, boolean autoCloseShells) {
+		finish(bot, "Finish",autoCloseShells);
 	}
 }

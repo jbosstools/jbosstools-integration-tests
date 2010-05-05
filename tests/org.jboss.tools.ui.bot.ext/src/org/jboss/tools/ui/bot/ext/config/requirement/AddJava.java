@@ -8,14 +8,14 @@ import org.jboss.tools.ui.bot.ext.config.TestConfigurator;
  * @author lzoubek
  *
  */
-public class AddJRE extends RequirementBase {
+public class AddJava extends RequirementBase {
 
 	private final String version;
 	/**
 	 * requirement for adding JRE
 	 * @param version to add
 	 */
-	public AddJRE(String version) {
+	public AddJava(String version) {
 		this.version = version;
 	}
 	@Override

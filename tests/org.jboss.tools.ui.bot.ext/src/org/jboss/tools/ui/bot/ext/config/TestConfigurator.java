@@ -13,6 +13,7 @@ import java.util.Properties;
 import org.apache.log4j.Logger;
 import org.jboss.tools.ui.bot.ext.Activator;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
+import org.jboss.tools.ui.bot.ext.config.Annotations.ESB;
 import org.jboss.tools.ui.bot.ext.config.Annotations.SWTBotTestRequires;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Seam;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
@@ -27,6 +28,7 @@ public class TestConfigurator {
 		public static final String SEAM = "SEAM";
 		public static final String JAVA_HOME_15 = "JAVA_HOME_15";
 		public static final String JAVA_HOME_16 = "JAVA_HOME_16";
+		public static final String ESB = "ESB";
 	}
 
 	public class Values {
@@ -39,6 +41,7 @@ public class TestConfigurator {
 	private static Properties swtTestProperties = new Properties();
 	public static ServerBean server;
 	public static SeamBean seam;
+	public static ESBBean esb;
 	static {
 		try {
 			// try to load from file first
@@ -78,6 +81,7 @@ public class TestConfigurator {
 		try {
 			server = ServerBean.fromString(getProperty(Keys.SERVER));
 			seam = SeamBean.fromString(getProperty(Keys.SEAM));
+			esb = ESBBean.fromString(getProperty(Keys.ESB));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -93,10 +97,11 @@ public class TestConfigurator {
 		checkDirExists(getProperty(Keys.JAVA_HOME_16));
 		checkDirExists(seam.seamHome);
 		checkDirExists(server.runtimeHome);
+		checkDirExists(esb.esbHome);
 		return true;
 		}
 		catch (Exception ex) {
-			log.error(ex.getMessage()+ " incorrect configuration, set your custom properties file via 'swtbot.test.properties.file' java property");
+			log.error("'"+ex.getMessage()+ "' - incorrect configuration, set your custom properties file via '"+SWTBOT_TEST_PROPERTIES_FILE+"' java property");
 			return false;
 		}
 		
@@ -153,6 +158,15 @@ public class TestConfigurator {
 		}
 		return RequirementBase.createAddSeam();
 	}
+	private static RequirementBase getESBRequirement(ESB e) {
+		if (!e.required()) {
+			return null;
+		}
+		if (!matches(esb.version, e.operator(), e.version())) {
+			return null;
+		}
+		return RequirementBase.createAddESB();
+	}
 
 	/**
 	 * returns list of requirements if given class (Test) can run, all this is
@@ -165,6 +179,7 @@ public class TestConfigurator {
 				.getAnnotation(SWTBotTestRequires.class);
 		// internal list
 		List<RequirementBase> reqs = new ArrayList<RequirementBase>();
+		reqs.add(RequirementBase.createPrepareViews());
 		// all not annotated classes can run
 		if (requies == null) {
 			return reqs;
@@ -178,6 +193,13 @@ public class TestConfigurator {
 		}
 		if (requies.seam().required()) {
 			RequirementBase req = getSeamRequirement(requies.seam());
+			if (req == null) {
+				return null;
+			}
+			reqs.add(req);
+		}
+		if (requies.esb().required()) {
+			RequirementBase req = getESBRequirement(requies.esb());
 			if (req == null) {
 				return null;
 			}

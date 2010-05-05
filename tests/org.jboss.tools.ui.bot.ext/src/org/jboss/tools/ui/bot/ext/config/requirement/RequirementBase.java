@@ -115,9 +115,13 @@ public abstract class RequirementBase {
 		RequirementBase req = new AddSeam();
 		return req;
 	}
+	public static RequirementBase createAddESB() {
+		RequirementBase req = new AddESB();
+		return req;
+	}
 
-	public static AddJRE createAddJRE(String version) {
-		AddJRE req = new AddJRE(version);
+	public static AddJava createAddJRE(String version) {
+		AddJava req = new AddJava(version);
 		return req;
 	}
 
@@ -138,5 +142,12 @@ public abstract class RequirementBase {
 		req.setPriority(-1);
 		return req;
 	}
+	public static RequirementBase createPrepareViews() {
+		RequirementBase req = new PrepareViews();
+		req.setPriority(2);
+		return req;
+	}
+
+	
 
 }
