@@ -31,27 +31,27 @@ public class VPEAllBotTests extends SWTBotTestCase{
 	public static Test suite(){
 		TestSuite suite = new TestSuite("VPE All Tests"); //$NON-NLS-1$
 		
-//		suite.addTestSuite(CancelTagLibDefenitionTest.class);
-//		suite.addTestSuite(ImportTagsFromTLDFileTest.class);
-//		suite.addTestSuite(ToggleCommentTest.class);
-//		suite.addTestSuite(BlockCommentTest.class);
-//		suite.addTestSuite(ChangeEditorTabForTheFirstOpenPageTest.class);
-//		suite.addTestSuite(JBIDE4556Test.class);
-//		suite.addTestSuite(VerificationOfNameSpacesTest.class);
-//		suite.addTestSuite(BorderForUnknownTagsTest.class);
-//		suite.addTestSuite(ShowResourceBundlesUsageasELexpressionsTest.class);
-//		suite.addTestSuite(ShowSelectionTagBarTest.class);
-//		suite.addTestSuite(AlwaysHideSelectionBarWithoutPromptTest.class);
-//		suite.addTestSuite(ShowNonVisualTagsTest.class);
-//		suite.addTestSuite(AddSubstitutedELExpressionFolderScopeTest.class);
-//		suite.addTestSuite(EditorSynchronizationTest.class);
-//		suite.addTestSuite(JSPPageCreationTest.class);
-//		suite.addTestSuite(XHTMLPageCreationTest.class);
-//		suite.addTestSuite(RenameFacesConfigFileTest.class);
-//		suite.addTestSuite(RenameJSPFileTest.class);
-//		suite.addTestSuite(RenameXHTMLFileTest.class);
-//		suite.addTestSuite(ImportUnknownTagsWizardTest.class);
-//		suite.addTestSuite(NewXHTMLPageWizardTest.class);
+		suite.addTestSuite(CancelTagLibDefenitionTest.class);
+		suite.addTestSuite(ImportTagsFromTLDFileTest.class);
+		suite.addTestSuite(ToggleCommentTest.class);
+		suite.addTestSuite(BlockCommentTest.class);
+		suite.addTestSuite(ChangeEditorTabForTheFirstOpenPageTest.class);
+		suite.addTestSuite(JBIDE4556Test.class);
+		suite.addTestSuite(VerificationOfNameSpacesTest.class);
+		suite.addTestSuite(BorderForUnknownTagsTest.class);
+		suite.addTestSuite(ShowResourceBundlesUsageasELexpressionsTest.class);
+		suite.addTestSuite(ShowSelectionTagBarTest.class);
+		suite.addTestSuite(AlwaysHideSelectionBarWithoutPromptTest.class);
+		suite.addTestSuite(ShowNonVisualTagsTest.class);
+		suite.addTestSuite(AddSubstitutedELExpressionFolderScopeTest.class);
+		suite.addTestSuite(EditorSynchronizationTest.class);
+		suite.addTestSuite(JSPPageCreationTest.class);
+		suite.addTestSuite(XHTMLPageCreationTest.class);
+		suite.addTestSuite(RenameFacesConfigFileTest.class);
+		suite.addTestSuite(RenameJSPFileTest.class);
+		suite.addTestSuite(RenameXHTMLFileTest.class);
+		suite.addTestSuite(ImportUnknownTagsWizardTest.class);
+		suite.addTestSuite(NewXHTMLPageWizardTest.class);
 		suite.addTestSuite(VPESourceCodeTemplatesPreferencePageTest.class);
 		return new TestSetup(suite);
 	}
