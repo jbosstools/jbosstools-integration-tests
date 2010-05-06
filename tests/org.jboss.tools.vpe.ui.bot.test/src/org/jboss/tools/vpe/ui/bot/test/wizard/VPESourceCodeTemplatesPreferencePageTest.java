@@ -11,7 +11,9 @@
 package org.jboss.tools.vpe.ui.bot.test.wizard;
 
 import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
+import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
+import org.jboss.tools.ui.bot.test.WidgetVariables;
 
 /**
  * This test class open vpe preference page
@@ -32,8 +34,13 @@ public class VPESourceCodeTemplatesPreferencePageTest extends SWTBotTestCase{
 		.expandNode("Editors") //$NON-NLS-1$
 		.expandNode("Visual Page Editor") //$NON-NLS-1$
 		.select("Templates").click(); //$NON-NLS-1$
-		this.bot.button("New...").click(); //$NON-NLS-1$
-		this.bot.button("Cancel").click(); //$NON-NLS-1$
-		System.out.println(this.bot.activeShell().getText());
+		try{
+			this.bot.button("New...").click(); //$NON-NLS-1$
+			this.bot.button("Cancel").click(); //$NON-NLS-1$
+		} catch(WidgetNotFoundException ex){
+			fail("Preference Page has not been created"+ex);//$NON-NLS-1$
+		}finally{
+			this.bot.button(WidgetVariables.OK_BUTTON).click();
+		}
 	}
 }
