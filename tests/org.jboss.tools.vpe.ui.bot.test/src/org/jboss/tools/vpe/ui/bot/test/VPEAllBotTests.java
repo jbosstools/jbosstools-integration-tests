@@ -25,6 +25,7 @@ import org.jboss.tools.vpe.ui.bot.test.smoke.RenameXHTMLFileTest;
 import org.jboss.tools.vpe.ui.bot.test.smoke.XHTMLPageCreationTest;
 import org.jboss.tools.vpe.ui.bot.test.wizard.ImportUnknownTagsWizardTest;
 import org.jboss.tools.vpe.ui.bot.test.wizard.NewXHTMLPageWizardTest;
+import org.jboss.tools.vpe.ui.bot.test.wizard.VPESourceCodeTemplatesPreferencePageTest;
 
 public class VPEAllBotTests extends SWTBotTestCase{
 	public static Test suite(){
@@ -51,6 +52,7 @@ public class VPEAllBotTests extends SWTBotTestCase{
 		suite.addTestSuite(RenameXHTMLFileTest.class);
 		suite.addTestSuite(ImportUnknownTagsWizardTest.class);
 		suite.addTestSuite(NewXHTMLPageWizardTest.class);
+		suite.addTestSuite(VPESourceCodeTemplatesPreferencePageTest.class);
 		return new TestSetup(suite);
 	}
 }
