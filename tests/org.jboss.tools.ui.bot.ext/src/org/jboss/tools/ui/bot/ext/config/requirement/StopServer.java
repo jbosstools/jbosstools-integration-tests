@@ -2,7 +2,7 @@ package org.jboss.tools.ui.bot.ext.config.requirement;
 
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 /**
- * Stops server (as dependent requirement has {@link AddServer}
+ * Stops server
  * @author Vladimir Pakan
  *
  */

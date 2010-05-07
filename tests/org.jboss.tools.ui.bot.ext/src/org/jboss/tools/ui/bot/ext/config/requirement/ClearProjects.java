@@ -1,6 +1,5 @@
 package org.jboss.tools.ui.bot.ext.config.requirement;
 
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 /**
  * undeploys and deletes all projects
@@ -12,13 +11,7 @@ public class ClearProjects extends RequirementBase {
 	@Override
 	public boolean checkFulfilled() {
 		try {		
-			SWTBotTreeItem[] items = SWTTestExt.projectExplorer.show().bot().tree().getAllItems();
-			if (items.length!=0) {
-				for (SWTBotTreeItem item : items) {
-					log.info("Item "+item.getText());					
-				}
-			}
-			return items.length==0;
+			return SWTTestExt.projectExplorer.show().bot().tree().getAllItems().length==0;						
 		}
 		catch (Exception ex) {
 			log.error("Unable to determine count of projects",ex);

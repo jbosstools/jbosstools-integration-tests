@@ -46,6 +46,7 @@ public class AddServer extends RequirementBase {
 		SWTTestExt.configuredState.getServer().name=runtimeName;
 		SWTTestExt.configuredState.getServer().version=TestConfigurator.server.version;
 		SWTTestExt.configuredState.getServer().type=TestConfigurator.server.type.toString();
+		SWTTestExt.configuredState.getServer().withJavaVersion = TestConfigurator.server.withJavaVersion;
 	}
 
 	

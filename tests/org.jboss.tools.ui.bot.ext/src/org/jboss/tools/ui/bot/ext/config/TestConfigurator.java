@@ -17,6 +17,7 @@ import org.jboss.tools.ui.bot.ext.config.Annotations.ESB;
 import org.jboss.tools.ui.bot.ext.config.Annotations.SWTBotTestRequires;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Seam;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
+import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
 import org.jboss.tools.ui.bot.ext.config.requirement.RequirementBase;
 
@@ -123,7 +124,7 @@ public class TestConfigurator {
 	private static RequirementBase getServerRequirement(Server s) {
 		if (!s.required()) {
 			return null;
-		}
+		}				
 		if (!s.type().equals(ServerType.ALL)) {
 			if (s.type().equals(ServerType.EAP)
 					&& !server.type.equals(ServerBean.ServerType.EAP)) {
@@ -134,9 +135,18 @@ public class TestConfigurator {
 				return null;
 			}
 		}
-
 		if (!matches(server.version, s.operator(), s.version())) {
 			return null;
+		}
+		if (ServerState.Disabled.equals(s.state())) {
+			RequirementBase removeServer = RequirementBase.createRemoveServer();
+			removeServer.getDependsOn().add(RequirementBase.createStopServer());
+			return removeServer;
+		}
+		if (ServerState.NotRunning.equals(s.state())) {
+			RequirementBase stopServer = RequirementBase.createStopServer();
+			stopServer.getDependsOn().add(RequirementBase.createAddServer());
+			return stopServer;
 		}
 		return RequirementBase.createStartServer();
 	}

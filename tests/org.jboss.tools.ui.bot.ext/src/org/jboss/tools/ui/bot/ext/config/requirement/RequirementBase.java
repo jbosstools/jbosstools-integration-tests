@@ -148,6 +148,16 @@ public abstract class RequirementBase {
 		return req;
 	}
 
+	public static RequirementBase createStopServer() {
+		RequirementBase req = new StopServer();
+		return req;
+	}
+
+	public static RequirementBase createRemoveServer() {
+		RequirementBase req = new RemoveServer();
+		return req;
+	}
+
 	
 
 }

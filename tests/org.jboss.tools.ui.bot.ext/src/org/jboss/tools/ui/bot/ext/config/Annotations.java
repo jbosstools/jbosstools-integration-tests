@@ -70,6 +70,11 @@ public class Annotations {
 		 */
 		boolean required() default true;
 		/**
+		 * state (default Running)
+		 * @return
+		 */
+		ServerState state() default ServerState.Running;
+		/**
 		 * server type to match (Default ALL)
 		 * @return
 		 */
@@ -91,7 +96,7 @@ public class Annotations {
 	 *
 	 */
 	@Retention(RetentionPolicy.RUNTIME)
-	public @interface Seam {
+	public @interface Seam {		
 		/**
 		 * true if Seam is required (default)
 		 * @return
@@ -132,6 +137,20 @@ public class Annotations {
 		 */
 		String operator() default "=";
 		
+	}
+	public enum ServerState {
+		/**
+		 * server will run
+		 */
+		Running,
+		/**
+		 * server present, but not running
+		 */
+		NotRunning,
+		/**
+		 * server (and runtime) not present
+		 */
+		Disabled
 	}
 	public enum ServerType {
 		/**

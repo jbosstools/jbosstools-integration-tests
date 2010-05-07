@@ -571,7 +571,30 @@ public class SWTEclipseExt {
 		}
 
 	}
+	public void removeServerRuntime(String runtimeName) {
+		  log.info("Removing Server Runtime: " + runtimeName );
+					SWTBot wiz = open
+							.preferenceOpen(ActionItem.Preference.ServerRuntimeEnvironments.LABEL);
+					SWTBotTable tbRuntimeEnvironments = bot.table();
 
+					// first check if Environment doesn't exist
+					int numRows = tbRuntimeEnvironments.rowCount();
+					if (numRows > 0) {
+						int currentRow = 0;
+						while (currentRow < numRows) {
+							if (tbRuntimeEnvironments.cell(currentRow, 0).equalsIgnoreCase(
+									runtimeName)) {
+								tbRuntimeEnvironments.select(currentRow);
+								wiz.button(IDELabel.Button.REMOVE).click();
+								open.finish(wiz,IDELabel.Button.OK);
+								log.info("Server Runtime '" + runtimeName +"' removed.");
+								return;
+							} else {
+								currentRow++;
+							}
+						}
+					}
+	}
 	/**
 	 * adds given java to Installed JRE's
 	 * 

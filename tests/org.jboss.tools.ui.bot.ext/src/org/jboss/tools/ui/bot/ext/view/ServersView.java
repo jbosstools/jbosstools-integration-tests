@@ -56,14 +56,32 @@ public class ServersView extends ViewBase {
 	 * @param serverName
 	 */
 	public void stopServer(String serverName) {
-		SWTBot bot = open.viewOpen(ServerServers.LABEL).bot();
+		SWTBot bot = show().bot();
 		SWTBotTree tree = bot.tree();
 		SWTBotTreeItem server = findServerByName(tree,serverName);
 		if (server!=null) {
 			ContextMenuHelper.prepareTreeItemForContextMenu(tree, server);
 	        new SWTBotMenu(ContextMenuHelper.getContextMenu(tree, IDELabel.Menu.STOP, false)).click();
 		    new SWTUtilExt(this).waitForNonIgnoredJobs();
-		    new SWTUtilExt(this).waitForAll(Timing.time3S());
+		    new SWTUtilExt(this).waitForAll(Timing.time10S());
+	        
+		}
+	}
+	/**
+	 * deletes server with given name
+	 * @param serverName
+	 */
+	public void deleteServer(String serverName) {
+		SWTBot bot = show().bot();
+		SWTBotTree tree = bot.tree();
+		SWTBotTreeItem server = findServerByName(tree,serverName);
+		if (server!=null) {
+			ContextMenuHelper.prepareTreeItemForContextMenu(tree, server);
+	        new SWTBotMenu(ContextMenuHelper.getContextMenu(tree, IDELabel.Menu.DELETE, false)).click();
+	        SWTBotShell shell = shell("Delete Server");
+	          shell.activate();
+	          open.finish(shell.bot(), IDELabel.Button.OK);
+	          log.info("Removed  server: " + serverName);
 	        
 		}
 	}
@@ -73,7 +91,7 @@ public class ServersView extends ViewBase {
 	 */
 	public void startServer(String serverName) {
 		show();
-		SWTBot bot = open.viewOpen(ServerServers.LABEL).bot();
+		SWTBot bot = show().bot();
 		SWTBotTree tree = bot.tree();
 		SWTBotTreeItem server = findServerByName(tree,serverName);
 		if (server!=null) {
