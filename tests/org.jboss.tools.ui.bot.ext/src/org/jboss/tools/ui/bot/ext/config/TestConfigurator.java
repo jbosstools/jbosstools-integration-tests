@@ -101,7 +101,7 @@ public class TestConfigurator {
 	private static void printConfig(String propName, Object bean) {
 		if (bean == null) {
 			log.info("Property " + propName
-					+ " not found, server not configured");
+					+ " not found, "+propName+" not configured");
 		} else {
 			log.info("Configured " + bean.toString());
 		}
