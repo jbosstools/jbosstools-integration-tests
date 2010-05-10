@@ -19,6 +19,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
 
+import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
@@ -40,7 +41,7 @@ import org.hamcrest.Matcher;
  *
  */
 public class ContextMenuHelper {
-
+  protected static final Logger log = Logger.getLogger(ContextMenuHelper.class);
   /**
    * Clicks the context menu matching the text.
    *
@@ -235,6 +236,7 @@ public class ContextMenuHelper {
 
 	    UIThreadRunnable.asyncExec(menuItem.getDisplay(), new VoidResult() {
 	      public void run() {
+	        log.info("Click on menu item: " + menuItem.getText());
 	        menuItem.notifyListeners(SWT.Selection, event);
 	      }
 	    });

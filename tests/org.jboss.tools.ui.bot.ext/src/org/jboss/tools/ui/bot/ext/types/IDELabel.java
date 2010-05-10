@@ -66,6 +66,12 @@ public class IDELabel {
     public static final String DEBUG_AS = "Debug As";
     public static final String DEBUG_AS_DROOLS_APPLICATION = "Drools Application";
     public static final String OPEN_GUVNOR_CONSOLE = "Open Guvnor Console";
+    public static final String GUVNOR = "Guvnor";
+    public static final String GUVNOR_UPDATE = "Update";
+    public static final String GUVNOR_COMMIT = "Commit";
+    public static final String GUVNOR_ADD = "Add...";
+    public static final String GUVNOR_DELETE = "Delete...";
+    public static final String GUVNOR_DISCONNECT = "Disconnect";
 	}
 
 	public class Button {
@@ -119,7 +125,9 @@ public class IDELabel {
 	  public static final String RENAME_JAVA_PROJECT = "Rename Java Project";
 	  public static final String CONFIRM_PERSPECTIVE_SWITCH = "Confirm Perspective Switch";
 	  public static final String NEW_SEAM_RUNTIME = "New Seam Runtime";
-	  public static final String NEW_ESB_RUNTIME = "New JBoss ESB Runtime";	
+	  public static final String NEW_ESB_RUNTIME = "New JBoss ESB Runtime";
+	  public static final String CONFIRM_DELETE = "Confirm Delete";  
+	  public static final String SHOW_VIEW = "Show View";
 	}
 
 	public class EntityGroup {
@@ -130,6 +138,7 @@ public class IDELabel {
 		public static final String JBOSS_TOOLS_WEB = "JBoss Tools Web";
 		public static final String JPA = "JPA";
 		public static final String DROOLS = "Drools";
+		public static final String GUVNOR = "Guvnor";
 	}
 	
 	public class EntityLabel {
@@ -146,6 +155,7 @@ public class IDELabel {
 		public static final String DROOLS_RULE = "Rule Resource";
 		public static final String GUIDED_DROOLS_RULE = "Guided Rule";
 		public static final String DSL_DROOLS_FILE = "Domain Specific Language";
+		public static final String RESOURCES_FROM_GUVNOR = "Resources from Guvnor";
 	}
 
 	public class JavaProjectWizard {

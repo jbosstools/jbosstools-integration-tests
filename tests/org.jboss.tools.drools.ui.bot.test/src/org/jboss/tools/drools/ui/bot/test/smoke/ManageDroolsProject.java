@@ -73,7 +73,7 @@ public class ManageDroolsProject extends SWTTestExt{
     }
     bot.button(IDELabel.Button.NEXT).click();
     bot.button(IDELabel.Button.FINISH).click();
-    SWTTestExt.util.waitForAll(20*1000L);
+    SWTTestExt.util.waitForAll(30*1000L);
     jbt.delay();
     
     assertTrue("Project "

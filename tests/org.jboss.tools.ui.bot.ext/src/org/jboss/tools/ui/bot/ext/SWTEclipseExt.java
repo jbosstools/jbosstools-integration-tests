@@ -117,7 +117,7 @@ public class SWTEclipseExt {
 		SWTBotMenu menu1 = bot.menu(IDELabel.Menu.WINDOW);
 		SWTBotMenu menu2 = menu1.menu(IDELabel.Menu.SHOW_VIEW);
 		menu2.menu(IDELabel.Menu.OTHER).click();
-
+    bot.shell(IDELabel.Shell.SHOW_VIEW).activate();
 		bot.tree().expandNode(type.getGroupLabel()).expandNode(
 				type.getViewLabel()).select();
 		bot.button(IDELabel.Button.OK).click();
@@ -165,12 +165,15 @@ public class SWTEclipseExt {
 		default:
 			fail("Unknown perspective to open");
 		}
-
+    bot.sleep(Timing.time1S()); 
 		SWTBotMenu menu1 = bot.menu(IDELabel.Menu.WINDOW);
+    bot.sleep(Timing.time1S());		
 		SWTBotMenu menu2 = menu1.menu(IDELabel.Menu.OPEN_PERSPECTIVE);
+    bot.sleep(Timing.time1S());		
 		menu2.menu(IDELabel.Menu.OTHER).click();
+    bot.sleep(Timing.time1S());		
 		bot.table().select(perspectiveLabel);
-
+    bot.sleep(Timing.time1S());
 		// Another approach
 		SWTBotShell openPerpectiveShell = bot.shell("Open Perspective");
 		openPerpectiveShell.activate();
@@ -818,20 +821,23 @@ public class SWTEclipseExt {
 
 	/**
 	 * Returns Tree Item with specified label and located on path
-	 * 
+	 * @param bot
 	 * @param tree
+	 * @param timeOut
 	 * @param treeItemText
 	 * @param path
 	 * @return
 	 */
-	public static SWTBotTreeItem getTreeItemOnPath(SWTBotTree tree,
+	public static SWTBotTreeItem getTreeItemOnPath(SWTBot bot,SWTBotTree tree, int timeOut,
 			String treeItemText, String[] path) {
 		SWTBotTreeItem parentTreeItem = null;
 		SWTBotTreeItem treeItem = null;
 		if (path != null && path.length > 0) {
 			parentTreeItem = tree.expandNode(path[0]);
+			bot.sleep(timeOut);
 			for (int index = 1; index < path.length; index++) {
 				parentTreeItem = parentTreeItem.expandNode(path[index]);
+				bot.sleep(timeOut);
 			}
 			treeItem = parentTreeItem.getNode(treeItemText);
 		} else {
@@ -839,7 +845,41 @@ public class SWTEclipseExt {
 		}
 		return treeItem;
 	}
+	/**
+	 * Returns first Tree Item with label starting with treeItemTextStartsWith and located on path
+	 * @param bot
+	 * @param tree
+	 * @param timeOut
+	 * @param treeItemTextStartsWith
+	 * @param path
+	 * @return
+	 */
+	public static SWTBotTreeItem getTreeItemOnPathStartsWith(SWTBot bot,SWTBotTree tree, int timeOut,
+      String treeItemTextStartsWith, String[] path) {
+    SWTBotTreeItem[] items = null;
+	  if (path.length > 0){
+	    String[] parentPath = new String[path.length - 1];
+      System.arraycopy(path, 0, parentPath, 0, parentPath.length);
+      SWTBotTreeItem parentTreeItem  = getTreeItemOnPath(bot, tree, timeOut, path[path.length - 1], parentPath);
+      parentTreeItem.expand();
+      bot.sleep(timeOut);
+      items = parentTreeItem.getItems();
+	  }else{
+	    items = tree.getAllItems();
+	  }
+	  SWTBotTreeItem treeItem = null;
+	  for (int index = 0 ; index < items.length && treeItem == null; index++){
+	    if (items[index].getText().trim()
+	          .startsWith(treeItemTextStartsWith)){
+	      treeItem = items[index];
+	    }
+	  }
 
+	  if (treeItem == null){
+	    throw new WidgetNotFoundException("Unable to find Tree Item with label starting with " + treeItemTextStartsWith);
+	  }
+	  return treeItem;
+	}
 	/**
 	 * Choose Run As Java Application menu for specified Tree Item
 	 * 

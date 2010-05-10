@@ -33,19 +33,33 @@ public abstract class ExplorerBase extends ViewBase {
 	public void selectProject(String projectName) {
 		SWTBot viewBot = viewByTitle(viewObject.getName()).bot();
 		viewBot.tree().expandNode(projectName).select();
-	}
-	  /**
-	   * Selects Tree Item within Package Explorer
-	   * @param treeItemText
-	   * @param path
-	   * @return
-	   */
-	  public SWTBotTreeItem selectTreeItem(String treeItemText, String[] path) {
-	    show();
-	    return SWTEclipseExt.getTreeItemOnPath(viewByTitle(viewObject.getName()).bot().tree(),
-	      treeItemText, path)
-	      .select();
-	  }
+  }
+
+  /**
+   * Selects Tree Item within Package Explorer
+   * 
+   * @param timeOut
+   * @param treeItemText
+   * @param path
+   * @return
+   */
+  public SWTBotTreeItem selectTreeItem(int timeOut, String treeItemText,
+      String[] path) {
+    SWTBot viewBot = show().bot();
+    return SWTEclipseExt.getTreeItemOnPath(viewBot, viewBot.tree(), timeOut,
+        treeItemText, path).select();
+  }
+  /**
+   * Selects Tree Item within Package Explorer
+   * 
+   * @param treeItemText
+   * @param path
+   * @return
+   */
+  public SWTBotTreeItem selectTreeItem(String treeItemText,
+      String[] path) {
+    return selectTreeItem(0,treeItemText,path);
+  }
 	/**
 	 * deletes given project from workspace
 	 * @param projectName

@@ -41,6 +41,8 @@ import org.eclipse.swtbot.swt.finder.results.Result;
 import org.eclipse.swtbot.swt.finder.utils.SWTUtils;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarButton;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.ui.bot.ext.parts.SWTBotBrowserExt;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.ext.types.JobLists;
@@ -667,6 +669,31 @@ public class SWTUtilExt extends SWTUtils {
       System.out.println("Button Tooltip: " + button.getToolTipText() +
         " Text: " + button.getText() + 
         " Class: " + button.getClass());
+    }
+  }
+  /**
+   * Displays all tree items of parentTreeItem node
+   * @param tree
+   * @param parentTreeItem
+   */
+  public static void displayAllTreeItemChildren (SWTBotTree tree,SWTBotTreeItem parentTreeItem){
+    SWTBotTreeItem[] items = parentTreeItem.getItems();
+    if (items != null){
+      for (int index = 0 ; index < items.length ; index++){
+        StringBuffer columnsText = new StringBuffer("");
+        for (int column = 0;column < tree.columnCount(); column++){
+          if (column > 0){
+            columnsText.append(" ");
+          }
+          columnsText.append(column);
+          columnsText.append("[");
+          columnsText.append(items[index].cell(column));
+          columnsText.append("]");
+        }
+        System.out.println("TreeItem text: " + items[index].getText() + 
+          " tooltip: " + items[index].getToolTipText() +
+          " columns: " + columnsText.toString());
+      }
     }
   }
   /**
