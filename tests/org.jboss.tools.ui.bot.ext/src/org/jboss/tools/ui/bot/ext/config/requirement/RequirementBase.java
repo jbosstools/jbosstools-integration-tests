@@ -120,8 +120,8 @@ public abstract class RequirementBase {
 		return req;
 	}
 
-	public static AddJava createAddJRE(String version) {
-		AddJava req = new AddJava(version);
+	public static AddJava createAddJava() {
+		AddJava req = new AddJava();
 		return req;
 	}
 

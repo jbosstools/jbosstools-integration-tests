@@ -1,6 +1,5 @@
 package org.jboss.tools.ui.bot.ext.config.requirement;
 
-import static org.junit.Assert.fail;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.config.TestConfigurator;
 /**
@@ -10,13 +9,11 @@ import org.jboss.tools.ui.bot.ext.config.TestConfigurator;
  */
 public class AddJava extends RequirementBase {
 
-	private final String version;
 	/**
-	 * requirement for adding JRE
+	 * requirement for adding JRE/JDK
 	 * @param version to add
 	 */
-	public AddJava(String version) {
-		this.version = version;
+	public AddJava() {
 	}
 	@Override
 	public boolean checkFulfilled() {
@@ -29,20 +26,10 @@ public class AddJava extends RequirementBase {
 		SWTTestExt.configuredState.getJreList().add(getAddedAsName());
 	}
 	public String getAddedAsName() {
-		return "JRE-"+version;
+		return "JRE-"+TestConfigurator.java.version;
 	}
 	private String getJavaHome() {
-		if ("1.5".equals(version)) {
-			return TestConfigurator.getProperty(TestConfigurator.Keys.JAVA_HOME_15);
-		}
-		if ("1.6".equals(version)) {
-			return TestConfigurator.getProperty(TestConfigurator.Keys.JAVA_HOME_16);
-		}
-		failParsing();
-		return null;
-	}
-	private void failParsing() {
-		fail("Unable to add JRE runtime, unsupported verson :"+version);
+		return TestConfigurator.java.javaHome;
 	}
 
 }

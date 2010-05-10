@@ -22,17 +22,17 @@ import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
 import org.jboss.tools.ui.bot.ext.config.requirement.RequirementBase;
 
 public class TestConfigurator {
-	private static final Logger log = Logger
-	.getLogger(TestConfigurator.class);
+	private static final Logger log = Logger.getLogger(TestConfigurator.class);
+
 	public class Keys {
 		public static final String SERVER = "SERVER";
 		public static final String SEAM = "SEAM";
-		public static final String JAVA_HOME_15 = "JAVA_HOME_15";
-		public static final String JAVA_HOME_16 = "JAVA_HOME_16";
+		public static final String JAVA = "JAVA";
 		public static final String ESB = "ESB";
 	}
 
 	public class Values {
+		public static final String SERVER_TYPE_EPP = "EPP";
 		public static final String SERVER_TYPE_EAP = "EAP";
 		public static final String SERVER_TYPE_JBOSSAS = "JBOSS_AS";
 		public static final String SERVER_WITH_DEFAULT_JAVA = "default";
@@ -43,6 +43,7 @@ public class TestConfigurator {
 	public static ServerBean server;
 	public static SeamBean seam;
 	public static ESBBean esb;
+	public static JavaBean java;
 	static {
 		try {
 			// try to load from file first
@@ -51,10 +52,13 @@ public class TestConfigurator {
 			if (propFile != null) {
 				try {
 					if (new File(propFile).exists()) {
-						log.info("Loading exeternaly provided configuration file '"+propFile+"'");
-					swtTestProperties.load(new FileInputStream(propFile));
+						log
+								.info("Loading exeternaly provided configuration file '"
+										+ propFile + "'");
+						swtTestProperties.load(new FileInputStream(propFile));
 					} else {
-						throw new IOException(SWTBOT_TEST_PROPERTIES_FILE+" "+propFile+" does not exist!");
+						throw new IOException(SWTBOT_TEST_PROPERTIES_FILE + " "
+								+ propFile + " does not exist!");
 					}
 				} catch (FileNotFoundException e) {
 					// TODO Auto-generated catch block
@@ -65,7 +69,7 @@ public class TestConfigurator {
 				}
 			} else {
 				try {
-					log.info("Loading default configuration");
+					log.info("Loading default configuration, override by pointing java system property '"+SWTBOT_TEST_PROPERTIES_FILE+"' to your custom property file");
 					swtTestProperties.load(new FileInputStream(SWTTestExt.util
 							.getResourceFile(Activator.PLUGIN_ID,
 									"/SWTBotTest-default.properties")));
@@ -80,38 +84,69 @@ public class TestConfigurator {
 
 		// properties got loaded
 		try {
+			java = JavaBean.fromString(getProperty(Keys.JAVA));
+			printConfig(Keys.JAVA, java);
 			server = ServerBean.fromString(getProperty(Keys.SERVER));
+			printConfig(Keys.SERVER, server);
 			seam = SeamBean.fromString(getProperty(Keys.SEAM));
+			printConfig(Keys.SEAM, seam);
 			esb = ESBBean.fromString(getProperty(Keys.ESB));
+			printConfig(Keys.ESB, esb);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-/**
- * check config values if they seem to be valid (existing dirs)
- * @throws FileNotFoundException 
- */
-	public static boolean checkConfig()  {
-		try {
-		checkDirExists(getProperty(Keys.JAVA_HOME_15));
-		checkDirExists(getProperty(Keys.JAVA_HOME_16));
-		checkDirExists(seam.seamHome);
-		checkDirExists(server.runtimeHome);
-		checkDirExists(esb.esbHome);
-		return true;
+
+	private static void printConfig(String propName, Object bean) {
+		if (bean == null) {
+			log.info("Property " + propName
+					+ " not found, server not configured");
+		} else {
+			log.info("Configured " + bean.toString());
 		}
-		catch (Exception ex) {
-			log.error("'"+ex.getMessage()+ "' - incorrect configuration, set your custom properties file via '"+SWTBOT_TEST_PROPERTIES_FILE+"' java property");
+	}
+
+	/**
+	 * check config values if they seem to be valid (existing dirs)
+	 * 
+	 * @throws FileNotFoundException
+	 */
+	public static boolean checkConfig() {
+		try {
+			if (java != null)
+				checkDirExists(java.javaHome);
+			if (seam != null)
+				checkDirExists(seam.seamHome);
+			if (server != null)
+				checkDirExists(server.runtimeHome);
+			if (esb != null)
+				checkDirExists(esb.esbHome);
+			// special checks capturing dependency of server on java 
+			if (java==null && server!=null && !server.withJavaVersion.equals(Values.SERVER_WITH_DEFAULT_JAVA)) {
+				throw new Exception("Server is configured to run with java version="+server.withJavaVersion+" but no JAVA is configured");
+			}
+			if (java!=null && !java.version.equals(server.withJavaVersion)) {
+				throw new Exception("Server is configured to run with java version="+server.withJavaVersion+" but JAVA is configured with "+java.version);
+			}
+			return true;
+		} catch (Exception ex) {
+			log
+					.error("'"
+							+ ex.getMessage()
+							+ "' - incorrect configuration, update your configuraton");
 			return false;
 		}
-		
+
 	}
+
 	private static void checkDirExists(String dir) throws FileNotFoundException {
 		if (!new File(dir).exists() || !new File(dir).isDirectory()) {
-			throw new FileNotFoundException("File '"+dir+"' does not exist or is not directory");
+			throw new FileNotFoundException("File '" + dir
+					+ "' does not exist or is not directory");
 		}
 	}
+
 	/**
 	 * returns null when given Server annotation does not match global test
 	 * configuration (e.g. Test wants Server type EAP but we are running on
@@ -122,16 +157,24 @@ public class TestConfigurator {
 	 * @return StartServer requirement otherwise
 	 */
 	private static RequirementBase getServerRequirement(Server s) {
-		if (!s.required()) {
+		// tests omitting server must run even when server not configured
+		if (ServerState.Disabled.equals(s.state()) && server == null) {
+			return RequirementBase.createRemoveServer();
+		}
+		if (!s.required() || server == null) {
 			return null;
-		}				
+		}
 		if (!s.type().equals(ServerType.ALL)) {
 			if (s.type().equals(ServerType.EAP)
-					&& !server.type.equals(ServerBean.ServerType.EAP)) {
+					&& !server.type.equals(Values.SERVER_TYPE_EAP)) {
 				return null;
 			}
 			if (s.type().equals(ServerType.JbossAS)
-					&& !server.type.equals(ServerBean.ServerType.JBOSS_AS)) {
+					&& !server.type.equals(Values.SERVER_TYPE_JBOSSAS)) {
+				return null;
+			}
+			if (s.type().equals(ServerType.EPP)
+					&& !server.type.equals(Values.SERVER_TYPE_EPP)) {
 				return null;
 			}
 		}
@@ -160,7 +203,7 @@ public class TestConfigurator {
 	 * @return AddSeam requirement otherwise
 	 */
 	private static RequirementBase getSeamRequirement(Seam s) {
-		if (!s.required()) {
+		if (!s.required() || seam == null) {
 			return null;
 		}
 		if (!matches(seam.version, s.operator(), s.version())) {
@@ -168,8 +211,9 @@ public class TestConfigurator {
 		}
 		return RequirementBase.createAddSeam();
 	}
+
 	private static RequirementBase getESBRequirement(ESB e) {
-		if (!e.required()) {
+		if (!e.required() || esb == null) {
 			return null;
 		}
 		if (!matches(esb.version, e.operator(), e.version())) {

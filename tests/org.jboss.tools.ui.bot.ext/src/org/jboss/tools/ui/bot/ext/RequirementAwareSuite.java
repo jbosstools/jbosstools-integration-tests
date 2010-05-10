@@ -87,13 +87,11 @@ public class RequirementAwareSuite extends Suite {
 							+ "' - incorrect configuration");
 					return null;
 				}
-				log.info("Returning runner for test class "
-						+ klass.getCanonicalName());
-				// ensure creating runner instance
-				Runner runner = new ReqAwareClassRunner(klass, reqs);
+				log.info("Returning runner for class '"
+						+ klass.getCanonicalName()+"'");
 				// increment number of tests planned to run by 1 (class contains at least 1 test method)
 				cleanUp.incrPlanned();
-				return runner;
+				return new ReqAwareClassRunner(klass, reqs);
 			}
 			log.info("Skipping class '" + klass.getCanonicalName()
 					+ "' - annotations do not met configuration");
@@ -136,6 +134,7 @@ public class RequirementAwareSuite extends Suite {
 		@Override
 		public void testFinished(Description description) throws Exception {
 			incrFinished();
+			log.info("Finished test : "+description.getDisplayName());
 			log.info("Finished tests : "+getFinished()+"/"+getPlanned());
 			if (getFinished() >= getPlanned()) {
 				log.info("All tests finished, performing cleanup requirements ");

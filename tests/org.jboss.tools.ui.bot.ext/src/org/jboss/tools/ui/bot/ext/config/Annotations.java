@@ -162,6 +162,10 @@ public class Annotations {
 		 */
 		JbossAS,
 		/**
+		 * EAP with portal
+		 */
+		EPP,
+		/**
 		 * all server types acceptable
 		 */
 		ALL
