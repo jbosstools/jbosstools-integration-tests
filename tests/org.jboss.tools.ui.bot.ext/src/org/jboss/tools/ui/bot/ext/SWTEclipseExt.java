@@ -1109,5 +1109,18 @@ public class SWTEclipseExt {
    */
   public boolean existEditorWithLabel(String editorLabel){
     return SWTEclipseExt.existEditorWithLabel(bot, editorLabel);
+  }  
+  /**
+   * Maximizes active shell
+   */
+  public void maximizeActiveShell() {
+	final Shell shell =  (Shell)(bot.activeShell().widget);
+	bot.getDisplay().syncExec(new Runnable() {
+
+		public void run() {
+			shell.setMaximized(true);
+			
+		}		
+	});
   }
 }
