@@ -140,7 +140,8 @@ public class IDELabel {
 		public static final String JBOSS_TOOLS_WEB = "JBoss Tools Web";
 		public static final String JPA = "JPA";
 		public static final String DROOLS = "Drools";
-		public static final String GUVNOR = "Guvnor";
+		public static final String GUVNOR = "Guvnor";		
+		public static final String SMOOKS = "Smooks";
 	}
 	
 	public class EntityLabel {
@@ -157,6 +158,7 @@ public class IDELabel {
 		public static final String DROOLS_RULE = "Rule Resource";
 		public static final String GUIDED_DROOLS_RULE = "Guided Rule";
 		public static final String DSL_DROOLS_FILE = "Domain Specific Language";
+		public static final String SMOOKS_CONF_FILE = "Smooks Configuration File";
 		public static final String RESOURCES_FROM_GUVNOR = "Resources from Guvnor";
 	}
 
