@@ -162,6 +162,9 @@ public class SWTEclipseExt {
 		case GUVNOR_REPOSITORY_EXPLORING:
       perspectiveLabel = IDELabel.SelectPerspectiveDialog.GUVNOR_REPOSITORY_EXPLORING;
       break;
+		case DROOLS:
+      perspectiveLabel = IDELabel.SelectPerspectiveDialog.DROOLS;
+      break;
 		default:
 			fail("Unknown perspective to open");
 		}

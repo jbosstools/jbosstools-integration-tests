@@ -93,6 +93,7 @@ public class IDELabel {
 		public static final String REMOVE = "Remove";
 		public static final String EDIT = "Edit...";
 		public static final String ADD_WITHOUT_DOTS = "Add";
+		public static final String DROOLS_WORKBENCH = "Drools workbench";
 	}
 
 	public class Shell {
@@ -187,6 +188,7 @@ public class IDELabel {
 		public static final String PROBLEMS = "Problems";
 		public static final String DEBUG = "Debug";
 		public static final String GUVNOR_REPOSITORIES = "Guvnor Repositories";
+		public static final String PROPERTIES = "Properties";
 	}
 	
 	public class ViewGroup {
@@ -208,6 +210,7 @@ public class IDELabel {
 		public static final String JPA = "JPA";
 		public static final String DEBUG = "Debug";
 		public static final String GUVNOR_REPOSITORY_EXPLORING = "Guvnor Repository Exploring";
+		public static final String DROOLS = "Drools";
 	}
 	/**
 	 * Hibernate Console Wizard (ConsoleConfigurationCreationWizard) Labels (

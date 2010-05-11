@@ -22,6 +22,7 @@ import org.jboss.tools.drools.ui.bot.test.smoke.ManageDroolsRuntime;
 import org.jboss.tools.drools.ui.bot.test.smoke.ManageDroolsProject;
 import org.jboss.tools.drools.ui.bot.test.smoke.ManageDroolsRules;
 import org.jboss.tools.drools.ui.bot.test.smoke.DroolsRulesEditorTest;
+import org.jboss.tools.drools.ui.bot.test.smoke.OpenDroolsPerspective;
 import org.jboss.tools.drools.ui.bot.test.smoke.RuleFlowTest;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.SWTUtilExt;
@@ -41,7 +42,8 @@ import org.junit.runners.Suite.SuiteClasses;
  * 
  */
 @RunWith(Suite.class)
-@SuiteClasses({ManageDroolsRuntime.class,
+@SuiteClasses({OpenDroolsPerspective.class,
+  ManageDroolsRuntime.class,
   ManageDroolsProject.class,
   ManageDroolsRules.class,
   DroolsRulesEditorTest.class,

@@ -28,6 +28,8 @@ import org.eclipse.swtbot.eclipse.gef.finder.SWTGefBot;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditor;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.results.Result;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.drools.ui.bot.test.DroolsAllBotTests;
 import org.jboss.tools.ui.bot.ext.SWTEclipseExt;
@@ -35,6 +37,7 @@ import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.SWTUtilExt;
 import org.jboss.tools.ui.bot.ext.helper.KeyboardHelper;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
+import org.jboss.tools.ui.bot.ext.types.ViewType;
 import org.junit.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -139,6 +142,15 @@ public class RuleFlowTest extends SWTTestExt{
     gefEditor.mouseMoveLeftClick(xspacing + xoffset + 5, yoffset + 5);
     gefEditor.save();
     checkFullRFFile(DroolsAllBotTests.DROOLS_PROJECT_NAME , ruleFlowFileName);
+    // check synchronization with Properties View
+    gefEditor.activateTool("Select");
+    gefEditor.mouseMoveLeftClick(xoffset + 5, yoffset + 5);
+    SWTBotTree tree = eclipse.showView(ViewType.PROPERTIES).tree();
+    String id = tree.getTreeItem("Id").cell(1);
+    String name = tree.getTreeItem("Name").cell(1);
+    assertTrue("First editor element has to have Id=1 and Name=Start." +
+      "\nBut it has Id=" + id +
+      " Name=" + name, id.equals("1") && name.equals("Start"));
     // Delete each component
     gefEditor.activateTool("Select");
     for (int toolIndex = 0;toolIndex < tools.length;toolIndex++){
