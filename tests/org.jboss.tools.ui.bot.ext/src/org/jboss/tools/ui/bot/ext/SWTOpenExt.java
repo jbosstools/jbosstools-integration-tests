@@ -246,6 +246,7 @@ public class SWTOpenExt {
 		SWTBotShell activeShell = bot.activeShell();
 		String activeShellStr = bot.activeShell().getText();
 		bot.button(finishButtonText).click();
+		SWTEclipseExt.hideWarningIfDisplayed(bot);
 		long time = System.currentTimeMillis();
 		while (true) {
 			log.info("Waiting until shell '" + activeShellStr + "' closes");

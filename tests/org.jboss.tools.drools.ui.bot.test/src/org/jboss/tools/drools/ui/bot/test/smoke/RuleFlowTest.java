@@ -34,6 +34,7 @@ import org.jboss.tools.ui.bot.ext.SWTEclipseExt;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.SWTUtilExt;
 import org.jboss.tools.ui.bot.ext.helper.KeyboardHelper;
+import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.junit.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -99,7 +100,11 @@ public class RuleFlowTest extends SWTTestExt{
     // Test if Rule Flow RF File is opened in editor
     assertTrue("Rule Flow RF File is not opened properly. File " + ruleFlowFileName + " is not opened in editor",
       SWTEclipseExt.existEditorWithLabel(bot,ruleFlowFileName));
-    
+    // Maximize editor
+    bot.menu(IDELabel.Menu.WINDOW)
+      .menu(IDELabel.Menu.NAVIGATION)
+      .menu(IDELabel.Menu.MAXIMIZE_ACTIVE_VIEW_OR_EDITOR)
+      .click();
     SWTGefBot gefBot = new SWTGefBot();
     SWTBotGefEditor gefEditor = gefBot.gefEditor(ruleFlowFileName);
     final Control editorControl = (Control)gefEditor.getWidget();
@@ -137,11 +142,17 @@ public class RuleFlowTest extends SWTTestExt{
     // Delete each component
     gefEditor.activateTool("Select");
     for (int toolIndex = 0;toolIndex < tools.length;toolIndex++){
-      gefEditor.mouseMoveLeftClick(xspacing * (toolIndex % 3) + xoffset + 5, 
-        yspacing * (toolIndex / 3) + yoffset + 5);
+      gefEditor.mouseMoveLeftClick(xspacing * (toolIndex % 3) + xoffset + 10, 
+        yspacing * (toolIndex / 3) + yoffset + 10);
       KeyboardHelper.pressKeyCode(bot.getDisplay(),(int)SWT.DEL);
     }
+    // Restore maximized editor
+    bot.menu(IDELabel.Menu.WINDOW)
+      .menu(IDELabel.Menu.NAVIGATION)
+      .menu(IDELabel.Menu.MAXIMIZE_ACTIVE_VIEW_OR_EDITOR)
+      .click();
     gefEditor.save();
+    gefEditor.close();
     checkEmptyRFFile(DroolsAllBotTests.DROOLS_PROJECT_NAME , ruleFlowFileName);
   }  
   /**

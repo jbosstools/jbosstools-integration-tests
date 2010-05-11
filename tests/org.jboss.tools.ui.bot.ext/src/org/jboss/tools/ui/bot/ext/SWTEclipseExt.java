@@ -770,10 +770,11 @@ public class SWTEclipseExt {
 	/**
 	 * Hide Warning Message if displayed static version
 	 */
-	public static void hideWarningIfDisplayed(SWTBotExt bot) {
+	public static void hideWarningIfDisplayed(SWTBot bot) {
 		try {
-			bot.shell(IDELabel.Shell.WARNING).activate();
-			bot.button(IDELabel.Button.OK).click();
+		  SWTBot warningBot = bot.shell(IDELabel.Shell.WARNING).activate().bot();
+		  warningBot.sleep(Timing.time3S());
+		  warningBot.button(IDELabel.Button.OK).click();
 		} catch (WidgetNotFoundException wnfe) {
 			// do nothing
 		}

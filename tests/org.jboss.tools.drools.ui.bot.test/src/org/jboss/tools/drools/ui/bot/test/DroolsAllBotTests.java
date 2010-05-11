@@ -98,7 +98,8 @@ public class DroolsAllBotTests extends SWTTestExt {
     } catch (WidgetNotFoundException wnfe){
       // Do nothing ignore this error
     }
-    eclipse.openPerspective(PerspectiveType.JAVA);	
+    eclipse.openPerspective(PerspectiveType.JAVA);
+    eclipse.maximizeActiveShell();
   }
 
   @AfterClass

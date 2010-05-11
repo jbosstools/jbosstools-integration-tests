@@ -20,6 +20,7 @@ import org.jboss.tools.ui.bot.ext.SWTEclipseExt;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.helper.KeyboardHelper;
+import org.jboss.tools.ui.bot.ext.parts.SWTBotEditorExt;
 import org.jboss.tools.ui.bot.ext.types.EntityType;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.ext.types.JobName;
@@ -112,6 +113,8 @@ public class DomainSpecificLanguageEditorTest extends SWTTestExt{
     SWTBotEclipseEditor drlDroolsEditor = packageExplorer.openFile(DroolsAllBotTests.DROOLS_PROJECT_NAME ,
       DroolsAllBotTests.SRC_MAIN_RULES_TREE_NODE,
       DroolsAllBotTests.SAMPLE_DROOLS_RULE_NAME).toTextEditor();
+    SWTBotEditorExt ruleEditor = bot.swtBotEditorExtByTitle(DroolsAllBotTests.SAMPLE_DROOLS_RULE_NAME);
+    ruleEditor.selectPage(IDELabel.DroolsEditor.TEXT_EDITOR_TAB);    
     // update drl file
     drlDroolsEditor.insertText(3,0,"\nexpander " +
       dslFileName +
@@ -121,7 +124,9 @@ public class DomainSpecificLanguageEditorTest extends SWTTestExt{
       drlDroolsEditor.insertText(lineNumber,0,">");
     }
     drlDroolsEditor.selectLine(18);
+    bot.sleep(Timing.time1S());
     KeyboardHelper.pressKeyCode(bot.getDisplay(),(int)SWT.DEL);
+    bot.sleep(Timing.time1S());
     drlDroolsEditor.insertText(18, 0, "        Message m of type Message.GOODBYE contains myMessage");
     drlDroolsEditor.save();
     util.waitForJobs(Timing.time10S(), JobName.BUILDING_WS);

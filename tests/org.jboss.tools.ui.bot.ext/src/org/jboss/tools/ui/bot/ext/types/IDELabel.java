@@ -72,6 +72,8 @@ public class IDELabel {
     public static final String GUVNOR_ADD = "Add...";
     public static final String GUVNOR_DELETE = "Delete...";
     public static final String GUVNOR_DISCONNECT = "Disconnect";
+    public static final String NAVIGATION = "Navigation";
+    public static final String MAXIMIZE_ACTIVE_VIEW_OR_EDITOR = "Maximize Active View or Editor";
 	}
 
 	public class Button {
