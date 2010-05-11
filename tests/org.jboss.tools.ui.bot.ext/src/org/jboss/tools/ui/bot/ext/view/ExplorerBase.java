@@ -196,6 +196,34 @@ public abstract class ExplorerBase extends ViewBase {
 				return false;
 			}
 	}
+	
+	
+	/***
+	 * Checks presence of file
+	 * 
+	 * @param projectName - project name
+	 * @param path - path to file
+	 * @return true if file is located in explorer, false if not
+	 */
+	public boolean isFilePresent(String projectName, String... path) {
+		SWTBot viewBot = open.viewOpen(viewObject).bot();
+		SWTBotTree tree = viewBot.tree().select(projectName);
+		StringBuilder builder = new StringBuilder(projectName);
+		// Go through path
+		try {
+			SWTBotTreeItem item = tree.expandNode(projectName);
+			for (String nodeName : path) {
+				builder.append("/" + nodeName);
+				item = item.expandNode(nodeName);				
+			}
+		} catch (WidgetNotFoundException e) {
+			log.info("Node not found:" + builder.toString());
+			return false;
+		}
+
+		return true;
+	}
+	
 	private SWTBotTreeItem getItem(SWTBotTreeItem ancestor, String name) {
 		try {
 			return ancestor.expandNode(name);
