@@ -11,21 +11,31 @@
 
 package org.jboss.tools.drools.ui.bot.test.smoke;
 
+import static org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable.syncExec;
+
 import java.awt.event.KeyEvent;
+import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
+import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
+import org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory;
+import org.eclipse.swtbot.swt.finder.results.StringResult;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.hamcrest.Matcher;
 import org.jboss.tools.drools.ui.bot.test.DroolsAllBotTests;
 import org.jboss.tools.ui.bot.ext.config.requirement.PrepareViews;
 import org.jboss.tools.ui.bot.ext.config.requirement.RequirementNotFulfilledException;
 import org.jboss.tools.ui.bot.ext.config.requirement.StartServer;
 import org.jboss.tools.ui.bot.ext.config.requirement.StopServer;
+import org.jboss.tools.ui.bot.ext.gen.ActionItem.View.GuvnorGuvnorResourceHistory;
 import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
 import org.jboss.tools.ui.bot.ext.helper.DragAndDropHelper;
 import org.jboss.tools.ui.bot.ext.helper.KeyboardHelper;
@@ -50,6 +60,7 @@ public class GuvnorRepositoriesTest extends SWTTestExt{
   private static final Logger log = Logger.getLogger(GuvnorRepositoriesTest.class);
   private static final String GUVNOR_TEST_FILE = "Dummy rule.drl";
   private static final String GUVNOR_REPOSITORY_IMPORT_TEST_FILE = "Underage.brl";
+  private static final String GUVNOR_REPOSITORY_HISTORY_TEST_FILE = "MortgageModel.model.drl";
   private GuvnorRepositories guvnorRepositories = new GuvnorRepositories(); 
   /**
    * Tests Guvnor Repositories
@@ -61,10 +72,12 @@ public class GuvnorRepositoriesTest extends SWTTestExt{
     deleteGuvnorRepository();
     addGuvnorRepository();
     openGuvnorConsole();
+    drillIntoFunctionalityCheck();
     browseGuvnorRepository(GuvnorRepositoriesTest.GUVNOR_TEST_FILE);
-    importFileFromGuvnorRepository(GuvnorRepositoriesTest.GUVNOR_TEST_FILE,
+    guvnorFunctionalityCheck(GuvnorRepositoriesTest.GUVNOR_TEST_FILE,
       DroolsAllBotTests.SAMPLE_DROOLS_RULE_NAME,
       GuvnorRepositoriesTest.GUVNOR_REPOSITORY_IMPORT_TEST_FILE);
+    repositoryHistoryCheck(GuvnorRepositoriesTest.GUVNOR_REPOSITORY_HISTORY_TEST_FILE);
     stopGuvnor();
   }
 
@@ -163,12 +176,12 @@ public class GuvnorRepositoriesTest extends SWTTestExt{
     } 
   }
   /**
-   * Imports file with fileName to Drools project
+   * Imports file with fileName to Drools project and check update and commit Guvnor functionality
    * @param fileName
    * @param sampleFileName
    * @param importFileName
    */
-  private void importFileFromGuvnorRepository(String fileName, String sampleFileName, String importFileName){
+  private void guvnorFunctionalityCheck(String fileName, String sampleFileName, String importFileName){
     eclipse.openPerspective(PerspectiveType.JAVA);
     guvnorRepositories.show().bot();
     SWTBotTreeItem tiGuvnorFile = guvnorRepositories.selectTreeItem(Timing.time3S(),fileName,
@@ -327,5 +340,169 @@ public class GuvnorRepositoriesTest extends SWTTestExt{
     // when imported from Guvnor repository
     assertTrue("File " + importFileName + " was not disconnected from Guvnor Repository.",
         tiImportRuleFile.getText().trim().equals(importFileName));    
+  }
+  private void drillIntoFunctionalityCheck(){
+    SWTBotView guvnorReposioryView = guvnorRepositories.show();
+    guvnorRepositories.selectTreeItem(Timing.time2S(), IDELabel.GuvnorRepositories.PACKAGES_TREE_ITEM, 
+      new String[]{IDELabel.GuvnorRepositories.GUVNOR_REPOSITORY_ROOT_TREE_ITEM});
+    SWTUtilExt.getViewToolbarButtonWithTooltip(guvnorReposioryView,
+      IDELabel.GuvnorRepositories.GO_INTO_GUVNOR_REPOSITORY_TOOLTIP)
+        .click();
+    SWTBot guvnorRepositoryBot = guvnorReposioryView.bot();
+    SWTBotTree guvnorRepositoryTree = guvnorRepositoryBot.tree();
+    guvnorRepositoryBot.sleep(Timing.time3S());
+    assertTrue("Guvnor repository Go Into functionality doesn't work properly.\n" +
+      "Expected First Tree Item in Guvnor Repository is " + IDELabel.GuvnorRepositories.DEFAULT_PACKAGE_TREE_ITEM +
+      "\nBut it was " + guvnorRepositoryTree.getAllItems()[0].getText(),
+      IDELabel.GuvnorRepositories.DEFAULT_PACKAGE_TREE_ITEM.equals(guvnorRepositoryTree.getAllItems()[0].getText()));
+    
+    guvnorRepositories.selectTreeItem(Timing.time2S(), IDELabel.GuvnorRepositories.MORTGAGE_TREE_ITEM, 
+      null);
+    SWTUtilExt.getViewToolbarButtonWithTooltip(guvnorReposioryView,
+        IDELabel.GuvnorRepositories.GO_INTO_GUVNOR_REPOSITORY_TOOLTIP)
+          .click();
+    guvnorRepositoryBot.sleep(Timing.time3S());
+    assertTrue("Guvnor repository Go Into functionality doesn't work properly.\n" +
+      "Expected First Tree Item in Guvnor Repository is " + IDELabel.GuvnorRepositories.APPLICANTDSL_DSL_TREE_ITEM +
+      "\nBut it was " + guvnorRepositoryTree.getAllItems()[0].getText(),
+      IDELabel.GuvnorRepositories.APPLICANTDSL_DSL_TREE_ITEM.equals(guvnorRepositoryTree.getAllItems()[0].getText()));
+
+    SWTUtilExt.getViewToolbarButtonWithTooltip(guvnorReposioryView,
+        IDELabel.GuvnorRepositories.BACK_GUVNOR_REPOSITORY_TOOLTIP)
+          .click();
+    guvnorRepositoryBot.sleep(Timing.time3S());
+    assertTrue("Guvnor repository Back functionality doesn't work properly.\n" +
+      "Expected First Tree Item in Guvnor Repository is " + IDELabel.GuvnorRepositories.DEFAULT_PACKAGE_TREE_ITEM +
+      "\nBut it was " + guvnorRepositoryTree.getAllItems()[0].getText(),
+      IDELabel.GuvnorRepositories.DEFAULT_PACKAGE_TREE_ITEM.equals(guvnorRepositoryTree.getAllItems()[0].getText()));
+
+    SWTUtilExt.getViewToolbarButtonWithTooltip(guvnorReposioryView,
+        IDELabel.GuvnorRepositories.HOME_GUVNOR_REPOSITORY_TOOLTIP)
+          .click();
+    guvnorRepositoryBot.sleep(Timing.time3S());
+    assertTrue("Guvnor repository Home functionality doesn't work properly.\n" +
+      "Expected First Tree Item in Guvnor Repository is " + IDELabel.GuvnorRepositories.GUVNOR_REPOSITORY_ROOT_TREE_ITEM +
+      "\nBut it was " + guvnorRepositoryTree.getAllItems()[0].getText(),
+      IDELabel.GuvnorRepositories.GUVNOR_REPOSITORY_ROOT_TREE_ITEM.equals(guvnorRepositoryTree.getAllItems()[0].getText()));    
+  }
+  /**
+   * Check Repository History Functionality
+   * @param testFileName
+   */
+  private void repositoryHistoryCheck (String testFileName){
+    // Import File From Repository
+    eclipse.createNew(EntityType.RESOURCES_FROM_GUVNOR);
+    bot.button(IDELabel.Button.NEXT).click();
+    SWTEclipseExt.getTreeItemOnPath(
+      bot,
+      bot.tree(),
+      Timing.time3S(),
+      testFileName,
+      new String[] {
+        IDELabel.GuvnorRepositories.GUVNOR_REPOSITORY_ROOT_TREE_ITEM,
+        IDELabel.GuvnorRepositories.PACKAGES_TREE_ITEM,
+        IDELabel.GuvnorRepositories.MORTGAGE_TREE_ITEM }).select();
+    bot.button(IDELabel.Button.NEXT).click();
+    SWTEclipseExt.getTreeItemOnPath(bot,
+      bot.tree(),
+      Timing.time1S(),
+      "rules",
+      new String[] {DroolsAllBotTests.DROOLS_PROJECT_NAME,"src","main"}).select();
+    bot.button(IDELabel.Button.FINISH).click();
+    util.waitForJobs(Timing.time5S(),JobName.BUILDING_WS);
+    bot.sleep(Timing.time1S());
+    SWTBot packageExplorerBot = packageExplorer.show().bot();
+    SWTBotTree packageExplorerTree = packageExplorerBot.tree();
+    // File is renamed because there is appended Guvnor info to Tree Item Label
+    // So we need to get real label of Tree Item and use it later
+    SWTBotTreeItem tiTestRuleFile = SWTEclipseExt.getTreeItemOnPathStartsWith(packageExplorerBot, 
+      packageExplorerTree, 
+      Timing.time1S(),
+      testFileName, 
+      new String[]{DroolsAllBotTests.DROOLS_PROJECT_NAME,
+        DroolsAllBotTests.SRC_MAIN_RULES_TREE_NODE});
+    SWTBotEditor editor = packageExplorer.openFile(DroolsAllBotTests.DROOLS_PROJECT_NAME, 
+      DroolsAllBotTests.SRC_MAIN_RULES_TREE_NODE,
+      tiTestRuleFile.getText());
+    // change test file
+    String addedChange = "SWTBOT Change!@#$asdfghjkl)(*&^";
+    editor.toTextEditor().insertText(0,0,addedChange);
+    editor.save();
+    bot.sleep(Timing.time1S());
+    // commit changes
+    ContextMenuHelper.prepareTreeItemForContextMenu(packageExplorerTree, tiTestRuleFile);
+    ContextMenuHelper.clickContextMenu(packageExplorerTree,
+      IDELabel.Menu.GUVNOR,IDELabel.Menu.GUVNOR_COMMIT);
+    bot.sleep(Timing.time5S());
+    // check history
+    ContextMenuHelper.prepareTreeItemForContextMenu(packageExplorerTree, tiTestRuleFile);
+    ContextMenuHelper.clickContextMenu(packageExplorerTree,
+      IDELabel.Menu.GUVNOR,IDELabel.Menu.GUVNOR_SHOW_HISTORY);
+    bot.sleep(Timing.time5S());
+    SWTBotView guvnorResourceHistoryView = open.viewOpen(GuvnorGuvnorResourceHistory.LABEL);
+    SWTBot guvnorResourceHistoryBot = guvnorResourceHistoryView.bot();
+    SWTBotTable guvnorResourceHistoryTable = guvnorResourceHistoryView.bot().table();
+    assertTrue("Guvnor Resource History table for file " + testFileName +
+        " has to contain at least one record but is empty.",
+      guvnorResourceHistoryTable.rowCount() > 0);
+    // Compare Revisions
+    String secondAddedChange = "222222" + addedChange;
+    editor.toTextEditor().insertText(0,0,secondAddedChange);
+    editor.saveAndClose();
+    bot.sleep(Timing.time1S());
+    ContextMenuHelper.prepareTreeItemForContextMenu(packageExplorerTree, tiTestRuleFile);
+    ContextMenuHelper.clickContextMenu(packageExplorerTree,
+      IDELabel.Menu.GUVNOR,IDELabel.Menu.GUVNOR_COMPARE_WITH_VERSION);
+    eclipse.waitForShell("");
+    guvnorResourceHistoryBot.activeShell().bot().button(IDELabel.Button.OK).click();
+    SWTBotEditor compareEditor = bot.editorByTitle("Compare");
+    Matcher<StyledText> widgetOfTypeMatcher = WidgetMatcherFactory.widgetOfType(StyledText.class);
+    final List<?> styledTexts = compareEditor.bot().widgets(widgetOfTypeMatcher,compareEditor.getWidget());
+    String newVersionEditorText = syncExec(new StringResult() {
+      public String run() {
+        return ((StyledText)styledTexts.get(0)).getText();
+      }
+    });
+    String revisionEditorText = syncExec(new StringResult() {
+      public String run() {
+        return ((StyledText)styledTexts.get(1)).getText();
+      }
+    });
+    compareEditor.close();
+    assertTrue("Actual version of file opened within compare editor has wrong content.\n" +
+      "Content should start with " + secondAddedChange +
+      "\n but is " + newVersionEditorText,newVersionEditorText.startsWith(secondAddedChange));
+    assertTrue("File stored in Guvnor Repository opened within compare editor has wrong content.\n" +
+      "Content should start with " + addedChange +
+      "\n but is " + revisionEditorText,revisionEditorText.startsWith(addedChange));
+    // Open Revision
+    guvnorResourceHistoryView.show();
+    guvnorResourceHistoryTable.setFocus();
+    bot.sleep(Timing.time1S());
+    guvnorResourceHistoryTable.select(0);
+    bot.sleep(Timing.time1S());
+    KeyboardHelper.pressKeyCodeUsingAWT(KeyEvent.VK_ENTER);
+    KeyboardHelper.releaseKeyCodeUsingAWT(KeyEvent.VK_ENTER);
+    bot.sleep(Timing.time1S());
+    SWTBotEditor revisonFileEditor = eclipse.editorStartsWith(testFileName);
+    String revisionFileText = revisonFileEditor.toTextEditor().getText();
+    revisonFileEditor.close();
+    assertTrue("File stored in Guvnor Repository has wrong content.\n" +
+        "Content should start with " + addedChange +
+        "\n but is " + revisionFileText,revisionFileText.startsWith(addedChange));
+    // Switch to version
+    editor = packageExplorer.openFile(DroolsAllBotTests.DROOLS_PROJECT_NAME, 
+        DroolsAllBotTests.SRC_MAIN_RULES_TREE_NODE,
+        tiTestRuleFile.getText());
+    ContextMenuHelper.prepareTreeItemForContextMenu(packageExplorerTree, tiTestRuleFile);
+    ContextMenuHelper.clickContextMenu(packageExplorerTree,
+      IDELabel.Menu.GUVNOR,IDELabel.Menu.GUVNOR_SWITCH_TO_VERSION);
+    eclipse.waitForShell("");
+    guvnorResourceHistoryBot.activeShell().bot().button(IDELabel.Button.OK).click();
+    bot.sleep(Timing.time3S());
+    String editorText = editor.toTextEditor().getText();    
+    assertTrue("Switched version of file has wrong content.\n" +
+      "Content should start with " + addedChange +
+      "\n but is " + editorText,editorText.startsWith(addedChange));
   }
 }

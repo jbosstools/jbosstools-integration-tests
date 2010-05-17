@@ -26,7 +26,7 @@ public class OpenDroolsPerspective extends SWTTestExt{
    * Test Opening Drools Rules
    */
   @Test
-  public void testManageDroolsProject() {
+  public void testOpenDroolsPerspective() {
     openDroolsPerspective();
   }
   /**

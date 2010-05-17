@@ -1124,7 +1124,28 @@ public class SWTEclipseExt {
 		public void run() {
 			shell.setMaximized(true);
 			
-		}		
-	});
+	    }		
+    });
+  }
+  /**
+   * Returns SWTBotEditor with title starting with prefix 
+   * @param prefix
+   * @return
+   */
+  public SWTBotEditor editorStartsWith (String prefix){
+    SWTBotEditor editor = null;
+    List<?> editors = bot.editors();
+    Iterator<?> iterator = editors.iterator();
+    boolean found = false;
+    while (iterator.hasNext() && !found){
+      editor = ((SWTBotEditor)iterator.next()); 
+      found = editor.getTitle().startsWith(prefix);
+    }
+    if (found){
+      return editor;
+    }
+    else{
+      return null;
+    }
   }
 }

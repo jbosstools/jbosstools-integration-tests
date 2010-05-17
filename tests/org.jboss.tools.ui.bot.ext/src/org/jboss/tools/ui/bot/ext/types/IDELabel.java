@@ -72,6 +72,9 @@ public class IDELabel {
     public static final String GUVNOR_ADD = "Add...";
     public static final String GUVNOR_DELETE = "Delete...";
     public static final String GUVNOR_DISCONNECT = "Disconnect";
+    public static final String GUVNOR_SHOW_HISTORY = "Show History";
+    public static final String GUVNOR_COMPARE_WITH_VERSION = "Compare with Version...";
+    public static final String GUVNOR_SWITCH_TO_VERSION = "Switch to Version...";
     public static final String NAVIGATION = "Navigation";
     public static final String MAXIMIZE_ACTIVE_VIEW_OR_EDITOR = "Maximize Active View or Editor";
 	}
@@ -188,6 +191,7 @@ public class IDELabel {
 		public static final String PROBLEMS = "Problems";
 		public static final String DEBUG = "Debug";
 		public static final String GUVNOR_REPOSITORIES = "Guvnor Repositories";
+		public static final String GUVNOR_RESOURCE_HISTORY = "Guvnor Resource History";
 		public static final String PROPERTIES = "Properties";
 	}
 	
@@ -460,6 +464,11 @@ public class IDELabel {
      public static final String GUVNOR_REPOSITORY_ROOT_TREE_ITEM = "http://localhost:8080/drools-guvnor/org.drools.guvnor.Guvnor/webdav";
      public static final String PACKAGES_TREE_ITEM = "packages/";
      public static final String MORTGAGE_TREE_ITEM = "mortgages/";
+     public static final String GO_INTO_GUVNOR_REPOSITORY_TOOLTIP = "Go Into";
+     public static final String BACK_GUVNOR_REPOSITORY_TOOLTIP = "Back";
+     public static final String HOME_GUVNOR_REPOSITORY_TOOLTIP = "Home";
+     public static final String DEFAULT_PACKAGE_TREE_ITEM = "defaultPackage/";
+     public static final String APPLICANTDSL_DSL_TREE_ITEM = "ApplicantDsl.dsl";
    }
    
    public static final class GuvnorConsole {
