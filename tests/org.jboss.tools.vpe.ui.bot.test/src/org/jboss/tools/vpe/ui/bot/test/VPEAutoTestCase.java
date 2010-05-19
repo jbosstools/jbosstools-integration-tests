@@ -325,6 +325,7 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase{
    * For debug purposes. Displays formatted node
    * @param node
    */
+	@SuppressWarnings("unused")
   private void displaynsIDOMNode(nsIDOMNode node) {
     System.out.println("");
     System.out.print("<" + node.getNodeName() + " ");

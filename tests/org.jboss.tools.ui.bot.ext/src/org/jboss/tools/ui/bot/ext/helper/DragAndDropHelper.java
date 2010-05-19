@@ -40,6 +40,7 @@ public class DragAndDropHelper {
    * @param targetWidget
    */
   public static void dragAndDropOnTo(Widget sourceWidget, Widget targetWidget){
+    log.info("Drag and Drop from " + sourceWidget + " to " + targetWidget);
     try {
       if (DragAndDropHelper.robot == null){
         DragAndDropHelper.robot = new Robot();
