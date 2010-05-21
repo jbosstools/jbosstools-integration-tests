@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: org.jboss.tools.bpel.ui.bot.test
+Bundle-SymbolicName: org.jboss.tools.bpel.ui.bot.test
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: org.jboss.tools.bpel.ui.bot.test.Activator
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.swtbot.eclipse.core,
+ org.eclipse.swtbot.eclipse.finder,
+ org.eclipse.swtbot.swt.finder,
+ org.junit,
+ org.eclipse.core.resources
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-Vendor: JBoss by Red Hat
