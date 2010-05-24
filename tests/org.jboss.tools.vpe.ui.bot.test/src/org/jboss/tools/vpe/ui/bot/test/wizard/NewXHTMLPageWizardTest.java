@@ -39,13 +39,10 @@ public class NewXHTMLPageWizardTest extends VPEAutoTestCase{
 		this.bot.menu("File").menu("New").menu("Other...").click();   //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
 		this.bot.shell("New").activate(); //$NON-NLS-1$
 		SWTBotTree importTree = this.bot.tree();
-		importTree.expandNode("JBoss Tools Web").select("XHTML Page");  //$NON-NLS-1$//$NON-NLS-2$
+		importTree.expandNode("JBoss Tools Web").select("XHTML File");  //$NON-NLS-1$//$NON-NLS-2$
 		this.bot.button(WidgetVariables.NEXT_BUTTON).click();
-		this.bot.shell("New XHTML Page"); //$NON-NLS-1$
-//		this.bot.textWithMessage("File name:").setText("test.xhtml"); //$NON-NLS-1$
-		this.bot.textWithLabel("File name:").setText("test"); //$NON-NLS-1$ //$NON-NLS-2$
-		this.bot.button(WidgetVariables.NEXT_BUTTON).click();
-		this.bot.checkBox("Use XHTML Template").click(); //$NON-NLS-1$
+		this.bot.shell("New File XHTML"); //$NON-NLS-1$
+		this.bot.textWithLabel("Name*").setText("test"); //$NON-NLS-1$ //$NON-NLS-2$
 		this.bot.button(WidgetVariables.NEXT_BUTTON).click();
 		this.bot.button(WidgetVariables.FINISH_BUTTON).click();
 		assertEquals("Active Editor Title should be" ,"test.xhtml", this.bot.activeEditor().getTitle());  //$NON-NLS-1$ //$NON-NLS-2$
