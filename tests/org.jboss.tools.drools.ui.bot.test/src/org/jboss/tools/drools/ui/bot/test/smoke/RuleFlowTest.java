@@ -57,7 +57,7 @@ public class RuleFlowTest extends SWTTestExt{
   private static final String NODES_NODE_NAME = "nodes";
   private static final String CONNECTIONS_NODE_NAME = "connections";
   private static final String CONNECTION_NODE_NAME = "connection";
-  private static final int NODES_NODE_CHILDREN_COUNT = 14;
+  private static final int NODES_NODE_CHILDREN_COUNT = 7;
   private static final int CONNECTIONS_NODE_CHILDREN_COUNT = 1;
   private static final int ROOT_NODE_CHILDREN_COUNT = 3;
   /**
@@ -122,8 +122,13 @@ public class RuleFlowTest extends SWTTestExt{
     // Draw each component
     String[] tools = new String[]{"Start Event","End Event","Rule Task",
       "Gateway [diverge]","Gateway [converge]","Reusable Sub-Process",
-      "Script Task","Timer Event","Error Event","Message Event","User Task",
-      "Embedded Sub-Process","Log","Email"};
+      "Script Task"
+      /*
+       ,"Timer Event","Error Event","Message Event","User Task",
+       
+      "Embedded Sub-Process","Log","Email"
+      */
+      };
     int xspacing = 100;
     int xoffset = 10;
     int yspacing = 100;
@@ -367,19 +372,28 @@ public class RuleFlowTest extends SWTTestExt{
   private static List<String> getMandatoryNodesOfNodesNode(){
     LinkedList<String> allowedNodes = new LinkedList<String>();
     allowedNodes.add("split");
+    /*
     allowedNodes.add("timerNode");
     allowedNodes.add("humanTask");
+    */
     allowedNodes.add("ruleSet");
     allowedNodes.add("actionNode");
+    /*
     allowedNodes.add("composite");
+    */
     allowedNodes.add("end");
+    /*
     allowedNodes.add("workItem");
     allowedNodes.add("fault");
+    */
     allowedNodes.add("subProcess");
     allowedNodes.add("start");
+    /*
     allowedNodes.add("workItem");
     allowedNodes.add("eventNode");
+    */
     allowedNodes.add("join");
+    
     return allowedNodes;
   }
 
