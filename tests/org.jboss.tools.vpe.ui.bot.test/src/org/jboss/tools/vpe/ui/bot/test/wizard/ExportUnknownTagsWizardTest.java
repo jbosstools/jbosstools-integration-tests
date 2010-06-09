@@ -22,6 +22,7 @@ public class ExportUnknownTagsWizardTest extends VPEAutoTestCase {
 	private final String STORED_TAGS_PATH = "storedTags.xml"; //$NON-NLS-1$
 	
 	public ExportUnknownTagsWizardTest() {
+		super();
 	}
 
 	@Override

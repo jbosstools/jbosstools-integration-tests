@@ -20,6 +20,7 @@ public class ImportUnknownTagsWizardTest extends VPEAutoTestCase {
 	private final String STORED_TAGS_PATH = "storedTags.xml"; //$NON-NLS-1$
 	
 	public ImportUnknownTagsWizardTest() {
+		super();
 	}
 
 	@Override
@@ -57,8 +58,8 @@ public class ImportUnknownTagsWizardTest extends VPEAutoTestCase {
         /*
          * Check that finish button is enabled and press it.
          */
-        assertTrue("Finish button should be enabled.", //$NON-NLS-1$ 
-        bot.button(WidgetVariables.FINISH_BUTTON).isEnabled());
+        assertTrue("Finish button should be enabled.", //$NON-NLS-1$
+        		bot.button(WidgetVariables.FINISH_BUTTON).isEnabled());
         bot.button(WidgetVariables.FINISH_BUTTON).click();
         /*
          * Check that templates have been added to the preference page 
