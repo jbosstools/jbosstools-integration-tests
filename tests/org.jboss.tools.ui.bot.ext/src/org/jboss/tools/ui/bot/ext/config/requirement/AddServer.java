@@ -8,11 +8,13 @@ import org.jboss.tools.ui.bot.ext.gen.IServer;
 import org.jboss.tools.ui.bot.ext.gen.IServerRuntime;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.Server.JBossCommunityJBossAS42;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.Server.JBossCommunityJBossAS50;
+import org.jboss.tools.ui.bot.ext.gen.ActionItem.Server.JBossCommunityJBossAS51;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.Server.JBossCommunityJBossAS60;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.Server.JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform43;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.Server.JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform50;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.ServerRuntime.JBossCommunityJBoss42Runtime;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.ServerRuntime.JBossCommunityJBoss50Runtime;
+import org.jboss.tools.ui.bot.ext.gen.ActionItem.ServerRuntime.JBossCommunityJBoss51Runtime;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.ServerRuntime.JBossCommunityJBoss60Runtime;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.ServerRuntime.JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform43Runtime;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.ServerRuntime.JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform50Runtime;
@@ -95,6 +97,9 @@ public class AddServer extends RequirementBase {
 			}
 			if ("5.0".equals(version)) {
 				return new ServerInfo(JBossCommunityJBoss50Runtime.LABEL,JBossCommunityJBossAS50.LABEL);				
+			}
+			if ("5.1".equals(version)) {
+				return new ServerInfo(JBossCommunityJBoss51Runtime.LABEL,JBossCommunityJBossAS51.LABEL);
 			}
 			if ("6.0".equals(version)) {
 				return new ServerInfo(JBossCommunityJBoss60Runtime.LABEL,JBossCommunityJBossAS60.LABEL);				
