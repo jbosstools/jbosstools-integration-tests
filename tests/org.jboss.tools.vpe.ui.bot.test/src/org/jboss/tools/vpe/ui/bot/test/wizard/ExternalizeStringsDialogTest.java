@@ -13,6 +13,7 @@ package org.jboss.tools.vpe.ui.bot.test.wizard;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCheckBox;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCombo;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
 import org.jboss.tools.vpe.messages.VpeUIMessages;
@@ -31,7 +32,12 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 
 	@Override
 	protected void closeUnuseDialogs() {
-
+//		try {
+//			SWTBotShell shell = bot.shell(VpeUIMessages.EXTRNALIZE_STRINGS_DIALOG_TITLE);
+//			shell.close();
+//		} catch (Exception e) {
+//			// Do nothing
+//		}
 	}
 
 	@Override
@@ -56,21 +62,21 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		bot.toolbarButtonWithTooltip(VpeUIMessages.EXTENALIZE_STRINGS).click();
 		bot.shell(VpeUIMessages.EXTRNALIZE_STRINGS_DIALOG_TITLE).setFocus();
 		bot.shell(VpeUIMessages.EXTRNALIZE_STRINGS_DIALOG_TITLE).activate();
-		
 		/*
 		 * Check properties key and value fields
 		 */
-		SWTBotText defKeyText = bot.textInGroup(
-				VpeUIMessages.EXTRNALIZE_STRINGS_DIALOG_DEFAULT_KEY,
+		SWTBotText defKeyText = bot.textWithLabelInGroup(
+				VpeUIMessages.EXTRNALIZE_STRINGS_DIALOG_PROPERTIES_KEY, 
 				VpeUIMessages.EXTRNALIZE_STRINGS_DIALOG_PROPS_STRINGS_GROUP);
 		if (null != defKeyText) {
-			assertText(VpeUIMessages.EXTRNALIZE_STRINGS_DIALOG_DEFAULT_KEY, defKeyText);
+			assertText(VpeUIMessages.EXTRNALIZE_STRINGS_DIALOG_DEFAULT_KEY,
+					defKeyText);
 		}
-		SWTBotText defValueText = bot.textInGroup(
-				VpeUIMessages.EXTRNALIZE_STRINGS_DIALOG_DEFAULT_VALUE,
+		SWTBotText defValueText = bot.textWithLabelInGroup(
+				VpeUIMessages.EXTRNALIZE_STRINGS_DIALOG_PROPERTIES_VALUE,
 				VpeUIMessages.EXTRNALIZE_STRINGS_DIALOG_PROPS_STRINGS_GROUP);
 		if (null != defValueText) {
-			assertText(VpeUIMessages.EXTRNALIZE_STRINGS_DIALOG_DEFAULT_VALUE, defValueText);
+			assertText("User", defValueText); //$NON-NLS-1$
 		}
 		SWTBotCheckBox checkBox = bot.checkBox();
 		assertNotNull("Cannot find checkbox '" //$NON-NLS-1$
@@ -119,7 +125,7 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 				"Messages.properties"); //$NON-NLS-1$
 		editor2.toTextEditor().selectLine(3);
 		String line = editor2.toTextEditor().getSelection();
-		assertEquals("'Messages.properties' was updated incorrectly", "key=value", line); //$NON-NLS-1$ //$NON-NLS-2$
+		assertEquals("'Messages.properties' was updated incorrectly", "key=User", line); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
 	public void testNewFileInExternalizeStringsDialog() throws Throwable {
@@ -178,6 +184,6 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 				"externalize.properties"); //$NON-NLS-1$
 		editor2.toTextEditor().selectLine(1);
 		String line = editor2.toTextEditor().getSelection();
-		assertEquals("Created file is incorrect", "key=value", line); //$NON-NLS-1$ //$NON-NLS-2$
+		assertEquals("Created file is incorrect", "key=Input", line); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 }

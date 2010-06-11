@@ -23,6 +23,7 @@ import org.jboss.tools.vpe.ui.bot.test.smoke.RenameFacesConfigFileTest;
 import org.jboss.tools.vpe.ui.bot.test.smoke.RenameJSPFileTest;
 import org.jboss.tools.vpe.ui.bot.test.smoke.RenameXHTMLFileTest;
 import org.jboss.tools.vpe.ui.bot.test.smoke.XHTMLPageCreationTest;
+import org.jboss.tools.vpe.ui.bot.test.wizard.ExternalizeStringsDialogTest;
 import org.jboss.tools.vpe.ui.bot.test.wizard.ImportUnknownTagsWizardTest;
 import org.jboss.tools.vpe.ui.bot.test.wizard.NewXHTMLPageWizardTest;
 import org.jboss.tools.vpe.ui.bot.test.wizard.VPESourceCodeTemplatesPreferencePageTest;
@@ -53,6 +54,8 @@ public class VPEAllBotTests extends SWTBotTestCase{
 		suite.addTestSuite(ImportUnknownTagsWizardTest.class);
 		suite.addTestSuite(NewXHTMLPageWizardTest.class);
 		suite.addTestSuite(VPESourceCodeTemplatesPreferencePageTest.class);
+		suite.addTestSuite(ExternalizeStringsDialogTest.class);
+		
 		return new TestSetup(suite);
 	}
 }
