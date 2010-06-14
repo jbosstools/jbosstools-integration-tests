@@ -3,18 +3,23 @@ package org.jboss.tools.ui.bot.ext;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 import org.eclipse.swtbot.swt.finder.junit.ScreenshotCaptureListener;
+import org.jboss.tools.ui.bot.ext.config.TestConfiguration;
 import org.jboss.tools.ui.bot.ext.config.TestConfigurator;
 import org.jboss.tools.ui.bot.ext.config.Annotations.SWTBotTestRequires;
 import org.jboss.tools.ui.bot.ext.config.requirement.RequirementBase;
 import org.junit.runner.Description;
 import org.junit.runner.Runner;
+import org.junit.runner.manipulation.Filter;
+import org.junit.runner.manipulation.NoTestsRemainException;
 import org.junit.runner.notification.RunListener;
 import org.junit.runner.notification.RunNotifier;
 import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.Suite;
+import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.InitializationError;
 import org.junit.runners.model.RunnerBuilder;
 import org.junit.runners.model.Statement;
@@ -31,18 +36,22 @@ public class RequirementAwareSuite extends Suite {
 	final static DoAfterAllTestsRunListener cleanUp = new DoAfterAllTestsRunListener();
 
 	class ReqAwareClassRunner extends BlockJUnit4ClassRunner {
+		private final TestConfiguration config;
 		private final List<RequirementBase> requirements;
 
 		public ReqAwareClassRunner(Class<?> klass,
-				List<RequirementBase> requirements) throws InitializationError {
+				List<RequirementBase> requirements, TestConfiguration config)
+				throws InitializationError {
 			super(klass);
 			this.requirements = requirements;
+			this.config = config;
 		}
 
 		@Override
 		public void run(RunNotifier notifier) {
-			// planned test counter must know about all tests (methods) within a class
-			cleanUp.incrPlanned(getChildren().size()-1);
+			// planned test counter must know about all tests (methods) within a
+			// class
+			cleanUp.incrPlanned(getChildren().size() - 1);
 			// ensure that we have exactly 1 cleanup listener registered
 			notifier.removeListener(cleanUp);
 			notifier.addListener(cleanUp);
@@ -57,8 +66,17 @@ public class RequirementAwareSuite extends Suite {
 				notifier.removeListener(failureSpy);
 			}
 		}
+
+		@Override
+		protected String testName(FrameworkMethod method) {
+			return config.getPropName() + " - " + method.getName();
+		}
+
 		@Override
 		protected Statement withBeforeClasses(Statement statement) {
+			if (!this.config.equals(TestConfigurator.currentConfig)) {
+				TestConfigurator.currentConfig = this.config;
+			}
 			log.info("Fullfilling requirements before test "
 					+ getTestClass().getJavaClass());
 			try {
@@ -68,7 +86,6 @@ public class RequirementAwareSuite extends Suite {
 			} catch (Exception e) {
 				log.error("Fulfilling failed", e);
 			}
-
 			return super.withBeforeClasses(statement);
 		}
 	}
@@ -77,21 +94,25 @@ public class RequirementAwareSuite extends Suite {
 			.getLogger(RequirementAwareSuite.class);
 
 	private class RequirementAwareRunnerBuilder extends RunnerBuilder {
+		private final TestConfiguration config;
+
+		public RequirementAwareRunnerBuilder(TestConfiguration config) {
+			this.config = config;
+		}
+
 		@Override
 		public Runner runnerForClass(Class<?> klass) throws Throwable {
-			List<RequirementBase> reqs = TestConfigurator
-					.getClassRequirements(klass);
-			if (reqs != null) {
-				if (!TestConfigurator.checkConfig()) {
-					log.info("Skipping class '" + klass.getCanonicalName()
-							+ "' - incorrect configuration");
-					return null;
-				}
+			if (!this.config.equals(TestConfigurator.currentConfig)) {
+				TestConfigurator.currentConfig = this.config;
+			}
+			List<RequirementBase> reqs = TestConfigurator.getClassRequirements(klass);
+			if (reqs != null) {				
 				log.info("Returning runner for class '"
-						+ klass.getCanonicalName()+"'");
-				// increment number of tests planned to run by 1 (class contains at least 1 test method)
+						+ klass.getCanonicalName() + "'");
+				// increment number of tests planned to run by 1 (class contains
+				// at least 1 test method)
 				cleanUp.incrPlanned();
-				return new ReqAwareClassRunner(klass, reqs);
+				return new ReqAwareClassRunner(klass, reqs, config);
 			}
 			log.info("Skipping class '" + klass.getCanonicalName()
 					+ "' - annotations do not met configuration");
@@ -108,14 +129,17 @@ public class RequirementAwareSuite extends Suite {
 	 * 
 	 */
 	static class DoAfterAllTestsRunListener extends RunListener {
-		// As we can run more suites at once, we need to count tests which are planned to run
-		// and the ones which already passed (or failed), perform cleanups when the last one finishes
+		// As we can run more suites at once, we need to count tests which are
+		// planned to run
+		// and the ones which already passed (or failed), perform cleanups when
+		// the last one finishes
 		private int testsAboutToRun = 0;
 		private int testsFinished = 0;
 
 		public void incrPlanned() {
 			testsAboutToRun += 1;
 		}
+
 		public void incrPlanned(int amount) {
 			testsAboutToRun += amount;
 		}
@@ -130,14 +154,16 @@ public class RequirementAwareSuite extends Suite {
 
 		public int getFinished() {
 			return testsFinished;
-		}		
+		}
+
 		@Override
 		public void testFinished(Description description) throws Exception {
 			incrFinished();
-			log.info("Finished test : "+description.getDisplayName());
-			log.info("Finished tests : "+getFinished()+"/"+getPlanned());
+			log.info("Finished test : " + description.getDisplayName());
+			log.info("Finished tests : " + getFinished() + "/" + getPlanned());
 			if (getFinished() >= getPlanned()) {
-				log.info("All tests finished, performing cleanup requirements ");
+				log
+						.info("All tests finished, performing cleanup requirements ");
 				try {
 					RequirementBase.createStopServer().fulfill();
 
@@ -165,11 +191,40 @@ public class RequirementAwareSuite extends Suite {
 	 */
 	public RequirementAwareSuite(Class<?> klass) throws Throwable {
 		super(klass, Collections.<Runner> emptyList());
-		runners.add(new Suite(klass, new RequirementAwareRunnerBuilder()));
+		log.info("Loading test configurations");
+		for (Entry<Object, Object> entry : TestConfigurator.multiProperties
+				.entrySet()) {
+			try {
+				TestConfiguration config = new TestConfiguration(entry.getKey()
+						.toString(), entry.getValue().toString());
+				String suiteName = config.getPropName() + " - "
+						+ klass.getCanonicalName();
+				runners.add(new NamedSuite(klass,
+						new RequirementAwareRunnerBuilder(config), suiteName));
+			} catch (Exception ex) {
+				log.error("Error loading test configuration", ex);
+			}
+		}
 	}
 
 	@Override
 	protected List<Runner> getChildren() {
 		return runners;
+	}
+
+	public class NamedSuite extends Suite {
+		private final String suiteName;
+
+		public NamedSuite(Class<?> klass, RunnerBuilder builder, String name)
+				throws InitializationError {
+			super(klass, builder);
+			this.suiteName = name;
+		}
+
+		@Override
+		protected String getName() {
+			return suiteName;
+		}
+
 	}
 }

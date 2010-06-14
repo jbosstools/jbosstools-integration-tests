@@ -27,8 +27,8 @@ public class AddServer extends RequirementBase {
 
 	private String javaName=null;
 	public AddServer() {
-		String javaVer = getNeededJavaVersion(TestConfigurator.server.withJavaVersion);
-		if (javaVer!=null && TestConfigurator.java!=null &&javaVer.equals(TestConfigurator.java.version)) {
+		String javaVer = getNeededJavaVersion(TestConfigurator.currentConfig.getServer().withJavaVersion);
+		if (javaVer!=null && TestConfigurator.currentConfig.getJava()!=null &&javaVer.equals(TestConfigurator.currentConfig.getJava().version)) {
 			AddJava addJava = createAddJava();
 			getDependsOn().add(addJava);
 			javaName=addJava.getAddedAsName();
@@ -38,17 +38,26 @@ public class AddServer extends RequirementBase {
 
 	@Override
 	public void handle() {
-		ServerInfo serverInfo = getRuntime(TestConfigurator.server.type,TestConfigurator.server.version);
-		String runtimeHome=TestConfigurator.server.runtimeHome;
-		String runtimeName=TestConfigurator.server.type+"-"+TestConfigurator.server.version;
+		ServerInfo serverInfo = getRuntime(TestConfigurator.currentConfig.getServer().type,TestConfigurator.currentConfig.getServer().version);
+		String runtimeHome=TestConfigurator.currentConfig.getServer().runtimeHome;
+		String runtimeName=TestConfigurator.currentConfig.getServer().type+"-"+TestConfigurator.currentConfig.getServer().version;
 		SWTTestExt.eclipse.addJbossServerRuntime(serverInfo.runtime, 
 				runtimeHome, runtimeName, javaName);
 		SWTTestExt.eclipse.addServer(serverInfo.server, runtimeName);
 		SWTTestExt.configuredState.getServer().isConfigured=true;
 		SWTTestExt.configuredState.getServer().name=runtimeName;
-		SWTTestExt.configuredState.getServer().version=TestConfigurator.server.version;
-		SWTTestExt.configuredState.getServer().type=TestConfigurator.server.type;
-		SWTTestExt.configuredState.getServer().withJavaVersion = TestConfigurator.server.withJavaVersion;
+		SWTTestExt.configuredState.getServer().version=TestConfigurator.currentConfig.getServer().version;
+		SWTTestExt.configuredState.getServer().type=TestConfigurator.currentConfig.getServer().type;
+		SWTTestExt.configuredState.getServer().withJavaVersion = TestConfigurator.currentConfig.getServer().withJavaVersion;
+		// setup bundled ESB versions for SOA server type
+		if (TestConfigurator.currentConfig.getServer().type.equals(TestConfigurator.Values.SERVER_TYPE_SOA)) {
+			if ("4.3".equals(TestConfigurator.currentConfig.getServer().version)) {
+				SWTTestExt.configuredState.getServer().bundledESBVersion="4.4";			
+			}
+			if ("5.0".equals(TestConfigurator.currentConfig.getServer().version)) {
+				SWTTestExt.configuredState.getServer().bundledESBVersion="4.7";
+			}
+		} 
 	}
 
 	
@@ -79,7 +88,20 @@ public class AddServer extends RequirementBase {
 						JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform50.LABEL);
 			}
 			
-		}if (TestConfigurator.Values.SERVER_TYPE_EPP.equals(serverType)) {
+		}
+		if (TestConfigurator.Values.SERVER_TYPE_EPP.equals(serverType)) {
+			if ("4.3".equals(version)) {
+				return new ServerInfo(JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform43Runtime.LABEL,
+						JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform43.LABEL
+						);				
+			}
+			if ("5.0".equals(version)) {
+				return new ServerInfo(JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform50Runtime.LABEL,
+						JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform50.LABEL);
+			}
+			
+		}
+		if (TestConfigurator.Values.SERVER_TYPE_SOA.equals(serverType)) {
 			if ("4.3".equals(version)) {
 				return new ServerInfo(JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform43Runtime.LABEL,
 						JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform43.LABEL

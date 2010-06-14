@@ -26,10 +26,10 @@ public class AddJava extends RequirementBase {
 		SWTTestExt.configuredState.getJreList().add(getAddedAsName());
 	}
 	public String getAddedAsName() {
-		return "JRE-"+TestConfigurator.java.version;
+		return "JRE-"+TestConfigurator.currentConfig.getJava().version;
 	}
 	private String getJavaHome() {
-		return TestConfigurator.java.javaHome;
+		return TestConfigurator.currentConfig.getJava().javaHome;
 	}
 
 }

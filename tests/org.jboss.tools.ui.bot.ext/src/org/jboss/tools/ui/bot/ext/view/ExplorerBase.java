@@ -142,6 +142,7 @@ public abstract class ExplorerBase extends ViewBase {
 	public void runOnServer(String projectName) {
 		SWTBot viewBot = show().bot();
 		SWTBotTreeItem item = viewBot.tree().expandNode(projectName);
+		item.select();
 		ContextMenuHelper.prepareTreeItemForContextMenu(viewBot.tree(), item);
 		   final SWTBotMenu menuRunAs = viewBot.menu(IDELabel.Menu.RUN).menu(IDELabel.Menu.RUN_AS);
 		    final MenuItem menuItem = UIThreadRunnable
@@ -151,6 +152,7 @@ public abstract class ExplorerBase extends ViewBase {
 		          MenuItem menuItem = null;
 		          final MenuItem[] menuItems = menuRunAs.widget.getMenu().getItems();
 		          while (menuItem == null && menuItemIndex < menuItems.length){
+		        	  log.info("Found item" +menuItems[menuItemIndex].getText());
 		            if (menuItems[menuItemIndex].getText().indexOf("Run on Server") > - 1){
 		              menuItem = menuItems[menuItemIndex];
 		            }

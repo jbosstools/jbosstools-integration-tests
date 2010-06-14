@@ -90,6 +90,10 @@ public class ConfiguredState {
 		 * version of java configured to server (1.5 or 1.6)
 		 */
 		public String withJavaVersion = null;
+		/**
+		 * version of bundled ESB (applicable only for server type SOA)
+		 */
+		public String bundledESBVersion=null;
 	}
 
 	public class Seam {

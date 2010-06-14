@@ -23,6 +23,7 @@ public class RemoveServer extends RequirementBase {
 		SWTTestExt.configuredState.getServer().version=null;
 		SWTTestExt.configuredState.getServer().type=null;
 		SWTTestExt.configuredState.getServer().withJavaVersion=null;
+		SWTTestExt.configuredState.getServer().bundledESBVersion=null;
 	}
 
 }

@@ -154,6 +154,10 @@ public class Annotations {
 	}
 	public enum ServerType {
 		/**
+		 * SOA platform (includes EAP)
+		 */
+		SOA,
+		/**
 		 * EAP
 		 */
 		EAP, 
