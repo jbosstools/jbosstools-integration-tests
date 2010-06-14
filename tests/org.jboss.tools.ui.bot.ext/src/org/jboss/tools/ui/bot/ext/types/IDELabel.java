@@ -400,6 +400,9 @@ public class IDELabel {
    public static class ConsoleView {
 
      public static final String BUTTON_CLEAR_CONSOLE_TOOLTIP = "Clear Console";
+     public static final String BUTTON_DISPLAY_SELECTED_CONSOLE_TOOLTIP = "Display Selected Console";
+     public static final String BUTTON_SHOW_WHEN_STDOUT_CHANGES_TOOLTIP = "Show Console When Standard Out Changes";
+     public static final String BUTTON_SHOW_WHEN_STDERR_CHANGES_TOOLTIP = "Show Console When Standard Error Changes";
      
    }
    

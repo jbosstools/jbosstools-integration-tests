@@ -6,6 +6,7 @@ import java.util.Vector;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.gen.IView;
+import org.jboss.tools.ui.bot.ext.types.IDELabel;
 
 /**
  * this is a special requirement which should run only once, main aim of this is  to prepare
@@ -27,14 +28,14 @@ public class PrepareViews extends RequirementBase {
 				return new Vector<String>();
 			}
 			public String getName() {
-				return "Welcome";
+				return IDELabel.View.WELCOME;
 			}});
 		
 		// force console view not to steal focus when something happens
 		try {
 		SWTBotView consoleView = SWTTestExt.console.show();
-		consoleView.toolbarToggleButton("Show Console When Standard Out Changes").deselect();
-		consoleView.toolbarToggleButton("Show Console When Standard Error Changes").deselect();
+		consoleView.toolbarToggleButton(IDELabel.ConsoleView.BUTTON_SHOW_WHEN_STDOUT_CHANGES_TOOLTIP).deselect();
+		consoleView.toolbarToggleButton(IDELabel.ConsoleView.BUTTON_SHOW_WHEN_STDERR_CHANGES_TOOLTIP).deselect();
 		} catch (Exception ex) {
 			// do nothing since buttons must not always be available 
 		}
