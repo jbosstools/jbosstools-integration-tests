@@ -133,6 +133,7 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase{
 			SWTBotTree  innerTree = bot.tree();
 			delay();
 			innerTree.expandNode("JBoss Enterprise Middleware").select("JBoss Enterprise Application Platform 4.3 Runtime"); //$NON-NLS-1$ //$NON-NLS-2$
+			delay();
 			bot.button("Next >").click(); //$NON-NLS-1$
 			bot.textWithLabel("Home Directory").setText(JBOSS_EAP_HOME); //$NON-NLS-1$
 			bot.button("Finish").click(); //$NON-NLS-1$
