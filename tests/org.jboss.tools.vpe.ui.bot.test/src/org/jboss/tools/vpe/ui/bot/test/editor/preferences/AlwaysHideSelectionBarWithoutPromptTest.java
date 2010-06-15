@@ -1,6 +1,7 @@
 package org.jboss.tools.vpe.ui.bot.test.editor.preferences;
 
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
+import org.jboss.tools.ui.bot.ext.types.IDELabel;
 
 public class AlwaysHideSelectionBarWithoutPromptTest extends PreferencesTestCase{
 	
@@ -41,6 +42,14 @@ public class AlwaysHideSelectionBarWithoutPromptTest extends PreferencesTestCase
 		closePage();
 		openPage();
 		checkIsShow();
+		
+  	//Test Hide Selection Bar button with confirm
+	  
+    selectPrompt();
+    bot.toolbarButtonWithTooltip(HID_SEL_BAR).click();
+    bot.shell("Confirm hide selection bar").activate();
+    bot.button(IDELabel.Button.OK).click();
+    checkIsHide();
 	}
 	
 	private void checkIsHide(){
