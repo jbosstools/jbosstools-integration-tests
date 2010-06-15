@@ -492,21 +492,62 @@ public class SWTEclipseExt {
 	}
 	public void addESBRuntime(String name, String version, String runtimeHome ) {
 		SWTBot wiz = open.preferenceOpen(ActionItem.Preference.JBossToolsJBossESBRuntimes.LABEL);
-		wiz.button("Add").click();
-		bot.shell(IDELabel.Shell.NEW_ESB_RUNTIME).activate();
-		bot.text(0).setText(name);
-		bot.text(1).setText(runtimeHome);
-		String[] versions = bot.comboBox().items();
-		int myIndex =0;
-		for (int index=0;index<versions.length;index++) {
-			if (version.equals(versions[index])) {
-				myIndex=index;
-				break;
+		
+		boolean createRuntime = true;
+		// first check if Environment doesn't exist
+		SWTBotTable tbRuntimeEnvironments = bot.table();
+		int numRows = tbRuntimeEnvironments.rowCount();
+		if (numRows > 0) {
+			int currentRow = 0;
+			while (createRuntime && currentRow < numRows) {
+				if (tbRuntimeEnvironments.cell(currentRow, 1).equalsIgnoreCase(
+						name)) {
+					createRuntime = false;
+				} else {
+					currentRow++;
+				}
 			}
 		}
-		bot.comboBox().setSelection(myIndex);
-		open.finish(bot.activeShell().bot());
+		if (createRuntime) {
+			wiz.button("Add").click();
+			bot.shell(IDELabel.Shell.NEW_ESB_RUNTIME).activate();
+			bot.text(0).setText(name);
+			bot.text(1).setText(runtimeHome);
+			String[] versions = bot.comboBox().items();
+			int myIndex =0;
+			for (int index=0;index<versions.length;index++) {
+				if (version.equals(versions[index])) {
+					myIndex=index;
+					break;
+				}
+			}
+			bot.comboBox().setSelection(myIndex);
+			open.finish(bot.activeShell().bot());
+		}
 		open.finish(wiz, IDELabel.Button.OK);
+	}
+	public void removeESBRuntime(String name) {
+		SWTBot wiz = open.preferenceOpen(ActionItem.Preference.JBossToolsJBossESBRuntimes.LABEL);
+		SWTBotTable tbRuntimeEnvironments = bot.table();
+		int numRows = tbRuntimeEnvironments.rowCount();
+		if (numRows > 0) {
+			int currentRow = 0;
+			while (currentRow < numRows) {
+				if (tbRuntimeEnvironments.cell(currentRow, 1).equalsIgnoreCase(
+						name)) {
+					tbRuntimeEnvironments.click(currentRow, 1);
+					wiz.button(IDELabel.Button.REMOVE).click();
+					SWTBotShell shell = bot.shell("Confirm Runtime Delete");
+					shell.activate();
+					shell.bot().button(IDELabel.Button.OK).click();
+					log.info("ESB Runtime '" + name +"' removed.");
+					break;
+				} else {
+					currentRow++;
+				}
+			}
+		}
+		open.finish(wiz,IDELabel.Button.OK);
 	}
 	/**
 	 * adds jboss server runtime only if it's not specified yet

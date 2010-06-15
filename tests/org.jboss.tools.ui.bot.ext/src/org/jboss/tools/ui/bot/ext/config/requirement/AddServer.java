@@ -38,6 +38,16 @@ public class AddServer extends RequirementBase {
 
 	@Override
 	public void handle() {
+		
+		// handle state when server is already configured, but configuration changed and another 
+		if (SWTTestExt.configuredState.getServer().isConfigured) {
+			if (SWTTestExt.configuredState.getServer().type!=TestConfigurator.currentConfig.getServer().type
+					||SWTTestExt.configuredState.getServer().version!=TestConfigurator.currentConfig.getServer().version) {
+				createStopServer().handle();
+				createRemoveServer().handle();
+			}
+		}
+		
 		ServerInfo serverInfo = getRuntime(TestConfigurator.currentConfig.getServer().type,TestConfigurator.currentConfig.getServer().version);
 		String runtimeHome=TestConfigurator.currentConfig.getServer().runtimeHome;
 		String runtimeName=TestConfigurator.currentConfig.getServer().type+"-"+TestConfigurator.currentConfig.getServer().version;
@@ -135,7 +145,9 @@ public class AddServer extends RequirementBase {
 	}
 	@Override
 	public boolean checkFulfilled() {
-		return SWTTestExt.configuredState.getServer().isConfigured;
+		return SWTTestExt.configuredState.getServer().isConfigured 
+		&& SWTTestExt.configuredState.getServer().type.equals(TestConfigurator.currentConfig.getServer().type)
+		&& SWTTestExt.configuredState.getServer().version.equals(TestConfigurator.currentConfig.getServer().version);
 	}
 
 }

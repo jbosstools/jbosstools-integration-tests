@@ -9,7 +9,7 @@ import org.jboss.tools.ui.bot.ext.SWTTestExt;
 public class StartServer extends RequirementBase {
 
 	public StartServer() {
-		// define dependency
+		// define dependency				
 		getDependsOn().add(createAddServer());
 	}
 	
@@ -20,7 +20,7 @@ public class StartServer extends RequirementBase {
 
 	@Override
 	public void handle(){
-	  if (!SWTTestExt.configuredState.getServer().isRunning){
+	  if (!checkFulfilled()){
 	    SWTTestExt.servers.startServer(SWTTestExt.configuredState.getServer().name);
 	    SWTTestExt.configuredState.getServer().isRunning = true;
 	  }
