@@ -14,8 +14,9 @@ import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
+import org.jboss.tools.ui.bot.ext.SWTTestExt;
 
-public abstract class JBTSWTBotTestCase extends SWTBotTestCase implements
+public abstract class JBTSWTBotTestCase extends SWTTestExt implements
 		ILogListener {
 
 	protected static final String BUILDING_WS = "Building workspace"; //$NON-NLS-1$
