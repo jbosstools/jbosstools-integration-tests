@@ -59,28 +59,28 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		/*
 		 * Get toolbar button
 		 */
-		bot.toolbarButtonWithTooltip(VpeUIMessages.EXTENALIZE_STRINGS).click();
-		bot.shell(VpeUIMessages.EXTRNALIZE_STRINGS_DIALOG_TITLE).setFocus();
-		bot.shell(VpeUIMessages.EXTRNALIZE_STRINGS_DIALOG_TITLE).activate();
+		bot.toolbarButtonWithTooltip(VpeUIMessages.EXTERNALIZE_STRINGS).click();
+		bot.shell(VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).setFocus();
+		bot.shell(VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).activate();
 		/*
 		 * Check properties key and value fields
 		 */
 		SWTBotText defKeyText = bot.textWithLabelInGroup(
-				VpeUIMessages.EXTRNALIZE_STRINGS_DIALOG_PROPERTIES_KEY, 
-				VpeUIMessages.EXTRNALIZE_STRINGS_DIALOG_PROPS_STRINGS_GROUP);
+				VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_PROPERTIES_KEY, 
+				VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_PROPS_STRINGS_GROUP);
 		if (null != defKeyText) {
-			assertText(VpeUIMessages.EXTRNALIZE_STRINGS_DIALOG_DEFAULT_KEY,
+			assertText(VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_DEFAULT_KEY,
 					defKeyText);
 		}
 		SWTBotText defValueText = bot.textWithLabelInGroup(
-				VpeUIMessages.EXTRNALIZE_STRINGS_DIALOG_PROPERTIES_VALUE,
-				VpeUIMessages.EXTRNALIZE_STRINGS_DIALOG_PROPS_STRINGS_GROUP);
+				VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_PROPERTIES_VALUE,
+				VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_PROPS_STRINGS_GROUP);
 		if (null != defValueText) {
 			assertText("User", defValueText); //$NON-NLS-1$
 		}
 		SWTBotCheckBox checkBox = bot.checkBox();
 		assertNotNull("Cannot find checkbox '" //$NON-NLS-1$
-				+ VpeUIMessages.EXTRNALIZE_STRINGS_DIALOG_NEW_FILE + "'", //$NON-NLS-1$
+				+ VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_NEW_FILE + "'", //$NON-NLS-1$
 				checkBox);
 		/*
 		 * Check that "Next" button is disabled
@@ -142,16 +142,16 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		/*
 		 * Get toolbar button
 		 */
-		bot.toolbarButtonWithTooltip(VpeUIMessages.EXTENALIZE_STRINGS).click();
-		bot.shell(VpeUIMessages.EXTRNALIZE_STRINGS_DIALOG_TITLE).setFocus();
-		bot.shell(VpeUIMessages.EXTRNALIZE_STRINGS_DIALOG_TITLE).activate();
+		bot.toolbarButtonWithTooltip(VpeUIMessages.EXTERNALIZE_STRINGS).click();
+		bot.shell(VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).setFocus();
+		bot.shell(VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).activate();
 		
 		/*
 		 * Enable next page and check it 
 		 */
 		SWTBotCheckBox checkBox = bot.checkBox();
 		assertNotNull("Cannot find checkbox '" //$NON-NLS-1$
-				+ VpeUIMessages.EXTRNALIZE_STRINGS_DIALOG_NEW_FILE + "'", //$NON-NLS-1$
+				+ VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_NEW_FILE + "'", //$NON-NLS-1$
 				checkBox);
 		checkBox.select();
 		assertTrue("Checkbox should be checked.", //$NON-NLS-1$
