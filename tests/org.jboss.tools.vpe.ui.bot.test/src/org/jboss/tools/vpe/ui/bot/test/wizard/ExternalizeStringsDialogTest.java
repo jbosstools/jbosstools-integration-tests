@@ -13,7 +13,6 @@ package org.jboss.tools.vpe.ui.bot.test.wizard;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCheckBox;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCombo;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
 import org.jboss.tools.vpe.messages.VpeUIMessages;
@@ -33,12 +32,7 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 
 	@Override
 	protected void closeUnuseDialogs() {
-//		try {
-//			SWTBotShell shell = bot.shell(VpeUIMessages.EXTRNALIZE_STRINGS_DIALOG_TITLE);
-//			shell.close();
-//		} catch (Exception e) {
-//			// Do nothing
-//		}
+		
 	}
 
 	@Override
@@ -198,6 +192,12 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		 */
 		editor.toTextEditor().selectRange(13, 0, 1);
 		/*
+		 * There is an exception caused by the fact that
+		 * line delimiter was selected.
+		 * But for this test it's ok, so just ignore this exception.
+		 */
+		setException(null);
+		/*
 		 * Activate the dialog
 		 */
 		bot.toolbarButtonWithTooltip(VpeUIMessages.EXTERNALIZE_STRINGS).click();
@@ -242,7 +242,6 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		 * Close the dialog
 		 */
 		bot.shell(VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).close();
-		
 		/*
 		 * Check selection in the attribute's value
 		 */
