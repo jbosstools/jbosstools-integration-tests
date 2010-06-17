@@ -180,7 +180,7 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		assertEquals("Created file is incorrect", "key=Input", line); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
-	public void testóEmptySelectionInExternalizeStringsDialog() throws Throwable {
+	public void testEmptySelectionInExternalizeStringsDialog() throws Throwable {
 		/*
 		 * Open simple html file in order to get the VPE toolbar
 		 */
