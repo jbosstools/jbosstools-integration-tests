@@ -25,6 +25,14 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 	private final String FOLDER_TEXT_LABEL = "Enter or select the parent folder:"; //$NON-NLS-1$
 	private final String INCORRECT_TABLE_VALUE = "Table value is incorrect"; //$NON-NLS-1$
 	private final String CANNOT_FIND_PROPERTY_VALUE = "Cannot find 'Property Value' text field"; //$NON-NLS-1$
+	private final String COMPLEX_TEXT = "!! HELLO ~ Input User, Name.Page ?" //$NON-NLS-1$
+		+ " \r\n and some more text \r\n" //$NON-NLS-1$
+		+ "@ \\# vc \\$ % yy^ &*(ghg ) _l-kk+mmm\\/fdg\\ " //$NON-NLS-1$
+		+ "\t ;.df:,ee {df}df[ty]"; //$NON-NLS-1$
+	private final String COMPLEX_KEY_RESULT = "HELLO_Input_User_Name_Page_and" + //$NON-NLS-1$
+			"_some_more_text_vc_yy_ghg_l_kk_mmm_fdg_df_ee_df_df_ty"; //$NON-NLS-1$
+	private final String COMPLEX_VALUE_RESULT = "!! HELLO ~ Input User, Name.Page ?" + //$NON-NLS-1$
+	"      and some more text       @ \\# vc \\$ % yy^ &*(ghg ) _l-kk+mmm\\/fdg\\   ;.df:,ee {df}df[ty]"; //$NON-NLS-1$
 	
 	public ExternalizeStringsDialogTest() {
 		super();
@@ -64,8 +72,7 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 				VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_PROPERTIES_KEY, 
 				VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_PROPS_STRINGS_GROUP);
 		assertNotNull("Cannot find 'Property Key' text field", defKeyText); //$NON-NLS-1$
-		assertText(VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_DEFAULT_KEY,
-				defKeyText);
+		assertText("User",defKeyText); //$NON-NLS-1$
 		SWTBotText defValueText = bot.textWithLabelInGroup(
 				VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_PROPERTIES_VALUE,
 				VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_PROPS_STRINGS_GROUP);
@@ -108,8 +115,8 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		/*
 		 * Check replaced text
 		 */
-		editor.toTextEditor().selectRange(7, 18, 14);
-		assertEquals("Replaced text is incorrect", "#{Message.key}", editor.toTextEditor().getSelection()); //$NON-NLS-1$ //$NON-NLS-2$
+		editor.toTextEditor().selectRange(7, 18, 15);
+		assertEquals("Replaced text is incorrect", "#{Message.User}", editor.toTextEditor().getSelection()); //$NON-NLS-1$ //$NON-NLS-2$
 		/*
 		 * Check that properties file has been updated
 		 */
@@ -118,7 +125,7 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 				"Messages.properties"); //$NON-NLS-1$
 		editor2.toTextEditor().selectLine(3);
 		String line = editor2.toTextEditor().getSelection();
-		assertEquals("'Messages.properties' was updated incorrectly", "key=User", line); //$NON-NLS-1$ //$NON-NLS-2$
+		assertEquals("'Messages.properties' was updated incorrectly", "User=User", line); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
 	public void testNewFileInExternalizeStringsDialog() throws Throwable {
@@ -167,8 +174,8 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		/*
 		 * Check that the text was replaced
 		 */
-		editor.toTextEditor().selectRange(7, 12, 7);
-		assertEquals("Replaced text is incorrect", "#{.key}", editor.toTextEditor().getSelection()); //$NON-NLS-1$ //$NON-NLS-2$
+		editor.toTextEditor().selectRange(7, 12, 9);
+		assertEquals("Replaced text is incorrect", "#{.Input}", editor.toTextEditor().getSelection()); //$NON-NLS-1$ //$NON-NLS-2$
 		/*
 		 * Check that properties file has been created
 		 */
@@ -177,7 +184,7 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 				"externalize.properties"); //$NON-NLS-1$
 		editor2.toTextEditor().selectLine(1);
 		String line = editor2.toTextEditor().getSelection();
-		assertEquals("Created file is incorrect", "key=Input", line); //$NON-NLS-1$ //$NON-NLS-2$
+		assertEquals("Created file is incorrect", "Input=Input", line); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
 	public void testEmptySelectionInExternalizeStringsDialog() throws Throwable {
@@ -218,7 +225,7 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		/*
 		 * Type some text outside the tag
 		 */
-		editor.toTextEditor().typeText(13, 0, "Plain text in the JSP file"); //$NON-NLS-1$
+		editor.toTextEditor().typeText(13, 0, COMPLEX_TEXT);
 		/*
 		 * Select nothing and call the dialog --
 		 * the whole text should be selected.
@@ -231,13 +238,18 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		bot.shell(VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).setFocus();
 		bot.shell(VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).activate();
 		/*
-		 * Check that the property value text is empty
+		 * Check that the property key and value text
 		 */
+		SWTBotText defKeyText = bot.textWithLabelInGroup(
+				VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_PROPERTIES_KEY,
+				VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_PROPS_STRINGS_GROUP);
+		assertNotNull(CANNOT_FIND_PROPERTY_VALUE, defKeyText);
+		assertText(COMPLEX_KEY_RESULT, defKeyText);
 		defValueText = bot.textWithLabelInGroup(
 				VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_PROPERTIES_VALUE,
 				VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_PROPS_STRINGS_GROUP);
 		assertNotNull(CANNOT_FIND_PROPERTY_VALUE, defValueText);
-		assertText("Plain text in the JSP file", defValueText); //$NON-NLS-1$
+		assertText(COMPLEX_VALUE_RESULT, defValueText);
 		/*
 		 * Close the dialog
 		 */
@@ -245,7 +257,7 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		/*
 		 * Check selection in the attribute's value
 		 */
-		editor.toTextEditor().selectRange(18, 50, 0);
+		editor.toTextEditor().selectRange(22, 50, 0);
 		/*
 		 * Activate the dialog
 		 */
