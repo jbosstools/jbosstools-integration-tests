@@ -23,15 +23,18 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.waits.Conditions;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotButton;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotCombo;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotList;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTabItem;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
 import org.eclipse.ui.internal.WorkbenchMessages;
 import org.eclipse.ui.internal.ide.IDEWorkbenchMessages;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
@@ -374,38 +377,40 @@ public class WsTesterTest extends SWTTestExt {
         }
 
         public void setWebServiceType(Ws_Type type) {
-            comboBox(0).setSelection(type.getLabel());
+        	//Web Service Type:
+            comboBoxWithLabel(JBossWSUIMessages.JAXRSWSTestView_Web_Service_Type_Label).setSelection(type.getLabel());
         }
 
 //      public void setSampleContent() {
 //          button(JBossWSUIMessages.JAXRSWSTestView_Set_Sample_Data_Label).click();
 //      }
+
         public void setHttpMethod(Http_Method m) {
-            comboBox(1).setSelection(m.toString());
+        	getHTTPTypeCombo().setSelection(m.toString());
         }
 
         public Http_Method getHttpMethod() {
-            return Enum.valueOf(Http_Method.class, comboBox(1).getText());
+            return Enum.valueOf(Http_Method.class, getHTTPTypeCombo().getText());
         }
 
         public boolean isHttpMethodSelectionEnabled() {
-            return comboBox(1).isEnabled();
+            return getHTTPTypeCombo().isEnabled();
         }
 
         public void setServiceURL(String url) {
-            comboBox(2).typeText(url);
+        	getServiceURLCombo().typeText(url);
         }
 
         public String getServiceURL() {
-            return comboBox(2).getText();
+            return getServiceURLCombo().getText();
         }
 
         public void setActionURL(String s) {
-            text(0).typeText(s);
+        	getActionURLText().typeText(s);
         }
 
         public String getActionURL() {
-            return text(0).getText();
+            return getActionURLText().getText();
         }
 
         public void setRequestBody(String s) {
@@ -442,7 +447,7 @@ public class WsTesterTest extends SWTTestExt {
             bot.button("Edit").click();
             SWTBot sh = bot.activeShell().bot();
             sh.text(0).typeText(newName + "=" + newValue);
-            sh.button("OK").click();
+            sh.button(IDialogConstants.OK_LABEL).click();
         }
 
         public void upRequestArg(Request_Arg_Type type, String name, String value) {
@@ -510,6 +515,21 @@ public class WsTesterTest extends SWTTestExt {
         private String getStringFromBundle(String key) {
             return Platform.getResourceString(WSUI_BUNDLE, key);
         }
+        
+        private SWTBotCombo getHTTPTypeCombo() {
+        	//HTTP Method:
+            return comboBoxWithLabel(JBossWSUIMessages.JAXRSWSTestView_HTTP_Method_Label);
+        }
+        
+        private SWTBotCombo getServiceURLCombo() {
+        	//Service URL:
+        	return comboBoxWithLabel(JBossWSUIMessages.JAXRSWSTestView_Service_URL_Label);
+        }
+        
+        private SWTBotText getActionURLText() {
+        	//Action URL:
+        	return textWithLabel(JBossWSUIMessages.JAXRSWSTestView_Action_URL_Label);
+        }
     }
     
     private static class SelectWSDLDialog extends SWTBotShell {
@@ -548,7 +568,7 @@ public class WsTesterTest extends SWTTestExt {
 		}
 		
 		public void ok() {
-			bot().button("OK").click();
+			bot().button(IDialogConstants.OK_LABEL).click();
 		}
 		
 		private List<String> getItems(String label) {
