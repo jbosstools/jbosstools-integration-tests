@@ -23,10 +23,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.SWTBot;
+import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.waits.Conditions;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotButton;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotList;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTabItem;
 import org.eclipse.ui.internal.WorkbenchMessages;
@@ -87,6 +90,33 @@ public class WsTesterTest extends SWTTestExt {
         Assert.assertEquals(2, wstv.getRequestArgs(WsTesterView.Request_Arg_Type.HEADER).keySet().size());
         wstv.clearRequestArgs(WsTesterView.Request_Arg_Type.HEADER);
         Assert.assertEquals(0, wstv.getRequestArgs(WsTesterView.Request_Arg_Type.HEADER).keySet().size());
+        
+        wstv.setWebServiceType(WsTesterView.Ws_Type.JAX_WS);
+        SelectWSDLDialog dlg = wstv.getFromWSDL();
+        dlg.openURL();
+        SWTBotShell sh = bot.activeShell();
+        sh.bot().text().typeText(SERVICE_URL + "?WSDL");
+        sh.bot().button("OK").click();
+        bot.sleep(1000);
+        Assert.assertEquals(SERVICE_URL + "?WSDL", dlg.getURI());
+        List<String> items = dlg.getServices();
+        L.log(Level.FINE, "Services: {0}", items);
+        Assert.assertEquals(1, items.size());
+        Assert.assertTrue(items.contains("BibleWebservice"));
+        items = dlg.getPorts();
+        L.log(Level.FINE, "Ports: {0}", items);
+        Assert.assertEquals(2, items.size());
+        Assert.assertTrue(items.contains("BibleWebserviceSoap"));
+        Assert.assertTrue(items.contains("BibleWebserviceSoap12"));
+        items = dlg.getOperations();
+        L.log(Level.FINE, "Operations: {0}", items);
+        Assert.assertEquals(4, items.size());
+        Assert.assertTrue(items.contains("GetBookTitles"));
+        Assert.assertTrue(items.contains("GetBibleWordsByChapterAndVerse"));
+        dlg.selectOperation("GetBibleWordsbyKeyWord");
+        dlg.ok();
+        Assert.assertEquals("http://www.webservicex.net/BibleWebservice.asmx", wstv.getServiceURL());
+        Assert.assertEquals("http://www.webserviceX.NET/GetBibleWordsbyKeyWord", wstv.getActionURL());
         viewBot.close();
     }
 
@@ -366,8 +396,16 @@ public class WsTesterTest extends SWTTestExt {
             comboBox(2).typeText(url);
         }
 
+        public String getServiceURL() {
+            return comboBox(2).getText();
+        }
+
         public void setActionURL(String s) {
             text(0).typeText(s);
+        }
+
+        public String getActionURL() {
+            return text(0).getText();
         }
 
         public void setRequestBody(String s) {
@@ -455,6 +493,11 @@ public class WsTesterTest extends SWTTestExt {
             waitWhile(Conditions.shellIsActive(dlgTitle), 120000);
             sleep(500);
         }
+        
+        public SelectWSDLDialog getFromWSDL() {
+        	button(JBossWSUIMessages.JAXRSWSTestView_Button_Get_From_WSDL).click();
+        	return new SelectWSDLDialog(activeShell().widget);
+        }
 
         public void openMonitor() {
             button(JBossWSUIMessages.JAXRSWSTestView_Open_Monitor_Button).click();
@@ -467,5 +510,54 @@ public class WsTesterTest extends SWTTestExt {
         private String getStringFromBundle(String key) {
             return Platform.getResourceString(WSUI_BUNDLE, key);
         }
+    }
+    
+    private static class SelectWSDLDialog extends SWTBotShell {
+
+		public SelectWSDLDialog(Shell shell) throws WidgetNotFoundException {
+			super(shell);
+			assert JBossWSUIMessages.WSDLBrowseDialog_Dialog_Title.equals(getText());
+		}
+    	
+		public void openURL() {
+			bot().button(JBossWSUIMessages.WSDLBrowseDialog_URL_Browse).click();
+		}
+		
+//		public void setURI(String s) {
+//			bot().comboBoxWithLabel(JBossWSUIMessages.WSDLBrowseDialog_WSDL_URI_Field).setText(s);
+//		}
+		
+		public String getURI() {
+			return bot().comboBoxWithLabel(JBossWSUIMessages.WSDLBrowseDialog_WSDL_URI_Field).getText();
+		}
+		
+		public List<String> getServices() {
+			return getItems(JBossWSUIMessages.WSDLBrowseDialog_Service_Field);
+		}
+		
+		public List<String> getPorts() {
+			return getItems(JBossWSUIMessages.WSDLBrowseDialog_Port_Field);
+		}
+		
+		public List<String> getOperations() {
+			return Arrays.asList(getOperationsList().getItems());
+		}
+		
+		public void selectOperation(String op) {
+			getOperationsList().select(op);
+		}
+		
+		public void ok() {
+			bot().button("OK").click();
+		}
+		
+		private List<String> getItems(String label) {
+			String[] items = bot().comboBoxWithLabel(label).items();
+			return Arrays.asList(items);
+		}
+		
+		private SWTBotList getOperationsList() {
+			return bot().listWithLabel(JBossWSUIMessages.WSDLBrowseDialog_Operation_Field);
+		}
     }
 }
