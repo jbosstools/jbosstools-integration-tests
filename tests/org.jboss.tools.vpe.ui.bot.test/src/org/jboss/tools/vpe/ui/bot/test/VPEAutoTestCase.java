@@ -247,7 +247,7 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase{
 		   +
 		   testPage;  //$NON-NLS-1$//$NON-NLS-2$
 		File file = new File(filePath);
-		if (!file.isFile()) {
+		if (!file.exists()) {
 			filePath = FileLocator.toFileURL(Platform.getBundle(Activator.PLUGIN_ID).getEntry("/")).getFile()+testPage; //$NON-NLS-1$
 		}
 		return filePath;
