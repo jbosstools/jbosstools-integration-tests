@@ -77,6 +77,7 @@ public class IDELabel {
     public static final String GUVNOR_SWITCH_TO_VERSION = "Switch to Version...";
     public static final String NAVIGATION = "Navigation";
     public static final String MAXIMIZE_ACTIVE_VIEW_OR_EDITOR = "Maximize Active View or Editor";
+    public static final String REFRESH = "Refresh";
 	}
 
 	public class Button {
@@ -134,6 +135,7 @@ public class IDELabel {
 	  public static final String NEW_ESB_RUNTIME = "New JBoss ESB Runtime";
 	  public static final String CONFIRM_DELETE = "Confirm Delete";  
 	  public static final String SHOW_VIEW = "Show View";
+	  public static final String PROPERTIES_FOR = "Properties for";
 	}
 
 	public class EntityGroup {
@@ -479,5 +481,17 @@ public class IDELabel {
      public static final String GUVNOR_CONSOLE_TITLE = "JBoss Guvnor";
      public static final String BUTTON_YES_INSTALL_SAMPLES = "Yes, please install samples";
      
+   }
+   
+   public static class PropertiesWindow {
+
+     public static final String RESOURCE = "Resource";
+     
+     public static final class ResourceProperties {
+       
+       public static final String PATH = "Path:";
+       public static final String LOCATION = "Location:";
+       
+     }
    }
  }
