@@ -655,6 +655,7 @@ public class SWTUtilExt extends SWTUtils {
     List<?> widgets = bot.widgets(new SWTUtilExt.AlwaysMatchMatcher<Widget>(),parent);
     for (Object object : widgets){
       System.out.println(object + 
+        " Class: " + object.getClass() +  
         " Text: " + SWTUtilExt.invokeMethod(object, "getText") +
         " Tooltip: " + SWTUtilExt.invokeMethod(object, "getToolTipText"));
     }
