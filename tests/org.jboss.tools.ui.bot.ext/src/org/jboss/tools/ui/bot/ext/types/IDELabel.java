@@ -311,6 +311,7 @@ public class IDELabel {
      // Server Runtime with this Label is created during JBDS installation for bundled EAP
      public static final String JBOSS_EAP = "jboss-eap Runtime";
      public static final String JBOSS_EAP_5_0 = "JBoss EAP 5.0 Runtime";
+     public static final String JBOSS_AS_5_1 = "JBoss 5.1 Runtime";
 
    }
 	
@@ -357,19 +358,22 @@ public class IDELabel {
 
      public static final String JBOSS_EAP_4_3 = "JBoss Enterprise Middleware";
      public static final String JBOSS_EAP_5_0 = "JBoss Enterprise Middleware";
+     public static final String JBOSS_COMMUNITY = "JBoss Community";
        
    }
    public static final class ServerRuntimeType {
 
      public static final String JBOSS_EAP_4_3 = "JBoss Enterprise Application Platform 4.3 Runtime";
      public static final String JBOSS_EAP_5_0 = "JBoss Enterprise Application Platform 5.0 Runtime";
+     public static final String JBOSS_AS_5_1 = "JBoss 5.1 Runtime";
        
    }
    public static final class ServerType {
 
      public static final String JBOSS_EAP_4_3 = "JBoss Enterprise Application Platform 4.3";
      public static final String JBOSS_EAP_5_0 = "JBoss Enterprise Application Platform 5.0";
-       
+     public static final String JBOSS_AS_5_1 = "JBoss AS 5.1";
+     
    }
    public static final class DroolsRuntimeDialog {
 
