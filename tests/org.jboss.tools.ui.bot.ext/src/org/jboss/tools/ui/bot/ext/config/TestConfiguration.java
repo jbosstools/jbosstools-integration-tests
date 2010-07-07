@@ -32,7 +32,7 @@ public class TestConfiguration {
 	public TestConfiguration(String propName, String propFile) throws Exception {
 		this.propName = propName;
 		this.propFile = propFile;
-		if (propFile != null) {
+		if (!"".equals(propFile)) {
 			if (new File(propFile).exists()) {
 				log.info("Loading configuration file '" + propFile + "'");
 				swtTestProperties.load(new FileInputStream(propFile));

@@ -58,8 +58,22 @@ public class TestConfigurator {
 					throw new IOException(SWTBOT_TEST_PROPERTIES_MULTI_FILE + " "
 							+ propMultiFile + " does not exist!");
 				}
-			} else {				
-				multiProperties.put(SWTBOT_TEST_PROPERTIES_FILE, propFile);
+			} 
+			else if (propFile!=null) {
+				if (new File(propFile).exists()) {
+					log
+					.info("Loading exeternaly configuration file '"
+							+ propFile + "'");
+					multiProperties.put(SWTBOT_TEST_PROPERTIES_FILE, propFile);
+				}
+				else {
+					throw new IOException(SWTBOT_TEST_PROPERTIES_FILE + " "
+							+ propFile + " does not exist!");
+				}
+			}
+			else {
+				log.info("No configuration property passed, using default");
+				multiProperties.put(SWTBOT_TEST_PROPERTIES_FILE, "");
 
 			}
 
