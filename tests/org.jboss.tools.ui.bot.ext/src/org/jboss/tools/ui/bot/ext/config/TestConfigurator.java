@@ -84,8 +84,8 @@ public class TestConfigurator {
 		try {
 			currentConfig = new TestConfiguration("default", "");
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			// log only message, nothing 
+			log.error(e.getMessage());
 		}
 
 	}
