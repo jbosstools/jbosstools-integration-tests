@@ -60,6 +60,8 @@ public class RuleFlowTest extends SWTTestExt{
   private static final int NODES_NODE_CHILDREN_COUNT = 7;
   private static final int CONNECTIONS_NODE_CHILDREN_COUNT = 1;
   private static final int ROOT_NODE_CHILDREN_COUNT = 3;
+  
+  private boolean isEditorMaximized = false;
   /**
    * Tests Rule Flow
    */
@@ -107,6 +109,7 @@ public class RuleFlowTest extends SWTTestExt{
       .menu(IDELabel.Menu.NAVIGATION)
       .menu(IDELabel.Menu.MAXIMIZE_ACTIVE_VIEW_OR_EDITOR)
       .click();
+    isEditorMaximized = true;
     SWTGefBot gefBot = new SWTGefBot();
     SWTBotGefEditor gefEditor = gefBot.gefEditor(ruleFlowFileName);
     final Control editorControl = (Control)gefEditor.getWidget();
@@ -167,6 +170,7 @@ public class RuleFlowTest extends SWTTestExt{
       .menu(IDELabel.Menu.NAVIGATION)
       .menu(IDELabel.Menu.MAXIMIZE_ACTIVE_VIEW_OR_EDITOR)
       .click();
+    isEditorMaximized = false;
     gefEditor.save();
     gefEditor.close();
     checkEmptyRFFile(DroolsAllBotTests.DROOLS_PROJECT_NAME , ruleFlowFileName);
@@ -434,5 +438,21 @@ public class RuleFlowTest extends SWTTestExt{
     }
     
     return errorDescription;
+  }
+  
+  protected void tearDown(){
+    if (isEditorMaximized){
+      // Restore maximized editor
+      bot.menu(IDELabel.Menu.WINDOW)
+        .menu(IDELabel.Menu.NAVIGATION)
+        .menu(IDELabel.Menu.MAXIMIZE_ACTIVE_VIEW_OR_EDITOR)
+        .click();
+      isEditorMaximized = false;
+    }
+    try {
+      super.tearDown();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
   }
 }
