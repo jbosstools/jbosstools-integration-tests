@@ -25,7 +25,7 @@ public class DecisionTableTest extends SWTTestExt{
    * Tests Decision Table
    */
   @Test
-  public void testRuleFlow() {
+  public void testDecisionTable() {
     runDecisionTable(DroolsAllBotTests.DECISION_TABLE_JAVA_TEST_FILE_NAME);
   }
   /**
