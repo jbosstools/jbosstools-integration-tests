@@ -80,7 +80,13 @@ public class TestConfigurator {
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
-
+		// load default config by default
+		try {
+			currentConfig = new TestConfiguration("default", "");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 	/**
