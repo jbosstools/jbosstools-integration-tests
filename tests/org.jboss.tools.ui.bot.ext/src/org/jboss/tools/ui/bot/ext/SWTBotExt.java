@@ -29,10 +29,12 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.ui.forms.widgets.Hyperlink;
+import org.eclipse.ui.forms.widgets.Section;
 import org.jboss.tools.ui.bot.ext.parts.SWTBotBrowserExt;
 import org.jboss.tools.ui.bot.ext.parts.SWTBotEditorExt;
 import org.jboss.tools.ui.bot.ext.parts.SWTBotHyperlinkExt;
 import org.jboss.tools.ui.bot.ext.parts.SWTBotScaleExt;
+import org.jboss.tools.ui.bot.ext.widgets.SWTBotSection;
 
 /**
  * Extended version of SWTWorkbenchBot, logging added
@@ -162,6 +164,15 @@ public class SWTBotExt extends SWTWorkbenchBot {
 	public SWTBotButton clickButton(String text) {
 		return button(text).click();
 	}
-	
+	@SuppressWarnings("unchecked")
+	public SWTBotSection section(String label) {
+		try {
+		List<Section> sections = (List<Section>)widgets(allOf(withText(label),widgetOfType(Section.class)));
+		return new SWTBotSection(sections.get(0));
+		} catch (WidgetNotFoundException ex) {
+			throw new WidgetNotFoundException(
+					"Could not find widget of type Section", ex);
+		}
+	}
 
 }

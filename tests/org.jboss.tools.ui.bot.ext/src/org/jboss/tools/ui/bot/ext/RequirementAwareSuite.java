@@ -2,19 +2,18 @@ package org.jboss.tools.ui.bot.ext;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map.Entry;
-
+import java.util.Set;
 import org.apache.log4j.Logger;
 import org.eclipse.swtbot.swt.finder.junit.ScreenshotCaptureListener;
+import org.jboss.tools.ui.bot.ext.config.Annotations.SWTBotTestRequires;
 import org.jboss.tools.ui.bot.ext.config.TestConfiguration;
 import org.jboss.tools.ui.bot.ext.config.TestConfigurator;
-import org.jboss.tools.ui.bot.ext.config.Annotations.SWTBotTestRequires;
 import org.jboss.tools.ui.bot.ext.config.requirement.RequirementBase;
 import org.junit.runner.Description;
 import org.junit.runner.Runner;
-import org.junit.runner.manipulation.Filter;
-import org.junit.runner.manipulation.NoTestsRemainException;
 import org.junit.runner.notification.RunListener;
 import org.junit.runner.notification.RunNotifier;
 import org.junit.runners.BlockJUnit4ClassRunner;
@@ -106,12 +105,20 @@ public class RequirementAwareSuite extends Suite {
 				TestConfigurator.currentConfig = this.config;
 			}
 			List<RequirementBase> reqs = TestConfigurator.getClassRequirements(klass);
-			if (reqs != null) {				
+			if (reqs != null) {
+				SWTBotTestRequires anno = klass.getAnnotation(SWTBotTestRequires.class);
+				if (anno!=null && anno.runOnce() && cleanUp.isClassPlanned(klass)) {
+					// class is already planned to run and contains annotation runOnce
+					log.info("Skipping class '" + klass.getCanonicalName()
+					+ "' - runOnce=true, class already planned");
+					return null;
+				}
 				log.info("Returning runner for class '"
 						+ klass.getCanonicalName() + "'");
 				// increment number of tests planned to run by 1 (class contains
 				// at least 1 test method)
 				cleanUp.incrPlanned();
+				cleanUp.addClass(klass);
 				return new ReqAwareClassRunner(klass, reqs, config);
 			}
 			log.info("Skipping class '" + klass.getCanonicalName()
@@ -123,7 +130,7 @@ public class RequirementAwareSuite extends Suite {
 
 	/**
 	 * listener which listens to test runs, does some cleanup after all tests
-	 * have run
+	 * have run it also holds set of all classes which run (usefull for runOnce annotation)
 	 * 
 	 * @author lzoubek
 	 * 
@@ -154,6 +161,17 @@ public class RequirementAwareSuite extends Suite {
 
 		public int getFinished() {
 			return testsFinished;
+		}
+		private Set<String> classes = new HashSet<String>();
+		/**
+		 * adds class to runList - as it is planned to run
+		 * @param klass
+		 */
+		public void addClass(Class<?> klass) {
+			classes.add(klass.getName());
+		}
+		public boolean isClassPlanned(Class<?> klass) {
+			return classes.contains(klass.getName());
 		}
 
 		@Override

@@ -56,6 +56,14 @@ public class Annotations {
 		 * @return
 		 */
 		boolean clearProjects() default true;
+		/**
+		 * if you want your class to be run just once (among all suites and possibly multiple configurations)
+		 * set this to true, default is false. 
+		 * This is useful when testing against multiple configurations is not needed 
+		 * or for test class which would last too long and would uselessly run more than once
+		 * @return
+		 */
+		boolean runOnce() default false;
 	}
 	/**
 	 * Server requirement, by default matches all server types and versions

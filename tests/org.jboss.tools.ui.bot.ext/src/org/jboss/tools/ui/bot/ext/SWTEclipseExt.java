@@ -1132,6 +1132,30 @@ public class SWTEclipseExt {
     return containsItem;
   }
   /**
+   * returns true if path composed from items exists in tree
+   * @param tree
+   * @param items
+   * @return
+   */
+  public static boolean containstInTree(SWTBotTree tree, String...items) {
+		try {			
+			SWTBotTreeItem ancestor = tree.getTreeItem(items[0]);
+			tree.expandNode(items[0]);
+			for (int i=1;i<items.length;i++) {
+				try {
+					ancestor = ancestor.expandNode(items[i]);
+				}
+				catch (WidgetNotFoundException ex) {
+					return false;
+				}				
+			}
+			return true;
+			}
+			catch (WidgetNotFoundException ex) {
+				return false;
+			}	
+  }
+  /**
    * Returns true if editor with editorLabel exists within bot
    * static version
    * @param bot

@@ -82,10 +82,15 @@ public class TestConfigurator {
 		}
 		// load default config by default
 		try {
+			log.info(" * Loading default configuration first");
 			currentConfig = new TestConfiguration("default", "");
+			
 		} catch (Exception e) {
 			// log only message, nothing 
 			log.error(e.getMessage());
+		}
+		finally {
+			log.info(" * Defaults loaded");
 		}
 
 	}
