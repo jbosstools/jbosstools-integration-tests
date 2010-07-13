@@ -44,6 +44,7 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase{
 	protected final static String JBOSS_EAP_HOME;
 	protected final static String JBT_TEST_PROJECT_NAME;
 	protected final static String JBOSS_SERVER_GROUP;
+	protected final static String JBOSS_SERVER_TYPE;
 	protected final static String JBOSS_SERVER_RUNTIME_TYPE;
 	
 	/* (non-Javadoc)
@@ -74,12 +75,13 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase{
 		  JBOSS_EAP_HOME = projectProperties.getProperty("JBossEap5.0"); //$NON-NLS-1$
 	    JBOSS_SERVER_GROUP = IDELabel.ServerGroup.JBOSS_EAP_5_0;
 	    JBOSS_SERVER_RUNTIME_TYPE = IDELabel.ServerRuntimeType.JBOSS_EAP_5_0;
-
+	    JBOSS_SERVER_TYPE = IDELabel.ServerType.JBOSS_EAP_5_0;
 		}
 		else {
 		  JBOSS_EAP_HOME = projectProperties.getProperty("JBossEap4.3"); //$NON-NLS-1$
       JBOSS_SERVER_GROUP = IDELabel.ServerGroup.JBOSS_EAP_4_3;
       JBOSS_SERVER_RUNTIME_TYPE = IDELabel.ServerRuntimeType.JBOSS_EAP_4_3;
+      JBOSS_SERVER_TYPE = IDELabel.ServerType.JBOSS_EAP_4_3;
 		}
 		JBT_TEST_PROJECT_NAME = projectProperties.getProperty("JSFProjectName"); //$NON-NLS-1$
 	}
