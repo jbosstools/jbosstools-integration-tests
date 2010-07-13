@@ -17,6 +17,7 @@ import org.jboss.tools.jst.jsp.jspeditor.JSPMultiPageEditor;
 import org.jboss.tools.test.TestProperties;
 import org.jboss.tools.vpe.ui.bot.test.Activator;
 import org.jboss.tools.ui.bot.ext.SWTJBTExt;
+import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.test.JBTSWTBotTestCase;
 import org.jboss.tools.ui.bot.test.SWTBotJSPMultiPageEditor;
 import org.jboss.tools.ui.bot.test.WidgetVariables;
@@ -25,9 +26,7 @@ import org.jboss.tools.vpe.editor.VpeEditorPart;
 import org.jboss.tools.vpe.editor.mapping.VpeNodeMapping;
 import org.mozilla.interfaces.nsIDOMDocument;
 import org.mozilla.interfaces.nsIDOMElement;
-import org.mozilla.interfaces.nsIDOMNamedNodeMap;
 import org.mozilla.interfaces.nsIDOMNode;
-import org.mozilla.interfaces.nsIDOMNodeList;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -42,8 +41,10 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase{
 	 * Variable defines JBoss EAP 4.3 server location on a file system
 	 */
 	
-	protected static String JBOSS_EAP_HOME;
-	protected static String JBT_TEST_PROJECT_NAME;
+	protected final static String JBOSS_EAP_HOME;
+	protected final static String JBT_TEST_PROJECT_NAME;
+	protected final static String JBOSS_SERVER_GROUP;
+	protected final static String JBOSS_SERVER_RUNTIME_TYPE;
 	
 	/* (non-Javadoc)
 	 * This static block read properties from 
@@ -69,7 +70,17 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase{
 			Activator.getDefault().getLog().log(status);
 			e.printStackTrace();
 		}
-		JBOSS_EAP_HOME = projectProperties.getProperty("JBossEap4.3"); //$NON-NLS-1$
+		if (projectProperties.containsKey("JBossEap5.0")){
+		  JBOSS_EAP_HOME = projectProperties.getProperty("JBossEap5.0"); //$NON-NLS-1$
+	    JBOSS_SERVER_GROUP = IDELabel.ServerGroup.JBOSS_EAP_5_0;
+	    JBOSS_SERVER_RUNTIME_TYPE = IDELabel.ServerRuntimeType.JBOSS_EAP_5_0;
+
+		}
+		else {
+		  JBOSS_EAP_HOME = projectProperties.getProperty("JBossEap4.3"); //$NON-NLS-1$
+      JBOSS_SERVER_GROUP = IDELabel.ServerGroup.JBOSS_EAP_4_3;
+      JBOSS_SERVER_RUNTIME_TYPE = IDELabel.ServerRuntimeType.JBOSS_EAP_4_3;
+		}
 		JBT_TEST_PROJECT_NAME = projectProperties.getProperty("JSFProjectName"); //$NON-NLS-1$
 	}
 	
@@ -132,7 +143,7 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase{
 			bot.button(0).click();
 			SWTBotTree  innerTree = bot.tree();
 			delay();
-			innerTree.expandNode("JBoss Enterprise Middleware").select("JBoss Enterprise Application Platform 4.3 Runtime"); //$NON-NLS-1$ //$NON-NLS-2$
+			innerTree.expandNode(JBOSS_SERVER_GROUP).select(JBOSS_SERVER_RUNTIME_TYPE); //$NON-NLS-1$ //$NON-NLS-2$
 			delay();
 			bot.button("Next >").click(); //$NON-NLS-1$
 			bot.textWithLabel("Home Directory").setText(JBOSS_EAP_HOME); //$NON-NLS-1$
@@ -322,44 +333,6 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase{
 		Node testBodyNode = xmlTestDocument.getElementsByTagName("BODY").item(0); //$NON-NLS-1$
 		TestDomUtil.compareNodes(visualBodyNode, testBodyNode);
 	}
-  /**
-   * For debug purposes. Displays formatted node
-   * @param node
-   */
-	@SuppressWarnings("unused")
-  private void displaynsIDOMNode(nsIDOMNode node) {
-    System.out.println("");
-    System.out.print("<" + node.getNodeName() + " ");
-
-    // compare node's attributes
-    if (node.getNodeType() == Node.ELEMENT_NODE) {
-      nsIDOMNamedNodeMap modelAttributes = node.getAttributes();
-      for (int i = 0; i < modelAttributes.getLength(); i++) {
-        nsIDOMNode modelAttr = modelAttributes.item(i);
-        System.out.print(modelAttr.getNodeName() + "=" + modelAttr.getNodeValue() + " ");
-      }
-    }
-    System.out.println(">");
-    if (node.getNodeValue() != null){
-      System.out.println(node.getNodeValue());
-    }
-    // compare children
-    nsIDOMNodeList children = node.getChildNodes();
-    for (int i = 0; i < children.getLength(); i++) {
-
-      nsIDOMNode child = children.item(i);
-
-      // leave out empty text nodes in test dom model
-      if ((child.getNodeType() == Node.TEXT_NODE)
-          && ((child.getNodeValue() == null) || (child.getNodeValue().trim()
-              .length() == 0)))
-        continue;
-
-      displaynsIDOMNode(child);
-
-    }
-    System.out.println("<" + node.getNodeName() + "/>");
-  }
 
 	/**
 	 * Try to close all unnecessary dialogs, that could prevent next tests fails
