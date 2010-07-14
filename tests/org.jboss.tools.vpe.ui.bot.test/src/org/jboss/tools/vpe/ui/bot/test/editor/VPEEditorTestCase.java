@@ -8,6 +8,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
+import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.test.WidgetVariables;
 import org.jboss.tools.vpe.ui.bot.test.Activator;
 import org.jboss.tools.vpe.ui.bot.test.VPEAutoTestCase;
@@ -74,6 +75,7 @@ public abstract class VPEEditorTestCase extends VPEAutoTestCase{
       bot.menu("Edit").menu("Delete").click(); //$NON-NLS-1$ //$NON-NLS-2$
       editor.setText(editorText);
       editor.save();
+      bot.sleep(Timing.time2S());
     }
 		super.tearDown();
 	}

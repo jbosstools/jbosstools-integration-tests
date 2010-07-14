@@ -31,7 +31,7 @@ import org.jboss.tools.ui.bot.ext.types.ViewType;
  *
  */
 public class FileRenameHelper {
-  private static final int sleepTime = 1000;
+  private static final int sleepTime = Timing.time2S();
   /**
    * Check File Renaming
    * @param bot
@@ -53,14 +53,14 @@ public class FileRenameHelper {
     if (treePathItems != null && treePathItems.length > 0){
       SWTBotTreeItem parentTreeItem = tree.getTreeItem(treePathItems[0]);
       parentTreeItem.expand();
-      bot.sleep(1000);  
+      bot.sleep(Timing.time1S());  
       parentTreeItem.select();
-      bot.sleep(1000);
+      bot.sleep(Timing.time1S());
       // Do not remove this part of code otherwise tree view is not populated properly
       parentTreeItem.collapse();
-      bot.sleep(1000);  
+      bot.sleep(Timing.time1S());  
       parentTreeItem.expand();
-      bot.sleep(1000);
+      bot.sleep(Timing.time1S());
       int index = 1;
       while (treePathItems.length > index){
         parentTreeItem = parentTreeItem.getNode(treePathItems[index]);
@@ -79,6 +79,7 @@ public class FileRenameHelper {
         .setText(newFileName);
       bot.button(IDELabel.Button.OK).click();
       new SWTUtilExt(bot).waitForAll(60 * 1000L);
+      bot.sleep(Timing.time5S());
       // Check Results
       // File with Old Name doesn't exists within WebProjects View
       try{

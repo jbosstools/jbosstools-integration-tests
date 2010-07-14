@@ -13,6 +13,8 @@ package org.jboss.tools.vpe.ui.bot.test.smoke;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.jboss.tools.ui.bot.ext.Timing;
+import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.test.WidgetVariables;
 import org.jboss.tools.vpe.ui.bot.test.editor.VPEEditorTestCase;
@@ -55,12 +57,14 @@ public class JSPPageCreationTest extends VPEEditorTestCase{
     
     webContentTreeItem.select();
     // create new JSP file
-    bot.menu(IDELabel.Menu.FILE).menu(IDELabel.Menu.NEW).menu(IDELabel.Menu.JSP_FILE).click();
+    open.newObject(ActionItem.NewObject.WebJSP.LABEL);
     bot.shell(IDELabel.Shell.NEW_JSP_FILE).activate();
-    bot.textWithLabel(IDELabel.NewJSPFileDialog.NAME).setText(TEST_NEW_JSP_FILE_NAME);
-    bot.comboBoxWithLabel(IDELabel.NewJSPFileDialog.TEMPLATE).setText(IDELabel.NewJSPFileDialog.TEMPLATE_JSF_BASE_PAGE);
+    bot.textWithLabel(ActionItem.NewObject.WebJSP.TEXT_FILE_NAME).setText(TEST_NEW_JSP_FILE_NAME);
+    bot.button(IDELabel.Button.NEXT).click();
+    bot.table().select(IDELabel.NewJSPFileDialog.JSP_TEMPLATE);
     bot.button(IDELabel.Button.FINISH).click();
-    
+    bot.sleep(Timing.time2S());
+    webContentTreeItem.expand();
     SWTBotTreeItem jspTestPageTreeItem = webContentTreeItem.getNode(TEST_NEW_JSP_FILE_NAME);
     
     String checkResult = CheckFileChangesSaving.checkIt(bot, bot.editorByTitle(TEST_NEW_JSP_FILE_NAME).toTextEditor(),

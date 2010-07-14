@@ -9,13 +9,12 @@ public class CancelTagLibDefenitionTest extends VPEAutoTestCase{
 	@Override
 	protected void createJSFProject(String jsfProjectName) {
 		super.createJSFProject(jsfProjectName);
-		openPalette();
 	}
 	
 	public void testCancelTagLibDefenition(){
-		
+    openPalette();
+	  openPage();		
 		//Test open import dialog
-		
 		bot.viewByTitle("JBoss Tools Palette").setFocus(); //$NON-NLS-1$
 		bot.toolbarButtonWithTooltip("Import").click(); //$NON-NLS-1$
 		bot.shell("Import Tags from TLD File").activate(); //$NON-NLS-1$
@@ -28,7 +27,7 @@ public class CancelTagLibDefenitionTest extends VPEAutoTestCase{
 		//Test cancel TLD
 		SWTBotTree tree = bot.tree();
 		delay();
-		tree.expandNode(projectProperties.getProperty("JSFProjectName")).expandNode("x-1_0-rt.tld [x_rt]").select(); //$NON-NLS-1$ //$NON-NLS-2$
+		tree.expandNode(projectProperties.getProperty("JSFProjectName")).expandNode("html_basic.tld [h]").select(); //$NON-NLS-1$ //$NON-NLS-2$
 		bot.button("Cancel").click(); //$NON-NLS-1$
 		
 		//Test check fields

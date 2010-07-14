@@ -110,9 +110,9 @@ public class IDELabel {
 		public static final String NEW = "New";
 		public static final String SAVE_RESOURCE = "Save Resource";
 		public static final String RENAME_RESOURCE = "Rename Resource";
-		public static final String NEW_JSP_FILE = "New File JSP";
+		public static final String NEW_JSP_FILE = "New JSP File";
 		public static final String PROPERTIES = "Properties";
-		public static final String NEW_XHTML_FILE = "New File XHTML";
+		public static final String NEW_XHTML_FILE = "New XHTML Page";
 		public static final String IMPORT_JSF_PROJECT = "Import JSF Project";
 		public static final String IMPORT = "Import";
 		public static final String DELETE_SERVER = "Delete Server";
@@ -280,6 +280,7 @@ public class IDELabel {
 		public static final String NAME = "Name*";
 		public static final String TEMPLATE = "Template";
 		public static final String TEMPLATE_JSF_BASE_PAGE = "JSFBasePage";
+		public static final String JSP_TEMPLATE = "New JSP File (html)";
 		
 	}
 	
@@ -294,6 +295,8 @@ public class IDELabel {
 		public static final String NAME = "Name*";
 		public static final String TEMPLATE = "Template";
 		public static final String TEMPLATE_FACELET_FORM_XHTML = "FaceletForm.xhtml";
+		public static final String TEMPLATE_FACELET_FORM_XHTML_NAME = "Form Facelet Page";
+		public static final String USE_XHTML_TEMPLATE_CHECK_BOX = "Use XHTML Template";
 		
 	}
 	
@@ -344,8 +347,12 @@ public class IDELabel {
      public static final String SERVER_GROUP = "Server";
      public static final String RUNTIME_ENVIRONMENTS = "Runtime Environments";
      public static final String DROOLS_GROUP = "Drools";
-     public static final String INSTALLED_DROOLS_RUNTIMES = "Installed Drools Runtimes";     
-     
+     public static final String INSTALLED_DROOLS_RUNTIMES = "Installed Drools Runtimes";  
+     public static final String JBOSS_TOOLS = "JBoss Tools";
+     public static final String JBOSS_TOOLS_WEB = "Web";
+     public static final String JBOSS_TOOLS_WEB_EDITORS = "Editors";
+     public static final String JBOSS_TOOLS_WEB_EDITORS_VPE = "Visual Page Editor";
+     public static final String JBOSS_TOOLS_WEB_EDITORS_VPE_VISUAL_TEMPLATES = "Visual Templates";
    }
    
    public static class JBossServerRuntimeDialog {

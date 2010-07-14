@@ -11,6 +11,8 @@
 package org.jboss.tools.vpe.ui.bot.test.wizard;
 
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
+import org.jboss.tools.ui.bot.ext.gen.ActionItem;
+import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.test.WidgetVariables;
 import org.jboss.tools.vpe.ui.bot.test.VPEAutoTestCase;
 
@@ -36,15 +38,13 @@ public class NewXHTMLPageWizardTest extends VPEAutoTestCase{
 		/*
 		 * Open wizard page
 		 */
-		this.bot.menu("File").menu("New").menu("Other...").click();   //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
-		this.bot.shell("New").activate(); //$NON-NLS-1$
-		SWTBotTree importTree = this.bot.tree();
-		importTree.expandNode("JBoss Tools Web").select("XHTML File");  //$NON-NLS-1$//$NON-NLS-2$
-		this.bot.button(WidgetVariables.NEXT_BUTTON).click();
-		this.bot.shell("New File XHTML"); //$NON-NLS-1$
-		this.bot.textWithLabel("Name*").setText("test"); //$NON-NLS-1$ //$NON-NLS-2$
-		this.bot.button(WidgetVariables.NEXT_BUTTON).click();
-		this.bot.button(WidgetVariables.FINISH_BUTTON).click();
+	  open.newObject(ActionItem.NewObject.JBossToolsWebXHTMLFile.LABEL);
+    bot.shell(IDELabel.Shell.NEW_XHTML_FILE).activate();
+    bot.textWithLabel(ActionItem.NewObject.JBossToolsWebXHTMLFile.TEXT_FILE_NAME).setText("test");
+    bot.button(IDELabel.Button.NEXT).click();
+    bot.checkBox(IDELabel.NewXHTMLFileDialog.USE_XHTML_TEMPLATE_CHECK_BOX).select();
+    bot.table().select(IDELabel.NewXHTMLFileDialog.TEMPLATE_FACELET_FORM_XHTML_NAME);
+    bot.button(IDELabel.Button.FINISH).click();
 		assertEquals("Active Editor Title should be" ,"test.xhtml", this.bot.activeEditor().getTitle());  //$NON-NLS-1$ //$NON-NLS-2$
 	}
 

@@ -5,6 +5,8 @@ import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
+import org.jboss.tools.ui.bot.ext.gen.ActionItem;
+import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.test.WidgetVariables;
 
 public class AddSubstitutedELExpressionFolderScopeTest extends SubstitutedELTestCase{
@@ -40,11 +42,11 @@ public class AddSubstitutedELExpressionFolderScopeTest extends SubstitutedELTest
 		innerBot.tree().expandNode(JBT_TEST_PROJECT_NAME).expandNode("WebContent") //$NON-NLS-1$
 		.getNode(TEST_FOLDER).select();
 		
-		bot.menu("File").menu("New").menu("JSP File").click(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    open.newObject(ActionItem.NewObject.WebJSP.LABEL);
 		
-		bot.shell("New File JSP").activate(); //$NON-NLS-1$
-		bot.textWithLabel("Name*").setText(TEST_PAGE_FOR_FOLDER); //$NON-NLS-1$
-		bot.button("Finish").click(); //$NON-NLS-1$
+		bot.shell(IDELabel.Shell.NEW_JSP_FILE).activate(); //$NON-NLS-1$
+		bot.textWithLabel(ActionItem.NewObject.WebJSP.TEXT_FILE_NAME).setText(TEST_PAGE_FOR_FOLDER); //$NON-NLS-1$
+		bot.button(IDELabel.Button.FINISH).click(); //$NON-NLS-1$
 		delay();
 		SWTBotEclipseEditor editorForTestPage = bot.editorByTitle(TEST_PAGE_FOR_FOLDER+".jsp").toTextEditor(); //$NON-NLS-1$
 		editorForTestPage.setText(getEditorText());

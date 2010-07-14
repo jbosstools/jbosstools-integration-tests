@@ -12,6 +12,7 @@ package org.jboss.tools.vpe.ui.bot.test.wizard;
 import java.io.File;
 
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
+import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.test.WidgetVariables;
 import org.jboss.tools.vpe.ui.bot.test.VPEAutoTestCase;
 
@@ -64,14 +65,14 @@ public class ImportUnknownTagsWizardTest extends VPEAutoTestCase {
         /*
          * Check that templates have been added to the preference page 
          */
-        bot.menu("Window").menu("Preferences").click(); //$NON-NLS-1$ //$NON-NLS-2$
-		bot.shell("Preferences").activate(); //$NON-NLS-1$
+        bot.menu(IDELabel.Menu.WINDOW).menu(IDELabel.Menu.PREFERENCES).click(); //$NON-NLS-1$ //$NON-NLS-2$
+		bot.shell(IDELabel.Shell.PREFERENCES).activate(); //$NON-NLS-1$
 		importTree = bot.tree();
-		importTree.expandNode("JBoss Tools") //$NON-NLS-1$d
-				.expandNode("Web") //$NON-NLS-1$
-				.expandNode("Editors") //$NON-NLS-1$
-				.select("Visual Page Editor"); //$NON-NLS-1$
-		bot.tabItem("Templates").activate(); //$NON-NLS-1$
+		importTree.expandNode(IDELabel.PreferencesDialog.JBOSS_TOOLS) //$NON-NLS-1$d
+				.expandNode(IDELabel.PreferencesDialog.JBOSS_TOOLS_WEB) //$NON-NLS-1$
+				.expandNode(IDELabel.PreferencesDialog.JBOSS_TOOLS_WEB_EDITORS) //$NON-NLS-1$
+				.select(IDELabel.PreferencesDialog.JBOSS_TOOLS_WEB_EDITORS_VPE); //$NON-NLS-1$
+		bot.tabItem(IDELabel.PreferencesDialog.JBOSS_TOOLS_WEB_EDITORS_VPE_VISUAL_TEMPLATES).activate(); //$NON-NLS-1$
 		/*
          * Check table values on the preferences page
          */

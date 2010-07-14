@@ -25,7 +25,7 @@ public class WidgetVariables {
 	public static final String NEW_BUTTON = "New...";	 //$NON-NLS-1$
 	public static final String WINDOW_MENU = "Window";	 //$NON-NLS-1$
 	public static final String PREFERENCES = "Preferences";	 //$NON-NLS-1$
-	public static final String VPE_TEMPLATES_TAB = "Templates";	 //$NON-NLS-1$
+	public static final String VPE_TEMPLATES_TAB = "Visual Templates";	 //$NON-NLS-1$
 	public static final String PREF_FILTER_SHELL_TITLE = "Preferences (Filtered)";	 //$NON-NLS-1$
 	public static final String ADD_BUTTON = "Add";	 //$NON-NLS-1$
 	public static final String EDIT_BUTTON = "Edit";	 //$NON-NLS-1$

@@ -3453,7 +3453,7 @@ public static String getItemString(IActionItem item) {
 			*/
 			public static final String CHB_ADD_PROJECT_TO_WORKING_SETS = "Add project to working sets";
 			}
-		public static class JBossToolsWebJSPFile {
+		public static class WebJSPFile {
 			/**
 			* represents item : JBoss Tools Web->JSP File
 			*/
@@ -3461,7 +3461,7 @@ public static String getItemString(IActionItem item) {
 				public String getName() { return "JSP File";}
 				public List<String> getGroupPath() {
 					List<String> l = new Vector<String>();
-					l.add("JBoss Tools Web");
+					l.add("Web");
 					return l;
 				}
 			};
@@ -3470,9 +3470,9 @@ public static String getItemString(IActionItem item) {
 			*/
 			public static final String TEXT_FOLDER = "Folder*";
 			/**
-			* text field labeled 'Name*'
+			* text field labeled 'File name'
 			*/
-			public static final String TEXT_NAME = "Name*";
+			public static final String TEXT_FILE_NAME = "File name:";
 			}
 		public static class SeamSeamConversation {
 			/**
@@ -4112,7 +4112,7 @@ public static String getItemString(IActionItem item) {
 			* represents item : Web->JSP
 			*/
 			public static final INewObject LABEL = new INewObject() {
-				public String getName() { return "JSP";}
+				public String getName() { return "JSP File";}
 				public List<String> getGroupPath() {
 					List<String> l = new Vector<String>();
 					l.add("Web");
@@ -4683,7 +4683,7 @@ public static String getItemString(IActionItem item) {
 			* represents item : JBoss Tools Web->XHTML File
 			*/
 			public static final INewObject LABEL = new INewObject() {
-				public String getName() { return "XHTML File";}
+				public String getName() { return "XHTML Page";}
 				public List<String> getGroupPath() {
 					List<String> l = new Vector<String>();
 					l.add("JBoss Tools Web");
@@ -4697,7 +4697,7 @@ public static String getItemString(IActionItem item) {
 			/**
 			* text field labeled 'Name*'
 			*/
-			public static final String TEXT_NAME = "Name*";
+			public static final String TEXT_FILE_NAME = "File name:";
 			}
 		public static class JBossToolsWebHTMLFile {
 			/**
@@ -4725,7 +4725,7 @@ public static String getItemString(IActionItem item) {
 			* represents item : Web->CSS
 			*/
 			public static final INewObject LABEL = new INewObject() {
-				public String getName() { return "CSS";}
+				public String getName() { return "CSS File";}
 				public List<String> getGroupPath() {
 					List<String> l = new Vector<String>();
 					l.add("Web");

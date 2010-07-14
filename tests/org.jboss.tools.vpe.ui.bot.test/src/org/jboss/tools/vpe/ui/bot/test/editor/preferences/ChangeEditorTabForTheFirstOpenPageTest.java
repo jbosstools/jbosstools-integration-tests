@@ -2,6 +2,8 @@ package org.jboss.tools.vpe.ui.bot.test.editor.preferences;
 
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
+import org.jboss.tools.ui.bot.ext.gen.ActionItem;
+import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.test.WidgetVariables;
 
 public class ChangeEditorTabForTheFirstOpenPageTest extends PreferencesTestCase{
@@ -22,10 +24,10 @@ public class ChangeEditorTabForTheFirstOpenPageTest extends PreferencesTestCase{
 		innerBot.tree().expandNode(JBT_TEST_PROJECT_NAME).expandNode("WebContent") //$NON-NLS-1$
 		.getNode("pages").select(); //$NON-NLS-1$
 		
-		bot.menu("File").menu("New").menu("JSP File").click(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		bot.shell("New File JSP").activate(); //$NON-NLS-1$
-		bot.textWithLabel("Name*").setText("testPage"); //$NON-NLS-1$ //$NON-NLS-2$
-		bot.button("Finish").click(); //$NON-NLS-1$
+		open.newObject(ActionItem.NewObject.WebJSP.LABEL);
+		bot.shell(IDELabel.Shell.NEW_JSP_FILE).activate(); //$NON-NLS-1$
+		bot.textWithLabel(ActionItem.NewObject.WebJSP.TEXT_FILE_NAME).setText("testPage"); //$NON-NLS-1$ //$NON-NLS-2$
+		bot.button(IDELabel.Button.FINISH).click(); //$NON-NLS-1$
 		bot.viewByTitle(WidgetVariables.PACKAGE_EXPLORER).setFocus();
 		
 		//Check if the tab changed

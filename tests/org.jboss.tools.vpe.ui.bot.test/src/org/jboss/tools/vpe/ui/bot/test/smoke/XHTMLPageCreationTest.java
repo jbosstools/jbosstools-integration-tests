@@ -13,6 +13,7 @@ package org.jboss.tools.vpe.ui.bot.test.smoke;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.test.WidgetVariables;
 import org.jboss.tools.vpe.ui.bot.test.editor.VPEEditorTestCase;
@@ -56,10 +57,12 @@ public class XHTMLPageCreationTest extends VPEEditorTestCase{
     
     webContentTreeItem.select();
     // create new JSP file
-    bot.menu(IDELabel.Menu.FILE).menu(IDELabel.Menu.NEW).menu(IDELabel.Menu.XHTML_FILE).click();
+    open.newObject(ActionItem.NewObject.JBossToolsWebXHTMLFile.LABEL);
     bot.shell(IDELabel.Shell.NEW_XHTML_FILE).activate();
-    bot.textWithLabel(IDELabel.NewXHTMLFileDialog.NAME).setText(TEST_NEW_XHTML_FILE_NAME);
-    bot.comboBoxWithLabel(IDELabel.NewXHTMLFileDialog.TEMPLATE).setText(IDELabel.NewXHTMLFileDialog.TEMPLATE_FACELET_FORM_XHTML);
+    bot.textWithLabel(ActionItem.NewObject.JBossToolsWebXHTMLFile.TEXT_FILE_NAME).setText(TEST_NEW_XHTML_FILE_NAME);
+    bot.button(IDELabel.Button.NEXT).click();
+    bot.checkBox(IDELabel.NewXHTMLFileDialog.USE_XHTML_TEMPLATE_CHECK_BOX).select();
+    bot.table().select(IDELabel.NewXHTMLFileDialog.TEMPLATE_FACELET_FORM_XHTML_NAME);
     bot.button(IDELabel.Button.FINISH).click();
     
     SWTBotTreeItem xhtmlTestPageTreeItem = webContentTreeItem.getNode(TEST_NEW_XHTML_FILE_NAME);

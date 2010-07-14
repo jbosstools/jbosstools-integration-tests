@@ -28,7 +28,7 @@ public class RenameXHTMLFileTest extends VPEEditorTestCase {
   private static final String NEW_XHTML_FILE_NAME = "renamed-" 
     + XHTMLPageCreationTest.TEST_NEW_XHTML_FILE_NAME;
   
-  public void testRenameFacesConfigFile() throws Throwable {
+  public void testRenameXHTMLFile() throws Throwable {
 
     checkRenameXHTMLFile();
 
