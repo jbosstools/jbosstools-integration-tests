@@ -1077,7 +1077,7 @@ public class SWTEclipseExt {
         String columnText = item.cell(column);
         if (columnText == null){
           columnText = "<null>";
-        } else if (columnText == null){
+        } else if (columnText.length( )== 0){
           columnText = "<empty>";
         }
         stringBuilder.append(columnText);
