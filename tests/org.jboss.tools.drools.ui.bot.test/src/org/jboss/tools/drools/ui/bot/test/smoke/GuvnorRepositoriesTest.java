@@ -27,6 +27,7 @@ import org.eclipse.swtbot.swt.finder.results.StringResult;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.hamcrest.Matcher;
@@ -35,6 +36,7 @@ import org.jboss.tools.ui.bot.ext.config.requirement.PrepareViews;
 import org.jboss.tools.ui.bot.ext.config.requirement.RequirementNotFulfilledException;
 import org.jboss.tools.ui.bot.ext.config.requirement.StartServer;
 import org.jboss.tools.ui.bot.ext.config.requirement.StopServer;
+import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.View.GuvnorGuvnorResourceHistory;
 import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
 import org.jboss.tools.ui.bot.ext.helper.DragAndDropHelper;
@@ -67,6 +69,7 @@ public class GuvnorRepositoriesTest extends SWTTestExt{
    */
   @Test
   public void testGuvnorRepositories() {
+    setGuvnorTemplate();
     startGuvnor();
     addGuvnorRepository();
     deleteGuvnorRepository();
@@ -194,6 +197,8 @@ public class GuvnorRepositoriesTest extends SWTTestExt{
       new String[] {DroolsAllBotTests.DROOLS_PROJECT_NAME});
     DragAndDropHelper.dragAndDropOnTo(tiGuvnorFile.widget,tiDroolRuleDir.widget);
     bot.sleep(Timing.time5S());
+    bot.shell(IDELabel.Shell.COPY_FILE_FROM_GUVNOR_TO_PACKAGE_EXPLORER).activate();
+    bot.button(IDELabel.Button.OK).click();
     SWTBotTree packageExplorerTree = packageExplorerBot.tree();
     // File is renamed because there is appended Guvnor info to Tree Item Label
     // So we need to get real label of Tree Item and use it later
@@ -256,6 +261,7 @@ public class GuvnorRepositoriesTest extends SWTTestExt{
       new String[]{IDELabel.GuvnorRepositories.GUVNOR_REPOSITORY_ROOT_TREE_ITEM,
       IDELabel.GuvnorRepositories.PACKAGES_TREE_ITEM})
       .select();
+    bot.sleep(Timing.time5S());
     addToGuvnorDialogBot.button(IDELabel.Button.FINISH).click();
     eclipse.waitForClosedShell(addToGuvnorShell);
     boolean isAddedToGuvnorRepository = false;
@@ -504,5 +510,15 @@ public class GuvnorRepositoriesTest extends SWTTestExt{
     assertTrue("Switched version of file has wrong content.\n" +
       "Content should start with " + addedChange +
       "\n but is " + editorText,editorText.startsWith(addedChange));
+  }
+  /** 
+   * Sets properly Guvnor Template
+   */
+  private void setGuvnorTemplate(){
+    SWTBot dialogBot = open.preferenceOpen(ActionItem.Preference.Guvnor.LABEL);
+    SWTBotText guvnorTemplateText = dialogBot.textWithLabel(IDELabel.GuvnorPropertiesDialog.GUVNOR_URL_TEMPLATE);
+    guvnorTemplateText.setText(guvnorTemplateText.getText().replaceFirst("jboss-brms", "drools-guvnor"));
+    dialogBot.button(IDELabel.Button.OK).click();
+    SWTEclipseExt.hideWarningIfDisplayed(bot);
   }
 }

@@ -15,6 +15,7 @@ import java.io.File;
 
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.SWTEclipseExt;
+import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.helper.FileRenameHelper;
 import org.jboss.tools.ui.bot.ext.types.EntityType;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
@@ -74,8 +75,7 @@ public class ManageDroolsProject extends SWTTestExt{
     bot.button(IDELabel.Button.NEXT).click();
     bot.button(IDELabel.Button.FINISH).click();
     SWTTestExt.util.waitForAll(30*1000L);
-    jbt.delay();
-    
+    bot.sleep(Timing.time5S());
     assertTrue("Project "
       + droolsProjectName 
       + " was not created properly.",SWTEclipseExt.isProjectInPackageExplorer(bot,droolsProjectName));

@@ -136,6 +136,7 @@ public class IDELabel {
 	  public static final String CONFIRM_DELETE = "Confirm Delete";  
 	  public static final String SHOW_VIEW = "Show View";
 	  public static final String PROPERTIES_FOR = "Properties for";
+	  public static final String COPY_FILE_FROM_GUVNOR_TO_PACKAGE_EXPLORER = "File Operation";
 	}
 
 	public class EntityGroup {
@@ -477,7 +478,7 @@ public class IDELabel {
      public static final String ADD_GUVNOR_REPOSITORY_TOOLTIP = "Add a Guvnor respository connection";
      public static final String REMOVE_GUVNOR_REPOSITORY_TOOLTIP = "Delete Guvnor repository connection";
      public static final String REMOVE_GUVNOR_REPOSITORY_DIALOG_TITLE = "Remove repository connection";
-     public static final String GUVNOR_REPOSITORY_ROOT_TREE_ITEM = "http://localhost:8080/drools-guvnor/org.drools.guvnor.Guvnor/webdav";
+     public static final String GUVNOR_REPOSITORY_ROOT_TREE_ITEM = "http://localhost:8080/drools-guvnor/org.drools.guvnor.Guvnor/webdav/";
      public static final String PACKAGES_TREE_ITEM = "packages/";
      public static final String MORTGAGE_TREE_ITEM = "mortgages/";
      public static final String GO_INTO_GUVNOR_REPOSITORY_TOOLTIP = "Go Into";
@@ -504,5 +505,11 @@ public class IDELabel {
        public static final String LOCATION = "Location:";
        
      }
+   }
+   
+   public static class GuvnorPropertiesDialog {
+
+     public static final String GUVNOR_URL_TEMPLATE = "Guvnor URL template: ";
+     
    }
  }
