@@ -24,26 +24,37 @@ public class SelectWSDLDialog extends SWTBotShell {
 
 	public SelectWSDLDialog(Shell shell) throws WidgetNotFoundException {
 		super(shell);
+		//Select WSDL
 		assert JBossWSUIMessages.WSDLBrowseDialog_Dialog_Title.equals(getText());
 	}
 
 	public void openURL() {
+		//URL...
 		bot().button(JBossWSUIMessages.WSDLBrowseDialog_URL_Browse).click();
 	}
 
-	// public void setURI(String s) {
-	// bot().comboBoxWithLabel(JBossWSUIMessages.WSDLBrowseDialog_WSDL_URI_Field).setText(s);
-	// }
+	public void setURI(String s) {
+		//WSDL URI:
+		bot().comboBoxWithLabel(JBossWSUIMessages.WSDLBrowseDialog_WSDL_URI_Field).setText(s);
+	}
 
 	public String getURI() {
+		//WSDL URI:
 		return bot().comboBoxWithLabel(JBossWSUIMessages.WSDLBrowseDialog_WSDL_URI_Field).getText();
 	}
 
 	public List<String> getServices() {
+		//Service:
 		return getItems(JBossWSUIMessages.WSDLBrowseDialog_Service_Field);
+	}
+	
+	public void selectService(String service) {
+		//Service:
+		bot().comboBoxWithLabel(JBossWSUIMessages.WSDLBrowseDialog_Service_Field).setSelection(service);
 	}
 
 	public List<String> getPorts() {
+		//Port:
 		return getItems(JBossWSUIMessages.WSDLBrowseDialog_Port_Field);
 	}
 
@@ -65,6 +76,7 @@ public class SelectWSDLDialog extends SWTBotShell {
 	}
 
 	private SWTBotList getOperationsList() {
+		//Operation:
 		return bot().listWithLabel(JBossWSUIMessages.WSDLBrowseDialog_Operation_Field);
 	}
 }

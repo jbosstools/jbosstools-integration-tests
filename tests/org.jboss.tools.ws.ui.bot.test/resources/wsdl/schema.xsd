@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	elementFormDefault="qualified" version="1.0"
+	targetNamespace="http://www.ecubicle.net/webservices">
+
+	<xs:element name="GetSearchResults">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="searchPage" type="xs:string" minOccurs="0" />
+				<xs:element name="gQuery" type="xs:string" minOccurs="0" />
+				<xs:element name="numOfResults" type="xs:string"
+					minOccurs="0" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="GetSearchResultsResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="GetSearchResultsResult" minOccurs="0">
+					<xs:complexType mixed="true">
+						<xs:sequence>
+							<xs:any processContents="lax" namespace="##other"
+								minOccurs="0" maxOccurs="unbounded" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

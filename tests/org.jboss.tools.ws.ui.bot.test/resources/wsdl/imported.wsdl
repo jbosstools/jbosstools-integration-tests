@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<definitions xmlns:tns="http://www.ecubicle.net/webservices"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.xmlsoap.org/wsdl/"
+	targetNamespace="http://www.ecubicle.net/webservices">
+	<types>
+		<xsd:schema>
+			<xsd:import namespace="http://www.ecubicle.net/webservices"
+				schemaLocation="schema.xsd" />
+		</xsd:schema>
+	</types>
+	<message name="GetSearchResults">
+		<part name="parameters" element="tns:GetSearchResults" />
+	</message>
+	<message name="GetSearchResultsResponse">
+		<part name="parameters" element="tns:GetSearchResultsResponse" />
+	</message>
+	<portType name="gsearch_rssSoap">
+		<operation name="GetSearchResults">
+			<input message="tns:GetSearchResults" />
+			<output message="tns:GetSearchResultsResponse" />
+		</operation>
+	</portType>
+</definitions>
