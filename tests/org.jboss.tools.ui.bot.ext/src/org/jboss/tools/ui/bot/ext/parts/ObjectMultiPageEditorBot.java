@@ -4,14 +4,16 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.results.Result;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorReference;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
-import org.jboss.tools.common.editor.ObjectMultiPageEditor;
 
 /**
  * 
@@ -20,11 +22,13 @@ import org.jboss.tools.common.editor.ObjectMultiPageEditor;
  */
 public class ObjectMultiPageEditorBot {
 	
-	String partName;
-	IEditorReference ref;
+	private final IEditorReference ref;
 	
 	public ObjectMultiPageEditorBot(String title) {
 		ref = getEditorReference(title);
+	}
+	public ObjectMultiPageEditorBot(SWTBotEditor editor) {
+		ref = editor.getReference();
 	}
 		
 	private IEditorReference getEditorReference(final String title) {		
@@ -54,21 +58,45 @@ public class ObjectMultiPageEditorBot {
 		return ref;
 	}
 	
-	public void selectPage(final String pageName) {
-
-		//assertTrue(ref.getPart(true) instanceof Hibernate3CompoundEditor);
-		assertTrue(ref.getPart(true) instanceof ObjectMultiPageEditor);
+	public void selectPage(final String pageName) {		
 		
-		//final Hibernate3CompoundEditor editor = (Hibernate3CompoundEditor)ref.getPart(true);		
-		final ObjectMultiPageEditor editor = (ObjectMultiPageEditor)ref.getPart(true);
-		
-		// Select page
-		Display.getDefault().syncExec(new Runnable() {
-			
-			public void run() {
-				editor.selectPageByName(pageName);
+		final Object editor = ref.getPart(true);
+		boolean found = false;
+		for (Class<?> cl : editor.getClass().getDeclaredClasses()) {
+			System.out.println(cl.getName());
+			if (cl.getName().equals("org.jboss.tools.common.editor.ObjectMultiPageEditor")) {
+				found=true;break;
 			}
-		});		
+		}
+		assertTrue("Editor is not instance of ObjectMultiPageEditor",found);
+		try {
+			final Method m = editor.getClass().getMethod("selectPageByName", String.class);
+			// Select page
+			Display.getDefault().syncExec(new Runnable() {
+				
+				public void run() {
+					try {
+						m.invoke(editor, pageName);						
+					} catch (IllegalArgumentException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IllegalAccessException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (InvocationTargetException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			});
+		} catch (SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchMethodException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 }
 
