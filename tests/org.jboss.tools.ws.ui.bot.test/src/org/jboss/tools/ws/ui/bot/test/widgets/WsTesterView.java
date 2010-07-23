@@ -144,7 +144,7 @@ public class WsTesterView extends ViewBase {
 						return ((ExpandableComposite) widget.getParent()).isExpanded();
 					}
 				});
-				assert !expanded : "Section '" + widget.getText() + "' is already expanded";
+				assert !expanded : "Section '" + getText() + "' is already expanded";
 				click(true);
 			}
 		}

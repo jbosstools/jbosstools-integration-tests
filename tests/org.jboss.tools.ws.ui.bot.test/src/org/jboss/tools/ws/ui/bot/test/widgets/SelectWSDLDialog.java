@@ -47,7 +47,7 @@ public class SelectWSDLDialog extends SWTBotShell {
 		//Service:
 		return getItems(JBossWSUIMessages.WSDLBrowseDialog_Service_Field);
 	}
-	
+
 	public void selectService(String service) {
 		//Service:
 		bot().comboBoxWithLabel(JBossWSUIMessages.WSDLBrowseDialog_Service_Field).setSelection(service);
@@ -56,6 +56,11 @@ public class SelectWSDLDialog extends SWTBotShell {
 	public List<String> getPorts() {
 		//Port:
 		return getItems(JBossWSUIMessages.WSDLBrowseDialog_Port_Field);
+	}
+
+	public void selectPort(String port) {
+		//Service:
+		bot().comboBoxWithLabel(JBossWSUIMessages.WSDLBrowseDialog_Port_Field).setSelection(port);
 	}
 
 	public List<String> getOperations() {

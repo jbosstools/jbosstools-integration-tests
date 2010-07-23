@@ -77,36 +77,10 @@ public class WsTesterTest extends SWTTestExt {
 		Assert.assertEquals(0, wstv.getRequestArgs(Request_Arg_Type.HEADER).keySet().size());
 
 		wstv.setRequestType(Request_Type.JAX_WS);
-		SelectWSDLDialog dlg = wstv.getFromWSDL();
-		try {
-			dlg.openURL();
-			SWTBotShell sh = bot.activeShell();
-			sh.bot().text().typeText(SERVICE_URL + "?WSDL");
-			sh.bot().button("OK").click();
-			bot.sleep(1000);
-			Assert.assertEquals(SERVICE_URL + "?WSDL", dlg.getURI());
-			List<String> items = dlg.getServices();
-			L.log(Level.FINE, "Services: {0}", items);
-			Assert.assertEquals(1, items.size());
-			Assert.assertTrue(items.contains("BibleWebservice"));
-			items = dlg.getPorts();
-			L.log(Level.FINE, "Ports: {0}", items);
-			Assert.assertEquals(2, items.size());
-			Assert.assertTrue(items.contains("BibleWebserviceSoap"));
-			Assert.assertTrue(items.contains("BibleWebserviceSoap12"));
-			items = dlg.getOperations();
-			L.log(Level.FINE, "Operations: {0}", items);
-			Assert.assertEquals(4, items.size());
-			Assert.assertTrue(items.contains("GetBookTitles"));
-			Assert.assertTrue(items.contains("GetBibleWordsByChapterAndVerse"));
-			dlg.selectOperation("GetBibleWordsbyKeyWord");
-			dlg.ok();
-			Assert.assertEquals("http://www.webservicex.net/BibleWebservice.asmx", wstv.getServiceURL());
-		} finally {
-			if (dlg.isOpen()) {
-				dlg.close();
-			}
-		}
+		selectPort(wstv, "BibleWebserviceSoap");
+		Assert.assertTrue(wstv.getRequestBody().contains("http://schemas.xmlsoap.org/soap/envelope/"));
+		selectPort(wstv, "BibleWebserviceSoap12");
+		Assert.assertTrue("Got: " + wstv.getRequestBody(), wstv.getRequestBody().contains("http://www.w3.org/2003/05/soap-envelope"));
 		viewBot.close();
 	}
 
@@ -181,6 +155,40 @@ public class WsTesterTest extends SWTTestExt {
 	}
 
 	/**
+	 * Test SOAP 1.2 service invocation
+	 */
+	@Test
+	public void testSOAP12Service() {
+		WsTesterView wstv = new WsTesterView();
+		wstv.show();
+		wstv.setRequestType(Request_Type.JAX_WS);
+		Assert.assertEquals(Request_Type.JAX_WS, wstv.getRequestType());
+		SelectWSDLDialog dlg = wstv.getFromWSDL();
+		try {
+			dlg.openURL();
+			SWTBotShell sh = bot.activeShell();
+			sh.bot().text().typeText(SERVICE_URL + "?WSDL");
+			sh.bot().button("OK").click();
+			bot.sleep(1000);
+			Assert.assertEquals(SERVICE_URL + "?WSDL", dlg.getURI());
+			dlg.selectPort("BibleWebserviceSoap12");
+			dlg.ok();
+		} finally {
+			if (dlg.isOpen()) {
+				dlg.close();
+			}
+		}
+		Assert.assertEquals(SERVICE_URL, wstv.getServiceURL());
+		InputStream is = WsTesterTest.class.getResourceAsStream("/resources/jbossws/message_soap12_out.xml");
+		wstv.setRequestBody(readResource(is));
+		wstv.invoke();
+		String rsp = wstv.getResponseBody();
+		L.log(Level.FINE, "SOAP response: {0}", rsp);
+		Assert.assertTrue(rsp.trim().length() > 0);
+		checkResponse(rsp, "&lt;BookTitle&gt;Mark&lt;/BookTitle&gt;");
+	}
+
+	/**
 	 * Test REST service invocation (GET request)
 	 */
 	@Test
@@ -219,7 +227,7 @@ public class WsTesterTest extends SWTTestExt {
 		wstv.setServiceURL(SERVICE_URL + "/GetBibleWordsByChapterAndVerse");
 		String requestBody = "BookTitle=John&chapter=3&Verse=1\r";
 		wstv.setRequestBody(requestBody);
-		wstv.expandSection(Request_Arg_Type.HEADER.toString());
+		wstv.expandSection(JBossWSUIMessages.JAXRSWSTestView2_ResponseHeaders_Section);
 		wstv.addRequestArg(Request_Arg_Type.HEADER,	"Content-Type", "application/x-www-form-urlencoded");
 		wstv.addRequestArg(Request_Arg_Type.HEADER,	"Content-Length", String.valueOf(requestBody.length()));
 		try {
@@ -245,7 +253,6 @@ public class WsTesterTest extends SWTTestExt {
 		wstv.invoke();
 		Assert.assertEquals(0, wstv.getRequestArgs(Request_Arg_Type.PARAMETER).size());
 		String rsp = wstv.getResponseBody();
-		wstv.expandSection(JBossWSUIMessages.JAXRSWSTestView2_ResponseHeaders_Section);
 		String[] rspHeaders = wstv.getResponseHeaders();
 		L.log(Level.FINE, "REST response: {0}", rsp);
 		L.log(Level.FINE, "Response headers: {0}", Arrays.asList(rspHeaders));
@@ -338,4 +345,37 @@ public class WsTesterTest extends SWTTestExt {
 			}
 		}
 	}
+
+	private void selectPort(WsTesterView wstv, String portName) {
+		SelectWSDLDialog dlg = wstv.getFromWSDL();
+		try {
+			dlg.openURL();
+			SWTBotShell sh = bot.activeShell();
+			sh.bot().text().typeText(SERVICE_URL + "?WSDL");
+			sh.bot().button("OK").click();
+			bot.sleep(1000);
+			Assert.assertEquals(SERVICE_URL + "?WSDL", dlg.getURI());
+			List<String> items = dlg.getServices();
+			L.log(Level.FINE, "Services: {0}", items);
+			Assert.assertEquals(1, items.size());
+			Assert.assertTrue(items.contains("BibleWebservice"));
+			items = dlg.getPorts();
+			L.log(Level.FINE, "Ports: {0}", items);
+			Assert.assertEquals(2, items.size());
+			Assert.assertTrue(items.contains("BibleWebserviceSoap"));
+			Assert.assertTrue(items.contains("BibleWebserviceSoap12"));
+			dlg.selectPort(portName);
+			items = dlg.getOperations();
+			L.log(Level.FINE, "Operations: {0}", items);
+			Assert.assertEquals(4, items.size());
+			Assert.assertTrue(items.contains("GetBookTitles"));
+			Assert.assertTrue(items.contains("GetBibleWordsByChapterAndVerse"));
+			dlg.selectOperation("GetBibleWordsbyKeyWord");
+			dlg.ok();
+			Assert.assertEquals("http://www.webservicex.net/BibleWebservice.asmx", wstv.getServiceURL());
+		} finally {
+			if (dlg.isOpen()) {
+				dlg.close();
+			}
+		}	}
 }
