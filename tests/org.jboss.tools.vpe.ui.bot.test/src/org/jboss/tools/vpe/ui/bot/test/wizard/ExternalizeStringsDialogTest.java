@@ -128,6 +128,85 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		assertEquals("'Messages.properties' was updated incorrectly", "User=User", line); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
+	public void testExternalizeStringsDialogInXhtml() throws Throwable {
+		/*
+		 * Open simple html file in order to get the VPE toolbar
+		 */
+		SWTBotEditor editor = SWTTestExt.packageExplorer.openFile(FACELETS_TEST_PROJECT_NAME,
+				"WebContent", "pages", FACELETS_TEST_PAGE); //$NON-NLS-1$ //$NON-NLS-2$
+		editor.setFocus();
+		/*
+		 * Select some text
+		 */
+		editor.toTextEditor().selectRange(10, 45, 4);
+		/*
+		 * Get toolbar button
+		 */
+		bot.toolbarButtonWithTooltip(VpeUIMessages.EXTERNALIZE_STRINGS).click();
+		bot.shell(VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).setFocus();
+		bot.shell(VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).activate();
+		
+		/*
+		 * Check properties key and value fields
+		 */
+		SWTBotText defKeyText = bot.textWithLabelInGroup(
+				VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_PROPERTIES_KEY, 
+				VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_PROPS_STRINGS_GROUP);
+		assertNotNull("Cannot find 'Property Key' text field", defKeyText); //$NON-NLS-1$
+		assertText("User",defKeyText); //$NON-NLS-1$
+		SWTBotText defValueText = bot.textWithLabelInGroup(
+				VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_PROPERTIES_VALUE,
+				VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_PROPS_STRINGS_GROUP);
+		assertNotNull(CANNOT_FIND_PROPERTY_VALUE, defValueText);
+		assertText("User", defValueText); //$NON-NLS-1$
+		SWTBotCheckBox checkBox = bot.checkBox();
+		assertNotNull("Cannot find checkbox '" //$NON-NLS-1$
+				+ VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_NEW_FILE + "'", //$NON-NLS-1$
+				checkBox);
+		/*
+		 * Check that "Next" button is disabled
+		 */
+		assertFalse("Checkbox should be unchecked.", //$NON-NLS-1$
+				checkBox.isChecked());
+		assertFalse("Next button should be disabled.", //$NON-NLS-1$
+				bot.button(WidgetVariables.NEXT_BUTTON).isEnabled());
+		/*
+		 * Select existed resource bundle 
+		 */
+		SWTBotCombo combo = bot.comboBox();
+		combo.setSelection(0);
+		assertText("resources", combo); //$NON-NLS-1$
+		/*
+		 * Check table results
+		 */
+		SWTBotTable table = bot.table();
+		assertNotNull("Table should exist", table); //$NON-NLS-1$
+		assertEquals(INCORRECT_TABLE_VALUE, "prompt", table.cell(0, 0)); //$NON-NLS-1$
+		assertEquals(INCORRECT_TABLE_VALUE, "Your Name\\:", table.cell(0, 1)); //$NON-NLS-1$
+		assertEquals(INCORRECT_TABLE_VALUE, "greeting", table.cell(1, 0)); //$NON-NLS-1$
+		assertEquals(INCORRECT_TABLE_VALUE, "Hello", table.cell(1, 1)); //$NON-NLS-1$
+		/*
+		 * Press OK and replace the text in the editor
+		 */
+		assertTrue("(OK) button should be enabled.", //$NON-NLS-1$
+				bot.button(WidgetVariables.OK_BUTTON).isEnabled());
+		bot.button(WidgetVariables.OK_BUTTON).click();
+		/*
+		 * Check replaced text
+		 */
+		editor.toTextEditor().selectRange(10, 39, 22);
+		assertEquals("Replaced text is incorrect", "Input #{msg.User} Name", editor.toTextEditor().getSelection()); //$NON-NLS-1$ //$NON-NLS-2$
+		/*
+		 * Check that properties file has been updated
+		 */
+		SWTBotEditor editor2 = SWTTestExt.eclipse.openFile(
+				FACELETS_TEST_PROJECT_NAME, "JavaSource", //$NON-NLS-1$
+		"resources.properties"); //$NON-NLS-1$
+		editor2.toTextEditor().selectLine(3);
+		String line = editor2.toTextEditor().getSelection();
+		assertEquals("'resources.properties' was updated incorrectly", "User=User", line); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	
 	public void testNewFileInExternalizeStringsDialog() throws Throwable {
 		/*
 		 * Open simple html file in order to get the VPE toolbar

@@ -35,6 +35,7 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase{
 	
 	protected static Properties projectProperties;
 	protected static final String TEST_PAGE = "inputUserName.jsp"; //$NON-NLS-1$
+	protected static final String FACELETS_TEST_PAGE = "inputname.xhtml"; //$NON-NLS-1$
 	protected static String PROJECT_PROPERTIES = "projectProperties.properties"; //$NON-NLS-1$
 	
 	/**
@@ -43,6 +44,7 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase{
 	
 	protected final static String JBOSS_EAP_HOME;
 	protected final static String JBT_TEST_PROJECT_NAME;
+	protected final static String FACELETS_TEST_PROJECT_NAME;
 	protected final static String JBOSS_SERVER_GROUP;
 	protected final static String JBOSS_SERVER_TYPE;
 	protected final static String JBOSS_SERVER_RUNTIME_TYPE;
@@ -84,6 +86,7 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase{
       JBOSS_SERVER_TYPE = IDELabel.ServerType.JBOSS_EAP_4_3;
 		}
 		JBT_TEST_PROJECT_NAME = projectProperties.getProperty("JSFProjectName"); //$NON-NLS-1$
+		FACELETS_TEST_PROJECT_NAME = projectProperties.getProperty("FaceletsProjectName"); //$NON-NLS-1$
 	}
 	
 	/**
@@ -96,10 +99,21 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase{
 		clearWorkbench();
 		SWTBot innerBot = bot.viewByTitle(WidgetVariables.PACKAGE_EXPLORER).bot();
 		SWTBotTree tree = innerBot.tree();
+		/*
+		 * Test JSF project
+		 */
 		try {
 			tree.getTreeItem(JBT_TEST_PROJECT_NAME);
 		} catch (WidgetNotFoundException e) {
 			createJSFProject(JBT_TEST_PROJECT_NAME);
+		}
+		/*
+		 * Test Facelets project
+		 */
+		try {
+			tree.getTreeItem(FACELETS_TEST_PROJECT_NAME);
+		} catch (WidgetNotFoundException e) {
+			createFaceletsProject(FACELETS_TEST_PROJECT_NAME);
 		}
 	}
 	
@@ -120,7 +134,6 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase{
 	 * Create JSF Project with <b>jsfProjectName</b>
 	 * @param jsfProjectName - name of created project
 	 */
-	
 	protected void createJSFProject(String jsfProjectName){
 		bot.menu("File").menu("New").menu("Other...").click(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		bot.shell("New").activate(); //$NON-NLS-1$
@@ -132,7 +145,7 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase{
 		bot.comboBoxWithLabel("Template*").setSelection("JSFKickStartWithoutLibs"); //$NON-NLS-1$ //$NON-NLS-2$
 		bot.button("Next >").click(); //$NON-NLS-1$
 		try {
-			bot.comboBoxWithLabel("Runtime*").setSelection("jboss-eap Runtime"); //$NON-NLS-1$ //$NON-NLS-2$
+			bot.comboBoxWithLabel("Runtime*").setSelection("JBoss EAP 4.3 Runtime"); //$NON-NLS-1$ //$NON-NLS-2$
 			delay();
 			bot.button("Finish").click(); //$NON-NLS-1$
 			try {
@@ -146,6 +159,53 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase{
 			SWTBotTree  innerTree = bot.tree();
 			delay();
 			innerTree.expandNode(JBOSS_SERVER_GROUP).select(JBOSS_SERVER_RUNTIME_TYPE); //$NON-NLS-1$ //$NON-NLS-2$
+			delay();
+			bot.button("Next >").click(); //$NON-NLS-1$
+			bot.textWithLabel("Home Directory").setText(JBOSS_EAP_HOME); //$NON-NLS-1$
+			bot.button("Finish").click(); //$NON-NLS-1$
+			delay();
+			bot.button("Finish").click(); //$NON-NLS-1$
+			try {
+				bot.button("Yes").click(); //$NON-NLS-1$
+				openErrorLog();
+				openPackageExplorer();
+			} catch (WidgetNotFoundException e2) {
+			}
+		}
+		waitForBlockingJobsAcomplished(60*1000L, BUILDING_WS);
+		setException(null);
+	}
+	
+	/**
+	 * Create Facelets Project with <b>faceletsProjectName</b>
+	 * @param faceletsProjectName - name of created project
+	 */
+	protected void createFaceletsProject(String faceletsProjectName){
+		bot.menu("File").menu("New").menu("Other...").click(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		bot.shell("New").activate(); //$NON-NLS-1$
+		SWTBotTree tree = bot.tree();
+		delay();
+		tree.expandNode("JBoss Tools Web").expandNode("JSF").select("JSF Project"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		bot.button("Next >").click(); //$NON-NLS-1$
+		bot.textWithLabel("Project Name*").setText(faceletsProjectName); //$NON-NLS-1$
+		bot.comboBoxWithLabel("JSF Environment*").setSelection("JSF 1.2 with Facelets"); //$NON-NLS-1$ //$NON-NLS-2$
+		bot.comboBoxWithLabel("Template*").setSelection("FaceletsKickStartWithoutLibs"); //$NON-NLS-1$ //$NON-NLS-2$
+		bot.button("Next >").click(); //$NON-NLS-1$
+		try {
+			bot.comboBoxWithLabel("Runtime*").setSelection("JBoss EAP 4.3 Runtime"); //$NON-NLS-1$ //$NON-NLS-2$
+			delay();
+			bot.button("Finish").click(); //$NON-NLS-1$
+			try {
+				bot.button("Yes").click(); //$NON-NLS-1$
+				openErrorLog();
+				openPackageExplorer();
+			} catch (WidgetNotFoundException e) {
+			}
+		} catch (Exception e) {
+			bot.button(0).click();
+			SWTBotTree  innerTree = bot.tree();
+			delay();
+			innerTree.expandNode(JBOSS_SERVER_GROUP).select(JBOSS_SERVER_RUNTIME_TYPE);
 			delay();
 			bot.button("Next >").click(); //$NON-NLS-1$
 			bot.textWithLabel("Home Directory").setText(JBOSS_EAP_HOME); //$NON-NLS-1$
