@@ -144,7 +144,7 @@ public class WsTesterTest extends SWTTestExt {
 		wstv.show();
 		wstv.setRequestType(Request_Type.JAX_WS);
 		Assert.assertEquals(Request_Type.JAX_WS, wstv.getRequestType());
-		wstv.setServiceURL(SERVICE_URL);
+		wstv.setServiceURL(SERVICE_URL + "?WSDL");
 		InputStream is = WsTesterTest.class.getResourceAsStream("/resources/jbossws/message_soap_out.xml");
 		wstv.setRequestBody(readResource(is));
 		wstv.invoke();
@@ -178,7 +178,7 @@ public class WsTesterTest extends SWTTestExt {
 				dlg.close();
 			}
 		}
-		Assert.assertEquals(SERVICE_URL, wstv.getServiceURL());
+		Assert.assertEquals(SERVICE_URL + "?WSDL", wstv.getServiceURL());
 		InputStream is = WsTesterTest.class.getResourceAsStream("/resources/jbossws/message_soap12_out.xml");
 		wstv.setRequestBody(readResource(is));
 		wstv.invoke();
@@ -372,7 +372,7 @@ public class WsTesterTest extends SWTTestExt {
 			Assert.assertTrue(items.contains("GetBibleWordsByChapterAndVerse"));
 			dlg.selectOperation("GetBibleWordsbyKeyWord");
 			dlg.ok();
-			Assert.assertEquals("http://www.webservicex.net/BibleWebservice.asmx", wstv.getServiceURL());
+			Assert.assertEquals("http://www.webservicex.net/BibleWebservice.asmx?WSDL", wstv.getServiceURL());
 		} finally {
 			if (dlg.isOpen()) {
 				dlg.close();
