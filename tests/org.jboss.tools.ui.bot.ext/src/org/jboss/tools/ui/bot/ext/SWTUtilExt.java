@@ -174,6 +174,16 @@ public class SWTUtilExt extends SWTUtils {
 			e.close();
 		}
 	}
+	
+	/**
+	 * closes all views
+	 */
+	public void closeAllViews() {
+		for (SWTBotView v : bot.views()) {
+			v.close();
+		}
+	}
+	
 	/**
 	 * Wait for named running jobs with defined TIMEOUT
 	 */
