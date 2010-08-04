@@ -24,14 +24,17 @@ public class ObjectMultiPageEditorBot {
 	
 	private final IEditorReference ref;
 	
-	public ObjectMultiPageEditorBot(String title) {
-		ref = getEditorReference(title);
+  public ObjectMultiPageEditorBot(String title) {
+		ref = getEditorReferenceByTitle(title);
 	}
 	public ObjectMultiPageEditorBot(SWTBotEditor editor) {
 		ref = editor.getReference();
 	}
-		
-	private IEditorReference getEditorReference(final String title) {		
+  
+	public IEditorReference getEditorReference() {
+    return ref;
+  }
+  private IEditorReference getEditorReferenceByTitle(final String title) {		
 		// Search for editor
 		IEditorReference ref = UIThreadRunnable.syncExec(new Result<IEditorReference>() {
 			public IEditorReference run() {
