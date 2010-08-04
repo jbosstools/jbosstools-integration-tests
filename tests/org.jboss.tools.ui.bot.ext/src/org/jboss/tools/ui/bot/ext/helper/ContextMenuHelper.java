@@ -176,10 +176,74 @@ public class ContextMenuHelper {
     }
     
   }
+  /**
+   * Clicks the context menu matching the text.
+   * @param topMenu first menu in submenu path to requested menu item 
+   * @param text
+   *          the text on the context menu.
+   * @throws WidgetNotFoundException
+   *           if the widget is not found.
+   */
+  public static void clickContextMenu(final Menu topMenu, final String... texts) {
+    final MenuItem menuItem = UIThreadRunnable.syncExec(new WidgetResult<MenuItem>() {
+      @SuppressWarnings("unchecked")
+      public MenuItem run() {
+        MenuItem menuItem = null;
+        Menu menu = topMenu;
+        for (String text : texts) {
+          Matcher<?> matcher = allOf(instanceOf(MenuItem.class),withMnemonic(text));
+          menuItem = show(menu, matcher, false, null);
+          if (menuItem != null) {
+            menu = menuItem.getMenu();
+          } else {
+            hide(menu);
+            break;
+          }
+        }
+        return menuItem;
+      }
+    });
+    if (menuItem == null) {
+      throw new WidgetNotFoundException("Could not find menu: "
+          + Arrays.asList(texts));
+    }
+    // click
+    click(menuItem);
+    // hide
+    UIThreadRunnable.syncExec(new VoidResult() {
+      public void run() {
+        hide(menuItem.getParent());
+      }
+    });
+
+  }
+
+  /**
+   * Clicks the context menu matching the text.
+   * @param control Control containing Menu 
+   * @param text
+   *          the text on the context menu.
+   * @throws WidgetNotFoundException
+   *           if the widget is not found.
+   */
+  public static void clickContextMenu(final Control control,
+      final String... texts) {
+
+    final Menu topMenu = UIThreadRunnable.syncExec(new WidgetResult<Menu>() {
+      public Menu run() {
+        return control.getMenu();
+        }
+      });
+    if (topMenu == null) {
+      throw new WidgetNotFoundException("Could not find menu: "
+          + Arrays.asList(texts));
+    }
+    clickContextMenu(topMenu, texts);
+  }
   
   /**
    * Clicks the context menu matching the text.
-   *
+   * @param bot bot containing Menu 
    * @param text
    *          the text on the context menu.
    * @throws WidgetNotFoundException
@@ -188,43 +252,15 @@ public class ContextMenuHelper {
   public static void clickContextMenu(final AbstractSWTBot<?> bot,
       final String... texts) {
 
-    // show
-    final MenuItem menuItem = UIThreadRunnable
-        .syncExec(new WidgetResult<MenuItem>() {
-          @SuppressWarnings("unchecked")
-		public MenuItem run() {
-            MenuItem menuItem = null;
-            Control control = (Control) bot.widget;
-            Menu menu = control.getMenu();
-            for (String text : texts) {
-              Matcher<?> matcher = allOf(instanceOf(MenuItem.class),
-                  withMnemonic(text));
-              menuItem = show(menu, matcher,false,null);
-              if (menuItem != null) {
-                menu = menuItem.getMenu();
-              } else {
-                hide(menu);
-                break;
-              }
-            }
-
-            return menuItem;
-          }
-        });
-    if (menuItem == null) {
-      throw new WidgetNotFoundException("Could not find menu: "
-          + Arrays.asList(texts));
-    }
-
-    // click
-    click(menuItem);
-
-    // hide
-    UIThreadRunnable.syncExec(new VoidResult() {
-      public void run() {
-        hide(menuItem.getParent());
+    final Control parentControl = UIThreadRunnable
+        .syncExec(new WidgetResult<Control>() {
+    	public Control run() {
+            return (Control) bot.widget;
       }
     });
+    
+    clickContextMenu(parentControl, texts);
+    
   }
   
   private static void click(final MenuItem menuItem) {
