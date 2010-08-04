@@ -7,6 +7,7 @@ import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
 import org.jboss.tools.vpe.ui.bot.test.editor.BlockCommentTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.ToggleCommentTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.VerificationOfNameSpacesTest;
+import org.jboss.tools.vpe.ui.bot.test.editor.JspFileEditingTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.pagedesign.AddSubstitutedELExpressionFolderScopeTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.preferences.AlwaysHideSelectionBarWithoutPromptTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.preferences.BorderForUnknownTagsTest;
@@ -31,7 +32,7 @@ import org.jboss.tools.vpe.ui.bot.test.wizard.VPESourceCodeTemplatesPreferencePa
 public class VPEAllBotTests extends SWTBotTestCase{
 	public static Test suite(){
 		TestSuite suite = new TestSuite("VPE All Tests"); //$NON-NLS-1$
-		
+
 		suite.addTestSuite(CancelTagLibDefenitionTest.class);
 		suite.addTestSuite(ImportTagsFromTLDFileTest.class);
 		suite.addTestSuite(ToggleCommentTest.class);
@@ -55,6 +56,7 @@ public class VPEAllBotTests extends SWTBotTestCase{
 		suite.addTestSuite(NewXHTMLPageWizardTest.class);
 		suite.addTestSuite(VPESourceCodeTemplatesPreferencePageTest.class);
 		suite.addTestSuite(ExternalizeStringsDialogTest.class);
+		suite.addTestSuite(JspFileEditingTest.class);
 		
 		return new TestSetup(suite);
 	}

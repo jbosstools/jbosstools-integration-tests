@@ -34,5 +34,6 @@ Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Import-Package: junit.framework
 Export-Package: org.jboss.tools.vpe.ui.bot.test,
- org.jboss.tools.vpe.ui.bot.test.jbide
+ org.jboss.tools.vpe.ui.bot.test.jbide,
+ org.jboss.tools.vpe.ui.bot.test.tools
 
