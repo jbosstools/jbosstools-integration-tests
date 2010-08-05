@@ -11,10 +11,13 @@
 package org.jboss.tools.vpe.ui.bot.test.wizard;
 
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
+import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCheckBox;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCombo;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
+import org.eclipse.swtbot.swt.finder.widgets.TimeoutException;
 import org.jboss.tools.vpe.messages.VpeUIMessages;
 import org.jboss.tools.vpe.ui.bot.test.VPEAutoTestCase;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
@@ -34,21 +37,33 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 	private final String COMPLEX_VALUE_RESULT = "!! HELLO ~ Input User, Name.Page ?" + //$NON-NLS-1$
 	"      and some more text       @ \\# vc \\$ % yy^ &*(ghg ) _l-kk+mmm\\/fdg\\   ;.df:,ee {df}df[ty]"; //$NON-NLS-1$
 	
+	private boolean isUnusedDialogOpened = false;
+	
 	public ExternalizeStringsDialogTest() {
 		super();
 	}
 
 	@Override
 	protected void closeUnuseDialogs() {
+		try {
+			SWTBotShell dlgShell = bot.shell(VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE);
+			dlgShell.setFocus();
+			dlgShell.close();
+		} catch (WidgetNotFoundException e) {
+			e.printStackTrace();
+		} finally {
+			isUnusedDialogOpened = false;
+		}
 		
 	}
 
 	@Override
 	protected boolean isUnuseDialogOpened() {
-		return false;
+		return isUnusedDialogOpened;
 	}
 
 	public void testExternalizeStringsDialog() throws Throwable {
+		isUnusedDialogOpened = false;
 		/*
 		 * Open simple html file in order to get the VPE toolbar
 		 */
@@ -65,6 +80,7 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		bot.toolbarButtonWithTooltip(VpeUIMessages.EXTERNALIZE_STRINGS).click();
 		bot.shell(VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).setFocus();
 		bot.shell(VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).activate();
+		isUnusedDialogOpened = true;
 		/*
 		 * Check properties key and value fields
 		 */
@@ -100,18 +116,23 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		 */
 		SWTBotTable table = bot.table();
 		assertNotNull("Table should exist", table); //$NON-NLS-1$
+		bot.sleep(10000);
+		/*
+		 * The list should be sorted in the alphabetical order.
+		 */
 		assertEquals(INCORRECT_TABLE_VALUE, "header", table.cell(0, 0)); //$NON-NLS-1$
 		assertEquals(INCORRECT_TABLE_VALUE, "Hello Demo Application", table.cell(0, 1)); //$NON-NLS-1$
-		assertEquals(INCORRECT_TABLE_VALUE, "prompt_message", table.cell(1, 0)); //$NON-NLS-1$
-		assertEquals(INCORRECT_TABLE_VALUE, "Name:", table.cell(1, 1)); //$NON-NLS-1$
-		assertEquals(INCORRECT_TABLE_VALUE, "hello_message", table.cell(2, 0)); //$NON-NLS-1$
-		assertEquals(INCORRECT_TABLE_VALUE, "Hello", table.cell(2, 1)); //$NON-NLS-1$
+		assertEquals(INCORRECT_TABLE_VALUE, "hello_message", table.cell(1, 0)); //$NON-NLS-1$
+		assertEquals(INCORRECT_TABLE_VALUE, "Hello", table.cell(1, 1)); //$NON-NLS-1$
+		assertEquals(INCORRECT_TABLE_VALUE, "prompt_message", table.cell(2, 0)); //$NON-NLS-1$
+		assertEquals(INCORRECT_TABLE_VALUE, "Name:", table.cell(2, 1)); //$NON-NLS-1$
 		/*
 		 * Press OK and replace the text in the editor
 		 */
 		assertTrue("(OK) button should be enabled.", //$NON-NLS-1$
 		bot.button(WidgetVariables.OK_BUTTON).isEnabled());
 		bot.button(WidgetVariables.OK_BUTTON).click();
+		isUnusedDialogOpened = false;
 		/*
 		 * Check replaced text
 		 */
@@ -129,6 +150,7 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 	}
 	
 	public void testExternalizeStringsDialogInXhtml() throws Throwable {
+		isUnusedDialogOpened = false;
 		/*
 		 * Open simple html file in order to get the VPE toolbar
 		 */
@@ -145,6 +167,7 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		bot.toolbarButtonWithTooltip(VpeUIMessages.EXTERNALIZE_STRINGS).click();
 		bot.shell(VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).setFocus();
 		bot.shell(VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).activate();
+		isUnusedDialogOpened = true;
 		
 		/*
 		 * Check properties key and value fields
@@ -181,16 +204,20 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		 */
 		SWTBotTable table = bot.table();
 		assertNotNull("Table should exist", table); //$NON-NLS-1$
-		assertEquals(INCORRECT_TABLE_VALUE, "prompt", table.cell(0, 0)); //$NON-NLS-1$
-		assertEquals(INCORRECT_TABLE_VALUE, "Your Name\\:", table.cell(0, 1)); //$NON-NLS-1$
-		assertEquals(INCORRECT_TABLE_VALUE, "greeting", table.cell(1, 0)); //$NON-NLS-1$
-		assertEquals(INCORRECT_TABLE_VALUE, "Hello", table.cell(1, 1)); //$NON-NLS-1$
+		/*
+		 * The list should be sorted in the alphabetical order.
+		 */
+		assertEquals(INCORRECT_TABLE_VALUE, "greeting", table.cell(0, 0)); //$NON-NLS-1$
+		assertEquals(INCORRECT_TABLE_VALUE, "Hello", table.cell(0, 1)); //$NON-NLS-1$
+		assertEquals(INCORRECT_TABLE_VALUE, "prompt", table.cell(1, 0)); //$NON-NLS-1$
+		assertEquals(INCORRECT_TABLE_VALUE, "Your Name:", table.cell(1, 1)); //$NON-NLS-1$
 		/*
 		 * Press OK and replace the text in the editor
 		 */
 		assertTrue("(OK) button should be enabled.", //$NON-NLS-1$
 				bot.button(WidgetVariables.OK_BUTTON).isEnabled());
 		bot.button(WidgetVariables.OK_BUTTON).click();
+		isUnusedDialogOpened = false;
 		/*
 		 * Check replaced text
 		 */
@@ -208,6 +235,7 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 	}
 	
 	public void testNewFileInExternalizeStringsDialog() throws Throwable {
+		isUnusedDialogOpened = false;
 		/*
 		 * Open simple html file in order to get the VPE toolbar
 		 */
@@ -224,7 +252,7 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		bot.toolbarButtonWithTooltip(VpeUIMessages.EXTERNALIZE_STRINGS).click();
 		bot.shell(VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).setFocus();
 		bot.shell(VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).activate();
-		
+		isUnusedDialogOpened = true;
 		/*
 		 * Enable next page and check it 
 		 */
@@ -250,6 +278,7 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		assertTrue("(OK) button should be enabled.", //$NON-NLS-1$
 		bot.button(WidgetVariables.OK_BUTTON).isEnabled());
 		bot.button(WidgetVariables.OK_BUTTON).click();
+		isUnusedDialogOpened = false;
 		/*
 		 * Check that the text was replaced
 		 */
@@ -267,6 +296,7 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 	}
 	
 	public void testEmptySelectionInExternalizeStringsDialog() throws Throwable {
+		isUnusedDialogOpened = false;
 		/*
 		 * Open simple html file in order to get the VPE toolbar
 		 */
@@ -289,6 +319,7 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		bot.toolbarButtonWithTooltip(VpeUIMessages.EXTERNALIZE_STRINGS).click();
 		bot.shell(VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).setFocus();
 		bot.shell(VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).activate();
+		isUnusedDialogOpened = true;
 		/*
 		 * Check that the property value text is empty
 		 */
@@ -301,6 +332,7 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		 * Close the dialog
 		 */
 		bot.shell(VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).close();
+		isUnusedDialogOpened = false;
 		/*
 		 * Type some text outside the tag
 		 */
