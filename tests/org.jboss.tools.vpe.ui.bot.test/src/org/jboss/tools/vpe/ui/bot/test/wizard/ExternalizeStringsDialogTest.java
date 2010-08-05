@@ -116,7 +116,6 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		 */
 		SWTBotTable table = bot.table();
 		assertNotNull("Table should exist", table); //$NON-NLS-1$
-		bot.sleep(10000);
 		/*
 		 * The list should be sorted in the alphabetical order.
 		 */
