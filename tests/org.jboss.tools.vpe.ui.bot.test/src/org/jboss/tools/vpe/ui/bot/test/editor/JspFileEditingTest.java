@@ -11,60 +11,111 @@
  ******************************************************************************/
 package org.jboss.tools.vpe.ui.bot.test.editor;
 
-
-import java.io.File;
-import java.io.IOException;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
+import org.eclipse.swtbot.swt.finder.SWTBot;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
+import org.jboss.tools.ui.bot.ext.SWTBotExt;
 import org.jboss.tools.ui.bot.ext.Timing;
-import org.jboss.tools.ui.bot.ext.helper.FileHelper;
+import org.jboss.tools.ui.bot.ext.helper.KeyboardHelper;
+import org.jboss.tools.ui.bot.ext.parts.SWTBotTableExt;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.vpe.ui.bot.test.tools.SWTBotWebBrowser;
 import org.mozilla.interfaces.nsIDOMNode;
 /**
- * Tests large XHTML file editing 
+ * Tests JSP file editing and synchronization between Source Editor and Visual Editor  
  * @author vlado pakan
  *
  */
 public class JspFileEditingTest extends VPEEditorTestCase {
   
+  private SWTBotExt botExt = null;
+  
 	public JspFileEditingTest() {
 		super();
+		botExt = new SWTBotExt();
 	}
 
 	public void testJspFileEditing(){
-	  try{
-	    String resourceWebContentLocation = getPathToResources("WebContent");	    
-	    FileHelper.copyFilesBinaryRecursively(new File(resourceWebContentLocation),
-	      new File(FileHelper.getProjectLocation(JBT_TEST_PROJECT_NAME, bot),"WebContent"),
-	      null);
-	  }catch (IOException ioe){
-	    throw new RuntimeException("Unable to copy necessary files from plugin's resources directory",ioe);
-	  }
-	  bot.menu(IDELabel.Menu.FILE).menu(IDELabel.Menu.REFRESH).click();
-	  bot.sleep(Timing.time1S());
 	  
 	  eclipse.maximizeActiveShell();
-	  openPage();
-	  openPalette();
-	  SWTBotWebBrowser swtBotWebBrowser = new SWTBotWebBrowser(TEST_PAGE,bot);
+
+	  insertTagUsingContextMenu();
+	  insertTagUsingPalette();
 	  
-	  nsIDOMNode node = swtBotWebBrowser.getDomNodeByTagName("INPUT",1);
-	  
-    swtBotWebBrowser.selectDomNode(node,0);
-    bot.sleep(Timing.time1S());
     
-    swtBotWebBrowser.clickContextMenu(node, SWTBotWebBrowser.INSERT_AFTER_MENU_LABEL,
-      SWTBotWebBrowser.JSF_MENU_LABEL,
-      SWTBotWebBrowser.HTML_MENU_LABEL,
-      SWTBotWebBrowser.H_OUTPUT_TEXT_TAG_MENU_LABEL);
-	  
-    final SWTBotEclipseEditor jspTextEditor = bot.editorByTitle(TEST_PAGE).toTextEditor();
+	}
+	/**
+	 * Inserts tag to html page using Context Menu of Visual Editor
+	 */
+  private void insertTagUsingContextMenu() {
+    
+    openPage();
+    SWTBotWebBrowser swtBotWebBrowser = new SWTBotWebBrowser(TEST_PAGE, botExt);
+    nsIDOMNode node = swtBotWebBrowser.getDomNodeByTagName("INPUT", 1);
+    swtBotWebBrowser.selectDomNode(node, 0);
+    botExt.sleep(Timing.time1S());
+
+    swtBotWebBrowser.clickContextMenu(node,
+        SWTBotWebBrowser.INSERT_AFTER_MENU_LABEL,
+        SWTBotWebBrowser.JSF_MENU_LABEL, SWTBotWebBrowser.HTML_MENU_LABEL,
+        SWTBotWebBrowser.H_OUTPUT_TEXT_TAG_MENU_LABEL);
+
+    final SWTBotEclipseEditor jspTextEditor = botExt.editorByTitle(TEST_PAGE)
+        .toTextEditor();
     jspTextEditor.save();
     // Check if tag h:outputText was properly added
     String editorText = jspTextEditor.getText();
-    assertTrue("File " + TEST_PAGE + " has to contain string '<h:outputText/>' but it doesn't",
-      editorText.contains("<h:outputText/>"));
-	}
+    assertTrue("File " + TEST_PAGE
+        + " has to contain string '<h:outputText/>' but it doesn't",
+        editorText.contains("<h:outputText/>"));
+  }
+	
+	/**
+   * Inserts tag to html page using JBoss Tools Palette
+   */
+  private void insertTagUsingPalette(){
+    
+    openPage();
+    openPalette();
+    
+    SWTBotWebBrowser swtBotWebBrowser = new SWTBotWebBrowser(TEST_PAGE, botExt);
+    nsIDOMNode node = swtBotWebBrowser.getDomNodeByTagName("INPUT", 1);
+    swtBotWebBrowser.selectDomNode(node, 0);
+    botExt.sleep(Timing.time1S());
+    
+    swtBotWebBrowser.activatePaletteTool("outputText");
+    SWTBot dialogBot = botExt.shell(IDELabel.Shell.INSERT_TAG).activate().bot();
+    SWTBotTable swtBotTable = dialogBot.table();
+    String outputTextValue = "123 !! Test value !! 321";
+    new SWTBotTableExt(swtBotTable).setTableCellWithTextEditorText(
+        outputTextValue, swtBotTable.indexOf("value"), 1, "", dialogBot);
+    dialogBot.button(IDELabel.Button.FINISH).click();
+    final SWTBotEclipseEditor jspTextEditor = botExt.editorByTitle(TEST_PAGE)
+        .toTextEditor();
+    jspTextEditor.save();
+    botExt.toolbarButtonWithTooltip(IDELabel.Button.REFRESH).click();
+    botExt.sleep(Timing.time1S());
+    String editorText = jspTextEditor.getText();
+    String testText = "<h:outputText value=\"" + outputTextValue + "\"/>";
+    assertTrue("File " + TEST_PAGE + " has to contain string '" + testText
+        + "' but it doesn't", editorText.contains(testText));
+    // Insert text via Visual Editor to inserted h:outputText tag
+    node = swtBotWebBrowser.getDomNodeByTagName(
+        swtBotWebBrowser.getNsIDOMDocument(), "#text", 6);
+    botExt.sleep(Timing.time2S());
+    swtBotWebBrowser.selectDomNode(node, 5);
+    String insertString = "ab9876CD";
+    KeyboardHelper.typeBasicStringUsingAWT(insertString);
+    botExt.sleep(Timing.time2S());
+    jspTextEditor.save();
+    editorText = jspTextEditor.getText();
+    outputTextValue = outputTextValue.substring(0, 5) + insertString
+        + outputTextValue.substring(5);
+    testText = "<h:outputText value=\"" + outputTextValue + "\"/>";
+    assertTrue("File " + TEST_PAGE + " has to contain string '" + testText
+        + "' but it doesn't", editorText.contains(testText));
+    jspTextEditor.close();
+  }
 	
 	@Override
 	protected void closeUnuseDialogs() {

@@ -20,7 +20,7 @@ import static org.junit.Assert.fail;
 public enum ViewType {
 	PACKAGE_EXPLORER, PROJECT_EXPLORER, WELCOME, DATA_SOURCE_EXPLORER,
 	SERVERS,WEB_PROJECTS,PROBLEMS,DEBUG,GUVNOR_REPOSITORIES,PROPERTIES,
-	GUVNOR_RESOURCE_HISTORY;
+	GUVNOR_RESOURCE_HISTORY,JBOSS_TOOLS_PALETTE;
 	
 	
 	public String getGroupLabel() {
@@ -36,6 +36,7 @@ public enum ViewType {
 			case GUVNOR_REPOSITORIES: viewLabel = IDELabel.ViewGroup.GUVNOR; break;
 			case PROPERTIES: viewLabel = IDELabel.ViewGroup.GENERAL; break;
 			case GUVNOR_RESOURCE_HISTORY: viewLabel = IDELabel.ViewGroup.GUVNOR; break;
+			case JBOSS_TOOLS_PALETTE: viewLabel = IDELabel.ViewGroup.JBOSS_TOOLS_WEB; break;
 			default: fail("Unknown View Type");
 		}
 		return viewLabel;	
@@ -54,6 +55,7 @@ public enum ViewType {
 			case GUVNOR_REPOSITORIES: viewLabel = IDELabel.View.GUVNOR_REPOSITORIES; break;
 			case PROPERTIES: viewLabel = IDELabel.View.PROPERTIES; break;
 			case GUVNOR_RESOURCE_HISTORY: viewLabel = IDELabel.View.GUVNOR_RESOURCE_HISTORY; break;
+			case JBOSS_TOOLS_PALETTE: viewLabel = IDELabel.View.JBOSS_TOOLS_PALETTE; break;
 			default: fail("Unknown View Type");
 		}
 		return viewLabel;

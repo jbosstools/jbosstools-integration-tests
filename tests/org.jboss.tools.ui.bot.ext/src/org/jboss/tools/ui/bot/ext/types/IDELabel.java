@@ -98,6 +98,7 @@ public class IDELabel {
 		public static final String EDIT = "Edit...";
 		public static final String ADD_WITHOUT_DOTS = "Add";
 		public static final String DROOLS_WORKBENCH = "Drools workbench";
+		public static final String REFRESH = "Refresh";
 	}
 
 	public class Shell {
@@ -137,6 +138,7 @@ public class IDELabel {
 	  public static final String SHOW_VIEW = "Show View";
 	  public static final String PROPERTIES_FOR = "Properties for";
 	  public static final String COPY_FILE_FROM_GUVNOR_TO_PACKAGE_EXPLORER = "File Operation";
+	  public static final String INSERT_TAG = "Insert Tag";
 	}
 
 	public class EntityGroup {
@@ -196,6 +198,7 @@ public class IDELabel {
 		public static final String GUVNOR_REPOSITORIES = "Guvnor Repositories";
 		public static final String GUVNOR_RESOURCE_HISTORY = "Guvnor Resource History";
 		public static final String PROPERTIES = "Properties";
+		public static final String JBOSS_TOOLS_PALETTE = "JBoss Tools Palette";
 	}
 	
 	public class ViewGroup {

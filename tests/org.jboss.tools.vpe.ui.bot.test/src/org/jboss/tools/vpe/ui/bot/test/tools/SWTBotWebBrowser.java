@@ -13,28 +13,44 @@ package org.jboss.tools.vpe.ui.bot.test.tools;
 
 import static org.junit.Assert.assertNotNull;
 
-import java.lang.reflect.Field;
 import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
+import org.eclipse.gef.EditDomain;
+import org.eclipse.gef.palette.PaletteEntry;
+import org.eclipse.gef.palette.ToolEntry;
+import org.eclipse.gef.ui.palette.PaletteViewer;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Decorations;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
-import org.eclipse.swtbot.swt.finder.SWTBot;
+import org.eclipse.swtbot.eclipse.gef.finder.finders.PaletteFinder;
+import org.eclipse.swtbot.eclipse.gef.finder.matchers.ToolEntryLabelMatcher;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
+import org.eclipse.swtbot.swt.finder.results.Result;
 import org.eclipse.swtbot.swt.finder.results.WidgetResult;
 import org.eclipse.ui.IEditorReference;
+import org.eclipse.ui.IViewReference;
+import org.eclipse.ui.PlatformUI;
+import org.jboss.tools.common.model.ui.views.palette.PaletteCreator;
+import org.jboss.tools.common.model.ui.views.palette.PaletteViewPart;
 import org.jboss.tools.jst.jsp.editor.IVisualEditor;
 import org.jboss.tools.jst.jsp.jspeditor.JSPMultiPageEditor;
+import org.jboss.tools.ui.bot.ext.SWTBotExt;
+import org.jboss.tools.ui.bot.ext.SWTEclipseExt;
 import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
+import org.jboss.tools.ui.bot.ext.helper.ReflectionsHelper;
 import org.jboss.tools.ui.bot.ext.parts.ObjectMultiPageEditorBot;
+import org.jboss.tools.ui.bot.ext.types.ViewType;
 import org.jboss.tools.vpe.editor.VpeEditorPart;
 import org.jboss.tools.vpe.editor.mozilla.MozillaEditor;
 import org.jboss.tools.vpe.editor.mozilla.MozillaEventAdapter;
+import org.jboss.tools.vpe.ui.palette.PaletteAdapter;
 import org.jboss.tools.vpe.xulrunner.util.XPCOM;
 import org.mozilla.interfaces.nsIDOMDocument;
 import org.mozilla.interfaces.nsIDOMEvent;
@@ -69,9 +85,9 @@ public class SWTBotWebBrowser {
   private Display display;
   private IVisualEditor visualEditor;
   private MozillaEditor mozillaEditor;
-  private SWTBot bot;
+  private SWTBotExt bot;
   
-  public SWTBotWebBrowser (String title, SWTBot bot){
+  public SWTBotWebBrowser (String title, SWTBotExt bot){
     ObjectMultiPageEditorBot objectMultiPageEditorBot = new ObjectMultiPageEditorBot(title);
     IEditorReference ref = objectMultiPageEditorBot.getEditorReference();
     JSPMultiPageEditor multiPageEditor = null;
@@ -81,7 +97,7 @@ public class SWTBotWebBrowser {
     assertNotNull(multiPageEditor);
     this.bot = bot;
     this.visualEditor = multiPageEditor.getVisualEditor();
-    this.mozillaEditor = ((VpeEditorPart)multiPageEditor.getVisualEditor()).getVisualEditor();
+    this.mozillaEditor = ((VpeEditorPart)visualEditor).getVisualEditor();
     this.display = getBrowser().getDisplay();
   }
    
@@ -90,7 +106,6 @@ public class SWTBotWebBrowser {
    * @param node
    * @param depth
    */
-  @SuppressWarnings("unused")
   private static void displayNsIDOMNode(nsIDOMNode node , int depth) {
     System.out.println("");
     System.out.print(fillString(' ', depth) + "<" + node.getNodeName() + " ");
@@ -330,11 +345,11 @@ public class SWTBotWebBrowser {
           parent = parent.getParent();
         }
         try {
-          Field menusField = Decorations.class.getDeclaredField("menus");
-          menusField.setAccessible(true);
-          Object menusObject = menusField.get(parent);
-          if (menusObject != null){
-            Menu[] menus = (Menu[])menusObject;
+          Menu[] menus = ReflectionsHelper.getPrivateFieldValue(Decorations.class,
+            "menus", 
+            parent,
+            Menu[].class);
+          if (menus != null){
             MenuItem topMenuItem = null;
             int index = menus.length - 1;
             while (topMenuItem == null && index >= 0){
@@ -372,5 +387,102 @@ public class SWTBotWebBrowser {
     ContextMenuHelper.clickContextMenu(topMenu, menuLabels);
 
   }
+  /**
+   * Returns node corresponding to specified tagName
+   * @param parentNode
+   * @param tagName
+   * @param order - index of tagName tag in DOM model from all tagName nodes contained in model
+   * @return
+   */
+  public nsIDOMNode getDomNodeByTagName(nsIDOMNode parentNode , String tagName, Integer order){
+    List<nsIDOMNode> nodes = getDomNodesByTagName(parentNode,tagName);
+    nsIDOMNode result = null;
+    if (nodes != null && nodes.size() > order){
+      result = nodes.get(order);
+    }
+    return result;
+  }
+  /**
+   * Recursively search for node with specified tagName
+   * @param parentNode
+   * @param tagName
+   * @return
+   */
+  public List<nsIDOMNode> getDomNodesByTagName(nsIDOMNode parentNode , String tagName){
+    LinkedList<nsIDOMNode> result = new LinkedList<nsIDOMNode>();
+    if (parentNode.getNodeName().equals(tagName)){
+      result.add(parentNode);
+    }  
+    nsIDOMNodeList children = parentNode.getChildNodes();
+    for (int i = 0; i < children.getLength(); i++) {
+      nsIDOMNode child = children.item(i);
+      // leave out empty text nodes in test dom model
+      if ((child.getNodeType() == Node.TEXT_NODE)
+          && ((child.getNodeValue() == null) || (child.getNodeValue().trim()
+              .length() == 0)))
+        continue;
 
+      result.addAll(getDomNodesByTagName(child, tagName));
+
+    }
+    return result;
+    
+  }
+  /**
+   * Activate JBoss Tools Palette Tool with specified Label
+   * @param toolLabel
+   */
+  public void activatePaletteTool (String toolLabel){
+    
+    SWTEclipseExt.showView(bot, ViewType.JBOSS_TOOLS_PALETTE);
+    
+    IViewReference ref = UIThreadRunnable.syncExec(new Result<IViewReference>() {
+      public IViewReference run() {
+        IViewReference ref = null;
+        IViewReference[] viewReferences = null;
+        viewReferences = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getViewReferences();
+        for (IViewReference reference : viewReferences) {
+          if (reference.getTitle().equals("JBoss Tools Palette")){
+            return reference;
+          }
+        }
+        return ref;       
+      }
+    });
+    // Find Palette Viewer dirty way
+    PaletteViewPart pvp = (PaletteViewPart)ref.getPart(true);
+    try {
+      PaletteCreator pc = ReflectionsHelper.getPrivateFieldValue(PaletteViewPart.class,
+        "paletteCreator",
+        pvp,
+        PaletteCreator.class);
+      PaletteAdapter pa = ReflectionsHelper.getPrivateFieldValue(PaletteCreator.class,
+        "paletteAdapter",
+        pc,
+        PaletteAdapter.class);
+      PaletteViewer paletteViewer = ReflectionsHelper.getPrivateFieldValue(PaletteAdapter.class,
+        "viewer",
+        pa,
+        PaletteViewer.class);
+      
+      EditDomain ed = new EditDomain();
+      ed.setPaletteViewer(paletteViewer);
+      ed.setPaletteRoot(paletteViewer.getPaletteRoot());
+      PaletteFinder pf = new PaletteFinder(ed);
+      ToolEntryLabelMatcher telm = new ToolEntryLabelMatcher(toolLabel);
+      PaletteEntry peJsfHtml = pf.findEntries(telm).get(0);
+      // Activate outputText Tool from Palette
+      paletteViewer.setActiveTool((ToolEntry)peJsfHtml);
+    } catch (SecurityException e) {
+      throw new RuntimeException(e);
+    } catch (IllegalArgumentException e) {
+      throw new RuntimeException(e);
+    } catch (NoSuchFieldException e) {
+      throw new RuntimeException(e);
+    } catch (IllegalAccessException e) {
+      throw new RuntimeException(e);
+    }
+
+  }
+  
 }
