@@ -10,10 +10,8 @@
  ******************************************************************************/
 package org.jboss.tools.vpe.ui.bot.test.wizard;
 
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
-import org.jboss.tools.ui.bot.test.WidgetVariables;
 import org.jboss.tools.vpe.ui.bot.test.VPEAutoTestCase;
 
 /**
