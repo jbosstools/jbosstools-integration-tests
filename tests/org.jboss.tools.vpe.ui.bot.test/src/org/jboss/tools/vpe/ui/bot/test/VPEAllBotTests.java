@@ -19,6 +19,7 @@ import org.jboss.tools.vpe.ui.bot.test.editor.preferences.ShowSelectionTagBarTes
 import org.jboss.tools.vpe.ui.bot.test.jbide.JBIDE4556Test;
 import org.jboss.tools.vpe.ui.bot.test.palette.CancelTagLibDefenitionTest;
 import org.jboss.tools.vpe.ui.bot.test.palette.ImportTagsFromTLDFileTest;
+import org.jboss.tools.vpe.ui.bot.test.palette.ManagePaletteGroups;
 import org.jboss.tools.vpe.ui.bot.test.smoke.EditorSynchronizationTest;
 import org.jboss.tools.vpe.ui.bot.test.smoke.JSPPageCreationTest;
 import org.jboss.tools.vpe.ui.bot.test.smoke.RenameFacesConfigFileTest;
@@ -59,6 +60,7 @@ public class VPEAllBotTests extends SWTBotTestCase{
 		suite.addTestSuite(ExternalizeStringsDialogTest.class);
 		suite.addTestSuite(JspFileEditingTest.class);
 	  suite.addTestSuite(XhtmlFilePerformanceTest.class);
+	  suite.addTestSuite(ManagePaletteGroups.class);
 	  
 		return new TestSetup(suite);
 	}

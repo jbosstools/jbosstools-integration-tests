@@ -29,6 +29,7 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swtbot.eclipse.gef.finder.finders.PaletteFinder;
 import org.eclipse.swtbot.eclipse.gef.finder.matchers.ToolEntryLabelMatcher;
+import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.results.Result;
@@ -434,54 +435,9 @@ public class SWTBotWebBrowser {
    */
   public void activatePaletteTool (String toolLabel){
     
-    SWTEclipseExt.showView(bot, ViewType.JBOSS_TOOLS_PALETTE);
-    
-    IViewReference ref = UIThreadRunnable.syncExec(new Result<IViewReference>() {
-      public IViewReference run() {
-        IViewReference ref = null;
-        IViewReference[] viewReferences = null;
-        viewReferences = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getViewReferences();
-        for (IViewReference reference : viewReferences) {
-          if (reference.getTitle().equals("JBoss Tools Palette")){
-            return reference;
-          }
-        }
-        return ref;       
-      }
-    });
-    // Find Palette Viewer dirty way
-    PaletteViewPart pvp = (PaletteViewPart)ref.getPart(true);
-    try {
-      PaletteCreator pc = ReflectionsHelper.getPrivateFieldValue(PaletteViewPart.class,
-        "paletteCreator",
-        pvp,
-        PaletteCreator.class);
-      PaletteAdapter pa = ReflectionsHelper.getPrivateFieldValue(PaletteCreator.class,
-        "paletteAdapter",
-        pc,
-        PaletteAdapter.class);
-      PaletteViewer paletteViewer = ReflectionsHelper.getPrivateFieldValue(PaletteAdapter.class,
-        "viewer",
-        pa,
-        PaletteViewer.class);
-      
-      EditDomain ed = new EditDomain();
-      ed.setPaletteViewer(paletteViewer);
-      ed.setPaletteRoot(paletteViewer.getPaletteRoot());
-      PaletteFinder pf = new PaletteFinder(ed);
-      ToolEntryLabelMatcher telm = new ToolEntryLabelMatcher(toolLabel);
-      PaletteEntry peJsfHtml = pf.findEntries(telm).get(0);
-      // Activate outputText Tool from Palette
-      paletteViewer.setActiveTool((ToolEntry)peJsfHtml);
-    } catch (SecurityException e) {
-      throw new RuntimeException(e);
-    } catch (IllegalArgumentException e) {
-      throw new RuntimeException(e);
-    } catch (NoSuchFieldException e) {
-      throw new RuntimeException(e);
-    } catch (IllegalAccessException e) {
-      throw new RuntimeException(e);
-    }
+    PaletteViewer paletteViewer = SWTBotWebBrowser.getPaletteViewer(bot);
+    PaletteEntry peJsfHtml = SWTBotWebBrowser.getPaletteEntry(paletteViewer , toolLabel);
+    paletteViewer.setActiveTool((ToolEntry) peJsfHtml);
 
   }
   /**
@@ -518,6 +474,92 @@ public class SWTBotWebBrowser {
     
     return result;
 
+  }
+  /**
+   * Returns Palette Viewer associated to JBoss Tools Palette
+   * @return
+   */
+  private static PaletteViewer getPaletteViewer (SWTBotExt bot){
+    SWTEclipseExt.showView(bot, ViewType.JBOSS_TOOLS_PALETTE);
+
+    IViewReference ref = UIThreadRunnable
+        .syncExec(new Result<IViewReference>() {
+          public IViewReference run() {
+            IViewReference ref = null;
+            IViewReference[] viewReferences = null;
+            viewReferences = PlatformUI.getWorkbench()
+                .getActiveWorkbenchWindow().getActivePage().getViewReferences();
+            for (IViewReference reference : viewReferences) {
+              if (reference.getTitle().equals("JBoss Tools Palette")) {
+                return reference;
+              }
+            }
+            return ref;
+          }
+        });
+    // Find Palette Viewer dirty way
+    PaletteViewPart pvp = (PaletteViewPart) ref.getPart(true);
+    try {
+      PaletteCreator pc = ReflectionsHelper.getPrivateFieldValue(
+          PaletteViewPart.class, "paletteCreator", pvp, PaletteCreator.class);
+      PaletteAdapter pa = ReflectionsHelper.getPrivateFieldValue(
+          PaletteCreator.class, "paletteAdapter", pc, PaletteAdapter.class);
+      PaletteViewer paletteViewer = ReflectionsHelper.getPrivateFieldValue(
+          PaletteAdapter.class, "viewer", pa, PaletteViewer.class);
+
+      return paletteViewer;
+    } catch (SecurityException e) {
+      throw new RuntimeException(e);
+    } catch (IllegalArgumentException e) {
+      throw new RuntimeException(e);
+    } catch (NoSuchFieldException e) {
+      throw new RuntimeException(e);
+    } catch (IllegalAccessException e) {
+      throw new RuntimeException(e);
+    }
+
+  }
+  /**
+   * Returns Palette Entry from Palette Viewer paletteViewer with entryLabel label
+   * @param paletteViewer
+   * @param entryLabel
+   * @return
+   */
+  private static PaletteEntry getPaletteEntry (PaletteViewer paletteViewer , String entryLabel) {
+    
+    PaletteEntry result = null;
+    EditDomain ed = new EditDomain();
+    ed.setPaletteViewer(paletteViewer);
+    ed.setPaletteRoot(paletteViewer.getPaletteRoot());
+    PaletteFinder pf = new PaletteFinder(ed);
+    ToolEntryLabelMatcher telm = new ToolEntryLabelMatcher(entryLabel);
+    List<PaletteEntry> paletteEntries = pf.findEntries(telm);
+    if (paletteEntries != null && paletteEntries.size() > 0) {
+       result = paletteEntries.get(0);
+    } else {
+      throw new WidgetNotFoundException(
+          "Unable to find JBoss Tools Palette Entry with label: " + entryLabel);
+    }
+    
+    return result;
+
+  }
+  /**
+   * Returns true if JBoss Tools Palette Contains Palette Entry with label paletteENtryLabel
+   * @param paletteEntryLabel
+   * @return
+   */
+  public static boolean paletteContainsPaletteEntry (SWTBotExt bot,String paletteEntryLabel){
+    boolean result = false;
+    PaletteViewer paletteViewer = SWTBotWebBrowser.getPaletteViewer(bot);
+    try{
+      SWTBotWebBrowser.getPaletteEntry(paletteViewer , paletteEntryLabel);
+      result = true;
+    } catch (WidgetNotFoundException wnfe){
+      result = false;
+    }
+    
+    return result;
   }
   
 }
