@@ -8,6 +8,7 @@ import org.jboss.tools.vpe.ui.bot.test.editor.BlockCommentTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.ToggleCommentTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.VerificationOfNameSpacesTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.JspFileEditingTest;
+import org.jboss.tools.vpe.ui.bot.test.editor.XhtmlFilePerformanceTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.pagedesign.AddSubstitutedELExpressionFolderScopeTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.preferences.AlwaysHideSelectionBarWithoutPromptTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.preferences.BorderForUnknownTagsTest;
@@ -57,7 +58,8 @@ public class VPEAllBotTests extends SWTBotTestCase{
 		suite.addTestSuite(VPESourceCodeTemplatesPreferencePageTest.class);
 		suite.addTestSuite(ExternalizeStringsDialogTest.class);
 		suite.addTestSuite(JspFileEditingTest.class);
-		
+	  suite.addTestSuite(XhtmlFilePerformanceTest.class);
+	  
 		return new TestSetup(suite);
 	}
 }
