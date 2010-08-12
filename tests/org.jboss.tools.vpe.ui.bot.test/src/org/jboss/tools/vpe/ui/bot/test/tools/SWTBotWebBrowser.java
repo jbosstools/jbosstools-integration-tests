@@ -29,7 +29,6 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swtbot.eclipse.gef.finder.finders.PaletteFinder;
 import org.eclipse.swtbot.eclipse.gef.finder.matchers.ToolEntryLabelMatcher;
-import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.results.Result;
@@ -434,6 +433,15 @@ public class SWTBotWebBrowser {
    * @param toolLabel
    */
   public void activatePaletteTool (String toolLabel){
+    
+    SWTBotWebBrowser.activatePaletteTool(bot,toolLabel);
+
+  }
+  /**
+   * Activate JBoss Tools Palette Tool with specified Label static version
+   * @param toolLabel
+   */
+  public static void activatePaletteTool (SWTBotExt bot , String toolLabel){
     
     PaletteViewer paletteViewer = SWTBotWebBrowser.getPaletteViewer(bot);
     PaletteEntry peJsfHtml = SWTBotWebBrowser.getPaletteEntry(paletteViewer , toolLabel);

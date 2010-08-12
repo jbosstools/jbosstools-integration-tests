@@ -22,14 +22,14 @@ import org.jboss.tools.vpe.ui.bot.test.tools.SWTBotWebBrowser;
  * @author vlado pakan
  *
  */
-public class ManagePaletteGroups extends VPEAutoTestCase {
+public class ManagePaletteGroupsTest extends VPEAutoTestCase {
   
   private static final String TEST_PALETTE_GROUP_LABEL = "JSF HTML";
   private static final String TEST_PALETTE_TREE_GROUP_LABEL = "JSF";
   
   private SWTBotExt botExt = null;
   
-  public ManagePaletteGroups() {
+  public ManagePaletteGroupsTest() {
     super();
     botExt = new SWTBotExt();
   }
@@ -39,22 +39,22 @@ public class ManagePaletteGroups extends VPEAutoTestCase {
     openPalette();	 
     bot.toolbarButtonWithTooltip(IDELabel.JBossToolsPalette.SHOW_HIDE_TOOL_ITEM).click();
     SWTBot dialogBot = bot.shell(IDELabel.Shell.SHOW_HIDE_DRAWERS).activate().bot();
-    SWTBotTreeItem tiTestPaletteGroup = dialogBot.tree().getTreeItem(ManagePaletteGroups.TEST_PALETTE_TREE_GROUP_LABEL);
+    SWTBotTreeItem tiTestPaletteGroup = dialogBot.tree().getTreeItem(ManagePaletteGroupsTest.TEST_PALETTE_TREE_GROUP_LABEL);
     if (tiTestPaletteGroup.isChecked()){
       // Check Palette Group hiding
       tiTestPaletteGroup.uncheck();
       dialogBot.button("Ok").click();
-      assertTrue("Palette Group " + ManagePaletteGroups.TEST_PALETTE_GROUP_LABEL +
+      assertTrue("Palette Group " + ManagePaletteGroupsTest.TEST_PALETTE_GROUP_LABEL +
         " has to be hidden but is visible.", 
-        !SWTBotWebBrowser.paletteContainsPaletteEntry(botExt, ManagePaletteGroups.TEST_PALETTE_GROUP_LABEL));
+        !SWTBotWebBrowser.paletteContainsPaletteEntry(botExt, ManagePaletteGroupsTest.TEST_PALETTE_GROUP_LABEL));
     }
     else{
       // Check Palette Group showing
       tiTestPaletteGroup.check();
       dialogBot.button("Ok").click();
-      assertTrue("Palette Group " + ManagePaletteGroups.TEST_PALETTE_GROUP_LABEL +
+      assertTrue("Palette Group " + ManagePaletteGroupsTest.TEST_PALETTE_GROUP_LABEL +
         " has to be visible but is hidden.", 
-        SWTBotWebBrowser.paletteContainsPaletteEntry(botExt, ManagePaletteGroups.TEST_PALETTE_GROUP_LABEL));
+        SWTBotWebBrowser.paletteContainsPaletteEntry(botExt, ManagePaletteGroupsTest.TEST_PALETTE_GROUP_LABEL));
     }
     
     
