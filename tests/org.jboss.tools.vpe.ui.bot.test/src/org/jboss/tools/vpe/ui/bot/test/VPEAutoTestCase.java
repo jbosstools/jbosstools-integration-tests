@@ -17,6 +17,8 @@ import org.jboss.tools.jst.jsp.jspeditor.JSPMultiPageEditor;
 import org.jboss.tools.test.TestProperties;
 import org.jboss.tools.vpe.ui.bot.test.Activator;
 import org.jboss.tools.ui.bot.ext.SWTJBTExt;
+import org.jboss.tools.ui.bot.ext.Timing;
+import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.test.JBTSWTBotTestCase;
 import org.jboss.tools.ui.bot.test.SWTBotJSPMultiPageEditor;
@@ -414,4 +416,18 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase{
     tree.expandNode(JBT_TEST_PROJECT_NAME)
     .expandNode("WebContent").expandNode("pages").getNode(TEST_PAGE).doubleClick(); //$NON-NLS-1$ //$NON-NLS-2$
   }
+	/**
+	 * Creates new empty JSP page within test project
+	 * @param pageName
+	 */
+	protected void createJspPage (String pageName){
+	  packageExplorer.selectTreeItem("pages", new String[] {VPEAutoTestCase.JBT_TEST_PROJECT_NAME,"WebContent"});
+    open.newObject(ActionItem.NewObject.WebJSP.LABEL);
+    bot.shell(IDELabel.Shell.NEW_JSP_FILE).activate();
+    bot.textWithLabel(ActionItem.NewObject.WebJSP.TEXT_FILE_NAME).setText(pageName);
+    bot.button(IDELabel.Button.NEXT).click();
+    bot.table().select(IDELabel.NewJSPFileDialog.JSP_TEMPLATE);
+    bot.button(IDELabel.Button.FINISH).click();
+    bot.sleep(Timing.time2S());
+	}
 }

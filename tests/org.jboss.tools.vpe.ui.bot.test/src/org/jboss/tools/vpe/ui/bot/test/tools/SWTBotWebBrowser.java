@@ -569,5 +569,18 @@ public class SWTBotWebBrowser {
     
     return result;
   }
-  
+  /**
+   * Returns browser selection
+   * @return
+   */
+  public nsISelection getSelection (){
+    nsISelection result = null;
+    display.syncExec(new Runnable() {
+      public void run() {
+        mozillaEditor.setFocus();
+      }
+    });
+    result = getSelectionController().getSelection(nsISelectionController.SELECTION_NORMAL);
+    return result;
+  }
 }

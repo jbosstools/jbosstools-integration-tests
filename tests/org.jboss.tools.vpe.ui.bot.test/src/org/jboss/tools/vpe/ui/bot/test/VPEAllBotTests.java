@@ -10,6 +10,7 @@ import org.jboss.tools.vpe.ui.bot.test.editor.VerificationOfNameSpacesTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.JspFileEditingTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.XhtmlFilePerformanceTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.pagedesign.AddSubstitutedELExpressionFolderScopeTest;
+import org.jboss.tools.vpe.ui.bot.test.editor.pagedesign.ToolbarTextFormattingTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.preferences.AlwaysHideSelectionBarWithoutPromptTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.preferences.BorderForUnknownTagsTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.preferences.ChangeEditorTabForTheFirstOpenPageTest;
@@ -63,6 +64,7 @@ public class VPEAllBotTests extends SWTBotTestCase{
 	  suite.addTestSuite(XhtmlFilePerformanceTest.class);
 	  suite.addTestSuite(ManagePaletteGroupsTest.class);
 		suite.addTestSuite(PaletteEditorTest.class);
+		suite.addTestSuite(ToolbarTextFormattingTest.class);
 		
 		return new TestSetup(suite);
 	}
