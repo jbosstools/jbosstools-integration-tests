@@ -48,6 +48,6 @@ public class DecisionTableTest extends SWTTestExt{
     assertTrue(decisionTableFileName + " didn't run properly.\n" +
       "Console Text was: " + consoleText + "\n" +
       "Expected console text is: Hello World\nGoodbye cruel world\n",
-      "Hello World\nGoodbye cruel world\n".equals(consoleText));
+      consoleText.endsWith("Hello World\nGoodbye cruel world\n"));
   }
 }
