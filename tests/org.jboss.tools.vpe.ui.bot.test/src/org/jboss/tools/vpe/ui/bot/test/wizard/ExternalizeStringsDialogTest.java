@@ -17,7 +17,6 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotCombo;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
-import org.eclipse.swtbot.swt.finder.widgets.TimeoutException;
 import org.jboss.tools.vpe.messages.VpeUIMessages;
 import org.jboss.tools.vpe.ui.bot.test.VPEAutoTestCase;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
