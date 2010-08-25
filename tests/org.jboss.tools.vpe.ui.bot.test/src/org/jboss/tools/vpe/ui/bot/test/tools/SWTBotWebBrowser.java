@@ -18,9 +18,11 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.gef.EditDomain;
+import org.eclipse.gef.palette.PaletteContainer;
 import org.eclipse.gef.palette.PaletteEntry;
 import org.eclipse.gef.palette.ToolEntry;
 import org.eclipse.gef.ui.palette.PaletteViewer;
+import org.eclipse.gef.ui.views.palette.PaletteView;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Decorations;
@@ -37,9 +39,9 @@ import org.eclipse.ui.IEditorReference;
 import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.PlatformUI;
 import org.jboss.tools.common.model.ui.views.palette.PaletteCreator;
-import org.jboss.tools.common.model.ui.views.palette.PaletteViewPart;
 import org.jboss.tools.jst.jsp.editor.IVisualEditor;
 import org.jboss.tools.jst.jsp.jspeditor.JSPMultiPageEditor;
+import org.jboss.tools.jst.jsp.jspeditor.PalettePageImpl;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
 import org.jboss.tools.ui.bot.ext.SWTEclipseExt;
 import org.jboss.tools.ui.bot.ext.Timing;
@@ -72,12 +74,18 @@ import org.w3c.dom.Node;
  *
  */
 public class SWTBotWebBrowser {
+  public static final String PARENT_TAG_MENU_LABEL = "Parent Tag";
   public static final String INSERT_AROUND_MENU_LABEL = "Insert around";
   public static final String INSERT_BEFORE_MENU_LABEL = "Insert before";
   public static final String INSERT_AFTER_MENU_LABEL = "Insert after";
   public static final String INSERT_INTO_MENU_LABEL = "Insert into";
   public static final String REPLACE_WITH_MENU_LABEL = "Replace with"; 
   public static final String STRIP_TAG_MENU_LABEL = "Strip Tag"; 
+  public static final String ZOOM_MENU_LABEL = "Zoom";
+  public static final String CUT_MENU_LABEL = "Cut";
+  public static final String COPY_MENU_LABEL = "Copy";
+  public static final String PASTE_MENU_LABEL = "Paste";
+
   public static final String JSF_MENU_LABEL = "JSF";
   public static final String HTML_MENU_LABEL = "HTML";
   public static final String H_OUTPUT_TEXT_TAG_MENU_LABEL = "<h:outputText>";
@@ -295,97 +303,8 @@ public class SWTBotWebBrowser {
    * @param menus
    */
   public void clickContextMenu(final nsIDOMNode node , final String... menuLabels){
-    // Create Context Menu Event
-    final nsIDOMEvent domEvent = new nsIDOMEvent() {
-      
-      public nsISupports queryInterface(String arg0) {
-        return XPCOM.queryInterface(node,nsISupports.class);
-      }
-      public void stopPropagation() {
-      }
-      public void preventDefault() {
-      }
-      public void initEvent(String arg0, boolean arg1, boolean arg2) {
-      }
-      public String getType() {
-        return "contextmenu";
-      }
-      public double getTimeStamp() {
-        return 0;
-      }
-      public nsIDOMEventTarget getTarget() {
-        return XPCOM.queryInterface(node,nsIDOMEventTarget.class);
-      }
-      public int getEventPhase() {
-        return 0;
-      }
-      
-      public nsIDOMEventTarget getCurrentTarget() {
-        return XPCOM.queryInterface(node,nsIDOMEventTarget.class);
-      }
-      public boolean getCancelable() {
-        return false;
-      }
-      public boolean getBubbles() {
-        return false;
-      }
-    };
-    // Simulate Context Menu Event
-    display.syncExec(new Runnable() {
-      public void run() {
-        getMozillaEventAdapter().handleEvent(domEvent);
-      }
-    });
-    // Get Top Menu
-    Menu topMenu = UIThreadRunnable.syncExec(new WidgetResult<Menu>() {
-      public Menu run() {
-        Menu result = null;
-        Composite parent = mozillaEditor.getControl().getParent();
-        while (!(parent instanceof Decorations)){
-          parent = parent.getParent();
-        }
-        try {
-          Menu[] menus = ReflectionsHelper.getPrivateFieldValue(Decorations.class,
-            "menus", 
-            parent,
-            Menu[].class);
-          if (menus != null){
-            MenuItem topMenuItem = null;
-            int index = menus.length - 1;
-            while (topMenuItem == null && index >= 0){
-              if (menus[index] != null){
-                MenuItem[] menuItems = menus[index].getItems();
-                int menuItemIndex = 0;
-                while (topMenuItem == null && menuItemIndex < menuItems.length){
-                  if (menuItems[menuItemIndex].getText().equals(menuLabels[0])){
-                    topMenuItem = menuItems[menuItemIndex];
-                  }
-                  menuItemIndex++;
-                }
-              }
-              index--;
-            }
-            if (topMenuItem != null){
-              result = topMenuItem.getParent();
-            }
-          }
-          else{
-            throw new WidgetNotFoundException("Unable to find MenuItem with label " + menuLabels[0]);
-          }
-        } catch (SecurityException se) {
-          throw new WidgetNotFoundException("Unable to find MenuItem with label " + menuLabels[0],se);
-        } catch (NoSuchFieldException nsfe) {
-          throw new WidgetNotFoundException("Unable to find MenuItem with label " + menuLabels[0],nsfe);
-        } catch (IllegalArgumentException iae) {
-          throw new WidgetNotFoundException("Unable to find MenuItem with label " + menuLabels[0],iae);
-        } catch (IllegalAccessException iace) {
-          throw new WidgetNotFoundException("Unable to find MenuItem with label " + menuLabels[0],iace);
-        }
-        return result;
-      }});
-    
+    Menu topMenu = getTopMenu(node, menuLabels[0]);
     ContextMenuHelper.clickContextMenu(topMenu, menuLabels);
-
   }
   /**
    * Returns node corresponding to specified tagName
@@ -488,7 +407,7 @@ public class SWTBotWebBrowser {
    * @return
    */
   private static PaletteViewer getPaletteViewer (SWTBotExt bot){
-    SWTEclipseExt.showView(bot, ViewType.JBOSS_TOOLS_PALETTE);
+    SWTEclipseExt.showView(bot, ViewType.PALETTE);
 
     IViewReference ref = UIThreadRunnable
         .syncExec(new Result<IViewReference>() {
@@ -498,7 +417,7 @@ public class SWTBotWebBrowser {
             viewReferences = PlatformUI.getWorkbench()
                 .getActiveWorkbenchWindow().getActivePage().getViewReferences();
             for (IViewReference reference : viewReferences) {
-              if (reference.getTitle().equals("JBoss Tools Palette")) {
+              if (reference.getTitle().equals(ViewType.PALETTE.getViewLabel())) {
                 return reference;
               }
             }
@@ -506,15 +425,15 @@ public class SWTBotWebBrowser {
           }
         });
     // Find Palette Viewer dirty way
-    PaletteViewPart pvp = (PaletteViewPart) ref.getPart(true);
+    PaletteView pv = (PaletteView)ref.getPart(true);
+    PalettePageImpl ppi = (PalettePageImpl)pv.getCurrentPage();
     try {
       PaletteCreator pc = ReflectionsHelper.getPrivateFieldValue(
-          PaletteViewPart.class, "paletteCreator", pvp, PaletteCreator.class);
+          PalettePageImpl.class, "paletteCreator", ppi, PaletteCreator.class);
       PaletteAdapter pa = ReflectionsHelper.getPrivateFieldValue(
           PaletteCreator.class, "paletteAdapter", pc, PaletteAdapter.class);
       PaletteViewer paletteViewer = ReflectionsHelper.getPrivateFieldValue(
           PaletteAdapter.class, "viewer", pa, PaletteViewer.class);
-
       return paletteViewer;
     } catch (SecurityException e) {
       throw new RuntimeException(e);
@@ -583,4 +502,145 @@ public class SWTBotWebBrowser {
     result = getSelectionController().getSelection(nsISelectionController.SELECTION_NORMAL);
     return result;
   }
+  /**
+   * Returns top context menu of Visual Editor
+   * @param node
+   * @param topMenuItemLabel
+   * @return
+   */
+  public Menu getTopMenu(final nsIDOMNode node , final String topMenuItemLabel){
+    // Create Context Menu Event
+    final nsIDOMEvent domEvent = new nsIDOMEvent() {
+      
+      public nsISupports queryInterface(String arg0) {
+        return node != null ? XPCOM.queryInterface(node,nsISupports.class) : null;
+      }
+      public void stopPropagation() {
+      }
+      public void preventDefault() {
+      }
+      public void initEvent(String arg0, boolean arg1, boolean arg2) {
+      }
+      public String getType() {
+        return "contextmenu";
+      }
+      public double getTimeStamp() {
+        return 0;
+      }
+      public nsIDOMEventTarget getTarget() {
+        return node != null ? XPCOM.queryInterface(node,nsIDOMEventTarget.class) : null;
+      }
+      public int getEventPhase() {
+        return 0;
+      }
+      
+      public nsIDOMEventTarget getCurrentTarget() {
+        return node != null ? XPCOM.queryInterface(node,nsIDOMEventTarget.class) : null;
+      }
+      public boolean getCancelable() {
+        return false;
+      }
+      public boolean getBubbles() {
+        return false;
+      }
+    };
+    // Simulate Context Menu Event
+    display.syncExec(new Runnable() {
+      public void run() {
+        getMozillaEventAdapter().handleEvent(domEvent);
+      }
+    });
+    // Get Top Menu
+    return UIThreadRunnable.syncExec(new WidgetResult<Menu>() {
+      public Menu run() {
+        Menu result = null;
+        Composite parent = mozillaEditor.getControl().getParent();
+        while (!(parent instanceof Decorations)){
+          parent = parent.getParent();
+        }
+        try {
+          Menu[] menus = ReflectionsHelper.getPrivateFieldValue(Decorations.class,
+            "menus", 
+            parent,
+            Menu[].class);
+          if (menus != null){
+            MenuItem topMenuItem = null;
+            int index = menus.length - 1;
+            while (topMenuItem == null && index >= 0){
+              if (menus[index] != null){
+                MenuItem[] menuItems = menus[index].getItems();
+                int menuItemIndex = 0;
+                while (topMenuItem == null && menuItemIndex < menuItems.length){
+                  if (ContextMenuHelper.trimMenuItemLabel(menuItems[menuItemIndex].getText())
+                        .equals(topMenuItemLabel)){
+                    topMenuItem = menuItems[menuItemIndex];
+                  }
+                  menuItemIndex++;
+                }
+              }
+              index--;
+            }
+            if (topMenuItem != null){
+              result = topMenuItem.getParent();
+            }
+          }
+          else{
+            throw new WidgetNotFoundException("Unable to find MenuItem with label " + topMenuItemLabel);
+          }
+        } catch (SecurityException se) {
+          throw new WidgetNotFoundException("Unable to find MenuItem with label " + topMenuItemLabel,se);
+        } catch (NoSuchFieldException nsfe) {
+          throw new WidgetNotFoundException("Unable to find MenuItem with label " + topMenuItemLabel,nsfe);
+        } catch (IllegalArgumentException iae) {
+          throw new WidgetNotFoundException("Unable to find MenuItem with label " + topMenuItemLabel,iae);
+        } catch (IllegalAccessException iace) {
+          throw new WidgetNotFoundException("Unable to find MenuItem with label " + topMenuItemLabel,iace);
+        }
+        return result;
+      }});
+    
+  }
+  /**
+   * Returns Palette Containers
+   * @param bot
+   * @return
+   */
+  public static final List<PaletteContainer> getPaletteRootContainers (SWTBotExt bot) {
+    List<PaletteContainer> result = null;   
+    final PaletteViewer paletteViewer = SWTBotWebBrowser.getPaletteViewer(bot);
+    result = UIThreadRunnable.syncExec(new Result<LinkedList<PaletteContainer>> (){
+      public LinkedList<PaletteContainer> run() {
+        LinkedList<PaletteContainer> paletteContainers = new LinkedList<PaletteContainer>();
+        for (Object o : paletteViewer.getPaletteRoot().getChildren()){
+          if (o instanceof PaletteContainer){
+            paletteContainers.add((PaletteContainer)o);
+          }
+        }
+        return paletteContainers;
+      }
+    });
+    
+    return result;  
+  }
+  /**
+   * Returns Palette Entries of paletteContainer
+   * @param paletteContainer
+   * @return
+   */
+  public static final List<PaletteEntry> getPaletteContainerItems (final PaletteContainer paletteContainer) {
+    List<PaletteEntry> result = null;
+    result = UIThreadRunnable.syncExec(new Result<LinkedList<PaletteEntry>> (){
+      public LinkedList<PaletteEntry> run() {
+        LinkedList<PaletteEntry> paletteEntries = new LinkedList<PaletteEntry>();
+        for (Object o : paletteContainer.getChildren()){
+          if (o instanceof PaletteEntry && !(o instanceof PaletteContainer)){
+            paletteEntries.add((PaletteEntry)o);
+          }
+        }
+        return paletteEntries;
+      }
+    });    
+    return result;
+  }
+  
 }

@@ -8,6 +8,7 @@ import org.jboss.tools.vpe.ui.bot.test.editor.BlockCommentTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.ToggleCommentTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.VerificationOfNameSpacesTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.JspFileEditingTest;
+import org.jboss.tools.vpe.ui.bot.test.editor.VisualEditorContextMenuTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.XhtmlFilePerformanceTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.pagedesign.AddSubstitutedELExpressionFolderScopeTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.pagedesign.ToolbarTextFormattingTest;
@@ -65,6 +66,7 @@ public class VPEAllBotTests extends SWTBotTestCase{
 	  suite.addTestSuite(ManagePaletteGroupsTest.class);
 		suite.addTestSuite(PaletteEditorTest.class);
 		suite.addTestSuite(ToolbarTextFormattingTest.class);
+		suite.addTestSuite(VisualEditorContextMenuTest.class);
 		
 		return new TestSetup(suite);
 	}
