@@ -133,8 +133,7 @@ public abstract class JBTSWTBotTestCase extends SWTTestExt implements
 
 	@Override
 	protected void setUp() throws Exception {
-	  // close Report Usage Window
-	  jbt.closeReportUsageWindowIfOpened(false);
+	  super.setUp();
 		activePerspective();
 		try {
 			bot.viewByTitle(WidgetVariables.WELCOME).close();
