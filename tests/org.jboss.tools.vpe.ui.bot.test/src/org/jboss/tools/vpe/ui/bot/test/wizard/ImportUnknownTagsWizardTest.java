@@ -41,7 +41,7 @@ public class ImportUnknownTagsWizardTest extends VPEAutoTestCase {
 		bot.menu("File").menu("Import...").click(); //$NON-NLS-1$ //$NON-NLS-2$
 		bot.shell("Import").activate(); //$NON-NLS-1$
 		SWTBotTree importTree = bot.tree();
-		importTree.expandNode("Other").select("Unknown tags templates"); //$NON-NLS-1$ //$NON-NLS-2$
+		importTree.expandNode("Other").select("User specified tag templates"); //$NON-NLS-1$ //$NON-NLS-2$
 		bot.button(WidgetVariables.NEXT_BUTTON).click();
 		/*
 		 * Load stored tags
@@ -65,22 +65,22 @@ public class ImportUnknownTagsWizardTest extends VPEAutoTestCase {
         /*
          * Check that templates have been added to the preference page 
          */
-        bot.menu(IDELabel.Menu.WINDOW).menu(IDELabel.Menu.PREFERENCES).click(); //$NON-NLS-1$ //$NON-NLS-2$
-		bot.shell(IDELabel.Shell.PREFERENCES).activate(); //$NON-NLS-1$
+        bot.menu(IDELabel.Menu.WINDOW).menu(IDELabel.Menu.PREFERENCES).click();
+		bot.shell(IDELabel.Shell.PREFERENCES).activate();
 		importTree = bot.tree();
-		importTree.expandNode(IDELabel.PreferencesDialog.JBOSS_TOOLS) //$NON-NLS-1$d
-				.expandNode(IDELabel.PreferencesDialog.JBOSS_TOOLS_WEB) //$NON-NLS-1$
-				.expandNode(IDELabel.PreferencesDialog.JBOSS_TOOLS_WEB_EDITORS) //$NON-NLS-1$
-				.select(IDELabel.PreferencesDialog.JBOSS_TOOLS_WEB_EDITORS_VPE); //$NON-NLS-1$
-		bot.tabItem(IDELabel.PreferencesDialog.JBOSS_TOOLS_WEB_EDITORS_VPE_VISUAL_TEMPLATES).activate(); //$NON-NLS-1$
+		importTree.expandNode(IDELabel.PreferencesDialog.JBOSS_TOOLS)
+				.expandNode(IDELabel.PreferencesDialog.JBOSS_TOOLS_WEB)
+				.expandNode(IDELabel.PreferencesDialog.JBOSS_TOOLS_WEB_EDITORS)
+				.select(IDELabel.PreferencesDialog.JBOSS_TOOLS_WEB_EDITORS_VPE);
+		bot.tabItem(IDELabel.PreferencesDialog.JBOSS_TOOLS_WEB_EDITORS_VPE_VISUAL_TEMPLATES).activate();
 		/*
          * Check table values on the preferences page
          */
         String taglib00 = bot.table().cell(0, 0);
         String taglib10 = bot.table().cell(1, 0);
         bot.button(WidgetVariables.OK_BUTTON).click();
-        assertEquals("Wrong table value.", "taglibName:tagName", taglib00); //$NON-NLS-1$  //$NON-NLS-2$
-        assertEquals("Wrong table value.", "lib:tag", taglib10); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals("Wrong table value.", "lib:tag", taglib00); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals("Wrong table value.", "taglibName:tagName", taglib10); //$NON-NLS-1$  //$NON-NLS-2$
         
 	}
 	

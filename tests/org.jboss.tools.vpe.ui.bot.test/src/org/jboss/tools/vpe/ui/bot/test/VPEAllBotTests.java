@@ -62,8 +62,8 @@ public class VPEAllBotTests extends SWTBotTestCase{
 		suite.addTestSuite(VPESourceCodeTemplatesPreferencePageTest.class);
 		suite.addTestSuite(ExternalizeStringsDialogTest.class);
 		suite.addTestSuite(JspFileEditingTest.class);
-	  suite.addTestSuite(XhtmlFilePerformanceTest.class);
-	  suite.addTestSuite(ManagePaletteGroupsTest.class);
+		suite.addTestSuite(XhtmlFilePerformanceTest.class);
+		suite.addTestSuite(ManagePaletteGroupsTest.class);
 		suite.addTestSuite(PaletteEditorTest.class);
 		suite.addTestSuite(ToolbarTextFormattingTest.class);
 		suite.addTestSuite(VisualEditorContextMenuTest.class);

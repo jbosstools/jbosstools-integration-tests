@@ -53,7 +53,7 @@ public class ExportUnknownTagsWizardTest extends VPEAutoTestCase {
 		bot.menu("File").menu("Export...").click(); //$NON-NLS-1$ //$NON-NLS-2$
 		bot.shell("Export").activate(); //$NON-NLS-1$
 		SWTBotTree importTree = bot.tree();
-		importTree.expandNode("Other").select("Unknown tags templates"); //$NON-NLS-1$ //$NON-NLS-2$
+		importTree.expandNode("Other").select("User specified tag templates"); //$NON-NLS-1$ //$NON-NLS-2$
 		bot.button(WidgetVariables.NEXT_BUTTON).click();
 		/*
 		 * Check table values
