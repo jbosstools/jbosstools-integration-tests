@@ -295,8 +295,8 @@ public class TestDomUtil {
 						+ "\" but pattern is \"" + regex + "\""); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 
-		} else if (!modelString.equals(vpeString)) {
-			throw new ComparisonException("string is\"" + vpeString //$NON-NLS-1$
+		} else if (!modelString.equals(vpeString.replaceAll("\n", " "))) {
+			throw new ComparisonException("string is\"" + vpeString.replaceAll("\n", " ") //$NON-NLS-1$
 					+ "\" but must be \"" + modelString + "\""); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 
