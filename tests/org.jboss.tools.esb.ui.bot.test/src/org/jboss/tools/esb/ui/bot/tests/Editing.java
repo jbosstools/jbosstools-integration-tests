@@ -34,7 +34,9 @@ import org.jboss.tools.esb.ui.bot.tests.editor.ESBProviderFactory;
 import org.jboss.tools.ui.bot.ext.SWTEclipseExt;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.config.Annotations.SWTBotTestRequires;
+import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.NewObject.ESBESBFile;
+import org.jboss.tools.ui.bot.ext.gen.ActionItem.NewObject.ESBESBProject;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.NewObject.JavaProject;
 import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
 import org.jboss.tools.ui.bot.ext.parts.ObjectMultiPageEditorBot;
@@ -59,20 +61,17 @@ public class Editing extends SWTTestExt {
 
 	@BeforeClass
 	public static void setupProject() {
-		SWTBot wiz = open.newObject(JavaProject.LABEL);
-		wiz.textWithLabel(JavaProject.TEXT_PROJECT_NAME).setText(projectName);
+		SWTBot wiz = open.newObject(ActionItem.NewObject.ESBESBProject.LABEL);
+		wiz.textWithLabel(ESBESBProject.TEXT_PROJECT_NAME).setText(projectName);		
 		wiz.button(IDELabel.Button.NEXT).click();
-		open.finish(wiz, true);
-		packageExplorer.show().bot().tree().select(projectName);
-		wiz = open.newObject(ESBESBFile.LABEL);
-		wiz.textWithLabel(ESBESBFile.TEXT_NAME).setText(configFile);
+		wiz.button(IDELabel.Button.NEXT).click();
+
+		
 		open.finish(wiz);
-		assertTrue(bot.editorByTitle(configFileFull) != null);
-		assertTrue("ESB Editor opened problems",
-				problems.getErrorsNode(bot) == null);
+		
 	}
 
-	//@AfterClass
+	@AfterClass
 	public static void waitAMinute() {
 		bot.sleep(Long.MAX_VALUE);
 	}
@@ -101,6 +100,8 @@ public class Editing extends SWTTestExt {
 					ESBProvider action = (ESBProvider) m.invoke(null, new Object[]{});
 					action.create(getEditor(), actionPath);
 					providerList.remove(action.getMenuLabel());
+					bot.sleep(TIME_1S);
+					Assertions.assertEmptyProblemsView("after "+action.getMenuLabel()+" was added");
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

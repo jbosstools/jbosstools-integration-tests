@@ -8,8 +8,10 @@ import java.util.Arrays;
 
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotButton;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.esb.ui.bot.tests.XmlFileValidator;
 import org.jboss.tools.ui.bot.ext.SWTEclipseExt;
+import org.jboss.tools.ui.bot.ext.SWTTestExt;
 
 public class Assertions {
 	public static void assertTreeContent(SWTBotEditor editor, String... items) {
@@ -58,5 +60,9 @@ public class Assertions {
 	 */
 	public static void assertXmlContentExists(String xml, String xpath) {
 		 assertXmlContentBool(xml, "count("+xpath+")=1");
+	}
+	public static void assertEmptyProblemsView(String message ) {
+		SWTBotTreeItem node = SWTTestExt.problems.getErrorsNode(SWTTestExt.bot);
+		assertTrue("ESB Editor has errors in 'Problems View' - "+message,node == null);
 	}
 }
