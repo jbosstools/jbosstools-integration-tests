@@ -41,7 +41,7 @@ public class ShowSelectionTagBarTest extends PreferencesTestCase{
 		
 		closePage();
 		openPage();
-		checkIsShow();
+		checkIsHide();
 	
 	}
 

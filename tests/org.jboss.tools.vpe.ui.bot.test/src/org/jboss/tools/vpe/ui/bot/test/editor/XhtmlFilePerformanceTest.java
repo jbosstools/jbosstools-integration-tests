@@ -68,7 +68,7 @@ public class XhtmlFilePerformanceTest extends VPEAutoTestCase {
     } catch (InterruptedException e) {
       // Ignore
     }
-    
+    multiPageEditor.selectPage(IDELabel.VisualPageEditor.VISUAL_SOURCE_TAB_LABEL);
     assertTrue("Web Browser has to contain text " + insertText + " but it doesn't.",swtBotWebBrowserExt.containsNodeWithValue(swtBotWebBrowserExt.getNsIDOMDocument(), insertText));
     xhtmlTextEditor.close();
     

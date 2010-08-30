@@ -36,7 +36,7 @@ public class VPESourceCodeTemplatesPreferencePageTest extends SWTBotTestCase{
 		.expandNode(IDELabel.PreferencesDialog.JBOSS_TOOLS_WEB_EDITORS_VPE).select(); //$NON-NLS-1$
 		bot.tabItem(IDELabel.PreferencesDialog.JBOSS_TOOLS_WEB_EDITORS_VPE_VISUAL_TEMPLATES).activate(); //$NON-NLS-1$
 		try{
-			this.bot.button(IDELabel.Button.ADD_WITHOUT_DOTS).click(); //$NON-NLS-1$
+			this.bot.button(IDELabel.Button.ADD).click(); //$NON-NLS-1$
 			this.bot.button(IDELabel.Button.CANCEL).click(); //$NON-NLS-1$
 		} catch(WidgetNotFoundException ex){
 			fail("Preference Page has not been created"+ex);//$NON-NLS-1$

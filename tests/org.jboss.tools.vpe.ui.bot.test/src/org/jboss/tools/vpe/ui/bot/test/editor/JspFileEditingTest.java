@@ -101,7 +101,7 @@ public class JspFileEditingTest extends VPEEditorTestCase {
         + "' but it doesn't", editorText.contains(testText));
     // Insert text via Visual Editor to inserted h:outputText tag
     node = swtBotWebBrowser.getDomNodeByTagName(
-        swtBotWebBrowser.getNsIDOMDocument(), "#text", 6);
+        swtBotWebBrowser.getNsIDOMDocument(), "#text", 5);
     botExt.sleep(Timing.time2S());
     swtBotWebBrowser.selectDomNode(node, 5);
     String insertString = "ab9876CD";

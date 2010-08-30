@@ -41,11 +41,12 @@ public class AlwaysHideSelectionBarWithoutPromptTest extends PreferencesTestCase
 		
 		closePage();
 		openPage();
-		checkIsShow();
+		checkIsHide();
 		
   	//Test Hide Selection Bar button with confirm
 	  
     selectPrompt();
+    selectSelection();
     bot.toolbarButtonWithTooltip(HID_SEL_BAR).click();
     bot.shell("Confirm hide selection bar").activate();
     bot.button(IDELabel.Button.OK).click();

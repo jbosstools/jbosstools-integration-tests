@@ -138,18 +138,23 @@ public class TestDomUtil {
 		}
 		
 		if ("#comment".equals(vpeNode.getNodeName())){ //$NON-NLS-1$
-			String vpeNodeValue = vpeNode.getNodeValue();
+			String vpeNodeValue = vpeNode.getNodeValue().trim();
 			try {
-				vpeNodeValue = clearStringFromRSymbols(vpeNodeValue);
+				vpeNodeValue = clearStringFromSpecSymbol("\t",clearStringFromSpecSymbol("\r",vpeNodeValue));
 			} catch (Exception e) {
 			}
-			if ((modelNode.getNodeValue() != null)
-					&& (!modelNode.getNodeValue().trim().equalsIgnoreCase(
-							vpeNodeValue.trim()))) {
-				throw new ComparisonException("value of " + vpeNode.getNodeName() //$NON-NLS-1$
-						+ " is \"" + vpeNodeValue.trim() //$NON-NLS-1$
-						+ "\" but must be \"" + modelNode.getNodeValue().trim() //$NON-NLS-1$
-						+ "\""); //$NON-NLS-1$
+			if (modelNode.getNodeValue() != null){
+			  String modelNodeValue = modelNode.getNodeValue().trim();
+	      try {
+	        modelNodeValue = clearStringFromSpecSymbol("\t",clearStringFromSpecSymbol("\r" , modelNodeValue));
+	      } catch (Exception e) {
+	      }
+        if (!modelNodeValue.equalsIgnoreCase(vpeNodeValue)) {
+          throw new ComparisonException("value of " + vpeNode.getNodeName() //$NON-NLS-1$
+            + " is\n\"" + vpeNodeValue //$NON-NLS-1$
+            + "\" but must be\n\"" + modelNodeValue //$NON-NLS-1$
+            + "\""); //$NON-NLS-1$
+			  }
 			}
 		} else {
 			if ((modelNode.getNodeValue() != null)
@@ -163,9 +168,18 @@ public class TestDomUtil {
 		}
 		// compare node's attributes
 		if (modelNode.getNodeType() == Node.ELEMENT_NODE) {
-
-			compareAttributes(modelNode.getAttributes(), vpeNode
-					.getAttributes());
+		  boolean attrVpetemporarydndelementFound = false;
+		  if (modelNode.getNodeName().equalsIgnoreCase("IMG")){
+        NamedNodeMap attrMap = modelNode.getAttributes();
+        for (int index = 0 ; (!attrVpetemporarydndelementFound) && (index < attrMap.getLength()) ; index++){
+          if (((Attr)attrMap.item(index)).getName().equalsIgnoreCase("vpetemporarydndelement")){
+            attrVpetemporarydndelementFound = true;
+          }
+        }
+      }
+      if (!attrVpetemporarydndelementFound){
+        compareAttributes(modelNode.getAttributes(), vpeNode.getAttributes());
+      }
 		}
 
 		// compare children
@@ -301,14 +315,19 @@ public class TestDomUtil {
 		}
 
 	}
-	
-	private static String clearStringFromRSymbols(String string){
-		int index = string.indexOf("\r"); //$NON-NLS-1$
+	/**
+	 * Clear string from special symbol
+	 * @param symbol
+	 * @param string
+	 * @return
+	 */
+	private static String clearStringFromSpecSymbol(String symbol,String string){
+		int index = string.indexOf(symbol); //$NON-NLS-1$
 		while (index!=-1) {
 			String stringAfterSymbol = string.substring(index+1);
 			String stringBeforeSymbol = string.substring(0,index);
 			string = stringBeforeSymbol.concat(stringAfterSymbol);
-			index = string.indexOf("\r"); //$NON-NLS-1$
+			index = string.indexOf(symbol); //$NON-NLS-1$
 		}
 		return string;
 	}

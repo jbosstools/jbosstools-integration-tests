@@ -114,7 +114,7 @@ public class SWTBotWebBrowser {
    * @param node
    * @param depth
    */
-  private static void displayNsIDOMNode(nsIDOMNode node , int depth) {
+  public static void displayNsIDOMNode(nsIDOMNode node , int depth) {
     System.out.println("");
     System.out.print(fillString(' ', depth) + "<" + node.getNodeName() + " ");
 
@@ -123,7 +123,7 @@ public class SWTBotWebBrowser {
       nsIDOMNamedNodeMap modelAttributes = node.getAttributes();
       for (int i = 0; i < modelAttributes.getLength(); i++) {
         nsIDOMNode modelAttr = modelAttributes.item(i);
-        System.out.print(modelAttr.getNodeName() + "=" + modelAttr.getNodeValue().replaceAll("\n", "") + " ");
+        System.out.print(modelAttr.getNodeName() + "=\"" + modelAttr.getNodeValue().replaceAll("\n", " ") + "\" ");
       }
     }
     System.out.println(">");
@@ -145,7 +145,7 @@ public class SWTBotWebBrowser {
       displayNsIDOMNode(child, depth + 2);
 
     }
-    System.out.println(fillString(' ', depth) + "<" + node.getNodeName() + "/>");
+    System.out.println(fillString(' ', depth) + "</" + node.getNodeName() + ">");
   }
   /**
    * Displays complete browser DOM

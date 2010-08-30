@@ -13,6 +13,7 @@ package org.jboss.tools.vpe.ui.bot.test.smoke;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.test.WidgetVariables;
@@ -64,7 +65,8 @@ public class XHTMLPageCreationTest extends VPEEditorTestCase{
     bot.checkBox(IDELabel.NewXHTMLFileDialog.USE_XHTML_TEMPLATE_CHECK_BOX).select();
     bot.table().select(IDELabel.NewXHTMLFileDialog.TEMPLATE_FACELET_FORM_XHTML_NAME);
     bot.button(IDELabel.Button.FINISH).click();
-    
+    webContentTreeItem.expand();
+    bot.sleep(Timing.time1S());
     SWTBotTreeItem xhtmlTestPageTreeItem = webContentTreeItem.getNode(TEST_NEW_XHTML_FILE_NAME);
     
     String checkResult = CheckFileChangesSaving.checkIt(bot,bot.editorByTitle(TEST_NEW_XHTML_FILE_NAME).toTextEditor(), tree, xhtmlTestPageTreeItem,

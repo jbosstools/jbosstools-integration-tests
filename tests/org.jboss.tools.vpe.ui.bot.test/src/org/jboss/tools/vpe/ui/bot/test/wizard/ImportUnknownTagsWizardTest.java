@@ -79,8 +79,8 @@ public class ImportUnknownTagsWizardTest extends VPEAutoTestCase {
         String taglib00 = bot.table().cell(0, 0);
         String taglib10 = bot.table().cell(1, 0);
         bot.button(WidgetVariables.OK_BUTTON).click();
-        assertEquals("Wrong table value.", "lib:tag", taglib00); //$NON-NLS-1$ //$NON-NLS-2$
         assertEquals("Wrong table value.", "taglibName:tagName", taglib10); //$NON-NLS-1$  //$NON-NLS-2$
+        assertEquals("Wrong table value.", "lib:tag", taglib00); //$NON-NLS-1$ //$NON-NLS-2$
         
 	}
 	
