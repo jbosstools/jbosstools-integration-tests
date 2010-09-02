@@ -147,6 +147,42 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		assertEquals("'Messages.properties' was updated incorrectly", "User=User", line); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
+	public void testExternalizingTheSameTextAgain() throws Throwable {
+		isUnusedDialogOpened = false;
+		/*
+		 * Open simple html file in order to get the VPE toolbar
+		 */
+		SWTBotEditor editor = SWTTestExt.packageExplorer.openFile(JBT_TEST_PROJECT_NAME,
+				"WebContent", "pages", TEST_PAGE); //$NON-NLS-1$ //$NON-NLS-2$
+		editor.setFocus();
+		
+		/*
+		 * Select some text
+		 */
+		editor.toTextEditor().selectRange(7, 18, 4);
+		assertEquals("Replaced text is incorrect", "User", editor.toTextEditor().getSelection()); //$NON-NLS-1$ //$NON-NLS-2$
+		/*
+		 * Get toolbar button
+		 */
+		bot.toolbarButtonWithTooltip(VpeUIMessages.EXTERNALIZE_STRINGS).click();
+		bot.shell(VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).setFocus();
+		bot.shell(VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).activate();
+		isUnusedDialogOpened = true;
+		
+		/*
+		 * Check generated property key
+		 */
+		SWTBotText defKeyText = bot.textWithLabelInGroup(
+				VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_PROPERTIES_KEY, 
+				VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_PROPS_STRINGS_GROUP);
+		assertNotNull("Cannot find 'Property Key' text field", defKeyText); //$NON-NLS-1$
+		assertText("User_1",defKeyText); //$NON-NLS-1$
+		
+		bot.button(WidgetVariables.CANCEL_BUTTON).click();
+		isUnusedDialogOpened = false;
+		
+	}
+	
 	public void testExternalizeStringsDialogInXhtml() throws Throwable {
 		isUnusedDialogOpened = false;
 		/*

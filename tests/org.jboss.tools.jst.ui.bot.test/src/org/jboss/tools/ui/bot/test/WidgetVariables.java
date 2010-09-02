@@ -18,6 +18,7 @@ public class WidgetVariables {
 	public static final String PROPERTIES = "Properties"; //$NON-NLS-1$
 	public static final String OUTLINE = "Outline"; //$NON-NLS-1$
 	public static final String OK_BUTTON = "OK"; //$NON-NLS-1$
+	public static final String CANCEL_BUTTON = "Cancel"; //$NON-NLS-1$
 	public static final String NEXT_BUTTON = "Next >"; //$NON-NLS-1$
 	public static final String BACK_BUTTON = "< Back"; //$NON-NLS-1$
 	public static final String FINISH_BUTTON = "Finish"; //$NON-NLS-1$
