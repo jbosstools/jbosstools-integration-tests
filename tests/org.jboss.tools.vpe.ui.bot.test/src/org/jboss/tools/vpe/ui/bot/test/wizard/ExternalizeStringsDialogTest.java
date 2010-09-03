@@ -10,6 +10,8 @@
  ******************************************************************************/
 package org.jboss.tools.vpe.ui.bot.test.wizard;
 
+import java.awt.event.KeyEvent;
+
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCheckBox;
@@ -20,12 +22,14 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
 import org.jboss.tools.vpe.messages.VpeUIMessages;
 import org.jboss.tools.vpe.ui.bot.test.VPEAutoTestCase;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
+import org.jboss.tools.ui.bot.ext.helper.KeyboardHelper;
 import org.jboss.tools.ui.bot.test.WidgetVariables;
 
 public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 
 	private final String FOLDER_TEXT_LABEL = "Enter or select the parent folder:"; //$NON-NLS-1$
 	private final String INCORRECT_TABLE_VALUE = "Table value is incorrect"; //$NON-NLS-1$
+	private final String TOOLBAR_ICON_ENABLED = "Toolbar buttion should be enabled"; //$NON-NLS-1$
 	private final String CANNOT_FIND_PROPERTY_VALUE = "Cannot find 'Property Value' text field"; //$NON-NLS-1$
 	private final String COMPLEX_TEXT = "!! HELLO ~ Input User, Name.Page ?" //$NON-NLS-1$
 		+ " \r\n and some more text \r\n" //$NON-NLS-1$
@@ -76,6 +80,9 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		/*
 		 * Get toolbar button
 		 */
+		assertTrue(TOOLBAR_ICON_ENABLED, bot
+				.toolbarButtonWithTooltip(VpeUIMessages.EXTERNALIZE_STRINGS)
+				.isEnabled());
 		bot.toolbarButtonWithTooltip(VpeUIMessages.EXTERNALIZE_STRINGS).click();
 		bot.shell(VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).setFocus();
 		bot.shell(VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).activate();
@@ -164,6 +171,9 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		/*
 		 * Get toolbar button
 		 */
+		assertTrue(TOOLBAR_ICON_ENABLED, bot
+				.toolbarButtonWithTooltip(VpeUIMessages.EXTERNALIZE_STRINGS)
+				.isEnabled());
 		bot.toolbarButtonWithTooltip(VpeUIMessages.EXTERNALIZE_STRINGS).click();
 		bot.shell(VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).setFocus();
 		bot.shell(VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).activate();
@@ -198,6 +208,9 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		/*
 		 * Get toolbar button
 		 */
+		assertTrue(TOOLBAR_ICON_ENABLED, bot
+				.toolbarButtonWithTooltip(VpeUIMessages.EXTERNALIZE_STRINGS)
+				.isEnabled());
 		bot.toolbarButtonWithTooltip(VpeUIMessages.EXTERNALIZE_STRINGS).click();
 		bot.shell(VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).setFocus();
 		bot.shell(VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).activate();
@@ -283,6 +296,9 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		/*
 		 * Get toolbar button
 		 */
+		assertTrue(TOOLBAR_ICON_ENABLED, bot
+				.toolbarButtonWithTooltip(VpeUIMessages.EXTERNALIZE_STRINGS)
+				.isEnabled());
 		bot.toolbarButtonWithTooltip(VpeUIMessages.EXTERNALIZE_STRINGS).click();
 		bot.shell(VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).setFocus();
 		bot.shell(VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).activate();
@@ -348,8 +364,25 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		 */
 		setException(null);
 		/*
+		 * Check that the toolbar buttion is disabled
+		 */
+		assertFalse("Toolbar buttion should be disabled", bot //$NON-NLS-1$
+				.toolbarButtonWithTooltip(VpeUIMessages.EXTERNALIZE_STRINGS)
+				.isEnabled());
+		/*
+		 * Select some text
+		 */
+		editor.toTextEditor().navigateTo(21, 40);
+		/*
+		 * Send key press event to fire VPE listeners
+		 */
+		KeyboardHelper.typeKeyCodeUsingAWT(KeyEvent.VK_LEFT);
+		/*
 		 * Activate the dialog
 		 */
+		assertTrue(TOOLBAR_ICON_ENABLED, bot
+				.toolbarButtonWithTooltip(VpeUIMessages.EXTERNALIZE_STRINGS)
+				.isEnabled());
 		bot.toolbarButtonWithTooltip(VpeUIMessages.EXTERNALIZE_STRINGS).click();
 		bot.shell(VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).setFocus();
 		bot.shell(VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).activate();
@@ -361,7 +394,7 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 				VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_PROPERTIES_VALUE,
 				VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_PROPS_STRINGS_GROUP);
 		assertNotNull(CANNOT_FIND_PROPERTY_VALUE, defValueText);
-		assertText("", defValueText); //$NON-NLS-1$
+		assertText("Say Hello!", defValueText); //$NON-NLS-1$
 		/*
 		 * Close the dialog
 		 */
@@ -382,6 +415,7 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		bot.toolbarButtonWithTooltip(VpeUIMessages.EXTERNALIZE_STRINGS).click();
 		bot.shell(VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).setFocus();
 		bot.shell(VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).activate();
+		isUnusedDialogOpened = true;
 		/*
 		 * Check that the property key and value text
 		 */
@@ -399,6 +433,7 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		 * Close the dialog
 		 */
 		bot.shell(VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).close();
+		isUnusedDialogOpened = false;
 		/*
 		 * Check selection in the attribute's value
 		 */
@@ -409,6 +444,7 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		bot.toolbarButtonWithTooltip(VpeUIMessages.EXTERNALIZE_STRINGS).click();
 		bot.shell(VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).setFocus();
 		bot.shell(VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).activate();
+		isUnusedDialogOpened = true;
 		/*
 		 * Check that the property value text is empty
 		 */
@@ -421,5 +457,6 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		 * Close the dialog
 		 */
 		bot.shell(VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).close();
+		isUnusedDialogOpened = false;
 	}
 }
