@@ -4,6 +4,7 @@ import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.config.Annotations.SWTBotTestRequires;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
+import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.NewObject.ESBESBProject;
@@ -35,8 +36,9 @@ public class NewProjectUsingBundledInEAP extends SWTTestExt {
 		wiz.button(IDELabel.Button.NEXT).click();
 		wiz.button(IDELabel.Button.NEXT).click();
 		try {
-		String text = wiz.text(2).getText();
+		String text = wiz.text(1).getText();
 		assertTrue("New ESB project wizard did not warn, when using runtime without ESB",text.contains("does not contain a valid ESB"));
+		log.info(text);
 		} catch (IndexOutOfBoundsException ex) {
 			assertTrue("New ESB project wizard did not warn, when using runtime without ESB",false);
 		}

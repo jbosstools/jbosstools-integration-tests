@@ -66,4 +66,7 @@ public class ESBListenerFactory {
 			}
 		};
 	}
+	public static ESBListener listenerCamel() {
+		return new ESBListener("Camel Gateway", "camel-gateway");
+	}
 }

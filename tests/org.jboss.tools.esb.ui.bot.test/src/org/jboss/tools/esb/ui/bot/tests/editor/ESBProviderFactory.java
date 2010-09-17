@@ -95,4 +95,7 @@ public class ESBProviderFactory {
 	public static ESBProvider providerSQL() {
 		return new ESBProvider("SQL Provider", "sql-provider");
 	}
+	public static ESBProvider providerCamel() {
+		return new ESBProvider("Camel Provider", "camel-provider");
+	}
 }

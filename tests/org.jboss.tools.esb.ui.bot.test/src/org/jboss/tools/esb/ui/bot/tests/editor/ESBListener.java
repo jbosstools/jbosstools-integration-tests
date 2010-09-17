@@ -33,7 +33,7 @@ public class ESBListener extends ESBObject {
 	public void edit(SWTBotEditor editor, String... path) {
 		editor.show();		
 		SWTEclipseExt.selectTreeLocation(editor.bot(), path);
-		doEditing(editor, null);
+		doEditing(editor, (String[])null);
 		editor.bot().sleep(5000);
 		editor.save();
 	}

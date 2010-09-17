@@ -73,7 +73,7 @@ public class Editing extends SWTTestExt {
 
 	@AfterClass
 	public static void waitAMinute() {
-		bot.sleep(Long.MAX_VALUE);
+		//bot.sleep(Long.MAX_VALUE);
 	}
 
 	@Test
@@ -132,7 +132,7 @@ public class Editing extends SWTTestExt {
 					action.create(getEditor(), actionPath);
 					listenerList.remove(action.getMenuLabel());
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
+					fail("Exception "+e.getMessage());
 					e.printStackTrace();
 				}
 			}
