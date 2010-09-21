@@ -103,7 +103,7 @@ public class PaletteEditorTest extends VPEAutoTestCase {
       "' and was '" + insertedText + "'",
       insertedText.equals(startText + endText));
     jspTextEditor.setText(originalText);
-    jspTextEditor.saveAndClose();
+    jspTextEditor.save();
     // Delete New Group From Palette
     bot.toolbarButtonWithTooltip(IDELabel.JBossToolsPalette.PALETTE_EDITOR_TOOL_ITEM).click();
     palettEditorBot = bot.shell(IDELabel.Shell.PALETTE_EDITOR).activate().bot();
@@ -119,6 +119,7 @@ public class PaletteEditorTest extends VPEAutoTestCase {
     SWTBot deleteDialogBot = bot.shell(IDELabel.Shell.CONFIRMATION).activate().bot();
     deleteDialogBot.button(IDELabel.Button.OK).click();
     palettEditorBot.button(IDELabel.Button.OK).click();
+    jspTextEditor.close();
 	}
 	@Override
 	protected void closeUnuseDialogs() {
