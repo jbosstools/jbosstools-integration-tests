@@ -19,8 +19,8 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotCombo;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
-import org.jboss.tools.vpe.messages.VpeUIMessages;
 import org.jboss.tools.vpe.ui.bot.test.VPEAutoTestCase;
+import org.jboss.tools.jst.jsp.messages.JstUIMessages;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.helper.KeyboardHelper;
 import org.jboss.tools.ui.bot.test.WidgetVariables;
@@ -49,7 +49,7 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 	@Override
 	protected void closeUnuseDialogs() {
 		try {
-			SWTBotShell dlgShell = bot.shell(VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE);
+			SWTBotShell dlgShell = bot.shell(JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE);
 			dlgShell.setFocus();
 			dlgShell.close();
 		} catch (WidgetNotFoundException e) {
@@ -81,28 +81,28 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		 * Get toolbar button
 		 */
 		assertTrue(TOOLBAR_ICON_ENABLED, bot
-				.toolbarButtonWithTooltip(VpeUIMessages.EXTERNALIZE_STRINGS)
+				.toolbarButtonWithTooltip(JstUIMessages.EXTERNALIZE_STRINGS)
 				.isEnabled());
-		bot.toolbarButtonWithTooltip(VpeUIMessages.EXTERNALIZE_STRINGS).click();
-		bot.shell(VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).setFocus();
-		bot.shell(VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).activate();
+		bot.toolbarButtonWithTooltip(JstUIMessages.EXTERNALIZE_STRINGS).click();
+		bot.shell(JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).setFocus();
+		bot.shell(JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).activate();
 		isUnusedDialogOpened = true;
 		/*
 		 * Check properties key and value fields
 		 */
 		SWTBotText defKeyText = bot.textWithLabelInGroup(
-				VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_PROPERTIES_KEY, 
-				VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_PROPS_STRINGS_GROUP);
+				JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_PROPERTIES_KEY, 
+				JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_PROPS_STRINGS_GROUP);
 		assertNotNull("Cannot find 'Property Key' text field", defKeyText); //$NON-NLS-1$
 		assertText("User",defKeyText); //$NON-NLS-1$
 		SWTBotText defValueText = bot.textWithLabelInGroup(
-				VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_PROPERTIES_VALUE,
-				VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_PROPS_STRINGS_GROUP);
+				JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_PROPERTIES_VALUE,
+				JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_PROPS_STRINGS_GROUP);
 		assertNotNull(CANNOT_FIND_PROPERTY_VALUE, defValueText);
 		assertText("User", defValueText); //$NON-NLS-1$
 		SWTBotCheckBox checkBox = bot.checkBox();
 		assertNotNull("Cannot find checkbox '" //$NON-NLS-1$
-				+ VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_NEW_FILE + "'", //$NON-NLS-1$
+				+ JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_NEW_FILE + "'", //$NON-NLS-1$
 				checkBox);
 		/*
 		 * Check that "Next" button is disabled
@@ -172,19 +172,19 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		 * Get toolbar button
 		 */
 		assertTrue(TOOLBAR_ICON_ENABLED, bot
-				.toolbarButtonWithTooltip(VpeUIMessages.EXTERNALIZE_STRINGS)
+				.toolbarButtonWithTooltip(JstUIMessages.EXTERNALIZE_STRINGS)
 				.isEnabled());
-		bot.toolbarButtonWithTooltip(VpeUIMessages.EXTERNALIZE_STRINGS).click();
-		bot.shell(VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).setFocus();
-		bot.shell(VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).activate();
+		bot.toolbarButtonWithTooltip(JstUIMessages.EXTERNALIZE_STRINGS).click();
+		bot.shell(JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).setFocus();
+		bot.shell(JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).activate();
 		isUnusedDialogOpened = true;
 		
 		/*
 		 * Check generated property key
 		 */
 		SWTBotText defKeyText = bot.textWithLabelInGroup(
-				VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_PROPERTIES_KEY, 
-				VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_PROPS_STRINGS_GROUP);
+				JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_PROPERTIES_KEY, 
+				JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_PROPS_STRINGS_GROUP);
 		assertNotNull("Cannot find 'Property Key' text field", defKeyText); //$NON-NLS-1$
 		assertText("User_1",defKeyText); //$NON-NLS-1$
 		
@@ -209,29 +209,29 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		 * Get toolbar button
 		 */
 		assertTrue(TOOLBAR_ICON_ENABLED, bot
-				.toolbarButtonWithTooltip(VpeUIMessages.EXTERNALIZE_STRINGS)
+				.toolbarButtonWithTooltip(JstUIMessages.EXTERNALIZE_STRINGS)
 				.isEnabled());
-		bot.toolbarButtonWithTooltip(VpeUIMessages.EXTERNALIZE_STRINGS).click();
-		bot.shell(VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).setFocus();
-		bot.shell(VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).activate();
+		bot.toolbarButtonWithTooltip(JstUIMessages.EXTERNALIZE_STRINGS).click();
+		bot.shell(JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).setFocus();
+		bot.shell(JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).activate();
 		isUnusedDialogOpened = true;
 		
 		/*
 		 * Check properties key and value fields
 		 */
 		SWTBotText defKeyText = bot.textWithLabelInGroup(
-				VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_PROPERTIES_KEY, 
-				VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_PROPS_STRINGS_GROUP);
+				JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_PROPERTIES_KEY, 
+				JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_PROPS_STRINGS_GROUP);
 		assertNotNull("Cannot find 'Property Key' text field", defKeyText); //$NON-NLS-1$
 		assertText("User",defKeyText); //$NON-NLS-1$
 		SWTBotText defValueText = bot.textWithLabelInGroup(
-				VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_PROPERTIES_VALUE,
-				VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_PROPS_STRINGS_GROUP);
+				JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_PROPERTIES_VALUE,
+				JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_PROPS_STRINGS_GROUP);
 		assertNotNull(CANNOT_FIND_PROPERTY_VALUE, defValueText);
 		assertText("User", defValueText); //$NON-NLS-1$
 		SWTBotCheckBox checkBox = bot.checkBox();
 		assertNotNull("Cannot find checkbox '" //$NON-NLS-1$
-				+ VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_NEW_FILE + "'", //$NON-NLS-1$
+				+ JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_NEW_FILE + "'", //$NON-NLS-1$
 				checkBox);
 		/*
 		 * Check that "Next" button is disabled
@@ -297,18 +297,18 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		 * Get toolbar button
 		 */
 		assertTrue(TOOLBAR_ICON_ENABLED, bot
-				.toolbarButtonWithTooltip(VpeUIMessages.EXTERNALIZE_STRINGS)
+				.toolbarButtonWithTooltip(JstUIMessages.EXTERNALIZE_STRINGS)
 				.isEnabled());
-		bot.toolbarButtonWithTooltip(VpeUIMessages.EXTERNALIZE_STRINGS).click();
-		bot.shell(VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).setFocus();
-		bot.shell(VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).activate();
+		bot.toolbarButtonWithTooltip(JstUIMessages.EXTERNALIZE_STRINGS).click();
+		bot.shell(JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).setFocus();
+		bot.shell(JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).activate();
 		isUnusedDialogOpened = true;
 		/*
 		 * Enable next page and check it 
 		 */
 		SWTBotCheckBox checkBox = bot.checkBox();
 		assertNotNull("Cannot find checkbox '" //$NON-NLS-1$
-				+ VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_NEW_FILE + "'", //$NON-NLS-1$
+				+ JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_NEW_FILE + "'", //$NON-NLS-1$
 				checkBox);
 		checkBox.select();
 		assertTrue("Checkbox should be checked.", //$NON-NLS-1$
@@ -340,6 +340,7 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		SWTBotEditor editor2 = SWTTestExt.eclipse.openFile(
 				JBT_TEST_PROJECT_NAME, "WebContent", "pages", //$NON-NLS-1$ //$NON-NLS-2$
 				"externalize.properties"); //$NON-NLS-1$
+//		bot.sleep(10000);
 		editor2.toTextEditor().selectLine(1);
 		String line = editor2.toTextEditor().getSelection();
 		assertEquals("Created file is incorrect", "Input=Input", line); //$NON-NLS-1$ //$NON-NLS-2$
@@ -367,7 +368,7 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		 * Check that the toolbar buttion is disabled
 		 */
 		assertFalse("Toolbar buttion should be disabled", bot //$NON-NLS-1$
-				.toolbarButtonWithTooltip(VpeUIMessages.EXTERNALIZE_STRINGS)
+				.toolbarButtonWithTooltip(JstUIMessages.EXTERNALIZE_STRINGS)
 				.isEnabled());
 		/*
 		 * Select some text
@@ -381,24 +382,24 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		 * Activate the dialog
 		 */
 		assertTrue(TOOLBAR_ICON_ENABLED, bot
-				.toolbarButtonWithTooltip(VpeUIMessages.EXTERNALIZE_STRINGS)
+				.toolbarButtonWithTooltip(JstUIMessages.EXTERNALIZE_STRINGS)
 				.isEnabled());
-		bot.toolbarButtonWithTooltip(VpeUIMessages.EXTERNALIZE_STRINGS).click();
-		bot.shell(VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).setFocus();
-		bot.shell(VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).activate();
+		bot.toolbarButtonWithTooltip(JstUIMessages.EXTERNALIZE_STRINGS).click();
+		bot.shell(JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).setFocus();
+		bot.shell(JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).activate();
 		isUnusedDialogOpened = true;
 		/*
 		 * Check that the property value text is empty
 		 */
 		SWTBotText defValueText = bot.textWithLabelInGroup(
-				VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_PROPERTIES_VALUE,
-				VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_PROPS_STRINGS_GROUP);
+				JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_PROPERTIES_VALUE,
+				JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_PROPS_STRINGS_GROUP);
 		assertNotNull(CANNOT_FIND_PROPERTY_VALUE, defValueText);
 		assertText("Say Hello!", defValueText); //$NON-NLS-1$
 		/*
 		 * Close the dialog
 		 */
-		bot.shell(VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).close();
+		bot.shell(JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).close();
 		isUnusedDialogOpened = false;
 		/*
 		 * Type some text outside the tag
@@ -412,27 +413,27 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		/*
 		 * Activate the dialog
 		 */
-		bot.toolbarButtonWithTooltip(VpeUIMessages.EXTERNALIZE_STRINGS).click();
-		bot.shell(VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).setFocus();
-		bot.shell(VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).activate();
+		bot.toolbarButtonWithTooltip(JstUIMessages.EXTERNALIZE_STRINGS).click();
+		bot.shell(JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).setFocus();
+		bot.shell(JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).activate();
 		isUnusedDialogOpened = true;
 		/*
 		 * Check that the property key and value text
 		 */
 		SWTBotText defKeyText = bot.textWithLabelInGroup(
-				VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_PROPERTIES_KEY,
-				VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_PROPS_STRINGS_GROUP);
+				JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_PROPERTIES_KEY,
+				JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_PROPS_STRINGS_GROUP);
 		assertNotNull(CANNOT_FIND_PROPERTY_VALUE, defKeyText);
 		assertText(COMPLEX_KEY_RESULT, defKeyText);
 		defValueText = bot.textWithLabelInGroup(
-				VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_PROPERTIES_VALUE,
-				VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_PROPS_STRINGS_GROUP);
+				JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_PROPERTIES_VALUE,
+				JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_PROPS_STRINGS_GROUP);
 		assertNotNull(CANNOT_FIND_PROPERTY_VALUE, defValueText);
 		assertText(COMPLEX_VALUE_RESULT, defValueText);
 		/*
 		 * Close the dialog
 		 */
-		bot.shell(VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).close();
+		bot.shell(JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).close();
 		isUnusedDialogOpened = false;
 		/*
 		 * Check selection in the attribute's value
@@ -441,22 +442,22 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		/*
 		 * Activate the dialog
 		 */
-		bot.toolbarButtonWithTooltip(VpeUIMessages.EXTERNALIZE_STRINGS).click();
-		bot.shell(VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).setFocus();
-		bot.shell(VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).activate();
+		bot.toolbarButtonWithTooltip(JstUIMessages.EXTERNALIZE_STRINGS).click();
+		bot.shell(JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).setFocus();
+		bot.shell(JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).activate();
 		isUnusedDialogOpened = true;
 		/*
 		 * Check that the property value text is empty
 		 */
 		defValueText = bot.textWithLabelInGroup(
-				VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_PROPERTIES_VALUE,
-				VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_PROPS_STRINGS_GROUP);
+				JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_PROPERTIES_VALUE,
+				JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_PROPS_STRINGS_GROUP);
 		assertNotNull(CANNOT_FIND_PROPERTY_VALUE, defValueText);
 		assertText("true", defValueText); //$NON-NLS-1$
 		/*
 		 * Close the dialog
 		 */
-		bot.shell(VpeUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).close();
+		bot.shell(JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).close();
 		isUnusedDialogOpened = false;
 	}
 }
