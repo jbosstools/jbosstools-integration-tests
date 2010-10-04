@@ -32,8 +32,12 @@ public class ESBProviderFactory {
 				shell.bot().text(1).setText("hibernate.cfg.xml");
 				Assertions.assertButtonEnabled(shell.bot().button(IDELabel.Button.NEXT), true);
 				shell.bot().button(IDELabel.Button.NEXT).click();
-				Assertions.assertButtonEnabled(shell.bot().button(getFinishButton()), false);
+				Assertions.assertButtonEnabled(shell.bot().button(IDELabel.Button.NEXT), false);
 				shell.bot().text(0).setText(this.uiName);
+				Assertions.assertButtonEnabled(shell.bot().button(IDELabel.Button.NEXT), true);
+				shell.bot().button(IDELabel.Button.NEXT).click();
+				Assertions.assertButtonEnabled(shell.bot().button(getFinishButton()), false);
+				shell.bot().text(0).setText("java.lang.Object");
 				Assertions.assertButtonEnabled(shell.bot().button(getFinishButton()), true);
 			}
 		};
@@ -84,13 +88,7 @@ public class ESBProviderFactory {
 		};
 	}
 	public static ESBProvider providerSchedule() {
-		return new ESBProvider("Schedule Provider", "schedule-provider") {
-			protected void doFillForm(SWTBotShell shell) {
-				Assertions.assertButtonEnabled(shell.bot().button(getFinishButton()), false);
-				shell.bot().text(0).setText(this.uiName);
-				Assertions.assertButtonEnabled(shell.bot().button(getFinishButton()), true);
-			}
-		};
+		return new ESBProvider("Schedule Provider", "schedule-provider");
 	}
 	public static ESBProvider providerSQL() {
 		return new ESBProvider("SQL Provider", "sql-provider");
