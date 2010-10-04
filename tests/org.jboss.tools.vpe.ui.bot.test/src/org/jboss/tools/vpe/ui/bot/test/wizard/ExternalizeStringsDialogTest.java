@@ -389,7 +389,7 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		bot.shell(JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).activate();
 		isUnusedDialogOpened = true;
 		/*
-		 * Check that the property value text is empty
+		 * Check that the property value text is auto completed.
 		 */
 		SWTBotText defValueText = bot.textWithLabelInGroup(
 				JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_PROPERTIES_VALUE,
