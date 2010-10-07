@@ -27,6 +27,7 @@ import org.jboss.tools.ui.bot.test.WidgetVariables;
 
 public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 
+	private final String TOOL_TIP = "Externalize Strings... (Ctrl+7)"; //$NON-NLS-1$
 	private final String FOLDER_TEXT_LABEL = "Enter or select the parent folder:"; //$NON-NLS-1$
 	private final String INCORRECT_TABLE_VALUE = "Table value is incorrect"; //$NON-NLS-1$
 	private final String TOOLBAR_ICON_ENABLED = "Toolbar buttion should be enabled"; //$NON-NLS-1$
@@ -81,9 +82,9 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		 * Get toolbar button
 		 */
 		assertTrue(TOOLBAR_ICON_ENABLED, bot
-				.toolbarButtonWithTooltip(JstUIMessages.EXTERNALIZE_STRINGS)
+				.toolbarButtonWithTooltip(TOOL_TIP)
 				.isEnabled());
-		bot.toolbarButtonWithTooltip(JstUIMessages.EXTERNALIZE_STRINGS).click();
+		bot.toolbarButtonWithTooltip(TOOL_TIP).click();
 		bot.shell(JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).setFocus();
 		bot.shell(JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).activate();
 		isUnusedDialogOpened = true;
@@ -172,9 +173,9 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		 * Get toolbar button
 		 */
 		assertTrue(TOOLBAR_ICON_ENABLED, bot
-				.toolbarButtonWithTooltip(JstUIMessages.EXTERNALIZE_STRINGS)
+				.toolbarButtonWithTooltip(TOOL_TIP)
 				.isEnabled());
-		bot.toolbarButtonWithTooltip(JstUIMessages.EXTERNALIZE_STRINGS).click();
+		bot.toolbarButtonWithTooltip(TOOL_TIP).click();
 		bot.shell(JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).setFocus();
 		bot.shell(JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).activate();
 		isUnusedDialogOpened = true;
@@ -209,9 +210,9 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		 * Get toolbar button
 		 */
 		assertTrue(TOOLBAR_ICON_ENABLED, bot
-				.toolbarButtonWithTooltip(JstUIMessages.EXTERNALIZE_STRINGS)
+				.toolbarButtonWithTooltip(TOOL_TIP)
 				.isEnabled());
-		bot.toolbarButtonWithTooltip(JstUIMessages.EXTERNALIZE_STRINGS).click();
+		bot.toolbarButtonWithTooltip(TOOL_TIP).click();
 		bot.shell(JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).setFocus();
 		bot.shell(JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).activate();
 		isUnusedDialogOpened = true;
@@ -297,9 +298,9 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		 * Get toolbar button
 		 */
 		assertTrue(TOOLBAR_ICON_ENABLED, bot
-				.toolbarButtonWithTooltip(JstUIMessages.EXTERNALIZE_STRINGS)
+				.toolbarButtonWithTooltip(TOOL_TIP)
 				.isEnabled());
-		bot.toolbarButtonWithTooltip(JstUIMessages.EXTERNALIZE_STRINGS).click();
+		bot.toolbarButtonWithTooltip(TOOL_TIP).click();
 		bot.shell(JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).setFocus();
 		bot.shell(JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).activate();
 		isUnusedDialogOpened = true;
@@ -367,7 +368,7 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		 * Check that the toolbar buttion is disabled
 		 */
 		assertFalse("Toolbar buttion should be disabled", bot //$NON-NLS-1$
-				.toolbarButtonWithTooltip(JstUIMessages.EXTERNALIZE_STRINGS)
+				.toolbarButtonWithTooltip(TOOL_TIP)
 				.isEnabled());
 		/*
 		 * Select some text
@@ -381,9 +382,9 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		 * Activate the dialog
 		 */
 		assertTrue(TOOLBAR_ICON_ENABLED, bot
-				.toolbarButtonWithTooltip(JstUIMessages.EXTERNALIZE_STRINGS)
+				.toolbarButtonWithTooltip(TOOL_TIP)
 				.isEnabled());
-		bot.toolbarButtonWithTooltip(JstUIMessages.EXTERNALIZE_STRINGS).click();
+		bot.toolbarButtonWithTooltip(TOOL_TIP).click();
 		bot.shell(JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).setFocus();
 		bot.shell(JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).activate();
 		isUnusedDialogOpened = true;
@@ -412,7 +413,7 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		/*
 		 * Activate the dialog
 		 */
-		bot.toolbarButtonWithTooltip(JstUIMessages.EXTERNALIZE_STRINGS).click();
+		bot.toolbarButtonWithTooltip(TOOL_TIP).click();
 		bot.shell(JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).setFocus();
 		bot.shell(JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).activate();
 		isUnusedDialogOpened = true;
@@ -441,7 +442,7 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		/*
 		 * Activate the dialog
 		 */
-		bot.toolbarButtonWithTooltip(JstUIMessages.EXTERNALIZE_STRINGS).click();
+		bot.toolbarButtonWithTooltip(TOOL_TIP).click();
 		bot.shell(JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).setFocus();
 		bot.shell(JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).activate();
 		isUnusedDialogOpened = true;
