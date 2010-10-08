@@ -460,4 +460,148 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		bot.shell(JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).close();
 		isUnusedDialogOpened = false;
 	}
+	
+	public void testNewFileCreationWithoutAnyExistedBundles() throws Throwable {
+		isUnusedDialogOpened = false;
+		/*
+		 * Open hello.jsp file
+		 */
+		SWTBotEditor editor = SWTTestExt.packageExplorer.openFile(JBT_TEST_PROJECT_NAME,
+				"WebContent", "pages", "hello.jsp"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		editor.setFocus();
+		/*
+		 * Select some text
+		 */
+		editor.toTextEditor().selectLine(3);
+		editor.toTextEditor().typeText("Plain text"); //$NON-NLS-1$
+		/*
+		 * Activate the dialog
+		 */
+		assertTrue(TOOLBAR_ICON_ENABLED, bot
+				.toolbarButtonWithTooltip(TOOL_TIP)
+				.isEnabled());
+		bot.toolbarButtonWithTooltip(TOOL_TIP).click();
+		bot.shell(JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).setFocus();
+		bot.shell(JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).activate();
+		isUnusedDialogOpened = true;
+		/*
+		 * Check that the property key and value text are auto completed.
+		 */
+		SWTBotText defKeyText = bot.textWithLabelInGroup(
+				JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_PROPERTIES_KEY,
+				JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_PROPS_STRINGS_GROUP);
+		assertNotNull(CANNOT_FIND_PROPERTY_VALUE, defKeyText);
+		assertText("Plain_text", defKeyText); //$NON-NLS-1$
+		SWTBotText defValueText = bot.textWithLabelInGroup(
+				JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_PROPERTIES_VALUE,
+				JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_PROPS_STRINGS_GROUP);
+		assertNotNull(CANNOT_FIND_PROPERTY_VALUE, defValueText);
+		assertText("Plain text", defValueText); //$NON-NLS-1$
+		/*
+		 * Check that checkbox for the new file is selected
+		 */
+		assertTrue(bot.checkBox(
+				JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_NEW_FILE).isChecked());
+		/*
+		 * 'Next>' button should. Press it.
+		 */
+		assertTrue("(Next>) button should be enabled.", //$NON-NLS-1$
+		bot.button(WidgetVariables.NEXT_BUTTON).isEnabled());
+		bot.button(WidgetVariables.NEXT_BUTTON).click();
+		/*
+		 * Check the folder name
+		 */
+		SWTBotText folderText = bot.textWithLabel(FOLDER_TEXT_LABEL);
+		assertNotNull("'" + FOLDER_TEXT_LABEL + "' text field is not found", folderText); //$NON-NLS-1$ //$NON-NLS-2$
+		assertText(JBT_TEST_PROJECT_NAME+"/WebContent/pages", folderText); //$NON-NLS-1$
+		/*
+		 * Check the file name
+		 */
+		SWTBotText fileName = bot.textWithLabel("File name:"); //$NON-NLS-1$
+		assertNotNull("'File Name:' text field is not found", fileName); //$NON-NLS-1$
+		assertText("hello.properties", fileName); //$NON-NLS-1$
+		/*
+		 * Create new file
+		 */
+		assertTrue("(OK) button should be enabled.", //$NON-NLS-1$
+		bot.button(WidgetVariables.OK_BUTTON).isEnabled());
+		bot.button(WidgetVariables.OK_BUTTON).click();
+		isUnusedDialogOpened = false;
+		/*
+		 * Check the file content
+		 */
+		 editor.close();
+		SWTBotEditor editor2 = SWTTestExt.eclipse.openFile(
+				JBT_TEST_PROJECT_NAME, "WebContent", "pages", //$NON-NLS-1$ //$NON-NLS-2$
+				"hello.properties"); //$NON-NLS-1$
+		editor2.toTextEditor().selectLine(1);
+		String line = editor2.toTextEditor().getSelection();
+		assertEquals("Created file is incorrect", "Plain_text=Plain text", line); //$NON-NLS-1$ //$NON-NLS-2$
+		/*
+		 * Reopen the page, and check that the new file 
+		 * for existed properties file won't be created.
+		 * Open hello.jsp file once again.
+		 */
+		editor = SWTTestExt.packageExplorer.openFile(JBT_TEST_PROJECT_NAME,
+				"WebContent", "pages", "hello.jsp"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		editor.setFocus();
+		/*
+		 * Select some text
+		 */
+		editor.toTextEditor().selectLine(3);
+		editor.toTextEditor().typeText("Plain text"); //$NON-NLS-1$
+		/*
+		 * Activate the dialog
+		 */
+		assertTrue(TOOLBAR_ICON_ENABLED, bot
+				.toolbarButtonWithTooltip(TOOL_TIP)
+				.isEnabled());
+		bot.toolbarButtonWithTooltip(TOOL_TIP).click();
+		bot.shell(JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).setFocus();
+		bot.shell(JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).activate();
+		isUnusedDialogOpened = true;
+		/*
+		 * Check that the property key and value text are auto completed.
+		 */
+		defKeyText = bot.textWithLabelInGroup(
+				JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_PROPERTIES_KEY,
+				JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_PROPS_STRINGS_GROUP);
+		assertNotNull(CANNOT_FIND_PROPERTY_VALUE, defKeyText);
+		assertText("Plain_text", defKeyText); //$NON-NLS-1$
+		defValueText = bot.textWithLabelInGroup(
+				JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_PROPERTIES_VALUE,
+				JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_PROPS_STRINGS_GROUP);
+		assertNotNull(CANNOT_FIND_PROPERTY_VALUE, defValueText);
+		assertText("Plain text", defValueText); //$NON-NLS-1$
+		/*
+		 * Check that checkbox for the new file is selected
+		 */
+		assertTrue(bot.checkBox(
+				JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_NEW_FILE).isChecked());
+		/*
+		 * 'Next>' button should. Press it.
+		 */
+		assertTrue("(Next>) button should be enabled.", //$NON-NLS-1$
+		bot.button(WidgetVariables.NEXT_BUTTON).isEnabled());
+		bot.button(WidgetVariables.NEXT_BUTTON).click();
+		/*
+		 * Check the folder name
+		 */
+		folderText = bot.textWithLabel(FOLDER_TEXT_LABEL);
+		assertNotNull("'" + FOLDER_TEXT_LABEL + "' text field is not found", folderText); //$NON-NLS-1$ //$NON-NLS-2$
+		assertText(JBT_TEST_PROJECT_NAME+"/WebContent/pages", folderText); //$NON-NLS-1$
+		/*
+		 * Check the file name
+		 */
+		fileName = bot.textWithLabel("File name:"); //$NON-NLS-1$
+		assertNotNull("'File Name:' text field is not found", fileName); //$NON-NLS-1$
+		assertText("hello.properties", fileName); //$NON-NLS-1$
+		/*
+		 * Create new file
+		 */
+		assertFalse("(OK) button should be disabled.", //$NON-NLS-1$
+		bot.button(WidgetVariables.OK_BUTTON).isEnabled());
+		bot.shell(JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).close();
+		isUnusedDialogOpened = false;
+	}
 }
