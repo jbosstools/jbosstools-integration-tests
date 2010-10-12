@@ -1,7 +1,6 @@
 package org.jboss.tools.vpe.ui.bot.test.editor.preferences;
 
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
-import org.jboss.tools.ui.bot.ext.types.IDELabel;
 
 public class AlwaysHideSelectionBarWithoutPromptTest extends PreferencesTestCase{
 	
