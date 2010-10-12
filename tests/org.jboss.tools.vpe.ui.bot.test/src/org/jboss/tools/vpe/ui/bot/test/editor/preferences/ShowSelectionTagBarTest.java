@@ -29,27 +29,11 @@ public class ShowSelectionTagBarTest extends PreferencesTestCase{
 		closePage();
 		openPage();
 		checkIsShow();
-		
-		//Test Hide Selection Bar button with confirm
-		
-		bot.toolbarButtonWithTooltip(HID_SEL_BAR).click();
-		bot.shell("Confirm hide selection bar").activate(); //$NON-NLS-1$
-		bot.button("OK").click(); //$NON-NLS-1$
-		checkIsHide();
-	
-		//Test Show selection after reopen
-		
-		closePage();
-		openPage();
-		checkIsHide();
 	
 	}
 
 	private void selectSelection(){
-		bot.toolbarButtonWithTooltip(PREF_TOOLTIP).click();
-		bot.shell(PREF_FILTER_SHELL_TITLE).activate();
-		bot.checkBox(SHOW_SELECTION_TAG_BAR).click();
-		bot.button("OK").click(); //$NON-NLS-1$
+	  bot.toolbarToggleButton(SHOW_SELECTION_BAR).click();
 	}
 
 	private void checkIsHide(){

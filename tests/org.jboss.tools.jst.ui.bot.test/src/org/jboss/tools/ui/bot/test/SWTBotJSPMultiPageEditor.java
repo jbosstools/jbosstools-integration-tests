@@ -73,7 +73,7 @@ public class SWTBotJSPMultiPageEditor extends SWTBotEditor{
 			public void run() {
 				Class<? extends JSPMultiPageEditorPart> cls = JSPMultiPageEditorPart.class;
 				try {
-					Field field = cls.getDeclaredField("container"); //$NON-NLS-1$
+					Field field = cls.getDeclaredField("tabFolderContainer"); //$NON-NLS-1$
 					field.setAccessible(true);
 					CTabFolder tabFolder = (CTabFolder) field.get(jspMultiPageEditor);
 					CTabItem[] tabItems = tabFolder.getItems();

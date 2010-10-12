@@ -7,17 +7,19 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCheckBox;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCombo;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarToggleButton;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
+import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.vpe.ui.bot.test.Activator;
 import org.jboss.tools.vpe.ui.bot.test.VPEAutoTestCase;
 
 public abstract class PreferencesTestCase extends VPEAutoTestCase{
 
-	protected static final String SHOW_SELECTION_TAG_BAR = "Show selection tag bar"; //$NON-NLS-1$
+	protected static final String SHOW_SELECTION_BAR = "Show Selection Bar"; //$NON-NLS-1$
 	protected static final String SHOW_NON_VISUAL_TAGS = "Show non-visual tags"; //$NON-NLS-1$
 	protected static final String SHOW_BORDER_FOR_UNKNOWN_TAGS = "Show border for unknown tags"; //$NON-NLS-1$
 	protected static final String SHOW_RESOURCE_BUNDLES = "Show resource bundles usage as EL expressions"; //$NON-NLS-1$
 	protected static final String ASK_FOR_ATTRIBUTES = "Ask for tag attributes during tag insert"; //$NON-NLS-1$
-	protected static final String ASK_FOR_CONFIRM = "Ask for confirmation when closing Selection Bar"; //$NON-NLS-1$
 	protected static final String SELECT_DEFAULT_TAB = "Select the default active editor's tab"; //$NON-NLS-1$
 	protected static final String EDITOR_SPLITTING = "Visual/Source editors splitting"; //$NON-NLS-1$
 	protected static final String SHOW_TEXY_FORMAT = "Show text formatting bar"; //$NON-NLS-1$
@@ -62,23 +64,34 @@ public abstract class PreferencesTestCase extends VPEAutoTestCase{
 	protected void setUp() throws Exception {
 		super.setUp();
 		openPage();
-		bot.toolbarButtonWithTooltip(PREF_TOOLTIP).click();
-		bot.shell(PREF_FILTER_SHELL_TITLE).activate();
-		setPreferencesToDefault();
-		bot.button("OK").click(); //$NON-NLS-1$
+		setPreferencesToDefault(true);
 	}
 	
 	@Override
 	protected void tearDown() throws Exception {
 		openPage();
-		bot.toolbarButtonWithTooltip("Preferences").click(); //$NON-NLS-1$
-		bot.shell("Preferences (Filtered)").activate(); //$NON-NLS-1$
-		setPreferencesToDefault();
-		bot.button("OK").click(); //$NON-NLS-1$
+		setPreferencesToDefault(true);
 		super.tearDown();
 	}
 	
-	void setPreferencesToDefault() throws WidgetNotFoundException{
+	void setPreferencesToDefault(boolean fromEditor) throws WidgetNotFoundException{
+	  SWTBotToolbarToggleButton tbShowSelectionBar = bot.toolbarToggleButton(SHOW_SELECTION_BAR);
+	  if (!tbShowSelectionBar.isChecked()){
+	    tbShowSelectionBar.click();
+	  }
+	  if (fromEditor){
+	    bot.toolbarButtonWithTooltip(PREF_TOOLTIP).click(); //$NON-NLS-1$
+	    bot.shell(PREF_FILTER_SHELL_TITLE).activate(); //$NON-NLS-1$
+	  }
+	  else{
+	    bot.menu(IDELabel.Menu.WINDOW).menu(IDELabel.Menu.PREFERENCES).click(); //$NON-NLS-1$ //$NON-NLS-2$
+	    SWTBotTree preferenceTree = bot.tree();
+	    preferenceTree
+	      .expandNode(IDELabel.PreferencesDialog.JBOSS_TOOLS) //$NON-NLS-1$
+  	    .expandNode(IDELabel.PreferencesDialog.JBOSS_TOOLS_WEB) //$NON-NLS-1$
+	      .expandNode(IDELabel.PreferencesDialog.JBOSS_TOOLS_WEB_EDITORS) //$NON-NLS-1$
+	      .expandNode(IDELabel.PreferencesDialog.JBOSS_TOOLS_WEB_EDITORS_VPE).select();
+	  }
 		SWTBotCheckBox checkBox = bot.checkBox(SHOW_BORDER_FOR_UNKNOWN_TAGS);
 		if (!checkBox.isChecked()) {
 			checkBox.click();
@@ -87,19 +100,12 @@ public abstract class PreferencesTestCase extends VPEAutoTestCase{
 		if (checkBox.isChecked()) {
 			checkBox.click();
 		}
-		checkBox = bot.checkBox(SHOW_SELECTION_TAG_BAR);
-		if (!checkBox.isChecked()) {
-			checkBox.click();
-		}
+		
 		checkBox = bot.checkBox(SHOW_RESOURCE_BUNDLES);
 		if (checkBox.isChecked()) {
 			checkBox.click();
 		}
 		checkBox = bot.checkBox(ASK_FOR_ATTRIBUTES);
-		if (!checkBox.isChecked()) {
-			checkBox.click();
-		}
-		checkBox = bot.checkBox(ASK_FOR_CONFIRM);
 		if (!checkBox.isChecked()) {
 			checkBox.click();
 		}
@@ -111,6 +117,7 @@ public abstract class PreferencesTestCase extends VPEAutoTestCase{
 		combo.setSelection("Visual/Source"); //$NON-NLS-1$
 		combo = bot.comboBoxWithLabel(EDITOR_SPLITTING);
 		combo.setSelection("Vertical splitting with Source Editor on the top"); //$NON-NLS-1$
+		bot.button("OK").click(); //$NON-NLS-1$
 	}
 	
 }

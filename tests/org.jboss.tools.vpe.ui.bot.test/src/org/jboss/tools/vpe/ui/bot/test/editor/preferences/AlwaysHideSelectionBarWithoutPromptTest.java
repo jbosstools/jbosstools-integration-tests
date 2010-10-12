@@ -33,7 +33,6 @@ public class AlwaysHideSelectionBarWithoutPromptTest extends PreferencesTestCase
 		
 		//Test Hide Selection Bar button without confirm
 	
-		selectPrompt();
 		bot.toolbarButtonWithTooltip(HID_SEL_BAR).click();
 		checkIsHide();
 	
@@ -43,14 +42,6 @@ public class AlwaysHideSelectionBarWithoutPromptTest extends PreferencesTestCase
 		openPage();
 		checkIsHide();
 		
-  	//Test Hide Selection Bar button with confirm
-	  
-    selectPrompt();
-    selectSelection();
-    bot.toolbarButtonWithTooltip(HID_SEL_BAR).click();
-    bot.shell("Confirm hide selection bar").activate();
-    bot.button(IDELabel.Button.OK).click();
-    checkIsHide();
 	}
 	
 	private void checkIsHide(){
@@ -74,17 +65,7 @@ public class AlwaysHideSelectionBarWithoutPromptTest extends PreferencesTestCase
 	}
 
 	private void selectSelection(){
-		bot.toolbarButtonWithTooltip(PREF_TOOLTIP).click();
-		bot.shell(PREF_FILTER_SHELL_TITLE).activate();
-		bot.checkBox(SHOW_SELECTION_TAG_BAR).click();
-		bot.button("OK").click(); //$NON-NLS-1$
-	}
-	
-	private void selectPrompt(){
-		bot.toolbarButtonWithTooltip(PREF_TOOLTIP).click();
-		bot.shell(PREF_FILTER_SHELL_TITLE).activate();
-		bot.checkBox(ASK_FOR_CONFIRM).click();
-		bot.button("OK").click(); //$NON-NLS-1$
+	  bot.toolbarToggleButton(SHOW_SELECTION_BAR).click();
 	}
 	
 }

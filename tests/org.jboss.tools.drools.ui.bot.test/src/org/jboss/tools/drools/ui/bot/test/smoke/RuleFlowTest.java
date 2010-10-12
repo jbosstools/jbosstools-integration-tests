@@ -11,6 +11,7 @@
 
 package org.jboss.tools.drools.ui.bot.test.smoke;
 
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
@@ -34,6 +35,7 @@ import org.jboss.tools.drools.ui.bot.test.DroolsAllBotTests;
 import org.jboss.tools.ui.bot.ext.SWTEclipseExt;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.SWTUtilExt;
+import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.helper.KeyboardHelper;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.ext.types.ViewType;
@@ -120,17 +122,14 @@ public class RuleFlowTest extends SWTTestExt{
     });
     // Clear Editor
     gefEditor.activateTool("Marquee");
-    gefEditor.mouseDrag(0,0,editorBounds.width - editorBounds.x, editorBounds.height - editorBounds.y);
-    KeyboardHelper.pressKeyCode(bot.getDisplay(),(int)SWT.DEL);
+    gefEditor.drag(0,0,editorBounds.width - editorBounds.x, editorBounds.height - editorBounds.y);
+    gefEditor.setFocus();
+    bot.sleep(Timing.time1S());
+    KeyboardHelper.typeKeyCodeUsingAWT(KeyEvent.VK_DELETE);
     // Draw each component
     String[] tools = new String[]{"Start Event","End Event","Rule Task",
       "Gateway [diverge]","Gateway [converge]","Reusable Sub-Process",
       "Script Task"
-      /*
-       ,"Timer Event","Error Event","Message Event","User Task",
-       
-      "Embedded Sub-Process","Log","Email"
-      */
       };
     int xspacing = 100;
     int xoffset = 10;
@@ -138,20 +137,20 @@ public class RuleFlowTest extends SWTTestExt{
     int yoffset = 10;
     for (int toolIndex = 0;toolIndex < tools.length;toolIndex++){
       gefEditor.activateTool(tools[toolIndex]);
-      gefEditor.mouseMoveLeftClick(xspacing * (toolIndex % 3) + xoffset, 
+      gefEditor.click(xspacing * (toolIndex % 3) + xoffset, 
         yspacing * (toolIndex / 3) + yoffset);
     }
     // Add Sequence Flow between Start and End Node
     gefEditor.activateTool("Sequence Flow");
     // Click on Start Node
-    gefEditor.mouseMoveLeftClick(xoffset + 5, yoffset + 5);
+    gefEditor.click(xoffset + 5, yoffset + 5);
     // Click on End Node
-    gefEditor.mouseMoveLeftClick(xspacing + xoffset + 5, yoffset + 5);
+    gefEditor.click(xspacing + xoffset + 5, yoffset + 5);
     gefEditor.save();
     checkFullRFFile(DroolsAllBotTests.DROOLS_PROJECT_NAME , ruleFlowFileName);
     // check synchronization with Properties View
     gefEditor.activateTool("Select");
-    gefEditor.mouseMoveLeftClick(xoffset + 5, yoffset + 5);
+    gefEditor.click(xoffset + 5, yoffset + 5);
     SWTBotTree tree = eclipse.showView(ViewType.PROPERTIES).tree();
     String id = tree.getTreeItem("Id").cell(1);
     String name = tree.getTreeItem("Name").cell(1);
@@ -161,9 +160,11 @@ public class RuleFlowTest extends SWTTestExt{
     // Delete each component
     gefEditor.activateTool("Select");
     for (int toolIndex = 0;toolIndex < tools.length;toolIndex++){
-      gefEditor.mouseMoveLeftClick(xspacing * (toolIndex % 3) + xoffset + 10, 
+      gefEditor.click(xspacing * (toolIndex % 3) + xoffset + 10, 
         yspacing * (toolIndex / 3) + yoffset + 10);
-      KeyboardHelper.pressKeyCode(bot.getDisplay(),(int)SWT.DEL);
+      gefEditor.setFocus();
+      bot.sleep(Timing.time1S());
+      KeyboardHelper.typeKeyCodeUsingAWT(KeyEvent.VK_DELETE);
     }
     // Restore maximized editor
     bot.menu(IDELabel.Menu.WINDOW)

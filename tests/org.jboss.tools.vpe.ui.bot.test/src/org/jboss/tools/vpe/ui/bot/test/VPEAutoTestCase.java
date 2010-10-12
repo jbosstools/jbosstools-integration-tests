@@ -158,15 +158,19 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase{
 			}
 		} catch (Exception e) {
 			bot.button(0).click();
+			delay();
 			SWTBotTree  innerTree = bot.tree();
 			delay();
 			innerTree.expandNode(JBOSS_SERVER_GROUP).select(JBOSS_SERVER_RUNTIME_TYPE); //$NON-NLS-1$ //$NON-NLS-2$
-			delay();
+			bot.sleep(Timing.time1S());
 			bot.button("Next >").click(); //$NON-NLS-1$
+			bot.sleep(Timing.time1S());
 			bot.textWithLabel("Home Directory").setText(JBOSS_EAP_HOME); //$NON-NLS-1$
+			bot.sleep(Timing.time1S());
 			bot.button("Finish").click(); //$NON-NLS-1$
-			delay();
+			bot.sleep(Timing.time10S());
 			bot.button("Finish").click(); //$NON-NLS-1$
+			bot.sleep(Timing.time10S());
 			try {
 				bot.button("Yes").click(); //$NON-NLS-1$
 				openErrorLog();

@@ -89,6 +89,7 @@ public class DroolsAllBotTests extends SWTTestExt {
   private static String testDroolsRuntimeLocation = null;
   @BeforeClass
   public static void setUpTest() {
+    jbt.closeReportUsageWindowIfOpened(false);
     DroolsAllBotTests.DROOLS_RUNTIME_LOCATION = System.getProperty("java.io.tmpdir");
     DroolsAllBotTests.CREATE_DROOLS_RUNTIME_LOCATION = DroolsAllBotTests.DROOLS_RUNTIME_LOCATION + File.separator + "drools";
     // Create directory for Drools Runtime which will be created as a part of test
