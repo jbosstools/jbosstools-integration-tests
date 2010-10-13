@@ -37,6 +37,9 @@ public class ESBExampleTest extends SWTTestExt{
 		if (configuredState.getServer().version.equals("5.0")) {
 			ret+="5.0";
 		}
+		if (configuredState.getServer().version.equals("5.1")) {
+			ret+="5.0";
+		}
 		else if (configuredState.getServer().version.equals("4.3")) {
 			ret+="4.3";
 			if (jbt.isJBDSRun()) {

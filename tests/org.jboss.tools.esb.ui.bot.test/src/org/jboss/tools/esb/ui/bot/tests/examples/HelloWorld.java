@@ -17,7 +17,7 @@ import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.junit.AfterClass;
 import org.junit.Test;
 
-@SWTBotTestRequires(server=@Server(type=ServerType.SOA,state=ServerState.NotRunning))
+@SWTBotTestRequires(server=@Server(type=ServerType.SOA,state=ServerState.Running))
 public class HelloWorld extends ESBExampleTest {
 
 	String projectName="helloworld";
@@ -25,18 +25,14 @@ public class HelloWorld extends ESBExampleTest {
 	
 	@AfterClass
 	public static void waitaminute() {
-		//bot.sleep(Long.MAX_VALUE);
+	//	bot.sleep(Long.MAX_VALUE);
 	}
 	@Test
 	public void helloWorldExample() {
 		String soaNode = getRunningSoaVersionTreeLabel();
 		assertNotNull("We are running on unexpected SOA-P version "+configuredState.getServer().version+" update test source code "+this.getClass().getName(), soaNode);
-		if (jbt.isJBDSRun()) {
-		createHelloWorldExample(soaNode, "JBoss ESB HelloWorld Example - ESB", "helloworld", "JBoss ESB HelloWorld Example - Client", "helloworld_testclient");
-		}
-		else {
-			createHelloWorldExample(soaNode, "JBoss ESB HelloWorld Example - ESB", "helloworld", null, "helloworld_testclient");	
-		}
+		createHelloWorldExample(soaNode, "JBoss ESB HelloWorld Example - ESB", "helloworld", null, "helloworld_testclient");	
+
 	}
 
 	/**
@@ -79,9 +75,11 @@ public class HelloWorld extends ESBExampleTest {
 		fixLibrary(projectClientName,"Server Library");
 		fixLibrary(projectName,"JBoss ESB Runtime");
 		fixLibrary(projectClientName,"JBoss ESB Runtime");
+		util.waitForNonIgnoredJobs();
 		SWTBotTreeItem errors = problems.getErrorsNode(bot);
-		assertTrue("Project still contain problems :"+eclipse.getFormattedTreeNodesText(problems.show().bot().tree(), errors.getItems()),errors==null);
+		//assertTrue("Project still contain problems :"+eclipse.getFormattedTreeNodesText(problems.show().bot().tree(), errors.getItems()),errors==null);
 		packageExplorer.runOnServer(projectName);
+		util.waitForNonIgnoredJobs();
 		String text = console.getConsoleText();		
 		SWTBotTreeItem jmsCall = SWTEclipseExt.selectTreeLocation(packageExplorer.show().bot(),projectClientName,"src","org.jboss.soa.esb.samples.quickstart.helloworld.test","SendJMSMessage.java");
 		eclipse.runTreeItemAsJavaApplication(jmsCall);

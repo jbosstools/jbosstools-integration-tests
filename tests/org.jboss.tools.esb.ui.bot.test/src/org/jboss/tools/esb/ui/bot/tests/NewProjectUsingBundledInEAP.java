@@ -18,7 +18,7 @@ import org.junit.Test;
  * @author lzoubek
  *
  */
-@SWTBotTestRequires(server=@Server(type=ServerType.EAP))
+@SWTBotTestRequires(server=@Server(type=ServerType.EAP,state=ServerState.Present))
 public class NewProjectUsingBundledInEAP extends SWTTestExt {
 
 	@AfterClass
