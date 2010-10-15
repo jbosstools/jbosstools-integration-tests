@@ -341,7 +341,7 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		SWTBotEditor editor2 = SWTTestExt.eclipse.openFile(
 				JBT_TEST_PROJECT_NAME, "WebContent", "pages", //$NON-NLS-1$ //$NON-NLS-2$
 				"externalize.properties"); //$NON-NLS-1$
-		editor2.toTextEditor().selectLine(1);
+		editor2.toTextEditor().selectLine(0);
 		String line = editor2.toTextEditor().getSelection();
 		assertEquals("Created file is incorrect", "Input=Input", line); //$NON-NLS-1$ //$NON-NLS-2$
 	}
@@ -534,7 +534,7 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		SWTBotEditor editor2 = SWTTestExt.eclipse.openFile(
 				JBT_TEST_PROJECT_NAME, "WebContent", "pages", //$NON-NLS-1$ //$NON-NLS-2$
 				"hello.properties"); //$NON-NLS-1$
-		editor2.toTextEditor().selectLine(1);
+		editor2.toTextEditor().selectLine(0);
 		String line = editor2.toTextEditor().getSelection();
 		assertEquals("Created file is incorrect", "Plain_text=Plain text", line); //$NON-NLS-1$ //$NON-NLS-2$
 		/*
