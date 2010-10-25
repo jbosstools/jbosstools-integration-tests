@@ -163,7 +163,6 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		SWTBotEditor editor = SWTTestExt.packageExplorer.openFile(JBT_TEST_PROJECT_NAME,
 				"WebContent", "pages", TEST_PAGE); //$NON-NLS-1$ //$NON-NLS-2$
 		editor.setFocus();
-		
 		/*
 		 * Select some text
 		 */
@@ -205,7 +204,6 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		editor2.toTextEditor().selectLine(3);
 		String line = editor2.toTextEditor().getSelection();
 		assertEquals("'Messages.properties' was updated incorrectly", "User=User", line); //$NON-NLS-1$ //$NON-NLS-2$
-		
 		/*
 		 * Change the property value to the new one, let say 'User1'.
 		 * And externalize the same string again.
@@ -241,6 +239,17 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 				JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_PROPS_STRINGS_GROUP);
 		assertNotNull("Cannot find 'Property Key' text field", defKeyText); //$NON-NLS-1$
 		assertText("User_1",defKeyText); //$NON-NLS-1$
+		assertTrue("(OK) button should be enabled.", //$NON-NLS-1$
+				bot.button(WidgetVariables.OK_BUTTON).isEnabled());
+		/*
+		 * Change the key to validate duplicate key situation
+		 */
+		defKeyText.setText("User"); //$NON-NLS-1$
+		assertTrue("(OK) button should be disabled.", //$NON-NLS-1$
+				!bot.button(WidgetVariables.OK_BUTTON).isEnabled());
+		defKeyText.setText("User_1"); //$NON-NLS-1$
+		assertTrue("(OK) button should be enabled.", //$NON-NLS-1$
+				bot.button(WidgetVariables.OK_BUTTON).isEnabled());
 		bot.button(WidgetVariables.OK_BUTTON).click();
 		isUnusedDialogOpened = false;
 		/*
