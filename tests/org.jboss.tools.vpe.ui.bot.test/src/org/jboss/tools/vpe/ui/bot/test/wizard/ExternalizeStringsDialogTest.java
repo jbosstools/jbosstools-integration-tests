@@ -181,17 +181,77 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		isUnusedDialogOpened = true;
 		
 		/*
-		 * Check generated property key
+		 * Check the generated property key.
+		 * It should be as is.
+		 * The dialog should use the stored key-pair value.
+		 * OK button should be enabled.
+		 * No modifications to the properties file should be made. 
 		 */
 		SWTBotText defKeyText = bot.textWithLabelInGroup(
 				JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_PROPERTIES_KEY, 
 				JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_PROPS_STRINGS_GROUP);
 		assertNotNull("Cannot find 'Property Key' text field", defKeyText); //$NON-NLS-1$
-		assertText("User_1",defKeyText); //$NON-NLS-1$
+		assertText("User",defKeyText); //$NON-NLS-1$
 		
-		bot.button(WidgetVariables.CANCEL_BUTTON).click();
+		bot.button(WidgetVariables.OK_BUTTON).click();
 		isUnusedDialogOpened = false;
+		editor.close();
+		/*
+		 * Check that properties file hasn't been modified.
+		 */
+		SWTBotEditor editor2 = SWTTestExt.eclipse.openFile(
+				JBT_TEST_PROJECT_NAME, "JavaSource", "demo", //$NON-NLS-1$ //$NON-NLS-2$
+				"Messages.properties"); //$NON-NLS-1$
+		editor2.toTextEditor().selectLine(3);
+		String line = editor2.toTextEditor().getSelection();
+		assertEquals("'Messages.properties' was updated incorrectly", "User=User", line); //$NON-NLS-1$ //$NON-NLS-2$
 		
+		/*
+		 * Change the property value to the new one, let say 'User1'.
+		 * And externalize the same string again.
+		 */
+		bot.cTabItem("Source").activate(); //$NON-NLS-1$
+		editor2.toTextEditor().typeText(3,9, "1"); //$NON-NLS-1$
+		editor2.saveAndClose();
+		editor = SWTTestExt.packageExplorer.openFile(JBT_TEST_PROJECT_NAME,
+				"WebContent", "pages", TEST_PAGE); //$NON-NLS-1$ //$NON-NLS-2$
+		editor.setFocus();
+		/*
+		 * Select some text
+		 */
+		editor.toTextEditor().selectRange(7, 18, 4);
+		assertEquals("Replaced text is incorrect", "User", editor.toTextEditor().getSelection()); //$NON-NLS-1$ //$NON-NLS-2$
+		/*
+		 * Get toolbar button
+		 */
+		assertTrue(TOOLBAR_ICON_ENABLED, bot
+				.toolbarButtonWithTooltip(TOOL_TIP)
+				.isEnabled());
+		bot.toolbarButtonWithTooltip(TOOL_TIP).click();
+		bot.shell(JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).setFocus();
+		bot.shell(JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).activate();
+		isUnusedDialogOpened = true;
+		/*
+		 * The value has been changed and now unique.
+		 * But the same key is in the bundle.
+		 * Thus the dialog should suggest "User_1" as a key value.
+		 */
+		defKeyText = bot.textWithLabelInGroup(
+				JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_PROPERTIES_KEY, 
+				JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_PROPS_STRINGS_GROUP);
+		assertNotNull("Cannot find 'Property Key' text field", defKeyText); //$NON-NLS-1$
+		assertText("User_1",defKeyText); //$NON-NLS-1$
+		bot.button(WidgetVariables.OK_BUTTON).click();
+		isUnusedDialogOpened = false;
+		/*
+		 * Check that the new key has been added.
+		 */
+		editor2 = SWTTestExt.eclipse.openFile(
+				JBT_TEST_PROJECT_NAME, "JavaSource", "demo", //$NON-NLS-1$ //$NON-NLS-2$
+				"Messages.properties"); //$NON-NLS-1$
+		editor2.toTextEditor().selectLine(4);
+		line = editor2.toTextEditor().getSelection();
+		assertEquals("'Messages.properties' was updated incorrectly", "User_1=User", line); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
 	public void testExternalizeStringsDialogInXhtml() throws Throwable {
