@@ -38,7 +38,7 @@ public class DomainSpecificLanguageEditorTest extends SWTTestExt{
    */
   private static final String LANGUAGE_EXRESSION = "Message {msg} of type {t} contains {what}";
   @Test
-  public void testGuidedDroolsRulesEditorTest() {
+  public void testDomainSpecificLanguageEditor() {
     createDslFile(DroolsAllBotTests.DOMAIN_SPECIFIC_LANGUAGE_FILE_NAME);
     addDslExpression(DroolsAllBotTests.DOMAIN_SPECIFIC_LANGUAGE_FILE_NAME);
     useDslExpression(DroolsAllBotTests.DOMAIN_SPECIFIC_LANGUAGE_FILE_NAME,
