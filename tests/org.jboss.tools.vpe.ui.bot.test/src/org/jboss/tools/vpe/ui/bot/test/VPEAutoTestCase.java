@@ -13,6 +13,7 @@ import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.jst.jsp.jspeditor.JSPMultiPageEditor;
 import org.jboss.tools.test.TestProperties;
 import org.jboss.tools.vpe.ui.bot.test.Activator;
@@ -414,24 +415,35 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase{
 	
 	protected abstract boolean isUnuseDialogOpened();
 	
-	protected void openPage(){
+	protected void openPage(String pageName){
     SWTBot innerBot = bot.viewByTitle(WidgetVariables.PACKAGE_EXPLORER).bot();
     SWTBotTree tree = innerBot.tree();
     tree.expandNode(JBT_TEST_PROJECT_NAME)
-    .expandNode("WebContent").expandNode("pages").getNode(TEST_PAGE).doubleClick(); //$NON-NLS-1$ //$NON-NLS-2$
+    .expandNode("WebContent").expandNode("pages").getNode(pageName).doubleClick(); //$NON-NLS-1$ //$NON-NLS-2$
+    bot.sleep(Timing.time3S());
+  }
+	
+	protected void openPage(){
+    openPage(TEST_PAGE);
   }
 	/**
 	 * Creates new empty JSP page within test project
 	 * @param pageName
 	 */
 	protected void createJspPage (String pageName){
-	  packageExplorer.selectTreeItem("pages", new String[] {VPEAutoTestCase.JBT_TEST_PROJECT_NAME,"WebContent"});
-    open.newObject(ActionItem.NewObject.WebJSP.LABEL);
-    bot.shell(IDELabel.Shell.NEW_JSP_FILE).activate();
-    bot.textWithLabel(ActionItem.NewObject.WebJSP.TEXT_FILE_NAME).setText(pageName);
-    bot.button(IDELabel.Button.NEXT).click();
-    bot.table().select(IDELabel.NewJSPFileDialog.JSP_TEMPLATE);
-    bot.button(IDELabel.Button.FINISH).click();
-    bot.sleep(Timing.time2S());
+	  SWTBotTreeItem tiPages = packageExplorer.selectTreeItem("pages", new String[] {VPEAutoTestCase.JBT_TEST_PROJECT_NAME,"WebContent"});
+    tiPages.expand();
+    try {
+      tiPages.getNode(pageName);
+      openPage(pageName);
+    } catch (WidgetNotFoundException e) {
+      open.newObject(ActionItem.NewObject.WebJSP.LABEL);
+      bot.shell(IDELabel.Shell.NEW_JSP_FILE).activate();
+      bot.textWithLabel(ActionItem.NewObject.WebJSP.TEXT_FILE_NAME).setText(pageName);
+      bot.button(IDELabel.Button.NEXT).click();
+      bot.table().select(IDELabel.NewJSPFileDialog.JSP_TEMPLATE);
+      bot.button(IDELabel.Button.FINISH).click();
+      bot.sleep(Timing.time2S());
+    }
 	}
 }

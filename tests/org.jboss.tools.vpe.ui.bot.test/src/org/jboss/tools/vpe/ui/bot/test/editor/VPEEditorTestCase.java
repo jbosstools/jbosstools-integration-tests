@@ -79,5 +79,13 @@ public abstract class VPEEditorTestCase extends VPEAutoTestCase{
     }
 		super.tearDown();
 	}
+	
+	 /**
+   * Returns HTML Source striped from spaces, tabs and EOL
+   * @return String
+   */
+  protected static String stripHTMLSourceText(String editorText){
+    return editorText.replaceAll("\n", "").replaceAll("\t", "").replaceAll(" ", "");
+  }
 
 }

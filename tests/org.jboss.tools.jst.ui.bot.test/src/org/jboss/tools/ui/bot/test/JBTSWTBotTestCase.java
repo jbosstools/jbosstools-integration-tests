@@ -13,7 +13,10 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.jboss.tools.ui.bot.ext.SWTBotExt;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
+import org.jboss.tools.ui.bot.ext.view.ProblemsView;
 
 public abstract class JBTSWTBotTestCase extends SWTTestExt implements
 		ILogListener {
@@ -361,5 +364,16 @@ public abstract class JBTSWTBotTestCase extends SWTTestExt implements
 		}
 		return process;
 	}
-	
+	/**
+	 * Asserts if Problems View has no errors
+	 * @param botExt
+	 */
+	protected static void assertProbelmsViewNoErrors (SWTBotExt botExt){
+	  
+    SWTBotTreeItem[] errors = ProblemsView.getFilteredErrorsTreeItems(botExt, null, null, null, null);
+    
+    assertTrue("There are errors in Problems view: " + 
+          (errors != null && errors.length > 0 ? errors[0].getText() : ""),
+        errors == null);
+	}
 }

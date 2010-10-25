@@ -87,8 +87,12 @@ public class SWTBotWebBrowser {
   public static final String PASTE_MENU_LABEL = "Paste";
 
   public static final String JSF_MENU_LABEL = "JSF";
+  public static final String JBOSS_MENU_LABEL = "JBoss";
+  public static final String RICH_FACES_MENU_LABEL = "RichFaces";
   public static final String HTML_MENU_LABEL = "HTML";
   public static final String H_OUTPUT_TEXT_TAG_MENU_LABEL = "<h:outputText>";
+  public static final String H_FORM_TAG_MENU_LABEL = "<h:form>";
+  public static final String RICH_CALENDAR_TAG_MENU_LABEL = "<rich:calendar>";
   
   private Display display;
   private IVisualEditor visualEditor;
@@ -368,13 +372,82 @@ public class SWTBotWebBrowser {
 
   }
   /**
+   * Returns true if node or it's child has node with specified name and attributes with specified values
+   * @param node
+   * @param searchName
+   * @param attributeNames
+   * @param attributeValues
+   * @return
+   */
+  public boolean containsNodeWithNameAndAttributes(nsIDOMNode node, String searchName , String[] attributeNames , String[] attributeValues) {
+
+    boolean result = false;
+
+    String nodeName = node.getNodeName();
+    if (nodeName != null && nodeName.equals(searchName)) {
+      // Test Attributes
+      if (attributeNames != null){
+        boolean attributesAreEqual = true;
+        nsIDOMNamedNodeMap attributesMap = node.getAttributes();
+        for (int index = 0 ; index < attributeNames.length && attributesAreEqual; index++){
+          nsIDOMNode attributeNode = attributesMap.getNamedItem(attributeNames[index]);
+          if (attributeNode != null){
+            if (!attributeNode.getNodeValue().equalsIgnoreCase(attributeValues[index])){
+              attributesAreEqual = false;
+            }
+          }
+          else{
+            attributesAreEqual = false;
+          }
+        }
+        if (attributesAreEqual){
+          result = true;
+        }
+      }
+      else{
+        result = true;
+      }
+    } 
+    
+    if (!result) {
+      nsIDOMNodeList children = node.getChildNodes();
+
+      for (int i = 0; i < children.getLength() && !result; i++) {
+
+        nsIDOMNode child = children.item(i);
+
+        // leave out empty text nodes in test dom model
+        if ((child.getNodeType() == Node.TEXT_NODE)
+            && ((child.getNodeValue() == null) || (child.getNodeValue().trim()
+                .length() == 0)))
+          continue;
+
+        result = containsNodeWithNameAndAttributes(child, searchName,attributeNames,attributeValues);
+      }
+    }
+    
+    return result;
+
+  }
+  /**
+   * Returns true if node or it's child has node with specified name
+   * @param node
+   * @param searchName
+   * @return
+   */
+  public boolean containsNodeWithNameAndAttributes(nsIDOMNode node, String searchName) {
+    
+    return containsNodeWithNameAndAttributes(node, searchName,null,null);
+    
+  }
+
+  /**
    * Returns true if node or it's child has value searchText
    * @param node
    * @param searchText
    * @return
    */
   public boolean containsNodeWithValue(nsIDOMNode node, String searchText) {
-
     boolean result = false;
 
     String nodeValue = node.getNodeValue();
@@ -400,7 +473,6 @@ public class SWTBotWebBrowser {
     }
     
     return result;
-
   }
   /**
    * Returns Palette Viewer associated to JBoss Tools Palette
