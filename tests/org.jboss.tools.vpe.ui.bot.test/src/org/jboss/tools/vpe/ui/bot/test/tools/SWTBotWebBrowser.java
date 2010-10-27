@@ -205,6 +205,16 @@ public class SWTBotWebBrowser {
     
   }
   /**
+   * Returns number of occurrences of specified tagName
+   * @param tagName
+   * @return
+   */
+  public long getDomNodeOccurenciesByTagName(String tagName) {
+
+    return getNsIDOMDocument().getElementsByTagName(tagName).getLength();
+    
+  }
+  /**
    * Returns first node corresponding to specified tagName
    * @param tagName
    * @return

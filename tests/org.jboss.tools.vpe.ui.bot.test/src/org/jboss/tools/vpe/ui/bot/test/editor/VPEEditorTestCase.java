@@ -12,6 +12,7 @@ import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.test.WidgetVariables;
 import org.jboss.tools.vpe.ui.bot.test.Activator;
 import org.jboss.tools.vpe.ui.bot.test.VPEAutoTestCase;
+import org.jboss.tools.vpe.ui.bot.test.tools.SWTBotWebBrowser;
 
 public abstract class VPEEditorTestCase extends VPEAutoTestCase{
 
@@ -87,5 +88,64 @@ public abstract class VPEEditorTestCase extends VPEAutoTestCase{
   protected static String stripHTMLSourceText(String editorText){
     return editorText.replaceAll("\n", "").replaceAll("\t", "").replaceAll(" ", "");
   }
-
+  /**
+   * Asserts if sourceEditorText of file with fileName contains textToContain
+   * @param sourceEditorText
+   * @param textToContain
+   * @param fileName
+   */
+  protected static void assertSourceEditorContains (String sourceEditorText, String textToContain, String fileName){
+    
+    assertTrue("File " + fileName
+        + " has to contain string '" 
+        + textToContain
+        + "' but it doesn't.\nIt contains: " + sourceEditorText, 
+        sourceEditorText.contains(textToContain));
+    
+  }
+  /**
+   * Asserts if Visual Editor contains node with particular attributes
+   * @param webBrowser
+   * @param nodeNameToContain
+   * @param attributeNames
+   * @param attributeValues
+   * @param fileName
+   */
+  protected static void assertVisualEditorContains (SWTBotWebBrowser webBrowser, 
+      String nodeNameToContain, 
+      String[] attributeNames, String[] attributeValues,
+      String fileName){
+    
+    assertTrue("Visual Representation of file " + fileName
+        + " has to contain "
+        + nodeNameToContain
+        + " node but it doesn't",
+        webBrowser.containsNodeWithNameAndAttributes(webBrowser.getMozillaEditor().getDomDocument(), 
+            nodeNameToContain,
+            attributeNames,
+            attributeValues));
+    
+  }
+  /**
+   * Asserts if Visual Editor contains node nodeNameToContain at least numOccurrencies times
+   * @param webBrowser
+   * @param nodeNameToContain
+   * @param numOccurrences
+   * @param fileName
+   */
+  protected static void assertVisualEditorContainsManyNodes (SWTBotWebBrowser webBrowser, 
+      String nodeNameToContain, 
+      int numOccurrences,
+      String fileName){
+    
+    assertTrue("Visual Representation of file " + fileName
+        + " has to contain "
+        + nodeNameToContain
+        + " node "
+        + (numOccurrences)
+        + " times but it doesn't",
+        webBrowser.getDomNodeOccurenciesByTagName(nodeNameToContain) == numOccurrences);
+    
+  }
+ 
 }

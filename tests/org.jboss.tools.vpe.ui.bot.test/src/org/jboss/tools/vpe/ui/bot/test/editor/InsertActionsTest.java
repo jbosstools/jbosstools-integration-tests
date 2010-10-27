@@ -66,17 +66,10 @@ public class InsertActionsTest extends VPEEditorTestCase {
 
     jspTextEditor.save();
     botExt.sleep(Timing.time3S());
-    String editorText = jspTextEditor.getText();
-    // Check if tag <rich:calendar> was properly added
-    assertTrue("File " + TEST_PAGE
-        + " has to contain string '<h:inputText/><rich:calendar>' but it doesn't.\nIt contains: " + editorText, 
-        editorText.contains("<h:inputText/><rich:calendar>"));
- 
-    assertTrue("Visual Representation of file " + TEST_PAGE
-        + " has to contain rich:calendar but it doesn't",
-        webBrowser.containsNodeWithNameAndAttributes(webBrowser.getMozillaEditor().getDomDocument(), "SPAN",
-            new String[]{"title"},new String[] {"rich:calendar"}));
-    
+    // Check if tag <rich:calendar> was properly added.
+    assertSourceEditorContains(jspTextEditor.getText(), "<h:inputText/><rich:calendar>", InsertActionsTest.TEST_PAGE);
+    assertVisualEditorContains(webBrowser, "SPAN", new String[]{"title"},new String[] {"rich:calendar"},
+        InsertActionsTest.TEST_PAGE);
     assertProbelmsViewNoErrors(botExt);    
     
 	}
@@ -94,17 +87,11 @@ public class InsertActionsTest extends VPEEditorTestCase {
 
     jspTextEditor.save();
     botExt.sleep(Timing.time3S());
-    String trimedEditorText = VPEEditorTestCase.stripHTMLSourceText(jspTextEditor.getText());
     // Check if tag <rich:calendar> was properly added
-    assertTrue("File " + TEST_PAGE
-        + " has to contain string '<rich:calendar></rich:calendar><h:inputText/>' but it doesn't.\nIt contains: " + trimedEditorText,
-        trimedEditorText.contains("<rich:calendar></rich:calendar><h:inputText/>"));
- 
-    assertTrue("Visual Representation of file " + TEST_PAGE
-        + " has to contain rich:calendar but it doesn't",
-        webBrowser.containsNodeWithNameAndAttributes(webBrowser.getMozillaEditor().getDomDocument(), "SPAN",
-            new String[]{"title"},new String[] {"rich:calendar"}));
-    
+    assertSourceEditorContains(VPEEditorTestCase.stripHTMLSourceText(jspTextEditor.getText()),
+        "<rich:calendar></rich:calendar><h:inputText/>", InsertActionsTest.TEST_PAGE);
+    assertVisualEditorContains(webBrowser, "SPAN", new String[]{"title"},new String[] {"rich:calendar"},
+        InsertActionsTest.TEST_PAGE);
     assertProbelmsViewNoErrors(botExt);
     
   }
@@ -131,16 +118,10 @@ public class InsertActionsTest extends VPEEditorTestCase {
 
     jspTextEditor.save();
     botExt.sleep(Timing.time3S());
-    String trimedEditorText = VPEEditorTestCase.stripHTMLSourceText(jspTextEditor.getText());
     // Check if tag <rich:calendar> was properly added
-    assertTrue("File " + TEST_PAGE
-        + " has to contain string '<form><rich:calendar></rich:calendar></form>' but it doesn't.\nIt contains: " + trimedEditorText,
-        trimedEditorText.contains("<form><rich:calendar></rich:calendar></form>"));
- 
-    assertTrue("Visual Representation of file " + TEST_PAGE
-        + " has to contain rich:calendar but it doesn't",
-        webBrowser.containsNodeWithNameAndAttributes(webBrowser.getMozillaEditor().getDomDocument(), "FORM"));
-    
+    assertSourceEditorContains(VPEEditorTestCase.stripHTMLSourceText(jspTextEditor.getText()),
+        "<form><rich:calendar></rich:calendar></form>", InsertActionsTest.TEST_PAGE);
+    assertVisualEditorContains(webBrowser, "FORM", null,null,InsertActionsTest.TEST_PAGE);
     assertProbelmsViewNoErrors(botExt);
     
   }
@@ -159,16 +140,10 @@ public class InsertActionsTest extends VPEEditorTestCase {
 
     jspTextEditor.save();
     botExt.sleep(Timing.time3S());
-    String trimedEditorText = VPEEditorTestCase.stripHTMLSourceText(jspTextEditor.getText());
     // Check if tag <h:form> was properly added
-    assertTrue("File " + TEST_PAGE
-        + " has to contain string '<h:form><h:inputText/></h:form>' but it doesn't.\nIt contains: " + trimedEditorText,
-        trimedEditorText.contains("<h:form><h:inputText/></h:form>"));
- 
-    assertTrue("Visual Representation of file " + TEST_PAGE
-        + " has to contain h:form but it doesn't",
-        webBrowser.containsNodeWithNameAndAttributes(webBrowser.getMozillaEditor().getDomDocument(), "FORM"));
-    
+    assertSourceEditorContains(VPEEditorTestCase.stripHTMLSourceText(jspTextEditor.getText()),
+        "<h:form><h:inputText/></h:form>", InsertActionsTest.TEST_PAGE);
+    assertVisualEditorContains(webBrowser, "FORM", null,null,InsertActionsTest.TEST_PAGE);
     assertProbelmsViewNoErrors(botExt);
     
   }
@@ -188,7 +163,12 @@ public class InsertActionsTest extends VPEEditorTestCase {
     return node;
 
   }
-
+  @Override
+  protected void tearDown() throws Exception {
+    jspTextEditor.close();
+    super.tearDown();
+  }
+  
 	@Override
 	protected void closeUnuseDialogs() {
 
