@@ -11,7 +11,8 @@ import org.junit.runners.Suite.SuiteClasses;
  *
  */
 @SuiteClasses({	
-	Publishing.class
+	Publishing.class,
+	TeiidFilesPublishing.class
 	})
 @RunWith(RequirementAwareSuite.class)
 public class ModeshapeAllTests {
