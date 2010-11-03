@@ -99,8 +99,23 @@ public abstract class VPEEditorTestCase extends VPEAutoTestCase{
     assertTrue("File " + fileName
         + " has to contain string '" 
         + textToContain
-        + "' but it doesn't.\nIt contains: " + sourceEditorText, 
+        + "' but it doesn't.\nIt is: " + sourceEditorText, 
         sourceEditorText.contains(textToContain));
+    
+  }
+  /**
+   * Asserts if sourceEditorText of file with fileName equals to expectedText
+   * @param sourceEditorText
+   * @param expectedText
+   * @param fileName
+   */
+  protected static void assertSourceEditorIs (String sourceEditorText, String expectedText, String fileName){
+    
+    assertTrue("File " + fileName
+        + " has to be '" 
+        + expectedText
+        + "' but it doesn't.\nIt is: " + sourceEditorText, 
+        sourceEditorText.equals(expectedText));
     
   }
   /**
@@ -127,7 +142,7 @@ public abstract class VPEEditorTestCase extends VPEAutoTestCase{
     
   }
   /**
-   * Asserts if Visual Editor contains node nodeNameToContain at least numOccurrencies times
+   * Asserts if Visual Editor contains node nodeNameToContain exactly numOccurrencies times
    * @param webBrowser
    * @param nodeNameToContain
    * @param numOccurrences
@@ -147,5 +162,23 @@ public abstract class VPEEditorTestCase extends VPEAutoTestCase{
         webBrowser.getDomNodeOccurenciesByTagName(nodeNameToContain) == numOccurrences);
     
   }
- 
+  /**
+   * Asserts if Visual Editor contains node with value valueToContain
+   * @param webBrowser
+   * @param valueToContain
+   * @param fileName
+   */
+  protected static void assertVisualEditorContainsNodeWithValue (SWTBotWebBrowser webBrowser,
+      String valueToContain,
+      String fileName){
+    
+    assertTrue("Visual Representation of file " + fileName
+        + " has to contain noide with "
+        + valueToContain
+        + " value but it doesn't",
+        webBrowser.containsNodeWithValue(webBrowser.getMozillaEditor().getDomDocument(),
+            valueToContain));
+    
+  }
+  
 }

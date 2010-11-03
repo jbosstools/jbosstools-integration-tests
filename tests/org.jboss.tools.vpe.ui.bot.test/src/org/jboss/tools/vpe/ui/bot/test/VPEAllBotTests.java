@@ -7,6 +7,7 @@ import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
 import org.jboss.tools.vpe.ui.bot.test.editor.BlockCommentTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.EditingActionsTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.InsertActionsTest;
+import org.jboss.tools.vpe.ui.bot.test.editor.TextEditingActionsTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.ToggleCommentTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.VerificationOfNameSpacesTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.JspFileEditingTest;
@@ -70,7 +71,7 @@ public class VPEAllBotTests extends SWTBotTestCase{
 		suite.addTestSuite(VisualEditorContextMenuTest.class);
 		suite.addTestSuite(InsertActionsTest.class);
 		suite.addTestSuite(EditingActionsTest.class);
-		
+		suite.addTestSuite(TextEditingActionsTest.class);
 		return new TestSetup(suite);
 	}
 }
