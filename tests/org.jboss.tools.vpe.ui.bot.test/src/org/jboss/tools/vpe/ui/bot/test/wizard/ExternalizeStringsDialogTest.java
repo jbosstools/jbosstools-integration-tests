@@ -354,55 +354,8 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 	}
 	
 	public void testNewFileInExternalizeStringsDialog() throws Throwable {
-		isUnusedDialogOpened = false;
-		/*
-		 * Open simple html file in order to get the VPE toolbar
-		 */
-		SWTBotEditor editor = SWTTestExt.packageExplorer.openFile(JBT_TEST_PROJECT_NAME,
-				"WebContent", "pages", TEST_PAGE); //$NON-NLS-1$ //$NON-NLS-2$
-		editor.setFocus();
-		/*
-		 * Select some text
-		 */
-		editor.toTextEditor().selectRange(7, 12, 5);
-		/*
-		 * Get toolbar button
-		 */
-		assertTrue(TOOLBAR_ICON_ENABLED, bot
-				.toolbarButtonWithTooltip(TOOL_TIP)
-				.isEnabled());
-		bot.toolbarButtonWithTooltip(TOOL_TIP).click();
-		bot.shell(JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).setFocus();
-		bot.shell(JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).activate();
-		isUnusedDialogOpened = true;
-		/*
-		 * Enable next page and check it 
-		 */
-		SWTBotCheckBox checkBox = bot.checkBox();
-		assertNotNull("Cannot find checkbox '" //$NON-NLS-1$
-				+ JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_NEW_FILE + "'", //$NON-NLS-1$
-				checkBox);
-		checkBox.select();
-		assertTrue("Checkbox should be checked.", //$NON-NLS-1$
-				checkBox.isChecked());
-		assertTrue("Next button should be enabled.", //$NON-NLS-1$
-				bot.button(WidgetVariables.NEXT_BUTTON).isEnabled());
-		bot.button(WidgetVariables.NEXT_BUTTON).click();
-		/*
-		 * Create new file
-		 */
-		SWTBotText folderText = bot.textWithLabel(FOLDER_TEXT_LABEL);
-		assertNotNull("'" + FOLDER_TEXT_LABEL + "' text field is not found", folderText); //$NON-NLS-1$ //$NON-NLS-2$
-		folderText.setText(JBT_TEST_PROJECT_NAME+"/WebContent/pages"); //$NON-NLS-1$
-		SWTBotText fileName = bot.textWithLabel("File name:"); //$NON-NLS-1$
-		assertNotNull("'File Name:' text field is not found", fileName); //$NON-NLS-1$
-		fileName.setText("externalize.properties"); //$NON-NLS-1$
-		/*
-		 * 'Next>' button should be enabled. Press it.
-		 */
-		assertTrue("(Next>) button should be enabled.", //$NON-NLS-1$
-		bot.button(WidgetVariables.NEXT_BUTTON).isEnabled());
-		bot.button(WidgetVariables.NEXT_BUTTON).click();
+		SWTBotEditor editor = createNewBundleToLastPage(JBT_TEST_PROJECT_NAME
+				+ "/WebContent/pages", "externalize.properties"); //$NON-NLS-1$ //$NON-NLS-2$
 		/*
 		 * 'OK' button should be enabled. Press it.
 		 */
@@ -615,7 +568,7 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		assertNotNull(CANNOT_FIND_RADIO_BUTTON
 				+ JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_USER_DEFINED,
 				rb);
-		assertTrue("("+JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_USER_DEFINED+") " +
+		assertTrue("("+JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_USER_DEFINED+") " + //$NON-NLS-1$ //$NON-NLS-2$
 				"radio button should be enabled.", //$NON-NLS-1$
 		rb.isSelected());
 		/*
@@ -706,5 +659,160 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		bot.button(WidgetVariables.OK_BUTTON).isEnabled());
 		bot.shell(JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).close();
 		isUnusedDialogOpened = false;
+	}
+	
+	public void testNewBundleRegisteringInFacesConfig() throws Throwable {
+		SWTBotEditor editor = createNewBundleToLastPage("", ""); //$NON-NLS-1$ //$NON-NLS-2$
+		/*
+		 * Select 'in the faces-config.xml file' radio button
+		 */
+		SWTBotRadio rb = bot.radioInGroup(
+				JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_FACES_CONFIG,
+				JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_SAVE_RESOURCE_BUNDLE);
+		assertNotNull(CANNOT_FIND_RADIO_BUTTON
+				+ JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_FACES_CONFIG,
+				rb);
+		rb.setFocus();
+		rb.click();
+		assertTrue("("+JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_FACES_CONFIG+") " + //$NON-NLS-1$ //$NON-NLS-2$
+				"radio button should be enabled.", //$NON-NLS-1$
+		rb.isSelected());
+		
+		/*
+		 * 'OK' button should be enabled. Press it.
+		 */
+		assertTrue("(OK) button should be enabled.", //$NON-NLS-1$
+		bot.button(WidgetVariables.OK_BUTTON).isEnabled());
+		bot.button(WidgetVariables.OK_BUTTON).click();
+		isUnusedDialogOpened = false;
+		/*
+		 * Check that the text was replaced
+		 */
+		editor.setFocus();
+		editor.toTextEditor().selectRange(7, 12, 22);
+		assertEquals("Replaced text is incorrect", "#{inputUserName.Input}", editor.toTextEditor().getSelection()); //$NON-NLS-1$ //$NON-NLS-2$
+		/*
+		 * Check that the resource-bundle has been added to the faces-config
+		 */
+		SWTBotEditor ed =  bot.editorByTitle("faces-config.xml"); //$NON-NLS-1$
+		assertNotNull("faces-config.xml should be opened in the editor", ed); //$NON-NLS-1$
+		ed.setFocus();
+		bot.cTabItem("Source").activate(); //$NON-NLS-1$
+		
+		ed.toTextEditor().selectLine(23);
+		assertEquals("24 line in not: <resource-bundle>", //$NON-NLS-1$
+				"  <resource-bundle>", //$NON-NLS-1$
+				ed.toTextEditor().getSelection());
+		ed.toTextEditor().selectLine(24);
+		assertEquals("25 line in not: <base-name>inputUserName</base-name>", //$NON-NLS-1$
+				"   <base-name>inputUserName</base-name>", //$NON-NLS-1$
+				ed.toTextEditor().getSelection());
+		ed.toTextEditor().selectLine(25);
+		assertEquals("26 line in not: <var>inputUserName</var>", //$NON-NLS-1$
+				"   <var>inputUserName</var>", //$NON-NLS-1$
+				ed.toTextEditor().getSelection());
+		ed.toTextEditor().selectLine(26);
+		assertEquals("27 line in not: </resource-bundle>", //$NON-NLS-1$
+				"  </resource-bundle>", //$NON-NLS-1$
+				ed.toTextEditor().getSelection());
+	}
+	
+	public void testNewBundleRegisteringViaLoadBundleTag() throws Throwable {
+		SWTBotEditor editor = createNewBundleToLastPage("", "inputUserName2"); //$NON-NLS-1$ //$NON-NLS-2$
+		/*
+		 * Select 'via <f:loadBundle> tag on the current page' radio button
+		 */
+		SWTBotRadio rb = bot.radioInGroup(
+				JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_LOAD_BUNDLE,
+				JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_SAVE_RESOURCE_BUNDLE);
+		assertNotNull(CANNOT_FIND_RADIO_BUTTON
+				+ JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_LOAD_BUNDLE,
+				rb);
+		rb.setFocus();
+		rb.click();
+		assertTrue("("+JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_LOAD_BUNDLE+") " + //$NON-NLS-1$ //$NON-NLS-2$
+				"radio button should be enabled.", //$NON-NLS-1$
+		rb.isSelected());
+		
+		/*
+		 * 'OK' button should be enabled. Press it.
+		 */
+		assertTrue("(OK) button should be enabled.", //$NON-NLS-1$
+		bot.button(WidgetVariables.OK_BUTTON).isEnabled());
+		bot.button(WidgetVariables.OK_BUTTON).click();
+		isUnusedDialogOpened = false;
+		/*
+		 * Check that the text was replaced
+		 */
+		editor.setFocus();
+		editor.toTextEditor().selectLine(7);
+		assertEquals("Replaced text is incorrect", //$NON-NLS-1$
+				"    	<title><f:loadBundle var=\"inputUserName\" basename=\"inputUserName2\" />#{inputUserName.Input} User Name Page</title>", //$NON-NLS-1$
+				editor.toTextEditor().getSelection());
+	}
+	
+	/**
+	 * Creates the new bundle till last page.
+	 *
+	 * @param folderPath the folder path
+	 * @param fileName the file name
+	 * @return the swt bot editor
+	 */
+	private SWTBotEditor createNewBundleToLastPage(String folderPath, String fileName) {
+		isUnusedDialogOpened = false;
+		/*
+		 * Open simple html file in order to get the VPE toolbar
+		 */
+		SWTBotEditor editor = SWTTestExt.packageExplorer.openFile(JBT_TEST_PROJECT_NAME,
+				"WebContent", "pages", TEST_PAGE); //$NON-NLS-1$ //$NON-NLS-2$
+		editor.setFocus();
+		/*
+		 * Select some text
+		 */
+		editor.toTextEditor().selectRange(7, 12, 5);
+		/*
+		 * Get toolbar button
+		 */
+		assertTrue(TOOLBAR_ICON_ENABLED, bot
+				.toolbarButtonWithTooltip(TOOL_TIP)
+				.isEnabled());
+		bot.toolbarButtonWithTooltip(TOOL_TIP).click();
+		bot.shell(JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).setFocus();
+		bot.shell(JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).activate();
+		isUnusedDialogOpened = true;
+		/*
+		 * Enable next page and check it 
+		 */
+		SWTBotCheckBox checkBox = bot.checkBox();
+		assertNotNull("Cannot find checkbox '" //$NON-NLS-1$
+				+ JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_NEW_FILE + "'", //$NON-NLS-1$
+				checkBox);
+		checkBox.select();
+		assertTrue("Checkbox should be checked.", //$NON-NLS-1$
+				checkBox.isChecked());
+		assertTrue("Next button should be enabled.", //$NON-NLS-1$
+				bot.button(WidgetVariables.NEXT_BUTTON).isEnabled());
+		bot.button(WidgetVariables.NEXT_BUTTON).click();
+		/*
+		 * Create new file
+		 */
+		SWTBotText folderText = bot.textWithLabel(FOLDER_TEXT_LABEL);
+		assertNotNull("'" + FOLDER_TEXT_LABEL + "' text field is not found", folderText); //$NON-NLS-1$ //$NON-NLS-2$
+		if ((null != folderPath) && (folderPath.length() > 0)){
+			folderText.setText(folderPath);
+		}
+		SWTBotText fileNameField = bot.textWithLabel("File name:"); //$NON-NLS-1$
+		assertNotNull("'File Name:' text field is not found", fileNameField); //$NON-NLS-1$
+		if ((null != fileName) && (fileName.length() > 0)) {
+			fileNameField.setText(fileName);
+		}
+		/*
+		 * 'Next>' button should be enabled. Press it.
+		 */
+		assertTrue("(Next>) button should be enabled.", //$NON-NLS-1$
+		bot.button(WidgetVariables.NEXT_BUTTON).isEnabled());
+		bot.button(WidgetVariables.NEXT_BUTTON).click();
+	
+		return editor;
 	}
 }
