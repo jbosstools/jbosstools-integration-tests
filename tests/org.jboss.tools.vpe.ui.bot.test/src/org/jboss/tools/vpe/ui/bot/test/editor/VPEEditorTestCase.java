@@ -104,6 +104,21 @@ public abstract class VPEEditorTestCase extends VPEAutoTestCase{
     
   }
   /**
+   * Asserts if sourceEditorText of file with fileName does not contain textToNotContain
+   * @param sourceEditorText
+   * @param textToNotContain
+   * @param fileName
+   */
+  protected static void assertSourceEditorNotContain (String sourceEditorText, String textToNotContain, String fileName){
+    
+    assertTrue("File " + fileName
+        + " must not contain string '" 
+        + textToNotContain
+        + "' but it does.\nIt is: " + sourceEditorText, 
+        !sourceEditorText.contains(textToNotContain));
+    
+  }
+  /**
    * Asserts if sourceEditorText of file with fileName equals to expectedText
    * @param sourceEditorText
    * @param expectedText
@@ -173,7 +188,7 @@ public abstract class VPEEditorTestCase extends VPEAutoTestCase{
       String fileName){
     
     assertTrue("Visual Representation of file " + fileName
-        + " has to contain noide with "
+        + " has to contain node with "
         + valueToContain
         + " value but it doesn't",
         webBrowser.containsNodeWithValue(webBrowser.getMozillaEditor().getDomDocument(),

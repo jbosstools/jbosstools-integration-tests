@@ -85,6 +85,8 @@ public class SWTBotWebBrowser {
   public static final String CUT_MENU_LABEL = "Cut";
   public static final String COPY_MENU_LABEL = "Copy";
   public static final String PASTE_MENU_LABEL = "Paste";
+  public static final String SETUP_VISUAL_TEMPLATE_FOR_MENU_LABEL = "Setup Visual Template for ";
+  public static final String SELECT_THIS_TAG_MENU_LABEL = "Select This Tag";
 
   public static final String JSF_MENU_LABEL = "JSF";
   public static final String JBOSS_MENU_LABEL = "JBoss";
