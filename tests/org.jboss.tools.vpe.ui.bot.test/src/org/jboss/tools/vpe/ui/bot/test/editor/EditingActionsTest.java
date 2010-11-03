@@ -73,7 +73,6 @@ public class EditingActionsTest extends VPEEditorTestCase {
         SWTBotWebBrowser.PASTE_MENU_LABEL);
     jspTextEditor.save();
     botExt.sleep(Timing.time3S());
-webBrowser.displayWebBrowserDOM();    
     assertSourceEditorContains(stripHTMLSourceText(jspTextEditor.getText()), 
         "<h:inputText/><h:inputText/><h:outputTextvalue=\"outputText\"/><h:inputText/>", 
         EditingActionsTest.TEST_PAGE);
