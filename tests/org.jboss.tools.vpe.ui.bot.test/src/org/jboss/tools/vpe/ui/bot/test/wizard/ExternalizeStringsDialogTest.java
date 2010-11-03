@@ -16,6 +16,7 @@ import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCheckBox;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCombo;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotRadio;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
@@ -32,6 +33,7 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 	private final String INCORRECT_TABLE_VALUE = "Table value is incorrect"; //$NON-NLS-1$
 	private final String TOOLBAR_ICON_ENABLED = "Toolbar buttion should be enabled"; //$NON-NLS-1$
 	private final String CANNOT_FIND_PROPERTY_VALUE = "Cannot find 'Property Value' text field"; //$NON-NLS-1$
+	private final String CANNOT_FIND_RADIO_BUTTON = "Cannot find radio button with name: "; //$NON-NLS-1$
 	private final String COMPLEX_TEXT = "!! HELLO ~ Input User, Name.Page ?" //$NON-NLS-1$
 		+ " \r\n and some more text \r\n" //$NON-NLS-1$
 		+ "@ \\# vc \\$ % yy^ &*(ghg ) _l-kk+mmm\\/fdg\\ " //$NON-NLS-1$
@@ -395,6 +397,15 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		SWTBotText fileName = bot.textWithLabel("File name:"); //$NON-NLS-1$
 		assertNotNull("'File Name:' text field is not found", fileName); //$NON-NLS-1$
 		fileName.setText("externalize.properties"); //$NON-NLS-1$
+		/*
+		 * 'Next>' button should be enabled. Press it.
+		 */
+		assertTrue("(Next>) button should be enabled.", //$NON-NLS-1$
+		bot.button(WidgetVariables.NEXT_BUTTON).isEnabled());
+		bot.button(WidgetVariables.NEXT_BUTTON).click();
+		/*
+		 * 'OK' button should be enabled. Press it.
+		 */
 		assertTrue("(OK) button should be enabled.", //$NON-NLS-1$
 		bot.button(WidgetVariables.OK_BUTTON).isEnabled());
 		bot.button(WidgetVariables.OK_BUTTON).click();
@@ -582,13 +593,31 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		 */
 		SWTBotText folderText = bot.textWithLabel(FOLDER_TEXT_LABEL);
 		assertNotNull("'" + FOLDER_TEXT_LABEL + "' text field is not found", folderText); //$NON-NLS-1$ //$NON-NLS-2$
-		assertText(JBT_TEST_PROJECT_NAME+"/WebContent/pages", folderText); //$NON-NLS-1$
+		assertText(JBT_TEST_PROJECT_NAME+"/JavaSource", folderText); //$NON-NLS-1$
 		/*
 		 * Check the file name
 		 */
 		SWTBotText fileName = bot.textWithLabel("File name:"); //$NON-NLS-1$
 		assertNotNull("'File Name:' text field is not found", fileName); //$NON-NLS-1$
 		assertText("hello.properties", fileName); //$NON-NLS-1$
+		/*
+		 * 'Next>' button should be enabled. Press it.
+		 */
+		assertTrue("(Next>) button should be enabled.", //$NON-NLS-1$
+		bot.button(WidgetVariables.NEXT_BUTTON).isEnabled());
+		bot.button(WidgetVariables.NEXT_BUTTON).click();
+		/*
+		 * Check that 'manually by user' radiobutton is selected
+		 */
+		SWTBotRadio rb = bot.radioInGroup(
+				JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_USER_DEFINED,
+				JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_SAVE_RESOURCE_BUNDLE);
+		assertNotNull(CANNOT_FIND_RADIO_BUTTON
+				+ JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_USER_DEFINED,
+				rb);
+		assertTrue("("+JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_USER_DEFINED+") " +
+				"radio button should be enabled.", //$NON-NLS-1$
+		rb.isSelected());
 		/*
 		 * Create new file
 		 */
@@ -601,7 +630,7 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		 */
 		 editor.close();
 		SWTBotEditor editor2 = SWTTestExt.eclipse.openFile(
-				JBT_TEST_PROJECT_NAME, "WebContent", "pages", //$NON-NLS-1$ //$NON-NLS-2$
+				JBT_TEST_PROJECT_NAME, "JavaSource", //$NON-NLS-1$
 				"hello.properties"); //$NON-NLS-1$
 		editor2.toTextEditor().selectLine(0);
 		String line = editor2.toTextEditor().getSelection();
@@ -658,13 +687,18 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		 */
 		folderText = bot.textWithLabel(FOLDER_TEXT_LABEL);
 		assertNotNull("'" + FOLDER_TEXT_LABEL + "' text field is not found", folderText); //$NON-NLS-1$ //$NON-NLS-2$
-		assertText(JBT_TEST_PROJECT_NAME+"/WebContent/pages", folderText); //$NON-NLS-1$
+		assertText(JBT_TEST_PROJECT_NAME+"/JavaSource", folderText); //$NON-NLS-1$
 		/*
 		 * Check the file name
 		 */
 		fileName = bot.textWithLabel("File name:"); //$NON-NLS-1$
 		assertNotNull("'File Name:' text field is not found", fileName); //$NON-NLS-1$
 		assertText("hello.properties", fileName); //$NON-NLS-1$
+		/*
+		 * 'Next>' button should be disabled.
+		 */
+		assertFalse("(Next>) button should be disabled.", //$NON-NLS-1$
+		bot.button(WidgetVariables.NEXT_BUTTON).isEnabled());
 		/*
 		 * Create new file
 		 */
