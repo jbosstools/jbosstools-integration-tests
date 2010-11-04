@@ -414,7 +414,10 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase{
 	 */
 	
 	protected abstract boolean isUnuseDialogOpened();
-	
+	/**
+	 * Opens page pageName
+	 * @param pageName
+	 */
 	protected void openPage(String pageName){
     SWTBot innerBot = bot.viewByTitle(WidgetVariables.PACKAGE_EXPLORER).bot();
     SWTBotTree tree = innerBot.tree();
@@ -422,7 +425,9 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase{
     .expandNode("WebContent").expandNode("pages").getNode(pageName).doubleClick(); //$NON-NLS-1$ //$NON-NLS-2$
     bot.sleep(Timing.time3S());
   }
-	
+	/**
+	 * Opens Test Page
+	 */
 	protected void openPage(){
     openPage(TEST_PAGE);
   }
@@ -445,5 +450,17 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase{
       bot.button(IDELabel.Button.FINISH).click();
       bot.sleep(Timing.time2S());
     }
+	}
+	/**
+	 * Deletes page pageName
+	 * @param pageName
+	 */
+	protected void deletePage(String pageName){
+    SWTBot innerBot = bot.viewByTitle(WidgetVariables.PACKAGE_EXPLORER).bot();
+    innerBot.tree().expandNode(JBT_TEST_PROJECT_NAME).expandNode("WebContent") //$NON-NLS-1$
+      .expandNode("pages").getNode("testPage.jsp").select();  //$NON-NLS-1$//$NON-NLS-2$
+    bot.menu("Edit").menu("Delete").click(); //$NON-NLS-1$ //$NON-NLS-2$
+    bot.shell("Confirm Delete").activate(); //$NON-NLS-1$
+    bot.button("OK").click(); //$NON-NLS-1$
 	}
 }

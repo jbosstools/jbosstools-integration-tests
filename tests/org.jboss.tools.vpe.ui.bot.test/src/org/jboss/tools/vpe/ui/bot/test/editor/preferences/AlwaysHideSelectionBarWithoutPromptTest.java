@@ -64,7 +64,7 @@ public class AlwaysHideSelectionBarWithoutPromptTest extends PreferencesTestCase
 	}
 
 	private void selectSelection(){
-	  bot.toolbarToggleButton(SHOW_SELECTION_BAR).click();
+	  bot.toolbarToggleButtonWithTooltip(TOGGLE_SELECTION_BAR_TOOLTIP).click();
 	}
 	
 }

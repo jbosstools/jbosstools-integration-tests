@@ -15,7 +15,7 @@ import org.jboss.tools.vpe.ui.bot.test.VPEAutoTestCase;
 
 public abstract class PreferencesTestCase extends VPEAutoTestCase{
 
-	protected static final String SHOW_SELECTION_BAR = "Show Selection Bar"; //$NON-NLS-1$
+	protected static final String TOGGLE_SELECTION_BAR_TOOLTIP = "Toggle Selection Bar (Ctrl+6)"; //$NON-NLS-1$
 	protected static final String SHOW_NON_VISUAL_TAGS = "Show non-visual tags"; //$NON-NLS-1$
 	protected static final String SHOW_BORDER_FOR_UNKNOWN_TAGS = "Show border for unknown tags"; //$NON-NLS-1$
 	protected static final String SHOW_RESOURCE_BUNDLES = "Show resource bundles usage as EL expressions"; //$NON-NLS-1$
@@ -75,7 +75,7 @@ public abstract class PreferencesTestCase extends VPEAutoTestCase{
 	}
 	
 	void setPreferencesToDefault(boolean fromEditor) throws WidgetNotFoundException{
-	  SWTBotToolbarToggleButton tbShowSelectionBar = bot.toolbarToggleButton(SHOW_SELECTION_BAR);
+	  SWTBotToolbarToggleButton tbShowSelectionBar = bot.toolbarToggleButtonWithTooltip(TOGGLE_SELECTION_BAR_TOOLTIP);
 	  if (!tbShowSelectionBar.isChecked()){
 	    tbShowSelectionBar.click();
 	  }

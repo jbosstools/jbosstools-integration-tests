@@ -18,6 +18,7 @@ import org.jboss.tools.vpe.ui.bot.test.editor.pagedesign.ToolbarTextFormattingTe
 import org.jboss.tools.vpe.ui.bot.test.editor.preferences.AlwaysHideSelectionBarWithoutPromptTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.preferences.BorderForUnknownTagsTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.preferences.ChangeEditorTabForTheFirstOpenPageTest;
+import org.jboss.tools.vpe.ui.bot.test.editor.preferences.PromptForTagAttributesDuringTagInsertTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.preferences.ShowNonVisualTagsTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.preferences.ShowResourceBundlesUsageasELexpressionsTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.preferences.ShowSelectionTagBarTest;
@@ -72,6 +73,7 @@ public class VPEAllBotTests extends SWTBotTestCase{
 		suite.addTestSuite(InsertActionsTest.class);
 		suite.addTestSuite(EditingActionsTest.class);
 		suite.addTestSuite(TextEditingActionsTest.class);
+		suite.addTestSuite(PromptForTagAttributesDuringTagInsertTest.class);
 		return new TestSetup(suite);
 	}
 }
