@@ -1,5 +1,16 @@
+/*******************************************************************************
+ * Copyright (c) 2010 Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ * Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/
 package org.jboss.tools.ws.ui.bot.test;
 
+import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,7 +21,6 @@ import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.NewObject.Class;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.NewObject.JavaEEEnterpriseApplicationProject;
-import org.jboss.tools.ui.bot.ext.gen.ActionItem.NewObject.WebDynamicWebProject;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.NewObject.WebServicesWebService;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.NewObject.WebServicesWebServiceClient;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.NewObject.WebServlet;
@@ -18,6 +28,8 @@ import org.jboss.tools.ui.bot.ext.parts.SWTBotBrowserExt;
 import org.jboss.tools.ui.bot.ext.parts.SWTBotHyperlinkExt;
 import org.jboss.tools.ui.bot.ext.parts.SWTBotScaleExt;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
+import org.jboss.tools.ws.ui.bot.test.uiutils.actions.NewFileWizardAction;
+import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.DynamicWebProjectWizard;
 import org.junit.runner.RunWith;
 
 @RunWith(SWTBotJunit4ClassRunner.class)
@@ -26,12 +38,6 @@ public class JbossWSTest extends SWTTestExt {
 	public static final String EAR_PROJECT_NAME="EAR";
 	public static final String PKG_NAME="jbossws";
 		
-	public static final String SAMPLE_WS_PROJ_NAME="SampleWS";
-	public static final String SAMPLE_WS_SERVICE_NAME="HelloWorld";
-	public static final String SAMPLE_WS_WSDL_URL="http://localhost:8080/"+SAMPLE_WS_PROJ_NAME+"/"+SAMPLE_WS_SERVICE_NAME+"?wsdl";
-	public static final String SAMPLE_WSCLIENT_PROJ_NAME = "SampleWSClient";
-	public static final String SAMPLE_WSCLIENT_SERVLET_NAME = "SampleWStest";
-	public static final String SAMPLE_WSCLIENT_SERVLET_URL = "http://localhost:8080/"+SAMPLE_WSCLIENT_PROJ_NAME+"/"+SAMPLE_WSCLIENT_SERVLET_NAME;
 	public static final String CLASS_A="ClassA";
 	public static final String CLASS_B="ClassB";
 	public static final String CLASS_C="ClassC";
@@ -63,6 +69,12 @@ public class JbossWSTest extends SWTTestExt {
 	public static final int SERVICE_SCALE_TEST=0;
 	protected static Map<Integer,String> wizardConfigTexts = new HashMap<Integer, String>();
 
+	private static final String SOAP_REQUEST_TEMPLATE = "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\" ?>" +
+	"<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\"" +
+	" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"" +
+	" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">" +
+	"<soap:Body>{0}</soap:Body>" +
+	"</soap:Envelope>";;
 	
 	public JbossWSTest() {
 
@@ -144,9 +156,9 @@ public class JbossWSTest extends SWTTestExt {
 	}
 
 	protected void createProject(String name) {
-		SWTBot wiz = open.newObject(WebDynamicWebProject.LABEL);
-		wiz.textWithLabel(WebDynamicWebProject.TEXT_PROJECT_NAME).setText(name);
-		open.finish(wiz);
+		new NewFileWizardAction().run().selectTemplate("Web", "Dynamic Web Project").next();
+		new DynamicWebProjectWizard().setProjectName(name).finish();
+		util.waitForNonIgnoredJobs();
 		assertTrue(projectExplorer.existsResource(name));
 		projectExplorer.selectProject(name);
 	}
@@ -198,4 +210,9 @@ public class JbossWSTest extends SWTTestExt {
 						+ servletReturned, servletRetOK);
 
 	}
+	
+	public static String getSoapRequest(String body) {
+		return MessageFormat.format(SOAP_REQUEST_TEMPLATE, body);
+	}
+	
 }
