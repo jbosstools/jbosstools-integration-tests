@@ -34,7 +34,6 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.ui.bot.ext.config.Annotations.SWTBotTestRequires;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
-import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 import org.jboss.tools.ws.ui.bot.test.uiutils.actions.NewSampleWSWizardAction;
 import org.jboss.tools.ws.ui.bot.test.uiutils.actions.TreeItemAction;
@@ -86,7 +85,7 @@ public class SampleWebService extends JbossWSTest {
 		}
 		assertTrue(dd.exists());
 		createSampleRESTWS(project, "RESTSample", "rest.sample", "Sample", "RESTApp");
-		checkRESTService(project, "RESTSample", "rest.sample", "Sample", "You", "RESTApp");
+		checkRESTService(project, "RESTSample", "rest.sample", "Sample", "Hello World!", "RESTApp");
 	}
 
 	private void createDD(String project) {
@@ -132,7 +131,6 @@ public class SampleWebService extends JbossWSTest {
 	}
 	
 	private void checkService(Type type, String project, String svcName, String svcPkg, String svcClass, String msgContent, String appCls) {
-		//"RESTSample", "rest.sample", "Sample", "RESTApp"
 		SWTBotEditor ed = bot.activeEditor();
 		assertEquals(svcClass + ".java", ed.getTitle());
 		String code = ed.toTextEditor().getText(); 
@@ -156,7 +154,7 @@ public class SampleWebService extends JbossWSTest {
 			try {
 				URL u = new URL("http://" + SERVER_URL + "/" + project + "/" + svcName);
 				String s = readStream(u.openConnection().getInputStream());
-				assertEquals("Hello World!", s);
+				assertEquals(msgContent, s);
 			} catch (MalformedURLException e) {
 				L.log(Level.WARNING, e.getMessage(), e);
 			} catch (IOException e) {
