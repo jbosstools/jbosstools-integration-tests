@@ -751,6 +751,141 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 				editor.toTextEditor().getSelection());
 	}
 	
+	public void testTaglibRegistrationInJSP() throws Throwable {
+		/*
+		 * Open simple html file in order to get the VPE toolbar
+		 */
+		SWTBotEditor editor = SWTTestExt.packageExplorer.openFile(JBT_TEST_PROJECT_NAME,
+				"WebContent", "pages", TEST_PAGE); //$NON-NLS-1$ //$NON-NLS-2$
+		editor.setFocus();
+		editor.toTextEditor().selectLine(0);
+		assertEquals("JSF Core taglib should present on page", //$NON-NLS-1$
+				"<%@ taglib uri=\"http://java.sun.com/jsf/core\" prefix=\"f\" %>", //$NON-NLS-1$
+				editor.toTextEditor().getSelection());
+		/*
+		 * Rewrite the taglib
+		 */
+		editor.toTextEditor().typeText(" "); //$NON-NLS-1$
+		/*
+		 * Make sure that taglib doesn't present
+		 */
+		assertTrue("JSF Core taglib should be removed", //$NON-NLS-1$
+				(editor.toTextEditor().getText().indexOf(
+				"<%@ taglib uri=\"http://java.sun.com/jsf/core\" prefix=\"f\" %>") == -1)); //$NON-NLS-1$
+		editor = createNewBundleToLastPage("", "inputUserName4"); //$NON-NLS-1$ //$NON-NLS-2$
+		/*
+		 * Select 'via <f:loadBundle> tag on the current page' radio button
+		 */
+		SWTBotRadio rb = bot.radioInGroup(
+				JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_LOAD_BUNDLE,
+				JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_SAVE_RESOURCE_BUNDLE);
+		assertNotNull(CANNOT_FIND_RADIO_BUTTON
+				+ JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_LOAD_BUNDLE,
+				rb);
+		rb.setFocus();
+		rb.click();
+		assertTrue("("+JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_LOAD_BUNDLE+") " + //$NON-NLS-1$ //$NON-NLS-2$
+				"radio button should be enabled.", //$NON-NLS-1$
+		rb.isSelected());
+		
+		/*
+		 * 'OK' button should be enabled. Press it.
+		 */
+		assertTrue("(OK) button should be enabled.", //$NON-NLS-1$
+		bot.button(WidgetVariables.OK_BUTTON).isEnabled());
+		bot.button(WidgetVariables.OK_BUTTON).click();
+		isUnusedDialogOpened = false;
+		/*
+		 * Check that the text was replaced
+		 */
+		editor.setFocus();
+		editor.toTextEditor().selectLine(1);
+		assertEquals("Taglig insertion failed!", //$NON-NLS-1$
+				"<%@ taglib uri=\"http://java.sun.com/jsf/core\" prefix=\"f\"%>", //$NON-NLS-1$
+				editor.toTextEditor().getSelection());
+	}
+	
+	public void testTaglibRegistrationInXHTML() throws Throwable {
+		isUnusedDialogOpened = false;
+		/*
+		 * Open simple html file in order to get the VPE toolbar
+		 */
+		SWTBotEditor editor = SWTTestExt.packageExplorer.openFile(FACELETS_TEST_PROJECT_NAME,
+				"WebContent", "pages", FACELETS_TEST_PAGE); //$NON-NLS-1$ //$NON-NLS-2$
+		editor.setFocus();
+		editor.toTextEditor().selectLine(4);
+		assertEquals("JSF Core taglib should present on page", //$NON-NLS-1$
+				"      xmlns:f=\"http://java.sun.com/jsf/core\"", //$NON-NLS-1$
+				editor.toTextEditor().getSelection());
+		/*
+		 * Rewrite the taglib
+		 */
+		editor.toTextEditor().typeText(" "); //$NON-NLS-1$
+		/*
+		 * Make sure that taglib doesn't present
+		 */
+		assertTrue("JSF Core taglib should be removed", //$NON-NLS-1$
+				(editor.toTextEditor().getText().indexOf(
+				"xmlns:f=\"http://java.sun.com/jsf/core\"") == -1)); //$NON-NLS-1$
+		editor.toTextEditor().selectRange(10, 45, 4);
+		/*
+		 * Get toolbar button
+		 */
+		assertTrue(TOOLBAR_ICON_ENABLED, bot
+				.toolbarButtonWithTooltip(TOOL_TIP)
+				.isEnabled());
+		bot.toolbarButtonWithTooltip(TOOL_TIP).click();
+		bot.shell(JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).setFocus();
+		bot.shell(JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).activate();
+		isUnusedDialogOpened = true;
+		SWTBotCheckBox checkBox = bot.checkBox();
+		assertNotNull("Cannot find checkbox '" //$NON-NLS-1$
+				+ JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_NEW_FILE + "'", //$NON-NLS-1$
+				checkBox);
+		checkBox.select();
+		assertTrue("Checkbox should be checked.", //$NON-NLS-1$
+				checkBox.isChecked());
+		assertTrue("Next button should be enabled.", //$NON-NLS-1$
+				bot.button(WidgetVariables.NEXT_BUTTON).isEnabled());
+		bot.button(WidgetVariables.NEXT_BUTTON).click();
+		/*
+		 * 'Next>' button should be enabled. Press it.
+		 */
+		assertTrue("(Next>) button should be enabled.", //$NON-NLS-1$
+		bot.button(WidgetVariables.NEXT_BUTTON).isEnabled());
+		bot.button(WidgetVariables.NEXT_BUTTON).click();
+		/*
+		 * Select 'via <f:loadBundle> tag on the current page' radio button
+		 */
+		SWTBotRadio rb = bot.radioInGroup(
+				JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_LOAD_BUNDLE,
+				JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_SAVE_RESOURCE_BUNDLE);
+		assertNotNull(CANNOT_FIND_RADIO_BUTTON
+				+ JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_LOAD_BUNDLE,
+				rb);
+		rb.setFocus();
+		rb.click();
+		assertTrue("("+JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_LOAD_BUNDLE+") " + //$NON-NLS-1$ //$NON-NLS-2$
+				"radio button should be enabled.", //$NON-NLS-1$
+		rb.isSelected());
+		
+		/*
+		 * 'OK' button should be enabled. Press it.
+		 */
+		assertTrue("(OK) button should be enabled.", //$NON-NLS-1$
+		bot.button(WidgetVariables.OK_BUTTON).isEnabled());
+		bot.button(WidgetVariables.OK_BUTTON).click();
+		isUnusedDialogOpened = false;
+		/*
+		 * Check that the text was replaced
+		 */
+		editor.setFocus();
+		editor.toTextEditor().selectLine(6);
+		assertEquals("Taglig insertion failed!", //$NON-NLS-1$
+			      "      xmlns:f=\"http://java.sun.com/jsf/core\">", //$NON-NLS-1$
+				editor.toTextEditor().getSelection());
+	}
+	
 	/**
 	 * Creates the new bundle till last page.
 	 *
