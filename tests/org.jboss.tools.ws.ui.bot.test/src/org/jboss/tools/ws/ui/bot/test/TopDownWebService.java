@@ -12,14 +12,29 @@ import org.junit.Test;
 public class TopDownWebService extends JbossWSTest {
 
 	@Test
-	public void topDownJbossWS() {
+	public void topDownJbossWS1() {
 		int testLevel = 3;
-		for (int i=0;i<testLevel;i++) {
-			for (int j=0;j<testLevel;j++) {
-				topDownJbossWebService(i, j);
-			}
-		}		
+		for (int j=0;j<testLevel;j++) {
+			topDownJbossWebService(0, j);
+		}
 	}
+
+	@Test
+	public void topDownJbossWS2() {
+		int testLevel = 3;
+		for (int j=0;j<testLevel;j++) {
+			topDownJbossWebService(1, j);
+		}
+	}
+
+	@Test
+	public void topDownJbossWS3() {
+		int testLevel = 3;
+		for (int j=0;j<testLevel;j++) {
+			topDownJbossWebService(2, j);
+		}
+	}
+
 	private void topDownJbossWebService(int serverType, int clientType) {
 		log.info(" * Running test ServiceType: '"+wizardConfigTexts.get(serverType)+"', ClientType: '"+wizardConfigTexts.get(clientType)+"'");
 		createEARProject(EAR_PROJECT_NAME);

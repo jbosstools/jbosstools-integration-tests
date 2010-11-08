@@ -10,10 +10,6 @@ import org.junit.Test;
 @SWTBotTestRequires(server=@Server(),perspective="Java EE")
 public class TwoBUWSInOneProject extends JbossWSTest {
 	
-	@AfterClass
-	public static void after() {
-		bot.sleep(Long.MAX_VALUE);
-	}
 	@Test
 	public void twoServices() {
 		createEARProject(EAR_PROJECT_NAME);

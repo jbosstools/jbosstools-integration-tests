@@ -10,13 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.ws.ui.bot.test;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.StringWriter;
-import java.io.Writer;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.MessageFormat;
@@ -190,38 +184,5 @@ public class SampleWebService extends JbossWSTest {
 		}
 		return "";
 	}
-	
-	private String readStream(InputStream is) {
-		Reader r = null;
-		Writer w = null;
-		try {
-			char[] buffer = new char[1024];
-			r = new BufferedReader(new InputStreamReader(is, "UTF-8"));
-			w = new StringWriter();
-			int n;
-			while ((n = r.read(buffer)) != -1) {
-				w.write(buffer, 0, n);
-			}
-		} catch (IOException e) {
-			L.log(Level.WARNING, e.getMessage(), e);
-		} finally {
-			if (r != null) {
-				try {
-					r.close();
-				} catch (IOException e) {
-					//ignore
-					L.log(Level.WARNING, e.getMessage(), e);
-				}
-			}
-			if (w != null) {
-				try {
-					w.close();
-				} catch (IOException e) {
-					//ignore
-					L.log(Level.WARNING, e.getMessage(), e);
-				}
-			}
-		}
-		return w != null ? w.toString() : "";
-	}
+
 }

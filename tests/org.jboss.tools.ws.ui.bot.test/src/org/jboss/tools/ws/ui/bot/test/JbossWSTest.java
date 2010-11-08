@@ -10,9 +10,21 @@
  ******************************************************************************/
 package org.jboss.tools.ws.ui.bot.test;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.StringWriter;
+import java.io.Writer;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
@@ -24,7 +36,6 @@ import org.jboss.tools.ui.bot.ext.gen.ActionItem.NewObject.JavaEEEnterpriseAppli
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.NewObject.WebServicesWebService;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.NewObject.WebServicesWebServiceClient;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.NewObject.WebServlet;
-import org.jboss.tools.ui.bot.ext.parts.SWTBotBrowserExt;
 import org.jboss.tools.ui.bot.ext.parts.SWTBotHyperlinkExt;
 import org.jboss.tools.ui.bot.ext.parts.SWTBotScaleExt;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
@@ -76,6 +87,7 @@ public class JbossWSTest extends SWTTestExt {
 	"<soap:Body>{0}</soap:Body>" +
 	"</soap:Envelope>";;
 	
+	private static final Logger L = Logger.getLogger(JbossWSTest.class.getName());
 	public JbossWSTest() {
 
 	}
@@ -102,7 +114,7 @@ public class JbossWSTest extends SWTTestExt {
 		// enable Finish button		
 		open.finish(wiz);
 		projectExplorer.selectProject(projectName);
-		// create servlet which will inovke service
+		// create servlet which will invoke service
 		createInvokingServlet(servletName);
 	}
 
@@ -177,42 +189,105 @@ public class JbossWSTest extends SWTTestExt {
 	}
 
 	protected void assertServiceDeployed(String wsdlURL) {
-		SWTBotBrowserExt b = bot.browser();
-		b.goURL("http://localhost:8080/jbossws/services");
-		util.waitForBrowserLoadsPage(b,JBOSSWS_CRED_LOGIN,JBOSSWS_CRED_PASS);
-		boolean wsdlOK = b.followLink(wsdlURL);
-		assertTrue(
-				"Service was not sucessfully deployed, WSDL '"+wsdlURL+"' is not listed in JbossWS endpoint registry",
-				wsdlOK);
-		util.waitForBrowserLoadsPage(b);
-		b.back();
-		util.waitForBrowserLoadsPage(b);
+		HttpURLConnection connection = null;
+		try {
+			URL u = new URL(wsdlURL);
+			connection = (HttpURLConnection) u.openConnection();
+			assertEquals("Service was not sucessfully deployed, WSDL '" + wsdlURL + "' was not found",
+					HttpURLConnection.HTTP_OK, connection.getResponseCode());
+		} catch (MalformedURLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			if (connection != null) {
+				connection.disconnect();
+			}
+		}
 	}
 	
 	protected void assertServiceNotDeployed(String wsdlURL) {
-		SWTBotBrowserExt b = bot.browser();
-		b.goURL("http://localhost:8080/jbossws/services");
-		util.waitForBrowserLoadsPage(b,JBOSSWS_CRED_LOGIN,JBOSSWS_CRED_PASS);
-		boolean wsdlOK = !b.getText().contains(wsdlURL);
-		assertTrue(
-				"Project was not sucessfully undeployed, WSDL '"+wsdlURL+"' is listed in JbossWS endpoint registry",
-				wsdlOK);
+		HttpURLConnection connection = null;
+		try {
+			URL u = new URL(wsdlURL);
+			connection = (HttpURLConnection) u.openConnection();
+			assertEquals("Project was not sucessfully undeployed, WSDL '" + wsdlURL + "' is still available",
+					HttpURLConnection.HTTP_NOT_FOUND, connection.getResponseCode());
+		} catch (MalformedURLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			if (connection != null) {
+				connection.disconnect();
+			}
+		}
 	}
 
 	protected void assertServiceResponseToClient(String startServlet, String response) {
-		SWTBotBrowserExt b = bot.browser();
-		b.goURL(startServlet);
-		util.waitForBrowserLoadsPage(b);
-		String servletReturned = b.getText();
-		boolean servletRetOK = servletReturned.contains(response);
-		assertTrue(
-				"Unexpected Client servlet response, error calling web service, response is : "
-						+ servletReturned, servletRetOK);
-
+		InputStream is = null;
+		try {
+			URL u = new URL(startServlet);
+			is = u.openStream();
+			String rsp = readStream(is);
+			assertContains(response, rsp);
+		} catch (MalformedURLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			if (is != null) {
+				try {
+					is.close();
+				} catch (IOException e) {
+					//ignore
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 	
 	public static String getSoapRequest(String body) {
 		return MessageFormat.format(SOAP_REQUEST_TEMPLATE, body);
 	}
 	
+	protected String readStream(InputStream is) {
+		Reader r = null;
+		Writer w = null;
+		try {
+			char[] buffer = new char[1024];
+			r = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+			w = new StringWriter();
+			int n;
+			while ((n = r.read(buffer)) != -1) {
+				w.write(buffer, 0, n);
+			}
+		} catch (IOException e) {
+			L.log(Level.WARNING, e.getMessage(), e);
+		} finally {
+			if (r != null) {
+				try {
+					r.close();
+				} catch (IOException e) {
+					//ignore
+					L.log(Level.WARNING, e.getMessage(), e);
+				}
+			}
+			if (w != null) {
+				try {
+					w.close();
+				} catch (IOException e) {
+					//ignore
+					L.log(Level.WARNING, e.getMessage(), e);
+				}
+			}
+		}
+		return w != null ? w.toString() : "";
+	}
 }

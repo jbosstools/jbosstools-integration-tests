@@ -8,12 +8,34 @@ import org.junit.Test;
 public class BottomUpWebService extends JbossWSTest {
 
 	@Test
-	public void bottomUpJbossWS() {
+	public void bottomUpJbossWS1() {
 		int testlevel=4;
-		for (int i=0;i<testlevel;i++) {
-			for (int j=0;j<testlevel;j++) {				
-				bottomUpJbossWebService(i, j);
-			}
+		for (int j=0;j<testlevel;j++) {				
+			bottomUpJbossWebService(0, j);
+		}
+	}
+	
+	@Test
+	public void bottomUpJbossWS2() {
+		int testlevel=4;
+		for (int j=0;j<testlevel;j++) {				
+			bottomUpJbossWebService(1, j);
+		}
+	}
+	
+	@Test
+	public void bottomUpJbossWS3() {
+		int testlevel=4;
+		for (int j=0;j<testlevel;j++) {				
+			bottomUpJbossWebService(2, j);
+		}
+	}
+	
+	@Test
+	public void bottomUpJbossWS4() {
+		int testlevel=4;
+		for (int j=0;j<testlevel;j++) {				
+			bottomUpJbossWebService(3, j);
 		}
 	}
 	

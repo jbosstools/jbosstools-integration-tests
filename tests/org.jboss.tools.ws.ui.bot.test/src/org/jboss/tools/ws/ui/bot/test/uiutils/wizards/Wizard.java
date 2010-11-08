@@ -30,6 +30,7 @@ public class Wizard extends SWTBotShell {
 		for (int i = 0; i < item.length - 1; i++) {
 			ti = ti != null ? ti.expandNode(item[i]).select() : tree.expandNode(item[i]).select();
 		}
+		sleep(100);
 		if (ti != null) {
 			ti.select(item[item.length - 1]);
 		} else {
