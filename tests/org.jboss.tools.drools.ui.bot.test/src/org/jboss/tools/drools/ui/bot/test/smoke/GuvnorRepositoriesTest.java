@@ -27,7 +27,6 @@ import org.eclipse.swtbot.swt.finder.results.StringResult;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.hamcrest.Matcher;
@@ -36,7 +35,6 @@ import org.jboss.tools.ui.bot.ext.config.requirement.PrepareViews;
 import org.jboss.tools.ui.bot.ext.config.requirement.RequirementNotFulfilledException;
 import org.jboss.tools.ui.bot.ext.config.requirement.StartServer;
 import org.jboss.tools.ui.bot.ext.config.requirement.StopServer;
-import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.View.GuvnorGuvnorResourceHistory;
 import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
 import org.jboss.tools.ui.bot.ext.helper.DragAndDropHelper;
@@ -63,13 +61,14 @@ public class GuvnorRepositoriesTest extends SWTTestExt{
   private static final String GUVNOR_TEST_FILE = "Dummy rule.drl";
   private static final String GUVNOR_REPOSITORY_IMPORT_TEST_FILE = "Underage.brl";
   private static final String GUVNOR_REPOSITORY_HISTORY_TEST_FILE = "MortgageModel.model.drl";
+  private static final String GUVNOR_USER_NAME = "admin";
+  private static final String GUVNOR_PASSWORD = "admin";
   private GuvnorRepositories guvnorRepositories = new GuvnorRepositories(); 
   /**
    * Tests Guvnor Repositories
    */
   @Test
   public void testGuvnorRepositories() {
-    setGuvnorTemplate();
     startGuvnor();
     addGuvnorRepository();
     deleteGuvnorRepository();
@@ -128,6 +127,8 @@ public class GuvnorRepositoriesTest extends SWTTestExt{
       IDELabel.Menu.OPEN_GUVNOR_CONSOLE, false)).click();
     bot.sleep(Timing.time5S());
     SWTBotBrowserExt browser = bot.browserByTitle(IDELabel.GuvnorConsole.GUVNOR_CONSOLE_TITLE);
+    browser.setInputTextViaJavaScript(GuvnorRepositoriesTest.GUVNOR_USER_NAME, 0, bot);
+    browser.setInputTextViaJavaScript(GuvnorRepositoriesTest.GUVNOR_PASSWORD, 1, bot);
     browser.clickOnButtonViaJavaScript(0, bot);
     browser.clickOnButtonViaJavaScript(IDELabel.GuvnorConsole.BUTTON_YES_INSTALL_SAMPLES, bot);
     bot.sleep(Timing.time1S());
@@ -349,8 +350,18 @@ public class GuvnorRepositoriesTest extends SWTTestExt{
   }
   private void drillIntoFunctionalityCheck(){
     SWTBotView guvnorReposioryView = guvnorRepositories.show();
-    guvnorRepositories.selectTreeItem(Timing.time2S(), IDELabel.GuvnorRepositories.PACKAGES_TREE_ITEM, 
-      new String[]{IDELabel.GuvnorRepositories.GUVNOR_REPOSITORY_ROOT_TREE_ITEM});
+    SWTBotTreeItem tiRoot = guvnorRepositories.selectTreeItem(IDELabel.GuvnorRepositories.GUVNOR_REPOSITORY_ROOT_TREE_ITEM,null)
+      .doubleClick();
+    bot.sleep(Timing.time2S());
+    SWTBot dialogBot = bot.shell("").activate().bot();
+    dialogBot.textWithLabel(IDELabel.GuvnorConsoleLoginDialog.USER_NAME).setText(
+        GuvnorRepositoriesTest.GUVNOR_USER_NAME);
+    dialogBot.textWithLabel(IDELabel.GuvnorConsoleLoginDialog.PASSWORD).setText(
+        GuvnorRepositoriesTest.GUVNOR_PASSWORD);
+    dialogBot.button(IDELabel.Button.OK).click();
+    tiRoot.expand();
+    bot.sleep(Timing.time2S());
+    tiRoot.select(IDELabel.GuvnorRepositories.PACKAGES_TREE_ITEM);
     SWTUtilExt.getViewToolbarButtonWithTooltip(guvnorReposioryView,
       IDELabel.GuvnorRepositories.GO_INTO_GUVNOR_REPOSITORY_TOOLTIP)
         .click();
@@ -511,14 +522,5 @@ public class GuvnorRepositoriesTest extends SWTTestExt{
       "Content should start with " + addedChange +
       "\n but is " + editorText,editorText.startsWith(addedChange));
   }
-  /** 
-   * Sets properly Guvnor Template
-   */
-  private void setGuvnorTemplate(){
-    SWTBot dialogBot = open.preferenceOpen(ActionItem.Preference.Guvnor.LABEL);
-    SWTBotText guvnorTemplateText = dialogBot.textWithLabel(IDELabel.GuvnorPropertiesDialog.GUVNOR_URL_TEMPLATE);
-    guvnorTemplateText.setText(guvnorTemplateText.getText().replaceFirst("jboss-brms", "drools-guvnor"));
-    dialogBot.button(IDELabel.Button.OK).click();
-    SWTEclipseExt.hideWarningIfDisplayed(bot);
-  }
+
 }

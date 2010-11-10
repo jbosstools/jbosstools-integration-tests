@@ -51,7 +51,7 @@ import org.junit.runners.Suite.SuiteClasses;
   DomainSpecificLanguageEditorTest.class,
   RuleFlowTest.class,
   DecisionTableTest.class,
-  GuvnorRepositoriesTest.class})  
+  GuvnorRepositoriesTest.class})
 public class DroolsAllBotTests extends SWTTestExt {
   public static final String DROOLS_PROJECT_NAME = "droolsTest";
   public static final String DROOLS_RUNTIME_NAME = "Drools Test Runtime";
@@ -68,7 +68,10 @@ public class DroolsAllBotTests extends SWTTestExt {
   public static final String RULE_FLOW_JAVA_TEST_FILE_NAME = "ProcessTest.java";
   public static final String RULE_FLOW_RF_FILE_NAME = "ruleflow.rf";
   public static final String DECISION_TABLE_JAVA_TEST_FILE_NAME = "DecisionTableTest.java";
-  public static final String EAP_50_WITH_GUVNOR_PROPERTY_NAME= "jboss-eap5.0-with-drools-home";
+  public static final String USE_EXTERNAL_DROOLS_RUNTIME_PROPERTY_NAME= "use-external-drools-runtime";
+  public static final String EXTERNAL_DROOLS_RUTIME_HOME_PROPERTY_NAME= "external-drools-runtime-home";
+  private static boolean USE_EXTERNAL_DROOLS_RUNTIME;
+
   private static String testDroolsRuntimeName = null;
   public static String getTestDroolsRuntimeName() {
     return testDroolsRuntimeName;
@@ -90,11 +93,20 @@ public class DroolsAllBotTests extends SWTTestExt {
   @BeforeClass
   public static void setUpTest() {
     jbt.closeReportUsageWindowIfOpened(false);
-    DroolsAllBotTests.DROOLS_RUNTIME_LOCATION = System.getProperty("java.io.tmpdir");
-    DroolsAllBotTests.CREATE_DROOLS_RUNTIME_LOCATION = DroolsAllBotTests.DROOLS_RUNTIME_LOCATION + File.separator + "drools";
+    properties = util.loadProperties(Activator.PLUGIN_ID);
+    String useExternalDroolRuntime = properties.getProperty(DroolsAllBotTests.USE_EXTERNAL_DROOLS_RUNTIME_PROPERTY_NAME);
+    DroolsAllBotTests.USE_EXTERNAL_DROOLS_RUNTIME = useExternalDroolRuntime != null && useExternalDroolRuntime.equalsIgnoreCase("true");
+    String droolsRuntimeLocation = properties.getProperty(DroolsAllBotTests.EXTERNAL_DROOLS_RUTIME_HOME_PROPERTY_NAME);
+    String tmpDir = System.getProperty("java.io.tmpdir");
+    if (droolsRuntimeLocation == null || droolsRuntimeLocation.length() ==0){
+      DroolsAllBotTests.DROOLS_RUNTIME_LOCATION = tmpDir;
+    }
+    else{
+      DroolsAllBotTests.DROOLS_RUNTIME_LOCATION = droolsRuntimeLocation;
+    }
+    DroolsAllBotTests.CREATE_DROOLS_RUNTIME_LOCATION = tmpDir + File.separator + "drools";
     // Create directory for Drools Runtime which will be created as a part of test
     new File(DroolsAllBotTests.CREATE_DROOLS_RUNTIME_LOCATION).mkdir();
-    properties = util.loadProperties(Activator.PLUGIN_ID);
     try{
       SWTBotView welcomeView = eclipse.getBot().viewByTitle(IDELabel.View.WELCOME);
       welcomeView.close();
@@ -103,6 +115,10 @@ public class DroolsAllBotTests extends SWTTestExt {
     }
     eclipse.openPerspective(PerspectiveType.JAVA);
     eclipse.maximizeActiveShell();
+  }
+
+  public static boolean useExternalDroolsRuntime() {
+    return USE_EXTERNAL_DROOLS_RUNTIME;
   }
 
   @AfterClass
