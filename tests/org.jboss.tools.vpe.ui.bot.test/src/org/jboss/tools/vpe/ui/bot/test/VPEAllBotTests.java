@@ -15,6 +15,7 @@ import org.jboss.tools.vpe.ui.bot.test.editor.VisualEditorContextMenuTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.XhtmlFilePerformanceTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.pagedesign.AddSubstitutedELExpressionFolderScopeTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.pagedesign.IncludedTagLibsTest;
+import org.jboss.tools.vpe.ui.bot.test.editor.pagedesign.SubstitutedELExressionsTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.pagedesign.ToolbarTextFormattingTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.preferences.AlwaysHideSelectionBarWithoutPromptTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.preferences.BorderForUnknownTagsTest;
@@ -76,6 +77,7 @@ public class VPEAllBotTests extends SWTBotTestCase{
 		suite.addTestSuite(TextEditingActionsTest.class);
 		suite.addTestSuite(PromptForTagAttributesDuringTagInsertTest.class);
 		suite.addTestSuite(IncludedTagLibsTest.class);
+		suite.addTestSuite(SubstitutedELExressionsTest.class);
 		return new TestSetup(suite);
 	}
 }
