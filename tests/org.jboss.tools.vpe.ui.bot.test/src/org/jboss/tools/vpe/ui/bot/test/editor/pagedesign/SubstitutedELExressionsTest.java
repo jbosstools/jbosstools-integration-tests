@@ -26,7 +26,7 @@ public class SubstitutedELExressionsTest extends PageDesignTestCase {
   private SWTBot optionsDialogBot  = null;
   private SWTBot editELReferenceDialogBot = null;
   
-  public void testIncludedTagLibs(){
+  public void testSubstitutedELExressions(){
     openPage();
     bot.toolbarButtonWithTooltip(PAGE_DESIGN).click();
     optionsDialogBot = bot.shell(IDELabel.Shell.PAGE_DESIGN_OPTIONS).activate().bot();

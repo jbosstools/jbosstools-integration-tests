@@ -7,6 +7,7 @@ import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
 import org.jboss.tools.vpe.ui.bot.test.editor.BlockCommentTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.EditingActionsTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.InsertActionsTest;
+import org.jboss.tools.vpe.ui.bot.test.editor.MinMaxPanesTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.TextEditingActionsTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.ToggleCommentTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.VerificationOfNameSpacesTest;
@@ -78,6 +79,7 @@ public class VPEAllBotTests extends SWTBotTestCase{
 		suite.addTestSuite(PromptForTagAttributesDuringTagInsertTest.class);
 		suite.addTestSuite(IncludedTagLibsTest.class);
 		suite.addTestSuite(SubstitutedELExressionsTest.class);
+		suite.addTestSuite(MinMaxPanesTest.class);
 		return new TestSetup(suite);
 	}
 }
