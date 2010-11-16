@@ -419,17 +419,28 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase{
 	 * @param pageName
 	 */
 	protected void openPage(String pageName){
+    openPage(pageName,VPEAutoTestCase.JBT_TEST_PROJECT_NAME);
+  }
+	/**
+   * Opens page pageName from projectName
+   * @param pageName
+   * @param projectName
+   */
+  protected void openPage(String pageName , String projectName){
     SWTBot innerBot = bot.viewByTitle(WidgetVariables.PACKAGE_EXPLORER).bot();
     SWTBotTree tree = innerBot.tree();
-    tree.expandNode(JBT_TEST_PROJECT_NAME)
-    .expandNode("WebContent").expandNode("pages").getNode(pageName).doubleClick(); //$NON-NLS-1$ //$NON-NLS-2$
+    tree.expandNode(projectName)
+      .expandNode("WebContent")
+      .expandNode("pages")
+      .getNode(pageName)
+      .doubleClick(); //$NON-NLS-1$ //$NON-NLS-2$
     bot.sleep(Timing.time3S());
   }
 	/**
 	 * Opens Test Page
 	 */
 	protected void openPage(){
-    openPage(TEST_PAGE);
+    openPage(VPEAutoTestCase.TEST_PAGE,VPEAutoTestCase.JBT_TEST_PROJECT_NAME);
   }
 	/**
 	 * Creates new empty JSP page within test project

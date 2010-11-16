@@ -196,4 +196,23 @@ public abstract class VPEEditorTestCase extends VPEAutoTestCase{
     
   }
   
+  /**
+   * Asserts if Visual Editor doesn't contain node with particular attributes
+   * @param webBrowser
+   * @param valueToContain
+   * @param fileName
+   */
+  protected static void assertVisualEditorNotContainNodeWithValue (SWTBotWebBrowser webBrowser,
+      String valueToContain,
+      String fileName){
+    
+    assertFalse("Visual Representation of file " + fileName
+        + " cannot contain node with "
+        + valueToContain
+        + " value but it does",
+        webBrowser.containsNodeWithValue(webBrowser.getMozillaEditor().getDomDocument(), 
+            valueToContain));
+    
+  }
+  
 }

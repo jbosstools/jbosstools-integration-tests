@@ -5,11 +5,14 @@ import java.io.IOException;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
+import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.vpe.ui.bot.test.Activator;
-import org.jboss.tools.vpe.ui.bot.test.VPEAutoTestCase;
+import org.jboss.tools.vpe.ui.bot.test.editor.VPEEditorTestCase;
 
-public abstract class PageDesignTestCase extends VPEAutoTestCase{
+public abstract class PageDesignTestCase extends VPEEditorTestCase{
 	
 	final static String PAGE_DESIGN = "Page Design Options"; //$NON-NLS-1$
 
@@ -45,5 +48,17 @@ public abstract class PageDesignTestCase extends VPEAutoTestCase{
 		}
 		return filePath;
 	}
-	
+	/**
+	 * Deletes all defined EL Substitutions. VPE has to be opened when called this method
+	 */
+	public void deleteAllELSubstitutions(){
+	  SWTBot optionsDialogBot = bot.shell(IDELabel.Shell.PAGE_DESIGN_OPTIONS).activate().bot();
+    optionsDialogBot.tabItem(IDELabel.PageDesignOptionsDialog.SUBSTITUTED_EL_EXPRESSIONS_TAB).activate();
+    SWTBotTable elVariablesTable = optionsDialogBot.table();
+    while (elVariablesTable.rowCount() > 0){
+      elVariablesTable.select(0);
+      optionsDialogBot.button(IDELabel.Button.REMOVE).click();
+    }
+    optionsDialogBot.button(IDELabel.Button.OK).click();
+	}
 }
