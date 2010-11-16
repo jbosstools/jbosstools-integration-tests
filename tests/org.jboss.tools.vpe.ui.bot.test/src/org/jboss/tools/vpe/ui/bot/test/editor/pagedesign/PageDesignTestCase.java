@@ -8,6 +8,8 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
+import org.jboss.tools.ui.bot.ext.Timing;
+import org.jboss.tools.ui.bot.ext.parts.SWTBotTableExt;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.vpe.ui.bot.test.Activator;
 import org.jboss.tools.vpe.ui.bot.test.editor.VPEEditorTestCase;
@@ -52,6 +54,7 @@ public abstract class PageDesignTestCase extends VPEEditorTestCase{
 	 * Deletes all defined EL Substitutions. VPE has to be opened when called this method
 	 */
 	public void deleteAllELSubstitutions(){
+	  bot.toolbarButtonWithTooltip(PAGE_DESIGN).click();
 	  SWTBot optionsDialogBot = bot.shell(IDELabel.Shell.PAGE_DESIGN_OPTIONS).activate().bot();
     optionsDialogBot.tabItem(IDELabel.PageDesignOptionsDialog.SUBSTITUTED_EL_EXPRESSIONS_TAB).activate();
     SWTBotTable elVariablesTable = optionsDialogBot.table();
@@ -60,5 +63,63 @@ public abstract class PageDesignTestCase extends VPEEditorTestCase{
       optionsDialogBot.button(IDELabel.Button.REMOVE).click();
     }
     optionsDialogBot.button(IDELabel.Button.OK).click();
+    bot.sleep(Timing.time2S());
 	}
+	/**
+	 * Adds EL Definition
+	 * @param elName
+	 * @param value
+	 * @param scope
+	 */
+	public void addELSubstitution (String elName , String value , String scope){
+    bot.toolbarButtonWithTooltip(PAGE_DESIGN).click();
+    SWTBot optionsDialogBot = bot.shell(IDELabel.Shell.PAGE_DESIGN_OPTIONS).activate().bot();
+    optionsDialogBot.tabItem(IDELabel.PageDesignOptionsDialog.SUBSTITUTED_EL_EXPRESSIONS_TAB).activate();
+    optionsDialogBot.button(IDELabel.Button.ADD_WITHOUT_DOTS).click();
+    SWTBot addELReferenceDialogBot = optionsDialogBot.shell(IDELabel.Shell.ADD_EL_REFERENCE).activate().bot();
+    addELReferenceDialogBot.textWithLabel(IDELabel.PageDesignOptionsDialog.SUBSTITUTED_EL_EXPRESSIONS_EL_NAME)
+      .setText(elName);
+    addELReferenceDialogBot.textWithLabel(IDELabel.PageDesignOptionsDialog.SUBSTITUTED_EL_EXPRESSIONS_VALUE)
+      .setText(value);
+    addELReferenceDialogBot.radio(scope).click();
+    addELReferenceDialogBot.button(IDELabel.Button.FINISH).click();
+    optionsDialogBot.button(IDELabel.Button.OK).click();
+	}
+	 /**
+   * Edits EL Variable elName Definition
+   * @param elName
+   * @param oldScope
+   * @param newValue
+   * @param scopeRadioLabel
+   */
+  public void editELSubstitution (String elName , String oldScope, String newValue , String scopeRadioLabel){
+    bot.toolbarButtonWithTooltip(PAGE_DESIGN).click();
+    SWTBot optionsDialogBot = bot.shell(IDELabel.Shell.PAGE_DESIGN_OPTIONS).activate().bot();
+    optionsDialogBot.tabItem(IDELabel.PageDesignOptionsDialog.SUBSTITUTED_EL_EXPRESSIONS_TAB).activate();
+    new SWTBotTableExt(optionsDialogBot.table())
+      .getTableItem(oldScope,elName)
+      .select();
+    optionsDialogBot.button(IDELabel.Button.EDIT_WITHOUT_DOTS).click();
+    SWTBot addELReferenceDialogBot = optionsDialogBot.shell(IDELabel.Shell.ADD_EL_REFERENCE).activate().bot();
+    addELReferenceDialogBot.textWithLabel(IDELabel.PageDesignOptionsDialog.SUBSTITUTED_EL_EXPRESSIONS_VALUE)
+      .setText(newValue);
+    addELReferenceDialogBot.radio(scopeRadioLabel).click();
+    addELReferenceDialogBot.button(IDELabel.Button.FINISH).click();
+    optionsDialogBot.button(IDELabel.Button.OK).click();
+  }
+  /**
+   * Deletes EL Variable elName Definition
+   * @param elName
+   * @param scope
+   */
+  public void deleteELSubstitution (String elName , String scope){
+    bot.toolbarButtonWithTooltip(PAGE_DESIGN).click();
+    SWTBot optionsDialogBot = bot.shell(IDELabel.Shell.PAGE_DESIGN_OPTIONS).activate().bot();
+    optionsDialogBot.tabItem(IDELabel.PageDesignOptionsDialog.SUBSTITUTED_EL_EXPRESSIONS_TAB).activate();
+    new SWTBotTableExt(optionsDialogBot.table())
+      .getTableItem(scope,elName)
+      .select();
+    optionsDialogBot.button(IDELabel.Button.REMOVE).click();
+    optionsDialogBot.button(IDELabel.Button.OK).click();
+  }
 }

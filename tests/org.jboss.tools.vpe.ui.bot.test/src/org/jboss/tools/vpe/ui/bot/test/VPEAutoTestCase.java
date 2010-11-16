@@ -3,6 +3,7 @@ package org.jboss.tools.vpe.ui.bot.test;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 import org.eclipse.core.runtime.FileLocator;
@@ -445,13 +446,20 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase{
 	/**
 	 * Creates new empty JSP page within test project
 	 * @param pageName
+	 * @param subDirs - complete path to page location within workspace
 	 */
-	protected void createJspPage (String pageName){
-	  SWTBotTreeItem tiPages = packageExplorer.selectTreeItem("pages", new String[] {VPEAutoTestCase.JBT_TEST_PROJECT_NAME,"WebContent"});
-    tiPages.expand();
+	protected void createJspPage (String pageName , String... subDirs){
+	  SWTBotTreeItem tiPageParent = null;
+	  if (subDirs == null || subDirs.length == 0) {
+	    tiPageParent = packageExplorer.selectTreeItem("pages", new String[] {VPEAutoTestCase.JBT_TEST_PROJECT_NAME,"WebContent"});
+	  }
+	  else{
+	    String[] subPath = Arrays.copyOfRange(subDirs, 0, subDirs.length - 1);
+	    tiPageParent = packageExplorer.selectTreeItem(subDirs[subDirs.length - 1], subPath);
+	  }
+    tiPageParent.expand();
     try {
-      tiPages.getNode(pageName);
-      openPage(pageName);
+      tiPageParent.getNode(pageName).doubleClick();
     } catch (WidgetNotFoundException e) {
       open.newObject(ActionItem.NewObject.WebJSP.LABEL);
       bot.shell(IDELabel.Shell.NEW_JSP_FILE).activate();
@@ -459,8 +467,9 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase{
       bot.button(IDELabel.Button.NEXT).click();
       bot.table().select(IDELabel.NewJSPFileDialog.JSP_TEMPLATE);
       bot.button(IDELabel.Button.FINISH).click();
-      bot.sleep(Timing.time2S());
     }
+    bot.sleep(Timing.time2S());
+
 	}
 	/**
 	 * Deletes page pageName
