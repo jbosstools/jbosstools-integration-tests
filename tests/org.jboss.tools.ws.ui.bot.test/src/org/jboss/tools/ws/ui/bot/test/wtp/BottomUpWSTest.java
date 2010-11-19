@@ -1,0 +1,112 @@
+/*******************************************************************************
+ * Copyright (c) 2010 Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ * Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/
+package org.jboss.tools.ws.ui.bot.test.wtp;
+
+import java.text.MessageFormat;
+
+import org.jboss.tools.ui.bot.ext.config.Annotations.SWTBotTestRequires;
+import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
+import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.WebServiceWizard.Service_Type;
+import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.WebServiceWizard.Slider_Level;
+import org.junit.Test;
+
+
+@SWTBotTestRequires(server=@Server(),perspective="Java EE")
+public class BottomUpWSTest extends WSTestBase {
+
+		//http://localhost:8080/BottomUpWS/ClassA?wsdl
+		/*
+ <soap:Body>
+<method xmlns = "http://jbossws/">
+</method>
+</soap:Body>
+
+<soap:Body>
+<ns2:methodResponse xmlns:ns2="http://jbossws/">
+<return>1234567890</return>
+</ns2:methodResponse>
+</soap:Body>
+		 */
+	
+	@Override
+	protected String getWsPackage() {
+		return "jbossws." + getLevel().toString().toLowerCase();
+	}
+
+	@Override
+	protected String getWsName() {
+		return "JavaWs_" + getLevel();
+	}
+	
+	protected String getWsProjectName() {
+		return "BottomUpWS-web";
+	}
+	
+	@Override
+	protected String getEarProjectName() {
+		return "BottomUpWS-ear";
+	}
+
+	@Test
+	public void testDevelopService() {
+		setLevel(Slider_Level.DEVELOP);
+		bottomUpJbossWebService();
+	}
+	
+	@Test
+	public void testAssembleService() {
+		setLevel(Slider_Level.ASSEMBLE);
+		bottomUpJbossWebService();
+	}
+	
+	@Test
+	public void testDeployService() {
+		setLevel(Slider_Level.DEPLOY);
+		bottomUpJbossWebService();
+	}
+	
+	@Test
+	public void testInstallService() {
+		setLevel(Slider_Level.INSTALL);
+		bottomUpJbossWebService();
+	}
+	
+	@Test
+	public void testStartService() {
+		setLevel(Slider_Level.START);
+		bottomUpJbossWebService();
+	}
+	
+	@Test
+	public void testTestService() {
+		setLevel(Slider_Level.TEST);
+		bottomUpJbossWebService();
+	}
+	
+	private void bottomUpJbossWebService() {
+		String s = readStream(BottomUpWSTest.class.getResourceAsStream("/resources/jbossws/ClassA.java.ws"));
+		String src = MessageFormat.format(s, getWsPackage(), getWsName());
+		createService(Service_Type.BOTTOM_UP, getWsPackage() + "." + getWsName(), getLevel(), src);
+//		runProject(getProjectName());
+		switch (getLevel()) {
+		case DEVELOP:
+			return;
+		case ASSEMBLE:
+		case DEPLOY:
+			runProject(getEarProjectName());
+			break;
+		}
+		assertServiceDeployed(getWSDLUrl());
+//		checkService(getWSDLUrl(svcName.substring(svcName.lastIndexOf(".") + 1)), QName service, QName port, String msg, String rsp)
+//		servers.removeAllProjectsFromServer(configuredState.getServer().name);
+	}
+
+}

@@ -8,7 +8,7 @@
  * Contributors:
  * Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.ws.ui.bot.test;
+package org.jboss.tools.ws.ui.bot.test.wtp;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -21,19 +21,18 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.MessageFormat;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
+import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCombo;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem;
-import org.jboss.tools.ui.bot.ext.gen.ActionItem.NewObject.Class;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.NewObject.JavaEEEnterpriseApplicationProject;
-import org.jboss.tools.ui.bot.ext.gen.ActionItem.NewObject.WebServicesWebService;
+import org.jboss.tools.ui.bot.ext.gen.ActionItem.NewObject.WebServicesWSDL;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.NewObject.WebServicesWebServiceClient;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.NewObject.WebServlet;
 import org.jboss.tools.ui.bot.ext.parts.SWTBotHyperlinkExt;
@@ -41,66 +40,88 @@ import org.jboss.tools.ui.bot.ext.parts.SWTBotScaleExt;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ws.ui.bot.test.uiutils.actions.NewFileWizardAction;
 import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.DynamicWebProjectWizard;
+import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.WebServiceWizard;
+import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.WebServiceWizard.Service_Type;
+import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.WebServiceWizard.Slider_Level;
+import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.Wizard;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.runner.RunWith;
 
 @RunWith(SWTBotJunit4ClassRunner.class)
-public class JbossWSTest extends SWTTestExt {
+public abstract class WSTestBase extends SWTTestExt {
 
 	public static final String EAR_PROJECT_NAME="EAR";
-	public static final String PKG_NAME="jbossws";
 		
-	public static final String CLASS_A="ClassA";
-	public static final String CLASS_B="ClassB";
 	public static final String CLASS_C="ClassC";
-	public static final String BOTTOMUP_WS_PROJ_NAME="BottomUpJbossWS";	
-	public static final String BOTTOMUP_WS_WSDL_URL="http://localhost:8080/"+BOTTOMUP_WS_PROJ_NAME+"/"+CLASS_A+"?wsdl";	
 	public static final String BOTTOMUP_WS_CLIENT_PROJ_NAME = "BottomUpJbossWSClient";
 	public static final String BOTTOMUP_WS_CLIENT_SERVLET_NAME = "BottomUpJbossWStest";
 	public static final String BOTTOMUP_WS_CLIENT_SERVLET_URL = "http://localhost:8080/"+BOTTOMUP_WS_CLIENT_PROJ_NAME+"/"+BOTTOMUP_WS_CLIENT_SERVLET_NAME;
 	public static final String TWO_SERVICES_CLIENT_SERVLET_NAME="TwoServicesJbossWStest";
 	public static final String TWO_SERVICES_CLIENT_SERVLET_URL = "http://localhost:8080/"+BOTTOMUP_WS_CLIENT_PROJ_NAME+"/"+TWO_SERVICES_CLIENT_SERVLET_NAME;
-	public static final String TOPDOWN_WS_PROJ_NAME="TopDownJbossWS";	
-	public static final String TOPDOWN_WS_WSDL_URL="http://localhost:8080/"+TOPDOWN_WS_PROJ_NAME+"/"+CLASS_B+"?wsdl";	
 	public static final String TOPDOWN_WS_CLIENT_PROJ_NAME = "TopDownJbossWSClient";
 	public static final String TOPDOWN_WS_CLIENT_SERVLET_NAME = "TopDownJbossWStest";
 	public static final String TOPDOWN_WS_CLIENT_SERVLET_URL = "http://localhost:8080/"+TOPDOWN_WS_CLIENT_PROJ_NAME+"/"+TOPDOWN_WS_CLIENT_SERVLET_NAME;
 	public static final String JBOSSWS_CRED_LOGIN="admin";
 	public static final String JBOSSWS_CRED_PASS="admin";
-	public static final int CLIENT_SCALE_DEVELOP=5;
-	public static final int CLIENT_SCALE_ASSEMBLE=4;
-	public static final int CLIENT_SCALE_DEPLOY=3;
-	public static final int CLIENT_SCALE_INSTALL=2;
 	public static final int CLIENT_SCALE_START=1;
-	public static final int CLIENT_SCALE_TEST=0;
-	public static final int SERVICE_SCALE_DEVELOP=5;
-	public static final int SERVICE_SCALE_ASSEMBLE=4;
-	public static final int SERVICE_SCALE_DEPLOY=3;
-	public static final int SERVICE_SCALE_INSTALL=2;
-	public static final int SERVICE_SCALE_START=1;
-	public static final int SERVICE_SCALE_TEST=0;
-	protected static Map<Integer,String> wizardConfigTexts = new HashMap<Integer, String>();
 
 	private static final String SOAP_REQUEST_TEMPLATE = "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\" ?>" +
 	"<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\"" +
 	" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"" +
 	" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">" +
 	"<soap:Body>{0}</soap:Body>" +
-	"</soap:Envelope>";;
+	"</soap:Envelope>";
 	
-	private static final Logger L = Logger.getLogger(JbossWSTest.class.getName());
-	public JbossWSTest() {
-
+	private static final Logger L = Logger.getLogger(WSTestBase.class.getName());
+	private Slider_Level level;
+	
+	@Before
+	public void setup() {
+		if (getEarProjectName() != null && !projectExists(getEarProjectName())) {
+			createEARProject(getEarProjectName());
+		}
+		if (!projectExists(getWsProjectName())) {
+			createProject(getWsProjectName());
+		}
 	}
 	
-	static {
-		wizardConfigTexts.put(0, "Test");
-		wizardConfigTexts.put(1, "Start");
-		wizardConfigTexts.put(2, "Install");
-		wizardConfigTexts.put(3, "Deploy");
-		wizardConfigTexts.put(4, "Assemble");
-		wizardConfigTexts.put(5, "Develop");
+	private boolean projectExists(String name) {
+		return projectExplorer.existsResource(name);
 	}
-		
+	
+	@After
+	public void cleanup() {
+		servers.removeAllProjectsFromServer();
+	}
+	
+	@AfterClass
+	public static void cleanAll() {
+		projectExplorer.deleteAllProjects();
+	}
+	
+	protected abstract String getWsProjectName();
+	
+	protected String getEarProjectName() {
+		return null;
+	}
+	
+	protected abstract String getWsPackage();
+	protected abstract String getWsName();
+	
+	protected void setLevel(Slider_Level level) {
+		this.level = level;
+	}
+	
+	protected Slider_Level getLevel() {
+		return level;
+	}
+	
+	protected String getWSDLUrl() {
+		return "http://localhost:8080/" + getWsProjectName() + "/" + getWsName() + "?wsdl";
+	}
+	
 	protected void createClient(String projectName, String servletName,String wsdlDef, int type) {
 		createProject(projectName);
 		SWTBot wiz = open.newObject(WebServicesWebServiceClient.LABEL);
@@ -122,6 +143,7 @@ public class JbossWSTest extends SWTTestExt {
 	 * checks if 'Web Service Runtime' is set to 'JbossWS' and possibly sets it correctly
 	 * @param wiz wizard page of new Web Service
 	 */
+	@Deprecated
 	protected void selectJbossWSRuntime() {
 		SWTBotHyperlinkExt link = bot.hyperlink(1); 
 		String linkText = link.getText();
@@ -133,26 +155,63 @@ public class JbossWSTest extends SWTTestExt {
 		}
 	}
 	
-	protected void bottomUpService(String projName, String serviceClass, int serverType) {		
-		SWTBot wiz = open.newObject(Class.LABEL);
-		wiz.textWithLabel(Class.TEXT_PACKAGE).setText(PKG_NAME);
-		wiz.textWithLabel(Class.TEXT_NAME).setText(serviceClass);
-		open.finish(wiz);
-		eclipse.setClassContentFromResource(bot.editorByTitle(serviceClass
-				+ ".java"), true,
-				org.jboss.tools.ws.ui.bot.test.Activator.PLUGIN_ID,
-				PKG_NAME, serviceClass + ".java.ws");
-		wiz = open.newObject(ActionItem.NewObject.WebServicesWebService.LABEL);
-		wiz.textWithLabel(WebServicesWebService.TEXT_SERVICE_IMPLEMENTATION)
-				.setText(PKG_NAME + "." + serviceClass);
-		SWTBotScaleExt slider = bot.scale();	
-		slider.setSelection(serverType);
-		selectJbossWSRuntime();
-		open.finish(wiz);
-		projectExplorer.runOnServer(projName);
+	protected void createService(Service_Type t, String source, Slider_Level level, String code) {
+		//create ws source - java class or wsdl
+		SWTBotEditor ed = null;
+		switch (t) {
+		case BOTTOM_UP:
+			ed = createClass(getWsPackage(), getWsName());
+			break;
+		case TOP_DOWN:
+			ed = createWsdl(getWsName());
+			break;
+		}
+		assertNotNull(ed);
+		//replace default content of java class w/ code
+        SWTBotEclipseEditor st = ed.toTextEditor();
+        st.selectRange(0, 0, st.getText().length());
+        st.setText(code);
+        ed.saveAndClose();
+        //create a web service
+		new NewFileWizardAction().run().selectTemplate("Web Services", "Web Service").next();
+		WebServiceWizard wsw = new WebServiceWizard();
+		wsw.setServiceType(t);
+		wsw.setServiceSource(source);
+		wsw.setServerRuntime(configuredState.getServer().name);
+		wsw.setWebServiceRuntime("JBossWS");
+		wsw.setServiceProject(getWsProjectName());
+		wsw.setServiceEARProject(getEarProjectName());
+		wsw.setServiceSlider(level);
+		if (wsw.isClientEnabled()) {
+			wsw.setClientSlider(Slider_Level.NO_CLIENT);
+		}
+		wsw.finish();
+		util.waitForNonIgnoredJobs();
+		bot.sleep(1000);
 	}
-
+	
+	private SWTBotEditor createClass(String pkg, String cName) {
+		new NewFileWizardAction().run().selectTemplate("Class").next();
+		Wizard w = new Wizard();
+		w.bot().textWithLabel("Package:").setText(pkg);
+		w.bot().textWithLabel("Name:").setText(cName);
+		w.bot().textWithLabel("Source folder:").setText(getWsProjectName() + "/src");
+		w.finish();
+		return bot.editorByTitle(cName + ".java");
+	}
+	
+	private SWTBotEditor createWsdl(String s) {
+		SWTBot wiz1 = open.newObject(WebServicesWSDL.LABEL);
+		wiz1.textWithLabel(WebServicesWSDL.TEXT_FILE_NAME).setText(s + ".wsdl");
+		wiz1.textWithLabel(WebServicesWSDL.TEXT_ENTER_OR_SELECT_THE_PARENT_FOLDER)
+			.setText(getWsProjectName() + "/src");
+		wiz1.button(IDELabel.Button.NEXT).click();
+		open.finish(wiz1);
+		return bot.editorByTitle(s + ".wsdl");
+	}
+	
 	protected void createInvokingServlet(String servletName) {
+		String PKG_NAME="jbossws";
 		SWTBot wiz = open.newObject(WebServlet.LABEL);
 		wiz.textWithLabel(WebServlet.TEXT_JAVA_PACKAGE).setText(
 				PKG_NAME);
@@ -184,6 +243,7 @@ public class JbossWSTest extends SWTTestExt {
 		wiz.button(IDELabel.Button.NEXT).click();
 		wiz.checkBox("Generate application.xml deployment descriptor").click();
 		open.finish(wiz);
+		bot.sleep(5000);
 		assertTrue(projectExplorer.existsResource(name));
 		projectExplorer.selectProject(name);
 	}
@@ -290,4 +350,12 @@ public class JbossWSTest extends SWTTestExt {
 		}
 		return w != null ? w.toString() : "";
 	}
+	
+	protected void runProject(String project) {
+		open.viewOpen(ActionItem.View.ServerServers.LABEL);
+		projectExplorer.runOnServer(project);
+		bot.sleep(5000);
+	}
+	
+
 }

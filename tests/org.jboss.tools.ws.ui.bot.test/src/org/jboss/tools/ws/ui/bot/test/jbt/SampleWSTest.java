@@ -8,7 +8,7 @@
  * Contributors:
  * Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.ws.ui.bot.test;
+package org.jboss.tools.ws.ui.bot.test.jbt;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -28,42 +28,46 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.ui.bot.ext.config.Annotations.SWTBotTestRequires;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
-import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 import org.jboss.tools.ws.ui.bot.test.uiutils.actions.NewSampleWSWizardAction;
 import org.jboss.tools.ws.ui.bot.test.uiutils.actions.TreeItemAction;
 import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.SampleWSWizard;
 import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.SampleWSWizard.Type;
+import org.jboss.tools.ws.ui.bot.test.utils.WSClient;
+import org.jboss.tools.ws.ui.bot.test.wtp.WSTestBase;
 import org.junit.AfterClass;
 import org.junit.Test;
 
 
 @SWTBotTestRequires(server=@Server(),perspective="Java EE")
-public class SampleWebService extends JbossWSTest {
+public class SampleWSTest extends WSTestBase {
 
 	private static final String SOAP_REQUEST = getSoapRequest("<ns1:sayHello xmlns:ns1=\"http://{0}/\"><arg0>{1}</arg0></ns1:sayHello>");
 	private static final String SERVER_URL = "localhost:8080";
-	private static final Logger L = Logger.getLogger(SampleWebService.class.getName());
+	private static final Logger L = Logger.getLogger(SampleWSTest.class.getName());
 	
 	@AfterClass
-	public static void cleanup() {
+	public static void clean() {
 		servers.removeAllProjectsFromServer();
 		projectExplorer.deleteAllProjects();
 	}
 	
+	@Override
+	protected String getWsProjectName() {
+		return "SampleSOAPWS";
+	}
+
 	@Test
 	public void testSampleSoapWS() {
-		String project = "SampleSOAPWS";
-		createProject(project);
-		IFile dd = getDD(project);
+		IFile dd = getDD(getWsProjectName());
 		if (!dd.exists()) {
-			createDD(project);
+			createDD(getWsProjectName());
 		}
 		assertTrue(dd.exists());
-		createSampleSOAPWS(project, "HelloService", "sample", "SampleService");
-		checkSOAPService(project, "HelloService", "sample", "SampleService", "You");
+		createSampleSOAPWS(getWsProjectName(), "HelloService", "sample", "SampleService");
+		checkSOAPService(getWsProjectName(), "HelloService", "sample", "SampleService", "You");
 
-		createSampleSOAPWS(project, "GreetService", "greeter", "Greeter");
-		checkSOAPService(project, "GreetService", "greeter", "Greeter", "Tester");
+		createSampleSOAPWS(getWsProjectName(), "GreetService", "greeter", "Greeter");
+		checkSOAPService(getWsProjectName(), "GreetService", "greeter", "Greeter", "Tester");
 	}
 
 	@Test
@@ -116,12 +120,6 @@ public class SampleWebService extends JbossWSTest {
 		}
 		w.finish();
 		util.waitForNonIgnoredJobs();
-	}
-	
-	private void runProject(String project) {
-		open.viewOpen(ActionItem.View.ServerServers.LABEL);
-		projectExplorer.runOnServer(project);
-		bot.sleep(5000);
 	}
 	
 	private void checkService(Type type, String project, String svcName, String svcPkg, String svcClass, String msgContent, String appCls) {
@@ -185,4 +183,15 @@ public class SampleWebService extends JbossWSTest {
 		return "";
 	}
 
+	@Override
+	protected String getWsPackage() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected String getWsName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
