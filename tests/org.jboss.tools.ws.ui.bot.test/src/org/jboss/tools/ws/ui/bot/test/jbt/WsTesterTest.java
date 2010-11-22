@@ -27,6 +27,7 @@ import java.util.logging.Logger;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
+import org.jboss.tools.ui.bot.ext.config.Annotations.SWTBotTestRequires;
 import org.jboss.tools.ws.ui.bot.test.widgets.SelectWSDLDialog;
 import org.jboss.tools.ws.ui.bot.test.widgets.WsTesterView;
 import org.jboss.tools.ws.ui.bot.test.widgets.WsTesterView.Request_Arg_Type;
@@ -40,6 +41,7 @@ import org.junit.Test;
  *
  * @author jlukas
  */
+@SWTBotTestRequires(perspective="Java")
 public class WsTesterTest extends SWTTestExt {
 
 	private static final Logger L = Logger.getLogger(WsTesterTest.class.getName());

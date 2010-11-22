@@ -12,6 +12,7 @@ package org.jboss.tools.ws.ui.bot.test;
 
 import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
 import org.jboss.tools.ws.ui.bot.test.jbt.SampleWSTest;
+import org.jboss.tools.ws.ui.bot.test.jbt.WsTesterTest;
 import org.jboss.tools.ws.ui.bot.test.wtp.BottomUpWSTest;
 import org.jboss.tools.ws.ui.bot.test.wtp.TopDownWSTest;
 import org.junit.runner.RunWith;
@@ -20,7 +21,8 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses({	
 	SampleWSTest.class,
 	BottomUpWSTest.class,
-	TopDownWSTest.class	
+	TopDownWSTest.class,
+	WsTesterTest.class
 	})
 @RunWith(RequirementAwareSuite.class)
 public class WSAllBotTests {

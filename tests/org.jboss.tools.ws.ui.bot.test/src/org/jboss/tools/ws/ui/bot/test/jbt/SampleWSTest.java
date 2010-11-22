@@ -37,7 +37,6 @@ import org.jboss.tools.ws.ui.bot.test.wtp.WSTestBase;
 import org.junit.AfterClass;
 import org.junit.Test;
 
-
 @SWTBotTestRequires(server=@Server(),perspective="Java EE")
 public class SampleWSTest extends WSTestBase {
 
