@@ -26,7 +26,6 @@ import org.jboss.tools.drools.ui.bot.test.smoke.OpenDroolsPerspective;
 import org.jboss.tools.drools.ui.bot.test.smoke.RuleFlowTest;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.SWTUtilExt;
-import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.ext.types.PerspectiveType;
 import org.junit.AfterClass;
@@ -114,7 +113,6 @@ public class DroolsAllBotTests extends SWTTestExt {
     } catch (WidgetNotFoundException wnfe){
       // Do nothing ignore this error
     }
-    bot.sleep(Timing.time5S());
     eclipse.openPerspective(PerspectiveType.JAVA);
     eclipse.maximizeActiveShell();
   }
