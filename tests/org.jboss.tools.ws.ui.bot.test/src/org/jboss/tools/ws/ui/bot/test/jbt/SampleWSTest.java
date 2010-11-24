@@ -55,6 +55,16 @@ public class SampleWSTest extends WSTestBase {
 		return "SampleSOAPWS";
 	}
 
+	@Override
+	protected String getWsPackage() {
+		return null;
+	}
+
+	@Override
+	protected String getWsName() {
+		return null;
+	}
+	
 	@Test
 	public void testSampleSoapWS() {
 		IFile dd = getDD(getWsProjectName());
@@ -180,17 +190,5 @@ public class SampleWSTest extends WSTestBase {
 			L.log(Level.WARNING, e.getMessage(), e);
 		}
 		return "";
-	}
-
-	@Override
-	protected String getWsPackage() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	protected String getWsName() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }

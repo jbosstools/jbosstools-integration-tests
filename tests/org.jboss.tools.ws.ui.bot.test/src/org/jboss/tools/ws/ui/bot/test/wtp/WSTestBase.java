@@ -256,11 +256,9 @@ public abstract class WSTestBase extends SWTTestExt {
 			assertEquals("Service was not sucessfully deployed, WSDL '" + wsdlURL + "' was not found",
 					HttpURLConnection.HTTP_OK, connection.getResponseCode());
 		} catch (MalformedURLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			throw new RuntimeException(e1);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		} finally {
 			if (connection != null) {
 				connection.disconnect();
@@ -276,11 +274,9 @@ public abstract class WSTestBase extends SWTTestExt {
 			assertEquals("Project was not sucessfully undeployed, WSDL '" + wsdlURL + "' is still available",
 					HttpURLConnection.HTTP_NOT_FOUND, connection.getResponseCode());
 		} catch (MalformedURLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			throw new RuntimeException(e1);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		} finally {
 			if (connection != null) {
 				connection.disconnect();
@@ -296,11 +292,9 @@ public abstract class WSTestBase extends SWTTestExt {
 			String rsp = readStream(is);
 			assertContains(response, rsp);
 		} catch (MalformedURLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			throw new RuntimeException(e1);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		} finally {
 			if (is != null) {
 				try {

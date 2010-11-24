@@ -26,5 +26,4 @@ import org.junit.runners.Suite.SuiteClasses;
 	})
 @RunWith(RequirementAwareSuite.class)
 public class WSAllBotTests {
-
 }
