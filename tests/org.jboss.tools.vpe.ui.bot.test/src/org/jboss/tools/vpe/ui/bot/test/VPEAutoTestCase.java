@@ -77,7 +77,12 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase{
 			Activator.getDefault().getLog().log(status);
 			e.printStackTrace();
 		}
-		if (projectProperties.containsKey("JBossEap5.0")){
+		if (projectProperties.containsKey("JBossEap5.x")){
+      JBOSS_EAP_HOME = projectProperties.getProperty("JBossEap5.x"); //$NON-NLS-1$
+      JBOSS_SERVER_GROUP = IDELabel.ServerGroup.JBOSS_EAP_5_x;
+      JBOSS_SERVER_RUNTIME_TYPE = IDELabel.ServerRuntimeType.JBOSS_EAP_5_x;
+      JBOSS_SERVER_TYPE = IDELabel.ServerType.JBOSS_EAP_5_x;
+    }else if (projectProperties.containsKey("JBossEap5.0")){
 		  JBOSS_EAP_HOME = projectProperties.getProperty("JBossEap5.0"); //$NON-NLS-1$
 	    JBOSS_SERVER_GROUP = IDELabel.ServerGroup.JBOSS_EAP_5_0;
 	    JBOSS_SERVER_RUNTIME_TYPE = IDELabel.ServerRuntimeType.JBOSS_EAP_5_0;
