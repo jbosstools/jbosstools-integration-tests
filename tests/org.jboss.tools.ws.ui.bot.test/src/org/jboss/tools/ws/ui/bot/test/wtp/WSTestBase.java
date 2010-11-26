@@ -29,6 +29,7 @@ import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCombo;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.NewObject.JavaEEEnterpriseApplicationProject;
@@ -46,26 +47,12 @@ import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.WebServiceWizard.Slider_Le
 import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.Wizard;
 import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 
 @RunWith(SWTBotJunit4ClassRunner.class)
 public abstract class WSTestBase extends SWTTestExt {
-
-	public static final String EAR_PROJECT_NAME="EAR";
-		
-	public static final String CLASS_C="ClassC";
-	public static final String BOTTOMUP_WS_CLIENT_PROJ_NAME = "BottomUpJbossWSClient";
-	public static final String BOTTOMUP_WS_CLIENT_SERVLET_NAME = "BottomUpJbossWStest";
-	public static final String BOTTOMUP_WS_CLIENT_SERVLET_URL = "http://localhost:8080/"+BOTTOMUP_WS_CLIENT_PROJ_NAME+"/"+BOTTOMUP_WS_CLIENT_SERVLET_NAME;
-	public static final String TWO_SERVICES_CLIENT_SERVLET_NAME="TwoServicesJbossWStest";
-	public static final String TWO_SERVICES_CLIENT_SERVLET_URL = "http://localhost:8080/"+BOTTOMUP_WS_CLIENT_PROJ_NAME+"/"+TWO_SERVICES_CLIENT_SERVLET_NAME;
-	public static final String TOPDOWN_WS_CLIENT_PROJ_NAME = "TopDownJbossWSClient";
-	public static final String TOPDOWN_WS_CLIENT_SERVLET_NAME = "TopDownJbossWStest";
-	public static final String TOPDOWN_WS_CLIENT_SERVLET_URL = "http://localhost:8080/"+TOPDOWN_WS_CLIENT_PROJ_NAME+"/"+TOPDOWN_WS_CLIENT_SERVLET_NAME;
-	public static final String JBOSSWS_CRED_LOGIN="admin";
-	public static final String JBOSSWS_CRED_PASS="admin";
-	public static final int CLIENT_SCALE_START=1;
 
 	private static final String SOAP_REQUEST_TEMPLATE = "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\" ?>" +
 	"<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\"" +
@@ -188,6 +175,17 @@ public abstract class WSTestBase extends SWTTestExt {
 		wsw.finish();
 		util.waitForNonIgnoredJobs();
 		bot.sleep(1000);
+		
+		//let's fail if there's some error in the wizard,
+		//and close error dialog and the wizard so other tests
+		//can continue
+		if (bot.activeShell().getText().contains("Error")) {
+			SWTBotShell sh = bot.activeShell();
+			String msg = sh.bot().text().getText();
+			sh.bot().button(0).click();
+			wsw.cancel();
+			Assert.fail(msg);
+		}
 	}
 	
 	private SWTBotEditor createClass(String pkg, String cName) {
