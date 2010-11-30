@@ -75,7 +75,7 @@ public class ManageDroolsProject extends SWTTestExt{
     bot.button(IDELabel.Button.NEXT).click();
     bot.button(IDELabel.Button.FINISH).click();
     SWTTestExt.util.waitForAll(30*1000L);
-    bot.sleep(Timing.time5S());
+    bot.sleep(Timing.time10S());
     assertTrue("Project "
       + droolsProjectName 
       + " was not created properly.",SWTEclipseExt.isProjectInPackageExplorer(bot,droolsProjectName));

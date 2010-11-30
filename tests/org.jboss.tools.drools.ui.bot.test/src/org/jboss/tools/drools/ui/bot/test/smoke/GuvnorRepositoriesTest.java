@@ -306,7 +306,7 @@ public class GuvnorRepositoriesTest extends SWTTestExt{
     SWTEclipseExt.getTreeItemOnPath(
       bot,
       bot.tree(),
-      Timing.time3S(),
+      Timing.time5S(),
       importFileName,
       new String[] {
         IDELabel.GuvnorRepositories.GUVNOR_REPOSITORY_ROOT_TREE_ITEM,
@@ -352,7 +352,7 @@ public class GuvnorRepositoriesTest extends SWTTestExt{
     SWTBotView guvnorReposioryView = guvnorRepositories.show();
     SWTBotTreeItem tiRoot = guvnorRepositories.selectTreeItem(IDELabel.GuvnorRepositories.GUVNOR_REPOSITORY_ROOT_TREE_ITEM,null)
       .doubleClick();
-    bot.sleep(Timing.time2S());
+    bot.sleep(Timing.time5S());
     SWTBot dialogBot = bot.shell("").activate().bot();
     dialogBot.textWithLabel(IDELabel.GuvnorConsoleLoginDialog.USER_NAME).setText(
         GuvnorRepositoriesTest.GUVNOR_USER_NAME);
@@ -413,7 +413,7 @@ public class GuvnorRepositoriesTest extends SWTTestExt{
     SWTEclipseExt.getTreeItemOnPath(
       bot,
       bot.tree(),
-      Timing.time3S(),
+      Timing.time5S(),
       testFileName,
       new String[] {
         IDELabel.GuvnorRepositories.GUVNOR_REPOSITORY_ROOT_TREE_ITEM,
