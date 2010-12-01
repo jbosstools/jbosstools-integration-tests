@@ -56,6 +56,12 @@ public class TopDownWSTest extends WSTestBase {
 		 */
 	
 	@Test
+	public void testDeployService() {
+		setLevel(Slider_Level.DEPLOY);
+		topDownWS();
+	}
+	
+	@Test
 	public void testDevelopService() {
 		setLevel(Slider_Level.DEVELOP);
 		topDownWS();
@@ -64,12 +70,6 @@ public class TopDownWSTest extends WSTestBase {
 	@Test
 	public void testAssembleService() {
 		setLevel(Slider_Level.ASSEMBLE);
-		topDownWS();
-	}
-	
-	@Test
-	public void testDeployService() {
-		setLevel(Slider_Level.DEPLOY);
 		topDownWS();
 	}
 	
@@ -101,8 +101,15 @@ public class TopDownWSTest extends WSTestBase {
 		}
 		sb.append(tns[0]);
 		String src = MessageFormat.format(s, sb.toString(), getWsName());
-		createService(Service_Type.TOP_DOWN, "/" + getWsProjectName() + "/src/" + getWsName() + ".wsdl", getLevel(), src);
-//		runProject(getProjectName());
+		String pkg = "ws." + getWsName().toLowerCase();
+		createService(Service_Type.TOP_DOWN, "/" + getWsProjectName() + "/src/" + getWsName() + ".wsdl", getLevel(), pkg, src);
+		switch (getLevel()) {
+		case DEVELOP:
+		case ASSEMBLE:
+		case DEPLOY:
+			runProject(getEarProjectName());
+			break;
+		}
 		assertServiceDeployed(getWSDLUrl());
 //		servers.removeAllProjectsFromServer(configuredState.getServer().name);
 	}

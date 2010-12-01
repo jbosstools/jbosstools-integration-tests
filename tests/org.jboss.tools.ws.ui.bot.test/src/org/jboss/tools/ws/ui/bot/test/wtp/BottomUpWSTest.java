@@ -56,8 +56,8 @@ public class BottomUpWSTest extends WSTestBase {
 	}
 
 	@Test
-	public void testDevelopService() {
-		setLevel(Slider_Level.DEVELOP);
+	public void testDeployService() {
+		setLevel(Slider_Level.DEPLOY);
 		bottomUpJbossWebService();
 	}
 	
@@ -68,8 +68,8 @@ public class BottomUpWSTest extends WSTestBase {
 	}
 	
 	@Test
-	public void testDeployService() {
-		setLevel(Slider_Level.DEPLOY);
+	public void testDevelopService() {
+		setLevel(Slider_Level.DEVELOP);
 		bottomUpJbossWebService();
 	}
 	
@@ -94,11 +94,9 @@ public class BottomUpWSTest extends WSTestBase {
 	private void bottomUpJbossWebService() {
 		String s = readStream(BottomUpWSTest.class.getResourceAsStream("/resources/jbossws/ClassA.java.ws"));
 		String src = MessageFormat.format(s, getWsPackage(), getWsName());
-		createService(Service_Type.BOTTOM_UP, getWsPackage() + "." + getWsName(), getLevel(), src);
-//		runProject(getProjectName());
+		createService(Service_Type.BOTTOM_UP, getWsPackage() + "." + getWsName(), getLevel(), null, src);
 		switch (getLevel()) {
 		case DEVELOP:
-			return;
 		case ASSEMBLE:
 		case DEPLOY:
 			runProject(getEarProjectName());

@@ -142,6 +142,12 @@ public class WebServiceWizard extends Wizard {
 		return scale(1).isEnabled();
 	}
 	
+	//second panel
+	public WebServiceWizard setPackageName(String pkg) {
+		bot().textWithLabel("Package name").typeText(pkg);
+		return this;
+	}
+	
 	private List<SWTBotHyperlinkExt> findLink(String text) {
 		List<? extends Hyperlink> widgets = bot().widgets(WidgetMatcherFactory.widgetOfType(Hyperlink.class));
 		List<SWTBotHyperlinkExt> ret = new ArrayList<SWTBotHyperlinkExt>();

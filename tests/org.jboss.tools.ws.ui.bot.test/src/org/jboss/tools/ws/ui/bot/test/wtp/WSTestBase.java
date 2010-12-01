@@ -24,6 +24,10 @@ import java.text.MessageFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.SWTBot;
@@ -142,7 +146,7 @@ public abstract class WSTestBase extends SWTTestExt {
 		}
 	}
 	
-	protected void createService(Service_Type t, String source, Slider_Level level, String code) {
+	protected void createService(Service_Type t, String source, Slider_Level level, String pkg, String code) {
 		//create ws source - java class or wsdl
 		SWTBotEditor ed = null;
 		switch (t) {
@@ -159,6 +163,13 @@ public abstract class WSTestBase extends SWTTestExt {
         st.selectRange(0, 0, st.getText().length());
         st.setText(code);
         ed.saveAndClose();
+        //refresh workspace - workaround for JBIDE-6731
+        try {
+			ResourcesPlugin.getWorkspace().getRoot().refreshLocal(IWorkspaceRoot.DEPTH_INFINITE, new NullProgressMonitor());
+		} catch (CoreException e) {
+			L.log(Level.WARNING, e.getMessage(), e);
+		}
+		bot.sleep(500);
         //create a web service
 		new NewFileWizardAction().run().selectTemplate("Web Services", "Web Service").next();
 		WebServiceWizard wsw = new WebServiceWizard();
@@ -171,6 +182,10 @@ public abstract class WSTestBase extends SWTTestExt {
 		wsw.setServiceSlider(level);
 		if (wsw.isClientEnabled()) {
 			wsw.setClientSlider(Slider_Level.NO_CLIENT);
+		}
+		if (pkg != null && pkg.trim().length() > 0) {
+			wsw.next();
+			wsw.setPackageName(pkg);
 		}
 		wsw.finish();
 		util.waitForNonIgnoredJobs();
