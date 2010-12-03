@@ -91,6 +91,8 @@ public class VisualEditorContextMenuTest extends VPEEditorTestCase {
       "",
       SWTBotWebBrowser.ZOOM_MENU_LABEL,
       "",
+      SWTBotWebBrowser.PREFERENCES_MENU_LABEL,
+      "",      
       SWTBotWebBrowser.PASTE_MENU_LABEL});
 
 	}
@@ -111,9 +113,12 @@ public class VisualEditorContextMenuTest extends VPEEditorTestCase {
       SWTBotWebBrowser.INSERT_AFTER_MENU_LABEL,
       SWTBotWebBrowser.INSERT_INTO_MENU_LABEL,
       SWTBotWebBrowser.REPLACE_WITH_MENU_LABEL,
+      SWTBotWebBrowser.EXTERNALIZE_STRING_MENU_LABEL,
       "",
       SWTBotWebBrowser.ZOOM_MENU_LABEL,
       "",
+      SWTBotWebBrowser.PREFERENCES_MENU_LABEL,
+      "",      
       SWTBotWebBrowser.CUT_MENU_LABEL,
       SWTBotWebBrowser.COPY_MENU_LABEL,
       SWTBotWebBrowser.PASTE_MENU_LABEL});
@@ -135,8 +140,11 @@ public class VisualEditorContextMenuTest extends VPEEditorTestCase {
       SWTBotWebBrowser.INSERT_INTO_MENU_LABEL,
       SWTBotWebBrowser.REPLACE_WITH_MENU_LABEL,
       SWTBotWebBrowser.STRIP_TAG_MENU_LABEL,
+      SWTBotWebBrowser.EXTERNALIZE_STRING_MENU_LABEL,
       "",
       SWTBotWebBrowser.ZOOM_MENU_LABEL,
+      "",
+      SWTBotWebBrowser.PREFERENCES_MENU_LABEL,
       "",
       SWTBotWebBrowser.CUT_MENU_LABEL,
       SWTBotWebBrowser.COPY_MENU_LABEL,

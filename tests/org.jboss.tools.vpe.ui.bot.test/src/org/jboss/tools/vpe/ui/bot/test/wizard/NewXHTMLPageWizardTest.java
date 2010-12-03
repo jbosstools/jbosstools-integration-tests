@@ -10,6 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.vpe.ui.bot.test.wizard;
 
+import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.vpe.ui.bot.test.VPEAutoTestCase;
@@ -58,6 +59,7 @@ public class NewXHTMLPageWizardTest extends VPEAutoTestCase{
 		bot.checkBox(IDELabel.NewXHTMLFileDialog.USE_XHTML_TEMPLATE_CHECK_BOX).select();
 		bot.table().select(IDELabel.NewXHTMLFileDialog.TEMPLATE_FACELET_FORM_XHTML_NAME);
 		bot.button(IDELabel.Button.FINISH).click();
+		bot.sleep(Timing.time2S());
 		assertEquals("Active Editor Title should be" ,"test.xhtml", this.bot.activeEditor().getTitle()); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
