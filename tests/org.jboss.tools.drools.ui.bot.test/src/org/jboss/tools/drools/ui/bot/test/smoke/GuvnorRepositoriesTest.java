@@ -303,6 +303,7 @@ public class GuvnorRepositoriesTest extends SWTTestExt{
     // Import File From Repository
     eclipse.createNew(EntityType.RESOURCES_FROM_GUVNOR);
     bot.button(IDELabel.Button.NEXT).click();
+    bot.sleep(Timing.time2S());
     SWTEclipseExt.getTreeItemOnPath(
       bot,
       bot.tree(),
@@ -353,7 +354,15 @@ public class GuvnorRepositoriesTest extends SWTTestExt{
     SWTBotTreeItem tiRoot = guvnorRepositories.selectTreeItem(IDELabel.GuvnorRepositories.GUVNOR_REPOSITORY_ROOT_TREE_ITEM,null)
       .doubleClick();
     bot.sleep(Timing.time5S());
-    SWTBot dialogBot = bot.shell("").activate().bot();
+    SWTBotShell activeShell = bot.activeShell();
+    SWTBot dialogBot = null;
+    if (activeShell.getText().length() != 0){
+      dialogBot = bot.shell("").activate().bot(); 
+    }
+    else{
+      dialogBot = activeShell.bot();
+    }
+     
     dialogBot.textWithLabel(IDELabel.GuvnorConsoleLoginDialog.USER_NAME).setText(
         GuvnorRepositoriesTest.GUVNOR_USER_NAME);
     dialogBot.textWithLabel(IDELabel.GuvnorConsoleLoginDialog.PASSWORD).setText(
