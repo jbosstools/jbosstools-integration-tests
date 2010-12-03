@@ -13,8 +13,10 @@ public class ESBExampleTest extends SWTTestExt{
 		SWTBotTree tree = projectExplorer.show().bot().tree();
 		SWTBotTreeItem proj = tree.select(project).getTreeItem(project);
 		boolean fixed=false;
+		boolean found=false;
 		for (SWTBotTreeItem item : proj.getItems()) {
 			if (item.getText().startsWith(lib)) {
+				found = true;
 				ContextMenuHelper.prepareTreeItemForContextMenu(tree, item);
 				new SWTBotMenu(ContextMenuHelper.getContextMenu(tree, IDELabel.Menu.PROPERTIES, false)).click();
 				SWTBotShell shell = bot.activeShell();
@@ -24,7 +26,8 @@ public class ESBExampleTest extends SWTTestExt{
 				break;
 			}
 		}
-		if (!fixed) {
+		if (!fixed && found) {
+			log.error("Libray starting with '"+lib+"' in project '"+project+"' was not fixed.");
 			bot.sleep(Long.MAX_VALUE);
 		}
 	}
