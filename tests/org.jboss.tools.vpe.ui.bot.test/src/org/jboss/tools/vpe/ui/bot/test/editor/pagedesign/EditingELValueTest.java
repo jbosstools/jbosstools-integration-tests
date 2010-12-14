@@ -114,7 +114,7 @@ public class EditingELValueTest extends PageDesignTestCase {
     optionsDialogBot = bot.shell(IDELabel.Shell.PAGE_DESIGN_OPTIONS).activate().bot();
     optionsDialogBot.tabItem(IDELabel.PageDesignOptionsDialog.SUBSTITUTED_EL_EXPRESSIONS_TAB).activate();
     assertTrue ("EL Substitution for EL Name " + EditingELValueTest.EL_VARIABLE_NAME + " is not defined.",
-        SWTEclipseExt.isItemInTableColumn(optionsDialogBot.table(), EditingELValueTest.EL_VARIABLE_NAME, 0));
+        SWTEclipseExt.isItemInTableColumn(optionsDialogBot.table(), EditingELValueTest.EL_VARIABLE_NAME, 1));
     optionsDialogBot.button(IDELabel.Button.OK).click();
   }
 
@@ -131,15 +131,17 @@ public class EditingELValueTest extends PageDesignTestCase {
   protected void tearDown() throws Exception {
     
     if (jspGreetingPageEditor != null){
+      jspGreetingPageEditor.show();
+      deleteAllELSubstitutions();
       jspGreetingPageEditor.setText(greetingPageOrigText);
       jspGreetingPageEditor.saveAndClose();
     }
     if (jspInputNamePageEditor != null){
+      jspInputNamePageEditor.show();
+      deleteAllELSubstitutions();
       jspInputNamePageEditor.setText(inputNamePageOrigText);
       jspInputNamePageEditor.saveAndClose();  
     }
-    
-    deleteAllELSubstitutions();
     
     super.tearDown();
   } 

@@ -23,6 +23,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
 import org.jboss.tools.vpe.ui.bot.test.VPEAutoTestCase;
 import org.jboss.tools.jst.jsp.messages.JstUIMessages;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
+import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.helper.KeyboardHelper;
 import org.jboss.tools.ui.bot.test.WidgetVariables;
 
@@ -390,7 +391,7 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		/*
 		 * Select some text
 		 */
-		editor.toTextEditor().selectRange(13, 0, 1);
+		editor.toTextEditor().selectRange(13, 15, 1);
 		/*
 		 * There is an exception caused by the fact that
 		 * line delimiter was selected.
@@ -400,7 +401,7 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		/*
 		 * Check that the toolbar buttion is disabled
 		 */
-		assertFalse("Toolbar buttion should be disabled", bot //$NON-NLS-1$
+		assertFalse("Toolbar button should be disabled", bot //$NON-NLS-1$
 				.toolbarButtonWithTooltip(TOOL_TIP)
 				.isEnabled());
 		/*
@@ -410,6 +411,7 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		/*
 		 * Send key press event to fire VPE listeners
 		 */
+		editor.setFocus();
 		KeyboardHelper.typeKeyCodeUsingAWT(KeyEvent.VK_LEFT);
 		/*
 		 * Activate the dialog
@@ -685,6 +687,7 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		bot.button(WidgetVariables.OK_BUTTON).isEnabled());
 		bot.button(WidgetVariables.OK_BUTTON).click();
 		isUnusedDialogOpened = false;
+		bot.sleep(Timing.time2S());
 		/*
 		 * Check that the text was replaced
 		 */

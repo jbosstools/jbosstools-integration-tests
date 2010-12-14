@@ -37,6 +37,15 @@ public class ManagePaletteGroupsTest extends VPEAutoTestCase {
 	  
 	  openPage();
     openPalette();	 
+    hideShowPaletteGroup();
+    // Put palette changes back
+    hideShowPaletteGroup();    
+    
+	}
+	/**
+	 * Hide or Show Pallete Group dependent on current Palette Group visibility
+	 */
+	private void hideShowPaletteGroup(){
     bot.toolbarButtonWithTooltip(IDELabel.JBossToolsPalette.SHOW_HIDE_TOOL_ITEM).click();
     SWTBot dialogBot = bot.shell(IDELabel.Shell.SHOW_HIDE_DRAWERS).activate().bot();
     SWTBotTreeItem tiTestPaletteGroup = dialogBot.tree().getTreeItem(ManagePaletteGroupsTest.TEST_PALETTE_TREE_GROUP_LABEL);
@@ -46,7 +55,7 @@ public class ManagePaletteGroupsTest extends VPEAutoTestCase {
       dialogBot.button("Ok").click();
       assertTrue("Palette Group " + ManagePaletteGroupsTest.TEST_PALETTE_GROUP_LABEL +
         " has to be hidden but is visible.", 
-        !SWTBotWebBrowser.paletteContainsPaletteEntry(botExt, ManagePaletteGroupsTest.TEST_PALETTE_GROUP_LABEL));
+        !SWTBotWebBrowser.paletteContainsRootPaletteCotnainer(botExt, ManagePaletteGroupsTest.TEST_PALETTE_GROUP_LABEL));
     }
     else{
       // Check Palette Group showing
@@ -54,10 +63,8 @@ public class ManagePaletteGroupsTest extends VPEAutoTestCase {
       dialogBot.button("Ok").click();
       assertTrue("Palette Group " + ManagePaletteGroupsTest.TEST_PALETTE_GROUP_LABEL +
         " has to be visible but is hidden.", 
-        SWTBotWebBrowser.paletteContainsPaletteEntry(botExt, ManagePaletteGroupsTest.TEST_PALETTE_GROUP_LABEL));
-    }
-    
-    
+        SWTBotWebBrowser.paletteContainsRootPaletteCotnainer(botExt, ManagePaletteGroupsTest.TEST_PALETTE_GROUP_LABEL));
+    }	  
 	}
 	@Override
 	protected void closeUnuseDialogs() {

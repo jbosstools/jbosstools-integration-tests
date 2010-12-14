@@ -14,6 +14,7 @@ package org.jboss.tools.vpe.ui.bot.test.tools;
 import static org.junit.Assert.assertNotNull;
 
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -381,8 +382,8 @@ public class SWTBotWebBrowser {
   public static void activatePaletteTool (SWTBotExt bot , String toolLabel){
     
     PaletteViewer paletteViewer = SWTBotWebBrowser.getPaletteViewer(bot);
-    PaletteEntry peJsfHtml = SWTBotWebBrowser.getPaletteEntry(paletteViewer , toolLabel);
-    paletteViewer.setActiveTool((ToolEntry) peJsfHtml);
+    PaletteEntry paletteEntry = SWTBotWebBrowser.getPaletteEntry(paletteViewer , toolLabel);
+    paletteViewer.setActiveTool((ToolEntry) paletteEntry);
 
   }
   /**
@@ -558,7 +559,7 @@ public class SWTBotWebBrowser {
 
   }
   /**
-   * Returns true if JBoss Tools Palette Contains Palette Entry with label paletteENtryLabel
+   * Returns true if JBoss Tools Palette Contains Palette Entry with label paletteEntryLabel
    * @param paletteEntryLabel
    * @return
    */
@@ -726,6 +727,25 @@ public class SWTBotWebBrowser {
         return paletteEntries;
       }
     });    
+    return result;
+  }
+  
+  /**
+   * Returns true if JBoss Tools Palette Contains Root Palette Container with label paletteContainerLabel
+   * @param paletteContainerLabel
+   * @return
+   */
+  public static boolean paletteContainsRootPaletteCotnainer (SWTBotExt bot,String paletteContainerLabel){
+    boolean result = false;
+    List<PaletteContainer> paletteContainers = SWTBotWebBrowser.getPaletteRootContainers(bot);
+    if (paletteContainers != null){
+      Iterator<PaletteContainer> pcIterator = paletteContainers.iterator();
+      while (pcIterator.hasNext() && !result){
+        if (pcIterator.next().getLabel().equals(paletteContainerLabel)){
+          result = true;
+        }
+      }
+    }
     return result;
   }
   

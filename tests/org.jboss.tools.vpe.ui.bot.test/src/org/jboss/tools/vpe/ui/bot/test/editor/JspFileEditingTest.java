@@ -53,16 +53,16 @@ public class JspFileEditingTest extends VPEEditorTestCase {
     SWTBotWebBrowser swtBotWebBrowser = new SWTBotWebBrowser(TEST_PAGE, botExt);
     nsIDOMNode node = swtBotWebBrowser.getDomNodeByTagName("INPUT", 1);
     swtBotWebBrowser.selectDomNode(node, 0);
-    botExt.sleep(Timing.time1S());
-
+    botExt.sleep(Timing.time2S());
     swtBotWebBrowser.clickContextMenu(node,
         SWTBotWebBrowser.INSERT_AFTER_MENU_LABEL,
         SWTBotWebBrowser.JSF_MENU_LABEL, SWTBotWebBrowser.HTML_MENU_LABEL,
         SWTBotWebBrowser.H_OUTPUT_TEXT_TAG_MENU_LABEL);
-
+    botExt.sleep(Timing.time2S());
     final SWTBotEclipseEditor jspTextEditor = botExt.editorByTitle(TEST_PAGE)
         .toTextEditor();
     jspTextEditor.save();
+    botExt.sleep(Timing.time2S());
     // Check if tag h:outputText was properly added
     String editorText = jspTextEditor.getText();
     assertTrue("File " + TEST_PAGE

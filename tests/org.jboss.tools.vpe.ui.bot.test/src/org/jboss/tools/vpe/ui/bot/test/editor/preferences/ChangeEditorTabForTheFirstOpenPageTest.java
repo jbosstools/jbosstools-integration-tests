@@ -2,6 +2,7 @@ package org.jboss.tools.vpe.ui.bot.test.editor.preferences;
 
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
+import org.eclipse.swtbot.swt.finder.widgets.TimeoutException;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.test.WidgetVariables;
@@ -31,11 +32,13 @@ public class ChangeEditorTabForTheFirstOpenPageTest extends PreferencesTestCase{
 		bot.viewByTitle(WidgetVariables.PACKAGE_EXPLORER).setFocus();
 		
 		//Check if the tab changed
-		WidgetNotFoundException exception = null;
+		Exception exception = null;
 		try {
 			bot.toolbarButtonWithTooltip("Refresh").click(); //$NON-NLS-1$
-		} catch (WidgetNotFoundException e) {
-			exception = e;
+		} catch (WidgetNotFoundException wnfe) {
+			exception = wnfe;
+		} catch (TimeoutException te){
+		  exception = te;
 		}
 		assertNotNull(exception);
 	}

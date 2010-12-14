@@ -55,8 +55,10 @@ public class XhtmlFilePerformanceTest extends VPEAutoTestCase {
 	  packageExplorer.openFile(JBT_TEST_PROJECT_NAME,IDELabel.JsfProjectTree.WEB_CONTENT,XhtmlFilePerformanceTest.TEST_PAGE_NAME);
 	  final SWTBotEclipseEditor xhtmlTextEditor = bot.editorByTitle(XhtmlFilePerformanceTest.TEST_PAGE_NAME).toTextEditor();
 	  String insertText = "!!!123 Test Title Inserted 321!!!";
+	  String origText = xhtmlTextEditor.getText();
 	  xhtmlTextEditor.insertText(9, 5, "<h1>" + insertText + "<h1/>");
 	  xhtmlTextEditor.save();
+	  bot.sleep(Timing.time2S());
     bot.toolbarButtonWithTooltip(IDELabel.Button.REFRESH).click();
     SWTBotEditorExt multiPageEditor = swtBotExt.swtBotEditorExtByTitle(XhtmlFilePerformanceTest.TEST_PAGE_NAME);
     multiPageEditor.selectPage(IDELabel.VisualPageEditor.PREVIEW_TAB_LABEL);
@@ -69,8 +71,12 @@ public class XhtmlFilePerformanceTest extends VPEAutoTestCase {
       // Ignore
     }
     multiPageEditor.selectPage(IDELabel.VisualPageEditor.VISUAL_SOURCE_TAB_LABEL);
-    assertTrue("Web Browser has to contain text " + insertText + " but it doesn't.",swtBotWebBrowserExt.containsNodeWithValue(swtBotWebBrowserExt.getNsIDOMDocument(), insertText));
+    boolean isOK = swtBotWebBrowserExt.containsNodeWithValue(swtBotWebBrowserExt.getNsIDOMDocument(), insertText);
+    xhtmlTextEditor.setText(origText);
+    xhtmlTextEditor.save();
     xhtmlTextEditor.close();
+    assertTrue("Web Browser has to contain text " + insertText + " but it doesn't.",isOK);
+    
     
 	}
 	

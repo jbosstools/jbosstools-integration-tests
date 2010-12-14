@@ -15,6 +15,7 @@ import java.util.Iterator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
+import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.helper.KeyboardHelper;
 import org.jboss.tools.ui.bot.test.WidgetVariables;
 import org.jboss.tools.vpe.ui.bot.test.editor.VPEEditorTestCase;
@@ -57,7 +58,7 @@ public class EditorSynchronizationTest extends VPEEditorTestCase{
 	  
 	  KeyboardHelper.pressKeyCode(bot.getDisplay(), SWT.ARROW_LEFT);
 	  
-	  delay();
+	  bot.sleep(Timing.time2S());
 	  
 	  assertTrue("h:messages node is not selected within Outline View",
 	    bot.viewByTitle(WidgetVariables.OUTLINE).bot().tree().selection().get(0).get(0).startsWith("h:messages "));

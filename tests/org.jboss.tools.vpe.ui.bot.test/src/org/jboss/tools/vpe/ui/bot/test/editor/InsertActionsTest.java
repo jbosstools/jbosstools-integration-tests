@@ -158,7 +158,7 @@ public class InsertActionsTest extends VPEEditorTestCase {
     botExt.sleep(Timing.time3S());
     nsIDOMNode node = webBrowser.getDomNodeByTagName(nodeText, 0);
     webBrowser.selectDomNode(node, 0);
-    botExt.sleep(Timing.time1S());
+    botExt.sleep(Timing.time2S());
     
     return node;
 

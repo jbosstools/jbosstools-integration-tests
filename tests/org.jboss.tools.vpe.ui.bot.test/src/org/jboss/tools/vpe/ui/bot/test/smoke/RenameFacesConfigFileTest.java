@@ -74,5 +74,9 @@ public class RenameFacesConfigFileTest extends VPEEditorTestCase{
         + OLD_FACES_CONFIG_FILE_NAME 
         + " file was not changed in web.xml file.",
       fullConfigFileName.endsWith(NEW_FACES_CONFIG_FILE_NAME));
+    // put changes back
+    checkResult = FileRenameHelper.checkFileRenamingWithinWebProjects(bot, NEW_FACES_CONFIG_FILE_NAME, OLD_FACES_CONFIG_FILE_NAME,
+        new String[]{JBT_TEST_PROJECT_NAME,IDELabel.WebProjectsTree.CONFIGURATION});
+      assertNull(checkResult,checkResult);
 	}
 }

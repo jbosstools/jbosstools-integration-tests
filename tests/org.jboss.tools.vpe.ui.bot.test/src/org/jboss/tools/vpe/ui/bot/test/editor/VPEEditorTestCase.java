@@ -76,7 +76,7 @@ public abstract class VPEEditorTestCase extends VPEAutoTestCase{
       bot.menu("Edit").menu("Delete").click(); //$NON-NLS-1$ //$NON-NLS-2$
       editor.setText(editorText);
       editor.save();
-      bot.sleep(Timing.time2S());
+      bot.sleep(Timing.time3S());
     }
 		super.tearDown();
 	}
