@@ -1,5 +1,7 @@
 package org.jboss.tools.vpe.ui.bot.test;
 
+import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.widgetOfType;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,14 +15,18 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
+import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
+import org.eclipse.swtbot.swt.finder.results.VoidResult;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.jst.jsp.jspeditor.JSPMultiPageEditor;
 import org.jboss.tools.test.TestProperties;
 import org.jboss.tools.vpe.ui.bot.test.Activator;
+import org.jboss.tools.ui.bot.ext.SWTBotExt;
 import org.jboss.tools.ui.bot.ext.SWTJBTExt;
 import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem;
+import org.jboss.tools.vpe.editor.xpl.CustomSashForm;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.test.JBTSWTBotTestCase;
 import org.jboss.tools.ui.bot.test.SWTBotJSPMultiPageEditor;
@@ -488,4 +494,76 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase{
     bot.shell("Confirm Delete").activate(); //$NON-NLS-1$
     bot.button("OK").click(); //$NON-NLS-1$
 	}
+  /**
+   * Maximize Source Pane
+   * @param botExt
+   * @param pageName
+   */
+  public void maximizeSourcePane(SWTBotExt botExt, String pageName) {
+    botExt.swtBotEditorExtByTitle(pageName).selectPage(
+        IDELabel.VisualPageEditor.VISUAL_SOURCE_TAB_LABEL);
+
+    final org.jboss.tools.vpe.editor.xpl.CustomSashForm csf = 
+      bot.widgets(widgetOfType(CustomSashForm.class)).get(0);
+    UIThreadRunnable.syncExec(new VoidResult() {
+      @Override
+      public void run() {
+        csf.maxDown();
+      }
+    });
+  }
+  /**
+   * Maximize Visual Pane
+   * @param botExt
+   * @param pageName
+   */
+  public void maximizeVisualPane(SWTBotExt botExt, String pageName) {
+    botExt.swtBotEditorExtByTitle(pageName).selectPage(
+        IDELabel.VisualPageEditor.VISUAL_SOURCE_TAB_LABEL);
+
+    final org.jboss.tools.vpe.editor.xpl.CustomSashForm csf = 
+      bot.widgets(widgetOfType(CustomSashForm.class)).get(0);
+    UIThreadRunnable.syncExec(new VoidResult() {
+      @Override
+      public void run() {
+        csf.maxUp();
+      }
+    });
+  }
+  /**
+   * Restore Source Pane
+   * @param botExt
+   * @param pageName
+   */
+  public void restoreSourcePane(SWTBotExt botExt, String pageName) {
+    botExt.swtBotEditorExtByTitle(pageName).selectPage(
+        IDELabel.VisualPageEditor.VISUAL_SOURCE_TAB_LABEL);
+
+    final org.jboss.tools.vpe.editor.xpl.CustomSashForm csf = 
+      bot.widgets(widgetOfType(CustomSashForm.class)).get(0);
+    UIThreadRunnable.syncExec(new VoidResult() {
+      @Override
+      public void run() {
+        csf.downClicked();
+      }
+    });
+  }
+  /**
+   * Restore Visual Pane
+   * @param botExt
+   * @param pageName
+   */
+  public void restoreVisualPane(SWTBotExt botExt, String pageName) {
+    botExt.swtBotEditorExtByTitle(pageName).selectPage(
+        IDELabel.VisualPageEditor.VISUAL_SOURCE_TAB_LABEL);
+
+    final org.jboss.tools.vpe.editor.xpl.CustomSashForm csf = 
+      bot.widgets(widgetOfType(CustomSashForm.class)).get(0);
+    UIThreadRunnable.syncExec(new VoidResult() {
+      @Override
+      public void run() {
+        csf.upClicked();
+      }
+    });
+  }
 }
