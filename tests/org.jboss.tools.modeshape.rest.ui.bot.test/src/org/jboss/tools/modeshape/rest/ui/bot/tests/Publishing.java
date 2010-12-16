@@ -15,6 +15,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotCombo;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.jboss.tools.ui.bot.ext.SWTEclipseExt;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.SWTUtilExt;
 import org.jboss.tools.ui.bot.ext.config.Annotations.SWTBotTestRequires;
@@ -28,12 +29,13 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+
 /**
  * 
  * @author psrna
  *
  */
-@SWTBotTestRequires(server=@Server(type=ServerType.SOA,version="5.1"),perspective="Java EE")
+//@SWTBotTestRequires(server=@Server(type=ServerType.SOA,version="5.1"),perspective="Java EE")
 public class Publishing extends SWTTestExt{
 	
 	private static final String CONNERR_MSG = "Unable to connect using the specified server properties." +
@@ -53,6 +55,8 @@ public class Publishing extends SWTTestExt{
 		open.finish(wiz);
 		assertTrue(projectExplorer.isFilePresent(Properties.PROJECT_NAME, Properties.FILE_NAME));	
 		
+		bot.editorByTitle(Properties.FILE_NAME).close();
+		
 		String projectLocation = SWTUtilExt.getPathToProject(Properties.PROJECT_NAME);
 		try {
 			FileWriter fstream = new FileWriter(projectLocation + "/" + Properties.FILE_NAME);
@@ -64,6 +68,15 @@ public class Publishing extends SWTTestExt{
 			log.error(e.getMessage());
 		}
 		
+		bot.viewByTitle("Project Explorer").show();
+		bot.viewByTitle("Project Explorer").setFocus();
+		SWTBot viewBot = bot.viewByTitle("Project Explorer").bot();
+		
+		SWTBotTreeItem node = SWTEclipseExt.selectTreeLocation(viewBot, Properties.PROJECT_NAME);
+
+		ContextMenuHelper.prepareTreeItemForContextMenu(viewBot.tree(), node);
+		ContextMenuHelper.clickContextMenu(viewBot.tree(), "Refresh");
+
 	}
 	
 	@BeforeClass
@@ -108,8 +121,8 @@ public class Publishing extends SWTTestExt{
 	private void openModeshapeView(){
 		
 		bot.menu(IDELabel.Menu.WINDOW)
-			.menu(IDELabel.Menu.SHOW_VIEW)
-			.menu(IDELabel.Menu.OTHER).click();		
+		   .menu(IDELabel.Menu.SHOW_VIEW)
+		   .menu(IDELabel.Menu.OTHER).click();		
 
 		SWTBotShell shell = bot.shell("Show View");
 		shell.activate();
@@ -135,6 +148,7 @@ public class Publishing extends SWTTestExt{
 		SWTBotCombo serverCombo = shell.bot().comboBoxWithLabel("Server:");
 		SWTBotCombo repoCombo = shell.bot().comboBoxWithLabel("Repository:");
 		SWTBotCombo workspaceCombo = shell.bot().comboBoxWithLabel("Workspace:");
+		workspaceCombo.setSelection(Properties.WORKSPACE);
 		
 		assertTrue("URL mismatch.", serverCombo.getText().equals(Properties.URL));
 		assertTrue("Repository mismatch.", repoCombo.getText().equals(Properties.REPOSITORY));
@@ -165,10 +179,10 @@ public class Publishing extends SWTTestExt{
 		assertTrue("Repository mismatch.", table.cell(0, 2).equals(Properties.REPOSITORY));
 		assertTrue("Workspace mismatch.", table.cell(0, 3).equals(Properties.WORKSPACE));
 		
-		String expectedPublishedUrl = Properties.URL + "/" + 
-		                              Properties.REPOSITORY + "/" + 
-		                              Properties.WORKSPACE + "/items/" + 
-		                              Properties.PROJECT_NAME + "/" + 
+		String expectedPublishedUrl = Properties.URL          + "/"             + 
+		                              Properties.REPOSITORY   + "/"             + 
+		                              Properties.WORKSPACE    + "/items/files/" + 
+		                              Properties.PROJECT_NAME + "/"             + 
 		                              Properties.FILE_NAME;
 		
 		assertTrue("Published Url mismatch.", table.cell(0, 4).equals(expectedPublishedUrl));
@@ -195,6 +209,7 @@ public class Publishing extends SWTTestExt{
 		SWTBotCombo serverCombo = shell.bot().comboBoxWithLabel("Server:");
 		SWTBotCombo repoCombo = shell.bot().comboBoxWithLabel("Repository:");
 		SWTBotCombo workspaceCombo = shell.bot().comboBoxWithLabel("Workspace:");
+		workspaceCombo.setSelection(Properties.WORKSPACE);
 		
 		assertTrue("URL mismatch.", serverCombo.getText().equals(Properties.URL));
 		assertTrue("Repository mismatch.", repoCombo.getText().equals(Properties.REPOSITORY));
@@ -228,11 +243,12 @@ public class Publishing extends SWTTestExt{
 		
 		try {
 			
-			URL url = new URL(Properties.WEBDAV_URL   + "/" + 
-							  Properties.REPOSITORY   + "/" + 
-							  Properties.WORKSPACE    + "/" + 
-							  Properties.PROJECT_NAME + "/" + 
+			URL url = new URL(Properties.WEBDAV_URL   + "/"       + 
+							  Properties.REPOSITORY   + "/"       + 
+							  Properties.WORKSPACE    + "/files/" + 
+							  Properties.PROJECT_NAME + "/"       + 
 							  Properties.FILE_NAME);
+			
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			
 			conn.setRequestMethod("GET");

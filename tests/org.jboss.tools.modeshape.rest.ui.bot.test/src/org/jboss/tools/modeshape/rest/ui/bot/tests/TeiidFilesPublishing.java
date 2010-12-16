@@ -34,7 +34,7 @@ import org.junit.Test;
  * @author psrna
  *
  */
-@SWTBotTestRequires(server=@Server(type=ServerType.SOA,version="5.1"), perspective="Teiid Designer")
+//@SWTBotTestRequires(server=@Server(type=ServerType.SOA,version="5.1"), perspective="Teiid Designer")
 public class TeiidFilesPublishing extends SWTTestExt{
 	
 	private static final String CONNERR_MSG = "Unable to connect using the specified server properties." +
@@ -96,8 +96,8 @@ public class TeiidFilesPublishing extends SWTTestExt{
 	private void openModeshapeView(){
 		
 		bot.menu(IDELabel.Menu.WINDOW)
-			.menu(IDELabel.Menu.SHOW_VIEW)
-			.menu(IDELabel.Menu.OTHER).click();		
+		   .menu(IDELabel.Menu.SHOW_VIEW)
+		   .menu(IDELabel.Menu.OTHER).click();		
 
 		SWTBotShell shell = bot.shell("Show View");
 		shell.activate();
@@ -124,6 +124,7 @@ public class TeiidFilesPublishing extends SWTTestExt{
 		SWTBotCombo serverCombo = shell.bot().comboBoxWithLabel("Server:");
 		SWTBotCombo repoCombo = shell.bot().comboBoxWithLabel("Repository:");
 		SWTBotCombo workspaceCombo = shell.bot().comboBoxWithLabel("Workspace:");
+		workspaceCombo.setSelection(Properties.WORKSPACE);
 		
 		assertTrue("URL mismatch.", serverCombo.getText().equals(Properties.URL));
 		assertTrue("Repository mismatch.", repoCombo.getText().equals(Properties.REPOSITORY));
@@ -155,6 +156,7 @@ public class TeiidFilesPublishing extends SWTTestExt{
 		SWTBotCombo serverCombo = shell.bot().comboBoxWithLabel("Server:");
 		SWTBotCombo repoCombo = shell.bot().comboBoxWithLabel("Repository:");
 		SWTBotCombo workspaceCombo = shell.bot().comboBoxWithLabel("Workspace:");
+		workspaceCombo.setSelection(Properties.WORKSPACE);
 		
 		assertTrue("URL mismatch.", serverCombo.getText().equals(Properties.URL));
 		assertTrue("Repository mismatch.", repoCombo.getText().equals(Properties.REPOSITORY));
@@ -178,10 +180,10 @@ public class TeiidFilesPublishing extends SWTTestExt{
 		
 		try {
 			
-			URL url = new URL(Properties.WEBDAV_URL 		+ "/" + 
-							  Properties.REPOSITORY 		+ "/" + 
-							  Properties.WORKSPACE  		+ "/" + 
-							  Properties.TEIID_PROJECT_NAME + "/" + filename);
+			URL url = new URL(Properties.WEBDAV_URL 		+ "/"       + 
+							  Properties.REPOSITORY 		+ "/"       + 
+							  Properties.WORKSPACE  		+ "/files/" + 
+							  Properties.TEIID_PROJECT_NAME + "/"       + filename);
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			
 			conn.setRequestMethod("GET");
