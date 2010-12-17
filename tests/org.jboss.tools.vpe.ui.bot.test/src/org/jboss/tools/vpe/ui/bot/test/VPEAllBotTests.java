@@ -16,6 +16,7 @@ import org.jboss.tools.vpe.ui.bot.test.editor.VisualEditorContextMenuTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.XhtmlFilePerformanceTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.pagedesign.AddSubstitutedELExpressionFolderScopeTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.pagedesign.EditingELValueTest;
+import org.jboss.tools.vpe.ui.bot.test.editor.pagedesign.IncludedCssFilesJSPTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.pagedesign.IncludedCssFilesTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.pagedesign.IncludedTagLibsTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.pagedesign.ManipulatingELValueTest;
@@ -90,6 +91,7 @@ public class VPEAllBotTests extends SWTBotTestCase{
 		suite.addTestSuite(SelectionBarTest.class);
 		suite.addTestSuite(IncludedCssFilesTest.class);
 		suite.addTestSuite(GlobalELVariablesTest.class);
+		suite.addTestSuite(IncludedCssFilesJSPTest.class);
 	
 		return new TestSetup(suite);
 	}

@@ -11,35 +11,30 @@
  ******************************************************************************/
 package org.jboss.tools.vpe.ui.bot.test.editor.pagedesign;
 
-import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.widgetOfType;
-
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
-import org.eclipse.swt.browser.Browser;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
-import org.hamcrest.Matcher;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
 import org.jboss.tools.ui.bot.ext.SWTUtilExt;
 import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem;
-import org.jboss.tools.ui.bot.ext.parts.SWTBotEditorExt;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.ext.types.JobName;
 import org.jboss.tools.vpe.ui.bot.test.VPEAutoTestCase;
+import org.jboss.tools.vpe.ui.bot.test.tools.SWTBotWebBrowser;
 
 /**
- * Tests functionality of Included CSS Files tab page of Page Design Options Dialog 
+ * Tests functionality of Included CSS Files tab page of Page Design Options Dialog  with JSP File 
  * @author vlado pakan
  *
  */
-public class IncludedCssFilesTest extends PageDesignTestCase {
+public class IncludedCssFilesJSPTest extends PageDesignTestCase {
   
-  private static final String CSS_FILE_NAME = "includedCssFileTest.css";
-  private static final String HTML_FILE_NAME = "includedCssFileTest.html";
+  private static final String CSS_FILE_NAME = "includedCssFileJSPTest.css";
+  private static final String JSP_FILE_NAME = "includedCssFileJSPTest.jsp";
   
   private SWTBot addCssReferenceDialogBot = null;
   private SWTBot optionsDialogBot  = null;
@@ -53,29 +48,38 @@ public class IncludedCssFilesTest extends PageDesignTestCase {
     // add CSS File
     open.newObject(ActionItem.NewObject.WebCSS.LABEL);
     bot.shell(IDELabel.Shell.NEW_CSS_FILE).activate(); //$NON-NLS-1$
-    bot.textWithLabel(IDELabel.NewCSSWizard.FILE_NAME).setText(IncludedCssFilesTest.CSS_FILE_NAME); //$NON-NLS-1$
+    bot.textWithLabel(IDELabel.NewCSSWizard.FILE_NAME).setText(IncludedCssFilesJSPTest.CSS_FILE_NAME); //$NON-NLS-1$
     bot.button(IDELabel.Button.FINISH).click(); //$NON-NLS-1$
     bot.sleep(Timing.time3S());
     util.waitForJobs(JobName.BUILDING_WS);
-    SWTBotEditor cssEditor = bot.editorByTitle(IncludedCssFilesTest.CSS_FILE_NAME);
-    cssEditor.toTextEditor().setText("h1 {\n" + 
-      "color: Red\n" +
+    SWTBotEditor cssEditor = bot.editorByTitle(IncludedCssFilesJSPTest.CSS_FILE_NAME);
+    cssEditor.toTextEditor().setText(".post-info {\n" +
+      "  color: blue;\n" +
+      "}\n" +
+      ".post-info a {\n" +
+      "  color: orange;\n" +
       "}");
     cssEditor.saveAndClose();
     // add HTML File
-    open.newObject(ActionItem.NewObject.WebHTMLPage.LABEL);
-    bot.shell(IDELabel.Shell.NEW_HTML_FILE).activate(); //$NON-NLS-1$
-    bot.textWithLabel(IDELabel.NewHTMLWizard.FILE_NAME).setText(IncludedCssFilesTest.HTML_FILE_NAME); //$NON-NLS-1$
+    open.newObject(ActionItem.NewObject.WebJSPFile.LABEL);
+    bot.shell(IDELabel.Shell.NEW_JSP_FILE).activate(); //$NON-NLS-1$
+    bot.textWithLabel(ActionItem.NewObject.WebJSPFile.TEXT_FILE_NAME).setText(IncludedCssFilesJSPTest.JSP_FILE_NAME); //$NON-NLS-1$
     bot.button(IDELabel.Button.FINISH).click(); //$NON-NLS-1$
     bot.sleep(Timing.time3S());
     util.waitForJobs(JobName.BUILDING_WS);
-    SWTBotEditor htmlEditor = bot.editorByTitle(IncludedCssFilesTest.HTML_FILE_NAME);
-    htmlEditor.toTextEditor().setText("<html>\n" +
+    SWTBotEditor jspEditor = bot.editorByTitle(IncludedCssFilesJSPTest.JSP_FILE_NAME);
+    jspEditor.toTextEditor().setText("<%@ taglib uri=\"http://java.sun.com/jsf/html\" prefix=\"h\"%>\n" +
       "  <body>\n" +
-      "    <h1>Title</h1>\n" +
-      "  </body>\n" +
-      "</html>");
-    htmlEditor.save();
+      "    <p class=\"post-info\">Posted by\n" +
+      "    <a href=\"index.html\">a href</a>\n" +
+      "    <br>\n" +
+      "    <h:outputLink  value=\"url\" value=\"/index.jsp\">h:outputLink</h:outputLink>\n" +
+      "    <h:form>\n" +
+      "      <h:commandLink value=\"h:commandLink\"/>\n" +
+      "    </h:form>\n" +
+      "  </p>\n" +    
+      "</body>\n");
+    jspEditor.save();
     bot.sleep(Timing.time3S());
     util.waitForJobs(JobName.BUILDING_WS);
     // add CSS File Reference
@@ -88,38 +92,21 @@ public class IncludedCssFilesTest extends PageDesignTestCase {
       .setText(SWTUtilExt.getPathToProject(VPEAutoTestCase.JBT_TEST_PROJECT_NAME) + File.separator +
           "WebContent" + File.separator +
           "pages" + File.separator +
-          IncludedCssFilesTest.CSS_FILE_NAME);
+          IncludedCssFilesJSPTest.CSS_FILE_NAME);
     addCssReferenceDialogBot.button(IDELabel.Button.FINISH).click();
     addCssReferenceDialogBot = null;
     optionsDialogBot.button(IDELabel.Button.OK).click();
     optionsDialogBot = null;
-    SWTBotEditorExt botEditorExt = new SWTBotExt().swtBotEditorExtByTitle(IncludedCssFilesTest.HTML_FILE_NAME);
-    botEditorExt.selectPage(IDELabel.VisualPageEditor.PREVIEW_TAB_LABEL);
-    Matcher<Browser> matcher = widgetOfType(Browser.class);
-    @SuppressWarnings("unchecked")
-    List<Browser> browsers = ((List<Browser>)botEditorExt.bot().widgets(matcher));
-    Browser browser0 = browsers.get(0);
-    Browser browser1 = browsers.get(1);
-    String browser0Text = SWTUtilExt.invokeMethod(browser0, "getText");
-    final String textToContain = "h1 {color: Red}";
-    // browser0 is editable browser displayed on page Visual/Source
-    boolean firstBrowserIsEditable = browser0Text.contains("dragIcon");
-    if (firstBrowserIsEditable) {
-      assertTrue("Preview Browser displayed Web Page Incorretly. There is no H1 tag with Red Color",
-          SWTUtilExt.invokeMethod(browser1, "getText").contains(textToContain));
-    } else {
-      assertTrue("Preview Browser displayed Web Page Incorretly. There is no H1 tag with Red Color",
-          browser0Text.contains(textToContain));    
-    }
-    // Test Visual Interpretation of CSS in Visual/Source Pane
-    botEditorExt.selectPage(IDELabel.VisualPageEditor.VISUAL_SOURCE_TAB_LABEL);
-    if (firstBrowserIsEditable) {
-      assertTrue("Preview Browser displayed Web Page Incorretly. There is no H1 tag with Red Color",
-          SWTUtilExt.invokeMethod(browser1, "getText").contains(textToContain));
-    } else {
-      assertTrue("Preview Browser displayed Web Page Incorretly. There is no H1 tag with Red Color",
-          SWTUtilExt.invokeMethod(browser0, "getText").contains(textToContain));    
-    }
+    bot.sleep(Timing.time3S());
+    SWTBotWebBrowser webBrowser = new SWTBotWebBrowser(IncludedCssFilesJSPTest.JSP_FILE_NAME, new SWTBotExt());
+    assertVisualEditorContainsNodeWithValue(webBrowser, 
+        "h1 {  color: Red}.post-info {  color: blue;}.post-info a {  color: orange;}",
+        IncludedCssFilesJSPTest.JSP_FILE_NAME);
+    assertVisualEditorContains(webBrowser,
+        "P", 
+        new String [] {"class"},
+        new String [] {"post-info"},
+        IncludedCssFilesJSPTest.JSP_FILE_NAME);
     bot.toolbarButtonWithTooltip(PAGE_DESIGN).click();
     optionsDialogBot = bot.shell(IDELabel.Shell.PAGE_DESIGN_OPTIONS).activate().bot();
     optionsDialogBot.tabItem(IDELabel.PageDesignOptionsDialog.INCLUDED_CSS_FILES_TAB).activate();
@@ -127,7 +114,7 @@ public class IncludedCssFilesTest extends PageDesignTestCase {
     optionsDialogBot.button(IDELabel.Button.REMOVE).click();
     optionsDialogBot.button(IDELabel.Button.OK).click();
     optionsDialogBot = null;
-    htmlEditor.close();
+    jspEditor.close();
 	}
 	
 	@Override
