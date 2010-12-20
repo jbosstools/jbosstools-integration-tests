@@ -8,6 +8,7 @@ import org.jboss.tools.vpe.ui.bot.test.editor.BlockCommentTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.EditingActionsTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.InsertActionsTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.MinMaxPanesTest;
+import org.jboss.tools.vpe.ui.bot.test.editor.StylesOnThePageTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.TextEditingActionsTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.ToggleCommentTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.VerificationOfNameSpacesTest;
@@ -92,6 +93,7 @@ public class VPEAllBotTests extends SWTBotTestCase{
 		suite.addTestSuite(IncludedCssFilesTest.class);
 		suite.addTestSuite(GlobalELVariablesTest.class);
 		suite.addTestSuite(IncludedCssFilesJSPTest.class);
+		suite.addTestSuite(StylesOnThePageTest.class);
 	
 		return new TestSetup(suite);
 	}

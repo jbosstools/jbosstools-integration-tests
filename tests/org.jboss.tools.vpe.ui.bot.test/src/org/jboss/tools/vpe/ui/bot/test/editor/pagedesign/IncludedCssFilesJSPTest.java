@@ -39,7 +39,7 @@ public class IncludedCssFilesJSPTest extends PageDesignTestCase {
   private SWTBot addCssReferenceDialogBot = null;
   private SWTBot optionsDialogBot  = null;
     
-  public void testIncludedCssFiles() throws IOException{
+  public void testIncludedCssFilesJSP() throws IOException{
     SWTBotTree tree = packageExplorer.show().bot().tree();
     tree.expandNode(VPEAutoTestCase.JBT_TEST_PROJECT_NAME)
       .expandNode("WebContent")
