@@ -12,12 +12,17 @@
 package org.jboss.tools.vpe.ui.bot.test.editor;
 
 import java.awt.event.KeyEvent;
+import java.io.File;
 
 import org.eclipse.swtbot.swt.finder.utils.Position;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
+import org.jboss.tools.ui.bot.ext.SWTEclipseExt;
 import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.helper.KeyboardHelper;
 import org.jboss.tools.ui.bot.ext.parts.SWTBotEditorExt;
+import org.jboss.tools.ui.bot.ext.view.ProblemsView;
+import org.jboss.tools.vpe.ui.bot.test.VPEAutoTestCase;
 import org.jboss.tools.vpe.ui.bot.test.tools.SWTBotWebBrowser;
 import org.mozilla.interfaces.nsIDOMNode;
 /**
@@ -126,6 +131,30 @@ public class TextEditingActionsTest extends VPEEditorTestCase {
         TextEditingActionsTest.TEST_PAGE_NAME);
 	}
 
+	 /**
+   * Tests insert Enter in Visual Editor
+   */
+  public void testInsertEnter(){
+    
+    jspEditor.setText(TextEditingActionsTest.PAGE_TEXT);
+    jspEditor.save();
+    bot.sleep(Timing.time3S());
+    nsIDOMNode node = webBrowser.getDomNodeByTagName("SPAN", 0);
+    webBrowser.selectDomNode(node, 0);
+    bot.sleep(Timing.time1S());
+    // Check inserting Enter Functionality
+    Position cursorPosition = jspEditor.cursorPosition();
+    jspEditor.deselectAndSetCursorPosition(cursorPosition.line, cursorPosition.column);
+    webBrowser.setFocus();
+    KeyboardHelper.typeKeyCodeUsingAWTRepeately(KeyEvent.VK_ENTER, 6);
+    jspEditor.save();
+    bot.sleep(Timing.time3S());
+    String jspEditorText = jspEditor.getText();
+    assertTrue ("Source Editor should has text " + TextEditingActionsTest.PAGE_TEXT +
+        "\nbut it is\n" + jspEditorText,
+        jspEditorText.equals(TextEditingActionsTest.PAGE_TEXT));  }
+
+	
 	@Override
 	protected void closeUnuseDialogs() {
 
@@ -180,6 +209,7 @@ public class TextEditingActionsTest extends VPEEditorTestCase {
     webBrowser.setFocus();
     KeyboardHelper.typeKeyCodeUsingAWTRepeately(KeyEvent.VK_RIGHT, textToContain.length());
     KeyboardHelper.selectTextUsingAWTKeyBoard(false, textToCutCopy.length());
+    bot.sleep(Timing.time2S());
     webBrowser.clickContextMenu(node,
         SWTBotWebBrowser.CUT_MENU_LABEL);
     jspEditor.save();
@@ -212,5 +242,15 @@ public class TextEditingActionsTest extends VPEEditorTestCase {
     assertVisualEditorContainsNodeWithValue(webBrowser, 
         textToContain, 
         TextEditingActionsTest.TEST_PAGE_NAME);
+    SWTBotTreeItem[] errors = ProblemsView.getFilteredErrorsTreeItems(botExt, 
+        null, 
+        File.separator + VPEAutoTestCase.JBT_TEST_PROJECT_NAME, 
+        TextEditingActionsTest.TEST_PAGE_NAME,
+        null);
+    assertTrue("There were these errors when editing page "
+        + TextEditingActionsTest.TEST_PAGE_NAME 
+        + ": " 
+        + SWTEclipseExt.getFormattedTreeNodesText(bot.tree(), errors),
+        errors == null || errors.length == 0);
   } 
 }
