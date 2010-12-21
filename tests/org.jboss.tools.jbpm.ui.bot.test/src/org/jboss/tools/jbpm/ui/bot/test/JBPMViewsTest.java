@@ -11,12 +11,14 @@
 package org.jboss.tools.jbpm.ui.bot.test;
 
 import org.jboss.tools.jbpm.ui.bot.test.suite.JBPMTest;
+import org.jboss.tools.jbpm.ui.bot.test.suite.Project;
 import org.jboss.tools.ui.bot.ext.config.Annotations.SWTBotTestRequires;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 import org.jboss.tools.ui.bot.ext.gen.IView;
+import org.jboss.tools.ui.bot.ext.view.PackageExplorer;
 import org.junit.Test;
 
-@SWTBotTestRequires( perspective="jBPM jPDL 3")
+@SWTBotTestRequires( perspective="jBPM jPDL 3",  clearProjects = false )
 public class JBPMViewsTest extends JBPMTest {
 
 	@Test
@@ -24,6 +26,11 @@ public class JBPMViewsTest extends JBPMTest {
 		
 		// reset perspective
 		bot.resetActivePerspective();
+		
+		// Open process
+		PackageExplorer pe = new PackageExplorer();
+		pe.openFile(Project.PROJECT_NAME, "src/main/jpdl", "simple.jpdl.xml");
+		util.waitForNonIgnoredJobs();
 		
 		// check if all views are opened
 		IView[] views = { ActionItem.View.JBossjBPMOverviewjBPM3.LABEL, 
