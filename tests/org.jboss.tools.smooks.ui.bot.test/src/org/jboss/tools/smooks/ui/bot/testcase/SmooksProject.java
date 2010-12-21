@@ -8,14 +8,15 @@ import java.nio.channels.FileChannel;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
+import org.eclipse.swtbot.eclipse.gef.finder.SWTGefBot;
+import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditor;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
 import org.jboss.tools.smooks.ui.bot.test.Activator;
 import org.jboss.tools.smooks.ui.bot.tests.Project;
 import org.jboss.tools.smooks.ui.bot.tests.SmooksTest;
-import org.jboss.tools.ui.bot.ext.SWTEclipseExt;
 import org.jboss.tools.ui.bot.ext.entity.JavaProjectEntity;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
@@ -50,12 +51,10 @@ public class SmooksProject extends SmooksTest {
 		open.viewOpen(ActionItem.View.GeneralProjectExplorer.LABEL);
 		projectExplorer.selectProject(Project.PROJECT_NAME);
 		assertTrue(eclipse.isProjectInPackageExplorer(Project.PROJECT_NAME));
-		
-		
+
 		projectCreated = true;
 	}
 
-	
 	/**
 	 * Defines smooks user library inside
 	 */
@@ -97,8 +96,8 @@ public class SmooksProject extends SmooksTest {
 	 */
 	@Test
 	public void addTestingJavaClasses() {
-		
-		// Copy class files\
+
+		// Copy class files
 		try {
 			copyFileFromResource(Project.PROJECT_NAME, "src", "org", "smooks",
 					"Header.java");
@@ -107,19 +106,22 @@ public class SmooksProject extends SmooksTest {
 			copyFileFromResource(Project.PROJECT_NAME, "src", "org", "smooks",
 					"Order.java");
 		} catch (IOException e) {
-			log.error(e.getStackTrace());			
+			log.error(e.getStackTrace());
 			fail("Unable to copy smooks classes resources");
 		}
 
 		projectExplorer.selectProject(Project.PROJECT_NAME);
 		ContextMenuHelper.clickContextMenu(projectExplorer.tree(), "Refresh");
-		
+
 		open.viewOpen(ActionItem.View.JavaPackageExplorer.LABEL);
 
 		// Check file existence
-		assertTrue(packageExplorer.isFilePresent(Project.PROJECT_NAME, "src","org.smooks","Header.java"));
-		assertTrue(packageExplorer.isFilePresent(Project.PROJECT_NAME, "src","org.smooks","OrderItem.java"));
-		assertTrue(packageExplorer.isFilePresent(Project.PROJECT_NAME, "src","org.smooks","Order.java"));
+		assertTrue(packageExplorer.isFilePresent(Project.PROJECT_NAME, "src",
+				"org.smooks", "Header.java"));
+		assertTrue(packageExplorer.isFilePresent(Project.PROJECT_NAME, "src",
+				"org.smooks", "OrderItem.java"));
+		assertTrue(packageExplorer.isFilePresent(Project.PROJECT_NAME, "src",
+				"org.smooks", "Order.java"));
 	}
 
 	@Test
@@ -128,46 +130,44 @@ public class SmooksProject extends SmooksTest {
 		try {
 			copyFileFromResource(Project.PROJECT_NAME, "xml", "order.xml");
 		} catch (IOException e) {
-			log.error(e.getStackTrace());			
+			log.error(e.getStackTrace());
 			fail("Unable to copy smooks xml resources");
 		}
 
 		open.viewOpen(ActionItem.View.GeneralProjectExplorer.LABEL);
 		projectExplorer.selectProject(Project.PROJECT_NAME);
 		ContextMenuHelper.clickContextMenu(projectExplorer.tree(), "Refresh");
-		
+
 		open.viewOpen(ActionItem.View.JavaPackageExplorer.LABEL);
 
-		// Check file existence		
-		assertTrue(packageExplorer.isFilePresent(Project.PROJECT_NAME, "xml","order.xml"));
+		// Check file existence
+		assertTrue(packageExplorer.isFilePresent(Project.PROJECT_NAME, "xml",
+				"order.xml"));
 	}
-	
+
 	@Test
 	public void createSmooksConfig() {
-		SWTBotView view = open.viewOpen(ActionItem.View.JavaPackageExplorer.LABEL);
+		SWTBotView view = open
+				.viewOpen(ActionItem.View.JavaPackageExplorer.LABEL);
 
-
-		eclipse.selectTreeLocation(view.bot(),Project.PROJECT_NAME,"src");
+		eclipse.selectTreeLocation(view.bot(), Project.PROJECT_NAME, "src");
 		eclipse.createNew(EntityType.SMOOKS_CONFIG);
-		
+
 		open.finish(bot.activeShell().bot());
-		
+
 		// check file
-		assertTrue(packageExplorer.isFilePresent(Project.PROJECT_NAME, "src","smooks-config.xml"));
+		assertTrue(packageExplorer.isFilePresent(Project.PROJECT_NAME, "src",
+				"smooks-config.xml"));
 	}
-	
-	
-	@Test 
+
+	@Test
 	public void defineInputTask() {
-		//SWTGefBot gefBot = new SWTGefBot();		
-		///SWTBotGefEditor editor = gefBot.gefEditor("smooks-config.xml");
-		
 		SWTZestBot zestBot = new SWTZestBot();
-		SWTBotZestGraph graph = zestBot.getZestGraph(0);		
-		
+		SWTBotZestGraph graph = zestBot.getZestGraph(0);
+
 		SWTBotZestNode node = graph.node("Input Task");
 		node.click();
-		
+
 		bot.sleep(2000, "--------> Trying to click");
 		
 		SWTBotZestContextMenu menu = node.contextMenu(); 
@@ -184,36 +184,38 @@ public class SmooksProject extends SmooksTest {
 		SWTBot shellBot  = bot.shell("Select Files").bot();
 		eclipse.selectTreeLocation(shellBot, Project.PROJECT_NAME, "xml", "order.xml");
 		bot.clickButton(IDELabel.Button.OK);
-		bot.clickButton(IDELabel.Button.FINISH);	
+		bot.clickButton(IDELabel.Button.FINISH);
 		bot.activeEditor().save();
 
-		SWTBotEditor editor;
-		graph.connection(graph.node("Input Task"),graph.node("Java Mapping")).click();
-		bot.sleep(2000,"check if edge is clicked");
+		graph.connection(graph.node("Input Task"), graph.node("Java Mapping"))
+				.click();
+		bot.sleep(2000, "check if edge is clicked");
 	}
-	
-	
+
 	@Test
 	public void addJavaMapping() {
-		
+
 		bot.sleep(1000);
 		SWTZestBot zestBot = new SWTZestBot();
-		SWTBotZestGraph graph = zestBot.getZestGraph(0);		
-		graph.node("Java Mapping").click();		
+		SWTBotZestGraph graph = zestBot.getZestGraph(0);
+		graph.node("Java Mapping").click();
 		bot.sleep(2000, "Check java mapping");
-		
+
 		bot.sleep(1000, "check widgets");
+
+		SWTWorkbenchBot bot;
 	}
-	
-	@Test 
+
+	@Test
 	public void defineJavaMapping() {
-		
-		
-		}
-	
+		SWTGefBot bot = new SWTGefBot();
+		SWTBotGefEditor editor = bot.gefEditor("smooks-config.xml");
+		System.out.println(editor);
+	}
+
 	@Test
 	public void removeProject() {
-		
+
 		open.viewOpen(ActionItem.View.GeneralProjectExplorer.LABEL);
 		// Action
 		projectExplorer.deleteProject(Project.PROJECT_NAME, true);

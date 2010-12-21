@@ -8,6 +8,7 @@ public class SmooksTest extends SWTTestExt {
 	public static void prepare() {
 		
 		eclipse.maximizeActiveShell();
+		jbt.closeReportUsageWindowIfOpened(false);
 		bot.viewByTitle("Welcome").close();
 	}
 
