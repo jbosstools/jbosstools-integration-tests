@@ -26,7 +26,7 @@ import org.jboss.tools.vpe.ui.bot.test.VPEAutoTestCase;
 import org.jboss.tools.vpe.ui.bot.test.tools.SWTBotWebBrowser;
 import org.mozilla.interfaces.nsIDOMNode;
 /**
- * Tests JSP file Cut, Copy, Paste actions through Visual Editor Menu for Text selection  
+ * Tests JSP file Editing and Cut, Copy, Paste actions through Visual Editor Menu for Text selection  
  * @author vlado pakan
  *
  */
@@ -70,7 +70,7 @@ public class TextEditingActionsTest extends VPEEditorTestCase {
 	/**
 	 * Tests Cut Copy Paste Operations on Blank Page
 	 */
-	public void testCutCopyPasteBlankPage(){
+	public void ttestCutCopyPasteBlankPage(){
 	  
 	  jspEditor.setText("");
     jspEditor.save();
@@ -134,7 +134,7 @@ public class TextEditingActionsTest extends VPEEditorTestCase {
 	 /**
    * Tests insert Enter in Visual Editor
    */
-  public void testInsertEnter(){
+  public void ttestInsertEnter(){
     
     jspEditor.setText(TextEditingActionsTest.PAGE_TEXT);
     jspEditor.save();
@@ -146,15 +146,64 @@ public class TextEditingActionsTest extends VPEEditorTestCase {
     Position cursorPosition = jspEditor.cursorPosition();
     jspEditor.deselectAndSetCursorPosition(cursorPosition.line, cursorPosition.column);
     webBrowser.setFocus();
+    KeyboardHelper.typeKeyCodeUsingAWT(KeyEvent.VK_RIGHT);
     KeyboardHelper.typeKeyCodeUsingAWTRepeately(KeyEvent.VK_ENTER, 6);
     jspEditor.save();
     bot.sleep(Timing.time3S());
     String jspEditorText = jspEditor.getText();
     assertTrue ("Source Editor should has text " + TextEditingActionsTest.PAGE_TEXT +
         "\nbut it is\n" + jspEditorText,
-        jspEditorText.equals(TextEditingActionsTest.PAGE_TEXT));  }
+        jspEditorText.equals(TextEditingActionsTest.PAGE_TEXT));
+  }
 
-	
+  /**
+   * Tests page editing via keyboard Enter in Visual Editor
+   */
+  public void testKeyboardEditing(){
+    
+    jspEditor.setText(TextEditingActionsTest.PAGE_TEXT);
+    jspEditor.save();
+    bot.sleep(Timing.time3S());
+    nsIDOMNode node = webBrowser.getDomNodeByTagName("SPAN", 0);
+    webBrowser.selectDomNode(node, 0);
+    bot.sleep(Timing.time1S());
+    // Check inserting Enter Functionality
+    Position cursorPosition = jspEditor.cursorPosition();
+    jspEditor.deselectAndSetCursorPosition(cursorPosition.line, cursorPosition.column);
+    webBrowser.setFocus();
+    KeyboardHelper.typeKeyCodeUsingAWT(KeyEvent.VK_RIGHT);
+    KeyboardHelper.typeKeyCodeUsingAWT(KeyEvent.VK_LEFT);
+    String testText = "insertedTextDeleteBackspace";
+    KeyboardHelper.typeBasicStringUsingAWT(testText);
+    jspEditor.save();
+    bot.sleep(Timing.time3S());
+    String sourceEditorText = jspEditor.getText();
+    String textToContain = "<h:outputText value=\"" + testText;
+    assertTrue ("Source Editor has to containt text " + textToContain +
+        "\nbut it doesn't.\nSource Editor text is:\n" + sourceEditorText,
+        sourceEditorText.contains(textToContain));
+    // Test Backspace
+    int lengthToRemove = 9;
+    KeyboardHelper.typeKeyCodeUsingAWTRepeately(KeyEvent.VK_BACK_SPACE, lengthToRemove);
+    jspEditor.save();
+    bot.sleep(Timing.time3S());
+    textToContain = textToContain.substring(0, textToContain.length() - lengthToRemove);
+    assertTrue ("Source Editor has to containt text " + textToContain +
+        "\nbut it doesn't.\nSource Editor text is:\n" + sourceEditorText,
+        sourceEditorText.contains(textToContain));
+    // Test Delete
+    lengthToRemove = 6;
+    KeyboardHelper.typeKeyCodeUsingAWTRepeately(KeyEvent.VK_LEFT, lengthToRemove);
+    KeyboardHelper.typeKeyCodeUsingAWTRepeately(KeyEvent.VK_DELETE, lengthToRemove);
+    jspEditor.save();
+    bot.sleep(Timing.time3S());
+    textToContain = textToContain.substring(0, textToContain.length() - lengthToRemove);
+    assertTrue ("Source Editor has to containt text " + textToContain +
+        "\nbut it doesn't.\nSource Editor text is:\n" + sourceEditorText,
+        sourceEditorText.contains(textToContain));
+    
+  }
+  
 	@Override
 	protected void closeUnuseDialogs() {
 
@@ -172,7 +221,7 @@ public class TextEditingActionsTest extends VPEEditorTestCase {
   /**
    * Tests Cut Copy Paste Operations on Value Attribute
    */
-  public void testCutCopyPasteValueAttribute(){
+  public void ttestCutCopyPasteValueAttribute(){
     
     jspEditor.setText(TextEditingActionsTest.PAGE_TEXT);
     jspEditor.save();
