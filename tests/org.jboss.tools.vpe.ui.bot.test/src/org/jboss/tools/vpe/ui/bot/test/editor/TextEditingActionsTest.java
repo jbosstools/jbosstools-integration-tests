@@ -70,7 +70,7 @@ public class TextEditingActionsTest extends VPEEditorTestCase {
 	/**
 	 * Tests Cut Copy Paste Operations on Blank Page
 	 */
-	public void ttestCutCopyPasteBlankPage(){
+	public void testCutCopyPasteBlankPage(){
 	  
 	  jspEditor.setText("");
     jspEditor.save();
@@ -134,7 +134,7 @@ public class TextEditingActionsTest extends VPEEditorTestCase {
 	 /**
    * Tests insert Enter in Visual Editor
    */
-  public void ttestInsertEnter(){
+  public void testInsertEnter(){
     
     jspEditor.setText(TextEditingActionsTest.PAGE_TEXT);
     jspEditor.save();
@@ -221,7 +221,7 @@ public class TextEditingActionsTest extends VPEEditorTestCase {
   /**
    * Tests Cut Copy Paste Operations on Value Attribute
    */
-  public void ttestCutCopyPasteValueAttribute(){
+  public void testCutCopyPasteValueAttribute(){
     
     jspEditor.setText(TextEditingActionsTest.PAGE_TEXT);
     jspEditor.save();
