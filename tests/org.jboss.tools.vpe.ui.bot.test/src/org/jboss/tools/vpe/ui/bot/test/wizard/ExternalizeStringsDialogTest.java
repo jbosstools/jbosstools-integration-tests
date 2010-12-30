@@ -12,8 +12,10 @@ package org.jboss.tools.vpe.ui.bot.test.wizard;
 
 import java.awt.event.KeyEvent;
 
+import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
+import org.eclipse.swtbot.swt.finder.utils.Position;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCheckBox;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCombo;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotRadio;
@@ -29,10 +31,12 @@ import org.jboss.tools.ui.bot.test.WidgetVariables;
 
 public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 
+	private final String ENABLED_TEST_TEXT = "<html>Externalize Text</html>"; //$NON-NLS-1$
 	private final String TOOL_TIP = "Externalize Strings... (Ctrl+7)"; //$NON-NLS-1$
 	private final String FOLDER_TEXT_LABEL = "Enter or select the parent folder:"; //$NON-NLS-1$
 	private final String INCORRECT_TABLE_VALUE = "Table value is incorrect"; //$NON-NLS-1$
-	private final String TOOLBAR_ICON_ENABLED = "Toolbar buttion should be enabled"; //$NON-NLS-1$
+	private final String TOOLBAR_ICON_ENABLED = "Toolbar button should be enabled"; //$NON-NLS-1$
+	private final String TOOLBAR_ICON_DISABLED = "Toolbar button should be disabled"; //$NON-NLS-1$
 	private final String CANNOT_FIND_PROPERTY_VALUE = "Cannot find 'Property Value' text field"; //$NON-NLS-1$
 	private final String CANNOT_FIND_RADIO_BUTTON = "Cannot find radio button with name: "; //$NON-NLS-1$
 	private final String COMPLEX_TEXT = "!! HELLO ~ Input User, Name.Page ?" //$NON-NLS-1$
@@ -889,6 +893,34 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 				editor.toTextEditor().getSelection());
 	}
 	
+	public void testToolBarIconEnableState() throws Throwable {
+		isUnusedDialogOpened = false;
+		SWTBotEditor editor = SWTTestExt.packageExplorer.openFile(FACELETS_TEST_PROJECT_NAME,
+				"WebContent", "pages", FACELETS_TEST_PAGE); //$NON-NLS-1$ //$NON-NLS-2$
+		editor.setFocus();
+		editor.toTextEditor().setText(ENABLED_TEST_TEXT);
+		navigateToAndTestIcon(editor.toTextEditor(), new Position(0, 1), false);
+		navigateToAndTestIcon(editor.toTextEditor(), new Position(0, 3), false);
+		navigateToAndTestIcon(editor.toTextEditor(), new Position(0, 16), true);
+		navigateToAndTestIcon(editor.toTextEditor(), new Position(0, 3), false);
+	}
+	
+	private void navigateToAndTestIcon(SWTBotEclipseEditor editor, Position pos, boolean enabled) {
+		/*
+		 * Select some text
+		 */
+		editor.navigateTo(pos);
+		/*
+		 * Send key press event to fire VPE listeners
+		 */
+		KeyboardHelper.typeKeyCodeUsingAWT(KeyEvent.VK_LEFT);
+		/*
+		 * Get toolbar button
+		 */
+		assertEquals(enabled ? TOOLBAR_ICON_ENABLED : TOOLBAR_ICON_DISABLED,
+				enabled, bot.toolbarButtonWithTooltip(TOOL_TIP).isEnabled());
+	}
+	
 	/**
 	 * Creates the new bundle till last page.
 	 *
@@ -953,4 +985,6 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 	
 		return editor;
 	}
+	
+	
 }
