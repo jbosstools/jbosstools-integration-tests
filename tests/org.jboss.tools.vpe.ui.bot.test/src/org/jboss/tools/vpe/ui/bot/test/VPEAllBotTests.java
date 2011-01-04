@@ -10,6 +10,7 @@ import org.jboss.tools.vpe.ui.bot.test.editor.InsertActionsTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.MinMaxPanesTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.StylesOnThePageTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.TextEditingActionsTest;
+import org.jboss.tools.vpe.ui.bot.test.editor.TextSelectionTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.ToggleCommentTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.VerificationOfNameSpacesTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.JspFileEditingTest;
@@ -94,7 +95,7 @@ public class VPEAllBotTests extends SWTBotTestCase{
 		suite.addTestSuite(GlobalELVariablesTest.class);
 		suite.addTestSuite(IncludedCssFilesJSPTest.class);
 		suite.addTestSuite(StylesOnThePageTest.class);
-	
+		suite.addTestSuite(TextSelectionTest.class);
 		return new TestSetup(suite);
 	}
 }

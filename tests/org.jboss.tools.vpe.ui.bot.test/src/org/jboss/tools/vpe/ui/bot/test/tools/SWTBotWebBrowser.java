@@ -61,6 +61,7 @@ import org.mozilla.interfaces.nsIDOMEventTarget;
 import org.mozilla.interfaces.nsIDOMNamedNodeMap;
 import org.mozilla.interfaces.nsIDOMNode;
 import org.mozilla.interfaces.nsIDOMNodeList;
+import org.mozilla.interfaces.nsIDOMRange;
 import org.mozilla.interfaces.nsIDOMWindow;
 import org.mozilla.interfaces.nsIEditor;
 import org.mozilla.interfaces.nsISelection;
@@ -747,6 +748,39 @@ public class SWTBotWebBrowser {
       }
     }
     return result;
+  }
+  /**
+   * Returns selected text in first selection range.
+   * Works correctly only when single node is selected. 
+   * @return
+   */
+  public String getSelectionText (){
+    String result = null;
+    
+    nsISelection selection = getSelection();
+    if (selection != null && selection.getRangeCount() > 0){
+      nsIDOMRange firstSelectedRange = selection.getRangeAt(0);
+      nsIDOMNode selectedNode = getSelectedDomNode();
+      if (selectedNode.getNodeName().equals("#text")){
+        int startOffset = firstSelectedRange.getStartOffset();
+        int endOffset = firstSelectedRange.getEndOffset();
+        int beginIndex, endIndex;
+        if (startOffset > endOffset){
+          beginIndex = endOffset;
+          endIndex = startOffset;
+        }
+        else{
+          beginIndex = startOffset;
+          endIndex = endOffset;
+        }
+        result = selectedNode
+          .getNodeValue()
+          .substring(beginIndex, endIndex);  
+      }
+    }
+    
+    return result;
+    
   }
   
 }
