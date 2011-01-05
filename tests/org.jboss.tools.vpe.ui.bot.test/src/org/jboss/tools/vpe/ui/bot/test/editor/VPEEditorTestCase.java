@@ -19,19 +19,19 @@ public abstract class VPEEditorTestCase extends VPEAutoTestCase{
 	private String editorText;
 	private SWTBotEclipseEditor editor;
 	
-	String getEditorText() {
+	protected String getEditorText() {
 		return editorText;
 	}
 
-	void setEditorText(String textEditor) {
+	protected void setEditorText(String textEditor) {
 		this.editorText = textEditor;
 	}
 
-	SWTBotEclipseEditor getEditor() {
+	protected SWTBotEclipseEditor getEditor() {
 		return editor;
 	}
 
-	void setEditor(SWTBotEclipseEditor editor) {
+	protected void setEditor(SWTBotEclipseEditor editor) {
 		this.editor = editor;
 	}
 

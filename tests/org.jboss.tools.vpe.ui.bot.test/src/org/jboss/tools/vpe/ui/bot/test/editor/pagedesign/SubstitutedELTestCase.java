@@ -1,6 +1,5 @@
 package org.jboss.tools.vpe.ui.bot.test.editor.pagedesign;
 
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
@@ -12,26 +11,7 @@ public abstract class SubstitutedELTestCase extends PageDesignTestCase{
 	
 	static final String ADD_EL = "Add EL Reference"; //$NON-NLS-1$
 	static final String SUBSTITUTED_EL = "Substituted EL expressions"; //$NON-NLS-1$
-	private SWTBotEclipseEditor editor;
-	private String editorText;
 
-
-	SWTBotEclipseEditor getEditor() {
-		return editor;
-	}
-
-	void setEditor(SWTBotEclipseEditor editor) {
-		this.editor = editor;
-	}
-
-	String getEditorText() {
-		return editorText;
-	}
-
-	void setEditorText(String editorText) {
-		this.editorText = editorText;
-	}
-	
 	@Override
 	protected void closeUnuseDialogs() {
 		try {
