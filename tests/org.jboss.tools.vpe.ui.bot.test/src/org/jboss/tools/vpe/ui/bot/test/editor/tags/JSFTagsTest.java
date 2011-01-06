@@ -248,7 +248,56 @@ public class JSFTagsTest extends VPEEditorTestCase {
         JSFTagsTest.TEST_PAGE_NAME);
   }
   /**
-   * Tests h:inputText Tag
+   * Tests h:selectManyCheckbox Tag
+   */
+  public void testSelectManyCheckbox(){
+    final String itemLabel = "item1";
+    jspEditor.setText("<%@ taglib uri=\"http://java.sun.com/jsf/html\" prefix=\"h\" %>\n" +
+        "<%@ taglib uri=\"http://java.sun.com/jsf/core\" prefix=\"f\" %>\n" +
+        "<html>\n" +
+        "  <head>\n" +
+        "  </head>\n" +
+        "  <body>\n" +
+        "    <f:view>\n" +
+        "      <h:form id=\"form1\">\n" +
+        "        <h:selectManyCheckbox value=\"checkbox\">\n" +
+        "          <f:selectItem itemLabel=\"" + itemLabel + "\"/>\n" +
+        "        </h:selectManyCheckbox>\n" +
+        "      </h:form>\n" +
+        "    </f:view>\n" +
+        "  </body>\n" + 
+        "</html>");
+    jspEditor.save();
+    bot.sleep(Timing.time3S());
+    assertVisualEditorContains(webBrowser,
+        "INPUT", 
+        new String[]{"type"},
+        new String[]{"checkbox"},
+        JSFTagsTest.TEST_PAGE_NAME);
+    assertVisualEditorContainsNodeWithValue(webBrowser, itemLabel, JSFTagsTest.TEST_PAGE_NAME);
+    // check tag selection
+    webBrowser.selectDomNode(webBrowser.getDomNodeByTagName("INPUT"), 0);
+    bot.sleep(Timing.time3S());
+    String selectedText = jspEditor.getSelection();
+    final String hasToStartWith = "<f:selectItem itemLabel=\"" + itemLabel + "\"";
+    assertTrue("Selected text in Source Pane has to start with '" + hasToStartWith + "'" +
+        "\nbut it is '" + selectedText + "'",
+        selectedText.trim().startsWith(hasToStartWith));
+    // check text insertion
+    webBrowser.selectDomNode(webBrowser.getDomNodeByTagName("LABEL"), 0);
+    bot.sleep(Timing.time3S());
+    webBrowser.setFocus();
+    final String insertText = "insertText";
+    KeyboardHelper.typeBasicStringUsingAWT(insertText);
+    jspEditor.save();
+    bot.sleep(Timing.time3S());
+    assertVisualEditorContainsNodeWithValue(webBrowser, insertText + itemLabel, JSFTagsTest.TEST_PAGE_NAME);
+    assertSourceEditorContains(jspEditor.getText(), 
+        "<f:selectItem itemLabel=\"" + insertText + itemLabel + "\"",
+        JSFTagsTest.TEST_PAGE_NAME);
+  }
+  /**
+   * Tests h:selectOneRadio Tag
    */
   public void testSelectOneRadio(){
     final String itemLabel = "item1";
