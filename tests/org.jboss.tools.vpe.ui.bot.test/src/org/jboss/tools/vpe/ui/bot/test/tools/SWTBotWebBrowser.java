@@ -408,7 +408,8 @@ public class SWTBotWebBrowser {
         for (int index = 0 ; index < attributeNames.length && attributesAreEqual; index++){
           nsIDOMNode attributeNode = attributesMap.getNamedItem(attributeNames[index]);
           if (attributeNode != null){
-            if (!attributeNode.getNodeValue().equalsIgnoreCase(attributeValues[index])){
+            if (!SWTBotWebBrowser.stripTextFromSpecChars(attributeNode.getNodeValue())
+                  .equalsIgnoreCase(attributeValues[index])){
               attributesAreEqual = false;
             }
           }
@@ -468,7 +469,7 @@ public class SWTBotWebBrowser {
 
     String nodeValue = node.getNodeValue();
     
-    if (nodeValue != null && nodeValue.equals(searchText)) {
+    if (nodeValue != null && SWTBotWebBrowser.stripTextFromSpecChars(nodeValue).equals(searchText)) {
       result = true;
     } 
     else {
@@ -782,5 +783,12 @@ public class SWTBotWebBrowser {
     return result;
     
   }
-  
+  /**
+   * Returns inputText striped from spaces, tabs and EOL
+   * @param inputText
+   * @return String
+   */
+  protected static String stripTextFromSpecChars(String inputText){
+    return inputText.replaceAll("\n", " ").replaceAll("\t", "").trim();
+  }
 }

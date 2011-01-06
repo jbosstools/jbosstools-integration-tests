@@ -58,14 +58,14 @@ public class CoreHTMLTagsTest extends VPEEditorTestCase {
         "BODY", 
         new String[]{"style"},
         new String[]{"color: red; text-align: center; background-color: green;"},
-        CoreHTMLTagsTest.PAGE_TEXT);
+        CoreHTMLTagsTest.TEST_PAGE_NAME);
     // check after refresh
     bot.toolbarButtonWithTooltip(IDELabel.ToolbarButton.REFRESH).click();
     assertVisualEditorContains(webBrowser,
         "BODY", 
         new String[]{"style"},
         new String[]{"color: red; text-align: center; background-color: green;"},
-        CoreHTMLTagsTest.PAGE_TEXT);
+        CoreHTMLTagsTest.TEST_PAGE_NAME);
 
   }
 

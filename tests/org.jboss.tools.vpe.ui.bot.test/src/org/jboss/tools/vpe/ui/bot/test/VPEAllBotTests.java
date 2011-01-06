@@ -34,6 +34,7 @@ import org.jboss.tools.vpe.ui.bot.test.editor.preferences.ShowResourceBundlesUsa
 import org.jboss.tools.vpe.ui.bot.test.editor.preferences.ShowSelectionTagBarTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.selectionbar.SelectionBarTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.CoreHTMLTagsTest;
+import org.jboss.tools.vpe.ui.bot.test.editor.tags.JSFTagsTest;
 import org.jboss.tools.vpe.ui.bot.test.jbide.JBIDE4556Test;
 import org.jboss.tools.vpe.ui.bot.test.palette.CancelTagLibDefenitionTest;
 import org.jboss.tools.vpe.ui.bot.test.palette.ImportTagsFromTLDFileTest;
@@ -98,6 +99,7 @@ public class VPEAllBotTests extends SWTBotTestCase{
 		suite.addTestSuite(StylesOnThePageTest.class);
 		suite.addTestSuite(TextSelectionTest.class);
 		suite.addTestSuite(CoreHTMLTagsTest.class);
+		suite.addTestSuite(JSFTagsTest.class);
 		return new TestSetup(suite);
 	}
 }
