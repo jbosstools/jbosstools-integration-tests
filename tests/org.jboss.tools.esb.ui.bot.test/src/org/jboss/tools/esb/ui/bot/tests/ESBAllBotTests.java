@@ -11,17 +11,31 @@
 package org.jboss.tools.esb.ui.bot.tests;
  
 import org.jboss.tools.esb.ui.bot.tests.examples.HelloWorld;
+import org.jboss.tools.esb.ui.bot.tests.examples.HelloWorldAction;
+import org.jboss.tools.esb.ui.bot.tests.examples.HelloWorldFileAction;
+import org.jboss.tools.esb.ui.bot.tests.examples.SmooksCSV2XML;
+import org.jboss.tools.esb.ui.bot.tests.examples.SmooksXML2XMLSimple;
+import org.jboss.tools.esb.ui.bot.tests.examples.SmooksXML2XMLDateManipulation;
+import org.jboss.tools.esb.ui.bot.tests.examples.WebServiceConsumer1;
+import org.jboss.tools.esb.ui.bot.tests.examples.WebServiceProducer;
 import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
 @SuiteClasses({	
-	CreateRuntimeFromESB.class,
-	CreateRuntimeFromSOA.class,
-	NewProjectUsingRuntime.class,
-	NewProjectUsingBundledInEAP.class,
-	Editing.class,
-	HelloWorld.class,	
+	//CreateRuntimeFromESB.class,
+	//CreateRuntimeFromSOA.class,
+	//NewProjectUsingRuntime.class,
+	//NewProjectUsingBundledInEAP.class,
+	//Editing.class,
+	HelloWorld.class,
+	HelloWorldAction.class,
+	HelloWorldFileAction.class,
+	WebServiceConsumer1.class,
+	WebServiceProducer.class,
+	SmooksCSV2XML.class,
+	SmooksXML2XMLDateManipulation.class,
+	SmooksXML2XMLSimple.class
 	})
 @RunWith(RequirementAwareSuite.class)
 public class ESBAllBotTests {

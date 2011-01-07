@@ -6,25 +6,25 @@ import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
 
 @SWTBotTestRequires(server=@Server(type=ServerType.SOA,state=ServerState.Running))
-public class HelloWorldAction extends ESBExampleTest {
+public class SmooksCSV2XML extends ESBExampleTest {
 	@Override
 	public String getExampleName() {
-		return "JBoss ESB HelloWorld Action Example - ESB";
+		return "JBoss ESB Smooks CSV->XML Example";
 	}
 	@Override
 	public String getExampleProjectName() {
-		return "helloworld_action";
+		return "transform_CSV2XML";
 	}
 	@Override
 	public String getExampleClientProjectName() {
-		return "helloworld_action_client";
+		return "transform_CSV2XML_client";
 	}
-
+	
 	@Override
 	protected void executeExample() {
-		super.executeExample();
-		String text = executeClientGetServerOutput(getExampleClientProjectName(),"src","org.jboss.soa.esb.samples.quickstart.helloworldaction.test","SendJMSMessage.java");
-		assertNotNull("Calling JMS Send message failed, nothing appened to server log",text);	
-		assertTrue("Calling JMS Send message failed, unexpected server output :"+text,text.contains("Hello World Action ESB invoked!"));				
+		super.executeExample();	
+		String text = executeClientGetServerOutput(getExampleClientProjectName(),"src","org.jboss.soa.esb.samples.quickstart.transformcsv2xml","SendJMSMessage.java");
+		assertNotNull("Calling Send message failed, nothing appened to server log",text);	
+		assertTrue("Calling Send message failed, unexpected server output :"+text,text.contains("<csv-set>"));
 	}
 }
