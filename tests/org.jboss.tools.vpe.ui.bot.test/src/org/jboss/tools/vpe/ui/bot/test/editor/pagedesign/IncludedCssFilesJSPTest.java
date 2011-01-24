@@ -100,7 +100,7 @@ public class IncludedCssFilesJSPTest extends PageDesignTestCase {
     bot.sleep(Timing.time3S());
     SWTBotWebBrowser webBrowser = new SWTBotWebBrowser(IncludedCssFilesJSPTest.JSP_FILE_NAME, new SWTBotExt());
     assertVisualEditorContainsNodeWithValue(webBrowser, 
-        "h1 {  color: Red}.post-info {  color: blue;}.post-info a {  color: orange;}",
+        ".post-info {  color: blue;}.post-info a {  color: orange;}",
         IncludedCssFilesJSPTest.JSP_FILE_NAME);
     assertVisualEditorContains(webBrowser,
         "P", 

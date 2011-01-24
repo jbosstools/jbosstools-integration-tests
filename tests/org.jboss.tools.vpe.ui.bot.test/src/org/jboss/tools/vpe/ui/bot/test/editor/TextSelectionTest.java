@@ -138,10 +138,10 @@ public class TextSelectionTest extends VPEEditorTestCase {
     jspEditor.save();
     bot.sleep(Timing.time3S());
     assertVisualEditorContainsNodeWithValue(webBrowser, 
-        "©2007 Exposure. All Rights Reserved.•Design by ",
+        "©2007 Exposure. All Rights Reserved.•Design by",
         TextSelectionTest.TEST_PAGE_NAME);
     assertVisualEditorContainsNodeWithValue(webBrowser, 
-        "•Icons by ",
+        "•Icons by",
         TextSelectionTest.TEST_PAGE_NAME);
     jspEditor.deselectAndSetCursorPosition(0, 0);
     webBrowser.setFocus();

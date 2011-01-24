@@ -36,7 +36,8 @@ public class GlobalELVariablesTest extends VPEEditorTestCase{
     preferenceTree
       .expandNode(IDELabel.PreferencesDialog.JBOSS_TOOLS)
       .expandNode(IDELabel.PreferencesDialog.JBOSS_TOOLS_WEB)
-      .select(IDELabel.PreferencesDialog.JBOSS_TOOLS_EL_VARIABLES);
+      .expandNode(IDELabel.PreferencesDialog.JBOSS_TOOLS_EXPRESSION_LANGUAGE)
+      .select(IDELabel.PreferencesDialog.JBOSS_TOOLS_VARIABLES);
     bot.button(IDELabel.Button.ADD_WITHOUT_DOTS).click();
     bot.shell(IDELabel.Shell.ADD_EL_REFERENCE).activate();
     bot.textWithLabel(IDELabel.AddELReferenceDialog.EL_NAME).setText(GlobalELVariablesTest.elName);
@@ -90,7 +91,8 @@ public class GlobalELVariablesTest extends VPEEditorTestCase{
     SWTBotTree preferenceTree = this.bot.tree();
     preferenceTree.expandNode(IDELabel.PreferencesDialog.JBOSS_TOOLS)
       .expandNode(IDELabel.PreferencesDialog.JBOSS_TOOLS_WEB)
-      .select(IDELabel.PreferencesDialog.JBOSS_TOOLS_EL_VARIABLES);
+      .expandNode(IDELabel.PreferencesDialog.JBOSS_TOOLS_EXPRESSION_LANGUAGE)
+      .select(IDELabel.PreferencesDialog.JBOSS_TOOLS_VARIABLES);;
     
     SWTBotTableItem tiEL = new SWTBotTableExt(bot.table()).getTableItem(new String[] {"Global",
         GlobalELVariablesTest.elName,  
