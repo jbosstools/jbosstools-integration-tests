@@ -38,6 +38,7 @@ public class ManageDroolsRules extends SWTTestExt{
   @Test
   public void testManageDroolsRules() {
     createDroolsRule (DroolsAllBotTests.TEST_DROOLS_RULE_NAME);
+    bot.sleep(Timing.time3S());
     debugDroolsRule (DroolsAllBotTests.SAMPLE_DROOLS_RULE_NAME);
   }
   /**
