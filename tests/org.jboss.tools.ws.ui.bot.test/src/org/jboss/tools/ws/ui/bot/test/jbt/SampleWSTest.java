@@ -98,7 +98,7 @@ public class SampleWSTest extends WSTestBase {
 	private void createDD(String project) {
 		SWTBotTree tree = projectExplorer.tree();
 		SWTBotTreeItem ti = tree.expandNode(project);
-		bot.sleep(500);
+		bot.sleep(1500);
 		ti = ti.getNode("Deployment Descriptor: " + project);
 		new TreeItemAction(ti, "Generate Deployment Descriptor Stub").run();
 		util.waitForNonIgnoredJobs();

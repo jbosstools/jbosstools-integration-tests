@@ -204,7 +204,7 @@ public abstract class WSTestBase extends SWTTestExt {
 	}
 	
 	private SWTBotEditor createClass(String pkg, String cName) {
-		new NewFileWizardAction().run().selectTemplate("Class").next();
+		new NewFileWizardAction().run().selectTemplate("Java", "Class").next();
 		Wizard w = new Wizard();
 		w.bot().textWithLabel("Package:").setText(pkg);
 		w.bot().textWithLabel("Name:").setText(cName);
