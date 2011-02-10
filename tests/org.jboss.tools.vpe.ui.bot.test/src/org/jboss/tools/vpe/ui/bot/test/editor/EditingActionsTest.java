@@ -148,10 +148,12 @@ public class EditingActionsTest extends VPEEditorTestCase {
 	 */
   private nsIDOMNode initJspPageBeforeInserting(String pageText , String nodeText) {
     
+    jspEditor.show();
     jspEditor.setText(pageText);
     jspEditor.save();
     botExt.sleep(Timing.time3S());
     nsIDOMNode node = webBrowser.getDomNodeByTagName(nodeText, 0);
+    webBrowser.setFocus();
     webBrowser.selectDomNode(node, 0);
     botExt.sleep(Timing.time1S());
     

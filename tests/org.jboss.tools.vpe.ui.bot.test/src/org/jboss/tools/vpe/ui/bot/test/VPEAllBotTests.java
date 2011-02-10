@@ -35,6 +35,7 @@ import org.jboss.tools.vpe.ui.bot.test.editor.preferences.ShowSelectionTagBarTes
 import org.jboss.tools.vpe.ui.bot.test.editor.selectionbar.SelectionBarTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.CoreHTMLTagsTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.JSFTagsTest;
+import org.jboss.tools.vpe.ui.bot.test.editor.tags.RichFacesTagsTest;
 import org.jboss.tools.vpe.ui.bot.test.jbide.JBIDE4556Test;
 import org.jboss.tools.vpe.ui.bot.test.palette.CancelTagLibDefenitionTest;
 import org.jboss.tools.vpe.ui.bot.test.palette.ImportTagsFromTLDFileTest;
@@ -54,7 +55,10 @@ import org.jboss.tools.vpe.ui.bot.test.wizard.VPESourceCodeTemplatesPreferencePa
 public class VPEAllBotTests extends SWTBotTestCase{
 	public static Test suite(){
 		TestSuite suite = new TestSuite("VPE All Tests"); //$NON-NLS-1$
-    suite.addTestSuite(NewXHTMLPageWizardTest.class); 
+		suite.addTestSuite(VisualEditorContextMenuTest.class);
+		suite.addTestSuite(EditingActionsTest.class);
+    suite.addTestSuite(NewXHTMLPageWizardTest.class);
+    suite.addTestSuite(ExternalizeStringsDialogTest.class);
 		suite.addTestSuite(CancelTagLibDefenitionTest.class);
 		suite.addTestSuite(ImportTagsFromTLDFileTest.class);
 		suite.addTestSuite(ToggleCommentTest.class);
@@ -76,15 +80,11 @@ public class VPEAllBotTests extends SWTBotTestCase{
 		suite.addTestSuite(RenameXHTMLFileTest.class);
 		suite.addTestSuite(ImportUnknownTagsWizardTest.class);
 		suite.addTestSuite(VPESourceCodeTemplatesPreferencePageTest.class);
-		suite.addTestSuite(ExternalizeStringsDialogTest.class);
 		suite.addTestSuite(JspFileEditingTest.class);
-		suite.addTestSuite(XhtmlFilePerformanceTest.class);
 		suite.addTestSuite(ManagePaletteGroupsTest.class);
 		suite.addTestSuite(PaletteEditorTest.class);
 		suite.addTestSuite(ToolbarTextFormattingTest.class);
-		suite.addTestSuite(VisualEditorContextMenuTest.class);
 		suite.addTestSuite(InsertActionsTest.class);
-		suite.addTestSuite(EditingActionsTest.class);
 		suite.addTestSuite(TextEditingActionsTest.class);
 		suite.addTestSuite(PromptForTagAttributesDuringTagInsertTest.class);
 		suite.addTestSuite(IncludedTagLibsTest.class);
@@ -100,6 +100,8 @@ public class VPEAllBotTests extends SWTBotTestCase{
 		suite.addTestSuite(TextSelectionTest.class);
 		suite.addTestSuite(CoreHTMLTagsTest.class);
 		suite.addTestSuite(JSFTagsTest.class);
+    suite.addTestSuite(RichFacesTagsTest.class);
+    suite.addTestSuite(XhtmlFilePerformanceTest.class);
 		return new TestSetup(suite);
 	}
 }

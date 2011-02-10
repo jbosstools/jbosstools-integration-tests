@@ -52,10 +52,21 @@ public class ImportUnknownTagsWizardTest extends VPEAutoTestCase {
         /*
          * Check table values 
          */
-        String taglib = bot.table().cell(0, 0);
-        assertEquals("Wrong table value.", "lib:tag", taglib); //$NON-NLS-1$ //$NON-NLS-2$
-        taglib = bot.table().cell(1, 0);
-        assertEquals("Wrong table value.", "taglibName:tagName", taglib); //$NON-NLS-1$  //$NON-NLS-2$
+        String firstLine = bot.table().cell(0, 0);
+        String libTagline = null;
+        String tagLibNameLine = null;
+        if (firstLine.startsWith("lib")){
+          libTagline = firstLine;
+          tagLibNameLine = bot.table().cell(1, 0);
+        }
+        else{
+          libTagline = bot.table().cell(1, 0);
+          tagLibNameLine = firstLine;
+        }
+         
+        assertEquals("Wrong table value.", "lib:tag", libTagline); //$NON-NLS-1$ //$NON-NLS-2$
+        
+        assertEquals("Wrong table value.", "taglibName:tagName", tagLibNameLine); //$NON-NLS-1$  //$NON-NLS-2$
         /*
          * Check that finish button is enabled and press it.
          */
@@ -76,11 +87,18 @@ public class ImportUnknownTagsWizardTest extends VPEAutoTestCase {
 		/*
          * Check table values on the preferences page
          */
-        String taglib00 = bot.table().cell(0, 0);
-        String taglib10 = bot.table().cell(1, 0);
+        firstLine = bot.table().cell(0, 0);
+        if (firstLine.startsWith("lib")){
+          libTagline = firstLine;
+          tagLibNameLine = bot.table().cell(1, 0);
+        }
+        else{
+          libTagline = bot.table().cell(1, 0);
+          tagLibNameLine = firstLine;
+        }
         bot.button(WidgetVariables.OK_BUTTON).click();
-        assertEquals("Wrong table value.", "taglibName:tagName", taglib10); //$NON-NLS-1$  //$NON-NLS-2$
-        assertEquals("Wrong table value.", "lib:tag", taglib00); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals("Wrong table value.", "taglibName:tagName", tagLibNameLine); //$NON-NLS-1$  //$NON-NLS-2$
+        assertEquals("Wrong table value.", "lib:tag", libTagline); //$NON-NLS-1$ //$NON-NLS-2$
         
 	}
 	

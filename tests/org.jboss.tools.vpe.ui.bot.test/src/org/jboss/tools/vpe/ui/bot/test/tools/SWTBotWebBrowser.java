@@ -55,9 +55,11 @@ import org.jboss.tools.vpe.editor.mozilla.MozillaEditor;
 import org.jboss.tools.vpe.editor.mozilla.MozillaEventAdapter;
 import org.jboss.tools.vpe.ui.palette.PaletteAdapter;
 import org.jboss.tools.vpe.xulrunner.util.XPCOM;
+import org.mozilla.interfaces.nsIDOMAbstractView;
 import org.mozilla.interfaces.nsIDOMDocument;
 import org.mozilla.interfaces.nsIDOMEvent;
 import org.mozilla.interfaces.nsIDOMEventTarget;
+import org.mozilla.interfaces.nsIDOMMouseEvent;
 import org.mozilla.interfaces.nsIDOMNamedNodeMap;
 import org.mozilla.interfaces.nsIDOMNode;
 import org.mozilla.interfaces.nsIDOMNodeList;
@@ -99,6 +101,9 @@ public class SWTBotWebBrowser {
   public static final String H_OUTPUT_TEXT_TAG_MENU_LABEL = "<h:outputText>";
   public static final String H_FORM_TAG_MENU_LABEL = "<h:form>";
   public static final String RICH_CALENDAR_TAG_MENU_LABEL = "<rich:calendar>";
+  
+  private static final String MOUSE_CLICK_EVENT_TYPE="click"; //$NON-NLS-1$^M
+  private static final String CONTEXT_MENU_EVENT_TYPE="contextmenu"; //$NON-NLS-1$^M
   
   private Display display;
   private IVisualEditor visualEditor;
@@ -611,7 +616,7 @@ public class SWTBotWebBrowser {
       public void initEvent(String arg0, boolean arg1, boolean arg2) {
       }
       public String getType() {
-        return "contextmenu";
+        return SWTBotWebBrowser.CONTEXT_MENU_EVENT_TYPE;
       }
       public double getTimeStamp() {
         return 0;
@@ -639,6 +644,7 @@ public class SWTBotWebBrowser {
         getMozillaEventAdapter().handleEvent(domEvent);
       }
     });
+    bot.sleep(Timing.time2S());
     // Get Top Menu
     return UIThreadRunnable.syncExec(new WidgetResult<Menu>() {
       public Menu run() {
@@ -791,4 +797,122 @@ public class SWTBotWebBrowser {
   protected static String stripTextFromSpecChars(String inputText){
     return inputText.replaceAll("\n", " ").replaceAll("\t", "").trim();
   }
+  
+  public void mouseClickOnNode(final nsIDOMNode node){
+    // Create DOM Event
+    final nsIDOMMouseEvent domMouseEvent = new DomMouseEvent(node);
+    // Simulate Context Menu Event
+    display.syncExec(new Runnable() {
+      public void run() {
+        getMozillaEventAdapter().handleEvent(domMouseEvent);
+      }
+    });
+  }
+  
+  private class DomMouseEvent implements nsIDOMMouseEvent {
+    private nsIDOMNode node = null;
+    public DomMouseEvent (nsIDOMNode node){
+      this.node = node;
+    }
+    @Override
+    public int getDetail() {
+      return 0;
+    }
+    @Override
+    public nsIDOMAbstractView getView() {
+      return null;
+    }
+    @Override
+    public void initUIEvent(String arg0, boolean arg1, boolean arg2,
+        nsIDOMAbstractView arg3, int arg4) {
+    }
+    @Override
+    public boolean getBubbles() {
+      return false;
+    }
+    @Override
+    public boolean getCancelable() {
+      return false;
+    }
+    @Override
+    public nsIDOMEventTarget getCurrentTarget() {
+      return node != null ? XPCOM.queryInterface(node,nsIDOMEventTarget.class) : null;
+    }
+    @Override
+    public int getEventPhase() {
+      return 0;
+    }
+    @Override
+    public nsIDOMEventTarget getTarget() {
+      return node != null ? XPCOM.queryInterface(node,nsIDOMEventTarget.class) : null;
+    }
+    @Override
+    public double getTimeStamp() {
+      return 0;
+    }
+    @Override
+    public String getType() {
+      return SWTBotWebBrowser.MOUSE_CLICK_EVENT_TYPE;
+    }
+    @Override
+    public void initEvent(String arg0, boolean arg1, boolean arg2) {
+    }
+    @Override
+    public void preventDefault() {
+    }
+    @Override
+    public void stopPropagation() {
+    }
+    @Override
+    public nsIDOMMouseEvent queryInterface(String arg0) {
+      return this;
+    }
+    @Override
+    public boolean getAltKey() {
+      return false;
+    }
+    @Override
+    public int getButton() {
+      return 0;
+    }
+    @Override
+    public int getClientX() {
+      return 0;
+    }
+    @Override
+    public int getClientY() {
+      return 0;
+    }
+    @Override
+    public boolean getCtrlKey() {
+      return false;
+    }
+    @Override
+    public boolean getMetaKey() {
+      return false;
+    }
+    @Override
+    public nsIDOMEventTarget getRelatedTarget() {
+      return null;
+    }
+    @Override
+    public int getScreenX() {
+      return 0;
+    }
+    @Override
+    public int getScreenY() {
+      return 0;
+    }
+    @Override
+    public boolean getShiftKey() {
+      return false;
+    }
+    @Override
+    public void initMouseEvent(String arg0, boolean arg1, boolean arg2,
+        nsIDOMAbstractView arg3, int arg4, int arg5, int arg6, int arg7,
+        int arg8, boolean arg9, boolean arg10, boolean arg11, boolean arg12,
+        int arg13, nsIDOMEventTarget arg14) {
+    }
+  }
+  
 }

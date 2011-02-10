@@ -910,10 +910,12 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		 * Select some text
 		 */
 		editor.navigateTo(pos);
+		bot.sleep(Timing.time1S());
 		/*
 		 * Send key press event to fire VPE listeners
 		 */
 		KeyboardHelper.typeKeyCodeUsingAWT(KeyEvent.VK_LEFT);
+		bot.sleep(Timing.time1S());
 		/*
 		 * Get toolbar button
 		 */

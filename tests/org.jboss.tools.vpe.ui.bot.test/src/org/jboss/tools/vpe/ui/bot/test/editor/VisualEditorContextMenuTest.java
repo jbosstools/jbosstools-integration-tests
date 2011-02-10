@@ -63,12 +63,12 @@ public class VisualEditorContextMenuTest extends VPEEditorTestCase {
     final SWTBotEclipseEditor jspTextEditor = botExt.editorByTitle(VisualEditorContextMenuTest.TEST_PAGE_NAME)
       .toTextEditor();
     final SWTBotWebBrowser webBrowser = new SWTBotWebBrowser(VisualEditorContextMenuTest.TEST_PAGE_NAME,botExt);
+    checkEditMenuFunctionality(webBrowser, jspTextEditor);
+    checkInsertMenuFunctionality(webBrowser, jspTextEditor);
     checkContextMenuOfEmptyPage(webBrowser, jspTextEditor);
     checkContextMenuOfPlainText(webBrowser, jspTextEditor);
     checkContextMenuOfComponent(webBrowser, jspTextEditor);
     checkInsertMenuContent(webBrowser);
-    checkEditMenuFunctionality(webBrowser, jspTextEditor);
-    checkInsertMenuFunctionality(webBrowser, jspTextEditor);
     jspTextEditor.close();
 	}
 	/**
@@ -165,9 +165,8 @@ public class VisualEditorContextMenuTest extends VPEEditorTestCase {
    * @param expectedMenuLabels
    */
 	private void checkMenuContent(SWTBotWebBrowser webBrowser , String[] expectedMenuLabels){
-	  
 	  webBrowser.setFocus();
-	  bot.sleep(Timing.time1S());
+	  bot.sleep(Timing.time2S());
     String[] menuLabels = ContextMenuHelper.getMenuItemLabels(webBrowser.getTopMenu(webBrowser.getSelectedDomNode(), 
         SWTBotWebBrowser.INSERT_AROUND_MENU_LABEL));
     assertMenuContent(menuLabels , expectedMenuLabels);
@@ -416,15 +415,20 @@ public class VisualEditorContextMenuTest extends VPEEditorTestCase {
    * @param jspTextEditor
    */
   private void checkEditMenuFunctionality(SWTBotWebBrowser webBrowser , SWTBotEclipseEditor jspTextEditor){
-    jspTextEditor.setFocus();
-    jspTextEditor.selectRange(6, 9, 0);
+    jspTextEditor.setText(VisualEditorContextMenuTest.PAGE_TEXT);
+    jspTextEditor.save();
+    botExt.sleep(Timing.time2S());
     webBrowser.setFocus();
+    botExt.sleep(Timing.time5S());
     // Test Cut
     nsIDOMNode calendarNode = webBrowser.getDomNodeByTagName("INPUT",0);
+    botExt.sleep(Timing.time2S());
     webBrowser.selectDomNode(calendarNode,0);
-    botExt.sleep(Timing.time1S());
+    botExt.sleep(Timing.time2S());
     webBrowser.clickContextMenu(calendarNode, IDELabel.Menu.CUT);
-    botExt.sleep(Timing.time1S());
+    botExt.sleep(Timing.time2S());
+    jspTextEditor.save();
+    botExt.sleep(Timing.time2S());
     String sourceEditorText = jspTextEditor.getText();
     assertTrue ("Source Editor should not contain text '<rich:calendar></rich:calendar>'\nSource Editor Text: " +
         sourceEditorText,
@@ -433,8 +437,11 @@ public class VisualEditorContextMenuTest extends VPEEditorTestCase {
     webBrowser.setFocus();
     nsIDOMNode inputTextNode = webBrowser.getDomNodeByTagName("INPUT",0);
     webBrowser.selectDomNode(inputTextNode,0);
+    botExt.sleep(Timing.time2S());
     webBrowser.clickContextMenu(inputTextNode, IDELabel.Menu.PASTE);
-    botExt.sleep(Timing.time1S());
+    botExt.sleep(Timing.time2S());    
+    jspTextEditor.save();
+    botExt.sleep(Timing.time2S());
     sourceEditorText = jspTextEditor.getText();
     assertTrue ("Source Editor should contain text '<rich:calendar></rich:calendar>'\nSource Editor Text: " +
         sourceEditorText,
@@ -442,14 +449,16 @@ public class VisualEditorContextMenuTest extends VPEEditorTestCase {
     // Test Copy
     calendarNode = webBrowser.getDomNodeByTagName("INPUT",0);
     webBrowser.setFocus();
-    calendarNode = webBrowser.getDomNodeByTagName("INPUT",0);
     webBrowser.selectDomNode(calendarNode,0);
+    botExt.sleep(Timing.time2S());
     webBrowser.clickContextMenu(calendarNode, IDELabel.Menu.COPY);
+    botExt.sleep(Timing.time2S());
     inputTextNode = webBrowser.getDomNodeByTagName("INPUT",1);
     webBrowser.selectDomNode(inputTextNode,0);
-    botExt.sleep(Timing.time1S());
+    botExt.sleep(Timing.time2S());
     webBrowser.clickContextMenu(inputTextNode, IDELabel.Menu.PASTE);
-    botExt.sleep(Timing.time1S());
+    botExt.sleep(Timing.time2S());
+    jspTextEditor.save();
     sourceEditorText = jspTextEditor.getText();
     assertTrue ("Source Editor should not contain text '<h:inputText/>'\nSource Editor Text: " +
         sourceEditorText,
@@ -458,16 +467,18 @@ public class VisualEditorContextMenuTest extends VPEEditorTestCase {
     jspTextEditor.setFocus();
     jspTextEditor.setText(VisualEditorContextMenuTest.PAGE_TEXT);
     jspTextEditor.save();
+    bot.sleep(Timing.time2S());
     jspTextEditor.selectRange(6, 9, 0);
-    bot.sleep(Timing.time1S());
+    bot.sleep(Timing.time2S());
     webBrowser.setFocus();
     // Test Cut
     calendarNode = webBrowser.getDomNodeByTagName("INPUT",0);
     webBrowser.selectDomNode(calendarNode,0);
-    botExt.sleep(Timing.time1S());
+    botExt.sleep(Timing.time2S());
     webBrowser.setFocus();
     KeyboardHelper.typeKeyCodeUsingAWT(KeyEvent.VK_X,KeyEvent.VK_CONTROL);
-    botExt.sleep(Timing.time1S());
+    jspTextEditor.save();
+    botExt.sleep(Timing.time2S());
     sourceEditorText = jspTextEditor.getText();
     assertTrue ("Source Editor should not contain text '<rich:calendar></rich:calendar>'\nSource Editor Text: " +
         sourceEditorText,
@@ -476,23 +487,29 @@ public class VisualEditorContextMenuTest extends VPEEditorTestCase {
     webBrowser.setFocus();
     inputTextNode = webBrowser.getDomNodeByTagName("INPUT",0);
     webBrowser.selectDomNode(inputTextNode,0);
+    botExt.sleep(Timing.time2S());
     KeyboardHelper.typeKeyCodeUsingAWT(KeyEvent.VK_V,KeyEvent.VK_CONTROL);
-    botExt.sleep(Timing.time1S());
+    jspTextEditor.save();
+    botExt.sleep(Timing.time2S());
     sourceEditorText = jspTextEditor.getText();
     assertTrue ("Source Editor should contain text '<rich:calendar></rich:calendar>'\nSource Editor Text: " +
         sourceEditorText,
       sourceEditorText.contains("<rich:calendar></rich:calendar>"));
     // Test Copy
-    calendarNode = webBrowser.getDomNodeByTagName("INPUT",0);
     webBrowser.setFocus();
+    botExt.sleep(Timing.time2S());
     calendarNode = webBrowser.getDomNodeByTagName("INPUT",0);
+    botExt.sleep(Timing.time2S());
     webBrowser.selectDomNode(calendarNode,0);
+    botExt.sleep(Timing.time2S());
     KeyboardHelper.typeKeyCodeUsingAWT(KeyEvent.VK_C,KeyEvent.VK_CONTROL);
     inputTextNode = webBrowser.getDomNodeByTagName("INPUT",1);
+    botExt.sleep(Timing.time2S());
     webBrowser.selectDomNode(inputTextNode,0);
-    botExt.sleep(Timing.time1S());
+    botExt.sleep(Timing.time2S());
     KeyboardHelper.typeKeyCodeUsingAWT(KeyEvent.VK_V,KeyEvent.VK_CONTROL);
-    botExt.sleep(Timing.time1S());
+    jspTextEditor.save();
+    botExt.sleep(Timing.time2S());
     sourceEditorText = jspTextEditor.getText();
     assertTrue ("Source Editor should not contain text '<h:inputText/>'\nSource Editor Text: " +
         sourceEditorText,
