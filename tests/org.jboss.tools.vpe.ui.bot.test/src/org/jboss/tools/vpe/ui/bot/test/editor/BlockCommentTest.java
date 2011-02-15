@@ -50,7 +50,7 @@ public class BlockCommentTest extends VPEEditorTestCase{
 		
 		getEditor().navigateTo(18,22);
 		bot.menu("Source").menu("Remove Block Comment").click();  //$NON-NLS-1$//$NON-NLS-2$
-		checkVPE("CommentTestUntoggle.xml"); //$NON-NLS-1$
+		checkVPE("BlockCommentTestUntoggle.xml"); //$NON-NLS-1$
 		
 		//Test add block comment lines with CTRL+SHIFT+/ hot keys
 		
@@ -62,7 +62,7 @@ public class BlockCommentTest extends VPEEditorTestCase{
 		
 		getEditor().navigateTo(18,22);
 		bot.menu("Source").menu("Remove Block Comment").click(); //$NON-NLS-1$ //$NON-NLS-2$
-		checkVPE("CommentTestUntoggle.xml"); //$NON-NLS-1$
+		checkVPE("BlockCommentTestUntoggle.xml"); //$NON-NLS-1$
 		
 	}
 	

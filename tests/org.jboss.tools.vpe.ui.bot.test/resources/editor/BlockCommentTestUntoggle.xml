@@ -27,7 +27,7 @@ Name:
 <INPUT value="#{user.name}" title="h:inputText value: #{user.name} required: true" >
 </INPUT>
 </SPAN>
-<INPUT type="button" title="h:commandButton action: hello value: Say Hello!" value="Say Hello!" style="border: 2px solid rgb(0, 0, 255) ! important; -moz-user-modify: read-only;" oldstyle="-moz-user-modify: read-only;" >
+<INPUT type="button" title="h:commandButton action: hello value: Say Hello!" value="Say Hello!" style="-moz-user-modify: read-only;" >
 </INPUT>
 </FORM>
 </DIV>

@@ -7,7 +7,7 @@
 <TR title="f:view" >
 <TD title="f:view" >
 <DIV title="f:view" >
-<H1 style="-moz-user-modify: read-write;" title="h1" >
+<H1 style="border: 2px solid rgb(0, 0, 255) ! important; -moz-user-modify: read-write;" title="h1" oldstyle="-moz-user-modify: read-write;" >
 <SPAN class="vpe-text" title="h:outputText value: #{Message.header}" >
 Hello Demo Application
 </SPAN>

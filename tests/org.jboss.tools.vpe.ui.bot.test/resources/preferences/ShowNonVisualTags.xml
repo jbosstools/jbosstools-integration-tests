@@ -1,6 +1,6 @@
 <BODY id="__content__area__" >
 <SPAN >
-<SPAN style="border: 1px dashed GREY; color: GREY; font-size: 12px;" >
+<SPAN style="border: 2px solid rgb(0, 0, 255) ! important; color: GREY; font-size: 12px;" oldstyle="border: 1px dashed GREY; color: GREY; font-size: 12px;" >
 jsp:directive.taglib
 </SPAN>
 <BR vpe:pseudo-element="yes" style="font-style: italic; color: green; -moz-user-modify: read-only;" >
