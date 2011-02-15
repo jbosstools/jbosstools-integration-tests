@@ -153,7 +153,9 @@ public class EditingActionsTest extends VPEEditorTestCase {
     jspEditor.save();
     botExt.sleep(Timing.time3S());
     nsIDOMNode node = webBrowser.getDomNodeByTagName(nodeText, 0);
+    botExt.sleep(Timing.time1S());
     webBrowser.setFocus();
+    botExt.sleep(Timing.time1S());
     webBrowser.selectDomNode(node, 0);
     botExt.sleep(Timing.time1S());
     
