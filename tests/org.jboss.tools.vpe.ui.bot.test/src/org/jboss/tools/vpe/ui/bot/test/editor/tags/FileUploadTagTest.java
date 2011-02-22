@@ -85,7 +85,7 @@ public class FileUploadTagTest extends RichFacesTagsTest{
           "\nbut it is '" + selectedText + "'",
           selectedText.trim().startsWith(hasToStartWith));
       final String hasEndWith = "</rich:fileUpload>";
-      assertTrue("Selected text in Source Pane has to end with '" + hasToStartWith + "'" +
+      assertTrue("Selected text in Source Pane has to end with '" + hasEndWith + "'" +
           "\nbut it is '" + selectedText + "'",
           selectedText.trim().endsWith(hasEndWith));
   }

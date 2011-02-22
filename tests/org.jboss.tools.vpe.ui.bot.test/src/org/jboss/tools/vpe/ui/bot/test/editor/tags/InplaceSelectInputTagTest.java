@@ -60,7 +60,7 @@ public class InplaceSelectInputTagTest extends RichFacesTagsTest{
           "\nbut it is '" + selectedText + "'",
           selectedText.trim().startsWith(hasToStartWith));
       final String hasEndWith = "</rich:inplaceSelect>";
-      assertTrue("Selected text in Source Pane has to end with '" + hasToStartWith + "'" +
+      assertTrue("Selected text in Source Pane has to end with '" + hasEndWith + "'" +
           "\nbut it is '" + selectedText + "'",
           selectedText.trim().endsWith(hasEndWith));
       // Click on tag and check correct tag displaying
@@ -85,7 +85,7 @@ public class InplaceSelectInputTagTest extends RichFacesTagsTest{
       assertTrue("Selected text in Source Pane has to start with '" + hasToStartWith + "'" +
           "\nbut it is '" + selectedText + "'",
           selectedText.trim().startsWith(hasToStartWith));
-      assertTrue("Selected text in Source Pane has to end with '" + hasToStartWith + "'" +
+      assertTrue("Selected text in Source Pane has to end with '" + hasEndWith + "'" +
           "\nbut it is '" + selectedText + "'",
           selectedText.trim().endsWith(hasEndWith));
   }

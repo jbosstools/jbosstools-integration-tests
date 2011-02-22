@@ -117,7 +117,7 @@ public class PickListTagTest extends RichFacesTagsTest{
           "\nbut it is '" + selectedText + "'",
           selectedText.trim().startsWith(hasToStartWith));
       String hasEndWith = "</rich:pickList>";
-      assertTrue("Selected text in Source Pane has to end with '" + hasToStartWith + "'" +
+      assertTrue("Selected text in Source Pane has to end with '" + hasEndWith + "'" +
           "\nbut it is '" + selectedText + "'",
           selectedText.trim().endsWith(hasEndWith));
       // select first item in VPE

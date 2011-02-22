@@ -52,7 +52,7 @@ public class ProgressTagTest extends RichFacesTagsTest{
           "\nbut it is '" + selectedText + "'",
           selectedText.trim().startsWith(hasToStartWith));
       final String hasEndWith = "</rich:progressBar>";
-      assertTrue("Selected text in Source Pane has to end with '" + hasToStartWith + "'" +
+      assertTrue("Selected text in Source Pane has to end with '" + hasEndWith + "'" +
           "\nbut it is '" + selectedText + "'",
           selectedText.trim().endsWith(hasEndWith));
   }
