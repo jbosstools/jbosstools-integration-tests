@@ -21,13 +21,16 @@ import org.jboss.tools.vpe.ui.bot.test.tools.SWTBotWebBrowser;
  * @author vlado pakan
  *
  */
-public class RichFacesTagsTest extends VPEEditorTestCase {
+public abstract class RichFacesTagsTest extends VPEEditorTestCase {
   
-  private static final String TEST_PAGE_NAME = "RichFacesTagsTest.jsp";
+  protected static final String TEST_PAGE_NAME_JSP = "RichFacesTagsTest.jsp";
+  protected static final String TEST_PAGE_NAME_XHTML = "RichFacesTagsTest.xhtml";
   
-  private SWTBotEditorExt jspEditor;
-  private SWTBotWebBrowser webBrowser;
-  private SWTBotExt botExt;
+  protected SWTBotEditorExt jspEditor;
+  protected SWTBotEditorExt xhtmlEditor;
+  protected SWTBotWebBrowser jspWebBrowser;
+  protected SWTBotWebBrowser xhtmlWebBrowser;
+  protected SWTBotExt botExt;
   
 	public RichFacesTagsTest() {
 		super();
@@ -37,9 +40,13 @@ public class RichFacesTagsTest extends VPEEditorTestCase {
 	protected void setUp() throws Exception {
 	  super.setUp();
     eclipse.maximizeActiveShell();
-    createJspPage(RichFacesTagsTest.TEST_PAGE_NAME);
-    jspEditor = botExt.swtBotEditorExtByTitle(RichFacesTagsTest.TEST_PAGE_NAME);
-    webBrowser = new SWTBotWebBrowser(RichFacesTagsTest.TEST_PAGE_NAME,botExt);
+    createJspPage(RichFacesTagsTest.TEST_PAGE_NAME_JSP);
+    jspEditor = botExt.swtBotEditorExtByTitle(RichFacesTagsTest.TEST_PAGE_NAME_JSP);
+    jspWebBrowser = new SWTBotWebBrowser(RichFacesTagsTest.TEST_PAGE_NAME_JSP,botExt);
+    createXhtmlPage(RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+    xhtmlEditor = botExt.swtBotEditorExtByTitle(RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+    xhtmlWebBrowser = new SWTBotWebBrowser(RichFacesTagsTest.TEST_PAGE_NAME_XHTML,botExt);
+
 	}
 
   @Override
@@ -54,117 +61,42 @@ public class RichFacesTagsTest extends VPEEditorTestCase {
   @Override
   protected void tearDown() throws Exception {
     jspEditor.close();
+    xhtmlEditor.close();
     super.tearDown();
   }
   /**
-   * Tests rich:comboBox Tag
+   * Runs Tag Testing
    */
-  public void testComboBoxTag(){
-    final String defaultLabel = "DefaultLabel";
-    jspEditor.setText("<%@ taglib uri=\"http://java.sun.com/jsf/html\" prefix=\"h\" %>\n" +
-        "<%@ taglib uri=\"http://java.sun.com/jsf/core\" prefix=\"f\" %>\n" +
-        "<%@ taglib uri=\"http://richfaces.org/rich\" prefix=\"rich\" %>\n" +
-        "<html>\n" +
-        "  <head>\n" +
-        "  </head>\n" +
-        "  <body>\n" +
-        "    <f:view>\n" +
-        "      <h:form>\n" +
-        "        <rich:comboBox id=\"comboBox\" defaultLabel=\"" + defaultLabel + "\">\n" +
-        "          <f:selectItem itemValue=\"item 1\"/>\n" +
-        "          <f:selectItem itemValue=\"item 2\"/>\n" +
-        "        </rich:comboBox>\n" +
-        "      </h:form>\n" +
-        "    </f:view>\n" +
-        "  </body>\n" + 
-        "</html>");
-    jspEditor.save();
-    bot.sleep(Timing.time3S());
-    assertVisualEditorContains(webBrowser,
-        "INPUT", 
-        new String[]{"type","class","value"},
-        new String[]{"text","rich-combobox-font-disabled rich-combobox-input-inactive",defaultLabel},
-        RichFacesTagsTest.TEST_PAGE_NAME);
-    assertVisualEditorContains(webBrowser,
-        "INPUT", 
-        new String[]{"type","class"},
-        new String[]{"text","rich-combobox-font-inactive rich-combobox-button-background rich-combobox-button-inactive"},
-        RichFacesTagsTest.TEST_PAGE_NAME);
-    assertVisualEditorContains(webBrowser,
-        "INPUT", 
-        new String[]{"type","class"},
-        new String[]{"text","rich-combobox-font-inactive rich-combobox-button-icon-inactive rich-combobox-button-inactive"},
-        RichFacesTagsTest.TEST_PAGE_NAME);
-    assertVisualEditorContains(webBrowser,
-        "DIV", 
-        new String[]{"class"},
-        new String[]{"rich-combobox-strut rich-combobox-font"},
-        RichFacesTagsTest.TEST_PAGE_NAME);    
-    // check tag selection
-    webBrowser.selectDomNode(webBrowser.getDomNodeByTagName("INPUT"), 0);
-    bot.sleep(Timing.time3S());
-    String selectedText = jspEditor.getSelection();
-    final String hasToStartWith = "<rich:comboBox";
-    assertTrue("Selected text in Source Pane has to start with '" + hasToStartWith + "'" +
-        "\nbut it is '" + selectedText + "'",
-        selectedText.trim().startsWith(hasToStartWith));
-    final String hasToEndWith = "</rich:comboBox>";
-    assertTrue("Selected text in Source Pane has to end with '" + hasToEndWith + "'" +
-        "\nbut it is '" + selectedText + "'",
-        selectedText.trim().endsWith(hasToEndWith));
-
+  public void testTag (){
+    initPageContent ();
+    savePageContent ();
+    verifyTag();
   }
   /**
-   * Tests rich:comboBox Tag
+   * Initialize proper page content
    */
-  public void testInplaceInputTag(){
-    final String defaultLabel = "DefaultLabel";
-    jspEditor.setText("<%@ taglib uri=\"http://java.sun.com/jsf/html\" prefix=\"h\" %>\n" +
-        "<%@ taglib uri=\"http://java.sun.com/jsf/core\" prefix=\"f\" %>\n" +
-        "<%@ taglib uri=\"http://richfaces.org/rich\" prefix=\"rich\" %>\n" +
-        "<html>\n" +
-        "  <head>\n" +
-        "  </head>\n" +
-        "  <body>\n" +
-        "    <f:view>\n" +
-        "      <rich:inplaceInput defaultLabel=\"" + defaultLabel+ "\"/>\n" +
-        "    </f:view>\n" +
-        "  </body>\n" + 
-        "</html>");
-    jspEditor.save();
-    bot.sleep(Timing.time3S());
-    assertVisualEditorContains(webBrowser,
-      "SPAN", 
-      new String[]{"vpe-user-toggle-id","title","class"},
-      new String[]{"false","rich:inplaceInput defaultLabel: DefaultLabel","rich-inplace rich-inplace-view"},
-      RichFacesTagsTest.TEST_PAGE_NAME);
-    assertVisualEditorContainsNodeWithValue(webBrowser,
-        defaultLabel, 
-        RichFacesTagsTest.TEST_PAGE_NAME);
-    // check tag selection
-    webBrowser.selectDomNode(webBrowser.getDomNodeByTagName("SPAN",2), 0);
-    bot.sleep(Timing.time3S());
-    String selectedText = jspEditor.getSelection();
-    final String expectedSelectedText = "<rich:inplaceInput defaultLabel=\"" + defaultLabel+ "\"/>";
-    assertTrue("Selected text in Source Pane has to be '" + expectedSelectedText + "'" +
-        "\nbut it is '" + selectedText + "'",
-        selectedText.trim().equals(expectedSelectedText));
-    webBrowser.mouseClickOnNode(webBrowser.getDomNodeByTagName("SPAN",2));
-    bot.sleep(Timing.time3S());
-    selectedText = jspEditor.getSelection();
-    assertVisualEditorContains(webBrowser,
-        "SPAN", 
-        new String[]{"vpe-user-toggle-id","class"},
-        new String[]{"true","rich-inplace rich-inplace-edit"},
-        RichFacesTagsTest.TEST_PAGE_NAME);
-    assertVisualEditorContains(webBrowser,
-        "INPUT", 
-        new String[]{"type","class","value"},
-        new String[]{"text","rich-inplace-field",defaultLabel},
-        RichFacesTagsTest.TEST_PAGE_NAME);
-    assertTrue("Selected text in Source Pane has to be '" + expectedSelectedText + "'" +
-        "\nbut it is '" + selectedText + "'",
-        selectedText.trim().equals(expectedSelectedText));
-  
+  protected abstract void initPageContent ();
+  /**
+   * Verify tag
+   */
+  protected abstract void verifyTag ();
+  /**
+   * Saves Page Content if it was changed and shows changed editor
+   */
+  protected void savePageContent(){
+    boolean wasSaved = false;
+    if (jspEditor.isDirty()){
+      jspEditor.save();
+      jspEditor.show();
+      wasSaved = true;
+    }
+    if (xhtmlEditor.isDirty()){
+      xhtmlEditor.save();
+      xhtmlEditor.show();
+      wasSaved = true;
+    }
+    if (wasSaved){
+      bot.sleep(Timing.time3S());
+    }
   }
 }

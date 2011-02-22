@@ -17,6 +17,7 @@ import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.results.VoidResult;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotCheckBox;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.jst.jsp.jspeditor.JSPMultiPageEditor;
@@ -566,4 +567,36 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase{
       }
     });
   }
+  /**
+   * Creates new empty xhtml page within test project
+   * @param pageName
+   * @param subDirs - complete path to page location within workspace
+   */
+  protected void createXhtmlPage (String pageName , String... subDirs){
+    SWTBotTreeItem tiPageParent = null;
+    if (subDirs == null || subDirs.length == 0) {
+      tiPageParent = packageExplorer.selectTreeItem("pages", new String[] {VPEAutoTestCase.JBT_TEST_PROJECT_NAME,"WebContent"});
+    }
+    else{
+      String[] subPath = Arrays.copyOfRange(subDirs, 0, subDirs.length - 1);
+      tiPageParent = packageExplorer.selectTreeItem(subDirs[subDirs.length - 1], subPath);
+    }
+    tiPageParent.expand();
+    try {
+      tiPageParent.getNode(pageName).doubleClick();
+    } catch (WidgetNotFoundException e) {
+      open.newObject(ActionItem.NewObject.JBossToolsWebXHTMLFile.LABEL);
+      bot.shell(IDELabel.Shell.NEW_XHTML_FILE).activate();
+      bot.textWithLabel(ActionItem.NewObject.JBossToolsWebXHTMLFile.TEXT_FILE_NAME).setText(pageName);
+      bot.button(IDELabel.Button.NEXT).click();
+      SWTBotCheckBox cbUseTemplate = bot.checkBox(IDELabel.NewXHTMLFileDialog.USE_XHTML_TEMPLATE_CHECK_BOX);
+      if (cbUseTemplate.isChecked()){
+        cbUseTemplate.deselect();
+      }
+      bot.button(IDELabel.Button.FINISH).click();
+    }
+    bot.sleep(Timing.time2S());
+
+  }
+
 }
