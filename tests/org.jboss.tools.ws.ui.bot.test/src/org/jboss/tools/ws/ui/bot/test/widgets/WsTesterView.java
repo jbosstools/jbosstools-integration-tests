@@ -98,7 +98,7 @@ public class WsTesterView extends ViewBase {
 	public SWTBotView show() {
 		SWTBotView b = super.show();
 		// maximize tester view
-		menu(IDEWorkbenchMessages.Workbench_window).menu(
+		bot.menu(IDEWorkbenchMessages.Workbench_window).menu(
 				WorkbenchMessages.MaximizePartAction_text).click();
 		return b;
 	}
@@ -123,12 +123,12 @@ public class WsTesterView extends ViewBase {
 
 	public void setRequestBody(String s) {
 		// Body Text
-		textWithLabel(JBossWSUIMessages.JAXRSWSTestView2_BodyText_Section).setText(s);
+		bot().textWithLabel(JBossWSUIMessages.JAXRSWSTestView2_BodyText_Section).setText(s);
 	}
 
 	public String getRequestBody() {
 		// Body Text
-		return textWithLabel(JBossWSUIMessages.JAXRSWSTestView2_BodyText_Section).getText();
+		return bot().textWithLabel(JBossWSUIMessages.JAXRSWSTestView2_BodyText_Section).getText();
 	}
 
 	public void expandSection(String name) {
@@ -148,18 +148,18 @@ public class WsTesterView extends ViewBase {
 				click(true);
 			}
 		}
-		new X(label(name).widget).expand();
+		new X(bot().label(name).widget).expand();
 	}
 
 	public void addRequestArg(WsTesterView.Request_Arg_Type type, String name,
 			String value) {
-		text(type.ordinal()).typeText(name + "=" + value);
-		button("Add", type.ordinal()).click();
-		text(type.ordinal()).setText("");
+		bot().text(type.ordinal()).typeText(name + "=" + value);
+		bot().button("Add", type.ordinal()).click();
+		bot().text(type.ordinal()).setText("");
 	}
 
 	public Map<String, String> getRequestArgs(WsTesterView.Request_Arg_Type type) {
-		String[] args = list(type.ordinal()).getItems();
+		String[] args = bot().list(type.ordinal()).getItems();
 		Map<String, String> result = new HashMap<String, String>();
 		for (String s : args) {
 			int i = s.indexOf('=');
@@ -170,41 +170,41 @@ public class WsTesterView extends ViewBase {
 
 	public void editRequestArg(WsTesterView.Request_Arg_Type type,
 			String oldName, String oldValue, String newName, String newValue) {
-		list(type.ordinal()).select(oldName + "=" + oldValue);
-		button("Edit", type.ordinal()).click();
-		SWTBot sh = activeShell().bot();
+		bot().list(type.ordinal()).select(oldName + "=" + oldValue);
+		bot().button("Edit", type.ordinal()).click();
+		SWTBot sh = bot().activeShell().bot();
 		sh.text(0).typeText(newName + "=" + newValue);
 		sh.button(IDialogConstants.OK_LABEL).click();
 	}
 
 	public void removeRequestArg(WsTesterView.Request_Arg_Type type,
 			String name, String value) {
-		list(type.ordinal()).select(name + "=" + value);
-		button("Remove", type.ordinal()).click();
+		bot().list(type.ordinal()).select(name + "=" + value);
+		bot().button("Remove", type.ordinal()).click();
 	}
 
 	public void clearRequestArgs(WsTesterView.Request_Arg_Type type) {
-		SWTBotButton b = button("Clear All", type.ordinal());
+		SWTBotButton b = bot().button("Clear All", type.ordinal());
 		b.click();
 	}
 
 	public String getResponseBody() {
-		return textWithLabel(JBossWSUIMessages.JAXRSWSTestView2_ResponseBody_Section).getText();
+		return bot().textWithLabel(JBossWSUIMessages.JAXRSWSTestView2_ResponseBody_Section).getText();
 	}
 
 	public String[] getResponseHeaders() {
-		return listWithLabel(JBossWSUIMessages.JAXRSWSTestView2_ResponseHeaders_Section).getItems();
+		return bot().listWithLabel(JBossWSUIMessages.JAXRSWSTestView2_ResponseHeaders_Section).getItems();
 	}
 
 	public void invoke() {
-		toolbarButtonWithTooltip(JBossWSUIMessages.JAXRSWSTestView2_Go_Tooltip).click();
-		waitWhile(Conditions.shellIsActive(JBossWSUIMessages.JAXRSWSTestView_Invoke_Label), 120000);
-		sleep(500);
+		bot().toolbarButtonWithTooltip(JBossWSUIMessages.JAXRSWSTestView2_Go_Tooltip).click();
+		bot.waitWhile(Conditions.shellIsActive(JBossWSUIMessages.JAXRSWSTestView_Invoke_Label), 120000);
+		bot.sleep(500);
 	}
 
 	public SelectWSDLDialog getFromWSDL() {
-		toolbarButtonWithTooltip(JBossWSUIMessages.JAXRSWSTestView2_GetFromWSDL_Tooltip).click();
-		return new SelectWSDLDialog(activeShell().widget);
+		bot().toolbarButtonWithTooltip(JBossWSUIMessages.JAXRSWSTestView2_GetFromWSDL_Tooltip).click();
+		return new SelectWSDLDialog(bot.activeShell().widget);
 	}
 
 	private String getStringFromBundle(String key) {
@@ -213,12 +213,12 @@ public class WsTesterView extends ViewBase {
 
 	private SWTBotCombo getRequestTypeCombo() {
 		// HTTP Method:
-		return comboBox(1);
+		return bot().comboBox(1);
 	}
 
 	private SWTBotCombo getServiceURLCombo() {
 		// Service URL:
-		return comboBox(0);
+		return bot().comboBox(0);
 	}
 
 }
