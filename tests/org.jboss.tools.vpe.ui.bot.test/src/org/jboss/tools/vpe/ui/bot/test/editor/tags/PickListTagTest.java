@@ -36,12 +36,11 @@ public class PickListTagTest extends RichFacesTagsTest{
       index++;
     }
     xhtmlEditor.setText("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n" +
-      "<ui:composition xmlns=\"http://www.w3.org/1999/xhtml\"\n" +
+      "<html xmlns=\"http://www.w3.org/1999/xhtml\"\n" +
       "  xmlns:ui=\"http://java.sun.com/jsf/facelets\"\n" +
       "  xmlns:f=\"http://java.sun.com/jsf/core\"\n" +
       "  xmlns:rich=\"http://richfaces.org/rich\"\n" + 
       "  xmlns:a4j=\"http://richfaces.org/a4j\">\n" +
-      "<html>\n" +
       "  <head>\n" +
       "  </head>\n" +
       "  <body>\n" +
@@ -51,8 +50,7 @@ public class PickListTagTest extends RichFacesTagsTest{
       "      </rich:pickList>\n" +   
       "    </f:view>\n" +
       "  </body>\n" + 
-      "</html>\n" +
-      "</ui:composition>");
+      "</html>");
   }
 
   @Override

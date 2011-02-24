@@ -40,6 +40,7 @@ import org.jboss.tools.vpe.ui.bot.test.editor.tags.FileUploadTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.InplaceInputTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.InplaceSelectInputTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.JSFTagsTest;
+import org.jboss.tools.vpe.ui.bot.test.editor.tags.PanelMenuTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.PickListTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.ProgressTagTest;
 import org.jboss.tools.vpe.ui.bot.test.jbide.JBIDE4556Test;
@@ -113,6 +114,7 @@ public class VPEAllBotTests extends SWTBotTestCase{
 		suite.addTestSuite(InplaceSelectInputTagTest.class);
 		suite.addTestSuite(PickListTagTest.class);
     suite.addTestSuite(ProgressTagTest.class);
+		suite.addTestSuite(PanelMenuTagTest.class);
     suite.addTestSuite(XhtmlFilePerformanceTest.class);
 		return new TestSetup(suite);
 	}
