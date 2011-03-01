@@ -35,7 +35,7 @@ import org.junit.Test;
  * @author psrna
  *
  */
-//@SWTBotTestRequires(server=@Server(type=ServerType.SOA,version="5.1"),perspective="Java EE")
+@SWTBotTestRequires(server=@Server(type=ServerType.SOA,version="5.1"),perspective="Java EE")
 public class Publishing extends SWTTestExt{
 	
 	private static final String CONNERR_MSG = "Unable to connect using the specified server properties." +
@@ -139,15 +139,15 @@ public class Publishing extends SWTTestExt{
 		SWTBot viewBot = view.bot();
 		SWTBotTreeItem node = eclipse.selectTreeLocation(viewBot, Properties.PROJECT_NAME, Properties.FILE_NAME);
 
-		ContextMenuHelper.prepareTreeItemForContextMenu(projectExplorer.tree(),node);
-		ContextMenuHelper.clickContextMenu(projectExplorer.tree(), "ModeShape", "Publish");
+		ContextMenuHelper.prepareTreeItemForContextMenu(projectExplorer.bot().tree(),node);
+		ContextMenuHelper.clickContextMenu(projectExplorer.bot().tree(), "ModeShape", "Publish");
 		
-		SWTBotShell shell = bot.shell("Publish");
+		SWTBotShell shell = bot.shell("Publish to ModeShape");
 		shell.activate();
 		
 		SWTBotCombo serverCombo = shell.bot().comboBoxWithLabel("Server:");
-		SWTBotCombo repoCombo = shell.bot().comboBoxWithLabel("Repository:");
-		SWTBotCombo workspaceCombo = shell.bot().comboBoxWithLabel("Workspace:");
+		SWTBotCombo repoCombo = shell.bot().comboBoxWithLabel("JCR Repository:");
+		SWTBotCombo workspaceCombo = shell.bot().comboBoxWithLabel("JCR Workspace:");
 		workspaceCombo.setSelection(Properties.WORKSPACE);
 		
 		assertTrue("URL mismatch.", serverCombo.getText().equals(Properties.URL));
@@ -167,8 +167,8 @@ public class Publishing extends SWTTestExt{
 		SWTBot viewBot = view.bot();
 		SWTBotTreeItem node = eclipse.selectTreeLocation(viewBot, Properties.PROJECT_NAME, Properties.FILE_NAME);
 		
-		ContextMenuHelper.prepareTreeItemForContextMenu(projectExplorer.tree(),node);
-		ContextMenuHelper.clickContextMenu(projectExplorer.tree(), "ModeShape", "Show Published Locations");
+		ContextMenuHelper.prepareTreeItemForContextMenu(projectExplorer.bot().tree(),node);
+		ContextMenuHelper.clickContextMenu(projectExplorer.bot().tree(), "ModeShape", "Show Published Locations");
 		
 		SWTBotShell shell = bot.shell("Published Locations");
 		shell.activate();
@@ -200,15 +200,15 @@ public class Publishing extends SWTTestExt{
 		SWTBot viewBot = view.bot();
 		SWTBotTreeItem node = eclipse.selectTreeLocation(viewBot, Properties.PROJECT_NAME, Properties.FILE_NAME);
 		
-		ContextMenuHelper.prepareTreeItemForContextMenu(projectExplorer.tree(),node);
-		ContextMenuHelper.clickContextMenu(projectExplorer.tree(), "ModeShape", "Unpublish");
+		ContextMenuHelper.prepareTreeItemForContextMenu(projectExplorer.bot().tree(),node);
+		ContextMenuHelper.clickContextMenu(projectExplorer.bot().tree(), "ModeShape", "Unpublish");
 		
-		SWTBotShell shell = bot.shell("Unpublish");
+		SWTBotShell shell = bot.shell("Unpublish from ModeShape");
 		shell.activate();
 		
 		SWTBotCombo serverCombo = shell.bot().comboBoxWithLabel("Server:");
-		SWTBotCombo repoCombo = shell.bot().comboBoxWithLabel("Repository:");
-		SWTBotCombo workspaceCombo = shell.bot().comboBoxWithLabel("Workspace:");
+		SWTBotCombo repoCombo = shell.bot().comboBoxWithLabel("JCR Repository:");
+		SWTBotCombo workspaceCombo = shell.bot().comboBoxWithLabel("JCR Workspace:");
 		workspaceCombo.setSelection(Properties.WORKSPACE);
 		
 		assertTrue("URL mismatch.", serverCombo.getText().equals(Properties.URL));

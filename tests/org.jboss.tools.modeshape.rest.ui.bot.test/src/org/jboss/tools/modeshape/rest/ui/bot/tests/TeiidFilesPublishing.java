@@ -1,5 +1,8 @@
 package org.jboss.tools.modeshape.rest.ui.bot.tests;
 
+import static org.eclipse.swtbot.swt.finder.waits.Conditions.shellCloses;
+import static org.eclipse.swtbot.swt.finder.waits.Conditions.waitForShell;
+
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -15,6 +18,7 @@ import org.eclipse.core.internal.preferences.Base64;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.SWTBot;
+import org.eclipse.swtbot.swt.finder.waits.Conditions;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCombo;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
@@ -34,7 +38,7 @@ import org.junit.Test;
  * @author psrna
  *
  */
-//@SWTBotTestRequires(server=@Server(type=ServerType.SOA,version="5.1"), perspective="Teiid Designer")
+@SWTBotTestRequires(server=@Server(type=ServerType.SOA,version="5.1"), perspective="Teiid Designer")
 public class TeiidFilesPublishing extends SWTTestExt{
 	
 	private static final String CONNERR_MSG = "Unable to connect using the specified server properties." +
@@ -52,6 +56,8 @@ public class TeiidFilesPublishing extends SWTTestExt{
 		
 		open.finish(shell.bot(), IDELabel.Button.FINISH);
 		
+		bot.waitUntil(Conditions.shellIsActive("Downloading..."));
+		bot.waitUntil(Conditions.shellCloses(bot.shell("Downloading...")));
 	}
 	
 	@BeforeClass
@@ -115,15 +121,15 @@ public class TeiidFilesPublishing extends SWTTestExt{
 		SWTBot viewBot = view.bot();
 		SWTBotTreeItem node = eclipse.selectTreeLocation(viewBot, Properties.TEIID_PROJECT_NAME);
 
-		ContextMenuHelper.prepareTreeItemForContextMenu(projectExplorer.tree(),node);
-		ContextMenuHelper.clickContextMenu(projectExplorer.tree(), "ModeShape", "Publish");
+		ContextMenuHelper.prepareTreeItemForContextMenu(projectExplorer.bot().tree(),node);
+		ContextMenuHelper.clickContextMenu(projectExplorer.bot().tree(), "ModeShape", "Publish");
 		
-		SWTBotShell shell = bot.shell("Publish");
+		SWTBotShell shell = bot.shell("Publish to ModeShape");
 		shell.activate();
 		
 		SWTBotCombo serverCombo = shell.bot().comboBoxWithLabel("Server:");
-		SWTBotCombo repoCombo = shell.bot().comboBoxWithLabel("Repository:");
-		SWTBotCombo workspaceCombo = shell.bot().comboBoxWithLabel("Workspace:");
+		SWTBotCombo repoCombo = shell.bot().comboBoxWithLabel("JCR Repository:");
+		SWTBotCombo workspaceCombo = shell.bot().comboBoxWithLabel("JCR Workspace:");
 		workspaceCombo.setSelection(Properties.WORKSPACE);
 		
 		assertTrue("URL mismatch.", serverCombo.getText().equals(Properties.URL));
@@ -131,13 +137,18 @@ public class TeiidFilesPublishing extends SWTTestExt{
 		assertTrue("Workspace mismatch.", workspaceCombo.getText().equals(Properties.WORKSPACE));
 		
 		open.finish(shell.bot());
+		bot.waitUntil(Conditions.shellCloses(shell));
 		
 		assertTrue("HTTP Response code must be 200 after publishing.", HttpURLConnection.HTTP_OK == testPublishedFile(Properties.TEIID_PROJECT_DESC));
 		assertTrue("HTTP Response code must be 200 after publishing.", HttpURLConnection.HTTP_OK == testPublishedFile(Properties.PARTS_SOURCE_A));
 		assertTrue("HTTP Response code must be 200 after publishing.", HttpURLConnection.HTTP_OK == testPublishedFile(Properties.PARTS_SOURCE_B));
 		assertTrue("HTTP Response code must be 200 after publishing.", HttpURLConnection.HTTP_OK == testPublishedFile(Properties.PARTS_VIRTUAL));
-		assertTrue("HTTP Response code must be 200 after publishing.", HttpURLConnection.HTTP_OK == testPublishedFile(Properties.ORACLE_SQL));
-		assertTrue("HTTP Response code must be 200 after publishing.", HttpURLConnection.HTTP_OK == testPublishedFile(Properties.SQLSERVER_SQL));
+		assertTrue("HTTP Response code must be 200 after publishing.", HttpURLConnection.HTTP_OK == testPublishedFile(Properties.DATA_1));
+		assertTrue("HTTP Response code must be 200 after publishing.", HttpURLConnection.HTTP_OK == testPublishedFile(Properties.DATA_2));
+		assertTrue("HTTP Response code must be 200 after publishing.", HttpURLConnection.HTTP_OK == testPublishedFile(Properties.DATA_3));
+		assertTrue("HTTP Response code must be 200 after publishing.", HttpURLConnection.HTTP_OK == testPublishedFile(Properties.DATA_4));
+		assertTrue("HTTP Response code must be 200 after publishing.", HttpURLConnection.HTTP_OK == testPublishedFile(Properties.DATA_5));
+		
 	}
 	
 	@Test
@@ -147,15 +158,15 @@ public class TeiidFilesPublishing extends SWTTestExt{
 		SWTBot viewBot = view.bot();
 		SWTBotTreeItem node = eclipse.selectTreeLocation(viewBot, Properties.TEIID_PROJECT_NAME);
 		
-		ContextMenuHelper.prepareTreeItemForContextMenu(projectExplorer.tree(),node);
-		ContextMenuHelper.clickContextMenu(projectExplorer.tree(), "ModeShape", "Unpublish");
+		ContextMenuHelper.prepareTreeItemForContextMenu(projectExplorer.bot().tree(),node);
+		ContextMenuHelper.clickContextMenu(projectExplorer.bot().tree(), "ModeShape", "Unpublish");
 		
-		SWTBotShell shell = bot.shell("Unpublish");
+		SWTBotShell shell = bot.shell("Unpublish from ModeShape");
 		shell.activate();
 		
 		SWTBotCombo serverCombo = shell.bot().comboBoxWithLabel("Server:");
-		SWTBotCombo repoCombo = shell.bot().comboBoxWithLabel("Repository:");
-		SWTBotCombo workspaceCombo = shell.bot().comboBoxWithLabel("Workspace:");
+		SWTBotCombo repoCombo = shell.bot().comboBoxWithLabel("JCR Repository:");
+		SWTBotCombo workspaceCombo = shell.bot().comboBoxWithLabel("JCR Workspace:");
 		workspaceCombo.setSelection(Properties.WORKSPACE);
 		
 		assertTrue("URL mismatch.", serverCombo.getText().equals(Properties.URL));
@@ -163,13 +174,18 @@ public class TeiidFilesPublishing extends SWTTestExt{
 		assertTrue("Workspace mismatch.", workspaceCombo.getText().equals(Properties.WORKSPACE));
 		
 		open.finish(shell.bot());
+		bot.waitUntil(Conditions.shellCloses(shell));
 			
 		assertTrue("HTTP Response code must be 404 after unpublishing.", HttpURLConnection.HTTP_NOT_FOUND == testPublishedFile(Properties.TEIID_PROJECT_DESC));
 		assertTrue("HTTP Response code must be 404 after unpublishing.", HttpURLConnection.HTTP_NOT_FOUND == testPublishedFile(Properties.PARTS_SOURCE_A));
 		assertTrue("HTTP Response code must be 404 after unpublishing.", HttpURLConnection.HTTP_NOT_FOUND == testPublishedFile(Properties.PARTS_SOURCE_B));
 		assertTrue("HTTP Response code must be 404 after unpublishing.", HttpURLConnection.HTTP_NOT_FOUND == testPublishedFile(Properties.PARTS_VIRTUAL));
-		assertTrue("HTTP Response code must be 404 after unpublishing.", HttpURLConnection.HTTP_NOT_FOUND == testPublishedFile(Properties.ORACLE_SQL));
-		assertTrue("HTTP Response code must be 404 after unpublishing.", HttpURLConnection.HTTP_NOT_FOUND == testPublishedFile(Properties.SQLSERVER_SQL));
+		assertTrue("HTTP Response code must be 404 after unpublishing.", HttpURLConnection.HTTP_NOT_FOUND == testPublishedFile(Properties.DATA_1));
+		assertTrue("HTTP Response code must be 404 after unpublishing.", HttpURLConnection.HTTP_NOT_FOUND == testPublishedFile(Properties.DATA_2));
+		assertTrue("HTTP Response code must be 404 after unpublishing.", HttpURLConnection.HTTP_NOT_FOUND == testPublishedFile(Properties.DATA_3));
+		assertTrue("HTTP Response code must be 404 after unpublishing.", HttpURLConnection.HTTP_NOT_FOUND == testPublishedFile(Properties.DATA_4));
+		assertTrue("HTTP Response code must be 404 after unpublishing.", HttpURLConnection.HTTP_NOT_FOUND == testPublishedFile(Properties.DATA_5));
+
 	}
 	
 	/**
