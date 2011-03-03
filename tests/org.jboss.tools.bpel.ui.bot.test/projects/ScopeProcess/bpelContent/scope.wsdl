@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://www.jboss.org/bpel/examples"
+				  xmlns:tns="http://www.jboss.org/bpel/examples"
+				  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+				  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+				  xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype" 
+				  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+				  
+	<wsdl:types>
+		<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+				    targetNamespace="http://www.jboss.org/bpel/examples">
+
+			<xsd:complexType name="scopeFault">
+				<xsd:sequence>
+					<xsd:element name="faultMessage" type="xsd:string"/>
+				</xsd:sequence>
+			</xsd:complexType>
+
+			<xsd:complexType name="scopeReqest">
+				<xsd:sequence>
+					<xsd:element name="simulateException" type="xsd:boolean"/>
+					<xsd:element name="compensate" type="xsd:boolean"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			
+		</xsd:schema>
+	</wsdl:types>
+	
+	<wsdl:message name="scopeRequestMessage">
+		<wsdl:part name="payload" type="tns:scopeReqest" />
+	</wsdl:message>
+	<wsdl:message name="scopeResponseMessage">
+		<wsdl:part name="result" type="xsd:string" />
+	</wsdl:message>
+	<wsdl:message name="Exception">
+		<wsdl:part name="message" type="tns:scopeFault"/>
+	</wsdl:message>
+	
+	<wsdl:portType name="scopePT">
+		<wsdl:operation name="processRequest">
+			<wsdl:input  message="tns:scopeRequestMessage" />
+			<wsdl:output message="tns:scopeResponseMessage" />
+			<wsdl:fault  message="tns:Exception" name="Exception" />
+		</wsdl:operation>
+	</wsdl:portType>
+	
+	<wsdl:binding name="scopeServiceBinding" type="tns:scopePT">
+		<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="processRequest">
+			<soap:operation soapAction="http://www.jboss.org/bpel/examples/receiveOrder" />
+			<wsdl:input>
+				<soap:body use="literal" namespace="http://www.jboss.org/bpel/examples" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" namespace="http://www.jboss.org/bpel/examples" />
+			</wsdl:output>
+			<wsdl:fault name="Exception">
+				<soap:fault use="literal" name="Exception" namespace="http://www.jboss.org/bpel/examples" />
+			</wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
+
+	<wsdl:service name="scopeService">
+		<wsdl:port name="scopeServicePort" binding="tns:scopeServiceBinding">
+			<soap:address location="http://localhost:8080/Quickstart_bpel_scopeWS" />
+		</wsdl:port>
+	</wsdl:service>
+	
+	<plnk:partnerLinkType name="scopeProcess">
+		<plnk:role name="scopeProcess" portType="tns:scopePT"/>
+	</plnk:partnerLinkType>
+	
+</wsdl:definitions>

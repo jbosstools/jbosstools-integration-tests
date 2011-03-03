@@ -1,0 +1,32 @@
+<bpel:process name="AssignTestProcess"
+	          targetNamespace="http://sample.bpel.org/bpel/sample"
+         	  xmlns:tns="http://sample.bpel.org/bpel/sample"
+         	  xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         	  xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+	<bpel:import namespace="http://sample.bpel.org/bpel/sample"
+				 location="AssignTestProcessArtifacts.wsdl" 
+	        	 importType="http://schemas.xmlsoap.org/wsdl/" />
+         
+    <bpel:partnerLinks>
+        <bpel:partnerLink name="client"
+	                      partnerLinkType="tns:AssignTestProcess"
+     	                  myRole="AssignTestProcessProvider"/>
+    </bpel:partnerLinks>
+  
+    <bpel:variables>
+        <bpel:variable name="simpleIn"    messageType="tns:simpleRequestMessage"/>
+        <bpel:variable name="simpleOut"   messageType="tns:simpleResponseMessage"/>
+        <bpel:variable name="moderateIn"  messageType="tns:moderateRequestMessage"/>
+        <bpel:variable name="moderateOut" messageType="tns:moderateResponseMessage"/>
+        <bpel:variable name="complexIn"   messageType="tns:complexRequestMessage"/>
+        <bpel:variable name="complexOut"  messageType="tns:complexResponseMessage"/>
+        
+        <bpel:variable name="processVar" type="xsd:string"/>
+    </bpel:variables>
+    
+    <bpel:sequence name="main">
+    </bpel:sequence>
+    
+</bpel:process>
+

@@ -1,0 +1,9 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:wsdl="http://www.jboss.org/bpel/examples/wsdl">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <wsdl:hello>
+         <ID>10</ID>
+         <Name>BPEL</Name>
+      </wsdl:hello>
+   </soapenv:Body>
+</soapenv:Envelope>

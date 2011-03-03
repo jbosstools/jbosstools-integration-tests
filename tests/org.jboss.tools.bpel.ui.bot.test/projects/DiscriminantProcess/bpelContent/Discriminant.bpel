@@ -1,0 +1,55 @@
+<bpel:process name="Discriminant"
+	          targetNamespace="http://www.jboss.org/bpel/examples"
+    	      suppressJoinFailure="yes"
+        	  xmlns:tns="http://www.jboss.org/bpel/examples"
+        	  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+         	  xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable">
+
+	<bpel:import location="DiscriminantArtifacts.wsdl" 
+				 namespace="http://www.jboss.org/bpel/examples" 
+	        	 importType="http://schemas.xmlsoap.org/wsdl/" />	        	 
+	<bpel:import location="MathArtifacts.wsdl" 
+				 namespace="http://www.jboss.org/bpel/examples" 
+	        	 importType="http://schemas.xmlsoap.org/wsdl/" />
+         
+    <bpel:partnerLinks>
+        <bpel:partnerLink name="client"
+	                      partnerLinkType="tns:Discriminant"
+    	                  myRole="DiscriminantProvider"/>
+		<bpel:partnerLink name="math"
+                     	  partnerLinkType="tns:Math"
+                     	  partnerRole="MathProvider"/>
+    </bpel:partnerLinks>
+  
+    <bpel:variables>
+        <bpel:variable name="DiscriminantRequest"  messageType="tns:DiscriminantRequestMessage"/>
+        <bpel:variable name="DiscriminantResponse" messageType="tns:DiscriminantResponseMessage"/>
+        
+        <bpel:variable name="MathRequest1" 		messageType="tns:MathRequestMessage"/>
+        <bpel:variable name="MathResponse1" 	messageType="tns:MathResponseMessage"/>
+        <bpel:variable name="MathRequest2" 		messageType="tns:MathRequestMessage"/>
+        <bpel:variable name="MathResponse2" 	messageType="tns:MathResponseMessage"/>
+        
+        <bpel:variable name="right" type="xsd:int"/>
+        <bpel:variable name="left"  type="xsd:int"/>
+    </bpel:variables>
+
+    <bpel:sequence name="Main">
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+	                
+    </bpel:sequence>
+</bpel:process>
+

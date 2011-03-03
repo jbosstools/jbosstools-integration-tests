@@ -1,0 +1,109 @@
+<?xml version="1.0"?>
+<definitions name="AssignTestProcess"
+	         xmlns="http://schemas.xmlsoap.org/wsdl/"
+	         targetNamespace="http://sample.bpel.org/bpel/sample"
+	         xmlns:tns="http://sample.bpel.org/bpel/sample"
+	         xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype"
+	         xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	         xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+    <types>
+        <!-- xsd:schema attributeFormDefault="unqualified" elementFormDefault="qualified" -->
+        <xsd:schema targetNamespace="http://sample.bpel.org/bpel/sample">
+
+            <xsd:element name="complex" type="tns:complexType"/>
+			<xsd:element name="complexResponse" type="tns:complexResponseType"/>
+
+			<xsd:complexType name="complexType">
+                <xsd:sequence>
+                    <xsd:element name="input" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>            
+            <xsd:complexType name="complexResponseType">
+                <xsd:sequence>
+                    <xsd:element name="result" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+        </xsd:schema>
+    </types>
+
+
+    <message name="simpleRequestMessage">
+        <part name="payload" type="xsd:string"/>
+    </message>
+    <message name="simpleResponseMessage">
+        <part name="payload" type="xsd:string"/>
+    </message>
+
+    <message name="moderateRequestMessage">
+    	<part name="moderateRequest" type="tns:complexType"/>
+    </message>
+    <message name="moderateResponseMessage">
+    	<part name="moderateResponse" type="tns:complexResponseType"/>
+    </message>
+    
+    <message name="complexRequestMessage">
+    	<part name="complexRequest" element="tns:complex"/>
+    </message>
+    <message name="complexResponseMessage">
+    	<part name="complexResponse" element="tns:complexResponse"/>
+    </message>
+    
+    <portType name="AssignTestProcess">
+        <operation name="simple">
+            <input  message="tns:simpleRequestMessage" />
+            <output message="tns:simpleResponseMessage"/>
+        </operation>
+        <operation name="moderate">
+        	<input message="tns:moderateRequestMessage"/>
+        	<output message="tns:moderateResponseMessage"/>
+        </operation>
+        <operation name="complex">
+        	<input message="tns:complexRequestMessage"/>
+        	<output message="tns:complexResponseMessage"/>
+        </operation>
+    </portType>   
+
+    <binding name="AssignTestProcessBinding" type="tns:AssignTestProcess">
+    	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http" />
+    	<operation name="simple">
+    		<soap:operation soapAction="http://sample.bpel.org/bpel/sample/simple" />
+    		<input>
+    			<soap:body use="literal" namespace="http://sample.bpel.org/bpel/sample" />
+    		</input>
+    		<output>
+    			<soap:body use="literal" namespace="http://sample.bpel.org/bpel/sample" />
+    		</output>
+    	</operation>
+    	<operation name="moderate">
+    		<soap:operation soapAction="http://sample.bpel.org/bpel/sample/moderate" />
+    		<input>
+    			<soap:body use="literal" namespace="http://sample.bpel.org/bpel/sample" />
+    		</input>
+    		<output>
+    			<soap:body use="literal" namespace="http://sample.bpel.org/bpel/sample" />
+    		</output>
+    	</operation>
+    	<operation name="complex">
+    		<soap:operation soapAction="http://sample.bpel.org/bpel/sample/complex" />
+    		<input>
+    			<soap:body use="literal" namespace="http://sample.bpel.org/bpel/sample" />
+    		</input>
+    		<output>
+    			<soap:body use="literal" namespace="http://sample.bpel.org/bpel/sample" />
+    		</output>
+    	</operation>
+    </binding>
+
+    <service name="AssignTestProcess">
+    	<port name="AssignTestProcessPort" binding="tns:AssignTestProcessBinding">
+    		<soap:address location="http://localhost:8080/AssignTestProcess" />
+    	</port>
+    </service>
+    
+    <plnk:partnerLinkType name="AssignTestProcess">
+        <plnk:role name="AssignTestProcessProvider" portType="tns:AssignTestProcess"/>
+    </plnk:partnerLinkType>
+    
+</definitions>

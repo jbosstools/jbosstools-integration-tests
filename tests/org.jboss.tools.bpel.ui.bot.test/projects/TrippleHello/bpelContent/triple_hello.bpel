@@ -1,0 +1,33 @@
+<process name="TripleHello" 
+		 targetNamespace="http://www.jboss.org/bpel/examples"
+		 xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+		 xmlns:tns="http://www.jboss.org/bpel/examples" 
+		 xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+		 xmlns:intf="http://www.jboss.org/bpel/examples/wsdl" 
+		 queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath2.0"
+		 expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath2.0" 
+		 xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable" xmlns:ns="http://www.jboss.org/bpel/examplesArtifacts">
+
+	<import location="triple_hello.wsdl" 
+			namespace="http://www.jboss.org/bpel/examples/wsdl"
+			importType="http://schemas.xmlsoap.org/wsdl/" />
+
+	<partnerLinks>
+		<partnerLink name="tripleHelloPartnerLink" 
+					 partnerLinkType="intf:TripleHelloPartnerLinkType" 
+					 myRole="me" />
+	</partnerLinks>
+
+	<!--correlationSets xmlns:cor="http://example.com/supplyCorrelation">
+		<correlationSet name="Session" />
+	</correlationSets-->
+
+	<variables>
+		<variable name="myHelloVar" messageType="intf:HelloMessage" />
+		<variable name="mesgVar" type="xsd:string" />
+	</variables>
+
+	<sequence>
+	
+	</sequence>
+</process>

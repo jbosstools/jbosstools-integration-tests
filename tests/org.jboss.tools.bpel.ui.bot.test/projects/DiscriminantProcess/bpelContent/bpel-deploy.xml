@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<deploy xmlns="http://www.apache.org/ode/schemas/dd/2007/03" xmlns:examples="http://www.jboss.org/bpel/examples">
+  <process name="examples:Discriminant">
+    <active>true</active>
+    <retired>false</retired>
+    <process-events generate="all"/>
+    <provide partnerLink="client">
+      <service name="examples:DiscriminantService" port="DiscriminantPort"/>
+    </provide>
+    <invoke partnerLink="math">
+      <service name="examples:MathService" port="MathPort"/>
+    </invoke>
+  </process>
+</deploy>

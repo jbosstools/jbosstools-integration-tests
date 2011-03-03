@@ -1,0 +1,60 @@
+<project name="Quickstart_bpel_scope" default="deploy" basedir=".">
+	
+	<description> 
+		${ant.project.name}
+		${line.separator}
+	</description>
+	
+	<macrodef name="soap">
+		<attribute name="url"/>
+		<attribute name="message"/>
+		<sequential>
+			<echo>Send test message to: ${ant.project.name}</echo>
+		    <java classname="org.apache.ode.tools.sendsoap.cline.HttpSoapSender">
+		      	<arg value="@{url}"/>
+		       	<arg value="@{message}"/>
+			    <classpath>
+			     	<fileset dir="../../common/lib">
+				       	<include name="**/*.jar"/>
+				   	</fileset>
+			       	<pathelement path="${java.class.path}"/>
+			    </classpath>
+		    </java>
+		</sequential>
+	</macrodef>
+	
+	<!-- Import the base Ant build script... -->
+	<property file="../../../install/deployment.properties" />
+	
+	<property name="version" value="1" />
+	
+	<property name="server.dir" value="${org.jboss.as.home}/server/${org.jboss.as.config}"/>
+	<property name="conf.dir" value="${server.dir}/conf"/>
+	<property name="deploy.dir" value="${server.dir}/deploy"/>
+	<property name="server.lib.dir" value="${server.dir}/lib"/>
+
+	<property name="sample.jar.name" value="${ant.project.name}-${version}.jar" />
+	
+	<target name="deploy">
+		<echo>Deploy ${ant.project.name}</echo>
+		<jar basedir="bpelContent" destfile="${deploy.dir}/${sample.jar.name}" />
+	</target> 
+ 
+	<target name="undeploy">
+		<echo>Undeploy ${ant.project.name}</echo>
+		<delete file="${deploy.dir}/${sample.jar.name}" />
+	</target>  
+	
+	<target name="sendok">
+		<soap url="http://localhost:8080/Quickstart_bpel_scopeWS" message="messages/ok.xml"/>
+	</target>
+	
+	<target name="sendfail">
+		<soap url="http://localhost:8080/Quickstart_bpel_scopeWS" message="messages/fail.xml"/>
+	</target>
+	
+	<target name="sendcompensate">
+		<soap url="http://localhost:8080/Quickstart_bpel_scopeWS" message="messages/compensate.xml"/>
+	</target>
+	
+</project>
