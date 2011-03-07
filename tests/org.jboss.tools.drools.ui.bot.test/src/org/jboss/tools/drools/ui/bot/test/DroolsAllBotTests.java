@@ -93,10 +93,10 @@ public class DroolsAllBotTests extends SWTTestExt {
   @BeforeClass
   public static void setUpTest() {
     jbt.closeReportUsageWindowIfOpened(false);
-    properties = util.loadProperties(Activator.PLUGIN_ID);
-    String useExternalDroolRuntime = properties.getProperty(DroolsAllBotTests.USE_EXTERNAL_DROOLS_RUNTIME_PROPERTY_NAME);
+    props = util.loadProperties(Activator.PLUGIN_ID);
+    String useExternalDroolRuntime = props.getProperty(DroolsAllBotTests.USE_EXTERNAL_DROOLS_RUNTIME_PROPERTY_NAME);
     DroolsAllBotTests.USE_EXTERNAL_DROOLS_RUNTIME = useExternalDroolRuntime != null && useExternalDroolRuntime.equalsIgnoreCase("true");
-    String droolsRuntimeLocation = properties.getProperty(DroolsAllBotTests.EXTERNAL_DROOLS_RUTIME_HOME_PROPERTY_NAME);
+    String droolsRuntimeLocation = props.getProperty(DroolsAllBotTests.EXTERNAL_DROOLS_RUTIME_HOME_PROPERTY_NAME);
     String tmpDir = System.getProperty("java.io.tmpdir");
     if (droolsRuntimeLocation == null || droolsRuntimeLocation.length() ==0){
       DroolsAllBotTests.DROOLS_RUNTIME_LOCATION = tmpDir;
