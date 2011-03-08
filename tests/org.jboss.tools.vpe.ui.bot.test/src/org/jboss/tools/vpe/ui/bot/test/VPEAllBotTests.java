@@ -36,10 +36,12 @@ import org.jboss.tools.vpe.ui.bot.test.editor.selectionbar.SelectionBarTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.ColumnsTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.ComboBoxTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.CoreHTMLTagsTest;
+import org.jboss.tools.vpe.ui.bot.test.editor.tags.DataDefinitionTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.FileUploadTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.InplaceInputTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.InplaceSelectInputTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.JSFTagsTest;
+import org.jboss.tools.vpe.ui.bot.test.editor.tags.ListShuttleTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.PanelMenuTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.PickListTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.ProgressTagTest;
@@ -115,6 +117,8 @@ public class VPEAllBotTests extends SWTBotTestCase{
 		suite.addTestSuite(PickListTagTest.class);
     suite.addTestSuite(ProgressTagTest.class);
 		suite.addTestSuite(PanelMenuTagTest.class);
+		suite.addTestSuite(ListShuttleTagTest.class);
+		suite.addTestSuite(DataDefinitionTagTest.class);
     suite.addTestSuite(XhtmlFilePerformanceTest.class);
 		return new TestSetup(suite);
 	}
