@@ -33,6 +33,7 @@ import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCombo;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotScale;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem;
@@ -119,8 +120,8 @@ public abstract class WSTestBase extends SWTTestExt {
 		wiz.comboBoxWithLabel(
 				WebServicesWebServiceClient.TEXT_SERVICE_DEFINITION).setText(
 						wsdlDef);
-		SWTBotScaleExt slider = bot.scale();	
-		slider.setSelection(type);
+		SWTBotScale slider = bot.scale();	
+		slider.setValue(type);
 		selectJbossWSRuntime();
 		bot.sleep(TIME_1S); // wait for wizard to validate wsdl url and
 		// enable Finish button		
