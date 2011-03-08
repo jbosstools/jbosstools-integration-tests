@@ -119,8 +119,8 @@ public abstract class WSTestBase extends SWTTestExt {
 		wiz.comboBoxWithLabel(
 				WebServicesWebServiceClient.TEXT_SERVICE_DEFINITION).setText(
 						wsdlDef);
-		SWTBotScaleExt slider = bot.scale();	
-		slider.setSelection(type);
+		SWTBotScale slider = bot.scale();	
+		slider.setValue(type);
 		selectJbossWSRuntime();
 		bot.sleep(TIME_1S); // wait for wizard to validate wsdl url and
 		// enable Finish button		
