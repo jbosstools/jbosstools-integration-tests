@@ -77,7 +77,7 @@ public class SmooksProject extends SmooksTest {
 		// Open Project Properties
 		open.viewOpen(ActionItem.View.GeneralProjectExplorer.LABEL);
 		projectExplorer.selectProject(Project.PROJECT_NAME);
-		ContextMenuHelper.clickContextMenu(projectExplorer.tree(), "Properties");
+		ContextMenuHelper.clickContextMenu(projectExplorer.bot().tree(), "Properties");
 
 		// Add Library
 		eclipse.waitForShell("Properties for " + Project.PROJECT_NAME);
@@ -111,7 +111,7 @@ public class SmooksProject extends SmooksTest {
 		}
 
 		projectExplorer.selectProject(Project.PROJECT_NAME);
-		ContextMenuHelper.clickContextMenu(projectExplorer.tree(), "Refresh");
+		ContextMenuHelper.clickContextMenu(projectExplorer.bot().tree(), "Refresh");
 
 		open.viewOpen(ActionItem.View.JavaPackageExplorer.LABEL);
 
@@ -136,7 +136,7 @@ public class SmooksProject extends SmooksTest {
 
 		open.viewOpen(ActionItem.View.GeneralProjectExplorer.LABEL);
 		projectExplorer.selectProject(Project.PROJECT_NAME);
-		ContextMenuHelper.clickContextMenu(projectExplorer.tree(), "Refresh");
+		ContextMenuHelper.clickContextMenu(projectExplorer.bot().tree(), "Refresh");
 
 		open.viewOpen(ActionItem.View.JavaPackageExplorer.LABEL);
 
