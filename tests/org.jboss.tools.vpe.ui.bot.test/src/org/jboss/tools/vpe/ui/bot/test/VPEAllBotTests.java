@@ -37,6 +37,7 @@ import org.jboss.tools.vpe.ui.bot.test.editor.tags.ColumnsTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.ComboBoxTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.CoreHTMLTagsTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.DataDefinitionTagTest;
+import org.jboss.tools.vpe.ui.bot.test.editor.tags.EditorTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.FileUploadTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.InplaceInputTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.InplaceSelectInputTagTest;
@@ -45,6 +46,7 @@ import org.jboss.tools.vpe.ui.bot.test.editor.tags.ListShuttleTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.PanelMenuTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.PickListTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.ProgressTagTest;
+import org.jboss.tools.vpe.ui.bot.test.editor.tags.TreeTagTest;
 import org.jboss.tools.vpe.ui.bot.test.jbide.JBIDE4556Test;
 import org.jboss.tools.vpe.ui.bot.test.palette.CancelTagLibDefenitionTest;
 import org.jboss.tools.vpe.ui.bot.test.palette.ImportTagsFromTLDFileTest;
@@ -119,6 +121,8 @@ public class VPEAllBotTests extends SWTBotTestCase{
 		suite.addTestSuite(PanelMenuTagTest.class);
 		suite.addTestSuite(ListShuttleTagTest.class);
 		suite.addTestSuite(DataDefinitionTagTest.class);
+		suite.addTestSuite(EditorTagTest.class);
+		suite.addTestSuite(TreeTagTest.class);
     suite.addTestSuite(XhtmlFilePerformanceTest.class);
 		return new TestSetup(suite);
 	}
