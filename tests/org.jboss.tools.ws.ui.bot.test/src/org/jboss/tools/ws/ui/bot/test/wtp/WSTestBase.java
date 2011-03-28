@@ -24,6 +24,8 @@ import java.text.MessageFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.net.ssl.HttpsURLConnection;
+
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -263,21 +265,41 @@ public abstract class WSTestBase extends SWTTestExt {
 	}
 
 	protected void assertServiceDeployed(String wsdlURL) {
-		HttpURLConnection connection = null;
-		try {
-			URL u = new URL(wsdlURL);
-			connection = (HttpURLConnection) u.openConnection();
-			assertEquals("Service was not sucessfully deployed, WSDL '" + wsdlURL + "' was not found",
-					HttpURLConnection.HTTP_OK, connection.getResponseCode());
-		} catch (MalformedURLException e1) {
-			throw new RuntimeException(e1);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		} finally {
-			if (connection != null) {
-				connection.disconnect();
+		assertServiceDeployed(wsdlURL, 5000);
+	}
+	
+	protected void assertServiceDeployed(String wsdlURL, long timeout) {
+		long t = System.currentTimeMillis();
+		int rsp = -1;
+		while (t + timeout > System.currentTimeMillis()) {
+			HttpURLConnection connection = null;
+			try {
+				URL u = new URL(wsdlURL);
+				connection = (HttpURLConnection) u.openConnection();
+				rsp = connection.getResponseCode();
+				if (rsp == HttpsURLConnection.HTTP_OK) {
+					break;
+				} else {
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						//ignore
+					}
+					L.info("retrying...");
+				}
+			} catch (MalformedURLException e1) {
+				throw new RuntimeException(e1);
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			} finally {
+				if (connection != null) {
+					connection.disconnect();
+				}
 			}
 		}
+		L.info("done after: " + (System.currentTimeMillis() - t) + "ms.");
+		assertEquals("Service was not sucessfully deployed, WSDL '" + wsdlURL + "' was not found",
+				HttpURLConnection.HTTP_OK, rsp);
 	}
 	
 	protected void assertServiceNotDeployed(String wsdlURL) {
@@ -362,7 +384,6 @@ public abstract class WSTestBase extends SWTTestExt {
 	protected void runProject(String project) {
 		open.viewOpen(ActionItem.View.ServerServers.LABEL);
 		projectExplorer.runOnServer(project);
-		bot.sleep(5000);
 	}
 	
 

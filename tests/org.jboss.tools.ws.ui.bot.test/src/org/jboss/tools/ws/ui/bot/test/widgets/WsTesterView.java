@@ -14,10 +14,12 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.results.BoolResult;
@@ -25,6 +27,7 @@ import org.eclipse.swtbot.swt.finder.waits.Conditions;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotButton;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCombo;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotLabel;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.internal.WorkbenchMessages;
 import org.eclipse.ui.internal.ide.IDEWorkbenchMessages;
@@ -37,6 +40,7 @@ import org.osgi.framework.Bundle;
 public class WsTesterView extends ViewBase {
 
 	private static final Bundle WSUI_BUNDLE = Platform.getBundle("org.jboss.tools.ws.ui");
+	private static boolean max = false;
 
 	public enum Request_Type {
 
@@ -80,6 +84,7 @@ public class WsTesterView extends ViewBase {
 
 	public WsTesterView() {
 		super();
+		max = false;
 		viewObject = new IView() {
 
 			public String getName() {
@@ -98,8 +103,11 @@ public class WsTesterView extends ViewBase {
 	public SWTBotView show() {
 		SWTBotView b = super.show();
 		// maximize tester view
-		bot.menu(IDEWorkbenchMessages.Workbench_window).menu(
+		if (!max) {
+			bot.menu(IDEWorkbenchMessages.Workbench_window).menu(
 				WorkbenchMessages.MaximizePartAction_text).click();
+			max = true;
+		}
 		return b;
 	}
 
@@ -172,7 +180,7 @@ public class WsTesterView extends ViewBase {
 			String oldName, String oldValue, String newName, String newValue) {
 		bot().list(type.ordinal()).select(oldName + "=" + oldValue);
 		bot().button("Edit", type.ordinal()).click();
-		SWTBot sh = bot().activeShell().bot();
+		SWTBot sh = bot().shell("Edit Value").bot();
 		sh.text(0).typeText(newName + "=" + newValue);
 		sh.button(IDialogConstants.OK_LABEL).click();
 	}

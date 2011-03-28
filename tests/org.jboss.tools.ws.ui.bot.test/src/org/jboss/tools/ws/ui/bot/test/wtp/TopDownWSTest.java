@@ -110,7 +110,7 @@ public class TopDownWSTest extends WSTestBase {
 			runProject(getEarProjectName());
 			break;
 		}
-		assertServiceDeployed(getWSDLUrl());
+		assertServiceDeployed(getWSDLUrl(), 10000);
 //		servers.removeAllProjectsFromServer(configuredState.getServer().name);
 	}
 

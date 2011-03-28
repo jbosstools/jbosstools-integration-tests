@@ -102,7 +102,7 @@ public class BottomUpWSTest extends WSTestBase {
 			runProject(getEarProjectName());
 			break;
 		}
-		assertServiceDeployed(getWSDLUrl());
+		assertServiceDeployed(getWSDLUrl(), 10000);
 //		checkService(getWSDLUrl(svcName.substring(svcName.lastIndexOf(".") + 1)), QName service, QName port, String msg, String rsp)
 //		servers.removeAllProjectsFromServer(configuredState.getServer().name);
 	}
