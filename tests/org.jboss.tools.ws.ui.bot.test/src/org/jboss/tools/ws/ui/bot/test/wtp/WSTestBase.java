@@ -24,8 +24,6 @@ import java.text.MessageFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.net.ssl.HttpsURLConnection;
-
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -44,7 +42,6 @@ import org.jboss.tools.ui.bot.ext.gen.ActionItem.NewObject.WebServicesWSDL;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.NewObject.WebServicesWebServiceClient;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.NewObject.WebServlet;
 import org.jboss.tools.ui.bot.ext.parts.SWTBotHyperlinkExt;
-import org.jboss.tools.ui.bot.ext.parts.SWTBotScaleExt;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ws.ui.bot.test.uiutils.actions.NewFileWizardAction;
 import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.DynamicWebProjectWizard;
@@ -277,7 +274,7 @@ public abstract class WSTestBase extends SWTTestExt {
 				URL u = new URL(wsdlURL);
 				connection = (HttpURLConnection) u.openConnection();
 				rsp = connection.getResponseCode();
-				if (rsp == HttpsURLConnection.HTTP_OK) {
+				if (rsp == HttpURLConnection.HTTP_OK) {
 					break;
 				} else {
 					try {
