@@ -91,6 +91,24 @@ public class WizardTest extends BPELTest {
 		Assert.assertTrue(isRuntimeSet("AbstractProcessProject"));
 	}
 	
+	
+	/**
+	 * @author psrna
+	 * @throws Exception
+	 */
+	@Test
+	public void createNewDeployDescriptor() throws Exception {
+		
+		IProject project = createNewProject("ODEProject");
+		IFile deploy = createNewDeployDescriptor("ODEProject");
+	
+		String deployContent = loadFile(deploy);
+		Assert.assertTrue(deployContent != null);
+		
+	}
+	
+	
+	
 	boolean isRuntimeSet(String projectName) throws Exception {
 		SWTBotView projectExplorer =  bot.viewByTitle("Project Explorer");
 		projectExplorer.setFocus();

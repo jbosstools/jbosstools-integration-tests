@@ -84,6 +84,47 @@ public class BPELTest extends SWTTestExt {
 	}
 	
 	/**
+	 * Creates a new ODE deployment descriptor in a project identified by it's name.
+	 * 
+	 * @author psrna
+	 * 
+	 * @param project	project name in which to create the new ODE deployment descriptor
+	 * @return			deployment descriptor file
+	 */
+	protected IFile createNewDeployDescriptor(String project){
+		
+		SWTBotView view = bot.viewByTitle("Project Explorer");
+		view.show();
+		view.setFocus();
+		
+		SWTBot viewBot = view.bot();
+		SWTBotTreeItem item = viewBot.tree().expandNode(project).expandNode("bpelContent");
+		item.select();
+		
+		bot.menu("File").menu("New").menu("Other...").click();
+		bot.shell("New").activate();
+		
+		SWTBotTree tree  = bot.tree();
+		tree.expandNode("BPEL 2.0").expandNode("Apache ODE Deployment Descriptor").select();
+	    assertTrue(bot.button("Next >").isEnabled());
+	    
+	    bot.button("Next >").click();
+
+	    assertTrue(bot.textWithLabel("BPEL Project:").getText().equals("/" + project + "/bpelContent"));
+	    assertTrue(bot.textWithLabel("File name:").getText().equals("deploy.xml"));
+	    
+	    bot.button("Finish").click();
+	    bot.sleep(5000);
+	    
+	    IProject iproject = ResourcesPlugin.getWorkspace().getRoot().getProject(project);
+	    IFile deployFile = iproject.getFile(new Path("bpelContent/deploy.xml"));
+	    assertNotNull(deployFile);
+
+		return deployFile;
+	}
+	
+	
+	/**
 	 * Create a new BPEL project
 	 * @param name project name
 	 * @return     project reference

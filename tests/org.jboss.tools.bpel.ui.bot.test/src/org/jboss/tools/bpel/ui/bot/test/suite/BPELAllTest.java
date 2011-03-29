@@ -15,7 +15,7 @@ import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
-@SuiteClasses({ WizardTest.class, ActivityModelingTest.class,/* AssignActivityTest.class,*/ SimpleModelingTest.class,  FaultModelingTest.class })
+@SuiteClasses({ WizardTest.class, ActivityModelingTest.class, /* AssignActivityTest.class,*/ SimpleModelingTest.class,  FaultModelingTest.class})
 @RunWith(RequirementAwareSuite.class)
 public class BPELAllTest extends TestSuite {
 
