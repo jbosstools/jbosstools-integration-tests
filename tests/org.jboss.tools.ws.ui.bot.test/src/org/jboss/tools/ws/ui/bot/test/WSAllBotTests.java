@@ -1,5 +1,5 @@
  /*******************************************************************************
-  * Copyright (c) 2007-2009 Red Hat, Inc.
+  * Copyright (c) 2007-2011 Red Hat, Inc.
   * Distributed under license by Red Hat, Inc. All rights reserved.
   * This program is made available under the terms of the
   * Eclipse Public License v1.0 which accompanies this distribution,
@@ -15,6 +15,7 @@ import org.jboss.tools.ws.ui.bot.test.jbt.SampleWSTest;
 import org.jboss.tools.ws.ui.bot.test.jbt.WsTesterTest;
 import org.jboss.tools.ws.ui.bot.test.wtp.BottomUpWSTest;
 import org.jboss.tools.ws.ui.bot.test.wtp.TopDownWSTest;
+import org.jboss.tools.ws.ui.bot.test.wtp.WsClientTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
@@ -36,10 +37,11 @@ import org.junit.runners.Suite.SuiteClasses;
  * 
  * @author Lukas Jungmann
  */
-@SuiteClasses({	
+@SuiteClasses({
 	SampleWSTest.class,
 	BottomUpWSTest.class,
 	TopDownWSTest.class,
+	WsClientTest.class,
 	WsTesterTest.class
 	})
 @RunWith(RequirementAwareSuite.class)

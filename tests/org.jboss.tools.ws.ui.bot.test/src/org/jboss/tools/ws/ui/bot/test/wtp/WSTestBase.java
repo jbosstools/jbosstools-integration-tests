@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Red Hat, Inc.
+ * Copyright (c) 2010-2011 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -33,22 +33,19 @@ import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCombo;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotScale;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.NewObject.JavaEEEnterpriseApplicationProject;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.NewObject.WebServicesWSDL;
-import org.jboss.tools.ui.bot.ext.gen.ActionItem.NewObject.WebServicesWebServiceClient;
-import org.jboss.tools.ui.bot.ext.gen.ActionItem.NewObject.WebServlet;
-import org.jboss.tools.ui.bot.ext.parts.SWTBotHyperlinkExt;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ws.ui.bot.test.uiutils.actions.NewFileWizardAction;
 import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.DynamicWebProjectWizard;
+import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.WebServiceClientWizard;
 import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.WebServiceWizard;
 import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.WebServiceWizard.Service_Type;
-import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.WebServiceWizard.Slider_Level;
 import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.Wizard;
+import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.WsWizardBase.Slider_Level;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -113,36 +110,31 @@ public abstract class WSTestBase extends SWTTestExt {
 		return "http://localhost:8080/" + getWsProjectName() + "/" + getWsName() + "?wsdl";
 	}
 	
-	protected void createClient(String projectName, String servletName,String wsdlDef, int type) {
-		createProject(projectName);
-		SWTBot wiz = open.newObject(WebServicesWebServiceClient.LABEL);
-		wiz.comboBoxWithLabel(
-				WebServicesWebServiceClient.TEXT_SERVICE_DEFINITION).setText(
-						wsdlDef);
-		SWTBotScale slider = bot.scale();	
-		slider.setValue(type);
-		selectJbossWSRuntime();
-		bot.sleep(TIME_1S); // wait for wizard to validate wsdl url and
-		// enable Finish button		
-		open.finish(wiz);
-		projectExplorer.selectProject(projectName);
-		// create servlet which will invoke service
-		createInvokingServlet(servletName);
-	}
-
-	/**
-	 * checks if 'Web Service Runtime' is set to 'JbossWS' and possibly sets it correctly
-	 * @param wiz wizard page of new Web Service
-	 */
-	@Deprecated
-	protected void selectJbossWSRuntime() {
-		SWTBotHyperlinkExt link = bot.hyperlink(1); 
-		String linkText = link.getText();
-		if (!linkText.contains("JBossWS")) {
-			link.click();
-			SWTBot dBot = bot.activeShell().bot();
-			dBot.tree().select("JBossWS");
-			open.finish(dBot,IDELabel.Button.OK);
+	protected void createClient(String wsdl, String targetProject, Slider_Level level, String pkg) {
+		new NewFileWizardAction().run().selectTemplate("Web Services", "Web Service Client").next();
+		WebServiceClientWizard w = new WebServiceClientWizard();
+		w.setSource(wsdl);
+		w.setSlider(level, 0);
+		w.setServerRuntime(configuredState.getServer().name);
+		w.setWebServiceRuntime("JBossWS");
+		w.setClientProject(targetProject);
+		if (pkg != null && !"".equals(pkg.trim())) {
+			w.next();
+			w.setPackageName(pkg);
+		}
+		w.finish();
+		util.waitForNonIgnoredJobs();
+		bot.sleep(1000);
+		
+		//let's fail if there's some error in the wizard,
+		//and close error dialog and the wizard so other tests
+		//can continue
+		if (bot.activeShell().getText().contains("Error")) {
+			SWTBotShell sh = bot.activeShell();
+			String msg = sh.bot().text().getText();
+			sh.bot().button(0).click();
+			w.cancel();
+			Assert.fail(msg);
 		}
 	}
 	
@@ -174,7 +166,7 @@ public abstract class WSTestBase extends SWTTestExt {
 		new NewFileWizardAction().run().selectTemplate("Web Services", "Web Service").next();
 		WebServiceWizard wsw = new WebServiceWizard();
 		wsw.setServiceType(t);
-		wsw.setServiceSource(source);
+		wsw.setSource(source);
 		wsw.setServerRuntime(configuredState.getServer().name);
 		wsw.setWebServiceRuntime("JBossWS");
 		wsw.setServiceProject(getWsProjectName());
@@ -223,22 +215,6 @@ public abstract class WSTestBase extends SWTTestExt {
 		return bot.editorByTitle(s + ".wsdl");
 	}
 	
-	protected void createInvokingServlet(String servletName) {
-		String PKG_NAME="jbossws";
-		SWTBot wiz = open.newObject(WebServlet.LABEL);
-		wiz.textWithLabel(WebServlet.TEXT_JAVA_PACKAGE).setText(
-				PKG_NAME);
-		wiz.textWithLabel(WebServlet.TEXT_CLASS_NAME).setText(
-				servletName);
-		open.finish(wiz);
-		eclipse.setClassContentFromResource(bot
-				.editorByTitle(servletName
-						+ ".java"), true,
-				org.jboss.tools.ws.ui.bot.test.Activator.PLUGIN_ID,
-				PKG_NAME, servletName
-						+ ".java.servlet");
-	}
-
 	protected void createProject(String name) {
 		new NewFileWizardAction().run().selectTemplate("Web", "Dynamic Web Project").next();
 		new DynamicWebProjectWizard().setProjectName(name).finish();
