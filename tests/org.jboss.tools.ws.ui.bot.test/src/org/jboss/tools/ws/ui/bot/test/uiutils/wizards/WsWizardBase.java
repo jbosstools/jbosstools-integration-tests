@@ -71,7 +71,7 @@ public abstract class WsWizardBase extends Wizard {
 	}
 
 	protected WsWizardBase setWebServiceRuntime(String name, int idx) {
-		findLink("Web service runtime:").get(0).click();
+		findLink("Web service runtime:").get(idx).click();
 		sleep(100);
 		SWTBotShell sh = bot().activeShell();
 		sleep(100);
