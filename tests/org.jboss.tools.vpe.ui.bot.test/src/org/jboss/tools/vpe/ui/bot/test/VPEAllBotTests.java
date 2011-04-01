@@ -33,6 +33,7 @@ import org.jboss.tools.vpe.ui.bot.test.editor.preferences.ShowNonVisualTagsTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.preferences.ShowResourceBundlesUsageasELexpressionsTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.preferences.ShowSelectionTagBarTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.selectionbar.SelectionBarTest;
+import org.jboss.tools.vpe.ui.bot.test.editor.tags.CalendarTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.ColumnsTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.ComboBoxTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.CoreHTMLTagsTest;
@@ -123,6 +124,7 @@ public class VPEAllBotTests extends SWTBotTestCase{
 		suite.addTestSuite(DataDefinitionTagTest.class);
 		suite.addTestSuite(EditorTagTest.class);
 		suite.addTestSuite(TreeTagTest.class);
+		suite.addTestSuite(CalendarTagTest.class);
     suite.addTestSuite(XhtmlFilePerformanceTest.class);
 		return new TestSetup(suite);
 	}
