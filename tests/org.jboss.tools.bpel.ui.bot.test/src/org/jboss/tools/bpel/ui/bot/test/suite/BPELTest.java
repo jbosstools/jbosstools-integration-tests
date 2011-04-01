@@ -117,7 +117,7 @@ public class BPELTest extends SWTTestExt {
 	    bot.sleep(5000);
 	    
 	    IProject iproject = ResourcesPlugin.getWorkspace().getRoot().getProject(project);
-	    IFile deployFile = iproject.getFile(new Path("bpelContent/dexxploy.xml"));
+	    IFile deployFile = iproject.getFile(new Path("bpelContent/deploy.xml"));
 	    assertTrue(deployFile.exists());
 
 		return deployFile;
