@@ -76,9 +76,9 @@ public class BPELTest extends SWTTestExt {
 	    
 	    IProject iproject = ResourcesPlugin.getWorkspace().getRoot().getProject(project);
 	    IFile bpelFile = iproject.getFile(new Path("bpelContent/" + name + ".bpel"));
-	    assertNotNull(bpelFile);
-	    assertNotNull(iproject.getFile(new Path("bpelContent/" + name + ".bpelex")));
-	    assertNotNull(iproject.getFile(new Path("bpelContent/" + name + "Artifacts.wsdl")));
+	    assertTrue(bpelFile.exists());
+	    assertTrue(iproject.getFile(new Path("bpelContent/" + name + ".bpelex")).exists());
+	    assertTrue(iproject.getFile(new Path("bpelContent/" + name + "Artifacts.wsdl")).exists());
 	    
 	    return bpelFile;
 	}
@@ -117,8 +117,8 @@ public class BPELTest extends SWTTestExt {
 	    bot.sleep(5000);
 	    
 	    IProject iproject = ResourcesPlugin.getWorkspace().getRoot().getProject(project);
-	    IFile deployFile = iproject.getFile(new Path("bpelContent/deploy.xml"));
-	    assertNotNull(deployFile);
+	    IFile deployFile = iproject.getFile(new Path("bpelContent/dexxploy.xml"));
+	    assertTrue(deployFile.exists());
 
 		return deployFile;
 	}
