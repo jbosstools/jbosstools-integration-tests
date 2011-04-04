@@ -1,28 +1,21 @@
 package org.jboss.tools.bpel.ui.bot.test;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.widgets.Table;
 import org.eclipse.swtbot.swt.finder.SWTBot;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTabItem;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTableItem;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.bpel.ui.bot.test.suite.BPELTest;
 import org.jboss.tools.bpel.ui.bot.test.util.ResourceHelper;
 import org.jboss.tools.ui.bot.ext.config.Annotations.SWTBotTestRequires;
-import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
-import org.jboss.tools.ui.bot.ext.types.IDELabel;
-import org.jboss.tools.ui.bot.ext.view.PackageExplorer;
 import org.jboss.tools.ui.bot.ext.view.ProjectExplorer;
 import org.jboss.tools.ui.bot.ext.view.ServersView;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-
+/**
+ * 
+ * @author psrna
+ *
+ */
 @SWTBotTestRequires(perspective="BPEL Perspective")
 public class OdeDeployTest extends BPELTest {
 	
