@@ -126,31 +126,5 @@ public class WizardTest extends BPELTest {
 		return hasRuntime;
 	}
 	
-	String loadFile(IFile file) throws Exception {
-		if(file.getType() != IFile.FILE) {
-			throw new IllegalArgumentException("File: " + file.getFullPath().toString() + " is a directory!");
-		}
-		
-		InputStream in = null;
-		StringBuffer out;
-		try {
-			in = file.getContents();
-			out = new StringBuffer();
-			byte[] buffer = new byte[4 * 1024];
-			int c = 0;
-			while((c = in.read(buffer)) > -1) {
-				out.append(new String(buffer, 0, c));
-			}
-		} finally {
-			if(in != null) {
-				try {
-					in.close();
-				} catch (IOException e) {
-					// ignore
-				}
-			}
-		}
-		return out.length() == 0 ? null : out.toString();
-	}
 	
 }
