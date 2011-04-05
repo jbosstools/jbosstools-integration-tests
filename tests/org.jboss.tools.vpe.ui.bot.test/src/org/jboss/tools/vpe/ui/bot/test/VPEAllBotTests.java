@@ -77,7 +77,6 @@ import org.jboss.tools.vpe.ui.bot.test.wizard.VPESourceCodeTemplatesPreferencePa
 public class VPEAllBotTests extends SWTBotTestCase{
 	public static Test suite(){
 		TestSuite suite = new TestSuite("VPE All Tests"); //$NON-NLS-1$
-/*		
 		suite.addTestSuite(VisualEditorContextMenuTest.class);
 		suite.addTestSuite(EditingActionsTest.class);
     suite.addTestSuite(NewXHTMLPageWizardTest.class);
@@ -145,8 +144,8 @@ public class VPEAllBotTests extends SWTBotTestCase{
 		suite.addTestSuite(AjaxValidatorTagTest.class);
 		suite.addTestSuite(BeanValidatorTagTest.class);
     suite.addTestSuite(ColumnGroupTagTest.class);
-*/  suite.addTestSuite(DataGridTagTest.class);    		
-//    suite.addTestSuite(XhtmlFilePerformanceTest.class);
+    suite.addTestSuite(DataGridTagTest.class);    		
+    suite.addTestSuite(XhtmlFilePerformanceTest.class);
 		return new TestSetup(suite);
 	}
 }
