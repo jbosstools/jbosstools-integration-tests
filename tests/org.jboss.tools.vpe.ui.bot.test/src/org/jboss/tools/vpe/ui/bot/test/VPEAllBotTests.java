@@ -33,12 +33,17 @@ import org.jboss.tools.vpe.ui.bot.test.editor.preferences.ShowNonVisualTagsTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.preferences.ShowResourceBundlesUsageasELexpressionsTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.preferences.ShowSelectionTagBarTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.selectionbar.SelectionBarTest;
+import org.jboss.tools.vpe.ui.bot.test.editor.tags.ActionParamTagTest;
+import org.jboss.tools.vpe.ui.bot.test.editor.tags.AjaxValidatorTagTest;
+import org.jboss.tools.vpe.ui.bot.test.editor.tags.BeanValidatorTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.CalendarTagTest;
+import org.jboss.tools.vpe.ui.bot.test.editor.tags.ColumnGroupTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.ColumnTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.ColumnsTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.ComboBoxTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.CoreHTMLTagsTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.DataDefinitionTagTest;
+import org.jboss.tools.vpe.ui.bot.test.editor.tags.DataGridTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.DataScrollerTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.DataTableTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.EditorTagTest;
@@ -72,6 +77,7 @@ import org.jboss.tools.vpe.ui.bot.test.wizard.VPESourceCodeTemplatesPreferencePa
 public class VPEAllBotTests extends SWTBotTestCase{
 	public static Test suite(){
 		TestSuite suite = new TestSuite("VPE All Tests"); //$NON-NLS-1$
+/*		
 		suite.addTestSuite(VisualEditorContextMenuTest.class);
 		suite.addTestSuite(EditingActionsTest.class);
     suite.addTestSuite(NewXHTMLPageWizardTest.class);
@@ -135,7 +141,12 @@ public class VPEAllBotTests extends SWTBotTestCase{
 		suite.addTestSuite(SpacerTagTest.class);
 		suite.addTestSuite(DataScrollerTagTest.class);
 		suite.addTestSuite(ColumnTagTest.class);
-    suite.addTestSuite(XhtmlFilePerformanceTest.class);
+  	suite.addTestSuite(ActionParamTagTest.class);
+		suite.addTestSuite(AjaxValidatorTagTest.class);
+		suite.addTestSuite(BeanValidatorTagTest.class);
+    suite.addTestSuite(ColumnGroupTagTest.class);
+*/  suite.addTestSuite(DataGridTagTest.class);    		
+//    suite.addTestSuite(XhtmlFilePerformanceTest.class);
 		return new TestSetup(suite);
 	}
 }

@@ -914,5 +914,23 @@ public class SWTBotWebBrowser {
         int arg13, nsIDOMEventTarget arg14) {
     }
   }
-  
+  /**
+   * Returns node attribute attributeName value or null when node doesn't have attribute with attributeName
+   * @param node
+   * @param attributeName
+   * @return
+   */
+  public static String getNodeAttribute (nsIDOMNode node , String attributeName){
+    String result = null;
+    nsIDOMNamedNodeMap attrs = node.getAttributes();
+    int index = 0;
+    while (result == null && index < attrs.getLength()){
+      nsIDOMNode modelAttr = attrs.item(index);
+      if (modelAttr.getNodeName().equals(attributeName)){
+        result = modelAttr.getNodeValue().replaceAll("\n", " ");
+      }
+      index++;
+    }
+    return result;
+  }
 }
