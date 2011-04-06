@@ -24,11 +24,11 @@ public class WebServiceConsumer1 extends ESBExampleTest {
 		super.executeExample();	
 		String text = executeClientGetServerOutput(getExampleClientProjectName(),"src","org.jboss.soa.esb.samples.quickstart.webservice_consumer1.test","SendJMSMessage.java");
 		assertNotNull("Calling JMS Send message failed, nothing appened to server log",text);	
-		assertTrue("Calling JMS Send message failed, unexpected server output :"+text,text.contains("Hello World Greeting for 'JMS'"));
+		assertTrue("Calling JMS Send message failed, unexpected server output :"+text,text.contains("Hello World Greeting for"));
 		text = null;
 		text = executeClientGetServerOutput(getExampleClientProjectName(),"src","org.jboss.soa.esb.samples.quickstart.webservice_consumer1.test","SendEsbMessage.java");
 		assertNotNull("Calling ESB Send message failed, nothing appened to server log",text);	
-		assertTrue("Calling ESB Send message failed, unexpected server output :"+text,text.contains("Hello World Greeting for 'ESB'"));
+		assertTrue("Calling ESB Send message failed, unexpected server output :"+text,text.contains("Hello World Greeting for"));
 		
 	}
 }
