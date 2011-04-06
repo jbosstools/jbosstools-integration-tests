@@ -23,11 +23,11 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
 @SuiteClasses({	
-	//CreateRuntimeFromESB.class,
-	//CreateRuntimeFromSOA.class,
-	//NewProjectUsingRuntime.class,
-	//NewProjectUsingBundledInEAP.class,
-	//Editing.class,
+	CreateRuntimeFromESB.class,
+	CreateRuntimeFromSOA.class,
+	NewProjectUsingRuntime.class,
+	NewProjectUsingBundledInEAP.class,
+	Editing.class,
 	HelloWorld.class,
 	HelloWorldAction.class,
 	HelloWorldFileAction.class,
