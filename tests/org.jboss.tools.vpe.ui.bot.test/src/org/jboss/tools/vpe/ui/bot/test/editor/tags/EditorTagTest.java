@@ -18,7 +18,7 @@ import org.jboss.tools.ui.bot.ext.Timing;
  * @author vlado pakan
  *
  */
-public class EditorTagTest extends RichFacesTagsTest{
+public class EditorTagTest extends AbstractTagTest{
   @Override
   protected void initPageContent() {
     xhtmlEditor.setText("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n" +
@@ -44,7 +44,7 @@ public class EditorTagTest extends RichFacesTagsTest{
       "DIV", 
       new String[]{"class"},
       new String[]{"mceIframeContainer"},
-      RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+      AbstractTagTest.TEST_PAGE_NAME_XHTML);
     // check tag selection
     xhtmlWebBrowser.selectDomNode(xhtmlWebBrowser.getDomNodeByTagName("DIV",4), 0);
     bot.sleep(Timing.time3S());

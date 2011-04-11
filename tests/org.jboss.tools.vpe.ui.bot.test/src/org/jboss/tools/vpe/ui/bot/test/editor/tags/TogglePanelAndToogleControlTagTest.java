@@ -18,7 +18,7 @@ import org.jboss.tools.ui.bot.ext.Timing;
  * @author vlado pakan
  *
  */
-public class TogglePanelAndToogleControlTagTest extends RichFacesTagsTest{
+public class TogglePanelAndToogleControlTagTest extends AbstractTagTest{
   private static final String FACET_0_LABEL = "!-* Facet 0 Label";
   private static final String FACET_1_LABEL = "!-* Facet 1 Label";
   @Override
@@ -51,10 +51,10 @@ public class TogglePanelAndToogleControlTagTest extends RichFacesTagsTest{
   protected void verifyTag() {
     assertVisualEditorContainsNodeWithValue(xhtmlWebBrowser,
       TogglePanelAndToogleControlTagTest.FACET_0_LABEL,
-      RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+      AbstractTagTest.TEST_PAGE_NAME_XHTML);
     assertVisualEditorNotContainNodeWithValue(xhtmlWebBrowser,
       TogglePanelAndToogleControlTagTest.FACET_1_LABEL,
-      RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+      AbstractTagTest.TEST_PAGE_NAME_XHTML);
     // check tag selection
     xhtmlWebBrowser.selectDomNode(xhtmlWebBrowser.getDomNodeByTagName("DIV",4), 0);
     bot.sleep(Timing.time3S());

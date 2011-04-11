@@ -18,7 +18,7 @@ import org.jboss.tools.ui.bot.ext.Timing;
  * @author vlado pakan
  *
  */
-public class PickListTagTest extends RichFacesTagsTest{
+public class PickListTagTest extends AbstractTagTest{
   private static final String[] options = new String[] {"Option0","Option1","Option2","Option3"};
 
   @Override
@@ -57,41 +57,41 @@ public class PickListTagTest extends RichFacesTagsTest{
   protected void verifyTag() {
     assertVisualEditorContainsNodeWithValue(xhtmlWebBrowser,
         "Copy all", 
-        RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+        AbstractTagTest.TEST_PAGE_NAME_XHTML);
       assertVisualEditorContainsNodeWithValue(xhtmlWebBrowser,
         "Copy", 
-        RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+        AbstractTagTest.TEST_PAGE_NAME_XHTML);
       assertVisualEditorContainsNodeWithValue(xhtmlWebBrowser,
         "Remove All", 
-        RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+        AbstractTagTest.TEST_PAGE_NAME_XHTML);
       assertVisualEditorContainsNodeWithValue(xhtmlWebBrowser,
         "Remove", 
-        RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+        AbstractTagTest.TEST_PAGE_NAME_XHTML);
       assertVisualEditorContains(xhtmlWebBrowser,
           "TABLE", 
           new String[]{"class"},
           new String[]{"rich-list-picklist"},
-          RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+          AbstractTagTest.TEST_PAGE_NAME_XHTML);
       assertVisualEditorContains(xhtmlWebBrowser,
           "TABLE", 
           new String[]{"class"},
           new String[]{"rich-picklist-body"},
-          RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+          AbstractTagTest.TEST_PAGE_NAME_XHTML);
       assertVisualEditorContains(xhtmlWebBrowser,
           "TABLE", 
           new String[]{"class"},
           new String[]{"rich-picklist-internal-tab"},
-          RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+          AbstractTagTest.TEST_PAGE_NAME_XHTML);
       assertVisualEditorContains(xhtmlWebBrowser,
           "TBODY", 
           null,
           null,
-          RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+          AbstractTagTest.TEST_PAGE_NAME_XHTML);
       int index = 0;
       for (String option : options ){
         assertVisualEditorContainsNodeWithValue(xhtmlWebBrowser,
             option, 
-            RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+            AbstractTagTest.TEST_PAGE_NAME_XHTML);
         StringBuffer sbTitle = new StringBuffer("");
         sbTitle.append("f:selectItem itemLabel: ");
         sbTitle.append(option);
@@ -103,7 +103,7 @@ public class PickListTagTest extends RichFacesTagsTest{
             "OPTION", 
             new String[]{"title"},
             new String[]{sbTitle.toString()},
-            RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+            AbstractTagTest.TEST_PAGE_NAME_XHTML);
         index++;
       }
       // check tag selection
@@ -143,7 +143,7 @@ public class PickListTagTest extends RichFacesTagsTest{
           "OPTION", 
           new String[]{"title","style"},
           new String[]{sbOptionTitle.toString(),"border: 2px solid rgb(0, 0, 255) ! important;"},
-          RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+          AbstractTagTest.TEST_PAGE_NAME_XHTML);
   }
 
 }

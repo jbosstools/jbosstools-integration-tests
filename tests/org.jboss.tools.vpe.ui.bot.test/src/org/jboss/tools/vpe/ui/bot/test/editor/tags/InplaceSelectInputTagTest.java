@@ -18,7 +18,7 @@ import org.jboss.tools.ui.bot.ext.Timing;
  * @author vlado pakan
  *
  */
-public class InplaceSelectInputTagTest extends RichFacesTagsTest{
+public class InplaceSelectInputTagTest extends AbstractTagTest{
   private static final String defaultLabel = "DefaultLabel";
   private static final String option1 = "Option 1";
   private static final String option2 = "Option 2";
@@ -47,10 +47,10 @@ public class InplaceSelectInputTagTest extends RichFacesTagsTest{
         "SPAN", 
         new String[]{"vpe-user-toggle-id","title","class"},
         new String[]{"false","rich:inplaceSelect value: 0 defaultLabel: " + defaultLabel,"rich-inplace-select rich-inplace-select-view"},
-        RichFacesTagsTest.TEST_PAGE_NAME_JSP);
+        AbstractTagTest.TEST_PAGE_NAME_JSP);
       assertVisualEditorContainsNodeWithValue(jspWebBrowser,
           defaultLabel, 
-          RichFacesTagsTest.TEST_PAGE_NAME_JSP);
+          AbstractTagTest.TEST_PAGE_NAME_JSP);
       // check tag selection
       jspWebBrowser.selectDomNode(jspWebBrowser.getDomNodeByTagName("SPAN",2), 0);
       bot.sleep(Timing.time3S());
@@ -70,16 +70,16 @@ public class InplaceSelectInputTagTest extends RichFacesTagsTest{
           "SPAN", 
           new String[]{"vpe-user-toggle-id","class"},
           new String[]{"true","rich-inplace-select rich-inplace-select-edit"},
-          RichFacesTagsTest.TEST_PAGE_NAME_JSP);
+          AbstractTagTest.TEST_PAGE_NAME_JSP);
       assertVisualEditorContainsNodeWithValue(jspWebBrowser,
           option1,
-          RichFacesTagsTest.TEST_PAGE_NAME_JSP);
+          AbstractTagTest.TEST_PAGE_NAME_JSP);
       assertVisualEditorContainsNodeWithValue(jspWebBrowser,
           option2,
-          RichFacesTagsTest.TEST_PAGE_NAME_JSP);
+          AbstractTagTest.TEST_PAGE_NAME_JSP);
       assertVisualEditorNotContainNodeWithValue(jspWebBrowser, 
           defaultLabel,
-          RichFacesTagsTest.TEST_PAGE_NAME_JSP);
+          AbstractTagTest.TEST_PAGE_NAME_JSP);
       selectedText = jspEditor.getSelection();
       // check tag selection
       assertTrue("Selected text in Source Pane has to start with '" + hasToStartWith + "'" +

@@ -18,7 +18,7 @@ import org.jboss.tools.ui.bot.ext.Timing;
  * @author vlado pakan
  *
  */
-public class ColumnGroupTagTest extends RichFacesTagsTest{
+public class ColumnGroupTagTest extends AbstractTagTest{
   private static final String SPAN_COLUMN_VALUE = "!-*Span Column Value";
   private static final String SPAN_ROW__VALUE = "!-*Span Row Value";
   private static final String CELL_1_0_VALUE = "!-* Cell 1x0 Value";
@@ -59,29 +59,29 @@ public class ColumnGroupTagTest extends RichFacesTagsTest{
       "TD", 
       new String[]{"class","rowspan"},
       new String[]{"dr-table-cell rich-table-cell dr-subtable-cell","2"},
-      RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+      AbstractTagTest.TEST_PAGE_NAME_XHTML);
     assertVisualEditorContains(xhtmlWebBrowser,
       "TD", 
       new String[]{"class","colspan"},
       new String[]{"dr-table-cell rich-table-cell dr-subtable-cell","2"},
-      RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+      AbstractTagTest.TEST_PAGE_NAME_XHTML);
     assertVisualEditorContains(xhtmlWebBrowser,
       "TD", 
       new String[]{"class","breakbefore"},
       new String[]{"dr-table-cell rich-table-cell dr-subtable-cell","true"},
-      RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+      AbstractTagTest.TEST_PAGE_NAME_XHTML);
     assertVisualEditorContainsNodeWithValue(xhtmlWebBrowser,
       ColumnGroupTagTest.SPAN_COLUMN_VALUE,
-      RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+      AbstractTagTest.TEST_PAGE_NAME_XHTML);
     assertVisualEditorContainsNodeWithValue(xhtmlWebBrowser,
       ColumnGroupTagTest.SPAN_ROW__VALUE,
-      RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+      AbstractTagTest.TEST_PAGE_NAME_XHTML);
     assertVisualEditorContainsNodeWithValue(xhtmlWebBrowser,
       ColumnGroupTagTest.CELL_1_0_VALUE,
-      RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+      AbstractTagTest.TEST_PAGE_NAME_XHTML);
     assertVisualEditorContainsNodeWithValue(xhtmlWebBrowser,
       ColumnGroupTagTest.CELL_1_1_VALUE,
-      RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+      AbstractTagTest.TEST_PAGE_NAME_XHTML);
     // check tag selection
     xhtmlWebBrowser.selectDomNode(xhtmlWebBrowser.getDomNodeByTagName("TBODY",0), 0);
     bot.sleep(Timing.time3S());

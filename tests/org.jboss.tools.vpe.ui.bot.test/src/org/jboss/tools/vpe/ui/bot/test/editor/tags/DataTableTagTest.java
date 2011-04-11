@@ -18,7 +18,7 @@ import org.jboss.tools.ui.bot.ext.Timing;
  * @author vlado pakan
  *
  */
-public class DataTableTagTest extends RichFacesTagsTest{
+public class DataTableTagTest extends AbstractTagTest{
   private static final String TABLE_HEADER_VALUE = "!-*Table Header Value";
   private static final String COLUMN_HEADER_VALUE = "!-*Column Header Value";
   private static final String COLUMN_0_VALUE = "!-*Column 0 Value";
@@ -58,49 +58,49 @@ public class DataTableTagTest extends RichFacesTagsTest{
       "TABLE", 
       new String[]{"class"},
       new String[]{"dr-table rich-table"},
-      RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+      AbstractTagTest.TEST_PAGE_NAME_XHTML);
     assertVisualEditorContains(xhtmlWebBrowser,
       "TR", 
       new String[]{"class"},
       new String[]{"dr-table-header rich-table-header"},
-      RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+      AbstractTagTest.TEST_PAGE_NAME_XHTML);
     assertVisualEditorContains(xhtmlWebBrowser,
       "TD", 
       new String[]{"class"},
       new String[]{"dr-table-headercell rich-table-headercell"},
-      RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+      AbstractTagTest.TEST_PAGE_NAME_XHTML);
     assertVisualEditorContains(xhtmlWebBrowser,
       "TR", 
       new String[]{"class"},
       new String[]{"dr-table-subheader rich-table-subheader"},
-      RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+      AbstractTagTest.TEST_PAGE_NAME_XHTML);
     assertVisualEditorContains(xhtmlWebBrowser,
       "TD", 
       new String[]{"class"},
       new String[]{"dr-table-subheadercell rich-table-subheadercell"},
-      RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+      AbstractTagTest.TEST_PAGE_NAME_XHTML);
     assertVisualEditorContains(xhtmlWebBrowser,
       "TR", 
       new String[]{"class"},
       new String[]{"dr-table-firstrow rich-table-firstrow"},
-      RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+      AbstractTagTest.TEST_PAGE_NAME_XHTML);
     assertVisualEditorContains(xhtmlWebBrowser,
       "TD", 
       new String[]{"class"},
       new String[]{"dr-table-cell rich-table-cell"},
-      RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+      AbstractTagTest.TEST_PAGE_NAME_XHTML);
     assertVisualEditorContainsNodeWithValue(xhtmlWebBrowser,
       DataTableTagTest.TABLE_HEADER_VALUE,
-      RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+      AbstractTagTest.TEST_PAGE_NAME_XHTML);
     assertVisualEditorContainsNodeWithValue(xhtmlWebBrowser,
       DataTableTagTest.COLUMN_HEADER_VALUE,
-      RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+      AbstractTagTest.TEST_PAGE_NAME_XHTML);
     assertVisualEditorContainsNodeWithValue(xhtmlWebBrowser,
       DataTableTagTest.COLUMN_0_VALUE,
-      RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+      AbstractTagTest.TEST_PAGE_NAME_XHTML);
     assertVisualEditorContainsNodeWithValue(xhtmlWebBrowser,
       DataTableTagTest.COLUMN_1_VALUE,
-      RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+      AbstractTagTest.TEST_PAGE_NAME_XHTML);
     // check tag selection
     xhtmlWebBrowser.selectDomNode(xhtmlWebBrowser.getDomNodeByTagName("THEAD",0), 0);
     bot.sleep(Timing.time3S());

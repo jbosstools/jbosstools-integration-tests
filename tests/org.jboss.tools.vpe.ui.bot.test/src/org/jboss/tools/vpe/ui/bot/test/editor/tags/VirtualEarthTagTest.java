@@ -18,7 +18,7 @@ import org.jboss.tools.ui.bot.ext.Timing;
  * @author vlado pakan
  *
  */
-public class VirtualEarthTagTest extends RichFacesTagsTest{
+public class VirtualEarthTagTest extends AbstractTagTest{
   @Override
   protected void initPageContent() {
     xhtmlEditor.setText("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n" +
@@ -42,12 +42,12 @@ public class VirtualEarthTagTest extends RichFacesTagsTest{
     assertVisualEditorContainsManyNodes(xhtmlWebBrowser,
       "IMG", 
       2,
-      RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+      AbstractTagTest.TEST_PAGE_NAME_XHTML);
     assertVisualEditorContains(xhtmlWebBrowser,
       "SCRIPT", 
       new String[]{"type","src"},
       new String[]{"text/javascript","mozileLoader.js"},
-      RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+      AbstractTagTest.TEST_PAGE_NAME_XHTML);
     // check tag selection
     xhtmlWebBrowser.selectDomNode(xhtmlWebBrowser.getDomNodeByTagName("IMG",0), 0);
     bot.sleep(Timing.time3S());

@@ -20,7 +20,7 @@ import org.mozilla.interfaces.nsIDOMNode;
  * @author vlado pakan
  *
  */
-public class ActionParamTagTest extends RichFacesTagsTest{
+public class ActionParamTagTest extends AbstractTagTest{
   @Override
   protected void initPageContent() {
     xhtmlEditor.setText("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n" +

@@ -18,7 +18,7 @@ import org.jboss.tools.ui.bot.ext.Timing;
  * @author vlado pakan
  *
  */
-public class DataListTagTest extends RichFacesTagsTest{
+public class DataListTagTest extends AbstractTagTest{
   private static final String ROW_0_VALUE = "!-* Row 0 Value";
   private static final String ROW_1_VALUE = "!-* Row 1 Value";
   private static final String ROW_2_VALUE = "!-* Row 2 Value";
@@ -51,21 +51,21 @@ public class DataListTagTest extends RichFacesTagsTest{
       "UL", 
       new String[]{"class"},
       new String[]{"dr-list rich-datalist"},
-      RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+      AbstractTagTest.TEST_PAGE_NAME_XHTML);
     assertVisualEditorContains(xhtmlWebBrowser,
       "LI", 
       new String[]{"class"},
       new String[]{"dr-list-item rich-list-item"},
-      RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+      AbstractTagTest.TEST_PAGE_NAME_XHTML);
     assertVisualEditorContainsNodeWithValue(xhtmlWebBrowser,
       DataListTagTest.ROW_0_VALUE,
-      RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+      AbstractTagTest.TEST_PAGE_NAME_XHTML);
     assertVisualEditorContainsNodeWithValue(xhtmlWebBrowser,
       DataListTagTest.ROW_1_VALUE,
-      RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+      AbstractTagTest.TEST_PAGE_NAME_XHTML);
     assertVisualEditorContainsNodeWithValue(xhtmlWebBrowser,
       DataListTagTest.ROW_2_VALUE,
-      RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+      AbstractTagTest.TEST_PAGE_NAME_XHTML);
     // check tag selecti
     xhtmlWebBrowser.selectDomNode(xhtmlWebBrowser.getDomNodeByTagName("LI",0), 0);
     bot.sleep(Timing.time3S());

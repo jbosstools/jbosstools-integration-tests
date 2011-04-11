@@ -41,6 +41,7 @@ import org.jboss.tools.vpe.ui.bot.test.editor.tags.ColumnGroupTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.ColumnTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.ColumnsTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.ComboBoxTagTest;
+import org.jboss.tools.vpe.ui.bot.test.editor.tags.CommandButtonTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.CoreHTMLTagsTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.DataDefinitionTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.DataGridTagTest;
@@ -157,7 +158,8 @@ public class VPEAllBotTests extends SWTBotTestCase{
 		suite.addTestSuite(ExtendedDataTableTagTest.class);
 		suite.addTestSuite(ToolbarAndToolbarGroupTagTest.class);
 		suite.addTestSuite(TogglePanelAndToogleControlTagTest.class);
-    suite.addTestSuite(XhtmlFilePerformanceTest.class);
+		suite.addTestSuite(CommandButtonTagTest.class);
+		suite.addTestSuite(XhtmlFilePerformanceTest.class);
 		return new TestSetup(suite);
 	}
 }

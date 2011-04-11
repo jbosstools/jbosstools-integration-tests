@@ -20,7 +20,7 @@ import org.mozilla.interfaces.nsIDOMNode;
  * @author vlado pakan
  *
  */
-public class AjaxValidatorTagTest extends RichFacesTagsTest{
+public class AjaxValidatorTagTest extends AbstractTagTest{
   private static final String INPUT_TEXT = "!*- Input Text";
   @Override
   protected void initPageContent() {

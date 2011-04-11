@@ -18,7 +18,7 @@ import org.jboss.tools.ui.bot.ext.Timing;
  * @author vlado pakan
  *
  */
-public class TreeTagTest extends RichFacesTagsTest{
+public class TreeTagTest extends AbstractTagTest{
   private static final String typeLibrary = "library";
   private static final String typePathway = "pathway";
   private static final String typeOrganism = "organism";
@@ -55,18 +55,18 @@ public class TreeTagTest extends RichFacesTagsTest{
   protected void verifyTag() {
     assertVisualEditorContainsNodeWithValue(xhtmlWebBrowser,
         TreeTagTest.typePathway, 
-      RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+      AbstractTagTest.TEST_PAGE_NAME_XHTML);
     assertVisualEditorContainsNodeWithValue(xhtmlWebBrowser,
       TreeTagTest.typeLibrary, 
-      RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+      AbstractTagTest.TEST_PAGE_NAME_XHTML);
     assertVisualEditorContainsNodeWithValue(xhtmlWebBrowser,
       TreeTagTest.typeOrganism, 
-      RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+      AbstractTagTest.TEST_PAGE_NAME_XHTML);
     assertVisualEditorContains(xhtmlWebBrowser,
       "IMG", 
       new String[]{"class"},
       new String[]{"treePictureStyle"},
-      RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+      AbstractTagTest.TEST_PAGE_NAME_XHTML);
     // check tag selection
     xhtmlWebBrowser.selectDomNode(xhtmlWebBrowser.getDomNodeByTagName("DIV",4), 0);
     bot.sleep(Timing.time3S());

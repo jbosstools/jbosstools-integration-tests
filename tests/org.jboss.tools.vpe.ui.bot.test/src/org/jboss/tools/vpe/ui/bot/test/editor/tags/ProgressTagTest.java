@@ -18,7 +18,7 @@ import org.jboss.tools.ui.bot.ext.Timing;
  * @author vlado pakan
  *
  */
-public class ProgressTagTest extends RichFacesTagsTest{
+public class ProgressTagTest extends AbstractTagTest{
   @Override
   protected void initPageContent() {
     jspEditor.setText("<%@ taglib uri=\"http://java.sun.com/jsf/html\" prefix=\"h\" %>\n" +
@@ -42,7 +42,7 @@ public class ProgressTagTest extends RichFacesTagsTest{
         "DIV", 
         new String[]{"title","class"},
         new String[]{"rich:progressBar mode: client id: progressBar","rich-progress-bar-block rich-progress-bar-width rich-progress-bar-shell"},
-        RichFacesTagsTest.TEST_PAGE_NAME_JSP);
+        AbstractTagTest.TEST_PAGE_NAME_JSP);
       // check tag selection
       jspWebBrowser.selectDomNode(jspWebBrowser.getDomNodeByTagName("DIV",4), 0);
       bot.sleep(Timing.time3S());

@@ -18,7 +18,7 @@ import org.jboss.tools.ui.bot.ext.Timing;
  * @author vlado pakan
  *
  */
-public class ListShuttleTagTest extends RichFacesTagsTest{
+public class ListShuttleTagTest extends AbstractTagTest{
   @Override
   protected void initPageContent() {
     xhtmlEditor.setText("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n" +
@@ -43,55 +43,55 @@ public class ListShuttleTagTest extends RichFacesTagsTest{
       assertVisualEditorContainsNodeWithValue(
         xhtmlWebBrowser, 
         "Copy all", 
-        RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+        AbstractTagTest.TEST_PAGE_NAME_XHTML);
       assertVisualEditorContainsNodeWithValue(
         xhtmlWebBrowser, 
         "Copy", 
-        RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+        AbstractTagTest.TEST_PAGE_NAME_XHTML);
       assertVisualEditorContainsNodeWithValue(
         xhtmlWebBrowser, 
         "Remove All", 
-        RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+        AbstractTagTest.TEST_PAGE_NAME_XHTML);
       assertVisualEditorContainsNodeWithValue(
         xhtmlWebBrowser, 
         "Remove", 
-          RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+          AbstractTagTest.TEST_PAGE_NAME_XHTML);
       assertVisualEditorContainsNodeWithValue(
         xhtmlWebBrowser, 
         "First", 
-        RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+        AbstractTagTest.TEST_PAGE_NAME_XHTML);
       assertVisualEditorContainsNodeWithValue(
         xhtmlWebBrowser, 
         "Up", 
-        RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+        AbstractTagTest.TEST_PAGE_NAME_XHTML);
       assertVisualEditorContainsNodeWithValue(
         xhtmlWebBrowser, 
         "Last", 
-        RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+        AbstractTagTest.TEST_PAGE_NAME_XHTML);
       assertVisualEditorContainsNodeWithValue(
         xhtmlWebBrowser, 
         "Down", 
-        RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+        AbstractTagTest.TEST_PAGE_NAME_XHTML);
       assertVisualEditorContains(xhtmlWebBrowser,
         "DIV", 
         new String[]{"class"},
         new String[]{"rich-shuttle-button-content"},
-        RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+        AbstractTagTest.TEST_PAGE_NAME_XHTML);
       assertVisualEditorContains(xhtmlWebBrowser,
         "TABLE", 
         new String[]{"class"},
         new String[]{"rich-list-shuttle"},
-        RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+        AbstractTagTest.TEST_PAGE_NAME_XHTML);
       assertVisualEditorContains(xhtmlWebBrowser,
         "DIV", 
         new String[]{"class"},
         new String[]{"rich-shuttle-controls"},
-        RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+        AbstractTagTest.TEST_PAGE_NAME_XHTML);
       assertVisualEditorContains(xhtmlWebBrowser,
         "DIV", 
         new String[]{"class"},
         new String[]{"rich-shuttle-control"},
-        RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+        AbstractTagTest.TEST_PAGE_NAME_XHTML);
       // check tag selection
       xhtmlWebBrowser.selectDomNode(xhtmlWebBrowser.getDomNodeByTagName("DIV",4), 0);
       bot.sleep(Timing.time3S());

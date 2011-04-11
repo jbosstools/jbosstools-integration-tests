@@ -18,7 +18,7 @@ import org.jboss.tools.ui.bot.ext.Timing;
  * @author vlado pakan
  *
  */
-public class DataScrollerTagTest extends RichFacesTagsTest{
+public class DataScrollerTagTest extends AbstractTagTest{
   private static final String DATA_SCROLLER_STYLE = "background-color: red;";
   @Override
   protected void initPageContent() {
@@ -45,22 +45,22 @@ public class DataScrollerTagTest extends RichFacesTagsTest{
       "DIV", 
       new String[]{"class","style"},
       new String[]{"rich-datascr",DataScrollerTagTest.DATA_SCROLLER_STYLE},
-      RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+      AbstractTagTest.TEST_PAGE_NAME_XHTML);
     assertVisualEditorContains(xhtmlWebBrowser,
       "TD", 
       new String[]{"class"},
       new String[]{"rich-datascr-button rich-datascr-button-dsbld"},
-      RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+      AbstractTagTest.TEST_PAGE_NAME_XHTML);
     assertVisualEditorContains(xhtmlWebBrowser,
       "TD", 
       new String[]{"class"},
       new String[]{"rich-datascr-act"},
-      RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+      AbstractTagTest.TEST_PAGE_NAME_XHTML);
     assertVisualEditorContains(xhtmlWebBrowser,
       "TD", 
       new String[]{"class"},
       new String[]{"rich-datascr-inact"},
-      RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+      AbstractTagTest.TEST_PAGE_NAME_XHTML);
     // check tag selection
     xhtmlWebBrowser.selectDomNode(xhtmlWebBrowser.getDomNodeByTagName("DIV",4), 0);
     bot.sleep(Timing.time3S());

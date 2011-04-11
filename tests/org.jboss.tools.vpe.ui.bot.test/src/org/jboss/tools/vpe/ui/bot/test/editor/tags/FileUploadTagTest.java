@@ -18,7 +18,7 @@ import org.jboss.tools.ui.bot.ext.Timing;
  * @author vlado pakan
  *
  */
-public class FileUploadTagTest extends RichFacesTagsTest{
+public class FileUploadTagTest extends AbstractTagTest{
   @Override
   protected void initPageContent() {
     jspEditor.setText("<%@ taglib uri=\"http://java.sun.com/jsf/html\" prefix=\"h\" %>\n" +
@@ -45,37 +45,37 @@ public class FileUploadTagTest extends RichFacesTagsTest{
         "B", 
         new String[]{"title"},
         new String[]{"rich:fileUpload fileUploadListener:  maxFilesQuantity: 1 id: upload immediateUpload: false acceptedTypes: jpg style: width:500; height:500"},
-        RichFacesTagsTest.TEST_PAGE_NAME_JSP);
+        AbstractTagTest.TEST_PAGE_NAME_JSP);
       assertVisualEditorContains(jspWebBrowser,
           "DIV", 
           new String[]{"class"},
           new String[]{"rich-fileupload-list-decor"},
-          RichFacesTagsTest.TEST_PAGE_NAME_JSP);
+          AbstractTagTest.TEST_PAGE_NAME_JSP);
       assertVisualEditorContains(jspWebBrowser,
           "DIV", 
           new String[]{"class"},
           new String[]{"rich-fileupload-button-border"},
-          RichFacesTagsTest.TEST_PAGE_NAME_JSP);
+          AbstractTagTest.TEST_PAGE_NAME_JSP);
       assertVisualEditorContains(jspWebBrowser,
           "DIV", 
           new String[]{"class"},
           new String[]{"rich-fileupload-button rich-fileupload-font"},
-          RichFacesTagsTest.TEST_PAGE_NAME_JSP);
+          AbstractTagTest.TEST_PAGE_NAME_JSP);
       assertVisualEditorContains(jspWebBrowser,
           "DIV", 
           new String[]{"class"},
           new String[]{"rich-fileupload-button-content rich-fileupload-font rich-fileupload-ico rich-fileupload-ico-add"},
-          RichFacesTagsTest.TEST_PAGE_NAME_JSP);
+          AbstractTagTest.TEST_PAGE_NAME_JSP);
       assertVisualEditorContains(jspWebBrowser,
           "DIV", 
           new String[]{"class"},
           new String[]{"rich-fileupload-button-content rich-fileupload-font rich-fileupload-ico rich-fileupload-ico-start"},
-          RichFacesTagsTest.TEST_PAGE_NAME_JSP);
+          AbstractTagTest.TEST_PAGE_NAME_JSP);
       assertVisualEditorContains(jspWebBrowser,
           "DIV", 
           new String[]{"class"},
           new String[]{"rich-fileupload-button-content rich-fileupload-font rich-fileupload-ico rich-fileupload-ico-clear"},
-          RichFacesTagsTest.TEST_PAGE_NAME_JSP);
+          AbstractTagTest.TEST_PAGE_NAME_JSP);
       // check tag selection
       jspWebBrowser.selectDomNode(jspWebBrowser.getDomNodeByTagName("B",0), 0);
       bot.sleep(Timing.time3S());

@@ -18,7 +18,7 @@ import org.jboss.tools.ui.bot.ext.Timing;
  * @author vlado pakan
  *
  */
-public class DataGridTagTest extends RichFacesTagsTest{
+public class DataGridTagTest extends AbstractTagTest{
   private static final String HEADER_VALUE = "!-*Header Value";
   private static final String FOOTER_VALUE = "!-*Footer Value";
   private static final String CELL_0_VALUE = "!-*Cell 0 Value";
@@ -58,63 +58,63 @@ public class DataGridTagTest extends RichFacesTagsTest{
       "TABLE", 
       new String[]{"class","columns","elements"},
       new String[]{"dr-table rich-table",DataGridTagTest.GRID_COLUMNS,DataGridTagTest.GRID_ELEMENTS},
-      RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+      AbstractTagTest.TEST_PAGE_NAME_XHTML);
     assertVisualEditorContains(xhtmlWebBrowser,
       "THEAD", 
       null,
       null,
-      RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+      AbstractTagTest.TEST_PAGE_NAME_XHTML);
     assertVisualEditorContains(xhtmlWebBrowser,
       "TFOOT", 
       null,
       null,
-      RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+      AbstractTagTest.TEST_PAGE_NAME_XHTML);
     assertVisualEditorContains(xhtmlWebBrowser,
       "TR", 
       new String[]{"class"},
       new String[]{"dr-table-header rich-table-header"},
-      RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+      AbstractTagTest.TEST_PAGE_NAME_XHTML);
     assertVisualEditorContains(xhtmlWebBrowser,
       "TD", 
       new String[]{"class"},
       new String[]{"dr-table-headercell rich-table-headercell"},
-      RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+      AbstractTagTest.TEST_PAGE_NAME_XHTML);
     assertVisualEditorContains(xhtmlWebBrowser,
       "TR", 
       new String[]{"class"},
       new String[]{"dr-table-footer rich-table-footer"},
-      RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+      AbstractTagTest.TEST_PAGE_NAME_XHTML);
     assertVisualEditorContains(xhtmlWebBrowser,
       "TD", 
       new String[]{"class"},
       new String[]{"dr-table-footercell rich-table-footercell"},
-      RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+      AbstractTagTest.TEST_PAGE_NAME_XHTML);
     assertVisualEditorContains(xhtmlWebBrowser,
       "TR", 
       new String[]{"class"},
       new String[]{"dr-table-row rich-table-row"},
-      RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+      AbstractTagTest.TEST_PAGE_NAME_XHTML);
     assertVisualEditorContains(xhtmlWebBrowser,
       "TD", 
       new String[]{"class"},
       new String[]{"dr-table-cell rich-table-cell"},
-      RichFacesTagsTest.TEST_PAGE_NAME_XHTML);    
+      AbstractTagTest.TEST_PAGE_NAME_XHTML);    
     assertVisualEditorContainsManyNodes(xhtmlWebBrowser,
         "SPAN", 
         2 + (2 * Integer.parseInt(DataGridTagTest.GRID_ELEMENTS)),
-        RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+        AbstractTagTest.TEST_PAGE_NAME_XHTML);
     assertVisualEditorContainsNodeWithValue(xhtmlWebBrowser,
       DataGridTagTest.HEADER_VALUE,
-      RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+      AbstractTagTest.TEST_PAGE_NAME_XHTML);
     assertVisualEditorContainsNodeWithValue(xhtmlWebBrowser,
       DataGridTagTest.FOOTER_VALUE,
-      RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+      AbstractTagTest.TEST_PAGE_NAME_XHTML);
     assertVisualEditorContainsNodeWithValue(xhtmlWebBrowser,
         DataGridTagTest.CELL_0_VALUE,
-        RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+        AbstractTagTest.TEST_PAGE_NAME_XHTML);
     assertVisualEditorContainsNodeWithValue(xhtmlWebBrowser,
         DataGridTagTest.CELL_1_VALUE,
-        RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+        AbstractTagTest.TEST_PAGE_NAME_XHTML);
     // check tag selection
     xhtmlWebBrowser.selectDomNode(xhtmlWebBrowser.getDomNodeByTagName("THEAD",0), 0);
     bot.sleep(Timing.time3S());

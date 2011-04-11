@@ -18,7 +18,7 @@ import org.jboss.tools.ui.bot.ext.Timing;
  * @author vlado pakan
  *
  */
-public class InplaceInputTagTest extends RichFacesTagsTest{
+public class InplaceInputTagTest extends AbstractTagTest{
   private static final String defaultLabel = "DefaultLabel";
   @Override
   protected void initPageContent() {
@@ -42,10 +42,10 @@ public class InplaceInputTagTest extends RichFacesTagsTest{
         "SPAN", 
         new String[]{"vpe-user-toggle-id","title","class"},
         new String[]{"false","rich:inplaceInput defaultLabel: " + defaultLabel,"rich-inplace rich-inplace-view"},
-        RichFacesTagsTest.TEST_PAGE_NAME_JSP);
+        AbstractTagTest.TEST_PAGE_NAME_JSP);
       assertVisualEditorContainsNodeWithValue(jspWebBrowser,
           defaultLabel, 
-          RichFacesTagsTest.TEST_PAGE_NAME_JSP);
+          AbstractTagTest.TEST_PAGE_NAME_JSP);
       // check tag selection
       jspWebBrowser.selectDomNode(jspWebBrowser.getDomNodeByTagName("SPAN",2), 0);
       bot.sleep(Timing.time3S());
@@ -61,12 +61,12 @@ public class InplaceInputTagTest extends RichFacesTagsTest{
           "SPAN", 
           new String[]{"vpe-user-toggle-id","class"},
           new String[]{"true","rich-inplace rich-inplace-edit"},
-          RichFacesTagsTest.TEST_PAGE_NAME_JSP);
+          AbstractTagTest.TEST_PAGE_NAME_JSP);
       assertVisualEditorContains(jspWebBrowser,
           "INPUT", 
           new String[]{"type","class","value"},
           new String[]{"text","rich-inplace-field",defaultLabel},
-          RichFacesTagsTest.TEST_PAGE_NAME_JSP);
+          AbstractTagTest.TEST_PAGE_NAME_JSP);
       assertTrue("Selected text in Source Pane has to be '" + expectedSelectedText + "'" +
           "\nbut it is '" + selectedText + "'",
           selectedText.trim().equals(expectedSelectedText));

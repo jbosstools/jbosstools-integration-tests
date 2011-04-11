@@ -18,7 +18,7 @@ import org.jboss.tools.ui.bot.ext.Timing;
  * @author vlado pakan
  *
  */
-public class SpacerTagTest extends RichFacesTagsTest{
+public class SpacerTagTest extends AbstractTagTest{
   private static final String SPACER_STYLE = "background-color: red;";
   @Override
   protected void initPageContent() {
@@ -44,7 +44,7 @@ public class SpacerTagTest extends RichFacesTagsTest{
       "IMG", 
       new String[]{"width","height","class","style"},
       new String[]{"1px","1px","rich-spacer",SpacerTagTest.SPACER_STYLE},
-      RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+      AbstractTagTest.TEST_PAGE_NAME_XHTML);
     // check tag selection
     xhtmlWebBrowser.selectDomNode(xhtmlWebBrowser.getDomNodeByTagName("IMG",0), 0);
     bot.sleep(Timing.time3S());

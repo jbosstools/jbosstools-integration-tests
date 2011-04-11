@@ -18,7 +18,7 @@ import org.jboss.tools.ui.bot.ext.Timing;
  * @author vlado pakan
  *
  */
-public class PanelTagTest extends RichFacesTagsTest{
+public class PanelTagTest extends AbstractTagTest{
   private static final String HEADER_VALUE = "!-*Header Value";
   private static final String BODY_VALUE = "!-*Body Value";
   @Override
@@ -50,18 +50,18 @@ public class PanelTagTest extends RichFacesTagsTest{
       "DIV", 
       new String[]{"class"},
       new String[]{"dr-pnl rich-panel"},
-      RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+      AbstractTagTest.TEST_PAGE_NAME_XHTML);
     assertVisualEditorContains(xhtmlWebBrowser,
       "DIV", 
       new String[]{"class"},
       new String[]{"dr-pnl-b rich-panel-body"},
-      RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+      AbstractTagTest.TEST_PAGE_NAME_XHTML);
     assertVisualEditorContainsNodeWithValue(xhtmlWebBrowser,
       PanelTagTest.HEADER_VALUE,
-      RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+      AbstractTagTest.TEST_PAGE_NAME_XHTML);
     assertVisualEditorContainsNodeWithValue(xhtmlWebBrowser,
       PanelTagTest.BODY_VALUE,
-      RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+      AbstractTagTest.TEST_PAGE_NAME_XHTML);
     // check tag selection
     xhtmlWebBrowser.selectDomNode(xhtmlWebBrowser.getDomNodeByTagName("DIV",4), 0);
     bot.sleep(Timing.time3S());

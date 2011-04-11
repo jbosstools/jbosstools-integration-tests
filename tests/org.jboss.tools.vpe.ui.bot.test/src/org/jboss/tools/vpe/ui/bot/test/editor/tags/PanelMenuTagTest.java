@@ -18,7 +18,7 @@ import org.jboss.tools.ui.bot.ext.Timing;
  * @author vlado pakan
  *
  */
-public class PanelMenuTagTest extends RichFacesTagsTest{
+public class PanelMenuTagTest extends AbstractTagTest{
   
   private static String getSubGroupLabel (final int groupIndex , final int subGroupIndex){
     StringBuffer sb = new StringBuffer();
@@ -104,29 +104,29 @@ public class PanelMenuTagTest extends RichFacesTagsTest{
       "TD", 
       new String[]{"class"},
       new String[]{"rich-pmenu-top-group-self-label"},
-      RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+      AbstractTagTest.TEST_PAGE_NAME_XHTML);
     assertVisualEditorContains(xhtmlWebBrowser,
       "TD", 
       new String[]{"class"},
       new String[]{"rich-pmenu-group-self-icon rich-pmenu-top-group-self-icon"},
-      RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+      AbstractTagTest.TEST_PAGE_NAME_XHTML);
     assertVisualEditorContains(xhtmlWebBrowser,
       "TABLE", 
       new String[]{"class"},
       new String[]{"dr-pmenu-top-group rich-pmenu-group"},
-      RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+      AbstractTagTest.TEST_PAGE_NAME_XHTML);
     assertVisualEditorContainsNodeWithValue(xhtmlWebBrowser,
       PanelMenuTagTest.getGroupLabel(0),
-      RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+      AbstractTagTest.TEST_PAGE_NAME_XHTML);
     assertVisualEditorContainsNodeWithValue(xhtmlWebBrowser,
       PanelMenuTagTest.getGroupLabel(1),
-      RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+      AbstractTagTest.TEST_PAGE_NAME_XHTML);
     assertVisualEditorContainsNodeWithValue(xhtmlWebBrowser,
       PanelMenuTagTest.getGroupLabel(2),
-      RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+      AbstractTagTest.TEST_PAGE_NAME_XHTML);
     assertVisualEditorNotContainNodeWithValue(xhtmlWebBrowser,
         PanelMenuTagTest.getGroupItemLabel(0, 0),
-        RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+        AbstractTagTest.TEST_PAGE_NAME_XHTML);
     // check tag selection
     xhtmlWebBrowser.selectDomNode(xhtmlWebBrowser.getDomNodeByTagName("DIV",4), 0);
     bot.sleep(Timing.time3S());
@@ -173,12 +173,12 @@ public class PanelMenuTagTest extends RichFacesTagsTest{
         selectedText.trim().endsWith(hasToEndWith));
     assertVisualEditorContainsNodeWithValue(xhtmlWebBrowser,
         PanelMenuTagTest.getSubGroupItemLabel(1, 0, 0),
-        RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+        AbstractTagTest.TEST_PAGE_NAME_XHTML);
     assertVisualEditorContains(xhtmlWebBrowser,
         "TD", 
         new String[]{"class"},
         new String[]{"rich-pmenu-item-label"},
-        RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+        AbstractTagTest.TEST_PAGE_NAME_XHTML);
   }
 
 }

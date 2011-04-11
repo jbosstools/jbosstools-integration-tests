@@ -18,7 +18,7 @@ import org.jboss.tools.ui.bot.ext.Timing;
  * @author vlado pakan
  *
  */
-public class ComboBoxTagTest extends RichFacesTagsTest{
+public class ComboBoxTagTest extends AbstractTagTest{
   private static final String defaultLabel = "DefaultLabel";
 
   @Override
@@ -48,22 +48,22 @@ public class ComboBoxTagTest extends RichFacesTagsTest{
         "INPUT", 
         new String[]{"type","class","value"},
         new String[]{"text","rich-combobox-font-disabled rich-combobox-input-inactive",defaultLabel},
-        RichFacesTagsTest.TEST_PAGE_NAME_JSP);
+        AbstractTagTest.TEST_PAGE_NAME_JSP);
     assertVisualEditorContains(jspWebBrowser,
         "INPUT", 
         new String[]{"type","class"},
         new String[]{"text","rich-combobox-font-inactive rich-combobox-button-background rich-combobox-button-inactive"},
-        RichFacesTagsTest.TEST_PAGE_NAME_JSP);
+        AbstractTagTest.TEST_PAGE_NAME_JSP);
     assertVisualEditorContains(jspWebBrowser,
         "INPUT", 
         new String[]{"type","class"},
         new String[]{"text","rich-combobox-font-inactive rich-combobox-button-icon-inactive rich-combobox-button-inactive"},
-        RichFacesTagsTest.TEST_PAGE_NAME_JSP);
+        AbstractTagTest.TEST_PAGE_NAME_JSP);
     assertVisualEditorContains(jspWebBrowser,
         "DIV", 
         new String[]{"class"},
         new String[]{"rich-combobox-strut rich-combobox-font"},
-        RichFacesTagsTest.TEST_PAGE_NAME_JSP);    
+        AbstractTagTest.TEST_PAGE_NAME_JSP);    
     // check tag selection
     jspWebBrowser.selectDomNode(jspWebBrowser.getDomNodeByTagName("INPUT"), 0);
     bot.sleep(Timing.time3S());

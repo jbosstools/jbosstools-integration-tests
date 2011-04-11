@@ -14,45 +14,45 @@ package org.jboss.tools.vpe.ui.bot.test.editor.tags;
 import org.jboss.tools.ui.bot.ext.Timing;
 
 /**
- * Tests Rich Faces Calendar Tag behavior 
+ * Tests ajax command button Tag behavior 
  * @author vlado pakan
  *
  */
-public class CalendarTagTest extends AbstractTagTest{
+public class CommandButtonTagTest extends AbstractTagTest{
   @Override
   protected void initPageContent() {
-    xhtmlEditor.setText("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n" +
-      "<html xmlns=\"http://www.w3.org/1999/xhtml\"\n" +
-      "  xmlns:ui=\"http://java.sun.com/jsf/facelets\"\n" +
-      "  xmlns:f=\"http://java.sun.com/jsf/core\"\n" +
-      "  xmlns:rich=\"http://richfaces.org/rich\"\n" + 
-      "  <head>\n" +
-      "  </head>\n" +
-      "  <body>\n" +
-      "    <f:view>\n" +
-      "      <rich:calendar>\n" +
-      "      </rich:calendar>\n" +      
-      "    </f:view>\n" +
-      "  </body>\n" + 
+    jspEditor.setText("<%@ taglib uri=\"http://java.sun.com/jsf/html\" prefix=\"h\" %>\n" +
+      "<%@ taglib uri=\"http://java.sun.com/jsf/core\" prefix=\"f\" %>\n" +
+      "<%@ taglib uri=\"http://richfaces.org/a4j\" prefix=\"a4j\" %>\n" +
+      "<%@ taglib uri=\"http://richfaces.org/rich\" prefix=\"rich\" %>\n" +
+      "<html>\n" +
+      " <head>\n" +
+      " </head>\n" +
+      " <body>\n" +
+      "   <f:view>\n" +
+      "     <a4j:commandButton type=\"Submit\">\n" +
+      "     </a4j:commandButton>\n" +
+      "   </f:view>\n" +
+      " </body> \n" +
       "</html>");
   }
 
   @Override
   protected void verifyTag() {
-    assertVisualEditorContains(xhtmlWebBrowser,
+    assertVisualEditorContains(jspWebBrowser,
       "INPUT", 
-      new String[]{"class"},
-      new String[]{"rich-calendar-input null"},
-      AbstractTagTest.TEST_PAGE_NAME_XHTML);
+      new String[]{"type"},
+      new String[]{"Submit"},
+      AbstractTagTest.TEST_PAGE_NAME_JSP);
     // check tag selection
-    xhtmlWebBrowser.selectDomNode(xhtmlWebBrowser.getDomNodeByTagName("INPUT",0), 0);
+    jspWebBrowser.selectDomNode(jspWebBrowser.getDomNodeByTagName("INPUT",0), 0);
     bot.sleep(Timing.time3S());
-    String selectedText = xhtmlEditor.getSelection();
-    String hasToStartWith = "<rich:calendar>";
+    String selectedText = jspEditor.getSelection();
+    String hasToStartWith = "<a4j:commandButton type=\"Submit\">";
     assertTrue("Selected text in Source Pane has to start with '" + hasToStartWith + "'" +
         "\nbut it is '" + selectedText + "'",
       selectedText.trim().startsWith(hasToStartWith));
-    String hasEndWith = "</rich:calendar>";
+    String hasEndWith = "</a4j:commandButton>";
     assertTrue("Selected text in Source Pane has to end with '" + hasEndWith + "'" +
         "\nbut it is '" + selectedText + "'",
       selectedText.trim().endsWith(hasEndWith));

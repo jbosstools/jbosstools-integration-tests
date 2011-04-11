@@ -18,7 +18,7 @@ import org.jboss.tools.ui.bot.ext.Timing;
  * @author vlado pakan
  *
  */
-public class ToolbarAndToolbarGroupTagTest extends RichFacesTagsTest{
+public class ToolbarAndToolbarGroupTagTest extends AbstractTagTest{
   private static final String GROUP_0_LABEL = "!-* Group 0 Label";
   private static final String GROUP_1_LABEL = "!-* Group 1 Label";
   @Override
@@ -51,13 +51,13 @@ public class ToolbarAndToolbarGroupTagTest extends RichFacesTagsTest{
       "TD", 
       new String[]{"class"},
       new String[]{"dr-toolbar-int rich-toolbar-item"},
-      RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+      AbstractTagTest.TEST_PAGE_NAME_XHTML);
     assertVisualEditorContainsNodeWithValue(xhtmlWebBrowser,
       ToolbarAndToolbarGroupTagTest.GROUP_0_LABEL,
-      RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+      AbstractTagTest.TEST_PAGE_NAME_XHTML);
     assertVisualEditorContainsNodeWithValue(xhtmlWebBrowser,
       ToolbarAndToolbarGroupTagTest.GROUP_1_LABEL,
-      RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+      AbstractTagTest.TEST_PAGE_NAME_XHTML);
     // check tag selection
     xhtmlWebBrowser.selectDomNode(xhtmlWebBrowser.getDomNodeByTagName("TBODY",0), 0);
     bot.sleep(Timing.time3S());

@@ -16,7 +16,7 @@ package org.jboss.tools.vpe.ui.bot.test.editor.tags;
  * @author vlado pakan
  *
  */
-public class ColumnsTagTest extends RichFacesTagsTest{
+public class ColumnsTagTest extends AbstractTagTest{
   private static final String columnHeader = "Column Header";
   private static final String columnValue = "Column Value";
 
@@ -52,30 +52,30 @@ public class ColumnsTagTest extends RichFacesTagsTest{
   protected void verifyTag() {
     assertVisualEditorContainsNodeWithValue(xhtmlWebBrowser,
         columnHeader, 
-        RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+        AbstractTagTest.TEST_PAGE_NAME_XHTML);
     assertVisualEditorContainsNodeWithValue(xhtmlWebBrowser,
         columnValue, 
-        RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+        AbstractTagTest.TEST_PAGE_NAME_XHTML);
     assertVisualEditorContains(xhtmlWebBrowser,
       "TR", 
       new String[]{"class"},
       new String[]{"dr-table-subheader rich-table-subheader"},
-      RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+      AbstractTagTest.TEST_PAGE_NAME_XHTML);
     assertVisualEditorContains(xhtmlWebBrowser,
         "TD", 
         new String[]{"class"},
         new String[]{"dr-table-subheadercell rich-table-subheadercell"},
-        RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+        AbstractTagTest.TEST_PAGE_NAME_XHTML);
     assertVisualEditorContains(xhtmlWebBrowser,
         "TR", 
         new String[]{"class"},
         new String[]{"dr-table-firstrow rich-table-firstrow"},
-        RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+        AbstractTagTest.TEST_PAGE_NAME_XHTML);
       assertVisualEditorContains(xhtmlWebBrowser,
           "TD", 
           new String[]{"class"},
           new String[]{"dr-table-cell rich-table-cell"},
-          RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+          AbstractTagTest.TEST_PAGE_NAME_XHTML);
   }
 
 }

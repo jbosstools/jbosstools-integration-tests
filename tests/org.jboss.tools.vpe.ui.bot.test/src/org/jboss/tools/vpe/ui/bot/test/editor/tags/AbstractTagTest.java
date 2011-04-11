@@ -17,14 +17,14 @@ import org.jboss.tools.ui.bot.ext.parts.SWTBotEditorExt;
 import org.jboss.tools.vpe.ui.bot.test.editor.VPEEditorTestCase;
 import org.jboss.tools.vpe.ui.bot.test.tools.SWTBotWebBrowser;
 /**
- * Tests Rich Faces Tags behavior 
+ * Abstract Tag Test behavior 
  * @author vlado pakan
  *
  */
-public abstract class RichFacesTagsTest extends VPEEditorTestCase {
+public abstract class AbstractTagTest extends VPEEditorTestCase {
   
-  protected static final String TEST_PAGE_NAME_JSP = "RichFacesTagsTest.jsp";
-  protected static final String TEST_PAGE_NAME_XHTML = "RichFacesTagsTest.xhtml";
+  protected static final String TEST_PAGE_NAME_JSP = "TagTest.jsp";
+  protected static final String TEST_PAGE_NAME_XHTML = "TagTest.xhtml";
   
   protected SWTBotEditorExt jspEditor;
   protected SWTBotEditorExt xhtmlEditor;
@@ -32,7 +32,7 @@ public abstract class RichFacesTagsTest extends VPEEditorTestCase {
   protected SWTBotWebBrowser xhtmlWebBrowser;
   protected SWTBotExt botExt;
   
-	public RichFacesTagsTest() {
+	public AbstractTagTest() {
 		super();
 		botExt = new SWTBotExt();
 	}
@@ -40,12 +40,12 @@ public abstract class RichFacesTagsTest extends VPEEditorTestCase {
 	protected void setUp() throws Exception {
 	  super.setUp();
     eclipse.maximizeActiveShell();
-    createJspPage(RichFacesTagsTest.TEST_PAGE_NAME_JSP);
-    jspEditor = botExt.swtBotEditorExtByTitle(RichFacesTagsTest.TEST_PAGE_NAME_JSP);
-    jspWebBrowser = new SWTBotWebBrowser(RichFacesTagsTest.TEST_PAGE_NAME_JSP,botExt);
-    createXhtmlPage(RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
-    xhtmlEditor = botExt.swtBotEditorExtByTitle(RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
-    xhtmlWebBrowser = new SWTBotWebBrowser(RichFacesTagsTest.TEST_PAGE_NAME_XHTML,botExt);
+    createJspPage(AbstractTagTest.TEST_PAGE_NAME_JSP);
+    jspEditor = botExt.swtBotEditorExtByTitle(AbstractTagTest.TEST_PAGE_NAME_JSP);
+    jspWebBrowser = new SWTBotWebBrowser(AbstractTagTest.TEST_PAGE_NAME_JSP,botExt);
+    createXhtmlPage(AbstractTagTest.TEST_PAGE_NAME_XHTML);
+    xhtmlEditor = botExt.swtBotEditorExtByTitle(AbstractTagTest.TEST_PAGE_NAME_XHTML);
+    xhtmlWebBrowser = new SWTBotWebBrowser(AbstractTagTest.TEST_PAGE_NAME_XHTML,botExt);
 
 	}
 

@@ -18,7 +18,7 @@ import org.jboss.tools.ui.bot.ext.Timing;
  * @author vlado pakan
  *
  */
-public class DataDefinitionTagTest extends RichFacesTagsTest{
+public class DataDefinitionTagTest extends AbstractTagTest{
   private static String testText = "test_text";
   private static int numRows = 3;
   @Override
@@ -47,21 +47,21 @@ public class DataDefinitionTagTest extends RichFacesTagsTest{
   protected void verifyTag() {
     assertVisualEditorContainsNodeWithValue(xhtmlWebBrowser,
       DataDefinitionTagTest.testText, 
-      RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+      AbstractTagTest.TEST_PAGE_NAME_XHTML);
     assertVisualEditorContainsManyNodes(xhtmlWebBrowser, 
       "DD",
       DataDefinitionTagTest.numRows,
-      RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+      AbstractTagTest.TEST_PAGE_NAME_XHTML);
     assertVisualEditorContains(xhtmlWebBrowser,
       "DL", 
       new String[]{"class"},
       new String[]{"listClass"},
-      RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+      AbstractTagTest.TEST_PAGE_NAME_XHTML);
     assertVisualEditorContains(xhtmlWebBrowser,
       "DD", 
       new String[]{"class"},
       new String[]{"columnClass"},
-      RichFacesTagsTest.TEST_PAGE_NAME_XHTML);
+      AbstractTagTest.TEST_PAGE_NAME_XHTML);
     // check tag selection
     xhtmlWebBrowser.selectDomNode(xhtmlWebBrowser.getDomNodeByTagName("DD",2), 0);
       bot.sleep(Timing.time3S());
