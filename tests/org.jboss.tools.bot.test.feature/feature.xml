@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature id="org.jboss.tools.bot.test.feature" label="Tools Bot Tests" version="3.1.0.qualifier">
+
+	<description url="http://www.jboss.org/tools">
+      JBossTools unit tests feature
+   </description>
+
+	<copyright>
+      Copyright (c) 2011 JBoss by Red Hat and Exadel, Inc.
+Distributed under license by JBoss by Red Hat. All rights reserved.
+This program is made available under the terms of the
+Eclipse Public License v1.0 which accompanies this distribution,
+and is available at http://www.eclipse.org/legal/epl-v10.html
+Contributors:
+JBoss by Red Hat and Exadel, Inc. - initial API and implementation
+   </copyright>
+
+	<license>
+      JBoss by Red Hat licenses these features and plugins to you under
+certain open source licenses (or aggregations of such licenses), which
+in a particular case may include the Eclipse Public License, the GNU
+Lesser General Public License, and/or certain other open source
+licenses. For precise licensing details, consult the corresponding
+source code, or contact Red Hat Legal Affairs, 1801 Varsity Drive,
+Raleigh NC 27606 USA.
+   </license>
+
+	<!-- depends on upstream components being built, 
+	 including tests, common, bpel, cdi, deltacloud, etc. -->
+	<requires>
+		<import plugin="org.jboss.tools.tests" />
+		<import plugin="org.jboss.tools.ui.bot.ext" />
+		<import plugin="org.jboss.tools.ui.bot.ext.test" />
+	</requires>
+
+	<!-- bpmn is not yet being built so this can't be available upstream -->
+	<plugin id="org.jboss.tools.bpmn.ui.bot.test" download-size="0" install-size="0" version="0.0.0" />
+
+	<plugin id="org.jboss.tools.bpel.ui.bot.test" download-size="0" install-size="0" version="0.0.0" />
+	<plugin id="org.jboss.tools.cdi.bot.test" download-size="0" install-size="0" version="0.0.0" />
+	<plugin id="org.jboss.tools.deltacloud.ui.bot.test" download-size="0" install-size="0" version="0.0.0" />
+	<plugin id="org.jboss.tools.drools.ui.bot.test" download-size="0" install-size="0" version="0.0.0" />
+	<plugin id="org.jboss.tools.esb.ui.bot.test" download-size="0" install-size="0" version="0.0.0" />
+	<plugin id="org.jboss.tools.hibernate.ui.bot.test" download-size="0" install-size="0" version="0.0.0" />
+	<plugin id="org.jboss.tools.jbpm.ui.bot.test" download-size="0" install-size="0" version="0.0.0" />
+	<plugin id="org.jboss.tools.jsf.ui.bot.test" download-size="0" install-size="0" version="0.0.0" />
+	<plugin id="org.jboss.tools.jst.ui.bot.test" download-size="0" install-size="0" version="0.0.0" />
+	<plugin id="org.jboss.tools.maven.ui.bot.test" download-size="0" install-size="0" version="0.0.0" />
+	<plugin id="org.jboss.tools.modeshape.rest.ui.bot.test" download-size="0" install-size="0" version="0.0.0" />
+	<plugin id="org.jboss.tools.seam.ui.bot.test" download-size="0" install-size="0" version="0.0.0" />
+	<plugin id="org.jboss.tools.smooks.ui.bot.test" download-size="0" install-size="0" version="0.0.0" />
+	<plugin id="org.jboss.tools.struts.ui.bot.test" download-size="0" install-size="0" version="0.0.0" />
+	<plugin id="org.jboss.tools.vpe.ui.bot.test" download-size="0" install-size="0" version="0.0.0" />
+	<plugin id="org.jboss.tools.ws.ui.bot.test" download-size="0" install-size="0" version="0.0.0" />
+
+</feature>
