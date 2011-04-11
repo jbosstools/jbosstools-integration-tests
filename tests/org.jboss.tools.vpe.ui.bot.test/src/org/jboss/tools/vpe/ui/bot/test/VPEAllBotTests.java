@@ -34,6 +34,7 @@ import org.jboss.tools.vpe.ui.bot.test.editor.preferences.ShowResourceBundlesUsa
 import org.jboss.tools.vpe.ui.bot.test.editor.preferences.ShowSelectionTagBarTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.selectionbar.SelectionBarTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.ActionParamTagTest;
+import org.jboss.tools.vpe.ui.bot.test.editor.tags.AjaxInvisibleTagsTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.AjaxValidatorTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.BeanValidatorTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.CalendarTagTest;
@@ -42,6 +43,7 @@ import org.jboss.tools.vpe.ui.bot.test.editor.tags.ColumnTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.ColumnsTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.ComboBoxTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.CommandButtonTagTest;
+import org.jboss.tools.vpe.ui.bot.test.editor.tags.CommandLinkTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.CoreHTMLTagsTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.DataDefinitionTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.DataGridTagTest;
@@ -52,6 +54,8 @@ import org.jboss.tools.vpe.ui.bot.test.editor.tags.DataTableTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.EditorTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.ExtendedDataTableTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.FileUploadTagTest;
+import org.jboss.tools.vpe.ui.bot.test.editor.tags.HtmlCommandLinkTagTest;
+import org.jboss.tools.vpe.ui.bot.test.editor.tags.IncludeTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.InplaceInputTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.InplaceSelectInputTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.JSFTagsTest;
@@ -159,6 +163,10 @@ public class VPEAllBotTests extends SWTBotTestCase{
 		suite.addTestSuite(ToolbarAndToolbarGroupTagTest.class);
 		suite.addTestSuite(TogglePanelAndToogleControlTagTest.class);
 		suite.addTestSuite(CommandButtonTagTest.class);
+		suite.addTestSuite(CommandLinkTagTest.class);
+		suite.addTestSuite(HtmlCommandLinkTagTest.class);
+   	suite.addTestSuite(IncludeTagTest.class);
+		suite.addTestSuite(AjaxInvisibleTagsTest.class);
 		suite.addTestSuite(XhtmlFilePerformanceTest.class);
 		return new TestSetup(suite);
 	}
