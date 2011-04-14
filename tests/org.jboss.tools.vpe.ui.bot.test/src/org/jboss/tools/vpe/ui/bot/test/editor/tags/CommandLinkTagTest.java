@@ -21,8 +21,9 @@ import org.jboss.tools.ui.bot.ext.Timing;
 public class CommandLinkTagTest extends AbstractTagTest{
   private static final String LINK_VALUE = "*! Link Value";
   @Override
-  protected void initPageContent() {
-    jspEditor.setText("<%@ taglib uri=\"http://java.sun.com/jsf/html\" prefix=\"h\" %>\n" +
+  protected void initTestPage() {
+    initTestPage(TestPageType.JSP,
+      "<%@ taglib uri=\"http://java.sun.com/jsf/html\" prefix=\"h\" %>\n" +
       "<%@ taglib uri=\"http://java.sun.com/jsf/core\" prefix=\"f\" %>\n" +
       "<%@ taglib uri=\"http://richfaces.org/a4j\" prefix=\"a4j\" %>\n" +
       "<%@ taglib uri=\"http://richfaces.org/rich\" prefix=\"rich\" %>\n" +
@@ -43,23 +44,23 @@ public class CommandLinkTagTest extends AbstractTagTest{
 
   @Override
   protected void verifyTag() {
-    assertVisualEditorContains(jspWebBrowser,
+    assertVisualEditorContains(getVisualEditor(),
       "INPUT", 
       new String[]{"type"},
       new String[]{"Submit"},
-      AbstractTagTest.TEST_PAGE_NAME_JSP);
-    assertVisualEditorContains(jspWebBrowser,
+      getTestPageFileName());
+    assertVisualEditorContains(getVisualEditor(),
       "A", 
       null,
       null,
-      AbstractTagTest.TEST_PAGE_NAME_JSP);
-    assertVisualEditorContainsNodeWithValue(jspWebBrowser,
-        CommandLinkTagTest.LINK_VALUE, 
-        AbstractTagTest.TEST_PAGE_NAME_JSP);
+      getTestPageFileName());
+    assertVisualEditorContainsNodeWithValue(getVisualEditor(),
+      CommandLinkTagTest.LINK_VALUE, 
+      getTestPageFileName());
     // check tag selection
-    jspWebBrowser.selectDomNode(jspWebBrowser.getDomNodeByTagName("A",0), 0);
+    getVisualEditor().selectDomNode(getVisualEditor().getDomNodeByTagName("A",0), 0);
     bot.sleep(Timing.time3S());
-    String selectedText = jspEditor.getSelection();
+    String selectedText = getSourceEditor().getSelection();
     String hasToStartWith = "<a4j:commandLink";
     assertTrue("Selected text in Source Pane has to start with '" + hasToStartWith + "'" +
         "\nbut it is '" + selectedText + "'",

@@ -20,12 +20,13 @@ import org.jboss.tools.ui.bot.ext.Timing;
  */
 public class CalendarTagTest extends AbstractTagTest{
   @Override
-  protected void initPageContent() {
-    xhtmlEditor.setText("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n" +
+  protected void initTestPage() {
+    initTestPage(TestPageType.XHTML,
+      "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n" +
       "<html xmlns=\"http://www.w3.org/1999/xhtml\"\n" +
       "  xmlns:ui=\"http://java.sun.com/jsf/facelets\"\n" +
       "  xmlns:f=\"http://java.sun.com/jsf/core\"\n" +
-      "  xmlns:rich=\"http://richfaces.org/rich\"\n" + 
+      "  xmlns:rich=\"http://richfaces.org/rich\">\n" + 
       "  <head>\n" +
       "  </head>\n" +
       "  <body>\n" +
@@ -39,15 +40,15 @@ public class CalendarTagTest extends AbstractTagTest{
 
   @Override
   protected void verifyTag() {
-    assertVisualEditorContains(xhtmlWebBrowser,
+    assertVisualEditorContains(getVisualEditor(),
       "INPUT", 
       new String[]{"class"},
       new String[]{"rich-calendar-input null"},
-      AbstractTagTest.TEST_PAGE_NAME_XHTML);
+      getTestPageFileName());
     // check tag selection
-    xhtmlWebBrowser.selectDomNode(xhtmlWebBrowser.getDomNodeByTagName("INPUT",0), 0);
+    getVisualEditor().selectDomNode(getVisualEditor().getDomNodeByTagName("INPUT",0), 0);
     bot.sleep(Timing.time3S());
-    String selectedText = xhtmlEditor.getSelection();
+    String selectedText = getSourceEditor().getSelection();
     String hasToStartWith = "<rich:calendar>";
     assertTrue("Selected text in Source Pane has to start with '" + hasToStartWith + "'" +
         "\nbut it is '" + selectedText + "'",

@@ -11,6 +11,8 @@
  ******************************************************************************/
 package org.jboss.tools.vpe.ui.bot.test.editor.tags;
 
+import java.security.InvalidParameterException;
+
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
 import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.parts.SWTBotEditorExt;
@@ -23,13 +25,12 @@ import org.jboss.tools.vpe.ui.bot.test.tools.SWTBotWebBrowser;
  */
 public abstract class AbstractTagTest extends VPEEditorTestCase {
   
-  protected static final String TEST_PAGE_NAME_JSP = "TagTest.jsp";
-  protected static final String TEST_PAGE_NAME_XHTML = "TagTest.xhtml";
+  private static final String TEST_PAGE_NAME_JSP = "TagTest.jsp";
+  private static final String TEST_PAGE_NAME_XHTML = "TagTest.xhtml";
   
-  protected SWTBotEditorExt jspEditor;
-  protected SWTBotEditorExt xhtmlEditor;
-  protected SWTBotWebBrowser jspWebBrowser;
-  protected SWTBotWebBrowser xhtmlWebBrowser;
+  private SWTBotEditorExt sourceEditor;
+  private SWTBotWebBrowser visualEditor;
+  private TestPageType testPageType;
   protected SWTBotExt botExt;
   
 	public AbstractTagTest() {
@@ -40,15 +41,29 @@ public abstract class AbstractTagTest extends VPEEditorTestCase {
 	protected void setUp() throws Exception {
 	  super.setUp();
     eclipse.maximizeActiveShell();
-    createJspPage(AbstractTagTest.TEST_PAGE_NAME_JSP);
-    jspEditor = botExt.swtBotEditorExtByTitle(AbstractTagTest.TEST_PAGE_NAME_JSP);
-    jspWebBrowser = new SWTBotWebBrowser(AbstractTagTest.TEST_PAGE_NAME_JSP,botExt);
-    createXhtmlPage(AbstractTagTest.TEST_PAGE_NAME_XHTML);
-    xhtmlEditor = botExt.swtBotEditorExtByTitle(AbstractTagTest.TEST_PAGE_NAME_XHTML);
-    xhtmlWebBrowser = new SWTBotWebBrowser(AbstractTagTest.TEST_PAGE_NAME_XHTML,botExt);
-
+    initTestPage ();
+    savePage();
 	}
-
+  /**
+   * 
+   * @param testPageType
+   * @param pageText
+   */
+	protected void initTestPage(TestPageType testPageType , String pageText){
+	  this.testPageType = testPageType;
+	  if (testPageType.equals(TestPageType.JSP)){
+	    createJspPage(AbstractTagTest.TEST_PAGE_NAME_JSP);
+	    sourceEditor = botExt.swtBotEditorExtByTitle(AbstractTagTest.TEST_PAGE_NAME_JSP);
+	    visualEditor = new SWTBotWebBrowser(AbstractTagTest.TEST_PAGE_NAME_JSP,botExt);
+	  } else if (testPageType.equals(TestPageType.XHTML)){
+	    createXhtmlPage(AbstractTagTest.TEST_PAGE_NAME_XHTML);
+	    sourceEditor = botExt.swtBotEditorExtByTitle(AbstractTagTest.TEST_PAGE_NAME_XHTML);
+	    visualEditor = new SWTBotWebBrowser(AbstractTagTest.TEST_PAGE_NAME_XHTML,botExt);
+	  } else {
+	    throw new InvalidParameterException("Invalid value of testPageType used: " + testPageType);
+	  }
+	  sourceEditor.setText(pageText);
+	}
   @Override
 	protected void closeUnuseDialogs() {
 
@@ -60,43 +75,67 @@ public abstract class AbstractTagTest extends VPEEditorTestCase {
 	}
   @Override
   protected void tearDown() throws Exception {
-    jspEditor.close();
-    xhtmlEditor.close();
+    sourceEditor.close();
     super.tearDown();
   }
   /**
    * Runs Tag Testing
    */
   public void testTag (){
-    initPageContent ();
-    savePageContent ();
     verifyTag();
   }
   /**
-   * Initialize proper page content
+   * Initialize properly page content
    */
-  protected abstract void initPageContent ();
+  protected abstract void initTestPage ();
   /**
    * Verify tag
    */
   protected abstract void verifyTag ();
   /**
-   * Saves Page Content if it was changed and shows changed editor
+   * Saves Page if it was changed and shows changed editor
    */
-  protected void savePageContent(){
+  protected void savePage(){
     boolean wasSaved = false;
-    if (jspEditor.isDirty()){
-      jspEditor.save();
-      jspEditor.show();
-      wasSaved = true;
-    }
-    if (xhtmlEditor.isDirty()){
-      xhtmlEditor.save();
-      xhtmlEditor.show();
+    if (sourceEditor.isDirty()){
+      sourceEditor.save();
+      sourceEditor.show();
       wasSaved = true;
     }
     if (wasSaved){
       bot.sleep(Timing.time3S());
     }
   }
+  /**
+   * Returns actual Source part of VPE Editor
+   * @return
+   */
+  protected SWTBotEditorExt getSourceEditor() {
+    return sourceEditor;
+  }
+  /**
+   * Returns actual Visual part of VPE Editor
+   * @return
+   */
+  protected SWTBotWebBrowser getVisualEditor() {
+    return visualEditor;
+  }  
+  /**
+   * Returns actual Test Page File Name
+   * @return
+   */
+  protected String getTestPageFileName() {
+    String fileName = null;
+    
+    if (testPageType.equals(TestPageType.JSP)){
+      fileName = AbstractTagTest.TEST_PAGE_NAME_JSP;  
+    } else if (testPageType.equals(TestPageType.XHTML)){
+      fileName = AbstractTagTest.TEST_PAGE_NAME_XHTML;  
+    } else{
+      throw new InvalidParameterException("Invalid value of testPageType used: " + testPageType);
+    }
+    
+    return fileName;
+  }
+  
 }

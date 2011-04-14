@@ -61,8 +61,9 @@ public class PanelMenuTagTest extends AbstractTagTest{
   }
 
   @Override
-  protected void initPageContent() {
-    xhtmlEditor.setText("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n" +
+  protected void initTestPage() {
+    initTestPage(TestPageType.XHTML,
+      "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n" +
       "<html xmlns=\"http://www.w3.org/1999/xhtml\"\n" +
       "  xmlns:ui=\"http://java.sun.com/jsf/facelets\"\n" +
       "  xmlns:h=\"http://java.sun.com/jsf/html\"\n" +
@@ -100,85 +101,85 @@ public class PanelMenuTagTest extends AbstractTagTest{
 
   @Override
   protected void verifyTag() {
-    assertVisualEditorContains(xhtmlWebBrowser,
+    assertVisualEditorContains(getVisualEditor(),
       "TD", 
       new String[]{"class"},
       new String[]{"rich-pmenu-top-group-self-label"},
-      AbstractTagTest.TEST_PAGE_NAME_XHTML);
-    assertVisualEditorContains(xhtmlWebBrowser,
+      getTestPageFileName());
+    assertVisualEditorContains(getVisualEditor(),
       "TD", 
       new String[]{"class"},
       new String[]{"rich-pmenu-group-self-icon rich-pmenu-top-group-self-icon"},
-      AbstractTagTest.TEST_PAGE_NAME_XHTML);
-    assertVisualEditorContains(xhtmlWebBrowser,
+      getTestPageFileName());
+    assertVisualEditorContains(getVisualEditor(),
       "TABLE", 
       new String[]{"class"},
       new String[]{"dr-pmenu-top-group rich-pmenu-group"},
-      AbstractTagTest.TEST_PAGE_NAME_XHTML);
-    assertVisualEditorContainsNodeWithValue(xhtmlWebBrowser,
+      getTestPageFileName());
+    assertVisualEditorContainsNodeWithValue(getVisualEditor(),
       PanelMenuTagTest.getGroupLabel(0),
-      AbstractTagTest.TEST_PAGE_NAME_XHTML);
-    assertVisualEditorContainsNodeWithValue(xhtmlWebBrowser,
+      getTestPageFileName());
+    assertVisualEditorContainsNodeWithValue(getVisualEditor(),
       PanelMenuTagTest.getGroupLabel(1),
-      AbstractTagTest.TEST_PAGE_NAME_XHTML);
-    assertVisualEditorContainsNodeWithValue(xhtmlWebBrowser,
+      getTestPageFileName());
+    assertVisualEditorContainsNodeWithValue(getVisualEditor(),
       PanelMenuTagTest.getGroupLabel(2),
-      AbstractTagTest.TEST_PAGE_NAME_XHTML);
-    assertVisualEditorNotContainNodeWithValue(xhtmlWebBrowser,
-        PanelMenuTagTest.getGroupItemLabel(0, 0),
-        AbstractTagTest.TEST_PAGE_NAME_XHTML);
+      getTestPageFileName());
+    assertVisualEditorNotContainNodeWithValue(getVisualEditor(),
+      PanelMenuTagTest.getGroupItemLabel(0, 0),
+      getTestPageFileName());
     // check tag selection
-    xhtmlWebBrowser.selectDomNode(xhtmlWebBrowser.getDomNodeByTagName("DIV",4), 0);
+    getVisualEditor().selectDomNode(getVisualEditor().getDomNodeByTagName("DIV",4), 0);
     bot.sleep(Timing.time3S());
-    String selectedText = xhtmlEditor.getSelection();
+    String selectedText = getSourceEditor().getSelection();
     String hasToStartWith = "<rich:panelMenu ";
     assertTrue("Selected text in Source Pane has to start with '" + hasToStartWith + "'" +
-        "\nbut it is '" + selectedText + "'",
-        selectedText.trim().startsWith(hasToStartWith));
+      "\nbut it is '" + selectedText + "'",
+      selectedText.trim().startsWith(hasToStartWith));
     String hasToEndWith = "</rich:panelMenu>";
     assertTrue("Selected text in Source Pane has to end with '" + hasToEndWith + "'" +
-        "\nbut it is '" + selectedText + "'",
-        selectedText.trim().endsWith(hasToEndWith));
+      "\nbut it is '" + selectedText + "'",
+      selectedText.trim().endsWith(hasToEndWith));
     // select and expand second group
-    xhtmlWebBrowser.selectDomNode(xhtmlWebBrowser.getDomNodeByTagName("DIV",6), 0);
+    getVisualEditor().selectDomNode(getVisualEditor().getDomNodeByTagName("DIV",6), 0);
     bot.sleep(Timing.time1S());
-    xhtmlWebBrowser.mouseClickOnNode(xhtmlWebBrowser.getDomNodeByTagName("DIV",6));
+    getVisualEditor().mouseClickOnNode(getVisualEditor().getDomNodeByTagName("DIV",6));
     bot.sleep(Timing.time3S());
-    selectedText = xhtmlEditor.getSelection();
+    selectedText = getSourceEditor().getSelection();
     hasToStartWith = "<rich:panelMenuGroup label=\"" + PanelMenuTagTest.getGroupLabel(1);
     assertTrue("Selected text in Source Pane has to start with '" + hasToStartWith + "'" +
-        "\nbut it is '" + selectedText + "'",
-        selectedText.trim().startsWith(hasToStartWith));
+      "\nbut it is '" + selectedText + "'",
+      selectedText.trim().startsWith(hasToStartWith));
     hasToEndWith = "</rich:panelMenuGroup>";
     assertTrue("Selected text in Source Pane has to end with '" + hasToEndWith + "'" +
-        "\nbut it is '" + selectedText + "'",
-        selectedText.trim().endsWith(hasToEndWith));
+      "\nbut it is '" + selectedText + "'",
+      selectedText.trim().endsWith(hasToEndWith));
     // select and expand subgroup
-    xhtmlWebBrowser.selectDomNode(xhtmlWebBrowser.getDomNodeByTagName("DIV",8), 0);
+    getVisualEditor().selectDomNode(getVisualEditor().getDomNodeByTagName("DIV",8), 0);
     bot.sleep(Timing.time1S());
-    xhtmlWebBrowser.mouseClickOnNode(xhtmlWebBrowser.getDomNodeByTagName("DIV",8));
+    getVisualEditor().mouseClickOnNode(getVisualEditor().getDomNodeByTagName("DIV",8));
     bot.sleep(Timing.time3S());
     // select subgroup item
-    xhtmlWebBrowser.selectDomNode(xhtmlWebBrowser.getDomNodeByTagName("DIV",9), 0);
+    getVisualEditor().selectDomNode(getVisualEditor().getDomNodeByTagName("DIV",9), 0);
     bot.sleep(Timing.time3S());
     bot.sleep(Timing.time3S());
-    selectedText = xhtmlEditor.getSelection();
+    selectedText = getSourceEditor().getSelection();
     hasToStartWith = "<rich:panelMenuItem label=\"" + PanelMenuTagTest.getSubGroupItemLabel(1, 0, 0) + "\"";
     assertTrue("Selected text in Source Pane has to start with '" + hasToStartWith + "'" +
-        "\nbut it is '" + selectedText + "'",
-        selectedText.trim().startsWith(hasToStartWith));
+      "\nbut it is '" + selectedText + "'",
+      selectedText.trim().startsWith(hasToStartWith));
     hasToEndWith = "</rich:panelMenuItem>";
     assertTrue("Selected text in Source Pane has to end with '" + hasToEndWith + "'" +
-        "\nbut it is '" + selectedText + "'",
-        selectedText.trim().endsWith(hasToEndWith));
-    assertVisualEditorContainsNodeWithValue(xhtmlWebBrowser,
-        PanelMenuTagTest.getSubGroupItemLabel(1, 0, 0),
-        AbstractTagTest.TEST_PAGE_NAME_XHTML);
-    assertVisualEditorContains(xhtmlWebBrowser,
-        "TD", 
-        new String[]{"class"},
-        new String[]{"rich-pmenu-item-label"},
-        AbstractTagTest.TEST_PAGE_NAME_XHTML);
+      "\nbut it is '" + selectedText + "'",
+      selectedText.trim().endsWith(hasToEndWith));
+    assertVisualEditorContainsNodeWithValue(getVisualEditor(),
+      PanelMenuTagTest.getSubGroupItemLabel(1, 0, 0),
+      getTestPageFileName());
+    assertVisualEditorContains(getVisualEditor(),
+      "TD", 
+      new String[]{"class"},
+      new String[]{"rich-pmenu-item-label"},
+      getTestPageFileName());
   }
 
 }

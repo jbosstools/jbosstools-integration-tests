@@ -23,8 +23,9 @@ public class InplaceSelectInputTagTest extends AbstractTagTest{
   private static final String option1 = "Option 1";
   private static final String option2 = "Option 2";
   @Override
-  protected void initPageContent() {
-    jspEditor.setText("<%@ taglib uri=\"http://java.sun.com/jsf/html\" prefix=\"h\" %>\n" +
+  protected void initTestPage() {
+    initTestPage(TestPageType.JSP,
+        "<%@ taglib uri=\"http://java.sun.com/jsf/html\" prefix=\"h\" %>\n" +
         "<%@ taglib uri=\"http://java.sun.com/jsf/core\" prefix=\"f\" %>\n" +
         "<%@ taglib uri=\"http://richfaces.org/rich\" prefix=\"rich\" %>\n" +
         "<html>\n" +
@@ -43,51 +44,51 @@ public class InplaceSelectInputTagTest extends AbstractTagTest{
 
   @Override
   protected void verifyTag() {
-    assertVisualEditorContains(jspWebBrowser,
-        "SPAN", 
-        new String[]{"vpe-user-toggle-id","title","class"},
-        new String[]{"false","rich:inplaceSelect value: 0 defaultLabel: " + defaultLabel,"rich-inplace-select rich-inplace-select-view"},
-        AbstractTagTest.TEST_PAGE_NAME_JSP);
-      assertVisualEditorContainsNodeWithValue(jspWebBrowser,
-          defaultLabel, 
-          AbstractTagTest.TEST_PAGE_NAME_JSP);
-      // check tag selection
-      jspWebBrowser.selectDomNode(jspWebBrowser.getDomNodeByTagName("SPAN",2), 0);
-      bot.sleep(Timing.time3S());
-      String selectedText = jspEditor.getSelection();
-      final String hasToStartWith = "<rich:inplaceSelect value=\"0\" defaultLabel=\"" + defaultLabel + "\">";
-      assertTrue("Selected text in Source Pane has to start with '" + hasToStartWith + "'" +
-          "\nbut it is '" + selectedText + "'",
-          selectedText.trim().startsWith(hasToStartWith));
-      final String hasEndWith = "</rich:inplaceSelect>";
-      assertTrue("Selected text in Source Pane has to end with '" + hasEndWith + "'" +
-          "\nbut it is '" + selectedText + "'",
-          selectedText.trim().endsWith(hasEndWith));
-      // Click on tag and check correct tag displaying
-      jspWebBrowser.mouseClickOnNode(jspWebBrowser.getDomNodeByTagName("SPAN",2));
-      bot.sleep(Timing.time3S());
-      assertVisualEditorContains(jspWebBrowser,
-          "SPAN", 
-          new String[]{"vpe-user-toggle-id","class"},
-          new String[]{"true","rich-inplace-select rich-inplace-select-edit"},
-          AbstractTagTest.TEST_PAGE_NAME_JSP);
-      assertVisualEditorContainsNodeWithValue(jspWebBrowser,
-          option1,
-          AbstractTagTest.TEST_PAGE_NAME_JSP);
-      assertVisualEditorContainsNodeWithValue(jspWebBrowser,
-          option2,
-          AbstractTagTest.TEST_PAGE_NAME_JSP);
-      assertVisualEditorNotContainNodeWithValue(jspWebBrowser, 
-          defaultLabel,
-          AbstractTagTest.TEST_PAGE_NAME_JSP);
-      selectedText = jspEditor.getSelection();
-      // check tag selection
-      assertTrue("Selected text in Source Pane has to start with '" + hasToStartWith + "'" +
-          "\nbut it is '" + selectedText + "'",
-          selectedText.trim().startsWith(hasToStartWith));
-      assertTrue("Selected text in Source Pane has to end with '" + hasEndWith + "'" +
-          "\nbut it is '" + selectedText + "'",
-          selectedText.trim().endsWith(hasEndWith));
+    assertVisualEditorContains(getVisualEditor(),
+      "SPAN", 
+      new String[]{"vpe-user-toggle-id","title","class"},
+      new String[]{"false","rich:inplaceSelect value: 0 defaultLabel: " + defaultLabel,"rich-inplace-select rich-inplace-select-view"},
+      getTestPageFileName());
+    assertVisualEditorContainsNodeWithValue(getVisualEditor(),
+      defaultLabel, 
+      getTestPageFileName());
+    // check tag selection
+    getVisualEditor().selectDomNode(getVisualEditor().getDomNodeByTagName("SPAN",2), 0);
+    bot.sleep(Timing.time3S());
+    String selectedText = getSourceEditor().getSelection();
+    final String hasToStartWith = "<rich:inplaceSelect value=\"0\" defaultLabel=\"" + defaultLabel + "\">";
+    assertTrue("Selected text in Source Pane has to start with '" + hasToStartWith + "'" +
+      "\nbut it is '" + selectedText + "'",
+      selectedText.trim().startsWith(hasToStartWith));
+    final String hasEndWith = "</rich:inplaceSelect>";
+    assertTrue("Selected text in Source Pane has to end with '" + hasEndWith + "'" +
+      "\nbut it is '" + selectedText + "'",
+      selectedText.trim().endsWith(hasEndWith));
+    // Click on tag and check correct tag displaying
+    getVisualEditor().mouseClickOnNode(getVisualEditor().getDomNodeByTagName("SPAN",2));
+    bot.sleep(Timing.time3S());
+    assertVisualEditorContains(getVisualEditor(),
+      "SPAN", 
+      new String[]{"vpe-user-toggle-id","class"},
+      new String[]{"true","rich-inplace-select rich-inplace-select-edit"},
+      getTestPageFileName());
+    assertVisualEditorContainsNodeWithValue(getVisualEditor(),
+      option1,
+      getTestPageFileName());
+    assertVisualEditorContainsNodeWithValue(getVisualEditor(),
+      option2,
+      getTestPageFileName());
+    assertVisualEditorNotContainNodeWithValue(getVisualEditor(), 
+      defaultLabel,
+      getTestPageFileName());
+    selectedText = getSourceEditor().getSelection();
+    // check tag selection
+    assertTrue("Selected text in Source Pane has to start with '" + hasToStartWith + "'" +
+      "\nbut it is '" + selectedText + "'",
+      selectedText.trim().startsWith(hasToStartWith));
+    assertTrue("Selected text in Source Pane has to end with '" + hasEndWith + "'" +
+      "\nbut it is '" + selectedText + "'",
+      selectedText.trim().endsWith(hasEndWith));
   }
 
 }

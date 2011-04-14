@@ -20,8 +20,9 @@ import org.jboss.tools.ui.bot.ext.Timing;
  */
 public class ListShuttleTagTest extends AbstractTagTest{
   @Override
-  protected void initPageContent() {
-    xhtmlEditor.setText("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n" +
+  protected void initTestPage() {
+    initTestPage(TestPageType.XHTML,
+      "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n" +
       "<html xmlns=\"http://www.w3.org/1999/xhtml\"\n" +
       "  xmlns:ui=\"http://java.sun.com/jsf/facelets\"\n" +
       "  xmlns:f=\"http://java.sun.com/jsf/core\"\n" +
@@ -40,70 +41,61 @@ public class ListShuttleTagTest extends AbstractTagTest{
 
   @Override
   protected void verifyTag() {
-      assertVisualEditorContainsNodeWithValue(
-        xhtmlWebBrowser, 
-        "Copy all", 
-        AbstractTagTest.TEST_PAGE_NAME_XHTML);
-      assertVisualEditorContainsNodeWithValue(
-        xhtmlWebBrowser, 
-        "Copy", 
-        AbstractTagTest.TEST_PAGE_NAME_XHTML);
-      assertVisualEditorContainsNodeWithValue(
-        xhtmlWebBrowser, 
-        "Remove All", 
-        AbstractTagTest.TEST_PAGE_NAME_XHTML);
-      assertVisualEditorContainsNodeWithValue(
-        xhtmlWebBrowser, 
-        "Remove", 
-          AbstractTagTest.TEST_PAGE_NAME_XHTML);
-      assertVisualEditorContainsNodeWithValue(
-        xhtmlWebBrowser, 
-        "First", 
-        AbstractTagTest.TEST_PAGE_NAME_XHTML);
-      assertVisualEditorContainsNodeWithValue(
-        xhtmlWebBrowser, 
-        "Up", 
-        AbstractTagTest.TEST_PAGE_NAME_XHTML);
-      assertVisualEditorContainsNodeWithValue(
-        xhtmlWebBrowser, 
-        "Last", 
-        AbstractTagTest.TEST_PAGE_NAME_XHTML);
-      assertVisualEditorContainsNodeWithValue(
-        xhtmlWebBrowser, 
-        "Down", 
-        AbstractTagTest.TEST_PAGE_NAME_XHTML);
-      assertVisualEditorContains(xhtmlWebBrowser,
-        "DIV", 
-        new String[]{"class"},
-        new String[]{"rich-shuttle-button-content"},
-        AbstractTagTest.TEST_PAGE_NAME_XHTML);
-      assertVisualEditorContains(xhtmlWebBrowser,
-        "TABLE", 
-        new String[]{"class"},
-        new String[]{"rich-list-shuttle"},
-        AbstractTagTest.TEST_PAGE_NAME_XHTML);
-      assertVisualEditorContains(xhtmlWebBrowser,
-        "DIV", 
-        new String[]{"class"},
-        new String[]{"rich-shuttle-controls"},
-        AbstractTagTest.TEST_PAGE_NAME_XHTML);
-      assertVisualEditorContains(xhtmlWebBrowser,
-        "DIV", 
-        new String[]{"class"},
-        new String[]{"rich-shuttle-control"},
-        AbstractTagTest.TEST_PAGE_NAME_XHTML);
-      // check tag selection
-      xhtmlWebBrowser.selectDomNode(xhtmlWebBrowser.getDomNodeByTagName("DIV",4), 0);
-      bot.sleep(Timing.time3S());
-      String selectedText = xhtmlEditor.getSelection();
-      String hasToStartWith = "<rich:listShuttle>";
-      assertTrue("Selected text in Source Pane has to start with '" + hasToStartWith + "'" +
-          "\nbut it is '" + selectedText + "'",
-          selectedText.trim().startsWith(hasToStartWith));
-      String hasEndWith = "</rich:listShuttle>";
-      assertTrue("Selected text in Source Pane has to end with '" + hasEndWith + "'" +
-          "\nbut it is '" + selectedText + "'",
-          selectedText.trim().endsWith(hasEndWith));
+    assertVisualEditorContainsNodeWithValue(getVisualEditor(),
+      "Copy all",
+      getTestPageFileName());
+    assertVisualEditorContainsNodeWithValue(getVisualEditor(),
+      "Copy",
+      getTestPageFileName());
+    assertVisualEditorContainsNodeWithValue(getVisualEditor(),
+      "Remove All",
+      getTestPageFileName());
+    assertVisualEditorContainsNodeWithValue(getVisualEditor(),
+      "Remove",
+      getTestPageFileName());
+    assertVisualEditorContainsNodeWithValue(getVisualEditor(),
+      "First",
+      getTestPageFileName());
+    assertVisualEditorContainsNodeWithValue(getVisualEditor(),
+      "Up",
+      getTestPageFileName());
+    assertVisualEditorContainsNodeWithValue(getVisualEditor(),
+      "Last",
+      getTestPageFileName());
+    assertVisualEditorContainsNodeWithValue(getVisualEditor(),
+      "Down",
+      getTestPageFileName());
+    assertVisualEditorContains(getVisualEditor(),
+      "DIV",
+      new String[] { "class" },
+      new String[] { "rich-shuttle-button-content" }, 
+      getTestPageFileName());
+    assertVisualEditorContains(getVisualEditor(),
+      "TABLE",
+      new String[] { "class" }, 
+      new String[] { "rich-list-shuttle" },
+      getTestPageFileName());
+    assertVisualEditorContains(getVisualEditor(),
+      "DIV",
+      new String[] { "class" },
+      new String[] { "rich-shuttle-controls" },
+      getTestPageFileName());
+    assertVisualEditorContains(getVisualEditor(),
+      "DIV",
+      new String[] { "class" }, 
+      new String[] { "rich-shuttle-control" },
+      getTestPageFileName());
+    // check tag selection
+    getVisualEditor().selectDomNode(getVisualEditor().getDomNodeByTagName("DIV", 4), 0);
+    bot.sleep(Timing.time3S());
+    String selectedText = getSourceEditor().getSelection();
+    String hasToStartWith = "<rich:listShuttle>";
+    assertTrue("Selected text in Source Pane has to start with '"
+      + hasToStartWith + "'" + "\nbut it is '" + selectedText + "'",
+      selectedText.trim().startsWith(hasToStartWith));
+    String hasEndWith = "</rich:listShuttle>";
+    assertTrue("Selected text in Source Pane has to end with '" + hasEndWith
+      + "'" + "\nbut it is '" + selectedText + "'", selectedText.trim().endsWith(hasEndWith));
   }
 
 }

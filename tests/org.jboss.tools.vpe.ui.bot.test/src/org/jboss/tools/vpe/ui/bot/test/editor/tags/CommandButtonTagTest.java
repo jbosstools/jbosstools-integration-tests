@@ -20,8 +20,9 @@ import org.jboss.tools.ui.bot.ext.Timing;
  */
 public class CommandButtonTagTest extends AbstractTagTest{
   @Override
-  protected void initPageContent() {
-    jspEditor.setText("<%@ taglib uri=\"http://java.sun.com/jsf/html\" prefix=\"h\" %>\n" +
+  protected void initTestPage() {
+    initTestPage(TestPageType.JSP,
+      "<%@ taglib uri=\"http://java.sun.com/jsf/html\" prefix=\"h\" %>\n" +
       "<%@ taglib uri=\"http://java.sun.com/jsf/core\" prefix=\"f\" %>\n" +
       "<%@ taglib uri=\"http://richfaces.org/a4j\" prefix=\"a4j\" %>\n" +
       "<%@ taglib uri=\"http://richfaces.org/rich\" prefix=\"rich\" %>\n" +
@@ -39,15 +40,15 @@ public class CommandButtonTagTest extends AbstractTagTest{
 
   @Override
   protected void verifyTag() {
-    assertVisualEditorContains(jspWebBrowser,
+    assertVisualEditorContains(getVisualEditor(),
       "INPUT", 
       new String[]{"type"},
       new String[]{"Submit"},
-      AbstractTagTest.TEST_PAGE_NAME_JSP);
+      getTestPageFileName());
     // check tag selection
-    jspWebBrowser.selectDomNode(jspWebBrowser.getDomNodeByTagName("INPUT",0), 0);
+    getVisualEditor().selectDomNode(getVisualEditor().getDomNodeByTagName("INPUT",0), 0);
     bot.sleep(Timing.time3S());
-    String selectedText = jspEditor.getSelection();
+    String selectedText = getSourceEditor().getSelection();
     String hasToStartWith = "<a4j:commandButton type=\"Submit\">";
     assertTrue("Selected text in Source Pane has to start with '" + hasToStartWith + "'" +
         "\nbut it is '" + selectedText + "'",

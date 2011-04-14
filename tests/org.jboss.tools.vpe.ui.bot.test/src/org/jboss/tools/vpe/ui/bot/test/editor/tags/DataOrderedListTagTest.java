@@ -23,8 +23,9 @@ public class DataOrderedListTagTest extends AbstractTagTest{
   private static final String ROW_1_VALUE = "!-* Row 1 Value";
   private static final String ROW_2_VALUE = "!-* Row 2 Value";
   @Override
-  protected void initPageContent() {
-    xhtmlEditor.setText("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n" +
+  protected void initTestPage() {
+    initTestPage(TestPageType.XHTML,
+      "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n" +
       "<html xmlns=\"http://www.w3.org/1999/xhtml\"\n" +
       "  xmlns:f=\"http://java.sun.com/jsf/core\"\n" +
       "  xmlns:rich=\"http://richfaces.org/rich\"\n" +
@@ -47,29 +48,29 @@ public class DataOrderedListTagTest extends AbstractTagTest{
 
   @Override
   protected void verifyTag() {
-    assertVisualEditorContains(xhtmlWebBrowser,
+    assertVisualEditorContains(getVisualEditor(),
       "OL", 
       new String[]{"class"},
       new String[]{"dr-list rich-orderedlist"},
-      AbstractTagTest.TEST_PAGE_NAME_XHTML);
-    assertVisualEditorContains(xhtmlWebBrowser,
+      getTestPageFileName());
+    assertVisualEditorContains(getVisualEditor(),
       "LI", 
       new String[]{"class"},
       new String[]{"dr-list-item rich-list-item"},
-      AbstractTagTest.TEST_PAGE_NAME_XHTML);
-    assertVisualEditorContainsNodeWithValue(xhtmlWebBrowser,
+      getTestPageFileName());
+    assertVisualEditorContainsNodeWithValue(getVisualEditor(),
       DataOrderedListTagTest.ROW_0_VALUE,
-      AbstractTagTest.TEST_PAGE_NAME_XHTML);
-    assertVisualEditorContainsNodeWithValue(xhtmlWebBrowser,
+      getTestPageFileName());
+    assertVisualEditorContainsNodeWithValue(getVisualEditor(),
       DataOrderedListTagTest.ROW_1_VALUE,
-      AbstractTagTest.TEST_PAGE_NAME_XHTML);
-    assertVisualEditorContainsNodeWithValue(xhtmlWebBrowser,
+      getTestPageFileName());
+    assertVisualEditorContainsNodeWithValue(getVisualEditor(),
       DataOrderedListTagTest.ROW_2_VALUE,
-      AbstractTagTest.TEST_PAGE_NAME_XHTML);
+      getTestPageFileName());
     // check tag selecti
-    xhtmlWebBrowser.selectDomNode(xhtmlWebBrowser.getDomNodeByTagName("LI",0), 0);
+    getVisualEditor().selectDomNode(getVisualEditor().getDomNodeByTagName("LI",0), 0);
     bot.sleep(Timing.time3S());
-    String selectedText = xhtmlEditor.getSelection();
+    String selectedText = getSourceEditor().getSelection();
     String hasToStartWith = "<rich:dataOrderedList>";
     assertTrue("Selected text in Source Pane has to start with '" + hasToStartWith + "'" +
         "\nbut it is '" + selectedText + "'",

@@ -22,8 +22,9 @@ public class DataDefinitionTagTest extends AbstractTagTest{
   private static String testText = "test_text";
   private static int numRows = 3;
   @Override
-  protected void initPageContent() {
-    xhtmlEditor.setText("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n" +
+  protected void initTestPage() {
+    initTestPage(TestPageType.XHTML,
+      "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n" +
       "<html xmlns=\"http://www.w3.org/1999/xhtml\"\n" +
       "  xmlns:ui=\"http://java.sun.com/jsf/facelets\"\n" +
       "  xmlns:f=\"http://java.sun.com/jsf/core\"\n" +
@@ -45,27 +46,27 @@ public class DataDefinitionTagTest extends AbstractTagTest{
 
   @Override
   protected void verifyTag() {
-    assertVisualEditorContainsNodeWithValue(xhtmlWebBrowser,
+    assertVisualEditorContainsNodeWithValue(getVisualEditor(),
       DataDefinitionTagTest.testText, 
-      AbstractTagTest.TEST_PAGE_NAME_XHTML);
-    assertVisualEditorContainsManyNodes(xhtmlWebBrowser, 
+      getTestPageFileName());
+    assertVisualEditorContainsManyNodes(getVisualEditor(), 
       "DD",
       DataDefinitionTagTest.numRows,
-      AbstractTagTest.TEST_PAGE_NAME_XHTML);
-    assertVisualEditorContains(xhtmlWebBrowser,
+      getTestPageFileName());
+    assertVisualEditorContains(getVisualEditor(),
       "DL", 
       new String[]{"class"},
       new String[]{"listClass"},
-      AbstractTagTest.TEST_PAGE_NAME_XHTML);
-    assertVisualEditorContains(xhtmlWebBrowser,
+      getTestPageFileName());
+    assertVisualEditorContains(getVisualEditor(),
       "DD", 
       new String[]{"class"},
       new String[]{"columnClass"},
-      AbstractTagTest.TEST_PAGE_NAME_XHTML);
+      getTestPageFileName());
     // check tag selection
-    xhtmlWebBrowser.selectDomNode(xhtmlWebBrowser.getDomNodeByTagName("DD",2), 0);
+    getVisualEditor().selectDomNode(getVisualEditor().getDomNodeByTagName("DD",2), 0);
       bot.sleep(Timing.time3S());
-      String selectedText = xhtmlEditor.getSelection();
+      String selectedText = getSourceEditor().getSelection();
       String hasToStartWith = "<rich:dataDefinitionList ";
       assertTrue("Selected text in Source Pane has to start with '" + hasToStartWith + "'" +
           "\nbut it is '" + selectedText + "'",

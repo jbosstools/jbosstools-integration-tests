@@ -22,8 +22,9 @@ public class ToolbarAndToolbarGroupTagTest extends AbstractTagTest{
   private static final String GROUP_0_LABEL = "!-* Group 0 Label";
   private static final String GROUP_1_LABEL = "!-* Group 1 Label";
   @Override
-  protected void initPageContent() {
-    xhtmlEditor.setText("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n" +
+  protected void initTestPage() {
+    initTestPage(TestPageType.XHTML,
+      "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n" +
       "<html xmlns=\"http://www.w3.org/1999/xhtml\"\n" +
       "  xmlns:f=\"http://java.sun.com/jsf/core\"\n" +
       "  xmlns:rich=\"http://richfaces.org/rich\"\n" +
@@ -47,21 +48,21 @@ public class ToolbarAndToolbarGroupTagTest extends AbstractTagTest{
 
   @Override
   protected void verifyTag() {
-    assertVisualEditorContains(xhtmlWebBrowser,
+    assertVisualEditorContains(getVisualEditor(),
       "TD", 
       new String[]{"class"},
       new String[]{"dr-toolbar-int rich-toolbar-item"},
-      AbstractTagTest.TEST_PAGE_NAME_XHTML);
-    assertVisualEditorContainsNodeWithValue(xhtmlWebBrowser,
+      getTestPageFileName());
+    assertVisualEditorContainsNodeWithValue(getVisualEditor(),
       ToolbarAndToolbarGroupTagTest.GROUP_0_LABEL,
-      AbstractTagTest.TEST_PAGE_NAME_XHTML);
-    assertVisualEditorContainsNodeWithValue(xhtmlWebBrowser,
+      getTestPageFileName());
+    assertVisualEditorContainsNodeWithValue(getVisualEditor(),
       ToolbarAndToolbarGroupTagTest.GROUP_1_LABEL,
-      AbstractTagTest.TEST_PAGE_NAME_XHTML);
+      getTestPageFileName());
     // check tag selection
-    xhtmlWebBrowser.selectDomNode(xhtmlWebBrowser.getDomNodeByTagName("TBODY",0), 0);
+    getVisualEditor().selectDomNode(getVisualEditor().getDomNodeByTagName("TBODY",0), 0);
     bot.sleep(Timing.time3S());
-    String selectedText = xhtmlEditor.getSelection();
+    String selectedText = getSourceEditor().getSelection();
     String hasToStartWith = "<rich:toolBar>";
     assertTrue("Selected text in Source Pane has to start with '" + hasToStartWith + "'" +
         "\nbut it is '" + selectedText + "'",
@@ -71,9 +72,9 @@ public class ToolbarAndToolbarGroupTagTest extends AbstractTagTest{
         "\nbut it is '" + selectedText + "'",
       selectedText.trim().endsWith(hasEndWith));
     // check rich:toolBarGroup selection
-    xhtmlWebBrowser.selectDomNode(xhtmlWebBrowser.getDomNodeByTagName("TBODY",1), 0);
+    getVisualEditor().selectDomNode(getVisualEditor().getDomNodeByTagName("TBODY",1), 0);
     bot.sleep(Timing.time3S());
-    selectedText = xhtmlEditor.getSelection();
+    selectedText = getSourceEditor().getSelection();
     hasToStartWith = "<rich:toolBarGroup>";
     assertTrue("Selected text in Source Pane has to start with '" + hasToStartWith + "'" +
         "\nbut it is '" + selectedText + "'",

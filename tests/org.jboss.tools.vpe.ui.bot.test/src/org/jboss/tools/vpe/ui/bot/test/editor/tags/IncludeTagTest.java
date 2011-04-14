@@ -21,7 +21,7 @@ import org.jboss.tools.ui.bot.ext.parts.SWTBotEditorExt;
 public class IncludeTagTest extends AbstractTagTest{
   private static final String INCLUDE_PAGE_NAME = "IncludePage.jsp";
   @Override
-  protected void initPageContent() {
+  protected void initTestPage() {
     // Create pge which will be included
     createJspPage(IncludeTagTest.INCLUDE_PAGE_NAME);
     SWTBotEditorExt includeEditor = botExt.swtBotEditorExtByTitle(IncludeTagTest.INCLUDE_PAGE_NAME);
@@ -30,7 +30,8 @@ public class IncludeTagTest extends AbstractTagTest{
       "</a4j:commandButton>\n");
     includeEditor.saveAndClose();
     
-    jspEditor.setText("<%@ taglib uri=\"http://java.sun.com/jsf/html\" prefix=\"h\" %>\n" +
+    initTestPage(TestPageType.JSP,
+      "<%@ taglib uri=\"http://java.sun.com/jsf/html\" prefix=\"h\" %>\n" +
       "<%@ taglib uri=\"http://java.sun.com/jsf/core\" prefix=\"f\" %>\n" +
       "<%@ taglib uri=\"http://richfaces.org/a4j\" prefix=\"a4j\" %>\n" +
       "<%@ taglib uri=\"http://richfaces.org/rich\" prefix=\"rich\" %>\n" +
@@ -47,20 +48,20 @@ public class IncludeTagTest extends AbstractTagTest{
 
   @Override
   protected void verifyTag() {
-    assertVisualEditorContains(jspWebBrowser,
+    assertVisualEditorContains(getVisualEditor(),
       "INPUT", 
       new String[]{"type"},
       new String[]{"Submit"},
-      AbstractTagTest.TEST_PAGE_NAME_JSP);
-    assertVisualEditorContains(jspWebBrowser,
+      getTestPageFileName());
+    assertVisualEditorContains(getVisualEditor(),
       "DIV", 
       new String[] {"vpe:include-element"},
       new String[] {"yes"},
-      AbstractTagTest.TEST_PAGE_NAME_JSP);
+      getTestPageFileName());
     // check tag selection
-    jspWebBrowser.selectDomNode(jspWebBrowser.getDomNodeByTagName("INPUT",0), 0);
+    getVisualEditor().selectDomNode(getVisualEditor().getDomNodeByTagName("INPUT",0), 0);
     bot.sleep(Timing.time3S());
-    String selectedText = jspEditor.getSelection();
+    String selectedText = getSourceEditor().getSelection();
     String hasToStartWith = "<a4j:include";
     assertTrue("Selected text in Source Pane has to start with '" + hasToStartWith + "'" +
         "\nbut it is '" + selectedText + "'",

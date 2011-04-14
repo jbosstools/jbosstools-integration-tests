@@ -22,8 +22,9 @@ import org.mozilla.interfaces.nsIDOMNode;
  */
 public class ActionParamTagTest extends AbstractTagTest{
   @Override
-  protected void initPageContent() {
-    xhtmlEditor.setText("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n" +
+  protected void initTestPage() {
+    initTestPage(TestPageType.XHTML,
+      "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n" +
       "<html xmlns=\"http://www.w3.org/1999/xhtml\"\n" +
       "  xmlns:f=\"http://java.sun.com/jsf/core\"\n" +
       "  xmlns:a4j=\"http://richfaces.org/a4j\"\n" +
@@ -43,9 +44,9 @@ public class ActionParamTagTest extends AbstractTagTest{
   @Override
   protected void verifyTag() {
     // check tag selection
-    xhtmlEditor.selectLine(10);
+    getSourceEditor().selectLine(10);
     bot.sleep(Timing.time3S());
-    nsIDOMNode selectedVisualNode=xhtmlWebBrowser.getSelectedDomNode();
+    nsIDOMNode selectedVisualNode=getVisualEditor().getSelectedDomNode();
     assertNotNull("Selected node in Visual Editor cannot be null",selectedVisualNode);
     String expectedSelectedNode = "DIV";
     assertTrue("Selected Node has to be '" + expectedSelectedNode + "' node but is " + selectedVisualNode.getLocalName(),

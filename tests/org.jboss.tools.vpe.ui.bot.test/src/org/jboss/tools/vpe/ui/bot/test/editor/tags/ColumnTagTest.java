@@ -22,8 +22,9 @@ public class ColumnTagTest extends AbstractTagTest{
   private static final String COLUMN_HEADER_VALUE = "!-*Column Header Value";
   private static final String COLUMN_VALUE = "!-*Column Value";
   @Override
-  protected void initPageContent() {
-    xhtmlEditor.setText("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n" +
+  protected void initTestPage() {
+    initTestPage(TestPageType.XHTML,
+      "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n" +
       "<html xmlns=\"http://www.w3.org/1999/xhtml\"\n" +
       "  xmlns:ui=\"http://java.sun.com/jsf/facelets\"\n" +
       "  xmlns:f=\"http://java.sun.com/jsf/core\"\n" +
@@ -48,36 +49,36 @@ public class ColumnTagTest extends AbstractTagTest{
 
   @Override
   protected void verifyTag() {
-    assertVisualEditorContains(xhtmlWebBrowser,
+    assertVisualEditorContains(getVisualEditor(),
       "TR", 
       new String[]{"class"},
       new String[]{"dr-table-subheader rich-table-subheader"},
-      AbstractTagTest.TEST_PAGE_NAME_XHTML);
-    assertVisualEditorContains(xhtmlWebBrowser,
+      getTestPageFileName());
+    assertVisualEditorContains(getVisualEditor(),
       "TD", 
       new String[]{"class"},
       new String[]{"dr-table-subheadercell rich-table-subheadercell"},
-      AbstractTagTest.TEST_PAGE_NAME_XHTML);
-    assertVisualEditorContains(xhtmlWebBrowser,
+      getTestPageFileName());
+    assertVisualEditorContains(getVisualEditor(),
       "TR", 
       new String[]{"class"},
       new String[]{"dr-table-firstrow rich-table-firstrow"},
-      AbstractTagTest.TEST_PAGE_NAME_XHTML);
-    assertVisualEditorContains(xhtmlWebBrowser,
+      getTestPageFileName());
+    assertVisualEditorContains(getVisualEditor(),
       "TD", 
       new String[]{"class"},
       new String[]{"dr-table-cell rich-table-cell"},
-      AbstractTagTest.TEST_PAGE_NAME_XHTML);
-    assertVisualEditorContainsNodeWithValue(xhtmlWebBrowser,
+      getTestPageFileName());
+    assertVisualEditorContainsNodeWithValue(getVisualEditor(),
       ColumnTagTest.COLUMN_HEADER_VALUE,
-      AbstractTagTest.TEST_PAGE_NAME_XHTML);
-    assertVisualEditorContainsNodeWithValue(xhtmlWebBrowser,
+      getTestPageFileName());
+    assertVisualEditorContainsNodeWithValue(getVisualEditor(),
       ColumnTagTest.COLUMN_VALUE,
-      AbstractTagTest.TEST_PAGE_NAME_XHTML);
+      getTestPageFileName());
     // check tag selection
-    xhtmlWebBrowser.selectDomNode(xhtmlWebBrowser.getDomNodeByTagName("TD",2), 0);
+    getVisualEditor().selectDomNode(getVisualEditor().getDomNodeByTagName("TD",2), 0);
     bot.sleep(Timing.time3S());
-    String selectedText = xhtmlEditor.getSelection();
+    String selectedText = getSourceEditor().getSelection();
     String hasToStartWith = "<rich:column>";
     assertTrue("Selected text in Source Pane has to start with '" + hasToStartWith + "'" +
         "\nbut it is '" + selectedText + "'",

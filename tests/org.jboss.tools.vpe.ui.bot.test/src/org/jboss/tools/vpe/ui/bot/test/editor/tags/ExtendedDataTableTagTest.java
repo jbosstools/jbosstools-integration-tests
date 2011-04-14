@@ -24,8 +24,9 @@ public class ExtendedDataTableTagTest extends AbstractTagTest{
   private static final String COL_0_LABEL = "!-* Col 0 Label";
   private static final String COL_1_LABEL = "!-* Col 1 Label";
   @Override
-  protected void initPageContent() {
-    xhtmlEditor.setText("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n" +
+  protected void initTestPage() {
+    initTestPage(TestPageType.XHTML,
+      "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n" +
       "<html xmlns=\"http://www.w3.org/1999/xhtml\"\n" +
       "  xmlns:f=\"http://java.sun.com/jsf/core\"\n" +
       "  xmlns:rich=\"http://richfaces.org/rich\"\n" +
@@ -55,52 +56,52 @@ public class ExtendedDataTableTagTest extends AbstractTagTest{
 
   @Override
   protected void verifyTag() {
-    assertVisualEditorContains(xhtmlWebBrowser,
+    assertVisualEditorContains(getVisualEditor(),
       "TR", 
       new String[]{"class"},
       new String[]{"dr-table-subheader rich-table-subheader"},
-      AbstractTagTest.TEST_PAGE_NAME_XHTML);
-    assertVisualEditorContains(xhtmlWebBrowser,
+      getTestPageFileName());
+    assertVisualEditorContains(getVisualEditor(),
       "TH", 
       new String[]{"class"},
       new String[]{"dr-table-subheadercell rich-table-subheadercell"},
-      AbstractTagTest.TEST_PAGE_NAME_XHTML);
-    assertVisualEditorContains(xhtmlWebBrowser,
+      getTestPageFileName());
+    assertVisualEditorContains(getVisualEditor(),
       "TR", 
       new String[]{"class"},
       new String[]{"dr-table-subfooter rich-table-subfooter"},
-      AbstractTagTest.TEST_PAGE_NAME_XHTML);
-    assertVisualEditorContains(xhtmlWebBrowser,
+      getTestPageFileName());
+    assertVisualEditorContains(getVisualEditor(),
       "TD", 
       new String[]{"class"},
       new String[]{"dr-table-subfootercell rich-table-subfootercell dr-table-subfooter rich-table-subfooter"},
-      AbstractTagTest.TEST_PAGE_NAME_XHTML);
-    assertVisualEditorContains(xhtmlWebBrowser,
+      getTestPageFileName());
+    assertVisualEditorContains(getVisualEditor(),
       "TR", 
       new String[]{"class"},
       new String[]{"dr-body-table-tr"},
-      AbstractTagTest.TEST_PAGE_NAME_XHTML);
-    assertVisualEditorContains(xhtmlWebBrowser,
+      getTestPageFileName());
+    assertVisualEditorContains(getVisualEditor(),
       "TD", 
       new String[]{"class"},
       new String[]{"dr-table-cell rich-table-cell"},
-      AbstractTagTest.TEST_PAGE_NAME_XHTML);
-    assertVisualEditorContainsNodeWithValue(xhtmlWebBrowser,
+      getTestPageFileName());
+    assertVisualEditorContainsNodeWithValue(getVisualEditor(),
       ExtendedDataTableTagTest.COL_0_VALUE,
-      AbstractTagTest.TEST_PAGE_NAME_XHTML);
-    assertVisualEditorContainsNodeWithValue(xhtmlWebBrowser,
+      getTestPageFileName());
+    assertVisualEditorContainsNodeWithValue(getVisualEditor(),
       ExtendedDataTableTagTest.COL_1_VALUE,
-      AbstractTagTest.TEST_PAGE_NAME_XHTML);
-    assertVisualEditorContainsNodeWithValue(xhtmlWebBrowser,
+      getTestPageFileName());
+    assertVisualEditorContainsNodeWithValue(getVisualEditor(),
       ExtendedDataTableTagTest.COL_0_LABEL,
-      AbstractTagTest.TEST_PAGE_NAME_XHTML);
-    assertVisualEditorContainsNodeWithValue(xhtmlWebBrowser,
+      getTestPageFileName());
+    assertVisualEditorContainsNodeWithValue(getVisualEditor(),
       ExtendedDataTableTagTest.COL_1_LABEL,
-      AbstractTagTest.TEST_PAGE_NAME_XHTML);
+      getTestPageFileName());
     // check tag selecti
-    xhtmlWebBrowser.selectDomNode(xhtmlWebBrowser.getDomNodeByTagName("TABLE",1), 0);
+    getVisualEditor().selectDomNode(getVisualEditor().getDomNodeByTagName("TABLE",1), 0);
     bot.sleep(Timing.time3S());
-    String selectedText = xhtmlEditor.getSelection();
+    String selectedText = getSourceEditor().getSelection();
     String hasToStartWith = "<rich:extendedDataTable>";
     assertTrue("Selected text in Source Pane has to start with '" + hasToStartWith + "'" +
         "\nbut it is '" + selectedText + "'",

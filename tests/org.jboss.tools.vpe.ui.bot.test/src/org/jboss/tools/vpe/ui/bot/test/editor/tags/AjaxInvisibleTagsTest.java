@@ -23,8 +23,9 @@ public class AjaxInvisibleTagsTest extends AbstractTagTest{
   private static final String SUPPORT_VALUE = "*! Support Value";
   private static final String STATUS_VALUE = "*! Status Value";
   @Override
-  protected void initPageContent() {
-    jspEditor.setText("<%@ taglib uri=\"http://java.sun.com/jsf/html\" prefix=\"h\" %>\n" +
+  protected void initTestPage() {
+    initTestPage(TestPageType.JSP,
+      "<%@ taglib uri=\"http://java.sun.com/jsf/html\" prefix=\"h\" %>\n" +
       "<%@ taglib uri=\"http://java.sun.com/jsf/core\" prefix=\"f\" %>\n" +
       "<%@ taglib uri=\"http://richfaces.org/a4j\" prefix=\"a4j\" %>\n" +
       "<%@ taglib uri=\"http://richfaces.org/rich\" prefix=\"rich\" %>\n" +
@@ -48,38 +49,38 @@ public class AjaxInvisibleTagsTest extends AbstractTagTest{
     // check Problems View for Errors
     assertProbelmsViewNoErrors(botExt);
     // check values which should not be displayed in Visual Editor 
-    assertVisualEditorNotContainNodeWithValue(jspWebBrowser,
+    assertVisualEditorNotContainNodeWithValue(getVisualEditor(),
       AjaxInvisibleTagsTest.JS_FUNCTION_VALUE, 
-      AbstractTagTest.TEST_PAGE_NAME_JSP);
-    assertVisualEditorNotContainNodeWithValue(jspWebBrowser,
+      getTestPageFileName());
+    assertVisualEditorNotContainNodeWithValue(getVisualEditor(),
       AjaxInvisibleTagsTest.QUEUE_VALUE, 
-      AbstractTagTest.TEST_PAGE_NAME_JSP);
-    assertVisualEditorNotContainNodeWithValue(jspWebBrowser,
+      getTestPageFileName());
+    assertVisualEditorNotContainNodeWithValue(getVisualEditor(),
       AjaxInvisibleTagsTest.KEEP_ALIVE_VALUE, 
-      AbstractTagTest.TEST_PAGE_NAME_JSP);
-    assertVisualEditorNotContainNodeWithValue(jspWebBrowser,
+      getTestPageFileName());
+    assertVisualEditorNotContainNodeWithValue(getVisualEditor(),
       AjaxInvisibleTagsTest.SUPPORT_VALUE, 
-      AbstractTagTest.TEST_PAGE_NAME_JSP);
-    assertVisualEditorNotContainNodeWithValue(jspWebBrowser,
+      getTestPageFileName());
+    assertVisualEditorNotContainNodeWithValue(getVisualEditor(),
       AjaxInvisibleTagsTest.STATUS_VALUE, 
-      AbstractTagTest.TEST_PAGE_NAME_JSP);
+      getTestPageFileName());
     // check empty Visual Editor
-    assertVisualEditorContainsManyNodes(jspWebBrowser,
+    assertVisualEditorContainsManyNodes(getVisualEditor(),
       "TABLE",
       1,
-      AbstractTagTest.TEST_PAGE_NAME_JSP);
-    assertVisualEditorContainsManyNodes(jspWebBrowser,
+      getTestPageFileName());
+    assertVisualEditorContainsManyNodes(getVisualEditor(),
       "TR",
       1,
-      AbstractTagTest.TEST_PAGE_NAME_JSP);
-    assertVisualEditorContainsManyNodes(jspWebBrowser,
+      getTestPageFileName());
+    assertVisualEditorContainsManyNodes(getVisualEditor(),
       "TD",
       1,
-      AbstractTagTest.TEST_PAGE_NAME_JSP);
-    assertVisualEditorContainsManyNodes(jspWebBrowser,
+      getTestPageFileName());
+    assertVisualEditorContainsManyNodes(getVisualEditor(),
       "DIV",
       4,
-      AbstractTagTest.TEST_PAGE_NAME_JSP);    
+      getTestPageFileName());    
   }
 
 }

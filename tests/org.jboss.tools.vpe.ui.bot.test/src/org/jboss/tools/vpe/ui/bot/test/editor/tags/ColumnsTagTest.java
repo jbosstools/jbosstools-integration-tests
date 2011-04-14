@@ -21,8 +21,9 @@ public class ColumnsTagTest extends AbstractTagTest{
   private static final String columnValue = "Column Value";
 
   @Override
-  protected void initPageContent() {
-    xhtmlEditor.setText("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n" +
+  protected void initTestPage() {
+    initTestPage(TestPageType.XHTML,
+      "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n" +
       "<ui:composition xmlns=\"http://www.w3.org/1999/xhtml\"\n" +
       "  xmlns:ui=\"http://java.sun.com/jsf/facelets\"\n" +
       "  xmlns:h=\"http://java.sun.com/jsf/html\"\n" +
@@ -50,32 +51,32 @@ public class ColumnsTagTest extends AbstractTagTest{
 
   @Override
   protected void verifyTag() {
-    assertVisualEditorContainsNodeWithValue(xhtmlWebBrowser,
-        columnHeader, 
-        AbstractTagTest.TEST_PAGE_NAME_XHTML);
-    assertVisualEditorContainsNodeWithValue(xhtmlWebBrowser,
-        columnValue, 
-        AbstractTagTest.TEST_PAGE_NAME_XHTML);
-    assertVisualEditorContains(xhtmlWebBrowser,
+    assertVisualEditorContainsNodeWithValue(getVisualEditor(),
+      columnHeader, 
+      getTestPageFileName());
+    assertVisualEditorContainsNodeWithValue(getVisualEditor(),
+      columnValue, 
+      getTestPageFileName());
+    assertVisualEditorContains(getVisualEditor(),
       "TR", 
       new String[]{"class"},
       new String[]{"dr-table-subheader rich-table-subheader"},
-      AbstractTagTest.TEST_PAGE_NAME_XHTML);
-    assertVisualEditorContains(xhtmlWebBrowser,
-        "TD", 
-        new String[]{"class"},
-        new String[]{"dr-table-subheadercell rich-table-subheadercell"},
-        AbstractTagTest.TEST_PAGE_NAME_XHTML);
-    assertVisualEditorContains(xhtmlWebBrowser,
-        "TR", 
-        new String[]{"class"},
-        new String[]{"dr-table-firstrow rich-table-firstrow"},
-        AbstractTagTest.TEST_PAGE_NAME_XHTML);
-      assertVisualEditorContains(xhtmlWebBrowser,
-          "TD", 
-          new String[]{"class"},
-          new String[]{"dr-table-cell rich-table-cell"},
-          AbstractTagTest.TEST_PAGE_NAME_XHTML);
+      getTestPageFileName());
+    assertVisualEditorContains(getVisualEditor(),
+      "TD", 
+      new String[]{"class"},
+      new String[]{"dr-table-subheadercell rich-table-subheadercell"},
+      getTestPageFileName());
+    assertVisualEditorContains(getVisualEditor(),
+      "TR", 
+      new String[]{"class"},
+      new String[]{"dr-table-firstrow rich-table-firstrow"},
+      getTestPageFileName());
+    assertVisualEditorContains(getVisualEditor(),
+      "TD", 
+      new String[]{"class"},
+      new String[]{"dr-table-cell rich-table-cell"},
+      getTestPageFileName());
   }
 
 }

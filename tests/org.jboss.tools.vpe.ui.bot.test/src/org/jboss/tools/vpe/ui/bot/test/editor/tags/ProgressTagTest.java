@@ -20,8 +20,9 @@ import org.jboss.tools.ui.bot.ext.Timing;
  */
 public class ProgressTagTest extends AbstractTagTest{
   @Override
-  protected void initPageContent() {
-    jspEditor.setText("<%@ taglib uri=\"http://java.sun.com/jsf/html\" prefix=\"h\" %>\n" +
+  protected void initTestPage() {
+    initTestPage(TestPageType.JSP,
+        "<%@ taglib uri=\"http://java.sun.com/jsf/html\" prefix=\"h\" %>\n" +
         "<%@ taglib uri=\"http://java.sun.com/jsf/core\" prefix=\"f\" %>\n" +
         "<%@ taglib uri=\"http://richfaces.org/rich\" prefix=\"rich\" %>\n" +
         "<html>\n" +
@@ -38,23 +39,23 @@ public class ProgressTagTest extends AbstractTagTest{
 
   @Override
   protected void verifyTag() {
-    assertVisualEditorContains(jspWebBrowser,
-        "DIV", 
-        new String[]{"title","class"},
-        new String[]{"rich:progressBar mode: client id: progressBar","rich-progress-bar-block rich-progress-bar-width rich-progress-bar-shell"},
-        AbstractTagTest.TEST_PAGE_NAME_JSP);
-      // check tag selection
-      jspWebBrowser.selectDomNode(jspWebBrowser.getDomNodeByTagName("DIV",4), 0);
-      bot.sleep(Timing.time3S());
-      String selectedText = jspEditor.getSelection();
-      final String hasToStartWith = "<rich:progressBar";
-      assertTrue("Selected text in Source Pane has to start with '" + hasToStartWith + "'" +
-          "\nbut it is '" + selectedText + "'",
-          selectedText.trim().startsWith(hasToStartWith));
-      final String hasEndWith = "</rich:progressBar>";
-      assertTrue("Selected text in Source Pane has to end with '" + hasEndWith + "'" +
-          "\nbut it is '" + selectedText + "'",
-          selectedText.trim().endsWith(hasEndWith));
+    assertVisualEditorContains(getVisualEditor(),
+      "DIV", 
+      new String[]{"title","class"},
+      new String[]{"rich:progressBar mode: client id: progressBar","rich-progress-bar-block rich-progress-bar-width rich-progress-bar-shell"},
+      getTestPageFileName());
+    // check tag selection
+    getVisualEditor().selectDomNode(getVisualEditor().getDomNodeByTagName("DIV",4), 0);
+    bot.sleep(Timing.time3S());
+    String selectedText = getSourceEditor().getSelection();
+    final String hasToStartWith = "<rich:progressBar";
+    assertTrue("Selected text in Source Pane has to start with '" + hasToStartWith + "'" +
+      "\nbut it is '" + selectedText + "'",
+      selectedText.trim().startsWith(hasToStartWith));
+    final String hasEndWith = "</rich:progressBar>";
+    assertTrue("Selected text in Source Pane has to end with '" + hasEndWith + "'" +
+      "\nbut it is '" + selectedText + "'",
+      selectedText.trim().endsWith(hasEndWith));
   }
 
 }

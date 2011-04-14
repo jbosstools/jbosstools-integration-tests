@@ -20,8 +20,9 @@ import org.jboss.tools.ui.bot.ext.Timing;
  */
 public class FileUploadTagTest extends AbstractTagTest{
   @Override
-  protected void initPageContent() {
-    jspEditor.setText("<%@ taglib uri=\"http://java.sun.com/jsf/html\" prefix=\"h\" %>\n" +
+  protected void initTestPage() {
+    initTestPage(TestPageType.JSP,
+        "<%@ taglib uri=\"http://java.sun.com/jsf/html\" prefix=\"h\" %>\n" +
         "<%@ taglib uri=\"http://java.sun.com/jsf/core\" prefix=\"f\" %>\n" +
         "<%@ taglib uri=\"http://richfaces.org/rich\" prefix=\"rich\" %>\n" +
         "<html>\n" +
@@ -41,53 +42,53 @@ public class FileUploadTagTest extends AbstractTagTest{
 
   @Override
   protected void verifyTag() {
-    assertVisualEditorContains(jspWebBrowser,
-        "B", 
-        new String[]{"title"},
-        new String[]{"rich:fileUpload fileUploadListener:  maxFilesQuantity: 1 id: upload immediateUpload: false acceptedTypes: jpg style: width:500; height:500"},
-        AbstractTagTest.TEST_PAGE_NAME_JSP);
-      assertVisualEditorContains(jspWebBrowser,
-          "DIV", 
-          new String[]{"class"},
-          new String[]{"rich-fileupload-list-decor"},
-          AbstractTagTest.TEST_PAGE_NAME_JSP);
-      assertVisualEditorContains(jspWebBrowser,
-          "DIV", 
-          new String[]{"class"},
-          new String[]{"rich-fileupload-button-border"},
-          AbstractTagTest.TEST_PAGE_NAME_JSP);
-      assertVisualEditorContains(jspWebBrowser,
-          "DIV", 
-          new String[]{"class"},
-          new String[]{"rich-fileupload-button rich-fileupload-font"},
-          AbstractTagTest.TEST_PAGE_NAME_JSP);
-      assertVisualEditorContains(jspWebBrowser,
-          "DIV", 
-          new String[]{"class"},
-          new String[]{"rich-fileupload-button-content rich-fileupload-font rich-fileupload-ico rich-fileupload-ico-add"},
-          AbstractTagTest.TEST_PAGE_NAME_JSP);
-      assertVisualEditorContains(jspWebBrowser,
-          "DIV", 
-          new String[]{"class"},
-          new String[]{"rich-fileupload-button-content rich-fileupload-font rich-fileupload-ico rich-fileupload-ico-start"},
-          AbstractTagTest.TEST_PAGE_NAME_JSP);
-      assertVisualEditorContains(jspWebBrowser,
-          "DIV", 
-          new String[]{"class"},
-          new String[]{"rich-fileupload-button-content rich-fileupload-font rich-fileupload-ico rich-fileupload-ico-clear"},
-          AbstractTagTest.TEST_PAGE_NAME_JSP);
+    assertVisualEditorContains(getVisualEditor(),
+      "B", 
+      new String[]{"title"},
+      new String[]{"rich:fileUpload fileUploadListener:  maxFilesQuantity: 1 id: upload immediateUpload: false acceptedTypes: jpg style: width:500; height:500"},
+      getTestPageFileName());
+    assertVisualEditorContains(getVisualEditor(),
+      "DIV", 
+      new String[]{"class"},
+      new String[]{"rich-fileupload-list-decor"},
+      getTestPageFileName());
+    assertVisualEditorContains(getVisualEditor(),
+      "DIV", 
+      new String[]{"class"},
+      new String[]{"rich-fileupload-button-border"},
+      getTestPageFileName());
+    assertVisualEditorContains(getVisualEditor(),
+      "DIV", 
+      new String[]{"class"},
+      new String[]{"rich-fileupload-button rich-fileupload-font"},
+      getTestPageFileName());
+    assertVisualEditorContains(getVisualEditor(),
+      "DIV", 
+      new String[]{"class"},
+      new String[]{"rich-fileupload-button-content rich-fileupload-font rich-fileupload-ico rich-fileupload-ico-add"},
+      getTestPageFileName());
+    assertVisualEditorContains(getVisualEditor(),
+      "DIV", 
+      new String[]{"class"},
+      new String[]{"rich-fileupload-button-content rich-fileupload-font rich-fileupload-ico rich-fileupload-ico-start"},
+      getTestPageFileName());
+    assertVisualEditorContains(getVisualEditor(),
+      "DIV", 
+      new String[]{"class"},
+      new String[]{"rich-fileupload-button-content rich-fileupload-font rich-fileupload-ico rich-fileupload-ico-clear"},
+      getTestPageFileName());
       // check tag selection
-      jspWebBrowser.selectDomNode(jspWebBrowser.getDomNodeByTagName("B",0), 0);
-      bot.sleep(Timing.time3S());
-      String selectedText = jspEditor.getSelection();
-      final String hasToStartWith = "<rich:fileUpload";
-      assertTrue("Selected text in Source Pane has to start with '" + hasToStartWith + "'" +
-          "\nbut it is '" + selectedText + "'",
-          selectedText.trim().startsWith(hasToStartWith));
-      final String hasEndWith = "</rich:fileUpload>";
-      assertTrue("Selected text in Source Pane has to end with '" + hasEndWith + "'" +
-          "\nbut it is '" + selectedText + "'",
-          selectedText.trim().endsWith(hasEndWith));
+    getVisualEditor().selectDomNode(getVisualEditor().getDomNodeByTagName("B",0), 0);
+    bot.sleep(Timing.time3S());
+    String selectedText = getSourceEditor().getSelection();
+    final String hasToStartWith = "<rich:fileUpload";
+    assertTrue("Selected text in Source Pane has to start with '" + hasToStartWith + "'" +
+      "\nbut it is '" + selectedText + "'",
+      selectedText.trim().startsWith(hasToStartWith));
+    final String hasEndWith = "</rich:fileUpload>";
+    assertTrue("Selected text in Source Pane has to end with '" + hasEndWith + "'" +
+      "\nbut it is '" + selectedText + "'",
+      selectedText.trim().endsWith(hasEndWith));
   }
 
 }

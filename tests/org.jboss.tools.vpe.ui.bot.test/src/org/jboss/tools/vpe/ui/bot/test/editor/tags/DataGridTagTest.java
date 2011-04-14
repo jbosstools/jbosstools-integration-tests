@@ -26,8 +26,9 @@ public class DataGridTagTest extends AbstractTagTest{
   private static final String GRID_COLUMNS = "3";
   private static final String GRID_ELEMENTS = "6";
   @Override
-  protected void initPageContent() {
-    xhtmlEditor.setText("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n" +
+  protected void initTestPage() {
+    initTestPage(TestPageType.XHTML,
+      "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n" +
       "<html xmlns=\"http://www.w3.org/1999/xhtml\"\n" +
       "  xmlns:ui=\"http://java.sun.com/jsf/facelets\"\n" +
       "  xmlns:f=\"http://java.sun.com/jsf/core\"\n" +
@@ -54,71 +55,71 @@ public class DataGridTagTest extends AbstractTagTest{
 
   @Override
   protected void verifyTag() {
-    assertVisualEditorContains(xhtmlWebBrowser,
+    assertVisualEditorContains(getVisualEditor(),
       "TABLE", 
       new String[]{"class","columns","elements"},
       new String[]{"dr-table rich-table",DataGridTagTest.GRID_COLUMNS,DataGridTagTest.GRID_ELEMENTS},
-      AbstractTagTest.TEST_PAGE_NAME_XHTML);
-    assertVisualEditorContains(xhtmlWebBrowser,
+      getTestPageFileName());
+    assertVisualEditorContains(getVisualEditor(),
       "THEAD", 
       null,
       null,
-      AbstractTagTest.TEST_PAGE_NAME_XHTML);
-    assertVisualEditorContains(xhtmlWebBrowser,
+      getTestPageFileName());
+    assertVisualEditorContains(getVisualEditor(),
       "TFOOT", 
       null,
       null,
-      AbstractTagTest.TEST_PAGE_NAME_XHTML);
-    assertVisualEditorContains(xhtmlWebBrowser,
+      getTestPageFileName());
+    assertVisualEditorContains(getVisualEditor(),
       "TR", 
       new String[]{"class"},
       new String[]{"dr-table-header rich-table-header"},
-      AbstractTagTest.TEST_PAGE_NAME_XHTML);
-    assertVisualEditorContains(xhtmlWebBrowser,
+      getTestPageFileName());
+    assertVisualEditorContains(getVisualEditor(),
       "TD", 
       new String[]{"class"},
       new String[]{"dr-table-headercell rich-table-headercell"},
-      AbstractTagTest.TEST_PAGE_NAME_XHTML);
-    assertVisualEditorContains(xhtmlWebBrowser,
+      getTestPageFileName());
+    assertVisualEditorContains(getVisualEditor(),
       "TR", 
       new String[]{"class"},
       new String[]{"dr-table-footer rich-table-footer"},
-      AbstractTagTest.TEST_PAGE_NAME_XHTML);
-    assertVisualEditorContains(xhtmlWebBrowser,
+      getTestPageFileName());
+    assertVisualEditorContains(getVisualEditor(),
       "TD", 
       new String[]{"class"},
       new String[]{"dr-table-footercell rich-table-footercell"},
-      AbstractTagTest.TEST_PAGE_NAME_XHTML);
-    assertVisualEditorContains(xhtmlWebBrowser,
+      getTestPageFileName());
+    assertVisualEditorContains(getVisualEditor(),
       "TR", 
       new String[]{"class"},
       new String[]{"dr-table-row rich-table-row"},
-      AbstractTagTest.TEST_PAGE_NAME_XHTML);
-    assertVisualEditorContains(xhtmlWebBrowser,
+      getTestPageFileName());
+    assertVisualEditorContains(getVisualEditor(),
       "TD", 
       new String[]{"class"},
       new String[]{"dr-table-cell rich-table-cell"},
-      AbstractTagTest.TEST_PAGE_NAME_XHTML);    
-    assertVisualEditorContainsManyNodes(xhtmlWebBrowser,
-        "SPAN", 
-        2 + (2 * Integer.parseInt(DataGridTagTest.GRID_ELEMENTS)),
-        AbstractTagTest.TEST_PAGE_NAME_XHTML);
-    assertVisualEditorContainsNodeWithValue(xhtmlWebBrowser,
+      getTestPageFileName());    
+    assertVisualEditorContainsManyNodes(getVisualEditor(),
+      "SPAN", 
+      2 + (2 * Integer.parseInt(DataGridTagTest.GRID_ELEMENTS)),
+      getTestPageFileName());
+    assertVisualEditorContainsNodeWithValue(getVisualEditor(),
       DataGridTagTest.HEADER_VALUE,
-      AbstractTagTest.TEST_PAGE_NAME_XHTML);
-    assertVisualEditorContainsNodeWithValue(xhtmlWebBrowser,
+      getTestPageFileName());
+    assertVisualEditorContainsNodeWithValue(getVisualEditor(),
       DataGridTagTest.FOOTER_VALUE,
-      AbstractTagTest.TEST_PAGE_NAME_XHTML);
-    assertVisualEditorContainsNodeWithValue(xhtmlWebBrowser,
-        DataGridTagTest.CELL_0_VALUE,
-        AbstractTagTest.TEST_PAGE_NAME_XHTML);
-    assertVisualEditorContainsNodeWithValue(xhtmlWebBrowser,
-        DataGridTagTest.CELL_1_VALUE,
-        AbstractTagTest.TEST_PAGE_NAME_XHTML);
+      getTestPageFileName());
+    assertVisualEditorContainsNodeWithValue(getVisualEditor(),
+      DataGridTagTest.CELL_0_VALUE,
+      getTestPageFileName());
+    assertVisualEditorContainsNodeWithValue(getVisualEditor(),
+      DataGridTagTest.CELL_1_VALUE,
+      getTestPageFileName());
     // check tag selection
-    xhtmlWebBrowser.selectDomNode(xhtmlWebBrowser.getDomNodeByTagName("THEAD",0), 0);
+    getVisualEditor().selectDomNode(getVisualEditor().getDomNodeByTagName("THEAD",0), 0);
     bot.sleep(Timing.time3S());
-    String selectedText = xhtmlEditor.getSelection();
+    String selectedText = getSourceEditor().getSelection();
     String hasToStartWith = "<rich:dataGrid";
     assertTrue("Selected text in Source Pane has to start with '" + hasToStartWith + "'" +
         "\nbut it is '" + selectedText + "'",

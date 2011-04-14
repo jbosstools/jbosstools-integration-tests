@@ -22,7 +22,7 @@ public class PickListTagTest extends AbstractTagTest{
   private static final String[] options = new String[] {"Option0","Option1","Option2","Option3"};
 
   @Override
-  protected void initPageContent() {
+  protected void initTestPage() {
     StringBuffer sbOptions = new StringBuffer("");
     int index = 0;
     for (String option : options){
@@ -35,7 +35,8 @@ public class PickListTagTest extends AbstractTagTest{
       sbOptions.append("\"/>\n");
       index++;
     }
-    xhtmlEditor.setText("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n" +
+    initTestPage(TestPageType.XHTML,
+      "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n" +
       "<html xmlns=\"http://www.w3.org/1999/xhtml\"\n" +
       "  xmlns:ui=\"http://java.sun.com/jsf/facelets\"\n" +
       "  xmlns:f=\"http://java.sun.com/jsf/core\"\n" +
@@ -55,95 +56,95 @@ public class PickListTagTest extends AbstractTagTest{
 
   @Override
   protected void verifyTag() {
-    assertVisualEditorContainsNodeWithValue(xhtmlWebBrowser,
-        "Copy all", 
-        AbstractTagTest.TEST_PAGE_NAME_XHTML);
-      assertVisualEditorContainsNodeWithValue(xhtmlWebBrowser,
-        "Copy", 
-        AbstractTagTest.TEST_PAGE_NAME_XHTML);
-      assertVisualEditorContainsNodeWithValue(xhtmlWebBrowser,
-        "Remove All", 
-        AbstractTagTest.TEST_PAGE_NAME_XHTML);
-      assertVisualEditorContainsNodeWithValue(xhtmlWebBrowser,
-        "Remove", 
-        AbstractTagTest.TEST_PAGE_NAME_XHTML);
-      assertVisualEditorContains(xhtmlWebBrowser,
-          "TABLE", 
-          new String[]{"class"},
-          new String[]{"rich-list-picklist"},
-          AbstractTagTest.TEST_PAGE_NAME_XHTML);
-      assertVisualEditorContains(xhtmlWebBrowser,
-          "TABLE", 
-          new String[]{"class"},
-          new String[]{"rich-picklist-body"},
-          AbstractTagTest.TEST_PAGE_NAME_XHTML);
-      assertVisualEditorContains(xhtmlWebBrowser,
-          "TABLE", 
-          new String[]{"class"},
-          new String[]{"rich-picklist-internal-tab"},
-          AbstractTagTest.TEST_PAGE_NAME_XHTML);
-      assertVisualEditorContains(xhtmlWebBrowser,
-          "TBODY", 
-          null,
-          null,
-          AbstractTagTest.TEST_PAGE_NAME_XHTML);
-      int index = 0;
-      for (String option : options ){
-        assertVisualEditorContainsNodeWithValue(xhtmlWebBrowser,
-            option, 
-            AbstractTagTest.TEST_PAGE_NAME_XHTML);
-        StringBuffer sbTitle = new StringBuffer("");
-        sbTitle.append("f:selectItem itemLabel: ");
-        sbTitle.append(option);
-        sbTitle.append(" itemValue: ");
-        sbTitle.append(index);
-        sbTitle.append(" id: id");
-        sbTitle.append(index);
-        assertVisualEditorContains(xhtmlWebBrowser,
-            "OPTION", 
-            new String[]{"title"},
-            new String[]{sbTitle.toString()},
-            AbstractTagTest.TEST_PAGE_NAME_XHTML);
-        index++;
-      }
-      // check tag selection
-      xhtmlWebBrowser.selectDomNode(xhtmlWebBrowser.getDomNodeByTagName("TABLE",1), 0);
-      bot.sleep(Timing.time3S());
-      String selectedText = xhtmlEditor.getSelection();
-      String hasToStartWith = "<rich:pickList value=\"\">";
-      assertTrue("Selected text in Source Pane has to start with '" + hasToStartWith + "'" +
-          "\nbut it is '" + selectedText + "'",
-          selectedText.trim().startsWith(hasToStartWith));
-      String hasEndWith = "</rich:pickList>";
-      assertTrue("Selected text in Source Pane has to end with '" + hasEndWith + "'" +
-          "\nbut it is '" + selectedText + "'",
-          selectedText.trim().endsWith(hasEndWith));
-      // select first item in VPE
-      xhtmlWebBrowser.selectDomNode(xhtmlWebBrowser.getDomNodeByTagName("OPTION",0), 0);
-      bot.sleep(Timing.time3S());    
-      String currentLineText = xhtmlEditor.getTextOnCurrentLine();
-      StringBuffer sbOption = new StringBuffer("");
-      sbOption.append("<f:selectItem itemLabel=\"");
-      sbOption.append(options[0]);
-      sbOption.append("\" itemValue=\"0\" id=\"id0\"/>");
-      assertTrue("Current Line text in Source Pane has to be '" + sbOption.toString() + "'" +
-          "\nbut it is '" + currentLineText + "'",
-          currentLineText.trim().equals(sbOption.toString()));
-      // select second item in Source Editor
-      xhtmlEditor.setFocus();
-      xhtmlEditor.selectRange(xhtmlEditor.cursorPosition().line + 1,xhtmlEditor.cursorPosition().column,0);
-      bot.sleep(Timing.time3S());
-      xhtmlWebBrowser.setFocus();
-      bot.sleep(Timing.time3S());
-      StringBuffer sbOptionTitle = new StringBuffer("");
-      sbOptionTitle.append("f:selectItem itemLabel: ");
-      sbOptionTitle.append(options[1]);
-      sbOptionTitle.append(" itemValue: 1 id: id1");
-      assertVisualEditorContains(xhtmlWebBrowser,
-          "OPTION", 
-          new String[]{"title","style"},
-          new String[]{sbOptionTitle.toString(),"border: 2px solid rgb(0, 0, 255) ! important;"},
-          AbstractTagTest.TEST_PAGE_NAME_XHTML);
+    assertVisualEditorContainsNodeWithValue(getVisualEditor(),
+      "Copy all", 
+      getTestPageFileName());
+    assertVisualEditorContainsNodeWithValue(getVisualEditor(),
+      "Copy", 
+      getTestPageFileName());
+    assertVisualEditorContainsNodeWithValue(getVisualEditor(),
+      "Remove All", 
+      getTestPageFileName());
+    assertVisualEditorContainsNodeWithValue(getVisualEditor(),
+      "Remove", 
+      getTestPageFileName());
+    assertVisualEditorContains(getVisualEditor(),
+      "TABLE", 
+      new String[]{"class"},
+      new String[]{"rich-list-picklist"},
+      getTestPageFileName());
+    assertVisualEditorContains(getVisualEditor(),
+      "TABLE", 
+      new String[]{"class"},
+      new String[]{"rich-picklist-body"},
+      getTestPageFileName());
+    assertVisualEditorContains(getVisualEditor(),
+      "TABLE", 
+      new String[]{"class"},
+      new String[]{"rich-picklist-internal-tab"},
+      getTestPageFileName());
+    assertVisualEditorContains(getVisualEditor(),
+      "TBODY", 
+      null,
+      null,
+      getTestPageFileName());
+    int index = 0;
+    for (String option : options ){
+      assertVisualEditorContainsNodeWithValue(getVisualEditor(),
+        option, 
+        getTestPageFileName());
+      StringBuffer sbTitle = new StringBuffer("");
+      sbTitle.append("f:selectItem itemLabel: ");
+      sbTitle.append(option);
+      sbTitle.append(" itemValue: ");
+      sbTitle.append(index);
+      sbTitle.append(" id: id");
+      sbTitle.append(index);
+      assertVisualEditorContains(getVisualEditor(),
+        "OPTION", 
+        new String[]{"title"},
+        new String[]{sbTitle.toString()},
+        getTestPageFileName());
+      index++;
+    }
+    // check tag selection
+    getVisualEditor().selectDomNode(getVisualEditor().getDomNodeByTagName("TABLE",1), 0);
+    bot.sleep(Timing.time3S());
+    String selectedText = getSourceEditor().getSelection();
+    String hasToStartWith = "<rich:pickList value=\"\">";
+    assertTrue("Selected text in Source Pane has to start with '" + hasToStartWith + "'" +
+      "\nbut it is '" + selectedText + "'",
+      selectedText.trim().startsWith(hasToStartWith));
+    String hasEndWith = "</rich:pickList>";
+    assertTrue("Selected text in Source Pane has to end with '" + hasEndWith + "'" +
+      "\nbut it is '" + selectedText + "'",
+      selectedText.trim().endsWith(hasEndWith));
+    // select first item in VPE
+    getVisualEditor().selectDomNode(getVisualEditor().getDomNodeByTagName("OPTION",0), 0);
+    bot.sleep(Timing.time3S());    
+    String currentLineText = getSourceEditor().getTextOnCurrentLine();
+    StringBuffer sbOption = new StringBuffer("");
+    sbOption.append("<f:selectItem itemLabel=\"");
+    sbOption.append(options[0]);
+    sbOption.append("\" itemValue=\"0\" id=\"id0\"/>");
+    assertTrue("Current Line text in Source Pane has to be '" + sbOption.toString() + "'" +
+      "\nbut it is '" + currentLineText + "'",
+      currentLineText.trim().equals(sbOption.toString()));
+    // select second item in Source Editor
+    getSourceEditor().setFocus();
+    getSourceEditor().selectRange(getSourceEditor().cursorPosition().line + 1,getSourceEditor().cursorPosition().column,0);
+    bot.sleep(Timing.time3S());
+    getVisualEditor().setFocus();
+    bot.sleep(Timing.time3S());
+    StringBuffer sbOptionTitle = new StringBuffer("");
+    sbOptionTitle.append("f:selectItem itemLabel: ");
+    sbOptionTitle.append(options[1]);
+    sbOptionTitle.append(" itemValue: 1 id: id1");
+    assertVisualEditorContains(getVisualEditor(),
+      "OPTION", 
+      new String[]{"title","style"},
+      new String[]{sbOptionTitle.toString(),"border: 2px solid rgb(0, 0, 255) ! important;"},
+      getTestPageFileName());
   }
 
 }

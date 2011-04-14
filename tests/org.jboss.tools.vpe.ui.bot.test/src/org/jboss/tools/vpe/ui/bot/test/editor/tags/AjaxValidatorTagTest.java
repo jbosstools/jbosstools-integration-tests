@@ -23,8 +23,9 @@ import org.mozilla.interfaces.nsIDOMNode;
 public class AjaxValidatorTagTest extends AbstractTagTest{
   private static final String INPUT_TEXT = "!*- Input Text";
   @Override
-  protected void initPageContent() {
-    xhtmlEditor.setText("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n" +
+  protected void initTestPage() {
+    initTestPage(TestPageType.XHTML,
+      "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n" +
       "<html xmlns=\"http://www.w3.org/1999/xhtml\"\n" +
       "  xmlns:f=\"http://java.sun.com/jsf/core\"\n" +
       "  xmlns:rich=\"http://richfaces.org/rich\"\n" +
@@ -45,9 +46,9 @@ public class AjaxValidatorTagTest extends AbstractTagTest{
   @Override
   protected void verifyTag() {
     // check tag selection
-    xhtmlEditor.selectLine(11);
+    getSourceEditor().selectLine(11);
     bot.sleep(Timing.time3S());
-    nsIDOMNode selectedVisualNode=xhtmlWebBrowser.getSelectedDomNode();
+    nsIDOMNode selectedVisualNode=getVisualEditor().getSelectedDomNode();
     assertNotNull("Selected node in Visual Editor cannot be null",selectedVisualNode);
     String expectedSelectedNode = "SPAN";
     assertTrue("Selected Node has to be '" + expectedSelectedNode + "' node but is " + selectedVisualNode.getLocalName(),

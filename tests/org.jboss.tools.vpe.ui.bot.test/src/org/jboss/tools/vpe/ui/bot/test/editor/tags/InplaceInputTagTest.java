@@ -21,8 +21,9 @@ import org.jboss.tools.ui.bot.ext.Timing;
 public class InplaceInputTagTest extends AbstractTagTest{
   private static final String defaultLabel = "DefaultLabel";
   @Override
-  protected void initPageContent() {
-    jspEditor.setText("<%@ taglib uri=\"http://java.sun.com/jsf/html\" prefix=\"h\" %>\n" +
+  protected void initTestPage() {
+    initTestPage(TestPageType.JSP,
+        "<%@ taglib uri=\"http://java.sun.com/jsf/html\" prefix=\"h\" %>\n" +
         "<%@ taglib uri=\"http://java.sun.com/jsf/core\" prefix=\"f\" %>\n" +
         "<%@ taglib uri=\"http://richfaces.org/rich\" prefix=\"rich\" %>\n" +
         "<html>\n" +
@@ -38,39 +39,39 @@ public class InplaceInputTagTest extends AbstractTagTest{
 
   @Override
   protected void verifyTag() {
-    assertVisualEditorContains(jspWebBrowser,
-        "SPAN", 
-        new String[]{"vpe-user-toggle-id","title","class"},
-        new String[]{"false","rich:inplaceInput defaultLabel: " + defaultLabel,"rich-inplace rich-inplace-view"},
-        AbstractTagTest.TEST_PAGE_NAME_JSP);
-      assertVisualEditorContainsNodeWithValue(jspWebBrowser,
-          defaultLabel, 
-          AbstractTagTest.TEST_PAGE_NAME_JSP);
-      // check tag selection
-      jspWebBrowser.selectDomNode(jspWebBrowser.getDomNodeByTagName("SPAN",2), 0);
-      bot.sleep(Timing.time3S());
-      String selectedText = jspEditor.getSelection();
-      final String expectedSelectedText = "<rich:inplaceInput defaultLabel=\"" + defaultLabel+ "\"/>";
-      assertTrue("Selected text in Source Pane has to be '" + expectedSelectedText + "'" +
-          "\nbut it is '" + selectedText + "'",
-          selectedText.trim().equals(expectedSelectedText));
-      jspWebBrowser.mouseClickOnNode(jspWebBrowser.getDomNodeByTagName("SPAN",2));
-      bot.sleep(Timing.time3S());
-      selectedText = jspEditor.getSelection();
-      assertVisualEditorContains(jspWebBrowser,
-          "SPAN", 
-          new String[]{"vpe-user-toggle-id","class"},
-          new String[]{"true","rich-inplace rich-inplace-edit"},
-          AbstractTagTest.TEST_PAGE_NAME_JSP);
-      assertVisualEditorContains(jspWebBrowser,
-          "INPUT", 
-          new String[]{"type","class","value"},
-          new String[]{"text","rich-inplace-field",defaultLabel},
-          AbstractTagTest.TEST_PAGE_NAME_JSP);
-      assertTrue("Selected text in Source Pane has to be '" + expectedSelectedText + "'" +
-          "\nbut it is '" + selectedText + "'",
-          selectedText.trim().equals(expectedSelectedText));
-    
+    assertVisualEditorContains(getVisualEditor(),
+      "SPAN", 
+      new String[]{"vpe-user-toggle-id","title","class"},
+      new String[]{"false","rich:inplaceInput defaultLabel: " + defaultLabel,"rich-inplace rich-inplace-view"},
+      getTestPageFileName());
+    assertVisualEditorContainsNodeWithValue(getVisualEditor(),
+      defaultLabel, 
+      getTestPageFileName());
+    // check tag selection
+    getVisualEditor().selectDomNode(getVisualEditor().getDomNodeByTagName("SPAN",2), 0);
+    bot.sleep(Timing.time3S());
+    String selectedText = getSourceEditor().getSelection();
+    final String expectedSelectedText = "<rich:inplaceInput defaultLabel=\"" + defaultLabel+ "\"/>";
+    assertTrue("Selected text in Source Pane has to be '" + expectedSelectedText + "'" +
+      "\nbut it is '" + selectedText + "'",
+      selectedText.trim().equals(expectedSelectedText));
+    getVisualEditor().mouseClickOnNode(getVisualEditor().getDomNodeByTagName("SPAN",2));
+    bot.sleep(Timing.time3S());
+    selectedText = getSourceEditor().getSelection();
+    assertVisualEditorContains(getVisualEditor(),
+      "SPAN", 
+      new String[]{"vpe-user-toggle-id","class"},
+      new String[]{"true","rich-inplace rich-inplace-edit"},
+      getTestPageFileName());
+    assertVisualEditorContains(getVisualEditor(),
+      "INPUT", 
+      new String[]{"type","class","value"},
+      new String[]{"text","rich-inplace-field",defaultLabel},
+      getTestPageFileName());
+    assertTrue("Selected text in Source Pane has to be '" + expectedSelectedText + "'" +
+      "\nbut it is '" + selectedText + "'",
+      selectedText.trim().equals(expectedSelectedText));
+  
   }
 
 }

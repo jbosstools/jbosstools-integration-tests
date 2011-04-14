@@ -22,8 +22,9 @@ public class ComboBoxTagTest extends AbstractTagTest{
   private static final String defaultLabel = "DefaultLabel";
 
   @Override
-  protected void initPageContent() {
-    jspEditor.setText("<%@ taglib uri=\"http://java.sun.com/jsf/html\" prefix=\"h\" %>\n" +
+  protected void initTestPage() {
+    initTestPage(TestPageType.JSP,
+        "<%@ taglib uri=\"http://java.sun.com/jsf/html\" prefix=\"h\" %>\n" +
         "<%@ taglib uri=\"http://java.sun.com/jsf/core\" prefix=\"f\" %>\n" +
         "<%@ taglib uri=\"http://richfaces.org/rich\" prefix=\"rich\" %>\n" +
         "<html>\n" +
@@ -44,30 +45,30 @@ public class ComboBoxTagTest extends AbstractTagTest{
 
   @Override
   protected void verifyTag() {
-    assertVisualEditorContains(jspWebBrowser,
-        "INPUT", 
-        new String[]{"type","class","value"},
-        new String[]{"text","rich-combobox-font-disabled rich-combobox-input-inactive",defaultLabel},
-        AbstractTagTest.TEST_PAGE_NAME_JSP);
-    assertVisualEditorContains(jspWebBrowser,
-        "INPUT", 
-        new String[]{"type","class"},
-        new String[]{"text","rich-combobox-font-inactive rich-combobox-button-background rich-combobox-button-inactive"},
-        AbstractTagTest.TEST_PAGE_NAME_JSP);
-    assertVisualEditorContains(jspWebBrowser,
-        "INPUT", 
-        new String[]{"type","class"},
-        new String[]{"text","rich-combobox-font-inactive rich-combobox-button-icon-inactive rich-combobox-button-inactive"},
-        AbstractTagTest.TEST_PAGE_NAME_JSP);
-    assertVisualEditorContains(jspWebBrowser,
-        "DIV", 
-        new String[]{"class"},
-        new String[]{"rich-combobox-strut rich-combobox-font"},
-        AbstractTagTest.TEST_PAGE_NAME_JSP);    
+    assertVisualEditorContains(getVisualEditor(),
+      "INPUT", 
+      new String[]{"type","class","value"},
+      new String[]{"text","rich-combobox-font-disabled rich-combobox-input-inactive",defaultLabel},
+      getTestPageFileName());
+    assertVisualEditorContains(getVisualEditor(),
+      "INPUT", 
+      new String[]{"type","class"},
+      new String[]{"text","rich-combobox-font-inactive rich-combobox-button-background rich-combobox-button-inactive"},
+      getTestPageFileName());
+    assertVisualEditorContains(getVisualEditor(),
+      "INPUT", 
+      new String[]{"type","class"},
+      new String[]{"text","rich-combobox-font-inactive rich-combobox-button-icon-inactive rich-combobox-button-inactive"},
+      getTestPageFileName());
+    assertVisualEditorContains(getVisualEditor(),
+      "DIV", 
+      new String[]{"class"},
+      new String[]{"rich-combobox-strut rich-combobox-font"},
+      getTestPageFileName());    
     // check tag selection
-    jspWebBrowser.selectDomNode(jspWebBrowser.getDomNodeByTagName("INPUT"), 0);
+    getVisualEditor().selectDomNode(getVisualEditor().getDomNodeByTagName("INPUT"), 0);
     bot.sleep(Timing.time3S());
-    String selectedText = jspEditor.getSelection();
+    String selectedText = getSourceEditor().getSelection();
     final String hasToStartWith = "<rich:comboBox";
     assertTrue("Selected text in Source Pane has to start with '" + hasToStartWith + "'" +
         "\nbut it is '" + selectedText + "'",
