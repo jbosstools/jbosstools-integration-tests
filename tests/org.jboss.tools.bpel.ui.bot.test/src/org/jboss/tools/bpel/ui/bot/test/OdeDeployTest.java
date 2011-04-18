@@ -9,6 +9,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.bpel.ui.bot.test.suite.BPELTest;
 import org.jboss.tools.bpel.ui.bot.test.util.ResourceHelper;
+import org.jboss.tools.bpel.util.SendSoapMessage;
 import org.jboss.tools.ui.bot.ext.config.Annotations.SWTBotTestRequires;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
@@ -18,7 +19,6 @@ import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.ext.view.ProjectExplorer;
 import org.jboss.tools.ui.bot.ext.view.ServersView;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 /**
@@ -29,7 +29,24 @@ import org.junit.Test;
 @SWTBotTestRequires(server = @Server(type = ServerType.SOA, state = ServerState.Running), perspective="BPEL Perspective")
 public class OdeDeployTest extends BPELTest {
 	
-	static String BUNDLE   = "org.jboss.tools.bpel.ui.bot.test";
+	final static String BUNDLE   = "org.jboss.tools.bpel.ui.bot.test";
+	final static String ENDPOINT = "http://localhost:8080/SayHelloProcess";
+	final static String MESSAGE  = 
+		"<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" " +
+		"xmlns:q0=\"http://www.jboss.org/bpel/examples\" " +
+		"xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"  " +
+		"xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">" +
+		"	<soapenv:Header/>" +
+		"	<soapenv:Body>" +
+		"			<q0:SayHelloRequest>" +
+		"				<q0:input>JBDS</q0:input>" +
+		"			</q0:SayHelloRequest>" +
+		"	</soapenv:Body>" +
+		"</soapenv:Envelope>";
+	
+
+	
+	
 	ServersView sView = new ServersView();
 	ProjectExplorer projExplorer = new ProjectExplorer(){
 		
@@ -114,9 +131,25 @@ public class OdeDeployTest extends BPELTest {
 		server.expand();
 		bot.sleep(TIME_5S);
 		assertTrue(server.getNode("say_hello  [Synchronized]").isVisible());
-		
 	}
 	
+	@Test
+	public void requestResponseTest() throws Exception {
+		
+		// Test the process
+		String response = SendSoapMessage.sendMessage(ENDPOINT, MESSAGE, "simple");
+		
+		Assert.assertTrue(response != null);
+		Assert.assertTrue(response.contains("<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\">"));
+		Assert.assertTrue(response.contains("<SOAP-ENV:Header />"));
+		Assert.assertTrue(response.contains("<SOAP-ENV:Body>"));
+		Assert.assertTrue(response.contains("<SayHelloResponse xmlns=\"http://www.jboss.org/bpel/examples\">"));
+		Assert.assertTrue(response.contains("<tns:result xmlns:tns=\"http://www.jboss.org/bpel/examples\">Hello JBDS</tns:result>"));
+		Assert.assertTrue(response.contains("</SayHelloResponse>"));
+		Assert.assertTrue(response.contains("</SOAP-ENV:Body>"));
+		Assert.assertTrue(response.contains("</SOAP-ENV:Envelope>"));
+
+	}
 	
 	
 	
