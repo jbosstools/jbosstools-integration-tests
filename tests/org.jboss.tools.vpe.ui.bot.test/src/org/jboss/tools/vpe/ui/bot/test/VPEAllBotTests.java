@@ -60,6 +60,7 @@ import org.jboss.tools.vpe.ui.bot.test.editor.tags.InplaceInputTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.InplaceSelectInputTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.JSFTagsTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.ListShuttleTagTest;
+import org.jboss.tools.vpe.ui.bot.test.editor.tags.LogTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.PanelMenuTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.PanelTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.PickListTagTest;
@@ -167,6 +168,7 @@ public class VPEAllBotTests extends SWTBotTestCase{
 		suite.addTestSuite(HtmlCommandLinkTagTest.class);
    	suite.addTestSuite(IncludeTagTest.class);
 		suite.addTestSuite(AjaxInvisibleTagsTest.class);
+		suite.addTestSuite(LogTagTest.class);
 		suite.addTestSuite(XhtmlFilePerformanceTest.class);
 		return new TestSetup(suite);
 	}

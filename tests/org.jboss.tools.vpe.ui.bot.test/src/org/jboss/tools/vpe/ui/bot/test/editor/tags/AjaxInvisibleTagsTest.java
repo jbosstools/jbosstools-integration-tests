@@ -22,6 +22,8 @@ public class AjaxInvisibleTagsTest extends AbstractTagTest{
   private static final String KEEP_ALIVE_VALUE = "*! KeepAlive Value";
   private static final String SUPPORT_VALUE = "*! Support Value";
   private static final String STATUS_VALUE = "*! Status Value";
+  private static final String LOAD_SCRIPT_VALUE = "*! loadScript Value";
+  private static final String LOAD_STYLE_VALUE = "*! loadStyle Value";
   @Override
   protected void initTestPage() {
     initTestPage(TestPageType.JSP,
@@ -39,6 +41,8 @@ public class AjaxInvisibleTagsTest extends AbstractTagTest{
       "     <a4j:keepAlive beanName=\"\">" + AjaxInvisibleTagsTest.KEEP_ALIVE_VALUE + "</a4j:keepAlive>\n" +
       "     <a4j:support>" + AjaxInvisibleTagsTest.SUPPORT_VALUE + "</a4j:support>\n" +
       "     <a4j:status>" + AjaxInvisibleTagsTest.STATUS_VALUE + "</a4j:status>\n" +
+      "     <a4j:loadScript src=\"\">" + AjaxInvisibleTagsTest.LOAD_SCRIPT_VALUE + "</a4j:loadScript>\n" +
+      "     <a4j:loadStyle src=\"\">" + AjaxInvisibleTagsTest.LOAD_STYLE_VALUE + "</a4j:loadStyle>\n" +
       "   </f:view>\n" +
       " </body> \n" +
       "</html>");
