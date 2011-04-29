@@ -12,7 +12,6 @@ import org.eclipse.bpel.model.impl.ElseIfImpl;
 import org.eclipse.bpel.model.impl.ElseImpl;
 import org.eclipse.bpel.model.impl.EmptyImpl;
 import org.eclipse.bpel.model.impl.ExitImpl;
-import org.eclipse.bpel.model.impl.ExtensibleElementImpl;
 import org.eclipse.bpel.model.impl.FaultHandlerImpl;
 import org.eclipse.bpel.model.impl.FlowImpl;
 import org.eclipse.bpel.model.impl.ForEachImpl;
@@ -31,6 +30,7 @@ import org.eclipse.bpel.model.impl.ThrowImpl;
 import org.eclipse.bpel.model.impl.ValidateImpl;
 import org.eclipse.bpel.model.impl.WaitImpl;
 import org.eclipse.bpel.model.impl.WhileImpl;
+import org.eclipse.wst.wsdl.internal.impl.ExtensibleElementImpl;
 
 import org.junit.Assert;
 

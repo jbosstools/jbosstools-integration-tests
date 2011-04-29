@@ -5,7 +5,7 @@ import java.lang.reflect.Method;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
-import org.eclipse.bpel.model.impl.ExtensibleElementImpl;
+import org.eclipse.wst.wsdl.internal.impl.ExtensibleElementImpl;
 import org.jboss.tools.bpel.ui.bot.test.assertion.BPELValidator;
 import org.junit.Assert;
 
