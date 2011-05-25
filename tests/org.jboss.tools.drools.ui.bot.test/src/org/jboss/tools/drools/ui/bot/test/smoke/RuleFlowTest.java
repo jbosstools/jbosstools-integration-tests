@@ -22,12 +22,8 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swtbot.eclipse.gef.finder.SWTGefBot;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditor;
-import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
-import org.eclipse.swtbot.swt.finder.results.Result;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.drools.ui.bot.test.DroolsAllBotTests;
@@ -41,6 +37,7 @@ import org.jboss.tools.ui.bot.ext.types.ViewType;
 import org.junit.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
@@ -113,18 +110,11 @@ public class RuleFlowTest extends SWTTestExt{
     isEditorMaximized = true;
     SWTGefBot gefBot = new SWTGefBot();
     SWTBotGefEditor gefEditor = gefBot.gefEditor(ruleFlowFileName);
-    final Control editorControl = (Control)gefEditor.getWidget();
-    Rectangle editorBounds = UIThreadRunnable.syncExec(new Result<Rectangle>() {
-      public Rectangle run() {
-        return editorControl.getBounds();
-      }
-    });
     // Clear Editor
-    gefEditor.activateTool("Marquee");
-    gefEditor.drag(0,0,editorBounds.width - editorBounds.x, editorBounds.height - editorBounds.y);
     gefEditor.setFocus();
-    bot.sleep(Timing.time1S());
-    KeyboardHelper.typeKeyCodeUsingAWT(KeyEvent.VK_DELETE);
+    deleteAllObjectsFromRFFile(gefEditor,
+      DroolsAllBotTests.DROOLS_PROJECT_NAME,
+      DroolsAllBotTests.RULE_FLOW_RF_FILE_NAME);
     // Draw each component
     String[] tools = new String[]{"Start Event","End Event","Rule Task",
       "Gateway [diverge]","Gateway [converge]","Reusable Sub-Process",
@@ -455,4 +445,47 @@ public class RuleFlowTest extends SWTTestExt{
       e.printStackTrace();
     }
   }
+  /**
+   * Delete all objects from RF File
+   * @param gefEditor
+   * @param projectName
+   * @param ruleFlowFileName
+   */
+  private void deleteAllObjectsFromRFFile(SWTBotGefEditor gefEditor, String projectName, String ruleFlowFileName) {
+
+    Document doc = loadXmlFile(SWTUtilExt.getPathToProject(projectName)
+        + File.separator + RuleFlowTest.RULE_FLOW_FILE_DIRECTORY
+        + File.separator + ruleFlowFileName);
+
+    String errorDescription = null;
+    Element rootNode = doc.getDocumentElement();
+    doc.normalizeDocument();
+    if (rootNode.getNodeName().equals(ROOT_NODE_NAME)) {
+      NodeList rootNodeList = rootNode.getChildNodes();
+      List<Node> rootNodes = removeTextNodes(rootNodeList);
+      if (rootNodes.size() == ROOT_NODE_CHILDREN_COUNT) {
+        Node nodesNode = rootNodes.get(1);
+        errorDescription = checkNodeName(nodesNode, NODES_NODE_NAME);
+        if (errorDescription == null) {
+          List<Node> nodes = removeTextNodes(nodesNode.getChildNodes());
+          for (Node node : nodes){
+            NamedNodeMap attributes = node.getAttributes();
+            int xPos = Integer.parseInt(attributes.getNamedItem("x").getNodeValue());
+            int yPos = Integer.parseInt(attributes.getNamedItem("y").getNodeValue());
+            gefEditor.click(xPos + 3, yPos + 3);
+            bot.sleep(Timing.time1S());
+            KeyboardHelper.typeKeyCodeUsingAWT(KeyEvent.VK_DELETE);
+            bot.sleep(Timing.time1S());
+          }
+        }
+      } else {
+        errorDescription = "'" + NODES_NODE_NAME + "'" +" was not found on expected location within RF file." +
+          " RF file structure has been changed";
+      }
+    } else {
+      errorDescription = "Root Node has to have name '" + ROOT_NODE_NAME + "'. RF file structure has been changed.";
+    }
+    assertNull(errorDescription,errorDescription);
+  }
+
 }

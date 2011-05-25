@@ -68,11 +68,16 @@ public class DroolsAllBotTests extends SWTTestExt {
   public static final String RULE_FLOW_JAVA_TEST_FILE_NAME = "ProcessTest.java";
   public static final String RULE_FLOW_RF_FILE_NAME = "ruleflow.rf";
   public static final String DECISION_TABLE_JAVA_TEST_FILE_NAME = "DecisionTableTest.java";
-  public static final String USE_EXTERNAL_DROOLS_RUNTIME_PROPERTY_NAME= "use-external-drools-runtime";
-  public static final String EXTERNAL_DROOLS_RUTIME_HOME_PROPERTY_NAME= "external-drools-runtime-home";
+  public static final String USE_EXTERNAL_DROOLS_RUNTIME_PROPERTY_NAME = "use-external-drools-runtime";
+  public static final String EXTERNAL_DROOLS_RUTIME_HOME_PROPERTY_NAME = "external-drools-runtime-home";
+  public static final String GUVNOR_REPOSITORY_URL_PROPERTY_NAME = "guvnor-repository-url";
   private static boolean USE_EXTERNAL_DROOLS_RUNTIME;
 
   private static String testDroolsRuntimeName = null;
+  private static String testDroolsRuntimeLocation = null;
+  private static String guvnorRepositoryUrl = null;
+  private static String guvnorRepositoryRootTreeItem = "http://localhost:8080/jboss-brms/org.drools.guvnor.Guvnor/webdav/";
+  
   public static String getTestDroolsRuntimeName() {
     return testDroolsRuntimeName;
   }
@@ -88,12 +93,33 @@ public class DroolsAllBotTests extends SWTTestExt {
   public static void setTestDroolsRuntimeLocation(String testDroolsRuntimeLocation) {
     DroolsAllBotTests.testDroolsRuntimeLocation = testDroolsRuntimeLocation;
   }
+  
+  public static String getGuvnorRepositoryUrl() {
+    return guvnorRepositoryUrl;
+  }
 
-  private static String testDroolsRuntimeLocation = null;
+  private static void setGuvnorRepositoryUrl(String guvnorRepositoryUrl) {
+    DroolsAllBotTests.guvnorRepositoryUrl = guvnorRepositoryUrl;
+  }
+
+  public static String getGuvnorRepositoryRootTreeItem() {
+    return guvnorRepositoryRootTreeItem;
+  }
+
+  private static void setGuvnorRepositoryRootTreeItem(
+      String guvnorRepositoryRootTreeItem) {
+    DroolsAllBotTests.guvnorRepositoryRootTreeItem = guvnorRepositoryRootTreeItem;
+  }
+
   @BeforeClass
   public static void setUpTest() {
     jbt.closeReportUsageWindowIfOpened(false);
     props = util.loadProperties(Activator.PLUGIN_ID);
+    String guvnorRepositoryUrl = props.getProperty(DroolsAllBotTests.GUVNOR_REPOSITORY_URL_PROPERTY_NAME);
+    if (guvnorRepositoryUrl != null){
+      DroolsAllBotTests.setGuvnorRepositoryUrl(guvnorRepositoryUrl);
+      DroolsAllBotTests.setGuvnorRepositoryRootTreeItem("http://localhost:8080" + guvnorRepositoryUrl);
+    }
     String useExternalDroolRuntime = props.getProperty(DroolsAllBotTests.USE_EXTERNAL_DROOLS_RUNTIME_PROPERTY_NAME);
     DroolsAllBotTests.USE_EXTERNAL_DROOLS_RUNTIME = useExternalDroolRuntime != null && useExternalDroolRuntime.equalsIgnoreCase("true");
     String droolsRuntimeLocation = props.getProperty(DroolsAllBotTests.EXTERNAL_DROOLS_RUTIME_HOME_PROPERTY_NAME);

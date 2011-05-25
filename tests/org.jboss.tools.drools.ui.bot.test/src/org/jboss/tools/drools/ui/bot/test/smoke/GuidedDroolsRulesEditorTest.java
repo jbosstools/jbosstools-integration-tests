@@ -128,10 +128,10 @@ public class GuidedDroolsRulesEditorTest extends SWTTestExt{
     ruleEditor.selectPage(2);
     String editorContent = droolsEditor.getText();
     assertTrue(DroolsAllBotTests.GUIDED_DROOLS_RULE_NAME +
-      " has to contain text: List( empty == \"true\" )\n" +
+      " has to contain text: List( empty == true )\n" +
       "but it doesn't.\n" +
       "It contains this text: " + editorContent, 
-      editorContent.replaceAll(" ","").indexOf("List(empty==\"true\")") > 0);
+      editorContent.replaceAll(" ","").indexOf("List(empty==true)") > 0);
   }
   /**
    * Removes Drools Rule Condition from Guided Drools Rule

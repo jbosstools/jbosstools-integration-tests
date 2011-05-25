@@ -160,7 +160,7 @@ public class ManageDroolsRuntime extends SWTTestExt{
       DroolsRuntimeManager.setDroolsRuntimes(new DroolsRuntime[]{droolsRuntime});
       // Test if Drools runtime is defined
       assertTrue("Drools Runtime was not properly created on location: " + runtimeLocation,
-        new File (runtimeLocation + File.separator + "drools-api.jar").exists());
+        new File (runtimeLocation + File.separator + "drools-core.jar").exists());
       selectDroolsPreferences();
       SWTBotTable table = bot.table();
       boolean droolsRuntimeCreated = 

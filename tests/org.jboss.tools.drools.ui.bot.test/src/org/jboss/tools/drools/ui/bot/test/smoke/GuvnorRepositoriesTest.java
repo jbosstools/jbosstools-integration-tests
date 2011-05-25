@@ -63,7 +63,8 @@ public class GuvnorRepositoriesTest extends SWTTestExt{
   private static final String GUVNOR_REPOSITORY_HISTORY_TEST_FILE = "MortgageModel.model.drl";
   private static final String GUVNOR_USER_NAME = "admin";
   private static final String GUVNOR_PASSWORD = "admin";
-  private GuvnorRepositories guvnorRepositories = new GuvnorRepositories(); 
+  private GuvnorRepositories guvnorRepositories = new GuvnorRepositories();
+
   /**
    * Tests Guvnor Repositories
    */
@@ -94,7 +95,13 @@ public class GuvnorRepositoriesTest extends SWTTestExt{
       IDELabel.GuvnorRepositories.ADD_GUVNOR_REPOSITORY_TOOLTIP)
         .click();
     eclipse.waitForShell("");
-    guvnorRepositoriesBot.activeShell().bot().button(IDELabel.Button.FINISH).click();
+    SWTBot addGuvnorRepositoryDialog = guvnorRepositoriesBot.activeShell().bot();
+    String guvnorRepositoryUrl = DroolsAllBotTests.getGuvnorRepositoryUrl();
+    if (guvnorRepositoryUrl != null && guvnorRepositoryUrl.length() > 0){
+      addGuvnorRepositoryDialog.textWithLabel(IDELabel.GuvnorAddRepositoryDialog.REPOSITORY)
+       .setText(guvnorRepositoryUrl);
+    }
+    addGuvnorRepositoryDialog.button(IDELabel.Button.FINISH).click();    
     assertTrue("Guvnor repository was not created properly",
       guvnorRepositoriesBot.tree().rowCount() == 1);
   }
@@ -149,7 +156,7 @@ public class GuvnorRepositoriesTest extends SWTTestExt{
     
     guvnorRepositories.show();
 
-    guvnorRepositories.openFile(Timing.time3S(),IDELabel.GuvnorRepositories.GUVNOR_REPOSITORY_ROOT_TREE_ITEM,
+    guvnorRepositories.openFile(Timing.time3S(),DroolsAllBotTests.getGuvnorRepositoryRootTreeItem(),
       IDELabel.GuvnorRepositories.PACKAGES_TREE_ITEM,
       IDELabel.GuvnorRepositories.MORTGAGE_TREE_ITEM,
       fileToOpen);
@@ -189,7 +196,7 @@ public class GuvnorRepositoriesTest extends SWTTestExt{
     eclipse.openPerspective(PerspectiveType.JAVA);
     guvnorRepositories.show().bot();
     SWTBotTreeItem tiGuvnorFile = guvnorRepositories.selectTreeItem(Timing.time3S(),fileName,
-      new String[]{IDELabel.GuvnorRepositories.GUVNOR_REPOSITORY_ROOT_TREE_ITEM,
+      new String[]{DroolsAllBotTests.getGuvnorRepositoryRootTreeItem(),
         IDELabel.GuvnorRepositories.PACKAGES_TREE_ITEM,
         IDELabel.GuvnorRepositories.MORTGAGE_TREE_ITEM});
     tiGuvnorFile.select();
@@ -236,7 +243,7 @@ public class GuvnorRepositoriesTest extends SWTTestExt{
       IDELabel.Menu.GUVNOR,IDELabel.Menu.GUVNOR_COMMIT);
     bot.sleep(Timing.time5S());
     editor.close();
-    editor = guvnorRepositories.openFile(Timing.time2S(),IDELabel.GuvnorRepositories.GUVNOR_REPOSITORY_ROOT_TREE_ITEM,
+    editor = guvnorRepositories.openFile(Timing.time2S(),DroolsAllBotTests.getGuvnorRepositoryRootTreeItem(),
         IDELabel.GuvnorRepositories.PACKAGES_TREE_ITEM,
         IDELabel.GuvnorRepositories.MORTGAGE_TREE_ITEM,
         fileName);
@@ -259,7 +266,7 @@ public class GuvnorRepositoriesTest extends SWTTestExt{
       addToGuvnorDialogBot.tree(),
       Timing.time3S(),
       IDELabel.GuvnorRepositories.MORTGAGE_TREE_ITEM, 
-      new String[]{IDELabel.GuvnorRepositories.GUVNOR_REPOSITORY_ROOT_TREE_ITEM,
+      new String[]{DroolsAllBotTests.getGuvnorRepositoryRootTreeItem(),
       IDELabel.GuvnorRepositories.PACKAGES_TREE_ITEM})
       .select();
     bot.sleep(Timing.time5S());
@@ -268,7 +275,7 @@ public class GuvnorRepositoriesTest extends SWTTestExt{
     boolean isAddedToGuvnorRepository = false;
     try{
       guvnorRepositories.selectTreeItem(Timing.time2S(),sampleFileName,
-          new String[]{IDELabel.GuvnorRepositories.GUVNOR_REPOSITORY_ROOT_TREE_ITEM,
+          new String[]{DroolsAllBotTests.getGuvnorRepositoryRootTreeItem(),
             IDELabel.GuvnorRepositories.PACKAGES_TREE_ITEM,
             IDELabel.GuvnorRepositories.MORTGAGE_TREE_ITEM});
       isAddedToGuvnorRepository = true;
@@ -291,7 +298,7 @@ public class GuvnorRepositoriesTest extends SWTTestExt{
     boolean isRemovedFromGuvnorRepository = false;
     try{
       guvnorRepositories.selectTreeItem(Timing.time2S(),sampleFileName,
-          new String[]{IDELabel.GuvnorRepositories.GUVNOR_REPOSITORY_ROOT_TREE_ITEM,
+          new String[]{DroolsAllBotTests.getGuvnorRepositoryRootTreeItem(),
             IDELabel.GuvnorRepositories.PACKAGES_TREE_ITEM,
             IDELabel.GuvnorRepositories.MORTGAGE_TREE_ITEM});
       isRemovedFromGuvnorRepository = false;
@@ -310,7 +317,7 @@ public class GuvnorRepositoriesTest extends SWTTestExt{
       Timing.time5S(),
       importFileName,
       new String[] {
-        IDELabel.GuvnorRepositories.GUVNOR_REPOSITORY_ROOT_TREE_ITEM,
+        DroolsAllBotTests.getGuvnorRepositoryRootTreeItem(),
         IDELabel.GuvnorRepositories.PACKAGES_TREE_ITEM,
         IDELabel.GuvnorRepositories.MORTGAGE_TREE_ITEM }).select();
     bot.button(IDELabel.Button.NEXT).click();
@@ -351,7 +358,7 @@ public class GuvnorRepositoriesTest extends SWTTestExt{
   }
   private void drillIntoFunctionalityCheck(){
     SWTBotView guvnorReposioryView = guvnorRepositories.show();
-    SWTBotTreeItem tiRoot = guvnorRepositories.selectTreeItem(IDELabel.GuvnorRepositories.GUVNOR_REPOSITORY_ROOT_TREE_ITEM,null)
+    SWTBotTreeItem tiRoot = guvnorRepositories.selectTreeItem(DroolsAllBotTests.getGuvnorRepositoryRootTreeItem(),null)
       .doubleClick();
     bot.sleep(Timing.time5S());
     SWTBotShell activeShell = bot.activeShell();
@@ -407,9 +414,9 @@ public class GuvnorRepositoriesTest extends SWTTestExt{
           .click();
     guvnorRepositoryBot.sleep(Timing.time3S());
     assertTrue("Guvnor repository Home functionality doesn't work properly.\n" +
-      "Expected First Tree Item in Guvnor Repository is " + IDELabel.GuvnorRepositories.GUVNOR_REPOSITORY_ROOT_TREE_ITEM +
+      "Expected First Tree Item in Guvnor Repository is " + DroolsAllBotTests.getGuvnorRepositoryRootTreeItem() +
       "\nBut it was " + guvnorRepositoryTree.getAllItems()[0].getText(),
-      IDELabel.GuvnorRepositories.GUVNOR_REPOSITORY_ROOT_TREE_ITEM.equals(guvnorRepositoryTree.getAllItems()[0].getText()));    
+      DroolsAllBotTests.getGuvnorRepositoryRootTreeItem().equals(guvnorRepositoryTree.getAllItems()[0].getText()));    
   }
   /**
    * Check Repository History Functionality
@@ -425,7 +432,7 @@ public class GuvnorRepositoriesTest extends SWTTestExt{
       Timing.time5S(),
       testFileName,
       new String[] {
-        IDELabel.GuvnorRepositories.GUVNOR_REPOSITORY_ROOT_TREE_ITEM,
+        DroolsAllBotTests.getGuvnorRepositoryRootTreeItem(),
         IDELabel.GuvnorRepositories.PACKAGES_TREE_ITEM,
         IDELabel.GuvnorRepositories.MORTGAGE_TREE_ITEM }).select();
     bot.button(IDELabel.Button.NEXT).click();
