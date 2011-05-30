@@ -5,6 +5,8 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+
+import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.ILogListener;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
@@ -31,7 +33,7 @@ public abstract class JBTSWTBotTestCase extends SWTTestExt implements
 	public static final String PATH_TO_SWT_BOT_PROPERTIES = "SWTBot.properties"; //$NON-NLS-1$
 	protected SWTJBTBot bot = new SWTJBTBot();
 	private static int sleepTime = 1000;
-
+	private Logger log = Logger.getLogger(JBTSWTBotTestCase.class);
 	/*
 	 * (non-Javadoc) This static block read properties from
 	 * org.jboss.tools.ui.bot.test/resources/SWTBot.properties file and set up
@@ -161,8 +163,13 @@ public abstract class JBTSWTBotTestCase extends SWTTestExt implements
 	protected void tearDown() throws Exception {
 		Platform.removeLogListener(this);
 		deleteLog();
-		if (getException() != null) {
-			throw new Exception(getException());
+    Throwable e = getException();
+		if (e != null) {
+      log.error(e.getMessage(),e);
+      if (e.getCause() != null){
+        log.error(e.getCause().getMessage(),e.getCause());
+      }
+			throw new Exception(e);
 		}
 	}
 
