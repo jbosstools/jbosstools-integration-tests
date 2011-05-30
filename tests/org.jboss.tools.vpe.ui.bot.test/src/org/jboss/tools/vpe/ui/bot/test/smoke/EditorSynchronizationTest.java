@@ -64,7 +64,7 @@ public class EditorSynchronizationTest extends VPEEditorTestCase{
 	    bot.viewByTitle(WidgetVariables.OUTLINE).bot().tree().selection().get(0).get(0).startsWith("h:messages "));
 	  
 	  SWTBotTree outlineTree = bot.viewByTitle(WidgetVariables.PROPERTIES).bot().tree();
-	  outlineTree.getTreeItem("Attributes").expand().getNode("style").select();
+	  outlineTree.getTreeItem("General").expand().getNode("style").select();
 	  
 	  assertTrue("style attribute of h:message node has wrong value within Properties view" +
 	  		". Should be 'color: red'",

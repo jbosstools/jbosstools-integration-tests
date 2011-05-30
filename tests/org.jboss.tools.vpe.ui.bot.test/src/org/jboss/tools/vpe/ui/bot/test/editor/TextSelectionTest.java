@@ -45,7 +45,7 @@ public class TextSelectionTest extends VPEEditorTestCase {
     "  </body>\n" +
     "</html>";
       
-  private static final String TEST_PAGE_NAME = "CoreHTMLTagsTest.jsp";
+  private static final String TEST_PAGE_NAME = "TextSelectionTest.jsp";
   
   private SWTBotEditorExt jspEditor;
   private SWTBotWebBrowser webBrowser;

@@ -52,7 +52,7 @@ public class AjaxValidatorTagTest extends AbstractTagTest{
     assertNotNull("Selected node in Visual Editor cannot be null",selectedVisualNode);
     String expectedSelectedNode = "SPAN";
     assertTrue("Selected Node has to be '" + expectedSelectedNode + "' node but is " + selectedVisualNode.getLocalName(),
-      selectedVisualNode.getLocalName().equals(expectedSelectedNode));
+      selectedVisualNode.getLocalName().equalsIgnoreCase(expectedSelectedNode));
     String selectedNodeTitle = SWTBotWebBrowser.getNodeAttribute(selectedVisualNode, "title");
     assertNotNull("Selected Node in Visual Editor has to have attribute title but it has not." ,selectedNodeTitle);
     final String expectedTitle = "h:inputText value: " + AjaxValidatorTagTest.INPUT_TEXT;

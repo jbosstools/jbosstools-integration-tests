@@ -79,32 +79,32 @@ public class StylesOnThePageTest extends VPEEditorTestCase {
     Browser previewPaneBrowser = browsers.get(1);
     // Test if current style is applied on Visual/Source pane
     String textToContain = "<STYLE>h3 {" + oldStyle + "}</STYLE>";
-    String browserText = SWTUtilExt.invokeMethod(visualSourcePaneBrowser, "getText"); 
+    String browserText = SWTUtilExt.invokeMethod(visualSourcePaneBrowser, "getText").toLowerCase(); 
     assertTrue("Browser on Visual/>Source pane has to contain text " + textToContain +
         " but it doesn't.\n" +
         "Browser text is:\n" +
         browserText,
-        browserText.contains(textToContain));
+        browserText.contains(textToContain.toLowerCase()));
     textToContain = "<H3 style=\"-moz-user-modify:";
     assertTrue("Browser on Visual/>Source pane has to contain text " + textToContain +
         " but it doesn't.\n" +
         "Browser text is:\n" +
         browserText,
-        browserText.contains(textToContain));
+        browserText.contains(textToContain.toLowerCase()));
     //  Test if current style is applied on Preview pane
     textToContain = "<STYLE>h3 {" + oldStyle + "}</STYLE>";
-    browserText = SWTUtilExt.invokeMethod(previewPaneBrowser, "getText");
+    browserText = SWTUtilExt.invokeMethod(previewPaneBrowser, "getText").toLowerCase();
     assertTrue("Browser on Preview pane has to contain text " + textToContain +
         " but it doesn't.\n" +
         "Browser text is:\n" +
         browserText,
-        browserText.contains(textToContain));
+        browserText.contains(textToContain.toLowerCase()));
     textToContain = "<H3 style=\"-moz-user-modify:";
     assertTrue("Browser on Preview pane has to contain text " + textToContain +
         " but it doesn't.\n" +
         "Browser text is:\n" +
         browserText,
-        browserText.contains(textToContain));
+        browserText.contains(textToContain.toLowerCase()));
     // Apply new style
     String newStyle = "background: black;color: white;";
     botEditorExt.selectPage(IDELabel.VisualPageEditor.VISUAL_SOURCE_TAB_LABEL);
@@ -115,32 +115,32 @@ public class StylesOnThePageTest extends VPEEditorTestCase {
     botEditorExt.selectPage(IDELabel.VisualPageEditor.PREVIEW_TAB_LABEL);
     // Test if current style is applied on Visual/Source pane
     textToContain = "<STYLE>h3 {" + newStyle + "}</STYLE>";
-    browserText = SWTUtilExt.invokeMethod(visualSourcePaneBrowser, "getText");
+    browserText = SWTUtilExt.invokeMethod(visualSourcePaneBrowser, "getText").toLowerCase();
     assertTrue("Browser on Visual/>Source pane has to contain text " + textToContain +
         " but it doesn't.\n" +
         "Browser text is:\n" +
         browserText,
-        browserText.contains(textToContain));
+        browserText.contains(textToContain.toLowerCase()));
     textToContain = "<H3 style=\"-moz-user-modify:";
     assertTrue("Browser on Visual/>Source pane has to contain text " + textToContain +
         " but it doesn't.\n" +
         "Browser text is:\n" +
         browserText,
-        browserText.contains(textToContain));
+        browserText.contains(textToContain.toLowerCase()));
     //  Test if current style is applied on Preview pane
     textToContain = "<STYLE>h3 {" + newStyle + "}</STYLE>";
-    browserText = SWTUtilExt.invokeMethod(previewPaneBrowser, "getText");
+    browserText = SWTUtilExt.invokeMethod(previewPaneBrowser, "getText").toLowerCase();
     assertTrue("Browser on Preview pane has to contain text " + textToContain +
         " but it doesn't.\n" +
         "Browser text is:\n" +
         browserText,
-        browserText.contains(textToContain));
+        browserText.contains(textToContain.toLowerCase()));
     textToContain = "<H3 style=\"-moz-user-modify:";
     assertTrue("Browser on Preview pane has to contain text " + textToContain +
         " but it doesn't.\n" +
         "Browser text is:\n" +
         browserText,
-        browserText.contains(textToContain));
+        browserText.contains(textToContain.toLowerCase()));
 
     botEditorExt.selectPage(IDELabel.VisualPageEditor.VISUAL_SOURCE_TAB_LABEL);
     jspEditor.close();

@@ -20,6 +20,7 @@ import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.results.Result;
 import org.eclipse.swtbot.swt.finder.results.VoidResult;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
+import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.helper.KeyboardHelper;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.vpe.editor.xpl.CustomSashForm;
@@ -85,6 +86,10 @@ public class MinMaxPanesTest extends VPEEditorTestCase {
       }
     });
     assertVisualEditorContains(webBrowser, "INPUT", null, null, MinMaxPanesTest.TEST_PAGE_NAME);
+    jspTextEditor.setFocus();
+    jspTextEditor.selectRange(4,25,0);
+    webBrowser.setFocus();
+    KeyboardHelper.typeKeyCodeUsingAWTRepeately(KeyEvent.VK_RIGHT, 1);
     // Make changes to Visual Page and Restore Sash position check for changes reflected in Source Pane
     UIThreadRunnable.syncExec(new VoidResult() {
       @Override
@@ -92,9 +97,6 @@ public class MinMaxPanesTest extends VPEEditorTestCase {
         csf.maxUp();
       }
     });
-    jspTextEditor.selectRange(4,18,0);
-    webBrowser.setFocus();
-    KeyboardHelper.typeKeyCodeUsingAWTRepeately(KeyEvent.VK_RIGHT, 1);
     String insertTestString = "xxinsertedyy";
     KeyboardHelper.typeBasicStringUsingAWT(insertTestString);
     jspTextEditor.save();
@@ -104,6 +106,7 @@ public class MinMaxPanesTest extends VPEEditorTestCase {
         csf.downClicked();
       }
     });
+    bot.sleep(Timing.time1S());
     assertSourceEditorContains(jspTextEditor.getText(), insertTestString, MinMaxPanesTest.TEST_PAGE_NAME);
 	}
 	

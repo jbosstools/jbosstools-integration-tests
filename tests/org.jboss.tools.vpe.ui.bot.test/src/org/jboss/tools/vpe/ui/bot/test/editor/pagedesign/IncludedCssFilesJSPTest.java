@@ -50,6 +50,9 @@ public class IncludedCssFilesJSPTest extends PageDesignTestCase {
     bot.shell(IDELabel.Shell.NEW_CSS_FILE).activate(); //$NON-NLS-1$
     bot.textWithLabel(IDELabel.NewCSSWizard.FILE_NAME).setText(IncludedCssFilesJSPTest.CSS_FILE_NAME); //$NON-NLS-1$
     bot.button(IDELabel.Button.FINISH).click(); //$NON-NLS-1$
+    if (getException() != null && getException() instanceof NullPointerException){
+      setException(null);
+    }
     bot.sleep(Timing.time3S());
     util.waitForJobs(JobName.BUILDING_WS);
     SWTBotEditor cssEditor = bot.editorByTitle(IncludedCssFilesJSPTest.CSS_FILE_NAME);
