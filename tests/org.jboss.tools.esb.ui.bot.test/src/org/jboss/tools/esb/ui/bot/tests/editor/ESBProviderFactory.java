@@ -64,7 +64,7 @@ public class ESBProviderFactory {
 			protected void doFillForm(SWTBotShell shell) {
 				Assertions.assertButtonEnabled(shell.bot().button(IDELabel.Button.NEXT), false);
 				shell.bot().text(0).setText(this.uiName);
-				shell.bot().text(1).setText(this.uiName);
+				shell.bot().comboBox().setSelection(0);
 				Assertions.assertButtonEnabled(shell.bot().button(IDELabel.Button.NEXT), true);
 				shell.bot().button(IDELabel.Button.NEXT).click();
 				Assertions.assertButtonEnabled(shell.bot().button(getFinishButton()), false);
@@ -78,7 +78,7 @@ public class ESBProviderFactory {
 			protected void doFillForm(SWTBotShell shell) {
 				Assertions.assertButtonEnabled(shell.bot().button(IDELabel.Button.NEXT), false);
 				shell.bot().text(0).setText(this.uiName);
-				shell.bot().text(1).setText(this.uiName);
+				shell.bot().comboBox().setSelection(0);
 				Assertions.assertButtonEnabled(shell.bot().button(IDELabel.Button.NEXT), true);
 				shell.bot().button(IDELabel.Button.NEXT).click();
 				Assertions.assertButtonEnabled(shell.bot().button(getFinishButton()), false);
