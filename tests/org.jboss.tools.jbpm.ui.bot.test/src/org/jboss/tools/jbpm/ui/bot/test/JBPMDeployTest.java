@@ -12,6 +12,7 @@ package org.jboss.tools.jbpm.ui.bot.test;
 
 import org.eclipse.swtbot.eclipse.gef.finder.SWTGefBot;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditor;
+import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
 import org.jboss.tools.jbpm.ui.bot.test.suite.JBPMTest;
 import org.jboss.tools.jbpm.ui.bot.test.suite.Project;
@@ -51,10 +52,36 @@ public class JBPMDeployTest extends JBPMTest {
 		
 		item.setFocus();		
 		bot.menu("jBPM").menu("Ping Server").click();			
+
+		try {
+			bot.sleep(TIME_1S);
+			bot.shell("Password Required").activate();
+			bot.text("User name:").setText("admin");
+			bot.text("Password:").setText("admin");
+			bot.button("OK").click();
+			bot.sleep(TIME_1S);
+		} catch (WidgetNotFoundException e) {
+			// do nothing
+			log.info("jBPM already authenticated");
+		}
+
+		// Confirm ping message dialog
+		bot.sleep(TIME_1S);
+		bot.shell("Ping Server Successful").activate();
+		bot.button("OK").click();
+		bot.sleep(TIME_1S);
 		
-		//bot.text(0).setText("admin");
-		//bot.text(1).setText("admin");
-		//bot.clickButton(IDELabel.Button.OK);				
-		//bot.sleep(TIME_10S);
+
+		// Deploy
+		bot.menu("jBPM").menu("Deploy Process").click();
+		// Confirm deployed message dialog
+		bot.sleep(TIME_1S);
+		bot.shell("Deployment Successful").activate();
+		bot.button("OK").click();
+		bot.sleep(TIME_1S);
+		
+		log.info("Process deployed");
+		
+		// TODO - check via jpdl console
 	}
 }
