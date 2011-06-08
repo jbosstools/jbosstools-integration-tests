@@ -101,7 +101,9 @@ public class SampleWSTest extends WSTestBase {
 		bot.sleep(1500);
 		ti = ti.getNode("Deployment Descriptor: " + project);
 		new TreeItemAction(ti, "Generate Deployment Descriptor Stub").run();
+		bot.sleep(1500);
 		util.waitForNonIgnoredJobs();
+		bot.sleep(1500);
 	}
 
 	private void createSampleSOAPWS(String project, String name, String pkg, String cls) {

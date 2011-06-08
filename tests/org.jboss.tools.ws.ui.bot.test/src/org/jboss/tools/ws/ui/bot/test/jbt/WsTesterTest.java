@@ -113,7 +113,7 @@ public class WsTesterTest extends SWTTestExt {
 		dlg.ok();
 		L.log(Level.INFO, "Request: {0}", wstv.getRequestBody());
 		Assert.assertTrue(wstv.getRequestBody().contains(
-				"<echo xmlns = \"http://test.jboss.org/ns\">"));
+				"<tns:echo xmlns:tns=\"http://test.jboss.org/ns\">"));
 
 		dlg = wstv.getFromWSDL();
 		dlg.setURI(uri);
@@ -134,7 +134,7 @@ public class WsTesterTest extends SWTTestExt {
 		dlg.ok();
 		L.log(Level.INFO, "Request: {0}", wstv.getRequestBody());
 		Assert.assertTrue(wstv.getRequestBody().contains(
-						"<GetSearchResults xmlns = \"http://www.ecubicle.net/webservices\">"));
+						"<tns:GetSearchResults xmlns:tns=\"http://www.ecubicle.net/webservices\">"));
 	}
 
 	/**
@@ -150,6 +150,7 @@ public class WsTesterTest extends SWTTestExt {
 		InputStream is = WsTesterTest.class.getResourceAsStream("/resources/jbossws/message_soap_out.xml");
 		wstv.setRequestBody(readResource(is));
 		wstv.invoke();
+		bot.sleep(5000);
 		String rsp = wstv.getResponseBody();
 		L.log(Level.FINE, "SOAP response: {0}", rsp);
 		Assert.assertTrue(rsp.trim().length() > 0);
