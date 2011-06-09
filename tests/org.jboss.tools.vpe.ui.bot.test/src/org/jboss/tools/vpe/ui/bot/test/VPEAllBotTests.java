@@ -77,6 +77,7 @@ import org.jboss.tools.vpe.ui.bot.test.palette.ManagePaletteGroupsTest;
 import org.jboss.tools.vpe.ui.bot.test.palette.PaletteEditorTest;
 import org.jboss.tools.vpe.ui.bot.test.smoke.EditorSynchronizationTest;
 import org.jboss.tools.vpe.ui.bot.test.smoke.JSPPageCreationTest;
+import org.jboss.tools.vpe.ui.bot.test.smoke.OpenOnTest;
 import org.jboss.tools.vpe.ui.bot.test.smoke.RenameFacesConfigFileTest;
 import org.jboss.tools.vpe.ui.bot.test.smoke.RenameJSPFileTest;
 import org.jboss.tools.vpe.ui.bot.test.smoke.RenameXHTMLFileTest;
@@ -169,6 +170,7 @@ public class VPEAllBotTests extends SWTBotTestCase{
    	suite.addTestSuite(IncludeTagTest.class);
 		suite.addTestSuite(AjaxInvisibleTagsTest.class);
 		suite.addTestSuite(LogTagTest.class);
+		suite.addTestSuite(OpenOnTest.class);				
 		suite.addTestSuite(XhtmlFilePerformanceTest.class);
 		return new TestSetup(suite);
 	}
