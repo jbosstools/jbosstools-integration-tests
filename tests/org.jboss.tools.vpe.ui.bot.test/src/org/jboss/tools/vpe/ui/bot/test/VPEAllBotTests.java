@@ -75,6 +75,7 @@ import org.jboss.tools.vpe.ui.bot.test.palette.CancelTagLibDefenitionTest;
 import org.jboss.tools.vpe.ui.bot.test.palette.ImportTagsFromTLDFileTest;
 import org.jboss.tools.vpe.ui.bot.test.palette.ManagePaletteGroupsTest;
 import org.jboss.tools.vpe.ui.bot.test.palette.PaletteEditorTest;
+import org.jboss.tools.vpe.ui.bot.test.smoke.CodeCompletionTest;
 import org.jboss.tools.vpe.ui.bot.test.smoke.EditorSynchronizationTest;
 import org.jboss.tools.vpe.ui.bot.test.smoke.JSPPageCreationTest;
 import org.jboss.tools.vpe.ui.bot.test.smoke.OpenOnTest;
@@ -170,7 +171,8 @@ public class VPEAllBotTests extends SWTBotTestCase{
    	suite.addTestSuite(IncludeTagTest.class);
 		suite.addTestSuite(AjaxInvisibleTagsTest.class);
 		suite.addTestSuite(LogTagTest.class);
-		suite.addTestSuite(OpenOnTest.class);				
+		suite.addTestSuite(OpenOnTest.class);
+		suite.addTestSuite(CodeCompletionTest.class);
 		suite.addTestSuite(XhtmlFilePerformanceTest.class);
 		return new TestSetup(suite);
 	}
