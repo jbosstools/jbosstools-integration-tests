@@ -173,6 +173,7 @@ public class CodeCompletionTest extends VPEEditorTestCase{
     result.add("hello");
     result.add("Message");
     result.add("user : User");
+    result.add("hello: goto /pages/hello.jsp ");
     
     return result;
   } 

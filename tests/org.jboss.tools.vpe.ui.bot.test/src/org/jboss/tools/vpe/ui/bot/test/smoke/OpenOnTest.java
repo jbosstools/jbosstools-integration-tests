@@ -58,10 +58,6 @@ public class OpenOnTest extends VPEEditorTestCase{
     openedEditor = OpenOnHelper.checkOpenOnFileIsOpened(SWTTestExt.bot,
         TEST_PAGE, "h:" + tagToCheck, 5, 0, 0,
         expectedOpenedFileName);
-    selectedTreeItemLabel = openedEditor.bot().tree().selection().get(0, 0);
-    assertTrue("Selected tree item has to have label " + tagToCheck
-        + " but it has " + selectedTreeItemLabel,
-        selectedTreeItemLabel.equalsIgnoreCase(tagToCheck));
     openedEditor.close();
     // Check open on for f:view
     tagToCheck = "view";
@@ -69,10 +65,6 @@ public class OpenOnTest extends VPEEditorTestCase{
     openedEditor = OpenOnHelper.checkOpenOnFileIsOpened(SWTTestExt.bot,
         TEST_PAGE, "f:" + tagToCheck, 5, 0, 0,
         expectedOpenedFileName);
-    selectedTreeItemLabel = openedEditor.bot().tree().selection().get(0, 0);
-    assertTrue("Selected tree item has to have label " + tagToCheck
-        + " but it has " + selectedTreeItemLabel,
-        selectedTreeItemLabel.equalsIgnoreCase(tagToCheck));
     openedEditor.close();
   }
 }
