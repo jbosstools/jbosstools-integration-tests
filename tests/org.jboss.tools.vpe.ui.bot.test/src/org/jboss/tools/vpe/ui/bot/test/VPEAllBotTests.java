@@ -94,6 +94,7 @@ public class VPEAllBotTests extends SWTBotTestCase{
 		suite.addTestSuite(VisualEditorContextMenuTest.class);
 		suite.addTestSuite(EditingActionsTest.class);
     suite.addTestSuite(NewXHTMLPageWizardTest.class);
+    suite.addTestSuite(CodeCompletionTest.class);
     suite.addTestSuite(ExternalizeStringsDialogTest.class);
 		suite.addTestSuite(CancelTagLibDefenitionTest.class);
 		suite.addTestSuite(ImportTagsFromTLDFileTest.class);
@@ -172,7 +173,6 @@ public class VPEAllBotTests extends SWTBotTestCase{
 		suite.addTestSuite(AjaxInvisibleTagsTest.class);
 		suite.addTestSuite(LogTagTest.class);
 		suite.addTestSuite(OpenOnTest.class);
-		suite.addTestSuite(CodeCompletionTest.class);
 		suite.addTestSuite(XhtmlFilePerformanceTest.class);
 		return new TestSetup(suite);
 	}
