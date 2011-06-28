@@ -16,7 +16,7 @@ import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.jboss.tools.drools.ui.bot.test.smoke.DecisionTableTest;
 import org.jboss.tools.drools.ui.bot.test.smoke.DomainSpecificLanguageEditorTest;
-import org.jboss.tools.drools.ui.bot.test.smoke.GuidedDroolsRulesEditorTest;
+//import org.jboss.tools.drools.ui.bot.test.smoke.GuidedDroolsRulesEditorTest;
 import org.jboss.tools.drools.ui.bot.test.smoke.GuvnorRepositoriesTest;
 import org.jboss.tools.drools.ui.bot.test.smoke.ManageDroolsRuntime;
 import org.jboss.tools.drools.ui.bot.test.smoke.ManageDroolsProject;
@@ -47,7 +47,7 @@ import org.junit.runners.Suite.SuiteClasses;
   ManageDroolsProject.class,
   ManageDroolsRules.class,
   DroolsRulesEditorTest.class,
-  GuidedDroolsRulesEditorTest.class,
+  //GuidedDroolsRulesEditorTest.class,
   DomainSpecificLanguageEditorTest.class,
   RuleFlowTest.class,
   DecisionTableTest.class,
