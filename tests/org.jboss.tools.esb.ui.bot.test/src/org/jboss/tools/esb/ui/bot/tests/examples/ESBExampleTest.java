@@ -14,6 +14,26 @@ import org.jboss.tools.ui.bot.ext.view.ProblemsView;
 
 public class ESBExampleTest extends ExampleTest{
 
+	
+	/**
+	 * returns example project name (as it is imported to workspace)
+	 * @return
+	 */
+	public String getExampleProjectName() {
+		return getProjectNames()[0];
+	}
+	/**
+	 * returns name of example client project (null if none)
+	 * @return
+	 */
+	public String getExampleClientProjectName() {
+		return getProjectNames()[1];
+	}
+	@Override
+	public String[] getProjectNames() {
+		return new String[2];
+	}
+	
 	@Override
 	public String getExampleCategory() {
 		return getRunningSoaVersionTreeLabel();

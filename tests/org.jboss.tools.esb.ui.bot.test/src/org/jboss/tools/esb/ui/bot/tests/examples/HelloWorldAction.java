@@ -12,12 +12,8 @@ public class HelloWorldAction extends ESBExampleTest {
 		return "JBoss ESB HelloWorld Action Example - ESB";
 	}
 	@Override
-	public String getExampleProjectName() {
-		return "helloworld_action";
-	}
-	@Override
-	public String getExampleClientProjectName() {
-		return "helloworld_action_client";
+	public String[] getProjectNames() {
+		return new String[] {"helloworld_action","helloworld_action_client"};
 	}
 
 	@Override

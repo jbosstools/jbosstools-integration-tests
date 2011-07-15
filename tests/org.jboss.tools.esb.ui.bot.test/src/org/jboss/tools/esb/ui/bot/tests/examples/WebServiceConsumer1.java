@@ -11,13 +11,8 @@ public class WebServiceConsumer1 extends ESBExampleTest {
 	public String getExampleName() {
 		return "JBoss ESB Web Service consumer1 Example";
 	}
-	@Override
-	public String getExampleProjectName() {
-		return "webservice_consumer1";
-	}
-	@Override
-	public String getExampleClientProjectName() {
-		return "webservice_consumer1_client";
+	public String[] getProjectNames() {
+		return new String[] {"webservice_consumer1","webservice_consumer1_client"};
 	}
 	@Override
 	protected void executeExample() {

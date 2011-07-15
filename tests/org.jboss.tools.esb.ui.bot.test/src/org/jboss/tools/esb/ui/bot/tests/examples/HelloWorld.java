@@ -13,12 +13,8 @@ public class HelloWorld extends ESBExampleTest {
 		return "JBoss ESB HelloWorld Example - ESB";
 	}
 	@Override
-	public String getExampleProjectName() {
-		return "helloworld";
-	}
-	@Override
-	public String getExampleClientProjectName() {
-		return "helloworld_testclient";
+	public String[] getProjectNames() {
+		return new String[] {"helloworld","helloworld_testclient"};
 	}
 	@AfterClass
 	public static void waitaminute() {

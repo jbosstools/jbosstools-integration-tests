@@ -12,15 +12,9 @@ public class SmooksXML2XMLDateManipulation extends ESBExampleTest {
 	public String getExampleName() {
 		return "JBoss ESB Smooks XML->XML date-manipulation Example";
 	}
-	@Override
-	public String getExampleProjectName() {
-		return "transform_XML2XML_date_manipulation";
+	public String[] getProjectNames() {
+		return new String[] {"transform_XML2XML_date_manipulation","transform_XML2XML_date_manipulation_client"};
 	}
-	@Override
-	public String getExampleClientProjectName() {
-		return "transform_XML2XML_date_manipulation_client";
-	}
-	
 	@Override
 	protected void executeExample() {
 		super.executeExample();	

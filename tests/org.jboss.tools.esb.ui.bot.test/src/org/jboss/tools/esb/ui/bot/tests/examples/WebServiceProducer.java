@@ -11,15 +11,9 @@ public class WebServiceProducer extends ESBExampleTest {
 	public String getExampleName() {
 		return "JBoss ESB Web Service producer Example";
 	}
-	@Override
-	public String getExampleProjectName() {
-		return "webservice_producer";
+	public String[] getProjectNames() {
+		return new String[] {"webservice_producer","webservice_producer_client"};
 	}
-	@Override
-	public String getExampleClientProjectName() {
-		return "webservice_producer_client";
-	}
-	
 	@Override
 	protected void executeExample() {
 		super.executeExample();	

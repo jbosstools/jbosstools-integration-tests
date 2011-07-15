@@ -13,14 +13,9 @@ public class SmooksXML2POJO extends ESBExampleTest {
 		return "JBoss ESB Smooks XML->POJO Example";
 	}
 	@Override
-	public String getExampleProjectName() {
-		return "transform_XML2POJO";
+	public String[] getProjectNames() {
+		return new String[] {"transform_XML2POJO","transform_XML2POJO_client"};
 	}
-	@Override
-	public String getExampleClientProjectName() {
-		return "transform_XML2POJO_client";
-	}
-	
 	@Override
 	protected void executeExample() {
 		super.executeExample();	

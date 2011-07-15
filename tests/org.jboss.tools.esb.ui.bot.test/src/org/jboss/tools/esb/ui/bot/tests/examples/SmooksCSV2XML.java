@@ -12,14 +12,9 @@ public class SmooksCSV2XML extends ESBExampleTest {
 		return "JBoss ESB Smooks CSV->XML Example";
 	}
 	@Override
-	public String getExampleProjectName() {
-		return "transform_CSV2XML";
+	public String[] getProjectNames() {
+		return new String[] {"transform_CSV2XML","transform_CSV2XML_client"};
 	}
-	@Override
-	public String getExampleClientProjectName() {
-		return "transform_CSV2XML_client";
-	}
-	
 	@Override
 	protected void executeExample() {
 		super.executeExample();	
