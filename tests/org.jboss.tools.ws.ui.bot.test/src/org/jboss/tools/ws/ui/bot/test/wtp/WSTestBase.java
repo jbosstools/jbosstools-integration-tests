@@ -10,20 +10,17 @@
  ******************************************************************************/
 package org.jboss.tools.ws.ui.bot.test.wtp;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.StringWriter;
-import java.io.Writer;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.MessageFormat;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -75,7 +72,7 @@ public abstract class WSTestBase extends SWTTestExt {
 		}
 	}
 	
-	private boolean projectExists(String name) {
+	protected boolean projectExists(String name) {
 		return projectExplorer.existsResource(name);
 	}
 	
@@ -86,6 +83,7 @@ public abstract class WSTestBase extends SWTTestExt {
 	
 	@AfterClass
 	public static void cleanAll() {
+		L.info("cleanAll");
 		projectExplorer.deleteAllProjects();
 	}
 	
@@ -114,6 +112,8 @@ public abstract class WSTestBase extends SWTTestExt {
 		new NewFileWizardAction().run().selectTemplate("Web Services", "Web Service Client").next();
 		WebServiceClientWizard w = new WebServiceClientWizard();
 		w.setSource(wsdl);
+		util.waitForNonIgnoredJobs();
+		bot.sleep(1000);
 		w.setSlider(level, 0);
 		w.setServerRuntime(configuredState.getServer().name);
 		w.setWebServiceRuntime("JBossWS");
@@ -195,13 +195,14 @@ public abstract class WSTestBase extends SWTTestExt {
 		}
 	}
 	
-	private SWTBotEditor createClass(String pkg, String cName) {
+	protected SWTBotEditor createClass(String pkg, String cName) {
 		new NewFileWizardAction().run().selectTemplate("Java", "Class").next();
 		Wizard w = new Wizard();
 		w.bot().textWithLabel("Package:").setText(pkg);
 		w.bot().textWithLabel("Name:").setText(cName);
 		w.bot().textWithLabel("Source folder:").setText(getWsProjectName() + "/src");
 		w.finish();
+		bot.sleep(4500);
 		return bot.editorByTitle(cName + ".java");
 	}
 	
@@ -235,6 +236,25 @@ public abstract class WSTestBase extends SWTTestExt {
 		bot.sleep(5000);
 		assertTrue(projectExplorer.existsResource(name));
 		projectExplorer.selectProject(name);
+	}
+
+	protected void bottomUpJbossWebService(InputStream javasrc) {
+		String s = readStream(javasrc);
+		String src = MessageFormat.format(s, getWsPackage(), getWsName());
+		createService(Service_Type.BOTTOM_UP, getWsPackage() + "." + getWsName(), getLevel(), null, src);
+	}
+
+	protected void topDownWS(InputStream input, String pkg) {
+		String s = readStream(input);
+		String[] tns = getWsPackage().split("\\.");
+		StringBuilder sb = new StringBuilder();
+		for (int i = tns.length - 1; i > 0; i--) {
+			sb.append(tns[i]);
+			sb.append(".");
+		}
+		sb.append(tns[0]);
+		String src = MessageFormat.format(s, sb.toString(), getWsName());
+		createService(Service_Type.TOP_DOWN, "/" + getWsProjectName() + "/src/" + getWsName() + ".wsdl", getLevel(), pkg, src);
 	}
 
 	protected void assertServiceDeployed(String wsdlURL) {
@@ -294,26 +314,43 @@ public abstract class WSTestBase extends SWTTestExt {
 	}
 
 	protected void assertServiceResponseToClient(String startServlet, String response) {
-		InputStream is = null;
-		try {
-			URL u = new URL(startServlet);
-			is = u.openStream();
-			String rsp = readStream(is);
-			assertContains(response, rsp);
-		} catch (MalformedURLException e1) {
-			throw new RuntimeException(e1);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		} finally {
-			if (is != null) {
-				try {
-					is.close();
-				} catch (IOException e) {
-					//ignore
-					e.printStackTrace();
+		assertContains(response, getPage(startServlet, 15000));
+	}
+	
+	protected String getPage(String url, long timeout) {
+		long t = System.currentTimeMillis();
+		int rsp = -1;
+		String page = null;
+		while (t + timeout > System.currentTimeMillis()) {
+			HttpURLConnection connection = null;
+			try {
+				URL u = new URL(url);
+				connection = (HttpURLConnection) u.openConnection();
+				rsp = connection.getResponseCode();
+				if (rsp == HttpURLConnection.HTTP_OK) {
+					page = new Scanner(connection.getInputStream()).useDelimiter("\\A").next();
+					break;
+				} else {
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						//ignore
+					}
+					L.info("retrying...");
+				}
+			} catch (MalformedURLException e1) {
+				throw new RuntimeException(e1);
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			} finally {
+				if (connection != null) {
+					connection.disconnect();
 				}
 			}
 		}
+		L.info("done after: " + (System.currentTimeMillis() - t) + "ms.");
+		assertEquals("cannot connect to '" + url + "'",	HttpURLConnection.HTTP_OK, rsp);
+		return page;
 	}
 	
 	public static String getSoapRequest(String body) {
@@ -321,37 +358,29 @@ public abstract class WSTestBase extends SWTTestExt {
 	}
 	
 	protected String readStream(InputStream is) {
-		Reader r = null;
-		Writer w = null;
+		//we don't care about performance in tests too much, so this should be OK
+		return new Scanner(is).useDelimiter("\\A").next();
+	}
+	
+	protected String readFile(IFile f) {
+		String content = null;
+		InputStream is = null;
 		try {
-			char[] buffer = new char[1024];
-			r = new BufferedReader(new InputStreamReader(is, "UTF-8"));
-			w = new StringWriter();
-			int n;
-			while ((n = r.read(buffer)) != -1) {
-				w.write(buffer, 0, n);
-			}
-		} catch (IOException e) {
-			L.log(Level.WARNING, e.getMessage(), e);
+			is = f.getContents();
+			content = readStream(is);
+		} catch (CoreException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
 		} finally {
-			if (r != null) {
+			if (is != null) {
 				try {
-					r.close();
+					is.close();
 				} catch (IOException e) {
-					//ignore
-					L.log(Level.WARNING, e.getMessage(), e);
-				}
-			}
-			if (w != null) {
-				try {
-					w.close();
-				} catch (IOException e) {
-					//ignore
-					L.log(Level.WARNING, e.getMessage(), e);
+					// ignore
 				}
 			}
 		}
-		return w != null ? w.toString() : "";
+		return content;
 	}
 	
 	protected void runProject(String project) {

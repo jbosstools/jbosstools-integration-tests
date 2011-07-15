@@ -10,11 +10,8 @@
  ******************************************************************************/
 package org.jboss.tools.ws.ui.bot.test.wtp;
 
-import java.text.MessageFormat;
-
 import org.jboss.tools.ui.bot.ext.config.Annotations.SWTBotTestRequires;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
-import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.WebServiceWizard.Service_Type;
 import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.WsWizardBase.Slider_Level;
 import org.junit.Test;
 
@@ -90,11 +87,9 @@ public class BottomUpWSTest extends WSTestBase {
 		setLevel(Slider_Level.TEST);
 		bottomUpJbossWebService();
 	}
-	
-	private void bottomUpJbossWebService() {
-		String s = readStream(BottomUpWSTest.class.getResourceAsStream("/resources/jbossws/ClassA.java.ws"));
-		String src = MessageFormat.format(s, getWsPackage(), getWsName());
-		createService(Service_Type.BOTTOM_UP, getWsPackage() + "." + getWsName(), getLevel(), null, src);
+
+	protected void bottomUpJbossWebService() {
+		bottomUpJbossWebService(BottomUpWSTest.class.getResourceAsStream("/resources/jbossws/ClassA.java.ws"));
 		switch (getLevel()) {
 		case DEVELOP:
 		case ASSEMBLE:
@@ -106,5 +101,4 @@ public class BottomUpWSTest extends WSTestBase {
 //		checkService(getWSDLUrl(svcName.substring(svcName.lastIndexOf(".") + 1)), QName service, QName port, String msg, String rsp)
 //		servers.removeAllProjectsFromServer(configuredState.getServer().name);
 	}
-
 }

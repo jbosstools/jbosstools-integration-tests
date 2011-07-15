@@ -10,11 +10,8 @@
  ******************************************************************************/
 package org.jboss.tools.ws.ui.bot.test.wtp;
 
-import java.text.MessageFormat;
-
 import org.jboss.tools.ui.bot.ext.config.Annotations.SWTBotTestRequires;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
-import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.WebServiceWizard.Service_Type;
 import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.WsWizardBase.Slider_Level;
 import org.junit.Test;
 
@@ -101,18 +98,8 @@ public class TopDownWSTest extends WSTestBase {
 		topDownWS("ws." + getWsName().toLowerCase());
 	}
 	
-	private void topDownWS(String pkg) {
-		String s = readStream(TopDownWSTest.class.getResourceAsStream("/resources/jbossws/ClassB.wsdl"));
-		String[] tns = getWsPackage().split("\\.");
-		StringBuilder sb = new StringBuilder();
-		for (int i = tns.length - 1; i > 0; i--) {
-			sb.append(tns[i]);
-			sb.append(".");
-		}
-		sb.append(tns[0]);
-		String src = MessageFormat.format(s, sb.toString(), getWsName());
-		createService(Service_Type.TOP_DOWN, "/" + getWsProjectName() + "/src/" + getWsName() + ".wsdl", getLevel(), pkg, src);
-
+	protected void topDownWS(String pkg) {
+		topDownWS(TopDownWSTest.class.getResourceAsStream("/resources/jbossws/ClassB.wsdl"), pkg);
 		switch (getLevel()) {
 			case DEVELOP:
 			case ASSEMBLE:
@@ -123,5 +110,4 @@ public class TopDownWSTest extends WSTestBase {
 		assertServiceDeployed(getWSDLUrl(), 10000);
 //		servers.removeAllProjectsFromServer(configuredState.getServer().name);
 	}
-
 }

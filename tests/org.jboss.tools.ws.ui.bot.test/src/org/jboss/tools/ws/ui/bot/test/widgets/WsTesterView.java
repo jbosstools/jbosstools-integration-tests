@@ -14,12 +14,10 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.results.BoolResult;
@@ -27,7 +25,6 @@ import org.eclipse.swtbot.swt.finder.waits.Conditions;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotButton;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCombo;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotLabel;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.internal.WorkbenchMessages;
 import org.eclipse.ui.internal.ide.IDEWorkbenchMessages;
@@ -39,11 +36,11 @@ import org.osgi.framework.Bundle;
 @SuppressWarnings("restriction")
 public class WsTesterView extends ViewBase {
 
-	private static final Bundle WSUI_BUNDLE = Platform.getBundle("org.jboss.tools.ws.ui");
+	private static final Bundle WSUI_BUNDLE = Platform
+			.getBundle("org.jboss.tools.ws.ui");
 	private static boolean max = false;
 
 	public enum Request_Type {
-
 		JAX_WS, GET, POST, PUT, DELETE;
 
 		@Override
@@ -63,9 +60,8 @@ public class WsTesterView extends ViewBase {
 
 	public enum Request_Arg_Type {
 
-		HEADER(JBossWSUIMessages.JAXRSWSTestView2_Headers_Section),
-		PARAMETER(JBossWSUIMessages.JAXRSWSTestView2_Parameters_Section);
-
+		HEADER(JBossWSUIMessages.JAXRSWSTestView2_Headers_Section), PARAMETER(
+				JBossWSUIMessages.JAXRSWSTestView2_Parameters_Section);
 		private String type;
 
 		private Request_Arg_Type(String s) {
@@ -94,7 +90,8 @@ public class WsTesterView extends ViewBase {
 
 			public List<String> getGroupPath() {
 				// JBoss Tools Web Services
-				return Collections.singletonList(getStringFromBundle("%test.view.category.name"));
+				return Collections
+						.singletonList(getStringFromBundle("%test.view.category.name"));
 			}
 		};
 	}
@@ -104,8 +101,8 @@ public class WsTesterView extends ViewBase {
 		SWTBotView b = super.show();
 		// maximize tester view
 		if (!max) {
-			bot.menu(IDEWorkbenchMessages.Workbench_window).menu(
-				WorkbenchMessages.MaximizePartAction_text).click();
+			bot.menu(IDEWorkbenchMessages.Workbench_window)
+					.menu(WorkbenchMessages.MaximizePartAction_text).click();
 			max = true;
 		}
 		return b;
@@ -131,17 +128,20 @@ public class WsTesterView extends ViewBase {
 
 	public void setRequestBody(String s) {
 		// Body Text
-		bot().textWithLabel(JBossWSUIMessages.JAXRSWSTestView2_BodyText_Section).setText(s);
+		bot().textWithLabel(JBossWSUIMessages.JAXRSWSTestView2_BodyText_Section)
+				.setText(s);
 	}
 
 	public String getRequestBody() {
 		// Body Text
-		return bot().textWithLabel(JBossWSUIMessages.JAXRSWSTestView2_BodyText_Section).getText();
+		return bot().textWithLabel(
+				JBossWSUIMessages.JAXRSWSTestView2_BodyText_Section).getText();
 	}
 
 	public void expandSection(String name) {
 		class X extends SWTBotLabel {
-			X(Label y){
+
+			X(Label y) {
 				super(y);
 			}
 
@@ -149,10 +149,12 @@ public class WsTesterView extends ViewBase {
 				boolean expanded = syncExec(new BoolResult() {
 
 					public Boolean run() {
-						return ((ExpandableComposite) widget.getParent()).isExpanded();
+						return ((ExpandableComposite) widget.getParent())
+								.isExpanded();
 					}
 				});
-				assert !expanded : "Section '" + getText() + "' is already expanded";
+				assert !expanded : "Section '" + getText()
+						+ "' is already expanded";
 				click(true);
 			}
 		}
@@ -197,21 +199,29 @@ public class WsTesterView extends ViewBase {
 	}
 
 	public String getResponseBody() {
-		return bot().textWithLabel(JBossWSUIMessages.JAXRSWSTestView2_ResponseBody_Section).getText();
+		return bot().textWithLabel(
+				JBossWSUIMessages.JAXRSWSTestView2_ResponseBody_Section)
+				.getText();
 	}
 
 	public String[] getResponseHeaders() {
-		return bot().listWithLabel(JBossWSUIMessages.JAXRSWSTestView2_ResponseHeaders_Section).getItems();
+		return bot().listWithLabel(
+				JBossWSUIMessages.JAXRSWSTestView2_ResponseHeaders_Section)
+				.getItems();
 	}
 
 	public void invoke() {
-		bot().toolbarButtonWithTooltip(JBossWSUIMessages.JAXRSWSTestView2_Go_Tooltip).click();
-		bot.waitWhile(Conditions.shellIsActive(JBossWSUIMessages.JAXRSWSTestView_Invoke_Label), 120000);
+		bot().toolbarButtonWithTooltip(
+				JBossWSUIMessages.JAXRSWSTestView2_Go_Tooltip).click();
+		bot.waitWhile(Conditions
+				.shellIsActive(JBossWSUIMessages.JAXRSWSTestView_Invoke_Label),
+				120000);
 		bot.sleep(500);
 	}
 
 	public SelectWSDLDialog getFromWSDL() {
-		bot().toolbarButtonWithTooltip(JBossWSUIMessages.JAXRSWSTestView2_GetFromWSDL_Tooltip).click();
+		bot().toolbarButtonWithTooltip(
+				JBossWSUIMessages.JAXRSWSTestView2_GetFromWSDL_Tooltip).click();
 		return new SelectWSDLDialog(bot.activeShell().widget);
 	}
 

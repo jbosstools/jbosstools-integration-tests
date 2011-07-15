@@ -22,7 +22,6 @@ import javax.xml.namespace.QName;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
@@ -37,160 +36,152 @@ import org.jboss.tools.ws.ui.bot.test.wtp.WSTestBase;
 import org.junit.AfterClass;
 import org.junit.Test;
 
-@SWTBotTestRequires(server=@Server(),perspective="Java EE")
+@SWTBotTestRequires(server =
+@Server(), perspective = "Java EE")
 public class SampleWSTest extends WSTestBase {
 
-	private static final String SOAP_REQUEST = getSoapRequest("<ns1:sayHello xmlns:ns1=\"http://{0}/\"><arg0>{1}</arg0></ns1:sayHello>");
-	private static final String SERVER_URL = "localhost:8080";
-	private static final Logger L = Logger.getLogger(SampleWSTest.class.getName());
-	
-	@AfterClass
-	public static void clean() {
-		servers.removeAllProjectsFromServer();
-		projectExplorer.deleteAllProjects();
-	}
-	
-	@Override
-	protected String getWsProjectName() {
-		return "SampleSOAPWS";
-	}
+    private static final String SOAP_REQUEST = getSoapRequest("<ns1:sayHello xmlns:ns1=\"http://{0}/\"><arg0>{1}</arg0></ns1:sayHello>");
+    private static final String SERVER_URL = "localhost:8080";
+    private static final Logger L = Logger.getLogger(SampleWSTest.class.getName());
 
-	@Override
-	protected String getWsPackage() {
-		return null;
-	}
+    @AfterClass
+    public static void clean() {
+        servers.removeAllProjectsFromServer();
+        projectExplorer.deleteAllProjects();
+    }
 
-	@Override
-	protected String getWsName() {
-		return null;
-	}
-	
-	@Test
-	public void testSampleSoapWS() {
-		IFile dd = getDD(getWsProjectName());
-		if (!dd.exists()) {
-			createDD(getWsProjectName());
-		}
-		assertTrue(dd.exists());
-		createSampleSOAPWS(getWsProjectName(), "HelloService", "sample", "SampleService");
-		checkSOAPService(getWsProjectName(), "HelloService", "sample", "SampleService", "You");
+    @Override
+    protected String getWsProjectName() {
+        return "SampleSOAPWS";
+    }
 
-		createSampleSOAPWS(getWsProjectName(), "GreetService", "greeter", "Greeter");
-		checkSOAPService(getWsProjectName(), "GreetService", "greeter", "Greeter", "Tester");
-	}
+    @Override
+    protected String getWsPackage() {
+        return null;
+    }
 
-	@Test
-	public void testSampleRestWS() {
-		if ("JBOSS_AS".equals(configuredState.getServer().type)) {
-			fail("This test requires RESTEasy jars in the server");
-		}
-		String project = "SampleRESTWS";
-		createProject(project);
-		IFile dd = getDD(project);
-		if (!dd.exists()) {
-			createDD(project);
-		}
-		assertTrue(dd.exists());
-		createSampleRESTWS(project, "RESTSample", "rest.sample", "Sample", "RESTApp");
-		checkRESTService(project, "RESTSample", "rest.sample", "Sample", "Hello World!", "RESTApp");
-	}
+    @Override
+    protected String getWsName() {
+        return null;
+    }
 
-	private void createDD(String project) {
-		SWTBotTree tree = projectExplorer.bot().tree();
-		SWTBotTreeItem ti = tree.expandNode(project);
-		bot.sleep(1500);
-		ti = ti.getNode("Deployment Descriptor: " + project);
-		new TreeItemAction(ti, "Generate Deployment Descriptor Stub").run();
-		bot.sleep(1500);
-		util.waitForNonIgnoredJobs();
-		bot.sleep(1500);
-	}
+    @Test
+    public void testSampleSoapWS() {
+        IFile dd = getDD(getWsProjectName());
+        if (!dd.exists()) {
+            createDD(getWsProjectName());
+        }
+        assertTrue(dd.exists());
+        createSampleSOAPWS(getWsProjectName(), "HelloService", "sample", "SampleService");
+        checkSOAPService(getWsProjectName(), "HelloService", "sample", "SampleService", "You");
 
-	private void createSampleSOAPWS(String project, String name, String pkg, String cls) {
-		createSampleService(Type.SOAP, project, name, pkg, cls, null);
-	}
-	
-	private void checkSOAPService(String project, String svcName, String svcPkg, String svcClass, String msgContent) { 
-		checkService(Type.SOAP, project, svcName, svcPkg, svcClass, msgContent, null);
-	}
-	
-	private void checkRESTService(String project, String svcName, String svcPkg, String svcClass, String msgContent, String appCls) { 
-		checkService(Type.REST, project, svcName, svcPkg, svcClass, msgContent, appCls);
-	}
-	
-	private void createSampleRESTWS(String project, String name, String pkg, String cls, String appCls) {
-		createSampleService(Type.REST, project, name, pkg, cls, appCls);
-	}
-	
-	private void createSampleService(Type type, String project, String name, String pkg, String cls, String appCls) {
-		SampleWSWizard w = new NewSampleWSWizardAction(type).run();
-		w.setProjectName(project).setServiceName(name);
-		w.setPackageName(pkg).setClassName(cls);
-		if (type == Type.REST) {
-			w.setApplicationClassName(appCls);
-		}
-		w.finish();
-		util.waitForNonIgnoredJobs();
-	}
-	
-	private void checkService(Type type, String project, String svcName, String svcPkg, String svcClass, String msgContent, String appCls) {
-		SWTBotEditor ed = bot.activeEditor();
-		assertEquals(svcClass + ".java", ed.getTitle());
-		String code = ed.toTextEditor().getText(); 
-		assertContains("package " + svcPkg + ";", code);
-		String dd = readFile(getDD(project));
-		switch (type) {
-		case REST:
-			assertContains("@Path(\"/" + svcName + "\")", code);
-			assertContains("@GET()", code);
-			assertContains("@Produces(\"text/plain\")", code);
-			assertContains("<servlet-name>Resteasy</servlet-name>", dd);
-			assertContains("<param-value>" + svcPkg + "." + appCls + "</param-value>", dd);
-			break;
-		case SOAP:
-			assertContains("<servlet-name>" + svcName + "</servlet-name>", dd);
-			break;
-		}
-		runProject(project);
-		switch (type) {
-		case REST:
-			try {
-				URL u = new URL("http://" + SERVER_URL + "/" + project + "/" + svcName);
-				String s = readStream(u.openConnection().getInputStream());
-				assertEquals(msgContent, s);
-			} catch (MalformedURLException e) {
-				L.log(Level.WARNING, e.getMessage(), e);
-			} catch (IOException e) {
-				L.log(Level.WARNING, e.getMessage(), e);
-			}
-			break;
-		case SOAP:
-			try {
-				WSClient c = new WSClient(new URL("http://" + SERVER_URL + "/" + project + "/" + svcName),
-						new QName("http://" + svcPkg + "/", svcClass + "Service"),
-						new QName("http://" + svcPkg + "/", svcClass + "Port"));
-				assertContains("Hello " + msgContent + "!", c.callService(MessageFormat.format(SOAP_REQUEST, svcPkg, msgContent)));
-			} catch (MalformedURLException e) {
-				L.log(Level.WARNING, e.getMessage(), e);
-			}
-			break;
-		}
-	}
-	
-	private IProject getProject(String project) {
-		return ResourcesPlugin.getWorkspace().getRoot().getProject(project);
-	}
-	
-	private IFile getDD(String project) {
-		return getProject(project).getFile("WebContent/WEB-INF/web.xml");
-	}
-	
-	private String readFile(IFile file) {
-		try {
-			return readStream(file.getContents());
-		} catch (CoreException e) {
-			L.log(Level.WARNING, e.getMessage(), e);
-		}
-		return "";
-	}
+        createSampleSOAPWS(getWsProjectName(), "GreetService", "greeter", "Greeter");
+        checkSOAPService(getWsProjectName(), "GreetService", "greeter", "Greeter", "Tester");
+    }
+
+    @Test
+    public void testSampleRestWS() {
+        if ("JBOSS_AS".equals(configuredState.getServer().type)) {
+            fail("This test requires RESTEasy jars in the server");
+        }
+        String project = "SampleRESTWS";
+        createProject(project);
+        IFile dd = getDD(project);
+        if (!dd.exists()) {
+            createDD(project);
+        }
+        assertTrue(dd.exists());
+        createSampleRESTWS(project, "RESTSample", "rest.sample", "Sample", "RESTApp");
+        checkRESTService(project, "RESTSample", "rest.sample", "Sample", "Hello World!", "RESTApp");
+    }
+
+    private void createDD(String project) {
+        SWTBotTree tree = projectExplorer.bot().tree();
+        SWTBotTreeItem ti = tree.expandNode(project);
+        bot.sleep(1500);
+        ti = ti.getNode("Deployment Descriptor: " + project);
+        new TreeItemAction(ti, "Generate Deployment Descriptor Stub").run();
+        bot.sleep(1500);
+        util.waitForNonIgnoredJobs();
+        bot.sleep(1500);
+    }
+
+    private void createSampleSOAPWS(String project, String name, String pkg, String cls) {
+        createSampleService(Type.SOAP, project, name, pkg, cls, null);
+    }
+
+    private void checkSOAPService(String project, String svcName, String svcPkg, String svcClass, String msgContent) {
+        checkService(Type.SOAP, project, svcName, svcPkg, svcClass, msgContent, null);
+    }
+
+    private void checkRESTService(String project, String svcName, String svcPkg, String svcClass, String msgContent, String appCls) {
+        checkService(Type.REST, project, svcName, svcPkg, svcClass, msgContent, appCls);
+    }
+
+    private void createSampleRESTWS(String project, String name, String pkg, String cls, String appCls) {
+        createSampleService(Type.REST, project, name, pkg, cls, appCls);
+    }
+
+    private void createSampleService(Type type, String project, String name, String pkg, String cls, String appCls) {
+        SampleWSWizard w = new NewSampleWSWizardAction(type).run();
+        w.setProjectName(project).setServiceName(name);
+        w.setPackageName(pkg).setClassName(cls);
+        if (type == Type.REST) {
+            w.setApplicationClassName(appCls);
+        }
+        w.finish();
+        util.waitForNonIgnoredJobs();
+    }
+
+    private void checkService(Type type, String project, String svcName, String svcPkg, String svcClass, String msgContent, String appCls) {
+        SWTBotEditor ed = bot.activeEditor();
+        assertEquals(svcClass + ".java", ed.getTitle());
+        String code = ed.toTextEditor().getText();
+        assertContains("package " + svcPkg + ";", code);
+        String dd = readFile(getDD(project));
+        switch (type) {
+            case REST:
+                assertContains("@Path(\"/" + svcName + "\")", code);
+                assertContains("@GET()", code);
+                assertContains("@Produces(\"text/plain\")", code);
+                assertContains("<servlet-name>Resteasy</servlet-name>", dd);
+                assertContains("<param-value>" + svcPkg + "." + appCls + "</param-value>", dd);
+                break;
+            case SOAP:
+                assertContains("<servlet-name>" + svcName + "</servlet-name>", dd);
+                break;
+        }
+        runProject(project);
+        switch (type) {
+            case REST:
+                try {
+                    URL u = new URL("http://" + SERVER_URL + "/" + project + "/" + svcName);
+                    String s = readStream(u.openConnection().getInputStream());
+                    assertEquals(msgContent, s);
+                } catch (MalformedURLException e) {
+                    L.log(Level.WARNING, e.getMessage(), e);
+                } catch (IOException e) {
+                    L.log(Level.WARNING, e.getMessage(), e);
+                }
+                break;
+            case SOAP:
+                try {
+                    WSClient c = new WSClient(new URL("http://" + SERVER_URL + "/" + project + "/" + svcName),
+                            new QName("http://" + svcPkg + "/", svcClass + "Service"),
+                            new QName("http://" + svcPkg + "/", svcClass + "Port"));
+                    assertContains("Hello " + msgContent + "!", c.callService(MessageFormat.format(SOAP_REQUEST, svcPkg, msgContent)));
+                } catch (MalformedURLException e) {
+                    L.log(Level.WARNING, e.getMessage(), e);
+                }
+                break;
+        }
+    }
+
+    private IProject getProject(String project) {
+        return ResourcesPlugin.getWorkspace().getRoot().getProject(project);
+    }
+
+    private IFile getDD(String project) {
+        return getProject(project).getFile("WebContent/WEB-INF/web.xml");
+    }
 }
