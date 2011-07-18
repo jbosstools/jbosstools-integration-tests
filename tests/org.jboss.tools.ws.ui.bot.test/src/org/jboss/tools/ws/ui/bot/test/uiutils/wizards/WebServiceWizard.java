@@ -42,11 +42,13 @@ public class WebServiceWizard extends WsWizardBase {
 	}
 
 	public WebServiceWizard setServiceType(Service_Type type) {
+    	setFocus();
 		bot().comboBoxWithLabel("Web service type:").setSelection(type.getDescription());
 		return this;
 	}
 	
 	public Service_Type getServiceType() {
+    	setFocus();
 		String s = bot().comboBoxWithLabel("Web service type:").getText();
 		return s.startsWith("Bottom up") ? Service_Type.BOTTOM_UP : Service_Type.TOP_DOWN;
 	}

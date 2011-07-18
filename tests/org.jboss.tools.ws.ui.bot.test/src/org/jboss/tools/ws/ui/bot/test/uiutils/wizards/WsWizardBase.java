@@ -43,8 +43,9 @@ public abstract class WsWizardBase extends Wizard {
     }
 
     public WsWizardBase setSource(String s) {
+    	setFocus();
         SWTBotCombo c = bot().comboBoxWithLabel(getSourceComboLabel());
-        c.typeText(s);
+        c.setText(s);
         return this;
     }
 
@@ -61,6 +62,7 @@ public abstract class WsWizardBase extends Wizard {
     protected abstract String getSourceComboLabel();
 
     protected WsWizardBase setServerRuntime(String name, int idx) {
+    	setFocus();
         findLink("Server runtime:").get(idx).click();
         SWTBotShell sh = bot().activeShell();
         SWTBotTree tree = sh.bot().treeInGroup("Server runtime:");
@@ -71,6 +73,8 @@ public abstract class WsWizardBase extends Wizard {
     }
 
     protected WsWizardBase setWebServiceRuntime(String name, int idx) {
+    	setFocus();
+    	sleep(100);
         findLink("Web service runtime:").get(idx).click();
         sleep(100);
         SWTBotShell sh = bot().activeShell();
@@ -83,6 +87,8 @@ public abstract class WsWizardBase extends Wizard {
     }
 
     protected WsWizardBase setTargetProject(String label, String name) {
+    	setFocus();
+    	sleep(100);
         findLink(label).get(0).click();
         SWTBotShell sh = bot().activeShell();
         SWTBotCombo c = sh.bot().comboBoxWithLabel(label);
@@ -111,6 +117,7 @@ public abstract class WsWizardBase extends Wizard {
 
     //second panel
     public WsWizardBase setPackageName(String pkg) {
+    	setFocus();
         bot().textWithLabel("Package name").typeText(pkg);
         return this;
     }
@@ -120,6 +127,7 @@ public abstract class WsWizardBase extends Wizard {
     }
 
     private List<SWTBotHyperlinkExt> findLink(String text) {
+    	setFocus();
         List<? extends Hyperlink> widgets = bot().widgets(WidgetMatcherFactory.widgetOfType(Hyperlink.class));
         List<SWTBotHyperlinkExt> ret = new ArrayList<SWTBotHyperlinkExt>();
         for (Hyperlink h : widgets) {
@@ -131,6 +139,7 @@ public abstract class WsWizardBase extends Wizard {
     }
 
     private SWTBotScaleExt scale(int i) {
+    	setFocus();
         List<? extends Scale> widgets = bot().widgets(WidgetMatcherFactory.widgetOfType(Scale.class));
         List<SWTBotScaleExt> ret = new ArrayList<SWTBotScaleExt>();
         for (Scale s : widgets) {
