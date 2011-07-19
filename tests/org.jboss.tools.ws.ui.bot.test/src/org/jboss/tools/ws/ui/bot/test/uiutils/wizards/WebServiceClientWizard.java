@@ -28,7 +28,7 @@ public class WebServiceClientWizard extends WsWizardBase {
 	}
 
 	public WebServiceClientWizard setClientProject(String name) {
-		setTargetProject("Client project:", name);
+		setTargetProject("Client project:", name, "Specify Client Project Settings");
 		return this;
 	}
 

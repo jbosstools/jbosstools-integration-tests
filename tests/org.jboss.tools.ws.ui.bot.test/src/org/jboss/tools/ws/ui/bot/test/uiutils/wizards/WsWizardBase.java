@@ -86,11 +86,13 @@ public abstract class WsWizardBase extends Wizard {
         return this;
     }
 
-    protected WsWizardBase setTargetProject(String label, String name) {
+    protected WsWizardBase setTargetProject(String label, String name, String shellTitle) {
     	setFocus();
     	sleep(100);
         findLink(label).get(0).click();
-        SWTBotShell sh = bot().activeShell();
+        sleep(100);
+        SWTBotShell sh = bot().shell(shellTitle);
+        sh.setFocus();
         SWTBotCombo c = sh.bot().comboBoxWithLabel(label);
         String[] items = c.items();
         boolean found = false;

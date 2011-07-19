@@ -94,5 +94,9 @@ public class WebServiceWizard extends WsWizardBase {
 	
 	public boolean isClientEnabled() {
 		return isScaleEnabled(1);
-	}	
+	}
+	
+	private void setTargetProject(String label, String name) {
+		setTargetProject(label, name, "Specify Service Project Settings");
+	}
 }
