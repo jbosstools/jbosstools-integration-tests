@@ -48,6 +48,7 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase{
 	protected static final String TEST_PAGE = "inputUserName.jsp"; //$NON-NLS-1$
 	protected static final String FACELETS_TEST_PAGE = "inputname.xhtml"; //$NON-NLS-1$
 	protected static String PROJECT_PROPERTIES = "projectProperties.properties"; //$NON-NLS-1$
+	protected static String JSF2_TEST_PAGE = "inputname.xhtml"; //$NON-NLS-1$
 	
 	/**
 	 * Variable defines JBoss EAP 4.3 server location on a file system
@@ -56,9 +57,14 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase{
 	protected final static String JBOSS_EAP_HOME;
 	protected final static String JBT_TEST_PROJECT_NAME;
 	protected final static String FACELETS_TEST_PROJECT_NAME;
+	protected final static String JSF2_TEST_PROJECT_NAME;
 	protected final static String JBOSS_SERVER_GROUP;
 	protected final static String JBOSS_SERVER_TYPE;
 	protected final static String JBOSS_SERVER_RUNTIME_TYPE;
+	protected final static String JBOSS_AS_FOR_JSF2_HOME;
+	protected final static String JBOSS_AS_FOR_JSF2_SERVER_GROUP;
+  protected final static String JBOSS_AS_FOR_JSF2_SERVER_TYPE;
+  protected final static String JBOSS_AS_FOR_JSF2_SERVER_RUNTIME_TYPE;
 	
 	/* (non-Javadoc)
 	 * This static block read properties from 
@@ -101,8 +107,29 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase{
       JBOSS_SERVER_RUNTIME_TYPE = IDELabel.ServerRuntimeType.JBOSS_EAP_4_3;
       JBOSS_SERVER_TYPE = IDELabel.ServerType.JBOSS_EAP_4_3;
 		}
+		// Setup JSF2 project related properties
+		if (projectProperties.containsKey("JBossASForJSF2")){
+      JBOSS_AS_FOR_JSF2_HOME = projectProperties.getProperty("JBossASForJSF2");
+      String version = projectProperties.getProperty("JBossASForJSF2Version","6.0");
+      if (version.equals("6.0")){
+        JBOSS_AS_FOR_JSF2_SERVER_GROUP = IDELabel.ServerGroup.JBOSS_AS_6_0;
+        JBOSS_AS_FOR_JSF2_SERVER_RUNTIME_TYPE = IDELabel.ServerRuntimeType.JBOSS_AS_6_0;
+        JBOSS_AS_FOR_JSF2_SERVER_TYPE = IDELabel.ServerType.JBOSS_AS_6_0;
+      }
+      else{
+        throw new RuntimeException("Unsupported version of JBoss AS runtime for JSF2 [version=" + version +
+            "location='" + JBOSS_AS_FOR_JSF2_HOME + "' specified.");
+      }
+		}
+		else{
+		  JBOSS_AS_FOR_JSF2_HOME = JBOSS_EAP_HOME;
+		  JBOSS_AS_FOR_JSF2_SERVER_GROUP = JBOSS_SERVER_GROUP;
+		  JBOSS_AS_FOR_JSF2_SERVER_TYPE = JBOSS_SERVER_TYPE;
+		  JBOSS_AS_FOR_JSF2_SERVER_RUNTIME_TYPE = JBOSS_SERVER_RUNTIME_TYPE;
+		}
 		JBT_TEST_PROJECT_NAME = projectProperties.getProperty("JSFProjectName"); //$NON-NLS-1$
 		FACELETS_TEST_PROJECT_NAME = projectProperties.getProperty("FaceletsProjectName"); //$NON-NLS-1$
+		JSF2_TEST_PROJECT_NAME = projectProperties.getProperty("JSF2ProjectName"); //$NON-NLS-1$
 	}
 	
 	/**
@@ -131,6 +158,14 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase{
 		} catch (WidgetNotFoundException e) {
 			createFaceletsProject(FACELETS_TEST_PROJECT_NAME);
 		}
+		/*
+     * Test JSF2 project
+     */
+    try {
+      tree.getTreeItem(JSF2_TEST_PROJECT_NAME);
+    } catch (WidgetNotFoundException e) {
+      createJSF2Project(JSF2_TEST_PROJECT_NAME);
+    }
 	}
 	
 	/**
@@ -597,6 +632,51 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase{
     }
     bot.sleep(Timing.time2S());
 
+  }
+
+  /**
+   * Create JSF2 Project with <b>jsf2ProjectName</b>
+   * @param jsf2ProjectName - name of created project
+   */
+  protected void createJSF2Project(String jsf2ProjectName){
+  	open.newObject(ActionItem.NewObject.JBossToolsWebJSFJSFProject.LABEL);
+  	bot.textWithLabel(IDELabel.NewJsfProjectDialog.PROJECT_NAME_LABEL).setText(jsf2ProjectName);
+  	bot.comboBoxWithLabel(IDELabel.NewJsfProjectDialog.JSF_ENVIRONMENT_LABEL)
+  	  .setSelection("JSF 2.0");//$NON-NLS-1$
+  	bot.comboBoxWithLabel(IDELabel.NewJsfProjectDialog.TEMPLATE_LABEL)
+  	  .setSelection("JSFKickStartWithoutLibs");//$NON-NLS-1$
+  	bot.button(IDELabel.Button.NEXT).click();
+  	try {
+  		bot.comboBoxWithLabel(IDELabel.NewJsfProjectDialog.RUNTIME_LABEL)
+  		  .setSelection(JBOSS_AS_FOR_JSF2_SERVER_RUNTIME_TYPE);
+  		delay();
+  		bot.button(IDELabel.Button.FINISH).click();
+  		try {
+  			bot.button(IDELabel.Button.YES).click();
+  			openErrorLog();
+  			openPackageExplorer();
+  		} catch (WidgetNotFoundException e) {
+  		}
+  	} catch (Exception e) {
+  		bot.button(0).click();
+  		SWTBotTree  innerTree = bot.tree();
+  		delay();
+  		innerTree.expandNode(JBOSS_AS_FOR_JSF2_SERVER_GROUP).select(JBOSS_AS_FOR_JSF2_SERVER_RUNTIME_TYPE);
+  		delay();
+  		bot.button(IDELabel.Button.NEXT).click();
+  		bot.textWithLabel(IDELabel.NewJsfProjectDialog.HOME_DIRECTORY_LABEL).setText(JBOSS_AS_FOR_JSF2_HOME);
+  		bot.button(IDELabel.Button.FINISH).click();
+  		delay();
+  		bot.button(IDELabel.Button.FINISH).click();
+  		try {
+  			bot.button(IDELabel.Button.YES).click();
+  			openErrorLog();
+  			openPackageExplorer();
+  		} catch (WidgetNotFoundException e2) {
+  		}
+  	}
+  	waitForBlockingJobsAcomplished(60*1000L, BUILDING_WS);
+  	setException(null);
   }
 
 }

@@ -20,17 +20,12 @@ import org.jboss.tools.vpe.ui.bot.test.editor.VPEEditorTestCase;
  *
  */
 public class OpenOnTest extends VPEEditorTestCase{
-	public void testOpenOn() throws Throwable{
-	 
-    eclipse.closeAllEditors();		
-	  openPage();
-	  checkOpenOn();
-		
-	}
 	/**
-	 * Check Open On functionality for jsp page
+	 * Test Open On functionality for jsp page
 	 */
-  private void checkOpenOn() {
+  public void testOpenOn() {
+    eclipse.closeAllEditors();
+    openPage();
     // Check open on for uri="http://java.sun.com/jsf/html"
     String expectedOpenedFileName = "html_basic.tld";
     SWTBotEditor openedEditor = OpenOnHelper.checkOpenOnFileIsOpened(
@@ -67,4 +62,5 @@ public class OpenOnTest extends VPEEditorTestCase{
         expectedOpenedFileName);
     openedEditor.close();
   }
+
 }
