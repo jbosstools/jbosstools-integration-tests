@@ -5,11 +5,11 @@
 	<parent>
 		<groupId>org.jboss.tools.modeshape</groupId>
 		<artifactId>tests</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>1.1.0-SNAPSHOT</version>
 	</parent>
 	<groupId>org.jboss.tools.modeshape.tests</groupId>
 	<artifactId>org.jboss.tools.modeshape.rest.ui.test</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	
 	<packaging>eclipse-test-plugin</packaging>
 	<properties>
 		<emma.filter>org.jboss.tools.modeshape.rest.ui*</emma.filter>
