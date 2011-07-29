@@ -34,4 +34,5 @@ Export-Package: org.jboss.tools.ws.ui.bot.test;
    org.eclipse.core.resources,
    org.jboss.tools.ui.bot.ext,
    org.osgi.framework,
-   org.jboss.tools.ws.ui.bot.test.uiutils.wizards"
+   org.jboss.tools.ws.ui.bot.test.uiutils.wizards",
+ org.jboss.tools.ws.ui.bot.test.eap
