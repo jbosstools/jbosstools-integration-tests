@@ -16,7 +16,7 @@ public class CreateRuntimeFromESB extends SWTTestExt {
 		wiz.button("Add").click();
 		bot.shell(IDELabel.Shell.NEW_ESB_RUNTIME).activate();
 		assertFalse("Finish button must not be enabled when no home dir is defined",bot.button(IDELabel.Button.FINISH).isEnabled());
-		bot.text(1).setText(TestConfigurator.currentConfig.getEsb().esbHome);
+		bot.text(1).setText(TestConfigurator.currentConfig.getEsb().runtimeHome);
 		assertTrue("Version was not automaticly selected by setting ESB home dir",bot.comboBox().selection().equals(TestConfigurator.currentConfig.getEsb().version));
 		bot.text(0).setText("runtime");
 		String name = bot.text(0).getText(); 
