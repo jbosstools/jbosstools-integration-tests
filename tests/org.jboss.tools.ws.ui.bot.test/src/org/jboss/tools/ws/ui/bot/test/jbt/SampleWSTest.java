@@ -23,10 +23,13 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
+import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.jboss.tools.ui.bot.ext.SWTEclipseExt;
 import org.jboss.tools.ui.bot.ext.config.Annotations.SWTBotTestRequires;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
+import org.jboss.tools.ui.bot.ext.entity.JavaProjectEntity;
 import org.jboss.tools.ws.ui.bot.test.uiutils.actions.NewSampleWSWizardAction;
 import org.jboss.tools.ws.ui.bot.test.uiutils.actions.TreeItemAction;
 import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.SampleWSWizard;
@@ -64,7 +67,7 @@ public class SampleWSTest extends WSTestBase {
     protected String getWsName() {
         return null;
     }
-
+    
     @Test
     public void testSampleSoapWS() {
         IFile dd = getDD(getWsProjectName());
@@ -79,6 +82,7 @@ public class SampleWSTest extends WSTestBase {
         checkSOAPService(getWsProjectName(), "GreetService", "greeter", "Greeter", "Tester");
     }
 
+    
     @Test
     public void testSampleRestWS() {
         if ("JBOSS_AS".equals(configuredState.getServer().type)) {
@@ -94,7 +98,33 @@ public class SampleWSTest extends WSTestBase {
         createSampleRESTWS(project, "RESTSample", "rest.sample", "Sample", "RESTApp");
         checkRESTService(project, "RESTSample", "rest.sample", "Sample", "Hello World!", "RESTApp");
     }
-
+    
+    
+    
+    /*
+     * Adding Rest support through context menu is available from JBT 3.3.0 M2
+     */
+    @Test
+    public void testImportRestSupport() {
+    	String projectName = "RestLessProject";
+    	JavaProjectEntity javaProject = new JavaProjectEntity();
+    	javaProject.setProjectName(projectName);
+    	eclipse.createJavaProject(javaProject);
+    	
+    	SWTBotTree tree = projectExplorer.bot().tree();
+    	assertTrue("Project " + projectName + " was not created properly", 
+    			SWTEclipseExt.treeContainsItemWithLabel(tree, projectName));
+    	SWTBotTreeItem ti = tree.expandNode(projectName);    	
+        new TreeItemAction(ti, "Configure","Add JAX-RS 1.1 support...").run();
+    	bot.sleep(500);
+    	util.waitForNonIgnoredJobs();
+    	try {
+    		ti.getNode("RESTful Web Services");
+    	}catch (WidgetNotFoundException exc) {
+    		fail("REST support was not configured properly");
+    	}
+    }
+        
     private void createDD(String project) {
         SWTBotTree tree = projectExplorer.bot().tree();
         SWTBotTreeItem ti = tree.expandNode(project);
