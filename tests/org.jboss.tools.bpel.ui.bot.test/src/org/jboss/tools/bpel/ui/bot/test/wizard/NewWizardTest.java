@@ -30,7 +30,8 @@ private void createBPELFile() throws IOException, CoreException {
 	bot.menu("File").menu("New").menu("Other...").click();
 	bot.shell("New").activate();
 	SWTBotTree tree  = bot.tree();
-	tree.expandNode("BPEL 2.0").expandNode("New BPEL Process File").select();
+	tree.expandNode("BPEL 2.0").expandNode("BPEL Process File").select();
+	//tree.expandNode("BPEL 2.0").expandNode("New BPEL Process File").select();
     assertTrue(bot.button("Next >").isEnabled());
     bot.button("Next >").click();
    
@@ -60,7 +61,7 @@ private void createBPELProject() {
 	tree.expandNode("BPEL 2.0").expandNode("BPEL Project").select();
     assertTrue(bot.button("Next >").isEnabled());
     bot.button("Next >").click();
-    bot.shell("New BPEL Project").activate();
+    bot.shell("BPEL Project").activate();
     assertFalse(bot.button("Finish").isEnabled());
     
     bot.textWithLabel("Project name:").setText("A"); 

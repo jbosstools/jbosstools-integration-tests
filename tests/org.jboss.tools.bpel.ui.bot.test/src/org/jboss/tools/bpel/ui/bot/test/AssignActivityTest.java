@@ -31,7 +31,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-@SWTBotTestRequires(clearProjects = true, server = @Server(type = ServerType.SOA, state = ServerState.Running), perspective="BPEL Perspective")
+@SWTBotTestRequires(clearProjects = true, server = @Server(type = ServerType.SOA, state = ServerState.Running), perspective="BPEL")
 public class AssignActivityTest extends BPELTest {
 
 	static String BUNDLE   = "org.jboss.tools.bpel.ui.bot.test";
@@ -155,13 +155,7 @@ public class AssignActivityTest extends BPELTest {
 		Assert.assertFalse(console.getConsoleText().contains("[ASSIGN] Assignment Fault:"));
 		Assert.assertEquals("Fixed Expression", response);
 		*/
-		log.info("############## START SLEEPING ################");
-		bot.sleep(TIME_20S);
-		bot.sleep(TIME_20S);
-		bot.sleep(TIME_20S);
-		bot.sleep(TIME_20S);
-		bot.sleep(TIME_20S);
-		bot.sleep(TIME_20S);
+
 	}
 	
 	void openFile(String projectName, String... path) throws Exception {

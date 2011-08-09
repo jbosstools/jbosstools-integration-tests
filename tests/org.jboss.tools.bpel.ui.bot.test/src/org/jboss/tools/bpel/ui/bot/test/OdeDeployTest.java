@@ -26,7 +26,7 @@ import org.junit.Test;
  * @author psrna
  *
  */
-@SWTBotTestRequires(server = @Server(type = ServerType.SOA, state = ServerState.Running), perspective="BPEL Perspective")
+@SWTBotTestRequires(server = @Server(type = ServerType.SOA, state = ServerState.Running), perspective="BPEL")
 public class OdeDeployTest extends BPELTest {
 	
 	final static String BUNDLE   = "org.jboss.tools.bpel.ui.bot.test";
@@ -59,6 +59,7 @@ public class OdeDeployTest extends BPELTest {
 			bot.viewByTitle("Servers").setFocus();
 			
 			SWTBotTree tree = bot.viewByTitle("Servers").bot().tree(); 
+			bot.sleep(TIME_5S);
 			SWTBotTreeItem server = tree.getTreeItem(serverName + "  [Started, Synchronized]").select();
 			
 			ContextMenuHelper.prepareTreeItemForContextMenu(tree, server);
@@ -117,10 +118,21 @@ public class OdeDeployTest extends BPELTest {
 	
 	@Test
 	public void deployProjectTest() throws Exception {
+		bot.sleep(TIME_20S);
+		bot.sleep(TIME_20S);
+		bot.sleep(TIME_20S);
+		bot.sleep(TIME_20S);
+		bot.sleep(TIME_20S);
+		bot.sleep(TIME_20S);
+		bot.sleep(TIME_20S);
+		bot.sleep(TIME_20S);
+		bot.sleep(TIME_20S);
+		
+		
 		String serverName = OdeDeployTest.configuredState.getServer().name;
 		// Publish the process
 		projExplorer.runOnServer("say_hello");
-		bot.sleep(TIME_5S);
+
 		Assert.assertFalse(console.getConsoleText().contains("DEPLOYMENTS IN ERROR:"));
 		
 		bot.viewByTitle("Servers").show();

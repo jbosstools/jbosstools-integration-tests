@@ -21,7 +21,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-@SWTBotTestRequires(clearProjects = true, /*server = @Server(type = ServerType.SOA, state = ServerState.Present),*/ perspective="BPEL Perspective")
+@SWTBotTestRequires(clearProjects = true, /*server = @Server(type = ServerType.SOA, state = ServerState.Present),*/ perspective="BPEL")
 public class ActivityModelingTest extends BPELTest {
 
 	static final String BUNDLE = "org.jboss.tools.bpel.ui.bot.test";

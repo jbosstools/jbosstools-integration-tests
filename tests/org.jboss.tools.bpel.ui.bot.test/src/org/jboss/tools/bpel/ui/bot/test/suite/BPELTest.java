@@ -55,7 +55,8 @@ public class BPELTest extends SWTTestExt {
 		bot.shell("New").activate();
 		
 		SWTBotTree tree  = bot.tree();
-		tree.expandNode("BPEL 2.0").expandNode("New BPEL Process File").select();
+		tree.expandNode("BPEL 2.0").expandNode("BPEL Process File").select();
+		//tree.expandNode("BPEL 2.0").expandNode("New BPEL Process File").select();
 	    assertTrue(bot.button("Next >").isEnabled());
 	    
 	    bot.button("Next >").click();
@@ -108,7 +109,8 @@ public class BPELTest extends SWTTestExt {
 		bot.shell("New").activate();
 		
 		SWTBotTree tree  = bot.tree();
-		tree.expandNode("BPEL 2.0").expandNode("Apache ODE Deployment Descriptor").select();
+		tree.expandNode("BPEL 2.0").expandNode("BPEL Deployment Descriptor").select();
+		//tree.expandNode("BPEL 2.0").expandNode("Apache ODE Deployment Descriptor").select();
 	    assertTrue(bot.button("Next >").isEnabled());
 	    
 	    bot.button("Next >").click();

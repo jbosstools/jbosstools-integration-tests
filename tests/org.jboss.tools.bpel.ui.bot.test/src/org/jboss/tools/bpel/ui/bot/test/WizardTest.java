@@ -20,7 +20,7 @@ import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
 import org.junit.Assert;
 import org.junit.Test;
 
-@SWTBotTestRequires(clearProjects = true, server = @Server(type = ServerType.SOA, state = ServerState.Present), perspective="BPEL Perspective")
+@SWTBotTestRequires(clearProjects = true, server = @Server(type = ServerType.SOA, state = ServerState.Present), perspective="BPEL")
 public class WizardTest extends BPELTest {
 
 	
@@ -120,6 +120,7 @@ public class WizardTest extends BPELTest {
 		SWTBotShell shell = bot.shell("Properties for " + projectName).activate();
 		
 		bot.tree().select("Targeted Runtimes");
+		bot.checkBox("Show &all runtimes").select();
 		boolean hasRuntime = bot.table().containsItem(configuredState.getServer().name); 
 		shell.close();
 		
