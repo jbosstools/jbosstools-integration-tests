@@ -36,6 +36,7 @@ import org.junit.runners.Suite.SuiteClasses;
  *  Suite duration: aprox. 13min
  * 
  * @author Lukas Jungmann
+ * @author jjankovi
  */
 @SuiteClasses({
 	SampleWSTest.class,
