@@ -24,6 +24,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.ui.bot.ext.SWTEclipseExt;
@@ -110,11 +111,11 @@ public class SampleWSTest extends WSTestBase {
     	JavaProjectEntity javaProject = new JavaProjectEntity();
     	javaProject.setProjectName(projectName);
     	eclipse.createJavaProject(javaProject);
-    	
     	SWTBotTree tree = projectExplorer.bot().tree();
     	assertTrue("Project " + projectName + " was not created properly", 
     			SWTEclipseExt.treeContainsItemWithLabel(tree, projectName));
-    	SWTBotTreeItem ti = tree.expandNode(projectName);    	
+    	SWTBotTreeItem ti = tree.expandNode(projectName);  
+    	  
         new TreeItemAction(ti, "Configure","Add JAX-RS 1.1 support...").run();
     	bot.sleep(500);
     	util.waitForNonIgnoredJobs();
@@ -136,10 +137,13 @@ public class SampleWSTest extends WSTestBase {
         bot.sleep(1500);
     }
 
+    // createSampleSOAPWS(getWsProjectName(), "HelloService", "sample", "SampleService");
+    //createSampleService(Type.SOAP, project, name, pkg, cls, null);
     private void createSampleSOAPWS(String project, String name, String pkg, String cls) {
         createSampleService(Type.SOAP, project, name, pkg, cls, null);
     }
 
+    //checkSOAPService(getWsProjectName(), "HelloService", "sample", "SampleService", "You");
     private void checkSOAPService(String project, String svcName, String svcPkg, String svcClass, String msgContent) {
         checkService(Type.SOAP, project, svcName, svcPkg, svcClass, msgContent, null);
     }
@@ -152,6 +156,10 @@ public class SampleWSTest extends WSTestBase {
         createSampleService(Type.REST, project, name, pkg, cls, appCls);
     }
 
+    
+    
+    // createSampleSOAPWS(getWsProjectName(), "HelloService", "sample", "SampleService");
+    //createSampleService(Type.SOAP, project, name, pkg, cls, null);
     private void createSampleService(Type type, String project, String name, String pkg, String cls, String appCls) {
         SampleWSWizard w = new NewSampleWSWizardAction(type).run();
         w.setProjectName(project).setServiceName(name);
