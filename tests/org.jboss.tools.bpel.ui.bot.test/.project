@@ -31,11 +31,4 @@
 		<nature>org.eclipse.jdt.core.javanature</nature>
 		<nature>org.eclipse.pde.api.tools.apiAnalysisNature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>lib-org.hamcrest.core_1.1.0.v20090501071000</name>
-			<type>2</type>
-			<location>/home/psrna/data/testing/bin/5.0.0.M2/studio/plugins/org.hamcrest.core_1.1.0.v20090501071000</location>
-		</link>
-	</linkedResources>
 </projectDescription>
