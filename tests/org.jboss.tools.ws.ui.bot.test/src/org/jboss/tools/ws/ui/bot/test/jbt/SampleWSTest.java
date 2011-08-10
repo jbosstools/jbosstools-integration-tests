@@ -179,7 +179,7 @@ public class SampleWSTest extends WSTestBase {
     }
 
     private void createSampleRESTWS(String project, String name, String pkg, String cls, String appCls) {
-    	SWTBotEditor ed = createSampleService(Type.REST, project, name, pkg, cls, appCls);        
+    	SWTBotEditor ed = createSampleService(Type.REST, project, name, pkg, cls, appCls);      	
         SWTBotEclipseEditor st = ed.toTextEditor();
         st.selectRange(0, 0, st.getText().length());
         InputStream javasrc = SampleWSTest.class.getResourceAsStream("/resources/jbossws/Rest.java.ws");
