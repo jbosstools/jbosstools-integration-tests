@@ -49,6 +49,13 @@ public class TeiidFilesPublishing extends SWTTestExt{
 		bot.menu(IDELabel.Menu.HELP)
 		   .menu("Project Examples...").click();
 		
+		bot.waitUntil(Conditions.shellIsActive("Progress Information"));
+		bot.waitUntil(Conditions.shellCloses(bot.shell("Progress Information")));
+		
+		bot.shell("Invalid Sites").activate();
+		bot.button("OK").click();
+		
+		
 		SWTBotShell shell = bot.shell("New Project Example");
 		shell.activate();
 		shell.bot().tree(0).expandNode("Teiid Designer")
