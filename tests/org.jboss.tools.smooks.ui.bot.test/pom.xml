@@ -23,9 +23,7 @@
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-surefire-plugin</artifactId>
 				<configuration>
-					<includes>
-						<include>org/jboss/tools/smooks/launch/serialize/ObjectSerializerTest.class</include>
-					</includes>
+					<useUIThread>false</useUIThread>
 				</configuration>
 			</plugin>
 		</plugins>
