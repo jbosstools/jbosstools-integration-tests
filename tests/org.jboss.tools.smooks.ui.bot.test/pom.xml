@@ -15,6 +15,7 @@
 	<properties>
 		<emma.filter>org.jboss.tools.smooks.*</emma.filter>
 		<emma.instrument.bundles>org.jboss.tools.smooks.ui,org.jboss.tools.smooks.core</emma.instrument.bundles>
+		<systemProperties>-Djbosstools.test.smooks.1.2.4=${requirement.build.root}/smooks-1.2.4</systemProperties>
 	</properties>
 
 	<build>
@@ -24,6 +25,19 @@
 				<artifactId>tycho-surefire-plugin</artifactId>
 				<configuration>
 					<useUIThread>false</useUIThread>
+					<product>org.eclipse.sdk.ide</product>
+					<dependencies>
+						<dependency>
+							<type>p2-installable-unit</type>
+							<artifactId>org.jboss.tools.smooks.feature.feature.group</artifactId>
+							<version>0.0.0</version>
+						</dependency>
+						<dependency>
+							<type>p2-installable-unit</type>
+							<artifactId>org.eclipse.sdk.feature.group</artifactId>
+							<version>0.0.0</version>
+						</dependency>
+					</dependencies>
 				</configuration>
 			</plugin>
 		</plugins>
