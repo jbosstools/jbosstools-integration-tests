@@ -101,47 +101,7 @@ public class SampleWSTest extends WSTestBase {
         checkRESTService(project, "RESTSample", "rest.sample", "Sample", "Hello World!", "RESTApp");
     }           
     
-    private void  addRestSupport(String project) {    	
-    	SWTBotTree tree = projectExplorer.bot().tree();   
-    	SWTBotTreeItem ti = tree.expandNode(project);  
-        new TreeItemAction(ti, "Configure","Add JAX-RS 1.1 support...").run();
-    	bot.sleep(500);
-    	util.waitForNonIgnoredJobs();
-    	try {
-    		ti.getNode("RESTful Web Services");
-    	}catch (WidgetNotFoundException exc) {
-    		fail("REST support was not configured properly");
-    	}    	
-    }
     
-    private void checkRestSupport(String project, String servName) {
-    	SWTBotTree tree = projectExplorer.bot().tree();   
-    	SWTBotTreeItem ti = tree.expandNode(project,"RESTful Web Services");
-    	ArrayList<String> nodes = (ArrayList<String>)ti.getNodes();
-    	
-    	
-    	assertTrue("Should be 2 GET services instead of " + 
-    				numberOfService(nodes,"GET"), numberOfService(nodes,"GET") == 2);    	
-    	assertTrue("Should be 1 DELETE service instead of " + 
-				numberOfService(nodes,"DELETE"), numberOfService(nodes,"DELETE") == 1);
-    	assertTrue("Should be 1 POST service instead of " + 
-				numberOfService(nodes,"POST"), numberOfService(nodes,"POST") == 1);
-    	assertTrue("Should be 1 PUT service instead of " + 
-				numberOfService(nodes,"PUT"), numberOfService(nodes,"PUT") == 1);
-    	
-    	
-    	assertTrue("Node's form should be {GET /RESTSample} instead of {" + 
-				nodes.get(0) + "}",nodes.get(0).equals("GET /" + servName));
-    	assertTrue("Node's form should be {DELETE /RESTSample/DeleteMethod} instead of {" + 
-				nodes.get(1) + "}",nodes.get(1).equals("DELETE /" + servName + "/DeleteMethod"));
-    	assertTrue("Node's form should be {POST /RESTSample/PostMethod} instead of {" + 
-				nodes.get(2) + "}",nodes.get(2).equals("POST /" + servName + "/PostMethod"));
-    	assertTrue("Node's form should be {PUT /RESTSample/PutMethod} instead of {" + 
-				nodes.get(3) + "}",nodes.get(3).equals("PUT /" + servName + "/PutMethod"));
-    	assertTrue("Node's form should be {GET /RESTSample/{name}} instead of {" + 
-				nodes.get(4) + "}",nodes.get(4).equals("GET /" + servName + "/{name}"));
-    	
-    }
     
     private int numberOfService(ArrayList<String> services, String serviceType) {
     	int count = 0;
@@ -174,18 +134,12 @@ public class SampleWSTest extends WSTestBase {
 
     private void checkRESTService(String project, String svcName, String svcPkg, String svcClass, String msgContent, String appCls) {
         checkService(Type.REST, project, svcName, svcPkg, svcClass, msgContent, appCls);
-        addRestSupport(project);
-        checkRestSupport(project,svcName);
+        checkRestSupport(project,svcName);        
     }
 
     private void createSampleRESTWS(String project, String name, String pkg, String cls, String appCls) {
     	SWTBotEditor ed = createSampleService(Type.REST, project, name, pkg, cls, appCls);      	
-        SWTBotEclipseEditor st = ed.toTextEditor();
-        st.selectRange(0, 0, st.getText().length());
-        InputStream javasrc = SampleWSTest.class.getResourceAsStream("/resources/jbossws/Rest.java.ws");
-        String code = readStream(javasrc);
-        st.setText(code);
-        ed.save();
+    	copyResourceToClass(ed, SampleWSTest.class.getResourceAsStream("/resources/jbossws/Rest.java.ws"),false);    	
     }
 
       
@@ -243,6 +197,53 @@ public class SampleWSTest extends WSTestBase {
                 }
                 break;
         }
+    }
+    
+    private void checkRestSupport(String project, String servName) {
+    	addRestSupport(project);
+    	testRestSupport(project, servName);
+    }
+    
+    private void  addRestSupport(String project) {    	
+    	SWTBotTree tree = projectExplorer.bot().tree();   
+    	SWTBotTreeItem ti = tree.expandNode(project);  
+        new TreeItemAction(ti, "Configure","Add JAX-RS 1.1 support...").run();
+    	bot.sleep(500);
+    	util.waitForNonIgnoredJobs();
+    	try {
+    		ti.getNode("RESTful Web Services");
+    	}catch (WidgetNotFoundException exc) {
+    		fail("REST support was not configured properly");
+    	}    	
+    }
+    
+    private void testRestSupport(String project, String servName) {
+    	SWTBotTree tree = projectExplorer.bot().tree();   
+    	SWTBotTreeItem ti = tree.expandNode(project,"RESTful Web Services");
+    	ArrayList<String> nodes = (ArrayList<String>)ti.getNodes();
+    	
+    	
+    	assertTrue("Should be 2 GET services instead of " + 
+    				numberOfService(nodes,"GET"), numberOfService(nodes,"GET") == 2);    	
+    	assertTrue("Should be 1 DELETE service instead of " + 
+				numberOfService(nodes,"DELETE"), numberOfService(nodes,"DELETE") == 1);
+    	assertTrue("Should be 1 POST service instead of " + 
+				numberOfService(nodes,"POST"), numberOfService(nodes,"POST") == 1);
+    	assertTrue("Should be 1 PUT service instead of " + 
+				numberOfService(nodes,"PUT"), numberOfService(nodes,"PUT") == 1);
+    	
+    	
+    	assertTrue("Node's form should be {GET /RESTSample} instead of {" + 
+				nodes.get(0) + "}",nodes.get(0).equals("GET /" + servName));
+    	assertTrue("Node's form should be {DELETE /RESTSample/DeleteMethod} instead of {" + 
+				nodes.get(1) + "}",nodes.get(1).equals("DELETE /" + servName + "/DeleteMethod"));
+    	assertTrue("Node's form should be {POST /RESTSample/PostMethod} instead of {" + 
+				nodes.get(2) + "}",nodes.get(2).equals("POST /" + servName + "/PostMethod"));
+    	assertTrue("Node's form should be {PUT /RESTSample/PutMethod} instead of {" + 
+				nodes.get(3) + "}",nodes.get(3).equals("PUT /" + servName + "/PutMethod"));
+    	assertTrue("Node's form should be {GET /RESTSample/{name}} instead of {" + 
+				nodes.get(4) + "}",nodes.get(4).equals("GET /" + servName + "/{name}"));
+    	
     }
 
     private IProject getProject(String project) {

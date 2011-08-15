@@ -36,6 +36,7 @@ import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.NewObject.JavaEEEnterpriseApplicationProject;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.NewObject.WebServicesWSDL;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
+import org.jboss.tools.ws.ui.bot.test.jbt.SampleWSTest;
 import org.jboss.tools.ws.ui.bot.test.uiutils.actions.NewFileWizardAction;
 import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.DynamicWebProjectWizard;
 import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.WebServiceClientWizard;
@@ -52,16 +53,16 @@ import org.junit.runner.RunWith;
 @RunWith(SWTBotJunit4ClassRunner.class)
 public abstract class WSTestBase extends SWTTestExt {
 
-	private static final String SOAP_REQUEST_TEMPLATE = "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\" ?>" +
-	"<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\"" +
-	" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"" +
-	" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">" +
-	"<soap:Body>{0}</soap:Body>" +
-	"</soap:Envelope>";
-	
-	private static final Logger L = Logger.getLogger(WSTestBase.class.getName());
+	private static final String SOAP_REQUEST_TEMPLATE = "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\" ?>"
+			+ "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\""
+			+ " xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\""
+			+ " xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">"
+			+ "<soap:Body>{0}</soap:Body>" + "</soap:Envelope>";
+
+	private static final Logger L = Logger
+			.getLogger(WSTestBase.class.getName());
 	private Slider_Level level;
-	
+
 	@Before
 	public void setup() {
 		if (getEarProjectName() != null && !projectExists(getEarProjectName())) {
@@ -71,45 +72,49 @@ public abstract class WSTestBase extends SWTTestExt {
 			createProject(getWsProjectName());
 		}
 	}
-	
+
 	protected boolean projectExists(String name) {
 		return projectExplorer.existsResource(name);
 	}
-	
+
 	@After
 	public void cleanup() {
 		servers.removeAllProjectsFromServer();
 	}
-	
+
 	@AfterClass
 	public static void cleanAll() {
 		L.info("cleanAll");
 		projectExplorer.deleteAllProjects();
 	}
-	
+
 	protected abstract String getWsProjectName();
-	
+
 	protected String getEarProjectName() {
 		return null;
 	}
-	
+
 	protected abstract String getWsPackage();
+
 	protected abstract String getWsName();
-	
+
 	protected void setLevel(Slider_Level level) {
 		this.level = level;
 	}
-	
+
 	protected Slider_Level getLevel() {
 		return level;
 	}
-	
+
 	protected String getWSDLUrl() {
-		return "http://localhost:8080/" + getWsProjectName() + "/" + getWsName() + "?wsdl";
+		return "http://localhost:8080/" + getWsProjectName() + "/"
+				+ getWsName() + "?wsdl";
 	}
-	
-	protected void createClient(String wsdl, String targetProject, Slider_Level level, String pkg) {
-		new NewFileWizardAction().run().selectTemplate("Web Services", "Web Service Client").next();
+
+	protected void createClient(String wsdl, String targetProject,
+			Slider_Level level, String pkg) {
+		new NewFileWizardAction().run()
+				.selectTemplate("Web Services", "Web Service Client").next();
 		WebServiceClientWizard w = new WebServiceClientWizard();
 		w.setSource(wsdl);
 		util.waitForNonIgnoredJobs();
@@ -125,10 +130,10 @@ public abstract class WSTestBase extends SWTTestExt {
 		w.finish();
 		util.waitForNonIgnoredJobs();
 		bot.sleep(1000);
-		
-		//let's fail if there's some error in the wizard,
-		//and close error dialog and the wizard so other tests
-		//can continue
+
+		// let's fail if there's some error in the wizard,
+		// and close error dialog and the wizard so other tests
+		// can continue
 		if (bot.activeShell().getText().contains("Error")) {
 			SWTBotShell sh = bot.activeShell();
 			String msg = sh.bot().text().getText();
@@ -137,9 +142,10 @@ public abstract class WSTestBase extends SWTTestExt {
 			Assert.fail(msg);
 		}
 	}
-	
-	protected void createService(Service_Type t, String source, Slider_Level level, String pkg, String code) {
-		//create ws source - java class or wsdl
+
+	protected void createService(Service_Type t, String source,
+			Slider_Level level, String pkg, String code) {
+		// create ws source - java class or wsdl
 		SWTBotEditor ed = null;
 		switch (t) {
 		case BOTTOM_UP:
@@ -150,20 +156,25 @@ public abstract class WSTestBase extends SWTTestExt {
 			break;
 		}
 		assertNotNull(ed);
-		//replace default content of java class w/ code
-        SWTBotEclipseEditor st = ed.toTextEditor();
-        st.selectRange(0, 0, st.getText().length());
-        st.setText(code);
-        ed.saveAndClose();
-        //refresh workspace - workaround for JBIDE-6731
-        try {
-			ResourcesPlugin.getWorkspace().getRoot().refreshLocal(IWorkspaceRoot.DEPTH_INFINITE, new NullProgressMonitor());
+		// replace default content of java class w/ code
+		SWTBotEclipseEditor st = ed.toTextEditor();
+		st.selectRange(0, 0, st.getText().length());
+		st.setText(code);
+		ed.saveAndClose();
+		// refresh workspace - workaround for JBIDE-6731
+		try {
+			ResourcesPlugin
+					.getWorkspace()
+					.getRoot()
+					.refreshLocal(IWorkspaceRoot.DEPTH_INFINITE,
+							new NullProgressMonitor());
 		} catch (CoreException e) {
 			L.log(Level.WARNING, e.getMessage(), e);
 		}
 		bot.sleep(500);
-        //create a web service
-		new NewFileWizardAction().run().selectTemplate("Web Services", "Web Service").next();
+		// create a web service
+		new NewFileWizardAction().run()
+				.selectTemplate("Web Services", "Web Service").next();
 		WebServiceWizard wsw = new WebServiceWizard();
 		wsw.setServiceType(t);
 		wsw.setSource(source);
@@ -182,10 +193,10 @@ public abstract class WSTestBase extends SWTTestExt {
 		wsw.finish();
 		util.waitForNonIgnoredJobs();
 		bot.sleep(1000);
-		
-		//let's fail if there's some error in the wizard,
-		//and close error dialog and the wizard so other tests
-		//can continue
+
+		// let's fail if there's some error in the wizard,
+		// and close error dialog and the wizard so other tests
+		// can continue
 		if (bot.activeShell().getText().contains("Error")) {
 			SWTBotShell sh = bot.activeShell();
 			String msg = sh.bot().text().getText();
@@ -194,42 +205,46 @@ public abstract class WSTestBase extends SWTTestExt {
 			Assert.fail(msg);
 		}
 	}
-	
+
 	protected SWTBotEditor createClass(String pkg, String cName) {
 		new NewFileWizardAction().run().selectTemplate("Java", "Class").next();
 		Wizard w = new Wizard();
 		w.bot().textWithLabel("Package:").setText(pkg);
 		w.bot().textWithLabel("Name:").setText(cName);
-		w.bot().textWithLabel("Source folder:").setText(getWsProjectName() + "/src");
+		w.bot().textWithLabel("Source folder:")
+				.setText(getWsProjectName() + "/src");
 		w.finish();
 		bot.sleep(4500);
 		return bot.editorByTitle(cName + ".java");
 	}
-	
+
 	private SWTBotEditor createWsdl(String s) {
 		SWTBot wiz1 = open.newObject(WebServicesWSDL.LABEL);
 		wiz1.textWithLabel(WebServicesWSDL.TEXT_FILE_NAME).setText(s + ".wsdl");
-		wiz1.textWithLabel(WebServicesWSDL.TEXT_ENTER_OR_SELECT_THE_PARENT_FOLDER)
-			.setText(getWsProjectName() + "/src");
+		wiz1.textWithLabel(
+				WebServicesWSDL.TEXT_ENTER_OR_SELECT_THE_PARENT_FOLDER)
+				.setText(getWsProjectName() + "/src");
 		wiz1.button(IDELabel.Button.NEXT).click();
 		open.finish(wiz1);
 		return bot.editorByTitle(s + ".wsdl");
 	}
-	
+
 	protected void createProject(String name) {
-		new NewFileWizardAction().run().selectTemplate("Web", "Dynamic Web Project").next();
+		new NewFileWizardAction().run()
+				.selectTemplate("Web", "Dynamic Web Project").next();
 		new DynamicWebProjectWizard().setProjectName(name).finish();
 		util.waitForNonIgnoredJobs();
 		assertTrue(projectExplorer.existsResource(name));
 		projectExplorer.selectProject(name);
 	}
-	
+
 	protected void createEARProject(String name) {
 		SWTBot wiz = open.newObject(JavaEEEnterpriseApplicationProject.LABEL);
-		wiz.textWithLabel(JavaEEEnterpriseApplicationProject.TEXT_PROJECT_NAME).setText(name);
+		wiz.textWithLabel(JavaEEEnterpriseApplicationProject.TEXT_PROJECT_NAME)
+				.setText(name);
 		// set EAR version
 		SWTBotCombo combo = wiz.comboBox(1);
-		combo.setSelection(combo.itemCount()-1);
+		combo.setSelection(combo.itemCount() - 1);
 		wiz.button(IDELabel.Button.NEXT).click();
 		wiz.checkBox("Generate application.xml deployment descriptor").click();
 		open.finish(wiz);
@@ -241,7 +256,8 @@ public abstract class WSTestBase extends SWTTestExt {
 	protected void bottomUpJbossWebService(InputStream javasrc) {
 		String s = readStream(javasrc);
 		String src = MessageFormat.format(s, getWsPackage(), getWsName());
-		createService(Service_Type.BOTTOM_UP, getWsPackage() + "." + getWsName(), getLevel(), null, src);
+		createService(Service_Type.BOTTOM_UP, getWsPackage() + "."
+				+ getWsName(), getLevel(), null, src);
 	}
 
 	protected void topDownWS(InputStream input, String pkg) {
@@ -254,13 +270,14 @@ public abstract class WSTestBase extends SWTTestExt {
 		}
 		sb.append(tns[0]);
 		String src = MessageFormat.format(s, sb.toString(), getWsName());
-		createService(Service_Type.TOP_DOWN, "/" + getWsProjectName() + "/src/" + getWsName() + ".wsdl", getLevel(), pkg, src);
+		createService(Service_Type.TOP_DOWN, "/" + getWsProjectName() + "/src/"
+				+ getWsName() + ".wsdl", getLevel(), pkg, src);
 	}
 
 	protected void assertServiceDeployed(String wsdlURL) {
 		assertServiceDeployed(wsdlURL, 5000);
 	}
-	
+
 	protected void assertServiceDeployed(String wsdlURL, long timeout) {
 		long t = System.currentTimeMillis();
 		int rsp = -1;
@@ -276,7 +293,7 @@ public abstract class WSTestBase extends SWTTestExt {
 					try {
 						Thread.sleep(1000);
 					} catch (InterruptedException e) {
-						//ignore
+						// ignore
 					}
 					L.info("retrying...");
 				}
@@ -291,17 +308,19 @@ public abstract class WSTestBase extends SWTTestExt {
 			}
 		}
 		L.info("done after: " + (System.currentTimeMillis() - t) + "ms.");
-		assertEquals("Service was not sucessfully deployed, WSDL '" + wsdlURL + "' was not found",
-				HttpURLConnection.HTTP_OK, rsp);
+		assertEquals("Service was not sucessfully deployed, WSDL '" + wsdlURL
+				+ "' was not found", HttpURLConnection.HTTP_OK, rsp);
 	}
-	
+
 	protected void assertServiceNotDeployed(String wsdlURL) {
 		HttpURLConnection connection = null;
 		try {
 			URL u = new URL(wsdlURL);
 			connection = (HttpURLConnection) u.openConnection();
-			assertEquals("Project was not sucessfully undeployed, WSDL '" + wsdlURL + "' is still available",
-					HttpURLConnection.HTTP_NOT_FOUND, connection.getResponseCode());
+			assertEquals("Project was not sucessfully undeployed, WSDL '"
+					+ wsdlURL + "' is still available",
+					HttpURLConnection.HTTP_NOT_FOUND,
+					connection.getResponseCode());
 		} catch (MalformedURLException e1) {
 			throw new RuntimeException(e1);
 		} catch (IOException e) {
@@ -313,10 +332,11 @@ public abstract class WSTestBase extends SWTTestExt {
 		}
 	}
 
-	protected void assertServiceResponseToClient(String startServlet, String response) {
+	protected void assertServiceResponseToClient(String startServlet,
+			String response) {
 		assertContains(response, getPage(startServlet, 15000));
 	}
-	
+
 	protected String getPage(String url, long timeout) {
 		long t = System.currentTimeMillis();
 		int rsp = -1;
@@ -328,13 +348,14 @@ public abstract class WSTestBase extends SWTTestExt {
 				connection = (HttpURLConnection) u.openConnection();
 				rsp = connection.getResponseCode();
 				if (rsp == HttpURLConnection.HTTP_OK) {
-					page = new Scanner(connection.getInputStream()).useDelimiter("\\A").next();
+					page = new Scanner(connection.getInputStream())
+							.useDelimiter("\\A").next();
 					break;
 				} else {
 					try {
 						Thread.sleep(1000);
 					} catch (InterruptedException e) {
-						//ignore
+						// ignore
 					}
 					L.info("retrying...");
 				}
@@ -349,19 +370,21 @@ public abstract class WSTestBase extends SWTTestExt {
 			}
 		}
 		L.info("done after: " + (System.currentTimeMillis() - t) + "ms.");
-		assertEquals("cannot connect to '" + url + "'",	HttpURLConnection.HTTP_OK, rsp);
+		assertEquals("cannot connect to '" + url + "'",
+				HttpURLConnection.HTTP_OK, rsp);
 		return page;
 	}
-	
+
 	public static String getSoapRequest(String body) {
 		return MessageFormat.format(SOAP_REQUEST_TEMPLATE, body);
 	}
-	
+
 	protected String readStream(InputStream is) {
-		//we don't care about performance in tests too much, so this should be OK
+		// we don't care about performance in tests too much, so this should be
+		// OK
 		return new Scanner(is).useDelimiter("\\A").next();
 	}
-	
+
 	protected String readFile(IFile f) {
 		String content = null;
 		InputStream is = null;
@@ -382,11 +405,20 @@ public abstract class WSTestBase extends SWTTestExt {
 		}
 		return content;
 	}
-	
+
+	protected void copyResourceToClass(SWTBotEditor classEdit,
+			InputStream resource, boolean closeEdit) {
+		SWTBotEclipseEditor st = classEdit.toTextEditor();
+		st.selectRange(0, 0, st.getText().length());
+		String code = readStream(resource);
+		st.setText(code);
+		classEdit.save();
+		if (closeEdit) classEdit.close();
+	}
+
 	protected void runProject(String project) {
 		open.viewOpen(ActionItem.View.ServerServers.LABEL);
 		projectExplorer.runOnServer(project);
 	}
-	
 
 }
