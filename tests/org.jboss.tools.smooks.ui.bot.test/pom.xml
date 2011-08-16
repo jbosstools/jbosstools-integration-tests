@@ -25,6 +25,7 @@
 				<artifactId>tycho-surefire-plugin</artifactId>
 				<configuration>
 					<useUIThread>false</useUIThread>
+					<skip>${swtbot.test.skip}</skip>
 					<product>org.eclipse.sdk.ide</product>
 					<dependencies>
 						<dependency>
