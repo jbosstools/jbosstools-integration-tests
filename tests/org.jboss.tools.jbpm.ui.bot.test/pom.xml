@@ -11,4 +11,69 @@
 	<artifactId>org.jboss.tools.jbpm.ui.bot.test</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>eclipse-test-plugin</packaging>
+	
+	<properties>
+		<systemProperties>-Dswtbot.test.properties.file=./swtbot.properties</systemProperties>
+	</properties>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-surefire-plugin</artifactId>
+				<configuration>
+					<useUIThread>false</useUIThread>
+					<skip>${swtbot.test.skip}</skip>
+					<includes><include>**/JBPMAllTest.class</include></includes>
+					<dependencies combine.children="append">
+						<dependency>
+							<type>p2-installable-unit</type>
+							<artifactId>org.jboss.tools.jbpm3.feature.feature.group</artifactId>
+							<version>0.0.0</version>
+						</dependency>
+					</dependencies>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>${maven.antrun.plugin.version}</version>
+				<dependencies>
+					<dependency>
+						<groupId>ant-contrib</groupId>
+						<artifactId>ant-contrib</artifactId>
+						<version>1.0b3</version>
+						<exclusions>
+							<exclusion>
+								<groupId>ant</groupId>
+								<artifactId>ant</artifactId>
+							</exclusion>
+						</exclusions>
+					</dependency>
+				</dependencies>
+				<executions>
+					<execution>
+						<id>default-swtbot-config</id>
+						<phase>generate-test-resources</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<tasks>
+								<taskdef resource="net/sf/antcontrib/antcontrib.properties" />
+								<if>
+									<not>
+										<isset property="jboss.tools.jre.6"/>
+									</not>
+									<then>
+										<property name="jboss.tools.jre.6" value="${java.home}" />
+									</then>
+								</if>
+								<echo file="swtbot.properties" append="false">JBPM=3.1.4,${requirement.build.root}/jbpm-3.1.4</echo>
+							</tasks>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 </project>
