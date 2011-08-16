@@ -299,7 +299,7 @@ public class TextEditingActionsTest extends VPEEditorTestCase {
     assertTrue("There were these errors when editing page "
         + TextEditingActionsTest.TEST_PAGE_NAME 
         + ": " 
-        + SWTEclipseExt.getFormattedTreeNodesText(bot.tree(), errors),
+        + SWTEclipseExt.getFormattedTreeNodesText(errors),
         errors == null || errors.length == 0);
   } 
 }
