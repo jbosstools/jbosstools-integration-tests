@@ -15,4 +15,17 @@
 		<emma.filter>org.jboss.tools.modeshape.rest.ui*</emma.filter>
 		<emma.instrument.bundles>org.jboss.tools.modeshape.rest</emma.instrument.bundles>
 	</properties>
+	
+<build>
+		<plugins>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-surefire-plugin</artifactId>
+				<configuration>
+					<useUIThread>false</useUIThread>
+					<skip>${swtbot.test.skip}</skip>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>
