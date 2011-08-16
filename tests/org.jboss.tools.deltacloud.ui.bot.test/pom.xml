@@ -45,6 +45,15 @@
 						</goals>
 						<configuration>
 							<tasks>
+								<taskdef resource="net/sf/antcontrib/antcontrib.properties" />
+								<if>
+									<not>
+										<isset property="jboss.tools.jre.6"/>
+									</not>
+									<then>
+										<property name="jboss.tools.jre.6" value="${java.home}" />
+									</then>
+								</if>
 								<echo file="swtbot.properties" append="false">JAVA=1.6,${jboss.tools.jre.6}
 SS=password
 								</echo>
