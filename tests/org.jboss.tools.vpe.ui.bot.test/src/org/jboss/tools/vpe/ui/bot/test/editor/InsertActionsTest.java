@@ -44,7 +44,7 @@ public class InsertActionsTest extends VPEEditorTestCase {
 		botExt = new SWTBotExt();
 	}
 	@Override
-	protected void setUp() throws Exception {
+	public void setUp() throws Exception {
 	  super.setUp();
     eclipse.maximizeActiveShell();
     createJspPage(InsertActionsTest.TEST_PAGE_NAME);
@@ -164,7 +164,7 @@ public class InsertActionsTest extends VPEEditorTestCase {
 
   }
   @Override
-  protected void tearDown() throws Exception {
+  public void tearDown() throws Exception {
     jspTextEditor.close();
     super.tearDown();
   }

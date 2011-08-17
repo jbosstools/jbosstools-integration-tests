@@ -38,12 +38,12 @@ public abstract class SubstitutedELTestCase extends PageDesignTestCase{
 	}
 	
 	@Override
-	protected void setUp() throws Exception {
+	public void setUp() throws Exception {
 		super.setUp();
 	}
 	
 	@Override
-	protected void tearDown() throws Exception {
+	public void tearDown() throws Exception {
 		bot.toolbarButtonWithTooltip(PAGE_DESIGN).click();
 		bot.shell(PAGE_DESIGN).activate();
 		bot.tabItem(SUBSTITUTED_EL).activate();

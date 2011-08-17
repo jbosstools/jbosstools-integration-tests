@@ -61,14 +61,14 @@ public abstract class PreferencesTestCase extends VPEAutoTestCase{
 	}
 	
 	@Override
-	protected void setUp() throws Exception {
+	public void setUp() throws Exception {
 		super.setUp();
 		openPage();
 		setPreferencesToDefault(true);
 	}
 	
 	@Override
-	protected void tearDown() throws Exception {
+	public void tearDown() throws Exception {
 		openPage();
 		setPreferencesToDefault(true);
 		super.tearDown();

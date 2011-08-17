@@ -18,6 +18,7 @@ import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.results.VoidResult;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCheckBox;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.jst.jsp.jspeditor.JSPMultiPageEditor;
@@ -25,16 +26,24 @@ import org.jboss.tools.test.TestProperties;
 import org.jboss.tools.vpe.ui.bot.test.Activator;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
 import org.jboss.tools.ui.bot.ext.SWTJBTExt;
+import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.Timing;
+import org.jboss.tools.ui.bot.ext.config.Annotations.SWTBotTestRequires;
+import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
+import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem;
+import org.jboss.tools.ui.bot.ext.gen.ActionItem.NewObject.JBossToolsWebJSFJSFProject;
 import org.jboss.tools.vpe.editor.xpl.CustomSashForm;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
+import org.jboss.tools.ui.bot.ext.wizards.SWTBotWizard;
 import org.jboss.tools.ui.bot.test.JBTSWTBotTestCase;
 import org.jboss.tools.ui.bot.test.SWTBotJSPMultiPageEditor;
 import org.jboss.tools.ui.bot.test.WidgetVariables;
 import org.jboss.tools.vpe.editor.VpeController;
 import org.jboss.tools.vpe.editor.VpeEditorPart;
 import org.jboss.tools.vpe.editor.mapping.VpeNodeMapping;
+import org.junit.After;
+import org.junit.Before;
 import org.mozilla.interfaces.nsIDOMDocument;
 import org.mozilla.interfaces.nsIDOMElement;
 import org.mozilla.interfaces.nsIDOMNode;
@@ -42,105 +51,31 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-public abstract class VPEAutoTestCase extends JBTSWTBotTestCase{
-	
-	protected static Properties projectProperties;
+@SWTBotTestRequires(server = @Server(state = ServerState.Present),
+		clearProjects=false,
+		clearWorkspace=false,
+		perspective="Web Development"
+		)
+public abstract class VPEAutoTestCase extends JBTSWTBotTestCase {
+
 	protected static final String TEST_PAGE = "inputUserName.jsp"; //$NON-NLS-1$
 	protected static final String FACELETS_TEST_PAGE = "inputname.xhtml"; //$NON-NLS-1$
-	protected static String PROJECT_PROPERTIES = "projectProperties.properties"; //$NON-NLS-1$
 	protected static String JSF2_TEST_PAGE = "inputname.xhtml"; //$NON-NLS-1$
-	
-	/**
-	 * Variable defines JBoss EAP 4.3 server location on a file system
-	 */
-	
-	protected final static String JBOSS_EAP_HOME;
-	protected final static String JBT_TEST_PROJECT_NAME;
-	protected final static String FACELETS_TEST_PROJECT_NAME;
-	protected final static String JSF2_TEST_PROJECT_NAME;
-	protected final static String JBOSS_SERVER_GROUP;
-	protected final static String JBOSS_SERVER_TYPE;
-	protected final static String JBOSS_SERVER_RUNTIME_TYPE;
-	protected final static String JBOSS_AS_FOR_JSF2_HOME;
-	protected final static String JBOSS_AS_FOR_JSF2_SERVER_GROUP;
-  protected final static String JBOSS_AS_FOR_JSF2_SERVER_TYPE;
-  protected final static String JBOSS_AS_FOR_JSF2_SERVER_RUNTIME_TYPE;
-	
-	/* (non-Javadoc)
-	 * This static block read properties from 
-	 * org.jboss.tools.vpe.ui.bot.test/resources/projectProperties.properties file
-	 * and set up parameters for project which you would like to create. You may change a number of parameters
-	 * in static block and their values in property file.
-	 */
-	
-	static {
-		try {
-			InputStream inputStream = VPEAutoTestCase.class.getResourceAsStream("/"+PROJECT_PROPERTIES); //$NON-NLS-1$
-			projectProperties = new TestProperties();
-			projectProperties.load(inputStream);
-			inputStream.close();
-		} 
-		catch (IOException e) {
-			IStatus status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Can't load properties from " + PROJECT_PROPERTIES + " file", e); //$NON-NLS-1$ //$NON-NLS-2$
-			Activator.getDefault().getLog().log(status);
-			e.printStackTrace();
-		}
-		catch (IllegalStateException e) {
-			IStatus status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Property file " + PROJECT_PROPERTIES + " was not found", e); //$NON-NLS-1$ //$NON-NLS-2$
-			Activator.getDefault().getLog().log(status);
-			e.printStackTrace();
-		}
-		if (projectProperties.containsKey("JBossEap5.x")){
-      JBOSS_EAP_HOME = projectProperties.getProperty("JBossEap5.x"); //$NON-NLS-1$
-      JBOSS_SERVER_GROUP = IDELabel.ServerGroup.JBOSS_EAP_5_x;
-      JBOSS_SERVER_RUNTIME_TYPE = IDELabel.ServerRuntimeType.JBOSS_EAP_5_x;
-      JBOSS_SERVER_TYPE = IDELabel.ServerType.JBOSS_EAP_5_x;
-    }else if (projectProperties.containsKey("JBossEap5.0")){
-		  JBOSS_EAP_HOME = projectProperties.getProperty("JBossEap5.0"); //$NON-NLS-1$
-	    JBOSS_SERVER_GROUP = IDELabel.ServerGroup.JBOSS_EAP_5_0;
-	    JBOSS_SERVER_RUNTIME_TYPE = IDELabel.ServerRuntimeType.JBOSS_EAP_5_0;
-	    JBOSS_SERVER_TYPE = IDELabel.ServerType.JBOSS_EAP_5_0;
-		}
-		else {
-		  JBOSS_EAP_HOME = projectProperties.getProperty("JBossEap4.3"); //$NON-NLS-1$
-      JBOSS_SERVER_GROUP = IDELabel.ServerGroup.JBOSS_EAP_4_3;
-      JBOSS_SERVER_RUNTIME_TYPE = IDELabel.ServerRuntimeType.JBOSS_EAP_4_3;
-      JBOSS_SERVER_TYPE = IDELabel.ServerType.JBOSS_EAP_4_3;
-		}
-		// Setup JSF2 project related properties
-		if (projectProperties.containsKey("JBossASForJSF2")){
-      JBOSS_AS_FOR_JSF2_HOME = projectProperties.getProperty("JBossASForJSF2");
-      String version = projectProperties.getProperty("JBossASForJSF2Version","6.0");
-      if (version.equals("6.0")){
-        JBOSS_AS_FOR_JSF2_SERVER_GROUP = IDELabel.ServerGroup.JBOSS_AS_6_0;
-        JBOSS_AS_FOR_JSF2_SERVER_RUNTIME_TYPE = IDELabel.ServerRuntimeType.JBOSS_AS_6_0;
-        JBOSS_AS_FOR_JSF2_SERVER_TYPE = IDELabel.ServerType.JBOSS_AS_6_0;
-      }
-      else{
-        throw new RuntimeException("Unsupported version of JBoss AS runtime for JSF2 [version=" + version +
-            "location='" + JBOSS_AS_FOR_JSF2_HOME + "' specified.");
-      }
-		}
-		else{
-		  JBOSS_AS_FOR_JSF2_HOME = JBOSS_EAP_HOME;
-		  JBOSS_AS_FOR_JSF2_SERVER_GROUP = JBOSS_SERVER_GROUP;
-		  JBOSS_AS_FOR_JSF2_SERVER_TYPE = JBOSS_SERVER_TYPE;
-		  JBOSS_AS_FOR_JSF2_SERVER_RUNTIME_TYPE = JBOSS_SERVER_RUNTIME_TYPE;
-		}
-		JBT_TEST_PROJECT_NAME = projectProperties.getProperty("JSFProjectName"); //$NON-NLS-1$
-		FACELETS_TEST_PROJECT_NAME = projectProperties.getProperty("FaceletsProjectName"); //$NON-NLS-1$
-		JSF2_TEST_PROJECT_NAME = projectProperties.getProperty("JSF2ProjectName"); //$NON-NLS-1$
-	}
-	
+
+	protected final static String JBT_TEST_PROJECT_NAME = "JBIDETestProject"; //$NON-NLS-1$
+	protected final static String FACELETS_TEST_PROJECT_NAME = "FaceletsTestProject"; //$NON-NLS-1$
+	protected final static String JSF2_TEST_PROJECT_NAME = "JSF2TestProject"; //$NON-NLS-1$
+
 	/**
 	 * @see #clearWorkbench()
 	 * @see #createJSFProject(String)
 	 */
-	
-	protected void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 		super.setUp();
 		clearWorkbench();
-		SWTBot innerBot = bot.viewByTitle(WidgetVariables.PACKAGE_EXPLORER).bot();
+		SWTBot innerBot = bot.viewByTitle(WidgetVariables.PACKAGE_EXPLORER)
+				.bot();
 		SWTBotTree tree = innerBot.tree();
 		/*
 		 * Test JSF project
@@ -159,83 +94,54 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase{
 			createFaceletsProject(FACELETS_TEST_PROJECT_NAME);
 		}
 		/*
-     * Test JSF2 project
-     */
-    try {
-      tree.getTreeItem(JSF2_TEST_PROJECT_NAME);
-    } catch (WidgetNotFoundException e) {
-      createJSF2Project(JSF2_TEST_PROJECT_NAME);
-    }
+		 * Test JSF2 project
+		 */
+		try {
+			tree.getTreeItem(JSF2_TEST_PROJECT_NAME);
+		} catch (WidgetNotFoundException e) {
+			// FIXME uncomment 
+			//createJSF2Project(JSF2_TEST_PROJECT_NAME);
+		}
 	}
-	
+
 	/**
-	 * Tears down the fixture. Verify Error Log. Close all dialogs which may be not closed
-	 * after test executing.
+	 * Tears down the fixture. Verify Error Log. Close all dialogs which may be
+	 * not closed after test executing.
+	 * 
 	 * @see #clearWorkbench()
 	 */
-	
-	@Override
-	protected void tearDown() throws Exception {
-	  clearWorkbench();
-	  new SWTJBTExt(bot).removeProjectFromServers(JBT_TEST_PROJECT_NAME);
+
+	@After
+	public void tearDown() throws Exception {
+		clearWorkbench();
+		new SWTJBTExt(bot).removeProjectFromServers(JBT_TEST_PROJECT_NAME);
 		super.tearDown();
 	}
-	
+
 	/**
 	 * Create JSF Project with <b>jsfProjectName</b>
-	 * @param jsfProjectName - name of created project
+	 * 
+	 * @param jsfProjectName
+	 *            - name of created project
 	 */
-	protected void createJSFProject(String jsfProjectName){
-		bot.menu("File").menu("New").menu("Other...").click(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		bot.shell("New").activate(); //$NON-NLS-1$
-		SWTBotTree tree = bot.tree();
-		delay();
-		tree.expandNode("JBoss Tools Web").expandNode("JSF").select("JSF Project"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		bot.button("Next >").click(); //$NON-NLS-1$
-		bot.textWithLabel("Project Name*").setText(jsfProjectName); //$NON-NLS-1$
-		bot.comboBoxWithLabel("Template*").setSelection("JSFKickStartWithoutLibs"); //$NON-NLS-1$ //$NON-NLS-2$
-		bot.button("Next >").click(); //$NON-NLS-1$
-		try {
-			bot.comboBoxWithLabel("Runtime*").setSelection("JBoss EAP 4.3 Runtime"); //$NON-NLS-1$ //$NON-NLS-2$
-			delay();
-			bot.button("Finish").click(); //$NON-NLS-1$
-			try {
-				bot.button("Yes").click(); //$NON-NLS-1$
-				openErrorLog();
-				openPackageExplorer();
-			} catch (WidgetNotFoundException e) {
-			}
-		} catch (Exception e) {
-			bot.button(0).click();
-			delay();
-			SWTBotTree  innerTree = bot.tree();
-			delay();
-			innerTree.expandNode(JBOSS_SERVER_GROUP).select(JBOSS_SERVER_RUNTIME_TYPE); //$NON-NLS-1$ //$NON-NLS-2$
-			bot.sleep(Timing.time1S());
-			bot.button("Next >").click(); //$NON-NLS-1$
-			bot.sleep(Timing.time1S());
-			bot.textWithLabel("Home Directory").setText(JBOSS_EAP_HOME); //$NON-NLS-1$
-			bot.sleep(Timing.time1S());
-			bot.button("Finish").click(); //$NON-NLS-1$
-			bot.sleep(Timing.time10S());
-			bot.button("Finish").click(); //$NON-NLS-1$
-			bot.sleep(Timing.time10S());
-			try {
-				bot.button("Yes").click(); //$NON-NLS-1$
-				openErrorLog();
-				openPackageExplorer();
-			} catch (WidgetNotFoundException e2) {
-			}
-		}
-		waitForBlockingJobsAcomplished(60*1000L, BUILDING_WS);
+	protected void createJSFProject(String jsfProjectName) {
+		SWTBot wiz = open.newObject(JBossToolsWebJSFJSFProject.LABEL);
+		wiz.textWithLabel("Project Name*").setText(jsfProjectName); //$NON-NLS-1$
+		wiz.comboBoxWithLabel("Template*").setSelection("JSFKickStartWithoutLibs"); //$NON-NLS-1$ //$NON-NLS-2$
+		wiz.button("Next >").click(); //$NON-NLS-1$
+		wiz.comboBoxWithLabel("Runtime:*").setSelection(SWTTestExt.configuredState.getServer().name); //$NON-NLS-1$ //$NON-NLS-2$
+		open.finish(wiz);
+		waitForBlockingJobsAcomplished(60 * 1000L, BUILDING_WS);
 		setException(null);
 	}
-	
+
 	/**
 	 * Create Facelets Project with <b>faceletsProjectName</b>
-	 * @param faceletsProjectName - name of created project
+	 * 
+	 * @param faceletsProjectName
+	 *            - name of created project
 	 */
-	protected void createFaceletsProject(String faceletsProjectName){
+	protected void createFaceletsProject(String faceletsProjectName) {
 		bot.menu("File").menu("New").menu("Other...").click(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		bot.shell("New").activate(); //$NON-NLS-1$
 		SWTBotTree tree = bot.tree();
@@ -246,63 +152,54 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase{
 		bot.comboBoxWithLabel("JSF Environment*").setSelection("JSF 1.2 with Facelets"); //$NON-NLS-1$ //$NON-NLS-2$
 		bot.comboBoxWithLabel("Template*").setSelection("FaceletsKickStartWithoutLibs"); //$NON-NLS-1$ //$NON-NLS-2$
 		bot.button("Next >").click(); //$NON-NLS-1$
+
+		bot.comboBoxWithLabel("Runtime:*").setSelection(SWTTestExt.configuredState.getServer().name); //$NON-NLS-1$ //$NON-NLS-2$
+		delay();
+		bot.button("Finish").click(); //$NON-NLS-1$
 		try {
-			bot.comboBoxWithLabel("Runtime*").setSelection("JBoss EAP 4.3 Runtime"); //$NON-NLS-1$ //$NON-NLS-2$
-			delay();
-			bot.button("Finish").click(); //$NON-NLS-1$
-			try {
-				bot.button("Yes").click(); //$NON-NLS-1$
-				openErrorLog();
-				openPackageExplorer();
-			} catch (WidgetNotFoundException e) {
-			}
-		} catch (Exception e) {
-			bot.button(0).click();
-			SWTBotTree  innerTree = bot.tree();
-			delay();
-			innerTree.expandNode(JBOSS_SERVER_GROUP).select(JBOSS_SERVER_RUNTIME_TYPE);
-			delay();
-			bot.button("Next >").click(); //$NON-NLS-1$
-			bot.textWithLabel("Home Directory").setText(JBOSS_EAP_HOME); //$NON-NLS-1$
-			bot.button("Finish").click(); //$NON-NLS-1$
-			delay();
-			bot.button("Finish").click(); //$NON-NLS-1$
-			try {
-				bot.button("Yes").click(); //$NON-NLS-1$
-				openErrorLog();
-				openPackageExplorer();
-			} catch (WidgetNotFoundException e2) {
-			}
+			bot.button("Yes").click(); //$NON-NLS-1$
+			openErrorLog();
+			openPackageExplorer();
+		} catch (WidgetNotFoundException e) {
 		}
-		waitForBlockingJobsAcomplished(60*1000L, BUILDING_WS);
+
+		waitForBlockingJobsAcomplished(60 * 1000L, BUILDING_WS);
 		setException(null);
 	}
-	
+
 	/**
-	 * Test content of elements from <b>editor</b> by IDs.<p>
+	 * Test content of elements from <b>editor</b> by IDs.
+	 * <p>
 	 * Tested elements from source editor should have id's attributes that
 	 * correspond to expected one from <b>expectedVPEContentFile</b>.
-	 * @param expectedVPEContentFile - file name, for example, <i>"ShowNonVisualTags.xml"</i>
-	 * with expected VPE DOM Elements and id's attributes correspond to source <b>editor</b> element
-	 * @param editor - {@link JSPMultiPageEditor} that contains source code with tested elements and current id.
+	 * 
+	 * @param expectedVPEContentFile
+	 *            - file name, for example, <i>"ShowNonVisualTags.xml"</i> with
+	 *            expected VPE DOM Elements and id's attributes correspond to
+	 *            source <b>editor</b> element
+	 * @param editor
+	 *            - {@link JSPMultiPageEditor} that contains source code with
+	 *            tested elements and current id.
 	 * @throws Throwable
 	 * @see SWTBotJSPMultiPageEditor
 	 * @see Throwable
 	 */
 	@Deprecated
-	protected void performContentTestByIDs(String expectedVPEContentFile, SWTBotJSPMultiPageEditor editor) throws Throwable{	
-		
+	protected void performContentTestByIDs(String expectedVPEContentFile,
+			SWTBotJSPMultiPageEditor editor) throws Throwable {
+
 		JSPMultiPageEditor multiPageEditor = editor.getJspMultiPageEditor();
 		assertNotNull(multiPageEditor);
-		
+
 		VpeController controller = TestUtil.getVpeController(multiPageEditor);
-		
+
 		String expectedVPEContentFilePath = getPathToResources(expectedVPEContentFile);
-		
-		File xmlTestFile = new File (expectedVPEContentFilePath);
-		
+
+		File xmlTestFile = new File(expectedVPEContentFilePath);
+
 		Document xmlTestDocument = TestDomUtil.getDocument(xmlTestFile);
-		assertNotNull("Can't get test file, possibly file not exists "+xmlTestFile,xmlTestDocument); //$NON-NLS-1$
+		assertNotNull(
+				"Can't get test file, possibly file not exists " + xmlTestFile, xmlTestDocument); //$NON-NLS-1$
 
 		List<String> ids = TestDomUtil.getTestIds(xmlTestDocument);
 
@@ -314,16 +211,16 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase{
 		if (getException() != null) {
 			throw getException();
 		}
-	
+
 	}
-	
+
 	private void compareElements(VpeController controller,
 			Document xmlTestDocument, String elementId, String xmlTestId)
 			throws ComparisonException {
 
 		// get element by id
 		nsIDOMElement vpeElement = findElementById(controller, elementId);
-		assertNotNull("Cann't find element with id="+elementId,vpeElement); //$NON-NLS-1$
+		assertNotNull("Cann't find element with id=" + elementId, vpeElement); //$NON-NLS-1$
 
 		// get test element by id - get <test id="..." > element and get his
 		// first child
@@ -354,41 +251,40 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase{
 
 		return (nsIDOMElement) nodeMapping.getVisualNode();
 	}
-	
+
 	private Element findSourceElementById(VpeController controller,
 			String elementId) {
 
 		return getSourceDocument(controller).getElementById(elementId);
 	}
-	
+
 	private Document getSourceDocument(VpeController controller) {
 		return controller.getSourceBuilder().getSourceDocument();
 	}
-	
+
 	protected String getPathToResources(String testPage) throws IOException {
-		String filePath = FileLocator
-		  .toFileURL(
-		     Platform.getBundle(Activator.PLUGIN_ID)
-		   .getEntry("/"))
-		   .getFile()+ 
-		   "resources/"
-		   +
-		   testPage;  //$NON-NLS-1$//$NON-NLS-2$
+		String filePath = FileLocator.toFileURL(
+				Platform.getBundle(Activator.PLUGIN_ID).getEntry("/"))
+				.getFile()
+				+ "resources/" + testPage; //$NON-NLS-1$//$NON-NLS-2$
 		File file = new File(filePath);
 		if (!file.exists()) {
-			filePath = FileLocator.toFileURL(Platform.getBundle(Activator.PLUGIN_ID).getEntry("/")).getFile()+testPage; //$NON-NLS-1$
+			filePath = FileLocator
+					.toFileURL(
+							Platform.getBundle(Activator.PLUGIN_ID).getEntry(
+									"/")).getFile() + testPage; //$NON-NLS-1$
 		}
 		return filePath;
 	}
-	
+
 	@Override
 	protected void activePerspective() {
 		if (!bot.perspectiveByLabel("Web Development").isActive()) { //$NON-NLS-1$
 			bot.perspectiveByLabel("Web Development").activate(); //$NON-NLS-1$
 		}
 	}
-	
-	protected void openPalette(){
+
+	protected void openPalette() {
 		try {
 			bot.viewByTitle(WidgetVariables.PALETTE);
 		} catch (WidgetNotFoundException e) {
@@ -400,15 +296,16 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase{
 			bot.button("OK").click(); //$NON-NLS-1$
 		}
 	}
-	
+
 	/**
-	 * Close all dialogs and editors, which may be not closed
-	 * after test executing.
+	 * Close all dialogs and editors, which may be not closed after test
+	 * executing.
+	 * 
 	 * @see #isUnuseDialogOpened()
 	 * @see #closeUnuseDialogs()
 	 */
-	
-	protected void clearWorkbench(){
+
+	protected void clearWorkbench() {
 		while (isUnuseDialogOpened()) {
 			closeUnuseDialogs();
 		}
@@ -419,264 +316,295 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase{
 			}
 		}
 	}
-	
+
 	/**
-	 * Test content for elements from all VPE DOM that are nested with <i>BODY</i> descriptor
-	 * @param expectedVPEContentFile - file name, for example, <i>"VerificationOfNameSpaces.xml"</i>
-	 * with expected VPE DOM Elements that are nested with <i>BODY</i> descriptor
-	 * @param editor - {@link JSPMultiPageEditor} that contains source code of currently tested page.
+	 * Test content for elements from all VPE DOM that are nested with
+	 * <i>BODY</i> descriptor
+	 * 
+	 * @param expectedVPEContentFile
+	 *            - file name, for example,
+	 *            <i>"VerificationOfNameSpaces.xml"</i> with expected VPE DOM
+	 *            Elements that are nested with <i>BODY</i> descriptor
+	 * @param editor
+	 *            - {@link JSPMultiPageEditor} that contains source code of
+	 *            currently tested page.
 	 * @throws Throwable
 	 */
-	
-	protected void performContentTestByDocument(String expectedVPEContentFile, SWTBotJSPMultiPageEditor editor) throws Throwable{
+
+	protected void performContentTestByDocument(String expectedVPEContentFile,
+			SWTBotJSPMultiPageEditor editor) throws Throwable {
 		JSPMultiPageEditor multiPageEditor = editor.getJspMultiPageEditor();
 		assertNotNull(multiPageEditor);
-	
-		nsIDOMDocument visualDocument = ((VpeEditorPart)multiPageEditor.getVisualEditor()).getVisualEditor().getDomDocument();
-		
+
+		nsIDOMDocument visualDocument = ((VpeEditorPart) multiPageEditor
+				.getVisualEditor()).getVisualEditor().getDomDocument();
+
 		String expectedVPEContentFilePath = getPathToResources(expectedVPEContentFile);
-		
-		File xmlTestFile = new File (expectedVPEContentFilePath);
-		
+
+		File xmlTestFile = new File(expectedVPEContentFilePath);
+
 		Document xmlTestDocument = TestDomUtil.getDocument(xmlTestFile);
-		assertNotNull("Can't get test file, possibly file not exists "+xmlTestFile,xmlTestDocument); //$NON-NLS-1$
-		
+		assertNotNull(
+				"Can't get test file, possibly file not exists " + xmlTestFile, xmlTestDocument); //$NON-NLS-1$
+
 		compareDocuments(visualDocument, xmlTestDocument);
 
 	}
-	
-	private void compareDocuments (nsIDOMDocument visualDocument, Document xmlTestDocument) throws ComparisonException{
-		nsIDOMNode visualBodyNode = visualDocument.getElementsByTagName("BODY").item(0); //$NON-NLS-1$
-		Node testBodyNode = xmlTestDocument.getElementsByTagName("BODY").item(0); //$NON-NLS-1$
+
+	private void compareDocuments(nsIDOMDocument visualDocument,
+			Document xmlTestDocument) throws ComparisonException {
+		nsIDOMNode visualBodyNode = visualDocument
+				.getElementsByTagName("BODY").item(0); //$NON-NLS-1$
+		Node testBodyNode = xmlTestDocument
+				.getElementsByTagName("BODY").item(0); //$NON-NLS-1$
 		TestDomUtil.compareNodes(visualBodyNode, testBodyNode);
 	}
 
 	/**
 	 * Try to close all unnecessary dialogs, that could prevent next tests fails
 	 */
-	
+
 	protected abstract void closeUnuseDialogs();
 
 	/**
 	 * Verify if any dialog that should be closed is opened
 	 */
-	
+
 	protected abstract boolean isUnuseDialogOpened();
+
 	/**
 	 * Opens page pageName
+	 * 
 	 * @param pageName
 	 */
-	protected void openPage(String pageName){
-    openPage(pageName,VPEAutoTestCase.JBT_TEST_PROJECT_NAME);
-  }
+	protected void openPage(String pageName) {
+		openPage(pageName, VPEAutoTestCase.JBT_TEST_PROJECT_NAME);
+	}
+
 	/**
-   * Opens page pageName from projectName
-   * @param pageName
-   * @param projectName
-   */
-  protected void openPage(String pageName , String projectName){
-    SWTBot innerBot = bot.viewByTitle(WidgetVariables.PACKAGE_EXPLORER).bot();
-    SWTBotTree tree = innerBot.tree();
-    tree.expandNode(projectName)
-      .expandNode("WebContent")
-      .expandNode("pages")
-      .getNode(pageName)
-      .doubleClick(); //$NON-NLS-1$ //$NON-NLS-2$
-    bot.sleep(Timing.time3S());
-  }
+	 * Opens page pageName from projectName
+	 * 
+	 * @param pageName
+	 * @param projectName
+	 */
+	protected void openPage(String pageName, String projectName) {
+		SWTBot innerBot = bot.viewByTitle(WidgetVariables.PACKAGE_EXPLORER)
+				.bot();
+		SWTBotTree tree = innerBot.tree();
+		tree.expandNode(projectName).expandNode("WebContent")
+				.expandNode("pages").getNode(pageName).doubleClick(); //$NON-NLS-1$ //$NON-NLS-2$
+		bot.sleep(Timing.time3S());
+	}
+
 	/**
 	 * Opens Test Page
 	 */
-	protected void openPage(){
-    openPage(VPEAutoTestCase.TEST_PAGE,VPEAutoTestCase.JBT_TEST_PROJECT_NAME);
-  }
+	protected void openPage() {
+		openPage(VPEAutoTestCase.TEST_PAGE,
+				VPEAutoTestCase.JBT_TEST_PROJECT_NAME);
+	}
+
 	/**
 	 * Creates new empty JSP page within test project
+	 * 
 	 * @param pageName
-	 * @param subDirs - complete path to page location within workspace
+	 * @param subDirs
+	 *            - complete path to page location within workspace
 	 */
-	protected void createJspPage (String pageName , String... subDirs){
-	  SWTBotTreeItem tiPageParent = null;
-	  if (subDirs == null || subDirs.length == 0) {
-	    tiPageParent = packageExplorer.selectTreeItem("pages", new String[] {VPEAutoTestCase.JBT_TEST_PROJECT_NAME,"WebContent"});
-	  }
-	  else{
-	    String[] subPath = Arrays.copyOfRange(subDirs, 0, subDirs.length - 1);
-	    tiPageParent = packageExplorer.selectTreeItem(subDirs[subDirs.length - 1], subPath);
-	  }
-    tiPageParent.expand();
-    try {
-      tiPageParent.getNode(pageName).doubleClick();
-    } catch (WidgetNotFoundException e) {
-      open.newObject(ActionItem.NewObject.WebJSP.LABEL);
-      bot.shell(IDELabel.Shell.NEW_JSP_FILE).activate();
-      bot.textWithLabel(ActionItem.NewObject.WebJSP.TEXT_FILE_NAME).setText(pageName);
-      bot.button(IDELabel.Button.NEXT).click();
-      bot.table().select(IDELabel.NewJSPFileDialog.JSP_TEMPLATE);
-      bot.button(IDELabel.Button.FINISH).click();
-    }
-    bot.sleep(Timing.time2S());
+	protected void createJspPage(String pageName, String... subDirs) {
+		SWTBotTreeItem tiPageParent = null;
+		if (subDirs == null || subDirs.length == 0) {
+			tiPageParent = packageExplorer.selectTreeItem("pages",
+					new String[] { VPEAutoTestCase.JBT_TEST_PROJECT_NAME,
+							"WebContent" });
+		} else {
+			String[] subPath = Arrays.copyOfRange(subDirs, 0,
+					subDirs.length - 1);
+			tiPageParent = packageExplorer.selectTreeItem(
+					subDirs[subDirs.length - 1], subPath);
+		}
+		tiPageParent.expand();
+		try {
+			tiPageParent.getNode(pageName).doubleClick();
+		} catch (WidgetNotFoundException e) {
+			open.newObject(ActionItem.NewObject.WebJSP.LABEL);
+			bot.shell(IDELabel.Shell.NEW_JSP_FILE).activate();
+			bot.textWithLabel(ActionItem.NewObject.WebJSP.TEXT_FILE_NAME)
+					.setText(pageName);
+			bot.button(IDELabel.Button.NEXT).click();
+			bot.table().select(IDELabel.NewJSPFileDialog.JSP_TEMPLATE);
+			bot.button(IDELabel.Button.FINISH).click();
+		}
+		bot.sleep(Timing.time2S());
 
 	}
+
 	/**
 	 * Deletes page pageName
+	 * 
 	 * @param pageName
 	 */
-	protected void deletePage(String pageName){
-    SWTBot innerBot = bot.viewByTitle(WidgetVariables.PACKAGE_EXPLORER).bot();
-    innerBot.tree().expandNode(JBT_TEST_PROJECT_NAME).expandNode("WebContent") //$NON-NLS-1$
-      .expandNode("pages").getNode("testPage.jsp").select();  //$NON-NLS-1$//$NON-NLS-2$
-    bot.menu("Edit").menu("Delete").click(); //$NON-NLS-1$ //$NON-NLS-2$
-    bot.shell("Confirm Delete").activate(); //$NON-NLS-1$
-    bot.button("OK").click(); //$NON-NLS-1$
+	protected void deletePage(String pageName) {
+		SWTBot innerBot = bot.viewByTitle(WidgetVariables.PACKAGE_EXPLORER)
+				.bot();
+		innerBot.tree().expandNode(JBT_TEST_PROJECT_NAME)
+				.expandNode("WebContent") //$NON-NLS-1$
+				.expandNode("pages").getNode("testPage.jsp").select(); //$NON-NLS-1$//$NON-NLS-2$
+		bot.menu("Edit").menu("Delete").click(); //$NON-NLS-1$ //$NON-NLS-2$
+		bot.shell("Confirm Delete").activate(); //$NON-NLS-1$
+		bot.button("OK").click(); //$NON-NLS-1$
 	}
-  /**
-   * Maximize Source Pane
-   * @param botExt
-   * @param pageName
-   */
-  public void maximizeSourcePane(SWTBotExt botExt, String pageName) {
-    botExt.swtBotEditorExtByTitle(pageName).selectPage(
-        IDELabel.VisualPageEditor.VISUAL_SOURCE_TAB_LABEL);
 
-    final org.jboss.tools.vpe.editor.xpl.CustomSashForm csf = 
-      bot.widgets(widgetOfType(CustomSashForm.class)).get(0);
-    UIThreadRunnable.syncExec(new VoidResult() {
-      @Override
-      public void run() {
-        csf.maxDown();
-      }
-    });
-  }
-  /**
-   * Maximize Visual Pane
-   * @param botExt
-   * @param pageName
-   */
-  public void maximizeVisualPane(SWTBotExt botExt, String pageName) {
-    botExt.swtBotEditorExtByTitle(pageName).selectPage(
-        IDELabel.VisualPageEditor.VISUAL_SOURCE_TAB_LABEL);
+	/**
+	 * Maximize Source Pane
+	 * 
+	 * @param botExt
+	 * @param pageName
+	 */
+	public void maximizeSourcePane(SWTBotExt botExt, String pageName) {
+		botExt.swtBotEditorExtByTitle(pageName).selectPage(
+				IDELabel.VisualPageEditor.VISUAL_SOURCE_TAB_LABEL);
 
-    final org.jboss.tools.vpe.editor.xpl.CustomSashForm csf = 
-      bot.widgets(widgetOfType(CustomSashForm.class)).get(0);
-    UIThreadRunnable.syncExec(new VoidResult() {
-      @Override
-      public void run() {
-        csf.maxUp();
-      }
-    });
-  }
-  /**
-   * Restore Source Pane
-   * @param botExt
-   * @param pageName
-   */
-  public void restoreSourcePane(SWTBotExt botExt, String pageName) {
-    botExt.swtBotEditorExtByTitle(pageName).selectPage(
-        IDELabel.VisualPageEditor.VISUAL_SOURCE_TAB_LABEL);
+		final org.jboss.tools.vpe.editor.xpl.CustomSashForm csf = bot.widgets(
+				widgetOfType(CustomSashForm.class)).get(0);
+		UIThreadRunnable.syncExec(new VoidResult() {
+			@Override
+			public void run() {
+				csf.maxDown();
+			}
+		});
+	}
 
-    final org.jboss.tools.vpe.editor.xpl.CustomSashForm csf = 
-      bot.widgets(widgetOfType(CustomSashForm.class)).get(0);
-    UIThreadRunnable.syncExec(new VoidResult() {
-      @Override
-      public void run() {
-        csf.downClicked();
-      }
-    });
-  }
-  /**
-   * Restore Visual Pane
-   * @param botExt
-   * @param pageName
-   */
-  public void restoreVisualPane(SWTBotExt botExt, String pageName) {
-    botExt.swtBotEditorExtByTitle(pageName).selectPage(
-        IDELabel.VisualPageEditor.VISUAL_SOURCE_TAB_LABEL);
+	/**
+	 * Maximize Visual Pane
+	 * 
+	 * @param botExt
+	 * @param pageName
+	 */
+	public void maximizeVisualPane(SWTBotExt botExt, String pageName) {
+		botExt.swtBotEditorExtByTitle(pageName).selectPage(
+				IDELabel.VisualPageEditor.VISUAL_SOURCE_TAB_LABEL);
 
-    final org.jboss.tools.vpe.editor.xpl.CustomSashForm csf = 
-      bot.widgets(widgetOfType(CustomSashForm.class)).get(0);
-    UIThreadRunnable.syncExec(new VoidResult() {
-      @Override
-      public void run() {
-        csf.upClicked();
-      }
-    });
-  }
-  /**
-   * Creates new empty xhtml page within test project
-   * @param pageName
-   * @param subDirs - complete path to page location within workspace
-   */
-  protected void createXhtmlPage (String pageName , String... subDirs){
-    SWTBotTreeItem tiPageParent = null;
-    if (subDirs == null || subDirs.length == 0) {
-      tiPageParent = packageExplorer.selectTreeItem("pages", new String[] {VPEAutoTestCase.JBT_TEST_PROJECT_NAME,"WebContent"});
-    }
-    else{
-      String[] subPath = Arrays.copyOfRange(subDirs, 0, subDirs.length - 1);
-      tiPageParent = packageExplorer.selectTreeItem(subDirs[subDirs.length - 1], subPath);
-    }
-    tiPageParent.expand();
-    try {
-      tiPageParent.getNode(pageName).doubleClick();
-    } catch (WidgetNotFoundException e) {
-      open.newObject(ActionItem.NewObject.JBossToolsWebXHTMLFile.LABEL);
-      bot.shell(IDELabel.Shell.NEW_XHTML_FILE).activate();
-      bot.textWithLabel(ActionItem.NewObject.JBossToolsWebXHTMLFile.TEXT_FILE_NAME).setText(pageName);
-      bot.button(IDELabel.Button.NEXT).click();
-      SWTBotCheckBox cbUseTemplate = bot.checkBox(IDELabel.NewXHTMLFileDialog.USE_XHTML_TEMPLATE_CHECK_BOX);
-      if (cbUseTemplate.isChecked()){
-        cbUseTemplate.deselect();
-      }
-      bot.button(IDELabel.Button.FINISH).click();
-    }
-    bot.sleep(Timing.time2S());
+		final org.jboss.tools.vpe.editor.xpl.CustomSashForm csf = bot.widgets(
+				widgetOfType(CustomSashForm.class)).get(0);
+		UIThreadRunnable.syncExec(new VoidResult() {
+			@Override
+			public void run() {
+				csf.maxUp();
+			}
+		});
+	}
 
-  }
+	/**
+	 * Restore Source Pane
+	 * 
+	 * @param botExt
+	 * @param pageName
+	 */
+	public void restoreSourcePane(SWTBotExt botExt, String pageName) {
+		botExt.swtBotEditorExtByTitle(pageName).selectPage(
+				IDELabel.VisualPageEditor.VISUAL_SOURCE_TAB_LABEL);
 
-  /**
-   * Create JSF2 Project with <b>jsf2ProjectName</b>
-   * @param jsf2ProjectName - name of created project
-   */
-  protected void createJSF2Project(String jsf2ProjectName){
-  	open.newObject(ActionItem.NewObject.JBossToolsWebJSFJSFProject.LABEL);
-  	bot.textWithLabel(IDELabel.NewJsfProjectDialog.PROJECT_NAME_LABEL).setText(jsf2ProjectName);
-  	bot.comboBoxWithLabel(IDELabel.NewJsfProjectDialog.JSF_ENVIRONMENT_LABEL)
-  	  .setSelection("JSF 2.0");//$NON-NLS-1$
-  	bot.comboBoxWithLabel(IDELabel.NewJsfProjectDialog.TEMPLATE_LABEL)
-  	  .setSelection("JSFKickStartWithoutLibs");//$NON-NLS-1$
-  	bot.button(IDELabel.Button.NEXT).click();
-  	try {
-  		bot.comboBoxWithLabel(IDELabel.NewJsfProjectDialog.RUNTIME_LABEL)
-  		  .setSelection(JBOSS_AS_FOR_JSF2_SERVER_RUNTIME_TYPE);
-  		delay();
-  		bot.button(IDELabel.Button.FINISH).click();
-  		try {
-  			bot.button(IDELabel.Button.YES).click();
-  			openErrorLog();
-  			openPackageExplorer();
-  		} catch (WidgetNotFoundException e) {
-  		}
-  	} catch (Exception e) {
-  		bot.button(0).click();
-  		SWTBotTree  innerTree = bot.tree();
-  		delay();
-  		innerTree.expandNode(JBOSS_AS_FOR_JSF2_SERVER_GROUP).select(JBOSS_AS_FOR_JSF2_SERVER_RUNTIME_TYPE);
-  		delay();
-  		bot.button(IDELabel.Button.NEXT).click();
-  		bot.textWithLabel(IDELabel.NewJsfProjectDialog.HOME_DIRECTORY_LABEL).setText(JBOSS_AS_FOR_JSF2_HOME);
-  		bot.button(IDELabel.Button.FINISH).click();
-  		delay();
-  		bot.button(IDELabel.Button.FINISH).click();
-  		try {
-  			bot.button(IDELabel.Button.YES).click();
-  			openErrorLog();
-  			openPackageExplorer();
-  		} catch (WidgetNotFoundException e2) {
-  		}
-  	}
-  	waitForBlockingJobsAcomplished(60*1000L, BUILDING_WS);
-  	setException(null);
-  }
+		final org.jboss.tools.vpe.editor.xpl.CustomSashForm csf = bot.widgets(
+				widgetOfType(CustomSashForm.class)).get(0);
+		UIThreadRunnable.syncExec(new VoidResult() {
+			@Override
+			public void run() {
+				csf.downClicked();
+			}
+		});
+	}
+
+	/**
+	 * Restore Visual Pane
+	 * 
+	 * @param botExt
+	 * @param pageName
+	 */
+	public void restoreVisualPane(SWTBotExt botExt, String pageName) {
+		botExt.swtBotEditorExtByTitle(pageName).selectPage(
+				IDELabel.VisualPageEditor.VISUAL_SOURCE_TAB_LABEL);
+
+		final org.jboss.tools.vpe.editor.xpl.CustomSashForm csf = bot.widgets(
+				widgetOfType(CustomSashForm.class)).get(0);
+		UIThreadRunnable.syncExec(new VoidResult() {
+			@Override
+			public void run() {
+				csf.upClicked();
+			}
+		});
+	}
+
+	/**
+	 * Creates new empty xhtml page within test project
+	 * 
+	 * @param pageName
+	 * @param subDirs
+	 *            - complete path to page location within workspace
+	 */
+	protected void createXhtmlPage(String pageName, String... subDirs) {
+		SWTBotTreeItem tiPageParent = null;
+		if (subDirs == null || subDirs.length == 0) {
+			tiPageParent = packageExplorer.selectTreeItem("pages",
+					new String[] { VPEAutoTestCase.JBT_TEST_PROJECT_NAME,
+							"WebContent" });
+		} else {
+			String[] subPath = Arrays.copyOfRange(subDirs, 0,
+					subDirs.length - 1);
+			tiPageParent = packageExplorer.selectTreeItem(
+					subDirs[subDirs.length - 1], subPath);
+		}
+		tiPageParent.expand();
+		try {
+			tiPageParent.getNode(pageName).doubleClick();
+		} catch (WidgetNotFoundException e) {
+			open.newObject(ActionItem.NewObject.JBossToolsWebXHTMLFile.LABEL);
+			bot.shell(IDELabel.Shell.NEW_XHTML_FILE).activate();
+			bot.textWithLabel(
+					ActionItem.NewObject.JBossToolsWebXHTMLFile.TEXT_FILE_NAME)
+					.setText(pageName);
+			bot.button(IDELabel.Button.NEXT).click();
+			SWTBotCheckBox cbUseTemplate = bot
+					.checkBox(IDELabel.NewXHTMLFileDialog.USE_XHTML_TEMPLATE_CHECK_BOX);
+			if (cbUseTemplate.isChecked()) {
+				cbUseTemplate.deselect();
+			}
+			bot.button(IDELabel.Button.FINISH).click();
+		}
+		bot.sleep(Timing.time2S());
+
+	}
+
+	/**
+	 * Create JSF2 Project with <b>jsf2ProjectName</b>
+	 * 
+	 * @param jsf2ProjectName
+	 *            - name of created project
+	 */
+	protected void createJSF2Project(String jsf2ProjectName) {
+		SWTBot wiz = open
+				.newObject(ActionItem.NewObject.JBossToolsWebJSFJSFProject.LABEL);
+		wiz.textWithLabel(IDELabel.NewJsfProjectDialog.PROJECT_NAME_LABEL)
+				.setText(jsf2ProjectName);
+		wiz.comboBoxWithLabel(
+				IDELabel.NewJsfProjectDialog.JSF_ENVIRONMENT_LABEL)
+				.setSelection("JSF 2.0");//$NON-NLS-1$
+		wiz.comboBoxWithLabel(IDELabel.NewJsfProjectDialog.TEMPLATE_LABEL)
+				.setSelection("JSFKickStartWithoutLibs");//$NON-NLS-1$
+		wiz.button(IDELabel.Button.NEXT).click();
+		wiz.comboBoxWithLabel("Runtime:*").setSelection(
+				SWTTestExt.configuredState.getServer().name);
+		delay();
+		bot.button(IDELabel.Button.FINISH).click();
+		try {
+			bot.button(IDELabel.Button.YES).click();
+			openErrorLog();
+			openPackageExplorer();
+		} catch (WidgetNotFoundException e) {
+		}
+
+		waitForBlockingJobsAcomplished(60 * 1000L, BUILDING_WS);
+		setException(null);
+	}
 
 }

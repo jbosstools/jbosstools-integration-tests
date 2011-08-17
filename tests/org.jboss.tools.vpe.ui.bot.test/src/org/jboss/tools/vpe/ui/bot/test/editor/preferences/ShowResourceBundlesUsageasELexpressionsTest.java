@@ -26,7 +26,7 @@ public class ShowResourceBundlesUsageasELexpressionsTest extends PreferencesTest
 	}
 	
 	@Override
-	protected void tearDown() throws Exception {
+	public void tearDown() throws Exception {
 
 		//Restore page state before tests
 		

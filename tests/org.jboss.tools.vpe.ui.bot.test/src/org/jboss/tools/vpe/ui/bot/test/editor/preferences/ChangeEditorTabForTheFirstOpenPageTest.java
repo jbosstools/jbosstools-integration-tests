@@ -44,7 +44,7 @@ public class ChangeEditorTabForTheFirstOpenPageTest extends PreferencesTestCase{
 	}
 	
 	@Override
-	protected void tearDown() throws Exception {
+	public void tearDown() throws Exception {
 		
 		//Delete test page if it has been created
 		SWTBot innerBot = bot.viewByTitle(WidgetVariables.PACKAGE_EXPLORER).bot();

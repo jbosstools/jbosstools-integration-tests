@@ -86,7 +86,7 @@ public class GlobalELVariablesTest extends VPEEditorTestCase{
 	}
 
   @Override
-  protected void tearDown() throws Exception {
+public void tearDown() throws Exception {
     bot.menu(IDELabel.Menu.WINDOW).menu(IDELabel.Menu.PREFERENCES).click();
     SWTBotTree preferenceTree = this.bot.tree();
     preferenceTree.expandNode(IDELabel.PreferencesDialog.JBOSS_TOOLS)

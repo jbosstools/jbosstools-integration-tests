@@ -124,7 +124,7 @@ public class SelectionBarTest extends VPEAutoTestCase {
 	  }
 	  
 	  @Override
-	  protected void tearDown() throws Exception {
+	  public void tearDown() throws Exception {
 	    if (sashStatus.equals("VisualPageMaximized")){
 	      restoreSourcePane(botExt, VPEAutoTestCase.TEST_PAGE);
 	    } else if (sashStatus.equals("SourcePageMaximized")){

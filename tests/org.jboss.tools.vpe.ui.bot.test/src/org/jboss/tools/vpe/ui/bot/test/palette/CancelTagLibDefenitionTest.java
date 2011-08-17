@@ -23,7 +23,7 @@ public class CancelTagLibDefenitionTest extends VPEAutoTestCase{
 		//Test cancel TLD
 		SWTBotTree tree = bot.tree();
 		delay();
-		SWTBotTreeItem item = tree.expandNode(projectProperties.getProperty("JSFProjectName"));
+		SWTBotTreeItem item = tree.expandNode(JBT_TEST_PROJECT_NAME);
 		delay();
 		item.getNode("html_basic.tld [h]").select(); //$NON-NLS-1$ //$NON-NLS-2$
 		delay();

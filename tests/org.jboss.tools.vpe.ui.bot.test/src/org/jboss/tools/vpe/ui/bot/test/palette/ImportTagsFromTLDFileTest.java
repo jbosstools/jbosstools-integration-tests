@@ -68,7 +68,7 @@ public class ImportTagsFromTLDFileTest extends VPEAutoTestCase{
 		bot.shell("Edit TLD").activate(); //$NON-NLS-1$
 		SWTBotTree tree = bot.tree();
 		delay();
-		tree.expandNode(projectProperties.getProperty("JSFProjectName")).expandNode("html_basic.tld [h]").select(); //$NON-NLS-1$ //$NON-NLS-2$
+		tree.expandNode(JBT_TEST_PROJECT_NAME).expandNode("html_basic.tld [h]").select(); //$NON-NLS-1$ //$NON-NLS-2$
 		bot.button("OK").click(); //$NON-NLS-1$
 
 		//Test set group

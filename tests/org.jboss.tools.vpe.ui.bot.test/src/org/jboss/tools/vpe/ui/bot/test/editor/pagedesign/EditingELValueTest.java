@@ -40,7 +40,7 @@ public class EditingELValueTest extends PageDesignTestCase {
 		botExt = new SWTBotExt();
 	}
 	@Override
-	protected void setUp() throws Exception {
+	public void setUp() throws Exception {
 	  super.setUp();
     eclipse.maximizeActiveShell();
 	}
@@ -128,7 +128,7 @@ public class EditingELValueTest extends PageDesignTestCase {
 		return false;
 	}
   @Override
-  protected void tearDown() throws Exception {
+public void tearDown() throws Exception {
     
     if (jspGreetingPageEditor != null){
       jspGreetingPageEditor.show();

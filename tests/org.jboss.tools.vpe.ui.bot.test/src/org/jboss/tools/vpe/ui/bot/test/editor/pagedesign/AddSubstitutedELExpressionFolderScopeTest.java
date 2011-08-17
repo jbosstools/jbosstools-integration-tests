@@ -126,7 +126,7 @@ public class AddSubstitutedELExpressionFolderScopeTest extends SubstitutedELTest
 	}
 	
 	@Override
-	protected void tearDown() throws Exception {
+	public void tearDown() throws Exception {
 		bot.viewByTitle(WidgetVariables.PACKAGE_EXPLORER).setFocus();
 		SWTBot innerBot = bot.viewByTitle(WidgetVariables.PACKAGE_EXPLORER).bot();
 		innerBot.tree().expandNode(JBT_TEST_PROJECT_NAME).expandNode("WebContent") //$NON-NLS-1$

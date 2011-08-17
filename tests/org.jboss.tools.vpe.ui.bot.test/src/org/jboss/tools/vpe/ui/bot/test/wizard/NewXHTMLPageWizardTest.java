@@ -14,6 +14,7 @@ import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.vpe.ui.bot.test.VPEAutoTestCase;
+import org.junit.Test;
 
 /**
  * @author mareshkau
@@ -36,6 +37,7 @@ public class NewXHTMLPageWizardTest extends VPEAutoTestCase{
 	/**
 	 * Test new xhtml page wizard basic functionality.
 	 */
+	@Test
 	public void testNewXHTMLPageWizard() {
 		/*
 		 * Open wizard page

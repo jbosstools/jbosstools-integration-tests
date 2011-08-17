@@ -67,7 +67,7 @@ public abstract class VPEEditorTestCase extends VPEAutoTestCase{
 	}
 
 	@Override
-	protected void tearDown() throws Exception {
+	public void tearDown() throws Exception {
 
 		//Restore page state before tests
     if (editor != null){

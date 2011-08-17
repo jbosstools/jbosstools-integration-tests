@@ -55,7 +55,7 @@ public class TextSelectionTest extends VPEEditorTestCase {
 		botExt = new SWTBotExt();
 	}
 	@Override
-	protected void setUp() throws Exception {
+	public void setUp() throws Exception {
 	  super.setUp();
     eclipse.maximizeActiveShell();
     createJspPage(TextSelectionTest.TEST_PAGE_NAME);
@@ -174,7 +174,7 @@ public class TextSelectionTest extends VPEEditorTestCase {
 		return false;
 	}
   @Override
-  protected void tearDown() throws Exception {
+  public void tearDown() throws Exception {
     jspEditor.close();
     super.tearDown();
   } 

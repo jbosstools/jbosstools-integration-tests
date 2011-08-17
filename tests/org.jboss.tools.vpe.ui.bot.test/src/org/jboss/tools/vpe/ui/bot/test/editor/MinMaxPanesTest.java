@@ -111,7 +111,7 @@ public class MinMaxPanesTest extends VPEEditorTestCase {
 	}
 	
 	@Override
-	protected void setUp() throws Exception {
+	public void setUp() throws Exception {
 	  super.setUp();
     eclipse.maximizeActiveShell();
     createJspPage(MinMaxPanesTest.TEST_PAGE_NAME);
@@ -121,7 +121,7 @@ public class MinMaxPanesTest extends VPEEditorTestCase {
     webBrowser = new SWTBotWebBrowser(MinMaxPanesTest.TEST_PAGE_NAME,botExt);	  
 	}
   @Override
-  protected void tearDown() throws Exception {
+  public void tearDown() throws Exception {
     jspTextEditor.close();
     super.tearDown();
   }
