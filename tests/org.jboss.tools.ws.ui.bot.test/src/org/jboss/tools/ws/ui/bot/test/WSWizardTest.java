@@ -15,6 +15,7 @@ import org.jboss.tools.test.util.TestProjectProvider;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
 import org.jboss.tools.ui.bot.ext.SWTEclipseExt;
 import org.jboss.tools.ui.bot.ext.SWTOpenExt;
+import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.parts.SWTBotHyperlinkExt;
 
 public class WSWizardTest extends TestCase{
@@ -41,7 +42,7 @@ public class WSWizardTest extends TestCase{
 			bot.menu("File").menu("New").menu("Other...").click();
 			bot.shell("New").activate();
 			SWTBotTree tree = bot.tree();
-			bot.sleep(1000);
+			bot.sleep(Timing.time1S());
 			tree.expandNode("Server").select("Server");
 			bot.button("Next >").click();
 			SWTBotTree tree2 = bot.tree();
@@ -51,7 +52,7 @@ public class WSWizardTest extends TestCase{
 			bot.textWithLabel("Name").setText("AS4.2Runtime");
 			bot.textWithLabel("Home Directory").setText(JBOSS_AS_42_HOME);
 			bot.button("Finish").click();
-			bot.sleep(2000);
+			bot.sleep(Timing.time2S());
 		}
 	}
 
@@ -100,7 +101,7 @@ public class WSWizardTest extends TestCase{
 			SWTBot dBot = bot.activeShell().bot();
 			dBot.comboBoxWithLabel("Service project:").setText("B");
 			dBot.button("OK").click();
-			dBot.sleep(1000);
+			dBot.sleep(Timing.time1S());
 		}
 	}
 	public void setDefaultWSRuntime(){
@@ -110,6 +111,6 @@ public class WSWizardTest extends TestCase{
 		tree.expandNode("Web Services").expandNode("Server and Runtime").select();
 		bot.comboBoxWithLabel("Web service runtime:").setSelection("JBossWS");
 		bot.button("OK").click();
-		bot.sleep(2000);
+		bot.sleep(Timing.time2S());
 	}
 }

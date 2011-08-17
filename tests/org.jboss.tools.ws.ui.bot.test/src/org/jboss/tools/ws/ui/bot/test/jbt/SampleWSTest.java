@@ -29,6 +29,7 @@ import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.config.Annotations.SWTBotTestRequires;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ws.ui.bot.test.uiutils.actions.NewSampleWSWizardAction;
@@ -208,7 +209,7 @@ public class SampleWSTest extends WSTestBase {
     	SWTBotTree tree = projectExplorer.bot().tree();   
     	SWTBotTreeItem ti = tree.expandNode(project);  
         new TreeItemAction(ti, "Configure","Add JAX-RS 1.1 support...").run();
-    	bot.sleep(500);
+    	bot.sleep(Timing.time500MS());
     	util.waitForNonIgnoredJobs();
     	try {
     		ti.getNode("RESTful Web Services");
