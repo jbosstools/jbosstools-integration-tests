@@ -8,7 +8,7 @@ import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.junit.Test;
 
-@SWTBotTestRequires(server=@Server(type=ServerType.SOA,state=ServerState.Present))
+@Require(server=@Server(type=ServerType.SOA,state=ServerState.Present))
 public class CreateRuntimeFromSOA extends SWTTestExt {
 
 	@Test

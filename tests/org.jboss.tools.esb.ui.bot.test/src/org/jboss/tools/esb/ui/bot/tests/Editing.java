@@ -33,7 +33,7 @@ import org.jboss.tools.esb.ui.bot.tests.editor.ESBProvider;
 import org.jboss.tools.esb.ui.bot.tests.editor.ESBProviderFactory;
 import org.jboss.tools.ui.bot.ext.SWTEclipseExt;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
-import org.jboss.tools.ui.bot.ext.config.Annotations.SWTBotTestRequires;
+import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.NewObject.ESBESBFile;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.NewObject.ESBESBProject;
@@ -47,7 +47,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-@SWTBotTestRequires(perspective = "Java", runOnce = true)
+@Require(perspective = "Java", runOnce = true)
 public class Editing extends SWTTestExt {
 
 	public static String menu_addService = "Add Service...";

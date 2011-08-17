@@ -12,13 +12,13 @@ package org.jboss.tools.ws.ui.bot.test.wtp;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.jboss.tools.ui.bot.ext.config.Annotations.SWTBotTestRequires;
+import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.WsWizardBase.Slider_Level;
 import org.junit.Assert;
 import org.junit.Test;
 
-@SWTBotTestRequires(server=@Server(),perspective="Java EE")
+@Require(server=@Server(),perspective="Java EE")
 public class WsClientTest extends WSTestBase {
 
 	@Override

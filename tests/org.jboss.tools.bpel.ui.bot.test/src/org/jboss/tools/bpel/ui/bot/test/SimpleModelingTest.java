@@ -13,7 +13,7 @@ import org.jboss.tools.bpel.ui.bot.test.util.ResourceHelper;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
-import org.jboss.tools.ui.bot.ext.config.Annotations.SWTBotTestRequires;
+import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.view.PackageExplorer;
 import org.jboss.tools.ui.bot.ext.view.ServersView;
 
@@ -21,7 +21,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-@SWTBotTestRequires(clearProjects = true, server = @Server(type = ServerType.SOA, state = ServerState.Present))
+@Require(clearProjects = true, server = @Server(type = ServerType.SOA, state = ServerState.Present))
 public class SimpleModelingTest extends BPELTest {
 
 	static String BUNDLE = "org.jboss.tools.bpel.ui.bot.test";

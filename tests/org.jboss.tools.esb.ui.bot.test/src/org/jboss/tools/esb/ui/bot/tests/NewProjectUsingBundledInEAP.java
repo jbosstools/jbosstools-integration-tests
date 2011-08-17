@@ -2,7 +2,7 @@ package org.jboss.tools.esb.ui.bot.tests;
 
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
-import org.jboss.tools.ui.bot.ext.config.Annotations.SWTBotTestRequires;
+import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
@@ -18,7 +18,7 @@ import org.junit.Test;
  * @author lzoubek
  *
  */
-@SWTBotTestRequires(server=@Server(type=ServerType.EAP,state=ServerState.Present))
+@Require(server=@Server(type=ServerType.EAP,state=ServerState.Present))
 public class NewProjectUsingBundledInEAP extends SWTTestExt {
 
 	@AfterClass

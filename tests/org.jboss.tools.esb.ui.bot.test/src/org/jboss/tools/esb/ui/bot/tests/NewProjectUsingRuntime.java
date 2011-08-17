@@ -3,14 +3,14 @@ package org.jboss.tools.esb.ui.bot.tests;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ESB;
-import org.jboss.tools.ui.bot.ext.config.Annotations.SWTBotTestRequires;
+import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.NewObject.ESBESBProject;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.junit.AfterClass;
 import org.junit.Test;
 
-@SWTBotTestRequires(esb=@ESB())
+@Require(esb=@ESB())
 public class NewProjectUsingRuntime extends SWTTestExt{
 
 	@AfterClass

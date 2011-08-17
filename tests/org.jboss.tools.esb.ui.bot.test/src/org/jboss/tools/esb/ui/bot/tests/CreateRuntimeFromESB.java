@@ -7,7 +7,7 @@ import org.jboss.tools.ui.bot.ext.config.Annotations.*;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.junit.Test;
-@SWTBotTestRequires(esb=@ESB())
+@Require(esb=@ESB())
 public class CreateRuntimeFromESB extends SWTTestExt {
 
 	@Test

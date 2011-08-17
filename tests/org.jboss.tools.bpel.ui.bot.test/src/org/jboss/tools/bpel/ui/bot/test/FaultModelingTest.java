@@ -9,7 +9,7 @@ import org.jboss.tools.bpel.ui.bot.ext.widgets.BotBpelEditor;
 import org.jboss.tools.bpel.ui.bot.test.suite.BPELTest;
 import org.jboss.tools.bpel.ui.bot.test.util.ResourceHelper;
 
-import org.jboss.tools.ui.bot.ext.config.Annotations.SWTBotTestRequires;
+import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
@@ -25,7 +25,7 @@ import org.junit.Test;
  * 
  * @author mbaluch
  */
-@SWTBotTestRequires(clearProjects = true, server = @Server(type = ServerType.SOA, state = ServerState.Disabled))
+@Require(clearProjects = true, server = @Server(type = ServerType.SOA, state = ServerState.Disabled))
 public class FaultModelingTest extends BPELTest {
 
 	static String BUNDLE = "org.jboss.tools.bpel.ui.bot.test";

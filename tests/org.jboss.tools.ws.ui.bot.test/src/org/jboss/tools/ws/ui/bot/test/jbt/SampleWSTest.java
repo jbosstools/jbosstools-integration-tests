@@ -30,7 +30,7 @@ import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.ui.bot.ext.Timing;
-import org.jboss.tools.ui.bot.ext.config.Annotations.SWTBotTestRequires;
+import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ws.ui.bot.test.uiutils.actions.NewSampleWSWizardAction;
 import org.jboss.tools.ws.ui.bot.test.uiutils.actions.TreeItemAction;
@@ -42,7 +42,7 @@ import org.junit.AfterClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
-@SWTBotTestRequires(server =
+@Require(server =
 @Server(), perspective = "Java EE")
 public class SampleWSTest extends WSTestBase {
 
