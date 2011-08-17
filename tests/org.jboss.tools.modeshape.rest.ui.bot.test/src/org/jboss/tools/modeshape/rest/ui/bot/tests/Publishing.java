@@ -18,7 +18,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.ui.bot.ext.SWTEclipseExt;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.SWTUtilExt;
-import org.jboss.tools.ui.bot.ext.config.Annotations.SWTBotTestRequires;
+import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem;
@@ -35,7 +35,7 @@ import org.junit.Test;
  * @author psrna
  *
  */
-@SWTBotTestRequires(server=@Server(type=ServerType.SOA,version="5.1"),perspective="Java EE")
+@Require(server=@Server(type=ServerType.SOA,version="5.1"),perspective="Java EE")
 public class Publishing extends SWTTestExt{
 	
 	private static final String CONNERR_MSG = "Unable to connect using the specified server properties." +

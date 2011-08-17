@@ -23,7 +23,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotCombo;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
-import org.jboss.tools.ui.bot.ext.config.Annotations.SWTBotTestRequires;
+import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
 import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
@@ -38,7 +38,7 @@ import org.junit.Test;
  * @author psrna
  *
  */
-@SWTBotTestRequires(server=@Server(type=ServerType.SOA,version="5.1"), perspective="Teiid Designer")
+@Require(server=@Server(type=ServerType.SOA,version="5.1"), perspective="Teiid Designer")
 public class TeiidFilesPublishing extends SWTTestExt{
 	
 	private static final String CONNERR_MSG = "Unable to connect using the specified server properties." +
