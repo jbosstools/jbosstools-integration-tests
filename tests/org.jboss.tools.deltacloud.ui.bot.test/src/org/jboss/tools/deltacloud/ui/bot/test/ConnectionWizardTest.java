@@ -1,5 +1,6 @@
 package org.jboss.tools.deltacloud.ui.bot.test;
 
+
 import java.util.Date;
 
 import org.jboss.tools.deltacloud.ui.bot.test.view.CloudViewer;
@@ -7,12 +8,12 @@ import org.jboss.tools.deltacloud.ui.bot.test.view.ConnectionWizard;
 import org.jboss.tools.ui.bot.ext.Assertions;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.Timing;
-import org.jboss.tools.ui.bot.ext.config.Annotations.SWTBotTestRequires;
+import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-@SWTBotTestRequires(runOnce=true,perspective="Deltacloud",secureStorage=true)
+@Require(runOnce=true,perspective="Deltacloud",secureStorage=true)
 public class ConnectionWizardTest extends SWTTestExt {
 
 	private CloudViewer cloudViewer = new CloudViewer();

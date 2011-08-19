@@ -6,12 +6,12 @@ import org.jboss.tools.deltacloud.ui.bot.test.view.CloudConnection;
 import org.jboss.tools.deltacloud.ui.bot.test.view.CloudConnection.InstanceAction;
 import org.jboss.tools.deltacloud.ui.bot.test.view.CloudViewer;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
-import org.jboss.tools.ui.bot.ext.config.Annotations.SWTBotTestRequires;
+import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-@SWTBotTestRequires(runOnce=true,perspective="Deltacloud",secureStorage=true)
+@Require(runOnce=true,perspective="Deltacloud",secureStorage=true)
 public class CloudViewerTest extends SWTTestExt {
 
 	private CloudViewer cloudViewer = new CloudViewer();
