@@ -14,14 +14,14 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.jboss.tools.jbpm.ui.bot.test.suite.JBPMTest;
 import org.jboss.tools.jbpm.ui.bot.test.suite.Project;
 import org.jboss.tools.ui.bot.ext.config.Annotations.JBPM;
-import org.jboss.tools.ui.bot.ext.config.Annotations.SWTBotTestRequires;
+import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.TestConfigurator;
 import org.jboss.tools.ui.bot.ext.types.EntityType;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.ext.view.PackageExplorer;
 import org.junit.Test;
 
-@SWTBotTestRequires(jbpm=@JBPM, perspective = "jBPM jPDL 3", clearProjects = false)
+@Require(jbpm=@JBPM, perspective = "jBPM jPDL 3", clearProjects = false)
 public class JBPMProjectTest extends JBPMTest {
 
 	@Test

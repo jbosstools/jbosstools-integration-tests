@@ -16,13 +16,13 @@ import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.swtbot.eclipse.gef.finder.SWTGefBot;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditor;
 import org.jboss.tools.jbpm.ui.bot.test.suite.JBPMTest;
-import org.jboss.tools.ui.bot.ext.config.Annotations.SWTBotTestRequires;
+import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.gef.SWTBotGefEditorExt;
 import org.jboss.tools.ui.bot.ext.gef.SWTBotGefFigure;
 import org.jboss.tools.ui.bot.ext.widgets.SWTBotMultiPageEditor;
 import org.junit.Test;
 
-@SWTBotTestRequires(perspective = "jBPM jPDL 3", clearProjects = false, clearWorkspace = false)
+@Require(perspective = "jBPM jPDL 3", clearProjects = false, clearWorkspace = false)
 public class GPDTest extends JBPMTest {
 
 	String[] nodes = { "start", "first", "end" };

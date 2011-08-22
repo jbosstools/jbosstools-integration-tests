@@ -12,12 +12,12 @@ package org.jboss.tools.jbpm.ui.bot.test;
 
 import org.eclipse.swt.graphics.Rectangle;
 import org.jboss.tools.jbpm.ui.bot.test.suite.JBPMTest;
-import org.jboss.tools.ui.bot.ext.config.Annotations.SWTBotTestRequires;
+import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.gef.SWTArranger;
 import org.jboss.tools.ui.bot.ext.gef.SWTBotGefEditorExt;
 import org.junit.Test;
 
-@SWTBotTestRequires(perspective = "jBPM jPDL 3", clearProjects = false, clearWorkspace = false)
+@Require(perspective = "jBPM jPDL 3", clearProjects = false, clearWorkspace = false)
 public class GPDPaletteTest extends JBPMTest {
 
 	@Test

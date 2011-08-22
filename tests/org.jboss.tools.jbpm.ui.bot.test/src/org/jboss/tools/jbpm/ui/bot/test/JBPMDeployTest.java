@@ -17,7 +17,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
 import org.jboss.tools.jbpm.ui.bot.test.suite.JBPMTest;
 import org.jboss.tools.jbpm.ui.bot.test.suite.Project;
 import org.jboss.tools.ui.bot.ext.config.Annotations.JBPM;
-import org.jboss.tools.ui.bot.ext.config.Annotations.SWTBotTestRequires;
+import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
@@ -26,7 +26,7 @@ import org.jboss.tools.ui.bot.ext.view.PackageExplorer;
 import org.jboss.tools.ui.bot.ext.widgets.SWTBotMultiPageEditor;
 import org.junit.Test;
 
-@SWTBotTestRequires( clearProjects=false, jbpm=@JBPM(), server=@Server(type=ServerType.SOA,state=ServerState.Present))
+@Require( clearProjects=false, jbpm=@JBPM(), server=@Server(type=ServerType.SOA,state=ServerState.Present))
 public class JBPMDeployTest extends JBPMTest {
 
 	@Test

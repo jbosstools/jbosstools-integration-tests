@@ -12,13 +12,13 @@ package org.jboss.tools.jbpm.ui.bot.test;
 
 import org.jboss.tools.jbpm.ui.bot.test.suite.JBPMTest;
 import org.jboss.tools.jbpm.ui.bot.test.suite.Project;
-import org.jboss.tools.ui.bot.ext.config.Annotations.SWTBotTestRequires;
+import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 import org.jboss.tools.ui.bot.ext.gen.IView;
 import org.jboss.tools.ui.bot.ext.view.PackageExplorer;
 import org.junit.Test;
 
-@SWTBotTestRequires( perspective="jBPM jPDL 3",  clearProjects = false )
+@Require( perspective="jBPM jPDL 3",  clearProjects = false )
 public class JBPMViewsTest extends JBPMTest {
 
 	@Test
