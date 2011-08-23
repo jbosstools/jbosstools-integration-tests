@@ -26,16 +26,10 @@
 				<configuration>
 					<useUIThread>false</useUIThread>
 					<skip>${swtbot.test.skip}</skip>
-					<product>org.eclipse.sdk.ide</product>
 					<dependencies>
-						<dependency>
+						<dependency combine.children="append">
 							<type>p2-installable-unit</type>
 							<artifactId>org.jboss.tools.smooks.feature.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.eclipse.sdk.feature.group</artifactId>
 							<version>0.0.0</version>
 						</dependency>
 					</dependencies>
