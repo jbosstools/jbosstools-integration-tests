@@ -11,7 +11,6 @@
 package org.jboss.tools.ws.ui.bot.test.jbt;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.MessageFormat;
@@ -24,14 +23,15 @@ import javax.xml.namespace.QName;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
 import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
+import org.jboss.tools.ws.ui.bot.test.WSAllBotTests;
 import org.jboss.tools.ws.ui.bot.test.uiutils.actions.NewSampleWSWizardAction;
 import org.jboss.tools.ws.ui.bot.test.uiutils.actions.TreeItemAction;
 import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.SampleWSWizard;
@@ -39,11 +39,13 @@ import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.SampleWSWizard.Type;
 import org.jboss.tools.ws.ui.bot.test.utils.WSClient;
 import org.jboss.tools.ws.ui.bot.test.wtp.WSTestBase;
 import org.junit.AfterClass;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite.SuiteClasses;
 
-@Require(server =
-@Server(), perspective = "Java EE")
+@Require(server=@Server(),perspective="Java EE")
+@RunWith(RequirementAwareSuite.class)
+@SuiteClasses({ WSAllBotTests.class})
 public class SampleWSTest extends WSTestBase {
 
     private static final String SOAP_REQUEST = getSoapRequest("<ns1:sayHello xmlns:ns1=\"http://{0}/\"><arg0>{1}</arg0></ns1:sayHello>");

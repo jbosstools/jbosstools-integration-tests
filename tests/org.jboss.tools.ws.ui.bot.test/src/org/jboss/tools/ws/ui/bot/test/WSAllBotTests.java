@@ -38,6 +38,7 @@ import org.junit.runners.Suite.SuiteClasses;
  * @author Lukas Jungmann
  * @author jjankovi
  */
+@RunWith(RequirementAwareSuite.class)
 @SuiteClasses({
 	SampleWSTest.class,
 	BottomUpWSTest.class,
@@ -45,6 +46,5 @@ import org.junit.runners.Suite.SuiteClasses;
 	WsClientTest.class,
 	WsTesterTest.class
 	})
-@RunWith(RequirementAwareSuite.class)
 public class WSAllBotTests {
 }

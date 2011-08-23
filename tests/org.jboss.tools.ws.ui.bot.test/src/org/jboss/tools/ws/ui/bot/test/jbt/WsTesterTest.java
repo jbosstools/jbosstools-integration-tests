@@ -26,8 +26,10 @@ import java.util.logging.Logger;
 
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
+import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
+import org.jboss.tools.ws.ui.bot.test.WSAllBotTests;
 import org.jboss.tools.ws.ui.bot.test.widgets.SelectWSDLDialog;
 import org.jboss.tools.ws.ui.bot.test.widgets.WsTesterView;
 import org.jboss.tools.ws.ui.bot.test.widgets.WsTesterView.Request_Arg_Type;
@@ -35,6 +37,8 @@ import org.jboss.tools.ws.ui.bot.test.widgets.WsTesterView.Request_Type;
 import org.jboss.tools.ws.ui.messages.JBossWSUIMessages;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite.SuiteClasses;
 
 /**
  * Tests for Web Service Tester
@@ -42,6 +46,8 @@ import org.junit.Test;
  * @author jlukas
  */
 @Require(perspective = "Java")
+@RunWith(RequirementAwareSuite.class)
+@SuiteClasses({ WSAllBotTests.class})
 public class WsTesterTest extends SWTTestExt {
 
     private static final Logger L = Logger.getLogger(WsTesterTest.class.getName());

@@ -10,12 +10,18 @@
  ******************************************************************************/
 package org.jboss.tools.ws.ui.bot.test.wtp;
 
+import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
+import org.jboss.tools.ws.ui.bot.test.WSAllBotTests;
 import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.WsWizardBase.Slider_Level;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite.SuiteClasses;
 
 @Require(server=@Server(),perspective="Java EE")
+@RunWith(RequirementAwareSuite.class)
+@SuiteClasses({ WSAllBotTests.class})
 public class TopDownWSTest extends WSTestBase {
 
 	@Override

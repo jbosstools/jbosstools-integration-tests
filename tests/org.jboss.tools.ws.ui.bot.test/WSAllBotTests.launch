@@ -39,7 +39,7 @@
 <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.pde.ui.workbenchClasspathProvider"/>
 <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dosgi.requiredJavaVersion=1.5 -XX:MaxPermSize=256m -Xms256m -Xmx1024m -Dswtbot.test.properties.file=${env_var:HOME}/swtbot.properties -Dusage_reporting_enabled=false"/>
 <stringAttribute key="pde.version" value="3.3"/>
-<stringAttribute key="product" value="org.jboss.tools.tests.product"/>
+<stringAttribute key="product" value="org.eclipse.platform.ide"/>
 <booleanAttribute key="show_selected_only" value="false"/>
 <booleanAttribute key="tracing" value="false"/>
 <booleanAttribute key="useCustomFeatures" value="false"/>
