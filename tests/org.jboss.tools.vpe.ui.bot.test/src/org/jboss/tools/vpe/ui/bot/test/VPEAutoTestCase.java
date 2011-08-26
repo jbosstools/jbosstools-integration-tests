@@ -4,11 +4,15 @@ import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.widget
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Properties;
 
 import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
@@ -18,6 +22,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotCheckBox;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.jst.jsp.jspeditor.JSPMultiPageEditor;
+import org.jboss.tools.test.TestProperties;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
 import org.jboss.tools.ui.bot.ext.SWTJBTExt;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
@@ -51,7 +56,9 @@ import org.w3c.dom.Node;
 		perspective="Web Development"
 		)
 public abstract class VPEAutoTestCase extends JBTSWTBotTestCase {
-
+  
+  protected static Properties projectProperties;
+  protected static String PROJECT_PROPERTIES = "projectProperties.properties";
 	protected static final String TEST_PAGE = "inputUserName.jsp"; //$NON-NLS-1$
 	protected static final String FACELETS_TEST_PAGE = "inputname.xhtml"; //$NON-NLS-1$
 	protected static String JSF2_TEST_PAGE = "inputname.xhtml"; //$NON-NLS-1$
@@ -59,6 +66,49 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase {
 	protected final static String JBT_TEST_PROJECT_NAME = "JBIDETestProject"; //$NON-NLS-1$
 	protected final static String FACELETS_TEST_PROJECT_NAME = "FaceletsTestProject"; //$NON-NLS-1$
 	protected final static String JSF2_TEST_PROJECT_NAME = "JSF2TestProject"; //$NON-NLS-1$
+	protected final static String JBOSS_AS_FOR_JSF2_HOME;
+	protected final static String JBOSS_AS_FOR_JSF2_SERVER_GROUP;
+	protected final static String JBOSS_AS_FOR_JSF2_SERVER_TYPE;
+	protected final static String JBOSS_AS_FOR_JSF2_SERVER_RUNTIME_TYPE;
+
+  static {
+    try {
+      InputStream inputStream = VPEAutoTestCase.class
+          .getResourceAsStream("/" + PROJECT_PROPERTIES); //$NON-NLS-1$
+      projectProperties = new TestProperties();
+      projectProperties.load(inputStream);
+      inputStream.close();
+    } catch (IOException e) {
+      IStatus status = new Status(IStatus.ERROR, Activator.PLUGIN_ID,
+          "Can't load properties from " + PROJECT_PROPERTIES + " file", e); //$NON-NLS-1$ //$NON-NLS-2$
+      Activator.getDefault().getLog().log(status);
+      e.printStackTrace();
+    } catch (IllegalStateException e) {
+      IStatus status = new Status(IStatus.ERROR, Activator.PLUGIN_ID,
+          "Property file " + PROJECT_PROPERTIES + " was not found", e); //$NON-NLS-1$ //$NON-NLS-2$
+      Activator.getDefault().getLog().log(status);
+      e.printStackTrace();
+    }
+    // Setup JSF2 project related properties
+    if (projectProperties.containsKey("JBossASForJSF2")) {
+      JBOSS_AS_FOR_JSF2_HOME = projectProperties.getProperty("JBossASForJSF2");
+      String version = projectProperties.getProperty("JBossASForJSF2Version",
+          "6.0");
+      if (version.equals("6.0")) {
+        JBOSS_AS_FOR_JSF2_SERVER_GROUP = IDELabel.ServerGroup.JBOSS_AS_6_0;
+        JBOSS_AS_FOR_JSF2_SERVER_RUNTIME_TYPE = IDELabel.ServerRuntimeType.JBOSS_AS_6_0;
+        JBOSS_AS_FOR_JSF2_SERVER_TYPE = IDELabel.ServerType.JBOSS_AS_6_0;
+      } else {
+        throw new RuntimeException(
+            "Unsupported version of JBoss AS runtime for JSF2 [version="
+                + version + "location='" + JBOSS_AS_FOR_JSF2_HOME
+                + "' specified.");
+      }
+    }
+    else{
+      throw new RuntimeException("Runtime for JSF2 is not specified");
+    }
+  }	  
 
 	/**
 	 * @see #clearWorkbench()
@@ -575,30 +625,56 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase {
 	 * @param jsf2ProjectName
 	 *            - name of created project
 	 */
-	protected void createJSF2Project(String jsf2ProjectName) {
-		SWTBot wiz = open
-				.newObject(ActionItem.NewObject.JBossToolsWebJSFJSFProject.LABEL);
-		wiz.textWithLabel(IDELabel.NewJsfProjectDialog.PROJECT_NAME_LABEL)
-				.setText(jsf2ProjectName);
-		wiz.comboBoxWithLabel(
-				IDELabel.NewJsfProjectDialog.JSF_ENVIRONMENT_LABEL)
-				.setSelection("JSF 2.0");//$NON-NLS-1$
-		wiz.comboBoxWithLabel(IDELabel.NewJsfProjectDialog.TEMPLATE_LABEL)
-				.setSelection("JSFKickStartWithoutLibs");//$NON-NLS-1$
-		wiz.button(IDELabel.Button.NEXT).click();
-		wiz.comboBoxWithLabel("Runtime:*").setSelection(
-				SWTTestExt.configuredState.getServer().name);
-		delay();
-		bot.button(IDELabel.Button.FINISH).click();
-		try {
-			bot.button(IDELabel.Button.YES).click();
-			openErrorLog();
-			openPackageExplorer();
-		} catch (WidgetNotFoundException e) {
-		}
+  protected void createJSF2Project(String jsf2ProjectName) {
+    SWTBot innerBot = bot.viewByTitle(WidgetVariables.PACKAGE_EXPLORER).bot();
+    SWTBotTree tree = innerBot.tree();
+    try {
+      tree.getTreeItem(JSF2_TEST_PROJECT_NAME);
+    } catch (WidgetNotFoundException wnfe) {
+      SWTBot wiz = open
+          .newObject(ActionItem.NewObject.JBossToolsWebJSFJSFProject.LABEL);
+      wiz.textWithLabel(IDELabel.NewJsfProjectDialog.PROJECT_NAME_LABEL)
+          .setText(jsf2ProjectName);
+      wiz.comboBoxWithLabel(IDELabel.NewJsfProjectDialog.JSF_ENVIRONMENT_LABEL)
+          .setSelection("JSF 2.0");//$NON-NLS-1$
+      wiz.comboBoxWithLabel(IDELabel.NewJsfProjectDialog.TEMPLATE_LABEL)
+          .setSelection("JSFKickStartWithoutLibs");//$NON-NLS-1$
+      wiz.button(IDELabel.Button.NEXT).click();
+      try {
+        wiz.comboBoxWithLabel(IDELabel.NewJsfProjectDialog.RUNTIME_LABEL)
+            .setSelection(JBOSS_AS_FOR_JSF2_SERVER_RUNTIME_TYPE);
+        delay();
+        wiz.button(IDELabel.Button.FINISH).click();
+        try {
+          wiz.button(IDELabel.Button.YES).click();
+          openErrorLog();
+          openPackageExplorer();
+        } catch (WidgetNotFoundException wnfe1) {
+        }
+      } catch (Exception e) {
+        bot.button(0).click();
+        SWTBotTree innerTree = wiz.tree();
+        delay();
+        innerTree.expandNode(JBOSS_AS_FOR_JSF2_SERVER_GROUP).select(
+            JBOSS_AS_FOR_JSF2_SERVER_RUNTIME_TYPE);
+        delay();
+        wiz.button(IDELabel.Button.NEXT).click();
+        wiz.textWithLabel(IDELabel.NewJsfProjectDialog.HOME_DIRECTORY_LABEL)
+            .setText(JBOSS_AS_FOR_JSF2_HOME);
+        wiz.button(IDELabel.Button.FINISH).click();
+        delay();
+        wiz.button(IDELabel.Button.FINISH).click();
+        try {
+          wiz.button(IDELabel.Button.YES).click();
+          openErrorLog();
+          openPackageExplorer();
+        } catch (WidgetNotFoundException e2) {
+        }
+      }
+      waitForBlockingJobsAcomplished(60 * 1000L, BUILDING_WS);
+      setException(null);
+    }
 
-		waitForBlockingJobsAcomplished(60 * 1000L, BUILDING_WS);
-		setException(null);
-	}
+  }
 
 }
