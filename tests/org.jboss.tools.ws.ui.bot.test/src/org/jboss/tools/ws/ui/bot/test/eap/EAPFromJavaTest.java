@@ -20,6 +20,7 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
+import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
@@ -32,9 +33,15 @@ import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite.SuiteClasses;
 
-@Require(server =
+@Require(server=
 @Server(type = ServerType.EAP), perspective = "Java EE")
+@RunWith(RequirementAwareSuite.class)
+@SuiteClasses({ EAPCompAllTests.class})
+
+
 public class EAPFromJavaTest extends WSTestBase {
 
     private static final Logger L = Logger.getLogger(EAPFromJavaTest.class.getName());
