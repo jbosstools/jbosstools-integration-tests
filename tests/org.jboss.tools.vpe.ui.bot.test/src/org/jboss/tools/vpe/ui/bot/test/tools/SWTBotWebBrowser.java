@@ -661,9 +661,8 @@ public class SWTBotWebBrowser {
           }
           menusHolder = parent;
         }        
-        
         try {          
-          Menu[] menus = ReflectionsHelper.getPrivateFieldValue(menusHolder.getClass(),
+          Menu[] menus = ReflectionsHelper.getPrivateFieldValue(SWTJBTExt.isRunningOnMacOs() ? Display.class : Decorations.class,
               "menus",
               menusHolder,
               Menu[].class);          
