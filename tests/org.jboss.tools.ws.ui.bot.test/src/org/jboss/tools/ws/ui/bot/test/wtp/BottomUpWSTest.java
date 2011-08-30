@@ -19,7 +19,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
-
 @Require(server=@Server(),perspective="Java EE")
 @RunWith(RequirementAwareSuite.class)
 @SuiteClasses({ WSAllBotTests.class})
