@@ -45,6 +45,7 @@ import org.jboss.tools.jst.jsp.jspeditor.JSPMultiPageEditor;
 import org.jboss.tools.jst.jsp.jspeditor.PalettePageImpl;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
 import org.jboss.tools.ui.bot.ext.SWTEclipseExt;
+import org.jboss.tools.ui.bot.ext.SWTJBTExt;
 import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
 import org.jboss.tools.ui.bot.ext.helper.ReflectionsHelper;
@@ -644,20 +645,28 @@ public class SWTBotWebBrowser {
         getMozillaEventAdapter().handleEvent(domEvent);
       }
     });
-    bot.sleep(Timing.time2S());
+    bot.sleep(Timing.time2S());    
     // Get Top Menu
     return UIThreadRunnable.syncExec(new WidgetResult<Menu>() {
-      public Menu run() {
+      public Menu run() {        
         Menu result = null;
-        Composite parent = mozillaEditor.getControl().getParent();
-        while (!(parent instanceof Decorations)){
-          parent = parent.getParent();
+        Object menusHolder = null;
+        if (SWTJBTExt.isRunningOnMacOs()){
+          menusHolder = mozillaEditor.getControl().getDisplay();
         }
-        try {
-          Menu[] menus = ReflectionsHelper.getPrivateFieldValue(Decorations.class,
-            "menus", 
-            parent,
-            Menu[].class);
+        else{
+          Composite parent = (Composite)mozillaEditor.getControl().getParent();
+          while (!(parent instanceof Decorations)){
+            parent = parent.getParent();
+          }
+          menusHolder = parent;
+        }        
+        
+        try {          
+          Menu[] menus = ReflectionsHelper.getPrivateFieldValue(menusHolder.getClass(),
+              "menus",
+              menusHolder,
+              Menu[].class);          
           if (menus != null){
             MenuItem topMenuItem = null;
             int index = menus.length - 1;
