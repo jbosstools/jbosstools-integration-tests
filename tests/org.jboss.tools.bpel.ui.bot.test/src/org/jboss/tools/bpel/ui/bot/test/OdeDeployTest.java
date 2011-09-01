@@ -44,37 +44,8 @@ public class OdeDeployTest extends BPELTest {
 		"	</soapenv:Body>" +
 		"</soapenv:Envelope>";
 	
-
-	
 	
 	ServersView sView = new ServersView();
-	ProjectExplorer projExplorer = new ProjectExplorer(){
-		
-		@Override
-		public void runOnServer(String projectName) {
-			String serverName = AssignActivityTest.configuredState.getServer().name;
-			//serverName = "SOA-5.1";
-
-			bot.viewByTitle("Servers").show();
-			bot.viewByTitle("Servers").setFocus();
-			
-			SWTBotTree tree = bot.viewByTitle("Servers").bot().tree(); 
-			bot.sleep(TIME_5S);
-			SWTBotTreeItem server = tree.getTreeItem(serverName + "  [Started, Synchronized]").select();
-			
-			ContextMenuHelper.prepareTreeItemForContextMenu(tree, server);
-			new SWTBotMenu(ContextMenuHelper.getContextMenu(tree, IDELabel.Menu.ADD_AND_REMOVE, false)).click();
-			
-			SWTBotShell shell = OdeDeployTest.bot.shell("Add and Remove...");
-			shell.activate();
-			
-			SWTBot viewBot = shell.bot();
-			viewBot.tree().setFocus();
-			viewBot.tree().select(projectName);
-			viewBot.button("Add >").click();
-			viewBot.button("Finish").click();
-		}
-	};
 	
 	@BeforeClass
 	public static void setupWorkspace() throws Exception {
@@ -118,16 +89,6 @@ public class OdeDeployTest extends BPELTest {
 	
 	@Test
 	public void deployProjectTest() throws Exception {
-		bot.sleep(TIME_20S);
-		bot.sleep(TIME_20S);
-		bot.sleep(TIME_20S);
-		bot.sleep(TIME_20S);
-		bot.sleep(TIME_20S);
-		bot.sleep(TIME_20S);
-		bot.sleep(TIME_20S);
-		bot.sleep(TIME_20S);
-		bot.sleep(TIME_20S);
-		
 		
 		String serverName = OdeDeployTest.configuredState.getServer().name;
 		// Publish the process
@@ -162,13 +123,5 @@ public class OdeDeployTest extends BPELTest {
 		Assert.assertTrue(response.contains("</SOAP-ENV:Envelope>"));
 
 	}
-	
-	
-	
-	
-	
-	
-
-	
 	
 }

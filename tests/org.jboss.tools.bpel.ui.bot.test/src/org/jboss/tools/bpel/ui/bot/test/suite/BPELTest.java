@@ -9,10 +9,16 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.SWTBot;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.jboss.tools.bpel.ui.bot.test.AssignActivityTest;
+import org.jboss.tools.bpel.ui.bot.test.OdeDeployTest;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
+import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
+import org.jboss.tools.ui.bot.ext.view.ProjectExplorer;
 
 public class BPELTest extends SWTTestExt {
 
@@ -29,6 +35,38 @@ public class BPELTest extends SWTTestExt {
 		util.waitForNonIgnoredJobs();
 		bot.sleep(TIME_5S, "BPEL All Tests Finished!");
 	}
+	
+	
+	
+	protected ProjectExplorer projExplorer = new ProjectExplorer(){
+		
+		@Override
+		public void runOnServer(String projectName) {
+			String serverName = AssignActivityTest.configuredState.getServer().name;
+			//serverName = "SOA-5.1";
+
+			bot.viewByTitle("Servers").show();
+			bot.viewByTitle("Servers").setFocus();
+			
+			SWTBotTree tree = bot.viewByTitle("Servers").bot().tree(); 
+			bot.sleep(TIME_5S);
+			SWTBotTreeItem server = tree.getTreeItem(serverName + "  [Started, Synchronized]").select();
+			
+			ContextMenuHelper.prepareTreeItemForContextMenu(tree, server);
+			new SWTBotMenu(ContextMenuHelper.getContextMenu(tree, IDELabel.Menu.ADD_AND_REMOVE, false)).click();
+			
+			SWTBotShell shell = OdeDeployTest.bot.shell("Add and Remove...");
+			shell.activate();
+			
+			SWTBot viewBot = shell.bot();
+			viewBot.tree().setFocus();
+			viewBot.tree().select(projectName);
+			viewBot.button("Add >").click();
+			viewBot.button("Finish").click();
+		}
+	};
+	
+	
 
 	/**
 	 * Creates a new process in a project identified by it's name.
