@@ -46,6 +46,7 @@ public class OdeDeployTest extends BPELTest {
 	
 	
 	ServersView sView = new ServersView();
+
 	
 	@BeforeClass
 	public static void setupWorkspace() throws Exception {
@@ -103,7 +104,7 @@ public class OdeDeployTest extends BPELTest {
 		SWTBotTreeItem server = tree.getTreeItem(serverName + "  [Started, Synchronized]").select();
 		server.expand();
 		bot.sleep(TIME_5S);
-		assertTrue(server.getNode("say_hello  [Synchronized]").isVisible());
+		assertTrue(server.getNode("say_hello  [Started, Synchronized]").isVisible());
 	}
 	
 	@Test
