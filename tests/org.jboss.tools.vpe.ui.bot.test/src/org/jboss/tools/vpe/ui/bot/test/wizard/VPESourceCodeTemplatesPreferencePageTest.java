@@ -10,38 +10,54 @@
  ******************************************************************************/
 package org.jboss.tools.vpe.ui.bot.test.wizard;
 
-import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
+import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.test.WidgetVariables;
+import org.jboss.tools.vpe.ui.bot.test.VPEAutoTestCase;
 
 /**
- * This test class open vpe preference page
- * Window->Preferences->JBoss Tools->Web->Editors->Visual Page Editor->Templates
+ * This test class open vpe preference page Window->Preferences->JBoss
+ * Tools->Web->Editors->Visual Page Editor->Templates
  * 
  * @author mareshkau
- *
+ * 
  */
-public class VPESourceCodeTemplatesPreferencePageTest extends SWTBotTestCase{
+public class VPESourceCodeTemplatesPreferencePageTest extends VPEAutoTestCase {
 
-	//just open a VPE Source Code templates preference test page
-	public void testSourceCodeTemplatesPreferencePage() {
-		this.bot.menu(IDELabel.Menu.WINDOW).menu(IDELabel.Menu.PREFERENCES).click(); //$NON-NLS-1$ //$NON-NLS-2$
-		SWTBotTree preferenceTree = this.bot.tree();
-		preferenceTree
-		.expandNode(IDELabel.PreferencesDialog.JBOSS_TOOLS) //$NON-NLS-1$
-		.expandNode(IDELabel.PreferencesDialog.JBOSS_TOOLS_WEB) //$NON-NLS-1$
-		.expandNode(IDELabel.PreferencesDialog.JBOSS_TOOLS_WEB_EDITORS) //$NON-NLS-1$
-		.expandNode(IDELabel.PreferencesDialog.JBOSS_TOOLS_WEB_EDITORS_VPE).select(); //$NON-NLS-1$
-		bot.tabItem(IDELabel.PreferencesDialog.JBOSS_TOOLS_WEB_EDITORS_VPE_VISUAL_TEMPLATES).activate(); //$NON-NLS-1$
-		try{
-			this.bot.button(IDELabel.Button.ADD).click(); //$NON-NLS-1$
-			this.bot.button(IDELabel.Button.CANCEL).click(); //$NON-NLS-1$
-		} catch(WidgetNotFoundException ex){
-			fail("Preference Page has not been created"+ex);//$NON-NLS-1$
-		}finally{
-			this.bot.button(WidgetVariables.OK_BUTTON).click();
-		}
-	}
+  // just open a VPE Source Code templates preference test page
+  public void testSourceCodeTemplatesPreferencePage() {
+    open.preferenceOpen(ActionItem.Preference.JBossTools.LABEL);
+    SWTBotTree preferenceTree = this.bot.tree();
+    preferenceTree.expandNode(IDELabel.PreferencesDialog.JBOSS_TOOLS)
+        //$NON-NLS-1$
+        .expandNode(IDELabel.PreferencesDialog.JBOSS_TOOLS_WEB)
+        //$NON-NLS-1$
+        .expandNode(IDELabel.PreferencesDialog.JBOSS_TOOLS_WEB_EDITORS)
+        //$NON-NLS-1$
+        .expandNode(IDELabel.PreferencesDialog.JBOSS_TOOLS_WEB_EDITORS_VPE)
+        .select(); //$NON-NLS-1$
+    bot.tabItem(
+        IDELabel.PreferencesDialog.JBOSS_TOOLS_WEB_EDITORS_VPE_VISUAL_TEMPLATES)
+        .activate(); //$NON-NLS-1$
+    try {
+      this.bot.button(IDELabel.Button.ADD).click(); //$NON-NLS-1$
+      this.bot.button(IDELabel.Button.CANCEL).click(); //$NON-NLS-1$
+    } catch (WidgetNotFoundException ex) {
+      fail("Preference Page has not been created" + ex);//$NON-NLS-1$
+    } finally {
+      this.bot.button(WidgetVariables.OK_BUTTON).click();
+    }
+  }
+
+  @Override
+  protected void closeUnuseDialogs() {
+
+  }
+
+  @Override
+  protected boolean isUnuseDialogOpened() {
+    return false;
+  }
 }

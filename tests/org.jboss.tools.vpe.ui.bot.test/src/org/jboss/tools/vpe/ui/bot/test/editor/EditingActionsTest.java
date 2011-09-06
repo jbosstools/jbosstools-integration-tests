@@ -13,6 +13,7 @@ package org.jboss.tools.vpe.ui.bot.test.editor;
 
 import java.awt.event.KeyEvent;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
@@ -20,6 +21,7 @@ import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.results.VoidResult;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
+import org.jboss.tools.ui.bot.ext.SWTJBTExt;
 import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
 import org.jboss.tools.ui.bot.ext.helper.KeyboardHelper;
@@ -114,18 +116,34 @@ public class EditingActionsTest extends VPEEditorTestCase {
     assertProbelmsViewNoErrors(botExt);
     // Check Undo Functionality
     webBrowser.setFocus();
-    KeyboardHelper.typeKeyCodeUsingAWT(KeyEvent.VK_Z, KeyEvent.VK_CONTROL);
+    if (SWTJBTExt.isRunningOnMacOs()){
+      bot.shells()[0].pressShortcut(SWT.COMMAND, 'z'); 
+    }
+    else{
+      KeyboardHelper.typeKeyCodeUsingAWT(KeyEvent.VK_Z, KeyEvent.VK_CONTROL);  
+    }    
     jspEditor.save();
     botExt.sleep(Timing.time3S());
     assertSourceEditorContains(stripHTMLSourceText(jspEditor.getText()), 
         "<h:outputTextvalue=\"outputText\"/><h:inputText/><rich:comboBox>", 
         EditingActionsTest.TEST_PAGE_NAME);
-    KeyboardHelper.typeKeyCodeUsingAWT(KeyEvent.VK_Z, KeyEvent.VK_CONTROL);
+    if (SWTJBTExt.isRunningOnMacOs()){
+      bot.shells()[0].pressShortcut(SWT.COMMAND, 'z'); 
+    }
+    else{
+      KeyboardHelper.typeKeyCodeUsingAWT(KeyEvent.VK_Z, KeyEvent.VK_CONTROL);
+    }
     jspEditor.save();
     botExt.sleep(Timing.time3S());
     assertSourceEditorContains(stripHTMLSourceText(jspEditor.getText()), 
         "<h:inputText/><h:inputText/><h:outputTextvalue=\"outputText\"/>", 
-        EditingActionsTest.TEST_PAGE_NAME);KeyboardHelper.typeKeyCodeUsingAWT(KeyEvent.VK_Z, KeyEvent.VK_CONTROL);
+        EditingActionsTest.TEST_PAGE_NAME);
+    if (SWTJBTExt.isRunningOnMacOs()){
+      bot.shells()[0].pressShortcut(SWT.COMMAND, 'z'); 
+    }
+    else{
+      KeyboardHelper.typeKeyCodeUsingAWT(KeyEvent.VK_Z, KeyEvent.VK_CONTROL);
+    }
     jspEditor.save();
     botExt.sleep(Timing.time3S());
     assertSourceEditorContains(stripHTMLSourceText(jspEditor.getText()), 
@@ -133,8 +151,9 @@ public class EditingActionsTest extends VPEEditorTestCase {
         EditingActionsTest.TEST_PAGE_NAME);
     // Check Delete Functionality
     webBrowser.setFocus();
+    botExt.sleep(Timing.time2S());
     webBrowser.selectDomNode(webBrowser.getDomNodeByTagName("INPUT",2),0);
-    botExt.sleep(Timing.time1S());
+    botExt.sleep(Timing.time2S());
     KeyboardHelper.typeKeyCodeUsingAWT(KeyEvent.VK_DELETE);
     jspEditor.save();
     botExt.sleep(Timing.time3S());
@@ -208,7 +227,9 @@ public class EditingActionsTest extends VPEEditorTestCase {
     bot.sleep(Timing.time2S());
     assertVisualEditorContainsNodeWithValue(webBrowser, "h:text", EditingActionsTest.TEST_PAGE_NAME);
     nsIDOMNode node = webBrowser.getDomNodeByTagName("DIV", 4);
+    bot.sleep(Timing.time2S());
     webBrowser.selectDomNode(node, 0);
+    bot.sleep(Timing.time2S());
     webBrowser.clickContextMenu(node,
         SWTBotWebBrowser.SETUP_VISUAL_TEMPLATE_FOR_MENU_LABEL + "<" + unknownTag + ">...");
     // Test if window for Tag Template definition was properly opened
@@ -309,7 +330,12 @@ public class EditingActionsTest extends VPEEditorTestCase {
     assertSourceEditorNotContain(jspEditor.getText(), "<f:view>", EditingActionsTest.TEST_PAGE_NAME);
     // Undo Changes
     webBrowser.setFocus();
-    KeyboardHelper.typeKeyCodeUsingAWT(KeyEvent.VK_Z, KeyEvent.VK_CONTROL);
+    if (SWTJBTExt.isRunningOnMacOs()){
+      bot.shells()[0].pressShortcut(SWT.COMMAND, 'z'); 
+    }
+    else{
+      KeyboardHelper.typeKeyCodeUsingAWT(KeyEvent.VK_Z, KeyEvent.VK_CONTROL);
+    }
     jspEditor.save();
     bot.sleep(Timing.time2S());
     assertSourceEditorContains(jspEditor.getText(), "<f:view>", EditingActionsTest.TEST_PAGE_NAME);

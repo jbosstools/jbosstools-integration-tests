@@ -12,6 +12,7 @@ package org.jboss.tools.vpe.ui.bot.test.wizard;
 import java.io.File;
 
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
+import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.test.WidgetVariables;
 import org.jboss.tools.vpe.ui.bot.test.VPEAutoTestCase;
@@ -76,8 +77,7 @@ public class ImportUnknownTagsWizardTest extends VPEAutoTestCase {
         /*
          * Check that templates have been added to the preference page 
          */
-        bot.menu(IDELabel.Menu.WINDOW).menu(IDELabel.Menu.PREFERENCES).click();
-		bot.shell(IDELabel.Shell.PREFERENCES).activate();
+        open.preferenceOpen(ActionItem.Preference.JBossTools.LABEL);
 		importTree = bot.tree();
 		importTree.expandNode(IDELabel.PreferencesDialog.JBOSS_TOOLS)
 				.expandNode(IDELabel.PreferencesDialog.JBOSS_TOOLS_WEB)

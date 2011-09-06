@@ -49,7 +49,6 @@ public class PaletteEditorTest extends VPEAutoTestCase {
     ContextMenuHelper.clickContextMenu(menu,
       IDELabel.PaletteEditor.NEW_MENU_ITEM,
       IDELabel.PaletteEditor.CREATE_GROUP_MENU_ITEM);
-    ContextMenuHelper.hideMenuRecursively(menu);
     SWTBot createGroupDialogBot = bot.shell(IDELabel.Shell.CREATE_GROUP).activate().bot();
     final String firstGroup = "First";
     createGroupDialogBot.textWithLabel(IDELabel.CreateGroupDialog.NAME).setText(firstGroup);
@@ -63,7 +62,6 @@ public class PaletteEditorTest extends VPEAutoTestCase {
     menu = ContextMenuHelper.getTreeMenuViaReflections(tree.widget,IDELabel.PaletteEditor.CREATE_GROUP_MENU_ITEM);
     ContextMenuHelper.clickContextMenu(menu,
         IDELabel.PaletteEditor.CREATE_GROUP_MENU_ITEM);
-    ContextMenuHelper.hideMenuRecursively(menu);
     SWTBot addPaletteGroupBot = bot.shell(IDELabel.Shell.ADD_PALETTE_GROUP).activate().bot();
     final String secondGroup = "Second";
     addPaletteGroupBot.textWithLabel(IDELabel.AddPaletteGroupDialog.NAME).setText(secondGroup);
@@ -79,7 +77,6 @@ public class PaletteEditorTest extends VPEAutoTestCase {
     ContextMenuHelper.clickContextMenu(menu,
       IDELabel.PaletteEditor.NEW_MENU_ITEM,        
       IDELabel.PaletteEditor.CREATE_MACRO_MENU_ITEM);
-    ContextMenuHelper.hideMenuRecursively(menu);
     SWTBot addPaletteMacroBot = bot.shell(IDELabel.Shell.ADD_PALETTE_MACRO).activate().bot();
     final String macroName = "Test Macro";
     addPaletteMacroBot.textWithLabel(IDELabel.AddPaletteMacroDialog.NAME).setText(macroName);

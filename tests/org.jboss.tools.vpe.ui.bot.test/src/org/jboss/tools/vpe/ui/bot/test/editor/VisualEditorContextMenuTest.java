@@ -17,12 +17,14 @@ import java.util.List;
 
 import org.eclipse.gef.palette.PaletteContainer;
 import org.eclipse.gef.palette.PaletteEntry;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.results.VoidResult;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
+import org.jboss.tools.ui.bot.ext.SWTJBTExt;
 import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
 import org.jboss.tools.ui.bot.ext.helper.KeyboardHelper;
@@ -472,11 +474,18 @@ public class VisualEditorContextMenuTest extends VPEEditorTestCase {
     bot.sleep(Timing.time2S());
     webBrowser.setFocus();
     // Test Cut
+    System.out.println(1);
     calendarNode = webBrowser.getDomNodeByTagName("INPUT",0);
+    bot.sleep(Timing.time2S());
     webBrowser.selectDomNode(calendarNode,0);
     botExt.sleep(Timing.time2S());
     webBrowser.setFocus();
-    KeyboardHelper.typeKeyCodeUsingAWT(KeyEvent.VK_X,KeyEvent.VK_CONTROL);
+    if (SWTJBTExt.isRunningOnMacOs()){
+      bot.shells()[0].pressShortcut(SWT.COMMAND, 'x'); 
+    }
+    else{
+      KeyboardHelper.typeKeyCodeUsingAWT(KeyEvent.VK_X,KeyEvent.VK_CONTROL);  
+    }
     jspTextEditor.save();
     botExt.sleep(Timing.time2S());
     sourceEditorText = jspTextEditor.getText();
@@ -486,9 +495,15 @@ public class VisualEditorContextMenuTest extends VPEEditorTestCase {
     // Test Paste
     webBrowser.setFocus();
     inputTextNode = webBrowser.getDomNodeByTagName("INPUT",0);
+    botExt.sleep(Timing.time2S());
     webBrowser.selectDomNode(inputTextNode,0);
     botExt.sleep(Timing.time2S());
-    KeyboardHelper.typeKeyCodeUsingAWT(KeyEvent.VK_V,KeyEvent.VK_CONTROL);
+    if (SWTJBTExt.isRunningOnMacOs()){
+      bot.shells()[0].pressShortcut(SWT.COMMAND, 'v'); 
+    }
+    else{
+      KeyboardHelper.typeKeyCodeUsingAWT(KeyEvent.VK_V,KeyEvent.VK_CONTROL);
+    }
     jspTextEditor.save();
     botExt.sleep(Timing.time2S());
     sourceEditorText = jspTextEditor.getText();
@@ -502,12 +517,22 @@ public class VisualEditorContextMenuTest extends VPEEditorTestCase {
     botExt.sleep(Timing.time2S());
     webBrowser.selectDomNode(calendarNode,0);
     botExt.sleep(Timing.time2S());
-    KeyboardHelper.typeKeyCodeUsingAWT(KeyEvent.VK_C,KeyEvent.VK_CONTROL);
+    if (SWTJBTExt.isRunningOnMacOs()){
+      bot.shells()[0].pressShortcut(SWT.COMMAND, 'c'); 
+    }
+    else{
+      KeyboardHelper.typeKeyCodeUsingAWT(KeyEvent.VK_C,KeyEvent.VK_CONTROL);
+    }
     inputTextNode = webBrowser.getDomNodeByTagName("INPUT",1);
     botExt.sleep(Timing.time2S());
     webBrowser.selectDomNode(inputTextNode,0);
     botExt.sleep(Timing.time2S());
-    KeyboardHelper.typeKeyCodeUsingAWT(KeyEvent.VK_V,KeyEvent.VK_CONTROL);
+    if (SWTJBTExt.isRunningOnMacOs()){
+      bot.shells()[0].pressShortcut(SWT.COMMAND, 'v'); 
+    }
+    else{
+      KeyboardHelper.typeKeyCodeUsingAWT(KeyEvent.VK_V,KeyEvent.VK_CONTROL);
+    }
     jspTextEditor.save();
     botExt.sleep(Timing.time2S());
     sourceEditorText = jspTextEditor.getText();

@@ -9,13 +9,15 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotCheckBox;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCombo;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarToggleButton;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
+import org.jboss.tools.ui.bot.ext.SWTJBTExt;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.vpe.ui.bot.test.Activator;
 import org.jboss.tools.vpe.ui.bot.test.VPEAutoTestCase;
 
 public abstract class PreferencesTestCase extends VPEAutoTestCase{
 
-	protected static final String TOGGLE_SELECTION_BAR_TOOLTIP = "Toggle Selection Bar (Ctrl+6)"; //$NON-NLS-1$
+	protected static final String TOGGLE_SELECTION_BAR_TOOLTIP = "Toggle Selection Bar (" + 
+	  (SWTJBTExt.isRunningOnMacOs() ? "⌘6" : "Ctrl+6") + ")"; //$NON-NLS-1$
 	protected static final String SHOW_NON_VISUAL_TAGS = "Show non-visual tags"; //$NON-NLS-1$
 	protected static final String SHOW_BORDER_FOR_UNKNOWN_TAGS = "Show border for unknown tags"; //$NON-NLS-1$
 	protected static final String SHOW_RESOURCE_BUNDLES = "Show resource bundles usage as EL expressions"; //$NON-NLS-1$

@@ -3,6 +3,7 @@ package org.jboss.tools.vpe.ui.bot.test.editor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
+import org.jboss.tools.ui.bot.ext.SWTJBTExt;
 
 public class ToggleCommentTest extends VPEEditorTestCase{
 	
@@ -42,35 +43,39 @@ public class ToggleCommentTest extends VPEEditorTestCase{
 	}
 	
 	private void pressToggleCommentHotKeys(){
-		bot.getDisplay().syncExec(new Runnable() {
-			public void run() {
-				Display display = bot.getDisplay();
-				Event event = new Event();
-				event.type = SWT.KeyDown;
-				event.keyCode = SWT.CTRL;
-				display.post(event);
-				event = new Event();
-				event.type = SWT.KeyDown;
-				event.keyCode = SWT.SHIFT;
-				display.post(event);
-				event = new Event();
-				event.type = SWT.KeyDown;
-				event.character = 'c';
-				display.post(event);
-				event = new Event();
-				event.type = SWT.KeyUp;
-				event.character = 'c';
-				display.post(event);
-				event = new Event();
-				event.type = SWT.KeyUp;
-				event.keyCode = SWT.SHIFT;
-				display.post(event);
-				event = new Event();
-				event.type = SWT.KeyUp;
-				event.keyCode = SWT.CTRL;
-				display.post(event);
-			}
-		});
-	}
-	
+	  if (SWTJBTExt.isRunningOnMacOs()){
+	    bot.shells()[0].pressShortcut(SWT.SHIFT | SWT.COMMAND,'c');
+	  }
+	  else{
+	    bot.getDisplay().syncExec(new Runnable() {
+	      public void run() {
+	        Display display = bot.getDisplay();
+	        Event event = new Event();
+	        event.type = SWT.KeyDown;
+	        event.keyCode = SWT.CTRL;
+	        display.post(event);
+	        event = new Event();
+	        event.type = SWT.KeyDown;
+	        event.keyCode = SWT.SHIFT;
+	        display.post(event);
+	        event = new Event();
+	        event.type = SWT.KeyDown;
+	        event.character = 'c';
+	        display.post(event);
+	        event = new Event();
+	        event.type = SWT.KeyUp;
+	        event.character = 'c';
+	        display.post(event);
+	        event = new Event();
+	        event.type = SWT.KeyUp;
+	        event.keyCode = SWT.SHIFT;
+	        display.post(event);
+	        event = new Event();
+	        event.type = SWT.KeyUp;
+	        event.keyCode = SWT.CTRL;
+	        display.post(event);
+	      }
+	    });
+	  }
+  }	
 }

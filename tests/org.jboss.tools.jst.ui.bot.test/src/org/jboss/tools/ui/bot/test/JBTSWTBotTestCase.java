@@ -378,9 +378,9 @@ public abstract class JBTSWTBotTestCase extends SWTTestExt implements
 	protected static void assertProbelmsViewNoErrors (SWTBotExt botExt){
 	  
     SWTBotTreeItem[] errors = ProblemsView.getFilteredErrorsTreeItems(botExt, null, null, null, null);
-    
+    boolean areThereNoErrors = ((errors == null) || (errors.length == 0));
     assertTrue("There are errors in Problems view: " + 
-          (errors != null && errors.length > 0 ? errors[0].getText() : ""),
-        errors == null);
+        (areThereNoErrors ? "" : errors[0].getText()),
+      areThereNoErrors);
 	}
 }
