@@ -66,8 +66,8 @@ public class JspFileEditingTest extends VPEEditorTestCase {
     // Check if tag h:outputText was properly added
     String editorText = jspTextEditor.getText();
     assertTrue("File " + TEST_PAGE
-        + " has to contain string '<h:outputText/>' but it doesn't",
-        editorText.contains("<h:outputText/>"));
+        + " has to contain string '<h:outputText>' but it doesn't",
+        editorText.contains("<h:outputText>"));
   }
 	
 	/**
@@ -96,7 +96,7 @@ public class JspFileEditingTest extends VPEEditorTestCase {
     botExt.toolbarButtonWithTooltip(IDELabel.Button.REFRESH).click();
     botExt.sleep(Timing.time1S());
     String editorText = jspTextEditor.getText();
-    String testText = "<h:outputText value=\"" + outputTextValue + "\"/>";
+    String testText = "<h:outputText value=\"" + outputTextValue + "\">";
     assertTrue("File " + TEST_PAGE + " has to contain string '" + testText
         + "' but it doesn't", editorText.contains(testText));
     // Insert text via Visual Editor to inserted h:outputText tag
@@ -111,7 +111,7 @@ public class JspFileEditingTest extends VPEEditorTestCase {
     editorText = jspTextEditor.getText();
     outputTextValue = outputTextValue.substring(0, 5) + insertString
         + outputTextValue.substring(5);
-    testText = "<h:outputText value=\"" + outputTextValue + "\"/>";
+    testText = "<h:outputText value=\"" + outputTextValue + "\">";
     assertTrue("File " + TEST_PAGE + " has to contain string '" + testText
         + "' but it doesn't", editorText.contains(testText));
     jspTextEditor.close();

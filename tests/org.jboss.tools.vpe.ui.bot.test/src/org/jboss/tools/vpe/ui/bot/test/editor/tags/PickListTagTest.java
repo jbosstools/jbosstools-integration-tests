@@ -142,8 +142,8 @@ public class PickListTagTest extends AbstractTagTest{
     sbOptionTitle.append(" itemValue: 1 id: id1");
     assertVisualEditorContains(getVisualEditor(),
       "OPTION", 
-      new String[]{"title","style"},
-      new String[]{sbOptionTitle.toString(),"border: 2px solid rgb(0, 0, 255) ! important;"},
+      new String[]{"title"},
+      new String[]{sbOptionTitle.toString()},
       getTestPageFileName());
   }
 

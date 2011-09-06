@@ -1,26 +1,26 @@
 <BODY id="__content__area__" >
 <SPAN >
-<SPAN style="border: 2px solid rgb(0, 0, 255) ! important; color: GREY; font-size: 12px;" oldstyle="border: 1px dashed GREY; color: GREY; font-size: 12px;" >
+<SPAN style="border: 1px dashed GREY; color: GREY; font-size: 12px;" >
 jsp:directive.taglib
 </SPAN>
-<BR vpe:pseudo-element="yes" style="font-style: italic; color: green; -moz-user-modify: read-only;" >
+<BR style="font-style: italic; color: green; -moz-user-modify: read-only;" >
 </BR>
 </SPAN>
 <SPAN >
 <SPAN style="border: 1px dashed GREY; color: GREY; font-size: 12px;" >
 jsp:directive.taglib
 </SPAN>
-<BR vpe:pseudo-element="yes" style="font-style: italic; color: green; -moz-user-modify: read-only;" >
+<BR style="font-style: italic; color: green; -moz-user-modify: read-only;" >
 </BR>
 </SPAN>
 <SPAN >
 <SPAN style="border: 1px dashed GREY; color: GREY; font-size: 12px;" title="f:loadBundle var: Message basename: demo.Messages" >
 f:loadBundle
 </SPAN>
-<BR vpe:pseudo-element="yes" style="font-style: italic; color: green; -moz-user-modify: read-only;" >
+<BR style="font-style: italic; color: green; -moz-user-modify: read-only;" >
 </BR>
 </SPAN>
-<DIV style="-moz-user-modify: read-write;" >
+<DIV >
 <DIV style="display: none; -moz-user-modify: read-only;" title="head" >
 <SPAN >
 <SPAN style="border: 1px dashed GREY; color: GREY; font-size: 12px;" title="title" >
@@ -32,7 +32,7 @@ Input User Name Page
 </SPAN>
 </DIV>
 <DIV title="body" >
-<TABLE style="border: 1px dotted rgb(255, 102, 0); padding: 5px; width: 100%;" title="f:view" >
+<TABLE style="width: 100%; border: 1px dotted rgb(255, 102, 0); padding: 5px;" title="f:view" >
 <TR title="f:view" >
 <TD title="f:view" >
 <DIV title="f:view" >
@@ -47,7 +47,7 @@ Hello Demo Application
 Error Messages
 </LI>
 </UL>
-<BR vpe:pseudo-element="yes" style="font-style: italic; color: green; -moz-user-modify: read-only;" >
+<BR style="font-style: italic; color: green; -moz-user-modify: read-only;" >
 </BR>
 </SPAN>
 <FORM style="border: 1px dotted rgb(255, 102, 0); padding: 5px;" title="h:form id: greetingForm" >
@@ -65,14 +65,14 @@ Name:
 <SPAN style="border: 1px dashed GREY; color: GREY; font-size: 12px;" title="f:validateLength maximum: 30 minimum: 3" >
 f:validateLength
 </SPAN>
-<BR vpe:pseudo-element="yes" style="font-style: italic; color: green; -moz-user-modify: read-only;" >
+<BR style="font-style: italic; color: green; -moz-user-modify: read-only;" >
 </BR>
 </SPAN>
 </SPAN>
 <SPAN >
 <INPUT type="button" title="h:commandButton action: hello value: Say Hello!" value="Say Hello!" style="-moz-user-modify: read-only;" >
 </INPUT>
-<BR vpe:pseudo-element="yes" style="font-style: italic; color: green; -moz-user-modify: read-only;" >
+<BR style="font-style: italic; color: green; -moz-user-modify: read-only;" >
 </BR>
 </SPAN>
 </FORM>
@@ -82,6 +82,6 @@ f:validateLength
 </TABLE>
 </DIV>
 </DIV>
-<IMG vpetemporarydndelement="true" id="dragIcon" src="file:////opt/jbdevstudio4.0.0.M2/studio/eclipse/plugins/org.jboss.tools.vpe_3.2.0.v201008232021N-H413-M2/ve/dragIcon.gif" style="position: absolute; cursor: move; left: 7px ! important; top: -14px ! important;" >
+<IMG vpetemporarydndelement="true" id="dragIcon" src="file:////opt/jbdevstudio5.0.0.M3/studio/plugins/org.jboss.tools.vpe_3.3.0.v20110901-0136-H11-M3/ve/dragIcon.gif" style="position: absolute; cursor: move; left: 7px ! important; top: -14px ! important;" >
 </IMG>
 </BODY>
