@@ -474,7 +474,6 @@ public class VisualEditorContextMenuTest extends VPEEditorTestCase {
     bot.sleep(Timing.time2S());
     webBrowser.setFocus();
     // Test Cut
-    System.out.println(1);
     calendarNode = webBrowser.getDomNodeByTagName("INPUT",0);
     bot.sleep(Timing.time2S());
     webBrowser.selectDomNode(calendarNode,0);
