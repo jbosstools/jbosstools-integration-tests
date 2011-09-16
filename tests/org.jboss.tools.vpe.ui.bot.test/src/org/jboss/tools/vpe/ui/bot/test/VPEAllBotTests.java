@@ -1,8 +1,5 @@
 package org.jboss.tools.vpe.ui.bot.test;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestSuite;
 import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
 import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
 import org.jboss.tools.vpe.ui.bot.test.editor.BlockCommentTest;
