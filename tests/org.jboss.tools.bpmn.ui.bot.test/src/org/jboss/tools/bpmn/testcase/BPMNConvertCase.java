@@ -6,16 +6,18 @@ import java.io.FileOutputStream;
 import java.nio.channels.FileChannel;
 
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.jboss.tools.bpmn.ui.bot.test.Activator;
+import org.jboss.tools.ui.bot.ext.SWTEclipseExt;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.SWTUtilExt;
-import org.jboss.tools.ui.bot.ext.config.Annotations.SWTBotTestRequires;
+import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.entity.JavaProjectEntity;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.junit.Test;
 
-@SWTBotTestRequires(clearProjects = true, perspective = "Java")
+@Require(clearProjects = true, perspective = "Java")
 public class BPMNConvertCase extends SWTTestExt {
 
 	private String projectName = "BPMNConvertProject";
@@ -75,7 +77,9 @@ public class BPMNConvertCase extends SWTTestExt {
 
 	@Test
 	public void convertProcess() {
-		eclipse.selectTreeLocation(projectName, originalFolder, file1);
+		SWTBot viewBot = bot.viewByTitle(IDELabel.View.PACKAGE_EXPLORER).bot();		
+		SWTEclipseExt.selectTreeLocation(viewBot,projectName, originalFolder, file1);
+		
 		open.newExport(ActionItem.Export.BPMNBPMNtojPDL.LABEL);
 		bot.clickButton(IDELabel.Button.NEXT);
 		bot.clickButton(IDELabel.Button.NEXT);
