@@ -18,6 +18,7 @@ import org.jboss.tools.bpel.ui.bot.test.OdeDeployTest;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
+import org.jboss.tools.ui.bot.ext.view.PackageExplorer;
 import org.jboss.tools.ui.bot.ext.view.ProjectExplorer;
 
 public class BPELTest extends SWTTestExt {
@@ -36,8 +37,7 @@ public class BPELTest extends SWTTestExt {
 		bot.sleep(TIME_5S, "BPEL All Tests Finished!");
 	}
 	
-	
-	
+	protected PackageExplorer pExplorer = new PackageExplorer();
 	protected ProjectExplorer projExplorer = new ProjectExplorer(){
 		
 		@Override
@@ -227,4 +227,9 @@ public class BPELTest extends SWTTestExt {
 		return out.length() == 0 ? null : out.toString();
 	}
 	
+	protected void openFile(String projectName, String... path) throws Exception {
+		log.info("Opening file: " + path[path.length - 1] + " ...");
+		pExplorer.openFile(projectName, path);
+	}
+
 }

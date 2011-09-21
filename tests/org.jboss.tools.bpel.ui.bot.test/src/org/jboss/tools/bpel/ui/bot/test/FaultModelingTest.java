@@ -106,10 +106,5 @@ public class FaultModelingTest extends BPELTest {
 		bpel.addReply("Reply", "outputMessage", "", new String[] {"scopeProcess", "scopePT", "processRequest"});
 	}	
 	
-	
-	void openFile(String projectName, String... path) throws Exception {
-		log.info("Opening file: " + path[path.length - 1] + " ...");
-		pExplorer.openFile(projectName, path);
-	}
 
 }

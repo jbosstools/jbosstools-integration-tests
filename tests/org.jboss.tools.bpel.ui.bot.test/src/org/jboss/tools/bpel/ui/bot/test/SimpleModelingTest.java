@@ -98,10 +98,4 @@ public class SimpleModelingTest extends BPELTest {
 		bpel.save();
 	}
 
-	
-	void openFile(String projectName, String... path) throws Exception {
-		log.info("Opening file: " + path[path.length - 1] + " ...");
-		pExplorer.openFile(projectName, path);
-	}
-
 }

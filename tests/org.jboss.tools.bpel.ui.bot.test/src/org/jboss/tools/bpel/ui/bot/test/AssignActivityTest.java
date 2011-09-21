@@ -158,9 +158,6 @@ public class AssignActivityTest extends BPELTest {
 
 	}
 	
-	void openFile(String projectName, String... path) throws Exception {
-		log.info("Opening file: " + path[path.length - 1] + " ...");
-		pExplorer.openFile(projectName, path);
-	}
+
 
 }

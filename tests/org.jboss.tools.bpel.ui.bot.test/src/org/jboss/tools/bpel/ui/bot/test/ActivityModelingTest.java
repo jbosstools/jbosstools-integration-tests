@@ -105,10 +105,5 @@ public class ActivityModelingTest extends BPELTest {
 		bpel.addReply("reply", "DiscriminantResponse", "", new String[] {"client", "Discriminant", "calculateDiscriminant"});
 		
 	}
-	
-	void openFile(String projectName, String... path) throws Exception {
-		log.info("Opening file: " + path[path.length - 1] + " ...");
-		pExplorer.openFile(projectName, path);
-	}
 
 }
