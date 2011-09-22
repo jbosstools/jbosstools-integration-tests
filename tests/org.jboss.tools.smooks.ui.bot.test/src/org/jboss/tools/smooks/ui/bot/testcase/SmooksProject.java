@@ -8,7 +8,6 @@ import java.nio.channels.FileChannel;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.eclipse.gef.finder.SWTGefBot;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditor;
@@ -16,11 +15,12 @@ import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
 import org.jboss.tools.smooks.ui.bot.test.Activator;
 import org.jboss.tools.smooks.ui.bot.tests.Project;
-import org.jboss.tools.smooks.ui.bot.tests.SmooksTest;
+import org.jboss.tools.ui.bot.ext.SWTEclipseExt;
+import org.jboss.tools.ui.bot.ext.SWTTestExt;
+import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.entity.JavaProjectEntity;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
-import org.jboss.tools.ui.bot.ext.helper.UserLibraryHelper;
 import org.jboss.tools.ui.bot.ext.types.EntityType;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.ext.zest.SWTBotZestContextMenu;
@@ -31,7 +31,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(SWTBotJunit4ClassRunner.class)
-public class SmooksProject extends SmooksTest {
+@Require(clearWorkspace = true, perspective = "Java")
+public class SmooksProject extends SWTTestExt {
 
 	boolean projectCreated = false;
 
@@ -53,19 +54,6 @@ public class SmooksProject extends SmooksTest {
 		assertTrue(eclipse.isProjectInPackageExplorer(Project.PROJECT_NAME));
 
 		projectCreated = true;
-	}
-
-	/**
-	 * Defines smooks user library inside
-	 */
-	@Test
-	public void defineSmooksUserLibrary() {
-
-		String[] jarList = UserLibraryHelper.getJarList(Project.SMOOKS_PATH
-				+ "/lib");
-		UserLibraryHelper.addUserLibrary("smooks-1.2.4", jarList);
-
-		// Check if library is defined TODO
 	}
 
 	/**
@@ -150,7 +138,7 @@ public class SmooksProject extends SmooksTest {
 		SWTBotView view = open
 				.viewOpen(ActionItem.View.JavaPackageExplorer.LABEL);
 
-		eclipse.selectTreeLocation(view.bot(), Project.PROJECT_NAME, "src");
+		SWTEclipseExt.selectTreeLocation(view.bot(), Project.PROJECT_NAME, "src");
 		eclipse.createNew(EntityType.SMOOKS_CONFIG);
 
 		open.finish(bot.activeShell().bot());
@@ -182,7 +170,7 @@ public class SmooksProject extends SmooksTest {
 		bot.clickButton("Add");
 		bot.clickButton("Browse WorkSpace");
 		SWTBot shellBot  = bot.shell("Select Files").bot();
-		eclipse.selectTreeLocation(shellBot, Project.PROJECT_NAME, "xml", "order.xml");
+		SWTEclipseExt.selectTreeLocation(shellBot, Project.PROJECT_NAME, "xml", "order.xml");
 		bot.clickButton(IDELabel.Button.OK);
 		bot.clickButton(IDELabel.Button.FINISH);
 		bot.activeEditor().save();
@@ -202,8 +190,6 @@ public class SmooksProject extends SmooksTest {
 		bot.sleep(2000, "Check java mapping");
 
 		bot.sleep(1000, "check widgets");
-
-		SWTWorkbenchBot bot;
 	}
 
 	@Test

@@ -30,7 +30,7 @@
 <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch ${target.arch} -nl ${target.nl} -consoleLog"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="org.jboss.tools.smooks.ui.bot.test"/>
 <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.pde.ui.workbenchClasspathProvider"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xms256m -Xmx384m -XX:MaxPermSize=256M &#10;-Dosgi.bundles=reference:file:org.eclipse.equinox.simpleconfigurator_1.0.200.v20100503.jar@1:start,org.eclipse.equinox.transforms.xslt@1:start,org.jboss.tools.equinox.transforms.xslt@1:start -Dusage_reporting_enabled=false -Dtest.configurations.dir=/home/jpeterka/etc/smooks"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xms256m -Xmx384m -XX:PermSize=128M -XX:MaxPermSize=256M -Dusage_reporting_enabled=false -Dtest.configurations.dir=/home/jpeterka/etc/smooks/"/>
 <stringAttribute key="pde.version" value="3.3"/>
 <stringAttribute key="product" value="com.jboss.jbds.product.product"/>
 <booleanAttribute key="show_selected_only" value="false"/>

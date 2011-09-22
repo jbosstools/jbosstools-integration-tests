@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?><smooks-resource-list xmlns="http://www.milyn.org/xsd/smooks-1.1.xsd" xmlns:csv="http://www.milyn.org/xsd/smooks/csv-1.2.xsd" xmlns:ftl="http://www.milyn.org/xsd/smooks/freemarker-1.1.xsd" xmlns:jb="http://www.milyn.org/xsd/smooks/javabean-1.2.xsd">
+  <params>
+    <param name="stream.filter.type">SAX</param>
+    <param name="inputType">input.csv</param>
+    <param name="input.csv" type="input.type.actived">Workspace://smooks-csv2java/csv/input-message.csv</param>
+  </params>
+  <csv:reader fields="firstname,surname,gender,age,nationality"/>
+  <jb:bean beanId="customer" class="example.Customer" createOnElement="/csv-set/csv-record">
+    <jb:value data="/csv-set/csv-record/age" property="age"/>
+    <jb:value data="/csv-set/csv-record/nationality" property="country"/>
+    <jb:value data="/csv-set/csv-record/firstname" property="firstName"/>
+    <jb:value data="/csv-set/csv-record/gender" decoder="Enum" property="gender">
+      <jb:decodeParam name="enumType">example.Gender</jb:decodeParam>
+      <jb:decodeParam name="Male">Male</jb:decodeParam>
+      <jb:decodeParam name="Female">Female</jb:decodeParam>
+    </jb:value>
+    <jb:value data="/csv-set/csv-record/surname" property="lastName"/>
+  </jb:bean>
+  <ftl:freemarker applyOnElement="#document">
+    <ftl:template><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<customer>
+    <firstname>${customer.firstName!?string}</firstname>    
+    <surname>${customer.lastName!?string}</surname>    
+    <age>${customer.age!?c}</age>    
+    <countery>${customer.country!?string}</countery>    
+    <gender>${customer.gender!?string}</gender>    
+</customer>]]></ftl:template>
+    <param name="modelSrc">Workspace://smooks-csv2java-xml/xml/customer.xml</param>
+    <param name="modelSrcType">XML</param>
+    <param name="messageType">XML</param>
+    <param name="templateDataProvider">java_mapping</param>
+  </ftl:freemarker>
+</smooks-resource-list>
