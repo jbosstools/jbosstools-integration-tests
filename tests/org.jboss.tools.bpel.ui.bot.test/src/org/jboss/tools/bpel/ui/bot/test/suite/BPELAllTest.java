@@ -4,7 +4,6 @@ import junit.framework.TestSuite;
 
 import org.jboss.tools.bpel.ui.bot.test.ActivityModelingTest;
 import org.jboss.tools.bpel.ui.bot.test.AssignActivityTest;
-import org.jboss.tools.bpel.ui.bot.test.ToolingCompatibilityTest;
 import org.jboss.tools.bpel.ui.bot.test.FaultModelingTest;
 import org.jboss.tools.bpel.ui.bot.test.OdeDeployTest;
 import org.jboss.tools.bpel.ui.bot.test.SimpleModelingTest;
