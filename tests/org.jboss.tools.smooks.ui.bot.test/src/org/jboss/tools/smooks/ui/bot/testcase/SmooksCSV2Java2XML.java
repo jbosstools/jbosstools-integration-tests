@@ -25,8 +25,7 @@ import org.junit.runner.RunWith;
 public class SmooksCSV2Java2XML extends SWTTestExt {
 	class MyFileFilter implements FileFilter {
 
-		@Override
-		public boolean accept(File pathname) {
+	public boolean accept(File pathname) {
 			return true;
 		}
 	}
