@@ -1,0 +1,36 @@
+<project name="Quickstart_bpel_triple_hello" default="deploy" basedir=".">
+	
+	<description> 
+		${ant.project.name}
+		${line.separator}
+	</description>
+	
+	<property file="../../../install/deployment.properties" />
+	
+	<property name="version" value="1" />
+	
+	<property name="server.dir" value="${org.jboss.as.home}/server/${org.jboss.as.config}"/>
+	<property name="conf.dir" value="${server.dir}/conf"/>
+	<property name="deploy.dir" value="${server.dir}/deploy"/>
+	<property name="server.lib.dir" value="${server.dir}/lib"/>
+
+	<property name="sample.jar.name" value="${ant.project.name}-1.jar" />
+	
+	<macrodef name="deploy">
+		<attribute name="app"/>
+		<sequential>
+			<echo message="Deploying application @{app}"/>
+			<mkdir dir="build"/>
+			<copy file="@{app}" todir="${deploy.dir}" />
+		</sequential>
+	</macrodef>
+	
+	<target name="deploy">
+		<jar basedir="bpelContent" destfile="${deploy.dir}/${sample.jar.name}" />
+	</target>
+	
+	<target name="undeploy">
+		<delete file="${deploy.dir}/${sample.jar.name}"/>
+	</target>
+	
+</project>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="say_hello_process" default="deploy" basedir=".">
+   <description>${ant.project.name} ${line.separator}</description>
+<!-- Import the base Ant build script... -->
+   <property file="../conf/quickstarts.properties"/>
+   <property name="org.jboss.esb.server.home" value="../../.."/>
+   <property name="org.jboss.esb.server.config" value="default"/>
+   <property name="version" value="1"/>
+   <property name="server.dir" value="${org.jboss.esb.server.home}/server/${org.jboss.esb.server.config}"/>
+   <property name="conf.dir" value="${server.dir}/conf"/>
+   <property name="deploy.dir" value="${server.dir}/deploy"/>
+   <property name="server.lib.dir" value="${server.dir}/lib"/>
+   <property name="sample.jar.name" value="${ant.project.name}-${version}.jar"/>
+   <target name="deploy">
+      <echo>Deploy ${ant.project.name}</echo>
+      <jar basedir="bpelContent" destfile="${deploy.dir}/${sample.jar.name}"/>
+   </target>
+   <target name="undeploy">
+      <echo>Undeploy ${ant.project.name}</echo>
+      <delete file="${deploy.dir}/${sample.jar.name}"/>
+   </target>
+   <target name="sayhello">
+      <echo>Send test message to: ${ant.project.name}</echo>
+      <java classname="org.apache.ode.tools.sendsoap.cline.HttpSoapSender">
+         <arg value="http://localhost:8080/SayHelloProcess"/>
+         <arg value="messages/sayHello_request.xml"/>
+         <classpath>
+            <fileset dir="${org.jboss.esb.server.home}/client" includes="*.jar"/>
+            <pathelement path="${java.class.path}"/>
+         </classpath>
+      </java>
+   </target>
+</project>

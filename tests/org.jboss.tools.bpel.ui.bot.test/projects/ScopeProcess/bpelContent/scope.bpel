@@ -1,0 +1,33 @@
+<process name="scope" 
+		 suppressJoinFailure="yes"
+		 targetNamespace="http://www.jboss.org/bpel/examples"
+		 xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+		 xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+		 xmlns:ns="http://www.jboss.org/bpel/examples"
+		 xmlns:types="http://www.jboss.org/bpel/examples/types" xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable">
+
+	<import importType="http://schemas.xmlsoap.org/wsdl/" 
+			location="scope.wsdl" 
+			namespace="http://www.jboss.org/bpel/examples" />
+
+	<partnerLinks>
+		<partnerLink name="scopeProcess" myRole="scopeProcess" partnerLinkType="ns:scopeProcess" />
+	</partnerLinks>
+
+	<variables>
+		<variable name="inputMessage" messageType="ns:scopeRequestMessage" />
+		<variable name="outputMessage" messageType="ns:scopeResponseMessage" />
+		<bpel:variable name="exceptionMessage" messageType="ns:Exception" />
+		<!-- TODO: move this variable to the outerScope -->
+		<variable name="localVariable" type="xsd:string" />
+    </variables>
+	
+	<sequence>
+		
+
+		
+      
+      	
+      		   
+	</sequence>
+</process>

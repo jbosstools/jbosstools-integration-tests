@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<wsdl:definitions
+    targetNamespace="http://www.jboss.org/bpel/examples/wsdl"
+    xmlns="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:tns="http://www.jboss.org/bpel/examples/wsdl"
+    xmlns:types="http://www.jboss.org/bpel/examples/xsd"
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    xmlns:vprop="http://docs.oasis-open.org/wsbpel/2.0/varprop"
+    xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype">
+
+  <wsdl:types>
+  </wsdl:types>
+
+  <wsdl:message name="HelloMessage">
+    <wsdl:part name="ID" type="xsd:int"/>
+    <wsdl:part name="Name" type="xsd:string"/>
+  </wsdl:message>
+
+  <wsdl:portType name="TripleHelloPortType">
+    <wsdl:operation name="hello">
+      <wsdl:input message="tns:HelloMessage"/>
+      <wsdl:output message="tns:HelloMessage"/>
+    </wsdl:operation>
+  </wsdl:portType>
+
+  <wsdl:binding name="TripleHelloSoapBinding" type="tns:TripleHelloPortType">
+    <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="hello">
+      <soap:operation soapAction="" style="rpc"/>
+      <wsdl:input>
+        <soap:body
+            namespace="http://www.jboss.org/bpel/examples/wsdl"
+            use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body
+            namespace="http://www.jboss.org/bpel/examples/wsdl"
+            use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  
+  <wsdl:service name="TripleHelloService">
+    <wsdl:port name="TripleHelloPort" binding="tns:TripleHelloSoapBinding">
+      <soap:address location="http://localhost:8080/Quickstart_bpel_triple_hello"/>
+    </wsdl:port>
+  </wsdl:service>
+
+  <plnk:partnerLinkType name="TripleHelloPartnerLinkType">
+    <plnk:role name="me" portType="tns:TripleHelloPortType"/>
+    <plnk:role name="you" portType="tns:TripleHelloPortType"/>
+  </plnk:partnerLinkType>
+
+</wsdl:definitions>
+
