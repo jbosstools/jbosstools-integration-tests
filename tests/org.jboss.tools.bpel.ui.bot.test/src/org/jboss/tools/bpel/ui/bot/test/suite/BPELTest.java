@@ -42,7 +42,7 @@ public class BPELTest extends SWTTestExt {
 		
 		@Override
 		public void runOnServer(String projectName) {
-			String serverName = AssignActivityTest.configuredState.getServer().name;
+			String serverName = BPELTest.configuredState.getServer().name;
 			//serverName = "SOA-5.1";
 
 			bot.viewByTitle("Servers").show();
@@ -64,6 +64,8 @@ public class BPELTest extends SWTTestExt {
 			viewBot.button("Add >").click();
 			viewBot.button("Finish").click();
 		}
+		
+
 	};
 	
 	
