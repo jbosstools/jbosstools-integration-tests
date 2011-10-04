@@ -192,7 +192,7 @@ public abstract class WSTestBase extends SWTTestExt {
 		}
 		wsw.finish();
 		util.waitForNonIgnoredJobs();
-		bot.sleep(1000);
+		bot.sleep(2*TIME_1S);
 
 		// let's fail if there's some error in the wizard,
 		// and close error dialog and the wizard so other tests

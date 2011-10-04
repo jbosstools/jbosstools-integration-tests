@@ -17,11 +17,11 @@ import org.junit.runners.Suite.SuiteClasses;
 /**
  * Documentation/description is available at <a href="https://docspace.corp.redhat.com/docs/DOC-43675">Docspace</a>}
  * 
- * @author jlukas
+ * @author jlukas, jjankovi
  * @see <a href="https://docspace.corp.redhat.com/docs/DOC-43675">DOC-43675</a>
  */
 @SuiteClasses({
-    EAPFromJavaTest.class,
+	EAPFromJavaTest.class,
     EAPFromWSDLTest.class
 })
 @RunWith(RequirementAwareSuite.class)
