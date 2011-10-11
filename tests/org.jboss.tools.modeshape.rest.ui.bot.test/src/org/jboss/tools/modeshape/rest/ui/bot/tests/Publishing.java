@@ -51,7 +51,7 @@ public class Publishing extends SWTTestExt{
 		
 		wiz = open.newObject(ActionItem.NewObject.GeneralFile.LABEL);
 		wiz.tree().select(Properties.PROJECT_NAME);
-		wiz.textWithLabel(ActionItem.NewObject.GeneralFile.TEXT_FILE_NAME).typeText(Properties.FILE_NAME);
+		wiz.textWithLabel(ActionItem.NewObject.GeneralFile.TEXT_FILE_NAME).setText(Properties.FILE_NAME);
 		open.finish(wiz);
 		assertTrue(projectExplorer.isFilePresent(Properties.PROJECT_NAME, Properties.FILE_NAME));	
 		
@@ -97,9 +97,9 @@ public class Publishing extends SWTTestExt{
 		SWTBotShell shell = bot.shell("New Server");
 		shell.activate();
 
-		shell.bot().textWithLabel("URL:").typeText(Properties.URL);
-		shell.bot().textWithLabel("User:").typeText(Properties.USER);
-		shell.bot().textWithLabel("Password:").typeText(Properties.PASSWORD);
+		shell.bot().textWithLabel("URL:").setText(Properties.URL);
+		shell.bot().textWithLabel("User:").setText(Properties.USER);
+		shell.bot().textWithLabel("Password:").setText(Properties.PASSWORD);
 
 		shell.bot().button("Test").click();
 		shell = bot.shell("Test Server Connection");
