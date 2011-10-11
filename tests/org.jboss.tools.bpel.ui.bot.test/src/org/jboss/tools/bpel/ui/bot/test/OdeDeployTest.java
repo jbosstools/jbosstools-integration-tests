@@ -26,7 +26,7 @@ import org.junit.Test;
  * @author psrna
  *
  */
-@Require(server = @Server(type = ServerType.SOA, state = ServerState.Running), perspective="BPEL")
+@Require(server = @Server(type = ServerType.SOA, state = ServerState.Running, version = "5.2"), perspective="BPEL")
 public class OdeDeployTest extends BPELTest {
 	
 	final static String BUNDLE   = "org.jboss.tools.bpel.ui.bot.test";

@@ -1,31 +1,18 @@
 package org.jboss.tools.bpel.ui.bot.test;
 
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.widgetOfType;
-import static org.eclipse.swtbot.swt.finder.waits.Conditions.waitForWidget;
-
-import java.awt.event.ComponentEvent;
-import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swtbot.eclipse.gef.finder.SWTGefBot;
-import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditPart;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditor;
 import org.eclipse.swtbot.swt.finder.SWTBot;
-import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
-import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
-import org.eclipse.swtbot.swt.finder.results.Result;
-import org.eclipse.swtbot.swt.finder.utils.MessageFormat;
-import org.eclipse.swtbot.swt.finder.utils.SWTUtils;
-import org.eclipse.swtbot.swt.finder.widgets.AbstractSWTBotControl;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.eclipse.ui.internal.views.properties.tabbed.view.TabbedPropertyList.ListElement;
 import org.hamcrest.Matcher;
-import org.hamcrest.SelfDescribing;
 import org.jboss.tools.bpel.ui.bot.ext.widgets.BotBpelEditor;
 import org.jboss.tools.bpel.ui.bot.test.suite.BPELTest;
 import org.jboss.tools.bpel.ui.bot.test.util.CompositeControl;
@@ -38,12 +25,17 @@ import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
 import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.ext.view.PropertiesView;
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-
-@Require(server = @Server(type = ServerType.SOA, state = ServerState.Running), perspective="BPEL")
+/**
+ * Tests that verify JBoss BPEL tooling and Eclipse BPEL tooling compatibility.
+ * @author psrna
+ *
+ */
+@Require(server = @Server(type = ServerType.SOA, state = ServerState.Running, version = "5.2"), perspective="BPEL")
 public class ToolingCompatibilityTest extends BPELTest{
 	
 	final static String BUNDLE   = "org.jboss.tools.bpel.ui.bot.test";
@@ -67,10 +59,10 @@ public class ToolingCompatibilityTest extends BPELTest{
 		ResourceHelper.importProject(BUNDLE, "/projects/eclipse_tooling_proj", "eclipse_tooling_proj");
 		bot.viewByTitle("Project Explorer").setFocus();
 	}
-	
+		
 	
 	@Test
-	public void deployEclipseProjectTest(){
+	public void deployProjectTest(){
 		
 		String serverName = ToolingCompatibilityTest.configuredState.getServer().name;
 		// Publish the process
@@ -86,7 +78,7 @@ public class ToolingCompatibilityTest extends BPELTest{
 		SWTBotTreeItem server = tree.getTreeItem(serverName + "  [Started, Synchronized]").select();
 		server.expand();
 		bot.sleep(TIME_5S);
-		assertTrue(server.getNode("eclipse_tooling_proj  [Started, Synchronized]").isVisible());
+		assertTrue(server.getNode("eclipse_tooling_proj  [Synchronized]").isVisible());
 	}
 	
 	@Test
@@ -104,11 +96,10 @@ public class ToolingCompatibilityTest extends BPELTest{
 		Assert.assertTrue(response.contains("</HelloWorldResponse>"));
 		Assert.assertTrue(response.contains("</SOAP-ENV:Body>"));
 		Assert.assertTrue(response.contains("</SOAP-ENV:Envelope>"));
-
 	}
 	
 
-	@SuppressWarnings({ "static-access", "restriction" })
+	@SuppressWarnings({ "restriction" })
 	@Test
 	public void simpleEditingTest() throws Exception {
 		
@@ -141,13 +132,10 @@ public class ToolingCompatibilityTest extends BPELTest{
 		pView.bot().styledText().setText("concat('Hello ', $input.payload/tns:input)");
 		log.info("Save");
 		bpel.save();
-		bot.sleep(TIME_5S);
-		
-		log.info("Remove from server");
-		removeFromServer("eclipse_tooling_proj");
-		bot.sleep(TIME_5S);
-		log.info("Run on server");
-		projExplorer.runOnServer("eclipse_tooling_proj");
+		bot.sleep(TIME_20S);
+				
+		log.info("Server: Clean...");
+		cleanServer();
 		
 		String serverName = OdeDeployTest.configuredState.getServer().name;
 
@@ -160,9 +148,8 @@ public class ToolingCompatibilityTest extends BPELTest{
 		SWTBotTree tree = bot.viewByTitle("Servers").bot().tree(); 
 		SWTBotTreeItem server = tree.getTreeItem(serverName + "  [Started, Synchronized]").select();
 		server.expand();
-		bot.sleep(TIME_5S);
-		assertTrue(server.getNode("eclipse_tooling_proj  [Started, Synchronized]").isVisible());
-		
+		bot.sleep(TIME_20S);
+		assertTrue(server.getNode("eclipse_tooling_proj  [Synchronized]").isVisible());
 	}
 	
 	@Test
@@ -180,18 +167,36 @@ public class ToolingCompatibilityTest extends BPELTest{
 		Assert.assertTrue(response.contains("</HelloWorldResponse>"));
 		Assert.assertTrue(response.contains("</SOAP-ENV:Body>"));
 		Assert.assertTrue(response.contains("</SOAP-ENV:Envelope>"));
-
 	}
 	
+	@Test
+	public void cleanupTest(){
+		removeFromServer("eclipse_tooling_proj");
+
+		String serverName = OdeDeployTest.configuredState.getServer().name;
+		
+		bot.viewByTitle("Servers").show();
+		bot.viewByTitle("Servers").setFocus();
+		
+		SWTBotTree tree = bot.viewByTitle("Servers").bot().tree(); 
+		SWTBotTreeItem server = tree.getTreeItem(serverName + "  [Started, Synchronized]").select();
+		server.expand();
+		bot.sleep(TIME_20S);
+		
+		List<String> projects = server.getNodes();
+		
+		for(String s : projects){
+			assertFalse(s.contains("eclipse_tooling_proj"));
+		}
+	}
 	
-	public void removeFromServer(String projectName){
+	public static void removeFromServer(String projectName){
 		String serverName = ToolingCompatibilityTest.configuredState.getServer().name;
 		
 		bot.viewByTitle("Servers").show();
 		bot.viewByTitle("Servers").setFocus();
 		
 		SWTBotTree tree = bot.viewByTitle("Servers").bot().tree(); 
-		bot.sleep(TIME_5S);
 		SWTBotTreeItem server = tree.getTreeItem(serverName + "  [Started, Synchronized]").select();
 		
 		ContextMenuHelper.prepareTreeItemForContextMenu(tree, server);
@@ -206,7 +211,24 @@ public class ToolingCompatibilityTest extends BPELTest{
 		viewBot.tree(1).select(projectName);
 		viewBot.button("< Remove").click();
 		viewBot.button("Finish").click();
-
 	}
 
+	public static void cleanServer(){
+		String serverName = ToolingCompatibilityTest.configuredState.getServer().name;
+		
+		bot.viewByTitle("Servers").show();
+		bot.viewByTitle("Servers").setFocus();
+		
+		SWTBotTree tree = bot.viewByTitle("Servers").bot().tree(); 
+		SWTBotTreeItem server = tree.getTreeItem(serverName + "  [Started, Republish]").select();
+		
+		ContextMenuHelper.prepareTreeItemForContextMenu(tree, server);
+		new SWTBotMenu(ContextMenuHelper.getContextMenu(tree, "Clean...", false)).click();
+		
+		SWTBotShell shell = OdeDeployTest.bot.shell("Server");
+		shell.activate();
+		
+		shell.bot().button(IDELabel.Button.OK).click();
+	}
+	
 }
