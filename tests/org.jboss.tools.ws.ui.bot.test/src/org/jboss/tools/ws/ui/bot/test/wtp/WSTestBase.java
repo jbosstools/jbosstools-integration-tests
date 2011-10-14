@@ -36,7 +36,6 @@ import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.NewObject.JavaEEEnterpriseApplicationProject;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.NewObject.WebServicesWSDL;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
-import org.jboss.tools.ws.ui.bot.test.jbt.SampleWSTest;
 import org.jboss.tools.ws.ui.bot.test.uiutils.actions.NewFileWizardAction;
 import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.DynamicWebProjectWizard;
 import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.WebServiceClientWizard;
@@ -187,7 +186,7 @@ public abstract class WSTestBase extends SWTTestExt {
 			wsw.setClientSlider(Slider_Level.NO_CLIENT);
 		}
 		if (pkg != null && pkg.trim().length() > 0) {
-			wsw.next();
+			wsw.next();			
 			wsw.setPackageName(pkg);
 		}
 		wsw.finish();

@@ -87,10 +87,6 @@ public class EAPFromJavaTest extends WSTestBase {
         return "TestWSClientProject";
     }
 
-    protected String getClientEarProjectName() {
-        return getWsClientProjectName() + "EAR";
-    }
-
     @Override
     protected String getWsPackage() {
         return "test.ws";
@@ -119,7 +115,7 @@ public class EAPFromJavaTest extends WSTestBase {
         } catch (CoreException e) {
             L.log(Level.WARNING, e.getMessage(), e);
         }
-        bot.sleep(500);
+        bot.sleep(TIME_500MS);
         bottomUpJbossWebService(EAPFromJavaTest.class.getResourceAsStream("/resources/jbossws/Echo.java.ws"));
         IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(getWsProjectName());
         IFile f = project.getFile("WebContent/WEB-INF/web.xml");
@@ -148,13 +144,14 @@ public class EAPFromJavaTest extends WSTestBase {
         w.bot().textWithLabel("File name:").setText("index");
         w.bot().textWithLabel("Enter or select the parent folder:").setText(getWsClientProjectName() + "/WebContent");
         w.finish();
-        bot.sleep(5000);
+        bot.sleep(TIME_5S);
         bot.activeShell().bot().button("Skip").click();
-        bot.sleep(5000);
+        bot.sleep(TIME_5S);
         SWTBotEclipseEditor st = bot.editorByTitle("index.jsp").toTextEditor();
         st.selectRange(0, 0, st.getText().length());
         st.setText(readStream(EAPFromJavaTest.class.getResourceAsStream("/resources/jbossws/index.jsp.ws")));
         st.saveAndClose();
+        bot.sleep(TIME_1S*2);
         runProject(getWsClientProjectName());
         String pageContent = getPage("http://localhost:8080/" + getWsClientProjectName() + "/index.jsp", 15000);
         L.info(pageContent);

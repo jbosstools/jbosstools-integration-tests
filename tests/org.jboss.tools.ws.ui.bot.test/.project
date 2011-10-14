@@ -43,16 +43,4 @@
 		<nature>org.eclipse.pde.api.tools.apiAnalysisNature</nature>
 		<nature>org.eclipse.wst.common.project.facet.core.nature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>lib-src</name>
-			<type>2</type>
-			<location>/home/jjankovi/Dokumenty/Trunk-svn/trunk/tests/plugins/org.jboss.tools.ui.bot.ext/src</location>
-		</link>
-		<link>
-			<name>lib-src-1</name>
-			<type>2</type>
-			<location>/home/jjankovi/Dokumenty/Trunk-svn/trunk/tests/plugins/org.jboss.tools.tests/src</location>
-		</link>
-	</linkedResources>
 </projectDescription>

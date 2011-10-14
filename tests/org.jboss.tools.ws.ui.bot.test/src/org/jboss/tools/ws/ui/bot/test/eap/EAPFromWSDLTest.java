@@ -122,6 +122,13 @@ public class EAPFromWSDLTest extends WSTestBase {
 				.getProject(getWsProjectName());
 		IFile f = project.getFile("src/" + getWsPackage().replace(".", "/")
 				+ "/AreaServiceImpl.java");
+		/*
+		 * workaround when package is not typed
+		 */
+		if (f == null) {
+			f = project.getFile("src/" + "org.tempuri.areaservice"
+					+ "/AreaServiceImpl.java");
+		}
 		String content = readFile(f);
 		Assert.assertNotNull(content);
 		Assert.assertTrue(content
@@ -244,7 +251,7 @@ public class EAPFromWSDLTest extends WSTestBase {
 			}
 		}
 		if (!libraryFound)
-			throw new Exception("No runtime library has been found");
+			throw new RuntimeException("No runtime library has been found");
 	}
 
 	private SWTBotMenu nodeContextMenu(final SWTBotTree tree,
