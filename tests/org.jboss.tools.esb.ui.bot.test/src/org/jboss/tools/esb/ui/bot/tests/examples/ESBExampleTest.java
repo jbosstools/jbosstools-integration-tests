@@ -80,6 +80,7 @@ public class ESBExampleTest extends ExampleTest{
 		SWTBotTreeItem jmsCall = SWTEclipseExt.selectTreeLocation(packageExplorer.show().bot(),clientClass);
 		eclipse.runTreeItemAsJavaApplication(jmsCall);
 		bot.sleep(Timing.time5S());
+		util.waitForNonIgnoredJobs();
 		console.switchConsole(configuredState.getServer().name);
 		String text2 = console.getConsoleText(TIME_5S, TIME_20S, false);
 		if (text.length()>=text2.length()) {
@@ -182,10 +183,7 @@ public class ESBExampleTest extends ExampleTest{
 		if (!configuredState.getServer().isConfigured) {
 			throw new NullPointerException("No server was configured for test, but it is required");
 		}
-		if (configuredState.getServer().version.equals("5.0")) {
-			ret+="5.0";
-		}
-		else if (configuredState.getServer().version.equals("5.1")) {
+		if (configuredState.getServer().version.startsWith("5.")) {
 			ret+="5.0";
 		}
 		else if (configuredState.getServer().version.equals("4.3")) {
