@@ -432,8 +432,7 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase {
 	 * @param projectName
 	 */
 	protected void openPage(String pageName, String projectName) {
-		SWTBot innerBot = bot.viewByTitle(WidgetVariables.PACKAGE_EXPLORER)
-				.bot();
+	  SWTBot innerBot = packageExplorer.show().bot();
 		SWTBotTree tree = innerBot.tree();
 		tree.expandNode(projectName).expandNode("WebContent")
 				.expandNode("pages").getNode(pageName).doubleClick(); //$NON-NLS-1$ //$NON-NLS-2$

@@ -84,6 +84,7 @@ public class SelectionBarTest extends VPEAutoTestCase {
 	     * Send key press event to fire VPE listeners
 	     */
 	    KeyboardHelper.typeKeyCodeUsingAWT(KeyEvent.VK_LEFT);
+	    bot.sleep(Timing.time3S());
 	    /*
 	     * Click on the tag in the selection bar 
 	     */
