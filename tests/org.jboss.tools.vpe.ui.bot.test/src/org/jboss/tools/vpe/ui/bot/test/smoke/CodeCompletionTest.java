@@ -89,7 +89,7 @@ public class CodeCompletionTest extends VPEEditorTestCase{
   private static List<String> getJspPageProposalList(){
     LinkedList<String> result = new LinkedList<String>();
     
-    result.add("New JSF EL Expression - Create a new attribute value with ${}");
+    result.add("New JSF EL Expression - Create a new attribute value with #{}");
     result.add("f:actionListener");
     result.add("f:attribute");
     result.add("f:convertDateTime");

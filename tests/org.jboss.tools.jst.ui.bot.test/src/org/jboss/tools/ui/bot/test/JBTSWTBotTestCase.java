@@ -18,6 +18,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
+import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.ext.view.ProblemsView;
 
 public abstract class JBTSWTBotTestCase extends SWTTestExt implements
@@ -144,6 +145,10 @@ public abstract class JBTSWTBotTestCase extends SWTTestExt implements
 			bot.viewByTitle(WidgetVariables.WELCOME).close();
 		} catch (WidgetNotFoundException e) {
 		}
+		try {
+      bot.editorByTitle(IDELabel.View.JBOSS_CENTRAL).close();
+    } catch (WidgetNotFoundException e) {
+    }
 		openErrorLog();
 		openPackageExplorer();
 		// openProgressStatus();

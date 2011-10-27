@@ -69,7 +69,9 @@ public class MenuItemEntity {
     if (label == null) {
       if (other.label != null)
         return false;
-    } else if (!label.equals(other.label))
+    } else if (!label.equals(other.label) &&
+        (!((label.equals("Seam") && other.label.equals("Seam 2")) || // Seam = Seam 2
+          (label.equals("Seam 2") && other.label.equals("Seam"))))) // Seam 2 = Seam
       return false;
     return true;
   }

@@ -64,10 +64,9 @@ public class JspFileEditingTest extends VPEEditorTestCase {
     jspTextEditor.save();
     botExt.sleep(Timing.time2S());
     // Check if tag h:outputText was properly added
-    String editorText = jspTextEditor.getText();
-    assertTrue("File " + TEST_PAGE
-        + " has to contain string '<h:outputText>' but it doesn't",
-        editorText.contains("<h:outputText>"));
+    String editorText = VPEEditorTestCase.stripHTMLSourceText(jspTextEditor.getText());   assertTrue("File " + TEST_PAGE
+        + " has to contain string '<h:outputText></h:outputText>' but it doesn't",
+        editorText.contains("<h:outputText></h:outputText>"));
   }
 	
 	/**

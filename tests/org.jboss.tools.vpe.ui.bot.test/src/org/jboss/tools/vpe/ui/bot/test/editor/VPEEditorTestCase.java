@@ -86,7 +86,8 @@ public abstract class VPEEditorTestCase extends VPEAutoTestCase{
    * @return String
    */
   protected static String stripHTMLSourceText(String editorText){
-    return editorText.replaceAll("\n", "").replaceAll("\t", "").replaceAll(" ", "");
+    return editorText.replaceAll("\n", "").replaceAll("\t", "").replaceAll("\b", "")
+             .replaceAll(" ", "").replaceAll("\r", "").replaceAll("\f", "");
   }
   /**
    * Asserts if sourceEditorText of file with fileName contains textToContain

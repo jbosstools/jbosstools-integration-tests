@@ -383,22 +383,11 @@ public class VisualEditorContextMenuTest extends VPEEditorTestCase {
         for (MenuItemEntity mieThirdLevel : mieSecondLevel.getChildren()){
           String thirdLevelMenuItemLabel = mieThirdLevel.getLabel();
           if (thirdLevelMenuItemLabel.endsWith(" taglib") ||
-              (firstLevelMenuItemLabel.equals("JBoss") && secondLevelMenuItemLabel.equals("Ajax4Jsf") && thirdLevelMenuItemLabel.equals("queue")) ||
-              (firstLevelMenuItemLabel.equals("JBoss") && secondLevelMenuItemLabel.equals("RichFaces") && thirdLevelMenuItemLabel.equals("menuSeparator")) || 
               (firstLevelMenuItemLabel.equals("JBoss") && secondLevelMenuItemLabel.equals("Seam") && thirdLevelMenuItemLabel.equals("convertEnum")) || 
               (firstLevelMenuItemLabel.equals("JBoss") && secondLevelMenuItemLabel.equals("Seam") && thirdLevelMenuItemLabel.equals("convertDateTime")) || 
               (firstLevelMenuItemLabel.equals("JBoss") && secondLevelMenuItemLabel.equals("Seam") && thirdLevelMenuItemLabel.equals("enumItem")) || 
               (firstLevelMenuItemLabel.equals("JBoss") && secondLevelMenuItemLabel.equals("Seam") && thirdLevelMenuItemLabel.equals("fileUpload")) || 
-              (firstLevelMenuItemLabel.equals("JBoss") && secondLevelMenuItemLabel.equals("Seam") && thirdLevelMenuItemLabel.equals("validate")) || 
-              (firstLevelMenuItemLabel.equals("JSF") && secondLevelMenuItemLabel.equals("HTML") && thirdLevelMenuItemLabel.equals("commandButton")) || 
-              (firstLevelMenuItemLabel.equals("JSF") && secondLevelMenuItemLabel.equals("HTML") && thirdLevelMenuItemLabel.equals("graphicImage")) || 
-              (firstLevelMenuItemLabel.equals("JSF") && secondLevelMenuItemLabel.equals("HTML") && thirdLevelMenuItemLabel.equals("inputHidden")) ||
-              (firstLevelMenuItemLabel.equals("JSF") && secondLevelMenuItemLabel.equals("HTML") && thirdLevelMenuItemLabel.equals("inputSecret")) ||
-              (firstLevelMenuItemLabel.equals("JSF") && secondLevelMenuItemLabel.equals("HTML") && thirdLevelMenuItemLabel.equals("inputText")) ||
-              (firstLevelMenuItemLabel.equals("JSF") && secondLevelMenuItemLabel.equals("HTML") && thirdLevelMenuItemLabel.equals("message")) ||
-              (firstLevelMenuItemLabel.equals("JSF") && secondLevelMenuItemLabel.equals("HTML") && thirdLevelMenuItemLabel.equals("messages")) ||
-              (firstLevelMenuItemLabel.equals("JSF") && secondLevelMenuItemLabel.equals("HTML") && thirdLevelMenuItemLabel.equals("outputText")) ||
-              (firstLevelMenuItemLabel.equals("JSF") && secondLevelMenuItemLabel.equals("HTML") && thirdLevelMenuItemLabel.equals("selectBooleanCheckbox"))){
+              (firstLevelMenuItemLabel.equals("JBoss") && secondLevelMenuItemLabel.equals("Seam") && thirdLevelMenuItemLabel.equals("validate"))){
             // Skip these Menu Items              
           }
           else{

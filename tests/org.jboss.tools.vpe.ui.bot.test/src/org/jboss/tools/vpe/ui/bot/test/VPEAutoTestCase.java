@@ -96,8 +96,8 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase {
           "6.0");
       if (version.equals("6.0")) {
         JBOSS_AS_FOR_JSF2_SERVER_GROUP = IDELabel.ServerGroup.JBOSS_AS_6_0;
-        JBOSS_AS_FOR_JSF2_SERVER_RUNTIME_TYPE = IDELabel.ServerRuntimeType.JBOSS_AS_6_0;
-        JBOSS_AS_FOR_JSF2_SERVER_TYPE = IDELabel.ServerType.JBOSS_AS_6_0;
+        JBOSS_AS_FOR_JSF2_SERVER_RUNTIME_TYPE = IDELabel.ServerRuntimeType.JBOSS_AS_6_x;
+        JBOSS_AS_FOR_JSF2_SERVER_TYPE = IDELabel.ServerType.JBOSS_AS_6_x;
       } else {
         throw new RuntimeException(
             "Unsupported version of JBoss AS runtime for JSF2 [version="

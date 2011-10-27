@@ -3,6 +3,7 @@ package org.jboss.tools.vpe.ui.bot.test.editor.preferences;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.TimeoutException;
+import org.jboss.tools.ui.bot.ext.SWTBotExt;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.test.WidgetVariables;
@@ -15,7 +16,8 @@ public class ChangeEditorTabForTheFirstOpenPageTest extends PreferencesTestCase{
 	  openPage();
 		bot.toolbarButtonWithTooltip(PREF_TOOLTIP).click();
 		bot.shell(PREF_FILTER_SHELL_TITLE).activate();
-		bot.comboBoxWithLabel(SELECT_DEFAULT_TAB).setSelection("Source"); //$NON-NLS-1$
+		bot.comboBoxWithLabel(SELECT_DEFAULT_TAB)
+		  .setSelection(IDELabel.VisualPageEditor.SOURCE_TAB_LABEL);
 		bot.button("OK").click(); //$NON-NLS-1$
 		
 		//Create and open new page
@@ -47,14 +49,18 @@ public class ChangeEditorTabForTheFirstOpenPageTest extends PreferencesTestCase{
 	public void tearDown() throws Exception {
 		
 		//Delete test page if it has been created
+	  new SWTBotExt().swtBotEditorExtByTitle(TEST_PAGE).selectPage(IDELabel.VisualPageEditor.VISUAL_SOURCE_TAB_LABEL);
 		SWTBot innerBot = bot.viewByTitle(WidgetVariables.PACKAGE_EXPLORER).bot();
 		innerBot.tree().expandNode(JBT_TEST_PROJECT_NAME).expandNode("WebContent") //$NON-NLS-1$
 		.expandNode("pages").getNode("testPage.jsp").select();  //$NON-NLS-1$//$NON-NLS-2$
 		bot.menu("Edit").menu("Delete").click(); //$NON-NLS-1$ //$NON-NLS-2$
 		bot.shell("Confirm Delete").activate(); //$NON-NLS-1$
-		bot.button("OK").click(); //$NON-NLS-1$
-		bot.multiPageEditorByTitle(TEST_PAGE).selectTab("Visual/Source"); //$NON-NLS-1$
-		super.tearDown();
+		bot.button(IDELabel.Button.OK).click(); //$NON-NLS-1$
+		bot.toolbarButtonWithTooltip(PREF_TOOLTIP).click();
+    bot.shell(PREF_FILTER_SHELL_TITLE).activate();
+    bot.comboBoxWithLabel(SELECT_DEFAULT_TAB).setSelection(IDELabel.VisualPageEditor.VISUAL_SOURCE_TAB_LABEL); //$NON-NLS-1$
+    bot.button(IDELabel.Button.OK).click();
+    super.tearDown();
 	}
 	
 }
