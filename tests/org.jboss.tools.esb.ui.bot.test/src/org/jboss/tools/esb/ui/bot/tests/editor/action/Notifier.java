@@ -46,7 +46,8 @@ public class Notifier extends ESBAction {
 		addSQL(editor, xpath, notifiersPath);
 		addNotifier(editor, new ESBObjectDummy("Notify TCP", "NotifyTCP"), xpath, notifiersPath);
 		addNotifier(editor, new ESBObjectDummy("Notify Topics", "NotifyTopics"), xpath, notifiersPath);
-		fail("OK");
+		// FIXME full coverage of notifiers
+		//fail("OK");
 	}
 	
 	private void addTarget(SWTBotEditor editor,String xpath,String... path) {
