@@ -85,6 +85,7 @@ public class MinMaxPanesTest extends VPEEditorTestCase {
         csf.upClicked();
       }
     });
+    bot.sleep(Timing.time2S());
     assertVisualEditorContains(webBrowser, "INPUT", null, null, MinMaxPanesTest.TEST_PAGE_NAME);
     jspTextEditor.setFocus();
     jspTextEditor.selectRange(4,25,0);
@@ -106,7 +107,7 @@ public class MinMaxPanesTest extends VPEEditorTestCase {
         csf.downClicked();
       }
     });
-    bot.sleep(Timing.time1S());
+    bot.sleep(Timing.time2S());
     assertSourceEditorContains(jspTextEditor.getText(), insertTestString, MinMaxPanesTest.TEST_PAGE_NAME);
 	}
 	

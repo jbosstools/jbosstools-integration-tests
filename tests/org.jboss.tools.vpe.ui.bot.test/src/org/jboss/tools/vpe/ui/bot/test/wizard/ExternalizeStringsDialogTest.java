@@ -46,8 +46,8 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		+ "\t ;.df:,ee {df}df[ty]"; //$NON-NLS-1$
 	private final String COMPLEX_KEY_RESULT = "HELLO_Input_User_Name_Page_and" + //$NON-NLS-1$
 			"_some_more_text_vc_yy_ghg_l_kk_mmm_fdg_df_ee_df_df_ty"; //$NON-NLS-1$
-	private final String COMPLEX_VALUE_RESULT = "!! HELLO ~ Input User, Name.Page ?" + //$NON-NLS-1$
-	"      and some more text       @ \\# vc \\$ % yy^ &*(ghg ) _l-kk+mmm\\/fdg\\   ;.df:,ee {df}df[ty]"; //$NON-NLS-1$
+	private final String COMPLEX_VALUE_RESULT = "\\r\\n!! HELLO ~ Input User, Name.Page ? \\r\\n\\r\\n and some more text " + //$NON-NLS-1$
+      "\\r\\n \\r\\n @ \\# vc \\$ % yy^ &*(ghg ) _l-kk+mmm\\/fdg\\ \\t ;.df:,ee {df}df[ty]\\r\\n\\t\\t";; //$NON-NLS-1$
 	
 	private boolean isUnusedDialogOpened = false;
 	
@@ -536,7 +536,7 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 				JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_PROPERTIES_VALUE,
 				JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_PROPS_STRINGS_GROUP);
 		assertNotNull(CANNOT_FIND_PROPERTY_VALUE, defValueText);
-		assertText("Plain text", defValueText); //$NON-NLS-1$
+		assertText("\\r\\n\\r\\nPlain text\\r\\n\\r\\n", defValueText); //$NON-NLS-1$
 		/*
 		 * Check that checkbox for the new file is selected
 		 */
@@ -594,7 +594,7 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 				"hello.properties"); //$NON-NLS-1$
 		editor2.toTextEditor().selectLine(0);
 		String line = editor2.toTextEditor().getSelection();
-		assertEquals("Created file is incorrect", "Plain_text=Plain text", line); //$NON-NLS-1$ //$NON-NLS-2$
+		assertEquals("Created file is incorrect", "Plain_text=\\r\\n\\r\\nPlain text\\r\\n\\r\\n", line); //$NON-NLS-1$ //$NON-NLS-2$
 		/*
 		 * Reopen the page, and check that the new file 
 		 * for existed properties file won't be created.
@@ -630,7 +630,7 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 				JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_PROPERTIES_VALUE,
 				JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_PROPS_STRINGS_GROUP);
 		assertNotNull(CANNOT_FIND_PROPERTY_VALUE, defValueText);
-		assertText("Plain text", defValueText); //$NON-NLS-1$
+		assertText("\\r\\n\\r\\nPlain text\\r\\n\\r\\n", defValueText); //$NON-NLS-1$
 		/*
 		 * Check that checkbox for the new file is selected
 		 */
