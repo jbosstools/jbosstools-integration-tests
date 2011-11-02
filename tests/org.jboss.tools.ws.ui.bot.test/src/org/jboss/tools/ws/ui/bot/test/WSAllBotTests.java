@@ -11,6 +11,8 @@
 package org.jboss.tools.ws.ui.bot.test;
 
 import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
+import org.jboss.tools.ws.ui.bot.test.eap.EAPFromJavaTest;
+import org.jboss.tools.ws.ui.bot.test.eap.EAPFromWSDLTest;
 import org.jboss.tools.ws.ui.bot.test.jbt.SampleWSTest;
 import org.jboss.tools.ws.ui.bot.test.jbt.WsTesterTest;
 import org.jboss.tools.ws.ui.bot.test.wtp.BottomUpWSTest;
@@ -44,7 +46,9 @@ import org.junit.runners.Suite.SuiteClasses;
 	BottomUpWSTest.class,
 	TopDownWSTest.class,
 	WsClientTest.class,
-	WsTesterTest.class
+	WsTesterTest.class,
+	EAPFromJavaTest.class,
+	EAPFromWSDLTest.class
 	})
 public class WSAllBotTests {
 }

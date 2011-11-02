@@ -24,6 +24,7 @@ import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
+import org.jboss.tools.ws.ui.bot.test.WSAllBotTests;
 import org.jboss.tools.ws.ui.bot.test.uiutils.actions.NewFileWizardAction;
 import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.Wizard;
 import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.WsWizardBase.Slider_Level;
@@ -39,7 +40,7 @@ import org.junit.runners.Suite.SuiteClasses;
 @Require(server=
 @Server(type = ServerType.EAP), perspective = "Java EE")
 @RunWith(RequirementAwareSuite.class)
-@SuiteClasses({ EAPCompAllTests.class})
+@SuiteClasses({ WSAllBotTests.class, EAPCompAllTests.class })
 
 
 public class EAPFromJavaTest extends WSTestBase {
@@ -145,8 +146,12 @@ public class EAPFromJavaTest extends WSTestBase {
         w.bot().textWithLabel("Enter or select the parent folder:").setText(getWsClientProjectName() + "/WebContent");
         w.finish();
         bot.sleep(TIME_5S);
-        bot.activeShell().bot().button("Skip").click();
-        bot.sleep(TIME_5S);
+        /**
+         *  Workaround for 4.x branch
+         * 
+         *	bot.activeShell().bot().button("Skip").click();
+         *	bot.sleep(TIME_5S);
+         */
         SWTBotEclipseEditor st = bot.editorByTitle("index.jsp").toTextEditor();
         st.selectRange(0, 0, st.getText().length());
         st.setText(readStream(EAPFromJavaTest.class.getResourceAsStream("/resources/jbossws/index.jsp.ws")));

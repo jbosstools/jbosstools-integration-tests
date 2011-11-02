@@ -136,7 +136,7 @@ public class SampleWSTest extends WSTestBase {
     }
 
     private void checkRESTService(String project, String svcName, String svcPkg, String svcClass, String msgContent, String appCls) {
-        checkService(Type.REST, project, svcName, svcPkg, svcClass, msgContent, appCls);
+        checkService(Type.REST, project, svcName, svcPkg, svcClass, msgContent, appCls);        
         checkRestSupport(project,svcName);        
     }
 

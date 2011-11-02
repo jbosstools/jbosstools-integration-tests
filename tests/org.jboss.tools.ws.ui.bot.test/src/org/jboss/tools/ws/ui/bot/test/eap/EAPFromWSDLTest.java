@@ -34,6 +34,7 @@ import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
 import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
+import org.jboss.tools.ws.ui.bot.test.WSAllBotTests;
 import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.WsWizardBase.Slider_Level;
 import org.jboss.tools.ws.ui.bot.test.wtp.TopDownWSTest;
 import org.jboss.tools.ws.ui.bot.test.wtp.WSTestBase;
@@ -47,7 +48,7 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @Require(server = @Server(type = ServerType.EAP), perspective = "Java EE")
 @RunWith(RequirementAwareSuite.class)
-@SuiteClasses({ EAPCompAllTests.class })
+@SuiteClasses({ WSAllBotTests.class, EAPCompAllTests.class })
 public class EAPFromWSDLTest extends WSTestBase {
 
 	private static final Logger L = Logger.getLogger(EAPFromWSDLTest.class

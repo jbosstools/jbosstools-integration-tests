@@ -15,6 +15,7 @@ import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ws.ui.bot.test.WSAllBotTests;
 import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.WsWizardBase.Slider_Level;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
@@ -93,12 +94,12 @@ public class TopDownWSTest extends WSTestBase {
 		setLevel(Slider_Level.TEST);
 		topDownWS();
 	}
-	
-//	@Test
-//	public void testDefaultPkg() {
-//		setLevel(Slider_Level.ASSEMBLE);
-//		topDownWS(null);
-//	}
+	@Ignore
+	@Test
+	public void testDefaultPkg() {
+		setLevel(Slider_Level.ASSEMBLE);
+		topDownWS(null);
+	}
 
 	private void topDownWS() {
 		topDownWS("ws." + getWsName().toLowerCase());
@@ -114,6 +115,6 @@ public class TopDownWSTest extends WSTestBase {
 				break;
 		}
 		assertServiceDeployed(getWSDLUrl(), 10000);
-//		servers.removeAllProjectsFromServer(configuredState.getServer().name);
+		servers.removeAllProjectsFromServer(configuredState.getServer().name);
 	}
 }
