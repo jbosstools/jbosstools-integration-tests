@@ -18,7 +18,18 @@ public class CreateRuntimeFromSOA extends SWTTestExt {
 		bot.shell(IDELabel.Shell.NEW_ESB_RUNTIME).activate();
 		assertFalse("Finish button must not be enabled when no home dir is defined",bot.button(IDELabel.Button.FINISH).isEnabled());
 		bot.text(1).setText(TestConfigurator.currentConfig.getServer().runtimeHome);
-		assertTrue("Version was not automaticly selected by setting ESB home dir",bot.comboBox().selection().equals(configuredState.getServer().bundledESBVersion));
+		
+		bot.sleep (3000l, "3 sleeping - " + TestConfigurator.currentConfig.getEsb().runtimeHome + " " + TestConfigurator.currentConfig.getEsb().version + " " + bot.comboBox().selection().toString());
+		System.out.println ("DEBUG - " + configuredState.getServer().bundledESBVersion);
+		System.out.println ("DEBUG - " + TestConfigurator.currentConfig.getServer().version);
+	
+		assertTrue("Version was not automatically selected by setting ESB home dir",bot.comboBox().selection().equals(configuredState.getServer().bundledESBVersion));
+		
+		/* ldimaggi - Oct 2011 */
+		bot.text(0).setText("123_TheName");
+		//System.out.println ("[" + bot.textWithLabel("JBoss ESB Runtime").getText() +"]");
+		assertTrue ("Runtime name cannot start with a number", bot.textWithLabel("JBoss ESB Runtime").getText().equals(" Runtime name is not correct") );
+		
 		bot.text(0).setText("esb-runtime");
 		String name = bot.text(0).getText(); 
 		assertFalse("Runtime name was not automaticly set by setting ESB home dir",name.equals(""));

@@ -159,7 +159,7 @@ public class Editing extends SWTTestExt {
 					ESBAction action = (ESBAction) m.invoke(null, new Object[]{});
 					action.setService(service);	
 					action.create(getEditor(), actionPath);
-					action.edit(getEditor(), actionPath);
+					//action.edit(getEditor(), actionPath);   /* Why is this here???   ldimaggi Nov 4 2011  */
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
