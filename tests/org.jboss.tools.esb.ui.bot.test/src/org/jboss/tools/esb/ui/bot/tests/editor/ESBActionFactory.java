@@ -382,10 +382,24 @@ public class ESBActionFactory {
 			}
 			@Override
 			protected void doFillForm(SWTBotShell shell) {
-				Assertions.assertButtonEnabled(shell.bot().button(getFinishButton()), false);
-				shell.bot().text(0).setText(this.uiName);
-				shell.bot().text(1).setText("Category");
-				shell.bot().text(2).setText("HelloService");
+				Assertions.assertButtonEnabled(shell.bot().button(getFinishButton()), false);					
+				shell.bot().text(0).setText(this.uiName);				
+
+				System.out.println ("DEBUG - this.uiName "  +  this.uiName);
+				
+				org.jboss.tools.ui.bot.ext.SWTUtilExt.displayAllBotWidgets(shell.bot());
+				
+				/* ldimaggi - Nov 4 2011 - need this to avoid an error where an array
+				 * out of bounds is hit - as the Sync Service Invoker has combo boxes, not text fields */
+				if (this.uiName.equals("Sync Service Invoker")) {
+					shell.bot().comboBox(0).setSelection(0);
+					shell.bot().comboBox(1).setSelection(0);
+				}
+				else {
+					shell.bot().text(1).setText("Category");
+					shell.bot().text(2).setText("HelloService");
+				}
+				
 				Assertions.assertButtonEnabled(shell.bot().button(getFinishButton()), true);
 			}
 		};
