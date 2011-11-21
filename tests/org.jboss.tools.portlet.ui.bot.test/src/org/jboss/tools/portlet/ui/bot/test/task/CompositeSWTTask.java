@@ -36,8 +36,8 @@ public class CompositeSWTTask<T extends SWTTask> extends AbstractSWTTask {
 		// hook up method
 	}
 
-	public void addTask(T task){
-		tasks.add(task);
+	public void setTasks(List<T> tasks) {
+		this.tasks = tasks;
 	}
 	
 	public List<T> getTasks() {

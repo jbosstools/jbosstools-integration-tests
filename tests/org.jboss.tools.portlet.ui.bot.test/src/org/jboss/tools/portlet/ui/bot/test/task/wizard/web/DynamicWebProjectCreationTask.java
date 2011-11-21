@@ -4,7 +4,6 @@ import org.jboss.tools.portlet.ui.bot.test.task.dialog.AssociatedPerspectiveDial
 import org.jboss.tools.portlet.ui.bot.test.task.facet.FacetsSelectionTask;
 import org.jboss.tools.portlet.ui.bot.test.task.wizard.WizardFillingTask;
 import org.jboss.tools.portlet.ui.bot.test.task.wizard.WizardOpeningTask;
-import org.jboss.tools.portlet.ui.bot.test.task.wizard.WizardPageFillingTask;
 
 /**
  * Creates a new dynamic web project using the wizard. 
@@ -16,26 +15,19 @@ public class DynamicWebProjectCreationTask extends WizardFillingTask {
 
 	private DynamicWebProjectWizardPageFillingTask firstPage;
 	
-	private WizardFillingTask wizardFillingTask;
-	
 	public DynamicWebProjectCreationTask() {
 		super();
 		firstPage = new DynamicWebProjectWizardPageFillingTask();
-		wizardFillingTask = new WizardFillingTask();
-		wizardFillingTask.addTask(firstPage);
+		addWizardPage(firstPage);
 	}
 	
 	@Override
 	public void perform() {
 		performInnerTask(new WizardOpeningTask("Dynamic Web Project", "Web"));
-		performInnerTask(wizardFillingTask);
+		super.perform();
 		performInnerTask(new AssociatedPerspectiveDialogClosingTask(false));
 	}
 
-	public void addWizardPage(WizardPageFillingTask page){
-		wizardFillingTask.addTask(page);
-	}
-	
 	public void setProjectName(String projectName) {
 		firstPage.setProjectName(projectName);
 	}
