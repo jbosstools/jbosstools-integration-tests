@@ -3,7 +3,6 @@ package org.jboss.tools.portlet.ui.bot.test.matcher.workspace;
 import org.hamcrest.Description;
 import org.jboss.tools.portlet.ui.bot.test.matcher.AbstractSWTMatcher;
 import org.jboss.tools.ui.bot.ext.SWTBotFactory;
-import org.jboss.tools.ui.bot.ext.SWTEclipseExt;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 
 /**
@@ -15,7 +14,7 @@ import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 public class ExistingFileMatcher extends AbstractSWTMatcher<String> {
 
 	private static final String FILE_SEPARATOR = "/";
-	
+
 	private String project;
 
 	public ExistingFileMatcher(String project) {
@@ -25,12 +24,7 @@ public class ExistingFileMatcher extends AbstractSWTMatcher<String> {
 	@Override
 	public boolean matchesSafely(String path) {
 		SWTBotFactory.getOpen().perspective(ActionItem.Perspective.JAVA.LABEL);
-		try {
-			SWTEclipseExt.openFile(SWTBotFactory.getBot(), project, path.split(FILE_SEPARATOR));
-			return true;
-		} catch (Exception e){
-			return false;	
-		}
+		return SWTBotFactory.getPackageexplorer().isFilePresent(project, path.split(FILE_SEPARATOR));
 	}
 
 	@Override
