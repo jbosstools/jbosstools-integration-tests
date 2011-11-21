@@ -2,7 +2,6 @@ package org.jboss.tools.portlet.ui.bot.test.testcase;
 
 import static org.junit.Assert.assertThat;
 
-import org.eclipse.jface.viewers.deferred.SetModel;
 import org.jboss.tools.portlet.ui.bot.test.matcher.SWTMatcher;
 import org.jboss.tools.portlet.ui.bot.test.task.SWTBotAware;
 import org.jboss.tools.portlet.ui.bot.test.task.SWTTask;
