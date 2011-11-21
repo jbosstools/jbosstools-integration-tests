@@ -1,6 +1,9 @@
 package org.jboss.tools.portlet.ui.bot.test.matcher.workspace;
 
 import org.jboss.tools.portlet.ui.bot.test.matcher.SWTMatcher;
+import org.jboss.tools.portlet.ui.bot.test.matcher.workspace.file.ExistingFileMatcher;
+import org.jboss.tools.portlet.ui.bot.test.matcher.workspace.file.xml.XMLFileNodeContentMatcher;
+import org.jboss.tools.portlet.ui.bot.test.matcher.workspace.file.xml.XMLNode;
 import org.jboss.tools.portlet.ui.bot.test.task.facet.FacetDefinition;
 
 /**
@@ -25,5 +28,9 @@ public class WorkspaceMatchersFactory {
 	
 	public static SWTMatcher<String> hasFacets(FacetDefinition... facets){
 		return new ProjectFacetsMatcher(facets);
+	}
+	
+	public static SWTMatcher<XMLNode[]> areInFile(String project, String file){
+		return new XMLFileNodeContentMatcher(project, file);
 	}
 }
