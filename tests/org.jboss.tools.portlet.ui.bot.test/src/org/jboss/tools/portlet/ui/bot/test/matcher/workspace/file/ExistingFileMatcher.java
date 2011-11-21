@@ -1,4 +1,4 @@
-package org.jboss.tools.portlet.ui.bot.test.matcher.workspace;
+package org.jboss.tools.portlet.ui.bot.test.matcher.workspace.file;
 
 import org.hamcrest.Description;
 import org.jboss.tools.portlet.ui.bot.test.matcher.AbstractSWTMatcher;
