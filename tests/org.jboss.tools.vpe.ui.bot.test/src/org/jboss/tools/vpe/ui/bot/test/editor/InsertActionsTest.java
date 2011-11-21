@@ -12,6 +12,7 @@
 package org.jboss.tools.vpe.ui.bot.test.editor;
 
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
+import org.jboss.tools.ui.bot.ext.Assertions;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
 import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.vpe.ui.bot.test.tools.SWTBotWebBrowser;
@@ -67,7 +68,7 @@ public class InsertActionsTest extends VPEEditorTestCase {
     jspTextEditor.save();
     botExt.sleep(Timing.time3S());
     // Check if tag <rich:calendar> was properly added.
-    assertSourceEditorContains(jspTextEditor.getText(), "<h:inputText/><rich:calendar>", InsertActionsTest.TEST_PAGE);
+    Assertions.assertSourceEditorContains(jspTextEditor.getText(), "<h:inputText/><rich:calendar>", InsertActionsTest.TEST_PAGE);
     assertVisualEditorContains(webBrowser, "SPAN", new String[]{"title"},new String[] {"rich:calendar"},
         InsertActionsTest.TEST_PAGE);
     assertProbelmsViewNoErrors(botExt);    
@@ -88,7 +89,7 @@ public class InsertActionsTest extends VPEEditorTestCase {
     jspTextEditor.save();
     botExt.sleep(Timing.time3S());
     // Check if tag <rich:calendar> was properly added
-    assertSourceEditorContains(VPEEditorTestCase.stripHTMLSourceText(jspTextEditor.getText()),
+    Assertions.assertSourceEditorContains(VPEEditorTestCase.stripHTMLSourceText(jspTextEditor.getText()),
         "<rich:calendar></rich:calendar><h:inputText/>", InsertActionsTest.TEST_PAGE);
     assertVisualEditorContains(webBrowser, "SPAN", new String[]{"title"},new String[] {"rich:calendar"},
         InsertActionsTest.TEST_PAGE);
@@ -119,7 +120,7 @@ public class InsertActionsTest extends VPEEditorTestCase {
     jspTextEditor.save();
     botExt.sleep(Timing.time3S());
     // Check if tag <rich:calendar> was properly added
-    assertSourceEditorContains(VPEEditorTestCase.stripHTMLSourceText(jspTextEditor.getText()),
+    Assertions.assertSourceEditorContains(VPEEditorTestCase.stripHTMLSourceText(jspTextEditor.getText()),
         "<form><rich:calendar></rich:calendar></form>", InsertActionsTest.TEST_PAGE);
     assertVisualEditorContains(webBrowser, "FORM", null,null,InsertActionsTest.TEST_PAGE);
     assertProbelmsViewNoErrors(botExt);
@@ -141,7 +142,7 @@ public class InsertActionsTest extends VPEEditorTestCase {
     jspTextEditor.save();
     botExt.sleep(Timing.time3S());
     // Check if tag <h:form> was properly added
-    assertSourceEditorContains(VPEEditorTestCase.stripHTMLSourceText(jspTextEditor.getText()),
+    Assertions.assertSourceEditorContains(VPEEditorTestCase.stripHTMLSourceText(jspTextEditor.getText()),
         "<h:form><h:inputText/></h:form>", InsertActionsTest.TEST_PAGE);
     assertVisualEditorContains(webBrowser, "FORM", null,null,InsertActionsTest.TEST_PAGE);
     assertProbelmsViewNoErrors(botExt);

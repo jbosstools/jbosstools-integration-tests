@@ -19,6 +19,7 @@ import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.results.Result;
 import org.eclipse.swtbot.swt.finder.results.VoidResult;
+import org.jboss.tools.ui.bot.ext.Assertions;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
 import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.helper.KeyboardHelper;
@@ -108,7 +109,7 @@ public class MinMaxPanesTest extends VPEEditorTestCase {
       }
     });
     bot.sleep(Timing.time2S());
-    assertSourceEditorContains(jspTextEditor.getText(), insertTestString, MinMaxPanesTest.TEST_PAGE_NAME);
+    Assertions.assertSourceEditorContains(jspTextEditor.getText(), insertTestString, MinMaxPanesTest.TEST_PAGE_NAME);
 	}
 	
 	@Override

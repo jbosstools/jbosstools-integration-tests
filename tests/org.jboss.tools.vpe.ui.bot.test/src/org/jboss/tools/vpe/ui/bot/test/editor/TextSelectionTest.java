@@ -12,6 +12,8 @@
 package org.jboss.tools.vpe.ui.bot.test.editor;
 
 import java.awt.event.KeyEvent;
+
+import org.jboss.tools.ui.bot.ext.Assertions;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
 import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.helper.KeyboardHelper;
@@ -84,7 +86,7 @@ public class TextSelectionTest extends VPEEditorTestCase {
     KeyboardHelper.typeBasicStringUsingAWT(newText);
     jspEditor.save();
     bot.sleep(Timing.time3S());
-    assertSourceEditorContains(jspEditor.getText(), " " + newText + " ", TextSelectionTest.TEST_PAGE_NAME);
+    Assertions.assertSourceEditorContains(jspEditor.getText(), " " + newText + " ", TextSelectionTest.TEST_PAGE_NAME);
     jspEditor.setText(TextSelectionTest.PAGE_TEXT);
     jspEditor.save();
     bot.sleep(Timing.time3S());

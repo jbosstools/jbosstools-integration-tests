@@ -16,6 +16,7 @@ import java.io.File;
 
 import org.eclipse.swtbot.swt.finder.utils.Position;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.jboss.tools.ui.bot.ext.Assertions;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
 import org.jboss.tools.ui.bot.ext.SWTEclipseExt;
 import org.jboss.tools.ui.bot.ext.Timing;
@@ -94,7 +95,7 @@ public class TextEditingActionsTest extends VPEEditorTestCase {
 	  jspEditor.save();
 	  bot.sleep(Timing.time2S());
 	  String textToContain = TextEditingActionsTest.TEXT_TO_EDIT + textToCutCopy;
-	  assertSourceEditorContains(jspEditor.getText(),
+	  Assertions.assertSourceEditorContains(jspEditor.getText(),
 	      textToContain, 
 	      TextEditingActionsTest.TEST_PAGE_NAME);
 	  assertVisualEditorContainsNodeWithValue(webBrowser, 
@@ -111,7 +112,7 @@ public class TextEditingActionsTest extends VPEEditorTestCase {
     jspEditor.save();
     bot.sleep(Timing.time2S());
     jspEditor.deselectAndSetCursorPosition(0, 0);
-    assertSourceEditorIs(jspEditor.getText(),
+    Assertions.assertSourceEditorIs(jspEditor.getText(),
         TextEditingActionsTest.TEXT_TO_EDIT, 
         TextEditingActionsTest.TEST_PAGE_NAME);
     assertVisualEditorContainsNodeWithValue(webBrowser, 
@@ -123,7 +124,7 @@ public class TextEditingActionsTest extends VPEEditorTestCase {
     jspEditor.save();
     bot.sleep(Timing.time2S());
     textToContain = textToCutCopy + TextEditingActionsTest.TEXT_TO_EDIT;
-    assertSourceEditorContains(jspEditor.getText(),
+    Assertions.assertSourceEditorContains(jspEditor.getText(),
         textToContain, 
         TextEditingActionsTest.TEST_PAGE_NAME);
     assertVisualEditorContainsNodeWithValue(webBrowser, 
@@ -245,7 +246,7 @@ public class TextEditingActionsTest extends VPEEditorTestCase {
     jspEditor.save();
     bot.sleep(Timing.time2S());
     String textToContain = TextEditingActionsTest.TEXT_TO_EDIT + textToCutCopy;
-    assertSourceEditorContains(jspEditor.getText(),
+    Assertions.assertSourceEditorContains(jspEditor.getText(),
         textToContain, 
         TextEditingActionsTest.TEST_PAGE_NAME);
     assertVisualEditorContainsNodeWithValue(webBrowser, 
@@ -263,7 +264,7 @@ public class TextEditingActionsTest extends VPEEditorTestCase {
         SWTBotWebBrowser.CUT_MENU_LABEL);
     jspEditor.save();
     bot.sleep(Timing.time2S());
-    assertSourceEditorContains(jspEditor.getText(),
+    Assertions.assertSourceEditorContains(jspEditor.getText(),
         "\"" + TextEditingActionsTest.TEXT_TO_EDIT + "\"", 
         TextEditingActionsTest.TEST_PAGE_NAME);
     assertVisualEditorContainsNodeWithValue(webBrowser, 
@@ -285,7 +286,7 @@ public class TextEditingActionsTest extends VPEEditorTestCase {
     jspEditor.save();
     bot.sleep(Timing.time2S());
     textToContain = textToCutCopy + TextEditingActionsTest.TEXT_TO_EDIT;
-    assertSourceEditorContains(jspEditor.getText(),
+    Assertions.assertSourceEditorContains(jspEditor.getText(),
         textToContain, 
         TextEditingActionsTest.TEST_PAGE_NAME);
     assertVisualEditorContainsNodeWithValue(webBrowser, 

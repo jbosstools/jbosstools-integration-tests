@@ -20,6 +20,7 @@ import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.results.VoidResult;
+import org.jboss.tools.ui.bot.ext.Assertions;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
 import org.jboss.tools.ui.bot.ext.SWTJBTExt;
 import org.jboss.tools.ui.bot.ext.Timing;
@@ -82,7 +83,7 @@ public class EditingActionsTest extends VPEEditorTestCase {
         SWTBotWebBrowser.PASTE_MENU_LABEL);
     jspEditor.save();
     botExt.sleep(Timing.time3S());
-    assertSourceEditorContains(stripHTMLSourceText(jspEditor.getText()), 
+    Assertions.assertSourceEditorContains(stripHTMLSourceText(jspEditor.getText()), 
         "<h:inputText/><h:inputText/><h:outputTextvalue=\"outputText\"/><h:inputText/>", 
         EditingActionsTest.TEST_PAGE);
     assertVisualEditorContainsManyNodes(webBrowser, "INPUT", 6, EditingActionsTest.TEST_PAGE_NAME);
@@ -95,7 +96,7 @@ public class EditingActionsTest extends VPEEditorTestCase {
         SWTBotWebBrowser.CUT_MENU_LABEL);
     jspEditor.save();
     botExt.sleep(Timing.time3S());
-    assertSourceEditorContains(stripHTMLSourceText(jspEditor.getText()), 
+    Assertions.assertSourceEditorContains(stripHTMLSourceText(jspEditor.getText()), 
         "<body><h:inputText/><h:outputTextvalue=\"outputText\"/><h:inputText/><rich:comboBox>", 
         EditingActionsTest.TEST_PAGE_NAME);
     assertVisualEditorContainsManyNodes(webBrowser, "INPUT", 5, EditingActionsTest.TEST_PAGE_NAME);
@@ -109,7 +110,7 @@ public class EditingActionsTest extends VPEEditorTestCase {
         SWTBotWebBrowser.PASTE_MENU_LABEL);
     jspEditor.save();
     botExt.sleep(Timing.time3S());
-    assertSourceEditorContains(stripHTMLSourceText(jspEditor.getText()), 
+    Assertions.assertSourceEditorContains(stripHTMLSourceText(jspEditor.getText()), 
         "<h:inputText/><h:outputTextvalue=\"outputText\"/><h:inputText/><h:inputText/>", 
         EditingActionsTest.TEST_PAGE_NAME);
     assertVisualEditorContainsManyNodes(webBrowser, "INPUT", 6, EditingActionsTest.TEST_PAGE_NAME);
@@ -124,7 +125,7 @@ public class EditingActionsTest extends VPEEditorTestCase {
     }    
     jspEditor.save();
     botExt.sleep(Timing.time3S());
-    assertSourceEditorContains(stripHTMLSourceText(jspEditor.getText()), 
+    Assertions.assertSourceEditorContains(stripHTMLSourceText(jspEditor.getText()), 
         "<h:outputTextvalue=\"outputText\"/><h:inputText/><rich:comboBox>", 
         EditingActionsTest.TEST_PAGE_NAME);
     if (SWTJBTExt.isRunningOnMacOs()){
@@ -135,7 +136,7 @@ public class EditingActionsTest extends VPEEditorTestCase {
     }
     jspEditor.save();
     botExt.sleep(Timing.time3S());
-    assertSourceEditorContains(stripHTMLSourceText(jspEditor.getText()), 
+    Assertions.assertSourceEditorContains(stripHTMLSourceText(jspEditor.getText()), 
         "<h:inputText/><h:inputText/><h:outputTextvalue=\"outputText\"/>", 
         EditingActionsTest.TEST_PAGE_NAME);
     if (SWTJBTExt.isRunningOnMacOs()){
@@ -146,7 +147,7 @@ public class EditingActionsTest extends VPEEditorTestCase {
     }
     jspEditor.save();
     botExt.sleep(Timing.time3S());
-    assertSourceEditorContains(stripHTMLSourceText(jspEditor.getText()), 
+    Assertions.assertSourceEditorContains(stripHTMLSourceText(jspEditor.getText()), 
         "<body><h:inputText/><h:outputTextvalue=\"outputText\"/>", 
         EditingActionsTest.TEST_PAGE_NAME);
     // Check Delete Functionality
@@ -157,7 +158,7 @@ public class EditingActionsTest extends VPEEditorTestCase {
     KeyboardHelper.typeKeyCodeUsingAWT(KeyEvent.VK_DELETE);
     jspEditor.save();
     botExt.sleep(Timing.time3S());
-    assertSourceEditorContains(stripHTMLSourceText(jspEditor.getText()), 
+    Assertions.assertSourceEditorContains(stripHTMLSourceText(jspEditor.getText()), 
         "<body><h:inputText/><h:outputTextvalue=\"outputText\"/><h:inputText/></body>", 
         EditingActionsTest.TEST_PAGE_NAME);
     assertVisualEditorContainsManyNodes(webBrowser, "INPUT", 2, EditingActionsTest.TEST_PAGE_NAME);
@@ -199,10 +200,10 @@ public class EditingActionsTest extends VPEEditorTestCase {
         SWTBotWebBrowser.H_OUTPUT_TEXT_TAG_MENU_LABEL);
     jspEditor.save();
     bot.sleep(Timing.time2S());
-    assertSourceEditorContains(stripHTMLSourceText(jspEditor.getText()), 
+    Assertions.assertSourceEditorContains(stripHTMLSourceText(jspEditor.getText()), 
         "h:outputText", 
         EditingActionsTest.TEST_PAGE_NAME);
-    assertSourceEditorNotContain(stripHTMLSourceText(jspEditor.getText()), 
+    Assertions.assertSourceEditorNotContain(stripHTMLSourceText(jspEditor.getText()), 
         "h:inputText", 
         EditingActionsTest.TEST_PAGE_NAME);
     assertVisualEditorContainsManyNodes(webBrowser, "SPAN", 1, EditingActionsTest.TEST_PAGE_NAME);
@@ -327,7 +328,7 @@ public class EditingActionsTest extends VPEEditorTestCase {
         SWTBotWebBrowser.STRIP_TAG_MENU_LABEL);
     jspEditor.save();
     bot.sleep(Timing.time2S());
-    assertSourceEditorNotContain(jspEditor.getText(), "<f:view>", EditingActionsTest.TEST_PAGE_NAME);
+    Assertions.assertSourceEditorNotContain(jspEditor.getText(), "<f:view>", EditingActionsTest.TEST_PAGE_NAME);
     // Undo Changes
     webBrowser.setFocus();
     if (SWTJBTExt.isRunningOnMacOs()){
@@ -338,7 +339,7 @@ public class EditingActionsTest extends VPEEditorTestCase {
     }
     jspEditor.save();
     bot.sleep(Timing.time2S());
-    assertSourceEditorContains(jspEditor.getText(), "<f:view>", EditingActionsTest.TEST_PAGE_NAME);
+    Assertions.assertSourceEditorContains(jspEditor.getText(), "<f:view>", EditingActionsTest.TEST_PAGE_NAME);
   }  
   /**
    * Tests Select This Tag Menu
@@ -365,7 +366,7 @@ public class EditingActionsTest extends VPEEditorTestCase {
         SWTBotWebBrowser.SELECT_THIS_TAG_MENU_LABEL);
     jspEditor.save();
     bot.sleep(Timing.time2S());
-    assertSourceEditorContains(stripHTMLSourceText(jspEditor.getText()), 
+    Assertions.assertSourceEditorContains(stripHTMLSourceText(jspEditor.getText()), 
         "<f:view><h:inputText",
         EditingActionsTest.TEST_PAGE_NAME);
   } 

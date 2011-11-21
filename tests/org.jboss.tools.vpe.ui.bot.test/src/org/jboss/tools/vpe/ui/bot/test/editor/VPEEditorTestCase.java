@@ -89,51 +89,7 @@ public abstract class VPEEditorTestCase extends VPEAutoTestCase{
     return editorText.replaceAll("\n", "").replaceAll("\t", "").replaceAll("\b", "")
              .replaceAll(" ", "").replaceAll("\r", "").replaceAll("\f", "");
   }
-  /**
-   * Asserts if sourceEditorText of file with fileName contains textToContain
-   * @param sourceEditorText
-   * @param textToContain
-   * @param fileName
-   */
-  protected static void assertSourceEditorContains (String sourceEditorText, String textToContain, String fileName){
-    
-    assertTrue("File " + fileName
-        + " has to contain string '" 
-        + textToContain
-        + "' but it doesn't.\nIt is: " + sourceEditorText, 
-        sourceEditorText.contains(textToContain));
-    
-  }
-  /**
-   * Asserts if sourceEditorText of file with fileName does not contain textToNotContain
-   * @param sourceEditorText
-   * @param textToNotContain
-   * @param fileName
-   */
-  protected static void assertSourceEditorNotContain (String sourceEditorText, String textToNotContain, String fileName){
-    
-    assertTrue("File " + fileName
-        + " must not contain string '" 
-        + textToNotContain
-        + "' but it does.\nIt is: " + sourceEditorText, 
-        !sourceEditorText.contains(textToNotContain));
-    
-  }
-  /**
-   * Asserts if sourceEditorText of file with fileName equals to expectedText
-   * @param sourceEditorText
-   * @param expectedText
-   * @param fileName
-   */
-  protected static void assertSourceEditorIs (String sourceEditorText, String expectedText, String fileName){
-    
-    assertTrue("File " + fileName
-        + " has to be '" 
-        + expectedText
-        + "' but it doesn't.\nIt is: " + sourceEditorText, 
-        sourceEditorText.equals(expectedText));
-    
-  }
+
   /**
    * Asserts if Visual Editor contains node with particular attributes
    * @param webBrowser

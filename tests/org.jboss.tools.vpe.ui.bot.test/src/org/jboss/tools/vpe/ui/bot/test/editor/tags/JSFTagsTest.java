@@ -13,6 +13,7 @@ package org.jboss.tools.vpe.ui.bot.test.editor.tags;
 
 import java.awt.event.KeyEvent;
 
+import org.jboss.tools.ui.bot.ext.Assertions;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
 import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.helper.KeyboardHelper;
@@ -148,7 +149,7 @@ public void tearDown() throws Exception {
         new String[]{"title","value"},
         new String[]{"h:inputText value: " + insertText,insertText},
         JSFTagsTest.TEST_PAGE_NAME);
-    assertSourceEditorContains(jspEditor.getText(), 
+    Assertions.assertSourceEditorContains(jspEditor.getText(), 
         "<h:inputText value=\"" + insertText + "\"",
         JSFTagsTest.TEST_PAGE_NAME);
   }
@@ -195,7 +196,7 @@ public void tearDown() throws Exception {
         new String[]{"h:inputTextarea value: " + insertText},
         JSFTagsTest.TEST_PAGE_NAME);
     assertVisualEditorContainsNodeWithValue(webBrowser, insertText, JSFTagsTest.TEST_PAGE_NAME);
-    assertSourceEditorContains(jspEditor.getText(), 
+    Assertions.assertSourceEditorContains(jspEditor.getText(), 
         "<h:inputTextarea value=\"" + insertText + "\"",
         JSFTagsTest.TEST_PAGE_NAME);
   }
@@ -236,14 +237,14 @@ public void tearDown() throws Exception {
     KeyboardHelper.typeBasicStringUsingAWT(insertText);
     jspEditor.save();
     bot.sleep(Timing.time3S());
-    assertSourceEditorContains(jspEditor.getText(), 
+    Assertions.assertSourceEditorContains(jspEditor.getText(), 
         "<h:outputText value=\"" + insertText + outputText + "\"",
         JSFTagsTest.TEST_PAGE_NAME);
     KeyboardHelper.typeKeyCodeUsingAWTRepeately(KeyEvent.VK_RIGHT,outputText.length() + normalText.length());
     KeyboardHelper.typeBasicStringUsingAWT(insertText);
     jspEditor.save();
     bot.sleep(Timing.time3S());
-    assertSourceEditorContains(jspEditor.getText(), 
+    Assertions.assertSourceEditorContains(jspEditor.getText(), 
         normalText + insertText,
         JSFTagsTest.TEST_PAGE_NAME);
   }
@@ -292,7 +293,7 @@ public void tearDown() throws Exception {
     jspEditor.save();
     bot.sleep(Timing.time3S());
     assertVisualEditorContainsNodeWithValue(webBrowser, insertText + itemLabel, JSFTagsTest.TEST_PAGE_NAME);
-    assertSourceEditorContains(jspEditor.getText(), 
+    Assertions.assertSourceEditorContains(jspEditor.getText(), 
         "<f:selectItem itemLabel=\"" + insertText + itemLabel + "\"",
         JSFTagsTest.TEST_PAGE_NAME);
   }
@@ -341,7 +342,7 @@ public void tearDown() throws Exception {
     jspEditor.save();
     bot.sleep(Timing.time3S());
     assertVisualEditorContainsNodeWithValue(webBrowser, insertText + itemLabel, JSFTagsTest.TEST_PAGE_NAME);
-    assertSourceEditorContains(jspEditor.getText(), 
+    Assertions.assertSourceEditorContains(jspEditor.getText(), 
         "<f:selectItem itemLabel=\"" + insertText + itemLabel + "\"",
         JSFTagsTest.TEST_PAGE_NAME);
   } 
