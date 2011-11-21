@@ -28,7 +28,7 @@ import org.junit.Test;
 @Require(server=@Server(required=true, state=ServerState.Present, type=ServerType.EPP))
 public class CreateJavaPortletProject extends SWTTaskBasedTestCase{
 
-	private static final String PROJECT_NAME = "java-portlet";
+	public static final String PROJECT_NAME = "java-portlet";
 	
 	private static final String FACET_CATEGORY = "JBoss Portlets";
 	
