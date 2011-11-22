@@ -25,8 +25,8 @@ public class WorkspaceMatchersFactory {
 		return new ExistingProjectMatcher();
 	}
 	
-	public static SWTMatcher<String> existsInProject(String project){
-		return new ExistingFileMatcher(project);
+	public static SWTMatcher<WorkspaceFile> exists(){
+		return new ExistingFileMatcher();
 	}
 	
 	public static SWTMatcher<String> hasFacets(FacetDefinition... facets){

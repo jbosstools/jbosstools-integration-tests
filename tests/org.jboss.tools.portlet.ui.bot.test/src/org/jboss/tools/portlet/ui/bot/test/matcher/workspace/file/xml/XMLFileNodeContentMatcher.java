@@ -31,9 +31,8 @@ public class XMLFileNodeContentMatcher extends AbstractSWTMatcher<WorkspaceFile>
 	
 	@Override
 	public boolean matchesSafely(WorkspaceFile file) {
-		String[] filePath = file.getFile().split("/");
-		SWTBotFactory.getPackageexplorer().openFile(file.getProject(), filePath);
-		SWTBotEditorExt editor = SWTBotFactory.getBot().swtBotEditorExtByTitle(filePath[filePath.length - 1]);
+		SWTBotFactory.getPackageexplorer().openFile(file.getProject(), file.getFilePathAsArray());
+		SWTBotEditorExt editor = SWTBotFactory.getBot().swtBotEditorExtByTitle(file.getFileName());
 		SWTBotTree tree = editor.bot().tree();
 		
 		for (XMLNode node : nodes){

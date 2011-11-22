@@ -2,14 +2,24 @@ package org.jboss.tools.portlet.ui.bot.test.entity;
 
 public class WorkspaceFile {
 
-	private String project;
-	
-	private String file;
+	public static final String FILE_SEPARATOR = "/";
 
-	public WorkspaceFile(String project, String file) {
+	private String project;
+
+	private String filePath;
+
+	public WorkspaceFile(String project, String filePath) {
 		super();
 		this.project = project;
-		this.file = file;
+		this.filePath = filePath;
+	}
+
+	public String getFileName(){
+		return getFilePathAsArray()[getFilePathAsArray().length - 1];
+	}
+
+	public String[] getFilePathAsArray(){
+		return getFilePath().split(FILE_SEPARATOR);
 	}
 
 	public String getProject() {
@@ -20,16 +30,16 @@ public class WorkspaceFile {
 		this.project = project;
 	}
 
-	public String getFile() {
-		return file;
+	public String getFilePath() {
+		return filePath;
 	}
 
-	public void setFile(String file) {
-		this.file = file;
+	public void setFilePath(String file) {
+		this.filePath = file;
 	}
-	
+
 	@Override
 	public String toString() {
-		return "Workspace file: " + getProject() + "/" + getFile();
+		return "Workspace file: " + getProject() + FILE_SEPARATOR + getFilePath();
 	}
 }

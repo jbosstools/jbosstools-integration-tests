@@ -1,7 +1,8 @@
 package org.jboss.tools.portlet.ui.bot.test.create;
 
+import static org.jboss.tools.portlet.ui.bot.test.entity.EntityFactory.file;
 import static org.jboss.tools.portlet.ui.bot.test.matcher.problems.ProblemViewMatchersFactory.isNumberOfErrors;
-import static org.jboss.tools.portlet.ui.bot.test.matcher.workspace.WorkspaceMatchersFactory.existsInProject;
+import static org.jboss.tools.portlet.ui.bot.test.matcher.workspace.WorkspaceMatchersFactory.exists;
 import static org.jboss.tools.portlet.ui.bot.test.matcher.workspace.WorkspaceMatchersFactory.hasFacets;
 import static org.jboss.tools.portlet.ui.bot.test.matcher.workspace.WorkspaceMatchersFactory.isExistingProject;
 
@@ -40,8 +41,8 @@ public class CreateJavaPortletProject extends SWTTaskBasedTestCase{
 
 		doAssertThat(0, isNumberOfErrors());
 		doAssertThat(PROJECT_NAME, isExistingProject());
-		doAssertThat("WebContent/WEB-INF/portlet.xml", existsInProject(PROJECT_NAME));
-		doAssertThat("JBoss Portlet Libraries", existsInProject(PROJECT_NAME));
+		doAssertThat(file(PROJECT_NAME, "WebContent/WEB-INF/portlet.xml"), exists());
+		doAssertThat(file(PROJECT_NAME, "JBoss Portlet Libraries"), exists());
 		doAssertThat(PROJECT_NAME, hasFacets(new FacetDefinition(FACET_NAME, FACET_CATEGORY)));		
 	}
 	
