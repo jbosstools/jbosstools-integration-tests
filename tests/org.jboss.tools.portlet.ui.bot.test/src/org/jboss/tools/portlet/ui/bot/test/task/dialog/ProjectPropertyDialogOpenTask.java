@@ -14,9 +14,8 @@ public class ProjectPropertyDialogOpenTask extends AbstractSWTTask{
 
 	@Override
 	public void perform() {
-		SWTBotFactory.getOpen().viewOpen(ActionItem.View.JavaPackageExplorer.LABEL);
-		
 		PackageExplorer projectExplorer = SWTBotFactory.getPackageexplorer();
+		projectExplorer.show();
 		projectExplorer.selectProject(project);
 		
 		ContextMenuHelper.clickContextMenu(projectExplorer.bot().tree(),
