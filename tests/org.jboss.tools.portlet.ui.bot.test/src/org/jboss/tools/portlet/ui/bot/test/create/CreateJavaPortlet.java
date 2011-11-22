@@ -2,9 +2,10 @@ package org.jboss.tools.portlet.ui.bot.test.create;
 
 import static org.jboss.tools.portlet.ui.bot.test.create.CreateJavaPortletProject.PROJECT_NAME;
 import static org.jboss.tools.portlet.ui.bot.test.matcher.problems.ProblemViewMatchersFactory.isNumberOfErrors;
-import static org.jboss.tools.portlet.ui.bot.test.matcher.workspace.WorkspaceMatchersFactory.areInFile;
+import static org.jboss.tools.portlet.ui.bot.test.matcher.workspace.WorkspaceMatchersFactory.containsNodes;
 import static org.jboss.tools.portlet.ui.bot.test.matcher.workspace.WorkspaceMatchersFactory.existsInProject;
 
+import org.jboss.tools.portlet.ui.bot.test.entity.WorkspaceFile;
 import org.jboss.tools.portlet.ui.bot.test.entity.XMLNode;
 import org.jboss.tools.portlet.ui.bot.test.task.SWTTask;
 import org.jboss.tools.portlet.ui.bot.test.task.wizard.web.jboss.PortletCreationTask;
@@ -37,7 +38,7 @@ public class CreateJavaPortlet extends SWTTaskBasedTestCase {
 		doAssertThat(CLASS_FILE, existsInProject(PROJECT_NAME));
 		doAssertThat("WebContent/WEB-INF/default-object.xml", existsInProject(PROJECT_NAME));
 		doAssertThat("WebContent/WEB-INF/portlet-instances.xml", existsInProject(PROJECT_NAME));
-		doAssertThat(nodes(new XMLNode("portlet-app/portlet/portlet-class", FULL_CLASS_NAME)), areInFile(PROJECT_NAME, "WebContent/WEB-INF/portlet.xml"));
+		doAssertThat(new WorkspaceFile(PROJECT_NAME, "WebContent/WEB-INF/portlet.xml"), containsNodes(new XMLNode("portlet-app/portlet/portlet-class", FULL_CLASS_NAME)));
 		System.out.println("");
 	}
 
@@ -47,9 +48,5 @@ public class CreateJavaPortlet extends SWTTaskBasedTestCase {
 		task.setPackageName(PACKAGE_NAME);
 		task.setClassName(CLASS_NAME);
 		return task;
-	}
-	
-	private XMLNode[] nodes(XMLNode... nodes){
-		return nodes;
 	}
 }

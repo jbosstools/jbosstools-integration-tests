@@ -1,11 +1,13 @@
 package org.jboss.tools.portlet.ui.bot.test.matcher.workspace.file.xml;
 
 import java.util.Arrays;
+import java.util.List;
 
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.hamcrest.Description;
+import org.jboss.tools.portlet.ui.bot.test.entity.WorkspaceFile;
 import org.jboss.tools.portlet.ui.bot.test.entity.XMLNode;
 import org.jboss.tools.portlet.ui.bot.test.matcher.AbstractSWTMatcher;
 import org.jboss.tools.ui.bot.ext.SWTBotFactory;
@@ -18,22 +20,19 @@ import org.jboss.tools.ui.bot.ext.parts.SWTBotEditorExt;
  * @author Lucia Jelinkova
  *
  */
-public class XMLFileNodeContentMatcher extends AbstractSWTMatcher<XMLNode[]> {
+public class XMLFileNodeContentMatcher extends AbstractSWTMatcher<WorkspaceFile> {
 
-	private String project;
+	private List<XMLNode> nodes;
 	
-	private String file;
-	
-	public XMLFileNodeContentMatcher(String project, String file) {
+	public XMLFileNodeContentMatcher(List<XMLNode> nodes) {
 		super();
-		this.project = project;
-		this.file = file;
+		this.nodes = nodes;
 	}
 	
 	@Override
-	public boolean matchesSafely(XMLNode[] nodes) {
-		String[] filePath = file.split("/");
-		SWTBotFactory.getPackageexplorer().openFile(project, filePath);
+	public boolean matchesSafely(WorkspaceFile file) {
+		String[] filePath = file.getFile().split("/");
+		SWTBotFactory.getPackageexplorer().openFile(file.getProject(), filePath);
 		SWTBotEditorExt editor = SWTBotFactory.getBot().swtBotEditorExtByTitle(filePath[filePath.length - 1]);
 		SWTBotTree tree = editor.bot().tree();
 		
@@ -46,10 +45,6 @@ public class XMLFileNodeContentMatcher extends AbstractSWTMatcher<XMLNode[]> {
 	}
 	
 	private boolean containsNode(SWTBot bot, SWTBotTree tree, XMLNode node) {
-		for (String s : getNodePath(node)){
-			System.out.println("Path element: " + s);
-		}
-		System.out.println("Name: " + getNodeName(node));
 		SWTBotTreeItem item = SWTEclipseExt.getTreeItemOnPathStartsWith(bot, tree, 0, getNodeName(node), getNodePath(node));
 		return item.cell(1).contains(node.getContent());
 	}
@@ -69,7 +64,7 @@ public class XMLFileNodeContentMatcher extends AbstractSWTMatcher<XMLNode[]> {
 	
 	@Override
 	public void describeTo(Description description) {
-		description.appendText("file " + project + "/" + file + " contains the node(s)");
+		description.appendText("file containing nodes: " + nodes);
 	}
 }
 
