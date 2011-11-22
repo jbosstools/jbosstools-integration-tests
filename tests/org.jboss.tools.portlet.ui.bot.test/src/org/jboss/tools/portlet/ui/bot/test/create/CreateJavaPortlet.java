@@ -5,7 +5,7 @@ import static org.jboss.tools.portlet.ui.bot.test.matcher.problems.ProblemViewMa
 import static org.jboss.tools.portlet.ui.bot.test.matcher.workspace.WorkspaceMatchersFactory.areInFile;
 import static org.jboss.tools.portlet.ui.bot.test.matcher.workspace.WorkspaceMatchersFactory.existsInProject;
 
-import org.jboss.tools.portlet.ui.bot.test.matcher.workspace.file.xml.XMLNode;
+import org.jboss.tools.portlet.ui.bot.test.entity.XMLNode;
 import org.jboss.tools.portlet.ui.bot.test.task.SWTTask;
 import org.jboss.tools.portlet.ui.bot.test.task.wizard.web.jboss.PortletCreationTask;
 import org.jboss.tools.portlet.ui.bot.test.testcase.SWTTaskBasedTestCase;

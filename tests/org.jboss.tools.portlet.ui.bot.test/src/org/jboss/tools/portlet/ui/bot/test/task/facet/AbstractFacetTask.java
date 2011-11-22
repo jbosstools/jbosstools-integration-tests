@@ -8,6 +8,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
+import org.jboss.tools.portlet.ui.bot.test.entity.FacetDefinition;
 import org.jboss.tools.portlet.ui.bot.test.task.AbstractSWTTask;
 
 /**

@@ -5,8 +5,8 @@ import static org.jboss.tools.portlet.ui.bot.test.matcher.workspace.WorkspaceMat
 import static org.jboss.tools.portlet.ui.bot.test.matcher.workspace.WorkspaceMatchersFactory.hasFacets;
 import static org.jboss.tools.portlet.ui.bot.test.matcher.workspace.WorkspaceMatchersFactory.isExistingProject;
 
+import org.jboss.tools.portlet.ui.bot.test.entity.FacetDefinition;
 import org.jboss.tools.portlet.ui.bot.test.task.AbstractSWTTask;
-import org.jboss.tools.portlet.ui.bot.test.task.facet.FacetDefinition;
 import org.jboss.tools.portlet.ui.bot.test.task.facet.FacetsSelectionTask;
 import org.jboss.tools.portlet.ui.bot.test.task.wizard.WizardPageDefaultsFillingTask;
 import org.jboss.tools.portlet.ui.bot.test.task.wizard.web.DynamicWebProjectCreationTask;

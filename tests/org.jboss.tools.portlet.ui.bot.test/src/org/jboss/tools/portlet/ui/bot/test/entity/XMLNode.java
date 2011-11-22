@@ -1,4 +1,4 @@
-package org.jboss.tools.portlet.ui.bot.test.matcher.workspace.file.xml;
+package org.jboss.tools.portlet.ui.bot.test.entity;
 
 
 public class XMLNode {

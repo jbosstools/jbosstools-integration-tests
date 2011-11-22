@@ -5,11 +5,11 @@ import java.util.List;
 
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.hamcrest.Description;
+import org.jboss.tools.portlet.ui.bot.test.entity.FacetDefinition;
 import org.jboss.tools.portlet.ui.bot.test.matcher.AbstractSWTMatcher;
 import org.jboss.tools.portlet.ui.bot.test.task.dialog.ProjectPropertyDialogCloseTask;
 import org.jboss.tools.portlet.ui.bot.test.task.dialog.ProjectPropertyDialogOpenTask;
 import org.jboss.tools.portlet.ui.bot.test.task.facet.AbstractFacetTask;
-import org.jboss.tools.portlet.ui.bot.test.task.facet.FacetDefinition;
 
 /**
  * Checks if the project has the specified facets. 
