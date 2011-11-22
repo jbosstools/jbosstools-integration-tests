@@ -1,10 +1,10 @@
 package org.jboss.tools.portlet.ui.bot.test.create;
 
 import static org.jboss.tools.portlet.ui.bot.test.entity.EntityFactory.file;
-import static org.jboss.tools.portlet.ui.bot.test.matcher.problems.ProblemViewMatchersFactory.isNumberOfErrors;
-import static org.jboss.tools.portlet.ui.bot.test.matcher.workspace.WorkspaceMatchersFactory.exists;
-import static org.jboss.tools.portlet.ui.bot.test.matcher.workspace.WorkspaceMatchersFactory.hasFacets;
-import static org.jboss.tools.portlet.ui.bot.test.matcher.workspace.WorkspaceMatchersFactory.isExistingProject;
+import static org.jboss.tools.portlet.ui.bot.test.matcher.factory.DefaultMatchersFactory.isNumberOfErrors;
+import static org.jboss.tools.portlet.ui.bot.test.matcher.factory.WorkspaceMatchersFactory.exists;
+import static org.jboss.tools.portlet.ui.bot.test.matcher.factory.WorkspaceMatchersFactory.hasFacets;
+import static org.jboss.tools.portlet.ui.bot.test.matcher.factory.WorkspaceMatchersFactory.isExistingProject;
 
 import org.jboss.tools.portlet.ui.bot.test.entity.FacetDefinition;
 import org.jboss.tools.portlet.ui.bot.test.task.AbstractSWTTask;

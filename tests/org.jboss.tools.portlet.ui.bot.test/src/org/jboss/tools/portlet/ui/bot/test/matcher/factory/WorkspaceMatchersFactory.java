@@ -1,4 +1,4 @@
-package org.jboss.tools.portlet.ui.bot.test.matcher.workspace;
+package org.jboss.tools.portlet.ui.bot.test.matcher.factory;
 
 import java.util.Arrays;
 
@@ -6,6 +6,8 @@ import org.jboss.tools.portlet.ui.bot.test.entity.FacetDefinition;
 import org.jboss.tools.portlet.ui.bot.test.entity.WorkspaceFile;
 import org.jboss.tools.portlet.ui.bot.test.entity.XMLNode;
 import org.jboss.tools.portlet.ui.bot.test.matcher.SWTMatcher;
+import org.jboss.tools.portlet.ui.bot.test.matcher.workspace.ExistingProjectMatcher;
+import org.jboss.tools.portlet.ui.bot.test.matcher.workspace.ProjectFacetsMatcher;
 import org.jboss.tools.portlet.ui.bot.test.matcher.workspace.file.ExistingFileMatcher;
 import org.jboss.tools.portlet.ui.bot.test.matcher.workspace.file.xml.XMLFileNodeContentMatcher;
 
