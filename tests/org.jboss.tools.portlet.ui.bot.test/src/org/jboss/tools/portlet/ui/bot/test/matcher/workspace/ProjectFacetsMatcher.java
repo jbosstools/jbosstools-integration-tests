@@ -28,7 +28,9 @@ public class ProjectFacetsMatcher extends AbstractSWTMatcher<String> {
 	@Override
 	public boolean matchesSafely(String project) {
 		showPropertyDialog(project);
-		return checkFacets();
+		boolean result = checkFacets();
+		performInnerTask(new ProjectPropertyDialogCloseTask());
+		return result;
 	}
 
 	private void showPropertyDialog(String project) {
@@ -45,7 +47,6 @@ public class ProjectFacetsMatcher extends AbstractSWTMatcher<String> {
 		}
 		performInnerTask(task);
 		
-		performInnerTask(new ProjectPropertyDialogCloseTask());
 		return task.allChecked;
 	}
 	
