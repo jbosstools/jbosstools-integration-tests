@@ -3,6 +3,8 @@ package org.jboss.tools.portlet.ui.bot.test.entity;
 
 public class XMLNode {
 
+	public static final String NODES_SEPARATOR = "/";
+	
 	private String path;
 	
 	private String content;
@@ -13,10 +15,18 @@ public class XMLNode {
 		this.content = content;
 	}
 
+	public String getNodeName(){
+		return getPathAsArray()[getPathAsArray().length - 1];
+	}
+	
+	public String[] getPathAsArray(){
+		return path.split(NODES_SEPARATOR);
+	}
+	
 	public String getPath() {
 		return path;
 	}
-
+	
 	public void setPath(String path) {
 		this.path = path;
 	}

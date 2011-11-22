@@ -44,21 +44,16 @@ public class XMLFileNodeContentMatcher extends AbstractSWTMatcher<WorkspaceFile>
 	}
 	
 	private boolean containsNode(SWTBot bot, SWTBotTree tree, XMLNode node) {
-		SWTBotTreeItem item = SWTEclipseExt.getTreeItemOnPathStartsWith(bot, tree, 0, getNodeName(node), getNodePath(node));
+		SWTBotTreeItem item = SWTEclipseExt.getTreeItemOnPathStartsWith(bot, tree, 0, node.getNodeName(), getNodePath(node));
 		return item.cell(1).contains(node.getContent());
 	}
 
 	private String[] getNodePath(XMLNode node) {
-		String[] path = node.getPath().split("/");
+		String[] path = node.getPathAsArray();
 		if (path.length <= 1){
 			return new String[0];
 		}
 		return Arrays.copyOfRange(path, 0, path.length - 1);
-	}
-	
-	private String getNodeName(XMLNode node) {
-		String[] path = node.getPath().split("/");
-		return path[path.length - 1];
 	}
 	
 	@Override
