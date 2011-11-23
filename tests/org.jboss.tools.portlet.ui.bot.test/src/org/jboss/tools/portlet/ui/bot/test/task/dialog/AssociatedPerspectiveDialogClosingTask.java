@@ -1,7 +1,10 @@
 package org.jboss.tools.portlet.ui.bot.test.task.dialog;
 
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
+import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
+import org.eclipse.swtbot.swt.finder.results.VoidResult;
 import org.jboss.tools.portlet.ui.bot.test.task.AbstractSWTTask;
 
 /**
@@ -26,6 +29,16 @@ public class AssociatedPerspectiveDialogClosingTask extends AbstractSWTTask {
 		SWTBot bot;
 		
 		try {
+			for (final Shell s : getBot().getFinder().getShells()){
+				UIThreadRunnable.asyncExec(getBot().getDisplay(), new VoidResult(){
+
+					@Override
+					public void run() {
+						System.out.println(s.getText());
+						System.out.println(s);
+					}
+			});
+			}
 			bot = getBot().shell("Open Associated Perspective?").activate().bot();
 		} catch (WidgetNotFoundException e) {
 			// dialog is not open, skip the rest

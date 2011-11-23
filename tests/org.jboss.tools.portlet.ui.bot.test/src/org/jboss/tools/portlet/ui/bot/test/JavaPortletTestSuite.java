@@ -1,6 +1,5 @@
 package org.jboss.tools.portlet.ui.bot.test;
 
-import org.jboss.tools.portlet.ui.bot.test.create.CreateJSFPortletProject;
 import org.jboss.tools.portlet.ui.bot.test.create.CreateJavaPortlet;
 import org.jboss.tools.portlet.ui.bot.test.create.CreateJavaPortletProject;
 import org.jboss.tools.portlet.ui.bot.test.create.RunJavaPortletOnServer;
@@ -11,9 +10,8 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
 	CreateJavaPortletProject.class,
 	CreateJavaPortlet.class, 
-	RunJavaPortletOnServer.class, 
-	CreateJSFPortletProject.class
+	RunJavaPortletOnServer.class
 	})
-public class AllTestsSuite {
+public class JavaPortletTestSuite {
 
 }

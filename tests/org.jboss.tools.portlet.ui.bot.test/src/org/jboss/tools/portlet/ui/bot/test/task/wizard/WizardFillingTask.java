@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jboss.tools.portlet.ui.bot.test.task.CompositeSWTTask;
+import org.jboss.tools.ui.bot.ext.SWTBotFactory;
 
 /**
  * 
@@ -27,10 +28,16 @@ public class WizardFillingTask extends CompositeSWTTask<WizardPageFillingTask>{
 		super.setTasks(wizardPages);
 		super.perform();
 		getBot().button("Finish").click();
+		
+		SWTBotFactory.getUtil().waitForAll();
 	}
 	
 	public void addWizardPage(WizardPageFillingTask task){
 		wizardPages.add(task);
+	}
+	
+	public void addAllWizardPages(List<WizardPageFillingTask> tasks){
+		wizardPages.addAll(tasks);
 	}
 	
 	@Override

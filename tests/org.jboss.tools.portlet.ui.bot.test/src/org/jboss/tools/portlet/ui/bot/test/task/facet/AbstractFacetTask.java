@@ -62,6 +62,10 @@ public abstract class AbstractFacetTask extends AbstractSWTTask {
 		facets.add(facet);
 	}
 	
+	public void addAllFacets(List<FacetDefinition> f){
+		facets.addAll(f);
+	}
+	
 	/**
 	 * Matcher for locating the facet selection tree on the screen. 
 	 * 

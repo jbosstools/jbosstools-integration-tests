@@ -1,6 +1,7 @@
 package org.jboss.tools.portlet.ui.bot.test.matcher.factory;
 
 import java.util.Arrays;
+import java.util.List;
 
 import org.jboss.tools.portlet.ui.bot.test.entity.FacetDefinition;
 import org.jboss.tools.portlet.ui.bot.test.entity.WorkspaceFile;
@@ -33,6 +34,10 @@ public class WorkspaceMatchersFactory {
 	
 	public static SWTMatcher<String> hasFacets(FacetDefinition... facets){
 		return new ProjectFacetsMatcher(facets);
+	}
+	
+	public static SWTMatcher<String> hasFacets(List<FacetDefinition> facets){
+		return new ProjectFacetsMatcher(facets.toArray(new FacetDefinition[facets.size()]));
 	}
 	
 	public static SWTMatcher<WorkspaceFile> containsNodes(XMLNode... nodes){

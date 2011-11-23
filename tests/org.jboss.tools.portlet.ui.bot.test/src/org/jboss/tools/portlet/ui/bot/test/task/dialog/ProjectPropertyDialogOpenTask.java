@@ -2,7 +2,6 @@ package org.jboss.tools.portlet.ui.bot.test.task.dialog;
 
 import org.jboss.tools.portlet.ui.bot.test.task.AbstractSWTTask;
 import org.jboss.tools.ui.bot.ext.SWTBotFactory;
-import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
 import org.jboss.tools.ui.bot.ext.view.PackageExplorer;
 
