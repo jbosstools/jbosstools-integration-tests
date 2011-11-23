@@ -28,13 +28,13 @@ public abstract class AbstractFacetTask extends AbstractSWTTask {
 		facets = new ArrayList<FacetDefinition>();
 	}
 	
-	protected abstract void processFacet(SWTBotTreeItem facetItem);
+	protected abstract void processFacet(FacetDefinition facet, SWTBotTreeItem facetTreewItem);
 	
 	@Override
 	public void perform() {
 		SWTBotTree tree = getTree();
 		for (FacetDefinition facet : facets){
-			processFacet(getTreeItem(tree, facet));
+			processFacet(facet, getTreeItem(tree, facet));
 		}
 	}
 

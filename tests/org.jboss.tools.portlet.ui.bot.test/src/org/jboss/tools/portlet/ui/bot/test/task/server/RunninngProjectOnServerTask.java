@@ -2,10 +2,6 @@ package org.jboss.tools.portlet.ui.bot.test.task.server;
 
 import org.jboss.tools.portlet.ui.bot.test.task.AbstractSWTTask;
 import org.jboss.tools.ui.bot.ext.SWTBotFactory;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
-import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
-import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
 
 /**
  * Performs Run on Server on the specified project. 

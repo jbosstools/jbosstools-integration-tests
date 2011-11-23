@@ -60,6 +60,7 @@ public class CreateJavaPortletProject extends SWTTaskBasedTestCase{
 	
 	private FacetsSelectionTask getSelectFacetsTask() {
 		FacetsSelectionTask task = new FacetsSelectionTask();
+		task.addFacet(new FacetDefinition("Java", null, "1.6"));
 		task.addFacet(new FacetDefinition(FACET_NAME, FACET_CATEGORY));
 		return task;
 	}

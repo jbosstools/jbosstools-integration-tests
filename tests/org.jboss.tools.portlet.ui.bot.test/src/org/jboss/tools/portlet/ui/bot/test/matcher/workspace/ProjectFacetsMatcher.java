@@ -59,7 +59,7 @@ public class ProjectFacetsMatcher extends AbstractSWTMatcher<String> {
 		private boolean allChecked = true;
 		
 		@Override
-		protected void processFacet(SWTBotTreeItem facetItem) {
+		protected void processFacet(FacetDefinition facet, SWTBotTreeItem facetItem) {
 			allChecked = allChecked && facetItem.isChecked();
 		}
 	}
