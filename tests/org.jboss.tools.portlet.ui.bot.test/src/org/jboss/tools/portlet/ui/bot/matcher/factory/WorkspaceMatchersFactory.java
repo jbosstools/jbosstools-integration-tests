@@ -10,6 +10,7 @@ import org.jboss.tools.portlet.ui.bot.matcher.SWTMatcher;
 import org.jboss.tools.portlet.ui.bot.matcher.workspace.ExistingProjectMatcher;
 import org.jboss.tools.portlet.ui.bot.matcher.workspace.ProjectFacetsMatcher;
 import org.jboss.tools.portlet.ui.bot.matcher.workspace.file.ExistingFileMatcher;
+import org.jboss.tools.portlet.ui.bot.matcher.workspace.file.ExistingFilesMatcher;
 import org.jboss.tools.portlet.ui.bot.matcher.workspace.file.xml.XMLFileNodeContentMatcher;
 
 /**
@@ -32,6 +33,10 @@ public class WorkspaceMatchersFactory {
 		return new ExistingFileMatcher();
 	}
 	
+	public static SWTMatcher<List<WorkspaceFile>> exist(){
+		return new ExistingFilesMatcher();
+	}
+	
 	public static SWTMatcher<String> hasFacets(FacetDefinition... facets){
 		return new ProjectFacetsMatcher(facets);
 	}
@@ -42,5 +47,9 @@ public class WorkspaceMatchersFactory {
 	
 	public static SWTMatcher<WorkspaceFile> containsNodes(XMLNode... nodes){
 		return new XMLFileNodeContentMatcher(Arrays.asList(nodes));
+	}
+	
+	public static SWTMatcher<WorkspaceFile> containsNodes(List<XMLNode> nodes){
+		return new XMLFileNodeContentMatcher(Arrays.asList(nodes.toArray(new XMLNode[nodes.size()])));
 	}
 }
