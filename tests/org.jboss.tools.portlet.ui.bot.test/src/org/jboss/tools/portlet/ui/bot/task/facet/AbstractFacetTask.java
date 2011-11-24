@@ -1,4 +1,4 @@
-package org.jboss.tools.portlet.ui.bot.test.task.facet;
+package org.jboss.tools.portlet.ui.bot.task.facet;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,8 +8,8 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
+import org.jboss.tools.portlet.ui.bot.task.AbstractSWTTask;
 import org.jboss.tools.portlet.ui.bot.test.entity.FacetDefinition;
-import org.jboss.tools.portlet.ui.bot.test.task.AbstractSWTTask;
 
 /**
  * Common ancestor for facet handling tasks that can locate the facet node

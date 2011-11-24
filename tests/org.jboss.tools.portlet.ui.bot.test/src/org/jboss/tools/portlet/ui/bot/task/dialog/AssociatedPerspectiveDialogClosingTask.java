@@ -1,11 +1,11 @@
-package org.jboss.tools.portlet.ui.bot.test.task.dialog;
+package org.jboss.tools.portlet.ui.bot.task.dialog;
 
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.results.VoidResult;
-import org.jboss.tools.portlet.ui.bot.test.task.AbstractSWTTask;
+import org.jboss.tools.portlet.ui.bot.task.AbstractSWTTask;
 
 /**
  * Checks if there is a dialog asking if the associated perspective 

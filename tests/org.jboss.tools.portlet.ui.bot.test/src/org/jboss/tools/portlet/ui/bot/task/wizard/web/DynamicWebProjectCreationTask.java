@@ -1,9 +1,9 @@
-package org.jboss.tools.portlet.ui.bot.test.task.wizard.web;
+package org.jboss.tools.portlet.ui.bot.task.wizard.web;
 
-import org.jboss.tools.portlet.ui.bot.test.task.dialog.AssociatedPerspectiveDialogClosingTask;
-import org.jboss.tools.portlet.ui.bot.test.task.facet.FacetsSelectionTask;
-import org.jboss.tools.portlet.ui.bot.test.task.wizard.WizardFillingTask;
-import org.jboss.tools.portlet.ui.bot.test.task.wizard.WizardOpeningTask;
+import org.jboss.tools.portlet.ui.bot.task.dialog.AssociatedPerspectiveDialogClosingTask;
+import org.jboss.tools.portlet.ui.bot.task.facet.FacetsSelectionTask;
+import org.jboss.tools.portlet.ui.bot.task.wizard.WizardFillingTask;
+import org.jboss.tools.portlet.ui.bot.task.wizard.WizardOpeningTask;
 
 /**
  * Creates a new dynamic web project using the wizard. 

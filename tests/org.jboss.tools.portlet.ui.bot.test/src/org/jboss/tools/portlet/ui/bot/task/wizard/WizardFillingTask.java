@@ -1,9 +1,9 @@
-package org.jboss.tools.portlet.ui.bot.test.task.wizard;
+package org.jboss.tools.portlet.ui.bot.task.wizard;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jboss.tools.portlet.ui.bot.test.task.CompositeSWTTask;
+import org.jboss.tools.portlet.ui.bot.task.CompositeSWTTask;
 import org.jboss.tools.ui.bot.ext.SWTBotFactory;
 
 /**

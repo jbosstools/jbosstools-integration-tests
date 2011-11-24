@@ -1,4 +1,4 @@
-package org.jboss.tools.portlet.ui.bot.test.task;
+package org.jboss.tools.portlet.ui.bot.task;
 
 import java.util.ArrayList;
 import java.util.List;

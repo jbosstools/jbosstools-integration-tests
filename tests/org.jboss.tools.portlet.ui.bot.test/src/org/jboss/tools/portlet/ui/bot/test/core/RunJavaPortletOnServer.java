@@ -5,8 +5,8 @@ import static org.jboss.tools.portlet.ui.bot.test.core.CreateJavaPortletProject.
 import static org.hamcrest.Matchers.not;
 import static org.jboss.tools.portlet.ui.bot.test.matcher.factory.DefaultMatchersFactory.inConsoleOutput;
 
-import org.jboss.tools.portlet.ui.bot.test.task.console.ConsoleClearingTask;
-import org.jboss.tools.portlet.ui.bot.test.task.server.RunninngProjectOnServerTask;
+import org.jboss.tools.portlet.ui.bot.task.console.ConsoleClearingTask;
+import org.jboss.tools.portlet.ui.bot.task.server.RunninngProjectOnServerTask;
 import org.jboss.tools.portlet.ui.bot.test.testcase.SWTTaskBasedTestCase;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;

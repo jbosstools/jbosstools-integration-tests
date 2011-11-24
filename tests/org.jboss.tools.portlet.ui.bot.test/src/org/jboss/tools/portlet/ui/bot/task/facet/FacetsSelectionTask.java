@@ -1,4 +1,4 @@
-package org.jboss.tools.portlet.ui.bot.test.task.facet;
+package org.jboss.tools.portlet.ui.bot.task.facet;
 
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;

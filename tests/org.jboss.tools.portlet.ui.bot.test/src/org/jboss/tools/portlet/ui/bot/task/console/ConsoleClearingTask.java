@@ -1,8 +1,8 @@
-package org.jboss.tools.portlet.ui.bot.test.task.console;
+package org.jboss.tools.portlet.ui.bot.task.console;
 
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarButton;
-import org.jboss.tools.portlet.ui.bot.test.task.AbstractSWTTask;
+import org.jboss.tools.portlet.ui.bot.task.AbstractSWTTask;
 import org.jboss.tools.ui.bot.ext.SWTBotFactory;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 

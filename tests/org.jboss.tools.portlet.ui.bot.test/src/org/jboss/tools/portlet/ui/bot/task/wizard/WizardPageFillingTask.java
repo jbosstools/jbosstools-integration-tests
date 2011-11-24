@@ -1,6 +1,6 @@
-package org.jboss.tools.portlet.ui.bot.test.task.wizard;
+package org.jboss.tools.portlet.ui.bot.task.wizard;
 
-import org.jboss.tools.portlet.ui.bot.test.task.SWTTask;
+import org.jboss.tools.portlet.ui.bot.task.SWTTask;
 
 /**
  * Common ancestor for tasks filling in information into the wizard page. 

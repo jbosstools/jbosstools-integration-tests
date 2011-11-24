@@ -2,8 +2,8 @@ package org.jboss.tools.portlet.ui.bot.test.matcher;
 
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.hamcrest.TypeSafeMatcher;
-import org.jboss.tools.portlet.ui.bot.test.task.SWTBotAware;
-import org.jboss.tools.portlet.ui.bot.test.task.SWTTask;
+import org.jboss.tools.portlet.ui.bot.task.SWTBotAware;
+import org.jboss.tools.portlet.ui.bot.task.SWTTask;
 
 /**
  * Common ancestor of all SWT based matchers. 

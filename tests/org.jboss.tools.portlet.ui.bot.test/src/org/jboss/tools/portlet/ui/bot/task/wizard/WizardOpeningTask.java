@@ -1,10 +1,10 @@
-package org.jboss.tools.portlet.ui.bot.test.task.wizard;
+package org.jboss.tools.portlet.ui.bot.task.wizard;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import org.jboss.tools.portlet.ui.bot.test.task.AbstractSWTTask;
+import org.jboss.tools.portlet.ui.bot.task.AbstractSWTTask;
 import org.jboss.tools.ui.bot.ext.SWTBotFactory;
 import org.jboss.tools.ui.bot.ext.gen.INewObject;
 

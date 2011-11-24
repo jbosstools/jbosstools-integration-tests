@@ -1,4 +1,4 @@
-package org.jboss.tools.portlet.ui.bot.test.task;
+package org.jboss.tools.portlet.ui.bot.task;
 
 import org.eclipse.swtbot.swt.finder.SWTBot;
 

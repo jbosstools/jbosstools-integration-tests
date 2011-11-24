@@ -6,9 +6,9 @@ import static org.jboss.tools.portlet.ui.bot.test.matcher.factory.DefaultMatcher
 import static org.jboss.tools.portlet.ui.bot.test.matcher.factory.WorkspaceMatchersFactory.containsNodes;
 import static org.jboss.tools.portlet.ui.bot.test.matcher.factory.WorkspaceMatchersFactory.exists;
 
+import org.jboss.tools.portlet.ui.bot.task.SWTTask;
+import org.jboss.tools.portlet.ui.bot.task.wizard.web.jboss.PortletCreationTask;
 import org.jboss.tools.portlet.ui.bot.test.entity.XMLNode;
-import org.jboss.tools.portlet.ui.bot.test.task.SWTTask;
-import org.jboss.tools.portlet.ui.bot.test.task.wizard.web.jboss.PortletCreationTask;
 import org.jboss.tools.portlet.ui.bot.test.testcase.SWTTaskBasedTestCase;
 import org.junit.Test;
 

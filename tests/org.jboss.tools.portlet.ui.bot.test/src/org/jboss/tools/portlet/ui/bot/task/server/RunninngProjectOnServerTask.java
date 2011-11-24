@@ -1,6 +1,6 @@
-package org.jboss.tools.portlet.ui.bot.test.task.server;
+package org.jboss.tools.portlet.ui.bot.task.server;
 
-import org.jboss.tools.portlet.ui.bot.test.task.AbstractSWTTask;
+import org.jboss.tools.portlet.ui.bot.task.AbstractSWTTask;
 import org.jboss.tools.ui.bot.ext.SWTBotFactory;
 
 /**

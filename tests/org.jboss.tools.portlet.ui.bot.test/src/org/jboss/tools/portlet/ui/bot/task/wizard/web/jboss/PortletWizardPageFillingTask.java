@@ -1,7 +1,7 @@
-package org.jboss.tools.portlet.ui.bot.test.task.wizard.web.jboss;
+package org.jboss.tools.portlet.ui.bot.task.wizard.web.jboss;
 
-import org.jboss.tools.portlet.ui.bot.test.task.AbstractSWTTask;
-import org.jboss.tools.portlet.ui.bot.test.task.wizard.WizardPageFillingTask;
+import org.jboss.tools.portlet.ui.bot.task.AbstractSWTTask;
+import org.jboss.tools.portlet.ui.bot.task.wizard.WizardPageFillingTask;
 
 public class PortletWizardPageFillingTask extends AbstractSWTTask implements WizardPageFillingTask {
 

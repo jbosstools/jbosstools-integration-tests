@@ -1,7 +1,7 @@
-package org.jboss.tools.portlet.ui.bot.test.task.wizard.web.jboss;
+package org.jboss.tools.portlet.ui.bot.task.wizard.web.jboss;
 
-import org.jboss.tools.portlet.ui.bot.test.task.wizard.WizardFillingTask;
-import org.jboss.tools.portlet.ui.bot.test.task.wizard.WizardOpeningTask;
+import org.jboss.tools.portlet.ui.bot.task.wizard.WizardFillingTask;
+import org.jboss.tools.portlet.ui.bot.task.wizard.WizardOpeningTask;
 
 /**
  * Creates a new portlet using a JBoss wizard. 

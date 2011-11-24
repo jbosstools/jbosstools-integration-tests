@@ -1,6 +1,6 @@
-package org.jboss.tools.portlet.ui.bot.test.task.wizard;
+package org.jboss.tools.portlet.ui.bot.task.wizard;
 
-import org.jboss.tools.portlet.ui.bot.test.task.AbstractSWTTask;
+import org.jboss.tools.portlet.ui.bot.task.AbstractSWTTask;
 
 /**
  * Leaves the defaults on the wizard page. 
