@@ -37,7 +37,11 @@ public class CreateJSFPortlet extends CreatePortletTemplate {
 		return Arrays.asList(
 				JSF_FOLDER + "edit.jsp",
 				JSF_FOLDER + "view.jsp",
-				JSF_FOLDER + "help.jsp");
+				JSF_FOLDER + "help.jsp",
+				"WebContent/WEB-INF/default-object.xml",
+				"WebContent/WEB-INF/portlet-instances.xml",
+				"WebContent/WEB-INF/jboss-app.xml",
+				"WebContent/WEB-INF/jboss-portlet.xml");
 	}
 
 	@Override
