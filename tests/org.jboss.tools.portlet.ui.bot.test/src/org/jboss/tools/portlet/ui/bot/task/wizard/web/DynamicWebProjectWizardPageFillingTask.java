@@ -22,7 +22,7 @@ public class DynamicWebProjectWizardPageFillingTask extends AbstractSWTTask
 
 	@Override
 	public void perform() {
-		getBot().textWithLabel("Project name:").typeText(projectName);
+		getBot().textWithLabel("Project name:").setText(projectName);
 
 		if (webModuleVersion != null){
 			getBot().comboBoxInGroup("Dynamic web module version").setSelection(webModuleVersion);
