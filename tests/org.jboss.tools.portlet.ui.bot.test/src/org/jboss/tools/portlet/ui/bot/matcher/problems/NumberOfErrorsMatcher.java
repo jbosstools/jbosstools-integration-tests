@@ -1,8 +1,8 @@
-package org.jboss.tools.portlet.ui.bot.test.matcher.problems;
+package org.jboss.tools.portlet.ui.bot.matcher.problems;
 
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.hamcrest.Description;
-import org.jboss.tools.portlet.ui.bot.test.matcher.AbstractSWTMatcher;
+import org.jboss.tools.portlet.ui.bot.matcher.AbstractSWTMatcher;
 import org.jboss.tools.ui.bot.ext.SWTBotFactory;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 import org.jboss.tools.ui.bot.ext.view.ProblemsView;

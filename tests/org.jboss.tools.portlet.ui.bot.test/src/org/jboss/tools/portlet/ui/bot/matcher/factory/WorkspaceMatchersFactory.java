@@ -1,16 +1,16 @@
-package org.jboss.tools.portlet.ui.bot.test.matcher.factory;
+package org.jboss.tools.portlet.ui.bot.matcher.factory;
 
 import java.util.Arrays;
 import java.util.List;
 
+import org.jboss.tools.portlet.ui.bot.matcher.SWTMatcher;
+import org.jboss.tools.portlet.ui.bot.matcher.workspace.ExistingProjectMatcher;
+import org.jboss.tools.portlet.ui.bot.matcher.workspace.ProjectFacetsMatcher;
+import org.jboss.tools.portlet.ui.bot.matcher.workspace.file.ExistingFileMatcher;
+import org.jboss.tools.portlet.ui.bot.matcher.workspace.file.xml.XMLFileNodeContentMatcher;
 import org.jboss.tools.portlet.ui.bot.test.entity.FacetDefinition;
 import org.jboss.tools.portlet.ui.bot.test.entity.WorkspaceFile;
 import org.jboss.tools.portlet.ui.bot.test.entity.XMLNode;
-import org.jboss.tools.portlet.ui.bot.test.matcher.SWTMatcher;
-import org.jboss.tools.portlet.ui.bot.test.matcher.workspace.ExistingProjectMatcher;
-import org.jboss.tools.portlet.ui.bot.test.matcher.workspace.ProjectFacetsMatcher;
-import org.jboss.tools.portlet.ui.bot.test.matcher.workspace.file.ExistingFileMatcher;
-import org.jboss.tools.portlet.ui.bot.test.matcher.workspace.file.xml.XMLFileNodeContentMatcher;
 
 /**
  * Factory for workspace specific matchers (projects, files..) 

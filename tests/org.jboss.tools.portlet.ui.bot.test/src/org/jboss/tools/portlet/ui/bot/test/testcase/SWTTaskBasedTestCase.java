@@ -2,9 +2,9 @@ package org.jboss.tools.portlet.ui.bot.test.testcase;
 
 import static org.junit.Assert.assertThat;
 
+import org.jboss.tools.portlet.ui.bot.matcher.SWTMatcher;
 import org.jboss.tools.portlet.ui.bot.task.SWTBotAware;
 import org.jboss.tools.portlet.ui.bot.task.SWTTask;
-import org.jboss.tools.portlet.ui.bot.test.matcher.SWTMatcher;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 
 /**

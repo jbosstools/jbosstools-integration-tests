@@ -1,15 +1,15 @@
-package org.jboss.tools.portlet.ui.bot.test.matcher.workspace;
+package org.jboss.tools.portlet.ui.bot.matcher.workspace;
 
 import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.hamcrest.Description;
+import org.jboss.tools.portlet.ui.bot.matcher.AbstractSWTMatcher;
 import org.jboss.tools.portlet.ui.bot.task.dialog.ProjectPropertyDialogCloseTask;
 import org.jboss.tools.portlet.ui.bot.task.dialog.ProjectPropertyDialogOpenTask;
 import org.jboss.tools.portlet.ui.bot.task.facet.AbstractFacetTask;
 import org.jboss.tools.portlet.ui.bot.test.entity.FacetDefinition;
-import org.jboss.tools.portlet.ui.bot.test.matcher.AbstractSWTMatcher;
 
 /**
  * Checks if the project has the specified facets. 

@@ -1,4 +1,4 @@
-package org.jboss.tools.portlet.ui.bot.test.matcher.workspace.file.xml;
+package org.jboss.tools.portlet.ui.bot.matcher.workspace.file.xml;
 
 import java.util.Arrays;
 import java.util.List;
@@ -7,9 +7,9 @@ import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.hamcrest.Description;
+import org.jboss.tools.portlet.ui.bot.matcher.AbstractSWTMatcher;
 import org.jboss.tools.portlet.ui.bot.test.entity.WorkspaceFile;
 import org.jboss.tools.portlet.ui.bot.test.entity.XMLNode;
-import org.jboss.tools.portlet.ui.bot.test.matcher.AbstractSWTMatcher;
 import org.jboss.tools.ui.bot.ext.SWTBotFactory;
 import org.jboss.tools.ui.bot.ext.SWTEclipseExt;
 import org.jboss.tools.ui.bot.ext.parts.SWTBotEditorExt;

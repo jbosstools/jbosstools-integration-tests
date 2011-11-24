@@ -1,7 +1,7 @@
-package org.jboss.tools.portlet.ui.bot.test.matcher.workspace;
+package org.jboss.tools.portlet.ui.bot.matcher.workspace;
 
 import org.hamcrest.Description;
-import org.jboss.tools.portlet.ui.bot.test.matcher.AbstractSWTMatcher;
+import org.jboss.tools.portlet.ui.bot.matcher.AbstractSWTMatcher;
 import org.jboss.tools.ui.bot.ext.SWTBotFactory;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 

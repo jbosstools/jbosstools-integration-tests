@@ -1,9 +1,9 @@
 package org.jboss.tools.portlet.ui.bot.test.core;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.jboss.tools.portlet.ui.bot.matcher.factory.DefaultMatchersFactory.inConsoleOutput;
 import static org.jboss.tools.portlet.ui.bot.test.core.CreateJavaPortletProject.PROJECT_NAME;
 import static org.hamcrest.Matchers.not;
-import static org.jboss.tools.portlet.ui.bot.test.matcher.factory.DefaultMatchersFactory.inConsoleOutput;
 
 import org.jboss.tools.portlet.ui.bot.task.console.ConsoleClearingTask;
 import org.jboss.tools.portlet.ui.bot.task.server.RunninngProjectOnServerTask;

@@ -1,8 +1,8 @@
-package org.jboss.tools.portlet.ui.bot.test.matcher.factory;
+package org.jboss.tools.portlet.ui.bot.matcher.factory;
 
-import org.jboss.tools.portlet.ui.bot.test.matcher.SWTMatcher;
-import org.jboss.tools.portlet.ui.bot.test.matcher.console.ConsoleOutputMatcher;
-import org.jboss.tools.portlet.ui.bot.test.matcher.problems.NumberOfErrorsMatcher;
+import org.jboss.tools.portlet.ui.bot.matcher.SWTMatcher;
+import org.jboss.tools.portlet.ui.bot.matcher.console.ConsoleOutputMatcher;
+import org.jboss.tools.portlet.ui.bot.matcher.problems.NumberOfErrorsMatcher;
 
 /**
  * Factory of matchers for Problems View. 

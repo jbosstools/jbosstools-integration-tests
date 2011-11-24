@@ -1,4 +1,4 @@
-package org.jboss.tools.portlet.ui.bot.test.matcher;
+package org.jboss.tools.portlet.ui.bot.matcher;
 
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.hamcrest.TypeSafeMatcher;
