@@ -1,7 +1,7 @@
-package org.jboss.tools.portlet.ui.bot.test.create;
+package org.jboss.tools.portlet.ui.bot.test.core;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.jboss.tools.portlet.ui.bot.test.create.CreateJavaPortletProject.PROJECT_NAME;
+import static org.jboss.tools.portlet.ui.bot.test.core.CreateJavaPortletProject.PROJECT_NAME;
 import static org.hamcrest.Matchers.not;
 import static org.jboss.tools.portlet.ui.bot.test.matcher.factory.DefaultMatchersFactory.inConsoleOutput;
 

@@ -1,4 +1,4 @@
-package org.jboss.tools.portlet.ui.bot.test.create;
+package org.jboss.tools.portlet.ui.bot.test.core;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,24 +6,18 @@ import java.util.List;
 import org.jboss.tools.portlet.ui.bot.test.entity.FacetDefinition;
 import org.jboss.tools.portlet.ui.bot.test.task.wizard.WizardPageDefaultsFillingTask;
 import org.jboss.tools.portlet.ui.bot.test.task.wizard.WizardPageFillingTask;
-import org.jboss.tools.portlet.ui.bot.test.task.wizard.web.jboss.JBossJSFPortletCapabilitiesWizardPageFillingTask;
 import org.jboss.tools.portlet.ui.bot.test.task.wizard.web.jboss.JBossPortletCapabilitiesWizardPageFillingTask;
 import org.jboss.tools.portlet.ui.bot.test.template.CreatePortletProjectTemplate;
 
-
 /**
- * Creates a new Dynamic Web Project with the specific JBoss JSF Portlet facet. 
+ * Creates a new Dynamic Web Project with the specific JBoss Core Portlet facet. 
  * 
  * @author Lucia Jelinkova
  *
  */
-public class CreateJSFPortletProject extends CreatePortletProjectTemplate{
+public class CreateJavaPortletProject extends CreatePortletProjectTemplate {
 
-	public static final String PROJECT_NAME = "jsf-portlet";
-	
-	protected static final FacetDefinition JSF_PORTLET_FACET = new FacetDefinition("JBoss JSF Portlet", JBOSS_FACET_CATEGORY);
-	
-	protected static final FacetDefinition JSF_FACET = new FacetDefinition("JavaServer Faces");
+	public static final String PROJECT_NAME = "java-portlet";
 	
 	@Override
 	public String getProjectName() {
@@ -34,9 +28,7 @@ public class CreateJSFPortletProject extends CreatePortletProjectTemplate{
 	public List<FacetDefinition> getRequiredFacets() {
 		List<FacetDefinition> facets = new ArrayList<FacetDefinition>();
 		facets.add(JAVA_FACET);
-		facets.add(JSF_FACET);
 		facets.add(CORE_PORTLET_FACET);
-		facets.add(JSF_PORTLET_FACET);
 		return facets;
 	}
 	
@@ -46,8 +38,6 @@ public class CreateJSFPortletProject extends CreatePortletProjectTemplate{
 		tasks.add(new WizardPageDefaultsFillingTask());
 		tasks.add(new WizardPageDefaultsFillingTask());
 		tasks.add(new JBossPortletCapabilitiesWizardPageFillingTask(JBossPortletCapabilitiesWizardPageFillingTask.Type.RUNTIME_PROVIDER));
-		tasks.add(new WizardPageDefaultsFillingTask());
-		tasks.add(new JBossJSFPortletCapabilitiesWizardPageFillingTask(JBossJSFPortletCapabilitiesWizardPageFillingTask.Type.RUNTIME_PROVIDER));
 		return tasks;
 	}
 }

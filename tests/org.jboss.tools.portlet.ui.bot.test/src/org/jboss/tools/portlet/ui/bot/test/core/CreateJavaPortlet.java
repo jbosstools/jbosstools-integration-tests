@@ -1,6 +1,6 @@
-package org.jboss.tools.portlet.ui.bot.test.create;
+package org.jboss.tools.portlet.ui.bot.test.core;
 
-import static org.jboss.tools.portlet.ui.bot.test.create.CreateJavaPortletProject.PROJECT_NAME;
+import static org.jboss.tools.portlet.ui.bot.test.core.CreateJavaPortletProject.PROJECT_NAME;
 import static org.jboss.tools.portlet.ui.bot.test.entity.EntityFactory.file;
 import static org.jboss.tools.portlet.ui.bot.test.matcher.factory.DefaultMatchersFactory.isNumberOfErrors;
 import static org.jboss.tools.portlet.ui.bot.test.matcher.factory.WorkspaceMatchersFactory.containsNodes;
