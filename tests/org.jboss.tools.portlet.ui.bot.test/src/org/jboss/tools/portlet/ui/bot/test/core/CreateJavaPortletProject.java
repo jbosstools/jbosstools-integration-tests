@@ -1,6 +1,7 @@
 package org.jboss.tools.portlet.ui.bot.test.core;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.jboss.tools.portlet.ui.bot.entity.FacetDefinition;
@@ -39,5 +40,10 @@ public class CreateJavaPortletProject extends CreatePortletProjectTemplate {
 		tasks.add(new WizardPageDefaultsFillingTask());
 		tasks.add(new JBossPortletCapabilitiesWizardPageFillingTask(JBossPortletCapabilitiesWizardPageFillingTask.Type.RUNTIME_PROVIDER));
 		return tasks;
+	}
+	
+	@Override
+	public List<String> getExpectedFiles() {
+		return Arrays.asList(WEB_XML, PORTLET_XML, PORTLET_LIBRARIES);
 	}
 }

@@ -1,14 +1,15 @@
 package org.jboss.tools.portlet.ui.bot.test.template;
 
-import static org.jboss.tools.portlet.ui.bot.entity.EntityFactory.file;
 import static org.jboss.tools.portlet.ui.bot.matcher.factory.DefaultMatchersFactory.isNumberOfErrors;
-import static org.jboss.tools.portlet.ui.bot.matcher.factory.WorkspaceMatchersFactory.exists;
+import static org.jboss.tools.portlet.ui.bot.matcher.factory.WorkspaceMatchersFactory.exist;
 import static org.jboss.tools.portlet.ui.bot.matcher.factory.WorkspaceMatchersFactory.hasFacets;
 import static org.jboss.tools.portlet.ui.bot.matcher.factory.WorkspaceMatchersFactory.isExistingProject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.jboss.tools.portlet.ui.bot.entity.FacetDefinition;
+import org.jboss.tools.portlet.ui.bot.entity.WorkspaceFile;
 import org.jboss.tools.portlet.ui.bot.task.AbstractSWTTask;
 import org.jboss.tools.portlet.ui.bot.task.facet.FacetsSelectionTask;
 import org.jboss.tools.portlet.ui.bot.task.wizard.WizardPageFillingTask;
@@ -37,11 +38,19 @@ public abstract class CreatePortletProjectTemplate extends SWTTaskBasedTestCase 
 	
 	protected static final FacetDefinition JAVA_FACET = new FacetDefinition("Java", null, "1.6");
 	
+	protected static final String WEB_XML = "WebContent/WEB-INF/web.xml";
+	
+	protected static final String PORTLET_XML = "WebContent/WEB-INF/portlet.xml";
+	
+	protected static final String PORTLET_LIBRARIES = "JBoss Portlet Libraries";
+	
 	public abstract String getProjectName();
 	
 	public abstract List<FacetDefinition> getRequiredFacets();
 	
 	public abstract List<WizardPageFillingTask> getAdditionalWizardPages();
+	
+	public abstract List<String> getExpectedFiles();
 	
 	@Test
 	public void testcreate(){
@@ -49,9 +58,8 @@ public abstract class CreatePortletProjectTemplate extends SWTTaskBasedTestCase 
 
 		doAssertThat(0, isNumberOfErrors());
 		doAssertThat(getProjectName(), isExistingProject());
-		doAssertThat(file(getProjectName(), "WebContent/WEB-INF/portlet.xml"), exists());
-		doAssertThat(file(getProjectName(), "JBoss Portlet Libraries"), exists());
 		doAssertThat(getProjectName(), hasFacets(getRequiredFacets()));		
+		doAssertThat(getExpectedWorkspaceFiles(), exist());
 	}
 	
 	protected AbstractSWTTask getCreateDynamicWebProjectTask() {
@@ -68,5 +76,15 @@ public abstract class CreatePortletProjectTemplate extends SWTTaskBasedTestCase 
 		FacetsSelectionTask task = new FacetsSelectionTask();
 		task.addAllFacets(getRequiredFacets());
 		return task;
+	}
+	
+	private List<WorkspaceFile> getExpectedWorkspaceFiles(){
+		List<WorkspaceFile> expectedWorkspaceFiles = new ArrayList<WorkspaceFile>();
+		
+		for (String file : getExpectedFiles()){
+			expectedWorkspaceFiles.add(new WorkspaceFile(getProjectName(), file));
+		}
+		
+		return expectedWorkspaceFiles;
 	}
 }

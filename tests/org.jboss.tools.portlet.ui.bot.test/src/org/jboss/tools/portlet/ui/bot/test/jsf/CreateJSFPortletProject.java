@@ -1,6 +1,7 @@
 package org.jboss.tools.portlet.ui.bot.test.jsf;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.jboss.tools.portlet.ui.bot.entity.FacetDefinition;
@@ -24,6 +25,10 @@ public class CreateJSFPortletProject extends CreatePortletProjectTemplate{
 	protected static final FacetDefinition JSF_PORTLET_FACET = new FacetDefinition("JBoss JSF Portlet", JBOSS_FACET_CATEGORY);
 	
 	protected static final FacetDefinition JSF_FACET = new FacetDefinition("JavaServer Faces");
+	
+	protected static final String FACES_CONFIG_XML = "WebContent/WEB-INF/faces-config.xml";
+	
+	protected static final String WEB_APP_LIBRARIES = "Web App Libraries";
 	
 	@Override
 	public String getProjectName() {
@@ -49,5 +54,10 @@ public class CreateJSFPortletProject extends CreatePortletProjectTemplate{
 		tasks.add(new WizardPageDefaultsFillingTask());
 		tasks.add(new JBossJSFPortletCapabilitiesWizardPageFillingTask(JBossJSFPortletCapabilitiesWizardPageFillingTask.Type.RUNTIME_PROVIDER));
 		return tasks;
+	}
+	
+	@Override
+	public List<String> getExpectedFiles() {
+		return Arrays.asList(WEB_XML, PORTLET_XML, PORTLET_LIBRARIES, FACES_CONFIG_XML, WEB_APP_LIBRARIES);
 	}
 }

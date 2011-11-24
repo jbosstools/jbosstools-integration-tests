@@ -3,7 +3,7 @@ package org.jboss.tools.portlet.ui.bot.task.wizard.web.jboss;
 import org.jboss.tools.portlet.ui.bot.task.AbstractSWTTask;
 import org.jboss.tools.portlet.ui.bot.task.wizard.WizardPageFillingTask;
 
-public class PortletWizardPageFillingTask extends AbstractSWTTask implements WizardPageFillingTask {
+public class JavaPortletWizardPageFillingTask extends AbstractSWTTask implements WizardPageFillingTask {
 
 	private String project;
 

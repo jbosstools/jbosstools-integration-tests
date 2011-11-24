@@ -1,26 +1,24 @@
 package org.jboss.tools.portlet.ui.bot.test.core;
 
-import static org.jboss.tools.portlet.ui.bot.entity.EntityFactory.file;
-import static org.jboss.tools.portlet.ui.bot.matcher.factory.DefaultMatchersFactory.isNumberOfErrors;
-import static org.jboss.tools.portlet.ui.bot.matcher.factory.WorkspaceMatchersFactory.containsNodes;
-import static org.jboss.tools.portlet.ui.bot.matcher.factory.WorkspaceMatchersFactory.exists;
 import static org.jboss.tools.portlet.ui.bot.test.core.CreateJavaPortletProject.PROJECT_NAME;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.jboss.tools.portlet.ui.bot.entity.XMLNode;
-import org.jboss.tools.portlet.ui.bot.task.SWTTask;
-import org.jboss.tools.portlet.ui.bot.task.wizard.web.jboss.PortletCreationTask;
-import org.jboss.tools.portlet.ui.bot.test.testcase.SWTTaskBasedTestCase;
-import org.junit.Test;
+import org.jboss.tools.portlet.ui.bot.task.wizard.web.jboss.AbstractPortletCreationTask;
+import org.jboss.tools.portlet.ui.bot.task.wizard.web.jboss.JavaPortletCreationTask;
+import org.jboss.tools.portlet.ui.bot.test.template.CreatePortletTemplate;
 
 /**
- * Creates a new java portlet. 
+ * Creates a new java portlet and checks if the right files are generated.  
  * 
  * @author Lucia Jelinkova
  *
  */
-public class CreateJavaPortlet extends SWTTaskBasedTestCase {
+public class CreateJavaPortlet extends CreatePortletTemplate {
 
-	private static final String CLASS_NAME = "UITestingPortlet";
+	private static final String CLASS_NAME = "UITestingJavaPortlet";
 	
 	private static final String PACKAGE_NAME = "org.jboss.tools.tests.ui.portlet";
 	
@@ -30,22 +28,29 @@ public class CreateJavaPortlet extends SWTTaskBasedTestCase {
 	
 	private static final String FULL_CLASS_NAME = PACKAGE_NAME + "." + CLASS_NAME;
 	
-	@Test
-	public void testCreate(){
-		doPerform(getCreatePortletTask());
-		
-		doAssertThat(0, isNumberOfErrors());
-		doAssertThat(file(PROJECT_NAME, CLASS_FILE), exists());
-		doAssertThat(file(PROJECT_NAME, "WebContent/WEB-INF/default-object.xml"), exists());
-		doAssertThat(file(PROJECT_NAME, "WebContent/WEB-INF/portlet-instances.xml"), exists());
-		doAssertThat(file(PROJECT_NAME, "WebContent/WEB-INF/portlet.xml"), containsNodes(new XMLNode("portlet-app/portlet/portlet-class", FULL_CLASS_NAME)));
+	@Override
+	protected String getProjectName() {
+		return PROJECT_NAME;
 	}
-
-	private SWTTask getCreatePortletTask() {
-		PortletCreationTask task = new PortletCreationTask();
+	
+	protected AbstractPortletCreationTask getCreatePortletTask() {
+		JavaPortletCreationTask task = new JavaPortletCreationTask();
 		task.setProject(PROJECT_NAME);
 		task.setPackageName(PACKAGE_NAME);
 		task.setClassName(CLASS_NAME);
 		return task;
+	}
+	
+	@Override
+	protected List<String> getExpectedFiles() {
+		return Arrays.asList(
+				"WebContent/WEB-INF/default-object.xml",
+				"WebContent/WEB-INF/portlet-instances.xml",
+				CLASS_FILE);
+	}
+	
+	@Override
+	protected List<XMLNode> getExpectedXMLNodes() {
+		return Arrays.asList(new XMLNode("portlet-app/portlet/portlet-class", FULL_CLASS_NAME));
 	}
 }
