@@ -3,10 +3,10 @@ package org.jboss.tools.portlet.ui.bot.test.core;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jboss.tools.portlet.ui.bot.entity.FacetDefinition;
 import org.jboss.tools.portlet.ui.bot.task.wizard.WizardPageDefaultsFillingTask;
 import org.jboss.tools.portlet.ui.bot.task.wizard.WizardPageFillingTask;
 import org.jboss.tools.portlet.ui.bot.task.wizard.web.jboss.JBossPortletCapabilitiesWizardPageFillingTask;
-import org.jboss.tools.portlet.ui.bot.test.entity.FacetDefinition;
 import org.jboss.tools.portlet.ui.bot.test.template.CreatePortletProjectTemplate;
 
 /**

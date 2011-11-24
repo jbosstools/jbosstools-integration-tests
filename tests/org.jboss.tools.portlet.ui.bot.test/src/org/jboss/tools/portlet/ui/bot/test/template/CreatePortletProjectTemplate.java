@@ -1,18 +1,18 @@
 package org.jboss.tools.portlet.ui.bot.test.template;
 
+import static org.jboss.tools.portlet.ui.bot.entity.EntityFactory.file;
 import static org.jboss.tools.portlet.ui.bot.matcher.factory.DefaultMatchersFactory.isNumberOfErrors;
 import static org.jboss.tools.portlet.ui.bot.matcher.factory.WorkspaceMatchersFactory.exists;
 import static org.jboss.tools.portlet.ui.bot.matcher.factory.WorkspaceMatchersFactory.hasFacets;
 import static org.jboss.tools.portlet.ui.bot.matcher.factory.WorkspaceMatchersFactory.isExistingProject;
-import static org.jboss.tools.portlet.ui.bot.test.entity.EntityFactory.file;
 
 import java.util.List;
 
+import org.jboss.tools.portlet.ui.bot.entity.FacetDefinition;
 import org.jboss.tools.portlet.ui.bot.task.AbstractSWTTask;
 import org.jboss.tools.portlet.ui.bot.task.facet.FacetsSelectionTask;
 import org.jboss.tools.portlet.ui.bot.task.wizard.WizardPageFillingTask;
 import org.jboss.tools.portlet.ui.bot.task.wizard.web.DynamicWebProjectCreationTask;
-import org.jboss.tools.portlet.ui.bot.test.entity.FacetDefinition;
 import org.jboss.tools.portlet.ui.bot.test.testcase.SWTTaskBasedTestCase;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;

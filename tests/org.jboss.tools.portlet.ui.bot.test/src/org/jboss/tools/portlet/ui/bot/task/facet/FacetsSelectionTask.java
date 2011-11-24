@@ -2,7 +2,7 @@ package org.jboss.tools.portlet.ui.bot.task.facet;
 
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
-import org.jboss.tools.portlet.ui.bot.test.entity.FacetDefinition;
+import org.jboss.tools.portlet.ui.bot.entity.FacetDefinition;
 
 /**
  * Selects the given facets in the Project facetss tree and optionaly also its version. 

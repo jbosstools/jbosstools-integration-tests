@@ -1,4 +1,4 @@
-package org.jboss.tools.portlet.ui.bot.test.entity;
+package org.jboss.tools.portlet.ui.bot.entity;
 
 public class FacetDefinition {
 
