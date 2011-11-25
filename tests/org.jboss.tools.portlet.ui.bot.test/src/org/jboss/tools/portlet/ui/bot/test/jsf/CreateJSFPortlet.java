@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.jboss.tools.portlet.ui.bot.entity.XMLNode;
+import org.jboss.tools.portlet.ui.bot.task.wizard.WizardPageDefaultsFillingTask;
 import org.jboss.tools.portlet.ui.bot.task.wizard.web.jboss.AbstractPortletCreationTask;
 import org.jboss.tools.portlet.ui.bot.task.wizard.web.jboss.JSFPortletCreationTask;
 import org.jboss.tools.portlet.ui.bot.test.template.CreatePortletTemplate;
@@ -17,11 +18,9 @@ import org.jboss.tools.portlet.ui.bot.test.template.CreatePortletTemplate;
  *
  */
 public class CreateJSFPortlet extends CreatePortletTemplate {
-	
+
 	private static final String FACES_CLASS_NAME = "javax.portlet.faces.GenericFacesPortlet";
-	
-	private static final String JSF_FOLDER = "WebContent/jsf/";
-	
+
 	@Override
 	protected String getProjectName() {
 		return PROJECT_NAME;
@@ -29,7 +28,10 @@ public class CreateJSFPortlet extends CreatePortletTemplate {
 
 	@Override
 	protected AbstractPortletCreationTask getCreatePortletTask() {
-		return new JSFPortletCreationTask();
+		JSFPortletCreationTask task = new JSFPortletCreationTask();
+		task.addWizardPage(new WizardPageDefaultsFillingTask());
+		task.addWizardPage(new WizardPageDefaultsFillingTask());
+		return task;
 	}
 
 	@Override
@@ -37,11 +39,17 @@ public class CreateJSFPortlet extends CreatePortletTemplate {
 		return Arrays.asList(
 				JSF_FOLDER + "edit.jsp",
 				JSF_FOLDER + "view.jsp",
-				JSF_FOLDER + "help.jsp",
-				"WebContent/WEB-INF/default-object.xml",
-				"WebContent/WEB-INF/portlet-instances.xml",
-				"WebContent/WEB-INF/jboss-app.xml",
-				"WebContent/WEB-INF/jboss-portlet.xml");
+				JSF_FOLDER + "help.jsp"
+				);
+	}
+
+	@Override
+	protected List<String> getNonExpectedFiles() {
+		return Arrays.asList(
+				DEFAULT_OBJECTS_XML, 
+				PORTLET_INSTANCES_XML, 
+				JBOSS_APP_XML, 
+				JBOSS_PORTLET_XML);
 	}
 
 	@Override

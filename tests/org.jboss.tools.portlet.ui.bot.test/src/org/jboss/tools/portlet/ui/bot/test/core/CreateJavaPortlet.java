@@ -44,9 +44,17 @@ public class CreateJavaPortlet extends CreatePortletTemplate {
 	@Override
 	protected List<String> getExpectedFiles() {
 		return Arrays.asList(
-				"WebContent/WEB-INF/default-object.xml",
-				"WebContent/WEB-INF/portlet-instances.xml",
+				DEFAULT_OBJECTS_XML,
+				PORTLET_INSTANCES_XML,
 				CLASS_FILE);
+	}
+	
+	@Override
+	protected List<String> getNonExpectedFiles() {
+		return Arrays.asList(
+				JSF_FOLDER,
+				JBOSS_APP_XML,
+				JBOSS_PORTLET_XML);
 	}
 	
 	@Override
