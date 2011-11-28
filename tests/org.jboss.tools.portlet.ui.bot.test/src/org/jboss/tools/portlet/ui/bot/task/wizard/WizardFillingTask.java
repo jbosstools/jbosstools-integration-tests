@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jboss.tools.portlet.ui.bot.task.CompositeSWTTask;
-import org.jboss.tools.ui.bot.ext.SWTBotFactory;
+import org.jboss.tools.portlet.ui.bot.task.progress.AllJobsFinishedWaitingTask;
 
 /**
  * 
@@ -29,7 +29,7 @@ public class WizardFillingTask extends CompositeSWTTask<WizardPageFillingTask>{
 		super.perform();
 		getBot().button("Finish").click();
 		
-		SWTBotFactory.getUtil().waitForAll();
+		performInnerTask(new AllJobsFinishedWaitingTask(AllJobsFinishedWaitingTask.JobDuration.LONG));
 	}
 	
 	public void addWizardPage(WizardPageFillingTask task){
