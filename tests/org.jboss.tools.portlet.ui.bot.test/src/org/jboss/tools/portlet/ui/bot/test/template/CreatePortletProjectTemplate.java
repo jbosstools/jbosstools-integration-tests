@@ -16,7 +16,9 @@ import org.jboss.tools.portlet.ui.bot.task.wizard.WizardPageFillingTask;
 import org.jboss.tools.portlet.ui.bot.task.wizard.web.DynamicWebProjectCreationTask;
 import org.jboss.tools.portlet.ui.bot.test.testcase.SWTTaskBasedTestCase;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
+import org.jboss.tools.ui.bot.ext.config.Annotations.DB;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
+import org.jboss.tools.ui.bot.ext.config.Annotations.Seam;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
@@ -29,39 +31,59 @@ import org.junit.Test;
  * @author Lucia Jelinkova
  *
  */
-@Require(server=@Server(required=true, state=ServerState.Present, type=ServerType.EPP))
+@Require(db=@DB(required=true), seam=@Seam(version="2.2"), server=@Server(required=true, state=ServerState.Present, type=ServerType.EPP))
 public abstract class CreatePortletProjectTemplate extends SWTTaskBasedTestCase {
 
-	protected static final String JBOSS_FACET_CATEGORY = "JBoss Portlets";
-	
-	protected static final FacetDefinition CORE_PORTLET_FACET = new FacetDefinition("JBoss Core Portlet", JBOSS_FACET_CATEGORY);
-	
 	protected static final FacetDefinition JAVA_FACET = new FacetDefinition("Java", null, "1.6");
 	
-	protected static final String WEB_XML = "WebContent/WEB-INF/web.xml";
+	protected static final FacetDefinition JSF_FACET = new FacetDefinition("JavaServer Faces");
 	
-	protected static final String PORTLET_XML = "WebContent/WEB-INF/portlet.xml";
+	public static final FacetDefinition SEAM_2_FACET = new FacetDefinition("Seam 2");
 	
+	protected static final String JBOSS_FACET_CATEGORY = "JBoss Portlets";
+
+	protected static final FacetDefinition CORE_PORTLET_FACET = new FacetDefinition("JBoss Core Portlet", JBOSS_FACET_CATEGORY);
+
+	protected static final FacetDefinition JSF_PORTLET_FACET = new FacetDefinition("JBoss JSF Portlet", JBOSS_FACET_CATEGORY);
+	
+	public static final FacetDefinition SEAM_PORTLET_FACET = new FacetDefinition("JBoss Seam Portlet", JBOSS_FACET_CATEGORY);
+	
+	protected static final String WEB_INF = "WebContent/WEB-INF/";
+	
+	protected static final String FACES_CONFIG_XML = WEB_INF + "faces-config.xml";
+
+	protected static final String WEB_XML = WEB_INF + "web.xml";
+
+	protected static final String PORTLET_XML = WEB_INF + "portlet.xml";
+	
+	protected static final String COMPONENTS_XML = WEB_INF + "components.xml";
+	
+	protected static final String PAGES_XML = WEB_INF + "pages.xml";
+	
+	protected static final String JBOSS_WEB_XML = WEB_INF + "jboss-web.xml";
+
 	protected static final String PORTLET_LIBRARIES = "JBoss Portlet Libraries";
 	
+	protected static final String WEB_APP_LIBRARIES = "Web App Libraries";
+	
 	public abstract String getProjectName();
-	
+
 	public abstract List<FacetDefinition> getRequiredFacets();
-	
+
 	public abstract List<WizardPageFillingTask> getAdditionalWizardPages();
-	
+
 	public abstract List<String> getExpectedFiles();
-	
+
 	@Test
 	public void testcreate(){
 		doPerform(getCreateDynamicWebProjectTask());
-
+		
 		doAssertThat(0, isNumberOfErrors());
 		doAssertThat(getProjectName(), isExistingProject());
 		doAssertThat(getProjectName(), hasFacets(getRequiredFacets()));		
 		doAssertThat(getExpectedWorkspaceFiles(), exist());
 	}
-	
+
 	protected AbstractSWTTask getCreateDynamicWebProjectTask() {
 		DynamicWebProjectCreationTask task = new DynamicWebProjectCreationTask();
 		task.setProjectName(getProjectName());
@@ -71,20 +93,20 @@ public abstract class CreatePortletProjectTemplate extends SWTTaskBasedTestCase 
 		task.addAllWizardPages(getAdditionalWizardPages());
 		return task;
 	}
-	
+
 	protected FacetsSelectionTask getSelectFacetsTask() {
 		FacetsSelectionTask task = new FacetsSelectionTask();
 		task.addAllFacets(getRequiredFacets());
 		return task;
 	}
-	
+
 	private List<WorkspaceFile> getExpectedWorkspaceFiles(){
 		List<WorkspaceFile> expectedWorkspaceFiles = new ArrayList<WorkspaceFile>();
-		
+
 		for (String file : getExpectedFiles()){
 			expectedWorkspaceFiles.add(new WorkspaceFile(getProjectName(), file));
 		}
-		
+
 		return expectedWorkspaceFiles;
 	}
 }

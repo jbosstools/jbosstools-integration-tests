@@ -6,6 +6,7 @@ import org.jboss.tools.portlet.ui.bot.test.core.RunJavaPortletOnServer;
 import org.jboss.tools.portlet.ui.bot.test.jsf.CreateJSFPortlet;
 import org.jboss.tools.portlet.ui.bot.test.jsf.CreateJSFPortletProject;
 import org.jboss.tools.portlet.ui.bot.test.jsf.RunJSFPortletOnServer;
+import org.jboss.tools.portlet.ui.bot.test.seam.CreateSeamPortletProject;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
@@ -16,7 +17,8 @@ import org.junit.runners.Suite;
 	RunJavaPortletOnServer.class, 
 	CreateJSFPortletProject.class,
 	CreateJSFPortlet.class, 
-	RunJSFPortletOnServer.class
+	RunJSFPortletOnServer.class,
+	CreateSeamPortletProject.class
 	})
 public class AllTestsSuite {
 
