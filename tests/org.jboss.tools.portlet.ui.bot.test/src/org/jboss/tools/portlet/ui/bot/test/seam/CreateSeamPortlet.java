@@ -1,0 +1,19 @@
+package org.jboss.tools.portlet.ui.bot.test.seam;
+
+import static org.jboss.tools.portlet.ui.bot.test.seam.CreateSeamPortletProject.PROJECT_NAME;
+
+import org.jboss.tools.portlet.ui.bot.test.template.CreateJSFSeamPortletTemplate;
+
+/**
+ * Creates a new seam portlet and checks if the right files are generated.  
+ * 
+ * @author Lucia Jelinkova
+ *
+ */
+public class CreateSeamPortlet extends CreateJSFSeamPortletTemplate {
+
+	@Override
+	protected String getProjectName() {
+		return PROJECT_NAME;
+	}
+}
