@@ -1,5 +1,6 @@
 package org.jboss.tools.portlet.ui.bot.test.template;
 
+import static org.hamcrest.Matchers.not;
 import static org.jboss.tools.portlet.ui.bot.matcher.factory.DefaultMatchersFactory.isNumberOfErrors;
 import static org.jboss.tools.portlet.ui.bot.matcher.factory.WorkspaceMatchersFactory.exist;
 import static org.jboss.tools.portlet.ui.bot.matcher.factory.WorkspaceMatchersFactory.hasFacets;
@@ -16,9 +17,7 @@ import org.jboss.tools.portlet.ui.bot.task.wizard.WizardPageFillingTask;
 import org.jboss.tools.portlet.ui.bot.task.wizard.web.DynamicWebProjectCreationTask;
 import org.jboss.tools.portlet.ui.bot.test.testcase.SWTTaskBasedTestCase;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
-import org.jboss.tools.ui.bot.ext.config.Annotations.DB;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Seam;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
@@ -73,6 +72,8 @@ public abstract class CreatePortletProjectTemplate extends SWTTaskBasedTestCase 
 	public abstract List<WizardPageFillingTask> getAdditionalWizardPages();
 
 	public abstract List<String> getExpectedFiles();
+	
+	public abstract List<String> getNonExpectedFiles();
 
 	@Test
 	public void testcreate(){
@@ -82,6 +83,9 @@ public abstract class CreatePortletProjectTemplate extends SWTTaskBasedTestCase 
 		doAssertThat(getProjectName(), isExistingProject());
 		doAssertThat(getProjectName(), hasFacets(getRequiredFacets()));		
 		doAssertThat(getExpectedWorkspaceFiles(), exist());
+		if (getNonExpectedFiles().size() > 0){
+			doAssertThat(getNonExpectedWorkspaceFiles(), not(exist()));
+		}
 	}
 
 	protected AbstractSWTTask getCreateDynamicWebProjectTask() {
@@ -101,12 +105,20 @@ public abstract class CreatePortletProjectTemplate extends SWTTaskBasedTestCase 
 	}
 
 	private List<WorkspaceFile> getExpectedWorkspaceFiles(){
-		List<WorkspaceFile> expectedWorkspaceFiles = new ArrayList<WorkspaceFile>();
+		return wrap(getExpectedFiles());
+	}
+	
+	private List<WorkspaceFile> getNonExpectedWorkspaceFiles(){
+		return wrap(getNonExpectedFiles());
+	}
+	
+	private List<WorkspaceFile> wrap(List<String> files){
+		List<WorkspaceFile> workspaceFiles = new ArrayList<WorkspaceFile>();
 
-		for (String file : getExpectedFiles()){
-			expectedWorkspaceFiles.add(new WorkspaceFile(getProjectName(), file));
+		for (String file : files){
+			workspaceFiles.add(new WorkspaceFile(getProjectName(), file));
 		}
 
-		return expectedWorkspaceFiles;
+		return workspaceFiles;
 	}
 }

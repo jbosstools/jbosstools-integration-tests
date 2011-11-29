@@ -52,4 +52,9 @@ public class CreateJSFPortletProject extends CreatePortletProjectTemplate{
 	public List<String> getExpectedFiles() {
 		return Arrays.asList(WEB_XML, PORTLET_XML, PORTLET_LIBRARIES, FACES_CONFIG_XML, WEB_APP_LIBRARIES);
 	}
+	
+	@Override
+	public List<String> getNonExpectedFiles() {
+		return Arrays.asList(PAGES_XML, COMPONENTS_XML, JBOSS_WEB_XML);
+	}
 }

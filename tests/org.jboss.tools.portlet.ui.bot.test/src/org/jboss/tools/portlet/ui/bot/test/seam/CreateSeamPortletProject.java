@@ -2,6 +2,7 @@ package org.jboss.tools.portlet.ui.bot.test.seam;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.jboss.tools.portlet.ui.bot.entity.FacetDefinition;
@@ -78,5 +79,10 @@ public class CreateSeamPortletProject extends CreatePortletProjectTemplate{
 				PAGES_XML, 
 				COMPONENTS_XML, 
 				JBOSS_WEB_XML);
+	}
+	
+	@Override
+	public List<String> getNonExpectedFiles() {
+		return Collections.emptyList();
 	}
 }

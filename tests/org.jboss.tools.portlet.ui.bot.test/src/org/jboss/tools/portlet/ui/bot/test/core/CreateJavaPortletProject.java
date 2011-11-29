@@ -46,4 +46,9 @@ public class CreateJavaPortletProject extends CreatePortletProjectTemplate {
 	public List<String> getExpectedFiles() {
 		return Arrays.asList(WEB_XML, PORTLET_XML, PORTLET_LIBRARIES);
 	}
+	
+	@Override
+	public List<String> getNonExpectedFiles() {
+		return Arrays.asList(FACES_CONFIG_XML, WEB_APP_LIBRARIES, PAGES_XML, COMPONENTS_XML, JBOSS_WEB_XML);
+	}
 }
