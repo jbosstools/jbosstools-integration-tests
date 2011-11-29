@@ -31,7 +31,7 @@ import org.junit.Test;
  * @author Lucia Jelinkova
  *
  */
-@Require(db=@DB(required=true), seam=@Seam(version="2.2"), server=@Server(required=true, state=ServerState.Present, type=ServerType.EPP))
+@Require(server=@Server(required=true, state=ServerState.Present, type=ServerType.EPP))
 public abstract class CreatePortletProjectTemplate extends SWTTaskBasedTestCase {
 
 	protected static final FacetDefinition JAVA_FACET = new FacetDefinition("Java", null, "1.6");

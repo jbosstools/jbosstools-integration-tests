@@ -12,6 +12,12 @@ import org.jboss.tools.portlet.ui.bot.task.wizard.web.jboss.JBossPortletCapabili
 import org.jboss.tools.portlet.ui.bot.task.wizard.web.seam.Seam2FacetWizardPageFillingTask;
 import org.jboss.tools.portlet.ui.bot.test.template.CreatePortletProjectTemplate;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
+import org.jboss.tools.ui.bot.ext.config.Annotations.DB;
+import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
+import org.jboss.tools.ui.bot.ext.config.Annotations.Seam;
+import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
+import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
+import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
 
 
 /**
@@ -20,6 +26,7 @@ import org.jboss.tools.ui.bot.ext.SWTTestExt;
  * @author Lucia Jelinkova
  *
  */
+@Require(db=@DB(required=true), seam=@Seam(version="2.2"), server=@Server(required=true, state=ServerState.Present, type=ServerType.EPP))
 public class CreateSeamPortletProject extends CreatePortletProjectTemplate{
 
 	public static final String PROJECT_NAME = "seam-portlet";
