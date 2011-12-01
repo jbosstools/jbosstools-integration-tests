@@ -1,3 +1,0 @@
-SERVER=EPP,5.1.0,default,/home/ljelinko/programs/jboss/jboss-epp-5.1/jboss-as
-SEAM=2.2,/home/ljelinko/programs/jboss/jboss-epp-5.1/seam
-DB=hsqldb18,internal, , , , ,
