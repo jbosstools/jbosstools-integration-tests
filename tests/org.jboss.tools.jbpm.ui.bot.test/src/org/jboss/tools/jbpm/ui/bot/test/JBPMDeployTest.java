@@ -47,8 +47,13 @@ public class JBPMDeployTest extends JBPMTest {
 		SWTBotText item = gefBot.textWithLabel("Server Deployer:").setText("gpd-deployer/upload");
 		editor.save();
 		
+		//gefBot.checkBoxWithLabel("Use credentials").select();
+		gefBot.checkBox(3).select();
+		gefBot.textWithLabel("Username:").setText("admin");
+		gefBot.textWithLabel("Password:").setText("admin");
+		
 		String serverName = TestConfigurator.currentConfig.getServer().type+"-"+TestConfigurator.currentConfig.getServer().version;
-		servers.startServer(serverName);
+		servers.startServer(serverName);	
 		
 		item.setFocus();		
 		bot.menu("jBPM").menu("Ping Server").click();			
