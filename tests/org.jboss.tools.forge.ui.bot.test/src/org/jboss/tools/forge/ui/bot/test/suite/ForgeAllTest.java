@@ -13,8 +13,8 @@ import org.junit.runners.Suite.SuiteClasses;
  *
  */
 @SuiteClasses({
-	ForgeViewTest.class
-	//ProjectTest.class
+	ForgeViewTest.class,
+	ProjectTest.class
 })
 @RunWith(RequirementAwareSuite.class)
 public class ForgeAllTest {

@@ -22,28 +22,7 @@ public class ForgeViewTest extends ForgeTest {
 	public void forgeViewPresent () {
 		openForgeView();
 		assertTrue(isForgeViewActive());
-	
-		bot.sleep(TIME_20S);
-		bot.sleep(TIME_20S);
-		bot.sleep(TIME_20S);
-		bot.sleep(TIME_20S);
-		bot.sleep(TIME_20S);
-		bot.sleep(TIME_20S);
-		bot.sleep(TIME_20S);
-		bot.sleep(TIME_20S);
-		bot.sleep(TIME_20S);
-		bot.sleep(TIME_20S);
-		bot.sleep(TIME_20S);
-		bot.sleep(TIME_20S);
-		bot.sleep(TIME_20S);
-		bot.sleep(TIME_20S);
-		bot.sleep(TIME_20S);
-		bot.sleep(TIME_20S);
-		bot.sleep(TIME_20S);
-		bot.sleep(TIME_20S);
-		bot.sleep(TIME_20S);
-		
-		
+			
 	}
 	
 	
