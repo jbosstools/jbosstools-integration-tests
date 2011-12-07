@@ -18,7 +18,7 @@ public class ConsoleOutputMatcher extends AbstractSWTMatcher<String> {
 	public boolean matchesSafely(String item) {
 		consoleText = SWTBotFactory.getConsole().getConsoleText();
 		if (consoleText == null){
-			consoleText = "";
+			throw new IllegalStateException("No console output present");
 		}
 		return consoleText.contains(item);
 	}
