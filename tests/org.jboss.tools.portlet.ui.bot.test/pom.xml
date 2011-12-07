@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.jboss.tools.portlet</groupId>
+		<artifactId>tests</artifactId>
+		<version>1.2.0-SNAPSHOT</version>
+	</parent>
+	<groupId>org.jboss.tools.portlet.tests</groupId>
+	<artifactId>org.jboss.tools.portlet.ui.bot.test</artifactId>
+	
+	<packaging>eclipse-test-plugin</packaging>
+
+	<properties>
+		<jbosstools.test.jboss-gatein.home></jbosstools.test.jboss-gatein.home> <!--TODO setup default path -->
+		<configurations.dir></configurations.dir> <!-- TODO setup default path -->
+		<systemProperties>-Djbosstools.test.jboss-gatein.home=${jbosstools.test.jboss-gatein.home} -Dtest.configurations.dir=${configurations.dir}</systemProperties>
+	</properties>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-surefire-plugin</artifactId>
+				<configuration>
+					<useUIThread>false</useUIThread>
+					<testSuite>org.jboss.tools.portlet.ui.bot.test</testSuite>
+					<testClass>org.jboss.tools.portlet.ui.bot.test.AllTestsSuite</testClass>
+					<skip>${swtbot.test.skip}</skip>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
