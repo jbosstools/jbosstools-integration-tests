@@ -70,6 +70,7 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase {
 	protected final static String JBOSS_AS_FOR_JSF2_SERVER_GROUP;
 	protected final static String JBOSS_AS_FOR_JSF2_SERVER_TYPE;
 	protected final static String JBOSS_AS_FOR_JSF2_SERVER_RUNTIME_TYPE;
+	protected final static String RICH_FACES_UI_JAR_LOCATION;
 
   static {
     try {
@@ -108,6 +109,16 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase {
     else{
       throw new RuntimeException("Runtime for JSF2 is not specified");
     }
+    // Get richfaces-ui.jar location
+    // System property has priority
+    String richFacesUiLocation = System.getProperty("org.jboss.tools.vpe.ui.bot.test.richafaces.ui.jar.location","");
+    // Read property from Properties File
+    if (richFacesUiLocation.length() == 0){
+      if (projectProperties.containsKey("RichFacesUiJarLocation")){
+        richFacesUiLocation = projectProperties.getProperty("RichFacesUiJarLocation");
+      }
+    }
+    RICH_FACES_UI_JAR_LOCATION = richFacesUiLocation;
   }	  
 
 	/**
