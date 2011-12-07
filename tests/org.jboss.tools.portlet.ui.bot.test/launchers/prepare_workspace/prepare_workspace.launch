@@ -9,7 +9,7 @@
 <listEntry value="JBOSS_EPP_4_3=${folder_prompt:EPP 4.3 installation directory}"/>
 <listEntry value="JBOSS_EPP_5_1=${folder_prompt:EPP 5.1 installation directory}"/>
 </listAttribute>
-<stringAttribute key="M2_RUNTIME" value="/home/ljelinko/programs/apache-maven-3.0.3"/>
+<stringAttribute key="M2_RUNTIME" value="EMBEDDED"/>
 <booleanAttribute key="M2_SKIP_TESTS" value="false"/>
 <booleanAttribute key="M2_UPDATE_SNAPSHOTS" value="false"/>
 <booleanAttribute key="M2_WORKSPACE_RESOLUTION" value="false"/>
