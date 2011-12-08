@@ -3,6 +3,9 @@ package org.jboss.tools.portlet.ui.bot.test;
 import org.jboss.tools.portlet.ui.bot.test.core.CreateJavaPortlet;
 import org.jboss.tools.portlet.ui.bot.test.core.CreateJavaPortletProject;
 import org.jboss.tools.portlet.ui.bot.test.core.RunJavaPortletOnServer;
+import org.jboss.tools.portlet.ui.bot.test.example.JSFPortletExample;
+import org.jboss.tools.portlet.ui.bot.test.example.JavaPortletExample;
+import org.jboss.tools.portlet.ui.bot.test.example.SeamPortletExample;
 import org.jboss.tools.portlet.ui.bot.test.jsf.CreateJSFPortlet;
 import org.jboss.tools.portlet.ui.bot.test.jsf.CreateJSFPortletProject;
 import org.jboss.tools.portlet.ui.bot.test.jsf.RunJSFPortletOnServer;
@@ -22,7 +25,10 @@ import org.junit.runners.Suite;
 	RunJSFPortletOnServer.class,
 	CreateSeamPortletProject.class, 
 	CreateSeamPortlet.class, 
-	RunSeamPortletOnServer.class
+	RunSeamPortletOnServer.class, 
+	JavaPortletExample.class, 
+	JSFPortletExample.class, 
+	SeamPortletExample.class
 	})
 public class AllTestsSuite {
 
