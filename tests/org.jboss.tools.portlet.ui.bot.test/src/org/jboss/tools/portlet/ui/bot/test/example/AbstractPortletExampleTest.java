@@ -3,6 +3,7 @@ package org.jboss.tools.portlet.ui.bot.test.example;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.not;
 import static org.jboss.tools.portlet.ui.bot.matcher.factory.DefaultMatchersFactory.inConsoleOutput;
+import static org.jboss.tools.portlet.ui.bot.matcher.factory.DefaultMatchersFactory.isNumberOfErrors;
 
 import org.jboss.tools.portlet.ui.bot.task.AbstractSWTTask;
 import org.jboss.tools.portlet.ui.bot.task.console.ConsoleClearingTask;
@@ -35,6 +36,7 @@ public abstract class AbstractPortletExampleTest extends ExampleTest {
 			doPerform(new RunninngProjectOnServerTask(project));			
 		}
 		
-		assertThat("Exception", not(inConsoleOutput()));
+		assertThat(0, isNumberOfErrors());
+		assertThat("Exception:", not(inConsoleOutput()));
 	}
 }
