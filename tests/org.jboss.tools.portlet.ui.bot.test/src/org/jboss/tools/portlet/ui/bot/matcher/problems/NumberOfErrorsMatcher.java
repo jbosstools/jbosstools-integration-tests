@@ -15,6 +15,8 @@ import org.jboss.tools.ui.bot.ext.view.ProblemsView;
  */
 public class NumberOfErrorsMatcher extends AbstractSWTMatcher<Integer> {
 
+	private int expectedNumber;
+
 	private int numberOfErrors;
 
 	@Override
@@ -30,13 +32,16 @@ public class NumberOfErrorsMatcher extends AbstractSWTMatcher<Integer> {
 			}
 		}
 
-		numberOfErrors = errorItem.getNodes().size();
+		this.expectedNumber = expectedNumber;
+		this.numberOfErrors = errorItem.getNodes().size();
 
 		return expectedNumber.equals(numberOfErrors);
 	}
 
 	@Override
-	public void describeTo(Description description) {
-		description.appendText(numberOfErrors + " errors");
+	public void describeTo(final Description description) {
+		description.appendText("Different number of errors.\n");
+		description.appendText("Number of expected errors: " + expectedNumber + "\n");
+		description.appendText("Number of errors: " + numberOfErrors + "\n");
 	}
 }
