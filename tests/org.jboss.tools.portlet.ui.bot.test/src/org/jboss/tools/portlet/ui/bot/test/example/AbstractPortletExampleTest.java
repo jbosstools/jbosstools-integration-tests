@@ -20,7 +20,7 @@ import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
  * @author Lucia Jelinkova
  *
  */
-@Require(server=@Server(required=true, state=ServerState.Running, type=ServerType.EPP))
+@Require(server=@Server(version="4.3", state=ServerState.Running, type=ServerType.EPP))
 public abstract class AbstractPortletExampleTest extends ExampleTest {
 
 	protected void doPerform(AbstractSWTTask task){
