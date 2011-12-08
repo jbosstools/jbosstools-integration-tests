@@ -1,8 +1,6 @@
-package org.jboss.tools.portlet.ui.bot.test;
+package org.jboss.tools.portlet.ui.bot.test.jsf;
 
-import org.jboss.tools.portlet.ui.bot.test.jsf.CreateJSFPortlet;
-import org.jboss.tools.portlet.ui.bot.test.jsf.CreateJSFPortletProject;
-import org.jboss.tools.portlet.ui.bot.test.jsf.RunJSFPortletOnServer;
+import org.jboss.tools.portlet.ui.bot.test.RequirementAwareUsageWindowClosingSuite;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 

@@ -1,8 +1,6 @@
-package org.jboss.tools.portlet.ui.bot.test;
+package org.jboss.tools.portlet.ui.bot.test.core;
 
-import org.jboss.tools.portlet.ui.bot.test.core.CreateJavaPortlet;
-import org.jboss.tools.portlet.ui.bot.test.core.CreateJavaPortletProject;
-import org.jboss.tools.portlet.ui.bot.test.core.RunJavaPortletOnServer;
+import org.jboss.tools.portlet.ui.bot.test.RequirementAwareUsageWindowClosingSuite;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 

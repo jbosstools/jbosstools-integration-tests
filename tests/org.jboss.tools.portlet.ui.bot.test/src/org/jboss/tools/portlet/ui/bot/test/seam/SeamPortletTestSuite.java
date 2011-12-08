@@ -1,8 +1,6 @@
-package org.jboss.tools.portlet.ui.bot.test;
+package org.jboss.tools.portlet.ui.bot.test.seam;
 
-import org.jboss.tools.portlet.ui.bot.test.seam.CreateSeamPortlet;
-import org.jboss.tools.portlet.ui.bot.test.seam.CreateSeamPortletProject;
-import org.jboss.tools.portlet.ui.bot.test.seam.RunSeamPortletOnServer;
+import org.jboss.tools.portlet.ui.bot.test.RequirementAwareUsageWindowClosingSuite;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
