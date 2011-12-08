@@ -27,7 +27,7 @@ import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
  * @author Lucia Jelinkova
  *
  */
-@Require(db=@DB(required=true), seam=@Seam(version="2.2"), server=@Server(required=true, state=ServerState.Present, type=ServerType.EPP))
+@Require(db=@DB, seam=@Seam, server=@Server(state=ServerState.Present, type=ServerType.EPP))
 public class CreateSeamPortletProject extends CreatePortletProjectTemplate{
 
 	public static final String PROJECT_NAME = "seam-portlet";
@@ -42,7 +42,7 @@ public class CreateSeamPortletProject extends CreatePortletProjectTemplate{
 		List<FacetDefinition> facets = new ArrayList<FacetDefinition>();
 		facets.add(JAVA_FACET);
 		facets.add(JSF_FACET);
-		facets.add(SEAM_2_FACET);
+		facets.add(new FacetDefinition("Seam 2", null, configuredState.getSeam().version));
 		facets.add(CORE_PORTLET_FACET);
 		facets.add(JSF_PORTLET_FACET);
 		facets.add(SEAM_PORTLET_FACET);
@@ -57,7 +57,7 @@ public class CreateSeamPortletProject extends CreatePortletProjectTemplate{
 		tasks.add(new JBossPortletCapabilitiesWizardPageFillingTask(JBossPortletCapabilitiesWizardPageFillingTask.Type.RUNTIME_PROVIDER));
 		tasks.add(new WizardPageDefaultsFillingTask());
 		tasks.add(getSeamFacetPageFillingTask());
-		tasks.add(new JBossJSFPortletCapabilitiesWizardPageFillingTask(JBossJSFPortletCapabilitiesWizardPageFillingTask.Type.RUNTIME_PROVIDER));
+		tasks.add(new JBossJSFPortletCapabilitiesWizardPageFillingTask(JBossJSFPortletCapabilitiesWizardPageFillingTask.Type.RUNTIME_PROVIDER, "/home/ljelinko/programs/jboss/EPP/jboss-epp-5.1/portletbridge"));
 		return tasks;
 	}
 	
