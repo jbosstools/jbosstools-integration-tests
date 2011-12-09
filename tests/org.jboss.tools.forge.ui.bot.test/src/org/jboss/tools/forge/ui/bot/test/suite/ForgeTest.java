@@ -2,14 +2,19 @@ package org.jboss.tools.forge.ui.bot.test.suite;
 
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.widgetOfType;
 
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotStyledText;
 import org.eclipse.ui.part.PageBook;
+import org.jboss.tools.forge.ui.bot.test.util.ConsoleUtils;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.ext.view.PackageExplorer;
+import org.jboss.tools.ui.bot.ext.view.ProjectExplorer;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 
 /**
  * 
@@ -18,9 +23,51 @@ import org.jboss.tools.ui.bot.ext.view.PackageExplorer;
  */
 public class ForgeTest extends SWTTestExt {
 
+	protected static final String PROJECT_NAME = "testproject";
+	protected static final String PACKAGE_NAME = "org.jboss.testproject";
+	
 	protected PackageExplorer pExplorer = new PackageExplorer();
 	
-	protected SWTBotView openForgeView(){
+	@BeforeClass
+	public static void setup(){
+		openForgeView();
+		startForge();
+		clear();
+	}
+	
+	@AfterClass
+	public static void cleanup(){
+		//TODO?
+	}
+	
+	public enum ProjectTypes{
+		jar, war, pom
+	}
+	
+	protected void createProject(ProjectTypes type){
+		
+		getStyledText().setText("new-project --type " + type + "\n");
+		getStyledText().setText(PROJECT_NAME + "\n");
+		getStyledText().setText(PACKAGE_NAME + "\n");
+		getStyledText().setText("Y\n");
+	
+		ConsoleUtils.waitUntilTextInConsole("project [" + PROJECT_NAME + "]", TIME_1S, TIME_20S*3);
+	
+		util.waitForJobs("Importing Forge project"); //see org.jboss.tools.forge.importer#importProject()
+	}
+	
+	protected void createPersistence(){
+		
+		getStyledText().setText("persistence setup\n");
+		getStyledText().setText("HIBERNATE\n");
+		getStyledText().setText("JBOSS_AS7\n");
+		getStyledText().setText("N\n");
+	
+		ConsoleUtils.waitUntilTextInConsole("persistence.xml", TIME_1S, TIME_20S*3);
+	}
+	
+	
+	public static SWTBotView openForgeView(){
 		if(isForgeViewActive())
 			return getForgeView();
 		
@@ -38,7 +85,7 @@ public class ForgeTest extends SWTTestExt {
 		return view;
 	}
 	
-	protected void clear() {
+	public static void clear() {
 		if(!isForgeViewActive())
 			openForgeView();
 		if(!isForgeRunning())
@@ -52,14 +99,14 @@ public class ForgeTest extends SWTTestExt {
 	 * This is private, use openForgeView method outside this class to get 
 	 * Forge Console View.
 	 */
-	private SWTBotView getForgeView(){
+	public static SWTBotView getForgeView(){
 		SWTBotView view = bot.viewByTitle("Forge Console");
 		view.setFocus();
 		view.show();
 		return view;
 	}
 	
-	protected boolean isForgeViewActive(){
+	public static boolean isForgeViewActive(){
 		
 		try{
 			SWTBotView view = getForgeView();
@@ -73,7 +120,7 @@ public class ForgeTest extends SWTTestExt {
 		return false;
 	}
 	
-	protected boolean isForgeRunning(){
+	public static boolean isForgeRunning(){
 		
 		if(!isForgeViewActive())
 			openForgeView();
@@ -103,31 +150,36 @@ public class ForgeTest extends SWTTestExt {
 		return false;
 	}
 	
-	protected void startForge(){
+	public static void startForge(){
 		
 		if(!isForgeViewActive())
 			openForgeView();
 		
 		SWTBotView view = getForgeView();
 		view.toolbarButton("Start Forge").click();
-		bot.sleep(TIME_5S);
+		
+		util.waitForJobs("Starting Forge"); //see org.jboss.tools.forge.ui.part#startForge()
 	}
 	
-	protected void stopForge(){
+	public static void stopForge(){
 		
 		if(!isForgeViewActive())
 			openForgeView();
 		
 		SWTBotView view = getForgeView();
 		view.toolbarButton("Stop Forge").click();
-		bot.sleep(TIME_1S);
+		bot.sleep(TIME_5S);
 	}
 	
-	protected SWTBotStyledText getStyledText(){
+	public static SWTBotStyledText getStyledText(){
 		SWTBotView view = getForgeView();
 		PageBook pb = view.bot().widget(widgetOfType(PageBook.class));
 		SWTBot pbbot = new SWTBot(pb);
 		return pbbot.styledText();
+	}
+	
+	public static SWTBot getForgeViewBot(){
+		return bot.viewByTitle("Forge Console").bot();
 	}
 	
 }

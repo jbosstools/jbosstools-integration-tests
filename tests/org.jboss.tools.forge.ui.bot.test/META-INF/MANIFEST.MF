@@ -12,4 +12,3 @@ Require-Bundle: org.eclipse.swtbot.go,
  org.jboss.tools.forge.core;bundle-version="1.0.0",
  org.jboss.tools.forge.runtime;bundle-version="1.0.0",
  org.jboss.tools.forge.runtime.ext;bundle-version="1.0.0"
- 
