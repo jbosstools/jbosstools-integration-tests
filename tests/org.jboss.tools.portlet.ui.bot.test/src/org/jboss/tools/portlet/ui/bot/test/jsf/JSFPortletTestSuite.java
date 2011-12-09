@@ -7,7 +7,8 @@ import org.junit.runners.Suite;
 @RunWith(RequirementAwareUsageWindowClosingSuite.class)
 @Suite.SuiteClasses({
 	CreateJSFPortletProject.class,
-	CreateJSFPortlet.class,
+	CreateJSFPortletRuntime4x.class,
+	CreateJSFPortletRuntime5x.class,
 	RunJSFPortletOnServer.class
 	})
 public class JSFPortletTestSuite {

@@ -27,24 +27,6 @@ public abstract class CreateJSFSeamPortletTemplate extends CreatePortletTemplate
 	}
 
 	@Override
-	protected List<String> getExpectedFiles() {
-		return Arrays.asList(
-				JSF_FOLDER + "edit.jsp",
-				JSF_FOLDER + "view.jsp",
-				JSF_FOLDER + "help.jsp"
-				);
-	}
-
-	@Override
-	protected List<String> getNonExpectedFiles() {
-		return Arrays.asList(
-				DEFAULT_OBJECTS_XML, 
-				PORTLET_INSTANCES_XML, 
-				JBOSS_APP_XML, 
-				JBOSS_PORTLET_XML);
-	}
-
-	@Override
 	protected List<XMLNode> getExpectedXMLNodes() {
 		return Arrays.asList(new XMLNode("portlet-app/portlet/portlet-class", FACES_CLASS_NAME));
 	}

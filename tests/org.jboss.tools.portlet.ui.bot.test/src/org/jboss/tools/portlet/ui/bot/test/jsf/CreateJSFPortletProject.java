@@ -44,7 +44,7 @@ public class CreateJSFPortletProject extends CreatePortletProjectTemplate{
 		tasks.add(new WizardPageDefaultsFillingTask());
 		tasks.add(new JBossPortletCapabilitiesWizardPageFillingTask(JBossPortletCapabilitiesWizardPageFillingTask.Type.RUNTIME_PROVIDER));
 		tasks.add(new WizardPageDefaultsFillingTask());
-		tasks.add(new JBossJSFPortletCapabilitiesWizardPageFillingTask(JBossJSFPortletCapabilitiesWizardPageFillingTask.Type.RUNTIME_PROVIDER));
+		tasks.add(new JBossJSFPortletCapabilitiesWizardPageFillingTask(JBossJSFPortletCapabilitiesWizardPageFillingTask.Type.RUNTIME_PROVIDER, "/home/ljelinko/programs/jboss/EPP/jboss-epp-5.1/portletbridge"));
 		return tasks;
 	}
 	

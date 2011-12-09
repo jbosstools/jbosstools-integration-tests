@@ -30,14 +30,12 @@ import org.junit.Test;
  * @author Lucia Jelinkova
  *
  */
-@Require(server=@Server(required=true, state=ServerState.Present, type=ServerType.EPP))
+@Require(server=@Server(state=ServerState.Present, type=ServerType.EPP))
 public abstract class CreatePortletProjectTemplate extends SWTTaskBasedTestCase {
 
 	protected static final FacetDefinition JAVA_FACET = new FacetDefinition("Java", null, "1.6");
 	
 	protected static final FacetDefinition JSF_FACET = new FacetDefinition("JavaServer Faces");
-	
-	public static final FacetDefinition SEAM_2_FACET = new FacetDefinition("Seam 2");
 	
 	protected static final String JBOSS_FACET_CATEGORY = "JBoss Portlets";
 

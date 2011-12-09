@@ -7,7 +7,8 @@ import org.junit.runners.Suite;
 @RunWith(RequirementAwareUsageWindowClosingSuite.class)
 @Suite.SuiteClasses({
 	CreateSeamPortletProject.class,
-	CreateSeamPortlet.class,
+	CreateSeamPortletRuntime4x.class,
+	CreateSeamPortletRuntime5x.class,
 	RunSeamPortletOnServer.class
 	})
 public class SeamPortletTestSuite {

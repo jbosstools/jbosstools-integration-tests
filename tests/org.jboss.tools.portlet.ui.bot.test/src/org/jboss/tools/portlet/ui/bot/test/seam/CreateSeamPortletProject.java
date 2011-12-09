@@ -19,6 +19,7 @@ import org.jboss.tools.ui.bot.ext.config.Annotations.Seam;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
+import org.jboss.tools.ui.bot.ext.config.TestConfigurator;
 
 
 /**
@@ -31,6 +32,8 @@ import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
 public class CreateSeamPortletProject extends CreatePortletProjectTemplate{
 
 	public static final String PROJECT_NAME = "seam-portlet";
+
+	private static final String PORTLET_BRIDGE_AS_RELATIVE_PATH = "/server/default/deploy/jboss-portal.sar/portal-identity.sar/portal-identity.war/WEB-INF/lib";
 	
 	@Override
 	public String getProjectName() {
@@ -54,10 +57,13 @@ public class CreateSeamPortletProject extends CreatePortletProjectTemplate{
 		List<WizardPageFillingTask> tasks = new ArrayList<WizardPageFillingTask>();
 		tasks.add(new WizardPageDefaultsFillingTask());
 		tasks.add(new WizardPageDefaultsFillingTask());
-		tasks.add(new JBossPortletCapabilitiesWizardPageFillingTask(JBossPortletCapabilitiesWizardPageFillingTask.Type.RUNTIME_PROVIDER));
+		tasks.add(new JBossPortletCapabilitiesWizardPageFillingTask(
+				JBossPortletCapabilitiesWizardPageFillingTask.Type.RUNTIME_PROVIDER));
 		tasks.add(new WizardPageDefaultsFillingTask());
 		tasks.add(getSeamFacetPageFillingTask());
-		tasks.add(new JBossJSFPortletCapabilitiesWizardPageFillingTask(JBossJSFPortletCapabilitiesWizardPageFillingTask.Type.RUNTIME_PROVIDER, "/home/ljelinko/programs/jboss/EPP/jboss-epp-5.1/portletbridge"));
+		tasks.add(new JBossJSFPortletCapabilitiesWizardPageFillingTask(
+				JBossJSFPortletCapabilitiesWizardPageFillingTask.Type.RUNTIME_PROVIDER, 
+				TestConfigurator.currentConfig.getServer().runtimeHome + PORTLET_BRIDGE_AS_RELATIVE_PATH));
 		return tasks;
 	}
 	
