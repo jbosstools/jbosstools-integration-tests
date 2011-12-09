@@ -23,19 +23,19 @@ import org.junit.Test;
  *
  */
 public abstract class CreatePortletTemplate extends SWTTaskBasedTestCase {
-	
+
 	protected static final String WEB_INF = "WebContent/WEB-INF/";
-	
+
 	protected static final String DEFAULT_OBJECTS_XML = WEB_INF + "default-object.xml";
-	
+
 	protected static final String PORTLET_INSTANCES_XML = WEB_INF + "portlet-instances.xml";
-	
+
 	protected static final String JBOSS_APP_XML = WEB_INF + "jboss-app.xml";
-	
+
 	protected static final String JBOSS_PORTLET_XML = WEB_INF + "jboss-portlet.xml";
 
 	protected static final String JSF_FOLDER = "WebContent/jsf/";
-	
+
 	protected abstract String getProjectName();
 
 	protected abstract AbstractPortletCreationTask getCreatePortletTask();
@@ -52,7 +52,9 @@ public abstract class CreatePortletTemplate extends SWTTaskBasedTestCase {
 
 		doAssertThat(0, isNumberOfErrors());
 		doAssertThat(getExpectedWorkspaceFiles(), exist());
-		doAssertThat(getNonExpectedWorkspaceFiles(), not(exist()));
+		if (getNonExpectedWorkspaceFiles().size() > 0){
+			doAssertThat(getNonExpectedWorkspaceFiles(), not(exist()));
+		}
 		doAssertThat(file(getProjectName(), WEB_INF + "portlet.xml"), 
 				containsNodes(getExpectedXMLNodes()));
 	}
