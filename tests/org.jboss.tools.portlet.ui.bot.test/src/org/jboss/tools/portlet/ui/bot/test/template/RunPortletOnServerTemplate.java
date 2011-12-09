@@ -20,7 +20,7 @@ import org.junit.Test;
  * @author Lucia Jelinkova
  *
  */
-@Require(clearWorkspace=false, clearProjects=false, server=@Server(required=true, state=ServerState.Running, type=ServerType.EPP))
+@Require(clearWorkspace=false, clearProjects=false, server=@Server(state=ServerState.Running, type=ServerType.EPP))
 public abstract class RunPortletOnServerTemplate extends SWTTaskBasedTestCase {
 
 	protected abstract String getProjectName(); 
@@ -30,6 +30,6 @@ public abstract class RunPortletOnServerTemplate extends SWTTaskBasedTestCase {
 		doPerform(new ConsoleClearingTask());
 		doPerform(new RunninngProjectOnServerTask(getProjectName()));
 		
-		assertThat("Exception", not(inConsoleOutput()));
+		assertThat("Exception:", not(inConsoleOutput()));
 	}
 }
