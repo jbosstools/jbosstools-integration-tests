@@ -30,9 +30,8 @@ public class GlobalELVariablesTest extends VPEEditorTestCase{
   }
   
 	public void testGlobalELVariables() throws Throwable{
-	  bot.menu(IDELabel.Menu.WINDOW).menu(IDELabel.Menu.PREFERENCES).click();
-	  bot.shell(IDELabel.Shell.PREFERENCES).activate();
-    SWTBotTree preferenceTree = this.bot.tree();
+	  open.preferenceOpen(ActionItem.Preference.JBossTools.LABEL);
+	  SWTBotTree preferenceTree = this.bot.tree();
     preferenceTree
       .expandNode(IDELabel.PreferencesDialog.JBOSS_TOOLS)
       .expandNode(IDELabel.PreferencesDialog.JBOSS_TOOLS_WEB)
@@ -87,7 +86,7 @@ public class GlobalELVariablesTest extends VPEEditorTestCase{
 
   @Override
 public void tearDown() throws Exception {
-    bot.menu(IDELabel.Menu.WINDOW).menu(IDELabel.Menu.PREFERENCES).click();
+    open.preferenceOpen(ActionItem.Preference.JBossTools.LABEL);
     SWTBotTree preferenceTree = this.bot.tree();
     preferenceTree.expandNode(IDELabel.PreferencesDialog.JBOSS_TOOLS)
       .expandNode(IDELabel.PreferencesDialog.JBOSS_TOOLS_WEB)

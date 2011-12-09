@@ -33,7 +33,7 @@ import org.jboss.tools.ui.bot.test.WidgetVariables;
 public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 
 	private final String ENABLED_TEST_TEXT = "<html>Externalize Text</html>"; //$NON-NLS-1$
-	private final String TOOL_TIP = (SWTJBTExt.isRunningOnMacOs() ? "Externalize Strings... (⌘7)" : "Externalize selected string... (Ctrl+7)"); //$NON-NLS-1$
+	private final String TOOL_TIP = (SWTJBTExt.isRunningOnMacOs() ? "Externalize selected string... (⌘7)" : "Externalize selected string... (Ctrl+7)"); //$NON-NLS-1$
 	private final String FOLDER_TEXT_LABEL = "Enter or select the parent folder:"; //$NON-NLS-1$
 	private final String INCORRECT_TABLE_VALUE = "Table value is incorrect"; //$NON-NLS-1$
 	private final String TOOLBAR_ICON_ENABLED = "Toolbar button should be enabled"; //$NON-NLS-1$
