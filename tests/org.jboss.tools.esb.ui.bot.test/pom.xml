@@ -11,7 +11,13 @@
 	<artifactId>org.jboss.tools.esb.ui.bot.test</artifactId>
 	
 	<packaging>eclipse-test-plugin</packaging>
-	
+	<properties>
+		<jbosstools.test.jbossesb.home>${requirement.build.root}/jbossesb-4.7</jbosstools.test.jbossesb.home>
+		<swtbot.test.properties.file>./org.jboss.tools.esb.ui.bot.test.properties</swtbot.test.properties.file>
+		<systemProperties>-Djbosstools.test.jbossesb.home=${jbosstools.test.jbossesb.home} -Dswtbot.test.properties.file=${swtbot.test.properties.file}
+		</systemProperties>
+	</properties>
+
 	<build>
 		<plugins>
 			<plugin>
@@ -19,7 +25,9 @@
 				<artifactId>tycho-surefire-plugin</artifactId>
 				<configuration>
 					<useUIThread>false</useUIThread>
-					<skip>${swtbot.test.skip}</skip>
+					<!--  <skip>${swtbot.test.skip}</skip>  -->
+					<testSuite>org.jboss.tools.esb.ui.bot.test</testSuite>
+					<testClass>org.jboss.tools.esb.ui.bot.tests.ESBAllBotTests</testClass>
 				</configuration>
 			</plugin>
 		</plugins>
