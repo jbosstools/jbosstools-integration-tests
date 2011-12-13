@@ -1,5 +1,6 @@
 package org.jboss.tools.portlet.ui.bot.matcher.workspace.file;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hamcrest.Description;
@@ -10,6 +11,12 @@ import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 
 public class ExistingFilesMatcher extends AbstractSWTMatcher<List<WorkspaceFile>> {
 
+	private List<WorkspaceFile> missingFiles;
+	
+	public ExistingFilesMatcher() {
+		missingFiles = new ArrayList<WorkspaceFile>();
+	}
+	
 	@Override
 	public boolean matchesSafely(List<WorkspaceFile> files) {
 		SWTBotFactory.getOpen().perspective(ActionItem.Perspective.JAVA.LABEL);
@@ -18,15 +25,15 @@ public class ExistingFilesMatcher extends AbstractSWTMatcher<List<WorkspaceFile>
 			boolean isPresent = SWTBotFactory.getPackageexplorer().isFilePresent(file.getProject(), file.getFilePathAsArray());
 			
 			if (!isPresent){
-				return false;
+				missingFiles.add(file);
 			}
 		}
 		
-		return true;
+		return missingFiles.isEmpty();
 	}
 
 	@Override
 	public void describeTo(Description description) {
-		description.appendText("existing files");
+		description.appendText("existing files " + missingFiles);
 	}
 }
