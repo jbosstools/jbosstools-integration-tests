@@ -37,7 +37,7 @@ public class NonSystemJobRunsCondition implements ICondition {
 	private List<Job> getJobs(){
 		List<Job> jobs = new ArrayList<Job>();
 		for (Job job : Job.getJobManager().find(null)){
-			if (!job.isSystem()){
+			if (!job.isSystem() && Job.SLEEPING != job.getState()){
 				jobs.add(job);
 			}
 		}
