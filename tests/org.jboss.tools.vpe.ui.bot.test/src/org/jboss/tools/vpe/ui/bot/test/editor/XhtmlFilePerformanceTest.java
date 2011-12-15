@@ -17,6 +17,7 @@ import java.io.IOException;
 
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
+import org.jboss.tools.ui.bot.ext.SWTJBTExt;
 import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.helper.FileHelper;
 import org.jboss.tools.ui.bot.ext.parts.SWTBotEditorExt;
@@ -59,7 +60,8 @@ public class XhtmlFilePerformanceTest extends VPEAutoTestCase {
 	  xhtmlTextEditor.insertText(9, 5, "<h1>" + insertText + "<h1/>");
 	  xhtmlTextEditor.save();
 	  bot.sleep(Timing.time2S());
-    bot.toolbarButtonWithTooltip(IDELabel.Button.REFRESH).click();
+    bot.toolbarButtonWithTooltip(SWTJBTExt.isRunningOnMacOs() ? 
+        IDELabel.ToolbarButton.REFRESH_MAC_OS: IDELabel.ToolbarButton.REFRESH).click();
     SWTBotEditorExt multiPageEditor = swtBotExt.swtBotEditorExtByTitle(XhtmlFilePerformanceTest.TEST_PAGE_NAME);
     multiPageEditor.selectPage(IDELabel.VisualPageEditor.PREVIEW_TAB_LABEL);
     SWTBotWebBrowser swtBotWebBrowserExt = new SWTBotWebBrowser(XhtmlFilePerformanceTest.TEST_PAGE_NAME, swtBotExt);

@@ -12,6 +12,7 @@
 package org.jboss.tools.vpe.ui.bot.test.editor.tags;
 
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
+import org.jboss.tools.ui.bot.ext.SWTJBTExt;
 import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.parts.SWTBotEditorExt;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
@@ -60,7 +61,8 @@ public class CoreHTMLTagsTest extends VPEEditorTestCase {
         new String[]{"color: red; text-align: center; background-color: green;"},
         CoreHTMLTagsTest.TEST_PAGE_NAME);
     // check after refresh
-    bot.toolbarButtonWithTooltip(IDELabel.ToolbarButton.REFRESH).click();
+    bot.toolbarButtonWithTooltip(SWTJBTExt.isRunningOnMacOs() ? 
+        IDELabel.ToolbarButton.REFRESH_MAC_OS: IDELabel.ToolbarButton.REFRESH).click();
     assertVisualEditorContains(webBrowser,
         "BODY", 
         new String[]{"style"},
