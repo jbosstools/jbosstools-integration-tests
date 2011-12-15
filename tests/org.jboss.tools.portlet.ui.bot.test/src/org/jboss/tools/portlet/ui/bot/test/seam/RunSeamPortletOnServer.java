@@ -4,7 +4,7 @@ import static org.jboss.tools.portlet.ui.bot.entity.EntityFactory.file;
 import static org.jboss.tools.portlet.ui.bot.test.seam.CreateSeamPortletProject.PROJECT_NAME;
 
 import org.jboss.tools.portlet.ui.bot.entity.WorkspaceFile;
-import org.jboss.tools.portlet.ui.bot.task.server.MarkFileAsDeployableTask;
+import org.jboss.tools.portlet.ui.bot.task.server.RunningFileOnServerTask;
 import org.jboss.tools.portlet.ui.bot.test.template.RunPortletOnServerTemplate;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
@@ -36,7 +36,7 @@ public class RunSeamPortletOnServer extends RunPortletOnServerTemplate {
 	
 	@Override
 	public void testRunOnServer() {
-		doPerform(new MarkFileAsDeployableTask(DATASOURCE_FILE));
+		doPerform(new RunningFileOnServerTask(DATASOURCE_FILE));
 		super.testRunOnServer();
 	}
 }

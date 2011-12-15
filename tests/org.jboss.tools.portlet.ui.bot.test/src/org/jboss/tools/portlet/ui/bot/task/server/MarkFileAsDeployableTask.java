@@ -1,5 +1,7 @@
 package org.jboss.tools.portlet.ui.bot.task.server;
 
+import org.eclipse.swtbot.swt.finder.keyboard.KeyboardFactory;
+import org.eclipse.swtbot.swt.finder.keyboard.Keystrokes;
 import org.jboss.tools.portlet.ui.bot.entity.WorkspaceFile;
 import org.jboss.tools.portlet.ui.bot.task.AbstractSWTTask;
 import org.jboss.tools.portlet.ui.bot.task.workspace.FileContextMenuSelectingTask;
@@ -13,7 +15,7 @@ import org.jboss.tools.portlet.ui.bot.task.workspace.FileContextMenuSelectingTas
 public class MarkFileAsDeployableTask extends AbstractSWTTask {
 
 	private WorkspaceFile workspaceFile;
-	
+
 	public MarkFileAsDeployableTask(WorkspaceFile file) {
 		this.workspaceFile = file;
 	}
@@ -21,5 +23,7 @@ public class MarkFileAsDeployableTask extends AbstractSWTTask {
 	@Override
 	public void perform() {
 		performInnerTask(new FileContextMenuSelectingTask(workspaceFile, "Mark as Deployable"));
+		// for the confirmation dialog select OK (the dialog is native and normal swtbot functions do now work)
+		KeyboardFactory.getAWTKeyboard().pressShortcut(Keystrokes.RIGHT, Keystrokes.CR, Keystrokes.LF);
 	}
 }
