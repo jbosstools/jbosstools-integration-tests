@@ -70,6 +70,15 @@ public class SampleWSWizard extends Wizard {
 		return this;
 	}
 	
+	public SampleWSWizard addRESTEasyLibraryFromRuntime() {
+		assert type == Type.REST;
+		//if server is AS, this checkbox is not enabled
+		if (bot().checkBox(1).isEnabled()) {
+			bot().checkBox(1).select();
+		}
+		return this;
+	}
+	
 	private static String getStringFromBundle(String key) {
 		return Platform.getResourceString(WSUI_BUNDLE, key);
 	}

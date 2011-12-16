@@ -70,7 +70,7 @@ public class TopDownWSTest extends WSTestBase {
 		setLevel(Slider_Level.DEVELOP);
 		topDownWS();
 	}
-	
+	@Ignore
 	@Test
 	public void testAssembleService() {
 		setLevel(Slider_Level.ASSEMBLE);
@@ -94,7 +94,7 @@ public class TopDownWSTest extends WSTestBase {
 		setLevel(Slider_Level.TEST);
 		topDownWS();
 	}
-	@Ignore
+	
 	@Test
 	public void testDefaultPkg() {
 		setLevel(Slider_Level.ASSEMBLE);
