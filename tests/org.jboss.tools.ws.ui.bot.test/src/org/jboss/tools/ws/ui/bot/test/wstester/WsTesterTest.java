@@ -8,7 +8,7 @@
  * Contributors:
  * Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.ws.ui.bot.test.jbt;
+package org.jboss.tools.ws.ui.bot.test.wstester;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -22,37 +22,43 @@ import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
-import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
-import org.jboss.tools.ui.bot.ext.SWTTestExt;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
-import org.jboss.tools.ws.ui.bot.test.WSAllBotTests;
+import org.jboss.tools.ws.ui.bot.test.WSTestBase;
 import org.jboss.tools.ws.ui.bot.test.widgets.SelectWSDLDialog;
 import org.jboss.tools.ws.ui.bot.test.widgets.WsTesterView;
 import org.jboss.tools.ws.ui.bot.test.widgets.WsTesterView.Request_Arg_Type;
 import org.jboss.tools.ws.ui.bot.test.widgets.WsTesterView.Request_Type;
 import org.jboss.tools.ws.ui.messages.JBossWSUIMessages;
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite.SuiteClasses;
 
 /**
  * Tests for Web Service Tester
  *
  * @author jlukas
  */
-@Require(perspective = "Java")
-@RunWith(RequirementAwareSuite.class)
-@SuiteClasses({ WSAllBotTests.class})
-public class WsTesterTest extends SWTTestExt {
+public class WsTesterTest extends WSTestBase {
 
-    private static final Logger L = Logger.getLogger(WsTesterTest.class.getName());
     private static final String SERVICE_URL = "http://www.webservicex.net/BibleWebservice.asmx";
 
+    @Override
+	public void setup() {
+		// do nothing
+	}
+
+	@Override
+	public void cleanup() {
+		// do nothing
+	}
+
+	@AfterClass
+	public static void cleanAll() {
+		// do nothing
+	}
+    
     /**
      * Test behavior of UI
      */
@@ -105,19 +111,19 @@ public class WsTesterTest extends SWTTestExt {
         dlg.setURI(uri);
         bot.sleep(1000);
         List<String> items = dlg.getServices();
-        L.log(Level.FINE, "Services: {0}", items);
+        LOGGER.log(Level.FINE, "Services: {0}", items);        
         Assert.assertEquals(2, items.size());
         Assert.assertTrue(items.contains("EchoService"));
         items = dlg.getPorts();
-        L.log(Level.FINE, "Ports: {0}", items);
+        LOGGER.log(Level.FINE, "Ports: {0}", items);
         Assert.assertEquals(1, items.size());
         Assert.assertTrue(items.contains("EchoPort"));
         items = dlg.getOperations();
-        L.log(Level.FINE, "Operations: {0}", items);
+        LOGGER.log(Level.FINE, "Operations: {0}", items);
         Assert.assertEquals(1, items.size());
         Assert.assertTrue(items.contains("echo"));
         dlg.ok();
-        L.log(Level.INFO, "Request: {0}", wstv.getRequestBody());
+        LOGGER.log(Level.INFO, "Request: {0}", wstv.getRequestBody());
         Assert.assertTrue(wstv.getRequestBody().contains(
                 "<tns:echo xmlns:tns=\"http://test.jboss.org/ns\">"));
 
@@ -125,20 +131,20 @@ public class WsTesterTest extends SWTTestExt {
         dlg.setURI(uri);
         bot.sleep(1000);
         items = dlg.getServices();
-        L.log(Level.FINE, "Services: {0}", items);
+        LOGGER.log(Level.FINE, "Services: {0}", items);
         Assert.assertEquals(2, items.size());
         Assert.assertTrue(items.contains("gsearch_rss"));
         dlg.selectService("gsearch_rss");
         items = dlg.getPorts();
-        L.log(Level.FINE, "Ports: {0}", items);
+        LOGGER.log(Level.FINE, "Ports: {0}", items);
         Assert.assertEquals(1, items.size());
         Assert.assertTrue(items.contains("gsearch_rssSoap"));
         items = dlg.getOperations();
-        L.log(Level.FINE, "Operations: {0}", items);
+        LOGGER.log(Level.FINE, "Operations: {0}", items);
         Assert.assertEquals(1, items.size());
         Assert.assertTrue(items.contains("GetSearchResults"));
         dlg.ok();
-        L.log(Level.INFO, "Request: {0}", wstv.getRequestBody());
+        LOGGER.log(Level.INFO, "Request: {0}", wstv.getRequestBody());
         Assert.assertTrue(wstv.getRequestBody().contains(
                 "<tns:GetSearchResults xmlns:tns=\"http://www.ecubicle.net/webservices\">"));
     }
@@ -158,7 +164,7 @@ public class WsTesterTest extends SWTTestExt {
         wstv.invoke();
         bot.sleep(5000);
         String rsp = wstv.getResponseBody();
-        L.log(Level.FINE, "SOAP response: {0}", rsp);
+        LOGGER.log(Level.FINE, "SOAP response: {0}", rsp);
         Assert.assertTrue(rsp.trim().length() > 0);
         checkResponse(rsp, "&lt;BookTitle&gt;Mark&lt;/BookTitle&gt;");
     }
@@ -192,7 +198,7 @@ public class WsTesterTest extends SWTTestExt {
         wstv.setRequestBody(readResource(is));
         wstv.invoke();
         String rsp = wstv.getResponseBody();
-        L.log(Level.FINE, "SOAP response: {0}", rsp);
+        LOGGER.log(Level.FINE, "SOAP response: {0}", rsp);
         Assert.assertTrue(rsp.trim().length() > 0);
         checkResponse(rsp, "&lt;BookTitle&gt;Mark&lt;/BookTitle&gt;");
     }
@@ -215,8 +221,8 @@ public class WsTesterTest extends SWTTestExt {
             wstv.invoke();
             String rsp = wstv.getResponseBody();
             String[] rspHeaders = wstv.getResponseHeaders();
-            L.log(Level.FINE, "REST response: {0}", rsp);
-            L.log(Level.FINE, "Response headers: {0}", Arrays.asList(rspHeaders));
+            LOGGER.log(Level.FINE, "REST response: {0}", rsp);
+            LOGGER.log(Level.FINE, "Response headers: {0}", Arrays.asList(rspHeaders));
             Assert.assertTrue(rsp.trim().length() > 0);
             checkResponse(rsp, "&lt;Chapter&gt;1&lt;/Chapter&gt;");
             checkResponse(rsp, "ministers of the word");
@@ -243,8 +249,8 @@ public class WsTesterTest extends SWTTestExt {
             wstv.invoke();
             String rsp = wstv.getResponseBody();
             String[] rspHeaders = wstv.getResponseHeaders();
-            L.log(Level.FINE, "REST response: {0}", rsp);
-            L.log(Level.FINE, "Response headers: {0}", Arrays.asList(rspHeaders));
+            LOGGER.log(Level.FINE, "REST response: {0}", rsp);
+            LOGGER.log(Level.FINE, "Response headers: {0}", Arrays.asList(rspHeaders));
             Assert.assertTrue(rsp.trim().length() > 0);
             checkResponse(rsp, "&lt;Chapter&gt;3&lt;/Chapter&gt;");
             checkResponse(rsp, "There was a man of the Pharisees, named Nicodemus, a ruler of the Jews");
@@ -263,8 +269,8 @@ public class WsTesterTest extends SWTTestExt {
         Assert.assertEquals(0, wstv.getRequestArgs(Request_Arg_Type.PARAMETER).size());
         String rsp = wstv.getResponseBody();
         String[] rspHeaders = wstv.getResponseHeaders();
-        L.log(Level.FINE, "REST response: {0}", rsp);
-        L.log(Level.FINE, "Response headers: {0}", Arrays.asList(rspHeaders));
+        LOGGER.log(Level.FINE, "REST response: {0}", rsp);
+        LOGGER.log(Level.FINE, "Response headers: {0}", Arrays.asList(rspHeaders));
         Assert.assertTrue(rsp.trim().length() > 0);
         checkResponse(rsp, "Invalid API Key.");
     }
@@ -280,13 +286,13 @@ public class WsTesterTest extends SWTTestExt {
                 sb.append('\n');
             }
         } catch (IOException e) {
-            L.log(Level.WARNING, e.getMessage(), e);
+            LOGGER.log(Level.WARNING, e.getMessage(), e);
         } finally {
             if (br != null) {
                 try {
                     br.close();
                 } catch (IOException e) {
-                    L.log(Level.FINEST, e.getMessage(), e);
+                    LOGGER.log(Level.FINEST, e.getMessage(), e);
                 }
             }
         }
@@ -298,7 +304,7 @@ public class WsTesterTest extends SWTTestExt {
             Assert.assertTrue(rsp, rsp.contains(expContent));
         } catch (AssertionError t) {
             if (rsp.contains("503")) {
-                L.log(Level.WARNING, "Service Unavailable: {0}", SERVICE_URL);
+                LOGGER.log(Level.WARNING, "Service Unavailable: {0}", SERVICE_URL);
             } else {
                 throw t;
             }
@@ -342,14 +348,14 @@ public class WsTesterTest extends SWTTestExt {
                 try {
                     in.close();
                 } catch (IOException ioe2) {
-                    L.log(Level.WARNING, ioe2.getMessage(), ioe2);
+                    LOGGER.log(Level.WARNING, ioe2.getMessage(), ioe2);
                 }
             }
             if (out != null) {
                 try {
                     out.close();
                 } catch (IOException ioe2) {
-                    L.log(Level.WARNING, ioe2.getMessage(), ioe2);
+                    LOGGER.log(Level.WARNING, ioe2.getMessage(), ioe2);
                 }
             }
         }
@@ -365,17 +371,17 @@ public class WsTesterTest extends SWTTestExt {
             bot.sleep(1000);
             Assert.assertEquals(SERVICE_URL + "?WSDL", dlg.getURI());
             List<String> items = dlg.getServices();
-            L.log(Level.FINE, "Services: {0}", items);
+            LOGGER.log(Level.FINE, "Services: {0}", items);
             Assert.assertEquals(1, items.size());
             Assert.assertTrue(items.contains("BibleWebservice"));
             items = dlg.getPorts();
-            L.log(Level.FINE, "Ports: {0}", items);
+            LOGGER.log(Level.FINE, "Ports: {0}", items);
             Assert.assertEquals(2, items.size());
             Assert.assertTrue(items.contains("BibleWebserviceSoap"));
             Assert.assertTrue(items.contains("BibleWebserviceSoap12"));
             dlg.selectPort(portName);
             items = dlg.getOperations();
-            L.log(Level.FINE, "Operations: {0}", items);
+            LOGGER.log(Level.FINE, "Operations: {0}", items);
             Assert.assertEquals(4, items.size());
             Assert.assertTrue(items.contains("GetBookTitles"));
             Assert.assertTrue(items.contains("GetBibleWordsByChapterAndVerse"));

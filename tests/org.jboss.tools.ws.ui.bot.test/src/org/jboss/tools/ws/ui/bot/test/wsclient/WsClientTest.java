@@ -8,23 +8,20 @@
  * Contributors:
  * Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.ws.ui.bot.test.wtp;
+package org.jboss.tools.ws.ui.bot.test.wsclient;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
-import org.jboss.tools.ws.ui.bot.test.WSAllBotTests;
+import org.jboss.tools.ws.ui.bot.test.WSTestBase;
 import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.WsWizardBase.Slider_Level;
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite.SuiteClasses;
 
-@Require(server=@Server(),perspective="Java EE")
-@RunWith(RequirementAwareSuite.class)
-@SuiteClasses({ WSAllBotTests.class})
+/**
+ * 
+ * @author jjankovi
+ *
+ */
 public class WsClientTest extends WSTestBase {
 
 	@Override
@@ -35,11 +32,6 @@ public class WsClientTest extends WSTestBase {
 	@Override
 	protected String getWsPackage() {
 		return "client." + getLevel().toString().toLowerCase();
-	}
-
-	@Override
-	protected String getWsName() {
-		return null;
 	}
 
 	@Test
@@ -85,7 +77,7 @@ public class WsClientTest extends WSTestBase {
 	}
 
 	private void clientTest(String targetPkg) {
-		createClient("http://footballpool.dataaccess.eu/data/info.wso?WSDL", getWsProjectName(), getLevel(), targetPkg);
+		clientHelper.createClient("http://footballpool.dataaccess.eu/data/info.wso?WSDL", getWsProjectName(), getLevel(), targetPkg);
 		IProject p = ResourcesPlugin.getWorkspace().getRoot().getProject(getWsProjectName());
 		String pkg = (targetPkg != null && !"".equals(targetPkg.trim())) ? getWsPackage() : "eu.dataaccess.footballpool";
 		String cls = "src/" + pkg.replace('.', '/') + "/Info.java";

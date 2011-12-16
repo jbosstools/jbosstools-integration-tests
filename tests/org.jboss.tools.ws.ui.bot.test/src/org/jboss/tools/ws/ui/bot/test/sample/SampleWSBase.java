@@ -16,7 +16,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.MessageFormat;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.xml.namespace.QName;
 
@@ -26,50 +25,29 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
-import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
-import org.jboss.tools.ws.ui.bot.test.WSAllBotTests;
+import org.jboss.tools.ws.ui.bot.test.WSTestBase;
 import org.jboss.tools.ws.ui.bot.test.uiutils.actions.NewSampleWSWizardAction;
 import org.jboss.tools.ws.ui.bot.test.uiutils.actions.TreeItemAction;
 import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.SampleWSWizard;
 import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.SampleWSWizard.Type;
-import org.jboss.tools.ws.ui.bot.test.utils.WSClient;
-import org.jboss.tools.ws.ui.bot.test.wtp.WSTestBase;
+import org.jboss.tools.ws.ui.bot.test.wsclient.WSClient;
 import org.junit.AfterClass;
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite.SuiteClasses;
 
-@Require(server=@Server(),perspective="Java EE")
-@RunWith(RequirementAwareSuite.class)
-@SuiteClasses({ WSAllBotTests.class })
+/**
+ * 
+ * @author jjankovi
+ *
+ */
 public class SampleWSBase extends WSTestBase {
 
 	protected static final String SOAP_REQUEST = getSoapRequest("<ns1:sayHello xmlns:ns1=\"http://{0}/\"><arg0>{1}</arg0></ns1:sayHello>");
     protected static final String SERVER_URL = "localhost:8080";
-    protected static final Logger L = Logger.getLogger(SampleSoapWebServiceTest.class.getName());
 	
     @AfterClass
     public static void clean() {
         servers.removeAllProjectsFromServer();
-        //projectExplorer.deleteAllProjects();
     }
     
-	@Override
-	protected String getWsProjectName() {		
-		return null;
-	}
-
-	@Override
-	protected String getWsPackage() {		
-		return null;
-	}
-
-	@Override
-	protected String getWsName() {		
-		return null;
-	}
-	
 	protected void createDD(String project) {
         SWTBotTree tree = projectExplorer.bot().tree();
         SWTBotTreeItem ti = tree.expandNode(project);
@@ -107,7 +85,7 @@ public class SampleWSBase extends WSTestBase {
         assertEquals(svcClass + ".java", ed.getTitle());
         String code = ed.toTextEditor().getText();
         assertContains("package " + svcPkg + ";", code);
-        String dd = readFile(getDD(project));
+        String dd = resourceHelper.readFile(getDD(project));
         switch (type) {
             case REST:
                 assertContains("@Path(\"/" + svcName + "\")", code);
@@ -120,17 +98,17 @@ public class SampleWSBase extends WSTestBase {
                 assertContains("<servlet-name>" + svcName + "</servlet-name>", dd);
                 break;
         }
-        runProject(project);
+        deploymentHelper.runProject(project);
         switch (type) {
             case REST:
                 try {
                     URL u = new URL("http://" + SERVER_URL + "/" + project + "/" + svcName);
-                    String s = readStream(u.openConnection().getInputStream());
+                    String s = resourceHelper.readStream(u.openConnection().getInputStream());
                     assertEquals(msgContent, s);
                 } catch (MalformedURLException e) {
-                    L.log(Level.WARNING, e.getMessage(), e);
+                    LOGGER.log(Level.WARNING, e.getMessage(), e);
                 } catch (IOException e) {
-                    L.log(Level.WARNING, e.getMessage(), e);
+                    LOGGER.log(Level.WARNING, e.getMessage(), e);
                 }
                 break;
             case SOAP:
@@ -140,7 +118,7 @@ public class SampleWSBase extends WSTestBase {
                             new QName("http://" + svcPkg + "/", svcClass + "Port"));
                     assertContains("Hello " + msgContent + "!", c.callService(MessageFormat.format(SOAP_REQUEST, svcPkg, msgContent)));
                 } catch (MalformedURLException e) {
-                    L.log(Level.WARNING, e.getMessage(), e);
+                    LOGGER.log(Level.WARNING, e.getMessage(), e);
                 }
                 break;
         }

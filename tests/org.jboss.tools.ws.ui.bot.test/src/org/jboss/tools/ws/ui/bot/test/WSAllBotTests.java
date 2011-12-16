@@ -11,14 +11,14 @@
 package org.jboss.tools.ws.ui.bot.test;
 
 import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
-import org.jboss.tools.ws.ui.bot.test.eap.EAPFromJavaTest;
-import org.jboss.tools.ws.ui.bot.test.eap.EAPFromWSDLTest;
-import org.jboss.tools.ws.ui.bot.test.jbt.WsTesterTest;
 import org.jboss.tools.ws.ui.bot.test.sample.SampleRESTWebServiceTest;
 import org.jboss.tools.ws.ui.bot.test.sample.SampleSoapWebServiceTest;
-import org.jboss.tools.ws.ui.bot.test.wtp.BottomUpWSTest;
-import org.jboss.tools.ws.ui.bot.test.wtp.TopDownWSTest;
-import org.jboss.tools.ws.ui.bot.test.wtp.WsClientTest;
+import org.jboss.tools.ws.ui.bot.test.webservice.BottomUpWSTest;
+import org.jboss.tools.ws.ui.bot.test.webservice.TopDownWSTest;
+import org.jboss.tools.ws.ui.bot.test.webservice.eap.EAPFromJavaTest;
+import org.jboss.tools.ws.ui.bot.test.webservice.eap.EAPFromWSDLTest;
+import org.jboss.tools.ws.ui.bot.test.wsclient.WsClientTest;
+import org.jboss.tools.ws.ui.bot.test.wstester.WsTesterTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 

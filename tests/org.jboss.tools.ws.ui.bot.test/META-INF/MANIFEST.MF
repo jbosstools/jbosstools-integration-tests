@@ -35,4 +35,4 @@ Export-Package: org.jboss.tools.ws.ui.bot.test;
    org.jboss.tools.ui.bot.ext,
    org.osgi.framework,
    org.jboss.tools.ws.ui.bot.test.uiutils.wizards",
- org.jboss.tools.ws.ui.bot.test.eap
+ org.jboss.tools.ws.ui.bot.test.webservice.eap

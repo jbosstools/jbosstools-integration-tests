@@ -8,7 +8,7 @@
  * Contributors:
  * Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.ws.ui.bot.test.utils;
+package org.jboss.tools.ws.ui.bot.test.wsclient;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

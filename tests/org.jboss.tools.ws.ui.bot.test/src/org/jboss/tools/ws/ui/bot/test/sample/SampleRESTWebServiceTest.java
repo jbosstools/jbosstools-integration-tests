@@ -20,8 +20,14 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ws.ui.bot.test.uiutils.actions.TreeItemAction;
 import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.SampleWSWizard.Type;
+import org.junit.Ignore;
 import org.junit.Test;
 
+/**
+ * 
+ * @author jjankovi
+ *
+ */
 public class SampleRESTWebServiceTest extends SampleWSBase {
 
 	private final String REST_WS_NODE = "JAX-RS REST Web Services";
@@ -46,7 +52,7 @@ public class SampleRESTWebServiceTest extends SampleWSBase {
         createSampleRESTWS(getWsProjectName(), "RESTSample", "rest.sample", "Sample", "RESTApp");        
         checkRESTService(getWsProjectName(), "RESTSample", "rest.sample", "Sample", "Hello World!", "RESTApp");
     }  
-    
+    @Ignore //not implemented yet
     @Test
     public void testSimpleRestWS() {
     	
@@ -69,7 +75,7 @@ public class SampleRESTWebServiceTest extends SampleWSBase {
 
     private void createSampleRESTWS(String project, String name, String pkg, String cls, String appCls) {
     	SWTBotEditor ed = createSampleService(Type.REST, project, name, pkg, cls, appCls);      	
-    	copyResourceToClass(ed, SampleRESTWebServiceTest.class.
+    	resourceHelper.copyResourceToClass(ed, SampleRESTWebServiceTest.class.
     			getResourceAsStream("/resources/jbossws/Rest.java.ws"),false);    	
     }
  

@@ -11,8 +11,14 @@
 package org.jboss.tools.ws.ui.bot.test.sample;
 
 import org.eclipse.core.resources.IFile;
+import org.junit.Ignore;
 import org.junit.Test;
 
+/**
+ * 
+ * @author jjankovi
+ *
+ */
 public class SampleSoapWebServiceTest extends SampleWSBase {
 
     @Override
@@ -33,10 +39,9 @@ public class SampleSoapWebServiceTest extends SampleWSBase {
         createSampleSOAPWS(getWsProjectName(), "GreetService", "greeter", "Greeter");
         checkSOAPService(getWsProjectName(), "GreetService", "greeter", "Greeter", "Tester");
     }
-    
+    @Ignore //not implemented yet
     @Test
     public void testSimpleSoapWS() {
     	
     }
-
 }

@@ -8,22 +8,18 @@
  * Contributors:
  * Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.ws.ui.bot.test.wtp;
+package org.jboss.tools.ws.ui.bot.test.webservice;
 
-import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
-import org.jboss.tools.ws.ui.bot.test.WSAllBotTests;
 import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.WsWizardBase.Slider_Level;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite.SuiteClasses;
 
-@Require(server=@Server(),perspective="Java EE")
-@RunWith(RequirementAwareSuite.class)
-@SuiteClasses({ WSAllBotTests.class})
-public class TopDownWSTest extends WSTestBase {
+/**
+ * 
+ * @author jjankovi
+ *
+ */
+public class TopDownWSTest extends WebServiceTestBase {
 
 	@Override
 	protected String getEarProjectName() {
@@ -111,10 +107,10 @@ public class TopDownWSTest extends WSTestBase {
 			case DEVELOP:
 			case ASSEMBLE:
 			case DEPLOY:
-				runProject(getEarProjectName());
+				deploymentHelper.runProject(getEarProjectName());
 				break;
 		}
-		assertServiceDeployed(getWSDLUrl(), 10000);
+		deploymentHelper.assertServiceDeployed(deploymentHelper.getWSDLUrl(getWsProjectName(), getWsName()), 10000);
 		servers.removeAllProjectsFromServer(configuredState.getServer().name);
 	}
 }

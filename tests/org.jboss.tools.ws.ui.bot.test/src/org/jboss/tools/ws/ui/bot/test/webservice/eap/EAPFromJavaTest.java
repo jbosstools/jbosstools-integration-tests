@@ -8,10 +8,10 @@
  * Contributors:
  * Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.ws.ui.bot.test.eap;
+
+package org.jboss.tools.ws.ui.bot.test.webservice.eap;
 
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -20,45 +20,36 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
-import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
-import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
 import org.jboss.tools.ws.ui.bot.test.WSAllBotTests;
 import org.jboss.tools.ws.ui.bot.test.uiutils.actions.NewFileWizardAction;
 import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.Wizard;
 import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.WsWizardBase.Slider_Level;
-import org.jboss.tools.ws.ui.bot.test.wtp.WSTestBase;
+import org.jboss.tools.ws.ui.bot.test.webservice.WebServiceTestBase;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
-@Require(server=
-@Server(type = ServerType.EAP), perspective = "Java EE")
-@RunWith(RequirementAwareSuite.class)
+/**
+ * 
+ * @author jjankovi
+ *
+ */
 @SuiteClasses({ WSAllBotTests.class, EAPCompAllTests.class })
+public class EAPFromJavaTest extends WebServiceTestBase {
 
-
-public class EAPFromJavaTest extends WSTestBase {
-
-    private static final Logger L = Logger.getLogger(EAPFromJavaTest.class.getName());
     private static boolean servicePassed = false;
-
-    public EAPFromJavaTest() {
-    }
 
     @Before
     @Override
     public void setup() {
         if (!projectExists(getWsProjectName())) {
-            createProject(getWsProjectName());
+            projectHelper.createProject(getWsProjectName());
         }
         if (!projectExists(getWsClientProjectName())) {
-            createProject(getWsClientProjectName());
+        	projectHelper.createProject(getWsClientProjectName());
         }
     }
 
@@ -106,33 +97,34 @@ public class EAPFromJavaTest extends WSTestBase {
     @Test
     public void testService() {
         //create a class representing some complex type
-        SWTBotEclipseEditor st = createClass("test", "Person").toTextEditor();
+        SWTBotEclipseEditor st = projectHelper.createClass(getWsProjectName(), "test", "Person").toTextEditor();
         st.selectRange(0, 0, st.getText().length());
-        st.setText(readStream(EAPFromJavaTest.class.getResourceAsStream("/resources/jbossws/Person.java.ws")));
+        st.setText(resourceHelper.readStream(EAPFromJavaTest.class.getResourceAsStream("/resources/jbossws/Person.java.ws")));
         st.saveAndClose();
         //refresh workspace - workaround??? for JBIDE-6731
         try {
             ResourcesPlugin.getWorkspace().getRoot().refreshLocal(IWorkspaceRoot.DEPTH_INFINITE, new NullProgressMonitor());
         } catch (CoreException e) {
-            L.log(Level.WARNING, e.getMessage(), e);
+            LOGGER.log(Level.WARNING, e.getMessage(), e);
         }
         bot.sleep(TIME_500MS);
         bottomUpJbossWebService(EAPFromJavaTest.class.getResourceAsStream("/resources/jbossws/Echo.java.ws"));
         IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(getWsProjectName());
         IFile f = project.getFile("WebContent/WEB-INF/web.xml");
-        String content = readFile(f);
+        String content = resourceHelper.readFile(f);
         Assert.assertNotNull(content);
         Assert.assertTrue(content.contains("<servlet-class>test.ws.Echo</servlet-class>"));
         Assert.assertTrue(content.contains("<url-pattern>/Echo</url-pattern>"));
-        runProject(getEarProjectName());
-        assertServiceDeployed(getWSDLUrl(), 10000);
+        deploymentHelper.runProject(getEarProjectName());
+        deploymentHelper.assertServiceDeployed(deploymentHelper.getWSDLUrl(getWsProjectName(), getWsName()), 10000);
         servicePassed = true;
     }
 
     @Test
     public void testClient() {
         Assert.assertTrue("service must exist", servicePassed);
-        createClient(getWSDLUrl(), getWsClientProjectName(), getLevel(), "");
+        clientHelper.createClient(deploymentHelper.getWSDLUrl(getWsProjectName(), getWsName()), 
+        			getWsClientProjectName(), getLevel(), "");
         IProject p = ResourcesPlugin.getWorkspace().getRoot().getProject(getWsClientProjectName());
         String pkg = "test/ws";
         String cls = "src/" + pkg + "/EchoService.java";
@@ -154,12 +146,12 @@ public class EAPFromJavaTest extends WSTestBase {
          */
         SWTBotEclipseEditor st = bot.editorByTitle("index.jsp").toTextEditor();
         st.selectRange(0, 0, st.getText().length());
-        st.setText(readStream(EAPFromJavaTest.class.getResourceAsStream("/resources/jbossws/index.jsp.ws")));
+        st.setText(resourceHelper.readStream(EAPFromJavaTest.class.getResourceAsStream("/resources/jbossws/index.jsp.ws")));
         st.saveAndClose();
         bot.sleep(TIME_1S*2);
-        runProject(getWsClientProjectName());
-        String pageContent = getPage("http://localhost:8080/" + getWsClientProjectName() + "/index.jsp", 15000);
-        L.info(pageContent);
+        deploymentHelper.runProject(getWsClientProjectName());
+        String pageContent = deploymentHelper.getPage("http://localhost:8080/" + getWsClientProjectName() + "/index.jsp", 15000);
+        LOGGER.info(pageContent);
         Assert.assertTrue(pageContent.contains("BartSimpson(age: 12)"));
         Assert.assertTrue(pageContent.contains("Homer(age: 44)"));
     }

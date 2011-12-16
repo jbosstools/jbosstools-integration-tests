@@ -8,12 +8,12 @@
  * Contributors:
  * Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.ws.ui.bot.test.eap;
+
+package org.jboss.tools.ws.ui.bot.test.webservice.eap;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -26,58 +26,51 @@ import org.eclipse.swtbot.swt.finder.results.Result;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
-import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
 import org.jboss.tools.ui.bot.ext.SWTUtilExt;
 import org.jboss.tools.ui.bot.ext.Timing;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
-import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
 import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
 import org.jboss.tools.ws.ui.bot.test.WSAllBotTests;
 import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.WsWizardBase.Slider_Level;
-import org.jboss.tools.ws.ui.bot.test.wtp.TopDownWSTest;
-import org.jboss.tools.ws.ui.bot.test.wtp.WSTestBase;
+import org.jboss.tools.ws.ui.bot.test.webservice.TopDownWSTest;
+import org.jboss.tools.ws.ui.bot.test.webservice.WebServiceTestBase;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
-@Require(server = @Server(type = ServerType.EAP), perspective = "Java EE")
-@RunWith(RequirementAwareSuite.class)
+/**
+ * 
+ * @author jjankovi
+ *
+ */
 @SuiteClasses({ WSAllBotTests.class, EAPCompAllTests.class })
-public class EAPFromWSDLTest extends WSTestBase {
+public class EAPFromWSDLTest extends WebServiceTestBase {
 
-	private static final Logger L = Logger.getLogger(EAPFromWSDLTest.class
-			.getName());
 	private static boolean servicePassed = false;
-
-	public EAPFromWSDLTest() {
-	}
 
 	@Before
 	@Override
 	public void setup() {
 		if (!projectExists(getWsProjectName())) {
-			createProject(getWsProjectName());
+			projectHelper.createProject(getWsProjectName());
 		}
 		if (!projectExists(getWsClientProjectName())) {
-			createProject(getWsClientProjectName());
+			projectHelper.createProject(getWsClientProjectName());
 		}
 	}
 
 	@After
 	@Override
 	public void cleanup() {
-		L.info("overridden");
+		LOGGER.info("overridden");
 	}
 
 	@AfterClass
 	public static void x() {
-		L.info("x");
+		LOGGER.info("x");
 		servers.removeAllProjectsFromServer();
 	}
 
@@ -130,7 +123,7 @@ public class EAPFromWSDLTest extends WSTestBase {
 			f = project.getFile("src/" + "org.tempuri.areaservice"
 					+ "/AreaServiceImpl.java");
 		}
-		String content = readFile(f);
+		String content = resourceHelper.readFile(f);
 		Assert.assertNotNull(content);
 		Assert.assertTrue(content
 				.contains("public class AreaServiceImpl implements AreaService {"));
@@ -139,22 +132,22 @@ public class EAPFromWSDLTest extends WSTestBase {
 		replaceContent(f, "/resources/jbossws/AreaWS.java.ws");
 
 		f = project.getFile("WebContent/WEB-INF/web.xml");
-		content = readFile(f);
+		content = resourceHelper.readFile(f);
 		Assert.assertNotNull(content);
 		Assert.assertTrue(content
 				.contains("<servlet-class>org.jboss.ws.AreaServiceImpl</servlet-class>"));
 		Assert.assertTrue(content
 				.contains("<url-pattern>/AreaService</url-pattern>"));
-		runProject(getEarProjectName());
-		assertServiceDeployed(getWSDLUrl(), 10000);
+		deploymentHelper.runProject(getEarProjectName());
+		deploymentHelper.assertServiceDeployed(deploymentHelper.getWSDLUrl(getWsProjectName(), getWsName()), 10000);
 		servicePassed = true;
 	}
 
 	@Test
 	public void testClient() {
 		Assert.assertTrue("service must exist", servicePassed);
-		createClient(getWSDLUrl(), getWsClientProjectName(),
-				Slider_Level.DEVELOP, "org.jboss.wsclient");
+		clientHelper.createClient(deploymentHelper.getWSDLUrl(getWsProjectName(), getWsName()), 
+				getWsClientProjectName(), Slider_Level.DEVELOP, "org.jboss.wsclient");
 		IProject p = ResourcesPlugin.getWorkspace().getRoot()
 				.getProject(getWsClientProjectName());
 		String pkg = "org/jboss/wsclient";
@@ -179,7 +172,7 @@ public class EAPFromWSDLTest extends WSTestBase {
 		util.waitForNonIgnoredJobs();
 		bot.sleep(15 * TIME_1S);
 		String output = console.getConsoleText();
-		L.info(output);
+		LOGGER.info(output);
 		Assert.assertTrue(output, output.contains("Server said: 37.5"));
 		Assert.assertTrue(output.contains("Server said: 3512.3699"));
 	}
@@ -188,14 +181,14 @@ public class EAPFromWSDLTest extends WSTestBase {
 		try {
 			f.delete(true, new NullProgressMonitor());
 		} catch (CoreException ce) {
-			L.log(Level.WARNING, ce.getMessage(), ce);
+			LOGGER.log(Level.WARNING, ce.getMessage(), ce);
 		}
 		InputStream is = null;
 		try {
 			is = EAPFromWSDLTest.class.getResourceAsStream(content);
 			f.create(is, true, new NullProgressMonitor());
 		} catch (CoreException ce) {
-			L.log(Level.WARNING, ce.getMessage(), ce);
+			LOGGER.log(Level.WARNING, ce.getMessage(), ce);
 		} finally {
 			if (is != null) {
 				try {
@@ -212,7 +205,7 @@ public class EAPFromWSDLTest extends WSTestBase {
 					.refreshLocal(IWorkspaceRoot.DEPTH_INFINITE,
 							new NullProgressMonitor());
 		} catch (CoreException e) {
-			L.log(Level.WARNING, e.getMessage(), e);
+			LOGGER.log(Level.WARNING, e.getMessage(), e);
 		}
 		util.waitForNonIgnoredJobs();
 		bot.sleep(TIME_1S);
