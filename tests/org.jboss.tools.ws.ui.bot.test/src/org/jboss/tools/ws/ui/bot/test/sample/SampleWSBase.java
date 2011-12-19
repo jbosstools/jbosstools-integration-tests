@@ -27,11 +27,12 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.ws.ui.bot.test.WSTestBase;
 import org.jboss.tools.ws.ui.bot.test.uiutils.actions.NewSampleWSWizardAction;
+import org.jboss.tools.ws.ui.bot.test.uiutils.actions.NewSimpleWSWizardAction;
 import org.jboss.tools.ws.ui.bot.test.uiutils.actions.TreeItemAction;
 import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.SampleWSWizard;
-import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.SampleWSWizard.Type;
+import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.SimpleWSWizard;
+import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.Type;
 import org.jboss.tools.ws.ui.bot.test.wsclient.WSClient;
-import org.junit.AfterClass;
 
 /**
  * 
@@ -42,11 +43,6 @@ public class SampleWSBase extends WSTestBase {
 
 	protected static final String SOAP_REQUEST = getSoapRequest("<ns1:sayHello xmlns:ns1=\"http://{0}/\"><arg0>{1}</arg0></ns1:sayHello>");
     protected static final String SERVER_URL = "localhost:8080";
-	
-    @AfterClass
-    public static void clean() {
-        servers.removeAllProjectsFromServer();
-    }
     
 	protected void createDD(String project) {
         SWTBotTree tree = projectExplorer.bot().tree();
@@ -58,22 +54,35 @@ public class SampleWSBase extends WSTestBase {
         util.waitForNonIgnoredJobs();
         bot.sleep(1500);
     }
-   
-    protected void createSampleSOAPWS(String project, String name, String pkg, String cls) {
-        createSampleService(Type.SOAP, project, name, pkg, cls, null);
-    }
-   
-    protected void checkSOAPService(String project, String svcName, String svcPkg, String svcClass, String msgContent) {
-        checkService(Type.SOAP, project, svcName, svcPkg, svcClass, msgContent, null);
-    }
-   
+	
+	protected IProject getProject(String project) {
+		return ResourcesPlugin.getWorkspace().getRoot().getProject(project);
+	}
+
+	protected IFile getDD(String project) {
+		return getProject(project).getFile("WebContent/WEB-INF/web.xml");
+	}
+	
     protected SWTBotEditor createSampleService(Type type, String project, String name, String pkg, String cls, String appCls) {
-        SampleWSWizard w = new NewSampleWSWizardAction(type).run();
+       SampleWSWizard w = new NewSampleWSWizardAction(type).run();    
+       w.setProjectName(project).setServiceName(name);
+       w.setPackageName(pkg).setClassName(cls);
+       if (type == Type.REST) {
+           w.setApplicationClassName(appCls);
+           w.addRESTEasyLibraryFromRuntime();
+       }
+       w.finish();
+       util.waitForNonIgnoredJobs();
+       return bot.editorByTitle(cls + ".java");
+    }
+    
+    protected SWTBotEditor createSimpleService(Type type, String project, String name, String pkg, String cls, String appCls) {
+    	SimpleWSWizard w = new NewSimpleWSWizardAction(type).run();    	
         w.setProjectName(project).setServiceName(name);
         w.setPackageName(pkg).setClassName(cls);
         if (type == Type.REST) {
-            w.setApplicationClassName(appCls);
-            w.addRESTEasyLibraryFromRuntime();
+        	w.addRESTEasyLibraryFromRuntime();
+            w.setApplicationClassName(appCls);            
         }
         w.finish();
         util.waitForNonIgnoredJobs();
@@ -81,8 +90,8 @@ public class SampleWSBase extends WSTestBase {
     }
 
     protected void checkService(Type type, String project, String svcName, String svcPkg, String svcClass, String msgContent, String appCls) {
-        SWTBotEditor ed = bot.activeEditor();
-        assertEquals(svcClass + ".java", ed.getTitle());
+        SWTBotEditor ed = bot.editorByTitle(svcClass + ".java");
+        ed.show();
         String code = ed.toTextEditor().getText();
         assertContains("package " + svcPkg + ";", code);
         String dd = resourceHelper.readFile(getDD(project));
@@ -124,13 +133,4 @@ public class SampleWSBase extends WSTestBase {
         }
     }
     
-    protected IProject getProject(String project) {
-        return ResourcesPlugin.getWorkspace().getRoot().getProject(project);
-    }
-
-    protected IFile getDD(String project) {
-        return getProject(project).getFile("WebContent/WEB-INF/web.xml");
-    }
-	
-
 }

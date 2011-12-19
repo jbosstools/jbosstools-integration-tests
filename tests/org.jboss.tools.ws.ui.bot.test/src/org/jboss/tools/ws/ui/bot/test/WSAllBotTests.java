@@ -11,8 +11,10 @@
 package org.jboss.tools.ws.ui.bot.test;
 
 import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
-import org.jboss.tools.ws.ui.bot.test.sample.SampleRESTWebServiceTest;
-import org.jboss.tools.ws.ui.bot.test.sample.SampleSoapWebServiceTest;
+import org.jboss.tools.ws.ui.bot.test.sample.test.SampleRESTWebServiceTest;
+import org.jboss.tools.ws.ui.bot.test.sample.test.SampleSoapWebServiceTest;
+import org.jboss.tools.ws.ui.bot.test.sample.test.SimpleRESTWebServiceTest;
+import org.jboss.tools.ws.ui.bot.test.sample.test.SimpleSoapWebServiceTest;
 import org.jboss.tools.ws.ui.bot.test.webservice.BottomUpWSTest;
 import org.jboss.tools.ws.ui.bot.test.webservice.TopDownWSTest;
 import org.jboss.tools.ws.ui.bot.test.webservice.eap.EAPFromJavaTest;
@@ -45,6 +47,8 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses({
 	SampleSoapWebServiceTest.class,
 	SampleRESTWebServiceTest.class,
+	SimpleSoapWebServiceTest.class,
+	SimpleRESTWebServiceTest.class,
 	BottomUpWSTest.class,
 	TopDownWSTest.class,
 	WsClientTest.class,

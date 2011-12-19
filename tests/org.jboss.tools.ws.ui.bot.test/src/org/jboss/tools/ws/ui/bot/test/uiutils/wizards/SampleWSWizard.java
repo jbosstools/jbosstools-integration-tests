@@ -10,32 +10,13 @@
  ******************************************************************************/
 package org.jboss.tools.ws.ui.bot.test.uiutils.wizards;
 
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCombo;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
 import org.jboss.tools.ws.ui.messages.JBossWSUIMessages;
-import org.osgi.framework.Bundle;
 
 public class SampleWSWizard extends Wizard {
 
-	private static final Bundle WSUI_BUNDLE = Platform.getBundle("org.jboss.tools.ws.ui");
-	
-	public enum Type {
-		SOAP, REST;
-	
-		public String getLabel() {
-			switch (this) {
-			case SOAP:
-				return getStringFromBundle("%JBOSSWS_GENERATEACTION_LABEL");
-			case REST:
-				return getStringFromBundle("%restful.wizard.name");
-			default:
-				throw new IllegalArgumentException("Unknown type: " + this);
-			}
-		}
-	}
-	
 	private Type type;
 	
 	public SampleWSWizard(Type type) throws WidgetNotFoundException {
@@ -79,7 +60,4 @@ public class SampleWSWizard extends Wizard {
 		return this;
 	}
 	
-	private static String getStringFromBundle(String key) {
-		return Platform.getResourceString(WSUI_BUNDLE, key);
-	}
 }

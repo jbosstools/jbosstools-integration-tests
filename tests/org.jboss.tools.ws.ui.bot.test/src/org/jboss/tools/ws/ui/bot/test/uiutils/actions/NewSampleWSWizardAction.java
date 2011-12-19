@@ -11,7 +11,7 @@
 package org.jboss.tools.ws.ui.bot.test.uiutils.actions;
 
 import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.SampleWSWizard;
-import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.SampleWSWizard.Type;
+import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.Type;
 import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.Wizard;
 
 public class NewSampleWSWizardAction extends NewFileWizardAction {

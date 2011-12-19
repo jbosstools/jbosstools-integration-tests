@@ -69,12 +69,6 @@ public class WSTestBase extends SWTTestExt {
 		servers.removeAllProjectsFromServer();
 	}
 
-	@AfterClass
-	public static void cleanAll() {
-		LOGGER.info("cleanAll");
-		projectExplorer.deleteAllProjects();
-	}
-	
 	protected Slider_Level getLevel() {
 		return level;
 	}

@@ -8,10 +8,10 @@
  * Contributors:
  * Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.ws.ui.bot.test.sample;
+package org.jboss.tools.ws.ui.bot.test.sample.test;
 
 import org.eclipse.core.resources.IFile;
-import org.junit.Ignore;
+import org.jboss.tools.ws.ui.bot.test.sample.SampleRESTTestBase;
 import org.junit.Test;
 
 /**
@@ -19,29 +19,22 @@ import org.junit.Test;
  * @author jjankovi
  *
  */
-public class SampleSoapWebServiceTest extends SampleWSBase {
+public class SampleRESTWebServiceTest extends SampleRESTTestBase {
 
     @Override
     protected String getWsProjectName() {
-        return "SampleSOAPWS";
+        return "SampleRESTWS";
     }
-
+    
     @Test
-    public void testSampleSoapWS() {
-    	IFile dd = getDD(getWsProjectName());
+    public void testSampleRestWS() {    	
+        IFile dd = getDD(getWsProjectName());
         if (!dd.exists()) {
             createDD(getWsProjectName());
         }
         assertTrue(dd.exists());
-        createSampleSOAPWS(getWsProjectName(), "HelloService", "sample", "SampleService");
-        checkSOAPService(getWsProjectName(), "HelloService", "sample", "SampleService", "You");
-
-        createSampleSOAPWS(getWsProjectName(), "GreetService", "greeter", "Greeter");
-        checkSOAPService(getWsProjectName(), "GreetService", "greeter", "Greeter", "Tester");
-    }
-    @Ignore //not implemented yet
-    @Test
-    public void testSimpleSoapWS() {
-    	
-    }
+        createSampleRESTWS(getWsProjectName(), "RESTSample", "rest.sample", "Sample", "RESTApp");        
+        checkRESTService(getWsProjectName(), "RESTSample", "rest.sample", "Sample", "Hello World!", "RESTApp");
+    }  
+   
 }
