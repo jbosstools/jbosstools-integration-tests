@@ -45,10 +45,10 @@ public class WSTestBase extends SWTTestExt {
 	protected static final Logger LOGGER = Logger
 			.getLogger(WSTestBase.class.getName());
 	
-	protected static ResourceHelper resourceHelper = new ResourceHelper();
-	protected static ProjectHelper projectHelper = new ProjectHelper();
-	protected static DeploymentHelper deploymentHelper = new DeploymentHelper();
-	protected static WebServiceClientHelper clientHelper = new WebServiceClientHelper();
+	protected static final ResourceHelper resourceHelper = new ResourceHelper();
+	protected static final ProjectHelper projectHelper = new ProjectHelper();
+	protected static final DeploymentHelper deploymentHelper = new DeploymentHelper();
+	protected static final WebServiceClientHelper clientHelper = new WebServiceClientHelper();
 
 	@Before
 	public void setup() {
