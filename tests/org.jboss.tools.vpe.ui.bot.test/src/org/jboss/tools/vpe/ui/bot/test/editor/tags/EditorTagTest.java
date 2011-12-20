@@ -42,9 +42,9 @@ public class EditorTagTest extends AbstractTagTest{
   @Override
   protected void verifyTag() {
     assertVisualEditorContains(getVisualEditor(),
-      "DIV", 
+      "TEXTAREA", 
       new String[]{"class"},
-      new String[]{"mceIframeContainer"},
+      new String[]{"jbds_rf_editor_content_textarea_internal_css_class"},
       getTestPageFileName());
     // check tag selection
     getVisualEditor().selectDomNode(getVisualEditor().getDomNodeByTagName("DIV",4), 0);

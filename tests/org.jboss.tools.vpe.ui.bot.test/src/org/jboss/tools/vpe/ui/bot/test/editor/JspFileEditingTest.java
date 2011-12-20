@@ -15,6 +15,7 @@ import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
+import org.jboss.tools.ui.bot.ext.SWTJBTExt;
 import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.helper.KeyboardHelper;
 import org.jboss.tools.ui.bot.ext.parts.SWTBotTableExt;
@@ -92,7 +93,8 @@ public class JspFileEditingTest extends VPEEditorTestCase {
     final SWTBotEclipseEditor jspTextEditor = botExt.editorByTitle(TEST_PAGE)
         .toTextEditor();
     jspTextEditor.save();
-    botExt.toolbarButtonWithTooltip(IDELabel.Button.REFRESH).click();
+    botExt.toolbarButtonWithTooltip(SWTJBTExt.isRunningOnMacOs() ? 
+        IDELabel.ToolbarButton.REFRESH_MAC_OS: IDELabel.ToolbarButton.REFRESH).click();
     botExt.sleep(Timing.time1S());
     String editorText = jspTextEditor.getText();
     String testText = "<h:outputText value=\"" + outputTextValue + "\">";

@@ -57,16 +57,16 @@ public class PickListTagTest extends AbstractTagTest{
   @Override
   protected void verifyTag() {
     assertVisualEditorContainsNodeWithValue(getVisualEditor(),
-      "Copy all", 
+      "⇒ Copy all", 
       getTestPageFileName());
     assertVisualEditorContainsNodeWithValue(getVisualEditor(),
-      "Copy", 
+      "→ Copy", 
       getTestPageFileName());
     assertVisualEditorContainsNodeWithValue(getVisualEditor(),
-      "Remove All", 
+      "⇐ Remove All", 
       getTestPageFileName());
     assertVisualEditorContainsNodeWithValue(getVisualEditor(),
-      "Remove", 
+      "← Remove", 
       getTestPageFileName());
     assertVisualEditorContains(getVisualEditor(),
       "TABLE", 
