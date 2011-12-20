@@ -3,7 +3,6 @@ package org.jboss.tools.portlet.ui.bot.test.example;
 import static org.jboss.tools.portlet.ui.bot.entity.EntityFactory.file;
 
 import org.jboss.tools.portlet.ui.bot.entity.WorkspaceFile;
-import org.jboss.tools.portlet.ui.bot.task.server.MarkFileAsDeployableTask;
 import org.jboss.tools.portlet.ui.bot.task.server.RunningFileOnServerTask;
 import org.jboss.tools.ui.bot.ext.config.Annotations.DB;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;

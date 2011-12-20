@@ -1,8 +1,7 @@
 package org.jboss.tools.portlet.ui.bot.test.template;
 
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.not;
-import static org.jboss.tools.portlet.ui.bot.matcher.factory.DefaultMatchersFactory.inConsoleOutput;
+import static org.jboss.tools.portlet.ui.bot.matcher.factory.DefaultMatchersFactory.exceptionInConsoleOutput;
 
 import org.jboss.tools.portlet.ui.bot.task.console.ConsoleClearingTask;
 import org.jboss.tools.portlet.ui.bot.task.server.RunninngProjectOnServerTask;
@@ -30,6 +29,6 @@ public abstract class RunPortletOnServerTemplate extends SWTTaskBasedTestCase {
 		doPerform(new ConsoleClearingTask());
 		doPerform(new RunninngProjectOnServerTask(getProjectName()));
 		
-		assertThat("Exception:", not(inConsoleOutput()));
+		doAssertThatInWorkspace(not(exceptionInConsoleOutput()));
 	}
 }

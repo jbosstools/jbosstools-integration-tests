@@ -1,6 +1,6 @@
 package org.jboss.tools.portlet.ui.bot.test.testcase;
 
-import static org.junit.Assert.assertThat;
+import static org.jboss.tools.portlet.ui.bot.matcher.WorkspaceAssert.assertThatInWorkspace;
 
 import org.hamcrest.Matcher;
 import org.jboss.tools.portlet.ui.bot.matcher.SWTMatcher;
@@ -23,11 +23,32 @@ public class SWTTaskBasedTestCase extends SWTTestExt {
 		task.perform();
 	}
 	
-	protected <T> void doAssertThat(T actual, Matcher<T> matcher){
+	protected void doAssertThatInWorkspace(Matcher<Void> matcher){
 		if (matcher instanceof SWTBotAware){
 			((SWTBotAware) matcher).setBot(bot);			
 		}
-		assertThat(actual, matcher);
+		assertThatInWorkspace(matcher);
+	}
+	
+	protected void doAssertThatInWorkspace(String reason, Matcher<Void> matcher){
+		if (matcher instanceof SWTBotAware){
+			((SWTBotAware) matcher).setBot(bot);			
+		}
+		assertThatInWorkspace(reason, matcher);
+	}
+	
+	protected <T> void doAssertThatInWorkspace(T actual, Matcher<T> matcher){
+		if (matcher instanceof SWTBotAware){
+			((SWTBotAware) matcher).setBot(bot);			
+		}
+		assertThatInWorkspace(actual, matcher);
+	}
+	
+	protected <T> void doAssertThatInWorkspace(String description, T actual, Matcher<T> matcher){
+		if (matcher instanceof SWTBotAware){
+			((SWTBotAware) matcher).setBot(bot);			
+		}
+		assertThatInWorkspace(description, actual, matcher);
 	}
 	
 }

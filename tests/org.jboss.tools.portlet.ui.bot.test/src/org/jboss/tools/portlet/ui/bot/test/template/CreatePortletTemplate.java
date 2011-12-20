@@ -50,12 +50,12 @@ public abstract class CreatePortletTemplate extends SWTTaskBasedTestCase {
 	public void testCreate(){
 		doPerform(getCreatePortletTask());
 
-		doAssertThat(0, isNumberOfErrors());
-		doAssertThat(getExpectedWorkspaceFiles(), exist());
+		doAssertThatInWorkspace(0, isNumberOfErrors());
+		doAssertThatInWorkspace(getExpectedWorkspaceFiles(), exist());
 		if (getNonExpectedWorkspaceFiles().size() > 0){
-			doAssertThat(getNonExpectedWorkspaceFiles(), not(exist()));
+			doAssertThatInWorkspace(getNonExpectedWorkspaceFiles(), not(exist()));
 		}
-		doAssertThat(file(getProjectName(), WEB_INF + "portlet.xml"), 
+		doAssertThatInWorkspace(file(getProjectName(), WEB_INF + "portlet.xml"), 
 				containsNodes(getExpectedXMLNodes()));
 	}
 

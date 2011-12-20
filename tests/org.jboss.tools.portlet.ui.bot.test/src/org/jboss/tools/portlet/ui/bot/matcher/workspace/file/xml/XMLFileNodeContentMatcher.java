@@ -9,7 +9,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.hamcrest.Description;
 import org.jboss.tools.portlet.ui.bot.entity.WorkspaceFile;
 import org.jboss.tools.portlet.ui.bot.entity.XMLNode;
-import org.jboss.tools.portlet.ui.bot.matcher.AbstractSWTMatcher;
+import org.jboss.tools.portlet.ui.bot.matcher.JavaPerspectiveAbstractSWTMatcher;
 import org.jboss.tools.ui.bot.ext.SWTBotFactory;
 import org.jboss.tools.ui.bot.ext.SWTEclipseExt;
 import org.jboss.tools.ui.bot.ext.parts.SWTBotEditorExt;
@@ -20,7 +20,7 @@ import org.jboss.tools.ui.bot.ext.parts.SWTBotEditorExt;
  * @author Lucia Jelinkova
  *
  */
-public class XMLFileNodeContentMatcher extends AbstractSWTMatcher<WorkspaceFile> {
+public class XMLFileNodeContentMatcher extends JavaPerspectiveAbstractSWTMatcher<WorkspaceFile> {
 
 	private List<XMLNode> nodes;
 	
@@ -30,7 +30,7 @@ public class XMLFileNodeContentMatcher extends AbstractSWTMatcher<WorkspaceFile>
 	}
 	
 	@Override
-	public boolean matchesSafely(WorkspaceFile file) {
+	protected boolean matchesSafelyInJavaPerspective(WorkspaceFile file) {
 		SWTBotFactory.getPackageexplorer().openFile(file.getProject(), file.getFilePathAsArray());
 		SWTBotEditorExt editor = SWTBotFactory.getBot().swtBotEditorExtByTitle(file.getFileName());
 		SWTBotTree tree = editor.bot().tree();
@@ -58,7 +58,7 @@ public class XMLFileNodeContentMatcher extends AbstractSWTMatcher<WorkspaceFile>
 	
 	@Override
 	public void describeTo(Description description) {
-		description.appendText("file containing nodes: " + nodes);
+		description.appendText("contains XML nodes: " + nodes);
 	}
 }
 

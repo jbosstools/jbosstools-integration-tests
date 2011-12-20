@@ -1,9 +1,8 @@
 package org.jboss.tools.portlet.ui.bot.matcher.workspace;
 
 import org.hamcrest.Description;
-import org.jboss.tools.portlet.ui.bot.matcher.AbstractSWTMatcher;
+import org.jboss.tools.portlet.ui.bot.matcher.JavaPerspectiveAbstractSWTMatcher;
 import org.jboss.tools.ui.bot.ext.SWTBotFactory;
-import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 
 /**
  * Checks if the project exists in the workspace. 
@@ -11,17 +10,17 @@ import org.jboss.tools.ui.bot.ext.gen.ActionItem;
  * @author Lucia Jelinkova
  *
  */
-public class ExistingProjectMatcher extends AbstractSWTMatcher<String> {
+public class ExistingProjectMatcher extends JavaPerspectiveAbstractSWTMatcher<String> {
 
+	
 	@Override
-	public boolean matchesSafely(String project) {
-		SWTBotFactory.getOpen().perspective(ActionItem.Perspective.JAVA.LABEL);
+	protected boolean matchesSafelyInJavaPerspective(String project) {
 		return SWTBotFactory.getEclipse().isProjectInPackageExplorer(project);
 	}
 
 	@Override
 	public void describeTo(Description description) {
-		description.appendValue("existing project");
+		description.appendText("is an existing project");
 	}
 }
 

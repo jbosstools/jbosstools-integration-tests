@@ -77,12 +77,12 @@ public abstract class CreatePortletProjectTemplate extends SWTTaskBasedTestCase 
 	public void testcreate(){
 		doPerform(getCreateDynamicWebProjectTask());
 		
-		doAssertThat(0, isNumberOfErrors());
-		doAssertThat(getProjectName(), isExistingProject());
-		doAssertThat(getProjectName(), hasFacets(getRequiredFacets()));		
-		doAssertThat(getExpectedWorkspaceFiles(), exist());
+		doAssertThatInWorkspace(0, isNumberOfErrors());
+		doAssertThatInWorkspace(getProjectName(), isExistingProject());
+		doAssertThatInWorkspace(getProjectName(), hasFacets(getRequiredFacets()));		
+		doAssertThatInWorkspace(getExpectedWorkspaceFiles(), exist());
 		if (getNonExpectedFiles().size() > 0){
-			doAssertThat(getNonExpectedWorkspaceFiles(), not(exist()));
+			doAssertThatInWorkspace(getNonExpectedWorkspaceFiles(), not(exist()));
 		}
 	}
 

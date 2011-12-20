@@ -2,9 +2,9 @@ package org.jboss.tools.portlet.ui.bot.matcher.problems;
 
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.hamcrest.Description;
-import org.jboss.tools.portlet.ui.bot.matcher.AbstractSWTMatcher;
+import org.jboss.tools.portlet.ui.bot.matcher.JavaPerspectiveAbstractSWTMatcher;
+import org.jboss.tools.portlet.ui.bot.matcher.perspective.OpenJavaPerspectiveTask;
 import org.jboss.tools.ui.bot.ext.SWTBotFactory;
-import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 import org.jboss.tools.ui.bot.ext.view.ProblemsView;
 
 /**
@@ -13,15 +13,12 @@ import org.jboss.tools.ui.bot.ext.view.ProblemsView;
  * @author Lucia Jelinkova
  *
  */
-public class NumberOfErrorsMatcher extends AbstractSWTMatcher<Integer> {
-
-	private int expectedNumber;
+public class NumberOfErrorsMatcher extends JavaPerspectiveAbstractSWTMatcher<Integer> {
 
 	private int numberOfErrors;
 
 	@Override
-	public boolean matchesSafely(Integer expectedNumber) {
-		SWTBotFactory.getOpen().perspective(ActionItem.Perspective.JAVA.LABEL);
+	protected boolean matchesSafelyInJavaPerspective(Integer expectedNumber) {
 		SWTBotTreeItem errorItem = ProblemsView.getErrorsNode(SWTBotFactory.getBot());
 
 		if (errorItem == null){
@@ -32,7 +29,6 @@ public class NumberOfErrorsMatcher extends AbstractSWTMatcher<Integer> {
 			}
 		}
 
-		this.expectedNumber = expectedNumber;
 		this.numberOfErrors = errorItem.getNodes().size();
 
 		return expectedNumber.equals(numberOfErrors);
@@ -40,8 +36,6 @@ public class NumberOfErrorsMatcher extends AbstractSWTMatcher<Integer> {
 
 	@Override
 	public void describeTo(final Description description) {
-		description.appendText("Different number of errors.\n");
-		description.appendText("Number of expected errors: " + expectedNumber + "\n");
-		description.appendText("Number of errors: " + numberOfErrors + "\n");
+		description.appendText("is number of errors in workspace but there are " + numberOfErrors + " errors");
 	}
 }

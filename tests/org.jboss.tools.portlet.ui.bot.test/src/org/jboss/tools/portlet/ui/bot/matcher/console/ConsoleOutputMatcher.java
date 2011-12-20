@@ -25,6 +25,6 @@ public class ConsoleOutputMatcher extends AbstractSWTMatcher<String> {
 
 	@Override
 	public void describeTo(Description description) {
-		description.appendText("console contains specified text [" + consoleText + "]");
+		description.appendText("is in console output, but instead: \n" + consoleText);
 	}
 }
