@@ -1,6 +1,11 @@
 package org.jboss.tools.portlet.ui.bot.entity;
 
-
+/**
+ * Represents one node in XML file. 
+ * 
+ * @author Lucia Jelinkova
+ *
+ */
 public class XMLNode {
 
 	public static final String NODES_SEPARATOR = "/";

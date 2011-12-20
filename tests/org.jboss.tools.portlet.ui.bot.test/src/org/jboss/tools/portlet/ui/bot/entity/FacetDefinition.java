@@ -1,5 +1,11 @@
 package org.jboss.tools.portlet.ui.bot.entity;
 
+/**
+ * Holds values for project facets. 
+ * 
+ * @author Lucia Jelinkova
+ *
+ */
 public class FacetDefinition {
 
 	private String category;
@@ -48,5 +54,10 @@ public class FacetDefinition {
 	
 	public void setVersion(String version) {
 		this.version = version;
+	}
+	
+	@Override
+	public String toString() {
+		return "Facet " + getCategory() + "/" + getName() + " in version " + getVersion();
 	}
 }

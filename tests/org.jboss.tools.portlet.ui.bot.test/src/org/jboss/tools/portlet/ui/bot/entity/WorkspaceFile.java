@@ -1,5 +1,11 @@
 package org.jboss.tools.portlet.ui.bot.entity;
 
+/**
+ * Holds information about one resource in the workspace. 
+ * 
+ * @author Lucia Jelinkova
+ *
+ */
 public class WorkspaceFile {
 
 	public static final String FILE_SEPARATOR = "/";
