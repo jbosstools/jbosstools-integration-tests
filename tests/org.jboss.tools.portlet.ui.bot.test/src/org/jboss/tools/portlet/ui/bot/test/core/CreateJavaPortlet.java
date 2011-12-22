@@ -18,7 +18,7 @@ import org.jboss.tools.portlet.ui.bot.test.template.CreatePortletTemplate;
  */
 public class CreateJavaPortlet extends CreatePortletTemplate {
 
-	private static final String CLASS_NAME = "UITestingJavaPortlet";
+	public static final String CLASS_NAME = "UITestingJavaPortlet";
 	
 	private static final String PACKAGE_NAME = "org.jboss.tools.tests.ui.portlet";
 	
