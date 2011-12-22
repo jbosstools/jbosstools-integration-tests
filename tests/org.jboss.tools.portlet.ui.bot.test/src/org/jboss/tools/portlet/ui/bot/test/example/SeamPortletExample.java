@@ -1,7 +1,9 @@
 package org.jboss.tools.portlet.ui.bot.test.example;
 
 import static org.jboss.tools.portlet.ui.bot.entity.EntityFactory.file;
+import static org.jboss.tools.portlet.ui.bot.entity.EntityFactory.portlet;
 
+import org.jboss.tools.portlet.ui.bot.entity.PortletDefinition;
 import org.jboss.tools.portlet.ui.bot.entity.WorkspaceFile;
 import org.jboss.tools.portlet.ui.bot.task.server.RunningFileOnServerTask;
 import org.jboss.tools.ui.bot.ext.config.Annotations.DB;
@@ -44,5 +46,10 @@ public class SeamPortletExample extends AbstractPortletExampleTest {
 	protected void executeExample() {
 		doPerform(new RunningFileOnServerTask(DATASOURCE_FILE));
 		super.executeExample();
+	}
+	
+	@Override
+	protected PortletDefinition getPortletDefinition() {
+		return portlet("TestSeamPortlet", "Test JBoss Seam Portlet");
 	}
 }

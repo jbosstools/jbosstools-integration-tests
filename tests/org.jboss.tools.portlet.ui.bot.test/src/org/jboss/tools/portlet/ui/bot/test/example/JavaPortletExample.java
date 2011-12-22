@@ -1,5 +1,9 @@
 package org.jboss.tools.portlet.ui.bot.test.example;
 
+import static org.jboss.tools.portlet.ui.bot.entity.EntityFactory.portlet;
+
+import org.jboss.tools.portlet.ui.bot.entity.PortletDefinition;
+
 
 /**
  * Tests the Java portlet example. 
@@ -24,5 +28,10 @@ public class JavaPortletExample extends AbstractPortletExampleTest {
 	@Override
 	public String[] getProjectNames() {
 		return new String[]{PROJECT_NAME};
+	}
+	
+	@Override
+	protected PortletDefinition getPortletDefinition() {
+		return portlet("default/TestJavaPortlet", "TestJavaPortlet");
 	}
 }
