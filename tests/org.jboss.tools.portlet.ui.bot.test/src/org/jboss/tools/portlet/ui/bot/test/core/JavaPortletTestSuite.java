@@ -8,7 +8,8 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
 	CreateJavaPortletProject.class,
 	CreateJavaPortlet.class, 
-	RunJavaPortletOnServer.class
+	RunJavaPortletOnServer.class, 
+	LoadJavaPortletInBrowserRuntime4x.class
 	})
 public class JavaPortletTestSuite {
 
