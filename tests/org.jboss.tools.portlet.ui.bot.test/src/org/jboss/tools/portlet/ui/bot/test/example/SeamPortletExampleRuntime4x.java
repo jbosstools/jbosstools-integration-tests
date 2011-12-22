@@ -15,22 +15,17 @@ import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
 
 
 /**
- * Tests the Java portlet example. 
+ * Tests the Seam portlet example. 
  * 
  * @author Lucia Jelinkova
  *
  */
 @Require(db=@DB, seam=@Seam, server=@Server(version="4.3", state=ServerState.Running, type=ServerType.EPP))
-public class SeamPortletExample extends AbstractPortletExampleTest {
+public class SeamPortletExampleRuntime4x extends AbstractPortletExampleRuntime4xTest {
 
 	private static final String PROJECT_NAME = "testseamportlet";
 	
 	private static final WorkspaceFile DATASOURCE_FILE = file(PROJECT_NAME, "resources/" + PROJECT_NAME + "-ds.xml");
-	
-	@Override
-	public String getExampleCategory() {
-		return "Portlet";
-	}
 	
 	@Override
 	public String getExampleName() {

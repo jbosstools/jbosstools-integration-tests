@@ -6,9 +6,11 @@ import org.junit.runners.Suite;
 
 @RunWith(RequirementAwareUsageWindowClosingSuite.class)
 @Suite.SuiteClasses({
-	JavaPortletExample.class, 
-	JSFPortletExample.class, 
-	SeamPortletExample.class
+	JavaPortletExampleRuntime4x.class, 
+	JSFPortletExampleRuntime4x.class, 
+	SeamPortletExampleRuntime4x.class,
+	JSFPortletExampleRuntime5x.class,
+	RichFacesPortletExampleRuntime5x.class
 	})
 public class ExamplesSuite {
 

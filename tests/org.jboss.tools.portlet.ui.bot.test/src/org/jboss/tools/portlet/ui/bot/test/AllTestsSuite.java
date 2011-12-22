@@ -4,9 +4,11 @@ import org.jboss.tools.portlet.ui.bot.test.core.CreateJavaPortlet;
 import org.jboss.tools.portlet.ui.bot.test.core.CreateJavaPortletProject;
 import org.jboss.tools.portlet.ui.bot.test.core.LoadJavaPortletInBrowserRuntime4x;
 import org.jboss.tools.portlet.ui.bot.test.core.RunJavaPortletOnServer;
-import org.jboss.tools.portlet.ui.bot.test.example.JSFPortletExample;
-import org.jboss.tools.portlet.ui.bot.test.example.JavaPortletExample;
-import org.jboss.tools.portlet.ui.bot.test.example.SeamPortletExample;
+import org.jboss.tools.portlet.ui.bot.test.example.JSFPortletExampleRuntime4x;
+import org.jboss.tools.portlet.ui.bot.test.example.JSFPortletExampleRuntime5x;
+import org.jboss.tools.portlet.ui.bot.test.example.JavaPortletExampleRuntime4x;
+import org.jboss.tools.portlet.ui.bot.test.example.RichFacesPortletExampleRuntime5x;
+import org.jboss.tools.portlet.ui.bot.test.example.SeamPortletExampleRuntime4x;
 import org.jboss.tools.portlet.ui.bot.test.jsf.CreateJSFPortletProject;
 import org.jboss.tools.portlet.ui.bot.test.jsf.CreateJSFPortletRuntime4x;
 import org.jboss.tools.portlet.ui.bot.test.jsf.CreateJSFPortletRuntime5x;
@@ -34,9 +36,11 @@ import org.junit.runners.Suite;
 	CreateSeamPortletRuntime4x.class,
 	CreateSeamPortletRuntime5x.class, 
 	RunSeamPortletOnServer.class, 
-	JavaPortletExample.class, 
-	JSFPortletExample.class, 
-	SeamPortletExample.class
+	JavaPortletExampleRuntime4x.class, 
+	JSFPortletExampleRuntime4x.class, 
+	SeamPortletExampleRuntime4x.class,
+	JSFPortletExampleRuntime5x.class,
+	RichFacesPortletExampleRuntime5x.class
 	})
 public class AllTestsSuite {
 

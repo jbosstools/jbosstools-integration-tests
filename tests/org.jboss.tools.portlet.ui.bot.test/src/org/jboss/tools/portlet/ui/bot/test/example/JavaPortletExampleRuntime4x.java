@@ -11,18 +11,13 @@ import org.jboss.tools.portlet.ui.bot.entity.PortletDefinition;
  * @author Lucia Jelinkova
  *
  */
-public class JSFPortletExample extends AbstractPortletExampleTest {
+public class JavaPortletExampleRuntime4x extends AbstractPortletExampleRuntime4xTest {
 
-	private static final String PROJECT_NAME = "testjsfportlet";
-	
-	@Override
-	public String getExampleCategory() {
-		return "Portlet";
-	}
+	private static final String PROJECT_NAME = "testjavaportlet";
 	
 	@Override
 	public String getExampleName() {
-		return "JBoss JSF Portlet Example";
+		return "JBoss Java Portlet Example";
 	}
 	
 	@Override
@@ -32,6 +27,6 @@ public class JSFPortletExample extends AbstractPortletExampleTest {
 	
 	@Override
 	protected PortletDefinition getPortletDefinition() {
-		return portlet("TestJSFPortlet", "Test JBoss JSF Portlet");
+		return portlet("default/TestJavaPortlet", "TestJavaPortlet");
 	}
 }
