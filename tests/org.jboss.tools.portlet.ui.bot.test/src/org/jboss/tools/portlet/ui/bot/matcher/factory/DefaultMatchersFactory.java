@@ -13,7 +13,7 @@ import org.jboss.tools.portlet.ui.bot.matcher.problems.NumberOfErrorsMatcher;
  */
 public class DefaultMatchersFactory {
 
-	public DefaultMatchersFactory() {
+	private DefaultMatchersFactory() {
 		// not to be instantiated
 	}
 	
