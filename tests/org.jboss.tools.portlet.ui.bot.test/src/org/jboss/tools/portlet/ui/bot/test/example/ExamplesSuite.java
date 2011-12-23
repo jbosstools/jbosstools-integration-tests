@@ -10,7 +10,8 @@ import org.junit.runners.Suite;
 	JSFPortletExampleRuntime4x.class, 
 	SeamPortletExampleRuntime4x.class,
 	JSFPortletExampleRuntime5x.class,
-	RichFacesPortletExampleRuntime5x.class
+	RichFacesPortletExampleRuntime5x.class,
+	SeamPortletExampleRuntime5x.class
 	})
 public class ExamplesSuite {
 
