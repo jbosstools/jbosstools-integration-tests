@@ -24,11 +24,15 @@ import org.jboss.tools.ws.ui.bot.test.utils.ProjectHelper;
 import org.jboss.tools.ws.ui.bot.test.utils.ResourceHelper;
 import org.jboss.tools.ws.ui.bot.test.utils.WebServiceClientHelper;
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
+/**
+ * Basic test base for all web service bot tests
+ * @author jjankovi
+ *
+ */
 @Require(server=@Server(),perspective="Java EE")
 @RunWith(RequirementAwareSuite.class)
 @SuiteClasses({ WSAllBotTests.class })

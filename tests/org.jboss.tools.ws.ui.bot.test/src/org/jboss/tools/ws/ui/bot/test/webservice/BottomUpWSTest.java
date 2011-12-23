@@ -14,7 +14,7 @@ import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.WsWizardBase.Slider_Level;
 import org.junit.Test;
 
 /**
- * 
+ * Test operates on Web Service Wizard with bottom up process of creating web service
  * @author jjankovi
  *
  */

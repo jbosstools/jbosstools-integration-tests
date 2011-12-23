@@ -35,7 +35,7 @@ import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.Type;
 import org.jboss.tools.ws.ui.bot.test.wsclient.WSClient;
 
 /**
- * 
+ * Test base for all sample Web Services bot tests
  * @author jjankovi
  *
  */

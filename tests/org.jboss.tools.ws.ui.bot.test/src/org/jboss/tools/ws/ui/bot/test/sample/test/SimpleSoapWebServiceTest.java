@@ -16,7 +16,7 @@ import org.jboss.tools.ws.ui.bot.test.sample.SampleSoapTestBase;
 import org.junit.Test;
 
 /**
- * 
+ * Test operates on Simple SOAP Web Service Wizard
  * @author jjankovi
  *
  */

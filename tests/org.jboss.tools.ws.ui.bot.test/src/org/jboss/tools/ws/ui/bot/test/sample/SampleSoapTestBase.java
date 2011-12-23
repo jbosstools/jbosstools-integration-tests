@@ -14,7 +14,7 @@ package org.jboss.tools.ws.ui.bot.test.sample;
 import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.Type;
 
 /**
- * 
+ * Test operates on Sample Web Service wizard
  * @author jjankovi
  *
  */

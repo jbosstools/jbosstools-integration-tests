@@ -20,15 +20,10 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 
-/**
- * 
- * @author jjankovi
- *
- */
 public class ResourceHelper {
 
 	/**
-	 * 
+	 * Method converts input stream to text format
 	 * @param is
 	 * @return
 	 */
@@ -39,7 +34,7 @@ public class ResourceHelper {
 	}
 
 	/**
-	 * 
+	 * Method reads input file and output it as text
 	 * @param f
 	 * @return
 	 */
@@ -65,7 +60,7 @@ public class ResourceHelper {
 	}
 
 	/**
-	 * 
+	 * Method copies resource to class opened in SWTBotEditor
 	 * @param classEdit
 	 * @param resource
 	 * @param closeEdit

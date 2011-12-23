@@ -14,7 +14,7 @@ package org.jboss.tools.ws.ui.bot.test.sample;
 import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.Type;
 
 /**
- * 
+ * Test base for all sample rest Web Services bot tests
  * @author jjankovi
  * 
  */

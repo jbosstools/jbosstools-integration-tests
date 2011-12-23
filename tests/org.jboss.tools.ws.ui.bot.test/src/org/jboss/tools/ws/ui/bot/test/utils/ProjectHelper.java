@@ -22,15 +22,11 @@ import org.jboss.tools.ws.ui.bot.test.uiutils.actions.NewFileWizardAction;
 import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.DynamicWebProjectWizard;
 import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.Wizard;
 
-/**
- * 
- * @author jjankovi
- *
- */
 public class ProjectHelper extends SWTTestExt {
 
 	/**
-	 * 
+	 * Method creates basic java class for entered project with 
+	 * entered package and class name
 	 * @param projectName
 	 * @param pkg
 	 * @param cName
@@ -49,7 +45,8 @@ public class ProjectHelper extends SWTTestExt {
 	}
 
 	/**
-	 * 
+	 * Method creates wsdl file for entered project with 
+	 * entered package name
 	 * @param projectName
 	 * @param s
 	 * @return
@@ -66,7 +63,7 @@ public class ProjectHelper extends SWTTestExt {
 	}
 	
 	/**
-	 * 
+	 * Method creates new Dynamic Web Project with entered name
 	 * @param name
 	 */
 	public void createProject(String name) {
@@ -79,7 +76,7 @@ public class ProjectHelper extends SWTTestExt {
 	}
 
 	/**
-	 * 
+	 * Method creates new EAR Project with entered name
 	 * @param name
 	 */
 	public void createEARProject(String name) {

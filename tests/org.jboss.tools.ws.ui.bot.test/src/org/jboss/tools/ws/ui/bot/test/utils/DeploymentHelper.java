@@ -21,18 +21,13 @@ import java.util.logging.Logger;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 
-/**
- * 
- * @author jjankovi
- *
- */
 public class DeploymentHelper extends SWTTestExt {
 
 	private final Logger LOGGER = Logger
 			.getLogger(DeploymentHelper.class.getName());
 	
 	/**
-	 * 
+	 * Method runs project on configured server
 	 * @param project
 	 */
 	public void runProject(String project) {
@@ -41,7 +36,8 @@ public class DeploymentHelper extends SWTTestExt {
 	}
 	
 	/**
-	 * 
+	 * Method checks if service is deployed by checking http header code
+	 * response of entered wsdURL
 	 * @param wsdlURL
 	 */
 	public void assertServiceDeployed(String wsdlURL) {
@@ -49,7 +45,8 @@ public class DeploymentHelper extends SWTTestExt {
 	}
 
 	/**
-	 * 
+	 * Method checks if service is deployed by checking http header code
+	 * response of entered wsdURL and timeout for this operation
 	 * @param wsdlURL
 	 * @param timeout
 	 */
@@ -88,7 +85,8 @@ public class DeploymentHelper extends SWTTestExt {
 	}
 
 	/**
-	 * 
+	 * Method checks if service is not deployed by checking http header code
+	 * response of entered wsdURL
 	 * @param wsdlURL
 	 */
 	public void assertServiceNotDeployed(String wsdlURL) {
@@ -112,7 +110,8 @@ public class DeploymentHelper extends SWTTestExt {
 	}
 
 	/**
-	 * 
+	 * Method checks if service is not deployed by checking http header code
+	 * response of entered wsdURL and timeout for this operation
 	 * @param startServlet
 	 * @param response
 	 */
@@ -122,7 +121,8 @@ public class DeploymentHelper extends SWTTestExt {
 	}
 	
 	/**
-	 * 
+	 * Method gets http page for entered url of page and timeout for
+	 * this operation
 	 * @param url
 	 * @param timeout
 	 * @return
@@ -166,7 +166,7 @@ public class DeploymentHelper extends SWTTestExt {
 	}
 	
 	/**
-	 * 
+	 * Method gets wsdl determined by deployed project and web service name 
 	 * @param projectName
 	 * @param wsName
 	 * @return

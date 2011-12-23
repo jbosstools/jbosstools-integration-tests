@@ -18,7 +18,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * 
+ * Test operates on Web Service Client Wizard
  * @author jjankovi
  *
  */

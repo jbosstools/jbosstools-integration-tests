@@ -15,7 +15,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 /**
- * 
+ * Test operates on Web Service Wizard with top down process of creating web service
  * @author jjankovi
  *
  */

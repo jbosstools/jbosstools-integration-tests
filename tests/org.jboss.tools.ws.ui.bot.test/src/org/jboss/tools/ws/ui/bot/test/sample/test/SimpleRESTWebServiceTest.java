@@ -16,7 +16,7 @@ import org.jboss.tools.ws.ui.bot.test.sample.SampleRESTTestBase;
 import org.junit.Test;
 
 /**
- * 
+ * Test operates on Simple REST Web Service Wizard
  * @author jjankovi
  * 
  */

@@ -7,15 +7,11 @@ import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.WebServiceClientWizard;
 import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.WsWizardBase.Slider_Level;
 import org.junit.Assert;
 
-/**
- * 
- * @author jjankovi
- *
- */
 public class WebServiceClientHelper extends SWTTestExt {
 
 	/**
-	 * 
+	 * Method creates Web Service Client for entered wsdl file, web project,
+	 * level of creation and name of package for client
 	 * @param wsdl
 	 * @param targetProject
 	 * @param level
