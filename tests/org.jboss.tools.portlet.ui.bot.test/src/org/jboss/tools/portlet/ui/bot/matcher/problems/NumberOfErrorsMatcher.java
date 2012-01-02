@@ -3,7 +3,6 @@ package org.jboss.tools.portlet.ui.bot.matcher.problems;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.hamcrest.Description;
 import org.jboss.tools.portlet.ui.bot.matcher.JavaPerspectiveAbstractSWTMatcher;
-import org.jboss.tools.portlet.ui.bot.matcher.perspective.OpenJavaPerspectiveTask;
 import org.jboss.tools.ui.bot.ext.SWTBotFactory;
 import org.jboss.tools.ui.bot.ext.view.ProblemsView;
 

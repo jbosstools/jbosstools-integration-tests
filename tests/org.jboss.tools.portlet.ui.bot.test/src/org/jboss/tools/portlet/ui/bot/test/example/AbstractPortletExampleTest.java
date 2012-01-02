@@ -5,14 +5,12 @@ import static org.jboss.tools.portlet.ui.bot.matcher.WorkspaceAssert.assertThatI
 import static org.jboss.tools.portlet.ui.bot.matcher.factory.DefaultMatchersFactory.exceptionInConsoleOutput;
 import static org.jboss.tools.portlet.ui.bot.matcher.factory.DefaultMatchersFactory.isNumberOfErrors;
 
-import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.hamcrest.Matcher;
 import org.jboss.tools.portlet.ui.bot.task.AbstractSWTTask;
 import org.jboss.tools.portlet.ui.bot.task.SWTBotAware;
 import org.jboss.tools.portlet.ui.bot.task.console.ConsoleClearingTask;
 import org.jboss.tools.portlet.ui.bot.task.server.RunninngProjectOnServerTask;
 import org.jboss.tools.ui.bot.ext.ExampleTest;
-import org.junit.Test;
 
 /**
  * Common ancestor for example projects tests. 
