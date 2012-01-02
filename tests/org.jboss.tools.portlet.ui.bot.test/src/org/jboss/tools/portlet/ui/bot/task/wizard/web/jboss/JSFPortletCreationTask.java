@@ -1,6 +1,5 @@
 package org.jboss.tools.portlet.ui.bot.task.wizard.web.jboss;
 
-import org.jboss.tools.portlet.ui.bot.task.wizard.WizardPageDefaultsFillingTask;
 
 
 /**
@@ -13,7 +12,5 @@ public class JSFPortletCreationTask extends AbstractPortletCreationTask {
 
 	public JSFPortletCreationTask() {
 		super("JBoss JSF/Seam Portlet");
-		// leave defaults on the first page
-		addWizardPage(new WizardPageDefaultsFillingTask());
 	}
 }

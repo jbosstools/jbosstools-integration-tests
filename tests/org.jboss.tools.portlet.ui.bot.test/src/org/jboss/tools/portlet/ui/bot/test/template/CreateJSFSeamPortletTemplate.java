@@ -23,6 +23,7 @@ public abstract class CreateJSFSeamPortletTemplate extends CreatePortletTemplate
 		JSFPortletCreationTask task = new JSFPortletCreationTask();
 		task.addWizardPage(new WizardPageDefaultsFillingTask());
 		task.addWizardPage(new WizardPageDefaultsFillingTask());
+		task.addWizardPage(new WizardPageDefaultsFillingTask());
 		return task;
 	}
 

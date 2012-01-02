@@ -8,6 +8,7 @@ import java.util.List;
 import org.jboss.tools.portlet.ui.bot.entity.XMLNode;
 import org.jboss.tools.portlet.ui.bot.task.wizard.web.jboss.AbstractPortletCreationTask;
 import org.jboss.tools.portlet.ui.bot.task.wizard.web.jboss.JavaPortletCreationTask;
+import org.jboss.tools.portlet.ui.bot.task.wizard.web.jboss.JavaPortletWizardPageFillingTask;
 import org.jboss.tools.portlet.ui.bot.test.template.CreatePortletTemplate;
 
 /**
@@ -34,11 +35,14 @@ public class CreateJavaPortlet extends CreatePortletTemplate {
 	}
 	
 	protected AbstractPortletCreationTask getCreatePortletTask() {
-		JavaPortletCreationTask task = new JavaPortletCreationTask();
+		JavaPortletWizardPageFillingTask task = new JavaPortletWizardPageFillingTask();
 		task.setProject(PROJECT_NAME);
 		task.setPackageName(PACKAGE_NAME);
 		task.setClassName(CLASS_NAME);
-		return task;
+		
+		JavaPortletCreationTask wizardTask = new JavaPortletCreationTask();
+		wizardTask.addWizardPage(task);
+		return wizardTask;
 	}
 	
 	@Override

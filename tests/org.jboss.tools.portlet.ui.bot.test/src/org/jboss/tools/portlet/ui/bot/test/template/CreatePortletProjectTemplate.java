@@ -11,10 +11,11 @@ import java.util.List;
 
 import org.jboss.tools.portlet.ui.bot.entity.FacetDefinition;
 import org.jboss.tools.portlet.ui.bot.entity.WorkspaceFile;
-import org.jboss.tools.portlet.ui.bot.task.AbstractSWTTask;
 import org.jboss.tools.portlet.ui.bot.task.facet.FacetsSelectionTask;
+import org.jboss.tools.portlet.ui.bot.task.wizard.WizardFillingTask;
 import org.jboss.tools.portlet.ui.bot.task.wizard.WizardPageFillingTask;
 import org.jboss.tools.portlet.ui.bot.task.wizard.web.DynamicWebProjectCreationTask;
+import org.jboss.tools.portlet.ui.bot.task.wizard.web.DynamicWebProjectWizardPageFillingTask;
 import org.jboss.tools.portlet.ui.bot.test.testcase.SWTTaskBasedTestCase;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
@@ -86,14 +87,17 @@ public abstract class CreatePortletProjectTemplate extends SWTTaskBasedTestCase 
 		}
 	}
 
-	protected AbstractSWTTask getCreateDynamicWebProjectTask() {
-		DynamicWebProjectCreationTask task = new DynamicWebProjectCreationTask();
+	protected WizardFillingTask getCreateDynamicWebProjectTask() {
+		DynamicWebProjectWizardPageFillingTask task = new DynamicWebProjectWizardPageFillingTask();
 		task.setProjectName(getProjectName());
 		task.setWebModuleVersion("2.5");
 		task.setServerName(SWTTestExt.configuredState.getServer().name);
 		task.setSelectFacetsTask(getSelectFacetsTask());
-		task.addAllWizardPages(getAdditionalWizardPages());
-		return task;
+		
+		DynamicWebProjectCreationTask wizardTask = new DynamicWebProjectCreationTask();
+		wizardTask.addWizardPage(task);
+		wizardTask.addAllWizardPages(getAdditionalWizardPages());
+		return wizardTask;
 	}
 
 	protected FacetsSelectionTask getSelectFacetsTask() {
