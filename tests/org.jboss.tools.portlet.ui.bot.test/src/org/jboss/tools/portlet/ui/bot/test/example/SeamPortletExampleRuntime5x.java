@@ -1,6 +1,5 @@
 package org.jboss.tools.portlet.ui.bot.test.example;
 
-import org.jboss.tools.portlet.ui.bot.task.dialog.property.seam.SeamRuntimeChangingTask;
 import org.jboss.tools.ui.bot.ext.config.Annotations.DB;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Seam;
@@ -41,11 +40,5 @@ public class SeamPortletExampleRuntime5x extends AbstractPortletExampleRuntime5x
 			return new String[]{PROJECT_NAME_IN_WIZARD};
 		}
 		return new String[]{PROJECT_NAME_EAR, PROJECT_NAME_EJB, PROJECT_NAME_WAR};
-	}
-	
-	@Override
-	protected void executeExample() {
-		doPerform(new SeamRuntimeChangingTask(PROJECT_NAME_WAR, configuredState.getSeam().name));
-		super.executeExample();
 	}
 }
