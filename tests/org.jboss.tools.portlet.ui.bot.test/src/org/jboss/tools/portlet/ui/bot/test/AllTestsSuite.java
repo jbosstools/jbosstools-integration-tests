@@ -18,10 +18,11 @@ import org.jboss.tools.portlet.ui.bot.test.seam.CreateSeamPortletProject;
 import org.jboss.tools.portlet.ui.bot.test.seam.CreateSeamPortletRuntime4x;
 import org.jboss.tools.portlet.ui.bot.test.seam.CreateSeamPortletRuntime5x;
 import org.jboss.tools.portlet.ui.bot.test.seam.RunSeamPortletOnServer;
+import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
-@RunWith(RequirementAwareUsageWindowClosingSuite.class)
+@RunWith(RequirementAwareSuite.class)
 @Suite.SuiteClasses({
 	CreateJavaPortletProject.class,
 	CreateJavaPortlet.class, 

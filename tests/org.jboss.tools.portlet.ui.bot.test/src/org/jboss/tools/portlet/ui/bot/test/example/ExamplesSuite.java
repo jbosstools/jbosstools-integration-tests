@@ -1,10 +1,10 @@
 package org.jboss.tools.portlet.ui.bot.test.example;
 
-import org.jboss.tools.portlet.ui.bot.test.RequirementAwareUsageWindowClosingSuite;
+import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
-@RunWith(RequirementAwareUsageWindowClosingSuite.class)
+@RunWith(RequirementAwareSuite.class)
 @Suite.SuiteClasses({
 	JavaPortletExampleRuntime4x.class, 
 	JSFPortletExampleRuntime4x.class, 
