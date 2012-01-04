@@ -49,6 +49,8 @@ public class WSTestBase extends SWTTestExt {
 	protected static final Logger LOGGER = Logger
 			.getLogger(WSTestBase.class.getName());
 	
+	protected final String LINE_SEPARATOR = System.getProperty("line.separator");
+	
 	protected static final ResourceHelper resourceHelper = new ResourceHelper();
 	protected static final ProjectHelper projectHelper = new ProjectHelper();
 	protected static final DeploymentHelper deploymentHelper = new DeploymentHelper();

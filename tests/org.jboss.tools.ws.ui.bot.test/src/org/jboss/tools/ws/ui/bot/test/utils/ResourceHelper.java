@@ -13,6 +13,7 @@ package org.jboss.tools.ws.ui.bot.test.utils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.MessageFormat;
 import java.util.Scanner;
 
 import org.eclipse.core.resources.IFile;
@@ -60,6 +61,18 @@ public class ResourceHelper {
 	}
 
 	/**
+	 * Method replaces string "target" by string "replacement.
+	 * @param target
+	 * @param replacement
+	 */
+	public void replaceInEditor(SWTBotEclipseEditor ed, String target, String replacement) {
+		ed.selectRange(0, 0, ed.getText().length());
+		ed.setText(ed.getText().replace(target,replacement));		
+		ed.save();
+	}
+
+	
+	/**
 	 * Method copies resource to class opened in SWTBotEditor
 	 * @param classEdit
 	 * @param resource
@@ -75,5 +88,21 @@ public class ResourceHelper {
 		if (closeEdit) classEdit.close();
 	}
 	
+	/**
+	 * Method copies resource to class opened in SWTBotEditor with entered parameters
+	 * @param classEdit
+	 * @param resource
+	 * @param closeEdit
+	 * @param param
+	 */
+	public void copyResourceToClass(SWTBotEditor classEdit,
+			InputStream resource, boolean closeEdit, Object... param) {
+		String s = readStream(resource);
+		String code = MessageFormat.format(s, param);
+		classEdit.toTextEditor().selectRange(0, 0, classEdit.toTextEditor().getText().length());
+		classEdit.toTextEditor().setText(code);
+		classEdit.save();
+		if (closeEdit) classEdit.close();
+	}
 	
 }
