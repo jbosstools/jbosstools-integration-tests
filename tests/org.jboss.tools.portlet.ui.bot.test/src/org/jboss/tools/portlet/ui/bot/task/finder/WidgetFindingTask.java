@@ -1,4 +1,4 @@
-package org.jboss.tools.portlet.ui.bot.task.debug;
+package org.jboss.tools.portlet.ui.bot.task.finder;
 
 import static org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable.syncExec;
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.widgetOfType;
@@ -13,22 +13,26 @@ import org.hamcrest.Matcher;
 import org.jboss.tools.portlet.ui.bot.task.AbstractSWTTask;
 
 /**
- * Finds all widgets recursively and writes debuggin information about each of them. 
+ * 
+ * Finds all widgets recursively and delegates the concrete action
+ * to be performed on the visitor (see GOF Visitor pattern)
  * 
  * @author Lucia Jelinkova
  *
  */
-public class WriteAllWidgets extends AbstractSWTTask {
+public class WidgetFindingTask extends AbstractSWTTask {
 
 	private Matcher<? extends Widget> matcher;
 
 	private Widget parentWidget;
-
+	
+	private WidgetVisitor visitor;
+	
 	/**
 	 * Finds all widgets for the active shell. 
 	 */
-	public WriteAllWidgets() {
-		this(widgetOfType(Widget.class));
+	public WidgetFindingTask(WidgetVisitor visitor) {
+		this(null, visitor);
 	}
 
 	/**
@@ -36,8 +40,8 @@ public class WriteAllWidgets extends AbstractSWTTask {
 	 * 
 	 * @param matcher
 	 */
-	public WriteAllWidgets(Matcher<? extends Widget> matcher) {
-		this(null, matcher);
+	public WidgetFindingTask(Matcher<? extends Widget> matcher, WidgetVisitor visitor) {
+		this(null, matcher, visitor);
 	}
 
 	/**
@@ -47,10 +51,11 @@ public class WriteAllWidgets extends AbstractSWTTask {
 	 * @param widget
 	 * @param matcher
 	 */
-	public WriteAllWidgets(Widget widget, Matcher<? extends Widget> matcher) {
+	public WidgetFindingTask(Widget widget, Matcher<? extends Widget> matcher, WidgetVisitor visitor) {
 		super();
 		this.matcher = matcher;
 		this.parentWidget = widget;
+		this.visitor = visitor;
 	}
 
 	@Override
@@ -59,39 +64,44 @@ public class WriteAllWidgets extends AbstractSWTTask {
 
 			@Override
 			public void run() {
-				System.out.println("List of current widgets");
-				writeWidgetRecursive(getParentWidget(), new ArrayList<Widget>(), "");
-				System.out.println("End of list");
+				findWidgetRecursive(getParentWidget(), new ArrayList<Widget>());
 			}
 		});
 	}
 
-	private void writeWidgetRecursive(Widget widget, ArrayList<Widget> visited, String prefix){
+	private void findWidgetRecursive(Widget widget, ArrayList<Widget> visited){
 		
 		if (visited.contains(widget)){
 			return;
 		} 
 
 		visited.add(widget);
-		writeWidget(widget, prefix);
+		visitWidget(widget);
 		
 		if (widget instanceof Composite && ((Composite) widget).getChildren().length == 0){
 			return;
 		}
 		
-		List<? extends Widget> children = getBot().widgets(matcher, widget);
+		List<? extends Widget> children = getBot().widgets(getMatcher(), widget);
 		for (Widget child : children){
-			writeWidgetRecursive(child, visited, prefix + "---");
+			findWidgetRecursive(child, visited);
 		}
 	}
 	
-	private void writeWidget(Widget widget, String prefix){
-		System.out.println(prefix + widget);
+	private void visitWidget(Widget widget){
+		new VisitableWidget(widget).accept(visitor);
+	}
+	
+	public Matcher<? extends Widget> getMatcher() {
+		if (matcher == null){
+			matcher = widgetOfType(Widget.class);
+		}
+		return matcher;
 	}
 
 	private Widget getParentWidget() {
 		if (parentWidget == null){
-			return getBot().activeShell().widget;
+			parentWidget = getBot().activeShell().widget;
 		}
 		return parentWidget;
 	}
