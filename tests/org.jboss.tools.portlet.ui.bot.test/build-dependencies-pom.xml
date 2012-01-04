@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	
+	<groupId>org.jboss.tools</groupId>
+	<artifactId>portlet.dependencies.build</artifactId>
+	<version>1.2.0-SNAPSHOT</version>
+	<name>Build portlet dependencies</name>
+	<packaging>pom</packaging>
+	<modelVersion>4.0.0</modelVersion>
+	
+	<properties>
+		<skipTests>true</skipTests>
+		<swtbot.test.skip>true</swtbot.test.skip>
+		<maven.test.skip>true</maven.test.skip>
+	</properties>
+	
+	<modules>
+		<module>../../../archives/features/org.jboss.ide.eclipse.archives.feature</module>
+		<module>../../../archives/features/org.jboss.ide.eclipse.archives.source.feature</module>
+		<module>../../../archives/plugins</module>
+		<module>../../../as/features/org.jboss.ide.eclipse.as.archives.integration.feature</module>
+		<module>../../../as/features/org.jboss.ide.eclipse.as.feature</module>
+		<module>../../../as/features/org.jboss.ide.eclipse.as.jmx.integration.feature</module>
+		<module>../../../as/features/org.jboss.ide.eclipse.as.server.rse.integration.feature</module>
+		<module>../../../as/features/org.jboss.ide.eclipse.as.serverAdapter.wtp.feature</module>
+		<module>../../../as/features/org.jboss.ide.eclipse.as.source.feature</module>
+		<module>../../../as/plugins</module>
+		<module>../../../build/parent</module>
+		<module>../../../common/features/org.jboss.tools.common.all.feature</module>
+		<module>../../../common/features/org.jboss.tools.common.all.source.feature</module>
+		<module>../../../common/features/org.jboss.tools.common.core.feature</module>
+		<module>../../../common/features/org.jboss.tools.common.feature</module>
+		<module>../../../common/features/org.jboss.tools.common.jdt.feature</module>
+		<module>../../../common/features/org.jboss.tools.common.jdt.source.feature</module>
+		<module>../../../common/features/org.jboss.tools.common.mylyn.feature</module>
+		<module>../../../common/features/org.jboss.tools.common.mylyn.source.feature</module>
+		<module>../../../common/features/org.jboss.tools.common.text.ext.feature</module>
+		<module>../../../common/features/org.jboss.tools.common.ui.feature</module>
+		<module>../../../common/features/org.jboss.tools.common.verification.feature</module>
+		<module>../../../common/plugins</module>
+		<module>../../../hibernatetools/features/org.hibernate.eclipse.feature</module>
+		<module>../../../hibernatetools/plugins</module>
+		<module>../../../jmx/features/org.jboss.tools.jmx.feature</module>
+		<module>../../../jmx/plugins</module>
+		<module>../../../jsf/features/org.jboss.tools.jsf.feature</module>
+		<module>../../../jsf/features/org.jboss.tools.richfaces.feature</module>
+		<module>../../../jsf/plugins</module>
+		<module>../../../jsf/tests/org.jboss.tools.jsf.ui.bot.test</module>
+		<module>../../../jst/features/org.jboss.tools.jst.feature</module>
+		<module>../../../jst/features/org.jboss.tools.jst.web.tiles.feature</module>
+		<module>../../../jst/plugins</module>
+		<module>../../../jst/tests/org.jboss.tools.jst.ui.bot.test</module>
+		<module>../../../jst/tests/org.jboss.tools.jst.ui.firstrun.bot.test</module>
+		<module>../../../seam/features/org.jboss.tools.seam.feature</module>
+		<module>../../../seam/plugins</module>
+		<module>../../../tests</module>
+		<module>../../../vpe/features/org.jboss.tools.vpe.browsersim.feature</module>
+		<module>../../../vpe/features/org.jboss.tools.vpe.feature</module>
+		<module>../../../vpe/features/org.jboss.tools.xulrunner.feature</module>
+		<module>../../../vpe/plugins</module>
+		<module>../../../vpe/tests/org.jboss.tools.vpe.ui.bot.test</module>
+	</modules>
+</project>
