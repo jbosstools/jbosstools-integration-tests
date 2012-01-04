@@ -9,7 +9,7 @@
  * Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
 
-package org.jboss.tools.ws.ui.bot.test.rest.explorer.test;
+package org.jboss.tools.ws.ui.bot.test.rest;
 
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
@@ -50,10 +50,10 @@ public class RESTfulTestBase extends WSTestBase {
 		SWTBotTree tree = projectExplorer.bot().tree();
 		SWTBotTreeItem item = tree.getTreeItem(wsProjectName);
 		item.expand();
-		NodeContextUtil.nodeContextMenu(tree, item, CONFIGURE_MENU_LABEL, 
+		NodeContextUtil.nodeContextMenu(tree, item, RESTFulAnnotations.CONFIGURE_MENU_LABEL.getLabel(), 
 				option==ConfigureOption.ADD?
-						REST_SUPPORT_MENU_LABEL_ADD:
-						REST_SUPPORT_MENU_LABEL_ADD).click();		
+						RESTFulAnnotations.REST_SUPPORT_MENU_LABEL_ADD.getLabel():
+						RESTFulAnnotations.REST_SUPPORT_MENU_LABEL_REMOVE.getLabel()).click();		
 		bot.sleep(Timing.time2S());		
 		util.waitForNonIgnoredJobs();
 	}
@@ -63,14 +63,11 @@ public class RESTfulTestBase extends WSTestBase {
 	 * @param wsProjectName
 	 * @return
 	 */
-	protected boolean isRestSupportEnabled(String wsProjectName) {
-		projectExplorer.selectProject(wsProjectName);
-		SWTBotTree tree = projectExplorer.bot().tree();
-		SWTBotTreeItem item = tree.getTreeItem(wsProjectName);		
-		assertTrue(NodeContextUtil.nodeContextMenu(tree, item, CONFIGURE_MENU_LABEL, 
-				REST_SUPPORT_MENU_LABEL_REMOVE).isVisible());
-		return (projectExplorer.isFilePresent(wsProjectName, REST_EXPLORER_LABEL) ||
-				  projectExplorer.isFilePresent(wsProjectName, REST_EXPLORER_LABEL_BUILD));
+	protected boolean isRestSupportEnabled(String wsProjectName) {		
+		return (projectExplorer.isFilePresent(wsProjectName, 
+					RESTFulAnnotations.REST_EXPLORER_LABEL.getLabel()) ||
+				projectExplorer.isFilePresent(wsProjectName, 
+					RESTFulAnnotations.REST_EXPLORER_LABEL_BUILD.getLabel()));
 	}
 	
 }

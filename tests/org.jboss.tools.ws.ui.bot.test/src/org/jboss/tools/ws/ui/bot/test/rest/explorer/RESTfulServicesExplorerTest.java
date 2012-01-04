@@ -9,12 +9,12 @@
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
 
-package org.jboss.tools.ws.ui.bot.test.rest.explorer.test;
+package org.jboss.tools.ws.ui.bot.test.rest.explorer;
 
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.ui.bot.ext.Timing;
-import org.jboss.tools.ws.ui.bot.test.rest.explorer.RESTFulAnnotations;
-import org.jboss.tools.ws.ui.bot.test.rest.explorer.RESTfulTestBase;
+import org.jboss.tools.ws.ui.bot.test.rest.RESTFulAnnotations;
+import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
 import org.jboss.tools.ws.ui.bot.test.ti.wizard.RESTFullExplorerWizard;
 import org.junit.Test;
 

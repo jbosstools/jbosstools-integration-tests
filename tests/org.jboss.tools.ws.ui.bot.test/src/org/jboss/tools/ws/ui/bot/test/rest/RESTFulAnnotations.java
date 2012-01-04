@@ -1,4 +1,4 @@
-package org.jboss.tools.ws.ui.bot.test.rest.explorer;
+package org.jboss.tools.ws.ui.bot.test.rest;
 
 public enum RESTFulAnnotations {
 	

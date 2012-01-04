@@ -13,7 +13,7 @@ package org.jboss.tools.ws.ui.bot.test.ti.wizard;
 
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
-import org.jboss.tools.ws.ui.bot.test.rest.explorer.RESTFulAnnotations;
+import org.jboss.tools.ws.ui.bot.test.rest.RESTFulAnnotations;
 
 public class RESTFullExplorerWizard extends SWTTestExt {
 
