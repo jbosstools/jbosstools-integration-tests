@@ -11,9 +11,18 @@
 
 package org.jboss.tools.ws.ui.bot.test.rest;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.eclipse.swtbot.swt.finder.SWTBot;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.ui.bot.ext.Timing;
+import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
+import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
+import org.jboss.tools.ui.bot.ext.gen.IPreference;
+import org.jboss.tools.ui.bot.ext.view.ProblemsView;
 import org.jboss.tools.ws.ui.bot.test.WSTestBase;
 import org.jboss.tools.ws.ui.bot.test.utils.NodeContextUtil;
 
@@ -22,8 +31,12 @@ import org.jboss.tools.ws.ui.bot.test.utils.NodeContextUtil;
  * @author jjankovi
  *
  */
+@Require(server=@Server(), perspective="Java EE")
 public class RESTfulTestBase extends WSTestBase {
 
+	protected final String PATH_PARAM_VALID_ERROR = "Invalid @PathParam value";
+	protected final String VALIDATION_PREFERENCE = "Validation";
+	protected final String JAX_RS_VALIDATOR = "JAX-RS Metamodel Validator";
 	protected final String CONFIGURE_MENU_LABEL = "Configure";
 	protected final String REST_SUPPORT_MENU_LABEL_ADD = "Add JAX-RS 1.1 support...";
 	protected final String REST_SUPPORT_MENU_LABEL_REMOVE = "Remove JAX-RS 1.1 support...";
@@ -33,10 +46,48 @@ public class RESTfulTestBase extends WSTestBase {
 		ADD, REMOVE;
 	}
 	
-	/**
-	 * 
-	 * @param wsProjectName
-	 */
+	protected SWTBotTreeItem[] getRESTValidationErrorsAfterCleanBuild(String wsProjectName) {
+		eclipse.cleanAllProjects();
+		return getRESTValidationErrors(wsProjectName);
+	}
+	
+	protected SWTBotTreeItem[] getRESTValidationErrors(String wsProjectName) {
+		return ProblemsView.getFilteredErrorsTreeItems(bot, PATH_PARAM_VALID_ERROR, "/"
+				+ wsProjectName, null, null);
+	}
+	
+	protected void enableRESTValidation() {
+		SWTBotTable validatorTable = preferenceDialog(VALIDATION_PREFERENCE, new ArrayList<String>()).table();		
+		int restValidationRow = -1;	
+		for (int row = 0; row < validatorTable.rowCount(); row++) {
+			if (validatorTable.getTableItem(row).getText().equals(JAX_RS_VALIDATOR)) {
+				restValidationRow = row;
+				break;
+			}
+		}
+		assertTrue(restValidationRow >= 0);
+		
+	}
+	
+	protected void disableRESTValidation() {
+		
+	}
+	
+	protected SWTBot preferenceDialog(final String name, final List<String> path) {
+		return open.preferenceOpen(new IPreference() {
+			
+			@Override
+			public String getName() {
+				return name;
+			}
+			
+			@Override
+			public List<String> getGroupPath() {
+				return path;				
+			}
+		});
+	}
+	
 	protected void addRestSupport(String wsProjectName) {
 		configureRestSupport(wsProjectName, ConfigureOption.ADD);
 	}
@@ -68,6 +119,11 @@ public class RESTfulTestBase extends WSTestBase {
 					RESTFulAnnotations.REST_EXPLORER_LABEL.getLabel()) ||
 				projectExplorer.isFilePresent(wsProjectName, 
 					RESTFulAnnotations.REST_EXPLORER_LABEL_BUILD.getLabel()));
+	}
+	
+	
+	protected static void addRestEasyLibs(String wsProjectName) {
+		assertTrue(configuredState.getServer().type.equals("EAP"));
 	}
 	
 }

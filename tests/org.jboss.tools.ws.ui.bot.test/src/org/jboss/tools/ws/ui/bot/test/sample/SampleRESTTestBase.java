@@ -11,6 +11,8 @@
 
 package org.jboss.tools.ws.ui.bot.test.sample;
 
+import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
+import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.Type;
 
 /**
@@ -18,6 +20,7 @@ import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.Type;
  * @author jjankovi
  * 
  */
+@Require(server=@Server(), perspective="Java EE")
 public class SampleRESTTestBase extends SampleWSBase {
 
 	protected void createSampleRESTWS(String project, String name, String pkg,

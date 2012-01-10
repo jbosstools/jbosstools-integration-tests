@@ -24,7 +24,7 @@ import org.junit.Test;
  * @author jjankovi
  *
  */
-public class RESTfulExplorerValidationTest extends WSTestBase {
+public class RESTfulValidationTest extends WSTestBase {
 	
 	private static final String CONFIGURE_MENU_LABEL = "Configure";
 	private static final String REST_SUPPORT_MENU_LABEL_ADD = "Add JAX-RS 1.1 support...";

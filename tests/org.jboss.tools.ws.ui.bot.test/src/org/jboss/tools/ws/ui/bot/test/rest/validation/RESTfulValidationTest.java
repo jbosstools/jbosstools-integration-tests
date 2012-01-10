@@ -12,6 +12,8 @@
 package org.jboss.tools.ws.ui.bot.test.rest.validation;
 
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
+import org.jboss.tools.ws.ui.bot.test.rest.explorer.RESTfulExplorerTest;
+import org.junit.Ignore;
 
 /**
  * Test operates on JAX-RS validation
@@ -32,22 +34,50 @@ public class RESTfulValidationTest extends RESTfulTestBase {
 		return "RestService";
 	}
 	
+	@Override
+	public void setup() {		
+		if (!projectExists(getWsProjectName())) {
+			projectHelper.createProject(getWsProjectName());
+		}
+		if (!projectExplorer.isFilePresent(getWsProjectName(), "Java Resources", 
+										  "src", getWsPackage(), getWsName() + ".java")) {
+			projectHelper.createClass(getWsProjectName(), getWsPackage(), getWsName());
+		}
+	}
+	@Ignore
 	public void testCorrectValueValidation() {
-		//not implemented yet
+		
+		resourceHelper.copyResourceToClass(bot.editorByTitle(getWsName() + ".java"), 
+				   RESTfulExplorerTest.class.
+				   getResourceAsStream("/resources/restful/CorrectRestWS.java.ws"), 
+				   false, getWsPackage(), getWsName());
+		
+		assertTrue(getRESTValidationErrorsAfterCleanBuild(getWsProjectName()).length == 0);
+		
 	}
-	
+	@Ignore
 	public void testBadValueValidation() {
-		//not implemented yet
+		resourceHelper.copyResourceToClass(bot.editorByTitle(getWsName() + ".java"), 
+				   RESTfulExplorerTest.class.
+				   getResourceAsStream("/resources/restful/BadRestWS.java.ws"), 
+				   false, getWsPackage(), getWsName());
+		
+		assertTrue("" + getRESTValidationErrorsAfterCleanBuild(getWsProjectName()).length, 
+				   getRESTValidationErrorsAfterCleanBuild(getWsProjectName()).length == 1);
 	}
-	
+	@Ignore
 	public void testCorrectToBadValueValidation() {
 		//not implemented yet
 	}
-	
+	@Ignore
+	public void testBadToCorrectValueValidation() {
+		//not implemented yet
+	}
+	@Ignore
 	public void testValidatorDisabling() {
 		//not implemented yet
 	}
-	
+	@Ignore
 	public void testValidatorReenabling() {
 		//not implemented yet
 	}

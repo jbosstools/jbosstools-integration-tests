@@ -20,7 +20,7 @@ import org.junit.Test;
  * @author jjankovi
  *
  */
-public class RESTfulExplorerSupportTest extends RESTfulTestBase {
+public class RESTfulSupportTest extends RESTfulTestBase {
 	
 	protected String getWsProjectName() {
 		return "RestExplorerTest";
@@ -43,7 +43,7 @@ public class RESTfulExplorerSupportTest extends RESTfulTestBase {
 	
 	
 	@Test
-	public void testSupportJAX_RS1_1_Explorer() {
+	public void testJAXRSExplorerSupport() {
 		
 		addRestSupport(getWsProjectName());
 		assertTrue(isRestSupportEnabled(getWsProjectName()));

@@ -21,11 +21,10 @@ import org.junit.Test;
 /**
  * Test operates on exploring RESTFul services in RESTful explorer 
  * 
- * TO DO: I have to add rest libraries for EAP 5.1
  * @author jjankovi
  *
  */
-public class RESTfulServicesExplorerTest extends RESTfulTestBase {
+public class RESTfulExplorerTest extends RESTfulTestBase {
 
 	private RESTFullExplorerWizard restfulWizard = null;
 	
@@ -49,6 +48,10 @@ public class RESTfulServicesExplorerTest extends RESTfulTestBase {
 		if (!isRestSupportEnabled(getWsProjectName())) {
 			addRestSupport(getWsProjectName());
 		}
+		if (!projectExplorer.isFilePresent(getWsProjectName(), "Java Resources", 
+										   "src", getWsPackage(), getWsName() + ".java")) {
+			projectHelper.createClass(getWsProjectName(), getWsPackage(), getWsName());
+		}	
 	}
 	
 	@Override
@@ -61,12 +64,8 @@ public class RESTfulServicesExplorerTest extends RESTfulTestBase {
 	@Test
 	public void testAddingSimpleRESTMethods() {
 		
-		if (!projectExplorer.isFilePresent(getWsProjectName(), "Java Resources", "src", getWsPackage(), getWsName() + ".java")) {
-			projectHelper.createClass(getWsProjectName(), getWsPackage(), getWsName());
-		}
-		
 		resourceHelper.copyResourceToClass(bot.editorByTitle(getWsName() + ".java"), 
-										   RESTfulServicesExplorerTest.class.
+										   RESTfulExplorerTest.class.
 										   getResourceAsStream("/resources/restful/BasicRestfulWS.java.ws"), 
 										   false, getWsPackage(), getWsName());
 		/**
@@ -79,7 +78,7 @@ public class RESTfulServicesExplorerTest extends RESTfulTestBase {
 		SWTBotTreeItem[] restServices = restfulWizard.getAllRestServices();
 		
 		assertTrue(restServices.length == 4);		
-		assertTrue(areAllRestServicesPresent(restServices));
+		assertTrue(allRestServicesArePresent(restServices));
 		
 		for (SWTBotTreeItem restService : restServices) {
 			assertTrue(restfulWizard.getPathForRestFulService(restService).equals("/rest"));
@@ -91,12 +90,8 @@ public class RESTfulServicesExplorerTest extends RESTfulTestBase {
 	@Test
 	public void testAddingAdvancedRESTMethods() {
 		
-		if (!projectExplorer.isFilePresent(getWsProjectName(), "Java Resources", "src", getWsPackage(), getWsName() + ".java")) {
-			projectHelper.createClass(getWsProjectName(), getWsPackage(), getWsName());
-		}
-		
 		resourceHelper.copyResourceToClass(bot.editorByTitle(getWsName() + ".java"), 
-										   RESTfulServicesExplorerTest.class.
+										   RESTfulExplorerTest.class.
 										   getResourceAsStream("/resources/restful/AdvancedRestfulWS.java.ws"), 
 										   false, getWsPackage(), getWsName());
 		/**
@@ -109,7 +104,7 @@ public class RESTfulServicesExplorerTest extends RESTfulTestBase {
 		SWTBotTreeItem[] restServices = restfulWizard.getAllRestServices();
 		
 		assertTrue(restServices.length == 4);
-		assertTrue(areAllRestServicesPresent(restServices));
+		assertTrue(allRestServicesArePresent(restServices));
 		
 		for (SWTBotTreeItem restService : restServices) {
 			if (restfulWizard.getRestServiceName(restService).equals(RESTFulAnnotations.GET.getLabel())) {
@@ -138,12 +133,9 @@ public class RESTfulServicesExplorerTest extends RESTfulTestBase {
 	
 	@Test
 	public void testEditingSimpleRESTMethods() {
-		if (!projectExplorer.isFilePresent(getWsProjectName(), "Java Resources", "src", getWsPackage(), getWsName() + ".java")) {
-			projectHelper.createClass(getWsProjectName(), getWsPackage(), getWsName());			
-		}
 		
 		resourceHelper.copyResourceToClass(bot.editorByTitle(getWsName() + ".java"), 
-				   RESTfulServicesExplorerTest.class.
+				   RESTfulExplorerTest.class.
 				   getResourceAsStream("/resources/restful/BasicRestfulWS.java.ws"), 
 				   false, getWsPackage(), getWsName());
 		
@@ -156,7 +148,7 @@ public class RESTfulServicesExplorerTest extends RESTfulTestBase {
 		restfulWizard = new RESTFullExplorerWizard(getWsProjectName());
 		SWTBotTreeItem[] restServices = restfulWizard.getAllRestServices();
 		
-		assertTrue(areAllRestServicesPresent(restServices));
+		assertTrue(allRestServicesArePresent(restServices));
 		
 		resourceHelper.replaceInEditor(bot.activeEditor().toTextEditor(), "@DELETE", "@GET");
 		
@@ -169,7 +161,7 @@ public class RESTfulServicesExplorerTest extends RESTfulTestBase {
 		restfulWizard = new RESTFullExplorerWizard(getWsProjectName());
 		restServices = restfulWizard.getAllRestServices();
 		
-		assertFalse(areAllRestServicesPresent(restServices));
+		assertFalse(allRestServicesArePresent(restServices));
 		
 		for (SWTBotTreeItem restService : restServices) {
 			if (restfulWizard.getRestServiceName(restService).equals(RESTFulAnnotations.DELETE.getLabel())) {
@@ -181,12 +173,9 @@ public class RESTfulServicesExplorerTest extends RESTfulTestBase {
 	
 	@Test
 	public void testEditingAdvancedRESTMethods() {
-		if (!projectExplorer.isFilePresent(getWsProjectName(), "Java Resources", "src", getWsPackage(), getWsName() + ".java")) {
-			projectHelper.createClass(getWsProjectName(), getWsPackage(), getWsName());			
-		}
 		
 		resourceHelper.copyResourceToClass(bot.editorByTitle(getWsName() + ".java"), 
-				   RESTfulServicesExplorerTest.class.
+				   RESTfulExplorerTest.class.
 				   getResourceAsStream("/resources/restful/AdvancedRestfulWS.java.ws"), 
 				   false, getWsPackage(), getWsName());
 		
@@ -229,12 +218,9 @@ public class RESTfulServicesExplorerTest extends RESTfulTestBase {
 	
 	@Test
 	public void testDeletingRESTMethods() {
-		if (!projectExplorer.isFilePresent(getWsProjectName(), "Java Resources", "src", getWsPackage(), getWsName() + ".java")) {
-			projectHelper.createClass(getWsProjectName(), getWsPackage(), getWsName());			
-		}
 		
 		resourceHelper.copyResourceToClass(bot.editorByTitle(getWsName() + ".java"), 
-				   RESTfulServicesExplorerTest.class.
+				   RESTfulExplorerTest.class.
 				   getResourceAsStream("/resources/restful/BasicRestfulWS.java.ws"), 
 				   false, getWsPackage(), getWsName());
 		
@@ -250,7 +236,7 @@ public class RESTfulServicesExplorerTest extends RESTfulTestBase {
 		assertTrue(restServices.length == 4);
 		
 		resourceHelper.copyResourceToClass(bot.editorByTitle(getWsName() + ".java"), 
-				   RESTfulServicesExplorerTest.class.
+				   RESTfulExplorerTest.class.
 				   getResourceAsStream("/resources/restful/EmptyRestfulWS.java.ws"), 
 				   false, getWsPackage(), getWsName());
 		
@@ -267,7 +253,7 @@ public class RESTfulServicesExplorerTest extends RESTfulTestBase {
 		
 	}
 	
-	private boolean areAllRestServicesPresent(SWTBotTreeItem[] restServices) {
+	private boolean allRestServicesArePresent(SWTBotTreeItem[] restServices) {
 		
 		String[] restMethods = {RESTFulAnnotations.GET.getLabel(), RESTFulAnnotations.POST.getLabel(), 
 								RESTFulAnnotations.POST.getLabel(), RESTFulAnnotations.DELETE.getLabel()};
