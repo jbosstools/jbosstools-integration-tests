@@ -1,8 +1,10 @@
 package org.jboss.tools.portlet.ui.bot.test.tmp;
 
+import org.eclipse.core.internal.registry.BundleHelper;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jst.j2ee.internal.plugin.IJ2EEModuleConstants;
 import org.eclipse.jst.j2ee.internal.plugin.J2EEPlugin;
+import org.eclipse.osgi.framework.internal.core.BundleHost;
 import org.jboss.tools.portlet.ui.bot.test.testcase.SWTTaskBasedTestCase;
 import org.jboss.tools.ui.bot.ext.config.Annotations.DB;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
@@ -18,6 +20,13 @@ public class TmpTest extends SWTTaskBasedTestCase {
 		String pluginId = J2EEPlugin.getPlugin().getPluginID();
 		System.out.println("Plugin id: " + pluginId);
 		Bundle bundle = Platform.getBundle(pluginId);
+		
+		if (bundle instanceof BundleHost){
+			System.out.println("Bundledata class:");
+			System.out.println(((BundleHost) bundle).getBundleData());
+		} else {
+			System.out.println("No Bundledata");
+		}
 		System.out.println("Location: " + bundle.getLocation());
 		System.out.println("Jar ext: " + IJ2EEModuleConstants.JAR_EXT);
 		System.out.println("Comparison: " + bundle.getLocation().endsWith(IJ2EEModuleConstants.JAR_EXT));
