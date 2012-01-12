@@ -26,7 +26,7 @@
 				<configuration>
 					<useUIThread>false</useUIThread>
 					<testSuite>org.jboss.tools.portlet.ui.bot.test</testSuite>
-					<testClass>org.jboss.tools.portlet.ui.bot.test.jsf.JSFPortletTestSuite</testClass>
+					<testClass>org.jboss.tools.portlet.ui.bot.test.AllTestsSuite</testClass>
 					<skip>${swtbot.test.skip}</skip>
 					<dependencies combine.children="append">
 						<dependency>
@@ -42,6 +42,16 @@
 						<dependency>
 							<type>p2-installable-unit</type>
 							<artifactId>org.eclipse.jst.web_core.feature.feature.group</artifactId>
+							<version>0.0.0</version>
+						</dependency>
+						<dependency>
+							<type>p2-installable-unit</type>
+							<artifactId>org.eclipse.datatools.enablement.hsqldb.feature.feature.group</artifactId>
+							<version>0.0.0</version>
+						</dependency>
+						<dependency>
+							<type>p2-installable-unit</type>
+							<artifactId>org.jboss.tools.project.examples.feature.feature.group</artifactId>
 							<version>0.0.0</version>
 						</dependency>
 					</dependencies>
