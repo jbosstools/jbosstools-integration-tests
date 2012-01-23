@@ -1,5 +1,6 @@
 package org.jboss.tools.esb.ui.bot.tests.examples;
 
+import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
@@ -18,6 +19,7 @@ public class WebServiceProducer extends ESBExampleTest {
 	protected void executeExample() {
 		super.executeExample();	
 		String text = executeClientGetServerOutput("org.jboss.soa.esb.samples.quickstart.webserviceproducer.test.SendMessage","jms");
+		SWTTestExt.servers.removeAllProjectsFromServer();
 		assertNotNull("Calling Send message failed, nothing appened to server log",text);	
 		assertTrue("Calling Send message failed, unexpected server output :"+text,text.contains("Goodbye!!"));
 		fail("testing method http not yet implemented");

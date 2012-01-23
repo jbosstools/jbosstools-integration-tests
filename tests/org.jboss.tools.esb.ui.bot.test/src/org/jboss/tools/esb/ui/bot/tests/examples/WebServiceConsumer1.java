@@ -1,5 +1,6 @@
 package org.jboss.tools.esb.ui.bot.tests.examples;
 
+import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
@@ -22,6 +23,7 @@ public class WebServiceConsumer1 extends ESBExampleTest {
 		assertTrue("Calling JMS Send message failed, unexpected server output :"+text,text.contains("Hello World Greeting for"));
 		text = null;
 		text = executeClientGetServerOutput(getExampleClientProjectName(),"src","org.jboss.soa.esb.samples.quickstart.webservice_consumer1.test","SendEsbMessage.java");
+		SWTTestExt.servers.removeAllProjectsFromServer();
 		assertNotNull("Calling ESB Send message failed, nothing appened to server log",text);	
 		assertTrue("Calling ESB Send message failed, unexpected server output :"+text,text.contains("Hello World Greeting for"));
 		

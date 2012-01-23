@@ -1,5 +1,6 @@
 package org.jboss.tools.esb.ui.bot.tests.examples;
 
+import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
@@ -24,6 +25,7 @@ public class SmooksXML2POJO extends ESBExampleTest {
 		assertNotNull("Calling Send message failed, nothing appened to server log",text);	
 		assertTrue("Calling Send message failed, unexpected server output :"+text,text.contains("Order Items"));
 		text = executeClient(getExampleClientProjectName(),"src","org.jboss.soa.esb.samples.quickstart.transformxml2pojo.test","ReceiveJMSMessage.java");
+		SWTTestExt.servers.removeAllProjectsFromServer();
 		assertTrue("Calling Send message failed, unexpected server output :"+text,text.contains("Order Items"));
 	}
 }

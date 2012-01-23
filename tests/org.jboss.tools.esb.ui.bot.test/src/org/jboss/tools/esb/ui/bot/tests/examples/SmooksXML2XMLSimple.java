@@ -1,5 +1,6 @@
 package org.jboss.tools.esb.ui.bot.tests.examples;
 
+import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
@@ -20,6 +21,7 @@ public class SmooksXML2XMLSimple extends ESBExampleTest {
 		super.executeExample();	
 		String text = executeClientGetServerOutput(getExampleClientProjectName(),"src","org.jboss.soa.esb.samples.quickstart.transformxml2xmlsimple.test","SendJMSMessage.java");
 		bot.sleep(Timing.time3S());
+		SWTTestExt.servers.removeAllProjectsFromServer();
 		assertNotNull("Calling Send message failed, nothing appened to server log",text);	
 		assertTrue("Calling Send message failed, unexpected server output :"+text,text.contains("<Order"));
 	}

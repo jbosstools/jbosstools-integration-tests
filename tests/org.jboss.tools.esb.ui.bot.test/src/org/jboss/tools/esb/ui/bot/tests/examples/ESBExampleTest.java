@@ -7,6 +7,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.ui.bot.ext.ExampleTest;
 import org.jboss.tools.ui.bot.ext.SWTEclipseExt;
+import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
@@ -145,6 +146,7 @@ public class ESBExampleTest extends ExampleTest{
 		util.waitForNonIgnoredJobs();
 	}
 	protected void assertProblemsView() {
+		//bot.sleep(60000l);
 		SWTBotTreeItem errors = ProblemsView.getErrorsNode(bot);
 		assertNull("Project still contain problems :"+SWTEclipseExt.getFormattedTreeNode(errors),errors);
 	}

@@ -1,5 +1,6 @@
 package org.jboss.tools.esb.ui.bot.tests.examples;
 
+import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
@@ -21,6 +22,7 @@ public class HelloWorldAction extends ESBExampleTest {
 		super.executeExample();
 		String text = executeClientGetServerOutput(getExampleClientProjectName(),"src","org.jboss.soa.esb.samples.quickstart.helloworldaction.test","SendJMSMessage.java");
 		assertNotNull("Calling JMS Send message failed, nothing appened to server log",text);	
-		assertTrue("Calling JMS Send message failed, unexpected server output :"+text,text.contains("Hello World Action ESB invoked!"));				
+		assertTrue("Calling JMS Send message failed, unexpected server output :"+text,text.contains("Hello World Action ESB invoked!"));	
+		SWTTestExt.servers.removeAllProjectsFromServer();			
 	}
 }

@@ -1,5 +1,6 @@
 package org.jboss.tools.esb.ui.bot.tests.examples;
 
+import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
@@ -19,6 +20,7 @@ public class SmooksCSV2XML extends ESBExampleTest {
 	protected void executeExample() {
 		super.executeExample();	
 		String text = executeClientGetServerOutput(getExampleClientProjectName(),"src","org.jboss.soa.esb.samples.quickstart.transformcsv2xml","SendJMSMessage.java");
+		SWTTestExt.servers.removeAllProjectsFromServer();
 		assertNotNull("Calling Send message failed, nothing appened to server log",text);	
 		assertTrue("Calling Send message failed, unexpected server output :"+text,text.contains("<csv-set>"));
 	}

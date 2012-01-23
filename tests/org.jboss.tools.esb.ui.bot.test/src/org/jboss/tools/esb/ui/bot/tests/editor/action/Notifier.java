@@ -70,6 +70,9 @@ public class Notifier extends ESBAction {
 		Assertions.assertXmlContentExists(editor.toTextEditor().getText(), xpath);
 	}
 	private void addEmail(SWTBotEditor editor,String xpath,String... path) {
+		
+		String xpathOrig = xpath;
+		
 		SWTBotTreeItem item = SWTEclipseExt.selectTreeLocation(editor.bot(), path);
 		ContextMenuHelper.prepareTreeItemForContextMenu(editor.bot().tree(),item);
 		ContextMenuHelper.clickContextMenu(editor.bot().tree(), IDELabel.Menu.NEW,"Notify Email...");
@@ -81,7 +84,36 @@ public class Notifier extends ESBAction {
 		editor.save();
 		xpath+="/target[@class='NotifyEmail' and @from='a' and @sendTo='b' and @subject='c']";
 		Assertions.assertXmlContentExists(editor.toTextEditor().getText(), xpath);
+		
+		/* ldimaggi */
+		System.out.println ("DEBUG1");
+		org.jboss.tools.ui.bot.ext.SWTUtilExt.displayAllBotWidgets(bot);
+		System.out.println ("DEBUG1");
+		
+		bot.textWithLabel("Host:").setText("redhat.com");
+		bot.textWithLabel("Port:").setText("25");
+		bot.textWithLabel("Username:").setText("QEuser");
+		bot.textWithLabel("Password:").setText("thepas$w0rd");
+		bot.textWithLabel("Auth:").setText("LDAP");
+		
+		System.out.println ("DEBUG " + bot.section("Target Notify Email").getText());
+				//expandBarWithLabel("Target Notify Email").expandedItemCount() );
+		
+		System.out.println (editor.toTextEditor().getText());
+		
+		xpathOrig+="/target[@auth='LDAP' and @class='NotifyEmail' and @from='a' and @host='redhat.com' and @password='thepas$w0rd' and @port='25' and @sendTo='b' and @subject='c' and username='QEuser']";
+		//Assertions.assertXmlContentExists(editor.toTextEditor().getText(), xpath);
+		
+////	       <target auth="LDAP" class="NotifyEmail" from="a"
+////	        host="redhat.com" password="thepas$w0rd" port="25" sendTo="b"
+////	        subject="c" username="QEuser"/>
+//		
+		editor.save();
+		bot.sleep(60000l);
+ 		
 	}
+	
+	
 	private void addSQL(SWTBotEditor editor,String xpath,String... path) {
 		SWTBotTreeItem item = SWTEclipseExt.selectTreeLocation(editor.bot(), path);
 		ContextMenuHelper.prepareTreeItemForContextMenu(editor.bot().tree(),item);

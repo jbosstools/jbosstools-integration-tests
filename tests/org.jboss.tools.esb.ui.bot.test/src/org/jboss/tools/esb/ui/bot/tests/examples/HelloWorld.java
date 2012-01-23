@@ -1,5 +1,6 @@
 package org.jboss.tools.esb.ui.bot.tests.examples;
 
+import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
@@ -31,6 +32,8 @@ public class HelloWorld extends ESBExampleTest {
 		text = executeClientGetServerOutput(getExampleClientProjectName(),"src","org.jboss.soa.esb.samples.quickstart.helloworld.test","SendEsbMessage.java");
 		assertNotNull("Calling ESB Send message failed, nothing appened to server log",text);	
 		assertTrue("Calling ESB Send message failed, unexpected server output :"+text,text.contains("hello world esb"));
+		
+		SWTTestExt.servers.removeAllProjectsFromServer();
 		
 	}
 }

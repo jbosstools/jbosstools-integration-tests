@@ -1,5 +1,6 @@
 package org.jboss.tools.esb.ui.bot.tests.examples;
 
+import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
@@ -17,6 +18,7 @@ public class HelloWorldFileAction extends ESBExampleTest {
 	}
 	@Override
 	protected void executeExample() {
+		SWTTestExt.servers.removeAllProjectsFromServer();
 		fail("Example execution not yet implemented");
 	}
 }
