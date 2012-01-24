@@ -10,6 +10,7 @@ import org.jboss.tools.portlet.ui.bot.task.wizard.WizardPageFillingTask;
 import org.jboss.tools.portlet.ui.bot.task.wizard.web.jboss.JBossJSFPortletCapabilitiesWizardPageFillingTask;
 import org.jboss.tools.portlet.ui.bot.task.wizard.web.jboss.JBossPortletCapabilitiesWizardPageFillingTask;
 import org.jboss.tools.portlet.ui.bot.test.template.CreatePortletProjectTemplate;
+import org.jboss.tools.ui.bot.ext.config.TestConfigurator;
 
 
 /**
@@ -44,7 +45,9 @@ public class CreateJSFPortletProject extends CreatePortletProjectTemplate{
 		tasks.add(new WizardPageDefaultsFillingTask());
 		tasks.add(new JBossPortletCapabilitiesWizardPageFillingTask(JBossPortletCapabilitiesWizardPageFillingTask.Type.RUNTIME_PROVIDER));
 		tasks.add(new WizardPageDefaultsFillingTask());
-		tasks.add(new JBossJSFPortletCapabilitiesWizardPageFillingTask(JBossJSFPortletCapabilitiesWizardPageFillingTask.Type.RUNTIME_PROVIDER, "/home/ljelinko/programs/jboss/EPP/jboss-epp-5.1/portletbridge"));
+		tasks.add(new JBossJSFPortletCapabilitiesWizardPageFillingTask(
+				JBossJSFPortletCapabilitiesWizardPageFillingTask.Type.RUNTIME_PROVIDER, 
+				TestConfigurator.currentConfig.getPortletBridge().getLocation()));
 		return tasks;
 	}
 	

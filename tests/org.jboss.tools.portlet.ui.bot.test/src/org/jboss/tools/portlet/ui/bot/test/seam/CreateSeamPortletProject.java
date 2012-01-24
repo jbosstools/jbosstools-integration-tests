@@ -33,8 +33,6 @@ public class CreateSeamPortletProject extends CreatePortletProjectTemplate{
 
 	public static final String PROJECT_NAME = "seam-portlet";
 
-	private static final String PORTLET_BRIDGE_AS_RELATIVE_PATH = "/server/default/deploy/jboss-portal.sar/portal-identity.sar/portal-identity.war/WEB-INF/lib";
-	
 	@Override
 	public String getProjectName() {
 		return PROJECT_NAME;
@@ -63,7 +61,7 @@ public class CreateSeamPortletProject extends CreatePortletProjectTemplate{
 		tasks.add(getSeamFacetPageFillingTask());
 		tasks.add(new JBossJSFPortletCapabilitiesWizardPageFillingTask(
 				JBossJSFPortletCapabilitiesWizardPageFillingTask.Type.RUNTIME_PROVIDER, 
-				TestConfigurator.currentConfig.getServer().runtimeHome + PORTLET_BRIDGE_AS_RELATIVE_PATH));
+				TestConfigurator.currentConfig.getPortletBridge().getLocation()));
 		return tasks;
 	}
 	
