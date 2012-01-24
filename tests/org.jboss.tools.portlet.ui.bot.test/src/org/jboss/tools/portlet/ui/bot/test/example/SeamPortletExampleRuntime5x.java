@@ -14,7 +14,7 @@ import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
  * @author Lucia Jelinkova
  *
  */
-@Require(db=@DB, seam=@Seam, server=@Server(version="5.0", operator=">", state=ServerState.Present, type=ServerType.EPP))
+@Require(db=@DB, seam=@Seam, server=@Server(version="5.0", operator=">", state=ServerState.Running, type=ServerType.EPP))
 public class SeamPortletExampleRuntime5x extends AbstractPortletExampleRuntime5xTest {
 	
 	private static final String PROJECT_NAME_IN_WIZARD = "SeamPortlet";
