@@ -9,7 +9,11 @@
 	<build>
 		<resources>
 			<resource>
-				<directory>./config_files</directory>
+				<directory>../../resources/product_config_files</directory>
+				<filtering>true</filtering>
+			</resource>
+			<resource>
+				<directory>../../resources/project_config_files</directory>
 				<filtering>true</filtering>
 			</resource>
 		</resources>

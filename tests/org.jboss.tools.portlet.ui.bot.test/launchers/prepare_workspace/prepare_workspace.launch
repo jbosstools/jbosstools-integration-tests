@@ -6,8 +6,10 @@
 <booleanAttribute key="M2_OFFLINE" value="false"/>
 <stringAttribute key="M2_PROFILES" value=""/>
 <listAttribute key="M2_PROPERTIES">
-<listEntry value="JBOSS_EPP_4_3=${folder_prompt:EPP 4.3 installation directory}"/>
-<listEntry value="JBOSS_EPP_5_1=${folder_prompt:EPP 5.1 installation directory}"/>
+<listEntry value="jbosstools.test.jboss-epp-4.3.home=${folder_prompt:EPP 4.3 installation directory}"/>
+<listEntry value="jbosstools.test.jboss-epp-5.1.home=${folder_prompt:EPP 5.1 installation directory}"/>
+<listEntry value="jbosstools.test.jboss-gatein.home=${folder_prompt:GateIn 3.1.0 installation directory}"/>
+<listEntry value="jbosstools.test.jboss-seam.home=${folder_prompt:Seam 2.2 installation directory}"/>
 </listAttribute>
 <stringAttribute key="M2_RUNTIME" value="EMBEDDED"/>
 <booleanAttribute key="M2_SKIP_TESTS" value="false"/>
