@@ -1,6 +1,6 @@
 package org.jboss.tools.portlet.ui.bot.task.wizard.web.jboss;
 
-import org.jboss.tools.portlet.ui.bot.task.wizard.WizardFillingTask;
+import org.jboss.tools.portlet.ui.bot.task.wizard.WizardOpeningAndFillingTask;
 
 /**
  * 
@@ -9,7 +9,7 @@ import org.jboss.tools.portlet.ui.bot.task.wizard.WizardFillingTask;
  * @author Lucia Jelinkova
  *
  */
-public abstract class AbstractPortletCreationTask extends WizardFillingTask {
+public abstract class AbstractPortletCreationTask extends WizardOpeningAndFillingTask {
 
 	private static final String PORTLET_WIZARD_PATH = "JBoss Tools Web/Portlet";
 	
