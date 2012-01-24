@@ -13,10 +13,10 @@
 	<packaging>eclipse-test-plugin</packaging>
 
 	<properties>
-		<jbosstools.test.jboss-gatein.home></jbosstools.test.jboss-gatein.home> <!--TODO setup default path -->
-		<jbosstools.test.jboss-seam.home></jbosstools.test.jboss-seam.home> <!--TODO setup default path -->
-		<configurations.dir></configurations.dir> <!-- TODO setup default path -->
-		<systemProperties>-Djbosstools.test.jboss-gatein.home=${jbosstools.test.jboss-gatein.home} -Dtest.configurations.dir=${configurations.dir}</systemProperties>
+		<jbosstools.test.jboss-gatein.home>${requirement.build.root}/GateIn-3.1.0-GA</jbosstools.test.jboss-gatein.home>
+		<jbosstools.test.jboss-seam.home>${requirement.build.root}/jboss-seam-2.2.1.CR2</jbosstools.test.jboss-seam.home> <!--TODO setup default path -->
+		<configurations.dir>resources/project_config_files</configurations.dir>
+		<systemProperties>-Djbosstools.test.jboss-gatein.home=${jbosstools.test.jboss-gatein.home} -Djbosstools.test.jboss-seam.home=${jbosstools.test.jboss-seam.home} -Dtest.configurations.dir=${configurations.dir}</systemProperties>
 	</properties>
 
 	<build>
