@@ -12,7 +12,7 @@ import java.util.List;
 import org.jboss.tools.portlet.ui.bot.entity.FacetDefinition;
 import org.jboss.tools.portlet.ui.bot.entity.WorkspaceFile;
 import org.jboss.tools.portlet.ui.bot.task.facet.FacetsSelectionTask;
-import org.jboss.tools.portlet.ui.bot.task.wizard.WizardFillingTask;
+import org.jboss.tools.portlet.ui.bot.task.wizard.WizardOpeningAndFillingTask;
 import org.jboss.tools.portlet.ui.bot.task.wizard.WizardPageFillingTask;
 import org.jboss.tools.portlet.ui.bot.task.wizard.web.DynamicWebProjectCreationTask;
 import org.jboss.tools.portlet.ui.bot.task.wizard.web.DynamicWebProjectWizardPageFillingTask;
@@ -87,7 +87,7 @@ public abstract class CreatePortletProjectTemplate extends SWTTaskBasedTestCase 
 		}
 	}
 
-	protected WizardFillingTask getCreateDynamicWebProjectTask() {
+	protected WizardOpeningAndFillingTask getCreateDynamicWebProjectTask() {
 		DynamicWebProjectWizardPageFillingTask task = new DynamicWebProjectWizardPageFillingTask();
 		task.setProjectName(getProjectName());
 		task.setWebModuleVersion("2.5");
