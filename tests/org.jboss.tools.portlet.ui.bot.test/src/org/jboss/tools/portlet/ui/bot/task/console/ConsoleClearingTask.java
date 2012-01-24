@@ -20,7 +20,7 @@ public class ConsoleClearingTask extends AbstractSWTTask {
 		SWTBotView view = SWTBotFactory.getConsole().show();
 		
 		for (SWTBotToolbarButton button : view.getToolbarButtons()){
-			if (IDELabel.ConsoleView.BUTTON_CLEAR_CONSOLE_TOOLTIP.equals(button.getToolTipText())){
+			if (button.isEnabled() && IDELabel.ConsoleView.BUTTON_CLEAR_CONSOLE_TOOLTIP.equals(button.getToolTipText())){
 				button.click();
 			}
 		}
