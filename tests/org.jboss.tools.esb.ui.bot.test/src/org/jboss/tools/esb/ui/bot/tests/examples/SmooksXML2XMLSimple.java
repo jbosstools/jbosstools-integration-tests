@@ -18,6 +18,7 @@ public class SmooksXML2XMLSimple extends ESBExampleTest {
 	}
 	@Override
 	protected void executeExample() {
+		SWTTestExt.servers.removeAllProjectsFromServer();
 		super.executeExample();	
 		String text = executeClientGetServerOutput(getExampleClientProjectName(),"src","org.jboss.soa.esb.samples.quickstart.transformxml2xmlsimple.test","SendJMSMessage.java");
 		bot.sleep(Timing.time3S());

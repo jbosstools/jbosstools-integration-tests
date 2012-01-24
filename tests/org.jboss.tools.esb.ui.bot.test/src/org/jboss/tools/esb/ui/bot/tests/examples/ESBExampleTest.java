@@ -77,13 +77,14 @@ public class ESBExampleTest extends ExampleTest{
 	 * @return string in server log console that was appended  or null if nothing appended
 	 */
 	protected String executeClientGetServerOutput(String... clientClass) {
-		String text = console.getConsoleText();		
+		String text = console.getConsoleText();	
 		SWTBotTreeItem jmsCall = SWTEclipseExt.selectTreeLocation(packageExplorer.show().bot(),clientClass);
 		eclipse.runTreeItemAsJavaApplication(jmsCall);
 		bot.sleep(Timing.time5S());
 		util.waitForNonIgnoredJobs();
 		console.switchConsole(configuredState.getServer().name);
-		String text2 = console.getConsoleText(TIME_5S, TIME_20S, false);
+		//String text2 = console.getConsoleText(TIME_5S, TIME_20S, false);
+		String text2 = console.getConsoleText(TIME_5S, TIME_60S, false);  /* https://issues.jboss.org/browse/JBQA-5838 - ldimaggi  */
 		if (text.length()>=text2.length()) {
 			return null;
 		}
