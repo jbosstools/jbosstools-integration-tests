@@ -1,7 +1,7 @@
 package org.jboss.tools.portlet.ui.bot.task.wizard.web;
 
 import org.jboss.tools.portlet.ui.bot.task.dialog.AssociatedPerspectiveDialogClosingTask;
-import org.jboss.tools.portlet.ui.bot.task.wizard.WizardFillingTask;
+import org.jboss.tools.portlet.ui.bot.task.wizard.WizardOpeningAndFillingTask;
 
 /**
  * Create a new dynamic web project using the wizard. 
@@ -9,7 +9,7 @@ import org.jboss.tools.portlet.ui.bot.task.wizard.WizardFillingTask;
  * @author ljelinko
  *
  */
-public class DynamicWebProjectCreationTask extends WizardFillingTask {
+public class DynamicWebProjectCreationTask extends WizardOpeningAndFillingTask {
 
 	public DynamicWebProjectCreationTask() {
 		super("Dynamic Web Project", "Web");
