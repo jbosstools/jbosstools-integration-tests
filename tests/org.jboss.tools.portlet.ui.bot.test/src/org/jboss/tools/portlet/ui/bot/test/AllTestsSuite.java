@@ -9,6 +9,7 @@ import org.jboss.tools.portlet.ui.bot.test.example.JSFPortletExampleRuntime5x;
 import org.jboss.tools.portlet.ui.bot.test.example.JavaPortletExampleRuntime4x;
 import org.jboss.tools.portlet.ui.bot.test.example.RichFacesPortletExampleRuntime5x;
 import org.jboss.tools.portlet.ui.bot.test.example.SeamPortletExampleRuntime4x;
+import org.jboss.tools.portlet.ui.bot.test.example.SeamPortletExampleRuntime5x;
 import org.jboss.tools.portlet.ui.bot.test.jsf.CreateJSFPortletProject;
 import org.jboss.tools.portlet.ui.bot.test.jsf.CreateJSFPortletRuntime4x;
 import org.jboss.tools.portlet.ui.bot.test.jsf.CreateJSFPortletRuntime5x;
@@ -24,6 +25,7 @@ import org.junit.runners.Suite;
 
 @RunWith(RequirementAwareSuite.class)
 @Suite.SuiteClasses({
+	GateinStartupFix.class,
 	CreateJavaPortletProject.class,
 	CreateJavaPortlet.class, 
 	RunJavaPortletOnServer.class,
@@ -41,7 +43,8 @@ import org.junit.runners.Suite;
 	JSFPortletExampleRuntime4x.class, 
 	SeamPortletExampleRuntime4x.class,
 	JSFPortletExampleRuntime5x.class,
-	RichFacesPortletExampleRuntime5x.class
+	RichFacesPortletExampleRuntime5x.class,
+	SeamPortletExampleRuntime5x.class
 	})
 public class AllTestsSuite {
 
