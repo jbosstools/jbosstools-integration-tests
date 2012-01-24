@@ -12,35 +12,23 @@ import org.jboss.tools.portlet.ui.bot.task.wait.condition.ShellIsActiveCondition
 
 /**
  * 
- * Provides the functionality of opening wizard and navigating between its pages. The data
- * should fill every wizard page itself.  
+ * Provides the functionality of navigating between pages of open wizard. The data
+ * should fill every wizard page itself.
  * 
- * @author ljelinko
+ * @author Lucia Jelinkova
  *
  */
 public class WizardFillingTask extends CompositeSWTTask<WizardPageFillingTask>{
 
 	private List<WizardPageFillingTask> wizardPages;
 
-	private String wizardName;
-	
-	private String wizardPath;
-	
-	public WizardFillingTask(String name) {
-		this(name, null);
-	}
-	
-	public WizardFillingTask(String name, String path) {
+	public WizardFillingTask() {
 		super();
-		this.wizardName = name;
-		this.wizardPath = path;
 		wizardPages = new ArrayList<WizardPageFillingTask>();
 	}
-
+	
 	@Override
 	public void perform() {
-		performInnerTask(new WizardOpeningTask(wizardName, wizardPath));
-		
 		SWTBotShell activeShell = getActiveShell();
 
 		super.setTasks(wizardPages);
