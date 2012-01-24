@@ -32,6 +32,8 @@ import org.eclipse.swt.widgets.Tray;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.swt.widgets.Widget;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 import org.hamcrest.Matcher;
 import org.jboss.tools.portlet.ui.bot.task.AbstractSWTTask;
@@ -222,7 +224,12 @@ public class PrintWidgetsTask extends AbstractSWTTask {
 		protected void visitTree(Tree widget) {
 			stream.print("Tree {");
 			stream.print(widget.getItemCount() + " item(s), ");
-			stream.print(widget.getColumnCount() + " columns(s)");
+			stream.print(widget.getColumnCount() + " columns(s), ");
+			stream.print("items = {");
+			for (SWTBotTreeItem item : new SWTBotTree(widget).getAllItems()){
+				stream.print(item.getText() + ", ");
+			}
+			stream.print("}");
 			stream.println("}");
 		}
 
