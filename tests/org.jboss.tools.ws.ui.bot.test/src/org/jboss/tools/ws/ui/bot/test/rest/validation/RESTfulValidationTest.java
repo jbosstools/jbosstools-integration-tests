@@ -25,6 +25,7 @@ public class RESTfulValidationTest extends RESTfulTestBase {
 	private final String GET_METHOD_PATH = "/{id}";
 	private final String CORRECT_PATH_PARAM = "id";
 	private final String BAD_PATH_PARAM = "customerId";
+	private final String SIMPLE_REST_WS_RESOURCE = "/resources/restful/SimpleRestWS.java.ws";
 	
 	protected String getWsProjectName() {
 		return "RestServicesValidation";
@@ -54,8 +55,7 @@ public class RESTfulValidationTest extends RESTfulTestBase {
 	public void testCorrectValueValidation() {
 		
 		resourceHelper.copyResourceToClass(bot.editorByTitle(getWsName() + ".java"), 
-				   RESTfulExplorerTest.class.
-				   getResourceAsStream("/resources/restful/CorrectRestWS.java.ws"), 
+				   RESTfulExplorerTest.class.getResourceAsStream(SIMPLE_REST_WS_RESOURCE), 
 				   false, getWsPackage(), getWsName(), GET_METHOD_PATH, CORRECT_PATH_PARAM);
 		
 		assertTrue(getRESTValidationErrors(getWsProjectName()).length == 0);
@@ -63,9 +63,9 @@ public class RESTfulValidationTest extends RESTfulTestBase {
 	
 	@Test
 	public void testBadValueValidation() {
+		
 		resourceHelper.copyResourceToClass(bot.editorByTitle(getWsName() + ".java"), 
-				   RESTfulExplorerTest.class.
-				   getResourceAsStream("/resources/restful/BadRestWS.java.ws"), 
+				   RESTfulExplorerTest.class.getResourceAsStream(SIMPLE_REST_WS_RESOURCE), 
 				   false, getWsPackage(), getWsName(), GET_METHOD_PATH, BAD_PATH_PARAM);
 		
 		assertTrue("" + getRESTValidationErrors(getWsProjectName()).length, 
@@ -74,14 +74,13 @@ public class RESTfulValidationTest extends RESTfulTestBase {
 	
 	@Test
 	public void testCorrectToBadValueValidation() {
+		
 		resourceHelper.copyResourceToClass(bot.editorByTitle(getWsName() + ".java"), 
-				   RESTfulExplorerTest.class.
-				   getResourceAsStream("/resources/restful/CorrectRestWS.java.ws"), 
+				   RESTfulExplorerTest.class.getResourceAsStream(SIMPLE_REST_WS_RESOURCE), 
 				   false, getWsPackage(), getWsName(), GET_METHOD_PATH, CORRECT_PATH_PARAM);
 		
 		resourceHelper.copyResourceToClass(bot.editorByTitle(getWsName() + ".java"), 
-				   RESTfulExplorerTest.class.
-				   getResourceAsStream("/resources/restful/BadRestWS.java.ws"), 
+				   RESTfulExplorerTest.class.getResourceAsStream(SIMPLE_REST_WS_RESOURCE), 
 				   false, getWsPackage(), getWsName(), GET_METHOD_PATH, BAD_PATH_PARAM);
 		
 		assertTrue("" + getRESTValidationErrors(getWsProjectName()).length, 
@@ -91,13 +90,11 @@ public class RESTfulValidationTest extends RESTfulTestBase {
 	@Test
 	public void testBadToCorrectValueValidation() {
 		resourceHelper.copyResourceToClass(bot.editorByTitle(getWsName() + ".java"), 
-				   RESTfulExplorerTest.class.
-				   getResourceAsStream("/resources/restful/BadRestWS.java.ws"), 
+				   RESTfulExplorerTest.class.getResourceAsStream(SIMPLE_REST_WS_RESOURCE), 
 				   false, getWsPackage(), getWsName(), GET_METHOD_PATH, BAD_PATH_PARAM);
 		
 		resourceHelper.copyResourceToClass(bot.editorByTitle(getWsName() + ".java"), 
-				   RESTfulExplorerTest.class.
-				   getResourceAsStream("/resources/restful/CorrectRestWS.java.ws"), 
+				   RESTfulExplorerTest.class.getResourceAsStream(SIMPLE_REST_WS_RESOURCE), 
 				   false, getWsPackage(), getWsName(), GET_METHOD_PATH, CORRECT_PATH_PARAM);
 		
 		assertTrue("" + getRESTValidationErrors(getWsProjectName()).length, 
@@ -110,8 +107,7 @@ public class RESTfulValidationTest extends RESTfulTestBase {
 		disableRESTValidation();
 		
 		resourceHelper.copyResourceToClass(bot.editorByTitle(getWsName() + ".java"), 
-				   RESTfulExplorerTest.class.
-				   getResourceAsStream("/resources/restful/BadRestWS.java.ws"), 
+				   RESTfulExplorerTest.class.getResourceAsStream(SIMPLE_REST_WS_RESOURCE), 
 				   false, getWsPackage(), getWsName(), GET_METHOD_PATH, BAD_PATH_PARAM);
 		
 		assertTrue("" + getRESTValidationErrors(getWsProjectName()).length, 
