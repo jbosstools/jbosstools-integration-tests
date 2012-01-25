@@ -11,6 +11,7 @@
 package org.jboss.tools.ws.ui.bot.test;
 
 import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
+import org.jboss.tools.ws.ui.bot.test.rest.completion.RESTfulCompletionTest;
 import org.jboss.tools.ws.ui.bot.test.rest.explorer.RESTfulExplorerTest;
 import org.jboss.tools.ws.ui.bot.test.rest.explorer.RESTfulSupportTest;
 import org.jboss.tools.ws.ui.bot.test.rest.validation.RESTfulValidationTest;
@@ -54,7 +55,8 @@ import org.junit.runners.Suite.SuiteClasses;
 	SimpleRESTWebServiceTest.class,
 	RESTfulSupportTest.class, 
 	RESTfulExplorerTest.class,
-//	RESTfulValidationTest.class,
+	RESTfulValidationTest.class,
+	RESTfulCompletionTest.class,
 	BottomUpWSTest.class,
 	TopDownWSTest.class,
 	WsClientTest.class,
