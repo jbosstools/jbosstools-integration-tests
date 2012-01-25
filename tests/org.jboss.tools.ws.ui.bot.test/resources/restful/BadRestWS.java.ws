@@ -9,8 +9,8 @@ import javax.ws.rs.PathParam;
 public class {1} '{'
 
 	@GET
-	@Path("/'{'id'}'")
-	public String getMessage(@PathParam("none") int id) '{'
+	@Path("{2}")
+	public String getMessage(@PathParam("{3}") int id) '{'
 		return null;
 	'}'
 	
