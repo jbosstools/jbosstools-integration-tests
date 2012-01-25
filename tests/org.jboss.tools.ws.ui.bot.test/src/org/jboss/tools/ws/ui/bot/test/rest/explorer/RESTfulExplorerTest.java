@@ -12,7 +12,6 @@
 package org.jboss.tools.ws.ui.bot.test.rest.explorer;
 
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
-import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTFulAnnotations;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
 import org.jboss.tools.ws.ui.bot.test.ti.wizard.RESTFullExplorerWizard;
@@ -68,11 +67,6 @@ public class RESTfulExplorerTest extends RESTfulTestBase {
 										   RESTfulExplorerTest.class.
 										   getResourceAsStream("/resources/restful/BasicRestfulWS.java.ws"), 
 										   false, getWsPackage(), getWsName());
-		/**
-		 * workaround
-		 */
-		eclipse.cleanAllProjects();
-		bot.sleep(Timing.time3S());
 
 		restfulWizard = new RESTFullExplorerWizard(getWsProjectName());
 		SWTBotTreeItem[] restServices = restfulWizard.getAllRestServices();
@@ -94,12 +88,7 @@ public class RESTfulExplorerTest extends RESTfulTestBase {
 										   RESTfulExplorerTest.class.
 										   getResourceAsStream("/resources/restful/AdvancedRestfulWS.java.ws"), 
 										   false, getWsPackage(), getWsName());
-		/**
-		 * workaround
-		 */
-		eclipse.cleanAllProjects();		
-		bot.sleep(Timing.time3S());
-
+		
 		restfulWizard = new RESTFullExplorerWizard(getWsProjectName());
 		SWTBotTreeItem[] restServices = restfulWizard.getAllRestServices();
 		
@@ -139,12 +128,6 @@ public class RESTfulExplorerTest extends RESTfulTestBase {
 				   getResourceAsStream("/resources/restful/BasicRestfulWS.java.ws"), 
 				   false, getWsPackage(), getWsName());
 		
-		/**
-		 * workaround
-		 */
-		eclipse.cleanAllProjects();		
-		bot.sleep(Timing.time3S());
-
 		restfulWizard = new RESTFullExplorerWizard(getWsProjectName());
 		SWTBotTreeItem[] restServices = restfulWizard.getAllRestServices();
 		
@@ -152,12 +135,6 @@ public class RESTfulExplorerTest extends RESTfulTestBase {
 		
 		resourceHelper.replaceInEditor(bot.activeEditor().toTextEditor(), "@DELETE", "@GET");
 		
-		/**
-		 * workaround
-		 */
-		eclipse.cleanAllProjects();		
-		bot.sleep(Timing.time3S());
-
 		restfulWizard = new RESTFullExplorerWizard(getWsProjectName());
 		restServices = restfulWizard.getAllRestServices();
 		
@@ -179,12 +156,6 @@ public class RESTfulExplorerTest extends RESTfulTestBase {
 				   getResourceAsStream("/resources/restful/AdvancedRestfulWS.java.ws"), 
 				   false, getWsPackage(), getWsName());
 		
-		/**
-		 * workaround
-		 */
-		eclipse.cleanAllProjects();
-		bot.sleep(Timing.time3S());
-
 		restfulWizard = new RESTFullExplorerWizard(getWsProjectName());
 		SWTBotTreeItem[] restServices = restfulWizard.getAllRestServices();
 		
@@ -199,12 +170,6 @@ public class RESTfulExplorerTest extends RESTfulTestBase {
 		resourceHelper.replaceInEditor(bot.activeEditor().toTextEditor(), "@DELETE", 
 									   "@DELETE" + LINE_SEPARATOR + "@Produces(\"text/plain\")");
 		
-		/**
-		 * workaround
-		 */
-		eclipse.cleanAllProjects();
-		bot.sleep(Timing.time3S());
-
 		restfulWizard = new RESTFullExplorerWizard(getWsProjectName());
 		restServices = restfulWizard.getAllRestServices();
 		
@@ -224,12 +189,6 @@ public class RESTfulExplorerTest extends RESTfulTestBase {
 				   getResourceAsStream("/resources/restful/BasicRestfulWS.java.ws"), 
 				   false, getWsPackage(), getWsName());
 		
-		/**
-		 * workaround
-		 */
-		eclipse.cleanAllProjects();
-		bot.sleep(Timing.time3S());
-
 		restfulWizard = new RESTFullExplorerWizard(getWsProjectName());
 		SWTBotTreeItem[] restServices = restfulWizard.getAllRestServices();
 		
@@ -240,12 +199,6 @@ public class RESTfulExplorerTest extends RESTfulTestBase {
 				   getResourceAsStream("/resources/restful/EmptyRestfulWS.java.ws"), 
 				   false, getWsPackage(), getWsName());
 		
-		/**
-		 * workaround
-		 */
-		eclipse.cleanAllProjects();
-		bot.sleep(Timing.time3S());
-
 		restfulWizard = new RESTFullExplorerWizard(getWsProjectName());
 		restServices = restfulWizard.getAllRestServices();
 		
