@@ -39,18 +39,6 @@ public class RESTfulValidationTest extends RESTfulTestBase {
 		return "RestService";
 	}
 	
-	@Override
-	public void setup() {		
-		if (!projectExists(getWsProjectName())) {
-			projectHelper.createProject(getWsProjectName());	
-			addRestSupport(getWsProjectName());
-		}
-		if (!projectExplorer.isFilePresent(getWsProjectName(), "Java Resources", 
-										  "src", getWsPackage(), getWsName() + ".java")) {
-			projectHelper.createClass(getWsProjectName(), getWsPackage(), getWsName());
-		}
-	}
-	
 	@Test
 	public void testCorrectValueValidation() {
 		

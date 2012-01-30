@@ -46,20 +46,6 @@ public class RESTfulExplorerTest extends RESTfulTestBase {
 		return "RestService";
 	}
 	
-	@Override
-	public void setup() {
-		if (!projectExists(getWsProjectName())) {
-			projectHelper.createProject(getWsProjectName());			
-		}
-		if (!isRestSupportEnabled(getWsProjectName())) {
-			addRestSupport(getWsProjectName());
-		}
-		if (!projectExplorer.isFilePresent(getWsProjectName(), "Java Resources", 
-										   "src", getWsPackage(), getWsName() + ".java")) {
-			projectHelper.createClass(getWsProjectName(), getWsPackage(), getWsName());
-		}	
-	}
-	
 	@Test
 	public void testAddingSimpleRESTMethods() {
 		
@@ -169,6 +155,8 @@ public class RESTfulExplorerTest extends RESTfulTestBase {
 		bot.sleep(Timing.time2S());
 		restfulWizard = new RESTFullExplorerWizard(getWsProjectName());
 		SWTBotTreeItem[] restServices = restfulWizard.getAllRestServices();
+		
+		assertTrue(restServices.length > 0);
 		
 		for (SWTBotTreeItem restService : restServices) {
 			if (restfulWizard.getRestServiceName(restService).equals(RESTFulAnnotations.DELETE.getLabel())) {
