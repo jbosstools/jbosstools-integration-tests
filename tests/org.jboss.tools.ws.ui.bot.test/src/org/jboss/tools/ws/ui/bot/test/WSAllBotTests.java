@@ -11,6 +11,7 @@
 package org.jboss.tools.ws.ui.bot.test;
 
 import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
+import org.jboss.tools.ws.ui.bot.test.annotation.AnnotationPropertiesTest;
 import org.jboss.tools.ws.ui.bot.test.rest.completion.RESTfulCompletionTest;
 import org.jboss.tools.ws.ui.bot.test.rest.explorer.RESTfulExplorerTest;
 import org.jboss.tools.ws.ui.bot.test.rest.explorer.RESTfulSupportTest;
@@ -53,6 +54,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	SampleRESTWebServiceTest.class,
 	SimpleSoapWebServiceTest.class,
 	SimpleRESTWebServiceTest.class,
+	AnnotationPropertiesTest.class,
 	RESTfulSupportTest.class, 
 	RESTfulExplorerTest.class,
 	RESTfulValidationTest.class,
