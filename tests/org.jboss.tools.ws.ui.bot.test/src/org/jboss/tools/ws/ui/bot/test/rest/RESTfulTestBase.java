@@ -11,6 +11,7 @@
 
 package org.jboss.tools.ws.ui.bot.test.rest;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +22,9 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
+import org.jboss.tools.ui.bot.ext.config.TestConfigurator;
 import org.jboss.tools.ui.bot.ext.gen.IPreference;
+import org.jboss.tools.ui.bot.ext.helper.BuildPathHelper;
 import org.jboss.tools.ui.bot.ext.view.ProblemsView;
 import org.jboss.tools.ws.ui.bot.test.WSTestBase;
 import org.jboss.tools.ws.ui.bot.test.utils.NodeContextUtil;
@@ -50,6 +53,25 @@ public class RESTfulTestBase extends WSTestBase {
 		ADD, REMOVE;
 	}
 
+	@Override
+	public void setup() {		
+		if (!projectExists(getWsProjectName())) {
+			projectHelper.createProject(getWsProjectName());			
+		}
+		if (!isRestSupportEnabled(getWsProjectName())) {	
+			// workaround for EAP 5.1
+			if (configuredState.getServer().type.equals("EAP") && 
+				configuredState.getServer().version.equals("5.1")) {
+				addRestEasyLibs(getWsProjectName());
+			}
+			addRestSupport(getWsProjectName());
+		}
+		if (!projectExplorer.isFilePresent(getWsProjectName(), "Java Resources", 
+										   "src", getWsPackage(), getWsName() + ".java")) {
+			projectHelper.createClass(getWsProjectName(), getWsPackage(), getWsName());
+		}	
+	}
+
 	protected SWTBotTreeItem[] getRESTValidationErrors(String wsProjectName) {
 		return ProblemsView.getFilteredErrorsTreeItems(bot,
 				PATH_PARAM_VALID_ERROR, "/" + wsProjectName, null, null);
@@ -63,18 +85,18 @@ public class RESTfulTestBase extends WSTestBase {
 		modifyRESTValidation(ConfigureOption.REMOVE);
 	}
 
-	
 	/**
 	 * DO IT BETTER!!!!!!!!!!!!!!!!!!
 	 */
 	protected void modifyRESTValidation(ConfigureOption option) {
-		
-		SWTBot validationBot = openValidationPreference(VALIDATION_PREFERENCE, new ArrayList<String>());
-		
+
+		SWTBot validationBot = openValidationPreference(VALIDATION_PREFERENCE,
+				new ArrayList<String>());
+
 		validationBot.button(ENABLE_ALL).click();
-		
+
 		if (option == ConfigureOption.REMOVE) {
-			
+
 			SWTBotTable validatorTable = validationBot.table();
 			int restValidationRow = -1;
 			for (int row = 0; row < validatorTable.rowCount(); row++) {
@@ -84,21 +106,21 @@ public class RESTfulTestBase extends WSTestBase {
 					break;
 				}
 			}
-			
+
 			assertTrue(restValidationRow >= 0);
-			
+
 			validatorTable.click(restValidationRow, 1);
 			validatorTable.click(restValidationRow, 2);
 		}
-		
+
 		validationBot.button("OK").click();
 		if (bot.activeShell().getText().equals(VALIDATION_SETTINGS_CHANGED)) {
 			bot.activeShell().bot().button("Yes").click();
 		}
-		
+
 		bot.sleep(Timing.time3S());
 		util.waitForNonIgnoredJobs();
-		
+
 	}
 
 	protected void addRestSupport(String wsProjectName) {
@@ -109,7 +131,6 @@ public class RESTfulTestBase extends WSTestBase {
 		configureRestSupport(wsProjectName, ConfigureOption.REMOVE);
 	}
 
-	
 	protected boolean isRestSupportEnabled(String wsProjectName) {
 		return (projectExplorer.isFilePresent(wsProjectName,
 				RESTFulAnnotations.REST_EXPLORER_LABEL.getLabel()) || projectExplorer
@@ -117,11 +138,39 @@ public class RESTfulTestBase extends WSTestBase {
 						RESTFulAnnotations.REST_EXPLORER_LABEL_BUILD.getLabel()));
 	}
 
-	protected static void addRestEasyLibs(String wsProjectName) {
-		assertTrue(configuredState.getServer().type.equals("EAP"));
+	
+	@SuppressWarnings("static-access")
+	private void addRestEasyLibs(String wsProjectName) {
+
+		List<File> restLibsPaths = getPathForRestLibs();
+		
+		BuildPathHelper buildPathHelper = new BuildPathHelper();
+		
+		for (File f : restLibsPaths) {
+			buildPathHelper.addExternalJar(f.getPath(), getWsProjectName());
+		}
+		
 	}
 	
-	
+	private List<File> getPathForRestLibs() {
+		
+		String runtimeHome = TestConfigurator.currentConfig.getServer().runtimeHome;
+		
+		// index of last occurence of "/" in EAP runtime path: jboss-eap-5.1/jboss-as
+		int indexOfAS = runtimeHome.lastIndexOf("/");
+		
+		// jboss-eap-5.1/jboss-as --> jboss-eap-5.1
+		String eapDirHome = runtimeHome.substring(0, indexOfAS);
+		
+		String restEasyDirPath = eapDirHome + "/" + "resteasy";
+		File restEasyDir = new File(restEasyDirPath);
+		
+		
+		String[] restEasyLibs = {"jaxrs-api.jar"};
+//		String[] restEasyLibs = {"jaxrs-api.jar", "resteasy-jaxrs.jar", "scannotation.jar"};
+		return resourceHelper.searchAllFiles(restEasyDir, restEasyLibs);
+	}
+
 	private void configureRestSupport(String wsProjectName,
 			ConfigureOption option) {
 		projectExplorer.selectProject(wsProjectName);
@@ -131,19 +180,21 @@ public class RESTfulTestBase extends WSTestBase {
 		NodeContextUtil.nodeContextMenu(tree, item,
 						RESTFulAnnotations.CONFIGURE_MENU_LABEL.getLabel(),
 						option == ConfigureOption.ADD ? RESTFulAnnotations.REST_SUPPORT_MENU_LABEL_ADD
-						.getLabel() : RESTFulAnnotations.REST_SUPPORT_MENU_LABEL_REMOVE.getLabel()).click();
+								.getLabel() : RESTFulAnnotations.REST_SUPPORT_MENU_LABEL_REMOVE
+								.getLabel()).click();
 		bot.sleep(Timing.time2S());
 		util.waitForNonIgnoredJobs();
 	}
-	
-	private SWTBot openValidationPreference(final String name, final List<String> groupPath) {
+
+	private SWTBot openValidationPreference(final String name,
+			final List<String> groupPath) {
 		return open.preferenceOpen(new IPreference() {
-			
+
 			@Override
 			public String getName() {
 				return name;
 			}
-			
+
 			@Override
 			public List<String> getGroupPath() {
 				return groupPath;
