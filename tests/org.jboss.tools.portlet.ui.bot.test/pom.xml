@@ -16,7 +16,7 @@
 		<jbosstools.test.jboss-gatein.home>${requirement.build.root}/GateIn-3.1.0-GA</jbosstools.test.jboss-gatein.home>
 		<jbosstools.test.jboss-seam.home>${requirement.build.root}/jboss-seam-2.2.1.CR2</jbosstools.test.jboss-seam.home> <!--TODO setup default path -->
 		<configurations.dir>resources/project_config_files</configurations.dir>
-		<systemProperties>-Djbosstools.test.jboss-gatein.home=${jbosstools.test.jboss-gatein.home} -Djbosstools.test.jboss-seam.home=${jbosstools.test.jboss-seam.home} -Dtest.configurations.dir=${configurations.dir}</systemProperties>
+		<systemProperties>-Djbosstools.test.jboss-gatein.home=${jbosstools.test.jboss-gatein.home} -Djbosstools.test.jboss-seam.home=${jbosstools.test.jboss-seam.home} -Dtest.configurations.dir=${configurations.dir}  -Dorg.eclipse.swtbot.screenshots.dir=${project.build.outputDirectory}/screenshots</systemProperties>
 	</properties>
 
 	<build>
