@@ -43,7 +43,7 @@ public class RESTfulSupportTest extends RESTfulTestBase {
 	
 	
 	@Test
-	public void testJAXRSExplorerSupport() {
+	public void test_JAXRS_ExplorerSupport() {
 		
 		addRestSupport(getWsProjectName());
 		assertTrue(isRestSupportEnabled(getWsProjectName()));

@@ -1,3 +1,1 @@
 * manually add resteasy libs to project with EAP target server (RESTfulTestBase)
-* enable/disable JAX-RS validator (RESTfulTestBase)
-* test operating on JAX-RS completion

@@ -75,7 +75,7 @@ public class WSTestBase extends SWTTestExt {
 	public void cleanup() {
 		servers.removeAllProjectsFromServer();
 	}
-
+	
 	protected Slider_Level getLevel() {
 		return level;
 	}
