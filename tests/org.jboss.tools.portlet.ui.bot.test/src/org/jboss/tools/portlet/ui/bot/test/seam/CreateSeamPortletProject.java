@@ -43,7 +43,7 @@ public class CreateSeamPortletProject extends CreatePortletProjectTemplate{
 		List<FacetDefinition> facets = new ArrayList<FacetDefinition>();
 		facets.add(JAVA_FACET);
 		facets.add(JSF_FACET);
-		facets.add(new FacetDefinition("Seam 2", null, configuredState.getSeam().version));
+		facets.add(new FacetDefinition("Seam", null, configuredState.getSeam().version));
 		facets.add(CORE_PORTLET_FACET);
 		facets.add(JSF_PORTLET_FACET);
 		facets.add(SEAM_PORTLET_FACET);
