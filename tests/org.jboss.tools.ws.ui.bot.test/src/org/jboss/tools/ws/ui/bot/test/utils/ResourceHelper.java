@@ -11,9 +11,12 @@
 
 package org.jboss.tools.ws.ui.bot.test.utils;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import org.eclipse.core.resources.IFile;
@@ -103,6 +106,45 @@ public class ResourceHelper {
 		classEdit.toTextEditor().setText(code);
 		classEdit.save();
 		if (closeEdit) classEdit.close();
+	}
+	
+	/**
+	 * Method recursively searches files names in dir and returns them as List of File objects 
+	 * @param dir
+	 * @param searchingFileNames
+	 * @return
+	 */
+	public List<File> searchAllFiles(File dir, String[] searchingFileNames) {
+		
+		List<File> restEasyLibs = new ArrayList<File>();
+		
+		for (String restEasyLibReq : searchingFileNames) {
+			restEasyLibs.add(searchInTextFiles(dir, restEasyLibReq));
+		}
+		return restEasyLibs;
+	}
+
+	/**
+	 * Method recursively searches files name in dir and returns it as File object
+	 * @param dir
+	 * @param searchingFileName
+	 * @return
+	 */
+	public File searchInTextFiles(File dir, String searchingFileName) {
+		File[] files = dir.listFiles();
+		for (File file : files) {
+			if (file.isDirectory()) {
+				File f = searchInTextFiles(file, searchingFileName);
+				if (f != null) {
+					return f;
+				}
+			} else {
+				if (file.getName().equals(searchingFileName)) {
+					return file;
+				}
+			}
+		}
+		return null;
 	}
 	
 }
