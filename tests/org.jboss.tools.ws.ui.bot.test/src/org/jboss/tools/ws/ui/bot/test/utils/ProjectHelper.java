@@ -14,11 +14,14 @@ package org.jboss.tools.ws.ui.bot.test.utils;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCombo;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.NewObject.JavaEEEnterpriseApplicationProject;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.NewObject.WebServicesWSDL;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ws.ui.bot.test.uiutils.actions.NewFileWizardAction;
+import org.jboss.tools.ws.ui.bot.test.uiutils.actions.TreeItemAction;
 import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.DynamicWebProjectWizard;
 import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.Wizard;
 
@@ -93,5 +96,20 @@ public class ProjectHelper extends SWTTestExt {
 		assertTrue(projectExplorer.existsResource(name));
 		projectExplorer.selectProject(name);
 	}
+	
+	/**
+	 * Method generates Deployment Descriptor for entered project 
+	 * @param project
+	 */
+	public void createDD(String project) {
+        SWTBotTree tree = projectExplorer.bot().tree();
+        SWTBotTreeItem ti = tree.expandNode(project);
+        bot.sleep(1500);
+        ti = ti.getNode("Deployment Descriptor: " + project);
+        new TreeItemAction(ti, "Generate Deployment Descriptor Stub").run();
+        bot.sleep(1500);
+        util.waitForNonIgnoredJobs();
+        bot.sleep(1500);
+    }
 	
 }

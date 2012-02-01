@@ -23,12 +23,9 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.ws.ui.bot.test.WSTestBase;
 import org.jboss.tools.ws.ui.bot.test.uiutils.actions.NewSampleWSWizardAction;
 import org.jboss.tools.ws.ui.bot.test.uiutils.actions.NewSimpleWSWizardAction;
-import org.jboss.tools.ws.ui.bot.test.uiutils.actions.TreeItemAction;
 import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.SampleWSWizard;
 import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.SimpleWSWizard;
 import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.Type;
@@ -44,17 +41,6 @@ public class SampleWSBase extends WSTestBase {
 	protected static final String SOAP_REQUEST = getSoapRequest("<ns1:sayHello xmlns:ns1=\"http://{0}/\"><arg0>{1}</arg0></ns1:sayHello>");
     protected static final String SERVER_URL = "localhost:8080";
     
-	protected void createDD(String project) {
-        SWTBotTree tree = projectExplorer.bot().tree();
-        SWTBotTreeItem ti = tree.expandNode(project);
-        bot.sleep(1500);
-        ti = ti.getNode("Deployment Descriptor: " + project);
-        new TreeItemAction(ti, "Generate Deployment Descriptor Stub").run();
-        bot.sleep(1500);
-        util.waitForNonIgnoredJobs();
-        bot.sleep(1500);
-    }
-	
 	protected IProject getProject(String project) {
 		return ResourcesPlugin.getWorkspace().getRoot().getProject(project);
 	}

@@ -31,7 +31,7 @@ public class SimpleSoapWebServiceTest extends SampleSoapTestBase {
     public void testSimpleSoapWS() {
     	IFile dd = getDD(getWsProjectName());
         if (!dd.exists()) {
-            createDD(getWsProjectName());
+        	projectHelper.createDD(getWsProjectName());
         }
         assertTrue(dd.exists());
         createSimpleSOAPWS(getWsProjectName(), "HelloService", "sample", "SampleService");
