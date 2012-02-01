@@ -28,12 +28,6 @@ public class RESTfulExplorerTest extends RESTfulTestBase {
 
 	private RESTFullExplorerWizard restfulWizard = null;
 	
-	private final String BASIC_WS_RESOURCE_PATH = "/resources/restful/BasicRestfulWS.java.ws";
-	
-	private final String ADVANCED_WS_RESOURCE_PATH = "/resources/restful/AdvancedRestfulWS.java.ws";
-	
-	private final String EMPTY_WS_RESOURCE_PATH = "/resources/restful/EmptyRestfulWS.java.ws";
-	
 	protected String getWsProjectName() {
 		return "RestServicesExplorer";
 	}
@@ -51,7 +45,7 @@ public class RESTfulExplorerTest extends RESTfulTestBase {
 		
 		resourceHelper.copyResourceToClass(bot.editorByTitle(getWsName() + ".java"), 
 										   RESTfulExplorerTest.class.
-										   getResourceAsStream(BASIC_WS_RESOURCE_PATH), 
+										   getResourceAsStream(BASIC_WS_RESOURCE), 
 										   false, getWsPackage(), getWsName());
 		
 		bot.sleep(Timing.time2S());
@@ -75,7 +69,7 @@ public class RESTfulExplorerTest extends RESTfulTestBase {
 		
 		resourceHelper.copyResourceToClass(bot.editorByTitle(getWsName() + ".java"), 
 										   RESTfulExplorerTest.class.
-										   getResourceAsStream(ADVANCED_WS_RESOURCE_PATH), 
+										   getResourceAsStream(ADVANCED_WS_RESOURCE), 
 										   false, getWsPackage(), getWsName());
 		
 		bot.sleep(Timing.time2S());
@@ -117,7 +111,7 @@ public class RESTfulExplorerTest extends RESTfulTestBase {
 		
 		resourceHelper.copyResourceToClass(bot.editorByTitle(getWsName() + ".java"), 
 				   RESTfulExplorerTest.class.
-				   getResourceAsStream(BASIC_WS_RESOURCE_PATH), 
+				   getResourceAsStream(BASIC_WS_RESOURCE), 
 				   false, getWsPackage(), getWsName());
 		
 		bot.sleep(Timing.time2S());
@@ -149,7 +143,7 @@ public class RESTfulExplorerTest extends RESTfulTestBase {
 		
 		resourceHelper.copyResourceToClass(bot.editorByTitle(getWsName() + ".java"), 
 				   RESTfulExplorerTest.class.
-				   getResourceAsStream(ADVANCED_WS_RESOURCE_PATH), 
+				   getResourceAsStream(ADVANCED_WS_RESOURCE), 
 				   false, getWsPackage(), getWsName());
 		
 		bot.sleep(Timing.time2S());
@@ -186,7 +180,7 @@ public class RESTfulExplorerTest extends RESTfulTestBase {
 		
 		resourceHelper.copyResourceToClass(bot.editorByTitle(getWsName() + ".java"), 
 				   RESTfulExplorerTest.class.
-				   getResourceAsStream(BASIC_WS_RESOURCE_PATH), 
+				   getResourceAsStream(BASIC_WS_RESOURCE), 
 				   false, getWsPackage(), getWsName());
 		
 		bot.sleep(Timing.time2S());
@@ -198,7 +192,7 @@ public class RESTfulExplorerTest extends RESTfulTestBase {
 		
 		resourceHelper.copyResourceToClass(bot.editorByTitle(getWsName() + ".java"), 
 				   RESTfulExplorerTest.class.
-				   getResourceAsStream(EMPTY_WS_RESOURCE_PATH), 
+				   getResourceAsStream(EMPTY_WS_RESOURCE), 
 				   false, getWsPackage(), getWsName());
 		
 		bot.sleep(Timing.time2S());

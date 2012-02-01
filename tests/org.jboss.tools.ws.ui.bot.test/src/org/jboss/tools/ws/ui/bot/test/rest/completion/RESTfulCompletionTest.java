@@ -26,8 +26,6 @@ import org.junit.Test;
  */
 public class RESTfulCompletionTest extends RESTfulTestBase{
 
-	private final String SIMPLE_REST_WS_RESOURCE = "/resources/restful/SimpleRestWS.java.ws";
-	
 	private final String GET_METHOD_PATH = "/{userId}";
 	
 	private final String EMPTY_PATH_PARAM = "";

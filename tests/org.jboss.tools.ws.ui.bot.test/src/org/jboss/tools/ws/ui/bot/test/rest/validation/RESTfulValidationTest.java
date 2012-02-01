@@ -25,7 +25,6 @@ public class RESTfulValidationTest extends RESTfulTestBase {
 	private final String GET_METHOD_PATH = "/{id}";
 	private final String CORRECT_PATH_PARAM = "id";
 	private final String BAD_PATH_PARAM = "customerId";
-	private final String SIMPLE_REST_WS_RESOURCE = "/resources/restful/SimpleRestWS.java.ws";
 	
 	protected String getWsProjectName() {
 		return "RestServicesValidation";

@@ -48,6 +48,14 @@ public class RESTfulTestBase extends WSTestBase {
 	protected final String REST_EXPLORER_LABEL = "JAX-RS REST Web Services";
 	protected final String REST_EXPLORER_LABEL_BUILD = "Building RESTful Web Services...";
 	protected final String VALIDATION_SETTINGS_CHANGED = "Validation Settings Changed";
+	
+	protected final String BASIC_WS_RESOURCE = "/resources/restful/BasicRestfulWS.java.ws";
+	
+	protected final String ADVANCED_WS_RESOURCE = "/resources/restful/AdvancedRestfulWS.java.ws";
+	
+	protected final String EMPTY_WS_RESOURCE = "/resources/restful/EmptyRestfulWS.java.ws";
+	
+	protected final String SIMPLE_REST_WS_RESOURCE = "/resources/restful/SimpleRestWS.java.ws";
 
 	private enum ConfigureOption {
 		ADD, REMOVE;
@@ -90,7 +98,7 @@ public class RESTfulTestBase extends WSTestBase {
 	 */
 	protected void modifyRESTValidation(ConfigureOption option) {
 
-		SWTBot validationBot = openValidationPreference(VALIDATION_PREFERENCE,
+		SWTBot validationBot = openPreferencePage(VALIDATION_PREFERENCE,
 				new ArrayList<String>());
 
 		validationBot.button(ENABLE_ALL).click();
@@ -147,12 +155,14 @@ public class RESTfulTestBase extends WSTestBase {
 		BuildPathHelper buildPathHelper = new BuildPathHelper();
 		
 		for (File f : restLibsPaths) {
-			buildPathHelper.addExternalJar(f.getPath(), getWsProjectName());
+			buildPathHelper.addExternalJar(f.getPath(), getWsProjectName(), true);
 		}
 		
 	}
 	
 	private List<File> getPathForRestLibs() {
+		
+		assertTrue(TestConfigurator.currentConfig.getServer().type.equals("EAP"));
 		
 		String runtimeHome = TestConfigurator.currentConfig.getServer().runtimeHome;
 		
@@ -186,7 +196,7 @@ public class RESTfulTestBase extends WSTestBase {
 		util.waitForNonIgnoredJobs();
 	}
 
-	private SWTBot openValidationPreference(final String name,
+	private SWTBot openPreferencePage(final String name,
 			final List<String> groupPath) {
 		return open.preferenceOpen(new IPreference() {
 
