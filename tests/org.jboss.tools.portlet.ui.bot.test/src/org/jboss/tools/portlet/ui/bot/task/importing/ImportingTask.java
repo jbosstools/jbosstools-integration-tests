@@ -1,12 +1,7 @@
 package org.jboss.tools.portlet.ui.bot.task.importing;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
 import org.jboss.tools.portlet.ui.bot.task.AbstractSWTTask;
-import org.jboss.tools.ui.bot.ext.SWTBotFactory;
-import org.jboss.tools.ui.bot.ext.gen.IImport;
+import org.jboss.tools.ui.bot.ext.wizards.SWTBotImportWizard;
 
 /**
  * Imports the specified object under the specified category. 
@@ -33,22 +28,14 @@ public class ImportingTask extends AbstractSWTTask {
 
 	@Override
 	public void perform() {
-		IImport importPath = new IImport() {
-			
-			@Override
-			public String getName() {
-				return name;
-			}
-			
-			@Override
-			public List<String> getGroupPath() {
-				if (category == null){
-					return Collections.emptyList();
-				}
-				
-				return Arrays.asList(category.split("/"));
-			}
-		};
-		SWTBotFactory.getOpen().newImport(importPath);
+		new SWTBotImportWizard().open(name, getGroupPath());
+	}
+
+	private String[] getGroupPath() {
+		if (category == null){
+			return new String[0]; 
+		}
+		
+		return category.split("/");
 	}
 }

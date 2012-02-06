@@ -1,4 +1,4 @@
-package org.jboss.tools.portlet.ui.bot.task.wait.condition;
+package org.jboss.tools.ui.bot.ext.condition;
 
 import java.util.ArrayList;
 import java.util.List;

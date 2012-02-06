@@ -5,10 +5,7 @@ import java.util.List;
 
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.jboss.tools.portlet.ui.bot.task.CompositeSWTTask;
-import org.jboss.tools.portlet.ui.bot.task.wait.TaskDuration;
-import org.jboss.tools.portlet.ui.bot.task.wait.WaitWhileTask;
-import org.jboss.tools.portlet.ui.bot.task.wait.condition.NonSystemJobRunsCondition;
-import org.jboss.tools.portlet.ui.bot.task.wait.condition.ShellIsActiveCondition;
+import org.jboss.tools.ui.bot.ext.wizards.SWTBotNewObjectWizard;
 
 /**
  * 
@@ -29,14 +26,10 @@ public class WizardFillingTask extends CompositeSWTTask<WizardPageFillingTask>{
 	
 	@Override
 	public void perform() {
-		SWTBotShell activeShell = getActiveShell();
-
 		super.setTasks(wizardPages);
 		super.perform();
 
-		getBot().button("Finish").click();
-		performInnerTask(new WaitWhileTask(new ShellIsActiveCondition(activeShell), TaskDuration.LONG));
-		performInnerTask(new WaitWhileTask(new NonSystemJobRunsCondition(), TaskDuration.LONG));
+		new SWTBotNewObjectWizard().finishWithWait();
 	}
 
 	public void addWizardPage(WizardPageFillingTask task){

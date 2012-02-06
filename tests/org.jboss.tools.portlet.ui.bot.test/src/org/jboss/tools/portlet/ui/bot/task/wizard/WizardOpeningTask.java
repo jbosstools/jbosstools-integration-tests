@@ -1,12 +1,7 @@
 package org.jboss.tools.portlet.ui.bot.task.wizard;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
 import org.jboss.tools.portlet.ui.bot.task.AbstractSWTTask;
-import org.jboss.tools.ui.bot.ext.SWTBotFactory;
-import org.jboss.tools.ui.bot.ext.gen.INewObject;
+import org.jboss.tools.ui.bot.ext.wizards.SWTBotNewObjectWizard;
 
 /**
  * Opens a specified wizard. 
@@ -37,22 +32,14 @@ public class WizardOpeningTask extends AbstractSWTTask {
 
 	@Override
 	public void perform() {
-		INewObject wizardPath = new INewObject() {
-			
-			@Override
-			public String getName() {
-				return name;
-			}
-			
-			@Override
-			public List<String> getGroupPath() {
-				if (category == null){
-					return Collections.emptyList();
-				}
-				
-				return Arrays.asList(category.split("/"));
-			}
-		};
-		SWTBotFactory.getOpen().newObject(wizardPath);
+		new SWTBotNewObjectWizard().open(name, getGroupPath());
+	}
+	
+	private String[] getGroupPath() {
+		if (category == null){
+			return new String[0];
+		}
+		
+		return category.split("/");
 	}
 }

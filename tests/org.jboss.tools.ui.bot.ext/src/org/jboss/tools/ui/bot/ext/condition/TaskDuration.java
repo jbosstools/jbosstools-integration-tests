@@ -1,4 +1,4 @@
-package org.jboss.tools.portlet.ui.bot.task.wait;
+package org.jboss.tools.ui.bot.ext.condition;
 
 public enum TaskDuration {
 	SHORT(1 * 1000), NORMAL(10 * 1000), LONG(1 * 60 * 1000), VERY_LONG(10 * 60 * 1000);

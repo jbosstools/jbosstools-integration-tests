@@ -2,6 +2,7 @@ package org.jboss.tools.portlet.ui.bot.task.wait;
 
 import org.eclipse.swtbot.swt.finder.waits.ICondition;
 import org.jboss.tools.portlet.ui.bot.task.AbstractSWTTask;
+import org.jboss.tools.ui.bot.ext.condition.TaskDuration;
 
 /**
  * Waits while the specified condition is valid with the specified timeout. 
