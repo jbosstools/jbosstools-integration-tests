@@ -79,7 +79,7 @@ public class RESTfulTestBase extends WSTestBase {
 			projectHelper.createClass(getWsProjectName(), getWsPackage(), getWsName());
 		}	
 	}
-
+	
 	protected SWTBotTreeItem[] getRESTValidationErrors(String wsProjectName) {
 		return ProblemsView.getFilteredErrorsTreeItems(bot,
 				PATH_PARAM_VALID_ERROR, "/" + wsProjectName, null, null);
@@ -148,15 +148,19 @@ public class RESTfulTestBase extends WSTestBase {
 
 	
 	@SuppressWarnings("static-access")
-	private void addRestEasyLibs(String wsProjectName) {
+	private List<String> addRestEasyLibs(String wsProjectName) {
 
 		List<File> restLibsPaths = getPathForRestLibs();
+		
+		List<String> variables = new ArrayList<String>();
 		
 		BuildPathHelper buildPathHelper = new BuildPathHelper();
 		
 		for (File f : restLibsPaths) {
-			buildPathHelper.addExternalJar(f.getPath(), getWsProjectName(), true);
+			variables.add(buildPathHelper.addExternalJar(f.getPath(), getWsProjectName(), true));
 		}
+		
+		return variables;
 		
 	}
 	
@@ -175,9 +179,8 @@ public class RESTfulTestBase extends WSTestBase {
 		String restEasyDirPath = eapDirHome + "/" + "resteasy";
 		File restEasyDir = new File(restEasyDirPath);
 		
-		
 		String[] restEasyLibs = {"jaxrs-api.jar"};
-//		String[] restEasyLibs = {"jaxrs-api.jar", "resteasy-jaxrs.jar", "scannotation.jar"};
+		
 		return resourceHelper.searchAllFiles(restEasyDir, restEasyLibs);
 	}
 
@@ -192,8 +195,9 @@ public class RESTfulTestBase extends WSTestBase {
 						option == ConfigureOption.ADD ? RESTFulAnnotations.REST_SUPPORT_MENU_LABEL_ADD
 								.getLabel() : RESTFulAnnotations.REST_SUPPORT_MENU_LABEL_REMOVE
 								.getLabel()).click();
-		bot.sleep(Timing.time2S());
-		util.waitForNonIgnoredJobs();
+		bot.sleep(Timing.time2S());		
+		util.waitForAll();
+		
 	}
 
 	private SWTBot openPreferencePage(final String name,
