@@ -15,7 +15,7 @@ import org.junit.Test;
 
 /**
  * Test operates on Web Service Wizard with bottom up process of creating web service
- * @author jjankovi
+ * @author jlukas
  *
  */
 public class BottomUpWSTest extends WebServiceTestBase {

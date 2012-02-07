@@ -19,7 +19,7 @@ import org.junit.Test;
 
 /**
  * Test operates on Web Service Client Wizard
- * @author jjankovi
+ * @author jlukas
  *
  */
 public class WsClientTest extends WSTestBase {

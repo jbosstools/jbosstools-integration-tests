@@ -43,7 +43,7 @@ import org.junit.runners.Suite.SuiteClasses;
 
 /**
  * Test operates on creating non-trivial EAP project from wsdl file
- * @author jjankovi
+ * @author jlukas
  *
  */
 @SuiteClasses({ WSAllBotTests.class, EAPCompAllTests.class })

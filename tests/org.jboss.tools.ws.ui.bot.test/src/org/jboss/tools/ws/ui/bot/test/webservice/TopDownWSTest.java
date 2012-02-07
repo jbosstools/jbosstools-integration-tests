@@ -16,7 +16,7 @@ import org.junit.Test;
 
 /**
  * Test operates on Web Service Wizard with top down process of creating web service
- * @author jjankovi
+ * @author jlukas
  *
  */
 public class TopDownWSTest extends WebServiceTestBase {
@@ -66,7 +66,7 @@ public class TopDownWSTest extends WebServiceTestBase {
 		setLevel(Slider_Level.DEVELOP);
 		topDownWS();
 	}
-	@Ignore
+	
 	@Test
 	public void testAssembleService() {
 		setLevel(Slider_Level.ASSEMBLE);
@@ -90,7 +90,7 @@ public class TopDownWSTest extends WebServiceTestBase {
 		setLevel(Slider_Level.TEST);
 		topDownWS();
 	}
-	
+	@Ignore
 	@Test
 	public void testDefaultPkg() {
 		setLevel(Slider_Level.ASSEMBLE);

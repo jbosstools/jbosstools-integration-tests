@@ -34,7 +34,7 @@ import org.junit.runners.Suite.SuiteClasses;
 
 /**
  * Test operates on creating non-trivial EAP project from Java class
- * @author jjankovi
+ * @author jlukas
  *
  */
 @SuiteClasses({ WSAllBotTests.class, EAPCompAllTests.class })
