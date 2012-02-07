@@ -52,10 +52,10 @@ public class WSTestBase extends SWTTestExt {
 	
 	protected final String LINE_SEPARATOR = System.getProperty("line.separator");
 	
-	protected static final ResourceHelper resourceHelper = new ResourceHelper();
-	protected static final ProjectHelper projectHelper = new ProjectHelper();
-	protected static final DeploymentHelper deploymentHelper = new DeploymentHelper();
-	protected static final WebServiceClientHelper clientHelper = new WebServiceClientHelper();
+	protected static ResourceHelper resourceHelper = new ResourceHelper();
+	protected static ProjectHelper projectHelper = new ProjectHelper();
+	protected static DeploymentHelper deploymentHelper = new DeploymentHelper();
+	protected static WebServiceClientHelper clientHelper = new WebServiceClientHelper();
 
 	@Before
 	public void setup() {
@@ -67,13 +67,13 @@ public class WSTestBase extends SWTTestExt {
 		}
 	}
 
-	protected boolean projectExists(String name) {
-		return projectExplorer.existsResource(name);
-	}
-
 	@After
 	public void cleanup() {
 		servers.removeAllProjectsFromServer();
+	}
+	
+	protected boolean projectExists(String name) {
+		return projectExplorer.existsResource(name);
 	}
 	
 	protected Slider_Level getLevel() {
