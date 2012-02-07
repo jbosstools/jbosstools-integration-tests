@@ -37,18 +37,21 @@
 							<artifactId>org.jboss.tools.ws.jaxrs.feature.feature.group</artifactId>
 							<version>0.0.0</version>
 						</dependency>
-					<!--	
 						<dependency>
 							<type>p2-installable-unit</type>
-							<artifactId>org.jboss.tools.cdi.feature.feature.group</artifactId>
+							<artifactId>org.eclipse.jst.enterprise_ui.feature.feature.group</artifactId>
 							<version>0.0.0</version>
 						</dependency>
 						<dependency>
 							<type>p2-installable-unit</type>
-							<artifactId>org.jboss.tools.richfaces.feature.feature.group</artifactId>
+							<artifactId>org.eclipse.wst.xml_ui.feature.feature.group</artifactId>
 							<version>0.0.0</version>
-						</dependency>					
-					-->
+						</dependency>
+						<dependency>
+							<type>p2-installable-unit</type>
+							<artifactId>org.eclipse.wst.ws_ui.feature.feature.group</artifactId>
+							<version>0.0.0</version>
+						</dependency>
 					</dependencies>
 				</configuration>
 			</plugin>
