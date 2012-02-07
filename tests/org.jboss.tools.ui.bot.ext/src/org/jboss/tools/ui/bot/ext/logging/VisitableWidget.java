@@ -1,4 +1,4 @@
-package org.jboss.tools.portlet.ui.bot.task.finder;
+package org.jboss.tools.ui.bot.ext.logging;
 
 import org.eclipse.swt.widgets.Widget;
 

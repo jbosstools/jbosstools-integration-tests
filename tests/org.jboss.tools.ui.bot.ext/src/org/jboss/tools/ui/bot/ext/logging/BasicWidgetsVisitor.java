@@ -1,4 +1,4 @@
-package org.jboss.tools.portlet.ui.bot.task.finder;
+package org.jboss.tools.ui.bot.ext.logging;
 
 import javax.swing.table.TableColumn;
 
@@ -12,6 +12,7 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.DateTime;
 import org.eclipse.swt.widgets.ExpandBar;
 import org.eclipse.swt.widgets.ExpandItem;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.List;
@@ -98,6 +99,8 @@ public abstract class BasicWidgetsVisitor implements WidgetVisitor {
 			visitTreeItem((TreeItem) widget);
 		} else if (widget instanceof Hyperlink){
 			visitHyperLink((Hyperlink) widget);
+		} else if (widget instanceof Group){
+			visitGroup((Group) widget);
 		} else {
 			visitUnkownItem(widget);
 		}
@@ -160,6 +163,8 @@ public abstract class BasicWidgetsVisitor implements WidgetVisitor {
 	protected abstract void visitTreeItem(TreeItem widget);
 	
 	protected abstract void visitHyperLink(Hyperlink widget);
+	
+	protected abstract void visitGroup(Group widget);
 
 	protected abstract void visitUnkownItem(Widget widget);
 }

@@ -1,4 +1,4 @@
-package org.jboss.tools.portlet.ui.bot.task.finder;
+package org.jboss.tools.ui.bot.ext.logging;
 
 import static org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable.syncExec;
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.widgetOfType;
@@ -8,9 +8,9 @@ import java.util.List;
 
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Widget;
+import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.results.VoidResult;
 import org.hamcrest.Matcher;
-import org.jboss.tools.portlet.ui.bot.task.AbstractSWTTask;
 
 /**
  * 
@@ -20,7 +20,7 @@ import org.jboss.tools.portlet.ui.bot.task.AbstractSWTTask;
  * @author Lucia Jelinkova
  *
  */
-public class WidgetFindingTask extends AbstractSWTTask {
+public class WidgetsFinder {
 
 	private Matcher<? extends Widget> matcher;
 
@@ -28,10 +28,12 @@ public class WidgetFindingTask extends AbstractSWTTask {
 	
 	private WidgetVisitor visitor;
 	
+	private SWTBot bot;
+	
 	/**
 	 * Finds all widgets for the active shell. 
 	 */
-	public WidgetFindingTask(WidgetVisitor visitor) {
+	public WidgetsFinder(WidgetVisitor visitor) {
 		this(null, visitor);
 	}
 
@@ -40,7 +42,7 @@ public class WidgetFindingTask extends AbstractSWTTask {
 	 * 
 	 * @param matcher
 	 */
-	public WidgetFindingTask(Matcher<? extends Widget> matcher, WidgetVisitor visitor) {
+	public WidgetsFinder(Matcher<? extends Widget> matcher, WidgetVisitor visitor) {
 		this(null, matcher, visitor);
 	}
 
@@ -51,15 +53,14 @@ public class WidgetFindingTask extends AbstractSWTTask {
 	 * @param widget
 	 * @param matcher
 	 */
-	public WidgetFindingTask(Widget widget, Matcher<? extends Widget> matcher, WidgetVisitor visitor) {
+	public WidgetsFinder(Widget widget, Matcher<? extends Widget> matcher, WidgetVisitor visitor) {
 		super();
 		this.matcher = matcher;
 		this.parentWidget = widget;
 		this.visitor = visitor;
 	}
 
-	@Override
-	public void perform() {
+	public void find() {
 		syncExec(new VoidResult() {
 
 			@Override
@@ -101,8 +102,17 @@ public class WidgetFindingTask extends AbstractSWTTask {
 
 	private Widget getParentWidget() {
 		if (parentWidget == null){
-			parentWidget = getBot().activeShell().widget;
+			// get active shell from generic bot
+			parentWidget = new SWTBot().activeShell().widget;
 		}
 		return parentWidget;
+	}
+	
+	private SWTBot getBot(){
+		if (bot == null){
+			// create bot for parent widget
+			bot = new SWTBot(getParentWidget());
+		}
+		return bot;
 	}
 }
