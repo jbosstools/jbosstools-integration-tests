@@ -74,7 +74,6 @@ public class ProjectHelper extends SWTTestExt {
 				.selectTemplate("Web", "Dynamic Web Project").next();
 		new DynamicWebProjectWizard().setProjectName(name).finish();
 		util.waitForNonIgnoredJobs();
-		assertTrue(projectExplorer.existsResource(name));
 		projectExplorer.selectProject(name);
 	}
 
@@ -93,7 +92,6 @@ public class ProjectHelper extends SWTTestExt {
 		wiz.checkBox("Generate application.xml deployment descriptor").click();
 		open.finish(wiz);
 		bot.sleep(5000);
-		assertTrue(projectExplorer.existsResource(name));
 		projectExplorer.selectProject(name);
 	}
 	
