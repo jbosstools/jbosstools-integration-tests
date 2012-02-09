@@ -44,7 +44,8 @@ import org.junit.runners.Suite;
 	SeamPortletExampleRuntime4x.class,
 	JSFPortletExampleRuntime5x.class,
 	RichFacesPortletExampleRuntime5x.class,
-	SeamPortletExampleRuntime5x.class
+	SeamPortletExampleRuntime5x.class,
+	StopServer.class
 	})
 public class AllTestsSuite {
 
