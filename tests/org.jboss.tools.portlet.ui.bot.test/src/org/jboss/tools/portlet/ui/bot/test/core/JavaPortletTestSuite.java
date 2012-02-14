@@ -9,7 +9,8 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
 	GateinStartupFix.class,
 	CreateJavaPortletProject.class,
-	CreateJavaPortlet.class, 
+	CreateJavaPortletRuntime4x.class,
+	CreateJavaPortletRuntime5x.class,
 	RunJavaPortletOnServer.class, 
 	LoadJavaPortletInBrowserRuntime4x.class
 	})

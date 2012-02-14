@@ -1,4 +1,4 @@
-package org.jboss.tools.portlet.ui.bot.test.core;
+package org.jboss.tools.portlet.ui.bot.test.template;
 
 import static org.jboss.tools.portlet.ui.bot.test.core.CreateJavaPortletProject.PROJECT_NAME;
 
@@ -12,7 +12,6 @@ import org.jboss.tools.portlet.ui.bot.entity.XMLNode;
 import org.jboss.tools.portlet.ui.bot.task.wizard.web.jboss.AbstractPortletCreationTask;
 import org.jboss.tools.portlet.ui.bot.task.wizard.web.jboss.JavaPortletCreationTask;
 import org.jboss.tools.portlet.ui.bot.task.wizard.web.jboss.JavaPortletWizardPageFillingTask;
-import org.jboss.tools.portlet.ui.bot.test.template.CreatePortletTemplate;
 import org.junit.Before;
 import org.osgi.framework.Bundle;
 
@@ -22,17 +21,17 @@ import org.osgi.framework.Bundle;
  * @author Lucia Jelinkova
  *
  */
-public class CreateJavaPortlet extends CreatePortletTemplate {
+public abstract class CreateJavaPortletTemplate extends CreatePortletTemplate {
 
 	public static final String CLASS_NAME = "UITestingJavaPortlet";
 	
-	private static final String PACKAGE_NAME = "org.jboss.tools.tests.ui.portlet";
+	protected static final String PACKAGE_NAME = "org.jboss.tools.tests.ui.portlet";
 	
-	private static final String SOURCE_FILE_NAME = "src";
+	protected static final String SOURCE_FILE_NAME = "src";
 	
-	private static final String CLASS_FILE = SOURCE_FILE_NAME + "/" + PACKAGE_NAME + "/" + CLASS_NAME + ".java";
+	protected static final String CLASS_FILE = SOURCE_FILE_NAME + "/" + PACKAGE_NAME + "/" + CLASS_NAME + ".java";
 	
-	private static final String FULL_CLASS_NAME = PACKAGE_NAME + "." + CLASS_NAME;
+	protected static final String FULL_CLASS_NAME = PACKAGE_NAME + "." + CLASS_NAME;
 	
 	/**
 	 * An ugly fix of Eclipse issue:
@@ -79,22 +78,6 @@ public class CreateJavaPortlet extends CreatePortletTemplate {
 		JavaPortletCreationTask wizardTask = new JavaPortletCreationTask();
 		wizardTask.addWizardPage(task);
 		return wizardTask;
-	}
-	
-	@Override
-	protected List<String> getExpectedFiles() {
-		return Arrays.asList(
-				DEFAULT_OBJECTS_XML,
-				PORTLET_INSTANCES_XML,
-				CLASS_FILE);
-	}
-	
-	@Override
-	protected List<String> getNonExpectedFiles() {
-		return Arrays.asList(
-				JSF_FOLDER,
-				JBOSS_APP_XML,
-				JBOSS_PORTLET_XML);
 	}
 	
 	@Override

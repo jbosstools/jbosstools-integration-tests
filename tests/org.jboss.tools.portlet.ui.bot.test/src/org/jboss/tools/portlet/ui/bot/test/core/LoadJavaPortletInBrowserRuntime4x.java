@@ -10,6 +10,6 @@ public class LoadJavaPortletInBrowserRuntime4x extends LoadPortletInBrowser4xRun
 
 	@Override
 	protected PortletDefinition getPortletDefinition() {
-		return portlet(CreateJavaPortlet.CLASS_NAME);
+		return portlet(CreateJavaPortletRuntime5x.CLASS_NAME);
 	}
 }
