@@ -1,7 +1,8 @@
 package org.jboss.tools.portlet.ui.bot.test;
 
-import org.jboss.tools.portlet.ui.bot.test.core.CreateJavaPortlet;
 import org.jboss.tools.portlet.ui.bot.test.core.CreateJavaPortletProject;
+import org.jboss.tools.portlet.ui.bot.test.core.CreateJavaPortletRuntime4x;
+import org.jboss.tools.portlet.ui.bot.test.core.CreateJavaPortletRuntime5x;
 import org.jboss.tools.portlet.ui.bot.test.core.LoadJavaPortletInBrowserRuntime4x;
 import org.jboss.tools.portlet.ui.bot.test.core.RunJavaPortletOnServer;
 import org.jboss.tools.portlet.ui.bot.test.example.JSFPortletExampleRuntime4x;
@@ -27,7 +28,8 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
 	GateinStartupFix.class,
 	CreateJavaPortletProject.class,
-	CreateJavaPortlet.class, 
+	CreateJavaPortletRuntime4x.class, 
+	CreateJavaPortletRuntime5x.class,
 	RunJavaPortletOnServer.class,
 	LoadJavaPortletInBrowserRuntime4x.class,
 	CreateJSFPortletProject.class,
