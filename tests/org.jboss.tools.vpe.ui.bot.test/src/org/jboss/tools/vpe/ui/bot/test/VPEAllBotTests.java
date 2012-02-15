@@ -81,7 +81,7 @@ import org.jboss.tools.vpe.ui.bot.test.editor.tags.VirtualEarthTagTest;
 import org.jboss.tools.vpe.ui.bot.test.jbide.JBIDE4556Test;
 import org.jboss.tools.vpe.ui.bot.test.jbide.JBIDE9445Test_DuplicateSourceMenu;
 import org.jboss.tools.vpe.ui.bot.test.jbide.Jbide10020_TestHotKeyForVpeRefresh;
-import org.jboss.tools.vpe.ui.bot.test.jbide.Jbide9827_TestNPEinHugeFile;
+import org.jboss.tools.vpe.ui.bot.test.jbide.TestNPEinHugeFile;
 import org.jboss.tools.vpe.ui.bot.test.palette.CancelTagLibDefenitionTest;
 import org.jboss.tools.vpe.ui.bot.test.palette.ImportTagsFromTLDFileTest;
 import org.jboss.tools.vpe.ui.bot.test.palette.ManagePaletteGroupsTest;
@@ -189,7 +189,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	XhtmlFilePerformanceTest.class,
 	MarkersTest.class,
 	JBIDE9445Test_DuplicateSourceMenu.class,
-	Jbide9827_TestNPEinHugeFile.class, 
+	TestNPEinHugeFile.class, 
 	Jbide10020_TestHotKeyForVpeRefresh.class
 })
 public class VPEAllBotTests extends SWTBotTestCase{

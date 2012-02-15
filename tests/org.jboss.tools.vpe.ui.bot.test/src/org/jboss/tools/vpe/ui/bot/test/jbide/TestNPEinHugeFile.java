@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007-2011 Exadel, Inc. and Red Hat, Inc.
+ * Copyright (c) 2007-2012 Exadel, Inc. and Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -22,11 +22,12 @@ import org.jboss.tools.ui.bot.ext.helper.FileHelper;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.vpe.ui.bot.test.VPEAutoTestCase;
 
-public class Jbide9827_TestNPEinHugeFile extends VPEAutoTestCase {
+public class TestNPEinHugeFile extends VPEAutoTestCase {
 
 	private static final String TEST_PAGE_NAME = "employee.xhtml"; //$NON-NLS-1$
+	private static final String TEXT = "veryLongNewTagNameIsTypingOrAttributeValueIsTypingUntilWeWillGetNPEExceptionOrEclipseCrashWhileRefreshingDOMTree"; //$NON-NLS-1$
 	
-	public Jbide9827_TestNPEinHugeFile() {
+	public TestNPEinHugeFile() {
 		super();
 	}
 
@@ -38,7 +39,17 @@ public class Jbide9827_TestNPEinHugeFile extends VPEAutoTestCase {
 		return false;
 	}
 	
-	public void testNPEwhenTypingTagName() {
+	public void testNPEinHugeFile_Jbide9827() {
+		openFileAndType(18, 9);
+	}
+	
+	public void testCrashInAttribute_Jbide9997() {
+		openFileAndType(18, 27);
+	}
+	
+	@Override
+	public void setUp() throws Exception {
+		super.setUp();
 		/*
 		 *  copy big XHTML page from resources folder
 		 */
@@ -56,14 +67,17 @@ public class Jbide9827_TestNPEinHugeFile extends VPEAutoTestCase {
 		}
 		bot.menu(IDELabel.Menu.FILE).menu(IDELabel.Menu.REFRESH).click();
 		bot.sleep(Timing.time1S());
-		  /*
-		   * open main page
-		   */
+	}
+
+	private void openFileAndType(int line, int col) {
+		/*
+		 * File employee.xhtml should already be copied to WebContent, 
+		 * open it.
+		 */
 		packageExplorer.openFile(JBT_TEST_PROJECT_NAME,
 				IDELabel.JsfProjectTree.WEB_CONTENT, TEST_PAGE_NAME);
 		final SWTBotEclipseEditor xhtmlTextEditor = bot.editorByTitle(TEST_PAGE_NAME).toTextEditor();
-		xhtmlTextEditor.typeText(18, 9, 
-			"veryLongNewTagNameIsTypingAndTypingUntilWeWillGetNPEExceptionWhileRefreshingDOMTree"); //$NON-NLS-1$
+		xhtmlTextEditor.typeText(line, col, TEXT);
 		/*
 		 * Sleep for 20sec, wait for refresh.
 		 * 10sec could be enough also.
@@ -79,5 +93,10 @@ public class Jbide9827_TestNPEinHugeFile extends VPEAutoTestCase {
 		    e.printStackTrace(printWriter);
 			fail("Internal Error: " + result.toString()); //$NON-NLS-1$
 		}
+		/*
+		 * Close the editor
+		 */
+		xhtmlTextEditor.close();
+		bot.sleep(Timing.time1S());
 	}
 }
