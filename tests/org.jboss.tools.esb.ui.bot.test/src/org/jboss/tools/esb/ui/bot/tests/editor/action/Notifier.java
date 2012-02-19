@@ -2,6 +2,8 @@ package org.jboss.tools.esb.ui.bot.tests.editor.action;
 
 import static org.junit.Assert.fail;
 
+import java.util.List;
+
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
@@ -71,7 +73,7 @@ public class Notifier extends ESBAction {
 	}
 	private void addEmail(SWTBotEditor editor,String xpath,String... path) {
 		
-		String xpathOrig = xpath;
+		String xpathOrig = new String (xpath);
 		
 		SWTBotTreeItem item = SWTEclipseExt.selectTreeLocation(editor.bot(), path);
 		ContextMenuHelper.prepareTreeItemForContextMenu(editor.bot().tree(),item);
@@ -86,31 +88,28 @@ public class Notifier extends ESBAction {
 		Assertions.assertXmlContentExists(editor.toTextEditor().getText(), xpath);
 		
 		/* ldimaggi */
-		System.out.println ("DEBUG1");
-		org.jboss.tools.ui.bot.ext.SWTUtilExt.displayAllBotWidgets(bot);
-		System.out.println ("DEBUG1");
-		
 		bot.textWithLabel("Host:").setText("redhat.com");
 		bot.textWithLabel("Port:").setText("25");
 		bot.textWithLabel("Username:").setText("QEuser");
 		bot.textWithLabel("Password:").setText("thepas$w0rd");
 		bot.textWithLabel("Auth:").setText("LDAP");
+
+		bot.textWithLabel("Message:").setText("The message");
+		bot.textWithLabel("Copy to:").setText("The copier");
 		
-		System.out.println ("DEBUG " + bot.section("Target Notify Email").getText());
-				//expandBarWithLabel("Target Notify Email").expandedItemCount() );
+		//xpathOrig+="/target[@auth='LDAP' and @class='NotifyEmail' and @from='a' and @host='redhat.com' and @password='thepas$w0rd' and @port='25' and @sendTo='b' and @subject='c' and username='QEuser']";
+		xpathOrig+="/target[@auth='LDAP' and @class='NotifyEmail' and @from='a' and @host='redhat.com' and @sendTo='b' and @subject='c' and @password='thepas$w0rd' and @port='25' and @ccTo='The copier' and @message='The message' and @username='QEuser']";
+		Assertions.assertXmlContentExists(editor.toTextEditor().getText(), xpathOrig);	
 		
-		System.out.println (editor.toTextEditor().getText());
+		bot.button("&Add...").click();		
+		SWTBotTreeItem [] theItems = bot.tree().getAllItems();
 		
-		xpathOrig+="/target[@auth='LDAP' and @class='NotifyEmail' and @from='a' and @host='redhat.com' and @password='thepas$w0rd' and @port='25' and @sendTo='b' and @subject='c' and username='QEuser']";
-		//Assertions.assertXmlContentExists(editor.toTextEditor().getText(), xpath);
+		theItems[0].getNode("resources.jar").expand();
+		theItems[0].getNode("resources.jar").getNode("META-INF").expand();		
+		theItems[0].getNode("resources.jar").getNode("META-INF").getNode("MANIFEST.MF").select();
+		bot.button("&Finish").click();
 		
-////	       <target auth="LDAP" class="NotifyEmail" from="a"
-////	        host="redhat.com" password="thepas$w0rd" port="25" sendTo="b"
-////	        subject="c" username="QEuser"/>
-//		
 		editor.save();
-		bot.sleep(60000l);
- 		
 	}
 	
 	
