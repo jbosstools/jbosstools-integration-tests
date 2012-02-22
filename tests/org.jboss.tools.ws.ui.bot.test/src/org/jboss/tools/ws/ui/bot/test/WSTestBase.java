@@ -18,7 +18,6 @@ import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
-import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
 import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.WsWizardBase.Slider_Level;
 import org.jboss.tools.ws.ui.bot.test.utils.DeploymentHelper;
 import org.jboss.tools.ws.ui.bot.test.utils.ProjectHelper;
@@ -34,7 +33,8 @@ import org.junit.runners.Suite.SuiteClasses;
  * @author jjankovi
  *
  */
-@Require(server=@Server(type=ServerType.EAP), perspective="Java EE")
+//@Require(server=@Server(type=ServerType.EAP), perspective="Java EE")
+@Require(server=@Server(), perspective="Java EE")
 @RunWith(RequirementAwareSuite.class)
 @SuiteClasses({ WSAllBotTests.class })
 public class WSTestBase extends SWTTestExt {
