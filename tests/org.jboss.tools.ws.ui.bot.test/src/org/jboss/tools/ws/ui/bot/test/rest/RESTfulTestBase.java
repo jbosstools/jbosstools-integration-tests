@@ -64,16 +64,17 @@ public class RESTfulTestBase extends WSTestBase {
 	@Override
 	public void setup() {		
 		if (!projectExists(getWsProjectName())) {
-			projectHelper.createProject(getWsProjectName());			
-		}
-		if (!isRestSupportEnabled(getWsProjectName())) {	
-			// workaround for EAP 5.1
-			if (configuredState.getServer().type.equals("EAP") && 
-				configuredState.getServer().version.equals("5.1")) {
-				addRestEasyLibs(getWsProjectName());
+			projectHelper.createProject(getWsProjectName());
+			if (!isRestSupportEnabled(getWsProjectName())) {	
+				// workaround for EAP 5.1
+				if (configuredState.getServer().type.equals("EAP") && 
+					configuredState.getServer().version.equals("5.1")) {
+					addRestEasyLibs(getWsProjectName());
+				}
+				addRestSupport(getWsProjectName());
 			}
-			addRestSupport(getWsProjectName());
 		}
+		
 		if (!projectExplorer.isFilePresent(getWsProjectName(), "Java Resources", 
 										   "src", getWsPackage(), getWsName() + ".java")) {
 			projectHelper.createClass(getWsProjectName(), getWsPackage(), getWsName());
