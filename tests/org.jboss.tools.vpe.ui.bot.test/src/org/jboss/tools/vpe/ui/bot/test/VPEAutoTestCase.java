@@ -82,6 +82,8 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase {
 	protected final static String JBOSS_AS_FOR_JSF2_SERVER_RUNTIME_TYPE;
 	protected final static String RICH_FACES_UI_JAR_LOCATION;
 
+	private String projectName = null;
+	
   static {
     try {
       InputStream inputStream = VPEAutoTestCase.class
@@ -131,6 +133,9 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase {
     RICH_FACES_UI_JAR_LOCATION = richFacesUiLocation;
   }	  
 
+  protected void setProjectName(String projectName) {
+    this.projectName = projectName;
+  }
 	/**
 	 * @see #clearWorkbench()
 	 * @see #createJSFProject(String)
@@ -159,7 +164,9 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase {
 	@After
 	public void tearDown() throws Exception {
 		clearWorkbench();
-		new SWTJBTExt(bot).removeProjectFromServers(JBT_TEST_PROJECT_NAME);
+		new SWTJBTExt(bot)
+		  .removeProjectFromServers((projectName != null && projectName.length() > 0) ? projectName : JBT_TEST_PROJECT_NAME);
+		setProjectName(null);
 		super.tearDown();
 	}
 
