@@ -18,10 +18,19 @@ public class WebServiceProducer extends ESBExampleTest {
 	@Override
 	protected void executeExample() {
 		super.executeExample();	
+		
 		String text = executeClientGetServerOutput("org.jboss.soa.esb.samples.quickstart.webserviceproducer.test.SendMessage","jms");
-		SWTTestExt.servers.removeAllProjectsFromServer();
+		assertNotNull("Calling Send message failed, nothing appened to server log",text);	
+		assertTrue("Calling Send message failed, unexpected server output :"+text,text.contains("Goodbye!!"));	
+
+		text = executeClientGetServerOutput("org.jboss.soa.esb.samples.quickstart.webserviceproducer.test.SendMessage","http 8765");
 		assertNotNull("Calling Send message failed, nothing appened to server log",text);	
 		assertTrue("Calling Send message failed, unexpected server output :"+text,text.contains("Goodbye!!"));
-		fail("testing method http not yet implemented");
+
+		text = executeClientGetServerOutput("org.jboss.soa.esb.samples.quickstart.webserviceproducer.test.SendMessage","socket 8888");
+		assertNotNull("Calling Send message failed, nothing appened to server log",text);	
+		assertTrue("Calling Send message failed, unexpected server output :"+text,text.contains("Goodbye!!"));
+		
+		SWTTestExt.servers.removeAllProjectsFromServer();
 	}
 }
