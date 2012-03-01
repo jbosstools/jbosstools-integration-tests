@@ -1,6 +1,11 @@
-<BODY ID="__content__area__">
-<SPAN CLASS="vpe-text">
+<BODY id="__content__area__" >
+<SPAN class="vpe-text" >
+      
 ...
-</SPAN><BR VPE:PSEUDO-ELEMENT="yes" STYLE="font-style: italic; color: green; -moz-user-modify: read-only;"/>
 
+</SPAN>
+<BR vpe:pseudo-element="yes" style="-moz-user-modify: read-only;" >
+</BR>
+<IMG vpetemporarydndelement="true" id="dragIcon" src="file:////opt/eclipse/eclipsebeta1/eclipse/plugins/org.jboss.tools.vpe_3.3.0.v20120224-2339-H52-Beta1/ve/dragIcon.gif" style="display: none ! important; position: absolute; cursor: move;" >
+</IMG>
 </BODY>

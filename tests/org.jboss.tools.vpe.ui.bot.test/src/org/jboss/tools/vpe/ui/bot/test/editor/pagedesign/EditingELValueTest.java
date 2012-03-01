@@ -59,14 +59,14 @@ public class EditingELValueTest extends PageDesignTestCase {
     jspGreetingPageEditor.save();
     bot.sleep(Timing.time2S());
     assertVisualEditorContainsNodeWithValue(new SWTBotWebBrowser(EditingELValueTest.GREETING_PAGE_NAME,botExt),
-        "Template file is not found: \"#{" + EditingELValueTest.EL_VARIABLE_NAME + "}templates/common.xhtml\"", 
+        "Template file is not found: \"templates/common.xhtml\"", 
         EditingELValueTest.GREETING_PAGE_NAME);
     jspInputNamePageEditor.setText(jspInputNamePageEditor.getText()
         .replaceFirst("/templates/common.xhtml", "#{" + EditingELValueTest.EL_VARIABLE_NAME + "}templates/common.xhtml"));
     jspInputNamePageEditor.save();
     bot.sleep(Timing.time2S());
     assertVisualEditorContainsNodeWithValue(new SWTBotWebBrowser(EditingELValueTest.INPUT_NAME_PAGE_NAME,botExt),
-        "Template file is not found: \"#{" + EditingELValueTest.EL_VARIABLE_NAME + "}templates/common.xhtml\"", 
+        "Template file is not found: \"templates/common.xhtml\"", 
         EditingELValueTest.INPUT_NAME_PAGE_NAME);
     // Opens Page Design Options Dialog
     bot.toolbarButtonWithTooltip(PAGE_DESIGN).click();

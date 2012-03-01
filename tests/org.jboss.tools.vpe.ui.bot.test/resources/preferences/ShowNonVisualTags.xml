@@ -3,21 +3,21 @@
 <SPAN style="border: 1px dashed GREY; color: GREY; font-size: 12px;" >
 jsp:directive.taglib
 </SPAN>
-<BR style="font-style: italic; color: green; -moz-user-modify: read-only;" >
+<BR vpe:pseudo-element="yes" style="-moz-user-modify: read-only;" >
 </BR>
 </SPAN>
 <SPAN >
 <SPAN style="border: 1px dashed GREY; color: GREY; font-size: 12px;" >
 jsp:directive.taglib
 </SPAN>
-<BR style="font-style: italic; color: green; -moz-user-modify: read-only;" >
+<BR vpe:pseudo-element="yes" style="-moz-user-modify: read-only;" >
 </BR>
 </SPAN>
 <SPAN >
 <SPAN style="border: 1px dashed GREY; color: GREY; font-size: 12px;" title="f:loadBundle var: Message basename: demo.Messages" >
 f:loadBundle
 </SPAN>
-<BR style="font-style: italic; color: green; -moz-user-modify: read-only;" >
+<BR vpe:pseudo-element="yes" style="-moz-user-modify: read-only;" >
 </BR>
 </SPAN>
 <DIV >
@@ -47,7 +47,7 @@ Hello Demo Application
 Error Messages
 </LI>
 </UL>
-<BR style="font-style: italic; color: green; -moz-user-modify: read-only;" >
+<BR vpe:pseudo-element="yes" style="-moz-user-modify: read-only;" >
 </BR>
 </SPAN>
 <FORM style="border: 1px dotted rgb(255, 102, 0); padding: 5px;" title="h:form id: greetingForm" >
@@ -57,6 +57,13 @@ Name:
 <SPAN >
 <SPAN class="vpe-text" title="h:inputText value: #{user.name} required: true" >
 <SPAN class="vpe-text" title="h:inputText value: #{user.name} required: true" >
+<SPAN >
+<SPAN style="border: 1px dashed GREY; color: GREY; font-size: 12px;" title="f:validateLength maximum: 30 minimum: 3" >
+f:validateLength
+</SPAN>
+<BR vpe:pseudo-element="yes" style="-moz-user-modify: read-only;" >
+</BR>
+</SPAN>
 </SPAN>
 <INPUT value="#{user.name}" title="h:inputText value: #{user.name} required: true" >
 </INPUT>
@@ -65,14 +72,14 @@ Name:
 <SPAN style="border: 1px dashed GREY; color: GREY; font-size: 12px;" title="f:validateLength maximum: 30 minimum: 3" >
 f:validateLength
 </SPAN>
-<BR style="font-style: italic; color: green; -moz-user-modify: read-only;" >
+<BR vpe:pseudo-element="yes" style="-moz-user-modify: read-only;" >
 </BR>
 </SPAN>
 </SPAN>
 <SPAN >
 <INPUT type="button" title="h:commandButton action: hello value: Say Hello!" value="Say Hello!" style="-moz-user-modify: read-only;" >
 </INPUT>
-<BR style="font-style: italic; color: green; -moz-user-modify: read-only;" >
+<BR vpe:pseudo-element="yes" style="-moz-user-modify: read-only;" >
 </BR>
 </SPAN>
 </FORM>
@@ -82,6 +89,6 @@ f:validateLength
 </TABLE>
 </DIV>
 </DIV>
-<IMG vpetemporarydndelement="true" id="dragIcon" src="file:////opt/jbdevstudio5.0.0.M3/studio/plugins/org.jboss.tools.vpe_3.3.0.v20110901-0136-H11-M3/ve/dragIcon.gif" style="position: absolute; cursor: move; left: 7px ! important; top: -14px ! important;" >
+<IMG vpetemporarydndelement="true" id="dragIcon" src="file:////opt/eclipse/eclipsebeta1/eclipse/plugins/org.jboss.tools.vpe_3.3.0.v20120224-2339-H52-Beta1/ve/dragIcon.gif" style="display: none ! important; position: absolute; cursor: move;" >
 </IMG>
 </BODY>
