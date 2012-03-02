@@ -13,7 +13,7 @@
 	<packaging>eclipse-test-plugin</packaging>
 
 	<properties>
-		<emma.filter>org.jboss.tools.smooks.*</emma.filter>
+		<coverage.filter>org.jboss.tools.smooks.*</coverage.filter>
 		<emma.instrument.bundles>org.jboss.tools.smooks.ui,org.jboss.tools.smooks.core</emma.instrument.bundles>
 		<systemProperties>-Djbosstools.test.smooks.1.2.4=${requirement.build.root}/smooks-1.2.4</systemProperties>
 	</properties>

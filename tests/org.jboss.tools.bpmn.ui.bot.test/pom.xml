@@ -12,7 +12,7 @@
 	<packaging>eclipse-test-plugin</packaging>
 
 	<properties>
-		<emma.filter>org.eclipse.bpmn2.*</emma.filter>
+		<coverage.filter>org.eclipse.bpmn2.*</coverage.filter>
 		<emma.instrument.bundles>org.eclipse.bpmn2,org.eclipse.bpmn2.edit,org.eclipse.bpmn2.editor,org.jboss.tools.bpmn2.model,org.jboss.tools.bpmn2.process.diagram,org.jboss.tools.jbpm</emma.instrument.bundles>
 	</properties>
 </project>

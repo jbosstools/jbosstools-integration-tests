@@ -11,7 +11,7 @@
 	
 	<packaging>eclipse-plugin</packaging>
 	<properties>
-		<emma.filter>org.jboss.tools.jst*</emma.filter>
+		<coverage.filter>org.jboss.tools.jst*</coverage.filter>
 		<emma.instrument.bundles>org.jboss.tools.jst*</emma.instrument.bundles>
 	</properties>
 </project>
