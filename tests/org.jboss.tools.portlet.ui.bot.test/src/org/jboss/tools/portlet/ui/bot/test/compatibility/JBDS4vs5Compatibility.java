@@ -22,7 +22,7 @@ import org.junit.Test;
  * @author Lucia Jelinkova
  *
  */
-@Require(server=@Server(version="5.0", operator=">", state=ServerState.Present), db=@DB, seam=@Seam)
+@Require(server=@Server(version="5.1", operator=">", state=ServerState.Present), db=@DB, seam=@Seam)
 public class JBDS4vs5Compatibility extends SWTTaskBasedTestCase {
 
 	private static final String ZIP_FILE = "resources/org/jboss/tools/portlet/ui/bot/test/compatibility/jbds-compatibility.zip";

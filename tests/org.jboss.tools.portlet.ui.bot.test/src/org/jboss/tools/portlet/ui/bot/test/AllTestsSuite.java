@@ -1,5 +1,6 @@
 package org.jboss.tools.portlet.ui.bot.test;
 
+import org.jboss.tools.portlet.ui.bot.test.compatibility.JBDS4vs5Compatibility;
 import org.jboss.tools.portlet.ui.bot.test.core.CreateJavaPortletProject;
 import org.jboss.tools.portlet.ui.bot.test.core.CreateJavaPortletRuntime4x;
 import org.jboss.tools.portlet.ui.bot.test.core.CreateJavaPortletRuntime5x;
@@ -47,6 +48,7 @@ import org.junit.runners.Suite;
 	JSFPortletExampleRuntime5x.class,
 	RichFacesPortletExampleRuntime5x.class,
 	SeamPortletExampleRuntime5x.class,
+	JBDS4vs5Compatibility.class,
 	StopServer.class
 	})
 public class AllTestsSuite {
