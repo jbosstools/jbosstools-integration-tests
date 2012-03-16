@@ -27,7 +27,6 @@ import org.junit.runners.Suite;
 
 @RunWith(RequirementAwareSuite.class)
 @Suite.SuiteClasses({
-	GateinStartupFix.class,
 	CreateJavaPortletProject.class,
 	CreateJavaPortletRuntime4x.class, 
 	CreateJavaPortletRuntime5x.class,
@@ -48,8 +47,7 @@ import org.junit.runners.Suite;
 	JSFPortletExampleRuntime5x.class,
 	RichFacesPortletExampleRuntime5x.class,
 	SeamPortletExampleRuntime5x.class,
-	JBDS4vs5Compatibility.class,
-	StopServer.class
+	JBDS4vs5Compatibility.class
 	})
 public class AllTestsSuite {
 
