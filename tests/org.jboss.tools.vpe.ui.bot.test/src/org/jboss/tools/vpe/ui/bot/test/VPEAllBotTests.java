@@ -44,6 +44,8 @@ import org.jboss.tools.vpe.ui.bot.test.editor.selectionbar.SelectionBarTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.ActionParamTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.AjaxInvisibleTagsTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.AjaxValidatorTagTest;
+import org.jboss.tools.vpe.ui.bot.test.editor.tags.ArticleTagTest;
+import org.jboss.tools.vpe.ui.bot.test.editor.tags.AsideTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.BeanValidatorTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.CalendarTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.ColumnGroupTagTest;
@@ -104,7 +106,7 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(RequirementAwareSuite.class)
 @SuiteClasses ({
-	VisualEditorContextMenuTest.class,
+  VisualEditorContextMenuTest.class,
 	EditingActionsTest.class,
 	NewXHTMLPageWizardTest.class,
 	CodeCompletionTest.class,
@@ -190,7 +192,9 @@ import org.junit.runners.Suite.SuiteClasses;
 	MarkersTest.class,
 	JBIDE9445Test_DuplicateSourceMenu.class,
 	TestNPEinHugeFile.class, 
-	Jbide10020_TestHotKeyForVpeRefresh.class
+	Jbide10020_TestHotKeyForVpeRefresh.class,
+	ArticleTagTest.class,
+  AsideTagTest.class
 })
 public class VPEAllBotTests extends SWTBotTestCase{
 

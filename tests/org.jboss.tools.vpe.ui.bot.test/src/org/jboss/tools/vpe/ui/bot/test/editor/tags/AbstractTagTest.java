@@ -25,6 +25,7 @@ import org.jboss.tools.vpe.ui.bot.test.tools.SWTBotWebBrowser;
  */
 public abstract class AbstractTagTest extends VPEEditorTestCase {
   
+  private static final String TEST_PAGE_NAME_HTML = "TagTest.html";
   private static final String TEST_PAGE_NAME_JSP = "TagTest.jsp";
   private static final String TEST_PAGE_NAME_XHTML = "TagTest.xhtml";
   
@@ -51,7 +52,11 @@ public abstract class AbstractTagTest extends VPEEditorTestCase {
    */
 	protected void initTestPage(TestPageType testPageType , String pageText){
 	  this.testPageType = testPageType;
-	  if (testPageType.equals(TestPageType.JSP)){
+	  if (testPageType.equals(TestPageType.HTML)){
+      createHtmlPage(AbstractTagTest.TEST_PAGE_NAME_HTML);
+      sourceEditor = botExt.swtBotEditorExtByTitle(AbstractTagTest.TEST_PAGE_NAME_HTML);
+      visualEditor = new SWTBotWebBrowser(AbstractTagTest.TEST_PAGE_NAME_HTML,botExt);
+    }else if (testPageType.equals(TestPageType.JSP)){
 	    createJspPage(AbstractTagTest.TEST_PAGE_NAME_JSP);
 	    sourceEditor = botExt.swtBotEditorExtByTitle(AbstractTagTest.TEST_PAGE_NAME_JSP);
 	    visualEditor = new SWTBotWebBrowser(AbstractTagTest.TEST_PAGE_NAME_JSP,botExt);
@@ -127,7 +132,9 @@ public abstract class AbstractTagTest extends VPEEditorTestCase {
   protected String getTestPageFileName() {
     String fileName = null;
     
-    if (testPageType.equals(TestPageType.JSP)){
+    if (testPageType.equals(TestPageType.HTML)){
+      fileName = AbstractTagTest.TEST_PAGE_NAME_HTML;  
+    }else if (testPageType.equals(TestPageType.JSP)){
       fileName = AbstractTagTest.TEST_PAGE_NAME_JSP;  
     } else if (testPageType.equals(TestPageType.XHTML)){
       fileName = AbstractTagTest.TEST_PAGE_NAME_XHTML;  

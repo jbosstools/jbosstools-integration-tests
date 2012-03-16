@@ -695,5 +695,37 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase {
     }
 
   }
+  /**
+   * Creates new empty HTML page within test project
+   * 
+   * @param pageName
+   * @param subDirs
+   *            - complete path to page location within workspace
+   */
+  protected void createHtmlPage(String pageName, String... subDirs) {
+    SWTBotTreeItem tiPageParent = null;
+    if (subDirs == null || subDirs.length == 0) {
+      tiPageParent = packageExplorer.selectTreeItem("pages",
+          new String[] { VPEAutoTestCase.JBT_TEST_PROJECT_NAME,
+              "WebContent" });
+    } else {
+      String[] subPath = Arrays.copyOfRange(subDirs, 0,
+          subDirs.length - 1);
+      tiPageParent = packageExplorer.selectTreeItem(
+          subDirs[subDirs.length - 1], subPath);
+    }
+    tiPageParent.expand();
+    try {
+      tiPageParent.getNode(pageName).doubleClick();
+    } catch (WidgetNotFoundException e) {
+      open.newObject(ActionItem.NewObject.WebHTMLPage.LABEL);
+      bot.shell(IDELabel.Shell.NEW_HTML_FILE).activate();
+      bot.textWithLabel(ActionItem.NewObject.WebHTMLPage.TEXT_FILE_NAME)
+          .setText(pageName);
+      bot.button(IDELabel.Button.NEXT).click();
+      bot.button(IDELabel.Button.FINISH).click();
+    }
+    bot.sleep(Timing.time2S());
 
+  }
 }
