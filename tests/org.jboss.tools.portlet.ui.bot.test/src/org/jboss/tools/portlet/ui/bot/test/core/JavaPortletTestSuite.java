@@ -10,7 +10,8 @@ import org.junit.runners.Suite;
 	CreateJavaPortletRuntime4x.class,
 	CreateJavaPortletRuntime5x.class,
 	RunJavaPortletOnServer.class, 
-	LoadJavaPortletInBrowserRuntime4x.class
+	LoadJavaPortletInBrowserRuntime4x.class, 
+	HotJavaPortletDeploymentRuntime5x.class
 	})
 public class JavaPortletTestSuite {
 

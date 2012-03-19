@@ -10,7 +10,8 @@ import org.junit.runners.Suite;
 	CreateJSFPortletRuntime4x.class,
 	CreateJSFPortletRuntime5x.class,
 	RunJSFPortletOnServer.class, 
-	LoadJSFPortletInBrowserRuntime4x.class
+	LoadJSFPortletInBrowserRuntime4x.class, 
+	HotJSFPortletDeploymentRuntime5x.class
 	})
 public class JSFPortletTestSuite {
 

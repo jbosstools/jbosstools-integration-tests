@@ -25,7 +25,7 @@ public abstract class CreateJavaPortletTemplate extends CreatePortletTemplate {
 
 	public static final String CLASS_NAME = "UITestingJavaPortlet";
 	
-	protected static final String PACKAGE_NAME = "org.jboss.tools.tests.ui.portlet";
+	public static final String PACKAGE_NAME = "org.jboss.tools.tests.ui.portlet";
 	
 	protected static final String SOURCE_FILE_NAME = "src";
 	

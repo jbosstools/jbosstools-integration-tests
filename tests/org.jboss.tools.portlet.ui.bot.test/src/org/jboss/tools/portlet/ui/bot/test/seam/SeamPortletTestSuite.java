@@ -9,7 +9,8 @@ import org.junit.runners.Suite;
 	CreateSeamPortletProject.class,
 	CreateSeamPortletRuntime4x.class,
 	CreateSeamPortletRuntime5x.class,
-	RunSeamPortletOnServer.class
+	RunSeamPortletOnServer.class, 
+	HotSeamPortletDeploymentRuntime5x.class
 	})
 public class SeamPortletTestSuite {
 
