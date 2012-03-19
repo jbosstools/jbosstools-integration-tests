@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.jboss.tools.portlet.ui.bot.entity.FacetDefinition;
+import org.jboss.tools.portlet.ui.bot.task.facet.Facets;
 import org.jboss.tools.portlet.ui.bot.task.wizard.WizardPageDefaultsFillingTask;
 import org.jboss.tools.portlet.ui.bot.task.wizard.WizardPageFillingTask;
 import org.jboss.tools.portlet.ui.bot.task.wizard.web.jboss.JBossJSFPortletCapabilitiesWizardPageFillingTask;
@@ -41,12 +42,12 @@ public class CreateSeamPortletProject extends CreatePortletProjectTemplate{
 	@Override
 	public List<FacetDefinition> getRequiredFacets() {
 		List<FacetDefinition> facets = new ArrayList<FacetDefinition>();
-		facets.add(JAVA_FACET);
-		facets.add(JSF_FACET);
+		facets.add(Facets.JAVA_FACET);
+		facets.add(Facets.JSF_FACET);
 		facets.add(new FacetDefinition("Seam", null, configuredState.getSeam().version));
-		facets.add(CORE_PORTLET_FACET);
-		facets.add(JSF_PORTLET_FACET);
-		facets.add(SEAM_PORTLET_FACET);
+		facets.add(Facets.CORE_PORTLET_FACET);
+		facets.add(Facets.JSF_PORTLET_FACET);
+		facets.add(Facets.SEAM_PORTLET_FACET);
 		return facets;
 	}
 	

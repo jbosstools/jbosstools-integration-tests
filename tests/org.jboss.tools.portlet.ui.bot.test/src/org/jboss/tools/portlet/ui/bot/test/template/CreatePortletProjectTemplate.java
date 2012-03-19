@@ -34,18 +34,6 @@ import org.junit.Test;
 @Require(server=@Server(state=ServerState.Present, type=ServerType.EPP))
 public abstract class CreatePortletProjectTemplate extends SWTTaskBasedTestCase {
 
-	protected static final FacetDefinition JAVA_FACET = new FacetDefinition("Java", null, "1.6");
-	
-	protected static final FacetDefinition JSF_FACET = new FacetDefinition("JavaServer Faces");
-	
-	protected static final String JBOSS_FACET_CATEGORY = "JBoss Portlets";
-
-	protected static final FacetDefinition CORE_PORTLET_FACET = new FacetDefinition("JBoss Core Portlet", JBOSS_FACET_CATEGORY);
-
-	protected static final FacetDefinition JSF_PORTLET_FACET = new FacetDefinition("JBoss JSF Portlet", JBOSS_FACET_CATEGORY);
-	
-	public static final FacetDefinition SEAM_PORTLET_FACET = new FacetDefinition("JBoss Seam Portlet", JBOSS_FACET_CATEGORY);
-	
 	protected static final String WEB_INF = "WebContent/WEB-INF/";
 	
 	protected static final String FACES_CONFIG_XML = WEB_INF + "faces-config.xml";
