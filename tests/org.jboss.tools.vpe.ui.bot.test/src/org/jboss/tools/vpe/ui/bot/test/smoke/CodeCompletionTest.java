@@ -13,7 +13,10 @@ package org.jboss.tools.vpe.ui.bot.test.smoke;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.jboss.tools.ui.bot.ext.SWTBotExt;
+import org.jboss.tools.ui.bot.ext.SWTJBTExt;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
+import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.helper.ContentAssistHelper;
 import org.jboss.tools.ui.bot.ext.parts.ContentAssistBot;
 import org.jboss.tools.ui.bot.ext.parts.SWTBotEditorExt;
@@ -24,9 +27,10 @@ import org.jboss.tools.vpe.ui.bot.test.editor.VPEEditorTestCase;
  *
  */
 public class CodeCompletionTest extends VPEEditorTestCase{
+  static final private String HTML_PAGE_NAME = "CodeComletionPage.html";
   private SWTBotEditorExt editor;
+  private SWTBotEditorExt htmlEditor;
   private String originalEditorText;
-  
   @Override
   public void setUp() throws Exception {
     super.setUp();
@@ -39,6 +43,9 @@ public class CodeCompletionTest extends VPEEditorTestCase{
     if (editor != null){
       editor.setText(originalEditorText);
       editor.saveAndClose();
+    }
+    if (htmlEditor != null){
+      htmlEditor.close();
     }
     super.tearDown();
   }
@@ -82,6 +89,41 @@ public class CodeCompletionTest extends VPEEditorTestCase{
         getCommandButtonValueAttrProposalList());
   }
   
+  /**
+   * Tests Code Completion for HTML Page
+   */
+  public void testCodeCompletionOfHtmlPage(){
+    createHtmlPage(CodeCompletionTest.HTML_PAGE_NAME);
+    SWTBotExt botExt = new SWTBotExt();
+    SWTBotEditorExt htmlEditor = botExt.swtBotEditorExtByTitle(CodeCompletionTest.HTML_PAGE_NAME);
+    htmlEditor.setText("<!DOCTYPE html>\n" +
+        "<html>\n" +
+        "  <head>\n" +
+        "  </head>\n" +
+        "  <body>\n" +
+        "  </boyd>\n" +
+        "</html>");
+    bot.sleep(Timing.time2S());
+    final String tagToSelect = "<body>";
+    SWTJBTExt.selectTextInSourcePane(botExt,
+        CodeCompletionTest.HTML_PAGE_NAME,
+        tagToSelect,
+        tagToSelect.length(),
+        0,
+        0);
+    List<String> proposals = htmlEditor.contentAssist().getProposalList();
+    StringBuffer sbMissingProposals = new StringBuffer("");
+    for (String expectedItem : getHTML5ProposalList()){
+      if (!proposals.contains(expectedItem)){
+        if (sbMissingProposals.length() != 0){
+          sbMissingProposals.append(",");
+        }
+        sbMissingProposals.append(expectedItem);
+      }
+    }
+    assertTrue("There are missing Code Assist proposals for these HTML 5 tags: " + sbMissingProposals.toString(),
+        sbMissingProposals.length() == 0 );
+  }
   /**
    * Returns list of expected Content Assist proposals for jsp page within <f:view> tag
    * @return
@@ -190,5 +232,35 @@ public class CodeCompletionTest extends VPEEditorTestCase{
     
     return result;
   } 
-  
+  /**
+   * Returns list of HTML% tags which should be in Code Assist proposals 
+   * @return
+   */
+  private static List<String> getHTML5ProposalList() {
+    List<String> result = new LinkedList<String>();
+    result.add("article");
+    result.add("aside");
+    result.add("audio");
+    result.add("command");
+    result.add("canvas");
+    result.add("details");
+    result.add("hgroup");
+    result.add("meter");
+    result.add("progress");
+    result.add("time");
+    result.add("wbr");
+    result.add("embed");
+    result.add("datalist");
+    result.add("keygen");
+    result.add("output");
+    result.add("figure");
+    result.add("footer");
+    result.add("header");
+    result.add("mark");
+    result.add("nav");
+    result.add("ruby");
+    result.add("section");
+    result.add("video");
+    return result;
+  }
 }
