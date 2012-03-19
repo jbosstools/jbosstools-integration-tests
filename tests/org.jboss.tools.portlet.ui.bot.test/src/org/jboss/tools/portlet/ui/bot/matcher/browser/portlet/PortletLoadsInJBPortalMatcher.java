@@ -11,7 +11,7 @@ import org.jboss.tools.portlet.ui.bot.matcher.browser.PageSourceMatcher;
  * @author Lucia Jelinkova
  *
  */
-public class PortletLoads4xRuntimeMatcher extends AbstractSWTMatcher<PortletDefinition> {
+public class PortletLoadsInJBPortalMatcher extends AbstractSWTMatcher<PortletDefinition> {
 
 	private static final String PORTAL_URL = "http://localhost:8080/portal/portal/default/";
 	

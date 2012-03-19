@@ -19,7 +19,7 @@ import org.junit.Test;
  *
  */
 @Require(clearWorkspace=false, clearProjects=false, server=@Server(version="5.0", operator=">", state=ServerState.Present))
-public abstract class HotDeploymentRuntime5xTemplate extends SWTTaskBasedTestCase {
+public abstract class HotDeploymentGateinTemplate extends SWTTaskBasedTestCase {
 
 	protected abstract String getProjectName();
 

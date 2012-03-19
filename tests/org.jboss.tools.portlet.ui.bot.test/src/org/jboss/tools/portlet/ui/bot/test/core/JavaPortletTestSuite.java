@@ -7,11 +7,11 @@ import org.junit.runners.Suite;
 @RunWith(RequirementAwareSuite.class)
 @Suite.SuiteClasses({
 	CreateJavaPortletProject.class,
-	CreateJavaPortletRuntime4x.class,
-	CreateJavaPortletRuntime5x.class,
+	CreateJavaPortletJBPortal.class,
+	CreateJavaPortletGatein.class,
 	RunJavaPortletOnServer.class, 
-	LoadJavaPortletInBrowserRuntime4x.class, 
-	HotJavaPortletDeploymentRuntime5x.class
+	LoadJavaPortletInBrowserJBPortal.class, 
+	HotJavaPortletDeploymentGatein.class
 	})
 public class JavaPortletTestSuite {
 

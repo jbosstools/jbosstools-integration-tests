@@ -7,10 +7,10 @@ import org.junit.runners.Suite;
 @RunWith(RequirementAwareSuite.class)
 @Suite.SuiteClasses({
 	CreateSeamPortletProject.class,
-	CreateSeamPortletRuntime4x.class,
-	CreateSeamPortletRuntime5x.class,
+	CreateSeamPortletJBPortal.class,
+	CreateSeamPortletGatein.class,
 	RunSeamPortletOnServer.class, 
-	HotSeamPortletDeploymentRuntime5x.class
+	HotSeamPortletDeploymentGatein.class
 	})
 public class SeamPortletTestSuite {
 

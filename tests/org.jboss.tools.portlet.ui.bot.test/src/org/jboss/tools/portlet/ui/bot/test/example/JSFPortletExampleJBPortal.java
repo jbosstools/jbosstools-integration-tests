@@ -11,7 +11,7 @@ import org.jboss.tools.portlet.ui.bot.entity.PortletDefinition;
  * @author Lucia Jelinkova
  *
  */
-public class JSFPortletExampleRuntime4x extends AbstractPortletExampleRuntime4xTest {
+public class JSFPortletExampleJBPortal extends AbstractPortletExampleJBPortal {
 
 	private static final String PROJECT_NAME = "testjsfportlet";
 	

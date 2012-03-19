@@ -15,7 +15,7 @@ import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
  *
  */
 @Require(server=@Server(version="4.3", state=ServerState.Running, type=ServerType.EPP))
-public abstract class AbstractPortletExampleRuntime4xTest extends
+public abstract class AbstractPortletExampleJBPortal extends
 		AbstractPortletExampleTest {
 
 	protected abstract PortletDefinition getPortletDefinition();

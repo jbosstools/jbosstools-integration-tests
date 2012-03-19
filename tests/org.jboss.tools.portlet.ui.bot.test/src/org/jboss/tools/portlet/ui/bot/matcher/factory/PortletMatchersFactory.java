@@ -2,7 +2,7 @@ package org.jboss.tools.portlet.ui.bot.matcher.factory;
 
 import org.jboss.tools.portlet.ui.bot.entity.PortletDefinition;
 import org.jboss.tools.portlet.ui.bot.matcher.SWTMatcher;
-import org.jboss.tools.portlet.ui.bot.matcher.browser.portlet.PortletLoads4xRuntimeMatcher;
+import org.jboss.tools.portlet.ui.bot.matcher.browser.portlet.PortletLoadsInJBPortalMatcher;
 
 public class PortletMatchersFactory {
 
@@ -11,6 +11,6 @@ public class PortletMatchersFactory {
 	}
 	
 	public static SWTMatcher<PortletDefinition> canLoadAt4xRuntime(){
-		return new PortletLoads4xRuntimeMatcher();
+		return new PortletLoadsInJBPortalMatcher();
 	}
 }

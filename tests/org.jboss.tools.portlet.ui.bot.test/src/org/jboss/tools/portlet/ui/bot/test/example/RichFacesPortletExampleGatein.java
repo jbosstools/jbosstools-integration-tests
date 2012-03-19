@@ -7,7 +7,7 @@ package org.jboss.tools.portlet.ui.bot.test.example;
  * @author Lucia Jelinkova
  *
  */
-public class RichFacesPortletExampleRuntime5x extends AbstractPortletExampleRuntime5xTest {
+public class RichFacesPortletExampleGatein extends AbstractPortletExampleGatein {
 
 	private static final String PROJECT_NAME_IN_WIZARD = "RichFacesPortlet";
 	

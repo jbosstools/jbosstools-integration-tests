@@ -3,13 +3,13 @@ package org.jboss.tools.portlet.ui.bot.test.core;
 import static org.jboss.tools.portlet.ui.bot.entity.EntityFactory.portlet;
 
 import org.jboss.tools.portlet.ui.bot.entity.PortletDefinition;
-import org.jboss.tools.portlet.ui.bot.test.template.LoadPortletInBrowser4xRuntimeTemplate;
+import org.jboss.tools.portlet.ui.bot.test.template.LoadPortletInBrowserJBPortalTemplate;
 
 
-public class LoadJavaPortletInBrowserRuntime4x extends LoadPortletInBrowser4xRuntimeTemplate {
+public class LoadJavaPortletInBrowserJBPortal extends LoadPortletInBrowserJBPortalTemplate {
 
 	@Override
 	protected PortletDefinition getPortletDefinition() {
-		return portlet(CreateJavaPortletRuntime5x.CLASS_NAME);
+		return portlet(CreateJavaPortletGatein.CLASS_NAME);
 	}
 }

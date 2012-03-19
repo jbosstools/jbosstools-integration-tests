@@ -16,7 +16,7 @@ import org.junit.Test;
  *
  */
 @Require(clearWorkspace=false, clearProjects=false, server=@Server(version="4.3", state=ServerState.Present))
-public abstract class LoadPortletInBrowser4xRuntimeTemplate extends SWTTaskBasedTestCase {
+public abstract class LoadPortletInBrowserJBPortalTemplate extends SWTTaskBasedTestCase {
 
 	protected abstract PortletDefinition getPortletDefinition();
 	

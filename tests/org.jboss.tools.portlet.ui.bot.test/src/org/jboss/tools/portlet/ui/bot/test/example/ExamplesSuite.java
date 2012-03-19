@@ -6,12 +6,12 @@ import org.junit.runners.Suite;
 
 @RunWith(RequirementAwareSuite.class)
 @Suite.SuiteClasses({
-	JavaPortletExampleRuntime4x.class, 
-	JSFPortletExampleRuntime4x.class, 
-	SeamPortletExampleRuntime4x.class,
-	JSFPortletExampleRuntime5x.class,
-	RichFacesPortletExampleRuntime5x.class,
-	SeamPortletExampleRuntime5x.class
+	JavaPortletExampleJBPortal.class, 
+	JSFPortletExampleJBPortal.class, 
+	SeamPortletExampleJBPortal.class,
+	JSFPortletExampleGatein.class,
+	RichFacesPortletExampleGatein.class,
+	SeamPortletExampleGatein.class
 	})
 public class ExamplesSuite {
 

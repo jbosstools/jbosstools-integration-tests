@@ -6,7 +6,7 @@ import org.jboss.tools.portlet.ui.bot.task.wizard.web.jboss.AbstractPortletCreat
 import org.jboss.tools.portlet.ui.bot.task.wizard.web.jboss.JavaPortletCreationTask;
 import org.jboss.tools.portlet.ui.bot.task.wizard.web.jboss.JavaPortletWizardPageFillingTask;
 import org.jboss.tools.portlet.ui.bot.test.template.CreateJavaPortletTemplate;
-import org.jboss.tools.portlet.ui.bot.test.template.HotDeploymentRuntime5xTemplate;
+import org.jboss.tools.portlet.ui.bot.test.template.HotDeploymentGateinTemplate;
 
 /**
  * Creates a java portlet and checks if the project is re-deployed. 
@@ -14,7 +14,7 @@ import org.jboss.tools.portlet.ui.bot.test.template.HotDeploymentRuntime5xTempla
  * @author Lucia Jelinkova
  *
  */
-public class HotJavaPortletDeploymentRuntime5x extends HotDeploymentRuntime5xTemplate {
+public class HotJavaPortletDeploymentGatein extends HotDeploymentGateinTemplate {
 
 	@Override
 	protected String getProjectName() {

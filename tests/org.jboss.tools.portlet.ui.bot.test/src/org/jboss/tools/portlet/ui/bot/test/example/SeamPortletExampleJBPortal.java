@@ -21,7 +21,7 @@ import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
  *
  */
 @Require(db=@DB, seam=@Seam, server=@Server(version="4.3", state=ServerState.Running, type=ServerType.EPP))
-public class SeamPortletExampleRuntime4x extends AbstractPortletExampleRuntime4xTest {
+public class SeamPortletExampleJBPortal extends AbstractPortletExampleJBPortal {
 
 	private static final String PROJECT_NAME = "testseamportlet";
 	

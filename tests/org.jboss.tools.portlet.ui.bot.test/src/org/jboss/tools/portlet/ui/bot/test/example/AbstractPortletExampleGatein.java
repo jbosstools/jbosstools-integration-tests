@@ -12,7 +12,7 @@ import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
  *
  */
 @Require(server=@Server(version="5.0", operator=">", state=ServerState.Running, type=ServerType.EPP))
-public abstract class AbstractPortletExampleRuntime5xTest extends
+public abstract class AbstractPortletExampleGatein extends
 		AbstractPortletExampleTest {
 
 	@Override

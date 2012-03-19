@@ -6,8 +6,8 @@ import org.junit.runners.Suite;
 
 @RunWith(RequirementAwareSuite.class)
 @Suite.SuiteClasses({
-	RunAsLoadsPortalURLRuntime4x.class, 
-	RunAsLoadsPortalURLRuntime5x.class
+	RunAsLoadsPortalURLJBPortal.class, 
+	RunAsLoadsPortalURLGatein.class
 	})
 public class PortletServerTestSuite {
 

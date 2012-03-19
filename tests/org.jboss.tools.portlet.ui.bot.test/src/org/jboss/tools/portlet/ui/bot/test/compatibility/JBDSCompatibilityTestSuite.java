@@ -6,7 +6,7 @@ import org.junit.runners.Suite;
 
 @RunWith(RequirementAwareSuite.class)
 @Suite.SuiteClasses({
-	JBDS4vs5Compatibility.class,
+	JBDS4vs5CompatibilityGatein.class,
 })
 public class JBDSCompatibilityTestSuite {
 

@@ -6,7 +6,7 @@ import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
 
 @Require(server=@Server(version="5.0", operator=">", state=ServerState.Running))
-public class RunAsLoadsPortalURLRuntime5x extends RunAsLoadsPortalURLTemplate {
+public class RunAsLoadsPortalURLGatein extends RunAsLoadsPortalURLTemplate {
 
 	@Override
 	public String getExpectedURL() {

@@ -6,7 +6,7 @@ package org.jboss.tools.portlet.ui.bot.test.example;
  * @author Lucia Jelinkova
  *
  */
-public class JSFPortletExampleRuntime5x extends AbstractPortletExampleRuntime5xTest {
+public class JSFPortletExampleGatein extends AbstractPortletExampleGatein {
 
 	private static final String PROJECT_NAME = "JSFPortlet";
 	
