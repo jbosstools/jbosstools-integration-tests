@@ -21,6 +21,8 @@ import org.jboss.tools.portlet.ui.bot.test.seam.CreateSeamPortletProject;
 import org.jboss.tools.portlet.ui.bot.test.seam.CreateSeamPortletRuntime4x;
 import org.jboss.tools.portlet.ui.bot.test.seam.CreateSeamPortletRuntime5x;
 import org.jboss.tools.portlet.ui.bot.test.seam.RunSeamPortletOnServer;
+import org.jboss.tools.portlet.ui.bot.test.server.RunAsLoadsPortalURLRuntime4x;
+import org.jboss.tools.portlet.ui.bot.test.server.RunAsLoadsPortalURLRuntime5x;
 import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -47,7 +49,9 @@ import org.junit.runners.Suite;
 	JSFPortletExampleRuntime5x.class,
 	RichFacesPortletExampleRuntime5x.class,
 	SeamPortletExampleRuntime5x.class,
-	JBDS4vs5Compatibility.class
+	JBDS4vs5Compatibility.class,
+	RunAsLoadsPortalURLRuntime4x.class, 
+	RunAsLoadsPortalURLRuntime5x.class
 	})
 public class AllTestsSuite {
 
