@@ -46,14 +46,17 @@ import org.jboss.tools.vpe.ui.bot.test.editor.tags.AjaxInvisibleTagsTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.AjaxValidatorTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.ArticleTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.AsideTagTest;
+import org.jboss.tools.vpe.ui.bot.test.editor.tags.AudioTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.BeanValidatorTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.CalendarTagTest;
+import org.jboss.tools.vpe.ui.bot.test.editor.tags.CanvasTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.ColumnGroupTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.ColumnTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.ColumnsTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.ComboBoxTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.CommandButtonTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.CommandLinkTagTest;
+import org.jboss.tools.vpe.ui.bot.test.editor.tags.CommandTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.CoreHTMLTagsTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.DataDefinitionTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.DataGridTagTest;
@@ -61,6 +64,7 @@ import org.jboss.tools.vpe.ui.bot.test.editor.tags.DataListTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.DataOrderedListTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.DataScrollerTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.DataTableTagTest;
+import org.jboss.tools.vpe.ui.bot.test.editor.tags.DetailsTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.EditorTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.ExtendedDataTableTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.FileUploadTagTest;
@@ -76,6 +80,7 @@ import org.jboss.tools.vpe.ui.bot.test.editor.tags.PanelTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.PickListTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.ProgressTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.SpacerTagTest;
+import org.jboss.tools.vpe.ui.bot.test.editor.tags.SummaryTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.TogglePanelAndToogleControlTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.ToolbarAndToolbarGroupTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.TreeTagTest;
@@ -194,7 +199,12 @@ import org.junit.runners.Suite.SuiteClasses;
 	TestNPEinHugeFile.class, 
 	Jbide10020_TestHotKeyForVpeRefresh.class,
 	ArticleTagTest.class,
-  AsideTagTest.class
+  AsideTagTest.class,
+  AudioTagTest.class,
+  CanvasTagTest.class,
+  CommandTagTest.class,
+  DetailsTagTest.class,
+  SummaryTagTest.class
 })
 public class VPEAllBotTests extends SWTBotTestCase{
 

@@ -12,12 +12,12 @@
 package org.jboss.tools.vpe.ui.bot.test.editor.tags;
 
 /**
- * Tests Aside Tag behavior 
+ * Tests Command Tag behavior 
  * @author vlado pakan
  *
  */
-public class AsideTagTest extends AbstractTagTest{
-  private static String ASIDE_TEXT = "!@#$ ASIDE TEXT $#@!";
+public class CommandTagTest extends AbstractTagTest{
+  private static String COMMAND_TEXT = "COMMAND-TEXT";
   @Override
   protected void initTestPage() {
     initTestPage(TestPageType.HTML,
@@ -28,9 +28,8 @@ public class AsideTagTest extends AbstractTagTest{
         "    <title>Insert title here</title>\n" +
         "  </head>\n" +
         "  <body>\n" +
-        "    <aside>\n" +
-        "    " + AsideTagTest.ASIDE_TEXT + "\n" +
-        "    </aside>\n" +
+        "    <command type=\"command\" label=\"Command Label\" onclick=\"command()\">" +
+        CommandTagTest.COMMAND_TEXT + "</command>\n" +
         "  </body>\n" +
         "</html>\n");
   }
@@ -39,11 +38,11 @@ public class AsideTagTest extends AbstractTagTest{
   protected void verifyTag() {
     // check Problems View for Errors
     assertProbelmsViewNoErrors(botExt);
-    // visual representation contains ASIDE tag
-    assertVisualEditorContains(getVisualEditor(), "ASIDE", null, null, getTestPageFileName());
-    // visual representation contains ASIDE_TEXT text
+    // visual representation contains COMMAND tag
+    assertVisualEditorContains(getVisualEditor(), "COMMAND", null, null, getTestPageFileName());
+    // visual representation contains COMMAND_TEXT text
     assertVisualEditorContainsNodeWithValue(getVisualEditor(), 
-        AsideTagTest.ASIDE_TEXT, getTestPageFileName());
+        CommandTagTest.COMMAND_TEXT, getTestPageFileName());
   }
 
 }

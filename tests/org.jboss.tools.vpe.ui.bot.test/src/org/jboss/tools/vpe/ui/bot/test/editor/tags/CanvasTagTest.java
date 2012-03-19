@@ -12,12 +12,11 @@
 package org.jboss.tools.vpe.ui.bot.test.editor.tags;
 
 /**
- * Tests Aside Tag behavior 
+ * Tests ASIDE Tag behavior 
  * @author vlado pakan
  *
  */
-public class AsideTagTest extends AbstractTagTest{
-  private static String ASIDE_TEXT = "!@#$ ASIDE TEXT $#@!";
+public class CanvasTagTest extends AbstractTagTest{
   @Override
   protected void initTestPage() {
     initTestPage(TestPageType.HTML,
@@ -28,9 +27,7 @@ public class AsideTagTest extends AbstractTagTest{
         "    <title>Insert title here</title>\n" +
         "  </head>\n" +
         "  <body>\n" +
-        "    <aside>\n" +
-        "    " + AsideTagTest.ASIDE_TEXT + "\n" +
-        "    </aside>\n" +
+        "    <canvas id=\"myCanvas\"></canvas>\n" +
         "  </body>\n" +
         "</html>\n");
   }
@@ -39,11 +36,8 @@ public class AsideTagTest extends AbstractTagTest{
   protected void verifyTag() {
     // check Problems View for Errors
     assertProbelmsViewNoErrors(botExt);
-    // visual representation contains ASIDE tag
-    assertVisualEditorContains(getVisualEditor(), "ASIDE", null, null, getTestPageFileName());
-    // visual representation contains ASIDE_TEXT text
-    assertVisualEditorContainsNodeWithValue(getVisualEditor(), 
-        AsideTagTest.ASIDE_TEXT, getTestPageFileName());
+    // visual representation contains CANVAS tag
+    assertVisualEditorContains(getVisualEditor(), "CANVAS", null, null, getTestPageFileName());
   }
 
 }
