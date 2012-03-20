@@ -17,6 +17,7 @@ package org.jboss.tools.vpe.ui.bot.test.editor.tags;
  *
  */
 public class AudioTagTest extends AbstractTagTest{
+  private static final String AUDIO_TAG_TEXT = "<audio/>";
   @Override
   protected void initTestPage() {
     initTestPage(TestPageType.HTML,
@@ -27,8 +28,7 @@ public class AudioTagTest extends AbstractTagTest{
         "    <title>Insert title here</title>\n" +
         "  </head>\n" +
         "  <body>\n" +
-        "    <audio>\n" +
-        "    </audio>\n" +
+        "    " + AudioTagTest.AUDIO_TAG_TEXT + "\n" +
         "  </body>\n" +
         "</html>\n");
   }
@@ -39,6 +39,12 @@ public class AudioTagTest extends AbstractTagTest{
     assertProbelmsViewNoErrors(botExt);
     // visual representation contains AUDIO tag
     assertVisualEditorContains(getVisualEditor(), "AUDIO", null, null, getTestPageFileName());
+    // test tag selection
+    getVisualEditor().selectDomNode(getVisualEditor().getDomNodeByTagName("AUDIO",0), 0);
+    final String selectedText = getSourceEditor().getSelection();
+    assertTrue("Selected text in Source Pane has to be '" + AudioTagTest.AUDIO_TAG_TEXT + "'" +
+        "\nbut it is '" + selectedText + "'",
+      selectedText.trim().equals(AudioTagTest.AUDIO_TAG_TEXT));
   }
 
 }

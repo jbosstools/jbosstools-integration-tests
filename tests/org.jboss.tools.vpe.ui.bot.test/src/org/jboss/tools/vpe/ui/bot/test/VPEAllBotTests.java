@@ -79,6 +79,7 @@ import org.jboss.tools.vpe.ui.bot.test.editor.tags.PanelMenuTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.PanelTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.PickListTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.ProgressTagTest;
+import org.jboss.tools.vpe.ui.bot.test.editor.tags.SelectTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.SpacerTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.SummaryTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.TogglePanelAndToogleControlTagTest;
@@ -93,6 +94,7 @@ import org.jboss.tools.vpe.ui.bot.test.palette.CancelTagLibDefenitionTest;
 import org.jboss.tools.vpe.ui.bot.test.palette.ImportTagsFromTLDFileTest;
 import org.jboss.tools.vpe.ui.bot.test.palette.ManagePaletteGroupsTest;
 import org.jboss.tools.vpe.ui.bot.test.palette.PaletteEditorTest;
+import org.jboss.tools.vpe.ui.bot.test.palette.RichFacesComponentTest;
 import org.jboss.tools.vpe.ui.bot.test.smoke.CodeCompletionTest;
 import org.jboss.tools.vpe.ui.bot.test.smoke.EditorSynchronizationTest;
 import org.jboss.tools.vpe.ui.bot.test.smoke.JSPPageCreationTest;
@@ -204,7 +206,9 @@ import org.junit.runners.Suite.SuiteClasses;
   CanvasTagTest.class,
   CommandTagTest.class,
   DetailsTagTest.class,
-  SummaryTagTest.class
+  SummaryTagTest.class,
+  SelectTagTest.class,
+  RichFacesComponentTest.class
 })
 public class VPEAllBotTests extends SWTBotTestCase{
 

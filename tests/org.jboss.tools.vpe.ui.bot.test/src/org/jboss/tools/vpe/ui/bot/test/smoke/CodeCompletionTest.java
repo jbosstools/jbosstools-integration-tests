@@ -28,8 +28,10 @@ import org.jboss.tools.vpe.ui.bot.test.editor.VPEEditorTestCase;
  */
 public class CodeCompletionTest extends VPEEditorTestCase{
   static final private String HTML_PAGE_NAME = "CodeComletionPage.html";
+  static final private String XHTML_PAGE_NAME = "CodeComletionPage.xhtml";
   private SWTBotEditorExt editor;
   private SWTBotEditorExt htmlEditor;
+  private SWTBotEditorExt xhtmlEditor;
   private String originalEditorText;
   @Override
   public void setUp() throws Exception {
@@ -42,10 +44,16 @@ public class CodeCompletionTest extends VPEEditorTestCase{
   public void tearDown() throws Exception {
     if (editor != null){
       editor.setText(originalEditorText);
-      editor.saveAndClose();
+      editor.save();
+      editor.close();
     }
     if (htmlEditor != null){
+      htmlEditor.save();
       htmlEditor.close();
+    }
+    if (xhtmlEditor != null){
+      xhtmlEditor.save();
+      xhtmlEditor.close();
     }
     super.tearDown();
   }
@@ -123,6 +131,45 @@ public class CodeCompletionTest extends VPEEditorTestCase{
     }
     assertTrue("There are missing Code Assist proposals for these HTML 5 tags: " + sbMissingProposals.toString(),
         sbMissingProposals.length() == 0 );
+  }
+  /**
+   * Tests Code Completion for RichFaces tags
+   */
+  public void testCodeCompletionOfRichFacesTags(){
+    createXhtmlPage(CodeCompletionTest.XHTML_PAGE_NAME);
+    SWTBotExt botExt = new SWTBotExt();
+    SWTBotEditorExt xhtmlEditor = botExt.swtBotEditorExtByTitle(CodeCompletionTest.XHTML_PAGE_NAME);
+    xhtmlEditor.setText("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n" +
+        "<ui:composition xmlns=\"http://www.w3.org/1999/xhtml\"\n" +
+        "  xmlns:h=\"http://java.sun.com/jsf/html\"\n" +
+        "  xmlns:f=\"http://java.sun.com/jsf/core\"\n" +
+        "  xmlns:ui=\"http://java.sun.com/jsf/facelets\"\n" +
+        "  xmlns:a4j=\"http://richfaces.org/a4j\"\n" +
+        "  xmlns:rich=\"http://richfaces.org/rich\">\n" +
+        "  <rich:\n" +
+        "</ui:composition>");
+    xhtmlEditor.save();
+    bot.sleep(Timing.time2S());
+    final String tagToSelect = "<rich:";
+    SWTJBTExt.selectTextInSourcePane(botExt,
+        CodeCompletionTest.XHTML_PAGE_NAME,
+        tagToSelect,
+        tagToSelect.length(),
+        0,
+        0);
+    List<String> proposals = xhtmlEditor.contentAssist().getProposalList();
+    StringBuffer sbMissingProposals = new StringBuffer("");
+    for (String expectedItem : getRichFacesProposalList()){
+      if (!proposals.contains(expectedItem)){
+        if (sbMissingProposals.length() != 0){
+          sbMissingProposals.append(",");
+        }
+        sbMissingProposals.append(expectedItem);
+      }
+    }
+    assertTrue("There are missing Code Assist proposals for these HTML 5 tags: " + sbMissingProposals.toString(),
+        sbMissingProposals.length() == 0 );
+
   }
   /**
    * Returns list of expected Content Assist proposals for jsp page within <f:view> tag
@@ -233,7 +280,7 @@ public class CodeCompletionTest extends VPEEditorTestCase{
     return result;
   } 
   /**
-   * Returns list of HTML% tags which should be in Code Assist proposals 
+   * Returns list of HTML 5 tags which should be in Code Assist proposals 
    * @return
    */
   private static List<String> getHTML5ProposalList() {
@@ -261,6 +308,19 @@ public class CodeCompletionTest extends VPEEditorTestCase{
     result.add("ruby");
     result.add("section");
     result.add("video");
+    return result;
+  }
+  
+  /**
+   * Returns list of richFaces tags which should be in Code Assist proposals 
+   * @return
+   */
+  private static List<String> getRichFacesProposalList() {
+    List<String> result = new LinkedList<String>();
+    result.add("rich:calendar");
+    result.add("rich:tree");
+    result.add("rich:inplaceSelect");
+    result.add("rich:select");
     return result;
   }
 }

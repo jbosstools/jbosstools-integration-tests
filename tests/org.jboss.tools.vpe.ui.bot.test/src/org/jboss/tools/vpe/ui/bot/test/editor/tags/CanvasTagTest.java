@@ -17,6 +17,7 @@ package org.jboss.tools.vpe.ui.bot.test.editor.tags;
  *
  */
 public class CanvasTagTest extends AbstractTagTest{
+  private static final String CANVAS_TAG_TEXT = "<canvas id=\"myCanvas\"></canvas>";
   @Override
   protected void initTestPage() {
     initTestPage(TestPageType.HTML,
@@ -27,7 +28,7 @@ public class CanvasTagTest extends AbstractTagTest{
         "    <title>Insert title here</title>\n" +
         "  </head>\n" +
         "  <body>\n" +
-        "    <canvas id=\"myCanvas\"></canvas>\n" +
+        "    " + CanvasTagTest.CANVAS_TAG_TEXT + "\n" +
         "  </body>\n" +
         "</html>\n");
   }
@@ -38,6 +39,12 @@ public class CanvasTagTest extends AbstractTagTest{
     assertProbelmsViewNoErrors(botExt);
     // visual representation contains CANVAS tag
     assertVisualEditorContains(getVisualEditor(), "CANVAS", null, null, getTestPageFileName());
+    // test tag selection
+    getVisualEditor().selectDomNode(getVisualEditor().getDomNodeByTagName("CANVAS",0), 0);
+    final String selectedText = getSourceEditor().getSelection();
+    assertTrue("Selected text in Source Pane has to be '" + CanvasTagTest.CANVAS_TAG_TEXT + "'" +
+        "\nbut it is '" + selectedText + "'",
+      selectedText.trim().equals(CanvasTagTest.CANVAS_TAG_TEXT));
   }
 
 }
