@@ -9,7 +9,7 @@ import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
 public class RunAsLoadsPortalURLGatein extends RunAsLoadsPortalURLTemplate {
 
 	@Override
-	public String getExpectedURL() {
-		return "http://localhost:8080/portal/classic/";
+	public String[] getExpectedURLs() {
+		return new String[]{"http://localhost:8080/portal/classic/", "http://localhost:8080/portal/public/classic/"};
 	}
 }

@@ -9,7 +9,7 @@ import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
 public class RunAsLoadsPortalURLJBPortal extends RunAsLoadsPortalURLTemplate {
 
 	@Override
-	public String getExpectedURL() {
-		return "http://localhost:8080/portal";
+	public String[] getExpectedURLs() {
+		return new String[]{"http://localhost:8080/portal"};
 	}
 }

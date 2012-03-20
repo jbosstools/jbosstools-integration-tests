@@ -25,14 +25,14 @@ public abstract class RunAsLoadsPortalURLTemplate extends SWTTaskBasedTestCase {
 
 	private static final String PROJECT_NAME = "runAsURLTestProject";
 	
-	public abstract String getExpectedURL();
+	public abstract String[] getExpectedURLs();
 		
 	@Test
 	public void runAsLoadsPortalURL(){
 		doPerform(createJavaPortletTask());
 		doPerform(runOnServerTask());
 		
-		doAssertThatInWorkspace(getExpectedURL(), new BrowserUrlMatcher());
+		doAssertThatInWorkspace(getExpectedURLs(), new BrowserUrlMatcher());
 	}
 
 	private SWTTask createJavaPortletTask() {
