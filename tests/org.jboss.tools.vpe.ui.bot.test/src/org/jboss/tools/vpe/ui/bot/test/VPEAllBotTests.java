@@ -20,6 +20,7 @@ import org.jboss.tools.vpe.ui.bot.test.editor.StylesOnThePageTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.TextEditingActionsTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.TextSelectionTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.ToggleCommentTest;
+import org.jboss.tools.vpe.ui.bot.test.editor.UnicodeCharacterDisplayingTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.VerificationOfNameSpacesTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.JspFileEditingTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.VisualEditorContextMenuTest;
@@ -208,7 +209,8 @@ import org.junit.runners.Suite.SuiteClasses;
   DetailsTagTest.class,
   SummaryTagTest.class,
   SelectTagTest.class,
-  RichFacesComponentTest.class
+  RichFacesComponentTest.class,
+  UnicodeCharacterDisplayingTest.class
 })
 public class VPEAllBotTests extends SWTBotTestCase{
 
