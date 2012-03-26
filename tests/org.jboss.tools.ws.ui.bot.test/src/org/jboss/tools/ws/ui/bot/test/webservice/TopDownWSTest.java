@@ -11,7 +11,6 @@
 package org.jboss.tools.ws.ui.bot.test.webservice;
 
 import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.WsWizardBase.Slider_Level;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -56,12 +55,6 @@ public class TopDownWSTest extends WebServiceTestBase {
 		 */
 	
 	@Test
-	public void testDeployService() {
-		setLevel(Slider_Level.DEPLOY);
-		topDownWS();
-	}
-	
-	@Test
 	public void testDevelopService() {
 		setLevel(Slider_Level.DEVELOP);
 		topDownWS();
@@ -70,6 +63,12 @@ public class TopDownWSTest extends WebServiceTestBase {
 	@Test
 	public void testAssembleService() {
 		setLevel(Slider_Level.ASSEMBLE);
+		topDownWS();
+	}
+	
+	@Test
+	public void testDeployService() {
+		setLevel(Slider_Level.DEPLOY);
 		topDownWS();
 	}
 	
@@ -90,7 +89,7 @@ public class TopDownWSTest extends WebServiceTestBase {
 		setLevel(Slider_Level.TEST);
 		topDownWS();
 	}
-	@Ignore
+	
 	@Test
 	public void testDefaultPkg() {
 		setLevel(Slider_Level.ASSEMBLE);
@@ -104,11 +103,11 @@ public class TopDownWSTest extends WebServiceTestBase {
 	protected void topDownWS(String pkg) {
 		topDownWS(TopDownWSTest.class.getResourceAsStream("/resources/jbossws/ClassB.wsdl"), pkg);
 		switch (getLevel()) {
-			case DEVELOP:
-			case ASSEMBLE:
-			case DEPLOY:
-				deploymentHelper.runProject(getEarProjectName());
-				break;
+		case DEVELOP:
+		case ASSEMBLE:
+//		case DEPLOY:
+			deploymentHelper.runProject(getEarProjectName());
+			break;
 		}
 		deploymentHelper.assertServiceDeployed(deploymentHelper.getWSDLUrl(getWsProjectName(), getWsName()), 10000);
 		servers.removeAllProjectsFromServer(configuredState.getServer().name);
