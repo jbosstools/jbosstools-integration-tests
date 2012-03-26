@@ -52,10 +52,10 @@ public class BottomUpWSTest extends WebServiceTestBase {
 	protected String getEarProjectName() {
 		return "BottomUpWS-ear";
 	}
-
+	
 	@Test
-	public void testDeployService() {
-		setLevel(Slider_Level.DEPLOY);
+	public void testDevelopService() {
+		setLevel(Slider_Level.DEVELOP);
 		bottomUpJbossWebService();
 	}
 	
@@ -64,10 +64,10 @@ public class BottomUpWSTest extends WebServiceTestBase {
 		setLevel(Slider_Level.ASSEMBLE);
 		bottomUpJbossWebService();
 	}
-	
+
 	@Test
-	public void testDevelopService() {
-		setLevel(Slider_Level.DEVELOP);
+	public void testDeployService() {
+		setLevel(Slider_Level.DEPLOY);
 		bottomUpJbossWebService();
 	}
 	
@@ -94,12 +94,11 @@ public class BottomUpWSTest extends WebServiceTestBase {
 		switch (getLevel()) {
 		case DEVELOP:
 		case ASSEMBLE:
-		case DEPLOY:
+//		case DEPLOY:
 			deploymentHelper.runProject(getEarProjectName());
 			break;
 		}
 		deploymentHelper.assertServiceDeployed(deploymentHelper.getWSDLUrl(getWsProjectName(), getWsName()), 10000);
-//		checkService(getWSDLUrl(svcName.substring(svcName.lastIndexOf(".") + 1)), QName service, QName port, String msg, String rsp)
-//		servers.removeAllProjectsFromServer(configuredState.getServer().name);
+		servers.removeAllProjectsFromServer(configuredState.getServer().name);
 	}
 }
