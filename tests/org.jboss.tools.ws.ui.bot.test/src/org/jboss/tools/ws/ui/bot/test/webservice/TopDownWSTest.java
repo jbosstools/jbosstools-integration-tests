@@ -90,11 +90,11 @@ public class TopDownWSTest extends WebServiceTestBase {
 		topDownWS();
 	}
 	
-	@Test
-	public void testDefaultPkg() {
-		setLevel(Slider_Level.ASSEMBLE);
-		topDownWS(null);
-	}
+//	@Test
+//	public void testDefaultPkg() {
+//		setLevel(Slider_Level.ASSEMBLE);
+//		topDownWS(null);
+//	}
 
 	private void topDownWS() {
 		topDownWS("ws." + getWsName().toLowerCase());
@@ -105,7 +105,6 @@ public class TopDownWSTest extends WebServiceTestBase {
 		switch (getLevel()) {
 		case DEVELOP:
 		case ASSEMBLE:
-//		case DEPLOY:
 			deploymentHelper.runProject(getEarProjectName());
 			break;
 		}
