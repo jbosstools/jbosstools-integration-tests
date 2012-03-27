@@ -94,7 +94,6 @@ public class BottomUpWSTest extends WebServiceTestBase {
 		switch (getLevel()) {
 		case DEVELOP:
 		case ASSEMBLE:
-//		case DEPLOY:
 			deploymentHelper.runProject(getEarProjectName());
 			break;
 		}
