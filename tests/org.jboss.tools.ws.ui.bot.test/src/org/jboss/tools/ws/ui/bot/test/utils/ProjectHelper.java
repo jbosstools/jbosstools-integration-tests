@@ -76,6 +76,20 @@ public class ProjectHelper extends SWTTestExt {
 		util.waitForNonIgnoredJobs();
 		projectExplorer.selectProject(name);
 	}
+	
+	/**
+	 * Method creates new Dynamic Web Project with entered name for
+	 * ear project
+	 * @param name
+	 */
+	public void createProjectForEAR(String name, String earProject) {
+		new NewFileWizardAction().run()
+				.selectTemplate("Web", "Dynamic Web Project").next();
+		new DynamicWebProjectWizard().setProjectName(name).
+			addProjectToEar(earProject).finish();
+		util.waitForNonIgnoredJobs();
+		projectExplorer.selectProject(name);
+	}
 
 	/**
 	 * Method creates new EAR Project with entered name
