@@ -50,12 +50,14 @@ public class UnicodeCharacterDisplayingTest extends VPEEditorTestCase {
     createHtmlPage(UnicodeCharacterDisplayingTest.TEST_PAGE_NAME);
     htmlEditor = botExt.swtBotEditorExtByTitle(UnicodeCharacterDisplayingTest.TEST_PAGE_NAME);
     htmlEditor.setText(UnicodeCharacterDisplayingTest.PAGE_TEXT);
+    htmlEditor.save();
+    util.waitForNonIgnoredJobs();
     webBrowser = new SWTBotWebBrowser(UnicodeCharacterDisplayingTest.TEST_PAGE_NAME,botExt);	 
 	}
 	/**
    * Check if Unicode Characters are properly displayed within Visual Editor
    */
-  public void testUnicodeCharacterDislpaying(){
+  public void testUnicodeCharacterDisplaying(){
     assertVisualEditorContainsNodeWithValue(webBrowser,
         UnicodeCharacterDisplayingTest.UNICODE_TEXT, 
         UnicodeCharacterDisplayingTest.TEST_PAGE_NAME);

@@ -155,10 +155,8 @@ public class ExternalEditingTest extends VPEEditorTestCase {
     }
     public void run() {
       try {
-        System.out.println("**-- start thread");
         sleep(Timing.time5S());
         for (int keyCode : keyCodes){
-          System.out.println("**--Type: " + keyCode);
           KeyboardHelper.typeKeyCodeUsingAWT(keyCode);
           sleep(Timing.time2S());
         }

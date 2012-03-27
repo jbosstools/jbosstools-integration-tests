@@ -63,6 +63,7 @@ public class EditingActionsTest extends VPEEditorTestCase {
 	  super.setUp();
     eclipse.maximizeActiveShell();
     createJspPage(EditingActionsTest.TEST_PAGE_NAME);
+    util.waitForNonIgnoredJobs();
     jspEditor = botExt.editorByTitle(EditingActionsTest.TEST_PAGE_NAME).toTextEditor();
     webBrowser = new SWTBotWebBrowser(EditingActionsTest.TEST_PAGE_NAME,botExt);	  
     

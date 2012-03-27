@@ -15,6 +15,7 @@ import java.awt.event.KeyEvent;
 
 import org.jboss.tools.ui.bot.ext.Assertions;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
+import org.jboss.tools.ui.bot.ext.SWTJBTExt;
 import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.helper.KeyboardHelper;
 import org.jboss.tools.ui.bot.ext.parts.SWTBotEditorExt;
@@ -229,8 +230,14 @@ public void tearDown() throws Exception {
         normalText, 
         JSFTagsTest.TEST_PAGE_NAME);
     // check editing via Visual Pane
-    webBrowser.selectDomNode(webBrowser.getDomNodeByTagName("SPAN"), 0);
+    SWTJBTExt.selectTextInSourcePane(botExt,
+        JSFTagsTest.TEST_PAGE_NAME, 
+        outputText, 
+        0,
+        0,
+        0);
     webBrowser.setFocus();
+    bot.sleep(Timing.time3S());
     final String insertText = "inserted";
     KeyboardHelper.typeKeyCodeUsingAWT(KeyEvent.VK_RIGHT);
     KeyboardHelper.typeKeyCodeUsingAWT(KeyEvent.VK_LEFT);
