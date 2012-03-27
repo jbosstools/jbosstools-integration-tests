@@ -11,6 +11,8 @@
 package org.jboss.tools.ws.ui.bot.test.uiutils.wizards;
 
 import org.eclipse.swtbot.swt.finder.SWTBot;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotCheckBox;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotCombo;
 
 public class DynamicWebProjectWizard extends Wizard {
 
@@ -23,5 +25,24 @@ public class DynamicWebProjectWizard extends Wizard {
 		setText("Project name:", name);
 		return this;
 	}
-
+	
+	public DynamicWebProjectWizard addProjectToEar(String earProject) {
+		checkBoxSetChecked("&Add project to an EAR", true);
+		setTextInCombobox("EAR project name:", earProject);
+		return this;
+	}
+	
+	private void checkBoxSetChecked(String checkBoxLabel, boolean checked) {
+		SWTBotCheckBox ch = bot().checkBox(checkBoxLabel);
+		ch.setFocus();
+		if (checked) ch.select();
+		else ch.deselect();
+	}
+	
+	private void setTextInCombobox(String comboboxLabel, String valueToSet) {
+		SWTBotCombo c = bot().comboBoxWithLabel(comboboxLabel);
+		c.setFocus();
+		c.setSelection(valueToSet);		
+	}
+	
 }
