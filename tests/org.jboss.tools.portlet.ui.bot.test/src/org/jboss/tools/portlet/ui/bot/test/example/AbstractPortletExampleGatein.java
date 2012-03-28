@@ -19,4 +19,9 @@ public abstract class AbstractPortletExampleGatein extends
 	public String getExampleCategory() {
 		return "Portlet for GateIn 3.1/EPP 5.x";
 	}
+	
+	@Override
+	protected boolean failOnMissingExample() {
+		return true;
+	}
 }
