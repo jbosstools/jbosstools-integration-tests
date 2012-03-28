@@ -24,7 +24,7 @@ import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
  * @author Lucia Jelinkova
  *
  */
-@Require(clearWorkspace=false, clearProjects=false, server=@Server(version="5.0", operator=">", state=ServerState.Present))
+@Require(clearWorkspace=false, clearProjects=false, server=@Server(version="5.0", operator=">", state=ServerState.Running))
 public class RunSeamPortletOnServer extends RunPortletOnServerTemplate {
 
 	private static final WorkspaceFile DATASOURCE_FILE = file(PROJECT_NAME, "resources/" + PROJECT_NAME + "-ds.xml");

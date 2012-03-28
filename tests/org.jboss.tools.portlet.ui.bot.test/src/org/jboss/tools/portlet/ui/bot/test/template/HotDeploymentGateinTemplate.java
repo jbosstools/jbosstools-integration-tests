@@ -18,7 +18,7 @@ import org.junit.Test;
  * @author Lucia Jelinkova
  *
  */
-@Require(clearWorkspace=false, clearProjects=false, server=@Server(version="5.0", operator=">", state=ServerState.Present))
+@Require(clearWorkspace=false, clearProjects=false, server=@Server(version="5.0", operator=">", state=ServerState.Running))
 public abstract class HotDeploymentGateinTemplate extends SWTTaskBasedTestCase {
 
 	protected abstract String getProjectName();
