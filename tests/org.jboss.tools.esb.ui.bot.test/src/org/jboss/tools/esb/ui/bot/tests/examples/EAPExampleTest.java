@@ -13,7 +13,7 @@ import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.ext.view.ProblemsView;
 
-public class ESBExampleTest extends ExampleTest{
+public class EAPExampleTest extends ExampleTest{
 
 	
 	/**
@@ -48,7 +48,7 @@ public class ESBExampleTest extends ExampleTest{
 		if (getExampleClientProjectName()!=null) {
 			fixExampleClientLibs();
 		}
-		openESBConfig();
+		//openESBConfig();
 		
 		/* Temporary fix to workaround JBDS-2011 */
 		System.out.println ("DEBUG - name = " + getExampleProjectName() );
