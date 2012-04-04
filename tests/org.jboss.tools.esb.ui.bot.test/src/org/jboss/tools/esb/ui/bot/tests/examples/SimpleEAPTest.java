@@ -1,5 +1,9 @@
 package org.jboss.tools.esb.ui.bot.tests.examples;
 
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.List;
+
 import org.jboss.tools.ui.bot.ext.ExampleTest;
 import org.jboss.tools.ui.bot.ext.SWTEclipseExt;
 import org.jboss.tools.ui.bot.ext.SWTOpenExt;
@@ -11,6 +15,9 @@ import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.NewObject.ESBESBFile;
+import org.jboss.tools.ui.bot.ext.gen.ActionItem.NewObject.ESBESBProject;
+import org.jboss.tools.ui.bot.ext.gen.ActionItem.NewObject.SeamSeamWebProject;
+import org.jboss.tools.ui.bot.ext.gen.ActionItem.NewObject.WebDynamicWebProject;
 
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
@@ -22,6 +29,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.NewObject.GeneralFolder;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.View.ServerServers;
+import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.ext.view.ProblemsView;
 import org.jboss.tools.ui.bot.ext.view.ServersView;
 
@@ -56,7 +64,8 @@ import org.jboss.tools.ui.bot.ext.view.ServersView;
 @Require(server=@Server(type=ServerType.EAP,state=ServerState.Running))
 public class SimpleEAPTest extends EAPExampleTest {
 	
-	public static String baseDir = "/opt/local/EAP6_ER3";
+	public static String baseDir = null;  // "/opt/local/EAP6_ER41";
+	Hashtable<String, Integer> portTable = new Hashtable<String, Integer>();
 	
 	@Override
 	public String getExampleName() {
@@ -68,6 +77,10 @@ public class SimpleEAPTest extends EAPExampleTest {
 	}
 	@Override
 	protected void executeExample() {
+
+		/* Ports referenced in the server's config */
+		portTable.put("Web", 8080);
+		portTable.put("Management", 9999);
 		
 		// 1) Open recent JBoss Tools
 		// 2) open servers view (window -> show view -> other -> Servers)
@@ -87,14 +100,22 @@ public class SimpleEAPTest extends EAPExampleTest {
 
 		// 5) in editor, verify all server ports are accurate (JNDI / Web / JMX RMI) (right side of editor)
 		theServer.doubleClick();
-		assertTrue("The web port is 8080 ", bot.textWithLabel("Web").getText().equals("8080"));
-		assertTrue("The management port is 9999 ", bot.textWithLabel("Management").getText().equals("9999"));
-		
+		Enumeration<String> ePortKeys = portTable.keys();
+		while (ePortKeys.hasMoreElements()) {	
+			String tempStr = ePortKeys.nextElement();
+			assertTrue("The " + tempStr + " port should be " + portTable.get(tempStr),	bot.textWithLabel(tempStr).getText().equals(portTable.get(tempStr).toString()));		
+		}
+
 		//6) click "open launch configuration" in the editor, verify launch configuration arguments and vm args match with what is expected
 		//   a) *** If there are any new arguments that have changed since the previous AS version, MAKE SURE the launch configuration HAS them!
 		bot.hyperlink("Open launch configuration").click();
 		
 		bot.sleep(3000l);
+		
+		String tempStr1 = bot.textInGroup("Working directory:", 1).getText();
+		int binStr = tempStr1.indexOf("/jboss-eap-6.0/bin");
+		String baseDir = tempStr1.substring(0, binStr);
+		
 		//System.out.println (bot.textInGroup("Program &arguments:").getText() );
 		assertTrue ("The Program arguments match ", 
 				bot.textInGroup("Program &arguments:").getText().equals("-mp \"" + baseDir + "/jboss-eap-6.0/modules\" -jaxpmodule javax.xml.jaxp-provider " +
@@ -114,11 +135,40 @@ public class SimpleEAPTest extends EAPExampleTest {
 						"\"-Dlogging.configuration=file:" + baseDir + "/jboss-eap-6.0/standalone/configuration/logging.properties\" " +
 						"\"-Djboss.home.dir=" + baseDir + "/jboss-eap-6.0\" "));
 				
-		   //org.jboss.tools.ui.bot.ext.SWTUtilExt.displayAllBotWidgets(bot);
+		org.jboss.tools.ui.bot.ext.SWTUtilExt.displayAllBotWidgets(bot);
+		//bot.sleep(30000l);
+		bot.button("Cancel").click();
 		
-//		7) In servers view, expand the server and look at XML Configuration/Ports, verify all labels have a number next to them
-//		9) Create a project (seam or dynamic web is fine, seam project is better)
+		//	7) In servers view, expand the server and look at XML Configuration/Ports, verify all labels have a number next to them
+		theSWTBotView = open.viewOpen(ServerServers.LABEL);
+		serverTree = bot.tree(0);		
+		theServerView = new ServersView();
+		theServer = theServerView.findServerByName(serverTree, "EAP-6.0");
+		
+		theServer.expand();
+		SWTBotTreeItem thePorts = theServer.expandNode("XML Configuration").getNode("Ports");
+		ePortKeys = portTable.keys();
+		while (ePortKeys.hasMoreElements()) {	
+			String tempStr = ePortKeys.nextElement();
+			assertTrue("The " + tempStr + " port should be " + portTable.get(tempStr), bot.textWithLabel(tempStr).getText().equals(portTable.get(tempStr).toString()));		
+		}
+	
+		//	9) Create a project (seam or dynamic web is fine, seam project is better)
+		theSWTBotView = open.viewOpen(ActionItem.View.GeneralNavigator.LABEL);		
+		SWTBot wiz = open.newObject(ActionItem.NewObject.WebDynamicWebProject.LABEL);
+		wiz.textWithLabel(WebDynamicWebProject.TEXT_PROJECT_NAME).setText("DynWebProject");
+		wiz.button(IDELabel.Button.NEXT).click();
+		wiz.button(IDELabel.Button.NEXT).click();
+		wiz.button("Finish").click();
+		wiz.sleep(30000l);	
+		bot.button("No").click();
+		
 //		10) Deploy it to the server, Verify the deployment works
+		
+		
+		
+		
+		
 //		11) remove deployment, verify console shows deployment removed
 //		12) Open MBean Viewer,
 //		     a) note that the server can now be expanded,
@@ -129,10 +179,14 @@ public class SimpleEAPTest extends EAPExampleTest {
 //		14) use mbean viewer / editor to execute start() operation on DeploymentScaner
 //		15) verify console now accepts deployment
 		
-		bot.sleep(60000l);
+		bot.sleep(10000l);
 		System.out.println("***End");
 		
 		SWTTestExt.servers.removeAllProjectsFromServer();
 		// 16) stop server, verify server shuts down properly without error.
 	}
 }
+
+
+
+//org.jboss.tools.ui.bot.ext.SWTUtilExt.displayAllBotWidgets(bot);
