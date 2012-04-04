@@ -18,6 +18,8 @@ import org.jboss.tools.ui.bot.ext.gen.ActionItem.NewObject.ESBESBFile;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.NewObject.ESBESBProject;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.NewObject.SeamSeamWebProject;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.NewObject.WebDynamicWebProject;
+import org.jboss.tools.ui.bot.ext.gen.ActionItem.Preference.RunDebugConsole;
+import org.jboss.tools.ui.bot.ext.gen.ActionItem.View.GeneralConsole;
 
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
@@ -65,7 +67,23 @@ import org.jboss.tools.ui.bot.ext.view.ServersView;
 public class SimpleEAPTest extends EAPExampleTest {
 	
 	public static String baseDir = null;  // "/opt/local/EAP6_ER41";
+	public static String projectName = "DynWebProject";
+	public static String projectDeployedText = "DynWebProject  [Started, Synchronized]";
+	public static String serverName = "EAP-6.0";
 	Hashtable<String, Integer> portTable = new Hashtable<String, Integer>();
+	
+	public boolean isTheAppDeployed (SWTBotTreeItem theItems[], String nameToMatch) {
+		boolean retValue = false;				
+		for (SWTBotTreeItem i : theItems)  {
+			System.out.println (i.getText() + "[" + projectDeployedText + "]");
+			if (i.getText().equals(nameToMatch)) {
+				retValue = true;
+			}
+		}
+		return retValue;
+	}
+	
+	
 	
 	@Override
 	public String getExampleName() {
@@ -77,28 +95,28 @@ public class SimpleEAPTest extends EAPExampleTest {
 	}
 	@Override
 	protected void executeExample() {
-
+		
 		/* Ports referenced in the server's config */
 		portTable.put("Web", 8080);
 		portTable.put("Management", 9999);
 		
-		// 1) Open recent JBoss Tools
-		// 2) open servers view (window -> show view -> other -> Servers)
-		// 3) create new server
-		//     - type: JBoss Community -> JBoss AS 6.0
-		//     - use default configuration
-		//      - finish wizard
-		// 8) Start server, verify when server is up and running, the servers view says "Started" and not "Starting"
+		/* Test steps handled in constructor:
+		   1) Open recent JBoss Tools
+		   2) open servers view (window -> show view -> other -> Servers)
+		   3) create new server
+		    - type: JBoss Community -> JBoss AS 6.0
+		    - use default configuration
+		    - finish wizard
+		   8) Start server, verify when server is up and running, the servers view says "Started" and not "Starting" */
 		
-		// 4) double-click server in servers view to open the server editor
+		/* Test step: 4) double-click server in servers view to open the server editor */
 		SWTBotView theSWTBotView = open.viewOpen(ServerServers.LABEL);
 		SWTBotTree serverTree = bot.tree(0);		
 		ServersView theServerView = new ServersView();
-		SWTBotTreeItem theServer = theServerView.findServerByName(serverTree, "EAP-6.0");	
-		//System.out.println ("*** the server = " + theServer.getText());
+		SWTBotTreeItem theServer = theServerView.findServerByName(serverTree, serverName);	
 		assertTrue("Found the EAP 6.0 server - and the name is correct: ", theServer.getText().equals("EAP-6.0  [Started, Synchronized]"));
 
-		// 5) in editor, verify all server ports are accurate (JNDI / Web / JMX RMI) (right side of editor)
+		/* Test step: 5) in editor, verify all server ports are accurate (JNDI / Web / JMX RMI) (right side of editor) */
 		theServer.doubleClick();
 		Enumeration<String> ePortKeys = portTable.keys();
 		while (ePortKeys.hasMoreElements()) {	
@@ -106,12 +124,13 @@ public class SimpleEAPTest extends EAPExampleTest {
 			assertTrue("The " + tempStr + " port should be " + portTable.get(tempStr),	bot.textWithLabel(tempStr).getText().equals(portTable.get(tempStr).toString()));		
 		}
 
-		//6) click "open launch configuration" in the editor, verify launch configuration arguments and vm args match with what is expected
-		//   a) *** If there are any new arguments that have changed since the previous AS version, MAKE SURE the launch configuration HAS them!
+		/* Test steps:
+		   6) click "open launch configuration" in the editor, verify launch configuration arguments and vm args match with what is expected 
+		   a) *** If there are any new arguments that have changed since the previous AS version, MAKE SURE the launch configuration HAS them! */
 		bot.hyperlink("Open launch configuration").click();
 		
-		bot.sleep(3000l);
-		
+		bot.sleep(Timing.time3S());
+			
 		String tempStr1 = bot.textInGroup("Working directory:", 1).getText();
 		int binStr = tempStr1.indexOf("/jboss-eap-6.0/bin");
 		String baseDir = tempStr1.substring(0, binStr);
@@ -135,16 +154,13 @@ public class SimpleEAPTest extends EAPExampleTest {
 						"\"-Dlogging.configuration=file:" + baseDir + "/jboss-eap-6.0/standalone/configuration/logging.properties\" " +
 						"\"-Djboss.home.dir=" + baseDir + "/jboss-eap-6.0\" "));
 				
-		org.jboss.tools.ui.bot.ext.SWTUtilExt.displayAllBotWidgets(bot);
-		//bot.sleep(30000l);
 		bot.button("Cancel").click();
 		
-		//	7) In servers view, expand the server and look at XML Configuration/Ports, verify all labels have a number next to them
+		/* Test step - 7) In servers view, expand the server and look at XML Configuration/Ports, verify all labels have a number next to them */
 		theSWTBotView = open.viewOpen(ServerServers.LABEL);
 		serverTree = bot.tree(0);		
 		theServerView = new ServersView();
-		theServer = theServerView.findServerByName(serverTree, "EAP-6.0");
-		
+		theServer = theServerView.findServerByName(serverTree, serverName);
 		theServer.expand();
 		SWTBotTreeItem thePorts = theServer.expandNode("XML Configuration").getNode("Ports");
 		ePortKeys = portTable.keys();
@@ -153,23 +169,62 @@ public class SimpleEAPTest extends EAPExampleTest {
 			assertTrue("The " + tempStr + " port should be " + portTable.get(tempStr), bot.textWithLabel(tempStr).getText().equals(portTable.get(tempStr).toString()));		
 		}
 	
-		//	9) Create a project (seam or dynamic web is fine, seam project is better)
+		/* Test step - 9) Create a project (seam or dynamic web is fine, seam project is better) */
 		theSWTBotView = open.viewOpen(ActionItem.View.GeneralNavigator.LABEL);		
 		SWTBot wiz = open.newObject(ActionItem.NewObject.WebDynamicWebProject.LABEL);
-		wiz.textWithLabel(WebDynamicWebProject.TEXT_PROJECT_NAME).setText("DynWebProject");
+		wiz.textWithLabel(WebDynamicWebProject.TEXT_PROJECT_NAME).setText(projectName);
 		wiz.button(IDELabel.Button.NEXT).click();
 		wiz.button(IDELabel.Button.NEXT).click();
 		wiz.button("Finish").click();
-		wiz.sleep(30000l);	
+		bot.sleep(Timing.time10S());
 		bot.button("No").click();
 		
-//		10) Deploy it to the server, Verify the deployment works
+		/* Test step - 10) Deploy it to the server, Verify the deployment works */
+		theSWTBotView = open.viewOpen(ServerServers.LABEL);
+		serverTree = theSWTBotView.bot().tree(0);		
+		theServerView = new ServersView();
+
+		theServerView.findServerByName(serverTree, serverName).contextMenu("Add and Remove...").click();
+		SWTBotTree appTree = bot.tree(0);
 		
+		appTree.getTreeItem(projectName).select();
+		bot.button ("Add >").click();	
+		bot.sleep(Timing.time3S());
 		
+		/* There should only be one project deployed to the server */ 
+		assertTrue (bot.tree(1).getAllItems().length == 1);
+		assertTrue (projectName.equals(bot.tree(1).getTreeItem(projectName).getText()));
+		bot.button("Finish").click();		
+		bot.sleep(Timing.time10S());
 		
+		theSWTBotView = open.viewOpen(ServerServers.LABEL);
+		serverTree = theSWTBotView.bot().tree(0);		
+		theServerView = new ServersView();
+		theServer = theServerView.findServerByName(serverTree, serverName);
 		
+		//SWTBotTreeItem [] theItems = theServer.getItems();
+		assertTrue (isTheAppDeployed(theServer.getItems(), projectDeployedText));
 		
-//		11) remove deployment, verify console shows deployment removed
+		theSWTBotView = open.viewOpen(ServerServers.LABEL);
+		serverTree = theSWTBotView.bot().tree(0);		
+		theServerView = new ServersView();
+		theServerView.findServerByName(serverTree, serverName).contextMenu("Add and Remove...").click();
+		
+		/* There should only be one project deployed to the server */ 
+		assertTrue (bot.tree(1).getAllItems().length == 1);
+		assertTrue (projectName.equals(bot.tree(1).getTreeItem(projectName).getText()));
+		bot.button("Finish").click();
+		
+		/* Test step - 11) remove deployment, verify console shows deployment removed */
+		SWTTestExt.servers.removeAllProjectsFromServer();		
+		theServerView.findServerByName(serverTree, serverName).contextMenu("Add and Remove...").click();		
+		SWTBotTree deployedAppTree = bot.tree(1);
+		
+		/* There should only no projects deployed to the server */ 
+		assertFalse (isTheAppDeployed(theServer.getItems(), projectDeployedText));
+		assertTrue (deployedAppTree.getAllItems().length == 0);
+		bot.button("Finish").click();
+		
 //		12) Open MBean Viewer,
 //		     a) note that the server can now be expanded,
 //		     b) under it are mbeans. browse down to jboss.deployment -> URL ->DeploymentScanner,
@@ -179,14 +234,12 @@ public class SimpleEAPTest extends EAPExampleTest {
 //		14) use mbean viewer / editor to execute start() operation on DeploymentScaner
 //		15) verify console now accepts deployment
 		
-		bot.sleep(10000l);
+		bot.sleep(Timing.time10S());
 		System.out.println("***End");
 		
 		SWTTestExt.servers.removeAllProjectsFromServer();
 		// 16) stop server, verify server shuts down properly without error.
 	}
 }
-
-
 
 //org.jboss.tools.ui.bot.ext.SWTUtilExt.displayAllBotWidgets(bot);
