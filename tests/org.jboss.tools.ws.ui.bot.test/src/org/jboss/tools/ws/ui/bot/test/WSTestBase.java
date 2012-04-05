@@ -19,6 +19,7 @@ import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
+import org.jboss.tools.ui.bot.ext.helper.ImportHelper;
 import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.WsWizardBase.Slider_Level;
 import org.jboss.tools.ws.ui.bot.test.utils.DeploymentHelper;
 import org.jboss.tools.ws.ui.bot.test.utils.ProjectHelper;
@@ -104,6 +105,10 @@ public class WSTestBase extends SWTTestExt {
 
 	public static String getSoapRequest(String body) {
 		return MessageFormat.format(SOAP_REQUEST_TEMPLATE, body);
+	}
+	
+	protected void importWSTestProject(String projectLocation, String dir) {
+		ImportHelper.importProject(projectLocation, dir, Activator.PLUGIN_ID);
 	}
 
 }
