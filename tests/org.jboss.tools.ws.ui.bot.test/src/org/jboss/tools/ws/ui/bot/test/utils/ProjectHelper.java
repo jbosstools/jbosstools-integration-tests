@@ -14,19 +14,33 @@ package org.jboss.tools.ws.ui.bot.test.utils;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCombo;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
-import org.jboss.tools.ui.bot.ext.SWTTestExt;
+import org.jboss.tools.ui.bot.ext.SWTBotExt;
+import org.jboss.tools.ui.bot.ext.SWTOpenExt;
+import org.jboss.tools.ui.bot.ext.SWTUtilExt;
+import org.jboss.tools.ui.bot.ext.condition.ShellIsActiveCondition;
+import org.jboss.tools.ui.bot.ext.condition.TaskDuration;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.NewObject.JavaEEEnterpriseApplicationProject;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.NewObject.WebServicesWSDL;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
+import org.jboss.tools.ui.bot.ext.view.ProjectExplorer;
 import org.jboss.tools.ws.ui.bot.test.uiutils.actions.NewFileWizardAction;
 import org.jboss.tools.ws.ui.bot.test.uiutils.actions.TreeItemAction;
 import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.DynamicWebProjectWizard;
 import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.Wizard;
 
-public class ProjectHelper extends SWTTestExt {
+public class ProjectHelper {
 
+	private final SWTBotExt bot = new SWTBotExt();
+	
+	private final ProjectExplorer projectExplorer = new ProjectExplorer();
+	
+	private final SWTOpenExt open = new SWTOpenExt(bot);
+	
+	private final SWTUtilExt util = new SWTUtilExt(bot);
+	
 	/**
 	 * Method creates basic java class for entered project with 
 	 * entered package and class name
@@ -123,5 +137,27 @@ public class ProjectHelper extends SWTTestExt {
         util.waitForNonIgnoredJobs();
         bot.sleep(1500);
     }
+	
+	/**
+	 * Add first defined runtime into project as targeted runtime
+	 * @param project
+	 */
+	public void addDefaultRuntimeIntoProject(String project) {
+		projectExplorer.selectProject(project);
+		bot.menu(IDELabel.Menu.FILE).menu(
+				IDELabel.Menu.PROPERTIES).click();
+		bot.waitForShell(IDELabel.Shell.PROPERTIES_FOR + " " + project);
+		SWTBotShell propertiesShell = bot.shell(
+				IDELabel.Shell.PROPERTIES_FOR + " " + project);
+		propertiesShell.activate();
+		SWTBotTreeItem item = bot.tree().getTreeItem("Targeted Runtimes");
+		item.select();
+		bot.table().getTableItem(0).uncheck();
+		bot.table().getTableItem(0).check();
+		bot.button(IDELabel.Button.OK).click();
+		bot.waitWhile(new ShellIsActiveCondition(propertiesShell), 
+				TaskDuration.LONG.getTimeout());
+		
+	}
 	
 }
