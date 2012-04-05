@@ -11,6 +11,9 @@
 
 package org.jboss.tools.ws.ui.bot.test.utils;
 
+import static org.eclipse.swtbot.swt.finder.SWTBotAssert.assertContains;
+import static org.junit.Assert.assertEquals;
+
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -18,13 +21,21 @@ import java.net.URL;
 import java.util.Scanner;
 import java.util.logging.Logger;
 
-import org.jboss.tools.ui.bot.ext.SWTTestExt;
+import org.jboss.tools.ui.bot.ext.SWTBotExt;
+import org.jboss.tools.ui.bot.ext.SWTOpenExt;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem;
+import org.jboss.tools.ui.bot.ext.view.ProjectExplorer;
 
-public class DeploymentHelper extends SWTTestExt {
+public class DeploymentHelper {
 
 	private final Logger LOGGER = Logger
 			.getLogger(DeploymentHelper.class.getName());
+
+	private final SWTBotExt bot = new SWTBotExt();
+	
+	private final ProjectExplorer projectExplorer = new ProjectExplorer();
+	
+	private final SWTOpenExt open = new SWTOpenExt(bot);
 	
 	/**
 	 * Method runs project on configured server
@@ -41,7 +52,7 @@ public class DeploymentHelper extends SWTTestExt {
 	 * @param wsdlURL
 	 */
 	public void assertServiceDeployed(String wsdlURL) {
-		assertServiceDeployed(wsdlURL, 5000);
+		assertServiceDeployed(wsdlURL, 5000);		
 	}
 
 	/**
