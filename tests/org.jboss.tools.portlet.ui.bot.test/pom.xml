@@ -17,12 +17,21 @@
 		<jbosstools.test.jboss-seam-2.2.home>${requirement.build.root}/jboss-seam-2.2.1.Final</jbosstools.test.jboss-seam-2.2.home> 
 		<jbosstools.test.jboss-portal.home>${requirement.build.root}/jboss-portal-2.7.2</jbosstools.test.jboss-portal.home>
 		<jbosstools.test.jboss-seam-2.0.home>${requirement.build.root}/jboss-seam-2.0.1.GA</jbosstools.test.jboss-seam-2.0.home>
-		<!--TODO setup default path -->
 		<configurations.dir>resources/project_config_files</configurations.dir>
-		<systemProperties>-Djbosstools.test.jboss-gatein.home=${jbosstools.test.jboss-gatein.home} -Djbosstools.test.jboss-seam-2.2.home=${jbosstools.test.jboss-seam-2.2.home} -Djbosstools.test.jboss-portal.home=${jbosstools.test.jboss-portal.home} -Djbosstools.test.jboss-seam-2.0.home=${jbosstools.test.jboss-seam-2.0.home} -Dtest.configurations.dir=${configurations.dir}  -Dorg.eclipse.swtbot.screenshots.dir=${project.build.directory}/screenshots</systemProperties>
+		<additionalSystemProperties></additionalSystemProperties>
+		<systemProperties>${additionalSystemProperties} -Djbosstools.test.jboss-gatein.home=${jbosstools.test.jboss-gatein.home} -Djbosstools.test.jboss-seam-2.2.home=${jbosstools.test.jboss-seam-2.2.home} -Djbosstools.test.jboss-portal.home=${jbosstools.test.jboss-portal.home} -Djbosstools.test.jboss-seam-2.0.home=${jbosstools.test.jboss-seam-2.0.home} -Dtest.configurations.dir=${configurations.dir}  -Dorg.eclipse.swtbot.screenshots.dir=${project.build.directory}/screenshots</systemProperties>
 		<test.class>org.jboss.tools.portlet.ui.bot.test.AllTestsSuite</test.class>
 	</properties>
 
+	<profiles>
+		<profile>
+			<id>debug</id>
+			<properties>
+				<additionalSystemProperties>-Xdebug -Xrunjdwp:transport=dt_socket,address=8001,server=y,suspend=y </additionalSystemProperties>
+			</properties>
+		</profile>
+	</profiles>
+	
 	<build>
 		<plugins>
 			<plugin>
