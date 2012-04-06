@@ -19,6 +19,7 @@
 				<artifactId>tycho-surefire-plugin</artifactId>
 				<configuration>
 					<useUIThread>false</useUIThread>
+					<skip>${swtbot.test.skip}</skip>
 					<testSuite>org.jboss.tools.forge.ui.bot.test</testSuite>
 					<testClass>org.jboss.tools.forge.ui.bot.test.suite.ForgeAllTest</testClass>
 				</configuration>
