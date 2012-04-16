@@ -39,7 +39,7 @@ public abstract class PreferencesTestCase extends VPEAutoTestCase{
 	protected static final String PREF_FILTER_SHELL_TITLE = "Preferences (Filtered)"; //$NON-NLS-1$
 	protected static final String SCROLL_LOCK_TOOLTIP = "Synchronize scrolling between source and visual panes"; //$NON-NLS-1$
 	protected static final String I18N_BUTTON_TOOLTIP = "Externalize selected string...(" + //$NON-NLS-1$
-			(SWTJBTExt.isRunningOnMacOs() ? "⌘6" : "Ctrl+7") + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			(SWTJBTExt.isRunningOnMacOs() ? "⌘7" : "Ctrl+7") + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	protected static final String SHOW_VISUAL_TOOLBAR_PREFS_CHECKBOX_NAME = "Show toolbar within the editor (otherwise in Eclipse's toolbar)"; //$NON-NLS-1$
 	
 	@Override
