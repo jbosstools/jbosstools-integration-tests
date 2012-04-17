@@ -15,6 +15,7 @@ import org.jboss.tools.ws.ui.bot.test.annotation.AnnotationPropertiesTest;
 import org.jboss.tools.ws.ui.bot.test.rest.completion.RESTfulCompletionTest;
 import org.jboss.tools.ws.ui.bot.test.rest.explorer.RESTfulExplorerTest;
 import org.jboss.tools.ws.ui.bot.test.rest.explorer.RESTfulSupportTest;
+import org.jboss.tools.ws.ui.bot.test.rest.validation.ApplicationPathParameterTest;
 import org.jboss.tools.ws.ui.bot.test.rest.validation.RESTfulValidationTest;
 import org.jboss.tools.ws.ui.bot.test.sample.test.SampleRESTWebServiceTest;
 import org.jboss.tools.ws.ui.bot.test.sample.test.SampleSoapWebServiceTest;
@@ -59,6 +60,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	RESTfulExplorerTest.class,
 	RESTfulValidationTest.class,
 	RESTfulCompletionTest.class,
+	ApplicationPathParameterTest.class,
 	BottomUpWSTest.class,
 	TopDownWSTest.class,
 	WsClientTest.class,
@@ -66,6 +68,6 @@ import org.junit.runners.Suite.SuiteClasses;
 	EAPFromJavaTest.class,
 	EAPFromWSDLTest.class
 	})
-public class WSAllBotTests {
+public class WSAllBotTests extends AbstractTestSuite {
 	
 }
