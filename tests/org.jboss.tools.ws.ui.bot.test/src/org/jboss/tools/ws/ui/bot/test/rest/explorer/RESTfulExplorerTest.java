@@ -16,6 +16,8 @@ import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTFulAnnotations;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
 import org.jboss.tools.ws.ui.bot.test.ti.wizard.RESTFullExplorerWizard;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -27,28 +29,26 @@ import org.junit.Test;
 public class RESTfulExplorerTest extends RESTfulTestBase {
 
 	private RESTFullExplorerWizard restfulWizard = null;
-	
-	protected String getWsProjectName() {
-		return "RestServicesExplorer";
-	}
-	
-	protected String getWsPackage() {
-		return "org.rest.explorer.services.test";
-	}
 
-	protected String getWsName() {
-		return "RestService";
+	private String restBasicProjectName = "restBasic";
+	private String restAdvancedProjectName = "restAdvanced";
+	
+	@Before
+	public void setup() {
+		
+	}
+	
+	@After
+	public void cleanup() {
+		projectExplorer.deleteAllProjects();
 	}
 	
 	@Test
 	public void testAddingSimpleRESTMethods() {
 		
-		resourceHelper.copyResourceToClass(bot.editorByTitle(getWsName() + ".java"), 
-										   RESTfulExplorerTest.class.
-										   getResourceAsStream(BASIC_WS_RESOURCE), 
-										   false, getWsPackage(), getWsName());
+		setWsProjectName(restBasicProjectName);
+		prepareRestProject();
 		
-		bot.sleep(Timing.time2S());
 		restfulWizard = new RESTFullExplorerWizard(getWsProjectName());
 		SWTBotTreeItem[] restServices = restfulWizard.getAllRestServices();
 		
@@ -67,14 +67,11 @@ public class RESTfulExplorerTest extends RESTfulTestBase {
 	@Test
 	public void testAddingAdvancedRESTMethods() {
 		
-		resourceHelper.copyResourceToClass(bot.editorByTitle(getWsName() + ".java"), 
-										   RESTfulExplorerTest.class.
-										   getResourceAsStream(ADVANCED_WS_RESOURCE), 
-										   false, getWsPackage(), getWsName());
+		setWsProjectName(restAdvancedProjectName);
+		prepareRestProject();
 		
-		bot.sleep(Timing.time2S());
 		restfulWizard = new RESTFullExplorerWizard(getWsProjectName());
-		SWTBotTreeItem[] restServices = restfulWizard.getAllRestServices();
+		SWTBotTreeItem[] restServices = restfulWizard.getAllRestServices(); 
 		
 		assertTrue(restServices.length + " RESTful services was found instead of 4.",
 				   restServices.length == 4);
@@ -109,18 +106,17 @@ public class RESTfulExplorerTest extends RESTfulTestBase {
 	@Test
 	public void testEditingSimpleRESTMethods() {
 		
-		resourceHelper.copyResourceToClass(bot.editorByTitle(getWsName() + ".java"), 
-				   RESTfulExplorerTest.class.
-				   getResourceAsStream(BASIC_WS_RESOURCE), 
-				   false, getWsPackage(), getWsName());
+		setWsProjectName(restBasicProjectName);
+		prepareRestProject();
 		
-		bot.sleep(Timing.time2S());
 		restfulWizard = new RESTFullExplorerWizard(getWsProjectName());
 		SWTBotTreeItem[] restServices = restfulWizard.getAllRestServices();
 		
 		assertTrue("All RESTful services (GET, DELETE, POST, PUT) should be present but they are not", 
 					allRestServicesArePresent(restServices));
 		
+		packageExplorer.openFile(getWsProjectName(), "src", 
+				getWsPackage(), getWsName() + ".java").toTextEditor();
 		resourceHelper.replaceInEditor(bot.activeEditor().toTextEditor(), "@DELETE", "@GET");
 		
 		bot.sleep(Timing.time2S());
@@ -141,12 +137,9 @@ public class RESTfulExplorerTest extends RESTfulTestBase {
 	@Test
 	public void testEditingAdvancedRESTMethods() {
 		
-		resourceHelper.copyResourceToClass(bot.editorByTitle(getWsName() + ".java"), 
-				   RESTfulExplorerTest.class.
-				   getResourceAsStream(ADVANCED_WS_RESOURCE), 
-				   false, getWsPackage(), getWsName());
+		setWsProjectName(restAdvancedProjectName);
+		prepareRestProject();
 		
-		bot.sleep(Timing.time2S());
 		restfulWizard = new RESTFullExplorerWizard(getWsProjectName());
 		SWTBotTreeItem[] restServices = restfulWizard.getAllRestServices();
 		
@@ -159,6 +152,8 @@ public class RESTfulExplorerTest extends RESTfulTestBase {
 			}
 		}
 		
+		packageExplorer.openFile(getWsProjectName(), "src", 
+				getWsPackage(), getWsName() + ".java").toTextEditor();
 		resourceHelper.replaceInEditor(bot.activeEditor().toTextEditor(), "/delete/{id}", "delete/edited/{id}");
 		resourceHelper.replaceInEditor(bot.activeEditor().toTextEditor(), "@DELETE", 
 									   "@DELETE" + LINE_SEPARATOR + "@Produces(\"text/plain\")");
@@ -178,18 +173,17 @@ public class RESTfulExplorerTest extends RESTfulTestBase {
 	@Test
 	public void testDeletingRESTMethods() {
 		
-		resourceHelper.copyResourceToClass(bot.editorByTitle(getWsName() + ".java"), 
-				   RESTfulExplorerTest.class.
-				   getResourceAsStream(BASIC_WS_RESOURCE), 
-				   false, getWsPackage(), getWsName());
+		setWsProjectName(restBasicProjectName);
+		prepareRestProject();
 		
-		bot.sleep(Timing.time2S());
 		restfulWizard = new RESTFullExplorerWizard(getWsProjectName());
 		SWTBotTreeItem[] restServices = restfulWizard.getAllRestServices();
 		
 		assertTrue(restServices.length + " RESTful services was found instead of 4.", 
 				   restServices.length == 4);
 		
+		packageExplorer.openFile(getWsProjectName(), "src", 
+				getWsPackage(), getWsName() + ".java").toTextEditor();
 		resourceHelper.copyResourceToClass(bot.editorByTitle(getWsName() + ".java"), 
 				   RESTfulExplorerTest.class.
 				   getResourceAsStream(EMPTY_WS_RESOURCE), 

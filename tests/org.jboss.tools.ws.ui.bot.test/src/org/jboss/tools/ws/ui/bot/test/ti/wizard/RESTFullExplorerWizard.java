@@ -21,7 +21,8 @@ public class RESTFullExplorerWizard extends SWTTestExt {
 	
 	public RESTFullExplorerWizard(String wsProjectName) {
 		String[] pathToRestExplorer = {wsProjectName};
-		restFulExplorer = projectExplorer.selectTreeItem(RESTFulAnnotations.REST_EXPLORER_LABEL.getLabel(), 
+		restFulExplorer = projectExplorer.selectTreeItem(
+				RESTFulAnnotations.REST_EXPLORER_LABEL.getLabel(), 
 				pathToRestExplorer).expand();		
 	}
 	

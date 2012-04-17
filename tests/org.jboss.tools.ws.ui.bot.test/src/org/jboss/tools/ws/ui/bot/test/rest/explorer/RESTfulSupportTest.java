@@ -26,14 +26,6 @@ public class RESTfulSupportTest extends RESTfulTestBase {
 		return "RestExplorerTest";
 	}
 	
-	protected String getWsPackage() {
-		return "org.rest.explorer.validation.test";
-	}
-
-	protected String getWsName() {
-		return "RestService";
-	}
-	
 	@Before
 	public void setup() {		
 		if (!projectExists(getWsProjectName())) {
@@ -45,8 +37,8 @@ public class RESTfulSupportTest extends RESTfulTestBase {
 	@Test
 	public void test_JAXRS_ExplorerSupport() {
 		
-		addRestSupport(getWsProjectName());
-		assertTrue(isRestSupportEnabled(getWsProjectName()));
+		restfulHelper.addRestSupport(getWsProjectName());
+		assertTrue(restfulHelper.isRestSupportEnabled(getWsProjectName()));
 		
 	}
 
