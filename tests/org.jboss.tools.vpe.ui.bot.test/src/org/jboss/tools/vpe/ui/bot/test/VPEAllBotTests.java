@@ -42,6 +42,7 @@ import org.jboss.tools.vpe.ui.bot.test.editor.preferences.PromptForTagAttributes
 import org.jboss.tools.vpe.ui.bot.test.editor.preferences.ShowNonVisualTagsTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.preferences.ShowResourceBundlesUsageasELexpressionsTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.preferences.ShowSelectionTagBarTest;
+import org.jboss.tools.vpe.ui.bot.test.editor.preferences.VpeToolbarTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.selectionbar.SelectionBarTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.ActionParamTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.AjaxInvisibleTagsTest;
@@ -212,7 +213,8 @@ import org.junit.runners.Suite.SuiteClasses;
   SelectTagTest.class,
   RichFacesComponentTest.class,
   UnicodeCharacterDisplayingTest.class,
-  ExternalEditingTest.class
+  ExternalEditingTest.class,
+  VpeToolbarTest.class
 })
 public class VPEAllBotTests extends SWTBotTestCase{
 
