@@ -36,12 +36,12 @@ import org.junit.runners.Suite.SuiteClasses;
  *
  */
 @Require(server=@Server(type=ServerType.EAP), perspective="Java EE")
-//@Require(server=@Server(type=ServerType.JbossAS), perspective="Java EE")
 @RunWith(RequirementAwareSuite.class)
 @SuiteClasses({ WSAllBotTests.class })
 public class WSTestBase extends SWTTestExt {
 
 	private Slider_Level level;
+	private String wsProjectName = null;
 	
 	private static final String SOAP_REQUEST_TEMPLATE = "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\" ?>"
 			+ "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\""
@@ -88,7 +88,11 @@ public class WSTestBase extends SWTTestExt {
 	}
 
 	protected String getWsProjectName() {
-		return null;
+		return wsProjectName;
+	}
+
+	protected void setWsProjectName(String wsProjectName) {
+		this.wsProjectName = wsProjectName;
 	}
 
 	protected String getEarProjectName() {
