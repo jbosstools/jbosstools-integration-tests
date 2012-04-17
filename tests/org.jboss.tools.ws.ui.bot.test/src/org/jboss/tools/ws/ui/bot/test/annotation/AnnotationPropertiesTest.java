@@ -11,10 +11,7 @@
 
 package org.jboss.tools.ws.ui.bot.test.annotation;
 
-import org.jboss.tools.ui.bot.ext.SWTJBTExt;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
-import org.jboss.tools.ws.ui.bot.test.rest.explorer.RESTfulExplorerTest;
-import org.jboss.tools.ws.ui.bot.test.uiutils.views.AnnotationProperties;
 import org.junit.Test;
 
 /**
@@ -46,17 +43,6 @@ public class AnnotationPropertiesTest extends RESTfulTestBase {
 	 */
 	@Test
 	public void testAbsenceOfAnnotation() {
-		
-		/*
-		resourceHelper.copyResourceToClass(bot.editorByTitle(getWsName() + ".java"), 
-										   RESTfulExplorerTest.class.
-										   getResourceAsStream(BASIC_WS_RESOURCE), 
-										   false, getWsPackage(), getWsName());
-		
-		SWTJBTExt.selectTextInSourcePane(bot, getWsName() + ".java", getWsName(), 0, 0);
-		
-		AnnotationProperties annotProperties = new AnnotationProperties();
-		*/
 		
 	}
 	
