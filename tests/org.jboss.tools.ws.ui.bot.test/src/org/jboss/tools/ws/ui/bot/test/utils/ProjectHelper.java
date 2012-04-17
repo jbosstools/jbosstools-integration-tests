@@ -15,6 +15,7 @@ import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCombo;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
@@ -152,7 +153,10 @@ public class ProjectHelper {
 		propertiesShell.activate();
 		SWTBotTreeItem item = bot.tree().getTreeItem("Targeted Runtimes");
 		item.select();
-		bot.table().getTableItem(0).uncheck();
+		SWTBotTable runtimes = bot.table(); 
+		for (int i = 0; i < runtimes.rowCount(); i++) {
+			runtimes.getTableItem(i).uncheck();
+		}
 		bot.table().getTableItem(0).check();
 		bot.button(IDELabel.Button.OK).click();
 		bot.waitWhile(new ShellIsActiveCondition(propertiesShell), 
