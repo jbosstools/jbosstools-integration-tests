@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<component id="org.jboss.tools.ws.ui.bot.test" version="2">
+    <resource path="src/org/jboss/tools/ws/ui/bot/test/WSTestBase.java" type="org.jboss.tools.ws.ui.bot.test.WSTestBase">
+        <filter id="627060751">
+            <message_arguments>
+                <message_argument value="DeploymentHelper"/>
+                <message_argument value="WSTestBase"/>
+                <message_argument value="deploymentHelper"/>
+            </message_arguments>
+        </filter>
+        <filter id="627060751">
+            <message_arguments>
+                <message_argument value="ProjectHelper"/>
+                <message_argument value="WSTestBase"/>
+                <message_argument value="projectHelper"/>
+            </message_arguments>
+        </filter>
+        <filter id="627060751">
+            <message_arguments>
+                <message_argument value="ResourceHelper"/>
+                <message_argument value="WSTestBase"/>
+                <message_argument value="resourceHelper"/>
+            </message_arguments>
+        </filter>
+        <filter id="627060751">
+            <message_arguments>
+                <message_argument value="WebServiceClientHelper"/>
+                <message_argument value="WSTestBase"/>
+                <message_argument value="clientHelper"/>
+            </message_arguments>
+        </filter>
+        <filter id="643842064">
+            <message_arguments>
+                <message_argument value="Slider_Level"/>
+                <message_argument value="WSTestBase"/>
+                <message_argument value="getLevel()"/>
+            </message_arguments>
+        </filter>
+        <filter id="643846161">
+            <message_arguments>
+                <message_argument value="Slider_Level"/>
+                <message_argument value="WSTestBase"/>
+                <message_argument value="setLevel(WsWizardBaseSlider_Level)"/>
+            </message_arguments>
+        </filter>
+    </resource>
+    <resource path="src/org/jboss/tools/ws/ui/bot/test/webservice/eap/EAPFromJavaTest.java" type="org.jboss.tools.ws.ui.bot.test.webservice.eap.EAPFromJavaTest">
+        <filter id="576720909">
+            <message_arguments>
+                <message_argument value="WebServiceTestBase"/>
+                <message_argument value="EAPFromJavaTest"/>
+            </message_arguments>
+        </filter>
+        <filter id="643842064">
+            <message_arguments>
+                <message_argument value="Slider_Level"/>
+                <message_argument value="EAPFromJavaTest"/>
+                <message_argument value="getLevel()"/>
+            </message_arguments>
+        </filter>
+    </resource>
+    <resource path="src/org/jboss/tools/ws/ui/bot/test/webservice/eap/EAPFromWSDLTest.java" type="org.jboss.tools.ws.ui.bot.test.webservice.eap.EAPFromWSDLTest">
+        <filter id="576720909">
+            <message_arguments>
+                <message_argument value="WebServiceTestBase"/>
+                <message_argument value="EAPFromWSDLTest"/>
+            </message_arguments>
+        </filter>
+        <filter id="643842064">
+            <message_arguments>
+                <message_argument value="Slider_Level"/>
+                <message_argument value="EAPFromWSDLTest"/>
+                <message_argument value="getLevel()"/>
+            </message_arguments>
+        </filter>
+    </resource>
+</component>
