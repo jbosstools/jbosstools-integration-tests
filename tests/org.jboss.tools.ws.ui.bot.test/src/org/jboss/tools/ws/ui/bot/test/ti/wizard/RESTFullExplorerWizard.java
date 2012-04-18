@@ -23,7 +23,7 @@ public class RESTFullExplorerWizard extends SWTTestExt {
 		String[] pathToRestExplorer = {wsProjectName};
 		restFulExplorer = projectExplorer.selectTreeItem(
 				RESTFulAnnotations.REST_EXPLORER_LABEL.getLabel(), 
-				pathToRestExplorer).expand();		
+				pathToRestExplorer).expand().expand();		
 	}
 	
 	/**

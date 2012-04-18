@@ -30,6 +30,7 @@ public class RESTfulExplorerTest extends RESTfulTestBase {
 
 	private RESTFullExplorerWizard restfulWizard = null;
 
+	private String restEmptyProjectName = "restEmpty";
 	private String restBasicProjectName = "restBasic";
 	private String restAdvancedProjectName = "restAdvanced";
 	
@@ -46,8 +47,15 @@ public class RESTfulExplorerTest extends RESTfulTestBase {
 	@Test
 	public void testAddingSimpleRESTMethods() {
 		
-		setWsProjectName(restBasicProjectName);
+		setWsProjectName(restEmptyProjectName);
 		prepareRestProject();
+		
+		packageExplorer.openFile(getWsProjectName(), "src", 
+				getWsPackage(), getWsName() + ".java").toTextEditor();
+		resourceHelper.copyResourceToClass(bot.editorByTitle(getWsName() + ".java"),
+				RESTfulExplorerTest.class.getResourceAsStream(BASIC_WS_RESOURCE), 
+				false, getWsPackage(), getWsName());
+		bot.sleep(Timing.time2S());
 		
 		restfulWizard = new RESTFullExplorerWizard(getWsProjectName());
 		SWTBotTreeItem[] restServices = restfulWizard.getAllRestServices();
@@ -67,8 +75,15 @@ public class RESTfulExplorerTest extends RESTfulTestBase {
 	@Test
 	public void testAddingAdvancedRESTMethods() {
 		
-		setWsProjectName(restAdvancedProjectName);
+		setWsProjectName(restBasicProjectName);
 		prepareRestProject();
+		
+		packageExplorer.openFile(getWsProjectName(), "src", 
+				getWsPackage(), getWsName() + ".java").toTextEditor();
+		resourceHelper.copyResourceToClass(bot.editorByTitle(getWsName() + ".java"),
+				RESTfulExplorerTest.class.getResourceAsStream(ADVANCED_WS_RESOURCE), 
+				false, getWsPackage(), getWsName());
+		bot.sleep(Timing.time2S());
 		
 		restfulWizard = new RESTFullExplorerWizard(getWsProjectName());
 		SWTBotTreeItem[] restServices = restfulWizard.getAllRestServices(); 

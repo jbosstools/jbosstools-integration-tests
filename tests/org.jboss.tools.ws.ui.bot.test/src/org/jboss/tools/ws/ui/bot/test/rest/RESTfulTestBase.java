@@ -14,6 +14,7 @@ package org.jboss.tools.ws.ui.bot.test.rest;
 import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
+import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
 import org.jboss.tools.ws.ui.bot.test.WSTestBase;
 
 /**
@@ -22,7 +23,7 @@ import org.jboss.tools.ws.ui.bot.test.WSTestBase;
  * @author jjankovi
  * 
  */
-@Require(server = @Server(), perspective = "Java EE")
+@Require(server = @Server(state=ServerState.NotRunning), perspective = "Java EE")
 public class RESTfulTestBase extends WSTestBase {
 
 	protected final RESTfulHelper restfulHelper = new RESTfulHelper();
