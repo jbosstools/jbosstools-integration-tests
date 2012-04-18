@@ -63,7 +63,8 @@ public class RESTfulTestBase extends WSTestBase {
 			importWSTestProject("resources/projects/" + 
 					getWsProjectName(), getWsProjectName());
 			//set target runtime - TO DO
-			projectHelper.addDefaultRuntimeIntoProject(getWsProjectName());
+			projectHelper.addConfiguredRuntimeIntoProject(
+					getWsProjectName(), configuredState.getServer().name);
 			
 			projectExplorer.selectProject(getWsProjectName());
 			eclipse.cleanAllProjects();
