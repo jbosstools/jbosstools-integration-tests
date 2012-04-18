@@ -59,7 +59,7 @@ public class RESTfulTestBase extends WSTestBase {
 		if (!projectExists(getWsProjectName())) {
 			
 			//importing project without targeted runtime set
-			importWSTestProject("/resources/projects/" + 
+			importWSTestProject("resources/projects/" + 
 					getWsProjectName(), getWsProjectName());
 			//set target runtime - TO DO
 			projectHelper.addDefaultRuntimeIntoProject(getWsProjectName());
