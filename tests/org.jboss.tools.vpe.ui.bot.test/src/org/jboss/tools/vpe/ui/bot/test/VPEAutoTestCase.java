@@ -76,10 +76,6 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase {
 	protected final static String JBT_TEST_PROJECT_NAME = "JBIDETestProject"; //$NON-NLS-1$
 	protected final static String FACELETS_TEST_PROJECT_NAME = "FaceletsTestProject"; //$NON-NLS-1$
 	protected final static String JSF2_TEST_PROJECT_NAME = "JSF2TestProject"; //$NON-NLS-1$
-	protected final static String JBOSS_AS_FOR_JSF2_HOME;
-	protected final static String JBOSS_AS_FOR_JSF2_SERVER_GROUP;
-	protected final static String JBOSS_AS_FOR_JSF2_SERVER_TYPE;
-	protected final static String JBOSS_AS_FOR_JSF2_SERVER_RUNTIME_TYPE;
 	protected final static String RICH_FACES_UI_JAR_LOCATION;
 
 	private String projectName = null;
@@ -101,25 +97,6 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase {
           "Property file " + PROJECT_PROPERTIES + " was not found", e); //$NON-NLS-1$ //$NON-NLS-2$
       Activator.getDefault().getLog().log(status);
       e.printStackTrace();
-    }
-    // Setup JSF2 project related properties
-    if (projectProperties.containsKey("JBossASForJSF2")) {
-      JBOSS_AS_FOR_JSF2_HOME = projectProperties.getProperty("JBossASForJSF2");
-      String version = projectProperties.getProperty("JBossASForJSF2Version",
-          "6.0");
-      if (version.equals("6.0")) {
-        JBOSS_AS_FOR_JSF2_SERVER_GROUP = IDELabel.ServerGroup.JBOSS_AS_6_0;
-        JBOSS_AS_FOR_JSF2_SERVER_RUNTIME_TYPE = IDELabel.ServerRuntimeType.JBOSS_AS_6_x;
-        JBOSS_AS_FOR_JSF2_SERVER_TYPE = IDELabel.ServerType.JBOSS_AS_6_x;
-      } else {
-        throw new RuntimeException(
-            "Unsupported version of JBoss AS runtime for JSF2 [version="
-                + version + "location='" + JBOSS_AS_FOR_JSF2_HOME
-                + "' specified.");
-      }
-    }
-    else{
-      throw new RuntimeException("Runtime for JSF2 is not specified");
     }
     // Get richfaces-ui.jar location
     // System property has priority
@@ -659,41 +636,23 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase {
       wiz.comboBoxWithLabel(IDELabel.NewJsfProjectDialog.TEMPLATE_LABEL)
           .setSelection("JSFKickStartWithoutLibs");//$NON-NLS-1$
       wiz.button(IDELabel.Button.NEXT).click();
-      try {
-        wiz.comboBoxWithLabel(IDELabel.NewJsfProjectDialog.RUNTIME_LABEL)
-            .setSelection(JBOSS_AS_FOR_JSF2_SERVER_RUNTIME_TYPE);
-        delay();
-        wiz.button(IDELabel.Button.FINISH).click();
-        try {
-          wiz.button(IDELabel.Button.YES).click();
-          openErrorLog();
-          openPackageExplorer();
-        } catch (WidgetNotFoundException wnfe1) {
-        }
-      } catch (Exception e) {
-        bot.button(0).click();
-        SWTBotTree innerTree = wiz.tree();
-        delay();
-        innerTree.expandNode(JBOSS_AS_FOR_JSF2_SERVER_GROUP).select(
-            JBOSS_AS_FOR_JSF2_SERVER_RUNTIME_TYPE);
-        delay();
-        wiz.button(IDELabel.Button.NEXT).click();
-        wiz.textWithLabel(IDELabel.NewJsfProjectDialog.HOME_DIRECTORY_LABEL)
-            .setText(JBOSS_AS_FOR_JSF2_HOME);
-        wiz.button(IDELabel.Button.FINISH).click();
-        delay();
-        wiz.button(IDELabel.Button.FINISH).click();
-        try {
-          wiz.button(IDELabel.Button.YES).click();
-          openErrorLog();
-          openPackageExplorer();
-        } catch (WidgetNotFoundException e2) {
-        }
+      wiz.comboBoxWithLabel("Runtime:*").setSelection(SWTTestExt.configuredState.getServer().name); //$NON-NLS-1$
+      // Check if there is problem to create JSF 2 project using configured Server Runtime
+      if (!wiz.button(IDELabel.Button.FINISH).isEnabled()){
+        String errorText = wiz.text(1).getText();
+        wiz.button(IDELabel.Button.CANCEL).click();
+        assertTrue("Unable to create JSF 2 Project with Server Runtime: "
+            + SWTTestExt.configuredState.getServer().name
+            + "\nError: "
+            + errorText,
+          false);
       }
-      waitForBlockingJobsAcomplished(60 * 1000L, BUILDING_WS);
-      setException(null);
+      else{
+        open.finish(wiz);
+        waitForBlockingJobsAcomplished(60 * 1000L, BUILDING_WS);
+        setException(null);
+      }  
     }
-
   }
   /**
    * Creates new empty HTML page within test project
