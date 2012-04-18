@@ -37,6 +37,16 @@ public class AnnotationPropertiesTest extends RESTfulTestBase {
 		return "WSService";
 	}
 	
+	@Override
+	public void setup() {		
+		
+	}
+
+	@Override
+	public void cleanup() {
+		
+	}
+	
 	/**
 	 * 1 there are no incorrectly checked annotations
 	 * 2 there are no incorrectly unchecked annotations 
