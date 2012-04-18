@@ -35,7 +35,9 @@ import org.junit.runners.Suite.SuiteClasses;
  * @author jjankovi
  *
  */
-@Require(server=@Server(type=ServerType.EAP), perspective="Java EE")
+@Require(perspective="Java EE", 
+		server=@Server(type=ServerType.JbossAS, 
+		version = "7.1", operator = ">="))
 @RunWith(RequirementAwareSuite.class)
 @SuiteClasses({ WSAllBotTests.class })
 public class WSTestBase extends SWTTestExt {
@@ -63,10 +65,13 @@ public class WSTestBase extends SWTTestExt {
 	public void setup() {
 		if (getEarProjectName() != null && !projectExists(getEarProjectName())) {
 			projectHelper.createEARProject(getEarProjectName());
+			if (!projectExists(getWsProjectName())) {
+				projectHelper.createProjectForEAR(getWsProjectName(), 
+						getEarProjectName());
+			}
 		}
 		if (!projectExists(getWsProjectName())) {
-			projectHelper.createProjectForEAR(getWsProjectName(), 
-					getEarProjectName());
+			projectHelper.createProject(getWsProjectName());
 		}
 	}
 

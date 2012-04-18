@@ -25,7 +25,7 @@ public class SampleSoapWebServiceTest extends SampleSoapTestBase {
     protected String getWsProjectName() {
         return "SampleSOAPWS";
     }
-
+    
     @Test
     public void testSampleSoapWS() {
     	IFile dd = getDD(getWsProjectName());
