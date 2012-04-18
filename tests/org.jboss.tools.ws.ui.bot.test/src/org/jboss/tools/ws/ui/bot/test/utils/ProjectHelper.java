@@ -143,7 +143,8 @@ public class ProjectHelper {
 	 * Add first defined runtime into project as targeted runtime
 	 * @param project
 	 */
-	public void addDefaultRuntimeIntoProject(String project) {
+	public void addConfiguredRuntimeIntoProject(String project, 
+			String configuredRuntime) {
 		projectExplorer.selectProject(project);
 		bot.menu(IDELabel.Menu.FILE).menu(
 				IDELabel.Menu.PROPERTIES).click();
@@ -157,7 +158,11 @@ public class ProjectHelper {
 		for (int i = 0; i < runtimes.rowCount(); i++) {
 			runtimes.getTableItem(i).uncheck();
 		}
-		bot.table().getTableItem(0).check();
+		for (int i = 0; i < runtimes.rowCount(); i++) {
+			if (runtimes.getTableItem(i).getText().equals(configuredRuntime)) {
+				runtimes.getTableItem(i).check();
+			}
+		}
 		bot.button(IDELabel.Button.OK).click();
 		bot.waitWhile(new ShellIsActiveCondition(propertiesShell), 
 				TaskDuration.LONG.getTimeout());
