@@ -11,9 +11,6 @@
 
 package org.jboss.tools.ws.ui.bot.test.utils;
 
-import static org.eclipse.swtbot.swt.finder.SWTBotAssert.assertContains;
-import static org.junit.Assert.assertEquals;
-
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -21,21 +18,30 @@ import java.net.URL;
 import java.util.Scanner;
 import java.util.logging.Logger;
 
-import org.jboss.tools.ui.bot.ext.SWTBotExt;
-import org.jboss.tools.ui.bot.ext.SWTOpenExt;
+import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem;
-import org.jboss.tools.ui.bot.ext.view.ProjectExplorer;
 
-public class DeploymentHelper {
+public class DeploymentHelper extends SWTTestExt {
 
 	private final Logger LOGGER = Logger
 			.getLogger(DeploymentHelper.class.getName());
 
-	private final SWTBotExt bot = new SWTBotExt();
 	
-	private final ProjectExplorer projectExplorer = new ProjectExplorer();
-	
-	private final SWTOpenExt open = new SWTOpenExt(bot);
+	public void removeProjectFromServer(String project) {
+		SWTBotView serverView = open.viewOpen(
+				ActionItem.View.ServerServers.LABEL);
+		SWTBotTreeItem asNode = servers.findServerByName(serverView.bot().tree(), 
+				configuredState.getServer().name);
+		asNode.expand();
+		for (int i = 0; i < asNode.getItems().length; i++) {
+			SWTBotTreeItem temp = asNode.getItems()[i];
+			if (temp.getText().contains(project)) {
+				servers.removeProjectFromServers(project);
+			}
+		}
+	}
 	
 	/**
 	 * Method runs project on configured server
