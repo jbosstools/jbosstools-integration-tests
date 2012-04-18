@@ -20,6 +20,9 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
+import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
+import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
+import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
 import org.jboss.tools.ws.ui.bot.test.WSAllBotTests;
 import org.jboss.tools.ws.ui.bot.test.uiutils.actions.NewFileWizardAction;
 import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.Wizard;
@@ -38,6 +41,9 @@ import org.junit.runners.Suite.SuiteClasses;
  *
  */
 @SuiteClasses({ WSAllBotTests.class, EAPCompAllTests.class })
+@Require(perspective="Java EE", 
+		server=@Server(type=ServerType.EAP, 
+		version = "5.1", operator = ">="))
 public class EAPFromJavaTest extends WebServiceTestBase {
 
     private static boolean servicePassed = false;

@@ -29,6 +29,9 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
 import org.jboss.tools.ui.bot.ext.SWTUtilExt;
 import org.jboss.tools.ui.bot.ext.Timing;
+import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
+import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
+import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
 import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
 import org.jboss.tools.ws.ui.bot.test.WSAllBotTests;
 import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.WsWizardBase.Slider_Level;
@@ -47,6 +50,9 @@ import org.junit.runners.Suite.SuiteClasses;
  *
  */
 @SuiteClasses({ WSAllBotTests.class, EAPCompAllTests.class })
+@Require(perspective="Java EE", 
+		server=@Server(type=ServerType.EAP, 
+		version = "5.1", operator = ">="))
 public class EAPFromWSDLTest extends WebServiceTestBase {
 
 	private static boolean servicePassed = false;
