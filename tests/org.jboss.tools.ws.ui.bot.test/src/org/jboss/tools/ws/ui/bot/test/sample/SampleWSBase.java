@@ -93,6 +93,7 @@ public class SampleWSBase extends WSTestBase {
                 assertContains("<servlet-name>" + svcName + "</servlet-name>", dd);
                 break;
         }
+        deploymentHelper.removeProjectFromServer(project);
         deploymentHelper.runProject(project);
         switch (type) {
             case REST:
