@@ -25,7 +25,7 @@ public class SmooksXML2POJO extends ESBExampleTest {
 		assertNotNull("Calling Send message failed, nothing appened to server log",text);	
 		assertTrue("Calling Send message failed, unexpected server output :"+text,text.contains("Order Items"));
 		text = executeClient(getExampleClientProjectName(),"src","org.jboss.soa.esb.samples.quickstart.transformxml2pojo.test","ReceiveJMSMessage.java");
-		SWTTestExt.servers.removeAllProjectsFromServer();
 		assertTrue("Calling Send message failed, unexpected server output :"+text,text.contains("Order Items"));
+		SWTTestExt.servers.removeAllProjectsFromServer();
 	}
 }

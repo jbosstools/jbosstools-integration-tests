@@ -23,9 +23,8 @@ public class WebServiceConsumer1 extends ESBExampleTest {
 		assertTrue("Calling JMS Send message failed, unexpected server output :"+text,text.contains("Hello World Greeting for"));
 		text = null;
 		text = executeClientGetServerOutput(getExampleClientProjectName(),"src","org.jboss.soa.esb.samples.quickstart.webservice_consumer1.test","SendEsbMessage.java");
-		SWTTestExt.servers.removeAllProjectsFromServer();
 		assertNotNull("Calling ESB Send message failed, nothing appened to server log",text);	
 		assertTrue("Calling ESB Send message failed, unexpected server output :"+text,text.contains("Hello World Greeting for"));
-		
+		SWTTestExt.servers.removeAllProjectsFromServer();
 	}
 }

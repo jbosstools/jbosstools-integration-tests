@@ -6,6 +6,7 @@ import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
 import org.junit.AfterClass;
+import org.junit.Test;
 
 @Require(server=@Server(type=ServerType.SOA,state=ServerState.Running))
 public class HelloWorld extends ESBExampleTest {
@@ -27,10 +28,13 @@ public class HelloWorld extends ESBExampleTest {
 		super.executeExample();	
 		String text = executeClientGetServerOutput(getExampleClientProjectName(),"src","org.jboss.soa.esb.samples.quickstart.helloworld.test","SendJMSMessage.java");
 		assertNotNull("Calling JMS Send message failed, nothing appened to server log",text);	
+		assertFalse ("Test fails due to ESB deployment error: NNNN", text.contains("ERROR [org.apache.juddi.v3.client.transport.wrapper.RequestHandler]"));
 		assertTrue("Calling JMS Send message failed, unexpected server output :"+text,text.contains("Body: Hello World"));
 		text = null;
+		
 		text = executeClientGetServerOutput(getExampleClientProjectName(),"src","org.jboss.soa.esb.samples.quickstart.helloworld.test","SendEsbMessage.java");
 		assertNotNull("Calling ESB Send message failed, nothing appened to server log",text);	
+		assertFalse ("Test fails due to ESB deployment error: NNNN", text.contains("ERROR [org.apache.juddi.v3.client.transport.wrapper.RequestHandler]"));
 		assertTrue("Calling ESB Send message failed, unexpected server output :"+text,text.contains("hello world esb"));
 		
 		SWTTestExt.servers.removeAllProjectsFromServer();
