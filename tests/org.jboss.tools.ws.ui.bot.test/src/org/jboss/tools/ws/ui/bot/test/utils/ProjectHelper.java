@@ -169,4 +169,55 @@ public class ProjectHelper {
 		
 	}
 	
+	/**
+	 * Set system default jdk in the project
+	 * @param projectName
+	 */
+	public void addDefaultJDKIntoProject(String projectName) {
+		
+		projectExplorer.selectProject(projectName);
+		bot.menu(IDELabel.Menu.FILE).menu(
+				IDELabel.Menu.PROPERTIES).click();
+		bot.waitForShell(IDELabel.Shell.PROPERTIES_FOR + " " + projectName);
+		SWTBotShell propertiesShell = bot.shell(
+				IDELabel.Shell.PROPERTIES_FOR + " " + projectName);
+		propertiesShell.activate();
+		SWTBotTreeItem item = bot.tree().getTreeItem(
+				IDELabel.JavaBuildPathPropertiesEditor.
+				JAVA_BUILD_PATH_TREE_ITEM_LABEL);
+		item.select();
+		bot.tabItem(IDELabel.JavaBuildPathPropertiesEditor.
+				LIBRARIES_TAB_LABEL).activate();
+		SWTBotTree librariesTree = bot.treeWithLabel(
+				"JARs and class folders on the build path:");
+		/** remove jdk currently configured on project */
+		for (int i = 0; i < librariesTree.rowCount(); i++) {
+			SWTBotTreeItem libraryItem = librariesTree.
+					getAllItems()[i];
+			if (libraryItem.getText().contains("JRE") || 
+				libraryItem.getText().contains("jdk")) {
+				libraryItem.select();
+				break;
+			}
+		}
+		bot.button(IDELabel.Button.REMOVE).click();
+		
+		/** add default jdk of system */
+		bot.button(IDELabel.Button.ADD_LIBRARY).click();
+		bot.waitForShell(IDELabel.Shell.ADD_LIBRARY);
+		SWTBotShell libraryShell = bot.shell(
+				IDELabel.Shell.ADD_LIBRARY);
+		libraryShell.activate();
+		bot.list().select("JRE System Library");
+		bot.button(IDELabel.Button.NEXT).click();
+		bot.radio(2).click();
+		bot.button(IDELabel.Button.FINISH).click();
+		bot.waitWhile(new ShellIsActiveCondition(libraryShell), 
+				TaskDuration.LONG.getTimeout());
+		bot.button(IDELabel.Button.OK).click();
+		bot.waitWhile(new ShellIsActiveCondition(propertiesShell), 
+				TaskDuration.LONG.getTimeout());
+		
+	}
+	
 }
