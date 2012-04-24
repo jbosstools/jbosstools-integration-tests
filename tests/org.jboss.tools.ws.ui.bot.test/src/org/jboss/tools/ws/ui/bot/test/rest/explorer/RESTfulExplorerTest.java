@@ -35,11 +35,6 @@ public class RESTfulExplorerTest extends RESTfulTestBase {
 		return restEmptyProjectName;
 	}
 	
-	@Override
-	public void cleanup() {
-		
-	}
-	
 	@Test
 	public void testAddingSimpleRESTMethods() {
 		

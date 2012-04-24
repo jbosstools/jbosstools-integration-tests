@@ -55,6 +55,11 @@ public class RESTfulTestBase extends WSTestBase {
 		prepareRestProject();
 	}
 	
+	@Override
+	public void cleanup() {		
+		
+	}
+	
 	protected void prepareRestProject() {
 		
 		if (!projectExists(getWsProjectName())) {
@@ -62,9 +67,6 @@ public class RESTfulTestBase extends WSTestBase {
 			//importing project without targeted runtime set
 			importWSTestProject("resources/projects/" + 
 					getWsProjectName(), getWsProjectName());
-			//set target runtime - TO DO
-			projectHelper.addConfiguredRuntimeIntoProject(
-					getWsProjectName(), configuredState.getServer().name);
 			
 			projectExplorer.selectProject(getWsProjectName());
 			eclipse.cleanAllProjects();

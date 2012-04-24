@@ -38,11 +38,6 @@ public class RESTfulCompletionTest extends RESTfulTestBase{
 		return "restEmpty";
 	}
 	
-	@Override
-	public void cleanup() {
-		
-	}
-	
 	@Test
 	public void testWithEmptyPrefix() {
 		

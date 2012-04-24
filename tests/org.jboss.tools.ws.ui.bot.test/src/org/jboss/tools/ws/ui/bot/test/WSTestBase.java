@@ -35,12 +35,12 @@ import org.junit.runners.Suite.SuiteClasses;
  * @author jjankovi
  *
  */
-@Require(perspective="Java EE", 
-		server=@Server(type=ServerType.JbossAS, 
-		version = "7.1", operator = ">="))
 //@Require(perspective="Java EE", 
-//		server=@Server(type=ServerType.EAP, 
-//		version = "5.1", operator = ">="))
+//		server=@Server(type=ServerType.JbossAS, 
+//		version = "7.1", operator = ">="))
+@Require(perspective="Java EE", 
+		server=@Server(type=ServerType.EAP, 
+		version = "5.1", operator = ">="))
 @RunWith(RequirementAwareSuite.class)
 @SuiteClasses({ WSAllBotTests.class })
 public class WSTestBase extends SWTTestExt {
