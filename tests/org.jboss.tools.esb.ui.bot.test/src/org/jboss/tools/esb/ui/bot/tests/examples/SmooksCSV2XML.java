@@ -20,6 +20,7 @@ public class SmooksCSV2XML extends ESBExampleTest {
 	protected void executeExample() {
 		super.executeExample();	
 		String text = executeClientGetServerOutput(getExampleClientProjectName(),"src","org.jboss.soa.esb.samples.quickstart.transformcsv2xml","SendJMSMessage.java");
+		assertFalse ("Test fails due to ESB deployment error: NNNN", text.contains("ERROR [org.apache.juddi.v3.client.transport.wrapper.RequestHandler]"));
 		assertNotNull("Calling Send message failed, nothing appened to server log",text);	
 		assertTrue("Calling Send message failed, unexpected server output :"+text,text.contains("<csv-set>"));
 		SWTTestExt.servers.removeAllProjectsFromServer();

@@ -105,17 +105,19 @@ public class ESBExampleTest extends ExampleTest{
 		
 		//String text2 = console.getConsoleText(TIME_5S, TIME_20S, false);
 		String text2 = console.getConsoleText(TIME_5S, TIME_60S, false);  /* https://issues.jboss.org/browse/JBQA-5838 - ldimaggi  */
-		log.info("text2=" + text2);
-		console.clearConsole();
-		
-		if (text2.length() == 0) {
+		log.info("text2 = " + text2);
+		//console.clearConsole();
+			
+		if (text2.length() == 0) {			
 			return null;
 		}
 		else {
 			return text2;
-		}
-		
+		}				
 	}
+	
+
+	
 	/**
 	 * executes given class in given project (path must include project name)
 	 * @param path clientClass as could be seen in package explorer (e.g src, org.jboss.tools.test.Class.java)

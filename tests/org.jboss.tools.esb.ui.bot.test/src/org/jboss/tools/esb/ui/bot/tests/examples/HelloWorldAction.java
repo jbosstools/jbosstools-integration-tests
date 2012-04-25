@@ -23,6 +23,6 @@ public class HelloWorldAction extends ESBExampleTest {
 		String text = executeClientGetServerOutput(getExampleClientProjectName(),"src","org.jboss.soa.esb.samples.quickstart.helloworldaction.test","SendJMSMessage.java");
 		assertNotNull("Calling JMS Send message failed, nothing appened to server log",text);	
 		assertTrue("Calling JMS Send message failed, unexpected server output :"+text,text.contains("Hello World Action ESB invoked!"));	
-		SWTTestExt.servers.removeAllProjectsFromServer();			
+		SWTTestExt.servers.removeAllProjectsFromServer();	
 	}
 }
