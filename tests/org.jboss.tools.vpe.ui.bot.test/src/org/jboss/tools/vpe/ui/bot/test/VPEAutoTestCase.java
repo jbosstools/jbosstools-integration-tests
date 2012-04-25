@@ -100,7 +100,7 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase {
     }
     // Get richfaces-ui.jar location
     // System property has priority
-    String richFacesUiLocation = System.getProperty("org.jboss.tools.vpe.ui.bot.test.richafaces.ui.jar.location","");
+    String richFacesUiLocation = System.getProperty("org.jboss.tools.vpe.ui.bot.test.richfaces.ui.jar.location","");
     // Read property from Properties File
     if (richFacesUiLocation.length() == 0){
       if (projectProperties.containsKey("RichFacesUiJarLocation")){

@@ -1,59 +1,68 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion> 
-	<parent>
-		<groupId>org.jboss.tools.vpe</groupId>
-		<artifactId>tests</artifactId>
-		<version>3.3.0-SNAPSHOT</version>
-	</parent>
-	<groupId>org.jboss.tools.vpe.tests</groupId>
-	<artifactId>org.jboss.tools.vpe.ui.bot.test</artifactId> 
-	
-	<packaging>eclipse-test-plugin</packaging>
-	<properties>
-                <jbosstools.test.jboss-as.home>${requirement.build.root}/jboss-5.1.0.GA</jbosstools.test.jboss-as.home>
-		<systemProperties>-Dswtbot.test.skip=false -Dtest.configurations.dir=resources/properties/ -Djbosstools.test.jboss-as.home=${jbosstools.test.jboss-as.home}</systemProperties>
-		<test.suite.class>org.jboss.tools.vpe.ui.bot.test.VPEAllBotTests</test.suite.class>
-	</properties>
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.eclipse.tycho</groupId>
-				<artifactId>tycho-surefire-plugin</artifactId>
-				<configuration>
-                                        <testSuite>org.jboss.tools.vpe.ui.bot.test</testSuite>
-					<testClass>${test.suite.class}</testClass>
-					<useUIThread>false</useUIThread>
-					<skip>${swtbot.test.skip}</skip>
-					<dependencies combine.children="append">
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.jboss.ide.eclipse.as.feature.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.jboss.tools.vpe.feature.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.jboss.tools.jsf.feature.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.eclipse.jst.enterprise_ui.feature.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.eclipse.jst.web_core.feature.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
-					</dependencies>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.jboss.tools.vpe</groupId>
+    <artifactId>tests</artifactId>
+    <version>3.3.0-SNAPSHOT</version>
+  </parent>
+  <groupId>org.jboss.tools.vpe.tests</groupId>
+  <artifactId>org.jboss.tools.vpe.ui.bot.test</artifactId>
+
+  <packaging>eclipse-test-plugin</packaging>
+  <properties>
+    <jbosstools.test.jboss-as.home>${requirement.build.root}/jboss-as-web-7.0.2.Final</jbosstools.test.jboss-as.home>
+    <xulrunner.plugin.name>org.mozilla.xulrunner.gtk.linux.x86_1.9.2.16b</xulrunner.plugin.name>
+    <org.jboss.tools.vpe.ui.bot.test.richfaces.ui.jar.location>${requirement.build.root}//richfaces-4.2.1.Final/artifacts/ui/richfaces-components-ui-4.2.1.Final.jar</org.jboss.tools.vpe.ui.bot.test.richfaces.ui.jar.location>
+    <systemProperties>-Dswtbot.test.skip=false -Dtest.configurations.dir=resources/properties/ -Djbosstools.test.jboss-as.home=${jbosstools.test.jboss-as.home} -Dorg.eclipse.swt.browser.XULRunnerPath=${project.build.outputDirectory}/../work/plugins/${xulrunner.plugin.name}/xulrunner -Dorg.jboss.tools.vpe.ui.bot.test.richfaces.ui.jar.location=${org.jboss.tools.vpe.ui.bot.test.richfaces.ui.jar.location}</systemProperties>
+    <test.suite.class>org.jboss.tools.vpe.ui.bot.test.VPEAllBotTests</test.suite.class>
+  </properties>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>tycho-surefire-plugin</artifactId>
+        <configuration>
+          <testSuite>org.jboss.tools.vpe.ui.bot.test</testSuite>
+          <testClass>${test.suite.class}</testClass>
+          <useUIThread>false</useUIThread>
+          <skip>${swtbot.test.skip}</skip>
+          <product>org.eclipse.platform.ide</product>
+          <dependencies combine.children="append">
+            <dependency>
+              <type>p2-installable-unit</type>
+              <artifactId>org.jboss.ide.eclipse.as.feature.feature.group</artifactId>
+              <version>0.0.0</version>
+            </dependency>
+            <dependency>
+              <type>p2-installable-unit</type>
+              <artifactId>org.jboss.tools.vpe.feature.feature.group</artifactId>
+              <version>0.0.0</version>
+            </dependency>
+            <dependency>
+              <type>p2-installable-unit</type>
+              <artifactId>org.jboss.tools.jsf.feature.feature.group</artifactId>
+              <version>0.0.0</version>
+            </dependency>
+            <dependency>
+              <type>p2-installable-unit</type>
+              <artifactId>org.eclipse.jst.enterprise_ui.feature.feature.group</artifactId>
+              <version>0.0.0</version>
+            </dependency>
+            <dependency>
+              <type>p2-installable-unit</type>
+              <artifactId>org.eclipse.jst.web_core.feature.feature.group</artifactId>
+              <version>0.0.0</version>
+            </dependency>
+            <dependency>
+              <type>p2-installable-unit</type>
+              <artifactId>org.eclipse.wst.web_ui.feature.feature.group</artifactId>
+              <version>0.0.0</version>
+            </dependency>
+          </dependencies>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>
