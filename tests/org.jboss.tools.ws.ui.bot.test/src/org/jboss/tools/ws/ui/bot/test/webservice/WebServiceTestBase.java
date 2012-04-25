@@ -121,6 +121,7 @@ public class WebServiceTestBase extends WSTestBase {
 			wsw.next();			
 			wsw.setPackageName(pkg);
 		}
+		wsw.next();
 		wsw.finish();
 		util.waitForNonIgnoredJobs();
 		bot.sleep(2*TIME_1S);
