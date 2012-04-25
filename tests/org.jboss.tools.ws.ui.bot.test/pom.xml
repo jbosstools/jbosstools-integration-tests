@@ -47,6 +47,13 @@
 							<artifactId>org.jboss.tools.ws.jaxrs.feature.feature.group</artifactId>
 							<version>0.0.0</version>
 						</dependency>
+						<!-- workaround until JIRA fixed -->
+						<dependency>
+							<type>p2-installable-unit</type>
+							<artifactId>org.jboss.ide.eclipse.as.feature.feature.group</artifactId>
+							<version>0.0.0</version>
+						</dependency>
+						<!-- end of workaround -->
 						<dependency>
 							<type>p2-installable-unit</type>
 							<artifactId>org.eclipse.jst.enterprise_ui.feature.feature.group</artifactId>
