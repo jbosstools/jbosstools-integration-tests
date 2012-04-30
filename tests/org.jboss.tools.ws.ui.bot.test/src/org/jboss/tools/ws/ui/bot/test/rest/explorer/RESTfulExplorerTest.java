@@ -35,6 +35,11 @@ public class RESTfulExplorerTest extends RESTfulTestBase {
 		return restEmptyProjectName;
 	}
 	
+	@Override
+	public void cleanup() {		
+		 bot.activeEditor().toTextEditor().save();
+	}
+	
 	@Test
 	public void testAddingSimpleRESTMethods() {
 		
@@ -42,7 +47,7 @@ public class RESTfulExplorerTest extends RESTfulTestBase {
 				getWsPackage(), getWsName() + ".java").toTextEditor();
 		resourceHelper.copyResourceToClass(bot.editorByTitle(getWsName() + ".java"),
 				RESTfulExplorerTest.class.getResourceAsStream(BASIC_WS_RESOURCE), 
-				false, getWsPackage(), getWsName());
+				false, false, getWsPackage(), getWsName());
 		bot.sleep(Timing.time2S());
 		
 		restfulWizard = new RESTFullExplorerWizard(getWsProjectName());
@@ -67,7 +72,7 @@ public class RESTfulExplorerTest extends RESTfulTestBase {
 				getWsPackage(), getWsName() + ".java").toTextEditor();
 		resourceHelper.copyResourceToClass(bot.editorByTitle(getWsName() + ".java"),
 				RESTfulExplorerTest.class.getResourceAsStream(ADVANCED_WS_RESOURCE), 
-				false, getWsPackage(), getWsName());
+				false, false, getWsPackage(), getWsName());
 		bot.sleep(Timing.time2S());
 		
 		restfulWizard = new RESTFullExplorerWizard(getWsProjectName());
@@ -110,7 +115,7 @@ public class RESTfulExplorerTest extends RESTfulTestBase {
 				getWsPackage(), getWsName() + ".java").toTextEditor();
 		resourceHelper.copyResourceToClass(bot.editorByTitle(getWsName() + ".java"),
 				RESTfulExplorerTest.class.getResourceAsStream(BASIC_WS_RESOURCE), 
-				false, getWsPackage(), getWsName());
+				false, false, getWsPackage(), getWsName());
 		
 		restfulWizard = new RESTFullExplorerWizard(getWsProjectName());
 		SWTBotTreeItem[] restServices = restfulWizard.getAllRestServices();
@@ -120,7 +125,7 @@ public class RESTfulExplorerTest extends RESTfulTestBase {
 		
 		packageExplorer.openFile(getWsProjectName(), "src", 
 				getWsPackage(), getWsName() + ".java").toTextEditor();
-		resourceHelper.replaceInEditor(bot.activeEditor().toTextEditor(), "@DELETE", "@GET");
+		resourceHelper.replaceInEditor(bot.activeEditor().toTextEditor(), "@DELETE", "@GET", false);
 		
 		bot.sleep(Timing.time2S());
 		restfulWizard = new RESTFullExplorerWizard(getWsProjectName());
@@ -143,7 +148,7 @@ public class RESTfulExplorerTest extends RESTfulTestBase {
 				getWsPackage(), getWsName() + ".java").toTextEditor();
 		resourceHelper.copyResourceToClass(bot.editorByTitle(getWsName() + ".java"),
 				RESTfulExplorerTest.class.getResourceAsStream(ADVANCED_WS_RESOURCE), 
-				false, getWsPackage(), getWsName());
+				false, false, getWsPackage(), getWsName());
 		
 		restfulWizard = new RESTFullExplorerWizard(getWsProjectName());
 		SWTBotTreeItem[] restServices = restfulWizard.getAllRestServices();
@@ -159,9 +164,10 @@ public class RESTfulExplorerTest extends RESTfulTestBase {
 		
 		packageExplorer.openFile(getWsProjectName(), "src", 
 				getWsPackage(), getWsName() + ".java").toTextEditor();
-		resourceHelper.replaceInEditor(bot.activeEditor().toTextEditor(), "/delete/{id}", "delete/edited/{id}");
+		resourceHelper.replaceInEditor(bot.activeEditor().toTextEditor(), 
+				"/delete/{id}", "delete/edited/{id}", false);
 		resourceHelper.replaceInEditor(bot.activeEditor().toTextEditor(), "@DELETE", 
-									   "@DELETE" + LINE_SEPARATOR + "@Produces(\"text/plain\")");
+									   "@DELETE" + LINE_SEPARATOR + "@Produces(\"text/plain\")", false);
 		
 		bot.sleep(Timing.time2S());
 		restfulWizard = new RESTFullExplorerWizard(getWsProjectName());
@@ -182,7 +188,7 @@ public class RESTfulExplorerTest extends RESTfulTestBase {
 				getWsPackage(), getWsName() + ".java").toTextEditor();
 		resourceHelper.copyResourceToClass(bot.editorByTitle(getWsName() + ".java"),
 				RESTfulExplorerTest.class.getResourceAsStream(BASIC_WS_RESOURCE), 
-				false, getWsPackage(), getWsName());
+				false, false, getWsPackage(), getWsName());
 		
 		restfulWizard = new RESTFullExplorerWizard(getWsProjectName());
 		SWTBotTreeItem[] restServices = restfulWizard.getAllRestServices();
@@ -195,7 +201,7 @@ public class RESTfulExplorerTest extends RESTfulTestBase {
 		resourceHelper.copyResourceToClass(bot.editorByTitle(getWsName() + ".java"), 
 				   RESTfulExplorerTest.class.
 				   getResourceAsStream(EMPTY_WS_RESOURCE), 
-				   false, getWsPackage(), getWsName());
+				   false, false, getWsPackage(), getWsName());
 		
 		bot.sleep(Timing.time2S());
 		restfulWizard = new RESTFullExplorerWizard(getWsProjectName());
