@@ -9,12 +9,10 @@
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
 
-package org.jboss.tools.ws.ui.bot.test.rest.explorer;
+package org.jboss.tools.ws.ui.bot.test.rest;
 
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.ui.bot.ext.Timing;
-import org.jboss.tools.ws.ui.bot.test.rest.RESTFulAnnotations;
-import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
 import org.jboss.tools.ws.ui.bot.test.ti.wizard.RESTFullExplorerWizard;
 import org.junit.Test;
 
@@ -24,7 +22,7 @@ import org.junit.Test;
  * @author jjankovi
  *
  */
-public class RESTfulExplorerTest extends RESTfulTestBase {
+public class PathAnnotationSupportTest extends RESTfulTestBase {
 
 	private RESTFullExplorerWizard restfulWizard = null;
 
@@ -46,7 +44,7 @@ public class RESTfulExplorerTest extends RESTfulTestBase {
 		packageExplorer.openFile(getWsProjectName(), "src", 
 				getWsPackage(), getWsName() + ".java").toTextEditor();
 		resourceHelper.copyResourceToClass(bot.editorByTitle(getWsName() + ".java"),
-				RESTfulExplorerTest.class.getResourceAsStream(BASIC_WS_RESOURCE), 
+				PathAnnotationSupportTest.class.getResourceAsStream(BASIC_WS_RESOURCE), 
 				false, false, getWsPackage(), getWsName());
 		bot.sleep(Timing.time2S());
 		
@@ -71,7 +69,7 @@ public class RESTfulExplorerTest extends RESTfulTestBase {
 		packageExplorer.openFile(getWsProjectName(), "src", 
 				getWsPackage(), getWsName() + ".java").toTextEditor();
 		resourceHelper.copyResourceToClass(bot.editorByTitle(getWsName() + ".java"),
-				RESTfulExplorerTest.class.getResourceAsStream(ADVANCED_WS_RESOURCE), 
+				PathAnnotationSupportTest.class.getResourceAsStream(ADVANCED_WS_RESOURCE), 
 				false, false, getWsPackage(), getWsName());
 		bot.sleep(Timing.time2S());
 		
@@ -114,7 +112,7 @@ public class RESTfulExplorerTest extends RESTfulTestBase {
 		packageExplorer.openFile(getWsProjectName(), "src", 
 				getWsPackage(), getWsName() + ".java").toTextEditor();
 		resourceHelper.copyResourceToClass(bot.editorByTitle(getWsName() + ".java"),
-				RESTfulExplorerTest.class.getResourceAsStream(BASIC_WS_RESOURCE), 
+				PathAnnotationSupportTest.class.getResourceAsStream(BASIC_WS_RESOURCE), 
 				false, false, getWsPackage(), getWsName());
 		
 		restfulWizard = new RESTFullExplorerWizard(getWsProjectName());
@@ -147,7 +145,7 @@ public class RESTfulExplorerTest extends RESTfulTestBase {
 		packageExplorer.openFile(getWsProjectName(), "src", 
 				getWsPackage(), getWsName() + ".java").toTextEditor();
 		resourceHelper.copyResourceToClass(bot.editorByTitle(getWsName() + ".java"),
-				RESTfulExplorerTest.class.getResourceAsStream(ADVANCED_WS_RESOURCE), 
+				PathAnnotationSupportTest.class.getResourceAsStream(ADVANCED_WS_RESOURCE), 
 				false, false, getWsPackage(), getWsName());
 		
 		restfulWizard = new RESTFullExplorerWizard(getWsProjectName());
@@ -187,7 +185,7 @@ public class RESTfulExplorerTest extends RESTfulTestBase {
 		packageExplorer.openFile(getWsProjectName(), "src", 
 				getWsPackage(), getWsName() + ".java").toTextEditor();
 		resourceHelper.copyResourceToClass(bot.editorByTitle(getWsName() + ".java"),
-				RESTfulExplorerTest.class.getResourceAsStream(BASIC_WS_RESOURCE), 
+				PathAnnotationSupportTest.class.getResourceAsStream(BASIC_WS_RESOURCE), 
 				false, false, getWsPackage(), getWsName());
 		
 		restfulWizard = new RESTFullExplorerWizard(getWsProjectName());
@@ -199,7 +197,7 @@ public class RESTfulExplorerTest extends RESTfulTestBase {
 		packageExplorer.openFile(getWsProjectName(), "src", 
 				getWsPackage(), getWsName() + ".java").toTextEditor();
 		resourceHelper.copyResourceToClass(bot.editorByTitle(getWsName() + ".java"), 
-				   RESTfulExplorerTest.class.
+				   PathAnnotationSupportTest.class.
 				   getResourceAsStream(EMPTY_WS_RESOURCE), 
 				   false, false, getWsPackage(), getWsName());
 		
