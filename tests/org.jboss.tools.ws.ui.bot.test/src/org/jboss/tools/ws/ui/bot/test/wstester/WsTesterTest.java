@@ -317,7 +317,7 @@ public class WsTesterTest extends WSTestBase {
                 "WsTesterTest");
         targetFolder.mkdirs();
         for (String file : files) {
-            InputStream is = WsTesterTest.class.getResourceAsStream("/wsdl/"
+            InputStream is = WsTesterTest.class.getResourceAsStream("/resources/wsdl/"
                     + file);
             File target = new File(targetFolder, file);
             if (target.exists()) {
