@@ -47,7 +47,7 @@ public class QueryParamSupportTest extends RESTfulTestBase {
 		packageExplorer.openFile(getWsProjectName(), "src", 
 				getWsPackage(), getWsName() + ".java").toTextEditor();
 		resourceHelper.copyResourceToClass(bot.editorByTitle(getWsName() + ".java"),
-				PathAnnotationSupportTest.class.getResourceAsStream(QUERY_ONE_PARAM_RESOURCE), 
+				QueryParamSupportTest.class.getResourceAsStream(QUERY_ONE_PARAM_RESOURCE), 
 				false, false, getWsPackage(), getWsName(), queryParam1, queryType);
 		bot.sleep(Timing.time2S());
 		
@@ -62,7 +62,7 @@ public class QueryParamSupportTest extends RESTfulTestBase {
 		
 		
 		resourceHelper.copyResourceToClass(bot.editorByTitle(getWsName() + ".java"),
-				PathAnnotationSupportTest.class.getResourceAsStream(QUERY_TWO_PARAM_RESOURCE), 
+				QueryParamSupportTest.class.getResourceAsStream(QUERY_TWO_PARAM_RESOURCE), 
 				false, false, getWsPackage(), getWsName(), 
 				queryParam1, queryType, queryParam2, queryType);
 		bot.sleep(Timing.time2S());
@@ -90,7 +90,7 @@ public class QueryParamSupportTest extends RESTfulTestBase {
 		packageExplorer.openFile(getWsProjectName(), "src", 
 				getWsPackage(), getWsName() + ".java").toTextEditor();
 		resourceHelper.copyResourceToClass(bot.editorByTitle(getWsName() + ".java"),
-				PathAnnotationSupportTest.class.getResourceAsStream(QUERY_TWO_PARAM_RESOURCE), 
+				QueryParamSupportTest.class.getResourceAsStream(QUERY_TWO_PARAM_RESOURCE), 
 				false, false, getWsPackage(), getWsName(), 
 				queryParam1, queryType, queryParam2, queryType);
 		bot.sleep(Timing.time2S());
@@ -136,7 +136,7 @@ public class QueryParamSupportTest extends RESTfulTestBase {
 		packageExplorer.openFile(getWsProjectName(), "src", 
 				getWsPackage(), getWsName() + ".java").toTextEditor();
 		resourceHelper.copyResourceToClass(bot.editorByTitle(getWsName() + ".java"),
-				PathAnnotationSupportTest.class.getResourceAsStream(QUERY_TWO_PARAM_RESOURCE), 
+				QueryParamSupportTest.class.getResourceAsStream(QUERY_TWO_PARAM_RESOURCE), 
 				false, false, getWsPackage(), getWsName(), 
 				queryParam1, queryType1, queryParam2, queryType2);
 		bot.sleep(Timing.time2S());
