@@ -12,7 +12,6 @@
 package org.jboss.tools.ws.ui.bot.test.rest.validation;
 
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
-import org.jboss.tools.ws.ui.bot.test.rest.explorer.RESTfulExplorerTest;
 import org.junit.Test;
 
 /**
@@ -37,7 +36,7 @@ public class RESTfulValidationTest extends RESTfulTestBase {
 		packageExplorer.openFile(getWsProjectName(), "src", 
 				getWsPackage(), getWsName() + ".java").toTextEditor();
 		resourceHelper.copyResourceToClass(bot.editorByTitle(getWsName() + ".java"),
-				RESTfulExplorerTest.class.getResourceAsStream(SIMPLE_REST_WS_RESOURCE), 
+				RESTfulValidationTest.class.getResourceAsStream(SIMPLE_REST_WS_RESOURCE), 
 				false, getWsPackage(), getWsName(), GET_METHOD_PATH, CORRECT_PATH_PARAM);
 		
 		assertTrue(restfulHelper.getRESTValidationErrors(getWsProjectName()).length == 0);
@@ -49,7 +48,7 @@ public class RESTfulValidationTest extends RESTfulTestBase {
 		packageExplorer.openFile(getWsProjectName(), "src", 
 				getWsPackage(), getWsName() + ".java").toTextEditor();
 		resourceHelper.copyResourceToClass(bot.editorByTitle(getWsName() + ".java"),
-				RESTfulExplorerTest.class.getResourceAsStream(SIMPLE_REST_WS_RESOURCE), 
+				RESTfulValidationTest.class.getResourceAsStream(SIMPLE_REST_WS_RESOURCE), 
 				false, getWsPackage(), getWsName(), GET_METHOD_PATH, BAD_PATH_PARAM);
 		
 		assertTrue("" + restfulHelper.getRESTValidationErrors(getWsProjectName()).length, 
@@ -62,13 +61,13 @@ public class RESTfulValidationTest extends RESTfulTestBase {
 		packageExplorer.openFile(getWsProjectName(), "src", 
 				getWsPackage(), getWsName() + ".java").toTextEditor();
 		resourceHelper.copyResourceToClass(bot.editorByTitle(getWsName() + ".java"),
-				RESTfulExplorerTest.class.getResourceAsStream(SIMPLE_REST_WS_RESOURCE), 
+				RESTfulValidationTest.class.getResourceAsStream(SIMPLE_REST_WS_RESOURCE), 
 				false, getWsPackage(), getWsName(), GET_METHOD_PATH, CORRECT_PATH_PARAM);
 		
 		packageExplorer.openFile(getWsProjectName(), "src", 
 				getWsPackage(), getWsName() + ".java").toTextEditor();
 		resourceHelper.copyResourceToClass(bot.editorByTitle(getWsName() + ".java"), 
-				   RESTfulExplorerTest.class.getResourceAsStream(SIMPLE_REST_WS_RESOURCE), 
+				   RESTfulValidationTest.class.getResourceAsStream(SIMPLE_REST_WS_RESOURCE), 
 				   false, getWsPackage(), getWsName(), GET_METHOD_PATH, BAD_PATH_PARAM);
 		
 		assertTrue("" + restfulHelper.getRESTValidationErrors(getWsProjectName()).length, 
@@ -81,13 +80,13 @@ public class RESTfulValidationTest extends RESTfulTestBase {
 		packageExplorer.openFile(getWsProjectName(), "src", 
 				getWsPackage(), getWsName() + ".java").toTextEditor();
 		resourceHelper.copyResourceToClass(bot.editorByTitle(getWsName() + ".java"),
-				RESTfulExplorerTest.class.getResourceAsStream(SIMPLE_REST_WS_RESOURCE), 
+				RESTfulValidationTest.class.getResourceAsStream(SIMPLE_REST_WS_RESOURCE), 
 				false, getWsPackage(), getWsName(), GET_METHOD_PATH, BAD_PATH_PARAM);
 		
 		packageExplorer.openFile(getWsProjectName(), "src", 
 				getWsPackage(), getWsName() + ".java").toTextEditor();
 		resourceHelper.copyResourceToClass(bot.editorByTitle(getWsName() + ".java"), 
-				   RESTfulExplorerTest.class.getResourceAsStream(SIMPLE_REST_WS_RESOURCE), 
+				   RESTfulValidationTest.class.getResourceAsStream(SIMPLE_REST_WS_RESOURCE), 
 				   false, getWsPackage(), getWsName(), GET_METHOD_PATH, CORRECT_PATH_PARAM);
 		
 		assertTrue("" + restfulHelper.getRESTValidationErrors(getWsProjectName()).length, 
@@ -102,7 +101,7 @@ public class RESTfulValidationTest extends RESTfulTestBase {
 		packageExplorer.openFile(getWsProjectName(), "src", 
 				getWsPackage(), getWsName() + ".java").toTextEditor();
 		resourceHelper.copyResourceToClass(bot.editorByTitle(getWsName() + ".java"),
-				RESTfulExplorerTest.class.getResourceAsStream(SIMPLE_REST_WS_RESOURCE), 
+				RESTfulValidationTest.class.getResourceAsStream(SIMPLE_REST_WS_RESOURCE), 
 				false, getWsPackage(), getWsName(), GET_METHOD_PATH, BAD_PATH_PARAM);
 		
 		assertTrue("" + restfulHelper.getRESTValidationErrors(getWsProjectName()).length, 
