@@ -54,6 +54,7 @@
 							<version>0.0.0</version>
 						</dependency>
 						<!-- end of workaround -->
+						<!-- 
 						<dependency>
 							<type>p2-installable-unit</type>
 							<artifactId>org.eclipse.jst.enterprise_ui.feature.feature.group</artifactId>
@@ -78,7 +79,7 @@
 							<type>p2-installable-unit</type>
 							<artifactId>org.eclipse.wst.xml_ui.feature.feature.group</artifactId>
 							<version>0.0.0</version>
-						</dependency>
+						</dependency>  -->
 					</dependencies>
 				</configuration>
 			</plugin>
