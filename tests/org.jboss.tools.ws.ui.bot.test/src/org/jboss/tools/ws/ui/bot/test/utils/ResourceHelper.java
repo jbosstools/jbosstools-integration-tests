@@ -69,26 +69,19 @@ public class ResourceHelper {
 	 * @param replacement
 	 */
 	public void replaceInEditor(SWTBotEclipseEditor ed, String target, String replacement) {
-		ed.selectRange(0, 0, ed.getText().length());
-		ed.setText(ed.getText().replace(target,replacement));		
-		ed.save();
+		replaceInEditor(ed, target, replacement, true);
 	}
-
 	
 	/**
-	 * Method copies resource to class opened in SWTBotEditor
-	 * @param classEdit
-	 * @param resource
-	 * @param closeEdit
+	 * Method replaces string "target" by string "replacement.
+	 * @param target
+	 * @param replacement
 	 */
-	public void copyResourceToClass(SWTBotEditor classEdit,
-			InputStream resource, boolean closeEdit) {
-		SWTBotEclipseEditor st = classEdit.toTextEditor();
-		st.selectRange(0, 0, st.getText().length());
-		String code = readStream(resource);
-		st.setText(code);
-		classEdit.save();
-		if (closeEdit) classEdit.close();
+	public void replaceInEditor(SWTBotEclipseEditor ed, String target, 
+			String replacement, boolean save) {
+		ed.selectRange(0, 0, ed.getText().length());
+		ed.setText(ed.getText().replace(target,replacement));		
+		if (save) ed.save();
 	}
 	
 	/**
@@ -100,11 +93,24 @@ public class ResourceHelper {
 	 */
 	public void copyResourceToClass(SWTBotEditor classEdit,
 			InputStream resource, boolean closeEdit, Object... param) {
+		copyResourceToClass(classEdit, resource, true, closeEdit, param);
+	}
+	
+	/**
+	 * Method copies resource to class opened in SWTBotEditor with entered parameters
+	 * @param classEdit
+	 * @param resource
+	 * @param closeEdit
+	 * @param param
+	 */
+	public void copyResourceToClass(SWTBotEditor classEdit,
+			InputStream resource, boolean save, boolean closeEdit, Object... param) {
 		String s = readStream(resource);
 		String code = MessageFormat.format(s, param);
-		classEdit.toTextEditor().selectRange(0, 0, classEdit.toTextEditor().getText().length());
-		classEdit.toTextEditor().setText(code);
-		classEdit.save();
+		SWTBotEclipseEditor st = classEdit.toTextEditor();
+		st.selectRange(0, 0, st.getText().length());
+		st.setText(code);
+		if (save) classEdit.save();
 		if (closeEdit) classEdit.close();
 	}
 	
