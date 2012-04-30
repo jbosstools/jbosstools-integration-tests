@@ -17,6 +17,7 @@ import org.jboss.tools.vpe.ui.bot.test.editor.EditingActionsTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.ExternalEditingTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.InsertActionsTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.MinMaxPanesTest;
+import org.jboss.tools.vpe.ui.bot.test.editor.MultiSelectionTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.StylesOnThePageTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.TextEditingActionsTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.TextSelectionTest;
@@ -214,7 +215,8 @@ import org.junit.runners.Suite.SuiteClasses;
   RichFacesComponentTest.class,
   UnicodeCharacterDisplayingTest.class,
   ExternalEditingTest.class,
-  VpeToolbarTest.class
+  VpeToolbarTest.class,
+  MultiSelectionTest.class
 })
 public class VPEAllBotTests extends SWTBotTestCase{
 

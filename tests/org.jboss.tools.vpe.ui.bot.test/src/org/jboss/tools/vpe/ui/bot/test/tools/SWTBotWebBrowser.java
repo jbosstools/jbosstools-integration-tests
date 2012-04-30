@@ -94,6 +94,7 @@ public class SWTBotWebBrowser {
   public static final String SELECT_THIS_TAG_MENU_LABEL = "Select This Tag";
   public static final String PREFERENCES_MENU_LABEL = "Preferences..";
   public static final String EXTERNALIZE_STRING_MENU_LABEL = "Externalize selected string...";
+  public static final String TEAM_MENU_LABEL = "Team";
 
   public static final String JSF_MENU_LABEL = "JSF";
   public static final String JBOSS_MENU_LABEL = "JBoss";
@@ -270,12 +271,7 @@ public class SWTBotWebBrowser {
    */
   public nsIDOMNode getSelectedDomNode (){
     nsIDOMNode result = null;
-    display.syncExec(new Runnable() {
-      public void run() {
-        mozillaEditor.setFocus();
-      }
-    });
-    nsISelection selection = getSelectionController().getSelection(nsISelectionController.SELECTION_NORMAL);
+    nsISelection selection = getSelection();
     if (selection != null){
       result = selection.getFocusNode();
     }
@@ -939,6 +935,43 @@ public class SWTBotWebBrowser {
       }
       index++;
     }
+    return result;
+  }
+  /**
+   * Returns true when current selection contains exactly nodes with values
+   * @param containsWholeNodes if true selection has to contain whole nodes
+   * @param values
+   * @return
+   */
+  public boolean selectionContainsNodes(boolean containsWholeNodes,
+      String... values) {
+    boolean result = true;
+
+    List<nsIDOMNode> selectedNodes = mozillaEditor.getXulRunnerEditor()
+        .getSelectedNodes();
+    if (selectedNodes != null && values != null) {
+      if (selectedNodes.size() == values.length) {
+        int index = 0;
+        while (result && index < values.length) {
+          boolean selectedNodeContainsValue = false;
+          Iterator<nsIDOMNode> itSelectedNodes = selectedNodes.iterator();
+          while (!selectedNodeContainsValue && itSelectedNodes.hasNext()) {
+            if (containsNodeWithValue(itSelectedNodes.next(), values[index])){
+              selectedNodeContainsValue = true;
+            }
+          }
+          if (!selectedNodeContainsValue){
+            result = false;
+          }
+          index++;
+        }
+      } else {
+        result = false;
+      }
+    } else {
+      result = false;
+    }
+    
     return result;
   }
 }

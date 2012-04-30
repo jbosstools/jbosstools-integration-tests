@@ -15,6 +15,7 @@ import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
 import org.jboss.tools.vpe.ui.bot.test.editor.BlockCommentTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.JspFileEditingTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.MinMaxPanesTest;
+import org.jboss.tools.vpe.ui.bot.test.editor.MultiSelectionTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.StylesOnThePageTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.TextSelectionTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.ToggleCommentTest;
@@ -95,7 +96,17 @@ import org.jboss.tools.vpe.ui.bot.test.wizard.NewXHTMLPageWizardTest;
 import org.jboss.tools.vpe.ui.bot.test.wizard.VPESourceCodeTemplatesPreferencePageTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
-
+/**
+ * Test Suite containing stable SWT Bot test i. e. test which should always pass
+ * and are not firing events in Visual part of VPE.
+ * Main purpose of this sub suite of VPEAllBotTests suite is to be used by
+ * Continuous Integration Tools for testing VPE component 
+ * 
+ * Can be deleted once we have stable tests firing events in Visual part of VPE.
+ *  
+ * @author vpakan
+ *
+ */
 @RunWith(RequirementAwareSuite.class)
 @SuiteClasses ({
     NewXHTMLPageWizardTest.class,
@@ -178,7 +189,8 @@ import org.junit.runners.Suite.SuiteClasses;
     OpenOnTest.class,
     XhtmlFilePerformanceTest.class,
     MarkersTest.class,
-    JBIDE9445Test_DuplicateSourceMenu.class
+    JBIDE9445Test_DuplicateSourceMenu.class,
+    MultiSelectionTest.class
 })
 public class VPEStableSubsetBotTests extends SWTBotTestCase {
 
