@@ -13,6 +13,7 @@ package org.jboss.tools.ws.ui.bot.test;
 import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
 import org.jboss.tools.ws.ui.bot.test.annotation.AnnotationPropertiesTest;
 import org.jboss.tools.ws.ui.bot.test.rest.DefaultValueParamSupportTest;
+import org.jboss.tools.ws.ui.bot.test.rest.MatrixParamSupportTest;
 import org.jboss.tools.ws.ui.bot.test.rest.PathAnnotationSupportTest;
 import org.jboss.tools.ws.ui.bot.test.rest.QueryParamSupportTest;
 import org.jboss.tools.ws.ui.bot.test.rest.completion.RESTfulCompletionTest;
@@ -62,6 +63,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	PathAnnotationSupportTest.class,
 	QueryParamSupportTest.class,
 	DefaultValueParamSupportTest.class,
+	MatrixParamSupportTest.class,
 	RESTfulValidationTest.class,
 	RESTfulCompletionTest.class,
 	ApplicationPathParameterTest.class,
