@@ -93,7 +93,7 @@ public class ResourceHelper {
 	 */
 	public void copyResourceToClass(SWTBotEditor classEdit,
 			InputStream resource, boolean closeEdit, Object... param) {
-		copyResourceToClass(classEdit, resource, true, closeEdit, param);
+		copyResourceToClassWithSave(classEdit, resource, true, closeEdit, param);
 	}
 	
 	/**
@@ -103,7 +103,7 @@ public class ResourceHelper {
 	 * @param closeEdit
 	 * @param param
 	 */
-	public void copyResourceToClass(SWTBotEditor classEdit,
+	public void copyResourceToClassWithSave(SWTBotEditor classEdit,
 			InputStream resource, boolean save, boolean closeEdit, Object... param) {
 		String s = readStream(resource);
 		String code = MessageFormat.format(s, param);

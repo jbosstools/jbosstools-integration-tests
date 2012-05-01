@@ -45,7 +45,7 @@ public class DefaultValueParamSupportTest extends RESTfulTestBase {
 		/**  test showing default DefaultValue in RESTful explorer  **/
 		packageExplorer.openFile(getWsProjectName(), "src", 
 				getWsPackage(), getWsName() + ".java").toTextEditor();
-		resourceHelper.copyResourceToClass(bot.editorByTitle(getWsName() + ".java"),
+		resourceHelper.copyResourceToClassWithSave(bot.editorByTitle(getWsName() + ".java"),
 				DefaultValueParamSupportTest.class.getResourceAsStream(DEFAULT_VALUE_RESOURCE), 
 				false, false, getWsPackage(), getWsName(), queryParam, defaultValue, queryParamType);
 		bot.sleep(Timing.time2S());

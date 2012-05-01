@@ -41,12 +41,7 @@ public class PathAnnotationSupportTest extends RESTfulTestBase {
 	@Test
 	public void testAddingSimpleRESTMethods() {
 		
-		packageExplorer.openFile(getWsProjectName(), "src", 
-				getWsPackage(), getWsName() + ".java").toTextEditor();
-		resourceHelper.copyResourceToClass(bot.editorByTitle(getWsName() + ".java"),
-				PathAnnotationSupportTest.class.getResourceAsStream(BASIC_WS_RESOURCE), 
-				false, false, getWsPackage(), getWsName());
-		bot.sleep(Timing.time2S());
+		prepareWSResource(BASIC_WS_RESOURCE);
 		
 		restfulWizard = new RESTFullExplorerWizard(getWsProjectName());
 		SWTBotTreeItem[] restServices = restfulWizard.getAllRestServices();
@@ -66,12 +61,7 @@ public class PathAnnotationSupportTest extends RESTfulTestBase {
 	@Test
 	public void testAddingAdvancedRESTMethods() {
 		
-		packageExplorer.openFile(getWsProjectName(), "src", 
-				getWsPackage(), getWsName() + ".java").toTextEditor();
-		resourceHelper.copyResourceToClass(bot.editorByTitle(getWsName() + ".java"),
-				PathAnnotationSupportTest.class.getResourceAsStream(ADVANCED_WS_RESOURCE), 
-				false, false, getWsPackage(), getWsName());
-		bot.sleep(Timing.time2S());
+		prepareWSResource(ADVANCED_WS_RESOURCE);
 		
 		restfulWizard = new RESTFullExplorerWizard(getWsProjectName());
 		SWTBotTreeItem[] restServices = restfulWizard.getAllRestServices(); 
@@ -109,11 +99,7 @@ public class PathAnnotationSupportTest extends RESTfulTestBase {
 	@Test
 	public void testEditingSimpleRESTMethods() {
 		
-		packageExplorer.openFile(getWsProjectName(), "src", 
-				getWsPackage(), getWsName() + ".java").toTextEditor();
-		resourceHelper.copyResourceToClass(bot.editorByTitle(getWsName() + ".java"),
-				PathAnnotationSupportTest.class.getResourceAsStream(BASIC_WS_RESOURCE), 
-				false, false, getWsPackage(), getWsName());
+		prepareWSResource(BASIC_WS_RESOURCE);
 		
 		restfulWizard = new RESTFullExplorerWizard(getWsProjectName());
 		SWTBotTreeItem[] restServices = restfulWizard.getAllRestServices();
@@ -142,11 +128,7 @@ public class PathAnnotationSupportTest extends RESTfulTestBase {
 	@Test
 	public void testEditingAdvancedRESTMethods() {
 		
-		packageExplorer.openFile(getWsProjectName(), "src", 
-				getWsPackage(), getWsName() + ".java").toTextEditor();
-		resourceHelper.copyResourceToClass(bot.editorByTitle(getWsName() + ".java"),
-				PathAnnotationSupportTest.class.getResourceAsStream(ADVANCED_WS_RESOURCE), 
-				false, false, getWsPackage(), getWsName());
+		prepareWSResource(ADVANCED_WS_RESOURCE);
 		
 		restfulWizard = new RESTFullExplorerWizard(getWsProjectName());
 		SWTBotTreeItem[] restServices = restfulWizard.getAllRestServices();
@@ -182,11 +164,7 @@ public class PathAnnotationSupportTest extends RESTfulTestBase {
 	@Test
 	public void testDeletingRESTMethods() {
 		
-		packageExplorer.openFile(getWsProjectName(), "src", 
-				getWsPackage(), getWsName() + ".java").toTextEditor();
-		resourceHelper.copyResourceToClass(bot.editorByTitle(getWsName() + ".java"),
-				PathAnnotationSupportTest.class.getResourceAsStream(BASIC_WS_RESOURCE), 
-				false, false, getWsPackage(), getWsName());
+		prepareWSResource(BASIC_WS_RESOURCE);
 		
 		restfulWizard = new RESTFullExplorerWizard(getWsProjectName());
 		SWTBotTreeItem[] restServices = restfulWizard.getAllRestServices();
@@ -196,7 +174,7 @@ public class PathAnnotationSupportTest extends RESTfulTestBase {
 		
 		packageExplorer.openFile(getWsProjectName(), "src", 
 				getWsPackage(), getWsName() + ".java").toTextEditor();
-		resourceHelper.copyResourceToClass(bot.editorByTitle(getWsName() + ".java"), 
+		resourceHelper.copyResourceToClassWithSave(bot.editorByTitle(getWsName() + ".java"), 
 				   PathAnnotationSupportTest.class.
 				   getResourceAsStream(EMPTY_WS_RESOURCE), 
 				   false, false, getWsPackage(), getWsName());
@@ -225,6 +203,17 @@ public class PathAnnotationSupportTest extends RESTfulTestBase {
 				if (!serviceFound) return false;
 		}
 		return true;
+	}
+	
+	private void prepareWSResource(String streamPath) {
+		
+		packageExplorer.openFile(getWsProjectName(), "src", 
+				getWsPackage(), getWsName() + ".java").toTextEditor();
+		resourceHelper.copyResourceToClassWithSave(bot.editorByTitle(getWsName() + ".java"),
+				PathAnnotationSupportTest.class.getResourceAsStream(streamPath), 
+				false, false, getWsPackage(), getWsName());
+		bot.sleep(Timing.time2S());
+		
 	}
 	
 }

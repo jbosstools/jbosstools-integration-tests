@@ -43,13 +43,8 @@ public class QueryParamSupportTest extends RESTfulTestBase {
 		String queryParam2 = "param2";
 		String queryType = "java.lang.String";
 		
-		
-		packageExplorer.openFile(getWsProjectName(), "src", 
-				getWsPackage(), getWsName() + ".java").toTextEditor();
-		resourceHelper.copyResourceToClass(bot.editorByTitle(getWsName() + ".java"),
-				QueryParamSupportTest.class.getResourceAsStream(QUERY_ONE_PARAM_RESOURCE), 
-				false, false, getWsPackage(), getWsName(), queryParam1, queryType);
-		bot.sleep(Timing.time2S());
+		prepareWSResource(QUERY_ONE_PARAM_RESOURCE, 
+				getWsPackage(), getWsName(), queryParam1, queryType);
 		
 		restfulWizard = new RESTFullExplorerWizard(getWsProjectName());
 		SWTBotTreeItem[] restServices = restfulWizard.getAllRestServices();
@@ -59,13 +54,8 @@ public class QueryParamSupportTest extends RESTfulTestBase {
 		String path = restfulWizard.getPathForRestFulService(restServices[0]);
 		assertEquals("/rest?" + queryParam1 + "={" + queryParam1 + ":" + queryType + "}", path);
 		
-		
-		
-		resourceHelper.copyResourceToClass(bot.editorByTitle(getWsName() + ".java"),
-				QueryParamSupportTest.class.getResourceAsStream(QUERY_TWO_PARAM_RESOURCE), 
-				false, false, getWsPackage(), getWsName(), 
+		prepareWSResource(QUERY_TWO_PARAM_RESOURCE, getWsPackage(), getWsName(), 
 				queryParam1, queryType, queryParam2, queryType);
-		bot.sleep(Timing.time2S());
 		
 		restfulWizard = new RESTFullExplorerWizard(getWsProjectName());
 		restServices = restfulWizard.getAllRestServices();
@@ -87,13 +77,9 @@ public class QueryParamSupportTest extends RESTfulTestBase {
 		String queryParam2New = "newParam2";
 		String queryType = "java.lang.String";
 		
-		packageExplorer.openFile(getWsProjectName(), "src", 
-				getWsPackage(), getWsName() + ".java").toTextEditor();
-		resourceHelper.copyResourceToClass(bot.editorByTitle(getWsName() + ".java"),
-				QueryParamSupportTest.class.getResourceAsStream(QUERY_TWO_PARAM_RESOURCE), 
-				false, false, getWsPackage(), getWsName(), 
+		prepareWSResource(QUERY_TWO_PARAM_RESOURCE, getWsPackage(), getWsName(), 
 				queryParam1, queryType, queryParam2, queryType);
-		bot.sleep(Timing.time2S());
+		
 		resourceHelper.replaceInEditor(bot.activeEditor().toTextEditor(), 
 				queryParam1, queryParam1New, false);
 		bot.sleep(Timing.time2S());
@@ -133,13 +119,9 @@ public class QueryParamSupportTest extends RESTfulTestBase {
 		String queryType2 = "java.lang.Integer";
 		String queryTypeNew = "java.lang.Long";
 		
-		packageExplorer.openFile(getWsProjectName(), "src", 
-				getWsPackage(), getWsName() + ".java").toTextEditor();
-		resourceHelper.copyResourceToClass(bot.editorByTitle(getWsName() + ".java"),
-				QueryParamSupportTest.class.getResourceAsStream(QUERY_TWO_PARAM_RESOURCE), 
-				false, false, getWsPackage(), getWsName(), 
+		prepareWSResource(QUERY_TWO_PARAM_RESOURCE, getWsPackage(), getWsName(), 
 				queryParam1, queryType1, queryParam2, queryType2);
-		bot.sleep(Timing.time2S());
+		
 		resourceHelper.replaceInEditor(bot.activeEditor().toTextEditor(), 
 				queryType1, queryTypeNew, false);
 		bot.sleep(Timing.time2S());
@@ -167,6 +149,17 @@ public class QueryParamSupportTest extends RESTfulTestBase {
 		path = restfulWizard.getPathForRestFulService(restServices[0]);
 		assertEquals("/rest?" + queryParam1 + "={" + queryParam1 + ":" + queryType1 + "}&" +
 								queryParam2 + "={" + queryParam2 + ":" + queryTypeNew + "}", path);
+		
+	}
+	
+	private void prepareWSResource(String streamPath, Object... parameters) {
+		
+		packageExplorer.openFile(getWsProjectName(), "src", 
+				getWsPackage(), getWsName() + ".java").toTextEditor();
+		resourceHelper.copyResourceToClassWithSave(bot.editorByTitle(getWsName() + ".java"),
+				QueryParamSupportTest.class.getResourceAsStream(streamPath), 
+				false, false, parameters);
+		bot.sleep(Timing.time2S());
 		
 	}
 
