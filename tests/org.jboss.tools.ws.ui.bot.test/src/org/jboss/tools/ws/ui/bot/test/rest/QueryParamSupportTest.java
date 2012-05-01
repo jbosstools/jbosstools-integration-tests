@@ -19,12 +19,19 @@ import org.junit.Test;
 public class QueryParamSupportTest extends RESTfulTestBase {
 	
 	private RESTFullExplorerWizard restfulWizard = null;
-	
 	private String projectName = "restEmpty";
-	
 	private final String QUERY_ONE_PARAM_RESOURCE = "/resources/restful/QueryOneParam.java.ws";
-	
 	private final String QUERY_TWO_PARAM_RESOURCE = "/resources/restful/QueryTwoParam.java.ws";
+	
+	private String queryParam1 = "param1";
+	private String queryParam2 = "param2";
+	private String queryType = "java.lang.String";
+	private String queryParam1New = "newParam1";
+	private String queryParam2New = "newParam2";
+	private String queryType1 = "java.lang.String";
+	private String queryType2 = "java.lang.Integer";
+	private String queryTypeNew = "java.lang.Long";
+	
 	
 	@Override
 	protected String getWsProjectName() {
@@ -38,10 +45,6 @@ public class QueryParamSupportTest extends RESTfulTestBase {
 	
 	@Test
 	public void testSupportInExplorer() {
-		
-		String queryParam1 = "param1";
-		String queryParam2 = "param2";
-		String queryType = "java.lang.String";
 		
 		prepareWSResource(QUERY_ONE_PARAM_RESOURCE, 
 				getWsPackage(), getWsName(), queryParam1, queryType);
@@ -70,12 +73,6 @@ public class QueryParamSupportTest extends RESTfulTestBase {
 	
 	@Test
 	public void testEditingQueryParam() {
-		
-		String queryParam1 = "param1";
-		String queryParam1New = "newParam1";
-		String queryParam2 = "param2";
-		String queryParam2New = "newParam2";
-		String queryType = "java.lang.String";
 		
 		prepareWSResource(QUERY_TWO_PARAM_RESOURCE, getWsPackage(), getWsName(), 
 				queryParam1, queryType, queryParam2, queryType);
@@ -111,13 +108,7 @@ public class QueryParamSupportTest extends RESTfulTestBase {
 	}
 	
 	@Test
-	public void testEditingTypeOfParam() {
-		
-		String queryParam1 = "param1";
-		String queryParam2 = "param2";
-		String queryType1 = "java.lang.String";
-		String queryType2 = "java.lang.Integer";
-		String queryTypeNew = "java.lang.Long";
+	public void testEditingTypeOfQueryParam() {
 		
 		prepareWSResource(QUERY_TWO_PARAM_RESOURCE, getWsPackage(), getWsName(), 
 				queryParam1, queryType1, queryParam2, queryType2);
