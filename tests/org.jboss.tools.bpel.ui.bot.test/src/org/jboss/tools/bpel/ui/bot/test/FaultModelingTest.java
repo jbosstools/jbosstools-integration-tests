@@ -25,7 +25,7 @@ import org.junit.Test;
  * 
  * @author mbaluch
  */
-@Require(clearProjects = true, server = @Server(type = ServerType.SOA, state = ServerState.Disabled))
+@Require(clearProjects = true, server = @Server(type = ServerType.SOA, state = ServerState.Disabled), perspective = "BPEL")
 public class FaultModelingTest extends BPELTest {
 
 	static String BUNDLE = "org.jboss.tools.bpel.ui.bot.test";
