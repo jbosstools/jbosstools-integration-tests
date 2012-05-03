@@ -71,7 +71,6 @@ import org.jboss.tools.vpe.ui.bot.test.editor.tags.PanelTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.PickListTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.ProgressTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.SpacerTagTest;
-import org.jboss.tools.vpe.ui.bot.test.editor.tags.TogglePanelAndToogleControlTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.ToolbarAndToolbarGroupTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.TreeTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.VirtualEarthTagTest;
@@ -179,7 +178,6 @@ import org.junit.runners.Suite.SuiteClasses;
     DataOrderedListTagTest.class,
     ExtendedDataTableTagTest.class,
     ToolbarAndToolbarGroupTagTest.class,
-    TogglePanelAndToogleControlTagTest.class,
     CommandButtonTagTest.class,
     CommandLinkTagTest.class,
     HtmlCommandLinkTagTest.class,
