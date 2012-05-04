@@ -21,7 +21,7 @@ public class CreateRuntimeFromESB extends SWTTestExt {
 		bot.sleep (3000l, "3 sleeping - " + TestConfigurator.currentConfig.getEsb().runtimeHome + " " + TestConfigurator.currentConfig.getEsb().version + " " + bot.comboBox().selection().toString());
 		
 		/* ldimaggi - Oct 2011 - https://issues.jboss.org/browse/JBDS-1886 - this test fails for ESB 4.10 */
-		//assertTrue("JBDS-1886 - Version was not automatically selected by setting ESB home dir",bot.comboBox().selection().equals(TestConfigurator.currentConfig.getEsb().version));
+		assertTrue("JBDS-1886 - Version was not automatically selected by setting ESB home dir",bot.comboBox().selection().equals(TestConfigurator.currentConfig.getEsb().version));
 		
 		/* ldimaggi - Oct 2011 */
 		bot.text(0).setText("123_TheName");
