@@ -17,7 +17,6 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCheckBox;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCombo;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarToggleButton;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.jboss.tools.ui.bot.ext.SWTJBTExt;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
@@ -26,7 +25,7 @@ import org.jboss.tools.vpe.ui.bot.test.VPEAutoTestCase;
 
 public abstract class PreferencesTestCase extends VPEAutoTestCase{
 
-	protected static final String TOGGLE_SELECTION_BAR_TOOLTIP = "Toggle Selection Bar (" +  //$NON-NLS-1$
+	protected static final String TOGGLE_SELECTION_BAR_TOOLTIP = "Toggle selection tag bar (" +  //$NON-NLS-1$
 	  (SWTJBTExt.isRunningOnMacOs() ? "⌘6" : "Ctrl+6") + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	protected static final String SHOW_NON_VISUAL_TAGS = "Show non-visual tags"; //$NON-NLS-1$
 	protected static final String SHOW_BORDER_FOR_UNKNOWN_TAGS = "Show border for unknown tags"; //$NON-NLS-1$
@@ -42,6 +41,7 @@ public abstract class PreferencesTestCase extends VPEAutoTestCase{
 	protected static final String I18N_BUTTON_TOOLTIP = "Externalize selected string... (" + //$NON-NLS-1$
 			(SWTJBTExt.isRunningOnMacOs() ? "⌘7" : "Ctrl+7") + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	protected static final String SHOW_VISUAL_TOOLBAR_PREFS_CHECKBOX_NAME = "Show toolbar within the editor (otherwise in Eclipse's toolbar)"; //$NON-NLS-1$
+	protected static final String SHOW_SELECTION_TAG_BAR = "Show selection tag bar"; //$NON-NLS-1$
 	
 	@Override
 	protected void closeUnuseDialogs() {
@@ -91,10 +91,6 @@ public abstract class PreferencesTestCase extends VPEAutoTestCase{
 	}
 	
 	void setPreferencesToDefault(boolean fromEditor) throws WidgetNotFoundException{
-	  SWTBotToolbarToggleButton tbShowSelectionBar = bot.toolbarToggleButtonWithTooltip(TOGGLE_SELECTION_BAR_TOOLTIP);
-	  if (!tbShowSelectionBar.isChecked()){
-	    tbShowSelectionBar.click();
-	  }
 	  if (fromEditor){
 	    bot.toolbarButtonWithTooltip(PREF_TOOLTIP).click(); //$NON-NLS-1$
 	    bot.shell(PREF_FILTER_SHELL_TITLE).activate(); //$NON-NLS-1$
@@ -108,10 +104,14 @@ public abstract class PreferencesTestCase extends VPEAutoTestCase{
 	      .expandNode(IDELabel.PreferencesDialog.JBOSS_TOOLS_WEB_EDITORS) //$NON-NLS-1$
 	      .expandNode(IDELabel.PreferencesDialog.JBOSS_TOOLS_WEB_EDITORS_VPE).select();
 	  }
-		SWTBotCheckBox checkBox = bot.checkBox(SHOW_BORDER_FOR_UNKNOWN_TAGS);
+		SWTBotCheckBox checkBox = bot.checkBox(SHOW_SELECTION_TAG_BAR);
 		if (!checkBox.isChecked()) {
 			checkBox.click();
 		}
+		checkBox = bot.checkBox(SHOW_BORDER_FOR_UNKNOWN_TAGS);
+    if (!checkBox.isChecked()) {
+      checkBox.click();
+    }
 		checkBox = bot.checkBox(SHOW_NON_VISUAL_TAGS);
 		if (checkBox.isChecked()) {
 			checkBox.click();

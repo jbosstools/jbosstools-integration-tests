@@ -57,7 +57,11 @@ public class XhtmlFilePerformanceTest extends VPEAutoTestCase {
 	  final SWTBotEclipseEditor xhtmlTextEditor = bot.editorByTitle(XhtmlFilePerformanceTest.TEST_PAGE_NAME).toTextEditor();
 	  String insertText = "!!!123 Test Title Inserted 321!!!";
 	  String origText = xhtmlTextEditor.getText();
-	  xhtmlTextEditor.insertText(9, 5, "<h1>" + insertText + "<h1/>");
+	  SWTJBTExt.selectTextInSourcePane(new SWTBotExt(), 
+	      XhtmlFilePerformanceTest.TEST_PAGE_NAME, 
+	      "<h1>", 
+	      0, 0);
+	  xhtmlTextEditor.insertText("<h1>" + insertText + "</h1>");
 	  xhtmlTextEditor.save();
 	  bot.sleep(Timing.time2S());
     bot.toolbarButtonWithTooltip(SWTJBTExt.isRunningOnMacOs() ? 
