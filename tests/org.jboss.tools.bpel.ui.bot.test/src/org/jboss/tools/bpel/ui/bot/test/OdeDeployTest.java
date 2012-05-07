@@ -1,9 +1,9 @@
 package org.jboss.tools.bpel.ui.bot.test;
 
+import org.custommonkey.xmlunit.Diff;
+import org.custommonkey.xmlunit.XMLUnit;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.swtbot.swt.finder.SWTBot;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
@@ -14,16 +14,13 @@ import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
-import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
-import org.jboss.tools.ui.bot.ext.types.IDELabel;
-import org.jboss.tools.ui.bot.ext.view.ProjectExplorer;
 import org.jboss.tools.ui.bot.ext.view.ServersView;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 /**
  * 
- * @author psrna
+ * @author psrna, apodhrad
  *
  */
 @Require(server = @Server(type = ServerType.SOA, state = ServerState.Running, version = "5.2"), perspective="BPEL")
@@ -43,7 +40,15 @@ public class OdeDeployTest extends BPELTest {
 		"			</q0:SayHelloRequest>" +
 		"	</soapenv:Body>" +
 		"</soapenv:Envelope>";
-	
+
+	final static String EXPECTED_RESPONSE = "<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\">"
+			+ "  <SOAP-ENV:Header />"
+			+ "  <SOAP-ENV:Body>"
+			+ "    <SayHelloResponse xmlns=\"http://www.jboss.org/bpel/examples\">"
+			+ "      <tns:result xmlns:tns=\"http://www.jboss.org/bpel/examples\">Hello JBDS</tns:result>"
+			+ "    </SayHelloResponse>"
+			+ "  </SOAP-ENV:Body>"
+			+ "</SOAP-ENV:Envelope>";
 	
 	ServersView sView = new ServersView();
 
@@ -104,7 +109,7 @@ public class OdeDeployTest extends BPELTest {
 		SWTBotTreeItem server = tree.getTreeItem(serverName + "  [Started, Synchronized]").select();
 		server.expand();
 		bot.sleep(TIME_5S);
-		assertTrue(server.getNode("say_hello  [Synchronized]").isVisible());
+		assertTrue(isProjectDeployed("say_hello"));
 	}
 	
 	@Test
@@ -112,17 +117,11 @@ public class OdeDeployTest extends BPELTest {
 		
 		// Test the process
 		String response = SendSoapMessage.sendMessage(ENDPOINT, MESSAGE, "simple");
-		
-		Assert.assertTrue(response != null);
-		Assert.assertTrue(response.contains("<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\">"));
-		Assert.assertTrue(response.contains("<SOAP-ENV:Header />"));
-		Assert.assertTrue(response.contains("<SOAP-ENV:Body>"));
-		Assert.assertTrue(response.contains("<SayHelloResponse xmlns=\"http://www.jboss.org/bpel/examples\">"));
-		Assert.assertTrue(response.contains("<tns:result xmlns:tns=\"http://www.jboss.org/bpel/examples\">Hello JBDS</tns:result>"));
-		Assert.assertTrue(response.contains("</SayHelloResponse>"));
-		Assert.assertTrue(response.contains("</SOAP-ENV:Body>"));
-		Assert.assertTrue(response.contains("</SOAP-ENV:Envelope>"));
 
+		XMLUnit.setIgnoreWhitespace(true);
+		Diff diff = new Diff(response, EXPECTED_RESPONSE);
+
+		assertTrue(diff.similar());
 	}
 	
 }

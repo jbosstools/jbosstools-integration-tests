@@ -3,6 +3,8 @@ package org.jboss.tools.bpel.ui.bot.test;
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.widgetOfType;
 import java.util.List;
 
+import org.custommonkey.xmlunit.Diff;
+import org.custommonkey.xmlunit.XMLUnit;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swtbot.eclipse.gef.finder.SWTGefBot;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditor;
@@ -78,7 +80,7 @@ public class ToolingCompatibilityTest extends BPELTest{
 		SWTBotTreeItem server = tree.getTreeItem(serverName + "  [Started, Synchronized]").select();
 		server.expand();
 		bot.sleep(TIME_5S);
-		assertTrue(server.getNode("eclipse_tooling_proj  [Synchronized]").isVisible());
+		assertTrue(isProjectDeployed("eclipse_tooling_proj"));
 	}
 	
 	@Test
@@ -86,16 +88,22 @@ public class ToolingCompatibilityTest extends BPELTest{
 		
 		// Test the process
 		String response = SendSoapMessage.sendMessage(ENDPOINT, MESSAGE, "simple");
-		
+
 		Assert.assertTrue(response != null);
-		Assert.assertTrue(response.contains("<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\">"));
-		Assert.assertTrue(response.contains("<SOAP-ENV:Header />"));
-		Assert.assertTrue(response.contains("<SOAP-ENV:Body>"));
-		Assert.assertTrue(response.contains("<HelloWorldResponse xmlns=\"http://helloWorld\">"));
-		Assert.assertTrue(response.contains("<tns:result xmlns:tns=\"http://helloWorld\">Kitty</tns:result>"));
-		Assert.assertTrue(response.contains("</HelloWorldResponse>"));
-		Assert.assertTrue(response.contains("</SOAP-ENV:Body>"));
-		Assert.assertTrue(response.contains("</SOAP-ENV:Envelope>"));
+		
+		String expectedResponse = "<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\">"
+			+ "  <SOAP-ENV:Header />"
+			+ "  <SOAP-ENV:Body>"
+			+ "    <HelloWorldResponse xmlns=\"http://helloWorld\">"
+			+ "      <tns:result xmlns:tns=\"http://helloWorld\">Kitty</tns:result>"
+			+ "    </HelloWorldResponse>"
+			+ "  </SOAP-ENV:Body>"
+			+ "</SOAP-ENV:Envelope>";
+		XMLUnit.setIgnoreWhitespace(true);
+		
+		Diff diff = new Diff(response, expectedResponse);
+
+		assertTrue(diff.similar());
 	}
 	
 
@@ -149,7 +157,7 @@ public class ToolingCompatibilityTest extends BPELTest{
 		SWTBotTreeItem server = tree.getTreeItem(serverName + "  [Started, Synchronized]").select();
 		server.expand();
 		bot.sleep(TIME_20S);
-		assertTrue(server.getNode("eclipse_tooling_proj  [Synchronized]").isVisible());
+		assertTrue(isProjectDeployed("eclipse_tooling_proj"));
 	}
 	
 	@Test
@@ -157,16 +165,24 @@ public class ToolingCompatibilityTest extends BPELTest{
 		
 		// Test the process
 		String response = SendSoapMessage.sendMessage(ENDPOINT, MESSAGE, "simple");
+
+		Assert.assertTrue(response != null);
+		
+		String expectedResponse = "<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\">"
+				+ "  <SOAP-ENV:Header />"
+				+ "  <SOAP-ENV:Body>"
+				+ "    <HelloWorldResponse xmlns=\"http://helloWorld\">"
+				+ "      <tns:result xmlns:tns=\"http://helloWorld\">Hello Kitty</tns:result>"
+				+ "    </HelloWorldResponse>"
+				+ "  </SOAP-ENV:Body>"
+				+ "</SOAP-ENV:Envelope>";
 		
 		Assert.assertTrue(response != null);
-		Assert.assertTrue(response.contains("<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\">"));
-		Assert.assertTrue(response.contains("<SOAP-ENV:Header />"));
-		Assert.assertTrue(response.contains("<SOAP-ENV:Body>"));
-		Assert.assertTrue(response.contains("<HelloWorldResponse xmlns=\"http://helloWorld\">"));
-		Assert.assertTrue(response.contains("<tns:result xmlns:tns=\"http://helloWorld\">Hello Kitty</tns:result>"));
-		Assert.assertTrue(response.contains("</HelloWorldResponse>"));
-		Assert.assertTrue(response.contains("</SOAP-ENV:Body>"));
-		Assert.assertTrue(response.contains("</SOAP-ENV:Envelope>"));
+
+		XMLUnit.setIgnoreWhitespace(true);
+		Diff diff = new Diff(response, expectedResponse);
+
+		assertTrue("Expected response is\n" + expectedResponse + "\nbut received message is as follows\n" + response, diff.similar());
 	}
 	
 	@Test
