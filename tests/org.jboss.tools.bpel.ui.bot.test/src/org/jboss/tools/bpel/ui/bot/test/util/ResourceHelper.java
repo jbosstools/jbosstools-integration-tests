@@ -32,6 +32,7 @@ public class ResourceHelper {
 			
 			Thread.sleep(3000);
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new RuntimeException("Failed to import project: " + projectName, e.getCause());
 		}
 	}
