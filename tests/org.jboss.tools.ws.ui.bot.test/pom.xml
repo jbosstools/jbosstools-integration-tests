@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"	
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-	
+
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.jboss.tools.ws</groupId>
@@ -10,22 +11,49 @@
 	</parent>
 	<groupId>org.jboss.tools.ws.tests</groupId>
 	<artifactId>org.jboss.tools.ws.ui.bot.test</artifactId>
-	
+
 	<packaging>eclipse-test-plugin</packaging>
 	<properties>
 		<!-- debug option -->
-		<!-- <systemProperties>-Xdebug -Xrunjdwp:transport=dt_socket,address=8001,server=y,suspend=y -Dswtbot.test.properties.file=${project.basedir}/properties/config_files/swtbot.properties</systemProperties> -->
-		<systemProperties> -Dswtbot.test.properties.file=${project.basedir}/properties/swtbot.properties</systemProperties>
-		
-		
+		<!-- <systemProperties>-Xdebug -Xrunjdwp:transport=dt_socket,address=8001,server=y,suspend=y 
+			-Dswtbot.test.properties.file=${project.basedir}/properties/config_files/swtbot.properties</systemProperties> -->
+		<systemProperties>-Dswtbot.test.properties.file=${project.basedir}/properties/swtbot.properties</systemProperties>
+
+
 		<!-- need to manually set path to swtbot.test.properties with property -->
-		<!-- <systemProperties>-Xdebug -Xrunjdwp:transport=dt_socket,address=8001,server=y,suspend=y -Dswtbot.test.properties.file=${swtbot.properties}</systemProperties> -->
+		<!-- <systemProperties>-Xdebug -Xrunjdwp:transport=dt_socket,address=8001,server=y,suspend=y 
+			-Dswtbot.test.properties.file=${swtbot.properties}</systemProperties> -->
 		<!-- <systemProperties>-Dswtbot.test.properties.file=${swtbot.properties}</systemProperties> -->
-		
+
 	</properties>
-	
+
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>2.4</version>
+				<executions>
+					<execution>
+						<id>unpack</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>unpack</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<groupId>org.jboss.as</groupId>
+									<artifactId>jboss-as-dist</artifactId>
+									<version>7.1.1.Final</version>
+									<type>zip</type>
+								</artifactItem>
+							</artifactItems>
+							<outputDirectory>${project.build.directory}/requirements</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-surefire-plugin</artifactId>
@@ -34,7 +62,8 @@
 					<testClass>org.jboss.tools.ws.ui.bot.test.WSAllBotTests</testClass>
 					<useUIThread>false</useUIThread>
 					<skip>${swtbot.test.skip}</skip>
-					<!-- Kill swt bot test take more than 3 hours minutes (10800 seconds) to finish -->
+					<!-- Kill swt bot test take more than 3 hours minutes (10800 seconds) 
+						to finish -->
 					<forkedProcessTimeoutInSeconds>10800</forkedProcessTimeoutInSeconds>
 					<dependencies combine.children="append">
 						<dependency>
@@ -54,32 +83,14 @@
 							<version>0.0.0</version>
 						</dependency>
 						<!-- end of workaround -->
-						<!-- 
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.eclipse.jst.enterprise_ui.feature.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.eclipse.jst.web_ui.feature.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.eclipse.wst.web_ui.feature.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.eclipse.wst.ws_ui.feature.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.eclipse.wst.xml_ui.feature.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>  -->
+						<!-- <dependency> <type>p2-installable-unit</type> <artifactId>org.eclipse.jst.enterprise_ui.feature.feature.group</artifactId> 
+							<version>0.0.0</version> </dependency> <dependency> <type>p2-installable-unit</type> 
+							<artifactId>org.eclipse.jst.web_ui.feature.feature.group</artifactId> <version>0.0.0</version> 
+							</dependency> <dependency> <type>p2-installable-unit</type> <artifactId>org.eclipse.wst.web_ui.feature.feature.group</artifactId> 
+							<version>0.0.0</version> </dependency> <dependency> <type>p2-installable-unit</type> 
+							<artifactId>org.eclipse.wst.ws_ui.feature.feature.group</artifactId> <version>0.0.0</version> 
+							</dependency> <dependency> <type>p2-installable-unit</type> <artifactId>org.eclipse.wst.xml_ui.feature.feature.group</artifactId> 
+							<version>0.0.0</version> </dependency> -->
 					</dependencies>
 				</configuration>
 			</plugin>
