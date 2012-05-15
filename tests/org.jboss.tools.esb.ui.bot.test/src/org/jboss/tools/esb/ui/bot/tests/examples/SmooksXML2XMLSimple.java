@@ -1,5 +1,6 @@
 package org.jboss.tools.esb.ui.bot.tests.examples;
 
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
@@ -25,6 +26,16 @@ public class SmooksXML2XMLSimple extends ESBExampleTest {
 		assertFalse ("Test fails due to ESB deployment error: NNNN", text.contains("ERROR [org.apache.juddi.v3.client.transport.wrapper.RequestHandler]"));
 		assertNotNull("Calling Send message failed, nothing appened to server log",text);	
 		assertTrue("Calling Send message failed, unexpected server output :"+text,text.contains("<Order"));
-		SWTTestExt.servers.removeAllProjectsFromServer();
+		
+		SWTTestExt.servers.removeAllProjectsFromServer();		
+
+		/* Close the open, but empty "Quick Fix" dialog - https://issues.jboss.org/browse/JBIDE-11781 */
+		try {
+			SWTTestExt.bot.shell("Quick Fix").close();
+		}
+		catch (Exception E) {
+			System.out.println("Condition from https://issues.jboss.org/browse/JBIDE-11781 not found " + E.getMessage());
+		}
+		//SWTTestExt.bot.closeAllShells(); // https://issues.jboss.org/browse/JBIDE-11781
 	}
 }

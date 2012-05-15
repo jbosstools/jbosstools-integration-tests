@@ -38,6 +38,5 @@ public class HelloWorld extends ESBExampleTest {
 		assertTrue("Calling ESB Send message failed, unexpected server output :"+text,text.contains("hello world esb"));
 		
 		SWTTestExt.servers.removeAllProjectsFromServer();
-		
 	}
 }

@@ -25,6 +25,14 @@ public class WebServiceConsumer1 extends ESBExampleTest {
 		text = executeClientGetServerOutput(getExampleClientProjectName(),"src","org.jboss.soa.esb.samples.quickstart.webservice_consumer1.test","SendEsbMessage.java");
 		assertNotNull("Calling ESB Send message failed, nothing appened to server log",text);	
 		assertTrue("Calling ESB Send message failed, unexpected server output :"+text,text.contains("Hello World Greeting for"));
-		SWTTestExt.servers.removeAllProjectsFromServer();
+		SWTTestExt.servers.removeAllProjectsFromServer();		
+		
+		/* Close the open, but empty "Quick Fix" dialog - https://issues.jboss.org/browse/JBIDE-11781 */
+		try {
+			SWTTestExt.bot.shell("Quick Fix").close();
+		}
+		catch (Exception E) {
+			System.out.println("Condition from https://issues.jboss.org/browse/JBIDE-11781 not found " + E.getMessage());
+		}
 	}
 }

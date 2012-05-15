@@ -47,7 +47,17 @@ public class ESBExampleTest extends ExampleTest{
 		fixExampleLibs();
 		if (getExampleClientProjectName()!=null) {
 			fixExampleClientLibs();
+		}	
+		
+		/* Close the open, but empty "Quick Fix" dialog if it is open.
+		 * Temporary fix to workaround https://issues.jboss.org/browse/JBIDE-11781 */
+		try {
+			SWTTestExt.bot.shell("Quick Fix").close();
 		}
+		catch (Exception E) {
+			log.error("Condition from https://issues.jboss.org/browse/JBIDE-11781 not found " + E.getMessage());
+		}
+		
 		openESBConfig();
 		
 		/* Temporary fix to workaround JBDS-2011 */
@@ -104,7 +114,7 @@ public class ESBExampleTest extends ExampleTest{
 		//console.switchConsole(configuredState.getServer().name);
 		
 		//String text2 = console.getConsoleText(TIME_5S, TIME_20S, false);
-		String text2 = console.getConsoleText(TIME_5S, TIME_60S, false);  /* https://issues.jboss.org/browse/JBQA-5838 - ldimaggi  */
+		String text2 = console.getConsoleText(TIME_5S, TIME_30S, false);  /* https://issues.jboss.org/browse/JBQA-5838 - ldimaggi  */
 		log.info("text2 = " + text2);
 		//console.clearConsole();
 			
@@ -177,9 +187,6 @@ public class ESBExampleTest extends ExampleTest{
 	protected void assertProblemsView() {
 		//bot.sleep(60000l);
 		SWTBotTreeItem errors = ProblemsView.getErrorsNode(bot);
-		
-		
-		
 		assertNull("Project still contain problems :"+SWTEclipseExt.getFormattedTreeNode(errors),errors);
 	}
 	protected void fixLibrary(String project, String lib) {
