@@ -17,15 +17,11 @@ import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
 @Require(db=@DB, seam=@Seam, server=@Server(version="5.0", operator=">", state=ServerState.Running, type=ServerType.EPP))
 public class SeamPortletExampleGatein extends AbstractPortletExampleGatein {
 	
-	private static final String PROJECT_NAME_IN_WIZARD = "SeamPortlet";
-
 	private static final String PROJECT_NAME_EAR = "seam-portlet-ear";
 
 	private static final String PROJECT_NAME_EJB = "seam-portlet-ejb";
 
 	private static final String PROJECT_NAME_WAR = "seam-portlet-web";
-
-	private int getProjectNameMethodCallCounter = 0;
 
 	@Override
 	public String getExampleName() {
@@ -34,11 +30,6 @@ public class SeamPortletExampleGatein extends AbstractPortletExampleGatein {
 
 	@Override
 	public String[] getProjectNames() {
-		// an ugly hack to pass the assert that the project name in wizard is the same as project name in workspace
-		if (getProjectNameMethodCallCounter <= 1){
-			getProjectNameMethodCallCounter++;
-			return new String[]{PROJECT_NAME_IN_WIZARD};
-		}
 		return new String[]{PROJECT_NAME_EAR, PROJECT_NAME_EJB, PROJECT_NAME_WAR};
 	}
 }
