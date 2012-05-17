@@ -14,8 +14,10 @@ import org.jboss.tools.esb.ui.bot.tests.examples.HelloWorld;
 import org.jboss.tools.esb.ui.bot.tests.examples.HelloWorldAction;
 import org.jboss.tools.esb.ui.bot.tests.examples.HelloWorldFileAction;
 import org.jboss.tools.esb.ui.bot.tests.examples.SmooksCSV2XML;
+import org.jboss.tools.esb.ui.bot.tests.examples.SmooksXML2POJO;
 import org.jboss.tools.esb.ui.bot.tests.examples.SmooksXML2XMLSimple;
 import org.jboss.tools.esb.ui.bot.tests.examples.SmooksXML2XMLDateManipulation;
+import org.jboss.tools.esb.ui.bot.tests.examples.SimpleEAPTest;
 import org.jboss.tools.esb.ui.bot.tests.examples.WebServiceConsumer1;
 import org.jboss.tools.esb.ui.bot.tests.examples.WebServiceProducer;
 import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
@@ -27,15 +29,17 @@ import org.junit.runners.Suite.SuiteClasses;
 	CreateRuntimeFromSOA.class,
 	NewProjectUsingRuntime.class,
 	NewProjectUsingBundledInEAP.class,
-	Editing.class,
+	//Editing.class,  // https://issues.jboss.org/browse/JBIDE-11616
 	HelloWorld.class,
 	HelloWorldAction.class,
 	HelloWorldFileAction.class,
-	WebServiceConsumer1.class,
-	WebServiceProducer.class,
 	SmooksCSV2XML.class,
+	SmooksXML2POJO.class,
 	SmooksXML2XMLDateManipulation.class,
-	SmooksXML2XMLSimple.class
+	SmooksXML2XMLSimple.class,
+	WebServiceConsumer1.class,
+	WebServiceProducer.class
+	//SimpleEAPTest.class
 	})
 @RunWith(RequirementAwareSuite.class)
 public class ESBAllBotTests {

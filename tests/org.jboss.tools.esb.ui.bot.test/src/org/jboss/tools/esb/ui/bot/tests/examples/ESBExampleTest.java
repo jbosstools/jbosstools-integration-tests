@@ -61,7 +61,7 @@ public class ESBExampleTest extends ExampleTest{
 		openESBConfig();
 		
 		/* Temporary fix to workaround JBDS-2011 */
-		System.out.println ("DEBUG - name = " + getExampleProjectName() );
+		//System.out.println ("DEBUG - name = " + getExampleProjectName() );
 		if (!getExampleProjectName().equals("transform_CSV2XML")) {
 			assertProblemsView();
 		}
