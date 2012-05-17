@@ -12,9 +12,10 @@
 	
 	<packaging>eclipse-test-plugin</packaging>
 	<properties>
-		<jbosstools.test.jbossesb.home>${requirement.build.root}/jbossesb-4.7</jbosstools.test.jbossesb.home>
+		<jbosstools.test.jbossesb.home>${requirement.build.root}/jbossesb-4.11</jbosstools.test.jbossesb.home>
+		<jbosstools.test.jbosssoa.home>${requirement.build.root}/jboss-soa-p-5.3/jboss-soa-p-5/jboss-as</jbosstools.test.jbosssoa.home>
 		<swtbot.test.properties.file>./org.jboss.tools.esb.ui.bot.test.properties</swtbot.test.properties.file>
-		<systemProperties>-Djbosstools.test.jbossesb.home=${jbosstools.test.jbossesb.home} -Dswtbot.test.properties.file=${swtbot.test.properties.file}
+		<systemProperties>-Djbosstools.test.jbossesb.home=${jbosstools.test.jbossesb.home} -Djbosstools.test.jbosssoa.home=${jbosstools.test.jbosssoa.home} -Dswtbot.test.properties.file=${swtbot.test.properties.file}
 		</systemProperties>
 	</properties>
 
