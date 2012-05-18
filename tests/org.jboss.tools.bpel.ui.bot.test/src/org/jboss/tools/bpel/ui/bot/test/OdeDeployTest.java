@@ -23,7 +23,7 @@ import org.junit.Test;
  * @author psrna, apodhrad
  *
  */
-@Require(server = @Server(type = ServerType.SOA, state = ServerState.Running, version = "5.2"), perspective="BPEL")
+@Require(server = @Server(type = ServerType.JbossAS, state = ServerState.Running, version = "5.1"), perspective="BPEL")
 public class OdeDeployTest extends BPELTest {
 	
 	final static String BUNDLE   = "org.jboss.tools.bpel.ui.bot.test";
@@ -114,7 +114,6 @@ public class OdeDeployTest extends BPELTest {
 	
 	@Test
 	public void requestResponseTest() throws Exception {
-		
 		// Test the process
 		String response = SendSoapMessage.sendMessage(ENDPOINT, MESSAGE, "simple");
 

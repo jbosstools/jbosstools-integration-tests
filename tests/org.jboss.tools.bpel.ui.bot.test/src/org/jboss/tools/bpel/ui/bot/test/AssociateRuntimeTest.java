@@ -17,7 +17,7 @@ import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.junit.Test;
 
 
-@Require(server = @Server(type = ServerType.SOA, state = ServerState.Present, version = "5.2"), perspective="BPEL")
+@Require(server = @Server(type = ServerType.JbossAS, state = ServerState.Present, version = "5.1"), perspective="BPEL")
 public class AssociateRuntimeTest extends BPELTest {
 	
 	@Test

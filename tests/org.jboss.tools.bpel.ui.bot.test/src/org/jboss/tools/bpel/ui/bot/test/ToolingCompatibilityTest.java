@@ -37,7 +37,7 @@ import org.junit.Test;
  * @author psrna
  *
  */
-@Require(server = @Server(type = ServerType.SOA, state = ServerState.Running, version = "5.2"), perspective="BPEL")
+@Require(server = @Server(type = ServerType.JbossAS, state = ServerState.Running, version = "5.1"), perspective="BPEL")
 public class ToolingCompatibilityTest extends BPELTest{
 	
 	final static String BUNDLE   = "org.jboss.tools.bpel.ui.bot.test";

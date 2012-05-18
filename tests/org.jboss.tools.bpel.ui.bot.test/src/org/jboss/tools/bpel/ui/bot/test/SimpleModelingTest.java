@@ -21,7 +21,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-@Require(clearProjects = true, server = @Server(type = ServerType.SOA, state = ServerState.Present, version = "5.2"))
+@Require(clearProjects = true, server = @Server(type = ServerType.JbossAS, state = ServerState.Present, version = "5.1"))
 public class SimpleModelingTest extends BPELTest {
 
 	static String BUNDLE = "org.jboss.tools.bpel.ui.bot.test";
