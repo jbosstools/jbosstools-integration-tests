@@ -29,7 +29,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	CreateRuntimeFromSOA.class,
 	NewProjectUsingRuntime.class,
 	NewProjectUsingBundledInEAP.class,
-	Editing.class,  // https://issues.jboss.org/browse/JBIDE-11616
+//	Editing.class,  // https://issues.jboss.org/browse/JBIDE-11616
 	HelloWorld.class,
 	HelloWorldAction.class,
 	HelloWorldFileAction.class,
