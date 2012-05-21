@@ -20,16 +20,16 @@ public class WebServiceProducer extends ESBExampleTest {
 		super.executeExample();	
 		
 		String text = executeClientGetServerOutput("org.jboss.soa.esb.samples.quickstart.webserviceproducer.test.SendMessage","jms");
-		assertNotNull("Calling Send message failed, nothing appened to server log",text);	
-		assertTrue("Calling Send message failed, unexpected server output :"+text,text.contains("Goodbye!!"));	
+		assertNotNull("Calling Send message failed, nothing appended to server log",text);	
+		assertTrue("Calling Send message failed, unexpected server output :"+text,text.contains("Ah Goodbye then!!!!"));	
 
 		text = executeClientGetServerOutput("org.jboss.soa.esb.samples.quickstart.webserviceproducer.test.SendMessage","http 8765");
-		assertNotNull("Calling Send message failed, nothing appened to server log",text);	
-		assertTrue("Calling Send message failed, unexpected server output :"+text,text.contains("Goodbye!!"));
+		assertNotNull("Calling Send message failed, nothing appended (http) to server log",text);	
+		assertTrue("Calling Send message failed, unexpected server output :"+text,text.contains("Ah Goodbye then!!!!"));
 
 		text = executeClientGetServerOutput("org.jboss.soa.esb.samples.quickstart.webserviceproducer.test.SendMessage","socket 8888");
-		assertNotNull("Calling Send message failed, nothing appened to server log",text);	
-		assertTrue("Calling Send message failed, unexpected server output :"+text,text.contains("Goodbye!!"));
+		assertNotNull("Calling Send message failed, nothing appended (socket) to server log",text);	
+		assertTrue("Calling Send message failed, unexpected server output :"+text,text.contains("Ah Goodbye then!!!!"));
 		
 		SWTTestExt.servers.removeAllProjectsFromServer();
 	}

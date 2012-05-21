@@ -150,14 +150,43 @@ public class ESBExampleTest extends ExampleTest{
 	protected String executeClientGetServerOutput(String className, String arguments) {
 		String text = console.getConsoleText();		
 		eclipse.runJavaApplication(getExampleClientProjectName(), className, arguments);
-		bot.sleep(Timing.time5S());
-		console.switchConsole(configuredState.getServer().name);
-		String text2 = console.getConsoleText(TIME_5S, TIME_20S, false);
-		if (text.length()>=text2.length()) {
+//		console.switchConsole(configuredState.getServer().name);
+//		String text2 = console.getConsoleText(TIME_5S, TIME_30S, false);
+//		if (text.length()>=text2.length()) {
+//			return null;
+//		}
+//		return text2.substring(text.length());
+	
+		// New - the consoles fail to switch....sometimes
+		boolean consoleSwitched = false;	
+		int switchLimit = 30;
+		int switchCounter = 0;
+		consoleSwitched = console.switchConsole(configuredState.getServer().name);
+		while (!consoleSwitched) {
+			consoleSwitched = console.switchConsole(configuredState.getServer().name);
+			bot.sleep(Timing.time10S());
+			log.error("Console did not switch - retrying.");
+			if (switchCounter++ > switchLimit) {
+				break;
+			}
+		}		
+		//console.switchConsole(configuredState.getServer().name);
+		
+		//String text2 = console.getConsoleText(TIME_5S, TIME_20S, false);
+		String text2 = console.getConsoleText(TIME_5S, TIME_30S, false);  /* https://issues.jboss.org/browse/JBQA-5838 - ldimaggi  */
+		log.info("text2 = " + text2);
+		//console.clearConsole();
+			
+		if (text2.length() == 0) {			
 			return null;
 		}
-		return text2.substring(text.length());
+		else {
+			return text2;
+		}	
 	}	
+	
+	
+	
 	protected void fixJREToWorkspaceDefault(String project) {
 		SWTBotTree tree = projectExplorer.show().bot().tree();
 		SWTBotTreeItem proj = tree.select(project).getTreeItem(project);
