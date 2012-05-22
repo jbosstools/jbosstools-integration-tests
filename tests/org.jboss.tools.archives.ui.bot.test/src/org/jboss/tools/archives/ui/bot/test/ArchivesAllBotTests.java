@@ -20,7 +20,7 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @RunWith(RequirementAwareSuite.class)
 @SuiteClasses({
-	
+	ExampleTest.class
 })
 public class ArchivesAllBotTests {
 		
