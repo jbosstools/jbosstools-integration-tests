@@ -19,7 +19,8 @@ import org.junit.runners.Suite.SuiteClasses;
  * @author Jaroslav Jankovic
  */
 @RunWith(RequirementAwareSuite.class)
-@SuiteClasses({	
+@SuiteClasses({
+	
 })
 public class ArchivesAllBotTests {
 		
