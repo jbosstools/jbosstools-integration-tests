@@ -13,15 +13,65 @@
 	<properties>
 		<coverage.filter>org.jboss.ide.eclipse.archives.ui*</coverage.filter>
 		<emma.instrument.bundles>org.jboss.ide.eclipse.archives.ui</emma.instrument.bundles>
+		<additionalSystemProperties></additionalSystemProperties>
+		<systemProperties>${additionalSystemProperties} -Dswtbot.test.properties.file=${project.basedir}/properties/swtbot.properties</systemProperties>
 	</properties>
+	<profiles>
+		<profile>
+			<id>debug</id>
+			<properties>
+				<additionalSystemProperties>-Xdebug
+					-Xrunjdwp:transport=dt_socket,address=8001,server=y,suspend=y</additionalSystemProperties>
+			</properties>
+		</profile>
+	</profiles>
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>2.4</version>
+				<executions>
+					<execution>
+						<id>unpack</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>unpack</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<groupId>org.jboss.as</groupId>
+									<artifactId>jboss-as-dist</artifactId>
+									<version>7.1.1.Final</version>
+									<type>zip</type>
+								</artifactItem>
+							</artifactItems>
+							<outputDirectory>${project.build.directory}/requirements</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-surefire-plugin</artifactId>
 				<configuration>
+					<testSuite>org.jboss.tools.archives.ui.bot.test</testSuite>
+					<testClass>org.jboss.tools.archives.ui.bot.test.ArchivesAllBotTests</testClass>
 					<useUIThread>false</useUIThread>
 					<skip>${swtbot.test.skip}</skip>
+					<dependencies combine.children="append">
+						<dependency>
+							<type>p2-installable-unit</type>
+							<artifactId>org.jboss.ide.eclipse.as.feature.feature.group</artifactId>
+							<version>0.0.0</version>
+						</dependency>
+						<dependency>
+							<type>p2-installable-unit</type>
+							<artifactId>org.jboss.ide.eclipse.archives.feature.feature.group</artifactId>
+							<version>0.0.0</version>
+						</dependency>
+					</dependencies>
 				</configuration>
 			</plugin>
 		</plugins>
