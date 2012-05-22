@@ -113,17 +113,19 @@ public class ESBExampleTest extends ExampleTest{
 		}		
 		//console.switchConsole(configuredState.getServer().name);
 		
-		//String text2 = console.getConsoleText(TIME_5S, TIME_20S, false);
-		String text2 = console.getConsoleText(TIME_5S, TIME_30S, false);  /* https://issues.jboss.org/browse/JBQA-5838 - ldimaggi  */
-		log.info("text2 = " + text2);
-		//console.clearConsole();
-			
-		if (text2.length() == 0) {			
-			return null;
-		}
-		else {
-			return text2;
-		}				
+//		//String text2 = console.getConsoleText(TIME_5S, TIME_20S, false);
+//		String text2 = console.getConsoleText(TIME_5S, TIME_30S, false);  /* https://issues.jboss.org/browse/JBQA-5838 - ldimaggi  */
+//		log.info("text2 = " + text2);
+//		//console.clearConsole();
+//			
+//		if (text2.length() == 0) {			
+//			return null;
+//		}
+//		else {
+//			return text2;
+//		}	
+		String returnString = consoleWaiting();
+		return returnString;				
 	}
 	
 
@@ -157,6 +159,38 @@ public class ESBExampleTest extends ExampleTest{
 //		}
 //		return text2.substring(text.length());
 	
+//		// New - the consoles fail to switch....sometimes
+//		boolean consoleSwitched = false;	
+//		int switchLimit = 30;
+//		int switchCounter = 0;
+//		consoleSwitched = console.switchConsole(configuredState.getServer().name);
+//		while (!consoleSwitched) {
+//			consoleSwitched = console.switchConsole(configuredState.getServer().name);
+//			bot.sleep(Timing.time10S());
+//			log.error("Console did not switch - retrying.");
+//			if (switchCounter++ > switchLimit) {
+//				break;
+//			}
+//		}		
+//		//console.switchConsole(configuredState.getServer().name);
+//		
+//		//String text2 = console.getConsoleText(TIME_5S, TIME_20S, false);
+//		String text2 = console.getConsoleText(TIME_5S, TIME_30S, false);  /* https://issues.jboss.org/browse/JBQA-5838 - ldimaggi  */
+//		log.info("text2 = " + text2);
+//		//console.clearConsole();
+//			
+//		if (text2.length() == 0) {			
+//			return null;
+//		}
+//		else {
+//			return text2;
+//		}
+		String returnString = consoleWaiting();
+		return returnString;	
+	}	
+	
+	
+	protected String consoleWaiting () {
 		// New - the consoles fail to switch....sometimes
 		boolean consoleSwitched = false;	
 		int switchLimit = 30;
@@ -171,19 +205,19 @@ public class ESBExampleTest extends ExampleTest{
 			}
 		}		
 		//console.switchConsole(configuredState.getServer().name);
-		
+
 		//String text2 = console.getConsoleText(TIME_5S, TIME_20S, false);
 		String text2 = console.getConsoleText(TIME_5S, TIME_30S, false);  /* https://issues.jboss.org/browse/JBQA-5838 - ldimaggi  */
 		log.info("text2 = " + text2);
 		//console.clearConsole();
-			
+
 		if (text2.length() == 0) {			
 			return null;
 		}
 		else {
 			return text2;
 		}	
-	}	
+	}
 	
 	
 	
