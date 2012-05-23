@@ -10,25 +10,23 @@
  ******************************************************************************/
 package org.jboss.tools.archives.ui.bot.test;
 
-import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite.SuiteClasses;
+import org.jboss.tools.archives.ui.bot.test.view.ProjectArchivesView;
+import org.jboss.tools.ui.bot.ext.types.IDELabel;
+import org.junit.Test;
 
 /**
+ * 
+ * @author jjankovi
  *
- * @author Jaroslav Jankovic
  */
-@RunWith(RequirementAwareSuite.class)
-@SuiteClasses({
-	ViewIsPresentTest.class,
-	BuildingArchiveNode.class,
-	BuildingProjectTest.class,
-	BuildingArchiveTest.class,
-//	CreatingArchiveTest.class,
-//	ModifyingArchiveTest.class,
-//	DeletingArchiveTest.class,
-//	DeployingArchiveTest.class,
-})
-public class ArchivesAllBotTests {
-		
+public class ViewIsPresentTest extends ArchivesTestBase {
+
+	@Test
+	public void testArchivesViewIsPresent() {
+		ProjectArchivesView view = new ProjectArchivesView();
+		view.show();
+		assertTrue("Project Archives view is not active.", 
+				bot.activeView().getTitle().equals(IDELabel.View.PROJECT_ARCHIVES));
+	}
+	
 }
