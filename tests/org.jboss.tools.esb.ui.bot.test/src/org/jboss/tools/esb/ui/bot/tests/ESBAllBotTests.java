@@ -20,6 +20,8 @@ import org.jboss.tools.esb.ui.bot.tests.examples.SmooksXML2XMLDateManipulation;
 import org.jboss.tools.esb.ui.bot.tests.examples.SimpleEAPTest;
 import org.jboss.tools.esb.ui.bot.tests.examples.WebServiceConsumer1;
 import org.jboss.tools.esb.ui.bot.tests.examples.WebServiceProducer;
+import org.jboss.tools.esb.ui.bot.tests.examples.WebServiceProducerHttp;
+import org.jboss.tools.esb.ui.bot.tests.examples.WebServiceProducerSocket;
 import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
@@ -38,7 +40,9 @@ import org.junit.runners.Suite.SuiteClasses;
 	SmooksXML2XMLDateManipulation.class,
 	SmooksXML2XMLSimple.class,
 	WebServiceConsumer1.class,
-	WebServiceProducer.class
+	WebServiceProducer.class,
+	WebServiceProducerHttp.class,
+	WebServiceProducerSocket.class
 	//SimpleEAPTest.class
 	})
 @RunWith(RequirementAwareSuite.class)
