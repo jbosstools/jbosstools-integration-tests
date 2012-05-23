@@ -121,9 +121,8 @@ public class WSTestBase extends SWTTestExt {
 	
 	protected void importWSTestProject(String projectLocation, String dir) {
 		ImportHelper.importProject(projectLocation, dir, Activator.PLUGIN_ID);
-		/** configure JDK and required runtime */
-		projectHelper.addDefaultJDKIntoProject(getWsProjectName());
-		projectHelper.addConfiguredRuntimeIntoProject(getWsProjectName(), 
+		
+		eclipse.addConfiguredRuntimeIntoProject(getWsProjectName(), 
 				configuredState.getServer().name);
 	}
 
