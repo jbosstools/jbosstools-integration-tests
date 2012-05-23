@@ -40,7 +40,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	SmooksXML2XMLDateManipulation.class,
 	SmooksXML2XMLSimple.class,
 	WebServiceConsumer1.class,
-	WebServiceProducer.class,
+//	WebServiceProducer.class,  // http://lists.jboss.org/pipermail/jbosstools-dev/2008-December/002559.html
 	WebServiceProducerHttp.class,
 	WebServiceProducerSocket.class
 	//SimpleEAPTest.class
