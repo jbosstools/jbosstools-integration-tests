@@ -24,7 +24,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	BuildingArchiveNode.class,
 	BuildingProjectTest.class,
 	BuildingArchiveTest.class,
-//	CreatingArchiveTest.class,
+	CreatingArchiveTest.class,
 //	ModifyingArchiveTest.class,
 //	DeletingArchiveTest.class,
 //	DeployingArchiveTest.class,
