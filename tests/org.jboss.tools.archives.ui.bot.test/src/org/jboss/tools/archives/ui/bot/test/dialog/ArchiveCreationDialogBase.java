@@ -26,6 +26,7 @@ public abstract class ArchiveCreationDialogBase {
 	
 	public ArchiveCreationDialogBase() {
 		shell = SWTBotFactory.getBot().shell(getDialogTitle());
+		shell.activate();
 		bot = shell.bot();
 	}
 	
@@ -67,6 +68,7 @@ public abstract class ArchiveCreationDialogBase {
 	
 	public void finish() {
 		bot.button("Finish").click();
+		SWTBotFactory.getUtil().waitForNonIgnoredJobs();
 	}
 
 	public abstract String getDialogTitle();
