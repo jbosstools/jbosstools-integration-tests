@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<packages version="1.3">
+   <package name="pr2.jar" type="jar" todir="/pr2" exploded="false" inWorkspace="true">
+      <properties>
+         <property name="org.jboss.ide.eclipse.as.core.packages.ModuleIDPropertyKey" value="1337777769109"></property>
+      </properties>
+   </package>
+   <properties></properties>
+</packages>
