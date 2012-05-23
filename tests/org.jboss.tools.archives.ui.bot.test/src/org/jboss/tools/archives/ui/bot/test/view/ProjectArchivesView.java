@@ -10,6 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.archives.ui.bot.test.view;
 
+import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.archives.ui.bot.test.context.ArchiveContextMenu;
@@ -81,6 +82,15 @@ public class ProjectArchivesView extends ViewBase {
 		SWTBotTree tree = this.bot().tree();
 		SWTBotTreeItem treeItem = TreeHelper.expandNode(this.bot(), pathToArchive);
 		return contextTool.editPublishSettings(tree, treeItem);
+	}
+	
+	public boolean itemExists(String... path) {
+		try {
+			TreeHelper.expandNode(bot, path);
+			return true;
+		} catch (WidgetNotFoundException exc) {
+			return false;
+		}
 	}
 	
 }
