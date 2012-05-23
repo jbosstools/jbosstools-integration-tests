@@ -11,6 +11,7 @@
 package org.jboss.tools.archives.ui.bot.test.explorer;
 
 import org.eclipse.swtbot.swt.finder.SWTBot;
+import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.archives.ui.bot.test.context.ArchiveContextMenu;
@@ -78,6 +79,18 @@ public class ProjectArchivesExplorer {
 		return contextTool.editPublishSettings(tree, treeItem);
 	}
 	
+	public boolean itemExists(String... path) {
+		try {
+			SWTBotTreeItem ti = explorer;
+			for (String pathItem : path) {
+				ti = ti.getNode(pathItem);
+			}
+			return true;
+		} catch (WidgetNotFoundException exc) {
+			return false;
+		}
+	}
+	
 	private SWTBot bot() {
 		return bot;
 	}
@@ -89,5 +102,6 @@ public class ProjectArchivesExplorer {
 		pe.selectProject(project);
 		return TreeHelper.expandNode(pe.bot(), project, "Project Archives");
 	}
+	
 	
 }
