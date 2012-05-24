@@ -55,31 +55,43 @@ public class CreatingArchiveTest extends ArchivesTestBase {
 	
 	@Test
 	public void testCreatingArchivetWithView() {
+		
+		/* prepare view for testing */
 		ProjectArchivesView view = viewForProject(project);
 		
 		/* creating JAR archive from project - standard way */
 		NewJarDialog dialog = view.createNewJarArchive(project);
 		createArchive(dialog, ARCHIVE_STANDARD_1, true);
+		
+		/* test archive was created */
 		assertItemExistsInView(view, project, ARCHIVE_STANDARD_1_PATH);
 		
 		/* creating JAR archive from project - no compression way */
 		dialog = view.createNewJarArchive(project);
 		createArchive(dialog, ARCHIVE_NO_COMPRESSION_1, false);
+		
+		/* test archive was created */
 		assertItemExistsInView(view, project, ARCHIVE_NO_COMPRESSION_1_PATH);
 	}
 	
 	@Test
 	public void testCreatingArchiveWithExplorer() {
+		
+		/* prepare explorer for testing */
 		ProjectArchivesExplorer explorer = explorerForProject(project);
 		
 		/* creating JAR archive from project - standard way */
 		NewJarDialog dialog = explorer.createNewJarArchive();
 		createArchive(dialog, ARCHIVE_STANDARD_2, true);
+		
+		/* test archive was created */
 		assertItemExistsInExplorer(explorer, ARCHIVE_STANDARD_2_PATH);
 		
 		/* creating JAR archive from project - no compression way */
 		dialog = explorer.createNewJarArchive();
 		createArchive(dialog, ARCHIVE_NO_COMPRESSION_2, false);
+		
+		/* test archive was created */
 		assertItemExistsInExplorer(explorer, ARCHIVE_NO_COMPRESSION_2_PATH);
 	}
 	

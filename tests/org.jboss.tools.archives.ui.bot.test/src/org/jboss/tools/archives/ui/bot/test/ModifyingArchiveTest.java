@@ -50,22 +50,30 @@ public class ModifyingArchiveTest extends ArchivesTestBase {
 	
 	@Test
 	public void testModifyingArchivetWithView() {
+		
+		/* prepare view for testing */
 		ProjectArchivesView view = viewForProject(project);
 		
 		/* modifying archive name with Project Archive view */
 		EditArchiveDialog dialog = view.editArchive(project, PATH_ARCHIVE_1);
 		editArchive(dialog, ARCHIVE_NAME_1_NEW);
+		
+		/* test archive was modified */
 		assertItemNotExistsInView(view, project, PATH_ARCHIVE_1);
 		assertItemExistsInView(view, project, PATH_ARCHIVE_1_NEW);
 	}
 	
 	@Test
 	public void testModifyingArchiveWithExplorer() {
+		
+		/* prepare explorer for testing */
 		ProjectArchivesExplorer explorer = new ProjectArchivesExplorer(project);
 		
 		/* modifying archive name with Project Archive explorer */
 		EditArchiveDialog dialog = explorer.editArchive(PATH_ARCHIVE_2);
 		editArchive(dialog, ARCHIVE_NAME_2_NEW);
+		
+		/* test archive was modified */
 		assertItemNotExistsInExplorer(explorer, PATH_ARCHIVE_2);
 		assertItemExistsInExplorer(explorer, PATH_ARCHIVE_2_NEW);
 	}

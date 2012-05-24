@@ -10,12 +10,15 @@
  ******************************************************************************/
 package org.jboss.tools.archives.ui.bot.test;
 
+import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.archives.ui.bot.test.explorer.ProjectArchivesExplorer;
 import org.jboss.tools.archives.ui.bot.test.view.ProjectArchivesView;
 import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.helper.ImportHelper;
+import org.jboss.tools.ui.bot.ext.view.ServersView;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
@@ -59,6 +62,43 @@ public class ArchivesTestBase extends SWTTestExt {
 	
 	protected void assertItemNotExistsInExplorer(ProjectArchivesExplorer explorer, String... path) {
 		assertFalse(explorer.itemExists(path));
+	}
+	
+	protected void assertArchiveIsDeployed(String archive) {
+		ServersView serversView = showServersView();
+		SWTBotTreeItem server = findConfiguredServer(serversView);
+		server.collapse();
+		server.expand();
+		boolean found = false;
+		for (SWTBotTreeItem ti : server.getItems()) {
+			if (ti.getText().contains(archive)) {
+				found = true;
+				break;
+			}
+		}
+		assertTrue(archive + " was not deployed", found);
+	}
+	
+	protected void removeArchiveFromServer(String archive) {
+		ServersView serversView = showServersView();
+		serversView.removeProjectFromServers(archive);
+	}
+	
+	protected SWTBotTreeItem findConfiguredServer(ServersView serversView) {
+		SWTBotTreeItem server = null;
+		try {
+			server = serversView. findServerByName(serversView.bot().tree(), 
+				configuredState.getServer().name);			
+		} catch (WidgetNotFoundException exc) {
+			fail("Server is not configured - missing in servers view");
+		}
+		return server;
+	}
+	
+	private ServersView showServersView() {
+		ServersView serversView = new ServersView();
+		serversView.show();
+		return serversView;
 	}
 	
 	protected static void importProject(String projectName) {

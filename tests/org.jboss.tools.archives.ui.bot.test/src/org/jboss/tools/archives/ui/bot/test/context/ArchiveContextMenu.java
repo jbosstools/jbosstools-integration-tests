@@ -70,12 +70,16 @@ public class ArchiveContextMenu {
 	}
 	
 	public ArchivePublishSettingsDialog publishToServer(SWTBotTree tree, 
-			SWTBotTreeItem item) {
+			SWTBotTreeItem item, boolean returnDialog) {
 		ContextMenuHelper.prepareTreeItemForContextMenu(tree, item);
 		SWTBotMenu menu = new SWTBotMenu(ContextMenuHelper.
 				getContextMenu(tree, "Publish To Server", false));
 		menu.click();
-		return new ArchivePublishSettingsDialog();
+		if (returnDialog) {
+			return new ArchivePublishSettingsDialog();
+		} else {
+			return null;
+		}
 	}
 	
 	public ArchivePublishSettingsDialog editPublishSettings(SWTBotTree tree, 

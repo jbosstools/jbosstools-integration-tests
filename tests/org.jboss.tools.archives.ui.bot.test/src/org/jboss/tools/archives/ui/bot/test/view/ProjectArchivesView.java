@@ -72,10 +72,11 @@ public class ProjectArchivesView extends ViewBase {
 		contextTool.deleteArchive(tree, treeItem);
 	}
 	
-	public ArchivePublishSettingsDialog publishToServer(String... pathToArchive) {
+	public ArchivePublishSettingsDialog publishToServer(boolean returnDialog,
+			String... pathToArchive) {
 		SWTBotTree tree = this.bot().tree();
 		SWTBotTreeItem treeItem = TreeHelper.expandNode(this.bot(), pathToArchive);
-		return contextTool.publishToServer(tree, treeItem);
+		return contextTool.publishToServer(tree, treeItem, returnDialog);
 	}
 	
 	public ArchivePublishSettingsDialog editPublishSettings(String... pathToArchive) {

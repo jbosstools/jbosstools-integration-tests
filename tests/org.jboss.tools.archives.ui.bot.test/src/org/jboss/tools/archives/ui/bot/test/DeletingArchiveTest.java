@@ -40,15 +40,27 @@ public class DeletingArchiveTest extends ArchivesTestBase {
 	
 	@Test
 	public void testDeletingArchivetWithView() {
+		
+		/* prepare view for testing */
 		ProjectArchivesView view = viewForProject(project);
+		
+		/* delete archive in view */
 		view.deleteArchive(project, PATH_ARCHIVE_1);
+		
+		/* test archive was deleted */
 		assertItemNotExistsInView(view, project, PATH_ARCHIVE_1);
 	}
 	
 	@Test
 	public void testDeletingArchiveWithExplorer() {
+		
+		/* prepare explorer for testing */
 		ProjectArchivesExplorer explorer = explorerForProject(project);
+		
+		/* delete archive in explorer */
 		explorer.deleteArchive(PATH_ARCHIVE_2);
+		
+		/* test archive was deleted */
 		assertItemNotExistsInExplorer(explorer, PATH_ARCHIVE_2);
 	}
 	

@@ -67,10 +67,11 @@ public class ProjectArchivesExplorer {
 		contextTool.deleteArchive(tree, treeItem);
 	}
 	
-	public ArchivePublishSettingsDialog publishToServer(String archive) {
+	public ArchivePublishSettingsDialog publishToServer(
+			boolean returnDialog, String archive) {
 		SWTBotTree tree = this.bot().tree();
 		SWTBotTreeItem treeItem = explorer.getNode(archive);
-		return contextTool.publishToServer(tree, treeItem);
+		return contextTool.publishToServer(tree, treeItem, returnDialog);
 	}
 	
 	public ArchivePublishSettingsDialog editPublishSettings(String archive) {

@@ -78,6 +78,11 @@ public class ArchivePublishSettingsDialog {
 		return this;
 	}
 	
+	public ArchivePublishSettingsDialog unselectAllServers() {
+		table().unselect();
+		return this;
+	}
+	
 	public ArchivePublishSettingsDialog checkAlwaysPublish() {
 		this.bot.checkBox(0).select();
 		return this; 
@@ -108,6 +113,7 @@ public class ArchivePublishSettingsDialog {
 	
 	public void finish() {
 		bot.button("Finish").click();
+		SWTBotFactory.getUtil().waitForNonIgnoredJobs();
 	}
 	
 }
