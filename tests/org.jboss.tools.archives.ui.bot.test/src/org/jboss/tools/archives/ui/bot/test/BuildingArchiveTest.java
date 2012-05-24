@@ -10,8 +10,6 @@
  ******************************************************************************/
 package org.jboss.tools.archives.ui.bot.test;
 
-import org.jboss.tools.archives.ui.bot.test.explorer.ProjectArchivesExplorer;
-import org.jboss.tools.archives.ui.bot.test.view.ProjectArchivesView;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -32,17 +30,14 @@ public class BuildingArchiveTest extends ArchivesTestBase{
 	
 	@Test
 	public void testBuildingArchiveWithView() {
-		ProjectArchivesView view = new ProjectArchivesView();
-		view.show();
-		projectExplorer.selectProject(projectName);
-		view.buildArchiveFull(projectName, archiveName);
+		viewForProject(projectName)
+			.buildArchiveFull(projectName, archiveName);
 	}
 	
 	@Test
 	public void testBuildingArchiveWithExplorer() {
-		ProjectArchivesExplorer explorer = 
-				new ProjectArchivesExplorer(projectName);
-		explorer.buildArchiveFull(archiveName);
+		explorerForProject(projectName)
+			.buildArchiveFull(archiveName);
 	}
 	
 }

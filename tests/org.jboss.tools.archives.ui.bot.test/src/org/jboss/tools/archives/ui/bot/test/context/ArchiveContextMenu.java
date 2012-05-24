@@ -16,6 +16,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.archives.ui.bot.test.dialog.ArchivePublishSettingsDialog;
 import org.jboss.tools.archives.ui.bot.test.dialog.EditArchiveDialog;
 import org.jboss.tools.archives.ui.bot.test.dialog.NewJarDialog;
+import org.jboss.tools.ui.bot.ext.SWTBotFactory;
 import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
 
 /**
@@ -65,6 +66,7 @@ public class ArchiveContextMenu {
 		SWTBotMenu menu = new SWTBotMenu(ContextMenuHelper.
 				getContextMenu(tree, "Delete Archive", false));
 		menu.click();
+		SWTBotFactory.getUtil().waitForNonIgnoredJobs();
 	}
 	
 	public ArchivePublishSettingsDialog publishToServer(SWTBotTree tree, 

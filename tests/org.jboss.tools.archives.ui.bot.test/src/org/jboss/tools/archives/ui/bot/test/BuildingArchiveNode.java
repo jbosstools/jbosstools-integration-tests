@@ -10,7 +10,6 @@
  ******************************************************************************/
 package org.jboss.tools.archives.ui.bot.test;
 
-import org.jboss.tools.archives.ui.bot.test.view.ProjectArchivesView;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -31,10 +30,8 @@ public class BuildingArchiveNode extends ArchivesTestBase {
 	
 	@Test
 	public void testBuildingArchiveNode() {
-		ProjectArchivesView view = new ProjectArchivesView();
-		view.show();
-		projectExplorer.selectProject(projectName);
-		view.buildArchiveNode(projectName, archiveName);
+		viewForProject(projectName).
+			buildArchiveNode(projectName, archiveName);
 	}
 	
 }
