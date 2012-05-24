@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:BpmnDiagram xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:bpmn="http://stp.eclipse.org/bpmn" xmi:id="_1ZcdAVmhEd2P9rCHPooJgA" iD="_1ZcdAFmhEd2P9rCHPooJgA">
+  <pools xmi:type="bpmn:Pool" xmi:id="_1ZpRUVmhEd2P9rCHPooJgA" iD="_1ZpRUFmhEd2P9rCHPooJgA" name="Policy Pricing">
+    <artifacts xmi:type="bpmn:DataObject" xmi:id="_fliSgVmmEd2P9rCHPooJgA" iD="_fliSgFmmEd2P9rCHPooJgA" name="Driver">
+      <associations xmi:type="bpmn:Association" xmi:id="_iz_ykFmmEd2P9rCHPooJgA" target="_A-sB0FmiEd2P9rCHPooJgA"/>
+    </artifacts>
+    <artifacts xmi:type="bpmn:DataObject" xmi:id="_eFomAVmmEd2P9rCHPooJgA" iD="_eFomAFmmEd2P9rCHPooJgA" name="Policy">
+      <associations xmi:type="bpmn:Association" xmi:id="_iAHekFmmEd2P9rCHPooJgA" target="_A-sB0FmiEd2P9rCHPooJgA"/>
+    </artifacts>
+    <vertices xmi:type="bpmn:Activity" xmi:id="_1ZpRU1mhEd2P9rCHPooJgA" iD="_1ZpRUlmhEd2P9rCHPooJgA" outgoingEdges="_W_ip4VmiEd2P9rCHPooJgA" incomingEdges="_WBEPcVmiEd2P9rCHPooJgA" name="Price Policy" lanes="_GO-2wVmiEd2P9rCHPooJgA" activityType="Task"/>
+    <vertices xmi:type="bpmn:Activity" xmi:id="_A-sB0FmiEd2P9rCHPooJgA" iD="_A-rawFmiEd2P9rCHPooJgA" associations="_iAHekFmmEd2P9rCHPooJgA _iz_ykFmmEd2P9rCHPooJgA" outgoingEdges="_WBEPcVmiEd2P9rCHPooJgA" lanes="_HHcIwVmiEd2P9rCHPooJgA _GO-2wVmiEd2P9rCHPooJgA" activityType="EventStartMessage"/>
+    <vertices xmi:type="bpmn:Activity" xmi:id="_OwuOUVmiEd2P9rCHPooJgA" iD="_OwuOUFmiEd2P9rCHPooJgA" outgoingEdges="_h4ty4VmiEd2P9rCHPooJgA _kUIscVmiEd2P9rCHPooJgA" incomingEdges="_W_ip4VmiEd2P9rCHPooJgA" name="   Price Calculated ?" lanes="_GO-2wVmiEd2P9rCHPooJgA _HHcIwVmiEd2P9rCHPooJgA" activityType="GatewayDataBasedExclusive"/>
+    <vertices xmi:type="bpmn:Activity" xmi:id="_P2TWUVmiEd2P9rCHPooJgA" iD="_P2TWUFmiEd2P9rCHPooJgA" outgoingEdges="_lkjLcVmiEd2P9rCHPooJgA" incomingEdges="_kUIscVmiEd2P9rCHPooJgA" name="Review Pricing" lanes="_HHcIwVmiEd2P9rCHPooJgA"/>
+    <vertices xmi:type="bpmn:Activity" xmi:id="_ZxYfYVmiEd2P9rCHPooJgA" iD="_ZxYfYFmiEd2P9rCHPooJgA" incomingEdges="_h4ty4VmiEd2P9rCHPooJgA _lkjLcVmiEd2P9rCHPooJgA" lanes="_HHcIwVmiEd2P9rCHPooJgA _GO-2wVmiEd2P9rCHPooJgA" activityType="EventEndEmpty"/>
+    <sequenceEdges xmi:type="bpmn:SequenceEdge" xmi:id="_WBEPcVmiEd2P9rCHPooJgA" iD="_WBEPcFmiEd2P9rCHPooJgA" source="_A-sB0FmiEd2P9rCHPooJgA" target="_1ZpRU1mhEd2P9rCHPooJgA"/>
+    <sequenceEdges xmi:type="bpmn:SequenceEdge" xmi:id="_W_ip4VmiEd2P9rCHPooJgA" iD="_W_ip4FmiEd2P9rCHPooJgA" source="_1ZpRU1mhEd2P9rCHPooJgA" target="_OwuOUVmiEd2P9rCHPooJgA"/>
+    <sequenceEdges xmi:type="bpmn:SequenceEdge" xmi:id="_h4ty4VmiEd2P9rCHPooJgA" iD="_h4ty4FmiEd2P9rCHPooJgA" name="false" source="_OwuOUVmiEd2P9rCHPooJgA" target="_ZxYfYVmiEd2P9rCHPooJgA"/>
+    <sequenceEdges xmi:type="bpmn:SequenceEdge" xmi:id="_kUIscVmiEd2P9rCHPooJgA" iD="_kUIscFmiEd2P9rCHPooJgA" name="true" source="_OwuOUVmiEd2P9rCHPooJgA" target="_P2TWUVmiEd2P9rCHPooJgA"/>
+    <sequenceEdges xmi:type="bpmn:SequenceEdge" xmi:id="_lkjLcVmiEd2P9rCHPooJgA" iD="_lkjLcFmiEd2P9rCHPooJgA" source="_P2TWUVmiEd2P9rCHPooJgA" target="_ZxYfYVmiEd2P9rCHPooJgA"/>
+    <lanes xmi:type="bpmn:Lane" xmi:id="_GO-2wVmiEd2P9rCHPooJgA" iD="_GO-2wFmiEd2P9rCHPooJgA" name="services-lane" activities="_1ZpRU1mhEd2P9rCHPooJgA _OwuOUVmiEd2P9rCHPooJgA _A-sB0FmiEd2P9rCHPooJgA _ZxYfYVmiEd2P9rCHPooJgA"/>
+    <lanes xmi:type="bpmn:Lane" xmi:id="_HHcIwVmiEd2P9rCHPooJgA" iD="_HHcIwFmiEd2P9rCHPooJgA" name="loanprocessor" activities="_A-sB0FmiEd2P9rCHPooJgA _P2TWUVmiEd2P9rCHPooJgA _ZxYfYVmiEd2P9rCHPooJgA _OwuOUVmiEd2P9rCHPooJgA"/>
+  </pools>
+</bpmn:BpmnDiagram>
