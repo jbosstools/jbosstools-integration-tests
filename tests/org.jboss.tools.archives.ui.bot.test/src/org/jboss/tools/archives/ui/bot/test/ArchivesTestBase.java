@@ -10,11 +10,11 @@
  ******************************************************************************/
 package org.jboss.tools.archives.ui.bot.test;
 
+import org.jboss.tools.archives.ui.bot.test.explorer.ProjectArchivesExplorer;
+import org.jboss.tools.archives.ui.bot.test.view.ProjectArchivesView;
 import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
-import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
 import org.jboss.tools.ui.bot.ext.helper.ImportHelper;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
@@ -24,13 +24,24 @@ import org.junit.runners.Suite.SuiteClasses;
  * @author jjankovi
  *
  */
-@Require(clearProjects = true, perspective = "Java",
-		 server = @Server(state = ServerState.NotRunning, 
-	 	 version = "6.0", operator = ">="))
+@Require(clearProjects = true, perspective = "Java")
+//		 server = @Server(state = ServerState.NotRunning, 
+//	 	 version = "6.0", operator = ">="))
 @RunWith(RequirementAwareSuite.class)
 @SuiteClasses({ ArchivesAllBotTests.class })
 public class ArchivesTestBase extends SWTTestExt {
 
+	protected ProjectArchivesView viewForProject(String projectName) {
+		ProjectArchivesView view = new ProjectArchivesView();
+		view.show();
+		projectExplorer.selectProject(projectName);
+		return view;
+	}
+	
+	protected ProjectArchivesExplorer explorerForProject(String projectName) {
+		return new ProjectArchivesExplorer(projectName);
+	}
+	
 	protected static void importProject(String projectName) {
 		
 		String location = "/resources/prj/" + projectName;
