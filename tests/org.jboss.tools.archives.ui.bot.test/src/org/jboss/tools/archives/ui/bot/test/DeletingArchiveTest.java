@@ -23,8 +23,15 @@ import org.junit.Test;
 public class DeletingArchiveTest extends ArchivesTestBase {
 
 	private static String project = "pr3";
-	private String pathToArchive1 = project + "a.jar [/" + project + "]";
-	private String pathToArchive2 = project + "b.jar [/" + project + "]";
+	private final String ARCHIVE_NAME_1 = 
+			project + "a.jar";
+	private final String ARCHIVE_NAME_2 = 
+			project + "b.jar";
+	private final String PATH_SUFFIX = " [/" + project + "]"; 
+	private final String PATH_ARCHIVE_1 = 
+			ARCHIVE_NAME_1 + PATH_SUFFIX;
+	private final String PATH_ARCHIVE_2 = 
+			ARCHIVE_NAME_2 + PATH_SUFFIX;
 	
 	@BeforeClass
 	public static void setup() {
@@ -34,15 +41,15 @@ public class DeletingArchiveTest extends ArchivesTestBase {
 	@Test
 	public void testDeletingArchivetWithView() {
 		ProjectArchivesView view = viewForProject(project);
-		view.deleteArchive(project, pathToArchive1);
-		assertFalse(view.itemExists(project, pathToArchive1));
+		view.deleteArchive(project, PATH_ARCHIVE_1);
+		assertItemNotExistsInView(view, project, PATH_ARCHIVE_1);
 	}
 	
 	@Test
 	public void testDeletingArchiveWithExplorer() {
 		ProjectArchivesExplorer explorer = explorerForProject(project);
-		explorer.deleteArchive(pathToArchive2);
-		assertFalse(explorer.itemExists(pathToArchive1));
+		explorer.deleteArchive(PATH_ARCHIVE_2);
+		assertItemNotExistsInExplorer(explorer, PATH_ARCHIVE_2);
 	}
 	
 }

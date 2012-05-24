@@ -25,15 +25,18 @@ import org.junit.runners.Suite.SuiteClasses;
  *
  */
 @Require(clearProjects = true, perspective = "Java")
-//		 server = @Server(state = ServerState.NotRunning, 
-//	 	 version = "6.0", operator = ">="))
 @RunWith(RequirementAwareSuite.class)
 @SuiteClasses({ ArchivesAllBotTests.class })
 public class ArchivesTestBase extends SWTTestExt {
 
-	protected ProjectArchivesView viewForProject(String projectName) {
+	protected ProjectArchivesView openProjectArchivesView() {
 		ProjectArchivesView view = new ProjectArchivesView();
 		view.show();
+		return view;
+	}
+	
+	protected ProjectArchivesView viewForProject(String projectName) {
+		ProjectArchivesView view = openProjectArchivesView();
 		projectExplorer.selectProject(projectName);
 		return view;
 	}
@@ -42,10 +45,25 @@ public class ArchivesTestBase extends SWTTestExt {
 		return new ProjectArchivesExplorer(projectName);
 	}
 	
+	protected void assertItemExistsInView(ProjectArchivesView view, String... path) {
+		assertTrue(view.itemExists(path));
+	}
+	
+	protected void assertItemExistsInExplorer(ProjectArchivesExplorer explorer, String... path) {
+		assertTrue(explorer.itemExists(path));
+	}
+	
+	protected void assertItemNotExistsInView(ProjectArchivesView view, String... path) {
+		assertFalse(view.itemExists(path));
+	}
+	
+	protected void assertItemNotExistsInExplorer(ProjectArchivesExplorer explorer, String... path) {
+		assertFalse(explorer.itemExists(path));
+	}
+	
 	protected static void importProject(String projectName) {
 		
 		String location = "/resources/prj/" + projectName;
-		
 		importProject(projectName, location, projectName);
 	}
 	
@@ -53,7 +71,6 @@ public class ArchivesTestBase extends SWTTestExt {
 			String projectLocation, String dir) {
 		
 		ImportHelper.importProject(projectLocation, dir, Activator.PLUGIN_ID);
-				
 		eclipse.addConfiguredRuntimeIntoProject(projectName, 
 				configuredState.getServer().name);
 	}
@@ -61,15 +78,12 @@ public class ArchivesTestBase extends SWTTestExt {
 	protected static void importProjectWithoutRuntime(String projectName) {
 		
 		String location = "/resources/prj/" + projectName;
-		
 		importProjectWithoutRuntime(projectName, location, projectName);
 	}
 	
 	protected static void importProjectWithoutRuntime(String projectName, 
 			String projectLocation, String dir) {
-		
 		ImportHelper.importProject(projectLocation, dir, Activator.PLUGIN_ID);
-		
 	}
 	
 }

@@ -21,7 +21,11 @@ import org.junit.Test;
 public class BuildingArchiveTest extends ArchivesTestBase{
 
 	private static String projectName = "pr2";
-	private String archiveName = projectName + ".jar [/" + projectName + "]";
+	
+	private final String PATH_SUFFIX = " [/" + projectName + "]"; 
+	private final String ARCHIVE_NAME = projectName + ".jar";
+	private final String ARCHIVE_PATH = 
+			ARCHIVE_NAME + PATH_SUFFIX;
 	
 	@BeforeClass
 	public static void setup() {
@@ -31,13 +35,13 @@ public class BuildingArchiveTest extends ArchivesTestBase{
 	@Test
 	public void testBuildingArchiveWithView() {
 		viewForProject(projectName)
-			.buildArchiveFull(projectName, archiveName);
+			.buildArchiveFull(projectName, ARCHIVE_PATH);
 	}
 	
 	@Test
 	public void testBuildingArchiveWithExplorer() {
 		explorerForProject(projectName)
-			.buildArchiveFull(archiveName);
+			.buildArchiveFull(ARCHIVE_PATH);
 	}
 	
 }

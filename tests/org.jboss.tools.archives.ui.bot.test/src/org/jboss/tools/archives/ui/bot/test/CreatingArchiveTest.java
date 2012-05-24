@@ -24,47 +24,63 @@ import org.junit.Test;
  */
 public class CreatingArchiveTest extends ArchivesTestBase {
 
-	private static String project1 = "pr1";
+	private static String project = "pr1";
+	
+	private final String ARCHIVE_STANDARD_1 = 
+			project + "-standard.jar";
+	private final String ARCHIVE_STANDARD_2 = 
+			project + "-standard-expl.jar";
+	private final String ARCHIVE_NO_COMPRESSION_1 = 
+			project + "-nocompression.jar";
+	private final String ARCHIVE_NO_COMPRESSION_2 = 
+			project + "-nocompression-expl.jar";
+	
+	private final String PATH_SUFFIX = " [/" + project + "]";
+	private final String ARCHIVE_STANDARD_1_PATH = 
+			ARCHIVE_STANDARD_1 + PATH_SUFFIX;
+	private final String ARCHIVE_STANDARD_2_PATH = 
+			ARCHIVE_STANDARD_2 + PATH_SUFFIX;
+	private final String ARCHIVE_NO_COMPRESSION_1_PATH = 
+			ARCHIVE_NO_COMPRESSION_1 + PATH_SUFFIX;
+	private final String ARCHIVE_NO_COMPRESSION_2_PATH = 
+			ARCHIVE_NO_COMPRESSION_2 + PATH_SUFFIX;
+	
 	
 	@BeforeClass
 	public static void setup() {
 		JavaProjectEntity jpe = new JavaProjectEntity();
-		jpe.setProjectName(project1);
+		jpe.setProjectName(project);
 		eclipse.createJavaProject(jpe);
 	}
 	
 	@Test
 	public void testCreatingArchivetWithView() {
-		ProjectArchivesView view = viewForProject(project1);
+		ProjectArchivesView view = viewForProject(project);
 		
-		/* creating JAR archive from project1 - standard way */
-		NewJarDialog dialog = view.createNewJarArchive(project1);
-		createArchive(dialog, project1 + "-standard", true);		
-		assertTrue(view.itemExists(project1, 
-				project1 + "-standard.jar [/" + project1 + "]"));
+		/* creating JAR archive from project - standard way */
+		NewJarDialog dialog = view.createNewJarArchive(project);
+		createArchive(dialog, ARCHIVE_STANDARD_1, true);
+		assertItemExistsInView(view, project, ARCHIVE_STANDARD_1_PATH);
 		
-		/* creating JAR archive from project1 - no compression way */
-		dialog = view.createNewJarArchive(project1);
-		createArchive(dialog, project1 + "-nocompression", false);
-		assertTrue(view.itemExists(project1, 
-				project1 + "-nocompression.jar [/" + project1 + "]"));
+		/* creating JAR archive from project - no compression way */
+		dialog = view.createNewJarArchive(project);
+		createArchive(dialog, ARCHIVE_NO_COMPRESSION_1, false);
+		assertItemExistsInView(view, project, ARCHIVE_NO_COMPRESSION_1_PATH);
 	}
 	
 	@Test
 	public void testCreatingArchiveWithExplorer() {
-		ProjectArchivesExplorer explorer = explorerForProject(project1);
+		ProjectArchivesExplorer explorer = explorerForProject(project);
 		
-		/* creating JAR archive from project1 - standard way */
+		/* creating JAR archive from project - standard way */
 		NewJarDialog dialog = explorer.createNewJarArchive();
-		createArchive(dialog, project1 + "-standard-expl", true);
-		assertTrue(explorer.itemExists(
-				project1 + "-standard-expl.jar [/" + project1 + "]"));
+		createArchive(dialog, ARCHIVE_STANDARD_2, true);
+		assertItemExistsInExplorer(explorer, ARCHIVE_STANDARD_2_PATH);
 		
-		/* creating JAR archive from project1 - no compression way */
+		/* creating JAR archive from project - no compression way */
 		dialog = explorer.createNewJarArchive();
-		createArchive(dialog, project1 + "-nocompression-expl", false);
-		assertTrue(explorer.itemExists(
-				project1 + "-nocompression-expl.jar [/" + project1 + "]"));
+		createArchive(dialog, ARCHIVE_NO_COMPRESSION_2, false);
+		assertItemExistsInExplorer(explorer, ARCHIVE_NO_COMPRESSION_2_PATH);
 	}
 	
 	private void createArchive(NewJarDialog dialog, String archiveName, 

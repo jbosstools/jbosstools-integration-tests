@@ -21,7 +21,11 @@ import org.junit.Test;
 public class BuildingArchiveNode extends ArchivesTestBase {
 
 	private static String projectName = "pr2";
-	private String archiveName = projectName + ".jar [/" + projectName + "]";
+	
+	private final String PATH_SUFFIX = " [/" + projectName + "]"; 
+	private final String ARCHIVE_NAME = projectName + ".jar";
+	private final String ARCHIVE_PATH = 
+			ARCHIVE_NAME + PATH_SUFFIX;
 	
 	@BeforeClass
 	public static void setup() {
@@ -31,7 +35,7 @@ public class BuildingArchiveNode extends ArchivesTestBase {
 	@Test
 	public void testBuildingArchiveNode() {
 		viewForProject(projectName).
-			buildArchiveNode(projectName, archiveName);
+			buildArchiveNode(projectName, ARCHIVE_PATH);
 	}
 	
 }

@@ -26,7 +26,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	BuildingArchiveTest.class,
 	CreatingArchiveTest.class,
 	DeletingArchiveTest.class,
-//	ModifyingArchiveTest.class,
+	ModifyingArchiveTest.class,
 //	DeployingArchiveTest.class,
 })
 public class ArchivesAllBotTests {
