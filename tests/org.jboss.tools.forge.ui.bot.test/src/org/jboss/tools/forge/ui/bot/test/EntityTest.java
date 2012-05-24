@@ -12,7 +12,7 @@ public class EntityTest extends ForgeTest {
 	@Test
 	public void newEntity(){
 		
-		createProject(ProjectTypes.jar);
+		createProject();
 		createPersistence();
 		
 		getStyledText().setText("entity\n");

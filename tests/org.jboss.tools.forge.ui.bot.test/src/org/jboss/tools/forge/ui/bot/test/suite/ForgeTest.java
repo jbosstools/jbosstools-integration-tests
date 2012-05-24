@@ -26,10 +26,11 @@ public class ForgeTest extends SWTTestExt {
 	protected static final String PROJECT_NAME = "testproject";
 	protected static final String PACKAGE_NAME = "org.jboss.testproject";
 	
-	protected PackageExplorer pExplorer = new PackageExplorer();
+	protected static ProjectExplorer pExplorer = null;
 	
 	@BeforeClass
 	public static void setup(){
+		pExplorer = new ProjectExplorer();
 		openForgeView();
 		startForge();
 		clear();
@@ -44,16 +45,29 @@ public class ForgeTest extends SWTTestExt {
 		jar, war, pom
 	}
 	
+	protected void createProject(){
+		getStyledText().setText("new-project \n");
+		
+		getStyledText().setText(PROJECT_NAME + "\n");
+		getStyledText().setText(PACKAGE_NAME + "\n");
+		getStyledText().setText("Y\n");
+		
+		ConsoleUtils.waitUntilTextInConsole("project [" + PROJECT_NAME + "]", TIME_1S, TIME_20S*3);
+		
+		util.waitForNonIgnoredJobs();
+	}
+	
 	protected void createProject(ProjectTypes type){
 		
 		getStyledText().setText("new-project --type " + type + "\n");
+		
 		getStyledText().setText(PROJECT_NAME + "\n");
 		getStyledText().setText(PACKAGE_NAME + "\n");
 		getStyledText().setText("Y\n");
 	
 		ConsoleUtils.waitUntilTextInConsole("project [" + PROJECT_NAME + "]", TIME_1S, TIME_20S*3);
 	
-		util.waitForJobs("Importing Forge project"); //see org.jboss.tools.forge.importer#importProject()
+		util.waitForNonIgnoredJobs();
 	}
 	
 	protected void createPersistence(){
@@ -156,9 +170,9 @@ public class ForgeTest extends SWTTestExt {
 			openForgeView();
 		
 		SWTBotView view = getForgeView();
-		view.toolbarButton("Start Forge").click();
+		view.toolbarButton("Start the default Forge runtime").click();
 		
-		util.waitForJobs("Starting Forge"); //see org.jboss.tools.forge.ui.part#startForge()
+		util.waitForNonIgnoredJobs();
 	}
 	
 	public static void stopForge(){
@@ -167,7 +181,7 @@ public class ForgeTest extends SWTTestExt {
 			openForgeView();
 		
 		SWTBotView view = getForgeView();
-		view.toolbarButton("Stop Forge").click();
+		view.toolbarButton("Stop the running Forge runtime").click();
 		bot.sleep(TIME_5S);
 	}
 	

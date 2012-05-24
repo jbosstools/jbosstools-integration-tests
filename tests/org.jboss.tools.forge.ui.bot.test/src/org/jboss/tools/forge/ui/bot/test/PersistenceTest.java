@@ -19,7 +19,7 @@ public class PersistenceTest extends ForgeTest {
 	@Test
 	public void hibernateJBossAS7(){
 		
-		createProject(ProjectTypes.jar);
+		createProject();
 		
 		getStyledText().setText("persistence setup\n");
 		getStyledText().setText("HIBERNATE\n");
@@ -48,7 +48,7 @@ public class PersistenceTest extends ForgeTest {
 	
 	@Test
 	public void openjpaJBossAS7(){
-		createProject(ProjectTypes.jar);
+		createProject();
 		
 		getStyledText().setText("persistence setup\n");
 		getStyledText().setText("OPENJPA\n");
@@ -73,7 +73,7 @@ public class PersistenceTest extends ForgeTest {
 	
 	@Test
 	public void eclipselinkJBossAS7(){
-		createProject(ProjectTypes.jar);
+		createProject();
 		
 		getStyledText().setText("persistence setup\n");
 		getStyledText().setText("ECLIPSELINK\n");
@@ -99,7 +99,7 @@ public class PersistenceTest extends ForgeTest {
 	
 	@Test
 	public void infinispanJBossAS7(){
-		createProject(ProjectTypes.jar);
+		createProject();
 		
 		getStyledText().setText("persistence setup\n");
 		getStyledText().setText("INFINISPAN\n");

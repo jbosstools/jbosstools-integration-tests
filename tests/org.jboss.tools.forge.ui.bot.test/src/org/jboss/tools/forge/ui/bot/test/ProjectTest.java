@@ -1,8 +1,12 @@
 package org.jboss.tools.forge.ui.bot.test;
 
 import java.io.IOException;
+
+import org.eclipse.swtbot.swt.finder.utils.SWTUtils;
 import org.jboss.tools.forge.ui.bot.test.suite.ForgeTest;
+import org.jboss.tools.forge.ui.bot.test.util.ConsoleUtils;
 import org.jboss.tools.forge.ui.bot.test.util.ResourceUtils;
+import org.jboss.tools.ui.bot.ext.SWTJBTExt;
 import org.jboss.tools.ui.bot.ext.SWTUtilExt;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.junit.Test;
@@ -21,8 +25,9 @@ public class ProjectTest extends ForgeTest {
 		createProject(ProjectTypes.pom);
 		
 		String text = getStyledText().getText();
-		assertTrue(text.contains("***SUCCESS*** Created project [" + PROJECT_NAME + "]"));
-		pExplorer.show();
+		assertTrue(ConsoleUtils.waitUntilTextInConsole("***SUCCESS*** Created project [" + PROJECT_NAME + "]", TIME_1S, TIME_20S*3));
+		
+		pExplorer.show();		
 		assertTrue(pExplorer.existsResource(PROJECT_NAME));
 		assertTrue(pExplorer.existsResource(PROJECT_NAME, "pom.xml"));
 		
@@ -46,7 +51,7 @@ public class ProjectTest extends ForgeTest {
 		createProject(ProjectTypes.war);
 		
 		String text = getStyledText().getText();
-		assertTrue(text.contains("***SUCCESS*** Created project [" + PROJECT_NAME + "]"));
+		assertTrue(ConsoleUtils.waitUntilTextInConsole("***SUCCESS*** Created project [" + PROJECT_NAME + "]", TIME_1S, TIME_20S*3));
 		pExplorer.show();
 		assertTrue(pExplorer.existsResource(PROJECT_NAME));
 		assertTrue(pExplorer.existsResource(PROJECT_NAME, "pom.xml"));
