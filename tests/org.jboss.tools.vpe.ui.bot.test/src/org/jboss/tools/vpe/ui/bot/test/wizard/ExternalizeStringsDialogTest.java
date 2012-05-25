@@ -33,7 +33,7 @@ import org.jboss.tools.ui.bot.test.WidgetVariables;
 public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 
 	private final String ENABLED_TEST_TEXT = "<html>Externalize Text</html>"; //$NON-NLS-1$
-	private final String TOOL_TIP = (SWTJBTExt.isRunningOnMacOs() ? "Externalize selected string... (⌘7)" : "Externalize selected string... (Ctrl+7)"); //$NON-NLS-1$
+	private final String TOOL_TIP = (SWTJBTExt.isRunningOnMacOs() ? "Externalize selected string... (вЊ�7)" : "Externalize selected string... (Ctrl+7)"); //$NON-NLS-1$
 	private final String FOLDER_TEXT_LABEL = "Enter or select the parent folder:"; //$NON-NLS-1$
 	private final String INCORRECT_TABLE_VALUE = "Table value is incorrect"; //$NON-NLS-1$
 	private final String TOOLBAR_ICON_ENABLED = "Toolbar button should be enabled"; //$NON-NLS-1$
@@ -86,6 +86,7 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		 * Select some text
 		 */
 		editor.toTextEditor().selectRange(7, 18, 4);
+		util.waitForAll();
 		/*
 		 * Get toolbar button
 		 */
@@ -152,6 +153,7 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		 */
 		editor.toTextEditor().selectRange(7, 18, 15);
 		assertEquals("Replaced text is incorrect", "#{Message.User}", editor.toTextEditor().getSelection()); //$NON-NLS-1$ //$NON-NLS-2$
+		editor.close();
 		/*
 		 * Check that properties file has been updated
 		 */
@@ -230,9 +232,8 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		/*
 		 * Get toolbar button
 		 */
-		assertTrue(TOOLBAR_ICON_ENABLED, bot
-				.toolbarButtonWithTooltip(TOOL_TIP)
-				.isEnabled());
+		assertTrue(TOOLBAR_ICON_ENABLED, 
+				bot.toolbarButtonWithTooltip(TOOL_TIP).isEnabled());
 		bot.toolbarButtonWithTooltip(TOOL_TIP).click();
 		bot.shell(JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).setFocus();
 		bot.shell(JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).activate();
@@ -260,6 +261,7 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 				bot.button(WidgetVariables.OK_BUTTON).isEnabled());
 		bot.button(WidgetVariables.OK_BUTTON).click();
 		isUnusedDialogOpened = false;
+		editor.close();
 		/*
 		 * Check that the new key has been added.
 		 */
@@ -269,6 +271,89 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		editor2.toTextEditor().selectLine(4);
 		line = editor2.toTextEditor().getSelection();
 		assertEquals("'Messages.properties' was updated incorrectly", "User_1=User", line); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	
+	public void testCompoundKeyWithDot() throws Throwable {
+		isUnusedDialogOpened = false;
+		/*
+		 * Open simple html file in order to get the VPE toolbar
+		 */
+		SWTBotEditor editor = SWTTestExt.packageExplorer.openFile(JBT_TEST_PROJECT_NAME,
+				"WebContent", "pages", TEST_PAGE); //$NON-NLS-1$ //$NON-NLS-2$
+		editor.setFocus();
+		/*
+		 * Select some text
+		 */
+		editor.toTextEditor().selectRange(7, 18, 4);
+		util.waitForAll();
+		/*
+		 * Get toolbar button
+		 */
+		assertTrue(TOOLBAR_ICON_ENABLED, bot
+				.toolbarButtonWithTooltip(TOOL_TIP).isEnabled());
+		bot.toolbarButtonWithTooltip(TOOL_TIP).click();
+		bot.shell(JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).setFocus();
+		bot.shell(JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).activate();
+		isUnusedDialogOpened = true;
+		/*
+		 * Check properties key and value fields
+		 */
+		SWTBotText defKeyText = bot.textWithLabelInGroup(
+				JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_PROPERTIES_KEY, 
+				JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_PROPS_STRINGS_GROUP);
+		assertNotNull("Cannot find 'Property Key' text field", defKeyText); //$NON-NLS-1$
+		assertText("User_1",defKeyText); //$NON-NLS-1$
+		defKeyText.setText("user.compoundKey"); //$NON-NLS-1$
+		SWTBotText defValueText = bot.textWithLabelInGroup(
+				JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_PROPERTIES_VALUE,
+				JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_PROPS_STRINGS_GROUP);
+		assertNotNull(CANNOT_FIND_PROPERTY_VALUE, defValueText);
+		assertText("User", defValueText); //$NON-NLS-1$
+		SWTBotCheckBox checkBox = bot.checkBox();
+		assertNotNull("Cannot find checkbox '" //$NON-NLS-1$
+				+ JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_NEW_FILE + "'", //$NON-NLS-1$
+				checkBox);
+		/*
+		 * Check that "Next" button is disabled
+		 */
+		assertFalse("Checkbox should be unchecked.", //$NON-NLS-1$
+				checkBox.isChecked());
+		assertFalse("Next button should be disabled.", //$NON-NLS-1$
+				bot.button(WidgetVariables.NEXT_BUTTON).isEnabled());
+		/*
+		 * Select existed resource bundle 
+		 */
+		SWTBotCombo combo = bot.comboBox();
+		combo.setSelection(0);
+		assertText("demo.Messages", combo); //$NON-NLS-1$
+		util.waitForAll();
+		/*
+		 * Press OK and replace the text in the editor
+		 */
+		assertTrue("(OK) button should be enabled.", //$NON-NLS-1$
+				bot.button(WidgetVariables.OK_BUTTON).isEnabled());
+		bot.button(WidgetVariables.OK_BUTTON).click();
+		isUnusedDialogOpened = false;
+		/*
+		 * Check replaced text
+		 */
+		editor.toTextEditor().selectRange(7, 18, 30);
+		assertEquals("Replaced text is incorrect", "#{Message['user.compoundKey']}", editor.toTextEditor().getSelection()); //$NON-NLS-1$ //$NON-NLS-2$
+		editor.close();
+		/*
+		 * Check that properties file has been updated
+		 */
+		SWTBotEditor editor2 = SWTTestExt.eclipse.openFile(
+				JBT_TEST_PROJECT_NAME, "JavaSource", "demo", //$NON-NLS-1$ //$NON-NLS-2$
+				"Messages.properties"); //$NON-NLS-1$
+		/*
+		 * Select the 4th line.
+		 * In the 3rd line should be results from the previous test "User=User".
+		 * If previous test failed -- it could crash this one as well.
+		 */
+		editor2.toTextEditor().selectLine(5);
+		String line = editor2.toTextEditor().getSelection();
+		assertEquals("'Messages.properties' was updated incorrectly", "user.compoundKey=User", line); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
 	public void testExternalizeStringsDialogInXhtml() throws Throwable {
@@ -397,6 +482,7 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		 * Select some text
 		 */
 		editor.toTextEditor().selectRange(13, 15, 1);
+		util.waitForAll();
 		/*
 		 * There is an exception caused by the fact that
 		 * line delimiter was selected.
@@ -421,9 +507,8 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		/*
 		 * Activate the dialog
 		 */
-		assertTrue(TOOLBAR_ICON_ENABLED, bot
-				.toolbarButtonWithTooltip(TOOL_TIP)
-				.isEnabled());
+		assertTrue(TOOLBAR_ICON_ENABLED,
+				bot.toolbarButtonWithTooltip(TOOL_TIP).isEnabled());
 		bot.toolbarButtonWithTooltip(TOOL_TIP).click();
 		bot.shell(JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).setFocus();
 		bot.shell(JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).activate();
@@ -479,6 +564,8 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		 * Check selection in the attribute's value
 		 */
 		editor.toTextEditor().selectRange(22, 50, 0);
+		KeyboardHelper.typeKeyCodeUsingAWT(KeyEvent.VK_RIGHT);
+		util.waitForAll();
 		/*
 		 * Activate the dialog
 		 */
@@ -987,7 +1074,5 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		bot.button(WidgetVariables.NEXT_BUTTON).click();
 	
 		return editor;
-	}
-	
-	
+	}	
 }
