@@ -29,7 +29,7 @@
 					<skip>${swtbot.test.skip}</skip>
 					<testSuite>org.jboss.tools.esb.ui.bot.test</testSuite>
 					<testClass>org.jboss.tools.esb.ui.bot.tests.ESBAllBotTests</testClass>
-					<forkedProcessTimeoutInSeconds>7200</forkedProcessTimeoutInSeconds>
+					<forkedProcessTimeoutInSeconds>10800</forkedProcessTimeoutInSeconds>
 				</configuration>
 			</plugin>
 		</plugins>
