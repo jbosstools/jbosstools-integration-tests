@@ -83,7 +83,9 @@ public class ProjectArchivesExplorer {
 	public boolean itemExists(String... path) {
 		try {
 			SWTBotTreeItem ti = explorer;
+			explorer.collapse();
 			for (String pathItem : path) {
+				ti.expand();
 				ti = ti.getNode(pathItem);
 			}
 			return true;

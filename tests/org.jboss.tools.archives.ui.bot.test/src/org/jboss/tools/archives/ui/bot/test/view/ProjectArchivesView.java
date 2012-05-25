@@ -87,6 +87,7 @@ public class ProjectArchivesView extends ViewBase {
 	
 	public boolean itemExists(String... path) {
 		try {
+			bot.tree(0).getTreeItem(path[0]).collapse();
 			TreeHelper.expandNode(bot, path);
 			return true;
 		} catch (WidgetNotFoundException exc) {
