@@ -97,7 +97,7 @@ public class Editing extends SWTTestExt {
 				try {
 					log.info("Invoke " + m.getName());
 					ESBProvider action = (ESBProvider) m.invoke(null, new Object[]{});
-					bot.sleep(60000l);
+					bot.sleep(TIME_5S);
 					action.create(getEditor(), actionPath);
 					providerList.remove(action.getMenuLabel());
 					bot.sleep(TIME_1S);
