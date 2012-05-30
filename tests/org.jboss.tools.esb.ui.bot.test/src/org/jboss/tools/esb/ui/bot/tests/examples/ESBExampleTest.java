@@ -222,7 +222,9 @@ public class ESBExampleTest extends ExampleTest{
 	 * @return
 	 */
 	protected String getRunningSoaVersionTreeLabel() {
-		String ret = "ESB for SOA-P ";
+		String ret = "ESB for JBoss Enterprise SOA Platform ";
+		//String ret = "ESB for SOA-P ";
+		
 		if (!configuredState.getServer().isConfigured) {
 			throw new NullPointerException("No server was configured for test, but it is required");
 		}
