@@ -103,13 +103,13 @@ public class Notifier extends ESBAction {
 		
 		
 		/* Comment out due to - https://issues.jboss.org/browse/JBDS-2167 */
-		bot.button("&Add...").click();		
-		SWTBotTreeItem [] theItems = bot.tree().getAllItems();
-		
-		theItems[0].getNode("resources.jar").expand();
-		theItems[0].getNode("resources.jar").getNode("META-INF").expand();		
-		theItems[0].getNode("resources.jar").getNode("META-INF").getNode("MANIFEST.MF").select();
-		bot.button("&Finish").click();
+//		bot.button("&Add...").click();		
+//		SWTBotTreeItem [] theItems = bot.tree().getAllItems();
+//		
+//		theItems[0].getNode("resources.jar").expand();
+//		theItems[0].getNode("resources.jar").getNode("META-INF").expand();		
+//		theItems[0].getNode("resources.jar").getNode("META-INF").getNode("MANIFEST.MF").select();
+//		bot.button("&Finish").click();
 		
 		editor.save();
 	}
