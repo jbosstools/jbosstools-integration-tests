@@ -54,7 +54,7 @@ public class CreatingArchiveTest extends ArchivesTestBase {
 	}
 	
 	@Test
-	public void testCreatingArchivetWithView() {
+	public void testCreatingArchiveWithView() {
 		
 		/* prepare view for testing */
 		ProjectArchivesView view = viewForProject(project);

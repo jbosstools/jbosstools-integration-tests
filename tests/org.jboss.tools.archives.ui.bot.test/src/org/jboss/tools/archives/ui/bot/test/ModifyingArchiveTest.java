@@ -49,7 +49,7 @@ public class ModifyingArchiveTest extends ArchivesTestBase {
 	}
 	
 	@Test
-	public void testModifyingArchivetWithView() {
+	public void testModifyingArchiveWithView() {
 		
 		/* prepare view for testing */
 		ProjectArchivesView view = viewForProject(project);

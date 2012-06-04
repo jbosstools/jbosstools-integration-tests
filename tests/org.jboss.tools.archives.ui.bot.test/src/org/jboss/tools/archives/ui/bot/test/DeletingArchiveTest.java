@@ -39,7 +39,7 @@ public class DeletingArchiveTest extends ArchivesTestBase {
 	}
 	
 	@Test
-	public void testDeletingArchivetWithView() {
+	public void testDeletingArchiveWithView() {
 		
 		/* prepare view for testing */
 		ProjectArchivesView view = viewForProject(project);

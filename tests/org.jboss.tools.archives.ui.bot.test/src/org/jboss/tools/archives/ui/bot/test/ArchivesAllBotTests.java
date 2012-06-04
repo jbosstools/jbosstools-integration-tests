@@ -21,6 +21,7 @@ import org.junit.runners.Suite.SuiteClasses;
 @RunWith(RequirementAwareSuite.class)
 @SuiteClasses({
 	ViewIsPresentTest.class,
+	VariousProjectsArchiving.class,
 	BuildingArchiveNode.class,
 	BuildingProjectTest.class,
 	BuildingArchiveTest.class,

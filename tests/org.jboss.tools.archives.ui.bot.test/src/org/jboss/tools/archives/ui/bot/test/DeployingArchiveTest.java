@@ -46,7 +46,7 @@ public class DeployingArchiveTest extends ArchivesTestBase {
 	}
 	
 	@Test
-	public void testDeployingArchivetWithView() {
+	public void testDeployingArchiveWithView() {
 		
 		/* prepare view for testing */
 		ProjectArchivesView view = viewForProject(project);
