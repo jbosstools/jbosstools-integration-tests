@@ -18,6 +18,7 @@ import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.helper.ImportHelper;
+import org.jboss.tools.ui.bot.ext.view.ErrorLogView;
 import org.jboss.tools.ui.bot.ext.view.ServersView;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
@@ -49,19 +50,23 @@ public class ArchivesTestBase extends SWTTestExt {
 	}
 	
 	protected void assertItemExistsInView(ProjectArchivesView view, String... path) {
-		assertTrue(view.itemExists(path));
+		assertTrue("Item " + path[path.length-1] + 
+				" does not exist in Project Archives View", view.itemExists(path));
 	}
 	
 	protected void assertItemExistsInExplorer(ProjectArchivesExplorer explorer, String... path) {
-		assertTrue(explorer.itemExists(path));
+		assertTrue("Item " + path[path.length-1] + 
+				" does not exist in Project Archives explorer", explorer.itemExists(path));
 	}
 	
 	protected void assertItemNotExistsInView(ProjectArchivesView view, String... path) {
-		assertFalse(view.itemExists(path));
+		assertFalse("Item " + path[path.length-1] + 
+				" should not exist in Project Archives View", view.itemExists(path));
 	}
 	
 	protected void assertItemNotExistsInExplorer(ProjectArchivesExplorer explorer, String... path) {
-		assertFalse(explorer.itemExists(path));
+		assertFalse("Item " + path[path.length-1] + 
+				" should not exist in Project Archives explorer", explorer.itemExists(path));
 	}
 	
 	protected void assertArchiveIsDeployed(String archive) {
@@ -99,6 +104,19 @@ public class ArchivesTestBase extends SWTTestExt {
 		ServersView serversView = new ServersView();
 		serversView.show();
 		return serversView;
+	}
+	
+	public void assertClearErrorLog() {
+		assertTrue("Error log contains some records", 
+				new ErrorLogView().getRecordCount() == 0);
+	}
+	
+	public static void showErrorView() {
+		new ErrorLogView().show();
+	}
+	
+	public static void clearErrorView() {
+		new ErrorLogView().clear();
 	}
 	
 	protected static void importProject(String projectName) {
