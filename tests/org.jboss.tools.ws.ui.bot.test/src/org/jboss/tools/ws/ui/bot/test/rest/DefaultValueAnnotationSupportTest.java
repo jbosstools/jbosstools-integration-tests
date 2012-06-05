@@ -17,12 +17,9 @@ import org.junit.Test;
 
 public class DefaultValueAnnotationSupportTest extends RESTfulTestBase {
 	
-	private String projectName = "default1";
-
-	@Override
-	protected String getWsProjectName() {
-		return projectName;
-	}
+	private String queryParam = "param";
+	private String defaultValue = "abc";
+	private String queryParamType = "java.lang.String";
 	
 	@Override
 	public void cleanup() {		
@@ -32,15 +29,11 @@ public class DefaultValueAnnotationSupportTest extends RESTfulTestBase {
 	@Test
 	public void testQueryParamDefaultValue() {
 		
-		String queryParam = "param";
-		String defaultValue = "abc";
-		String queryParamType = "java.lang.String";
-		
 		/* prepare project */
-		importRestWSProject(getWsProjectName());
+		importRestWSProject("default1");
 		
 		/* get JAX-RS REST explorer for the project */
-		restfulWizard = new RESTFullExplorerWizard(getWsProjectName());
+		restfulWizard = new RESTFullExplorerWizard("default1");
 		SWTBotTreeItem[] restServices = restfulWizard.getAllRestServices();
 		
 		/* test JAX-RS REST explorer */
@@ -52,12 +45,37 @@ public class DefaultValueAnnotationSupportTest extends RESTfulTestBase {
 	}
 	
 	@Test
-	public void testPathParamDefaultValue() {
+	public void testMatrixParamDefaultValue() {
 		
+		/* prepare project */
+		importRestWSProject("default2");
+		
+		/* get JAX-RS REST explorer for the project */
+		restfulWizard = new RESTFullExplorerWizard("default2");
+		SWTBotTreeItem[] restServices = restfulWizard.getAllRestServices();
+		
+		/* test JAX-RS REST explorer */
+		assertCountOfRESTServices(restServices, 1);
+		assertExpectedPathOfService(restServices[0], 
+				"/rest:" + queryParam + "={" + queryParam + ":" + 
+						  queryParamType + "=" + defaultValue + "}");
 	}
 	
 	@Test
-	public void testMatrixParamDefaultValue() {
+	public void testPathParamDefaultValue() {
+
+		/* prepare project */
+		importRestWSProject("default3");
+		
+		/* get JAX-RS REST explorer for the project */
+		restfulWizard = new RESTFullExplorerWizard("default3");
+		SWTBotTreeItem[] restServices = restfulWizard.getAllRestServices();
+		
+		/* test JAX-RS REST explorer */
+		assertCountOfRESTServices(restServices, 1);
+		assertExpectedPathOfService(restServices[0], 
+				"/rest/{" + queryParam + ":" + 
+						  queryParamType + "=" + defaultValue + "}");
 		
 	}
 	
