@@ -16,7 +16,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class ApplicationPathParameterTest extends RESTfulTestBase {
+public class ApplicationPathAnnotationTest extends RESTfulTestBase {
 
 	@Override
 	public String getWsProjectName() {

@@ -141,8 +141,7 @@ public class RESTfulTestBase extends WSTestBase {
 	protected void assertExpectedPathOfService(SWTBotTreeItem service,
 			String expectedPath) {
 		String path = restfulWizard.getPathForRestFulService(service);
-		assertEquals("Expected path: " + expectedPath + " <--> found path: "
-				+ path, expectedPath, path);
+		assertEquals("Failure when comparing paths = ", expectedPath, path);
 	}
 
 	protected void assertCoundOfValidationErrors(String projectName,
