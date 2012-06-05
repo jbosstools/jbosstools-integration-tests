@@ -30,87 +30,96 @@ public class RESTfulValidationTest extends RESTfulTestBase {
 		return "restEmpty";
 	}
 	
-	@Test
-	public void testCorrectValueValidation() {
-		
-		packageExplorer.openFile(getWsProjectName(), "src", 
-				getWsPackage(), getWsName() + ".java").toTextEditor();
-		resourceHelper.copyResourceToClass(bot.editorByTitle(getWsName() + ".java"),
-				RESTfulValidationTest.class.getResourceAsStream(SIMPLE_REST_WS_RESOURCE), 
-				false, getWsPackage(), getWsName(), GET_METHOD_PATH, CORRECT_PATH_PARAM);
-		
-		assertTrue(restfulHelper.getRESTValidationErrors(getWsProjectName()).length == 0);
+	@Override
+	public void cleanup() {		
+		 projectExplorer.deleteAllProjects();
 	}
 	
 	@Test
+	public void testCorrectValueValidation() {
+		
+		/* prepare project */
+		importRestWSProject(getWsProjectName());
+		prepareRestfulResource(editorForClass(getWsProjectName(), "src", 
+				"org.rest.test", "RestService.java"), SIMPLE_REST_WS_RESOURCE, 
+				"org.rest.test", "RestService",
+				GET_METHOD_PATH, CORRECT_PATH_PARAM);
+		
+		/* test count of validation errors */
+		assertCoundOfValidationErrors(getWsProjectName(), 0);
+	}
+	
+	
+
+	@Test
 	public void testBadValueValidation() {
 		
-		packageExplorer.openFile(getWsProjectName(), "src", 
-				getWsPackage(), getWsName() + ".java").toTextEditor();
-		resourceHelper.copyResourceToClass(bot.editorByTitle(getWsName() + ".java"),
-				RESTfulValidationTest.class.getResourceAsStream(SIMPLE_REST_WS_RESOURCE), 
-				false, getWsPackage(), getWsName(), GET_METHOD_PATH, BAD_PATH_PARAM);
+		/* prepare project */
+		importRestWSProject(getWsProjectName());
+		prepareRestfulResource(editorForClass(getWsProjectName(), "src", 
+				"org.rest.test", "RestService.java"), SIMPLE_REST_WS_RESOURCE, 
+				"org.rest.test", "RestService",
+				GET_METHOD_PATH, BAD_PATH_PARAM);
 		
-		assertTrue("" + restfulHelper.getRESTValidationErrors(getWsProjectName()).length, 
-				restfulHelper.getRESTValidationErrors(getWsProjectName()).length == 1);
+		/* test count of validation errors */
+		assertCoundOfValidationErrors(getWsProjectName(), 1);
 	}
 	
 	@Test
 	public void testCorrectToBadValueValidation() {
 		
-		packageExplorer.openFile(getWsProjectName(), "src", 
-				getWsPackage(), getWsName() + ".java").toTextEditor();
-		resourceHelper.copyResourceToClass(bot.editorByTitle(getWsName() + ".java"),
-				RESTfulValidationTest.class.getResourceAsStream(SIMPLE_REST_WS_RESOURCE), 
-				false, getWsPackage(), getWsName(), GET_METHOD_PATH, CORRECT_PATH_PARAM);
+		/* prepare project */
+		importRestWSProject(getWsProjectName());
+		prepareRestfulResource(editorForClass(getWsProjectName(), "src", 
+				"org.rest.test", "RestService.java"), SIMPLE_REST_WS_RESOURCE, 
+				"org.rest.test", "RestService",
+				GET_METHOD_PATH, CORRECT_PATH_PARAM);
+		prepareRestfulResource(bot.activeEditor(), SIMPLE_REST_WS_RESOURCE, 
+				"org.rest.test", "RestService",
+				GET_METHOD_PATH, BAD_PATH_PARAM);
 		
-		packageExplorer.openFile(getWsProjectName(), "src", 
-				getWsPackage(), getWsName() + ".java").toTextEditor();
-		resourceHelper.copyResourceToClass(bot.editorByTitle(getWsName() + ".java"), 
-				   RESTfulValidationTest.class.getResourceAsStream(SIMPLE_REST_WS_RESOURCE), 
-				   false, getWsPackage(), getWsName(), GET_METHOD_PATH, BAD_PATH_PARAM);
-		
-		assertTrue("" + restfulHelper.getRESTValidationErrors(getWsProjectName()).length, 
-				restfulHelper.getRESTValidationErrors(getWsProjectName()).length == 1);
+		/* test count of validation errors */
+		assertCoundOfValidationErrors(getWsProjectName(), 1);
 	}
 	
 	@Test
 	public void testBadToCorrectValueValidation() {
 		
-		packageExplorer.openFile(getWsProjectName(), "src", 
-				getWsPackage(), getWsName() + ".java").toTextEditor();
-		resourceHelper.copyResourceToClass(bot.editorByTitle(getWsName() + ".java"),
-				RESTfulValidationTest.class.getResourceAsStream(SIMPLE_REST_WS_RESOURCE), 
-				false, getWsPackage(), getWsName(), GET_METHOD_PATH, BAD_PATH_PARAM);
+		/* prepare project */
+		importRestWSProject(getWsProjectName());
+		prepareRestfulResource(editorForClass(getWsProjectName(), "src", 
+				"org.rest.test", "RestService.java"), SIMPLE_REST_WS_RESOURCE, 
+				"org.rest.test", "RestService",
+				GET_METHOD_PATH, BAD_PATH_PARAM);
+		prepareRestfulResource(bot.activeEditor(), SIMPLE_REST_WS_RESOURCE, 
+				"org.rest.test", "RestService",
+				GET_METHOD_PATH, CORRECT_PATH_PARAM);
 		
-		packageExplorer.openFile(getWsProjectName(), "src", 
-				getWsPackage(), getWsName() + ".java").toTextEditor();
-		resourceHelper.copyResourceToClass(bot.editorByTitle(getWsName() + ".java"), 
-				   RESTfulValidationTest.class.getResourceAsStream(SIMPLE_REST_WS_RESOURCE), 
-				   false, getWsPackage(), getWsName(), GET_METHOD_PATH, CORRECT_PATH_PARAM);
-		
-		assertTrue("" + restfulHelper.getRESTValidationErrors(getWsProjectName()).length, 
-				restfulHelper.getRESTValidationErrors(getWsProjectName()).length == 0);
+		/* test count of validation errors */
+		assertCoundOfValidationErrors(getWsProjectName(), 0);
 	}
 	
 	@Test
-	public void testJAX_RS_Validator() {
+	public void testJaxRsValidator() {
 		
+		/* disable restful validation */
 		restfulHelper.disableRESTValidation();
 		
-		packageExplorer.openFile(getWsProjectName(), "src", 
-				getWsPackage(), getWsName() + ".java").toTextEditor();
-		resourceHelper.copyResourceToClass(bot.editorByTitle(getWsName() + ".java"),
-				RESTfulValidationTest.class.getResourceAsStream(SIMPLE_REST_WS_RESOURCE), 
-				false, getWsPackage(), getWsName(), GET_METHOD_PATH, BAD_PATH_PARAM);
+		/* prepare project */
+		importRestWSProject(getWsProjectName());
+		prepareRestfulResource(editorForClass(getWsProjectName(), "src", 
+				"org.rest.test", "RestService.java"), SIMPLE_REST_WS_RESOURCE, 
+				"org.rest.test", "RestService",
+				GET_METHOD_PATH, BAD_PATH_PARAM);
 		
-		assertTrue("" + restfulHelper.getRESTValidationErrors(getWsProjectName()).length, 
-				restfulHelper.getRESTValidationErrors(getWsProjectName()).length == 0);
+		/* test count of validation errors */
+		assertCoundOfValidationErrors(getWsProjectName(), 0);
 		
+		/* enable restful validation */
 		restfulHelper.enableRESTValidation();
 		
-		assertTrue("" + restfulHelper.getRESTValidationErrors(getWsProjectName()).length, 
-				restfulHelper. getRESTValidationErrors(getWsProjectName()).length == 1);
+		/* test count of validation errors */
+		assertCoundOfValidationErrors(getWsProjectName(), 1);
 	}
 
 }

@@ -12,7 +12,6 @@
 package org.jboss.tools.ws.ui.bot.test.rest.explorer;
 
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
-import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -20,25 +19,23 @@ import org.junit.Test;
  * @author jjankovi
  *
  */
-public class RESTfulSupportTest extends RESTfulTestBase {
+public class RESTfulExplorerTest extends RESTfulTestBase {
 	
 	protected String getWsProjectName() {
 		return "RestExplorerTest";
 	}
 	
-	@Before
-	public void setup() {		
-		if (!projectExists(getWsProjectName())) {
-			projectHelper.createProject(getWsProjectName());
-		}
-	}
-	
-	
 	@Test
-	public void test_JAXRS_ExplorerSupport() {
+	public void testJaxRsExplorerSupport() {
 		
+		/* create dynamic web project */
+		projectHelper.createProject(getWsProjectName());
+		
+		/* add RESTful support into project */
 		restfulHelper.addRestSupport(getWsProjectName());
-		assertTrue(restfulHelper.isRestSupportEnabled(getWsProjectName()));
+		
+		/* test if RESYful explorer is not missing */
+		assertRestFullSupport(getWsProjectName());
 		
 	}
 

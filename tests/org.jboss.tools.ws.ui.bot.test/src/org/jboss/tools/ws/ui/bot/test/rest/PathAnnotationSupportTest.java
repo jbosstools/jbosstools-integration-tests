@@ -11,9 +11,11 @@
 
 package org.jboss.tools.ws.ui.bot.test.rest;
 
+import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ws.ui.bot.test.ti.wizard.RESTFullExplorerWizard;
+import org.junit.After;
 import org.junit.Test;
 
 /**
@@ -24,53 +26,117 @@ import org.junit.Test;
  */
 public class PathAnnotationSupportTest extends RESTfulTestBase {
 
-	private RESTFullExplorerWizard restfulWizard = null;
-
-	private String restEmptyProjectName = "restEmpty";
-	
-	@Override
-	protected String getWsProjectName() {
-		return restEmptyProjectName;
-	}
-	
-	@Override
-	public void cleanup() {		
-		 bot.activeEditor().toTextEditor().save();
+	@After
+	public void cleanWorkspace() {
+		projectExplorer.deleteAllProjects();
 	}
 	
 	@Test
 	public void testAddingSimpleRESTMethods() {
 		
-		prepareWSResource(BASIC_WS_RESOURCE);
+		/* import project */
+		importRestWSProject("restBasic");
 		
-		restfulWizard = new RESTFullExplorerWizard(getWsProjectName());
+		/* get JAX-RS REST explorer for the project */
+		restfulWizard = new RESTFullExplorerWizard("restBasic");
 		SWTBotTreeItem[] restServices = restfulWizard.getAllRestServices();
 		
-		assertTrue(restServices.length + " RESTful services was found instead of 4.", 
-				   restServices.length == 4);		
-		assertTrue("All RESTful services (GET, DELETE, POST, PUT) should be present but they are not", 
-				   allRestServicesArePresent(restServices));
-		
-		for (SWTBotTreeItem restService : restServices) {
-			assertTrue(restfulWizard.getPathForRestFulService(restService).equals("/rest"));
-			assertTrue(restfulWizard.getConsumesInfo(restService).equals("*/*"));
-			assertTrue(restfulWizard.getProducesInfo(restService).equals("*/*"));
-		}
+		/* test JAX-RS REST explorer */
+		assertCountOfRESTServices(restServices, 4);		
+		assertAllRESTServicesInExplorer(restServices);
+		assertPathOfAllRESTWebServices(restServices, "/rest");
 	}
-	
+
 	@Test
 	public void testAddingAdvancedRESTMethods() {
 		
-		prepareWSResource(ADVANCED_WS_RESOURCE);
+		/* import project */
+		importRestWSProject("restAdvanced");
 		
-		restfulWizard = new RESTFullExplorerWizard(getWsProjectName());
+		/* get JAX-RS REST explorer for the project */
+		restfulWizard = new RESTFullExplorerWizard("restAdvanced");
 		SWTBotTreeItem[] restServices = restfulWizard.getAllRestServices(); 
 		
-		assertTrue(restServices.length + " RESTful services was found instead of 4.",
-				   restServices.length == 4);
-		assertTrue("All RESTful services (GET, DELETE, POST, PUT) should be present but they are not", 
-					allRestServicesArePresent(restServices));
+		/* test JAX-RS REST explorer */
+		assertCountOfRESTServices(restServices, 4);		
+		assertAllRESTServicesInExplorer(restServices);
+		testAdvancedRESTServices(restServices);
+	}
+	
+	@Test
+	public void testEditingSimpleRESTMethods() {
 		
+		/* import project */
+		importRestWSProject("restBasic");
+		
+		/* replace @DELETE annotation to @GET annotation */
+		resourceHelper.replaceInEditor(editorForClass("restBasic", "src", 
+				"org.rest.test", "RestService.java").toTextEditor(), "@DELETE", "@GET", true);
+		bot.sleep(Timing.time2S());
+		
+		/* get JAX-RS REST explorer for the project */
+		restfulWizard = new RESTFullExplorerWizard("restBasic");
+		SWTBotTreeItem[] restServices = restfulWizard.getAllRestServices(); 
+		
+		/* test JAX-RS REST explorer */
+		assertNotAllRESTServicesInExplorer(restServices);
+		assertAbsenceOfRESTWebService(restServices, 
+				RESTFulAnnotations.DELETE.getLabel());
+	}
+	
+	@Test
+	public void testEditingAdvancedRESTMethods() {
+		
+		/* import project */
+		importRestWSProject("restAdvanced");
+		
+		/* edit @DELETE annotation */
+		SWTBotEclipseEditor editor = editorForClass("restAdvanced", "src", 
+				"org.rest.test", "RestService.java").toTextEditor();
+		resourceHelper.replaceInEditor(editor, "/delete/{id}", 
+				"delete/edited/{id}", true);
+		resourceHelper.replaceInEditor(editor, "@DELETE", "@DELETE"
+				+ LINE_SEPARATOR + "@Produces(\"text/plain\")", true);
+		bot.sleep(Timing.time2S());
+		
+		/* get JAX-RS REST explorer for the project */
+		restfulWizard = new RESTFullExplorerWizard("restAdvanced");
+		SWTBotTreeItem[] restServices = restfulWizard.getAllRestServices(); 
+		
+		/* test JAX-RS REST explorer */
+		testEditedDeleteRestWebResource(restServices);
+	}
+	
+	@Test
+	public void testDeletingRESTMethods() {
+		
+		/* prepare project*/
+		importRestWSProject("restBasic");
+		prepareRestfulResource(editorForClass("restBasic", "src", 
+				"org.rest.test", "RestService.java"), "EmptyRestfulWS.java.ws", 
+				"org.rest.test", "RestService");
+		bot.sleep(Timing.time2S());
+		
+		/* get JAX-RS REST explorer for the project */
+		restfulWizard = new RESTFullExplorerWizard("restBasic");
+		SWTBotTreeItem[] restServices = restfulWizard.getAllRestServices(); 
+		
+		/* none of REST web services found */
+		assertNoRESTServicesInExplorerFound(restServices);
+	}
+
+	private void testEditedDeleteRestWebResource(
+			SWTBotTreeItem[] restServices) {
+		for (SWTBotTreeItem restService : restServices) {
+			if (restfulWizard.getRestServiceName(restService).equals(RESTFulAnnotations.DELETE.getLabel())) {
+				assertTrue(restfulWizard.getPathForRestFulService(restService).equals("/rest/delete/edited/{id}"));
+				assertTrue(restfulWizard.getProducesInfo(restService).equals("text/plain"));
+			}
+		}
+	}
+
+	private void testAdvancedRESTServices(
+			SWTBotTreeItem[] restServices) {
 		for (SWTBotTreeItem restService : restServices) {
 			if (restfulWizard.getRestServiceName(restService).equals(RESTFulAnnotations.GET.getLabel())) {
 				assertTrue(restfulWizard.getPathForRestFulService(restService).equals("/rest/{id}"));
@@ -93,127 +159,5 @@ public class PathAnnotationSupportTest extends RESTfulTestBase {
 				assertTrue(restfulWizard.getProducesInfo(restService).equals("*/*"));
 			}			
 		}
-		
 	}
-	
-	@Test
-	public void testEditingSimpleRESTMethods() {
-		
-		prepareWSResource(BASIC_WS_RESOURCE);
-		
-		restfulWizard = new RESTFullExplorerWizard(getWsProjectName());
-		SWTBotTreeItem[] restServices = restfulWizard.getAllRestServices();
-		
-		assertTrue("All RESTful services (GET, DELETE, POST, PUT) should be present but they are not", 
-					allRestServicesArePresent(restServices));
-		
-		packageExplorer.openFile(getWsProjectName(), "src", 
-				getWsPackage(), getWsName() + ".java").toTextEditor();
-		resourceHelper.replaceInEditor(bot.activeEditor().toTextEditor(), "@DELETE", "@GET", false);
-		
-		bot.sleep(Timing.time2S());
-		restfulWizard = new RESTFullExplorerWizard(getWsProjectName());
-		restServices = restfulWizard.getAllRestServices();
-		
-		assertFalse("All RESTful services (GET, DELETE, POST, PUT) shouldnt be present but they are", 
-					 allRestServicesArePresent(restServices));
-		
-		for (SWTBotTreeItem restService : restServices) {
-			if (restfulWizard.getRestServiceName(restService).equals(RESTFulAnnotations.DELETE.getLabel())) {
-				fail("There should not be DELETE RESTful services");
-			}
-		}
-	}
-	
-	@Test
-	public void testEditingAdvancedRESTMethods() {
-		
-		prepareWSResource(ADVANCED_WS_RESOURCE);
-		
-		restfulWizard = new RESTFullExplorerWizard(getWsProjectName());
-		SWTBotTreeItem[] restServices = restfulWizard.getAllRestServices();
-		
-		assertTrue(restServices.length > 0);
-		
-		for (SWTBotTreeItem restService : restServices) {
-			if (restfulWizard.getRestServiceName(restService).equals(RESTFulAnnotations.DELETE.getLabel())) {
-				assertTrue(restfulWizard.getPathForRestFulService(restService).equals("/rest/delete/{id}"));
-				assertTrue(restfulWizard.getProducesInfo(restService).equals("*/*"));
-			}
-		}
-		
-		packageExplorer.openFile(getWsProjectName(), "src", 
-				getWsPackage(), getWsName() + ".java").toTextEditor();
-		resourceHelper.replaceInEditor(bot.activeEditor().toTextEditor(), 
-				"/delete/{id}", "delete/edited/{id}", false);
-		resourceHelper.replaceInEditor(bot.activeEditor().toTextEditor(), "@DELETE", 
-									   "@DELETE" + LINE_SEPARATOR + "@Produces(\"text/plain\")", false);
-		
-		bot.sleep(Timing.time2S());
-		restfulWizard = new RESTFullExplorerWizard(getWsProjectName());
-		restServices = restfulWizard.getAllRestServices();
-		
-		for (SWTBotTreeItem restService : restServices) {
-			if (restfulWizard.getRestServiceName(restService).equals(RESTFulAnnotations.DELETE.getLabel())) {
-				assertTrue(restfulWizard.getPathForRestFulService(restService).equals("/rest/delete/edited/{id}"));
-				assertTrue(restfulWizard.getProducesInfo(restService).equals("text/plain"));
-			}
-		}
-	}
-	
-	@Test
-	public void testDeletingRESTMethods() {
-		
-		prepareWSResource(BASIC_WS_RESOURCE);
-		
-		restfulWizard = new RESTFullExplorerWizard(getWsProjectName());
-		SWTBotTreeItem[] restServices = restfulWizard.getAllRestServices();
-		
-		assertTrue(restServices.length + " RESTful services was found instead of 4.", 
-				   restServices.length == 4);
-		
-		packageExplorer.openFile(getWsProjectName(), "src", 
-				getWsPackage(), getWsName() + ".java").toTextEditor();
-		resourceHelper.copyResourceToClassWithSave(bot.editorByTitle(getWsName() + ".java"), 
-				   PathAnnotationSupportTest.class.
-				   getResourceAsStream(EMPTY_WS_RESOURCE), 
-				   false, false, getWsPackage(), getWsName());
-		
-		bot.sleep(Timing.time2S());
-		restfulWizard = new RESTFullExplorerWizard(getWsProjectName());
-		restServices = restfulWizard.getAllRestServices();
-		
-		assertTrue(restServices.length + " RESTful services was found instead of 0.",
-				   restServices.length == 0);
-		
-	}
-	
-	private boolean allRestServicesArePresent(SWTBotTreeItem[] restServices) {
-		
-		String[] restMethods = {RESTFulAnnotations.GET.getLabel(), RESTFulAnnotations.POST.getLabel(), 
-								RESTFulAnnotations.POST.getLabel(), RESTFulAnnotations.DELETE.getLabel()};
-		for (String restMethod : restMethods) {
-			boolean serviceFound = false;
-				for (SWTBotTreeItem restService : restServices) {
-					if (restfulWizard.getRestServiceName(restService).equals(restMethod)) {
-						serviceFound = true;
-						break;
-					}
-				}
-				if (!serviceFound) return false;
-		}
-		return true;
-	}
-	
-	private void prepareWSResource(String streamPath) {
-		
-		packageExplorer.openFile(getWsProjectName(), "src", 
-				getWsPackage(), getWsName() + ".java").toTextEditor();
-		resourceHelper.copyResourceToClassWithSave(bot.editorByTitle(getWsName() + ".java"),
-				PathAnnotationSupportTest.class.getResourceAsStream(streamPath), 
-				false, false, getWsPackage(), getWsName());
-		bot.sleep(Timing.time2S());
-		
-	}
-	
 }

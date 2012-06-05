@@ -24,9 +24,9 @@ import org.jboss.tools.ui.bot.ext.view.ViewBase;
  * @author jjankovi
  * 
  */
-public class AnnotationProperties extends ViewBase {
+public class AnnotationPropertiesView extends ViewBase {
 
-	public AnnotationProperties() {
+	public AnnotationPropertiesView() {
 		viewObject = ActionItem.View.JAXWSAnnotationProperties.LABEL;
 	}
 

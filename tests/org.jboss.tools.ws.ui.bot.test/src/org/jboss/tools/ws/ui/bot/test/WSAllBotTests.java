@@ -12,12 +12,12 @@ package org.jboss.tools.ws.ui.bot.test;
 
 import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
 import org.jboss.tools.ws.ui.bot.test.annotation.AnnotationPropertiesTest;
-import org.jboss.tools.ws.ui.bot.test.rest.DefaultValueParamSupportTest;
-import org.jboss.tools.ws.ui.bot.test.rest.MatrixParamSupportTest;
+import org.jboss.tools.ws.ui.bot.test.rest.DefaultValueAnnotationSupportTest;
+import org.jboss.tools.ws.ui.bot.test.rest.MatrixAnnotationSupportTest;
 import org.jboss.tools.ws.ui.bot.test.rest.PathAnnotationSupportTest;
-import org.jboss.tools.ws.ui.bot.test.rest.QueryParamSupportTest;
+import org.jboss.tools.ws.ui.bot.test.rest.QueryAnnotationSupportTest;
 import org.jboss.tools.ws.ui.bot.test.rest.completion.RESTfulCompletionTest;
-import org.jboss.tools.ws.ui.bot.test.rest.explorer.RESTfulSupportTest;
+import org.jboss.tools.ws.ui.bot.test.rest.explorer.RESTfulExplorerTest;
 import org.jboss.tools.ws.ui.bot.test.rest.validation.ApplicationPathParameterTest;
 import org.jboss.tools.ws.ui.bot.test.rest.validation.RESTfulValidationTest;
 import org.jboss.tools.ws.ui.bot.test.sample.test.SampleRESTWebServiceTest;
@@ -59,11 +59,11 @@ import org.junit.runners.Suite.SuiteClasses;
 	SimpleSoapWebServiceTest.class,
 	SimpleRESTWebServiceTest.class,
 	AnnotationPropertiesTest.class,
-	RESTfulSupportTest.class, 
+	RESTfulExplorerTest.class, 
 	PathAnnotationSupportTest.class,
-	QueryParamSupportTest.class,
-	DefaultValueParamSupportTest.class,
-	MatrixParamSupportTest.class,
+	QueryAnnotationSupportTest.class,
+	MatrixAnnotationSupportTest.class,
+	DefaultValueAnnotationSupportTest.class,
 	RESTfulValidationTest.class,
 	RESTfulCompletionTest.class,
 	ApplicationPathParameterTest.class,

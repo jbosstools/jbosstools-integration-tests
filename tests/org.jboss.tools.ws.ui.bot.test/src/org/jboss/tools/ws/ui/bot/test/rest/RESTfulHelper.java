@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.swtbot.swt.finder.SWTBot;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
@@ -28,9 +29,10 @@ import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.config.TestConfigurator;
 import org.jboss.tools.ui.bot.ext.gen.IPreference;
 import org.jboss.tools.ui.bot.ext.helper.BuildPathHelper;
+import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
+import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.ext.view.ProblemsView;
 import org.jboss.tools.ui.bot.ext.view.ProjectExplorer;
-import org.jboss.tools.ws.ui.bot.test.utils.NodeContextUtil;
 import org.jboss.tools.ws.ui.bot.test.utils.ResourceHelper;
 
 public class RESTfulHelper {
@@ -160,12 +162,13 @@ public class RESTfulHelper {
 		projectExplorer.selectProject(wsProjectName);
 		SWTBotTree tree = projectExplorer.bot().tree();
 		SWTBotTreeItem item = tree.getTreeItem(wsProjectName);
-		item.expand();
-		NodeContextUtil.nodeContextMenu(tree, item,
-						RESTFulAnnotations.CONFIGURE_MENU_LABEL.getLabel(),
-						option == ConfigureOption.ADD ? RESTFulAnnotations.REST_SUPPORT_MENU_LABEL_ADD
-								.getLabel() : RESTFulAnnotations.REST_SUPPORT_MENU_LABEL_REMOVE
-								.getLabel()).click();
+		ContextMenuHelper.prepareTreeItemForContextMenu(tree, item);
+		SWTBotMenu menu = new SWTBotMenu(
+				ContextMenuHelper.getContextMenu(
+				tree, IDELabel.Menu.PACKAGE_EXPLORER_CONFIGURE, false));
+		menu.menu(option == ConfigureOption.ADD ? RESTFulAnnotations.REST_SUPPORT_MENU_LABEL_ADD
+				.getLabel() : RESTFulAnnotations.REST_SUPPORT_MENU_LABEL_REMOVE
+				.getLabel()).click();
 		bot.sleep(Timing.time2S());		
 		util.waitForAll();
 		

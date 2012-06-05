@@ -32,33 +32,33 @@ import org.junit.runners.Suite.SuiteClasses;
 
 /**
  * Basic test base for all web service bot tests
+ * 
  * @author jjankovi
- *
+ * 
  */
-@Require(perspective="Java EE", 
-		server=@Server(type=ServerType.JbossAS, 
-		version = "7.1", operator = ">="))
-//@Require(perspective="Java EE", 
-//		server=@Server(type=ServerType.EAP, 
-//		version = "5.1", operator = ">="))
+@Require(perspective = "Java EE", server = @Server(type = ServerType.JbossAS, version = "7.1", operator = ">="))
+// @Require(perspective="Java EE",
+// server=@Server(type=ServerType.EAP,
+// version = "5.1", operator = ">="))
 @RunWith(RequirementAwareSuite.class)
 @SuiteClasses({ WSAllBotTests.class })
 public class WSTestBase extends SWTTestExt {
 
 	private Slider_Level level;
 	private String wsProjectName = null;
-	
+
 	private static final String SOAP_REQUEST_TEMPLATE = "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\" ?>"
 			+ "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\""
 			+ " xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\""
 			+ " xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">"
 			+ "<soap:Body>{0}</soap:Body>" + "</soap:Envelope>";
 
-	protected static final Logger LOGGER = Logger
-			.getLogger(WSAllBotTests.class.getName());
-	
-	protected final String LINE_SEPARATOR = System.getProperty("line.separator");
-	
+	protected static final Logger LOGGER = Logger.getLogger(WSAllBotTests.class
+			.getName());
+
+	protected final String LINE_SEPARATOR = System
+			.getProperty("line.separator");
+
 	protected static ResourceHelper resourceHelper = new ResourceHelper();
 	protected static ProjectHelper projectHelper = new ProjectHelper();
 	protected static DeploymentHelper deploymentHelper = new DeploymentHelper();
@@ -69,7 +69,7 @@ public class WSTestBase extends SWTTestExt {
 		if (getEarProjectName() != null && !projectExists(getEarProjectName())) {
 			projectHelper.createEARProject(getEarProjectName());
 			if (!projectExists(getWsProjectName())) {
-				projectHelper.createProjectForEAR(getWsProjectName(), 
+				projectHelper.createProjectForEAR(getWsProjectName(),
 						getEarProjectName());
 			}
 		}
@@ -82,15 +82,15 @@ public class WSTestBase extends SWTTestExt {
 	public void cleanup() {
 		servers.removeAllProjectsFromServer();
 	}
-	
+
 	protected boolean projectExists(String name) {
 		return projectExplorer.existsResource(name);
 	}
-	
+
 	protected Slider_Level getLevel() {
 		return level;
 	}
-	
+
 	protected void setLevel(Slider_Level level) {
 		this.level = level;
 	}
@@ -118,12 +118,16 @@ public class WSTestBase extends SWTTestExt {
 	public static String getSoapRequest(String body) {
 		return MessageFormat.format(SOAP_REQUEST_TEMPLATE, body);
 	}
-	
+
+	protected void importWSTestProject(String projectName) {
+		String location = "/resources/projects/" + projectName;
+		importWSTestProject(location, projectName);
+	}
+
 	protected void importWSTestProject(String projectLocation, String dir) {
 		ImportHelper.importProject(projectLocation, dir, Activator.PLUGIN_ID);
-		
-		eclipse.addConfiguredRuntimeIntoProject(getWsProjectName(), 
-				configuredState.getServer().name);
+
+		eclipse.addConfiguredRuntimeIntoProject(dir, configuredState.getServer().name);
 	}
 
 }

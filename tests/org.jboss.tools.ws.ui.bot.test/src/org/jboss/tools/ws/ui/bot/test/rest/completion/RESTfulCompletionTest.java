@@ -29,25 +29,32 @@ public class RESTfulCompletionTest extends RESTfulTestBase{
 	private final String CORRECT_PATH_PARAM = "userId";
 	private final String INCORRECT_PATH_PARAM = "someId";
 	private final String PATH_PARAM_NAVIGATION = "@PathParam(";
-	private final List<String> EXP_NON_EMPTY_COMPLETION_RESULT = Arrays.asList("userId - JAX-RS Mapping");
-	private final List<String> EXP_EMPTY_COMPLETION_RESULT = Arrays.asList("No Default Proposals");
+	private final List<String> EXP_NON_EMPTY_COMPLETION_RESULT = 
+			Arrays.asList("userId - JAX-RS Mapping");
+	private final List<String> EXP_EMPTY_COMPLETION_RESULT = 
+			Arrays.asList("No Default Proposals");
 	
 	@Override
 	protected String getWsProjectName() {
 		return "restEmpty";
 	}
 	
+	@Override
+	public void cleanup() {		
+		 projectExplorer.deleteAllProjects();
+	}
+	
 	@Test
 	public void testWithEmptyPrefix() {
 		
-		packageExplorer.openFile(getWsProjectName(), "src", 
-				getWsPackage(), getWsName() + ".java").toTextEditor();
-		resourceHelper.copyResourceToClass(bot.editorByTitle(getWsName() + ".java"),
-				RESTfulCompletionTest.class.getResourceAsStream(SIMPLE_REST_WS_RESOURCE), 
-				false, getWsPackage(), getWsName(), GET_METHOD_PATH, "");
+		/* prepare project */
+		importRestWSProject(getWsProjectName());
+		prepareRestfulResource(editorForClass(getWsProjectName(), "src", 
+				"org.rest.test", "RestService.java"), SIMPLE_REST_WS_RESOURCE, 
+				"org.rest.test", "RestService",
+				GET_METHOD_PATH, "");
 		
-		packageExplorer.openFile(getWsProjectName(), "src", 
-				getWsPackage(), getWsName() + ".java").toTextEditor();
+		/* test content assist proposal */
 		ContentAssistHelper.checkContentAssistContent(bot, 
 				getWsName() + ".java", PATH_PARAM_NAVIGATION, PATH_PARAM_NAVIGATION.length() + 1, 
 				0, EXP_NON_EMPTY_COMPLETION_RESULT);
@@ -57,14 +64,14 @@ public class RESTfulCompletionTest extends RESTfulTestBase{
 	@Test
 	public void testWithValidPrefixAtTheEnd() {
 		
-		packageExplorer.openFile(getWsProjectName(), "src", 
-				getWsPackage(), getWsName() + ".java").toTextEditor();
-		resourceHelper.copyResourceToClass(bot.editorByTitle(getWsName() + ".java"),
-				RESTfulCompletionTest.class.getResourceAsStream(SIMPLE_REST_WS_RESOURCE), 
-				false, getWsPackage(), getWsName(), GET_METHOD_PATH, CORRECT_PATH_PARAM);
+		/* prepare project */
+		importRestWSProject(getWsProjectName());
+		prepareRestfulResource(editorForClass(getWsProjectName(), "src", 
+				"org.rest.test", "RestService.java"), SIMPLE_REST_WS_RESOURCE, 
+				"org.rest.test", "RestService",
+				GET_METHOD_PATH, CORRECT_PATH_PARAM);
 		
-		packageExplorer.openFile(getWsProjectName(), "src", 
-				getWsPackage(), getWsName() + ".java").toTextEditor();
+		/* test content assist proposal */
 		ContentAssistHelper.checkContentAssistContent(bot, 
 				getWsName() + ".java", PATH_PARAM_NAVIGATION, PATH_PARAM_NAVIGATION.length() + 
 				CORRECT_PATH_PARAM.length() + 1, 
@@ -75,14 +82,14 @@ public class RESTfulCompletionTest extends RESTfulTestBase{
 	@Test
 	public void testWithValidPrefixInTheBeginning() {
 	
-		packageExplorer.openFile(getWsProjectName(), "src", 
-				getWsPackage(), getWsName() + ".java").toTextEditor();
-		resourceHelper.copyResourceToClass(bot.editorByTitle(getWsName() + ".java"),
-				RESTfulCompletionTest.class.getResourceAsStream(SIMPLE_REST_WS_RESOURCE), 
-				false, getWsPackage(), getWsName(), GET_METHOD_PATH, CORRECT_PATH_PARAM);
+		/* prepare project */
+		importRestWSProject(getWsProjectName());
+		prepareRestfulResource(editorForClass(getWsProjectName(), "src", 
+				"org.rest.test", "RestService.java"), SIMPLE_REST_WS_RESOURCE, 
+				"org.rest.test", "RestService",
+				GET_METHOD_PATH, CORRECT_PATH_PARAM);
 		
-		packageExplorer.openFile(getWsProjectName(), "src", 
-				getWsPackage(), getWsName() + ".java").toTextEditor();
+		/* test content assist proposal */
 		ContentAssistHelper.checkContentAssistContent(bot, 
 				getWsName() + ".java", PATH_PARAM_NAVIGATION, PATH_PARAM_NAVIGATION.length() + 1, 
 				0, EXP_NON_EMPTY_COMPLETION_RESULT);
@@ -92,14 +99,14 @@ public class RESTfulCompletionTest extends RESTfulTestBase{
 	@Test
 	public void testWithInvalidPrefixAtTheEnd() {
 		
-		packageExplorer.openFile(getWsProjectName(), "src", 
-				getWsPackage(), getWsName() + ".java").toTextEditor();
-		resourceHelper.copyResourceToClass(bot.editorByTitle(getWsName() + ".java"),
-				RESTfulCompletionTest.class.getResourceAsStream(SIMPLE_REST_WS_RESOURCE), 
-				false, getWsPackage(), getWsName(), GET_METHOD_PATH, INCORRECT_PATH_PARAM);
+		/* prepare project */
+		importRestWSProject(getWsProjectName());
+		prepareRestfulResource(editorForClass(getWsProjectName(), "src", 
+				"org.rest.test", "RestService.java"), SIMPLE_REST_WS_RESOURCE, 
+				"org.rest.test", "RestService",
+				GET_METHOD_PATH, INCORRECT_PATH_PARAM);
 		
-		packageExplorer.openFile(getWsProjectName(), "src", 
-				getWsPackage(), getWsName() + ".java").toTextEditor();
+		/* test content assist proposal */
 		ContentAssistHelper.checkContentAssistContent(bot, 
 				getWsName() + ".java", PATH_PARAM_NAVIGATION, PATH_PARAM_NAVIGATION.length() + 
 				INCORRECT_PATH_PARAM.length() + 1, 
@@ -110,14 +117,14 @@ public class RESTfulCompletionTest extends RESTfulTestBase{
 	@Test
 	public void testWithInvalidPrefixInTheBeginning() {
 	
-		packageExplorer.openFile(getWsProjectName(), "src", 
-				getWsPackage(), getWsName() + ".java").toTextEditor();
-		resourceHelper.copyResourceToClass(bot.editorByTitle(getWsName() + ".java"),
-				RESTfulCompletionTest.class.getResourceAsStream(SIMPLE_REST_WS_RESOURCE), 
-				false, getWsPackage(), getWsName(), GET_METHOD_PATH, INCORRECT_PATH_PARAM);
+		/* prepare project */
+		importRestWSProject(getWsProjectName());
+		prepareRestfulResource(editorForClass(getWsProjectName(), "src", 
+				"org.rest.test", "RestService.java"), SIMPLE_REST_WS_RESOURCE, 
+				"org.rest.test", "RestService",
+				GET_METHOD_PATH, INCORRECT_PATH_PARAM);
 		
-		packageExplorer.openFile(getWsProjectName(), "src", 
-				getWsPackage(), getWsName() + ".java").toTextEditor();
+		/* test content assist proposal */
 		ContentAssistHelper.checkContentAssistContent(bot, 
 				getWsName() + ".java", PATH_PARAM_NAVIGATION, PATH_PARAM_NAVIGATION.length() + 1, 
 				0, EXP_NON_EMPTY_COMPLETION_RESULT);
@@ -127,14 +134,14 @@ public class RESTfulCompletionTest extends RESTfulTestBase{
 	@Test
 	public void testWithAllInvalidParamSelection() {
 		
-		packageExplorer.openFile(getWsProjectName(), "src", 
-				getWsPackage(), getWsName() + ".java").toTextEditor();
-		resourceHelper.copyResourceToClass(bot.editorByTitle(getWsName() + ".java"),
-				RESTfulCompletionTest.class.getResourceAsStream(SIMPLE_REST_WS_RESOURCE), 
-				false, getWsPackage(), getWsName(), GET_METHOD_PATH, INCORRECT_PATH_PARAM);
+		/* prepare project */
+		importRestWSProject(getWsProjectName());
+		prepareRestfulResource(editorForClass(getWsProjectName(), "src", 
+				"org.rest.test", "RestService.java"), SIMPLE_REST_WS_RESOURCE, 
+				"org.rest.test", "RestService",
+				GET_METHOD_PATH, INCORRECT_PATH_PARAM);
 		
-		packageExplorer.openFile(getWsProjectName(), "src", 
-				getWsPackage(), getWsName() + ".java").toTextEditor();
+		/* test content assist proposal */
 		ContentAssistHelper.checkContentAssistContent(bot, 
 				getWsName() + ".java", PATH_PARAM_NAVIGATION, PATH_PARAM_NAVIGATION.length() + 1, 
 				INCORRECT_PATH_PARAM.length(), EXP_NON_EMPTY_COMPLETION_RESULT);
