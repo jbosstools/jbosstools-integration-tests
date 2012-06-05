@@ -14,7 +14,6 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
-import org.jboss.tools.bpel.ui.bot.test.AssignActivityTest;
 import org.jboss.tools.bpel.ui.bot.test.OdeDeployTest;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
@@ -25,6 +24,8 @@ import org.osgi.framework.Version;
 
 public class BPELTest extends SWTTestExt {
 
+	public static final Version JBT_3_2_BPEL_VERSION = new Version(0, 6, 2);
+	
 	public static void prepare() {
 		log.info("BPEL All Test started...");
 
@@ -122,7 +123,7 @@ public class BPELTest extends SWTTestExt {
 	}
 
 	protected void createNewBpelProcess(String project, String name, String type, boolean isAbstract, Version version) {
-		if (version.toString().startsWith("0.8.0")) {
+		if (version.compareTo(JBT_3_2_BPEL_VERSION) == 1) {
 			bot.textWithLabel("Process Name:").setText(name);
 			bot.comboBoxWithLabel("Namespace:").setText("http://eclipse.org/bpel/sample");
 			if (isAbstract) {
