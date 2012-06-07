@@ -17,7 +17,7 @@ public abstract class AbstractPortletExampleGatein extends
 
 	@Override
 	public String getExampleCategory() {
-		return "Portlet for GateIn 3.1/EPP 5.x";
+		return "Portlet for JBoss Enterprise Portal Platform 5.x/GateIn 3.1";
 	}
 	
 	@Override
