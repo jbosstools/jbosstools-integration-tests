@@ -46,7 +46,7 @@ public class RESTfulValidationTest extends RESTfulTestBase {
 				GET_METHOD_PATH, CORRECT_PATH_PARAM);
 		
 		/* test count of validation errors */
-		assertCoundOfValidationErrors(getWsProjectName(), 0);
+		assertCountOfPathAnnotationValidationErrors(getWsProjectName(), 0);
 	}
 	
 	
@@ -62,7 +62,7 @@ public class RESTfulValidationTest extends RESTfulTestBase {
 				GET_METHOD_PATH, BAD_PATH_PARAM);
 		
 		/* test count of validation errors */
-		assertCoundOfValidationErrors(getWsProjectName(), 1);
+		assertCountOfPathAnnotationValidationErrors(getWsProjectName(), 1);
 	}
 	
 	@Test
@@ -79,7 +79,7 @@ public class RESTfulValidationTest extends RESTfulTestBase {
 				GET_METHOD_PATH, BAD_PATH_PARAM);
 		
 		/* test count of validation errors */
-		assertCoundOfValidationErrors(getWsProjectName(), 1);
+		assertCountOfPathAnnotationValidationErrors(getWsProjectName(), 1);
 	}
 	
 	@Test
@@ -96,7 +96,7 @@ public class RESTfulValidationTest extends RESTfulTestBase {
 				GET_METHOD_PATH, CORRECT_PATH_PARAM);
 		
 		/* test count of validation errors */
-		assertCoundOfValidationErrors(getWsProjectName(), 0);
+		assertCountOfPathAnnotationValidationErrors(getWsProjectName(), 0);
 	}
 	
 	@Test
@@ -113,13 +113,13 @@ public class RESTfulValidationTest extends RESTfulTestBase {
 				GET_METHOD_PATH, BAD_PATH_PARAM);
 		
 		/* test count of validation errors */
-		assertCoundOfValidationErrors(getWsProjectName(), 0);
+		assertCountOfPathAnnotationValidationErrors(getWsProjectName(), 0);
 		
 		/* enable restful validation */
 		restfulHelper.enableRESTValidation();
 		
 		/* test count of validation errors */
-		assertCoundOfValidationErrors(getWsProjectName(), 1);
+		assertCountOfPathAnnotationValidationErrors(getWsProjectName(), 1);
 	}
 
 }

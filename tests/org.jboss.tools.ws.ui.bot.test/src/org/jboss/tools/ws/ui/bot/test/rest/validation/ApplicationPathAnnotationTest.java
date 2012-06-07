@@ -16,12 +16,13 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * 
+ * @author jjankovi
+ *
+ */
 public class ApplicationPathAnnotationTest extends RESTfulTestBase {
 
-	@Override
-	public String getWsProjectName() {
-		return "restApplication1";
-	}
 	
 	@Before
 	public void setup() {		
@@ -34,13 +35,23 @@ public class ApplicationPathAnnotationTest extends RESTfulTestBase {
 	}
 	
 	@Test
-	public void testMultipleAppClasses() {
+	public void testMultipleApplicationClasses() {
 		
+		/* prepare project */
+		importRestWSProject("app1");
+		
+		/* test validation error */
+		assertCountOfApplicationAnnotationValidationErrors("app1", 1);
 	}
 	
 	@Test
-	public void testWebXmlApplicationOption() {
+	public void testWebXmlAndApplicationClass() {
 		
+		/* prepare project */
+		importRestWSProject("app2");
+		
+		/* test validation error */
+		assertCountOfApplicationAnnotationValidationErrors("app2", 1);
 	}
 	
 }

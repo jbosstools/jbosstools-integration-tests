@@ -14,7 +14,6 @@ package org.jboss.tools.ws.ui.bot.test.rest;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.ui.bot.ext.Timing;
-import org.jboss.tools.ws.ui.bot.test.ti.wizard.RESTFullExplorerWizard;
 import org.junit.After;
 import org.junit.Test;
 
@@ -37,9 +36,8 @@ public class PathAnnotationSupportTest extends RESTfulTestBase {
 		/* import project */
 		importRestWSProject("restBasic");
 		
-		/* get JAX-RS REST explorer for the project */
-		restfulWizard = new RESTFullExplorerWizard("restBasic");
-		SWTBotTreeItem[] restServices = restfulWizard.getAllRestServices();
+		/* get RESTful services from JAX-RS REST explorer for the project */
+		SWTBotTreeItem[] restServices = restfulServicesForProject("restBasic");
 		
 		/* test JAX-RS REST explorer */
 		assertCountOfRESTServices(restServices, 4);		
@@ -53,9 +51,8 @@ public class PathAnnotationSupportTest extends RESTfulTestBase {
 		/* import project */
 		importRestWSProject("restAdvanced");
 		
-		/* get JAX-RS REST explorer for the project */
-		restfulWizard = new RESTFullExplorerWizard("restAdvanced");
-		SWTBotTreeItem[] restServices = restfulWizard.getAllRestServices(); 
+		/* get RESTful services from JAX-RS REST explorer for the project */
+		SWTBotTreeItem[] restServices = restfulServicesForProject("restAdvanced");
 		
 		/* test JAX-RS REST explorer */
 		assertCountOfRESTServices(restServices, 4);		
@@ -74,9 +71,8 @@ public class PathAnnotationSupportTest extends RESTfulTestBase {
 				"org.rest.test", "RestService.java").toTextEditor(), "@DELETE", "@GET", true);
 		bot.sleep(Timing.time2S());
 		
-		/* get JAX-RS REST explorer for the project */
-		restfulWizard = new RESTFullExplorerWizard("restBasic");
-		SWTBotTreeItem[] restServices = restfulWizard.getAllRestServices(); 
+		/* get RESTful services from JAX-RS REST explorer for the project */
+		SWTBotTreeItem[] restServices = restfulServicesForProject("restBasic"); 
 		
 		/* test JAX-RS REST explorer */
 		assertNotAllRESTServicesInExplorer(restServices);
@@ -99,9 +95,8 @@ public class PathAnnotationSupportTest extends RESTfulTestBase {
 				+ LINE_SEPARATOR + "@Produces(\"text/plain\")", true);
 		bot.sleep(Timing.time2S());
 		
-		/* get JAX-RS REST explorer for the project */
-		restfulWizard = new RESTFullExplorerWizard("restAdvanced");
-		SWTBotTreeItem[] restServices = restfulWizard.getAllRestServices(); 
+		/* get RESTful services from JAX-RS REST explorer for the project */
+		SWTBotTreeItem[] restServices = restfulServicesForProject("restAdvanced");
 		
 		/* test JAX-RS REST explorer */
 		testEditedDeleteRestWebResource(restServices);
@@ -117,12 +112,11 @@ public class PathAnnotationSupportTest extends RESTfulTestBase {
 				"org.rest.test", "RestService");
 		bot.sleep(Timing.time2S());
 		
-		/* get JAX-RS REST explorer for the project */
-		restfulWizard = new RESTFullExplorerWizard("restBasic");
-		SWTBotTreeItem[] restServices = restfulWizard.getAllRestServices(); 
+		/* get RESTful services from JAX-RS REST explorer for the project */
+		SWTBotTreeItem[] restServices = restfulServicesForProject("restBasic");  
 		
 		/* none of REST web services found */
-		assertNoRESTServicesInExplorerFound(restServices);
+		assertCountOfRESTServices(restServices, 0);
 	}
 
 	private void testEditedDeleteRestWebResource(

@@ -13,7 +13,6 @@ package org.jboss.tools.ws.ui.bot.test.rest;
 
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.ui.bot.ext.Timing;
-import org.jboss.tools.ws.ui.bot.test.ti.wizard.RESTFullExplorerWizard;
 import org.junit.Test;
 
 public class MatrixAnnotationSupportTest extends RESTfulTestBase {
@@ -42,9 +41,8 @@ public class MatrixAnnotationSupportTest extends RESTfulTestBase {
 		/* prepare project */
 		importRestWSProject("matrix1");
 		
-		/* get JAX-RS REST explorer for the project */
-		restfulWizard = new RESTFullExplorerWizard("matrix1");
-		SWTBotTreeItem[] restServices = restfulWizard.getAllRestServices();
+		/* get RESTful services from JAX-RS REST explorer for the project */
+		SWTBotTreeItem[] restServices = restfulServicesForProject("matrix1");
 		
 		/* test JAX-RS REST explorer */
 		assertCountOfRESTServices(restServices, 1);	
@@ -64,9 +62,8 @@ public class MatrixAnnotationSupportTest extends RESTfulTestBase {
 				matrixParam1, matrixParamNew, true);
 		bot.sleep(Timing.time2S());
 
-		/* get JAX-RS REST explorer for the project */
-		restfulWizard = new RESTFullExplorerWizard("matrix1");
-		SWTBotTreeItem[] restServices = restfulWizard.getAllRestServices();
+		/* get RESTful services from JAX-RS REST explorer for the project */
+		SWTBotTreeItem[] restServices = restfulServicesForProject("matrix1");
 
 		/* test JAX-RS REST explorer */
 		assertCountOfRESTServices(restServices, 1);	
@@ -85,9 +82,8 @@ public class MatrixAnnotationSupportTest extends RESTfulTestBase {
 				matrixParamType1, matrixParamTypeNew, true);
 		bot.sleep(Timing.time2S());
 
-		/* get JAX-RS REST explorer for the project */
-		restfulWizard = new RESTFullExplorerWizard("matrix1");
-		SWTBotTreeItem[] restServices = restfulWizard.getAllRestServices();
+		/* get RESTful services from JAX-RS REST explorer for the project */
+		SWTBotTreeItem[] restServices = restfulServicesForProject("matrix1");
 		
 		/* test JAX-RS REST explorer */
 		assertCountOfRESTServices(restServices, 1);	

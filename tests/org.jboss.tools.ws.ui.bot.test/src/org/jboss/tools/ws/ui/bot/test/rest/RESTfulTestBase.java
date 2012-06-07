@@ -95,13 +95,6 @@ public class RESTfulTestBase extends WSTestBase {
 				allRestServicesArePresent(restServices));
 	}
 
-	protected void assertNoRESTServicesInExplorerFound(
-			SWTBotTreeItem[] restServices) {
-		assertTrue(restServices.length
-				+ " RESTful services was found instead of 0.",
-				restServices.length == 0);
-	}
-
 	protected void assertPathOfAllRESTWebServices(
 			SWTBotTreeItem[] restServices, String path) {
 		for (SWTBotTreeItem restService : restServices) {
@@ -144,12 +137,27 @@ public class RESTfulTestBase extends WSTestBase {
 		assertEquals("Failure when comparing paths = ", expectedPath, path);
 	}
 
-	protected void assertCoundOfValidationErrors(String projectName,
+	protected void assertCountOfPathAnnotationValidationErrors(String projectName,
 			int expectedCount) {
-		int foundErrors = restfulHelper.getRESTValidationErrors(projectName).length;
-		assertTrue("There should be " + expectedCount
-				+ " validation error. Found: " + foundErrors,
-				foundErrors == expectedCount);
+		int foundErrors = restfulHelper.getPathAnnotationValidationErrors(projectName).length;
+		assertCountOfValidationError(expectedCount, foundErrors);
+	}
+	
+	protected void assertCountOfApplicationAnnotationValidationErrors(String projectName,
+			int expectedCount) {
+		int foundErrors = restfulHelper.getPathAnnotationValidationErrors(projectName).length;
+		assertCountOfValidationError(expectedCount, foundErrors);
+	}
+	
+	private void assertCountOfValidationError(int expectedCount, int foundCount) {
+		assertTrue("Expected count of validation errors: " + expectedCount
+				+ ". Count of found validation errors: " + foundCount,
+				foundCount == expectedCount);
+	}
+	
+	protected SWTBotTreeItem[] restfulServicesForProject(String projectName) {
+		restfulWizard = new RESTFullExplorerWizard(projectName);
+		return restfulWizard.getAllRestServices();
 	}
 
 	protected SWTBotEditor editorForClass(String projectName, String... path) {

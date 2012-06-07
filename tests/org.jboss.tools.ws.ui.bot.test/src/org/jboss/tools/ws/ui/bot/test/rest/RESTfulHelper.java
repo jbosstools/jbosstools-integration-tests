@@ -53,9 +53,17 @@ public class RESTfulHelper {
 		ADD, REMOVE;
 	}
 	
-	public SWTBotTreeItem[] getRESTValidationErrors(String wsProjectName) {
+	private SWTBotTreeItem[] getRESTValidationErrors(String wsProjectName, String description) {
 		return ProblemsView.getFilteredErrorsTreeItems(bot,
-				PATH_PARAM_VALID_ERROR, "/" + wsProjectName, null, null);
+				description, "/" + wsProjectName, null, null);
+	}
+	
+	public SWTBotTreeItem[] getPathAnnotationValidationErrors(String wsProjectName) {
+		return getRESTValidationErrors(wsProjectName, PATH_PARAM_VALID_ERROR);
+	}
+	
+	public SWTBotTreeItem[] getApplicationAnnotationValidationErrors(String wsProjectName) {
+		return getRESTValidationErrors(wsProjectName, null);
 	}
 
 	public void enableRESTValidation() {

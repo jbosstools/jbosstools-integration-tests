@@ -12,7 +12,6 @@
 package org.jboss.tools.ws.ui.bot.test.rest;
 
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
-import org.jboss.tools.ws.ui.bot.test.ti.wizard.RESTFullExplorerWizard;
 import org.junit.Test;
 
 public class DefaultValueAnnotationSupportTest extends RESTfulTestBase {
@@ -32,9 +31,8 @@ public class DefaultValueAnnotationSupportTest extends RESTfulTestBase {
 		/* prepare project */
 		importRestWSProject("default1");
 		
-		/* get JAX-RS REST explorer for the project */
-		restfulWizard = new RESTFullExplorerWizard("default1");
-		SWTBotTreeItem[] restServices = restfulWizard.getAllRestServices();
+		/* get RESTful services from JAX-RS REST explorer for the project */
+		SWTBotTreeItem[] restServices = restfulServicesForProject("default1");
 		
 		/* test JAX-RS REST explorer */
 		assertCountOfRESTServices(restServices, 1);
@@ -50,9 +48,8 @@ public class DefaultValueAnnotationSupportTest extends RESTfulTestBase {
 		/* prepare project */
 		importRestWSProject("default2");
 		
-		/* get JAX-RS REST explorer for the project */
-		restfulWizard = new RESTFullExplorerWizard("default2");
-		SWTBotTreeItem[] restServices = restfulWizard.getAllRestServices();
+		/* get RESTful services from JAX-RS REST explorer for the project */
+		SWTBotTreeItem[] restServices = restfulServicesForProject("default2");
 		
 		/* test JAX-RS REST explorer */
 		assertCountOfRESTServices(restServices, 1);
@@ -67,9 +64,8 @@ public class DefaultValueAnnotationSupportTest extends RESTfulTestBase {
 		/* prepare project */
 		importRestWSProject("default3");
 		
-		/* get JAX-RS REST explorer for the project */
-		restfulWizard = new RESTFullExplorerWizard("default3");
-		SWTBotTreeItem[] restServices = restfulWizard.getAllRestServices();
+		/* get RESTful services from JAX-RS REST explorer for the project */
+		SWTBotTreeItem[] restServices = restfulServicesForProject("default3");
 		
 		/* test JAX-RS REST explorer */
 		assertCountOfRESTServices(restServices, 1);

@@ -13,7 +13,6 @@ package org.jboss.tools.ws.ui.bot.test.rest;
 
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.ui.bot.ext.Timing;
-import org.jboss.tools.ws.ui.bot.test.ti.wizard.RESTFullExplorerWizard;
 import org.junit.Test;
 
 public class QueryAnnotationSupportTest extends RESTfulTestBase {
@@ -39,9 +38,8 @@ public class QueryAnnotationSupportTest extends RESTfulTestBase {
 		/* prepare project */
 		importRestWSProject("query1");
 		
-		/* get JAX-RS REST explorer for the project */
-		restfulWizard = new RESTFullExplorerWizard("query1");
-		SWTBotTreeItem[] restServices = restfulWizard.getAllRestServices();
+		/* get RESTful services from JAX-RS REST explorer for the project */
+		SWTBotTreeItem[] restServices = restfulServicesForProject("query1"); 
 		
 		/* test JAX-RS REST explorer */
 		assertCountOfRESTServices(restServices, 1);	
@@ -51,9 +49,8 @@ public class QueryAnnotationSupportTest extends RESTfulTestBase {
 		/* prepare project*/
 		importRestWSProject("query2");
 		
-		/* get JAX-RS REST explorer for the project */
-		restfulWizard = new RESTFullExplorerWizard("query2");
-		restServices = restfulWizard.getAllRestServices();
+		/* get RESTful services from JAX-RS REST explorer for the project */
+		restServices = restfulServicesForProject("query2");
 		
 		/* test JAX-RS REST explorer */
 		assertCountOfRESTServices(restServices, 1);	
@@ -74,9 +71,8 @@ public class QueryAnnotationSupportTest extends RESTfulTestBase {
 				queryParam1, queryParam1New, true);
 		bot.sleep(Timing.time2S());
 		
-		/* get JAX-RS REST explorer for the project */
-		restfulWizard = new RESTFullExplorerWizard("query2");
-		SWTBotTreeItem[] restServices = restfulWizard.getAllRestServices();
+		/* get RESTful services from JAX-RS REST explorer for the project */
+		SWTBotTreeItem[] restServices = restfulServicesForProject("query2");
 		
 		/* test JAX-RS REST explorer */
 		assertCountOfRESTServices(restServices, 1);
@@ -99,9 +95,8 @@ public class QueryAnnotationSupportTest extends RESTfulTestBase {
 				queryType1, queryTypeNew, true);
 		bot.sleep(Timing.time2S());
 		
-		/* get JAX-RS REST explorer for the project */
-		restfulWizard = new RESTFullExplorerWizard("query2");
-		SWTBotTreeItem[] restServices = restfulWizard.getAllRestServices();
+		/* get RESTful services from JAX-RS REST explorer for the project */
+		SWTBotTreeItem[] restServices = restfulServicesForProject("query2");
 		
 		/* test JAX-RS REST explorer */
 		assertCountOfRESTServices(restServices, 1);
