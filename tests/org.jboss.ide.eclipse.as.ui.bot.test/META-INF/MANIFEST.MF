@@ -4,7 +4,10 @@ Bundle-Name: Bot tests for AS component
 Bundle-SymbolicName: org.jboss.ide.eclipse.as.ui.bot.test;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: org.jboss.ide.eclipse.as.ui.bot.test.Activator
-Require-Bundle: org.eclipse.core.runtime
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.swtbot.swt.finder,
+ org.junit4;bundle-version="4.8.1",
+ org.eclipse.swtbot.junit4_x;bundle-version="2.0.5"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Vendor: JBoss by Red Hat
