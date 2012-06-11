@@ -7,10 +7,13 @@ public class JBPMTest extends SWTTestExt {
 
 	public static void prepare() {
 		log.info("jBPM All Test started...");
-		
+				
 		eclipse.maximizeActiveShell();
 		eclipse.closeView(IDELabel.View.WELCOME);
-		bot.closeAllEditors();		
+		eclipse.closeView(IDELabel.View.JBOSS_CENTRAL);
+		eclipse.closeAllEditors();
+		util.waitForAll();
+		bot.closeAllShells();
 	}
 
 	public static void clean() {
