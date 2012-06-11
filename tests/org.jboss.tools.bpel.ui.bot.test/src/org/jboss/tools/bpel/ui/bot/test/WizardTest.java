@@ -3,6 +3,7 @@ package org.jboss.tools.bpel.ui.bot.test;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
+import org.eclipse.swtbot.swt.finder.utils.TableCollection;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.jboss.tools.bpel.ui.bot.test.suite.BPELTest;
@@ -100,7 +101,53 @@ public class WizardTest extends BPELTest {
 		
 	}
 	
-	
+	/**
+	 * @author apodhrad
+	 * 
+	 * Test for JBIDE-11536
+	 */
+	@Test
+	public void createNewRuntime() {
+		// New Project
+		bot.menu("File").menu("New").menu("Project...").click();
+		bot.shell("New Project").activate();
+
+		// Choose BPEL 2.0 project
+		SWTBotTree tree = bot.tree();
+		tree.expandNode("BPEL 2.0").expandNode("BPEL Project").select();
+		assertTrue(bot.button("Next >").isEnabled());
+		bot.button("Next >").click();
+		
+		// Create new runtime
+		bot.shell("New BPEL Project").activate();
+		bot.button("New Runtime...").click();
+		bot.shell("New Server Runtime Environment").activate();
+		
+		tree = bot.tree();
+		TableCollection selection = bot.tree().selection();
+		assertTrue("No server has been selected as default.", selection.rowCount() > 0);
+		
+		// Is the checkbox ok?
+		assertTrue(bot.checkBox("Create a new local server").isVisible());
+		bot.checkBox("Create a new local server").select();
+		assertTrue(bot.checkBox("Create a new local server").isVisible());
+		
+		assertTrue(bot.button("Next >").isEnabled());
+		bot.button("Next >").click();
+		String serverName = bot.textWithLabel("Name").getText();
+		assertTrue(bot.button("Finish").isEnabled());
+		bot.button("Finish").click();
+		
+		assertEquals(bot.comboBoxInGroup("Target runtime").getText(), serverName);
+		
+		assertTrue(bot.button("Cancel").isEnabled());
+		bot.button("Cancel").click();
+		
+		SWTBotView serversView = bot.viewByTitle("Servers");
+		serversView.show();
+		serversView.setFocus();
+		assertNotNull(serversView.bot().tree().getTreeItem(serverName + " Server  [Stopped]"));
+	}
 	
 	boolean isRuntimeSet(String projectName) throws Exception {
 		SWTBotView projectExplorer =  bot.viewByTitle("Project Explorer");
