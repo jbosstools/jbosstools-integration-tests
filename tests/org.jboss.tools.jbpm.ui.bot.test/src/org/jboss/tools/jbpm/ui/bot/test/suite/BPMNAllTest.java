@@ -12,21 +12,16 @@ package org.jboss.tools.jbpm.ui.bot.test.suite;
 
 import junit.framework.TestSuite;
 
-import org.jboss.tools.jbpm.ui.bot.test.GPDPaletteTest;
-import org.jboss.tools.jbpm.ui.bot.test.GPDTest;
-import org.jboss.tools.jbpm.ui.bot.test.JBPMDeployTest;
-import org.jboss.tools.jbpm.ui.bot.test.JBPMProjectTest;
-import org.jboss.tools.jbpm.ui.bot.test.JBPMViewsTest;
+import org.jboss.tools.jbpm.ui.bot.test.BPMNConvertCase;
 import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
-@SuiteClasses({ JBPMProjectTest.class, JBPMViewsTest.class,  GPDTest.class, GPDPaletteTest.class, JBPMDeployTest.class  })
-//@SuiteClasses({ BPMNConvertCase.class })
+@SuiteClasses({ BPMNConvertCase.class })
 @RunWith(RequirementAwareSuite.class)
-public class JBPMAllTest extends TestSuite {
+public class BPMNAllTest extends TestSuite {
 
 	@BeforeClass
 	public static void setUpSuite() {
