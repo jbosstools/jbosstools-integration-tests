@@ -16,6 +16,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.archives.ui.bot.test.context.ArchiveContextMenu;
 import org.jboss.tools.archives.ui.bot.test.dialog.ArchivePublishSettingsDialog;
 import org.jboss.tools.archives.ui.bot.test.dialog.EditArchiveDialog;
+import org.jboss.tools.archives.ui.bot.test.dialog.FolderCreatingDialog;
 import org.jboss.tools.archives.ui.bot.test.dialog.NewJarDialog;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.View.JBossToolsProjectarchives;
 import org.jboss.tools.ui.bot.ext.helper.TreeHelper;
@@ -58,6 +59,12 @@ public class ProjectArchivesView extends ViewBase {
 		SWTBotTree tree = this.bot().tree();
 		SWTBotTreeItem treeItem = TreeHelper.expandNode(this.bot(), pathToArchive);
 		contextTool.buildArchiveFull(tree, treeItem);
+	}
+	
+	public FolderCreatingDialog createFolder(String... pathToArchive) {
+		SWTBotTree tree = this.bot().tree();
+		SWTBotTreeItem treeItem = TreeHelper.expandNode(this.bot(), pathToArchive);
+		return contextTool.createFolder(tree, treeItem);
 	}
 	
 	public EditArchiveDialog editArchive(String... pathToArchive) {

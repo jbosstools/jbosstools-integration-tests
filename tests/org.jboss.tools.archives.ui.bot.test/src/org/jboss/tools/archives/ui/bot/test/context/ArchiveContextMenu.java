@@ -15,6 +15,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.archives.ui.bot.test.dialog.ArchivePublishSettingsDialog;
 import org.jboss.tools.archives.ui.bot.test.dialog.EditArchiveDialog;
+import org.jboss.tools.archives.ui.bot.test.dialog.FolderCreatingDialog;
 import org.jboss.tools.archives.ui.bot.test.dialog.NewJarDialog;
 import org.jboss.tools.ui.bot.ext.SWTBotFactory;
 import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
@@ -49,6 +50,15 @@ public class ArchiveContextMenu {
 		SWTBotMenu menu = new SWTBotMenu(ContextMenuHelper.
 				getContextMenu(tree, "Build Archive (Full)", false));
 		menu.click();
+	}
+	
+	public FolderCreatingDialog createFolder(SWTBotTree tree, 
+			SWTBotTreeItem item) {
+		ContextMenuHelper.prepareTreeItemForContextMenu(tree, item);
+		SWTBotMenu menu = new SWTBotMenu(ContextMenuHelper.
+				getContextMenu(tree, "New Folder", false));
+		menu.click();
+		return new FolderCreatingDialog();
 	}
 	
 	public EditArchiveDialog editArchive(SWTBotTree tree, 

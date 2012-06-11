@@ -17,6 +17,7 @@ import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.jboss.tools.ui.bot.ext.SWTBotFactory;
+import org.jboss.tools.ui.bot.ext.types.IDELabel;
 
 /**
  * 
@@ -108,11 +109,11 @@ public class ArchivePublishSettingsDialog {
 	}
 	
 	public void cancel() {
-		bot.button("Cancel").click();
+		bot.button(IDELabel.Button.CANCEL).click();
 	}
 	
 	public void finish() {
-		bot.button("Finish").click();
+		bot.button(IDELabel.Button.FINISH).click();
 		SWTBotFactory.getUtil().waitForNonIgnoredJobs();
 	}
 	

@@ -20,46 +20,23 @@ import org.jboss.tools.ui.bot.ext.types.IDELabel;
  * @author jjankovi
  *
  */
-public abstract class ArchiveCreationDialogBase {
+public class FolderCreatingDialog {
 
 	private SWTBotShell shell = null;
 	private SWTBot bot = null;
+	private final String DIALOG_TITLE = "Create a folder";
 	
-	public ArchiveCreationDialogBase() {
+	public FolderCreatingDialog() {
 		shell = SWTBotFactory.getBot().shell(getDialogTitle());
-		shell.activate();
 		bot = shell.bot();
 	}
-	
-	public ArchiveCreationDialogBase setArchiveName(String archiveName) {
-		String newArchiveName = archiveName.contains(".jar")?
-				archiveName:archiveName + ".jar";
-		bot.textWithLabel("Archive name:").setText(newArchiveName);
-		return this;
+
+	private String getDialogTitle() {
+		return DIALOG_TITLE;
 	}
 	
-	public ArchiveCreationDialogBase setDestination(String location) {
-		bot.textWithLabel("Destination:").setText(location);
-		return this;
-	}
-	
-	public ArchiveCreationDialogBase setFileSystemRelative() {
-		bot.radio(0).click();
-		return this;
-	}
-	
-	public ArchiveCreationDialogBase setWorkspaceRelative() {
-		bot.radio(1).click();
-		return this;
-	}
-	
-	public ArchiveCreationDialogBase setZipStandardArchiveType() {
-		bot.radio(2).click();
-		return this;
-	}
-	
-	public ArchiveCreationDialogBase setNoCompressionArchiveType() {
-		bot.radio(3).click();
+	public FolderCreatingDialog setNameOfFolder(String fileName) {
+		bot.text().setText(fileName);
 		return this;
 	}
 	
@@ -67,11 +44,9 @@ public abstract class ArchiveCreationDialogBase {
 		bot.button(IDELabel.Button.CANCEL).click();
 	}
 	
-	public void finish() {
-		bot.button(IDELabel.Button.FINISH).click();
+	public void ok() {
+		bot.button(IDELabel.Button.OK).click();
 		SWTBotFactory.getUtil().waitForNonIgnoredJobs();
 	}
-
-	public abstract String getDialogTitle();
 	
 }
