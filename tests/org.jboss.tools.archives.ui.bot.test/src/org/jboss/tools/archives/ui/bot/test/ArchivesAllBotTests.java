@@ -22,6 +22,7 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses({
 	ViewIsPresentTest.class,
 	VariousProjectsArchiving.class,
+	ArchiveViewReSwitchingTest.class,
 	BuildingArchiveNode.class,
 	BuildingProjectTest.class,
 	BuildingArchiveTest.class,
