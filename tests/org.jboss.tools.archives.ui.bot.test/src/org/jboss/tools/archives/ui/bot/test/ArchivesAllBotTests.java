@@ -23,6 +23,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	ViewIsPresentTest.class,
 	VariousProjectsArchiving.class,
 	ArchiveViewReSwitchingTest.class,
+	FolderTest.class,
 	BuildingArchiveNode.class,
 	BuildingProjectTest.class,
 	BuildingArchiveTest.class,

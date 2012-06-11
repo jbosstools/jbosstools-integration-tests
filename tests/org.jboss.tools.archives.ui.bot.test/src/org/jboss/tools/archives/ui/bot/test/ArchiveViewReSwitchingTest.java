@@ -8,7 +8,6 @@
  * Contributors:
  * Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-
 package org.jboss.tools.archives.ui.bot.test;
 
 import org.jboss.tools.archives.ui.bot.test.view.ProjectArchivesView;
@@ -17,7 +16,6 @@ import org.jboss.tools.ui.bot.ext.view.ErrorLogView;
 import org.jboss.tools.ui.bot.ext.view.ViewBase;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
 
 /**
  * 
