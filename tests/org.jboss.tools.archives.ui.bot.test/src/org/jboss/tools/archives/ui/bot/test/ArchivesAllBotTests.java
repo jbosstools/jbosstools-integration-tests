@@ -24,6 +24,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	VariousProjectsArchiving.class,
 	ArchiveViewReSwitchingTest.class,
 	FolderTest.class,
+	FilesetTest.class,
 	UserLibrariesFilesetTest.class,
 	BuildingArchiveNode.class,
 	BuildingProjectTest.class,
