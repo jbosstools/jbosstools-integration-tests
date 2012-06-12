@@ -19,6 +19,7 @@ import org.jboss.tools.archives.ui.bot.test.dialog.ArchivePublishSettingsDialog;
 import org.jboss.tools.archives.ui.bot.test.dialog.EditArchiveDialog;
 import org.jboss.tools.archives.ui.bot.test.dialog.FolderCreatingDialog;
 import org.jboss.tools.archives.ui.bot.test.dialog.NewJarDialog;
+import org.jboss.tools.archives.ui.bot.test.dialog.UserLibrariesFilesetDialog;
 import org.jboss.tools.ui.bot.ext.SWTBotFactory;
 import org.jboss.tools.ui.bot.ext.helper.TreeHelper;
 import org.jboss.tools.ui.bot.ext.view.ProjectExplorer;
@@ -60,6 +61,12 @@ public class ProjectArchivesExplorer {
 		SWTBotTree tree = this.bot().tree();
 		SWTBotTreeItem treeItem = explorer.getNode(archive);
 		return contextTool.createFolder(tree, treeItem);
+	}
+	
+	public UserLibrariesFilesetDialog createUserLibraryFileset(String archive) {
+		SWTBotTree tree = this.bot().tree();
+		SWTBotTreeItem treeItem = explorer.getNode(archive);
+		return contextTool.createUserLibraryFileset(tree, treeItem);
 	}
 	
 	public EditArchiveDialog editArchive(String archive) {

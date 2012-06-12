@@ -18,6 +18,7 @@ import org.jboss.tools.archives.ui.bot.test.dialog.ArchivePublishSettingsDialog;
 import org.jboss.tools.archives.ui.bot.test.dialog.EditArchiveDialog;
 import org.jboss.tools.archives.ui.bot.test.dialog.FolderCreatingDialog;
 import org.jboss.tools.archives.ui.bot.test.dialog.NewJarDialog;
+import org.jboss.tools.archives.ui.bot.test.dialog.UserLibrariesFilesetDialog;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.View.JBossToolsProjectarchives;
 import org.jboss.tools.ui.bot.ext.helper.TreeHelper;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
@@ -67,6 +68,12 @@ public class ProjectArchivesView extends ViewBase {
 		return contextTool.createFolder(tree, treeItem);
 	}
 	
+	public UserLibrariesFilesetDialog createUserLibraryFileset(String... pathToArchive) {
+		SWTBotTree tree = this.bot().tree();
+		SWTBotTreeItem treeItem = TreeHelper.expandNode(this.bot(), pathToArchive);
+		return contextTool.createUserLibraryFileset(tree, treeItem);
+	}
+	
 	public EditArchiveDialog editArchive(String... pathToArchive) {
 		SWTBotTree tree = this.bot().tree();
 		SWTBotTreeItem treeItem = TreeHelper.expandNode(this.bot(), pathToArchive);
@@ -94,7 +101,7 @@ public class ProjectArchivesView extends ViewBase {
 	
 	public boolean itemExists(String... path) {
 		try {
-			bot.tree(0).getTreeItem(path[0]).collapse();
+			this.bot().tree(0).getTreeItem(path[0]).collapse();
 			TreeHelper.expandNode(bot, path);
 			return true;
 		} catch (WidgetNotFoundException exc) {
