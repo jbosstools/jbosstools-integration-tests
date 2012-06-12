@@ -1,0 +1,8 @@
+<env:Envelope xmlns:env="http://schemas.xmlsoap.org/soap/envelope/">
+   <env:Header/>
+   <env:Body>
+      <MathResponse xmlns="http://www.jboss.org/bpel/examples">
+         <tns:result xmlns:tns="http://www.jboss.org/bpel/examples">6.5</tns:result>
+      </MathResponse>
+   </env:Body>
+</env:Envelope>

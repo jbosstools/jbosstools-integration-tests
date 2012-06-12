@@ -1,0 +1,10 @@
+<env:Envelope xmlns:env="http://schemas.xmlsoap.org/soap/envelope/">
+   <env:Header>
+      <ns:conversationId xmlns:ns="http://www.jboss.org/cid">12345</ns:conversationId>
+   </env:Header>
+   <env:Body>
+      <odens:helloResponse xmlns:odens="http://www.jboss.org/bpel/examples/wsdl">
+         <TestPart>Test World conversationId=12345</TestPart>
+      </odens:helloResponse>
+   </env:Body>
+</env:Envelope>

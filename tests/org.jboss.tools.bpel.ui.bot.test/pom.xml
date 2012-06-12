@@ -30,11 +30,19 @@
 					<skip>${swtbot.test.skip}</skip>
 					<forkedProcessTimeoutInSeconds>10800</forkedProcessTimeoutInSeconds>
 					<dependencies combine.children="append">
+						<!-- BPEL feature -->
 						<dependency>
 							<type>p2-installable-unit</type>
 							<artifactId>org.jboss.tools.bpel.feature.feature.group</artifactId>
 							<version>0.0.0</version>
 						</dependency>
+						<!-- JBoss Examples feature -->
+						<dependency>
+							<type>p2-installable-unit</type>
+							<artifactId>org.jboss.tools.community.project.examples.feature.feature.group</artifactId>
+							<version>0.0.0</version>
+						</dependency>
+						<!-- This feature is due to JBIDE-11608 -->
 						<dependency>
 							<type>p2-installable-unit</type>
 							<artifactId>org.jboss.ide.eclipse.as.feature.feature.group</artifactId>

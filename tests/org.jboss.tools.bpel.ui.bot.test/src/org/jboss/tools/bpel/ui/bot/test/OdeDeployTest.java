@@ -5,9 +5,6 @@ import org.custommonkey.xmlunit.XMLUnit;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
-import org.jboss.tools.bpel.ui.bot.test.suite.BPELTest;
 import org.jboss.tools.bpel.ui.bot.test.util.ResourceHelper;
 import org.jboss.tools.bpel.util.SendSoapMessage;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
@@ -95,20 +92,9 @@ public class OdeDeployTest extends BPELTest {
 	
 	@Test
 	public void deployProjectTest() throws Exception {
-		
-		String serverName = OdeDeployTest.configuredState.getServer().name;
 		// Publish the process
 		projExplorer.runOnServer("say_hello");
 
-		Assert.assertFalse(console.getConsoleText().contains("DEPLOYMENTS IN ERROR:"));
-		
-		bot.viewByTitle("Servers").show();
-		bot.viewByTitle("Servers").setFocus();
-		
-		SWTBotTree tree = bot.viewByTitle("Servers").bot().tree(); 
-		SWTBotTreeItem server = tree.getTreeItem(serverName + "  [Started, Synchronized]").select();
-		server.expand();
-		bot.sleep(TIME_5S);
 		assertTrue(isProjectDeployed("say_hello"));
 	}
 	

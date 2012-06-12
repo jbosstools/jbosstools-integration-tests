@@ -1,0 +1,10 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:wsdl="http://example.com/loan-approval/wsdl/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <wsdl:request>
+         <firstName>Test</firstName>
+         <name>Name</name>
+         <amount>20000</amount>
+      </wsdl:request>
+   </soapenv:Body>
+</soapenv:Envelope>

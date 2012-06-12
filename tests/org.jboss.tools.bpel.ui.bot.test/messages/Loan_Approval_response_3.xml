@@ -1,0 +1,11 @@
+<env:Envelope xmlns:env="http://schemas.xmlsoap.org/soap/envelope/">
+   <env:Header/>
+   <env:Body>
+      <env:Fault>
+         <faultcode xmlns:valueNS="http://example.com/loan-approval/wsdl/">valueNS:unableToHandleRequest</faultcode>
+         <detail>
+            <ns1:integer xmlns:ns1="http://example.com/loan-approval/xsd/error-messages/">20000</ns1:integer>
+         </detail>
+      </env:Fault>
+   </env:Body>
+</env:Envelope>

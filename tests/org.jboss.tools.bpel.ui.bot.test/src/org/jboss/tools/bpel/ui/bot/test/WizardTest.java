@@ -6,7 +6,6 @@ import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.utils.TableCollection;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
-import org.jboss.tools.bpel.ui.bot.test.suite.BPELTest;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
@@ -124,6 +123,8 @@ public class WizardTest extends BPELTest {
 		bot.shell("New Server Runtime Environment").activate();
 		
 		tree = bot.tree();
+		assertTrue("There is no server adapter available.", tree.getAllItems().length > 0);
+		
 		TableCollection selection = bot.tree().selection();
 		assertTrue("No server has been selected as default.", selection.rowCount() > 0);
 		

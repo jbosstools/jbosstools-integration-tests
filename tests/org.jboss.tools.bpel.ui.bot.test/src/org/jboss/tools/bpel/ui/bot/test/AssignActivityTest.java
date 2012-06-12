@@ -12,7 +12,6 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 
 import org.jboss.tools.bpel.ui.bot.ext.widgets.BotBpelEditor;
-import org.jboss.tools.bpel.ui.bot.test.suite.BPELTest;
 import org.jboss.tools.bpel.ui.bot.test.util.ResourceHelper;
 import org.jboss.tools.bpel.util.SendSoapMessage;
 

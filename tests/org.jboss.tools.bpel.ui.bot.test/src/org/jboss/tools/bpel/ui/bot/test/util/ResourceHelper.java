@@ -1,23 +1,26 @@
 package org.jboss.tools.bpel.ui.bot.test.util;
 
+import java.io.IOException;
 import java.net.URL;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
-import org.junit.Assert;
 import org.osgi.framework.Bundle;
 
+/**
+ * 
+ * @author mbaluch, apodhrad
+ *
+ */
 public class ResourceHelper {
 
 	public static void importProject(String bundleName, String templatePath, String projectName) throws Exception {
 		try {
 			SWTBotExt bot = new SWTBotExt();
 			
-			Bundle bundle = Platform.getBundle(bundleName);
-			URL url = bundle.getEntry(templatePath);
-			String path = FileLocator.resolve(url).getFile();
+			String path = getPath(bundleName, templatePath);
 			
 			bot.menu("File").menu("Import...").click();
 			SWTBot viewBot = bot.shell("Import").bot();
@@ -35,6 +38,12 @@ public class ResourceHelper {
 			e.printStackTrace();
 			throw new RuntimeException("Failed to import project: " + projectName, e.getCause());
 		}
+	}
+	
+	public static String getPath(String bundleName, String templatePath) throws IOException {
+		Bundle bundle = Platform.getBundle(bundleName);
+		URL url = bundle.getEntry(templatePath);
+		return FileLocator.resolve(url).getFile();
 	}
 	
 }

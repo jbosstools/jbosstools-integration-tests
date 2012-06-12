@@ -5,27 +5,32 @@ import junit.framework.TestSuite;
 import org.jboss.tools.bpel.ui.bot.test.ActivityModelingTest;
 import org.jboss.tools.bpel.ui.bot.test.AssignActivityTest;
 import org.jboss.tools.bpel.ui.bot.test.AssociateRuntimeTest;
-import org.jboss.tools.bpel.ui.bot.test.ToolingCompatibilityTest;
+import org.jboss.tools.bpel.ui.bot.test.BPELTest;
 import org.jboss.tools.bpel.ui.bot.test.FaultModelingTest;
 import org.jboss.tools.bpel.ui.bot.test.OdeDeployTest;
 import org.jboss.tools.bpel.ui.bot.test.SimpleModelingTest;
+import org.jboss.tools.bpel.ui.bot.test.ToolingCompatibilityTest;
 import org.jboss.tools.bpel.ui.bot.test.WizardTest;
-
+import org.jboss.tools.bpel.ui.bot.test.examples.HelloWorldExampleTest;
+import org.jboss.tools.bpel.ui.bot.test.examples.HelloWorldOdeExampleTest;
 import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
-
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
-@SuiteClasses({OdeDeployTest.class, 
-	           WizardTest.class, 
-	           ActivityModelingTest.class, 
-	           AssignActivityTest.class, 
-	           SimpleModelingTest.class,  
-	           FaultModelingTest.class, 
-	           ToolingCompatibilityTest.class,
-	           AssociateRuntimeTest.class})
+//@SuiteClasses({OdeDeployTest.class, 
+//    WizardTest.class, 
+//    ActivityModelingTest.class, 
+//    AssignActivityTest.class, 
+//    SimpleModelingTest.class,  
+//    FaultModelingTest.class, 
+//    ToolingCompatibilityTest.class,
+//    AssociateRuntimeTest.class,
+//    HelloWorldExampleTest.class,
+//    HelloWorldOdeExampleTest.class})
+
+@SuiteClasses({HelloWorldExampleTest.class})
 
 @RunWith(RequirementAwareSuite.class)
 public class BPELAllTest extends TestSuite {

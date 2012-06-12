@@ -1,0 +1,8 @@
+<env:Envelope xmlns:env="http://schemas.xmlsoap.org/soap/envelope/">
+   <env:Header/>
+   <env:Body>
+      <odens:requestResponse xmlns:odens="http://example.com/loan-approval/wsdl/">
+         <accept>yes</accept>
+      </odens:requestResponse>
+   </env:Body>
+</env:Envelope>
