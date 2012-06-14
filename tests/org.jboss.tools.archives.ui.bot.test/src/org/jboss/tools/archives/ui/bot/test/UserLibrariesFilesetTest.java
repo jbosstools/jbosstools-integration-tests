@@ -21,7 +21,6 @@ import org.jboss.tools.archives.ui.bot.test.view.ProjectArchivesView;
 import org.jboss.tools.ui.bot.ext.gen.IPreference;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -60,8 +59,8 @@ public class UserLibrariesFilesetTest extends ArchivesTestBase {
 		/* test if folder was created */
 		assertItemExistsInView(view, projectName, ARCHIVE_PATH, USER_LIBRARY_1);
 	}
-	@Ignore // not implemented in tools yet
-	@Test
+	
+	@Test // not implemented in tools yet
 	public void testCreatingUserLibraryFileSetInExplorer() {
 		/* prepare view for testing */
 		ProjectArchivesExplorer explorer = explorerForProject(projectName);
