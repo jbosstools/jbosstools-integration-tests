@@ -7,12 +7,13 @@ import static org.hamcrest.Matchers.is;
 import java.util.List;
 
 import org.jboss.ide.eclipse.as.ui.bot.test.editor.ServerEditor;
-import org.jboss.ide.eclipse.as.ui.bot.test.entity.XMLConfiguration;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
+import org.jboss.tools.ui.bot.ext.entity.XMLConfiguration;
+import org.jboss.tools.ui.bot.ext.view.ServersView;
 import org.junit.Test;
 
 /**
@@ -32,7 +33,8 @@ public class CreateAS7Test extends SWTTestExt {
 		assertThat("8080", is(editor.getWebPort()));
 		assertThat("9999", is(editor.getManagementPort()));
 		
-		List<XMLConfiguration> configurations = editor.getXMLConfiguration("Ports");
+		ServersView view = new ServersView();
+		List<XMLConfiguration> configurations = view.getXMLConfiguration(configuredState.getServer().name, "Ports");
 		assertThat(configurations, hasItem(new XMLConfiguration("JBoss Management", "${jboss.management.native.port:9999}")));
 		assertThat(configurations, hasItem(new XMLConfiguration("JBoss Web", "8080")));
 	}
