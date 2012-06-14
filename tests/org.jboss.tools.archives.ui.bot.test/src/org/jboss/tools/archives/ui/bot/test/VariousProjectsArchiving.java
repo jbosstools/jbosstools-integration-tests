@@ -21,7 +21,6 @@ import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 import org.jboss.tools.ui.bot.ext.gen.INewObject;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.junit.After;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -33,15 +32,9 @@ import org.junit.Test;
 		 server = @Server(state = ServerState.NotRunning, 
 		 version = "6.0", operator = ">="))
 public class VariousProjectsArchiving extends ArchivesTestBase {
-
-	@BeforeClass
-	public static void prepareWorkspace() {
-		showErrorView();
-		clearErrorView();
-	}
 	
 	@After
-	public void testEmptyErrorLog() {
+	public void checkErrorLog() {
 		assertClearErrorLog();
 	}
 	
@@ -51,6 +44,9 @@ public class VariousProjectsArchiving extends ArchivesTestBase {
 		
 		/* create dynamic web project */
 		createDynamicWebProject(project);
+		
+		/* clear error view before creating an archive */
+		clearErrorView();
 		
 		/* open view for project */
 		ProjectArchivesView view = viewForProject(project);
@@ -69,6 +65,9 @@ public class VariousProjectsArchiving extends ArchivesTestBase {
 		
 		/* create ejb project */
 		createEJBProject(project);
+		
+		/* clear error view before creating an archive */
+		clearErrorView();
 		
 		/* open view for project */
 		ProjectArchivesView view = viewForProject(project);
