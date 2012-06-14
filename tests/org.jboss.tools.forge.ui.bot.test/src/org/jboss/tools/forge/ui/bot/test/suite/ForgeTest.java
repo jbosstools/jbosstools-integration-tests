@@ -53,7 +53,6 @@ public class ForgeTest extends SWTTestExt {
 		getStyledText().setText("Y\n");
 		
 		ConsoleUtils.waitUntilTextInConsole("project [" + PROJECT_NAME + "]", TIME_1S, TIME_20S*3);
-		
 		util.waitForNonIgnoredJobs();
 	}
 	
@@ -66,7 +65,6 @@ public class ForgeTest extends SWTTestExt {
 		getStyledText().setText("Y\n");
 	
 		ConsoleUtils.waitUntilTextInConsole("project [" + PROJECT_NAME + "]", TIME_1S, TIME_20S*3);
-	
 		util.waitForNonIgnoredJobs();
 	}
 	
@@ -75,9 +73,11 @@ public class ForgeTest extends SWTTestExt {
 		getStyledText().setText("persistence setup\n");
 		getStyledText().setText("HIBERNATE\n");
 		getStyledText().setText("JBOSS_AS7\n");
+		getStyledText().setText("\n"); //accept default java-ee-spec
 		getStyledText().setText("N\n");
 	
 		ConsoleUtils.waitUntilTextInConsole("persistence.xml", TIME_1S, TIME_20S*3);
+		util.waitForNonIgnoredJobs();
 	}
 	
 	
@@ -168,6 +168,8 @@ public class ForgeTest extends SWTTestExt {
 		
 		if(!isForgeViewActive())
 			openForgeView();
+		if(isForgeRunning())
+			return;
 		
 		SWTBotView view = getForgeView();
 		view.toolbarButton("Start the default Forge runtime").click();

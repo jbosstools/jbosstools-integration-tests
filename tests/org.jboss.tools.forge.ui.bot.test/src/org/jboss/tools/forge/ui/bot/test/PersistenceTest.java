@@ -24,6 +24,7 @@ public class PersistenceTest extends ForgeTest {
 		getStyledText().setText("persistence setup\n");
 		getStyledText().setText("HIBERNATE\n");
 		getStyledText().setText("JBOSS_AS7\n");
+		getStyledText().setText("\n"); //accept default java-ee-spec
 		getStyledText().setText("N\n");
 		
 		assertTrue(ConsoleUtils.waitUntilTextInConsole("persistence.xml", TIME_1S, TIME_20S*3));
@@ -48,11 +49,13 @@ public class PersistenceTest extends ForgeTest {
 	
 	@Test
 	public void openjpaJBossAS7(){
+		
 		createProject();
 		
 		getStyledText().setText("persistence setup\n");
 		getStyledText().setText("OPENJPA\n");
 		getStyledText().setText("JBOSS_AS7\n");
+		getStyledText().setText("\n"); //accept default java-ee-spec
 		getStyledText().setText("N\n");
 		
 		assertTrue(ConsoleUtils.waitUntilTextInConsole("persistence.xml", TIME_1S, TIME_20S*3));
@@ -73,11 +76,13 @@ public class PersistenceTest extends ForgeTest {
 	
 	@Test
 	public void eclipselinkJBossAS7(){
+		
 		createProject();
 		
 		getStyledText().setText("persistence setup\n");
 		getStyledText().setText("ECLIPSELINK\n");
 		getStyledText().setText("JBOSS_AS7\n");
+		getStyledText().setText("\n"); //accept default java-ee-spec
 		getStyledText().setText("N\n");
 		
 		assertTrue(ConsoleUtils.waitUntilTextInConsole("persistence.xml", TIME_1S, TIME_20S*3));
@@ -99,11 +104,13 @@ public class PersistenceTest extends ForgeTest {
 	
 	@Test
 	public void infinispanJBossAS7(){
+		
 		createProject();
 		
 		getStyledText().setText("persistence setup\n");
 		getStyledText().setText("INFINISPAN\n");
 		getStyledText().setText("JBOSS_AS7\n");
+		getStyledText().setText("\n"); //accept default java-ee-spec
 		getStyledText().setText("N\n");
 		
 		assertTrue(ConsoleUtils.waitUntilTextInConsole("persistence.xml", TIME_1S, TIME_20S*3));
