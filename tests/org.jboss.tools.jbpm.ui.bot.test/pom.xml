@@ -35,6 +35,26 @@
 				</configuration>
 			</plugin>
 			<plugin>
+				<groupId>com.googlecode.maven-download-plugin</groupId>
+				<artifactId>maven-download-plugin</artifactId>
+				<version>0.2-SNAPSHOT</version>
+				<executions>
+					<execution>
+						<id>install-jbpm</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<configuration>
+							<url>http://downloads.sourceforge.net/project/jbpm/jBPM%203/jbpm-3.1.4/jbpm-3.1.4.zip</url>
+							<unpack>true</unpack>
+							<outputDirectory>${project.build.directory}/jbpm-3.1.4</outputDirectory>
+							<md5>df65b5642f33676313ebe4d5b69a3fff</md5>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
 				<artifactId>maven-antrun-plugin</artifactId>
 				<version>${maven.antrun.plugin.version}</version>
 				<dependencies>
@@ -68,7 +88,7 @@
 										<property name="jboss.tools.jre.6" value="${java.home}" />
 									</then>
 								</if>
-								<echo file="swtbot.properties" append="false">JBPM=3.1.4,${requirement.build.root}/jbpm-3.1.4</echo>
+								<echo file="swtbot.properties" append="false">JBPM=3.1.4,${project.build.directory}/jbpm-3.1.4</echo>
 							</tasks>
 						</configuration>
 					</execution>
