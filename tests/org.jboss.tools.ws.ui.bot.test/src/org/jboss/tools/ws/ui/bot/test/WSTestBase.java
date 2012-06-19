@@ -18,7 +18,6 @@ import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
-import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
 import org.jboss.tools.ui.bot.ext.helper.ImportHelper;
 import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.WsWizardBase.Slider_Level;
 import org.jboss.tools.ws.ui.bot.test.utils.DeploymentHelper;
@@ -36,7 +35,9 @@ import org.junit.runners.Suite.SuiteClasses;
  * @author jjankovi
  * 
  */
-@Require(perspective = "Java EE", server = @Server(type = ServerType.JbossAS, version = "7.1", operator = ">="))
+@Require(perspective = "Java EE", 
+		 server = @Server) 
+//		 server = @Server(type = ServerType.JbossAS, version = "7.1", operator = ">="))
 // @Require(perspective="Java EE",
 // server=@Server(type=ServerType.EAP,
 // version = "5.1", operator = ">="))
