@@ -21,7 +21,7 @@ import org.junit.Test;
 @Require(server=@Server(type=ServerType.EAP, state=ServerState.Running))
 public class DeployJSPProject extends SWTTestExt {
 
-	private static final String PROJECT_NAME = "jsp-as7";
+	public static final String PROJECT_NAME = "jsp-as7";
 	
 	@Before
 	public void importProject(){
@@ -38,8 +38,8 @@ public class DeployJSPProject extends SWTTestExt {
 		serversView.addProjectToServer(PROJECT_NAME, configuredState.getServer().name);
 		
 		// console
-		assertThat("Exception:", not(new ConsoleOutputMatcher(TaskDuration.NORMAL)));
 		assertThat("Registering web context: /" + PROJECT_NAME, new ConsoleOutputMatcher(TaskDuration.NORMAL));
+		assertThat("Exception:", not(new ConsoleOutputMatcher()));
 		// view
 		assertTrue("Server contains project", serversView.containsProject(configuredState.getServer().name, PROJECT_NAME));
 		assertEquals("Started", serversView.getServerStatus(configuredState.getServer().name));
