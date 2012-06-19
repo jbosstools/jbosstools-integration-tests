@@ -43,7 +43,14 @@ public class ShowSelectionTagBarTest extends PreferencesTestCase{
 	}
 
 	private void selectSelection(){
+	  Throwable exception = getException();
 	  bot.toolbarToggleButtonWithTooltip(TOGGLE_SELECTION_BAR_TOOLTIP).click();
+	  if (exception == null){
+	    exception = getException();
+	    if (exception != null && exception instanceof NullPointerException){
+	      setException(null);
+	    }
+	  }
 	}
 
 	private void checkIsHide(){

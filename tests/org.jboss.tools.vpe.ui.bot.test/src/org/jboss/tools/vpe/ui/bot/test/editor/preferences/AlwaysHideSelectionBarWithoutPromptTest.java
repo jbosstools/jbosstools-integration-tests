@@ -41,8 +41,14 @@ public class AlwaysHideSelectionBarWithoutPromptTest extends PreferencesTestCase
 		checkIsShow();
 		
 		//Test Hide Selection Bar button without confirm
-	
+		Throwable exception = getException();
 		bot.toolbarButtonWithTooltip(HID_SEL_BAR).click();
+    if (exception == null){
+      exception = getException();
+      if (exception != null && exception instanceof NullPointerException){
+        setException(null);
+      }
+    }
 		checkIsHide();
 	
 		//Test Show selection after reopen
@@ -50,7 +56,7 @@ public class AlwaysHideSelectionBarWithoutPromptTest extends PreferencesTestCase
 		closePage();
 		openPage();
 		checkIsHide();
-		
+				
 	}
 	
 	private void checkIsHide(){
@@ -74,7 +80,14 @@ public class AlwaysHideSelectionBarWithoutPromptTest extends PreferencesTestCase
 	}
 
 	private void selectSelection(){
+	  Throwable exception = getException();
 	  bot.toolbarToggleButtonWithTooltip(TOGGLE_SELECTION_BAR_TOOLTIP).click();
+	  if (exception == null){
+      exception = getException();
+      if (exception != null && exception instanceof NullPointerException){
+        setException(null);
+      }
+    }
 	}
 	
 }

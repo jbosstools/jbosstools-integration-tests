@@ -133,7 +133,14 @@ public abstract class PreferencesTestCase extends VPEAutoTestCase{
 		combo.setSelection("Visual/Source"); //$NON-NLS-1$
 		combo = bot.comboBoxWithLabel(EDITOR_SPLITTING);
 		combo.setSelection("Vertical splitting with Source Editor on the top"); //$NON-NLS-1$
+		Throwable exception = getException();
 		bot.button("OK").click(); //$NON-NLS-1$
+		if (exception == null){
+      exception = getException();
+      if (exception != null && exception instanceof NullPointerException){
+        setException(null);
+      }
+    }
 	}
 	
 }
