@@ -19,6 +19,7 @@ import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ui.bot.ext.helper.ImportHelper;
+import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.WsWizardBase.Slider_Level;
 import org.jboss.tools.ws.ui.bot.test.utils.DeploymentHelper;
 import org.jboss.tools.ws.ui.bot.test.utils.ProjectHelper;
@@ -115,17 +116,22 @@ public class WSTestBase extends SWTTestExt {
 	protected String getWsName() {
 		return null;
 	}
+	
+	protected void assertWebServiceTesterIsActive() {
+		assertTrue("Web Service Tester view should be active", 
+				bot.viewByTitle(IDELabel.View.WEB_SERVICE_TESTER).isActive());
+	}
 
 	public static String getSoapRequest(String body) {
 		return MessageFormat.format(SOAP_REQUEST_TEMPLATE, body);
 	}
 
-	protected void importWSTestProject(String projectName) {
+	protected static void importWSTestProject(String projectName) {
 		String location = "/resources/projects/" + projectName;
 		importWSTestProject(location, projectName);
 	}
 
-	protected void importWSTestProject(String projectLocation, String dir) {
+	protected static void importWSTestProject(String projectLocation, String dir) {
 		ImportHelper.importProject(projectLocation, dir, Activator.PLUGIN_ID);
 
 		eclipse.addConfiguredRuntimeIntoProject(dir, configuredState.getServer().name);

@@ -18,7 +18,8 @@ import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
 import org.jboss.tools.ws.ui.bot.test.WSTestBase;
-import org.jboss.tools.ws.ui.bot.test.ti.wizard.RESTFullExplorerWizard;
+import org.jboss.tools.ws.ui.bot.test.uiutils.RESTFullExplorer;
+import org.jboss.tools.ws.ui.bot.test.uiutils.RunOnServerDialog;
 
 /**
  * Test base for bot tests using RESTFul support
@@ -29,9 +30,9 @@ import org.jboss.tools.ws.ui.bot.test.ti.wizard.RESTFullExplorerWizard;
 @Require(server = @Server(state = ServerState.NotRunning), perspective = "Java EE")
 public class RESTfulTestBase extends WSTestBase {
 
-	protected final RESTfulHelper restfulHelper = new RESTfulHelper();
+	protected final static RESTfulHelper restfulHelper = new RESTfulHelper();
 
-	protected RESTFullExplorerWizard restfulWizard = null;
+	protected RESTFullExplorer restfulWizard = null;
 
 	protected final String SIMPLE_REST_WS_RESOURCE = "SimpleRestWS.java.ws";
 
@@ -53,7 +54,7 @@ public class RESTfulTestBase extends WSTestBase {
 
 	}
 
-	protected void importRestWSProject(String projectName) {
+	protected static void importRestWSProject(String projectName) {
 
 		// importing project without targeted runtime set
 		importWSTestProject(projectName);
@@ -155,8 +156,13 @@ public class RESTfulTestBase extends WSTestBase {
 				foundCount == expectedCount);
 	}
 	
+	protected void runRestServiceOnConfiguredServer(String webService) {
+		RunOnServerDialog dialog = restfulWizard.runOnServer(restfulWizard.restService(webService));
+		dialog.chooseExistingServer().selectServer(configuredState.getServer().name).finish();		
+	}
+	
 	protected SWTBotTreeItem[] restfulServicesForProject(String projectName) {
-		restfulWizard = new RESTFullExplorerWizard(projectName);
+		restfulWizard = new RESTFullExplorer(projectName);
 		return restfulWizard.getAllRestServices();
 	}
 
