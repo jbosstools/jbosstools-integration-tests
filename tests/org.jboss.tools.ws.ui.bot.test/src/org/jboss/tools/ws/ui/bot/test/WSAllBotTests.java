@@ -12,6 +12,7 @@ package org.jboss.tools.ws.ui.bot.test;
 
 import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
 import org.jboss.tools.ws.ui.bot.test.annotation.AnnotationPropertiesTest;
+import org.jboss.tools.ws.ui.bot.test.integration.SOAPWSToolingIntegrationTest;
 import org.jboss.tools.ws.ui.bot.test.rest.DefaultValueAnnotationSupportTest;
 import org.jboss.tools.ws.ui.bot.test.rest.MatrixAnnotationSupportTest;
 import org.jboss.tools.ws.ui.bot.test.rest.PathAnnotationSupportTest;
@@ -66,6 +67,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	DefaultValueAnnotationSupportTest.class,
 	RESTfulValidationTest.class,
 	RESTfulCompletionTest.class,
+	SOAPWSToolingIntegrationTest.class,
 	ApplicationPathAnnotationTest.class,
 	BottomUpWSTest.class,
 	TopDownWSTest.class,
