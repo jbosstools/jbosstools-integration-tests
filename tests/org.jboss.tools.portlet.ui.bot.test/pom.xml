@@ -13,11 +13,11 @@
 	<packaging>eclipse-test-plugin</packaging>
 
 	<properties>
-		<jbosstools.test.jboss-gatein.home>${requirement.build.root}/GateIn-3.1.0-GA</jbosstools.test.jboss-gatein.home>
-		<jbosstools.test.jboss-seam-2.2.home>${requirement.build.root}/jboss-seam-2.2.1.Final</jbosstools.test.jboss-seam-2.2.home> 
-		<jbosstools.test.jboss-portal.home>${requirement.build.root}/jboss-portal-2.7.2</jbosstools.test.jboss-portal.home>
-		<jbosstools.test.jboss-seam-2.0.home>${requirement.build.root}/jboss-seam-2.0.1.GA</jbosstools.test.jboss-seam-2.0.home>
-		<jbosstools.test.jboss-portlet-bridge.home>${requirement.build.root}</jbosstools.test.jboss-portlet-bridge.home>
+		<jbosstools.test.jboss-gatein.home>${project.build.directory}/GateIn-3.1.0-GA</jbosstools.test.jboss-gatein.home>
+		<jbosstools.test.jboss-seam-2.2.home>${project.build.directory}/jboss-seam-2.2.1.Final</jbosstools.test.jboss-seam-2.2.home> 
+		<jbosstools.test.jboss-portal.home>${project.build.directory}/jboss-portal-2.7.2</jbosstools.test.jboss-portal.home>
+		<jbosstools.test.jboss-seam-2.0.home>${project.build.directory}/jboss-seam-2.0.1.GA</jbosstools.test.jboss-seam-2.0.home>
+		<jbosstools.test.jboss-portlet-bridge.home>${project.build.directory}</jbosstools.test.jboss-portlet-bridge.home>
 		<configurations.dir>resources/project_config_files</configurations.dir>
 		<additionalSystemProperties></additionalSystemProperties>
 		<systemProperties>${additionalSystemProperties} -Djbosstools.test.jboss-gatein.home=${jbosstools.test.jboss-gatein.home} -Djbosstools.test.jboss-seam-2.2.home=${jbosstools.test.jboss-seam-2.2.home} -Djbosstools.test.jboss-portal.home=${jbosstools.test.jboss-portal.home} -Djbosstools.test.jboss-seam-2.0.home=${jbosstools.test.jboss-seam-2.0.home} -Djbosstools.test.jboss-portlet-bridge.home=${jbosstools.test.jboss-portlet-bridge.home} -Dtest.configurations.dir=${configurations.dir}  -Dorg.eclipse.swtbot.screenshots.dir=${project.build.directory}/screenshots</systemProperties>
@@ -35,6 +35,84 @@
 	
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>com.googlecode.maven-download-plugin</groupId>
+				<artifactId>maven-download-plugin</artifactId>
+				<version>0.2-SNAPSHOT</version>
+				<executions>
+					<execution>
+						<id>install-gatein</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<configuration>
+							<url>http://downloads.sourceforge.net/project/jboss/GateIn/Portal/3.1.0-FINAL/GateIn-3.1.0-FINAL-jbossas.zip</url>
+							<md5>e8c35a21f8f1e33181adc80a0b32d7f2</md5>
+							<unpack>true</unpack>
+							<outputDirectory>${project.build.directory}</outputDirectory>
+							<skip>${swtbot.test.skip}</skip>
+						</configuration>
+					</execution>
+					<execution>
+						<id>install-seam-2.0.1</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<configuration>
+							<url>http://repository.jboss.org/sourceforge/jboss-seam-2.0.1.GA.zip</url>
+							<unpack>true</unpack>
+							<outputDirectory>${project.build.directory}</outputDirectory>
+							<md5>0a1accf94fd37e40ab1091ee593b8b75</md5>
+							<skip>${swtbot.test.skip}</skip>
+						</configuration>
+					</execution>
+					<execution>
+						<id>install-seam-2.2.1</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<configuration>
+							<url>http://downloads.sourceforge.net/project/jboss/JBoss%20Seam/2.2.1.Final/jboss-seam-2.2.1.Final.zip</url>
+							<unpack>true</unpack>
+							<outputDirectory>${project.build.directory}</outputDirectory>
+							<md5>b490d794e805aef78cb9fee510073850</md5>
+							<skip>${swtbot.test.skip}</skip>
+						</configuration>
+					</execution>
+					<execution>
+						<id>install-jboss-portal</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<configuration>
+							<url>http://sourceforge.net/projects/jboss/files/JBoss%20Portal/JBoss-Portal-2.7.2.GA/jboss-portal-2.7.2-bundled.zip</url>
+							<unpack>true</unpack>
+							<outputDirectory>${project.build.directory}</outputDirectory>
+							<md5>83aa628f5451f47ebce4845d8799144e</md5>
+							<skip>${swtbot.test.skip}</skip>
+						</configuration>
+					</execution>
+					<execution>
+						<id>install-jboss-portlet-bridge</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<configuration>
+							<url>http://sourceforge.net/projects/jboss/files/JBoss%20Portal/JBossPortletBridge-2.1.0.FINAL/JBossPortletBridge-2.1.0.FINAL.zip</url>
+							<unpack>true</unpack>
+							<outputDirectory>${project.build.directory}</outputDirectory>
+							<md5>44a7b67d0b6e0995bec97e8c81bacab3</md5>
+							<skip>${swtbot.test.skip}</skip>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-surefire-plugin</artifactId>
