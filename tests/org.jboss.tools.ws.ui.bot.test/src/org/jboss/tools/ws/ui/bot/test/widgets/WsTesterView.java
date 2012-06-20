@@ -107,7 +107,15 @@ public class WsTesterView extends ViewBase {
 		}
 		return b;
 	}
-
+	
+	public void minimize() {
+		if (max) {
+			bot.menu(IDEWorkbenchMessages.Workbench_window)
+			.menu(WorkbenchMessages.MinimizePartAction_text).click();
+			max = false;
+		}
+	}
+	
 	public void setRequestType(Request_Type m) {
 		getRequestTypeCombo().setSelection(m.toString());
 	}
