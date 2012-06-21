@@ -101,16 +101,13 @@ public class Notifier extends ESBAction {
 		xpathOrig+="/target[@auth='LDAP' and @class='NotifyEmail' and @from='a' and @host='redhat.com' and @sendTo='b' and @subject='c' and @password='thepas$w0rd' and @port='25' and @ccTo='The copier' and @message='The message' and @username='QEuser']";
 		Assertions.assertXmlContentExists(editor.toTextEditor().getText(), xpathOrig);	
 		
-		
 		/* Comment out due to - https://issues.jboss.org/browse/JBDS-2167 */
 		bot.button("&Add...").click();		
 		SWTBotTreeItem [] theItems = bot.tree().getAllItems();
-		
-		theItems[0].getNode("resources.jar").expand();
-		theItems[0].getNode("resources.jar").getNode("META-INF").expand();		
-		theItems[0].getNode("resources.jar").getNode("META-INF").getNode("MANIFEST.MF").select();
+		theItems[0].getNode("esbcontent").expand();
+		theItems[0].getNode("esbcontent").getNode("META-INF").expand();		
+		theItems[0].getNode("esbcontent").getNode("META-INF").getNode("jboss-esb.xml*").select();
 		bot.button("&Finish").click();
-		
 		editor.save();
 	}
 	
