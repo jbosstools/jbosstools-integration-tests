@@ -23,7 +23,7 @@ import org.junit.Test;
  *
  */
 @Require(server=@Server(type=ServerType.EAP, state=ServerState.Present))
-public class CreateAS7Test extends SWTTestExt {
+public class CreateAS7Server extends SWTTestExt {
 
 	@Test
 	public void createServer(){

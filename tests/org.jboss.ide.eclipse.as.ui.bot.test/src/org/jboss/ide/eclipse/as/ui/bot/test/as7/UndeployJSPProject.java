@@ -13,11 +13,22 @@ import org.jboss.tools.ui.bot.ext.matcher.console.ConsoleOutputMatcher;
 import org.jboss.tools.ui.bot.ext.view.ServersView;
 import org.junit.Test;
 
+/**
+ * Removes JSP project from server. Checks:
+ * 
+ * <ul>
+ * 	<li>the console output</li>
+ * 	<li>server's label</li>
+ * 	<li>project is not listed under the server</li>
+ * </ul>
+ * @author Lucia Jelinkova
+ *
+ */
 @Require(server=@Server(type=ServerType.EAP, state=ServerState.Running), clearProjects=false, clearWorkspace=false)
 public class UndeployJSPProject extends SWTTestExt {
 
 	@Test
-	public void deployJSPProject(){
+	public void undeployProject(){
 		ServersView serversView = new ServersView();
 		serversView.removeProjectFromServer(DeployJSPProject.PROJECT_NAME, configuredState.getServer().name);
 		

@@ -1,6 +1,7 @@
 package org.jboss.ide.eclipse.as.ui.bot.test.as7;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 
@@ -12,6 +13,17 @@ import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
 import org.jboss.tools.ui.bot.ext.matcher.console.ConsoleOutputMatcher;
 import org.jboss.tools.ui.bot.ext.view.ServersView;
 import org.junit.Test;
+
+/**
+ * Starts, restarts and stops the server and checks:
+ * <ul>
+ * 	<li>the console output</li>
+ * 	<li>server's label</li>
+ * 	<li>welcome page is available (if the result state is started)</li>
+ * </ul>
+ * @author Lucia Jelinkova
+ *
+ */
 @Require(server=@Server(type=ServerType.EAP, state=ServerState.NotRunning))
 public class OperateAS7Server extends SWTTestExt {
 

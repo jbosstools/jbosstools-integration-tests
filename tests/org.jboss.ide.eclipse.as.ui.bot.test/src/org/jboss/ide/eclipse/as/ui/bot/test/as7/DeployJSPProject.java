@@ -18,6 +18,18 @@ import org.jboss.tools.ui.bot.ext.view.ServersView;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * Imports pre-prepared JSP project and adds it into the server. Checks:
+ * 
+ * <ul>
+ * 	<li>the console output</li>
+ * 	<li>server's label</li>
+ * 	<li>project is listed under the server</li>
+ * 	<li>the index.jsp of the project</li>
+ * </ul>
+ * @author Lucia Jelinkova
+ *
+ */
 @Require(server=@Server(type=ServerType.EAP, state=ServerState.Running))
 public class DeployJSPProject extends SWTTestExt {
 
@@ -33,7 +45,7 @@ public class DeployJSPProject extends SWTTestExt {
 	}
 	
 	@Test
-	public void deployJSPProject(){
+	public void deployProject(){
 		ServersView serversView = new ServersView();
 		serversView.addProjectToServer(PROJECT_NAME, configuredState.getServer().name);
 		

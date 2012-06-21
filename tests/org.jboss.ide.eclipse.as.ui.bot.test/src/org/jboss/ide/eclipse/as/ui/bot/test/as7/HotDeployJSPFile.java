@@ -8,6 +8,14 @@ import org.jboss.tools.ui.bot.ext.SWTBotFactory;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.junit.Test;
 
+/**
+ * Adds a new jsp file into the jsp project and checks it is hot deployed:
+ * <ul>
+ * 	<li>loads the new page in the web browser </li>
+ * </ul>
+ * @author Lucia Jelinkova
+ *
+ */
 public class HotDeployJSPFile extends SWTTestExt {
 
 	public static final String JSP_CONTENT = 

@@ -5,7 +5,7 @@ import org.jboss.tools.ui.bot.ext.view.ServersView;
 import org.junit.Test;
 
 /**
- * Deletes the server. 
+ * Deletes the server and checks that it is not present on the server's view. 
  * 
  * @author Lucia Jelinkova
  *

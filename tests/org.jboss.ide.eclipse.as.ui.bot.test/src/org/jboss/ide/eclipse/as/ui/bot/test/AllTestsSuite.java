@@ -1,6 +1,6 @@
 package org.jboss.ide.eclipse.as.ui.bot.test;
 
-import org.jboss.ide.eclipse.as.ui.bot.test.as7.CreateAS7Test;
+import org.jboss.ide.eclipse.as.ui.bot.test.as7.CreateAS7Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.as7.DeleteAS7Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.as7.DeployJSPProject;
 import org.jboss.ide.eclipse.as.ui.bot.test.as7.HotDeployJSPFile;
@@ -12,7 +12,7 @@ import org.junit.runners.Suite;
 
 @RunWith(RequirementAwareSuite.class)
 @Suite.SuiteClasses({
-		CreateAS7Test.class, 
+		CreateAS7Server.class, 
 		OperateAS7Server.class,
 		DeployJSPProject.class,
 		HotDeployJSPFile.class,
