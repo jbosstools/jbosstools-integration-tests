@@ -63,7 +63,6 @@ public class SelectionSynchronizationTest extends VPEEditorTestCase {
 		 */
 		webBrowser.setFocus();
 		nsIDOMNode node = webBrowser.getDomNodeByTagName("SPAN", 1); //$NON-NLS-1$
-		webBrowser.setFocus();
 		webBrowser.selectDomNode(node, 0);
 		KeyboardHelper.pressKeyCode(d, SWT.ARROW_RIGHT);
 		KeyboardHelper.pressKeyCode(d, SWT.ARROW_RIGHT);

@@ -303,17 +303,13 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase {
 		return controller.getSourceBuilder().getSourceDocument();
 	}
 
-	protected String getPathToResources(String testPage) throws IOException {
-		String filePath = FileLocator.toFileURL(
-				Platform.getBundle(Activator.PLUGIN_ID).getEntry("/"))
-				.getFile()
-				+ "resources/" + testPage; //$NON-NLS-1$//$NON-NLS-2$
+	protected String getPathToResources(String pagePathNextToPluginBundlePath) throws IOException {
+		String pluginBundlePath = FileLocator.toFileURL(
+				Platform.getBundle(Activator.PLUGIN_ID).getEntry("/")).getFile(); //$NON-NLS-1$
+		String filePath = pluginBundlePath + "resources/" + pagePathNextToPluginBundlePath; //$NON-NLS-1$
 		File file = new File(filePath);
 		if (!file.exists()) {
-			filePath = FileLocator
-					.toFileURL(
-							Platform.getBundle(Activator.PLUGIN_ID).getEntry(
-									"/")).getFile() + testPage; //$NON-NLS-1$
+			filePath = pluginBundlePath + pagePathNextToPluginBundlePath;
 		}
 		return filePath;
 	}
@@ -431,8 +427,8 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase {
 	protected void openPage(String pageName, String projectName) {
 	  SWTBot innerBot = packageExplorer.show().bot();
 		SWTBotTree tree = innerBot.tree();
-		tree.expandNode(projectName).expandNode("WebContent")
-				.expandNode("pages").getNode(pageName).doubleClick(); //$NON-NLS-1$ //$NON-NLS-2$
+		tree.expandNode(projectName).expandNode("WebContent") //$NON-NLS-1$
+				.expandNode("pages").getNode(pageName).doubleClick(); //$NON-NLS-1$
 		bot.sleep(Timing.time3S());
 	}
 

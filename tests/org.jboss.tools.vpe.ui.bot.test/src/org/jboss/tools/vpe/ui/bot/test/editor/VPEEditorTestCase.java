@@ -10,17 +10,11 @@
  ******************************************************************************/
 package org.jboss.tools.vpe.ui.bot.test.editor;
 
-import java.io.File;
-import java.io.IOException;
-
-import org.eclipse.core.runtime.FileLocator;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.test.WidgetVariables;
-import org.jboss.tools.vpe.ui.bot.test.Activator;
 import org.jboss.tools.vpe.ui.bot.test.VPEAutoTestCase;
 import org.jboss.tools.vpe.ui.bot.test.tools.SWTBotWebBrowser;
 
@@ -54,15 +48,26 @@ public abstract class VPEEditorTestCase extends VPEAutoTestCase{
 	protected void closeUnuseDialogs() {
 	}
 	
-	@Override
-	protected String getPathToResources(String testPage) throws IOException {
-		String filePath = FileLocator.toFileURL(Platform.getBundle(Activator.PLUGIN_ID).getEntry("/")).getFile()+"resources/editor/"+testPage; //$NON-NLS-1$ //$NON-NLS-2$
-		File file = new File(filePath);
-		if (!file.isFile()) {
-			filePath = FileLocator.toFileURL(Platform.getBundle(Activator.PLUGIN_ID).getEntry("/")).getFile()+"editor/"+testPage;  //$NON-NLS-1$//$NON-NLS-2$
-		}
-		return filePath;
-	}
+//	@Override
+//	/**
+//	 * Path "trunk\vpe\tests\org.jboss.tools.vpe.ui.bot.test\editor\"
+//	 * does not exist. The code is obsolete.
+//	 * So there is no need in the overridden method.
+//	 */
+//	protected String getPathToResources(String pagePathNextToPluginBundlePath) throws IOException {
+//		String pluginBundlePath = FileLocator.toFileURL(Platform.getBundle(Activator.PLUGIN_ID).getEntry("/")).getFile(); 
+//		String filePath = pluginBundlePath +"resources/editor/"+pagePathNextToPluginBundlePath; //$NON-NLS-1$
+//		File file = new File(filePath);
+//		/*
+//		 * Path "trunk\vpe\tests\org.jboss.tools.vpe.ui.bot.test\editor\"
+//		 * does not exist. The code is obsolete.
+//		 */
+//		if (!file.isFile()) {
+//			filePath = pluginBundlePath +"editor/"+testPage;  //$NON-NLS-1$
+//			file = new File(filePath);
+//		}
+//		return filePath;
+//	}
 	
 	protected void openPage(){
 		SWTBot innerBot = bot.viewByTitle(WidgetVariables.PACKAGE_EXPLORER).bot();
