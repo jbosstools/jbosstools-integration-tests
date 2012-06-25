@@ -12,8 +12,8 @@
 	
 	<packaging>eclipse-test-plugin</packaging>
 	<properties>
-		<jbosstools.test.jbossesb.home>${requirement.build.root}/jbossesb-4.11</jbosstools.test.jbossesb.home>
-		<jbosstools.test.jbosssoa.home>${requirement.build.root}/jboss-soa-p-5.3/jboss-soa-p-5/jboss-as</jbosstools.test.jbosssoa.home>
+		<jbosstools.test.jbossesb.home>${requirementsDirectory}/jbossesb-4.11</jbosstools.test.jbossesb.home>
+		<jbosstools.test.jbosssoa.home>${requirementsDirectory}/jboss-soa-p-5.3/jboss-soa-p-5/jboss-as</jbosstools.test.jbosssoa.home>
 		<swtbot.test.properties.file>./org.jboss.tools.esb.ui.bot.test.properties</swtbot.test.properties.file>
 		<systemProperties>-Djbosstools.test.jbossesb.home=${jbosstools.test.jbossesb.home} -Djbosstools.test.jbosssoa.home=${jbosstools.test.jbosssoa.home} -Dswtbot.test.properties.file=${swtbot.test.properties.file}
 		</systemProperties>
@@ -21,6 +21,36 @@
 
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>com.googlecode.maven-download-plugin</groupId>
+				<artifactId>maven-download-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>install-soa-platform</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<configuration>
+							<url>http://jawa05.englab.brq.redhat.com/candidate/soa-5.3.0.ER2/soa-p-5.3.0.ER2.zip</url>
+							<md5>1f70c15b26a0d812ba2a39a96c6a8c57</md5>
+							<unpack>true</unpack>
+						</configuration>
+					</execution>
+					<execution>
+						<id>install-esb</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<configuration>
+							<url>http://download.jboss.org/jbossesb/4.11/binary/jbossesb-4.11.zip</url>
+							<md5>506bb7f42777cf0e524ccc37336aa137</md5>
+							<unpack>true</unpack>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-surefire-plugin</artifactId>
