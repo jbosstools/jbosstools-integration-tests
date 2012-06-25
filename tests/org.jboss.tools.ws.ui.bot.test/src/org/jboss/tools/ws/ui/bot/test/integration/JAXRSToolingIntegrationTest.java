@@ -17,6 +17,7 @@ import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
 import org.jboss.tools.ws.ui.bot.test.uiutils.RESTFullExplorer;
 import org.jboss.tools.ws.ui.bot.test.widgets.WsTesterView;
 import org.jboss.tools.ws.ui.bot.test.widgets.WsTesterView.Request_Type;
+import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -31,10 +32,19 @@ public class JAXRSToolingIntegrationTest extends RESTfulTestBase {
 	private static String projectName = "integration1"; 
 	private String localhostUrl = "http://localhost:8080/";
 	private String serviceUrl = localhostUrl + projectName + "/rest/"; 
+	private WsTesterView wsTesterView = new WsTesterView();
 	
 	@BeforeClass
 	public static void prepareWS() {
 		importRestWSProject(projectName);
+		servers.addProjectToServer(
+				projectName, configuredState.getServer().name);
+	}
+	
+	@After
+	public void minimizeTester() {
+		/* minimize web service tester */
+		wsTesterView.minimize();
 	}
 	
 	@Test
@@ -47,15 +57,12 @@ public class JAXRSToolingIntegrationTest extends RESTfulTestBase {
 		assertWebServiceTesterIsActive();
 		
 		/* test generated url and response after invoking */
-		WsTesterView wsTesterView = showWSTester();
+		wsTesterView = showWSTester();
 		assertEquals(serviceUrl + "get", wsTesterView.getServiceURL());
 		
 		invokeMethodInWSTester(wsTesterView, Request_Type.GET);
 		assertEquals("GET method", wsTesterView.getResponseBody());
 		assertEquals("[HTTP/1.1 200 OK]", wsTesterView.getResponseHeaders()[0]);
-		
-		/* minimize web service tester */
-		wsTesterView.minimize();
 	}
 	
 	@Test
@@ -68,15 +75,12 @@ public class JAXRSToolingIntegrationTest extends RESTfulTestBase {
 		assertWebServiceTesterIsActive();
 		
 		/* test generated url and response after invoking */
-		WsTesterView wsTesterView = showWSTester();
+		wsTesterView = showWSTester();
 		assertEquals(serviceUrl + "post", wsTesterView.getServiceURL());
 		
 		invokeMethodInWSTester(wsTesterView, Request_Type.POST);
 		assertEquals("POST method", wsTesterView.getResponseBody());
 		assertEquals("[HTTP/1.1 200 OK]", wsTesterView.getResponseHeaders()[0]);
-		
-		/* minimize web service tester */
-		wsTesterView.minimize();
 	}
 	
 	@Test
@@ -89,15 +93,12 @@ public class JAXRSToolingIntegrationTest extends RESTfulTestBase {
 		assertWebServiceTesterIsActive();
 		
 		/* test generated url and response after invoking */
-		WsTesterView wsTesterView = showWSTester();
+		wsTesterView = showWSTester();
 		assertEquals(serviceUrl + "put", wsTesterView.getServiceURL());
 		
 		invokeMethodInWSTester(wsTesterView, Request_Type.PUT);
 		assertEquals("PUT method", wsTesterView.getResponseBody());
 		assertEquals("[HTTP/1.1 200 OK]", wsTesterView.getResponseHeaders()[0]);
-		
-		/* minimize web service tester */
-		wsTesterView.minimize();
 	}
 	
 	@Test
@@ -110,15 +111,12 @@ public class JAXRSToolingIntegrationTest extends RESTfulTestBase {
 		assertWebServiceTesterIsActive();
 		
 		/* test generated url and response after invoking */
-		WsTesterView wsTesterView = showWSTester();
-		assertEquals(serviceUrl + "get", wsTesterView.getServiceURL());
+		wsTesterView = showWSTester();
+		assertEquals(serviceUrl + "delete", wsTesterView.getServiceURL());
 		
 		invokeMethodInWSTester(wsTesterView, Request_Type.DELETE);
 		assertEquals("DELETE method", wsTesterView.getResponseBody());
 		assertEquals("[HTTP/1.1 200 OK]", wsTesterView.getResponseHeaders()[0]);
-		
-		/* minimize web service tester */
-		wsTesterView.minimize();
 	}
 	
 	@Test
@@ -131,20 +129,16 @@ public class JAXRSToolingIntegrationTest extends RESTfulTestBase {
 		assertWebServiceTesterIsActive();
 		
 		/* test generated url and response after invoking */
-		WsTesterView wsTesterView = showWSTester();
+		wsTesterView = showWSTester();
 		assertEquals(serviceUrl + "get", wsTesterView.getServiceURL());
 		
 		invokeMethodInWSTester(wsTesterView, Request_Type.POST);
 		assertFalse(wsTesterView.getResponseBody().equals("GET method"));
 		assertEquals("[HTTP/1.1 405 Method Not Allowed]", wsTesterView.getResponseHeaders()[0]);
-		
-		/* minimize web service tester */
-		wsTesterView.minimize();
 	}
 	
 	private WsTesterView showWSTester() {
-		WsTesterView wsTesterView = new WsTesterView();
-		wsTesterView.show();
+		wsTesterView.show();		
 		return wsTesterView;
 	}
 	
