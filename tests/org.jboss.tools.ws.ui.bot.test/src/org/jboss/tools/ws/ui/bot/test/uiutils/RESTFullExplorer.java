@@ -11,11 +11,9 @@
 
 package org.jboss.tools.ws.ui.bot.test.uiutils;
 
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
-import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
+import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTFulAnnotations;
 
 public class RESTFullExplorer extends SWTTestExt {
@@ -40,7 +38,7 @@ public class RESTFullExplorer extends SWTTestExt {
 	public SWTBotTreeItem restService(String method) {
 		SWTBotTreeItem getMethod = null;
 		for (SWTBotTreeItem ti : getAllRestServices()) {
-			if (ti.getText().contains("GET")) {
+			if (ti.getText().contains(method)) {
 				getMethod = ti;
 				break;
 			}
@@ -49,11 +47,10 @@ public class RESTFullExplorer extends SWTTestExt {
 	}
 	
 	public RunOnServerDialog runOnServer(SWTBotTreeItem service) {
-		SWTBotTree tree = projectExplorer.bot().tree();
-		ContextMenuHelper.prepareTreeItemForContextMenu(tree, service);
-		SWTBotMenu menu = new SWTBotMenu(ContextMenuHelper.
-				getContextMenu(tree, "Run As", false));
-		menu.menu("1 Run on Server").click();
+		service.select();
+		bot.menu(IDELabel.Menu.RUN).
+			menu(IDELabel.Menu.RUN_AS).
+			menu("1 " + IDELabel.Menu.RUN_ON_SERVER).click();
 		return new RunOnServerDialog();
 	}
 	
