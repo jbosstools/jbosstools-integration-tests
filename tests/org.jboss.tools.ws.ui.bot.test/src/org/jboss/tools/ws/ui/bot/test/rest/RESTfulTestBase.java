@@ -14,9 +14,11 @@ package org.jboss.tools.ws.ui.bot.test.rest;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.ui.bot.ext.Timing;
+import org.jboss.tools.ui.bot.ext.condition.ViewIsActive;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
+import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ws.ui.bot.test.WSTestBase;
 import org.jboss.tools.ws.ui.bot.test.uiutils.RESTFullExplorer;
 import org.jboss.tools.ws.ui.bot.test.uiutils.RunOnServerDialog;
@@ -159,6 +161,7 @@ public class RESTfulTestBase extends WSTestBase {
 	protected void runRestServiceOnConfiguredServer(String webService) {
 		RunOnServerDialog dialog = restfulWizard.runOnServer(restfulWizard.restService(webService));
 		dialog.chooseExistingServer().selectServer(configuredState.getServer().name).finish();		
+		bot.waitUntil(new ViewIsActive(IDELabel.View.WEB_SERVICE_TESTER));
 	}
 	
 	protected SWTBotTreeItem[] restfulServicesForProject(String projectName) {
