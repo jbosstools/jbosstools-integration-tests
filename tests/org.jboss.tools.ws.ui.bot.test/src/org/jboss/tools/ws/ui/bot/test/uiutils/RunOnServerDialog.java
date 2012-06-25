@@ -40,7 +40,7 @@ public class RunOnServerDialog {
 	}
 	
 	public RunOnServerDialog chooseExistingServer() {
-		bot.checkBox(0).select();
+		bot.radio(0).click();
 		return this;
 	}
 	
