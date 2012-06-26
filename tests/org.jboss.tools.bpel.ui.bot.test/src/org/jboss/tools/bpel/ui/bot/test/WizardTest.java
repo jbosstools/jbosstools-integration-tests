@@ -13,7 +13,7 @@ import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
 import org.junit.Assert;
 import org.junit.Test;
 
-@Require(clearProjects = true, server = @Server(type = ServerType.JbossAS, state = ServerState.Present), perspective="BPEL")
+@Require(server = @Server(type = ServerType.ALL, state = ServerState.Present), perspective="BPEL")
 public class WizardTest extends BPELTest {
 
 	

@@ -10,7 +10,7 @@ import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
  * @author apodhrad
  *
  */
-@Require(server = @Server(type = ServerType.JbossAS, state = ServerState.Running, version = "5.1"), perspective = "BPEL")
+@Require(server = @Server(type = ServerType.ALL, state = ServerState.Running), perspective = "BPEL")
 public class HelloWorldOdeExampleTest extends BPELExampleTest {
 	
 	private static final String PROJECT_NAME = "Hello_World_Header_Ode";

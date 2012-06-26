@@ -36,7 +36,7 @@ import org.junit.Test;
  * @author psrna
  *
  */
-@Require(server = @Server(type = ServerType.JbossAS, state = ServerState.Running, version = "5.1"), perspective="BPEL")
+@Require(server = @Server(type = ServerType.ALL, state = ServerState.Running), perspective="BPEL")
 public class ToolingCompatibilityTest extends BPELTest{
 	
 	final static String BUNDLE   = "org.jboss.tools.bpel.ui.bot.test";
@@ -63,22 +63,9 @@ public class ToolingCompatibilityTest extends BPELTest{
 		
 	
 	@Test
-	public void deployProjectTest(){
-		
-		String serverName = ToolingCompatibilityTest.configuredState.getServer().name;
+	public void deployProjectTest() {
 		// Publish the process
 		projExplorer.runOnServer("eclipse_tooling_proj");
-
-		Assert.assertFalse(console.getConsoleText().contains("DEPLOYMENTS IN ERROR:"));
-		Assert.assertFalse(console.getConsoleText().contains("deploy failed"));
-		
-		bot.viewByTitle("Servers").show();
-		bot.viewByTitle("Servers").setFocus();
-		
-		SWTBotTree tree = bot.viewByTitle("Servers").bot().tree(); 
-		SWTBotTreeItem server = tree.getTreeItem(serverName + "  [Started, Synchronized]").select();
-		server.expand();
-		bot.sleep(TIME_5S);
 		assertTrue(isProjectDeployed("eclipse_tooling_proj"));
 	}
 	

@@ -1,36 +1,28 @@
 package org.jboss.tools.bpel.ui.bot.test;
 
 import org.eclipse.core.resources.IProject;
-
 import org.eclipse.swtbot.eclipse.gef.finder.SWTGefBot;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditor;
-
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
-
 import org.jboss.tools.bpel.ui.bot.ext.widgets.BotBpelEditor;
 import org.jboss.tools.bpel.ui.bot.test.util.ResourceHelper;
-import org.jboss.tools.bpel.util.SendSoapMessage;
-
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
 import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
-import org.jboss.tools.ui.bot.ext.types.ViewType;
 import org.jboss.tools.ui.bot.ext.view.PackageExplorer;
 import org.jboss.tools.ui.bot.ext.view.ServersView;
-
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-@Require(clearProjects = true, server = @Server(type = ServerType.JbossAS, state = ServerState.Running, version = "5.1"), perspective="BPEL")
+@Require(clearProjects = true, server = @Server(type = ServerType.ALL, state = ServerState.Running), perspective="BPEL")
 public class AssignActivityTest extends BPELTest {
 
 	static String BUNDLE   = "org.jboss.tools.bpel.ui.bot.test";

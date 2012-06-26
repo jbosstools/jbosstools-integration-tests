@@ -19,7 +19,8 @@ import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
-@SuiteClasses({OdeDeployTest.class, 
+@SuiteClasses({
+	OdeDeployTest.class, 
     WizardTest.class, 
     ActivityModelingTest.class, 
     AssignActivityTest.class, 
@@ -28,7 +29,8 @@ import org.junit.runners.Suite.SuiteClasses;
     ToolingCompatibilityTest.class,
     AssociateRuntimeTest.class,
     HelloWorldExampleTest.class,
-    HelloWorldOdeExampleTest.class})
+    HelloWorldOdeExampleTest.class
+    })
 
 @RunWith(RequirementAwareSuite.class)
 public class BPELAllTest extends TestSuite {

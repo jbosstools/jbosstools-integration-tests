@@ -19,6 +19,7 @@ import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.ext.view.PackageExplorer;
 import org.jboss.tools.ui.bot.ext.view.ProjectExplorer;
+import org.junit.Assert;
 import org.osgi.framework.Version;
 
 public class BPELTest extends SWTTestExt {
@@ -275,7 +276,10 @@ public class BPELTest extends SWTTestExt {
 	}
 
 	public static boolean isProjectDeployed(String projectName) {
+		bot.sleep(TIME_5S);
+		
 		assertFalse(console.getConsoleText().contains("DEPLOYMENTS IN ERROR:"));
+		assertFalse(console.getConsoleText().contains("deploy failed"));
 
 		// This is due to JBIDE-11928
 		return true;
