@@ -13,13 +13,98 @@
 	<packaging>eclipse-test-plugin</packaging>
 
 	<properties>
-		<emma.filter>org.jboss.tools.bpel.runtimes*</emma.filter>
+		<coverage.filter>org.jboss.tools.bpel.runtimes*</coverage.filter>
 		<emma.instrument.bundles>org.jboss.tools.bpel.runtimes</emma.instrument.bundles>
 		<systemProperties>-Dswtbot.test.properties.file=./org.jboss.tools.bpel.ui.bot.test.properties</systemProperties>
 	</properties>
 
 	<build>
 		<plugins>
+			<!-- Install AS, ESB and Riftsaw -->
+			<plugin>
+				<groupId>com.googlecode.maven-download-plugin</groupId>
+				<artifactId>maven-download-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>install-as-5.1.0</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<configuration>
+							<url>http://repository.jboss.org/sourceforge/jboss-5.1.0.GA.zip</url>
+							<md5>78322c75ca0c13002a04418b4a8bc920</md5>
+							<unpack>true</unpack>
+						</configuration>
+					</execution>
+					<execution>
+						<id>get-esb</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<configuration>
+							<url>http://download.jboss.org/jbossesb/4.11/binary/jbossesb-4.11.zip</url>
+							<md5>506bb7f42777cf0e524ccc37336aa137</md5>
+							<unpack>true</unpack>
+						</configuration>
+					</execution>
+					<execution>
+						<id>get-riftsaw</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<configuration>
+							<url>http://downloads.jboss.org/riftsaw/releases/2.3.0.Final/riftsaw-2.3.0.Final.zip</url>
+							<md5>506bb7f42777cf0e524ccc37336aa137</md5>
+							<unpack>true</unpack>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.7</version>
+				<executions>
+					<execution>
+						<id>install-esb</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<skip>${skipRequirements}</skip>
+							<target>
+								<ant dir="${requirementsDirectory}/jboss-esb-4.11/install" target="deploy">
+									<property name="org.jboss.esb.server.home" value="${requirementsDirectory}/jboss-5.1.GA" />
+									<property name="org.jboss.esb.server.config" value="default" />
+								</ant>
+							</target>
+						</configuration>
+					</execution>
+					<execution>
+						<id>install-riftsaw</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<skip>${skipRequirements}</skip>
+							<target>
+								<ant dir="${requirementsDirectory}/riftsaw-2.3.0.Final/install" target="deploy">
+									<property name="org.jboss.as.home" value="${requirementsDirectory}/jboss-5.1.GA" />
+									<property name="org.jboss.as.config" value="default" />
+									<property name="org.jboss.esb.home" value="${requirementsDirectory}/jboss-esb-4.11" />
+									<property name="databasev" value="hsql" />
+									<property name="ws.version" value="3.4.0.GA" />
+								</ant>
+							</target>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-surefire-plugin</artifactId>
