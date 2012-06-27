@@ -57,7 +57,7 @@
 						</goals>
 						<configuration>
 							<url>http://downloads.jboss.org/riftsaw/releases/2.3.0.Final/riftsaw-2.3.0.Final.zip</url>
-							<md5>506bb7f42777cf0e524ccc37336aa137</md5>
+							<md5>d57290b01d25ec0d15e143c6053d0878</md5>
 							<unpack>true</unpack>
 						</configuration>
 					</execution>
