@@ -259,7 +259,7 @@ public class Editing extends SWTTestExt {
 		assertTrue(bot.button(IDELabel.Button.FINISH).isEnabled());
 		open.finish(shellBot);
 		
-		/* New test - for SPA-P 5.3 new feature - recordRoute - */		
+		/* New test - for SOA-P 5.3 new feature - recordRoute - https://issues.jboss.org/browse/JBQA-6528 */		
 //		org.jboss.tools.ui.bot.ext.SWTUtilExt.displayAllBotWidgets(bot);
 		assertTrue (bot.comboBoxWithLabel("Record Route:").selectionIndex() == -1);
 		assertTrue (bot.comboBoxWithLabel("Record Route:").itemCount() == 3);
