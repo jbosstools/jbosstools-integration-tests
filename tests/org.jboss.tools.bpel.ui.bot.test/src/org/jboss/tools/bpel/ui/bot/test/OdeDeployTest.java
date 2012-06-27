@@ -93,8 +93,7 @@ public class OdeDeployTest extends BPELTest {
 	@Test
 	public void deployProjectTest() throws Exception {
 		// Publish the process
-		projExplorer.runOnServer("say_hello");
-
+		deployProject("say_hello");
 		assertTrue(isProjectDeployed("say_hello"));
 	}
 	

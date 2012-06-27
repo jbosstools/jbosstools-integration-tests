@@ -3,10 +3,12 @@ package org.jboss.tools.bpel.ui.bot.test.util;
 import java.io.IOException;
 import java.net.URL;
 
+import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
+import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.osgi.framework.Bundle;
 
 /**
@@ -15,8 +17,11 @@ import org.osgi.framework.Bundle;
  *
  */
 public class ResourceHelper {
+	
+	public static Logger log = Logger.getLogger(SWTTestExt.class);
 
 	public static void importProject(String bundleName, String templatePath, String projectName) throws Exception {
+		log.info("Importing project " + projectName);
 		try {
 			SWTBotExt bot = new SWTBotExt();
 			
@@ -27,6 +32,7 @@ public class ResourceHelper {
 			viewBot.tree().expandNode("General", "Existing Projects into Workspace").select();
 			viewBot.button("Next >").click();
 			
+			log.info("Setting path to " + path.toString());
 			viewBot.text().setText(path.toString());
 			viewBot.tree().select(projectName + " (" + path.substring(0, path.length() - 1) + ")");
 			viewBot.checkBox("Copy projects into workspace").select();

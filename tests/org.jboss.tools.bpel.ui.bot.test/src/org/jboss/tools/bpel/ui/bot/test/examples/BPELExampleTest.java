@@ -34,27 +34,9 @@ public class BPELExampleTest extends ExampleTest {
 	}
 
 	protected static void deployExamples(String... projectName) {
-		String serverName = BPELTest.configuredState.getServer().name;
-
-		bot.viewByTitle("Servers").show();
-		bot.viewByTitle("Servers").setFocus();
-
-		SWTBotTree tree = bot.viewByTitle("Servers").bot().tree();
-		bot.sleep(TIME_5S);
-		SWTBotTreeItem server = tree.getTreeItem(serverName + "  [Started, Synchronized]").select();
-
-		ContextMenuHelper.prepareTreeItemForContextMenu(tree, server);
-		new SWTBotMenu(ContextMenuHelper.getContextMenu(tree, IDELabel.Menu.ADD_AND_REMOVE, false))
-				.click();
-
-		SWTBotShell shell = OdeDeployTest.bot.shell("Add and Remove...");
-		shell.activate();
-
-		SWTBot viewBot = shell.bot();
-		viewBot.tree().setFocus();
-		viewBot.tree().select(projectName);
-		viewBot.button("Add >").click();
-		viewBot.button("Finish").click();
+		for (int i = 0; i < projectName.length; i++) {
+			BPELTest.deployProject(projectName[0]);
+		}
 	}
 
 	protected static void testDeployment(String projectName) {

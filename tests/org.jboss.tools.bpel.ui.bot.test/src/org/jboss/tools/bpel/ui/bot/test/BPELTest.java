@@ -40,38 +40,34 @@ public class BPELTest extends SWTTestExt {
 		util.waitForNonIgnoredJobs();
 		bot.sleep(TIME_5S, "BPEL All Tests Finished!");
 	}
+	
+	public static void deployProject(String projectName) {
+		String serverName = BPELTest.configuredState.getServer().name;
 
-	protected PackageExplorer pExplorer = new PackageExplorer();
-	protected ProjectExplorer projExplorer = new ProjectExplorer() {
+		bot.viewByTitle("Servers").show();
+		bot.viewByTitle("Servers").setFocus();
 
-		@Override
-		public void runOnServer(String projectName) {
-			String serverName = BPELTest.configuredState.getServer().name;
-			// serverName = "SOA-5.1";
+		SWTBotTree tree = bot.viewByTitle("Servers").bot().tree();
+		bot.sleep(TIME_5S);
+		
+		SWTBotTreeItem server = tree.getAllItems()[0];
 
-			bot.viewByTitle("Servers").show();
-			bot.viewByTitle("Servers").setFocus();
+		assertContains(serverName, server.getText());
+//		assertEquals("", serverName + "  [Started, Synchronized]", server.getText());
+		
+		ContextMenuHelper.prepareTreeItemForContextMenu(tree, server);
+		new SWTBotMenu(ContextMenuHelper.getContextMenu(tree, IDELabel.Menu.ADD_AND_REMOVE,
+				false)).click();
 
-			SWTBotTree tree = bot.viewByTitle("Servers").bot().tree();
-			bot.sleep(TIME_5S);
-			SWTBotTreeItem server = tree.getTreeItem(serverName + "  [Started, Synchronized]")
-					.select();
+		SWTBotShell shell = OdeDeployTest.bot.shell("Add and Remove...");
+		shell.activate();
 
-			ContextMenuHelper.prepareTreeItemForContextMenu(tree, server);
-			new SWTBotMenu(ContextMenuHelper.getContextMenu(tree, IDELabel.Menu.ADD_AND_REMOVE,
-					false)).click();
-
-			SWTBotShell shell = OdeDeployTest.bot.shell("Add and Remove...");
-			shell.activate();
-
-			SWTBot viewBot = shell.bot();
-			viewBot.tree().setFocus();
-			viewBot.tree().select(projectName);
-			viewBot.button("Add >").click();
-			viewBot.button("Finish").click();
-		}
-
-	};
+		SWTBot viewBot = shell.bot();
+		viewBot.tree().setFocus();
+		viewBot.tree().select(projectName);
+		viewBot.button("Add >").click();
+		viewBot.button("Finish").click();
+	}
 
 	/**
 	 * Creates a new process in a project identified by it's name.
@@ -264,7 +260,7 @@ public class BPELTest extends SWTTestExt {
 
 	protected void openFile(String projectName, String... path) throws Exception {
 		log.info("Opening file: " + path[path.length - 1] + " ...");
-		pExplorer.openFile(projectName, path);
+		projectExplorer.openFile(projectName, path);
 	}
 
 	public static Version getServerToolsVersion() {

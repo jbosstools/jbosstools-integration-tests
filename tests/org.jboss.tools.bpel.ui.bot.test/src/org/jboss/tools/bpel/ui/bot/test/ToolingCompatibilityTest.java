@@ -65,7 +65,7 @@ public class ToolingCompatibilityTest extends BPELTest{
 	@Test
 	public void deployProjectTest() {
 		// Publish the process
-		projExplorer.runOnServer("eclipse_tooling_proj");
+		deployProject("eclipse_tooling_proj");
 		assertTrue(isProjectDeployed("eclipse_tooling_proj"));
 	}
 	

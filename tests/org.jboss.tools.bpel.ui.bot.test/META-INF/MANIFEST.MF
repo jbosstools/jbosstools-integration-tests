@@ -22,5 +22,6 @@ Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Vendor: JBoss by Red Hat
 Import-Package: org.eclipse.ui.internal.views.properties.tabbed.view
+Eclipse-RegisterBuddy: org.apache.log4j
 Bundle-ClassPath: lib/xmlunit-1.3.jar,
  .

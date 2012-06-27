@@ -4,12 +4,16 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.utils.TableCollection;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
+import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
+import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -147,7 +151,32 @@ public class WizardTest extends BPELTest {
 		SWTBotView serversView = bot.viewByTitle("Servers");
 		serversView.show();
 		serversView.setFocus();
-		assertNotNull(serversView.bot().tree().getTreeItem(serverName + " Server  [Stopped]"));
+		
+		// check if the new server is avialable
+		tree = serversView.bot().tree();
+		SWTBotTreeItem[] servers = tree.getAllItems();
+		SWTBotTreeItem server = null;
+		for (int i = 0; i < servers.length; i++) {
+			if(servers[i].getText().contains(serverName)) {
+				server = servers[i];
+				break;
+			}
+		}
+		assertNotNull("The new server runtime not found", server);
+		
+		// delete the server
+		ContextMenuHelper.prepareTreeItemForContextMenu(tree, server);
+		new SWTBotMenu(ContextMenuHelper.getContextMenu(tree, IDELabel.Menu.DELETE, false)).click();
+		SWTBotShell shell = bot.waitForShell("Delete Server");
+		shell.bot().button("OK").click();
+		server = null;
+		for (int i = 0; i < servers.length; i++) {
+			if(servers[i].getText().contains(serverName)) {
+				server = servers[i];
+				break;
+			}
+		}
+		assertNull("The server wasn't deleted", server);
 	}
 	
 	boolean isRuntimeSet(String projectName) throws Exception {

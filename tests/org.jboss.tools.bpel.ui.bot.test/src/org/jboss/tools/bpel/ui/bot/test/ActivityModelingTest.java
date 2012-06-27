@@ -1,21 +1,12 @@
 package org.jboss.tools.bpel.ui.bot.test;
 
 import org.eclipse.core.resources.IProject;
-
 import org.eclipse.swtbot.eclipse.gef.finder.SWTGefBot;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditor;
-
 import org.jboss.tools.bpel.ui.bot.ext.widgets.BotBpelEditor;
 import org.jboss.tools.bpel.ui.bot.test.util.ResourceHelper;
-
-import org.jboss.tools.ui.bot.ext.SWTUtilExt;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
-import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
-import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
-import org.jboss.tools.ui.bot.ext.view.PackageExplorer;
 import org.jboss.tools.ui.bot.ext.view.ServersView;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,29 +18,22 @@ public class ActivityModelingTest extends BPELTest {
 
 	IProject project;
 	ServersView sView = new ServersView();
-	PackageExplorer pExplorer = new PackageExplorer();
 
 	@Before
 	public void setupWorkspace() throws Exception {
-		System.err.println("setup start!");
+		log.info("ActivityModelingTest: setup starts");
 		
-		pExplorer.deleteAllProjects();
-		
+		projectExplorer.deleteAllProjects();
 		ResourceHelper.importProject(BUNDLE, "/projects/DiscriminantProcess", "DiscriminantProcess");
+		projectExplorer.selectProject("DiscriminantProcess");
 		
-		//ResourcesUtils.importProject(BUNDLE, "/projects/DiscriminantProcess",
-		//		"DiscriminantProcess", null);
-		
-		bot.viewByTitle("Package Explorer").setFocus();
-		pExplorer.selectProject("DiscriminantProcess");
-		
-		System.err.println("setup complete!");
+		log.info("ActivityModelingTest: setup complete!");
 	
 	}
 
 	@After
 	public void cleanupWorkspace() throws Exception {
-//		pExplorer.deleteAllProjects();
+		projectExplorer.deleteAllProjects();
 	}
 
 	/**
