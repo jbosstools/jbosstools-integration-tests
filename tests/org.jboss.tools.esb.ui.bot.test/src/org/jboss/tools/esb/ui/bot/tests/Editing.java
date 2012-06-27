@@ -62,8 +62,10 @@ public class Editing extends SWTTestExt {
 	@BeforeClass
 	public static void setupProject() {
 		SWTBot wiz = open.newObject(ActionItem.NewObject.ESBESBProject.LABEL);
-		wiz.textWithLabel(ESBESBProject.TEXT_PROJECT_NAME).setText(projectName);		
+		wiz.textWithLabel(ESBESBProject.TEXT_PROJECT_NAME).setText(projectName);
+		wiz.sleep(30000l);
 		wiz.button(IDELabel.Button.NEXT).click();
+		wiz.sleep(30000l);
 		wiz.button(IDELabel.Button.NEXT).click();
 		wiz.sleep(30000l);
 		open.finish(wiz);		
@@ -247,7 +249,7 @@ public class Editing extends SWTTestExt {
 				menu_addService, false)).click();
 		SWTBotShell shell = bot.shell("Add Service");
 		shell.activate();
-		SWTBot shellBot = shell.bot();
+		SWTBot shellBot = shell.bot();	
 		assertFalse(bot.button(IDELabel.Button.FINISH).isEnabled());
 		shellBot.text(0).setText(name);
 		assertFalse(bot.button(IDELabel.Button.FINISH).isEnabled());
@@ -256,11 +258,24 @@ public class Editing extends SWTTestExt {
 		shellBot.text(2).setText(name);
 		assertTrue(bot.button(IDELabel.Button.FINISH).isEnabled());
 		open.finish(shellBot);
+		
+		/* New test - for SPA-P 5.3 new feature - recordRoute - */		
+//		org.jboss.tools.ui.bot.ext.SWTUtilExt.displayAllBotWidgets(bot);
+		assertTrue (bot.comboBoxWithLabel("Record Route:").selectionIndex() == -1);
+		assertTrue (bot.comboBoxWithLabel("Record Route:").itemCount() == 3);
+		String [] theItems = bot.comboBoxWithLabel("Record Route:").items();
+		assertTrue (theItems.length == 3);
+		assertTrue (theItems[1].equals("true"));
+		assertTrue (theItems[2].equals("false"));
+		bot.comboBoxWithLabel("Record Route:").setSelection("true");
+		assertTrue (bot.comboBoxWithLabel("Record Route:").getText().equals("true"));		
+		
 		Assertions.assertXmlContentBool(getEditor().toTextEditor().getText(),
-				"count(//jbossesb/services/service[@name='" + name + "'])=1");
+				"count(//jbossesb/services/service[@name='" + name + "' and @recordRoute='true'])=1");
+		
 		Assertions.assertTreeContent(getEditor(),configFileFullNotSaved, node_services, name);
 		addPropertyWithXMLContent("//jbossesb/services/service[@name='" + name
-				+ "']", configFileFullNotSaved, node_services, name);
+				+ "']", configFileFullNotSaved, node_services, name);		
 		editor.save();
 
 	}
@@ -340,7 +355,7 @@ public class Editing extends SWTTestExt {
 		
 		/* ldimaggi - https://issues.jboss.org/browse/JBQA-5829 */
 //		Assertions.assertXmlContentString(getEditor().toTextEditor().getText(), xpathPath
-//				+ "/property[@name='" + propertyName + "']/" + propertyName
+//				+ "/property[@name='" + propertyName + "']/" + propertyName 
 //		+ "[@name='value']/text()", "<>@&");
 
 	}
