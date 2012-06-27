@@ -76,8 +76,8 @@
 						<configuration>
 							<skip>${skipRequirements}</skip>
 							<target>
-								<ant dir="${requirementsDirectory}/jboss-esb-4.11/install" target="deploy">
-									<property name="org.jboss.esb.server.home" value="${requirementsDirectory}/jboss-5.1.GA" />
+								<ant dir="${requirementsDirectory}/jbossesb-4.11/install" target="deploy">
+									<property name="org.jboss.esb.server.home" value="${requirementsDirectory}/jboss-5.1.0.GA" />
 									<property name="org.jboss.esb.server.config" value="default" />
 								</ant>
 							</target>
@@ -93,9 +93,9 @@
 							<skip>${skipRequirements}</skip>
 							<target>
 								<ant dir="${requirementsDirectory}/riftsaw-2.3.0.Final/install" target="deploy">
-									<property name="org.jboss.as.home" value="${requirementsDirectory}/jboss-5.1.GA" />
+									<property name="org.jboss.as.home" value="${requirementsDirectory}/jboss-5.1.0.GA" />
 									<property name="org.jboss.as.config" value="default" />
-									<property name="org.jboss.esb.home" value="${requirementsDirectory}/jboss-esb-4.11" />
+									<property name="org.jboss.esb.home" value="${requirementsDirectory}/jbossesb-4.11" />
 									<property name="databasev" value="hsql" />
 									<property name="ws.version" value="3.4.0.GA" />
 								</ant>
