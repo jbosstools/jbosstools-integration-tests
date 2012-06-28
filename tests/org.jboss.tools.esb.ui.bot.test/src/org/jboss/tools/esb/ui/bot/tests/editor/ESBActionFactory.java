@@ -6,6 +6,8 @@ import org.jboss.tools.esb.ui.bot.tests.editor.action.Notifier;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.ext.widgets.SWTBotSection;
 
+import static junit.framework.Assert.assertTrue;
+
 public class ESBActionFactory {
 	public static ESBAction customAction() {
 		return new ESBAction("Custom Action",null,"java.lang.Object") {
@@ -51,6 +53,8 @@ public class ESBActionFactory {
 				SWTBotSection section = bot.section(editor.bot(),getSectionTitle());
 				editTextProperty(editor, section.bot(), "Process Definition Name:", "process-definition-name", "process");
 				editProcess(editor,true);
+				bot.sleep(60000l);
+				
 			}
 			@Override
 			protected void doFillForm(SWTBotShell shell) {
@@ -62,6 +66,51 @@ public class ESBActionFactory {
 			
 		};
 	}
+
+	public static ESBAction bpm5Processor() {
+		return new ESBAction("BPM 5 Processor","BPM","org.jboss.soa.esb.services.jbpm5.actions.Bpm5Processor") {
+
+			@Override
+			public String getMenuLabel() {
+				return this.uiName;
+			}
+			@Override
+			public String getSectionTitle() {
+				return "Bpm5 Processor Action";
+			}
+			@Override
+			protected void doEditing(SWTBotEditor editor, String... path) {
+				SWTBotSection section = bot.section(editor.bot(),getSectionTitle());
+				org.jboss.tools.ui.bot.ext.SWTUtilExt.displayAllBotWidgets(bot);
+				editTextProperty(editor, section.bot(), "Process Definition Name:", "process-definition-name", "edited process definition name");
+				editTextProperty(editor, section.bot(), "Process ID:", "process-id", "edited processID");
+				editProcess(editor,true);
+				bot.sleep(60000l);
+			}
+			@Override
+			protected void doFillForm(SWTBotShell shell) {
+				Assertions.assertButtonEnabled(shell.bot().button(getFinishButton()), false);
+				shell.bot().text(0).setText(this.uiName);
+				shell.bot().text(1).setText(this.uiName + "processDefName");
+				shell.bot().text(2).setText(this.uiName + "processID");
+				shell.bot().comboBox().setSelection(1);			
+				
+				/* Added for - https://issues.jboss.org/browse/JBQA-6529 - ESB Editor : create template for BPM5Processor action */
+				assertTrue (shell.bot().comboBox().selectionIndex() == 1);
+				assertTrue (shell.bot().comboBox().itemCount() == 3);
+				String [] theItems = shell.bot().comboBox().items();
+				assertTrue (theItems.length == 3);
+				assertTrue (theItems[0].equals("startProcess"));
+				assertTrue (theItems[1].equals("signalEvent"));
+				assertTrue (theItems[2].equals("abortProcessInstance"));
+				
+				Assertions.assertButtonEnabled(shell.bot().button(getFinishButton()), true);
+				bot.sleep(60000l);
+			}
+			
+		};
+	}
+	
 	public static ESBAction bpmRulesProcessor() {
 		return new ESBAction("Business Rules Processor","BPM","org.jboss.soa.esb.actions.BusinessRulesProcessor") {
 			@Override
