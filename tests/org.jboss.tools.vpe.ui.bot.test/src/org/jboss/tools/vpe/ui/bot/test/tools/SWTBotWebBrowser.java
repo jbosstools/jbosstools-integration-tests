@@ -467,31 +467,25 @@ public class SWTBotWebBrowser {
    * @return
    */
   public boolean containsNodeWithValue(nsIDOMNode node, String searchText) {
-    boolean result = false;
+	  boolean result = false;
+	  String nodeValue = node.getNodeValue();
 
-    String nodeValue = node.getNodeValue();
-    
-    if (nodeValue != null && SWTBotWebBrowser.stripTextFromSpecChars(nodeValue).equals(searchText)) {
-      result = true;
-    } 
-    else {
-      nsIDOMNodeList children = node.getChildNodes();
-
-      for (int i = 0; i < children.getLength() && !result; i++) {
-
-        nsIDOMNode child = children.item(i);
-
-        // leave out empty text nodes in test dom model
-        if ((child.getNodeType() == Node.TEXT_NODE)
-            && ((child.getNodeValue() == null) || (child.getNodeValue().trim()
-                .length() == 0)))
-          continue;
-
-        result = containsNodeWithValue(child, searchText);
-      }
-    }
-    
-    return result;
+	  if (nodeValue != null && SWTBotWebBrowser.stripTextFromSpecChars(nodeValue).equals(searchText)) {
+		  result = true;
+	  } else {
+		  nsIDOMNodeList children = node.getChildNodes();
+		  for (int i = 0; i < children.getLength() && !result; i++) {
+			  nsIDOMNode child = children.item(i);
+			  // leave out empty text nodes in test dom model
+			  if ((child.getNodeType() == Node.TEXT_NODE)
+					  && ((child.getNodeValue() == null) || 
+							  (child.getNodeValue().trim().length() == 0))) {
+				  continue;
+			  }
+			  result = containsNodeWithValue(child, searchText);
+		  }
+	  }
+	  return result;
   }
   /**
    * Returns Palette Viewer associated to JBoss Tools Palette

@@ -92,6 +92,7 @@ import org.jboss.tools.vpe.ui.bot.test.editor.tags.TogglePanelAndToogleControlTa
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.ToolbarAndToolbarGroupTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.TreeTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.VirtualEarthTagTest;
+import org.jboss.tools.vpe.ui.bot.test.el.ElForBundleValueTest_Jbide10531;
 import org.jboss.tools.vpe.ui.bot.test.jbide.JBIDE4556Test;
 import org.jboss.tools.vpe.ui.bot.test.jbide.JBIDE9445Test_DuplicateSourceMenu;
 import org.jboss.tools.vpe.ui.bot.test.jbide.Jbide10020_TestHotKeyForVpeRefresh;
@@ -220,7 +221,8 @@ import org.junit.runners.Suite.SuiteClasses;
   VpeToolbarTest.class,
   MultiSelectionTest.class,
   SelectionSynchronizationTest.class,
-  ScrollingSynchronizationTest.class
+  ScrollingSynchronizationTest.class,
+  ElForBundleValueTest_Jbide10531.class
 })
 public class VPEAllBotTests extends SWTBotTestCase{
 
