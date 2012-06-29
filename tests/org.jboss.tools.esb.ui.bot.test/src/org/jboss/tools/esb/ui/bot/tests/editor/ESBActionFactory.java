@@ -85,7 +85,6 @@ public class ESBActionFactory {
 				editTextProperty(editor, section.bot(), "Process Definition Name:", "process-definition-name", "edited process definition name");
 				editTextProperty(editor, section.bot(), "Process ID:", "process-id", "edited processID");
 				editProcess(editor,true);
-				bot.sleep(60000l);
 			}
 			@Override
 			protected void doFillForm(SWTBotShell shell) {
@@ -103,9 +102,7 @@ public class ESBActionFactory {
 				assertTrue (theItems[0].equals("startProcess"));
 				assertTrue (theItems[1].equals("signalEvent"));
 				assertTrue (theItems[2].equals("abortProcessInstance"));
-				
 				Assertions.assertButtonEnabled(shell.bot().button(getFinishButton()), true);
-				bot.sleep(60000l);
 			}
 			
 		};

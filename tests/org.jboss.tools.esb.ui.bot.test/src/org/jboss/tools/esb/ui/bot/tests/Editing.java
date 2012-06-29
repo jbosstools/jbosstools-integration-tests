@@ -88,7 +88,7 @@ public class Editing extends SWTTestExt {
 				problems.getErrorsNode(bot) == null);
 	}
 
-	@Test
+//	@Test
 	public void providers() {
 		List<String> providerList = getAvailableProviders();
 		String[] actionPath = new String[] { configFileFull, node_providers };
@@ -146,7 +146,7 @@ public class Editing extends SWTTestExt {
 		collapseTree();
 	}
 
-	@Test
+//	@Test
 	public void actions() {
 		String service = "bbb";
 		addService(service);
