@@ -50,9 +50,15 @@ public class BPELTest extends SWTTestExt {
 		SWTBotTree tree = bot.viewByTitle("Servers").bot().tree();
 		bot.sleep(TIME_5S);
 		
-		SWTBotTreeItem server = tree.getAllItems()[0];
+		SWTBotTreeItem server = null;
+		SWTBotTreeItem[] servers = tree.getAllItems();
+		for (int i = 0; i < servers.length; i++) {
+			if(servers[i].getText().contains(serverName)) {
+				server = servers[i];
+			}
+		}
 
-		assertContains(serverName, server.getText());
+		assertNotNull("Server " + serverName + " not found", server);
 //		assertEquals("", serverName + "  [Started, Synchronized]", server.getText());
 		
 		ContextMenuHelper.prepareTreeItemForContextMenu(tree, server);
