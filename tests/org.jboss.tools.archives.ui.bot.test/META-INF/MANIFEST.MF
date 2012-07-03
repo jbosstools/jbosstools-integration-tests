@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Test
 Bundle-SymbolicName: org.jboss.tools.archives.ui.bot.test
-Bundle-Version: 3.2.1.qualifier
+Bundle-Version: 3.4.0.qualifier
 Bundle-Activator: org.jboss.tools.archives.ui.bot.test.Activator
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.swtbot.eclipse.core;bundle-version="2.0.0",
