@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Portal Tests
 Bundle-SymbolicName: org.jboss.tools.portlet.ui.bot.test;singleton:=true
-Bundle-Version: 1.2.0.qualifier
+Bundle-Version: 1.4.0.qualifier
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: 
  JBoss by Red Hat
