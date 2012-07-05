@@ -104,6 +104,7 @@ public class VariousProjectsArchiving extends ArchivesTestBase {
 	
 	private void handlePerspectivePopUpDialog() {
 		try {
+			bot.waitForShell(IDELabel.Shell.OPEN_ASSOCIATED_PERSPECTIVE);
 			bot.shell(IDELabel.Shell.OPEN_ASSOCIATED_PERSPECTIVE)
 				.bot().button(IDELabel.Button.NO).click();
 		} catch (WidgetNotFoundException exc) {
