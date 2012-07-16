@@ -50,6 +50,8 @@ public class JSPPageCreationTest extends VPEEditorTestCase{
 
     tree.setFocus();
 
+    bot.sleep(Timing.time5S());
+    
     SWTBotTreeItem webContentTreeItem = tree
       .getTreeItem(JBT_TEST_PROJECT_NAME)
       .expand()

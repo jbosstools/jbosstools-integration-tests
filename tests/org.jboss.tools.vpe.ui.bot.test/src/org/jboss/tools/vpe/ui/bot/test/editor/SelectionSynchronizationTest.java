@@ -77,30 +77,6 @@ public class SelectionSynchronizationTest extends VPEEditorTestCase {
 		util.sleep(TIME_1S);
 		selectionText = jspTextEditor.getSelection();
 		assertEquals("Step 4. Selected text in the Source Part is wrong: ", "e Plain", selectionText); //$NON-NLS-1$ //$NON-NLS-2$
-
-		/*
-		 * Navigate to the text
-		 */
-		jspTextEditor.setFocus();
-		jspTextEditor.navigateTo(11, 38);
-		util.sleep(TIME_1S);
-		jspTextEditor.navigateTo(11, 39);
-		util.sleep(TIME_1S);
-		/*
-		 * Select some text to the right
-		 */
-		KeyboardHelper.selectTextUsingSWTEvents(d, true, SELECTION_LENGTH);
-		util.sleep(TIME_1S);
-		selectionText = webBrowser.getSelectionText();
-		assertEquals("Step 5. Selected text in the Visual Part is wrong: ", "llo Dem", selectionText); //$NON-NLS-1$ //$NON-NLS-2$
-		jspTextEditor.navigateTo(11, 46);
-		util.sleep(TIME_1S);
-		jspTextEditor.navigateTo(11, 51);
-		util.sleep(TIME_1S);
-		KeyboardHelper.selectTextUsingSWTEvents(d, false, SELECTION_LENGTH);
-		util.sleep(TIME_1S);
-		selectionText = webBrowser.getSelectionText();
-		assertEquals("Step 6. Selected text in the Visual Part is wrong: ", "emo App", selectionText); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 }

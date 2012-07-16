@@ -63,7 +63,7 @@ public class XhtmlFilePerformanceTest extends VPEAutoTestCase {
 	      0, 0);
 	  xhtmlTextEditor.insertText("<h1>" + insertText + "</h1>");
 	  xhtmlTextEditor.save();
-	  bot.sleep(Timing.time2S());
+	  bot.sleep(Timing.time5S());
     bot.toolbarButtonWithTooltip(SWTJBTExt.isRunningOnMacOs() ? 
         IDELabel.ToolbarButton.REFRESH_MAC_OS: IDELabel.ToolbarButton.REFRESH).click();
     SWTBotEditorExt multiPageEditor = swtBotExt.swtBotEditorExtByTitle(XhtmlFilePerformanceTest.TEST_PAGE_NAME);
