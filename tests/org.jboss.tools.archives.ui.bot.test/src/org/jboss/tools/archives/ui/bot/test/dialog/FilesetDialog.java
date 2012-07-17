@@ -27,7 +27,7 @@ public class FilesetDialog {
 
 	private SWTBotShell shell = null;
 	private SWTBot bot = null;
-	private final String DIALOG_TITLE = "Fileset Wizard";
+	private static final String DIALOG_TITLE = "Fileset Wizard";
 	
 	public FilesetDialog() {
 		shell = SWTBotFactory.getBot().shell(getDialogTitle());

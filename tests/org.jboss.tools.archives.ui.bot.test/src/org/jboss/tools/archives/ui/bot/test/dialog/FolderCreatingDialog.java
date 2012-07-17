@@ -24,7 +24,7 @@ public class FolderCreatingDialog {
 
 	private SWTBotShell shell = null;
 	private SWTBot bot = null;
-	private final String DIALOG_TITLE = "Create a folder";
+	private static final String DIALOG_TITLE = "Create a folder";
 	
 	public FolderCreatingDialog() {
 		shell = SWTBotFactory.getBot().shell(getDialogTitle());

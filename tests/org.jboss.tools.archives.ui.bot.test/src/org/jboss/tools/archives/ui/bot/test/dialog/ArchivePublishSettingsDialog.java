@@ -28,7 +28,7 @@ public class ArchivePublishSettingsDialog {
 
 	private SWTBotShell shell = null;
 	private SWTBot bot = null;
-	private final String DIALOG_TITLE = "Archive Publish Settings";
+	private static final String DIALOG_TITLE = "Archive Publish Settings";
 	
 	
 	public ArchivePublishSettingsDialog() {
