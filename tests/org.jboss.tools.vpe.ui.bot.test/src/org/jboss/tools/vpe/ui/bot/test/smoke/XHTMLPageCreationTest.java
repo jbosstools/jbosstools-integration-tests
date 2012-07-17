@@ -50,13 +50,13 @@ public class XHTMLPageCreationTest extends VPEEditorTestCase{
 	  SWTBotTree tree = webProjects.tree();
 
     tree.setFocus();
-
-    bot.sleep(Timing.time5S());
+    // tree of webProject view is not populated properly. Project node has to be reexpanded
+    SWTBotTreeItem projectTreeItem = tree.getTreeItem(JBT_TEST_PROJECT_NAME);
+    projectTreeItem.expand();
+    projectTreeItem.collapse();
+    projectTreeItem.expand();
     
-    SWTBotTreeItem webContentTreeItem = tree
-      .getTreeItem(JBT_TEST_PROJECT_NAME)
-      .expand()
-        .getNode(IDELabel.WebProjectsTree.WEB_CONTENT);
+    SWTBotTreeItem webContentTreeItem = projectTreeItem.expand().getNode(IDELabel.WebProjectsTree.WEB_CONTENT);
     
     webContentTreeItem.select();
     // create new JSP file
