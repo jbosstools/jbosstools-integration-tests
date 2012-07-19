@@ -22,6 +22,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotRadio;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarButton;
 import org.jboss.tools.vpe.ui.bot.test.VPEAutoTestCase;
 import org.jboss.tools.jst.jsp.messages.JstUIMessages;
 import org.jboss.tools.ui.bot.ext.SWTJBTExt;
@@ -86,14 +87,12 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		 * Select some text
 		 */
 		editor.toTextEditor().selectRange(7, 18, 4);
-		util.waitForAll();
 		/*
 		 * Get toolbar button
 		 */
-		assertTrue(TOOLBAR_ICON_ENABLED, bot
-				.toolbarButtonWithTooltip(TOOL_TIP)
-				.isEnabled());
-		bot.toolbarButtonWithTooltip(TOOL_TIP).click();
+		SWTBotToolbarButton tbButton = bot.toolbarButtonWithTooltip(TOOL_TIP);
+    util.waitForToolbarButtonEnabled(tbButton,Timing.time5S());
+    tbButton.click();
 		bot.shell(JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).setFocus();
 		bot.shell(JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).activate();
 		isUnusedDialogOpened = true;
@@ -181,10 +180,9 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		/*
 		 * Get toolbar button
 		 */
-		assertTrue(TOOLBAR_ICON_ENABLED, bot
-				.toolbarButtonWithTooltip(TOOL_TIP)
-				.isEnabled());
-		bot.toolbarButtonWithTooltip(TOOL_TIP).click();
+		SWTBotToolbarButton tbButton = bot.toolbarButtonWithTooltip(TOOL_TIP);
+		util.waitForToolbarButtonEnabled(tbButton,Timing.time5S());
+		tbButton.click();
 		bot.shell(JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).setFocus();
 		bot.shell(JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).activate();
 		isUnusedDialogOpened = true;
@@ -228,13 +226,13 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		 * Select some text
 		 */
 		editor.toTextEditor().selectRange(7, 18, 4);
-		assertEquals("Replaced text is incorrect", "User", editor.toTextEditor().getSelection()); //$NON-NLS-1$ //$NON-NLS-2$
+    assertEquals("Replaced text is incorrect", "User", editor.toTextEditor().getSelection()); //$NON-NLS-1$ //$NON-NLS-2$
 		/*
 		 * Get toolbar button
 		 */
-		assertTrue(TOOLBAR_ICON_ENABLED, 
-				bot.toolbarButtonWithTooltip(TOOL_TIP).isEnabled());
-		bot.toolbarButtonWithTooltip(TOOL_TIP).click();
+    tbButton = bot.toolbarButtonWithTooltip(TOOL_TIP);
+    util.waitForToolbarButtonEnabled(tbButton,Timing.time5S());
+    tbButton.click();
 		bot.shell(JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).setFocus();
 		bot.shell(JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).activate();
 		isUnusedDialogOpened = true;
@@ -285,13 +283,12 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		 * Select some text
 		 */
 		editor.toTextEditor().selectRange(7, 18, 4);
-		util.waitForAll();
-		/*
+    /*
 		 * Get toolbar button
 		 */
-		assertTrue(TOOLBAR_ICON_ENABLED, bot
-				.toolbarButtonWithTooltip(TOOL_TIP).isEnabled());
-		bot.toolbarButtonWithTooltip(TOOL_TIP).click();
+		SWTBotToolbarButton tbButton = bot.toolbarButtonWithTooltip(TOOL_TIP);
+		util.waitForToolbarButtonEnabled(tbButton,Timing.time5S());
+    tbButton.click();
 		bot.shell(JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).setFocus();
 		bot.shell(JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).activate();
 		isUnusedDialogOpened = true;
@@ -371,11 +368,10 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		/*
 		 * Get toolbar button
 		 */
-		assertTrue(TOOLBAR_ICON_ENABLED, bot
-				.toolbarButtonWithTooltip(TOOL_TIP)
-				.isEnabled());
-		bot.toolbarButtonWithTooltip(TOOL_TIP).click();
-		bot.shell(JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).setFocus();
+		SWTBotToolbarButton tbButton = bot.toolbarButtonWithTooltip(TOOL_TIP);
+		util.waitForToolbarButtonEnabled(tbButton,Timing.time5S());
+    tbButton.click();
+    bot.shell(JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).setFocus();
 		bot.shell(JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).activate();
 		isUnusedDialogOpened = true;
 		
@@ -482,19 +478,18 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		 * Select some text
 		 */
 		editor.toTextEditor().selectRange(13, 15, 1);
-		util.waitForAll();
 		/*
 		 * There is an exception caused by the fact that
 		 * line delimiter was selected.
 		 * But for this test it's ok, so just ignore this exception.
 		 */
 		setException(null);
+		SWTBotToolbarButton tbButton = bot.toolbarButtonWithTooltip(TOOL_TIP);
+		util.waitWhileToolbarButtonisDisabled(tbButton,Timing.time5S());
 		/*
-		 * Check that the toolbar buttion is disabled
+		 * Check that the toolbar button is disabled
 		 */
-		assertFalse("Toolbar button should be disabled", bot //$NON-NLS-1$
-				.toolbarButtonWithTooltip(TOOL_TIP)
-				.isEnabled());
+	  assertFalse("Toolbar button should be disabled", tbButton.isEnabled());
 		/*
 		 * Select some text
 		 */
@@ -507,9 +502,9 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		/*
 		 * Activate the dialog
 		 */
-		assertTrue(TOOLBAR_ICON_ENABLED,
-				bot.toolbarButtonWithTooltip(TOOL_TIP).isEnabled());
-		bot.toolbarButtonWithTooltip(TOOL_TIP).click();
+		tbButton = bot.toolbarButtonWithTooltip(TOOL_TIP);
+		util.waitWhileToolbarButtonisDisabled(tbButton,Timing.time5S());
+    tbButton.click();
 		bot.shell(JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).setFocus();
 		bot.shell(JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).activate();
 		isUnusedDialogOpened = true;
@@ -926,11 +921,10 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		/*
 		 * Get toolbar button
 		 */
-		assertTrue(TOOLBAR_ICON_ENABLED, bot
-				.toolbarButtonWithTooltip(TOOL_TIP)
-				.isEnabled());
-		bot.toolbarButtonWithTooltip(TOOL_TIP).click();
-		bot.shell(JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).setFocus();
+		SWTBotToolbarButton tbButton = bot.toolbarButtonWithTooltip(TOOL_TIP);
+		util.waitForToolbarButtonEnabled(tbButton,Timing.time5S());
+    tbButton.click();
+    bot.shell(JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).setFocus();
 		bot.shell(JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).activate();
 		isUnusedDialogOpened = true;
 		SWTBotCheckBox checkBox = bot.checkBox();
@@ -1033,10 +1027,9 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		/*
 		 * Get toolbar button
 		 */
-		assertTrue(TOOLBAR_ICON_ENABLED, bot
-				.toolbarButtonWithTooltip(TOOL_TIP)
-				.isEnabled());
-		bot.toolbarButtonWithTooltip(TOOL_TIP).click();
+		SWTBotToolbarButton tbButton = bot.toolbarButtonWithTooltip(TOOL_TIP);
+		util.waitForToolbarButtonEnabled(tbButton,Timing.time5S());
+    tbButton.click();
 		bot.shell(JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).setFocus();
 		bot.shell(JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).activate();
 		isUnusedDialogOpened = true;
@@ -1074,5 +1067,6 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		bot.button(WidgetVariables.NEXT_BUTTON).click();
 	
 		return editor;
-	}	
+	}
+
 }

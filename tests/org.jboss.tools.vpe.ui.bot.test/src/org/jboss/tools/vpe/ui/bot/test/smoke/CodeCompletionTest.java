@@ -109,7 +109,7 @@ public class CodeCompletionTest extends VPEEditorTestCase{
         "  <head>\n" +
         "  </head>\n" +
         "  <body>\n" +
-        "  </boyd>\n" +
+        "  </body>\n" +
         "</html>");
     bot.sleep(Timing.time2S());
     final String tagToSelect = "<body>";
