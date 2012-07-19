@@ -13,6 +13,8 @@ import org.jboss.tools.bpel.ui.bot.test.ToolingCompatibilityTest;
 import org.jboss.tools.bpel.ui.bot.test.WizardTest;
 import org.jboss.tools.bpel.ui.bot.test.examples.HelloWorldExampleTest;
 import org.jboss.tools.bpel.ui.bot.test.examples.HelloWorldOdeExampleTest;
+import org.jboss.tools.bpel.ui.bot.test.examples.LoanApprovalExampleTest;
+import org.jboss.tools.bpel.ui.bot.test.examples.MathExampleTest;
 import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -29,7 +31,9 @@ import org.junit.runners.Suite.SuiteClasses;
     ToolingCompatibilityTest.class,
     AssociateRuntimeTest.class,
     HelloWorldExampleTest.class,
-    HelloWorldOdeExampleTest.class
+    HelloWorldOdeExampleTest.class,
+	LoanApprovalExampleTest.class,
+	MathExampleTest.class
     })
 
 @RunWith(RequirementAwareSuite.class)
