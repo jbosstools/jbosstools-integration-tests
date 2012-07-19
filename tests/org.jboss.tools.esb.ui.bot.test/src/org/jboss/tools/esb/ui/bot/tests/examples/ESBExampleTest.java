@@ -203,7 +203,14 @@ public class ESBExampleTest extends ExampleTest{
 				ContextMenuHelper.prepareTreeItemForContextMenu(tree, item);
 				new SWTBotMenu(ContextMenuHelper.getContextMenu(tree, IDELabel.Menu.PROPERTIES, false)).click();
 				SWTBotShell shell = bot.activeShell();
-				shell.bot().table().select(configuredState.getServer().name);
+
+				/* ldimagi - July 2012 - added this as all tests were failing - unclear how this EVER worked before the change */
+				if (lib.contains("ESB")) {
+					shell.bot().table().select("ESB-" + configuredState.getServer().bundledESBVersion);
+				}
+				else {
+					shell.bot().table().select(configuredState.getServer().name);	
+				}					
 				open.finish(shell.bot(),IDELabel.Button.OK);
 				fixed=true;
 				break;
