@@ -1,0 +1,8 @@
+<env:Envelope xmlns:env="http://schemas.xmlsoap.org/soap/envelope/">
+   <env:Header/>
+   <env:Body>
+      <SalutationsResponse xmlns="http://www.jboss.org/bpel/examples">
+         <tns:result xmlns:tns="http://www.jboss.org/bpel/examples">Good Afternoon, Test</tns:result>
+      </SalutationsResponse>
+   </env:Body>
+</env:Envelope>

@@ -1,0 +1,11 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:pur="http://manufacturing.org/xsd/purchase">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <pur:purchaseOrder>
+         <pur:orderId>321</pur:orderId>
+         <pur:customerId>456</pur:customerId>
+         <pur:orderDescription>ThrowPOServiceFault: Cause a POService fault</pur:orderDescription>
+         <pur:price>0</pur:price>
+      </pur:purchaseOrder>
+   </soapenv:Body>
+</soapenv:Envelope>

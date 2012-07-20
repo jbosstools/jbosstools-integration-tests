@@ -15,6 +15,7 @@ import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
 public class HelloWorldExampleTest extends BPELExampleTest {
 
 	private static final String PROJECT_NAME = "HelloWorld";
+	private static final String WSDL_URL = "http://localhost:8080/bpel/processes/helloWorld?wsdl";
 
 	@Override
 	public String[] getProjectNames() {
@@ -31,10 +32,7 @@ public class HelloWorldExampleTest extends BPELExampleTest {
 		deployExamples(PROJECT_NAME);
 		assertTrue(BPELTest.isProjectDeployed(PROJECT_NAME));
 
-		String url = "http://localhost:8080/bpel/processes/helloWorld";
-		String requestFile = "HelloWorld_request.xml";
-		String responseFile = "HelloWorld_response.xml";
-		testResponse(url, requestFile, responseFile);
+		testResponses(WSDL_URL, PROJECT_NAME);
 
 		servers.removeAllProjectsFromServer();
 	}

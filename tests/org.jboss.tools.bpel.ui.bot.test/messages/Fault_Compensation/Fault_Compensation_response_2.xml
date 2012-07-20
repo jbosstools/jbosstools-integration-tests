@@ -1,0 +1,8 @@
+<env:Envelope xmlns:env="http://schemas.xmlsoap.org/soap/envelope/">
+   <env:Header/>
+   <env:Body>
+      <env:Fault>
+         <faultcode xmlns:valueNS="http://www.jboss.org/bpel/examples">valueNS:propagatedFault</faultcode>
+      </env:Fault>
+   </env:Body>
+</env:Envelope>

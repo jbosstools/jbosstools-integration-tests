@@ -1,0 +1,14 @@
+<env:Envelope xmlns:env="http://schemas.xmlsoap.org/soap/envelope/">
+   <env:Header/>
+   <env:Body>
+      <env:Fault>
+         <faultcode xmlns:valueNS="http://manufacturing.org/wsdl/inventory/bp3">valueNS:inventoryFaultType</faultcode>
+         <detail>
+            <inventoryFault xmlns="http://manufacturing.org/xsd/inventory">
+               <tns:FaultCode xmlns:tns="http://manufacturing.org/xsd/inventory"/>
+               <tns:FaultMessage xmlns:tns="http://manufacturing.org/xsd/inventory">Inventory Fault thrown for PurchaseOrder ID 456 customer ID</tns:FaultMessage>
+            </inventoryFault>
+         </detail>
+      </env:Fault>
+   </env:Body>
+</env:Envelope>

@@ -1,0 +1,8 @@
+<env:Envelope xmlns:env="http://schemas.xmlsoap.org/soap/envelope/">
+   <env:Header/>
+   <env:Body>
+      <odens:fibonacciResponse xmlns:odens="http://www.jboss.org/bpel/examples">
+         <response>1: 1: 2: 3: 5</response>
+      </odens:fibonacciResponse>
+   </env:Body>
+</env:Envelope>

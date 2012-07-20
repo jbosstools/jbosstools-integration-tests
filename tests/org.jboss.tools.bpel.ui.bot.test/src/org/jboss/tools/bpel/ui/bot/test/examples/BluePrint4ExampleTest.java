@@ -9,13 +9,13 @@ import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
 /**
  * 
  * @author apodhrad
- *
+ * 
  */
 @Require(server = @Server(type = ServerType.ALL, state = ServerState.Running), perspective = "BPEL")
-public class HelloWorldOdeExampleTest extends BPELExampleTest {
-	
-	private static final String PROJECT_NAME = "Hello_World_Header_Ode";
-	private static final String WSDL_URL = "http://localhost:8080/Quickstart_bpel_hello_world_header_odeWS?wsdl";
+public class BluePrint4ExampleTest extends BPELExampleTest {
+
+	private static final String PROJECT_NAME = "BluePrint4";
+	private static final String WSDL_URL = "http://localhost:8080/BPEL_BluePrint4_PurchaseOrderService?wsdl";
 
 	@Override
 	public String[] getProjectNames() {
@@ -24,7 +24,7 @@ public class HelloWorldOdeExampleTest extends BPELExampleTest {
 
 	@Override
 	public String getExampleName() {
-		return "A Hello World Header ODE BPEL example";
+		return "A Message-Based Coordination of Events BPEL example";
 	}
 
 	@Override
@@ -36,4 +36,6 @@ public class HelloWorldOdeExampleTest extends BPELExampleTest {
 
 		servers.removeAllProjectsFromServer();
 	}
+
+
 }

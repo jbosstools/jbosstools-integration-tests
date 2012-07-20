@@ -1,0 +1,11 @@
+<env:Envelope xmlns:env="http://schemas.xmlsoap.org/soap/envelope/">
+   <env:Header/>
+   <env:Body>
+      <odens:helloResponse xmlns:odens="http://www.jboss.org/bpel/examples/wsdl">
+         <ID>
+            <id>1</id>
+         </ID>
+         <Message>Hi World</Message>
+      </odens:helloResponse>
+   </env:Body>
+</env:Envelope>

@@ -12,25 +12,25 @@ import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
  * 
  */
 @Require(server = @Server(type = ServerType.ALL, state = ServerState.Running), perspective = "BPEL")
-public class LoanApprovalExampleTest extends BPELExampleTest {
+public class SimpleInvokeExampleTest extends BPELExampleTest {
 
-	private static final String PROJECT_NAME = "Loan_Approval";
-	private static final String PROJECT_NAME_WS = "Loan_Approval_WS";
-	private static final String WSDL_URL = "http://localhost:8080/Quickstart_bpel_loan_approvalWS?wsdl";
+	private static final String PROJECT_NAME = "Simple_Invoke";
+	private static final String PROJECT_NAME_WS = "Simple_Invoke_WS";
+	private static final String WSDL_URL = "http://localhost:8080/Quickstart_bpel_simple_invokeWS?wsdl";
 
 	@Override
 	public String[] getProjectNames() {
-		return new String[] { PROJECT_NAME_WS, "JSR-109 Web Services" };
+		return new String[] { PROJECT_NAME_WS };
 	}
 
 	@Override
 	public String getExampleName() {
-		return "A Web Services Project called by Loan_Approval";
+		return "A Web Service project called by Simple Invoke BPEL example";
 	}
 
 	@Override
 	protected void postImport() {
-		new LoanApprovalExample().exampleTest();
+		new SimpleInvokeExample().exampleTest();
 	}
 
 	@Override
@@ -45,7 +45,7 @@ public class LoanApprovalExampleTest extends BPELExampleTest {
 		servers.removeAllProjectsFromServer();
 	}
 
-	private class LoanApprovalExample extends BPELExampleTest {
+	private class SimpleInvokeExample extends BPELExampleTest {
 
 		@Override
 		public String[] getProjectNames() {
@@ -54,7 +54,7 @@ public class LoanApprovalExampleTest extends BPELExampleTest {
 
 		@Override
 		public String getExampleName() {
-			return "A Loan Approval BPEL example";
+			return "A Simple Invoke BPEL example";
 		}
 	}
 

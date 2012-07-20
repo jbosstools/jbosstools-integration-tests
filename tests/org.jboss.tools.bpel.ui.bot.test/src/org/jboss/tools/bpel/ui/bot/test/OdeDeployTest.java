@@ -100,7 +100,7 @@ public class OdeDeployTest extends BPELTest {
 	@Test
 	public void requestResponseTest() throws Exception {
 		// Test the process
-		String response = SendSoapMessage.sendMessage(ENDPOINT, MESSAGE, "simple");
+		String response = SendSoapMessage.sendMessage(ENDPOINT, MESSAGE);
 
 		XMLUnit.setIgnoreWhitespace(true);
 		Diff diff = new Diff(response, EXPECTED_RESPONSE);

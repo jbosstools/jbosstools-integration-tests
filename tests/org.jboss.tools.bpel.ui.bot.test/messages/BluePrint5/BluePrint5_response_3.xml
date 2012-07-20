@@ -1,0 +1,10 @@
+<env:Envelope xmlns:env="http://schemas.xmlsoap.org/soap/envelope/">
+   <env:Header/>
+   <env:Body>
+      <reservationStatusOfAll xmlns="http://ReservationSystem.org/xsd/reserve">
+         <tns:airlineStatus xmlns:tns="http://ReservationSystem.org/xsd/reserve">false</tns:airlineStatus>
+         <tns:hotelStatus xmlns:tns="http://ReservationSystem.org/xsd/reserve">true</tns:hotelStatus>
+         <tns:carStatus xmlns:tns="http://ReservationSystem.org/xsd/reserve">false</tns:carStatus>
+      </reservationStatusOfAll>
+   </env:Body>
+</env:Envelope>

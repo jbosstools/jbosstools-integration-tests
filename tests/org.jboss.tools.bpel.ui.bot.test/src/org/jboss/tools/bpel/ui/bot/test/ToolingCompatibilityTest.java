@@ -73,7 +73,7 @@ public class ToolingCompatibilityTest extends BPELTest{
 	public void requestResponseTest() throws Exception {
 		
 		// Test the process
-		String response = SendSoapMessage.sendMessage(ENDPOINT, MESSAGE, "simple");
+		String response = SendSoapMessage.sendMessage(ENDPOINT, MESSAGE);
 
 		Assert.assertTrue(response != null);
 		
@@ -150,7 +150,7 @@ public class ToolingCompatibilityTest extends BPELTest{
 	public void requestResponseEditedTest() throws Exception {
 		
 		// Test the process
-		String response = SendSoapMessage.sendMessage(ENDPOINT, MESSAGE, "simple");
+		String response = SendSoapMessage.sendMessage(ENDPOINT, MESSAGE);
 
 		Assert.assertTrue(response != null);
 		

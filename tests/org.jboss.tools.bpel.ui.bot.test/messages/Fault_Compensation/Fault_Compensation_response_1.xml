@@ -1,0 +1,8 @@
+<env:Envelope xmlns:env="http://schemas.xmlsoap.org/soap/envelope/">
+   <env:Header/>
+   <env:Body>
+      <odens:processRequestResponse xmlns:odens="http://www.jboss.org/bpel/examples">
+         <result>Inner scope value</result>
+      </odens:processRequestResponse>
+   </env:Body>
+</env:Envelope>

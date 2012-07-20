@@ -1,0 +1,9 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:res="http://ReservationSystem.org/xsd/reserve">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <res:reserve>
+         <res:reservationID>2001</res:reservationID>
+         <res:description>book_hotel</res:description>
+      </res:reserve>
+   </soapenv:Body>
+</soapenv:Envelope>

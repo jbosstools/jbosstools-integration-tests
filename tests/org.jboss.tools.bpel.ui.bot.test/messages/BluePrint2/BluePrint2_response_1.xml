@@ -1,0 +1,11 @@
+<env:Envelope xmlns:env="http://schemas.xmlsoap.org/soap/envelope/">
+   <env:Header/>
+   <env:Body>
+      <pur:purchaseOrder xmlns:pur="http://manufacturing.org/xsd/purchase">
+         <pur:orderId>2002</pur:orderId>
+         <pur:customerId>100656</pur:customerId>
+         <pur:orderDescription>OrderValid: Purchase an item that is in stock</pur:orderDescription>
+         <pur:price>49.98</pur:price>
+      </pur:purchaseOrder>
+   </env:Body>
+</env:Envelope>

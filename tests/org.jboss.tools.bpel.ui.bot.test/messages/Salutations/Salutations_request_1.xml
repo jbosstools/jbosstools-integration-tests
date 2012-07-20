@@ -1,0 +1,10 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:exam="http://www.jboss.org/bpel/examples">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <exam:SalutationsRequest>
+         <exam:name>Test</exam:name>
+         <exam:hours>4</exam:hours>
+         <exam:minutes>0</exam:minutes>
+      </exam:SalutationsRequest>
+   </soapenv:Body>
+</soapenv:Envelope>

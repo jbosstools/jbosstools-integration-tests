@@ -1,0 +1,14 @@
+<env:Envelope xmlns:env="http://schemas.xmlsoap.org/soap/envelope/">
+   <env:Header/>
+   <env:Body>
+      <env:Fault>
+         <faultcode xmlns:valueNS="http://manufacturing.org/wsdl/purchase/bp3">valueNS:cannotCompleteOrder</faultcode>
+         <detail>
+            <purchaseOrderFault xmlns="http://manufacturing.org/xsd/purchase">
+               <tns:FaultCode xmlns:tns="http://manufacturing.org/xsd/purchase">404</tns:FaultCode>
+               <tns:FaultMessage xmlns:tns="http://manufacturing.org/xsd/purchase">currently out of stock</tns:FaultMessage>
+            </purchaseOrderFault>
+         </detail>
+      </env:Fault>
+   </env:Body>
+</env:Envelope>
