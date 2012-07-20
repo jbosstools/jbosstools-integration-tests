@@ -10,6 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.vpe.ui.bot.test.smoke;
 
+import java.awt.event.KeyEvent;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -18,6 +19,7 @@ import org.jboss.tools.ui.bot.ext.SWTJBTExt;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.helper.ContentAssistHelper;
+import org.jboss.tools.ui.bot.ext.helper.KeyboardHelper;
 import org.jboss.tools.ui.bot.ext.parts.ContentAssistBot;
 import org.jboss.tools.ui.bot.ext.parts.SWTBotEditorExt;
 import org.jboss.tools.vpe.ui.bot.test.editor.VPEEditorTestCase;
@@ -73,6 +75,9 @@ public class CodeCompletionTest extends VPEEditorTestCase{
     // Check content assist insertion    
     String contentAssistToUse = "h:commandButton"; 
     contentAssist.checkContentAssist(contentAssistToUse, true);
+    // close Content Assist window which is automatically opened after previous
+    // Content Assist choice were applied
+    KeyboardHelper.pressKeyCode(editor.bot().getDisplay(), KeyEvent.VK_ESCAPE);
     editor.save();
     String expectedInsertedText = textForSelection + "<" + contentAssistToUse + " action=\"\" value=\"\" />";
     if (!editor.getText().contains(expectedInsertedText)){
