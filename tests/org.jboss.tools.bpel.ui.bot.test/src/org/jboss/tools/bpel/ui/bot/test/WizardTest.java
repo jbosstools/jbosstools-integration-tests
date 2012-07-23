@@ -25,89 +25,89 @@ import org.junit.Test;
 public class WizardTest extends BPELTest {
 
 	
-//	@Test
-//	public void createNewSyncProcess() throws Exception {
-//		IProject project = createNewProject("SyncProcessProject");
-//		IFile process =    createNewProcess("SyncProcessProject", "SyncProcess", BPELConstants.SYNC_PROCESS_LABEL, false);
-//		
-//		process.getFileExtension();
-//		String processContent = loadFile(process);
-//		
-//		Assert.assertTrue(processContent != null);
-//		Assert.assertTrue(processContent.contains("http://docs.oasis-open.org/wsbpel/2.0/process/executable"));
-//		Assert.assertTrue(processContent.contains("<bpel:import location=\"SyncProcessArtifacts.wsdl\""));
-//		Assert.assertTrue(processContent.contains("<bpel:receive name=\"receiveInput\""));
-//		Assert.assertTrue(processContent.contains("<bpel:reply name=\"replyOutput\""));
-//		Assert.assertTrue(isRuntimeSet("SyncProcessProject"));
-//	}
-//	
-//	@Test
-//	public void createNewAsyncProcess() throws Exception {
-//		IProject project = createNewProject("AsyncProcessProject");
-//		IFile process =    createNewProcess("AsyncProcessProject", "AsyncProcess", BPELConstants.ASYNC_PROCESS_LABEL, false);
-//		
-//		process.getFileExtension();
-//		String processContent = loadFile(process);
-//		
-//		Assert.assertTrue(processContent != null);
-//		Assert.assertTrue(processContent.contains("http://docs.oasis-open.org/wsbpel/2.0/process/executable"));
-//		Assert.assertTrue(processContent.contains("<bpel:import location=\"AsyncProcessArtifacts.wsdl\""));
-//		Assert.assertTrue(processContent.contains("<bpel:receive name=\"receiveInput\""));
-//		Assert.assertTrue(processContent.contains("<bpel:invoke name=\"callbackClient\""));
-//		Assert.assertTrue(isRuntimeSet("AsyncProcessProject"));
-//	}
-//	
-//	@Test
-//	public void createNewEmptyProcess() throws Exception {
-//		IProject project = createNewProject("EmptyProcessProject");
-//		IFile process =    createNewProcess("EmptyProcessProject", "EmptyProcess", BPELConstants.EMPTY_PROCESS_LABEL, false);
-//		
-//		process.getFileExtension();
-//		String processContent = loadFile(process);
-//		
-//		Assert.assertTrue(processContent != null);
-//		Assert.assertTrue(processContent.contains("http://docs.oasis-open.org/wsbpel/2.0/process/executable"));
-//		Assert.assertTrue(processContent.contains("<bpel:import location=\"EmptyProcessArtifacts.wsdl\""));
-//		Assert.assertTrue(processContent.contains("<bpel:sequence name=\"main\">"));
-//		Assert.assertTrue(processContent.contains("<bpel:empty name=\"Empty\"></bpel:empty>"));
-//		
-//		Assert.assertFalse(processContent.contains("<bpel:receive name=\"receiveInput\""));
-//		
-//		Assert.assertTrue(isRuntimeSet("EmptyProcessProject"));
-//	}
-//
-//	@Test
-//	public void createNewAbstractSyncProcess() throws Exception {
-//		IProject project = createNewProject("AbstractProcessProject");
-//		IFile process =    createNewProcess("AbstractProcessProject", "AbstractProcess", BPELConstants.SYNC_PROCESS_LABEL, true);
-//		
-//		process.getFileExtension();
-//		String processContent = loadFile(process);
-//		
-//		Assert.assertTrue(processContent != null);
-//		Assert.assertTrue(processContent.contains("http://docs.oasis-open.org/wsbpel/2.0/process/abstract"));
-//		Assert.assertTrue(processContent.contains("<bpel:import location=\"AbstractProcessArtifacts.wsdl\""));
-//		Assert.assertTrue(processContent.contains("<bpel:receive name=\"receiveInput\""));
-//		Assert.assertTrue(processContent.contains("<bpel:reply name=\"replyOutput\""));
-//		Assert.assertTrue(isRuntimeSet("AbstractProcessProject"));
-//	}
-//	
-//	
-//	/**
-//	 * @author psrna
-//	 * @throws Exception
-//	 */
-//	@Test
-//	public void createNewDeployDescriptor() throws Exception {
-//		
-//		IProject project = createNewProject("ODEProject");
-//		IFile deploy = createNewDeployDescriptor("ODEProject");
-//	
-//		String deployContent = loadFile(deploy);
-//		Assert.assertTrue(deployContent != null);
-//		
-//	}
-//	
+	@Test
+	public void createNewSyncProcess() throws Exception {
+		IProject project = createNewProject("SyncProcessProject");
+		IFile process =    createNewProcess("SyncProcessProject", "SyncProcess", BPELConstants.SYNC_PROCESS_LABEL, false);
+		
+		process.getFileExtension();
+		String processContent = loadFile(process);
+		
+		Assert.assertTrue(processContent != null);
+		Assert.assertTrue(processContent.contains("http://docs.oasis-open.org/wsbpel/2.0/process/executable"));
+		Assert.assertTrue(processContent.contains("<bpel:import location=\"SyncProcessArtifacts.wsdl\""));
+		Assert.assertTrue(processContent.contains("<bpel:receive name=\"receiveInput\""));
+		Assert.assertTrue(processContent.contains("<bpel:reply name=\"replyOutput\""));
+		Assert.assertTrue(isRuntimeSet("SyncProcessProject"));
+	}
+	
+	@Test
+	public void createNewAsyncProcess() throws Exception {
+		IProject project = createNewProject("AsyncProcessProject");
+		IFile process =    createNewProcess("AsyncProcessProject", "AsyncProcess", BPELConstants.ASYNC_PROCESS_LABEL, false);
+		
+		process.getFileExtension();
+		String processContent = loadFile(process);
+		
+		Assert.assertTrue(processContent != null);
+		Assert.assertTrue(processContent.contains("http://docs.oasis-open.org/wsbpel/2.0/process/executable"));
+		Assert.assertTrue(processContent.contains("<bpel:import location=\"AsyncProcessArtifacts.wsdl\""));
+		Assert.assertTrue(processContent.contains("<bpel:receive name=\"receiveInput\""));
+		Assert.assertTrue(processContent.contains("<bpel:invoke name=\"callbackClient\""));
+		Assert.assertTrue(isRuntimeSet("AsyncProcessProject"));
+	}
+	
+	@Test
+	public void createNewEmptyProcess() throws Exception {
+		IProject project = createNewProject("EmptyProcessProject");
+		IFile process =    createNewProcess("EmptyProcessProject", "EmptyProcess", BPELConstants.EMPTY_PROCESS_LABEL, false);
+		
+		process.getFileExtension();
+		String processContent = loadFile(process);
+		
+		Assert.assertTrue(processContent != null);
+		Assert.assertTrue(processContent.contains("http://docs.oasis-open.org/wsbpel/2.0/process/executable"));
+		Assert.assertTrue(processContent.contains("<bpel:import location=\"EmptyProcessArtifacts.wsdl\""));
+		Assert.assertTrue(processContent.contains("<bpel:sequence name=\"main\">"));
+		Assert.assertTrue(processContent.contains("<bpel:empty name=\"Empty\"></bpel:empty>"));
+		
+		Assert.assertFalse(processContent.contains("<bpel:receive name=\"receiveInput\""));
+		
+		Assert.assertTrue(isRuntimeSet("EmptyProcessProject"));
+	}
+
+	@Test
+	public void createNewAbstractSyncProcess() throws Exception {
+		IProject project = createNewProject("AbstractProcessProject");
+		IFile process =    createNewProcess("AbstractProcessProject", "AbstractProcess", BPELConstants.SYNC_PROCESS_LABEL, true);
+		
+		process.getFileExtension();
+		String processContent = loadFile(process);
+		
+		Assert.assertTrue(processContent != null);
+		Assert.assertTrue(processContent.contains("http://docs.oasis-open.org/wsbpel/2.0/process/abstract"));
+		Assert.assertTrue(processContent.contains("<bpel:import location=\"AbstractProcessArtifacts.wsdl\""));
+		Assert.assertTrue(processContent.contains("<bpel:receive name=\"receiveInput\""));
+		Assert.assertTrue(processContent.contains("<bpel:reply name=\"replyOutput\""));
+		Assert.assertTrue(isRuntimeSet("AbstractProcessProject"));
+	}
+	
+	
+	/**
+	 * @author psrna
+	 * @throws Exception
+	 */
+	@Test
+	public void createNewDeployDescriptor() throws Exception {
+		
+		IProject project = createNewProject("ODEProject");
+		IFile deploy = createNewDeployDescriptor("ODEProject");
+	
+		String deployContent = loadFile(deploy);
+		Assert.assertTrue(deployContent != null);
+		
+	}
+	
 	/**
 	 * @author apodhrad
 	 * 
