@@ -15,6 +15,8 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
+import org.jboss.tools.ui.bot.ext.types.IDELabel;
+import org.jboss.tools.ui.bot.ext.view.PaletteView;
 import org.jboss.tools.vpe.ui.bot.test.VPEAutoTestCase;
 
 public class ImportTagsFromTLDFileTest extends VPEAutoTestCase{
@@ -25,7 +27,9 @@ public class ImportTagsFromTLDFileTest extends VPEAutoTestCase{
 
 		//Test clear group
 	  bot.viewByTitle("JBoss Tools Palette").setFocus(); //$NON-NLS-1$
-		bot.toolbarButtonWithTooltip("Palette Editor").click(); //$NON-NLS-1$
+	  PaletteView paletteView = new PaletteView();
+	  paletteView.getToolbarButtonWitTooltip(IDELabel.JBossToolsPalette.PALETTE_EDITOR_TOOL_ITEM)
+      .click();
 		bot.shell("Palette Editor").activate(); //$NON-NLS-1$
 		try {
 			bot.getDisplay().syncExec(new Runnable() {
@@ -69,7 +73,8 @@ public class ImportTagsFromTLDFileTest extends VPEAutoTestCase{
 
 		//Test open import dialog
 
-		bot.toolbarButtonWithTooltip("Import").click(); //$NON-NLS-1$
+    paletteView.getToolbarButtonWitTooltip(IDELabel.JBossToolsPalette.IMPORT_TOOL_ITEM)
+      .click();
 		bot.shell("Import Tags from TLD File").activate(); //$NON-NLS-1$
 		
 		//Test set tag lib
@@ -90,7 +95,8 @@ public class ImportTagsFromTLDFileTest extends VPEAutoTestCase{
 
 		//Test if group is created
 		
-		bot.toolbarButtonWithTooltip("Palette Editor").click(); //$NON-NLS-1$
+		paletteView.getToolbarButtonWitTooltip(IDELabel.JBossToolsPalette.PALETTE_EDITOR_TOOL_ITEM)
+      .click();
 		bot.shell("Palette Editor").activate(); //$NON-NLS-1$
 		try {
 			bot.getDisplay().syncExec(new Runnable() {

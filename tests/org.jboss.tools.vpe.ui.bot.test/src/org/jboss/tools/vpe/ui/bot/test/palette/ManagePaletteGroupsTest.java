@@ -15,6 +15,7 @@ import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
+import org.jboss.tools.ui.bot.ext.view.PaletteView;
 import org.jboss.tools.vpe.ui.bot.test.VPEAutoTestCase;
 import org.jboss.tools.vpe.ui.bot.test.tools.SWTBotWebBrowser;
 /**
@@ -46,7 +47,9 @@ public class ManagePaletteGroupsTest extends VPEAutoTestCase {
 	 * Hide or Show Pallete Group dependent on current Palette Group visibility
 	 */
 	private void hideShowPaletteGroup(){
-    bot.toolbarButtonWithTooltip(IDELabel.JBossToolsPalette.SHOW_HIDE_TOOL_ITEM).click();
+	   new PaletteView()
+       .getToolbarButtonWitTooltip(IDELabel.JBossToolsPalette.SHOW_HIDE_TOOL_ITEM)
+       .click();
     SWTBot dialogBot = bot.shell(IDELabel.Shell.SHOW_HIDE_DRAWERS).activate().bot();
     SWTBotTreeItem tiTestPaletteGroup = dialogBot.tree().getTreeItem(ManagePaletteGroupsTest.TEST_PALETTE_TREE_GROUP_LABEL);
     if (tiTestPaletteGroup.isChecked()){

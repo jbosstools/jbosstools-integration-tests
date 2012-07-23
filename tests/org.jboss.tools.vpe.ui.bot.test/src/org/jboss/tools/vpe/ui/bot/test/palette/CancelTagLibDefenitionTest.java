@@ -13,6 +13,7 @@ package org.jboss.tools.vpe.ui.bot.test.palette;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.jboss.tools.ui.bot.ext.view.PaletteView;
 import org.jboss.tools.vpe.ui.bot.test.VPEAutoTestCase;
 
 public class CancelTagLibDefenitionTest extends VPEAutoTestCase{
@@ -22,7 +23,9 @@ public class CancelTagLibDefenitionTest extends VPEAutoTestCase{
 	  openPage();		
 		//Test open import dialog
 		bot.viewByTitle("JBoss Tools Palette").setFocus(); //$NON-NLS-1$
-		bot.toolbarButtonWithTooltip("Import").click(); //$NON-NLS-1$
+		new PaletteView()
+		  .getToolbarButtonWitTooltip("Import")
+		  .click();
 		bot.shell("Import Tags from TLD File").activate(); //$NON-NLS-1$
 		
 		//Test open edit TLD dialog

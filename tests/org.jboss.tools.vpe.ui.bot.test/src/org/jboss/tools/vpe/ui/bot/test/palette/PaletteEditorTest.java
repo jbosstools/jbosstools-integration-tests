@@ -19,6 +19,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
 import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
+import org.jboss.tools.ui.bot.ext.view.PaletteView;
 import org.jboss.tools.vpe.ui.bot.test.VPEAutoTestCase;
 import org.jboss.tools.vpe.ui.bot.test.tools.SWTBotWebBrowser;
 /**
@@ -38,7 +39,9 @@ public class PaletteEditorTest extends VPEAutoTestCase {
 	  openPage();
     openPalette();	
     // add First Palette Group
-    bot.toolbarButtonWithTooltip(IDELabel.JBossToolsPalette.PALETTE_EDITOR_TOOL_ITEM).click();
+    PaletteView paletteView = new PaletteView();
+    paletteView.getToolbarButtonWitTooltip(IDELabel.JBossToolsPalette.PALETTE_EDITOR_TOOL_ITEM)
+      .click();
     SWTBot palettEditorBot = bot.shell(IDELabel.Shell.PALETTE_EDITOR).activate().bot();
     SWTBotTree tree = palettEditorBot.tree();
     SWTBotTreeItem tiPalette = tree.expandNode(IDELabel.PaletteEditor.XSTUDIO_NODE)
@@ -102,7 +105,8 @@ public class PaletteEditorTest extends VPEAutoTestCase {
     jspTextEditor.setText(originalText);
     jspTextEditor.save();
     // Delete New Group From Palette
-    bot.toolbarButtonWithTooltip(IDELabel.JBossToolsPalette.PALETTE_EDITOR_TOOL_ITEM).click();
+    paletteView.getToolbarButtonWitTooltip(IDELabel.JBossToolsPalette.PALETTE_EDITOR_TOOL_ITEM)
+      .click();
     palettEditorBot = bot.shell(IDELabel.Shell.PALETTE_EDITOR).activate().bot();
     tree = palettEditorBot.tree();
     tiFirstGroup = tree.expandNode(IDELabel.PaletteEditor.XSTUDIO_NODE)
