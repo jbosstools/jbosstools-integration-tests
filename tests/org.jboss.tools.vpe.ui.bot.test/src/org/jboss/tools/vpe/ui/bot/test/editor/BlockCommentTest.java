@@ -28,52 +28,32 @@ public class BlockCommentTest extends VPEEditorTestCase{
 	
 		//Test add block comment from Source menu
 		
-		getEditor().navigateTo(22,22);
+		getEditor().selectLine(22);
 		bot.menu("Source").menu("Add Block Comment").click();  //$NON-NLS-1$//$NON-NLS-2$
+		getEditor().save();
 		checkVPE("BlockCommentTestToggle.xml"); //$NON-NLS-1$
 		
 		//Test remove block comment from Source menu
 		
-		getEditor().navigateTo(22,22);
+		getEditor().selectLine(22);
 		bot.menu("Source").menu("Remove Block Comment").click();  //$NON-NLS-1$//$NON-NLS-2$
+		getEditor().save();
 		checkVPE("CommentTestUntoggle.xml"); //$NON-NLS-1$
 	
 		
 		//Test add block comment with CTRL+SHIFT+/ hot keys
 		
-		getEditor().navigateTo(22,22);
+		getEditor().selectLine(22);
 		pressBlockCommentHotKeys();
+		getEditor().save();
 		checkVPE("BlockCommentTestToggle.xml"); //$NON-NLS-1$
 		
 		//Test remove block comment with CTRL+SHIFT+\ hot keys
 
-		getEditor().navigateTo(22,22);
+		getEditor().selectLine(22);
 		pressUnBlockCommentHotKeys();
+		getEditor().save();
 		checkVPE("CommentTestUntoggle.xml"); //$NON-NLS-1$
-		
-		//Test add block comment lines from Source menu
-		
-		getEditor().navigateTo(18,22);
-		bot.menu("Source").menu("Add Block Comment").click();  //$NON-NLS-1$//$NON-NLS-2$
-		checkVPE("BlockCommentTestLinesToggle.xml"); //$NON-NLS-1$
-
-		//Test remove block comment lines from Source menu
-		
-		getEditor().navigateTo(18,22);
-		bot.menu("Source").menu("Remove Block Comment").click();  //$NON-NLS-1$//$NON-NLS-2$
-		checkVPE("BlockCommentTestUntoggle.xml"); //$NON-NLS-1$
-		
-		//Test add block comment lines with CTRL+SHIFT+/ hot keys
-		
-		getEditor().navigateTo(18,22);
-		bot.menu("Source").menu("Add Block Comment").click(); //$NON-NLS-1$ //$NON-NLS-2$
-		checkVPE("BlockCommentTestLinesToggle.xml"); //$NON-NLS-1$
-
-		//Test remove block comment lines with CTRL+SHIFT+/ hot keys
-		
-		getEditor().navigateTo(18,22);
-		bot.menu("Source").menu("Remove Block Comment").click(); //$NON-NLS-1$ //$NON-NLS-2$
-		checkVPE("BlockCommentTestUntoggle.xml"); //$NON-NLS-1$
 		
 	}
 	

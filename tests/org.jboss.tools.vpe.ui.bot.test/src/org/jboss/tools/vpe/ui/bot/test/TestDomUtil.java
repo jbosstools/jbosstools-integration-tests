@@ -130,33 +130,20 @@ public class TestDomUtil {
 	 */
 	public static void compareNodes(nsIDOMNode vpeNode, Node modelNode)
 			throws ComparisonException {
-
-		if (!modelNode.getNodeName().equalsIgnoreCase(vpeNode.getNodeName())) {
-			throw new ComparisonException("name of tag is \"" //$NON-NLS-1$
-					+ vpeNode.getNodeName() + "\"but must be \"" //$NON-NLS-1$
-					+ modelNode.getNodeName() + "\""); //$NON-NLS-1$
-		}
 		
 		if ("#comment".equals(vpeNode.getNodeName())){ //$NON-NLS-1$
-			String vpeNodeValue = vpeNode.getNodeValue().trim();
-			try {
-				vpeNodeValue = clearStringFromSpecSymbol("\t",clearStringFromSpecSymbol("\r",vpeNodeValue));
-			} catch (Exception e) {
-			}
-			if (modelNode.getNodeValue() != null){
-			  String modelNodeValue = modelNode.getNodeValue().trim();
-	      try {
-	        modelNodeValue = clearStringFromSpecSymbol("\t",clearStringFromSpecSymbol("\r" , modelNodeValue));
-	      } catch (Exception e) {
-	      }
-        if (!modelNodeValue.equalsIgnoreCase(vpeNodeValue)) {
-          throw new ComparisonException("value of " + vpeNode.getNodeName() //$NON-NLS-1$
-            + " is\n\"" + vpeNodeValue //$NON-NLS-1$
-            + "\" but must be\n\"" + modelNodeValue //$NON-NLS-1$
-            + "\""); //$NON-NLS-1$
-			  }
-			}
-		} else {
+      if (!"COMMENTPLACEHOLDER".equalsIgnoreCase(modelNode.getNodeName())){
+        throw new ComparisonException("name of tag is \"" //$NON-NLS-1$
+            + vpeNode.getNodeName() + "\"but must be \"" //$NON-NLS-1$
+            + modelNode.getNodeName() + "\""); //$NON-NLS-1$        
+      }
+    }
+		else {
+		  if (!modelNode.getNodeName().equalsIgnoreCase(vpeNode.getNodeName())) {
+	      throw new ComparisonException("name of tag is \"" //$NON-NLS-1$
+	          + vpeNode.getNodeName() + "\"but must be \"" //$NON-NLS-1$
+	          + modelNode.getNodeName() + "\""); //$NON-NLS-1$
+	    }
 			if ((modelNode.getNodeValue() != null)
 					&& (!modelNode.getNodeValue().trim().equalsIgnoreCase(
 							vpeNode.getNodeValue().trim()))) {
@@ -165,63 +152,61 @@ public class TestDomUtil {
 						+ "\" but must be \"" + modelNode.getNodeValue().trim() //$NON-NLS-1$
 						+ "\""); //$NON-NLS-1$
 			}
+	    // compare node's attributes
+	    if (modelNode.getNodeType() == Node.ELEMENT_NODE) {
+	      boolean attrVpetemporarydndelementFound = false;
+	      if (modelNode.getNodeName().equalsIgnoreCase("IMG")){
+	        NamedNodeMap attrMap = modelNode.getAttributes();
+	        for (int index = 0 ; (!attrVpetemporarydndelementFound) && (index < attrMap.getLength()) ; index++){
+	          if (((Attr)attrMap.item(index)).getName().equalsIgnoreCase("vpetemporarydndelement")){
+	            attrVpetemporarydndelementFound = true;
+	          }
+	        }
+	      }
+	      if (!attrVpetemporarydndelementFound){
+	        compareAttributes(modelNode.getAttributes(), vpeNode.getAttributes());
+	      }
+	    }
+	    // compare children
+	    nsIDOMNodeList vpeChildren = vpeNode.getChildNodes();
+	    NodeList schemeChildren = modelNode.getChildNodes();
+	    int realCount = 0;
+	    for (int i = 0; i < schemeChildren.getLength(); i++) {
+
+	      Node schemeChild = schemeChildren.item(i);
+
+	      // leave out empty text nodes in test dom model
+	      if ((schemeChild.getNodeType() == Node.TEXT_NODE)
+	          && ((schemeChild.getNodeValue() == null) || (schemeChild
+	              .getNodeValue().trim().length() == 0)))
+	        continue;
+
+	      nsIDOMNode vpeChild = vpeChildren.item(realCount++);
+
+	      if (null == vpeChild) {
+	        throw new ComparisonException(
+	            "Child of node \"" //$NON-NLS-1$
+	                + vpeNode.getNodeName()
+	                + "\" is \"null\", but should be \"" + schemeChild.getNodeName() + "\""); //$NON-NLS-1$ //$NON-NLS-2$
+	      }
+
+	      // leave out empty text nodes in vpe dom model
+	      while (((vpeChild.getNodeType() == Node.TEXT_NODE) && ((vpeChild
+	          .getNodeValue() == null) || (vpeChild.getNodeValue().trim().length() == 0)))) {
+	        vpeChild = vpeChildren.item(realCount++);
+	        if (null == vpeChild) {
+	          throw new ComparisonException(
+	              "Child of node \"" //$NON-NLS-1$
+	                  + vpeNode.getNodeName()
+	                  + "\" is \"null\", but should be \"" + schemeChild.getNodeName() + "\""); //$NON-NLS-1$ //$NON-NLS-2$
+	        }
+	      }
+
+	      compareNodes(vpeChild, schemeChild);
+
+	    }
 		}
-		// compare node's attributes
-		if (modelNode.getNodeType() == Node.ELEMENT_NODE) {
-		  boolean attrVpetemporarydndelementFound = false;
-		  if (modelNode.getNodeName().equalsIgnoreCase("IMG")){
-        NamedNodeMap attrMap = modelNode.getAttributes();
-        for (int index = 0 ; (!attrVpetemporarydndelementFound) && (index < attrMap.getLength()) ; index++){
-          if (((Attr)attrMap.item(index)).getName().equalsIgnoreCase("vpetemporarydndelement")){
-            attrVpetemporarydndelementFound = true;
-          }
-        }
-      }
-      if (!attrVpetemporarydndelementFound){
-        compareAttributes(modelNode.getAttributes(), vpeNode.getAttributes());
-      }
-		}
-
-		// compare children
-		nsIDOMNodeList vpeChildren = vpeNode.getChildNodes();
-		NodeList schemeChildren = modelNode.getChildNodes();
-		int realCount = 0;
-		for (int i = 0; i < schemeChildren.getLength(); i++) {
-
-			Node schemeChild = schemeChildren.item(i);
-
-			// leave out empty text nodes in test dom model
-			if ((schemeChild.getNodeType() == Node.TEXT_NODE)
-					&& ((schemeChild.getNodeValue() == null) || (schemeChild
-							.getNodeValue().trim().length() == 0)))
-				continue;
-
-			nsIDOMNode vpeChild = vpeChildren.item(realCount++);
-
-			if (null == vpeChild) {
-				throw new ComparisonException(
-						"Child of node \"" //$NON-NLS-1$
-								+ vpeNode.getNodeName()
-								+ "\" is \"null\", but should be \"" + schemeChild.getNodeName() + "\""); //$NON-NLS-1$ //$NON-NLS-2$
-			}
-
-			// leave out empty text nodes in vpe dom model
-			while (((vpeChild.getNodeType() == Node.TEXT_NODE) && ((vpeChild
-					.getNodeValue() == null) || (vpeChild.getNodeValue().trim()
-					.length() == 0)))) {
-				vpeChild = vpeChildren.item(realCount++);
-				if (null == vpeChild) {
-					throw new ComparisonException(
-							"Child of node \"" //$NON-NLS-1$
-									+ vpeNode.getNodeName()
-									+ "\" is \"null\", but should be \"" + schemeChild.getNodeName() + "\""); //$NON-NLS-1$ //$NON-NLS-2$
-				}
-			}
-
-			compareNodes(vpeChild, schemeChild);
-
-		}
-
+	
 	}
 
 	/**
@@ -315,21 +300,5 @@ public class TestDomUtil {
 		}
 
 	}
-	/**
-	 * Clear string from special symbol
-	 * @param symbol
-	 * @param string
-	 * @return
-	 */
-	private static String clearStringFromSpecSymbol(String symbol,String string){
-		int index = string.indexOf(symbol); //$NON-NLS-1$
-		while (index!=-1) {
-			String stringAfterSymbol = string.substring(index+1);
-			String stringBeforeSymbol = string.substring(0,index);
-			string = stringBeforeSymbol.concat(stringAfterSymbol);
-			index = string.indexOf(symbol); //$NON-NLS-1$
-		}
-		return string;
-	}
-	
+
 }
