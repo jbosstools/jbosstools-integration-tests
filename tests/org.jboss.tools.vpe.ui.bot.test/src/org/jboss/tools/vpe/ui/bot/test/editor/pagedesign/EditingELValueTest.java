@@ -69,6 +69,7 @@ public class EditingELValueTest extends PageDesignTestCase {
         "Template file is not found: \"templates/common.xhtml\"", 
         EditingELValueTest.INPUT_NAME_PAGE_NAME);
     // Opens Page Design Options Dialog
+    util.waitForToolbarButtonWithTooltipIsFound(PAGE_DESIGN, Timing.time10S());
     bot.toolbarButtonWithTooltip(PAGE_DESIGN).click();
     SWTBot optionsDialogBot = bot.shell(IDELabel.Shell.PAGE_DESIGN_OPTIONS).activate().bot();
     optionsDialogBot.tabItem(IDELabel.PageDesignOptionsDialog.SUBSTITUTED_EL_EXPRESSIONS_TAB).activate();

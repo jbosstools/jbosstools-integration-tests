@@ -14,6 +14,7 @@ package org.jboss.tools.vpe.ui.bot.test.editor;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
 import org.jboss.tools.ui.bot.ext.SWTJBTExt;
+import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.vpe.ui.bot.test.tools.SWTBotWebBrowser;
 import org.mozilla.interfaces.nsIDOMNode;
 /**
@@ -70,6 +71,8 @@ public class MultiSelectionTest extends VPEEditorTestCase {
         0,
         0,
         0);
+
+    util.waitForNonIgnoredJobs(true,Timing.time3S());
     
     assertSelectedNodeHasText(webBrowser, MultiSelectionTest.OUTPUT_TEXT_1_TEXT);
     
@@ -79,6 +82,8 @@ public class MultiSelectionTest extends VPEEditorTestCase {
         0,
         0,
         0);
+
+    util.waitForNonIgnoredJobs(true,Timing.time3S());
     
     assertSelectedNodeHasText(webBrowser, MultiSelectionTest.OUTPUT_TEXT_0_TEXT);
     
@@ -89,9 +94,13 @@ public class MultiSelectionTest extends VPEEditorTestCase {
     jspEditor.selectRange(yPos, xPos, 
         tagsLine.indexOf(MultiSelectionTest.OUTPUT_TEXT_1_TEXT) - tagsLine.indexOf(MultiSelectionTest.OUTPUT_TEXT_0_TEXT));
     
+    util.waitForNonIgnoredJobs(true,Timing.time3S());
+        
     assertSelectedNodeHasText(webBrowser, MultiSelectionTest.OUTPUT_TEXT_0_TEXT);
     
     jspEditor.selectCurrentLine();
+    
+    util.waitForNonIgnoredJobs(true,Timing.time3S());
     
     assertTrue("Multiple selection doesn't contain proper nodes.",
         webBrowser.selectionContainsNodes(false, MultiSelectionTest.OUTPUT_TEXT_0_TEXT

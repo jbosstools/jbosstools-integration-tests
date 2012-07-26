@@ -86,6 +86,7 @@ public class IncludedCssFilesJSPTest extends PageDesignTestCase {
     bot.sleep(Timing.time3S());
     util.waitForJobs(JobName.BUILDING_WS);
     // add CSS File Reference
+    util.waitForToolbarButtonWithTooltipIsFound(PAGE_DESIGN, Timing.time10S());
     bot.toolbarButtonWithTooltip(PAGE_DESIGN).click();
     optionsDialogBot = bot.shell(IDELabel.Shell.PAGE_DESIGN_OPTIONS).activate().bot();
     optionsDialogBot.tabItem(IDELabel.PageDesignOptionsDialog.INCLUDED_CSS_FILES_TAB).activate();

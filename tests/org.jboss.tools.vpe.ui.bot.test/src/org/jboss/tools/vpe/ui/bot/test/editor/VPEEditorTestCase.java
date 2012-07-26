@@ -68,7 +68,9 @@ public abstract class VPEEditorTestCase extends VPEAutoTestCase{
 		SWTBot innerBot = bot.viewByTitle(WidgetVariables.PACKAGE_EXPLORER).bot();
 		SWTBotTree tree = innerBot.tree();
 		tree.expandNode(JBT_TEST_PROJECT_NAME)
-		.expandNode("WebContent").expandNode("pages").getNode(TEST_PAGE).doubleClick(); //$NON-NLS-1$ //$NON-NLS-2$
+		  .expandNode("WebContent").expandNode("pages").getNode(TEST_PAGE).doubleClick(); //$NON-NLS-1$ //$NON-NLS-2$
+		// wait for page to be opened
+		bot.editorByTitle(TEST_PAGE);
 	}
 	
 	void checkVPE(String testPage) throws Throwable{

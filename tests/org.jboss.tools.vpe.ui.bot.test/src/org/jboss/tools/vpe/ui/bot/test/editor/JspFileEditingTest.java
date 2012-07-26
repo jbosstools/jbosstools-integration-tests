@@ -93,8 +93,10 @@ public class JspFileEditingTest extends VPEEditorTestCase {
     final SWTBotEclipseEditor jspTextEditor = botExt.editorByTitle(TEST_PAGE)
         .toTextEditor();
     jspTextEditor.save();
-    botExt.toolbarButtonWithTooltip(SWTJBTExt.isRunningOnMacOs() ? 
-        IDELabel.ToolbarButton.REFRESH_MAC_OS: IDELabel.ToolbarButton.REFRESH).click();
+    final String toolbarButtonRefreshTooltip = SWTJBTExt.isRunningOnMacOs() ? 
+        IDELabel.ToolbarButton.REFRESH_MAC_OS: IDELabel.ToolbarButton.REFRESH;
+    util.waitForToolbarButtonWithTooltipIsFound(toolbarButtonRefreshTooltip, Timing.time10S());
+    botExt.toolbarButtonWithTooltip(toolbarButtonRefreshTooltip).click();
     botExt.sleep(Timing.time1S());
     String editorText = jspTextEditor.getText();
     String testText = "<h:outputText value=\"" + outputTextValue + "\">";

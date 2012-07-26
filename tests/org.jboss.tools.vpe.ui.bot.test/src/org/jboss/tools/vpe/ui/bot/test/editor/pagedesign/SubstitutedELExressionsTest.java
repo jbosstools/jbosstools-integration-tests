@@ -13,6 +13,7 @@ package org.jboss.tools.vpe.ui.bot.test.editor.pagedesign;
 
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
+import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 
 /**
@@ -28,6 +29,7 @@ public class SubstitutedELExressionsTest extends PageDesignTestCase {
   
   public void testSubstitutedELExressions(){
     openPage();
+    util.waitForToolbarButtonWithTooltipIsFound(PAGE_DESIGN, Timing.time10S());
     bot.toolbarButtonWithTooltip(PAGE_DESIGN).click();
     optionsDialogBot = bot.shell(IDELabel.Shell.PAGE_DESIGN_OPTIONS).activate().bot();
     optionsDialogBot.tabItem(IDELabel.PageDesignOptionsDialog.SUBSTITUTED_EL_EXPRESSIONS_TAB).activate();

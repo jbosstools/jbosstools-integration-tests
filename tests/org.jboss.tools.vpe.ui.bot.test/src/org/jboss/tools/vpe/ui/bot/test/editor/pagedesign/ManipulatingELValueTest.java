@@ -54,9 +54,11 @@ public class ManipulatingELValueTest extends PageDesignTestCase {
 	  createJspPage(ManipulatingELValueTest.TEST_IN_PAGE_FOLDER_PAGE_NAME);
 	  testInPageFolderEditor = botExt.editorByTitle(ManipulatingELValueTest.TEST_IN_PAGE_FOLDER_PAGE_NAME).toTextEditor();
 	  testInPageFolderEditor.setText(ManipulatingELValueTest.PAGE_TEXT);
+	  testInPageFolderEditor.save();
 	  createJspPage(ManipulatingELValueTest.TEST_IN_MAIN_FOLDER_PAGE_NAME , JBT_TEST_PROJECT_NAME , "WebContent");
     testInMainFolderEditor = botExt.editorByTitle(ManipulatingELValueTest.TEST_IN_MAIN_FOLDER_PAGE_NAME).toTextEditor();
     testInMainFolderEditor.setText(ManipulatingELValueTest.PAGE_TEXT);
+    testInMainFolderEditor.save();
     testInPageFolderEditor.show();
     addELSubstitution(ManipulatingELValueTest.EL_VARIABLE_NAME, ManipulatingELValueTest.EL_IN_PAGE_FOLDER_VARIABLE_VALUE,
         IDELabel.PageDesignOptionsDialog.SUBSTITUTED_EL_EXPRESSIONS_SCOPE_FOLDER);

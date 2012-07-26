@@ -64,6 +64,7 @@ public abstract class PageDesignTestCase extends VPEEditorTestCase{
 	 * Deletes all defined EL Substitutions. VPE has to be opened when called this method
 	 */
 	public void deleteAllELSubstitutions(){
+	  util.waitForToolbarButtonWithTooltipIsFound(PAGE_DESIGN, Timing.time10S());
 	  bot.toolbarButtonWithTooltip(PAGE_DESIGN).click();
 	  SWTBot optionsDialogBot = bot.shell(IDELabel.Shell.PAGE_DESIGN_OPTIONS).activate().bot();
     optionsDialogBot.tabItem(IDELabel.PageDesignOptionsDialog.SUBSTITUTED_EL_EXPRESSIONS_TAB).activate();
@@ -82,6 +83,7 @@ public abstract class PageDesignTestCase extends VPEEditorTestCase{
 	 * @param scope
 	 */
 	public void addELSubstitution (String elName , String value , String scope){
+	  util.waitForToolbarButtonWithTooltipIsFound(PAGE_DESIGN, Timing.time10S());
     bot.toolbarButtonWithTooltip(PAGE_DESIGN).click();
     SWTBot optionsDialogBot = bot.shell(IDELabel.Shell.PAGE_DESIGN_OPTIONS).activate().bot();
     optionsDialogBot.tabItem(IDELabel.PageDesignOptionsDialog.SUBSTITUTED_EL_EXPRESSIONS_TAB).activate();

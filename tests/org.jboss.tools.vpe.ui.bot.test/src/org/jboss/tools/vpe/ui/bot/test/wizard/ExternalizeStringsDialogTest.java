@@ -230,6 +230,7 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		/*
 		 * Get toolbar button
 		 */
+    util.waitForToolbarButtonWithTooltipIsFound(TOOL_TIP, Timing.time3S());
     tbButton = bot.toolbarButtonWithTooltip(TOOL_TIP);
     util.waitForToolbarButtonEnabled(tbButton,Timing.time5S());
     tbButton.click();
@@ -245,6 +246,7 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 				JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_PROPERTIES_KEY, 
 				JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_PROPS_STRINGS_GROUP);
 		assertNotNull("Cannot find 'Property Key' text field", defKeyText); //$NON-NLS-1$
+		util.waitForNonIgnoredJobs(true, Timing.time3S());
 		assertText("User_1",defKeyText); //$NON-NLS-1$
 		assertTrue("(OK) button should be enabled.", //$NON-NLS-1$
 				bot.button(WidgetVariables.OK_BUTTON).isEnabled());
@@ -299,6 +301,7 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 				JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_PROPERTIES_KEY, 
 				JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_PROPS_STRINGS_GROUP);
 		assertNotNull("Cannot find 'Property Key' text field", defKeyText); //$NON-NLS-1$
+		util.waitForNonIgnoredJobs(true, Timing.time3S());
 		assertText("User_1",defKeyText); //$NON-NLS-1$
 		defKeyText.setText("user.compoundKey"); //$NON-NLS-1$
 		SWTBotText defValueText = bot.textWithLabelInGroup(
@@ -368,6 +371,7 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		/*
 		 * Get toolbar button
 		 */
+		util.waitForToolbarButtonWithTooltipIsFound(TOOL_TIP, Timing.time3S());
 		SWTBotToolbarButton tbButton = bot.toolbarButtonWithTooltip(TOOL_TIP);
 		util.waitForToolbarButtonEnabled(tbButton,Timing.time5S());
     tbButton.click();
@@ -484,6 +488,7 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		 * But for this test it's ok, so just ignore this exception.
 		 */
 		setException(null);
+		util.waitForToolbarButtonWithTooltipIsFound(TOOL_TIP, Timing.time3S());
 		SWTBotToolbarButton tbButton = bot.toolbarButtonWithTooltip(TOOL_TIP);
 		util.waitWhileToolbarButtonisDisabled(tbButton,Timing.time5S());
 		/*
@@ -533,7 +538,10 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		/*
 		 * Activate the dialog
 		 */
-		bot.toolbarButtonWithTooltip(TOOL_TIP).click();
+		util.waitForToolbarButtonWithTooltipIsFound(TOOL_TIP, Timing.time3S());
+		SWTBotToolbarButton tbExternalizeStrings = (bot.toolbarButtonWithTooltip(TOOL_TIP));
+		util.waitForToolbarButtonEnabled(tbExternalizeStrings, Timing.time3S());
+		tbExternalizeStrings.click();
 		bot.shell(JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).setFocus();
 		bot.shell(JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).activate();
 		isUnusedDialogOpened = true;
@@ -599,6 +607,7 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		/*
 		 * Activate the dialog
 		 */
+		util.waitForToolbarButtonWithTooltipIsFound(TOOL_TIP, Timing.time3S());
 		assertTrue(TOOLBAR_ICON_ENABLED, bot
 				.toolbarButtonWithTooltip(TOOL_TIP)
 				.isEnabled());
@@ -856,6 +865,7 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		 * Rewrite the taglib
 		 */
 		editor.toTextEditor().typeText(" "); //$NON-NLS-1$
+		editor.save();
 		/*
 		 * Make sure that taglib doesn't present
 		 */
@@ -911,6 +921,7 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		 * Rewrite the taglib
 		 */
 		editor.toTextEditor().typeText(" "); //$NON-NLS-1$
+		editor.save();
 		/*
 		 * Make sure that taglib doesn't present
 		 */
@@ -921,6 +932,7 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		/*
 		 * Get toolbar button
 		 */
+		util.waitForToolbarButtonWithTooltipIsFound(TOOL_TIP, Timing.time3S());
 		SWTBotToolbarButton tbButton = bot.toolbarButtonWithTooltip(TOOL_TIP);
 		util.waitForToolbarButtonEnabled(tbButton,Timing.time5S());
     tbButton.click();
@@ -1001,8 +1013,16 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		/*
 		 * Get toolbar button
 		 */
+		util.waitForToolbarButtonWithTooltipIsFound(TOOL_TIP, Timing.time3S());
+		SWTBotToolbarButton tbExternalizeStrings = (bot.toolbarButtonWithTooltip(TOOL_TIP));
+		if (enabled){
+		  util.waitForToolbarButtonEnabled(tbExternalizeStrings, Timing.time3S());
+		}
+		else{
+		  util.waitWhileToolbarButtonisDisabled(tbExternalizeStrings, Timing.time3S());
+		}
 		assertEquals(enabled ? TOOLBAR_ICON_ENABLED : TOOLBAR_ICON_DISABLED,
-				enabled, bot.toolbarButtonWithTooltip(TOOL_TIP).isEnabled());
+				enabled, tbExternalizeStrings.isEnabled());
 	}
 	
 	/**
@@ -1027,6 +1047,7 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		/*
 		 * Get toolbar button
 		 */
+		util.waitForToolbarButtonWithTooltipIsFound(TOOL_TIP, Timing.time3S());
 		SWTBotToolbarButton tbButton = bot.toolbarButtonWithTooltip(TOOL_TIP);
 		util.waitForToolbarButtonEnabled(tbButton,Timing.time5S());
     tbButton.click();
