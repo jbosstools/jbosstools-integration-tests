@@ -1,7 +1,8 @@
-package org.jboss.ide.eclipse.as.ui.bot.test.as7;
+package org.jboss.ide.eclipse.as.ui.bot.test.template;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 
+import org.jboss.ide.eclipse.as.ui.bot.test.as7.DeployJSPProjectAS7Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.web.PageSourceMatcher;
 import org.jboss.ide.eclipse.as.ui.bot.test.wizard.NewFileWizard;
 import org.jboss.tools.ui.bot.ext.SWTBotFactory;
