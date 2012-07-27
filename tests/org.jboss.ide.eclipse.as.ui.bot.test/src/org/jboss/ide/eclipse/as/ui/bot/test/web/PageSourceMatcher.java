@@ -28,7 +28,6 @@ public class PageSourceMatcher extends TypeSafeMatcher<String> {
 		}
 		
 		pageText = browser.getText();
-		System.out.println("Page text: " + pageText);
 		if ("".equals(item)){
 			return pageText.equals(item);
 		}

@@ -1,11 +1,11 @@
 package org.jboss.ide.eclipse.as.ui.bot.test;
 
 import org.jboss.ide.eclipse.as.ui.bot.test.as7.CreateAS7Server;
-import org.jboss.ide.eclipse.as.ui.bot.test.as7.DeleteAS7Server;
-import org.jboss.ide.eclipse.as.ui.bot.test.as7.DeployJSPProject;
+import org.jboss.ide.eclipse.as.ui.bot.test.as7.DeployJSPProjectAS7Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.as7.HotDeployJSPFile;
 import org.jboss.ide.eclipse.as.ui.bot.test.as7.OperateAS7Server;
-import org.jboss.ide.eclipse.as.ui.bot.test.as7.UndeployJSPProject;
+import org.jboss.ide.eclipse.as.ui.bot.test.as7.UndeployJSPProjectAS7Server;
+import org.jboss.ide.eclipse.as.ui.bot.test.template.DeleteServer;
 import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -14,10 +14,10 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
 		CreateAS7Server.class, 
 		OperateAS7Server.class,
-		DeployJSPProject.class,
+		DeployJSPProjectAS7Server.class,
 		HotDeployJSPFile.class,
-		UndeployJSPProject.class,
-		DeleteAS7Server.class
+		UndeployJSPProjectAS7Server.class,
+		DeleteServer.class
 })
 public class EAPCompatibilitySuite {
 

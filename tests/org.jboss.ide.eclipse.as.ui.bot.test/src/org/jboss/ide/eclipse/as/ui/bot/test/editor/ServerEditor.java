@@ -28,6 +28,14 @@ public class ServerEditor {
 		return SWTBotFactory.getBot().textWithLabel("Web").getText();
 	}
 	
+	public String getJNDIPort(){
+		return SWTBotFactory.getBot().textWithLabel("JNDI").getText();
+	}
+	
+	public String getJMXPort(){
+		return SWTBotFactory.getBot().textWithLabel("JMX RMI").getText();
+	}
+	
 	public String getManagementPort(){
 		return SWTBotFactory.getBot().textWithLabel("Management").getText();
 	}

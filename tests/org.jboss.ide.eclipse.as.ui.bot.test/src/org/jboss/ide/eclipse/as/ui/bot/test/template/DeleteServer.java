@@ -1,4 +1,4 @@
-package org.jboss.ide.eclipse.as.ui.bot.test.as7;
+package org.jboss.ide.eclipse.as.ui.bot.test.template;
 
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.view.ServersView;
@@ -10,7 +10,7 @@ import org.junit.Test;
  * @author Lucia Jelinkova
  *
  */
-public class DeleteAS7Server extends SWTTestExt {
+public class DeleteServer extends SWTTestExt {
 
 	private ServersView serversView = new ServersView();
 	

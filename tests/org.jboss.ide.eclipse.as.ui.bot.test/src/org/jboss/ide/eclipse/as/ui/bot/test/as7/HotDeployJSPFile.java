@@ -25,12 +25,12 @@ public class HotDeployJSPFile extends SWTTestExt {
 	@Test
 	public void hotDeployment(){
 		NewFileWizard wizard = new NewFileWizard();
-		wizard.setPath(DeployJSPProject.PROJECT_NAME, "WebContent");
+		wizard.setPath(DeployJSPProjectAS7Server.PROJECT_NAME, "WebContent");
 		wizard.setFileName("hot.jsp");
 		wizard.setText(JSP_CONTENT);
 		wizard.execute();
 		
 		SWTBotFactory.getBot().sleep(5000);
-		assertThat("Hot deployment", new PageSourceMatcher("http://localhost:8080/" + DeployJSPProject.PROJECT_NAME + "/hot.jsp"));
+		assertThat("Hot deployment", new PageSourceMatcher("http://localhost:8080/" + DeployJSPProjectAS7Server.PROJECT_NAME + "/hot.jsp"));
 	}
 }

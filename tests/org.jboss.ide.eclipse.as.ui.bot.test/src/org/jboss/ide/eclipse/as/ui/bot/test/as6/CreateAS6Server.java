@@ -1,7 +1,6 @@
-package org.jboss.ide.eclipse.as.ui.bot.test.as7;
+package org.jboss.ide.eclipse.as.ui.bot.test.as6;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.is;
 
 import java.util.List;
@@ -14,23 +13,33 @@ import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
 import org.jboss.tools.ui.bot.ext.entity.XMLConfiguration;
 
 /**
- *
- * @see CreateServerTemplate
- * @author Lucia Jelinkova
- *
- */
-@Require(server=@Server(type=ServerType.EAP, state=ServerState.Present))
-public class CreateAS7Server extends CreateServerTemplate {
+*
+* @see CreateServerTemplate
+* @author Lucia Jelinkova
+*
+*/
+@Require(server=@Server(type=ServerType.JbossAS, version="6.1", state=ServerState.Present))
+public class CreateAS6Server extends CreateServerTemplate {
 
 	@Override
 	protected void assertEditorPorts() {
 		assertThat("8080", is(editor.getWebPort()));
-		assertThat("9999", is(editor.getManagementPort()));		
+		assertThat("1099", is(editor.getJNDIPort()));		
+		assertThat("1090", is(editor.getJMXPort()));
 	}
 
 	@Override
 	protected void assertViewPorts(List<XMLConfiguration> configurations) {
-		assertThat(configurations, hasItem(new XMLConfiguration("JBoss Management", "${jboss.management.native.port:9999}")));
-		assertThat(configurations, hasItem(new XMLConfiguration("JBoss Web", "8080")));		
+		for (XMLConfiguration config : configurations){
+			assertValueIsNumber(config);
+		}
+	}
+
+	private void assertValueIsNumber(XMLConfiguration config){
+		try {
+			Integer.parseInt(config.getValue());
+		} catch (NumberFormatException e){
+			fail(config + " does not a numeric value");
+		}
 	}
 }

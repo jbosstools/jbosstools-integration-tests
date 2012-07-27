@@ -1,4 +1,4 @@
-package org.jboss.ide.eclipse.as.ui.bot.test.as7;
+package org.jboss.ide.eclipse.as.ui.bot.test.template;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.not;
@@ -9,10 +9,6 @@ import org.jboss.ide.eclipse.as.ui.bot.test.wizard.ImportProjectWizard;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.SWTUtilExt;
 import org.jboss.tools.ui.bot.ext.condition.TaskDuration;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
-import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
-import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
 import org.jboss.tools.ui.bot.ext.matcher.console.ConsoleOutputMatcher;
 import org.jboss.tools.ui.bot.ext.view.ServersView;
 import org.junit.Before;
@@ -30,10 +26,11 @@ import org.junit.Test;
  * @author Lucia Jelinkova
  *
  */
-@Require(server=@Server(type=ServerType.EAP, state=ServerState.Running))
-public class DeployJSPProject extends SWTTestExt {
+public abstract class DeployJSPProjectTemplate extends SWTTestExt {
 
-	public static final String PROJECT_NAME = "jsp-as7";
+	public static final String PROJECT_NAME = "jsp-project";
+	
+	protected abstract String getConsoleMessage();
 	
 	@Before
 	public void importProject(){
@@ -50,7 +47,7 @@ public class DeployJSPProject extends SWTTestExt {
 		serversView.addProjectToServer(PROJECT_NAME, configuredState.getServer().name);
 		
 		// console
-		assertThat("Registering web context: /" + PROJECT_NAME, new ConsoleOutputMatcher(TaskDuration.NORMAL));
+		assertThat(getConsoleMessage(), new ConsoleOutputMatcher(TaskDuration.NORMAL));
 		assertThat("Exception:", not(new ConsoleOutputMatcher()));
 		// view
 		assertTrue("Server contains project", serversView.containsProject(configuredState.getServer().name, PROJECT_NAME));
