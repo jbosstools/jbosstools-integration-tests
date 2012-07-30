@@ -20,8 +20,7 @@
 		<profile>
 			<id>debug</id>
 			<properties>
-				<additionalSystemProperties>-Xdebug
-					-Xrunjdwp:transport=dt_socket,address=8001,server=y,suspend=y</additionalSystemProperties>
+				<additionalSystemProperties>-Xdebug -Xrunjdwp:transport=dt_socket,address=8001,server=y,suspend=y</additionalSystemProperties>
 			</properties>
 		</profile>
 	</profiles>
