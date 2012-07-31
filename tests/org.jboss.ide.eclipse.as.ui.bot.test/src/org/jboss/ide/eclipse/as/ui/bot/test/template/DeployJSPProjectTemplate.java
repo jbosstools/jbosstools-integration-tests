@@ -8,6 +8,7 @@ import org.jboss.ide.eclipse.as.ui.bot.test.web.PageSourceMatcher;
 import org.jboss.ide.eclipse.as.ui.bot.test.wizard.ImportProjectWizard;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.SWTUtilExt;
+import org.jboss.tools.ui.bot.ext.condition.NonSystemJobRunsCondition;
 import org.jboss.tools.ui.bot.ext.condition.TaskDuration;
 import org.jboss.tools.ui.bot.ext.matcher.console.ConsoleOutputMatcher;
 import org.jboss.tools.ui.bot.ext.view.ServersView;
@@ -29,9 +30,9 @@ import org.junit.Test;
 public abstract class DeployJSPProjectTemplate extends SWTTestExt {
 
 	public static final String PROJECT_NAME = "jsp-project";
-	
+
 	protected abstract String getConsoleMessage();
-	
+
 	@Before
 	public void importProject(){
 		ImportProjectWizard wizard = new ImportProjectWizard();
@@ -40,12 +41,15 @@ public abstract class DeployJSPProjectTemplate extends SWTTestExt {
 		wizard.setProjectNames(PROJECT_NAME);
 		wizard.execute();
 	}
-	
+
 	@Test
 	public void deployProject(){
 		ServersView serversView = new ServersView();
 		serversView.addProjectToServer(PROJECT_NAME, configuredState.getServer().name);
-		
+
+		// web
+		serversView.openWebPage(configuredState.getServer().name, PROJECT_NAME);
+		assertThat("Hello tests!", new PageSourceMatcher());
 		// console
 		assertThat(getConsoleMessage(), new ConsoleOutputMatcher(TaskDuration.NORMAL));
 		assertThat("Exception:", not(new ConsoleOutputMatcher()));
@@ -53,8 +57,5 @@ public abstract class DeployJSPProjectTemplate extends SWTTestExt {
 		assertTrue("Server contains project", serversView.containsProject(configuredState.getServer().name, PROJECT_NAME));
 		assertEquals("Started", serversView.getServerStatus(configuredState.getServer().name));
 		assertEquals("Synchronized", serversView.getServerPublishStatus(configuredState.getServer().name));
-		// web
-		serversView.openWebPage(configuredState.getServer().name, PROJECT_NAME);
-		assertThat("Hello tests!", new PageSourceMatcher());
 	}
 }
