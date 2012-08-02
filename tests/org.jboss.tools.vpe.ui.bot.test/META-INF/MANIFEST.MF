@@ -39,4 +39,4 @@ Import-Package: junit.framework
 Export-Package: org.jboss.tools.vpe.ui.bot.test,
  org.jboss.tools.vpe.ui.bot.test.jbide,
  org.jboss.tools.vpe.ui.bot.test.tools
-
+Eclipse-BundleShape: jar
