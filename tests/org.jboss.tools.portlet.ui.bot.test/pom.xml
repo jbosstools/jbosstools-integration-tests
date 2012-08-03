@@ -45,6 +45,9 @@
 					<testSuite>org.jboss.tools.portlet.ui.bot.test</testSuite>
 					<testClass>${test.class}</testClass>
 					<skip>${swtbot.test.skip}</skip>
+					<explodedBundles>
+						<explodedBundle>org.mozilla.xulrunner.gtk.linux.x86_64</explodedBundle>
+					</explodedBundles>
 					<dependencies combine.children="append">
 						<dependency>
 							<type>p2-installable-unit</type>
