@@ -3,6 +3,7 @@ package org.jboss.tools.ui.bot.test;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Properties;
 
@@ -35,6 +36,7 @@ public abstract class JBTSWTBotTestCase extends SWTTestExt implements
 	protected SWTJBTBot bot = new SWTJBTBot();
 	private static int sleepTime = 1000;
 	private Logger log = Logger.getLogger(JBTSWTBotTestCase.class);
+	private HashSet<String> ignoredExceptionsFromEclipseLog = new HashSet<String>();
 	/*
 	 * (non-Javadoc) This static block read properties from
 	 * org.jboss.tools.ui.bot.test/resources/SWTBot.properties file and set up
@@ -76,6 +78,12 @@ public abstract class JBTSWTBotTestCase extends SWTTestExt implements
 			if (throwable == null) {
 				throwable = new Throwable(status.getMessage() + " in " //$NON-NLS-1$
 						+ status.getPlugin());
+			}
+			else {
+		     // Check if exception has to be ignored
+         if (ignoredExceptionsFromEclipseLog.contains(throwable.getClass().getCanonicalName())){
+           throwable = null;
+         }
 			}
 			setException(throwable);
 			break;
@@ -388,4 +396,26 @@ public abstract class JBTSWTBotTestCase extends SWTTestExt implements
         (areThereNoErrors ? "" : errors[0].getText()),
       areThereNoErrors);
 	}
+	/**
+	 * Adds exceptionFullClassName to ignored exception from eclipse log
+	 * exceptionFullClassName exception will not make test failing
+	 * @param exceptionFullClassName
+	 */
+	protected void addIgnoredExceptionFromEclipseLog(String exceptionFullClassName){
+	  ignoredExceptionsFromEclipseLog.add(exceptionFullClassName);
+	}
+	/**
+	 * Removes exceptionFullClassName from ignored exception from eclipse log
+	 * exceptionFullClassName exception will make test failing
+	 * @param exceptionFullClassName
+	 */
+  protected void removeIgnoredExceptionFromEclipseLog(String exceptionFullClassName){
+    ignoredExceptionsFromEclipseLog.remove(exceptionFullClassName);
+  }
+  /**
+   * Removes all ignored exceptions
+   */
+  protected void eraseIgnoredExceptionsFromEclipseLog(){
+    ignoredExceptionsFromEclipseLog.clear();
+  }
 }
