@@ -13,6 +13,7 @@
 	<packaging>eclipse-test-plugin</packaging>
 
 	<properties>
+		<requirementsDirectory>${project.build.directory}/requirements</requirementsDirectory>
 		<jbosstools.test.jboss-as-7.1.home>${requirementsDirectory}/jboss-as-7.1.1.Final</jbosstools.test.jboss-as-7.1.home>
 		<jbosstools.test.jboss-as-7.1.url>http://download.jboss.org/jbossas/7.1/jboss-as-7.1.1.Final/jboss-as-7.1.1.Final.zip</jbosstools.test.jboss-as-7.1.url>
 		<jbosstools.test.jboss-as-7.1.md5>175c92545454f4e7270821f4b8326c4e</jbosstools.test.jboss-as-7.1.md5>
@@ -50,6 +51,11 @@
 			<plugin>
 				<groupId>com.googlecode.maven-download-plugin</groupId>
 				<artifactId>maven-download-plugin</artifactId>
+				<version>0.2-SNAPSHOT</version>
+				<configuration>
+					<skip>${skipRequirements}</skip>
+					<outputDirectory>${requirementsDirectory}</outputDirectory>
+				</configuration>
 				<executions>
 					<execution>
 						<id>install-as-7.1.1</id>
