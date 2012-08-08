@@ -75,9 +75,11 @@ public abstract class JBTSWTBotTestCase extends SWTTestExt implements
 		switch (status.getSeverity()) {
 		case IStatus.ERROR:
 			Throwable throwable = status.getException();
-			if (throwable == null) {
-				throwable = new Throwable(status.getMessage() + " in " //$NON-NLS-1$
-						+ status.getPlugin());
+			if (throwable == null){
+			  if (!ignoredExceptionsFromEclipseLog.contains("null")) {
+		       throwable = new Throwable(status.getMessage() + " in " //$NON-NLS-1$
+		            + status.getPlugin());
+  			}
 			}
 			else {
 		     // Check if exception has to be ignored
