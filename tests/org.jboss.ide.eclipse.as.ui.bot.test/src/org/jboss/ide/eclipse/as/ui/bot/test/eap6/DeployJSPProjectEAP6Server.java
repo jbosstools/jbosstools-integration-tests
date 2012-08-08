@@ -1,4 +1,4 @@
-package org.jboss.ide.eclipse.as.ui.bot.test.as7;
+package org.jboss.ide.eclipse.as.ui.bot.test.eap6;
 
 import org.jboss.ide.eclipse.as.ui.bot.test.template.DeployJSPProjectTemplate;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
@@ -12,7 +12,7 @@ import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
  *
  */
 @Require(server=@Server(type=ServerType.EAP, state=ServerState.Running))
-public class DeployJSPProjectAS7Server extends DeployJSPProjectTemplate {
+public class DeployJSPProjectEAP6Server extends DeployJSPProjectTemplate {
 
 	@Override
 	protected String getConsoleMessage() {

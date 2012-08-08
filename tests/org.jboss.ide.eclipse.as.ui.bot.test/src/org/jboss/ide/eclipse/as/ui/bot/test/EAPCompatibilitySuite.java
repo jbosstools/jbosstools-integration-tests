@@ -1,9 +1,9 @@
 package org.jboss.ide.eclipse.as.ui.bot.test;
 
-import org.jboss.ide.eclipse.as.ui.bot.test.as7.CreateAS7Server;
-import org.jboss.ide.eclipse.as.ui.bot.test.as7.DeployJSPProjectAS7Server;
-import org.jboss.ide.eclipse.as.ui.bot.test.as7.OperateAS7Server;
-import org.jboss.ide.eclipse.as.ui.bot.test.as7.UndeployJSPProjectAS7Server;
+import org.jboss.ide.eclipse.as.ui.bot.test.eap6.CreateEAP6Server;
+import org.jboss.ide.eclipse.as.ui.bot.test.eap6.DeployJSPProjectEAP6Server;
+import org.jboss.ide.eclipse.as.ui.bot.test.eap6.OperateEAP6Server;
+import org.jboss.ide.eclipse.as.ui.bot.test.eap6.UndeployJSPProjectEAP6Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.template.DeleteServer;
 import org.jboss.ide.eclipse.as.ui.bot.test.template.HotDeployJSPFile;
 import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
@@ -12,11 +12,11 @@ import org.junit.runners.Suite;
 
 @RunWith(RequirementAwareSuite.class)
 @Suite.SuiteClasses({
-		CreateAS7Server.class, 
-		OperateAS7Server.class,
-		DeployJSPProjectAS7Server.class,
+		CreateEAP6Server.class, 
+		OperateEAP6Server.class,
+		DeployJSPProjectEAP6Server.class,
 		HotDeployJSPFile.class,
-		UndeployJSPProjectAS7Server.class,
+		UndeployJSPProjectEAP6Server.class,
 		DeleteServer.class
 })
 public class EAPCompatibilitySuite {

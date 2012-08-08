@@ -1,4 +1,4 @@
-package org.jboss.ide.eclipse.as.ui.bot.test.as7;
+package org.jboss.ide.eclipse.as.ui.bot.test.eap6;
 
 import org.jboss.ide.eclipse.as.ui.bot.test.template.OperateServerTemplate;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
@@ -13,7 +13,7 @@ import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
  *
  */
 @Require(server=@Server(type=ServerType.EAP, state=ServerState.NotRunning))
-public class OperateAS7Server extends OperateServerTemplate {
+public class OperateEAP6Server extends OperateServerTemplate {
 
 	@Override
 	public String getWelcomePageText() {
