@@ -1,5 +1,9 @@
 package org.jboss.ide.eclipse.as.ui.bot.test;
 
+import org.jboss.ide.eclipse.as.ui.bot.test.as3.CreateAS3Server;
+import org.jboss.ide.eclipse.as.ui.bot.test.as3.DeployJSPProjectAS3Server;
+import org.jboss.ide.eclipse.as.ui.bot.test.as3.OperateAS3Server;
+import org.jboss.ide.eclipse.as.ui.bot.test.as3.UndeployJSPProjectAS3Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.as4.CreateAS4Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.as4.DeployJSPProjectAS4Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.as4.OperateAS4Server;
@@ -28,19 +32,23 @@ import org.junit.runners.Suite;
 		CreateAS6Server.class,
 		CreateAS5Server.class,
 		CreateAS4Server.class,
+		CreateAS3Server.class,
 		OperateAS7Server.class,
 		OperateAS6Server.class,
 		OperateAS5Server.class,
 		OperateAS4Server.class,
+		OperateAS3Server.class,
 		DeployJSPProjectAS7Server.class,
 		DeployJSPProjectAS6Server.class,
 		DeployJSPProjectAS5Server.class,
 		DeployJSPProjectAS4Server.class,
+		DeployJSPProjectAS3Server.class,
 		HotDeployJSPFile.class,
 		UndeployJSPProjectAS7Server.class,
 		UndeployJSPProjectAS6Server.class,
 		UndeployJSPProjectAS5Server.class,
 		UndeployJSPProjectAS4Server.class,
+		UndeployJSPProjectAS3Server.class,
 		DeleteServer.class
 })
 public class AllTestsSuite {

@@ -7,8 +7,10 @@
 <stringAttribute key="M2_PROFILES" value=""/>
 <listAttribute key="M2_PROPERTIES">
 <listEntry value="eap-6.0=${folder_prompt:EAP 6.0 installation directory}"/>
-<listEntry value="jboss-as-5.1=${folder_prompt:JBoss AS 5.1 installation directory}"/>
 <listEntry value="jboss-as-6.1=${folder_prompt:JBoss AS 6.1 installation directory}"/>
+<listEntry value="jboss-as-5.1=${folder_prompt:JBoss AS 5.1 installation directory}"/>
+<listEntry value="jboss-as-4.2=${folder_prompt:JBoss AS 4.2 installation directory}"/>
+<listEntry value="jboss-as-3.2=${folder_prompt:JBoss AS 3.2 installation directory}"/>
 </listAttribute>
 <stringAttribute key="M2_RUNTIME" value="/home/ljelinko/programs/apache-maven-3.0.3"/>
 <booleanAttribute key="M2_SKIP_TESTS" value="false"/>
