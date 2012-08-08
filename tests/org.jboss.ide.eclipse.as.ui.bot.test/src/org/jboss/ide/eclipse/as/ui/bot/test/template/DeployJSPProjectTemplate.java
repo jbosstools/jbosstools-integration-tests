@@ -8,7 +8,6 @@ import org.jboss.ide.eclipse.as.ui.bot.test.web.PageSourceMatcher;
 import org.jboss.ide.eclipse.as.ui.bot.test.wizard.ImportProjectWizard;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.SWTUtilExt;
-import org.jboss.tools.ui.bot.ext.condition.NonSystemJobRunsCondition;
 import org.jboss.tools.ui.bot.ext.condition.TaskDuration;
 import org.jboss.tools.ui.bot.ext.matcher.console.ConsoleOutputMatcher;
 import org.jboss.tools.ui.bot.ext.view.ServersView;
@@ -47,12 +46,12 @@ public abstract class DeployJSPProjectTemplate extends SWTTestExt {
 		ServersView serversView = new ServersView();
 		serversView.addProjectToServer(PROJECT_NAME, configuredState.getServer().name);
 
-		// web
-		serversView.openWebPage(configuredState.getServer().name, PROJECT_NAME);
-		assertThat("Hello tests!", new PageSourceMatcher());
 		// console
 		assertThat(getConsoleMessage(), new ConsoleOutputMatcher(TaskDuration.NORMAL));
 		assertThat("Exception:", not(new ConsoleOutputMatcher()));
+		// web
+		serversView.openWebPage(configuredState.getServer().name, PROJECT_NAME);
+		assertThat("Hello tests!", new PageSourceMatcher());
 		// view
 		assertTrue("Server contains project", serversView.containsProject(configuredState.getServer().name, PROJECT_NAME));
 		assertEquals("Started", serversView.getServerStatus(configuredState.getServer().name));
