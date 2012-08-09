@@ -51,7 +51,7 @@ public abstract class DeployJSPProjectTemplate extends SWTTestExt {
 		assertThat("Exception:", not(new ConsoleOutputMatcher()));
 		// web
 		serversView.openWebPage(configuredState.getServer().name, PROJECT_NAME);
-		assertThat("Hello tests!", new PageSourceMatcher());
+		assertThat("Hello tests!", new PageSourceMatcher(TaskDuration.SHORT));
 		// view
 		assertTrue("Server contains project", serversView.containsProject(configuredState.getServer().name, PROJECT_NAME));
 		assertEquals("Started", serversView.getServerStatus(configuredState.getServer().name));
