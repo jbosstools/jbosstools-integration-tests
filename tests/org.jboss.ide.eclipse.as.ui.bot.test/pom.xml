@@ -13,15 +13,12 @@
 	<packaging>eclipse-test-plugin</packaging>
 
 	<properties>
+		<swtbot.test.skip>false</swtbot.test.skip>
+		<maven.test.failure.ignore>true</maven.test.failure.ignore>
 		<requirementsDirectory>${project.build.directory}/requirements</requirementsDirectory>
-		<jbosstools.test.jboss-as-7.1.home>${requirementsDirectory}/jboss-as-7.1.1.Final</jbosstools.test.jboss-as-7.1.home>
-		<jbosstools.test.jboss-as-7.1.url>http://download.jboss.org/jbossas/7.1/jboss-as-7.1.1.Final/jboss-as-7.1.1.Final.zip</jbosstools.test.jboss-as-7.1.url>
-		<jbosstools.test.jboss-as-7.1.md5>175c92545454f4e7270821f4b8326c4e</jbosstools.test.jboss-as-7.1.md5>
-		<configurations.dir>resources/project_config_files</configurations.dir>
 		<additionalSystemProperties></additionalSystemProperties>
-		<systemProperties>${additionalSystemProperties} -Djbosstools.test.jboss-as-7.1.home=${jbosstools.test.jboss-as-7.1.home} -Dtest.configurations.dir=${configurations.dir}  -Dorg.eclipse.swtbot.screenshots.dir=${project.build.directory}/screenshots</systemProperties>
-		<test.class>org.jboss.ide.eclipse.as.ui.bot.test.AllTestsSuite</test.class>
-		
+		<runtimesProperties></runtimesProperties>
+		<systemProperties>${additionalSystemProperties} ${runtimesProperties} -Dorg.eclipse.swtbot.screenshots.dir=${project.build.directory}/screenshots</systemProperties>
 	</properties>
 
 	<profiles>
@@ -44,6 +41,193 @@
 				<platformSystemProperties> -d32 -Dosgi.arch=x86 -XstartOnFirstThread -Dorg.eclipse.swtbot.keyboard.layout=MAC_EN_US</platformSystemProperties>
 			</properties>
 		</profile>
+		
+		<!-- the default and jbosstools-staging-aggregate profiles are to be active always 
+			- thus using a random property is known to be always defined -->
+		<profile>
+			<id>default</id>
+			<activation>
+				<property>
+					<name>!disableDefaultProfiles</name>
+				</property>
+			</activation>
+		</profile>
+		<profile>
+			<id>jbosstools-staging-aggregate</id>
+			<activation>
+				<property>
+					<name>!disableDefaultProfiles</name>
+				</property>
+			</activation>
+		</profile>
+		
+		<profile>
+			<id>projects</id>
+			<activation>
+				<property>
+					<name>!test.profile</name>
+				</property>
+			</activation>
+			<properties>
+				<test.class>org.jboss.ide.eclipse.as.ui.bot.test.AllTestsSuite</test.class>
+				<jbosstools.test.jboss-as-3.2.home>${requirementsDirectory}/jboss-3.2.8.SP1</jbosstools.test.jboss-as-3.2.home>
+				<jbosstools.test.jboss-as-4.0.home>${requirementsDirectory}/jboss-4.0.5.GA</jbosstools.test.jboss-as-4.0.home>
+				<jbosstools.test.jboss-as-4.2.home>${requirementsDirectory}/jboss-4.2.3.GA</jbosstools.test.jboss-as-4.2.home>
+				<jbosstools.test.jboss-as-5.0.home>${requirementsDirectory}/jboss-5.0.1.GA</jbosstools.test.jboss-as-5.0.home>
+				<jbosstools.test.jboss-as-5.1.home>${requirementsDirectory}/jboss-5.1.0.GA</jbosstools.test.jboss-as-5.1.home>
+				<jbosstools.test.jboss-as-6.x.home>${requirementsDirectory}/jboss-6.1.0.Final</jbosstools.test.jboss-as-6.x.home>
+				<jbosstools.test.jboss-as-7.0.home>${requirementsDirectory}/jboss-as-7.0.2.Final</jbosstools.test.jboss-as-7.0.home>
+				<jbosstools.test.jboss-as-7.1.home>${requirementsDirectory}/jboss-as-7.1.1.Final</jbosstools.test.jboss-as-7.1.home>
+				<runtimesProperties>-Djbosstools.test.jboss-as-3.2.home=${jbosstools.test.jboss-as-3.2.home} -Djbosstools.test.jboss-as-4.0.home=${jbosstools.test.jboss-as-4.0.home} -Djbosstools.test.jboss-as-4.2.home=${jbosstools.test.jboss-as-4.2.home} -Djbosstools.test.jboss-as-5.0.home=${jbosstools.test.jboss-as-5.0.home} -Djbosstools.test.jboss-as-5.1.home=${jbosstools.test.jboss-as-5.1.home} -Djbosstools.test.jboss-as-6.x.home=${jbosstools.test.jboss-as-6.x.home} -Djbosstools.test.jboss-as-7.0.home=${jbosstools.test.jboss-as-7.0.home} -Djbosstools.test.jboss-as-7.1.home=${jbosstools.test.jboss-as-7.1.home} -Dtest.configurations.dir=resources/config_files_templates/project</runtimesProperties>
+			</properties>
+			<build>
+			<plugins><plugin>
+				<groupId>com.googlecode.maven-download-plugin</groupId>
+				<artifactId>maven-download-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>install-as-3.2.8</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<configuration>
+							<url>http://sourceforge.net/projects/jboss/files/JBoss/JBoss-3.2.8.SP1/jboss-3.2.8.SP1.zip/download</url>
+							<outputFileName>jboss-3.2.8.SP1.zip</outputFileName>
+							<md5>97147374ee5b048e4462c7ebaf3cccb5</md5>
+							<unpack>true</unpack>
+						</configuration>
+					</execution>
+					<execution>
+						<id>install-as-4.0.5</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<configuration>
+							<url>http://sourceforge.net/projects/jboss/files/JBoss/JBoss-4.0.5.GA/jboss-4.0.5.GA.zip/download</url>
+							<outputFileName>jboss-4.0.5.GA.zip</outputFileName>
+							<md5>a39e85981958fea2411e9346e218aa39</md5>
+							<unpack>true</unpack>
+						</configuration>
+					</execution>
+					<execution>
+						<id>install-as-4.2.3</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<configuration>
+							<url>http://sourceforge.net/projects/jboss/files/JBoss/JBoss-4.2.3.GA/jboss-4.2.3.GA-jdk6.zip/download</url>
+							<outputFileName>jboss-4.2.3.GA-jdk6.zip</outputFileName>
+							<md5>e548d9e369589f8b9be0abc642c19842</md5>
+							<unpack>true</unpack>
+						</configuration>
+					</execution>
+					<execution>
+						<id>install-as-5.0.1</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<configuration>
+							<url>http://sourceforge.net/projects/jboss/files/JBoss/JBoss-5.0.1.GA/jboss-5.0.1.GA-jdk6.zip/download</url>
+							<outputFileName>jboss-5.0.1.GA-jdk6.zip</outputFileName>
+							<md5>8983740c2cdd2bbcbd8e94df0b7a87c8</md5>
+							<unpack>true</unpack>
+						</configuration>
+					</execution>
+					<execution>
+						<id>install-as-5.1.0</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<configuration>
+							<url>http://sourceforge.net/projects/jboss/files/JBoss/JBoss-5.1.0.GA/jboss-5.1.0.GA-jdk6.zip/download</url>
+							<outputFileName>jboss-5.1.0.GA-jdk6.zip</outputFileName>
+							<md5>ca64add783eb38c123ddb0dcd8465e3f</md5>
+							<unpack>true</unpack>
+						</configuration>
+					</execution>
+					<execution>
+						<id>install-as-6.1.0</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<configuration>
+							<url>http://download.jboss.org/jbossas/6.1/jboss-as-distribution-6.1.0.Final.zip</url>
+							<md5>2264e4d5ba448fa07716008d1452f1e7</md5>
+							<unpack>true</unpack>
+						</configuration>
+					</execution>
+					<execution>
+						<id>install-as-7.0.2</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<configuration>
+							<url>http://download.jboss.org/jbossas/7.0/jboss-as-7.0.2.Final/jboss-as-7.0.2.Final.zip</url>
+							<md5>774556618e73c2273fff91fa5e92c1d5</md5>
+							<unpack>true</unpack>
+						</configuration>
+					</execution>
+					<execution>
+						<id>install-as-7.1.1</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<configuration>
+							<url>http://download.jboss.org/jbossas/7.1/jboss-as-7.1.1.Final/jboss-as-7.1.1.Final.zip</url>
+							<md5>175c92545454f4e7270821f4b8326c4e</md5>
+							<unpack>true</unpack>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin></plugins>
+			</build>
+		</profile>
+		
+		
+		<profile>
+			<id>eap6</id>
+			<activation>
+				<property>
+					<name>test.profile</name>
+					<value>eap6</value>
+				</property>
+			</activation>
+			<properties>
+				<test.class>org.jboss.ide.eclipse.as.ui.bot.test.EAP6CompatibilitySuite</test.class>
+				<jbosstools.test.jboss-eap-6.home>${requirementsDirectory}/jboss-eap-6.0</jbosstools.test.jboss-eap-6.home>
+				<jbosstools.test.jboss-eap-6.url></jbosstools.test.jboss-eap-6.url>
+				<jbosstools.test.jboss-eap-6.md5>ca0e20c5523281233888c296689b7172</jbosstools.test.jboss-eap-6.md5>
+				<runtimesProperties>-Djbosstools.test.jboss-eap-6.home=${jbosstools.test.jboss-eap-6.home} -Dswtbot.test.properties.file=resources/config_files_templates/product/eap-6.properties</runtimesProperties>
+			</properties>
+			<build>
+			<plugins><plugin>
+				<groupId>com.googlecode.maven-download-plugin</groupId>
+				<artifactId>maven-download-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>install-eap-6</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<configuration>
+							<url>${jbosstools.test.jboss-eap-6.url}</url>
+							<md5>${jbosstools.test.jboss-eap-6.md5}</md5>
+							<unpack>true</unpack>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin></plugins>
+			</build>
+		</profile>
 	</profiles>
 	
 	<build>
@@ -56,20 +240,6 @@
 					<skip>${skipRequirements}</skip>
 					<outputDirectory>${requirementsDirectory}</outputDirectory>
 				</configuration>
-				<executions>
-					<execution>
-						<id>install-as-7.1.1</id>
-						<phase>pre-integration-test</phase>
-						<goals>
-							<goal>wget</goal>
-						</goals>
-						<configuration>
-							<url>${jbosstools.test.jboss-as-7.1.url}</url>
-							<md5>${jbosstools.test.jboss-as-7.1.md5}</md5>
-							<unpack>true</unpack>
-						</configuration>
-					</execution>
-				</executions>
 			</plugin>
 		
 			<plugin>
