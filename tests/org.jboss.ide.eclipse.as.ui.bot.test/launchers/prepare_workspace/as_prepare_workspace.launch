@@ -10,7 +10,7 @@
 <listEntry value="jboss-as-5.1=${folder_prompt:JBoss AS 5.1 installation directory}"/>
 <listEntry value="jboss-as-6.1=${folder_prompt:JBoss AS 6.1 installation directory}"/>
 </listAttribute>
-<stringAttribute key="M2_RUNTIME" value="/home/ljelinko/programs/apache-maven-3.0.3"/>
+<stringAttribute key="M2_RUNTIME" value="EMBEDDED"/>
 <booleanAttribute key="M2_SKIP_TESTS" value="false"/>
 <booleanAttribute key="M2_UPDATE_SNAPSHOTS" value="false"/>
 <booleanAttribute key="M2_WORKSPACE_RESOLUTION" value="false"/>
