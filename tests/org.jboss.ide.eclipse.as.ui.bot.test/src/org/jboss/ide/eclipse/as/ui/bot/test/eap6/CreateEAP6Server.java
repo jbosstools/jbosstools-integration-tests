@@ -1,4 +1,4 @@
-package org.jboss.ide.eclipse.as.ui.bot.test.as7;
+package org.jboss.ide.eclipse.as.ui.bot.test.eap6;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasItem;
@@ -20,7 +20,7 @@ import org.jboss.tools.ui.bot.ext.entity.XMLConfiguration;
  *
  */
 @Require(server=@Server(type=ServerType.EAP, state=ServerState.Present))
-public class CreateAS7Server extends CreateServerTemplate {
+public class CreateEAP6Server extends CreateServerTemplate {
 
 	@Override
 	protected void assertEditorPorts() {

@@ -1,4 +1,4 @@
-package org.jboss.ide.eclipse.as.ui.bot.test.as7;
+package org.jboss.ide.eclipse.as.ui.bot.test.eap6;
 
 import org.jboss.ide.eclipse.as.ui.bot.test.template.DeployJSPProjectTemplate;
 import org.jboss.ide.eclipse.as.ui.bot.test.template.UndeployJSPProjectTemplate;
@@ -13,7 +13,7 @@ import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
  *
  */
 @Require(server=@Server(type=ServerType.EAP, state=ServerState.Running), clearProjects=false, clearWorkspace=false)
-public class UndeployJSPProjectAS7Server extends UndeployJSPProjectTemplate {
+public class UndeployJSPProjectEAP6Server extends UndeployJSPProjectTemplate {
 
 	@Override
 	protected String getConsoleMessage() {
