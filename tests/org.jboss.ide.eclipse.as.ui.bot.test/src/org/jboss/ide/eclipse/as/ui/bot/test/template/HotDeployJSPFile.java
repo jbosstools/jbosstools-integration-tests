@@ -7,6 +7,8 @@ import org.jboss.ide.eclipse.as.ui.bot.test.web.PageSourceMatcher;
 import org.jboss.ide.eclipse.as.ui.bot.test.wizard.NewFileWizard;
 import org.jboss.tools.ui.bot.ext.SWTBotFactory;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
+import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
+import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.junit.Test;
 
 /**
@@ -17,6 +19,7 @@ import org.junit.Test;
  * @author Lucia Jelinkova
  *
  */
+@Require(server=@Server, clearWorkspace=false, clearProjects=false)
 public class HotDeployJSPFile extends SWTTestExt {
 
 	public static final String JSP_CONTENT = 
