@@ -19,7 +19,7 @@ import org.jboss.tools.ui.bot.ext.entity.XMLConfiguration;
  * @author Lucia Jelinkova
  *
  */
-@Require(server=@Server(type=ServerType.EAP, state=ServerState.Present))
+@Require(server=@Server(type=ServerType.EAP, version="6", state=ServerState.Present))
 public class CreateEAP6Server extends CreateServerTemplate {
 
 	@Override
