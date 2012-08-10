@@ -14,7 +14,7 @@
 <booleanAttribute key="includeOptional" value="true"/>
 <stringAttribute key="location" value="${workspace_loc}/../junit-workspace"/>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
-<listEntry value="/org.jboss.ide.eclipse.as.ui.bot.test/src/org/jboss/ide/eclipse/as/ui/bot/test/EAPCompatibilitySuite.java"/>
+<listEntry value="/org.jboss.ide.eclipse.as.ui.bot.test/src/org/jboss/ide/eclipse/as/ui/bot/test/EAP6CompatibilitySuite.java"/>
 </listAttribute>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
 <listEntry value="1"/>
@@ -26,11 +26,11 @@
 <booleanAttribute key="org.eclipse.jdt.junit.KEEPRUNNING_ATTR" value="false"/>
 <stringAttribute key="org.eclipse.jdt.junit.TESTNAME" value=""/>
 <stringAttribute key="org.eclipse.jdt.junit.TEST_KIND" value="org.eclipse.jdt.junit.loader.junit4"/>
-<stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="org.jboss.ide.eclipse.as.ui.bot.test.EAPCompatibilitySuite"/>
+<stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="org.jboss.ide.eclipse.as.ui.bot.test.EAP6CompatibilitySuite"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch ${target.arch} -nl ${target.nl} -consoleLog"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="org.jboss.ide.eclipse.as.ui.bot.test"/>
 <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.pde.ui.workbenchClasspathProvider"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dswtbot.test.properties.file=${file_prompt:&quot;Please choose a SWTBot configuration file&quot;:${workspace_loc}/org.jboss.ide.eclipse.as.ui.bot.test/resources/generated_config_files}  -Xmx1024m -XX:MaxPermSize=256m"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dswtbot.test.properties.file=${workspace_loc}/org.jboss.ide.eclipse.as.ui.bot.test/resources/generated_config_files/eap-6.properties  -Xmx1024m -XX:MaxPermSize=256m"/>
 <stringAttribute key="pde.version" value="3.3"/>
 <stringAttribute key="product" value="org.eclipse.platform.ide"/>
 <booleanAttribute key="show_selected_only" value="false"/>

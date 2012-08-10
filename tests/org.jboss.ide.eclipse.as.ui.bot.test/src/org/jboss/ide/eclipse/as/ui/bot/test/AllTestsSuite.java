@@ -16,6 +16,10 @@ import org.jboss.ide.eclipse.as.ui.bot.test.as6.CreateAS6Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.as6.DeployJSPProjectAS6Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.as6.OperateAS6Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.as6.UndeployJSPProjectAS6Server;
+import org.jboss.ide.eclipse.as.ui.bot.test.eap5.CreateEAP5Server;
+import org.jboss.ide.eclipse.as.ui.bot.test.eap5.DeployJSPProjectEAP5Server;
+import org.jboss.ide.eclipse.as.ui.bot.test.eap5.OperateEAP5Server;
+import org.jboss.ide.eclipse.as.ui.bot.test.eap5.UndeployJSPProjectEAP5Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.eap6.CreateEAP6Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.eap6.DeployJSPProjectEAP6Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.eap6.OperateEAP6Server;
@@ -28,23 +32,27 @@ import org.junit.runners.Suite;
 
 @RunWith(RequirementAwareSuite.class)
 @Suite.SuiteClasses({
-		CreateEAP6Server.class, 
+		CreateEAP6Server.class,
+		CreateEAP5Server.class,
 		CreateAS6Server.class,
 		CreateAS5Server.class,
 		CreateAS4Server.class,
 		CreateAS3Server.class,
 		OperateEAP6Server.class,
+		OperateEAP5Server.class,
 		OperateAS6Server.class,
 		OperateAS5Server.class,
 		OperateAS4Server.class,
 		OperateAS3Server.class,
 		DeployJSPProjectEAP6Server.class,
+		DeployJSPProjectEAP5Server.class,
 		DeployJSPProjectAS6Server.class,
 		DeployJSPProjectAS5Server.class,
 		DeployJSPProjectAS4Server.class,
 		DeployJSPProjectAS3Server.class,
 		HotDeployJSPFile.class,
 		UndeployJSPProjectEAP6Server.class,
+		UndeployJSPProjectEAP5Server.class,
 		UndeployJSPProjectAS6Server.class,
 		UndeployJSPProjectAS5Server.class,
 		UndeployJSPProjectAS4Server.class,
