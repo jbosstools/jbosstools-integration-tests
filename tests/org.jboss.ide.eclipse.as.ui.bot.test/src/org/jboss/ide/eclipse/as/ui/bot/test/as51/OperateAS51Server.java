@@ -1,4 +1,4 @@
-package org.jboss.ide.eclipse.as.ui.bot.test.as5;
+package org.jboss.ide.eclipse.as.ui.bot.test.as51;
 
 import org.jboss.ide.eclipse.as.ui.bot.test.template.OperateServerTemplate;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
