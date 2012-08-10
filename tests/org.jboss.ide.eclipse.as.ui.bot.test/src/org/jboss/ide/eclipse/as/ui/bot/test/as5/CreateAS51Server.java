@@ -19,7 +19,7 @@ import org.jboss.tools.ui.bot.ext.entity.XMLConfiguration;
 *
 */
 @Require(server=@Server(type=ServerType.JbossAS, version="5.1", state=ServerState.Present))
-public class CreateAS5Server extends CreateServerTemplate {
+public class CreateAS51Server extends CreateServerTemplate {
 
 	@Override
 	protected void assertEditorPorts() {

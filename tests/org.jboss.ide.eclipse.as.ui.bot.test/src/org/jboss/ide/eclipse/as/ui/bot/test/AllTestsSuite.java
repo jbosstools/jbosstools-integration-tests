@@ -4,14 +4,14 @@ import org.jboss.ide.eclipse.as.ui.bot.test.as3.CreateAS3Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.as3.DeployJSPProjectAS3Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.as3.OperateAS3Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.as3.UndeployJSPProjectAS3Server;
-import org.jboss.ide.eclipse.as.ui.bot.test.as4.CreateAS4Server;
-import org.jboss.ide.eclipse.as.ui.bot.test.as4.DeployJSPProjectAS4Server;
-import org.jboss.ide.eclipse.as.ui.bot.test.as4.OperateAS4Server;
-import org.jboss.ide.eclipse.as.ui.bot.test.as4.UndeployJSPProjectAS4Server;
-import org.jboss.ide.eclipse.as.ui.bot.test.as5.CreateAS5Server;
-import org.jboss.ide.eclipse.as.ui.bot.test.as5.DeployJSPProjectAS5Server;
-import org.jboss.ide.eclipse.as.ui.bot.test.as5.OperateAS5Server;
-import org.jboss.ide.eclipse.as.ui.bot.test.as5.UndeployJSPProjectAS5Server;
+import org.jboss.ide.eclipse.as.ui.bot.test.as4.CreateAS42Server;
+import org.jboss.ide.eclipse.as.ui.bot.test.as4.DeployJSPProjectAS42Server;
+import org.jboss.ide.eclipse.as.ui.bot.test.as4.OperateAS42Server;
+import org.jboss.ide.eclipse.as.ui.bot.test.as4.UndeployJSPProjectAS42Server;
+import org.jboss.ide.eclipse.as.ui.bot.test.as5.CreateAS51Server;
+import org.jboss.ide.eclipse.as.ui.bot.test.as5.DeployJSPProjectAS51Server;
+import org.jboss.ide.eclipse.as.ui.bot.test.as5.OperateAS51Server;
+import org.jboss.ide.eclipse.as.ui.bot.test.as5.UndeployJSPProjectAS51Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.as6.CreateAS6Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.as6.DeployJSPProjectAS6Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.as6.OperateAS6Server;
@@ -45,24 +45,24 @@ import org.junit.runners.Suite;
 		CreateAS71Server.class,
 		CreateAS70Server.class,
 		CreateAS6Server.class,
-		CreateAS5Server.class,
-		CreateAS4Server.class,
+		CreateAS51Server.class,
+		CreateAS42Server.class,
 		CreateAS3Server.class,
 		OperateEAP6Server.class,
 		OperateEAP5Server.class,
 		OperateAS71Server.class,
 		OperateAS70Server.class,
 		OperateAS6Server.class,
-		OperateAS5Server.class,
-		OperateAS4Server.class,
+		OperateAS51Server.class,
+		OperateAS42Server.class,
 		OperateAS3Server.class,
 		DeployJSPProjectEAP6Server.class,
 		DeployJSPProjectEAP5Server.class,
 		DeployJSPProjectAS71Server.class,
 		DeployJSPProjectAS70Server.class,
 		DeployJSPProjectAS6Server.class,
-		DeployJSPProjectAS5Server.class,
-		DeployJSPProjectAS4Server.class,
+		DeployJSPProjectAS51Server.class,
+		DeployJSPProjectAS42Server.class,
 		DeployJSPProjectAS3Server.class,
 		HotDeployJSPFile.class,
 		UndeployJSPProjectEAP6Server.class,
@@ -70,8 +70,8 @@ import org.junit.runners.Suite;
 		UndeployJSPProjectAS71Server.class,
 		UndeployJSPProjectAS70Server.class,
 		UndeployJSPProjectAS6Server.class,
-		UndeployJSPProjectAS5Server.class,
-		UndeployJSPProjectAS4Server.class,
+		UndeployJSPProjectAS51Server.class,
+		UndeployJSPProjectAS42Server.class,
 		UndeployJSPProjectAS3Server.class,
 		DeleteServer.class
 })

@@ -1,4 +1,4 @@
-package org.jboss.ide.eclipse.as.ui.bot.test.as4;
+package org.jboss.ide.eclipse.as.ui.bot.test.as5;
 
 import org.jboss.ide.eclipse.as.ui.bot.test.template.DeployJSPProjectTemplate;
 import org.jboss.ide.eclipse.as.ui.bot.test.template.UndeployJSPProjectTemplate;
@@ -12,8 +12,8 @@ import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
  * @author Lucia Jelinkova
  *
  */
-@Require(server=@Server(type=ServerType.JbossAS, version="4.2", state=ServerState.Running), clearProjects=false, clearWorkspace=false)
-public class UndeployJSPProjectAS4Server extends UndeployJSPProjectTemplate {
+@Require(server=@Server(type=ServerType.JbossAS, version="5.1", state=ServerState.Running), clearProjects=false, clearWorkspace=false)
+public class UndeployJSPProjectAS51Server extends UndeployJSPProjectTemplate {
 
 	@Override
 	protected String getConsoleMessage() {

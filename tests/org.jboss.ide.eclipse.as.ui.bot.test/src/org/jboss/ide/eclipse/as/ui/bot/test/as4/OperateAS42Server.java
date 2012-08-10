@@ -12,7 +12,7 @@ import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
  *
  */
 @Require(server=@Server(type=ServerType.JbossAS, version="4.2", state=ServerState.NotRunning))
-public class OperateAS4Server extends OperateServerTemplate {
+public class OperateAS42Server extends OperateServerTemplate {
 
 	@Override
 	public String getWelcomePageText() {
