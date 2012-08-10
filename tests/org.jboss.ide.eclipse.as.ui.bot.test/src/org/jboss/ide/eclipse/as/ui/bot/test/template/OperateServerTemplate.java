@@ -4,6 +4,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 
+import org.jboss.ide.eclipse.as.ui.bot.test.web.PageSourceMatcher;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.matcher.console.ConsoleOutputMatcher;
 import org.jboss.tools.ui.bot.ext.view.ServersView;
@@ -71,6 +72,7 @@ public abstract class OperateServerTemplate extends SWTTestExt {
 	}
 	
 	private void assertWebPageContains(String string) {
-		serversView.openWebPage(configuredState.getServer().name);		
+		serversView.openWebPage(configuredState.getServer().name);
+		assertThat(string, new PageSourceMatcher());
 	}
 }

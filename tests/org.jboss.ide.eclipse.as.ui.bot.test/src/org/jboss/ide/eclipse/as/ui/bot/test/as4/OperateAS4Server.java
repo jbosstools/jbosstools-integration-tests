@@ -16,6 +16,6 @@ public class OperateAS4Server extends OperateServerTemplate {
 
 	@Override
 	public String getWelcomePageText() {
-		return "Manage this JBoss AS Instance";
+		return "JBoss Management";
 	}
 }
