@@ -191,7 +191,42 @@
 			</build>
 		</profile>
 		
-		
+		<profile>
+			<id>eap5</id>
+			<activation>
+				<property>
+					<name>test.profile</name>
+					<value>eap5</value>
+				</property>
+			</activation>
+			<properties>
+				<test.class>org.jboss.ide.eclipse.as.ui.bot.test.EAP5CompatibilitySuite</test.class>
+				<jbosstools.test.jboss-eap-5.home>${requirementsDirectory}/jboss-eap-5.1</jbosstools.test.jboss-eap-5.home>
+				<jbosstools.test.jboss-eap-5.url></jbosstools.test.jboss-eap-5.url>
+				<jbosstools.test.jboss-eap-5.md5>6d652593f03b398a9b832760c71ae1ad</jbosstools.test.jboss-eap-5.md5>
+				<runtimesProperties>-Djbosstools.test.jboss-eap-5.home=${jbosstools.test.jboss-eap-5.home} -Dswtbot.test.properties.file=resources/config_files_templates/product/eap-5.properties</runtimesProperties>
+			</properties>
+			<build>
+			<plugins><plugin>
+				<groupId>com.googlecode.maven-download-plugin</groupId>
+				<artifactId>maven-download-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>install-eap-6</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<configuration>
+							<url>${jbosstools.test.jboss-eap-5.url}</url>
+							<md5>${jbosstools.test.jboss-eap-5.md5}</md5>
+							<unpack>true</unpack>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin></plugins>
+			</build>
+		</profile>
 		<profile>
 			<id>eap6</id>
 			<activation>
