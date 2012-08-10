@@ -8,6 +8,8 @@
 <listAttribute key="M2_PROPERTIES">
 <listEntry value="jbosstools.test.jboss-eap-6.home=${folder_prompt:EAP 6 installation directory}"/>
 <listEntry value="jbosstools.test.jboss-eap-5.home=${folder_prompt:EAP 5 installation directory}"/>
+<listEntry value="jbosstools.test.jboss-as-7.1.home=${folder_prompt:JBoss AS 7.1 installation directory}"/>
+<listEntry value="jbosstools.test.jboss-as-7.0.home=${folder_prompt:JBoss AS 7.0 installation directory}"/>
 <listEntry value="jbosstools.test.jboss-as-6.x.home=${folder_prompt:JBoss AS 6.x installation directory}"/>
 <listEntry value="jbosstools.test.jboss-as-5.1.home=${folder_prompt:JBoss AS 5.1 installation directory}"/>
 <listEntry value="jbosstools.test.jboss-as-4.2.home=${folder_prompt:JBoss AS 4.2 installation directory}"/>
