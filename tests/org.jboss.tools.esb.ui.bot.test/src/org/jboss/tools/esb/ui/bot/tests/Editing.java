@@ -63,11 +63,11 @@ public class Editing extends SWTTestExt {
 	public static void setupProject() {
 		SWTBot wiz = open.newObject(ActionItem.NewObject.ESBESBProject.LABEL);
 		wiz.textWithLabel(ESBESBProject.TEXT_PROJECT_NAME).setText(projectName);
-		wiz.sleep(30000l);
+		wiz.sleep(TIME_5S);
 		wiz.button(IDELabel.Button.NEXT).click();
-		wiz.sleep(30000l);
+		wiz.sleep(TIME_5S);
 		wiz.button(IDELabel.Button.NEXT).click();
-		wiz.sleep(30000l);
+		wiz.sleep(TIME_5S);
 		open.finish(wiz);		
 	}
 
@@ -81,14 +81,15 @@ public class Editing extends SWTTestExt {
 		packageExplorer.show().bot().tree().select(projectName);
 		SWTBot wiz = open.newObject(ESBESBFile.LABEL);
 		wiz.textWithLabel(ESBESBFile.TEXT_NAME).setText("another-esb-config");
-		bot.sleep(30000l);
+		bot.sleep(TIME_5S);
 		open.finish(wiz);
+		bot.sleep(TIME_5S);
 		assertTrue(bot.editorByTitle("another-esb-config.xml") != null);
 		assertTrue("ESB Editor opened problems",
 				problems.getErrorsNode(bot) == null);
 	}
 
-//	@Test
+	@Test
 	public void providers() {
 		List<String> providerList = getAvailableProviders();
 		String[] actionPath = new String[] { configFileFull, node_providers };
@@ -115,6 +116,8 @@ public class Editing extends SWTTestExt {
 						+ Arrays.toString(providerList.toArray()),
 				providerList.isEmpty());
 		collapseTree();
+		/* ldimaggi - August 2012 - added to make test run on Eclipse Juno */
+		getEditor().save();
 	}
 
 	@Test
@@ -131,6 +134,10 @@ public class Editing extends SWTTestExt {
 					log.info("Invoke " + m.getName());
 					ESBListener action = (ESBListener) m.invoke(null, new Object[]{});
 					action.setService(service);
+
+					/* ldimaggi - August 2012 - added to make test run on Eclipse Juno */
+					getEditor().save();
+					
 					action.create(getEditor(), actionPath);
 					listenerList.remove(action.getMenuLabel());
 				} catch (Exception e) {
@@ -144,9 +151,13 @@ public class Editing extends SWTTestExt {
 						+ Arrays.toString(listenerList.toArray()),
 				listenerList.isEmpty());
 		collapseTree();
+		bot.sleep(TIME_5S);
+
+		/* ldimaggi - August 2012 - added to make test run on Eclipse Juno */
+		getEditor().save();
 	}
 
-//	@Test
+	@Test
 	public void actions() {
 		String service = "bbb";
 		addService(service);
@@ -189,6 +200,7 @@ public class Editing extends SWTTestExt {
 	}
 
 	private SWTBotEditor getEditor() {
+		bot.sleep(TIME_5S);
 		return bot.editorByTitle(configFileFull);
 	}
 
@@ -359,9 +371,5 @@ public class Editing extends SWTTestExt {
 //		+ "[@name='value']/text()", "<>@&");
 
 	}
-
-
-
-
 
 }
