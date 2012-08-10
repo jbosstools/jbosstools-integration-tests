@@ -1,4 +1,4 @@
-package org.jboss.ide.eclipse.as.ui.bot.test.as4;
+package org.jboss.ide.eclipse.as.ui.bot.test.as42;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;

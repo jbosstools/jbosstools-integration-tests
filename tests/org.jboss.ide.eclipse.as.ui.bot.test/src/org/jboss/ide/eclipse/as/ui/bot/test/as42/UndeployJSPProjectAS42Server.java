@@ -1,4 +1,4 @@
-package org.jboss.ide.eclipse.as.ui.bot.test.as4;
+package org.jboss.ide.eclipse.as.ui.bot.test.as42;
 
 import org.jboss.ide.eclipse.as.ui.bot.test.template.DeployJSPProjectTemplate;
 import org.jboss.ide.eclipse.as.ui.bot.test.template.UndeployJSPProjectTemplate;
