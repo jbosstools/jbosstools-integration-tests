@@ -201,9 +201,9 @@
 			</activation>
 			<properties>
 				<test.class>org.jboss.ide.eclipse.as.ui.bot.test.EAP5CompatibilitySuite</test.class>
-				<jbosstools.test.jboss-eap-5.home>${requirementsDirectory}/jboss-eap-5.1</jbosstools.test.jboss-eap-5.home>
-				<jbosstools.test.jboss-eap-5.url></jbosstools.test.jboss-eap-5.url>
-				<jbosstools.test.jboss-eap-5.md5>6d652593f03b398a9b832760c71ae1ad</jbosstools.test.jboss-eap-5.md5>
+				<jbosstools.test.jboss-eap-5.home>${requirementsDirectory}/jboss-eap-5.1/jboss-as</jbosstools.test.jboss-eap-5.home>
+				<jbosstools.test.jboss-eap-5.url>url/to/jboss-eap-noauth-5.1.2.zip</jbosstools.test.jboss-eap-5.url>
+				<jbosstools.test.jboss-eap-5.md5>82fac5578a5ed96d68592ac58f9c35e4</jbosstools.test.jboss-eap-5.md5>
 				<runtimesProperties>-Djbosstools.test.jboss-eap-5.home=${jbosstools.test.jboss-eap-5.home} -Dswtbot.test.properties.file=resources/config_files_templates/product/eap-5.properties</runtimesProperties>
 			</properties>
 			<build>
@@ -212,7 +212,7 @@
 				<artifactId>maven-download-plugin</artifactId>
 				<executions>
 					<execution>
-						<id>install-eap-6</id>
+						<id>install-eap-5</id>
 						<phase>pre-integration-test</phase>
 						<goals>
 							<goal>wget</goal>
