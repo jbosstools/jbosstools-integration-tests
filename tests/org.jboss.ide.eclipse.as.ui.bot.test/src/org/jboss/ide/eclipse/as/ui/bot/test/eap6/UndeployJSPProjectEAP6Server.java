@@ -12,7 +12,7 @@ import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
  * @author Lucia Jelinkova
  *
  */
-@Require(server=@Server(type=ServerType.EAP, state=ServerState.Running), clearProjects=false, clearWorkspace=false)
+@Require(server=@Server(type=ServerType.EAP, version="6", state=ServerState.Running), clearProjects=false, clearWorkspace=false)
 public class UndeployJSPProjectEAP6Server extends UndeployJSPProjectTemplate {
 
 	@Override

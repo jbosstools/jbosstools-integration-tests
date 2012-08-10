@@ -11,7 +11,7 @@ import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
  * @author Lucia Jelinkova
  *
  */
-@Require(server=@Server(type=ServerType.EAP, state=ServerState.Running))
+@Require(server=@Server(type=ServerType.EAP, version="6", state=ServerState.Running))
 public class DeployJSPProjectEAP6Server extends DeployJSPProjectTemplate {
 
 	@Override

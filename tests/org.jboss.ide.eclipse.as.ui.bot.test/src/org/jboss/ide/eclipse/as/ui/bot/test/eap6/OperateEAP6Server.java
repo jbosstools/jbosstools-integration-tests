@@ -12,7 +12,7 @@ import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
  * @author Lucia Jelinkova
  *
  */
-@Require(server=@Server(type=ServerType.EAP, state=ServerState.NotRunning))
+@Require(server=@Server(type=ServerType.EAP, version="6", state=ServerState.NotRunning))
 public class OperateEAP6Server extends OperateServerTemplate {
 
 	@Override
