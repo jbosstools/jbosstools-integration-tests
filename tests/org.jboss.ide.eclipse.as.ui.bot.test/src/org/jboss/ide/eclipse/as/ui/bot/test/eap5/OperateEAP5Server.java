@@ -16,6 +16,6 @@ public class OperateEAP5Server extends OperateServerTemplate {
 
 	@Override
 	public String getWelcomePageText() {
-		return "Manage this JBoss AS Instance";
+		return "Manage this JBoss EAP Instance";
 	}
 }
