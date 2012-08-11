@@ -36,7 +36,7 @@ public class HelloWorld extends ESBExampleTest {
 		assertFalse ("Test fails due to ESB deployment error: NNNN", text.contains("ERROR [org.apache.juddi.v3.client.transport.wrapper.RequestHandler]"));
 		assertNotNull("Calling ESB Send message failed, nothing appened to server log",text);
 		assertTrue("Calling ESB Send message failed, unexpected server output :"+text,text.contains("hello world esb"));
-		
+	
 		SWTTestExt.servers.removeAllProjectsFromServer();
 	}
 }

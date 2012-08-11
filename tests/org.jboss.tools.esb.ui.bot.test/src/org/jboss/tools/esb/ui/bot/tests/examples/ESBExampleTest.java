@@ -94,7 +94,11 @@ public class ESBExampleTest extends ExampleTest{
 	protected String executeClientGetServerOutput(String... clientClass) {
 		//String text = console.getConsoleText();
 		SWTBotTreeItem jmsCall = SWTEclipseExt.selectTreeLocation(packageExplorer.show().bot(),clientClass);
-		eclipse.runTreeItemAsJavaApplication(jmsCall);
+		// eclipse.runTreeItemAsJavaApplication(jmsCall);
+		
+		/* ldimaggi - Aug 2012 - https://issues.jboss.org/browse/JBQA-6462 */
+		eclipse.runTreeItemAsJavaApplication2(jmsCall);
+		
 		bot.sleep(Timing.time5S());
 		util.waitForNonIgnoredJobs();
 		String returnString = consoleWaiting();
@@ -110,7 +114,11 @@ public class ESBExampleTest extends ExampleTest{
 	 */
 	protected String executeClient(String... clientClass) {	
 		SWTBotTreeItem jmsCall = SWTEclipseExt.selectTreeLocation(packageExplorer.show().bot(),clientClass);
-		eclipse.runTreeItemAsJavaApplication(jmsCall);
+		
+		//eclipse.runTreeItemAsJavaApplication(jmsCall);
+		/* ldimaggi - Aug 2012 - https://issues.jboss.org/browse/JBQA-6462 */
+		eclipse.runTreeItemAsJavaApplication2(jmsCall);
+		
 		bot.sleep(Timing.time5S());
 		String text =  console.getConsoleText(TIME_5S, TIME_20S, false);
 		console.switchConsole(configuredState.getServer().name); // switch console back for sure
@@ -132,6 +140,7 @@ public class ESBExampleTest extends ExampleTest{
 	
 	protected String consoleWaiting () {
 		// New - the consoles fail to switch....sometimes
+		bot.sleep(60000);
 		boolean consoleSwitched = false;	
 		int switchLimit = 30;
 		int switchCounter = 0;
@@ -204,7 +213,7 @@ public class ESBExampleTest extends ExampleTest{
 				new SWTBotMenu(ContextMenuHelper.getContextMenu(tree, IDELabel.Menu.PROPERTIES, false)).click();
 				SWTBotShell shell = bot.activeShell();
 
-				/* ldimagi - July 2012 - added this as all tests were failing - unclear how this EVER worked before the change */
+				/* ldimaggi - July 2012 - added this as all tests were failing - unclear how this EVER worked before the change */
 				if (lib.contains("ESB")) {
 					shell.bot().table().select("ESB-" + configuredState.getServer().bundledESBVersion);
 				}
