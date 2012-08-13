@@ -14,19 +14,17 @@
 
 	<packaging>eclipse-test-plugin</packaging>
 	<properties>
-		<!-- debug option -->
-		<!-- <systemProperties>-Xdebug -Xrunjdwp:transport=dt_socket,address=8001,server=y,suspend=y 
-			-Dswtbot.test.properties.file=${project.basedir}/properties/config_files/swtbot.properties</systemProperties> -->
-		<systemProperties>-Dswtbot.test.properties.file=${project.basedir}/properties/swtbot.properties</systemProperties>
-
-
-		<!-- need to manually set path to swtbot.test.properties with property -->
-		<!-- <systemProperties>-Xdebug -Xrunjdwp:transport=dt_socket,address=8001,server=y,suspend=y 
-			-Dswtbot.test.properties.file=${swtbot.properties}</systemProperties> -->
-		<!-- <systemProperties>-Dswtbot.test.properties.file=${swtbot.properties}</systemProperties> -->
-
+		<additionalSystemProperties></additionalSystemProperties>
+		<systemProperties>${additionalSystemProperties} -Dswtbot.test.properties.file=${project.basedir}/properties/swtbot.properties</systemProperties>
 	</properties>
-
+	<profiles>
+		<profile>
+			<id>debug</id>
+			<properties>
+				<additionalSystemProperties>-Xdebug -Xrunjdwp:transport=dt_socket,address=8001,server=y,suspend=y</additionalSystemProperties>
+			</properties>
+		</profile>
+	</profiles>
 	<build>
 		<plugins>
 			<plugin>
@@ -76,22 +74,53 @@
 							<artifactId>org.jboss.tools.ws.jaxrs.feature.feature.group</artifactId>
 							<version>0.0.0</version>
 						</dependency>
-						<!-- workaround until JIRA fixed -->
 						<dependency>
 							<type>p2-installable-unit</type>
 							<artifactId>org.jboss.ide.eclipse.as.feature.feature.group</artifactId>
 							<version>0.0.0</version>
 						</dependency>
-						<!-- end of workaround -->
-						<!-- <dependency> <type>p2-installable-unit</type> <artifactId>org.eclipse.jst.enterprise_ui.feature.feature.group</artifactId> 
-							<version>0.0.0</version> </dependency> <dependency> <type>p2-installable-unit</type> 
-							<artifactId>org.eclipse.jst.web_ui.feature.feature.group</artifactId> <version>0.0.0</version> 
-							</dependency> <dependency> <type>p2-installable-unit</type> <artifactId>org.eclipse.wst.web_ui.feature.feature.group</artifactId> 
-							<version>0.0.0</version> </dependency> <dependency> <type>p2-installable-unit</type> 
-							<artifactId>org.eclipse.wst.ws_ui.feature.feature.group</artifactId> <version>0.0.0</version> 
-							</dependency> <dependency> <type>p2-installable-unit</type> <artifactId>org.eclipse.wst.xml_ui.feature.feature.group</artifactId> 
-							<version>0.0.0</version> </dependency> -->
 					</dependencies>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>target-platform-configuration</artifactId>
+				<version>${tychoVersion}</version>
+				<configuration>
+					<resolver>p2</resolver>
+					<ignoreTychoRepositories>true</ignoreTychoRepositories>
+					<environments>
+						<environment>
+							<os>macosx</os>
+							<ws>cocoa</ws>
+							<arch>x86</arch>
+						</environment>
+						<environment>
+							<os>macosx</os>
+							<ws>cocoa</ws>
+							<arch>x86_64</arch>
+						</environment>
+						<environment>
+							<os>win32</os>
+							<ws>win32</ws>
+							<arch>x86</arch>
+						</environment>
+						<environment>
+							<os>win32</os>
+							<ws>win32</ws>
+							<arch>x86_64</arch>
+						</environment>
+						<environment>
+							<os>linux</os>
+							<ws>gtk</ws>
+							<arch>x86</arch>
+						</environment>
+						<environment>
+							<os>linux</os>
+							<ws>gtk</ws>
+							<arch>x86_64</arch>
+						</environment>
+					</environments>
 				</configuration>
 			</plugin>
 		</plugins>
