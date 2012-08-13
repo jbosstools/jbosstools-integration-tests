@@ -16,6 +16,7 @@
 		<coverage.filter>org.jboss.tools.bpel.runtimes*</coverage.filter>
 		<emma.instrument.bundles>org.jboss.tools.bpel.runtimes</emma.instrument.bundles>
 		<systemProperties>-Dswtbot.test.properties.file=./org.jboss.tools.bpel.ui.bot.test.properties</systemProperties>
+		<surefire.timeout>10800</surefire.timeout>
 	</properties>
 
 	<build>
@@ -113,7 +114,6 @@
 					<testClass>org.jboss.tools.bpel.ui.bot.test.suite.BPELAllTest</testClass>
 					<useUIThread>false</useUIThread>
 					<skip>${swtbot.test.skip}</skip>
-					<forkedProcessTimeoutInSeconds>10800</forkedProcessTimeoutInSeconds>
 					<dependencies combine.children="append">
 						<!-- BPEL feature -->
 						<dependency>

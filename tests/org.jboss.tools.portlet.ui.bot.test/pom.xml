@@ -22,6 +22,7 @@
 		<additionalSystemProperties></additionalSystemProperties>
 		<systemProperties>${additionalSystemProperties} -Djbosstools.test.jboss-gatein.home=${jbosstools.test.jboss-gatein.home} -Djbosstools.test.jboss-seam-2.2.home=${jbosstools.test.jboss-seam-2.2.home} -Djbosstools.test.jboss-portal.home=${jbosstools.test.jboss-portal.home} -Djbosstools.test.jboss-seam-2.0.home=${jbosstools.test.jboss-seam-2.0.home} -Djbosstools.test.jboss-portlet-bridge.home=${jbosstools.test.jboss-portlet-bridge.home} -Dtest.configurations.dir=${configurations.dir}  -Dorg.eclipse.swtbot.screenshots.dir=${project.build.directory}/screenshots</systemProperties>
 		<test.class>org.jboss.tools.portlet.ui.bot.test.AllTestsSuite</test.class>
+		<surefire.timeout>7200</surefire.timeout>
 	</properties>
 
 	<profiles>
@@ -107,8 +108,6 @@
 				<artifactId>tycho-surefire-plugin</artifactId>
 				<configuration>
 					<useUIThread>false</useUIThread>
-					<surefire.timeout>7200</surefire.timeout>
-					<forkedProcessTimeoutInSeconds>7200</forkedProcessTimeoutInSeconds>
 					<testSuite>org.jboss.tools.portlet.ui.bot.test</testSuite>
 					<testClass>${test.class}</testClass>
 					<skip>${swtbot.test.skip}</skip>
