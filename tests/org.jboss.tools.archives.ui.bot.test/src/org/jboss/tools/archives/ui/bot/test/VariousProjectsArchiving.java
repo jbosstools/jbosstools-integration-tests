@@ -54,6 +54,9 @@ public class VariousProjectsArchiving extends ArchivesTestBase {
 		/* create archive */
 		view.createNewJarArchive(project).finish();
 		
+		/* workaround JBIDE-11878 */
+		view = viewForProject(project);
+		
 		/* test if archive was created and no error was thrown*/
 		assertItemExistsInView(view, 
 				project, project + ".jar [/" + project + "]");
@@ -74,6 +77,9 @@ public class VariousProjectsArchiving extends ArchivesTestBase {
 		
 		/* create archive */
 		view.createNewJarArchive(project).finish();
+		
+		/* workaround JBIDE-11878 */
+		view = viewForProject(project);
 		
 		/* test if archive was created and no error was thrown*/
 		assertItemExistsInView(view, 
