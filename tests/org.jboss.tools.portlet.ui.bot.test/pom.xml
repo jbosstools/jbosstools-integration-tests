@@ -46,7 +46,11 @@
 					<testClass>${test.class}</testClass>
 					<skip>${swtbot.test.skip}</skip>
 					<explodedBundles>
-						<explodedBundle>org.mozilla.xulrunner.gtk.linux.x86_64</explodedBundle>
+						<bundle>org.mozilla.xulrunner.carbon.macosx</bundle>
+						<bundle>org.mozilla.xulrunner.cocoa.macosx</bundle>
+						<bundle>org.mozilla.xulrunner.gtk.linux.x86</bundle>
+						<bundle>org.mozilla.xulrunner.gtk.linux.x86_64</bundle>
+						<bundle>org.mozilla.xulrunner.win32.win32.x86</bundle>
 					</explodedBundles>
 					<dependencies combine.children="append">
 						<dependency>
