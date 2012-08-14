@@ -13,10 +13,10 @@
 	<packaging>eclipse-test-plugin</packaging>
 	<properties>
 		<jbosstools.test.jbossesb.home>${requirementsDirectory}/jbossesb-4.11</jbosstools.test.jbossesb.home>
-		<jbosstools.test.jbosssoa.home>${requirementsDirectory}/jboss-soa-p-5.3/jboss-soa-p-5/jboss-as</jbosstools.test.jbosssoa.home>
+		<jbosstools.test.jbosssoa.home>${requirementsDirectory}/jboss-soa-p-5/jboss-as</jbosstools.test.jbosssoa.home>
 		<swtbot.test.properties.file>./org.jboss.tools.esb.ui.bot.test.properties</swtbot.test.properties.file>
-		<systemProperties>-Djbosstools.test.jbossesb.home=${jbosstools.test.jbossesb.home} -Djbosstools.test.jbosssoa.home=${jbosstools.test.jbosssoa.home} -Dswtbot.test.properties.file=${swtbot.test.properties.file}</systemProperties>
-		<surefire.timeout>7200</surefire.timeout>
+		<systemProperties>-Djbosstools.test.jbossesb.home=${jbosstools.test.jbossesb.home} -Djbosstools.test.jbosssoa.home=${jbosstools.test.jbosssoa.home} -Dswtbot.test.properties.file=${swtbot.test.properties.file}
+		</systemProperties>
 	</properties>
 
 	<build>
@@ -32,8 +32,8 @@
 							<goal>wget</goal>
 						</goals>
 						<configuration>
-							<url>http://jawa05.englab.brq.redhat.com/candidate/soa-5.3.0.ER2/soa-p-5.3.0.ER2.zip</url>
-							<md5>1f70c15b26a0d812ba2a39a96c6a8c57</md5>
+							<url>http://jawa05.englab.brq.redhat.com/candidate/soa-5.3.0.ER5/soa-p-5.3.0.ER5.zip</url>
+							<md5>1c2e329498396762b8dad2c1621308bf</md5>
 							<unpack>true</unpack>
 						</configuration>
 					</execution>
@@ -59,6 +59,7 @@
 					<skip>${swtbot.test.skip}</skip>
 					<testSuite>org.jboss.tools.esb.ui.bot.test</testSuite>
 					<testClass>org.jboss.tools.esb.ui.bot.tests.ESBAllBotTests</testClass>
+					<forkedProcessTimeoutInSeconds>7200</forkedProcessTimeoutInSeconds>
 				</configuration>
 			</plugin>
 		</plugins>
