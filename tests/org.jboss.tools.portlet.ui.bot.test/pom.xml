@@ -111,6 +111,13 @@
 					<testSuite>org.jboss.tools.portlet.ui.bot.test</testSuite>
 					<testClass>${test.class}</testClass>
 					<skip>${swtbot.test.skip}</skip>
+					<explodedBundles>
+						<bundle>org.mozilla.xulrunner.carbon.macosx</bundle>
+						<bundle>org.mozilla.xulrunner.cocoa.macosx</bundle>
+						<bundle>org.mozilla.xulrunner.gtk.linux.x86</bundle>
+						<bundle>org.mozilla.xulrunner.gtk.linux.x86_64</bundle>
+						<bundle>org.mozilla.xulrunner.win32.win32.x86</bundle>
+					</explodedBundles>
 					<dependencies combine.children="append">
 						<dependency>
 							<type>p2-installable-unit</type>
