@@ -2,16 +2,15 @@ package org.jboss.tools.forge.ui.bot.test.suite;
 
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.widgetOfType;
 
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotStyledText;
 import org.eclipse.ui.part.PageBook;
 import org.jboss.tools.forge.ui.bot.test.util.ConsoleUtils;
+import org.jboss.tools.forge.ui.bot.test.util.ViewUtils;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
-import org.jboss.tools.ui.bot.ext.view.PackageExplorer;
 import org.jboss.tools.ui.bot.ext.view.ProjectExplorer;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -172,7 +171,10 @@ public class ForgeTest extends SWTTestExt {
 			return;
 		
 		SWTBotView view = getForgeView();
-		view.toolbarButton("Start the default Forge runtime").click();
+		/* view.toolbarButton("Start the default Forge runtime").click(); */
+		//not working with juno ^^^
+		//workaround:
+		ViewUtils.getToolbarButton("Start the default Forge runtime").click();	
 		
 		util.waitForNonIgnoredJobs();
 	}
@@ -183,7 +185,11 @@ public class ForgeTest extends SWTTestExt {
 			openForgeView();
 		
 		SWTBotView view = getForgeView();
-		view.toolbarButton("Stop the running Forge runtime").click();
+		/* view.toolbarButton("Stop the running Forge runtime").click(); */
+		//not working with juno ^^^
+		//workaround:
+		ViewUtils.getToolbarButton("Stop the running Forge runtime").click();
+		
 		bot.sleep(TIME_5S);
 	}
 	
