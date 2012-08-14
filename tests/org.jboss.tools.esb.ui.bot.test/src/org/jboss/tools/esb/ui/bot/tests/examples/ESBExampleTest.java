@@ -140,7 +140,7 @@ public class ESBExampleTest extends ExampleTest{
 	
 	protected String consoleWaiting () {
 		// New - the consoles fail to switch....sometimes
-		bot.sleep(60000);
+		bot.sleep(Timing.time30S());
 		boolean consoleSwitched = false;	
 		int switchLimit = 30;
 		int switchCounter = 0;
