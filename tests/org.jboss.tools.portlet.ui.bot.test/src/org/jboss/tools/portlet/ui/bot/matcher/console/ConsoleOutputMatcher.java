@@ -2,6 +2,7 @@ package org.jboss.tools.portlet.ui.bot.matcher.console;
 
 import org.hamcrest.Description;
 import org.jboss.tools.portlet.ui.bot.matcher.AbstractSWTMatcher;
+import org.jboss.tools.ui.bot.ext.condition.TaskDuration;
 
 /**
  * Checks if the console contains specified text. 
@@ -15,6 +16,10 @@ public class ConsoleOutputMatcher extends AbstractSWTMatcher<String> {
 	
 	public ConsoleOutputMatcher() {
 		wrappedMatcher = new org.jboss.tools.ui.bot.ext.matcher.console.ConsoleOutputMatcher();
+	}
+	
+	public ConsoleOutputMatcher(TaskDuration duration) {
+		wrappedMatcher = new org.jboss.tools.ui.bot.ext.matcher.console.ConsoleOutputMatcher(duration);
 	}
 	
 	@Override

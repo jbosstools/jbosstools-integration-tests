@@ -4,6 +4,7 @@ import org.hamcrest.Description;
 import org.jboss.tools.portlet.ui.bot.entity.PortletDefinition;
 import org.jboss.tools.portlet.ui.bot.matcher.AbstractSWTMatcher;
 import org.jboss.tools.portlet.ui.bot.matcher.browser.PageSourceMatcher;
+import org.jboss.tools.ui.bot.ext.condition.TaskDuration;
 
 /**
  * Check if the given portlet can be loaded in EPP 4.x runtime. 
@@ -17,9 +18,15 @@ public class PortletLoadsInJBPortalMatcher extends AbstractSWTMatcher<PortletDef
 	
 	private PageSourceMatcher pageMatcher;
 	
+	private TaskDuration duration;
+	
+	public PortletLoadsInJBPortalMatcher(TaskDuration duration){
+		this.duration = duration;
+	}
+	
 	@Override
 	public boolean matchesSafely(PortletDefinition portletTitle) {
-		pageMatcher = new PageSourceMatcher(PORTAL_URL + portletTitle.getPage());
+		pageMatcher = new PageSourceMatcher(PORTAL_URL + portletTitle.getPage(), duration);
 		pageMatcher.setBot(getBot());
 		return pageMatcher.matchesSafely("<span class=\"portlet-titlebar-title\">" + portletTitle.getDisplayName() + "</span>");
 	}
