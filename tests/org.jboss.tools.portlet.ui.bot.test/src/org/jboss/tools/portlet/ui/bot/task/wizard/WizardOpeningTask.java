@@ -37,6 +37,7 @@ public class WizardOpeningTask extends AbstractSWTTask {
 
 	@Override
 	public void perform() {
+		activateWorkbenchShell();
 		log.info("Opening wizard");
 		log.info("All shells: ");
 		for (SWTBotShell shell : SWTBotFactory.getBot().shells()){
@@ -44,6 +45,19 @@ public class WizardOpeningTask extends AbstractSWTTask {
 			log.info("Is active: " + shell.isActive());
 		}
 		new SWTBotNewObjectWizard().open(name, getGroupPath());
+	}
+	
+	private void activateWorkbenchShell(){
+		SWTBotShell[] shells = getBot().shells();
+		if (shells.length == 1){
+			log.info("Only one shell present, assuming it's workbench and activating");
+			shells[0].activate();
+		} else {
+			log.info("More than one shell present");
+			for (SWTBotShell shell : shells){
+				log.info(shell.getText());
+			}
+		}
 	}
 	
 	private String[] getGroupPath() {
