@@ -13,7 +13,7 @@ public class ProjectPropertyDialogCloseTask extends AbstractSWTTask {
 	public void perform() {
 		SWTBotShell activeShell = getBot().activeShell();
 		getBot().button("OK").click();
-		performInnerTask(new WaitWhileTask(new ShellIsActiveCondition(activeShell), TaskDuration.NORMAL));
 		performInnerTask(new WaitWhileTask(new NonSystemJobRunsCondition(), TaskDuration.LONG));
+		performInnerTask(new WaitWhileTask(new ShellIsActiveCondition(activeShell), TaskDuration.NORMAL));
 	}
 }
