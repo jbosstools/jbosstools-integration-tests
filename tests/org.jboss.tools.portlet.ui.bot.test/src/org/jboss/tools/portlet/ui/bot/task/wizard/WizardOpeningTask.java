@@ -41,6 +41,7 @@ public class WizardOpeningTask extends AbstractSWTTask {
 		log.info("All shells: ");
 		for (SWTBotShell shell : SWTBotFactory.getBot().shells()){
 			log.info(shell.getText() + ": " + shell);
+			log.info("Is active: " + shell.isActive());
 		}
 		new SWTBotNewObjectWizard().open(name, getGroupPath());
 	}
