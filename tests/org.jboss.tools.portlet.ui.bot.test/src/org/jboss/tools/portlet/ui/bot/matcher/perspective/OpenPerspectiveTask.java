@@ -29,20 +29,28 @@ public class OpenPerspectiveTask extends AbstractSWTTask {
 
 	@Override
 	public void perform() {
-		log.info("Opening wizard");
+		activateWorkbenchShell();
+		log.info("Opening perspective");
 		log.info("All shells: ");
 		for (SWTBotShell shell : SWTBotFactory.getBot().shells()){
 			log.info(shell.getText() + ": " + shell);
 			log.info("Is active: " + shell.isActive());
 		}
 		getBot().waitUntil(widgetIsEnabled(getBot().menu("Window")), TaskDuration.NORMAL.getTimeout());
-		log.info("Opening wizard");
-		log.info("All shells: ");
-		for (SWTBotShell shell : SWTBotFactory.getBot().shells()){
-			log.info(shell.getText() + ": " + shell);
-			log.info("Is active: " + shell.isActive());
-		}
 		SWTBotFactory.getOpen().perspective(perspective);
+	}
+	
+	public void activateWorkbenchShell(){
+		SWTBotShell[] shells = getBot().shells();
+		if (shells.length == 1){
+			log.info("Only one shell present, assuming it's workbench and activating");
+			shells[0].activate();
+		} else {
+			log.info("More than one shell present");
+			for (SWTBotShell shell : shells){
+				log.info(shell.getText());
+			}
+		}
 	}
 	
 	@Override
