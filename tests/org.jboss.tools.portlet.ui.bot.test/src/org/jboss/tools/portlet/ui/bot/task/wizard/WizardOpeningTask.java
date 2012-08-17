@@ -1,6 +1,9 @@
 package org.jboss.tools.portlet.ui.bot.task.wizard;
 
+import org.apache.log4j.Logger;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.jboss.tools.portlet.ui.bot.task.AbstractSWTTask;
+import org.jboss.tools.ui.bot.ext.SWTBotFactory;
 import org.jboss.tools.ui.bot.ext.wizards.SWTBotNewObjectWizard;
 
 /**
@@ -10,6 +13,8 @@ import org.jboss.tools.ui.bot.ext.wizards.SWTBotNewObjectWizard;
  *
  */
 public class WizardOpeningTask extends AbstractSWTTask {
+	
+	private static final Logger log = Logger.getLogger(WizardOpeningTask.class);
 
 	private String category;
 
@@ -32,6 +37,11 @@ public class WizardOpeningTask extends AbstractSWTTask {
 
 	@Override
 	public void perform() {
+		log.info("Opening wizard");
+		log.info("All shells: ");
+		for (SWTBotShell shell : SWTBotFactory.getBot().shells()){
+			log.info(shell.getText() + ": " + shell);
+		}
 		new SWTBotNewObjectWizard().open(name, getGroupPath());
 	}
 	
