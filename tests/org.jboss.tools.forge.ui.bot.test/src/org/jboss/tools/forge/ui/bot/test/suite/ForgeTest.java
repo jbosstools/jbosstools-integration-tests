@@ -1,7 +1,6 @@
 package org.jboss.tools.forge.ui.bot.test.suite;
 
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.widgetOfType;
-
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
@@ -10,16 +9,21 @@ import org.eclipse.ui.part.PageBook;
 import org.jboss.tools.forge.ui.bot.test.util.ConsoleUtils;
 import org.jboss.tools.forge.ui.bot.test.util.ViewUtils;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
+import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.ext.view.ProjectExplorer;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
+import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
+import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
 
 /**
  * 
  * @author psrna
  *
  */
+@Require(server = @Server(type = ServerType.ALL, state = ServerState.Present))
 public class ForgeTest extends SWTTestExt {
 
 	protected static final String PROJECT_NAME = "testproject";
@@ -164,6 +168,7 @@ public class ForgeTest extends SWTTestExt {
 	}
 	
 	public static void startForge(){
+		log.info("Trying to start forge...");
 		
 		if(!isForgeViewActive())
 			openForgeView();
@@ -175,7 +180,7 @@ public class ForgeTest extends SWTTestExt {
 		//not working with juno ^^^
 		//workaround:
 		ViewUtils.getToolbarButton("Start the default Forge runtime").click();	
-		
+
 		util.waitForNonIgnoredJobs();
 	}
 	

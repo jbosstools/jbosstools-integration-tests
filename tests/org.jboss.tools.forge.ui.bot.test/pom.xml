@@ -14,7 +14,7 @@
 	<properties>
 		<jbosstools.test.jboss-as.home>${requirementsDirectory}/jboss-as-7.1.1.Final</jbosstools.test.jboss-as.home>
 		<additionalSystemProperties></additionalSystemProperties>
-		<systemProperties>${additionalSystemProperties} -Dtest.configurations.dir=resources/properties -Djbosstools.test.jboss-as.home=${jbosstools.test.jboss-as.home}</systemProperties>
+		<systemProperties>${additionalSystemProperties} -DJAVA_HOME=${JAVA_HOME} -Dtest.configurations.dir=resources/properties -Djbosstools.test.jboss-as.home=${jbosstools.test.jboss-as.home}</systemProperties>
 	</properties>
 
 	<profiles>
