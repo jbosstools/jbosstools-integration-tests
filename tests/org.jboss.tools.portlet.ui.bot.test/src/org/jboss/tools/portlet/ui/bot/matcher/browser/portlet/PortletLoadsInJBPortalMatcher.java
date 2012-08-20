@@ -28,7 +28,7 @@ public class PortletLoadsInJBPortalMatcher extends AbstractSWTMatcher<PortletDef
 	public boolean matchesSafely(PortletDefinition portletTitle) {
 		pageMatcher = new PageSourceMatcher(PORTAL_URL + portletTitle.getPage(), duration);
 		pageMatcher.setBot(getBot());
-		return pageMatcher.matchesSafely("<span class=\"portlet-titlebar-title\">" + portletTitle.getDisplayName() + "</span>");
+		return pageMatcher.matchesSafely(".*<span class=(.?\")?portlet-titlebar-title(.?\")?>" + portletTitle.getDisplayName() + "</span>.*");
 	}
 
 	@Override

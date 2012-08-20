@@ -1,5 +1,8 @@
 package org.jboss.tools.portlet.ui.bot.matcher.browser;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
 import org.eclipse.swtbot.swt.finder.widgets.TimeoutException;
 import org.hamcrest.Description;
@@ -76,7 +79,10 @@ public class PageSourceMatcher extends AbstractSWTMatcher<String> {
 			if ("".equals(expectedText)){
 				return pageText.equals(expectedText);
 			}
-			return pageText.contains(expectedText);
+			System.out.println(pageText);
+			Pattern p = Pattern.compile(expectedText, Pattern.DOTALL | Pattern.CASE_INSENSITIVE);
+	        Matcher m = p.matcher(pageText);
+			return m.matches();
 		}
 
 		@Override
