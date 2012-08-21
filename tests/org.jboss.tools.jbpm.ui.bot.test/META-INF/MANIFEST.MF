@@ -16,7 +16,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.swtbot.swt.finder;bundle-version="2.0.0",
  org.apache.log4j;bundle-version="1.2.15",
  org.jboss.tools.ui.bot.ext;bundle-version="3.2.0",
- org.junit4;bundle-version="4.8.1",
+ org.junit;bundle-version="4.8.1",
  org.eclipse.gef;bundle-version="3.6.1"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
