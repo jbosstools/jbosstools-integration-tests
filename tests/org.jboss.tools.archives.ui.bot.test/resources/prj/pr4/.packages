@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?><packages version="1.3">
+  <package exploded="false" inWorkspace="true" name="pr4aa.jar">
+    <properties/>
+  </package>
+  <package exploded="false" inWorkspace="true" name="pr4ab.jar">
+    <properties/>
+  </package>
+  <package exploded="false" inWorkspace="true" name="pr4ba.jar">
+    <properties/>
+  </package>
+  <package exploded="false" inWorkspace="true" name="pr4bb.jar">
+    <properties/>
+  </package>
+  <properties/>
+</packages>
