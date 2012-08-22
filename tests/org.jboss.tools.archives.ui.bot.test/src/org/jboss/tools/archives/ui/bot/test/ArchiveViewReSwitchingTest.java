@@ -33,7 +33,7 @@ public class ArchiveViewReSwitchingTest extends ArchivesTestBase {
 		/* show all tested views */
 		console.show();
 		servers.show();
-		errors .show();
+		errors.show();
 		
 		/* create test project */
 		JavaProjectEntity project = new JavaProjectEntity();

@@ -10,6 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.archives.ui.bot.test.context;
 
+import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
@@ -19,8 +20,10 @@ import org.jboss.tools.archives.ui.bot.test.dialog.FilesetDialog;
 import org.jboss.tools.archives.ui.bot.test.dialog.FolderCreatingDialog;
 import org.jboss.tools.archives.ui.bot.test.dialog.NewJarDialog;
 import org.jboss.tools.archives.ui.bot.test.dialog.UserLibrariesFilesetDialog;
+import org.jboss.tools.ui.bot.ext.SWTBotExt;
 import org.jboss.tools.ui.bot.ext.SWTBotFactory;
 import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
+import org.jboss.tools.ui.bot.ext.types.IDELabel;
 
 /**
  * 
@@ -96,6 +99,7 @@ public class ArchiveContextMenu {
 		SWTBotMenu menu = new SWTBotMenu(ContextMenuHelper.
 				getContextMenu(tree, "Delete Archive", false));
 		menu.click();
+		handleDeleteDialog();
 		SWTBotFactory.getUtil().waitForNonIgnoredJobs();
 	}
 	
@@ -119,6 +123,17 @@ public class ArchiveContextMenu {
 				getContextMenu(tree, "Edit publish settings...", false));
 		menu.click();
 		return new ArchivePublishSettingsDialog();
+	}
+	
+	private void handleDeleteDialog() {
+		SWTBotExt bot = SWTBotFactory.getBot();
+		try {
+			bot.waitForShell(IDELabel.Shell.DELETE_NODE);
+			bot.shell(IDELabel.Shell.DELETE_NODE)
+				.bot().button(IDELabel.Button.YES).click();
+		} catch (WidgetNotFoundException exc) {
+			//do nothing here
+		}
 	}
 	
 }

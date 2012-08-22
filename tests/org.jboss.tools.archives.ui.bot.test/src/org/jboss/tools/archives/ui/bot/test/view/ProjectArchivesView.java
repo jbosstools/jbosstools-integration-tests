@@ -10,7 +10,10 @@
  ******************************************************************************/
 package org.jboss.tools.archives.ui.bot.test.view;
 
+import java.util.List;
+
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarButton;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.archives.ui.bot.test.context.ArchiveContextMenu;
@@ -42,7 +45,8 @@ public class ProjectArchivesView extends ViewBase {
 	
 	public void buildArchiveNode(String... path) {
 		open.selectTreeNode(this.bot(), path);
-		show().toolbarButton(IDELabel.ArchivesView.BUTTON_BUILD_ARCHIVE_NODE).click();
+		show();
+		toolbarButton(IDELabel.ArchivesView.BUTTON_BUILD_ARCHIVE_NODE).click();
 	}
 	
 	public NewJarDialog createNewJarArchive(String project) {
@@ -109,11 +113,22 @@ public class ProjectArchivesView extends ViewBase {
 	public boolean itemExists(String... path) {
 		try {
 			this.bot().tree(0).getTreeItem(path[0]).collapse();
-			TreeHelper.expandNode(bot, path);
+			TreeHelper.expandNode(bot(), path);
 			return true;
 		} catch (WidgetNotFoundException exc) {
 			return false;
 		}
+	}
+	
+	private SWTBotToolbarButton toolbarButton(String toolbarToolTip) {
+		List<SWTBotToolbarButton> toolbarButtons = getToolbarButtons();
+		for (SWTBotToolbarButton button : toolbarButtons) {
+			if (button.isEnabled() && button.getToolTipText().equals(toolbarToolTip)) {
+				return button;
+			}
+		}
+		throw new WidgetNotFoundException("Toolbar button '" + toolbarToolTip + "' was not " +
+				"found or enabled");
 	}
 	
 }

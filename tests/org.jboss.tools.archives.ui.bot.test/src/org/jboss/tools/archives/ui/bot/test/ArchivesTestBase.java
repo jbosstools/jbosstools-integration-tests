@@ -75,8 +75,8 @@ public class ArchivesTestBase extends SWTTestExt {
 		server.collapse();
 		server.expand();
 		boolean found = false;
-		for (SWTBotTreeItem ti : server.getItems()) {
-			if (ti.getText().contains(archive)) {
+		for (String node : server.getNodes()) {
+			if (node.contains(archive)) {
 				found = true;
 				break;
 			}
