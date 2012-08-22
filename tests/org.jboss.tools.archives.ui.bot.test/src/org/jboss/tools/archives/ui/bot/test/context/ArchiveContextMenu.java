@@ -11,6 +11,7 @@
 package org.jboss.tools.archives.ui.bot.test.context;
 
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
+import org.eclipse.swtbot.swt.finder.keyboard.Keystrokes;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
@@ -94,11 +95,17 @@ public class ArchiveContextMenu {
 	}
 	
 	public void deleteArchive(SWTBotTree tree, 
-			SWTBotTreeItem item) {
-		ContextMenuHelper.prepareTreeItemForContextMenu(tree, item);
-		SWTBotMenu menu = new SWTBotMenu(ContextMenuHelper.
+			SWTBotTreeItem item, boolean withContextMenu) {
+		if (withContextMenu) {
+			ContextMenuHelper.prepareTreeItemForContextMenu(tree, item);
+			SWTBotMenu menu = new SWTBotMenu(ContextMenuHelper.
 				getContextMenu(tree, "Delete Archive", false));
-		menu.click();
+			menu.click();
+		} else {
+			item.select();
+			item.pressShortcut(Keystrokes.DELETE);
+		}
+		
 		handleDeleteDialog();
 		SWTBotFactory.getUtil().waitForNonIgnoredJobs();
 	}

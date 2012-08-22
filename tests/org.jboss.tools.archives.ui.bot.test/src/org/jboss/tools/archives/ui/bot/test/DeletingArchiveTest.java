@@ -22,16 +22,16 @@ import org.junit.Test;
  */
 public class DeletingArchiveTest extends ArchivesTestBase {
 
-	private static String project = "pr3";
-	private final String ARCHIVE_NAME_1 = 
-			project + "a.jar";
-	private final String ARCHIVE_NAME_2 = 
-			project + "b.jar";
-	private final String PATH_SUFFIX = " [/" + project + "]"; 
-	private final String PATH_ARCHIVE_1 = 
-			ARCHIVE_NAME_1 + PATH_SUFFIX;
-	private final String PATH_ARCHIVE_2 = 
-			ARCHIVE_NAME_2 + PATH_SUFFIX;
+	private static String project = "pr4";
+	private static final String ARCHIVE_NAME_AA = 
+			project + "aa.jar";
+	private static final String ARCHIVE_NAME_AB = 
+			project + "ab.jar";
+	private static final String ARCHIVE_NAME_BA = 
+			project + "ba.jar";
+	private static final String ARCHIVE_NAME_BB = 
+			project + "bb.jar";
+	private static final String PATH_SUFFIX = " [/" + project + "]"; 
 	
 	@BeforeClass
 	public static void setup() {
@@ -44,11 +44,17 @@ public class DeletingArchiveTest extends ArchivesTestBase {
 		/* prepare view for testing */
 		ProjectArchivesView view = viewForProject(project);
 		
-		/* delete archive in view */
-		view.deleteArchive(project, PATH_ARCHIVE_1);
+		/* delete archive in view with context menu */
+		view.deleteArchive(true, project, ARCHIVE_NAME_AA + PATH_SUFFIX);
 		
 		/* test archive was deleted */
-		assertItemNotExistsInView(view, project, PATH_ARCHIVE_1);
+		assertItemNotExistsInView(view, project, ARCHIVE_NAME_AA + PATH_SUFFIX);
+		
+		/* delete archive in view with keyboard shortcut */
+		view.deleteArchive(false, project, ARCHIVE_NAME_AB + PATH_SUFFIX);
+		
+		/* test archive was deleted */
+		assertItemNotExistsInView(view, project, ARCHIVE_NAME_AB + PATH_SUFFIX);
 	}
 	
 	@Test
@@ -57,11 +63,17 @@ public class DeletingArchiveTest extends ArchivesTestBase {
 		/* prepare explorer for testing */
 		ProjectArchivesExplorer explorer = explorerForProject(project);
 		
-		/* delete archive in explorer */
-		explorer.deleteArchive(PATH_ARCHIVE_2);
+		/* delete archive in explorer with context menu*/
+		explorer.deleteArchive(true, ARCHIVE_NAME_BA + PATH_SUFFIX);
 		
 		/* test archive was deleted */
-		assertItemNotExistsInExplorer(explorer, PATH_ARCHIVE_2);
+		assertItemNotExistsInExplorer(explorer, ARCHIVE_NAME_BA + PATH_SUFFIX);
+		
+		/* delete archive in explorer with keyboard shortcut */
+		explorer.deleteArchive(false, ARCHIVE_NAME_BB + PATH_SUFFIX);
+		
+		/* test archive was deleted */
+		assertItemNotExistsInExplorer(explorer, ARCHIVE_NAME_BB + PATH_SUFFIX);
 	}
 	
 }

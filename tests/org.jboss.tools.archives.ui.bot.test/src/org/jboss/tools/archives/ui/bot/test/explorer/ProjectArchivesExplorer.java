@@ -82,10 +82,10 @@ public class ProjectArchivesExplorer {
 		return contextTool.editArchive(tree, treeItem);
 	}
 	
-	public void deleteArchive(String archive) {
+	public void deleteArchive(boolean withContextMenu, String archive) {
 		SWTBotTree tree = this.bot().tree();
 		SWTBotTreeItem treeItem = explorer.getNode(archive);
-		contextTool.deleteArchive(tree, treeItem);
+		contextTool.deleteArchive(tree, treeItem, withContextMenu);
 	}
 	
 	public ArchivePublishSettingsDialog publishToServer(
