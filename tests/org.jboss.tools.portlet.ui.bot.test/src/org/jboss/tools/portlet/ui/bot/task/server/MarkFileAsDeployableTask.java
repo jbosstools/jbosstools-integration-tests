@@ -28,12 +28,18 @@ public class MarkFileAsDeployableTask extends AbstractSWTTask {
 		// for the confirmation dialog select OK (the dialog is native and normal swtbot functions do now work)
 		try {
 			Robot robot = new Robot();
-			robot.keyPress(KeyEvent.VK_RIGHT);
-			robot.keyRelease(KeyEvent.VK_RIGHT);
+			if (!isWindowsOS()){
+				robot.keyPress(KeyEvent.VK_RIGHT);
+				robot.keyRelease(KeyEvent.VK_RIGHT);
+			}
 			robot.keyPress(KeyEvent.VK_ENTER);
 			robot.keyRelease(KeyEvent.VK_ENTER);
 		} catch (AWTException e) {
 			throw new IllegalStateException("Cannot create instance of " + Robot.class + " in order to close native dialog", e);
 		}
+	}
+
+	private boolean isWindowsOS(){
+		return System.getProperty("os.name").toLowerCase().contains("win");
 	}
 }
