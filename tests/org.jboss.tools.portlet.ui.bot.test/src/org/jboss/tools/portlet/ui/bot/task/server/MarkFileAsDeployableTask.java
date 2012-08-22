@@ -24,6 +24,7 @@ public class MarkFileAsDeployableTask extends AbstractSWTTask {
 	public void perform() {
 		performInnerTask(new FileContextMenuSelectingTask(workspaceFile, "Mark as Deployable"));
 		// for the confirmation dialog select OK (the dialog is native and normal swtbot functions do now work)
-		KeyboardFactory.getAWTKeyboard().pressShortcut(Keystrokes.RIGHT, Keystrokes.CR, Keystrokes.LF);
+		KeyboardFactory.getAWTKeyboard().pressShortcut(Keystrokes.RIGHT);
+		KeyboardFactory.getAWTKeyboard().pressShortcut(Keystrokes.CR, Keystrokes.LF);
 	}
 }
