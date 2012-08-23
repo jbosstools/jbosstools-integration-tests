@@ -19,6 +19,36 @@
 		</systemProperties>
 	</properties>
 
+	<profiles>
+		<profile>
+			<id>skip-tests-privateReqs</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+				<property>
+					<name>skipPrivateRequirements</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<properties>
+				<esb.test.skip>true</esb.test.skip>
+			</properties>
+		</profile>
+		<profile>
+			<id>skip-swtbot</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+				<property>
+					<name>swtbot.test.skip</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<properties>
+				<esb.test.skip>true</esb.test.skip>
+			</properties>
+		</profile>
+	</profiles>
+
+
 	<build>
 		<plugins>
 			<plugin>
@@ -35,6 +65,7 @@
 							<url>http://jawa05.englab.brq.redhat.com/candidate/soa-5.3.0.ER5/soa-p-5.3.0.ER5.zip</url>
 							<md5>1c2e329498396762b8dad2c1621308bf</md5>
 							<unpack>true</unpack>
+							<skip>${esb.test.skip}</skip>
 						</configuration>
 					</execution>
 					<execution>
@@ -47,6 +78,7 @@
 							<url>http://download.jboss.org/jbossesb/4.11/binary/jbossesb-4.11.zip</url>
 							<md5>506bb7f42777cf0e524ccc37336aa137</md5>
 							<unpack>true</unpack>
+							<skip>${esb.test.skip}</skip>
 						</configuration>
 					</execution>
 				</executions>
@@ -56,7 +88,7 @@
 				<artifactId>tycho-surefire-plugin</artifactId>
 				<configuration>
 					<useUIThread>false</useUIThread>
-					<skip>${swtbot.test.skip}</skip>
+					<skip>${esb.test.skip}</skip>
 					<testSuite>org.jboss.tools.esb.ui.bot.test</testSuite>
 					<testClass>org.jboss.tools.esb.ui.bot.tests.ESBAllBotTests</testClass>
 					<forkedProcessTimeoutInSeconds>7200</forkedProcessTimeoutInSeconds>
