@@ -1,12 +1,16 @@
 package org.jboss.tools.portlet.ui.bot.task.server;
 
+import static org.eclipse.swtbot.swt.finder.waits.Conditions.shellIsActive;
+
 import java.awt.AWTException;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
 
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.jboss.tools.portlet.ui.bot.entity.WorkspaceFile;
 import org.jboss.tools.portlet.ui.bot.task.AbstractSWTTask;
 import org.jboss.tools.portlet.ui.bot.task.workspace.FileContextMenuSelectingTask;
+import org.jboss.tools.ui.bot.ext.SWTBotFactory;
 
 /**
  * Marks a file as deployable for the specified server (it works only if there is just one server defined) 
@@ -24,7 +28,25 @@ public class MarkFileAsDeployableTask extends AbstractSWTTask {
 
 	@Override
 	public void perform() {
+		System.out.println("*** Shells: ***");
+		SWTBotShell activeShell = SWTBotFactory.getBot().activeShell();
+		System.out.println("A: " + activeShell.getText());
+		for (SWTBotShell shell : SWTBotFactory.getBot().shells()){
+			System.out.println(shell.getText());
+		}
+
+
 		performInnerTask(new FileContextMenuSelectingTask(workspaceFile, "Mark as Deployable"));
+
+		SWTBotFactory.getBot().waitUntil(shellIsActive("Really mark these resources as deployable?"));
+
+		System.out.println("---------");
+		activeShell = SWTBotFactory.getBot().activeShell();
+		System.out.println("A: " + activeShell.getText());
+		for (SWTBotShell shell : SWTBotFactory.getBot().shells()){
+			System.out.println(shell.getText());
+		}
+
 		// for the confirmation dialog select OK (the dialog is native and normal swtbot functions do now work)
 		try {
 			Robot robot = new Robot();
