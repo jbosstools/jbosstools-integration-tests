@@ -31,6 +31,11 @@ public class MarkFileAsDeployableTask extends AbstractSWTTask {
 			if (!isWindowsOS()){
 				robot.keyPress(KeyEvent.VK_RIGHT);
 				robot.keyRelease(KeyEvent.VK_RIGHT);
+			} else {
+				robot.keyPress(KeyEvent.VK_RIGHT);
+				robot.keyRelease(KeyEvent.VK_RIGHT);
+				robot.keyPress(KeyEvent.VK_LEFT);
+				robot.keyRelease(KeyEvent.VK_LEFT);
 			}
 			robot.keyPress(KeyEvent.VK_ENTER);
 			robot.keyRelease(KeyEvent.VK_ENTER);
