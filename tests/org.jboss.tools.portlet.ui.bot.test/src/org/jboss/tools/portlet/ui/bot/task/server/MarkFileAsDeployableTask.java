@@ -7,6 +7,7 @@ import org.jboss.tools.portlet.ui.bot.entity.WorkspaceFile;
 import org.jboss.tools.portlet.ui.bot.task.AbstractSWTTask;
 import org.jboss.tools.portlet.ui.bot.task.workspace.FileContextMenuSelectingTask;
 import org.jboss.tools.ui.bot.ext.SWTBotFactory;
+import org.jboss.tools.ui.bot.ext.logging.WidgetsLogger;
 
 /**
  * Marks a file as deployable for the specified server (it works only if there is just one server defined) 
@@ -32,6 +33,7 @@ public class MarkFileAsDeployableTask extends AbstractSWTTask {
 		log.info("Waiting for confirmation shell to appear");
 		SWTBotFactory.getBot().waitUntil(shellIsActive("Really mark these resources as deployable?"));
 
+		WidgetsLogger.log();
 		getBot().button("OK").click();
 		
 		log.info("Waiting for confirmation shell to disappear");
