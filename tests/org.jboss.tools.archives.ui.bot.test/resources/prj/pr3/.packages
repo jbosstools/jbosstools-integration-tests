@@ -1,15 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<packages version="1.3">
-   <package name="pr3a.jar" type="jar" todir="/pr3" exploded="false" inWorkspace="true">
-      <properties>
-         <property name="org.jboss.ide.eclipse.as.core.packages.ModuleIDPropertyKey" value="1337838280901"></property>
-      </properties>
-   </package>
-   <package name="pr3b.jar" type="jar" todir="/pr3" exploded="false" inWorkspace="true">
-      <properties>
-         <property name="org.jboss.ide.eclipse.as.core.packages.ModuleIDPropertyKey" value="1337838285723"></property>
-      </properties>
-   </package>
-   <properties></properties>
+<?xml version="1.0" encoding="UTF-8"?><packages version="1.3">
+  <package exploded="false" inWorkspace="true" name="pr3a.jar">
+    <properties/>
+  </package>
+  <package exploded="false" inWorkspace="true" name="pr3b.jar">
+    <properties/>
+  </package>
+  <properties/>
 </packages>
