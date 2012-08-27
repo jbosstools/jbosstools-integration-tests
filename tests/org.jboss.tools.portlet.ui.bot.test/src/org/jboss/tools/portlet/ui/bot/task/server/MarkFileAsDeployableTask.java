@@ -58,7 +58,7 @@ public class MarkFileAsDeployableTask extends AbstractSWTTask {
 		}
 		
 		log.info("Waiting for confirmation shell to disappear");
-		SWTBotFactory.getBot().waitUntil(shellIsActive("Really mark these resources as deployable?"));
+		SWTBotFactory.getBot().waitWhile(shellIsActive("Really mark these resources as deployable?"));
 	}
 
 	private boolean isWindowsOS(){
