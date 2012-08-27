@@ -6,6 +6,8 @@ import java.awt.AWTException;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
 
+import org.eclipse.swtbot.swt.finder.keyboard.KeyboardFactory;
+import org.eclipse.swtbot.swt.finder.keyboard.Keystrokes;
 import org.jboss.tools.portlet.ui.bot.entity.WorkspaceFile;
 import org.jboss.tools.portlet.ui.bot.task.AbstractSWTTask;
 import org.jboss.tools.portlet.ui.bot.task.workspace.FileContextMenuSelectingTask;
@@ -35,16 +37,15 @@ public class MarkFileAsDeployableTask extends AbstractSWTTask {
 		try {
 			Robot robot = new Robot();
 			if (!isWindowsOS()){
-				robot.keyPress(KeyEvent.VK_RIGHT);
-				robot.keyRelease(KeyEvent.VK_RIGHT);
+				KeyboardFactory.getAWTKeyboard().pressShortcut(Keystrokes.RIGHT, Keystrokes.CR, Keystrokes.LF);
 			} else {
 				robot.keyPress(KeyEvent.VK_RIGHT);
 				robot.keyRelease(KeyEvent.VK_RIGHT);
 				robot.keyPress(KeyEvent.VK_LEFT);
 				robot.keyRelease(KeyEvent.VK_LEFT);
+				robot.keyPress(KeyEvent.VK_ENTER);
+				robot.keyRelease(KeyEvent.VK_ENTER);
 			}
-			robot.keyPress(KeyEvent.VK_ENTER);
-			robot.keyRelease(KeyEvent.VK_ENTER);
 		} catch (AWTException e) {
 			throw new IllegalStateException("Cannot create instance of " + Robot.class + " in order to close native dialog", e);
 		}
