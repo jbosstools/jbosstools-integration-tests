@@ -11,7 +11,7 @@
 	<artifactId>org.jboss.tools.jbpm.ui.bot.test</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>eclipse-test-plugin</packaging>
-	
+
 	<properties>
 		<systemProperties>-Dswtbot.test.properties.file=./swtbot.properties</systemProperties>
 	</properties>
@@ -24,7 +24,9 @@
 				<configuration>
 					<useUIThread>false</useUIThread>
 					<skip>${swtbot.test.skip}</skip>
-					<includes><include>**/JBPMAllTest.class</include></includes>
+					<includes>
+						<include>**/JBPMAllTest.class</include>
+					</includes>
 					<dependencies combine.children="append">
 						<dependency>
 							<type>p2-installable-unit</type>
@@ -39,15 +41,15 @@
 				<artifactId>maven-download-plugin</artifactId>
 				<executions>
 					<execution>
-						<id>install-jbpm</id>
+						<id>download-jbpm</id>
 						<phase>pre-integration-test</phase>
 						<goals>
 							<goal>wget</goal>
 						</goals>
 						<configuration>
-							<url>http://downloads.sourceforge.net/project/jbpm/jBPM%203/jbpm-3.1.4/jbpm-3.1.4.zip</url>
-							<unpack>true</unpack>
-							<md5>df65b5642f33676313ebe4d5b69a3fff</md5>
+							<url>http://sourceforge.net/projects/jbpm/files/jBPM%203/jbpm-jpdl-3.3.1.GA/jbpm-installer-3.3.1.GA.jar</url>
+							<unpack>false</unpack>
+							<md5>22ac4a30fdf191b715b41fd151125c23</md5>
 						</configuration>
 					</execution>
 				</executions>
@@ -55,38 +57,20 @@
 			<plugin>
 				<artifactId>maven-antrun-plugin</artifactId>
 				<version>${maven.antrun.plugin.version}</version>
-				<dependencies>
-					<dependency>
-						<groupId>ant-contrib</groupId>
-						<artifactId>ant-contrib</artifactId>
-						<version>1.0b3</version>
-						<exclusions>
-							<exclusion>
-								<groupId>ant</groupId>
-								<artifactId>ant</artifactId>
-							</exclusion>
-						</exclusions>
-					</dependency>
-				</dependencies>
 				<executions>
 					<execution>
-						<id>default-swtbot-config</id>
-						<phase>generate-test-resources</phase>
+						<id>install-jbpm</id>
+						<phase>pre-integration-test</phase>
 						<goals>
 							<goal>run</goal>
 						</goals>
 						<configuration>
 							<tasks>
-								<taskdef resource="net/sf/antcontrib/antcontrib.properties" />
-								<if>
-									<not>
-										<isset property="jboss.tools.jre.6"/>
-									</not>
-									<then>
-										<property name="jboss.tools.jre.6" value="${java.home}" />
-									</then>
-								</if>
-								<echo file="swtbot.properties" append="false">JBPM=3.1.4,${requirementsDirectory}/jbpm-3.1.4</echo>
+								<java jar="${requirementsDirectory}/jbpm-installer-3.3.1.GA.jar"
+									dir="${requirementsDirectory}" fork="true">
+									<arg value="../../resources/properties/install-jbpm3.xml" />
+								</java>
+								<echo file="swtbot.properties" append="false">JBPM=3.3.1,${requirementsDirectory}/jbpm-3.3.1.GA</echo>
 							</tasks>
 						</configuration>
 					</execution>

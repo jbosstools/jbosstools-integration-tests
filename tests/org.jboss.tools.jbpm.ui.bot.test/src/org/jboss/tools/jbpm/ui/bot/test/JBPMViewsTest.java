@@ -18,34 +18,34 @@ import org.jboss.tools.ui.bot.ext.gen.IView;
 import org.jboss.tools.ui.bot.ext.view.PackageExplorer;
 import org.junit.Test;
 
-@Require( perspective="jBPM jPDL 3",  clearProjects = false )
+@Require(perspective = "jBPM jPDL 3", clearProjects = false)
 public class JBPMViewsTest extends JBPMTest {
 
 	@Test
 	public void testViews() {
-		
+
 		// reset perspective
 		bot.resetActivePerspective();
-		
+
 		// Open process
 		PackageExplorer pe = new PackageExplorer();
 		pe.openFile(Project.PROJECT_NAME, "src/main/jpdl", "simple.jpdl.xml");
 		util.waitForNonIgnoredJobs();
-		
+
 		// check if all views are opened
-		IView[] views = { ActionItem.View.JBossjBPMOverviewjBPM3.LABEL, 
-				ActionItem.View.GeneralOutline.LABEL,
-				ActionItem.View.GeneralProperties.LABEL,
-				ActionItem.View.GeneralProjectExplorer.LABEL};
-	
+		IView[] views = { ActionItem.View.JBossjBPMOverviewjBPM3.LABEL,
+				ActionItem.View.GeneralOutline.LABEL, ActionItem.View.GeneralProperties.LABEL,
+				ActionItem.View.GeneralProjectExplorer.LABEL };
+
 		for (IView view : views) {
-			// For jBPM Overview titles aren't the same
-			if (view.equals(ActionItem.View.JBossjBPMOverviewjBPM3.LABEL)) { 
-				assertTrue(eclipse.isViewOpened("Overview")); 
-			}
-			else {				
-				assertTrue(eclipse.isViewOpened(view.getName()));
-			}
+			// For jBPM Overview titles aren't the same, named 'Overview (jBPM3)'
+			// if (view.equals(ActionItem.View.JBossjBPMOverviewjBPM3.LABEL)) {
+			// assertTrue(eclipse.isViewOpened("Overview"));
+			// }
+			// else {
+			// assertTrue(eclipse.isViewOpened(view.getName()));
+			// }
+			assertTrue(eclipse.isViewOpened(view.getName()));
 		}
-	}	
+	}
 }

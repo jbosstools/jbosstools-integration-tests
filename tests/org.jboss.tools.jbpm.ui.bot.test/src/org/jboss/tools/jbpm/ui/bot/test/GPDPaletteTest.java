@@ -35,5 +35,7 @@ public class GPDPaletteTest extends JBPMTest {
 		arranger.setOrigin(cr);
 		
 		bot.sleep(TIME_10S);
+		
+		editor.save();
 	}
 }
