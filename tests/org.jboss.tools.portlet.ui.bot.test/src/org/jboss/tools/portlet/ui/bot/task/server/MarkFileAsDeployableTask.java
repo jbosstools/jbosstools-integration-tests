@@ -41,7 +41,7 @@ public class MarkFileAsDeployableTask extends AbstractSWTTask {
 			log.info("Shell: " + shell.getText() + ", is active: " + shell.isActive());
 		}
 		SWTBotFactory.getBot().waitUntil(shellIsActive("Really mark these resources as deployable?"));
-
+		SWTBotFactory.getBot().shell("Really mark these resources as deployable?").activate();
 		log.info("Logging all widgets:");
 		log.info("Logging all shells: ");
 		for (SWTBotShell shell : SWTBotFactory.getBot().shells()){
