@@ -35,7 +35,7 @@ public class VariousProjectsArchiving extends ArchivesTestBase {
 	
 	@After
 	public void checkErrorLog() {
-		assertClearErrorLog();
+		assertClearArchivesErrorLog();
 	}
 	
 	@Test
@@ -53,9 +53,6 @@ public class VariousProjectsArchiving extends ArchivesTestBase {
 		
 		/* create archive */
 		view.createNewJarArchive(project).finish();
-		
-		/* workaround JBIDE-11878 */
-		view = viewForProject(project);
 		
 		/* test if archive was created and no error was thrown*/
 		assertItemExistsInView(view, 
@@ -77,9 +74,6 @@ public class VariousProjectsArchiving extends ArchivesTestBase {
 		
 		/* create archive */
 		view.createNewJarArchive(project).finish();
-		
-		/* workaround JBIDE-11878 */
-		view = viewForProject(project);
 		
 		/* test if archive was created and no error was thrown*/
 		assertItemExistsInView(view, 

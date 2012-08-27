@@ -106,9 +106,10 @@ public class ArchivesTestBase extends SWTTestExt {
 		return serversView;
 	}
 	
-	public void assertClearErrorLog() {
-		assertTrue("Error log contains some records", 
-				new ErrorLogView().getRecordCount() == 0);
+	public void assertClearArchivesErrorLog() {
+		
+		assertTrue("Error log contains archive errors", 
+				countOfArchivesErrors() == 0);
 	}
 	
 	public static void showErrorView() {
@@ -142,6 +143,17 @@ public class ArchivesTestBase extends SWTTestExt {
 	protected static void importProjectWithoutRuntime(String projectName, 
 			String projectLocation, String dir) {
 		ImportHelper.importProject(projectLocation, dir, Activator.PLUGIN_ID);
+	}
+	
+	private int countOfArchivesErrors() {
+		ErrorLogView errorLog = new ErrorLogView();
+		int archivesErrorsCount = 0;
+		for (SWTBotTreeItem ti : errorLog.getMessages()) {
+			if (ti.getText().contains("org.jboss.ide.eclipse.archives")) {
+				archivesErrorsCount++;
+			}
+		}
+		return archivesErrorsCount;
 	}
 	
 }
