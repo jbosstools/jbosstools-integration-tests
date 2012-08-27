@@ -7,6 +7,7 @@ import org.jboss.tools.portlet.ui.bot.task.console.ConsoleClearingTask;
 import org.jboss.tools.portlet.ui.bot.task.editor.CloseAllEditors;
 import org.jboss.tools.portlet.ui.bot.task.wizard.web.jboss.AbstractPortletCreationTask;
 import org.jboss.tools.portlet.ui.bot.test.testcase.SWTTaskBasedTestCase;
+import org.jboss.tools.ui.bot.ext.condition.TaskDuration;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
@@ -31,7 +32,7 @@ public abstract class HotDeploymentGateinTemplate extends SWTTaskBasedTestCase {
 		doPerform(new ConsoleClearingTask());
 		doPerform(createPortlet());
 		
-		assertThatInWorkspace("undeploy, ctxPath=/" + getProjectName(), new ConsoleOutputMatcher());
-		assertThatInWorkspace("deploy, ctxPath=/" + getProjectName(), new ConsoleOutputMatcher());
+		assertThatInWorkspace("undeploy, ctxPath=/" + getProjectName(), new ConsoleOutputMatcher(TaskDuration.LONG));
+		assertThatInWorkspace("deploy, ctxPath=/" + getProjectName(), new ConsoleOutputMatcher(TaskDuration.LONG));
 	}
 }

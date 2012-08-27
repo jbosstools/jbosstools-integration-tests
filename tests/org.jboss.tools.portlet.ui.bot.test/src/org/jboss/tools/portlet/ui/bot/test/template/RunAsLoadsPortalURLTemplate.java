@@ -11,6 +11,7 @@ import org.jboss.tools.portlet.ui.bot.task.wizard.web.DynamicWebProjectWizardPag
 import org.jboss.tools.portlet.ui.bot.task.wizard.web.jboss.JBossPortletCapabilitiesWizardPageFillingTask;
 import org.jboss.tools.portlet.ui.bot.test.testcase.SWTTaskBasedTestCase;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
+import org.jboss.tools.ui.bot.ext.condition.TaskDuration;
 import org.junit.Test;
 
 /**
@@ -32,7 +33,7 @@ public abstract class RunAsLoadsPortalURLTemplate extends SWTTaskBasedTestCase {
 		doPerform(createJavaPortletTask());
 		doPerform(runOnServerTask());
 		
-		doAssertThatInWorkspace(getExpectedURLs(), new BrowserUrlMatcher());
+		doAssertThatInWorkspace(getExpectedURLs(), new BrowserUrlMatcher(TaskDuration.NORMAL));
 	}
 
 	private SWTTask createJavaPortletTask() {
