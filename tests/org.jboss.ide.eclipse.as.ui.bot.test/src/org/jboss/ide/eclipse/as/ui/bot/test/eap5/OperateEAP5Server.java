@@ -1,4 +1,4 @@
-package org.jboss.ide.eclipse.as.ui.bot.test.as4;
+package org.jboss.ide.eclipse.as.ui.bot.test.eap5;
 
 import org.jboss.ide.eclipse.as.ui.bot.test.template.OperateServerTemplate;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
@@ -11,11 +11,11 @@ import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
  * @author Lucia Jelinkova
  *
  */
-@Require(server=@Server(type=ServerType.JbossAS, version="4.2", state=ServerState.NotRunning))
-public class OperateAS4Server extends OperateServerTemplate {
+@Require(server=@Server(type=ServerType.EAP, version="5", state=ServerState.NotRunning))
+public class OperateEAP5Server extends OperateServerTemplate {
 
 	@Override
 	public String getWelcomePageText() {
-		return "Manage this JBoss AS Instance";
+		return "Manage this JBoss EAP Instance";
 	}
 }

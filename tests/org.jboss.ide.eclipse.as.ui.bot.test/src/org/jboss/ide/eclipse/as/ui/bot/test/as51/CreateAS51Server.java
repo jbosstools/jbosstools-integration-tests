@@ -1,4 +1,4 @@
-package org.jboss.ide.eclipse.as.ui.bot.test.as4;
+package org.jboss.ide.eclipse.as.ui.bot.test.as51;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -18,8 +18,8 @@ import org.jboss.tools.ui.bot.ext.entity.XMLConfiguration;
 * @author Lucia Jelinkova
 *
 */
-@Require(server=@Server(type=ServerType.JbossAS, version="4.2", state=ServerState.Present))
-public class CreateAS4Server extends CreateServerTemplate {
+@Require(server=@Server(type=ServerType.JbossAS, version="5.1", state=ServerState.Present))
+public class CreateAS51Server extends CreateServerTemplate {
 
 	@Override
 	protected void assertEditorPorts() {

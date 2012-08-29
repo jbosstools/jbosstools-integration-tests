@@ -1,4 +1,4 @@
-package org.jboss.ide.eclipse.as.ui.bot.test.eap6;
+package org.jboss.ide.eclipse.as.ui.bot.test.as50;
 
 import org.jboss.ide.eclipse.as.ui.bot.test.template.DeployJSPProjectTemplate;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
@@ -11,11 +11,11 @@ import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
  * @author Lucia Jelinkova
  *
  */
-@Require(server=@Server(type=ServerType.EAP, version="6", state=ServerState.Running))
-public class DeployJSPProjectEAP6Server extends DeployJSPProjectTemplate {
+@Require(server=@Server(type=ServerType.JbossAS, version="5.0", state=ServerState.Running))
+public class DeployJSPProjectAS50Server extends DeployJSPProjectTemplate {
 
 	@Override
 	protected String getConsoleMessage() {
-		return "Registering web context: /" + PROJECT_NAME;
+		return "deploy, ctxPath=/" + PROJECT_NAME;
 	}
 }

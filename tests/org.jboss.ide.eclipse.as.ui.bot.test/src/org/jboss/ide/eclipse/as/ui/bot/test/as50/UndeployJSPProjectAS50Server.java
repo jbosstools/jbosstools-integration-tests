@@ -1,4 +1,4 @@
-package org.jboss.ide.eclipse.as.ui.bot.test.eap6;
+package org.jboss.ide.eclipse.as.ui.bot.test.as50;
 
 import org.jboss.ide.eclipse.as.ui.bot.test.template.DeployJSPProjectTemplate;
 import org.jboss.ide.eclipse.as.ui.bot.test.template.UndeployJSPProjectTemplate;
@@ -12,11 +12,11 @@ import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
  * @author Lucia Jelinkova
  *
  */
-@Require(server=@Server(type=ServerType.EAP, version="6", state=ServerState.Running), clearProjects=false, clearWorkspace=false)
-public class UndeployJSPProjectEAP6Server extends UndeployJSPProjectTemplate {
+@Require(server=@Server(type=ServerType.JbossAS, version="5.0", state=ServerState.Running), clearProjects=false, clearWorkspace=false)
+public class UndeployJSPProjectAS50Server extends UndeployJSPProjectTemplate {
 
 	@Override
 	protected String getConsoleMessage() {
-		return "Undeployed \"" + DeployJSPProjectTemplate.PROJECT_NAME + ".war\"";
+		return "undeploy, ctxPath=/" + DeployJSPProjectTemplate.PROJECT_NAME;
 	}
 }
