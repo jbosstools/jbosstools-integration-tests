@@ -33,6 +33,11 @@
 							<artifactId>org.jboss.tools.jbpm3.feature.feature.group</artifactId>
 							<version>0.0.0</version>
 						</dependency>
+						<dependency>
+							<type>p2-installable-unit</type>
+							<artifactId>org.jboss.ide.eclipse.as.feature.feature.group</artifactId>
+							<version>0.0.0</version>
+						</dependency>
 					</dependencies>
 				</configuration>
 			</plugin>
@@ -41,15 +46,27 @@
 				<artifactId>maven-download-plugin</artifactId>
 				<executions>
 					<execution>
+						<id>install-as-5.1.0</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<configuration>
+							<url>http://repository.jboss.org/sourceforge/jboss-5.1.0.GA.zip</url>
+							<md5>78322c75ca0c13002a04418b4a8bc920</md5>
+							<unpack>true</unpack>
+						</configuration>
+					</execution>
+					<execution>
 						<id>download-jbpm</id>
 						<phase>pre-integration-test</phase>
 						<goals>
 							<goal>wget</goal>
 						</goals>
 						<configuration>
-							<url>http://sourceforge.net/projects/jbpm/files/jBPM%203/jbpm-jpdl-3.3.1.GA/jbpm-installer-3.3.1.GA.jar</url>
+							<url>https://repository.jboss.org/nexus/content/groups/public/org/jbpm/jbpm3/jbpm-distribution/3.2.9/jbpm-distribution-3.2.9-installer.jar</url>
 							<unpack>false</unpack>
-							<md5>22ac4a30fdf191b715b41fd151125c23</md5>
+							<md5>e2d8624bd181235a34b5f97fb088c589</md5>
 						</configuration>
 					</execution>
 				</executions>
@@ -66,11 +83,11 @@
 						</goals>
 						<configuration>
 							<tasks>
-								<java jar="${requirementsDirectory}/jbpm-installer-3.3.1.GA.jar"
+								<java
+									jar="${requirementsDirectory}/jbpm-distribution-3.2.9-installer.jar"
 									dir="${requirementsDirectory}" fork="true">
 									<arg value="../../resources/properties/install-jbpm3.xml" />
 								</java>
-								<echo file="swtbot.properties" append="false">JBPM=3.3.1,${requirementsDirectory}/jbpm-3.3.1.GA</echo>
 							</tasks>
 						</configuration>
 					</execution>

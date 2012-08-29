@@ -26,7 +26,7 @@ import org.jboss.tools.ui.bot.ext.view.PackageExplorer;
 import org.jboss.tools.ui.bot.ext.widgets.SWTBotMultiPageEditor;
 import org.junit.Test;
 
-@Require( clearProjects=false, jbpm=@JBPM(), server=@Server(type=ServerType.SOA,state=ServerState.Present))
+@Require( clearProjects=false, jbpm=@JBPM(), server=@Server(type=ServerType.ALL,state=ServerState.Running))
 public class JBPMDeployTest extends JBPMTest {
 
 	@Test
@@ -51,9 +51,6 @@ public class JBPMDeployTest extends JBPMTest {
 		gefBot.checkBox(3).select();
 		gefBot.textWithLabel("Username:").setText("admin");
 		gefBot.textWithLabel("Password:").setText("admin");
-		
-		String serverName = TestConfigurator.currentConfig.getServer().type+"-"+TestConfigurator.currentConfig.getServer().version;
-		servers.startServer(serverName);	
 		
 		item.setFocus();		
 		bot.menu("jBPM").menu("Ping Server").click();			
