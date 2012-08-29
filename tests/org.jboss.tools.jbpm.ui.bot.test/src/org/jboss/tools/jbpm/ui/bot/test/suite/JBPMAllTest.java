@@ -12,6 +12,7 @@ package org.jboss.tools.jbpm.ui.bot.test.suite;
 
 import junit.framework.TestSuite;
 
+import org.jboss.tools.jbpm.ui.bot.test.BPMNConvertCase;
 import org.jboss.tools.jbpm.ui.bot.test.GPDPaletteTest;
 import org.jboss.tools.jbpm.ui.bot.test.GPDTest;
 import org.jboss.tools.jbpm.ui.bot.test.JBPMDeployTest;
@@ -23,8 +24,8 @@ import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
-@SuiteClasses({ JBPMProjectTest.class, JBPMViewsTest.class,  GPDTest.class, GPDPaletteTest.class, JBPMDeployTest.class  })
-//@SuiteClasses({ BPMNConvertCase.class })
+@SuiteClasses({ JBPMProjectTest.class, JBPMViewsTest.class, GPDTest.class, GPDPaletteTest.class,
+		JBPMDeployTest.class, BPMNConvertCase.class })
 @RunWith(RequirementAwareSuite.class)
 public class JBPMAllTest extends TestSuite {
 
