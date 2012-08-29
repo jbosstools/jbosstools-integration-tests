@@ -10,6 +10,8 @@
  ******************************************************************************/
 package org.jboss.tools.archives.ui.bot.test.context;
 
+import static org.junit.Assert.fail;
+
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.keyboard.Keystrokes;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
@@ -79,10 +81,16 @@ public class ArchiveContextMenu {
 	public UserLibrariesFilesetDialog createUserLibraryFileset(SWTBotTree tree, 
 			SWTBotTreeItem item) {
 		ContextMenuHelper.prepareTreeItemForContextMenu(tree, item);
-		SWTBotMenu menu = new SWTBotMenu(ContextMenuHelper.
+		try {
+			SWTBotMenu menu = new SWTBotMenu(ContextMenuHelper.
 				getContextMenu(tree, "New User Library Fileset", false));
-		menu.click();
-		return new UserLibrariesFilesetDialog();
+			menu.click();
+			return new UserLibrariesFilesetDialog();
+		} catch (WidgetNotFoundException wnfe) {
+			fail("'New User Library Fileset' is not included in context menu of " +
+					"Project Archives explorer - known issue - JBIDE-12155");
+			return null;
+		}
 	}
 	
 	public EditArchiveDialog editArchive(SWTBotTree tree, 

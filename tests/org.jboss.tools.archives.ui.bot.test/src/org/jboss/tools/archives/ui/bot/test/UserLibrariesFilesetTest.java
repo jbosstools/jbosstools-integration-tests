@@ -60,7 +60,7 @@ public class UserLibrariesFilesetTest extends ArchivesTestBase {
 		assertItemExistsInView(view, projectName, ARCHIVE_PATH, USER_LIBRARY_1);
 	}
 	
-	@Test // not implemented in tools yet
+	@Test // failing cause of JBIDE-12155
 	public void testCreatingUserLibraryFileSetInExplorer() {
 		/* prepare view for testing */
 		ProjectArchivesExplorer explorer = explorerForProject(projectName);

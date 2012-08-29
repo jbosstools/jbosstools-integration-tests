@@ -54,7 +54,7 @@ public class ArchivesTestBase extends SWTTestExt {
 				" does not exist in Project Archives View", view.itemExists(path));
 	}
 	
-	protected void assertItemExistsInExplorer(ProjectArchivesExplorer explorer, String... path) {
+	protected void assertItemExistsInExplorer(ProjectArchivesExplorer explorer, String... path) {		
 		assertTrue("Item " + path[path.length-1] + 
 				" does not exist in Project Archives explorer", explorer.itemExists(path));
 	}
@@ -81,7 +81,11 @@ public class ArchivesTestBase extends SWTTestExt {
 				break;
 			}
 		}
-		assertTrue(archive + " was not deployed", found);
+		String knownIssue = "";
+		if (archive.contains("pr3b.jar")) {
+			knownIssue = " - known issue JBIDE-12495";
+		}
+		assertTrue(archive + " was not deployed" + knownIssue, found);
 	}
 	
 	protected void removeArchiveFromServer(String archive) {

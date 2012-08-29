@@ -13,6 +13,7 @@ package org.jboss.tools.archives.ui.bot.test.dialog;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.jboss.tools.ui.bot.ext.SWTBotFactory;
+import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 
 /**
@@ -70,6 +71,7 @@ public abstract class ArchiveCreationDialogBase {
 	public void finish() {
 		bot.button(IDELabel.Button.FINISH).click();
 		SWTBotFactory.getUtil().waitForNonIgnoredJobs();
+		bot.sleep(Timing.time1S());
 	}
 
 	public abstract String getDialogTitle();
