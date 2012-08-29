@@ -19,6 +19,6 @@ import org.junit.runners.Suite;
 		UndeployJSPProjectEAP6Server.class,
 		DeleteServer.class
 })
-public class EAPCompatibilitySuite {
+public class EAP6CompatibilitySuite {
 
 }
