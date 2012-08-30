@@ -17,3 +17,5 @@ Require-Bundle: org.eclipse.ui,
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Vendor: JBoss by Red Hat
+Import-Package: org.eclipse.core.resources,
+ org.eclipse.swtbot.swt.finder.junit
