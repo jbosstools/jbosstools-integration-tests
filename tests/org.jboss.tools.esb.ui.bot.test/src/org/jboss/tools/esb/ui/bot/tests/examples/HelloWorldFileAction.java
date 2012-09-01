@@ -64,7 +64,7 @@ public class HelloWorldFileAction extends ESBExampleTest {
 		SWTBotView theSWTBotView = open.viewOpen(ActionItem.View.GeneralNavigator.LABEL);
 		SWTBotTreeItem theProject = bot.tree(0).getTreeItem(projectName).select();
 		bot.menu("File").menu("Properties").click();
-		baseDir = bot.textWithLabel("Location:").getText() + "/";
+		baseDir = bot.textWithLabel("Location:").getText() + System.getProperty("file.separator");
 		bot.button("OK").click();
 				
 		theSWTBotView = open.viewOpen(ActionItem.View.GeneralNavigator.LABEL);		
@@ -98,18 +98,23 @@ public class HelloWorldFileAction extends ESBExampleTest {
 		
 		editor = projectExplorer.openFile(clientProjectName, "src","org.jboss.soa.esb.samples.quickstart.helloworldfileaction.test", "CreateTestFile.java");
 		theEditor = editor.bot();
-//		System.out.println ("DEBUG " + theEditor.styledText().getText() );
+		//System.out.println ("DEBUG " + theEditor.styledText().getText() );
 				
 		theEditor.styledText().insertText(10, 0, "//");
-		theEditor.styledText().insertText(11, 0, "\t\tString inputDirectory = \"" + baseDir + inputDir + "\";\n");
+		theEditor.styledText().insertText(11, 0, "\t\tString inputDirectory = \"" + baseDir + "\" + System.getProperty(\"file.separator\") + \"inputDir\";\n");
 		theEditor.styledText().insertText(12, 0, "//");
 		theEditor.styledText().insertText(13, 0, "\t\tString fileName = \"MyInput.dat" + "\";\n");
 		theEditor.styledText().insertText(14, 0, "//");
 		theEditor.styledText().insertText(15, 0, "\t\tString fileContents = \"Hello World In A File\";\n");
-		// bot.sleep(30000l);
-		// System.out.println ("DEBUG " + theEditor.styledText().getText() );
+		theEditor.styledText().insertText(16, 0, "//");
+		theEditor.styledText().insertText(17, 0, "\t\tFile x = new File(inputDirectory + System.getProperty(\"file.separator\") + fileName);\n");
+		theEditor.styledText().insertText(23, 0, "//");
+		theEditor.styledText().insertText(24, 0, "\t\tSystem.out.println(\"Error while writing the file: \" + inputDirectory + System.getProperty(\"file.separator\") + fileName);\n");
+
+		//bot.sleep(30000l);
+		//System.out.println ("DEBUG " + theEditor.styledText().getText() );
 		editor.save();		
-//		bot.sleep(30000l);
+		//bot.sleep(30000l);
 		
 		String text = executeClientGetServerOutput(getExampleClientProjectName(),"src",
 				"org.jboss.soa.esb.samples.quickstart.helloworldfileaction.test",
