@@ -64,7 +64,9 @@ public class HelloWorldFileAction extends ESBExampleTest {
 		SWTBotView theSWTBotView = open.viewOpen(ActionItem.View.GeneralNavigator.LABEL);
 		SWTBotTreeItem theProject = bot.tree(0).getTreeItem(projectName).select();
 		bot.menu("File").menu("Properties").click();
-		baseDir = bot.textWithLabel("Location:").getText() + System.getProperty("file.separator");
+		
+//		baseDir = bot.textWithLabel("Location:").getText() + System.getProperty("file.separator");
+		baseDir = bot.textWithLabel("Location:").getText().replaceAll("\\", "\\\\") + System.getProperty("file.separator");
 		bot.button("OK").click();
 				
 		theSWTBotView = open.viewOpen(ActionItem.View.GeneralNavigator.LABEL);		
