@@ -65,8 +65,19 @@ public class HelloWorldFileAction extends ESBExampleTest {
 		SWTBotTreeItem theProject = bot.tree(0).getTreeItem(projectName).select();
 		bot.menu("File").menu("Properties").click();
 		
-		baseDir = bot.textWithLabel("Location:").getText() + System.getProperty("file.separator");
-//		baseDir = bot.textWithLabel("Location:").getText().replaceAll("\\", "\\\\") + System.getProperty("file.separator");
+		if (System.getProperty("file.separator").equals("/")) { 
+			baseDir = bot.textWithLabel("Location:").getText() + System.getProperty("file.separator");
+		}	
+		else 	{
+			/* Needed to avoid a syntax error with Windows \ dir path characters */
+			baseDir = bot.textWithLabel("Location:").getText().replaceAll(System.getProperty("file.separator"), System.getProperty("file.separator") + System.getProperty("file.separator")) + System.getProperty("file.separator");
+		}						
+//		if (System.getProperty("file.separator").equals("/")) { 
+//			baseDir = bot.textWithLabel("Location:").getText() + System.getProperty("file.separator");
+//		}
+//		else {
+//			baseDir = bot.textWithLabel("Location:").getText().replaceAll("\\", "\\\\") + System.getProperty("file.separator");
+//		}
 		bot.button("OK").click();
 				
 		theSWTBotView = open.viewOpen(ActionItem.View.GeneralNavigator.LABEL);		
