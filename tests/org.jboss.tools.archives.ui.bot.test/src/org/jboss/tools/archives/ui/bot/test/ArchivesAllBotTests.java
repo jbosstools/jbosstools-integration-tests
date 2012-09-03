@@ -20,19 +20,19 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @RunWith(RequirementAwareSuite.class)
 @SuiteClasses({
-//	ViewIsPresentTest.class,
-//	VariousProjectsArchiving.class,
-//	ArchiveViewReSwitchingTest.class,
-//	FolderTest.class,
-//	FilesetTest.class, // failing on win
-//	UserLibrariesFilesetTest.class, // failing on win
-//	BuildingArchiveNode.class, // failing on win
-//	BuildingProjectTest.class,
-//	BuildingArchiveTest.class,
-//	CreatingArchiveTest.class,
-	DeletingArchiveTest.class, // failing on win
-//	ModifyingArchiveTest.class,
-//	DeployingArchiveTest.class, // failing on win
+	ViewIsPresentTest.class,
+	VariousProjectsArchiving.class,
+	ArchiveViewReSwitchingTest.class,
+	FolderTest.class,
+	FilesetTest.class,
+	UserLibrariesFilesetTest.class,
+	BuildingArchiveNode.class,
+	BuildingProjectTest.class,
+	BuildingArchiveTest.class,
+	CreatingArchiveTest.class,
+	DeletingArchiveTest.class, 
+	ModifyingArchiveTest.class,
+	DeployingArchiveTest.class,
 })
 public class ArchivesAllBotTests {
 		
