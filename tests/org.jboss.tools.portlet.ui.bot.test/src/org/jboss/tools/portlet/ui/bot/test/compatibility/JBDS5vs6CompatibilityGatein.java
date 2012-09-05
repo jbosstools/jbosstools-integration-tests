@@ -17,21 +17,22 @@ import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
 import org.junit.Test;
 
 /**
- * Tests that project from JBDS 4 can work in JBDS 5 without any problems. 
+ * Tests that project from JBDS 5 can work in JBDS 6 without any problems. Note that the project need to have EPP-5.1.1 as 
+ * its target runtime at the time of import.  
  * 
  * @author Lucia Jelinkova
  *
  */
 @Require(server=@Server(version="5.1", operator=">", state=ServerState.Present), db=@DB, seam=@Seam)
-public class JBDS4vs5CompatibilityGatein extends SWTTaskBasedTestCase {
+public class JBDS5vs6CompatibilityGatein extends SWTTaskBasedTestCase {
 
 	private static final String ZIP_FILE = "resources/org/jboss/tools/portlet/ui/bot/test/compatibility/jbds-compatibility.zip";
 	
-	private static final String CORE_PROJECT_NAME = "jbds-4-core";
+	private static final String CORE_PROJECT_NAME = "jbds-5-core";
 	
-	private static final String JSF_PROJECT_NAME = "jbds-4-jsf"; 
+	private static final String JSF_PROJECT_NAME = "jbds-5-jsf"; 
 	
-	private static final String SEAM_PROJECT_NAME = "jbds-4-seam"; 
+	private static final String SEAM_PROJECT_NAME = "jbds-5-seam"; 
 	
 	@Test
 	public void testCompatibility(){

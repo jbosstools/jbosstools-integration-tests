@@ -1,6 +1,6 @@
 package org.jboss.tools.portlet.ui.bot.test;
 
-import org.jboss.tools.portlet.ui.bot.test.compatibility.JBDS4vs5CompatibilityGatein;
+import org.jboss.tools.portlet.ui.bot.test.compatibility.JBDS5vs6CompatibilityGatein;
 import org.jboss.tools.portlet.ui.bot.test.core.CreateJavaPortletProject;
 import org.jboss.tools.portlet.ui.bot.test.core.CreateJavaPortletJBPortal;
 import org.jboss.tools.portlet.ui.bot.test.core.CreateJavaPortletGatein;
@@ -55,7 +55,7 @@ import org.junit.runners.Suite;
 	JSFPortletExampleGatein.class,
 	RichFacesPortletExampleGatein.class,
 	SeamPortletExampleGatein.class,
-	JBDS4vs5CompatibilityGatein.class,
+	JBDS5vs6CompatibilityGatein.class,
 	RunAsLoadsPortalURLJBPortal.class, 
 	RunAsLoadsPortalURLGatein.class
 	})
