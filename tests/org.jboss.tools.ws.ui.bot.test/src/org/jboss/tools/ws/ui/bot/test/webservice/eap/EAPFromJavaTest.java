@@ -156,6 +156,7 @@ public class EAPFromJavaTest extends WebServiceTestBase {
         st.saveAndClose();
         bot.sleep(TIME_1S*2);
         deploymentHelper.runProject(getWsClientProjectName());
+        servers.cleanServer(configuredState.getServer().name);
         String pageContent = deploymentHelper.getPage("http://localhost:8080/" + getWsClientProjectName() + "/index.jsp", 15000);
         LOGGER.info(pageContent);
         Assert.assertTrue(pageContent.contains("BartSimpson(age: 12)"));
