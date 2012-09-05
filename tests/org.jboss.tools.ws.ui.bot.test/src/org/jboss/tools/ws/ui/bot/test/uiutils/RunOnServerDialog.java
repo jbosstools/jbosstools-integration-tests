@@ -28,7 +28,7 @@ public class RunOnServerDialog {
 
 	private SWTBotShell shell = null;
 	private SWTBot bot = null;
-	private final String DIALOG_TITLE = "Run On Server";
+	private static final String DIALOG_TITLE = "Run On Server";
 	
 	public RunOnServerDialog() {
 		shell = SWTBotFactory.getBot().shell(getDialogTitle());

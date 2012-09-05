@@ -41,13 +41,13 @@ public class RESTfulHelper {
 	private static final SWTUtilExt util = new SWTUtilExt(bot);
 	private static final ProjectExplorer projectExplorer = new ProjectExplorer();
 	private static final SWTOpenExt open = new SWTOpenExt(bot);
-	private static ResourceHelper resourceHelper = new ResourceHelper();
+	private static final ResourceHelper resourceHelper = new ResourceHelper();
 	
-	private final String PATH_PARAM_VALID_ERROR = "Invalid @PathParam value";
-	private final String VALIDATION_PREFERENCE = "Validation";
-	private final String ENABLE_ALL = "Enable All";
-	private final String JAX_RS_VALIDATOR = "JAX-RS Metamodel Validator";
-	private final String VALIDATION_SETTINGS_CHANGED = "Validation Settings Changed";
+	private static final String PATH_PARAM_VALID_ERROR = "@PathParam value";
+	private static final String VALIDATION_PREFERENCE = "Validation";
+	private static final String ENABLE_ALL = "Enable All";
+	private static final String JAX_RS_VALIDATOR = "JAX-RS Metamodel Validator";
+	private static final String VALIDATION_SETTINGS_CHANGED = "Validation Settings Changed";
 	
 	private enum ConfigureOption {
 		ADD, REMOVE;

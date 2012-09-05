@@ -25,13 +25,13 @@ import org.junit.Test;
  */
 public class RESTfulCompletionTest extends RESTfulTestBase{
 
-	private final String GET_METHOD_PATH = "/{userId}";
-	private final String CORRECT_PATH_PARAM = "userId";
-	private final String INCORRECT_PATH_PARAM = "someId";
-	private final String PATH_PARAM_NAVIGATION = "@PathParam(";
-	private final List<String> EXP_NON_EMPTY_COMPLETION_RESULT = 
+	private static final String GET_METHOD_PATH = "/{userId}";
+	private static final String CORRECT_PATH_PARAM = "userId";
+	private static final String INCORRECT_PATH_PARAM = "someId";
+	private static final String PATH_PARAM_NAVIGATION = "@PathParam(";
+	private static final List<String> EXP_NON_EMPTY_COMPLETION_RESULT = 
 			Arrays.asList("userId - JAX-RS Mapping");
-	private final List<String> EXP_EMPTY_COMPLETION_RESULT = 
+	private static final List<String> EXP_EMPTY_COMPLETION_RESULT = 
 			Arrays.asList("No Default Proposals");
 	
 	@Override

@@ -22,6 +22,8 @@ import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ws.ui.bot.test.WSTestBase;
 import org.jboss.tools.ws.ui.bot.test.uiutils.RESTFullExplorer;
 import org.jboss.tools.ws.ui.bot.test.uiutils.RunOnServerDialog;
+import org.jboss.tools.ws.ui.bot.test.widgets.WsTesterView;
+import org.jboss.tools.ws.ui.bot.test.widgets.WsTesterView.Request_Type;
 
 /**
  * Test base for bot tests using RESTFul support
@@ -158,8 +160,8 @@ public class RESTfulTestBase extends WSTestBase {
 				foundCount == expectedCount);
 	}
 	
-	protected void runRestServiceOnConfiguredServer(String webService) {
-		RunOnServerDialog dialog = restfulWizard.runOnServer(restfulWizard.restService(webService));
+	protected void runRestServiceOnConfiguredServer(SWTBotTreeItem webService) {
+		RunOnServerDialog dialog = restfulWizard.runOnServer(webService);
 		dialog.chooseExistingServer().selectServer(configuredState.getServer().name).finish();		
 		bot.waitUntil(new ViewIsActive(IDELabel.View.WEB_SERVICE_TESTER));
 	}
@@ -167,6 +169,11 @@ public class RESTfulTestBase extends WSTestBase {
 	protected SWTBotTreeItem[] restfulServicesForProject(String projectName) {
 		restfulWizard = new RESTFullExplorer(projectName);
 		return restfulWizard.getAllRestServices();
+	}
+
+	protected void invokeMethodInWSTester(WsTesterView wsTesterView, Request_Type type) {
+		wsTesterView.setRequestType(type);
+		wsTesterView.invoke();
 	}
 
 	protected SWTBotEditor editorForClass(String projectName, String... path) {

@@ -21,9 +21,9 @@ import org.junit.Test;
  */
 public class RESTfulValidationTest extends RESTfulTestBase {
 	
-	private final String GET_METHOD_PATH = "/{id}";
-	private final String CORRECT_PATH_PARAM = "id";
-	private final String BAD_PATH_PARAM = "customerId";
+	private static final String GET_METHOD_PATH = "/{id}";
+	private static final String CORRECT_PATH_PARAM = "id";
+	private static final String BAD_PATH_PARAM = "customerId";
 	
 	@Override
 	protected String getWsProjectName() {

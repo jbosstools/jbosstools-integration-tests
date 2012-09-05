@@ -53,11 +53,11 @@ public class JAXRSToolingIntegrationTest extends RESTfulTestBase {
 		restfulWizard = new RESTFullExplorer(projectName);
 		
 		/* run on server - web service tester should be shown */
-		runRestServiceOnConfiguredServer("GET");
+		runRestServiceOnConfiguredServer(restfulWizard.restService("GET"));
 		assertWebServiceTesterIsActive();
 		
 		/* test generated url and response after invoking */
-		wsTesterView = showWSTester();
+		wsTesterView.show();
 		assertEquals(serviceUrl + "get", wsTesterView.getServiceURL());
 		
 		invokeMethodInWSTester(wsTesterView, Request_Type.GET);
@@ -71,11 +71,11 @@ public class JAXRSToolingIntegrationTest extends RESTfulTestBase {
 		restfulWizard = new RESTFullExplorer(projectName);
 		
 		/* run on server - web service tester should be shown */
-		runRestServiceOnConfiguredServer("POST");
+		runRestServiceOnConfiguredServer(restfulWizard.restService("POST"));
 		assertWebServiceTesterIsActive();
 		
 		/* test generated url and response after invoking */
-		wsTesterView = showWSTester();
+		wsTesterView.show();
 		assertEquals(serviceUrl + "post", wsTesterView.getServiceURL());
 		
 		invokeMethodInWSTester(wsTesterView, Request_Type.POST);
@@ -89,11 +89,11 @@ public class JAXRSToolingIntegrationTest extends RESTfulTestBase {
 		restfulWizard = new RESTFullExplorer(projectName);
 		
 		/* run on server - web service tester should be shown */
-		runRestServiceOnConfiguredServer("PUT");
+		runRestServiceOnConfiguredServer(restfulWizard.restService("PUT"));
 		assertWebServiceTesterIsActive();
 		
 		/* test generated url and response after invoking */
-		wsTesterView = showWSTester();
+		wsTesterView.show();
 		assertEquals(serviceUrl + "put", wsTesterView.getServiceURL());
 		
 		invokeMethodInWSTester(wsTesterView, Request_Type.PUT);
@@ -107,11 +107,11 @@ public class JAXRSToolingIntegrationTest extends RESTfulTestBase {
 		restfulWizard = new RESTFullExplorer(projectName);
 		
 		/* run on server - web service tester should be shown */
-		runRestServiceOnConfiguredServer("DELETE");
+		runRestServiceOnConfiguredServer(restfulWizard.restService("DELETE"));
 		assertWebServiceTesterIsActive();
 		
 		/* test generated url and response after invoking */
-		wsTesterView = showWSTester();
+		wsTesterView.show();
 		assertEquals(serviceUrl + "delete", wsTesterView.getServiceURL());
 		
 		invokeMethodInWSTester(wsTesterView, Request_Type.DELETE);
@@ -125,26 +125,16 @@ public class JAXRSToolingIntegrationTest extends RESTfulTestBase {
 		restfulWizard = new RESTFullExplorer(projectName);
 		
 		/* run on server - web service tester should be shown */
-		runRestServiceOnConfiguredServer("GET");
+		runRestServiceOnConfiguredServer(restfulWizard.restService("GET"));
 		assertWebServiceTesterIsActive();
 		
 		/* test generated url and response after invoking */
-		wsTesterView = showWSTester();
+		wsTesterView.show();
 		assertEquals(serviceUrl + "get", wsTesterView.getServiceURL());
 		
 		invokeMethodInWSTester(wsTesterView, Request_Type.POST);
 		assertFalse(wsTesterView.getResponseBody().equals("GET method"));
 		assertEquals("[HTTP/1.1 405 Method Not Allowed]", wsTesterView.getResponseHeaders()[0]);
-	}
-	
-	private WsTesterView showWSTester() {
-		wsTesterView.show();		
-		return wsTesterView;
-	}
-	
-	private void invokeMethodInWSTester(WsTesterView wsTesterView, Request_Type type) {
-		wsTesterView.setRequestType(type);
-		wsTesterView.invoke();
 	}
 	
 }

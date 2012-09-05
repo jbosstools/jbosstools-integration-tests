@@ -97,6 +97,20 @@ public class RESTFullExplorer extends SWTTestExt {
 	 * @param restService
 	 * @return
 	 */
+	public String getClassMethodName(SWTBotTreeItem restService) {
+		for (SWTBotTreeItem ti: getAllInfoAboutRestService(restService)) {
+			if (!ti.getText().contains("produces:") && !ti.getText().contains("consumes:")) {
+				return ti.getText();
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * 
+	 * @param restService
+	 * @return
+	 */
 	public String getRestServiceName(SWTBotTreeItem restService) {
 		return restService.getText().split(" ")[0];
 	}

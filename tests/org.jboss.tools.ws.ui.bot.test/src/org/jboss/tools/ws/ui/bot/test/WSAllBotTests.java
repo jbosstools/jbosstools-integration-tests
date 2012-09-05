@@ -36,20 +36,6 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
 /**
- * System properties:
- *  -Dswtbot.test.properties.file=$PATH
- *  -Dusage_reporting_enabled=$BOOLEAN
- *  
- *  Format of swtbot.properties file:
- *  SERVER=EAP|JBOSS_AS,<server version>,<jre version to run with>|default,<server home>
- *  
- *  Sample swtbot.properties file:
- *
- *  SERVER=JBOSS_AS,6.0,default,/home/lukas/latest/jboss-6.0.0.Final
- *  JAVA=1.6,/space/java/sdk/jdk1.6.0_22
- *  
- *  
- *  Suite duration: aprox. 13min
  * 
  * @author Lukas Jungmann
  * @author jjankovi
@@ -60,7 +46,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	SampleRESTWebServiceTest.class,
 	SimpleSoapWebServiceTest.class,
 	SimpleRESTWebServiceTest.class,
-	AnnotationPropertiesTest.class,
+//	AnnotationPropertiesTest.class, // not implemented yet
 	RESTfulExplorerTest.class, 
 	PathAnnotationSupportTest.class,
 	QueryAnnotationSupportTest.class,
@@ -70,6 +56,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	RESTfulCompletionTest.class,
 	JAXRSToolingIntegrationTest.class,
 	SOAPWSToolingIntegrationTest.class,
+//	WSTesterPromptValuesSupportTest.class, // not implemented yet
 	ApplicationPathAnnotationTest.class,
 	BottomUpWSTest.class,
 	TopDownWSTest.class,
