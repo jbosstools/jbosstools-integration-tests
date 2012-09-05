@@ -53,8 +53,14 @@ public class CreatingArchiveTest extends ArchivesTestBase {
 		eclipse.createJavaProject(jpe);
 	}
 	
-	@Test
-	public void testCreatingArchiveWithView() {
+	@Test 
+	public void testCreatingArchive() {
+		// workaround because of JBIDE-11927
+		testCreatingArchiveWithView();
+		testCreatingArchiveWithExplorer();
+	}
+	
+	private void testCreatingArchiveWithView() {
 		
 		/* prepare view for testing */
 		ProjectArchivesView view = viewForProject(project);
@@ -74,8 +80,7 @@ public class CreatingArchiveTest extends ArchivesTestBase {
 		assertItemExistsInView(view, project, ARCHIVE_NO_COMPRESSION_1_PATH);
 	}
 	
-	@Test
-	public void testCreatingArchiveWithExplorer() {
+	private void testCreatingArchiveWithExplorer() {
 		
 		/* prepare explorer for testing */
 		ProjectArchivesExplorer explorer = explorerForProject(project);
