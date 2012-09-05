@@ -12,7 +12,6 @@ package org.jboss.tools.archives.ui.bot.test.explorer;
 
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.archives.ui.bot.test.context.ArchiveContextMenu;
 import org.jboss.tools.archives.ui.bot.test.dialog.ArchivePublishSettingsDialog;
@@ -22,6 +21,7 @@ import org.jboss.tools.archives.ui.bot.test.dialog.FolderCreatingDialog;
 import org.jboss.tools.archives.ui.bot.test.dialog.NewJarDialog;
 import org.jboss.tools.archives.ui.bot.test.dialog.UserLibrariesFilesetDialog;
 import org.jboss.tools.ui.bot.ext.SWTBotFactory;
+import org.jboss.tools.ui.bot.ext.condition.TreeItemContainsNode;
 import org.jboss.tools.ui.bot.ext.helper.TreeHelper;
 import org.jboss.tools.ui.bot.ext.view.ProjectExplorer;
 
@@ -43,62 +43,54 @@ public class ProjectArchivesExplorer {
 	}
 	
 	public NewJarDialog createNewJarArchive() {
-		SWTBotTree tree = this.bot().tree();
-		return contextTool.createNewJarArchive(tree, explorer);
+		return contextTool.createNewJarArchive(
+				this.bot().tree(), explorer);
 	}
 	
 	public void buildProjectFull() {
-		SWTBotTree tree = this.bot().tree();
-		contextTool.buildProjectFull(tree, explorer);
+		contextTool.buildProjectFull(
+				this.bot().tree(), explorer);
 	}
 	
 	public void buildArchiveFull(String archive) {
-		SWTBotTree tree = this.bot().tree();
-		SWTBotTreeItem treeItem = explorer.getNode(archive);
-		contextTool.buildArchiveFull(tree, treeItem);
+		contextTool.buildArchiveFull(
+				this.bot().tree(), getArchive(archive));
 	}
 	
 	public FolderCreatingDialog createFolder(String archive) {
-		SWTBotTree tree = this.bot().tree();
-		SWTBotTreeItem treeItem = explorer.getNode(archive);
-		return contextTool.createFolder(tree, treeItem);
+		return contextTool.createFolder(
+				this.bot().tree(), getArchive(archive));
 	}
 	
 	public FilesetDialog createFileset(String archive) {
-		SWTBotTree tree = this.bot().tree();
-		SWTBotTreeItem treeItem = explorer.getNode(archive);
-		return contextTool.createFileset(tree, treeItem);
+		return contextTool.createFileset(
+				this.bot().tree(), getArchive(archive));
 	}
 	
 	public UserLibrariesFilesetDialog createUserLibraryFileset(String archive) {
-		SWTBotTree tree = this.bot().tree();
-		SWTBotTreeItem treeItem = explorer.getNode(archive);
-		return contextTool.createUserLibraryFileset(tree, treeItem);
+		return contextTool.createUserLibraryFileset(
+				this.bot().tree(), getArchive(archive));
 	}
 	
 	public EditArchiveDialog editArchive(String archive) {
-		SWTBotTree tree = this.bot().tree();
-		SWTBotTreeItem treeItem = explorer.getNode(archive);
-		return contextTool.editArchive(tree, treeItem);
+		return contextTool.editArchive(
+				this.bot().tree(), getArchive(archive));
 	}
 	
 	public void deleteArchive(boolean withContextMenu, String archive) {
-		SWTBotTree tree = this.bot().tree();
-		SWTBotTreeItem treeItem = explorer.getNode(archive);
-		contextTool.deleteArchive(tree, treeItem, withContextMenu);
+		contextTool.deleteArchive(
+				this.bot().tree(), getArchive(archive), withContextMenu);
 	}
 	
 	public ArchivePublishSettingsDialog publishToServer(
 			boolean returnDialog, String archive) {
-		SWTBotTree tree = this.bot().tree();
-		SWTBotTreeItem treeItem = explorer.getNode(archive);
-		return contextTool.publishToServer(tree, treeItem, returnDialog);
+		return contextTool.publishToServer(
+				this.bot().tree(), getArchive(archive), returnDialog);
 	}
 	
 	public ArchivePublishSettingsDialog editPublishSettings(String archive) {
-		SWTBotTree tree = this.bot().tree();
-		SWTBotTreeItem treeItem = explorer.getNode(archive);
-		return contextTool.editPublishSettings(tree, treeItem);
+		return contextTool.editPublishSettings(
+				this.bot().tree(), getArchive(archive));
 	}
 	
 	public boolean itemExists(String... path) {
@@ -113,6 +105,11 @@ public class ProjectArchivesExplorer {
 		} catch (WidgetNotFoundException exc) {
 			return false;
 		}
+	}
+	
+	private SWTBotTreeItem getArchive(String archive) {
+		bot.waitUntil(new TreeItemContainsNode(explorer, archive));
+		return explorer.getNode(archive);
 	}
 	
 	private SWTBot bot() {

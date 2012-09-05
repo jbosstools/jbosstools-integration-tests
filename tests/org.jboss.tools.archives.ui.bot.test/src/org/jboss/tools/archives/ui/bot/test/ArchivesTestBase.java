@@ -35,7 +35,6 @@ public class ArchivesTestBase extends SWTTestExt {
 
 	protected ProjectArchivesView openProjectArchivesView() {
 		ProjectArchivesView view = new ProjectArchivesView();
-		view.show();
 		return view;
 	}
 	

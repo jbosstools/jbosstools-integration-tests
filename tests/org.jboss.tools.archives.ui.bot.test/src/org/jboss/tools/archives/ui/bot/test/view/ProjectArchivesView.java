@@ -24,6 +24,7 @@ import org.jboss.tools.archives.ui.bot.test.dialog.FilesetDialog;
 import org.jboss.tools.archives.ui.bot.test.dialog.FolderCreatingDialog;
 import org.jboss.tools.archives.ui.bot.test.dialog.NewJarDialog;
 import org.jboss.tools.archives.ui.bot.test.dialog.UserLibrariesFilesetDialog;
+import org.jboss.tools.ui.bot.ext.condition.TreeContainsNode;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.View.JBossToolsProjectarchives;
 import org.jboss.tools.ui.bot.ext.helper.TreeHelper;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
@@ -38,77 +39,71 @@ public class ProjectArchivesView extends ViewBase {
 
 	private ArchiveContextMenu contextTool = null;
 	
+	private SWTBotTree viewTree = null;
+	
 	public ProjectArchivesView() {
 		super();
 		viewObject = JBossToolsProjectarchives.LABEL;
+		show();
 		contextTool = new ArchiveContextMenu();
+		viewTree = this.bot().tree();
 	}
 	
 	public void buildArchiveNode(String... path) {
-		open.selectTreeNode(this.bot(), path);
 		show();
+		open.selectTreeNode(this.bot(), path);
 		toolbarButton(IDELabel.ArchivesView.BUTTON_BUILD_ARCHIVE_NODE).click();
 	}
 	
 	public NewJarDialog createNewJarArchive(String project) {
-		SWTBotTree tree = this.bot().tree();
-		SWTBotTreeItem treeItem = tree.getTreeItem(project);
-		return contextTool.createNewJarArchive(tree, treeItem);
+		return contextTool.createNewJarArchive(
+				viewTree, getArchive(project));
 	}
 	
 	public void buildProjectFull(String project) {
-		SWTBotTree tree = this.bot().tree();
-		SWTBotTreeItem treeItem = tree.getTreeItem(project);
-		contextTool.buildProjectFull(tree, treeItem);
+		contextTool.buildProjectFull(
+				viewTree, getArchive(project));
 	}
 	
 	public void buildArchiveFull(String... pathToArchive) {
-		SWTBotTree tree = this.bot().tree();
-		SWTBotTreeItem treeItem = TreeHelper.expandNode(this.bot(), pathToArchive);
-		contextTool.buildArchiveFull(tree, treeItem);
+		contextTool.buildArchiveFull(
+				viewTree, getArchive(pathToArchive));
 	}
 	
 	public FolderCreatingDialog createFolder(String... pathToArchive) {
-		SWTBotTree tree = this.bot().tree();
-		SWTBotTreeItem treeItem = TreeHelper.expandNode(this.bot(), pathToArchive);
-		return contextTool.createFolder(tree, treeItem);
+		return contextTool.createFolder(
+				viewTree, getArchive(pathToArchive));
 	}
 	
 	public FilesetDialog createFileset(String... pathToArchive) {
-		SWTBotTree tree = this.bot().tree();
-		SWTBotTreeItem treeItem = TreeHelper.expandNode(this.bot(), pathToArchive);
-		return contextTool.createFileset(tree, treeItem);
+		return contextTool.createFileset(
+				viewTree, getArchive(pathToArchive));
 	}
 	
 	public UserLibrariesFilesetDialog createUserLibraryFileset(String... pathToArchive) {
-		SWTBotTree tree = this.bot().tree();
-		SWTBotTreeItem treeItem = TreeHelper.expandNode(this.bot(), pathToArchive);
-		return contextTool.createUserLibraryFileset(tree, treeItem);
+		return contextTool.createUserLibraryFileset(
+				viewTree, getArchive(pathToArchive));
 	}
 	
 	public EditArchiveDialog editArchive(String... pathToArchive) {
-		SWTBotTree tree = this.bot().tree();
-		SWTBotTreeItem treeItem = TreeHelper.expandNode(this.bot(), pathToArchive);
-		return contextTool.editArchive(tree, treeItem);
+		return contextTool.editArchive(
+				viewTree, getArchive(pathToArchive));
 	}
 	
 	public void deleteArchive(boolean withContextMenu, String... pathToArchive) {
-		SWTBotTree tree = this.bot().tree();
-		SWTBotTreeItem treeItem = TreeHelper.expandNode(this.bot(), pathToArchive);
-		contextTool.deleteArchive(tree, treeItem, withContextMenu);
+		contextTool.deleteArchive(
+				viewTree, getArchive(pathToArchive), withContextMenu);
 	}
 	
 	public ArchivePublishSettingsDialog publishToServer(boolean returnDialog,
 			String... pathToArchive) {
-		SWTBotTree tree = this.bot().tree();
-		SWTBotTreeItem treeItem = TreeHelper.expandNode(this.bot(), pathToArchive);
-		return contextTool.publishToServer(tree, treeItem, returnDialog);
+		return contextTool.publishToServer(
+				viewTree, getArchive(pathToArchive), returnDialog);
 	}
 	
 	public ArchivePublishSettingsDialog editPublishSettings(String... pathToArchive) {
-		SWTBotTree tree = this.bot().tree();
-		SWTBotTreeItem treeItem = TreeHelper.expandNode(this.bot(), pathToArchive);
-		return contextTool.editPublishSettings(tree, treeItem);
+		return contextTool.editPublishSettings(
+				viewTree, getArchive(pathToArchive));
 	}
 	
 	public boolean itemExists(String... path) {
@@ -119,6 +114,11 @@ public class ProjectArchivesView extends ViewBase {
 		} catch (TimeoutException exc) {
 			return false;
 		}
+	}
+	
+	private SWTBotTreeItem getArchive(String... pathToArchive) {
+		bot.waitUntil(new TreeContainsNode(viewTree, pathToArchive));
+		return TreeHelper.expandNode(this.bot(), pathToArchive);
 	}
 	
 	private SWTBotToolbarButton toolbarButton(String toolbarToolTip) {
