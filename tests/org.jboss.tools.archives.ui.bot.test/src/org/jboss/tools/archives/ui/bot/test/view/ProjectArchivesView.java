@@ -24,6 +24,7 @@ import org.jboss.tools.archives.ui.bot.test.dialog.FilesetDialog;
 import org.jboss.tools.archives.ui.bot.test.dialog.FolderCreatingDialog;
 import org.jboss.tools.archives.ui.bot.test.dialog.NewJarDialog;
 import org.jboss.tools.archives.ui.bot.test.dialog.UserLibrariesFilesetDialog;
+import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.condition.TreeContainsNode;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.View.JBossToolsProjectarchives;
 import org.jboss.tools.ui.bot.ext.helper.TreeHelper;
@@ -117,7 +118,7 @@ public class ProjectArchivesView extends ViewBase {
 	}
 	
 	private SWTBotTreeItem getArchive(String... pathToArchive) {
-		bot.waitUntil(new TreeContainsNode(viewTree, pathToArchive));
+		bot.waitUntil(new TreeContainsNode(viewTree, pathToArchive), Timing.time5S());
 		return TreeHelper.expandNode(this.bot(), pathToArchive);
 	}
 	
