@@ -13,7 +13,7 @@
 	<packaging>eclipse-test-plugin</packaging>
 
 	<properties>
-		<jbosstools.test.jboss-gatein.home>${requirementsDirectory}/GateIn-3.1.0-GA</jbosstools.test.jboss-gatein.home>
+		<jbosstools.test.jboss-gatein.home>${requirementsDirectory}/GateIn-3.3.0-GA-jbossas5</jbosstools.test.jboss-gatein.home>
 		<jbosstools.test.jboss-seam-2.2.home>${requirementsDirectory}/jboss-seam-2.2.1.Final</jbosstools.test.jboss-seam-2.2.home> 
 		<jbosstools.test.jboss-portal.home>${requirementsDirectory}/jboss-portal-2.7.2</jbosstools.test.jboss-portal.home>
 		<jbosstools.test.jboss-seam-2.0.home>${requirementsDirectory}/jboss-seam-2.0.1.GA</jbosstools.test.jboss-seam-2.0.home>
