@@ -45,7 +45,7 @@ public class ScrollingSynchronizationTest extends VPEEditorTestCase {
 		 */
 		try {
 			FileHelper.copyFilesBinary(
-					new File(getPathToResources(IDELabel.JsfProjectTree.WEB_CONTENT + "/" + FACELETS_JSP)), //$NON-NLS-1$
+					new File(getPathToRootResources(IDELabel.JsfProjectTree.WEB_CONTENT + "/" + FACELETS_JSP)), //$NON-NLS-1$
 					new File(FileHelper.getProjectLocation(JBT_TEST_PROJECT_NAME, bot),
 							IDELabel.JsfProjectTree.WEB_CONTENT + "/" + IDELabel.JsfProjectTree.PAGES)); //$NON-NLS-1$
 		} catch (IOException ioe) {

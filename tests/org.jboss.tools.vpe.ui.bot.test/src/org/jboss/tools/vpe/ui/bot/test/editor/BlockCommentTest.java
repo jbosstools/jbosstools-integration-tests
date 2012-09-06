@@ -13,7 +13,9 @@ package org.jboss.tools.vpe.ui.bot.test.editor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
+import org.jboss.tools.ui.bot.ext.SWTBotExt;
 import org.jboss.tools.ui.bot.ext.SWTJBTExt;
+import org.jboss.tools.vpe.ui.bot.test.tools.SWTBotWebBrowser;
 
 public class BlockCommentTest extends VPEEditorTestCase{
 
@@ -31,14 +33,20 @@ public class BlockCommentTest extends VPEEditorTestCase{
 		getEditor().selectLine(22);
 		bot.menu("Source").menu("Add Block Comment").click();  //$NON-NLS-1$//$NON-NLS-2$
 		getEditor().save();
-		checkVPE("BlockCommentTestToggle.xml"); //$NON-NLS-1$
+		waitForBlockingJobsAcomplished(VISUAL_UPDATE);
+    SWTBotWebBrowser webBrowser = new SWTBotWebBrowser(TEST_PAGE, new SWTBotExt());
+    assertVisualEditorContainsManyComments(webBrowser, 1, TEST_PAGE);
+    final String commentValue = "<h:commandButton action=\"hello\" value=\"Say Hello!\" />";
+    assertTrue("Visual Representation of page doesn't contain comment with value " + commentValue,
+        webBrowser.containsCommentWithValue(commentValue));
 		
 		//Test remove block comment from Source menu
 		
 		getEditor().selectLine(22);
 		bot.menu("Source").menu("Remove Block Comment").click();  //$NON-NLS-1$//$NON-NLS-2$
 		getEditor().save();
-		checkVPE("CommentTestUntoggle.xml"); //$NON-NLS-1$
+		waitForBlockingJobsAcomplished(VISUAL_UPDATE);
+    assertVisualEditorContainsManyComments(webBrowser, 0, TEST_PAGE);
 	
 		
 		//Test add block comment with CTRL+SHIFT+/ hot keys
@@ -46,14 +54,18 @@ public class BlockCommentTest extends VPEEditorTestCase{
 		getEditor().selectLine(22);
 		pressBlockCommentHotKeys();
 		getEditor().save();
-		checkVPE("BlockCommentTestToggle.xml"); //$NON-NLS-1$
+		waitForBlockingJobsAcomplished(VISUAL_UPDATE);
+    assertVisualEditorContainsManyComments(webBrowser, 1, TEST_PAGE);
+    assertTrue("Visual Representation of page doesn't contain comment with value " + commentValue,
+        webBrowser.containsCommentWithValue(commentValue));
 		
 		//Test remove block comment with CTRL+SHIFT+\ hot keys
 
 		getEditor().selectLine(22);
 		pressUnBlockCommentHotKeys();
 		getEditor().save();
-		checkVPE("CommentTestUntoggle.xml"); //$NON-NLS-1$
+		waitForBlockingJobsAcomplished(VISUAL_UPDATE);
+    assertVisualEditorContainsManyComments(webBrowser, 0, TEST_PAGE);
 		
 	}
 	

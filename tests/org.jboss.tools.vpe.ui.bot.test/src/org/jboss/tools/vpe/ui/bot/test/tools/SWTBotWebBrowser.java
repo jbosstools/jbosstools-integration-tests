@@ -968,4 +968,61 @@ public class SWTBotWebBrowser {
     
     return result;
   }
+  
+  /**
+   * Returns all comment nodes
+   * @return
+   */
+  public List<nsIDOMNode> getCommentNodes(){
+    return getCommentNodes(mozillaEditor.getDomDocument());
+  }
+  /**
+   * Returns all comment nodes of node
+   * @param node
+   * @return
+   */
+  public List<nsIDOMNode> getCommentNodes(nsIDOMNode node){
+    LinkedList<nsIDOMNode> result = new LinkedList<nsIDOMNode>();
+    final String commentNodeName = "#comment";
+    if (node.getNodeName().trim().equals(commentNodeName)){
+      result.add(node);
+    }
+    else{
+      // check children children
+      nsIDOMNodeList children = node.getChildNodes();
+      for (int i = 0; i < children.getLength(); i++) {
+
+        nsIDOMNode child = children.item(i);
+        // leave out empty text nodes in test dom model
+        if ((child.getNodeType() == Node.TEXT_NODE)
+            && ((child.getNodeValue() == null) || (child.getNodeValue().trim()
+                .length() == 0)))
+          continue;
+
+        result.addAll(getCommentNodes(child));
+      }
+    }
+    return result;
+  }
+  /**
+   * Returns true if browser contains comment node with value
+   * @param value
+   * @return
+   */
+  public boolean containsCommentWithValue (String value){
+    boolean notFound = true;
+    
+    List<nsIDOMNode> comments = getCommentNodes();
+    if (comments != null && comments.size() > 0){
+      Iterator<nsIDOMNode> itNode = comments.iterator();
+      while (itNode.hasNext() && notFound){
+        nsIDOMNode node = itNode.next();
+        if (stripTextFromSpecChars(node.getNodeValue()).equalsIgnoreCase(value)){
+          notFound = false;
+        }
+      }
+    }
+    
+    return !notFound;
+  }
 }

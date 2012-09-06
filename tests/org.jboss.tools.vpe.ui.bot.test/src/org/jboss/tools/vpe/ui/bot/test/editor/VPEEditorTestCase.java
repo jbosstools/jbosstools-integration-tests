@@ -64,6 +64,9 @@ public abstract class VPEEditorTestCase extends VPEAutoTestCase{
 		return filePath;
 	}
 	
+	protected String getPathToRootResources(String testPage) throws IOException {
+    return super.getPathToResources(testPage);
+  }
 	protected void openPage(){
 		SWTBot innerBot = bot.viewByTitle(WidgetVariables.PACKAGE_EXPLORER).bot();
 		SWTBotTree tree = innerBot.tree();
@@ -204,6 +207,24 @@ public abstract class VPEEditorTestCase extends VPEAutoTestCase{
             nodeNameToContain,
             attributeNames,
             attributeValues));
+    
+  }
+  /**
+   * Asserts if Visual Editor contains node nodeNameToContain exactly numOccurrencies times
+   * @param webBrowser
+   * @param nodeNameToContain
+   * @param numOccurrences
+   * @param fileName
+   */
+  protected static void assertVisualEditorContainsManyComments (SWTBotWebBrowser webBrowser, 
+     int numOccurrences,
+     String fileName){
+    
+    assertTrue("Visual Representation of file " + fileName
+        + " has to contain "
+        + numOccurrences
+        + " comment nodes but it doesn't",
+        webBrowser.getCommentNodes().size() == numOccurrences);
     
   }
 }

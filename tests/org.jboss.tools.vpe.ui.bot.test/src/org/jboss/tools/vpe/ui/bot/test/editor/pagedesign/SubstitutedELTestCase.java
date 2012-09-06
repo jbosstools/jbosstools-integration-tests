@@ -10,12 +10,8 @@
  ******************************************************************************/
 package org.jboss.tools.vpe.ui.bot.test.editor.pagedesign;
 
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
-import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
-import org.jboss.tools.ui.bot.test.WidgetVariables;
 
 public abstract class SubstitutedELTestCase extends PageDesignTestCase{
 	
@@ -40,11 +36,6 @@ public abstract class SubstitutedELTestCase extends PageDesignTestCase{
 		} catch (WidgetNotFoundException e) {
 		}
 		return isOpened;
-	}
-	
-	
-	void checkVPEForTestPage(String testPage) throws Throwable{
-		performContentTestByDocument(testPage, bot.multiPageEditorByTitle(TEST_PAGE));
 	}
 	
 	@Override
@@ -77,27 +68,5 @@ public abstract class SubstitutedELTestCase extends PageDesignTestCase{
 		catch (WidgetNotFoundException e) {
 		}
 	}
-	
-	void checkVPEForHelloPage(String testHelloPage) throws Throwable{
 		
-		//Open hello page
-
-		SWTBot innerBot = bot.viewByTitle(WidgetVariables.PACKAGE_EXPLORER).bot();
-		SWTBotTree tree = innerBot.tree();
-		tree.expandNode(JBT_TEST_PROJECT_NAME)
-		.expandNode("WebContent").expandNode("pages").getNode("hello.jsp").doubleClick(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		SWTBotEditor editor = bot.editorByTitle("hello.jsp"); //$NON-NLS-1$
-		
-		//Check page content
-		
-		try {
-			performContentTestByDocument(testHelloPage, bot.multiPageEditorByTitle("hello.jsp")); //$NON-NLS-1$
-		} catch (Throwable e) {
-			throw e;
-		}finally{
-			editor.close();
-			openPage();
-		}
-	}
-	
 }

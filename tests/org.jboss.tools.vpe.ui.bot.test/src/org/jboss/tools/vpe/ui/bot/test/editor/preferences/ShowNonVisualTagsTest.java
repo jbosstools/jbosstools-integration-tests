@@ -10,30 +10,35 @@
  ******************************************************************************/
 package org.jboss.tools.vpe.ui.bot.test.editor.preferences;
 
+import org.jboss.tools.ui.bot.ext.SWTBotExt;
+import org.jboss.tools.vpe.ui.bot.test.tools.SWTBotWebBrowser;
+
 public class ShowNonVisualTagsTest extends PreferencesTestCase{
 	
 	public void testShowNonVisualTags() throws Throwable{
 	  openPage();
-		checkVPE("DumpedTestPage.xml"); //$NON-NLS-1$
-		
-		//Test Show Non-Visual Tags
-		
+	  //Test Show Non-Visual Tags
 		selectShowNonVisual();
 		closePage();
 		openPage();
-		checkVPE("ShowNonVisualTags.xml"); //$NON-NLS-1$
-		
+		SWTBotWebBrowser webBrowser = new SWTBotWebBrowser(TEST_PAGE, new SWTBotExt());
+		assertVisualEditorContainsNodeWithValue(webBrowser, 
+        "jsp:directive.taglib",
+        TEST_PAGE);
+    assertVisualEditorContainsNodeWithValue(webBrowser, 
+        "f:loadBundle",
+        TEST_PAGE);		
 		//Test Hide Non-Visual Tags
 		selectShowNonVisual();
 		closePage();
 		openPage();
-		checkVPE("DumpedTestPage.xml"); //$NON-NLS-1$
-
-	}
-	
-	private void checkVPE(String testPage) throws Throwable{
-//		waitForBlockingJobsAcomplished(VISUAL_REFRESH);
-		performContentTestByDocument(testPage, bot.multiPageEditorByTitle(TEST_PAGE));
+		webBrowser = new SWTBotWebBrowser(TEST_PAGE, new SWTBotExt());
+		assertVisualEditorNotContainNodeWithValue(webBrowser, 
+        "jsp:directive.taglib",
+        TEST_PAGE);
+    assertVisualEditorNotContainNodeWithValue(webBrowser, 
+        "f:loadBundle",
+        TEST_PAGE);
 	}
 	
 	private void selectShowNonVisual(){

@@ -11,6 +11,8 @@
 package org.jboss.tools.vpe.ui.bot.test.editor.preferences;
 
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
+import org.jboss.tools.ui.bot.ext.SWTBotExt;
+import org.jboss.tools.vpe.ui.bot.test.tools.SWTBotWebBrowser;
 
 public class ShowResourceBundlesUsageasELexpressionsTest extends PreferencesTestCase{
 
@@ -22,17 +24,37 @@ public class ShowResourceBundlesUsageasELexpressionsTest extends PreferencesTest
 	  openPage();
 		editor = bot.editorByTitle(TEST_PAGE).toTextEditor();
 		textEditor = editor.getText();
-
+    SWTBotWebBrowser webBrowser = new SWTBotWebBrowser(TEST_PAGE, new SWTBotExt());
 		//Test check VPE content with resource bundles
-		
 		selectELExpressions();
-		checkVPE("ShowResourceBundlesUsageasELExpressions.xml"); //$NON-NLS-1$
-	
+		assertVisualEditorContainsNodeWithValue(webBrowser, 
+		    "#{Message.prompt_message}",
+		    TEST_PAGE);
+		assertVisualEditorContainsNodeWithValue(webBrowser, 
+        "#{Message.header}",
+        TEST_PAGE);
+		assertVisualEditorNotContainNodeWithValue(webBrowser, 
+        "Hello Demo Application",
+        TEST_PAGE);
+    assertVisualEditorNotContainNodeWithValue(webBrowser, 
+        "Name:",
+        TEST_PAGE);
 		//Test check VPE content without resource bundles
 		
 		selectELExpressions();
-		checkVPE("HideResourceBundlesUsageasELExpressions.xml"); //$NON-NLS-1$
-		
+		new SWTBotWebBrowser(TEST_PAGE, new SWTBotExt()).displayWebBrowserDOM();
+		assertVisualEditorNotContainNodeWithValue(webBrowser, 
+        "#{Message.prompt_message}",
+        TEST_PAGE);
+    assertVisualEditorNotContainNodeWithValue(webBrowser, 
+        "#{Message.header}",
+        TEST_PAGE);
+    assertVisualEditorContainsNodeWithValue(webBrowser, 
+        "Hello Demo Application",
+        TEST_PAGE);
+    assertVisualEditorContainsNodeWithValue(webBrowser, 
+        "Name:",
+        TEST_PAGE);
 	}
 	
 	@Override
@@ -46,11 +68,6 @@ public class ShowResourceBundlesUsageasELexpressionsTest extends PreferencesTest
 		editor.setText(textEditor);
 		editor.save();
 		super.tearDown();
-	}
-	
-	private void checkVPE(String testPage) throws Throwable{
-//		waitForBlockingJobsAcomplished(VISUAL_REFRESH);
-		performContentTestByDocument(testPage, bot.multiPageEditorByTitle(TEST_PAGE));
 	}
 	
 	private void selectELExpressions(){

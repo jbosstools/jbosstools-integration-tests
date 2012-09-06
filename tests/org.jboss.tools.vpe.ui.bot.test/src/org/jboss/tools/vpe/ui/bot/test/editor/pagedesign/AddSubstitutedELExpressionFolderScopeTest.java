@@ -11,13 +11,13 @@
 package org.jboss.tools.vpe.ui.bot.test.editor.pagedesign;
 
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
+import org.jboss.tools.ui.bot.ext.SWTBotExt;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.test.WidgetVariables;
+import org.jboss.tools.vpe.ui.bot.test.tools.SWTBotWebBrowser;
 
 public class AddSubstitutedELExpressionFolderScopeTest extends SubstitutedELTestCase{
 	
@@ -104,17 +104,27 @@ public class AddSubstitutedELExpressionFolderScopeTest extends SubstitutedELTest
 	//	waitForBlockingJobsAcomplished(VISUAL_REFRESH);
 		
 		//Check page content
-		
-		checkVPEForTestPage("AddSubstitutedELExpressionTestPage.xml"); //$NON-NLS-1$
-		checkVPEForHelloPage("AddSubstitutedELExpressionHelloPage.xml"); //$NON-NLS-1$
-		checkVPEForTestPageFolder("RemoveSubstitutedELExpressionTestPage.xml"); //$NON-NLS-1$
-		
-		//Test check the page in the same folder
-		
-		
-		
-		//Test open Page Design Options
-		
+		openPage();
+		SWTBotExt botExt = new SWTBotExt();
+		assertVisualEditorContains(new SWTBotWebBrowser(TEST_PAGE,botExt),
+        "INPUT",
+        new String[]{"value"},
+        new String[]{EL_VALUE},
+        TEST_PAGE);
+		openPage("hello.jsp");
+		assertVisualEditorContainsNodeWithValue(new SWTBotWebBrowser("hello.jsp",botExt),
+        EL_VALUE,
+        "hello.jsp");
+		packageExplorer.openFile(JBT_TEST_PROJECT_NAME,
+		    "WebContent",
+		    TEST_FOLDER,
+		    TEST_PAGE_FOR_FOLDER+".jsp");
+		assertVisualEditorContains(new SWTBotWebBrowser(TEST_PAGE_FOR_FOLDER+".jsp",botExt),
+        "INPUT",
+        new String[]{"value"},
+        new String[]{"#{user.name}"},
+        TEST_PAGE_FOR_FOLDER+".jsp");
+		openPage();
 		bot.toolbarButtonWithTooltip(PAGE_DESIGN).click();
 		bot.shell(PAGE_DESIGN).activate();
 		
@@ -129,10 +139,21 @@ public class AddSubstitutedELExpressionFolderScopeTest extends SubstitutedELTest
 		bot.button("OK").click(); //$NON-NLS-1$
 		
 		//Check VPE content
+		assertVisualEditorContains(new SWTBotWebBrowser(TEST_PAGE,botExt),
+        "INPUT",
+        new String[]{"value"},
+        new String[]{"#{user.name}"},
+        TEST_PAGE);
 		
-		checkVPEForTestPage("RemoveSubstitutedELExpressionTestPage.xml"); //$NON-NLS-1$
-		checkVPEForHelloPage("RemoveSubstitutedELExpressionHelloPage.xml"); //$NON-NLS-1$
-		checkVPEForTestPageFolder("RemoveSubstitutedELExpressionTestPage.xml"); //$NON-NLS-1$
+		assertVisualEditorContainsNodeWithValue(new SWTBotWebBrowser("hello.jsp",botExt),
+		    "#{user.name}",
+        "hello.jsp");
+		
+		assertVisualEditorContains(new SWTBotWebBrowser(TEST_PAGE_FOR_FOLDER+".jsp",botExt),
+        "INPUT",
+        new String[]{"value"},
+        new String[]{"#{user.name}"},
+        TEST_PAGE_FOR_FOLDER+".jsp");
 	}
 	
 	@Override
@@ -147,30 +168,5 @@ public class AddSubstitutedELExpressionFolderScopeTest extends SubstitutedELTest
 		delay();
 		super.tearDown();
 	}
-	
-	private void checkVPEForTestPageFolder(String testPageFolder) throws Throwable{
 		
-		//Open hello page
-
-		SWTBot innerBot = bot.viewByTitle(WidgetVariables.PACKAGE_EXPLORER).bot();
-		SWTBotTree tree = innerBot.tree();
-		tree.expandNode(JBT_TEST_PROJECT_NAME)
-		.expandNode("WebContent").expandNode(TEST_FOLDER) //$NON-NLS-1$
-		.getNode(TEST_PAGE_FOR_FOLDER+".jsp").doubleClick(); //$NON-NLS-1$
-		SWTBotEditor editor = bot.editorByTitle(TEST_PAGE_FOR_FOLDER+".jsp"); //$NON-NLS-1$
-	//	waitForBlockingJobsAcomplished(VISUAL_REFRESH);
-		
-		//Check page content
-		
-		try {
-			performContentTestByDocument(testPageFolder, bot.multiPageEditorByTitle(TEST_PAGE_FOR_FOLDER+".jsp")); //$NON-NLS-1$
-		} catch (Throwable e) {
-			throw e;
-		}finally{
-			editor.close();
-			openPage();
-		}
-
-	}
-	
 }

@@ -21,9 +21,9 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.jboss.tools.ui.bot.ext.SWTJBTExt;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.vpe.ui.bot.test.Activator;
-import org.jboss.tools.vpe.ui.bot.test.VPEAutoTestCase;
+import org.jboss.tools.vpe.ui.bot.test.editor.VPEEditorTestCase;
 
-public abstract class PreferencesTestCase extends VPEAutoTestCase{
+public abstract class PreferencesTestCase extends VPEEditorTestCase{
 
 	protected static final String TOGGLE_SELECTION_BAR_TOOLTIP = "Toggle selection tag bar (" +  //$NON-NLS-1$
 	  (SWTJBTExt.isRunningOnMacOs() ? "⌘6" : "Ctrl+6") + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$

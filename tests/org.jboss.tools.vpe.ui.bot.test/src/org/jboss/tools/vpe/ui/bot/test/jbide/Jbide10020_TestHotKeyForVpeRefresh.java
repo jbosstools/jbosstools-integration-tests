@@ -11,13 +11,15 @@
 package org.jboss.tools.vpe.ui.bot.test.jbide;
 
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
+import org.jboss.tools.ui.bot.ext.SWTJBTExt;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
+import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.vpe.ui.bot.test.VPEAutoTestCase;
 
 public class Jbide10020_TestHotKeyForVpeRefresh extends VPEAutoTestCase {
 
-	private final String TOOL_TIP = "Refresh (F5)";  //$NON-NLS-1$
-	private final String TOOL_TIP2 = "Refresh";  //$NON-NLS-1$
+	private final String TOOL_TIP = SWTJBTExt.isRunningOnMacOs() ? 
+      IDELabel.ToolbarButton.REFRESH_MAC_OS: IDELabel.ToolbarButton.REFRESH;
 	private final String ERROR_MESSAGE = 
 			"Could not find tool bar button with tooltip '" + TOOL_TIP  //$NON-NLS-1$
 			+ "' on the toolbar. Hot key 'F5' for VPE refresh is broken.";  //$NON-NLS-1$
@@ -41,7 +43,7 @@ public class Jbide10020_TestHotKeyForVpeRefresh extends VPEAutoTestCase {
 		/*
 		 * Case 1:
 		 * When focus is on in the VPE --
-		 * Find "Refresh (F5)" toolbar button
+		 * Find "Refresh (Ctrl+5)" toolbar button
 		 */
 		editor.setFocus();
 		try {
@@ -55,10 +57,6 @@ public class Jbide10020_TestHotKeyForVpeRefresh extends VPEAutoTestCase {
 		 * Find "Refresh" toolbar button without HotKey defined.
 		 */
 		packageExplorer.show();
-		try {
-			bot.toolbarButtonWithTooltip(TOOL_TIP2);
-		} catch (Exception e) {
-			fail("Hot key for VPE refresh is *NOT* disabled in Package Explorer"); //$NON-NLS-1$
-		}
+		assertNotEnabled(bot.toolbarButtonWithTooltip(TOOL_TIP));
 	}
 }

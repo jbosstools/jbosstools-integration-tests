@@ -12,6 +12,8 @@ package org.jboss.tools.vpe.ui.bot.test.editor.preferences;
 
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCheckBox;
+import org.jboss.tools.ui.bot.ext.SWTBotExt;
+import org.jboss.tools.vpe.ui.bot.test.tools.SWTBotWebBrowser;
 
 public class BorderForUnknownTagsTest extends PreferencesTestCase{
 
@@ -28,7 +30,8 @@ public class BorderForUnknownTagsTest extends PreferencesTestCase{
 		//Test insert unknown tag
 		
 		editor.navigateTo(12, 52);
-		editor.insertText("<tagunknown></tagunknown>"); //$NON-NLS-1$
+		final String unknownTag = "tagunknown";
+		editor.insertText("<" + unknownTag + "></" + unknownTag + ">"); //$NON-NLS-1$
 	
 		//Test default Show Border value
 		
@@ -42,25 +45,32 @@ public class BorderForUnknownTagsTest extends PreferencesTestCase{
 	
 		//Test check VPE content
 		
-		checkVPE("ShowBorderForUnknownTag.xml"); //$NON-NLS-1$
-		
+		SWTBotWebBrowser webBrowser = new SWTBotWebBrowser(TEST_PAGE, new SWTBotExt());
+		assertVisualEditorContains(webBrowser, 
+		    "DIV",
+		    new String[]{"style","title"},
+		    new String[]{"-moz-user-modify: read-only; border: 1px solid green;",unknownTag}, 
+		    TEST_PAGE);
 		//Test hide border for unknown tag
 		
 		selectBorder();
-		checkVPE("HideBorderForUnknownTag.xml"); //$NON-NLS-1$
-		
+		assertVisualEditorContains(webBrowser, 
+        "DIV",
+        new String[]{"style","title"},
+        new String[]{"-moz-user-modify: read-only;",unknownTag}, 
+        TEST_PAGE);
+				
 		//Test restore previous state
 		
 		selectBorder();
-		checkVPE("ShowBorderForUnknownTag.xml"); //$NON-NLS-1$
+		assertVisualEditorContains(webBrowser, 
+        "DIV",
+        new String[]{"style","title"},
+        new String[]{"-moz-user-modify: read-only; border: 1px solid green;",unknownTag}, 
+        TEST_PAGE);
 		
 	}
 	
-	private void checkVPE(String testPage) throws Throwable{
-//		waitForBlockingJobsAcomplished(VISUAL_REFRESH);
-		performContentTestByDocument(testPage, bot.multiPageEditorByTitle(TEST_PAGE));
-	}
-
 	private void selectBorder(){
 		bot.toolbarButtonWithTooltip(PREF_TOOLTIP).click();
 		bot.shell(PREF_FILTER_SHELL_TITLE).activate();
