@@ -488,6 +488,15 @@ public class SWTBotWebBrowser {
 	  return result;
   }
   /**
+   * Returns true if visual editor contains node with value searchText
+   * @param webBrowser
+   * @param searchText
+   * @return
+   */
+  public boolean containsNodeWithValue(SWTBotWebBrowser webBrowser, String searchText) {
+    return containsNodeWithValue(webBrowser.getMozillaEditor().getDomDocument(), searchText);
+  }
+  /**
    * Returns Palette Viewer associated to JBoss Tools Palette
    * @return
    */
