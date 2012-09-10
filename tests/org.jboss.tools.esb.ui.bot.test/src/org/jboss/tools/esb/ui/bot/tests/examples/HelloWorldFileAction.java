@@ -65,6 +65,8 @@ public class HelloWorldFileAction extends ESBExampleTest {
 		SWTBotTreeItem theProject = bot.tree(0).getTreeItem(projectName).select();
 		bot.menu("File").menu("Properties").click();
 		
+		bot.sleep(60000l);
+		
 		if (System.getProperty("file.separator").equals("/")) { 
 			baseDir = bot.textWithLabel("Location:").getText() + System.getProperty("file.separator");
 		}	
@@ -73,7 +75,15 @@ public class HelloWorldFileAction extends ESBExampleTest {
 			//baseDir = bot.textWithLabel("Location:").getText().replaceAll(System.getProperty("file.separator"), System.getProperty("file.separator") + System.getProperty("file.separator")) + System.getProperty("file.separator");
 			baseDir = bot.textWithLabel("Location:").getText();
 			System.out.println("DEBUG baseDir = " + bot.textWithLabel("Location:").getText()) ;
-			baseDir = bot.textWithLabel("Location:").getText().replaceAll(System.getProperty("file.separator"), "zzz");
+			
+			try {
+				baseDir = bot.textWithLabel("Location:").getText().replaceAll(System.getProperty("file.separator"), "zzz");
+			}
+			catch (Exception E) {
+				System.out.println ("replaceAll failing with " + E.getMessage() );
+			}
+			
+			
 		}						
 //		if (System.getProperty("file.separator").equals("/")) { 
 //			baseDir = bot.textWithLabel("Location:").getText() + System.getProperty("file.separator");
