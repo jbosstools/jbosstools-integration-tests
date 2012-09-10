@@ -79,7 +79,7 @@ public class HelloWorldFileAction extends ESBExampleTest {
 			try {
 				//baseDir = bot.textWithLabel("Location:").getText().replaceAll(System.getProperty("file.separator"), "zzz");
 				// http://stackoverflow.com/questions/1701839/backslash-problem-with-string-replaceall
-				baseDir = bot.textWithLabel("Location:").getText().replace("\\", "\\\\") + "\\";
+				baseDir = bot.textWithLabel("Location:").getText().replace("\\", "\\\\") + "\\\\";
 			}
 			catch (Exception E) {
 				System.out.println ("replaceAll failing with " + E.getMessage() );
