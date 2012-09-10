@@ -70,7 +70,8 @@ public class HelloWorldFileAction extends ESBExampleTest {
 		}	
 		else 	{
 			/* Needed to avoid a syntax error with Windows \ dir path characters */
-			baseDir = bot.textWithLabel("Location:").getText().replaceAll(System.getProperty("file.separator"), System.getProperty("file.separator") + System.getProperty("file.separator")) + System.getProperty("file.separator");
+			//baseDir = bot.textWithLabel("Location:").getText().replaceAll(System.getProperty("file.separator"), System.getProperty("file.separator") + System.getProperty("file.separator")) + System.getProperty("file.separator");
+			baseDir = bot.textWithLabel("Location:").getText().replaceAll(System.getProperty("file.separator"), "zzz");
 		}						
 //		if (System.getProperty("file.separator").equals("/")) { 
 //			baseDir = bot.textWithLabel("Location:").getText() + System.getProperty("file.separator");
