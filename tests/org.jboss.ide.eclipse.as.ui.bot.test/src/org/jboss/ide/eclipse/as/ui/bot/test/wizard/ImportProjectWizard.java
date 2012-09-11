@@ -61,13 +61,20 @@ public class ImportProjectWizard {
 		selectCopyProjectsIntoWorkspace();
 		getBot().button("Deselect All").click();
 		SWTBotTree projectsTree = getBot().treeWithLabel("Projects:");
-		for (SWTBotTreeItem item : projectsTree.getAllItems()){
-			System.out.println(item.getText());
-		}
+		
 		for (String projectName : projectNames){
-			SWTBotTreeItem  projectItem = projectsTree.getTreeItem(getProjectLabel(projectName));
+			SWTBotTreeItem  projectItem = getProjectTreeItem(projectsTree, projectName);
 			projectItem.check();
 		}
+	}
+
+	private SWTBotTreeItem getProjectTreeItem(SWTBotTree projectsTree, String projectName) {
+		for (SWTBotTreeItem item : projectsTree.getAllItems()){
+			if (projectName.equals(getProjectLabel(item.getText()))){
+				return item;
+			}
+		}
+		throw new IllegalStateException("Project " + projectName + " not available");
 	}
 
 	private void selectCopyProjectsIntoWorkspace() {
@@ -81,11 +88,7 @@ public class ImportProjectWizard {
 	}
 
 	private String getProjectLabel(String project){
-		if (isFileSystem()){
-			return project + " (" + projectPath + "/" + project + ")";
-		} else {
-			return project + " (" + project + ")";
-		}
+		return project.substring(0, project.indexOf('(')).trim();
 	}
 
 	private boolean isFileSystem(){
