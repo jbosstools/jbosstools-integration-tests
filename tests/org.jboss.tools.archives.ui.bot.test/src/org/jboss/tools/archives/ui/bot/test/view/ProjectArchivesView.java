@@ -16,7 +16,6 @@ import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarButton;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
-import org.eclipse.swtbot.swt.finder.widgets.TimeoutException;
 import org.jboss.tools.archives.ui.bot.test.context.ArchiveContextMenu;
 import org.jboss.tools.archives.ui.bot.test.dialog.ArchivePublishSettingsDialog;
 import org.jboss.tools.archives.ui.bot.test.dialog.EditArchiveDialog;
@@ -112,7 +111,7 @@ public class ProjectArchivesView extends ViewBase {
 			this.bot().tree(0).getTreeItem(path[0]).collapse();
 			TreeHelper.expandNode(bot(), path);
 			return true;
-		} catch (TimeoutException exc) {
+		} catch (WidgetNotFoundException exc) {
 			return false;
 		}
 	}
