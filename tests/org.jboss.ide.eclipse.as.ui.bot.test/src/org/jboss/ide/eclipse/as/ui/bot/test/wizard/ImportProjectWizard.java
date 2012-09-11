@@ -61,6 +61,9 @@ public class ImportProjectWizard {
 		selectCopyProjectsIntoWorkspace();
 		getBot().button("Deselect All").click();
 		SWTBotTree projectsTree = getBot().treeWithLabel("Projects:");
+		for (SWTBotTreeItem item : projectsTree.getAllItems()){
+			System.out.println(item.getText());
+		}
 		for (String projectName : projectNames){
 			SWTBotTreeItem  projectItem = projectsTree.getTreeItem(getProjectLabel(projectName));
 			projectItem.check();
