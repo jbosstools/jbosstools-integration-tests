@@ -15,11 +15,11 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
@@ -43,14 +43,11 @@ public class RESTfulHelper {
 	private static final SWTOpenExt open = new SWTOpenExt(bot);
 	private static final ResourceHelper resourceHelper = new ResourceHelper();
 	
-	private static final String PATH_PARAM_VALID_ERROR = "@PathParam value";
-	private static final String VALIDATION_PREFERENCE = "Validation";
-	private static final String ENABLE_ALL = "Enable All";
-	private static final String JAX_RS_VALIDATOR = "JAX-RS Metamodel Validator";
+	private static final String PATH_PARAM_VALID_ERROR = "@PathParam value";		
 	private static final String VALIDATION_SETTINGS_CHANGED = "Validation Settings Changed";
 	
 	private enum ConfigureOption {
-		ADD, REMOVE;
+		ENABLE, DISABLE;
 	}
 	
 	private SWTBotTreeItem[] getRESTValidationErrors(String wsProjectName, String description) {
@@ -67,44 +64,26 @@ public class RESTfulHelper {
 	}
 
 	public void enableRESTValidation() {
-		modifyRESTValidation(ConfigureOption.ADD);
+		modifyRESTValidation(ConfigureOption.ENABLE);
 	}
 
 	public void disableRESTValidation() {
-		modifyRESTValidation(ConfigureOption.REMOVE);
+		modifyRESTValidation(ConfigureOption.DISABLE);
 	}
 
-	/**
-	 * DO IT BETTER!!!!!!!!!!!!!!!!!!
-	 */
 	public void modifyRESTValidation(ConfigureOption option) {
 
-		SWTBot validationBot = openPreferencePage(VALIDATION_PREFERENCE,
-				new ArrayList<String>());
+		SWTBot validationBot = openPreferencePage("JAX-RS Validator",
+				Arrays.asList("JBoss Tools", "JAX-RS"));
 
-		validationBot.button(ENABLE_ALL).click();
-
-		if (option == ConfigureOption.REMOVE) {
-
-			SWTBotTable validatorTable = validationBot.table();
-			int restValidationRow = -1;
-			for (int row = 0; row < validatorTable.rowCount(); row++) {
-				if (validatorTable.getTableItem(row).getText()
-						.equals(JAX_RS_VALIDATOR)) {
-					restValidationRow = row;
-					break;
-				}
-			}
-			
-			assertTrue(restValidationRow >= 0);
-
-			validatorTable.click(restValidationRow, 1);
-			validatorTable.click(restValidationRow, 2);
+		if (option == ConfigureOption.ENABLE) {
+			validationBot.checkBox(0).select();
+		} else {
+			validationBot.checkBox(0).deselect();
 		}
-
-		validationBot.button("OK").click();
+		validationBot.button(IDELabel.Button.OK).click();
 		if (bot.activeShell().getText().equals(VALIDATION_SETTINGS_CHANGED)) {
-			bot.activeShell().bot().button("Yes").click();
+			bot.activeShell().bot().button(IDELabel.Button.YES).click();
 		}
 
 		bot.sleep(Timing.time3S());
@@ -113,11 +92,11 @@ public class RESTfulHelper {
 	}
 
 	public void addRestSupport(String wsProjectName) {
-		configureRestSupport(wsProjectName, ConfigureOption.ADD);
+		configureRestSupport(wsProjectName, ConfigureOption.ENABLE);
 	}
 
 	public void removeRestSupport(String wsProjectName) {
-		configureRestSupport(wsProjectName, ConfigureOption.REMOVE);
+		configureRestSupport(wsProjectName, ConfigureOption.DISABLE);
 	}
 
 	public boolean isRestSupportEnabled(String wsProjectName) {
@@ -174,7 +153,7 @@ public class RESTfulHelper {
 		SWTBotMenu menu = new SWTBotMenu(
 				ContextMenuHelper.getContextMenu(
 				tree, IDELabel.Menu.PACKAGE_EXPLORER_CONFIGURE, false));
-		menu.menu(option == ConfigureOption.ADD ? RESTFulAnnotations.REST_SUPPORT_MENU_LABEL_ADD
+		menu.menu(option == ConfigureOption.ENABLE ? RESTFulAnnotations.REST_SUPPORT_MENU_LABEL_ADD
 				.getLabel() : RESTFulAnnotations.REST_SUPPORT_MENU_LABEL_REMOVE
 				.getLabel()).click();
 		bot.sleep(Timing.time2S());		

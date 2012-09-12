@@ -30,6 +30,11 @@ public class PathAnnotationSupportTest extends RESTfulTestBase {
 		projectExplorer.deleteAllProjects();
 	}
 	
+	@Override
+	public void setup() {
+	
+	}
+	
 	@Test
 	public void testAddingSimpleRESTMethods() {
 		

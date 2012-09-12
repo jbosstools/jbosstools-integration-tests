@@ -39,16 +39,10 @@ public class RESTfulCompletionTest extends RESTfulTestBase{
 		return "restEmpty";
 	}
 	
-	@Override
-	public void cleanup() {		
-		 projectExplorer.deleteAllProjects();
-	}
-	
 	@Test
 	public void testWithEmptyPrefix() {
 		
 		/* prepare project */
-		importRestWSProject(getWsProjectName());
 		prepareRestfulResource(editorForClass(getWsProjectName(), "src", 
 				"org.rest.test", "RestService.java"), SIMPLE_REST_WS_RESOURCE, 
 				"org.rest.test", "RestService",
@@ -65,7 +59,6 @@ public class RESTfulCompletionTest extends RESTfulTestBase{
 	public void testWithValidPrefixAtTheEnd() {
 		
 		/* prepare project */
-		importRestWSProject(getWsProjectName());
 		prepareRestfulResource(editorForClass(getWsProjectName(), "src", 
 				"org.rest.test", "RestService.java"), SIMPLE_REST_WS_RESOURCE, 
 				"org.rest.test", "RestService",
@@ -83,7 +76,6 @@ public class RESTfulCompletionTest extends RESTfulTestBase{
 	public void testWithValidPrefixInTheBeginning() {
 	
 		/* prepare project */
-		importRestWSProject(getWsProjectName());
 		prepareRestfulResource(editorForClass(getWsProjectName(), "src", 
 				"org.rest.test", "RestService.java"), SIMPLE_REST_WS_RESOURCE, 
 				"org.rest.test", "RestService",
@@ -100,7 +92,6 @@ public class RESTfulCompletionTest extends RESTfulTestBase{
 	public void testWithInvalidPrefixAtTheEnd() {
 		
 		/* prepare project */
-		importRestWSProject(getWsProjectName());
 		prepareRestfulResource(editorForClass(getWsProjectName(), "src", 
 				"org.rest.test", "RestService.java"), SIMPLE_REST_WS_RESOURCE, 
 				"org.rest.test", "RestService",
@@ -118,7 +109,6 @@ public class RESTfulCompletionTest extends RESTfulTestBase{
 	public void testWithInvalidPrefixInTheBeginning() {
 	
 		/* prepare project */
-		importRestWSProject(getWsProjectName());
 		prepareRestfulResource(editorForClass(getWsProjectName(), "src", 
 				"org.rest.test", "RestService.java"), SIMPLE_REST_WS_RESOURCE, 
 				"org.rest.test", "RestService",
@@ -135,7 +125,6 @@ public class RESTfulCompletionTest extends RESTfulTestBase{
 	public void testWithAllInvalidParamSelection() {
 		
 		/* prepare project */
-		importRestWSProject(getWsProjectName());
 		prepareRestfulResource(editorForClass(getWsProjectName(), "src", 
 				"org.rest.test", "RestService.java"), SIMPLE_REST_WS_RESOURCE, 
 				"org.rest.test", "RestService",

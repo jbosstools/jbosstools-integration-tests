@@ -28,8 +28,8 @@ public class QueryAnnotationSupportTest extends RESTfulTestBase {
 	private String queryTypeNew = "java.lang.Long";
 	
 	@Override
-	public void cleanup() {		
-		 projectExplorer.deleteAllProjects();
+	public void setup() {
+	
 	}
 	
 	@Test

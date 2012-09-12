@@ -30,16 +30,10 @@ public class RESTfulValidationTest extends RESTfulTestBase {
 		return "restEmpty";
 	}
 	
-	@Override
-	public void cleanup() {		
-		 projectExplorer.deleteAllProjects();
-	}
-	
 	@Test
 	public void testCorrectValueValidation() {
 		
 		/* prepare project */
-		importRestWSProject(getWsProjectName());
 		prepareRestfulResource(editorForClass(getWsProjectName(), "src", 
 				"org.rest.test", "RestService.java"), SIMPLE_REST_WS_RESOURCE, 
 				"org.rest.test", "RestService",
@@ -55,7 +49,6 @@ public class RESTfulValidationTest extends RESTfulTestBase {
 	public void testBadValueValidation() {
 		
 		/* prepare project */
-		importRestWSProject(getWsProjectName());
 		prepareRestfulResource(editorForClass(getWsProjectName(), "src", 
 				"org.rest.test", "RestService.java"), SIMPLE_REST_WS_RESOURCE, 
 				"org.rest.test", "RestService",
@@ -69,7 +62,6 @@ public class RESTfulValidationTest extends RESTfulTestBase {
 	public void testCorrectToBadValueValidation() {
 		
 		/* prepare project */
-		importRestWSProject(getWsProjectName());
 		prepareRestfulResource(editorForClass(getWsProjectName(), "src", 
 				"org.rest.test", "RestService.java"), SIMPLE_REST_WS_RESOURCE, 
 				"org.rest.test", "RestService",
@@ -86,7 +78,6 @@ public class RESTfulValidationTest extends RESTfulTestBase {
 	public void testBadToCorrectValueValidation() {
 		
 		/* prepare project */
-		importRestWSProject(getWsProjectName());
 		prepareRestfulResource(editorForClass(getWsProjectName(), "src", 
 				"org.rest.test", "RestService.java"), SIMPLE_REST_WS_RESOURCE, 
 				"org.rest.test", "RestService",
@@ -106,7 +97,6 @@ public class RESTfulValidationTest extends RESTfulTestBase {
 		restfulHelper.disableRESTValidation();
 		
 		/* prepare project */
-		importRestWSProject(getWsProjectName());
 		prepareRestfulResource(editorForClass(getWsProjectName(), "src", 
 				"org.rest.test", "RestService.java"), SIMPLE_REST_WS_RESOURCE, 
 				"org.rest.test", "RestService",

@@ -17,7 +17,6 @@ import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
 import org.jboss.tools.ws.ui.bot.test.WSTestBase;
 import org.jboss.tools.ws.ui.bot.test.widgets.WsTesterView;
 import org.jboss.tools.ws.ui.bot.test.widgets.WsTesterView.Request_Type;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -43,15 +42,12 @@ public class SOAPWSToolingIntegrationTest extends WSTestBase {
 			"</soap:Body>" + LINE_SEPARATOR + 
 			"</soap:Envelope>";  
 	
-	@BeforeClass
-	public static void prepareWS() {
-		importWSTestProject(projectName);
-		deploymentHelper.runProject(projectName);
-	}
-	
 	@Override
 	public void setup() {
-		
+		if (!projectExists(getWsProjectName())) {
+			importWSTestProject(projectName);
+			deploymentHelper.runProject(projectName);
+		}
 	}
 	
 	@Override

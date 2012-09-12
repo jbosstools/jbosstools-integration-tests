@@ -12,7 +12,6 @@
 package org.jboss.tools.ws.ui.bot.test.rest.validation;
 
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -27,11 +26,6 @@ public class ApplicationPathAnnotationTest extends RESTfulTestBase {
 	@Before
 	public void setup() {		
 		
-	}
-	
-	@After
-	public void cleanup() {
-		projectExplorer.deleteAllProjects();
 	}
 	
 	@Test

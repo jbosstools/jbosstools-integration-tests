@@ -30,17 +30,9 @@ public class MatrixAnnotationSupportTest extends RESTfulTestBase {
 		return projectName;
 	}
 	
-	@Override
-	public void cleanup() {
-		projectExplorer.deleteAllProjects();
-	}
-
 	@Test
 	public void testMatrixParamSupport() {
 
-		/* prepare project */
-		importRestWSProject("matrix1");
-		
 		/* get RESTful services from JAX-RS REST explorer for the project */
 		SWTBotTreeItem[] restServices = restfulServicesForProject("matrix1");
 		
@@ -56,7 +48,6 @@ public class MatrixAnnotationSupportTest extends RESTfulTestBase {
 	public void testEditingMatrixParam() {
 
 		/* prepare project */
-		importRestWSProject("matrix1");
 		resourceHelper.replaceInEditor(editorForClass("matrix1", "src", 
 				"org.rest.test", "RestService.java").toTextEditor(), 
 				matrixParam1, matrixParamNew, true);
@@ -76,7 +67,6 @@ public class MatrixAnnotationSupportTest extends RESTfulTestBase {
 	public void testEditingTypeOfMatrixParam() {
 		
 		/* prepare project */
-		importRestWSProject("matrix1");
 		resourceHelper.replaceInEditor(editorForClass("matrix1", "src", 
 				"org.rest.test", "RestService.java").toTextEditor(), 
 				matrixParamType1, matrixParamTypeNew, true);

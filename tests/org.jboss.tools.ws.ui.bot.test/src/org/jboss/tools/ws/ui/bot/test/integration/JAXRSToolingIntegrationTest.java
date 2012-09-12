@@ -17,8 +17,6 @@ import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
 import org.jboss.tools.ws.ui.bot.test.uiutils.RESTFullExplorer;
 import org.jboss.tools.ws.ui.bot.test.widgets.WsTesterView;
 import org.jboss.tools.ws.ui.bot.test.widgets.WsTesterView.Request_Type;
-import org.junit.After;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -34,17 +32,24 @@ public class JAXRSToolingIntegrationTest extends RESTfulTestBase {
 	private String serviceUrl = localhostUrl + projectName + "/rest/"; 
 	private WsTesterView wsTesterView = new WsTesterView();
 	
-	@BeforeClass
-	public static void prepareWS() {
-		importRestWSProject(projectName);
-		servers.addProjectToServer(
-				projectName, configuredState.getServer().name);
+	@Override
+	public void setup() {
+		if (!projectExists(getWsProjectName())) {
+			importRestWSProject(projectName);
+			servers.addProjectToServer(projectName, 
+					configuredState.getServer().name);			
+		}
 	}
 	
-	@After
-	public void minimizeTester() {
+	@Override
+	public void cleanup() {		
 		/* minimize web service tester */
-		wsTesterView.minimize();
+		wsTesterView.minimize(); 
+	}
+	
+	@Override
+	protected String getWsProjectName() {
+		return projectName;
 	}
 	
 	@Test
@@ -57,7 +62,6 @@ public class JAXRSToolingIntegrationTest extends RESTfulTestBase {
 		assertWebServiceTesterIsActive();
 		
 		/* test generated url and response after invoking */
-		wsTesterView.show();
 		assertEquals(serviceUrl + "get", wsTesterView.getServiceURL());
 		
 		invokeMethodInWSTester(wsTesterView, Request_Type.GET);
@@ -75,7 +79,6 @@ public class JAXRSToolingIntegrationTest extends RESTfulTestBase {
 		assertWebServiceTesterIsActive();
 		
 		/* test generated url and response after invoking */
-		wsTesterView.show();
 		assertEquals(serviceUrl + "post", wsTesterView.getServiceURL());
 		
 		invokeMethodInWSTester(wsTesterView, Request_Type.POST);
@@ -93,7 +96,6 @@ public class JAXRSToolingIntegrationTest extends RESTfulTestBase {
 		assertWebServiceTesterIsActive();
 		
 		/* test generated url and response after invoking */
-		wsTesterView.show();
 		assertEquals(serviceUrl + "put", wsTesterView.getServiceURL());
 		
 		invokeMethodInWSTester(wsTesterView, Request_Type.PUT);
@@ -111,7 +113,6 @@ public class JAXRSToolingIntegrationTest extends RESTfulTestBase {
 		assertWebServiceTesterIsActive();
 		
 		/* test generated url and response after invoking */
-		wsTesterView.show();
 		assertEquals(serviceUrl + "delete", wsTesterView.getServiceURL());
 		
 		invokeMethodInWSTester(wsTesterView, Request_Type.DELETE);
@@ -129,7 +130,6 @@ public class JAXRSToolingIntegrationTest extends RESTfulTestBase {
 		assertWebServiceTesterIsActive();
 		
 		/* test generated url and response after invoking */
-		wsTesterView.show();
 		assertEquals(serviceUrl + "get", wsTesterView.getServiceURL());
 		
 		invokeMethodInWSTester(wsTesterView, Request_Type.POST);

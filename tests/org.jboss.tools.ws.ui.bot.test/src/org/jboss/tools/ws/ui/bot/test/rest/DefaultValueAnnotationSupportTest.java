@@ -21,8 +21,8 @@ public class DefaultValueAnnotationSupportTest extends RESTfulTestBase {
 	private String queryParamType = "java.lang.String";
 	
 	@Override
-	public void cleanup() {		
-		projectExplorer.deleteAllProjects();
+	public void setup() {
+	
 	}
 	
 	@Test

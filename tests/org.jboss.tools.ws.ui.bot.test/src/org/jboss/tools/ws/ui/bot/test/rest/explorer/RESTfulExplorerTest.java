@@ -25,6 +25,11 @@ public class RESTfulExplorerTest extends RESTfulTestBase {
 		return "RestExplorerTest";
 	}
 	
+	@Override
+	public void setup() {
+	
+	}
+	
 	@Test
 	public void testJaxRsExplorerSupport() {
 		

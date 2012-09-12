@@ -11,7 +11,6 @@
 package org.jboss.tools.ws.ui.bot.test;
 
 import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
-import org.jboss.tools.ws.ui.bot.test.annotation.AnnotationPropertiesTest;
 import org.jboss.tools.ws.ui.bot.test.integration.JAXRSToolingIntegrationTest;
 import org.jboss.tools.ws.ui.bot.test.integration.SOAPWSToolingIntegrationTest;
 import org.jboss.tools.ws.ui.bot.test.rest.DefaultValueAnnotationSupportTest;
@@ -48,7 +47,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	SimpleRESTWebServiceTest.class,
 //	AnnotationPropertiesTest.class, // not implemented yet
 	RESTfulExplorerTest.class, 
-	PathAnnotationSupportTest.class,
+	PathAnnotationSupportTest.class, 
 	QueryAnnotationSupportTest.class,
 	MatrixAnnotationSupportTest.class,
 	DefaultValueAnnotationSupportTest.class,

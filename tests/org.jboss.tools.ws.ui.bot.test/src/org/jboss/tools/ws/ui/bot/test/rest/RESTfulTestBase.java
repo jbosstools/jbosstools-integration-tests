@@ -50,12 +50,14 @@ public class RESTfulTestBase extends WSTestBase {
 
 	@Override
 	public void setup() {
-
+		if (!projectExists(getWsProjectName())) {
+			importRestWSProject(getWsProjectName());
+		}
 	}
-
+	
 	@Override
-	public void cleanup() {
-
+	public void cleanup() {		
+		 projectExplorer.deleteAllProjects();
 	}
 
 	protected static void importRestWSProject(String projectName) {
@@ -65,7 +67,7 @@ public class RESTfulTestBase extends WSTestBase {
 
 		projectExplorer.selectProject(projectName);
 		eclipse.cleanAllProjects();
-		bot.sleep(Timing.time3S());
+		util.waitForNonIgnoredJobs();
 
 		// workaround for EAP 5.1
 		if (configuredState.getServer().type.equals("EAP")
@@ -163,7 +165,7 @@ public class RESTfulTestBase extends WSTestBase {
 	protected void runRestServiceOnConfiguredServer(SWTBotTreeItem webService) {
 		RunOnServerDialog dialog = restfulWizard.runOnServer(webService);
 		dialog.chooseExistingServer().selectServer(configuredState.getServer().name).finish();		
-		bot.waitUntil(new ViewIsActive(IDELabel.View.WEB_SERVICE_TESTER));
+		bot.waitUntil(new ViewIsActive(IDELabel.View.WEB_SERVICE_TESTER), TIME_20S);
 	}
 	
 	protected SWTBotTreeItem[] restfulServicesForProject(String projectName) {
