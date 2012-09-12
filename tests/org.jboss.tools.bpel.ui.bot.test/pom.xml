@@ -15,7 +15,7 @@
 	<properties>
 		<coverage.filter>org.jboss.tools.bpel.runtimes*</coverage.filter>
 		<emma.instrument.bundles>org.jboss.tools.bpel.runtimes</emma.instrument.bundles>
-		<systemProperties>-Dswtbot.test.properties.file=./org.jboss.tools.bpel.ui.bot.test.properties</systemProperties>
+		<systemProperties>-Dswtbot.test.properties.file=./swtbot.properties</systemProperties>
 		<surefire.timeout>10800</surefire.timeout>
 	</properties>
 
