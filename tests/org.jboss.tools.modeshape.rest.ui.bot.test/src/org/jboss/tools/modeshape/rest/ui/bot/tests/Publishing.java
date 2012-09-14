@@ -20,6 +20,7 @@ import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.SWTUtilExt;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
+import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.NewObject.GeneralProject;
@@ -35,7 +36,7 @@ import org.junit.Test;
  * @author psrna
  *
  */
-@Require(server=@Server(type=ServerType.SOA,version="5.1"),perspective="Java EE")
+@Require(server=@Server(type=ServerType.ALL, state=ServerState.Running),perspective="Java EE")
 public class Publishing extends SWTTestExt{
 	
 	private static final String CONNERR_MSG = "Unable to connect using the specified server properties." +
@@ -225,9 +226,9 @@ public class Publishing extends SWTTestExt{
 	public static void afterClass(){
 		
 		bot.viewByTitle("ModeShape").show();
-		SWTBot mbot = bot.viewByTitle("ModeShape").bot();
-		mbot.tree().select(Properties.URL);
-		bot.toolbarButtonWithTooltip("Delete server from the server registry").click();
+		SWTBotView botView = bot.viewByTitle("ModeShape");
+		botView.bot().tree().select(Properties.URL);
+		botView.toolbarButton("Delete server from the server registry").click();
 		SWTBotShell shell = bot.shell("Confirm Delete Server");
 		
 		open.finish(shell.bot(),IDELabel.Button.OK);

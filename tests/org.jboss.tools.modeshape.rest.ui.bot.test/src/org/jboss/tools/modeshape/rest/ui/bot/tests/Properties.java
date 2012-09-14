@@ -14,7 +14,8 @@ public class Properties {
 	public static final String URL           = "http://localhost:8080/modeshape-rest";
 	public static final String WEBDAV_URL    = "http://localhost:8080/modeshape-webdav";
 	
-	public static final String REPOSITORY    = "eds";
+	// TODO: The default repository in SOA-P is 'eds', we should create our own repo 
+	public static final String REPOSITORY    = "repository";
 	public static final String WORKSPACE     = "default";
 	
 	public static final String USER          = "admin";

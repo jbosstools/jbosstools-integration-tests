@@ -14,10 +14,42 @@
 	<properties>
 		<coverage.filter>org.jboss.tools.modeshape.rest.ui*</coverage.filter>
 		<emma.instrument.bundles>org.jboss.tools.modeshape.rest</emma.instrument.bundles>
+		<systemProperties>-Dswtbot.test.properties.file=./swtbot.properties</systemProperties>
 	</properties>
-	
+
 <build>
 		<plugins>
+		        <plugin>
+				<groupId>com.googlecode.maven-download-plugin</groupId>
+				<artifactId>maven-download-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>install-as</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<configuration>
+							<url>http://repository.jboss.org/sourceforge/jboss-5.1.0.GA.zip</url>
+							<md5>78322c75ca0c13002a04418b4a8bc920</md5>
+							<unpack>true</unpack>
+						</configuration>
+					</execution>
+					<execution>
+						<id>get-modeshape</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<configuration>
+							<url>http://downloads.jboss.org/modeshape/2.8.3.Final/modeshape-2.8.3.Final-jbossas-5-dist.zip</url>
+							<unpack>true</unpack>
+							<md5>4b279bf46ae3247376f55f0dadd729f6</md5>
+							<outputDirectory>${requirementsDirectory}/jboss-5.1.0.GA/server/default</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-surefire-plugin</artifactId>
