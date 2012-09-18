@@ -1,6 +1,8 @@
-package org.jboss.ws;
+package org.jboss.ws.impl;
  
 import javax.jws.WebService;
+import org.jboss.ws.AreaService;
+import org.jboss.ws.Dimensions;
  
 @WebService(serviceName = "AreaService",
             endpointInterface = "org.jboss.ws.AreaService")

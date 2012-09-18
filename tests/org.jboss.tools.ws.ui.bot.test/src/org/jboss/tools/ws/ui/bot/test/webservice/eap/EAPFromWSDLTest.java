@@ -121,7 +121,7 @@ public class EAPFromWSDLTest extends WebServiceTestBase {
 		IProject project = ResourcesPlugin.getWorkspace().getRoot()
 				.getProject(getWsProjectName());
 		IFile f = project.getFile("src/" + getWsPackage().replace(".", "/")
-				+ "/AreaServiceImpl.java");
+				+ "/impl" + "/AreaServiceImpl.java");
 		/*
 		 * workaround when package is not typed
 		 */
@@ -141,7 +141,7 @@ public class EAPFromWSDLTest extends WebServiceTestBase {
 		content = resourceHelper.readFile(f);
 		Assert.assertNotNull(content);
 		Assert.assertTrue(content
-				.contains("<servlet-class>org.jboss.ws.AreaServiceImpl</servlet-class>"));
+				.contains("<servlet-class>org.jboss.ws.impl.AreaServiceImpl</servlet-class>"));
 		Assert.assertTrue(content
 				.contains("<url-pattern>/AreaService</url-pattern>"));
 		deploymentHelper.runProject(getEarProjectName());
