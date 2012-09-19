@@ -35,8 +35,7 @@ public abstract class DeployJSPProjectTemplate extends SWTTestExt {
 	@Before
 	public void importProject(){
 		ImportProjectWizard wizard = new ImportProjectWizard();
-		wizard.setCopyProjectsIntoWorkspace(true);
-		wizard.setProjectPath(SWTUtilExt.getPathToFileWithinPlugin(Activator.PLUGIN_ID, "projects"));
+		wizard.setZipFilePath(SWTUtilExt.getPathToFileWithinPlugin(Activator.PLUGIN_ID, "projects/jsp-project.zip"));
 		wizard.setProjectNames(PROJECT_NAME);
 		wizard.execute();
 	}
