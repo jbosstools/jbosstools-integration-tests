@@ -1,8 +1,6 @@
 package org.jboss.ide.eclipse.as.ui.bot.test.wizard;
 
 import org.eclipse.swtbot.swt.finder.SWTBot;
-import org.eclipse.swtbot.swt.finder.keyboard.KeyboardFactory;
-import org.eclipse.swtbot.swt.finder.keyboard.Keystrokes;
 import org.eclipse.swtbot.swt.finder.waits.ICondition;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
@@ -50,7 +48,7 @@ public class ImportProjectWizard {
 	private void loadProjectsFromFolder() {
 		getBot().text(0).setText(projectPath);
 		getBot().text(0).setFocus();
-		KeyboardFactory.getAWTKeyboard().pressShortcut(Keystrokes.TAB);
+		getProjectsTree().setFocus();
 		getBot().waitUntil(new ProjectIsLoaded());
 	}
 
@@ -58,19 +56,23 @@ public class ImportProjectWizard {
 		getBot().radio("Select archive file:").click();
 		getBot().text(1).setText(zipFilePath);
 		getBot().text(1).setFocus();
-		KeyboardFactory.getAWTKeyboard().pressShortcut(Keystrokes.TAB);
+		getProjectsTree().setFocus();
 		getBot().waitUntil(new ProjectIsLoaded());
 	}
 
 	private void selectProjects() {
 		selectCopyProjectsIntoWorkspace();
 		getBot().button("Deselect All").click();
-		SWTBotTree projectsTree = getBot().treeWithLabel("Projects:");
+		SWTBotTree projectsTree = getProjectsTree();
 		
 		for (String projectName : projectNames){
 			SWTBotTreeItem  projectItem = getProjectTreeItem(projectsTree, projectName);
 			projectItem.check();
 		}
+	}
+
+	private SWTBotTree getProjectsTree() {
+		return getBot().treeWithLabel("Projects:");
 	}
 
 	private SWTBotTreeItem getProjectTreeItem(SWTBotTree projectsTree, String projectName) {
