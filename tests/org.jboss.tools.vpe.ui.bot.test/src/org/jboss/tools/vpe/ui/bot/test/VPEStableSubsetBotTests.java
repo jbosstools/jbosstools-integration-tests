@@ -38,42 +38,10 @@ import org.jboss.tools.vpe.ui.bot.test.editor.preferences.ShowNonVisualTagsTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.preferences.ShowResourceBundlesUsageasELexpressionsTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.preferences.ShowSelectionTagBarTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.selectionbar.SelectionBarTest;
-import org.jboss.tools.vpe.ui.bot.test.editor.tags.ActionParamTagTest;
-import org.jboss.tools.vpe.ui.bot.test.editor.tags.AjaxInvisibleTagsTest;
-import org.jboss.tools.vpe.ui.bot.test.editor.tags.AjaxValidatorTagTest;
-import org.jboss.tools.vpe.ui.bot.test.editor.tags.BeanValidatorTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.CalendarTagTest;
-import org.jboss.tools.vpe.ui.bot.test.editor.tags.ColumnGroupTagTest;
-import org.jboss.tools.vpe.ui.bot.test.editor.tags.ColumnTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.ColumnsTagTest;
-import org.jboss.tools.vpe.ui.bot.test.editor.tags.ComboBoxTagTest;
-import org.jboss.tools.vpe.ui.bot.test.editor.tags.CommandButtonTagTest;
-import org.jboss.tools.vpe.ui.bot.test.editor.tags.CommandLinkTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.CoreHTMLTagsTest;
-import org.jboss.tools.vpe.ui.bot.test.editor.tags.DataDefinitionTagTest;
-import org.jboss.tools.vpe.ui.bot.test.editor.tags.DataGridTagTest;
-import org.jboss.tools.vpe.ui.bot.test.editor.tags.DataListTagTest;
-import org.jboss.tools.vpe.ui.bot.test.editor.tags.DataOrderedListTagTest;
-import org.jboss.tools.vpe.ui.bot.test.editor.tags.DataScrollerTagTest;
-import org.jboss.tools.vpe.ui.bot.test.editor.tags.DataTableTagTest;
-import org.jboss.tools.vpe.ui.bot.test.editor.tags.EditorTagTest;
-import org.jboss.tools.vpe.ui.bot.test.editor.tags.ExtendedDataTableTagTest;
-import org.jboss.tools.vpe.ui.bot.test.editor.tags.FileUploadTagTest;
-import org.jboss.tools.vpe.ui.bot.test.editor.tags.HtmlCommandLinkTagTest;
-import org.jboss.tools.vpe.ui.bot.test.editor.tags.IncludeTagTest;
-import org.jboss.tools.vpe.ui.bot.test.editor.tags.InplaceInputTagTest;
-import org.jboss.tools.vpe.ui.bot.test.editor.tags.InplaceSelectInputTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.JSFTagsTest;
-import org.jboss.tools.vpe.ui.bot.test.editor.tags.ListShuttleTagTest;
-import org.jboss.tools.vpe.ui.bot.test.editor.tags.LogTagTest;
-import org.jboss.tools.vpe.ui.bot.test.editor.tags.PanelMenuTagTest;
-import org.jboss.tools.vpe.ui.bot.test.editor.tags.PanelTagTest;
-import org.jboss.tools.vpe.ui.bot.test.editor.tags.PickListTagTest;
-import org.jboss.tools.vpe.ui.bot.test.editor.tags.ProgressTagTest;
-import org.jboss.tools.vpe.ui.bot.test.editor.tags.SpacerTagTest;
-import org.jboss.tools.vpe.ui.bot.test.editor.tags.ToolbarAndToolbarGroupTagTest;
-import org.jboss.tools.vpe.ui.bot.test.editor.tags.TreeTagTest;
-import org.jboss.tools.vpe.ui.bot.test.editor.tags.VirtualEarthTagTest;
 import org.jboss.tools.vpe.ui.bot.test.jbide.JBIDE4556Test;
 import org.jboss.tools.vpe.ui.bot.test.jbide.JBIDE9445Test_DuplicateSourceMenu;
 import org.jboss.tools.vpe.ui.bot.test.palette.CancelTagLibDefenitionTest;
@@ -151,39 +119,7 @@ import org.junit.runners.Suite.SuiteClasses;
     CoreHTMLTagsTest.class,
     JSFTagsTest.class,
     ColumnsTagTest.class,
-    ComboBoxTagTest.class,
-    FileUploadTagTest.class,
-    InplaceInputTagTest.class,
-    InplaceSelectInputTagTest.class,
-    PickListTagTest.class,
-    ProgressTagTest.class,
-    PanelMenuTagTest.class,
-    ListShuttleTagTest.class,
-    DataDefinitionTagTest.class,
-    EditorTagTest.class,
-    TreeTagTest.class,
     CalendarTagTest.class,
-    PanelTagTest.class,
-    DataTableTagTest.class,
-    SpacerTagTest.class,
-    DataScrollerTagTest.class,
-    ColumnTagTest.class,
-    ActionParamTagTest.class,
-    AjaxValidatorTagTest.class,
-    BeanValidatorTagTest.class,
-    ColumnGroupTagTest.class,
-    DataGridTagTest.class,
-    VirtualEarthTagTest.class,
-    DataListTagTest.class,
-    DataOrderedListTagTest.class,
-    ExtendedDataTableTagTest.class,
-    ToolbarAndToolbarGroupTagTest.class,
-    CommandButtonTagTest.class,
-    CommandLinkTagTest.class,
-    HtmlCommandLinkTagTest.class,
-    IncludeTagTest.class,
-    AjaxInvisibleTagsTest.class,
-    LogTagTest.class,
     OpenOnTest.class,
     XhtmlFilePerformanceTest.class,
     MarkersTest.class,
