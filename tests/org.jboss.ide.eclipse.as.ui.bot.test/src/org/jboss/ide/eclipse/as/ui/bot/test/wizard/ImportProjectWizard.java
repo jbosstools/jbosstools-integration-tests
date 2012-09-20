@@ -3,6 +3,7 @@ package org.jboss.ide.eclipse.as.ui.bot.test.wizard;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.keyboard.KeyboardFactory;
 import org.eclipse.swtbot.swt.finder.keyboard.Keystrokes;
+import org.eclipse.swtbot.swt.finder.waits.ICondition;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.ui.bot.ext.SWTBotFactory;
@@ -49,12 +50,14 @@ public class ImportProjectWizard {
 	private void loadProjectsFromFolder() {
 		getBot().text(0).setText(projectPath);
 		KeyboardFactory.getAWTKeyboard().pressShortcut(Keystrokes.TAB);
+		getBot().waitUntil(new ProjectIsLoaded());
 	}
 
 	private void loadProjectsFromZIP() {
 		getBot().radio("Select archive file:").click();
 		getBot().text(1).setText(zipFilePath);
 		KeyboardFactory.getAWTKeyboard().pressShortcut(Keystrokes.TAB);
+		getBot().waitUntil(new ProjectIsLoaded());
 	}
 
 	private void selectProjects() {
@@ -113,5 +116,25 @@ public class ImportProjectWizard {
 	
 	private SWTBot getBot(){
 		return SWTBotFactory.getBot();
+	}
+	
+	private class ProjectIsLoaded implements ICondition {
+
+		private SWTBotTree tree;
+		
+		@Override
+		public boolean test() {
+			return tree.hasItems();
+		}
+
+		@Override
+		public String getFailureMessage() {
+			return "At least one project is loaded";
+		}
+
+		@Override
+		public void init(SWTBot bot) {
+			tree = getBot().treeWithLabel("Projects:");
+		}
 	}
 }
