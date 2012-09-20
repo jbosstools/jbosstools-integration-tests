@@ -49,6 +49,7 @@ public class ImportProjectWizard {
 
 	private void loadProjectsFromFolder() {
 		getBot().text(0).setText(projectPath);
+		getBot().text(0).setFocus();
 		KeyboardFactory.getAWTKeyboard().pressShortcut(Keystrokes.TAB);
 		getBot().waitUntil(new ProjectIsLoaded());
 	}
@@ -56,6 +57,7 @@ public class ImportProjectWizard {
 	private void loadProjectsFromZIP() {
 		getBot().radio("Select archive file:").click();
 		getBot().text(1).setText(zipFilePath);
+		getBot().text(1).setFocus();
 		KeyboardFactory.getAWTKeyboard().pressShortcut(Keystrokes.TAB);
 		getBot().waitUntil(new ProjectIsLoaded());
 	}
