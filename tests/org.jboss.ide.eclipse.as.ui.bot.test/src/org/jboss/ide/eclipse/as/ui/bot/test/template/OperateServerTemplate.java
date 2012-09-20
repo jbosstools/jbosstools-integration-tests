@@ -6,6 +6,7 @@ import static org.hamcrest.Matchers.not;
 
 import org.jboss.ide.eclipse.as.ui.bot.test.web.PageSourceMatcher;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
+import org.jboss.tools.ui.bot.ext.condition.TaskDuration;
 import org.jboss.tools.ui.bot.ext.matcher.console.ConsoleOutputMatcher;
 import org.jboss.tools.ui.bot.ext.view.ServersView;
 import org.junit.Test;
@@ -73,6 +74,6 @@ public abstract class OperateServerTemplate extends SWTTestExt {
 	
 	private void assertWebPageContains(String string) {
 		serversView.openWebPage(configuredState.getServer().name);
-		assertThat(string, new PageSourceMatcher());
+		assertThat(string, new PageSourceMatcher(TaskDuration.NORMAL));
 	}
 }
