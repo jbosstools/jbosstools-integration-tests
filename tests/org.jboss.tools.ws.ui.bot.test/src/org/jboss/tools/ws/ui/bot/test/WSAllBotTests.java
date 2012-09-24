@@ -20,6 +20,7 @@ import org.jboss.tools.ws.ui.bot.test.rest.QueryAnnotationSupportTest;
 import org.jboss.tools.ws.ui.bot.test.rest.completion.RESTfulCompletionTest;
 import org.jboss.tools.ws.ui.bot.test.rest.explorer.RESTfulExplorerTest;
 import org.jboss.tools.ws.ui.bot.test.rest.validation.ApplicationPathAnnotationTest;
+import org.jboss.tools.ws.ui.bot.test.rest.validation.JaxRsValidatorTest;
 import org.jboss.tools.ws.ui.bot.test.rest.validation.RESTfulValidationTest;
 import org.jboss.tools.ws.ui.bot.test.sample.test.SampleRESTWebServiceTest;
 import org.jboss.tools.ws.ui.bot.test.sample.test.SampleSoapWebServiceTest;
@@ -57,6 +58,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	SOAPWSToolingIntegrationTest.class,
 //	WSTesterPromptValuesSupportTest.class, // not implemented yet
 	ApplicationPathAnnotationTest.class,
+	JaxRsValidatorTest.class,
 	BottomUpWSTest.class,
 	TopDownWSTest.class,
 	WsClientTest.class,

@@ -89,27 +89,5 @@ public class RESTfulValidationTest extends RESTfulTestBase {
 		/* test count of validation errors */
 		assertCountOfPathAnnotationValidationErrors(getWsProjectName(), 0);
 	}
-	
-	@Test
-	public void testJaxRsValidator() {
-		
-		/* disable restful validation */
-		restfulHelper.disableRESTValidation();
-		
-		/* prepare project */
-		prepareRestfulResource(editorForClass(getWsProjectName(), "src", 
-				"org.rest.test", "RestService.java"), SIMPLE_REST_WS_RESOURCE, 
-				"org.rest.test", "RestService",
-				GET_METHOD_PATH, BAD_PATH_PARAM);
-		
-		/* test count of validation errors */
-		assertCountOfPathAnnotationValidationErrors(getWsProjectName(), 0);
-		
-		/* enable restful validation */
-		restfulHelper.enableRESTValidation();
-		
-		/* test count of validation errors */
-		assertCountOfPathAnnotationValidationErrors(getWsProjectName(), 1);
-	}
 
 }
