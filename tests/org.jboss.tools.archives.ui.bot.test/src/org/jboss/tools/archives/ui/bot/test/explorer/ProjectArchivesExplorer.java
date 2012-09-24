@@ -11,7 +11,6 @@
 package org.jboss.tools.archives.ui.bot.test.explorer;
 
 import org.eclipse.swtbot.swt.finder.SWTBot;
-import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.archives.ui.bot.test.context.ArchiveContextMenu;
 import org.jboss.tools.archives.ui.bot.test.dialog.ArchivePublishSettingsDialog;
@@ -103,7 +102,7 @@ public class ProjectArchivesExplorer {
 				ti = ti.getNode(pathItem);
 			}
 			return true;
-		} catch (WidgetNotFoundException exc) {
+		} catch (Exception exc) {
 			return false;
 		}
 	}
