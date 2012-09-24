@@ -11,6 +11,7 @@
 package org.jboss.tools.ws.ui.bot.test;
 
 import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
+import org.jboss.tools.ws.ui.bot.test.annotation.HTTPMethodAnnotationQuickFixTest;
 import org.jboss.tools.ws.ui.bot.test.integration.JAXRSToolingIntegrationTest;
 import org.jboss.tools.ws.ui.bot.test.integration.SOAPWSToolingIntegrationTest;
 import org.jboss.tools.ws.ui.bot.test.rest.DefaultValueAnnotationSupportTest;
@@ -59,6 +60,7 @@ import org.junit.runners.Suite.SuiteClasses;
 //	WSTesterPromptValuesSupportTest.class, // not implemented yet
 	ApplicationPathAnnotationTest.class,
 	JaxRsValidatorTest.class,
+	HTTPMethodAnnotationQuickFixTest.class,
 	BottomUpWSTest.class,
 	TopDownWSTest.class,
 	WsClientTest.class,
