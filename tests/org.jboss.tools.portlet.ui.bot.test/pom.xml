@@ -47,7 +47,7 @@
 							<goal>wget</goal>
 						</goals>
 						<configuration>
-							<url>http://downloads.jboss.org/gatein/Releases/3.3.0-GA/GateIn-3.3.0-GA-jbossas5.zip</url>
+							<url>downloads.jboss.org/gatein/Releases/Portal/3.3.0.Final/GateIn-3.3.0-GA-jbossas5.zip</url>
 							<unpack>true</unpack>
 						</configuration>
 					</execution>
