@@ -6,7 +6,7 @@ public class Facets {
 
 	public static final FacetDefinition JAVA_FACET = new FacetDefinition("Java", null, "1.6");
 	
-	public static final FacetDefinition JSF_FACET = new FacetDefinition("JavaServer Faces");
+	public static final FacetDefinition JSF_FACET = new FacetDefinition("JavaServer Faces", null, "2.0");
 	
 	private static final String JBOSS_FACET_CATEGORY = "JBoss Portlets";
 	
