@@ -201,8 +201,10 @@
 			</activation>
 			<properties>
 				<test.class>org.jboss.ide.eclipse.as.ui.bot.test.StableTestsSuite</test.class>
+				<jbosstools.test.jboss-as-6.x.home>${requirementsDirectory}/jboss-6.1.0.Final</jbosstools.test.jboss-as-6.x.home>
+				<jbosstools.test.jboss-as-7.0.home>${requirementsDirectory}/jboss-as-7.0.2.Final</jbosstools.test.jboss-as-7.0.home>
 				<jbosstools.test.jboss-as-7.1.home>${requirementsDirectory}/jboss-as-7.1.1.Final</jbosstools.test.jboss-as-7.1.home>
-				<runtimesProperties>-Djbosstools.test.jboss-as-7.1.home=${jbosstools.test.jboss-as-7.1.home} -Dtest.configurations.dir=resources/config_files_templates/project</runtimesProperties>
+				<runtimesProperties>-Djbosstools.test.jboss-as-6.x.home=${jbosstools.test.jboss-as-6.x.home} -Djbosstools.test.jboss-as-7.0.home=${jbosstools.test.jboss-as-7.0.home} -Djbosstools.test.jboss-as-7.1.home=${jbosstools.test.jboss-as-7.1.home} -Dtest.configurations.dir=resources/config_files_templates/project</runtimesProperties>
 			</properties>
 			<build>
 			<plugins><plugin>
