@@ -249,6 +249,30 @@
 				<artifactId>maven-download-plugin</artifactId>
 				<executions>
 					<execution>
+						<id>install-as-6.1.0</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<configuration>
+							<url>http://download.jboss.org/jbossas/6.1/jboss-as-distribution-6.1.0.Final.zip</url>
+							<md5>2264e4d5ba448fa07716008d1452f1e7</md5>
+							<unpack>true</unpack>
+						</configuration>
+					</execution>
+					<execution>
+						<id>install-as-7.0.2</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<configuration>
+							<url>http://download.jboss.org/jbossas/7.0/jboss-as-7.0.2.Final/jboss-as-7.0.2.Final.zip</url>
+							<md5>774556618e73c2273fff91fa5e92c1d5</md5>
+							<unpack>true</unpack>
+						</configuration>
+					</execution>
+					<execution>
 						<id>install-eap-5</id>
 						<phase>pre-integration-test</phase>
 						<goals>
