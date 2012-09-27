@@ -6,7 +6,6 @@ import org.jboss.ide.eclipse.as.ui.bot.test.web.PageSourceMatcher;
 import org.jboss.ide.eclipse.as.ui.bot.test.wizard.NewFileWizard;
 import org.jboss.tools.ui.bot.ext.SWTBotFactory;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.junit.Test;
 
@@ -15,11 +14,14 @@ import org.junit.Test;
  * <ul>
  * 	<li>loads the new page in the web browser </li>
  * </ul>
+ * 
+ * NOTE: It is marked as abstract so that concrete implementation can specify their own {@link Server}
+ * annotation
+ * 
  * @author Lucia Jelinkova
  *
  */
-@Require(server=@Server, clearWorkspace=false, clearProjects=false)
-public class HotDeployJSPFile extends SWTTestExt {
+public abstract class HotDeployJSPFileTemplate extends SWTTestExt {
 
 	public static final String JSP_CONTENT = 
 				"<%@ page language=\"java\" contentType=\"text/html; charset=UTF-8\" pageEncoding=\"UTF-8\"%> \n" + 

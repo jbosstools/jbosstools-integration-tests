@@ -9,11 +9,14 @@ import org.junit.Test;
 /**
  * Deletes the server and checks that it is not present on the server's view. 
  * 
+ * NOTE: It is marked as abstract so that concrete implementation can specify their own {@link Server}
+ * annotation
+ * 
  * @author Lucia Jelinkova
  *
  */
 @Require(server=@Server)
-public class DeleteServer extends SWTTestExt {
+public abstract class DeleteServerTemplate extends SWTTestExt {
 
 	private ServersView serversView = new ServersView();
 	
