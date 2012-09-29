@@ -144,6 +144,7 @@ public class ESBExampleTest extends ExampleTest{
 		boolean consoleSwitched = false;	
 		int switchLimit = 30;
 		int switchCounter = 0;
+		log.info("Switching the console");
 		consoleSwitched = console.switchConsole(configuredState.getServer().name);
 		while (!consoleSwitched) {
 			consoleSwitched = console.switchConsole(configuredState.getServer().name);
