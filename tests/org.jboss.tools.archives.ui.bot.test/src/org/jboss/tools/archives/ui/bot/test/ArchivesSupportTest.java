@@ -3,6 +3,7 @@ package org.jboss.tools.archives.ui.bot.test;
 import org.jboss.tools.archives.ui.bot.test.explorer.ProjectArchivesExplorer;
 import org.jboss.tools.ui.bot.ext.entity.JavaProjectEntity;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -39,7 +40,8 @@ public class ArchivesSupportTest extends ArchivesTestBase {
 				archiveExplorerExists(project));
 		
 	}
-	
+	// JBIDE-12697 - maybe will not be implemented ever
+	@Ignore
 	@Test
 	public void testReAddingArchiveSupport() {
 		
