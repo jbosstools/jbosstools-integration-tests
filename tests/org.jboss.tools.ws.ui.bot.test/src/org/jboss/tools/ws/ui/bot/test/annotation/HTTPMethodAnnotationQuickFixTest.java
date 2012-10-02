@@ -41,8 +41,8 @@ public class HTTPMethodAnnotationQuickFixTest extends WSTestBase {
 	@Test
 	public void testQuickFixes() {
 		
-		/* workaround for JBIDE-12690 */
-		jbide12680Workaround(getWsProjectName(), "src", "test", "MyAnnot.java");
+		/* workaround for JBIDE-12690 
+		jbide12680Workaround(getWsProjectName(), "src", "test", "MyAnnot.java"); */
 		
 		/* assert that there are two JAX-RS errors */
 		assertThat(errorsByType("JAX-RS Problem").length, equalTo(2));

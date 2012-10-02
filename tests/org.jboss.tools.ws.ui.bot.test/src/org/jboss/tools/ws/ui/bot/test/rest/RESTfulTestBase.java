@@ -14,6 +14,7 @@ package org.jboss.tools.ws.ui.bot.test.rest;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.ui.bot.ext.Timing;
+import org.jboss.tools.ui.bot.ext.condition.NonSystemJobRunsCondition;
 import org.jboss.tools.ui.bot.ext.condition.ViewIsActive;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
@@ -150,10 +151,10 @@ public class RESTfulTestBase extends WSTestBase {
 		assertCountOfValidationError(expectedCount, foundErrors);
 	}
 	
-	protected void assertCountOfApplicationAnnotationValidationErrors(String projectName,
+	protected void assertCountOfApplicationAnnotationValidationWarnings(String projectName,
 			int expectedCount) {
-		int foundErrors = restfulHelper.getPathAnnotationValidationErrors(projectName).length;
-		assertCountOfValidationError(expectedCount, foundErrors);
+		int foundWarnings = restfulHelper.getApplicationAnnotationValidationWarnings(projectName).length;
+		assertCountOfValidationError(expectedCount, foundWarnings);
 	}
 	
 	private void assertCountOfValidationError(int expectedCount, int foundCount) {
@@ -166,6 +167,7 @@ public class RESTfulTestBase extends WSTestBase {
 		RunOnServerDialog dialog = restfulWizard.runOnServer(webService);
 		dialog.chooseExistingServer().selectServer(configuredState.getServer().name).finish();		
 		bot.waitUntil(new ViewIsActive(IDELabel.View.WEB_SERVICE_TESTER), TIME_20S);
+		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_20S);
 	}
 	
 	protected SWTBotTreeItem[] restfulServicesForProject(String projectName) {

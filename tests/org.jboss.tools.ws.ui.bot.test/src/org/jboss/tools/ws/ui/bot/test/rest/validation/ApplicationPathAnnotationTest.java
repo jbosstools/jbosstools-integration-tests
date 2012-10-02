@@ -11,6 +11,8 @@
 
 package org.jboss.tools.ws.ui.bot.test.rest.validation;
 
+import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
+import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,18 +36,44 @@ public class ApplicationPathAnnotationTest extends RESTfulTestBase {
 		/* prepare project */
 		importRestWSProject("app1");
 		
+		/* workaround for JBIDE-12690 
+		jbide12680Workaround("app1", "src", "test", "App.java"); */
+		
 		/* test validation error */
-		assertCountOfApplicationAnnotationValidationErrors("app1", 1);
+		assertCountOfApplicationAnnotationValidationWarnings("app1", 2);
 	}
 	
 	@Test
-	public void testWebXmlAndApplicationClass() {
+	public void testWebXmlAndApplicationClassWithWarning() {
 		
 		/* prepare project */
 		importRestWSProject("app2");
 		
+		/* workaround for JBIDE-12690 
+		jbide12680Workaround("app2", "src", "test", "App.java"); */
+		
 		/* test validation error */
-		assertCountOfApplicationAnnotationValidationErrors("app2", 1);
+		assertCountOfApplicationAnnotationValidationWarnings("app2", 2);
+	}
+	
+	@Test
+	public void testWebXmlAndApplicationClassWithoutWarning() {
+		
+		/* prepare project */
+		importRestWSProject("app3");
+		
+		/* workaround for JBIDE-12690 
+		jbide12680Workaround("app3", "src", "test", "App.java"); */
+		
+		/* test validation error */
+		assertCountOfApplicationAnnotationValidationWarnings("app3", 0);
+	}
+	
+	private void jbide12680Workaround(String projectName, String... path) {
+		SWTBotEditor editor = packageExplorer.openFile(projectName, path);
+		SWTBotEclipseEditor eclipseEditor = editor.toTextEditor();
+		eclipseEditor.insertText(" ");
+		eclipseEditor.save();
 	}
 	
 }

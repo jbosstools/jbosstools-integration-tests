@@ -52,15 +52,21 @@ public class RESTfulHelper {
 	
 	private SWTBotTreeItem[] getRESTValidationErrors(String wsProjectName, String description) {
 		return ProblemsView.getFilteredErrorsTreeItems(bot,
-				description, "/" + wsProjectName, null, null);
+				description, "/" + wsProjectName, null, "JAX-RS Problem");
+	}
+	
+	private SWTBotTreeItem[] getRESTValidationWarnings(String wsProjectName,
+			String description) {
+		return ProblemsView.getFilteredWarningsTreeItems(bot,
+				description, "/" + wsProjectName, null, "JAX-RS Problem");
 	}
 	
 	public SWTBotTreeItem[] getPathAnnotationValidationErrors(String wsProjectName) {
 		return getRESTValidationErrors(wsProjectName, PATH_PARAM_VALID_ERROR);
 	}
 	
-	public SWTBotTreeItem[] getApplicationAnnotationValidationErrors(String wsProjectName) {
-		return getRESTValidationErrors(wsProjectName, null);
+	public SWTBotTreeItem[] getApplicationAnnotationValidationWarnings(String wsProjectName) {
+		return getRESTValidationWarnings(wsProjectName, null);
 	}
 
 	public void enableRESTValidation() {

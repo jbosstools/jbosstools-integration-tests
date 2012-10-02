@@ -35,9 +35,7 @@ public class JAXRSToolingIntegrationTest extends RESTfulTestBase {
 	@Override
 	public void setup() {
 		if (!projectExists(getWsProjectName())) {
-			importRestWSProject(projectName);
-			servers.addProjectToServer(projectName, 
-					configuredState.getServer().name);			
+			importRestWSProject(projectName);			
 		}
 	}
 	
