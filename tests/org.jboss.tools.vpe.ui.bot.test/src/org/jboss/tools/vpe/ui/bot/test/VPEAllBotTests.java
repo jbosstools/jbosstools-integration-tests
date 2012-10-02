@@ -47,7 +47,6 @@ import org.jboss.tools.vpe.ui.bot.test.editor.preferences.ShowResourceBundlesUsa
 import org.jboss.tools.vpe.ui.bot.test.editor.preferences.ShowSelectionTagBarTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.preferences.VpeToolbarTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.selectionbar.SelectionBarTest;
-import org.jboss.tools.vpe.ui.bot.test.editor.tags.ActionParamTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.AjaxInvisibleTagsTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.AjaxValidatorTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.ArticleTagTest;
@@ -184,7 +183,6 @@ import org.junit.runners.Suite.SuiteClasses;
 	SpacerTagTest.class,
 	DataScrollerTagTest.class,
 	ColumnTagTest.class,
-	ActionParamTagTest.class,
 	AjaxValidatorTagTest.class,
 	BeanValidatorTagTest.class,
 	ColumnGroupTagTest.class,
