@@ -3,8 +3,8 @@
   <display-name>app2</display-name>
   
   <servlet-mapping>
-  	<servlet-name>javax.ws.core.Application</servlet-name>
-  	<url-pattern>/path/*</url-pattern>
+  	<servlet-name>javax.ws.rs.core.Application</servlet-name>
+  	<url-pattern>/path2/*</url-pattern>
   </servlet-mapping>
   
 </web-app>
