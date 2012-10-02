@@ -22,7 +22,7 @@ import org.junit.Test;
  * @author jjankovi
  *
  */
-public class ApplicationPathAnnotationTest extends RESTfulTestBase {
+public class ApplicationValidationTest extends RESTfulTestBase {
 
 	
 	@Before
@@ -36,8 +36,8 @@ public class ApplicationPathAnnotationTest extends RESTfulTestBase {
 		/* prepare project */
 		importRestWSProject("app1");
 		
-		/* workaround for JBIDE-12690 
-		jbide12680Workaround("app1", "src", "test", "App.java"); */
+		/* workaround for JBIDE-12690 */
+		jbide12680Workaround("app1", "src", "test", "App.java"); 
 		
 		/* test validation error */
 		assertCountOfApplicationAnnotationValidationWarnings("app1", 2);
@@ -49,8 +49,8 @@ public class ApplicationPathAnnotationTest extends RESTfulTestBase {
 		/* prepare project */
 		importRestWSProject("app2");
 		
-		/* workaround for JBIDE-12690 
-		jbide12680Workaround("app2", "src", "test", "App.java"); */
+		/* workaround for JBIDE-12690 */
+		jbide12680Workaround("app2", "src", "test", "App.java");
 		
 		/* test validation error */
 		assertCountOfApplicationAnnotationValidationWarnings("app2", 2);
@@ -62,11 +62,51 @@ public class ApplicationPathAnnotationTest extends RESTfulTestBase {
 		/* prepare project */
 		importRestWSProject("app3");
 		
-		/* workaround for JBIDE-12690 
-		jbide12680Workaround("app3", "src", "test", "App.java"); */
+		/* workaround for JBIDE-12690 */
+		jbide12680Workaround("app3", "src", "test", "App.java");
 		
 		/* test validation error */
 		assertCountOfApplicationAnnotationValidationWarnings("app3", 0);
+	}
+	
+	@Test
+	public void testNotExtendingApplicationClass() {
+		
+		/* prepare project */
+		importRestWSProject("app4");
+		
+		/* workaround for JBIDE-12690 */
+		jbide12680Workaround("app4", "src", "test", "App.java");
+		
+		/* test validation error */
+		assertCountOfApplicationAnnotationValidationErrors("app4", 1);
+		
+		/* fix class - should be no error */
+		resourceHelper.replaceInEditor(editorForClass("app4", "src", 
+				"test", "App.java").toTextEditor(), "@ApplicationPath(\"/rest\")", "", true);
+		
+		/* test validation error */
+		assertCountOfApplicationAnnotationValidationErrors("app4", 0);
+	}
+	
+	@Test
+	public void testApplicationClassWithoutPath() {
+		
+		/* prepare project */
+		importRestWSProject("app5");
+		
+		/* workaround for JBIDE-12690 */
+		jbide12680Workaround("app5", "src", "test", "App.java");
+		
+		/* test validation error */
+		assertCountOfApplicationAnnotationValidationErrors("app5", 1);
+		
+		/* fix class - should be no error */
+		resourceHelper.replaceInEditor(editorForClass("app5", "src", 
+				"test", "App.java").toTextEditor(), "extends Application", "", true);
+		
+		/* test validation error */
+		assertCountOfApplicationAnnotationValidationErrors("app5", 0);
 	}
 	
 	private void jbide12680Workaround(String projectName, String... path) {

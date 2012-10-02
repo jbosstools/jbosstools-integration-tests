@@ -153,8 +153,14 @@ public class RESTfulTestBase extends WSTestBase {
 	
 	protected void assertCountOfApplicationAnnotationValidationWarnings(String projectName,
 			int expectedCount) {
-		int foundWarnings = restfulHelper.getApplicationAnnotationValidationWarnings(projectName).length;
-		assertCountOfValidationError(expectedCount, foundWarnings);
+		int foundProblems = restfulHelper.getRESTValidationWarnings(projectName, null).length;
+		assertCountOfValidationError(expectedCount, foundProblems);
+	}
+	
+	protected void assertCountOfApplicationAnnotationValidationErrors(String projectName,
+			int expectedCount) {
+		int foundProblems = restfulHelper.getRESTValidationErrors(projectName, null).length;
+		assertCountOfValidationError(expectedCount, foundProblems);
 	}
 	
 	private void assertCountOfValidationError(int expectedCount, int foundCount) {
