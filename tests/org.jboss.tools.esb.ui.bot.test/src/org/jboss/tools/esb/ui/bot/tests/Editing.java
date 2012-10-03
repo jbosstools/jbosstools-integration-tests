@@ -253,6 +253,11 @@ public class Editing extends SWTTestExt {
 
 	private void addService(String name) {
 		SWTBotEditor editor = getEditor();
+		
+		bot.sleep(30000l);
+		org.jboss.tools.ui.bot.ext.SWTUtilExt.displayAllBotWidgets(editor.bot());
+		
+		
 		SWTBotTreeItem services = SWTEclipseExt.selectTreeLocation(
 				editor.bot(), configFileFull, node_services);
 		ContextMenuHelper.prepareTreeItemForContextMenu(editor.bot().tree(),
