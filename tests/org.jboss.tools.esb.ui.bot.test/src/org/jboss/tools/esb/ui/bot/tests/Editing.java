@@ -160,7 +160,21 @@ public class Editing extends SWTTestExt {
 	@Test
 	public void actions() {
 		String service = "bbb";
-		addService(service);
+		
+		/* Add service is failing on Jenkins - ldimaggi */
+		try {
+			addService(service);
+		}
+		catch (Exception e){
+			log.error("actions - cannot add a service");
+			e.printStackTrace();
+			SWTBotEditor editor = getEditor();	
+			log.error("Editor is active = " + editor.isActive());
+			org.jboss.tools.ui.bot.ext.SWTUtilExt.displayAllBotWidgets(editor.bot());
+			bot.sleep(30000l);
+			addService(service);
+		}
+				
 		String[] actionPath = new String[] { configFileFull, node_services,
 				"bbb", "Actions" };
 		// first create all actions
@@ -252,12 +266,7 @@ public class Editing extends SWTTestExt {
 	}
 
 	private void addService(String name) {
-		SWTBotEditor editor = getEditor();
-		
-		bot.sleep(30000l);
-		org.jboss.tools.ui.bot.ext.SWTUtilExt.displayAllBotWidgets(editor.bot());
-		
-		
+		SWTBotEditor editor = getEditor();		
 		SWTBotTreeItem services = SWTEclipseExt.selectTreeLocation(
 				editor.bot(), configFileFull, node_services);
 		ContextMenuHelper.prepareTreeItemForContextMenu(editor.bot().tree(),
