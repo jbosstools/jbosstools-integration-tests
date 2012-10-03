@@ -76,7 +76,7 @@ public class ESBActionFactory {
 			}
 			@Override
 			public String getSectionTitle() {
-				return "Bpm5 Processor Action";
+				return "Bpm 5 Processor Action";
 			}
 			@Override
 			protected void doEditing(SWTBotEditor editor, String... path) {

@@ -165,7 +165,9 @@ public class Editing extends SWTTestExt {
 	public void actions() {
 		String service = "bbb";
 		
-		/* Add service is failing on Jenkins - ldimaggi */
+		/* Add service is failing on Jenkins - https://issues.jboss.org/browse/JBQA-7100 
+		 * This problem appeared in the firt week of Oct. 2012 - and is only seen when the
+		 * test is run on Jenkins - as a workaround - the editor is saved/shown - ldimaggi */
 		SWTBotEditor editor = getEditor();	
 		if (!editor.isActive()) {
 			log.error("Actions Editor is active? = " + editor.isActive());
