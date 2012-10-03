@@ -165,40 +165,16 @@ public class Editing extends SWTTestExt {
 	public void actions() {
 		String service = "bbb";
 		
-		SWTBotEditor editor = getEditor();	
-		log.error("Actions Editor is active = " + editor.isActive());
-		
 		/* Add service is failing on Jenkins - ldimaggi */
-		try {
-			addService(service);
-		}
-		catch (Exception e){
-			log.error("actions - cannot add a service");
-			e.printStackTrace();
-			editor.setFocus();
-			bot.sleep(30000l);
-			
-
+		SWTBotEditor editor = getEditor();	
+		log.error("Actions Editor is active = " + editor.isActive());	
+		if (!editor.isActive()) {
 			bot.shell(configFileFull).activate();
 			bot.sleep(30000l);
 			log.error("Actions Editor is active = " + editor.isActive());
-			addService(service);
-			
-			log.error("Actions Editor is active = " + editor.isActive());
-//			org.jboss.tools.ui.bot.ext.SWTUtilExt.displayAllBotWidgets(editor.bot());
-
-			log.error ("The active shell is: " + editor.bot().activeShell().getText() );
-			SWTBotShell [] theShells = editor.bot().shells();
-			for (SWTBotShell s : theShells) {
-				log.error("DEBUG - the shell is: [" + s.getText() + "]");
-			}			
-
-			bot.shell(configFileFull).activate();
-			bot.sleep(30000l);
-			log.error("Actions Editor is active = " + editor.isActive());
-			addService(service);
 		}
-				
+		
+		addService(service);		
 		String[] actionPath = new String[] { configFileFull, node_services,
 				"bbb", "Actions" };
 		// first create all actions
