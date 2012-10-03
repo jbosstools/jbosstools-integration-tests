@@ -169,9 +169,16 @@ public class Editing extends SWTTestExt {
 		SWTBotEditor editor = getEditor();	
 		log.error("Actions Editor is active = " + editor.isActive());	
 		if (!editor.isActive()) {
+			
+			try {			
 			bot.shell(configFileFull).activate();
 			bot.sleep(30000l);
 			log.error("Actions Editor is active = " + editor.isActive());
+			}
+			catch (Exception e) {
+				log.error("Cannot activate editor");
+				e.printStackTrace();
+			}
 		}
 		
 		addService(service);		
