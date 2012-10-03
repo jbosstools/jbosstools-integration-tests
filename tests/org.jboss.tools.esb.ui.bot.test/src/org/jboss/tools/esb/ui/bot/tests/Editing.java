@@ -177,6 +177,13 @@ public class Editing extends SWTTestExt {
 			e.printStackTrace();
 			editor.setFocus();
 			bot.sleep(30000l);
+			
+
+			bot.shell(configFileFull).activate();
+			bot.sleep(30000l);
+			log.error("Actions Editor is active = " + editor.isActive());
+			addService(service);
+			
 			log.error("Actions Editor is active = " + editor.isActive());
 //			org.jboss.tools.ui.bot.ext.SWTUtilExt.displayAllBotWidgets(editor.bot());
 
