@@ -157,7 +157,7 @@ public class Editing extends SWTTestExt {
 		getEditor().save();
 	}
 
-	@Test
+//	@Test
 	public void actions() {
 		String service = "bbb";
 		addService(service);
