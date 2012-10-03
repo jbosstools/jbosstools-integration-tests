@@ -122,6 +122,10 @@ public class Editing extends SWTTestExt {
 
 	@Test
 	public void listeners() {
+
+		SWTBotEditor editor = getEditor();	
+		log.error("Listeners Editor is active = " + editor.isActive());
+		
 		String service = "aaa";
 		addService(service);
 		List<String> listenerList = getAvailableListeners(service);
@@ -169,8 +173,12 @@ public class Editing extends SWTTestExt {
 			log.error("actions - cannot add a service");
 			e.printStackTrace();
 			SWTBotEditor editor = getEditor();	
-			log.error("Editor is active = " + editor.isActive());
-			org.jboss.tools.ui.bot.ext.SWTUtilExt.displayAllBotWidgets(editor.bot());
+			log.error("Actions Editor is active = " + editor.isActive());
+//			org.jboss.tools.ui.bot.ext.SWTUtilExt.displayAllBotWidgets(editor.bot());
+			SWTBotShell [] theShells = editor.bot().shells();
+			for (SWTBotShell s : theShells) {
+				log.error("DEBUG - the shell is: " + s.getText());
+			}
 			bot.sleep(30000l);
 			addService(service);
 		}
