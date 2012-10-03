@@ -165,6 +165,9 @@ public class Editing extends SWTTestExt {
 	public void actions() {
 		String service = "bbb";
 		
+		SWTBotEditor editor = getEditor();	
+		log.error("Actions Editor is active = " + editor.isActive());
+		
 		/* Add service is failing on Jenkins - ldimaggi */
 		try {
 			addService(service);
@@ -172,14 +175,20 @@ public class Editing extends SWTTestExt {
 		catch (Exception e){
 			log.error("actions - cannot add a service");
 			e.printStackTrace();
-			SWTBotEditor editor = getEditor();	
+			editor.setFocus();
+			bot.sleep(30000l);
 			log.error("Actions Editor is active = " + editor.isActive());
 //			org.jboss.tools.ui.bot.ext.SWTUtilExt.displayAllBotWidgets(editor.bot());
+
+			log.error ("The active shell is: " + editor.bot().activeShell().getText() );
 			SWTBotShell [] theShells = editor.bot().shells();
 			for (SWTBotShell s : theShells) {
-				log.error("DEBUG - the shell is: " + s.getText());
-			}
+				log.error("DEBUG - the shell is: [" + s.getText() + "]");
+			}			
+
+			bot.shell(configFileFull).activate();
 			bot.sleep(30000l);
+			log.error("Actions Editor is active = " + editor.isActive());
 			addService(service);
 		}
 				
