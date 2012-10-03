@@ -167,7 +167,14 @@ public class Editing extends SWTTestExt {
 		
 		/* Add service is failing on Jenkins - ldimaggi */
 		SWTBotEditor editor = getEditor();	
-		log.error("Actions Editor is active = " + editor.isActive());	
+		log.error("Actions Editor is active = " + editor.isActive());
+		bot.sleep(30000l);
+		log.error(editor.getTitle());
+		editor.save();
+		editor.show();
+		
+		
+			
 		if (!editor.isActive()) {
 			
 			try {			
