@@ -167,27 +167,15 @@ public class Editing extends SWTTestExt {
 		
 		/* Add service is failing on Jenkins - ldimaggi */
 		SWTBotEditor editor = getEditor();	
-		log.error("Actions Editor is active = " + editor.isActive());
-		bot.sleep(30000l);
-		log.error(editor.getTitle());
-		editor.save();
-		editor.show();
-		
-		
-			
 		if (!editor.isActive()) {
-			
-			try {			
-			bot.shell(configFileFull).activate();
+			log.error("Actions Editor is active? = " + editor.isActive());
 			bot.sleep(30000l);
-			log.error("Actions Editor is active = " + editor.isActive());
-			}
-			catch (Exception e) {
-				log.error("Cannot activate editor");
-				e.printStackTrace();
-			}
+			log.error(editor.getTitle());
+			editor.save();
+			editor.show();			
+			log.error("Actions Editor is active? = " + editor.isActive());
 		}
-		
+			
 		addService(service);		
 		String[] actionPath = new String[] { configFileFull, node_services,
 				"bbb", "Actions" };
