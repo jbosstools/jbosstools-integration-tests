@@ -38,7 +38,7 @@ public class ArticleTagTest extends AbstractTagTest{
   @Override
   protected void verifyTag() {
     // check Problems View for Errors
-    assertProbelmsViewNoErrors(botExt);
+    assertProbelmsViewNoErrorsForPage(botExt);
     // visual representation contains ARTICLE tag
     assertVisualEditorContains(getVisualEditor(), "ARTICLE", null, null, getTestPageFileName());
     // visual representation contains ARTICLE_TEXT text

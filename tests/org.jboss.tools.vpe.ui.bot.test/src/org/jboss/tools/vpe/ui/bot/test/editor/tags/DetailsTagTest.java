@@ -36,7 +36,7 @@ public class DetailsTagTest extends AbstractTagTest{
   @Override
   protected void verifyTag() {
     // check Problems View for Errors
-    assertProbelmsViewNoErrors(botExt);
+    assertProbelmsViewNoErrorsForPage(botExt);
     // visual representation contains DETAILS tag
     assertVisualEditorContains(getVisualEditor(), "DETAILS", null, null, getTestPageFileName());
     // visual representation contains DETAILS_TEXT text

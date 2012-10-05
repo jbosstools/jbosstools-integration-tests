@@ -37,7 +37,7 @@ public class CommandTagTest extends AbstractTagTest{
   @Override
   protected void verifyTag() {
     // check Problems View for Errors
-    assertProbelmsViewNoErrors(botExt);
+    assertProbelmsViewNoErrorsForPage(botExt);
     // visual representation contains COMMAND tag
     assertVisualEditorContains(getVisualEditor(), "COMMAND", null, null, getTestPageFileName());
     // visual representation contains COMMAND_TEXT text

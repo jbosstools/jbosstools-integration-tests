@@ -42,7 +42,6 @@ public class ShowResourceBundlesUsageasELexpressionsTest extends PreferencesTest
 		//Test check VPE content without resource bundles
 		
 		selectELExpressions();
-		new SWTBotWebBrowser(TEST_PAGE, new SWTBotExt()).displayWebBrowserDOM();
 		assertVisualEditorNotContainNodeWithValue(webBrowser, 
         "#{Message.prompt_message}",
         TEST_PAGE);

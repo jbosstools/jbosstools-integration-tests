@@ -41,7 +41,7 @@ public class XHTMLPageCreationTest extends VPEEditorTestCase{
 	 * Test XHTML page Creation and Saving
 	 */
 	private void checkXHTMLPageCreation(){
-	  
+	  bot.closeAllEditors();
 	  openWebProjects();
 	  
 	  delay();

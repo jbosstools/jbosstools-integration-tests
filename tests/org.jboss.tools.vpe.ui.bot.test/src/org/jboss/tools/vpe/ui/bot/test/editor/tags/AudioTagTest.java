@@ -36,7 +36,7 @@ public class AudioTagTest extends AbstractTagTest{
   @Override
   protected void verifyTag() {
     // check Problems View for Errors
-    assertProbelmsViewNoErrors(botExt);
+    assertProbelmsViewNoErrorsForPage(botExt);
     // visual representation contains AUDIO tag
     assertVisualEditorContains(getVisualEditor(), "AUDIO", null, null, getTestPageFileName());
     // test tag selection

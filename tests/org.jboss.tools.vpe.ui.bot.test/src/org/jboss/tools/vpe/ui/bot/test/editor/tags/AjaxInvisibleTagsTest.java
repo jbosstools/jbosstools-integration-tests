@@ -51,7 +51,7 @@ public class AjaxInvisibleTagsTest extends AbstractTagTest{
   @Override
   protected void verifyTag() {
     // check Problems View for Errors
-    assertProbelmsViewNoErrors(botExt);
+    assertProbelmsViewNoErrorsForPage(botExt);
     // check values which should not be displayed in Visual Editor 
     assertVisualEditorNotContainNodeWithValue(getVisualEditor(),
       AjaxInvisibleTagsTest.JS_FUNCTION_VALUE, 

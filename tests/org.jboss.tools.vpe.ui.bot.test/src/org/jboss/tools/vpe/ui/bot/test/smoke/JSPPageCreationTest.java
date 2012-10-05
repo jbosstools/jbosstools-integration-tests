@@ -40,6 +40,7 @@ public class JSPPageCreationTest extends VPEEditorTestCase{
    * Test JSP page Creation and Saving
    */
   private void checkJSPPageCreation(){
+    bot.closeAllEditors();
     
     openWebProjects();
     
@@ -68,7 +69,6 @@ public class JSPPageCreationTest extends VPEEditorTestCase{
     bot.sleep(Timing.time2S());
     webContentTreeItem.expand();
     SWTBotTreeItem jspTestPageTreeItem = webContentTreeItem.getNode(TEST_NEW_JSP_FILE_NAME);
-    
     String checkResult = CheckFileChangesSaving.checkIt(bot, bot.editorByTitle(TEST_NEW_JSP_FILE_NAME).toTextEditor(),
       tree, jspTestPageTreeItem,
       SAVE_COMMENT, true);

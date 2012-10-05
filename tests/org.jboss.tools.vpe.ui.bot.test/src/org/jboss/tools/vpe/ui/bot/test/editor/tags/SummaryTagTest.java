@@ -36,7 +36,7 @@ public class SummaryTagTest extends AbstractTagTest{
   @Override
   protected void verifyTag() {
     // check Problems View for Errors
-    assertProbelmsViewNoErrors(botExt);
+    assertProbelmsViewNoErrorsForPage(botExt);
     // visual representation contains SUMMARY tag
     assertVisualEditorContains(getVisualEditor(), "SUMMARY", null, null, getTestPageFileName());
     // visual representation contains SUMMARY_TEXT text
