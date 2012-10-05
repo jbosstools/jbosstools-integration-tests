@@ -81,10 +81,10 @@ public class ESBActionFactory {
 			@Override
 			protected void doEditing(SWTBotEditor editor, String... path) {
 				SWTBotSection section = bot.section(editor.bot(),getSectionTitle());
-				org.jboss.tools.ui.bot.ext.SWTUtilExt.displayAllBotWidgets(bot);
+				//org.jboss.tools.ui.bot.ext.SWTUtilExt.displayAllBotWidgets(bot);
 				editTextProperty(editor, section.bot(), "Process Definition Name:", "process-definition-name", "edited process definition name");
 				editTextProperty(editor, section.bot(), "Process ID:", "process-id", "edited processID");
-				editProcess(editor,true);
+				editProcess(editor,false);
 			}
 			@Override
 			protected void doFillForm(SWTBotShell shell) {
@@ -431,9 +431,8 @@ public class ESBActionFactory {
 				Assertions.assertButtonEnabled(shell.bot().button(getFinishButton()), false);					
 				shell.bot().text(0).setText(this.uiName);				
 
-				System.out.println ("DEBUG - this.uiName "  +  this.uiName);
-				
-				org.jboss.tools.ui.bot.ext.SWTUtilExt.displayAllBotWidgets(shell.bot());
+				//System.out.println ("DEBUG - this.uiName "  +  this.uiName);
+				//org.jboss.tools.ui.bot.ext.SWTUtilExt.displayAllBotWidgets(shell.bot());
 				
 				/* ldimaggi - Nov 4 2011 - need this to avoid an error where an array
 				 * out of bounds is hit - as the Sync Service Invoker has combo boxes, not text fields */

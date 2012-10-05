@@ -38,7 +38,7 @@ public class NewProjectUsingBundledInSOA extends SWTTestExt{
 		assertTrue(wiz.radio(0).isSelected());
 		 
 		wiz.sleep(3000l);
-		org.jboss.tools.ui.bot.ext.SWTUtilExt.displayAllBotWidgets(wiz);   
+//		org.jboss.tools.ui.bot.ext.SWTUtilExt.displayAllBotWidgets(wiz);   
 		wiz.button("Finish").click();
 		wiz.sleep(3000l);	
 		
