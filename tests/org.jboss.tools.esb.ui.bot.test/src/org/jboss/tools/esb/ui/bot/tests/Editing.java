@@ -123,9 +123,12 @@ public class Editing extends SWTTestExt {
 	@Test
 	public void listeners() {
 
+		/* Add service is failing on Jenkins - https://issues.jboss.org/browse/JBQA-7100 
+		 * This problem appeared in the firt week of Oct. 2012 - and is only seen when the
+		 * test is run on Jenkins - as a workaround - the editor is saved/shown - ldimaggi */
 		SWTBotEditor editor = getEditor();	
-		log.error("Listeners Editor is active = " + editor.isActive());
-		
+		getEditorActive(editor, "Listeners");
+			
 		String service = "aaa";
 		addService(service);
 		List<String> listenerList = getAvailableListeners(service);
@@ -169,14 +172,7 @@ public class Editing extends SWTTestExt {
 		 * This problem appeared in the firt week of Oct. 2012 - and is only seen when the
 		 * test is run on Jenkins - as a workaround - the editor is saved/shown - ldimaggi */
 		SWTBotEditor editor = getEditor();	
-		if (!editor.isActive()) {
-			log.error("Actions Editor is active? = " + editor.isActive());
-			bot.sleep(30000l);
-			log.error(editor.getTitle());
-			editor.save();
-			editor.show();			
-			log.error("Actions Editor is active? = " + editor.isActive());
-		}
+		getEditorActive(editor, "Actions");
 			
 		addService(service);		
 		String[] actionPath = new String[] { configFileFull, node_services,
@@ -215,6 +211,20 @@ public class Editing extends SWTTestExt {
 			}
 		}
 
+	}
+	
+	/* Add service is failing on Jenkins - https://issues.jboss.org/browse/JBQA-7100 
+	 * This problem appeared in the firt week of Oct. 2012 - and is only seen when the
+	 * test is run on Jenkins - as a workaround - the editor is saved/shown - ldimaggi */
+	public void getEditorActive (SWTBotEditor theEditor, String taskType) {
+		if (!theEditor.isActive()) {
+			log.error(taskType + " Editor is active? = " + theEditor.isActive());
+			bot.sleep(30000l);
+			log.error(theEditor.getTitle());
+			theEditor.save();
+			theEditor.show();			
+			log.error(taskType + " Editor is active? = " + theEditor.isActive());
+		}
 	}
 
 	private SWTBotEditor getEditor() {
