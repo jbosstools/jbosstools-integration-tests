@@ -161,7 +161,7 @@ public class DeployingArchiveTest extends ArchivesTestBase {
 		ArchivePublishSettingsDialog dialog = getDialog(publishContextMenu, 
 				view, explorer, returnDialog, archivePath);
 		
-		dialog.selectServers(configuredState.getServer().name);
+		dialog.selectServers(configuredState.getServer().name + " Server");
 		if (alwaysPublish) dialog.checkAlwaysPublish();
 		if (autodeploy) dialog.checkAutoDeploy();
 		dialog.finish();
