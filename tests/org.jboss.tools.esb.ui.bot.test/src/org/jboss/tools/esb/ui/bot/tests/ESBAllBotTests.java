@@ -10,7 +10,7 @@
   ******************************************************************************/
 package org.jboss.tools.esb.ui.bot.tests;
  
-import org.jboss.tools.esb.ui.bot.tests.examples.SimpleMylyn;
+#import org.jboss.tools.esb.ui.bot.tests.examples.SimpleMylyn;
 import org.jboss.tools.esb.ui.bot.tests.examples.HelloWorld;
 import org.jboss.tools.esb.ui.bot.tests.examples.HelloWorldAction;
 import org.jboss.tools.esb.ui.bot.tests.examples.HelloWorldFileAction;
@@ -32,6 +32,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	CreateRuntimeFromSOA.class,
 	NewProjectUsingRuntime.class,
 	NewProjectUsingBundledInEAP.class,
+//	SimpleMylyn.class
 	Editing.class,
 	HelloWorld.class,	
 	HelloWorldAction.class,
