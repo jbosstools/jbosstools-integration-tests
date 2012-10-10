@@ -15,6 +15,7 @@
 		<emma.instrument.bundles>org.jboss.ide.eclipse.archives.ui</emma.instrument.bundles>
 		<additionalSystemProperties></additionalSystemProperties>
 		<systemProperties>${additionalSystemProperties} -Dswtbot.test.properties.file=${project.basedir}/properties/swtbot.properties</systemProperties>
+		<suiteClass>org.jboss.tools.archives.ui.bot.test.ArchivesAllBotTests</suiteClass>
 	</properties>
 	<profiles>
 		<profile>
@@ -22,6 +23,12 @@
 			<properties>
 				<additionalSystemProperties>-Xdebug -Xrunjdwp:transport=dt_socket,address=8001,server=y,suspend=y</additionalSystemProperties>
 			</properties>
+		</profile>
+		<profile>
+			<id>jenkins</id>
+			<properties>
+				<suiteClass>org.jboss.tools.archives.ui.bot.test.JenkinsTestSuite</suiteClass>
+			</properties>			
 		</profile>
 	</profiles>
 	<build>
@@ -55,7 +62,7 @@
 				<artifactId>tycho-surefire-plugin</artifactId>
 				<configuration>
 					<testSuite>org.jboss.tools.archives.ui.bot.test</testSuite>
-					<testClass>org.jboss.tools.archives.ui.bot.test.ArchivesAllBotTests</testClass>
+					<testClass>${suiteClass}</testClass>
 					<useUIThread>false</useUIThread>
 					<skip>${swtbot.test.skip}</skip>
 					<dependencies combine.children="append">
