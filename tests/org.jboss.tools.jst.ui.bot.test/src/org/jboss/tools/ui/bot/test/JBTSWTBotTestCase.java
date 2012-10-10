@@ -37,6 +37,7 @@ public abstract class JBTSWTBotTestCase extends SWTTestExt implements
 	private static int sleepTime = 1000;
 	private Logger log = Logger.getLogger(JBTSWTBotTestCase.class);
 	private HashSet<String> ignoredExceptionsFromEclipseLog = new HashSet<String>();
+	private boolean acceptExceptionsFromEclipseLog = false;
 	/*
 	 * (non-Javadoc) This static block read properties from
 	 * org.jboss.tools.ui.bot.test/resources/SWTBot.properties file and set up
@@ -74,20 +75,22 @@ public abstract class JBTSWTBotTestCase extends SWTTestExt implements
 	public void logging(IStatus status, String plugin) {
 		switch (status.getSeverity()) {
 		case IStatus.ERROR:
-			Throwable throwable = status.getException();
-			if (throwable == null){
-			  if (!ignoredExceptionsFromEclipseLog.contains("null")) {
-		       throwable = new Throwable(status.getMessage() + " in " //$NON-NLS-1$
-		            + status.getPlugin());
-  			}
+			if (acceptExceptionsFromEclipseLog) {
+				Throwable throwable = status.getException();
+				if (throwable == null) {
+					if (!ignoredExceptionsFromEclipseLog.contains("null")) {
+						throwable = new Throwable(status.getMessage() + " in " //$NON-NLS-1$
+								+ status.getPlugin());
+					}
+				} else {
+					// Check if exception has to be ignored
+					if (ignoredExceptionsFromEclipseLog.contains(throwable
+							.getClass().getCanonicalName())) {
+						throwable = null;
+					}
+				}
+				setException(throwable);
 			}
-			else {
-		     // Check if exception has to be ignored
-         if (ignoredExceptionsFromEclipseLog.contains(throwable.getClass().getCanonicalName())){
-           throwable = null;
-         }
-			}
-			setException(throwable);
 			break;
 		default:
 			break;
@@ -419,5 +422,24 @@ public abstract class JBTSWTBotTestCase extends SWTTestExt implements
    */
   protected void eraseIgnoredExceptionsFromEclipseLog(){
     ignoredExceptionsFromEclipseLog.clear();
+  }
+  /**
+   * Disables catching exceptions from Eclipse log 
+   */
+  protected void ignoreAllExceptionsFromEclipseLog(){
+	  acceptExceptionsFromEclipseLog = false;
+  }
+  /**
+   * Reenables catching exceptions from Eclipse log
+   */
+  protected void catchExceptionsFromEclipseLog(){
+	  acceptExceptionsFromEclipseLog = true;
+  }
+  /**
+   * Returns true when exceptions from Eclipse log are catched
+   * @return
+   */
+  protected boolean isAcceptExceptionsFromEclipseLog(){
+	  return acceptExceptionsFromEclipseLog;
   }
 }

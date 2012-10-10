@@ -23,7 +23,6 @@ import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
@@ -346,12 +345,7 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase {
 		while (isUnuseDialogOpened()) {
 			closeUnuseDialogs();
 		}
-		List<? extends SWTBotEditor> editors = bot.editors();
-		if (editors != null) {
-			for (int i = 0; i < editors.size(); i++) {
-				editors.get(i).close();
-			}
-		}
+		bot.closeAllEditors();
 	}
 
 	/**
