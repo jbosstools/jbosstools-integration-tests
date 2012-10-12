@@ -39,7 +39,6 @@ import org.jboss.tools.vpe.ui.bot.test.editor.preferences.ShowResourceBundlesUsa
 import org.jboss.tools.vpe.ui.bot.test.editor.preferences.ShowSelectionTagBarTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.selectionbar.SelectionBarTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.CalendarTagTest;
-import org.jboss.tools.vpe.ui.bot.test.editor.tags.ColumnsTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.CoreHTMLTagsTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.JSFTagsTest;
 import org.jboss.tools.vpe.ui.bot.test.jbide.JBIDE4556Test;
@@ -118,7 +117,6 @@ import org.junit.runners.Suite.SuiteClasses;
     TextSelectionTest.class,
     CoreHTMLTagsTest.class,
     JSFTagsTest.class,
-    ColumnsTagTest.class,
     CalendarTagTest.class,
     OpenOnTest.class,
     XhtmlFilePerformanceTest.class,

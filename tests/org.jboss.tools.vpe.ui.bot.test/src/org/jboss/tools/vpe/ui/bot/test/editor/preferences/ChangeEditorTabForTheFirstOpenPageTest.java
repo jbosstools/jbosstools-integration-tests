@@ -14,6 +14,7 @@ import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.TimeoutException;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
+import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.test.WidgetVariables;
@@ -66,6 +67,7 @@ public class ChangeEditorTabForTheFirstOpenPageTest extends PreferencesTestCase{
 		bot.menu("Edit").menu("Delete").click(); //$NON-NLS-1$ //$NON-NLS-2$
 		bot.shell("Confirm Delete").activate(); //$NON-NLS-1$
 		bot.button(IDELabel.Button.OK).click(); //$NON-NLS-1$
+		util.waitForNonIgnoredJobs(Timing.time3S());
 		bot.toolbarButtonWithTooltip(PREF_TOOLTIP).click();
     bot.shell(PREF_FILTER_SHELL_TITLE).activate();
     bot.comboBoxWithLabel(SELECT_DEFAULT_TAB).setSelection(IDELabel.VisualPageEditor.VISUAL_SOURCE_TAB_LABEL); //$NON-NLS-1$

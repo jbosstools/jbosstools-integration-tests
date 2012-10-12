@@ -78,6 +78,7 @@ public class CodeCompletionTest extends VPEEditorTestCase{
     // close Content Assist window which is automatically opened after previous
     // Content Assist choice were applied
     KeyboardHelper.pressKeyCode(editor.bot().getDisplay(), KeyEvent.VK_ESCAPE);
+    bot.sleep(Timing.time3S());
     editor.save();
     String expectedInsertedText = textForSelection + "<" + contentAssistToUse + " action=\"\" value=\"\" />";
     if (!editor.getText().contains(expectedInsertedText)){
