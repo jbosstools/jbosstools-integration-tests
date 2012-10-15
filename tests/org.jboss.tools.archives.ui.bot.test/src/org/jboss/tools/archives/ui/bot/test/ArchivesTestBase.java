@@ -88,11 +88,7 @@ public class ArchivesTestBase extends SWTTestExt {
 				break;
 			}
 		}
-		String knownIssue = "";
-		if (archive.contains("pr3b.jar")) {
-			knownIssue = " - known issue JBIDE-12495";
-		}
-		assertTrue(archive + " was not deployed" + knownIssue, found);
+		assertTrue(archive + " was not deployed", found);
 	}
 	
 	protected void removeArchiveFromServer(String archive) {

@@ -13,6 +13,7 @@ package org.jboss.tools.archives.ui.bot.test;
 import org.jboss.tools.archives.ui.bot.test.dialog.ArchivePublishSettingsDialog;
 import org.jboss.tools.archives.ui.bot.test.explorer.ProjectArchivesExplorer;
 import org.jboss.tools.archives.ui.bot.test.view.ProjectArchivesView;
+import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
@@ -115,6 +116,7 @@ public class DeployingArchiveTest extends ArchivesTestBase {
 			boolean autodeploy, String... archivePath) {
 		fillDeployDialogForArchives(true, true, view, 
 				null, alwaysPublish, autodeploy, archivePath);
+		bot.sleep(Timing.time2S());
 	}
 	
 	private void publishArchiveInExplorer(
@@ -128,6 +130,7 @@ public class DeployingArchiveTest extends ArchivesTestBase {
 			boolean autodeploy, String archive) {
 		fillDeployDialogForArchives(true, true, null, 
 				explorer, alwaysPublish, autodeploy, archive);
+		bot.sleep(Timing.time2S());
 	}
 	
 	private void editPublishSettingsArchiveInView(
