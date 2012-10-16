@@ -6,6 +6,7 @@ import static org.hamcrest.Matchers.equalTo;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
@@ -24,13 +25,8 @@ import org.junit.Test;
 public class HTTPMethodAnnotationQuickFixTest extends WSTestBase {
 
 	@Override
-	protected String getWsProjectName() {
-		return "httpAnnot";
-	}
-	
-	@Override
 	public void setup() {
-		importWSTestProject(getWsProjectName());
+		
 	}
 	
 	@Override
@@ -39,21 +35,53 @@ public class HTTPMethodAnnotationQuickFixTest extends WSTestBase {
 	}
 	
 	@Test
-	public void testQuickFixes() {
+	public void testHTTPMethodWithoutParameters() {
+		/* import the project */
+		String wsProjectName = "httpAnnot1";
+		importWSTestProject(wsProjectName);
 		
-		/* workaround for JBIDE-12690 
-		jbide12680Workaround(getWsProjectName(), "src", "test", "MyAnnot.java"); */
+		/* workaround for JBIDE-12690 */
+		jbide12680Workaround(wsProjectName, "src", "test", "MyAnnot.java"); 
+		
+		/* assert that there is one Java problem */
+		assertThat(errorsByType("Java Problem").length, equalTo(1));
+
+		/* get quickfix bot for HttpMethod annotation */
+		QuickFixBot qBot = quickFixBot("@HttpMethod");
+		
+		/* check that there are quick fixes for both required annotations */
+		qBot.checkQuickFix("Add missing attributes", true);
+		bot.activeEditor().save();
+		
+		/* assert that there is one JAX-RS errors - empty value */
+		assertThat(errorsByType("JAX-RS Problem").length, equalTo(1));
+	}
+	
+	@Test
+	public void testTargetRetentionQuickFixes() {
+		
+		/* import the project */
+		String wsProjectName = "httpAnnot2";
+		importWSTestProject(wsProjectName);
+		
+		/* workaround for JBIDE-12690 */
+		jbide12680Workaround(wsProjectName, "src", "test", "MyAnnot.java"); 
 		
 		/* assert that there are two JAX-RS errors */
 		assertThat(errorsByType("JAX-RS Problem").length, equalTo(2));
 
 		/* get quickfix bot for MyAnnot annotation */
-		QuickFixBot bot = quickFixBot();
+		QuickFixBot qBot = quickFixBot("MyAnnot");
 		
 		/* check that there are quick fixes for both required annotations */
-		bot.checkQuickFix("Add @Target annotation on type MyAnnot", false);
-		bot.checkQuickFix("Add @Retention annotation on type MyAnnot", false);
+		qBot.checkQuickFix("Add @Target annotation on type MyAnnot", true);
+		/* there is need to wait a while until validation starts to work */
+		bot.sleep(Timing.time2S());
+		qBot.checkQuickFix("Add @Retention annotation on type MyAnnot", true);
+		bot.sleep(Timing.time2S());
 		
+		/* assert that there are no JAX-RS errors */
+		assertThat(errorsByType("JAX-RS Problem").length, equalTo(0));
 	}
 	
 	private void jbide12680Workaround(String projectName, String... path) {
@@ -63,12 +91,12 @@ public class HTTPMethodAnnotationQuickFixTest extends WSTestBase {
 		eclipseEditor.save();
 	}
 
-	private QuickFixBot quickFixBot() {
+	private QuickFixBot quickFixBot(String underlinedText) {
 		SWTBotEditorExt editor = new SWTBotEditorExt(bot.activeEditor().getReference(), bot);
 		SWTBotEclipseEditor eclipseEditor = editor.toTextEditor();
 		int lineIndex = 0;
 		for (String line : eclipseEditor.getLines()) {
-			if (line.contains("@Http")) {
+			if (line.contains(underlinedText)) {
 				 break;
 			}
 			lineIndex++;

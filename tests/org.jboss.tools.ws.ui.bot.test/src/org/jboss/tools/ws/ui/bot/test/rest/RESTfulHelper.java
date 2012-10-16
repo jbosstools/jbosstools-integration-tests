@@ -44,7 +44,7 @@ public class RESTfulHelper {
 	private static final ResourceHelper resourceHelper = new ResourceHelper();
 	
 	private static final String PATH_PARAM_VALID_ERROR = "@PathParam value";		
-	private static final String VALIDATION_SETTINGS_CHANGED = "Validation Settings Changed";
+	private static final String VALIDATOR_SETTINGS_CHANGED = "Validator Settings Changed";
 	
 	private enum ConfigureOption {
 		ENABLE, DISABLE;
@@ -84,7 +84,7 @@ public class RESTfulHelper {
 			validationBot.checkBox(0).deselect();
 		}
 		validationBot.button(IDELabel.Button.OK).click();
-		if (bot.activeShell().getText().equals(VALIDATION_SETTINGS_CHANGED)) {
+		if (bot.activeShell().getText().equals(VALIDATOR_SETTINGS_CHANGED)) {
 			bot.activeShell().bot().button(IDELabel.Button.YES).click();
 		}
 

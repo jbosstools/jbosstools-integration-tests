@@ -56,6 +56,9 @@ public class JaxRsValidatorTest extends RESTfulTestBase {
 		
 		/* test count of validation errors */
 		assertCountOfPathAnnotationValidationErrors(getWsProjectName(), 0);
+		
+		/* enable restful validation - to have proper test environment*/
+		restfulHelper.enableRESTValidation();
 	}
 	
 	private SWTBot openJaxRsValidator() {
