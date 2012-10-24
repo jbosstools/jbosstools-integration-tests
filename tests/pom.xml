@@ -1,0 +1,43 @@
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.jboss.tools</groupId>
+		<artifactId>integration-tests</artifactId>
+		<version>4.0.0-SNAPSHOT</version>
+	</parent>
+	<groupId>org.jboss.tools.integration-tests</groupId>
+	<artifactId>tests</artifactId>
+	<name>integration-tests.tests</name>
+	<packaging>pom</packaging>
+
+	<modules>
+		<module>org.jboss.ide.eclipse.as.ui.bot.test</module>
+		<module>org.jboss.tools.archives.ui.bot.test</module>
+		<module>org.jboss.tools.bpel.ui.bot.test</module>
+		<module>org.jboss.tools.cdi.bot.test</module>
+		<module>org.jboss.tools.cdi.seam3.bot.test</module>
+		<module>org.jboss.tools.central.test.ui.bot</module>
+		<module>org.jboss.tools.dummy.ui.bot.test</module>
+		<module>org.jboss.tools.esb.ui.bot.test</module>
+		<module>org.jboss.tools.forge.ui.bot.test</module>
+		<module>org.jboss.tools.freemarker.ui.bot.test</module>
+		<module>org.jboss.tools.hibernate.ui.bot.test</module>
+		<module>org.jboss.tools.jbpm.ui.bot.test</module>
+		<module>org.jboss.tools.jsf.ui.bot.test</module>
+		<module>org.jboss.tools.jst.ui.bot.test</module>
+		<module>org.jboss.tools.jst.ui.firstrun.bot.test</module>
+		<module>org.jboss.tools.maven.ui.bot.test</module>
+		<module>org.jboss.tools.openshift.ui.bot.test</module>
+		<module>org.jboss.tools.portlet.ui.bot.test</module>
+		<module>org.jboss.tools.runtime.as.ui.bot.test</module>
+		<module>org.jboss.tools.seam.ui.bot.test</module>
+		<module>org.jboss.tools.struts.ui.bot.test</module>
+		<module>org.jboss.tools.ui.bot.ext</module>
+		<module>org.jboss.tools.ui.bot.ext.test</module>
+		<module>org.jboss.tools.vpe.ui.bot.test</module>
+		<module>org.jboss.tools.ws.ui.bot.test</module>
+	</modules>
+</project>
+
