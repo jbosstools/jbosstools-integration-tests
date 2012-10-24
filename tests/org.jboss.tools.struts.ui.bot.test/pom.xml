@@ -4,12 +4,13 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>org.jboss.tools.struts</groupId>
+		<groupId>org.jboss.tools.integration-tests</groupId>
 		<artifactId>tests</artifactId>
-		<version>3.4.0-SNAPSHOT</version>
+		<version>4.0.0-SNAPSHOT</version>
 	</parent>
 	<groupId>org.jboss.tools.struts.tests</groupId>
 	<artifactId>org.jboss.tools.struts.ui.bot.test</artifactId>
+	<version>3.4.0-SNAPSHOT</version>
 
 	<packaging>eclipse-test-plugin</packaging>
 	<properties>
