@@ -1,0 +1,282 @@
+package org.jboss.tools.mylyn.ui.bot.test;
+
+//import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+import static org.junit.Assert.*;
+
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+//import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.util.Bot;
+import org.jboss.reddeer.swt.impl.menu.ShellMenu;
+import org.jboss.reddeer.swt.api.Menu;
+import org.jboss.reddeer.swt.api.Shell;
+import org.jboss.reddeer.swt.api.TreeItem;
+//import org.eclipse.swt.SWT;
+//import org.eclipse.swt.widgets.Tree;
+import org.jboss.reddeer.swt.impl.text.DefaultText;
+import org.jboss.reddeer.swt.impl.tree.DefaultTree;
+import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.swt.api.StyledText;
+import org.jboss.reddeer.swt.impl.table.DefaultTable;
+
+
+import java.util.ArrayList;
+import java.util.Arrays;
+//import java.util.Collections;
+import java.util.List;
+
+//import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
+//import org.eclipse.swtbot.swt.finder.SWTBot;
+//import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
+//import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.junit.Test;
+
+public class MylynTest2 {
+	
+	protected final Logger log = Logger.getLogger(this.getClass());
+	//protected Tree swtTree;
+	protected String expectedMylynElements[] = {"Tasks", "Local", "Bugs", "Eclipse.org", "Red Hat Bugzilla", "Atlassian Integrations Support", "JBoss Community"};
+
+	public void selectTreeItem (List <TreeItem> theTreeItems, String matchingName) {
+		for (TreeItem item : theTreeItems) {
+			log.info(item.getText());
+//			list.add(i++, item.getText());
+			if (item.getText().equals(matchingName)) {
+				item.select();
+				break;
+			}
+		}			
+	}
+	
+	
+	@Test
+	public void TestIt() {
+	
+//	List<String> expectedTasks = Arrays.asList ("Local");
+//	List<String> expectedBugs = Arrays.asList("Eclipse.org", "Red Hat Bugzilla", "Atlassian Integrations Support", "JBoss Community");
+	
+//	SWTWorkbenchBot bot = new SWTWorkbenchBot();
+//	WorkbenchShell ws = new WorkbenchShell();
+
+	log.info ("Step 1 - Close the Usage Shell");	
+	Bot.get().sleep(10000);
+	DefaultShell ds = new DefaultShell("JBoss Developer Studio Usage");   
+	
+//	bot.shell("JBoss Developer Studio Usage").bot().button("Yes").click();
+	Bot.get().sleep(10000);
+	new PushButton("Yes").click();
+	
+	log.info ("Step 2 - Open the Mylyn View");	
+	Bot.get().sleep(10000);
+	ds = new DefaultShell("JBoss - JBoss Developer Studio");
+    
+	// JBDS50_XXXX Mylyn plugin can be installed from Central without errors 
+//	bot.menu("Window").menu("Show View").menu("Other...").click();
+	Bot.get().sleep(10000);
+	Menu m = new ShellMenu("Window", "Show View" , "Other...");
+	m.select();
+	
+	//	SWTBotShell shell = bot.shell("Show View");  
+	//	shell.activate();
+	//	bot.sleep(10000l);
+	Shell s = new DefaultShell("Show View");
+
+	/* Verify that the expected repos are defined */
+//	bot.tree().getTreeItem("Mylyn").expand().getNode("Task Repositories").select().click();
+//	bot.button("OK").click();
+	
+	log.info ("Step 3 - Verify that the Mylyn Features are Present");	
+	DefaultTree FeatureTree = new DefaultTree();
+	List <TreeItem> featureItems = FeatureTree.getAllItems();
+//	theItems.get(0).select();
+//	ArrayList<String> list = new ArrayList<String>();	
+	
+//	int i = 0;
+//	for (TreeItem item : featureItems) {
+//		log.info(item.getText());
+//		list.add(i++, item.getText());
+//		if (item.getText().equals("Task Repositories")) {
+//			item.select();
+//			break;
+//		}
+//	}
+	selectTreeItem (featureItems, "Task Repositories");
+
+//	int index = Collections.binarySearch(list, "Task Repositories");
+//	System.out.println("Found Mylyn @ " + index);
+	
+//	theItems.get(index).select();
+	new PushButton("OK").click();
+	
+	ArrayList<String> repoList = new ArrayList<String>();
+	DefaultTree RepoTree = new DefaultTree();
+	List <TreeItem> repoItems = RepoTree.getAllItems();
+	int i = 0;
+	for (TreeItem item : repoItems) {
+		log.info(item.getText());
+		repoList.add(i++, item.getText());
+	}
+	
+	assertEquals ("Expecting 7 MyLyn items", repoItems.size(), 7);
+	for (String elementName : repoList) {
+		assertTrue ("Mylyn element list incorrect", repoList.contains(elementName));
+	}
+	
+//	assertEquals ("Expecting 2 groups of MyLyn Task Repos", bot.viewByTitle("Task Repositories").bot().tree().getAllItems().length, 2);
+//	assertEquals ("Expecting Bugs group of MyLyn Task Repos", bot.viewByTitle("Task Repositories").bot().tree().getAllItems()[0].getText(), "Tasks");
+//	assertEquals ("Expecting Tasks group of MyLyn Task Repos", bot.viewByTitle("Task Repositories").bot().tree().getAllItems()[1].getText(), "Bugs");
+//
+//	SWTBotTreeItem [] theTaskitems = bot.viewByTitle("Task Repositories").bot().tree().getAllItems()[0].getItems();			
+//	List<SWTBotTreeItem> itemList = Arrays.asList(theTaskitems);
+//	for (SWTBotTreeItem item : itemList) {
+//		assertTrue ("Looking for task group " + item.getText(), expectedTasks.contains(item.getText()));
+//	}
+//	
+//	SWTBotTreeItem [] theBugitems = bot.viewByTitle("Task Repositories").bot().tree().getAllItems()[1].getItems();			
+//	itemList = Arrays.asList(theBugitems);
+//	for (SWTBotTreeItem item : itemList) {
+//		assertTrue ("Looking for bug group " + item.getText(), expectedBugs.contains(item.getText()));
+//	}		
+
+	// JBDS50_0135 User can connect Bugzilla via Mylyn connectors plugin 
+	// JBDS50_0140 Red Hat Bugzilla task repository is available and can be connected 		
+//	bot.viewByTitle("Task Repositories").bot().tree().getTreeItem("Bugs").getNode("Red Hat Bugzilla").select().click().contextMenu("Properties").click();	
+//	bot.viewByTitle("Task Repositories").bot().tree().getTreeItem("Bugs").getNode("Red Hat Bugzilla").select().click();
+//	bot.menu("File").menu("Properties").click();
+//	
+//	shell = bot.shell("Properties for Task Repository"); 
+//	
+//	shell.getText();
+//	SWTBot thebot = shell.bot();
+//	thebot.button ("Validate Settings").click();
+	
+	log.info ("Step 4 - Validate connection to the Red Hat Bugzilla repo");	
+	Bot.get().sleep(10000);
+	
+	int elementIndex = repoList.indexOf("Red Hat Bugzilla");
+	repoItems.get(elementIndex).doubleClick();
+	Bot.get().sleep(10000);
+	
+	s = new DefaultShell("Properties for Task Repository");
+	log.info(new PushButton("Validate Settings").getText());
+	log.info(new PushButton("Validate Settings").isEnabled());
+	Bot.get().sleep(10000);
+	PushButton validate = new PushButton("Validate Settings");
+	validate.click();
+
+	while (!validate.isEnabled()) {
+		Bot.get().sleep(3000l);
+	}				
+	
+//
+//	while (!thebot.textWithLabel("Label: ").isEnabled()) {
+//		bot.sleep(3000l);
+//	}		
+//	assertTrue ("Repo Connection Properties Invalid", thebot.textWithLabel("Bugzilla Repository Settings").getText().contains("Repository is valid."));
+//	bot.button("Cancel").click();
+	
+	log.info("[" + new LabeledText("Bugzilla Repository Settings").getText()+"]");
+	assertTrue ("Repo Connection Properties Invalid", new LabeledText("Bugzilla Repository Settings").getText().contains("Repository is valid"));
+	new PushButton("Cancel").click();
+	
+//	// JBDS50_XXXX Local tasks can be created, viewed and deleted 
+//	// JBDS50_XXXX Task-Focused UI works 
+//	
+////	bot.viewByTitle("Task Repositories").bot().tree().getTreeItem("Tasks").getNode("Local").contextMenu("New Task...").click();
+//	bot.viewByTitle("Task Repositories").bot().tree().getTreeItem("Tasks").getNode("Local").click();
+//	bot.menu("File").menu("New").menu("Other...").click();
+//	shell = bot.shell("New");  
+//	shell.activate();
+
+	
+//	for (TreeItem item : newItems) {
+//		log.info(item.getText());
+//		if (item.getText().equals("Task Repositories")) {
+//			item.select();
+//			break;
+//		}
+//	}
+	
+	
+	//	
+//	bot.sleep(10000l);
+//	
+//	/* Verify that the expected repos are defined */
+//	bot.tree().getTreeItem("Tasks").expand().getNode("Task").select().click();
+//	bot.button("Next >").click();
+//	
+//	bot.sleep(10000l);
+//	bot.tree().getTreeItem("Local").select().click();
+//	bot.sleep(10000l);
+//	
+//	bot.button("Finish").click();
+//	
+//	bot.sleep(30000l);
+//	
+//	bot.styledText("New Task").setText("A new deal");
+//	bot.styledText("Notes").setText("A loooooong comment");
+//	bot.sleep(30000l);
+//	
+//	bot.menu("File").menu("Save").click();
+//	bot.sleep(30000l);
+//
+	
+
+	log.info ("Step 5 - Create a new local task");	
+	Bot.get().sleep(10000);
+	
+	elementIndex = repoList.indexOf("Local");
+	repoItems.get(elementIndex).select();
+
+	m = new ShellMenu("File", "New" , "Other...");
+	m.select();
+
+	s = new DefaultShell("New");
+
+	DefaultTree newElementTree = new DefaultTree();
+	List <TreeItem> newItems = newElementTree.getAllItems();
+	
+	Bot.get().sleep(10000l);
+
+	selectTreeItem (newItems, "Task");
+	
+	Bot.get().sleep(10000l);
+	new PushButton("Next >").click();
+	new PushButton("Finish").click();
+	Bot.get().sleep(10000l);
+	
+	s = new DefaultShell("JBoss - New Task - JBoss Developer Studio");
+	Bot.get().sleep(10000l);
+	
+	Bot.get().styledText("New Task").setText("A new deal");
+	Bot.get().styledText("Notes").setText("A loooooong comment");
+	
+	Bot.get().sleep(10000l);
+
+
+	log.info("Saving the task1");
+	new ShellMenu("File", "Save").select();
+	log.info("Saving the task2");
+	
+	Bot.get().sleep(10000l);
+	
+	log.info ("Step 6 - Verify the new local task");	
+	
+	m = new ShellMenu("Navigate", "Open Task...");
+	m.select();	
+	s = new DefaultShell("Open Task");
+	
+	DefaultTable TaskTable = new DefaultTable();
+	log.info(TaskTable.rowCount());
+	
+	assertTrue ("Task not found", TaskTable.cell(0, 0).equals("A new deal"));
+	new PushButton("Cancel").click();
+	
+	Bot.get().sleep(30000l);
+	
+	} /* method */
+
+} /* class */
+
+
