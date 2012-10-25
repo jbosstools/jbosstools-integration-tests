@@ -10,7 +10,6 @@ import org.junit.runners.Suite.SuiteClasses;
 	CreateProjectsWithJava7Test.class,
 	CreateProjectsWithServerTest.class,
 	DocumentationSectionTest.class
-//	InstallTest.class
 	})
 public class CentralAllBotTests {
 

@@ -24,6 +24,8 @@ public class CreateProjectsWithJava7Test extends CreateProjectsWithServerTest{
 		formText = formText.replaceAll("\\s", "");
 		if (formText.equals("JavaEEProject")){
 			setupMultiProject(formText);
+		}else if (projectName != null && (projectName.equals("jboss-as-helloworld-jms") || projectName.equals("jboss-as-helloworld-osgi"))){
+			setupProject(projectName, true, false);
 		}else{
 			setupProject((projectName==null) ? formText : projectName, true, true);
 		}
