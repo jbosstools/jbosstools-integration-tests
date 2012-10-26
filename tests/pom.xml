@@ -27,7 +27,6 @@
 		<module>org.jboss.tools.jbpm.ui.bot.test</module>
 		<module>org.jboss.tools.jsf.ui.bot.test</module>
 		<module>org.jboss.tools.jst.ui.bot.test</module>
-		<module>org.jboss.tools.jst.ui.firstrun.bot.test</module>
 		<module>org.jboss.tools.maven.ui.bot.test</module>
 		<module>org.jboss.tools.openshift.ui.bot.test</module>
 		<module>org.jboss.tools.portlet.ui.bot.test</module>
