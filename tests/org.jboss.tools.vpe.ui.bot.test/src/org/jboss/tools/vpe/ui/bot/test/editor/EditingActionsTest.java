@@ -39,13 +39,12 @@ public class EditingActionsTest extends VPEEditorTestCase {
   private SWTBotExt botExt = null;
   
   private static final String PAGE_TEXT = "<%@ taglib uri=\"http://java.sun.com/jsf/html\" prefix=\"h\" %>\n" +
-    "<%@ taglib uri=\"http://richfaces.org/rich\" prefix=\"rich\"%>\n" +
     "<html>\n" +
     "  <body>\n" +
     "    <h:inputText/>\n" + 
     "    <h:outputText value = \"outputText\"/>\n" +
     "    <h:inputText/>\n" + 
-    "    <rich:comboBox></rich:comboBox>\n" +
+    "    <h:commandButton></h:commandButton>\n" +
     "  </body>\n" +
     "</html>";
 
@@ -78,8 +77,8 @@ public class EditingActionsTest extends VPEEditorTestCase {
 	  webBrowser.clickContextMenu(node,
         SWTBotWebBrowser.COPY_MENU_LABEL);
     jspEditor.setFocus();
-    jspEditor.selectRange(4,18,1);
-    jspEditor.insertText(4,18,"");
+    jspEditor.selectRange(3,18,1);
+    jspEditor.insertText(3,18,"");
     webBrowser.clickContextMenu(node,
         SWTBotWebBrowser.PASTE_MENU_LABEL);
     jspEditor.save();
@@ -87,8 +86,8 @@ public class EditingActionsTest extends VPEEditorTestCase {
     Assertions.assertSourceEditorContains(stripHTMLSourceText(jspEditor.getText()), 
         "<h:inputText/><h:inputText/><h:outputTextvalue=\"outputText\"/><h:inputText/>", 
         EditingActionsTest.TEST_PAGE);
-    assertVisualEditorContainsManyNodes(webBrowser, "INPUT", 6, EditingActionsTest.TEST_PAGE_NAME);
-    assertProbelmsViewNoErrors(botExt);      
+    assertVisualEditorContainsManyNodes(webBrowser, "INPUT", 4, EditingActionsTest.TEST_PAGE_NAME);
+    assertProbelmsViewNoErrorsForPage(botExt, EditingActionsTest.TEST_PAGE); 
     // Check Cut Functionality
     node = webBrowser.getDomNodeByTagName("INPUT",0);
     webBrowser.selectDomNode(node, 0);
@@ -98,15 +97,15 @@ public class EditingActionsTest extends VPEEditorTestCase {
     jspEditor.save();
     botExt.sleep(Timing.time3S());
     Assertions.assertSourceEditorContains(stripHTMLSourceText(jspEditor.getText()), 
-        "<body><h:inputText/><h:outputTextvalue=\"outputText\"/><h:inputText/><rich:comboBox>", 
+        "<body><h:inputText/><h:outputTextvalue=\"outputText\"/><h:inputText/><h:commandButton>", 
         EditingActionsTest.TEST_PAGE_NAME);
-    assertVisualEditorContainsManyNodes(webBrowser, "INPUT", 5, EditingActionsTest.TEST_PAGE_NAME);
-    assertProbelmsViewNoErrors(botExt);      
+    assertVisualEditorContainsManyNodes(webBrowser, "INPUT", 3, EditingActionsTest.TEST_PAGE_NAME);
+    assertProbelmsViewNoErrorsForPage(botExt, EditingActionsTest.TEST_PAGE);      
     // Check Paste Functionality
     node = webBrowser.getDomNodeByTagName("INPUT",1);
     jspEditor.setFocus();
-    jspEditor.selectRange(6,18,1);
-    jspEditor.insertText(6,18,"");
+    jspEditor.selectRange(5,18,1);
+    jspEditor.insertText(5,18,"");
     webBrowser.clickContextMenu(node,
         SWTBotWebBrowser.PASTE_MENU_LABEL);
     jspEditor.save();
@@ -114,8 +113,8 @@ public class EditingActionsTest extends VPEEditorTestCase {
     Assertions.assertSourceEditorContains(stripHTMLSourceText(jspEditor.getText()), 
         "<h:inputText/><h:outputTextvalue=\"outputText\"/><h:inputText/><h:inputText/>", 
         EditingActionsTest.TEST_PAGE_NAME);
-    assertVisualEditorContainsManyNodes(webBrowser, "INPUT", 6, EditingActionsTest.TEST_PAGE_NAME);
-    assertProbelmsViewNoErrors(botExt);
+    assertVisualEditorContainsManyNodes(webBrowser, "INPUT", 4, EditingActionsTest.TEST_PAGE_NAME);
+    assertProbelmsViewNoErrorsForPage(botExt, EditingActionsTest.TEST_PAGE);
     // Check Undo Functionality
     webBrowser.setFocus();
     if (SWTJBTExt.isRunningOnMacOs()){
@@ -127,7 +126,7 @@ public class EditingActionsTest extends VPEEditorTestCase {
     jspEditor.save();
     botExt.sleep(Timing.time3S());
     Assertions.assertSourceEditorContains(stripHTMLSourceText(jspEditor.getText()), 
-        "<h:outputTextvalue=\"outputText\"/><h:inputText/><rich:comboBox>", 
+        "<h:outputTextvalue=\"outputText\"/><h:inputText/><h:commandButton>", 
         EditingActionsTest.TEST_PAGE_NAME);
     if (SWTJBTExt.isRunningOnMacOs()){
       bot.shells()[0].pressShortcut(SWT.COMMAND, 'z'); 

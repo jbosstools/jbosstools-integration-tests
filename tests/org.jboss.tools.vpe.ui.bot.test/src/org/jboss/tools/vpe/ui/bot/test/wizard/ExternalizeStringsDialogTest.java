@@ -899,6 +899,7 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		 * Check that the text was replaced
 		 */
 		editor.setFocus();
+		editor.save();
 		editor.toTextEditor().selectLine(1);
 		assertEquals("Taglig insertion failed!", //$NON-NLS-1$
 				"<%@ taglib uri=\"http://java.sun.com/jsf/core\" prefix=\"f\"%>", //$NON-NLS-1$

@@ -62,16 +62,16 @@ public class InsertActionsTest extends VPEEditorTestCase {
 	  
 	  webBrowser.clickContextMenu(node,
         SWTBotWebBrowser.INSERT_AFTER_MENU_LABEL,
-        SWTBotWebBrowser.JBOSS_MENU_LABEL, SWTBotWebBrowser.RICH_FACES_MENU_LABEL,
-        SWTBotWebBrowser.RICH_CALENDAR_TAG_MENU_LABEL);
+        SWTBotWebBrowser.JSF_MENU_LABEL, SWTBotWebBrowser.HTML_MENU_LABEL,
+        SWTBotWebBrowser.H_COMMAND_BUTTON_TAG_MENU_LABEL);
 
     jspTextEditor.save();
     botExt.sleep(Timing.time3S());
-    // Check if tag <rich:calendar> was properly added.
-    Assertions.assertSourceEditorContains(jspTextEditor.getText(), "<h:inputText/><rich:calendar>", InsertActionsTest.TEST_PAGE);
-    assertVisualEditorContains(webBrowser, "SPAN", new String[]{"title"},new String[] {"rich:calendar"},
+    // Check if tag <h:commandButton> was properly added.
+    Assertions.assertSourceEditorContains(jspTextEditor.getText(), "<h:inputText/><h:commandButton>", InsertActionsTest.TEST_PAGE);
+    assertVisualEditorContains(webBrowser, "INPUT", new String[]{"type","title"},new String[] {"submit","h:commandButton"},
         InsertActionsTest.TEST_PAGE);
-    assertProbelmsViewNoErrors(botExt);    
+    assertProbelmsViewNoErrorsForPage(botExt, InsertActionsTest.TEST_PAGE);    
     
 	}
 	 /**
@@ -83,17 +83,17 @@ public class InsertActionsTest extends VPEEditorTestCase {
     
     webBrowser.clickContextMenu(node,
         SWTBotWebBrowser.INSERT_BEFORE_MENU_LABEL,
-        SWTBotWebBrowser.JBOSS_MENU_LABEL, SWTBotWebBrowser.RICH_FACES_MENU_LABEL,
-        SWTBotWebBrowser.RICH_CALENDAR_TAG_MENU_LABEL);
+        SWTBotWebBrowser.JSF_MENU_LABEL, SWTBotWebBrowser.HTML_MENU_LABEL,
+        SWTBotWebBrowser.H_COMMAND_BUTTON_TAG_MENU_LABEL);
 
     jspTextEditor.save();
     botExt.sleep(Timing.time3S());
-    // Check if tag <rich:calendar> was properly added
+    // Check if tag <h:commandButton> was properly added
     Assertions.assertSourceEditorContains(VPEEditorTestCase.stripHTMLSourceText(jspTextEditor.getText()),
-        "<rich:calendar></rich:calendar><h:inputText/>", InsertActionsTest.TEST_PAGE);
-    assertVisualEditorContains(webBrowser, "SPAN", new String[]{"title"},new String[] {"rich:calendar"},
+        "<h:commandButton></h:commandButton><h:inputText/>", InsertActionsTest.TEST_PAGE);
+    assertVisualEditorContains(webBrowser, "INPUT", new String[]{"type","title"},new String[] {"submit","h:commandButton"},
         InsertActionsTest.TEST_PAGE);
-    assertProbelmsViewNoErrors(botExt);
+    assertProbelmsViewNoErrorsForPage(botExt, InsertActionsTest.TEST_PAGE);
     
   }
 
@@ -114,16 +114,18 @@ public class InsertActionsTest extends VPEEditorTestCase {
     
     webBrowser.clickContextMenu(node,
         SWTBotWebBrowser.INSERT_INTO_MENU_LABEL,
-        SWTBotWebBrowser.JBOSS_MENU_LABEL, SWTBotWebBrowser.RICH_FACES_MENU_LABEL,
-        SWTBotWebBrowser.RICH_CALENDAR_TAG_MENU_LABEL);
+        SWTBotWebBrowser.JSF_MENU_LABEL, SWTBotWebBrowser.HTML_MENU_LABEL,
+        SWTBotWebBrowser.H_COMMAND_BUTTON_TAG_MENU_LABEL);
 
     jspTextEditor.save();
     botExt.sleep(Timing.time3S());
-    // Check if tag <rich:calendar> was properly added
+    // Check if tag <h:commandButton> was properly added
     Assertions.assertSourceEditorContains(VPEEditorTestCase.stripHTMLSourceText(jspTextEditor.getText()),
-        "<form><rich:calendar></rich:calendar></form>", InsertActionsTest.TEST_PAGE);
+        "<form><h:commandButton></h:commandButton></form>", InsertActionsTest.TEST_PAGE);
     assertVisualEditorContains(webBrowser, "FORM", null,null,InsertActionsTest.TEST_PAGE);
-    assertProbelmsViewNoErrors(botExt);
+    assertVisualEditorContains(webBrowser, "INPUT", new String[]{"type","title"},new String[] {"submit","h:commandButton"},
+            InsertActionsTest.TEST_PAGE);
+    assertProbelmsViewNoErrorsForPage(botExt, InsertActionsTest.TEST_PAGE);
     
   }
   
@@ -145,7 +147,7 @@ public class InsertActionsTest extends VPEEditorTestCase {
     Assertions.assertSourceEditorContains(VPEEditorTestCase.stripHTMLSourceText(jspTextEditor.getText()),
         "<h:form><h:inputText/></h:form>", InsertActionsTest.TEST_PAGE);
     assertVisualEditorContains(webBrowser, "FORM", null,null,InsertActionsTest.TEST_PAGE);
-    assertProbelmsViewNoErrors(botExt);
+    assertProbelmsViewNoErrorsForPage(botExt, InsertActionsTest.TEST_PAGE);
     
   }
   

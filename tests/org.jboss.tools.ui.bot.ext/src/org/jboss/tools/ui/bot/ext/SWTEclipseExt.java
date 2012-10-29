@@ -66,7 +66,6 @@ import org.jboss.tools.ui.bot.ext.types.PerspectiveType;
 import org.jboss.tools.ui.bot.ext.types.ViewType;
 import org.jboss.tools.ui.bot.ext.view.PackageExplorer;
 import org.jboss.tools.ui.bot.ext.view.RemoteSystems;
-import org.jboss.tools.ui.bot.ext.view.ViewBase;
 import org.junit.Assert;
 
 /**
@@ -1695,14 +1694,20 @@ public class SWTEclipseExt {
       item = item.expandNode(nodeName);
       builder.append("/" + nodeName);
     }
-    
+    SWTBotShell currentShell = bot.activeShell();
     ContextMenuHelper.prepareTreeItemForContextMenu(tree, item);
     new SWTBotMenu(ContextMenuHelper.getContextMenu(tree, 
       IDELabel.Menu.DELETE, false)).click();
   
+    bot.sleep(Timing.time3S());
+    
     bot.shell(IDELabel.Shell.CONFIRM_DELETE).activate();
+    
     bot.button(IDELabel.Button.OK).click();
+    
     new SWTUtilExt(bot).waitForNonIgnoredJobs();
+    
+    bot.waitUntil(new ShellIsActiveCondition(currentShell), Timing.time10S());
     
     log.info("File Deleted: " + builder.toString());
   

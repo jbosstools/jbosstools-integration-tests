@@ -11,6 +11,8 @@
  ******************************************************************************/
 package org.jboss.tools.vpe.ui.bot.test.editor.tags;
 
+import org.jboss.tools.vpe.ui.bot.test.VPEAutoTestCase;
+
 /**
  * Tests ajax invisible tags behavior 
  * @author vlado pakan
@@ -26,11 +28,11 @@ public class AjaxInvisibleTagsTest extends AbstractTagTest{
   private static final String LOAD_STYLE_VALUE = "*! loadStyle Value";
   @Override
   protected void initTestPage() {
+	addRichFacesToProjectClassPath(VPEAutoTestCase.JBT_TEST_PROJECT_NAME);
     initTestPage(TestPageType.JSP,
       "<%@ taglib uri=\"http://java.sun.com/jsf/html\" prefix=\"h\" %>\n" +
       "<%@ taglib uri=\"http://java.sun.com/jsf/core\" prefix=\"f\" %>\n" +
       "<%@ taglib uri=\"http://richfaces.org/a4j\" prefix=\"a4j\" %>\n" +
-      "<%@ taglib uri=\"http://richfaces.org/rich\" prefix=\"rich\" %>\n" +
       "<html>\n" +
       " <head>\n" +
       " </head>\n" +
@@ -87,4 +89,9 @@ public class AjaxInvisibleTagsTest extends AbstractTagTest{
       getTestPageFileName());    
   }
 
+  @Override
+  public void tearDown() throws Exception {
+    removeRichFacesFromProjectClassPath(VPEAutoTestCase.JBT_TEST_PROJECT_NAME);
+    super.tearDown();
+  }
 }

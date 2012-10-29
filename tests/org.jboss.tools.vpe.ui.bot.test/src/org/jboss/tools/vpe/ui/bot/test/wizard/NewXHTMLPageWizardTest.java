@@ -33,12 +33,18 @@ public class NewXHTMLPageWizardTest extends VPEAutoTestCase{
 		// TODO Auto-generated method stub
 		return false;
 	}
-
 	/**
 	 * Test new xhtml page wizard basic functionality.
 	 */
-	@Test
-	public void testNewXHTMLPageWizard() {
+    @Test
+    public void testNewXHTMLPageWizard(){
+    	checkNewXHTMLPageWizard();
+    	checkBlankResultWithoutAnyTemplateText_JBIDE6921();
+    }
+	/**
+	 * Checks new xhtml page wizard basic functionality.
+	 */
+	public void checkNewXHTMLPageWizard() {
 		/*
 		 * Open wizard page
 		 */
@@ -66,10 +72,10 @@ public class NewXHTMLPageWizardTest extends VPEAutoTestCase{
 	}
 
 	/**
-	 * Test blank result without any template text.
+	 * Checks blank result without any template text.
 	 * Tests https://jira.jboss.org/browse/JBIDE-6921
 	 */
-	public void testBlankResultWithoutAnyTemplateText_JBIDE6921() {
+	public void checkBlankResultWithoutAnyTemplateText_JBIDE6921() {
 		open.newObject(ActionItem.NewObject.JBossToolsWebXHTMLFile.LABEL);
 		bot.shell(IDELabel.Shell.NEW_XHTML_FILE).activate();
 		bot.textWithLabel(ActionItem.NewObject.JBossToolsWebXHTMLFile.TEXT_FILE_NAME).setText("test2"); //$NON-NLS-1$
