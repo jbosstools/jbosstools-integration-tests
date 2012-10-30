@@ -1,60 +1,40 @@
 package org.jboss.tools.bpel.ui.bot.test;
 
-import org.eclipse.core.resources.IProject;
-
-import org.eclipse.swtbot.eclipse.gef.finder.SWTGefBot;
-import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditor;
-
-import org.jboss.tools.bpel.ui.bot.ext.widgets.BotBpelEditor;
+import org.jboss.tools.bpel.ui.bot.ext.BpelBot;
+import org.jboss.tools.bpel.ui.bot.ext.editor.BpelEditor;
 import org.jboss.tools.bpel.ui.bot.test.util.ResourceHelper;
-
-
+import org.jboss.tools.ui.bot.ext.SWTTestExt;
+import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
-import org.jboss.tools.ui.bot.ext.view.PackageExplorer;
-import org.jboss.tools.ui.bot.ext.view.ServersView;
-
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-@Require(clearProjects = true, server = @Server(type = ServerType.ALL, state = ServerState.Present))
-public class SimpleModelingTest extends BPELTest {
+@Require(server = @Server(type = ServerType.ALL, state = ServerState.Present), perspective = "BPEL")
+public class SimpleModelingTest extends SWTTestExt {
 
-	static String BUNDLE = "org.jboss.tools.bpel.ui.bot.test";
-
-	IProject project;
-	ServersView sView = new ServersView();
-	PackageExplorer pExplorer = new PackageExplorer();
+	public static final String PROJECT_NAME = "DiscriminantProcess";
+	public static final String BPEL_FILE_NAME = "Discriminant.bpel";
+	
+	private BpelBot bpelBot;
+	
+	public SimpleModelingTest() {
+		bpelBot = new BpelBot();
+	}
 
 	@Before
 	public void setupWorkspace() throws Exception {
-		pExplorer.deleteAllProjects();
-		ResourceHelper.importProject(BUNDLE, "/projects/DiscriminantProcess",
-				"DiscriminantProcess");
-		
-		bot.viewByTitle("Package Explorer").setFocus();
-		pExplorer.selectProject("DiscriminantProcess");
-	}
-
-	@After
-	public void cleanupWorkspace() throws Exception {
-//		pExplorer.deleteAllProjects();
+		ResourceHelper.importProject(Activator.PLUGIN_ID, "/projects/DiscriminantProcess", PROJECT_NAME);
 	}
 
 	@Test
 	public void testActions() throws Exception {
-		openFile("DiscriminantProcess", "bpelContent", "Discriminant.bpel");
+		BpelEditor bpelEditor = bpelBot.openBpelFile("DiscriminantProcess", "Discriminant.bpel");
+		bpelEditor.activateDesignPage();
 
-		SWTGefBot gefBot = new SWTGefBot();
-		final SWTBotGefEditor editor = gefBot.gefEditor("Discriminant.bpel");
-		final BotBpelEditor bpel = new BotBpelEditor(editor, gefBot);
-		bpel.activatePage("Design");
-
-		bpel.addReceive("receive", "DiscriminantRequest", new String[] {"client", "Discriminant", "calculateDiscriminant"}, true);
-		bpel.addAssignVarToVar("assignRequest", 
+		bpelEditor.addReceive("receive", "DiscriminantRequest", new String[] {"client", "Discriminant", "calculateDiscriminant"}, true);
+		bpelEditor.addAssignVarToVar("assignRequest", 
 				new String[] {
 					"DiscriminantRequest : DiscriminantRequestMessage", 
 					"parameters : DiscriminantRequest", 
@@ -64,7 +44,7 @@ public class SimpleModelingTest extends BPELTest {
 					"parameters : MathRequest", 
 					"a : decimal"}
 	    );
-		bpel.addAssignVarToVar("assignRequest", 
+		bpelEditor.addAssignVarToVar("assignRequest", 
 				new String[] {
 					"DiscriminantRequest : DiscriminantRequestMessage", 
 					"parameters : DiscriminantRequest", 
@@ -74,15 +54,15 @@ public class SimpleModelingTest extends BPELTest {
 					"parameters : MathRequest", 
 					"b : decimal"}
 		);
-		bpel.addAssignFixedToVar("assignRequest", "*", 
+		bpelEditor.addAssignFixedToVar("assignRequest", "*", 
 				new String[] {
 					"MathRequest1 : MathRequestMessage", 
 					"parameters : MathRequest", 
 					"operator : string"}
 		);
-		bpel.addValidate("validateInput", "DiscriminantRequest");
-		bpel.addInvoke("invokePartner", "MathRequest1", "MathResponse1", new String[] {"math", "Math", "calculate"});
-		bpel.addAssignVarToVar("assignResponse", 
+		bpelEditor.addValidate("validateInput", "DiscriminantRequest");
+		bpelEditor.addInvoke("invokePartner", "MathRequest1", "MathResponse1", new String[] {"math", "Math", "calculate"});
+		bpelEditor.addAssignVarToVar("assignResponse", 
 				new String[] {
 					"MathResponse1 : MathResponseMessage", 
 					"parameters : MathResponse", 
@@ -92,9 +72,9 @@ public class SimpleModelingTest extends BPELTest {
 					"parameters : DiscriminantResponse", 
 					"result : int"}
 		);
-		bpel.addReply("reply", "DiscriminantResponse", "", new String[] {"client", "Discriminant", "calculateDiscriminant"});
+		bpelEditor.addReply("reply", "DiscriminantResponse", "", new String[] {"client", "Discriminant", "calculateDiscriminant"});
 		
-		bpel.save();
+		bpelEditor.save();
 	}
 
 }

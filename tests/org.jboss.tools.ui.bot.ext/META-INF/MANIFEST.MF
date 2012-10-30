@@ -53,7 +53,8 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.swtbot.forms.finder,
- org.jboss.tools.tests;bundle-version="3.4.0"
+ org.jboss.tools.tests;bundle-version="3.4.0",
+ org.eclipse.ui.views.properties.tabbed;bundle-version="3.5.300"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Import-Package: org.eclipse.gef,

@@ -1,9 +1,6 @@
-package org.jboss.tools.bpel.ui.bot.ext.widgets;
+package org.jboss.tools.bpel.ui.bot.ext.editor;
 
-import java.io.IOError;
 import java.util.List;
-
-import javax.swing.KeyStroke;
 
 import org.eclipse.bpel.model.Else;
 import org.eclipse.bpel.model.If;
@@ -16,54 +13,54 @@ import org.eclipse.bpel.model.impl.FaultHandlerImpl;
 import org.eclipse.bpel.model.impl.OnMessageImpl;
 import org.eclipse.bpel.model.impl.ScopeImpl;
 import org.eclipse.bpel.model.impl.SequenceImpl;
-
 import org.eclipse.gef.EditPart;
-
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
+import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotMultiPageEditor;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditPart;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditor;
-
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.AssertionFailedException;
 import org.eclipse.swtbot.swt.finder.keyboard.Keystrokes;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotButton;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
-
-import org.jboss.tools.ui.bot.ext.widgets.SWTBotMultiPageEditor;
-import org.junit.Assert;
+import org.jboss.tools.bpel.ui.bot.ext.widgets.BPELEditPartListener;
+import org.jboss.tools.bpel.ui.bot.ext.widgets.EditPartEventLogger;
+import org.jboss.tools.ui.bot.ext.view.TabbedPropertiesView;
 
 /**
  * TODO: - add support for catchAll to fault handlers
  *        
  * @author mbaluch
+ * @author apodhrad
  *
  */
-public class BotBpelEditor extends SWTBotMultiPageEditor {
+public class BpelEditor extends SWTBotMultiPageEditor {
+	
+	public static final String DESIGN_PAGE = "Design";
+	public static final String SOURCE_PAGE = "Source";
 
 	SWTBotGefEditor gefEditor;
 	
-	SWTBotPropertiesView propertiesView;
+	TabbedPropertiesView propertiesView;
 	
 	SWTBotGefEditPart selectedPart;
 	
 	BPELEditPartListener listener;
 	
 	/**
-	 * Creates a new instance of SWTBotBPELEditor
+	 * Creates a new instance of SWTBpelEditor
 	 * 
 	 * @param gefEditor
 	 * @param bot
 	 */
-	public BotBpelEditor(SWTBotGefEditor gefEditor, SWTWorkbenchBot bot) {
+	public BpelEditor(SWTBotGefEditor gefEditor, SWTWorkbenchBot bot) {
 		super(gefEditor.getReference(), bot);
 		
 		this.gefEditor = gefEditor;
-		this.propertiesView = new SWTBotPropertiesView(bot);
+		this.propertiesView = new TabbedPropertiesView();
 		this.listener = new BPELEditPartListener();
 		
 		EditPartEventLogger eventLogger = new EditPartEventLogger();
@@ -72,6 +69,15 @@ public class BotBpelEditor extends SWTBotMultiPageEditor {
 		mainSequencePart.part().addEditPartListener(eventLogger);
 		select(mainSequencePart);
 	}
+	
+	public void activateDesignPage() {
+		activatePage(DESIGN_PAGE);
+	}
+	
+	public void activateSourcePage() {
+		activatePage(SOURCE_PAGE);
+	}
+	
 	
 	/**
 	 * TODO: the line on which the variable is declared needs to be selected (caret needs to present) otherwise
@@ -161,7 +167,7 @@ public class BotBpelEditor extends SWTBotMultiPageEditor {
 	 * @param name
 	 * @return
 	 */
-	protected BotBpelEditor addAssign(String name) {
+	protected BpelEditor addAssign(String name) {
 		appendActivity("Assign", name);
 		propertiesView.selectTab(1);
 		SWTBot propertiesBot = propertiesView.bot();
@@ -259,7 +265,7 @@ public class BotBpelEditor extends SWTBotMultiPageEditor {
 //		return assignPart;
 //	}
 	
-	public BotBpelEditor addAssignVarToVar(String label, String[] from, String[] to) {
+	public BpelEditor addAssignVarToVar(String label, String[] from, String[] to) {
 		addAssign(label);
 		propertiesView.selectTab(1);
 		SWTBot propertiesBot = propertiesView.bot();
@@ -281,7 +287,7 @@ public class BotBpelEditor extends SWTBotMultiPageEditor {
 		return this;
 	}
 	
-	public BotBpelEditor addAssignVarToExpression(String label, String[] from, String exp) {
+	public BpelEditor addAssignVarToExpression(String label, String[] from, String exp) {
 		addAssign(label);
 		propertiesView.selectTab(1);
 		SWTBot propertiesBot = propertiesView.bot();
@@ -296,7 +302,7 @@ public class BotBpelEditor extends SWTBotMultiPageEditor {
 		return this;
 	}
 	
-	public BotBpelEditor addAssignExpressionToExpression(String label, String from, String to) {
+	public BpelEditor addAssignExpressionToExpression(String label, String from, String to) {
 		addAssign(label);
 		propertiesView.selectTab(1);
 		SWTBot propertiesBot = propertiesView.bot();
@@ -304,7 +310,7 @@ public class BotBpelEditor extends SWTBotMultiPageEditor {
 		propertiesBot.comboBox(0).setSelection("Expression");
 		propertiesBot.styledText(0).setText(from);
 		
-		propertiesBot.comboBox(2).setSelection("Expression");
+		propertiesBot.comboBox(1).setSelection("Expression");
 		propertiesBot.styledText(1).setText(to);
 		save();
 		
@@ -313,7 +319,7 @@ public class BotBpelEditor extends SWTBotMultiPageEditor {
 		return this;
 	}
 	
-	public BotBpelEditor addAssignFixedToExpression(String label, String fixed, String expression) {
+	public BpelEditor addAssignFixedToExpression(String label, String fixed, String expression) {
 		addAssign(label);
 		propertiesView.selectTab(1);
 		SWTBot propertiesBot = propertiesView.bot();
@@ -331,7 +337,7 @@ public class BotBpelEditor extends SWTBotMultiPageEditor {
 	}
 	
 	// TODO - Test me!
-	public BotBpelEditor addAssignFixedToVar(String label, String exp, String[] to) {
+	public BpelEditor addAssignFixedToVar(String label, String exp, String[] to) {
 		addAssign(label);
 		propertiesView.selectTab(1);
 		SWTBot propertiesBot = propertiesView.bot();
@@ -354,7 +360,7 @@ public class BotBpelEditor extends SWTBotMultiPageEditor {
 		return this;
 	}
 	
-	public BotBpelEditor addInvoke(String label, String in, String out, String partnerLink, String operation) {
+	public BpelEditor addInvoke(String label, String in, String out, String partnerLink, String operation) {
 		appendActivity("Invoke", label);
 		SWTBot propertiesBot = propertiesView.bot();
 		propertiesView.selectTab(1);
@@ -371,7 +377,7 @@ public class BotBpelEditor extends SWTBotMultiPageEditor {
 		return this;
 	}
 	
-	public BotBpelEditor addInvoke(String label, String in, String out, String[] operationInfo) {
+	public BpelEditor addInvoke(String label, String in, String out, String[] operationInfo) {
 		appendActivity("Invoke", label);
 		SWTBot propertiesBot = propertiesView.bot();
 		propertiesView.selectTab(1);
@@ -387,7 +393,7 @@ public class BotBpelEditor extends SWTBotMultiPageEditor {
 		return this;
 	}	
 	
-	public BotBpelEditor addReceive(String label, String var, String partnerLink, String operation, boolean createInstance) {
+	public BpelEditor addReceive(String label, String var, String partnerLink, String operation, boolean createInstance) {
 		appendActivity("Receive", label);
 		propertiesView.selectTab(1);
 		SWTBot propertiesBot = propertiesView.bot();
@@ -404,7 +410,7 @@ public class BotBpelEditor extends SWTBotMultiPageEditor {
 		return this;
 	}
 	
-	public BotBpelEditor addReceive(String label, String var, String[] operationInfo, boolean createInstance) {
+	public BpelEditor addReceive(String label, String var, String[] operationInfo, boolean createInstance) {
 		appendActivity("Receive", label);
 		SWTBot propertiesBot = propertiesView.bot();
 		propertiesView.selectTab(1);
@@ -422,7 +428,7 @@ public class BotBpelEditor extends SWTBotMultiPageEditor {
 		return this;
 	}
 	
-	public BotBpelEditor addReply(String label, String var, String partnerLink, String operation, String fault) {
+	public BpelEditor addReply(String label, String var, String partnerLink, String operation, String fault) {
 		appendActivity("Reply", label);
 		SWTBot propertiesBot = propertiesView.bot();
 		propertiesView.selectTab(1);
@@ -439,7 +445,7 @@ public class BotBpelEditor extends SWTBotMultiPageEditor {
 		return this;
 	}
 	
-	public BotBpelEditor addReply(String label, String var, String fault, String[] operationInfo) {
+	public BpelEditor addReply(String label, String var, String fault, String[] operationInfo) {
 		appendActivity("Reply", label);
 		SWTBot propertiesBot = propertiesView.bot();
 		propertiesView.selectTab(1);
@@ -468,11 +474,11 @@ public class BotBpelEditor extends SWTBotMultiPageEditor {
 	 * @param expression condition expression
 	 * @return
 	 */
-	public BotBpelEditor addIf(String label, String condition) {
+	public BpelEditor addIf(String label, String condition) {
 		appendActivity("If", label);
 		SWTBot propertiesBot = propertiesView.bot();
 		propertiesView.selectTab(1);
-		propertiesBot.button("Create a New Condition").click();
+//		propertiesBot.button("Create a New Condition").click();
 		propertiesBot.styledText().setText(condition);
 		save();
 		SWTBotGefEditPart part = getEditPart(selectedPart, label); 
@@ -481,7 +487,7 @@ public class BotBpelEditor extends SWTBotMultiPageEditor {
 		return this;
 	}
 	
-	public BotBpelEditor addElseIf(String ifLabel, String condition) {
+	public BpelEditor addElseIf(String ifLabel, String condition) {
 		SWTBotGefEditPart ifPart = getEditPart(selectedPart, ifLabel);
 		if(ifPart == null || !(ifPart.part().getModel() instanceof If)) {
 			throw new RuntimeException("Pick not found: " + ifLabel);
@@ -506,7 +512,7 @@ public class BotBpelEditor extends SWTBotMultiPageEditor {
 		return this;
 	}
 	
-	public BotBpelEditor addElse(String ifLabel) {
+	public BpelEditor addElse(String ifLabel) {
 		SWTBotGefEditPart ifPart = getEditPart(selectedPart, ifLabel);
 		if(ifPart == null || !(ifPart.part().getModel() instanceof If)) {
 			throw new RuntimeException("Pick not found: " + ifLabel);
@@ -523,7 +529,7 @@ public class BotBpelEditor extends SWTBotMultiPageEditor {
 		return this;
 	}
 	
-	public BotBpelEditor addValidate(String label, String ... variables) {
+	public BpelEditor addValidate(String label, String ... variables) {
 		appendActivity("Validate", label);
 		SWTBot propertiesBot = propertiesView.bot();
 		propertiesView.selectTab(1);
@@ -546,7 +552,7 @@ public class BotBpelEditor extends SWTBotMultiPageEditor {
 		return this;
 	}
 	
-	public BotBpelEditor addEmpty(String label) {
+	public BpelEditor addEmpty(String label) {
 		appendActivity("Empty", label);
 		save();
 		SWTBotGefEditPart part = getEditPart(selectedPart, label); 
@@ -569,7 +575,7 @@ public class BotBpelEditor extends SWTBotMultiPageEditor {
 	 * @param operationInfo
 	 * @return
 	 */
-	public BotBpelEditor addPick(String label, boolean createInstance, String in, String[] operationInfo) {
+	public BpelEditor addPick(String label, boolean createInstance, String in, String[] operationInfo) {
 		appendActivity("Pick", label);
 		// setup pick properties
 		SWTBot propertiesBot = propertiesView.bot();
@@ -594,7 +600,7 @@ public class BotBpelEditor extends SWTBotMultiPageEditor {
 		return this;
 	}
 	
-	public BotBpelEditor addOnMessage(String pickLabel, String in, String[] operationInfo) {
+	public BpelEditor addOnMessage(String pickLabel, String in, String[] operationInfo) {
 		SWTBotGefEditPart pick = getEditPart(selectedPart, pickLabel);
 		if(pick == null || !(pick.part().getModel() instanceof Pick)) {
 			throw new RuntimeException("Pick not found: " + pickLabel);
@@ -619,7 +625,7 @@ public class BotBpelEditor extends SWTBotMultiPageEditor {
 		return this;
 	}
 	
-	public BotBpelEditor addOnAlarm(String pickLabel, String condition) {
+	public BpelEditor addOnAlarm(String pickLabel, String condition) {
 		SWTBotGefEditPart pick = getEditPart(selectedPart, pickLabel);
 		if(pick == null || !(pick.part().getModel() instanceof Pick)) {
 			throw new RuntimeException("Pick not found: " + pickLabel);
@@ -633,8 +639,8 @@ public class BotBpelEditor extends SWTBotMultiPageEditor {
 		select(onAlarm);
 		// setup properties
 		SWTBot propertiesBot = propertiesView.bot();
-		propertiesBot.button("Create a New Condition").click();
-		propertiesBot.comboBox(1).setSelection("Text");
+//		propertiesBot.button("Create a New Condition").click();
+//		propertiesBot.comboBox(1).setSelection("Text");
 		propertiesBot.styledText().setText(condition);
 		save();
 		fireEditFinished(onAlarm.part(), new String[] {"for"}, new String[] {condition});
@@ -642,11 +648,11 @@ public class BotBpelEditor extends SWTBotMultiPageEditor {
 		return this;
 	}
 	
-	public BotBpelEditor addWhile(String label, String condition) {
+	public BpelEditor addWhile(String label, String condition) {
 		appendActivity("While", label);
 		SWTBot propertiesBot = propertiesView.bot();
 		propertiesView.selectTab(1);
-		propertiesBot.button("Create a New Condition").click();
+//		propertiesBot.button("Create a New Condition").click();
 		propertiesBot.styledText().setText(condition);
 		save();
 		SWTBotGefEditPart part = getEditPart(selectedPart, label); 
@@ -655,16 +661,16 @@ public class BotBpelEditor extends SWTBotMultiPageEditor {
 		return this;
 	}
 	
-	public BotBpelEditor addForEach(String label, String startExpression, String finalExpression) throws Exception {
+	public BpelEditor addForEach(String label, String startExpression, String finalExpression) throws Exception {
 		appendActivity("ForEach", label);
 		SWTBot propsBot = propertiesView.bot();
 		propertiesView.selectTab(2);
 		
-		SWTBotButton leftButton = propsBot.button(0);
-		SWTBotButton rightButton = propsBot.button(1);
-		
-		leftButton.click();
-		rightButton.click();
+//		SWTBotButton leftButton = propsBot.button(0);
+//		SWTBotButton rightButton = propsBot.button(1);
+//		
+//		leftButton.click();
+//		rightButton.click();
 		propsBot.styledText(0).setText(startExpression);
 		// Previous change must be saved otherwise we will see an ugly NPE.
 		// This issue seems to be caused by SWTBot since the exception cannot
@@ -680,11 +686,11 @@ public class BotBpelEditor extends SWTBotMultiPageEditor {
 		return this;
 	}
 	
-	public BotBpelEditor addRepeatUntil(String label, String condition) {
+	public BpelEditor addRepeatUntil(String label, String condition) {
 		appendActivity("RepeatUntil", label);
 		SWTBot propsBot = propertiesView.bot();
 		propertiesView.selectTab(1);
-		propsBot.button("Create a New Condition").click();
+//		propsBot.button("Create a New Condition").click();
 		propsBot.styledText().setText(condition);
 		save();
 		SWTBotGefEditPart part = getEditPart(selectedPart, label); 
@@ -692,12 +698,12 @@ public class BotBpelEditor extends SWTBotMultiPageEditor {
 		return this;
 	}
 	
-	public BotBpelEditor addWait(String label, String condition) {
+	public BpelEditor addWait(String label, String condition) {
 		appendActivity("Wait", label);
 		SWTBot propsBot = propertiesView.bot();
 		propertiesView.selectTab(1);
-		propsBot.button("Create a New Condition").click();
-		propsBot.comboBox(1).setSelection("Text");
+//		propsBot.button("Create a New Condition").click();
+//		propsBot.comboBox(1).setSelection("Text");
 		propsBot.styledText().setText(condition);
 		save();
 		SWTBotGefEditPart part = getEditPart(selectedPart, label); 
@@ -706,7 +712,7 @@ public class BotBpelEditor extends SWTBotMultiPageEditor {
 		return this;
 	}
 	
-	public BotBpelEditor addSequence(String label) {
+	public BpelEditor addSequence(String label) {
 		appendActivity("Sequence", label);
 		save();
 		SWTBotGefEditPart part = getEditPart(selectedPart, label); 
@@ -715,7 +721,7 @@ public class BotBpelEditor extends SWTBotMultiPageEditor {
 		return this;
 	}
 	
-	public BotBpelEditor addFlow(String label) {
+	public BpelEditor addFlow(String label) {
 		appendActivity("Flow", label);
 		save();
 		SWTBotGefEditPart part = getEditPart(selectedPart, label); 
@@ -724,7 +730,7 @@ public class BotBpelEditor extends SWTBotMultiPageEditor {
 		return this;
 	}
 	
-	public BotBpelEditor addScope(String label, boolean isoalated) {
+	public BpelEditor addScope(String label, boolean isoalated) {
 		appendActivity("Scope", label);
 		propertiesView.selectTab(1);
 		if(isoalated) {
@@ -738,7 +744,7 @@ public class BotBpelEditor extends SWTBotMultiPageEditor {
 		return this;
 	}
 
-	public BotBpelEditor addCompensationHandler() {
+	public BpelEditor addCompensationHandler() {
 		// add the fault handler to selectedPart
 		gefEditor.clickContextMenu("Add Compensation Handler");
 		save();
@@ -764,7 +770,7 @@ public class BotBpelEditor extends SWTBotMultiPageEditor {
 	 * @param var
 	 * @return
 	 */
-	public BotBpelEditor addFaultHandler(String faultName, String var) {
+	public BpelEditor addFaultHandler(String faultName, String var) {
 		// add the fult handler to selectedPart
 		gefEditor.clickContextMenu("Add Fault Handler");
 		save();
@@ -794,7 +800,7 @@ public class BotBpelEditor extends SWTBotMultiPageEditor {
 		return this;
 	}
 	
-	public BotBpelEditor addExit(String label) {
+	public BpelEditor addExit(String label) {
 		appendActivity("Exit", label);
 		save();
 		SWTBotGefEditPart part = getEditPart(selectedPart, label);
@@ -803,7 +809,7 @@ public class BotBpelEditor extends SWTBotMultiPageEditor {
 		return this;
 	}
 	
-	public BotBpelEditor addThrow(String label, String faultName) {
+	public BpelEditor addThrow(String label, String faultName) {
 		appendActivity("Throw", label);
 		propertiesView.selectTab(1);
 		SWTBot propertiesBot = propertiesView.bot();
@@ -816,7 +822,7 @@ public class BotBpelEditor extends SWTBotMultiPageEditor {
 		return this;
 	}
 	
-	public BotBpelEditor addRethrow(String label) {
+	public BpelEditor addRethrow(String label) {
 		appendActivity("Rethrow", label);
 		save();
 		fireEditFinished(getEditPart(selectedPart, label).part(), 
@@ -825,7 +831,7 @@ public class BotBpelEditor extends SWTBotMultiPageEditor {
 		return this;
 	}
 	
-	public BotBpelEditor addCompensate(String label) {
+	public BpelEditor addCompensate(String label) {
 		appendActivity("Compensate", label);
 		save();
 		fireEditFinished(selectedPart.part(), new String[] {"name"}, new String[] {label});
@@ -833,7 +839,7 @@ public class BotBpelEditor extends SWTBotMultiPageEditor {
 		return this;
 	}
 	
-	public BotBpelEditor addCompensateScope(String label, String target) {
+	public BpelEditor addCompensateScope(String label, String target) {
 		appendActivity("CompensateScope", label); 
 		propertiesView.selectTab(1);
 		SWTBot bot = propertiesView.bot();
@@ -890,6 +896,10 @@ public class BotBpelEditor extends SWTBotMultiPageEditor {
 		selectedPart = part;
 	}
 	
+	public void selectMainEditPart() {
+		select(gefEditor.mainEditPart());
+	}
+	
 	public SWTBotGefEditPart getEditPart(SWTBotGefEditPart fromPart, int index) {
 		List<SWTBotGefEditPart> children = fromPart.children();
 		if(children.size() <= index) {
@@ -911,6 +921,10 @@ public class BotBpelEditor extends SWTBotMultiPageEditor {
 		return getEditPart(allEditParts, label);
 	}
 	
+	public SWTBotGefEditPart getEditPart(String label) {
+		return getEditPart(gefEditor.mainEditPart(), label);
+	}
+	
 	protected SWTBotGefEditPart getEditPart(List<SWTBotGefEditPart> allEditParts, String label) {
 		for (SWTBotGefEditPart child : allEditParts) {
 			Object model = child.part().getModel();
@@ -930,7 +944,7 @@ public class BotBpelEditor extends SWTBotMultiPageEditor {
 	}
 	
 	protected void fireEditFinished(EditPart editpart, String[] attributes, String[] values) {
-		listener.editFinished(new BPELEditPartEvent(editpart, attributes, values));
+//		listener.editFinished(new BPELEditPartEvent(editpart, attributes, values));
 	}
 	
 	private SWTBotGefEditPart getEditPartByClass(final SWTBotGefEditPart parent, Class<?> modelClass) {

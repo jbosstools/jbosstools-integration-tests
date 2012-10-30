@@ -17,9 +17,6 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
-import org.jboss.tools.ui.bot.ext.view.PackageExplorer;
-import org.jboss.tools.ui.bot.ext.view.ProjectExplorer;
-import org.junit.Assert;
 import org.osgi.framework.Version;
 
 public class BPELTest extends SWTTestExt {
@@ -27,20 +24,6 @@ public class BPELTest extends SWTTestExt {
 	public static final String BUNDLE = "org.jboss.tools.bpel.ui.bot.test";
 	public static final Version JBT_3_2_BPEL_VERSION = new Version(0, 6, 2);
 
-	public static void prepare() {
-		log.info("BPEL All Test started...");
-
-		// jbt.closeReportUsageWindowIfOpened(true);
-		// eclipse.maximizeActiveShell();
-		// eclipse.closeView(IDELabel.View.WELCOME);
-		// bot.closeAllEditors();
-	}
-
-	public static void clean() {
-		util.waitForNonIgnoredJobs();
-		bot.sleep(TIME_5S, "BPEL All Tests Finished!");
-	}
-	
 	public static void deployProject(String projectName) {
 		String serverName = BPELTest.configuredState.getServer().name;
 
@@ -262,11 +245,6 @@ public class BPELTest extends SWTTestExt {
 			}
 		}
 		return out.length() == 0 ? null : out.toString();
-	}
-
-	protected void openFile(String projectName, String... path) throws Exception {
-		log.info("Opening file: " + path[path.length - 1] + " ...");
-		projectExplorer.openFile(projectName, path);
 	}
 
 	public static Version getServerToolsVersion() {

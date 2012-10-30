@@ -2,7 +2,8 @@ package org.jboss.tools.bpel.ui.bot.test;
 
 import org.eclipse.swtbot.eclipse.gef.finder.SWTGefBot;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditor;
-import org.jboss.tools.bpel.ui.bot.ext.widgets.BotBpelEditor;
+import org.jboss.tools.bpel.ui.bot.ext.BpelBot;
+import org.jboss.tools.bpel.ui.bot.ext.editor.BpelEditor;
 import org.jboss.tools.bpel.ui.bot.test.util.ResourceHelper;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
@@ -24,6 +25,12 @@ public class AssignActivityTest extends BPELTest {
 		"		<payload>Initial value</payload>" +
 		"	</soapenv:Body>" +
 		"</soapenv:Envelope>";
+	
+	private BpelBot bpelBot;
+	
+	public AssignActivityTest() {
+		bpelBot = new BpelBot();
+	}
 	
 	@Before
 	public void setupWorkspace() throws Exception {
@@ -63,33 +70,29 @@ public class AssignActivityTest extends BPELTest {
 	@Test
 	public void testAssignment() throws Exception {
 		// Create the process
-		openFile("AssignerProject", "bpelContent", "AssignTestProcess.bpel");
-	
-		SWTGefBot gefBot = new SWTGefBot();
-		final SWTBotGefEditor editor = gefBot.gefEditor("AssignTestProcess.bpel");
-		final BotBpelEditor bpel = new BotBpelEditor(editor, gefBot);
-		bpel.activatePage("Design");
+		BpelEditor bpelEditor = bpelBot.openBpelFile("AssignerProject", "AssignTestProcess.bpel");
+		bpelEditor.activatePage("Design");
 		
-		bpel.addReceive("receiveSimple", "simpleIn", new String[] {"client", "AssignTestProcess", "simple"}, true);
-		bpel.addAssignVarToVar("assignSimpleToSimple", 
+		bpelEditor.addReceive("receiveSimple", "simpleIn", new String[] {"client", "AssignTestProcess", "simple"}, true);
+		bpelEditor.addAssignVarToVar("assignSimpleToSimple", 
 				new String[] {"simpleIn : simpleRequestMessage", "payload : string"}, 
 				new String[] {"simpleOut : simpleResponseMessage", "payload : string"}
 		);
 		
-		bpel.addAssignVarToVar("assignSimpleToComplex", 
+		bpelEditor.addAssignVarToVar("assignSimpleToComplex", 
 				new String[] {"simpleIn : simpleRequestMessage", "payload : string"}, 
 				new String[] {"complexOut : complexResponseMessage", "complexResponse : complexResponse", "result : string"}
 		);
 		
-		bpel.addAssignVarToVar("assignSimpleToModerate", 
+		bpelEditor.addAssignVarToVar("assignSimpleToModerate", 
 				new String[] {"simpleIn : simpleRequestMessage", "payload : string"}, 
 				new String[] {"moderateOut : moderateResponseMessage", "moderateResponse : complexResponseType", "result : string"}
 		);
 		
-		bpel.addAssignExpressionToExpression("assignExpressionToExpression", "$simpleIn.payload", "$moderateOut.moderateResponse/result");
-		bpel.addAssignFixedToExpression("assignFixedToExpression", "Fixed Expression", "$simpleOut.payload");
+		bpelEditor.addAssignExpressionToExpression("assignExpressionToExpression", "$simpleIn.payload", "$moderateOut.moderateResponse/result");
+		bpelEditor.addAssignFixedToExpression("assignFixedToExpression", "Fixed Expression", "$simpleOut.payload");
 		
-		bpel.addReply("replySimple", "simpleOut", "", new String[] {"client", "AssignTestProcess", "simple"});
+		bpelEditor.addReply("replySimple", "simpleOut", "", new String[] {"client", "AssignTestProcess", "simple"});
 		/*
 		// Publish the process
 		pExplorer.runOnServer("AssignerProject");
