@@ -14,20 +14,17 @@ import java.awt.event.KeyEvent;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.eclipse.swt.SWTException;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.jboss.tools.jsf.ui.bot.test.JSFAutoTestCase;
 import org.jboss.tools.ui.bot.ext.Assertions;
 import org.jboss.tools.ui.bot.ext.SWTJBTExt;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.Timing;
-import org.jboss.tools.ui.bot.ext.helper.BuildPathHelper;
 import org.jboss.tools.ui.bot.ext.helper.ContentAssistHelper;
 import org.jboss.tools.ui.bot.ext.helper.KeyboardHelper;
 import org.jboss.tools.ui.bot.ext.helper.OpenOnHelper;
 import org.jboss.tools.ui.bot.ext.parts.ContentAssistBot;
 import org.jboss.tools.ui.bot.ext.parts.SWTBotEditorExt;
-import org.jboss.tools.vpe.ui.bot.test.VPEAutoTestCase;
 /** * Test Code Completion functionality of JSF components within xhtml page
  * @author Vladimir Pakan
  *
@@ -39,7 +36,6 @@ public class CodeCompletionTest extends JSFAutoTestCase{
   private String originalEditorText;
   private String compositeComponentDefEditorText;
   private String origCompositeComponentContainerEditorText;
-  private String addedVariableRichfacesUiLocation = null;
   /**
    * Test Code Completion functionality for managed bean
    */
@@ -344,7 +340,7 @@ public class CodeCompletionTest extends JSFAutoTestCase{
    */
   public void testCodeCompletionOfSrcAttribute(){
     initJSF2PageTest();
-    addRichFacesToJSF2ProjectClassPath();
+    addRichFacesToProjectClassPath(JSF2_TEST_PROJECT_NAME);
     SWTJBTExt.selectTextInSourcePane(SWTTestExt.bot, 
         JSF2_TEST_PAGE,
         "xmlns:f=\"http://java.sun.com/jsf/core\"", 
@@ -533,7 +529,7 @@ public class CodeCompletionTest extends JSFAutoTestCase{
       compositeComponentContainerEditor.close();
     }
     util.waitForNonIgnoredJobs();
-    removeRichFacesFromJSF2ProjectClassPath();
+    removeRichFacesFromProjectClassPath(JSF2_TEST_PROJECT_NAME);
 
     super.tearDown();
   }
@@ -650,26 +646,5 @@ public class CodeCompletionTest extends JSFAutoTestCase{
     contentAssist.checkContentAssist("/resources", false);
     contentAssist.checkContentAssist("/templates", false);
   }
-  /**
-   * Add RichFaces library to JSF2 project classpath
-   */
-  private void addRichFacesToJSF2ProjectClassPath(){
-    Throwable exceptionBeforeCall = getException();
-    addedVariableRichfacesUiLocation = BuildPathHelper.addExternalJar(VPEAutoTestCase.RICH_FACES_UI_JAR_LOCATION, 
-      JSF2_TEST_PROJECT_NAME);
-    if (exceptionBeforeCall == null 
-        && getException() != null
-        && getException() instanceof SWTException){
-      setException(null);
-    }
-  }
-  /**
-   * Remove previously added RichFaces library from JSF2 project classpath
-   */
-  private void removeRichFacesFromJSF2ProjectClassPath(){
-    if (addedVariableRichfacesUiLocation != null){
-      BuildPathHelper.removeVariable(JSF2_TEST_PROJECT_NAME, addedVariableRichfacesUiLocation, true);
-      eclipse.cleanAllProjects();
-    }
-  }
+
 }
