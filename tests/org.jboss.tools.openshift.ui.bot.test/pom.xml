@@ -11,13 +11,28 @@
 	<groupId>org.jboss.tools.openshift.tests</groupId>
 	<artifactId>org.jboss.tools.openshift.ui.bot.test</artifactId>
 	<version>2.4.0-SNAPSHOT</version>
-	
+
 	<packaging>eclipse-test-plugin</packaging>
 
 	<properties>
 		<systemProperties>-Dtest.configurations.dir=${configurations.dir}</systemProperties>
 		<surefire.timeout>10800</surefire.timeout>
 	</properties>
+
+	<repositories>
+		<repository>
+			<id>red_deer</id>
+			<!-- replace url value with any RedDeer update site you require -->
+			<url>http://p2-reddeer.rhcloud.com/stable</url>
+			<layout>p2</layout>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+		</repository>
+	</repositories>
 
 	<build>
 		<plugins>

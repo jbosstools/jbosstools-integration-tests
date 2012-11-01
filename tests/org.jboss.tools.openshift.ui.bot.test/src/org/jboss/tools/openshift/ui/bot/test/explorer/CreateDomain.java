@@ -29,11 +29,9 @@ public class CreateDomain extends SWTTestExt {
 		openshiftExplorer
 				.bot()
 				.tree()
-				.getTreeItem(
-						TestProperties.get("openshift.user.name") + " "
-								+ TestProperties.get("openshift.server.prod"))
+				.getAllItems()[0] // get 1st account in OpenShift Explorer
 				.contextMenu(OpenShiftUI.Labels.EXPLORER_CREATE_EDIT_DOMAIN)
-				.click();
+				.click(); // click on 'Create or Edit Domain'
 
 		bot.waitForShell(OpenShiftUI.Shell.CREATE_DOMAIN);
 
