@@ -94,6 +94,7 @@ public class CreateProjectsWithServerTest extends SWTTestExt{
 	public void teardown(){
 		projectExplorer.deleteAllProjects();
 		servers.removeAllProjectsFromServer("AS-7.0");
+		bot.closeAllShells();
 	}
 	
 	@Test
@@ -163,10 +164,16 @@ public class CreateProjectsWithServerTest extends SWTTestExt{
 	}
 	
 	public void projectExamplesSectionTest(String name, String projectName, String readmeFile){
-		SWTBotTwistie twistieBot = bot.twistieByLabel("JBoss Quickstarts");
+		SWTBotTwistie jBossQuickstartsTwistie = bot.twistieByLabel("JBoss Developer Framework Quickstarts");
 		int counter = 0;
-		while (!twistieBot.isExpanded() && counter<10){
-			twistieBot.toggle();
+		while (!jBossQuickstartsTwistie.isExpanded() && counter<10){
+			jBossQuickstartsTwistie.toggle();
+			counter++;
+		}
+		SWTBotTwistie geteinQuickstartsTwistie = bot.twistieByLabel("GateIn Portal Quickstarts");
+		 counter = 0;
+		while (!geteinQuickstartsTwistie.isExpanded() && counter<10){
+			geteinQuickstartsTwistie.toggle();
 			counter++;
 		}
 		SWTFormsBotExt formsBot = SWTBotFactory.getFormsBot();
@@ -182,19 +189,34 @@ public class CreateProjectsWithServerTest extends SWTTestExt{
 		projectExamplesSectionTest(name, projectName, null);
 	}
 	
-	@Test
+//	@Test JBIDE-12906
 	public void projectExamplesSectionHelloworldTest(){
-		projectExamplesSectionTest("Helloworld", "jboss-as-helloworld");
+		projectExamplesSectionTest("Hello World", "helloworld");
 	}
 	
 	@Test
+	public void projectExamplesSectionHelloworldJSFTest(){
+		projectExamplesSectionTest("Hello World JSF", "jboss-as-helloworld-jsf");
+	}
+	
+	@Test
+	public void projectExamplesSectionHelloworldJMSTest(){
+		projectExamplesSectionTest("Hello World JMS", "jboss-as-helloworld-jms");
+	}
+	
+	@Test
+	public void projectExamplesSectionHelloworldErraiTest(){
+		projectExamplesSectionTest("Hello World Errai", "jboss-as-helloworld-errai");
+	}
+	
+	@Test
+	public void projectExamplesSectionHelloworldOsgiTest(){
+		projectExamplesSectionTest("Hello World OSGi", "jboss-as-helloworld-osgi");
+	}
+	
+//	@Test JBIDE-12906
 	public void projectExamplesSectionNumberguessTest(){
-		projectExamplesSectionTest("Numberguess", "jboss-as-numberguess");
-	}
-	
-	@Test
-	public void projectExamplesSectionLoginTest(){
-		projectExamplesSectionTest("Login", "jboss-as-login", "login.xml");
+		projectExamplesSectionTest("Number Guess", "jboss-as-numberguess");
 	}
 	
 	@Test
@@ -203,8 +225,28 @@ public class CreateProjectsWithServerTest extends SWTTestExt{
 	}
 	
 	@Test
+	public void projectExamplesSectionGreeterTest(){
+		projectExamplesSectionTest("Greeter", "jboss-as-greeter");
+	}
+	
+	@Test
+	public void projectExamplesSectionHelloworldPortletTest(){
+		projectExamplesSectionTest("Simplest Hello World Portlet", "simplest-hello-world-portlet");
+	}
+	
+	@Test
+	public void projectExamplesSectionJSF2HelloworldTest(){
+		projectExamplesSectionTest("JSF2 Hello World Portlet", "jsf2-hello-world-portlet");
+	}
+	
+	@Test
+	public void projectExamplesSectionJSF2RF4HelloworldTest(){
+		projectExamplesSectionTest("JSF2+RF4 Hello World Portlet", "jsf2-rf4-hello-world-portlet");
+	}
+	
+	@Test
 	public void projectExamplesSectionHTML5Test(){
-		projectExamplesSectionTest("HTML5", "helloworld-html5");
+		projectExamplesSectionTest("AeroGear HTML5/Mobile", "jboss-as-kitchensink-html5-mobile");
 	}
 	
 	/**
@@ -225,14 +267,19 @@ public class CreateProjectsWithServerTest extends SWTTestExt{
 		}
 		String serverName = bot.tree().getAllItems()[0].getText().substring(0, bot.tree().getAllItems()[0].getText().indexOf(' '));
 		servers.findServerByName(servers.bot().tree(), serverName).contextMenu("Add and Remove...").click();
-		bot.shell("Add and Remove...").activate();
-		for (SWTBotTreeItem treeItem : bot.tree().getAllItems()) {
-			treeItem.select();
-			log.info("Adding "+treeItem.getText()+" to server");
-			bot.clickButton("Add >");
-				log.info("Succesfully added");
+		try{
+			bot.shell("Add and Remove...").activate();
+			for (SWTBotTreeItem treeItem : bot.tree().getAllItems()) {
+				treeItem.select();
+				log.info("Adding "+treeItem.getText()+" to server");
+				bot.clickButton("Add >");
+					log.info("Succesfully added");
+			}
+			bot.clickButton("Finish");
+		}catch (WidgetNotFoundException ex){
+			bot.shell("Server").activate();
+			bot.clickButton("OK");
 		}
-		bot.clickButton("Finish");
 		servers.show();
 		bot.waitWhile(new NonSystemJobRunsCondition(), TaskDuration.LONG.getTimeout());
 		assertNull("Errors node should be null", ProblemsView.getErrorsNode(bot));
@@ -248,7 +295,10 @@ public class CreateProjectsWithServerTest extends SWTTestExt{
 			}catch (WidgetNotFoundException wnfe){
 				//exception for Java EE Web project. It hase 4 projects, multi, multi-ear, multi-ejb and multi-web.
 				if (!projectName.getText().contains("JavaEEProject")){
-					fail("Project <"+projectName.getText()+"> is not deployed on server correctly");
+					//jms and osgi aren't project, that can be deployed to server
+					if (!projectName.getText().equals("jboss-as-helloworld-jms") && !projectName.getText().equals("jboss-as-helloworld-osgi")){
+						fail("Project <"+projectName.getText()+"> is not deployed on server correctly");
+					}
 				}
 			}
 		}

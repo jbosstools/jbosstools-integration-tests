@@ -15,34 +15,34 @@ public class RenameDomain extends SWTTestExt {
 	@Test
 	public void canRenameDomain() {
 
-		SWTBotView explorer = open.viewOpen(OpenShiftUI.Explorer.iView);
+		SWTBotView openshiftExplorer = open
+				.viewOpen(OpenShiftUI.Explorer.iView);
 
-		explorer.bot().tree()
-				.getTreeItem(
-						TestProperties.get("openshift.user.name") + " "
-								+ TestProperties.get("openshift.server.prod"))
-				.contextMenu(OpenShiftUI.Labels.EXPLORER_CREATE_EDIT_DOMAIN)
-				.click();
+		openshiftExplorer
+					.bot()
+					.tree()
+					.getAllItems()[0] // get 1st account in OpenShift Explorer
+					.contextMenu(OpenShiftUI.Labels.EXPLORER_CREATE_EDIT_DOMAIN)
+					.click(); // click on 'Create or Edit Domain'
 
 		bot.waitForShell(OpenShiftUI.Shell.EDIT_DOMAIN);
 
 		SWTBotText domainText = bot.text(0);
 
-		assertTrue(
-				"Domain should be set correctly at this stage!",
-				domainText.getText().equals(
-						TestProperties.get("openshift.domain")));
+		assertTrue("Domain should be set correctly at this stage!", domainText
+				.getText().equals(TestProperties.get("openshift.domain")));
 
 		domainText.setText(TestProperties.get("openshift.domain.new"));
 
 		log.info("*** OpenShift SWTBot Tests: Domain name re-set. ***");
-		
+
 		bot.button(IDELabel.Button.FINISH).click();
-		bot.waitUntil(Conditions.shellCloses(bot.activeShell()), TIME_60S + TIME_30S);
-		
+		bot.waitUntil(Conditions.shellCloses(bot.activeShell()), TIME_60S
+				+ TIME_30S);
+
 		log.info("*** OpenShift SWTBot Tests: Domain renamed. ***");
-		
-		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_20S, TIME_1S);		
+
+		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_20S, TIME_1S);
 	}
 
 }

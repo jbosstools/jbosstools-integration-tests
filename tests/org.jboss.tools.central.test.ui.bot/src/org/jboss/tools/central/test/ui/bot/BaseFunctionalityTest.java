@@ -1,17 +1,6 @@
 package org.jboss.tools.central.test.ui.bot;
 
-import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.allOf;
-import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.widgetOfType;
-import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.withStyle;
-
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
-import org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarPushButton;
-import org.hamcrest.Matcher;
-import org.jboss.tools.central.editors.xpl.TextSearchControl;
-import org.jboss.tools.ui.bot.ext.SWTBotFactory;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.Perspective;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;

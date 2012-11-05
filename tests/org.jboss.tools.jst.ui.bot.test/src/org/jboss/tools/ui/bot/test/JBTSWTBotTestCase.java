@@ -401,6 +401,24 @@ public abstract class JBTSWTBotTestCase extends SWTTestExt implements
         (areThereNoErrors ? "" : errors[0].getText()),
       areThereNoErrors);
 	}
+
+	/**
+	 * Asserts if Problems View has no errors for page pageName
+	 * 
+	 * @param botExt
+	 */
+	protected static void assertProbelmsViewNoErrorsForPage(SWTBotExt botExt,
+			String pageName) {
+
+		SWTBotTreeItem[] errors = ProblemsView.getFilteredErrorsTreeItems(
+				botExt, null, null, pageName, null);
+
+		boolean areThereNoErrors = ((errors == null) || (errors.length == 0));
+		assertTrue("There are errors in Problems view for test page: "
+				+ (areThereNoErrors ? "" : errors[0].getText()),
+				areThereNoErrors);
+	}
+
 	/**
 	 * Adds exceptionFullClassName to ignored exception from eclipse log
 	 * exceptionFullClassName exception will not make test failing

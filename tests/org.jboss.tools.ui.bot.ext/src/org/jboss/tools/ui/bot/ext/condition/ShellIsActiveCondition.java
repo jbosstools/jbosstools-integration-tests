@@ -30,6 +30,6 @@ public class ShellIsActiveCondition implements ICondition {
 	
 	@Override
 	public String getFailureMessage() {
-		return "Expected the shell to become non active: " + shell;
+		return "Expected the shell to become active: \"" + shell + "\" is not active!";
 	}
 }

@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Runtime Test
 Bundle-SymbolicName: org.jboss.tools.runtime.as.ui.bot.test;singleton:=true
-Bundle-Version: 2.0.0.qualifier
+Bundle-Version: 4.0.0.qualifier
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: 
  JBoss by Red Hat

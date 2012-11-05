@@ -25,11 +25,4 @@
 		<nature>org.eclipse.pde.PluginNature</nature>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>lib-org.jboss.tools.ui.bot.ext_3.2.0.v20111115-2301-Beta1</name>
-			<type>2</type>
-			<location>/home/rax/eclipse-pracovni/plugins/org.jboss.tools.ui.bot.ext_3.2.0.v20111115-2301-Beta1</location>
-		</link>
-	</linkedResources>
 </projectDescription>

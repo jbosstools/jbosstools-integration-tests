@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: OpenShift SWTBot Tests
 Bundle-SymbolicName: org.jboss.tools.openshift.ui.bot.test
-Bundle-Version: 2.4.0.qualifier
+Bundle-Version: 4.0.0.qualifier
 Bundle-Activator: org.jboss.tools.openshift.ui.bot.test.Activator
 Bundle-Vendor: Red Hat
 Require-Bundle: org.eclipse.ui,
@@ -17,6 +17,11 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.swtbot.swt.finder;bundle-version="2.0.5",
  org.eclipse.core.resources;bundle-version="3.7.100",
  org.eclipse.ui.forms;bundle-version="3.5.100",
- org.eclipse.ui.ide;bundle-version="3.7.0"
+ org.eclipse.ui.ide;bundle-version="3.7.0",
+ org.jboss.reddeer.jface,
+ org.jboss.reddeer.swt,
+ org.jboss.reddeer.eclipse,
+ org.jboss.reddeer.workbench,
+ org.jboss.reddeer.junit;bundle-version="0.0.1"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy

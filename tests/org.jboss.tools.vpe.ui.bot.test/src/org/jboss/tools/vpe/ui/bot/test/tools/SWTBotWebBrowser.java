@@ -102,6 +102,7 @@ public class SWTBotWebBrowser {
   public static final String HTML_MENU_LABEL = "HTML";
   public static final String H_OUTPUT_TEXT_TAG_MENU_LABEL = "<h:outputText>";
   public static final String H_FORM_TAG_MENU_LABEL = "<h:form>";
+  public static final String H_COMMAND_BUTTON_TAG_MENU_LABEL = "<h:commandButton>";
   public static final String RICH_CALENDAR_TAG_MENU_LABEL = "<rich:calendar>";
   
   private static final String MOUSE_CLICK_EVENT_TYPE="click"; //$NON-NLS-1$^M

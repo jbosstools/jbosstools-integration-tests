@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 
@@ -23,11 +24,13 @@ import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.swt.SWTException;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.results.VoidResult;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCheckBox;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.jst.jsp.jspeditor.JSPMultiPageEditor;
@@ -36,11 +39,13 @@ import org.jboss.tools.ui.bot.ext.SWTBotExt;
 import org.jboss.tools.ui.bot.ext.SWTJBTExt;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.Timing;
+import org.jboss.tools.ui.bot.ext.condition.ShellIsActiveCondition;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.NewObject.JBossToolsWebJSFJSFProject;
+import org.jboss.tools.ui.bot.ext.helper.BuildPathHelper;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.test.JBTSWTBotTestCase;
 import org.jboss.tools.ui.bot.test.SWTBotJSPMultiPageEditor;
@@ -65,19 +70,20 @@ import org.w3c.dom.Node;
 		perspective="Web Development"
 		)
 public abstract class VPEAutoTestCase extends JBTSWTBotTestCase {
-  
+
   protected static Properties projectProperties;
   protected static String PROJECT_PROPERTIES = "projectProperties.properties";
-	protected static final String TEST_PAGE = "inputUserName.jsp"; //$NON-NLS-1$
-	protected static final String FACELETS_TEST_PAGE = "inputname.xhtml"; //$NON-NLS-1$
-	protected static String JSF2_TEST_PAGE = "inputname.xhtml"; //$NON-NLS-1$
+  protected static final String TEST_PAGE = "inputUserName.jsp"; //$NON-NLS-1$
+  protected static final String FACELETS_TEST_PAGE = "inputname.xhtml"; //$NON-NLS-1$
+  protected static String JSF2_TEST_PAGE = "inputname.xhtml"; //$NON-NLS-1$
 
-	protected final static String JBT_TEST_PROJECT_NAME = "JBIDETestProject"; //$NON-NLS-1$
-	protected final static String FACELETS_TEST_PROJECT_NAME = "FaceletsTestProject"; //$NON-NLS-1$
-	protected final static String JSF2_TEST_PROJECT_NAME = "JSF2TestProject"; //$NON-NLS-1$
-	protected final static String RICH_FACES_UI_JAR_LOCATION;
+  protected final static String JBT_TEST_PROJECT_NAME = "JBIDETestProject"; //$NON-NLS-1$
+  protected final static String FACELETS_TEST_PROJECT_NAME = "FaceletsTestProject"; //$NON-NLS-1$
+  protected final static String JSF2_TEST_PROJECT_NAME = "JSF2TestProject"; //$NON-NLS-1$
+  protected final static String RICH_FACES_UI_JAR_LOCATION;
 
-	private String projectName = null;
+  private String projectName = null;
+  private HashMap<String,String> addedVariableRichfacesUiLocation = new HashMap<String,String>();
 	
   static {
     try {
@@ -457,6 +463,7 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase {
 		try {
 			tiPageParent.getNode(pageName).doubleClick();
 		} catch (WidgetNotFoundException e) {
+			SWTBotShell currentShell = bot.activeShell();
 			open.newObject(ActionItem.NewObject.WebJSP.LABEL);
 			bot.shell(IDELabel.Shell.NEW_JSP_FILE).activate();
 			bot.textWithLabel(ActionItem.NewObject.WebJSP.TEXT_FILE_NAME)
@@ -464,6 +471,7 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase {
 			bot.button(IDELabel.Button.NEXT).click();
 			bot.table().select(IDELabel.NewJSPFileDialog.JSP_TEMPLATE);
 			bot.button(IDELabel.Button.FINISH).click();
+			bot.waitUntil(new ShellIsActiveCondition(currentShell), Timing.time10S());
 		}
 		bot.sleep(Timing.time2S());
 
@@ -588,6 +596,7 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase {
 		try {
 			tiPageParent.getNode(pageName).doubleClick();
 		} catch (WidgetNotFoundException e) {
+			SWTBotShell currentShell = bot.activeShell();
 			open.newObject(ActionItem.NewObject.JBossToolsWebXHTMLFile.LABEL);
 			bot.shell(IDELabel.Shell.NEW_XHTML_FILE).activate();
 			bot.textWithLabel(
@@ -600,6 +609,7 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase {
 				cbUseTemplate.deselect();
 			}
 			bot.button(IDELabel.Button.FINISH).click();
+			bot.waitUntil(new ShellIsActiveCondition(currentShell), Timing.time10S());
 		}
 		bot.sleep(Timing.time2S());
 
@@ -667,14 +677,42 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase {
     try {
       tiPageParent.getNode(pageName).doubleClick();
     } catch (WidgetNotFoundException e) {
+      SWTBotShell currentShell = bot.activeShell();
       open.newObject(ActionItem.NewObject.WebHTMLPage.LABEL);
       bot.shell(IDELabel.Shell.NEW_HTML_FILE).activate();
       bot.textWithLabel(ActionItem.NewObject.WebHTMLPage.TEXT_FILE_NAME)
           .setText(pageName);
       bot.button(IDELabel.Button.NEXT).click();
       bot.button(IDELabel.Button.FINISH).click();
+      bot.waitUntil(new ShellIsActiveCondition(currentShell), Timing.time10S());
     }
     bot.sleep(Timing.time2S());
 
+  }
+  
+  /**
+   * Add RichFaces library to project classpath
+   * @param projectName
+   */
+  protected void addRichFacesToProjectClassPath(String projectName){
+    Throwable exceptionBeforeCall = getException();
+    addedVariableRichfacesUiLocation.put(projectName,
+    	BuildPathHelper.addExternalJar(VPEAutoTestCase.RICH_FACES_UI_JAR_LOCATION,projectName));
+    if (exceptionBeforeCall == null 
+        && getException() != null
+        && getException() instanceof SWTException){
+      setException(null);
+    }
+  }
+  /**
+   * Remove previously added RichFaces library from project classpath
+   * @param projectName
+   */
+  protected void removeRichFacesFromProjectClassPath(String projectName){
+    if (addedVariableRichfacesUiLocation.containsKey(projectName)){
+      BuildPathHelper.removeVariable(projectName, addedVariableRichfacesUiLocation.get(projectName), true);
+      addedVariableRichfacesUiLocation.remove(projectName);
+      eclipse.cleanAllProjects();
+    }
   }
 }

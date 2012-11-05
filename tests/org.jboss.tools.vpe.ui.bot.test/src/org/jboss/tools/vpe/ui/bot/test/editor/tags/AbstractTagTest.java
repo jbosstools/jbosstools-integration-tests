@@ -13,11 +13,10 @@ package org.jboss.tools.vpe.ui.bot.test.editor.tags;
 
 import java.security.InvalidParameterException;
 
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
 import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.parts.SWTBotEditorExt;
-import org.jboss.tools.ui.bot.ext.view.ProblemsView;
+import org.jboss.tools.ui.bot.test.JBTSWTBotTestCase;
 import org.jboss.tools.vpe.ui.bot.test.VPEAutoTestCase;
 import org.jboss.tools.vpe.ui.bot.test.editor.VPEEditorTestCase;
 import org.jboss.tools.vpe.ui.bot.test.tools.SWTBotWebBrowser;
@@ -158,21 +157,14 @@ public abstract class AbstractTagTest extends VPEEditorTestCase {
     }
   }
   /**
-   * Asserts if Problems View has no errors for test page
-   * @param botExt
-   */
-  protected void assertProbelmsViewNoErrorsForPage (SWTBotExt botExt){
-    
-    SWTBotTreeItem[] errors = ProblemsView.getFilteredErrorsTreeItems
-        (botExt, 
-         null,
-         null,
-         getTestPageFileName(),
-         null);
-    
-    boolean areThereNoErrors = ((errors == null) || (errors.length == 0));
-    assertTrue("There are errors in Problems view for test page: " + 
-        (areThereNoErrors ? "" : errors[0].getText()),
-      areThereNoErrors);
+	 * Asserts if Problems View has no errors for test page
+	 * 
+	 * @param botExt
+	 */
+  protected void assertProbelmsViewNoErrorsForPage(SWTBotExt botExt) {
+	  
+	JBTSWTBotTestCase.assertProbelmsViewNoErrorsForPage(botExt, getTestPageFileName());
+	  
   }
+
 }
