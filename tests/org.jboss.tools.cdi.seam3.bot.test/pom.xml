@@ -2,20 +2,33 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-                <groupId>org.jboss.tools.integration-tests</groupId>
-		<artifactId>tests</artifactId>
+        <groupId>org.jboss.tools.integration-tests</groupId>
+ 		<artifactId>tests</artifactId>
 		<version>4.0.0-SNAPSHOT</version>
-	</parent>
-	<groupId>org.jboss.tools.cdi.tests</groupId>
-	<artifactId>org.jboss.tools.cdi.seam3.bot.test</artifactId>
+ 	</parent>
+ 	<groupId>org.jboss.tools.cdi.tests</groupId>
+ 	<artifactId>org.jboss.tools.cdi.seam3.bot.test</artifactId>
 	<version>4.0.0-SNAPSHOT</version>
 	
 	<packaging>eclipse-test-plugin</packaging>
 	<properties>
 		<systemProperties>${additionalSystemProperties} -Dswtbot.test.properties.file=${project.basedir}/properties/swtbot.properties</systemProperties>
 		<surefire.timeout>10800</surefire.timeout>
+		<suiteClass>org.jboss.tools.cdi.seam3.bot.test.CDISeam3AllBotTests</suiteClass>
 	</properties>
 	<profiles>
+		<profile>
+			<id>debug</id>
+			<properties>
+				<additionalSystemProperties>-Xdebug -Xrunjdwp:transport=dt_socket,address=8001,server=y,suspend=y</additionalSystemProperties>
+			</properties>
+		</profile>
+		<profile>
+			<id>jenkins</id>
+			<properties>
+				<suiteClass>org.jboss.tools.cdi.seam3.bot.test.JenkinsTestSuite</suiteClass>
+			</properties>			
+		</profile>
 	</profiles>
 	<build>
 		<plugins>
@@ -49,7 +62,7 @@
 				<artifactId>tycho-surefire-plugin</artifactId>
 				<configuration>
 					<testSuite>org.jboss.tools.cdi.seam3.bot.test</testSuite>
-					<testClass>org.jboss.tools.cdi.seam3.bot.test.CDISeam3AllBotTests</testClass>
+					<testClass>${suiteClass}</testClass>
 					<useUIThread>false</useUIThread>
 					<skip>${swtbot.test.skip}</skip>
 					<dependencies combine.children="append">
@@ -63,14 +76,15 @@
 							<artifactId>org.jboss.ide.eclipse.as.feature.feature.group</artifactId>
 							<version>0.0.0</version>
 						</dependency>
-                       <!--  <dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.jboss.tools.jsf.feature.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency> -->
 						<dependency>
 							<type>p2-installable-unit</type>
 							<artifactId>org.jboss.tools.cdi.seam.feature.feature.group</artifactId>
+							<version>0.0.0</version>
+						</dependency>
+						<!-- This entry should enable creating of default JDK on Mac -->
+						<dependency>
+							<type>p2-installable-unit</type>
+							<artifactId>org.eclipse.jdt.feature.group</artifactId>
 							<version>0.0.0</version>
 						</dependency>
 					</dependencies>
