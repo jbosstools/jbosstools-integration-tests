@@ -12,17 +12,10 @@
 	
 	<packaging>eclipse-test-plugin</packaging>
 	<properties>
-		<additionalSystemProperties></additionalSystemProperties>
 		<systemProperties>${additionalSystemProperties} -Dswtbot.test.properties.file=${project.basedir}/properties/swtbot.properties</systemProperties>
 		<surefire.timeout>10800</surefire.timeout>
 	</properties>
 	<profiles>
-		<profile>
-			<id>debug</id>
-			<properties>
-				<additionalSystemProperties>-Xdebug -Xrunjdwp:transport=dt_socket,address=8001,server=y,suspend=y</additionalSystemProperties>
-			</properties>
-		</profile>
 	</profiles>
 	<build>
 		<plugins>

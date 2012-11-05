@@ -12,6 +12,10 @@
 	<name>integration-tests.tests</name>
 	<packaging>pom</packaging>
 
+	<properties>
+		<systemProperties>${additionalSystemProperties}</systemProperties>
+	</properties>
+
 	<modules>
 		<module>org.jboss.ide.eclipse.as.ui.bot.test</module>
 		<module>org.jboss.tools.archives.ui.bot.test</module>
@@ -38,5 +42,14 @@
 		<module>org.jboss.tools.vpe.ui.bot.test</module>
 		<module>org.jboss.tools.ws.ui.bot.test</module>
 	</modules>
+	
+	<profiles>
+		<profile>
+			<id>debug</id>
+			<properties>
+				<additionalSystemProperties>-Xdebug -Xrunjdwp:transport=dt_socket,address=8001,server=y,suspend=y </additionalSystemProperties>
+			</properties>
+		</profile>
+	</profiles>
 </project>
 

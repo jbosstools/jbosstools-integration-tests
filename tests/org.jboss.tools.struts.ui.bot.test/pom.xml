@@ -14,17 +14,10 @@
 
 	<packaging>eclipse-test-plugin</packaging>
 	<properties>
-		<additionalSystemProperties></additionalSystemProperties>
 		<systemProperties>${additionalSystemProperties} -Dswtbot.test.properties.file=${project.basedir}/properties/swtbot.properties</systemProperties>
 		<suiteClass>org.jboss.tools.struts.ui.bot.test.StrutsAllBotTests</suiteClass>
 	</properties>
 	<profiles>
-		<profile>
-			<id>debug</id>
-			<properties>
-				<additionalSystemProperties>-Xdebug -Xrunjdwp:transport=dt_socket,address=8001,server=y,suspend=y</additionalSystemProperties>
-			</properties>
-		</profile>
 		<profile>
 			<id>jenkins</id>
 			<properties>
