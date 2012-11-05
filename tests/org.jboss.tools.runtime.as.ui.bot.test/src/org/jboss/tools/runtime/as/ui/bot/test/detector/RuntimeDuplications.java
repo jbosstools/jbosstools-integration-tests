@@ -7,6 +7,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import org.jboss.reddeer.swt.condition.JobIsRunning;
+import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.common.util.FileUtil;
 import org.jboss.tools.runtime.as.ui.bot.test.RuntimeProperties;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap5.DetectEAP5;
@@ -52,6 +55,8 @@ public class RuntimeDuplications extends RuntimeDetectionTestCase {
 		
 		searchingForRuntimesDialog = searchFirstPath();
 		searchingForRuntimesDialog.ok();
+		
+		new WaitWhile(new JobIsRunning());
 		assertSeamRuntimesNumber(2);
 		assertServerRuntimesNumber(2);
 		
