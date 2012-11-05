@@ -105,7 +105,7 @@
 						</configuration>
 					</execution>
 					<execution>
-						<id>install-seam-2.3.0.Beta1</id>
+						<id>install-seam-2.3.0.Final</id>
 						<phase>pre-integration-test</phase>
 						<goals>
 							<goal>wget</goal>
