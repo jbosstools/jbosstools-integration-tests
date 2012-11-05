@@ -14,17 +14,11 @@
 
 
 	<properties>
-		<systemProperties>-Dswtbot.test.properties.file=./swtbot.properties</systemProperties>
+		<systemProperties>${additionalSystemProperties} -Dswtbot.test.properties.file=./swtbot.properties</systemProperties>
 		<test.class>org.teiid.designer.ui.bot.test.suite.TeiidDesignerAllTests</test.class>
 	</properties>
 
 	<profiles>
-		<profile>
-			<id>debug</id>
-			<properties>
-				<additionalSystemProperties>-Xdebug -Xrunjdwp:transport=dt_socket,address=8001,server=y,suspend=y </additionalSystemProperties>
-			</properties>
-		</profile>
 	</profiles>
 	
 	<build>

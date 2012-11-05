@@ -15,7 +15,6 @@
 
 	<packaging>eclipse-test-plugin</packaging>
 	<properties>
-		<additionalSystemProperties></additionalSystemProperties>
 		<jbosstools.test.jbossas.home>${requirementsDirectory}/jboss-as-7.1.1.Final</jbosstools.test.jbossas.home>
 		<jbosstools.test.eap.6.0.home>${requirementsDirectory}/jboss-eap-6.0</jbosstools.test.eap.6.0.home>
 		<!-- for debugging ucomment and comment next line <systemProperties>-Xdebug 
@@ -26,12 +25,6 @@
 	</properties>
 
 	<profiles>
-		<profile>
-			<id>debug</id>
-			<properties>
-				<additionalSystemProperties>-Xdebug -Xrunjdwp:transport=dt_socket,address=8001,server=y,suspend=y</additionalSystemProperties>
-			</properties>
-		</profile>
 	</profiles>
 
 	<build>

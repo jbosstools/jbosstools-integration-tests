@@ -14,17 +14,10 @@
 	<packaging>eclipse-test-plugin</packaging>
 	<properties>
 		<jbosstools.test.jboss-as.home>${requirementsDirectory}/jboss-as-7.1.1.Final</jbosstools.test.jboss-as.home>
-		<additionalSystemProperties></additionalSystemProperties>
 		<systemProperties>${additionalSystemProperties} -DJAVA_HOME=${JAVA_HOME} -Dtest.configurations.dir=resources/properties -Djbosstools.test.jboss-as.home=${jbosstools.test.jboss-as.home}</systemProperties>
 	</properties>
 
 	<profiles>
-		<profile>
-			<id>debug</id>
-			<properties>
-				<additionalSystemProperties>-Xdebug -Xrunjdwp:transport=dt_socket,address=8001,server=y,suspend=y </additionalSystemProperties>
-			</properties>
-		</profile>
 	</profiles>
 
 	<build>

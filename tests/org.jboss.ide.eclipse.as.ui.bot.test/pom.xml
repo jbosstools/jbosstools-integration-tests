@@ -17,18 +17,11 @@
 		<swtbot.test.skip>false</swtbot.test.skip>
 		<maven.test.failure.ignore>true</maven.test.failure.ignore>
 		<requirementsDirectory>${project.build.directory}/requirements</requirementsDirectory>
-		<additionalSystemProperties></additionalSystemProperties>
 		<runtimesProperties></runtimesProperties>
 		<systemProperties>${additionalSystemProperties} ${runtimesProperties} -Dorg.eclipse.swtbot.screenshots.dir=${project.build.directory}/screenshots</systemProperties>
 	</properties>
 
 	<profiles>
-		<profile>
-			<id>debug</id>
-			<properties>
-				<additionalSystemProperties>-Xdebug -Xrunjdwp:transport=dt_socket,address=8001,server=y,suspend=y </additionalSystemProperties>
-			</properties>
-		</profile>
 		<profile>
 			<id>osx</id>
 			<activation>
@@ -43,24 +36,6 @@
 			</properties>
 		</profile>
 		
-		<!-- the default and jbosstools-staging-aggregate profiles are to be active always 
-			- thus using a random property is known to be always defined -->
-		<profile>
-			<id>default</id>
-			<activation>
-				<property>
-					<name>!disableDefaultProfiles</name>
-				</property>
-			</activation>
-		</profile>
-		<profile>
-			<id>jbosstools-staging-aggregate</id>
-			<activation>
-				<property>
-					<name>!disableDefaultProfiles</name>
-				</property>
-			</activation>
-		</profile>
 		
 		<profile>
 			<id>projects</id>
