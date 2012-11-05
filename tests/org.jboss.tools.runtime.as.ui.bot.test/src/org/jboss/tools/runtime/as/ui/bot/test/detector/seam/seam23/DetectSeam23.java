@@ -9,9 +9,9 @@ import org.jboss.tools.runtime.as.ui.bot.test.template.DetectRuntimeTemplate;
 
 public class DetectSeam23 extends DetectRuntimeTemplate {
 
-	public static final String SEAM_ID = "jboss-seam-2.3.0.Beta1";
+	public static final String SEAM_ID = "jboss-seam-2.3.0.Final";
 	
-	public static final String VERSION = "2.3.0.Beta1";
+	public static final String VERSION = "2.3.0.Final";
 	
 	@Override
 	protected String getPathID() {
