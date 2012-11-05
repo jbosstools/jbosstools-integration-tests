@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2011 Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/ 
 package org.jboss.tools.maven.ui.bot.test;
 
 import java.io.ByteArrayInputStream;
@@ -19,22 +29,30 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.swtbot.swt.finder.SWTBot;
-import org.eclipse.swtbot.swt.finder.keyboard.Keystrokes;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
-import org.jboss.tools.ui.bot.ext.SWTBotExt;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.swt.impl.button.CheckBox;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.impl.menu.ShellMenu;
+import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.tools.maven.ui.bot.test.utils.ProjectIsBuilt;
 import org.jboss.tools.ui.bot.ext.SWTUtilExt;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
-import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
-
-@Require(perspective="Java EE")
+/**
+ * @author Rastislav Wagner
+ * 
+ */
 public class EARProjectTest extends AbstractMavenSWTBotTest{
 	
 	public static final String WAR_PROJECT_NAME="earWeb";
@@ -42,46 +60,45 @@ public class EARProjectTest extends AbstractMavenSWTBotTest{
 	public static final String EAR_PROJECT_NAME="ear";
 
 	private SWTUtilExt botUtil= new SWTUtilExt(bot);
-	
-	@BeforeClass
-	public static void setup(){
-		SWTBotExt setup = new SWTBotExt();
-		setup.menu("Window").menu("Show View").menu("Other...").click();
-		setup.tree().expandNode("Java").select("Package Explorer").click();
-		setup.button("OK").click();
-	}
 
+	@BeforeClass
+	public final static void beforeClass(){
+		setPerspective("Java EE");
+	}
+	
 	
 	@Test
 	public void createEARProject() throws Exception{
 		createWarProject(WAR_PROJECT_NAME);
-		Thread.sleep(500);
 		createEJBProject(EJB_PROJECT_NAME);
-		Thread.sleep(500);
-		bot.menu("File").menu("Enterprise Application Project").click();
-		bot.textWithLabel("Project name:").setText(EAR_PROJECT_NAME);
-		bot.button("Modify...").click();
-		bot.tree().getTreeItem("JBoss Maven Integration").check();
-		bot.button("OK").click();
-		bot.button("Next >").click();
-		bot.button("Select All").click();
-		bot.button("Next >").click();
-		bot.comboBoxWithLabel("Packaging:").setSelection("ear");
-		bot.button("Finish").click();
-		waitForIdle();
+		
+		new ShellMenu("File","New","Enterprise Application Project").select();
+		new LabeledText("Project name:").setText(EAR_PROJECT_NAME);
+		new PushButton("Modify...").click();
+		new DefaultTreeItem("JBoss Maven Integration").setChecked(true);
+		new PushButton("OK").click();
+		new PushButton("Next >").click();
+		new PushButton("Select All").click();
+		new PushButton("Next >").click();
+		new DefaultCombo("Packaging:").setSelection("ear");
+		new PushButton("Finish").click();
+		botUtil.waitForAll();
+		PackageExplorer pexplorer = new PackageExplorer();
+		pexplorer.open();
+		assertTrue(pexplorer.containsProject(EAR_PROJECT_NAME));
 		assertTrue("EAR project isn't maven project", isMavenProject(EAR_PROJECT_NAME));
 		installProject(WAR_PROJECT_NAME);
 		installProject(EJB_PROJECT_NAME);
 		addDependencies(EAR_PROJECT_NAME, "org.jboss.tools", WAR_PROJECT_NAME, "0.0.1-SNAPSHOT", "war");
 		addDependencies(EAR_PROJECT_NAME, "org.jboss.tools", EJB_PROJECT_NAME, "0.0.1-SNAPSHOT", "ejb");
 		confEarMavenPlugn(EAR_PROJECT_NAME);
-		bot.viewByTitle("Package Explorer").setFocus();
-		SWTBotTree innerBot = bot.viewByTitle("Package Explorer").bot().tree().select(EAR_PROJECT_NAME);
-		ContextMenuHelper.clickContextMenu(innerBot,"Run As","3 Maven build...");
-		waitForShell(botUtil,"Edit Configuration");
-		bot.textWithLabel("Goals:").setText("clean package");
-		bot.button("Run").click();
-		waitForIdle();
+		pexplorer.open();
+		pexplorer.getProject(EAR_PROJECT_NAME).select();
+		new ContextMenu("Run As","3 Maven build...").select();
+		new WaitUntil(new ShellWithTextIsActive("Edit Configuration"), TimePeriod.NORMAL);
+		new LabeledText("Goals:").setText("clean install");
+		new PushButton("Run").click();
+		new WaitUntil(new ProjectIsBuilt(), TimePeriod.NORMAL);
 		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(EAR_PROJECT_NAME);
 		project.getFolder("target").refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
 		IFolder earFolder = project.getFolder("target/" + EAR_PROJECT_NAME + "-0.0.1-SNAPSHOT");
@@ -90,57 +107,53 @@ public class EARProjectTest extends AbstractMavenSWTBotTest{
 		assertTrue(EJB_PROJECT_NAME+ ".jar is missing in ear",project.getFile("target/" +EAR_PROJECT_NAME+ "-0.0.1-SNAPSHOT/" +EJB_PROJECT_NAME+ "-0.0.1-SNAPSHOT.jar").exists());
 	}
 	
-	private void createWarProject(String projectName) throws CoreException, InterruptedException{
-		bot.menu("File").menu("Dynamic Web Project").click();
-		bot.textWithLabel("Project name:").setText(projectName);
-		bot.button("Next >").click();
-		bot.button("Next >").click();
-		bot.checkBox("Generate web.xml deployment descriptor").select();
-		bot.button("Finish").click();
+	private void createWarProject(String projectName) throws CoreException{
+		new ShellMenu("File","New","Dynamic Web Project").select();
+		new LabeledText("Project name:").setText(projectName);
+		new PushButton("Next >").click();
+		new PushButton("Next >").click();
+		new CheckBox("Generate web.xml deployment descriptor").click();
+		new PushButton("Finish").click();
 		botUtil.waitForAll(Long.MAX_VALUE);
-		SWTBotTreeItem item = bot.viewByTitle("Package Explorer").bot().tree().getTreeItem(projectName).select();
-		item.pressShortcut(Keystrokes.ALT,Keystrokes.LF);
-		waitForShell(botUtil, "Properties for "+projectName);
-		SWTBot shellProperties = bot.shell("Properties for "+projectName).activate().bot();
-	    shellProperties.tree().select("Project Facets");
-	    shellProperties.tree(1).getTreeItem("JBoss Maven Integration").check();
-	    waitForIdle();
-	    bot.sleep(500);
-	    bot.hyperlink("Further configuration required...").click();
-	    bot.button("OK").click();
-	    bot.button("OK").click();
-	    botUtil.waitForAll(Long.MAX_VALUE);
+		PackageExplorer pexplorer = new PackageExplorer();
+		pexplorer.open();
+		pexplorer.getProject(projectName).select();
+		new ContextMenu("Properties").select();
+		new DefaultTreeItem("Project Facets").select();
+		new DefaultTreeItem(1,"JBoss Maven Integration").setChecked(true);
+		bot.hyperlink("Further configuration required...").click();
+		new PushButton("OK").click();
+		new PushButton("OK").click();
+		botUtil.waitForAll(Long.MAX_VALUE);
+		new WaitWhile(new ShellWithTextIsActive("Properties for "+projectName), TimePeriod.NORMAL);
 		assertTrue("Web project doesn't have maven nature",isMavenProject(projectName));
-		
 	}
 	
-	private void createEJBProject(String projectName) throws CoreException, InterruptedException{
-		bot.menu("File").menu("EJB Project").click();
-		bot.textWithLabel("Project name:").setText(projectName);
-		bot.button("Modify...").click();
-		bot.tree().getTreeItem("JBoss Maven Integration").check();
-		bot.button("OK").click();
-		bot.button("Next >").click();
-		bot.button("Next >").click();
-		bot.button("Next >").click();
-		bot.comboBoxWithLabel("Packaging:").setSelection("ejb");
-		bot.button("Finish").click();
+	private void createEJBProject(String projectName) throws CoreException{
+		new ShellMenu("File","New","EJB Project").select();
+		new LabeledText("Project name:").setText(projectName);
+		new PushButton("Modify...").click();
+		new DefaultTreeItem("JBoss Maven Integration").setChecked(true);
+		new PushButton("OK").click();
+		new PushButton("Next >").click();
+		new PushButton("Next >").click();
+		new PushButton("Next >").click();
+		new DefaultCombo("Packaging:").setSelection("ejb");
+		new PushButton("Finish").click();
 		botUtil.waitForAll(Long.MAX_VALUE);
 		assertTrue("EJB project doesn't have maven nature", isMavenProject(projectName));
 	}
 	
-	private void installProject(String projectName) throws InterruptedException{
-		bot.menu("Window").menu("Show View").menu("Other...").click();
-		bot.tree().expandNode("Java").select("Package Explorer").click();
-		bot.button("OK").click();
-		SWTBotTree innerBot = bot.viewByTitle("Package Explorer").bot().tree().select(projectName);
-		ContextMenuHelper.clickContextMenu(innerBot,"Run As","5 Maven build...");
-		waitForShell(botUtil,"Edit Configuration");
-		bot.textWithLabel("Goals:").setText("clean install");
-		bot.button("Run").click();
-		waitForIdle();
-		botUtil.waitForAll();
-		bot.sleep(5000);
+	private void installProject(String projectName){
+		PackageExplorer pexplorer = new PackageExplorer();
+		pexplorer.open();
+		assertTrue(pexplorer.containsProject(projectName));
+		pexplorer.getProject(projectName).select();
+		new ContextMenu("Run As","4 Maven build").select();
+		new WaitUntil(new ShellWithTextIsActive("Edit Configuration"), TimePeriod.NORMAL);
+		new LabeledText("Goals:").setText("clean install");
+		new PushButton("Run").click();
+		new WaitUntil(new ProjectIsBuilt(), TimePeriod.LONG);
 	}
 	
 	private void confEarMavenPlugn(String projectName) throws ParserConfigurationException, SAXException, IOException, CoreException, TransformerException{
