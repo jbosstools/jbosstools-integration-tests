@@ -13,10 +13,9 @@
 	<packaging>eclipse-test-plugin</packaging>
 
 	<properties>
-		<coverage.filter>org.jboss.tools.bpel.runtimes*</coverage.filter>
-		<emma.instrument.bundles>org.jboss.tools.bpel.runtimes</emma.instrument.bundles>
 		<systemProperties>${additionalSystemProperties} -Dswtbot.test.properties.file=./swtbot.properties</systemProperties>
 		<surefire.timeout>10800</surefire.timeout>
+		<testClass>org.jboss.tools.bpel.ui.bot.test.suite.BPELAllTest</testClass>
 	</properties>
 
 	<build>
@@ -111,7 +110,7 @@
 				<artifactId>tycho-surefire-plugin</artifactId>
 				<configuration>
 					<testSuite>org.jboss.tools.bpel.ui.bot.test</testSuite>
-					<testClass>org.jboss.tools.bpel.ui.bot.test.suite.BPELAllTest</testClass>
+					<testClass>${testClass}</testClass>
 					<useUIThread>false</useUIThread>
 					<skip>${swtbot.test.skip}</skip>
 					<dependencies combine.children="append">

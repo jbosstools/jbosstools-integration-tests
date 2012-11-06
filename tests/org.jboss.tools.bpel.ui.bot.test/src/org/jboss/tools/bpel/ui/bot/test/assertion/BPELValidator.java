@@ -158,6 +158,8 @@ public class BPELValidator {
 		validateElementName(mOnAlarm.getElement(), "bpel:onAlarm");
 		Element scope = (Element) mOnAlarm.getElement().getElementsByTagName("bpel:scope").item(0);
 		Assert.assertNotNull(scope);
+		@SuppressWarnings("unused")
+		NodeList nodeList = mOnAlarm.getElement().getElementsByTagName("bpel:for");
 		Element condition = (Element) mOnAlarm.getElement().getElementsByTagName("bpel:for").item(0);
 		Assert.assertNotNull(condition);
 		validateElementValue(condition, expected.getProperty("for"));

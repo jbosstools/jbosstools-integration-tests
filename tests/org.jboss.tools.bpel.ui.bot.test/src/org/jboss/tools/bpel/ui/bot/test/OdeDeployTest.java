@@ -5,6 +5,7 @@ import org.custommonkey.xmlunit.XMLUnit;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
+import org.jboss.tools.bpel.ui.bot.ext.BpelBot;
 import org.jboss.tools.bpel.ui.bot.test.util.ResourceHelper;
 import org.jboss.tools.bpel.util.SendSoapMessage;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
@@ -22,8 +23,10 @@ import org.junit.Test;
  */
 @Require(server = @Server(type = ServerType.ALL, state = ServerState.Running), perspective="BPEL")
 public class OdeDeployTest extends BPELTest {
+
+	public static final String PROJECT_NAME = "say_hello";
+	public static final String BPEL_FILE_NAME = "Discriminant.bpel";
 	
-	final static String BUNDLE   = "org.jboss.tools.bpel.ui.bot.test";
 	final static String ENDPOINT = "http://localhost:8080/SayHelloProcess";
 	final static String MESSAGE  = 
 		"<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" " +
@@ -49,11 +52,15 @@ public class OdeDeployTest extends BPELTest {
 	
 	ServersView sView = new ServersView();
 
+	private BpelBot bpelBot;
+
+	public OdeDeployTest() {
+		bpelBot = new BpelBot();
+	}
 	
 	@BeforeClass
 	public static void setupWorkspace() throws Exception {
-		ResourceHelper.importProject(BUNDLE, "/projects/bpel_say_hello", "say_hello");
-		bot.viewByTitle("Project Explorer").setFocus();
+		ResourceHelper.importProject(BUNDLE, "/projects/bpel_say_hello", PROJECT_NAME);
 	}
 	
 	@Test

@@ -69,13 +69,37 @@ public class ImportHelper {
 	
 	/**
 	 * Import project from a given zip location
+	 * 
 	 * @param projectLocation
 	 */
 	public static void importProjectFromZip(String projectLocation) {
+		importProject(projectLocation, true);
+	}
+	
+	/**
+	 * Import project from a given location
+	 * 
+	 * @param projectLocation
+	 */
+	public static void importProject(String projectLocation) {
+		importProject(projectLocation, false);
+	}
+	
+	/**
+	 * Import project from a given absolute location
+	 * 
+	 * @param projectLocation
+	 * @param izZip 
+	 */
+	public static void importProject(String projectLocation, boolean isZip) {
 		SWTBotImportWizard wizard = new SWTBotImportWizard();
 		wizard.open(GeneralExistingProjectsintoWorkspace.LABEL);
-		wizard.bot().radio(1).click();
-		wizard.bot().text(1).setText(projectLocation);
+		int index = 0;
+		if(isZip) {
+			index = 1;
+		}
+		wizard.bot().radio(index).click();
+		wizard.bot().text(index).setText(projectLocation);
 		wizard.bot().button(IDELabel.Button.REFRESH).click();
 		wizard.finishWithWait();	
 	}
