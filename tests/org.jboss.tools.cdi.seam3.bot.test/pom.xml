@@ -12,17 +12,11 @@
 	
 	<packaging>eclipse-test-plugin</packaging>
 	<properties>
-		<systemProperties>${additionalSystemProperties} -Dswtbot.test.properties.file=${project.basedir}/properties/swtbot.properties</systemProperties>
+		<systemProperties>-Dswtbot.test.properties.file=${project.basedir}/properties/swtbot.properties</systemProperties>
 		<surefire.timeout>10800</surefire.timeout>
 		<suiteClass>org.jboss.tools.cdi.seam3.bot.test.CDISeam3AllBotTests</suiteClass>
 	</properties>
 	<profiles>
-		<profile>
-			<id>debug</id>
-			<properties>
-				<additionalSystemProperties>-Xdebug -Xrunjdwp:transport=dt_socket,address=8001,server=y,suspend=y</additionalSystemProperties>
-			</properties>
-		</profile>
 		<profile>
 			<id>jenkins</id>
 			<properties>

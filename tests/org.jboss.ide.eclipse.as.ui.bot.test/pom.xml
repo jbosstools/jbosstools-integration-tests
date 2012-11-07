@@ -18,7 +18,7 @@
 		<maven.test.failure.ignore>true</maven.test.failure.ignore>
 		<requirementsDirectory>${project.build.directory}/requirements</requirementsDirectory>
 		<runtimesProperties></runtimesProperties>
-		<systemProperties>${additionalSystemProperties} ${runtimesProperties} -Dorg.eclipse.swtbot.screenshots.dir=${project.build.directory}/screenshots</systemProperties>
+		<systemProperties>${runtimesProperties} -Dorg.eclipse.swtbot.screenshots.dir=${project.build.directory}/screenshots</systemProperties>
 	</properties>
 
 	<profiles>
