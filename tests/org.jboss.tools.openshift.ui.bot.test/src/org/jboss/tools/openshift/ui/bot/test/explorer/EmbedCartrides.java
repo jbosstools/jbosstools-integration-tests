@@ -3,13 +3,12 @@ package org.jboss.tools.openshift.ui.bot.test.explorer;
 import java.util.StringTokenizer;
 
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
-import org.eclipse.swtbot.swt.finder.SWTBot;
-import org.eclipse.swtbot.swt.finder.waits.ICondition;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.openshift.ui.bot.util.OpenShiftUI;
 import org.jboss.tools.openshift.ui.bot.util.TestProperties;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
+import org.jboss.tools.ui.bot.ext.condition.NonSystemJobRunsCondition;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.junit.Test;
 
@@ -19,42 +18,21 @@ public class EmbedCartrides extends SWTTestExt {
 	@Test
 	public void canEmbeddCartriges() {
 
-		SWTBotView explorer = open.viewOpen(OpenShiftUI.Explorer.iView);
+		// open OpenShift Explorer
+		SWTBotView openshiftExplorer = open
+				.viewOpen(OpenShiftUI.Explorer.iView);
 
-		account = explorer.bot().tree()
-				.getTreeItem(TestProperties.get("openshift.user.name"))
-				.doubleClick();
+		// get 1st account in OpenShift Explorer
+		SWTBotTreeItem account = openshiftExplorer.bot().tree().getAllItems()[0]
+				.doubleClick(); // expand the account
 
-		bot.toolbarButtonWithTooltip("Collapse All").click();
+		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_20S, TIME_1S);
 
-		// custom condition to wait for app to show
-		bot.waitUntil(new ICondition() {
-			@Override
-			public boolean test() {
+		assertTrue(account.getItems().length > 0);
 
-				for (SWTBotTreeItem item : account.getItems()) {
-					if (item.getText().contains(
-							TestProperties.get("openshift.jbossapp.name"))) {
-						return true;
-					}
-				}
-				return false;
-			}
-
-			@Override
-			public void init(SWTBot bot) {
-				// keep empty
-			}
-
-			@Override
-			public String getFailureMessage() {
-				return "Application did not appear in user account after reasonable timeout.";
-			}
-
-		}, TIME_60S, TIME_1S);
-
-		account.getNode(0).contextMenu(OpenShiftUI.Labels.EDIT_CARTRIDGES)
-				.click();
+		// click on 'Embedd cartridges'
+		account.getItems()[0]
+				.contextMenu(OpenShiftUI.Labels.EDIT_CARTRIDGES).click();
 
 		bot.waitForShell("");
 
@@ -64,8 +42,10 @@ public class EmbedCartrides extends SWTTestExt {
 
 		bot.button(IDELabel.Button.FINISH).click();
 
-		bot.waitForShell("Embedded Cartridges", TIME_60S + TIME_30S);
+		bot.waitForShell("Embedded Cartridges", TIME_60S * 3);
 		bot.button(IDELabel.Button.OK).click();
+
+		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_20S, TIME_1S);
 	}
 
 	/*

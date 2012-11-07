@@ -49,7 +49,7 @@ public class Connection extends SWTTestExt {
 
 		// wait for credentials validation
 		bot.waitUntil(Conditions.shellCloses(shell), TIME_20S);
-		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S);
+		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S, TIME_1S);
 
 		log.info("*** OpenShift SWTBot Tests: Credentials validated. ***");
 		log.info("*** OpenShift SWTBot Tests: Connection to OpenShift established. ***");

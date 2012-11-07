@@ -8,7 +8,8 @@
 <listAttribute key="M2_PROPERTIES">
 <listEntry value="swtbot.test.skip=false"/>
 <listEntry value="configurations.dir=${project_loc}/resources"/>
-<listEntry value="scope=RedDeer"/>
+<listEntry value="scope=All"/>
+<listEntry value="jbosstools-nightly=http://download.jboss.org/jbosstools/updates/nightly/trunk/"/>
 </listAttribute>
 <stringAttribute key="M2_RUNTIME" value="EMBEDDED"/>
 <booleanAttribute key="M2_SKIP_TESTS" value="false"/>
