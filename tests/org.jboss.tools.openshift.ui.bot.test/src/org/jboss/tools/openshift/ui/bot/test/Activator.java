@@ -1,5 +1,8 @@
 package org.jboss.tools.openshift.ui.bot.test;
 
+import java.io.File;
+
+import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -14,6 +17,8 @@ public class Activator extends AbstractUIPlugin {
 	// The shared instance
 	private static Activator plugin;
 	
+	// Path to plugin
+	public static File location;
 	/**
 	 * The constructor
 	 */
@@ -26,6 +31,7 @@ public class Activator extends AbstractUIPlugin {
 	 */
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
+		location = FileLocator.getBundleFile(context.getBundle());
 		plugin = this;
 	}
 

@@ -15,6 +15,7 @@ import org.jboss.tools.openshift.ui.bot.test.explorer.CreateDomain;
 import org.jboss.tools.openshift.ui.bot.test.explorer.DeleteApp;
 import org.jboss.tools.openshift.ui.bot.test.explorer.DeleteDomain;
 import org.jboss.tools.openshift.ui.bot.test.explorer.EmbedCartrides;
+import org.jboss.tools.openshift.ui.bot.test.explorer.ManageSSH;
 import org.jboss.tools.openshift.ui.bot.test.explorer.RenameDomain;
 import org.jboss.tools.openshift.ui.bot.test.explorer.Connection;
 import org.jboss.tools.openshift.ui.bot.test.wizard.RepublishApp;
@@ -30,14 +31,15 @@ import org.junit.runners.Suite.SuiteClasses;
  * @author sbunciak
  */
 @SuiteClasses({
-Connection.class,
-CreateDomain.class,
-CreateApp.class,
-EmbedCartrides.class,
-RepublishApp.class,
-DeleteApp.class,
-RenameDomain.class,
-DeleteDomain.class
+	Connection.class, 
+	ManageSSH.class, 
+	CreateDomain.class,
+	CreateApp.class,
+	EmbedCartrides.class,
+	RepublishApp.class,
+	DeleteApp.class, 
+	RenameDomain.class,
+	DeleteDomain.class
 })
 @RunWith(RequirementAwareSuite.class)
 public class OpenShiftAllBotTests {
