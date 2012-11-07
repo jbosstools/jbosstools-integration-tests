@@ -14,7 +14,7 @@
 
 	<packaging>eclipse-test-plugin</packaging>
 	<properties>
-		<systemProperties>${additionalSystemProperties} -Dswtbot.test.properties.file=${project.basedir}/properties/swtbot.properties</systemProperties>
+		<systemProperties>-Dswtbot.test.properties.file=${project.basedir}/properties/swtbot.properties</systemProperties>
 		<suiteClass>org.jboss.tools.struts.ui.bot.test.StrutsAllBotTests</suiteClass>
 	</properties>
 	<profiles>

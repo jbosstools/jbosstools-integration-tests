@@ -20,7 +20,7 @@
 		<jbosstools.test.jboss-seam-2.0.home>${requirementsDirectory}/jboss-seam-2.0.1.GA</jbosstools.test.jboss-seam-2.0.home>
 		<jbosstools.test.jboss-portlet-bridge.home>${requirementsDirectory}</jbosstools.test.jboss-portlet-bridge.home>
 		<configurations.dir>resources/project_config_files</configurations.dir>
-		<systemProperties>${additionalSystemProperties} -Djbosstools.test.jboss-gatein.home=${jbosstools.test.jboss-gatein.home} -Djbosstools.test.jboss-seam-2.2.home=${jbosstools.test.jboss-seam-2.2.home} -Djbosstools.test.jboss-portal.home=${jbosstools.test.jboss-portal.home} -Djbosstools.test.jboss-seam-2.0.home=${jbosstools.test.jboss-seam-2.0.home} -Djbosstools.test.jboss-portlet-bridge.home=${jbosstools.test.jboss-portlet-bridge.home} -Dtest.configurations.dir=${configurations.dir}  -Dorg.eclipse.swtbot.screenshots.dir=${project.build.directory}/screenshots</systemProperties>
+		<systemProperties>-Djbosstools.test.jboss-gatein.home=${jbosstools.test.jboss-gatein.home} -Djbosstools.test.jboss-seam-2.2.home=${jbosstools.test.jboss-seam-2.2.home} -Djbosstools.test.jboss-portal.home=${jbosstools.test.jboss-portal.home} -Djbosstools.test.jboss-seam-2.0.home=${jbosstools.test.jboss-seam-2.0.home} -Djbosstools.test.jboss-portlet-bridge.home=${jbosstools.test.jboss-portlet-bridge.home} -Dtest.configurations.dir=${configurations.dir}  -Dorg.eclipse.swtbot.screenshots.dir=${project.build.directory}/screenshots</systemProperties>
 		<test.class>org.jboss.tools.portlet.ui.bot.test.AllTestsSuite</test.class>
 		<surefire.timeout>7200</surefire.timeout>
 	</properties>

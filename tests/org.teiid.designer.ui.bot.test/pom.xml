@@ -14,7 +14,7 @@
 
 
 	<properties>
-		<systemProperties>${additionalSystemProperties} -Dswtbot.test.properties.file=./swtbot.properties</systemProperties>
+		<systemProperties>-Dswtbot.test.properties.file=./swtbot.properties</systemProperties>
 		<test.class>org.teiid.designer.ui.bot.test.suite.TeiidDesignerAllTests</test.class>
 	</properties>
 
