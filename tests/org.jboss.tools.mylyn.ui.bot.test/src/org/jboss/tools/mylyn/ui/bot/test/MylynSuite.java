@@ -6,12 +6,18 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 /**
- * Dummy test suite is SWTBot test suite for basic jenkins slave test
- * @author Jiri Peterka
+ * Mylyn Test Suite
+ * @author ldimaggi
  *
  */
+
 @RunWith(Suite.class)
-@SuiteClasses({MylynTest2.class})
+
+@SuiteClasses({
+	MylynReqTest.class,
+	MylynBugzillaQueryTest.class
+	})
+
 public class MylynSuite {
 	
 }
