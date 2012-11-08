@@ -1,51 +1,69 @@
+/*******************************************************************************
+ * Copyright (c) 2011 Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/ 
 package org.jboss.tools.maven.ui.bot.test;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.swtbot.swt.finder.SWTBot;
+import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.swt.impl.button.CheckBox;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.impl.menu.ShellMenu;
+import org.jboss.reddeer.swt.impl.table.DefaultTable;
+import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.reddeer.workbench.view.impl.WorkbenchView;
 import org.jboss.tools.maven.ui.bot.test.utils.TableHasRows;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
 import org.jboss.tools.ui.bot.ext.SWTUtilExt;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-@Require(perspective="Java")
+/**
+ * @author Rastislav Wagner
+ * 
+ */
 public class ArchetypesTest extends AbstractMavenSWTBotTest{
 
-	public static final String REPO_URL = "http://repo1.maven.org/maven2";
+	public static final String REPO_URL = "http://repo.maven.apache.org/maven2";
 	public static final String NEXUS_URL = "https://repository.jboss.org/nexus/content/repositories/releases/";
-	
+
+	private SWTUtilExt botUtil = new SWTUtilExt(bot);
+
 	@BeforeClass
 	public static void setup() throws InterruptedException, CoreException{
-		SWTBotExt setup = new SWTBotExt();
-		setup.menu("Window").menu("Show View").menu("Other...").click();
-		setup.tree().expandNode("Java").select("Package Explorer").click();
-		setup.button("OK").click();
+		setPerspective("Java");
 		updateRepositories();
 		
 	}
 
 	public static void updateRepositories() throws InterruptedException, CoreException {
-		SWTBotExt bot = new SWTBotExt();
-		SWTUtilExt botUtil= new SWTUtilExt(bot);
-		bot.menu("Window").menu("Show View").menu("Other...").click();
-		bot.tree().expandNode("Maven").select("Maven Repositories");
-		bot.button("OK").click();
-		bot.viewByTitle("Maven Repositories");
-		bot.sleep(1000);
-		bot.tree().expandNode("Global Repositories").getNode("central (" + REPO_URL + ")").contextMenu("Rebuild Index").click();
-		bot.button("OK").click();
-		botUtil.waitForAll();
-		botUtil.waitForJobs(Long.MAX_VALUE,"Rebuilding Indexes");
-		bot.tree().expandNode("Global Repositories").getNode("jboss (" + NEXUS_URL + ")").contextMenu("Rebuild Index").click();
-		bot.button("OK").click();
-		botUtil.waitForAll();
-		botUtil.waitForJobs(Long.MAX_VALUE,"Rebuilding Indexes");
-		bot.tree().expandNode("Global Repositories").getNode("jboss (" + NEXUS_URL + ")").contextMenu("Update Index").click();
-		botUtil.waitForAll();
-		botUtil.waitForJobs(Long.MAX_VALUE,"Updating Indexes");
+		new WorkbenchView("Maven Repositories").open();
+		Thread.sleep(5000);
+		//new WaitUntil(new TreeCanBeExpanded(new DefaultTreeItem("Global Repositories")),TimePeriod.NORMAL);
+		new DefaultTreeItem("Global Repositories","central ("+REPO_URL+")").select();
+		new ContextMenu("Rebuild Index").select();
+		new WaitUntil(new ShellWithTextIsActive("Rebuild Index"),TimePeriod.NORMAL);
+		new PushButton("OK").click();
+		SWTUtilExt botUtil = new SWTUtilExt(new SWTBotExt());
+		botUtil.waitForAll(Long.MAX_VALUE);
+		new DefaultTreeItem("Global Repositories","jboss ("+NEXUS_URL+")").select();
+		new ContextMenu("Rebuild Index").select();
+		new PushButton("OK").click();
+		botUtil.waitForAll(Long.MAX_VALUE);
+		new DefaultTreeItem("Global Repositories","jboss ("+NEXUS_URL+")").select();
+		new ContextMenu("Update Index").select();
+		botUtil.waitForAll(Long.MAX_VALUE);
 	}
 	
 	
@@ -71,29 +89,28 @@ public class ArchetypesTest extends AbstractMavenSWTBotTest{
 	}
 	
 	private void createSimpleMavenProjectArchetype(String projectName,String projectType, String catalog) throws InterruptedException,CoreException {
-		SWTBotExt botExt = new SWTBotExt();
-		botExt.menu("File").menu("New").menu("Other...").click();
-		waitForIdle();
-		SWTBot shell = botExt.shell("New").activate().bot();
-		shell.tree().expandNode("Maven").select("Maven Project");
-		shell.button("Next >").click();
-		shell.checkBox("Create a simple project (skip archetype selection)").deselect();
-		shell.button("Next >").click();
+		new ShellMenu("File","Menu","Other...").select();
+		new WaitUntil(new ShellWithTextIsActive("New"),TimePeriod.NORMAL);
+		new DefaultTreeItem("Maven","Maven Project").select();
+		new PushButton("Next >").click();
+		new CheckBox("Create a simple project (skip archetype selection)").toggle(true);
+		new PushButton("Next >").click();
+
 		Thread.sleep(2000);
-		shell.comboBox().setSelection(catalog);
-		SWTUtilExt botUtil = new SWTUtilExt(botExt);
+		new DefaultCombo(0).setSelection(catalog);
 		botUtil.waitForAll();
-		botExt.waitUntil(new TableHasRows(botExt.table(),projectType),100000);
+		new WaitUntil(new TableHasRows(new DefaultTable()),TimePeriod.LONG);
 		Thread.sleep(10000);
-		int index = botExt.table(0).indexOf(projectType, "Artifact Id");
-		if (index == -1) {
-			fail(projectType + " not found");
-		}
-		shell.table(0).select(index);
-		shell.button("Next >").click();
-		shell.comboBoxWithLabel("Group Id:").setText(projectName);
-		shell.comboBoxWithLabel("Artifact Id:").setText(projectName);
-		shell.button("Finish").click();
-		waitForIdle();
+		new DefaultTable().select(projectType);
+		//int index = botExt.table(0).indexOf(projectType, "Artifact Id");
+		//if (index == -1) {
+		//	fail(projectType + " not found");
+		//}
+		//shell.table(0).select(index);
+		new PushButton("Next >").click();
+		new DefaultCombo("Group Id:").setText(projectName);
+		new DefaultCombo("Artifact Id:").setText(projectName);
+		new PushButton("Finish").click();
+		botUtil.waitForAll();
 	}
 }

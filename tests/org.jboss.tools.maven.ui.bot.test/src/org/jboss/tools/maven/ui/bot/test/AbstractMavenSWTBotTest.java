@@ -1,18 +1,20 @@
-/*************************************************************************************
- * Copyright (c) 2008-2011 Red Hat, Inc. and others.
- * All rights reserved. This program and the accompanying materials 
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- * 
+/*******************************************************************************
+ * Copyright (c) 2011 Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ *
  * Contributors:
- *     JBoss by Red Hat - Initial implementation.
- ************************************************************************************/
+ *     Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/ 
 package org.jboss.tools.maven.ui.bot.test;
-
+/**
+ * @author Rastislav Wagner
+ * 
+ */
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.IOException;
 import java.io.StringWriter;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -28,71 +30,57 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.jface.bindings.keys.KeyStroke;
 import org.eclipse.m2e.core.internal.IMavenConstants;
 import org.eclipse.m2e.tests.common.AbstractMavenProjectTestCase;
-import org.eclipse.m2e.tests.common.JobHelpers;
-import org.eclipse.m2e.tests.common.WorkspaceHelpers;
-import org.eclipse.swtbot.swt.finder.SWTBot;
-import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
-import org.eclipse.swtbot.swt.finder.keyboard.Keystrokes;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
-import org.eclipse.swtbot.swt.finder.widgets.TimeoutException;
-import org.eclipse.ui.IWorkbenchPreferenceConstants;
-import org.eclipse.ui.internal.IPreferenceConstants;
-import org.eclipse.ui.internal.WorkbenchPlugin;
-import org.eclipse.ui.internal.util.PrefUtil;
-import org.eclipse.wst.validation.ValidationFramework;
-import org.jboss.tools.maven.ui.bot.test.utils.ProjectHasNature;
-import org.jboss.tools.test.util.ResourcesUtils;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
+import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.impl.menu.ShellMenu;
+import org.jboss.reddeer.swt.impl.table.DefaultTable;
+import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.tools.maven.ui.bot.test.dialog.MavenPreferencesDialog;
+import org.jboss.tools.maven.ui.bot.test.utils.ProjectIsBuilt;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
 import org.jboss.tools.ui.bot.ext.SWTUtilExt;
-import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
-import org.jboss.tools.ui.bot.ext.parts.SWTBotRadioExt;
-import org.jboss.tools.ui.bot.ext.view.ErrorLogView;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.runner.RunWith;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-@RunWith(SWTBotJunit4ClassRunner.class)
+@SuppressWarnings("restriction")
 public abstract class AbstractMavenSWTBotTest extends AbstractMavenProjectTestCase {
-
-	public static final String PACKAGE_EXPLORER = "Package Explorer"; //$NON-NLS-1$
-	public static final int TIMEOUT = 30*1000;
-	public static final int HAS_NATURE_TIMEOUT=10000;
-	private ErrorLogView errorLog;
+	
 
 	protected SWTBotExt bot = new SWTBotExt();
 	
 	@BeforeClass 
 	public static void beforeClass() throws Exception {
-		setUserSettingsAndPerspective();
-		WorkbenchPlugin.getDefault().getPreferenceStore()
-		.setValue(IPreferenceConstants.RUN_IN_BACKGROUND, true);
-
-		PrefUtil.getAPIPreferenceStore().setValue(
-		IWorkbenchPreferenceConstants.ENABLE_ANIMATIONS, false);
+		MavenPreferencesDialog mpreferences = new MavenPreferencesDialog();
+		mpreferences.open();
+		mpreferences.setUserSettings(new File("usersettings/settings.xml").getAbsolutePath());
+		mpreferences.ok();
 	}
-
-	//@AfterClass
-	public final static void cleanUp() throws Exception {
-		boolean buildAutomatically = ResourcesUtils.setBuildAutomatically(false);
-		ValidationFramework.getDefault().suspendAllValidation(true);
-		try {
-			WorkspaceHelpers.cleanWorkspace();
-		} finally {
-			ResourcesUtils.setBuildAutomatically(buildAutomatically);
-			ValidationFramework.getDefault().suspendAllValidation(false);
+	
+	@AfterClass
+	public static void afterClass(){
+		PackageExplorer pexplorer = new PackageExplorer();
+		for(Project p: pexplorer.getProjects()){
+			p.delete(true);
 		}
-		JobHelpers.waitForLaunchesToComplete(30*1000);
-		JobHelpers.waitForJobsToComplete();
+		SWTBotExt bot = new SWTBotExt();
+		SWTUtilExt botUtil = new SWTUtilExt(bot);
+		botUtil.waitForAll(Long.MAX_VALUE);
 	}
 
-	public void waitForIdle() {
-		JobHelpers.waitForLaunchesToComplete(TIMEOUT);
-		JobHelpers.waitForJobsToComplete();
+	public static void setPerspective(String perspective){
+		new ShellMenu("Window","Open Perspective","Other...").select();
+		new DefaultTable().select(perspective);
+		new PushButton("OK").click();
 	}
 	
 	public boolean isMavenProject(String projectName) throws CoreException {
@@ -101,18 +89,15 @@ public abstract class AbstractMavenSWTBotTest extends AbstractMavenProjectTestCa
 	}
 	
 	public boolean hasNature(String projectName, String natureID){
-		try{
-			bot.waitUntil(new ProjectHasNature(projectName, natureID),HAS_NATURE_TIMEOUT);
-		} catch (TimeoutException ex){
-			return false;
-		}
-		return true;
-	}
-
-	public void waitForShell(SWTUtilExt botUtil, String shellName) throws InterruptedException {
-		while(!botUtil.isShellActive(shellName)){
-			Thread.sleep(500);
-		}
+		PackageExplorer pexplorer = new PackageExplorer();
+		pexplorer.open();
+		pexplorer.getProject(projectName).select();
+		new ContextMenu("Properties").select();
+		new WaitUntil(new ShellWithTextIsActive("Properties for "+projectName), TimePeriod.NORMAL);
+		new DefaultTreeItem("Project Facets").select();
+		boolean result = new DefaultTreeItem(1,natureID).isChecked();
+		new PushButton("OK").click();
+		return result;
 	}
 	
 	protected void addDependencies(String projectName, String groupId, String artifactId, String version, String type) throws Exception{
@@ -157,57 +142,37 @@ public abstract class AbstractMavenSWTBotTest extends AbstractMavenProjectTestCa
 	}
 	
 	protected void updateConf(SWTUtilExt botUtil, String projectName){
-		SWTBotTree innerBot = bot.viewByTitle("Package Explorer").bot().tree().select(projectName);
-		ContextMenuHelper.clickContextMenu(innerBot, "Maven","Update Project Configuration...");
-		bot.button("OK").click();
+		PackageExplorer pexplorer = new PackageExplorer();
+		pexplorer.open();
+		pexplorer.getProject(projectName).select();
+		new ContextMenu("Maven","Update Project...").select();
+		new PushButton("OK").click();
 		botUtil.waitForAll(Long.MAX_VALUE);
-		botUtil.waitForNonIgnoredJobs();
-	}
-	
-	private static void setUserSettingsAndPerspective() throws InterruptedException, IOException, CoreException{
-		SWTBotExt botExt = new SWTBotExt();
-		botExt.menu("Window").menu("Preferences").click();
-		botExt.tree().expandNode("Maven").select("User Settings").click();
-		File f = new File("usersettings/settings.xml");
-		botExt.text(1).setText(f.getAbsolutePath());
-		botExt.button("Update Settings").click();
-		botExt.tree().expandNode("General").select("Perspectives").click();
-		SWTBotRadioExt radio = new SWTBotRadioExt(botExt.radio("Never open").widget);
-		radio.clickWithoutDeselectionEvent();
-		botExt.button("OK").click();
-	}
-	
-	protected void clearErrorLog(){
-		errorLog = new ErrorLogView();
-		errorLog.clear();
-	}
-	
-	protected void checkErrorLog() {
-		int count = errorLog.getRecordCount();
-		if (count > 0) {
-			errorLog.logMessages();
-			fail("Unexpected messages in Error log, see test log");
-		}
 	}
 	
 	public void buildProject(String projectName, String mavenBuild, String packaging, String version) throws Exception {
 		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
-		bot.viewByTitle("Package Explorer").setFocus();
-		SWTBot explorer = bot.viewByTitle("Package Explorer").bot();
-		bot.sleep(500);
-		SWTBotTreeItem item = explorer.tree().getTreeItem(projectName).select();
-		SWTBotExt swtBot = new SWTBotExt();
-		item.pressShortcut(Keystrokes.SHIFT,Keystrokes.ALT,KeyStroke.getInstance("X"));
-		bot.sleep(1000);
-		item.pressShortcut(KeyStroke.getInstance("M"));
-		swtBot.waitForShell("Edit Configuration");
-		swtBot.textWithLabel("Goals:").setText("clean package");
-		swtBot.button("Run").click();
-		waitForIdle();
+		PackageExplorer pexplorer = new PackageExplorer();
+		pexplorer.open();
+		pexplorer.getProject(projectName).select();
+		new ContextMenu("Run As",mavenBuild).select();
+		new WaitUntil(new ShellWithTextIsActive("Edit Configuration"),TimePeriod.NORMAL);
+		new LabeledText("Goals:").setText("clean package");
+		new PushButton("Run").click();
+		new WaitUntil(new ProjectIsBuilt(),TimePeriod.NORMAL);
 		project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
 		project.getFolder("target").refreshLocal(IResource.DEPTH_INFINITE,new NullProgressMonitor());
 		IFile jarFile = project.getFile("target/" + projectName + version+"."+packaging);
 		assertTrue(jarFile + " is missing ", jarFile.exists());
 	}
 	
+	public void deleteProjects(boolean fromSystem){
+		PackageExplorer pexplorer = new PackageExplorer();
+		pexplorer.open();
+		for(Project p: pexplorer.getProjects()){
+			p.delete(fromSystem);
+		}
+		SWTUtilExt botUtil = new SWTUtilExt(bot);
+		botUtil.waitForAll(Long.MAX_VALUE);
+	}
 }

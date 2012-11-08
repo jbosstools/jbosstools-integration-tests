@@ -14,7 +14,7 @@
 	<packaging>eclipse-test-plugin</packaging>
 
 		<properties>
-			<systemProperties>-Djbosstools.test.jboss.home.7.1=${requirementsDirectory}/jboss-as-7.1.1.Final -Djbosstools.test.seam.2.2.0.home=${requirementsDirectory}/jboss-seam-2.2.0.GA -Djbosstools.test.seam.2.3.0.home=${requirementsDirectory}/jboss-seam-2.3.0</systemProperties>
+			<systemProperties>-Dhsqldb.driver=#{requirementsDirectory}/hsqldb/hsqldb-1.8.0.10.jar -Djbosstools.test.jboss.home.7.1=${requirementsDirectory}/jboss-as-7.1.1.Final -Djbosstools.test.seam.2.2.0.home=${requirementsDirectory}/jboss-seam-2.2.0.GA -Djbosstools.test.seam.2.3.0.home=${requirementsDirectory}/jboss-seam-2.3.0</systemProperties>
 		</properties>
 	<build>
 		<plugins>
@@ -69,6 +69,19 @@
 							<unpack>true</unpack>
 							<outputDirectory>${requirementsDirectory}/jboss-seam-2.3.0</outputDirectory>
 							<md5>07b19de75bcb86b5f4cff3a15d7e2158</md5>
+						</configuration>
+					</execution>
+					<execution>
+						<id>hsqldb</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<configuration>
+							<url>http://repo1.maven.org/maven2/hsqldb/hsqldb/1.8.0.10/hsqldb-1.8.0.10.jar</url>
+							<unpack>false</unpack>
+							<outputDirectory>${requirementsDirectory}/hsqldb</outputDirectory>
+							<md5>7df83e09e41d742cc5fb20d16b80729c</md5>
 						</configuration>
 					</execution>
 				</executions>
@@ -216,4 +229,19 @@
 			</plugin>
 		</plugins>
 	</build>
+	
+	<repositories>
+		<repository>
+			<id>red_deer</id>
+			<url>http://p2-reddeer.rhcloud.com</url>
+
+			<layout>p2</layout>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+		</repository>
+	</repositories>
 </project>
