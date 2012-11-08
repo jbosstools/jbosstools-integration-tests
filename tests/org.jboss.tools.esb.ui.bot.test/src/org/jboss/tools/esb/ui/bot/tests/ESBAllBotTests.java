@@ -32,7 +32,6 @@ import org.junit.runners.Suite.SuiteClasses;
 	CreateRuntimeFromSOA.class,
 	NewProjectUsingRuntime.class,
 	NewProjectUsingBundledInEAP.class,
-//	SimpleMylyn.class
 	Editing.class,
 	HelloWorld.class,	
 	HelloWorldAction.class,
