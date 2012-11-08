@@ -50,7 +50,7 @@ public class CreateSeamProjects extends AbstractSeamTestBase {
 		bot.menu("File").menu("New").menu("Seam Web Project").click();
 		bot.textWithLabel("Project name:").setText(AbstractSeamTestBase.testProjectName + type);
 		bot.comboBoxInGroup("Target runtime").setSelection(SWTTestExt.configuredState.getServer().name);
-		bot.comboBoxInGroup("Target Server").setSelection(SWTTestExt.configuredState.getServer().name);
+		bot.comboBoxInGroup("Target Server").setSelection(SWTTestExt.configuredState.getServer().name + " Server");
 		bot.comboBoxInGroup("Configuration").setSelection(
 				AbstractSeamTestBase.seamConfigPrefix +
 				SWTTestExt.configuredState.getSeam().version + 
