@@ -9,13 +9,12 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.m2e.core,
  org.jboss.tools.ui.bot.ext,
- org.junit;bundle-version="4.8.0",
+ org.junit,
  org.eclipse.swtbot.swt.finder,
  org.eclipse.swtbot.eclipse.finder,
  org.eclipse.m2e.tests.common,
  org.eclipse.wst.validation,
  org.apache.log4j,
- org.jboss.tools.tests,
  org.eclipse.swtbot.junit4_x,
  org.eclipse.ui.forms,
  org.jboss.tools.maven.ui,
@@ -24,9 +23,15 @@ Require-Bundle: org.eclipse.ui,
  org.jboss.tools.seam.core,
  org.eclipse.datatools.connectivity,
  org.eclipse.datatools.connectivity.db.generic,
- org.hamcrest
+ org.hamcrest,
+ org.jboss.reddeer.eclipse,
+ org.jboss.reddeer.jface,
+ org.jboss.reddeer.direct,
+ org.jboss.reddeer.gef,
+ org.jboss.reddeer.junit,
+ org.jboss.reddeer.selenium,
+ org.jboss.reddeer.swt,
+ org.jboss.reddeer.workbench
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Eclipse-RegisterBuddy: org.apache.log4j
-Import-Package: org.apache.maven.model
 

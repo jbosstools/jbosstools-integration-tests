@@ -1,20 +1,36 @@
+/*******************************************************************************
+ * Copyright (c) 2011 Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/ 
 package org.jboss.tools.maven.ui.bot.test;
 
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.jface.bindings.keys.KeyStroke;
-
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
-import org.eclipse.swtbot.swt.finder.keyboard.Keystrokes;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
-import org.jboss.tools.ui.bot.ext.SWTBotExt;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.swt.impl.button.CheckBox;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.impl.menu.ShellMenu;
+import org.jboss.reddeer.swt.impl.tree.DefaultTree;
+import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.tools.maven.ui.bot.test.utils.ButtonIsEnabled;
 import org.jboss.tools.ui.bot.ext.SWTUtilExt;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-@Require(perspective="Java")
+/**
+ * @author Rastislav Wagner
+ * 
+ */
 public class MaterializeLibraryTest extends AbstractMavenSWTBotTest{
 	
 	private String projectName = "example";
@@ -23,68 +39,60 @@ public class MaterializeLibraryTest extends AbstractMavenSWTBotTest{
 	
 	@BeforeClass
 	public static void setup(){
-		SWTBotExt setup = new SWTBotExt();
-		setup.menu("Window").menu("Show View").menu("Other...").click();
-		setup.tree().expandNode("Java").select("Package Explorer").click();
-		setup.button("OK").click();
-		setup.menu("Window").menu("Preferences").click();
-		setup.waitForShell("Preferences");
-		setup.tree().expandNode("JBoss Tools").select("Project Examples");
-		setup.checkBox("Show Project Ready wizard").deselect();
-		setup.checkBox("Show readme/cheatsheet file").deselect();
-		setup.button("OK").click();
+		setPerspective("Java");
+		new ShellMenu("Window","Preferences").select();
+		new WaitUntil(new ShellWithTextIsActive("Preferences"), TimePeriod.NORMAL);
+		new DefaultTreeItem("JBoss Tools","Project Examples");
+		new CheckBox("Show Project Ready wizard").toggle(false);
+		new CheckBox("Show readme/cheatsheet file").toggle(false);
+		new PushButton("OK").click();
 	}
 	
-	@SuppressWarnings("restriction")
 	@Test
 	public void testMaterializeLibrary() throws Exception{
-		bot.menu("New").menu("Example...").click();
-		bot.tree().expandNode("JBoss Tools").select("Project Examples");
-		waitForIdle();
-		bot.button("Next >").click();
-		waitForShell(botUtil, "New Project Example");
-		bot.tree().expandNode("JBoss Maven Archetypes").select("Spring MVC Project");
-		bot.button("Next >").click();
-		bot.button("Next >").click();
-		bot.comboBoxWithLabel("Project name").setText(projectName);
-		bot.comboBoxWithLabel("Package").setText(projectName);
-		bot.button("Finish").click();
-		botUtil.waitForAll(Long.MAX_VALUE);
-
-		final SWTBotView packageExplorer = bot.viewByTitle("Package Explorer");
-		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
-		SWTBotTree tree = packageExplorer.bot().tree();
-		SWTBotTreeItem item = tree.expandNode(project.getName());
-		item = item.getNode("Maven Dependencies");
-		item.select().pressShortcut(Keystrokes.SHIFT,Keystrokes.F10);
-		KeyStroke k = KeyStroke.getInstance("M");
-		item.pressShortcut(k);
-		waitForShell(botUtil, "Materialize Classpath Library");
-		bot.button("OK").click();
+		new ShellMenu("File","New","Example...").select();
+		new DefaultTreeItem("JBoss Tools","Project Examples").select();
+		new WaitUntil(new ButtonIsEnabled("Next >"), TimePeriod.NORMAL);
+		//waitForIdle();
+		new PushButton("Next >").click();
+		new WaitUntil(new ShellWithTextIsActive("New Project Example"), TimePeriod.NORMAL);
+		new DefaultTreeItem("JBoss Maven Archetypes","Spring MVC Project").select();
+		new PushButton("Next >").click();
+		new PushButton("Next >").click();
+		new DefaultCombo("Project name").setText(projectName);
+		new DefaultCombo("Package").setText(projectName);
+		new PushButton("Finish").click();
+		new WaitUntil(new ShellWithTextIsActive("Importing..."),TimePeriod.VERY_LONG);
+		new WaitWhile(new ShellWithTextIsActive("Importing..."),TimePeriod.VERY_LONG);
+		PackageExplorer pexplorer = new PackageExplorer();
+		pexplorer.open();
+		new DefaultTreeItem(projectName,"Maven Dependencies").select();
+		new ContextMenu("Materialize Library...").select();
+		new WaitUntil(new ShellWithTextIsActive("Materialize Classpath Library"),TimePeriod.NORMAL);
+		new PushButton("OK").click();
 		bot.sleep(1000);
-		bot.activeShell().activate();
-		bot.button("OK").click();
+		new PushButton("OK").click();
 		botUtil.waitForAll(Long.MAX_VALUE);
-		assertFalse(project.getName()+" is still a maven project!",isMavenProject(project.getName()));
-		testExcludedResources(project);
-		assertNoErrors(project);
+		assertFalse(projectName+" is still a maven project!",isMavenProject(projectName));
+		testExcludedResources(projectName);
 	}
 	
-	private void testExcludedResources(IProject project) throws Exception{
-		final SWTBotView packageExplorer = bot.viewByTitle("Package Explorer");
-		packageExplorer.bot().tree().getTreeItem(project.getName()).select().pressShortcut(Keystrokes.ALT,Keystrokes.LF);
-		bot.tree().select("Java Build Path");
+	private void testExcludedResources(String project) throws Exception{
+		PackageExplorer pexplorer = new PackageExplorer();
+		pexplorer.open();
+		pexplorer.selectProject(project);
+		new ContextMenu("Properties").select();
+		new WaitUntil(new ShellWithTextIsActive("Properties for "+project),TimePeriod.NORMAL);
+		new DefaultTreeItem("Java Build Path").select();
 		bot.tabItem("Source").activate();
-		for(SWTBotTreeItem item: bot.tree(1).getAllItems()){
-			for(SWTBotTreeItem itemToCheck: item.getItems()){
-				if(itemToCheck.getText().startsWith("Included")){
-					assertTrue("(All) expected in Included patterns",itemToCheck.getText().endsWith("(All)"));
-				} else if (itemToCheck.getText().startsWith("Excluded")){
-					assertTrue("(None) expected in Excluded patterns",itemToCheck.getText().endsWith("(None)"));
-				}
+		for(TreeItem item: new DefaultTree(1).getAllItems()){
+			if(item.getText().startsWith("Included")){
+				assertTrue("(All) expected in Included patterns",item.getText().endsWith("(All)"));
+			} else if (item.getText().startsWith("Excluded")){
+				assertTrue("(None) expected in Excluded patterns",item.getText().endsWith("(None)"));
 			}
 		}
-		bot.button("OK").click();
+		new PushButton("OK").click();
 	}
 	
 	
