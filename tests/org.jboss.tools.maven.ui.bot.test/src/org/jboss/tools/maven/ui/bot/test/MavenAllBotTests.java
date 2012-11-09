@@ -10,7 +10,7 @@
  ************************************************************************************/
 package org.jboss.tools.maven.ui.bot.test;
 
-import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
@@ -19,21 +19,21 @@ import org.junit.runners.Suite;
  * This is a swtbot testcase for an eclipse application.
  * 
  */
-@RunWith(RequirementAwareSuite.class)
+@RunWith(RedDeerSuite.class)
 @Suite.SuiteClasses({
+	PerspectiveTest.class,
 	SeamProjectTest.class,
-	EARProjectTest.class,
 	JSFProjectTest.class,
-	MavenProfilesTest.class,
+	EARProjectTest.class,
+	MavenProfilesTest.class,     //fix
 	MaterializeLibraryTest.class,
-	JAXRSConfiguratorTest.class,
+	
 	JPAConfiguratorTest.class,
 	JSFConfiguratorTest.class,
 	SeamConfiguratorTest.class,
 	CDIConfiguratorTest.class,
-	CreateMavenProjectsTest.class,
+	JAXRSConfiguratorTest.class,
 	//ArchetypesTest.class,
-	JBossPerspectiveTest.class
 })
 public class MavenAllBotTests {
 	

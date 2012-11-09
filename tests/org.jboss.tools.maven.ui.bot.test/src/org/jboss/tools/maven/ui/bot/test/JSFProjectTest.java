@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2011 Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/ 
 package org.jboss.tools.maven.ui.bot.test;
 
 
@@ -20,20 +30,24 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.swtbot.swt.finder.SWTBot;
-import org.eclipse.swtbot.swt.finder.keyboard.Keystrokes;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
-import org.jboss.tools.ui.bot.ext.SWTBotExt;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.impl.menu.ShellMenu;
+import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.tools.maven.ui.bot.test.utils.ProjectIsBuilt;
 import org.jboss.tools.ui.bot.ext.SWTUtilExt;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
-//TODO deployment
-@Require(perspective="Web Development")
 public class JSFProjectTest extends AbstractMavenSWTBotTest{
 	public static final String JBOSS7_AS_HOME=System.getProperty("jbosstools.test.jboss.home.7.1");
 	public static final String POM_FILE = "pom.xml";
@@ -50,11 +64,8 @@ public class JSFProjectTest extends AbstractMavenSWTBotTest{
 	private SWTUtilExt botUtil= new SWTUtilExt(bot);
 	
 	@BeforeClass
-	public final static void beforeClass() throws Exception {
-		SWTBotExt setup = new SWTBotExt();
-		setup.menu("Window").menu("Show View").menu("Other...").click();
-		setup.tree().expandNode("Java").select("Package Explorer").click();
-		setup.button("OK").click();
+	public final static void beforeClass(){
+		setPerspective("Web Development");
 	}
 	
 	@Test
@@ -79,28 +90,28 @@ public class JSFProjectTest extends AbstractMavenSWTBotTest{
 	
 	
 	private void createJSFProject(String serverRuntime, String server, String serverHome, String jsfVersion, String projectName) throws InterruptedException, CoreException{
-		bot.menu("File").menu("New").menu("Other...").click();
-		waitForShell(botUtil, "New");
-		bot.tree().expandNode("JBoss Tools Web").expandNode("JSF").select("JSF Project");
-		bot.button("Next >").click();
-		waitForShell(botUtil, "New JSF Project");
-		bot.textWithLabel("Project Name*").setText(projectName);
-		bot.comboBox(0).setSelection(jsfVersion);
-		bot.comboBox(1).setSelection("JSFKickStartWithoutLibs");
-		bot.button("Next >").click();
-		bot.button("New...").click();
-		waitForShell(botUtil,"New Server Runtime");
-		bot.tree().expandNode("JBoss Community").select(serverRuntime);
-		bot.button("Next >").click();
-		bot.textWithLabel("Home Directory").setText(serverHome);
-		bot.button("Finish").click();
-		waitForShell(botUtil,"New JSF Project");
-		bot.button(1).click();
-		waitForShell(botUtil,"New Server");
-		bot.tree().expandNode("JBoss Community").select(server);
-		bot.button("Finish").click();
-		botUtil.waitForAll(Long.MAX_VALUE);
-		bot.button("Finish").click();;
+		new ShellMenu("File","New","Other...").select();
+		new WaitUntil(new ShellWithTextIsActive("New"),TimePeriod.NORMAL);
+		new DefaultTreeItem("JBoss Tools Web","JSF","JSF Project").select();
+		new PushButton("Next >").click();
+		new WaitUntil(new ShellWithTextIsActive("New JSF Project"),TimePeriod.NORMAL);
+		new LabeledText("Project Name*").setText(projectName);
+		new DefaultCombo(0).setSelection(jsfVersion);
+		new DefaultCombo(1).setSelection("JSFKickStartWithoutLibs");
+		new PushButton("Next >").click();
+		new PushButton("New...").click();
+		new WaitUntil(new ShellWithTextIsActive("New Server Runtime"),TimePeriod.NORMAL);
+		new DefaultTreeItem("JBoss Community",serverRuntime).select();
+		new PushButton("Next >").click();
+		new LabeledText("Home Directory").setText(serverHome);
+		new PushButton("Finish").click();
+		new WaitUntil(new ShellWithTextIsActive("New JSF Project"),TimePeriod.NORMAL);
+		new PushButton(1).click();
+		new WaitUntil(new ShellWithTextIsActive("New Server"),TimePeriod.NORMAL);
+		new DefaultTreeItem("JBoss Community",server).select();
+		new PushButton("Finish").click();
+		new WaitUntil(new ShellWithTextIsActive("New JSF Project"),TimePeriod.NORMAL);
+		new PushButton("Finish").click();
 		botUtil.waitForAll(Long.MAX_VALUE);
 	}
 	
@@ -132,34 +143,35 @@ public class JSFProjectTest extends AbstractMavenSWTBotTest{
 		DOMSource source = new DOMSource(docPom);
 		trans.transform(source, result);
 		project.getFile("pom.xml").setContents(new ByteArrayInputStream(xmlAsWriter.toString().getBytes("UTF-8")), 0, null);
-	    waitForIdle();
+		botUtil.waitForAll(Long.MAX_VALUE);
 	}
 	
 	private void activateMavenFacet(String projectName) throws InterruptedException, CoreException{
-		bot.viewByTitle("Package Explorer").setFocus();
-		SWTBotTreeItem item = bot.viewByTitle("Package Explorer").bot().tree().getTreeItem(projectName).select();
-	    item.pressShortcut(Keystrokes.ALT,Keystrokes.LF);
-	    waitForShell(botUtil,"Properties for "+projectName);
-	    bot.tree().select("Project Facets");
-	    bot.tree(1).getTreeItem("JBoss Maven Integration").check();
+		PackageExplorer pexplorer = new PackageExplorer();
+		pexplorer.open();
+		pexplorer.getProject(projectName).select();
+		new ContextMenu("Properties").select();
+		new WaitUntil(new ShellWithTextIsActive("Properties for "+projectName),TimePeriod.NORMAL);
+		new DefaultTreeItem("Project Facets").select();
+		new DefaultTreeItem(1, "JBoss Maven Integration").setChecked(true);
 	    botUtil.waitForAll();
-	    Thread.sleep(500);
 	    bot.hyperlink("Further configuration required...").click();
-	    bot.button("OK").click();
-	    bot.button("OK").click();
-	    waitForIdle();
+		new WaitUntil(new ShellWithTextIsActive("Modify Faceted Project"),TimePeriod.NORMAL);
+	    new PushButton("OK").click();
+	    new PushButton("OK").click();
+		botUtil.waitForAll(Long.MAX_VALUE);
 	    assertTrue(projectName+ " doesn't have maven nature", isMavenProject(projectName));
 	}
 	
 	private void buildProject(String projectName) throws CoreException{
+		PackageExplorer pexplorer = new PackageExplorer();
+		pexplorer.getProject(projectName).select();
+		new ContextMenu("Run As","5 Maven build...");
+		new WaitUntil(new ShellWithTextIsActive("Edit Configuration"),TimePeriod.NORMAL);
+		new LabeledText("Goals:").setText("clean package");
+		new PushButton("Run").click();
+	    new WaitUntil(new ProjectIsBuilt(), TimePeriod.LONG);
 		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
-		SWTBot explorer = bot.viewByTitle("Package Explorer").bot();
-	    SWTBotTreeItem item = explorer.tree().getTreeItem(projectName).select();
-	    SWTBotExt swtBot = new SWTBotExt();
-	    item.contextMenu("Run As").menu("5 Maven build...").click();
-	    swtBot.textWithLabel("Goals:").setText("clean package");
-	    swtBot.button("Run").click();
-	    waitForIdle();
 	    project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
 		project.getFolder("target").refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
 		IFolder warFolder = project.getFolder("target/" + projectName + "-0.0.1-SNAPSHOT");

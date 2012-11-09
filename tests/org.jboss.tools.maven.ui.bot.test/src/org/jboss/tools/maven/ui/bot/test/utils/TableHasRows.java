@@ -1,25 +1,23 @@
 package org.jboss.tools.maven.ui.bot.test.utils;
 
-import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
+import org.jboss.reddeer.swt.condition.WaitCondition;
+import org.jboss.reddeer.swt.impl.table.DefaultTable;
 
-public class TableHasRows extends DefaultCondition {
-	  private final String projectType;
-	  private final SWTBotTable table;
+public class TableHasRows implements WaitCondition  {
+	  private final DefaultTable table;
 
-	  // initialize
-	  public TableHasRows(SWTBotTable table, String projectType) {
+	  public TableHasRows(DefaultTable table) {
 	    this.table = table;
-	    this.projectType = projectType;
 	  }
 
-	  // return true if the condition matches, false otherwise
+
 	  public boolean test() {
-		return table.indexOf(projectType, "Artifact Id")!=-1;
+		return  table.rowCount() > 1;
 	  }
 
-	  // provide a human readable error message
-	  public String getFailureMessage() {
-	    return "Timed out waiting for " + table + " to contain rows.";
-	  }
+	@Override
+	public String description() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	}
