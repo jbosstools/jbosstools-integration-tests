@@ -18,6 +18,7 @@ import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.test.WidgetVariables;
+import org.jboss.tools.vpe.ui.bot.test.VPEAutoTestCase;
 
 public class ChangeEditorTabForTheFirstOpenPageTest extends PreferencesTestCase{
 	
@@ -58,15 +59,8 @@ public class ChangeEditorTabForTheFirstOpenPageTest extends PreferencesTestCase{
 	
 	@Override
 	public void tearDown() throws Exception {
-		
-		//Delete test page if it has been created
-	  new SWTBotExt().swtBotEditorExtByTitle(TEST_PAGE).selectPage(IDELabel.VisualPageEditor.VISUAL_SOURCE_TAB_LABEL);
-		SWTBot innerBot = bot.viewByTitle(WidgetVariables.PACKAGE_EXPLORER).bot();
-		innerBot.tree().expandNode(JBT_TEST_PROJECT_NAME).expandNode("WebContent") //$NON-NLS-1$
-		.expandNode("pages").getNode("testPage.jsp").select();  //$NON-NLS-1$//$NON-NLS-2$
-		bot.menu("Edit").menu("Delete").click(); //$NON-NLS-1$ //$NON-NLS-2$
-		bot.shell("Confirm Delete").activate(); //$NON-NLS-1$
-		bot.button(IDELabel.Button.OK).click(); //$NON-NLS-1$
+  	//Delete test page if it has been created
+    eclipse.deleteFile(VPEAutoTestCase.JBT_TEST_PROJECT_NAME,  "WebContent","pages","testPage.jsp");
 		util.waitForNonIgnoredJobs(Timing.time3S());
 		bot.toolbarButtonWithTooltip(PREF_TOOLTIP).click();
     bot.shell(PREF_FILTER_SHELL_TITLE).activate();

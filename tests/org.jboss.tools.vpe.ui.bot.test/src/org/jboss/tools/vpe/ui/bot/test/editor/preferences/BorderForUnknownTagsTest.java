@@ -13,6 +13,7 @@ package org.jboss.tools.vpe.ui.bot.test.editor.preferences;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCheckBox;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
+import org.jboss.tools.ui.bot.ext.SWTJBTExt;
 import org.jboss.tools.vpe.ui.bot.test.tools.SWTBotWebBrowser;
 
 public class BorderForUnknownTagsTest extends PreferencesTestCase{
@@ -28,8 +29,12 @@ public class BorderForUnknownTagsTest extends PreferencesTestCase{
 		textEditor = editor.getText();
 			
 		//Test insert unknown tag
-		
-		editor.navigateTo(12, 52);
+		SWTJBTExt.selectTextInSourcePane(new SWTBotExt(),
+				TEST_PAGE,
+				"<f:view>",
+				0,
+				"<f:view>".length(),
+		        0);
 		final String unknownTag = "tagunknown";
 		editor.insertText("<" + unknownTag + "></" + unknownTag + ">"); //$NON-NLS-1$
 	

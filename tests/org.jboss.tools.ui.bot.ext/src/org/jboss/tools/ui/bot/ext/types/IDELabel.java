@@ -389,6 +389,7 @@ public class IDELabel {
 		public static final String ACTION_STRUTS = "action:org.apache.struts.action.ActionServlet";
 		public static final String CONFIG = "config";
 		public static final String TAG_LIBRARIES = "Tag Libraries";
+		public static final String PAGES = "pages";
 		
 	}
 	

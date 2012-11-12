@@ -56,9 +56,12 @@ public class JSPPageCreationTest extends VPEEditorTestCase{
     projectTreeItem.collapse();
     projectTreeItem.expand();
     
-    SWTBotTreeItem webContentTreeItem = projectTreeItem.expand().getNode(IDELabel.WebProjectsTree.WEB_CONTENT);
+    SWTBotTreeItem pagesTreeItem = projectTreeItem.expand()
+        .getNode(IDELabel.WebProjectsTree.WEB_CONTENT)
+        .expand()
+        .getNode(IDELabel.WebProjectsTree.PAGES);
     
-    webContentTreeItem.select();
+    pagesTreeItem.select();
     // create new JSP file
     open.newObject(ActionItem.NewObject.WebJSP.LABEL);
     bot.shell(IDELabel.Shell.NEW_JSP_FILE).activate();
@@ -67,8 +70,8 @@ public class JSPPageCreationTest extends VPEEditorTestCase{
     bot.table().select(IDELabel.NewJSPFileDialog.JSP_TEMPLATE);
     bot.button(IDELabel.Button.FINISH).click();
     bot.sleep(Timing.time2S());
-    webContentTreeItem.expand();
-    SWTBotTreeItem jspTestPageTreeItem = webContentTreeItem.getNode(TEST_NEW_JSP_FILE_NAME);
+    pagesTreeItem.expand();
+    SWTBotTreeItem jspTestPageTreeItem = pagesTreeItem.getNode(TEST_NEW_JSP_FILE_NAME);
     String checkResult = CheckFileChangesSaving.checkIt(bot, bot.editorByTitle(TEST_NEW_JSP_FILE_NAME).toTextEditor(),
       tree, jspTestPageTreeItem,
       SAVE_COMMENT, true);

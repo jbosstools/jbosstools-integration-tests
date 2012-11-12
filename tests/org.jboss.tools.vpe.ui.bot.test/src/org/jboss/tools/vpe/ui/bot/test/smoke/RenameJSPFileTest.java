@@ -46,7 +46,7 @@ public class RenameJSPFileTest extends VPEEditorTestCase{
     tree.setFocus();
     String checkResult = FileRenameHelper.checkFileRenamingWithinWebProjects(bot,
         JSPPageCreationTest.TEST_NEW_JSP_FILE_NAME, NEW_JSP_FILE_NAME,
-        new String[] {JBT_TEST_PROJECT_NAME, IDELabel.WebProjectsTree.WEB_CONTENT});
+        new String[] {JBT_TEST_PROJECT_NAME, IDELabel.WebProjectsTree.WEB_CONTENT, IDELabel.WebProjectsTree.PAGES});
     assertNull(checkResult, checkResult);
 	  
 	}
