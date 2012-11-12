@@ -16,8 +16,10 @@ import java.io.File;
 import java.io.IOException;
 
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
+import org.eclipse.swtbot.swt.finder.widgets.TimeoutException;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
 import org.jboss.tools.ui.bot.ext.Timing;
+import org.jboss.tools.ui.bot.ext.condition.EclipseEditorText;
 import org.jboss.tools.ui.bot.ext.helper.FileHelper;
 import org.jboss.tools.ui.bot.ext.helper.KeyboardHelper;
 import org.jboss.tools.vpe.ui.bot.test.VPEAutoTestCase;
@@ -45,10 +47,10 @@ public class ExternalEditingTest extends VPEEditorTestCase {
 	/**
 	 * Checks External Editing of web page when accepting External changes
 	 */
-	public void testAcceptExternalChanges(){
-	  final String acceptExtChangesPageName = "ExternalEditingTestAccept.jsp";
-    createJspPage(acceptExtChangesPageName);
-    jspEditor = botExt.editorByTitle(acceptExtChangesPageName).toTextEditor();
+	public void testExternalChanges(){
+	  final String extChangesPageName = "ExternalEditingTest.jsp";
+    createJspPage(extChangesPageName);
+    jspEditor = botExt.editorByTitle(extChangesPageName).toTextEditor();
     final String originalPageContent = "<%@ taglib uri=\"http://java.sun.com/jsf/html\" prefix=\"h\" %>\n" +
         "<html>\n" +
         "  <body>\n" +
@@ -64,19 +66,25 @@ public class ExternalEditingTest extends VPEEditorTestCase {
         "  </body>\n" +
         "</html>";
     try {
-      FileHelper.modifyTextFile(getPageLocation(acceptExtChangesPageName),
+      FileHelper.modifyTextFile(getPageLocation(extChangesPageName),
           changedPageContent);
     } catch (IOException ioe) {
       throw new RuntimeException(ioe);
     }
-    new TypeKeyCodesThread(new int[] {KeyEvent.VK_ENTER})
-        .start();
     jspEditor.setFocus();
+    boolean isOk = false;
+    try{
+      bot.waitUntil(new EclipseEditorText(jspEditor, changedPageContent, true), Timing.time5S());
+      isOk = true;
+    } catch (TimeoutException te){
+      // do nothing      
+    }
+    jspEditor.save();
     String sourceText = jspEditor.getText();
     assertTrue("VPE Source pane has to contain text\n" + changedPageContent +
         "'\nbut it contains\n" +
         sourceText,
-      sourceText.equals(changedPageContent));
+      isOk);
 	}
 	@Override
 	protected void closeUnuseDialogs() {
@@ -107,61 +115,5 @@ public class ExternalEditingTest extends VPEEditorTestCase {
     sbPageLocation.append(File.separator);
     sbPageLocation.append(pageName);
     return sbPageLocation.toString();
-  }
-  /**
-   * Checks External Editing of web page when deny External changes
-   */
-  public void testDenyExternalChanges(){
-    final String denyExtChangesPageName = "ExternalEditingTestDeny.jsp";
-    createJspPage(denyExtChangesPageName);
-    jspEditor = botExt.editorByTitle(denyExtChangesPageName).toTextEditor();
-    final String originalPageContent = "<%@ taglib uri=\"http://java.sun.com/jsf/html\" prefix=\"h\" %>\n" +
-        "<html>\n" +
-        "  <body>\n" +
-        "  </body>\n" +
-        "</html>";
-    jspEditor.setText(originalPageContent);
-    jspEditor.save();
-    // modify web page externally   
-    final String changedPageContent = "<%@ taglib uri=\"http://java.sun.com/jsf/html\" prefix=\"h\" %>\n" +
-        "<html>\n" +
-        "  <body>\n" +
-        "    !@#$%CHANGED_TEXT%$#@!\n" +
-        "  </body>\n" +
-        "</html>";
-    try {
-      FileHelper.modifyTextFile(getPageLocation(denyExtChangesPageName),
-          changedPageContent);
-    } catch (IOException ioe) {
-      throw new RuntimeException(ioe);
-    }
-    new TypeKeyCodesThread(new int[] {KeyEvent.VK_TAB,KeyEvent.VK_ENTER})
-        .start();
-    jspEditor.setFocus();
-    String sourceText = jspEditor.getText();
-    assertTrue("VPE Source pane has to contain text\n" + originalPageContent +
-        "'\nbut it contains\n" +
-        sourceText,
-      sourceText.equals(originalPageContent));
-  }
-  /**
-   * Thread closing dialog displayed when page is modified externally 
-   */
-  class TypeKeyCodesThread extends Thread {
-    private int[] keyCodes;
-    public TypeKeyCodesThread (int[] keyCodes){
-      super();
-      this.keyCodes = keyCodes;
-    }
-    public void run() {
-      try {
-        sleep(Timing.time5S());
-        for (int keyCode : keyCodes){
-          KeyboardHelper.typeKeyCodeUsingAWT(keyCode);
-          sleep(Timing.time2S());
-        }
-      } catch (InterruptedException e) {
-      }
-    }
   }
 }

@@ -20,53 +20,76 @@ import org.jboss.tools.vpe.ui.bot.test.tools.SWTBotWebBrowser;
 public class BlockCommentTest extends VPEEditorTestCase{
 
 	public void testBlockComment() throws Throwable{
-		
-		//Test open page
-		
+
+		// Test open page
+
 		openPage();
-		
+
 		setEditor(bot.editorByTitle(TEST_PAGE).toTextEditor());
 		setEditorText(getEditor().getText());
-	
-		//Test add block comment from Source menu
-		
-		getEditor().selectLine(22);
-		bot.menu("Source").menu("Add Block Comment").click();  //$NON-NLS-1$//$NON-NLS-2$
+		// Test add block comment from Source menu
+		SWTBotExt botExt = new SWTBotExt();
+		final String commentValue = "<h:commandButton action=\"hello\" value=\"Say Hello!\" />";
+		SWTJBTExt.selectTextInSourcePane(botExt,
+				TEST_PAGE,
+				commentValue,
+				0,
+				commentValue.length(),
+		        0);
+		bot.menu("Source").menu("Add Block Comment").click(); //$NON-NLS-1$//$NON-NLS-2$
 		getEditor().save();
 		waitForBlockingJobsAcomplished(VISUAL_UPDATE);
-    SWTBotWebBrowser webBrowser = new SWTBotWebBrowser(TEST_PAGE, new SWTBotExt());
-    assertVisualEditorContainsManyComments(webBrowser, 1, TEST_PAGE);
-    final String commentValue = "<h:commandButton action=\"hello\" value=\"Say Hello!\" />";
-    assertTrue("Visual Representation of page doesn't contain comment with value " + commentValue,
-        webBrowser.containsCommentWithValue(commentValue));
-		
-		//Test remove block comment from Source menu
-		
-		getEditor().selectLine(22);
-		bot.menu("Source").menu("Remove Block Comment").click();  //$NON-NLS-1$//$NON-NLS-2$
+		SWTBotWebBrowser webBrowser = new SWTBotWebBrowser(TEST_PAGE,
+				new SWTBotExt());
+		assertVisualEditorContainsManyComments(webBrowser, 1, TEST_PAGE);
+
+		assertTrue(
+				"Visual Representation of page doesn't contain comment with value "
+						+ commentValue,
+				webBrowser.containsCommentWithValue(commentValue));
+
+		// Test remove block comment from Source menu
+		SWTJBTExt.selectTextInSourcePane(botExt,
+				TEST_PAGE,
+				commentValue,
+				0,
+				commentValue.length(),
+		        0);
+		getEditor().selectCurrentLine();
+		bot.menu("Source").menu("Remove Block Comment").click(); //$NON-NLS-1$//$NON-NLS-2$
 		getEditor().save();
 		waitForBlockingJobsAcomplished(VISUAL_UPDATE);
-    assertVisualEditorContainsManyComments(webBrowser, 0, TEST_PAGE);
-	
-		
-		//Test add block comment with CTRL+SHIFT+/ hot keys
-		
-		getEditor().selectLine(22);
+		assertVisualEditorContainsManyComments(webBrowser, 0, TEST_PAGE);
+
+		// Test add block comment with CTRL+SHIFT+/ hot keys
+		SWTJBTExt.selectTextInSourcePane(botExt,
+				TEST_PAGE,
+				commentValue,
+				0,
+				commentValue.length(),
+		        0);
 		pressBlockCommentHotKeys();
 		getEditor().save();
 		waitForBlockingJobsAcomplished(VISUAL_UPDATE);
-    assertVisualEditorContainsManyComments(webBrowser, 1, TEST_PAGE);
-    assertTrue("Visual Representation of page doesn't contain comment with value " + commentValue,
-        webBrowser.containsCommentWithValue(commentValue));
-		
-		//Test remove block comment with CTRL+SHIFT+\ hot keys
+		assertVisualEditorContainsManyComments(webBrowser, 1, TEST_PAGE);
+		assertTrue(
+				"Visual Representation of page doesn't contain comment with value "
+						+ commentValue,
+				webBrowser.containsCommentWithValue(commentValue));
 
-		getEditor().selectLine(22);
+		// Test remove block comment with CTRL+SHIFT+\ hot keys
+		SWTJBTExt.selectTextInSourcePane(botExt,
+				TEST_PAGE,
+				commentValue,
+				0,
+				commentValue.length(),
+		        0);
+		getEditor().selectCurrentLine();
 		pressUnBlockCommentHotKeys();
 		getEditor().save();
 		waitForBlockingJobsAcomplished(VISUAL_UPDATE);
-    assertVisualEditorContainsManyComments(webBrowser, 0, TEST_PAGE);
-		
+		assertVisualEditorContainsManyComments(webBrowser, 0, TEST_PAGE);
+
 	}
 	
 	private void pressBlockCommentHotKeys(){

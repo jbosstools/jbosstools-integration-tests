@@ -269,6 +269,7 @@ public class CodeCompletionTest extends VPEEditorTestCase{
     result.add("hello");
     result.add("Message");
     result.add("user : User");
+    result.add("user : User");
         
     return result;
   } 
