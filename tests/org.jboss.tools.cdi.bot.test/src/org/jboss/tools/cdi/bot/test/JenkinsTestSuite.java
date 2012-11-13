@@ -56,6 +56,6 @@ import org.junit.runners.Suite.SuiteClasses;
 	
 	**/
 })
-public class JenkinsTestSuite {
+public class JenkinsTestSuite extends AbstractTestSuite {
 		
 }
