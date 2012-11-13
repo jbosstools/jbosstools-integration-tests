@@ -56,9 +56,12 @@ public class XHTMLPageCreationTest extends VPEEditorTestCase{
     projectTreeItem.collapse();
     projectTreeItem.expand();
     
-    SWTBotTreeItem webContentTreeItem = projectTreeItem.expand().getNode(IDELabel.WebProjectsTree.WEB_CONTENT);
+    SWTBotTreeItem pagesTreeItem = projectTreeItem.expand()
+        .getNode(IDELabel.WebProjectsTree.WEB_CONTENT)
+        .expand()
+        .getNode(IDELabel.WebProjectsTree.PAGES);
     
-    webContentTreeItem.select();
+    pagesTreeItem.select();
     // create new JSP file
     open.newObject(ActionItem.NewObject.JBossToolsWebXHTMLFile.LABEL);
     bot.shell(IDELabel.Shell.NEW_XHTML_FILE).activate();
@@ -67,9 +70,9 @@ public class XHTMLPageCreationTest extends VPEEditorTestCase{
     bot.checkBox(IDELabel.NewXHTMLFileDialog.USE_XHTML_TEMPLATE_CHECK_BOX).select();
     bot.table().select(IDELabel.NewXHTMLFileDialog.TEMPLATE_FACELET_FORM_XHTML_NAME);
     bot.button(IDELabel.Button.FINISH).click();
-    webContentTreeItem.expand();
+    pagesTreeItem.expand();
     bot.sleep(Timing.time1S());
-    SWTBotTreeItem xhtmlTestPageTreeItem = webContentTreeItem.getNode(TEST_NEW_XHTML_FILE_NAME);
+    SWTBotTreeItem xhtmlTestPageTreeItem = pagesTreeItem.getNode(TEST_NEW_XHTML_FILE_NAME);
     
     String checkResult = CheckFileChangesSaving.checkIt(bot,bot.editorByTitle(TEST_NEW_XHTML_FILE_NAME).toTextEditor(), tree, xhtmlTestPageTreeItem,
       SAVE_COMMENT, true);

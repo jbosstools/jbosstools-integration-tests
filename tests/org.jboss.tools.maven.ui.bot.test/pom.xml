@@ -9,12 +9,11 @@
 	</parent>
 	<groupId>org.jboss.tools.maven.tests</groupId>
 	<artifactId>org.jboss.tools.maven.ui.bot.test</artifactId>
-	<version>4.0.0-SNAPSHOT</version>
 
 	<packaging>eclipse-test-plugin</packaging>
 
 		<properties>
-			<systemProperties>-Djbosstools.test.jboss.home.7.1=${requirementsDirectory}/jboss-as-7.1.1.Final -Djbosstools.test.seam.2.2.0.home=${requirementsDirectory}/jboss-seam-2.2.0.GA -Djbosstools.test.seam.2.3.0.home=${requirementsDirectory}/jboss-seam-2.3.0</systemProperties>
+			<systemProperties>-Dhsqldb.driver=${requirementsDirectory}/hsqldb/hsqldb-1.8.0.10.jar -Djbosstools.test.jboss.home.7.1=${requirementsDirectory}/jboss-as-7.1.1.Final -Djbosstools.test.seam.2.2.0.home=${requirementsDirectory}/jboss-seam-2.2.0.GA -Djbosstools.test.seam.2.3.0.home=${requirementsDirectory}/jboss-seam-2.3.0</systemProperties>
 		</properties>
 	<build>
 		<plugins>
@@ -35,6 +34,25 @@
 										<artifactId>jboss-as-dist</artifactId>
 										<version>7.1.1.Final</version>
 										<type>zip</type>
+									</artifactItem>
+								</artifactItems>
+							<skip>${skipRequirements}</skip>
+						</configuration>
+					</execution>
+					<execution>
+						<id>hsqldb</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+										<groupId>hsqldb</groupId>
+										<artifactId>hsqldb</artifactId>
+										<version>1.8.0.10</version>
+										<outputDirectory>${requirementsDirectory}/hsqldb</outputDirectory>
+										<type>jar</type>
 									</artifactItem>
 								</artifactItems>
 							<skip>${skipRequirements}</skip>
@@ -105,11 +123,6 @@
 						<dependency>
 							<type>p2-installable-unit</type>
 							<artifactId>org.jboss.tools.jsf.feature.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.maven.ide.eclipse.wtp.feature.feature.group</artifactId>
 							<version>0.0.0</version>
 						</dependency>
 						<dependency>
@@ -216,4 +229,18 @@
 			</plugin>
 		</plugins>
 	</build>
+	
+	<repositories>
+		<repository>
+			<id>red_deer</id>
+			<url>http://p2-reddeer.rhcloud.com/master/</url>
+			<layout>p2</layout>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+		</repository>
+	</repositories>
 </project>
