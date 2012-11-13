@@ -35,7 +35,7 @@ public class MylynReqTest {
 
 		WorkbenchShell ws = new WorkbenchShell();
 		
-		List<TreeItem> repoItems = TestSupport.mylynTestSetup1(log);	
+		List<TreeItem> repoItems = TestSupport.mylynTestSetup1(log, true);	
 		
 		ArrayList<String> repoList = TestSupport.mylynTestSetup2(repoItems, log);
 				

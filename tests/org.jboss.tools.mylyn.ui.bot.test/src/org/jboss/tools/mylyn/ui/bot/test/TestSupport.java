@@ -2,14 +2,23 @@ package org.jboss.tools.mylyn.ui.bot.test;
 
 /* Support routines for Mylyn tests */
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.List;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.button.RadioButton;
+import org.jboss.reddeer.swt.impl.combo.ComboWithLabel;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
+import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.util.Bot;
+import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.apache.log4j.Logger;
 
 public class TestSupport {
@@ -25,24 +34,38 @@ public class TestSupport {
 				break;
 			}
 		}
+		
+	} /* method */	public static TreeItem returnTreeItem(List<TreeItem> theTreeItems, String matchingName, Logger log) {
+		TreeItem retItem = null;
+		for (TreeItem item : theTreeItems) {
+			log.info(item.getText());
+			if (item.getText().equals(matchingName)) {
+				item.select();
+				retItem = item;
+				break;
+			}
+		}
+		return retItem;
 	} /* method */
 
 	/* Test Setup part 1 */
-	public static List<TreeItem> mylynTestSetup1 (Logger log) {		
+	public static List<TreeItem> mylynTestSetup1 (Logger log, boolean checkForUsage) {		
 		/* Close the initial "Usage" Dialog */
-		log.info("*** Step 1 - Close the Usage Shell");
 		
-		/* Catch and ignore the exception - needed after the first test in the suite runs */
-		try {
-		new DefaultShell("JBoss Developer Studio Usage");
-		Bot.get().sleep(DELAY);
-		new PushButton("Yes").click();
-		}
-		catch (Exception E) {
-			E.printStackTrace();
-		}
+		if (checkForUsage) {
 		
+			log.info("*** Step 1 - Close the Usage Shell");
 		
+			/* Catch and ignore the exception - needed after the first test in the suite runs */
+			try {
+				new DefaultShell("JBoss Developer Studio Usage");
+				Bot.get().sleep(DELAY);
+				new PushButton("Yes").click();
+			}
+			catch (Exception E) {
+				E.printStackTrace();
+			}
+		}		
 		
 		log.info("*** Step 2 - Open the Mylyn View");
 		new ShellMenu("Window", "Show View", "Other...").select();
@@ -73,5 +96,5 @@ public class TestSupport {
 		return repoList;
 		
 	} /* method */
-	
+
 } /* class */
