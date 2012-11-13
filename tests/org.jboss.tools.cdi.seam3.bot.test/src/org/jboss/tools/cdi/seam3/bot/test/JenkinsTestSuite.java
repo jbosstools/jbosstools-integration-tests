@@ -10,6 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.cdi.seam3.bot.test;
 
+import org.jboss.tools.cdi.bot.test.AbstractTestSuite;
 import org.jboss.tools.cdi.seam3.bot.test.tests.DefaultBeansTest;
 import org.jboss.tools.cdi.seam3.bot.test.tests.ExactAnnotationTest;
 import org.jboss.tools.cdi.seam3.bot.test.tests.VetoAnnotationTest;
@@ -48,6 +49,6 @@ import org.junit.runners.Suite.SuiteClasses;
 	
 	**/
 })
-public class JenkinsTestSuite {
+public class JenkinsTestSuite extends AbstractTestSuite {
 		
 }

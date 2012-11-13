@@ -12,11 +12,13 @@
 package org.jboss.tools.struts.ui.bot.test.smoke;
 
 import org.eclipse.swtbot.swt.finder.SWTBot;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.jboss.tools.struts.ui.bot.test.StrutsAllBotTests;
 import org.jboss.tools.ui.bot.ext.SWTEclipseExt;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
-import org.jboss.tools.ui.bot.ext.condition.NonSystemJobRunsCondition;
+import org.jboss.tools.ui.bot.ext.condition.ShellIsActiveCondition;
+import org.jboss.tools.ui.bot.ext.condition.TaskDuration;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
@@ -41,7 +43,7 @@ public class CreateNewStrutsProjectTest extends SWTTestExt {
 	@Test
 	public void testCreateNewStrutsProject() {
 		eclipse.createNew(EntityType.STRUTS_PROJECT);
-		bot.shell(IDELabel.Shell.NEW_STRUTS_PROJECT).activate();
+		SWTBotShell shell = bot.shell(IDELabel.Shell.NEW_STRUTS_PROJECT).activate();
 		bot.textWithLabel(IDELabel.NewStrutsProjectDialog.NAME).setText(
 				StrutsAllBotTests.STRUTS_PROJECT_NAME);
 		bot.comboBoxWithLabel(IDELabel.NewStrutsProjectDialog.TEMPLATE)
@@ -50,8 +52,9 @@ public class CreateNewStrutsProjectTest extends SWTTestExt {
 		bot.sleep(1000L);
 		bot.button(IDELabel.Button.NEXT).click();
 		bot.button(IDELabel.Button.FINISH).click();
-		bot.waitUntil(new NonSystemJobRunsCondition());
-
+		bot.waitWhile(new ShellIsActiveCondition(shell), 
+				TaskDuration.VERY_LONG.getTimeout()+TaskDuration.VERY_LONG.getTimeout());
+		
 		SWTBot v = eclipse.showView(ViewType.PACKAGE_EXPLORER);
 		SWTBotTree tree = v.tree();
 		tree.setFocus();
