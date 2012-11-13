@@ -11,6 +11,11 @@
 	<artifactId>tests</artifactId>
 	<name>integration-tests.tests</name>
 	<packaging>pom</packaging>
+  
+        <properties>
+            <surefire.timeout>7200</surefire.timeout>
+            <memoryOptions2>-XX:MaxPermSize=512m</memoryOptions2>
+        </properties>
 
 	<modules>
 		<module>org.jboss.ide.eclipse.as.ui.bot.test</module>
