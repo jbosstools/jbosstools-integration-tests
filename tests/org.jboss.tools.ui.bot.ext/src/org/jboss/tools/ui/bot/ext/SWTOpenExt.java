@@ -17,6 +17,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.eclipse.swtbot.swt.finder.widgets.TimeoutException;
 import org.hamcrest.Matcher;
+import org.jboss.tools.ui.bot.ext.condition.ShellIsActiveCondition;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 import org.jboss.tools.ui.bot.ext.gen.IActionItem;
 import org.jboss.tools.ui.bot.ext.gen.IExport;
@@ -149,8 +150,8 @@ public class SWTOpenExt {
 		else{
 		  bot.menu("Window").menu("Preferences").click();				
 		}
-	  SWTBotShell shell = bot.shell("Preferences");
-		shell.activate();
+	    bot.waitUntil(new ShellIsActiveCondition("Preferences"),Timing.time5S());
+	    SWTBotShell shell = bot.shell("Preferences");
 		try{
 		selectTreeNode(pref);
 		}catch (WidgetNotFoundException wnfe){
