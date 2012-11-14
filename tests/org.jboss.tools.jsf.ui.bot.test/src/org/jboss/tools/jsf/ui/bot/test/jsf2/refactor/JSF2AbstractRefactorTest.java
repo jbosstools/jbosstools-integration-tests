@@ -3,9 +3,12 @@ package org.jboss.tools.jsf.ui.bot.test.jsf2.refactor;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.jboss.tools.jsf.ui.bot.test.JSFAutoTestCase;
 import org.jboss.tools.ui.bot.ext.Timing;
+import org.jboss.tools.ui.bot.ext.condition.ShellIsActiveCondition;
+import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.test.WidgetVariables;
 
 public abstract class JSF2AbstractRefactorTest extends JSFAutoTestCase {
@@ -21,6 +24,7 @@ public abstract class JSF2AbstractRefactorTest extends JSFAutoTestCase {
 		} catch (WidgetNotFoundException e) {
 			tree.getTreeItem(JBT_TEST_PROJECT_NAME).expandNode("WebContent").select(); //$NON-NLS-1$ //$NON-NLS-2$
 			bot.menu("File").menu("New").menu("Folder").click(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			bot.shell(IDELabel.Shell.NEW_FOLDER).activate();
 			bot.textWithLabel("Folder name:").setText("resources"); //$NON-NLS-1$ //$NON-NLS-2$
 			bot.button("Finish").click(); //$NON-NLS-1$
 		}
@@ -37,6 +41,7 @@ public abstract class JSF2AbstractRefactorTest extends JSFAutoTestCase {
 		} catch (WidgetNotFoundException e) {
 			tree.getTreeItem(JBT_TEST_PROJECT_NAME).expandNode("WebContent").expandNode("resources").select(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			bot.menu("File").menu("New").menu("Folder").click(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			bot.shell(IDELabel.Shell.NEW_FOLDER).activate();
 			bot.textWithLabel("Folder name:").setText("mycomp"); //$NON-NLS-1$ //$NON-NLS-2$
 			bot.button("Finish").click(); //$NON-NLS-1$
 		}
@@ -45,13 +50,14 @@ public abstract class JSF2AbstractRefactorTest extends JSFAutoTestCase {
 		} catch (WidgetNotFoundException e) {
 			tree.getTreeItem(JBT_TEST_PROJECT_NAME).expandNode("WebContent").expandNode("resources").expandNode("mycomp").select(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 			bot.menu("File").menu("New").menu("Other...").click(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			bot.shell("New").activate(); //$NON-NLS-1$
+			SWTBotShell shell = bot.shell("New").activate();
 			tree = bot.tree();
 			tree.expandNode("JBoss Tools Web").select("XHTML Page"); //$NON-NLS-1$ //$NON-NLS-2$
 			bot.button("Next >").click(); //$NON-NLS-1$
 			bot.textWithLabel("File name:").setText("echo"); //$NON-NLS-1$ //$NON-NLS-2$
 			bot.button("Finish").click(); //$NON-NLS-1$
 			bot.sleep(2000);
+			bot.waitWhile(new ShellIsActiveCondition(shell), Timing.time10S());
 			SWTBotEclipseEditor editor = bot
 					.editorByTitle("echo.xhtml").toTextEditor(); //$NON-NLS-1$
 			bot.menu("Edit").menu("Select All").click(); //$NON-NLS-1$ //$NON-NLS-2$
@@ -73,12 +79,13 @@ public abstract class JSF2AbstractRefactorTest extends JSFAutoTestCase {
 		} catch (WidgetNotFoundException e) {
 			tree.getTreeItem(JBT_TEST_PROJECT_NAME).select(); //$NON-NLS-1$
 			bot.menu("File").menu("New").menu("Other...").click(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			bot.shell("New").activate(); //$NON-NLS-1$
+			SWTBotShell shell = bot.shell("New").activate(); //$NON-NLS-1$
 			tree = bot.tree();
 			tree.expandNode("JBoss Tools Web").select("XHTML Page"); //$NON-NLS-1$ //$NON-NLS-2$
 			bot.button("Next >").click(); //$NON-NLS-1$
 			bot.textWithLabel("File name:").setText(JSF2_Test_Page_Name); //$NON-NLS-1$
 			bot.button("Finish").click(); //$NON-NLS-1$
+			bot.waitWhile(new ShellIsActiveCondition(shell),Timing.time10S());
 		}
 		SWTBotEclipseEditor editor = bot.editorByTitle(
 				JSF2_Test_Page_Name + ".xhtml").toTextEditor(); //$NON-NLS-1$
