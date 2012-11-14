@@ -16,10 +16,12 @@ import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.ui.bot.ext.SWTUtilExt;
 import org.jboss.tools.ui.bot.ext.Timing;
+import org.jboss.tools.ui.bot.ext.condition.ShellIsActiveCondition;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.ext.types.ViewType;
 
@@ -74,12 +76,13 @@ public class FileRenameHelper {
       // Rename file
       new SWTBotMenu(ContextMenuHelper.getContextMenu(tree, IDELabel.Menu.RENAME, true)).click();
       bot.sleep(sleepTime); 
-      bot.shell(IDELabel.Shell.RENAME_RESOURCE).activate();
+      SWTBotShell shell = bot.shell(IDELabel.Shell.RENAME_RESOURCE).activate();
       bot.textWithLabel(IDELabel.RenameResourceDialog.NEW_NAME)
         .setText(newFileName);
       bot.button(IDELabel.Button.OK).click();
       new SWTUtilExt(bot).waitForAll(60 * 1000L);
       bot.sleep(Timing.time5S());
+      bot.waitWhile(new ShellIsActiveCondition(shell),Timing.time10S());
       // Check Results
       // File with Old Name doesn't exists within WebProjects View
       try{
