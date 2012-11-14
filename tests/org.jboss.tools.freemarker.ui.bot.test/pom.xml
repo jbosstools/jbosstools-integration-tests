@@ -13,22 +13,6 @@
 
 	<packaging>eclipse-test-plugin</packaging>
 	
-
-	<profiles>
-		<profile>
-			<id>mac17</id>
-			<activation>
-				<jdk>1.7</jdk>
-				<os>
-					<name>Mac OS X</name>
-				</os>
-			</activation>
-			<properties>
-				<systemProperties>-Dawt.toolkit=sun.lwawt.macosx.LWCToolkit</systemProperties>
-			</properties>
-		</profile>
-	</profiles>
-
 	<build>
 		<plugins>
 			<plugin>
