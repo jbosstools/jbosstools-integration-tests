@@ -23,19 +23,20 @@ import org.junit.runners.Suite.SuiteClasses;
 	ViewIsPresentTest.class,
 	VariousProjectsArchiving.class,
 	ArchiveViewReSwitchingTest.class,
+	FolderTest.class,
+	FilesetTest.class,
 	BuildingArchiveNode.class,
 	BuildingProjectTest.class,
 	CreatingArchiveTest.class,
+	DeletingArchiveTest.class, 
+	ModifyingArchiveTest.class,
 	
 	/** Not stable yet
 	
-	FolderTest.class,
-	FilesetTest.class,
+	
 	UserLibrariesFilesetTest.class,
 	ArchivesSupportTest.class,
 	
-	DeletingArchiveTest.class, 
-	ModifyingArchiveTest.class,
 	DeployingArchiveTest.class,
 	
 	**/
