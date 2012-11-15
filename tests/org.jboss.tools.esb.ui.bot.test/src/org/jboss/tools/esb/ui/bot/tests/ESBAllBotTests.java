@@ -32,6 +32,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	CreateRuntimeFromSOA.class,
 	NewProjectUsingRuntime.class,
 	NewProjectUsingBundledInEAP.class,
+	NewProjectUsingBundledInSOA.class,
 	Editing.class,
 	HelloWorld.class,	
 	HelloWorldAction.class,
@@ -44,7 +45,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	WebServiceProducer.class,  // http://lists.jboss.org/pipermail/jbosstools-dev/2008-December/002559.html
 	WebServiceProducerHttp.class,
 	WebServiceProducerSocket.class
-	//SimpleEAPTest.class
+//	//SimpleEAPTest.class
 	})
 @RunWith(RequirementAwareSuite.class)
 public class ESBAllBotTests {
