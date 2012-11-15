@@ -45,7 +45,9 @@ public class NewProjectUsingBundledInSOA extends SWTTestExt{
 		/* Locate the SOA-P server */
 		SWTBot serv = servers.bot();
 		SWTBotTree servTree = serv.tree();		
-		servTree.select ("SOA-5.2  [Stopped]").contextMenu("Add and Remove...").click();
+		servTree.select ("SOA-5.3  [Stopped]").contextMenu("Add and Remove...").click();
+		
+		bot.sleep(60000l);
 		
 		/* Deploy the ESB project to the server */		
 		bot.button ("Add All >>").click();		
