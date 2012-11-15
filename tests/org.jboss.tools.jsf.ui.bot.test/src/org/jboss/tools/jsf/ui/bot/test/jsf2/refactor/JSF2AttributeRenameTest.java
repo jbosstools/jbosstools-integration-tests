@@ -4,8 +4,11 @@ import java.io.IOException;
 
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
 import org.eclipse.swtbot.swt.finder.SWTBot;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotStyledText;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
+import org.jboss.tools.ui.bot.ext.Timing;
+import org.jboss.tools.ui.bot.ext.condition.ShellIsActiveCondition;
 import org.jboss.tools.ui.bot.test.WidgetVariables;
 
 public class JSF2AttributeRenameTest extends JSF2AbstractRefactorTest {
@@ -26,11 +29,13 @@ public class JSF2AttributeRenameTest extends JSF2AbstractRefactorTest {
 		packageExplorer.bot().tree().setFocus();
 		editor.setFocus();
 		bot.menu("Refactor").menu("Rename").click(); //$NON-NLS-1$ //$NON-NLS-2$
-		bot.shell("Rename Composite Attribute").activate(); //$NON-NLS-1$
+		SWTBotShell shell = bot.shell("Rename Composite Attribute").activate(); //$NON-NLS-1$
 		bot.textWithLabel("New name:").setText("echo1"); //$NON-NLS-1$ //$NON-NLS-2$
 		bot.button("Preview >").click(); //$NON-NLS-1$
 		checkPreview();
 		bot.button("OK").click(); //$NON-NLS-1$
+		bot.sleep(Timing.time2S());
+		bot.waitWhile(new ShellIsActiveCondition(shell),Timing.time10S());
 	}
 
 	private void checkContent() throws IOException {
