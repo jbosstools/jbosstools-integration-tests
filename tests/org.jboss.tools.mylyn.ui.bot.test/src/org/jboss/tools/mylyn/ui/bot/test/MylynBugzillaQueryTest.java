@@ -2,6 +2,9 @@ package org.jboss.tools.mylyn.ui.bot.test;
 
 /*
  * Prototype test for Mylyn
+ * Test to verify that a Bugzilla simple query can be made as an anonymous user.
+ * The query should return only (1) bugzilla: 
+ * 		826087: Bugzilla mail layout change for 'new bugs' is a usability regression (this isn't about HTML)		
  * 
  */
 
@@ -15,18 +18,14 @@ import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.combo.ComboWithLabel;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.util.Bot;
 import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
-import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 //import org.jboss.reddeer.swt.condition.ButtonWithTextIsActive;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
-import org.jboss.reddeer.swt.wait.WaitWhile;
-
 
 public class MylynBugzillaQueryTest {
 
@@ -34,29 +33,71 @@ public class MylynBugzillaQueryTest {
 	protected final String expectedMylynElements[] = { "Tasks", "Local",
 			"Bugs", "Eclipse.org", "Red Hat Bugzilla",
 			"Atlassian Integrations Support", "JBoss Community" };
-	protected final String TASKNAME = "a sample task in Mylyn";
-	protected final String TASKNOTE = "a sample note for a sample task in Mylyn";
 
+	/* Simple test to verify the operation of anonymous queries of the RH and eclipse bugzilla
+	 * repos through Mylyn. 
+	 * 
+	 * Workarounds to deal with SWTBot/Mylyn issues:
+	 * 
+	 * 1) The query name as displayed by Mylyn can take either form:
+	 *     MylynBugzillaQueryTest - test query   [Red Hat Bugzilla]
+	 *     MylynBugzillaQueryTest - test query
+	 * 
+	 * This test checks for the shorter form as it is a subset of the longer form. 
+	 * 
+	 * 2) SWTBot has problems with the tree of queries displayed by Mylyn. The query names are
+	 * generally displayed, but the resulting set of bugzillas (in this case of this test, these
+	 * sets consist of only one bugzilla) are not. It sometimes helps to expand/double-click 
+	 * the query - but a better workaround is to enter the bugzilla number in the display filter
+	 * text box. 
+	 * 
+	 * Note that these problems are specific to SWTBot - they are not seen in manual use. 
+	 * 
+	 */
+	
+	/* Test for RH bugzilla */
 	@Test
-	public void TestIt() {
+	public void TestRHBugzilla() {
+		TestBugzillaQuery("Red Hat Bugzilla",
+				"MylynRHBugzillaQueryTest - test query",
+				"Bugzilla mail layout change for 'new bugs' is a usability regression (this isn't about HTML)",
+				"826087");
+	} /* test */
 
+	/* Test for eclipse bugzilla */
+	@Test
+	public void TestEclipseBugzilla() {
+		TestBugzillaQuery("Eclipse.org",
+				"MylynEclipseBugzillaQueryTest - test query",
+				"JBoss agent doesn't work remotely",
+				"188417");
+	} /* test */
+	
+	/* 
+	 * Generalized test method
+	 * Performs anonymous bugzilla query 
+	 */
+	public void TestBugzillaQuery(String targetRepo, String queryName, String bugzillaSummary, String bugzilla) {
+
+		String fullBugzillaString = bugzilla + ": " + bugzillaSummary;
+		
 		WorkbenchShell ws = new WorkbenchShell();
-		
-		List<TreeItem> repoItems = TestSupport.mylynTestSetup1(log);	
-		
+
+		List<TreeItem> repoItems = TestSupport.mylynTestSetup1(log, true);
 		ArrayList<String> repoList = TestSupport.mylynTestSetup2(repoItems, log);
-				
-		assertEquals ("Expecting 7 MyLyn items", repoItems.size(), 7);
+
+		assertEquals("Expecting 7 MyLyn items", repoItems.size(), 7);
 		for (String elementName : expectedMylynElements) {
-			assertTrue ("Mylyn element list incorrect", repoList.contains(elementName));
+			assertTrue("Mylyn element list incorrect",
+					repoList.contains(elementName));
 		}
 
 		// JBDS50_0135 User can connect Bugzilla via Mylyn connectors plugin
 		// JBDS50_0140 Red Hat Bugzilla task repository is available and can be
 		// connected
 		log.info("Step 4 - Validate connection to the Red Hat Bugzilla repo");
-		int elementIndex = repoList.indexOf("Red Hat Bugzilla");
-		repoItems.get(elementIndex).doubleClick();		
+		int elementIndex = repoList.indexOf(targetRepo);
+		repoItems.get(elementIndex).doubleClick();
 		// Bot.get().sleep(TimePeriod.NORMAL.getSeconds());
 
 		new DefaultShell("Properties for Task Repository");
@@ -73,54 +114,52 @@ public class MylynBugzillaQueryTest {
 		log.info("["
 				+ new LabeledText("Bugzilla Repository Settings").getText()
 				+ "]");
-		assertTrue("Repo Connection Properties Invalid",
-				new LabeledText("Bugzilla Repository Settings").getText()
-						.contains("Repository is valid"));
+		assertTrue("Repo Connection Properties Invalid", new LabeledText("Bugzilla Repository Settings").getText().contains("Repository is valid"));
 		new PushButton("Cancel").click();
 
-		log.info ("Step 5 - Create a anonymous bugzilla query");
+		log.info("Step 5 - Create a anonymous bugzilla query");
 		Bot.get().sleep(TimePeriod.NORMAL.getSeconds());
 
-		elementIndex = repoList.indexOf("Red Hat Bugzilla");
+		elementIndex = repoList.indexOf(targetRepo);
 		repoItems.get(elementIndex).select();
 
 		Bot.get().sleep(TimePeriod.LONG.getSeconds());
 
-		new ShellMenu("File", "New" , "Other...").select();
+		new ShellMenu("File", "New", "Other...").select();
 		new DefaultShell("New");
 		DefaultTree newElementTree = new DefaultTree();
-		List <TreeItem> newItems = newElementTree.getAllItems();	
+		List<TreeItem> newItems = newElementTree.getAllItems();
 		Bot.get().sleep(TimePeriod.NORMAL.getSeconds());
-		TestSupport.selectTreeItem (newItems, "Query", log);
-		Bot.get().sleep(TimePeriod.NORMAL.getSeconds());
-		new PushButton("Next >").click();
-		
-		new DefaultShell ("New Query");
+		TestSupport.selectTreeItem(newItems, "Query", log);
 		Bot.get().sleep(TimePeriod.NORMAL.getSeconds());
 		new PushButton("Next >").click();
+
+		new DefaultShell("New Query");
 		Bot.get().sleep(TimePeriod.NORMAL.getSeconds());
-		
-		new DefaultShell ("Edit Query");
-		Bot.get().sleep(TimePeriod.NORMAL.getSeconds());
-		new RadioButton ("Create query using form").click();
 		new PushButton("Next >").click();
-		new WaitUntil (new ButtonWithTextIsActive ("Cancel"), TimePeriod.VERY_LONG);
-		
+		Bot.get().sleep(TimePeriod.NORMAL.getSeconds());
+
+		new DefaultShell("Edit Query");
+		Bot.get().sleep(TimePeriod.NORMAL.getSeconds());
+		new RadioButton("Create query using form").click();
+		new PushButton("Next >").click();
+		new WaitUntil(new ButtonWithTextIsActive("Cancel"),
+				TimePeriod.VERY_LONG);
+
 		while (!new PushButton("Cancel").isEnabled()) {
 			log.info("I am not ready" + new PushButton("Cancel").isEnabled());
 			Bot.get().sleep(TimePeriod.NORMAL.getSeconds());
-		}		
-		
-		new DefaultShell ("Edit Query");
+		}
+
+		new DefaultShell("Edit Query");
 		Bot.get().sleep(TimePeriod.NORMAL.getSeconds());
-		new LabeledText ("Title:").setText("MylynBugzillaQueryTest - test query");
+		new LabeledText("Title:").setText(queryName);
 		Bot.get().sleep(TimePeriod.NORMAL.getSeconds());
-		// Look for bugzilla #826087
-		new ComboWithLabel ("Summary:").setText("Bugzilla mail layout change for 'new bugs' is a usability regression (this isn't about HTML)");
+		new ComboWithLabel("Summary:").setText(bugzillaSummary);
 		Bot.get().sleep(TimePeriod.NORMAL.getSeconds());
-		new PushButton("Finish").click();		
+		new PushButton("Finish").click();
 		Bot.get().sleep(TimePeriod.LONG.getSeconds());
-		
+
 		new ShellMenu("Window", "Show View", "Other...").select();
 		new DefaultShell("Show View");
 
@@ -129,10 +168,73 @@ public class MylynBugzillaQueryTest {
 		DefaultTree FeatureTree = new DefaultTree();
 		List<TreeItem> featureItems = FeatureTree.getAllItems();
 		TestSupport.selectTreeItem(featureItems, "Task List", log);
+		Bot.get().sleep(TimePeriod.LONG.getSeconds());
 		new PushButton("OK").click();
 		Bot.get().sleep(TimePeriod.LONG.getSeconds());
-	
 
+		/*
+		 * A full 30 second delay is needed here - or else the test fails to
+		 * locate the widget.
+		 */
+		Bot.get().sleep(30000l);
+		new DefaultShell("JBoss - JBoss Developer Studio");
+		Bot.get().sleep(30000l);
+		DefaultTree bugzillaTree = new DefaultTree();
+		List<TreeItem> bugzillaQueryItems = bugzillaTree.getAllItems();
+		
+		/*
+		 * There seems to be an SWTBot problem here - the full query tree is not
+		 * visible unless the first element is expanded - the workaround is to
+		 * expand it.
+		 */
+		Bot.get().text(0).setText("");
+		Bot.get().text(0).setText(bugzilla);	
+		
+		int TreeItemCounter = 0;
+		for (TreeItem i : bugzillaQueryItems) {
+			log.info("Found queryItem: " + TreeItemCounter + " " + i.getText());
+			if (i.getText().contains(queryName)) {
+				break;
+			}
+			else {
+				TreeItemCounter++;
+			}
+		}
+		
+		log.info ("The counter is: " + TreeItemCounter);
+		
+		for (TreeItem i : bugzillaQueryItems) {
+			log.warn("Mylyn queries before workaround: [" + i.getText() + "]");
+		}
+		
+		TreeItem bugzillaQueryItem = bugzillaQueryItems.get(TreeItemCounter);
+		TreeItem bugzillaItem = bugzillaQueryItems.get(TreeItemCounter + 1);
+		
+		if (!bugzillaItem.getText().equals(fullBugzillaString)) {
+
+			while (!bugzillaItem.getText().equals(fullBugzillaString)) {
+				log.warn("Query tree not full populated - SWTBot issue - will retry in 30 sec...");
+				bugzillaQueryItem.select();
+				bugzillaQueryItem.doubleClick();
+				bugzillaQueryItem.expand();
+				Bot.get().sleep(30000l);
+				bugzillaQueryItems = bugzillaTree.getAllItems();
+				bugzillaItem = bugzillaQueryItems.get(TreeItemCounter + 1);
+			}
+
+			bugzillaQueryItems = bugzillaTree.getAllItems();
+			for (TreeItem i : bugzillaQueryItems) {
+				log.info("Mylyn queries after workaround: [" + i.getText() + "]");
+			}
+		}
+
+		assertTrue("Query name mismatch - expected: " + queryName + " got "
+				+ bugzillaQueryItem.getText(), bugzillaQueryItem.getText().contains(queryName));
+		assertTrue("Bugzilla summary mismatch - expected: " + fullBugzillaString
+				+ " got " + bugzillaItem.getText(), bugzillaItem.getText().contains(fullBugzillaString));
+
+		Bot.get().sleep(30000l);
+		
 	} /* method */
 
 } /* class */

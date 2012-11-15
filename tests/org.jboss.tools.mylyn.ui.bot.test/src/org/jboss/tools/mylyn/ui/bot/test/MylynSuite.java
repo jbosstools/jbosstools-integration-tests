@@ -14,7 +14,7 @@ import org.junit.runners.Suite.SuiteClasses;
 @RunWith(Suite.class)
 
 @SuiteClasses({
-	MylynReqTest.class,
+//	MylynReqTest.class,
 	MylynBugzillaQueryTest.class
 	})
 

@@ -20,6 +20,7 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.util.Bot;
 import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
+import org.jboss.reddeer.swt.condition.ButtonWithTextIsActive;
 
 public class MylynTestBugzillaQuery {
 
@@ -33,7 +34,6 @@ public class MylynTestBugzillaQuery {
 	
 	//protected static final List<TreeItem> theRepoItems = null;
 	
-
 	/* To locate one item by name in a list */
 	public void selectTreeItem(List<TreeItem> theTreeItems, String matchingName) {
 		for (TreeItem item : theTreeItems) {
