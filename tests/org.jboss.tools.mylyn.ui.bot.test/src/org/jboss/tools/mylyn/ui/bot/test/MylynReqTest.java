@@ -35,7 +35,7 @@ public class MylynReqTest {
 
 		WorkbenchShell ws = new WorkbenchShell();
 		
-		List<TreeItem> repoItems = TestSupport.mylynTestSetup1(log);	
+		List<TreeItem> repoItems = TestSupport.mylynTestSetup1(log, true);	
 		
 		ArrayList<String> repoList = TestSupport.mylynTestSetup2(repoItems, log);
 				
@@ -111,9 +111,17 @@ public class MylynReqTest {
 		new DefaultShell("Open Task");
 
 		DefaultTable TaskTable = new DefaultTable();
-		log.info(TaskTable.rowCount());
+		log.info("Total in task table = " + TaskTable.rowCount());
+		
+		boolean taskFound = false;
+		for (int i = 0; i < TaskTable.rowCount(); i++) {
+			log.info(TaskTable.cell(i,0));
+			if (TaskTable.cell(i, 0).equals(TASKNAME)) {
+				taskFound = true;
+			}
+		}		
 
-		assertTrue ("Task not found", TaskTable.cell(0, 0).equals(TASKNAME));
+		assertTrue ("Task not found: " + TASKNAME, taskFound);
 		new PushButton("Cancel").click();
 
 	} /* method */
