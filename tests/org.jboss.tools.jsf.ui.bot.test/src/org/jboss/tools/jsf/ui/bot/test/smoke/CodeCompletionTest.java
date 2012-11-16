@@ -53,13 +53,14 @@ public class CodeCompletionTest extends JSFAutoTestCase{
         0, 
         expectedProposals);
     // Check content assist for #{msg. prefix
-    ContentAssistHelper.checkContentAssistAutoProposal(SWTTestExt.bot, 
+    expectedProposals.clear();
+    expectedProposals.add("name : String - Person");
+    ContentAssistHelper.checkContentAssistContent(SWTTestExt.bot, 
         FACELETS_TEST_PAGE,
         textForSelection, 
         16, 
         0, 
-        0,
-        "name");
+        expectedProposals);
   }
   /**
    * Test Code Completion functionality for resource
@@ -190,13 +191,14 @@ public class CodeCompletionTest extends JSFAutoTestCase{
         0);
     String textToInsert = "<ez:";
     compositeComponentContainerEditor.insertText(textToInsert);
-    // Check content assist "<ez:"
-    ContentAssistHelper.applyContentAssistAutoProposal(SWTTestExt.bot, 
+    SWTJBTExt.selectTextInSourcePane(SWTTestExt.bot, 
         JSF2_TEST_PAGE,
-        textToInsert,
-   		textToInsert.length(),
-    	0,
-    	0);
+        textToInsert, 
+        textToInsert.length(), 
+        0, 
+        0);
+    // Check content assist menu content for "<ez:"
+    contentAssist.checkContentAssist("ez:input", true);
     bot.sleep(Timing.time2S());
     compositeComponentContainerEditor.save();
     String currentLineText = compositeComponentContainerEditor.getTextOnCurrentLine();
