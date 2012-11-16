@@ -42,7 +42,6 @@ public class ModelEditor extends SWTBotEditor {
 	public static final String MAPPING_DIAGRAM = "Mapping Diagram";
 	public static final String TABLE_EDITOR = "Table Editor";
 
-	private SWTBotGefFigureCanvas canvas;
 	private SWTBotGefViewer viewer;
 
 	public ModelEditor(SWTBotEditor editor, SWTWorkbenchBot bot) {
@@ -51,9 +50,6 @@ public class ModelEditor extends SWTBotEditor {
 
 	public ModelEditor(IEditorReference editorReference, SWTWorkbenchBot bot) {
 		super(editorReference, bot);
-		Matcher matcher = widgetOfType(FigureCanvas.class);
-		canvas = new SWTBotGefFigureCanvas((FigureCanvas) bot.widget(matcher, 0));
-
 	}
 	
 	private GraphicalEditor getGraphicalEditor(String tabLabel) {
@@ -149,6 +145,7 @@ public class ModelEditor extends SWTBotEditor {
 
 	public void editFigure(SWTBotGefFigure figureBot) {
 		Rectangle rectangle = figureBot.getAbsoluteBounds();
+		SWTBotGefFigureCanvas canvas = getFigureCanvas();
 		canvas.mouseMoveLeftClick(rectangle.x + 1, rectangle.y + 1);
 		canvas.contextMenu("Edit").click();
 		bot().waitUntil(new DefaultCondition() {
@@ -157,7 +154,6 @@ public class ModelEditor extends SWTBotEditor {
 			public boolean test() throws Exception {
 				try {
 					bot.styledText();
-					log.info("APLog: OK ");
 					return true;
 				} catch (WidgetNotFoundException wnfe) {
 					return false;
@@ -170,6 +166,11 @@ public class ModelEditor extends SWTBotEditor {
 			}
 		});
 		bot().styledText();
+	}
+	
+	private SWTBotGefFigureCanvas getFigureCanvas() {
+		Matcher matcher = widgetOfType(FigureCanvas.class);
+		return new SWTBotGefFigureCanvas((FigureCanvas) bot.widget(matcher, 0));
 	}
 
 	public SWTBotGefFigure figureWithLabel(String label) {
@@ -187,6 +188,7 @@ public class ModelEditor extends SWTBotEditor {
 	}
 
 	public IFigure figure(Matcher matcher, int index) {
+		SWTBotGefFigureCanvas canvas = getFigureCanvas();
 		WaitForFigure waitForFigure = new WaitForFigure(matcher, (FigureCanvas) canvas.widget);
 		bot().waitUntil(waitForFigure);
 		return waitForFigure.get(index);

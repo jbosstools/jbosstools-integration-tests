@@ -65,7 +65,7 @@ public class ModelWizardTest extends TeiidDesignerTestCase{
 		assertTrue(projectExplorer.existsResource(PROJECT_NAME, 
 				RELATIONAL_VIEW_MODEL_NAME + ".xmi"));
 
-		assertTrue(modelEditor(RELATIONAL_SOURCE_MODEL_NAME + ".xmi").isActive());
+		assertTrue(modelEditor(RELATIONAL_VIEW_MODEL_NAME + ".xmi").isActive());
 	}
 
 	@Test
