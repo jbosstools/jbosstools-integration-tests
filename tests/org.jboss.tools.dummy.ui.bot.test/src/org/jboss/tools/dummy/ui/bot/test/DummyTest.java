@@ -7,19 +7,18 @@ import static org.junit.Assert.assertEquals;
 import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
-import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
+import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 /**
  * Dummy bot tests - designed to test jenkins slaves
  * @author jpeterka
  *
  */
-@RunWith(SWTBotJunit4ClassRunner.class)
+@Require
 public class DummyTest {
 	
 	Logger log = Logger.getLogger("");
