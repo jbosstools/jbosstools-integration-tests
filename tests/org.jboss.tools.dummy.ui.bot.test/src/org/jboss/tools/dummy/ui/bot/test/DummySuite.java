@@ -1,7 +1,7 @@
 package org.jboss.tools.dummy.ui.bot.test;
 
+import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
 import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 /**
@@ -9,7 +9,7 @@ import org.junit.runners.Suite.SuiteClasses;
  * @author Jiri Peterka
  *
  */
-@RunWith(Suite.class)
+@RunWith(RequirementAwareSuite.class)
 @SuiteClasses({DummyTest.class})
 public class DummySuite {
 
