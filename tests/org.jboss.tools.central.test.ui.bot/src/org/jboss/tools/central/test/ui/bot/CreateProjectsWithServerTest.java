@@ -189,12 +189,12 @@ public class CreateProjectsWithServerTest extends SWTTestExt{
 		projectExamplesSectionTest(name, projectName, null);
 	}
 	
-//	@Test JBIDE-12906
+	@Test
 	public void projectExamplesSectionHelloworldTest(){
-		projectExamplesSectionTest("Hello World", "helloworld");
+		projectExamplesSectionTest("Hello World", "jboss-as-helloworld");
 	}
 	
-	@Test
+//	JBIDE-13102 @Test
 	public void projectExamplesSectionHelloworldJSFTest(){
 		projectExamplesSectionTest("Hello World JSF", "jboss-as-helloworld-jsf");
 	}
@@ -214,14 +214,14 @@ public class CreateProjectsWithServerTest extends SWTTestExt{
 		projectExamplesSectionTest("Hello World OSGi", "jboss-as-helloworld-osgi");
 	}
 	
-//	@Test JBIDE-12906
+	@Test 
 	public void projectExamplesSectionNumberguessTest(){
 		projectExamplesSectionTest("Number Guess", "jboss-as-numberguess");
 	}
 	
 	@Test
 	public void projectExamplesSectionKitchensinkTest(){
-		projectExamplesSectionTest("Kitchensink", "jboss-as-kitchensink");
+		projectExamplesSectionTest("Kitchensink", "kitchensink");
 	}
 	
 	@Test
@@ -294,7 +294,7 @@ public class CreateProjectsWithServerTest extends SWTTestExt{
 				log.info("Project: "+projectName.getText()+" is properly deployed.");
 			}catch (WidgetNotFoundException wnfe){
 				//exception for Java EE Web project. It hase 4 projects, multi, multi-ear, multi-ejb and multi-web.
-				if (!projectName.getText().contains("JavaEEProject")){
+				if (!projectName.getText().contains(IDELabel.JBossCentralEditor.JAVA_EE_PROJECT.replaceAll("\\s", ""))){
 					//jms and osgi aren't project, that can be deployed to server
 					if (!projectName.getText().equals("jboss-as-helloworld-jms") && !projectName.getText().equals("jboss-as-helloworld-osgi")){
 						fail("Project <"+projectName.getText()+"> is not deployed on server correctly");
@@ -303,10 +303,6 @@ public class CreateProjectsWithServerTest extends SWTTestExt{
 			}
 		}
 		servers.removeProjectFromServers(serverName);
-	}
-	
-	private void waitForAWhile(){
-		bot.sleep(Long.MAX_VALUE);
 	}
 	
 	

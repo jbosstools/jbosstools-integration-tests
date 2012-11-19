@@ -7,6 +7,7 @@ import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.jboss.tools.ui.bot.ext.SWTFormsBotExt;
 import org.jboss.tools.ui.bot.ext.condition.TaskDuration;
+import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.ext.view.ProblemsView;
 
 public class CreateProjectsWithJava7Test extends CreateProjectsWithServerTest{
@@ -22,7 +23,7 @@ public class CreateProjectsWithJava7Test extends CreateProjectsWithServerTest{
 		super.checkExample(formsBot, formText, readme, projectName, readmeFileName);
 		projectExplorer.show();
 		formText = formText.replaceAll("\\s", "");
-		if (formText.equals("JavaEEProject")){
+		if (formText.equals(IDELabel.JBossCentralEditor.JAVA_EE_PROJECT.replaceAll("\\s", ""))){
 			setupMultiProject(formText);
 		}else if (projectName != null && (projectName.equals("jboss-as-helloworld-jms") || projectName.equals("jboss-as-helloworld-osgi"))){
 			setupProject(projectName, true, false);
