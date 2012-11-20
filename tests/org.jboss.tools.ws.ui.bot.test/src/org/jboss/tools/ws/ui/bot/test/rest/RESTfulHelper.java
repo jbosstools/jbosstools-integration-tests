@@ -19,9 +19,11 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.swtbot.swt.finder.SWTBot;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.jboss.reddeer.swt.api.Menu;
+import org.jboss.reddeer.swt.condition.JobIsRunning;
+import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
 import org.jboss.tools.ui.bot.ext.SWTOpenExt;
 import org.jboss.tools.ui.bot.ext.SWTUtilExt;
@@ -29,7 +31,6 @@ import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.config.TestConfigurator;
 import org.jboss.tools.ui.bot.ext.gen.IPreference;
 import org.jboss.tools.ui.bot.ext.helper.BuildPathHelper;
-import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.ext.view.ProblemsView;
 import org.jboss.tools.ui.bot.ext.view.ProjectExplorer;
@@ -102,6 +103,7 @@ public class RESTfulHelper {
 	}
 
 	public boolean isRestSupportEnabled(String wsProjectName) {
+		
 		return (projectExplorer.isFilePresent(wsProjectName,
 				RESTFulAnnotations.REST_EXPLORER_LABEL.getLabel()) || projectExplorer
 				.isFilePresent(wsProjectName,
@@ -149,18 +151,16 @@ public class RESTfulHelper {
 	private void configureRestSupport(String wsProjectName,
 			ConfigureOption option) {
 		projectExplorer.selectProject(wsProjectName);
-		SWTBotTree tree = projectExplorer.bot().tree();
-		SWTBotTreeItem item = tree.getTreeItem(wsProjectName);
-		ContextMenuHelper.prepareTreeItemForContextMenu(tree, item);
-		SWTBotMenu menu = new SWTBotMenu(
-				ContextMenuHelper.getContextMenu(
-				tree, IDELabel.Menu.PACKAGE_EXPLORER_CONFIGURE, false));
-		menu.menu(option == ConfigureOption.ENABLE ? RESTFulAnnotations.REST_SUPPORT_MENU_LABEL_ADD
-				.getLabel() : RESTFulAnnotations.REST_SUPPORT_MENU_LABEL_REMOVE
-				.getLabel()).click();
-		bot.sleep(Timing.time2S());		
-		util.waitForAll();
-		
+		Menu menu = null;
+		if (option == ConfigureOption.ENABLE) {
+			menu = new ContextMenu("Configure", 
+					RESTFulAnnotations.REST_SUPPORT_MENU_LABEL_ADD.getLabel());
+		} else {
+			menu = new ContextMenu("Configure", 
+					RESTFulAnnotations.REST_SUPPORT_MENU_LABEL_REMOVE.getLabel());
+		}
+		menu.select();
+		new WaitUntil(new JobIsRunning());		
 	}
 	
 	private SWTBot openPreferencePage(final String name,
