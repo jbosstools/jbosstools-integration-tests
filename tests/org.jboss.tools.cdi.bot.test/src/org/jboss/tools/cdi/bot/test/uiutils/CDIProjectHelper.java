@@ -16,6 +16,8 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.tools.cdi.bot.test.CDIConstants;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
 import org.jboss.tools.cdi.bot.test.uiutils.actions.NewFileWizardAction;
@@ -153,16 +155,12 @@ public class CDIProjectHelper extends CDITestBase {
 	 */
 	public void addCDISupport(String projectName) {
 		projectExplorer.selectProject(projectName);
-		SWTBotTree tree = projectExplorer.bot().tree();
-		SWTBotTreeItem item = tree.getTreeItem(projectName);
-		item.expand();
-		ContextMenuHelper.prepareTreeItemForContextMenu(tree, item);
-		SWTBotMenu menu = new SWTBotMenu(
-				ContextMenuHelper.getContextMenu(
-				tree, IDELabel.Menu.PACKAGE_EXPLORER_CONFIGURE, false));
-		menu.menu(CDIConstants.ADD_CDI_SUPPORT).click();
-		bot.button(IDELabel.Button.OK).click();
-		bot.waitWhile(new ProgressInformationShellIsActiveCondition(), TaskDuration.LONG.getTimeout());
+		new ContextMenu(IDELabel.Menu.PACKAGE_EXPLORER_CONFIGURE, 
+				CDIConstants.ADD_CDI_SUPPORT).select();
+		new PushButton(IDELabel.Button.OK).click();
+		bot.waitWhile(new 
+				ProgressInformationShellIsActiveCondition(), 
+				TaskDuration.LONG.getTimeout());
 	}
 	
 	/**
