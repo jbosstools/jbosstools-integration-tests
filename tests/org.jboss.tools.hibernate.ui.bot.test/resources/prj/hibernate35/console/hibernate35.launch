@@ -7,7 +7,7 @@
 <listEntry value="4"/>
 </listAttribute>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="hibernate35"/>
-<stringAttribute key="org.hibernate.eclipse.launch.CFG_XML_FILE" value="/hibernatelib/cfg/hibernate.cfg.xml"/>
+<stringAttribute key="org.hibernate.eclipse.launch.CFG_XML_FILE" value="/hibernate35/src/hibernate.cfg.xml"/>
 <stringAttribute key="org.hibernate.eclipse.launch.CONFIGURATION_FACTORY" value="CORE"/>
 <listAttribute key="org.hibernate.eclipse.launch.FILE_MAPPINGS">
 <listEntry value="/hibernate35/src/org/diagram/Customer.hbm.xml"/>
@@ -24,5 +24,5 @@
 <listEntry value="/hibernate35/src/org/diagram/Productlines.hbm.xml"/>
 <listEntry value="/hibernate35/src/org/diagram/Products.hbm.xml"/>
 </listAttribute>
-<stringAttribute key="org.hibernate.eclipse.launch.HIBERNATE_VERSION" value="4.0"/>
+<stringAttribute key="org.hibernate.eclipse.launch.HIBERNATE_VERSION" value="3.5"/>
 </launchConfiguration>
