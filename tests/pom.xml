@@ -43,6 +43,21 @@
 		<module>org.jboss.tools.vpe.ui.bot.test</module>
 		<module>org.jboss.tools.ws.ui.bot.test</module>
 	</modules>
+	<profiles>
+		<profile>
+			<id>windows-xp-memory-options</id>
+			<activation>
+				<os>
+					<name>Windows XP</name>
+					<family>Windows</family>
+				</os>
+			</activation>
+			<properties>
+				<memoryOptions1>-Xms384m -Xmx768m -XX:PermSize=192m</memoryOptions1>
+		        <memoryOptions2>-XX:MaxPermSize=384m</memoryOptions2>
+			</properties>
+		</profile>
+	</profiles>
 	
 </project>
 
