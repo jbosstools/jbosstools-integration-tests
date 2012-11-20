@@ -22,9 +22,16 @@ public class RESTFullExplorer extends SWTTestExt {
 	
 	public RESTFullExplorer(String wsProjectName) {
 		String[] pathToRestExplorer = {wsProjectName};
+		/** workaround when project in project explorer is not expanded **/
+		String[] pathToProject = {};
+		SWTBotTreeItem ti = projectExplorer.selectTreeItem(wsProjectName, pathToProject);
+		ti.expand();
+		ti.collapse();
+		ti.expand();
+		
 		restFulExplorer = projectExplorer.selectTreeItem(
 				RESTFulAnnotations.REST_EXPLORER_LABEL.getLabel(), 
-				pathToRestExplorer).expand().expand();		
+				pathToRestExplorer).expand().expand();
 	}
 	
 	/**
