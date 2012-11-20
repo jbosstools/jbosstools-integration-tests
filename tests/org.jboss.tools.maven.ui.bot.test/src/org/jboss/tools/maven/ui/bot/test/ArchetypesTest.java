@@ -20,7 +20,7 @@ import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.swt.impl.tree.ShellTreeItem;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.workbench.view.impl.WorkbenchView;
@@ -51,17 +51,17 @@ public class ArchetypesTest extends AbstractMavenSWTBotTest{
 		new WorkbenchView("Maven Repositories").open();
 		Thread.sleep(5000);
 		//new WaitUntil(new TreeCanBeExpanded(new DefaultTreeItem("Global Repositories")),TimePeriod.NORMAL);
-		new DefaultTreeItem("Global Repositories","central ("+REPO_URL+")").select();
+		new ShellTreeItem("Global Repositories","central ("+REPO_URL+")").select();
 		new ContextMenu("Rebuild Index").select();
 		new WaitUntil(new ShellWithTextIsActive("Rebuild Index"),TimePeriod.NORMAL);
 		new PushButton("OK").click();
 		SWTUtilExt botUtil = new SWTUtilExt(new SWTBotExt());
 		botUtil.waitForAll(Long.MAX_VALUE);
-		new DefaultTreeItem("Global Repositories","jboss ("+NEXUS_URL+")").select();
+		new ShellTreeItem("Global Repositories","jboss ("+NEXUS_URL+")").select();
 		new ContextMenu("Rebuild Index").select();
 		new PushButton("OK").click();
 		botUtil.waitForAll(Long.MAX_VALUE);
-		new DefaultTreeItem("Global Repositories","jboss ("+NEXUS_URL+")").select();
+		new ShellTreeItem("Global Repositories","jboss ("+NEXUS_URL+")").select();
 		new ContextMenu("Update Index").select();
 		botUtil.waitForAll(Long.MAX_VALUE);
 	}
@@ -91,7 +91,7 @@ public class ArchetypesTest extends AbstractMavenSWTBotTest{
 	private void createSimpleMavenProjectArchetype(String projectName,String projectType, String catalog) throws InterruptedException,CoreException {
 		new ShellMenu("File","Menu","Other...").select();
 		new WaitUntil(new ShellWithTextIsActive("New"),TimePeriod.NORMAL);
-		new DefaultTreeItem("Maven","Maven Project").select();
+		new ShellTreeItem("Maven","Maven Project").select();
 		new PushButton("Next >").click();
 		new CheckBox("Create a simple project (skip archetype selection)").toggle(true);
 		new PushButton("Next >").click();

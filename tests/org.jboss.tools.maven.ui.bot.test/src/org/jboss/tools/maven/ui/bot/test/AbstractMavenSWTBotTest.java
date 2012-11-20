@@ -40,7 +40,7 @@ import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.swt.impl.tree.ShellTreeItem;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.tools.maven.ui.bot.test.dialog.MavenPreferencesDialog;
@@ -94,8 +94,8 @@ public abstract class AbstractMavenSWTBotTest extends AbstractMavenProjectTestCa
 		pexplorer.getProject(projectName).select();
 		new ContextMenu("Properties").select();
 		new WaitUntil(new ShellWithTextIsActive("Properties for "+projectName), TimePeriod.NORMAL);
-		new DefaultTreeItem("Project Facets").select();
-		boolean result = new DefaultTreeItem(1,natureID).isChecked();
+		new ShellTreeItem("Project Facets").select();
+		boolean result = new ShellTreeItem(1,natureID).isChecked();
 		new PushButton("OK").click();
 		return result;
 	}

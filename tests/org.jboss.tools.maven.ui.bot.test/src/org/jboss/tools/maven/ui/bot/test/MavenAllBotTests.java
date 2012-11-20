@@ -21,19 +21,21 @@ import org.junit.runners.Suite;
  */
 @RunWith(RedDeerSuite.class)
 @Suite.SuiteClasses({
-	PerspectiveTest.class,
-	SeamProjectTest.class,
-	JSFProjectTest.class,
-	EARProjectTest.class,
-	MavenProfilesTest.class,     //fix
-	MaterializeLibraryTest.class,
 	
-	JPAConfiguratorTest.class,
-	JSFConfiguratorTest.class,
-	SeamConfiguratorTest.class,
-	CDIConfiguratorTest.class,
-	JAXRSConfiguratorTest.class,
+	//PerspectiveTest.class,
+	//SeamProjectTest.class,
+	//JSFProjectTest.class,
+	//EARProjectTest.class,
+	MavenProfilesTest.class,     //fix
+	//MaterializeLibraryTest.class,
+	
+	//JPAConfiguratorTest.class,
+	//JSFConfiguratorTest.class,
+	//SeamConfiguratorTest.class,
+	//CDIConfiguratorTest.class,
+	//JAXRSConfiguratorTest.class,
 	//ArchetypesTest.class,
+	 
 })
 public class MavenAllBotTests {
 	

@@ -7,11 +7,12 @@ public class ProjectIsBuilt implements WaitCondition {
 	
 	@Override
 	public boolean test() {
-		return new ConsoleView().getConsoleText().contains("BUILD SUCCESS");
+		ConsoleView cview = new ConsoleView();
+		cview.open();
+		return cview.getConsoleText().contains("BUILD SUCCESS");
 	}
 	@Override
 	public String description() {
-		// TODO Auto-generated method stub
-		return null;
+		return "Project was not build";
 	}
 }
