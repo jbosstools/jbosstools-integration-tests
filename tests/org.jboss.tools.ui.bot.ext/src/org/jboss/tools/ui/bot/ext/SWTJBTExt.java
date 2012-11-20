@@ -562,7 +562,7 @@ public class SWTJBTExt {
     	SWTBotShell shell = bot.activeShell();
     	bot.menu("Window").menu("Close Perspective").click();
     	shell.setFocus();
-    	SWTBotFactory.getOpen().perspective(ActionItem.Perspective.JAVA.LABEL);
+    	SWTBotFactory.getOpen().perspective(ActionItem.Perspective.RESOURCE.LABEL);
     } catch (WidgetNotFoundException e){
     	// ok, Welcome screen not present
     	log.info("Welcome window not present");
