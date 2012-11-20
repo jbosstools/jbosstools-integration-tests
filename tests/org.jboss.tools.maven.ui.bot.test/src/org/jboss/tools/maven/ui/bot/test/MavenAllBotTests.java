@@ -26,8 +26,8 @@ import org.junit.runners.Suite;
 	SeamProjectTest.class,
 	JSFProjectTest.class,
 	EARProjectTest.class,
-	MavenProfilesTest.class,     //fix
-	//MaterializeLibraryTest.class,
+	//MavenProfilesTest.class,     //fix
+	MaterializeLibraryTest.class,
 	
 	JPAConfiguratorTest.class,
 	JSFConfiguratorTest.class,
