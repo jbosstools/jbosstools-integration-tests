@@ -26,7 +26,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	FolderTest.class,
 	FilesetTest.class,
 	UserLibrariesFilesetTest.class,
-//	ArchivesSupportTest.class, 	Context menu not found -> error in test 
+	ArchivesSupportTest.class, 
 	BuildingArchiveNode.class,
 	BuildingProjectTest.class,
 	BuildingArchiveTest.class,
