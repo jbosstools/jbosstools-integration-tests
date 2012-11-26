@@ -22,6 +22,7 @@
 		<module>org.jboss.tools.archives.ui.bot.test</module>
 		<module>org.jboss.tools.bpel.ui.bot.test</module>
 		<module>org.jboss.tools.cdi.bot.test</module>
+		<module>org.jboss.tools.cdi.reddeer</module>
 		<module>org.jboss.tools.cdi.seam3.bot.test</module>
 		<module>org.jboss.tools.central.test.ui.bot</module>
 		<module>org.jboss.tools.dummy.ui.bot.test</module>
