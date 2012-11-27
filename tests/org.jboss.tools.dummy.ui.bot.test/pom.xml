@@ -24,6 +24,13 @@
 					<testSuite>org.jboss.tools.dummy.ui.bot.test</testSuite>
 					<testClass>org.jboss.tools.dummy.ui.bot.test.DummySuite</testClass>
 					<skip>${swtbot.test.skip}</skip>
+					<dependencies>
+						<dependency>
+							<type>p2-installable-unit</type>
+							<artifactId>org.eclipse.jdt.feature.group</artifactId>
+							<version>0.0.0</version>
+						</dependency>
+					</dependencies>
 				</configuration>
 			</plugin>
 		</plugins>
