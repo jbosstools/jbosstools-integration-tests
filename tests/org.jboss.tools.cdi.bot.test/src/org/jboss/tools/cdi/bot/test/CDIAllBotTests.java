@@ -30,6 +30,7 @@ import org.jboss.tools.cdi.bot.test.quickfix.test.QualifierValidationQuickFixTes
 import org.jboss.tools.cdi.bot.test.quickfix.test.QuickFixProposalsDescriptionTest;
 import org.jboss.tools.cdi.bot.test.quickfix.test.ScopeValidationQuickFixTest;
 import org.jboss.tools.cdi.bot.test.quickfix.test.StereotypeValidationQuickFixTest;
+import org.jboss.tools.cdi.bot.test.validation.CDIValidatorTest;
 import org.jboss.tools.cdi.bot.test.wizard.CDIWebProjectWizardTest;
 import org.jboss.tools.cdi.bot.test.wizard.ConfigurationPresetTest;
 import org.jboss.tools.cdi.bot.test.wizard.DynamicWebProjectWithCDITest;
@@ -51,7 +52,8 @@ import org.junit.runners.Suite.SuiteClasses;
 	ConfigurationPresetTest.class,
 	FacetTest.class, 
 	CDIWebProjectWizardTest.class,
-	DynamicWebProjectWithCDITest.class, 
+	DynamicWebProjectWithCDITest.class,
+	CDIValidatorTest.class,
 	WizardTest.class,
 	BeansEditorTest.class,
 	NamedRefactoringTest.class,
