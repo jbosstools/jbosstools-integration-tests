@@ -280,7 +280,7 @@ public class WizardTest extends CDITestBase {
 		assertTrue(code.contains("@B2"));
 		assertTrue(code.contains("@Interceptor"));
 		assertTrue(code.contains("@AroundInvoke"));
-		assertTrue(code.contains("public Object manage(InvocationContext ic) throws Exception {"));
+		assertTrue(code.contains("public Object aroundInvoke(InvocationContext ic) throws Exception {"));
 		assertFalse(code.contains("final"));
 		assertFalse(code.startsWith("/**"));
 		
