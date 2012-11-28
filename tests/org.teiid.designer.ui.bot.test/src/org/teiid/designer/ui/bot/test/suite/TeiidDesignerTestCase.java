@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.nio.channels.FileChannel;
 
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.datatools.connectivity.ConnectionProfileException;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.SWTBot;
@@ -20,7 +19,6 @@ import org.jboss.tools.ui.bot.ext.SWTUtilExt;
 import org.jboss.tools.ui.bot.ext.condition.NonSystemJobRunsCondition;
 import org.jboss.tools.ui.bot.ext.condition.TaskDuration;
 import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
-import org.jboss.tools.ui.bot.ext.helper.DatabaseHelper;
 import org.jboss.tools.ui.bot.ext.types.DriverEntity;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.ext.types.ViewType;
@@ -139,13 +137,7 @@ public class TeiidDesignerTestCase extends SWTTestExt {
 	}
 	
 	public static void prepareDatabase(DriverEntity entity, final String profileName){
-		
-		try {
-			DatabaseHelper.createDriver(entity, profileName);
-		} catch (ConnectionProfileException e) {
-			log.error("Unable to create Server Driver" + e);
-			fail();	
-		}	
+		throw new UnsupportedOperationException();
 	}
 	
 	

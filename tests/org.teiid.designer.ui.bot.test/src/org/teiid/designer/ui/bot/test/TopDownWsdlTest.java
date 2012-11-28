@@ -2,14 +2,12 @@ package org.teiid.designer.ui.bot.test;
 
 import static org.eclipse.swtbot.swt.finder.waits.Conditions.shellCloses;
 
-import org.eclipse.datatools.connectivity.ConnectionProfileException;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
-import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
 import org.jboss.tools.ui.bot.ext.config.TestConfigurator;
 import org.jboss.tools.ui.bot.ext.helper.DatabaseHelper;
 import org.jboss.tools.ui.bot.ext.helper.ResourceHelper;
@@ -37,7 +35,7 @@ import org.teiid.designer.ui.bot.test.suite.TeiidDesignerTestCase;
  * @author apodhrad
  * 
  */
-@Require(server = @Server(type = ServerType.ALL, state = ServerState.Running), perspective = "Teiid Designer")
+@Require(server = @Server(state = ServerState.Running), secureStorage = true, perspective = "Teiid Designer")
 public class TopDownWsdlTest extends TeiidDesignerTestCase {
 
 	public static final String BUNDLE = "org.teiid.designer.ui.bot.test";
@@ -75,11 +73,12 @@ public class TopDownWsdlTest extends TeiidDesignerTestCase {
 		entity.setDriverDefId("SQL Server DB");
 		entity.setUser("tpcr");
 		entity.setPassword("mm");
-		try {
-			DatabaseHelper.createDriver(entity, CONNECTION_PROFILE);
-		} catch (ConnectionProfileException e) {
-			fail("Couldn't create a driver.");
-		}
+		// Unsupported
+		// try {
+		// DatabaseHelper.createDriver(entity, CONNECTION_PROFILE);
+		// } catch (ConnectionProfileException e) {
+		// fail("Couldn't create a driver.");
+		// }
 
 		// Create Teiid instance
 		NewDefaultTeiidInstance teiid = new NewDefaultTeiidInstance();
@@ -221,7 +220,7 @@ public class TopDownWsdlTest extends TeiidDesignerTestCase {
 		SQLResult result = DatabaseDevelopmentPerspective.getInstance().getSqlResultsView()
 				.getByOperation(testSql);
 		assertEquals(SQLResult.STATUS_SUCCEEDED, result.getStatus());
-		
+
 		testSql = "EXEC ChkOrdSvc.Service1Soap.CheckOrder('<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
 				+ "<OC_Input xmlns=\"http://com.metamatrix/TPCRwsdl_VDB\">"
 				+ "<OrderDate>1993-03-31</OrderDate>"
@@ -232,13 +231,13 @@ public class TopDownWsdlTest extends TeiidDesignerTestCase {
 		sqlEditor.executeAll();
 		result = DatabaseDevelopmentPerspective.getInstance().getSqlResultsView()
 				.getByOperation(testSql);
-	 	assertEquals(SQLResult.STATUS_SUCCEEDED, result.getStatus());
-		
-	 	// Close the editor without saving
-	 	sqlEditor.close();
-	 	
-	 	// Generate the WAR file
-		
+		assertEquals(SQLResult.STATUS_SUCCEEDED, result.getStatus());
+
+		// Close the editor without saving
+		sqlEditor.close();
+
+		// Generate the WAR file
+
 		System.out.println("Done.");
 	}
 
@@ -248,7 +247,8 @@ public class TopDownWsdlTest extends TeiidDesignerTestCase {
 		wizard.setProjectName(projectName);
 		wizard.setModelName(modelName);
 		wizard.execute();
-		assertTrue("Metadata not created!", projectExplorer.existsResource(PROJECT_NAME, "TPCR_S2k.xmi"));
+		assertTrue("Metadata not created!",
+				projectExplorer.existsResource(PROJECT_NAME, "TPCR_S2k.xmi"));
 	}
 
 }
