@@ -1,6 +1,9 @@
 package org.teiid.designer.ui.bot.ext.teiid;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Properties;
 
 import org.jboss.reddeer.eclipse.datatools.ui.DatabaseProfile;
@@ -61,6 +64,21 @@ public class TeiidBot {
 	private static String getSecureStoragePassword() {
 		return TestConfigurator.currentConfig.getSecureStorage().password;
 	}
+	
+	public void createDatabaseProfile(String name, String fileName) {
+		Properties props = new Properties();
+		try {
+			props.load(new FileReader(fileName));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			return;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return;
+		}
+		createDatabaseProfile(name, props);
+		
+	}
 
 	public void createDatabaseProfile(String name, Properties props) {
 		DriverTemplate drvTemp = new DriverTemplate(props.getProperty("db.template"),
@@ -90,7 +108,6 @@ public class TeiidBot {
 		ConnectionProfileWizard wizard = new ConnectionProfileWizard();
 		wizard.open();
 		wizard.createDatabaseProfile(dbProfile);
-
 	}
 
 }
