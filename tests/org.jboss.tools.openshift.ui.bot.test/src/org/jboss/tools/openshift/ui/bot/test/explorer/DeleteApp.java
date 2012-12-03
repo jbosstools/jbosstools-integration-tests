@@ -20,7 +20,7 @@ public class DeleteApp extends SWTTestExt {
 				.bot()
 				.tree()
 				.getAllItems()[0] // get 1st account in OpenShift Explorer
-				.doubleClick(); // collapse account
+				.expand(); // expand account
 
 		account.getNode(0).contextMenu(OpenShiftUI.Labels.EXPLORER_DELETE_APP)
 				.click();
@@ -34,15 +34,13 @@ public class DeleteApp extends SWTTestExt {
 				account.getItems().length == 0);
 
 		projectExplorer.show();
-		projectExplorer.bot().tree(0).contextMenu("Delete").click();
-
+		
+		bot.tree().getAllItems()[0].contextMenu("Delete").click();
 		bot.waitForShell("Delete Resources");
 		bot.checkBox().select();
 		bot.button(IDELabel.Button.OK).click();
 
-		assertFalse("The project still exists!",
-				projectExplorer.existsResource(TestProperties
-						.get("openshift.jbossapp.name")));
+		assertFalse("The project still exists!",bot.tree().getAllItems().length > 0);
 		
 	}
 }

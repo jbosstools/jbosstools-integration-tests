@@ -2,7 +2,8 @@ package org.jboss.tools.openshift.ui.bot.test.explorer;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Date;
+
+import static org.jboss.tools.openshift.ui.bot.test.OpenShiftJenkinsBotTests.JBOSS_APP_NAME;
 
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.waits.Conditions;
@@ -39,8 +40,6 @@ public class CreateApp extends SWTTestExt {
 
 	@Test
 	public void canCreateAppFromExplorer() {
-		String jboss_app_name =  TestProperties.get("openshift.jbossapp.name") + new Date().getTime();
-		
 		// open OpenShift Explorer
 		SWTBotView openshiftExplorer = open
 				.viewOpen(OpenShiftUI.Explorer.iView);
@@ -56,7 +55,7 @@ public class CreateApp extends SWTTestExt {
 		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_20S, TIME_1S);
 
 		// fill app info
-		bot.textInGroup("New application", 0).setText(jboss_app_name);
+		bot.textInGroup("New application", 0).setText(JBOSS_APP_NAME);
 
 		log.info("*** OpenShift SWTBot Tests: Application name set. ***");
 
@@ -85,7 +84,7 @@ public class CreateApp extends SWTTestExt {
 
 		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 2, TIME_1S);
 
-		servers.serverExists(jboss_app_name	+ " OpenShift Server");
+		servers.serverExists(JBOSS_APP_NAME	+ " OpenShift Server");
 
 		log.info("*** OpenShift SWTBot Tests: OpenShift Server Adapter created. ***");
 	}
