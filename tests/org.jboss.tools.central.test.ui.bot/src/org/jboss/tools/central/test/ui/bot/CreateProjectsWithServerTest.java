@@ -135,31 +135,41 @@ public class CreateProjectsWithServerTest extends SWTTestExt{
 	
 	@Test
 	public void createProjectSectionJavaEEWebProjectTest(){
-		checkExample(null, IDELabel.JBossCentralEditor.JAVA_EE_WEB_PROJECT, true);
+		checkExample(null, IDELabel.JBossCentralEditor.JAVA_EE_WEB_PROJECT, true, false);
 		canBeDeployedTest();
 	}
 	
 	@Test
+	public void createProjectSectionJavaEEWebProjectBlankTest(){
+		checkExample(null, IDELabel.JBossCentralEditor.JAVA_EE_WEB_PROJECT, false, true);
+	}
+	
+	@Test
 	public void createProjectSectionJavaEEProjectTest(){
-		checkExample(null, IDELabel.JBossCentralEditor.JAVA_EE_PROJECT, true);
+		checkExample(null, IDELabel.JBossCentralEditor.JAVA_EE_PROJECT, true, false);
+	}
+	
+	@Test
+	public void createProjectSectionJavaEEProjectBlankTest(){
+		checkExample(null, IDELabel.JBossCentralEditor.JAVA_EE_PROJECT, false, true);
 		canBeDeployedTest();
 	}
 	
 	@Test
 	public void createProjectSectionHTML5ProjectTest(){
-		checkExample(null, IDELabel.JBossCentralEditor.HTML5_PROJECT, true);
+		checkExample(null, IDELabel.JBossCentralEditor.HTML5_PROJECT, true, false);
 		canBeDeployedTest();
 	}
 	
 	@Test
 	public void createProjectSectionRichFacesProjectTest(){
-		checkExample(null, IDELabel.JBossCentralEditor.RICHFACES_PROJECT, true);
+		checkExample(null, IDELabel.JBossCentralEditor.RICHFACES_PROJECT, true, false);
 		canBeDeployedTest();
 	}
 	
 	@Test
 	public void createProjectSectionSpringMVCProjectTest(){
-		checkExample(null, IDELabel.JBossCentralEditor.SPRING_MVC_PROJECT, true);
+		checkExample(null, IDELabel.JBossCentralEditor.SPRING_MVC_PROJECT, true, false);
 		canBeDeployedTest();
 	}
 	
@@ -180,7 +190,7 @@ public class CreateProjectsWithServerTest extends SWTTestExt{
 		if (readmeFile == null){
 			checkExample(formsBot, name, true, projectName);
 		}else{
-			checkExample(formsBot, name, true, projectName, readmeFile);
+			checkExample(formsBot, name, true, false, projectName, readmeFile);
 		}
 		canBeDeployedTest();
 	}
@@ -306,8 +316,8 @@ public class CreateProjectsWithServerTest extends SWTTestExt{
 	}
 	
 	
-	private void checkExample(SWTFormsBotExt formsBot, String formText, boolean readme){
-		checkExample(formsBot, formText, readme, null, null);
+	private void checkExample(SWTFormsBotExt formsBot, String formText, boolean readme, boolean blank){
+		checkExample(formsBot, formText, readme, blank, null, null);
 	}
 
 	/**
@@ -318,7 +328,7 @@ public class CreateProjectsWithServerTest extends SWTTestExt{
 	 */
 	
 	private void checkExample(SWTFormsBotExt formsBot, String formText, boolean readme, String projectName){
-		checkExample(formsBot, formText, readme, projectName, null);
+		checkExample(formsBot, formText, readme, false, projectName, null);
 	}
 	
 	/**
@@ -329,7 +339,7 @@ public class CreateProjectsWithServerTest extends SWTTestExt{
 	 * @param readmeFileName 
 	 */
 	
-	protected void checkExample(SWTFormsBotExt formsBot, String formText, boolean readme, String projectName, String readmeFileName){
+	protected void checkExample(SWTFormsBotExt formsBot, String formText, boolean readme, boolean blank, String projectName, String readmeFileName){
 		problems.show();
 		if (formsBot==null){
 			bot.hyperlink(formText).click();
@@ -351,7 +361,9 @@ public class CreateProjectsWithServerTest extends SWTTestExt{
 			}catch (WidgetNotFoundException ex){
 				//everything fine
 			}
-			//bot.checkBox(0); //Create a blank project checkbox
+			if (blank){
+				bot.checkBox(0); //Create a blank project checkbox
+			}
 			wizard.next();
 			bot.comboBox().setText(formText.replaceAll("\\s", ""));
 			if (wizard.canNext()) wizard.next();
