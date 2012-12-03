@@ -18,9 +18,9 @@ public class CreateProjectsWithJava7Test extends CreateProjectsWithServerTest{
 	
 	@Override
 	protected void checkExample(SWTFormsBotExt formsBot, String formText,
-			boolean readme, String projectName, String readmeFileName) {
+			boolean readme, boolean blank, String projectName, String readmeFileName) {
 		
-		super.checkExample(formsBot, formText, readme, projectName, readmeFileName);
+		super.checkExample(formsBot, formText, readme, blank, projectName, readmeFileName);
 		projectExplorer.show();
 		formText = formText.replaceAll("\\s", "");
 		if (formText.equals(IDELabel.JBossCentralEditor.JAVA_EE_PROJECT.replaceAll("\\s", ""))){
