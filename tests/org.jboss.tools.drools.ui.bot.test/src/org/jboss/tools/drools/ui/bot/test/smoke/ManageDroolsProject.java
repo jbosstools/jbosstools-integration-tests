@@ -27,7 +27,6 @@ import org.jboss.tools.ui.bot.ext.types.EntityType;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.ext.types.ViewType;
 import org.jboss.tools.ui.bot.ext.view.ProblemsView;
-import org.jboss.tools.ui.bot.test.WidgetVariables;
 import org.junit.Test;
 /**
  * Test managing of Drools Project
@@ -141,7 +140,7 @@ public class ManageDroolsProject extends SWTTestExt{
     
     bot.sleep(TIME_1S);
     
-    SWTBot webProjects = bot.viewByTitle(WidgetVariables.PACKAGE_EXPLORER).bot();
+    SWTBot webProjects = bot.viewByTitle("Package Explorer").bot();
     SWTBotTree tree = webProjects.tree();
 
     tree.setFocus();
