@@ -44,8 +44,8 @@ public class ResourceOpenOnTest extends Seam3TestBase {
 		packageExplorer.openFile(projectName, CDIConstants.SRC, 
 				"cdi.seam", className);
 
-		assertTrue(openOnUtil.openOnByOption(CDIConstants.RESOURCE_ANNOTATION, 
-				className, "Open Resource"));
+		openOnUtil.openOnByOption(CDIConstants.RESOURCE_ANNOTATION, 
+				className, "Open Resource");
 		
 		String destinationFile = getEd().getTitle();		
 		assertTrue("ERROR: redirected to " + destinationFile,
@@ -58,8 +58,8 @@ public class ResourceOpenOnTest extends Seam3TestBase {
 		
 		setEd(bot.swtBotEditorExtByTitle(className));
 		editResourceUtil.replaceInEditor("WEB", "META");
-		assertTrue(openOnUtil.openOnByOption(CDIConstants.RESOURCE_ANNOTATION, 
-				className, "Open Resource"));
+		openOnUtil.openOnByOption(CDIConstants.RESOURCE_ANNOTATION, 
+				className, "Open Resource");
 		
 		destinationFile = getEd().getTitle();
 		assertTrue("ERROR: redirected to " + destinationFile,

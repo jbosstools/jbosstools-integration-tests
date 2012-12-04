@@ -30,24 +30,29 @@ public class OpenOnHelper extends CDITestBase {
 	 * @param titleName
 	 * @param chosenOption
 	 */
-	public boolean openOnByOption(String openOnString, String titleName, String chosenOption) {
+	public void openOnByOption(String openOnString, String titleName, String chosenOption) {
 		selectTextForOpenOn(openOnString, titleName);
 		bot.menu(CDIConstants.NAVIGATE).menu(CDIConstants.OPEN_HYPERLINK).click();			
 		bot.sleep(Timing.time3S());
 		SWTBotTable table = bot.activeShell().bot().table(0);
 		
 		boolean optionFound = false;
+		String foundOptions = "";
 		
 		for (int i = 0; i < table.rowCount(); i++) {
-			if (table.getTableItem(i).getText().contains(chosenOption)) {
+			String foundOption = table.getTableItem(i).getText();
+			foundOptions = foundOptions + foundOption + ", ";
+			if (foundOption.contains(chosenOption)) {
 				optionFound = true;
 				table.click(i, 0);					
 				break;
 			}
-		}									 
+		}
+		foundOptions = foundOptions.substring(0, foundOptions.length() - 3);
+		assertTrue(chosenOption + " was not found in open on options of " 
+				+ openOnString + " Found: " + foundOptions, optionFound);
 		bot.sleep(Timing.time1S());
 		setEd(bot.activeEditor().toTextEditor());
-		return optionFound;
 	}
 	
 	/**

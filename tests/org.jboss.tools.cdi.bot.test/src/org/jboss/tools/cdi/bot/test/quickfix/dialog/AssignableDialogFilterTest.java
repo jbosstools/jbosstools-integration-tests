@@ -31,7 +31,7 @@ public class AssignableDialogFilterTest extends CDITestBase {
 		setEd(packageExplorer.openFile(getProjectName(), CDIConstants.SRC, 
 				getPackageName(), appClass).toTextEditor());
 		
-		assertTrue(openOnUtil.openOnByOption("animal", appClass, CDIConstants.SHOW_ALL_ASSIGNABLE));			
+		openOnUtil.openOnByOption("animal", appClass, CDIConstants.SHOW_ALL_ASSIGNABLE);			
 		
 		AssignableBeansDialog assignDialog = new AssignableBeansDialog(bot.shell("Assignable Beans"));
 		
@@ -77,7 +77,7 @@ public class AssignableDialogFilterTest extends CDITestBase {
 		setEd(packageExplorer.openFile(getProjectName(), CDIConstants.SRC, 
 				getPackageName(), appClass).toTextEditor());
 		
-		assertTrue(openOnUtil.openOnByOption("animal", appClass, CDIConstants.SHOW_ALL_ASSIGNABLE));			
+		openOnUtil.openOnByOption("animal", appClass, CDIConstants.SHOW_ALL_ASSIGNABLE);			
 		
 		AssignableBeansDialog assignDialog = new AssignableBeansDialog(bot.shell("Assignable Beans"));
 		

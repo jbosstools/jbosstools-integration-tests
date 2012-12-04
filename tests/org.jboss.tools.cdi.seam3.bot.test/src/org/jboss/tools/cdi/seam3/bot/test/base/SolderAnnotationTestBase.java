@@ -97,13 +97,15 @@ public class SolderAnnotationTestBase extends Seam3TestBase {
 	 * @param producer
 	 * @param producerMethod
 	 */
-	private void testProperInject(String projectName, String openOnString, String openedClass, 
+	private void testProperInject(String projectName, String openOnString, 
+			String openedClass, 
 			boolean producer, String producerMethod) {
 		
 		SWTBotTreeItem[] validationProblems = quickFixHelper.getProblems(
 				ProblemsType.WARNINGS, projectName);
 		assertTrue(validationProblems.length == 0);
-		assertTrue(openOnUtil.openOnByOption(openOnString, APPLICATION_CLASS, CDIConstants.OPEN_INJECT_BEAN));
+		openOnUtil.openOnByOption(openOnString, APPLICATION_CLASS, 
+				CDIConstants.OPEN_INJECT_BEAN);
 		assertTrue(getEd().getTitle().equals(openedClass + ".java"));
 		if (producer) {
 			assertTrue(getEd().getSelection().equals(producerMethod));

@@ -131,16 +131,13 @@ public class VetoAnnotationTest extends SolderAnnotationTestBase {
 		setEd(packageExplorer.openFile(projectName, CDIConstants.SRC, 
 				getPackageName(), APPLICATION_CLASS).toTextEditor());
 		
-		assertFalse(openOnUtil.openOnByOption(eventAttribute, APPLICATION_CLASS, 
-				CDIConstants.OPEN_CDI_OBSERVER_METHOD));
-		
 		setEd(packageExplorer.openFile(projectName, CDIConstants.SRC, 
 				getPackageName(), vetoBean + ".java").toTextEditor());
 		editResourceUtil.replaceInEditor("@Veto", "");
 		editResourceUtil.replaceInEditor("import org.jboss.solder.core.Veto;", "");
 		
-		assertTrue(openOnUtil.openOnByOption(eventAttribute, APPLICATION_CLASS, 
-				CDIConstants.OPEN_CDI_OBSERVER_METHOD));
+		openOnUtil.openOnByOption(eventAttribute, APPLICATION_CLASS, 
+				CDIConstants.OPEN_CDI_OBSERVER_METHOD);
 		assertTrue(getEd().getTitle().equals(vetoBean + ".java"));
 		assertTrue(getEd().getSelection().equals("method"));
 		

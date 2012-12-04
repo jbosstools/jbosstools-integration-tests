@@ -136,16 +136,13 @@ public class RequiresAnnotationTest extends SolderAnnotationTestBase {
 		setEd(packageExplorer.openFile(projectName, CDIConstants.SRC, 
 				getPackageName(), APPLICATION_CLASS).toTextEditor());
 		
-		assertFalse(openOnUtil.openOnByOption(eventAttribute, APPLICATION_CLASS, 
-				CDIConstants.OPEN_CDI_OBSERVER_METHOD));
-		
 		setEd(packageExplorer.openFile(projectName, CDIConstants.SRC, 
 				getPackageName(), managerProducer + ".java").toTextEditor());
 		editResourceUtil.replaceInEditor("@Requires(\"cdi.test." + manager + "\")",
 				"@Requires(\"" + getPackageName() + "." + manager + "\")");
 		
-		assertTrue(openOnUtil.openOnByOption(eventAttribute, APPLICATION_CLASS, 
-				CDIConstants.OPEN_CDI_OBSERVER_METHOD));
+		openOnUtil.openOnByOption(eventAttribute, APPLICATION_CLASS, 
+				CDIConstants.OPEN_CDI_OBSERVER_METHOD);
 		assertTrue(getEd().getTitle().equals(managerProducer + ".java"));
 		assertTrue(getEd().getSelection().equals("method"));
 		
