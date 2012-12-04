@@ -7,6 +7,8 @@ import org.jboss.tools.hb.ui.bot.test.console.CreateConsoleConfigurationTest;
 import org.jboss.tools.hb.ui.bot.test.criteria.CriteriaEditorTest;
 import org.jboss.tools.hb.ui.bot.test.diagram.MappingDiagramTest;
 import org.jboss.tools.hb.ui.bot.test.generation.CreateCodeGenerationConfiguration;
+import org.jboss.tools.hb.ui.bot.test.generation.GenerateJPAHibernateAnnotationsContextMenu;
+import org.jboss.tools.hb.ui.bot.test.generation.GenerateJPAHibernateAnnotationsMenuBar;
 import org.jboss.tools.hb.ui.bot.test.generation.JPADDLGenerationTest;
 import org.jboss.tools.hb.ui.bot.test.generation.JPAEntitiesGenerationTest;
 import org.jboss.tools.hb.ui.bot.test.generation.RunSchemaExportTest;
@@ -40,10 +42,12 @@ import org.junit.runners.Suite.SuiteClasses;
 	/* diagram */
 	MappingDiagramTest.class,
 	/* generation */
+	GenerateJPAHibernateAnnotationsContextMenu.class, 
+	GenerateJPAHibernateAnnotationsMenuBar.class, 
 	CreateCodeGenerationConfiguration.class,
 	JPADDLGenerationTest.class,
 	JPAEntitiesGenerationTest.class,
-	RunSchemaExportTest.class,
+	RunSchemaExportTest.class,	
 	/* hql */
 	HQLEditorTest.class,
 	/* jpa */
