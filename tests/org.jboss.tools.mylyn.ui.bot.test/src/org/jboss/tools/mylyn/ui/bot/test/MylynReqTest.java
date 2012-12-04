@@ -16,7 +16,7 @@ import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.impl.tree.DefaultTree;
+import org.jboss.reddeer.swt.impl.tree.ViewTree;
 import org.jboss.reddeer.swt.util.Bot;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
@@ -83,7 +83,7 @@ public class MylynReqTest {
 
 		new ShellMenu("File", "New" , "Other...").select();
 		new DefaultShell("New");
-		DefaultTree newElementTree = new DefaultTree();
+		ViewTree newElementTree = new ViewTree();
 		List <TreeItem> newItems = newElementTree.getAllItems();
 
 		Bot.get().sleep(TimePeriod.NORMAL.getSeconds());

@@ -8,7 +8,8 @@ Bundle-Activator: org.jboss.tools.mylyn.ui.bot.test.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.apache.log4j,
- org.eclipse.swtbot.go;bundle-version="2.0.5"
+ org.eclipse.swtbot.go;bundle-version="2.0.5",
+ org.jboss.reddeer.swt
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: org.jboss.reddeer.swt.api,

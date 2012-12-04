@@ -10,12 +10,12 @@ import java.util.List;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
-import org.jboss.reddeer.swt.impl.combo.ComboWithLabel;
+import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.impl.tree.DefaultTree;
+import org.jboss.reddeer.swt.impl.tree.ViewTree;
 import org.jboss.reddeer.swt.util.Bot;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
@@ -73,12 +73,14 @@ public class TestSupport {
 
 		/* Verify that the expected repos are defined */
 		log.info("***Step 3 - Verify that the Mylyn Features are Present");
-		DefaultTree FeatureTree = new DefaultTree();
+		ViewTree FeatureTree = new ViewTree();
 		List<TreeItem> featureItems = FeatureTree.getAllItems();
 		selectTreeItem(featureItems, "Task Repositories", log);
 		new PushButton("OK").click();
 		
-		DefaultTree RepoTree = new DefaultTree();
+		Bot.get().sleep(30000l);
+		
+		ViewTree RepoTree = new ViewTree();
 		List<TreeItem> repoItems = RepoTree.getAllItems();
 		
 		return repoItems;

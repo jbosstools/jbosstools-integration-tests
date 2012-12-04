@@ -17,7 +17,7 @@ import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.impl.tree.DefaultTree;
+import org.jboss.reddeer.swt.impl.tree.ViewTree;
 import org.jboss.reddeer.swt.util.Bot;
 import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 
@@ -60,12 +60,12 @@ public class MylynTestBugzillaQuery {
 
 		/* Verify that the expected repos are defined */
 		log.info("Step 3 - Verify that the Mylyn Features are Present");
-		DefaultTree FeatureTree = new DefaultTree();
+		ViewTree FeatureTree = new ViewTree();
 		List<TreeItem> featureItems = FeatureTree.getAllItems();
 		selectTreeItem(featureItems, "Task Repositories");
 		new PushButton("OK").click();
 		
-		DefaultTree RepoTree = new DefaultTree();
+		ViewTree RepoTree = new ViewTree();
 		List<TreeItem> repoItems = RepoTree.getAllItems();
 		
 		return repoItems;
