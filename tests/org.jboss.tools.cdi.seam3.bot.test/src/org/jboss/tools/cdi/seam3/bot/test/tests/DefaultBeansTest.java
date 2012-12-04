@@ -42,8 +42,8 @@ public class DefaultBeansTest extends SolderAnnotationTestBase {
 		packageExplorer.openFile(projectName, CDIConstants.SRC, 
 				getPackageName(), APPLICATION_CLASS);
 		
-		assertFalse(openOnUtil.openOnByOption("managerImpl", APPLICATION_CLASS, CDIConstants.SHOW_ALL_ASSIGNABLE));			
-		openOnUtil.openOnByOption("managerImpl", APPLICATION_CLASS, CDIConstants.OPEN_INJECT_BEAN);
+		openOnUtil.openOnByOption("managerImpl", APPLICATION_CLASS, 
+				CDIConstants.OPEN_INJECT_BEAN);
 		String destinationFile = getEd().getTitle();		
 		assertTrue("ERROR: redirected to " + destinationFile,
 					destinationFile.equals("DefaultOne.java"));
@@ -55,15 +55,18 @@ public class DefaultBeansTest extends SolderAnnotationTestBase {
 
 		importSeam3ProjectWithLibrary(projectName, SeamLibrary.SOLDER_3_1);
 		
-		wizardExt.bean(getPackageName(), "ManagerImpl", true, false, false, false, true, false, null,
+		wizardExt.bean(getPackageName(), "ManagerImpl", true, false, false, 
+				false, true, false, null,
 				"Manager", null, null).finish();
 		
 		packageExplorer.openFile(projectName, CDIConstants.SRC, 
 				getPackageName(), APPLICATION_CLASS);
 		
-		assertTrue(openOnUtil.openOnByOption("managerImpl", APPLICATION_CLASS, CDIConstants.SHOW_ALL_ASSIGNABLE));			
+		openOnUtil.openOnByOption("managerImpl", APPLICATION_CLASS, 
+				CDIConstants.SHOW_ALL_ASSIGNABLE);			
 		
-		AssignableBeansDialogExt assignDialog = new AssignableBeansDialogExt(bot.shell("Assignable Beans"));
+		AssignableBeansDialogExt assignDialog = new AssignableBeansDialogExt(
+				bot.shell("Assignable Beans"));
 		
 		List<String> allBeans = assignDialog.getAllBeans();
 		assertTrue(allBeans.size() == 2);
@@ -75,7 +78,8 @@ public class DefaultBeansTest extends SolderAnnotationTestBase {
 		assertTrue(allBeans.size() == 1);
 		assertTrue(allBeans.get(0).contains("DefaultOne"));
 		
-		openOnUtil.openOnByOption("managerImpl", APPLICATION_CLASS, CDIConstants.OPEN_INJECT_BEAN);
+		openOnUtil.openOnByOption("managerImpl", APPLICATION_CLASS, 
+				CDIConstants.OPEN_INJECT_BEAN);
 		String destinationFile = getEd().getTitle();		
 		assertTrue("ERROR: redirected to " + destinationFile,
 					destinationFile.equals("DefaultOne.java"));
@@ -87,15 +91,17 @@ public class DefaultBeansTest extends SolderAnnotationTestBase {
 
 		importSeam3ProjectWithLibrary(projectName, SeamLibrary.SOLDER_3_1);
 		
-		wizardExt.bean(getPackageName(), "ManagerImpl", true, false, false, false, false, false, null,
-				"Manager", null, null).finish();
+		wizardExt.bean(getPackageName(), "ManagerImpl", true, false, false, 
+				 false, false, false, null, "Manager", null, null).finish();
 		
 		packageExplorer.openFile(projectName, CDIConstants.SRC, 
 				getPackageName(), APPLICATION_CLASS);
 		
-		assertTrue(openOnUtil.openOnByOption("managerImpl", APPLICATION_CLASS, CDIConstants.SHOW_ALL_ASSIGNABLE));			
+		openOnUtil.openOnByOption("managerImpl", APPLICATION_CLASS, 
+				CDIConstants.SHOW_ALL_ASSIGNABLE);			
 		
-		AssignableBeansDialogExt assignDialog = new AssignableBeansDialogExt(bot.shell("Assignable Beans"));
+		AssignableBeansDialogExt assignDialog = new AssignableBeansDialogExt(
+				bot.shell("Assignable Beans"));
 		
 		List<String> allBeans = assignDialog.getAllBeans();
 		assertTrue(allBeans.size() == 2);
@@ -119,13 +125,14 @@ public class DefaultBeansTest extends SolderAnnotationTestBase {
 
 		importSeam3ProjectWithLibrary(projectName, SeamLibrary.SOLDER_3_1);
 		
-		wizardExt.bean(getPackageName(), "ManagerImpl", true, false, false, false, true, true, null,
-				"Manager", null, null).finish();
+		wizardExt.bean(getPackageName(), "ManagerImpl", true, false, false, 
+				false, true, true, null, "Manager", null, null).finish();
 		
 		packageExplorer.openFile(projectName, CDIConstants.SRC, 
 				getPackageName(), APPLICATION_CLASS);
 		
-		assertTrue(openOnUtil.openOnByOption("managerImpl", APPLICATION_CLASS, CDIConstants.SHOW_ALL_ASSIGNABLE));			
+		openOnUtil.openOnByOption("managerImpl", APPLICATION_CLASS, 
+				CDIConstants.SHOW_ALL_ASSIGNABLE);			
 		
 		AssignableBeansDialogExt assignDialog = new AssignableBeansDialogExt(bot.shell("Assignable Beans"));
 		

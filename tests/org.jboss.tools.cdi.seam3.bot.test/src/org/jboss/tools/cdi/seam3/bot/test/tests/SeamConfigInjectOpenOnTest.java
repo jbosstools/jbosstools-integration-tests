@@ -41,8 +41,8 @@ public class SeamConfigInjectOpenOnTest extends Seam3TestBase {
 	@Test
 	public void testBasicInjectOpenOn() {
 		
-		assertTrue(openOnUtil.openOnByOption("path1", 
-				"Report.java", "Open Resource in seam-beans.xml"));
+		openOnUtil.openOnByOption("path1", 
+				"Report.java", "Open Resource in seam-beans.xml");
 		assertExpectedOpenedClass(SEAM_CONFIG, "<r:Resource path=\"value\">");
 		
 	}
@@ -50,8 +50,8 @@ public class SeamConfigInjectOpenOnTest extends Seam3TestBase {
 	@Test
 	public void testQualifierInjectOpenOn() {
 		
-		assertTrue(openOnUtil.openOnByOption("path2", 
-				"Report.java", "Open Resource in seam-beans.xml"));
+		openOnUtil.openOnByOption("path2", 
+				"Report.java", "Open Resource in seam-beans.xml");
 		assertExpectedOpenedClass(SEAM_CONFIG, "<r:Resource>");
 		
 	}

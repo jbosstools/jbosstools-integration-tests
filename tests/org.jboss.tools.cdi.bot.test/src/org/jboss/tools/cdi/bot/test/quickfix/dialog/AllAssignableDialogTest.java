@@ -31,7 +31,7 @@ public class AllAssignableDialogTest extends CDITestBase {
 		setEd(packageExplorer.openFile(getProjectName(), CDIConstants.SRC, 
 				getPackageName(), appClass).toTextEditor());
 		
-		assertTrue(openOnUtil.openOnByOption("manager", appClass, CDIConstants.SHOW_ALL_ASSIGNABLE));			
+		openOnUtil.openOnByOption("manager", appClass, CDIConstants.SHOW_ALL_ASSIGNABLE);			
 		
 		AssignableBeansDialog assignDialog = new AssignableBeansDialog(bot.shell("Assignable Beans"));
 		
@@ -54,7 +54,7 @@ public class AllAssignableDialogTest extends CDITestBase {
 		setEd(packageExplorer.openFile(getProjectName(), CDIConstants.SRC, 
 				getPackageName(), appClass).toTextEditor());
 		
-		assertTrue(openOnUtil.openOnByOption("manager", appClass, CDIConstants.SHOW_ALL_ASSIGNABLE));			
+		openOnUtil.openOnByOption("manager", appClass, CDIConstants.SHOW_ALL_ASSIGNABLE);			
 		
 		AssignableBeansDialog assignDialog = new AssignableBeansDialog(bot.shell("Assignable Beans"));
 		
@@ -76,7 +76,7 @@ public class AllAssignableDialogTest extends CDITestBase {
 		setEd(packageExplorer.openFile(getProjectName(), CDIConstants.SRC, 
 				getPackageName(), appClass).toTextEditor());
 		
-		assertTrue(openOnUtil.openOnByOption("manager", appClass, CDIConstants.SHOW_ALL_ASSIGNABLE));			
+		openOnUtil.openOnByOption("manager", appClass, CDIConstants.SHOW_ALL_ASSIGNABLE);			
 		
 		AssignableBeansDialog assignDialog = new AssignableBeansDialog(bot.shell("Assignable Beans"));
 		
@@ -98,7 +98,7 @@ public class AllAssignableDialogTest extends CDITestBase {
 		setEd(packageExplorer.openFile(getProjectName(), CDIConstants.SRC, 
 				getPackageName(), appClass).toTextEditor());
 		
-		assertTrue(openOnUtil.openOnByOption("manager", appClass, CDIConstants.SHOW_ALL_ASSIGNABLE));			
+		openOnUtil.openOnByOption("manager", appClass, CDIConstants.SHOW_ALL_ASSIGNABLE);			
 		
 		AssignableBeansDialog assignDialog = new AssignableBeansDialog(bot.shell("Assignable Beans"));
 		
@@ -120,7 +120,7 @@ public class AllAssignableDialogTest extends CDITestBase {
 		setEd(packageExplorer.openFile(getProjectName(), CDIConstants.SRC, 
 				getPackageName(), appClass).toTextEditor());
 		
-		assertTrue(openOnUtil.openOnByOption("manager", appClass, CDIConstants.SHOW_ALL_ASSIGNABLE));			
+		openOnUtil.openOnByOption("manager", appClass, CDIConstants.SHOW_ALL_ASSIGNABLE);			
 		
 		AssignableBeansDialog assignDialog = new AssignableBeansDialog(bot.shell("Assignable Beans"));
 		
@@ -142,8 +142,8 @@ public class AllAssignableDialogTest extends CDITestBase {
 		setEd(packageExplorer.openFile(getProjectName(), CDIConstants.SRC, 
 				getPackageName(), appClass).toTextEditor());
 		
-		assertTrue(openOnUtil.openOnByOption("managerImpl", appClass, 
-				CDIConstants.SHOW_ALL_ASSIGNABLE));			
+		openOnUtil.openOnByOption("managerImpl", appClass, 
+				CDIConstants.SHOW_ALL_ASSIGNABLE);			
 		
 		AssignableBeansDialog assignDialog = new AssignableBeansDialog(
 				bot.shell("Assignable Beans"));
