@@ -8,13 +8,10 @@ import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
-import org.jboss.tools.ui.bot.ext.config.TestConfigurator;
-import org.jboss.tools.ui.bot.ext.helper.DatabaseHelper;
 import org.jboss.tools.ui.bot.ext.helper.ResourceHelper;
-import org.jboss.tools.ui.bot.ext.types.DriverEntity;
 import org.jboss.tools.ui.bot.ext.wizards.SWTBotImportWizard;
-import org.junit.BeforeClass;
 import org.junit.Test;
+import org.teiid.designer.ui.bot.ext.teiid.TeiidBot;
 import org.teiid.designer.ui.bot.ext.teiid.database.DatasourceDialog;
 import org.teiid.designer.ui.bot.ext.teiid.database.DatasourcePasswordDialog;
 import org.teiid.designer.ui.bot.ext.teiid.editor.ModelEditor;
@@ -27,7 +24,6 @@ import org.teiid.designer.ui.bot.ext.teiid.view.ModelExplorerView;
 import org.teiid.designer.ui.bot.ext.teiid.view.SQLResult;
 import org.teiid.designer.ui.bot.ext.teiid.wizard.CreateVDB;
 import org.teiid.designer.ui.bot.ext.teiid.wizard.ImportJDBCDatabaseWizard;
-import org.teiid.designer.ui.bot.test.suite.Properties;
 import org.teiid.designer.ui.bot.test.suite.TeiidDesignerTestCase;
 
 /**
@@ -44,8 +40,20 @@ public class TopDownWsdlTest extends TeiidDesignerTestCase {
 	public static final String CONNECTION_PROFILE = "TopDownWsdl SQL Profile";
 	public static final String VDB_NAME = "testVDB";
 
-	@BeforeClass
-	public static void createTeiidProject() {
+	private TeiidBot teiidBot;
+
+	public TopDownWsdlTest() {
+		teiidBot = new TeiidBot();
+	}
+	
+	@Test
+	public void topDownWsdlTestScript() throws Exception {
+		// Set secure storage password
+		teiidBot.showTeiidView();
+		if (configuredState.getServer().isRunning) {
+			teiidBot.setSecureStoragePassword();
+		}
+		
 		// Create new project
 		createProject(PROJECT_NAME);
 
@@ -60,33 +68,9 @@ public class TopDownWsdlTest extends TeiidDesignerTestCase {
 		wizard.bot().button("Finish").click();
 
 		// Create DB connection profile
-		DriverEntity entity = new DriverEntity();
-		String drvPath = TestConfigurator.currentConfig.getServer().runtimeHome
-				+ "/server/default/lib/" + Properties.SQLSERVER_DRIVER;
-		entity.setDrvPath(drvPath);
-		entity.setDatabaseName("tpcr");
-		entity.setInstanceName("Microsoft SQL Server 2008 JDBC Driver");
-		entity.setProfileName(CONNECTION_PROFILE);
-		entity.setProfileDescription("PartsSupplier SQL Server database");
-		entity.setJdbcString("jdbc:sqlserver://slntdb02.mw.lab.eng.bos.redhat.com:1433;databaseName=PartsSupplier");
-		entity.setDriverTemplateDescId("org.eclipse.datatools.enablement.msft.sqlserver.2008.driverTemplate");
-		entity.setDriverDefId("SQL Server DB");
-		entity.setUser("tpcr");
-		entity.setPassword("mm");
-		// Unsupported
-		// try {
-		// DatabaseHelper.createDriver(entity, CONNECTION_PROFILE);
-		// } catch (ConnectionProfileException e) {
-		// fail("Couldn't create a driver.");
-		// }
-
-		// Create Teiid instance
-		NewDefaultTeiidInstance teiid = new NewDefaultTeiidInstance();
-		teiid.execute();
-	}
-
-	@Test
-	public void topDownWsdlTestScript() throws Exception {
+		teiidBot.createDatabaseProfile(CONNECTION_PROFILE, "resources/db/sqlserver_tpcr.properties");
+		
+		
 		SWTBotImportWizard importWizard;
 		/* Create the Web Service model */
 		importWizard = new SWTBotImportWizard();
@@ -120,6 +104,7 @@ public class TopDownWsdlTest extends TeiidDesignerTestCase {
 				importWizard.bot().button("Next >").isEnabled());
 		importWizard.bot().button("Next >").click();
 		// XML Model Generation
+		// TEIIDDES-1541
 		assertTrue(importWizard.bot().checkBox("Generate virtual XML document model").isChecked());
 		assertEquals(WS_NAME + "Responses", importWizard.bot().textWithLabel("XML Model:")
 				.getText());

@@ -1,10 +1,5 @@
 package org.teiid.designer.ui.bot.test;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.Properties;
-
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.jboss.tools.teiid.reddeer.VDB;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
@@ -125,8 +120,9 @@ public class VirtualGroupTutorialTest extends TeiidDesignerTestCase {
 		}
 		
 		createProject(PROJECT_NAME);
-		prepareOracleDatabase();
-		prepareSQLServerDatabase();
+		
+		teiidBot.createDatabaseProfile(ORACLE_CONNPROFILE_NAME, "resources/db/oracle_parts.properties");
+		teiidBot.createDatabaseProfile(SQLSERVER_CONNPROFILE_NAME, "resources/db/sqlserver_parts.properties");
 		
 		eclipse.maximizeActiveShell();
 		
@@ -335,35 +331,6 @@ public class VirtualGroupTutorialTest extends TeiidDesignerTestCase {
 		closeModelEditor(ORACLE_MODEL_NAME);
 		closeModelEditor(SQLSERVER_MODEL_NAME);
 		closeAutoConnectToTeiidInstance();
-	}
-
-	/**
-	 * Prepares database 
-	 */
-	public void prepareOracleDatabase()  {
-		Properties props = getDBProperties("oracle");
-		teiidBot.createDatabaseProfile(ORACLE_CONNPROFILE_NAME, props);
-	}
-	
-	
-	/**
-	 * Prepares database 
-	 */
-	public void prepareSQLServerDatabase()  {
-		Properties props = getDBProperties("sqlserver");
-		teiidBot.createDatabaseProfile(SQLSERVER_CONNPROFILE_NAME, props);
-	}
-	
-	public static Properties getDBProperties(String fileName) {
-		Properties props = new Properties();
-		try {
-			props.load(new FileReader(fileName + ".properties"));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return props;
 	}
 
 	private static void closeScrapbook() {
