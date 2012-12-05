@@ -97,11 +97,57 @@ public class OpenOnHelper {
 
 	}
 	
-	public static void showOpenOnOptions(SWTBotExt bot, String editorTitle, 
+	public static SWTBotEditor selectOpenOnOption(SWTBotExt bot, String editorTitle, 
 			String textToSelect, String openOnOption) {
 		int offset = textToSelect.contains("@")?1:0;
-		showOpenOnOptions(bot, editorTitle, textToSelect, offset, 
+		return selectOpenOnOption(bot, editorTitle, textToSelect, offset, 
 				textToSelect.length() - offset, 0, openOnOption);
+	}
+	
+	/**
+	 * Selects specified text in specified opened editor, shows open on options
+	 * via selecting Navigate -> Open Hyperlink and select one of them specified 
+	 * by openOnOption
+	 * 
+	 * @param bot
+	 * @param editorTitle
+	 * @param textToSelect
+	 * @param selectionOffset
+	 * @param selectionLength
+	 * @param textToSelectIndex
+	 * @param openOnOption
+	 */
+	public static SWTBotEditor selectOpenOnOption(SWTBotExt bot, String editorTitle, 
+			String textToSelect, int selectionOffset,
+			int selectionLength, int textToSelectIndex, String openOnOption) {
+		showOpenOnOptions(bot, editorTitle, textToSelect, selectionOffset, 
+				selectionLength, textToSelectIndex);
+		
+		SWTBotTable table = bot.activeShell().bot().table(0);
+
+		boolean optionFound = false;
+		String foundOptions = "";
+
+		for (int i = 0; i < table.rowCount(); i++) {
+			String foundOption = table.getTableItem(i).getText();
+			foundOptions = foundOptions + foundOption + ", ";
+			if (foundOption.contains(openOnOption)) {
+				optionFound = true;
+				table.click(i, 0);
+				break;
+			}
+		}
+		foundOptions = foundOptions.substring(0, foundOptions.length() - 3);
+		assertTrue(openOnOption + " was not found in open on options of "
+				+ textToSelect + " Found: " + foundOptions, optionFound);
+		return bot.activeEditor();
+	}
+	
+	public static void showOpenOnOptions(SWTBotExt bot, String editorTitle, 
+			String textToSelect) {
+		int offset = textToSelect.contains("@")?1:0;
+		showOpenOnOptions(bot, editorTitle, textToSelect, offset, 
+				textToSelect.length() - offset, 0);
 	}
 	
 	/**
@@ -114,15 +160,16 @@ public class OpenOnHelper {
 	 * @param selectionOffset
 	 * @param selectionLength
 	 * @param textToSelectIndex
-	 * @param openOnOption
 	 */
 	public static void showOpenOnOptions(SWTBotExt bot,
 			String editorTitle, String textToSelect, int selectionOffset,
-			int selectionLength, int textToSelectIndex, String openOnOption) {
+			int selectionLength, int textToSelectIndex) {
 		
 		SWTJBTExt.selectTextInSourcePane(
 				bot, editorTitle, textToSelect, selectionOffset,
 				selectionLength, textToSelectIndex);
+		bot.editorByTitle(editorTitle).show();
+		bot.editorByTitle(editorTitle).setFocus();
 		bot.menu(IDELabel.Menu.NAVIGATE).menu(IDELabel.Menu.OPEN_HYPERLINK)
 				.click();
 
@@ -160,27 +207,8 @@ public class OpenOnHelper {
 			int selectionLength, int textToSelectIndex, String openOnOption,
 			String expectedOpenedFileName) {
 		
-		showOpenOnOptions(bot, editorTitle, textToSelect, selectionOffset, 
+		selectOpenOnOption(bot, editorTitle, textToSelect, selectionOffset, 
 				selectionLength, textToSelectIndex, openOnOption);
-		
-		SWTBotTable table = bot.activeShell().bot().table(0);
-
-		boolean optionFound = false;
-		String foundOptions = "";
-
-		for (int i = 0; i < table.rowCount(); i++) {
-			String foundOption = table.getTableItem(i).getText();
-			foundOptions = foundOptions + foundOption + ", ";
-			if (foundOption.contains(openOnOption)) {
-				optionFound = true;
-				table.click(i, 0);
-				break;
-			}
-		}
-		foundOptions = foundOptions.substring(0, foundOptions.length() - 3);
-		assertTrue(openOnOption + " was not found in open on options of "
-				+ textToSelect + " Found: " + foundOptions, optionFound);
-		
 		return checkActiveEditorTitle(bot, expectedOpenedFileName);
 		
 	}
