@@ -46,6 +46,8 @@ public class IDELabel {
 		public static final String REMOVE = "Remove";
 		public static final String IMPORT = "Import...";
 		public static final String RUN_AS = "Run As";
+		public static final String NAVIGATE = "Navigate";
+		public static final String OPEN_HYPERLINK = "Open Hyperlink";
 		public static final String WEB_PROJECT_JBT_JSF = "JBoss Tools JSF";
 		public static final String PACKAGE_EXPLORER_JBT = "JBoss Tools";
 		public static final String PACKAGE_EXPLORER_CONFIGURE = "Configure";
