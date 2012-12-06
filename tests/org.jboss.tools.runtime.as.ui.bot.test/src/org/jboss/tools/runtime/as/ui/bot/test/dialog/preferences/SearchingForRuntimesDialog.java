@@ -9,7 +9,7 @@ import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.tree.DefaultTree;
+import org.jboss.reddeer.swt.impl.tree.ShellTree;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.runtime.as.ui.bot.test.entity.Runtime;
 
@@ -52,6 +52,6 @@ public class SearchingForRuntimesDialog {
 	}
 	
 	private List<TreeItem> getRuntimesTreeItems(){
-		return new DefaultTree().getAllItems();
+		return new ShellTree().getAllItems();
 	}
 }
