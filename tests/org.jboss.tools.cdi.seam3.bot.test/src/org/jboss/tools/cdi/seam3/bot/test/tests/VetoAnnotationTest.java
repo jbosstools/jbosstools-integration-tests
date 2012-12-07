@@ -14,6 +14,7 @@ package org.jboss.tools.cdi.seam3.bot.test.tests;
 import org.jboss.tools.cdi.bot.test.CDIConstants;
 import org.jboss.tools.cdi.seam3.bot.test.base.SolderAnnotationTestBase;
 import org.jboss.tools.cdi.seam3.bot.test.util.SeamLibrary;
+import org.jboss.tools.ui.bot.ext.helper.OpenOnHelper;
 import org.junit.After;
 import org.junit.Test;
 
@@ -38,13 +39,13 @@ public class VetoAnnotationTest extends SolderAnnotationTestBase {
 		
 		importSeam3ProjectWithLibrary(projectName, SeamLibrary.SOLDER_3_1);
 		
-		setEd(packageExplorer.openFile(projectName, CDIConstants.SRC, 
-				getPackageName(), APPLICATION_CLASS).toTextEditor());
+		packageExplorer.openFile(projectName, CDIConstants.SRC, 
+				getPackageName(), APPLICATION_CLASS).toTextEditor();
 		
 		testNoBeanValidationProblemExists(projectName);
 		
-		setEd(packageExplorer.openFile(projectName, CDIConstants.SRC, 
-				getPackageName(), otherBean + ".java").toTextEditor());
+		packageExplorer.openFile(projectName, CDIConstants.SRC, 
+				getPackageName(), otherBean + ".java").toTextEditor();
 		editResourceUtil.replaceInEditor("public class " + otherBean,
 				"public class " + otherBean + " extends " + vetoBean);
 		
@@ -61,13 +62,13 @@ public class VetoAnnotationTest extends SolderAnnotationTestBase {
 		
 		importSeam3ProjectWithLibrary(projectName, SeamLibrary.SOLDER_3_1);
 		
-		setEd(packageExplorer.openFile(projectName, CDIConstants.SRC, 
-				getPackageName(), APPLICATION_CLASS).toTextEditor());
+		packageExplorer.openFile(projectName, CDIConstants.SRC, 
+				getPackageName(), APPLICATION_CLASS).toTextEditor();
 		
 		testNoBeanValidationProblemExists(projectName);
 		
-		setEd(packageExplorer.openFile(projectName, CDIConstants.SRC, 
-				getPackageName(), otherBean + ".java").toTextEditor());
+		packageExplorer.openFile(projectName, CDIConstants.SRC, 
+				getPackageName(), otherBean + ".java").toTextEditor();
 		editResourceUtil.replaceInEditor("public class " + otherBean,
 				"public class " + otherBean + " extends " + vetoBean);
 		
@@ -83,13 +84,13 @@ public class VetoAnnotationTest extends SolderAnnotationTestBase {
 		
 		importSeam3ProjectWithLibrary(projectName, SeamLibrary.SOLDER_3_1);
 		
-		setEd(packageExplorer.openFile(projectName, CDIConstants.SRC, 
-				getPackageName(), APPLICATION_CLASS).toTextEditor());
+		packageExplorer.openFile(projectName, CDIConstants.SRC, 
+				getPackageName(), APPLICATION_CLASS).toTextEditor();
 		
 		testNoBeanValidationProblemExists(projectName);
 		
-		setEd(packageExplorer.openFile(projectName, CDIConstants.SRC, 
-				getPackageName(), vetoBean + ".java").toTextEditor());
+		packageExplorer.openFile(projectName, CDIConstants.SRC, 
+				getPackageName(), vetoBean + ".java").toTextEditor();
 		editResourceUtil.replaceInEditor("@Veto", "");
 		editResourceUtil.replaceInEditor("import org.jboss.solder.core.Veto;", "");
 		
@@ -105,13 +106,13 @@ public class VetoAnnotationTest extends SolderAnnotationTestBase {
 		
 		importSeam3ProjectWithLibrary(projectName, SeamLibrary.SOLDER_3_1);
 		
-		setEd(packageExplorer.openFile(projectName, CDIConstants.SRC, 
-				getPackageName(), APPLICATION_CLASS).toTextEditor());
+		packageExplorer.openFile(projectName, CDIConstants.SRC, 
+				getPackageName(), APPLICATION_CLASS).toTextEditor();
 		
 		testNoBeanValidationProblemExists(projectName);
 		
-		setEd(packageExplorer.openFile(projectName, CDIConstants.SRC, 
-				getPackageName(), vetoBean + ".java").toTextEditor());
+		packageExplorer.openFile(projectName, CDIConstants.SRC, 
+				getPackageName(), vetoBean + ".java").toTextEditor();
 		editResourceUtil.replaceInEditor("@Veto", "");
 		editResourceUtil.replaceInEditor("import org.jboss.solder.core.Veto;", "");
 		
@@ -128,18 +129,23 @@ public class VetoAnnotationTest extends SolderAnnotationTestBase {
 		
 		importSeam3ProjectWithLibrary(projectName, SeamLibrary.SOLDER_3_1);
 		
-		setEd(packageExplorer.openFile(projectName, CDIConstants.SRC, 
-				getPackageName(), APPLICATION_CLASS).toTextEditor());
+		packageExplorer.openFile(projectName, CDIConstants.SRC, 
+				getPackageName(), APPLICATION_CLASS).toTextEditor();
 		
-		setEd(packageExplorer.openFile(projectName, CDIConstants.SRC, 
-				getPackageName(), vetoBean + ".java").toTextEditor());
+		packageExplorer.openFile(projectName, CDIConstants.SRC, 
+				getPackageName(), vetoBean + ".java").toTextEditor();
 		editResourceUtil.replaceInEditor("@Veto", "");
 		editResourceUtil.replaceInEditor("import org.jboss.solder.core.Veto;", "");
 		
-		openOnUtil.openOnByOption(eventAttribute, APPLICATION_CLASS, 
-				CDIConstants.OPEN_CDI_OBSERVER_METHOD);
-		assertTrue(getEd().getTitle().equals(vetoBean + ".java"));
-		assertTrue(getEd().getSelection().equals("method"));
+		OpenOnHelper.checkOpenOnFileIsOpened(bot, APPLICATION_CLASS, eventAttribute,
+				CDIConstants.OPEN_CDI_OBSERVER_METHOD, vetoBean + ".java");
+		
+		String selectedString = bot.activeEditor().toTextEditor()
+				.getSelection();
+		
+		assertTrue("'method' should be selected. " +
+				"Actual selected text: " + selectedString,selectedString.
+				equals("method"));
 		
 	}
 	

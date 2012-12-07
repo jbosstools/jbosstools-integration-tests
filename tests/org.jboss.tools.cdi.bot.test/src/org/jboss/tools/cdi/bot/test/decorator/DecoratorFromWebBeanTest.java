@@ -11,6 +11,7 @@
 package org.jboss.tools.cdi.bot.test.decorator;
 
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
+import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.jboss.tools.cdi.bot.test.CDIConstants;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
@@ -78,21 +79,21 @@ public class DecoratorFromWebBeanTest extends CDITestBase {
 		SWTBotEditor editor = new SWTWorkbenchBot().activeEditor();
 		BeansEditor be = new BeansEditor(editor.getReference(), new SWTWorkbenchBot());
 		be.activatePage("Source");
-		setEd(bot.activeEditor().toTextEditor());
+		SWTBotEclipseEditor activeEditor = bot.activeEditor().toTextEditor(); 
 		
-		assertTrue(getEd().getText().contains("\n <decorators>\n  " +
+		assertTrue(activeEditor.getText().contains("\n <decorators>\n  " +
 				"<class>cdi.AccountDecorator</class>\n </decorators>"));
 		
-		setEd(packageExplorer.openFile(getProjectName(), CDIConstants.SRC, 
-				getPackageName(), ACCOUNT_DECORATOR_JAVA).toTextEditor());
+		activeEditor = packageExplorer.openFile(getProjectName(), CDIConstants.SRC, 
+				getPackageName(), ACCOUNT_DECORATOR_JAVA).toTextEditor();
 		
-		assertTrue(getEd().getText().contains("@Decorator"));
-		assertTrue(getEd().getText().contains("@Inject\n\t@Delegate\n\t@Any" +
+		assertTrue(activeEditor.getText().contains("@Decorator"));
+		assertTrue(activeEditor.getText().contains("@Inject\n\t@Delegate\n\t@Any" +
 				"\n\tprivate Account account;"));
-		assertTrue(getEd().getText().contains("BigDecimal getBalance()"));
-		assertTrue(getEd().getText().contains("User getOwner()"));
-		assertTrue(getEd().getText().contains("void withdraw(BigDecimal amount)"));
-		assertTrue(getEd().getText().contains("void deposit(BigDecimal amount)"));
+		assertTrue(activeEditor.getText().contains("BigDecimal getBalance()"));
+		assertTrue(activeEditor.getText().contains("User getOwner()"));
+		assertTrue(activeEditor.getText().contains("void withdraw(BigDecimal amount)"));
+		assertTrue(activeEditor.getText().contains("void deposit(BigDecimal amount)"));
 		
 		
 	}
@@ -113,21 +114,21 @@ public class DecoratorFromWebBeanTest extends CDITestBase {
 		SWTBotEditor editor = new SWTWorkbenchBot().activeEditor();
 		BeansEditor be = new BeansEditor(editor.getReference(), new SWTWorkbenchBot());
 		be.activatePage("Source");
-		setEd(bot.activeEditor().toTextEditor());
+		SWTBotEclipseEditor activeEditor = bot.activeEditor().toTextEditor();
 
-		assertTrue(getEd().getText().contains("\n <decorators>\n  " +
+		assertTrue(activeEditor.getText().contains("\n <decorators>\n  " +
 				"<class>cdi.AccountDecorator</class>\n </decorators>"));
 		
-		setEd(packageExplorer.openFile(getProjectName(), CDIConstants.SRC, 
-				getPackageName(), ACCOUNT_DECORATOR_JAVA).toTextEditor());
+		activeEditor = packageExplorer.openFile(getProjectName(), CDIConstants.SRC, 
+				getPackageName(), ACCOUNT_DECORATOR_JAVA).toTextEditor();
 		
-		assertTrue(getEd().getText().contains("@Decorator"));
-		assertTrue(getEd().getText().contains("@Inject\n\t@Delegate\n\t@Any" +
+		assertTrue(activeEditor.getText().contains("@Decorator"));
+		assertTrue(activeEditor.getText().contains("@Inject\n\t@Delegate\n\t@Any" +
 				"\n\tprivate Account account;"));
-		assertTrue(getEd().getText().contains("BigDecimal getBalance()"));
-		assertTrue(getEd().getText().contains("User getOwner()"));
-		assertTrue(getEd().getText().contains("void withdraw(BigDecimal amount)"));
-		assertTrue(getEd().getText().contains("void deposit(BigDecimal amount)"));
+		assertTrue(activeEditor.getText().contains("BigDecimal getBalance()"));
+		assertTrue(activeEditor.getText().contains("User getOwner()"));
+		assertTrue(activeEditor.getText().contains("void withdraw(BigDecimal amount)"));
+		assertTrue(activeEditor.getText().contains("void deposit(BigDecimal amount)"));
 		
 	}
 

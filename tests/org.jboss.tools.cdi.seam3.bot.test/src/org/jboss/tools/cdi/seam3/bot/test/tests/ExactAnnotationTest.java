@@ -54,8 +54,8 @@ public class ExactAnnotationTest extends SolderAnnotationTestBase {
 		
 		importSeam3ProjectWithLibrary(projectName, SeamLibrary.SOLDER_3_1);
 		
-		setEd(packageExplorer.openFile(projectName, CDIConstants.SRC, 
-				getPackageName(), APPLICATION_CLASS).toTextEditor());
+		packageExplorer.openFile(projectName, CDIConstants.SRC, 
+				getPackageName(), APPLICATION_CLASS).toTextEditor();
 		
 		testMultipleBeansValidationProblemExists(projectName);
 				

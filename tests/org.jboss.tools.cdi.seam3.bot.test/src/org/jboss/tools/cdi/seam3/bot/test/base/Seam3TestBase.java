@@ -101,23 +101,23 @@ public class Seam3TestBase extends CDITestBase {
 	/**
 	 * 
 	 * @param projectName
-	 * @param libraryName
+	 * @param libraries
 	 */
-	private static void addLibraryIntoProject(String projectName, Collection<String> libraryName) {
+	private static void addLibraryIntoProject(String projectName, Collection<String> libraries) {
 		try {
-			Iterator<String> iter = libraryName.iterator();
+			Iterator<String> iter = libraries.iterator();
 			while (iter.hasNext()) {
 				String temp = iter.next();
 				libraryHelper.addLibraryIntoProjectFolder(projectName, temp);
-				LOGGER.info("Library: \"" + libraryName + "\" copied");
+				LOGGER.info("Library: \"" + libraries + "\" copied");
 				util.waitForNonIgnoredJobs();
-				libraryHelper.addLibraryToProjectsClassPath(projectName, temp);
-				LOGGER.info("Library: \"" + libraryName + "\" on class path of project\"" + projectName + "\"");
 			}
 		} catch (IOException exc) {
-			LOGGER.log(Level.SEVERE, "Error while adding " + libraryName + " library into project");
+			LOGGER.log(Level.SEVERE, "Error while adding " + libraries + " library into project");
 			LOGGER.log(Level.SEVERE, exc.getMessage());
-		}		
+		}	
+		libraryHelper.addLibrariesToProjectsClassPath(projectName, libraries);
+		LOGGER.info("Library: \"" + libraries + "\" on class path of project\"" + projectName + "\"");
 	}
 	
 }

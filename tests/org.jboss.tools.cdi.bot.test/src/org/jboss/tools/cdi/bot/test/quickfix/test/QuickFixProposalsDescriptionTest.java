@@ -14,6 +14,7 @@ package org.jboss.tools.cdi.bot.test.quickfix.test;
 import java.util.Arrays;
 import java.util.List;
 
+import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTableItem;
 import org.jboss.tools.cdi.bot.test.CDIConstants;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
@@ -32,8 +33,8 @@ public class QuickFixProposalsDescriptionTest extends CDITestBase {
 		
 		String className = "AddCodeBean.java";
 		
-		setEd(packageExplorer.openFile(getProjectName(), CDIConstants.SRC, 
-				getPackageName(), className).toTextEditor());
+		SWTBotEditor editor = packageExplorer.openFile(getProjectName(), CDIConstants.SRC, 
+				getPackageName(), className);
 		
 		OpenOnOptionsDialog openOnDialog = quickFixHelper.openOnDialog(
 				"AddCodeBean", className);
@@ -55,7 +56,7 @@ public class QuickFixProposalsDescriptionTest extends CDITestBase {
 		
 		for (String affectedLine : affectedLinesInProposal) {
 			assertTrue(proposeText.contains(affectedLine));
-			String text = getEd().getText();
+			String text = editor.toTextEditor().getText();
 			assertTrue(text.contains(affectedLine));
 		}
 
@@ -66,8 +67,8 @@ public class QuickFixProposalsDescriptionTest extends CDITestBase {
 	
 		String className = "RemoveCodeBean.java";
 		
-		setEd(packageExplorer.openFile(getProjectName(), CDIConstants.SRC, 
-				getPackageName(), className).toTextEditor());
+		SWTBotEditor editor = packageExplorer.openFile(getProjectName(), CDIConstants.SRC, 
+				getPackageName(), className);
 		
 		OpenOnOptionsDialog openOnDialog = quickFixHelper.openOnDialog(
 				"@Disposes String param1, @Observes String param2", className);
@@ -90,7 +91,7 @@ public class QuickFixProposalsDescriptionTest extends CDITestBase {
 		
 		for (String affectedLine : affectedLinesInProposal) {
 			assertFalse(proposeText.contains(affectedLine));
-			String text = getEd().getText();
+			String text = editor.toTextEditor().getText();
 			assertFalse(text.contains(affectedLine));
 		}
 		
@@ -101,8 +102,8 @@ public class QuickFixProposalsDescriptionTest extends CDITestBase {
 		
 		String className = "EditCodeStereotype.java";
 		
-		setEd(packageExplorer.openFile(getProjectName(), CDIConstants.SRC, 
-				getPackageName(), className).toTextEditor());
+		SWTBotEditor editor = packageExplorer.openFile(getProjectName(), CDIConstants.SRC, 
+				getPackageName(), className);
 		
 		OpenOnOptionsDialog openOnDialog = quickFixHelper.openOnDialog(
 				"@Named(\"name\")", className);
@@ -124,7 +125,7 @@ public class QuickFixProposalsDescriptionTest extends CDITestBase {
 		
 		for (String affectedLine : affectedLinesInProposal) {
 			assertTrue(proposeText.contains(affectedLine));
-			String text = getEd().getText();
+			String text = editor.toTextEditor().getText();
 			assertTrue(text.contains(affectedLine));
 		}
 		
@@ -133,7 +134,7 @@ public class QuickFixProposalsDescriptionTest extends CDITestBase {
 		
 		for (String affectedLine : affectedLinesInProposal) {
 			assertFalse(proposeText.contains(affectedLine));
-			String text = getEd().getText();
+			String text = editor.toTextEditor().getText();
 			assertFalse(text.contains(affectedLine));
 		}
 		

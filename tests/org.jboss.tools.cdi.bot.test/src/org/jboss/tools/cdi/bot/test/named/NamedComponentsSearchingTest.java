@@ -82,7 +82,6 @@ public class NamedComponentsSearchingTest extends CDITestBase {
 		
 		wizardExt.bean(getPackageName(), beanName, true, false, false, 
 				false, false, false, namedParam, null, null, null).finishWithWait();
-		setEd(bot.activeEditor().toTextEditor());
 				
 		namedDialog = openSearchNamedDialog().setNamedPrefix(namedParam);		
 		assertTrue(namedDialog.matchingItems().size() == 1);

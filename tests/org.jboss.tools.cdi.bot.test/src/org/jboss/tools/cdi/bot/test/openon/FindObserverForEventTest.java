@@ -11,9 +11,10 @@
 
 package org.jboss.tools.cdi.bot.test.openon;
 
+import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.jboss.tools.cdi.bot.test.annotations.CDIWizardType;
-import org.jboss.tools.ui.bot.ext.Timing;
+import org.jboss.tools.ui.bot.ext.helper.OpenOnHelper;
 import org.junit.Test;
 
 /**
@@ -86,21 +87,21 @@ public class FindObserverForEventTest extends OpenOnBase {
 
 	private void checkEventsAndObserver(String name, String className,
 			String option) {
-		openOnUtil.openOnByOption(name, className, option);
-		bot.sleep(Timing.time1S());
+		SWTBotEditor openedEditor = OpenOnHelper.selectOpenOnOption(
+				bot, className, name, option);
 		if (option.equals("Open CDI Event")) {
 			if (name.equals("observeQ1MyBean2")) {
 				LOGGER.info("Testing observer: observeQ1MyBean2 started");
-				assertTrue(getEd().toTextEditor().getSelection().equals("myBean2Q1Event"));
+				assertTrue(openedEditor.toTextEditor().getSelection().equals("myBean2Q1Event"));
 				LOGGER.info("Testing observer: observeQ1MyBean2 ended");
 			}else {  
 				//observeQ1MyBean2
 				LOGGER.info("Testing observer: observeQ1MyBean2 started");
-				assertTrue(getEd().toTextEditor().getSelection().equals("myBean2Q2Event"));
+				assertTrue(openedEditor.toTextEditor().getSelection().equals("myBean2Q2Event"));
 				LOGGER.info("Testing observer: observeQ1MyBean2 ended");
 			}			
 		} else {
-			SWTBotTable observerTable = bot.table(0);
+			SWTBotTable observerTable = bot.activeShell().bot().table(0);
 			if (className.equals("EventsProducer.java")) {
 				assertTrue(checkAllObserverMethodsForEvent(name, observerTable)); 
 			}

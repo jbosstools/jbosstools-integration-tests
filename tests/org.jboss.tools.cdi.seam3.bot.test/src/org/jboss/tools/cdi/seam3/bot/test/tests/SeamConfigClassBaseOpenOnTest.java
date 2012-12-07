@@ -13,6 +13,7 @@ package org.jboss.tools.cdi.seam3.bot.test.tests;
 import org.jboss.tools.cdi.bot.test.CDIConstants;
 import org.jboss.tools.cdi.seam3.bot.test.base.Seam3TestBase;
 import org.jboss.tools.cdi.seam3.bot.test.util.SeamLibrary;
+import org.jboss.tools.ui.bot.ext.helper.OpenOnHelper;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -20,69 +21,72 @@ import org.junit.Test;
 /**
  * 
  * @author jjankovi
- *
+ * 
  */
 public class SeamConfigClassBaseOpenOnTest extends Seam3TestBase {
 
 	private static final String projectName = "seamConfigOpenOn";
 	private static final String SEAM_CONFIG = "seam-beans.xml";
-	
+
 	@BeforeClass
 	public static void setup() {
 		importSeam3ProjectWithLibrary(projectName, SeamLibrary.SOLDER_3_1);
 	}
-	
+
 	@Before
 	public void openSeamConfig() {
-		packageExplorer.openFile(projectName, CDIConstants.WEBCONTENT, 
+		packageExplorer.openFile(projectName, CDIConstants.WEBCONTENT,
 				CDIConstants.WEB_INF, SEAM_CONFIG).toTextEditor();
 		bot.cTabItem("Source").activate();
 	}
-	
+
 	@Test
 	public void testBeanOpenOn() {
-		
+
 		/* open on bean class */
-		openOnUtil.openOnDirect("b:Bean1", SEAM_CONFIG);
-		
+		OpenOnHelper.checkOpenOnFileIsOpened(bot, SEAM_CONFIG, "b:Bean1",
+				"Bean1.java");
+
 		/* test opened object */
-		assertExpectedOpenedClassAndSelection("Bean1.java", "Bean1");
+		assertExpectedSelection("Bean1");
 	}
-	
+
 	@Test
 	public void testConstructorOpenOn() {
-		
+
 		/* open on bean class */
-		openOnUtil.openOnDirect("s:parameters", SEAM_CONFIG);
-		
+		OpenOnHelper.checkOpenOnFileIsOpened(bot, SEAM_CONFIG, "s:parameters",
+				"Bean1.java");
+
 		/* test opened object */
-		assertExpectedOpenedClassAndSelection("Bean1.java", "Bean1");
+		assertExpectedSelection("Bean1");
 	}
-	
+
 	@Test
 	public void testFieldOpenOn() {
-		
+
 		/* open on bean class */
-		openOnUtil.openOnDirect("b:value", SEAM_CONFIG);
-		
+		OpenOnHelper.checkOpenOnFileIsOpened(bot, SEAM_CONFIG, "b:value",
+				"Bean1.java");
+
 		/* test opened object */
-		assertExpectedOpenedClassAndSelection("Bean1.java", "value");
+		assertExpectedSelection("value");
 	}
-	
+
 	@Test
 	public void testMethodOpenOn() {
-		
+
 		/* open on bean class */
-		openOnUtil.openOnDirect("b:method", SEAM_CONFIG);
-		
+		OpenOnHelper.checkOpenOnFileIsOpened(bot, SEAM_CONFIG, "b:method",
+				"Bean1.java");
+
 		/* test opened object */
-		assertExpectedOpenedClassAndSelection("Bean1.java", "method");
+		assertExpectedSelection("method");
 	}
-	
-	private void assertExpectedOpenedClassAndSelection(String className,
-			String selectedString) {
-		assertEquals(className, bot.activeEditor().getTitle());
-		assertEquals(selectedString, bot.activeEditor().toTextEditor().getSelection());
+
+	private void assertExpectedSelection(String selectedString) {
+		assertEquals(selectedString, bot.activeEditor().toTextEditor()
+				.getSelection());
 	}
-	
+
 }

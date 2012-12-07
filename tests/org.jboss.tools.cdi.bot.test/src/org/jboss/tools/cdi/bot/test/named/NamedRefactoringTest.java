@@ -50,10 +50,7 @@ public class NamedRefactoringTest extends JSFTestBase {
 		
 		createXHTMLPageWithContent(INDEX_XHTML_1, "/resources/jsf/index1.xhtml.cdi");
 		createXHTMLPageWithContent(INDEX_XHTML_3, "/resources/jsf/index3.xhtml.cdi");
-		
-		bot.editorByTitle(MANAGED_BEAN_1 + ".java").show();
-		setEd(bot.activeEditor().toTextEditor());
-		
+	
 		Collection<String> affectedFiles = changeNamedAnnotation(MANAGED_BEAN_1, 
 				NEW_NAMED_PARAM);
 		Collection<String> expectedAffectedFiles = Arrays.asList(
@@ -87,9 +84,6 @@ public class NamedRefactoringTest extends JSFTestBase {
 		createXHTMLPageWithContent(INDEX_XHTML_2, "/resources/jsf/index2.xhtml.cdi");
 		createXHTMLPageWithContent(INDEX_XHTML_3, "/resources/jsf/index3.xhtml.cdi");
 		
-		bot.editorByTitle(MANAGED_BEAN_2 + ".java").show();
-		setEd(bot.activeEditor().toTextEditor());
-
 		Collection<String> affectedFiles = changeNamedAnnotation(MANAGED_BEAN_2, NEW_NAMED_PARAM);
 		Collection<String> expectedAffectedFiles = Arrays.asList(
 				MANAGED_BEAN_2 + ".java", INDEX_XHTML_2, INDEX_XHTML_3);
@@ -120,9 +114,6 @@ public class NamedRefactoringTest extends JSFTestBase {
 				getPackageName(), null, "/resources/jsf/ManagedBeanNoParamNamed.java.cdi");	
 		
 		createXHTMLPageWithContent(INDEX_XHTML_2, "/resources/jsf/index1.xhtml.cdi");		
-		
-		bot.editorByTitle(MANAGED_BEAN_2 + ".java").show();
-		setEd(bot.activeEditor().toTextEditor());
 			
 		Collection<String> affectedFiles = changeNamedAnnotation(MANAGED_BEAN_2, NEW_NAMED_PARAM);
 		Collection<String> expectedAffectedFiles = Arrays.asList(MANAGED_BEAN_2 + ".java");
