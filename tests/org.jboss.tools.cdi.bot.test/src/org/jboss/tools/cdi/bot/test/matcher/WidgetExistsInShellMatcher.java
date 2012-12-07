@@ -11,25 +11,33 @@
 
 package org.jboss.tools.cdi.bot.test.matcher;
 
+import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.widgetOfType;
+
+import org.eclipse.swt.widgets.Widget;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.hamcrest.Description;
 import org.junit.internal.matchers.TypeSafeMatcher;
 
 @SuppressWarnings("restriction")
-public class StyledTextExistsInShellMatcher extends TypeSafeMatcher<SWTBotShell> {
+public class WidgetExistsInShellMatcher extends TypeSafeMatcher<SWTBotShell> {
 
+	private Class<? extends Widget> widgetClass = null;
+	
+	public WidgetExistsInShellMatcher(Class<? extends Widget> clazz) {
+		this.widgetClass = clazz;
+	}
+	
 	public void describeTo(Description description) {
-		description.appendText("shell does not contain any " +
-				"styled text");
+		description.appendText("Shell does not contain any widget of type" + widgetClass);
 	}
 
 	@Override
 	public boolean matchesSafely(SWTBotShell shell) {
 		try {
-			shell.bot().styledText();
+			shell.bot().widget(widgetOfType(widgetClass));
 			return true;
-		} catch (WidgetNotFoundException exc) {				
+		} catch (WidgetNotFoundException wnfe) {
 			return false;
 		}
 	}

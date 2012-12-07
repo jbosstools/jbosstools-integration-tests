@@ -19,16 +19,23 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.tools.cdi.bot.test.CDIConstants;
-import org.jboss.tools.cdi.bot.test.CDITestBase;
 import org.jboss.tools.cdi.bot.test.uiutils.actions.NewFileWizardAction;
 import org.jboss.tools.cdi.bot.test.uiutils.wizards.DynamicWebProjectWizard;
+import org.jboss.tools.ui.bot.ext.SWTBotExt;
+import org.jboss.tools.ui.bot.ext.SWTBotFactory;
+import org.jboss.tools.ui.bot.ext.SWTUtilExt;
 import org.jboss.tools.ui.bot.ext.condition.ProgressInformationShellIsActiveCondition;
 import org.jboss.tools.ui.bot.ext.condition.ShellIsActiveCondition;
 import org.jboss.tools.ui.bot.ext.condition.TaskDuration;
 import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
+import org.jboss.tools.ui.bot.ext.view.ProjectExplorer;
 
-public class CDIProjectHelper extends CDITestBase {
+public class CDIProjectHelper {
+	
+	private SWTBotExt bot = SWTBotFactory.getBot();
+	private SWTUtilExt util = SWTBotFactory.getUtil();
+	private ProjectExplorer projectExplorer = SWTBotFactory.getProjectexplorer();
 	
 	/**
 	 * Method creates new CDI Project with CDI Web Project wizard

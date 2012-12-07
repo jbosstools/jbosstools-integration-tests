@@ -13,6 +13,7 @@ package org.jboss.tools.cdi.seam3.bot.test.tests;
 import org.jboss.tools.cdi.bot.test.CDIConstants;
 import org.jboss.tools.cdi.seam3.bot.test.base.Seam3TestBase;
 import org.jboss.tools.cdi.seam3.bot.test.util.SeamLibrary;
+import org.jboss.tools.ui.bot.ext.helper.OpenOnHelper;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -20,46 +21,45 @@ import org.junit.Test;
 /**
  * 
  * @author jjankovi
- *
+ * 
  */
 public class SeamConfigInjectOpenOnTest extends Seam3TestBase {
 
 	private static String projectName = "seamConfigInjectOpenOn";
 	private static final String SEAM_CONFIG = "seam-beans.xml";
-	
+
 	@BeforeClass
 	public static void setup() {
 		importSeam3ProjectWithLibrary(projectName, SeamLibrary.SOLDER_3_1);
 	}
-	
+
 	@Before
 	public void openSeamConfig() {
-		packageExplorer.openFile(projectName, CDIConstants.SRC, 
-				"test", "Report.java");		
+		packageExplorer.openFile(projectName, CDIConstants.SRC, "test",
+				"Report.java");
 	}
-	
+
 	@Test
 	public void testBasicInjectOpenOn() {
-		
-		openOnUtil.openOnByOption("path1", 
-				"Report.java", "Open Resource in seam-beans.xml");
-		assertExpectedOpenedClass(SEAM_CONFIG, "<r:Resource path=\"value\">");
-		
+
+		OpenOnHelper.checkOpenOnFileIsOpened(bot, "Report.java", "path1",
+				"Open Resource in seam-beans.xml", SEAM_CONFIG);
+		assertExpectedSelection("<r:Resource path=\"value\">");
+
 	}
-	
+
 	@Test
 	public void testQualifierInjectOpenOn() {
-		
-		openOnUtil.openOnByOption("path2", 
-				"Report.java", "Open Resource in seam-beans.xml");
-		assertExpectedOpenedClass(SEAM_CONFIG, "<r:Resource>");
-		
+
+		OpenOnHelper.checkOpenOnFileIsOpened(bot, "Report.java", "path2",
+				"Open Resource in seam-beans.xml", SEAM_CONFIG);
+		assertExpectedSelection("<r:Resource>");
+
 	}
-	
-	private void assertExpectedOpenedClass(String className,
-			String selectedString) {
-		assertEquals(className, bot.activeEditor().getTitle());
-		assertEquals(selectedString, bot.activeEditor().toTextEditor().getSelection());
+
+	private void assertExpectedSelection(String selectedString) {
+		assertEquals(selectedString, bot.activeEditor().toTextEditor()
+				.getSelection());
 	}
-	
+
 }
