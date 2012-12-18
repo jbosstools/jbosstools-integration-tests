@@ -13,7 +13,7 @@
 	<packaging>eclipse-test-plugin</packaging>
 
 		<properties>
-			<systemProperties>-Dhsqldb.driver=${requirementsDirectory}/hsqldb/hsqldb-1.8.0.10.jar -Djbosstools.test.jboss.home.7.1=${requirementsDirectory}/jboss-as-7.1.1.Final -Djbosstools.test.seam.2.2.0.home=${requirementsDirectory}/jboss-seam-2.2.0.GA -Djbosstools.test.seam.2.3.0.home=${requirementsDirectory}/jboss-seam-2.3.0</systemProperties>
+			<systemProperties>${integrationTestsSystemProperties} -Dhsqldb.driver=${requirementsDirectory}/hsqldb/hsqldb-1.8.0.10.jar -Djbosstools.test.jboss.home.7.1=${requirementsDirectory}/jboss-as-7.1.1.Final -Djbosstools.test.seam.2.2.0.home=${requirementsDirectory}/jboss-seam-2.2.0.GA -Djbosstools.test.seam.2.3.0.home=${requirementsDirectory}/jboss-seam-2.3.0</systemProperties>
 		</properties>
 	<build>
 		<plugins>

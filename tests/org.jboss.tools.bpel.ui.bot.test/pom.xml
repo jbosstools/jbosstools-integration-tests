@@ -13,7 +13,7 @@
 	<packaging>eclipse-test-plugin</packaging>
 
 	<properties>
-		<systemProperties>-Dswtbot.test.properties.file=./swtbot.properties</systemProperties>
+		<systemProperties>${integrationTestsSystemProperties} -Dswtbot.test.properties.file=./swtbot.properties</systemProperties>
 		<surefire.timeout>10800</surefire.timeout>
 		<testClass>org.jboss.tools.bpel.ui.bot.test.suite.BPELAllTest</testClass>
 	</properties>

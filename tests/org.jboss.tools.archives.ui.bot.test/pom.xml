@@ -14,7 +14,7 @@
 	<properties>
 		<coverage.filter>org.jboss.ide.eclipse.archives.ui*</coverage.filter>
 		<emma.instrument.bundles>org.jboss.ide.eclipse.archives.ui</emma.instrument.bundles>
-		<systemProperties>-Dswtbot.test.properties.file=${project.basedir}/properties/swtbot.properties</systemProperties>
+		<systemProperties>${integrationTestsSystemProperties} -Dswtbot.test.properties.file=${project.basedir}/properties/swtbot.properties</systemProperties>
 		<suiteClass>org.jboss.tools.archives.ui.bot.test.ArchivesAllBotTests</suiteClass>
 	</properties>
 	<profiles>
