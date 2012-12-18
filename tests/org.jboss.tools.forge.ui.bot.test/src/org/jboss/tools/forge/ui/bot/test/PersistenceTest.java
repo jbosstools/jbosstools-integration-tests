@@ -2,6 +2,9 @@ package org.jboss.tools.forge.ui.bot.test;
 
 import java.io.IOException;
 
+import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
+import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
+import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.jboss.tools.forge.ui.bot.test.suite.ForgeTest;
 import org.jboss.tools.forge.ui.bot.test.util.ConsoleUtils;
 import org.jboss.tools.forge.ui.bot.test.util.ResourceUtils;
@@ -20,14 +23,19 @@ public class PersistenceTest extends ForgeTest {
 	public void hibernateJBossAS7(){
 		
 		createProject();
+		createPersistence("HIBERNATE", "JBOSS_AS7");
 		
-		getStyledText().setText("persistence setup\n");
-		getStyledText().setText("HIBERNATE\n");
-		getStyledText().setText("JBOSS_AS7\n");
-		getStyledText().setText("\n"); //accept default java-ee-spec
-		getStyledText().setText("N\n");
+		try{
+			bot.editorByTitle("persistence.xml");
+		}catch(WidgetNotFoundException ex){
+			log.error(ex.getMessage());			
+			fail("persistence.xml was probably not opened!");
+		}
 		
-		assertTrue(ConsoleUtils.waitUntilTextInConsole("persistence.xml", TIME_1S, TIME_20S*3));
+		pExplorer.show();	
+		assertTrue(pExplorer.existsResource(PROJECT_NAME));
+		assertTrue(pExplorer.existsResource(PROJECT_NAME,"src","main","resources","META-INF", "persistence.xml"));
+		
 		
 		String projectLocation = SWTUtilExt.getPathToProject(PROJECT_NAME);
 		try {
@@ -51,14 +59,18 @@ public class PersistenceTest extends ForgeTest {
 	public void openjpaJBossAS7(){
 		
 		createProject();
+		createPersistence("OPENJPA", "JBOSS_AS7");
 		
-		getStyledText().setText("persistence setup\n");
-		getStyledText().setText("OPENJPA\n");
-		getStyledText().setText("JBOSS_AS7\n");
-		getStyledText().setText("\n"); //accept default java-ee-spec
-		getStyledText().setText("N\n");
+		try{
+			bot.editorByTitle("persistence.xml");
+		}catch(WidgetNotFoundException ex){
+			log.error(ex.getMessage());
+			fail("persistence.xml was probably not opened!");
+		}
 		
-		assertTrue(ConsoleUtils.waitUntilTextInConsole("persistence.xml", TIME_1S, TIME_20S*3));
+		pExplorer.show();		
+		assertTrue(pExplorer.existsResource(PROJECT_NAME));
+		assertTrue(pExplorer.existsResource(PROJECT_NAME,"src","main","resources","META-INF", "persistence.xml"));
 		
 		String projectLocation = SWTUtilExt.getPathToProject(PROJECT_NAME);
 		try {
@@ -78,14 +90,18 @@ public class PersistenceTest extends ForgeTest {
 	public void eclipselinkJBossAS7(){
 		
 		createProject();
+		createPersistence("ECLIPSELINK", "JBOSS_AS7");
 		
-		getStyledText().setText("persistence setup\n");
-		getStyledText().setText("ECLIPSELINK\n");
-		getStyledText().setText("JBOSS_AS7\n");
-		getStyledText().setText("\n"); //accept default java-ee-spec
-		getStyledText().setText("N\n");
+		try{
+			bot.editorByTitle("persistence.xml");
+		}catch(WidgetNotFoundException ex){
+			log.error(ex.getMessage());
+			fail("persistence.xml was probably not opened!");
+		}
 		
-		assertTrue(ConsoleUtils.waitUntilTextInConsole("persistence.xml", TIME_1S, TIME_20S*3));
+		pExplorer.show();		
+		assertTrue(pExplorer.existsResource(PROJECT_NAME));
+		assertTrue(pExplorer.existsResource(PROJECT_NAME,"src","main","resources","META-INF", "persistence.xml"));
 		
 		String projectLocation = SWTUtilExt.getPathToProject(PROJECT_NAME);
 		try {
@@ -106,14 +122,18 @@ public class PersistenceTest extends ForgeTest {
 	public void infinispanJBossAS7(){
 		
 		createProject();
+		createPersistence("INFINISPAN", "JBOSS_AS7");
 		
-		getStyledText().setText("persistence setup\n");
-		getStyledText().setText("INFINISPAN\n");
-		getStyledText().setText("JBOSS_AS7\n");
-		getStyledText().setText("\n"); //accept default java-ee-spec
-		getStyledText().setText("N\n");
+		try{
+			bot.editorByTitle("persistence.xml");
+		}catch(WidgetNotFoundException ex){
+			log.error(ex.getMessage());
+			fail("persistence.xml was probably not opened!");
+		}
 		
-		assertTrue(ConsoleUtils.waitUntilTextInConsole("persistence.xml", TIME_1S, TIME_20S*3));
+		pExplorer.show();		
+		assertTrue(pExplorer.existsResource(PROJECT_NAME));
+		assertTrue(pExplorer.existsResource(PROJECT_NAME,"src","main","resources","META-INF", "persistence.xml"));
 		
 		String projectLocation = SWTUtilExt.getPathToProject(PROJECT_NAME);
 		try {
