@@ -15,7 +15,7 @@
 
 	<packaging>eclipse-test-plugin</packaging>
 	<properties>
-		<systemProperties>-Dswtbot.test.properties.file=${project.basedir}/properties/swtbot.properties</systemProperties>
+		<systemProperties>${integrationTestsSystemProperties} -Dswtbot.test.properties.file=${project.basedir}/properties/swtbot.properties</systemProperties>
 		<surefire.timeout>10800</surefire.timeout>
 	</properties>
 	<profiles>

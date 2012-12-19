@@ -20,6 +20,7 @@
 		<jboss-seam-2.3>${requirementsDirectory}/jboss-seam-2.3.0.Final/</jboss-seam-2.3>
 		<test.class>org.jboss.tools.runtime.as.ui.bot.test.ProjectTestsSuite</test.class>
 		<surefire.timeout>7200</surefire.timeout>
+		<systemProperties>${integrationTestsSystemProperties}</systemProperties>
 	</properties>
 
 	<profiles>
