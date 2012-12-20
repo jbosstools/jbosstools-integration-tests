@@ -19,6 +19,9 @@ public class CloseAllEditors extends AbstractSWTTask {
 		List<? extends SWTBotEditor> editors = SWTBotFactory.getBot().editors();
 
 		for (SWTBotEditor editor : editors){
+			if(editor.isDirty()){
+				editor.save();
+			}
 			editor.close();
 		}
 	}
