@@ -152,14 +152,22 @@ public class MylynBugzillaQueryTest {
 		}
 
 		new DefaultShell("Edit Query");
+			
 		Bot.get().sleep(TimePeriod.NORMAL.getSeconds());
-		new LabeledText("Title:").setText(queryName);
+		
+		if (System.getProperty("jbds.release").equals("5")) {
+			new LabeledText("Query Title:").setText(queryName);
+		}
+		else {
+			new LabeledText("Title:").setText(queryName);
+		}
+		
 		Bot.get().sleep(TimePeriod.NORMAL.getSeconds());
 		new DefaultCombo("Summary:").setText(bugzillaSummary);
 		Bot.get().sleep(TimePeriod.NORMAL.getSeconds());
 		new PushButton("Finish").click();
 		Bot.get().sleep(TimePeriod.LONG.getSeconds());
-
+		
 		new ShellMenu("Window", "Show View", "Other...").select();
 		new DefaultShell("Show View");
 
@@ -177,7 +185,21 @@ public class MylynBugzillaQueryTest {
 		 * locate the widget.
 		 */
 		Bot.get().sleep(30000l);
-		new DefaultShell("JBoss - JBoss Developer Studio");
+		
+		log.info ("THE RELEASE IS: " + System.getProperty("jbds.release"));	
+		log.info ("THE RELEASE IS: " + System.getProperty("jbds.release"));
+		log.info ("THE RELEASE IS: " + System.getProperty("jbds.release"));
+		log.info ("THE RELEASE IS: " + System.getProperty("jbds.release"));
+		log.info ("THE RELEASE IS: " + System.getProperty("jbds.release"));
+		
+		if (System.getProperty("jbds.release").equals("5")) {
+			new DefaultShell("JBoss - JBoss Central - JBoss Developer Studio");
+		}
+		else {
+			new DefaultShell("JBoss - JBoss Developer Studio");
+		}
+		
+		
 		Bot.get().sleep(30000l);
 		ViewTree bugzillaTree = new ViewTree();
 		List<TreeItem> bugzillaQueryItems = bugzillaTree.getAllItems();
