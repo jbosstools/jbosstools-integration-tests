@@ -155,10 +155,13 @@ public class MylynBugzillaQueryTest {
 			
 		Bot.get().sleep(TimePeriod.NORMAL.getSeconds());
 		
-		if (System.getProperty("jbds.release").equals("5")) {
+		/* Slightly different text on JBDS5/6 - assume that 5 is running, trap
+		 * an exception use the catch block if it's JBDS6 (same for JBT3/4)
+		 */
+		try {
 			new LabeledText("Query Title:").setText(queryName);
 		}
-		else {
+		catch (org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException E) {
 			new LabeledText("Title:").setText(queryName);
 		}
 		
@@ -185,20 +188,16 @@ public class MylynBugzillaQueryTest {
 		 * locate the widget.
 		 */
 		Bot.get().sleep(30000l);
-		
-		log.info ("THE RELEASE IS: " + System.getProperty("jbds.release"));	
-		log.info ("THE RELEASE IS: " + System.getProperty("jbds.release"));
-		log.info ("THE RELEASE IS: " + System.getProperty("jbds.release"));
-		log.info ("THE RELEASE IS: " + System.getProperty("jbds.release"));
-		log.info ("THE RELEASE IS: " + System.getProperty("jbds.release"));
-		
-		if (System.getProperty("jbds.release").equals("5")) {
+			
+		/* Slightly different text on JBDS5/6 - assume that 5 is running, trap
+		 * an exception use the catch block if it's JBDS6 (same for JBT3/4)
+		 */
+		try {
 			new DefaultShell("JBoss - JBoss Central - JBoss Developer Studio");
 		}
-		else {
+		catch (org.jboss.reddeer.swt.exception.SWTLayerException E) {
 			new DefaultShell("JBoss - JBoss Developer Studio");
-		}
-		
+		}		
 		
 		Bot.get().sleep(30000l);
 		ViewTree bugzillaTree = new ViewTree();
