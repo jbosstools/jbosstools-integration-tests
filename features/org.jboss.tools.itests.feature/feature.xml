@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature id="org.jboss.tools.itests.feature" label="%featureName" version="1.0.0.qualifier" provider-name="%providerName"> 
+   <description>
+      %description
+   </description>
+
+   <copyright>
+      %copyright
+   </copyright>
+
+   <license url="%licenseURL">
+      %license
+   </license>
+
+  <plugin id="org.jboss.ide.eclipse.as.ui.bot.test" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
+  <plugin id="org.jboss.tools.archives.ui.bot.test" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
+  <plugin id="org.jboss.tools.bpel.ui.bot.test" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
+  <plugin id="org.jboss.tools.cdi.bot.test" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
+  <plugin id="org.jboss.tools.cdi.seam3.bot.test" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
+  <plugin id="org.jboss.tools.central.test.ui.bot" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
+  <plugin id="org.jboss.tools.drools.ui.bot.test" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
+  <plugin id="org.jboss.tools.dummy.ui.bot.test" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
+  <plugin id="org.jboss.tools.esb.ui.bot.test" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
+  <plugin id="org.jboss.tools.forge.ui.bot.test" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
+  <plugin id="org.jboss.tools.freemarker.ui.bot.test" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
+  <plugin id="org.jboss.tools.hibernate.ui.bot.test" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
+  <plugin id="org.jboss.tools.jbpm.ui.bot.test" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
+  <plugin id="org.jboss.tools.jsf.ui.bot.test" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
+  <plugin id="org.jboss.tools.jst.ui.bot.test" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
+  <plugin id="org.jboss.tools.maven.ui.bot.test" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
+  <plugin id="org.jboss.tools.modeshape.rest.ui.bot.test" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
+  <plugin id="org.jboss.tools.mylyn.ui.bot.test" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
+  <plugin id="org.jboss.tools.openshift.ui.bot.test" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
+  <plugin id="org.jboss.tools.portlet.ui.bot.test" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
+  <plugin id="org.jboss.tools.runtime.as.ui.bot.test" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
+  <plugin id="org.jboss.tools.seam.ui.bot.test" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
+  <plugin id="org.jboss.tools.struts.ui.bot.test" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
+  <plugin id="org.jboss.tools.ui.bot.ext" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
+  <plugin id="org.jboss.tools.ui.bot.ext.test" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
+  <plugin id="org.jboss.tools.vpe.ui.bot.test" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
+  <plugin id="org.jboss.tools.ws.ui.bot.test" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
+  <plugin id="org.teiid.designer.ui.bot.test" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
+
+</feature>
+
