@@ -73,12 +73,18 @@ public class ForgeTest extends SWTTestExt {
 	
 	protected void createPersistence(){
 		
-		getStyledText().setText("persistence setup\n");
-		getStyledText().setText("HIBERNATE\n");
-		getStyledText().setText("JBOSS_AS7\n");
-		getStyledText().setText("\n"); //accept default java-ee-spec
-		getStyledText().setText("N\n");
+		createPersistence("HIBERNATE", "JBOSS_AS7");
+	}
 	
+	protected void createPersistence(String provider, String container){
+		
+		getStyledText().setText("persistence setup\n");
+		getStyledText().setText(provider + "\n");
+		getStyledText().setText(container + "\n");
+		getStyledText().setText("\n"); //accept default java-ee-spec
+		getStyledText().setText("N\n"); //JPA 2 metamodel generator?
+		getStyledText().setText("N\n"); //extended APIs. Install these as well?
+		
 		ConsoleUtils.waitUntilTextInConsole("persistence.xml", TIME_1S, TIME_20S*3);
 		util.waitForNonIgnoredJobs();
 	}

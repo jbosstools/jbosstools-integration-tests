@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
+import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.jboss.tools.cdi.bot.test.CDIConstants;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
@@ -61,7 +63,6 @@ public class JSFTestBase extends CDITestBase {
 		XHTMLDialogWizard xhtmlWizard = new NewXHTMLFileWizard().run();
 		xhtmlWizard.setDestination(getProjectName() + "/" + CDIConstants.WEBCONTENT + 
 				"/" + WEB_FOLDER).setName(pageName).finishWithWait();
-		setEd(bot.activeEditor().toTextEditor());
 	}
 	
 	/**
@@ -89,7 +90,7 @@ public class JSFTestBase extends CDITestBase {
 		String renameContextMenuText = "Rename '" + 
 					parseNamedAnnotation(className, text) + 
 					"' Named Bean ";
-		openContextMenuForTextInEditor(text, 
+		openContextMenuForTextInEditor(text, bot.editorByTitle(className + ".java"), 
 				IDELabel.Menu.CDI_REFACTOR, renameContextMenuText);
 		bot.waitForShell("Refactoring");	
 	}
@@ -101,14 +102,14 @@ public class JSFTestBase extends CDITestBase {
 	 */
 	private String getNamedAnnotationForClass(String className) {
 		try {
-			bot.editorByTitle(className + ".java");
+			bot.editorByTitle(className + ".java").show();
 		} catch (WidgetNotFoundException exc) {
 			projectExplorer.openFile(getProjectName(), CDIConstants.JAVA_RESOURCES, CDIConstants.JAVA_SOURCE, 
 									 getPackageName(), className);
 		}
 		
-		setEd(bot.activeEditor().toTextEditor());
-		for (String line : getEd().getLines()) {
+		SWTBotEclipseEditor activeEditor = bot.activeEditor().toTextEditor();
+		for (String line : activeEditor.getLines()) {
 			if (line.contains("@Named") &&
 					!line.contains("//") && !line.contains("*")) {
 				return line;
@@ -138,12 +139,13 @@ public class JSFTestBase extends CDITestBase {
 	 * @param menu
 	 */
 	protected void openContextMenuForTextInEditor(final String text, 
-			final String... menu) {
+			final SWTBotEditor editorTitle, final String... menu) {
 		assert menu.length > 0;		
-		SWTJBTExt.selectTextInSourcePane(bot, getEd().getTitle(), 
+		editorTitle.show();
+		SWTJBTExt.selectTextInSourcePane(bot, editorTitle.getTitle(), 
 				text, 0, text.length());	
 					
-		ContextMenuHelper.clickContextMenu(getEd(), menu);
+		ContextMenuHelper.clickContextMenu(editorTitle, menu);
 		
 	}
 	

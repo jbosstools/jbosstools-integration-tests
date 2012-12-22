@@ -35,9 +35,10 @@ import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.swt.impl.tree.ShellTreeItem;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.ui.bot.ext.SWTUtilExt;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -73,7 +74,7 @@ public abstract class AbstractConfiguratorsTest extends AbstractMavenSWTBotTest{
 		pexplorer.getProject(projectName).select();
 		new ContextMenu("New","Other...").select();
 		new WaitUntil(new ShellWithTextIsActive("New"),TimePeriod.NORMAL);
-		new DefaultTreeItem("XML","XML File").select();
+		new ShellTreeItem("XML","XML File").select();
 		new PushButton("Next >").click();
 		new LabeledText("Enter or select the parent folder:").setText(projectName+"/src/META-INF");
 		new LabeledText("File name:").setText("persistence.xml");
@@ -111,7 +112,7 @@ public abstract class AbstractConfiguratorsTest extends AbstractMavenSWTBotTest{
 	public void createMavenizedDynamicWebProject(String projectName, boolean runtime) throws Exception{
 		new ShellMenu("File","New","Other...").select();
 		new WaitUntil(new ShellWithTextIsActive("New"),TimePeriod.NORMAL);
-		new DefaultTreeItem("Web","Dynamic Web Project").select();
+		new ShellTreeItem("Web","Dynamic Web Project").select();
 		new PushButton("Next >").click();
 		new WaitUntil(new ShellWithTextIsActive("New Dynamic Web Project"),TimePeriod.NORMAL);;
 		new LabeledText("Project name:").setText(projectName);
@@ -119,7 +120,7 @@ public abstract class AbstractConfiguratorsTest extends AbstractMavenSWTBotTest{
 		if(runtime){
 			new PushButton("New Runtime...").click();
 			new WaitUntil(new ShellWithTextIsActive("New Server Runtime Environment"),TimePeriod.NORMAL);
-			new DefaultTreeItem("JBoss Community","JBoss 7.1 Runtime").select();
+			new ShellTreeItem("JBoss Community","JBoss 7.1 Runtime").select();
 			new PushButton("Next >").click();
 			new LabeledText("Home Directory").setText(JBOSS7_AS_HOME);
 			new PushButton("Finish").click();
@@ -131,15 +132,15 @@ public abstract class AbstractConfiguratorsTest extends AbstractMavenSWTBotTest{
 		new PushButton("Next >").click();
 		new CheckBox("Generate web.xml deployment descriptor").toggle(true);
 		new PushButton("Finish").click();
-
+		new WaitWhile(new ShellWithTextIsActive("New Dynamic Web Project"),TimePeriod.LONG);
 		botUtil.waitForAll(Long.MAX_VALUE);
 		PackageExplorer pexplorer = new PackageExplorer();
 		pexplorer.open();
 		pexplorer.getProject(projectName).select();
 		new ContextMenu("Properties").select();
 		new WaitUntil(new ShellWithTextIsActive("Properties for "+projectName),TimePeriod.NORMAL);
-		new DefaultTreeItem("Project Facets").select();
-		new DefaultTreeItem(1,"JBoss Maven Integration").setChecked(true);
+		new ShellTreeItem("Project Facets").select();
+		new ShellTreeItem(1,"JBoss Maven Integration").setChecked(true);
 	    botUtil.waitForAll();
 	    bot.hyperlink("Further configuration required...").click();
 		new PushButton("OK").click();
@@ -160,7 +161,7 @@ public abstract class AbstractConfiguratorsTest extends AbstractMavenSWTBotTest{
 	public void createMavenizedEJBProject(String projectName, boolean runtime)throws Exception{
 		new ShellMenu("File","New","Other...").select();
 		new WaitUntil(new ShellWithTextIsActive("New"),TimePeriod.NORMAL);
-		new DefaultTreeItem("EJB","EJB Project").select();
+		new ShellTreeItem("EJB","EJB Project").select();
 		new PushButton("Next >").click();
 		new WaitUntil(new ShellWithTextIsActive("New EJB Project"),TimePeriod.NORMAL);;
 		new LabeledText("Project name:").setText(projectName);
@@ -168,7 +169,7 @@ public abstract class AbstractConfiguratorsTest extends AbstractMavenSWTBotTest{
 		if(runtime){
 			new PushButton("New Runtime...").click();
 			new WaitUntil(new ShellWithTextIsActive("New Server Runtime Environment"),TimePeriod.NORMAL);
-			new DefaultTreeItem("JBoss Community","JBoss 7.1 Runtime").select();
+			new ShellTreeItem("JBoss Community","JBoss 7.1 Runtime").select();
 			new PushButton("Next >").click();
 			new LabeledText("Home Directory").setText(JBOSS7_AS_HOME);
 			new PushButton("Finish").click();
@@ -185,8 +186,8 @@ public abstract class AbstractConfiguratorsTest extends AbstractMavenSWTBotTest{
 		pexplorer.getProject(projectName).select();
 		new ContextMenu("Properties").select();
 		new WaitUntil(new ShellWithTextIsActive("Properties for "+projectName),TimePeriod.NORMAL);
-		new DefaultTreeItem("Project Facets").select();
-		new DefaultTreeItem(1,"JBoss Maven Integration").setChecked(true);
+		new ShellTreeItem("Project Facets").select();
+		new ShellTreeItem(1,"JBoss Maven Integration").setChecked(true);
 	    bot.hyperlink("Further configuration required...").click();
 	   	new DefaultCombo("Packaging:").setSelection("ejb");
 	   	new PushButton("OK").click();
@@ -203,10 +204,10 @@ public abstract class AbstractConfiguratorsTest extends AbstractMavenSWTBotTest{
 		pexplorer.open();
 		pexplorer.getProject(projectName).select();
 		new ContextMenu("New","Other...").select();
-		new DefaultTreeItem("JBoss Tools Web","JSF","Faces Config").select();
+		new ShellTreeItem("JBoss Tools Web","JSF","Faces Config").select();
 		new PushButton("Next >").click();
 		new PushButton("Browse...").click();
-		new DefaultTreeItem(projectName,"WebContent","WEB-INF").select();
+		new ShellTreeItem(projectName,"WebContent","WEB-INF").select();
 		new PushButton("OK").click();
 		new PushButton("Finish").click();
 		updateConf(botUtil,projectName);

@@ -37,7 +37,7 @@ import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.swt.impl.tree.ShellTreeItem;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.tools.maven.ui.bot.test.utils.ProjectIsBuilt;
@@ -92,7 +92,7 @@ public class JSFProjectTest extends AbstractMavenSWTBotTest{
 	private void createJSFProject(String serverRuntime, String server, String serverHome, String jsfVersion, String projectName) throws InterruptedException, CoreException{
 		new ShellMenu("File","New","Other...").select();
 		new WaitUntil(new ShellWithTextIsActive("New"),TimePeriod.NORMAL);
-		new DefaultTreeItem("JBoss Tools Web","JSF","JSF Project").select();
+		new ShellTreeItem("JBoss Tools Web","JSF","JSF Project").select();
 		new PushButton("Next >").click();
 		new WaitUntil(new ShellWithTextIsActive("New JSF Project"),TimePeriod.NORMAL);
 		new LabeledText("Project Name*").setText(projectName);
@@ -101,14 +101,14 @@ public class JSFProjectTest extends AbstractMavenSWTBotTest{
 		new PushButton("Next >").click();
 		new PushButton("New...").click();
 		new WaitUntil(new ShellWithTextIsActive("New Server Runtime"),TimePeriod.NORMAL);
-		new DefaultTreeItem("JBoss Community",serverRuntime).select();
+		new ShellTreeItem("JBoss Community",serverRuntime).select();
 		new PushButton("Next >").click();
 		new LabeledText("Home Directory").setText(serverHome);
 		new PushButton("Finish").click();
 		new WaitUntil(new ShellWithTextIsActive("New JSF Project"),TimePeriod.NORMAL);
 		new PushButton(1).click();
 		new WaitUntil(new ShellWithTextIsActive("New Server"),TimePeriod.NORMAL);
-		new DefaultTreeItem("JBoss Community",server).select();
+		new ShellTreeItem("JBoss Community",server).select();
 		new PushButton("Finish").click();
 		new WaitUntil(new ShellWithTextIsActive("New JSF Project"),TimePeriod.NORMAL);
 		new PushButton("Finish").click();
@@ -152,8 +152,8 @@ public class JSFProjectTest extends AbstractMavenSWTBotTest{
 		pexplorer.getProject(projectName).select();
 		new ContextMenu("Properties").select();
 		new WaitUntil(new ShellWithTextIsActive("Properties for "+projectName),TimePeriod.NORMAL);
-		new DefaultTreeItem("Project Facets").select();
-		new DefaultTreeItem(1, "JBoss Maven Integration").setChecked(true);
+		new ShellTreeItem("Project Facets").select();
+		new ShellTreeItem(1, "JBoss Maven Integration").setChecked(true);
 	    botUtil.waitForAll();
 	    bot.hyperlink("Further configuration required...").click();
 		new WaitUntil(new ShellWithTextIsActive("Modify Faceted Project"),TimePeriod.NORMAL);
@@ -166,7 +166,7 @@ public class JSFProjectTest extends AbstractMavenSWTBotTest{
 	private void buildProject(String projectName) throws CoreException{
 		PackageExplorer pexplorer = new PackageExplorer();
 		pexplorer.getProject(projectName).select();
-		new ContextMenu("Run As","5 Maven build...");
+		new ContextMenu("Run As","5 Maven build...").select();
 		new WaitUntil(new ShellWithTextIsActive("Edit Configuration"),TimePeriod.NORMAL);
 		new LabeledText("Goals:").setText("clean package");
 		new PushButton("Run").click();

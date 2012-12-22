@@ -14,6 +14,8 @@ package org.jboss.tools.cdi.bot.test.uiutils.wizards;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.swt.custom.StyledText;
+import org.eclipse.swt.widgets.Table;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.keyboard.Keystrokes;
@@ -21,8 +23,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotStyledText;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTableItem;
-import org.jboss.tools.cdi.bot.test.matcher.StyledTextExistsInShellMatcher;
-import org.jboss.tools.cdi.bot.test.matcher.TableExistsInShellMatcher;
+import org.jboss.tools.cdi.bot.test.matcher.WidgetExistsInShellMatcher;
 import org.junit.internal.matchers.TypeSafeMatcher;
 
 @SuppressWarnings("restriction")
@@ -58,11 +59,11 @@ public class OpenOnOptionsDialog {
 	}
 	
 	private SWTBotShell getShellWithTable() {
-		TypeSafeMatcher<SWTBotShell> matcher = 
-				new TableExistsInShellMatcher();
+		TypeSafeMatcher<SWTBotShell> tableExistsMatcher = 
+				new WidgetExistsInShellMatcher(Table.class);
 		
 		for (SWTBotShell s : bot.shells()) {
-			if (matcher.matchesSafely(s)) {
+			if (tableExistsMatcher.matchesSafely(s)) {
 				return s;
 			}
 		}
@@ -70,11 +71,11 @@ public class OpenOnOptionsDialog {
 	}
 	
 	private SWTBotShell getShellWithOnlyStyledText() {
-		TypeSafeMatcher<SWTBotShell> matcher = 
-				new StyledTextExistsInShellMatcher();
+		TypeSafeMatcher<SWTBotShell> styledTextExistsMatcher = 
+				new WidgetExistsInShellMatcher(StyledText.class);
 		
 		for (SWTBotShell s : bot.shells()) {
-			if (matcher.matchesSafely(s)) {
+			if (styledTextExistsMatcher.matchesSafely(s)) {
 				boolean onlyStyledText = false;
 				try {
 					s.bot().tree();

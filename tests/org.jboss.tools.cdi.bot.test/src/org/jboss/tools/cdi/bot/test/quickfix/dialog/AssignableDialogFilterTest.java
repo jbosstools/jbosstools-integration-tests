@@ -14,12 +14,13 @@ package org.jboss.tools.cdi.bot.test.quickfix.dialog;
 import org.jboss.tools.cdi.bot.test.CDIConstants;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
 import org.jboss.tools.cdi.bot.test.uiutils.wizards.AssignableBeansDialog;
+import org.jboss.tools.ui.bot.ext.helper.OpenOnHelper;
 import org.junit.Test;
 
 public class AssignableDialogFilterTest extends CDITestBase {
-	
+
 	private String appClass = "App.java";
-	
+
 	@Override
 	public String getProjectName() {
 		return "AssignableDialogFilterTest";
@@ -27,83 +28,93 @@ public class AssignableDialogFilterTest extends CDITestBase {
 
 	@Test
 	public void testFilterAssignableBeans() {
-		
-		setEd(packageExplorer.openFile(getProjectName(), CDIConstants.SRC, 
-				getPackageName(), appClass).toTextEditor());
-		
-		assertTrue(openOnUtil.openOnByOption("animal", appClass, CDIConstants.SHOW_ALL_ASSIGNABLE));			
-		
-		AssignableBeansDialog assignDialog = new AssignableBeansDialog(bot.shell("Assignable Beans"));
-		
+
+		packageExplorer.openFile(getProjectName(), CDIConstants.SRC,
+				getPackageName(), appClass).toTextEditor();
+
+		OpenOnHelper.selectOpenOnOption(bot, appClass, "animal",
+				CDIConstants.SHOW_ALL_ASSIGNABLE);
+
+		AssignableBeansDialog assignDialog = new AssignableBeansDialog(
+				bot.shell("Assignable Beans"));
+
 		/** test lower and upper case */
 		assignDialog.typeInFilter("cat");
 		assertTrue(assignDialog.getAllBeans().size() == 1);
-		assertTrue(assignDialog.getAllBeans().get(0).
-				equals("Cat - " + getPackageName() + " - /" 
-				+ getProjectName() + "/src"));
-		
+		assertTrue(assignDialog
+				.getAllBeans()
+				.get(0)
+				.equals("Cat - " + getPackageName() + " - /" + getProjectName()
+						+ "/src"));
+
 		assignDialog.typeInFilter("CAT");
 		assertTrue(assignDialog.getAllBeans().size() == 1);
-		assertTrue(assignDialog.getAllBeans().get(0).
-				equals("Cat - " + getPackageName() + " - /" 
-				+ getProjectName() + "/src"));
-		
+		assertTrue(assignDialog
+				.getAllBeans()
+				.get(0)
+				.equals("Cat - " + getPackageName() + " - /" + getProjectName()
+						+ "/src"));
+
 		/** test '*' asterisk */
 		assignDialog.typeInFilter("*at");
 		assertTrue(assignDialog.getAllBeans().size() == 2);
-		assertTrue(assignDialog.getAllBeans().contains("Cat - " 
-				+ getPackageName() + " - /" 
-				+ getProjectName() + "/src"));
-		assertTrue(assignDialog.getAllBeans().contains("@Decorator AnimalDecorator - " 
-				+ getPackageName() + " - /" 
-				+ getProjectName() + "/src"));
-		
+		assertTrue(assignDialog.getAllBeans().contains(
+				"Cat - " + getPackageName() + " - /" + getProjectName()
+						+ "/src"));
+		assertTrue(assignDialog.getAllBeans().contains(
+				"@Decorator AnimalDecorator - " + getPackageName() + " - /"
+						+ getProjectName() + "/src"));
+
 		/** test '?' asterisk */
 		assignDialog.typeInFilter("??g");
 		assertTrue(assignDialog.getAllBeans().size() == 1);
-		assertTrue(assignDialog.getAllBeans().get(0).equals("Dog - " 
-				+ getPackageName() + " - /" 
-				+ getProjectName() + "/src"));
-		
+		assertTrue(assignDialog
+				.getAllBeans()
+				.get(0)
+				.equals("Dog - " + getPackageName() + " - /" + getProjectName()
+						+ "/src"));
+
 		/** test non-existing bean */
 		assignDialog.typeInFilter("?*?s");
 		assertTrue(assignDialog.getAllBeans().size() == 0);
-		
+
 	}
-	
+
 	@Test
 	public void testFilterNonAssignableBeans() {
-		
-		setEd(packageExplorer.openFile(getProjectName(), CDIConstants.SRC, 
-				getPackageName(), appClass).toTextEditor());
-		
-		assertTrue(openOnUtil.openOnByOption("animal", appClass, CDIConstants.SHOW_ALL_ASSIGNABLE));			
-		
-		AssignableBeansDialog assignDialog = new AssignableBeansDialog(bot.shell("Assignable Beans"));
-		
+
+		packageExplorer.openFile(getProjectName(), CDIConstants.SRC,
+				getPackageName(), appClass).toTextEditor();
+
+		OpenOnHelper.selectOpenOnOption(bot, appClass, "animal",
+				CDIConstants.SHOW_ALL_ASSIGNABLE);
+
+		AssignableBeansDialog assignDialog = new AssignableBeansDialog(
+				bot.shell("Assignable Beans"));
+
 		assignDialog.hideDecorators();
-		
+
 		/** test lower and upper case */
 		assignDialog.typeInFilter("animaldecorator");
 		assertTrue(assignDialog.getAllBeans().size() == 0);
-		
+
 		assignDialog.typeInFilter("ANIMALDECORATOR");
 		assertTrue(assignDialog.getAllBeans().size() == 0);
-		
+
 		/** test '*' asterisk */
 		assignDialog.typeInFilter("*at");
 		assertTrue(assignDialog.getAllBeans().size() == 1);
-		assertTrue(assignDialog.getAllBeans().contains("Cat - " 
-				+ getPackageName() + " - /" 
-				+ getProjectName() + "/src"));
-		assertFalse(assignDialog.getAllBeans().contains("@Decorator AnimalDecorator - " 
-				+ getPackageName() + " - /" 
-				+ getProjectName() + "/src"));
-		
+		assertTrue(assignDialog.getAllBeans().contains(
+				"Cat - " + getPackageName() + " - /" + getProjectName()
+						+ "/src"));
+		assertFalse(assignDialog.getAllBeans().contains(
+				"@Decorator AnimalDecorator - " + getPackageName() + " - /"
+						+ getProjectName() + "/src"));
+
 		/** test '?' asterisk */
 		assignDialog.typeInFilter("??i");
 		assertTrue(assignDialog.getAllBeans().size() == 0);
-		
+
 	}
 
 }

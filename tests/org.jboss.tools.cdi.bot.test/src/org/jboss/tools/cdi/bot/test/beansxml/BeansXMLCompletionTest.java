@@ -14,6 +14,7 @@ package org.jboss.tools.cdi.bot.test.beansxml;
 import java.util.Arrays;
 import java.util.List;
 
+import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
 import org.jboss.tools.cdi.bot.test.CDIConstants;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
 import org.jboss.tools.cdi.bot.test.annotations.CDIWizardType;
@@ -162,8 +163,9 @@ public class BeansXMLCompletionTest extends CDITestBase {
 	 */
 	private void checkAutoCompletion(int row, int column, String text, String editorTitle,
 			List<String> expectedProposalList) {
-		getEd().navigateTo(row, column);
-		getEd().typeText(text);
+		SWTBotEclipseEditor activeEditor = bot.activeEditor().toTextEditor();
+		activeEditor.navigateTo(row, column);
+		activeEditor.typeText(text);
 		ContentAssistHelper.checkContentAssistContent(bot, 
 				editorTitle, text, 1, 0, expectedProposalList, false);		
 		editResourceUtil.replaceInEditor(text, "");

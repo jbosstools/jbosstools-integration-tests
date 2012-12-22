@@ -46,6 +46,8 @@ public class IDELabel {
 		public static final String REMOVE = "Remove";
 		public static final String IMPORT = "Import...";
 		public static final String RUN_AS = "Run As";
+		public static final String NAVIGATE = "Navigate";
+		public static final String OPEN_HYPERLINK = "Open Hyperlink";
 		public static final String WEB_PROJECT_JBT_JSF = "JBoss Tools JSF";
 		public static final String PACKAGE_EXPLORER_JBT = "JBoss Tools";
 		public static final String PACKAGE_EXPLORER_CONFIGURE = "Configure";
@@ -854,7 +856,7 @@ public class IDELabel {
 	   public static final String HTML5_PROJECT = "HTML5 Project";
 	   public static final String RICHFACES_PROJECT = "RichFaces Project";
 	   public static final String OPENSHIFT_APP = "OpenShift Application";
-	   public static final String JAVA_EE_PROJECT = "Java EE Project";
+	   public static final String JAVA_EE_PROJECT = "Java EE EAR Project";
 	   public static final String SPRING_MVC_PROJECT = "Spring MVC Project";
 	   public static final String NEW_DYNAMIC_WEB_PROJECT = "New Dynamic Web Project";
 	   public static final String PROJECT_EXAMPLE = "New Project Example";

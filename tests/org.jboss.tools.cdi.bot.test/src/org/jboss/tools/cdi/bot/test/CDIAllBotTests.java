@@ -30,8 +30,10 @@ import org.jboss.tools.cdi.bot.test.quickfix.test.QualifierValidationQuickFixTes
 import org.jboss.tools.cdi.bot.test.quickfix.test.QuickFixProposalsDescriptionTest;
 import org.jboss.tools.cdi.bot.test.quickfix.test.ScopeValidationQuickFixTest;
 import org.jboss.tools.cdi.bot.test.quickfix.test.StereotypeValidationQuickFixTest;
+import org.jboss.tools.cdi.bot.test.validation.CDIValidatorTest;
 import org.jboss.tools.cdi.bot.test.wizard.CDIWebProjectWizardTest;
 import org.jboss.tools.cdi.bot.test.wizard.ConfigurationPresetTest;
+import org.jboss.tools.cdi.bot.test.wizard.DynamicWebProjectWithCDITest;
 import org.jboss.tools.cdi.bot.test.wizard.FacetTest;
 import org.jboss.tools.cdi.bot.test.wizard.WizardTest;
 import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
@@ -50,7 +52,8 @@ import org.junit.runners.Suite.SuiteClasses;
 	ConfigurationPresetTest.class,
 	FacetTest.class, 
 	CDIWebProjectWizardTest.class,
-//	DynamicWebProjectWithCDITest.class, // Context menu not found -> error in test 
+	DynamicWebProjectWithCDITest.class,
+	CDIValidatorTest.class,
 	WizardTest.class,
 	BeansEditorTest.class,
 	NamedRefactoringTest.class,

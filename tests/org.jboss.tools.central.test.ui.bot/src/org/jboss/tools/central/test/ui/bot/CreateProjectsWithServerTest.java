@@ -135,31 +135,41 @@ public class CreateProjectsWithServerTest extends SWTTestExt{
 	
 	@Test
 	public void createProjectSectionJavaEEWebProjectTest(){
-		checkExample(null, IDELabel.JBossCentralEditor.JAVA_EE_WEB_PROJECT, true);
+		checkExample(null, IDELabel.JBossCentralEditor.JAVA_EE_WEB_PROJECT, true, false);
 		canBeDeployedTest();
 	}
 	
 	@Test
+	public void createProjectSectionJavaEEWebProjectBlankTest(){
+		checkExample(null, IDELabel.JBossCentralEditor.JAVA_EE_WEB_PROJECT, false, true);
+	}
+	
+	@Test
 	public void createProjectSectionJavaEEProjectTest(){
-		checkExample(null, IDELabel.JBossCentralEditor.JAVA_EE_PROJECT, true);
+		checkExample(null, IDELabel.JBossCentralEditor.JAVA_EE_PROJECT, true, false);
+	}
+	
+	@Test
+	public void createProjectSectionJavaEEProjectBlankTest(){
+		checkExample(null, IDELabel.JBossCentralEditor.JAVA_EE_PROJECT, false, true);
 		canBeDeployedTest();
 	}
 	
 	@Test
 	public void createProjectSectionHTML5ProjectTest(){
-		checkExample(null, IDELabel.JBossCentralEditor.HTML5_PROJECT, true);
+		checkExample(null, IDELabel.JBossCentralEditor.HTML5_PROJECT, true, false);
 		canBeDeployedTest();
 	}
 	
 	@Test
 	public void createProjectSectionRichFacesProjectTest(){
-		checkExample(null, IDELabel.JBossCentralEditor.RICHFACES_PROJECT, true);
+		checkExample(null, IDELabel.JBossCentralEditor.RICHFACES_PROJECT, true, false);
 		canBeDeployedTest();
 	}
 	
 	@Test
 	public void createProjectSectionSpringMVCProjectTest(){
-		checkExample(null, IDELabel.JBossCentralEditor.SPRING_MVC_PROJECT, true);
+		checkExample(null, IDELabel.JBossCentralEditor.SPRING_MVC_PROJECT, true, false);
 		canBeDeployedTest();
 	}
 	
@@ -180,7 +190,7 @@ public class CreateProjectsWithServerTest extends SWTTestExt{
 		if (readmeFile == null){
 			checkExample(formsBot, name, true, projectName);
 		}else{
-			checkExample(formsBot, name, true, projectName, readmeFile);
+			checkExample(formsBot, name, true, false, projectName, readmeFile);
 		}
 		canBeDeployedTest();
 	}
@@ -189,12 +199,12 @@ public class CreateProjectsWithServerTest extends SWTTestExt{
 		projectExamplesSectionTest(name, projectName, null);
 	}
 	
-//	@Test JBIDE-12906
+	@Test
 	public void projectExamplesSectionHelloworldTest(){
-		projectExamplesSectionTest("Hello World", "helloworld");
+		projectExamplesSectionTest("Hello World", "jboss-as-helloworld");
 	}
 	
-	@Test
+//	JBIDE-13102 @Test
 	public void projectExamplesSectionHelloworldJSFTest(){
 		projectExamplesSectionTest("Hello World JSF", "jboss-as-helloworld-jsf");
 	}
@@ -214,14 +224,14 @@ public class CreateProjectsWithServerTest extends SWTTestExt{
 		projectExamplesSectionTest("Hello World OSGi", "jboss-as-helloworld-osgi");
 	}
 	
-//	@Test JBIDE-12906
+	@Test 
 	public void projectExamplesSectionNumberguessTest(){
 		projectExamplesSectionTest("Number Guess", "jboss-as-numberguess");
 	}
 	
 	@Test
 	public void projectExamplesSectionKitchensinkTest(){
-		projectExamplesSectionTest("Kitchensink", "jboss-as-kitchensink");
+		projectExamplesSectionTest("Kitchensink", "kitchensink");
 	}
 	
 	@Test
@@ -294,7 +304,7 @@ public class CreateProjectsWithServerTest extends SWTTestExt{
 				log.info("Project: "+projectName.getText()+" is properly deployed.");
 			}catch (WidgetNotFoundException wnfe){
 				//exception for Java EE Web project. It hase 4 projects, multi, multi-ear, multi-ejb and multi-web.
-				if (!projectName.getText().contains("JavaEEProject")){
+				if (!projectName.getText().contains(IDELabel.JBossCentralEditor.JAVA_EE_PROJECT.replaceAll("\\s", ""))){
 					//jms and osgi aren't project, that can be deployed to server
 					if (!projectName.getText().equals("jboss-as-helloworld-jms") && !projectName.getText().equals("jboss-as-helloworld-osgi")){
 						fail("Project <"+projectName.getText()+"> is not deployed on server correctly");
@@ -305,13 +315,9 @@ public class CreateProjectsWithServerTest extends SWTTestExt{
 		servers.removeProjectFromServers(serverName);
 	}
 	
-	private void waitForAWhile(){
-		bot.sleep(Long.MAX_VALUE);
-	}
 	
-	
-	private void checkExample(SWTFormsBotExt formsBot, String formText, boolean readme){
-		checkExample(formsBot, formText, readme, null, null);
+	private void checkExample(SWTFormsBotExt formsBot, String formText, boolean readme, boolean blank){
+		checkExample(formsBot, formText, readme, blank, null, null);
 	}
 
 	/**
@@ -322,7 +328,7 @@ public class CreateProjectsWithServerTest extends SWTTestExt{
 	 */
 	
 	private void checkExample(SWTFormsBotExt formsBot, String formText, boolean readme, String projectName){
-		checkExample(formsBot, formText, readme, projectName, null);
+		checkExample(formsBot, formText, readme, false, projectName, null);
 	}
 	
 	/**
@@ -333,7 +339,7 @@ public class CreateProjectsWithServerTest extends SWTTestExt{
 	 * @param readmeFileName 
 	 */
 	
-	protected void checkExample(SWTFormsBotExt formsBot, String formText, boolean readme, String projectName, String readmeFileName){
+	protected void checkExample(SWTFormsBotExt formsBot, String formText, boolean readme, boolean blank, String projectName, String readmeFileName){
 		problems.show();
 		if (formsBot==null){
 			bot.hyperlink(formText).click();
@@ -355,7 +361,9 @@ public class CreateProjectsWithServerTest extends SWTTestExt{
 			}catch (WidgetNotFoundException ex){
 				//everything fine
 			}
-			//bot.checkBox(0); //Create a blank project checkbox
+			if (blank){
+				bot.checkBox(0); //Create a blank project checkbox
+			}
 			wizard.next();
 			bot.comboBox().setText(formText.replaceAll("\\s", ""));
 			if (wizard.canNext()) wizard.next();

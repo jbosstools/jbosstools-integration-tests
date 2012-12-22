@@ -5,7 +5,6 @@ import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 import org.teiid.designer.ui.bot.test.ModelWizardTest;
-import org.teiid.designer.ui.bot.test.TopDownWsdlTest;
 import org.teiid.designer.ui.bot.test.VirtualGroupTutorialTest;
 
 
@@ -16,9 +15,9 @@ import org.teiid.designer.ui.bot.test.VirtualGroupTutorialTest;
  *
  */
 @SuiteClasses({
-	TopDownWsdlTest.class
-//	ModelWizardTest.class,
-//	VirtualGroupTutorialTest.class
+    //TopDownWsdlTest.class
+	ModelWizardTest.class,
+	VirtualGroupTutorialTest.class
 	//TeiidSourceInSeamTest.class
 	//TeiidSourceInHibernateToolsTest.class
 	})

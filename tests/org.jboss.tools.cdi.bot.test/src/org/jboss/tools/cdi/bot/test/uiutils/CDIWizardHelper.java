@@ -13,12 +13,19 @@ package org.jboss.tools.cdi.bot.test.uiutils;
 
 import java.util.List;
 
-import org.jboss.tools.cdi.bot.test.CDITestBase;
 import org.jboss.tools.cdi.bot.test.annotations.CDIWizardType;
 import org.jboss.tools.cdi.bot.test.uiutils.wizards.CDIWizardBaseExt;
+import org.jboss.tools.ui.bot.ext.SWTBotExt;
+import org.jboss.tools.ui.bot.ext.SWTBotFactory;
+import org.jboss.tools.ui.bot.ext.SWTOpenExt;
+import org.jboss.tools.ui.bot.ext.SWTUtilExt;
 
-public class CDIWizardHelper extends CDITestBase {
+public class CDIWizardHelper {
 	
+	private SWTBotExt bot = SWTBotFactory.getBot();
+	private SWTUtilExt util = SWTBotFactory.getUtil();
+	private SWTOpenExt open = SWTBotFactory.getOpen();
+	private EditorResourceHelper editResourceUtil = new EditorResourceHelper();
 	private CDIWizardBaseExt wizardExt = new CDIWizardBaseExt();
 	
 	/**
@@ -40,15 +47,7 @@ public class CDIWizardHelper extends CDITestBase {
 	 */
 	public void createCDIComponent(CDIWizardType component, String name,
 			String packageName, String necessaryParam) {			
-		createComponent(component, name, packageName, necessaryParam);	
-//		util.waitForNonIgnoredJobs();
-		/**
-		 * if beans.xml is created as first component in project,
-		 * it is not opened as default ==> there is no active editor
-		 */
-		if (component != CDIWizardType.BEANS_XML) {
-			setEd(bot.activeEditor().toTextEditor());
-		}		
+		createComponent(component, name, packageName, necessaryParam);			
 	}
 	
 	/**
@@ -64,10 +63,9 @@ public class CDIWizardHelper extends CDITestBase {
 		createCDIComponent(component, name, packageName, necessaryParam);
 		if (!bot.activeEditor().getTitle().equals(name + ".java")) {
 			bot.editorByTitle(name + ".java").show();
-			setEd(bot.activeEditor().toTextEditor());
 		}
-		editResourceUtil.replaceClassContentByResource(CDIWizardHelper.class.
-				getResourceAsStream(resource), false);
+		editResourceUtil.replaceClassContentByResource(bot.activeEditor(), 
+				CDIWizardHelper.class.getResourceAsStream(resource), false);
 	}
 	
 	/**

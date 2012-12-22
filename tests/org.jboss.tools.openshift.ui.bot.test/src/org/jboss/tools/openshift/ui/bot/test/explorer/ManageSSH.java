@@ -42,13 +42,13 @@ public class ManageSSH extends SWTTestExt {
 		bot.waitForShell(OpenShiftUI.Shell.NEW_SSH);
 		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_20S, TIME_1S);
 
-		bot.button("Refresh...").click();
-		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_20S, TIME_1S);
+		bot.buttonInGroup("Refresh...", "SSH Public Keys").click();
+		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S, TIME_1S);
 
 		// delete all keys
 		for (int i = 0; i < bot.table().rowCount(); i++) {
 			bot.table().getTableItem(i).select();
-			bot.button("Remove...").click();
+			bot.buttonInGroup("Remove...", "SSH Public Keys").click();
 			bot.waitForShell("");
 			bot.button(IDELabel.Button.OK).click();
 			bot.waitWhile(new NonSystemJobRunsCondition(), TIME_20S, TIME_1S);

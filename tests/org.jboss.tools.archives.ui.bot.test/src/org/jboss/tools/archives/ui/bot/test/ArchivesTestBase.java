@@ -12,9 +12,8 @@ package org.jboss.tools.archives.ui.bot.test;
 
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.tools.archives.ui.bot.test.explorer.ProjectArchivesExplorer;
 import org.jboss.tools.archives.ui.bot.test.view.ProjectArchivesView;
 import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
@@ -22,7 +21,6 @@ import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.condition.ProgressInformationShellIsActiveCondition;
 import org.jboss.tools.ui.bot.ext.condition.TaskDuration;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
-import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
 import org.jboss.tools.ui.bot.ext.helper.ImportHelper;
 import org.jboss.tools.ui.bot.ext.helper.TreeHelper;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
@@ -172,19 +170,16 @@ public class ArchivesTestBase extends SWTTestExt {
 	
 	private void addRemoveArchivesSupport(String projectName, boolean add) {
 		projectExplorer.selectProject(projectName);
-		SWTBotTree tree = projectExplorer.bot().tree();
-		SWTBotTreeItem item = tree.getTreeItem(projectName);
-		item.expand();
-		ContextMenuHelper.prepareTreeItemForContextMenu(tree, item);
-		SWTBotMenu menu = new SWTBotMenu(
-				ContextMenuHelper.getContextMenu(
-				tree, IDELabel.Menu.PACKAGE_EXPLORER_CONFIGURE, false));
 		if (add) {
-			menu.menu(IDELabel.Menu.ADD_ARCHIVE_SUPPORT).click();
+			new ContextMenu(IDELabel.Menu.PACKAGE_EXPLORER_CONFIGURE, 
+					IDELabel.Menu.ADD_ARCHIVE_SUPPORT).select();
 		} else {
-			menu.menu(IDELabel.Menu.REMOVE_ARCHIVE_SUPPORT).click();
+			new ContextMenu(IDELabel.Menu.PACKAGE_EXPLORER_CONFIGURE, 
+					IDELabel.Menu.REMOVE_ARCHIVE_SUPPORT).select();
 		}
-		bot.waitWhile(new ProgressInformationShellIsActiveCondition(), TaskDuration.LONG.getTimeout());
+		bot.waitWhile(new 
+				ProgressInformationShellIsActiveCondition(), 
+				TaskDuration.LONG.getTimeout());
 	}
 	
 	private int countOfArchivesErrors() {
