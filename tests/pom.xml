@@ -26,6 +26,7 @@
 		<!-- <module>org.jboss.tools.cdi.reddeer</module>         JBIDE-13323 -->
 		<!-- <module>org.jboss.tools.cdi.seam3.bot.test</module>  JBIDE-13323 -->
 		<module>org.jboss.tools.central.test.ui.bot</module>
+		<module>org.jboss.tools.drools.ui.bot.test</module>
 		<module>org.jboss.tools.dummy.ui.bot.test</module>
 		<module>org.jboss.tools.forge.ui.bot.test</module>
 		<module>org.jboss.tools.freemarker.ui.bot.test</module>
@@ -33,6 +34,8 @@
 		<module>org.jboss.tools.jsf.ui.bot.test</module>
 		<module>org.jboss.tools.jst.ui.bot.test</module>
 		<module>org.jboss.tools.maven.ui.bot.test</module>
+		<module>org.jboss.tools.modeshape.rest.ui.bot.test</module>
+		<module>org.jboss.tools.mylyn.ui.bot.test</module>
 		<module>org.jboss.tools.openshift.ui.bot.test</module>
 		<!-- <module>org.jboss.tools.portlet.ui.bot.test</module> JBIDE-13324 -->
 		<module>org.jboss.tools.runtime.as.ui.bot.test</module>
@@ -41,8 +44,8 @@
 		<module>org.jboss.tools.ui.bot.ext</module>
 		<module>org.jboss.tools.ui.bot.ext.test</module>
 		<module>org.jboss.tools.vpe.ui.bot.test</module>
-		<module>org.jboss.tools.ws.ui.bot.test</module> 
-		<module>org.jboss.tools.mylyn.ui.bot.test</module>
+		<module>org.jboss.tools.ws.ui.bot.test</module>
+		<module>org.teiid.designer.ui.bot.test</module>
 	</modules>
 	<profiles>
 		<profile>
