@@ -11,12 +11,14 @@
 		sed "s#\.\/.\+\/features\/\(.\+\)#<feature url=\"features/\1_0.0.0.jar\" id=\"\1\" version=\"0.0.0\"><category name=\"SOA/BRMS/EDS Integration Stack Tests\"/></feature>#g"
 	-->
 
-	<category-def name="JBoss Tools Integration Tests" label="JBoss Tools Integration Tests"><description>JBoss Tools Integration Tests</description></category-def>
 	<category-def name="JBoss Tools Core Tests" label="JBoss Tools Core Tests"><description>JBoss Tools Core Tests</description></category-def>
 	<category-def name="SOA/BRMS/EDS Integration Stack Tests" label="SOA/BRMS/EDS Integration Stack Tests"><description>SOA/BRMS/EDS Integration Stack Tests</description></category-def>
 
-<feature url="features/org.jboss.tools.itests.feature_0.0.0.jar" id="org.jboss.tools.itests.feature" version="0.0.0"><category name="JBoss Tools Integration Tests"/></feature>
-<feature url="features/org.jboss.tools.itests.feature.source_0.0.0.jar" id="org.jboss.tools.itests.feature.source" version="0.0.0"><category name="JBoss Tools Integration Tests"/></feature>
+<feature url="features/org.jboss.tools.itests.feature_0.0.0.jar" id="org.jboss.tools.itests.feature" version="0.0.0"><category name="JBoss Tools Core Tests"/></feature>
+<!-- <feature url="features/org.jboss.tools.itests.feature.source_0.0.0.jar" id="org.jboss.tools.itests.feature.source" version="0.0.0"><category name="JBoss Tools Core Tests"/></feature> -->
+
+<feature url="features/org.jboss.tools.itests.feature_0.0.0.jar" id="org.jboss.tools.itests.feature" version="0.0.0"><category name="SOA/BRMS/EDS Integration Stack Tests"/></feature>
+<!-- <feature url="features/org.jboss.tools.itests.soa.feature.source_0.0.0.jar" id="org.jboss.tools.itests.soa.feature.source" version="0.0.0"><category name="SOA/BRMS/EDS Integration Stack Tests"/></feature> -->
 
 <feature url="features/org.jboss.ide.eclipse.archives.test.feature_0.0.0.jar" id="org.jboss.ide.eclipse.archives.test.feature" version="0.0.0"><category name="JBoss Tools Core Tests"/></feature>
 <feature url="features/org.jboss.ide.eclipse.as.test.feature_0.0.0.jar" id="org.jboss.ide.eclipse.as.test.feature" version="0.0.0"><category name="JBoss Tools Core Tests"/></feature>
