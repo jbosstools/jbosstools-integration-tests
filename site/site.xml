@@ -16,6 +16,7 @@
 	<category-def name="SOA/BRMS/EDS Integration Stack Tests" label="SOA/BRMS/EDS Integration Stack Tests"><description>SOA/BRMS/EDS Integration Stack Tests</description></category-def>
 
 <feature url="features/org.jboss.tools.itests.feature_0.0.0.jar" id="org.jboss.tools.itests.feature" version="0.0.0"><category name="JBoss Tools Integration Tests"/></feature>
+<feature url="features/org.jboss.tools.itests.feature.source_0.0.0.jar" id="org.jboss.tools.itests.feature.source" version="0.0.0"><category name="JBoss Tools Integration Tests"/></feature>
 
 <feature url="features/org.jboss.ide.eclipse.archives.test.feature_0.0.0.jar" id="org.jboss.ide.eclipse.archives.test.feature" version="0.0.0"><category name="JBoss Tools Core Tests"/></feature>
 <feature url="features/org.jboss.ide.eclipse.as.test.feature_0.0.0.jar" id="org.jboss.ide.eclipse.as.test.feature" version="0.0.0"><category name="JBoss Tools Core Tests"/></feature>
