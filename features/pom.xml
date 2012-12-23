@@ -14,6 +14,7 @@
 	<packaging>pom</packaging>
 	<modules>
 		<module>org.jboss.tools.itests.feature</module>
+		<module>org.jboss.tools.itests.soa.feature</module>
 	</modules>
 </project>
 
