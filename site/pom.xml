@@ -12,7 +12,14 @@
 	<artifactId>site</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<name>integration-tests.site</name>
-	<packaging>eclipse-update-site</packaging>
+	<packaging>eclipse-repository</packaging>
+	<repositories>
+		<repository>
+			<id>reddeer-nightly-staging-site</id>
+			<url>http://download.jboss.org/jbosstools/builds/staging/RedDeer_master/all/repo/</url>
+			<layout>p2</layout>
+		</repository>
+	</repositories>
 	<build>
 		<plugins>
 			<plugin>
