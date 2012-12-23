@@ -45,7 +45,9 @@
 		<module>org.jboss.tools.ui.bot.ext.test</module>
 		<module>org.jboss.tools.vpe.ui.bot.test</module>
 		<module>org.jboss.tools.ws.ui.bot.test</module>
+		<!-- org.teiid.designer.ui.bot.test 8.0.0.qualifier requires 'bundle org.jboss.tools.teiid.reddeer 0.0.0' but it could not be found 
 		<module>org.teiid.designer.ui.bot.test</module>
+		-->
 	</modules>
 	<profiles>
 		<profile>

@@ -14,7 +14,7 @@
 	<name>integration-tests.all</name>
 	<packaging>pom</packaging>
 	<!-- 
-	mvn clean install -P jbosstools-nightly-staging-composite-soa-tooling,multiple.target
+	mvn clean install -P jbosstools-nightly-staging-composite-soa-tooling,multiple.target -Dmaven.test.failure.ignore=true -Dmaven.test.error.ignore=true
 	-->
 	<modules>
 		<module>tests</module>

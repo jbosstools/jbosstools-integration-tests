@@ -39,7 +39,9 @@
   <plugin id="org.jboss.tools.ui.bot.ext.test" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
   <plugin id="org.jboss.tools.vpe.ui.bot.test" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
   <plugin id="org.jboss.tools.ws.ui.bot.test" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
+  <!-- org.teiid.designer.ui.bot.test 8.0.0.qualifier requires 'bundle org.jboss.tools.teiid.reddeer 0.0.0' but it could not be found
   <plugin id="org.teiid.designer.ui.bot.test" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
+  -->
 
 </feature>
 
