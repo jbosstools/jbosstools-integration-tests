@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature id="org.jboss.tools.itests.soa.feature" label="%featureName" version="1.0.0.qualifier" provider-name="%providerName"> 
+   <description>
+      %description
+   </description>
+
+   <copyright>
+      %copyright
+   </copyright>
+
+   <license url="%licenseURL">
+      %license
+   </license>
+
+  <plugin id="org.jboss.tools.jbpm.ui.bot.test" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
+  <plugin id="org.jboss.tools.bpel.ui.bot.test" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
+  <plugin id="org.jboss.tools.esb.ui.bot.test" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
+  <plugin id="org.jboss.tools.teiid.reddeer" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
+  <plugin id="org.teiid.designer.ui.bot.test" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
+  <plugin id="org.jboss.tools.modeshape.rest.ui.bot.test" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
+  <plugin id="org.jboss.tools.drools.ui.bot.test" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
+
+</feature>
+
