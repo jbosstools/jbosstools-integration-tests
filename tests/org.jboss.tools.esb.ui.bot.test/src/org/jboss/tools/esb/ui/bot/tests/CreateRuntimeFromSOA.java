@@ -28,7 +28,7 @@ public class CreateRuntimeFromSOA extends SWTTestExt {
 		
 		/* ldimaggi - Oct 2011 */
 		bot.text(0).setText("123_TheName");
-		//System.out.println ("[" + bot.textWithLabel("JBoss ESB Runtime").getText() +"]");
+		log.info("[" + bot.textWithLabel("JBoss ESB Runtime").getText() +"]");
 		assertTrue ("Runtime name cannot start with a number", bot.textWithLabel("JBoss ESB Runtime").getText().equals(" Runtime name is not correct") );
 		
 		bot.text(0).setText("esb-runtime");
