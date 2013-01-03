@@ -20,15 +20,15 @@ public class CreateRuntimeFromSOA extends SWTTestExt {
 		bot.text(1).setText(TestConfigurator.currentConfig.getServer().runtimeHome);
 		
 		bot.sleep (3000l, "3 sleeping - " + TestConfigurator.currentConfig.getEsb().runtimeHome + " " + TestConfigurator.currentConfig.getEsb().version + " " + bot.comboBox().selection().toString());
-		System.out.println ("DEBUG - " + TestConfigurator.currentConfig.getServer().version);
-		System.out.println ("DEBUG - " + configuredState.getServer().bundledESBVersion);
-		System.out.println ("DEBUG - " + bot.comboBox().selection().toString());
+		log.info("server = " + TestConfigurator.currentConfig.getServer().version);
+		log.info("bundledESBVersion = " + configuredState.getServer().bundledESBVersion);
+		log.info("selected esb version = " + bot.comboBox().selection().toString());
 		
 		assertTrue("Version was not automatically selected by setting ESB home dir",bot.comboBox().selection().equals(configuredState.getServer().bundledESBVersion));
 		
 		/* ldimaggi - Oct 2011 */
 		bot.text(0).setText("123_TheName");
-		//System.out.println ("[" + bot.textWithLabel("JBoss ESB Runtime").getText() +"]");
+		//log.info("[" + bot.textWithLabel("JBoss ESB Runtime").getText() +"]");
 		assertTrue ("Runtime name cannot start with a number", bot.textWithLabel("JBoss ESB Runtime").getText().equals(" Runtime name is not correct") );
 		
 		bot.text(0).setText("esb-runtime");
