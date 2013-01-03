@@ -45,9 +45,8 @@ import org.junit.runners.Suite.SuiteClasses;
 	WebServiceProducer.class,  // http://lists.jboss.org/pipermail/jbosstools-dev/2008-December/002559.html
 	WebServiceProducerHttp.class,
 	WebServiceProducerSocket.class
-	//SimpleEAPTest.class
+//	//SimpleEAPTest.class
 	})
-
 @RunWith(RequirementAwareSuite.class)
 public class ESBAllBotTests {
 
