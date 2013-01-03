@@ -13,7 +13,10 @@
 	<version>4.0.0-SNAPSHOT</version>
 
 	<packaging>eclipse-test-plugin</packaging>
-
+    <properties>
+        <systemProperties>${integrationTestsSystemProperties}</systemProperties>
+    </properties>
+    
 	<repositories>
 		<repository>
 			<id>red_deer</id>

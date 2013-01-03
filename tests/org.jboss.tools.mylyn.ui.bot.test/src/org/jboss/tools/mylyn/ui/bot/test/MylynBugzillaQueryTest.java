@@ -19,8 +19,8 @@ import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.impl.combo.ComboWithLabel;
-import org.jboss.reddeer.swt.impl.tree.DefaultTree;
+import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.tree.ViewTree;
 import org.jboss.reddeer.swt.util.Bot;
 import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 //import org.jboss.reddeer.swt.condition.ButtonWithTextIsActive;
@@ -127,7 +127,7 @@ public class MylynBugzillaQueryTest {
 
 		new ShellMenu("File", "New", "Other...").select();
 		new DefaultShell("New");
-		DefaultTree newElementTree = new DefaultTree();
+		ViewTree newElementTree = new ViewTree();
 		List<TreeItem> newItems = newElementTree.getAllItems();
 		Bot.get().sleep(TimePeriod.NORMAL.getSeconds());
 		TestSupport.selectTreeItem(newItems, "Query", log);
@@ -152,20 +152,31 @@ public class MylynBugzillaQueryTest {
 		}
 
 		new DefaultShell("Edit Query");
+			
 		Bot.get().sleep(TimePeriod.NORMAL.getSeconds());
-		new LabeledText("Title:").setText(queryName);
+		
+		/* Slightly different text on JBDS5/6 - assume that 5 is running, trap
+		 * an exception use the catch block if it's JBDS6 (same for JBT3/4)
+		 */
+		try {
+			new LabeledText("Query Title:").setText(queryName);
+		}
+		catch (org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException E) {
+			new LabeledText("Title:").setText(queryName);
+		}
+		
 		Bot.get().sleep(TimePeriod.NORMAL.getSeconds());
-		new ComboWithLabel("Summary:").setText(bugzillaSummary);
+		new DefaultCombo("Summary:").setText(bugzillaSummary);
 		Bot.get().sleep(TimePeriod.NORMAL.getSeconds());
 		new PushButton("Finish").click();
 		Bot.get().sleep(TimePeriod.LONG.getSeconds());
-
+		
 		new ShellMenu("Window", "Show View", "Other...").select();
 		new DefaultShell("Show View");
 
 		/* Verify that the expected repos are defined */
 		log.info("***Step 3 - Verify that the Mylyn Features are Present");
-		DefaultTree FeatureTree = new DefaultTree();
+		ViewTree FeatureTree = new ViewTree();
 		List<TreeItem> featureItems = FeatureTree.getAllItems();
 		TestSupport.selectTreeItem(featureItems, "Task List", log);
 		Bot.get().sleep(TimePeriod.LONG.getSeconds());
@@ -177,9 +188,19 @@ public class MylynBugzillaQueryTest {
 		 * locate the widget.
 		 */
 		Bot.get().sleep(30000l);
-		new DefaultShell("JBoss - JBoss Developer Studio");
+			
+		/* Slightly different text on JBDS5/6 - assume that 5 is running, trap
+		 * an exception use the catch block if it's JBDS6 (same for JBT3/4)
+		 */
+		try {
+			new DefaultShell("JBoss - JBoss Central - JBoss Developer Studio");
+		}
+		catch (org.jboss.reddeer.swt.exception.SWTLayerException E) {
+			new DefaultShell("JBoss - JBoss Developer Studio");
+		}		
+		
 		Bot.get().sleep(30000l);
-		DefaultTree bugzillaTree = new DefaultTree();
+		ViewTree bugzillaTree = new ViewTree();
 		List<TreeItem> bugzillaQueryItems = bugzillaTree.getAllItems();
 		
 		/*

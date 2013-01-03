@@ -15,6 +15,7 @@ package org.jboss.tools.cdi.seam3.bot.test.tests;
 import org.jboss.tools.cdi.bot.test.CDIConstants;
 import org.jboss.tools.cdi.seam3.bot.test.base.Seam3TestBase;
 import org.jboss.tools.cdi.seam3.bot.test.util.SeamLibrary;
+import org.jboss.tools.ui.bot.ext.helper.OpenOnHelper;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -44,27 +45,20 @@ public class ResourceOpenOnTest extends Seam3TestBase {
 		packageExplorer.openFile(projectName, CDIConstants.SRC, 
 				"cdi.seam", className);
 
-		assertTrue(openOnUtil.openOnByOption(CDIConstants.RESOURCE_ANNOTATION, 
-				className, "Open Resource"));
+		OpenOnHelper.checkOpenOnFileIsOpened(bot, className, 
+				CDIConstants.RESOURCE_ANNOTATION, "Open Resource", CDIConstants.BEANS_XML);
 		
-		String destinationFile = getEd().getTitle();		
-		assertTrue("ERROR: redirected to " + destinationFile,
-					destinationFile.equals(CDIConstants.BEANS_XML));
-
 		editResourceUtil.moveFileInExplorerBase(packageExplorer, CDIConstants.BEANS_XML, 
 				projectName + "/" + CDIConstants.WEBCONTENT + "/" + CDIConstants.WEB_INF,
 				projectName + "/" + CDIConstants.WEBCONTENT + "/" + CDIConstants.META_INF);
 		LOGGER.info("bean.xml was moved to META-INF");
 		
-		setEd(bot.swtBotEditorExtByTitle(className));
+		bot.swtBotEditorExtByTitle(className).show();
 		editResourceUtil.replaceInEditor("WEB", "META");
-		assertTrue(openOnUtil.openOnByOption(CDIConstants.RESOURCE_ANNOTATION, 
-				className, "Open Resource"));
 		
-		destinationFile = getEd().getTitle();
-		assertTrue("ERROR: redirected to " + destinationFile,
-				   destinationFile.equals(CDIConstants.BEANS_XML));
-
+		OpenOnHelper.checkOpenOnFileIsOpened(bot, className, 
+				CDIConstants.RESOURCE_ANNOTATION, "Open Resource", CDIConstants.BEANS_XML);
+		
 	}
 	
 }

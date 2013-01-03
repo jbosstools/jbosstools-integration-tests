@@ -14,6 +14,7 @@ package org.jboss.tools.cdi.bot.test.openon;
 import org.jboss.tools.cdi.bot.test.CDIConstants;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
 import org.jboss.tools.cdi.bot.test.annotations.CDIWizardType;
+import org.jboss.tools.ui.bot.ext.helper.OpenOnHelper;
 
 /**
  * test base for OpenOn-like CDI tests
@@ -47,13 +48,10 @@ public class OpenOnBase extends CDITestBase {
 	 * @param className
 	 * @return
 	 */
-	protected boolean checkBeanXMLDecoratorOpenOn(String packageName, String className) {
+	protected void checkBeanXMLDecoratorOpenOn(String packageName, String className) {
 		wizard.createCDIComponent(CDIWizardType.DECORATOR, className, packageName,
 				"java.util.Set");
-		bot.editorByTitle(CDIConstants.BEANS_XML).show();
-		bot.cTabItem("Source").activate();
-		openOnUtil.openOnDirect(packageName + "." + className, CDIConstants.BEANS_XML);
-		return getEd().getTitle().equals(className + ".java");
+		checkOpenOnBeanXml(packageName, className);
 	}
 	
 	
@@ -65,13 +63,10 @@ public class OpenOnBase extends CDITestBase {
 	 * @param className
 	 * @return
 	 */
-	protected boolean checkBeanXMLInterceptorOpenOn(String packageName, String className) {
+	protected void checkBeanXMLInterceptorOpenOn(String packageName, String className) {
 		wizard.createCDIComponent(CDIWizardType.INTERCEPTOR, className, packageName,
 				null);
-		bot.editorByTitle(CDIConstants.BEANS_XML).show();
-		bot.cTabItem("Source").activate();
-		openOnUtil.openOnDirect(packageName + "." + className, CDIConstants.BEANS_XML);
-		return getEd().getTitle().equals(className + ".java");
+		checkOpenOnBeanXml(packageName, className);
 	}
 	
 	/**
@@ -82,13 +77,17 @@ public class OpenOnBase extends CDITestBase {
 	 * @param className
 	 * @return
 	 */
-	protected boolean checkBeanXMLAlternativeOpenOn(String packageName, String className) {
+	protected void checkBeanXMLAlternativeOpenOn(String packageName, String className) {
 		wizard.createCDIComponent(CDIWizardType.BEAN, className, packageName,
 				"alternative+beansxml");
+		checkOpenOnBeanXml(packageName, className);
+	}
+	
+	private void checkOpenOnBeanXml(String packageName, String className) {
 		bot.editorByTitle(CDIConstants.BEANS_XML).show();
 		bot.cTabItem("Source").activate();
-		openOnUtil.openOnDirect(packageName + "." + className, CDIConstants.BEANS_XML);
-		return getEd().getTitle().equals(className + ".java");
+		OpenOnHelper.checkOpenOnFileIsOpened(bot, CDIConstants.BEANS_XML, 
+				packageName + "." + className, className + ".java");
 	}
 
 }

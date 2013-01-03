@@ -37,7 +37,7 @@ import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.swt.impl.tree.ShellTreeItem;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
@@ -75,7 +75,7 @@ public class EARProjectTest extends AbstractMavenSWTBotTest{
 		new ShellMenu("File","New","Enterprise Application Project").select();
 		new LabeledText("Project name:").setText(EAR_PROJECT_NAME);
 		new PushButton("Modify...").click();
-		new DefaultTreeItem("JBoss Maven Integration").setChecked(true);
+		new ShellTreeItem("JBoss Maven Integration").setChecked(true);
 		new PushButton("OK").click();
 		new PushButton("Next >").click();
 		new PushButton("Select All").click();
@@ -119,8 +119,8 @@ public class EARProjectTest extends AbstractMavenSWTBotTest{
 		pexplorer.open();
 		pexplorer.getProject(projectName).select();
 		new ContextMenu("Properties").select();
-		new DefaultTreeItem("Project Facets").select();
-		new DefaultTreeItem(1,"JBoss Maven Integration").setChecked(true);
+		new ShellTreeItem("Project Facets").select();
+		new ShellTreeItem(1,"JBoss Maven Integration").setChecked(true);
 		bot.hyperlink("Further configuration required...").click();
 		new PushButton("OK").click();
 		new PushButton("OK").click();
@@ -133,7 +133,7 @@ public class EARProjectTest extends AbstractMavenSWTBotTest{
 		new ShellMenu("File","New","EJB Project").select();
 		new LabeledText("Project name:").setText(projectName);
 		new PushButton("Modify...").click();
-		new DefaultTreeItem("JBoss Maven Integration").setChecked(true);
+		new ShellTreeItem("JBoss Maven Integration").setChecked(true);
 		new PushButton("OK").click();
 		new PushButton("Next >").click();
 		new PushButton("Next >").click();

@@ -48,8 +48,8 @@ public class NamedPackagesTest extends Seam3TestBase {
 		
 		importSeam3ProjectWithLibrary(projectName, SeamLibrary.SOLDER_3_1);
 		
-		setEd(packageExplorer.openFile(projectName, CDIConstants.SRC, 
-				ORG_JBOSS_PACKAGE, MANAGER_JAVA).toTextEditor());
+		packageExplorer.openFile(projectName, CDIConstants.SRC, 
+				ORG_JBOSS_PACKAGE, MANAGER_JAVA).toTextEditor();
 		List<String> beansProposal = editResourceUtil.getProposalList(
 				MANAGER_JAVA, "\"#{}\"", 3, 0);
 		List<String> nonexpectedList = Arrays.asList("bean1 : Bean1", "bean2 : Bean2", 
@@ -67,8 +67,8 @@ public class NamedPackagesTest extends Seam3TestBase {
 				projectName + "/" + CDIConstants.SRC + "/" + CDI_SEAM_PACKAGE, PACKAGE_INFO_JAVA);
 		eclipse.cleanAllProjects();
 		
-		setEd(packageExplorer.openFile(projectName, CDIConstants.SRC, 
-				ORG_JBOSS_PACKAGE, MANAGER_JAVA).toTextEditor());
+		packageExplorer.openFile(projectName, CDIConstants.SRC, 
+				ORG_JBOSS_PACKAGE, MANAGER_JAVA).toTextEditor();
 		List<String> beansProposal = editResourceUtil.getProposalList(
 				MANAGER_JAVA, "\"#{}\"", 3, 0);
 		
@@ -90,8 +90,8 @@ public class NamedPackagesTest extends Seam3TestBase {
 				projectName + "/" + CDIConstants.SRC + "/" + CDI_TEST_PACKAGE, PACKAGE_INFO_JAVA);
 		eclipse.cleanAllProjects();
 		
-		setEd(packageExplorer.openFile(projectName, CDIConstants.SRC, 
-				ORG_JBOSS_PACKAGE, MANAGER_JAVA).toTextEditor());
+		packageExplorer.openFile(projectName, CDIConstants.SRC, 
+				ORG_JBOSS_PACKAGE, MANAGER_JAVA).toTextEditor();
 		List<String> beansProposal = editResourceUtil.getProposalList(
 				MANAGER_JAVA, "\"#{}\"", 3, 0);
 		

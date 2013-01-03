@@ -14,6 +14,7 @@ package org.jboss.tools.cdi.seam3.bot.test.base;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.cdi.bot.test.CDIConstants;
 import org.jboss.tools.cdi.bot.test.annotations.ProblemsType;
+import org.jboss.tools.ui.bot.ext.helper.OpenOnHelper;
 
 /**
  * 
@@ -97,16 +98,18 @@ public class SolderAnnotationTestBase extends Seam3TestBase {
 	 * @param producer
 	 * @param producerMethod
 	 */
-	private void testProperInject(String projectName, String openOnString, String openedClass, 
+	private void testProperInject(String projectName, String openOnString, 
+			String openedClass, 
 			boolean producer, String producerMethod) {
 		
 		SWTBotTreeItem[] validationProblems = quickFixHelper.getProblems(
 				ProblemsType.WARNINGS, projectName);
 		assertTrue(validationProblems.length == 0);
-		assertTrue(openOnUtil.openOnByOption(openOnString, APPLICATION_CLASS, CDIConstants.OPEN_INJECT_BEAN));
-		assertTrue(getEd().getTitle().equals(openedClass + ".java"));
+		OpenOnHelper.checkOpenOnFileIsOpened(bot, APPLICATION_CLASS, 
+				openOnString, CDIConstants.OPEN_INJECT_BEAN, openedClass + ".java");
 		if (producer) {
-			assertTrue(getEd().getSelection().equals(producerMethod));
+			assertTrue(bot.activeEditor().toTextEditor().
+					getSelection().equals(producerMethod));
 		}
 		
 	}

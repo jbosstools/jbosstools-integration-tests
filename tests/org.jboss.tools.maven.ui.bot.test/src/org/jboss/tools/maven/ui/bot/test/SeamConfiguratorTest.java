@@ -28,11 +28,11 @@ public class SeamConfiguratorTest extends AbstractConfiguratorsTest{
 	
 	@Test
 	public void testSeamConfigurator() throws Exception{
-		//createMavenizedDynamicWebProject(PROJECT_NAME_SEAM+"_noRuntime", false);
-		//addDependencies(PROJECT_NAME_SEAM+"_noRuntime", "org.jboss.seam", "jboss-seam", "2.3.0.Final","ejb");
-		//updateConf(botUtil,PROJECT_NAME_SEAM+"_noRuntime");
-		//assertTrue("Project "+PROJECT_NAME_SEAM+"_noRuntime"+" with jboss-seam dependency doesn't have "+SEAM_NATURE+" nature.",hasNature(PROJECT_NAME_SEAM+"_noRuntime", SEAM_NATURE));
-		//clean();
+		createMavenizedDynamicWebProject(PROJECT_NAME_SEAM+"_noRuntime", false);
+		addDependencies(PROJECT_NAME_SEAM+"_noRuntime", "org.jboss.seam", "jboss-seam", "2.3.0.Final","ejb");
+		updateConf(botUtil,PROJECT_NAME_SEAM+"_noRuntime");
+		assertTrue("Project "+PROJECT_NAME_SEAM+"_noRuntime"+" with jboss-seam dependency doesn't have "+SEAM_NATURE+" nature.",hasNature(PROJECT_NAME_SEAM+"_noRuntime", SEAM_NATURE));
+		clean();
 		
 		createMavenizedDynamicWebProject(PROJECT_NAME_SEAM+"_noRuntime", false);
 		addDependencies(PROJECT_NAME_SEAM+"_noRuntime", "org.jboss.seam", "jboss-seam-ui", "2.3.0.Final",null);

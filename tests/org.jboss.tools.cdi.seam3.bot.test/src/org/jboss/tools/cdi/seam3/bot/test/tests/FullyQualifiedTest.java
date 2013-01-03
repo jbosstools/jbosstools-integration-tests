@@ -42,8 +42,8 @@ public class FullyQualifiedTest extends SolderAnnotationTestBase {
 		
 		importSeam3ProjectWithLibrary(projectName, SeamLibrary.SOLDER_3_1);
 		
-		setEd(packageExplorer.openFile(projectName, CDIConstants.SRC, 
-				getPackageName(), APPLICATION_CLASS).toTextEditor());
+		packageExplorer.openFile(projectName, CDIConstants.SRC, 
+				getPackageName(), APPLICATION_CLASS).toTextEditor();
 		
 		List<String> beansProposal = editResourceUtil.getProposalList(APPLICATION_CLASS, 
 				"\"#{}\"", 3, 0);
@@ -59,8 +59,8 @@ public class FullyQualifiedTest extends SolderAnnotationTestBase {
 		
 		importSeam3ProjectWithLibrary(projectName, SeamLibrary.SOLDER_3_1);
 		
-		setEd(packageExplorer.openFile(projectName, CDIConstants.SRC, 
-				getPackageName(), APPLICATION_CLASS).toTextEditor());
+		packageExplorer.openFile(projectName, CDIConstants.SRC, 
+				getPackageName(), APPLICATION_CLASS).toTextEditor();
 		
 		List<String> beansProposal = editResourceUtil.getProposalList(APPLICATION_CLASS, 
 				"\"#{}\"", 3, 0);
@@ -85,8 +85,8 @@ public class FullyQualifiedTest extends SolderAnnotationTestBase {
 		
 		importSeam3ProjectWithLibrary(projectName, SeamLibrary.SOLDER_3_1);
 		
-		setEd(packageExplorer.openFile(projectName, CDIConstants.SRC, 
-				getPackageName(), APPLICATION_CLASS).toTextEditor());
+		packageExplorer.openFile(projectName, CDIConstants.SRC, 
+				getPackageName(), APPLICATION_CLASS).toTextEditor();
 		
 		List<String> beansProposal = editResourceUtil.getProposalList(APPLICATION_CLASS, 
 				"\"#{}\"", 3, 0);
@@ -106,8 +106,8 @@ public class FullyQualifiedTest extends SolderAnnotationTestBase {
 		
 		importSeam3ProjectWithLibrary(projectName, SeamLibrary.SOLDER_3_1);
 		
-		setEd(packageExplorer.openFile(projectName, CDIConstants.SRC, 
-				getPackageName(), myBean1).toTextEditor());
+		packageExplorer.openFile(projectName, CDIConstants.SRC, 
+				getPackageName(), myBean1).toTextEditor();
 		
 		SWTBotTreeItem[] validationProblems = quickFixHelper.getProblems(
 				ProblemsType.ERRORS, projectName);
@@ -131,8 +131,8 @@ public class FullyQualifiedTest extends SolderAnnotationTestBase {
 		
 		importSeam3ProjectWithLibrary(projectName, SeamLibrary.SOLDER_3_1);
 		
-		setEd(packageExplorer.openFile(projectName, CDIConstants.SRC, 
-				getPackageName(), APPLICATION_CLASS).toTextEditor());
+		packageExplorer.openFile(projectName, CDIConstants.SRC, 
+				getPackageName(), APPLICATION_CLASS).toTextEditor();
 		
 		List<String> beansProposal = editResourceUtil.getProposalList(APPLICATION_CLASS, 
 				"\"#{}\"", 3, 0);
@@ -142,14 +142,14 @@ public class FullyQualifiedTest extends SolderAnnotationTestBase {
 		List<String> expectedList = Arrays.asList("cdi.seam.bean : MyBean1");
 		assertTrue(CollectionsUtil.checkMatch(beansProposal, expectedList));
 		
-		setEd(packageExplorer.openFile(projectName, CDIConstants.SRC, 
-				getPackageName(), "MyBean1.java").toTextEditor());
+		packageExplorer.openFile(projectName, CDIConstants.SRC, 
+				getPackageName(), "MyBean1.java").toTextEditor();
 		
 		editResourceUtil.replaceInEditor("@FullyQualified", 
 				"@FullyQualified(cdi.test.MyBean2.class)");
 		
-		setEd(packageExplorer.openFile(projectName, CDIConstants.SRC, 
-				getPackageName(), APPLICATION_CLASS).toTextEditor());
+		packageExplorer.openFile(projectName, CDIConstants.SRC, 
+				getPackageName(), APPLICATION_CLASS).toTextEditor();
 		beansProposal = editResourceUtil.getProposalList(APPLICATION_CLASS, 
 				"\"#{}\"", 3, 0);
 		
@@ -168,8 +168,8 @@ public class FullyQualifiedTest extends SolderAnnotationTestBase {
 		
 		importSeam3ProjectWithLibrary(projectName, SeamLibrary.SOLDER_3_1);
 		
-		setEd(packageExplorer.openFile(projectName, CDIConstants.SRC, 
-				getPackageName(), APPLICATION_CLASS).toTextEditor());
+		packageExplorer.openFile(projectName, CDIConstants.SRC, 
+				getPackageName(), APPLICATION_CLASS).toTextEditor();
 		
 		List<String> beansProposal = editResourceUtil.getProposalList(APPLICATION_CLASS, 
 				"\"#{}\"", 3, 0);
@@ -180,14 +180,14 @@ public class FullyQualifiedTest extends SolderAnnotationTestBase {
 		List<String> expectedList = Arrays.asList("cdi.seam.uniqueBean : MyBean1 - MyBean1");
 		assertTrue(CollectionsUtil.checkMatch(beansProposal, expectedList));
 		
-		setEd(packageExplorer.openFile(projectName, CDIConstants.SRC, 
-				getPackageName(), "MyBean1.java").toTextEditor());
+		packageExplorer.openFile(projectName, CDIConstants.SRC, 
+				getPackageName(), "MyBean1.java").toTextEditor();
 		
 		editResourceUtil.replaceInEditor("@Named", 
 				"@Named(\"bean\")");
 		
-		setEd(packageExplorer.openFile(projectName, CDIConstants.SRC, 
-				getPackageName(), APPLICATION_CLASS).toTextEditor());
+		packageExplorer.openFile(projectName, CDIConstants.SRC, 
+				getPackageName(), APPLICATION_CLASS).toTextEditor();
 		beansProposal = editResourceUtil.getProposalList(APPLICATION_CLASS, 
 				"\"#{}\"", 3, 0);
 		
@@ -197,14 +197,14 @@ public class FullyQualifiedTest extends SolderAnnotationTestBase {
 		expectedList = Arrays.asList("cdi.seam.bean : MyBean1 - MyBean1");
 		assertTrue(CollectionsUtil.checkMatch(beansProposal, expectedList));
 		
-		setEd(packageExplorer.openFile(projectName, CDIConstants.SRC, 
-				getPackageName(), "MyBean1.java").toTextEditor());
+		packageExplorer.openFile(projectName, CDIConstants.SRC, 
+				getPackageName(), "MyBean1.java").toTextEditor();
 		
 		editResourceUtil.replaceInEditor("@FullyQualified", 
 				"@FullyQualified(cdi.test.MyBean2.class)");
 		
-		setEd(packageExplorer.openFile(projectName, CDIConstants.SRC, 
-				getPackageName(), APPLICATION_CLASS).toTextEditor());
+		packageExplorer.openFile(projectName, CDIConstants.SRC, 
+				getPackageName(), APPLICATION_CLASS).toTextEditor();
 		beansProposal = editResourceUtil.getProposalList(APPLICATION_CLASS, 
 				"\"#{}\"", 3, 0);
 		
@@ -224,8 +224,8 @@ public class FullyQualifiedTest extends SolderAnnotationTestBase {
 		
 		importSeam3ProjectWithLibrary(projectName, SeamLibrary.SOLDER_3_1);
 		
-		setEd(packageExplorer.openFile(projectName, CDIConstants.SRC, 
-				getPackageName(), APPLICATION_CLASS).toTextEditor());
+		packageExplorer.openFile(projectName, CDIConstants.SRC, 
+				getPackageName(), APPLICATION_CLASS).toTextEditor();
 		
 		List<String> beansProposal = editResourceUtil.getProposalList(APPLICATION_CLASS, 
 				"\"#{}\"", 3, 0);
@@ -237,14 +237,14 @@ public class FullyQualifiedTest extends SolderAnnotationTestBase {
 		assertTrue(CollectionsUtil.checkMatch(beansProposal, expectedList));
 		
 		
-		setEd(packageExplorer.openFile(projectName, CDIConstants.SRC, 
-				getPackageName(), "MyBean1.java").toTextEditor());
+		packageExplorer.openFile(projectName, CDIConstants.SRC, 
+				getPackageName(), "MyBean1.java").toTextEditor();
 		
 		editResourceUtil.replaceInEditor("@FullyQualified", 
 				"@FullyQualified(cdi.test.MyBean2.class)");
 		
-		setEd(packageExplorer.openFile(projectName, CDIConstants.SRC, 
-				getPackageName(), APPLICATION_CLASS).toTextEditor());
+		packageExplorer.openFile(projectName, CDIConstants.SRC, 
+				getPackageName(), APPLICATION_CLASS).toTextEditor();
 		beansProposal = editResourceUtil.getProposalList(APPLICATION_CLASS, 
 				"\"#{}\"", 3, 0);
 		
@@ -255,14 +255,14 @@ public class FullyQualifiedTest extends SolderAnnotationTestBase {
 		expectedList = Arrays.asList("cdi.test.uniqueBean : MyBean1 - MyBean1");
 		assertTrue(CollectionsUtil.checkMatch(beansProposal, expectedList));
 		
-		setEd(packageExplorer.openFile(projectName, CDIConstants.SRC, 
-				getPackageName(), "MyBean1.java").toTextEditor());
+		packageExplorer.openFile(projectName, CDIConstants.SRC, 
+				getPackageName(), "MyBean1.java").toTextEditor();
 		
 		editResourceUtil.replaceInEditor("@Named", 
 				"@Named(\"bean\")");
 		
-		setEd(packageExplorer.openFile(projectName, CDIConstants.SRC, 
-				getPackageName(), APPLICATION_CLASS).toTextEditor());
+		packageExplorer.openFile(projectName, CDIConstants.SRC, 
+				getPackageName(), APPLICATION_CLASS).toTextEditor();
 		beansProposal = editResourceUtil.getProposalList(APPLICATION_CLASS, 
 				"\"#{}\"", 3, 0);
 		

@@ -1,15 +1,23 @@
 package org.jboss.tools.hb.ui.bot.test.generation;
 
+import static org.eclipse.swtbot.swt.finder.waits.Conditions.shellCloses;
+
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swtbot.eclipse.finder.matchers.WidgetMatcherFactory;
+import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
+import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCheckBox;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.hamcrest.Matcher;
+import org.jboss.tools.hb.ui.bot.common.ConfigurationFile;
+import org.jboss.tools.hb.ui.bot.common.Tree;
 import org.jboss.tools.hb.ui.bot.test.HibernateBaseTest;
 import org.jboss.tools.ui.bot.ext.config.Annotations.DB;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
+import org.jboss.tools.ui.bot.ext.helper.TreeHelper;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
+import org.jboss.tools.ui.bot.ext.view.PackageExplorer;
 import org.junit.Test;
 
 /**
@@ -22,17 +30,35 @@ import org.junit.Test;
 @Require(db = @DB, clearProjects = true, perspective = "Hibernate")
 public class CreateCodeGenerationConfiguration extends HibernateBaseTest {
 
-	final String prjName = "hibernate35";
+	private String prjName = "";
+		
 	
-	@Test
+	public String getPrjName() {
+		return prjName;
+	}
+
+	public void setPrjName(String prjName) {
+		this.prjName = prjName;
+	}
+	
 	public void hibernateCodeGeneration() {
-		importTestProject("/resources/prj/hibernate35");
+		importTestProject("/resources/prj/hibernatelib");
+		importTestProject("/resources/prj/" + prjName);
+		ConfigurationFile.create(new String[]{prjName,"src"},"hibernate.cfg.xml",false);
 		SWTBotShell dlg = openCodeGenerationDlg();
 		fillMainTab();
 		fillExportersTab(dlg);
 		fillRefreshTab(dlg);
 		fillCommonTab(dlg);
-		runCodeGeneration();		
+		runCodeGeneration();
+		bot.waitUntil(shellCloses(dlg));
+		
+		
+		SWTBotView view = bot.viewByTitle("Package Explorer");
+		view.setFocus();
+		Tree.select(view.bot(), prjName,"gen","org","test","Actor.java");
+		
+		System.out.println("a");
 	}
 
 	private SWTBotShell openCodeGenerationDlg() {
@@ -46,17 +72,18 @@ public class CreateCodeGenerationConfiguration extends HibernateBaseTest {
 	}
 
 	private void runCodeGeneration() {
-		bot.button(IDELabel.Button.RUN).click();
+		bot.button(IDELabel.Button.RUN).click();		
 	}
 
 	private void fillMainTab() {
-
+		
 		bot.tree().expandNode("Hibernate Code Generation").select();
 		bot.toolbarButtonWithTooltip("New launch configuration").click();
 
 		eclipse.selectTreeLocation("Hibernate Code Generation",
 				"New_configuration");
-		bot.textWithLabel("Name:").setText("HSQL Configuration");
+		bot.textWithLabel("Name:").setText(prjName + "-gen");
+		bot.button("Apply").click();
 
 		// Console Configuration
 		bot.comboBoxWithLabel("Console configuration:").setSelection(

@@ -15,34 +15,61 @@
         <properties>
             <surefire.timeout>7200</surefire.timeout>
             <memoryOptions2>-XX:MaxPermSize=512m</memoryOptions2>
+            <swt.bot.test.record.screencast>false</swt.bot.test.record.screencast>
+            <integrationTestsSystemProperties>-Dswt.bot.test.record.screencast=${swt.bot.test.record.screencast}</integrationTestsSystemProperties>
         </properties>
 
 	<modules>
 		<module>org.jboss.ide.eclipse.as.ui.bot.test</module>
 		<module>org.jboss.tools.archives.ui.bot.test</module>
-		<module>org.jboss.tools.bpel.ui.bot.test</module>
-		<module>org.jboss.tools.cdi.bot.test</module>
-		<module>org.jboss.tools.cdi.seam3.bot.test</module>
+		<!-- <module>org.jboss.tools.cdi.bot.test</module>        JBIDE-13323 -->
+		<!-- <module>org.jboss.tools.cdi.reddeer</module>         JBIDE-13323 -->
+		<!-- <module>org.jboss.tools.cdi.seam3.bot.test</module>  JBIDE-13323 -->
 		<module>org.jboss.tools.central.test.ui.bot</module>
 		<module>org.jboss.tools.dummy.ui.bot.test</module>
-		<module>org.jboss.tools.esb.ui.bot.test</module>
 		<module>org.jboss.tools.forge.ui.bot.test</module>
 		<module>org.jboss.tools.freemarker.ui.bot.test</module>
 		<module>org.jboss.tools.hibernate.ui.bot.test</module>
-		<module>org.jboss.tools.jbpm.ui.bot.test</module>
 		<module>org.jboss.tools.jsf.ui.bot.test</module>
 		<module>org.jboss.tools.jst.ui.bot.test</module>
 		<module>org.jboss.tools.maven.ui.bot.test</module>
 		<module>org.jboss.tools.openshift.ui.bot.test</module>
-		<module>org.jboss.tools.portlet.ui.bot.test</module>
+		<!-- <module>org.jboss.tools.portlet.ui.bot.test</module> JBIDE-13324 -->
 		<module>org.jboss.tools.runtime.as.ui.bot.test</module>
 		<module>org.jboss.tools.seam.ui.bot.test</module>
 		<module>org.jboss.tools.struts.ui.bot.test</module>
 		<module>org.jboss.tools.ui.bot.ext</module>
 		<module>org.jboss.tools.ui.bot.ext.test</module>
 		<module>org.jboss.tools.vpe.ui.bot.test</module>
-		<module>org.jboss.tools.ws.ui.bot.test</module>
+		<module>org.jboss.tools.ws.ui.bot.test</module> 
+		<module>org.jboss.tools.mylyn.ui.bot.test</module>
 	</modules>
-	
+	<profiles>
+		<profile>
+			<id>soa</id>
+			<modules>
+				<module>org.jboss.tools.jbpm.ui.bot.test</module>
+				<module>org.jboss.tools.bpel.ui.bot.test</module>
+				<module>org.jboss.tools.esb.ui.bot.test</module>
+				<module>org.jboss.tools.teiid.reddeer</module>
+				<module>org.teiid.designer.ui.bot.test</module>
+				<module>org.jboss.tools.modeshape.rest.ui.bot.test</module>
+				<module>org.jboss.tools.drools.ui.bot.test</module>
+			</modules>
+		</profile>
+		<profile>
+			<id>windows-xp-memory-options</id>
+			<activation>
+				<os>
+					<name>Windows XP</name>
+					<family>Windows</family>
+				</os>
+			</activation>
+			<properties>
+				<memoryOptions1>-Xms384m -Xmx768m -XX:PermSize=192m</memoryOptions1>
+		        <memoryOptions2>-XX:MaxPermSize=384m</memoryOptions2>
+			</properties>
+		</profile>
+	</profiles>	
 </project>
 

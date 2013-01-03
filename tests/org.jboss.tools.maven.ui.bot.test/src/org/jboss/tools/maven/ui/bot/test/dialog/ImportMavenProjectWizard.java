@@ -5,8 +5,8 @@ import org.jboss.reddeer.swt.condition.WaitCondition;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
-import org.jboss.reddeer.swt.impl.tree.DefaultTree;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.swt.impl.tree.ShellTree;
+import org.jboss.reddeer.swt.impl.tree.ShellTreeItem;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 
@@ -15,7 +15,7 @@ public class ImportMavenProjectWizard {
 	public void open(){
 		new ShellMenu("File","Import...").select();
 		new WaitUntil(new ShellWithTextIsActive("Import"),TimePeriod.NORMAL);
-		new DefaultTreeItem("Maven","Existing Maven Projects").select();
+		new ShellTreeItem("Maven","Existing Maven Projects").select();
 		new PushButton("Next >").click();
 		new WaitUntil(new ShellWithTextIsActive("Import Maven Projects"),TimePeriod.NORMAL);
 	}
@@ -23,15 +23,15 @@ public class ImportMavenProjectWizard {
 	public void importProject(String path){
 		new DefaultCombo("Root Directory:").setText(path);
 		new PushButton("Refresh").click();
-		new WaitUntil(new ProjectIsLoaded(new DefaultTree()), TimePeriod.LONG);
+		new WaitUntil(new ProjectIsLoaded(new ShellTree()), TimePeriod.LONG);
 		new PushButton("Finish").click();
 	}
 	
 	private class ProjectIsLoaded implements WaitCondition {
 
-		private DefaultTree tree;
+		private ShellTree tree;
 		
-		private ProjectIsLoaded(DefaultTree tree) {
+		private ProjectIsLoaded(ShellTree tree) {
 			this.tree = tree;
 		}
 		

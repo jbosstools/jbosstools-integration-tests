@@ -23,19 +23,31 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
+import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
-import org.jboss.tools.cdi.bot.test.CDITestBase;
 import org.jboss.tools.cdi.bot.test.editor.BeansEditorTest;
+import org.jboss.tools.ui.bot.ext.SWTBotExt;
+import org.jboss.tools.ui.bot.ext.SWTBotFactory;
 import org.jboss.tools.ui.bot.ext.SWTJBTExt;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
+import org.jboss.tools.ui.bot.ext.SWTUtilExt;
 import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.helper.TreeHelper;
 import org.jboss.tools.ui.bot.ext.parts.ContentAssistBot;
 import org.jboss.tools.ui.bot.ext.parts.SWTBotEditorExt;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.ext.view.ExplorerBase;
+import org.jboss.tools.ui.bot.ext.view.ProjectExplorer;
 
-public class EditorResourceHelper extends CDITestBase {
+public class EditorResourceHelper {
+	
+	private SWTBotExt bot = SWTBotFactory.getBot();
+	private SWTUtilExt util = SWTBotFactory.getUtil();
+	private ProjectExplorer projectExplorer = SWTBotFactory.getProjectexplorer();
+	
+	public void replaceClassContentByResource(InputStream resource, boolean closeEdit) {
+		replaceClassContentByResource(bot.activeEditor(), resource, closeEdit);
+	}
 	
 	/**
 	 * method replaces whole content of class "classEdit" by inputstream resource
@@ -45,15 +57,21 @@ public class EditorResourceHelper extends CDITestBase {
 	 * @param resource
 	 * @param closeEdit
 	 */
-	public void replaceClassContentByResource(InputStream resource, boolean closeEdit) {
-		SWTBotEclipseEditor st = getEd().toTextEditor();
-		st.selectRange(0, 0, st.getText().length());
+	public void replaceClassContentByResource(SWTBotEditor editor, 
+			InputStream resource, boolean closeEdit) {
+		SWTBotEclipseEditor eclipseEditor = editor.toTextEditor();
+		eclipseEditor.selectRange(0, 0, eclipseEditor.getText().length());
 		String code = readStream(resource);
-		st.setText(code);
-		getEd().save();
+		eclipseEditor.setText(code);
+		editor.save();
 		if (closeEdit) {
-			getEd().close();
+			editor.close();
 		}
+	}
+	
+	public void replaceClassContentByResource(InputStream resource, boolean closeEdit, 
+			Object... param) {
+		replaceClassContentByResource(bot.activeEditor(), resource, closeEdit, param);
 	}
 	
 	/**
@@ -63,8 +81,9 @@ public class EditorResourceHelper extends CDITestBase {
 	 * @param closeEdit
 	 * @param param
 	 */
-	public void replaceClassContentByResource(InputStream resource, boolean closeEdit, Object... param) {
-		SWTBotEclipseEditor classEdit = getEd().toTextEditor();
+	public void replaceClassContentByResource(SWTBotEditor editor, 
+			InputStream resource, boolean closeEdit, Object... param) {
+		SWTBotEclipseEditor classEdit = editor.toTextEditor();
 		String s = readStream(resource);
 		String code = MessageFormat.format(s, param);
 		classEdit.toTextEditor().selectRange(0, 0, classEdit.toTextEditor().getText().length());
@@ -103,20 +122,24 @@ public class EditorResourceHelper extends CDITestBase {
 		}
 	}
 
+	
+	public void replaceInEditor(String target, String replacement) {
+		replaceInEditor(bot.activeEditor(), target, replacement);
+	}
+	
 	/**
 	 * Method replaces string "target" by string "replacement.
 	 * Prerequisite: editor has been set
 	 * @param target
 	 * @param replacement
 	 */
-	public void replaceInEditor(String target, String replacement) {
-		setEd(bot.activeEditor().toTextEditor());
-		getEd().selectRange(0, 0, getEd().getText().length());
-		getEd().setText(getEd().getText().replace(
+	public void replaceInEditor(SWTBotEditor editor, String target, String replacement) {
+		editor.toTextEditor().selectRange(0, 0, editor.toTextEditor().getText().length());
+		editor.toTextEditor().setText(editor.toTextEditor().getText().replace(
 				target + (replacement.equals("") ? System
 								.getProperty("line.separator") : ""),
 				replacement));		
-		getEd().save();
+		editor.save();
 	}
 
 	/**
@@ -126,10 +149,10 @@ public class EditorResourceHelper extends CDITestBase {
 	 * @param column
 	 * @param insertText
 	 */
-	public void insertInEditor(int line, int column, String insertText) {
-		getEd().toTextEditor().insertText(line, column, insertText);
+	public void insertInEditor(SWTBotEditor editor, int line, int column, String insertText) {
+		editor.toTextEditor().insertText(line, column, insertText);
 		bot.sleep(Timing.time1S());
-		getEd().save();
+		editor.save();
 	}
 	
 	/**

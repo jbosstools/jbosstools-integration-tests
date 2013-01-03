@@ -14,6 +14,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotCheckBox;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
+import org.jboss.tools.ui.bot.ext.SWTBotFactory;
 import org.jboss.tools.ui.bot.ext.SWTUtilExt;
 import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.condition.ShellIsActiveCondition;
@@ -22,9 +23,8 @@ import org.jboss.tools.ui.bot.ext.types.IDELabel;
 
 public class SWTEclipseCDIExtUtil {
 	
-	private static final SWTBotExt bot = new SWTBotExt();
-	
-	private static final SWTUtilExt util = new SWTUtilExt(bot);
+	private static SWTBotExt bot = SWTBotFactory.getBot();
+	private static SWTUtilExt util = SWTBotFactory.getUtil();
 	
 	private SWTEclipseCDIExtUtil() {
 		throw new AssertionError();

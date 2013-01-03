@@ -13,7 +13,7 @@
 
 	<packaging>eclipse-test-plugin</packaging>
 	<properties>
-		<systemProperties>-Dswtbot.test.properties.file=${project.basedir}/properties/swtbot.properties</systemProperties>
+		<systemProperties>${integrationTestsSystemProperties} -Dswtbot.test.properties.file=${project.basedir}/properties/swtbot.properties</systemProperties>
 		<surefire.timeout>10800</surefire.timeout>
 	</properties>
 
@@ -103,7 +103,19 @@
 					</dependencies>
 				</configuration>
 			</plugin>
-
 		</plugins>
 	</build>
+	<repositories>
+		<repository>
+      		<id>red_deer</id>
+      		<url>http://p2-reddeer.rhcloud.com/master</url>
+      		<layout>p2</layout>
+      		<snapshots>
+         		<enabled>true</enabled>
+      		</snapshots>
+      		<releases>
+         		<enabled>true</enabled>
+     		</releases>
+   		</repository>
+	</repositories>
 </project>

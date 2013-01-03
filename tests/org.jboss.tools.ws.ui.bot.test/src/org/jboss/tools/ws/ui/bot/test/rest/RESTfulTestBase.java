@@ -12,6 +12,7 @@
 package org.jboss.tools.ws.ui.bot.test.rest;
 
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
+import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.condition.NonSystemJobRunsCondition;
@@ -78,9 +79,14 @@ public class RESTfulTestBase extends WSTestBase {
 	}
 
 	protected void assertRestFullSupport(String projectName) {
-		assertTrue("JAX-RS REST Web Services explorer is missing in "
-				+ "project \"" + projectName + "\"",
-				restfulHelper.isRestSupportEnabled(getWsProjectName()));
+		RESTFullExplorer explorer = null;
+		try {
+			explorer = new RESTFullExplorer(projectName);
+		} catch (WidgetNotFoundException wnfe) {
+			
+		}
+		assertNotNull("JAX-RS REST Web Services explorer is missing in "
+				+ "project \"" + projectName + "\"", explorer);
 	}
 
 	protected void assertCountOfRESTServices(SWTBotTreeItem[] restServices,

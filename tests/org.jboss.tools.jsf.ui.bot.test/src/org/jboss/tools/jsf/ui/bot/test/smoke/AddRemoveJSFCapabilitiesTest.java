@@ -13,17 +13,22 @@ package org.jboss.tools.jsf.ui.bot.test.smoke;
 
 import java.io.File;
 
+import org.apache.log4j.Logger;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.eclipse.swtbot.swt.finder.widgets.TimeoutException;
 import org.jboss.tools.jsf.ui.bot.test.JSFAutoTestCase;
 import org.jboss.tools.ui.bot.ext.SWTJBTExt;
 import org.jboss.tools.ui.bot.ext.SWTUtilExt;
+import org.jboss.tools.ui.bot.ext.Timing;
+import org.jboss.tools.ui.bot.ext.condition.ShellIsActiveCondition;
 import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
 import org.jboss.tools.ui.bot.ext.helper.WidgetFinderHelper;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
+import org.jboss.tools.ui.bot.test.JBTSWTBotTestCase;
 import org.jboss.tools.ui.bot.test.WidgetVariables;
 
 /**
@@ -36,6 +41,7 @@ public class AddRemoveJSFCapabilitiesTest extends JSFAutoTestCase {
   
   private SWTJBTExt swtJbtExt = null;
   private SWTUtilExt swtUtilExt = null;
+  private Logger log = Logger.getLogger(AddRemoveJSFCapabilitiesTest.class);
   
   public AddRemoveJSFCapabilitiesTest(){
     swtJbtExt = new SWTJBTExt(bot);
@@ -188,7 +194,7 @@ public class AddRemoveJSFCapabilitiesTest extends JSFAutoTestCase {
       tree.getTreeItem(JBT_TEST_PROJECT_NAME));
     
     delay();
-    
+    log.info("Adding JSF Capabilities to project " + JBT_TEST_PROJECT_NAME);
     try{
       new SWTBotMenu(ContextMenuHelper.getContextMenu(tree,
         IDELabel.Menu.PACKAGE_EXPLORER_JBT, false)).menu(
@@ -209,6 +215,18 @@ public class AddRemoveJSFCapabilitiesTest extends JSFAutoTestCase {
  
     delay();
 
+    try{
+      bot.waitUntil(new ShellIsActiveCondition(IDELabel.Shell.PROPERTIES_FOR + " " + JBT_TEST_PROJECT_NAME),
+        Timing.time10S());
+      log.info("Properties dialog was opened. Trying to close it");
+      bot.shell(IDELabel.Shell.PROPERTIES_FOR + " " + JBT_TEST_PROJECT_NAME)
+        .bot()
+        .button(IDELabel.Button.CANCEL)
+        .click();
+    } catch (TimeoutException te){
+      log.info("Properties dialog was not opened");
+    }
+    
     assertTrue("JSF Capabilities were not added to project "
         + JBT_TEST_PROJECT_NAME,
         isTreeItemWithinWebProjectsView(JBT_TEST_PROJECT_NAME));

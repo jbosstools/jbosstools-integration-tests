@@ -16,17 +16,26 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.tools.cdi.bot.test.CDIConstants;
-import org.jboss.tools.cdi.bot.test.CDITestBase;
 import org.jboss.tools.cdi.bot.test.uiutils.actions.NewFileWizardAction;
 import org.jboss.tools.cdi.bot.test.uiutils.wizards.DynamicWebProjectWizard;
+import org.jboss.tools.ui.bot.ext.SWTBotExt;
+import org.jboss.tools.ui.bot.ext.SWTBotFactory;
+import org.jboss.tools.ui.bot.ext.SWTUtilExt;
 import org.jboss.tools.ui.bot.ext.condition.ProgressInformationShellIsActiveCondition;
 import org.jboss.tools.ui.bot.ext.condition.ShellIsActiveCondition;
 import org.jboss.tools.ui.bot.ext.condition.TaskDuration;
 import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
+import org.jboss.tools.ui.bot.ext.view.ProjectExplorer;
 
-public class CDIProjectHelper extends CDITestBase {
+public class CDIProjectHelper {
+	
+	private SWTBotExt bot = SWTBotFactory.getBot();
+	private SWTUtilExt util = SWTBotFactory.getUtil();
+	private ProjectExplorer projectExplorer = SWTBotFactory.getProjectexplorer();
 	
 	/**
 	 * Method creates new CDI Project with CDI Web Project wizard
@@ -153,16 +162,12 @@ public class CDIProjectHelper extends CDITestBase {
 	 */
 	public void addCDISupport(String projectName) {
 		projectExplorer.selectProject(projectName);
-		SWTBotTree tree = projectExplorer.bot().tree();
-		SWTBotTreeItem item = tree.getTreeItem(projectName);
-		item.expand();
-		ContextMenuHelper.prepareTreeItemForContextMenu(tree, item);
-		SWTBotMenu menu = new SWTBotMenu(
-				ContextMenuHelper.getContextMenu(
-				tree, IDELabel.Menu.PACKAGE_EXPLORER_CONFIGURE, false));
-		menu.menu(CDIConstants.ADD_CDI_SUPPORT).click();
-		bot.button(IDELabel.Button.OK).click();
-		bot.waitWhile(new ProgressInformationShellIsActiveCondition(), TaskDuration.LONG.getTimeout());
+		new ContextMenu(IDELabel.Menu.PACKAGE_EXPLORER_CONFIGURE, 
+				CDIConstants.ADD_CDI_SUPPORT).select();
+		new PushButton(IDELabel.Button.OK).click();
+		bot.waitWhile(new 
+				ProgressInformationShellIsActiveCondition(), 
+				TaskDuration.LONG.getTimeout());
 	}
 	
 	/**
