@@ -76,8 +76,20 @@ public class TestSupport {
 		ViewTree FeatureTree = new ViewTree();
 		List<TreeItem> featureItems = FeatureTree.getAllItems();
 		selectTreeItem(featureItems, "Task Repositories", log);
-		new PushButton("OK").click();
 		
+		/* Slightly different text after update for 
+		 * http://wiki.eclipse.org/Platform_UI/Juno_Performance_Investigation
+		 * installed - see:
+		 * https://issues.jboss.org/browse/JBDS-2441
+		 * https://bugs.eclipse.org/bugs/show_bug.cgi?id=385272
+		 */
+		try {
+			new PushButton("OK").click();
+		}
+		catch (org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException E) {
+			new PushButton("ok").click();
+		}
+				
 		Bot.get().sleep(30000l);
 		
 		ViewTree RepoTree = new ViewTree();

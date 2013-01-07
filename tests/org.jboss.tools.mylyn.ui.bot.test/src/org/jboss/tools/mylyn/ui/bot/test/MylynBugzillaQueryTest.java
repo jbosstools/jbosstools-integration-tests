@@ -180,7 +180,20 @@ public class MylynBugzillaQueryTest {
 		List<TreeItem> featureItems = FeatureTree.getAllItems();
 		TestSupport.selectTreeItem(featureItems, "Task List", log);
 		Bot.get().sleep(TimePeriod.LONG.getSeconds());
-		new PushButton("OK").click();
+		
+		/* Slightly different text after update for 
+		 * http://wiki.eclipse.org/Platform_UI/Juno_Performance_Investigation
+		 * installed - see: 
+		 * https://issues.jboss.org/browse/JBDS-2441
+		 * https://bugs.eclipse.org/bugs/show_bug.cgi?id=385272
+		 */
+		try {
+			new PushButton("OK").click();
+		}
+		catch (org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException E) {
+			new PushButton("ok").click();
+		}		
+		
 		Bot.get().sleep(TimePeriod.LONG.getSeconds());
 
 		/*
