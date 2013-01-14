@@ -42,6 +42,10 @@ public class ModeshapeLocationDialog extends SWTBotWizard {
 	public String getPublishedUrl() {
 		return getTableCell(LABEL_PUBLISHED_URL);
 	}
+	
+	public void copyURL() {
+		bot().button("Copy URL").click();
+	}
 
 	private String getTableCell(String label) {
 		SWTBotTable table = bot().table();
