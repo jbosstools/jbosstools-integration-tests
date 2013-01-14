@@ -475,6 +475,9 @@ public class IDELabel {
      public static final String JBOSS_TOOLS_WEB_EDITORS_VPE_VISUAL_TEMPLATES = "Visual Templates";
      public static final String JBOSS_TOOLS_EXPRESSION_LANGUAGE = "Expression Language";
      public static final String JBOSS_TOOLS_VARIABLES = "Variables";
+     public static final String CDI_CONTEXT_AND_DEPENDENCY_INJECTION = "CDI " +
+     		"(Context and Dependency Injection)";
+     public static final String CDI_VALIDATOR = "CDI Validator";
    }
    
    public static class JBossServerRuntimeDialog {

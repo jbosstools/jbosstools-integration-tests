@@ -8,6 +8,7 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(RequirementAwareSuite.class)
 @SuiteClasses({
+	ValidationsInPreferenceTest.class,
 	ExcludesAnnotationTest.class,
 	ConfigPropertyAnnotationTest.class,
 	MessageBundleAnnotationTest.class,
