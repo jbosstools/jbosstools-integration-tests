@@ -10,7 +10,7 @@ import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.Server;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
-import org.jboss.reddeer.swt.exception.WidgetNotAvailableException;
+import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.junit.After;
@@ -54,12 +54,12 @@ public abstract class OperateServerTemplate {
 
 	public void restartServer(){
 		// need to have try-catch because of problems with context menu
-		try{
+//		try{
 			serversView.getServer(getServerName()).restart();
-		}catch(WidgetNotAvailableException ex){
-			new WaitWhile(new JobIsRunning());
-			serversView.getServer(getServerName()).restart();
-		}
+//		}catch(SWTLayerException ex){
+//			new WaitWhile(new JobIsRunning());
+//			serversView.getServer(getServerName()).restart();
+//		}
 		
 		assertNoException("Restarting server");
 		assertServerState("Restarting server", "Started");
@@ -68,12 +68,12 @@ public abstract class OperateServerTemplate {
 
 	public void stopServer(){
 		// need to have try-catch because of problems with context menu
-		try{
+//		try{
 			serversView.getServer(getServerName()).stop();
-		}catch(WidgetNotAvailableException ex){
-			new WaitWhile(new JobIsRunning());
-			serversView.getServer(getServerName()).stop();
-		}
+//		}catch(SWTLayerException ex){
+//			new WaitWhile(new JobIsRunning());
+//			serversView.getServer(getServerName()).stop();
+//		}
 		
 		assertNoException("Stopping server");
 		assertServerState("Stopping server", "Stopped");
@@ -85,7 +85,14 @@ public abstract class OperateServerTemplate {
 
 	protected void assertNoException(String message) {
 		ConsoleView console = new ConsoleView();
-		assertThat(message, console.getConsoleText(), not(containsString("Exception:")));
+        try{
+            String consoleText = console.getConsoleText();
+            if(consoleText != null){
+    	        assertThat(message, consoleText, not(containsString("Exception:")));
+            }
+        }catch(NullPointerException ex){
+        	// console.getConsoleText() fails on linux
+        }
 	}
 
 	protected void assertServerState(String message, String state) {
