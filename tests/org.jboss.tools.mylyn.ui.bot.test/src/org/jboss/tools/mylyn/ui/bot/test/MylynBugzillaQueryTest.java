@@ -197,40 +197,22 @@ public class MylynBugzillaQueryTest {
 		 * locate the widget.
 		 */
 		Bot.get().sleep(30000l);
-			
-		/* Slightly different text on JBDS5/6 - assume that 5 is running, trap
-		 * an exception use the catch block if it's JBDS6 (same for JBT3/4)
-		 */
-//		try {
-//			new DefaultShell("JBoss - JBoss Central - JBoss Developer Studio");
-//		}
-//		catch (org.jboss.reddeer.swt.exception.SWTLayerException E) {
-//			new DefaultShell("JBoss - JBoss Developer Studio");
-//		}				
-//		new DefaultShell("Resource - Eclipse Platform");
 
-		boolean onJBDS = true;
-		/* Need to handle both JBDS and JBT */
-		try {
-			new DefaultShell("JBoss - JBoss Central - JBoss Developer Studio");
-		}
-		catch (org.jboss.reddeer.swt.exception.SWTLayerException E) {
+		/* Dealing with Red Deer incompatibilities on JBT */
+		
+		if (org.eclipse.core.runtime.Platform.getProduct().getName().equals("JBoss Developer Studio")) {
+
+			/* Slightly different text on JBDS5/6 - assume that 5 is running, trap
+			 * an exception use the catch block if it's JBDS6 (same for JBT3/4)
+			 */
 			try {
+				new DefaultShell("JBoss - JBoss Central - JBoss Developer Studio");
+			}
+			catch (org.jboss.reddeer.swt.exception.SWTLayerException E) {
+				log.error("No such shell" + E.getMessage());
 				new DefaultShell("JBoss - JBoss Developer Studio");
 			}
-			catch (org.jboss.reddeer.swt.exception.SWTLayerException EE) {
-				log.error("No such shell" + E.getMessage());
-				new DefaultShell("Resource - Eclipse Platform");
-				onJBDS = false;
-			}			
-//			log.error("No such shell - JBoss - JBoss Central - JBoss Developer Studio" + E.getMessage());
-//			new DefaultShell("Resource - Eclipse Platform");
-		}
 			
-		Bot.get().sleep(30000l);
-		
-		if (onJBDS) {
-		
 		/* Locate the list of created queries */
 		
 		ViewTree bugzillaTree = new ViewTree();
@@ -290,8 +272,10 @@ public class MylynBugzillaQueryTest {
 				+ " got " + bugzillaItem.getText(), bugzillaItem.getText().contains(fullBugzillaString));
 		}
 		
-		else if (!onJBDS) {
+		else if (org.eclipse.core.runtime.Platform.getProduct().getName().equals("Eclipse Platform")) {
 		
+			new DefaultShell("Resource - Eclipse Platform");
+			
 		/* Seeing different behavior with JBT - need to explicitly get the query list and results */
 		SWTBotTreeItem [] theQueries =  Bot.get().tree(1).getAllItems();
 		for (SWTBotTreeItem i : theQueries) {

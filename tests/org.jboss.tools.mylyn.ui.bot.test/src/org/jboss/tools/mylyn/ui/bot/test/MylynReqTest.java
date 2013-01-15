@@ -26,11 +26,7 @@ public class MylynReqTest {
 
 	protected final Logger log = Logger.getLogger(this.getClass());
 	
-//	protected final String expectedMylynElements[] = { "Tasks", "Local",
-//			"Bugs", "Eclipse.org", "Red Hat Bugzilla",
-//			"Atlassian Integrations Support", "JBoss Community" };
-	protected ArrayList<String> expectedMylynElements = new ArrayList<String>();
-	
+	protected ArrayList<String> expectedMylynElements = new ArrayList<String>();	
 	protected final String TASKNAME = "a sample task in Mylyn";
 	protected final String TASKNOTE = "a sample note for a sample task in Mylyn";
 
