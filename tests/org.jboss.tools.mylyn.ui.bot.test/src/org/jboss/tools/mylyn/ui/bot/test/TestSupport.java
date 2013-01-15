@@ -34,8 +34,9 @@ public class TestSupport {
 				break;
 			}
 		}
-		
-	} /* method */	public static TreeItem returnTreeItem(List<TreeItem> theTreeItems, String matchingName, Logger log) {
+	} /* method */	
+	
+	public static TreeItem returnTreeItem(List<TreeItem> theTreeItems, String matchingName, Logger log) {
 		TreeItem retItem = null;
 		for (TreeItem item : theTreeItems) {
 			log.info(item.getText());
@@ -48,6 +49,10 @@ public class TestSupport {
 		return retItem;
 	} /* method */
 
+	
+	
+	
+	
 	/* Test Setup part 1 */
 	public static List<TreeItem> mylynTestSetup1 (Logger log, boolean checkForUsage) {		
 		/* Close the initial "Usage" Dialog */
