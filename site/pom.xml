@@ -4,9 +4,8 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.jboss.tools</groupId>
-		<artifactId>org.jboss.tools.site</artifactId>
-		<version>4.1.0.Alpha1-SNAPSHOT</version>
-		<relativePath>../../jbosstools-build-sites/aggregate/pom.xml</relativePath>
+		<artifactId>integration-tests</artifactId>
+		<version>4.0.0-SNAPSHOT</version>
 	</parent>
 	<groupId>org.jboss.tools.integration-tests</groupId>
 	<artifactId>site</artifactId>
@@ -20,72 +19,39 @@
 			<layout>p2</layout>
 		</repository>
 	</repositories>
+
+	<properties>
+		<update.site.name>JBoss Tools 4.1 - Tests</update.site.name>
+		<update.site.description>Nightly Build</update.site.description>
+		<update.site.version>1.0.0.${BUILD_ALIAS}</update.site.version>
+		<target.eclipse.version>4.3 (Kepler)</target.eclipse.version>
+		<siteTemplateFolder>siteTemplateFolder</siteTemplateFolder>
+	</properties>
+
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-antrun-plugin</artifactId>
-				<version>1.7</version>
+				<groupId>org.jboss.tools.tycho-plugins</groupId>
+				<artifactId>repository-utils</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
 				<executions>
 					<execution>
-						<id>install</id>
-						<phase>install</phase>
-						<configuration>
-							<quiet>true</quiet>
-							<target>
-								<!-- called AFTER generating update site + zip to add in extra content -->
-								<ant antfile="build.xml" target="basic.build" dir="../../jbosstools-build-sites/aggregate">
-									<property name="output.dir" value="${basedir}" />
-									<property name="inputRepos"
-										value="${jbosstools-nightly-staging-composite}, ${jbosstools-nightly-staging-composite-soa-tooling}" />
-									<property name="update.site.name" value="JBoss Tools Tests"/>
-									<property name="JBT_VERSION" value="${JBT_VERSION}" />
-									<property name="BUILD_ALIAS" value="${BUILD_ALIAS}" />
-								</ant>
-							</target>
-						</configuration>
+						<id>generate-facade</id>
+						<phase>package</phase>
 						<goals>
-							<goal>run</goal>
+							<goal>generate-repository-facade</goal>
 						</goals>
+						<configuration>
+							<siteTemplateFolder>${siteTemplateFolder}</siteTemplateFolder>
+							<symbols>
+								<update.site.name>${update.site.name}</update.site.name>
+								<update.site.description>${update.site.description}</update.site.description>
+								<update.site.version>${update.site.version}</update.site.version>
+								<target.eclipse.version>${target.eclipse.version}</target.eclipse.version>
+							</symbols>
+						</configuration>
 					</execution>
 				</executions>
-				<dependencies>
-					<dependency>
-						<groupId>commons-net</groupId>
-						<artifactId>commons-net</artifactId>
-						<version>1.4.1</version>
-					</dependency>
-					<dependency>
-						<groupId>org.apache.ant</groupId>
-						<artifactId>ant</artifactId>
-						<version>1.8.2</version>
-					</dependency>
-					<dependency>
-						<groupId>org.apache.ant</groupId>
-						<artifactId>ant-nodeps</artifactId>
-						<version>1.8.1</version>
-					</dependency>
-					<dependency>
-						<groupId>org.apache.ant</groupId>
-						<artifactId>ant-trax</artifactId>
-						<version>1.8.0</version>
-					</dependency>
-					<dependency>
-						<groupId>org.apache.ant</groupId>
-						<artifactId>ant-commons-net</artifactId>
-						<version>1.8.2</version>
-					</dependency>
-					<dependency>
-						<groupId>org.apache.ant</groupId>
-						<artifactId>ant-apache-regexp</artifactId>
-						<version>1.8.2</version>
-					</dependency>
-					<dependency>
-						<groupId>ant-contrib</groupId>
-						<artifactId>ant-contrib</artifactId>
-						<version>1.0b3</version>
-					</dependency>
-				</dependencies>
 			</plugin>
 		</plugins>
 	</build>

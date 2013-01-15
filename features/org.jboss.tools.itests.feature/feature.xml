@@ -15,7 +15,7 @@
   <plugin id="org.jboss.ide.eclipse.as.ui.bot.test" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
   <plugin id="org.jboss.tools.archives.ui.bot.test" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
   <!-- <plugin id="org.jboss.tools.cdi.bot.test" download-size="0" install-size="0" version="0.0.0" unpack="false"/>        JBIDE-13323 -->
-  <!-- <plugin id="org.jboss.tools.cdi.reddeer" download-size="0" install-size="0" version="0.0.0" unpack="false"/>         JBIDE-13323 -->
+  <plugin id="org.jboss.tools.cdi.reddeer" download-size="0" install-size="0" version="0.0.0" unpack="false"/>         <!-- JBIDE-13323 -->
   <!-- <plugin id="org.jboss.tools.cdi.seam3.bot.test" download-size="0" install-size="0" version="0.0.0" unpack="false"/>  JBIDE-13323 -->
   <plugin id="org.jboss.tools.central.test.ui.bot" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
   <plugin id="org.jboss.tools.deltaspike.ui.bot.test" download-size="0" install-size="0" version="0.0.0" unpack="false"/>	
