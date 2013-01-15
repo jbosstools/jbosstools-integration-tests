@@ -12,6 +12,7 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.log4j.Logger;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.junit.Test;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -85,13 +86,7 @@ public class MylynBugzillaQueryTest {
 
 		List<TreeItem> repoItems = TestSupport.mylynTestSetup1(log, true);
 		ArrayList<String> repoList = TestSupport.mylynTestSetup2(repoItems, log);
-
-		assertEquals("Expecting 7 MyLyn items", repoItems.size(), 7);
-		for (String elementName : expectedMylynElements) {
-			assertTrue("Mylyn element list incorrect",
-					repoList.contains(elementName));
-		}
-
+		
 		// JBDS50_0135 User can connect Bugzilla via Mylyn connectors plugin
 		// JBDS50_0140 Red Hat Bugzilla task repository is available and can be
 		// connected
@@ -170,14 +165,15 @@ public class MylynBugzillaQueryTest {
 		Bot.get().sleep(TimePeriod.NORMAL.getSeconds());
 		new PushButton("Finish").click();
 		Bot.get().sleep(TimePeriod.LONG.getSeconds());
-		
+
 		new ShellMenu("Window", "Show View", "Other...").select();
 		new DefaultShell("Show View");
 
 		/* Verify that the expected repos are defined */
-		log.info("***Step 3 - Verify that the Mylyn Features are Present");
+		log.info("Step 6 - Verify that the Mylyn query is Present");
 		ViewTree FeatureTree = new ViewTree();
 		List<TreeItem> featureItems = FeatureTree.getAllItems();
+		/* Open the Task List view */
 		TestSupport.selectTreeItem(featureItems, "Task List", log);
 		Bot.get().sleep(TimePeriod.LONG.getSeconds());
 		
@@ -205,16 +201,42 @@ public class MylynBugzillaQueryTest {
 		/* Slightly different text on JBDS5/6 - assume that 5 is running, trap
 		 * an exception use the catch block if it's JBDS6 (same for JBT3/4)
 		 */
+//		try {
+//			new DefaultShell("JBoss - JBoss Central - JBoss Developer Studio");
+//		}
+//		catch (org.jboss.reddeer.swt.exception.SWTLayerException E) {
+//			new DefaultShell("JBoss - JBoss Developer Studio");
+//		}				
+//		new DefaultShell("Resource - Eclipse Platform");
+
+		boolean onJBDS = true;
+		/* Need to handle both JBDS and JBT */
 		try {
 			new DefaultShell("JBoss - JBoss Central - JBoss Developer Studio");
 		}
 		catch (org.jboss.reddeer.swt.exception.SWTLayerException E) {
-			new DefaultShell("JBoss - JBoss Developer Studio");
-		}		
-		
+			try {
+				new DefaultShell("JBoss - JBoss Developer Studio");
+			}
+			catch (org.jboss.reddeer.swt.exception.SWTLayerException EE) {
+				log.error("No such shell" + E.getMessage());
+				new DefaultShell("Resource - Eclipse Platform");
+				onJBDS = false;
+			}			
+//			log.error("No such shell - JBoss - JBoss Central - JBoss Developer Studio" + E.getMessage());
+//			new DefaultShell("Resource - Eclipse Platform");
+		}
+			
 		Bot.get().sleep(30000l);
+		
+		if (onJBDS) {
+		
+		/* Locate the list of created queries */
+		
 		ViewTree bugzillaTree = new ViewTree();
 		List<TreeItem> bugzillaQueryItems = bugzillaTree.getAllItems();
+		log.info("Total of query items found = " + bugzillaQueryItems.size());
+		Bot.get().sleep(30000l);
 		
 		/*
 		 * There seems to be an SWTBot problem here - the full query tree is not
@@ -266,8 +288,43 @@ public class MylynBugzillaQueryTest {
 				+ bugzillaQueryItem.getText(), bugzillaQueryItem.getText().contains(queryName));
 		assertTrue("Bugzilla summary mismatch - expected: " + fullBugzillaString
 				+ " got " + bugzillaItem.getText(), bugzillaItem.getText().contains(fullBugzillaString));
+		}
+		
+		else if (!onJBDS) {
+		
+		/* Seeing different behavior with JBT - need to explicitly get the query list and results */
+		SWTBotTreeItem [] theQueries =  Bot.get().tree(1).getAllItems();
+		for (SWTBotTreeItem i : theQueries) {
+			log.info(i.getText());
+		}
+		
+		boolean foundQuery = false;
+		boolean foundQueryResults = false;
+		
+		for (SWTBotTreeItem i : theQueries) {
+			log.info("Looking for query: " + queryName + " found: " + i.getText());
+			if (i.getText().contains(queryName)) {
+				foundQuery = true;
+				log.info("Found query: " + queryName);
+					
+				i.select();
+				i.doubleClick();
+				Bot.get().sleep(30000l);
+				
+				SWTBotTreeItem [] theQueryResults = i.getItems();
+				for (SWTBotTreeItem q : theQueryResults) {
+					log.info("Looking for query results: " + fullBugzillaString + " found: " + q.getText());
+					if (q.getText().contains(fullBugzillaString)) {
+						foundQueryResults = true;
+						log.info("Found query results: " + fullBugzillaString);
+					}
+				}				
+			}
+		}
+		assertTrue("Found query: " + queryName, foundQuery);
+		assertTrue("Found query results: " + fullBugzillaString, foundQueryResults);
 
-		Bot.get().sleep(30000l);
+		}
 		
 	} /* method */
 
