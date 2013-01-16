@@ -28,6 +28,12 @@
 			<url>http://download.jboss.org/jbosstools/builds/staging/RedDeer_master/all/repo/</url>
 			<layout>p2</layout>
 		</repository>
+		<!-- need to add this in case jbosstools-nightly-staging-composite-soa-tooling is empty/incomplete -->
+		<repository>
+			<id>jbosstools-nightly-soa-tooling</id>
+			<url>${jbosstools-nightly-soa-tooling}</url>
+			<layout>p2</layout>
+		</repository>
 	</repositories>
 </project>
 
