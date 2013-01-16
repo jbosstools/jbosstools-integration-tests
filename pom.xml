@@ -14,7 +14,7 @@
 	<name>integration-tests.all</name>
 	<packaging>pom</packaging>
 	<!-- 
-	mvn clean install -P jbosstools-nightly-staging-composite-soa-tooling,multiple.target -Dmaven.test.failure.ignore=true -Dmaven.test.error.ignore=true
+	mvn clean install -P multiple.target -Dmaven.test.failure.ignore=true -Dmaven.test.error.ignore=true
 	-->
 	<modules>
 		<module>tests</module>
@@ -28,10 +28,10 @@
 			<url>http://download.jboss.org/jbosstools/builds/staging/RedDeer_master/all/repo/</url>
 			<layout>p2</layout>
 		</repository>
-		<!-- need to add this in case jbosstools-nightly-staging-composite-soa-tooling is empty/incomplete -->
+		<!-- need to add this because trunk content does not yet exist -->
 		<repository>
 			<id>jbosstools-nightly-soa-tooling</id>
-			<url>${jbosstools-nightly-soa-tooling}</url>
+			<url>http://download.jboss.org/jbosstools/builds/staging/_composite_/soa-tooling/3.3.x.Nightly/</url>
 			<layout>p2</layout>
 		</repository>
 	</repositories>
