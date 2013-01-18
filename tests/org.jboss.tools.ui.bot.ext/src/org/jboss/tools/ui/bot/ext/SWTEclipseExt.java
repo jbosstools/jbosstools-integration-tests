@@ -240,6 +240,9 @@ public class SWTEclipseExt {
 		case JBPM3:
 			perspectiveLabel = IDELabel.SelectPerspectiveDialog.JBPM3;
 			break;
+		case JBOSS:
+      perspectiveLabel = IDELabel.SelectPerspectiveDialog.JBOSS;
+      break;
 		default:
 			fail("Unknown perspective to open");
 		}

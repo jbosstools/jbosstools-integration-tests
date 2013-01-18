@@ -11,20 +11,100 @@
 	<version>4.0.0-SNAPSHOT</version>
 	
 	<packaging>eclipse-test-plugin</packaging>
-	
 	<properties>
-        <systemProperties>${integrationTestsSystemProperties}</systemProperties>
+	    <test.suite.class>org.jboss.tools.seam.ui.bot.test.SeamAllBotTests</test.suite.class>
+	    <jbosstools.test.jboss-as.home>${requirementsDirectory}/jboss-as-7.1.1.Final</jbosstools.test.jboss-as.home>
+	    <jbosstools.test.jboss-seam.home>${requirementsDirectory}/jboss-seam-2.3.0.Final</jbosstools.test.jboss-seam.home>
+        <systemProperties>${integrationTestsSystemProperties} -Dtest.configurations.dir=resources/properties/ -Djbosstools.test.jboss-as.home=${jbosstools.test.jboss-as.home} -Djbosstools.test.jboss-seam.home=${jbosstools.test.jboss-seam.home}</systemProperties>
     </properties>
     
 	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.eclipse.tycho</groupId>
-				<artifactId>tycho-surefire-plugin</artifactId>
-				<configuration>
-					<skip>true</skip>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
+	<plugins>
+		<plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-dependency-plugin</artifactId>
+			<version>2.4</version>
+			<executions>
+				<execution>
+					<id>unpack</id>
+					<phase>pre-integration-test</phase>
+					<goals>
+						<goal>unpack</goal>
+					</goals>
+					<configuration>
+						<skip>${swtbot.test.skip}</skip>
+						<artifactItems>
+							<artifactItem>
+								<groupId>org.jboss.as</groupId>
+								<artifactId>jboss-as-dist</artifactId>
+								<version>7.1.1.Final</version>
+								<type>zip</type>
+							</artifactItem>
+							<artifactItem>
+								<groupId>org.jboss.seam</groupId>
+								<artifactId>distribution</artifactId>
+								<version>2.3.0.Final</version>
+								<classifier>dist</classifier>
+								<type>zip</type>
+							</artifactItem>
+						</artifactItems>
+					</configuration>
+				</execution>
+			</executions>
+		</plugin>
+		<plugin>
+			<groupId>org.eclipse.tycho</groupId>
+			<artifactId>tycho-surefire-plugin</artifactId>
+			<configuration>
+				<testSuite>org.jboss.tools.seam.ui.bot.test</testSuite>
+				<testClass>${test.suite.class}</testClass>
+				<useUIThread>false</useUIThread>
+				<skip>${swtbot.test.skip}</skip>
+				<product>org.eclipse.platform.ide</product>
+				<dependencies combine.children="append">
+					<dependency>
+						<type>p2-installable-unit</type>
+						<artifactId>org.jboss.ide.eclipse.as.feature.feature.group</artifactId>
+						<version>0.0.0</version>
+					</dependency>
+					<dependency>
+						<type>p2-installable-unit</type>
+						<artifactId>org.jboss.tools.vpe.feature.feature.group</artifactId>
+						<version>0.0.0</version>
+					</dependency>
+					<dependency>
+						<type>p2-installable-unit</type>
+						<artifactId>org.jboss.tools.seam.feature.feature.group</artifactId>
+						<version>0.0.0</version>
+					</dependency>
+					<dependency>
+						<type>p2-installable-unit</type>
+						<artifactId>org.eclipse.jst.enterprise_ui.feature.feature.group</artifactId>
+						<version>0.0.0</version>
+					</dependency>
+					<dependency>
+						<type>p2-installable-unit</type>
+						<artifactId>org.eclipse.jst.web_core.feature.feature.group</artifactId>
+						<version>0.0.0</version>
+					</dependency>
+					<dependency>
+						<type>p2-installable-unit</type>
+						<artifactId>org.eclipse.wst.web_ui.feature.feature.group</artifactId>
+						<version>0.0.0</version>
+					</dependency>
+					<dependency>
+						<type>p2-installable-unit</type>
+						<artifactId>org.eclipse.jdt.feature.group</artifactId>
+						<version>0.0.0</version>
+					</dependency>
+					<dependency>
+						<type>p2-installable-unit</type>
+						<artifactId>org.eclipse.datatools.enablement.hsqldb.feature.feature.group</artifactId>
+						<version>0.0.0</version>
+					</dependency>
+				</dependencies>
+			</configuration>
+		</plugin>
+	</plugins>
+</build>
 </project>
