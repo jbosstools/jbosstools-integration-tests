@@ -336,6 +336,7 @@ public class IDELabel {
 		public static final String DROOLS = "Drools";
 		public static final String JBPM3 = "jBPM jPDL 3";
     public static final String CONFIGURE_VARIABLES = "Configure Variables...";
+    public static final String JBOSS = "JBoss";
 	}
 	/**
 	 * Hibernate Console Wizard (ConsoleConfigurationCreationWizard) Labels (
@@ -773,6 +774,7 @@ public class IDELabel {
      
      public static final String REFRESH = "Refresh (Ctrl+R)";
      public static final String REFRESH_MAC_OS = "Refresh (⌘R)";
+     public static final String RUN_BROWSER_SIM = "Run BrowserSim";
      
    }
    

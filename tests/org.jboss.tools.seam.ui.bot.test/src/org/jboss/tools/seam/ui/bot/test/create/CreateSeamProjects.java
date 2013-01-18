@@ -50,11 +50,23 @@ public class CreateSeamProjects extends AbstractSeamTestBase {
 		bot.menu("File").menu("New").menu("Seam Web Project").click();
 		bot.textWithLabel("Project name:").setText(AbstractSeamTestBase.testProjectName + type);
 		bot.comboBoxInGroup("Target runtime").setSelection(SWTTestExt.configuredState.getServer().name);
-		bot.comboBoxInGroup("Target Server").setSelection(SWTTestExt.configuredState.getServer().name + " Server");
-		bot.comboBoxInGroup("Configuration").setSelection(
-				AbstractSeamTestBase.seamConfigPrefix +
-				SWTTestExt.configuredState.getSeam().version + 
-				(SWTTestExt.configuredState.getSeam().version.equals("2.3") ? " (Technical Preview)" : ""));				
+		if (SWTTestExt.configuredState.getSeam().version.equals("2.3")){
+		  try{
+	      bot.comboBoxInGroup("Configuration").setSelection(
+	          AbstractSeamTestBase.seamConfigPrefix +
+	          SWTTestExt.configuredState.getSeam().version);        
+		  } catch (RuntimeException re){
+	      bot.comboBoxInGroup("Configuration").setSelection(
+	          AbstractSeamTestBase.seamConfigPrefix +
+	          SWTTestExt.configuredState.getSeam().version + 
+	          " (Technical Preview)");        
+		  }
+		}
+		else{
+	    bot.comboBoxInGroup("Configuration").setSelection(
+	        AbstractSeamTestBase.seamConfigPrefix +
+	        SWTTestExt.configuredState.getSeam().version); 
+		}
 		bot.button("Next >").click();
 		bot.button("Next >").click();
 		bot.button("Next >").click();
