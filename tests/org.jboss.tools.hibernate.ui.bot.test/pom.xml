@@ -72,7 +72,7 @@
 			</activation>
 			<id>jenkins</id>
 			<properties>
-				<test.suite.class>org.jboss.tools.hb.ui.bot.suite.JenkinsSuite</test.suite.class>
+				<test.suite.class>org.jboss.tools.hb.ui.bot.suite.HibernateSuite</test.suite.class>
 			</properties>
 		</profile>
 	</profiles>
