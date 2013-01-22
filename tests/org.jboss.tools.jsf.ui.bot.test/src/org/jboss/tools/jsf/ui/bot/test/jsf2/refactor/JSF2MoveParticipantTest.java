@@ -1,10 +1,13 @@
 package org.jboss.tools.jsf.ui.bot.test.jsf2.refactor;
 
+import static org.eclipse.swtbot.swt.finder.waits.Conditions.shellCloses;
+
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
+import org.jboss.tools.ui.bot.ext.SWTEclipseExt;
 import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.test.WidgetVariables;
 
@@ -37,17 +40,25 @@ public class JSF2MoveParticipantTest extends JSF2AbstractRefactorTest {
 		SWTBot innerBot = bot.viewByTitle(WidgetVariables.PACKAGE_EXPLORER)
 				.bot();
 		SWTBotTree tree = innerBot.tree();
-		tree
-				.expandNode(JBT_TEST_PROJECT_NAME).expandNode("WebContent").expandNode("resources").expandNode("mycomp").select(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+		SWTEclipseExt.getTreeItemOnPath(innerBot,
+		    tree, 
+		    Timing.time1S(), 
+		    "mycomp", 
+		    new String[]{JBT_TEST_PROJECT_NAME,"WebContent","resources"}).select();
 		bot.menu("Refactor").menu("Move...").click(); //$NON-NLS-1$ //$NON-NLS-2$
 		SWTBotShell shMove = bot.shell("Move").activate();
 		innerBot = shMove.bot(); //$NON-NLS-1$
 		tree = innerBot.tree();
-		tree
-				.expandNode(JBT_TEST_PROJECT_NAME).expandNode("WebContent").expandNode("resources").expandNode("mycomp1").select(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+    SWTEclipseExt.getTreeItemOnPath(innerBot,
+        tree, 
+        Timing.time1S(), 
+        "mycomp1", 
+        new String[]{JBT_TEST_PROJECT_NAME,"WebContent","resources"}).select();
 		bot.button("Preview >").click(); //$NON-NLS-1$
 		checkPreview();
+		SWTBotShell activeShell = bot.activeShell();
 		bot.button("OK").click(); //$NON-NLS-1$
+		bot.waitUntil(shellCloses(activeShell));
 		bot.sleep(Timing.time3S());
 		util.waitForNonIgnoredJobs(Timing.time3S());
 	}
