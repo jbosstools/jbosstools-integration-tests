@@ -274,12 +274,13 @@ public class SWTOpenExt {
 		bot.button(finishButtonText).click();
 		SWTEclipseExt.hideWarningIfDisplayed(bot);
 		long time = System.currentTimeMillis();
-		while (true) {
+		boolean isOpened = true;
+		while (isOpened) {
 			log.info("Waiting until shell '" + activeShellStr + "' closes");
 			try {
 				bot.waitUntil(shellCloses(activeShell));
+				isOpened = false;
 				log.info("OK, shell '" + activeShellStr + "' closed.");
-				return;
 			} catch (TimeoutException ex) {
 				if (autoCloseShells) {
 					String currentShellStr = bot.activeShell().getText();
@@ -307,9 +308,9 @@ public class SWTOpenExt {
 						bot.waitUntil(shellCloses(activeShell));
 						log.info("Shell  '" + activeShellStr
 								+ "' was forced to close.");
-						return;
+						isOpened = false;
 					} catch (Exception e) {
-						e.printStackTrace();
+						log.error("Error when closing shells: " + e);
 					}
 					throw new WidgetNotFoundException("Shell '"
 							+ activeShellStr + "' did not close after timeout",
@@ -318,6 +319,7 @@ public class SWTOpenExt {
 				log.warn("Shell '" + activeShellStr + "' is still opened");
 			}
 		}
+		log.info("Method finish() for shell '" + activeShellStr + "' finished successfully");
 	}
 
 	/**
