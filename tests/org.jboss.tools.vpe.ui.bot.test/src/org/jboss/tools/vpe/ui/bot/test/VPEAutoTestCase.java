@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 
+import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
@@ -37,6 +38,7 @@ import org.jboss.tools.jst.jsp.jspeditor.JSPMultiPageEditor;
 import org.jboss.tools.test.TestProperties;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
 import org.jboss.tools.ui.bot.ext.SWTJBTExt;
+import org.jboss.tools.ui.bot.ext.SWTOpenExt;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.condition.ShellIsActiveCondition;
@@ -70,7 +72,7 @@ import org.w3c.dom.Node;
 		perspective="Web Development"
 		)
 public abstract class VPEAutoTestCase extends JBTSWTBotTestCase {
-
+  private static final Logger log = Logger.getLogger(VPEAutoTestCase.class);
   protected static Properties projectProperties;
   protected static String PROJECT_PROPERTIES = "projectProperties.properties";
   protected static final String TEST_PAGE = "inputUserName.jsp"; //$NON-NLS-1$
@@ -627,6 +629,7 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase {
     try {
       tree.getTreeItem(jsf2ProjectName);
     } catch (WidgetNotFoundException wnfe) {
+      log.info("Create new JSF2 project");
       SWTBot wiz = open
           .newObject(ActionItem.NewObject.JBossToolsWebJSFJSFProject.LABEL);
       wiz.textWithLabel(IDELabel.NewJsfProjectDialog.PROJECT_NAME_LABEL)
@@ -649,8 +652,11 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase {
       }
       else{
         open.finish(wiz);
+        log.info("Wizard for New JSF project finished");
         waitForBlockingJobsAcomplished(60 * 1000L, BUILDING_WS);
+        log.info("Waiting for Blocking jobs finished");
         setException(null);
+        log.info("Exception set to null");
       }  
     }
   }
