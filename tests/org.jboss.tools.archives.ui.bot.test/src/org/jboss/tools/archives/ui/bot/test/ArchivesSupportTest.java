@@ -1,9 +1,7 @@
 package org.jboss.tools.archives.ui.bot.test;
 
-import org.jboss.tools.archives.ui.bot.test.explorer.ProjectArchivesExplorer;
 import org.jboss.tools.ui.bot.ext.entity.JavaProjectEntity;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -23,7 +21,12 @@ public class ArchivesSupportTest extends ArchivesTestBase {
 	}
 	
 	@Test
-	public void testAddArchiveSupport() {
+	public void testArchiveSupport() {
+		testAddArchiveSupport();
+		testRemoveArchiveSupport();
+	}
+	
+	private void testAddArchiveSupport() {
 		
 		addArchivesSupport(project);
 		
@@ -31,32 +34,13 @@ public class ArchivesSupportTest extends ArchivesTestBase {
 				archiveExplorerExists(project));
 	}
 	
-	@Test
-	public void testRemoveArchiveSupport() {
+	private void testRemoveArchiveSupport() {
 		
 		removeArchivesSupport(project);
 		
 		assertFalse("Project archives support is still set on project '" + project + "'",
 				archiveExplorerExists(project));
 		
-	}
-	// JBIDE-12697 - maybe will not be implemented ever
-	@Ignore
-	@Test
-	public void testReAddingArchiveSupport() {
-		
-		String project = "pr2";
-		
-		/* prepare project with existing archive in it */
-		importProjectWithoutRuntime(project);
-		ProjectArchivesExplorer explorer = explorerForProject(project);
-		assertItemExistsInExplorer(explorer, project + ".jar" + " [/" + project + "]");
-		
-		/* re-add archive support into project */
-		removeArchivesSupport(project);
-		addArchivesSupport(project);
-		
-		assertItemExistsInExplorer(explorer, project + ".jar" + " [/" + project + "]");
 	}
 	
 }
