@@ -180,7 +180,7 @@ public class IDELabel {
 	  public static final String NEW_SEAM_RUNTIME = "New Seam Runtime";
 	  public static final String NEW_ESB_RUNTIME = "New JBoss ESB Runtime";
 	  public static final String NEW_JBPM_RUNTIME = "Add Location";
-	  public static final String CONFIRM_DELETE = "Confirm Delete";  
+	  public static final String CONFIRM_DELETE = "Delete";  
 	  public static final String SHOW_VIEW = "Show View";
 	  public static final String PROPERTIES_FOR = "Properties for";
 	  public static final String COPY_FILE_FROM_GUVNOR_TO_PACKAGE_EXPLORER = "File Operation";
