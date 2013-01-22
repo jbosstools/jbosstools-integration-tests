@@ -53,25 +53,25 @@
 								<artifactItem>
 									<groupId>org.apache.deltaspike.core</groupId>
 									<artifactId>deltaspike-core-api</artifactId>
-									<version>0.4-incubating-SNAPSHOT</version>
+									<version>0.3-incubating</version>
 									<type>jar</type>
 								</artifactItem>
 								<artifactItem>
 									<groupId>org.apache.deltaspike.core</groupId>
 									<artifactId>deltaspike-core-impl</artifactId>
-									<version>0.4-incubating-SNAPSHOT</version>
+									<version>0.3-incubating</version>
 									<type>jar</type>
 								</artifactItem>
 								<artifactItem>
 									<groupId>org.apache.deltaspike.modules</groupId>
 									<artifactId>deltaspike-security-module-api</artifactId>
-									<version>0.4-incubating-SNAPSHOT</version>
+									<version>0.3-incubating</version>
 									<type>jar</type>
 								</artifactItem>
 								<artifactItem>
 									<groupId>org.apache.deltaspike.modules</groupId>
 									<artifactId>deltaspike-security-module-impl</artifactId>
-									<version>0.4-incubating-SNAPSHOT</version>
+									<version>0.3-incubating</version>
 									<type>jar</type>
 								</artifactItem>
 							</artifactItems>
@@ -113,22 +113,5 @@
 				</configuration>
 			</plugin>
 		</plugins>
-	</build>
-	<repositories>
-		<repository>
-			<id>red_deer</id>
-			<url>http://p2-reddeer.rhcloud.com/master</url>
-			<layout>p2</layout>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-		</repository>
-		<repository>
-			 <id>jboss-nexus-public</id>
-			 <url>https://repository.jboss.org/nexus/content/repositories/public/</url>        
-		</repository>
-	</repositories>
+	</build>	
 </project>
