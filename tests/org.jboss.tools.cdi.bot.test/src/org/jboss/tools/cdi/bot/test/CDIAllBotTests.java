@@ -30,6 +30,7 @@ import org.jboss.tools.cdi.bot.test.quickfix.test.QualifierValidationQuickFixTes
 import org.jboss.tools.cdi.bot.test.quickfix.test.QuickFixProposalsDescriptionTest;
 import org.jboss.tools.cdi.bot.test.quickfix.test.ScopeValidationQuickFixTest;
 import org.jboss.tools.cdi.bot.test.quickfix.test.StereotypeValidationQuickFixTest;
+import org.jboss.tools.cdi.bot.test.validation.AsYouTypeValidationTest;
 import org.jboss.tools.cdi.bot.test.validation.CDIValidatorTest;
 import org.jboss.tools.cdi.bot.test.wizard.CDIWebProjectWizardTest;
 import org.jboss.tools.cdi.bot.test.wizard.ConfigurationPresetTest;
@@ -61,7 +62,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	BeansXMLValidationTest.class,			
 	BeansXMLCompletionTest.class,	
 	BeansXMLValidationQuickFixTest.class,
-//	AsYouTypeValidationTest.class, // not implemented yet
+	AsYouTypeValidationTest.class,
 	DecoratorFromWebBeanTest.class,
 	ProblemEligibleInjectionTest.class,
 	AllAssignableDialogTest.class,

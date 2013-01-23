@@ -23,7 +23,6 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.jboss.tools.cdi.bot.test.editor.BeansEditorTest;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
@@ -41,12 +40,12 @@ import org.jboss.tools.ui.bot.ext.view.ProjectExplorer;
 
 public class EditorResourceHelper {
 	
-	private SWTBotExt bot = SWTBotFactory.getBot();
-	private SWTUtilExt util = SWTBotFactory.getUtil();
-	private ProjectExplorer projectExplorer = SWTBotFactory.getProjectexplorer();
+	SWTBotExt bot = SWTBotFactory.getBot();
+	SWTUtilExt util = SWTBotFactory.getUtil();
+	ProjectExplorer projectExplorer = SWTBotFactory.getProjectexplorer();
 	
 	public void replaceClassContentByResource(InputStream resource, boolean closeEdit) {
-		replaceClassContentByResource(bot.activeEditor(), resource, closeEdit);
+		replaceClassContentByResource(resource, true, closeEdit);
 	}
 	
 	/**
@@ -57,21 +56,17 @@ public class EditorResourceHelper {
 	 * @param resource
 	 * @param closeEdit
 	 */
-	public void replaceClassContentByResource(SWTBotEditor editor, 
-			InputStream resource, boolean closeEdit) {
-		SWTBotEclipseEditor eclipseEditor = editor.toTextEditor();
+	public void replaceClassContentByResource(InputStream resource, boolean save, boolean closeEdit) {
+		SWTBotEclipseEditor eclipseEditor = bot.activeEditor().toTextEditor();
 		eclipseEditor.selectRange(0, 0, eclipseEditor.getText().length());
 		String code = readStream(resource);
 		eclipseEditor.setText(code);
-		editor.save();
-		if (closeEdit) {
-			editor.close();
-		}
+		if (save) eclipseEditor.save();
+		if (closeEdit) eclipseEditor.close();
 	}
 	
-	public void replaceClassContentByResource(InputStream resource, boolean closeEdit, 
-			Object... param) {
-		replaceClassContentByResource(bot.activeEditor(), resource, closeEdit, param);
+	public void replaceClassContentByResource(InputStream resource, boolean closeEdit, String... param) {
+		replaceClassContentByResource(resource, true, closeEdit, param);
 	}
 	
 	/**
@@ -81,15 +76,15 @@ public class EditorResourceHelper {
 	 * @param closeEdit
 	 * @param param
 	 */
-	public void replaceClassContentByResource(SWTBotEditor editor, 
-			InputStream resource, boolean closeEdit, Object... param) {
-		SWTBotEclipseEditor classEdit = editor.toTextEditor();
+	public void replaceClassContentByResource(InputStream resource, boolean save, 
+			boolean closeEdit, String... param) {
+		SWTBotEclipseEditor eclipseEditor = bot.activeEditor().toTextEditor();
 		String s = readStream(resource);
 		String code = MessageFormat.format(s, param);
-		classEdit.toTextEditor().selectRange(0, 0, classEdit.toTextEditor().getText().length());
-		classEdit.toTextEditor().setText(code);
-		classEdit.save();
-		if (closeEdit) classEdit.close();
+		eclipseEditor.selectRange(0, 0, eclipseEditor.getText().length());
+		eclipseEditor.setText(code);
+		if (save) eclipseEditor.save();
+		if (closeEdit) eclipseEditor.close();
 	}
 	
 	/**
@@ -122,9 +117,8 @@ public class EditorResourceHelper {
 		}
 	}
 
-	
 	public void replaceInEditor(String target, String replacement) {
-		replaceInEditor(bot.activeEditor(), target, replacement);
+		replaceInEditor(target, replacement, true);
 	}
 	
 	/**
@@ -133,15 +127,16 @@ public class EditorResourceHelper {
 	 * @param target
 	 * @param replacement
 	 */
-	public void replaceInEditor(SWTBotEditor editor, String target, String replacement) {
-		editor.toTextEditor().selectRange(0, 0, editor.toTextEditor().getText().length());
-		editor.toTextEditor().setText(editor.toTextEditor().getText().replace(
+	public void replaceInEditor(String target, String replacement, boolean save) {
+		SWTBotEclipseEditor eclipseEditor = bot.activeEditor().toTextEditor();
+		eclipseEditor.selectRange(0, 0, eclipseEditor.getText().length());
+		eclipseEditor.setText(eclipseEditor.getText().replace(
 				target + (replacement.equals("") ? System
 								.getProperty("line.separator") : ""),
 				replacement));		
-		editor.save();
+		if (save) eclipseEditor.save();
 	}
-
+	
 	/**
 	 * Method inserts the string "insertText" on location ("line", "column")
 	 * Prerequisite: editor has been set
@@ -149,10 +144,11 @@ public class EditorResourceHelper {
 	 * @param column
 	 * @param insertText
 	 */
-	public void insertInEditor(SWTBotEditor editor, int line, int column, String insertText) {
-		editor.toTextEditor().insertText(line, column, insertText);
+	public void insertInEditor(int line, int column, String insertText) {
+		SWTBotEclipseEditor eclipseEditor = bot.activeEditor().toTextEditor();
+		eclipseEditor.toTextEditor().insertText(line, column, insertText);
 		bot.sleep(Timing.time1S());
-		editor.save();
+		eclipseEditor.save();
 	}
 	
 	/**
