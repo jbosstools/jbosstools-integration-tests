@@ -26,14 +26,8 @@ import org.junit.runners.Suite.SuiteClasses;
 	MessageContextAnnotationTest.class,
 	ExceptionHandlerAnnotationTest.class,
 	ExceptionHandlerMethodsTest.class,
-	
-	/** not implemented yet
-	 *
-	 * SequresAnnotationTest.class,
-	 * SequredAnnotationTest.class,
-	 * SecurityBindingTypeAnnotationTest.class,
-	 * SecurityParameterBindingAnnotationTest.class
-	**/
+	SecuresAnnotationTest.class,
+	SecuredAnnotationTest.class
 })
 public class DeltaspikeAllBotTests {
 	
