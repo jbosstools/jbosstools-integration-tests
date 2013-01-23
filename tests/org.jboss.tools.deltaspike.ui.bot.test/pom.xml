@@ -65,13 +65,13 @@
 								<artifactItem>
 									<groupId>org.apache.deltaspike.modules</groupId>
 									<artifactId>deltaspike-security-module-api</artifactId>
-									<version>0.3-incubating</version>
+									<version>0.2-incubating</version>
 									<type>jar</type>
 								</artifactItem>
 								<artifactItem>
 									<groupId>org.apache.deltaspike.modules</groupId>
 									<artifactId>deltaspike-security-module-impl</artifactId>
-									<version>0.3-incubating</version>
+									<version>0.2-incubating</version>
 									<type>jar</type>
 								</artifactItem>
 							</artifactItems>
