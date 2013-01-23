@@ -88,6 +88,22 @@ public class DeltaspikeTestBase extends SWTTestExt {
 		editor.insertText(line, column, insertedText);
 		editor.save();
 	}
+	
+	protected void replaceInEditor(String projectName, String packageName, String bean, 
+			String target, String replacement, boolean save) {
+		openClass(projectName, packageName, bean);
+		replaceInEditor(target, replacement, save);
+	}
+	
+	protected void replaceInEditor(String target, String replacement, boolean save) {
+		SWTBotEclipseEditor eclipseEditor = bot.activeEditor().toTextEditor();
+		eclipseEditor.selectRange(0, 0, eclipseEditor.getText().length());
+		eclipseEditor.setText(eclipseEditor.getText().replace(
+				target + (replacement.equals("") ? System
+								.getProperty("line.separator") : ""),
+				replacement));		
+		if (save) eclipseEditor.save();
+	}
 
 	protected void annotateBean(String projectName, String packageName,
 			String bean, int line, int column, String annotation) {
