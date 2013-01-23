@@ -20,16 +20,13 @@ import org.junit.BeforeClass;
 
 public abstract class AbstractTestSuite extends TestSuite {
 	
-	private static final SWTBotExt bot = new SWTBotExt();
-	
-	private static final SWTEclipseExt eclipse = new SWTEclipseExt(bot);
-	
 	/*
 	 * init method "setup()" shows a project explorer view as default, disable
 	 * folding (to easier source code editing)
 	 */
 	@BeforeClass
 	public static void setUpSuite() {
+		SWTEclipseExt eclipse = new SWTEclipseExt(new SWTBotExt());
 		eclipse.showView(ViewType.PROJECT_EXPLORER);
 		SWTEclipseCDIExtUtil.disableFolding();
 	}

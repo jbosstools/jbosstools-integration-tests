@@ -181,7 +181,7 @@ public class BeansXMLHelper {
 				&& !packageExplorer.isFilePresent(projectName,
 						CDIConstants.WEB_INF_BEANS_XML_PATH.split("/"))) {
 
-			wizard.createCDIComponent(CDIWizardType.BEANS_XML, null,
+			wizard.createCDIComponent(CDIWizardType.BEANS_XML, "beans.xml",
 					projectName + "/" + CDIConstants.WEBCONTENT + "/"
 							+ CDIConstants.WEB_INF, null);
 		}

@@ -13,6 +13,7 @@ package org.jboss.tools.cdi.bot.test;
 
 import java.util.logging.Logger;
 
+import org.jboss.tools.cdi.bot.test.uiutils.AsYouTypeValidationHelper;
 import org.jboss.tools.cdi.bot.test.uiutils.BeansXMLHelper;
 import org.jboss.tools.cdi.bot.test.uiutils.CDIProjectHelper;
 import org.jboss.tools.cdi.bot.test.uiutils.CDIWizardHelper;
@@ -47,6 +48,8 @@ public class CDITestBase extends SWTTestExt {
 	protected static final CDIWizardBaseExt wizardExt = new CDIWizardBaseExt();
 	protected static final EditorResourceHelper editResourceUtil = new EditorResourceHelper();
 	protected static final QuickFixHelper quickFixHelper = new QuickFixHelper();
+	protected static final AsYouTypeValidationHelper asYouTypeValidationHelper = 
+			new AsYouTypeValidationHelper();
 	
 	@Before
 	public void prepareWorkspace() {

@@ -14,6 +14,7 @@ package org.jboss.tools.cdi.bot.test.uiutils;
 import java.util.List;
 
 import org.jboss.tools.cdi.bot.test.annotations.CDIWizardType;
+import org.jboss.tools.cdi.bot.test.condition.OpenedEditorHasTitleCondition;
 import org.jboss.tools.cdi.bot.test.uiutils.wizards.CDIWizardBaseExt;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
 import org.jboss.tools.ui.bot.ext.SWTBotFactory;
@@ -35,11 +36,13 @@ public class CDIWizardHelper {
 	 */
 	public void createAnnotation(String name, String packageName) {
 		wizardExt.annotation(open, util, packageName, name);
+		bot.waitUntil(new OpenedEditorHasTitleCondition(name + ".java"));
+		bot.editorByTitle(name + ".java").show();
 	}
 	
 	/**
-	 * Method creates CDI component with workaround for beans.xml - 
-	 * if component is beans.xml, editor is not set (there is no active editor by default)	 
+	 * Method creates CDI component 
+	 * 	 
 	 * @param component
 	 * @param name
 	 * @param packageName
@@ -47,7 +50,13 @@ public class CDIWizardHelper {
 	 */
 	public void createCDIComponent(CDIWizardType component, String name,
 			String packageName, String necessaryParam) {			
-		createComponent(component, name, packageName, necessaryParam);			
+		createComponent(component, name, packageName, necessaryParam);
+		String editorTitle = name + ".java";
+		if (name.contains(".xml")) {
+			editorTitle = name;
+		}
+		bot.waitUntil(new OpenedEditorHasTitleCondition(editorTitle));
+		bot.editorByTitle(editorTitle).show();
 	}
 	
 	/**
@@ -64,7 +73,7 @@ public class CDIWizardHelper {
 		if (!bot.activeEditor().getTitle().equals(name + ".java")) {
 			bot.editorByTitle(name + ".java").show();
 		}
-		editResourceUtil.replaceClassContentByResource(bot.activeEditor(), 
+		editResourceUtil.replaceClassContentByResource(
 				CDIWizardHelper.class.getResourceAsStream(resource), false);
 	}
 	
