@@ -331,6 +331,7 @@ public abstract class JBTSWTBotTestCase extends SWTTestExt implements
 		if (jobNames == null) {
 			return;
 		} else {
+		  log.info("Entering waitForBlockingJobsAcomplished method");
 			Map<String, Boolean> runningProcessesMap = new HashMap<String, Boolean>();
 			for (int i = 0; i < jobNames.length; i++) {
 				runningProcessesMap.put(jobNames[i], false);
@@ -363,14 +364,27 @@ public abstract class JBTSWTBotTestCase extends SWTTestExt implements
 					}
 				}
 			}
-			while (isRequiredProcessesStarted) {
-				isRequiredProcessesStarted = false;
+			boolean continueWaiting = isRequiredProcessesStarted;
+			while (continueWaiting) {
+			  continueWaiting = false;
 				Job[] jobs = Job.getJobManager().find(null);
 				for (Job job : jobs) {
 					for (String jobName : jobNames) {
 						if (jobName.equalsIgnoreCase(job.getName())) {
-							isRequiredProcessesStarted = true;
-							delay();
+						  log.info("Waiting for job " + job.getName() + " [job_state=" + job.getState() + "]");
+						  if (job.getState() == Job.RUNNING){
+						    continueWaiting = true;  
+    						 // if job is sleeping after timeout do not wait anymore sometimes it gets stucked forever
+						  } else if (job.getState() == Job.SLEEPING){
+						    long timeLeftToWaitForSleepingJob = timeOut - (System.currentTimeMillis() - startTime);
+						    if (timeLeftToWaitForSleepingJob > 0) {
+						      log.info("Waiting for sleeping job for " + timeLeftToWaitForSleepingJob + " miliseconds");
+						      continueWaiting = true; 
+						    }
+						  }
+							if (continueWaiting){
+							  delay();
+							}
 						}
 					}
 				}
