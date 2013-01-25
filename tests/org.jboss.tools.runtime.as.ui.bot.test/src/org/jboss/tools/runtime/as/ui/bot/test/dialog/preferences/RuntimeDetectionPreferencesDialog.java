@@ -1,11 +1,10 @@
 package org.jboss.tools.runtime.as.ui.bot.test.dialog.preferences;
 
-import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.jboss.reddeer.eclipse.jface.preference.PreferencePage;
 import org.jboss.reddeer.swt.api.Table;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.WaitCondition;
-import org.jboss.reddeer.swt.exception.WidgetNotAvailableException;
+import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.label.DefaultLabel;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
@@ -30,19 +29,8 @@ public class RuntimeDetectionPreferencesDialog extends PreferencePage {
 	
 	public SearchingForRuntimesDialog addPath(final String path){
 		RuntimeUIActivator.getDefault().getModel().addRuntimePath(new RuntimePath(path));
-		
-		// ↓ MacOSX cannot open preferences dialog for the first time - trying to resolve
-		new WaitWhile(new JobIsRunning());
 		cancel();
-		new WaitWhile(new JobIsRunning());
-		try{
-			open();
-		}catch(WidgetNotAvailableException ex){
-			new WaitWhile(new JobIsRunning());
-			open();
-		}
-		new WaitWhile(new JobIsRunning());
-		
+		open();
 		return new SearchingForRuntimesDialog();
 	}
 
@@ -70,7 +58,7 @@ public class RuntimeDetectionPreferencesDialog extends PreferencePage {
 			try {
 				new DefaultLabel("Searching runtimes is finished.");
 				return true;
-			} catch (WidgetNotAvailableException e){
+			} catch (SWTLayerException e){
 				return false;
 			}
 		}
