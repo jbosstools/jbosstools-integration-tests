@@ -13,9 +13,8 @@ import org.jboss.reddeer.eclipse.jface.preference.PreferencePage;
 import org.jboss.reddeer.swt.api.Table;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.WaitCondition;
-import org.jboss.reddeer.swt.exception.WidgetNotAvailableException;
+import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.label.DefaultLabel;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
@@ -80,7 +79,7 @@ public class SeamPreferencesDialog extends PreferencePage {
 			try {
 				PushButton removeButton = new PushButton("Remove");
 				return removeButton.isEnabled();
-			} catch (WidgetNotAvailableException e){
+			} catch (SWTLayerException e){
 				return false;
 			}
 		}
