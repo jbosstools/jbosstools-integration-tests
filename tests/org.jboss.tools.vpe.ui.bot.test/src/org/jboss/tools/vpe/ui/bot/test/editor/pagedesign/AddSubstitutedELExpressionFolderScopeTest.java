@@ -158,14 +158,7 @@ public class AddSubstitutedELExpressionFolderScopeTest extends SubstitutedELTest
 	
 	@Override
 	public void tearDown() throws Exception {
-		bot.viewByTitle(WidgetVariables.PACKAGE_EXPLORER).setFocus();
-		SWTBot innerBot = bot.viewByTitle(WidgetVariables.PACKAGE_EXPLORER).bot();
-		innerBot.tree().expandNode(JBT_TEST_PROJECT_NAME).expandNode("WebContent") //$NON-NLS-1$
-		.getNode(TEST_FOLDER).select();
-		bot.menu("Edit").menu("Delete").click(); //$NON-NLS-1$ //$NON-NLS-2$
-		bot.shell("Confirm Delete").activate(); //$NON-NLS-1$
-		bot.button("OK").click(); //$NON-NLS-1$
-		delay();
+	  eclipse.deleteFile(JBT_TEST_PROJECT_NAME, "WebContent",TEST_FOLDER);
 		super.tearDown();
 	}
 		
