@@ -5,6 +5,7 @@ import static org.eclipse.swtbot.swt.finder.waits.Conditions.shellCloses;
 import java.util.Iterator;
 
 import org.apache.log4j.Logger;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swtbot.eclipse.finder.matchers.WidgetMatcherFactory;
@@ -16,7 +17,11 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotButton;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.eclipse.swtbot.swt.finder.widgets.TimeoutException;
+import org.eclipse.ui.IViewReference;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.internal.ViewReference;
 import org.hamcrest.Matcher;
+import org.jboss.tools.ui.bot.ext.condition.ActiveShellTitleMatches;
 import org.jboss.tools.ui.bot.ext.condition.ShellIsActiveCondition;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 import org.jboss.tools.ui.bot.ext.gen.IActionItem;
@@ -55,7 +60,9 @@ public class SWTOpenExt {
 			return viewObj;
 		} catch (WidgetNotFoundException ex) {
 		}
+		new SWTUtilExt(bot).waitForAll(Timing.time3S());
 		bot.menu("Window").menu("Show View").menu("Other...").click();
+		bot.waitUntil(new ActiveShellTitleMatches(bot,"Show View"), Timing.time5S());
 		SWTBotShell shell = bot.shell("Show View");
 		shell.activate();
 		selectTreeNode(view);
