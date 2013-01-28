@@ -2,6 +2,7 @@ package org.jboss.tools.esb.ui.bot.tests;
 
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
+import org.jboss.tools.ui.bot.ext.SWTEclipseExt;
 import org.jboss.tools.ui.bot.ext.config.TestConfigurator;
 import org.jboss.tools.ui.bot.ext.config.Annotations.*;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem;
@@ -14,7 +15,10 @@ public class CreateRuntimeFromSOA extends SWTTestExt {
 	@Test
 	public void createESBRuntime() {
 		SWTBot wiz = open.preferenceOpen(ActionItem.Preference.JBossToolsJBossESBRuntimes.LABEL);
-		wiz.button("Add").click();
+		
+		/* ldimaggi - Jan 27, 2013 - need to add this as the Add button text changed */
+		SWTEclipseExt.clickESBButton (wiz);
+		
 		bot.shell(IDELabel.Shell.NEW_ESB_RUNTIME).activate();
 		assertFalse("Finish button must not be enabled when no home dir is defined",bot.button(IDELabel.Button.FINISH).isEnabled());
 		bot.text(1).setText(TestConfigurator.currentConfig.getServer().runtimeHome);
