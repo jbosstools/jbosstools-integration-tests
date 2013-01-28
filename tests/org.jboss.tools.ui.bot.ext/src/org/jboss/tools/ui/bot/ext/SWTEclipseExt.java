@@ -733,7 +733,8 @@ public class SWTEclipseExt {
 			}
 		}
 		if (createRuntime) {
-			wiz.button("Add").click();
+			/* https://issues.jboss.org/browse/JBIDE-13351 - Changed from "Add" to "Add..." */
+			wiz.button("Add...").click();
 			bot.shell(IDELabel.Shell.NEW_ESB_RUNTIME).activate();
 			bot.text(0).setText(name);
 			bot.text(1).setText(runtimeHome);

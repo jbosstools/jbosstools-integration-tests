@@ -95,10 +95,11 @@ public class ExampleTest extends SWTTestExt{
 		
 		log.info("Example name=" + getExampleName());
 		log.info("SWTJBTExt.isRunningOnMacOs() = " + SWTJBTExt.isRunningOnMacOs());
-		log.info("bot.shell(\"Java - Eclipse Platform\").isActive()" + bot.shell("Java - Eclipse Platform").isActive() );
+		/* Changed text on shell title due to - https://issues.jboss.org/browse/JBIDE-13351 */
+		log.info("bot.shell(\"Resource - Eclipse Platform\").isActive()" + bot.shell("Resource - Eclipse Platform").isActive() );
 		log.info("configuredState.getServer().type" + configuredState.getServer().type);
 		
-		if ( (SWTJBTExt.isRunningOnMacOs()) && (!bot.shell("Java - Eclipse Platform").isActive()) && (configuredState.getServer().type.equals("SOA"))  ){
+		if ( (SWTJBTExt.isRunningOnMacOs()) && (!bot.shell("Resource - Eclipse Platform").isActive()) && (configuredState.getServer().type.equals("SOA"))  ){
 			log.info("Running on a MAC - need to set Focus back to the Eclipse shell window");
 			bot.sleep(30000l);
 			bot.shell("Java - Eclipse Platform").activate();
