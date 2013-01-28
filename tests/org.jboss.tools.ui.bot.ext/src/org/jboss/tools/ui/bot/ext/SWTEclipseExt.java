@@ -732,8 +732,11 @@ public class SWTEclipseExt {
 				}
 			}
 		}
-		if (createRuntime) {
-			wiz.button("Add").click();
+		if (createRuntime) {			
+
+			/* ldimaggi - Jan 27, 2013 - need to add this as the Add button text changed */
+			clickESBButton(wiz);
+			
 			bot.shell(IDELabel.Shell.NEW_ESB_RUNTIME).activate();
 			bot.text(0).setText(name);
 			bot.text(1).setText(runtimeHome);
@@ -750,6 +753,17 @@ public class SWTEclipseExt {
 		}
 		open.finish(wiz, IDELabel.Button.OK);
 	}
+
+	/* ldimaggi - Jan 27, 2013 - need to add this as the Add button text changed */
+	public static void clickESBButton (SWTBot wiz) {
+		try {
+			wiz.button("Add").click();
+		}
+		catch (org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException E) {
+			wiz.button("Add...").click();
+		}
+	}
+	
 	public void removeESBRuntime(String name) {
 		SWTBot wiz = open.preferenceOpen(ActionItem.Preference.JBossToolsJBossESBRuntimes.LABEL);
 		SWTBotTable tbRuntimeEnvironments = bot.table();
