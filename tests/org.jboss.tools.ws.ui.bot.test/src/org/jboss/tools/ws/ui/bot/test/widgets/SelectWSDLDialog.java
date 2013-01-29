@@ -73,7 +73,6 @@ public class SelectWSDLDialog extends SWTBotShell {
 
 	public void ok() {
 		bot().button(IDialogConstants.OK_LABEL).click();
-		bot().sleep(500);
 		if (JBossWSUIMessages.JAXRSWSTestView2_Title_Msg_May_Be_Out_of_Date.equals(bot().activeShell().getText())) {
 			bot().activeShell().bot().button("Yes").click();
 		}
