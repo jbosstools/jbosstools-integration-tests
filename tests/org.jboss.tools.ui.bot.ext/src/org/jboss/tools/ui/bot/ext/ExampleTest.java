@@ -88,19 +88,19 @@ public class ExampleTest extends SWTTestExt{
 		 * extra UI window (un-named) that is opened for the SOA/ESB tests during the
 		 * startup of an SOA-P server in eclipse/JBDS.
 		 */
-//		SWTBotShell [] theShells = bot.shells();
-//		for (SWTBotShell s : theShells) {
-//			System.out.println ("DEBUG! " + s.getText());
-//		}
+		SWTBotShell [] theShells = bot.shells();
+		for (SWTBotShell s : theShells) {
+			log.info ("Available shell = [" + s.getText() + "]");
+		}
 		
 		log.info("Example name=" + getExampleName());
 		log.info("SWTJBTExt.isRunningOnMacOs() = " + SWTJBTExt.isRunningOnMacOs());
 		
-		/* https://issues.jboss.org/browse/JBIDE-13351 - Chnaged from "Java" to "Resource" */
-		log.info("bot.shell(\"Resource - Eclipse Platform\").isActive()" + bot.shell("Resource - Eclipse Platform").isActive() );
+		/* https://issues.jboss.org/browse/JBIDE-13351 - Text changed */
+		log.info("bot.shell(\"Java - Eclipse Platform\").isActive()" + bot.shell("Java - Eclipse Platform").isActive() );
 		log.info("configuredState.getServer().type" + configuredState.getServer().type);
 		
-		if ( (SWTJBTExt.isRunningOnMacOs()) && (!bot.shell("Resource - Eclipse Platform").isActive()) && (configuredState.getServer().type.equals("SOA"))  ){
+		if ( (SWTJBTExt.isRunningOnMacOs()) && (!bot.shell("Java - Eclipse Platform").isActive()) && (configuredState.getServer().type.equals("SOA"))  ){
 			log.info("Running on a MAC - need to set Focus back to the Eclipse shell window");
 			bot.sleep(30000l);
 			bot.shell("Java - Eclipse Platform").activate();
