@@ -15,6 +15,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
 import org.jboss.tools.ws.ui.bot.test.WSTestBase;
+import org.jboss.tools.ws.ui.bot.test.condition.WsTesterNotNullResponseText;
 import org.jboss.tools.ws.ui.bot.test.widgets.WsTesterView;
 import org.jboss.tools.ws.ui.bot.test.widgets.WsTesterView.Request_Type;
 import org.junit.Test;
@@ -55,6 +56,11 @@ public class SOAPWSToolingIntegrationTest extends WSTestBase {
 		
 	}
 	
+	@Override
+	protected String getWsProjectName() {
+		return projectName;
+	}
+	
 	@Test
 	public void testSimpleIntegration() {
 		
@@ -74,6 +80,7 @@ public class SOAPWSToolingIntegrationTest extends WSTestBase {
 	
 	private WsTesterView openWSDLFileInWSTester() {
 		SWTBotTree tree = getProjectExplorerTree();
+		tree.expandNode(getWsProjectName());
 		ContextMenuHelper.prepareTreeItemForContextMenu(
 				tree, getWSDLTreeItem());
 		SWTBotMenu menu = new SWTBotMenu(ContextMenuHelper.
@@ -89,7 +96,7 @@ public class SOAPWSToolingIntegrationTest extends WSTestBase {
 		wsTesterView.getFromWSDL().ok();
 		wsTesterView.setRequestBody(request);
 		wsTesterView.invoke();
-        bot.sleep(5000);
+		bot.waitUntil(new WsTesterNotNullResponseText(wsTesterView));
         String rsp = wsTesterView.getResponseBody();
         assertTrue(rsp.trim().length() > 0);
         assertTrue(rsp, rsp.contains("Hello User!"));

@@ -28,7 +28,6 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
 import org.jboss.tools.ui.bot.ext.SWTUtilExt;
-import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
@@ -175,8 +174,7 @@ public class EAPFromWSDLTest extends WebServiceTestBase {
 
 		eclipse.runJavaApplication(getWsClientProjectName(),
 				"org.jboss.wsclient.clientsample.ClientSample", null);
-		util.waitForNonIgnoredJobs();
-		bot.sleep(15 * TIME_1S);
+		util.waitForNonIgnoredJobs();		
 		String output = console.getConsoleText();
 		LOGGER.info(output);
 		Assert.assertTrue(output, output.contains("Server said: 37.5"));
@@ -213,8 +211,7 @@ public class EAPFromWSDLTest extends WebServiceTestBase {
 		} catch (CoreException e) {
 			LOGGER.log(Level.WARNING, e.getMessage(), e);
 		}
-		util.waitForNonIgnoredJobs();
-		bot.sleep(TIME_1S);
+		util.waitForNonIgnoredJobs();		
 	}
 
 	private void removeRuntimeLibrary(final SWTBotTree tree,
@@ -228,8 +225,7 @@ public class EAPFromWSDLTest extends WebServiceTestBase {
 			findSelectEnterpriseRuntimeLibrary(bot);
 			assertTrue(bot.button("Remove").isEnabled());
 			bot.button("Remove").click();
-			bot.button("OK").click();
-			bot.sleep(Timing.time2S());
+			bot.button("OK").click();			
 			util.waitForNonIgnoredJobs();
 		} catch (Exception e) {
 			e.printStackTrace();

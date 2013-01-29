@@ -102,7 +102,6 @@ public class WebServiceTestBase extends WSTestBase {
 		} catch (CoreException e) {
 			LOGGER.log(Level.WARNING, e.getMessage(), e);
 		}
-		bot.sleep(500);
 		// create a web service
 		new NewFileWizardAction().run()
 				.selectTemplate("Web Services", "Web Service").next();
@@ -124,8 +123,7 @@ public class WebServiceTestBase extends WSTestBase {
 		wsw.next();
 		wsw.finish();
 		util.waitForNonIgnoredJobs();
-		bot.sleep(2*TIME_1S);
-
+		
 		// let's fail if there's some error in the wizard,
 		// and close error dialog and the wizard so other tests
 		// can continue

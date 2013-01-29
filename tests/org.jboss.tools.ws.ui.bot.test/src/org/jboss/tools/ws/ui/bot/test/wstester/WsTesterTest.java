@@ -26,6 +26,7 @@ import java.util.logging.Level;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.jboss.tools.ws.ui.bot.test.WSTestBase;
+import org.jboss.tools.ws.ui.bot.test.condition.WsTesterNotNullResponseText;
 import org.jboss.tools.ws.ui.bot.test.widgets.SelectWSDLDialog;
 import org.jboss.tools.ws.ui.bot.test.widgets.WsTesterView;
 import org.jboss.tools.ws.ui.bot.test.widgets.WsTesterView.Request_Arg_Type;
@@ -162,7 +163,7 @@ public class WsTesterTest extends WSTestBase {
         InputStream is = WsTesterTest.class.getResourceAsStream("/resources/jbossws/message_soap_out.xml");
         wstv.setRequestBody(readResource(is));
         wstv.invoke();
-        bot.sleep(5000);
+        bot.waitUntil(new WsTesterNotNullResponseText(wstv));
         String rsp = wstv.getResponseBody();
         LOGGER.log(Level.FINE, "SOAP response: {0}", rsp);
         Assert.assertTrue(rsp.trim().length() > 0);

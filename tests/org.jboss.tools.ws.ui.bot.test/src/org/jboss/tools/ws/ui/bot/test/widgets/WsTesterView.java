@@ -224,7 +224,6 @@ public class WsTesterView extends ViewBase {
 		bot.waitWhile(Conditions
 				.shellIsActive(JBossWSUIMessages.JAXRSWSTestView_Invoke_Label),
 				120000);
-		bot.sleep(500);
 	}
 
 	public SelectWSDLDialog getFromWSDL() {

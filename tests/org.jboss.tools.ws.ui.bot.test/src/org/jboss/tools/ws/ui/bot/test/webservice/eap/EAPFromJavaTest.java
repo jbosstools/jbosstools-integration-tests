@@ -113,7 +113,6 @@ public class EAPFromJavaTest extends WebServiceTestBase {
         } catch (CoreException e) {
             LOGGER.log(Level.WARNING, e.getMessage(), e);
         }
-        bot.sleep(TIME_500MS);
         bottomUpJbossWebService(EAPFromJavaTest.class.getResourceAsStream("/resources/jbossws/Echo.java.ws"));
         IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(getWsProjectName());
         IFile f = project.getFile("WebContent/WEB-INF/web.xml");
@@ -143,7 +142,7 @@ public class EAPFromJavaTest extends WebServiceTestBase {
         w.bot().textWithLabel("File name:").setText("index");
         w.bot().textWithLabel("Enter or select the parent folder:").setText(getWsClientProjectName() + "/WebContent");
         w.finish();
-        bot.sleep(TIME_5S);
+        util.waitForNonIgnoredJobs();
         /**
          *  Workaround for 4.x branch
          * 

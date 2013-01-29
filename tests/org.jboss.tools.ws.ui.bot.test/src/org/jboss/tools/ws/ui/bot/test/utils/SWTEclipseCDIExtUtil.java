@@ -63,7 +63,6 @@ public class SWTEclipseCDIExtUtil {
 		bot.button(IDELabel.Button.OK).click();
 		bot.waitWhile(new ShellIsActiveCondition(preferencesShell), 
 				TaskDuration.LONG.getTimeout());
-		bot.sleep(Timing.time2S());
 		util.waitForNonIgnoredJobs();
 	}
 

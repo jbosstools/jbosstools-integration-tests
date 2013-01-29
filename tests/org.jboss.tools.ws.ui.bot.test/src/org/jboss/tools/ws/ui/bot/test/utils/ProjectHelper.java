@@ -19,6 +19,9 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
 import org.jboss.tools.ui.bot.ext.SWTOpenExt;
 import org.jboss.tools.ui.bot.ext.SWTUtilExt;
+import org.jboss.tools.ui.bot.ext.Timing;
+import org.jboss.tools.ui.bot.ext.condition.ActiveEditorHasTitleCondition;
+import org.jboss.tools.ui.bot.ext.condition.TreeItemContainsNode;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.NewObject.JavaEEEnterpriseApplicationProject;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.NewObject.WebServicesWSDL;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
@@ -54,7 +57,7 @@ public class ProjectHelper {
 		w.bot().textWithLabel("Source folder:")
 				.setText(projectName + "/src");
 		w.finish();
-		bot.sleep(4500);
+		bot.waitUntil(new ActiveEditorHasTitleCondition(bot, cName + ".java"));
 		return bot.editorByTitle(cName + ".java");
 	}
 
@@ -116,7 +119,7 @@ public class ProjectHelper {
 		wiz.button(IDELabel.Button.NEXT).click();
 		wiz.checkBox("Generate application.xml deployment descriptor").click();
 		open.finish(wiz);
-		bot.sleep(5000);
+		util.waitForNonIgnoredJobs();
 		projectExplorer.selectProject(name);
 	}
 	
@@ -126,13 +129,23 @@ public class ProjectHelper {
 	 */
 	public void createDD(String project) {
         SWTBotTree tree = projectExplorer.bot().tree();
-        SWTBotTreeItem ti = tree.expandNode(project);
-        bot.sleep(1500);
-        ti = ti.getNode("Deployment Descriptor: " + project);
+        SWTBotTreeItem ti = expandProject(tree, project);
+        String dd = "Deployment Descriptor: " + project;
+        bot.waitUntil(new TreeItemContainsNode(ti, dd), Timing.time10S());
+        ti = ti.getNode(dd);
         new TreeItemAction(ti, "Generate Deployment Descriptor Stub").run();
-        bot.sleep(1500);
         util.waitForNonIgnoredJobs();
-        bot.sleep(1500);
     }
+	
+	private SWTBotTreeItem expandProject(SWTBotTree tree, String project) {
+		SWTBotTreeItem ti = null;
+				
+		do {
+			tree.collapseNode(project);
+			ti = tree.expandNode(project);
+		}while (!ti.isExpanded());
+		
+		return ti;
+	}
 	
 }
