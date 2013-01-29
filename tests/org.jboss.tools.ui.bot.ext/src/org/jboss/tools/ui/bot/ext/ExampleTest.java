@@ -95,7 +95,8 @@ public class ExampleTest extends SWTTestExt{
 		
 		log.info("Example name=" + getExampleName());
 		log.info("SWTJBTExt.isRunningOnMacOs() = " + SWTJBTExt.isRunningOnMacOs());
-		/* Changed text on shell title due to - https://issues.jboss.org/browse/JBIDE-13351 */
+		
+		/* https://issues.jboss.org/browse/JBIDE-13351 - Chnaged from "Java" to "Resource" */
 		log.info("bot.shell(\"Resource - Eclipse Platform\").isActive()" + bot.shell("Resource - Eclipse Platform").isActive() );
 		log.info("configuredState.getServer().type" + configuredState.getServer().type);
 		
