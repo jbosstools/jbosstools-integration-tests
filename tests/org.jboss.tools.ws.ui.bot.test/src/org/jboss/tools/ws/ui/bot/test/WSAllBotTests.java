@@ -33,6 +33,7 @@ import org.jboss.tools.ws.ui.bot.test.webservice.eap.EAPFromJavaTest;
 import org.jboss.tools.ws.ui.bot.test.webservice.eap.EAPFromWSDLTest;
 import org.jboss.tools.ws.ui.bot.test.wsclient.WsClientTest;
 import org.jboss.tools.ws.ui.bot.test.wstester.WsTesterTest;
+import org.jboss.tools.ws.ui.bot.test.wstester.XmlJsonFormattingTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
@@ -57,6 +58,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	RESTfulCompletionTest.class,
 	JAXRSToolingIntegrationTest.class,
 	SOAPWSToolingIntegrationTest.class,
+	XmlJsonFormattingTest.class,
 //	WSTesterPromptValuesSupportTest.class, // not implemented yet
 	ApplicationValidationTest.class,
 	JaxRsValidatorTest.class,
