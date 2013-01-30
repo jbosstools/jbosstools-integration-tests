@@ -12,7 +12,8 @@
 package org.jboss.tools.ws.ui.bot.test.rest.validation;
 
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
+import org.jboss.tools.ui.bot.ext.Timing;
+import org.jboss.tools.ui.bot.ext.condition.ActiveEditorHasTitleCondition;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
 import org.junit.Before;
 import org.junit.Test;
@@ -110,10 +111,18 @@ public class ApplicationValidationTest extends RESTfulTestBase {
 	}
 	
 	private void jbide12680Workaround(String projectName, String... path) {
-		SWTBotEditor editor = packageExplorer.openFile(projectName, path);
-		SWTBotEclipseEditor eclipseEditor = editor.toTextEditor();
+		packageExplorer.openFile(projectName, path);
+		String javaClass = obtainClassNameFromPath(path);
+		bot.waitUntil(new ActiveEditorHasTitleCondition(bot, javaClass));
+		SWTBotEclipseEditor eclipseEditor = bot.activeEditor().toTextEditor();
 		eclipseEditor.insertText(" ");
+		bot.sleep(Timing.time1S());
 		eclipseEditor.save();
+	}
+
+	private String obtainClassNameFromPath(String... path) {
+		int length  = path.length;
+		return path[length - 1];
 	}
 	
 }

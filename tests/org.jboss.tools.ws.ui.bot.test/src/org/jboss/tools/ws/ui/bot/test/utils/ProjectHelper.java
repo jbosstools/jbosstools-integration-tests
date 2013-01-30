@@ -16,6 +16,7 @@ import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCombo;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
 import org.jboss.tools.ui.bot.ext.SWTOpenExt;
 import org.jboss.tools.ui.bot.ext.SWTUtilExt;
@@ -27,7 +28,6 @@ import org.jboss.tools.ui.bot.ext.gen.ActionItem.NewObject.WebServicesWSDL;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.ext.view.ProjectExplorer;
 import org.jboss.tools.ws.ui.bot.test.uiutils.actions.NewFileWizardAction;
-import org.jboss.tools.ws.ui.bot.test.uiutils.actions.TreeItemAction;
 import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.DynamicWebProjectWizard;
 import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.Wizard;
 
@@ -86,8 +86,13 @@ public class ProjectHelper {
 	public void createProject(String name) {
 		new NewFileWizardAction().run()
 				.selectTemplate("Web", "Dynamic Web Project").next();
-		new DynamicWebProjectWizard().setProjectName(name).finish();
-		util.waitForNonIgnoredJobs();
+		new DynamicWebProjectWizard().
+			setProjectName(name).
+			next().
+			next().
+			generateDeploymentDescriptor().
+			finish();
+		util.waitForNonIgnoredJobs(Timing.time60S());
 		projectExplorer.selectProject(name);
 	}
 	
@@ -133,7 +138,10 @@ public class ProjectHelper {
         String dd = "Deployment Descriptor: " + project;
         bot.waitUntil(new TreeItemContainsNode(ti, dd), Timing.time10S());
         ti = ti.getNode(dd);
-        new TreeItemAction(ti, "Generate Deployment Descriptor Stub").run();
+        ti.select();
+        
+        new ContextMenu("Generate Deployment Descriptor Stub").select();
+        
         util.waitForNonIgnoredJobs();
     }
 	

@@ -13,6 +13,7 @@ package org.jboss.tools.ws.ui.bot.test.uiutils.wizards;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCheckBox;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCombo;
+import org.jboss.tools.ui.bot.ext.types.IDELabel;
 
 public class DynamicWebProjectWizard extends Wizard {
 
@@ -32,6 +33,12 @@ public class DynamicWebProjectWizard extends Wizard {
 		return this;
 	}
 	
+	public DynamicWebProjectWizard generateDeploymentDescriptor() {
+		checkBoxSetChecked(IDELabel.DynamicWebProjectWizard.
+				GENERATE_DEPLOYMENT_DESCRIPTOR, true);
+		return this;
+	}
+	
 	private void checkBoxSetChecked(String checkBoxLabel, boolean checked) {
 		SWTBotCheckBox ch = bot().checkBox(checkBoxLabel);
 		ch.setFocus();
@@ -43,6 +50,18 @@ public class DynamicWebProjectWizard extends Wizard {
 		SWTBotCombo c = bot().comboBoxWithLabel(comboboxLabel);
 		c.setFocus();
 		c.setSelection(valueToSet);		
+	}
+	
+	@Override
+	public DynamicWebProjectWizard back() {
+		clickButton("< Back");
+		return this;
+	}
+
+	@Override
+	public DynamicWebProjectWizard next() {
+		clickButton("Next >");
+		return this;
 	}
 	
 }
