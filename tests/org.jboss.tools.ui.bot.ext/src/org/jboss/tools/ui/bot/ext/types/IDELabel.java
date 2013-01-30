@@ -281,6 +281,10 @@ public class IDELabel {
 		public static final String PROJECT_EXPLORER = "Project Explorer";
 
 	}
+	
+	public class DynamicWebProjectWizard {
+		public static final String GENERATE_DEPLOYMENT_DESCRIPTOR = "Generate web.xml deployment descriptor";
+	}
 
 	public class View {
 		public static final String WELCOME = "Welcome";

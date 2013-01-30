@@ -44,8 +44,9 @@ public class RESTfulHelper {
 	private static final SWTOpenExt open = new SWTOpenExt(bot);
 	private static final ResourceHelper resourceHelper = new ResourceHelper();
 	
-	private static final String PATH_PARAM_VALID_ERROR = "@PathParam value";		
-	private static final String VALIDATOR_SETTINGS_CHANGED = "Validator Settings Changed";
+	public static final String PATH_PARAM_VALID_ERROR = "@PathParam value";		
+	public static final String VALIDATOR_SETTINGS_CHANGED = "Validator Settings Changed";
+	public static final String JAX_RS_PROBLEM = "JAX-RS Problem";
 	
 	private enum ConfigureOption {
 		ENABLE, DISABLE;
@@ -53,13 +54,13 @@ public class RESTfulHelper {
 	
 	public SWTBotTreeItem[] getRESTValidationErrors(String wsProjectName, String description) {
 		return ProblemsView.getFilteredErrorsTreeItems(bot,
-				description, "/" + wsProjectName, null, "JAX-RS Problem");
+				description, "/" + wsProjectName, null, JAX_RS_PROBLEM);
 	}
 	
 	public SWTBotTreeItem[] getRESTValidationWarnings(String wsProjectName,
 			String description) {
 		return ProblemsView.getFilteredWarningsTreeItems(bot,
-				description, "/" + wsProjectName, null, "JAX-RS Problem");
+				description, "/" + wsProjectName, null, JAX_RS_PROBLEM);
 	}
 	
 	public SWTBotTreeItem[] getPathAnnotationValidationErrors(String wsProjectName) {

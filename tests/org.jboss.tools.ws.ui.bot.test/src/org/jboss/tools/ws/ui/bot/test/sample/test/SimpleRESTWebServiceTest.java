@@ -30,9 +30,7 @@ public class SimpleRESTWebServiceTest extends SampleRESTTestBase {
 	@Test
 	public void testSimpleRestWS() {
 		IFile dd = getDD(getWsProjectName());
-		if (!dd.exists()) {
-			projectHelper.createDD(getWsProjectName());
-		}
+
 		assertTrue(dd.exists());
 		createSimpleRESTWS(getWsProjectName(), "RESTSample", "rest.sample", "Sample", "RESTApp");
 		checkRESTService(getWsProjectName(), "RESTSample", "rest.sample", "Sample", "Hello World!", "RESTApp");

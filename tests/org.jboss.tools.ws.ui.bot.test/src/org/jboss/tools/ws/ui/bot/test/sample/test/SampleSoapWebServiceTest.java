@@ -29,9 +29,7 @@ public class SampleSoapWebServiceTest extends SampleSoapTestBase {
     @Test
     public void testSampleSoapWS() {
     	IFile dd = getDD(getWsProjectName());
-        if (!dd.exists()) {
-            projectHelper.createDD(getWsProjectName());
-        }
+
         assertTrue(dd.exists());
         createSampleSOAPWS(getWsProjectName(), "HelloService", "sample", "SampleService");
         checkSOAPService(getWsProjectName(), "HelloService", "sample", "SampleService", "You");
