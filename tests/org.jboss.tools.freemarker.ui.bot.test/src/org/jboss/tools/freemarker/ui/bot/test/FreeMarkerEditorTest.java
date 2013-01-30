@@ -34,7 +34,7 @@ import org.junit.Test;
  *
  */
 @Require(perspective="Java")
-public class FreeMarkerTest extends SWTTestExt {
+public class FreeMarkerEditorTest extends SWTTestExt {
 
 	private String prj = "org.jboss.tools.freemarker.testprj";
 	

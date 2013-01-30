@@ -5,7 +5,9 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(RequirementAwareSuite.class)
-@SuiteClasses({FreeMarkerTest.class})
+//@SuiteClasses({FreemarkerPreferencePageTest.class })
+//@SuiteClasses({FreeMarkerTest.class })
+@SuiteClasses({FreeMarkerEditorTest.class, FreemarkerPreferencePageTest.class })
 public class FreeMarkerSuite {
 
 }
