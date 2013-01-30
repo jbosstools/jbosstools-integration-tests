@@ -37,4 +37,7 @@ public class TestProperties {
     	return props.getProperty(key);
     }
     
+    public static void put(String key, String value) {
+    	props.put(key, value);
+    }
 }

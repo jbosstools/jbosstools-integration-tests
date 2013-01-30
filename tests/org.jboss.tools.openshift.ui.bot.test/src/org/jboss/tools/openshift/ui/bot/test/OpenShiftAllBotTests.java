@@ -10,6 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.openshift.ui.bot.test;
 
+import org.jboss.tools.openshift.ui.bot.test.explorer.ConnectionEnterprise;
 import org.jboss.tools.openshift.ui.bot.test.explorer.CreateApp;
 import org.jboss.tools.openshift.ui.bot.test.explorer.CreateDomain;
 import org.jboss.tools.openshift.ui.bot.test.explorer.DeleteApp;
@@ -17,7 +18,6 @@ import org.jboss.tools.openshift.ui.bot.test.explorer.DeleteDomain;
 import org.jboss.tools.openshift.ui.bot.test.explorer.EmbedCartrides;
 import org.jboss.tools.openshift.ui.bot.test.explorer.ManageSSH;
 import org.jboss.tools.openshift.ui.bot.test.explorer.RenameDomain;
-import org.jboss.tools.openshift.ui.bot.test.explorer.Connection;
 import org.jboss.tools.openshift.ui.bot.test.wizard.RepublishApp;
 import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
 import org.junit.runner.RunWith;
@@ -26,12 +26,13 @@ import org.junit.runners.Suite.SuiteClasses;
 /**
  * <b>OpenShift SWTBot TestSuite</b>
  * <br>
- * This bot test will try to demonstrate a new OpenShift Application and domain life cycle. 
+ * This bot test will try to demonstrate a new OpenShift Application and domain life cycle, 
+ * and is meant to run on machine with OpenShift Enterprise installed to test integration of hosted OpenShift within JBDS.   
  * 
  * @author sbunciak
  */
 @SuiteClasses({
-	Connection.class, 
+	ConnectionEnterprise.class, 
 	ManageSSH.class, 
 	CreateDomain.class,
 	CreateApp.class,
@@ -43,7 +44,5 @@ import org.junit.runners.Suite.SuiteClasses;
 })
 @RunWith(RequirementAwareSuite.class)
 public class OpenShiftAllBotTests {
-	/**
-	 * Wrapper Suite class
-	 */
+	
 }
