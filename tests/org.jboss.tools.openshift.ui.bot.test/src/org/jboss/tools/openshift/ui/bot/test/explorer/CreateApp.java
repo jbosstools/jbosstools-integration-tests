@@ -2,8 +2,7 @@ package org.jboss.tools.openshift.ui.bot.test.explorer;
 
 import java.io.File;
 import java.io.IOException;
-
-import static org.jboss.tools.openshift.ui.bot.test.OpenShiftJenkinsBotTests.JBOSS_APP_NAME;
+import java.util.Date;
 
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.waits.Conditions;
@@ -18,14 +17,16 @@ import org.junit.Test;
 
 public class CreateApp extends SWTTestExt {
 
+	public static final String JBOSS_APP_NAME = TestProperties
+			.get("openshift.jbossapp.name") + new Date().getTime();
+
 	@Before
 	public void cleanUpProject() {
 		File gitDir = new File(System.getProperty("user.home") + "/git");
 
-		boolean exists = gitDir.exists() ?  true : gitDir.mkdir(); 
-		
-		if (exists && gitDir.isDirectory()
-				&& gitDir.listFiles().length > 0) {
+		boolean exists = gitDir.exists() ? true : gitDir.mkdir();
+
+		if (exists && gitDir.isDirectory() && gitDir.listFiles().length > 0) {
 			for (File file : gitDir.listFiles()) {
 				if (file.getName().contains(
 						TestProperties.get("openshift.jbossapp.name")))
@@ -36,7 +37,7 @@ public class CreateApp extends SWTTestExt {
 					}
 			}
 		}
-	}	
+	}
 
 	@Test
 	public void canCreateAppFromExplorer() {
@@ -44,12 +45,14 @@ public class CreateApp extends SWTTestExt {
 		SWTBotView openshiftExplorer = open
 				.viewOpen(OpenShiftUI.Explorer.iView);
 
-		openshiftExplorer
-				.bot()
-				.tree()
-				.getAllItems()[0] // get 1st account in OpenShift Explorer
-				.contextMenu(OpenShiftUI.Labels.EXPLORER_NEW_APP)
-				.click(); // click on 'Create or Edit Domain'
+		openshiftExplorer.bot().tree().getAllItems()[0] // get 1st account in
+														// OpenShift Explorer
+				.contextMenu(OpenShiftUI.Labels.EXPLORER_NEW_APP).click(); // click
+																			// on
+																			// 'Create
+																			// or
+																			// Edit
+																			// Domain'
 
 		bot.waitForShell(OpenShiftUI.Shell.NEW_APP);
 		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_20S, TIME_1S);
@@ -77,26 +80,25 @@ public class CreateApp extends SWTTestExt {
 		bot.button(IDELabel.Button.YES).click();
 
 		// create known_hosts since it does not exists any more
-		SWTBotShell khShell = bot.waitForShell("Question"); 
+		SWTBotShell khShell = bot.waitForShell("Question");
 		if (khShell != null) {
 			bot.button(IDELabel.Button.YES).click();
 		}
 
 		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 2, TIME_1S);
 
-		servers.serverExists(JBOSS_APP_NAME	+ " OpenShift Server");
+		servers.serverExists(JBOSS_APP_NAME + " OpenShift Server");
 
 		log.info("*** OpenShift SWTBot Tests: OpenShift Server Adapter created. ***");
 	}
-	
+
 	private void delete(File file) throws IOException {
 
 		if (file.isDirectory()) {
 			// directory is empty, then delete it
 			if (file.list().length == 0) {
 				file.delete();
-				log.debug("Directory is deleted : "
-						+ file.getAbsolutePath());
+				log.debug("Directory is deleted : " + file.getAbsolutePath());
 			} else {
 				// list all the directory contents
 				String files[] = file.list();

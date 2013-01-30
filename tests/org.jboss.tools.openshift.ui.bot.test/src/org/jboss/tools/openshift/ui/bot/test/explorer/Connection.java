@@ -1,6 +1,8 @@
 package org.jboss.tools.openshift.ui.bot.test.explorer;
 
+import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.waits.Conditions;
+import org.eclipse.swtbot.swt.finder.waits.ICondition;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotButton;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.jboss.tools.openshift.ui.bot.util.OpenShiftExplorerView;
@@ -18,12 +20,32 @@ public class Connection extends SWTTestExt {
 	@Test
 	public void canCreateConnectionToOpenShiftAccount() {
 		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S, TIME_1S);
-		
+
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 		explorer.getConnectionToolButton().click();
-		
+
 		// open credentials dialog
 		SWTBotShell shell = bot.waitForShell(OpenShiftUI.Shell.CREDENTIALS);
+		// select openshift url
+		bot.checkBox(0).deselect();
+		bot.waitWhile(new ICondition() {
+			@Override
+			public boolean test() throws Exception {
+				// TODO Auto-generated method stub
+				return !bot.comboBox(1).isEnabled();
+			}
+			@Override
+			public String getFailureMessage() {
+				// TODO Auto-generated method stub
+				return "blah";
+			}
+			@Override
+			public void init(SWTBot bot) {
+				// TODO Auto-generated method stub
+			}
+			
+		});
+		bot.comboBox(1).typeText(TestProperties.get("openshift.server.url"));
 
 		// set wrong user credentials
 		bot.text(0).setText(TestProperties.get("openshift.user.name"));
@@ -40,7 +62,7 @@ public class Connection extends SWTTestExt {
 		assertFalse("Finish button shouldn't be enabled.",
 				finishButton.isEnabled());
 
-		// set correct user credentials and save it to secure storage
+		// set correct user credentials and do not save it to secure storage
 		bot.text(0).setText(TestProperties.get("openshift.user.name"));
 		bot.text(1).setText(TestProperties.get("openshift.user.pwd"));
 		bot.checkBox(1).deselect();
@@ -54,4 +76,5 @@ public class Connection extends SWTTestExt {
 		log.info("*** OpenShift SWTBot Tests: Credentials validated. ***");
 		log.info("*** OpenShift SWTBot Tests: Connection to OpenShift established. ***");
 	}
+	
 }
