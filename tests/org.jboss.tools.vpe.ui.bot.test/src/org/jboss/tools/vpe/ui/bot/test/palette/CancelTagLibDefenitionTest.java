@@ -19,8 +19,8 @@ import org.jboss.tools.vpe.ui.bot.test.VPEAutoTestCase;
 public class CancelTagLibDefenitionTest extends VPEAutoTestCase{
 	
 	public void testCancelTagLibDefenition(){
+    openPage();
     openPalette();
-	  openPage();		
 		//Test open import dialog
 		bot.viewByTitle("JBoss Tools Palette").setFocus(); //$NON-NLS-1$
 		new PaletteView()
