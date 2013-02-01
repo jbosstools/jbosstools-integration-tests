@@ -20,7 +20,7 @@ public class DetectSOAPStandalone5 extends DetectRuntimeTemplate {
 	protected List<Runtime> getExpectedRuntimes() {
 		Runtime expectedServer = new Runtime();
 		expectedServer.setName(SERVER_ID);
-		expectedServer.setVersion("5.2");
+		expectedServer.setVersion("5.3");
 		expectedServer.setType("SOA-P-STD");
 		expectedServer.setLocation(RuntimeProperties.getInstance().getRuntimePath(SERVER_ID));
 		return Arrays.asList(expectedServer);

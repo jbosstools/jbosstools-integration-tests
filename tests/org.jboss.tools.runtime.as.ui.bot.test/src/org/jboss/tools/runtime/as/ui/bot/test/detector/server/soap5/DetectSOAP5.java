@@ -20,14 +20,14 @@ public class DetectSOAP5 extends DetectRuntimeTemplate {
 	protected List<Runtime> getExpectedRuntimes() {
 		Runtime server = new Runtime();
 		server.setName(SERVER_ID);
-		server.setVersion("5.2");
+		server.setVersion("5.3");
 		server.setType("SOA-P");
 		server.setLocation(RuntimeProperties.getInstance().getRuntimePath(SERVER_ID));
 
 		Runtime seam = new Runtime();
 		seam.setName("seam");
 		seam.setType("SEAM");
-		seam.setVersion("2.2.4.EAP5");
+		seam.setVersion("2.2.5.EAP5");
 		seam.setLocation(RuntimeProperties.getInstance().getRuntimePath(getPathID()) + "/seam");
 		
 		return Arrays.asList(server, seam);
