@@ -38,7 +38,6 @@ import org.jboss.tools.jst.jsp.jspeditor.JSPMultiPageEditor;
 import org.jboss.tools.test.TestProperties;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
 import org.jboss.tools.ui.bot.ext.SWTJBTExt;
-import org.jboss.tools.ui.bot.ext.SWTOpenExt;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.condition.ShellIsActiveCondition;
@@ -49,6 +48,7 @@ import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.NewObject.JBossToolsWebJSFJSFProject;
 import org.jboss.tools.ui.bot.ext.helper.BuildPathHelper;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
+import org.jboss.tools.ui.bot.ext.view.PaletteView;
 import org.jboss.tools.ui.bot.test.JBTSWTBotTestCase;
 import org.jboss.tools.ui.bot.test.SWTBotJSPMultiPageEditor;
 import org.jboss.tools.ui.bot.test.WidgetVariables;
@@ -329,16 +329,7 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase {
 	}
 
 	protected void openPalette() {
-		try {
-			bot.viewByTitle(WidgetVariables.PALETTE);
-		} catch (WidgetNotFoundException e) {
-			bot.menu("Window").menu("Show View").menu("Other...").click(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			SWTBotTree viewTree = bot.tree();
-			delay();
-			viewTree.expandNode("JBoss Tools Web").expandNode( //$NON-NLS-1$
-					WidgetVariables.PALETTE).select();
-			bot.button("OK").click(); //$NON-NLS-1$
-		}
+	  new PaletteView().show();
 	}
 
 	/**
