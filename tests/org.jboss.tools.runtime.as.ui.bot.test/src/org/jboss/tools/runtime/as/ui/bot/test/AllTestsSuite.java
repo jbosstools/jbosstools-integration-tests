@@ -28,11 +28,16 @@ import org.jboss.tools.runtime.as.ui.bot.test.detector.server.ewp5.DetectEWP5;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.ewp5.OperateEWP5;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.jboss7.DetectJBoss7;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.jboss7.OperateJBoss7;
-import org.jboss.tools.runtime.as.ui.bot.test.detector.server.soap5.CheckSOAP5Seam;
-import org.jboss.tools.runtime.as.ui.bot.test.detector.server.soap5.DetectSOAP5;
-import org.jboss.tools.runtime.as.ui.bot.test.detector.server.soap5.OperateSOAP5;
-import org.jboss.tools.runtime.as.ui.bot.test.detector.server.soap5.standalone.DetectSOAPStandalone5;
-import org.jboss.tools.runtime.as.ui.bot.test.detector.server.soap5.standalone.OperateSOAPStandalone5;
+import org.jboss.tools.runtime.as.ui.bot.test.detector.server.soap52.CheckSOAP52Seam;
+import org.jboss.tools.runtime.as.ui.bot.test.detector.server.soap52.DetectSOAP52;
+import org.jboss.tools.runtime.as.ui.bot.test.detector.server.soap52.OperateSOAP52;
+import org.jboss.tools.runtime.as.ui.bot.test.detector.server.soap52.standalone.DetectSOAPStandalone52;
+import org.jboss.tools.runtime.as.ui.bot.test.detector.server.soap52.standalone.OperateSOAPStandalone52;
+import org.jboss.tools.runtime.as.ui.bot.test.detector.server.soap53.CheckSOAP53Seam;
+import org.jboss.tools.runtime.as.ui.bot.test.detector.server.soap53.DetectSOAP53;
+import org.jboss.tools.runtime.as.ui.bot.test.detector.server.soap53.OperateSOAP53;
+import org.jboss.tools.runtime.as.ui.bot.test.detector.server.soap53.standalone.DetectSOAPStandalone53;
+import org.jboss.tools.runtime.as.ui.bot.test.detector.server.soap53.standalone.OperateSOAPStandalone53;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
@@ -62,11 +67,16 @@ import org.junit.runners.Suite;
 		DetectEWP5.class, 
 		CheckEWP5Seam.class,
 		OperateEWP5.class,
-		DetectSOAP5.class, 
-		CheckSOAP5Seam.class,
-		OperateSOAP5.class, 
-		DetectSOAPStandalone5.class, 
-		OperateSOAPStandalone5.class,
+		DetectSOAP52.class, 
+		CheckSOAP52Seam.class,
+		OperateSOAP52.class, 
+		DetectSOAPStandalone52.class, 
+		OperateSOAPStandalone52.class,
+		DetectSOAP53.class, 
+		CheckSOAP53Seam.class,
+		OperateSOAP53.class, 
+		DetectSOAPStandalone53.class, 
+		OperateSOAPStandalone53.class,
 		DetectSeam22.class,
 		CheckSeam22.class,
 		DetectSeam23.class,
