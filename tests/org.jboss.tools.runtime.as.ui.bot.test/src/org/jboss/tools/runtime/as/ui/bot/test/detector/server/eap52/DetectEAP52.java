@@ -1,4 +1,4 @@
-package org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap5;
+package org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap52;
 
 import java.util.Arrays;
 import java.util.List;
@@ -7,7 +7,7 @@ import org.jboss.tools.runtime.as.ui.bot.test.RuntimeProperties;
 import org.jboss.tools.runtime.as.ui.bot.test.entity.Runtime;
 import org.jboss.tools.runtime.as.ui.bot.test.template.DetectRuntimeTemplate;
 
-public class DetectEAP5 extends DetectRuntimeTemplate {
+public class DetectEAP52 extends DetectRuntimeTemplate {
 
 	public static final String SERVER_ID = "jboss-eap-5.2";
 	

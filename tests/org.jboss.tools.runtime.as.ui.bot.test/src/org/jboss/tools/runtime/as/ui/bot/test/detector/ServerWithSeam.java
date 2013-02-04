@@ -1,7 +1,7 @@
 package org.jboss.tools.runtime.as.ui.bot.test.detector;
 
 import org.jboss.tools.runtime.as.ui.bot.test.RuntimeProperties;
-import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap5.DetectEAP5;
+import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap52.DetectEAP52;
 import org.jboss.tools.runtime.as.ui.bot.test.dialog.preferences.SearchingForRuntimesDialog;
 import org.jboss.tools.runtime.as.ui.bot.test.template.RuntimeDetectionTestCase;
 import org.junit.After;
@@ -21,7 +21,7 @@ public class ServerWithSeam extends RuntimeDetectionTestCase {
 	
 	@Before
 	public void search(){
-		searchingForRuntimesDialog = addPath(RuntimeProperties.getInstance().getRuntimePath(DetectEAP5.SERVER_ID));
+		searchingForRuntimesDialog = addPath(RuntimeProperties.getInstance().getRuntimePath(DetectEAP52.SERVER_ID));
 	}
 	
 	@Test
@@ -39,7 +39,7 @@ public class ServerWithSeam extends RuntimeDetectionTestCase {
 	
 	@Test
 	public void seamFirst(){
-		deselectRuntime(DetectEAP5.SERVER_ID);
+		deselectRuntime(DetectEAP52.SERVER_ID);
 		
 		assertSeamRuntimesNumber(1);
 		assertServerRuntimesNumber(0);

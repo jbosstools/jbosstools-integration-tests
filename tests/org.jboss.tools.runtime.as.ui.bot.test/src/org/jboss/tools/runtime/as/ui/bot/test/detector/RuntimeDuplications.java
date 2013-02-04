@@ -8,11 +8,10 @@ import java.io.IOException;
 import java.util.List;
 
 import org.jboss.reddeer.swt.condition.JobIsRunning;
-import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.common.util.FileUtil;
 import org.jboss.tools.runtime.as.ui.bot.test.RuntimeProperties;
-import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap5.DetectEAP5;
+import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap52.DetectEAP52;
 import org.jboss.tools.runtime.as.ui.bot.test.dialog.preferences.SearchingForRuntimesDialog;
 import org.jboss.tools.runtime.as.ui.bot.test.entity.Runtime;
 import org.jboss.tools.runtime.as.ui.bot.test.template.RuntimeDetectionTestCase;
@@ -40,10 +39,10 @@ public class RuntimeDuplications extends RuntimeDetectionTestCase {
 	public void prepareServers() throws IOException{
 		File tmpDir = new File(System.getProperty("java.io.tmpdir"));
 		tmpServerPath = new File(tmpDir, "tmpServerCopy_" + System.currentTimeMillis());
-		tmpServerAPath = new File(tmpServerPath, "serverA/jboss-eap-5.1");
-		tmpServerBPath = new File(tmpServerPath, "serverB/jboss-eap-5.1");
+		tmpServerAPath = new File(tmpServerPath, "serverA/jboss-eap-5.2");
+		tmpServerBPath = new File(tmpServerPath, "serverB/jboss-eap-5.2");
 		
-		File server = new File(RuntimeProperties.getInstance().getRuntimePath(DetectEAP5.SERVER_ID));
+		File server = new File(RuntimeProperties.getInstance().getRuntimePath(DetectEAP52.SERVER_ID));
 		FileUtil.copyDir(server, tmpServerAPath, true, true, true);
 		FileUtil.copyDir(server, tmpServerBPath, true, true, true);
 	}

@@ -9,9 +9,12 @@ import org.jboss.tools.runtime.as.ui.bot.test.detector.seam.seam23.DetectSeam23;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap4.CheckEAP4Seam;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap4.DetectEAP4;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap4.OperateEAP4;
-import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap5.CheckEAP5Seam;
-import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap5.DetectEAP5;
-import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap5.OperateEAP5;
+import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap51.CheckEAP51Seam;
+import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap51.DetectEAP51;
+import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap51.OperateEAP51;
+import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap52.CheckEAP52Seam;
+import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap52.DetectEAP52;
+import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap52.OperateEAP52;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap6.DetectEAP6;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap6.OperateEAP6;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.epp4.CheckEPP4Seam;
@@ -41,9 +44,12 @@ import org.junit.runners.Suite;
 		OperateJBoss7.class,
 		DetectEAP6.class,
 		OperateEAP6.class,
-		DetectEAP5.class, 
-		CheckEAP5Seam.class,
-		OperateEAP5.class, 
+		DetectEAP51.class, 
+		CheckEAP51Seam.class,
+		OperateEAP51.class, 
+		DetectEAP52.class, 
+		CheckEAP52Seam.class,
+		OperateEAP52.class, 
 		DetectEAP4.class, 
 		CheckEAP4Seam.class,
 		OperateEAP4.class,
