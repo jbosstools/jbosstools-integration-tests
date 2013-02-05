@@ -54,7 +54,7 @@ import org.jboss.tools.ui.bot.ext.types.ViewType;
 import org.jboss.tools.vpe.editor.VpeEditorPart;
 import org.jboss.tools.vpe.editor.mozilla.MozillaEditor;
 import org.jboss.tools.vpe.editor.mozilla.MozillaEventAdapter;
-import org.jboss.tools.vpe.ui.palette.PaletteAdapter;
+import org.jboss.tools.jst.web.ui.palette.PaletteAdapter;
 import org.jboss.tools.vpe.xulrunner.util.XPCOM;
 import org.mozilla.interfaces.nsIDOMAbstractView;
 import org.mozilla.interfaces.nsIDOMDocument;
