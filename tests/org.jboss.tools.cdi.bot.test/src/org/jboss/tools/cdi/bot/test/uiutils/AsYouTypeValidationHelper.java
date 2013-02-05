@@ -13,16 +13,15 @@ package org.jboss.tools.cdi.bot.test.uiutils;
 
 import java.util.Iterator;
 
-import org.eclipse.jdt.internal.ui.javaeditor.JavaEditor;
 import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.jface.text.source.IAnnotationModel;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.texteditor.IDocumentProvider;
 import org.eclipse.ui.texteditor.ITextEditor;
+import org.jboss.tools.common.util.IEditorWrapper;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
 import org.jboss.tools.ui.bot.ext.SWTBotFactory;
 
-@SuppressWarnings("restriction")
 public class AsYouTypeValidationHelper {
 
 	private SWTBotExt bot = SWTBotFactory.getBot();
@@ -30,8 +29,13 @@ public class AsYouTypeValidationHelper {
 	public ITextEditor getActiveTextEditor() {
 		ITextEditor textEditor = null;
 		IEditorPart editorPart = bot.activeEditor().getReference().getEditor(true);
-		if (editorPart instanceof JavaEditor) {
-			textEditor = (JavaEditor) editorPart;
+		if (editorPart instanceof IEditorWrapper) {
+			editorPart = ((IEditorWrapper) editorPart).getEditor();
+		}
+		if (editorPart instanceof ITextEditor) {
+			textEditor = (ITextEditor) editorPart;
+		} else {
+			textEditor = editorPart == null ? null : (ITextEditor)editorPart.getAdapter(ITextEditor.class);
 		}
 		return textEditor;
 	}
@@ -66,7 +70,7 @@ public class AsYouTypeValidationHelper {
 	public boolean markerExists(IAnnotationModel annotationModel, String type, String message) {
 		Iterator<?> it = annotationModel.getAnnotationIterator();
 		boolean found = false;
-		while (it.hasNext()) {
+		while (it.hasNext() && !found) {
 			Object o = it.next();
 
 			if (!(o instanceof Annotation))
