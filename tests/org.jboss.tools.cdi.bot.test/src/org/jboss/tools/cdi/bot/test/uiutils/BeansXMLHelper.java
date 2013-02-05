@@ -144,6 +144,11 @@ public class BeansXMLHelper {
 
 	}
 
+	public void createBeansXMLWithAlternative(String projectName,
+			String packageName, String className) {
+		createBeansXMLWithAlternative(projectName, packageName, className, true);
+	}
+	
 	/**
 	 * Methods creates beans.xml with alternative tags in it for entered
 	 * project. Package and alternative bean component name which should be
@@ -155,7 +160,7 @@ public class BeansXMLHelper {
 	 * @param className
 	 */
 	public void createBeansXMLWithAlternative(String projectName,
-			String packageName, String className) {
+			String packageName, String className, boolean save) {
 
 		createBeansXML(projectName);
 		replaceBeansXMLContent(projectName, BEANS_XML_WITH_ALTERNATIVE);
@@ -164,7 +169,7 @@ public class BeansXMLHelper {
 					"<class></class>");
 		} else {
 			editResourceUtil.replaceInEditor("Component", packageName + "."
-					+ className);
+					+ className, save);
 		}
 	}
 

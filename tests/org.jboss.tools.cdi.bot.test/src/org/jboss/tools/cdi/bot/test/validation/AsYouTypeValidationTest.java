@@ -11,13 +11,11 @@
 
 package org.jboss.tools.cdi.bot.test.validation;
 
-import org.eclipse.jface.text.source.IAnnotationModel;
-import org.eclipse.ui.texteditor.ITextEditor;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
 import org.jboss.tools.cdi.bot.test.annotations.CDIWizardType;
 import org.jboss.tools.cdi.bot.test.condition.AsYouTypeMarkerExistsCondition;
+import org.jboss.tools.ui.bot.ext.Timing;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -31,13 +29,15 @@ public class AsYouTypeValidationTest extends CDITestBase {
 	private static final String ELIGIBLE_VALIDATION_PROBLEM = "Multiple beans are eligible " +
 			"for injection to the injection point.*";
 	
+	private static final String BEAN_IS_NOT_ALTERNATIVE = ".*is not an alternative bean class.*";
+	
 	@After
 	public void cleanUp() {
 		bot.activeEditor().save();
 	}
 	
 	@Test
-	public void testJavaValidation() {
+	public void testJavaAYTValidation() {
 		
 		wizard.createCDIComponent(
 				CDIWizardType.BEAN, "Test", getPackageName(), null);
@@ -56,20 +56,40 @@ public class AsYouTypeValidationTest extends CDITestBase {
 		
 		bot.waitUntil(new AsYouTypeMarkerExistsCondition(ELIGIBLE_VALIDATION_PROBLEM));
 		
-		ITextEditor activeTextEditor = asYouTypeValidationHelper.getActiveTextEditor();
-		
-		IAnnotationModel annotationModel = asYouTypeValidationHelper.
-				getAnnotationModel(activeTextEditor);
-		
-		assertTrue(asYouTypeValidationHelper.markerExists((annotationModel), 
-				null, ELIGIBLE_VALIDATION_PROBLEM));
-		
 		//==========================================================================
 		// 	Invoke as-you-type validation marker disappearance without saving file
 		//==========================================================================
 		
 		editResourceUtil.replaceInEditor("@Inject ", "@Inject @Named ", false);
 		bot.waitWhile(new AsYouTypeMarkerExistsCondition(ELIGIBLE_VALIDATION_PROBLEM));
+	}
+	
+	@Test
+	public void testBeansXmlAYTValidation() {
+		
+		wizard.createCDIComponent(
+				CDIWizardType.BEAN, "A1", getPackageName(), null);
+		
+		wizard.createCDIComponent(
+				CDIWizardType.BEAN, "A2", getPackageName(), "alternative");
+		
+		//=======================================================================
+		// 	Invoke as-you-type validation marker appearance without saving file
+		//=======================================================================
+		
+		beansHelper.createBeansXMLWithAlternative(getProjectName(), 
+				getPackageName(), "A1", false);
+		
+		bot.waitUntil(new AsYouTypeMarkerExistsCondition(BEAN_IS_NOT_ALTERNATIVE), 
+				Timing.time10S());
+		
+		//==========================================================================
+		// 	Invoke as-you-type validation marker disappearance without saving file
+		//==========================================================================
+		
+		editResourceUtil.replaceInEditor("A1", "A2", false);
+		
+		bot.waitWhile(new AsYouTypeMarkerExistsCondition(BEAN_IS_NOT_ALTERNATIVE));
 	}
 	
 }
