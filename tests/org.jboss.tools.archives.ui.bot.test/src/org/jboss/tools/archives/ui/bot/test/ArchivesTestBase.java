@@ -10,9 +10,12 @@
  ******************************************************************************/
 package org.jboss.tools.archives.ui.bot.test;
 
+import static org.junit.Assert.assertThat;
+
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.hamcrest.core.Is;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.tools.archives.ui.bot.test.explorer.ProjectArchivesExplorer;
 import org.jboss.tools.archives.ui.bot.test.view.ProjectArchivesView;
@@ -21,6 +24,7 @@ import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.condition.ProgressInformationShellIsActiveCondition;
 import org.jboss.tools.ui.bot.ext.condition.TaskDuration;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
+import org.jboss.tools.ui.bot.ext.entity.JavaProjectEntity;
 import org.jboss.tools.ui.bot.ext.helper.ImportHelper;
 import org.jboss.tools.ui.bot.ext.helper.TreeHelper;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
@@ -89,6 +93,36 @@ public class ArchivesTestBase extends SWTTestExt {
 		assertTrue(archive + " was not deployed", found);
 	}
 	
+	protected void assertClearArchivesErrorLog() {
+		
+		assertTrue("Error log contains archive errors", 
+				countOfArchivesErrors() == 0);
+	}
+	
+	protected void assertBuildingArchiveErrorExists(String location, String archive) {
+		
+		ErrorLogView errorLog = new ErrorLogView();
+		
+		SWTBotTreeItem buildingError = null; 
+		
+		for (SWTBotTreeItem ti : errorLog.getMessages()) {
+			String pluginId = ti.cell(1);
+			if (pluginId.contains("org.jboss.ide.eclipse.archives") && 
+				ti.getText().equals("An error occurred while building project archives")) {
+				buildingError = ti;
+			}
+		}
+		
+		assertNotNull("No building archive error was found in error log", buildingError);
+		
+		buildingError.expand();
+		SWTBotTreeItem[] subErrorMessages = buildingError.getItems();
+		assertThat(subErrorMessages.length, Is.is(1));
+		assertThat(subErrorMessages[0].getText(), Is.is("Error creating output file " 
+				+ location + " for node " + archive));
+		
+	}
+	
 	protected void removeArchiveFromServer(String archive) {
 		ServersView serversView = showServersView();
 		serversView.removeProjectFromServers(archive);
@@ -97,7 +131,7 @@ public class ArchivesTestBase extends SWTTestExt {
 	protected SWTBotTreeItem findConfiguredServer(ServersView serversView) {
 		SWTBotTreeItem server = null;
 		try {
-			server = serversView. findServerByName(serversView.bot().tree(), 
+			server = serversView.findServerByName(serversView.bot().tree(), 
 				configuredState.getServer().name);			
 		} catch (WidgetNotFoundException exc) {
 			fail("Server is not configured - missing in servers view");
@@ -111,18 +145,18 @@ public class ArchivesTestBase extends SWTTestExt {
 		return serversView;
 	}
 	
-	public void assertClearArchivesErrorLog() {
-		
-		assertTrue("Error log contains archive errors", 
-				countOfArchivesErrors() == 0);
-	}
-	
-	public static void showErrorView() {
+	protected static void showErrorView() {
 		new ErrorLogView().show();
 	}
 	
-	public static void clearErrorView() {
+	protected static void clearErrorView() {
 		new ErrorLogView().clear();
+	}
+	
+	protected static void createJavaProject(String projectName) {
+		JavaProjectEntity jpe = new JavaProjectEntity();
+		jpe.setProjectName(projectName);
+		eclipse.createJavaProject(jpe);
 	}
 	
 	protected static void importProject(String projectName) {
@@ -186,7 +220,8 @@ public class ArchivesTestBase extends SWTTestExt {
 		ErrorLogView errorLog = new ErrorLogView();
 		int archivesErrorsCount = 0;
 		for (SWTBotTreeItem ti : errorLog.getMessages()) {
-			if (ti.getText().contains("org.jboss.ide.eclipse.archives")) {
+			String pluginId = ti.cell(1);
+			if (pluginId.contains("org.jboss.ide.eclipse.archives")) {
 				archivesErrorsCount++;
 			}
 		}

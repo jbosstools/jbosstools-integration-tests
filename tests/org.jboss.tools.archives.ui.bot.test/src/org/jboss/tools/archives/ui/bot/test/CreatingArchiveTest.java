@@ -13,7 +13,6 @@ package org.jboss.tools.archives.ui.bot.test;
 import org.jboss.tools.archives.ui.bot.test.dialog.NewJarDialog;
 import org.jboss.tools.archives.ui.bot.test.explorer.ProjectArchivesExplorer;
 import org.jboss.tools.archives.ui.bot.test.view.ProjectArchivesView;
-import org.jboss.tools.ui.bot.ext.entity.JavaProjectEntity;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -48,9 +47,7 @@ public class CreatingArchiveTest extends ArchivesTestBase {
 	
 	@BeforeClass
 	public static void setup() {
-		JavaProjectEntity jpe = new JavaProjectEntity();
-		jpe.setProjectName(project);
-		eclipse.createJavaProject(jpe);
+		createJavaProject(project);
 	}
 	
 	@Test 

@@ -27,6 +27,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	FilesetTest.class,
 	UserLibrariesFilesetTest.class,
 	ArchivesSupportTest.class, 
+	ArchivesErrorDialogTest.class,
 	BuildingArchiveNode.class,
 	BuildingProjectTest.class,
 	BuildingArchiveTest.class,

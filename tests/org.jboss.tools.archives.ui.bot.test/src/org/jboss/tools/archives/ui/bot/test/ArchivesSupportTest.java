@@ -1,6 +1,5 @@
 package org.jboss.tools.archives.ui.bot.test;
 
-import org.jboss.tools.ui.bot.ext.entity.JavaProjectEntity;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -15,9 +14,7 @@ public class ArchivesSupportTest extends ArchivesTestBase {
 	
 	@BeforeClass
 	public static void setup() {
-		JavaProjectEntity jpe = new JavaProjectEntity();
-		jpe.setProjectName(project);
-		eclipse.createJavaProject(jpe);
+		createJavaProject(project);
 	}
 	
 	@Test
