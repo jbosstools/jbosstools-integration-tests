@@ -44,7 +44,6 @@ public class DeployingArchiveTest extends ArchivesTestBase {
 	@BeforeClass
 	public static void setup() {
 		importProjectWithoutRuntime(project);
-		new ProjectArchivesView().show(); // workaround JBIDE-12493
 	}
 	
 	@Test
