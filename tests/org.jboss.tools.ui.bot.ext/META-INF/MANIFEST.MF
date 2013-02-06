@@ -23,8 +23,7 @@ Export-Package:
  org.jboss.tools.ui.bot.ext.types,
  org.jboss.tools.ui.bot.ext.view,
  org.jboss.tools.ui.bot.ext.widgets,
- org.jboss.tools.ui.bot.ext.wizards,
- org.jboss.tools.ui.bot.ext.zest
+ org.jboss.tools.ui.bot.ext.wizards
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.swtbot.eclipse.core;bundle-version="2.0.0",
