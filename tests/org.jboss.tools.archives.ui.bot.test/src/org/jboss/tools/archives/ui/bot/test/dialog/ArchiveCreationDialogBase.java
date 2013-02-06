@@ -14,6 +14,7 @@ import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.jboss.tools.ui.bot.ext.SWTBotFactory;
 import org.jboss.tools.ui.bot.ext.Timing;
+import org.jboss.tools.ui.bot.ext.parts.SWTBotRadioExt;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 
 /**
@@ -40,17 +41,20 @@ public abstract class ArchiveCreationDialogBase {
 	}
 	
 	public ArchiveCreationDialogBase setDestination(String location) {
-		bot.textWithLabel("Destination:").setText(location);
+		bot.textWithLabel("Destination:").setText("");
+		bot.textWithLabel("Destination:").typeText(location);
 		return this;
 	}
 	
 	public ArchiveCreationDialogBase setFileSystemRelative() {
-		bot.radio(0).click();
+		new SWTBotRadioExt(bot.radio(1).widget).setSelection(false);
+		new SWTBotRadioExt(bot.radio(0).widget).clickWithoutDeselectionEvent();
 		return this;
 	}
 	
 	public ArchiveCreationDialogBase setWorkspaceRelative() {
-		bot.radio(1).click();
+		new SWTBotRadioExt(bot.radio(0).widget).setSelection(false);
+		new SWTBotRadioExt(bot.radio(1).widget).clickWithoutDeselectionEvent();
 		return this;
 	}
 	

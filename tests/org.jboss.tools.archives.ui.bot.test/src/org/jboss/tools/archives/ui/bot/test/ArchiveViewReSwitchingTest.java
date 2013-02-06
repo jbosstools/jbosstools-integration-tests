@@ -11,7 +11,6 @@
 package org.jboss.tools.archives.ui.bot.test;
 
 import org.jboss.tools.archives.ui.bot.test.view.ProjectArchivesView;
-import org.jboss.tools.ui.bot.ext.entity.JavaProjectEntity;
 import org.jboss.tools.ui.bot.ext.view.ErrorLogView;
 import org.jboss.tools.ui.bot.ext.view.ViewBase;
 import org.junit.BeforeClass;
@@ -36,9 +35,7 @@ public class ArchiveViewReSwitchingTest extends ArchivesTestBase {
 		errors.show();
 		
 		/* create test project */
-		JavaProjectEntity project = new JavaProjectEntity();
-		project.setProjectName(projectName);
-		eclipse.createJavaProject(project);
+		createJavaProject(projectName);
 	}
 	
 	@Test
