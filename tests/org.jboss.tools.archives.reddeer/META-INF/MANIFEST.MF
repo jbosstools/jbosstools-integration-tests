@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Archive Reddeer
+Bundle-SymbolicName: org.jboss.tools.archives.reddeer
+Bundle-Version: 4.0.0.qualifier
+Bundle-Activator: org.jboss.tools.archives.reddeer.Activator
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.jboss.reddeer.swt,
+ org.jboss.reddeer.jface
+Export-Package: 
+ org.jboss.tools.archives.reddeer.archives.ui
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
