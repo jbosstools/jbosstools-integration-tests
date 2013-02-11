@@ -629,7 +629,7 @@ public class CodeCompletionTest extends JSFAutoTestCase{
     result.add("onmouseup");
     result.add("submitlabel");
     result.add("value");
-    result.add("\"#{cc.attrs.}\"");    
+        
     return result;
   }
   /**

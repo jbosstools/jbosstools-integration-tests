@@ -216,10 +216,10 @@ public class AddRemoveJSFCapabilitiesTest extends JSFAutoTestCase {
     delay();
 
     try{
-      bot.waitUntil(new ShellIsActiveCondition(IDELabel.Shell.PROPERTIES_FOR + " " + JBT_TEST_PROJECT_NAME),
+      bot.waitUntil(new ShellIsActiveCondition(IDELabel.Shell.PROPERTIES_FOR + " " + JBT_TEST_PROJECT_NAME + " (Filtered)"),
         Timing.time10S());
       log.info("Properties dialog was opened. Trying to close it");
-      bot.shell(IDELabel.Shell.PROPERTIES_FOR + " " + JBT_TEST_PROJECT_NAME)
+      bot.shell(IDELabel.Shell.PROPERTIES_FOR + " " + JBT_TEST_PROJECT_NAME + " (Filtered)")
         .bot()
         .button(IDELabel.Button.CANCEL)
         .click();
