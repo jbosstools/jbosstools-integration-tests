@@ -21,6 +21,7 @@ import org.junit.runners.Suite.SuiteClasses;
 @RunWith(RequirementAwareSuite.class)
 @SuiteClasses({
 	ViewIsPresentTest.class,
+	ArchivePreferencesTest.class,
 	VariousProjectsArchiving.class,
 	ArchiveViewReSwitchingTest.class,
 	FolderTest.class,
