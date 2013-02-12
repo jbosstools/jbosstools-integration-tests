@@ -86,7 +86,6 @@ public class EligibleInjectionQuickFixTestBase extends CDITestBase {
 		
 		spBeanDialogWizard.finish();
 		
-		bot.sleep(Timing.time1S());
 		util.waitForNonIgnoredJobs();
 	}
 
