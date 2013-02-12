@@ -17,6 +17,8 @@ import static org.hamcrest.Matchers.instanceOf;
 
 import java.awt.event.KeyEvent;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
 
@@ -702,5 +704,20 @@ public class ContextMenuHelper {
 
     return result;
     
+  }
+  
+  public static String[] getFilteredMenuItemLabels (final Menu menu , String... ignoredMenuItems){
+    LinkedList<String> result = null;
+    String[] menuItems = ContextMenuHelper.getMenuItemLabels(menu);
+    
+    if (menuItems != null && ignoredMenuItems != null){
+      result = new LinkedList<String>();
+      Collections.addAll(result, menuItems);
+      LinkedList<String> ignoredMenuItemsList = new LinkedList<String>();
+      Collections.addAll(ignoredMenuItemsList, ignoredMenuItems);
+      result.removeAll(ignoredMenuItemsList);
+    }
+    
+    return result.toArray(new String[0]);
   }
 }

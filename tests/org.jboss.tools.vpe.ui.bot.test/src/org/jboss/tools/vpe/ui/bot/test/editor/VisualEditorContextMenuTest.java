@@ -256,32 +256,32 @@ public class VisualEditorContextMenuTest extends VPEEditorTestCase {
 	  paletteRootEntity.setChildren(getPaletteActionsStructure());
 	  MenuItemEntity contextMenuRootEntity = new MenuItemEntity("root");
 	  // Gets Complete Context Menu Structure
-	  contextMenuRootEntity.setChildren(getContextMenuStructure(SWTBotWebBrowser.INSERT_AROUND_MENU_LABEL,webBrowser));
+	  contextMenuRootEntity.setChildren(getContextMenuStructure(SWTBotWebBrowser.INSERT_AROUND_MENU_LABEL,webBrowser , "Mobile"));
 	  MenuItemEntity filteredPaleteRootEntity =  filterPaletteMenuForInsertAroundAction(paletteRootEntity);
 	  assertTrue("Palette content is different than Context Menu Items for inserting\n" +
 	      "Palette  content:\n" + filteredPaleteRootEntity +
 	      "\n Context Menu Content:\n" + contextMenuRootEntity,
 	    filteredPaleteRootEntity.equals(contextMenuRootEntity));
 	  // Gets Complete Context Menu Structure
-	  contextMenuRootEntity.setChildren(getContextMenuStructure(SWTBotWebBrowser.INSERT_BEFORE_MENU_LABEL,webBrowser));
+	  contextMenuRootEntity.setChildren(getContextMenuStructure(SWTBotWebBrowser.INSERT_BEFORE_MENU_LABEL,webBrowser, "Mobile"));
     assertTrue("Palette content is different than Context Menu Items for inserting\n" +
 	      "Palette  content:\n" + paletteRootEntity +
 	      "\n Context Menu Content:\n" + contextMenuRootEntity,
 	    paletteRootEntity.equals(contextMenuRootEntity));
 	  // Gets Complete Context Menu Structure
-	  contextMenuRootEntity.setChildren(getContextMenuStructure(SWTBotWebBrowser.INSERT_AFTER_MENU_LABEL,webBrowser));
+	  contextMenuRootEntity.setChildren(getContextMenuStructure(SWTBotWebBrowser.INSERT_AFTER_MENU_LABEL,webBrowser, "Mobile"));
     assertTrue("Palette content is different than Context Menu Items for inserting\n" +
         "Palette  content:\n" + paletteRootEntity +
         "\n Context Menu Content:\n" + contextMenuRootEntity,
       paletteRootEntity.equals(contextMenuRootEntity));
     // Gets Complete Context Menu Structure
- 	  contextMenuRootEntity.setChildren(getContextMenuStructure(SWTBotWebBrowser.INSERT_INTO_MENU_LABEL,webBrowser));
+ 	  contextMenuRootEntity.setChildren(getContextMenuStructure(SWTBotWebBrowser.INSERT_INTO_MENU_LABEL,webBrowser, "Mobile"));
     assertTrue("Palette content is different than Context Menu Items for inserting\n" +
         "Palette  content:\n" + paletteRootEntity +
         "\n Context Menu Content:\n" + contextMenuRootEntity,
       paletteRootEntity.equals(contextMenuRootEntity));
     // Gets Complete Context Menu Structure
-    contextMenuRootEntity.setChildren(getContextMenuStructure(SWTBotWebBrowser.REPLACE_WITH_MENU_LABEL,webBrowser));
+    contextMenuRootEntity.setChildren(getContextMenuStructure(SWTBotWebBrowser.REPLACE_WITH_MENU_LABEL,webBrowser, "Mobile"));
     assertTrue("Palette content is different than Context Menu Items for inserting\n" +
         "Palette  content:\n" + paletteRootEntity +
         "\n Context Menu Content:\n" + contextMenuRootEntity,
@@ -319,9 +319,10 @@ public class VisualEditorContextMenuTest extends VPEEditorTestCase {
    * which can be used for comparing with Context Menu Structure
    * @param topMenuLabel
    * @param webBrowser
+   * @param ignoredFirstMenuItems
    * @return
    */
-  private List<MenuItemEntity> getContextMenuStructure(final String topMenuLabel , SWTBotWebBrowser webBrowser){
+  private List<MenuItemEntity> getContextMenuStructure(final String topMenuLabel , SWTBotWebBrowser webBrowser , final String... ignoredFirstMenuItems){
     final LinkedList<MenuItemEntity> result = new LinkedList<MenuItemEntity>(); 
     final Menu topMenu = webBrowser.getTopMenu(webBrowser.getSelectedDomNode(), topMenuLabel);
     
@@ -330,7 +331,7 @@ public class VisualEditorContextMenuTest extends VPEEditorTestCase {
         ContextMenuHelper.clickContextMenu(topMenu, topMenuLabel);
         MenuItem useMenuItem = ContextMenuHelper.getContextMenu(topMenu, topMenuLabel, false);
         Menu useMenu = ContextMenuHelper.showMenuOfMenuItem(useMenuItem);
-        for (String firstLevelMenuItemLabel : ContextMenuHelper.getMenuItemLabels(useMenu)){
+        for (String firstLevelMenuItemLabel : ContextMenuHelper.getFilteredMenuItemLabels(useMenu,ignoredFirstMenuItems)){
           ContextMenuHelper.clickContextMenu(useMenu, firstLevelMenuItemLabel);
           MenuItem firstLevelMenuItem = ContextMenuHelper.getContextMenu(useMenu, firstLevelMenuItemLabel, false);
           MenuItemEntity firstLevelMenuItemEntity = new MenuItemEntity(firstLevelMenuItem.getText());
@@ -348,8 +349,12 @@ public class VisualEditorContextMenuTest extends VPEEditorTestCase {
             secondLevelMenuItemEntity.setChildren(secondMenuItemEntities);
             for (String thirdLevelMenuItemLabel : ContextMenuHelper.getMenuItemLabels(secondLevelMenu)){
               // trim name space and <,> characters
-              String trimedLabel = thirdLevelMenuItemLabel.split(":")[1].replaceFirst(">", "");
-              secondMenuItemEntities.add(new MenuItemEntity(trimedLabel));
+              if (thirdLevelMenuItemLabel.contains(":")){
+                String trimedLabel = thirdLevelMenuItemLabel.split(":")[1].replaceFirst(">", "");
+                secondMenuItemEntities.add(new MenuItemEntity(trimedLabel));
+              }else{
+                secondMenuItemEntities.add(new MenuItemEntity(thirdLevelMenuItemLabel));
+              }
             }
           }
         }

@@ -20,7 +20,7 @@ import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 public class PaletteView extends ViewBase {
 	Logger log = Logger.getLogger(PaletteView.class);
 	public PaletteView() {
-		viewObject = ActionItem.View.JBossToolsWebJBossToolsPalette.LABEL;		
+		viewObject = ActionItem.View.GeneralPalette.LABEL;		
 	}
 
 }
