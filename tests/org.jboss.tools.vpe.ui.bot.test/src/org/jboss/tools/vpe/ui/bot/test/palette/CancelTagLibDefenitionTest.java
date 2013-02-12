@@ -13,6 +13,7 @@ package org.jboss.tools.vpe.ui.bot.test.palette;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 import org.jboss.tools.ui.bot.ext.view.PaletteView;
 import org.jboss.tools.vpe.ui.bot.test.VPEAutoTestCase;
 
@@ -22,7 +23,7 @@ public class CancelTagLibDefenitionTest extends VPEAutoTestCase{
     openPage();
     openPalette();
 		//Test open import dialog
-		bot.viewByTitle("JBoss Tools Palette").setFocus(); //$NON-NLS-1$
+		bot.viewByTitle(ActionItem.View.GeneralPalette.LABEL.getName()).setFocus(); //$NON-NLS-1$
 		new PaletteView()
 		  .getToolbarButtonWitTooltip("Import")
 		  .click();

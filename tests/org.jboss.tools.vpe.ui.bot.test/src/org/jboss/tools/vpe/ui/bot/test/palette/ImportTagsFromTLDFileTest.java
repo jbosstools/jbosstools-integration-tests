@@ -15,6 +15,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
+import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.ext.view.PaletteView;
 import org.jboss.tools.vpe.ui.bot.test.VPEAutoTestCase;
@@ -26,8 +27,10 @@ public class ImportTagsFromTLDFileTest extends VPEAutoTestCase{
 	public void testImportTagsFromTLDFile(){
 
 		//Test clear group
-	  bot.viewByTitle("JBoss Tools Palette").setFocus(); //$NON-NLS-1$
+	  openPage();
 	  PaletteView paletteView = new PaletteView();
+	  paletteView.show();
+	  bot.viewByTitle(ActionItem.View.GeneralPalette.LABEL.getName()).setFocus(); //$NON-NLS-1$
 	  paletteView.getToolbarButtonWitTooltip(IDELabel.JBossToolsPalette.PALETTE_EDITOR_TOOL_ITEM)
       .click();
 		bot.shell("Palette Editor").activate(); //$NON-NLS-1$
