@@ -17,7 +17,6 @@ import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.cdi.bot.test.CDIConstants;
-import org.jboss.tools.ui.bot.ext.Timing;
 
 public class DynamicWebProjectWizard extends Wizard {
 
@@ -42,7 +41,6 @@ public class DynamicWebProjectWizard extends Wizard {
 	public DynamicWebProjectWizard setCDIFacet() {
 		clickButton("Modify...");		
 		setCDIFacetInFacets(bot());
-		bot().sleep(Timing.time1S());
 		return this;
 	}
 	
@@ -55,8 +53,7 @@ public class DynamicWebProjectWizard extends Wizard {
 				ti.check();
 				break;
 			}
-		}
-		facetsBot.sleep(Timing.time1S());
+		}		
 		facetsBot.button("OK").click();
 	}
 
