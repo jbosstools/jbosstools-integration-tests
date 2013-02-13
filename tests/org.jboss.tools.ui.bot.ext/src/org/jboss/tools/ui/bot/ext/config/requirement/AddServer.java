@@ -73,6 +73,7 @@ public class AddServer extends RequirementBase {
 		SWTTestExt.configuredState.getServer().isConfigured=true;
 		SWTTestExt.configuredState.getServer().name=runtimeName;
 		SWTTestExt.configuredState.getServer().version=TestConfigurator.currentConfig.getServer().version;
+		SWTTestExt.configuredState.getServer().runtimeLocation = runtimeHome;
 		SWTTestExt.configuredState.getServer().type=TestConfigurator.currentConfig.getServer().type;
 		SWTTestExt.configuredState.getServer().withJavaVersion = TestConfigurator.currentConfig.getServer().withJavaVersion;
 		// setup bundled ESB versions for SOA server type
