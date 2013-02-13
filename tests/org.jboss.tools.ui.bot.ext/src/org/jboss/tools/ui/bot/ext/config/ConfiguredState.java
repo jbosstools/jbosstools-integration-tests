@@ -119,6 +119,10 @@ public class ConfiguredState {
 		 */
 		public String name = null;
 		/**
+		 * location of runtime
+		 */
+		public String runtimeLocation = null;
+		/**
 		 * version of java configured to server (1.5 or 1.6)
 		 */
 		public String withJavaVersion = null;
