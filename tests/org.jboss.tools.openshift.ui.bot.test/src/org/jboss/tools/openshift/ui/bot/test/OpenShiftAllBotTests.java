@@ -11,13 +11,19 @@
 package org.jboss.tools.openshift.ui.bot.test;
 
 import org.jboss.tools.openshift.ui.bot.test.explorer.ConnectionEnterprise;
-import org.jboss.tools.openshift.ui.bot.test.explorer.CreateApp;
+import org.jboss.tools.openshift.ui.bot.test.explorer.CreateAdapter;
+import org.jboss.tools.openshift.ui.bot.test.explorer.CreateJBossApp;
 import org.jboss.tools.openshift.ui.bot.test.explorer.CreateDomain;
 import org.jboss.tools.openshift.ui.bot.test.explorer.DeleteApp;
 import org.jboss.tools.openshift.ui.bot.test.explorer.DeleteDomain;
-import org.jboss.tools.openshift.ui.bot.test.explorer.EmbedCartrides;
+import org.jboss.tools.openshift.ui.bot.test.explorer.EmbedCartridges;
+import org.jboss.tools.openshift.ui.bot.test.explorer.EnvVar;
+import org.jboss.tools.openshift.ui.bot.test.explorer.ImportApp;
 import org.jboss.tools.openshift.ui.bot.test.explorer.ManageSSH;
+import org.jboss.tools.openshift.ui.bot.test.explorer.PortForward;
 import org.jboss.tools.openshift.ui.bot.test.explorer.RenameDomain;
+import org.jboss.tools.openshift.ui.bot.test.explorer.TailFiles;
+import org.jboss.tools.openshift.ui.bot.test.explorer.WebBrowser;
 import org.jboss.tools.openshift.ui.bot.test.wizard.RepublishApp;
 import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
 import org.junit.runner.RunWith;
@@ -33,14 +39,22 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @SuiteClasses({
 	ConnectionEnterprise.class, 
+	/* TODO: temporarily disable jobs to see if this test suite passes on OpenShift Enterprise
 	ManageSSH.class, 
 	CreateDomain.class,
-	CreateApp.class,
-	EmbedCartrides.class,
+	CreateJBossApp.class,
+	EmbedCartridges.class,
 	RepublishApp.class,
 	DeleteApp.class, 
 	RenameDomain.class,
-	DeleteDomain.class
+	DeleteDomain.class,
+	ImportApp.class,
+	TailFiles.class,
+	EnvVar.class,
+	PortForward.class,
+	WebBrowser.class,
+	CreateAdapter.class
+	*/
 })
 @RunWith(RequirementAwareSuite.class)
 public class OpenShiftAllBotTests {

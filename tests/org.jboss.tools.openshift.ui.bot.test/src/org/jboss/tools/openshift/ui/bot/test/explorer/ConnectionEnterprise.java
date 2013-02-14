@@ -8,7 +8,7 @@ public class ConnectionEnterprise extends Connection{
 	@Before
 	public void setUpServer() {
 		TestProperties.put("openshift.server.url", TestProperties
-				.get("openshift.server.prod"));
+				.get("openshift.server.enterprise"));
 		
 		TestProperties.put("openshift.user.name", "demo");
 		TestProperties.put("openshift.user.pwd", "changeme");

@@ -12,9 +12,11 @@ import org.jboss.tools.ui.bot.ext.condition.NonSystemJobRunsCondition;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.junit.Test;
 
-public class EmbedCartrides extends SWTTestExt {
+public class EmbedCartridges extends SWTTestExt {
 	SWTBotTreeItem account;
 
+	// TODO: test for all cartridges to embed 
+	
 	@Test
 	public void canEmbeddCartriges() {
 
@@ -34,10 +36,12 @@ public class EmbedCartrides extends SWTTestExt {
 		account.getItems()[0]
 				.contextMenu(OpenShiftUI.Labels.EDIT_CARTRIDGES).click();
 
-		bot.waitForShell("");
+		bot.waitForShell(OpenShiftUI.Shell.EDIT_CARTRIDGES);
 
 		SWTBotTable cartridgeTable = bot.tableInGroup("Embeddable Cartridges");
 
+		
+		
 		selectCartridges(cartridgeTable);
 
 		bot.button(IDELabel.Button.FINISH).click();
