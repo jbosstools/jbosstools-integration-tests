@@ -36,6 +36,28 @@ public class OpenShiftUI {
 			}
 		};
 	}
+	
+	/**
+	 * 
+	 * Class representing OpenShift Console View
+	 *
+	 */
+	public static class WebBrowser {
+
+		public static final IView iView = new IView() {
+			@Override
+			public String getName() {
+				return "Internal Web Browser";
+			}
+
+			@Override
+			public List<String> getGroupPath() {
+				List<String> l = new Vector<String>();
+				l.add("General");
+				return l;
+			}
+		};
+	}
 
 	/**
 	 * 
@@ -104,6 +126,12 @@ public class OpenShiftUI {
 		public static final String EXPLORER_MANAGE_SSH = "Manage SSH &Keys...";
 		public static final String EDIT_CARTRIDGES = "Edit Embedded Cartridges...";
 		public static final String REFRESH = "Refresh";
+		public static final String EXPLORER_IMPORT_APP = "Import Application...";
+		public static final String EXPLORER_TAIL_FILES = "Tail files...";
+		public static final String EXPLORER_ENV_VAR = "Environment Variables";
+		public static final String EXPLORER_PORTS = "Port forwarding...";
+		public static final String BROWSER = "Web Browser";
+		public static final String EXPLORER_ADAPTER = "Create a Server Adapter...";
 		
 	}
 	
@@ -117,6 +145,11 @@ public class OpenShiftUI {
 		public static final String SSH_WIZARD = "";
 		public static final String NEW_SSH = "";
 		public static final String DELETE_APP = "Application deletion";
+		public static final String IMPORT_APP = "Import OpenShift Application";
+		public static final String TAIL_FILES = "Tail Files";
+		public static final String PORTS = "";
+		public static final String ADAPTER = "New Server";
+		public static final String EDIT_CARTRIDGES = "Edit Embedded Cartridges";
 		
 	}
 }

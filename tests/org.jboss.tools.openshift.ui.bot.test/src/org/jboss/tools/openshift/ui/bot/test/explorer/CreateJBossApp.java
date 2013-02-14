@@ -15,8 +15,10 @@ import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.junit.Before;
 import org.junit.Test;
 
-public class CreateApp extends SWTTestExt {
+public class CreateJBossApp extends SWTTestExt {
 
+	// TODO: create separate test for all kinds of app
+	
 	public static final String JBOSS_APP_NAME = TestProperties
 			.get("openshift.jbossapp.name") + new Date().getTime();
 
