@@ -871,6 +871,7 @@ public class IDELabel {
 	   public static final String PROJECT_EXAMPLE = "New Project Example";
 	   public static final String NEW_JBOSS_PROJECT = "New JBoss Project";
 	   public static final String OPENSHIFT_APP_WIZARD = "New OpenShift Application";
+	   public static final String GWT_WEB_PROJECT = "GWT Web Project";
    }
    
    public static class NewViewDialog{
