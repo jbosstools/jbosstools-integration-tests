@@ -14,6 +14,7 @@ import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
 import org.jboss.tools.ws.ui.bot.test.annotation.HTTPMethodAnnotationQuickFixTest;
 import org.jboss.tools.ws.ui.bot.test.integration.JAXRSToolingIntegrationTest;
 import org.jboss.tools.ws.ui.bot.test.integration.SOAPWSToolingIntegrationTest;
+import org.jboss.tools.ws.ui.bot.test.preferences.JBossWSPreferencesTest;
 import org.jboss.tools.ws.ui.bot.test.rest.DefaultValueAnnotationSupportTest;
 import org.jboss.tools.ws.ui.bot.test.rest.MatrixAnnotationSupportTest;
 import org.jboss.tools.ws.ui.bot.test.rest.PathAnnotationSupportTest;
@@ -44,6 +45,7 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @RunWith(RequirementAwareSuite.class)
 @SuiteClasses({
+	JBossWSPreferencesTest.class,
 	SampleSoapWebServiceTest.class,
 	SampleRESTWebServiceTest.class,
 	SimpleSoapWebServiceTest.class,
