@@ -142,7 +142,6 @@ public static String getItemString(IActionItem item) {
 				}
 			};
 			}
-		
 		public static class JAXWSAnnotationProperties {
 			/**
 			* represents item : JAX-WS->Annotation Properties
@@ -156,7 +155,19 @@ public static String getItemString(IActionItem item) {
 				}
 			};
 			}
-		
+		public static class JBTWSWebServiceTester {
+			/**
+			* represents item : JAX-WS->Annotation Properties
+			*/
+			public static final IView LABEL = new IView() {
+				public String getName() { return "Web Service Tester";}
+				public List<String> getGroupPath() {
+					List<String> l = new Vector<String>();
+					l.add("JBoss Tools Web Services");
+					return l;
+				}
+			};
+			}
 		public static class PluginDevelopmentPluginDependencies {
 			/**
 			* represents item : Plug-in Development->Plug-in Dependencies
