@@ -36,6 +36,7 @@
   <plugin id="org.jboss.tools.ui.bot.ext" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
   <plugin id="org.jboss.tools.ui.bot.ext.test" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
   <plugin id="org.jboss.tools.vpe.ui.bot.test" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
+  <plugin id="org.jboss.tools.ws.reddeer" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
   <plugin id="org.jboss.tools.ws.ui.bot.test" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
 </feature>
 
