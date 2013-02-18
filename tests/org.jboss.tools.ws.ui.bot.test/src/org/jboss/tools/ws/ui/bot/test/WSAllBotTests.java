@@ -11,6 +11,7 @@
 package org.jboss.tools.ws.ui.bot.test;
 
 import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
+import org.jboss.tools.ws.ui.bot.test.annotation.AnnotationPropertiesTest;
 import org.jboss.tools.ws.ui.bot.test.annotation.HTTPMethodAnnotationQuickFixTest;
 import org.jboss.tools.ws.ui.bot.test.integration.JAXRSToolingIntegrationTest;
 import org.jboss.tools.ws.ui.bot.test.integration.SOAPWSToolingIntegrationTest;
@@ -33,6 +34,7 @@ import org.jboss.tools.ws.ui.bot.test.webservice.TopDownWSTest;
 import org.jboss.tools.ws.ui.bot.test.webservice.eap.EAPFromJavaTest;
 import org.jboss.tools.ws.ui.bot.test.webservice.eap.EAPFromWSDLTest;
 import org.jboss.tools.ws.ui.bot.test.wsclient.WsClientTest;
+import org.jboss.tools.ws.ui.bot.test.wstester.WSTesterPromptValuesSupportTest;
 import org.jboss.tools.ws.ui.bot.test.wstester.WsTesterTest;
 import org.jboss.tools.ws.ui.bot.test.wstester.XmlJsonFormattingTest;
 import org.junit.runner.RunWith;
@@ -61,7 +63,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	JAXRSToolingIntegrationTest.class,
 	SOAPWSToolingIntegrationTest.class,
 	XmlJsonFormattingTest.class,
-//	WSTesterPromptValuesSupportTest.class, // not implemented yet
+	WSTesterPromptValuesSupportTest.class,
 	ApplicationValidationTest.class,
 	JaxRsValidatorTest.class,
 	HTTPMethodAnnotationQuickFixTest.class,
