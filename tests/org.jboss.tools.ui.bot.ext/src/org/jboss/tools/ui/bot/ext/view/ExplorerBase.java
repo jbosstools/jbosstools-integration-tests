@@ -78,7 +78,7 @@ public abstract class ExplorerBase extends ViewBase {
 	     if (fileSystem) {
 	    	 shell.bot().checkBox().click();
 	     }
-	     open.finish(shell.bot(),IDELabel.Button.OK);
+	     open.finish(shell.bot(),IDELabel.Button.OK, IDELabel.Button.CONTINUE, true);
 	     util.waitForNonIgnoredJobs();
 	     //util.waitForAll(Timing.time30S()); rhopp. Removed unnecessary waiting.
 	}

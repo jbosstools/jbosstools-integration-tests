@@ -262,17 +262,31 @@ public class SWTOpenExt {
 	 * @param finishButtonText
 	 */
 	public void finish(SWTBot bot, String finishButtonText) {
-		finish(bot, finishButtonText,false);
+		finish(bot, finishButtonText, finishButtonText, false);
 	}
-
 	/**
-	 * clicks given button on active shell and waits until shell disappears
+	 * clicks given button on active shell and waits until shell disappears. If autoCloseShells
+	 * is true and some other shell pops up, it tries to close it by clicking on button with 
+	 * finishButtonText label.
+	 * 
+	 * @param bot
+	 * @param finishButtonText
+	 * @param autoCloseShells
+	 */
+	public void finish(SWTBot bot, String finishButtonText, boolean autoCloseShells){
+		finish(bot, finishButtonText, finishButtonText, autoCloseShells);
+	}
+	
+	/**
+	 * clicks given button on active shell and waits until shell disappears. If autoCloseShells
+	 * is true and some other shell pops up, it tries to close it by clicking on button with 
+	 * popupShellFinishButtonText label.
 	 * 
 	 * @param bot
 	 * @param finishButtonText
 	 * @param autoCloseShells true if you want close all possibly risen shells when closing   
 	 */
-	public void finish(SWTBot bot, String finishButtonText,
+	public void finish(SWTBot bot, String finishButtonText, String popupShellFinishButonText,
 			boolean autoCloseShells) {
 		long timeout = 480 * 1000;
 
@@ -290,8 +304,9 @@ public class SWTOpenExt {
 				log.info("OK, shell '" + activeShellStr + "' closed.");
 			} catch (TimeoutException ex) {
 				if (autoCloseShells) {
+					SWTBotShell popupShell = bot.activeShell();
 					String currentShellStr = bot.activeShell().getText();
-					if (!activeShellStr.equals(currentShellStr)) {
+					if (popupShell != activeShell) {
 						log
 								.error("Unexpected shell '"
 										+ currentShellStr
@@ -301,7 +316,7 @@ public class SWTOpenExt {
 										+ "] appeared, when waiting for shell to close");
 						bot.activeShell().close();
 						log.info("Shell '" + currentShellStr + "' closed, clicking finish button again.");
-						bot.button(finishButtonText).click();
+						bot.button(popupShellFinishButonText).click();
 					}
 				}
 				if (System.currentTimeMillis() - time > timeout) {

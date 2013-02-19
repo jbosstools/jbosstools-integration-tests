@@ -1,5 +1,6 @@
 package org.jboss.tools.ui.bot.ext.view;
 
+import org.eclipse.core.commands.NotEnabledException;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.waits.Conditions;
@@ -69,6 +70,12 @@ public class ErrorLogView extends ViewBase {
 			log.info("Error log content deleted");
 		} catch (WidgetNotFoundException e) {
 			log.warn("Error log is empty or can't be deleted");
+		} catch (RuntimeException ex){
+			if (ex.getCause() instanceof NotEnabledException){
+				log.warn("Error log is empty or can't be deleted");
+			}else{
+				throw ex;
+			}
 		}
 	}
 
