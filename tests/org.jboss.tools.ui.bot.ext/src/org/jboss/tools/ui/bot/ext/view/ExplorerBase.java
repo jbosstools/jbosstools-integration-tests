@@ -15,6 +15,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.ui.bot.ext.SWTEclipseExt;
 import org.jboss.tools.ui.bot.ext.Timing;
+import org.jboss.tools.ui.bot.ext.condition.ShellIsActiveCondition;
 import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 /**
@@ -70,7 +71,10 @@ public abstract class ExplorerBase extends ViewBase {
 		SWTBotTreeItem item = viewBot.tree().expandNode(projectName);
 		ContextMenuHelper.prepareTreeItemForContextMenu(viewBot.tree(), item);
 		new SWTBotMenu(ContextMenuHelper.getContextMenu(viewBot.tree(), IDELabel.Menu.DELETE, false)).click();
-	     SWTBotShell shell = bot.shell("Delete Resources").activate();
+	     String deleteResourcesTitle = "Delete Resources";
+		 bot.waitUntil(new ShellIsActiveCondition(deleteResourcesTitle));
+		 SWTBotShell shell = bot.activeShell();
+		 shell.setFocus();
 	     if (fileSystem) {
 	    	 shell.bot().checkBox().click();
 	     }
