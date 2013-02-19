@@ -14,7 +14,6 @@ package org.jboss.tools.ws.ui.bot.test.rest;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.ui.bot.ext.Timing;
-import org.junit.After;
 import org.junit.Test;
 
 /**
@@ -25,11 +24,6 @@ import org.junit.Test;
  */
 public class PathAnnotationSupportTest extends RESTfulTestBase {
 
-	@After
-	public void cleanWorkspace() {
-		projectExplorer.deleteAllProjects();
-	}
-	
 	@Override
 	public void setup() {
 	
