@@ -13,6 +13,7 @@ package org.jboss.tools.ws.ui.bot.test;
 import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
 import org.jboss.tools.ws.ui.bot.test.annotation.AnnotationPropertiesTest;
 import org.jboss.tools.ws.ui.bot.test.annotation.HTTPMethodAnnotationQuickFixTest;
+import org.jboss.tools.ws.ui.bot.test.facet.JAXRSFacetTest;
 import org.jboss.tools.ws.ui.bot.test.integration.JAXRSToolingIntegrationTest;
 import org.jboss.tools.ws.ui.bot.test.integration.SOAPWSToolingIntegrationTest;
 import org.jboss.tools.ws.ui.bot.test.preferences.JBossWSPreferencesTest;
@@ -48,6 +49,7 @@ import org.junit.runners.Suite.SuiteClasses;
 @RunWith(RequirementAwareSuite.class)
 @SuiteClasses({
 	JBossWSPreferencesTest.class,
+	JAXRSFacetTest.class,
 	SampleSoapWebServiceTest.class,
 	SampleRESTWebServiceTest.class,
 	SimpleSoapWebServiceTest.class,
