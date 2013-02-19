@@ -146,7 +146,7 @@ public class JBossWSPreferencesTest extends WSTestBase {
 		assertThat(jbossWsRuntimeDialog.getRuntimeImplementation(), 
 				Is.is("JBoss Web Services - Stack CXF Runtime Client"));
 		assertThat(jbossWsRuntimeDialog.getRuntimeVersion(), Is.is(
-				"4.0.1.GA"));
+				"4.0.2.GA"));
 		
 	}
 	
