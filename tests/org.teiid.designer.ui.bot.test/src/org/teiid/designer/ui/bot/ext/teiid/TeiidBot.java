@@ -6,17 +6,24 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Properties;
 
+import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.jboss.reddeer.eclipse.datatools.ui.DatabaseProfile;
 import org.jboss.reddeer.eclipse.datatools.ui.DriverDefinition;
 import org.jboss.reddeer.eclipse.datatools.ui.DriverTemplate;
 import org.jboss.reddeer.eclipse.datatools.ui.FlatFileProfile;
 import org.jboss.reddeer.eclipse.datatools.ui.preference.DriverDefinitionPreferencePage;
+import org.jboss.reddeer.eclipse.datatools.ui.wizard.ConnectionProfileSelectPage;
 import org.jboss.reddeer.eclipse.datatools.ui.wizard.ConnectionProfileWizard;
+import org.jboss.reddeer.swt.util.Bot;
 import org.jboss.tools.teiid.reddeer.ModelProject;
-import org.jboss.tools.teiid.reddeer.dialog.SecureStorageDialog;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.view.TeiidView;
-import org.jboss.tools.ui.bot.ext.config.TestConfigurator;
+import org.jboss.tools.teiid.reddeer.wizard.ConnectionProfileXmlPage;
+import org.jboss.tools.teiid.reddeer.wizard.TeiidConnectionProfileWizard;
+import org.jboss.tools.ui.bot.ext.helper.ResourceHelper;
+import org.teiid.designer.ui.bot.ext.teiid.editor.ModelEditor;
+import org.teiid.designer.ui.bot.ext.teiid.preference.DriverDefinitionPreferencePageExt;
+import org.teiid.designer.ui.bot.test.Activator;
 
 /**
  * Bot operations specific for Teiid Designer.
@@ -37,6 +44,18 @@ public class TeiidBot {
 		modelExplorer.open();
 		return modelExplorer.createModelProject(name);
 	}
+	
+	public ModelExplorer modelExplorer() {
+		ModelExplorer modelExplorer = new ModelExplorer();
+		modelExplorer.open();
+		return modelExplorer;
+	}
+
+	public ModelEditor modelEditor(String title) {
+		SWTBotEditor editor = Bot.get().editorByTitle(title);
+		ModelEditor modelEditor = new ModelEditor(editor.getReference(), Bot.get());
+		return modelEditor;
+	}
 
 	public FlatFileProfile createFlatFileProfile(String name, String folder) {
 		FlatFileProfile flatProfile = new FlatFileProfile();
@@ -50,21 +69,28 @@ public class TeiidBot {
 		connWizard.createFlatFileProfile(flatProfile);
 		return flatProfile;
 	}
-
-	public void setSecureStoragePassword() {
-		setSecureStoragePassword(getSecureStoragePassword());
-	}
-
-	public void setSecureStoragePassword(String password) {
-		SecureStorageDialog ssDialog = new SecureStorageDialog();
-		ssDialog.setPasword(password);
-		ssDialog.ok();
-	}
-
-	private static String getSecureStoragePassword() {
-		return TestConfigurator.currentConfig.getSecureStorage().password;
-	}
 	
+	public void createXmlProfile(String name, String path) {
+		String xmlProfile = "XML Local File Source";
+		if(xmlProfile.startsWith("http")) {
+			xmlProfile = "XML File URL Source";
+		}
+		
+		TeiidConnectionProfileWizard wizard = new TeiidConnectionProfileWizard();
+		wizard.open();
+		
+		ConnectionProfileSelectPage selectPage = wizard.getFirstPage();
+		selectPage.setConnectionProfile(xmlProfile);
+		selectPage.setName(name);
+		
+		wizard.next();
+		
+		ConnectionProfileXmlPage xmlPage = (ConnectionProfileXmlPage) wizard.getSecondPage();
+		xmlPage.setPath(toAbsolutePath(path));
+		
+		wizard.finish();
+	}
+
 	public void createDatabaseProfile(String name, String fileName) {
 		Properties props = new Properties();
 		try {
@@ -77,7 +103,7 @@ public class TeiidBot {
 			return;
 		}
 		createDatabaseProfile(name, props);
-		
+
 	}
 
 	public void createDatabaseProfile(String name, Properties props) {
@@ -90,7 +116,7 @@ public class TeiidBot {
 		String driverPath = new File(props.getProperty("db.jdbc_path")).getAbsolutePath();
 		driverDefinition.setDriverLibrary(driverPath);
 
-		DriverDefinitionPreferencePage prefPage = new DriverDefinitionPreferencePage();
+		DriverDefinitionPreferencePage prefPage = new DriverDefinitionPreferencePageExt();
 		prefPage.open();
 		prefPage.addDriverDefinition().create(driverDefinition);
 		prefPage.ok();
@@ -105,9 +131,13 @@ public class TeiidBot {
 		dbProfile.setVendor(props.getProperty("db.vendor"));
 		dbProfile.setPort(props.getProperty("db.port"));
 
-		ConnectionProfileWizard wizard = new ConnectionProfileWizard();
+		TeiidConnectionProfileWizard wizard = new TeiidConnectionProfileWizard();
 		wizard.open();
 		wizard.createDatabaseProfile(dbProfile);
+	}
+	
+	public String toAbsolutePath(String path) {
+		return ResourceHelper.getResourceAbsolutePath(Activator.PLUGIN_ID, path);
 	}
 
 }

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<accounts>
+	<account>
+		<nick>alinnan</nick>
+		<balance>100000</balance>
+	</account>
+	<account>
+		<nick>hernanez</nick>
+		<balance>250000</balance>
+	</account>
+	<account>
+		<nick>hrydelek</nick>
+		<balance>100000</balance>
+	</account>
+	<account>
+		<nick>huey</nick>
+		<balance>120000</balance>
+	</account>
+	<account>
+		<nick>sbrueske</nick>
+		<balance>75000</balance>
+	</account>
+	<account>
+		<nick>wona</nick>
+		<balance>135000</balance>
+	</account>
+	<account>
+		<nick>mterogan</nick>
+		<balance>120000</balance>
+	</account>
+</accounts>
