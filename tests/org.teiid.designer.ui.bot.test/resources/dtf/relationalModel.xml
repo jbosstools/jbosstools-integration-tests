@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<relational-model>
+  <table name="ProductData" nameInSource="dbo.products.ProductData" 
+	 description="Basic stocks or bond" cardinality="100" materialized="FALSE" supportsUpdate="true" system="false">
+    <column name="ProductID" description="Unique ID for this product" datatype="varchar" length="10" nullable="NO_NULLS"/> 
+    <column name="ProductName" datatype="varchar" length="60" nullable="NULLABLE"/> 
+    <primary-key name="PK_ProductID" nameInSource="dbo.products.ProductData.PK_ProductID"> 
+      <column-reference name="ProductID"></column-reference> 
+    </primary-key> 
+  </table> 
+  <table name="ProductSymbols" nameInSource="dbo.products.ProductSymbols" cardinality="100" supportsUpdate="true" system="false"> 
+    <column name="ProductID" description="Unique ID for this product" datatype="varchar" length="10" nullable="NO_NULLS"/> 
+    <column name="SymboldType" datatype="integer" length="10" radix="10" precision="10" nullable="NULLABLE"/> 
+    <foreign-key name="FK_ProductID" uniqueKeyName="PK_ProductID" uniqueKeyTableName="ProductData"> 
+      <column-reference name="ProductID"></column-reference>  
+    </foreign-key> 
+  </table> 
+  <procedure name="getProductInfo" nameInSource="dbo.products.getProductInfo" function="true" > 
+    <parameter name="ID" direction="IN" datatype="decimal" length="10" radix="10" precision="10"  nullable="NO_NULLS"> 
+    </parameter> 
+    <parameter name="productInfo" direction="RETURN" datatype="varchar" length="980" radix="10" precision="1" nullable="NO_NULLS"> 
+    </parameter> 
+    <resultset name="InfoResult"> 
+      <column name="ProductID" datatype="varchar" length="10" nullable="NO_NULLS"/> 
+      <column name="ProductName" datatype="varchar" length="60" nullable="NULLABLE"/> 
+      <column name="ProductType" datatype="varchar" length="15" nullable="NULLABLE"/> 
+    </resultset> 
+  </procedure> 
+  <index name="ProductIDIndex" autoupdate="false" nullable="false" unique="true"> 
+    <column-table-reference name="ProductID" tableName="ProductData" /> 
+  </index> 
+</relational-model>

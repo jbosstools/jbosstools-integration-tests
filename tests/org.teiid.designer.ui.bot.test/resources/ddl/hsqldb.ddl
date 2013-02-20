@@ -1,0 +1,13 @@
+CREATE TABLE USER
+(
+	id INTEGER NOT NULL,
+	name VARCHAR(25) NOT NULL,
+	PRIMARY KEY (id)
+);
+
+CREATE TABLE ADDRESS
+(
+	user_id INTEGER NOT NULL,
+	address VARCHAR(25) NOT NULL,
+	PRIMARY KEY (user_id, address)
+);

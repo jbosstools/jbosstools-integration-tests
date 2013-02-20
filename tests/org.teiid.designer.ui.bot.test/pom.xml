@@ -14,70 +14,63 @@
 
 	<properties>
 	  <systemProperties>${integrationTestsSystemProperties} -Dswtbot.test.properties.file=./swtbot.properties</systemProperties>
-	  <test.class>org.teiid.designer.ui.bot.test.suite.TeiidDesignerAllTests</test.class>
+	  <test.package>org.teiid.designer.ui.bot.test.suite</test.package>
+	  <test.class>AllTests</test.class>
 	  <jdbc.dir>${requirementsDirectory}/lib</jdbc.dir>
 	</properties>
 	
+	<repositories>
+	  <!-- Red Deer Repository -->
+	  <repository>
+	    <id>red_deer</id>
+	    <url>http://p2-reddeer.rhcloud.com/master</url>
+	    <layout>p2</layout>
+	    <snapshots>
+	      <enabled>true</enabled>
+	    </snapshots>
+	    <releases>
+	      <enabled>true</enabled>
+	    </releases>
+	  </repository>
+	  <!-- Teiid Designer Repository -->
+	  <repository>
+	    <id>teiid_designer</id>
+	    <url>http://download.jboss.org/jbosstools/updates/stable/juno/soa-tooling/teiiddesigner/8.0.0.Final</url>
+	    <layout>p2</layout>
+	    <snapshots>
+	      <enabled>true</enabled>
+	    </snapshots>
+	    <releases>
+	      <enabled>true</enabled>
+	    </releases>
+	  </repository>
+	  <!-- Integration Tests Repository -->
+	  <repository>
+	    <id>integration_tests</id>
+	    <url>http://download.jboss.org/jbosstools/updates/nightly/integrationtests/trunk</url>
+	    <layout>p2</layout>
+	    <snapshots>
+	      <enabled>true</enabled>
+	    </snapshots>
+	    <releases>
+	      <enabled>true</enabled>
+	    </releases>
+	  </repository>
+	</repositories>
+
 	<build>
 	  <plugins>
-	    <!-- Install AS and Teiid -->
-	    <plugin>
-	      <groupId>com.googlecode.maven-download-plugin</groupId>
-	      <artifactId>maven-download-plugin</artifactId>
-	      <executions>
-		<execution>
-		  <id>get-as</id>
-		  <phase>pre-integration-test</phase>
-		  <goals>
-		    <goal>wget</goal>
-		  </goals>
-		  <configuration>
-		    <url>http://download.jboss.org/jbossas/7.1/jboss-as-7.1.1.Final/jboss-as-7.1.1.Final.zip</url>
-		    <md5>175c92545454f4e7270821f4b8326c4e</md5>
-		    <unpack>true</unpack>
-		  </configuration>
-		</execution>
-		<execution>
-		  <id>get-teiid</id>
-		  <phase>pre-integration-test</phase>
-		  <goals>
-		    <goal>wget</goal>
-		  </goals>
-		  <configuration>
-		    <url>http://sourceforge.net/projects/teiid/files/teiid/8.2/Final/teiid-8.2.0.Final-jboss-dist.zip</url>
-		    <unpack>true</unpack>
-		    <outputDirectory>${requirementsDirectory}/jboss-as-7.1.1.Final</outputDirectory>
-		  </configuration>
-		</execution>
-	      </executions>
-	    </plugin>
-	    <plugin>
-	      <artifactId>maven-antrun-plugin</artifactId>
-	      <version>${maven.antrun.plugin.version}</version>
-	      <executions>
-		<execution>
-		  <id>prepare-teiid</id>
-		  <phase>pre-integration-test</phase>
-		  <goals>
-		    <goal>run</goal>
-		  </goals>
-		  <configuration>
-		    <tasks>
-		      <copy file="${requirementsDirectory}/jboss-as-7.1.1.Final/standalone/configuration/standalone-teiid.xml" tofile="${requirementsDirectory}/jboss-as-7.1.1.Final/standalone/configuration/standalone.xml" overwrite="true"/>
-		    </tasks>
-		  </configuration>
-		</execution>
-	      </executions>
-	    </plugin>
+	    <!-- Run Teiid Bot Tests -->
 	    <plugin>
 	      <groupId>org.eclipse.tycho</groupId>
 	      <artifactId>tycho-surefire-plugin</artifactId>
 	      <configuration>
+		<appArgLine>-eclipse.password resources/security/password</appArgLine>
 		<useUIThread>false</useUIThread>
 		<surefire.timeout>3600</surefire.timeout>
 		<forkedProcessTimeoutInSeconds>3600</forkedProcessTimeoutInSeconds>
 		<testSuite>org.teiid.designer.ui.bot.test</testSuite>
-		<testClass>${test.class}</testClass>
+		<testClass>${test.package}.${test.class}</testClass>
 		<skip>${swtbot.test.skip}</skip>
 		<dependencies combine.children="append">
 		  <dependency>
@@ -102,12 +95,89 @@
 		  </dependency>
 		</dependencies>
 	      </configuration>
-	    </plugin>	
+	    </plugin>
+	    <plugin>
+	      <groupId>com.googlecode.maven-download-plugin</groupId>
+	      <artifactId>maven-download-plugin</artifactId>
+	      <executions>
+		<execution>
+		  <id>get-hsqldb</id>
+		  <phase>pre-integration-test</phase>
+		  <goals>
+		    <goal>wget</goal>
+		  </goals>
+		  <configuration>
+		    <url>http://sourceforge.net/projects/hsqldb/files/hsqldb/hsqldb_2_2/hsqldb-2.2.9.zip</url>
+		    <md5>c2a47e08e95cdff1dc9bb2f8dd73d553</md5>
+		    <unpack>true</unpack>
+		  </configuration>
+		</execution>
+	      </executions>
+	    </plugin>
 	  </plugins>
 	</build>
 	
-	<!-- JDBC Drivers -->
 	<profiles>
+	  <!-- Install AS and Teiid -->
+	  <profile>
+	    <id>as-teiid</id>
+	    <properties>
+	      <systemProperties>${integrationTestsSystemProperties} -Dswtbot.test.properties.file=./as-teiid.properties</systemProperties>
+	    </properties>
+	    <build>
+	      <plugins>
+		<plugin>
+		  <groupId>com.googlecode.maven-download-plugin</groupId>
+		  <artifactId>maven-download-plugin</artifactId>
+		  <executions>
+		    <execution>
+		      <id>get-as</id>
+		      <phase>pre-integration-test</phase>
+		      <goals>
+			<goal>wget</goal>
+		      </goals>
+		      <configuration>
+			<url>http://download.jboss.org/jbossas/7.1/jboss-as-7.1.1.Final/jboss-as-7.1.1.Final.zip</url>
+			<md5>175c92545454f4e7270821f4b8326c4e</md5>
+			<unpack>true</unpack>
+		      </configuration>
+		    </execution>
+		    <execution>
+		      <id>get-teiid</id>
+		      <phase>pre-integration-test</phase>
+		      <goals>
+			<goal>wget</goal>
+		      </goals>
+		      <configuration>
+			<url>http://sourceforge.net/projects/teiid/files/teiid/8.2/Final/teiid-8.2.0.Final-jboss-dist.zip</url>
+			<unpack>true</unpack>
+			<outputDirectory>${requirementsDirectory}/jboss-as-7.1.1.Final</outputDirectory>
+		      </configuration>
+		    </execution>
+	      </executions>
+		</plugin>
+		<plugin>
+		  <artifactId>maven-antrun-plugin</artifactId>
+		  <version>${maven.antrun.plugin.version}</version>
+		  <executions>
+		    <execution>
+		      <id>prepare-teiid</id>
+		      <phase>pre-integration-test</phase>
+		      <goals>
+			<goal>run</goal>
+		      </goals>
+		      <configuration>
+			<tasks>
+			  <copy file="${requirementsDirectory}/jboss-as-7.1.1.Final/standalone/configuration/standalone-teiid.xml" tofile="${requirementsDirectory}/jboss-as-7.1.1.Final/standalone/configuration/standalone.xml" overwrite="true"/>
+			  <echo file="as-teiid.properties">SERVER=AS,7.1,default,target/requirements/jboss-as-7.1.1.Final</echo>
+			</tasks>
+		      </configuration>
+		    </execution>
+		  </executions>
+		</plugin>
+	      </plugins>
+	    </build>
+	  </profile>
 	  <!-- To download ojdbc6.jar using maven, specify url in -Djdbc.ojdbc6 in command line  --> 
 	  <profile>
 	    <id>profile-ojdbc6</id>
