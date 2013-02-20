@@ -114,11 +114,6 @@ public class VirtualGroupTutorialTest extends TeiidDesignerTestCase {
 
 	@Test
 	public void virtualGroupTutorialTest() {
-		teiidBot.showTeiidView();
-		if (configuredState.getServer().isRunning) {
-			teiidBot.setSecureStoragePassword();
-		}
-		
 		createProject(PROJECT_NAME);
 		
 		teiidBot.createDatabaseProfile(ORACLE_CONNPROFILE_NAME, "resources/db/oracle_parts.properties");
