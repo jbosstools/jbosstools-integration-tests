@@ -48,12 +48,6 @@ public class TopDownWsdlTest extends TeiidDesignerTestCase {
 	
 	@Test
 	public void topDownWsdlTestScript() throws Exception {
-		// Set secure storage password
-		teiidBot.showTeiidView();
-		if (configuredState.getServer().isRunning) {
-			teiidBot.setSecureStoragePassword();
-		}
-		
 		// Create new project
 		createProject(PROJECT_NAME);
 

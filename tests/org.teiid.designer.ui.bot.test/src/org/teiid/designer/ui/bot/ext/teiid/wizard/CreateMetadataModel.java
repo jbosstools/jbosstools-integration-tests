@@ -3,6 +3,7 @@ package org.teiid.designer.ui.bot.ext.teiid.wizard;
 import org.eclipse.swtbot.swt.finder.waits.Conditions;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.jboss.tools.ui.bot.ext.SWTBotFactory;
+import org.jboss.tools.ui.bot.ext.condition.ShellIsActiveCondition;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.ext.wizards.SWTBotNewObjectWizard;
 
@@ -58,6 +59,8 @@ public class CreateMetadataModel {
 		wizard.open("Teiid Metadata Model", "Teiid Designer");
 		fillFirstPage();
 		wizard.finishWithWait();
+		
+		wizard.bot().waitWhile(new ShellIsActiveCondition("New Model Wizard"));
 
 		xsdSchemaSelection();
 	}

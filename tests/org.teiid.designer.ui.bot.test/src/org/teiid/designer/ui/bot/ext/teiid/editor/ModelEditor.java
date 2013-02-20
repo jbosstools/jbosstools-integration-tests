@@ -16,6 +16,7 @@ import org.eclipse.gef.ui.parts.GraphicalEditor;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
+import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditPart;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefFigureCanvas;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefViewer;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
@@ -34,12 +35,13 @@ import org.teiid.designer.ui.bot.ext.teiid.matcher.WaitForFigure;
  * This class represents Model Editor in Teiid Designer perspective.
  * 
  * @author apodhrad
- *
+ * 
  */
 public class ModelEditor extends SWTBotEditor {
 
 	public static final String TRANSFORMATION_DIAGRAM = "Transformation Diagram";
 	public static final String MAPPING_DIAGRAM = "Mapping Diagram";
+	public static final String PACKAGE_DIAGRAM = "Package Diagram";
 	public static final String TABLE_EDITOR = "Table Editor";
 
 	private SWTBotGefViewer viewer;
@@ -51,7 +53,7 @@ public class ModelEditor extends SWTBotEditor {
 	public ModelEditor(IEditorReference editorReference, SWTWorkbenchBot bot) {
 		super(editorReference, bot);
 	}
-	
+
 	private GraphicalEditor getGraphicalEditor(String tabLabel) {
 		final SWTBotCTabItem tabItem = showTab(tabLabel);
 		GraphicalEditor graphicalEditor = syncExec(new Result<GraphicalEditor>() {
@@ -67,7 +69,7 @@ public class ModelEditor extends SWTBotEditor {
 		});
 		return graphicalEditor;
 	}
-	
+
 	public SWTBotGefViewer getGraphicalViewer(String tabLabel) {
 		final GraphicalEditor graphicalEditor = getGraphicalEditor(tabLabel);
 		GraphicalViewer graphicalViewer = syncExec(new Result<GraphicalViewer>() {
@@ -167,7 +169,7 @@ public class ModelEditor extends SWTBotEditor {
 		});
 		bot().styledText();
 	}
-	
+
 	private SWTBotGefFigureCanvas getFigureCanvas() {
 		Matcher matcher = widgetOfType(FigureCanvas.class);
 		return new SWTBotGefFigureCanvas((FigureCanvas) bot.widget(matcher, 0));
@@ -192,5 +194,19 @@ public class ModelEditor extends SWTBotEditor {
 		WaitForFigure waitForFigure = new WaitForFigure(matcher, (FigureCanvas) canvas.widget);
 		bot().waitUntil(waitForFigure);
 		return waitForFigure.get(index);
+	}
+
+	public ModelDiagram getModeDiagram(String label) {
+		return getModelDiagram(label, PACKAGE_DIAGRAM);
+	}
+
+	public ModelDiagram getModelDiagram(String label, String tab) {
+		SWTBotGefViewer viewer = getGraphicalViewer(tab);
+		SWTBotGefEditPart editPart = viewer.getEditPart(label);
+		if (editPart != null) {
+			return new ModelDiagram(viewer.getEditPart(label));
+		} else {
+			return null;
+		}
 	}
 }

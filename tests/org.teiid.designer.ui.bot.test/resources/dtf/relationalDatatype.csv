@@ -1,0 +1,6 @@
+TYPETAG,Name,Description,BaseType,Length,MinLength,MaxLength,MinBound,MinInclusive,MaxBound,MaxInclusive,TotalDigits,Fraction Digits 
+TYPE, Atomic1, "Description for Type1", BType, 5, 1, 10, 1, 2, 1, 2, 5, 2 
+TYPE, Atomic2, "Description for Type2", BType, 5, 1, 10, 1, 2, 1, 2, 5, 2 
+TYPE, Atomic3, "Description for Type3", BType, 5, 1, 10, 1, 2, 1, 2, 5, 2 
+TYPE, Atomic4, "Description for Type4", BType, 5, 1, 10, 1, 2, 1, 2, 5, 2 
+TYPE, Atomic5, "Description for Type5", BType, 5, 1, 10, 1, 2, 1, 2, 5, 2 
