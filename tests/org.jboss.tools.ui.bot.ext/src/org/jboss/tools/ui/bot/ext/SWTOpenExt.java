@@ -314,9 +314,8 @@ public class SWTOpenExt {
 										+ SWTUtilExt
 												.getAllBotWidgetsAsText(bot)
 										+ "] appeared, when waiting for shell to close");
-						bot.activeShell().close();
 						log.info("Shell '" + currentShellStr + "' closed, clicking finish button again.");
-						bot.button(popupShellFinishButonText).click();
+						popupShell.bot().button(popupShellFinishButonText).click();
 					}
 				}
 				if (System.currentTimeMillis() - time > timeout) {

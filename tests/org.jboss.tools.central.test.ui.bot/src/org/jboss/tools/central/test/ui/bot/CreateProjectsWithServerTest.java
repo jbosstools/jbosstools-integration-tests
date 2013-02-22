@@ -25,7 +25,7 @@ import org.junit.Test;
 
 
 //TODO When testing new build try it with type=ServerType.EAP !!!!
-@Require(clearProjects=false,server=@org.jboss.tools.ui.bot.ext.config.Annotations.Server(type=ServerType.ALL))
+@Require(clearProjects=false,server=@org.jboss.tools.ui.bot.ext.config.Annotations.Server(type=ServerType.EAP))
 public class CreateProjectsWithServerTest extends SWTTestExt{
 	
 	@BeforeClass
@@ -59,7 +59,7 @@ public class CreateProjectsWithServerTest extends SWTTestExt{
 				"property does not exist");
 		File mvnLocalRepo = new File(System.getProperty("user.home")+"/.m2/clean-repository");
 		if (mvnLocalRepo.exists()){
-			deleteDirectory(mvnLocalRepo);
+			//deleteDirectory(mvnLocalRepo);
 		}
 		//Now is ~/.m2/clean-repository deleted and settings.xml exists. Next step is to tell eclipse to use our settings.xml
 		open.preferenceOpen(Preference.create("Maven", "User Settings"));
@@ -132,7 +132,7 @@ public class CreateProjectsWithServerTest extends SWTTestExt{
 		bot.activeShell().close();
 	}
 	
-	
+
 	@Test
 	public void createProjectSectionJavaEEWebProjectTest(){
 		checkExample(null, IDELabel.JBossCentralEditor.JAVA_EE_WEB_PROJECT, true, false);
@@ -142,17 +142,6 @@ public class CreateProjectsWithServerTest extends SWTTestExt{
 	@Test
 	public void createProjectSectionJavaEEWebProjectBlankTest(){
 		checkExample(null, IDELabel.JBossCentralEditor.JAVA_EE_WEB_PROJECT, false, true);
-	}
-	
-	@Test
-	public void createProjectSectionJavaEEProjectTest(){
-		checkExample(null, IDELabel.JBossCentralEditor.JAVA_EE_PROJECT, true, false);
-	}
-	
-	@Test
-	public void createProjectSectionJavaEEProjectBlankTest(){
-		checkExample(null, IDELabel.JBossCentralEditor.JAVA_EE_PROJECT, false, true);
-		canBeDeployedTest();
 	}
 	
 	@Test
@@ -286,7 +275,7 @@ public class CreateProjectsWithServerTest extends SWTTestExt{
 		}catch (WidgetNotFoundException ex){
 			//let be...
 		}
-		String serverName = bot.tree().getAllItems()[0].getText().substring(0, bot.tree().getAllItems()[0].getText().indexOf(' '));
+		String serverName = configuredState.getServer().name;
 		servers.findServerByName(servers.bot().tree(), serverName).contextMenu("Add and Remove...").click();
 		try{
 			bot.shell("Add and Remove...").activate();
