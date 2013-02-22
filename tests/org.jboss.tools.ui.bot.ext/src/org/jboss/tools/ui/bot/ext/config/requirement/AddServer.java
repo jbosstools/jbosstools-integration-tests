@@ -14,7 +14,8 @@ import org.jboss.tools.ui.bot.ext.gen.ActionItem.Server.JBossCommunityJBossAS70;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.Server.JBossCommunityJBossAS71;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.Server.JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform43;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.Server.JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform5x;
-import org.jboss.tools.ui.bot.ext.gen.ActionItem.Server.JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform6x;
+import org.jboss.tools.ui.bot.ext.gen.ActionItem.Server.JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform60;
+import org.jboss.tools.ui.bot.ext.gen.ActionItem.Server.JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform61;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.ServerRuntime.JBossCommunityJBoss32Runtime;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.ServerRuntime.JBossCommunityJBoss40Runtime;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.ServerRuntime.JBossCommunityJBoss42Runtime;
@@ -25,7 +26,8 @@ import org.jboss.tools.ui.bot.ext.gen.ActionItem.ServerRuntime.JBossCommunityJBo
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.ServerRuntime.JBossCommunityJBoss71Runtime;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.ServerRuntime.JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform43Runtime;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.ServerRuntime.JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform5xRuntime;
-import org.jboss.tools.ui.bot.ext.gen.ActionItem.ServerRuntime.JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform6xRuntime;
+import org.jboss.tools.ui.bot.ext.gen.ActionItem.ServerRuntime.JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform60Runtime;
+import org.jboss.tools.ui.bot.ext.gen.ActionItem.ServerRuntime.JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform61Runtime;
 import org.jboss.tools.ui.bot.ext.gen.IServer;
 import org.jboss.tools.ui.bot.ext.gen.IServerRuntime;
 /**
@@ -124,9 +126,12 @@ public class AddServer extends RequirementBase {
 				return new ServerInfo(JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform5xRuntime.LABEL,
 						JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform5x.LABEL);
 			}
-			if (version!=null && version.startsWith("6")) {
-				return new ServerInfo(JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform6xRuntime.LABEL,
-						JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform6x.LABEL);
+			if (version!=null && version.equals("6.1")){
+				return new ServerInfo(JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform61Runtime.LABEL,
+						JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform61.LABEL);
+			}else if (version!=null && version.startsWith("6")) {
+				return new ServerInfo(JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform60Runtime.LABEL,
+						JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform60.LABEL);
 			}			
 			
 		}
