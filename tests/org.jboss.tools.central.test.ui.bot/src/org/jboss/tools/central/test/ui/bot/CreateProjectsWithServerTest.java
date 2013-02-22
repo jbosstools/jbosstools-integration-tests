@@ -25,7 +25,7 @@ import org.junit.Test;
 
 
 //TODO When testing new build try it with type=ServerType.EAP !!!!
-@Require(clearProjects=false,server=@org.jboss.tools.ui.bot.ext.config.Annotations.Server(type=ServerType.ALL))
+@Require(clearProjects=false,server=@org.jboss.tools.ui.bot.ext.config.Annotations.Server(type=ServerType.EAP))
 public class CreateProjectsWithServerTest extends SWTTestExt{
 	
 	@BeforeClass
@@ -59,7 +59,7 @@ public class CreateProjectsWithServerTest extends SWTTestExt{
 				"property does not exist");
 		File mvnLocalRepo = new File(System.getProperty("user.home")+"/.m2/clean-repository");
 		if (mvnLocalRepo.exists()){
-			deleteDirectory(mvnLocalRepo);
+			//deleteDirectory(mvnLocalRepo);
 		}
 		//Now is ~/.m2/clean-repository deleted and settings.xml exists. Next step is to tell eclipse to use our settings.xml
 		open.preferenceOpen(Preference.create("Maven", "User Settings"));
@@ -92,7 +92,7 @@ public class CreateProjectsWithServerTest extends SWTTestExt{
 	
 	@After
 	public void teardown(){
-		projectExplorer.deleteAllProjects();
+		packageExplorer.deleteAllProjects();
 		servers.removeAllProjectsFromServer("AS-7.0");
 		bot.closeAllShells();
 	}
@@ -100,10 +100,10 @@ public class CreateProjectsWithServerTest extends SWTTestExt{
 	@Test
 	public void createProjectsSectionTest(){
 		//Dynamic web project
-		bot.hyperlink(IDELabel.JBossCentralEditor.DYNAMIC_WEB_PROJECT).click();
+		/*bot.hyperlink(IDELabel.JBossCentralEditor.DYNAMIC_WEB_PROJECT).click();
 		bot.waitForShell(IDELabel.JBossCentralEditor.NEW_DYNAMIC_WEB_PROJECT);
 		assertTrue("New Dynamic Web Project should have appeared", bot.shell(IDELabel.JBossCentralEditor.NEW_DYNAMIC_WEB_PROJECT).isActive());
-		bot.activeShell().close();
+		bot.activeShell().close();*/
 		//Openshift app
 		
 		bot.hyperlink(IDELabel.JBossCentralEditor.OPENSHIFT_APP).click();
@@ -132,7 +132,7 @@ public class CreateProjectsWithServerTest extends SWTTestExt{
 		bot.activeShell().close();
 	}
 	
-	
+
 	@Test
 	public void createProjectSectionJavaEEWebProjectTest(){
 		checkExample(null, IDELabel.JBossCentralEditor.JAVA_EE_WEB_PROJECT, true, false);
@@ -142,17 +142,6 @@ public class CreateProjectsWithServerTest extends SWTTestExt{
 	@Test
 	public void createProjectSectionJavaEEWebProjectBlankTest(){
 		checkExample(null, IDELabel.JBossCentralEditor.JAVA_EE_WEB_PROJECT, false, true);
-	}
-	
-	@Test
-	public void createProjectSectionJavaEEProjectTest(){
-		checkExample(null, IDELabel.JBossCentralEditor.JAVA_EE_PROJECT, true, false);
-	}
-	
-	@Test
-	public void createProjectSectionJavaEEProjectBlankTest(){
-		checkExample(null, IDELabel.JBossCentralEditor.JAVA_EE_PROJECT, false, true);
-		canBeDeployedTest();
 	}
 	
 	@Test
@@ -173,19 +162,24 @@ public class CreateProjectsWithServerTest extends SWTTestExt{
 		canBeDeployedTest();
 	}
 	
+	@Test
+	public void createProjectSectionGWTProjectTest(){
+		checkExample(null, IDELabel.JBossCentralEditor.GWT_WEB_PROJECT, true, false);
+	}
+	
 	public void projectExamplesSectionTest(String name, String projectName, String readmeFile){
-		SWTBotTwistie jBossQuickstartsTwistie = bot.twistieByLabel("JBoss Developer Framework Quickstarts");
+		SWTBotTwistie jBossQuickstartsTwistie = bot.twistieByLabel("JBoss Quickstarts");
 		int counter = 0;
 		while (!jBossQuickstartsTwistie.isExpanded() && counter<10){
 			jBossQuickstartsTwistie.toggle();
 			counter++;
 		}
-		SWTBotTwistie geteinQuickstartsTwistie = bot.twistieByLabel("GateIn Portal Quickstarts");
+		/*SWTBotTwistie geteinQuickstartsTwistie = bot.twistieByLabel("GateIn Portal Quickstarts");
 		 counter = 0;
 		while (!geteinQuickstartsTwistie.isExpanded() && counter<10){
 			geteinQuickstartsTwistie.toggle();
 			counter++;
-		}
+		}*/
 		SWTFormsBotExt formsBot = SWTBotFactory.getFormsBot();
 		if (readmeFile == null){
 			checkExample(formsBot, name, true, projectName);
@@ -200,41 +194,52 @@ public class CreateProjectsWithServerTest extends SWTTestExt{
 	}
 	
 	@Test
-	public void projectExamplesSectionHelloworldTest(){
-		projectExamplesSectionTest("Hello World", "jboss-as-helloworld");
-	}
-	
-//	JBIDE-13102 @Test
-	public void projectExamplesSectionHelloworldJSFTest(){
-		projectExamplesSectionTest("Hello World JSF", "jboss-as-helloworld-jsf");
-	}
-	
-	@Test
-	public void projectExamplesSectionHelloworldJMSTest(){
-		projectExamplesSectionTest("Hello World JMS", "jboss-as-helloworld-jms");
-	}
-	
-	@Test
-	public void projectExamplesSectionHelloworldErraiTest(){
-		projectExamplesSectionTest("Hello World Errai", "jboss-as-helloworld-errai");
-	}
-	
-	@Test
-	public void projectExamplesSectionHelloworldOsgiTest(){
-		projectExamplesSectionTest("Hello World OSGi", "jboss-as-helloworld-osgi");
-	}
-	
-	@Test 
-	public void projectExamplesSectionNumberguessTest(){
-		projectExamplesSectionTest("Number Guess", "jboss-as-numberguess");
+	public void projectExamplesSectionKitchensinkHTML5Test(){
+		projectExamplesSectionTest("kitchensink-html5-mobile", "jboss-as-kitchensink-html5-mobile");
 	}
 	
 	@Test
 	public void projectExamplesSectionKitchensinkTest(){
-		projectExamplesSectionTest("Kitchensink", "kitchensink");
+		projectExamplesSectionTest("kitchensink", "jboss-as-kitchensink");
 	}
 	
 	@Test
+	public void projectExamplesSectionGreeterTest(){
+		projectExamplesSectionTest("greeter", "jboss-as-greeter");
+	}
+	
+	@Test
+	public void projectExamplesSectionHelloworldTest(){
+		projectExamplesSectionTest("helloworld", "jboss-as-helloworld");
+	}
+	
+	@Test
+	public void projectExamplesSectionKitchensinkRfTest(){
+		projectExamplesSectionTest("kitchensink-rf", "jboss-as-kitchensink-rf");
+	}
+	
+	@Test
+	public void projectExamplesSectionJaxRsClientTest(){
+		projectExamplesSectionTest("jax-rs-client", "jboss-as-jax-rs-client");
+	}
+	
+	@Test
+	public void projectExamplesSectionHelloworldJMSTest(){
+		projectExamplesSectionTest("helloworld-jms", "jboss-as-helloworld-jms");
+	}
+	
+	@Test
+	public void projectExamplesSectionHelloworldErraiTest(){
+		projectExamplesSectionTest("helloworld-errai", "jboss-as-helloworld-errai");
+	}
+	
+	@Test 
+	public void projectExamplesSectionNumberguessTest(){
+		projectExamplesSectionTest("numberguess", "jboss-as-numberguess");
+	}
+	
+
+	/*@Test
 	public void projectExamplesSectionGreeterTest(){
 		projectExamplesSectionTest("Greeter", "jboss-as-greeter");
 	}
@@ -252,12 +257,7 @@ public class CreateProjectsWithServerTest extends SWTTestExt{
 	@Test
 	public void projectExamplesSectionJSF2RF4HelloworldTest(){
 		projectExamplesSectionTest("JSF2+RF4 Hello World Portlet", "jsf2-rf4-hello-world-portlet");
-	}
-	
-	@Test
-	public void projectExamplesSectionHTML5Test(){
-		projectExamplesSectionTest("AeroGear HTML5/Mobile", "jboss-as-kitchensink-html5-mobile");
-	}
+	}*/
 	
 	/**
 	 * Tries to deploy all imported projects
@@ -275,7 +275,7 @@ public class CreateProjectsWithServerTest extends SWTTestExt{
 		}catch (WidgetNotFoundException ex){
 			//let be...
 		}
-		String serverName = bot.tree().getAllItems()[0].getText().substring(0, bot.tree().getAllItems()[0].getText().indexOf(' '));
+		String serverName = configuredState.getServer().name;
 		servers.findServerByName(servers.bot().tree(), serverName).contextMenu("Add and Remove...").click();
 		try{
 			bot.shell("Add and Remove...").activate();
@@ -297,7 +297,7 @@ public class CreateProjectsWithServerTest extends SWTTestExt{
 		bot.waitWhile(new NonSystemJobRunsCondition());
 		SWTBotTreeItem serverTreeItem = servers.findServerByName(servers.bot().tree(), serverName).expand();
 		bot.sleep(TIME_1S);
-		for (SWTBotTreeItem projectName : projectExplorer.show().bot().tree().getAllItems()) {
+		for (SWTBotTreeItem projectName : packageExplorer.show().bot().tree().getAllItems()) {
 			try{
 				log.info("Testing project "+projectName.getText());
 				serverTreeItem.getNode(projectName.getText()+"  [Started, Synchronized]");
@@ -362,7 +362,7 @@ public class CreateProjectsWithServerTest extends SWTTestExt{
 				//everything fine
 			}
 			if (blank){
-				bot.checkBox(0); //Create a blank project checkbox
+				bot.checkBox(0).click(); //Create a blank project checkbox
 			}
 			wizard.next();
 			bot.comboBox().setText(formText.replaceAll("\\s", ""));

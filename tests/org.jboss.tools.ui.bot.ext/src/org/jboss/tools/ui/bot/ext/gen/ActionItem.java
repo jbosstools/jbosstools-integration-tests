@@ -1866,12 +1866,12 @@ public static String getItemString(IActionItem item) {
 			*/
 			public static final String TEXT_DIRECTORY = "Directory:";
 			}
-		public static class JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform6x {
+		public static class JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform60 {
 			/**
-			* represents item : JBoss Enterprise Middleware->JBoss Enterprise Application Platform 6.x
+			* represents item : JBoss Enterprise Middleware->JBoss Enterprise Application Platform 6.0
 			*/
 			public static final IServer LABEL = new IServer() {
-				public String getName() { return "JBoss Enterprise Application Platform 6.x";}
+				public String getName() { return "JBoss Enterprise Application Platform 6.0";}
 				public List<String> getGroupPath() {
 					List<String> l = new Vector<String>();
 					l.add("JBoss Enterprise Middleware");
@@ -1882,7 +1882,24 @@ public static String getItemString(IActionItem item) {
 			* text field labeled 'Directory:'
 			*/
 			public static final String TEXT_DIRECTORY = "Directory:";
-			}		
+			}	
+		public static class JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform61 {
+			/**
+			* represents item : JBoss Enterprise Middleware->JBoss Enterprise Application Platform 6.1
+			*/
+			public static final IServer LABEL = new IServer() {
+				public String getName() { return "JBoss Enterprise Application Platform 6.1 (Tech Preview)";}
+				public List<String> getGroupPath() {
+					List<String> l = new Vector<String>();
+					l.add("JBoss Enterprise Middleware");
+					return l;
+				}
+			};
+			/**
+			* text field labeled 'Directory:'
+			*/
+			public static final String TEXT_DIRECTORY = "Directory:";
+			}	
 		public static class JBossCommunityJBossAS42 {
 			/**
 			* represents item : JBoss Community->JBoss AS 4.2
@@ -10680,12 +10697,12 @@ public static String getItemString(IActionItem item) {
 			*/
 			public static final String TEXT_DIRECTORY = "Directory:";
 			}
-		public static class JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform6xRuntime {
+		public static class JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform60Runtime {
 			/**
-			* represents item : JBoss Enterprise Middleware->JBoss Enterprise Application Platform 6.x Runtime
+			* represents item : JBoss Enterprise Middleware->JBoss Enterprise Application Platform 6.0 Runtime
 			*/
 			public static final IServerRuntime LABEL = new IServerRuntime() {
-				public String getName() { return "JBoss Enterprise Application Platform 6.x Runtime";}
+				public String getName() { return "JBoss Enterprise Application Platform 6.0 Runtime";}
 				public List<String> getGroupPath() {
 					List<String> l = new Vector<String>();
 					l.add("JBoss Enterprise Middleware");
@@ -10696,7 +10713,24 @@ public static String getItemString(IActionItem item) {
 			* text field labeled 'Directory:'
 			*/
 			public static final String TEXT_DIRECTORY = "Directory:";
-			}		
+			}
+		public static class JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform61Runtime {
+			/**
+			* represents item : JBoss Enterprise Middleware->JBoss Enterprise Application Platform 6.1 Runtime
+			*/
+			public static final IServerRuntime LABEL = new IServerRuntime() {
+				public String getName() { return "JBoss Enterprise Application Platform 6.1 Runtime  (Tech Preview)";}
+				public List<String> getGroupPath() {
+					List<String> l = new Vector<String>();
+					l.add("JBoss Enterprise Middleware");
+					return l;
+				}
+			};
+			/**
+			* text field labeled 'Directory:'
+			*/
+			public static final String TEXT_DIRECTORY = "Directory:";
+			}
 		public static class JBossCommunityJBoss42Runtime {
 			/**
 			* represents item : JBoss Community->JBoss 4.2 Runtime

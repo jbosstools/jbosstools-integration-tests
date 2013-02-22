@@ -21,7 +21,7 @@ public class CreateProjectsWithJava7Test extends CreateProjectsWithServerTest{
 			boolean readme, boolean blank, String projectName, String readmeFileName) {
 		
 		super.checkExample(formsBot, formText, readme, blank, projectName, readmeFileName);
-		projectExplorer.show();
+		packageExplorer.show();
 		formText = formText.replaceAll("\\s", "");
 		if (formText.equals(IDELabel.JBossCentralEditor.JAVA_EE_PROJECT.replaceAll("\\s", ""))){
 			setupMultiProject(formText);
@@ -45,8 +45,8 @@ public class CreateProjectsWithJava7Test extends CreateProjectsWithServerTest{
 	}
 	
 	private void setupProject(String formText, boolean compiler, boolean facets){
-		projectExplorer.bot().tree().getTreeItem(formText).select();
-		projectExplorer.bot().tree().getTreeItem(formText).pressShortcut(SWT.ALT, SWT.CR, SWT.LF);
+		packageExplorer.bot().tree().getTreeItem(formText).select();
+		packageExplorer.bot().tree().getTreeItem(formText).pressShortcut(SWT.ALT, SWT.CR, SWT.LF);
 		bot.waitForShell("Properties for " + formText);
 		if (compiler) setupCompiler(formText);
 		if (facets) setupFacets(formText);
