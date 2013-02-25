@@ -15,17 +15,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.swtbot.swt.finder.SWTBot;
-import org.jboss.tools.cdi.bot.test.CDIConstants;
+import org.jboss.tools.ui.bot.ext.types.IDELabel;
 
 public class QuickFixDialogWizard extends Wizard {
 
-	private static final String QUICK_FIX_TITLE = CDIConstants.QUICK_FIX;
 	private List<String> availableFixes = null;
 	private List<String> resources = null;
 	
 	public QuickFixDialogWizard() {		 
 		super(new SWTBot().activeShell().widget);
-		assert (QUICK_FIX_TITLE).equals(getText());	
+		assert (IDELabel.Menu.QUICK_FIX).equals(getText());	
 		availableFixes = new ArrayList<String>();
 		resources = new ArrayList<String>();
 	}

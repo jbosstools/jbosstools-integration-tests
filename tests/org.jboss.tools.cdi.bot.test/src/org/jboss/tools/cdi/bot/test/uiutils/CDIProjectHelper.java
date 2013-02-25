@@ -11,11 +11,11 @@
 
 package org.jboss.tools.cdi.bot.test.uiutils;
 
-import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.tools.cdi.bot.test.CDIConstants;
@@ -64,7 +64,8 @@ public class CDIProjectHelper {
 	 */
 	public void createDynamicWebProjectWithCDIPreset(String projectName) {
 		new NewFileWizardAction().run()
-				.selectTemplate(CDIConstants.WEB_GROUP, CDIConstants.DYNAMIC_WEB_PROJECT).next();
+				.selectTemplate(IDELabel.PreferencesDialog.JBOSS_TOOLS_WEB, 
+						IDELabel.JBossCentralEditor.DYNAMIC_WEB_PROJECT).next();
 		new DynamicWebProjectWizard().setProjectName(projectName).setCDIPreset().finishWithWait();
 	}
 	
@@ -74,7 +75,8 @@ public class CDIProjectHelper {
 	 */
 	public void createDynamicWebProjectWithCDIFacets(String projectName) {
 		new NewFileWizardAction().run()
-				.selectTemplate(CDIConstants.WEB_GROUP, CDIConstants.DYNAMIC_WEB_PROJECT).next();
+				.selectTemplate(IDELabel.PreferencesDialog.JBOSS_TOOLS_WEB, 
+						IDELabel.JBossCentralEditor.DYNAMIC_WEB_PROJECT).next();
 		new DynamicWebProjectWizard().setProjectName(projectName).setCDIFacet().finishWithWait();
 	}
 	
@@ -84,14 +86,9 @@ public class CDIProjectHelper {
 	 * @return 
 	 */
 	public boolean projectExists(String projectName) {
-		SWTBotTree tree = projectExplorer.bot().tree();
-		boolean projectExists = false;
-		try {
-			tree.getTreeItem(projectName);
-			projectExists = true;
-		}catch (WidgetNotFoundException exc) {
-		}
-		return projectExists;
+		PackageExplorer packageExplorer = new PackageExplorer();
+		packageExplorer.open();
+		return packageExplorer.containsProject(projectName);
 	}
 	
 	/**
@@ -152,7 +149,8 @@ public class CDIProjectHelper {
 	 */
 	private void createDynamicWebProject(String projectName) {
 		new NewFileWizardAction().run()
-				.selectTemplate(CDIConstants.WEB_GROUP, CDIConstants.DYNAMIC_WEB_PROJECT).next();
+				.selectTemplate(IDELabel.PreferencesDialog.JBOSS_TOOLS_WEB, 
+						IDELabel.JBossCentralEditor.DYNAMIC_WEB_PROJECT).next();
 		new DynamicWebProjectWizard().setProjectName(projectName).finishWithWait();
 	}
 	
@@ -180,7 +178,8 @@ public class CDIProjectHelper {
 		
 		SWTBotTree tree = projectExplorer.bot().tree();
 		ContextMenuHelper.prepareTreeItemForContextMenu(tree);
-	    new SWTBotMenu(ContextMenuHelper.getContextMenu(tree,CDIConstants.PROPERTIES,false)).click();
+	    new SWTBotMenu(ContextMenuHelper.getContextMenu(
+	    		tree,IDELabel.Menu.PROPERTIES,false)).click();
 	    
 	    bot.tree().expandNode(CDIConstants.CDI_PROPERTIES_SETTINGS).select();	    	    
 		boolean isCDISupported = bot.checkBox().isChecked();

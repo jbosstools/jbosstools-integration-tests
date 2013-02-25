@@ -1,12 +1,11 @@
 package org.jboss.tools.cdi.bot.test.condition;
 
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
-import org.eclipse.swtbot.swt.finder.SWTBot;
-import org.eclipse.swtbot.swt.finder.waits.ICondition;
+import org.jboss.reddeer.swt.condition.WaitCondition;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
 import org.jboss.tools.ui.bot.ext.SWTBotFactory;
 
-public class OpenedEditorHasTitleCondition implements ICondition {
+public class OpenedEditorHasTitleCondition implements WaitCondition {
 
 	private String title;
 	private SWTBotExt bot = SWTBotFactory.getBot();
@@ -15,7 +14,7 @@ public class OpenedEditorHasTitleCondition implements ICondition {
 		this.title = title;
 	}
 	
-	public boolean test() throws Exception {
+	public boolean test() {
 		for (SWTBotEditor editor : bot.editors()) {
 			if (editor.getTitle().equals(title)) {
 				return true;
@@ -24,12 +23,8 @@ public class OpenedEditorHasTitleCondition implements ICondition {
 		return false;
 	}
 
-	public void init(SWTBot bot) {
-		// nothing do here
-	}
-
-	public String getFailureMessage() {
-		return "No opened editor has title: " + title; 
+	public String description() {
+		return "No opened editor has title: " + title;
 	}
 	
 }

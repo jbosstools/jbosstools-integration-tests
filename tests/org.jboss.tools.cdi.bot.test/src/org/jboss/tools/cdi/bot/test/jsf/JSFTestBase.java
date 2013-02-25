@@ -61,8 +61,9 @@ public class JSFTestBase extends CDITestBase {
 	 */
 	protected void createXHTMLPage(String pageName) {
 		XHTMLDialogWizard xhtmlWizard = new NewXHTMLFileWizard().run();
-		xhtmlWizard.setDestination(getProjectName() + "/" + CDIConstants.WEBCONTENT + 
-				"/" + WEB_FOLDER).setName(pageName).finishWithWait();
+		xhtmlWizard.setDestination(getProjectName() + "/" 
+				+ IDELabel.WebProjectsTree.WEB_CONTENT 
+				+ "/" + WEB_FOLDER).setName(pageName).finishWithWait();
 	}
 	
 	/**

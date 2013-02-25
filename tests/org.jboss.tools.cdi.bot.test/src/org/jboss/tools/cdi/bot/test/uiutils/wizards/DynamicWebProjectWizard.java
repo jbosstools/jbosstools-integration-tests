@@ -17,6 +17,7 @@ import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.cdi.bot.test.CDIConstants;
+import org.jboss.tools.ui.bot.ext.types.IDELabel;
 
 public class DynamicWebProjectWizard extends Wizard {
 
@@ -33,7 +34,7 @@ public class DynamicWebProjectWizard extends Wizard {
 	}
 	
 	public DynamicWebProjectWizard setCDIPreset() {
-		bot().comboBoxInGroup(CDIConstants.CONFIGURATION, 0).
+		bot().comboBoxInGroup(IDELabel.WebProjectsTree.CONFIGURATION, 0).
 			setSelection(CDIConstants.CDI_PRESET);			
 		return this;
 	}

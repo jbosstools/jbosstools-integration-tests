@@ -16,6 +16,7 @@ import org.jboss.tools.cdi.bot.test.CDIConstants;
 import org.jboss.tools.cdi.seam3.bot.test.base.Seam3TestBase;
 import org.jboss.tools.cdi.seam3.bot.test.util.SeamLibrary;
 import org.jboss.tools.ui.bot.ext.helper.OpenOnHelper;
+import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -46,18 +47,24 @@ public class ResourceOpenOnTest extends Seam3TestBase {
 				"cdi.seam", className);
 
 		OpenOnHelper.checkOpenOnFileIsOpened(bot, className, 
-				CDIConstants.RESOURCE_ANNOTATION, "Open Resource", CDIConstants.BEANS_XML);
+				CDIConstants.RESOURCE_ANNOTATION, "Open Resource", 
+				IDELabel.WebProjectsTree.BEANS_XML);
 		
-		editResourceUtil.moveFileInExplorerBase(packageExplorer, CDIConstants.BEANS_XML, 
-				projectName + "/" + CDIConstants.WEBCONTENT + "/" + CDIConstants.WEB_INF,
-				projectName + "/" + CDIConstants.WEBCONTENT + "/" + CDIConstants.META_INF);
+		editResourceUtil.moveFileInExplorerBase(
+				packageExplorer, 
+				IDELabel.WebProjectsTree.BEANS_XML, 
+				projectName + "/" + IDELabel.WebProjectsTree.WEB_CONTENT + 
+				"/" + IDELabel.WebProjectsTree.WEB_INF,
+				projectName + "/" + IDELabel.WebProjectsTree.WEB_CONTENT + 
+				"/" + CDIConstants.META_INF);
 		LOGGER.info("bean.xml was moved to META-INF");
 		
 		bot.swtBotEditorExtByTitle(className).show();
 		editResourceUtil.replaceInEditor("WEB", "META");
 		
 		OpenOnHelper.checkOpenOnFileIsOpened(bot, className, 
-				CDIConstants.RESOURCE_ANNOTATION, "Open Resource", CDIConstants.BEANS_XML);
+				CDIConstants.RESOURCE_ANNOTATION, "Open Resource", 
+				IDELabel.WebProjectsTree.BEANS_XML);
 		
 	}
 	

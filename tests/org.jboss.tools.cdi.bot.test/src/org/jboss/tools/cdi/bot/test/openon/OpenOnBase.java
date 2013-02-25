@@ -11,10 +11,10 @@
 
 package org.jboss.tools.cdi.bot.test.openon;
 
-import org.jboss.tools.cdi.bot.test.CDIConstants;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
 import org.jboss.tools.cdi.bot.test.annotations.CDIWizardType;
 import org.jboss.tools.ui.bot.ext.helper.OpenOnHelper;
+import org.jboss.tools.ui.bot.ext.types.IDELabel;
 
 /**
  * test base for OpenOn-like CDI tests
@@ -84,9 +84,9 @@ public class OpenOnBase extends CDITestBase {
 	}
 	
 	private void checkOpenOnBeanXml(String packageName, String className) {
-		bot.editorByTitle(CDIConstants.BEANS_XML).show();
+		bot.editorByTitle(IDELabel.WebProjectsTree.BEANS_XML).show();
 		bot.cTabItem("Source").activate();
-		OpenOnHelper.checkOpenOnFileIsOpened(bot, CDIConstants.BEANS_XML, 
+		OpenOnHelper.checkOpenOnFileIsOpened(bot, IDELabel.WebProjectsTree.BEANS_XML, 
 				packageName + "." + className, className + ".java");
 	}
 

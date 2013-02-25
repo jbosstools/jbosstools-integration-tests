@@ -11,10 +11,10 @@
 package org.jboss.tools.cdi.seam3.bot.test.tests;
 
 import org.eclipse.core.resources.IMarker;
-import org.jboss.tools.cdi.bot.test.CDIConstants;
 import org.jboss.tools.cdi.seam3.bot.test.base.Seam3TestBase;
 import org.jboss.tools.cdi.seam3.bot.test.util.SeamLibrary;
 import org.jboss.tools.ui.bot.ext.helper.MarkerHelper;
+import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -89,13 +89,19 @@ public class SeamConfigValidationTest extends Seam3TestBase {
 	}
 	
 	private static void getAllSeamConfigMarkers() {
-		markers = getMarkersForResource(SEAM_CONFIG, projectName, 
-				CDIConstants.WEBCONTENT, CDIConstants.WEB_INF);
+		markers = getMarkersForResource(
+				SEAM_CONFIG, 
+				projectName, 
+				IDELabel.WebProjectsTree.WEB_CONTENT, 
+				IDELabel.WebProjectsTree.WEB_INF);
 	}
 
 	private static void openSeamConfig() {
-		packageExplorer.openFile(projectName, CDIConstants.WEBCONTENT, 
-				CDIConstants.WEB_INF, SEAM_CONFIG);
+		packageExplorer.openFile(
+				projectName, 
+				IDELabel.WebProjectsTree.WEB_CONTENT, 
+				IDELabel.WebProjectsTree.WEB_INF, 
+				SEAM_CONFIG);
 		bot.cTabItem("Source").activate();
 	}
 	

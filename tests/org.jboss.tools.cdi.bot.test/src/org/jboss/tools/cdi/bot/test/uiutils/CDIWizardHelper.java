@@ -13,6 +13,7 @@ package org.jboss.tools.cdi.bot.test.uiutils;
 
 import java.util.List;
 
+import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.tools.cdi.bot.test.annotations.CDIWizardType;
 import org.jboss.tools.cdi.bot.test.condition.OpenedEditorHasTitleCondition;
 import org.jboss.tools.cdi.bot.test.uiutils.wizards.CDIWizardBaseExt;
@@ -36,7 +37,7 @@ public class CDIWizardHelper {
 	 */
 	public void createAnnotation(String name, String packageName) {
 		wizardExt.annotation(open, util, packageName, name);
-		bot.waitUntil(new OpenedEditorHasTitleCondition(name + ".java"));
+		new WaitUntil(new OpenedEditorHasTitleCondition(name + ".java"));
 		bot.editorByTitle(name + ".java").show();
 	}
 	
@@ -55,7 +56,7 @@ public class CDIWizardHelper {
 		if (name.contains(".xml")) {
 			editorTitle = name;
 		}
-		bot.waitUntil(new OpenedEditorHasTitleCondition(editorTitle));
+		new WaitUntil(new OpenedEditorHasTitleCondition(editorTitle));
 		bot.editorByTitle(editorTitle).show();
 	}
 	

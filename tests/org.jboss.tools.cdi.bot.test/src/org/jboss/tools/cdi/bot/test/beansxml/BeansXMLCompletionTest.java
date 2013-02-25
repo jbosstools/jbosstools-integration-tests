@@ -19,6 +19,7 @@ import org.jboss.tools.cdi.bot.test.CDIConstants;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
 import org.jboss.tools.cdi.bot.test.annotations.CDIWizardType;
 import org.jboss.tools.ui.bot.ext.helper.ContentAssistHelper;
+import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.junit.Test;
 
 /**
@@ -48,7 +49,7 @@ public class BeansXMLCompletionTest extends CDITestBase {
 		beansHelper.createBeansXMLWithEmptyTag(getProjectName());
 		LOGGER.info("Clear beans.xml was created");
 				
-		checkAutoCompletion(3, 0, "<>", CDIConstants.BEANS_XML, BEANS_XML_TAGS);				
+		checkAutoCompletion(3, 0, "<>", IDELabel.WebProjectsTree.BEANS_XML, BEANS_XML_TAGS);				
 	}
 	
 	@Test
@@ -61,7 +62,7 @@ public class BeansXMLCompletionTest extends CDITestBase {
 		LOGGER.info("Beans.xml with interceptors tag was created");
 				
 		List<String> proposalList = editResourceUtil.getProposalList(
-				CDIConstants.BEANS_XML, CDIConstants.CLASS_END_TAG, 0, 0);
+				IDELabel.WebProjectsTree.BEANS_XML, CDIConstants.CLASS_END_TAG, 0, 0);
 		for (String interceptor : INTERCEPTOR_NAMES) {
 			assertTrue(proposalList.contains(interceptor + " - " + getPackageName()));
 		}
@@ -76,7 +77,7 @@ public class BeansXMLCompletionTest extends CDITestBase {
 		beansHelper.createBeansXMLWithDecorator(getProjectName(), getPackageName(), null);
 		LOGGER.info("Beans.xml with decorators tag was created");
 			
-		List<String> proposalList = editResourceUtil.getProposalList(CDIConstants.BEANS_XML, 
+		List<String> proposalList = editResourceUtil.getProposalList(IDELabel.WebProjectsTree.BEANS_XML, 
 				CDIConstants.CLASS_END_TAG, 0, 0);
 		for (String decorator : DECORATORS_NAMES) {
 			assertTrue(proposalList.contains(decorator + " - " + getPackageName()));
@@ -93,7 +94,7 @@ public class BeansXMLCompletionTest extends CDITestBase {
 		beansHelper.createBeansXMLWithStereotype(getProjectName(), getPackageName(), null);
 		LOGGER.info("Beans.xml with stereotype tag was created");
 			
-		List<String> proposalList = editResourceUtil.getProposalList(CDIConstants.BEANS_XML, 
+		List<String> proposalList = editResourceUtil.getProposalList(IDELabel.WebProjectsTree.BEANS_XML, 
 				CDIConstants.STEREOTYPE_END_TAG, 0, 0);
 		for (String stereotype : STEREOTYPES_NAMES) {
 			assertTrue(proposalList.contains(stereotype + " - " + getPackageName()));
@@ -110,7 +111,7 @@ public class BeansXMLCompletionTest extends CDITestBase {
 		beansHelper.createBeansXMLWithAlternative(getProjectName(), getPackageName(), null);
 		LOGGER.info("Beans.xml with alternative tag was created");
 		
-		List<String> proposalList = editResourceUtil.getProposalList(CDIConstants.BEANS_XML, 
+		List<String> proposalList = editResourceUtil.getProposalList(IDELabel.WebProjectsTree.BEANS_XML, 
 				CDIConstants.CLASS_END_TAG, 0, 0);
 		for (String alternative : ALTERNATIVES_NAMES) {
 			assertTrue(proposalList.contains(alternative + " - " + getPackageName()));
@@ -138,7 +139,7 @@ public class BeansXMLCompletionTest extends CDITestBase {
 		LOGGER.info("Clear beans.xml with empty tag was created");
 		
 		List<String> proposalList = editResourceUtil.getProposalList(
-				CDIConstants.BEANS_XML, "<>", 1, 0);
+				IDELabel.WebProjectsTree.BEANS_XML, "<>", 1, 0);
 		List<String> nonSupportedComponents = Arrays.asList(components);
 		
 		for (String nonSupportedComponent : nonSupportedComponents) {

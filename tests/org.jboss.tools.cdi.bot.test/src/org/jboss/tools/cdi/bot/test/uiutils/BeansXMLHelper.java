@@ -16,6 +16,7 @@ import org.jboss.tools.cdi.bot.test.annotations.CDIWizardType;
 import org.jboss.tools.cdi.bot.test.openon.OpenOnTest;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
 import org.jboss.tools.ui.bot.ext.SWTBotFactory;
+import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.ext.view.PackageExplorer;
 
 /**
@@ -187,8 +188,8 @@ public class BeansXMLHelper {
 						CDIConstants.WEB_INF_BEANS_XML_PATH.split("/"))) {
 
 			wizard.createCDIComponent(CDIWizardType.BEANS_XML, "beans.xml",
-					projectName + "/" + CDIConstants.WEBCONTENT + "/"
-							+ CDIConstants.WEB_INF, null);
+					projectName + "/" + IDELabel.WebProjectsTree.WEB_CONTENT + "/"
+							+ IDELabel.WebProjectsTree.WEB_INF, null);
 		}
 	}
 
