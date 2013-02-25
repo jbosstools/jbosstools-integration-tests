@@ -18,7 +18,6 @@ import java.util.List;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
-import org.jboss.tools.cdi.bot.test.CDIConstants;
 import org.jboss.tools.cdi.bot.test.annotations.ProblemsType;
 import org.jboss.tools.cdi.bot.test.annotations.ValidationType;
 import org.jboss.tools.cdi.bot.test.quickfix.validators.IValidationProvider;
@@ -150,7 +149,7 @@ public class QuickFixHelper {
 		ContextMenuHelper.prepareTreeItemForContextMenu(
 				problemsTree, item);
 		new SWTBotMenu(ContextMenuHelper.getContextMenu(problemsTree, 
-				CDIConstants.QUICK_FIX, false)).click();
+				IDELabel.Menu.QUICK_FIX, false)).click();
 	}
 	
 	/**

@@ -15,11 +15,11 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.jboss.tools.cdi.bot.test.CDIConstants;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
 import org.jboss.tools.cdi.bot.test.annotations.CDIWizardType;
 import org.jboss.tools.cdi.bot.test.uiutils.wizards.CDIWizardBaseExt;
 import org.jboss.tools.cdi.bot.test.uiutils.wizards.SearchNamedDialogWizard;
+import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.junit.After;
 import org.junit.Test;
 
@@ -222,8 +222,8 @@ public class NamedComponentsSearchingTest extends CDITestBase {
 	
 	
 	private SearchNamedDialogWizard openSearchNamedDialog() {		
-		bot.menu(CDIConstants.NAVIGATE).menu(CDIConstants.OPEN_CDI_NAMED_BEANS).click();
-		bot.waitForShell(CDIConstants.OPEN_CDI_NAMED_BEANS);
+		bot.menu(IDELabel.Menu.NAVIGATE).menu(IDELabel.Menu.OPEN_CDI_NAMED_BEAN).click();
+		bot.waitForShell(IDELabel.Menu.OPEN_CDI_NAMED_BEAN);
 		return new SearchNamedDialogWizard();
 	}
 

@@ -13,10 +13,10 @@ package org.jboss.tools.cdi.seam3.bot.test.tests;
 import java.util.Arrays;
 import java.util.List;
 
-import org.jboss.tools.cdi.bot.test.CDIConstants;
 import org.jboss.tools.cdi.seam3.bot.test.base.Seam3TestBase;
 import org.jboss.tools.cdi.seam3.bot.test.util.SeamLibrary;
 import org.jboss.tools.ui.bot.ext.helper.ContentAssistHelper;
+import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -236,8 +236,11 @@ public class SeamConfigCodeCompletionTest extends Seam3TestBase {
 	}
 	
 	private static void openSeamConfig() {
-		packageExplorer.openFile(projectName, CDIConstants.WEBCONTENT, 
-				CDIConstants.WEB_INF, SEAM_CONFIG);
+		packageExplorer.openFile(
+				projectName, 
+				IDELabel.WebProjectsTree.WEB_CONTENT, 
+				IDELabel.WebProjectsTree.WEB_INF, 
+				SEAM_CONFIG);
 		bot.cTabItem("Source").activate();
 	}
 	

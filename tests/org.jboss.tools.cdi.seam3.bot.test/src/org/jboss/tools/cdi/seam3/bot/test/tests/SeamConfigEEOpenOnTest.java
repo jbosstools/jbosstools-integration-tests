@@ -10,10 +10,10 @@
  ******************************************************************************/
 package org.jboss.tools.cdi.seam3.bot.test.tests;
 
-import org.jboss.tools.cdi.bot.test.CDIConstants;
 import org.jboss.tools.cdi.seam3.bot.test.base.Seam3TestBase;
 import org.jboss.tools.cdi.seam3.bot.test.util.SeamLibrary;
 import org.jboss.tools.ui.bot.ext.helper.OpenOnHelper;
+import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -35,8 +35,11 @@ public class SeamConfigEEOpenOnTest extends Seam3TestBase {
 
 	@Before
 	public void openSeamConfig() {
-		packageExplorer.openFile(projectName, CDIConstants.WEBCONTENT,
-				CDIConstants.WEB_INF, SEAM_CONFIG).toTextEditor();
+		packageExplorer.openFile(
+				projectName, 
+				IDELabel.WebProjectsTree.WEB_CONTENT,
+				IDELabel.WebProjectsTree.WEB_INF, 
+				SEAM_CONFIG).toTextEditor();
 		bot.cTabItem("Source").activate();
 	}
 

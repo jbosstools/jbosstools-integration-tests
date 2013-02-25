@@ -15,8 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.swtbot.swt.finder.SWTBot;
-import org.jboss.tools.cdi.bot.test.CDIConstants;
 import org.jboss.tools.ui.bot.ext.Timing;
+import org.jboss.tools.ui.bot.ext.types.IDELabel;
 
 public class SearchNamedDialogWizard extends Wizard {
 
@@ -24,7 +24,7 @@ public class SearchNamedDialogWizard extends Wizard {
 	
 	public SearchNamedDialogWizard() {
 		super(new SWTBot().activeShell().widget);
-		assert (CDIConstants.OPEN_CDI_NAMED_BEANS).equals(getText());	
+		assert (IDELabel.Menu.OPEN_CDI_NAMED_BEAN).equals(getText());	
 		matchingItems = new ArrayList<String>();
 	}
 	

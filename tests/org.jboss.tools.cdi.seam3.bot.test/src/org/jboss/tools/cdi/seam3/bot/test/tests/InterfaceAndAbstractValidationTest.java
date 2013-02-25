@@ -11,11 +11,11 @@
 package org.jboss.tools.cdi.seam3.bot.test.tests;
 
 import org.eclipse.core.resources.IMarker;
-import org.jboss.tools.cdi.bot.test.CDIConstants;
 import org.jboss.tools.cdi.seam3.bot.test.base.Seam3TestBase;
 import org.jboss.tools.cdi.seam3.bot.test.util.SeamLibrary;
 import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.helper.MarkerHelper;
+import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.junit.After;
 import org.junit.Test;
 
@@ -40,8 +40,11 @@ public class InterfaceAndAbstractValidationTest extends Seam3TestBase {
 		bot.sleep(Timing.time3S()); // necessary to CDI Validation computation
 		
 		/* get markers for beans.xml */
-		IMarker[] markers = getMarkersForResource(CDIConstants.BEANS_XML, projectName, 
-				CDIConstants.WEBCONTENT, CDIConstants.WEB_INF);
+		IMarker[] markers = getMarkersForResource(
+				IDELabel.WebProjectsTree.BEANS_XML, 
+				projectName, 
+				IDELabel.WebProjectsTree.WEB_CONTENT, 
+				IDELabel.WebProjectsTree.WEB_INF);
 		
 		/* assert expected count */
 		assertExpectedCount(markers.length ,1);
@@ -61,8 +64,11 @@ public class InterfaceAndAbstractValidationTest extends Seam3TestBase {
 		bot.sleep(Timing.time3S()); // necessary to CDI Validation computation
 		
 		/* get markers for beans.xml */
-		IMarker[] markers = getMarkersForResource(CDIConstants.BEANS_XML, projectName, 
-				CDIConstants.WEBCONTENT, CDIConstants.WEB_INF);
+		IMarker[] markers = getMarkersForResource(
+				IDELabel.WebProjectsTree.BEANS_XML, 
+				projectName, 
+				IDELabel.WebProjectsTree.WEB_CONTENT, 
+				IDELabel.WebProjectsTree.WEB_INF);
 		
 		/* assert expected count */
 		assertExpectedCount(markers.length ,1);

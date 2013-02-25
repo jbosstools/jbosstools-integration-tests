@@ -58,17 +58,20 @@ public class LibraryHelper {
 
 		ContextMenuHelper.prepareTreeItemForContextMenu(tree);
 		new SWTBotMenu(ContextMenuHelper.getContextMenu(tree,
-				CDIConstants.REFRESH, false)).click();
+				IDELabel.Menu.REFRESH, false)).click();
 
 		ContextMenuHelper.prepareTreeItemForContextMenu(tree);
 		new SWTBotMenu(ContextMenuHelper.getContextMenu(tree,
-				CDIConstants.PROPERTIES, false)).click();
+				IDELabel.Menu.PROPERTIES, false)).click();
 
 		bot.waitForShell(IDELabel.Shell.PROPERTIES_FOR + " " + projectName);
 		SWTBotShell propertiesShell = bot.activeShell();
 
-		bot.tree().expandNode(CDIConstants.JAVA_BUILD_PATH).select();
-		bot.tabItem(CDIConstants.LIBRARIES).activate();
+		bot.tree().expandNode(
+				IDELabel.JavaBuildPathPropertiesEditor.
+				JAVA_BUILD_PATH_TREE_ITEM_LABEL).select();
+		bot.tabItem(IDELabel.JavaBuildPathPropertiesEditor.
+				LIBRARIES_TAB_LABEL).activate();
 
 		Iterator<String> iter = libraries.iterator();
 		while (iter.hasNext()) {

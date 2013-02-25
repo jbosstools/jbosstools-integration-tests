@@ -88,6 +88,7 @@ public class IDELabel {
     public static final String GUVNOR_SWITCH_TO_VERSION = "Switch to Version...";
     public static final String NAVIGATION = "Navigation";
     public static final String MAXIMIZE_ACTIVE_VIEW_OR_EDITOR = "Maximize Active View or Editor";
+    public static final String OPEN_CDI_NAMED_BEAN = "Open CDI Named Bean";
     public static final String REFRESH = "Refresh";
     public static final String CUT = "Cut";
     public static final String COPY = "Copy";
@@ -387,8 +388,10 @@ public class IDELabel {
 	public static class WebProjectsTree {
 
 		public static final String WEB_CONTENT = "WebContent";
+		public static final String WEB_INF = "WEB-INF";
 		public static final String CONFIGURATION = "Configuration";
 		public static final String WEB_XML = "web.xml";
+		public static final String BEANS_XML = "beans.xml";
 		public static final String CONTEXT_PARAMS = "Context Params";
 		public static final String JAVAX_FACES_CONFIG_FILES = "javax.faces.CONFIG_FILES";
 		public static final String DEFAULT = "default";
