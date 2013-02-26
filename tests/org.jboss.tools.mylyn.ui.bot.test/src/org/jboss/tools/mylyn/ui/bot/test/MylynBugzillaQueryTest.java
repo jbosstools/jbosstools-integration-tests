@@ -84,13 +84,13 @@ public class MylynBugzillaQueryTest {
 		
 		WorkbenchShell ws = new WorkbenchShell();
 
-		List<TreeItem> repoItems = TestSupport.mylynTestSetup1(log, true);
+		List<TreeItem> repoItems = TestSupport.mylynTestSetup1(log);
 		ArrayList<String> repoList = TestSupport.mylynTestSetup2(repoItems, log);
 		
 		// JBDS50_0135 User can connect Bugzilla via Mylyn connectors plugin
 		// JBDS50_0140 Red Hat Bugzilla task repository is available and can be
 		// connected
-		log.info("Step 4 - Validate connection to the Red Hat Bugzilla repo");
+		log.info("Step - Validate connection to the Red Hat Bugzilla repo");
 		int elementIndex = repoList.indexOf(targetRepo);
 		repoItems.get(elementIndex).doubleClick();
 		// Bot.get().sleep(TimePeriod.NORMAL.getSeconds());
@@ -112,7 +112,7 @@ public class MylynBugzillaQueryTest {
 		assertTrue("Repo Connection Properties Invalid", new LabeledText("Bugzilla Repository Settings").getText().contains("Repository is valid"));
 		new PushButton("Cancel").click();
 
-		log.info("Step 5 - Create a anonymous bugzilla query");
+		log.info("Step - Create a anonymous bugzilla query");
 		Bot.get().sleep(TimePeriod.NORMAL.getSeconds());
 
 		elementIndex = repoList.indexOf(targetRepo);
@@ -170,7 +170,7 @@ public class MylynBugzillaQueryTest {
 		new DefaultShell("Show View");
 
 		/* Verify that the expected repos are defined */
-		log.info("Step 6 - Verify that the Mylyn query is Present");
+		log.info("Step - Verify that the Mylyn query is Present");
 		ViewTree FeatureTree = new ViewTree();
 		List<TreeItem> featureItems = FeatureTree.getAllItems();
 		/* Open the Task List view */
