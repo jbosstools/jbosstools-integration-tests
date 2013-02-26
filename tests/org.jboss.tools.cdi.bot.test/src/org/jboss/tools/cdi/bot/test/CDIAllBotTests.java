@@ -14,6 +14,7 @@ import org.jboss.tools.cdi.bot.test.beansxml.BeansXMLCompletionTest;
 import org.jboss.tools.cdi.bot.test.beansxml.BeansXMLValidationTest;
 import org.jboss.tools.cdi.bot.test.decorator.DecoratorFromWebBeanTest;
 import org.jboss.tools.cdi.bot.test.editor.BeansEditorTest;
+import org.jboss.tools.cdi.bot.test.editor.WeldExtensionTest;
 import org.jboss.tools.cdi.bot.test.named.NamedComponentsSearchingTest;
 import org.jboss.tools.cdi.bot.test.named.NamedRefactoringTest;
 import org.jboss.tools.cdi.bot.test.openon.FindObserverForEventTest;
@@ -57,6 +58,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	CDIValidatorTest.class,
 	WizardTest.class,
 	BeansEditorTest.class,
+	WeldExtensionTest.class,
 	NamedRefactoringTest.class,
 	NamedComponentsSearchingTest.class,
 	BeansXMLValidationTest.class,			
