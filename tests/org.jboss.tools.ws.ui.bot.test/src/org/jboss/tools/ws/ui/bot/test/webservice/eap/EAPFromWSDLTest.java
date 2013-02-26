@@ -111,9 +111,14 @@ public class EAPFromWSDLTest extends WebServiceTestBase {
 	protected Slider_Level getLevel() {
 		return Slider_Level.DEPLOY;
 	}
-
+	
 	@Test
-	public void testService() {
+	public void testEAPFromWSDL() {
+		testService();
+		testClient();
+	}
+	
+	private void testService() {
 		topDownWS(TopDownWSTest.class.getResourceAsStream("/resources/jbossws/AreaService.wsdl"),
 				getWsPackage());
 
@@ -148,8 +153,7 @@ public class EAPFromWSDLTest extends WebServiceTestBase {
 		servicePassed = true;
 	}
 
-	@Test
-	public void testClient() {
+	private void testClient() {
 		Assert.assertTrue("service must exist", servicePassed);
 		clientHelper.createClient(deploymentHelper.getWSDLUrl(getWsProjectName(), getWsName()), 
 				getWsClientProjectName(), Slider_Level.DEVELOP, "org.jboss.wsclient");
