@@ -7,6 +7,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
@@ -19,7 +20,12 @@ import org.jboss.reddeer.swt.impl.tree.ViewTree;
 import org.jboss.reddeer.swt.util.Bot;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.reddeer.workbench.view.impl.WorkbenchView;
 import org.apache.log4j.Logger;
+import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.intro.IIntroManager;
+import org.eclipse.ui.intro.IIntroPart;
 
 public class TestSupport {
 	
@@ -47,28 +53,44 @@ public class TestSupport {
 			}
 		}
 		return retItem;
-	} /* method */
-
-	
-	
-	
+	} /* method */	
 	
 	/* Test Setup part 1 */
 	public static List<TreeItem> mylynTestSetup1 (Logger log, boolean checkForUsage) {		
 		/* Close the initial "Usage" Dialog */
 		
-		if (checkForUsage) {
+		/* Added to enable the tests to run from trunk with Kepler - Feb 2013 */
+		Bot.get().sleep(30000l);
+		log.info("Look for and close the welcome tab");	
+		List<SWTBotView> theViews = Bot.get().views();
+		for (SWTBotView theView : theViews) {
+			log.info ("Looking for Welcome - Found view: " + theView.getTitle());
+			if (theView.getTitle().equals("Welcome")) {
+				log.info("Found Welcome view - closing");
+				Bot.get().viewByTitle("Welcome").close();
+			}			
+		}		
+		
+		if (checkForUsage) {	
 		
 			log.info("*** Step 1 - Close the Usage Shell");
 		
 			/* Catch and ignore the exception - needed after the first test in the suite runs */
 			try {
-				new DefaultShell("JBoss Developer Studio Usage");
-				Bot.get().sleep(DELAY);
-				new PushButton("Yes").click();
+				
+				if (org.eclipse.core.runtime.Platform.getProduct().getName().equals("JBoss Developer Studio")) {
+					new DefaultShell("JBoss Developer Studio Usage");
+					Bot.get().sleep(DELAY);
+					new PushButton("Yes").click();
+				}
+				else {
+					new DefaultShell("JBoss Tools Usage");
+					Bot.get().sleep(DELAY);
+					new PushButton("Yes").click();
+				}
 			}
 			catch (Exception E) {
-				E.printStackTrace();
+				log.info(E.getMessage());
 			}
 		}		
 		
