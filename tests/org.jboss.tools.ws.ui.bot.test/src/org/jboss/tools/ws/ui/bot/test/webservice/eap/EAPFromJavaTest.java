@@ -99,9 +99,14 @@ public class EAPFromJavaTest extends WebServiceTestBase {
     protected Slider_Level getLevel() {
         return Slider_Level.DEPLOY;
     }
-
+    
     @Test
-    public void testService() {
+    public void testEAPFromJava() {
+    	testService();
+    	testClient();
+    }
+
+    private void testService() {
         //create a class representing some complex type
         SWTBotEclipseEditor st = projectHelper.createClass(getWsProjectName(), "test", "Person").toTextEditor();
         st.selectRange(0, 0, st.getText().length());
@@ -125,8 +130,7 @@ public class EAPFromJavaTest extends WebServiceTestBase {
         servicePassed = true;
     }
 
-    @Test
-    public void testClient() {
+    private void testClient() {
         Assert.assertTrue("service must exist", servicePassed);
         clientHelper.createClient(deploymentHelper.getWSDLUrl(getWsProjectName(), getWsName()), 
         			getWsClientProjectName(), getLevel(), "");
