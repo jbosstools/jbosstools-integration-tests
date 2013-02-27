@@ -44,7 +44,8 @@ public class MacSpecifics {
 		SWTBotTable table = bot.table();
 		
 		for (int i = 0; i < table.rowCount(); i++){
-			if (javaLocation.equals(table.cell(i, 1))){
+			// JBIDE-13595 fix
+			if (javaLocation.contains(table.cell(i, 1))) { 
 				table.getTableItem(i).check();			
 				return;
 			}
