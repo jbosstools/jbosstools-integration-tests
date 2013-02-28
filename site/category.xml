@@ -40,7 +40,6 @@
 <feature url="features/org.jboss.tools.portlet.test.feature_0.0.0.jar" id="org.jboss.tools.portlet.test.feature" version="0.0.0"><category name="JBoss Tools Core Tests"/></feature>
 <feature url="features/org.jboss.tools.runtime.test.feature_0.0.0.jar" id="org.jboss.tools.runtime.test.feature" version="0.0.0"><category name="JBoss Tools Core Tests"/></feature>
 <feature url="features/org.jboss.tools.seam.test.feature_0.0.0.jar" id="org.jboss.tools.seam.test.feature" version="0.0.0"><category name="JBoss Tools Core Tests"/></feature>
-<feature url="features/org.jboss.tools.struts.test.feature_0.0.0.jar" id="org.jboss.tools.struts.test.feature" version="0.0.0"><category name="JBoss Tools Core Tests"/></feature>
 <feature url="features/org.jboss.tools.test.feature_0.0.0.jar" id="org.jboss.tools.test.feature" version="0.0.0"><category name="JBoss Tools Core Tests"/></feature>
 <feature url="features/org.jboss.tools.usage.test.feature_0.0.0.jar" id="org.jboss.tools.usage.test.feature" version="0.0.0"><category name="JBoss Tools Core Tests"/></feature>
 <feature url="features/org.jboss.tools.vpe.test.feature_0.0.0.jar" id="org.jboss.tools.vpe.test.feature" version="0.0.0"><category name="JBoss Tools Core Tests"/></feature>
@@ -65,7 +64,6 @@
 <feature url="features/org.jboss.tools.portlet.test.feature.source_0.0.0.jar" id="org.jboss.tools.portlet.test.feature.source" version="0.0.0"><category name="JBoss Tools Core Tests"/></feature>
 <feature url="features/org.jboss.tools.runtime.test.feature.source_0.0.0.jar" id="org.jboss.tools.runtime.test.feature.source" version="0.0.0"><category name="JBoss Tools Core Tests"/></feature>
 <feature url="features/org.jboss.tools.seam.test.feature.source_0.0.0.jar" id="org.jboss.tools.seam.test.feature.source" version="0.0.0"><category name="JBoss Tools Core Tests"/></feature>
-<feature url="features/org.jboss.tools.struts.test.feature.source_0.0.0.jar" id="org.jboss.tools.struts.test.feature.source" version="0.0.0"><category name="JBoss Tools Core Tests"/></feature>
 <feature url="features/org.jboss.tools.test.feature.source_0.0.0.jar" id="org.jboss.tools.test.feature.source" version="0.0.0"><category name="JBoss Tools Core Tests"/></feature>
 <feature url="features/org.jboss.tools.usage.test.feature.source_0.0.0.jar" id="org.jboss.tools.usage.test.feature.source" version="0.0.0"><category name="JBoss Tools Core Tests"/></feature>
 <feature url="features/org.jboss.tools.vpe.test.feature.source_0.0.0.jar" id="org.jboss.tools.vpe.test.feature.source" version="0.0.0"><category name="JBoss Tools Core Tests"/></feature>

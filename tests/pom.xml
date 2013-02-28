@@ -40,7 +40,6 @@
 		<!-- <module>org.jboss.tools.portlet.ui.bot.test</module> JBIDE-13324 -->
 		<module>org.jboss.tools.runtime.as.ui.bot.test</module>
 		<module>org.jboss.tools.seam.ui.bot.test</module>
-		<module>org.jboss.tools.struts.ui.bot.test</module>
 		<module>org.jboss.tools.ui.bot.ext</module>
 		<module>org.jboss.tools.ui.bot.ext.test</module>
 		<module>org.jboss.tools.vpe.ui.bot.test</module>
