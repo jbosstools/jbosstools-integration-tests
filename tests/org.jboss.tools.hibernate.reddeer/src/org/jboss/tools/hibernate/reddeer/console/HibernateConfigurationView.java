@@ -1,0 +1,82 @@
+package org.jboss.tools.hibernate.reddeer.console;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.jboss.reddeer.swt.api.Menu;
+import org.jboss.reddeer.swt.api.Tree;
+import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.menu.ShellMenu;
+import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
+import org.jboss.reddeer.swt.impl.text.DefaultText;
+import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.swt.impl.tree.ShellTreeItem;
+import org.jboss.reddeer.swt.impl.tree.ViewTree;
+import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.reddeer.workbench.view.View;
+
+public class HibernateConfigurationView extends View {
+
+	public HibernateConfigurationView() {
+		super("Hibernate Configurations");
+	}
+
+	/**
+	 * Return list of available HibernateConfigurations
+	 * @return
+	 */
+	public List<HibernateConfiguration> getConfigurations() {
+		Tree tree = new ViewTree();
+		List<TreeItem> allItems = tree.getAllItems();
+		List<HibernateConfiguration> configurations = new ArrayList<HibernateConfiguration>();
+		
+		for (TreeItem i : allItems) {
+			HibernateConfiguration c = new HibernateConfiguration();
+			c.setName(i.getText());
+			
+		}
+		return configurations;
+	}
+	
+	/**
+	 * Returns true when Hibernate Configuration View contains given configuration
+	 * @param configuration
+	 * @return
+	 */
+	public boolean contains(String configuration) {	
+		Tree tree = new ViewTree();
+		List<TreeItem> allItems = tree.getAllItems();
+		
+		return allItems.contains(configuration);
+	}
+	
+	/**
+	 * Add/Creates new hibernate configuration
+	 */
+	public void addConfiguration(HibernateConfiguration configuration) {
+		new WorkbenchShell();
+		Menu m = new ShellMenu("File","New","Other...");
+		m.select();
+
+		new WaitUntil(new ShellWithTextIsActive("New"));		
+		new ShellTreeItem("Hibernate", "Hibernate Console Configuration").select();
+		new PushButton("Next >").click();
+		
+		new WaitUntil(new ShellWithTextIsActive(""));
+		
+		new LabeledText("Name:").setText(configuration.getName());
+		
+		new DefaultText("Project:", 0).setText(configuration.getProject());
+		new DefaultCombo("Database connection:", 0).setSelection(configuration.getDatabaseConnection());
+		new LabeledText("Name:").setText(configuration.getName());
+		new DefaultText("Project:", 0).setText(configuration.getProject());
+		new DefaultText("Configuration file:", 0).setText(configuration.getConfigurationFile());
+		
+		new PushButton("Finish").click();
+		new WaitWhile(new ShellWithTextIsActive(""));
+	}	
+}

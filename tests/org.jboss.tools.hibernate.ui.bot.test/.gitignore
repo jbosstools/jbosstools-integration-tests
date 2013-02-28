@@ -1,3 +1,4 @@
 #ignore db and screenshot dir
 db/
 screenshots/
+target/
