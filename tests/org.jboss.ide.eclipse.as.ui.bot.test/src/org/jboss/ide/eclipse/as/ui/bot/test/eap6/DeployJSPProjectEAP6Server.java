@@ -16,6 +16,6 @@ public class DeployJSPProjectEAP6Server extends DeployJSPProjectTemplate {
 
 	@Override
 	protected String getConsoleMessage() {
-		return "Registering web context: /" + PROJECT_NAME;
+		return "Register web context: /" + PROJECT_NAME;
 	}
 }
