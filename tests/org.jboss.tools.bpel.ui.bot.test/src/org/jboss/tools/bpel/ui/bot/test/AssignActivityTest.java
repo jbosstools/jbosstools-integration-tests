@@ -1,114 +1,108 @@
 package org.jboss.tools.bpel.ui.bot.test;
 
-import org.eclipse.swtbot.eclipse.gef.finder.SWTGefBot;
-import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditor;
-import org.jboss.tools.bpel.ui.bot.ext.BpelBot;
+import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.tools.bpel.ui.bot.ext.activity.Sequence;
+import org.jboss.tools.bpel.ui.bot.ext.condition.NoErrorExists;
 import org.jboss.tools.bpel.ui.bot.ext.editor.BpelEditor;
-import org.jboss.tools.bpel.ui.bot.test.util.ResourceHelper;
+import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
-import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
-import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
+import org.jboss.tools.ui.bot.ext.helper.ImportHelper;
+import org.jboss.tools.ui.bot.ext.helper.ResourceHelper;
 import org.junit.After;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
-@Require(clearProjects = true, server = @Server(type = ServerType.ALL, state = ServerState.Running), perspective="BPEL")
-public class AssignActivityTest extends BPELTest {
+@Require(perspective = "BPEL")
+public class AssignActivityTest extends SWTTestExt {
 
-	static String BUNDLE   = "org.jboss.tools.bpel.ui.bot.test";
-	static String ENDPOINT = "http://localhost:8080/AssignTestProcess";
-	static String MESSAGE  = 
-		"<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\">" +
-		"	<soapenv:Header/>" +
-		"	<soapenv:Body>" +
-		"		<payload>Initial value</payload>" +
-		"	</soapenv:Body>" +
-		"</soapenv:Envelope>";
-	
-	private BpelBot bpelBot;
-	
-	public AssignActivityTest() {
-		bpelBot = new BpelBot();
-	}
-	
-	@Before
-	public void setupWorkspace() throws Exception {
-		projectExplorer.deleteAllProjects();
-		// Need to use own importer. ResourceUtils does not import the project correctly when server
-		// is running. TODO: Why?
-		log.info("APLog: test");
-		ResourceHelper.importProject(BUNDLE, "/projects/AssignerProject", "AssignerProject");
-		projectExplorer.selectProject("AssignerProject");
+	@BeforeClass
+	public static void maximizeEclipse() throws Exception {
+		eclipse.maximizeActiveShell();
 	}
 
 	@After
-	public void cleanupWorkspace() throws Exception {
-		projectExplorer.deleteAllProjects();
+	public void saveAndClose() {
+		new BpelEditor().saveAndClose();
 	}
 
-	
-//	/**
-//	 * TODO: assert that the Variable Initializer dialog will not be shown
-//	 * @throws Exception
-//	 */
-//	@Test
-//	public void testLocalVarAssignment() throws Exception {
-//		// Create the process
-//		openFile("AssignerProject", "bpelContent", "AssignTestProcess.bpel");
-//	
-//		SWTGefBot gefBot = new SWTGefBot();
-//		final SWTBotGefEditor editor = gefBot.gefEditor("AssignTestProcess.bpel");
-//		final BotBpelEditor bpel = new BotBpelEditor(editor, gefBot);
-//
-//		bpel.addReceive("receiveSimple", "simpleIn", new String[] {"client", "AssignTestProcess", "simple"}, true);
-//		bpel.addAssignVarToVar("assignToLocal", new String[] {"simpleIn : simpleRequestMessage", "payload : string"}, new String[] {"processVar : string"});
-////		Assert.assertFalse(console.getConsoleText().contains("Failed to execute runnable (java.lang.NullPointerException)"));
-//	}
-	
-	
 	@Test
 	public void testAssignment() throws Exception {
-		// Create the process
-		BpelEditor bpelEditor = bpelBot.openBpelFile("AssignerProject", "AssignTestProcess.bpel");
-		bpelEditor.activatePage("Design");
-		
-		bpelEditor.addReceive("receiveSimple", "simpleIn", new String[] {"client", "AssignTestProcess", "simple"}, true);
-		bpelEditor.addAssignVarToVar("assignSimpleToSimple", 
-				new String[] {"simpleIn : simpleRequestMessage", "payload : string"}, 
-				new String[] {"simpleOut : simpleResponseMessage", "payload : string"}
-		);
-		
-		bpelEditor.addAssignVarToVar("assignSimpleToComplex", 
-				new String[] {"simpleIn : simpleRequestMessage", "payload : string"}, 
-				new String[] {"complexOut : complexResponseMessage", "complexResponse : complexResponse", "result : string"}
-		);
-		
-		bpelEditor.addAssignVarToVar("assignSimpleToModerate", 
-				new String[] {"simpleIn : simpleRequestMessage", "payload : string"}, 
-				new String[] {"moderateOut : moderateResponseMessage", "moderateResponse : complexResponseType", "result : string"}
-		);
-		
-		bpelEditor.addAssignExpressionToExpression("assignExpressionToExpression", "$simpleIn.payload", "$moderateOut.moderateResponse/result");
-		bpelEditor.addAssignFixedToExpression("assignFixedToExpression", "Fixed Expression", "$simpleOut.payload");
-		
-		bpelEditor.addReply("replySimple", "simpleOut", "", new String[] {"client", "AssignTestProcess", "simple"});
-		/*
-		// Publish the process
-		pExplorer.runOnServer("AssignerProject");
-		Thread.sleep(TIME_5S);
-		Assert.assertFalse(console.getConsoleText().contains("DEPLOYMENTS IN ERROR:"));
+		new BPELProject("AssignerProject").openBpelProcess("AssignTestProcess");
 
-		// Test the process
-		String response = SendSoapMessage.sendMessage(ENDPOINT, MESSAGE, "simple");
-		log.info("Got response from process: " + response);
-		Thread.sleep(TIME_5S);
-		Assert.assertFalse(console.getConsoleText().contains("[ASSIGN] Assignment Fault:"));
-		Assert.assertEquals("Fixed Expression", response);
-		*/
+		// variables
+		String[] simpleIn = new String[] { "simpleIn : simpleRequestMessage", "payload : string" };
+		String[] simpleOut = new String[] { "simpleOut : simpleResponseMessage", "payload : string" };
+		String[] complexOut = new String[] { "complexOut : complexResponseMessage",
+				"complexResponse : complexResponse", "result : string" };
+		String[] moderateOut = new String[] { "moderateOut : moderateResponseMessage",
+				"moderateResponse : complexResponseType", "result : string" };
 
+		Sequence main = new Sequence("main");
+		main.addReceive("receiveSimple").pickOperation("simple").checkCreateInstance();
+		main.addAssign("assignSimpleToSimple").addVarToVar(simpleIn, simpleOut);
+		main.addAssign("assignSimpleToComplex").addVarToVar(simpleIn, complexOut);
+		main.addAssign("assignSimpleToModerate").addVarToVar(simpleIn, moderateOut);
+		main.addAssign("assignExpToExp").addExpToExp("$simpleIn.payload",
+				"$moderateOut.moderateResponse/result");
+		main.addAssign("assignFixToExp").addFixToExp("Fixed Expression", "$simpleOut.payload");
+		main.addReply("replySimple").pickOperation("simple");
+
+		new WaitUntil(new NoErrorExists(), TimePeriod.NORMAL);
 	}
-	
 
+	@Test
+	public void testAssignment2() {
+		new BPELProject("DiscriminantProcess").openBpelProcess("Discriminant");
+
+		// variables
+		String[] discriminantA = new String[] { "DiscriminantRequest : DiscriminantRequestMessage",
+				"parameters : DiscriminantRequest", "a : decimal" };
+		String[] discriminantB = new String[] { "DiscriminantRequest : DiscriminantRequestMessage",
+				"parameters : DiscriminantRequest", "b : decimal" };
+		String[] discriminantResult = new String[] {
+				"DiscriminantResponse : DiscriminantResponseMessage",
+				"parameters : DiscriminantResponse", "result : int" };
+		String[] mathA = new String[] { "MathRequest1 : MathRequestMessage",
+				"parameters : MathRequest", "a : decimal" };
+		String[] mathB = new String[] { "MathRequest1 : MathRequestMessage",
+				"parameters : MathRequest", "b : decimal" };
+		String[] mathOperator = new String[] { "MathRequest1 : MathRequestMessage",
+				"parameters : MathRequest", "operator : string" };
+		String[] mathResult = new String[] { "MathResponse1 : MathResponseMessage",
+				"parameters : MathResponse", "result : decimal" };
+
+		Sequence main = new Sequence("Main");
+		main.addReceive("receive").pickOperation("calculateDiscriminant").checkCreateInstance();
+		main.addAssign("assignRequest1").addVarToVar(discriminantA, mathA);
+		main.addAssign("assignRequest2").addVarToVar(discriminantB, mathB);
+		main.addAssign("assignRequest3").addFixToVar("*", mathOperator);
+		main.addValidate("validateInput").addVariable("DiscriminantRequest");
+		main.addInvoke("invokePartner").pickOperation("calculate");
+		main.addAssign("assignRequest4").addVarToVar(mathResult, discriminantResult);
+		main.addReply("reply").pickOperation("calculateDiscriminant");
+
+		new WaitUntil(new NoErrorExists(), TimePeriod.NORMAL);
+	}
+
+	private class BPELProject {
+
+		private String projectName;
+
+		public BPELProject(String projectName) {
+			this.projectName = projectName;
+			String projectLocation = ResourceHelper.getResourceAbsolutePath(Activator.PLUGIN_ID,
+					"resources/projects/" + projectName + ".zip");
+			ImportHelper.importProjectFromZip(projectLocation);
+		}
+
+		public void open(String fileName) {
+			projectExplorer.openFile(projectName, "bpelContent", fileName);
+		}
+
+		public void openBpelProcess(String bpelProcess) {
+			open(bpelProcess + ".bpel");
+		}
+	}
 
 }
