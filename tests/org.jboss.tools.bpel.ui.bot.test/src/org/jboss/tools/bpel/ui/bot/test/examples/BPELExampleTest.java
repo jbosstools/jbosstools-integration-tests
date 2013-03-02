@@ -11,19 +11,13 @@ import javax.xml.soap.SOAPException;
 
 import org.custommonkey.xmlunit.Diff;
 import org.custommonkey.xmlunit.XMLUnit;
-import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.AssertionFailedException;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
-import org.jboss.tools.bpel.ui.bot.test.BPELTest;
-import org.jboss.tools.bpel.ui.bot.test.OdeDeployTest;
-import org.jboss.tools.bpel.ui.bot.test.util.ResourceHelper;
-import org.jboss.tools.bpel.util.SendSoapMessage;
+import org.jboss.reddeer.swt.util.Bot;
+import org.jboss.tools.bpel.ui.bot.ext.util.SoapClient;
+import org.jboss.tools.bpel.ui.bot.test.Activator;
 import org.jboss.tools.ui.bot.ext.ExampleTest;
-import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
-import org.jboss.tools.ui.bot.ext.types.IDELabel;
+import org.jboss.tools.ui.bot.ext.helper.ResourceHelper;
+import org.jboss.tools.ui.bot.ext.view.ServersView;
 import org.xml.sax.SAXException;
 
 /**
@@ -41,13 +35,16 @@ public class BPELExampleTest extends ExampleTest {
 	}
 
 	protected static void deployExamples(String... projectName) {
+		String serverName = configuredState.getServer().name;
+		ServersView serversView = new ServersView();
 		for (int i = 0; i < projectName.length; i++) {
-			BPELTest.deployProject(projectName[0]);
+			serversView.addProjectToServer(projectName[i], serverName);
+			Bot.get().sleep(TIME_5S);
 		}
 	}
 
 	protected static void testDeployment(String projectName) {
-		assertTrue(BPELTest.isProjectDeployed(projectName));
+//		assertTrue(BPELTest.isProjectDeployed(projectName));
 	}
 
 	protected void testResponse(String url, String requestFile, String responseFile) {
@@ -55,7 +52,7 @@ public class BPELExampleTest extends ExampleTest {
 		try {
 			String requestMessage = getMessageFromFile(requestFile);
 			String responseMessage = getMessageFromFile(responseFile);
-			String response = SendSoapMessage.sendMessage(url, requestMessage);
+			String response = SoapClient.sendMessage(url, requestMessage);
 			Diff diff = new Diff(response, responseMessage);
 			assertTrue("Expected response is\n" + responseMessage + "\nbut it was\n" + response,
 					diff.similar());
@@ -77,7 +74,7 @@ public class BPELExampleTest extends ExampleTest {
 	protected void testResponses(String url, String dir) {
 		try {
 			List<String> requests = getRequestMessages(dir);
-			for(String request: requests) {
+			for (String request : requests) {
 				request = dir + "/" + request;
 				String response = request.replace("request", "response");
 				testResponse(url, request, response);
@@ -91,8 +88,8 @@ public class BPELExampleTest extends ExampleTest {
 
 	private static List<String> getRequestMessages(String dir) throws IOException {
 		List<String> messages = new ArrayList<String>();
-		File messages_dir = new File(ResourceHelper.getPath(BPELTest.BUNDLE, MESSAGE_DIR + "/"
-				+ dir));
+		File messages_dir = new File(ResourceHelper.getResourceAbsolutePath(Activator.PLUGIN_ID,
+				MESSAGE_DIR + "/" + dir));
 		String[] file = messages_dir.list();
 		for (int i = 0; i < file.length; i++) {
 			if (file[i].endsWith(".xml") && file[i].contains("request")) {
@@ -105,10 +102,10 @@ public class BPELExampleTest extends ExampleTest {
 	private static String getMessageFromFile(String fileName) throws IOException {
 		return getMessageFromFile(fileName, MESSAGE_DIR);
 	}
-	
+
 	private static String getMessageFromFile(String fileName, String dir) throws IOException {
 		String path = dir + "/" + fileName;
-		String message = readFile(ResourceHelper.getPath(BPELTest.BUNDLE, path));
+		String message = readFile(ResourceHelper.getResourceAbsolutePath(Activator.PLUGIN_ID, path));
 		assertNotNull("Couldn't get message from " + path, message);
 		return message;
 	}
