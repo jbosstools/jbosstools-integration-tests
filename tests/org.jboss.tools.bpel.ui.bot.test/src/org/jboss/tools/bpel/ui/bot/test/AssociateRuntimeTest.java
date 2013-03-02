@@ -1,54 +1,51 @@
 package org.jboss.tools.bpel.ui.bot.test;
 
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTableItem;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
-import org.jboss.tools.ui.bot.ext.SWTEclipseExt;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.swt.api.Table;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.impl.table.DefaultTable;
+import org.jboss.reddeer.swt.impl.tree.ShellTreeItem;
+import org.jboss.tools.bpel.ui.bot.ext.wizard.NewProjectWizard;
+import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
-import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
-import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.junit.Test;
 
+/**
+ * 
+ * @author apodhrad
+ * 
+ */
+@Require(server = @Server(type = ServerType.ALL, state = ServerState.Present), perspective = "BPEL")
+public class AssociateRuntimeTest extends SWTTestExt {
 
-@Require(server = @Server(type = ServerType.ALL, state = ServerState.Present), perspective="BPEL")
-public class AssociateRuntimeTest extends BPELTest {
-	
 	@Test
-	public  void associateRuntimeTest(){
-		createNewProject("testproject");
-		
-		SWTBotView view = bot.viewByTitle("Project Explorer");
-		view.show();
-		view.setFocus();
+	public void testModeling() throws Exception {
+		new NewProjectWizard("runtimeTest").execute();
 
-		SWTBotTreeItem item = SWTEclipseExt.selectTreeLocation(view.bot(), "testproject");
+		new PackageExplorer().getProject("runtimeTest").select();
 
-		ContextMenuHelper.prepareTreeItemForContextMenu(view.bot().tree(), item);
-		ContextMenuHelper.clickContextMenu(view.bot().tree(), "Properties");
-		
-		SWTBotShell shell = bot.shell("Properties for testproject");
-		shell.activate();
-		
-		SWTEclipseExt.selectTreeLocation(shell.bot(), "Targeted Runtimes");
-		
-		String serverName = AssociateRuntimeTest.configuredState.getServer().name;
-		assertTrue(shell.bot().table().containsItem(serverName));
-		
-		SWTBotTableItem cell = shell.bot().table().getTableItem(serverName);
-		cell.select();
-		cell.toggleCheck();
-		
-		assertTrue(cell.isChecked());
-		
-		shell.bot().button(IDELabel.Button.APPLY).click();
-		shell.bot().button(IDELabel.Button.OK).click();
-		
+		new ContextMenu("Properties").select();
+
+		new ShellTreeItem("Targeted Runtimes").select();
+
+		String serverName = configuredState.getServer().name;
+		assertTrue(containsItem(new DefaultTable(), serverName));
+
+		new PushButton("OK").click();
 	}
-	
-	
+
+	private static boolean containsItem(Table table, String item) {
+		int count = table.rowCount();
+		for (int i = 0; i < count; i++) {
+			if (table.cell(i, 0).equals(item)) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 }

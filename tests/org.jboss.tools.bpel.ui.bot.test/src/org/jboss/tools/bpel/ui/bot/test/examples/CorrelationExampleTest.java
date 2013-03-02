@@ -1,6 +1,5 @@
 package org.jboss.tools.bpel.ui.bot.test.examples;
 
-import org.jboss.tools.bpel.ui.bot.test.BPELTest;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
@@ -30,7 +29,7 @@ public class CorrelationExampleTest extends BPELExampleTest {
 	@Override
 	protected void executeExample() {
 		deployExamples(PROJECT_NAME);
-		assertTrue(BPELTest.isProjectDeployed(PROJECT_NAME));
+		testDeployment(PROJECT_NAME);
 
 		testResponses(WSDL_URL, PROJECT_NAME);
 
