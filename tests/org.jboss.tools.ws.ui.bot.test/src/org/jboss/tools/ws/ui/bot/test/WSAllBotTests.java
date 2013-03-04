@@ -54,7 +54,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	SampleRESTWebServiceTest.class,
 	SimpleSoapWebServiceTest.class,
 	SimpleRESTWebServiceTest.class,
-//	AnnotationPropertiesTest.class, // not implemented yet
+	AnnotationPropertiesTest.class,
 	RESTfulExplorerTest.class, 
 	PathAnnotationSupportTest.class, 
 	QueryAnnotationSupportTest.class,

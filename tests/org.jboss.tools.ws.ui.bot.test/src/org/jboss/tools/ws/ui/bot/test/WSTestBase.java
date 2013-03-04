@@ -14,6 +14,7 @@ package org.jboss.tools.ws.ui.bot.test;
 import java.text.MessageFormat;
 import java.util.logging.Logger;
 
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
@@ -86,7 +87,9 @@ public class WSTestBase extends SWTTestExt {
 	}
 
 	protected boolean projectExists(String name) {
-		return projectExplorer.existsResource(name);
+		PackageExplorer packageExplorer = new PackageExplorer();
+		packageExplorer.open();
+		return packageExplorer.containsProject(name);
 	}
 
 	protected Slider_Level getLevel() {
@@ -129,6 +132,7 @@ public class WSTestBase extends SWTTestExt {
 	protected static void importWSTestProject(String projectName) {
 		String location = "/resources/projects/" + projectName;
 		importWSTestProject(location, projectName);
+		eclipse.cleanAllProjects();
 	}
 
 	protected static void importWSTestProject(String projectLocation, String dir) {

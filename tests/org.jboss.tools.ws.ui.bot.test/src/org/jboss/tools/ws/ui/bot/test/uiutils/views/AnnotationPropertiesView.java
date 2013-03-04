@@ -42,14 +42,28 @@ public class AnnotationPropertiesView extends ViewBase {
 
 		return annotations;
 	}
-
-	public List<SWTBotTreeItem> getAnnotationValues(SWTBotTreeItem annotation) {
-
-		List<SWTBotTreeItem> annotValues = new ArrayList<SWTBotTreeItem>();
-		for (SWTBotTreeItem ti : annotValues) {
-			annotValues.add(ti);
+	
+	public SWTBotTreeItem getAnnotation(String annotationName) {
+		
+		for (SWTBotTreeItem annotation : getAllAnnotations()) {
+			if (annotation.getText().equals(annotationName)) {
+				return annotation;
+			}
 		}
-		return annotValues;
+		return null;
+	}
+
+	public List<SWTBotTreeItem> getAnnotationValues(
+			SWTBotTreeItem annotation) {
+
+		List<SWTBotTreeItem> annotationValues = new ArrayList<SWTBotTreeItem>();
+		
+		annotation.expand();
+		
+		for (SWTBotTreeItem ti : annotation.getItems()) {
+			annotationValues.add(ti);
+		}
+		return annotationValues;
 
 	}
 
@@ -70,27 +84,36 @@ public class AnnotationPropertiesView extends ViewBase {
 		return activeAnnotations;
 
 	}
-
+	
+	
 	//!!!not working
 	public SWTBotTreeItem activateAnnotation(SWTBotTreeItem annotation) {
-		annotation.check();
-		return annotation;
+		return changeStateOfAnnotation(annotation);
 	}
 
 	//!!!not working
 	public SWTBotTreeItem deactivateAnnotation(SWTBotTreeItem annotation) {
-		annotation.uncheck();
-		return annotation;
+		return changeStateOfAnnotation(annotation);
 	}
 
 	public SWTBotTreeItem changeAnnotationParamValue(SWTBotTreeItem annotation,
 			String param, String newValue) {
 		for (SWTBotTreeItem parameter : getAnnotationValues(annotation)) {
-			if (parameter.equals(param)) {
-				// change value of parameter no newValue
+			if (parameter.getText().equals(param)) {
+				annotation.getNode(param).select();
+				parameter.click(1);
+				show().bot().text().setText(newValue);
+				parameter.click(0);
 				break;
 			}
 		}
+		return annotation;
+	}
+	
+	private SWTBotTreeItem changeStateOfAnnotation(SWTBotTreeItem annotation) {
+		
+		show().bot().tree().select(annotation.getText());
+		annotation.click(1);
 		return annotation;
 	}
 
