@@ -11,39 +11,43 @@
 
 package org.jboss.tools.ws.ui.bot.test.annotation;
 
+import static org.junit.Assert.assertThat;
+
+import java.util.List;
+
+import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.hamcrest.core.Is;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
+import org.jboss.tools.ws.ui.bot.test.uiutils.views.AnnotationPropertiesView;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
+ * Checks behaviour of AnnotationProperties view and its 
+ * impact on JAX-RS explorer 
  * 
  * @author jjankovi
  *
  */
 public class AnnotationPropertiesTest extends RESTfulTestBase {
 	
+	private PackageExplorer packageExplorerRD = 
+			new PackageExplorer();
+	private AnnotationPropertiesView annotationsView = 
+			new AnnotationPropertiesView();
 	
 	@Override
 	public String getWsProjectName() {
-		return "AnnotationViewTest";
+		return "restAdvanced";
 	}
 	
 	@Override
-	public String getWsPackage() {
-		return "org.ws.annotation.properties.test";
-	}
-
-	@Override
-	public String getWsName() {
-		return "WSService";
-	}
-	
-	@Override
-	public void setup() {		
+	public void setup() {
 		
-	}
-
-	@Override
-	public void cleanup() {
+		importRestWSProject(getWsProjectName());
+		openClass(getWsProjectName(), getWsPackage(), getWsName() + ".java");
 		
 	}
 	
@@ -51,6 +55,7 @@ public class AnnotationPropertiesTest extends RESTfulTestBase {
 	 * 1 there are no incorrectly checked annotations
 	 * 2 there are no incorrectly unchecked annotations 
 	 */
+	@Ignore // not implemented yet
 	@Test
 	public void testAbsenceOfAnnotation() {
 		
@@ -61,6 +66,7 @@ public class AnnotationPropertiesTest extends RESTfulTestBase {
 	 * 2 there are correctly unchecked annotations
 	 */
 	@Test
+	@Ignore // not implemented yet
 	public void testPresenceOfAnnotation() {
 		
 	}
@@ -72,6 +78,25 @@ public class AnnotationPropertiesTest extends RESTfulTestBase {
 	@Test
 	public void testAnnotationParamValues() {
 		
+		/** check params of annotation is synchronized **/
+		navigateInActiveEditor(13, 0);
+		
+		annotationsView.show();
+		
+		SWTBotTreeItem pathAnnotation = annotationsView.
+				getAnnotation("javax.ws.rs.Path");
+		List<SWTBotTreeItem> values = annotationsView.
+				getAnnotationValues(pathAnnotation);
+		
+		assertThat(values.size(), Is.is(1));
+		String parameter = values.get(0).getText();
+		assertThat(values.get(0).cell(1), Is.is("\"/rest\""));
+		
+		/** edit parameter values and check if it is still synchronized **/
+		annotationsView.changeAnnotationParamValue(
+				pathAnnotation, parameter, "/edit");
+		activeEditorContains("@Path(\"/edit\")");
+		
 	}
 	
 	/**
@@ -79,6 +104,14 @@ public class AnnotationPropertiesTest extends RESTfulTestBase {
 	 */
 	@Test
 	public void testAnnotationActivating() {
+		
+		navigateInActiveEditor(13, 0);
+		
+		annotationsView.show();
+		annotationsView.activateAnnotation(
+				annotationsView.getAnnotation("javax.ws.rs.Encoded"));
+		
+		activeEditorContains("@Encoded");
 		
 	}
 	
@@ -88,6 +121,84 @@ public class AnnotationPropertiesTest extends RESTfulTestBase {
 	@Test
 	public void testAnnotationDeactivating() {
 		
+		navigateInActiveEditor(13, 0);
+		
+		annotationsView.show();
+		annotationsView.deactivateAnnotation(
+				annotationsView.getAnnotation("javax.ws.rs.Path"));
+		
+		activeEditorDoesntContain("@Path(\"/rest\")");
+		
+	}
+	
+	/**
+	 * 1 editing annotation(ant its values) is reflected on JAX-RS explorer
+	 */
+	@Test
+	public void testJaxRSSupport() {
+		
+		/** edit JAX-RS annotation value **/
+		navigateInActiveEditor(13, 0);
+		
+		annotationsView.show();
+		
+		SWTBotTreeItem pathAnnotation = annotationsView.
+				getAnnotation("javax.ws.rs.Path");
+		
+		annotationsView.changeAnnotationParamValue(
+				pathAnnotation, 
+				annotationsView.getAnnotationValues(pathAnnotation).get(0).getText(), 
+				"/edit");
+		
+		for (SWTBotTreeItem service : restfulServicesForProject(getWsProjectName())) {
+			String path = restfulWizard.getPathForRestFulService(service);
+			assertDoesNotContain("rest", path);
+			assertContains("edit", path);	
+		}
+		
+		/** delelete JAX-RS annotation **/
+		navigateInActiveEditor(16, 0);
+		
+		annotationsView.show();
+		
+		SWTBotTreeItem getAnnotation = annotationsView.
+				getAnnotation("javax.ws.rs.GET");
+		
+		annotationsView.deactivateAnnotation(getAnnotation);
+		
+		assertThat(restfulServicesForProject(getWsProjectName()).length, Is.is(3));
+		
+		
+	}
+	
+	private void openClass(String projectName, String packageName,
+			String classFullName) {
+
+		packageExplorerRD.open();
+		packageExplorerRD.getProject(projectName)
+				.getProjectItem("src", packageName, classFullName)
+				.open();
+
+	}
+	
+	private void navigateInActiveEditor(int line, int column) {
+		SWTBotEclipseEditor editor = bot.activeEditor().toTextEditor();
+		editor.navigateTo(line, column);
+	}
+	
+	private void activeEditorDoesntContain(String value) {
+		activeValueIsContainedInActiveEditor(value, false);
+	}
+	
+	private void activeEditorContains(String value) {
+		activeValueIsContainedInActiveEditor(value, true);
+	}
+	
+	private void activeValueIsContainedInActiveEditor(
+			String value, boolean shouldContain) {
+		SWTBotEclipseEditor editor = bot.activeEditor().toTextEditor();
+		assertThat(editor.toTextEditor().getText().contains(value), 
+				Is.is(shouldContain));
 	}
 	
 }

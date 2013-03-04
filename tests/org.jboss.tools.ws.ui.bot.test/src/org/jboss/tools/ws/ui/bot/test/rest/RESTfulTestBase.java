@@ -67,8 +67,6 @@ public class RESTfulTestBase extends WSTestBase {
 		// importing project without targeted runtime set
 		importWSTestProject(projectName);
 
-		eclipse.cleanAllProjects();
-
 		// workaround for EAP 5.1
 		if (configuredState.getServer().type.equals("EAP")
 				&& configuredState.getServer().version.equals("5.1")) {
