@@ -70,7 +70,7 @@
 <feature url="features/org.jboss.tools.ws.test.feature.source_0.0.0.jar" id="org.jboss.tools.ws.test.feature.source" version="0.0.0"><category name="JBoss Tools Core Tests"/></feature>
 
 <feature url="features/org.jboss.tools.bpel.test.feature_0.0.0.jar" id="org.jboss.tools.bpel.test.feature" version="0.0.0"><category name="SOA/BRMS/EDS Integration Stack Tests"/></feature>
-<feature url="features/org.jboss.tools.esb.test.feature_0.0.0.jar" id="org.jboss.tools.esb.test.feature" version="0.0.0"><category name="SOA/BRMS/EDS Integration Stack Tests"/></feature>
+<!-- JBIDE-13709 <feature url="features/org.jboss.tools.esb.test.feature_0.0.0.jar" id="org.jboss.tools.esb.test.feature" version="0.0.0"><category name="SOA/BRMS/EDS Integration Stack Tests"/></feature> -->
 <feature url="features/org.jboss.tools.jbpm3.test.feature_0.0.0.jar" id="org.jboss.tools.jbpm3.test.feature" version="0.0.0"><category name="SOA/BRMS/EDS Integration Stack Tests"/></feature>
 <feature url="features/org.jboss.tools.modeshape.rest.test.feature_0.0.0.jar" id="org.jboss.tools.modeshape.rest.test.feature" version="0.0.0"><category name="SOA/BRMS/EDS Integration Stack Tests"/></feature>
 <feature url="features/org.jboss.tools.modeshape.jcr.test.feature_0.0.0.jar" id="org.jboss.tools.modeshape.jcr.test.feature" version="0.0.0"><category name="SOA/BRMS/EDS Integration Stack Tests"/></feature>
