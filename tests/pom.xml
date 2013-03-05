@@ -53,7 +53,8 @@
 			<modules>
 				<module>org.jboss.tools.jbpm.ui.bot.test</module>
 				<module>org.jboss.tools.bpel.ui.bot.test</module>
-				<module>org.jboss.tools.esb.ui.bot.test</module>
+<!-- JBIDE-13709				<module>org.jboss.tools.esb.ui.bot.test</module>
+-->
 				<module>org.jboss.tools.teiid.reddeer</module>
 				<module>org.teiid.designer.ui.bot.test</module>
 				<module>org.jboss.tools.modeshape.rest.ui.bot.test</module>
