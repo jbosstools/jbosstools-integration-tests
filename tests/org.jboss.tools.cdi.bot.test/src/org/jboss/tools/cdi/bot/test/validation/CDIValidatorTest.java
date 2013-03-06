@@ -12,6 +12,7 @@ import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
 import org.jboss.tools.cdi.reddeer.cdi.ui.CDIValidatorPreferencePage;
+import org.junit.AfterClass;
 import org.junit.Test;
 
 /**
@@ -23,7 +24,7 @@ import org.junit.Test;
  */
 public class CDIValidatorTest extends CDITestBase {
 	
-	private final CDIValidatorPreferencePage 
+	private final static CDIValidatorPreferencePage 
 		cdiValidatorPage = new CDIValidatorPreferencePage();
 	private final ProblemsView problemsView = new ProblemsView();
 	
@@ -31,6 +32,11 @@ public class CDIValidatorTest extends CDITestBase {
 	@Override
 	public String getProjectName() {
 		return "CDIAssignableDialogTest";
+	}
+	
+	@AfterClass
+	public static void enableValidator() {
+		modifyCDIValidatorState(true);
 	}
 	
 	@Test
@@ -61,7 +67,7 @@ public class CDIValidatorTest extends CDITestBase {
 		
 	}
 	
-	private void modifyCDIValidatorState(boolean enable) {
+	private static void modifyCDIValidatorState(boolean enable) {
 		cdiValidatorPage.open();
 		if (enable) {
 			cdiValidatorPage.enableValidation();
