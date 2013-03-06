@@ -14,6 +14,7 @@ package org.jboss.tools.cdi.seam3.bot.test.tests;
 import org.jboss.tools.cdi.bot.test.CDIConstants;
 import org.jboss.tools.cdi.seam3.bot.test.base.SolderAnnotationTestBase;
 import org.jboss.tools.cdi.seam3.bot.test.util.SeamLibrary;
+import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.helper.OpenOnHelper;
 import org.junit.After;
 import org.junit.Test;
@@ -136,6 +137,8 @@ public class VetoAnnotationTest extends SolderAnnotationTestBase {
 				getPackageName(), vetoBean + ".java").toTextEditor();
 		editResourceUtil.replaceInEditor("@Veto", "");
 		editResourceUtil.replaceInEditor("import org.jboss.solder.core.Veto;", "");
+		
+		bot.sleep(Timing.time2S()); // wait a while for CDI validator to validate observer  
 		
 		OpenOnHelper.checkOpenOnFileIsOpened(bot, APPLICATION_CLASS, eventAttribute,
 				CDIConstants.OPEN_CDI_OBSERVER_METHOD, vetoBean + ".java");
