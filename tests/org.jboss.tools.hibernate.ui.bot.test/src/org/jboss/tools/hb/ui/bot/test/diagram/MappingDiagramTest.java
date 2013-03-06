@@ -5,6 +5,8 @@ import java.util.regex.Pattern;
 
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.jboss.reddeer.swt.api.Menu;
+import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.tools.hb.ui.bot.common.Tree;
 import org.jboss.tools.hb.ui.bot.test.HibernateBaseTest;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
@@ -35,9 +37,13 @@ public class MappingDiagramTest extends HibernateBaseTest {
 	}
 
 	private void openDiagram() {
+		
+		
 		SWTBotView hcv = open.viewOpen(ActionItem.View.HibernateHibernateConfigurations.LABEL);
 		SWTBotTreeItem item = Tree.select(hcv.bot(), hc, "Configuration");
-		item.contextMenu("Mapping Diagram").click();
+		Menu m = new ContextMenu("Mapping Diagram");
+		m.select();
+		
 		String title = bot.activeEditor().getTitle();
 		
 		Pattern pattern = Pattern.compile(hc + ".*");
