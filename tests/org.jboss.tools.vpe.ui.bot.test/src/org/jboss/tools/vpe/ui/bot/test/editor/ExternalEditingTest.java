@@ -45,12 +45,12 @@ public class ExternalEditingTest extends VPEEditorTestCase {
     bot.closeAllEditors();
 	}
 	/**
-	 * Checks External Editing of web page when accepting External changes
-	 */
-	public void testExternalChanges(){
-	  final String extChangesPageName = "ExternalEditingTest.jsp";
-    createJspPage(extChangesPageName);
-    jspEditor = botExt.editorByTitle(extChangesPageName).toTextEditor();
+   * Checks External Editing of web page when External changes are accepted
+   */
+  public void testAcceptExternalChanges(){
+    final String acceptExtChangesPageName = "ExternalEditingTestAccept.jsp";
+    createJspPage(acceptExtChangesPageName);
+    jspEditor = botExt.editorByTitle(acceptExtChangesPageName).toTextEditor();
     final String originalPageContent = "<%@ taglib uri=\"http://java.sun.com/jsf/html\" prefix=\"h\" %>\n" +
         "<html>\n" +
         "  <body>\n" +
@@ -66,26 +66,57 @@ public class ExternalEditingTest extends VPEEditorTestCase {
         "  </body>\n" +
         "</html>";
     try {
-      FileHelper.modifyTextFile(getPageLocation(extChangesPageName),
+      FileHelper.modifyTextFile(getPageLocation(acceptExtChangesPageName),
           changedPageContent);
     } catch (IOException ioe) {
       throw new RuntimeException(ioe);
     }
+    new TypeKeyCodesThread(new int[] {KeyEvent.VK_ENTER})
+        .start();
     jspEditor.setFocus();
-    boolean isOk = false;
-    try{
-      bot.waitUntil(new EclipseEditorText(jspEditor, changedPageContent, true), Timing.time5S());
-      isOk = true;
-    } catch (TimeoutException te){
-      // do nothing      
-    }
-    jspEditor.save();
     String sourceText = jspEditor.getText();
     assertTrue("VPE Source pane has to contain text\n" + changedPageContent +
         "'\nbut it contains\n" +
         sourceText,
-      isOk);
-	}
+      sourceText.equals(changedPageContent));
+  }
+  /**
+   * Checks External Editing of web page when External changes are denied
+   */
+  public void testDenyExternalChanges(){
+    final String denyExtChangesPageName = "ExternalEditingTestDeny.jsp";
+    createJspPage(denyExtChangesPageName);
+    jspEditor = botExt.editorByTitle(denyExtChangesPageName).toTextEditor();
+    final String originalPageContent = "<%@ taglib uri=\"http://java.sun.com/jsf/html\" prefix=\"h\" %>\n" +
+        "<html>\n" +
+        "  <body>\n" +
+        "  </body>\n" +
+        "</html>";
+    jspEditor.setText(originalPageContent);
+    jspEditor.save();
+    // modify web page externally   
+    final String changedPageContent = "<%@ taglib uri=\"http://java.sun.com/jsf/html\" prefix=\"h\" %>\n" +
+        "<html>\n" +
+        "  <body>\n" +
+        "    !@#$%CHANGED_TEXT%$#@!\n" +
+        "  </body>\n" +
+        "</html>";
+    try {
+      FileHelper.modifyTextFile(getPageLocation(denyExtChangesPageName),
+          changedPageContent);
+    } catch (IOException ioe) {
+      throw new RuntimeException(ioe);
+    }
+    new TypeKeyCodesThread(new int[] {KeyEvent.VK_TAB,KeyEvent.VK_ENTER})
+        .start();
+    jspEditor.setFocus();
+    String sourceText = jspEditor.getText();
+    assertTrue("VPE Source pane has to contain text\n" + originalPageContent +
+        "'\nbut it contains\n" +
+        sourceText,
+      sourceText.equals(originalPageContent));
+    jspEditor.close();
+  }
 	@Override
 	protected void closeUnuseDialogs() {
 
@@ -115,5 +146,27 @@ public class ExternalEditingTest extends VPEEditorTestCase {
     sbPageLocation.append(File.separator);
     sbPageLocation.append(pageName);
     return sbPageLocation.toString();
+  }
+  /**
+   * Thread closing dialog displayed when page is modified externally 
+   */
+  class TypeKeyCodesThread extends Thread {
+    private int[] keyCodes;
+    public TypeKeyCodesThread (int[] keyCodes){
+      super();
+      this.keyCodes = keyCodes;
+    }
+    public void run() {
+      try {
+        System.out.println("**-- start thread");
+        sleep(Timing.time5S());
+        for (int keyCode : keyCodes){
+          System.out.println("**--Type: " + keyCode);
+          KeyboardHelper.typeKeyCodeUsingAWT(keyCode);
+          sleep(Timing.time2S());
+        }
+      } catch (InterruptedException e) {
+      }
+    }
   }
 }
