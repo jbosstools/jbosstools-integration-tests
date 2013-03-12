@@ -89,12 +89,15 @@ public class OpenShiftUI {
 	public static class AppType {
 		
 		public static final String JBOSS = "jbossas-7";
+		public static final String JBOSS_EAP = "jbosseap-6.0";
+		public static final String JBOSS_EWS = "jbossews-1.0";
 		public static final String JENKINS = "jenkins-1.4";
 		public static final String PERL = "perl-5.10";
 		public static final String PHP = "php-5.3";
 		public static final String PYTHON = "python-2.6";
-		public static final String RAW = "raw-0.1";
-		public static final String RUBY = "ruby-1.8";
+		public static final String DIY = "diy-0.1";
+		public static final String RUBY_1_8 = "ruby-1.8";
+		public static final String RUBY_1_9 = "ruby-1.9";
 	}
 	
 	/**
@@ -105,11 +108,13 @@ public class OpenShiftUI {
 	 */
 	public static class Cartridge {
 		
-		public static final String MONGODB = "mongodb-2.0";
+		
 		public static final String JENKINS = "jenkins-1.4";
 		public static final String CRON = "cron-1.4";
 		public static final String MYSQL = "mysql-5.1";
 		public static final String POSTGRESQL = "postgresql-8.4";
+		
+		public static final String MONGODB = "mongodb-2.0";
 		public static final String PHPMYADMIN = "phpmyadmin-3.4";
 		public static final String METRICS = "metrics-0.1";
 		public static final String ROCKMONGO = "rockmongo-1.1";

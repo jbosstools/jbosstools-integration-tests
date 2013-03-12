@@ -11,9 +11,11 @@ import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.jboss.tools.openshift.ui.bot.util.OpenShiftUI;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.condition.NonSystemJobRunsCondition;
+import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.junit.Test;
 
+@Require(clearWorkspace = true)
 public class ManageSSH extends SWTTestExt {
 
 	public static final String SSH_KEY_NAME = "id" + new Date().getTime();
@@ -48,8 +50,8 @@ public class ManageSSH extends SWTTestExt {
 		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S, TIME_1S);
 
 		// delete all keys
-		for (int i = 0; i < bot.table().rowCount(); i++) {
-			bot.table().getTableItem(i).select();
+		while (bot.table().rowCount() > 0) {
+			bot.table().getTableItem(0).select();
 			bot.buttonInGroup("Remove...", "SSH Public Keys").click();
 			bot.waitForShell("");
 			bot.button(IDELabel.Button.OK).click();

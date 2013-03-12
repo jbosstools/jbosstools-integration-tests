@@ -1,10 +1,11 @@
-package org.jboss.tools.openshift.ui.bot.test.explorer;
+package org.jboss.tools.openshift.ui.bot.test.cartridge;
 
 import java.util.Date;
 
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.waits.Conditions;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.openshift.ui.bot.util.OpenShiftUI;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
@@ -16,7 +17,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 @Require(clearWorkspace = true)
-public class CreateAdapter extends SWTTestExt {
+public class EmbedCartridges extends SWTTestExt {
 
 	private final String DYI_APP = "diyapp" + new Date().getTime();
 
@@ -42,16 +43,14 @@ public class CreateAdapter extends SWTTestExt {
 
 		log.info("*** OpenShift SWTBot Tests: Application type selected. ***");
 
-		// Do not create server adapter
-		bot.button(IDELabel.Button.NEXT).click();
-		bot.checkBox(1).deselect();
-
 		bot.waitUntil(Conditions.widgetIsEnabled(bot
 				.button(IDELabel.Button.FINISH)));
 		bot.button(IDELabel.Button.FINISH).click();
 
 		log.info("*** OpenShift SWTBot Tests: Application creation started. ***");
 
+		// only for the 1st time - with known_hosts deleting it will appear
+		// every time
 		// add to known_hosts
 		bot.waitForShell("Question", TIME_60S * 4);
 		bot.button(IDELabel.Button.YES).click();
@@ -66,32 +65,50 @@ public class CreateAdapter extends SWTTestExt {
 	}
 
 	@Test
-	public void canCreateAdapterViaServers() {
+	public void canEmbedCron() {
+		embedCartrige(OpenShiftUI.Cartridge.CRON);
+	}
 
+	@Test
+	public void canEmbedMysql() {
+		embedCartrige(OpenShiftUI.Cartridge.MYSQL);
+	}
+
+	@Test
+	public void canEmbedPgSql() {
+		embedCartrige(OpenShiftUI.Cartridge.POSTGRESQL);
+	}
+
+	private void embedCartrige(String cartridge) {
+
+		// open OpenShift Explorer
 		SWTBotView openshiftExplorer = open
 				.viewOpen(OpenShiftUI.Explorer.iView);
 
-		SWTBotTreeItem account = openshiftExplorer.bot().tree().getAllItems()[0] 
-				.doubleClick(); // expand account
+		// get 1st account in OpenShift Explorer
+		SWTBotTreeItem account = openshiftExplorer.bot().tree().getAllItems()[0]
+				.doubleClick(); // expand the account
 
-		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 2, TIME_1S);
+		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_20S, TIME_1S);
 
-		account.getNode(0).contextMenu(OpenShiftUI.Labels.EXPLORER_ADAPTER)
+		assertTrue(account.getItems().length > 0);
+
+		// click on 'Embedd cartridges'
+		account.getItems()[0].contextMenu(OpenShiftUI.Labels.EDIT_CARTRIDGES)
 				.click();
 
-		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 2, TIME_1S);
-		bot.waitForShell(OpenShiftUI.Shell.ADAPTER);
+		bot.waitForShell(OpenShiftUI.Shell.EDIT_CARTRIDGES);
 
-		bot.button(IDELabel.Button.NEXT).click(); 
-		bot.comboBox(1).setSelection(0);
+		SWTBotTable cartridgeTable = bot.tableInGroup("Embeddable Cartridges");
+
+		cartridgeTable.getTableItem(cartridge).toggleCheck();
+
 		bot.button(IDELabel.Button.FINISH).click();
 
-		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 2, TIME_1S);
+		bot.waitForShell("Embedded Cartridges", TIME_60S * 3);
+		bot.button(IDELabel.Button.OK).click();
 
-		servers.show();
-		assertTrue(servers.serverExists(DYI_APP + " at OpenShift"));
-
-		log.info("*** OpenShift SWTBot Tests: OpenShift Server Adapter created. ***");
+		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_20S, TIME_1S);
 	}
 
 	@After
@@ -125,4 +142,5 @@ public class CreateAdapter extends SWTTestExt {
 		servers.show();
 		servers.deleteServer(DYI_APP + " at OpenShift");
 	}
+
 }

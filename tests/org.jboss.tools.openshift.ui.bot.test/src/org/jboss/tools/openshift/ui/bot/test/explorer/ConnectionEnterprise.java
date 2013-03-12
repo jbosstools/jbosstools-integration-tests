@@ -3,7 +3,7 @@ package org.jboss.tools.openshift.ui.bot.test.explorer;
 import org.jboss.tools.openshift.ui.bot.util.TestProperties;
 import org.junit.Before;
 
-public class ConnectionEnterprise extends Connection{
+public class ConnectionEnterprise extends Connection {
 
 	@Before
 	public void setUpServer() {
