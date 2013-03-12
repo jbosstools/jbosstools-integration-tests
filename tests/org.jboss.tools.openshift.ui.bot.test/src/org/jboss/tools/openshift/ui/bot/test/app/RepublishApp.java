@@ -1,4 +1,4 @@
-package org.jboss.tools.openshift.ui.bot.test.wizard;
+package org.jboss.tools.openshift.ui.bot.test.app;
 
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.jboss.tools.openshift.ui.bot.util.TestProperties;
@@ -49,14 +49,7 @@ public class RepublishApp extends SWTTestExt {
 
 		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_UNLIMITED, TIME_1S);
 
-		// custom condition to wait for the openshift server to be synchronized
-		/*
-		 * servers.show(); assertTrue(servers.getServerPublishStatus(
-		 * TestProperties.get("openshift.jbossapp.name") +
-		 * " OpenShift Server").equalsIgnoreCase("synchronized"));
-		 * 
-		 * TODO: JIRA? Server not synchornized although it actually is
-		 */
+
 	}
 
 }

@@ -16,7 +16,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 @Require(clearWorkspace = true)
-public class CreateAdapter extends SWTTestExt {
+public class OpenShiftDebugFeatures extends SWTTestExt {
 
 	private final String DYI_APP = "diyapp" + new Date().getTime();
 
@@ -42,10 +42,6 @@ public class CreateAdapter extends SWTTestExt {
 
 		log.info("*** OpenShift SWTBot Tests: Application type selected. ***");
 
-		// Do not create server adapter
-		bot.button(IDELabel.Button.NEXT).click();
-		bot.checkBox(1).deselect();
-
 		bot.waitUntil(Conditions.widgetIsEnabled(bot
 				.button(IDELabel.Button.FINISH)));
 		bot.button(IDELabel.Button.FINISH).click();
@@ -66,32 +62,115 @@ public class CreateAdapter extends SWTTestExt {
 	}
 
 	@Test
-	public void canCreateAdapterViaServers() {
-
+	public void canTailFiles() {
 		SWTBotView openshiftExplorer = open
 				.viewOpen(OpenShiftUI.Explorer.iView);
 
-		SWTBotTreeItem account = openshiftExplorer.bot().tree().getAllItems()[0] 
+		SWTBotTreeItem account = openshiftExplorer.bot().tree().getAllItems()[0] // get
+																					// 1st
+																					// account
+																					// in
+																					// OpenShift
+																					// Explorer
 				.doubleClick(); // expand account
 
 		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 2, TIME_1S);
 
-		account.getNode(0).contextMenu(OpenShiftUI.Labels.EXPLORER_ADAPTER)
+		account.getNode(0).contextMenu(OpenShiftUI.Labels.EXPLORER_TAIL_FILES)
+				.click();
+
+		bot.waitForShell(OpenShiftUI.Shell.TAIL_FILES);
+		bot.button(IDELabel.Button.FINISH).click();
+		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 2, TIME_1S);
+
+		assertFalse("Remote console should not be empty!", console
+				.getConsoleText().isEmpty());
+	}
+
+	@Test
+	public void canForwardPorts() {
+		SWTBotView openshiftExplorer = open
+				.viewOpen(OpenShiftUI.Explorer.iView);
+
+		SWTBotTreeItem account = openshiftExplorer.bot().tree().getAllItems()[0] // get
+																					// 1st
+																					// account
+																					// in
+																					// OpenShift
+																					// Explorer
+				.doubleClick(); // expand account
+
+		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 2, TIME_1S);
+
+		account.getNode(0).contextMenu(OpenShiftUI.Labels.EXPLORER_PORTS)
 				.click();
 
 		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 2, TIME_1S);
-		bot.waitForShell(OpenShiftUI.Shell.ADAPTER);
+		bot.waitForShell(OpenShiftUI.Shell.PORTS);
+		bot.button("Start All").click();
 
-		bot.button(IDELabel.Button.NEXT).click(); 
-		bot.comboBox(1).setSelection(0);
-		bot.button(IDELabel.Button.FINISH).click();
+		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 2, TIME_1S);
+		bot.button("OK").click();
+
+		assertFalse("Console should not be empty!", console.getConsoleText()
+				.isEmpty());
+
+		open.viewOpen(OpenShiftUI.Explorer.iView);
+		account.getNode(0).contextMenu(OpenShiftUI.Labels.EXPLORER_PORTS)
+				.click();
+
+		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 2, TIME_1S);
+		bot.waitForShell(OpenShiftUI.Shell.PORTS);
+
+		bot.button("Stop All").click();
+		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 2, TIME_1S);
+		bot.button("OK").click();
+	}
+
+	@Test
+	public void canOpenWebBrowser() {
+		SWTBotView openshiftExplorer = open
+				.viewOpen(OpenShiftUI.Explorer.iView);
+
+		SWTBotTreeItem account = openshiftExplorer.bot().tree().getAllItems()[0] // get
+																					// 1st
+																					// account
+																					// in
+																					// OpenShift
+																					// Explorer
+				.doubleClick(); // expand account
 
 		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 2, TIME_1S);
 
-		servers.show();
-		assertTrue(servers.serverExists(DYI_APP + " at OpenShift"));
+		account.getNode(0).contextMenu(OpenShiftUI.Labels.BROWSER).click();
 
-		log.info("*** OpenShift SWTBot Tests: OpenShift Server Adapter created. ***");
+		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 2, TIME_1S);
+		assertTrue(open.viewOpen(OpenShiftUI.Explorer.iView).getTitle()
+				.contains("OpenShift"));
+	}
+
+	@Test
+	public void canShowEnvVariables() {
+		SWTBotView openshiftExplorer = open
+				.viewOpen(OpenShiftUI.Explorer.iView);
+
+		SWTBotTreeItem account = openshiftExplorer.bot().tree().getAllItems()[0] // get
+																					// 1st
+																					// account
+																					// in
+																					// OpenShift
+																					// Explorer
+				.doubleClick(); // expand account
+
+		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 2, TIME_1S);
+
+		account.getNode(0).contextMenu(OpenShiftUI.Labels.EXPLORER_ENV_VAR)
+				.click();
+
+		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 2, TIME_1S);
+
+		assertFalse("Console should not be empty!", console.getConsoleText()
+				.isEmpty());
 	}
 
 	@After
@@ -125,4 +204,5 @@ public class CreateAdapter extends SWTTestExt {
 		servers.show();
 		servers.deleteServer(DYI_APP + " at OpenShift");
 	}
+
 }

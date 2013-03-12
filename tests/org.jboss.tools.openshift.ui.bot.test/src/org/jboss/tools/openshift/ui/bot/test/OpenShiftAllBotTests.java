@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007-2009 Red Hat, Inc.
+ * Copyright (c) 2007-20013 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -10,21 +10,19 @@
  ******************************************************************************/
 package org.jboss.tools.openshift.ui.bot.test;
 
+import org.jboss.tools.openshift.ui.bot.test.app.CreateDeleteEWSApp;
+import org.jboss.tools.openshift.ui.bot.test.app.CreateDeleteJBossApp;
+import org.jboss.tools.openshift.ui.bot.test.app.CreateDeletePHPApp;
+import org.jboss.tools.openshift.ui.bot.test.app.CreateDeletePythonApp;
+import org.jboss.tools.openshift.ui.bot.test.app.CreateDeleteScaledRubyApp;
+import org.jboss.tools.openshift.ui.bot.test.cartridge.EmbedCartridges;
+import org.jboss.tools.openshift.ui.bot.test.domain.CreateDomain;
+import org.jboss.tools.openshift.ui.bot.test.domain.DeleteDomain;
+import org.jboss.tools.openshift.ui.bot.test.domain.RenameDomain;
 import org.jboss.tools.openshift.ui.bot.test.explorer.ConnectionEnterprise;
 import org.jboss.tools.openshift.ui.bot.test.explorer.CreateAdapter;
-import org.jboss.tools.openshift.ui.bot.test.explorer.CreateJBossApp;
-import org.jboss.tools.openshift.ui.bot.test.explorer.CreateDomain;
-import org.jboss.tools.openshift.ui.bot.test.explorer.DeleteApp;
-import org.jboss.tools.openshift.ui.bot.test.explorer.DeleteDomain;
-import org.jboss.tools.openshift.ui.bot.test.explorer.EmbedCartridges;
-import org.jboss.tools.openshift.ui.bot.test.explorer.EnvVar;
-import org.jboss.tools.openshift.ui.bot.test.explorer.ImportApp;
 import org.jboss.tools.openshift.ui.bot.test.explorer.ManageSSH;
-import org.jboss.tools.openshift.ui.bot.test.explorer.PortForward;
-import org.jboss.tools.openshift.ui.bot.test.explorer.RenameDomain;
-import org.jboss.tools.openshift.ui.bot.test.explorer.TailFiles;
-import org.jboss.tools.openshift.ui.bot.test.explorer.WebBrowser;
-import org.jboss.tools.openshift.ui.bot.test.wizard.RepublishApp;
+import org.jboss.tools.openshift.ui.bot.test.explorer.OpenShiftDebugFeatures;
 import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
@@ -39,22 +37,23 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @SuiteClasses({
 	ConnectionEnterprise.class, 
-	/* TODO: temporarily disable jobs to see if this test suite passes on OpenShift Enterprise
 	ManageSSH.class, 
-	CreateDomain.class,
-	CreateJBossApp.class,
-	EmbedCartridges.class,
-	RepublishApp.class,
-	DeleteApp.class, 
-	RenameDomain.class,
+	/* Domain */
 	DeleteDomain.class,
-	ImportApp.class,
-	TailFiles.class,
-	EnvVar.class,
-	PortForward.class,
-	WebBrowser.class,
-	CreateAdapter.class
-	*/
+	CreateDomain.class,
+	RenameDomain.class,
+	/* App */
+	CreateDeleteJBossApp.class,
+	CreateDeleteEWSApp.class,
+	CreateDeletePHPApp.class,
+	CreateDeletePythonApp.class,
+	CreateDeleteScaledRubyApp.class,
+	//RepublishApp.class,
+	/* Cartridge */
+	EmbedCartridges.class,
+	/* Explorer */
+	OpenShiftDebugFeatures.class,
+	CreateAdapter.class,
 })
 @RunWith(RequirementAwareSuite.class)
 public class OpenShiftAllBotTests {

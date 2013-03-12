@@ -1,4 +1,4 @@
-package org.jboss.tools.openshift.ui.bot.test.explorer;
+package org.jboss.tools.openshift.ui.bot.test.domain;
 
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.waits.Conditions;
@@ -8,7 +8,9 @@ import org.jboss.tools.openshift.ui.bot.util.OpenShiftUI;
 import org.jboss.tools.openshift.ui.bot.util.TestProperties;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.condition.NonSystemJobRunsCondition;
+import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -18,10 +20,16 @@ import org.junit.Test;
  * @author sbunciak
  * 
  */
+@Require(clearWorkspace = true)
 public class CreateDomain extends SWTTestExt {
 
+	@Before
+	public void waitNoJobs() {
+		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S, TIME_1S);
+	}
+	
 	@Test
-	public void canCreateDomain() throws InterruptedException {
+	public void canCreateDomain() {
 		// open OpenShift Explorer
 		SWTBotView openshiftExplorer = open
 				.viewOpen(OpenShiftUI.Explorer.iView);
@@ -33,13 +41,13 @@ public class CreateDomain extends SWTTestExt {
 				.contextMenu(OpenShiftUI.Labels.EXPLORER_CREATE_EDIT_DOMAIN)
 				.click(); // click on 'Create or Edit Domain'
 
-		bot.waitForShell(OpenShiftUI.Shell.CREATE_DOMAIN);
-
+		bot.waitForShell(OpenShiftUI.Shell.CREATE_DOMAIN, TIME_30S);
+		bot.waitUntil(Conditions.shellIsActive(OpenShiftUI.Shell.CREATE_DOMAIN), TIME_60S);
+		
 		SWTBotText domainText = bot.text(0);
 
-		assertTrue("Domain should not be set at this stage!", domainText
-				.getText().equals(""));
-
+		assertTrue("Domain should not be set at this stage!", domainText.getText().equals(""));
+		
 		domainText.setText(TestProperties.get("openshift.domain"));
 		log.info("*** OpenShift SWTBot Tests: Domain name set. ***");
 

@@ -1,4 +1,4 @@
-package org.jboss.tools.openshift.ui.bot.test.explorer;
+package org.jboss.tools.openshift.ui.bot.test.app;
 
 import java.util.Date;
 
@@ -7,6 +7,8 @@ import org.eclipse.swtbot.swt.finder.waits.Conditions;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.openshift.ui.bot.util.OpenShiftUI;
+import org.jboss.tools.openshift.ui.bot.util.TestProperties;
+import org.jboss.tools.openshift.ui.bot.util.TestUtils;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.condition.NonSystemJobRunsCondition;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
@@ -16,35 +18,43 @@ import org.junit.Before;
 import org.junit.Test;
 
 @Require(clearWorkspace = true)
-public class CreateAdapter extends SWTTestExt {
+public class CreateDeleteScaledRubyApp extends SWTTestExt {
 
-	private final String DYI_APP = "diyapp" + new Date().getTime();
-
+	private final String RUBY_APP_NAME = TestProperties
+			.get("openshift.rubyapp.name") + new Date().getTime();
+	
 	@Before
-	public void createDYIApp() {
+	public void cleanUpProject() {
+		TestUtils.cleanupGitFolder(TestProperties
+				.get("openshift.rubyapp.name"));
+	}
+	
+	
+	@Test
+	public void canCreateRubyApp() {
 		// open OpenShift Explorer
 		SWTBotView openshiftExplorer = open
 				.viewOpen(OpenShiftUI.Explorer.iView);
 
-		openshiftExplorer.bot().tree().getAllItems()[0].contextMenu(
-				OpenShiftUI.Labels.EXPLORER_NEW_APP).click();
+		openshiftExplorer.bot().tree().getAllItems()[0] // get 1st account in
+														// OpenShift Explorer
+				.contextMenu(OpenShiftUI.Labels.EXPLORER_NEW_APP).click();
 
 		bot.waitForShell(OpenShiftUI.Shell.NEW_APP);
 		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_20S, TIME_1S);
 
 		// fill app info
-		bot.textInGroup("New application", 0).setText(DYI_APP);
+		bot.textInGroup("New application", 0).typeText(RUBY_APP_NAME);
 
 		log.info("*** OpenShift SWTBot Tests: Application name set. ***");
 
 		bot.comboBoxInGroup("New application").setSelection(
-				OpenShiftUI.AppType.DIY);
+				OpenShiftUI.AppType.RUBY_1_9);
+		
+		/* Enable scaling */
+		bot.checkBoxInGroup("New application").select();
 
 		log.info("*** OpenShift SWTBot Tests: Application type selected. ***");
-
-		// Do not create server adapter
-		bot.button(IDELabel.Button.NEXT).click();
-		bot.checkBox(1).deselect();
 
 		bot.waitUntil(Conditions.widgetIsEnabled(bot
 				.button(IDELabel.Button.FINISH)));
@@ -52,6 +62,8 @@ public class CreateAdapter extends SWTTestExt {
 
 		log.info("*** OpenShift SWTBot Tests: Application creation started. ***");
 
+		// only for the 1st time - with known_hosts deleting it will appear
+		// every time
 		// add to known_hosts
 		bot.waitForShell("Question", TIME_60S * 4);
 		bot.button(IDELabel.Button.YES).click();
@@ -63,40 +75,15 @@ public class CreateAdapter extends SWTTestExt {
 		}
 
 		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 10, TIME_1S);
-	}
-
-	@Test
-	public void canCreateAdapterViaServers() {
-
-		SWTBotView openshiftExplorer = open
-				.viewOpen(OpenShiftUI.Explorer.iView);
-
-		SWTBotTreeItem account = openshiftExplorer.bot().tree().getAllItems()[0] 
-				.doubleClick(); // expand account
-
-		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 2, TIME_1S);
-
-		account.getNode(0).contextMenu(OpenShiftUI.Labels.EXPLORER_ADAPTER)
-				.click();
-
-		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 2, TIME_1S);
-		bot.waitForShell(OpenShiftUI.Shell.ADAPTER);
-
-		bot.button(IDELabel.Button.NEXT).click(); 
-		bot.comboBox(1).setSelection(0);
-		bot.button(IDELabel.Button.FINISH).click();
-
-		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 2, TIME_1S);
 
 		servers.show();
-		assertTrue(servers.serverExists(DYI_APP + " at OpenShift"));
+		assertTrue(servers.serverExists(RUBY_APP_NAME + " at OpenShift"));
 
 		log.info("*** OpenShift SWTBot Tests: OpenShift Server Adapter created. ***");
 	}
-
+	
 	@After
-	public void deleteDIYApp() {
-
+	public void canDeleteRubyApp() {
 		SWTBotView openshiftExplorer = open
 				.viewOpen(OpenShiftUI.Explorer.iView);
 
@@ -105,7 +92,7 @@ public class CreateAdapter extends SWTTestExt {
 
 		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 2, TIME_1S);
 
-		account.getNode(DYI_APP + " " + OpenShiftUI.AppType.DIY)
+		account.getNode(RUBY_APP_NAME + " " + OpenShiftUI.AppType.RUBY_1_9)
 				.contextMenu(OpenShiftUI.Labels.EXPLORER_DELETE_APP).click();
 
 		bot.waitForShell(OpenShiftUI.Shell.DELETE_APP);
@@ -123,6 +110,7 @@ public class CreateAdapter extends SWTTestExt {
 				bot.tree().getAllItems().length > 0);
 
 		servers.show();
-		servers.deleteServer(DYI_APP + " at OpenShift");
+		servers.deleteServer(RUBY_APP_NAME + " at OpenShift");
 	}
+
 }

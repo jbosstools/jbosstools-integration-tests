@@ -8,7 +8,7 @@
 <listAttribute key="M2_PROPERTIES">
 <listEntry value="swtbot.test.skip=false"/>
 <listEntry value="configurations.dir=${project_loc}/resources"/>
-<listEntry value="scope=Jenkins"/>
+<listEntry value="scope=All"/>
 <listEntry value="maven.test.failure.ignore=true"/>
 </listAttribute>
 <stringAttribute key="M2_RUNTIME" value="EMBEDDED"/>
