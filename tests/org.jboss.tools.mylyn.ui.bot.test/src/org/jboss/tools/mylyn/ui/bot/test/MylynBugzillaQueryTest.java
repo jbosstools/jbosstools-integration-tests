@@ -150,14 +150,38 @@ public class MylynBugzillaQueryTest {
 			
 		Bot.get().sleep(TimePeriod.NORMAL.getSeconds());
 		
-		/* Slightly different text on JBDS5/6 - assume that 5 is running, trap
-		 * an exception use the catch block if it's JBDS6 (same for JBT3/4)
-		 */
-		try {
-			new LabeledText("Query Title:").setText(queryName);
+		/* Slightly different text on JBT3/4)  */ 	
+		log.info("GET Bundle");
+		log.info("Version = " + org.eclipse.core.runtime.Platform.getProduct().getDefiningBundle().getHeaders().get(org.osgi.framework.Constants.BUNDLE_VERSION));
+		log.info("Product = " + org.eclipse.core.runtime.Platform.getProduct().getName());
+
+		// Example version string = 4.3.0.v201302041400
+		String extendedVersionString = org.eclipse.core.runtime.Platform.getProduct().getDefiningBundle().getHeaders().get(org.osgi.framework.Constants.BUNDLE_VERSION);
+		String theVersionString = extendedVersionString.substring(0, 1);
+		
+		if (org.eclipse.core.runtime.Platform.getProduct().getName().equals("JBoss Developer Studio")) {
+			if (theVersionString.equals("5")) {
+				log.info ("JBDS 5 is running");
+				new LabeledText("Query Title:").setText(queryName);
+			}
+			else if (theVersionString.equals("6")) {
+				log.info ("JBDS 6 is running");
+				new LabeledText("Title:").setText(queryName);
+			}
+			else if (theVersionString.equals("7")) {
+				log.info ("JBDS 7 is running");
+				new LabeledText("Title:").setText(queryName);
+			}
 		}
-		catch (org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException E) {
-			new LabeledText("Title:").setText(queryName);
+		else {
+			if (theVersionString.equals("3")) {
+				log.info ("JBT 3 is running");
+				new LabeledText("Query Title:").setText(queryName);
+			}
+			else if (theVersionString.equals("4")) {
+				log.info ("JBT 4 is running");
+				new LabeledText("Title:").setText(queryName);
+			}
 		}
 		
 		Bot.get().sleep(TimePeriod.NORMAL.getSeconds());
@@ -204,14 +228,19 @@ public class MylynBugzillaQueryTest {
 
 			/* Slightly different text on JBDS5/6 - assume that 5 is running, trap
 			 * an exception use the catch block if it's JBDS6 (same for JBT3/4)
-			 */
-			try {
+			 */		
+			if (theVersionString.equals("5")) {
+				log.info ("JBDS 5 is running");
 				new DefaultShell("JBoss - JBoss Central - JBoss Developer Studio");
 			}
-			catch (org.jboss.reddeer.swt.exception.SWTLayerException E) {
-				log.error("No such shell" + E.getMessage());
+			else if (theVersionString.equals("6")) {
+				log.info ("JBDS 6 is running");
 				new DefaultShell("JBoss - JBoss Developer Studio");
-			}
+			}	
+			else if (theVersionString.equals("7")) {
+				log.info ("JBDS 7 is running");
+				new DefaultShell("JBoss - JBoss Developer Studio");
+			}	
 			
 		/* Locate the list of created queries */
 		
