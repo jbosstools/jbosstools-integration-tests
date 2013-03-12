@@ -4,11 +4,11 @@
 	<parent>
 		<groupId>org.jboss.tools.integration-tests</groupId>
 		<artifactId>tests</artifactId>
-		<version>4.0.0-SNAPSHOT</version>
+		<version>4.1.0-SNAPSHOT</version>
 	</parent>
 	<groupId>org.jboss.tools.seam.tests</groupId>
 	<artifactId>org.jboss.tools.seam.ui.bot.test</artifactId> 
-	<version>4.0.0-SNAPSHOT</version>
+	<version>4.1.0-SNAPSHOT</version>
 	
 	<packaging>eclipse-test-plugin</packaging>
 	<properties>
