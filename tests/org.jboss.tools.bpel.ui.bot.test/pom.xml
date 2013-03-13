@@ -13,128 +13,204 @@
 	<packaging>eclipse-test-plugin</packaging>
 
 	<properties>
-		<systemProperties>${integrationTestsSystemProperties} -Dswtbot.test.properties.file=./swtbot.properties</systemProperties>
-		<surefire.timeout>10800</surefire.timeout>
-		<testClass>org.jboss.tools.bpel.ui.bot.test.suite.BPELAllTest</testClass>
+	  <systemProperties>${integrationTestsSystemProperties} -Dswtbot.test.properties.file=./swtbot.properties</systemProperties>
+	  <surefire.timeout>10800</surefire.timeout>
+	  <testClass>org.jboss.tools.bpel.ui.bot.test.suite.AllTests</testClass>
+	  <reddeer.site>http://download.jboss.org/jbosstools/builds/staging/RedDeer_master/all/repo</reddeer.site>
+	  <jbtis.site>http://download.jboss.org/jbosstools/updates/integration/juno/integration-stack/aggregate/4.0.0</jbtis.site>
 	</properties>
 
+	<repositories>
+	  <!-- Red Deer Repository -->
+	  <repository>
+	    <id>red_deer</id>
+	    <url>${reddeer.site}</url>
+	    <layout>p2</layout>
+	    <snapshots>
+	      <enabled>true</enabled>
+	    </snapshots>
+	    <releases>
+	      <enabled>true</enabled>
+	    </releases>
+	  </repository>
+	  <!-- JBTIS Repository -->
+	  <repository>
+	    <id>jbtis</id>
+	    <url>${jbtis.site}</url>
+	    <layout>p2</layout>
+	    <snapshots>
+	      <enabled>true</enabled>
+	    </snapshots>
+	    <releases>
+	      <enabled>true</enabled>
+	    </releases>
+	  </repository>
+	</repositories>
+
 	<build>
-		<plugins>
-			<!-- Install AS, ESB and Riftsaw -->
-			<plugin>
-				<groupId>com.googlecode.maven-download-plugin</groupId>
-				<artifactId>maven-download-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>install-as-5.1.0</id>
-						<phase>pre-integration-test</phase>
-						<goals>
-							<goal>wget</goal>
-						</goals>
-						<configuration>
-							<url>http://repository.jboss.org/sourceforge/jboss-5.1.0.GA.zip</url>
-							<md5>78322c75ca0c13002a04418b4a8bc920</md5>
-							<unpack>true</unpack>
-						</configuration>
-					</execution>
-					<execution>
-						<id>get-esb</id>
-						<phase>pre-integration-test</phase>
-						<goals>
-							<goal>wget</goal>
-						</goals>
-						<configuration>
-							<url>http://download.jboss.org/jbossesb/4.11/binary/jbossesb-4.11.zip</url>
-							<md5>506bb7f42777cf0e524ccc37336aa137</md5>
-							<unpack>true</unpack>
-						</configuration>
-					</execution>
-					<execution>
-						<id>get-riftsaw</id>
-						<phase>pre-integration-test</phase>
-						<goals>
-							<goal>wget</goal>
-						</goals>
-						<configuration>
-							<url>http://downloads.jboss.org/riftsaw/releases/2.3.0.Final/riftsaw-2.3.0.Final.zip</url>
-							<md5>d57290b01d25ec0d15e143c6053d0878</md5>
-							<unpack>true</unpack>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<artifactId>maven-antrun-plugin</artifactId>
-				<version>1.7</version>
-				<executions>
-					<execution>
-						<id>install-esb</id>
-						<phase>pre-integration-test</phase>
-						<goals>
-							<goal>run</goal>
-						</goals>
-						<configuration>
-							<skip>${skipRequirements}</skip>
-							<target>
-								<ant dir="${requirementsDirectory}/jbossesb-4.11/install" target="deploy">
-									<property name="org.jboss.esb.server.home" value="${requirementsDirectory}/jboss-5.1.0.GA" />
-									<property name="org.jboss.esb.server.config" value="default" />
-								</ant>
-							</target>
-						</configuration>
-					</execution>
-					<execution>
-						<id>install-riftsaw</id>
-						<phase>pre-integration-test</phase>
-						<goals>
-							<goal>run</goal>
-						</goals>
-						<configuration>
-							<skip>${skipRequirements}</skip>
-							<target>
-								<ant dir="${requirementsDirectory}/riftsaw-2.3.0.Final/install" target="deploy">
-									<property name="org.jboss.as.home" value="${requirementsDirectory}/jboss-5.1.0.GA" />
-									<property name="org.jboss.as.config" value="default" />
-									<property name="org.jboss.esb.home" value="${requirementsDirectory}/jbossesb-4.11" />
-									<property name="databasev" value="hsql" />
-									<property name="ws.version" value="3.4.0.GA" />
-								</ant>
-							</target>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-		
-			<plugin>
-				<groupId>org.eclipse.tycho</groupId>
-				<artifactId>tycho-surefire-plugin</artifactId>
-				<configuration>
-					<testSuite>org.jboss.tools.bpel.ui.bot.test</testSuite>
-					<testClass>${testClass}</testClass>
-					<useUIThread>false</useUIThread>
-					<skip>${swtbot.test.skip}</skip>
-					<dependencies combine.children="append">
-						<!-- BPEL feature -->
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.jboss.tools.bpel.feature.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
-						<!-- JBoss Examples feature -->
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.jboss.tools.community.project.examples.feature.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
-						<!-- This feature is due to JBIDE-11608 -->
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.jboss.ide.eclipse.as.feature.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
-					</dependencies>
-				</configuration>
-			</plugin>
-		</plugins>
+	  <plugins>
+	    <plugin>
+	      <groupId>org.eclipse.tycho</groupId>
+	      <artifactId>target-platform-configuration</artifactId>
+	      <version>${tychoVersion}</version>
+	      <configuration>
+		<target>
+		  <artifact>
+		    <groupId>org.jboss.tools.integration-stack</groupId>
+		    <artifactId>target-platform</artifactId>
+		    <version>4.0.0-SNAPSHOT</version>
+		    <type>target</type>
+		    <classifier>base</classifier>
+		  </artifact>
+		</target>
+	      </configuration>
+	    </plugin>
+	    <plugin>
+	      <groupId>org.eclipse.tycho</groupId>
+	      <artifactId>tycho-surefire-plugin</artifactId>
+	      <configuration>
+		<testSuite>org.jboss.tools.bpel.ui.bot.test</testSuite>
+		<testClass>${testClass}</testClass>
+		<useUIThread>false</useUIThread>
+		<skip>${swtbot.test.skip}</skip>
+		<dependencies combine.children="append">
+		  <!-- BPEL feature -->
+		  <dependency>
+		    <type>p2-installable-unit</type>
+		    <artifactId>org.jboss.tools.bpel.feature.feature.group</artifactId>
+		    <version>0.0.0</version>
+		  </dependency>
+		  <!-- JBoss Examples feature 
+		  <dependency>
+		    <type>p2-installable-unit</type>
+		    <artifactId>org.jboss.tools.community.project.examples.feature.feature.group</artifactId>
+		    <version>0.0.0</version>
+		  </dependency>-->
+		  <!-- This feature is due to JBIDE-11608 -->
+		  <dependency>
+		    <type>p2-installable-unit</type>
+		    <artifactId>org.jboss.ide.eclipse.as.feature.feature.group</artifactId>
+		    <version>0.0.0</version>
+		  </dependency>
+		  <!-- This entry should enable creating of default JDK on Mac -->
+		  <dependency>
+		    <type>p2-installable-unit</type>
+		    <artifactId>org.eclipse.jdt.feature.group</artifactId>
+		    <version>0.0.0</version>
+		  </dependency>
+		</dependencies>
+	      </configuration>
+	    </plugin>
+	  </plugins>
 	</build>
-</project>
+	
+	<profiles>
+	  <profile>
+	    <id>as-51</id>
+	    <properties>
+	      <systemProperties>${integrationTestsSystemProperties} -Dswtbot.test.properties.file=./as-51.properties</systemProperties>
+	    </properties>
+	    <build>
+	      <plugins>
+		<!-- Install AS, ESB and Riftsaw -->
+		<plugin>
+		  <groupId>com.googlecode.maven-download-plugin</groupId>
+		  <artifactId>maven-download-plugin</artifactId>
+		  <executions>
+		    <execution>
+		      <id>install-as-5.1.0</id>
+		      <phase>pre-integration-test</phase>
+		      <goals>
+			<goal>wget</goal>
+		      </goals>
+		      <configuration>
+			<url>http://repository.jboss.org/sourceforge/jboss-5.1.0.GA.zip</url>
+			<md5>78322c75ca0c13002a04418b4a8bc920</md5>
+			<unpack>true</unpack>
+		      </configuration>
+		    </execution>
+		    <execution>
+		      <id>get-esb</id>
+		      <phase>pre-integration-test</phase>
+		      <goals>
+			<goal>wget</goal>
+		      </goals>
+		      <configuration>
+			<url>http://download.jboss.org/jbossesb/4.11/binary/jbossesb-4.11.zip</url>
+			<md5>506bb7f42777cf0e524ccc37336aa137</md5>
+			<unpack>true</unpack>
+		      </configuration>
+		    </execution>
+		    <execution>
+		      <id>get-riftsaw</id>
+		      <phase>pre-integration-test</phase>
+		      <goals>
+			<goal>wget</goal>
+		      </goals>
+		      <configuration>
+			<url>http://downloads.jboss.org/riftsaw/releases/2.3.0.Final/riftsaw-2.3.0.Final.zip</url>
+			<md5>d57290b01d25ec0d15e143c6053d0878</md5>
+			<unpack>true</unpack>
+		      </configuration>
+		    </execution>
+		  </executions>
+		</plugin>
+		<plugin>
+		  <artifactId>maven-antrun-plugin</artifactId>
+		  <version>${maven.antrun.plugin.version}</version>
+		  <executions>
+		    <execution>
+		      <id>install-esb</id>
+		      <phase>pre-integration-test</phase>
+		      <goals>
+			<goal>run</goal>
+		      </goals>
+		      <configuration>
+			<skip>${skipRequirements}</skip>
+			<target>
+			  <ant dir="${requirementsDirectory}/jbossesb-4.11/install" target="deploy">
+			    <property name="org.jboss.esb.server.home" value="${requirementsDirectory}/jboss-5.1.0.GA" />
+			    <property name="org.jboss.esb.server.config" value="default" />
+			  </ant>
+			</target>
+		      </configuration>
+		    </execution>
+		    <execution>
+		      <id>install-riftsaw</id>
+		      <phase>pre-integration-test</phase>
+		      <goals>
+			<goal>run</goal>
+		      </goals>
+		      <configuration>
+			<skip>${skipRequirements}</skip>
+			<target>
+			  <ant dir="${requirementsDirectory}/riftsaw-2.3.0.Final/install" target="deploy">
+			    <property name="org.jboss.as.home" value="${requirementsDirectory}/jboss-5.1.0.GA" />
+			    <property name="org.jboss.as.config" value="default" />
+			    <property name="org.jboss.esb.home" value="${requirementsDirectory}/jbossesb-4.11" />
+			    <property name="databasev" value="hsql" />
+			    <property name="ws.version" value="3.4.0.GA" />
+			  </ant>
+			</target>
+		      </configuration>
+		    </execution>
+		    <execution>
+		      <id>prepare-swtbot</id>
+		      <phase>pre-integration-test</phase>
+		      <goals>
+			<goal>run</goal>
+		      </goals>
+		      <configuration>
+			<tasks>
+			  <echo file="as-51.properties">SERVER=AS,5.1,default,target/requirements/jboss-5.1.0.GA</echo>
+			</tasks>
+		      </configuration>
+		    </execution>
+		  </executions>
+		</plugin>
+	      </plugins>	      
+	    </build>
+	  </profile>
+	</profiles>
+      </project>
+      

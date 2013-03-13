@@ -1,6 +1,5 @@
 package org.jboss.tools.bpel.ui.bot.test.examples;
 
-import org.jboss.tools.bpel.ui.bot.test.BPELTest;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
@@ -36,9 +35,9 @@ public class SimpleInvokeExampleTest extends BPELExampleTest {
 	@Override
 	protected void executeExample() {
 		deployExamples(PROJECT_NAME_WS);
-		assertTrue(BPELTest.isProjectDeployed(PROJECT_NAME_WS));
+		testDeployment(PROJECT_NAME_WS);
 		deployExamples(PROJECT_NAME);
-		assertTrue(BPELTest.isProjectDeployed(PROJECT_NAME));
+		testDeployment(PROJECT_NAME);
 
 		testResponses(WSDL_URL, PROJECT_NAME);
 

@@ -1,0 +1,8 @@
+<env:Envelope xmlns:env="http://schemas.xmlsoap.org/soap/envelope/">
+   <env:Header/>
+   <env:Body>
+      <deployHelloResponse xmlns="http://eclipse.org/bpel/sample">
+         <tns:result xmlns:tns="http://eclipse.org/bpel/sample">Hello Andrej</tns:result>
+      </deployHelloResponse>
+   </env:Body>
+</env:Envelope>
