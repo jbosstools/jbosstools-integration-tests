@@ -18,7 +18,36 @@
 		<swtbot.test.properties.file>./org.jboss.tools.esb.ui.bot.test.properties</swtbot.test.properties.file>
 		<systemProperties>${integrationTestsSystemProperties} -Djbosstools.test.jbossesb.home=${jbosstools.test.jbossesb.home} -Djbosstools.test.jbosssoa.home=${jbosstools.test.jbosssoa.home} -Dswtbot.test.properties.file=${swtbot.test.properties.file}
 		</systemProperties>
+		<reddeer.site>http://download.jboss.org/jbosstools/builds/staging/RedDeer_master/all/repo</reddeer.site>
+		<jbtis.site>http://download.jboss.org/jbosstools/updates/integration/juno/integration-stack/aggregate/4.0.0</jbtis.site>
 	</properties>
+
+	<repositories>
+	  <!-- Red Deer Repository -->
+	  <repository>
+	    <id>red_deer</id>
+	    <url>${reddeer.site}</url>
+	    <layout>p2</layout>
+	    <snapshots>
+	      <enabled>true</enabled>
+	    </snapshots>
+	    <releases>
+	      <enabled>true</enabled>
+	    </releases>
+	  </repository>
+	  <!-- JBTIS Repository -->
+	  <repository>
+	    <id>jbtis</id>
+	    <url>${jbtis.site}</url>
+	    <layout>p2</layout>
+	    <snapshots>
+	      <enabled>true</enabled>
+	    </snapshots>
+	    <releases>
+	      <enabled>true</enabled>
+	    </releases>
+	  </repository>
+	</repositories>
 
 	<profiles>
 		<profile>
@@ -114,14 +143,24 @@
                                                         <version>0.0.0</version>
                                                 </dependency>
                                         </dependencies>
-
-
-
-
-
-
-
 				</configuration>
+			</plugin>
+			<!-- JBTIS Target Platform -->
+			<plugin>
+			  <groupId>org.eclipse.tycho</groupId>
+			  <artifactId>target-platform-configuration</artifactId>
+			  <version>${tychoVersion}</version>
+			  <configuration>
+			    <target>
+			      <artifact>
+				<groupId>org.jboss.tools.integration-stack</groupId>
+				<artifactId>target-platform</artifactId>
+				<version>4.0.0-SNAPSHOT</version>
+				<type>target</type>
+				<classifier>base</classifier>
+			      </artifact>
+			    </target>
+			  </configuration>
 			</plugin>
 		</plugins>
 	</build>

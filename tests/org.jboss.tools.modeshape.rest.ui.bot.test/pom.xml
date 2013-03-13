@@ -10,14 +10,43 @@
 	<groupId>org.jboss.tools.modeshape.tests</groupId>
 	<artifactId>org.jboss.tools.modeshape.rest.ui.bot.test</artifactId>
 	<version>3.0.0-SNAPSHOT</version>
-	
 	<packaging>eclipse-test-plugin</packaging>
-	<properties>
-	  <coverage.filter>org.jboss.tools.modeshape.rest.ui*</coverage.filter>
-	  <emma.instrument.bundles>org.jboss.tools.modeshape.rest</emma.instrument.bundles>
-	  <systemProperties>${integrationTestsSystemProperties} -Dswtbot.test.properties.file=./swtbot.properties</systemProperties>
-	</properties>
 	
+	<properties>
+	  <systemProperties>${integrationTestsSystemProperties} -Dswtbot.test.properties.file=./swtbot.properties</systemProperties>
+	  <surefire.timeout>10800</surefire.timeout>
+	  <testClass>ModeshapeAllTests</testClass>
+	  <reddeer.site>http://download.jboss.org/jbosstools/builds/staging/RedDeer_master/all/repo</reddeer.site>
+	  <jbtis.site>http://download.jboss.org/jbosstools/updates/integration/juno/integration-stack/aggregate/4.0.0</jbtis.site>
+	</properties>
+
+	<repositories>
+	  <!-- Red Deer Repository -->
+	  <repository>
+	    <id>red_deer</id>
+	    <url>${reddeer.site}</url>
+	    <layout>p2</layout>
+	    <snapshots>
+	      <enabled>true</enabled>
+	    </snapshots>
+	    <releases>
+	      <enabled>true</enabled>
+	    </releases>
+	  </repository>
+	  <!-- JBTIS Repository -->
+	  <repository>
+	    <id>jbtis</id>
+	    <url>${jbtis.site}</url>
+	    <layout>p2</layout>
+	    <snapshots>
+	      <enabled>true</enabled>
+	    </snapshots>
+	    <releases>
+	      <enabled>true</enabled>
+	    </releases>
+	  </repository>
+	</repositories>
+
 	<build>
 	  <plugins>
 	    <!-- Modeshape Bot Test -->
@@ -25,6 +54,8 @@
 	      <groupId>org.eclipse.tycho</groupId>
 	      <artifactId>tycho-surefire-plugin</artifactId>
 	      <configuration>
+		<testSuite>org.jboss.tools.modeshape.rest.ui.bot.test</testSuite>
+		<testClass>org.jboss.tools.modeshape.rest.ui.bot.tests.${testClass}</testClass>
 		<useUIThread>false</useUIThread>
 		<skip>${swtbot.test.skip}</skip>
 		<dependencies combine.children="append">
@@ -46,19 +77,26 @@
 		</dependencies>
 	      </configuration>
             </plugin>
+	    <!-- JBTIS Target Platform -->
+	    <plugin>
+	      <groupId>org.eclipse.tycho</groupId>
+	      <artifactId>target-platform-configuration</artifactId>
+	      <version>${tychoVersion}</version>
+	      <configuration>
+		<target>
+		  <artifact>
+		    <groupId>org.jboss.tools.integration-stack</groupId>
+		    <artifactId>target-platform</artifactId>
+		    <version>4.0.0-SNAPSHOT</version>
+		    <type>target</type>
+		    <classifier>base</classifier>
+		  </artifact>
+		</target>
+	      </configuration>
+	    </plugin>
 	  </plugins>
 	</build>
 	
-	<!-- JBIDE-11121 - remove this when we have a SOA TP site instead -->
-	<repositories>	    
-	  <repository>
-	    <id>soa-tools</id>
-	    <name>SOA Tools Repository</name>
-	    <url>http://download.jboss.org/jbosstools/updates/nightly/soa-tooling/trunk</url>
-	    <layout>p2</layout>
-	  </repository>
-	</repositories>
-
 	<profiles>
 	  <!-- Install JBoss AS 5.1.0 with ModeShape 2.8.3 -->
 	  <profile>

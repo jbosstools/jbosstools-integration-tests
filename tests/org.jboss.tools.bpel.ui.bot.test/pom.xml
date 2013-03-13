@@ -49,22 +49,7 @@
 
 	<build>
 	  <plugins>
-	    <plugin>
-	      <groupId>org.eclipse.tycho</groupId>
-	      <artifactId>target-platform-configuration</artifactId>
-	      <version>${tychoVersion}</version>
-	      <configuration>
-		<target>
-		  <artifact>
-		    <groupId>org.jboss.tools.integration-stack</groupId>
-		    <artifactId>target-platform</artifactId>
-		    <version>4.0.0-SNAPSHOT</version>
-		    <type>target</type>
-		    <classifier>base</classifier>
-		  </artifact>
-		</target>
-	      </configuration>
-	    </plugin>
+	    <!-- BPEL Bot Tests -->
 	    <plugin>
 	      <groupId>org.eclipse.tycho</groupId>
 	      <artifactId>tycho-surefire-plugin</artifactId>
@@ -99,6 +84,23 @@
 		    <version>0.0.0</version>
 		  </dependency>
 		</dependencies>
+	      </configuration>
+	    </plugin>
+	    <!-- JBTIS Target Platform -->
+	    <plugin>
+	      <groupId>org.eclipse.tycho</groupId>
+	      <artifactId>target-platform-configuration</artifactId>
+	      <version>${tychoVersion}</version>
+	      <configuration>
+		<target>
+		  <artifact>
+		    <groupId>org.jboss.tools.integration-stack</groupId>
+		    <artifactId>target-platform</artifactId>
+		    <version>4.0.0-SNAPSHOT</version>
+		    <type>target</type>
+		    <classifier>base</classifier>
+		  </artifact>
+		</target>
 	      </configuration>
 	    </plugin>
 	  </plugins>
