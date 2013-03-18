@@ -17,7 +17,8 @@ import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.impl.tree.ViewTree;
+import org.jboss.reddeer.swt.impl.tree.DefaultTree;
+import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.util.Bot;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
@@ -58,12 +59,12 @@ public class MylynReqTest {
 		log.info("Step 4 - Validate connection to the Red Hat Bugzilla repo");
 		int elementIndex = repoList.indexOf("Red Hat Bugzilla");
 		repoItems.get(elementIndex).doubleClick();
-		// Bot.get().sleep(DELAY);
+		Bot.get().sleep(TimePeriod.NORMAL.getSeconds());
 
 		new DefaultShell("Properties for Task Repository");
 		log.info(new PushButton("Validate Settings").getText());
 		log.info(new PushButton("Validate Settings").isEnabled());
-		// Bot.get().sleep(DELAY);
+		Bot.get().sleep(TimePeriod.NORMAL.getSeconds());
 		PushButton validate = new PushButton("Validate Settings");
 		validate.click();
 
@@ -91,11 +92,12 @@ public class MylynReqTest {
 
 		new ShellMenu("File", "New" , "Other...").select();
 		new DefaultShell("New");
-		ViewTree newElementTree = new ViewTree();
-		List <TreeItem> newItems = newElementTree.getAllItems();
-
 		Bot.get().sleep(TimePeriod.NORMAL.getSeconds());
-		TestSupport.selectTreeItem (newItems, "Task", log);
+		
+		new DefaultTree();
+		DefaultTreeItem theTask = new DefaultTreeItem ("Tasks", "Task");
+		theTask.select();				
+		
 		Bot.get().sleep(TimePeriod.NORMAL.getSeconds());
 		new PushButton("Next >").click();
 		new PushButton("Finish").click();

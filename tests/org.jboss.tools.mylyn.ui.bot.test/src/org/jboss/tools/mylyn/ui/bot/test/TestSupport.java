@@ -8,38 +8,19 @@ import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.ViewTree;
 import org.jboss.reddeer.swt.util.Bot;
 import org.apache.log4j.Logger;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 
+import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+
 public class TestSupport {
 	
 	protected final static long DELAY = 3000l;
 
-	/* To locate one item by name in a list */
-	public static void selectTreeItem(List<TreeItem> theTreeItems, String matchingName, Logger log) {
-		for (TreeItem item : theTreeItems) {
-			log.info(item.getText());
-			if (item.getText().equals(matchingName)) {
-				item.select();
-				break;
-			}
-		}
-	} /* method */	
-	
-	public static TreeItem returnTreeItem(List<TreeItem> theTreeItems, String matchingName, Logger log) {
-		TreeItem retItem = null;
-		for (TreeItem item : theTreeItems) {
-			log.info(item.getText());
-			if (item.getText().equals(matchingName)) {
-				item.select();
-				retItem = item;
-				break;
-			}
-		}
-		return retItem;
-	} /* method */	
+
 	
 	/* Test Setup part 1 */
 	public static List<TreeItem> mylynTestSetup1 (Logger log) {		
@@ -62,9 +43,11 @@ public class TestSupport {
 
 		/* Verify that the expected repos are defined */
 		log.info("***Step - Verify that the Mylyn Features are Present");
-		ViewTree FeatureTree = new ViewTree();
-		List<TreeItem> featureItems = FeatureTree.getAllItems();
-		selectTreeItem(featureItems, "Task Repositories", log);
+		DefaultTree FeatureTree = new DefaultTree();
+		DefaultTreeItem taskRepositories = new DefaultTreeItem ("Mylyn", "Task Repositories");
+		taskRepositories.select();		
+//		List<TreeItem> featureItems = FeatureTree.getAllItems();
+//		selectTreeItem(featureItems, "Task Repositories", log);
 		
 		/* Slightly different text after update for 
 		 * http://wiki.eclipse.org/Platform_UI/Juno_Performance_Investigation
@@ -81,7 +64,7 @@ public class TestSupport {
 				
 		Bot.get().sleep(30000l);
 		
-		ViewTree RepoTree = new ViewTree();
+		DefaultTree RepoTree = new DefaultTree();
 		List<TreeItem> repoItems = RepoTree.getAllItems();
 		
 		return repoItems;
