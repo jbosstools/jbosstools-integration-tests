@@ -17,13 +17,15 @@
 	  <test.package>org.teiid.designer.ui.bot.test.suite</test.package>
 	  <test.class>AllTests</test.class>
 	  <jdbc.dir>${requirementsDirectory}/lib</jdbc.dir>
+	  <reddeer.site>http://download.jboss.org/jbosstools/builds/staging/RedDeer_master/all/repo</reddeer.site>
+	  <jbtis.site>http://download.jboss.org/jbosstools/updates/integration/juno/integration-stack/aggregate/4.0.0</jbtis.site>
 	</properties>
-	
+
 	<repositories>
 	  <!-- Red Deer Repository -->
 	  <repository>
 	    <id>red_deer</id>
-	    <url>http://p2-reddeer.rhcloud.com/master</url>
+	    <url>${reddeer.site}</url>
 	    <layout>p2</layout>
 	    <snapshots>
 	      <enabled>true</enabled>
@@ -32,22 +34,10 @@
 	      <enabled>true</enabled>
 	    </releases>
 	  </repository>
-	  <!-- Teiid Designer Repository -->
+	  <!-- JBTIS Repository -->
 	  <repository>
-	    <id>teiid_designer</id>
-	    <url>http://download.jboss.org/jbosstools/updates/stable/juno/soa-tooling/teiiddesigner/8.0.0.Final</url>
-	    <layout>p2</layout>
-	    <snapshots>
-	      <enabled>true</enabled>
-	    </snapshots>
-	    <releases>
-	      <enabled>true</enabled>
-	    </releases>
-	  </repository>
-	  <!-- Integration Tests Repository -->
-	  <repository>
-	    <id>integration_tests</id>
-	    <url>http://download.jboss.org/jbosstools/updates/nightly/integrationtests/trunk</url>
+	    <id>jbtis</id>
+	    <url>${jbtis.site}</url>
 	    <layout>p2</layout>
 	    <snapshots>
 	      <enabled>true</enabled>
@@ -113,6 +103,23 @@
 		  </configuration>
 		</execution>
 	      </executions>
+	    </plugin>
+	    <!-- JBTIS Target Platform -->
+	    <plugin>
+	      <groupId>org.eclipse.tycho</groupId>
+	      <artifactId>target-platform-configuration</artifactId>
+	      <version>${tychoVersion}</version>
+	      <configuration>
+		<target>
+		  <artifact>
+		    <groupId>org.jboss.tools.integration-stack</groupId>
+		    <artifactId>target-platform</artifactId>
+		    <version>4.0.0-SNAPSHOT</version>
+		    <type>target</type>
+		    <classifier>base</classifier>
+		  </artifact>
+		</target>
+	      </configuration>
 	    </plugin>
 	  </plugins>
 	</build>
