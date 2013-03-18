@@ -21,10 +21,11 @@ import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.tree.DefaultTree;
+import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.impl.tree.ViewTree;
 import org.jboss.reddeer.swt.util.Bot;
 import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
-//import org.jboss.reddeer.swt.condition.ButtonWithTextIsActive;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 
@@ -93,12 +94,12 @@ public class MylynBugzillaQueryTest {
 		log.info("Step - Validate connection to the Red Hat Bugzilla repo");
 		int elementIndex = repoList.indexOf(targetRepo);
 		repoItems.get(elementIndex).doubleClick();
-		// Bot.get().sleep(TimePeriod.NORMAL.getSeconds());
+		Bot.get().sleep(TimePeriod.NORMAL.getSeconds());
 
 		new DefaultShell("Properties for Task Repository");
 		log.info(new PushButton("Validate Settings").getText());
 		log.info(new PushButton("Validate Settings").isEnabled());
-		// Bot.get().sleep(TimePeriod.NORMAL.getSeconds());
+		Bot.get().sleep(TimePeriod.NORMAL.getSeconds());
 		PushButton validate = new PushButton("Validate Settings");
 		validate.click();
 
@@ -122,10 +123,12 @@ public class MylynBugzillaQueryTest {
 
 		new ShellMenu("File", "New", "Other...").select();
 		new DefaultShell("New");
-		ViewTree newElementTree = new ViewTree();
-		List<TreeItem> newItems = newElementTree.getAllItems();
 		Bot.get().sleep(TimePeriod.NORMAL.getSeconds());
-		TestSupport.selectTreeItem(newItems, "Query", log);
+		
+		new DefaultTree();
+		DefaultTreeItem theTask = new DefaultTreeItem ("Tasks", "Query");
+		theTask.select();		
+		
 		Bot.get().sleep(TimePeriod.NORMAL.getSeconds());
 		new PushButton("Next >").click();
 
@@ -195,11 +198,12 @@ public class MylynBugzillaQueryTest {
 
 		/* Verify that the expected repos are defined */
 		log.info("Step - Verify that the Mylyn query is Present");
-		ViewTree FeatureTree = new ViewTree();
-		List<TreeItem> featureItems = FeatureTree.getAllItems();
 		/* Open the Task List view */
-		TestSupport.selectTreeItem(featureItems, "Task List", log);
 		Bot.get().sleep(TimePeriod.LONG.getSeconds());
+
+		new DefaultTree();
+		theTask = new DefaultTreeItem ("Mylyn", "Task List");
+		theTask.select();	
 		
 		/* Slightly different text after update for 
 		 * http://wiki.eclipse.org/Platform_UI/Juno_Performance_Investigation
