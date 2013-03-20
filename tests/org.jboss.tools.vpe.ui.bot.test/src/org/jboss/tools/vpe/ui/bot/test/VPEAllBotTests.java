@@ -120,7 +120,6 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(RequirementAwareSuite.class)
 @SuiteClasses({
-  /*
     VisualEditorContextMenuTest.class,
     EditingActionsTest.class,
 		NewXHTMLPageWizardTest.class, 
@@ -222,7 +221,6 @@ import org.junit.runners.Suite.SuiteClasses;
 		SelectionSynchronizationTest.class,
     ScrollingSynchronizationTest.class,
 		ElForBundleValueTest_Jbide10531.class,
-		*/
 		MobilePaletteTest.class})
 public class VPEAllBotTests extends SWTBotTestCase{
 
