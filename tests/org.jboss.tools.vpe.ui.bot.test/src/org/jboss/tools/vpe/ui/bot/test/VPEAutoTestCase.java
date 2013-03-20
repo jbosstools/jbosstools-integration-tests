@@ -46,6 +46,7 @@ import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.NewObject.JBossToolsWebJSFJSFProject;
+import org.jboss.tools.ui.bot.ext.gen.ActionItem.NewObject.WebDynamicWebProject;
 import org.jboss.tools.ui.bot.ext.helper.BuildPathHelper;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.ext.view.PaletteView;
@@ -82,6 +83,7 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase {
   protected final static String JBT_TEST_PROJECT_NAME = "JBIDETestProject"; //$NON-NLS-1$
   protected final static String FACELETS_TEST_PROJECT_NAME = "FaceletsTestProject"; //$NON-NLS-1$
   protected final static String JSF2_TEST_PROJECT_NAME = "JSF2TestProject"; //$NON-NLS-1$
+  protected final static String DYNAMIC_WEB_TEST_PROJECT_NAME = "DynWebTestProject"; //$NON-NLS-1$
   protected final static String RICH_FACES_UI_JAR_LOCATION;
 
   private String projectName = null;
@@ -710,6 +712,26 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase {
       BuildPathHelper.removeVariable(projectName, addedVariableRichfacesUiLocation.get(projectName), true);
       addedVariableRichfacesUiLocation.remove(projectName);
       eclipse.cleanAllProjects();
+    }
+  }
+  /**
+   * Create Dynamic Web Project with <b>jsfProjectName</b>
+   * 
+   * @param dynamicWebfProjectName
+   *            - name of created project
+   */
+  protected void createDynamicWebProject(String dynamicWebfProjectName) {
+    SWTBot innerBot = bot.viewByTitle(WidgetVariables.PACKAGE_EXPLORER).bot();
+    SWTBotTree innerTree = innerBot.tree();
+    try {
+      innerTree.getTreeItem(dynamicWebfProjectName);
+    } catch (WidgetNotFoundException wnfe) {
+      SWTBot wiz = open.newObject(WebDynamicWebProject.LABEL);
+      wiz.textWithLabel(IDELabel.DynamicWebProjectWizard.PROJECT_NAME_LABEL).setText(dynamicWebfProjectName);
+      wiz.button(IDELabel.Button.NEXT).click();
+      open.finish(wiz,IDELabel.Button.FINISH, IDELabel.Button.NO, true);
+      waitForBlockingJobsAcomplished(Timing.time5S(), BUILDING_WS);
+      setException(null);
     }
   }
 }

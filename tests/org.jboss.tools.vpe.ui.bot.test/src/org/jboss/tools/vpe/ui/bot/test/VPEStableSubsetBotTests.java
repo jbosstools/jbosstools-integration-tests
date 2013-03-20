@@ -16,6 +16,8 @@ import org.jboss.tools.vpe.ui.bot.test.editor.BlockCommentTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.JspFileEditingTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.MinMaxPanesTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.MultiSelectionTest;
+import org.jboss.tools.vpe.ui.bot.test.editor.ScrollingSynchronizationTest;
+import org.jboss.tools.vpe.ui.bot.test.editor.SelectionSynchronizationTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.StylesOnThePageTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.TextSelectionTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.ToggleCommentTest;
@@ -41,11 +43,13 @@ import org.jboss.tools.vpe.ui.bot.test.editor.selectionbar.SelectionBarTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.CalendarTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.CoreHTMLTagsTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.JSFTagsTest;
+import org.jboss.tools.vpe.ui.bot.test.el.ElForBundleValueTest_Jbide10531;
 import org.jboss.tools.vpe.ui.bot.test.jbide.JBIDE4556Test;
 import org.jboss.tools.vpe.ui.bot.test.jbide.JBIDE9445Test_DuplicateSourceMenu;
 import org.jboss.tools.vpe.ui.bot.test.palette.CancelTagLibDefenitionTest;
 import org.jboss.tools.vpe.ui.bot.test.palette.ImportTagsFromTLDFileTest;
 import org.jboss.tools.vpe.ui.bot.test.palette.ManagePaletteGroupsTest;
+import org.jboss.tools.vpe.ui.bot.test.palette.MobilePaletteTest;
 import org.jboss.tools.vpe.ui.bot.test.palette.PaletteEditorTest;
 import org.jboss.tools.vpe.ui.bot.test.smoke.CodeCompletionTest;
 import org.jboss.tools.vpe.ui.bot.test.smoke.EditorSynchronizationTest;
@@ -122,7 +126,11 @@ import org.junit.runners.Suite.SuiteClasses;
     XhtmlFilePerformanceTest.class,
     MarkersTest.class,
     JBIDE9445Test_DuplicateSourceMenu.class,
-    MultiSelectionTest.class
+    MultiSelectionTest.class,
+    SelectionSynchronizationTest.class,
+    ScrollingSynchronizationTest.class,
+    ElForBundleValueTest_Jbide10531.class,
+    MobilePaletteTest.class
 })
 public class VPEStableSubsetBotTests extends SWTBotTestCase {
 
