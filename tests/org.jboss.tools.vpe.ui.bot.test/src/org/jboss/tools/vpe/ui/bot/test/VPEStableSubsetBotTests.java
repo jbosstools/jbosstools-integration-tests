@@ -12,6 +12,7 @@ package org.jboss.tools.vpe.ui.bot.test;
 
 import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
 import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
+import org.jboss.tools.vpe.ui.bot.test.browsersim.OpenBrowserSimTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.BlockCommentTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.JspFileEditingTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.MinMaxPanesTest;
@@ -130,7 +131,8 @@ import org.junit.runners.Suite.SuiteClasses;
     SelectionSynchronizationTest.class,
     ScrollingSynchronizationTest.class,
     ElForBundleValueTest_Jbide10531.class,
-    MobilePaletteTest.class
+    MobilePaletteTest.class,
+    OpenBrowserSimTest.class
 })
 public class VPEStableSubsetBotTests extends SWTBotTestCase {
 
