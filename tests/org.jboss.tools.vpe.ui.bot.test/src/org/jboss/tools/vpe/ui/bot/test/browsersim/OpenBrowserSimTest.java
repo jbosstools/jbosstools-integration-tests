@@ -32,7 +32,7 @@ public class OpenBrowserSimTest extends JBTSWTBotTestCase{
 	  if (!bot.activePerspective().getLabel().equals(IDELabel.SelectPerspectiveDialog.JBOSS)){
 	    bot.perspectiveByLabel(IDELabel.SelectPerspectiveDialog.JBOSS).activate();
 	  }
-	  final String browserSimmProcessName = "BrowserSim";
+	  final String browserSimmProcessName = "BrowserSimRunner";
 	  int countBrowserSimmProcesses = OpenBrowserSimTest.countJavaProcess(browserSimmProcessName);
 	  // this also asserts that BrowserSim runs without error within JBT
 		bot.toolbarButtonWithTooltip(IDELabel.ToolbarButton.RUN_BROWSER_SIM).click();
