@@ -97,6 +97,11 @@
               <artifactId>org.eclipse.jdt.feature.group</artifactId>
               <version>0.0.0</version>
             </dependency> 
+            <dependency>
+              <type>p2-installable-unit</type>
+              <artifactId>org.jboss.tools.vpe.browsersim.feature.feature.group</artifactId>
+              <version>0.0.0</version>
+            </dependency>
           </dependencies>
         </configuration>
       </plugin>
