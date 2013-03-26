@@ -21,6 +21,7 @@ import org.jboss.tools.ui.bot.ext.SWTBotExt;
 import org.jboss.tools.ui.bot.ext.SWTEclipseExt;
 import org.jboss.tools.ui.bot.ext.SWTUtilExt;
 import org.jboss.tools.ui.bot.ext.Timing;
+import org.jboss.tools.ui.bot.ext.condition.ActiveShellTitleMatches;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 
 /**
@@ -101,8 +102,11 @@ public class BuildPathHelper {
 		}
 		bot.clickButton(IDELabel.Button.OK).click();
 		String result = TableHelper.getSelectionText(bot.table());
+		bot.waitUntil(new ActiveShellTitleMatches(bot, "Preferences \\(Filtered\\)"),Timing.time3S());
 		bot.clickButton(IDELabel.Button.OK).click();
+		bot.waitUntil(new ActiveShellTitleMatches(bot, IDELabel.Shell.NEW_VARIABLE_CLASS_PATH_ENTRY),Timing.time3S());
 		bot.clickButton(IDELabel.Button.OK).click();
+		bot.waitUntil(new ActiveShellTitleMatches(bot, IDELabel.Shell.PROPERTIES_FOR + " " + projectName),Timing.time3S());
 		bot.clickButton(IDELabel.Button.OK).click();
 		new SWTUtilExt(bot).waitForNonIgnoredJobs();
 		return result;
