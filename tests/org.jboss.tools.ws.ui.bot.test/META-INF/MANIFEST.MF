@@ -7,7 +7,7 @@ Bundle-Activator: org.jboss.tools.ws.ui.bot.test.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.apache.log4j;bundle-version="1.2.13",
- org.jboss.tools.ui.bot.ext,
+ org.jboss.tools.ui.bot.ext;bundle-version="[4.0.0,4.1.0)",
  org.jboss.reddeer.swt,
  org.eclipse.jdt.ui,
  org.eclipse.swtbot.eclipse.core;bundle-version="2.0.0",

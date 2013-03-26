@@ -7,7 +7,7 @@ Bundle-ActivationPolicy: lazy
 Bundle-Vendor: JBoss by Red Hat
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Require-Bundle: org.eclipse.swtbot.go,
- org.jboss.tools.ui.bot.ext;bundle-version="3.2.0",
+ org.jboss.tools.ui.bot.ext;bundle-version="[4.0.0,4.1.0)",
  org.jboss.tools.forge.ui;bundle-version="1.0.0",
  org.jboss.tools.forge.core;bundle-version="1.0.0",
  org.jboss.tools.forge.runtime;bundle-version="1.0.0",
