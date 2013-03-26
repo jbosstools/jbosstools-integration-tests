@@ -684,6 +684,41 @@ public class SWTEclipseExt {
 	}
 	
 	/**
+	 * Add a jBPM 5.x runtime and mark it as default.
+	 * 
+	 * ISSUES: Does not check validity of provided folder. Allows to add
+	 *         a wrong directory!
+	 *         
+	 * @param name
+	 * @param runtimeHome
+	 */
+	public void addJBPM5Runtime(String name, String runtimeHome) {
+		SWTBot windowBot = open.preferenceOpen(ActionItem.Preference.JbpmInstalledJbpmRuntimes.LABEL);
+		
+		boolean runtimeFound = false;
+		SWTBotTable table = bot.table();
+		if (table.rowCount() > 0) {
+			for (int row=0; row<table.rowCount(); row++) {
+				if (table.cell(row, 1).equals(name)) {
+					runtimeFound = true;
+					break;
+				}
+			}
+		}
+		
+		if (!runtimeFound) {
+			windowBot.button("Add...").click();
+			bot.text(0).setText(name);
+			bot.text(1).setText(runtimeHome);
+			bot.button("OK").click();
+			log.info("jBPM Runtime '" + name + "' added.");
+		}
+		table.getTableItem(name).check();
+
+		windowBot.button("OK").click();
+	}
+	
+	/**
 	 * Removes jBPM Runtime via SWTBot
 	 * @param name
 	 */
