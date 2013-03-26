@@ -13,7 +13,7 @@ Require-Bundle: org.eclipse.ui,
  org.apache.log4j;bundle-version="1.2.13",
  org.junit;bundle-version="4.8.1",
  org.eclipse.datatools.connectivity;bundle-version="1.1.2",
- org.jboss.tools.ui.bot.ext;bundle-version="1.0.0"
+ org.jboss.tools.ui.bot.ext;bundle-version="[4.1.0,4.2.0)"
 Eclipse-RegisterBuddy: org.apache.log4j
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6

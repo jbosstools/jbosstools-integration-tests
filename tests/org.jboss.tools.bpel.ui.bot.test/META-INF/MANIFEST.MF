@@ -15,7 +15,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.gef,
  org.eclipse.wst.wsdl,
  org.eclipse.emf.ecore,
- org.jboss.tools.ui.bot.ext,
+ org.jboss.tools.ui.bot.ext;bundle-version="[4.1.0,4.2.0)",
  org.eclipse.swtbot.eclipse.gef.finder,
  org.eclipse.bpel.model
 Bundle-ActivationPolicy: lazy
