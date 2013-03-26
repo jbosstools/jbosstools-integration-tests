@@ -275,7 +275,6 @@ public class CodeCompletionTest extends JSFAutoTestCase{
     List<String> expectedProposals = new LinkedList<String>();
     expectedProposals.add("msgs");
     expectedProposals.add("user : User");
-    expectedProposals.add("\"#{user.name}\"");
     // Check content assist for #{ prefix
     ContentAssistHelper.checkContentAssistContent(SWTTestExt.bot, 
         JSF2_TEST_PAGE,
@@ -287,7 +286,6 @@ public class CodeCompletionTest extends JSFAutoTestCase{
     expectedProposals.clear();
     expectedProposals.add("name : String - User");
     expectedProposals.add("sayHello() : String - User");
-    expectedProposals.add("\"#{user.name}\"");
     ContentAssistHelper.checkContentAssistContent(SWTTestExt.bot, 
         FACELETS_TEST_PAGE,
         textForSelection, 
