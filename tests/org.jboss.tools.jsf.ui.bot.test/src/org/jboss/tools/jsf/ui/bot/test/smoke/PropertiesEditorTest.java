@@ -128,8 +128,8 @@ public class PropertiesEditorTest extends JSFAutoTestCase{
     assertNotEnabled(bot.button(IDELabel.Button.UP));
     // Update Property Directly
     propTable.select(newPropertyIndex);
-    final String updatedPropertyName = "updPropName";
-    final String updatedPropertyValue = "updPropValue";
+    final String updatedPropertyName = "updpropname";
+    final String updatedPropertyValue = "updpropvalue";
     propTable.select(newPropertyIndex);
     propTable.setFocus();
     bot.sleep(Timing.time2S());
