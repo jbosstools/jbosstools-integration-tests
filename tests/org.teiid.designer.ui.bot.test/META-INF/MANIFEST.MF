@@ -21,5 +21,5 @@ Require-Bundle: org.apache.log4j,
  org.jboss.reddeer.workbench,
  org.jboss.reddeer.jface,
  org.jboss.reddeer.swt,
- org.jboss.tools.ui.bot.ext;bundle-version="4.0.0"
+ org.jboss.tools.ui.bot.ext;bundle-version="[4.1.0,4.2.0)"
 Eclipse-RegisterBuddy: org.apache.log4j
