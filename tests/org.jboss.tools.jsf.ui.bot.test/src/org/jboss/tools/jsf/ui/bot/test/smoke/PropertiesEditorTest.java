@@ -128,15 +128,15 @@ public class PropertiesEditorTest extends JSFAutoTestCase{
     assertNotEnabled(bot.button(IDELabel.Button.UP));
     // Update Property Directly
     propTable.select(newPropertyIndex);
-    final String updatedPropertyName = "updpropname";
-    final String updatedPropertyValue = "updpropvalue";
+    final String updatedPropertyName = "upn";
+    final String updatedPropertyValue = "upv";
     propTable.select(newPropertyIndex);
-    propTable.setFocus();
     bot.sleep(Timing.time2S());
     propTable.click(newPropertyIndex, 0);
     bot.sleep(Timing.time2S());
     KeyboardHelper.typeBasicStringUsingAWT(updatedPropertyName);
     propTable.click(newPropertyIndex, 1);
+    bot.sleep(Timing.time2S());
     KeyboardHelper.typeBasicStringUsingAWT(updatedPropertyValue);
     propTable.select(newPropertyIndex);
     propertiesEditor.save();
@@ -177,11 +177,12 @@ public class PropertiesEditorTest extends JSFAutoTestCase{
     bot.button(IDELabel.Button.DELETE).click();
     bot.shell(IDELabel.Shell.CONFIRMATION).activate();
     bot.button(IDELabel.Button.OK).click();
+    bot.sleep(Timing.time1S());
     propertiesEditor.save();
-    bot.sleep(Timing.time2S());
+    bot.sleep(Timing.time3S());
     assertEquals("Properties file " + PropertiesEditorTest.PROPERTIES_FILE_NAME + 
         " should have content:\n" + originalContent +
-        "\nbut has:]n" + propertiesEditor.toTextEditor().getText(),
+        "\nbut has:\n" + propertiesEditor.toTextEditor().getText(),
       originalContent, propertiesEditor.toTextEditor().getText());
   }
   /**
