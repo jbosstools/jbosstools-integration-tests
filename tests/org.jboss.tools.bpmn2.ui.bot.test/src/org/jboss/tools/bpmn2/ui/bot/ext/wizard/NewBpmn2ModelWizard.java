@@ -16,6 +16,7 @@ public class NewBpmn2ModelWizard extends NewWizardDialog {
 	 * Creates a new instance of NewBpmn2ModelWizard. 
 	 */
 	public NewBpmn2ModelWizard() {
+		super("BPMN2", "BPMN2 Model");
 	}
 	
 	@Override

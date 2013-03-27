@@ -18,7 +18,7 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses({
 	ProjectWizardTest.class
 })
-public class BPMN2AllBotTests extends SWTTestExt {
+public class Bpmn2AllBotTests extends SWTTestExt {
 
 	// TBD
 	

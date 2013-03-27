@@ -54,7 +54,7 @@
                 <configuration>
                     <useUIThread>false</useUIThread>
                     <testSuite>org.jboss.tools.bpmn2.ui.bot.test</testSuite>
-                    <testClass>org.jboss.tools.bpmn2.ui.bot.test.BPMN2AllBotTests</testClass>
+                    <testClass>org.jboss.tools.bpmn2.ui.bot.test.Bpmn2AllBotTests</testClass>
                     <dependencies combine.children="append">
                         <dependency>
                             <type>p2-installable-unit</type>
