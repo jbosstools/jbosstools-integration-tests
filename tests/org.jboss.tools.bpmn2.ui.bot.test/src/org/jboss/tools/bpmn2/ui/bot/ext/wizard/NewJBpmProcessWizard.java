@@ -51,7 +51,7 @@ public class NewJBpmProcessWizard extends NewWizardDialog {
 	 */
 	public void execute(String fileName, String[] path, String processName, String processId, String packageName) {
 		open();
-		// if these are null use predifined values by the editor wizard.
+		// if these are null use predefined values by the editor wizard.
 		if (path != null && path.length > 0) new LabeledText("Container:").setText(PathInProject.buildPath(path));
 		if (fileName != null && !fileName.isEmpty()) new LabeledText("File name:").setText(fileName);
 		if (processName != null && !processName.isEmpty()) new LabeledText("Process name:").setText(processName);

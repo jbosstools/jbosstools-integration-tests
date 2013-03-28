@@ -64,6 +64,8 @@ public class ProjectWizardTest extends SWTTestExt {
 			fail("Project with an empty name was created!");
 		} catch (JFaceLayerException e) {
 			assertEquals("Button '&Next >' is not enabled", e.getMessage());
+		} finally {
+			wizardView.cancel();
 		}
 	}
 	
