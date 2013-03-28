@@ -41,8 +41,8 @@ public class NewJBpmProcessWizard extends NewWizardDialog {
 	 */
 	public void execute(String processName, String[] path) {
 		open();
-		new LabeledText("Enter or select the parent folder:").setText(processName);
-		new LabeledText("File name:").setText(PathInProject.buildPath(path));
+		new LabeledText("Enter or select the parent folder:").setText(PathInProject.buildPath(path));
+		new LabeledText("File name:").setText(processName);
 		finish();			
 	}
 	
