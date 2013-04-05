@@ -8,8 +8,6 @@ Bundle-Vendor:
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Require-Bundle: org.eclipse.swtbot.go,
  org.jboss.reddeer.junit;bundle-version="0.2.0"
-Bundle-ClassPath: .,
- bin/org/pali/,
- src/org/pali/
+Bundle-ClassPath: .
 Export-Package: org.jboss.ide.eclipse.as.reddeer.server.requirement
 Import-Package: javax.xml.bind.annotation
