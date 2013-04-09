@@ -34,7 +34,7 @@ public class ImportHelper {
 		dlgBot.button(IDELabel.Button.NEXT).click();
 		
 		dlgBot.radio(0).click();
-		dlgBot.text().setText(path);
+		dlgBot.comboBox().setText(path);
 		dlgBot.radio(1).click();
 		dlgBot.radio(0).click();
 		dlgBot.button("Select All").click();
