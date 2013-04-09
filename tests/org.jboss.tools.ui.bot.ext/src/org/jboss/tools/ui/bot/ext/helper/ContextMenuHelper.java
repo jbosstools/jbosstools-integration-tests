@@ -12,8 +12,8 @@
 package org.jboss.tools.ui.bot.ext.helper;
 
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.withMnemonic;
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.core.AllOf.allOf;
+import static org.hamcrest.core.IsInstanceOf.instanceOf;
 
 import java.awt.event.KeyEvent;
 import java.util.Arrays;

@@ -1,6 +1,6 @@
 package org.jboss.tools.portlet.ui.bot.test.example;
 
-import static org.hamcrest.Matchers.not;
+import static org.hamcrest.core.IsNot.not;
 import static org.jboss.tools.portlet.ui.bot.matcher.WorkspaceAssert.assertThatInWorkspace;
 import static org.jboss.tools.portlet.ui.bot.matcher.factory.DefaultMatchersFactory.exceptionInConsoleOutput;
 import static org.jboss.tools.portlet.ui.bot.matcher.factory.DefaultMatchersFactory.isNumberOfErrors;

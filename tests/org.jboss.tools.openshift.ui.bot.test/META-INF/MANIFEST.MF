@@ -22,7 +22,6 @@ Require-Bundle: org.eclipse.ui,
  org.jboss.reddeer.swt,
  org.jboss.reddeer.eclipse,
  org.jboss.reddeer.workbench,
- org.jboss.reddeer.junit,
- org.hamcrest;bundle-version="1.1.0"
+ org.jboss.reddeer.junit
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy

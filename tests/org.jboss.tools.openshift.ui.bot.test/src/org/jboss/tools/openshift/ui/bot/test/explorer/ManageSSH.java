@@ -1,6 +1,6 @@
 package org.jboss.tools.openshift.ui.bot.test.explorer;
 
-import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.core.IsEqual.equalTo;
 
 import java.util.Date;
 import java.util.List;

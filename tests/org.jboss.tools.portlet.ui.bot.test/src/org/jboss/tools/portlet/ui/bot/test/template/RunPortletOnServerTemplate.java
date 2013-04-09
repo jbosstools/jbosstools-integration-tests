@@ -1,6 +1,6 @@
 package org.jboss.tools.portlet.ui.bot.test.template;
 
-import static org.hamcrest.Matchers.not;
+import static org.hamcrest.core.IsNot.not;
 import static org.jboss.tools.portlet.ui.bot.matcher.factory.DefaultMatchersFactory.exceptionInConsoleOutput;
 
 import org.jboss.tools.portlet.ui.bot.task.console.ConsoleClearingTask;

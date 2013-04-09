@@ -11,8 +11,8 @@
 package org.jboss.tools.ui.bot.ext.gef;
 
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.withRegex;
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.core.AllOf.allOf;
+import static org.hamcrest.core.IsInstanceOf.instanceOf;
 
 import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;

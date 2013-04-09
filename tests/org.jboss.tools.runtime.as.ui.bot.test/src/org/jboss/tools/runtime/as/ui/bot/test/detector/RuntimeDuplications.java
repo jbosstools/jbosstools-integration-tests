@@ -1,7 +1,7 @@
 package org.jboss.tools.runtime.as.ui.bot.test.detector;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.core.Is.is;
 
 import java.io.File;
 import java.io.IOException;

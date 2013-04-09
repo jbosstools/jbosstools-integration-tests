@@ -1,8 +1,8 @@
 package org.jboss.ide.eclipse.as.ui.bot.test.template;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNot.not;
 
 import org.jboss.ide.eclipse.as.ui.bot.test.web.PageSourceMatcher;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;

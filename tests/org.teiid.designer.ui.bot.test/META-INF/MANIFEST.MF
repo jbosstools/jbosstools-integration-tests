@@ -7,7 +7,6 @@ Bundle-ActivationPolicy: lazy
 Bundle-Vendor: 
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: org.apache.log4j,
- org.hamcrest,
  org.eclipse.ui,
  org.eclipse.gef,
  org.eclipse.draw2d,
@@ -21,5 +20,6 @@ Require-Bundle: org.apache.log4j,
  org.jboss.reddeer.workbench,
  org.jboss.reddeer.jface,
  org.jboss.reddeer.swt,
- org.jboss.tools.ui.bot.ext;bundle-version="[4.1.0,4.2.0)"
+ org.jboss.tools.ui.bot.ext;bundle-version="[4.1.0,4.2.0)",
+ org.hamcrest.core;bundle-version="1.3.0"
 Eclipse-RegisterBuddy: org.apache.log4j
