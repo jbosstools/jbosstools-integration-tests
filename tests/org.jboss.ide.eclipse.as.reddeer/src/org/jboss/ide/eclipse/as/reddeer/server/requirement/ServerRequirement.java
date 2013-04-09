@@ -9,6 +9,12 @@ import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.Ser
 import org.jboss.reddeer.junit.requirement.CustomConfiguration;
 import org.jboss.reddeer.junit.requirement.Requirement;
 
+/**
+ * 
+ * @author psrna
+ *
+ */
+
 public class ServerRequirement implements Requirement<Server>, CustomConfiguration<ServerRequirementConfig> {
 
 	private ServerRequirementConfig config;
