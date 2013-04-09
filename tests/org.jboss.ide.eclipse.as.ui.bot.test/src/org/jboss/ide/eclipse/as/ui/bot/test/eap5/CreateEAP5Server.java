@@ -1,7 +1,7 @@
 package org.jboss.ide.eclipse.as.ui.bot.test.eap5;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.core.Is.is;
 
 import java.util.List;
 

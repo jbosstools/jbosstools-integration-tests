@@ -2,8 +2,8 @@ package org.teiid.designer.ui.bot.ext.teiid.editor;
 
 import static org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable.syncExec;
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.widgetOfType;
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.core.AllOf.allOf;
+import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.teiid.designer.ui.bot.ext.teiid.matcher.FigureMatcherFactory.withBounds;
 import static org.teiid.designer.ui.bot.ext.teiid.matcher.FigureMatcherFactory.withLabel;
 

@@ -1,8 +1,8 @@
 package org.jboss.tools.runtime.as.ui.bot.test.template;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.core.IsCollectionContaining.hasItem;
+import static org.hamcrest.core.Is.is;
 
 import java.util.List;
 

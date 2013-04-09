@@ -4,8 +4,7 @@ Bundle-Name: Teiid Reddeer
 Bundle-SymbolicName: org.jboss.tools.teiid.reddeer
 Bundle-Version: 8.0.0.qualifier
 Bundle-Activator: org.jboss.tools.teiid.reddeer.Activator
-Require-Bundle: org.hamcrest,
- org.eclipse.ui,
+Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.jboss.reddeer.swt,
  org.jboss.reddeer.jface,

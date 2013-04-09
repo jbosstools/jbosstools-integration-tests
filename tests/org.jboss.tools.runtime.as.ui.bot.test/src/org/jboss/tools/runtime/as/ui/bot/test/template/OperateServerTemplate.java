@@ -1,9 +1,9 @@
 package org.jboss.tools.runtime.as.ui.bot.test.template;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
+import static org.hamcrest.core.StringContains.containsString;
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNot.not;
 import static org.junit.Assert.fail;
 
 import org.jboss.reddeer.eclipse.exception.EclipseLayerException;

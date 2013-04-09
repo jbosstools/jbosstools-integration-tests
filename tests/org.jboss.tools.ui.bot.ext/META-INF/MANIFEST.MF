@@ -30,7 +30,6 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.swtbot.eclipse.finder;bundle-version="2.0.0",
  org.eclipse.swtbot.junit4_x;bundle-version="2.0.0",
  org.eclipse.swtbot.swt.finder;bundle-version="2.0.0",
- org.hamcrest;bundle-version="1.1.0",
  org.eclipse.datatools.connectivity;bundle-version="1.1.2",
  org.eclipse.datatools.connectivity.db.generic;bundle-version="1.0.1",
  org.eclipse.ui.ide;bundle-version="3.5.1",
@@ -50,7 +49,8 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.swtbot.forms.finder,
  org.jboss.tools.tests;bundle-version="3.4.0",
- org.eclipse.ui.views.properties.tabbed;bundle-version="3.5.300"
+ org.eclipse.ui.views.properties.tabbed;bundle-version="3.5.300",
+ org.hamcrest.core;bundle-version="1.3.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Import-Package: org.apache.log4j;version="1.2.13",

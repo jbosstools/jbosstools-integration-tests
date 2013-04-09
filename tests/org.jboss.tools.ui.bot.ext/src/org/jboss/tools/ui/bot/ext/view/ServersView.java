@@ -2,7 +2,7 @@ package org.jboss.tools.ui.bot.ext.view;
 
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.widgetOfType;
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.withMnemonic;
-import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.core.AllOf.allOf;
 
 import java.util.ArrayList;
 import java.util.List;
