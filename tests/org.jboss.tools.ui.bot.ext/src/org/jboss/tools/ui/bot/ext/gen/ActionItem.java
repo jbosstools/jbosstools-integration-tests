@@ -150,7 +150,7 @@ public static String getItemString(IActionItem item) {
 				public String getName() { return "Annotation Properties";}
 				public List<String> getGroupPath() {
 					List<String> l = new Vector<String>();
-					l.add("JAX-WS");
+					l.add("Web Services");
 					return l;
 				}
 			};
