@@ -27,7 +27,9 @@ import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
 public class ForgeTest extends SWTTestExt {
 
 	protected static final String PROJECT_NAME = "testproject";
-	protected static final String PACKAGE_NAME = "org.jboss.testproject";
+	protected static final String PACKAGE_NAME = "org.jboss.testpackage";
+	protected static final String ENTITY_NAME = "testentity";
+	protected static final String FIELD_NAME = "testfield";
 	
 	protected static ProjectExplorer pExplorer = null;
 	
@@ -36,12 +38,14 @@ public class ForgeTest extends SWTTestExt {
 		pExplorer = new ProjectExplorer();
 		openForgeView();
 		startForge();
+		cdWS();
 		clear();
 	}
 	
 	@AfterClass
 	public static void cleanup(){
-		//TODO?
+		pExplorer = new ProjectExplorer();
+		pExplorer.deleteAllProjects();
 	}
 	
 	public enum ProjectTypes{
@@ -49,10 +53,11 @@ public class ForgeTest extends SWTTestExt {
 	}
 	
 	protected void createProject(){
-		getStyledText().setText("new-project \n");
 		
-		getStyledText().setText(PROJECT_NAME + "\n");
-		getStyledText().setText(PACKAGE_NAME + "\n");
+		cdWS();
+		getStyledText().setText("new-project --named " + PROJECT_NAME + 
+								" --topLevelPackage " + PACKAGE_NAME + "\n");
+		
 		getStyledText().setText("Y\n");
 		
 		ConsoleUtils.waitUntilTextInConsole("project [" + PROJECT_NAME + "]", TIME_1S, TIME_20S*3);
@@ -61,12 +66,13 @@ public class ForgeTest extends SWTTestExt {
 	
 	protected void createProject(ProjectTypes type){
 		
-		getStyledText().setText("new-project --type " + type + "\n");
+		cdWS();
+		getStyledText().setText("new-project --named " + PROJECT_NAME + 
+								" --topLevelPackage " + PACKAGE_NAME + 
+								" --type " + type + "\n");
 		
-		getStyledText().setText(PROJECT_NAME + "\n");
-		getStyledText().setText(PACKAGE_NAME + "\n");
 		getStyledText().setText("Y\n");
-	
+		
 		ConsoleUtils.waitUntilTextInConsole("project [" + PROJECT_NAME + "]", TIME_1S, TIME_20S*3);
 		util.waitForNonIgnoredJobs();
 	}
@@ -86,6 +92,34 @@ public class ForgeTest extends SWTTestExt {
 		getStyledText().setText("N\n"); //extended APIs. Install these as well?
 		
 		ConsoleUtils.waitUntilTextInConsole("persistence.xml", TIME_1S, TIME_20S*3);
+		util.waitForNonIgnoredJobs();
+	}
+	
+	protected void createEntity(){
+		createEntity(ENTITY_NAME, PACKAGE_NAME);
+	}
+	
+	protected void createEntity(String entityName, String packageName){
+		
+		final String ENTITY_CREATED = "Created @Entity [" + packageName + "." + entityName + "]";
+		
+		getStyledText().setText("entity\n");
+		getStyledText().setText(entityName + "\n");
+		getStyledText().setText(packageName + "\n");
+		
+		ConsoleUtils.waitUntilTextInConsole(ENTITY_CREATED , TIME_1S, TIME_20S*3);
+		util.waitForNonIgnoredJobs();
+		
+	}
+	
+	protected void createStringField(String fieldName){
+		
+		final String FIELD_ADDED = "Added field to " + PACKAGE_NAME + "." +
+									ENTITY_NAME + ": @Column private String " + fieldName + ";";
+		
+		getStyledText().setText("field string --named " + fieldName + "\n" );
+		
+		ConsoleUtils.waitUntilTextInConsole(FIELD_ADDED , TIME_1S, TIME_20S*3);
 		util.waitForNonIgnoredJobs();
 	}
 	
@@ -118,6 +152,10 @@ public class ForgeTest extends SWTTestExt {
 		bot.sleep(TIME_5S);
 	}
 	
+	public static void cdWS() {
+		getStyledText().setText("cd #" + "\n");
+		bot.sleep(TIME_1S);
+	}
 	/*
 	 * This is private, use openForgeView method outside this class to get 
 	 * Forge Console View.
