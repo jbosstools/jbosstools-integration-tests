@@ -33,6 +33,7 @@ public class ForgeTest extends SWTTestExt {
 	
 	protected static ProjectExplorer pExplorer = null;
 	
+	
 	@BeforeClass
 	public static void setup(){
 		pExplorer = new ProjectExplorer();
@@ -123,6 +124,15 @@ public class ForgeTest extends SWTTestExt {
 		util.waitForNonIgnoredJobs();
 	}
 	
+	protected void installPlugin(String pluginName){
+		
+		getStyledText().setText("forge install-plugin " + pluginName + "\n");
+		
+		ConsoleUtils.waitUntilTextInConsole("***SUCCESS*** Installed" , TIME_1S, TIME_20S*3);
+		util.waitForNonIgnoredJobs();
+		
+		bot.sleep(TIME_1S*2);
+	}
 	
 	public static SWTBotView openForgeView(){
 		if(isForgeViewActive())
