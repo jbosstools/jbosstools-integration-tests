@@ -5,6 +5,7 @@ import org.jboss.tools.forge.ui.bot.test.ForgeViewTest;
 import org.jboss.tools.forge.ui.bot.test.InstallPluginTest;
 import org.jboss.tools.forge.ui.bot.test.PersistenceTest;
 import org.jboss.tools.forge.ui.bot.test.ProjectTest;
+import org.jboss.tools.forge.ui.bot.test.ScaffoldingTest;
 import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
@@ -20,9 +21,9 @@ import org.junit.runners.Suite.SuiteClasses;
 	ProjectTest.class,
 	PersistenceTest.class,
 	EntityTest.class,
-	InstallPluginTest.class
+	InstallPluginTest.class,
+	ScaffoldingTest.class
 })
 @RunWith(RequirementAwareSuite.class)
 public class ForgeAllTest {
-
 }
