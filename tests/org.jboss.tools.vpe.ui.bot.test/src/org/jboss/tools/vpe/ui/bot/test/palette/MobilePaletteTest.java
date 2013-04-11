@@ -12,6 +12,7 @@
 package org.jboss.tools.vpe.ui.bot.test.palette;
 
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
+import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotBrowser;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCheckBox;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCombo;
@@ -52,6 +53,13 @@ public class MobilePaletteTest extends VPEAutoTestCase {
     createDynamicWebProject(VPEAutoTestCase.DYNAMIC_WEB_TEST_PROJECT_NAME);
     final String htmlPageName = "MobilePaletteTestpage.html";
     createHtmlPage(htmlPageName, VPEAutoTestCase.DYNAMIC_WEB_TEST_PROJECT_NAME,"WebContent");
+    SWTBotEclipseEditor htmlPage = eclipse.openFile(VPEAutoTestCase.DYNAMIC_WEB_TEST_PROJECT_NAME, 
+        "WebContent",
+        htmlPageName).toTextEditor();
+    htmlPage.selectLine(0);
+    htmlPage.insertText("<!DOCTYPE html> ");
+    htmlPage.save();
+    htmlPage.close();
     eclipse.openFile(VPEAutoTestCase.DYNAMIC_WEB_TEST_PROJECT_NAME, 
         "WebContent",
         htmlPageName);
@@ -65,12 +73,12 @@ public class MobilePaletteTest extends VPEAutoTestCase {
         6, 
         0,
         0);
-    SWTBotWebBrowser.activatePaletteTool(botExt, "check box");
+    SWTBotWebBrowser.activatePaletteTool(botExt, "Checkbox");
     bot.shell(IDELabel.Shell.INSERT_TAG).activate();
     // check init values
     SWTBotText txLabel = bot.textWithLabel("Label:");
-    assertText("",txLabel);
-    SWTBotText txCode = bot.text("<label><input type=\"checkbox\" name=\"checkbox-1\"/></label>\n");
+    assertText("I agree",txLabel);
+    SWTBotText txCode = bot.text("<label><input type=\"checkbox\" name=\"checkbox-1\"/>I \nagree</label>\n");
     SWTBotCheckBox chbMini = bot.checkBoxWithLabel("Mini:");
     assertFalse("Checkbox Mini is checked", chbMini.isChecked());
     SWTBotCombo cmbTheme = bot.comboBoxWithLabel("Theme:");
