@@ -50,7 +50,7 @@ public class PersistenceTest extends ForgeTest {
 			e.printStackTrace();
 			fail("Attempt to read the 'persistence.xml' file failed!");
 		}
-		getStyledText().setText("cd ..\n");
+		cdWS();
 		clear();
 		pExplorer.deleteAllProjects();
 	}
@@ -81,7 +81,7 @@ public class PersistenceTest extends ForgeTest {
 			e.printStackTrace();
 			fail("Attempt to read the 'persistence.xml' file failed!");
 		}
-		getStyledText().setText("cd ..\n");
+		cdWS();
 		clear();
 		pExplorer.deleteAllProjects();
 	}
@@ -113,7 +113,7 @@ public class PersistenceTest extends ForgeTest {
 			e.printStackTrace();
 			fail("Attempt to read the 'persistence.xml' file failed!");
 		}
-		getStyledText().setText("cd ..\n");
+		cdWS();
 		clear();
 		pExplorer.deleteAllProjects();
 	}
@@ -145,7 +145,7 @@ public class PersistenceTest extends ForgeTest {
 			e.printStackTrace();
 			fail("Attempt to read the 'persistence.xml' file failed!");
 		}
-		getStyledText().setText("cd ..\n");
+		cdWS();
 		clear();
 		pExplorer.deleteAllProjects();
 	}

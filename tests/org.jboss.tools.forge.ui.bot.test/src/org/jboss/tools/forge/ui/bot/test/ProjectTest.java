@@ -40,7 +40,7 @@ public class ProjectTest extends ForgeTest {
 			e.printStackTrace();
 			fail("Attempt to read the 'pom.xml' failed!");
 		}
-		getStyledText().setText("cd ..\n");
+		cdWS();
 		clear();
 		pExplorer.deleteAllProjects();
 	}
@@ -65,7 +65,7 @@ public class ProjectTest extends ForgeTest {
 			e.printStackTrace();
 			fail("Attempt to read the 'pom.xml' failed!");
 		}
-		getStyledText().setText("cd ..\n");
+		cdWS();
 		clear();
 		pExplorer.deleteAllProjects();
 	}
