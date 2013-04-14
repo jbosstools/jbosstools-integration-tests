@@ -166,6 +166,16 @@ public class ForgeTest extends SWTTestExt {
 		getStyledText().setText("cd #" + "\n");
 		bot.sleep(TIME_1S);
 	}
+	
+	public static String pwd(){
+		
+		getStyledText().setText("pwd\n");
+		int line = getStyledText().cursorPosition().line;
+		
+		return getStyledText().getTextOnLine(line - 1);
+		
+	}
+	
 	/*
 	 * This is private, use openForgeView method outside this class to get 
 	 * Forge Console View.
