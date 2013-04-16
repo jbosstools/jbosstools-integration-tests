@@ -2,7 +2,6 @@ package org.jboss.tools.esb.ui.bot.tests;
 
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.widgetOfType;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,7 +15,6 @@ import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.results.VoidResult;
-import org.eclipse.swtbot.swt.finder.results.WidgetResult;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotButton;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
@@ -28,7 +26,6 @@ import org.jboss.tools.esb.ui.bot.tests.editor.ESBAction;
 import org.jboss.tools.esb.ui.bot.tests.editor.ESBActionFactory;
 import org.jboss.tools.esb.ui.bot.tests.editor.ESBListener;
 import org.jboss.tools.esb.ui.bot.tests.editor.ESBListenerFactory;
-import org.jboss.tools.esb.ui.bot.tests.editor.ESBObject;
 import org.jboss.tools.esb.ui.bot.tests.editor.ESBProvider;
 import org.jboss.tools.esb.ui.bot.tests.editor.ESBProviderFactory;
 import org.jboss.tools.ui.bot.ext.SWTEclipseExt;
@@ -37,11 +34,8 @@ import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.NewObject.ESBESBFile;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.NewObject.ESBESBProject;
-import org.jboss.tools.ui.bot.ext.gen.ActionItem.NewObject.JavaProject;
 import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
-import org.jboss.tools.ui.bot.ext.parts.ObjectMultiPageEditorBot;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
-import org.jboss.tools.ui.bot.ext.view.ProblemsView;
 import org.jboss.tools.ui.bot.ext.widgets.SWTBotSection;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -100,7 +94,7 @@ public class Editing extends SWTTestExt {
 				try {
 					log.info("Invoke " + m.getName());
 					ESBProvider action = (ESBProvider) m.invoke(null, new Object[]{});
-					bot.sleep(TIME_5S);
+					bot.sleep(TIME_1S);
 					action.create(getEditor(), actionPath);
 					providerList.remove(action.getMenuLabel());
 					bot.sleep(TIME_1S);
@@ -228,7 +222,7 @@ public class Editing extends SWTTestExt {
 	}
 
 	private SWTBotEditor getEditor() {
-		bot.sleep(TIME_5S);
+		bot.sleep(TIME_1S);
 		return bot.editorByTitle(configFileFull);
 	}
 
