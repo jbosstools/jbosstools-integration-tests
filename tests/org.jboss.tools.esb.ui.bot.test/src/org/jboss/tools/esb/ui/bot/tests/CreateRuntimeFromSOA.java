@@ -25,7 +25,7 @@ public class CreateRuntimeFromSOA extends SWTTestExt {
 		System.out.println ("DEBUG - " + configuredState.getServer().bundledESBVersion);
 		System.out.println ("DEBUG - " + bot.comboBox().selection().toString());
 		
-		assertTrue("Version was not automatically selected by setting ESB home dir",bot.comboBox().selection().equals(configuredState.getServer().bundledESBVersion));
+		assertTrue("Version was not automatically selected by setting ESB home dir",bot.comboBox().selection().equals(TestConfigurator.currentConfig.getEsb().version));
 		
 		/* ldimaggi - Oct 2011 */
 		bot.text(0).setText("123_TheName");
