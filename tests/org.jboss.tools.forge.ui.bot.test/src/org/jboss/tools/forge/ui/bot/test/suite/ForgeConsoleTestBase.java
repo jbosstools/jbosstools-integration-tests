@@ -5,6 +5,8 @@ import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotStyledText;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTableItem;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.eclipse.ui.part.PageBook;
 import org.jboss.tools.forge.ui.bot.test.util.ConsoleUtils;
 import org.jboss.tools.forge.ui.bot.test.util.ViewUtils;
@@ -152,6 +154,25 @@ public class ForgeConsoleTestBase extends SWTTestExt {
 		return view;
 	}
 	
+	public static SWTBotShell getFRuntimesPrefShell(){
+		
+		bot.menu(IDELabel.Menu.WINDOW)
+		   .menu(IDELabel.Menu.PREFERENCES).click();
+		
+		SWTBotShell shell = bot.shell("Preferences");
+		shell.activate();
+		
+		SWTBotTreeItem forge = shell.bot().tree().getTreeItem("Forge");
+		forge.expand();
+		SWTBotTreeItem item = forge.getNode("Installed Forge Runtimes");
+		item.setFocus();
+		item.select();
+		item.click();
+		
+		return shell;
+	}
+	
+	
 	public static void clear() {
 		if(!isForgeViewActive())
 			openForgeView();
@@ -173,6 +194,46 @@ public class ForgeConsoleTestBase extends SWTTestExt {
 		int line = getStyledText().cursorPosition().line;
 		
 		return getStyledText().getTextOnLine(line - 1);
+		
+	}
+	
+	public static String getForgeVersion(){
+		
+		clear();
+		
+		getStyledText().setText("version\n");
+		int line = getStyledText().cursorPosition().line;
+		String versionStr = getStyledText().getTextOnLine(line - 1);
+		int leftBracket = versionStr.indexOf("[");
+		int rightBracket = versionStr.indexOf("]");
+		
+		return versionStr.substring(leftBracket+1, rightBracket).trim();
+	}
+	
+	public static void setForgeRuntime(String name, String location){
+		
+		SWTBotShell preferences = getFRuntimesPrefShell();
+		
+		preferences.bot().button("Add...").click();
+		SWTBotShell addShell = bot.shell("Add Forge Runtime");
+		addShell.activate();
+		
+		addShell.bot().text(0).setText(name);
+		addShell.bot().text(1).setText(location);
+		addShell.bot().button("OK").click();
+		
+		assertTrue(preferences.bot().table().cell(1, 0).equals(name));
+		assertTrue(preferences.bot().table().cell(1, 1).equals(location));	
+		
+		SWTBotTableItem cell_embedded = preferences.bot().table().getTableItem("embedded");
+		SWTBotTableItem cell_new = preferences.bot().table().getTableItem(name);
+		
+		cell_new.check();
+		assertFalse(cell_embedded.isChecked());
+		assertTrue(cell_new.isChecked());
+		
+		preferences.bot().button("OK").click();
+		util.waitForNonIgnoredJobs();
 		
 	}
 	

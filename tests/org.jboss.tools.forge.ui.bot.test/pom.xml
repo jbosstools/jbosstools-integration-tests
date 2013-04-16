@@ -46,6 +46,33 @@
 					</execution>
 				</executions>
 			</plugin>
+
+			 <plugin>
+                                <groupId>org.apache.maven.plugins</groupId>
+                                <artifactId>maven-dependency-plugin</artifactId>
+                                <executions>
+                                        <execution>
+                                                <id>forge-runtime-1.2.0</id>
+                                                <phase>pre-integration-test</phase>
+                                                <goals>
+                                                        <goal>unpack</goal>
+                                                </goals>
+                                                <configuration>
+                                                        <artifactItems>
+                                                                <artifactItem>
+                                                                                <groupId>org.jboss.forge</groupId>
+                                                                                <artifactId>forge-distribution</artifactId>
+                                                                                <version>1.2.0.Final</version>
+                                                                                <type>zip</type>
+                                                                        </artifactItem>
+                                                                </artifactItems>
+                                                        <skip>${skipRequirements}</skip>
+                                                </configuration>
+                                        </execution>
+                                </executions>
+                        </plugin>
+
+
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-surefire-plugin</artifactId>
