@@ -71,7 +71,8 @@ public class CodeCompletionTest extends VPEEditorTestCase{
         textForSelection, 
         textForSelection.length(), 
         0, 
-        getJspPageProposalList());
+        getJspPageProposalList(),
+        false);
     // Check content assist insertion    
     String contentAssistToUse = "h:commandButton"; 
     contentAssist.checkContentAssist(contentAssistToUse, true);
@@ -93,7 +94,8 @@ public class CodeCompletionTest extends VPEEditorTestCase{
         textForSelection, 
         expectedInsertedText.indexOf("action=\"") + 8, 
         0, 
-        getCommandButtonActionAttrProposalList());
+        getCommandButtonActionAttrProposalList(),
+        false);
     // Check content assist for value attribute of <h:commandButton> tag
     ContentAssistHelper.checkContentAssistContent(SWTTestExt.bot, 
         TEST_PAGE,

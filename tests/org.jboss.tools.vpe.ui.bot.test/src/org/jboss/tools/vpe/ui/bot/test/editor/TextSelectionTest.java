@@ -93,10 +93,10 @@ public class TextSelectionTest extends VPEEditorTestCase {
     // select text in Visual Page
     jspEditor.deselectAndSetCursorPosition(TextSelectionTest.SELECTION_START_LINE, TextSelectionTest.SELECTION_START_COLUMN);
     webBrowser.setFocus();
-    bot.sleep(Timing.time1S());
+    bot.sleep(Timing.time2S());
     KeyboardHelper.typeKeyCodeUsingAWTRepeately(KeyEvent.VK_RIGHT, 5);
     KeyboardHelper.typeKeyCodeUsingAWTRepeately(KeyEvent.VK_RIGHT, TextSelectionTest.TEXT_TO_SELECT.length(),KeyEvent.VK_SHIFT);
-    bot.sleep(Timing.time1S());
+    bot.sleep(Timing.time2S());
     // check selected text in Source Pane
     selectedText = jspEditor.getSelection();
     assertTrue("Selected text in Source Pane has to be '" + TextSelectionTest.TEXT_TO_SELECT + "'" +

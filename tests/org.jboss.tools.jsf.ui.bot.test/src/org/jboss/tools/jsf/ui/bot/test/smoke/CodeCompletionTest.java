@@ -281,7 +281,8 @@ public class CodeCompletionTest extends JSFAutoTestCase{
         textForSelection, 
         9, 
         0, 
-        expectedProposals);
+        expectedProposals,
+        false);
     // Check content assist for #{user. prefix
     expectedProposals.clear();
     expectedProposals.add("name : String - User");
@@ -291,7 +292,8 @@ public class CodeCompletionTest extends JSFAutoTestCase{
         textForSelection, 
         14, 
         0, 
-        expectedProposals);
+        expectedProposals,
+        false);
   }
   /**
    * Test Code Completion functionality for msgs[

@@ -15,6 +15,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
 import org.jboss.tools.ui.bot.ext.SWTJBTExt;
+import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.vpe.ui.bot.test.tools.SWTBotWebBrowser;
 
 public class ToggleCommentTest extends VPEEditorTestCase{
@@ -30,6 +31,7 @@ public class ToggleCommentTest extends VPEEditorTestCase{
 	
 		//Test toggle comment from Source menu
 		getEditor().navigateTo(22,22);
+		bot.sleep(Timing.time2S());
 		bot.menu("Source").menu("Toggle Comment").click(); //$NON-NLS-1$ //$NON-NLS-2$
 		getEditor().save();
 		waitForBlockingJobsAcomplished(VISUAL_UPDATE);
@@ -42,6 +44,7 @@ public class ToggleCommentTest extends VPEEditorTestCase{
 		//Test untoggle comment from Source menu
 
 		getEditor().navigateTo(22,22);
+		bot.sleep(Timing.time2S());
 		bot.menu("Source").menu("Toggle Comment").click(); //$NON-NLS-1$ //$NON-NLS-2$
 		getEditor().save();
     waitForBlockingJobsAcomplished(VISUAL_UPDATE);
@@ -50,6 +53,7 @@ public class ToggleCommentTest extends VPEEditorTestCase{
 		//Test toggle comment with CTRL+SHIFT+C hot keys
 		
 		getEditor().navigateTo(22,22);
+		bot.sleep(Timing.time2S());
 		pressToggleCommentHotKeys();
 		getEditor().save();
     waitForBlockingJobsAcomplished(VISUAL_UPDATE);
@@ -60,6 +64,7 @@ public class ToggleCommentTest extends VPEEditorTestCase{
 		//Test untoggle comment with CTRL+SHIFT hot keys
 
 		getEditor().navigateTo(22,22);
+		bot.sleep(Timing.time2S());
 		pressToggleCommentHotKeys();
 		getEditor().save();
     waitForBlockingJobsAcomplished(VISUAL_UPDATE);

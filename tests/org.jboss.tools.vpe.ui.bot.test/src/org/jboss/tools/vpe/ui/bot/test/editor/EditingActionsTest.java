@@ -117,6 +117,7 @@ public class EditingActionsTest extends VPEEditorTestCase {
     assertProbelmsViewNoErrorsForPage(botExt, EditingActionsTest.TEST_PAGE);
     // Check Undo Functionality
     webBrowser.setFocus();
+    botExt.sleep(Timing.time1S());
     if (SWTJBTExt.isRunningOnMacOs()){
       bot.shells()[0].pressShortcut(SWT.COMMAND, 'z'); 
     }
@@ -152,7 +153,7 @@ public class EditingActionsTest extends VPEEditorTestCase {
         EditingActionsTest.TEST_PAGE_NAME);
     // Check Delete Functionality
     webBrowser.setFocus();
-    botExt.sleep(Timing.time2S());
+    botExt.sleep(Timing.time1S());
     webBrowser.selectDomNode(webBrowser.getDomNodeByTagName("INPUT",2),0);
     botExt.sleep(Timing.time2S());
     KeyboardHelper.typeKeyCodeUsingAWT(KeyEvent.VK_DELETE);
@@ -331,6 +332,7 @@ public class EditingActionsTest extends VPEEditorTestCase {
     Assertions.assertSourceEditorNotContain(jspEditor.getText(), "<f:view>", EditingActionsTest.TEST_PAGE_NAME);
     // Undo Changes
     webBrowser.setFocus();
+    bot.sleep(Timing.time1S());
     if (SWTJBTExt.isRunningOnMacOs()){
       bot.shells()[0].pressShortcut(SWT.COMMAND, 'z'); 
     }
@@ -338,7 +340,7 @@ public class EditingActionsTest extends VPEEditorTestCase {
       KeyboardHelper.typeKeyCodeUsingAWT(KeyEvent.VK_Z, KeyEvent.VK_CONTROL);
     }
     jspEditor.save();
-    bot.sleep(Timing.time2S());
+    bot.sleep(Timing.time3S());
     Assertions.assertSourceEditorContains(jspEditor.getText(), "<f:view>", EditingActionsTest.TEST_PAGE_NAME);
   }  
   /**
