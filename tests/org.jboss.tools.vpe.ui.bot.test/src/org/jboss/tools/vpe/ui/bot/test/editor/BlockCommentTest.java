@@ -15,6 +15,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
 import org.jboss.tools.ui.bot.ext.SWTJBTExt;
+import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.vpe.ui.bot.test.tools.SWTBotWebBrowser;
 
 public class BlockCommentTest extends VPEEditorTestCase{
@@ -36,6 +37,7 @@ public class BlockCommentTest extends VPEEditorTestCase{
 				0,
 				commentValue.length(),
 		        0);
+		bot.sleep(Timing.time2S());
 		bot.menu("Source").menu("Add Block Comment").click(); //$NON-NLS-1$//$NON-NLS-2$
 		getEditor().save();
 		waitForBlockingJobsAcomplished(VISUAL_UPDATE);
@@ -56,6 +58,7 @@ public class BlockCommentTest extends VPEEditorTestCase{
 				commentValue.length(),
 		        0);
 		getEditor().selectCurrentLine();
+		bot.sleep(Timing.time2S());
 		bot.menu("Source").menu("Remove Block Comment").click(); //$NON-NLS-1$//$NON-NLS-2$
 		getEditor().save();
 		waitForBlockingJobsAcomplished(VISUAL_UPDATE);
@@ -84,6 +87,7 @@ public class BlockCommentTest extends VPEEditorTestCase{
 				0,
 				commentValue.length(),
 		        0);
+		bot.sleep(Timing.time2S());
 		getEditor().selectCurrentLine();
 		pressUnBlockCommentHotKeys();
 		getEditor().save();
