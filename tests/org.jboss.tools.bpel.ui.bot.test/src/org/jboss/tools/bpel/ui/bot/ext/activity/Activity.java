@@ -1,6 +1,6 @@
 package org.jboss.tools.bpel.ui.bot.ext.activity;
 
-import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.core.AllOf.allOf;
 
 import java.util.ArrayList;
 import java.util.List;
