@@ -3,7 +3,7 @@ package org.jboss.tools.bpel.ui.bot.ext.activity;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.util.Bot;
 import org.jboss.tools.bpel.ui.bot.ext.view.BPELPropertiesView;
 
@@ -82,7 +82,7 @@ public class Assign extends Activity {
 			Bot.get().treeWithLabel(label).expandNode(value).select();
 		}
 		if (assignment.equals(FIX)) {
-			new LabeledText(label).setText("'" + value[0] + "'");
+			new DefaultText(0).setText("'" + value[0] + "'");
 		}
 		if (assignment.equals(EXP)) {
 			Bot.get().styledTextWithLabel(label).setText(value[0]);
