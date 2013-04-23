@@ -1,0 +1,356 @@
+package org.jboss.tools.bpmn2.ui.bot.ext.editor.constructs;
+
+import org.eclipse.swtbot.swt.finder.SWTBot;
+
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.button.RadioButton;
+import org.jboss.reddeer.swt.impl.button.CheckBox;
+import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.table.DefaultTable;
+import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.swt.util.Bot;
+
+import org.jboss.tools.bpmn2.ui.bot.ext.editor.ConstructType;
+import org.jboss.tools.bpmn2.ui.bot.ext.editor.properties.variables.IMapping;
+
+/**
+ * START
+ * conditional
+ * message
+ * signal
+ * timer
+ * 
+ * END
+ * compensate
+ * error
+ * escalation
+ * message
+ * signal
+ * terminate
+ * 
+ * THROW
+ * compensate
+ * escalation
+ * link
+ * message
+ * signal
+ * 
+ * CATCH
+ * conditional
+ * link
+ * message
+ * signal
+ * timer
+ * 
+ * TBD: own method for Structure/Data Type creation
+ * 
+ * @author Marek Baluch <mbaluch@redhat.com>
+ */
+@Deprecated
+public abstract class AbstractEvent extends Construct {
+
+	/**
+	 * Creates a new instance of Event.
+	 * 
+	 * @param name
+	 * @param type
+	 * @param parent
+	 * @param index
+	 */
+	public AbstractEvent(String name, ConstructType type) {
+		super(name, type);
+	}
+
+	
+	public void addParameterMapping(String name, String dataType, IMapping mapping) {
+		properties.selectTab("Event");
+		Bot.get().buttonWithTooltip("Add").click();
+		new LabeledText("Name").setText(name);
+		new DefaultCombo("Data Type").setSelection(dataType);
+		mapping.add();
+		Bot.get().toolbarButtonWithTooltip("Close").click();
+	}
+	
+	/**
+	 * 
+	 * @param name
+	 */
+	protected void removeParameterMapping(String name) {
+		properties.selectTab("Event");
+		
+		SWTBot viewBot = Bot.get().activeShell().bot();
+		viewBot.table(1).select(name);
+		viewBot.toolbarButtonWithTooltip("Remove", 1).click();
+	}
+	
+	// -------------------------------- START
+	protected void addVariable(String name, String dataState, String dataType) {
+		properties.selectTab("Event");
+		
+		SWTBot viewBot = Bot.get().activeShell().bot();
+		viewBot.toolbarButtonWithTooltip("Add", 2).click();
+		new LabeledText("Name").setText(name);
+
+		new PushButton(0).click();
+		if (dataState != null && !dataState.isEmpty()) {
+			SWTBot dataStateBot = Bot.get().shell("Create New Data State").bot();
+			dataStateBot.textWithLabel("Name").setText(dataType);
+			dataStateBot.button("OK").click();
+		}
+		
+		new PushButton(2).click();
+		SWTBot dataStateBot = Bot.get().shell("Create New Data Type").bot();
+		dataStateBot.comboBoxWithLabel("Item Kind").setSelection("Physical");
+		dataStateBot.textWithLabel("Data Type").setText(dataType);
+		dataStateBot.button("OK").click();
+		
+		viewBot.toolbarButtonWithTooltip("Close").click();
+	}
+	
+	/**
+	 * 
+	 * @param name
+	 */
+	protected void removeVariable(String name) {
+		properties.selectTab("Event");
+		
+		SWTBot viewBot = Bot.get().activeShell().bot();
+		viewBot.table(2).select(name);
+		viewBot.toolbarButtonWithTooltip("Remove", 2).click();
+	}
+	
+	/**
+	 * 
+	 * @param condition
+	 */         
+	protected void conditionalEventDefinition(String condition) {
+		properties.selectTab("Event");
+		
+		SWTBot viewBot = Bot.get().activeShell().bot();
+		viewBot.toolbarButtonWithTooltip("Add").click();
+		
+		new DefaultTable().select("Conditional Event Definition");
+		new PushButton("OK").click();
+		new DefaultCombo("Script Language").setSelection("XPath");
+		new LabeledText("Script").setText(condition);
+
+		viewBot.toolbarButtonWithTooltip("Close").click();
+	}
+	
+	/**
+	 * ISSUES:
+	 * 	1) Data Type is named data type but in signalEventDefinition it's called Structure!
+	 * TBD:
+	 * 	1) Setup operation
+	 *  2) Add Kind and XSD type choosing.
+	 * 
+	 * @param name
+	 * @param dataType
+	 */
+	protected void messageEventDefinition(String operationName, String messageName, String dataType) {
+		properties.selectTab("Event");
+		
+		SWTBot viewBot = Bot.get().activeShell().bot();
+		viewBot.toolbarButtonWithTooltip("Add").click();
+		
+		new DefaultTable().select("Message Event Definition");
+		new PushButton("OK").click();
+		
+		new DefaultCombo("Operation").setSelection(operationName);
+		new PushButton(0).click();
+		
+		SWTBot createMessageBot = Bot.get().shell("Create New Message").bot();
+		createMessageBot.textWithLabel("Name").setText(messageName);
+		createMessageBot.button(0).click();
+		
+		SWTBot createDataTypeBot = Bot.get().shell("Create New Data Type").bot();
+		createDataTypeBot.comboBoxWithLabel("Item Kind").setSelection("Physical");
+		createDataTypeBot.textWithLabel("Data Type").setText(dataType);
+		createDataTypeBot.button("OK").click();
+		
+		createMessageBot.comboBoxWithLabel("Data Type").setSelection(dataType);
+		createMessageBot.button("OK").click();
+		
+		viewBot.toolbarButtonWithTooltip("Close").click();
+	}
+	
+	/**
+	 * ISSUE: Adding signals even though Cancel was clicked (ESC pressed)
+	 * 
+	 * TBD: 
+	 * 	1) should we not rather use "Information" structure type?
+	 * 	2) Add Kind and XSD type choosing.
+	 * @param name
+	 * @param dataType
+	 */
+	protected void signalEventDefinition(String signalName, String dataType) {
+		properties.selectTab("Event");
+		
+		SWTBot viewBot = Bot.get().activeShell().bot();
+		viewBot.toolbarButtonWithTooltip("Add").click();
+		
+		new DefaultTable().select("Signal Event Definition");
+		new PushButton("OK").click();
+		new PushButton(0).click();
+		
+		SWTBot createSignalBot = Bot.get().shell("Create New Signal").bot();
+		createSignalBot.textWithLabel("Name").setText(signalName);
+		createSignalBot.button(0).click();
+		
+		SWTBot createDataTypeBot = Bot.get().shell("Create New Data Type").bot();
+		createDataTypeBot.comboBoxWithLabel("Item Kind").setSelection("Physical");
+		createDataTypeBot.textWithLabel("Data Type").setText(dataType);
+		createDataTypeBot.button("OK").click();
+		
+		createSignalBot.comboBoxWithLabel("Structure").setSelection(dataType);
+		createSignalBot.button("OK").click();
+		
+		viewBot.toolbarButtonWithTooltip("Close").click();
+	}
+	
+	/**
+	 * 
+	 * @param duration
+	 */
+	protected void timerEventDefinition(String duration) {
+		properties.selectTab("Event");
+		
+		SWTBot viewBot = Bot.get().activeShell().bot();
+		viewBot.toolbarButtonWithTooltip("Add").click();
+		
+		new DefaultTable().select("Timer Event Definition");
+		new PushButton("OK").click();
+		new RadioButton("Duration").click();
+		new LabeledText("Value").setText(duration);
+		
+		viewBot.toolbarButtonWithTooltip("Close").click();
+	}
+
+	// -------------------------------- END
+
+	/**
+	 * 
+	 * @param activityName
+	 * @param waitForCompletion
+	 */
+	protected void compensateEventDefinition(String activityName, boolean waitForCompletion) {
+		properties.selectTab("Event");
+		
+		SWTBot viewBot = Bot.get().activeShell().bot();
+		viewBot.toolbarButtonWithTooltip("Add").click();
+		
+		new DefaultTable().select("Compensate Event Definition");
+		new PushButton("OK").click();
+		new DefaultCombo("Activity").setSelection(activityName);
+
+		CheckBox waitCheckBox = new CheckBox(0);
+		if ((!waitForCompletion && waitCheckBox.isChecked()) || (waitForCompletion && !waitCheckBox.isChecked())) {
+			waitCheckBox.click();
+		}
+
+		viewBot.toolbarButtonWithTooltip("Close").click();
+	}
+	
+	/**
+	 * TBD:
+	 * 	1) Item Kind, Is Collection
+	 * 
+	 * @param errorName
+	 * @param errorCode
+	 * @param errorDataType
+	 */
+	protected void errorEventDefinition(String errorName, String errorCode, String errorDataType) {
+		properties.selectTab("Event");
+		
+		SWTBot viewBot = Bot.get().activeShell().bot();
+		viewBot.toolbarButtonWithTooltip("Add").click();
+		
+		new DefaultTable().select("Error Event Definition");
+		new PushButton("OK").click();
+		new PushButton(0).click();
+
+		SWTBot createErrorBot = Bot.get().shell("Create New Error").bot();
+		createErrorBot.textWithLabel("Name").setText(errorName);
+		createErrorBot.textWithLabel("Error Code").setText(errorCode);
+		createErrorBot.button(0).click();
+		
+		SWTBot createDataTypeBot = Bot.get().shell("Create New Data Type").bot(); 
+		createDataTypeBot.comboBoxWithLabel("Item Kind").setSelection("Physical");
+		createDataTypeBot.textWithLabel("Data Type").setText(errorDataType);
+		createDataTypeBot.button("OK").click();
+		
+		createErrorBot.button("OK").click();
+		
+		viewBot.toolbarButtonWithTooltip("Close").click();
+	}
+
+	/**
+	 * 
+	 * @param escalationName
+	 * @param escalationCode
+	 * @param escalationDataType
+	 */
+	protected void escalationEventDefinition(String escalationName, String escalationCode, String escalationDataType) {
+		properties.selectTab("Event");
+		
+		SWTBot viewBot = Bot.get().activeShell().bot();
+		viewBot.toolbarButtonWithTooltip("Add").click();
+		
+		new DefaultTable().select("Escalation Event Definition");
+		new PushButton("OK").click();
+		new PushButton(0).click();
+		
+		SWTBot createEscalationBot = Bot.get().shell("Create New Escalation").bot();
+		createEscalationBot.textWithLabel("Name").setText(escalationName);
+		createEscalationBot.textWithLabel("Escalation Code").setText(escalationCode);
+		createEscalationBot.button(0).click();
+		
+		SWTBot createDataTypeBot = Bot.get().shell("Create New Data Type").bot(); 
+		createDataTypeBot.comboBoxWithLabel("Item Kind").setSelection("Physical");
+		createDataTypeBot.textWithLabel("Data Type").setText(escalationDataType);
+		createDataTypeBot.button("OK").click();
+		
+		createEscalationBot.button("OK").click();
+		
+		viewBot.toolbarButtonWithTooltip("Close").click();
+	}
+	
+	/**
+	 *
+	 */
+	protected void terminateEventDefinition() {
+		properties.selectTab("Event");
+		
+		SWTBot viewBot = Bot.get().activeShell().bot();
+		viewBot.toolbarButtonWithTooltip("Add").click();
+		
+		new DefaultTable().select("Terminate Event Definition");
+		new PushButton("OK").click();
+	}
+	
+	// -------------------------------- THROW + all END (except for escalationEventDefinition), 
+	
+	protected void linkEventDefinition() {
+		properties.selectTab("Event");
+
+		SWTBot viewBot = Bot.get().activeShell().bot();
+		viewBot.toolbarButtonWithTooltip("Add").click();
+		
+		new DefaultTable().select("Link Event Definition");
+		new PushButton("OK").click();
+		
+		viewBot.toolbarButtonWithTooltip("Close").click();		
+	}
+	
+	/**
+	 * Remove an event definition.
+	 * 
+	 * @param eventDefinition
+	 */
+	public void removeEventDefinition(String eventDefinition) {
+		properties.selectTab("Event");
+		new DefaultTable(0).select(eventDefinition, 0);
+		Bot.get().toolbarButtonWithTooltip("Remove").click();
+	}
+	
+}
