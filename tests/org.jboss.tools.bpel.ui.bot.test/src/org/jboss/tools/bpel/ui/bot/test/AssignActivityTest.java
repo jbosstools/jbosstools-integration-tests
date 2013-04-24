@@ -48,7 +48,8 @@ public class AssignActivityTest extends SWTTestExt {
 		main.addAssign("assignFixToExp").addFixToExp("Fixed Expression", "$simpleOut.payload");
 		main.addReply("replySimple").pickOperation("simple");
 
-		new WaitUntil(new NoErrorExists(), TimePeriod.NORMAL);
+		log.info("[1] Waiting for resolving all errors");
+		new WaitUntil(new NoErrorExists(), TimePeriod.LONG);
 	}
 
 	@Test
@@ -82,7 +83,8 @@ public class AssignActivityTest extends SWTTestExt {
 		main.addAssign("assignRequest4").addVarToVar(mathResult, discriminantResult);
 		main.addReply("reply").pickOperation("calculateDiscriminant");
 
-		new WaitUntil(new NoErrorExists(), TimePeriod.NORMAL);
+		log.info("[2] Waiting for resolving all errors");
+		new WaitUntil(new NoErrorExists(), TimePeriod.LONG);
 	}
 
 	private class BPELProject {
