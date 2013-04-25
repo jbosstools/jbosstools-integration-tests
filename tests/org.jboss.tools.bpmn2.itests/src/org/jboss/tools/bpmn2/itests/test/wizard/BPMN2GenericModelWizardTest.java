@@ -1,5 +1,6 @@
 package org.jboss.tools.bpmn2.itests.test.wizard;
 
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.jface.exception.JFaceLayerException;
 import org.jboss.tools.bpmn2.itests.wizard.BPMN2GenericModelWizard;
@@ -44,19 +45,19 @@ public class BPMN2GenericModelWizardTest {
 	@Test
 	public void newProcessModelTest() throws Exception {
 		new BPMN2GenericModelWizard().execute("ProcessModel.bpmn2", new String[] {PROJECT}, NAMESPACE, ModelType.PROCESS);
-		Assert.assertTrue(new PackageExplorer().selectProject(PROJECT).containsItem("ProcessModel.bpmn2"));
+		Assert.assertTrue(new ProjectExplorer().getProject(PROJECT).containsItem("ProcessModel.bpmn2"));
 	}
 	
 	@Test
 	public void newChoreographyModelTest() throws Exception {
 		new BPMN2GenericModelWizard().execute("ChoreographyModel.bpmn2", new String[] {PROJECT}, NAMESPACE, ModelType.CHOREOGRAPHY);
-		Assert.assertTrue(new PackageExplorer().selectProject(PROJECT).containsItem("ChoreographyModel.bpmn2"));
+		Assert.assertTrue(new ProjectExplorer().getProject(PROJECT).containsItem("ChoreographyModel.bpmn2"));
 	}
 	
 	@Test
 	public void newCollaborationModelTest() throws Exception {
 		new BPMN2GenericModelWizard().execute("CollaborationModel.bpmn2", new String[] {PROJECT}, NAMESPACE, ModelType.COLLABORATION);
-		Assert.assertTrue(new PackageExplorer().selectProject(PROJECT).containsItem("CollaborationModel.bpmn2"));
+		Assert.assertTrue(new ProjectExplorer().getProject(PROJECT).containsItem("CollaborationModel.bpmn2"));
 	}
 	
 	@Test

@@ -1,5 +1,6 @@
 package org.jboss.tools.bpmn2.itests.test.wizard;
 
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.jface.exception.JFaceLayerException;
 import org.jboss.tools.bpmn2.itests.wizard.JBPMProcessWizard;
@@ -32,7 +33,7 @@ public class JBPMProcessWizardTest {
 	@Test
 	public void newModelTest() throws Exception {
 		new JBPMProcessWizard().execute("SampleProcess.bpmn", new String[] {"TestProject"}, "Sample", "jboss.org.bpmn2", "defaultPackage");
-		Assert.assertTrue(new PackageExplorer().selectProject("TestProject").containsItem("SampleProcess.bpmn"));
+		Assert.assertTrue(new ProjectExplorer().getProject("TestProject").containsItem("SampleProcess.bpmn"));
 		// Assert process name, process id and package
 	}
 	
