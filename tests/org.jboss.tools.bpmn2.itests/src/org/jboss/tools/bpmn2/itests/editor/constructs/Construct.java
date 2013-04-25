@@ -48,7 +48,7 @@ public class Construct implements IConstruct {
 	 * @param type
 	 */
 	public Construct(String name, ConstructType type) {
-		this(name, type, null, -1);
+		this(name, type, null, -1, true);
 	}
 	
 	/**
@@ -60,8 +60,9 @@ public class Construct implements IConstruct {
 	 * @param type
 	 * @param parent
 	 * @param index
+	 * @param select
 	 */
-	public Construct(String name, ConstructType type, Construct parent, int index) {
+	public Construct(String name, ConstructType type, Construct parent, int index, boolean select) {
 		this.editor = new BPMN2Editor();
 		this.properties = new BPMN2PropertiesView();
 		this.robot  = new AWTBot();
@@ -91,7 +92,9 @@ public class Construct implements IConstruct {
 			throw new RuntimeException("Could not find construct with name '" + name + "' of type '" + type.name() + "'");
 		}
 		
-		select();
+		if (select) {
+			select();
+		}
 	}
 	
 	/**
@@ -164,8 +167,8 @@ public class Construct implements IConstruct {
 				y = centerY;
 				break;
 			case SOUTH_EAST:
-				x = r.x + r.width + 75;
-				y = r.y + 100;
+				x = r.x + r.width  + 75;
+				y = r.y + r.height + 100;
 				break;
 			case SOUTH:
 				x = centerX;
@@ -173,7 +176,7 @@ public class Construct implements IConstruct {
 				break;
 			case SOUTH_WEST:
 				x = r.x - 75;
-				y = r.y + 100;
+				y = r.y + r.height + 100;
 				break;
 			case WEST:
 				x = r.x - 100;
@@ -186,34 +189,6 @@ public class Construct implements IConstruct {
 			default:
 				throw new UnsupportedOperationException();
 		}
-		
-//		switch (relativePosition) {
-//			case NORTH:
-//				x = centerX;
-//				y = r.y + relativePosition.getYShift();
-//				break;
-//			case NORTH_EAST:
-//				x = r.x + r.width + relativePosition.getXShift();
-//				y = r.y + relativePosition.getYShift();
-//				break;
-//			case SOUTH:
-//				x = centerX;
-//				y = r.y + r.height + relativePosition.getYShift();
-//				break;
-//			case WEST:
-//				x = r.x + relativePosition.getXShift();
-//				y = centerY;
-//				break;
-//			case EAST:
-//				x = r.x + r.width + relativePosition.getXShift();
-//				y = centerY;
-//				break;
-//			case WEST_NORTH:
-//				x = r.x + relativePosition.getXShift();
-//				y = r.y + relativePosition.getYShift();
-//			default:
-//				throw new UnsupportedOperationException();
-//		}
 		
 		editor.activateTool(constructType.toToolName());
 		editor.click(x, y);

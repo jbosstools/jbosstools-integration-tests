@@ -1,27 +1,11 @@
 package org.jboss.tools.bpmn2.itests.test.editor;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.net.URL;
-
-import org.eclipse.swt.widgets.Widget;
-import org.eclipse.swtbot.swt.finder.SWTBot;
-import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
-import org.eclipse.swtbot.swt.finder.utils.internal.SiblingFinder;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
-import org.jboss.reddeer.swt.util.Bot;
 
 import org.jboss.tools.bpmn2.itests.editor.BPMN2Editor;
-import org.jboss.tools.bpmn2.itests.editor.ConstructType;
-import org.jboss.tools.bpmn2.itests.editor.constructs.BPMN2Process;
-import org.jboss.tools.bpmn2.itests.editor.constructs.JBPM5Process;
-import org.jboss.tools.bpmn2.itests.editor.constructs.events.StartEvent;
-import org.jboss.tools.bpmn2.itests.editor.constructs.tasks.ManualTask;
-import org.jboss.tools.bpmn2.itests.editor.properties.BPMN2PropertiesView;
-import org.jboss.tools.bpmn2.itests.editor.properties.variables.ParameterExpressionMapping;
 import org.jboss.tools.bpmn2.itests.test.Activator;
 import org.jboss.tools.bpmn2.itests.validator.SchemaValidator;
+
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.helper.ImportHelper;
 import org.jboss.tools.ui.bot.ext.helper.ResourceHelper;

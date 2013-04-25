@@ -20,7 +20,7 @@ public class ContainerConstruct extends Construct {
 	 * @param type
 	 */
 	public ContainerConstruct(String name, ConstructType type) {
-		this(name, type, null, -1);
+		this(name, type, null, -1, true);
 	}
 	
 	/**
@@ -29,9 +29,10 @@ public class ContainerConstruct extends Construct {
 	 * @param type
 	 * @param parent
 	 * @param index
+	 * @param select
 	 */
-	public ContainerConstruct(String name, ConstructType type, Construct parent, int index) {
-		super(name, type, parent, index);
+	public ContainerConstruct(String name, ConstructType type, Construct parent, int index, boolean select) {
+		super(name, type, parent, index, select);
 	}
 
 	/**

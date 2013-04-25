@@ -81,29 +81,32 @@ public class BPMN2PropertiesView extends WorkbenchView {
 	 * @param section
 	 * @param tooltip
 	 */
-	public void clickToolbarButton(final String section, final String tooltip) {
-		final Widget widget = Bot.get().label(section).widget;
-		widget.getDisplay().asyncExec(new Runnable() {
-			
-			public void run() {
+	public SWTBotToolbarPushButton toolbarButton(final String section, final String tooltip) {
+		SWTBotToolbarPushButton toolbarButton = UIThreadRunnable.syncExec(new Result<SWTBotToolbarPushButton>() {
+
+			public SWTBotToolbarPushButton run() {
+				Widget widget = Bot.get().label(section).widget;
 				Widget[] siblings = new SiblingFinder(widget).run();
 				for (Widget sibling : siblings) {
 					if (sibling instanceof ToolBar) {
 						ToolItem[] items = ((ToolBar) sibling).getItems();
 						for (ToolItem item : items) {
 							if (item.getToolTipText().equals(tooltip)) {
-								new SWTBotToolbarPushButton(item).click();
-								return;
+								return new SWTBotToolbarPushButton(item);
 							}
 						}
 					}
 				}		
-				
+				return null;
 			}
 			
 		});
 		
-		throw new WidgetNotFoundException("Toolbar button in section '" + section + "' with tooltip '" + tooltip + "' was not found.");
+		if (toolbarButton == null) {
+			throw new WidgetNotFoundException("Toolbar button in section '" + section + "' with tooltip '" + tooltip + "' was not found.");
+		}
+		
+		return toolbarButton;
 	}
 
 	/**
