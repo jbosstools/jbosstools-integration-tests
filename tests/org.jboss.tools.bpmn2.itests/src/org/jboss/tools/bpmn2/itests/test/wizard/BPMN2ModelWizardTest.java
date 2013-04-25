@@ -1,5 +1,6 @@
 package org.jboss.tools.bpmn2.itests.test.wizard;
 
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.jface.exception.JFaceLayerException;
 import org.jboss.tools.bpmn2.itests.wizard.BPMN2ModelWizard;
@@ -33,7 +34,7 @@ public class BPMN2ModelWizardTest {
 	@Test
 	public void newModelTest() throws Exception {
 		new BPMN2ModelWizard().execute("SampleProcess.bpmn2", new String[] {"TestProject"});
-		Assert.assertTrue(new PackageExplorer().selectProject("TestProject").containsItem("SampleProcess.bpmn2"));
+		Assert.assertTrue(new ProjectExplorer().getProject("TestProject").containsItem("SampleProcess.bpmn2"));
 	}
 	
 	@Test

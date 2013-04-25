@@ -1,12 +1,11 @@
 package org.jboss.tools.bpmn2.itests.editor.constructs.tasks;
 
-
 import org.eclipse.swtbot.swt.finder.SWTBot;
 
 import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.util.Bot;
+
 import org.jboss.tools.bpmn2.itests.editor.ConstructType;
 import org.jboss.tools.bpmn2.itests.editor.constructs.AbstractTask;
 import org.jboss.tools.bpmn2.itests.editor.properties.variables.IParameter;
@@ -61,24 +60,49 @@ public class UserTask extends AbstractTask {
 		new LabeledText("Locale").setText(locale);
 	}
 	
+	/**
+	 * Used before Reddeer code bellow to set the actor data:
+	 * 
+	 * <code>
+	 *	if (!language.isEmpty()) {
+	 *		new DefaultCombo("Script Language").setSelection(language);
+	 *	}
+     *	new LabeledText("Script").setText(script);
+	 * </code>
+	 *
+	 * The code created an issue when creating the 3rd UserTask in the SimpleModelingTest. When
+	 * this method was called on the 
+	 * 
+	 * When the following code from SimpleModelingTest was executed an error was found. That
+	 * error was caused because another properties view was selected (the process view) instead
+	 * of the UserTask view.
+	 * 
+	 * <code>
+	 *  UserTask userTask3 = new UserTask("PM Evaluation");
+	 *  userTask3.addActor("John", "mvel");
+	 * </code>
+	 * 
+	 * Looks like the error is caused by the Reddeer code because it works fine with plain old
+	 * SWT Bot.
+	 * 
+	 * @param script
+	 * @param language
+	 */
 	public void addActor(String script, String language) {
 		properties.selectTab("User Task");
+		properties.toolbarButton("Actors", "Add").click();
 		
-		SWTBot viewBot = Bot.get().activeShell().bot();
-		viewBot.toolbarButtonWithTooltip("Add").click();
-		
-		new DefaultCombo("Script Language").setSelection(language);
-		new LabeledText("Script").setText(script);
-		
-		viewBot.toolbarButtonWithTooltip("Close").click();
+		SWTBot bot = Bot.get();
+		if (!language.isEmpty()) {
+			bot.comboBoxWithLabel("Script Language").setSelection(language);
+		}
+		bot.textWithLabel("Script").setText(script);
+		bot.toolbarButtonWithTooltip("Close").click();
 	}
 	
 	public void removeActor(String name) {
 		properties.selectTab("User Task");
-		
-		SWTBot viewBot = Bot.get().activeShell().bot();
-		viewBot.table().select(name);
-		viewBot.toolbarButtonWithTooltip("Remove").click();
+		properties.toolbarButton("Actors", "Remove").click();
 	}
 
 	/**

@@ -1,6 +1,6 @@
 package org.jboss.tools.bpmn2.itests.test.wizard;
 
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jface.exception.JFaceLayerException;
 
 import org.jboss.tools.bpmn2.itests.wizard.JBPMProcessLegacyWizard;
@@ -21,7 +21,7 @@ import org.junit.Test;
 @Require(jbpm = @JBPM(), runOnce = true)
 public class LegacyProcessWizardTest {
 
-	static PackageExplorer packageView = new PackageExplorer();
+	static ProjectExplorer packageView = new ProjectExplorer();
 	static JBPMProjectLegacyWizard projectWizardView = new JBPMProjectLegacyWizard();
 	static JBPMProcessLegacyWizard processWizardView = new JBPMProcessLegacyWizard();
 	
@@ -38,7 +38,7 @@ public class LegacyProcessWizardTest {
 	@Test
 	public void newProcessTest() {
 		processWizardView.execute("SampleProcess", new String[] {"TestProject", "src/main/resources"});
-		Assert.assertTrue(packageView.selectProject("TestProject").containsItem("src/main/resources", "SampleProcess.bpmn"));
+		Assert.assertTrue(packageView.getProject("TestProject").containsItem("src/main/resources", "SampleProcess.bpmn"));
 	}
 	
 	/**
