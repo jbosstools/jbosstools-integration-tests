@@ -102,11 +102,20 @@ public class BPMN2Editor extends SWTBotGefEditor {
 	
 	/**
 	 * 
+	 * @param label
+	 */
+	public List<SWTBotGefEditPart> getEditParts(String label) {
+		return editParts(new ConstructWithName<EditPart>(label));
+	}
+	
+	/**
+	 * 
+	 * @param label
 	 */
 	public SWTBotGefEditPart getEditPart(String label) {
-		List<SWTBotGefEditPart> list = editParts(new ConstructWithName<EditPart>(label));
-		if (!list.isEmpty()) {
-			return list.get(0);
+		List<SWTBotGefEditPart> partList = getEditParts(label);
+		if (!partList.isEmpty()) {
+			return partList.get(0);
 		}
 		return null;
 	}
@@ -202,12 +211,12 @@ public class BPMN2Editor extends SWTBotGefEditor {
 		// The name has the format of 'construct_type sequence_number'
 		// e.g. 'Task 10'
 		List<Construct> constructList = new ArrayList<Construct>();
-				
+		
 		Pattern pattern = Pattern.compile(constructType.toId() + "_[0-9]+");
 		List<SWTBotGefEditPart> editPartList = getEditParts(new ConstructAttributeMatchingRegex<EditPart>("id", pattern));
 		
 		for (SWTBotGefEditPart editPart : editPartList) {
-			constructList.add(new Construct(getName(editPart), constructType));
+			constructList.add(new Construct(getName(editPart), constructType, null, 1, false));
 		}
 		
 		return constructList;
