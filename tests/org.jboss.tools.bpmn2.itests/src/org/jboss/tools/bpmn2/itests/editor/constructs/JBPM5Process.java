@@ -1,6 +1,5 @@
 package org.jboss.tools.bpmn2.itests.editor.constructs;
 
-
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.bpmn2.itests.editor.properties.datatypes.JBPM5DataType;
@@ -11,10 +10,12 @@ import org.jboss.tools.bpmn2.itests.editor.properties.datatypes.JBPM5DataType;
  */
 public class JBPM5Process extends Process {
 
-	public JBPM5Process() {
-		super();
-		
-		this.name = "New Process";
+	/**
+	 * 
+	 * @param name
+	 */
+	public JBPM5Process(String name) {
+		super(name);
 	}
 	
 	/**
