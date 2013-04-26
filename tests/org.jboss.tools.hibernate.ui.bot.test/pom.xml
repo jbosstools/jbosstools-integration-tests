@@ -17,21 +17,6 @@
 		<systemProperties>${integrationTestsSystemProperties} -Dtest.configurations.dir=${project.basedir}/properties/</systemProperties>
 	</properties>
 		
-	<repositories>
-		<!--  RedDeer master repository -->
-		<repository>
-			<id>red_deer</id>
-			<!-- replace url value with any RedDeer update site you require -->
-			<url>http://p2-reddeer.rhcloud.com/master</url>
-			<layout>p2</layout>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-		</repository>
-	</repositories>
 	<build>
 		<plugins>
 			<plugin>

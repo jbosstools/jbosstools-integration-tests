@@ -17,20 +17,6 @@
         <systemProperties>${integrationTestsSystemProperties}</systemProperties>
     </properties>
     
-	<repositories>
-		<repository>
-			<id>red_deer</id>
-			<url>http://p2-reddeer.rhcloud.com/master</url>
-			<layout>p2</layout>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-		</repository>
-	</repositories>
-
 	<build>
 		<plugins>
 			<plugin>
