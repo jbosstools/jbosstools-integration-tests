@@ -1,24 +1,29 @@
 package org.jboss.tools.bpel.ui.bot.test;
 
+import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
-import org.jboss.tools.bpel.ui.bot.ext.activity.Sequence;
-import org.jboss.tools.bpel.ui.bot.ext.condition.NoErrorExists;
-import org.jboss.tools.bpel.ui.bot.ext.editor.BpelEditor;
-import org.jboss.tools.ui.bot.ext.SWTTestExt;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
-import org.jboss.tools.ui.bot.ext.helper.ImportHelper;
-import org.jboss.tools.ui.bot.ext.helper.ResourceHelper;
+import org.jboss.tools.bpel.reddeer.activity.Sequence;
+import org.jboss.tools.bpel.reddeer.condition.NoErrorExists;
+import org.jboss.tools.bpel.reddeer.editor.BpelEditor;
+import org.jboss.tools.bpel.reddeer.shell.EclipseShell;
+import org.jboss.tools.bpel.reddeer.wizard.ImportProjectWizard;
+import org.jboss.tools.bpel.ui.bot.test.suite.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.tools.bpel.ui.bot.test.suite.PerspectiveRequirement.Perspective;
+import org.jboss.tools.bpel.ui.bot.test.util.ResourceHelper;
 import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-@Require(perspective = "BPEL")
-public class AssignActivityTest extends SWTTestExt {
+@CleanWorkspace
+@Perspective(name = "BPEL")
+public class AssignActivityTest extends SWTBotTestCase {
 
 	@BeforeClass
 	public static void maximizeEclipse() throws Exception {
-		eclipse.maximizeActiveShell();
+		new EclipseShell().maximize();
 	}
 
 	@After
@@ -48,7 +53,6 @@ public class AssignActivityTest extends SWTTestExt {
 		main.addAssign("assignFixToExp").addFixToExp("Fixed Expression", "$simpleOut.payload");
 		main.addReply("replySimple").pickOperation("simple");
 
-		log.info("[1] Waiting for resolving all errors");
 		new WaitUntil(new NoErrorExists(), TimePeriod.LONG);
 	}
 
@@ -83,7 +87,6 @@ public class AssignActivityTest extends SWTTestExt {
 		main.addAssign("assignRequest4").addVarToVar(mathResult, discriminantResult);
 		main.addReply("reply").pickOperation("calculateDiscriminant");
 
-		log.info("[2] Waiting for resolving all errors");
 		new WaitUntil(new NoErrorExists(), TimePeriod.LONG);
 	}
 
@@ -95,11 +98,15 @@ public class AssignActivityTest extends SWTTestExt {
 			this.projectName = projectName;
 			String projectLocation = ResourceHelper.getResourceAbsolutePath(Activator.PLUGIN_ID,
 					"resources/projects/" + projectName + ".zip");
-			ImportHelper.importProjectFromZip(projectLocation);
+			new ImportProjectWizard(projectLocation).execute();
 		}
 
 		public void open(String fileName) {
-			projectExplorer.openFile(projectName, "bpelContent", fileName);
+
+			ProjectExplorer projectExplorer = new ProjectExplorer();
+			projectExplorer.open();
+			Project project = projectExplorer.getProject(projectName);
+			project.getProjectItem("bpelContent", fileName).open();
 		}
 
 		public void openBpelProcess(String bpelProcess) {
