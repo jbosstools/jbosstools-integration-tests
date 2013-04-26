@@ -16,24 +16,11 @@
 	<properties>
 		<systemProperties>${integrationTestsSystemProperties} -Dswtbot.test.skip=false -Dtest.configurations.dir=resources/</systemProperties>
 		<surefire.timeout>3600</surefire.timeout>
-		<reddeer.site>http://download.jboss.org/jbosstools/builds/staging/RedDeer_master/all/repo</reddeer.site>
 		<jbtis.site>http://download.jboss.org/jbosstools/updates/integration/juno/integration-stack/aggregate/4.0.0</jbtis.site>
 		<eclipse.graphiti.site>http://download.eclipse.org/graphiti/updates/0.9.0</eclipse.graphiti.site>
 	</properties>
 
 	<repositories>
-		<!-- Red Deer Repository -->
-		<repository>
-			<id>red_deer</id>
-			<url>${reddeer.site}</url>
-			<layout>p2</layout>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-		</repository>
 		<!-- JBTIS Repository -->
 		<repository>
 			<id>jbtis</id>

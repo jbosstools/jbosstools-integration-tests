@@ -17,23 +17,10 @@
 	  <test.package>org.teiid.designer.ui.bot.test.suite</test.package>
 	  <test.class>AllTests</test.class>
 	  <jdbc.dir>${requirementsDirectory}/lib</jdbc.dir>
-	  <reddeer.site>http://download.jboss.org/jbosstools/builds/staging/RedDeer_master/all/repo</reddeer.site>
 	  <jbtis.site>http://download.jboss.org/jbosstools/updates/integration/juno/integration-stack/aggregate/4.0.0</jbtis.site>
 	</properties>
 
 	<repositories>
-	  <!-- Red Deer Repository -->
-	  <repository>
-	    <id>red_deer</id>
-	    <url>${reddeer.site}</url>
-	    <layout>p2</layout>
-	    <snapshots>
-	      <enabled>true</enabled>
-	    </snapshots>
-	    <releases>
-	      <enabled>true</enabled>
-	    </releases>
-	  </repository>
 	  <!-- JBTIS Repository -->
 	  <repository>
 	    <id>jbtis</id>
