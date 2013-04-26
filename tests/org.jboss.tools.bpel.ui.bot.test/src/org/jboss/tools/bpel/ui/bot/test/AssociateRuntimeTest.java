@@ -1,17 +1,19 @@
 package org.jboss.tools.bpel.ui.bot.test;
 
+import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.swt.api.Table;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.reddeer.swt.impl.tree.ShellTreeItem;
-import org.jboss.tools.bpel.ui.bot.ext.wizard.NewProjectWizard;
-import org.jboss.tools.ui.bot.ext.SWTTestExt;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
-import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
-import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
+import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.tools.bpel.reddeer.wizard.NewProjectWizard;
+import org.jboss.tools.bpel.ui.bot.test.suite.BPELSuite;
+import org.jboss.tools.bpel.ui.bot.test.suite.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.tools.bpel.ui.bot.test.suite.PerspectiveRequirement.Perspective;
+import org.jboss.tools.bpel.ui.bot.test.suite.ServerRequirement.Server;
+import org.jboss.tools.bpel.ui.bot.test.suite.ServerRequirement.State;
+import org.jboss.tools.bpel.ui.bot.test.suite.ServerRequirement.Type;
 import org.junit.Test;
 
 /**
@@ -19,8 +21,10 @@ import org.junit.Test;
  * @author apodhrad
  * 
  */
-@Require(server = @Server(type = ServerType.ALL, state = ServerState.Present), perspective = "BPEL")
-public class AssociateRuntimeTest extends SWTTestExt {
+@CleanWorkspace
+@Perspective(name = "BPEL")
+@Server(type = Type.ALL, state = State.PRESENT)
+public class AssociateRuntimeTest extends SWTBotTestCase {
 
 	@Test
 	public void testModeling() throws Exception {
@@ -30,9 +34,9 @@ public class AssociateRuntimeTest extends SWTTestExt {
 
 		new ContextMenu("Properties").select();
 
-		new ShellTreeItem("Targeted Runtimes").select();
+		new DefaultTreeItem("Targeted Runtimes").select();
 
-		String serverName = configuredState.getServer().name;
+		String serverName = BPELSuite.getServerName();
 		assertTrue(containsItem(new DefaultTable(), serverName));
 
 		new PushButton("OK").click();

@@ -1,26 +1,32 @@
 package org.jboss.tools.bpel.ui.bot.test;
 
-import org.jboss.tools.bpel.ui.bot.ext.activity.ForEach;
-import org.jboss.tools.bpel.ui.bot.ext.activity.If;
-import org.jboss.tools.bpel.ui.bot.ext.activity.OnAlarm;
-import org.jboss.tools.bpel.ui.bot.ext.activity.OnMessage;
-import org.jboss.tools.bpel.ui.bot.ext.activity.Pick;
-import org.jboss.tools.bpel.ui.bot.ext.activity.RepeatUntil;
-import org.jboss.tools.bpel.ui.bot.ext.activity.Scope;
-import org.jboss.tools.bpel.ui.bot.ext.activity.Sequence;
-import org.jboss.tools.ui.bot.ext.SWTTestExt;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
-import org.jboss.tools.ui.bot.ext.helper.ImportHelper;
-import org.jboss.tools.ui.bot.ext.helper.ResourceHelper;
+import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
+import org.jboss.tools.bpel.reddeer.activity.ForEach;
+import org.jboss.tools.bpel.reddeer.activity.If;
+import org.jboss.tools.bpel.reddeer.activity.OnAlarm;
+import org.jboss.tools.bpel.reddeer.activity.OnMessage;
+import org.jboss.tools.bpel.reddeer.activity.Pick;
+import org.jboss.tools.bpel.reddeer.activity.RepeatUntil;
+import org.jboss.tools.bpel.reddeer.activity.Scope;
+import org.jboss.tools.bpel.reddeer.activity.Sequence;
+import org.jboss.tools.bpel.reddeer.shell.EclipseShell;
+import org.jboss.tools.bpel.reddeer.wizard.ImportProjectWizard;
+import org.jboss.tools.bpel.ui.bot.test.suite.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.tools.bpel.ui.bot.test.suite.PerspectiveRequirement.Perspective;
+import org.jboss.tools.bpel.ui.bot.test.util.ResourceHelper;
 import org.junit.Before;
+import org.junit.Test;
 
 /**
  * 
  * @author apodhrad
  * 
  */
-@Require(perspective = "BPEL")
-public class ActivityModelingTest extends SWTTestExt {
+@CleanWorkspace
+@Perspective(name = "BPEL")
+public class ActivityModelingTest extends SWTBotTestCase {
 
 	public static final String PROJECT_NAME = "DiscriminantProcess";
 	public static final String BPEL_FILE_NAME = "Discriminant.bpel";
@@ -29,7 +35,7 @@ public class ActivityModelingTest extends SWTTestExt {
 	public void setupWorkspace() throws Exception {
 		String projectLocation = ResourceHelper.getResourceAbsolutePath(Activator.PLUGIN_ID,
 				"resources/projects/" + PROJECT_NAME + ".zip");
-		ImportHelper.importProjectFromZip(projectLocation);
+		new ImportProjectWizard(projectLocation).execute();
 	}
 
 	/**
@@ -37,11 +43,14 @@ public class ActivityModelingTest extends SWTTestExt {
 	 * 
 	 * @throws Exception
 	 */
-	// @Test
+	@Test
 	public void testModeling() throws Exception {
-		eclipse.maximizeActiveShell();
+		new EclipseShell().maximize();
 
-		projectExplorer.openFile(PROJECT_NAME, "bpelContent", BPEL_FILE_NAME);
+		ProjectExplorer projectExplorer = new ProjectExplorer();
+		projectExplorer.open();
+		Project project = projectExplorer.getProject(PROJECT_NAME);
+		project.getProjectItem("bpelContent", BPEL_FILE_NAME).open();
 
 		Sequence mainSequence = new Sequence("Main");
 		mainSequence.addReceive("receive").pickOperation("calculateDiscriminant")
