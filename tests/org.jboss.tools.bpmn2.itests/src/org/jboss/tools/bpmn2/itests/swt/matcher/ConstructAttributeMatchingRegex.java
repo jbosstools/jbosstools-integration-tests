@@ -60,24 +60,49 @@ public class ConstructAttributeMatchingRegex<T extends EditPart> extends BaseMat
 	 */
 	public boolean matches(EditPart editPart, Pattern pattern) {
 		Object model = editPart.getModel();
+		/*
+		 * Check weather the process edit part attribute matches the pattern.
+		 * 
+		 * See org.eclipse.graphiti.mm.pictograms.impl.DiagramImpl;
+		 */
+		if (matches(model, pattern)) {
+			return true;
+		}
+		/*
+		 * Check weather a business object attribute matches the patterns.
+		 * 
+		 * See org.eclipse.graphiti.mm.pictograms.impl.ContainerShapeImpl.getLink();
+		 */
 		if (model instanceof Shape) {
 			Shape shape = (Shape) model;
 			PictogramLink link = shape.getLink();
 			if (link != null) {
 				EList<EObject> objectList = link.getBusinessObjects();
 				for (EObject eo : objectList) {
-					try {
-						// Just one of the business objects should have a name!
-						Method method = eo.getClass().getMethod(methodName);
-						String name = method.invoke(eo).toString();
-						if(pattern.matcher(name).matches()) {
-							return true;
-						}
-					} catch (Exception e) {
-						// Ignore
+					if (matches(eo, pattern)) {
+						return true;
 					}
 				}
 			}
+		}
+		return false;
+	}
+	
+	/**
+	 * 
+	 * @param instance
+	 * @param pattern
+	 * @return
+	 */
+	public boolean matches(Object instance, Pattern pattern) {
+		try {
+			Method method = instance.getClass().getMethod(methodName);
+			String name = method.invoke(instance).toString();
+			if(pattern.matcher(name).matches()) {
+				return true;
+			}
+		} catch (Exception e) {
+			// ignore
 		}
 		return false;
 	}
