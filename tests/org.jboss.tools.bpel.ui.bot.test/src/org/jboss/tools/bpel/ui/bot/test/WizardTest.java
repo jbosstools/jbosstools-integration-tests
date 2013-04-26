@@ -1,11 +1,14 @@
 package org.jboss.tools.bpel.ui.bot.test;
 
-import org.jboss.tools.bpel.ui.bot.ext.editor.BpelEditor;
-import org.jboss.tools.bpel.ui.bot.ext.wizard.NewProcessWizard;
-import org.jboss.tools.bpel.ui.bot.ext.wizard.NewProjectWizard;
-import org.jboss.tools.ui.bot.ext.SWTTestExt;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
+import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
+import org.jboss.reddeer.swt.util.Bot;
+import org.jboss.tools.bpel.reddeer.editor.BpelEditor;
+import org.jboss.tools.bpel.reddeer.wizard.NewProcessWizard;
+import org.jboss.tools.bpel.reddeer.wizard.NewProjectWizard;
+import org.jboss.tools.bpel.ui.bot.test.suite.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.tools.bpel.ui.bot.test.suite.PerspectiveRequirement.Perspective;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -13,8 +16,18 @@ import org.junit.Test;
  * @author apodhrad
  * 
  */
-@Require(perspective = "BPEL")
-public class WizardTest extends SWTTestExt {
+@CleanWorkspace
+@Perspective(name = "BPEL")
+public class WizardTest extends SWTBotTestCase {
+
+	@BeforeClass
+	public static void closeWelcome() throws Exception {
+		try {
+			Bot.get().viewByTitle("Welcome").close();
+		} catch (Exception ex) {
+			//
+		}
+	}
 
 	@Test
 	public void createNewSyncProcess() throws Exception {
@@ -28,13 +41,11 @@ public class WizardTest extends SWTTestExt {
 		wizard.execute();
 
 		BpelEditor bpelEditor = new BpelEditor(processName + ".bpel");
-		String processContent = bpelEditor.toTextEditor().getText();
+		String processContent = bpelEditor.getSource();
 
 		Assert.assertTrue(processContent != null);
-		Assert.assertTrue(processContent
-				.contains("http://docs.oasis-open.org/wsbpel/2.0/process/executable"));
-		Assert.assertTrue(processContent
-				.contains("<bpel:import location=\"SyncProcessArtifacts.wsdl\""));
+		Assert.assertTrue(processContent.contains("http://docs.oasis-open.org/wsbpel/2.0/process/executable"));
+		Assert.assertTrue(processContent.contains("<bpel:import location=\"SyncProcessArtifacts.wsdl\""));
 		Assert.assertTrue(processContent.contains("<bpel:receive name=\"receiveInput\""));
 		Assert.assertTrue(processContent.contains("<bpel:reply name=\"replyOutput\""));
 	}
@@ -51,13 +62,11 @@ public class WizardTest extends SWTTestExt {
 		wizard.execute();
 
 		BpelEditor bpelEditor = new BpelEditor(processName + ".bpel");
-		String processContent = bpelEditor.toTextEditor().getText();
+		String processContent = bpelEditor.getSource();
 
 		Assert.assertTrue(processContent != null);
-		Assert.assertTrue(processContent
-				.contains("http://docs.oasis-open.org/wsbpel/2.0/process/executable"));
-		Assert.assertTrue(processContent
-				.contains("<bpel:import location=\"AsyncProcessArtifacts.wsdl\""));
+		Assert.assertTrue(processContent.contains("http://docs.oasis-open.org/wsbpel/2.0/process/executable"));
+		Assert.assertTrue(processContent.contains("<bpel:import location=\"AsyncProcessArtifacts.wsdl\""));
 		Assert.assertTrue(processContent.contains("<bpel:receive name=\"receiveInput\""));
 		Assert.assertTrue(processContent.contains("<bpel:invoke name=\"callbackClient\""));
 	}
@@ -74,13 +83,11 @@ public class WizardTest extends SWTTestExt {
 		wizard.execute();
 
 		BpelEditor bpelEditor = new BpelEditor(processName + ".bpel");
-		String processContent = bpelEditor.toTextEditor().getText();
+		String processContent = bpelEditor.getSource();
 
 		Assert.assertTrue(processContent != null);
-		Assert.assertTrue(processContent
-				.contains("http://docs.oasis-open.org/wsbpel/2.0/process/executable"));
-		Assert.assertTrue(processContent
-				.contains("<bpel:import location=\"EmptyProcessArtifacts.wsdl\""));
+		Assert.assertTrue(processContent.contains("http://docs.oasis-open.org/wsbpel/2.0/process/executable"));
+		Assert.assertTrue(processContent.contains("<bpel:import location=\"EmptyProcessArtifacts.wsdl\""));
 		Assert.assertTrue(processContent.contains("<bpel:sequence name=\"main\">"));
 		Assert.assertTrue(processContent.contains("<bpel:empty name=\"Empty\"></bpel:empty>"));
 
@@ -100,13 +107,11 @@ public class WizardTest extends SWTTestExt {
 		wizard.execute();
 
 		BpelEditor bpelEditor = new BpelEditor(processName + ".bpel");
-		String processContent = bpelEditor.toTextEditor().getText();
+		String processContent = bpelEditor.getSource();
 
 		Assert.assertTrue(processContent != null);
-		Assert.assertTrue(processContent
-				.contains("http://docs.oasis-open.org/wsbpel/2.0/process/abstract"));
-		Assert.assertTrue(processContent
-				.contains("<bpel:import location=\"AbstractProcessArtifacts.wsdl\""));
+		Assert.assertTrue(processContent.contains("http://docs.oasis-open.org/wsbpel/2.0/process/abstract"));
+		Assert.assertTrue(processContent.contains("<bpel:import location=\"AbstractProcessArtifacts.wsdl\""));
 		Assert.assertTrue(processContent.contains("<bpel:receive name=\"receiveInput\""));
 		Assert.assertTrue(processContent.contains("<bpel:reply name=\"replyOutput\""));
 	}
