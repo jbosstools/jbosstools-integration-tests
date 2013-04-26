@@ -12,6 +12,7 @@ import org.apache.log4j.Logger;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPart;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditPart;
+import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 
 import org.jboss.reddeer.swt.impl.text.LabeledText;
@@ -36,7 +37,8 @@ public class Construct implements IConstruct {
 	
 	protected BPMN2Editor editor;
 	protected BPMN2PropertiesView properties;
-	protected AWTBot robot;
+	protected SWTBot bot;
+	
 	protected SWTBotGefEditPart editPart;
 	
 	protected Logger log = Logger.getLogger(getClass());
@@ -65,7 +67,7 @@ public class Construct implements IConstruct {
 	public Construct(String name, ConstructType type, Construct parent, int index, boolean select) {
 		this.editor = new BPMN2Editor();
 		this.properties = new BPMN2PropertiesView();
-		this.robot  = new AWTBot();
+		this.bot = Bot.get();
 		
 		this.name = name;
 		this.type = type;

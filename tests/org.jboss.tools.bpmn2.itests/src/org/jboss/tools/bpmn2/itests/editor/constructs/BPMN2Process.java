@@ -11,12 +11,12 @@ public class BPMN2Process extends Process {
 
 	/**
 	 * Creates a new instance of Process.
+	 * 
+	 * @param name
 	 */
-	public BPMN2Process() {
-		super();
-		
-		this.name = "Default Process Diagram";
-	}
+	public BPMN2Process(String name) {
+		super(name);
+	}		
 	
 	/**
 	 * 
