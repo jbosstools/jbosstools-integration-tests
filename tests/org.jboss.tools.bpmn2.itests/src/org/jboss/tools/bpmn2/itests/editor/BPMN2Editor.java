@@ -126,7 +126,7 @@ public class BPMN2Editor extends SWTBotGefEditor {
 	 * @param matcher
 	 * @return
 	 */
-	public List<SWTBotGefEditPart> getEditPart(SWTBotGefEditPart editPart, Matcher<? extends EditPart> matcher) {
+	public List<SWTBotGefEditPart> getEditParts(SWTBotGefEditPart editPart, Matcher<? extends EditPart> matcher) {
 		return editPart.descendants(matcher);
 	}
 	

@@ -1,16 +1,10 @@
 package org.jboss.tools.bpmn2.itests.editor.constructs;
 
-import java.util.List;
-
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPart;
-import org.eclipse.gef.GraphicalEditPart;
-import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditPart;
-
-import org.hamcrest.BaseMatcher;
-import org.hamcrest.Description;
 
 import org.jboss.tools.bpmn2.itests.editor.ConstructType;
+import org.jboss.tools.bpmn2.itests.swt.matcher.ConstructOnPoint;
 
 /**
  * ISSUES: 
@@ -49,23 +43,19 @@ public class ContainerConstruct extends Construct {
 	 * @param type
 	 */
 	public void add(String name, ConstructType type) {
-		Rectangle bounds = editor.getBounds(editor.rootEditPart());
+		Rectangle bounds = editor.getBounds(editPart);
 		/*
 		 * 1/10 from the X axis 
 		 */
-		int x = (bounds.x + bounds.width) / 10;
+		int x = bounds.x + (bounds.width / 8);
 		/* 
 		 * 1/2 from the Y axis
 		 */
-		int y = (bounds.y + bounds.height) / 2;
+		int y = bounds.y + (bounds.height / 2);
 		/*
-		 * Add
+		 * Add the construct
 		 */
-		if (isAvailable(x, y)) {
-			add(name, type, x, y);
-		} else {
-			throw new RuntimeException("[x, y] = " + "[" + x + ", " + y + "] is not available");
-		}
+		add(name, type, x, y);
 	}
 	
 	/**
@@ -76,9 +66,13 @@ public class ContainerConstruct extends Construct {
 	 * @param y
 	 */
 	public void add(String name, ConstructType type, int x, int y) {
-		/* 
-		 * Add the construct
+		if (!isAvailable(x, y)) {
+			throw new RuntimeException("[x, y] = " + "[" + x + ", " + y + "] is not available");
+		}
+		/*
+		 * Add the construct using the tool in the palette.
 		 */
+		log.info("Adding consturct '" + name + "' of type '" + type + "' to [x, y] = [" + x + ", " + y + "]");
 		editor.activateTool(type.toToolName());
 		editor.click(x, y);
 		/*
@@ -96,37 +90,19 @@ public class ContainerConstruct extends Construct {
 	 * @return
 	 */
 	protected boolean isAvailable(final int x, final int y) {
-		List<SWTBotGefEditPart> editPartList = editor.getEditParts(new BaseMatcher<EditPart>() {
-
-			public boolean matches(Object item) {
-				/*
-				 * instance of org.eclipse.gef.EditPart but nor of org.eclipse.graphiti.ui.internal.parts.DiagramEditPart.
-				 * 
-				 * - don't want to include other dependencies that's why the class is compared using it's name
-				 *   instead of using the 'instanceof' operator.
-				 */
-				if ((item instanceof EditPart) && !(item.getClass().getName().endsWith("DiagramEditPart"))) {
-					Rectangle bounds = editor.getBounds((GraphicalEditPart) item);
-					
-					int xItemStart = bounds.x;
-					int xItemEnd = bounds.x + bounds.width;
-					
-					int yItemStart = bounds.y;
-					int yItemEnd = bounds.y + bounds.height;
-					
-					return xItemStart < x && xItemEnd > x && yItemStart < y && yItemEnd > y;
-				}
-				return false;
-			}
-
-			public void describeTo(Description description) {
-				description.appendText(" checking bounds [x,y] = " + "[" + x + ", " + y + "] for editPart presence.");
-			}
-			
-		});
-		
-		return editPartList.size() == 0;
-		
+		/*
+		 * The point must be inside this edit part.
+		 */
+		if (editor.getBounds(editPart).contains(x, y)) {
+			/*
+			 * Check weather the point is not already taken by another child editPart.
+			 */
+			return editor.getEditParts(editPart, new ConstructOnPoint<EditPart>(x, y)).isEmpty();
+		}
+		/*
+		 * Out of bounds.
+		 */
+		return false;
 	}
 	
 	/**
