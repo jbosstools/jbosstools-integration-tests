@@ -1,22 +1,25 @@
 package org.jboss.tools.bpel.ui.bot.test;
 
+import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
 import org.jboss.reddeer.swt.util.Bot;
-import org.jboss.tools.bpel.ui.bot.ext.activity.Assign;
-import org.jboss.tools.bpel.ui.bot.ext.activity.Empty;
-import org.jboss.tools.bpel.ui.bot.ext.activity.Receive;
-import org.jboss.tools.bpel.ui.bot.ext.activity.Reply;
-import org.jboss.tools.bpel.ui.bot.ext.activity.Sequence;
-import org.jboss.tools.bpel.ui.bot.ext.editor.BpelDescriptorEditor;
-import org.jboss.tools.bpel.ui.bot.ext.util.SoapClient;
-import org.jboss.tools.bpel.ui.bot.ext.wizard.NewDescriptorWizard;
-import org.jboss.tools.bpel.ui.bot.ext.wizard.NewProcessWizard;
-import org.jboss.tools.bpel.ui.bot.ext.wizard.NewProjectWizard;
-import org.jboss.tools.ui.bot.ext.SWTTestExt;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
-import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
-import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
-import org.jboss.tools.ui.bot.ext.view.ServersView;
+import org.jboss.tools.bpel.reddeer.activity.Assign;
+import org.jboss.tools.bpel.reddeer.activity.Empty;
+import org.jboss.tools.bpel.reddeer.activity.Receive;
+import org.jboss.tools.bpel.reddeer.activity.Reply;
+import org.jboss.tools.bpel.reddeer.activity.Sequence;
+import org.jboss.tools.bpel.reddeer.editor.BpelDescriptorEditor;
+import org.jboss.tools.bpel.reddeer.server.ServerDeployment;
+import org.jboss.tools.bpel.reddeer.shell.EclipseShell;
+import org.jboss.tools.bpel.reddeer.wizard.NewDescriptorWizard;
+import org.jboss.tools.bpel.reddeer.wizard.NewProcessWizard;
+import org.jboss.tools.bpel.reddeer.wizard.NewProjectWizard;
+import org.jboss.tools.bpel.ui.bot.test.suite.BPELSuite;
+import org.jboss.tools.bpel.ui.bot.test.suite.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.tools.bpel.ui.bot.test.suite.PerspectiveRequirement.Perspective;
+import org.jboss.tools.bpel.ui.bot.test.suite.ServerRequirement.Server;
+import org.jboss.tools.bpel.ui.bot.test.suite.ServerRequirement.State;
+import org.jboss.tools.bpel.ui.bot.test.suite.ServerRequirement.Type;
+import org.jboss.tools.bpel.ui.bot.test.util.SoapClient;
 import org.junit.Test;
 
 /**
@@ -24,13 +27,16 @@ import org.junit.Test;
  * @author apodhrad
  * 
  */
-@Require(server = @Server(type = ServerType.ALL, state = ServerState.Running), perspective = "BPEL")
-public class SimpleDeployTest extends SWTTestExt {
+@CleanWorkspace
+@Perspective(name = "BPEL")
+@Server(type = Type.ALL, state = State.RUNNING)
+public class SimpleDeployTest extends SWTBotTestCase {
 
 	private static final String WSDL_URL = "http://localhost:8080/deployHello?wsdl";
 
 	@Test
 	public void simpleDeployTest() throws Exception {
+		new EclipseShell().maximize();
 		String projectName = "deployTest";
 		String processName = "deployHello";
 
@@ -47,17 +53,17 @@ public class SimpleDeployTest extends SWTTestExt {
 		Assign assign = new Empty("FIX_ME-Add_Business_Logic_Here").toAssign();
 		assign.setName("addHello");
 		assign.addExpToVar("concat('Hello ', $input.payload/tns:input)", new String[] {
-				"output : deployHelloResponseMessage", "payload : deployHelloResponse",
-				"result : string" });
+				"output : deployHelloResponseMessage", "payload : deployHelloResponse", "result : string" });
 
 		// create descriptor
 		new NewDescriptorWizard(projectName).execute();
 		new BpelDescriptorEditor().setAssociatedPort("deployHelloPort");
 
 		// deploy project
-		String serverName = configuredState.getServer().name;
-		new ServersView().addProjectToServer(projectName, serverName);
-		Bot.get().sleep(TIME_5S);
+		String serverName = BPELSuite.getServerName();
+		ServerDeployment server = new ServerDeployment(serverName);
+		server.deployProject(projectName);
+		Bot.get().sleep(5 * 1000);
 
 		// test the deployed project
 		SoapClient.testResponses(WSDL_URL, "Deploy_Hello");

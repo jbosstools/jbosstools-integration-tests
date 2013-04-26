@@ -1,27 +1,34 @@
 package org.jboss.tools.bpel.ui.bot.test;
 
-import org.jboss.tools.bpel.ui.bot.ext.activity.Assign;
-import org.jboss.tools.bpel.ui.bot.ext.activity.Catch;
-import org.jboss.tools.bpel.ui.bot.ext.activity.CompensationHandler;
-import org.jboss.tools.bpel.ui.bot.ext.activity.FaultHandler;
-import org.jboss.tools.bpel.ui.bot.ext.activity.If;
-import org.jboss.tools.bpel.ui.bot.ext.activity.Receive;
-import org.jboss.tools.bpel.ui.bot.ext.activity.Scope;
-import org.jboss.tools.bpel.ui.bot.ext.activity.Sequence;
-import org.jboss.tools.ui.bot.ext.SWTTestExt;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
-import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
-import org.jboss.tools.ui.bot.ext.helper.ImportHelper;
-import org.jboss.tools.ui.bot.ext.helper.ResourceHelper;
+import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
+import org.jboss.tools.bpel.reddeer.activity.Assign;
+import org.jboss.tools.bpel.reddeer.activity.Catch;
+import org.jboss.tools.bpel.reddeer.activity.CompensationHandler;
+import org.jboss.tools.bpel.reddeer.activity.FaultHandler;
+import org.jboss.tools.bpel.reddeer.activity.If;
+import org.jboss.tools.bpel.reddeer.activity.Receive;
+import org.jboss.tools.bpel.reddeer.activity.Scope;
+import org.jboss.tools.bpel.reddeer.activity.Sequence;
+import org.jboss.tools.bpel.reddeer.shell.EclipseShell;
+import org.jboss.tools.bpel.reddeer.wizard.ImportProjectWizard;
+import org.jboss.tools.bpel.ui.bot.test.suite.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.tools.bpel.ui.bot.test.suite.PerspectiveRequirement.Perspective;
+import org.jboss.tools.bpel.ui.bot.test.suite.ServerRequirement.Server;
+import org.jboss.tools.bpel.ui.bot.test.suite.ServerRequirement.State;
+import org.jboss.tools.bpel.ui.bot.test.suite.ServerRequirement.Type;
+import org.jboss.tools.bpel.ui.bot.test.util.ResourceHelper;
 import org.junit.Test;
 
 /**
  * 
  * @author apodhrad
  */
-@Require(server = @Server(state = ServerState.Disabled), perspective = "BPEL")
-public class FaultModelingTest extends SWTTestExt {
+@CleanWorkspace
+@Perspective(name="BPEL")
+@Server(type = Type.ALL, state = State.NOT_RUNNING)
+public class FaultModelingTest extends SWTBotTestCase {
 
 	public static final String PROJECT_NAME = "bpel_scope";
 	public static final String BPEL_FILE_NAME = "scope.bpel";
@@ -36,11 +43,14 @@ public class FaultModelingTest extends SWTTestExt {
 	public void testScopes() throws Exception {
 		String projectLocation = ResourceHelper.getResourceAbsolutePath(Activator.PLUGIN_ID,
 				"resources/projects/" + PROJECT_NAME + ".zip");
-		ImportHelper.importProjectFromZip(projectLocation);
+		new ImportProjectWizard(projectLocation).execute();
 
-		eclipse.maximizeActiveShell();
+		new EclipseShell().maximize();
 
-		projectExplorer.openFile(PROJECT_NAME, "bpelContent", BPEL_FILE_NAME);
+		ProjectExplorer projectExplorer = new ProjectExplorer();
+		projectExplorer.open();
+		Project project = projectExplorer.getProject(PROJECT_NAME);
+		project.getProjectItem("bpelContent", BPEL_FILE_NAME).open();
 
 		Sequence mainSequence = new Sequence("Main");
 		mainSequence.addReceive("mainReceive");
