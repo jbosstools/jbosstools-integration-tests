@@ -17,13 +17,14 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.util.Bot;
-import org.jboss.tools.bpmn2.itests.awt.AWTBot;
+
 import org.jboss.tools.bpmn2.itests.editor.BPMN2Editor;
 import org.jboss.tools.bpmn2.itests.editor.ConnectionType;
 import org.jboss.tools.bpmn2.itests.editor.ConstructType;
 import org.jboss.tools.bpmn2.itests.editor.Position;
 import org.jboss.tools.bpmn2.itests.editor.properties.BPMN2PropertiesView;
 import org.jboss.tools.bpmn2.itests.swt.matcher.ConstructOfType;
+import org.jboss.tools.bpmn2.itests.swt.matcher.ConstructOnPoint;
 import org.jboss.tools.bpmn2.itests.swt.matcher.ConstructWithName;
 
 /**
@@ -80,7 +81,7 @@ public class Construct implements IConstruct {
 		
 		Matcher<? extends EditPart> matcher = allOf(matchers);
 		if (parent != null) {
-			List<SWTBotGefEditPart> editParts = editor.getEditPart(parent.editPart, matcher);
+			List<SWTBotGefEditPart> editParts = editor.getEditParts(parent.editPart, matcher);
 			if (!editParts.isEmpty()) {
 				editPart = editParts.get(index);
 			}
@@ -192,13 +193,17 @@ public class Construct implements IConstruct {
 				throw new UnsupportedOperationException();
 		}
 		
+		if (!isAvailable(x, y)) {
+			throw new RuntimeException("[x, y] = " + "[" + x + ", " + y + "] is not available");
+		}
+		
 		editor.activateTool(constructType.toToolName());
 		editor.click(x, y);
-		
+			
 		Construct construct = editor.getLastConstruct(constructType);
 		if (construct == null) throw new RuntimeException("Unexpected error. Could not find added construct.");
 		if (name != null) construct.setName(name);
-		
+			
 		connectTo(construct, connectionType);
 	}
 	
@@ -244,37 +249,18 @@ public class Construct implements IConstruct {
 		editor.clickContextMenu("Delete");
 	}
 	
-//	/**
-//	 * Add a new construct with ${name} and ${constructType} to
-//	 * the editor.
-//	 * 
-//	 * @param name
-//	 * @param constructType
-//	 */
-//	public void contextMenuAppend(String name, ConstructType constructType) {
-//		contextMenuAppend(name, constructType, ConnectionType.SEQUENCE_FLOW);
-//	}
-//	
-//	/**
-//	 * Add a new construct to the to this one connected using a
-//	 * connector of type ${connectionType}.
-//	 * 
-//	 * @param name
-//	 * @param constructType
-//	 * @param connectionType
-//	 */
-//	public void contextMenuAppend(String name, ConstructType constructType, ConnectionType connectionType) {
-//		editor.selectEditPart(editPart, true);
-//		editor.clickContextMenu(constructType.getCategory().toName());
-//		for (int i=0; i<constructType.indexOf() + 1; i++) robot.type(KeyEvent.VK_DOWN);
-//		robot.type(KeyEvent.VK_ENTER);
-//
-//		Construct construct = editor.getLastConstructByLabelName(constructType);
-//		if (construct == null) throw new RuntimeException("Unexpected error. Could not find added construct.");
-//		if (name != null) construct.setName(name);
-//		
-//		connectTo(new Construct(name, constructType), connectionType);
-//	}
+	/**
+	 * 
+	 * @param x
+	 * @param y
+	 * @return
+	 */
+	protected boolean isAvailable(final int x, final int y) {
+		/*
+		 * Check weather the point is not already taken by another child editPart.
+		 */
+		return editor.getEditParts(editPart.parent(), new ConstructOnPoint<EditPart>(x, y)).isEmpty();
+	}
 	
 	/**
 	 * Validate this construct.
