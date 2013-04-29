@@ -15,7 +15,11 @@ import org.jboss.tools.ui.bot.ext.view.ProblemsView;
 
 public class ESBExampleTest extends ExampleTest{
 
-	
+	/* Over-ride method failOnMissingExample from parent class for: https://issues.jboss.org/browse/JBIDE-13439 */
+	protected boolean failOnMissingExample(){
+		return true;
+	}
+
 	/**
 	 * returns example project name (as it is imported to workspace)
 	 * @return
