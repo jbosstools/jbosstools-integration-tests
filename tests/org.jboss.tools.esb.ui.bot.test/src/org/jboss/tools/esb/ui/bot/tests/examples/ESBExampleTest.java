@@ -19,7 +19,7 @@ public class ESBExampleTest extends ExampleTest{
 	protected boolean failOnMissingExample(){
 		return true;
 	}
-	
+
 	/**
 	 * returns example project name (as it is imported to workspace)
 	 * @return
