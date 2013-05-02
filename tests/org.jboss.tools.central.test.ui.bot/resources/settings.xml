@@ -100,88 +100,11 @@
 				</pluginRepository>
 			</pluginRepositories>
 		</profile>
-
-		<profile>
-			<id>jboss-wfk-repository</id>
-			<repositories>
-				<repository>
-					<id>jboss-wfk-repository</id>
-					<name>JBoss WFK Maven Repository</name>
-					<url>file:///home/rax/maven%20Repository/jboss-wfk-2.1.0-maven-repository</url>
-					<layout>default</layout>
-					<releases>
-						<enabled>true</enabled>
-						<updatePolicy>never</updatePolicy>
-					</releases>
-					<snapshots>
-						<enabled>false</enabled>
-						<updatePolicy>never</updatePolicy>
-					</snapshots>
-				</repository>
-			</repositories>
-			<pluginRepositories>
-				<pluginRepository>
-					<id>jboss-wfk-repository-group</id>
-					<name>JBoss WFK Maven Repository</name>
-					<url>file:///home/rax/maven%20Repository/jboss-wfk-2.1.0-maven-repository</url>
-					<layout>default</layout>
-					<releases>
-						<enabled>true</enabled>
-						<updatePolicy>never</updatePolicy>
-					</releases>
-					<snapshots>
-						<enabled>false</enabled>
-						<updatePolicy>never</updatePolicy>
-					</snapshots>
-				</pluginRepository>
-			</pluginRepositories>
-		</profile>
-		
-		<profile>
-			<id>jboss-wfk-online-repository</id>
-			<repositories>
-				<repository>
-					<id>jboss-wfk-repository</id>
-					<name>JBoss WFK Maven Repository</name>
-					<url>http://maven.repository.redhat.com/techpreview/wfk2/2.0.0/maven-repository/</url>
-					<layout>default</layout>
-					<releases>
-						<enabled>true</enabled>
-						<updatePolicy>never</updatePolicy>
-					</releases>
-					<snapshots>
-						<enabled>false</enabled>
-						<updatePolicy>never</updatePolicy>
-					</snapshots>
-				</repository>
-			</repositories>
-			<pluginRepositories>
-				<pluginRepository>
-					<id>jboss-wfk-repository-group</id>
-					<name>JBoss WFK Maven Repository</name>
-					<url>http://maven.repository.redhat.com/techpreview/wfk2/2.0.0/maven-repository/</url>
-					<layout>default</layout>
-					<releases>
-						<enabled>true</enabled>
-						<updatePolicy>never</updatePolicy>
-					</releases>
-					<snapshots>
-						<enabled>false</enabled>
-						<updatePolicy>never</updatePolicy>
-					</snapshots>
-				</pluginRepository>
-			</pluginRepositories>
-		</profile>
-
 	</profiles>
 
 	<activeProfiles>
-		<!-- Optionally, make the repository active by default -->
 		<activeProfile>jboss-public-repository</activeProfile>
-<!-- 		<activeProfile>jboss-eap-maven-repository</activeProfile> -->
-<!-- 		<activeProfile>jboss-wfk-repository</activeProfile> -->
 		<activeProfile>jboss-eap-maven-online-repository</activeProfile>
-<!-- 		<activeProfile>jboss-wfk-online-repository</activeProfile> -->
 	</activeProfiles>
 
 </settings>
