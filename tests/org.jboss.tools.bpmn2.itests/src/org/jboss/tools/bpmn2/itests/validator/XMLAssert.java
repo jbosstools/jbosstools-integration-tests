@@ -21,14 +21,14 @@ import org.xml.sax.InputSource;
  * 
  * @author Marek Baluch <mbaluch@redhat.com>
  */
-public class StructureValidator {
+public class XMLAssert {
 
 	private Document document;
 	
 	/**
 	 * 
 	 */
-	public StructureValidator() {
+	public XMLAssert() {
 		// TODO Auto-generated constructor stub
 	}
 	
