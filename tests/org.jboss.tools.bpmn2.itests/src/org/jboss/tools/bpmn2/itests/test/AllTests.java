@@ -17,14 +17,16 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @RunWith(RequirementAwareSuite.class)
 @SuiteClasses({
+// Wizard tests
+// ------------
 //	ProjectWizardTest.class
 //	ProcessWizardTest.class
 //	Bpmn2ModelWizardTest.class
 //	GenericBpmn2ModelWizardTest.class
 //	JBpmProcessWizardTest.class
-//	ConstructTest.class
+// Editor tests
+// ------------
 	ModelingSmokeTest.class
-//	SubProcessTest.class
 })
 public class AllTests extends SWTTestExt {
 
