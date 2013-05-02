@@ -13,7 +13,7 @@ import org.jboss.tools.bpmn2.itests.editor.constructs.events.StartEvent;
 import org.jboss.tools.bpmn2.itests.editor.constructs.gateways.ParallelGateway;
 import org.jboss.tools.bpmn2.itests.editor.constructs.tasks.UserTask;
 import org.jboss.tools.bpmn2.itests.test.Activator;
-import org.jboss.tools.bpmn2.itests.validator.SchemaValidator;
+import org.jboss.tools.bpmn2.itests.validator.BPMN2Validator;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.helper.ImportHelper;
 import org.jboss.tools.ui.bot.ext.helper.ResourceHelper;
@@ -31,7 +31,7 @@ import org.junit.Test;
  *
  */
 //@Require(jbpm = @JBPM(), runOnce = true)
-public class SimpleModelingTest extends SWTTestExt {
+public class ModelingSmokeTest extends SWTTestExt {
 
 	public static final String PROJECT_NAME = "EditorTestProject";
 	public static final String PROCESS_NAME = "EmptyProcess.bpmn";
@@ -90,11 +90,13 @@ public class SimpleModelingTest extends SWTTestExt {
 		
 		gateway2.append("End", ConstructType.END_EVENT);
 		
+		new BPMN2Editor().save();
+		
 		/*
 		 * Validation
 		 */
 		BPMN2Editor editor = new BPMN2Editor();
-		SchemaValidator validator = new SchemaValidator();
+		BPMN2Validator validator = new BPMN2Validator();
 		boolean valid = validator.validate(editor.getSourceText());
 		
 		Assert.assertTrue(valid);
