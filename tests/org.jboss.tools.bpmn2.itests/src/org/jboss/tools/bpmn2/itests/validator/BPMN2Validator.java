@@ -2,10 +2,16 @@ package org.jboss.tools.bpmn2.itests.validator;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.nio.MappedByteBuffer;
+import java.nio.channels.FileChannel;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.XMLConstants;
+import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
@@ -13,8 +19,10 @@ import javax.xml.validation.Validator;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+
 import org.jboss.tools.bpmn2.itests.test.Activator;
 import org.jboss.tools.ui.bot.ext.helper.ResourceHelper;
+
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
@@ -26,22 +34,50 @@ public class BPMN2Validator {
 
 	private static final Logger log = Logger.getLogger(BPMN2Validator.class);
 	
-	private final File xsd;
+	protected final List<String> warningList;
+	protected final List<String> errorList;
+	protected final List<String> fatalErrorList;
 	
-	private final List<String> warningList;
-	private final List<String> errorList;
-	private final List<String> fatalErrorList;
+	protected List<Source> schemaList;
 	
 	/**
 	 * 
 	 */
 	public BPMN2Validator() {
-		xsd = new File(ResourceHelper.getResourceAbsolutePath(
-				Activator.PLUGIN_ID, "resources/bpmn2/BPMN20.xsd"));
-		
 		warningList = new ArrayList<String>();
 		errorList = new ArrayList<String>();
 		fatalErrorList = new ArrayList<String>();
+		
+		schemaList = new ArrayList<Source>();
+		
+		schemaList.add(new StreamSource(
+				ResourceHelper.getResourceAbsolutePath(
+						Activator.PLUGIN_ID, "resources/bpmn2/BPMN20.xsd")));
+	}
+	
+	/**
+	 * 
+	 * @param xmlFile
+	 * @return
+	 */
+	public boolean validate(File xmlFile) throws IOException {
+		String content = null;
+		FileInputStream stream = new FileInputStream(xmlFile);
+		try {
+			FileChannel fc = stream.getChannel();
+			MappedByteBuffer bb = fc.map(FileChannel.MapMode.READ_ONLY, 0, fc.size());
+			/* Instead of using default, pass in a decoder. */
+			content = Charset.defaultCharset().decode(bb).toString();
+		} finally {
+			try {
+				stream.close();
+			} catch (IOException e) {
+				// ignore
+				log.error(e.getMessage());
+			}
+		}
+		
+		return validate(content);
 	}
 	
 	/**
@@ -51,16 +87,18 @@ public class BPMN2Validator {
 	 */
 	public boolean validate(String xmlContent) {
 		try {
+			Source[] sa = schemaList.toArray(new Source[schemaList.size()]); 
+			
 			SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-			Schema s = sf.newSchema(new StreamSource(xsd));
+			Schema s = sf.newSchema(sa);
 
 			Validator v = s.newValidator();
 			v.setErrorHandler(new ErrorHandler());
 			v.validate(new StreamSource(new ByteArrayInputStream(xmlContent.getBytes())));
 
-			if (!fatalErrorList.isEmpty()) logIssues(Level.FATAL, "Fatal Errors:", fatalErrorList);
-			if (!errorList.isEmpty()) logIssues(Level.ERROR, "Errors:", errorList);
-			if (!warningList.isEmpty()) logIssues(Level.WARN, "Warnings:", warningList);
+			if (!fatalErrorList.isEmpty()) logIssues(Level.FATAL, fatalErrorList.size() + " Fatal Errors:", fatalErrorList);
+			if (!errorList.isEmpty()) logIssues(Level.ERROR, errorList.size() + " Errors:", errorList);
+			if (!warningList.isEmpty()) logIssues(Level.WARN, warningList.size() + " Warnings:", warningList);
 			
 			return errorList.isEmpty() && fatalErrorList.isEmpty();
 		} catch (Exception e) {
