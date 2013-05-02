@@ -23,13 +23,11 @@ public class DocumentationSectionTest extends SWTTestExt {
 	public void documentationSectionTest(){
 		//Commented out because of bug in eclipse Juno on RHEL 6.3 https://bugs.eclipse.org/bugs/show_bug.cgi?id=387213
 		//testHyperlinkToBrowser("Wiki");
-		testHyperlinkToBrowser("New and Noteworthy");
+		testHyperlinkToBrowser("JBoss developer website");
 		testHyperlinkToBrowser("User Forum");
-		testHyperlinkToBrowser("Reference");
 		testHyperlinkToBrowser("Developer Forum");
-		testHyperlinkToBrowser("FAQ");
-		testHyperlinkToBrowser("Screencasts");
-		testHyperlinkToBrowser("Issue Tracker");
+		testHyperlinkToBrowser("Product documentation");
+		testHyperlinkToBrowser("Videos");
 	}
 	
 	private void testHyperlinkToBrowser(String hyperlinkText){

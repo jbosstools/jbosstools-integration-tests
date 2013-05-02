@@ -10719,7 +10719,7 @@ public static String getItemString(IActionItem item) {
 			* represents item : JBoss Enterprise Middleware->JBoss Enterprise Application Platform 6.1 Runtime
 			*/
 			public static final IServerRuntime LABEL = new IServerRuntime() {
-				public String getName() { return "JBoss Enterprise Application Platform 6.1 Runtime  (Tech Preview)";}
+				public String getName() { return "JBoss Enterprise Application Platform 6.1 Runtime (Tech Preview)";}
 				public List<String> getGroupPath() {
 					List<String> l = new Vector<String>();
 					l.add("JBoss Enterprise Middleware");

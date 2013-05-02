@@ -25,7 +25,7 @@ import org.junit.Test;
 
 
 //TODO When testing new build try it with type=ServerType.EAP !!!!
-@Require(clearProjects=false,server=@org.jboss.tools.ui.bot.ext.config.Annotations.Server(type=ServerType.EAP))
+@Require(clearProjects=false,server=@org.jboss.tools.ui.bot.ext.config.Annotations.Server(type=ServerType.ALL))
 public class CreateProjectsWithServerTest extends SWTTestExt{
 	
 	@BeforeClass
@@ -59,7 +59,7 @@ public class CreateProjectsWithServerTest extends SWTTestExt{
 				"property does not exist");
 		File mvnLocalRepo = new File(System.getProperty("user.home")+"/.m2/clean-repository");
 		if (mvnLocalRepo.exists()){
-			//deleteDirectory(mvnLocalRepo);
+			deleteDirectory(mvnLocalRepo);
 		}
 		//Now is ~/.m2/clean-repository deleted and settings.xml exists. Next step is to tell eclipse to use our settings.xml
 		open.preferenceOpen(Preference.create("Maven", "User Settings"));
@@ -99,11 +99,6 @@ public class CreateProjectsWithServerTest extends SWTTestExt{
 	
 	@Test
 	public void createProjectsSectionTest(){
-		//Dynamic web project
-		/*bot.hyperlink(IDELabel.JBossCentralEditor.DYNAMIC_WEB_PROJECT).click();
-		bot.waitForShell(IDELabel.JBossCentralEditor.NEW_DYNAMIC_WEB_PROJECT);
-		assertTrue("New Dynamic Web Project should have appeared", bot.shell(IDELabel.JBossCentralEditor.NEW_DYNAMIC_WEB_PROJECT).isActive());
-		bot.activeShell().close();*/
 		//Openshift app
 		
 		bot.hyperlink(IDELabel.JBossCentralEditor.OPENSHIFT_APP).click();
@@ -168,18 +163,6 @@ public class CreateProjectsWithServerTest extends SWTTestExt{
 	}
 	
 	public void projectExamplesSectionTest(String name, String projectName, String readmeFile){
-		SWTBotTwistie jBossQuickstartsTwistie = bot.twistieByLabel("JBoss Quickstarts");
-		int counter = 0;
-		while (!jBossQuickstartsTwistie.isExpanded() && counter<10){
-			jBossQuickstartsTwistie.toggle();
-			counter++;
-		}
-		/*SWTBotTwistie geteinQuickstartsTwistie = bot.twistieByLabel("GateIn Portal Quickstarts");
-		 counter = 0;
-		while (!geteinQuickstartsTwistie.isExpanded() && counter<10){
-			geteinQuickstartsTwistie.toggle();
-			counter++;
-		}*/
 		SWTFormsBotExt formsBot = SWTBotFactory.getFormsBot();
 		if (readmeFile == null){
 			checkExample(formsBot, name, true, projectName);
@@ -237,27 +220,6 @@ public class CreateProjectsWithServerTest extends SWTTestExt{
 	public void projectExamplesSectionNumberguessTest(){
 		projectExamplesSectionTest("numberguess", "jboss-as-numberguess");
 	}
-	
-
-	/*@Test
-	public void projectExamplesSectionGreeterTest(){
-		projectExamplesSectionTest("Greeter", "jboss-as-greeter");
-	}
-	
-	@Test
-	public void projectExamplesSectionHelloworldPortletTest(){
-		projectExamplesSectionTest("Simplest Hello World Portlet", "simplest-hello-world-portlet");
-	}
-	
-	@Test
-	public void projectExamplesSectionJSF2HelloworldTest(){
-		projectExamplesSectionTest("JSF2 Hello World Portlet", "jsf2-hello-world-portlet");
-	}
-	
-	@Test
-	public void projectExamplesSectionJSF2RF4HelloworldTest(){
-		projectExamplesSectionTest("JSF2+RF4 Hello World Portlet", "jsf2-rf4-hello-world-portlet");
-	}*/
 	
 	/**
 	 * Tries to deploy all imported projects
@@ -357,7 +319,9 @@ public class CreateProjectsWithServerTest extends SWTTestExt{
 			bot.comboBox(0).setSelection(1); //Target runtime combobox
 			try{
 				bot.link();
-				fail("There is something wrong with maven repo. Message: \n"+bot.link().getText());
+				if (!bot.link().getText().isEmpty()){
+					fail("There is something wrong with maven repo. Message: \n"+bot.link().getText());
+				}
 			}catch (WidgetNotFoundException ex){
 				//everything fine
 			}
