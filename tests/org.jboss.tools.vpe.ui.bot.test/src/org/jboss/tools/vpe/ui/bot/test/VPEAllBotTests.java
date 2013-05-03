@@ -12,6 +12,8 @@ package org.jboss.tools.vpe.ui.bot.test;
 
 import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
 import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
+import org.jboss.tools.vpe.ui.bot.test.browsersim.BrowserSimContextMenuTest;
+import org.jboss.tools.vpe.ui.bot.test.browsersim.BrowserSimLoadUrlTest;
 import org.jboss.tools.vpe.ui.bot.test.browsersim.OpenBrowserSimTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.BlockCommentTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.EditingActionsTest;
@@ -121,7 +123,7 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(RequirementAwareSuite.class)
 @SuiteClasses({
-    VisualEditorContextMenuTest.class,
+	  VisualEditorContextMenuTest.class,
     EditingActionsTest.class,
 		NewXHTMLPageWizardTest.class, 
 		CodeCompletionTest.class,
@@ -223,7 +225,9 @@ import org.junit.runners.Suite.SuiteClasses;
     ScrollingSynchronizationTest.class,
 		ElForBundleValueTest_Jbide10531.class,
 		MobilePaletteTest.class,
-		OpenBrowserSimTest.class})
+		OpenBrowserSimTest.class,
+    BrowserSimLoadUrlTest.class,
+    BrowserSimContextMenuTest.class})
 public class VPEAllBotTests extends SWTBotTestCase{
 
 }

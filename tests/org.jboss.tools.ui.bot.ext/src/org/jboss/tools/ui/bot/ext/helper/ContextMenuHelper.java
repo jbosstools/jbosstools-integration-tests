@@ -720,4 +720,16 @@ public class ContextMenuHelper {
     
     return result.toArray(new String[0]);
   }
+  public static void showMenu(final Menu menu) {
+    menu.getDisplay().syncExec(new Runnable() {
+      public void run() {
+        menu.notifyListeners(SWT.Show, new Event());
+      }
+    });
+    try {
+      Thread.sleep(50);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
+  }
 }
