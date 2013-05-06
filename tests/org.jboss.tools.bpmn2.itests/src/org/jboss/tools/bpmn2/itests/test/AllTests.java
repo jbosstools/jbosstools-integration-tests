@@ -2,8 +2,9 @@ package org.jboss.tools.bpmn2.itests.test;
 
 import junit.framework.TestSuite;
 
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.tools.bpmn2.itests.reddeer.suite.BPMN2Suite;
 import org.jboss.tools.bpmn2.itests.test.editor.*;
+import org.jboss.tools.bpmn2.itests.test.editor.smoke.ModelingSmokeTest;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
@@ -15,7 +16,7 @@ import org.junit.runners.Suite.SuiteClasses;
  * @author Marek Baluch
  * 
  */
-@RunWith(RedDeerSuite.class)
+@RunWith(BPMN2Suite.class)
 @SuiteClasses({
 // Wizard tests
 // ------------
@@ -27,6 +28,7 @@ import org.junit.runners.Suite.SuiteClasses;
 // Editor tests
 // ------------
 	ModelingSmokeTest.class
+//	CallActivityTest.class
 })
 public class AllTests extends TestSuite {
 	

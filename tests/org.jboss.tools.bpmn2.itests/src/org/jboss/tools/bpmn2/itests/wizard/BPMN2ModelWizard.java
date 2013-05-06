@@ -29,18 +29,18 @@ public class BPMN2ModelWizard extends NewWizardDialog {
 	 * @param processName name of the file.
 	 */
 	public void execute(String processName) {
-		execute(processName, new String[0]);
+		execute(new String[0], processName);
 	}
 	
 	/**
 	 * Create a new process definition.
 	 * 
+	 * @param location    path where the file is supposed to be stored (including project name)
 	 * @param processName name of the file. Must end with bpmn2
-	 * @param path        path where the file is supposed to be stored (including project name)
 	 */
-	public void execute(String processName, String[] path) {
+	public void execute(String[] location, String processName) {
 		open();
-		new LabeledText("Enter or select the parent folder:").setText(ProjectPath.valueOf(path));
+		new LabeledText("Enter or select the parent folder:").setText(ProjectPath.valueOf(location));
 		new LabeledText("File name:").setText(processName);
 		finish();
 	}

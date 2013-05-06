@@ -1,10 +1,9 @@
-package org.jboss.tools.bpmn2.itests.test.editor;
+package org.jboss.tools.bpmn2.itests.test.editor.smoke;
 
 import junit.framework.Assert;
 
 import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
 
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.tools.bpmn2.itests.editor.BPMN2Editor;
 import org.jboss.tools.bpmn2.itests.editor.ConnectionType;
 import org.jboss.tools.bpmn2.itests.editor.ConstructType;
@@ -13,16 +12,9 @@ import org.jboss.tools.bpmn2.itests.editor.constructs.AbstractGateway.Direction;
 import org.jboss.tools.bpmn2.itests.editor.constructs.events.StartEvent;
 import org.jboss.tools.bpmn2.itests.editor.constructs.gateways.ParallelGateway;
 import org.jboss.tools.bpmn2.itests.editor.constructs.tasks.UserTask;
-import org.jboss.tools.bpmn2.itests.swt.ext.EclipseHelper;
-import org.jboss.tools.bpmn2.itests.swt.ext.ImportProjectWizard;
-import org.jboss.tools.bpmn2.itests.swt.ext.ResourceHelper;
-import org.jboss.tools.bpmn2.itests.swt.ext.JBPM5RuntimeRequirement.JBPM5;
-import org.jboss.tools.bpmn2.itests.swt.ext.SetUpWorkspaceRequirement.SetUpWorkspace;
-import org.jboss.tools.bpmn2.itests.test.Activator;
+import org.jboss.tools.bpmn2.itests.reddeer.requirements.ProcessDefinitionRequirement.ProcessDefinition;
 import org.jboss.tools.bpmn2.itests.validator.BPMN2Validator;
 
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -33,27 +25,9 @@ import org.junit.Test;
  * @author mbaluch
  *
  */
-@JBPM5()
-@SetUpWorkspace()
+@ProcessDefinition(name="Evaluation", file="EvaluationProcess.bpmn", project="EmployeeEvaluation")
 public class ModelingSmokeTest extends SWTBotTestCase {
 
-	public static final String PROJECT_NAME = "EditorTestProject";
-	public static final String PROCESS_NAME = "EmptyProcess.bpmn";
-
-	@BeforeClass
-	public static void importProject() {
-		if (!new PackageExplorer().containsProject(PROJECT_NAME)) {
-			String projectLocation = ResourceHelper.getResourceAbsolutePath(Activator.PLUGIN_ID, "resources/projects/" + PROJECT_NAME + ".zip");
-			new ImportProjectWizard(projectLocation).execute();
-		}
-	}
-	
-	@Before
-	public void openFile() {
-		EclipseHelper.maximizeActiveShell();
-		new PackageExplorer().getProject("EditorTestProject").getProjectItem("Evaluation.bpmn").open();
-	}
-	
 	/**
 	 * ISSUES:
 	 * 	1) empty actor language is valid but cannot be chosen after mvel or java was chosen.
@@ -68,7 +42,8 @@ public class ModelingSmokeTest extends SWTBotTestCase {
 		/*
 		 * Modeling
 		 */
-		StartEvent start = new StartEvent("Start");
+		StartEvent start = new StartEvent("StartProcess");
+		start.setName("Start");
 		start.append("Self Evaluation", ConstructType.USER_TASK);
 		
 		UserTask userTask1 = new UserTask("Self Evaluation");

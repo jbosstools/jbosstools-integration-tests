@@ -4,8 +4,7 @@ import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.jface.exception.JFaceLayerException;
 
-import org.jboss.tools.bpmn2.itests.swt.ext.JBPM5RuntimeRequirement.JBPM5;
-import org.jboss.tools.bpmn2.itests.swt.ext.SetUpWorkspaceRequirement.SetUpWorkspace;
+import org.jboss.tools.bpmn2.itests.reddeer.requirements.ProcessRuntimeRequirement.ProcessRuntime;
 import org.jboss.tools.bpmn2.itests.wizard.BPMN2GenericModelWizard;
 import org.jboss.tools.bpmn2.itests.wizard.JBPMProjectLegacyWizard;
 import org.jboss.tools.bpmn2.itests.wizard.BPMN2GenericModelWizard.ModelType;
@@ -27,8 +26,7 @@ import org.junit.Test;
  * 
  * @author Marek Baluch <mbaluch@redhat.com>
  */
-@JBPM5()
-@SetUpWorkspace()
+@ProcessRuntime()
 public class BPMN2GenericModelWizardTest {
 
 	public static final String NAMESPACE = "http://jboss.org/bpmn2";
@@ -46,19 +44,19 @@ public class BPMN2GenericModelWizardTest {
 	
 	@Test
 	public void newProcessModelTest() throws Exception {
-		new BPMN2GenericModelWizard().execute("ProcessModel.bpmn2", new String[] {PROJECT}, NAMESPACE, ModelType.PROCESS);
+		new BPMN2GenericModelWizard().execute(new String[] {PROJECT}, "ProcessModel.bpmn2", NAMESPACE, ModelType.PROCESS);
 		Assert.assertTrue(new ProjectExplorer().getProject(PROJECT).containsItem("ProcessModel.bpmn2"));
 	}
 	
 	@Test
 	public void newChoreographyModelTest() throws Exception {
-		new BPMN2GenericModelWizard().execute("ChoreographyModel.bpmn2", new String[] {PROJECT}, NAMESPACE, ModelType.CHOREOGRAPHY);
+		new BPMN2GenericModelWizard().execute(new String[] {PROJECT}, "ChoreographyModel.bpmn2", NAMESPACE, ModelType.CHOREOGRAPHY);
 		Assert.assertTrue(new ProjectExplorer().getProject(PROJECT).containsItem("ChoreographyModel.bpmn2"));
 	}
 	
 	@Test
 	public void newCollaborationModelTest() throws Exception {
-		new BPMN2GenericModelWizard().execute("CollaborationModel.bpmn2", new String[] {PROJECT}, NAMESPACE, ModelType.COLLABORATION);
+		new BPMN2GenericModelWizard().execute(new String[] {PROJECT}, "CollaborationModel.bpmn2", NAMESPACE, ModelType.COLLABORATION);
 		Assert.assertTrue(new ProjectExplorer().getProject(PROJECT).containsItem("CollaborationModel.bpmn2"));
 	}
 	
@@ -66,7 +64,7 @@ public class BPMN2GenericModelWizardTest {
 	public void newModelFormValidationTest() throws Exception {
 		BPMN2GenericModelWizard wizard = new BPMN2GenericModelWizard();
 		try {
-			wizard.execute("unknown.bpmn", new String[0], "", ModelType.PROCESS);
+			wizard.execute(new String[0], "unknown.bpmn", "", ModelType.PROCESS);
 		} catch (JFaceLayerException e) {
 			Assert.assertEquals("Button '&Finish' is not enabled", e.getMessage());
 		} finally {

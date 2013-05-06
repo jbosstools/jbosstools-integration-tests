@@ -5,8 +5,7 @@ import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.eclipse.jface.exception.JFaceLayerException;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.tools.bpmn2.itests.swt.ext.JBPM5RuntimeRequirement.JBPM5;
-import org.jboss.tools.bpmn2.itests.swt.ext.SetUpWorkspaceRequirement.SetUpWorkspace;
+import org.jboss.tools.bpmn2.itests.reddeer.requirements.ProcessRuntimeRequirement.ProcessRuntime;
 import org.jboss.tools.bpmn2.itests.wizard.JBPMProjectLegacyWizard;
 import org.junit.After;
 import org.junit.Assert;
@@ -18,8 +17,7 @@ import org.junit.Test;
  * @author Marek Baluch <mbaluch@redhat.com>
  * 
  */
-@JBPM5()
-@SetUpWorkspace()
+@ProcessRuntime()
 public class LegacyProjectWizardTest extends SWTBotTestCase {
 
 	// TBD: 
