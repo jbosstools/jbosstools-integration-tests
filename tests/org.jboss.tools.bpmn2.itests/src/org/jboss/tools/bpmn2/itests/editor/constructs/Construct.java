@@ -292,7 +292,7 @@ public class Construct implements IConstruct {
 	 */
 	public void printShells() {
 		for (SWTBotShell s : Bot.get().shells()) {
-			System.out.println(" --- SHELL: " + s);
+			System.out.println(" --- Shell: " + s.getText());
 		}
 	}
 	

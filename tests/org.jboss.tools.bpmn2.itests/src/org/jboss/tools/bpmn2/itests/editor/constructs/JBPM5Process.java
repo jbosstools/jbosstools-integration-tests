@@ -1,7 +1,9 @@
 package org.jboss.tools.bpmn2.itests.editor.constructs;
 
 import org.jboss.reddeer.swt.impl.button.CheckBox;
+import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
+
 import org.jboss.tools.bpmn2.itests.editor.properties.datatypes.JBPM5DataType;
 
 /**
@@ -112,11 +114,20 @@ public class JBPM5Process extends Process {
 	 */
 	public void addDataType(String name) {
 		properties.selectTab("Definitions");
-		new JBPM5DataType(name, 0).add();
+		properties.toolbarButton("Data Type List", "Add").click();
+		bot.textWithLabel("Data Type").setText(name);
+		bot.toolbarButtonWithTooltip("Close").click();
+//		new JBPM5DataType(name, 0).add();
 	}
 	
-	public void addImport() {
-		throw new UnsupportedOperationException();
+	public void addImport(String dataType) {
+		properties.selectTab("Definitions");
+		properties.toolbarButton("Imports", "Add").click();
+		
+//		SWTBot windowBot = Bot.get().shell("Browse for a Java type to Import").bot();
+		
+		new LabeledText("Type:").setText(dataType);
+		new PushButton("OK");
 	}
 	
 	public void addMessage(String name, JBPM5DataType dataType) {
@@ -158,24 +169,24 @@ public class JBPM5Process extends Process {
 		bot.toolbarButtonWithTooltip("Close").click();
 	}
 	
-	public void addGlobalVariable(String name, JBPM5DataType dataType) {
+	public void addGlobalVariable(String name, String dataType) {
 		properties.selectTab("Data Items");
 		
 		bot.toolbarButtonWithTooltip("Add", 0).click();
 		bot.textWithLabel("Name").setText(name);
 		
-		dataType.add();
+		new JBPM5DataType(dataType).add();
 		
 		bot.toolbarButtonWithTooltip("Close").click();
 	}
 	
-	public void addLocalVariable(String name, JBPM5DataType dataType) {
+	public void addLocalVariable(String name, String dataType) {
 		properties.selectTab("Data Items");
 		
 		bot.toolbarButtonWithTooltip("Add", 0).click();
 		bot.textWithLabel("Name").setText(name);
 		
-		dataType.add();
+		new JBPM5DataType(dataType).add();
 		
 		bot.toolbarButtonWithTooltip("Close").click();
 	}

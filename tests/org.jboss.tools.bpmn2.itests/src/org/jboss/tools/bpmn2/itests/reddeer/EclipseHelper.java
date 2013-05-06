@@ -1,4 +1,4 @@
-package org.jboss.tools.bpmn2.itests.swt.ext;
+package org.jboss.tools.bpmn2.itests.reddeer;
 
 import org.eclipse.swt.widgets.Shell;
 import org.jboss.reddeer.swt.util.Bot;

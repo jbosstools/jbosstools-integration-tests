@@ -48,10 +48,12 @@ public class JBPM5Variable extends AbstractVariable {
 		
 		bot.textWithLabel("Name").setText(name);
 		bot.toolbarButtonWithTooltip("Add", index);
-		try {
-			bot.comboBoxWithLabel("Data Type").setSelection(dataType.getTypeName());
-		} catch (Exception e) {
-			dataType.add();
+		if(dataType != null) {
+			try {
+				bot.comboBoxWithLabel("Data Type").setSelection(dataType.getTypeName());
+			} catch (Exception e) {
+				dataType.add();
+			}
 		}
 		bot.toolbarButtonWithTooltip("Close");
 	}
