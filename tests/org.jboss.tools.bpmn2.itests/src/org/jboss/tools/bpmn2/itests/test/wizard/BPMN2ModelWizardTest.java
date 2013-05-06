@@ -3,10 +3,10 @@ package org.jboss.tools.bpmn2.itests.test.wizard;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.jface.exception.JFaceLayerException;
+import org.jboss.tools.bpmn2.itests.swt.ext.JBPM5RuntimeRequirement.JBPM5;
+import org.jboss.tools.bpmn2.itests.swt.ext.SetUpWorkspaceRequirement.SetUpWorkspace;
 import org.jboss.tools.bpmn2.itests.wizard.BPMN2ModelWizard;
 import org.jboss.tools.bpmn2.itests.wizard.JBPMProjectLegacyWizard;
-import org.jboss.tools.ui.bot.ext.config.Annotations.JBPM;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -18,7 +18,8 @@ import org.junit.Test;
  * 
  * @author Marek Baluch <mbaluch@redhat.com>
  */
-@Require(jbpm = @JBPM(), runOnce = true)
+@JBPM5()
+@SetUpWorkspace()
 public class BPMN2ModelWizardTest {
 
 	@BeforeClass

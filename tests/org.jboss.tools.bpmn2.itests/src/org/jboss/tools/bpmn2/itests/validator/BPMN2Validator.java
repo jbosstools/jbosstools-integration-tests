@@ -20,8 +20,8 @@ import javax.xml.validation.Validator;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
+import org.jboss.tools.bpmn2.itests.swt.ext.ResourceHelper;
 import org.jboss.tools.bpmn2.itests.test.Activator;
-import org.jboss.tools.ui.bot.ext.helper.ResourceHelper;
 
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;

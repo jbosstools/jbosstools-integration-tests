@@ -4,8 +4,8 @@ import javax.xml.transform.stream.StreamSource;
 
 import org.apache.log4j.Logger;
 
+import org.jboss.tools.bpmn2.itests.swt.ext.ResourceHelper;
 import org.jboss.tools.bpmn2.itests.test.Activator;
-import org.jboss.tools.ui.bot.ext.helper.ResourceHelper;
 
 /**
  * 
