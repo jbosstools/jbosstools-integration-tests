@@ -7,6 +7,7 @@ import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.util.Bot;
 import org.jboss.tools.bpmn2.itests.editor.ConstructType;
 import org.jboss.tools.bpmn2.itests.editor.constructs.AbstractTask;
+import org.jboss.tools.bpmn2.itests.editor.properties.variables.IParameter;
 
 
 /**
@@ -55,7 +56,7 @@ public class CallActivity extends AbstractTask {
 	 * @see org.jboss.tools.bpmn2.itests.editor.constructs.AbstractTask#setIsForCompensation(boolean)
 	 */
 	@Override
-	protected void setIsForCompensation(boolean b) {
+	public void setIsForCompensation(boolean b) {
 		super.setIsForCompensation(b);
 	}
 
@@ -63,7 +64,7 @@ public class CallActivity extends AbstractTask {
 	 * @see org.jboss.tools.bpmn2.itests.editor.constructs.AbstractTask#setOnEntryScript(java.lang.String, java.lang.String)
 	 */
 	@Override
-	protected void setOnEntryScript(String language, String script) {
+	public void setOnEntryScript(String language, String script) {
 		super.setOnEntryScript(language, script);
 	}
 
@@ -71,8 +72,18 @@ public class CallActivity extends AbstractTask {
 	 * @see org.jboss.tools.bpmn2.itests.editor.constructs.AbstractTask#setOnExistScript(java.lang.String, java.lang.String)
 	 */
 	@Override
-	protected void setOnExistScript(String language, String script) {
+	public void setOnExistScript(String language, String script) {
 		super.setOnExistScript(language, script);
 	}
+
+	/**
+	 * @see org.jboss.tools.bpmn2.itests.editor.constructs.AbstractTask#addParameterMapping(org.jboss.tools.bpmn2.itests.editor.properties.variables.IParameter)
+	 */
+	@Override
+	public void addParameterMapping(IParameter parameter) {
+		super.addParameterMapping(parameter);
+	}
+	
+	
 	
 }

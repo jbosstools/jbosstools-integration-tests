@@ -1,46 +1,32 @@
-package org.jboss.tools.bpmn2.itests.swt.ext;
+package org.jboss.tools.bpmn2.itests.reddeer.requirements;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import java.util.Properties;
 
 import org.apache.log4j.Logger;
+
 import org.jboss.reddeer.eclipse.jface.preference.PreferencePage;
 import org.jboss.reddeer.junit.requirement.Requirement;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
-import org.jboss.tools.bpmn2.itests.swt.ext.JBPM5RuntimeRequirement.JBPM5;
+import org.jboss.tools.bpmn2.itests.reddeer.requirements.ProcessRuntimeRequirement.ProcessRuntime;
 
-public class JBPM5RuntimeRequirement implements Requirement<JBPM5> {
+public class ProcessRuntimeRequirement implements Requirement<ProcessRuntime> {
 
-	private String name;
+	private String name = System.getProperty("jbpm.name", "jbpm5");
 	
-	private String runtimeHome;
+	private String runtimeHome = System.getProperty("jbpm.runtime.dir");
 	
 	@Retention(RetentionPolicy.RUNTIME)
 	@Target(ElementType.TYPE)
-	public @interface JBPM5 {
+	public @interface ProcessRuntime {
 
 	}
 
 	public boolean canFulfill() {
-		Properties props = new Properties();
-		try {
-			String propsFilePath = System.getProperty("swtbot.test.properties");
-			
-			props = new Properties();
-			props.load(new FileInputStream(new File(propsFilePath)));
-			
-			name = props.getProperty("jbpm.name", "jbpm5");
-			runtimeHome = props.getProperty("jbpm.runtime.dir");
-		} catch (Exception e) {
-			return false;
-		}
 		return name != null && runtimeHome != null;
 	}
 
@@ -64,14 +50,14 @@ public class JBPM5RuntimeRequirement implements Requirement<JBPM5> {
 			new DefaultText(1).setText(runtimeHome);
 			new PushButton("OK").click();
 			
-			Logger.getLogger(JBPM5RuntimeRequirement.class).info("jBPM Runtime '" + name + "' added.");
+			Logger.getLogger(ProcessRuntimeRequirement.class).info("jBPM Runtime '" + name + "' added.");
 		}
 		
 		table.check(name);
 		new PushButton("OK").click();
 	}
 
-	public void setDeclaration(JBPM5 declaration) {
+	public void setDeclaration(ProcessRuntime declaration) {
 		// Not required
 	}
 	

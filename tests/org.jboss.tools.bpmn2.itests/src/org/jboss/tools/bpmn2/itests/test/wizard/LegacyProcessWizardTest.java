@@ -3,8 +3,7 @@ package org.jboss.tools.bpmn2.itests.test.wizard;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jface.exception.JFaceLayerException;
 
-import org.jboss.tools.bpmn2.itests.swt.ext.JBPM5RuntimeRequirement.JBPM5;
-import org.jboss.tools.bpmn2.itests.swt.ext.SetUpWorkspaceRequirement.SetUpWorkspace;
+import org.jboss.tools.bpmn2.itests.reddeer.requirements.ProcessRuntimeRequirement.ProcessRuntime;
 import org.jboss.tools.bpmn2.itests.wizard.JBPMProcessLegacyWizard;
 import org.jboss.tools.bpmn2.itests.wizard.JBPMProjectLegacyWizard;
 
@@ -18,8 +17,7 @@ import org.junit.Test;
  * 
  * @author Marek Baluch <mbaluch@redhat.com>
  */
-@JBPM5()
-@SetUpWorkspace()
+@ProcessRuntime()
 public class LegacyProcessWizardTest {
 
 	static ProjectExplorer packageView = new ProjectExplorer();
@@ -38,7 +36,7 @@ public class LegacyProcessWizardTest {
 	
 	@Test
 	public void newProcessTest() {
-		processWizardView.execute("SampleProcess", new String[] {"TestProject", "src/main/resources"});
+		processWizardView.execute(new String[] {"TestProject", "src/main/resources"}, "SampleProcess");
 		Assert.assertTrue(packageView.getProject("TestProject").containsItem("src/main/resources", "SampleProcess.bpmn"));
 	}
 	

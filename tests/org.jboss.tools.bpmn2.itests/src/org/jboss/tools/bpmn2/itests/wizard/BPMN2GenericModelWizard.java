@@ -46,16 +46,16 @@ public class BPMN2GenericModelWizard extends NewWizardDialog {
 
 	/**
 	 * 
+	 * @param location
 	 * @param fileName
-	 * @param path
 	 * @param targetNamespace
 	 * @param type
 	 */
-	public void execute(String fileName, String[] path, String targetNamespace, ModelType type) {
+	public void execute(String[] location, String fileName, String targetNamespace, ModelType type) {
 		open();
 		new PushButton(type.getButtonIndex()).click();
 		next();
-		new LabeledText("Location:").setText(ProjectPath.valueOf(path));
+		new LabeledText("Location:").setText(ProjectPath.valueOf(location));
 		new LabeledText("File name:").setText(fileName);
 		new LabeledText("Target Namespace:").setText(targetNamespace);
 		finish();
