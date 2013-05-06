@@ -15,8 +15,10 @@ import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap51.OperateEAP51
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap52.CheckEAP52Seam;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap52.DetectEAP52;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap52.OperateEAP52;
-import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap6.DetectEAP6;
-import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap6.OperateEAP6;
+import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap60.DetectEAP60;
+import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap60.OperateEAP60;
+import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap61.DetectEAP61;
+import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap61.OperateEAP61;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.epp4.CheckEPP4Seam;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.epp4.DetectEPP4;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.epp4.OperateEPP4;
@@ -47,8 +49,10 @@ import org.junit.runners.Suite;
 		ServerWithSeam.class,
 		DetectJBoss7.class,
 		OperateJBoss7.class,
-		DetectEAP6.class,
-		OperateEAP6.class,
+		DetectEAP60.class,
+		OperateEAP60.class,
+		DetectEAP61.class,
+		OperateEAP61.class,
 		DetectEAP51.class, 
 		CheckEAP51Seam.class,
 		OperateEAP51.class, 
