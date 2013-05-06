@@ -1,4 +1,4 @@
-package org.jboss.tools.bpmn2.itests.swt.ext;
+package org.jboss.tools.bpmn2.itests.reddeer;
 
 import static org.junit.Assert.fail;
 

@@ -3,8 +3,7 @@ package org.jboss.tools.bpmn2.itests.test.wizard;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.jface.exception.JFaceLayerException;
-import org.jboss.tools.bpmn2.itests.swt.ext.JBPM5RuntimeRequirement.JBPM5;
-import org.jboss.tools.bpmn2.itests.swt.ext.SetUpWorkspaceRequirement.SetUpWorkspace;
+import org.jboss.tools.bpmn2.itests.reddeer.requirements.ProcessRuntimeRequirement.ProcessRuntime;
 import org.jboss.tools.bpmn2.itests.wizard.BPMN2ModelWizard;
 import org.jboss.tools.bpmn2.itests.wizard.JBPMProjectLegacyWizard;
 
@@ -18,8 +17,7 @@ import org.junit.Test;
  * 
  * @author Marek Baluch <mbaluch@redhat.com>
  */
-@JBPM5()
-@SetUpWorkspace()
+@ProcessRuntime()
 public class BPMN2ModelWizardTest {
 
 	@BeforeClass
@@ -34,7 +32,7 @@ public class BPMN2ModelWizardTest {
 	
 	@Test
 	public void newModelTest() throws Exception {
-		new BPMN2ModelWizard().execute("SampleProcess.bpmn2", new String[] {"TestProject"});
+		new BPMN2ModelWizard().execute(new String[] {"TestProject"}, "SampleProcess.bpmn2");
 		Assert.assertTrue(new ProjectExplorer().getProject("TestProject").containsItem("SampleProcess.bpmn2"));
 	}
 	
