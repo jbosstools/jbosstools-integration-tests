@@ -30,7 +30,7 @@
 <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch ${target.arch} -nl ${target.nl} -consoleLog"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="org.jboss.tools.bpmn2.itests"/>
 <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.pde.ui.workbenchClasspathProvider"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dswtbot.test.properties.file=resources/swtbot-my.properties -Xms256m -Xmx512m -XX:PermSize=256m -XX:MaxPermSize=384m"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dusage_reporting_enabled=false -Dswtbot.test.properties=resources/swtbot-my.properties -Dreddeer.config=resources/reddeer-my.xml -Xms256m -Xmx512m -XX:PermSize=256m -XX:MaxPermSize=384m"/>
 <stringAttribute key="pde.version" value="3.3"/>
 <stringAttribute key="product" value="org.eclipse.platform.ide"/>
 <booleanAttribute key="show_selected_only" value="false"/>

@@ -2,8 +2,9 @@ package org.jboss.tools.bpmn2.itests.test.editor;
 
 import junit.framework.Assert;
 
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
 
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.tools.bpmn2.itests.editor.BPMN2Editor;
 import org.jboss.tools.bpmn2.itests.editor.ConnectionType;
 import org.jboss.tools.bpmn2.itests.editor.ConstructType;
@@ -12,11 +13,13 @@ import org.jboss.tools.bpmn2.itests.editor.constructs.AbstractGateway.Direction;
 import org.jboss.tools.bpmn2.itests.editor.constructs.events.StartEvent;
 import org.jboss.tools.bpmn2.itests.editor.constructs.gateways.ParallelGateway;
 import org.jboss.tools.bpmn2.itests.editor.constructs.tasks.UserTask;
+import org.jboss.tools.bpmn2.itests.swt.ext.EclipseHelper;
+import org.jboss.tools.bpmn2.itests.swt.ext.ImportProjectWizard;
+import org.jboss.tools.bpmn2.itests.swt.ext.ResourceHelper;
+import org.jboss.tools.bpmn2.itests.swt.ext.JBPM5RuntimeRequirement.JBPM5;
+import org.jboss.tools.bpmn2.itests.swt.ext.SetUpWorkspaceRequirement.SetUpWorkspace;
 import org.jboss.tools.bpmn2.itests.test.Activator;
 import org.jboss.tools.bpmn2.itests.validator.BPMN2Validator;
-import org.jboss.tools.ui.bot.ext.SWTTestExt;
-import org.jboss.tools.ui.bot.ext.helper.ImportHelper;
-import org.jboss.tools.ui.bot.ext.helper.ResourceHelper;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -30,8 +33,9 @@ import org.junit.Test;
  * @author mbaluch
  *
  */
-//@Require(jbpm = @JBPM(), runOnce = true)
-public class ModelingSmokeTest extends SWTTestExt {
+@JBPM5()
+@SetUpWorkspace()
+public class ModelingSmokeTest extends SWTBotTestCase {
 
 	public static final String PROJECT_NAME = "EditorTestProject";
 	public static final String PROCESS_NAME = "EmptyProcess.bpmn";
@@ -40,14 +44,14 @@ public class ModelingSmokeTest extends SWTTestExt {
 	public static void importProject() {
 		if (!new PackageExplorer().containsProject(PROJECT_NAME)) {
 			String projectLocation = ResourceHelper.getResourceAbsolutePath(Activator.PLUGIN_ID, "resources/projects/" + PROJECT_NAME + ".zip");
-			ImportHelper.importProjectFromZip(projectLocation);
+			new ImportProjectWizard(projectLocation).execute();
 		}
 	}
 	
 	@Before
 	public void openFile() {
-		eclipse.maximizeActiveShell();
-		projectExplorer.openFile("EditorTestProject", "Evaluation.bpmn");
+		EclipseHelper.maximizeActiveShell();
+		new PackageExplorer().getProject("EditorTestProject").getProjectItem("Evaluation.bpmn").open();
 	}
 	
 	/**
