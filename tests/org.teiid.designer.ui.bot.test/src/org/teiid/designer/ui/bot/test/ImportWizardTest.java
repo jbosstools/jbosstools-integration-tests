@@ -2,23 +2,26 @@ package org.teiid.designer.ui.bot.test;
 
 import java.util.Arrays;
 
+import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
 import org.jboss.reddeer.eclipse.datatools.ui.FlatFileProfile;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
+import org.jboss.reddeer.swt.util.Bot;
 import org.jboss.tools.teiid.reddeer.ModelProject;
+import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
+import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.wizard.DDLImportWizard;
 import org.jboss.tools.teiid.reddeer.wizard.FlatImportWizard;
+import org.jboss.tools.teiid.reddeer.wizard.ImportJDBCDatabaseWizard;
 import org.jboss.tools.teiid.reddeer.wizard.MetadataImportWizard;
 import org.jboss.tools.teiid.reddeer.wizard.MetadataImportWizard.ImportType;
 import org.jboss.tools.teiid.reddeer.wizard.TeiidImportWizard;
 import org.jboss.tools.teiid.reddeer.wizard.WsdlImportWizard;
 import org.jboss.tools.teiid.reddeer.wizard.WsdlProfileWizard;
 import org.jboss.tools.teiid.reddeer.wizard.XMLImportWizard;
-import org.jboss.tools.ui.bot.ext.SWTTestExt;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.teiid.designer.ui.bot.ext.teiid.TeiidBot;
-import org.teiid.designer.ui.bot.ext.teiid.editor.ModelEditor;
-import org.teiid.designer.ui.bot.ext.teiid.wizard.ImportJDBCDatabaseWizard;
+import org.teiid.designer.ui.bot.test.requirement.PerspectiveRequirement.Perspective;
 
 /**
  * Tests for importing relational models from various sources
@@ -26,8 +29,8 @@ import org.teiid.designer.ui.bot.ext.teiid.wizard.ImportJDBCDatabaseWizard;
  * @author apodhrad
  * 
  */
-@Require(perspective = "Teiid Designer")
-public class ImportWizardTest extends SWTTestExt {
+@Perspective(name = "Teiid Designer")
+public class ImportWizardTest extends SWTBotTestCase {
 
 	public static final String MODEL_PROJECT = "importTest";
 
@@ -35,7 +38,6 @@ public class ImportWizardTest extends SWTTestExt {
 
 	@BeforeClass
 	public static void createModelProject() {
-		eclipse.maximizeActiveShell();
 		teiidBot.createModelProject(MODEL_PROJECT);
 	}
 
@@ -63,8 +65,7 @@ public class ImportWizardTest extends SWTTestExt {
 	public void flatImportTest() {
 		String flatProfile = "Flat Profile";
 
-		FlatFileProfile flatFileProfile = teiidBot.createFlatFileProfile(flatProfile,
-				"resources/flat");
+		FlatFileProfile flatFileProfile = teiidBot.createFlatFileProfile(flatProfile, "resources/flat");
 
 		FlatImportWizard importWizard = new FlatImportWizard();
 		importWizard.setProfile(flatFileProfile.getName());
@@ -208,34 +209,21 @@ public class ImportWizardTest extends SWTTestExt {
 		checkDiagram(target, "NewProcedureResult");
 	}
 
-	// TEIIDDES-1588
-	// @Test
-	public void metadataDatatypeImportTest() {
-		String source = teiidBot.toAbsolutePath("resources/dtf/relationalDatatype.csv");
-		String target = "RelationalDatatype.xmi";
-
-		MetadataImportWizard importWizard = new MetadataImportWizard();
-		importWizard.setImportType(ImportType.RELATIONAL_DATATYPE);
-		importWizard.setSource(source);
-		importWizard.setTarget(target);
-
-		importModel(importWizard);
-
-		checkResource(target);
-	}
-
 	private static void importModel(TeiidImportWizard importWizard) {
 		ModelProject modelProject = teiidBot.modelExplorer().getModelProject(MODEL_PROJECT);
 		modelProject.importModel(importWizard);
 	}
 
 	private static void checkResource(String... path) {
-		ModelProject modelproject = teiidBot.modelExplorer().getModelProject(MODEL_PROJECT);
+		Bot.get().sleep(500);
+		ModelProject modelproject = new ModelExplorer().getModelProject(MODEL_PROJECT);
 		assertTrue(Arrays.toString(path) + " not created!", modelproject.containsItem(path));
 	}
 
 	private static void checkDiagram(String file, String label) {
-		packageExplorer.openFile(MODEL_PROJECT, file);
+		Bot.get().sleep(500);
+		Project project = new ProjectExplorer().getProject(MODEL_PROJECT);
+		project.getProjectItem(file).open();
 		ModelEditor modelEditor = teiidBot.modelEditor(file);
 		assertNotNull(file + " is not opened!", modelEditor);
 		assertNotNull("Diagram '" + label + "' not found!", modelEditor.getModeDiagram(label));

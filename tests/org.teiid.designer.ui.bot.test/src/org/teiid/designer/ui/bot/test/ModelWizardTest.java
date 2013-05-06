@@ -1,45 +1,63 @@
 package org.teiid.designer.ui.bot.test;
 
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
+import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
+import org.jboss.reddeer.swt.exception.SWTLayerException;
+import org.jboss.reddeer.swt.impl.menu.ShellMenu;
+import org.jboss.reddeer.swt.util.Bot;
+import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
+import org.jboss.tools.teiid.reddeer.wizard.CreateMetadataModel;
+import org.jboss.tools.teiid.reddeer.wizard.ModelProjectWizard;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.teiid.designer.ui.bot.ext.teiid.wizard.CreateMetadataModel;
-import org.teiid.designer.ui.bot.test.suite.TeiidDesignerTestCase;
-
+import org.teiid.designer.ui.bot.test.requirement.PerspectiveRequirement.Perspective;
 
 /**
  * 
- * Test for the creation of new models using Teiid Designer wizard. 
+ * Test for the creation of new models using Teiid Designer wizard.
  * 
  * @author psrna
- *
+ * 
  */
-@Require(perspective="Teiid Designer")
-public class ModelWizardTest extends TeiidDesignerTestCase{
+@Perspective(name = "Teiid Designer")
+public class ModelWizardTest extends SWTBotTestCase {
 
 	private static final String PROJECT_NAME = "ModelWizardTestProject";
-	
+
 	public static final String RELATIONAL_SOURCE_MODEL_NAME = "relational_source";
 
 	public static final String RELATIONAL_VIEW_MODEL_NAME = "relational_view";
-	
+
 	public static final String XML_VIEW_MODEL_NAME = "xml_view";
-	
+
 	public static final String XSD_DATATYPE_MODEL_NAME = "xsd_datatype";
-	
+
 	public static final String WEBSERVICE_MODEL_NAME = "webservice_view";
-	
+
 	public static final String MODELEXT_MODEL_NAME = "modelext";
-	
+
 	public static final String FUNCTION_MODEL_NAME = "function_userdef";
-	
+
 	@BeforeClass
-	public static void beforeClass(){
-		createProject(PROJECT_NAME);
+	public static void beforeClass() {
+		/* Create new project */
+		new ModelProjectWizard().create(PROJECT_NAME);
+	}
+
+	@AfterClass
+	public static void saveAllFiles() {
+		try {
+			new ShellMenu("File", "Save All").select();
+			Bot.get().sleep(1000);
+		} catch (SWTLayerException swte) {
+			// ok, everything was saved
+		}
 	}
 
 	@Test
-	public void relationalSourceModel(){
+	public void relationalSourceModel() {
 		CreateMetadataModel createModel = new CreateMetadataModel();
 		createModel.setLocation(PROJECT_NAME);
 		createModel.setName(RELATIONAL_SOURCE_MODEL_NAME);
@@ -47,14 +65,13 @@ public class ModelWizardTest extends TeiidDesignerTestCase{
 		createModel.setType(CreateMetadataModel.ModelType.SOURCE);
 		createModel.execute();
 
-		assertTrue(projectExplorer.existsResource(PROJECT_NAME, 
-				RELATIONAL_SOURCE_MODEL_NAME + ".xmi"));
+		assertTrue(getProject().containsItem(RELATIONAL_SOURCE_MODEL_NAME + ".xmi"));
 
-		assertTrue(modelEditor(RELATIONAL_SOURCE_MODEL_NAME + ".xmi").isActive());
+		assertTrue(new ModelEditor(RELATIONAL_SOURCE_MODEL_NAME + ".xmi").isActive());
 	}
 
 	@Test
-	public void relationalViewModel(){
+	public void relationalViewModel() {
 		CreateMetadataModel createModel = new CreateMetadataModel();
 		createModel.setLocation(PROJECT_NAME);
 		createModel.setName(RELATIONAL_VIEW_MODEL_NAME);
@@ -62,14 +79,13 @@ public class ModelWizardTest extends TeiidDesignerTestCase{
 		createModel.setType(CreateMetadataModel.ModelType.VIEW);
 		createModel.execute();
 
-		assertTrue(projectExplorer.existsResource(PROJECT_NAME, 
-				RELATIONAL_VIEW_MODEL_NAME + ".xmi"));
+		assertTrue(getProject().containsItem(RELATIONAL_VIEW_MODEL_NAME + ".xmi"));
 
-		assertTrue(modelEditor(RELATIONAL_VIEW_MODEL_NAME + ".xmi").isActive());
+		assertTrue(new ModelEditor(RELATIONAL_VIEW_MODEL_NAME + ".xmi").isActive());
 	}
 
 	@Test
-	public void xmlViewModel(){
+	public void xmlViewModel() {
 		CreateMetadataModel createModel = new CreateMetadataModel();
 		createModel.setLocation(PROJECT_NAME);
 		createModel.setName(XML_VIEW_MODEL_NAME);
@@ -77,14 +93,13 @@ public class ModelWizardTest extends TeiidDesignerTestCase{
 		createModel.setType(CreateMetadataModel.ModelType.VIEW);
 		createModel.execute();
 
-		assertTrue(projectExplorer.existsResource(PROJECT_NAME, 
-				XML_VIEW_MODEL_NAME + ".xmi"));
+		assertTrue(getProject().containsItem(XML_VIEW_MODEL_NAME + ".xmi"));
 
-		assertTrue(modelEditor(XML_VIEW_MODEL_NAME + ".xmi").isActive());
+		assertTrue(new ModelEditor(XML_VIEW_MODEL_NAME + ".xmi").isActive());
 	}
 
 	@Test
-	public void xsdDatatypeModel(){
+	public void xsdDatatypeModel() {
 		CreateMetadataModel createModel = new CreateMetadataModel();
 		createModel.setLocation(PROJECT_NAME);
 		createModel.setName(XSD_DATATYPE_MODEL_NAME);
@@ -92,15 +107,13 @@ public class ModelWizardTest extends TeiidDesignerTestCase{
 		createModel.setType(CreateMetadataModel.ModelType.DATATYPE);
 		createModel.execute();
 
-		assertTrue(projectExplorer.existsResource(PROJECT_NAME, 
-				XSD_DATATYPE_MODEL_NAME + ".xsd"));
+		assertTrue(getProject().containsItem(XSD_DATATYPE_MODEL_NAME + ".xsd"));
 
-		assertTrue(modelEditor(XSD_DATATYPE_MODEL_NAME + ".xsd").isActive());
+		assertTrue(new ModelEditor(XSD_DATATYPE_MODEL_NAME + ".xsd").isActive());
 	}
 
 	@Test
-	public void webserviceModel(){
-
+	public void webserviceModel() {
 		CreateMetadataModel createModel = new CreateMetadataModel();
 		createModel.setLocation(PROJECT_NAME);
 		createModel.setName(WEBSERVICE_MODEL_NAME);
@@ -108,14 +121,13 @@ public class ModelWizardTest extends TeiidDesignerTestCase{
 		createModel.setType(CreateMetadataModel.ModelType.VIEW);
 		createModel.execute();
 
-		assertTrue(projectExplorer.existsResource(PROJECT_NAME, 
-				WEBSERVICE_MODEL_NAME + ".xmi"));
+		assertTrue(getProject().containsItem(WEBSERVICE_MODEL_NAME + ".xmi"));
 
-		assertTrue(modelEditor(WEBSERVICE_MODEL_NAME + ".xmi").isActive());
+		assertTrue(new ModelEditor(WEBSERVICE_MODEL_NAME + ".xmi").isActive());
 	}
 
 	@Test
-	public void modelExtensionModel(){
+	public void modelExtensionModel() {
 		CreateMetadataModel createModel = new CreateMetadataModel();
 		createModel.setLocation(PROJECT_NAME);
 		createModel.setName(MODELEXT_MODEL_NAME);
@@ -123,15 +135,13 @@ public class ModelWizardTest extends TeiidDesignerTestCase{
 		createModel.setType(CreateMetadataModel.ModelType.EXTENSION);
 		createModel.execute();
 
-		assertTrue(projectExplorer.existsResource(PROJECT_NAME, 
-				MODELEXT_MODEL_NAME + ".xmi"));
+		assertTrue(getProject().containsItem(MODELEXT_MODEL_NAME + ".xmi"));
 
-		assertTrue(modelEditor(MODELEXT_MODEL_NAME + ".xmi").isActive());
+		assertTrue(new ModelEditor(MODELEXT_MODEL_NAME + ".xmi").isActive());
 	}
 
-
 	@Test
-	public void functionModel(){
+	public void functionModel() {
 		CreateMetadataModel createModel = new CreateMetadataModel();
 		createModel.setLocation(PROJECT_NAME);
 		createModel.setName(FUNCTION_MODEL_NAME);
@@ -139,9 +149,13 @@ public class ModelWizardTest extends TeiidDesignerTestCase{
 		createModel.setType(CreateMetadataModel.ModelType.FUNCTION);
 		createModel.execute();
 
-		assertTrue(projectExplorer.existsResource(PROJECT_NAME, 
-				FUNCTION_MODEL_NAME + ".xmi"));
+		assertTrue(getProject().containsItem(FUNCTION_MODEL_NAME + ".xmi"));
 
-		assertTrue(modelEditor(FUNCTION_MODEL_NAME + ".xmi").isActive());
+		assertTrue(new ModelEditor(FUNCTION_MODEL_NAME + ".xmi").isActive());
+	}
+
+	private static Project getProject() {
+		Project project = new ProjectExplorer().getProject(PROJECT_NAME);
+		return project;
 	}
 }

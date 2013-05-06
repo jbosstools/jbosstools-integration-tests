@@ -7,9 +7,9 @@
 		<artifactId>tests</artifactId>
 		<version>4.1.0-SNAPSHOT</version>
 	</parent>
-	<groupId>org.jboss.tools</groupId>
+	<groupId>org.jboss.tools.teiid</groupId>
 	<artifactId>org.teiid.designer.ui.bot.test</artifactId>
-	<version>8.0.0-SNAPSHOT</version>
+	<version>4.0.0-SNAPSHOT</version>
 	<packaging>eclipse-test-plugin</packaging>
 
 	<properties>
@@ -19,25 +19,17 @@
 	  <jdbc.dir>${requirementsDirectory}/lib</jdbc.dir>
 	  <reddeer.site>http://download.jboss.org/jbosstools/builds/staging/RedDeer_master/all/repo</reddeer.site>
 	  <jbtis.site>http://download.jboss.org/jbosstools/updates/integration/juno/integration-stack/aggregate/4.0.0</jbtis.site>
+	  <teiid-820final.url>http://sourceforge.net/projects/teiid/files/teiid/8.2/Final/teiid-8.2.0.Final-jboss-dist.zip</teiid-820final.url>
+	  <teiid-830final.url>http://downloads.sourceforge.net/project/teiid/teiid/8.3/Final/teiid-8.3.0.Final-jboss-dist.zip</teiid-830final.url>
+	  <teiid-designer-810Final.site>http://download.jboss.org/jbosstools/updates/release/juno/soa-tooling/teiiddesigner/8.1.0.Final</teiid-designer-810Final.site>
+	  <teiid-designer.site>${teiid-designer-810Final.site}</teiid-designer.site>
 	</properties>
 
 	<repositories>
-	  <!-- Red Deer Repository -->
+	  <!-- Teiid Repository -->
 	  <repository>
-	    <id>red_deer</id>
-	    <url>${reddeer.site}</url>
-	    <layout>p2</layout>
-	    <snapshots>
-	      <enabled>true</enabled>
-	    </snapshots>
-	    <releases>
-	      <enabled>true</enabled>
-	    </releases>
-	  </repository>
-	  <!-- JBTIS Repository -->
-	  <repository>
-	    <id>jbtis</id>
-	    <url>${jbtis.site}</url>
+	    <id>teiid</id>
+	    <url>${teiid-designer.site}</url>
 	    <layout>p2</layout>
 	    <snapshots>
 	      <enabled>true</enabled>
@@ -156,7 +148,7 @@
 			<goal>wget</goal>
 		      </goals>
 		      <configuration>
-			<url>http://sourceforge.net/projects/teiid/files/teiid/8.2/Final/teiid-8.2.0.Final-jboss-dist.zip</url>
+			<url>${teiid-830final.url}</url>
 			<unpack>true</unpack>
 			<outputDirectory>${requirementsDirectory}/jboss-as-7.1.1.Final</outputDirectory>
 		      </configuration>
