@@ -9,7 +9,7 @@ import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.impl.tree.ShellTree;
+import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.util.Bot;
 
 /**
@@ -57,7 +57,7 @@ public class MetadataImportWizard extends TeiidImportWizard {
 
 		new DefaultCombo(SOURCE_LOCATION).setSelection(source);
 		new PushButton(1).click();
-		new ShellTree().getItems().get(0).select();
+		new DefaultTree().getItems().get(0).select();
 		new LabeledText(MODEL_NAME).setText(target);
 		new PushButton("OK").click();
 		// Insure that this dialog is activated
