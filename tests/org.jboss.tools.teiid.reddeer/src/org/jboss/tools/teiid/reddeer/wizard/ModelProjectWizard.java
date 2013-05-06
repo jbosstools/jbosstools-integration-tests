@@ -6,7 +6,7 @@ import org.jboss.reddeer.eclipse.jface.wizard.NewWizardDialog;
  * Wizard for creating a new model project
  * 
  * @author apodhrad
- *
+ * 
  */
 public class ModelProjectWizard extends NewWizardDialog {
 
@@ -15,11 +15,13 @@ public class ModelProjectWizard extends NewWizardDialog {
 
 	public ModelProjectWizard() {
 		super(CATEGORY, PROJECT_TITLE);
+		addWizardPage(new ModelProjectPage(), 1);
 	}
 
-	@Override
-	public ModelProjectPage getFirstPage() {
-		return new ModelProjectPage(this);
+	public void create(String name) {
+		open();
+		getWizardPage().fillWizardPage(name);
+		finish();
 	}
 
 }

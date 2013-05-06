@@ -8,7 +8,8 @@ import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.impl.tree.ShellTreeItem;
+import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.swt.util.Bot;
 
 /**
  * Wizard for importing relational model from XML
@@ -68,12 +69,13 @@ public class XMLImportWizard extends TeiidImportWizard {
 		next();
 		new LabeledText("Root Path").setText(rootPath);
 		for (String[] path : elements) {
-			new ShellTreeItem(path).select();
+			new DefaultTreeItem(1, path).select();
 			new PushButton("Add").click();
 		}
 
 		next();
-		new LabeledText("Name:").setText(name + "View");
+		// new LabeledText("Name:").setText(name + "View");
+		Bot.get().textWithLabel("Name:").setText(name + "View");
 		new LabeledText("New view table name:").setText(name + "Table");
 
 		finish();

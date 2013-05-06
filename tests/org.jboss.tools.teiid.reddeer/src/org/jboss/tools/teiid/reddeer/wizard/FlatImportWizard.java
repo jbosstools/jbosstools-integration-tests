@@ -56,7 +56,9 @@ public class FlatImportWizard extends TeiidImportWizard {
 		open();
 		new DefaultCombo("Data File Source", 0).setSelection(profile);
 		setCheckedFile(file, true);
-		new LabeledText("Name:").setText(name + "Source");
+		// TODO: LabeledText
+		// new LabeledText("Name:").setText(name + "Source");
+		Bot.get().textWithLabel("Name:").setText(name + "Source");
 
 		next();
 		next();
@@ -69,7 +71,10 @@ public class FlatImportWizard extends TeiidImportWizard {
 		}
 
 		next();
-		new LabeledText("Name:").setText(name + "View");
+		// TODO: LabeledText
+		// new LabeledText("Name:").setText(name + "View");
+		Bot.get().textWithLabel("Name:").setText(name + "View");
+
 		new LabeledText("New view table name:").setText(name + "Table");
 
 		finish();
