@@ -1,12 +1,15 @@
 package org.jboss.tools.bpmn2.itests.test.wizard;
 
+import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.eclipse.jface.exception.JFaceLayerException;
+import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.tools.bpmn2.itests.swt.ext.JBPM5RuntimeRequirement.JBPM5;
+import org.jboss.tools.bpmn2.itests.swt.ext.SetUpWorkspaceRequirement.SetUpWorkspace;
 import org.jboss.tools.bpmn2.itests.wizard.JBPMProjectLegacyWizard;
-import org.jboss.tools.ui.bot.ext.SWTTestExt;
-import org.jboss.tools.ui.bot.ext.config.Annotations.JBPM;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
-import org.jboss.tools.ui.bot.ext.view.ProjectExplorer;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -15,8 +18,9 @@ import org.junit.Test;
  * @author Marek Baluch <mbaluch@redhat.com>
  * 
  */
-@Require(jbpm = @JBPM(), runOnce = true)
-public class LegacyProjectWizardTest extends SWTTestExt {
+@JBPM5()
+@SetUpWorkspace()
+public class LegacyProjectWizardTest extends SWTBotTestCase {
 
 	// TBD: 
 	//   * switch to org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer
@@ -27,25 +31,28 @@ public class LegacyProjectWizardTest extends SWTTestExt {
 	
 	@After
 	public void deleteAllProjects() {
-		explorerView.deleteAllProjects();
-		
+		for (Project p : explorerView.getProjects()) {
+			p.delete(true);
+		}
 	}
 	
 	@Test
 	public void newProjectWithSimpleProcessTest() throws Exception {
 		wizardView.execute("TestProject", JBPMProjectLegacyWizard.ProcessType.SIMPLE, true, false);
 		
-		assertTrue(explorerView.existsResource("TestProject", "src/main/resources", "sample.bpmn"));
-		assertTrue(explorerView.existsResource("TestProject", "src/main/java", "com.sample", "ProcessMain.java"));
+		Project p = explorerView.getProject("TestProject");
+		assertTrue(p.containsItem("src/main/resources", "sample.bpmn"));
+		assertTrue(p.containsItem("src/main/java", "com.sample", "ProcessMain.java"));
 	}
 	
 	@Test
 	public void newProjectWithAdvancedProcessTest() {
 		wizardView.execute("TestProject", JBPMProjectLegacyWizard.ProcessType.ADVANCED, true, true);
 		
-		assertTrue(explorerView.existsResource("TestProject", "src/main/resources", "sample.bpmn"));
-		assertTrue(explorerView.existsResource("TestProject", "src/main/java", "com.sample", "ProcessMain.java"));
-		assertTrue(explorerView.existsResource("TestProject", "src/main/java", "com.sample", "ProcessTest.java"));
+		Project p = explorerView.getProject("TestProject");
+		assertTrue(p.containsItem("src/main/resources", "sample.bpmn"));
+		assertTrue(p.containsItem("TestProject", "src/main/java", "com.sample", "ProcessMain.java"));
+		assertTrue(p.containsItem("TestProject", "src/main/java", "com.sample", "ProcessTest.java"));
 	}
 	
 	@Test()
@@ -53,17 +60,17 @@ public class LegacyProjectWizardTest extends SWTTestExt {
 		wizardView.execute("TestProject");
 		
 		// the node list will contain one empty node!
-		assertTrue(explorerView.selectTreeItem("src/main/java", new String[] {"TestProject"}).getNodes().get(0).isEmpty());
-		assertTrue(explorerView.selectTreeItem("src/main/resources", new String[] {"TestProject"}).getNodes().get(0).isEmpty());
+		assertTrue(new DefaultTreeItem("TestProject", "src/main/java").getItems().isEmpty());
+		assertTrue(new DefaultTreeItem("TestProject", "src/main/resources").getItems().isEmpty());
 	}
 
 	@Test()
 	public void newProjectFormValidationTest() throws Exception {
 		try {
 			wizardView.execute("");
-			fail("Project with an empty name was created!");
+			Assert.fail("Project with an empty name was created!");
 		} catch (JFaceLayerException e) {
-			assertEquals("Button '&Next >' is not enabled", e.getMessage());
+			Assert.assertEquals("Button '&Next >' is not enabled", e.getMessage());
 		} finally {
 			wizardView.cancel();
 		}

@@ -1,9 +1,9 @@
 package org.jboss.tools.bpmn2.itests.test;
 
+import junit.framework.TestSuite;
+
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.bpmn2.itests.test.editor.*;
-import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
-import org.jboss.tools.ui.bot.ext.SWTTestExt;
-//import org.jboss.tools.ui.bot.ext.SWTTestExt;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
@@ -15,7 +15,7 @@ import org.junit.runners.Suite.SuiteClasses;
  * @author Marek Baluch
  * 
  */
-@RunWith(RequirementAwareSuite.class)
+@RunWith(RedDeerSuite.class)
 @SuiteClasses({
 // Wizard tests
 // ------------
@@ -28,6 +28,6 @@ import org.junit.runners.Suite.SuiteClasses;
 // ------------
 	ModelingSmokeTest.class
 })
-public class AllTests extends SWTTestExt {
-
+public class AllTests extends TestSuite {
+	
 }
