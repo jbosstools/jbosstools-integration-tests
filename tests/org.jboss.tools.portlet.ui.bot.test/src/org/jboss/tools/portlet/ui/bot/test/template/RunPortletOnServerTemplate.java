@@ -19,7 +19,7 @@ import org.junit.Test;
  * @author Lucia Jelinkova
  *
  */
-@Require(clearWorkspace=false, clearProjects=false, server=@Server(state=ServerState.Running, type=ServerType.EPP))
+@Require(clearWorkspace=false, clearProjects=false, server=@Server(state=ServerState.Running))
 public abstract class RunPortletOnServerTemplate extends SWTTaskBasedTestCase {
 
 	protected abstract String getProjectName(); 
