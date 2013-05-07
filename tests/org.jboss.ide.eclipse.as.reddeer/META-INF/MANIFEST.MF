@@ -7,7 +7,10 @@ Bundle-ActivationPolicy: lazy
 Bundle-Vendor: 
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Require-Bundle: org.eclipse.swtbot.go,
- org.jboss.reddeer.junit;bundle-version="0.2.0"
+ org.jboss.reddeer.jface;bundle-version="0.3.0",
+ org.jboss.reddeer.junit;bundle-version="0.3.0",
+ org.jboss.reddeer.swt;bundle-version="0.3.0",
+ org.jboss.reddeer.eclipse;bundle-version="0.3.0"
 Bundle-ClassPath: .
 Export-Package: org.jboss.ide.eclipse.as.reddeer.server.requirement
 Import-Package: javax.xml.bind.annotation
