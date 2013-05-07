@@ -29,7 +29,7 @@ import org.jboss.tools.ui.bot.ext.config.TestConfigurator;
  * @author Lucia Jelinkova
  *
  */
-@Require(db=@DB, seam=@Seam, server=@Server(state=ServerState.Present, type=ServerType.EPP))
+@Require(db=@DB, seam=@Seam, server=@Server(state=ServerState.Present))
 public class CreateSeamPortletProject extends CreatePortletProjectTemplate{
 
 	public static final String PROJECT_NAME = "seam-portlet";

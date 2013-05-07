@@ -31,7 +31,7 @@ import org.junit.Test;
  * @author Lucia Jelinkova
  *
  */
-@Require(server=@Server(state=ServerState.Present, type=ServerType.EPP))
+@Require(server=@Server(state=ServerState.Present))
 public abstract class CreatePortletProjectTemplate extends SWTTaskBasedTestCase {
 
 	protected static final String WEB_INF = "WebContent/WEB-INF/";

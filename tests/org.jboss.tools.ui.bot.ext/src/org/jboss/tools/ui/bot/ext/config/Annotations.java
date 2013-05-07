@@ -266,6 +266,10 @@ public class Annotations {
 		 */
 		EPP,
 		/**
+		 * JBoss Portal Platform
+		 */
+		JPP,
+		/**
 		 * all server types acceptable
 		 */
 		ALL

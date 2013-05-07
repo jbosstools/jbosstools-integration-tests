@@ -58,6 +58,7 @@ public class TestConfigurator {
 	 */
 	public class Values {
 		public static final String SERVER_TYPE_EPP = "EPP";
+		public static final String SERVER_TYPE_JPP = "JPP";
 		public static final String SERVER_TYPE_EAP = "EAP";
 		public static final String SERVER_TYPE_SOA = "SOA";
 		public static final String SERVER_TYPE_AS = "AS";
