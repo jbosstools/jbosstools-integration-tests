@@ -15,6 +15,7 @@ public class JBossRuntimeWizardPage {
 
 	public void setRuntimeDir(String path){
 		new LabeledText("Home Directory").setText(path);
+		//TODO check if path exists
 	}
 	
 }
