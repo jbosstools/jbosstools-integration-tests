@@ -54,8 +54,8 @@ public class ImportProjectWizard {
 
 	private void loadProjectsFromZIP() {
 		getBot().radio("Select archive file:").click();
-		getBot().text(1).setText(zipFilePath);
-		getBot().text(1).setFocus();
+		getBot().comboBox(1).setText(zipFilePath);
+		getBot().comboBox(1).setFocus();
 		getProjectsTree().setFocus();
 		getBot().waitUntil(new ProjectIsLoaded());
 	}

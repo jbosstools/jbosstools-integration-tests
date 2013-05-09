@@ -58,7 +58,6 @@ public abstract class OperateServerTemplate extends SWTTestExt {
 
 	public void stopServer(){
 		serversView.stopServer(getServerName());
-		serversView.openWebPage(configuredState.getServer().name);
 		
 		assertNoException("Stopping server");
 		assertServerState("Stopping server", "Stopped");
