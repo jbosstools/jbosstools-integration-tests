@@ -12,6 +12,7 @@ import org.jboss.ide.eclipse.as.reddeer.server.wizard.page.JBossRuntimeWizardPag
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.junit.requirement.CustomConfiguration;
 import org.jboss.reddeer.junit.requirement.Requirement;
+import org.jboss.reddeer.workbench.view.impl.WorkbenchView;
 
 /**
  * 
@@ -34,6 +35,7 @@ public class ServerRequirement implements Requirement<Server>, CustomConfigurati
 	
 	@Override
 	public boolean canFulfill() {
+		//TODO
 		return true;
 	}
 
@@ -42,7 +44,7 @@ public class ServerRequirement implements Requirement<Server>, CustomConfigurati
 		
 		setupServerAdapter();
 		if(server.started()){
-			//TODO
+			startServer();
 		}
 		
 	}
@@ -99,4 +101,15 @@ public class ServerRequirement implements Requirement<Server>, CustomConfigurati
 		
 	}
 	
+	public void startServer(){
+		
+		try{
+			new WorkbenchView("Welcome").close();
+		}catch(Exception e){
+			//do nothing
+		}
+		
+		ServersView sw = new ServersView();
+		sw.getServer(getServerNameLabelText()).start();
+	}
 }
