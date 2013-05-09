@@ -28,7 +28,7 @@ public class DetectSOAP53 extends DetectRuntimeTemplate {
 		Runtime seam = new Runtime();
 		seam.setName("seam");
 		seam.setType("SEAM");
-		seam.setVersion("2.2.5.EAP5");
+		seam.setVersion("2.2.6.EAP5");
 		seam.setLocation(RuntimeProperties.getInstance().getRuntimePath(getPathID()) + "/seam");
 		
 		return Arrays.asList(server, seam);
