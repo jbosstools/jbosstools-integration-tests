@@ -1,11 +1,8 @@
 package org.jboss.tools.runtime.as.ui.bot.test.dialog.preferences;
 
 import java.awt.AWTException;
-import java.awt.Dimension;
 import java.awt.Robot;
-import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,16 +20,16 @@ import org.jboss.tools.runtime.as.ui.bot.test.entity.Runtime;
 
 public class SeamPreferencesDialog extends PreferencePage {
 
-	public SeamPreferencesDialog(){
+	public SeamPreferencesDialog() {
 		super("JBoss Tools", "Web", "Seam");
 	}
-	
-	public List<Runtime> getRuntimes(){
+
+	public List<Runtime> getRuntimes() {
 		List<Runtime> runtimes = new ArrayList<Runtime>();
-		
+
 		Table table = new DefaultTable();
-		
-		for (int i = 0; i < table.rowCount(); i++){
+
+		for (int i = 0; i < table.rowCount(); i++) {
 			Runtime runtime = new Runtime();
 			runtime.setName(table.cell(i, 1));
 			runtime.setVersion(table.cell(i, 2));
@@ -41,37 +38,35 @@ public class SeamPreferencesDialog extends PreferencePage {
 		}
 		return runtimes;
 	}
-	
-	public void removeAllRuntimes(){
+
+	public void removeAllRuntimes() {
 		Table table = new DefaultTable();
-		
+
 		int runtimesNumber = table.rowCount();
-		for (int i = 0; i < runtimesNumber; i++){
+		for (int i = 0; i < runtimesNumber; i++) {
 			table.select(0);
 			new WaitWhile(new JobIsRunning());
-			new WaitUntil(new RemoveButtonEnabled(),TimePeriod.LONG);			
+			new WaitUntil(new RemoveButtonEnabled(), TimePeriod.LONG);
 			new PushButton("Remove").click();
-			
+
 			try {
 				Robot robot = new Robot();
 				robot.setAutoWaitForIdle(true);
-				
-				//↓ Windows loses focus on native dialog - using mouse click
-				Toolkit tools = Toolkit.getDefaultToolkit();
-				Dimension dim = tools.getScreenSize();
-				robot.mouseMove(((int)dim.getWidth())/2,((int)dim.getHeight()/2 - 60));
-				robot.mousePress(MouseEvent.BUTTON1_MASK);
-				robot.mouseRelease(MouseEvent.BUTTON1_MASK);
-				
 				robot.keyPress(KeyEvent.VK_ENTER);
 				robot.keyRelease(KeyEvent.VK_ENTER);
 			} catch (AWTException e) {
 				throw new RuntimeException("Cannot press shortcut during removing of Seam runtimes", e);
 			}
-			
-			open();
+
+			if (table.rowCount() != (runtimesNumber - i - 1)) {
+				throw new RuntimeException("Error during removing Seam runtimes");
+			} else {
+				open();
+			}
+
 		}
 	}
+
 	private static class RemoveButtonEnabled implements WaitCondition {
 
 		@Override
@@ -79,7 +74,7 @@ public class SeamPreferencesDialog extends PreferencePage {
 			try {
 				PushButton removeButton = new PushButton("Remove");
 				return removeButton.isEnabled();
-			} catch (SWTLayerException e){
+			} catch (SWTLayerException e) {
 				return false;
 			}
 		}
