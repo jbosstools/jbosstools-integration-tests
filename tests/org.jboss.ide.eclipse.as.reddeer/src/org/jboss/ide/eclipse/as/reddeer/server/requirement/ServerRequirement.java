@@ -9,8 +9,10 @@ import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.Ser
 import org.jboss.ide.eclipse.as.reddeer.server.wizard.NewServerWizardDialog;
 import org.jboss.ide.eclipse.as.reddeer.server.wizard.page.DefineNewServerWizardPage;
 import org.jboss.ide.eclipse.as.reddeer.server.wizard.page.JBossRuntimeWizardPage;
+import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.junit.requirement.CustomConfiguration;
 import org.jboss.reddeer.junit.requirement.Requirement;
+import org.jboss.reddeer.workbench.view.impl.WorkbenchView;
 
 /**
  * 
@@ -21,48 +23,35 @@ import org.jboss.reddeer.junit.requirement.Requirement;
 public class ServerRequirement implements Requirement<Server>, CustomConfiguration<ServerRequirementConfig> {
 
 	private ServerRequirementConfig config;
+	private Server server;
 	
 	
 	@Retention(RetentionPolicy.RUNTIME)
 	@Target(ElementType.TYPE)
 	public @interface Server {
+		boolean started() default true;
 	}
 	
 	
 	@Override
 	public boolean canFulfill() {
+		//TODO
 		return true;
 	}
 
 	@Override
 	public void fulfill() {
-
-		NewServerWizardDialog serverW = new NewServerWizardDialog();
-		serverW.open();
 		
-		DefineNewServerWizardPage sp = new DefineNewServerWizardPage(serverW);
-
-		String serverName = config.getServerFamily().getLabel() + " " 
-				  + config.getServerFamily().getVersion() + " Server";
-		String serverType = config.getServerFamily().getLabel() + " " 
-				  + config.getServerFamily().getVersion();
-
-		sp.setName(serverName);
-		sp.selectType(serverType);
-		serverW.next();
+		setupServerAdapter();
+		if(server.started()){
+			startServer();
+		}
 		
-		String runtimeName = config.getServerFamily().getLabel() + " " 
-				   + config.getServerFamily().getVersion() + " Runtime";
-		
-		JBossRuntimeWizardPage rp = new JBossRuntimeWizardPage();
-		rp.setRuntimeName(runtimeName);
-		rp.setRuntimeDir(config.getRuntime());
-		
-		serverW.finish();
 	}
 
 	@Override
-	public void setDeclaration(Server declaration) {
+	public void setDeclaration(Server server) {
+		this.server = server;
 	}
 	
 
@@ -79,6 +68,48 @@ public class ServerRequirement implements Requirement<Server>, CustomConfigurati
 	public ServerRequirementConfig getConfig(){
 		return this.config;
 	}
-
+		
+	public String getServerTypeLabelText(){
+		return config.getServerFamily().getLabel() + " " 
+	         + config.getServerFamily().getVersion();
+	}
 	
+	public String getServerNameLabelText(){
+		return getServerTypeLabelText() + " Server";
+	}
+
+	public String getRuntimeNameLabelText(){
+		return getServerTypeLabelText() + " Runtime";
+	}
+	
+	public void setupServerAdapter(){
+		
+		NewServerWizardDialog serverW = new NewServerWizardDialog();
+		serverW.open();
+		
+		DefineNewServerWizardPage sp = new DefineNewServerWizardPage(serverW);
+
+		sp.setName(getServerNameLabelText());
+		sp.selectType(getServerTypeLabelText());
+		serverW.next();
+		
+		JBossRuntimeWizardPage rp = new JBossRuntimeWizardPage();
+		rp.setRuntimeName(getRuntimeNameLabelText());
+		rp.setRuntimeDir(config.getRuntime());
+		
+		serverW.finish();
+		
+	}
+	
+	public void startServer(){
+		
+		try{
+			new WorkbenchView("Welcome").close();
+		}catch(Exception e){
+			//do nothing
+		}
+		
+		ServersView sw = new ServersView();
+		sw.getServer(getServerNameLabelText()).start();
+	}
 }

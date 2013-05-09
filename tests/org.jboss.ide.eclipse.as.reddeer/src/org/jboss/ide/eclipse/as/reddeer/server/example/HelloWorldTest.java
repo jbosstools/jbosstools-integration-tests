@@ -6,7 +6,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(RedDeerSuite.class)
-@Server
+@Server()
 public class HelloWorldTest {
 	
 	@Test
