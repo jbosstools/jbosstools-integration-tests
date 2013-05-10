@@ -1917,6 +1917,22 @@ public static String getItemString(IActionItem item) {
 			*/
 			public static final String TEXT_DIRECTORY = "Directory:";
 			}
+	  public static class BasicLiveReloadServer {
+	    /**
+	     * represents item : Basic-> LiveReload Server
+	     */
+	    public static final IServer LABEL = new IServer() {
+	      public String getName() {
+	        return "LiveReload Server";
+	      }
+
+	      public List<String> getGroupPath() {
+	        List<String> l = new Vector<String>();
+	        l.add("Basic");
+	        return l;
+	      }
+	    };
+	  }
 
 		}
 
@@ -11108,5 +11124,4 @@ public static String getItemString(IActionItem item) {
 			}
 
 		}
-
 }

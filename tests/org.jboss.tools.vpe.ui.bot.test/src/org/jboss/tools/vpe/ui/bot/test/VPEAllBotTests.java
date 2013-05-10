@@ -99,6 +99,7 @@ import org.jboss.tools.vpe.ui.bot.test.jbide.JBIDE4556Test;
 import org.jboss.tools.vpe.ui.bot.test.jbide.JBIDE9445Test_DuplicateSourceMenu;
 import org.jboss.tools.vpe.ui.bot.test.jbide.Jbide10020_TestHotKeyForVpeRefresh;
 import org.jboss.tools.vpe.ui.bot.test.jbide.TestNPEinHugeFile;
+import org.jboss.tools.vpe.ui.bot.test.livereload.LiveReloadServerTest;
 import org.jboss.tools.vpe.ui.bot.test.palette.CancelTagLibDefenitionTest;
 import org.jboss.tools.vpe.ui.bot.test.palette.ImportTagsFromTLDFileTest;
 import org.jboss.tools.vpe.ui.bot.test.palette.ManagePaletteGroupsTest;
@@ -227,7 +228,8 @@ import org.junit.runners.Suite.SuiteClasses;
 		MobilePaletteTest.class,
 		OpenBrowserSimTest.class,
     BrowserSimLoadUrlTest.class,
-    BrowserSimContextMenuTest.class})
+    BrowserSimContextMenuTest.class,    
+    LiveReloadServerTest.class})
 public class VPEAllBotTests extends SWTBotTestCase{
 
 }
