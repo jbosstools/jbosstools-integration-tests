@@ -212,7 +212,9 @@ public class ContextMenuHelper {
    */
   public static void prepareTreeItemForContextMenu(SWTBotTree tree , SWTBotTreeItem treeItem){
     tree.setFocus();
-    treeItem.select();
+    if (!treeItem.isSelected()) {
+    	treeItem.select();
+    }
     treeItem.click();
   }
   /**

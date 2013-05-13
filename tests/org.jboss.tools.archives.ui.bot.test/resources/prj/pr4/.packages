@@ -1,15 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?><packages version="1.3">
   <package exploded="false" inWorkspace="true" name="pr4aa.jar">
-    <properties/>
+    <properties>
+      <property name="org.jboss.ide.eclipse.as.core.packages.ModuleIDPropertyKey" value="136844016507819165430372702436461919"/>
+    </properties>
   </package>
   <package exploded="false" inWorkspace="true" name="pr4ab.jar">
-    <properties/>
+    <properties>
+      <property name="org.jboss.ide.eclipse.as.core.packages.ModuleIDPropertyKey" value="136844016507819165430387125479255507"/>
+    </properties>
   </package>
   <package exploded="false" inWorkspace="true" name="pr4ba.jar">
-    <properties/>
+    <properties>
+      <property name="org.jboss.ide.eclipse.as.core.packages.ModuleIDPropertyKey" value="136844016507819165430392548-2042769221"/>
+    </properties>
   </package>
   <package exploded="false" inWorkspace="true" name="pr4bb.jar">
-    <properties/>
+    <properties>
+      <property name="org.jboss.ide.eclipse.as.core.packages.ModuleIDPropertyKey" value="136844016507819165430397988-258910687"/>
+    </properties>
+  </package>
+  <package exploded="false" inWorkspace="true" name="pr4ca.jar" todir="/pr4" type="jar">
+    <properties>
+      <property name="org.jboss.ide.eclipse.as.core.packages.ModuleIDPropertyKey" value="1368440181101191814532660701420789873"/>
+    </properties>
+  </package>
+  <package exploded="false" inWorkspace="true" name="pr4cb.jar" todir="/pr4" type="jar">
+    <properties>
+      <property name="org.jboss.ide.eclipse.as.core.packages.ModuleIDPropertyKey" value="1368440187598191879511430031778485716"/>
+    </properties>
+  </package>
+  <package exploded="false" inWorkspace="true" name="pr4da.jar" todir="/pr4" type="jar">
+    <properties>
+      <property name="org.jboss.ide.eclipse.as.core.packages.ModuleIDPropertyKey" value="136844020062119200973431575767507770"/>
+    </properties>
+  </package>
+  <package exploded="false" inWorkspace="true" name="pr4db.jar" todir="/pr4" type="jar">
+    <properties>
+      <property name="org.jboss.ide.eclipse.as.core.packages.ModuleIDPropertyKey" value="136844024140219241755102191-1712523631"/>
+    </properties>
   </package>
   <properties/>
 </packages>

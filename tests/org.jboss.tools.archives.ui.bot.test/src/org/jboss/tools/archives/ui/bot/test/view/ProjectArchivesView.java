@@ -10,6 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.archives.ui.bot.test.view;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
@@ -93,6 +94,26 @@ public class ProjectArchivesView extends ViewBase {
 	public void deleteArchive(boolean withContextMenu, String... pathToArchive) {
 		contextTool.deleteArchive(
 				viewTree, getArchive(pathToArchive), withContextMenu);
+	}
+	
+	public void deleteArchives(boolean withContextMenu, 
+			Collection<String> archivesNames, String... pathToArchivesRoot) {
+		SWTBotTreeItem[] items = new SWTBotTreeItem[archivesNames.size()];
+		String[] pathToArchive = new String[pathToArchivesRoot.length + 1];
+		
+		int index = 0;
+		for (String pathItem : pathToArchivesRoot) {
+			pathToArchive[index] = pathItem;
+			index++;
+		}
+		
+		index = 0;
+		for (String archiveName : archivesNames) {
+			pathToArchive[pathToArchivesRoot.length] = archiveName;
+			items[index] = getArchive(pathToArchive);
+			index++;
+		}
+		contextTool.deleteArchives(viewTree, withContextMenu, items);
 	}
 	
 	public ArchivePublishSettingsDialog publishToServer(boolean returnDialog,

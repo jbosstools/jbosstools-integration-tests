@@ -82,6 +82,17 @@ public class ProjectArchivesExplorer {
 				this.bot().tree(), getArchive(archive), withContextMenu);
 	}
 	
+	public void deleteArchives(boolean withContextMenu, String... archives) {
+		SWTBotTreeItem[] items = new SWTBotTreeItem[archives.length];
+		
+		int index = 0;
+		for (String archive : archives) {
+			items[index] = getArchive(archive);
+			index++;
+		}
+		contextTool.deleteArchives(this.bot().tree(), withContextMenu, items);
+	}
+	
 	public ArchivePublishSettingsDialog publishToServer(
 			boolean returnDialog, String archive) {
 		return contextTool.publishToServer(

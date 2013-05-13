@@ -10,6 +10,8 @@
  ******************************************************************************/
 package org.jboss.tools.archives.ui.bot.test;
 
+import java.util.Arrays;
+
 import org.jboss.tools.archives.ui.bot.test.explorer.ProjectArchivesExplorer;
 import org.jboss.tools.archives.ui.bot.test.view.ProjectArchivesView;
 import org.junit.BeforeClass;
@@ -31,6 +33,14 @@ public class DeletingArchiveTest extends ArchivesTestBase {
 			project + "ba.jar";
 	private static final String ARCHIVE_NAME_BB = 
 			project + "bb.jar";
+	private static final String ARCHIVE_NAME_CA = 
+			project + "ca.jar";
+	private static final String ARCHIVE_NAME_CB = 
+			project + "cb.jar";
+	private static final String ARCHIVE_NAME_DA = 
+			project + "da.jar";
+	private static final String ARCHIVE_NAME_DB = 
+			project + "db.jar";
 	private static final String PATH_SUFFIX = " [/" + project + "]"; 
 	
 	@BeforeClass
@@ -74,6 +84,39 @@ public class DeletingArchiveTest extends ArchivesTestBase {
 		
 		/* test archive was deleted */
 		assertItemNotExistsInExplorer(explorer, ARCHIVE_NAME_BB + PATH_SUFFIX);
+	}
+	
+	@Test
+	public void testMultideletionWithView() {
+		
+		/* prepare view for testing */
+		ProjectArchivesView view = viewForProject(project);
+		
+		/* delete archives in view with context menu */
+		view.deleteArchives(true, Arrays.asList(new String[]{
+				ARCHIVE_NAME_CA + PATH_SUFFIX, 
+				ARCHIVE_NAME_CB + PATH_SUFFIX}), 
+				project);
+		
+		/* test that specific archives were deleted with multiselection */
+		assertItemNotExistsInView(view, project, ARCHIVE_NAME_CA + PATH_SUFFIX);
+		assertItemNotExistsInView(view, project, ARCHIVE_NAME_CB + PATH_SUFFIX);
+		
+	}
+	
+	@Test
+	public void testMultideletionWithExplorer() {
+		
+		/* prepare explorer for testing */
+		ProjectArchivesExplorer explorer = explorerForProject(project);
+		
+		/* delete archives in explorer with context menu */
+		explorer.deleteArchives(false, ARCHIVE_NAME_DA + PATH_SUFFIX, ARCHIVE_NAME_DB + PATH_SUFFIX);
+		
+		/* test that specific archives were deleted with multiselection */
+		assertItemNotExistsInExplorer(explorer, ARCHIVE_NAME_DA + PATH_SUFFIX);
+		assertItemNotExistsInExplorer(explorer, ARCHIVE_NAME_DB + PATH_SUFFIX);
+		
 	}
 	
 }
