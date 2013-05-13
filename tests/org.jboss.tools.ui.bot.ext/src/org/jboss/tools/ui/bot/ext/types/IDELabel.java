@@ -160,6 +160,7 @@ public class IDELabel {
 		public static final String IMPORT = "Import";
 		public static final String DELETE_SERVER = "Delete Server";
 		public static final String DELETE_NODE = "Delete this node?";
+		public static final String DELETE_SELECTED_NODES = "Delete selected nodes?";
 		public static final String SERVER = "Server";
 		public static final String NEW_STRUTS_PROJECT = "New Struts Project";
 	  public static final String PREFERENCES = "Preferences";

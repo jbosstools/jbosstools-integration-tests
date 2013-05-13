@@ -118,6 +118,22 @@ public class ArchiveContextMenu {
 		SWTBotFactory.getUtil().waitForNonIgnoredJobs();
 	}
 	
+	public void deleteArchives(SWTBotTree tree,
+			boolean withContextMenu, SWTBotTreeItem... items) {
+		tree.select(items);
+		if (withContextMenu) { 
+			ContextMenuHelper.prepareTreeItemForContextMenu(tree, items[0]);
+			SWTBotMenu menu = new SWTBotMenu(ContextMenuHelper.
+				getContextMenu(tree, "Delete Archive", false));
+			menu.click();
+		} else {
+			items[0].pressShortcut(Keystrokes.DELETE);
+		}
+		
+		handleDeleteDialog();
+		SWTBotFactory.getUtil().waitForNonIgnoredJobs();
+	}
+	
 	public ArchivePublishSettingsDialog publishToServer(SWTBotTree tree, 
 			SWTBotTreeItem item, boolean returnDialog) {
 		ContextMenuHelper.prepareTreeItemForContextMenu(tree, item);
@@ -143,8 +159,8 @@ public class ArchiveContextMenu {
 	private void handleDeleteDialog() {
 		SWTBotExt bot = SWTBotFactory.getBot();
 		try {
-			bot.waitForShell(IDELabel.Shell.DELETE_NODE);
-			bot.shell(IDELabel.Shell.DELETE_NODE)
+			bot.waitForShell(IDELabel.Shell.DELETE_SELECTED_NODES);
+			bot.shell(IDELabel.Shell.DELETE_SELECTED_NODES)
 				.bot().button(IDELabel.Button.YES).click();
 		} catch (WidgetNotFoundException exc) {
 			//do nothing here
