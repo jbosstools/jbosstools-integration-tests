@@ -1,4 +1,4 @@
-package org.teiid.designer.ui.bot.test.suite;
+package org.jboss.tools.teiid.ui.bot.test.suite;
 
 import java.io.File;
 import java.io.FileNotFoundException;

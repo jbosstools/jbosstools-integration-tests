@@ -1,4 +1,4 @@
-package org.teiid.designer.ui.bot.test;
+package org.jboss.tools.teiid.ui.bot.test;
 
 import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
@@ -9,10 +9,10 @@ import org.jboss.reddeer.swt.util.Bot;
 import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
 import org.jboss.tools.teiid.reddeer.wizard.CreateMetadataModel;
 import org.jboss.tools.teiid.reddeer.wizard.ModelProjectWizard;
+import org.jboss.tools.teiid.ui.bot.test.requirement.PerspectiveRequirement.Perspective;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.teiid.designer.ui.bot.test.requirement.PerspectiveRequirement.Perspective;
 
 /**
  * 

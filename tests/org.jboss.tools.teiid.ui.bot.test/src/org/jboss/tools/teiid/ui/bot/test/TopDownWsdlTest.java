@@ -1,4 +1,4 @@
-package org.teiid.designer.ui.bot.test;
+package org.jboss.tools.teiid.ui.bot.test;
 
 import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
 import org.jboss.tools.teiid.reddeer.ModelProject;
@@ -15,11 +15,11 @@ import org.jboss.tools.teiid.reddeer.wizard.ImportFileWizard;
 import org.jboss.tools.teiid.reddeer.wizard.ImportJDBCDatabaseWizard;
 import org.jboss.tools.teiid.reddeer.wizard.ModelProjectWizard;
 import org.jboss.tools.teiid.reddeer.wizard.WsdlWebImportWizard;
+import org.jboss.tools.teiid.ui.bot.test.requirement.PerspectiveRequirement.Perspective;
+import org.jboss.tools.teiid.ui.bot.test.requirement.ServerRequirement.Server;
+import org.jboss.tools.teiid.ui.bot.test.requirement.ServerRequirement.State;
+import org.jboss.tools.teiid.ui.bot.test.requirement.ServerRequirement.Type;
 import org.junit.Test;
-import org.teiid.designer.ui.bot.test.requirement.PerspectiveRequirement.Perspective;
-import org.teiid.designer.ui.bot.test.requirement.ServerRequirement.Server;
-import org.teiid.designer.ui.bot.test.requirement.ServerRequirement.State;
-import org.teiid.designer.ui.bot.test.requirement.ServerRequirement.Type;
 
 /**
  * 

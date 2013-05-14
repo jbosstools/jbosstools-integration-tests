@@ -1,4 +1,4 @@
-package org.teiid.designer.ui.bot.test.requirement;
+package org.jboss.tools.teiid.ui.bot.test.requirement;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -12,8 +12,8 @@ import org.jboss.reddeer.junit.requirement.Requirement;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.tools.teiid.reddeer.condition.ServerHasState;
-import org.teiid.designer.ui.bot.test.requirement.ServerRequirement.Server;
-import org.teiid.designer.ui.bot.test.suite.TeiidSuite;
+import org.jboss.tools.teiid.ui.bot.test.requirement.ServerRequirement.Server;
+import org.jboss.tools.teiid.ui.bot.test.suite.TeiidSuite;
 
 /**
  * 

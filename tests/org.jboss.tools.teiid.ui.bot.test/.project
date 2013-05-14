@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>org.teiid.designer.ui.bot.test</name>
+	<name>org.jboss.tools.teiid.ui.bot.test</name>
 	<comment></comment>
 	<projects>
 	</projects>
