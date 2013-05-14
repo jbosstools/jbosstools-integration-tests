@@ -8,7 +8,7 @@ import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
-import org.jboss.reddeer.swt.impl.tree.ShellTreeItem;
+import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.util.Bot;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
@@ -52,7 +52,7 @@ public class WsdlImportWizard extends TeiidImportWizard {
 		new ShellMenu(getMenuPath()).select();
 		new DefaultShell(getDialogTitle());
 		log.info("Select " + IMPORTER);
-		new ShellTreeItem("Teiid Designer", IMPORTER).select();
+		new DefaultTreeItem("Teiid Designer", IMPORTER).select();
 		stupidWait();
 		next();
 		stupidWait();
@@ -82,7 +82,15 @@ public class WsdlImportWizard extends TeiidImportWizard {
 	private void addElement(String tab, String path) {
 		log.info("Add " + tab + " element '" + path + "'");
 		new DefaultTabItem(tab).activate();
-		new ShellTreeItem(path.split("/")).select();
+		// TODO: DefaultTreeItem
+		try {
+			new DefaultTreeItem(1, path.split("/")).select();
+		} catch (Exception e) {
+		}
+		try {
+			new DefaultTreeItem(3, path.split("/")).select();
+		} catch (Exception e) {
+		}
 		new PushButton("Add").click();
 		String lastItem = getLastItem(path);
 		new WaitUntil(new IsItemAdded(lastItem, tab), TimePeriod.NORMAL);

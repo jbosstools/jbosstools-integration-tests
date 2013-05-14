@@ -1,9 +1,11 @@
 package org.jboss.tools.teiid.reddeer;
 
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.ProjectItem;
-import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
 
 /**
  * This class represents a virtual database.
@@ -11,10 +13,12 @@ import org.jboss.reddeer.swt.impl.menu.ContextMenu;
  * @author apodhrad
  * 
  */
-public class VDB extends ProjectItem {
+public class VDB {
 
-	public VDB(TreeItem treeItem, Project project, String[] path) {
-		super(treeItem, project, path);
+	private ProjectItem projectItem;
+	
+	public VDB(ProjectItem projectItem) {
+		this.projectItem = projectItem;
 	}
 
 	/**
@@ -34,15 +38,17 @@ public class VDB extends ProjectItem {
 	 * Deployes this VDB
 	 */
 	public void deployVDB() {
-		select();
+		projectItem.select();
 		new ContextMenu("Modeling", "Deploy").select();
+		new WaitWhile(new IsInProgress(), TimePeriod.LONG);
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
 
 	/**
 	 * Executes this VDB
 	 */
 	public void executeVDB() {
-		select();
+		projectItem.select();
 		new ContextMenu("Modeling", "Execute VDB").select();
 	}
 

@@ -8,7 +8,7 @@ import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.WaitCondition;
 import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.reddeer.swt.impl.tree.ShellTree;
+import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 
 /**
  * Condition that specifies if a given item was added
@@ -41,7 +41,7 @@ public class IsItemAdded implements WaitCondition {
 		new DefaultTabItem(tab).activate();
 		List<String> result = new ArrayList<String>();
 		if (tab.equals("Request")) {
-			List<TreeItem> items = new ShellTree(1).getItems();
+			List<TreeItem> items = new DefaultTree(2).getItems();
 			for (TreeItem item : items) {
 				result.add(item.getText());
 			}

@@ -1,13 +1,13 @@
 package org.jboss.tools.teiid.reddeer.wizard;
 
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.swt.util.Bot;
 
 /**
  * Wizard for importing relational model from DDL
  * 
  * @author apodhrad
- *
+ * 
  */
 public class DDLImportWizard extends TeiidImportWizard {
 
@@ -45,9 +45,9 @@ public class DDLImportWizard extends TeiidImportWizard {
 		open();
 
 		new DefaultCombo(DDL_FILE).setText(ddlPath);
-		// new LabeledText(MODEL_FOLDER).setText(modelFolder);
-		new LabeledText(MODEL_NAME).setText(modelName);
-		// new DefaultCombo(MODEL_FOLDER).setText(modelFolder);
+		// TODO: LabeledText
+		// new LabeledText(MODEL_NAME).setText(modelName);
+		Bot.get().textWithLabel(MODEL_NAME).setText(modelName);
 
 		next();
 		finish();
