@@ -49,10 +49,11 @@
 			<id>soa</id>
 			<modules>
 				<module>org.jboss.tools.jbpm.ui.bot.test</module>
+				<module>org.jboss.tools.bpel.reddeer</module>
 				<module>org.jboss.tools.bpel.ui.bot.test</module>
 				<module>org.jboss.tools.esb.ui.bot.test</module>
 				<module>org.jboss.tools.teiid.reddeer</module>
-				<module>org.teiid.designer.ui.bot.test</module>
+				<module>org.jboss.tools.teiid.ui.bot.test</module>
 				<module>org.jboss.tools.modeshape.rest.ui.bot.test</module>
 				<module>org.jboss.tools.drools.ui.bot.test</module>
 				<module>org.jboss.tools.bpmn2.itests</module>

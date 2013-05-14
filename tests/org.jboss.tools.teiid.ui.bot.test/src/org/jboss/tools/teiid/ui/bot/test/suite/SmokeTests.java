@@ -1,9 +1,9 @@
-package org.teiid.designer.ui.bot.test.suite;
+package org.jboss.tools.teiid.ui.bot.test.suite;
 
+import org.jboss.tools.teiid.ui.bot.test.ImportWizardTest;
+import org.jboss.tools.teiid.ui.bot.test.ModelWizardTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
-import org.teiid.designer.ui.bot.test.ImportWizardTest;
-import org.teiid.designer.ui.bot.test.ModelWizardTest;
 
 /**
  * Test suite for smoke teiid bot tests

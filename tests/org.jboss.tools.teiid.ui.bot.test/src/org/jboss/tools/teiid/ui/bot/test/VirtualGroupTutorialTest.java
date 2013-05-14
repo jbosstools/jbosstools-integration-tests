@@ -1,4 +1,4 @@
-package org.teiid.designer.ui.bot.test;
+package org.jboss.tools.teiid.ui.bot.test;
 
 import java.util.Arrays;
 
@@ -23,12 +23,12 @@ import org.jboss.tools.teiid.reddeer.wizard.CreateMetadataModel;
 import org.jboss.tools.teiid.reddeer.wizard.CreateVDB;
 import org.jboss.tools.teiid.reddeer.wizard.ImportJDBCDatabaseWizard;
 import org.jboss.tools.teiid.reddeer.wizard.ModelProjectWizard;
+import org.jboss.tools.teiid.ui.bot.test.requirement.PerspectiveRequirement.Perspective;
+import org.jboss.tools.teiid.ui.bot.test.requirement.ServerRequirement.Server;
+import org.jboss.tools.teiid.ui.bot.test.requirement.ServerRequirement.State;
+import org.jboss.tools.teiid.ui.bot.test.requirement.ServerRequirement.Type;
 import org.junit.AfterClass;
 import org.junit.Test;
-import org.teiid.designer.ui.bot.test.requirement.PerspectiveRequirement.Perspective;
-import org.teiid.designer.ui.bot.test.requirement.ServerRequirement.Server;
-import org.teiid.designer.ui.bot.test.requirement.ServerRequirement.State;
-import org.teiid.designer.ui.bot.test.requirement.ServerRequirement.Type;
 
 @Perspective(name = "Teiid Designer")
 @Server(type = Type.ALL, state = State.RUNNING)

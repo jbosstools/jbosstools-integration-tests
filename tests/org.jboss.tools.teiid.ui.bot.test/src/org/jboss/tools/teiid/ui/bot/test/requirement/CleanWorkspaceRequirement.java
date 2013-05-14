@@ -1,4 +1,4 @@
-package org.teiid.designer.ui.bot.test.requirement;
+package org.jboss.tools.teiid.ui.bot.test.requirement;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -9,7 +9,7 @@ import java.util.List;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.junit.requirement.Requirement;
-import org.teiid.designer.ui.bot.test.requirement.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.tools.teiid.ui.bot.test.requirement.CleanWorkspaceRequirement.CleanWorkspace;
 
 /**
  * This requirement ensures, that all projects are deleted from workspace (aka.

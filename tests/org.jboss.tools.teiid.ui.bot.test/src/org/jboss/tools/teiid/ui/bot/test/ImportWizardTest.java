@@ -1,4 +1,4 @@
-package org.teiid.designer.ui.bot.test;
+package org.jboss.tools.teiid.ui.bot.test;
 
 import java.util.Arrays;
 
@@ -19,9 +19,9 @@ import org.jboss.tools.teiid.reddeer.wizard.TeiidImportWizard;
 import org.jboss.tools.teiid.reddeer.wizard.WsdlImportWizard;
 import org.jboss.tools.teiid.reddeer.wizard.WsdlProfileWizard;
 import org.jboss.tools.teiid.reddeer.wizard.XMLImportWizard;
+import org.jboss.tools.teiid.ui.bot.test.requirement.PerspectiveRequirement.Perspective;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.teiid.designer.ui.bot.test.requirement.PerspectiveRequirement.Perspective;
 
 /**
  * Tests for importing relational models from various sources

@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: org.teiid.designer.ui.bot.test
-Bundle-SymbolicName: org.teiid.designer.ui.bot.test;singleton:=true
+Bundle-Name: org.jboss.tools.teiid.ui.bot.test
+Bundle-SymbolicName: org.jboss.tools.teiid.ui.bot.test;singleton:=true
 Bundle-Version: 4.0.0.qualifier
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: 

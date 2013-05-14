@@ -1,4 +1,4 @@
-package org.teiid.designer.ui.bot.test.requirement;
+package org.jboss.tools.teiid.ui.bot.test.requirement;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 import org.jboss.reddeer.eclipse.ui.perspectives.AbstractPerspective;
 import org.jboss.reddeer.junit.requirement.Requirement;
 import org.jboss.reddeer.swt.util.Bot;
-import org.teiid.designer.ui.bot.test.requirement.PerspectiveRequirement.Perspective;
+import org.jboss.tools.teiid.ui.bot.test.requirement.PerspectiveRequirement.Perspective;
 
 /**
  * 
