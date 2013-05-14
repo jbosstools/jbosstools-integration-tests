@@ -1,11 +1,11 @@
-package org.teiid.designer.ui.bot.test.suite;
+package org.jboss.tools.teiid.ui.bot.test.suite;
 
+import org.jboss.tools.teiid.ui.bot.test.ImportWizardTest;
+import org.jboss.tools.teiid.ui.bot.test.ModelWizardTest;
+import org.jboss.tools.teiid.ui.bot.test.TopDownWsdlTest;
+import org.jboss.tools.teiid.ui.bot.test.VirtualGroupTutorialTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
-import org.teiid.designer.ui.bot.test.ImportWizardTest;
-import org.teiid.designer.ui.bot.test.ModelWizardTest;
-import org.teiid.designer.ui.bot.test.TopDownWsdlTest;
-import org.teiid.designer.ui.bot.test.VirtualGroupTutorialTest;
 
 /**
  * Test suite for all teiid bot tests
