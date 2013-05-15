@@ -1,0 +1,62 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.jboss.tools.integration-tests</groupId>
+    <artifactId>tests</artifactId>
+    <version>4.0.0-SNAPSHOT</version>
+  </parent>
+
+  <groupId>org.jboss.tools</groupId>
+  <artifactId>org.jboss.tools.drools.reddeer.test</artifactId>
+  <packaging>eclipse-test-plugin</packaging>
+
+  <properties>
+    <jbtis.site>http://download.jboss.org/jbosstools/updates/integration/juno/integration-stack/aggregate/4.0.0</jbtis.site>
+  </properties>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>tycho-surefire-plugin</artifactId>
+        <configuration>
+          <useUIThread>false</useUIThread>
+          <product>com.jboss.jbds.product</product>
+          <testSuite>org.jboss.tools.drools.reddeer.test</testSuite>
+          <testClass>org.jboss.tools.drools.reddeer.test.BrmsTestSuite</testClass>
+          <dependencies combine.children="append">
+            <!-- Drools plugins -->
+            <dependency>
+              <type>p2-installable-unit</type>
+              <artifactId>org.guvnor.tools.feature.feature.group</artifactId>
+            </dependency>
+            <dependency>
+              <type>p2-installable-unit</type>
+              <artifactId>org.drools.eclipse.feature.feature.group</artifactId>
+            </dependency>
+            <dependency>
+              <type>p2-installable-unit</type>
+              <artifactId>org.jbpm.eclipse.feature.feature.group</artifactId>
+            </dependency>
+            <dependency>
+              <type>p2-installable-unit</type>
+              <artifactId>org.jbpm.eclipse.task.feature.feature.group</artifactId>
+            </dependency>
+            <!-- RedDeer framework -->
+            <dependency>
+              <type>p2-installable-unit</type>
+              <artifactId>org.jboss.reddeer.feature.feature.group</artifactId>
+            </dependency>
+            <!-- Do we need AS plugin? -->
+            <dependency>
+              <type>p2-installable-unit</type>
+              <artifactId>org.jboss.ide.eclipse.as.feature.feature.group</artifactId>
+            </dependency>
+          </dependencies>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>
