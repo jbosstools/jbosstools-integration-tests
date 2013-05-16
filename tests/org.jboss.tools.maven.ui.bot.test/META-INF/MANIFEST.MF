@@ -8,7 +8,6 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.core.resources,
  org.eclipse.core.runtime,
  org.eclipse.m2e.core,
- org.jboss.tools.ui.bot.ext;bundle-version="[4.1.0,4.2.0)",
  org.junit,
  org.eclipse.swtbot.swt.finder,
  org.eclipse.swtbot.eclipse.finder,
@@ -30,7 +29,12 @@ Require-Bundle: org.eclipse.ui,
  org.jboss.reddeer.junit,
  org.jboss.reddeer.selenium,
  org.jboss.reddeer.swt,
- org.jboss.reddeer.workbench
+ org.jboss.reddeer.workbench,
+ org.eclipse.swtbot.forms.finder,
+ org.jboss.reddeer.jface,
+ org.jboss.reddeer.swt,
+ org.jboss.reddeer.swt,
+ org.jboss.reddeer.eclipse
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 

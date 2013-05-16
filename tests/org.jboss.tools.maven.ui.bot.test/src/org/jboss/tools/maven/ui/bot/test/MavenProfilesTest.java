@@ -11,24 +11,16 @@
 package org.jboss.tools.maven.ui.bot.test;
 
 import java.io.File;
-
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.jface.bindings.keys.ParseException;
-import org.eclipse.m2e.core.MavenPlugin;
-import org.eclipse.m2e.core.project.IMavenProjectFacade;
+import java.util.List;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
-import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.wait.TimePeriod;
-import org.jboss.reddeer.swt.wait.WaitUntil;
-import org.jboss.tools.maven.ui.bot.test.dialog.ImportMavenProjectWizard;
-import org.jboss.tools.ui.bot.ext.SWTUtilExt;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
+import org.jboss.tools.maven.ui.bot.test.dialog.maven.ImportMavenProjectWizard;
+import org.jboss.tools.maven.ui.bot.test.dialog.maven.JBossMavenIntegrationDialog;
+import org.jboss.tools.maven.ui.bot.test.dialog.maven.MavenProfilesDialog;
+import org.jboss.tools.maven.ui.bot.test.dialog.maven.MavenRepositoriesDialog;
+import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -39,98 +31,112 @@ import org.junit.Test;
 public class MavenProfilesTest extends AbstractMavenSWTBotTest {
 	
 	public static final String AUTOACTIVATED_PROFILE_IN_POM = "active-profile";
-	public static final String[] AUTOACTIVATED_PROFILES_IN_USER_SETTINGS = {"profile.from.settings.xml", "jboss"};
-	public static final String[] COMMON_PROFILES = {"common-profile"};
-	public static final String[] SIMPLE_JAR_ALL_PROFILES = {"inactive-profile", "common-profile", "active-profile"};
+	public static final String AUTOACTIVATED_PROFILE_IN_SETTINGS="auto.activated.settings";
+	public static final String PROFILE_IN_SETTINGS="profile.settings";
+	public static final String COMMON_PROFILE = "common-profile";
+	public static final String[] SIMPLE_JAR_ALL_PROFILES = {"inact-profile", "common-profile", "active-profile"};
 	
-	private SWTUtilExt botUtil= new SWTUtilExt(bot);
 	
 	@BeforeClass
-	public static void setup() {
+	public static void setup() throws IOException {
 		setPerspective("Java");
-	}
-	
-	//@Test
-	public void testOpenMavenProfiles() throws IOException, InterruptedException, CoreException, ParseException{
-		importMavenProject("projects/simple-jar/pom.xml");
-		testAutoActivatedProfiles();
-		PackageExplorer pexplorer = new PackageExplorer();
-		pexplorer.open();
-
-		//activate all profiles
-		pexplorer.getProject("simple-jar").select();
-		new ContextMenu("Maven","Select Maven Profiles...").select();
-		new WaitUntil(new ShellWithTextIsActive("Select Maven profiles"), TimePeriod.NORMAL);
-		new PushButton("Select All").click();
-		new PushButton("Activate").click();
-	    new PushButton("OK").click();
-	    testActivatedProfiles("simple-jar", SIMPLE_JAR_ALL_PROFILES);
-	    
-	    //disable all profiles
-		pexplorer.getProject("simple-jar").select();
-		new ContextMenu("Maven","Select Maven Profiles...").select();
-		new WaitUntil(new ShellWithTextIsActive("Select Maven profiles"), TimePeriod.NORMAL);
-		new PushButton("Deselect all").click();
-		new PushButton("Deactivate").click();
-	    new PushButton("OK").click();
-	    testActivatedProfiles("simple-jar", null);
-	    pexplorer.getProject("simple-jar").delete(false);
-	}
-	
-	@Test
-	public void testOpenMultipleMavenProfiles() throws IOException, InterruptedException, CoreException, ParseException{
+		JBossMavenIntegrationDialog jm = new JBossMavenIntegrationDialog();
+		jm.open();
+		MavenRepositoriesDialog mr = jm.modifyRepositories();
+		boolean deleted = mr.removeAllRepos();
+		if(deleted){
+			mr.confirm();
+		} else {
+			mr.cancel();
+		}
+		jm.ok();
 		importMavenProject("projects/simple-jar/pom.xml");
 		importMavenProject("projects/simple-jar1/pom.xml");
 		importMavenProject("projects/simple-jar2/pom.xml");
-		PackageExplorer pexplorer = new PackageExplorer();
-		pexplorer.open();
-		pexplorer.selectProjects("simple-jar","simple-jar1","simple-jar2");
-		new ContextMenu("Maven","Select Maven Profiles...").select();
-		new WaitUntil(new ShellWithTextIsActive("Select Maven profiles"), TimePeriod.NORMAL);
-		new PushButton("Select All").click();
-		new PushButton("Activate").click();
-	    new PushButton("OK").click();
-	    botUtil.waitForAll();
-		testActivatedProfiles("simple-jar", COMMON_PROFILES);
-		testActivatedProfiles("simple-jar1", COMMON_PROFILES);
-		testActivatedProfiles("simple-jar2", COMMON_PROFILES);
-		pexplorer.getProject("simple-jar").delete(false);
-		pexplorer.getProject("simple-jar1").delete(false);
-		pexplorer.getProject("simple-jar2").delete(false);
 	}
 	
-	
-	private void testActivatedProfiles(String projectName, String[] expectedProfiles) {
-		Set<String> setOfExpectedProfiles =new HashSet<String>();
-		if(expectedProfiles != null){    	
-	    	setOfExpectedProfiles = new HashSet<String>(Arrays.asList(expectedProfiles));
-	    	for(String act: AUTOACTIVATED_PROFILES_IN_USER_SETTINGS){
-	    		setOfExpectedProfiles.add(act);
-	    	}
-	    }
-	    IMavenProjectFacade facade = MavenPlugin.getMavenProjectRegistry().getMavenProject("org.jboss.tools.maven.tests", projectName, "1.0.0-SNAPSHOT");
-		assertNotNull("facade is null",facade);
-		System.out.println(setOfExpectedProfiles);
-		System.out.println();
-		Set<String> setOfFacadeProfiles = new HashSet<String>(MavenPlugin.getProjectConfigurationManager().getResolverConfiguration(facade.getProject()).getActiveProfileList());
-		System.out.println(setOfFacadeProfiles);
-		for(String s: setOfExpectedProfiles){
-	    	   assertTrue(s+" profile is not activated",setOfFacadeProfiles.contains(s));	
-	    }
+	@AfterClass
+	public static void clean(){
+		deleteProjects(false, false);
 	}
 	
-	private void testAutoActivatedProfiles(){
-		IMavenProjectFacade facade = MavenPlugin.getMavenProjectRegistry().getMavenProject("org.jboss.tools.maven.tests", "simple-jar", "1.0.0-SNAPSHOT");
-	    assertNotNull("facade is null",facade);
-	    assertEquals("Auto Activated profiles from pom.xml doesn't match", AUTOACTIVATED_PROFILE_IN_POM, facade.getMavenProject().getActiveProfiles().get(0).getId());
-	    assertEquals("Auto Activated profiles from settings.xml doesn't match", AUTOACTIVATED_PROFILES_IN_USER_SETTINGS[0], facade.getMavenProject().getActiveProfiles().get(1).getId());
-	    assertEquals("Auto Activated profiles from settings.xml doesn't match", AUTOACTIVATED_PROFILES_IN_USER_SETTINGS[1], facade.getMavenProject().getActiveProfiles().get(2).getId());
+	@After
+	public void cleanProfiles(){
+		PackageExplorer pe = new PackageExplorer();
+		pe.open();
+		for(Project p: pe.getProjects()){
+			MavenProfilesDialog mp = new MavenProfilesDialog(p.getName());
+			mp.open();
+			mp.deselectAllProfiles();
+			mp.ok();
+		}
 	}
 	
-	private void importMavenProject(String pomPath) throws IOException, InterruptedException{
+	@Test
+	public void testAutoActivatedProfiles() throws IOException{
+		MavenProfilesDialog mp = new MavenProfilesDialog("simple-jar");
+		mp.open();
+		List<String> profiles = mp.getAllProfiles();
+		for(String p: profiles){
+			if(p.contains(AUTOACTIVATED_PROFILE_IN_POM) || p.contains(AUTOACTIVATED_PROFILE_IN_SETTINGS)){
+				if(!p.contains("(auto activated)")){
+					fail("profile "+p+" is not autoactivated");
+				}
+			}
+		}
+		mp.cancel();
+		buildProject("simple-jar", "..Maven build...", "clean verify",true);
+	}
+	@Test
+	public void activateAllProfiles() throws IOException{
+		MavenProfilesDialog mp = new MavenProfilesDialog("simple-jar");
+		mp.open();
+		mp.activateAllProfiles();
+		String profilesText = mp.getActiveProfilesText();
+		mp.ok();
+		
+		String[] profiles = profilesText.split(", ");
+		assertTrue("not all profiles are activated",profiles.length == 5);
+		for(String p:profiles){
+			if(! (p.equals(AUTOACTIVATED_PROFILE_IN_SETTINGS) || p.equals(SIMPLE_JAR_ALL_PROFILES[0]) || p.equals(SIMPLE_JAR_ALL_PROFILES[1]) ||
+					p.equals(SIMPLE_JAR_ALL_PROFILES[2]) || p.equals(PROFILE_IN_SETTINGS))){
+				fail("not all profiles are activated");
+			}
+		}
+		
+	}
+	@Test
+	public void activateProfile() throws IOException{
+		MavenProfilesDialog mp = new MavenProfilesDialog("simple-jar");
+		mp.open();
+		mp.activateProfile(SIMPLE_JAR_ALL_PROFILES[0]);
+		String profilesText = mp.getActiveProfilesText();
+		mp.ok();
+		String[] profiles = profilesText.split(", ");
+		assertTrue("profile "+SIMPLE_JAR_ALL_PROFILES[0]+" is not activated",profiles.length == 1);
+		if(!profiles[0].equals(SIMPLE_JAR_ALL_PROFILES[0])){
+			fail("profile "+SIMPLE_JAR_ALL_PROFILES[0]+" is not activated");
+		}
+	}
+	
+	@Test
+	public void deactivateProfile() throws IOException{
+		MavenProfilesDialog mp = new MavenProfilesDialog("simple-jar");
+		mp.open();
+		mp.deactivateProfile(AUTOACTIVATED_PROFILE_IN_POM);
+		String profilesText = mp.getActiveProfilesText();
+		mp.ok();
+		String[] profiles = profilesText.split(", ");
+		assertTrue("profile "+AUTOACTIVATED_PROFILE_IN_POM+" is still activated",profiles.length == 1);
+		if(!profiles[0].equals("!"+AUTOACTIVATED_PROFILE_IN_POM)){
+			fail("profile "+AUTOACTIVATED_PROFILE_IN_POM+" is still activated");
+		}
+		buildProject("simple-jar", "..Maven build...", "clean verify",false);
+	}
+	
+	private static void importMavenProject(String pomPath) throws IOException{
 		ImportMavenProjectWizard importWizard = new ImportMavenProjectWizard();
 		importWizard.open();
 		importWizard.importProject((new File(pomPath)).getParentFile().getCanonicalPath());
-		botUtil.waitForAll();
 	}
 }
