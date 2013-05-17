@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <launchConfiguration type="org.eclipse.m2e.Maven2LaunchConfigurationType">
 <booleanAttribute key="M2_DEBUG_OUTPUT" value="false"/>
-<stringAttribute key="M2_GOALS" value="clean process-resources"/>
+<stringAttribute key="M2_GOALS" value="clean dependency:copy process-resources "/>
 <booleanAttribute key="M2_NON_RECURSIVE" value="false"/>
 <booleanAttribute key="M2_OFFLINE" value="false"/>
 <stringAttribute key="M2_PROFILES" value=""/>
@@ -14,9 +14,9 @@
 <listEntry value="jbosstools.test.jboss-seam-2.0.home=${folder_prompt:Seam 2.0 installation directory}"/>
 <listEntry value="jbosstools.test.jboss-portlet-bridge.home=${folder_prompt:JBoss Portlet Bridge installation directory}"/>
 </listAttribute>
-<stringAttribute key="M2_RUNTIME" value="/home/ljelinko/programs/apache-maven-3.0.3"/>
+<stringAttribute key="M2_RUNTIME" value="EMBEDDED"/>
 <booleanAttribute key="M2_SKIP_TESTS" value="false"/>
 <booleanAttribute key="M2_UPDATE_SNAPSHOTS" value="false"/>
 <booleanAttribute key="M2_WORKSPACE_RESOLUTION" value="false"/>
-<stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="${workspace_loc}/org.jboss.tools.portlet.ui.bot.test/launchers/prepare_workspace"/>
+<stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="${workspace_loc:/org.jboss.tools.portlet.ui.bot.test/launchers/prepare_workspace}"/>
 </launchConfiguration>
