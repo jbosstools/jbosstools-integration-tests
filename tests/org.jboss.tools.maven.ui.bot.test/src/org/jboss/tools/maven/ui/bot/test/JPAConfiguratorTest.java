@@ -7,31 +7,43 @@
  *
  * Contributors:
  *     Red Hat, Inc. - initial API and implementation
- ******************************************************************************/ 
+ ******************************************************************************/
 package org.jboss.tools.maven.ui.bot.test;
 
-import org.jboss.tools.ui.bot.ext.SWTUtilExt;
+import java.io.UnsupportedEncodingException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+
+import org.eclipse.core.runtime.CoreException;
+import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
 /**
  * @author Rastislav Wagner
  * 
  */
-public class JPAConfiguratorTest extends AbstractConfiguratorsTest{
-
-	private SWTUtilExt botUtil= new SWTUtilExt(bot);
+public class JPAConfiguratorTest extends AbstractConfiguratorsTest {
 	
+	private String projectNameNoRuntime = PROJECT_NAME_JPA + "_noRuntime";
+
 	@BeforeClass
-	public static void beforeClass(){
+	public static void before() {
 		setPerspective("Java EE");
 	}
 	
+	@After
+	public void clean(){
+		deleteProjects(true, true);
+	}
+	
 	@Test
-	public void testJPAConfigurator() throws Exception{
-		createMavenizedDynamicWebProject(PROJECT_NAME_JPA+"_noRuntime", false);
-		addPersistence(PROJECT_NAME_JPA+"_noRuntime");
-		updateConf(botUtil,PROJECT_NAME_JPA+"_noRuntime");
-		assertTrue("Project "+PROJECT_NAME_JPA+"_noRuntime"+" with persistence.xml file doesn't have "+JPA_NATURE+" nature.",hasNature(PROJECT_NAME_JPA+"_noRuntime", JPA_NATURE));
-		clean();
+	public void testJPAConfigurator() throws UnsupportedEncodingException, ParserConfigurationException, TransformerException, CoreException{
+		createWebProject(projectNameNoRuntime, null, false);
+		convertToMavenProject(projectNameNoRuntime, "war", false);
+		addPersistence(projectNameNoRuntime);
+		updateConf(projectNameNoRuntime);
+		assertTrue("Project " + projectNameNoRuntime+ " with persistence.xml file doesn't have " + JPA_NATURE+ " nature.",hasNature(projectNameNoRuntime, JPA_NATURE, null));
 	}
 }

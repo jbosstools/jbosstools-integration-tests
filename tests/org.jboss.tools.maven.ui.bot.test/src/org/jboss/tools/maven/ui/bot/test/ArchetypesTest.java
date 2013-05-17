@@ -10,23 +10,13 @@
  ******************************************************************************/ 
 package org.jboss.tools.maven.ui.bot.test;
 
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
-import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.menu.ShellMenu;
-import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.reddeer.swt.impl.tree.ShellTreeItem;
-import org.jboss.reddeer.swt.wait.TimePeriod;
-import org.jboss.reddeer.swt.wait.WaitUntil;
-import org.jboss.reddeer.workbench.view.impl.WorkbenchView;
-import org.jboss.tools.maven.ui.bot.test.utils.TableHasRows;
-import org.jboss.tools.ui.bot.ext.SWTBotExt;
-import org.jboss.tools.ui.bot.ext.SWTUtilExt;
+import org.jboss.tools.maven.ui.bot.test.dialog.maven.JBossMavenIntegrationDialog;
+import org.jboss.tools.maven.ui.bot.test.dialog.maven.MavenProjectWizardDialog;
+import org.jboss.tools.maven.ui.bot.test.dialog.maven.MavenProjectWizardSecondPage;
+import org.jboss.tools.maven.ui.bot.test.dialog.maven.MavenProjectWizardThirdPage;
+import org.jboss.tools.maven.ui.bot.test.dialog.maven.MavenRepositoriesDialog;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 /**
@@ -35,82 +25,59 @@ import org.junit.Test;
  */
 public class ArchetypesTest extends AbstractMavenSWTBotTest{
 
-	public static final String REPO_URL = "http://repo.maven.apache.org/maven2";
-	public static final String NEXUS_URL = "https://repository.jboss.org/nexus/content/repositories/releases/";
-
-	private SWTUtilExt botUtil = new SWTUtilExt(bot);
 
 	@BeforeClass
-	public static void setup() throws InterruptedException, CoreException{
+	public static void setup(){
 		setPerspective("Java");
-		updateRepositories();
+		JBossMavenIntegrationDialog jm = new JBossMavenIntegrationDialog();
+		jm.open();
+		MavenRepositoriesDialog mr = jm.modifyRepositories();
+		mr.removeAllRepos();
+		mr.addRepository(MavenRepositories.JBOSS_REPO, true);
+		mr.confirm();
+		jm.ok();
 		
 	}
-
-	public static void updateRepositories() throws InterruptedException, CoreException {
-		new WorkbenchView("Maven Repositories").open();
-		Thread.sleep(5000);
-		//new WaitUntil(new TreeCanBeExpanded(new DefaultTreeItem("Global Repositories")),TimePeriod.NORMAL);
-		new ShellTreeItem("Global Repositories","central ("+REPO_URL+")").select();
-		new ContextMenu("Rebuild Index").select();
-		new WaitUntil(new ShellWithTextIsActive("Rebuild Index"),TimePeriod.NORMAL);
-		new PushButton("OK").click();
-		SWTUtilExt botUtil = new SWTUtilExt(new SWTBotExt());
-		botUtil.waitForAll(Long.MAX_VALUE);
-		new ShellTreeItem("Global Repositories","jboss ("+NEXUS_URL+")").select();
-		new ContextMenu("Rebuild Index").select();
-		new PushButton("OK").click();
-		botUtil.waitForAll(Long.MAX_VALUE);
-		new ShellTreeItem("Global Repositories","jboss ("+NEXUS_URL+")").select();
-		new ContextMenu("Update Index").select();
-		botUtil.waitForAll(Long.MAX_VALUE);
+	
+	@AfterClass
+	public static void clean(){
+		afterClass();
+		JBossMavenIntegrationDialog jm = new JBossMavenIntegrationDialog();
+		jm.open();
+		MavenRepositoriesDialog mr = jm.modifyRepositories();
+		mr.removeAllRepos();
+		mr.confirm();
+		jm.ok();
 	}
 	
 	
 	@Test
-	public void createSimpleJSFProjectArchetype() throws Exception {
-		String projectName = "JsfQuickstart";
-		createSimpleMavenProjectArchetype(projectName,"maven-archetype-jsfwebapp", "Nexus Indexer");
-		//IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
-		//assertNoErrors(project);
+	public void createSimpleJSFProjectArchetype() throws CoreException{
+		String projectName= "JsfQuickstart";
+		createArchetype(projectName, "Nexus Indexer", "maven-archetype-jsfwebapp");
 		assertTrue(isMavenProject(projectName));
-		buildProject(projectName, "5 Maven build...", "war",""); //version is 1.0.0
+		buildProject(projectName, "..Maven build...","clean package",true); //version is 1.0.0
+		checkWebTarget(projectName, projectName);
 	}
 	
-	@SuppressWarnings("restriction")
 	@Test
-	public void createSimpleJarProjectArchetype() throws Exception {
-		String projectName = "ArchetypeQuickstart";
-		createSimpleMavenProjectArchetype(projectName,"maven-archetype-quickstart", "Internal");
-		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
-		assertNoErrors(project);
+	public void createSimpleJarProjectArchetype() throws CoreException{
+		String projectName= "ArchetypeQuickstart";
+		createArchetype(projectName, "Internal", "maven-archetype-quickstart");
+		assertNoErrors(projectName);
 		assertTrue(isMavenProject(projectName));
-		buildProject(projectName, "4 Maven build...", "jar","-0.0.1-SNAPSHOT");
+		buildProject(projectName, "..Maven build...","clean package",true); //version is 1.0.0
 	}
 	
-	private void createSimpleMavenProjectArchetype(String projectName,String projectType, String catalog) throws InterruptedException,CoreException {
-		new ShellMenu("File","Menu","Other...").select();
-		new WaitUntil(new ShellWithTextIsActive("New"),TimePeriod.NORMAL);
-		new ShellTreeItem("Maven","Maven Project").select();
-		new PushButton("Next >").click();
-		new CheckBox("Create a simple project (skip archetype selection)").toggle(true);
-		new PushButton("Next >").click();
-
-		Thread.sleep(2000);
-		new DefaultCombo(0).setSelection(catalog);
-		botUtil.waitForAll();
-		new WaitUntil(new TableHasRows(new DefaultTable()),TimePeriod.LONG);
-		Thread.sleep(10000);
-		new DefaultTable().select(projectType);
-		//int index = botExt.table(0).indexOf(projectType, "Artifact Id");
-		//if (index == -1) {
-		//	fail(projectType + " not found");
-		//}
-		//shell.table(0).select(index);
-		new PushButton("Next >").click();
-		new DefaultCombo("Group Id:").setText(projectName);
-		new DefaultCombo("Artifact Id:").setText(projectName);
-		new PushButton("Finish").click();
-		botUtil.waitForAll();
+	private void createArchetype(String name, String catalog, String type){
+		MavenProjectWizardDialog md = new MavenProjectWizardDialog();
+		md.open();
+		md.selectPage(2);
+		MavenProjectWizardSecondPage fp = (MavenProjectWizardSecondPage)md.getWizardPage();
+		fp.selectArchetype(catalog, type);
+		md.selectPage(3);
+		MavenProjectWizardThirdPage tp = (MavenProjectWizardThirdPage)md.getWizardPage();
+		tp.setGAV(name, name, null);
+		md.finish();
 	}
 }

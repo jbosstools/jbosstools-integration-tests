@@ -1,7 +1,6 @@
 package org.jboss.tools.maven.ui.bot.test.dialog;
 
 import org.jboss.reddeer.eclipse.jface.wizard.NewWizardDialog;
-import org.jboss.reddeer.eclipse.jface.wizard.WizardPage;
 
 public class DynamicWebProjectWizard extends NewWizardDialog{
 
@@ -10,12 +9,8 @@ public class DynamicWebProjectWizard extends NewWizardDialog{
 	
 	public DynamicWebProjectWizard(){
 		super(CATEGORY,NAME);
-	}
-	
-	@Override
-	public WizardPage getFirstPage() {
-		// TODO Auto-generated method stub
-		return null;
+		addWizardPage(new DynamicWebProjectFirstPage(), 1);
+		addWizardPage(new DynamicWebProjectThirdPage(), 3);
 	}
 
 }

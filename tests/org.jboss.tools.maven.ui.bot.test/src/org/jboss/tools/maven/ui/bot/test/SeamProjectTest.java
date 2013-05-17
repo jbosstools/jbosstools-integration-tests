@@ -15,7 +15,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Properties;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.datatools.connectivity.ConnectionProfileConstants;
 import org.eclipse.datatools.connectivity.ConnectionProfileException;
@@ -28,19 +27,14 @@ import org.eclipse.datatools.connectivity.drivers.IDriverMgmtConstants;
 import org.eclipse.datatools.connectivity.drivers.IPropertySet;
 import org.eclipse.datatools.connectivity.drivers.PropertySetImpl;
 import org.eclipse.datatools.connectivity.drivers.models.TemplateDescriptor;
-import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.menu.ShellMenu;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.impl.tree.ShellTreeItem;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
-import org.jboss.tools.seam.core.project.facet.SeamRuntime;
-import org.jboss.tools.seam.core.project.facet.SeamRuntimeManager;
-import org.jboss.tools.seam.core.project.facet.SeamVersion;
-import org.jboss.tools.ui.bot.ext.SWTUtilExt;
+import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.tools.maven.ui.bot.test.dialog.seam.SeamPreferencePage;
+import org.jboss.tools.maven.ui.bot.test.dialog.seam.SeamProjectDialog;
+import org.jboss.tools.maven.ui.bot.test.dialog.seam.SeamProjectFifthPage;
+import org.jboss.tools.maven.ui.bot.test.dialog.seam.SeamProjectFirstPage;
+import org.jboss.tools.maven.ui.bot.test.utils.ProjectHasErrors;
 import org.junit.BeforeClass;
 import org.junit.Test;
 /**
@@ -51,11 +45,12 @@ public class SeamProjectTest extends AbstractMavenSWTBotTest {
 
 	public static final String SEAM_WEB_PROJECT = "seamWeb";
 	public static final String SEAM_EAR_PROJECT = "seamEar";
-	public static final String JBOSS_AS_7_1 = System.getProperty("jbosstools.test.jboss.home.7.1");
 	public static final String SEAM_2_3 = System.getProperty("jbosstools.test.seam.2.3.0.home");
 	public static final String SEAM_2_3_NAME = "jboss-seam-2.3.0";
 	public static final String SEAM_2_2 = System.getProperty("jbosstools.test.seam.2.2.0.home");
 	public static final String SEAM_2_2_NAME = "jboss-seam-2.2.0";
+	public static final String SEAM_2_1 = System.getProperty("jbosstools.test.seam.2.1.0.home");
+	public static final String SEAM_2_1_NAME = "jboss-seam-2.1.0";
 	public static final String CONNECTION_PROFILE_NAME = "DefaultDS";
 	public static final String HSQL_DRIVER_DEFINITION_ID ="DriverDefn.Hypersonic DB";
 	public static final String HSQL_DRIVER_NAME ="Hypersonic DB";
@@ -66,94 +61,68 @@ public class SeamProjectTest extends AbstractMavenSWTBotTest {
 	public static final String CURRENT_SEAM_2_3 = "2.3.0.Final";
 	public static final String CURRENT_SEAM_2_2 ="2.2.2.Final";
 	
-			
-	private SWTUtilExt botUtil = new SWTUtilExt(bot);
+	public static final String ACCEPTED_ERROR_TYPE = "Maven Project Build Lifecycle Mapping Problem";
+	
+	public static final String SEAM23_NAME="Seam2.3";
+	public static final String SEAM22_NAME="Seam2.2";
 
 	@BeforeClass
-	public static void setup() {
+	public static void setup() throws ConnectionProfileException, IOException {
 		setPerspective("Seam");
+		SeamPreferencePage sp = new SeamPreferencePage();
+		sp.open();
+		sp.addRuntime(SEAM23_NAME, SEAM_2_3, "2.3");
+		sp.addRuntime(SEAM22_NAME, SEAM_2_2, "2.2");
+		sp.ok();
+		createDriver(JBOSS_AS_7_1,"HSQLDB_DRIVER_LOCATION");
 	}
 	
 	@Test
-	public void createSeam23WebProjectTest() throws InterruptedException, ConnectionProfileException, IOException, CoreException{
-		createSeamProject(SEAM_WEB_PROJECT,"2.3", "WAR", "Disable Library Configuration");
-		//checkErrors(); TODO QuickFix Project
-		deleteProjects(true);
+	public void createSeam23WebProjectTest(){
+		createSeamProject(SEAM_WEB_PROJECT+"23", SEAM23_NAME, "2.3", false);
+		new WaitUntil(new ProjectHasErrors(SEAM_WEB_PROJECT+"23", null), TimePeriod.LONG);
+		deleteProjects(true,false);
 	}
 	
 	@Test
-	public void createSeam23EarProjectTest() throws InterruptedException, ConnectionProfileException, IOException, CoreException{
-		createSeamProject(SEAM_EAR_PROJECT,"2.3", "EAR", "Disable Library Configuration");
-		//checkErrors(); TODO QuickFix Project
-		deleteProjects(true);
+	public void createSeam23EarProjectTest(){
+		createSeamProject(SEAM_EAR_PROJECT+"23", SEAM23_NAME, "2.3", true);
+		new WaitUntil(new ProjectHasErrors(SEAM_EAR_PROJECT+"23", null), TimePeriod.LONG);
+		deleteProjects(true,false);
 	}
 	
 	@Test
-	public void createSeam22WebProjectTest() throws InterruptedException, ConnectionProfileException, IOException, CoreException{
-		createSeamProject(SEAM_WEB_PROJECT,"2.2", "WAR", "Disable Library Configuration");
-		//checkErrors();
-		deleteProjects(true);
-	}
-	
-	@Test
-	public void createSeam22EarProjectTest() throws InterruptedException, ConnectionProfileException, IOException, CoreException{
-		createSeamProject(SEAM_EAR_PROJECT,"2.2", "EAR", "Disable Library Configuration");
-		//checkErrors();
-		deleteProjects(true);
-	}
-	
-	private void createSeamProject(String name, String version, String type, String JSFLibrary) throws InterruptedException, ConnectionProfileException, IOException, CoreException {
-		createDriver(JBOSS_AS_7_1, HSQLDB_DRIVER_LOCATION);
-		if(version.equals("2.3")){
-			createSeamRuntime(SEAM_2_3_NAME, SEAM_2_3, SeamVersion.SEAM_2_3);
-		} else if(version.equals("2.2")){
-			createSeamRuntime(SEAM_2_2_NAME, SEAM_2_2, SeamVersion.SEAM_2_2);
-		}
-		new ShellMenu("File","New","Seam Web Project").select();
-		new WaitUntil(new ShellWithTextIsActive("New Seam Project"), TimePeriod.NORMAL);
-		new LabeledText("Project name:").setText(name);
-		new PushButton("New Runtime...").click();
-		new WaitUntil(new ShellWithTextIsActive("New Server Runtime Environment"), TimePeriod.NORMAL);
-		new ShellTreeItem("JBoss Community", "JBoss 7.1 Runtime").select();
-		new PushButton("Next >").click();
-		new LabeledText("Home Directory").setText(JBOSS_AS_7_1);
-		new PushButton("Finish").click();
-		new PushButton("New...").click();
-		new WaitUntil(new ShellWithTextIsActive("New Server"), TimePeriod.NORMAL);
-		new ShellTreeItem("JBoss Community", "JBoss AS 7.1").select();
-		new PushButton("Finish").click();
-		new PushButton("Modify...").click();
-		new WaitUntil(new ShellWithTextIsActive("Project Facets"), TimePeriod.NORMAL);
-		new ShellTreeItem("Seam").select();
-		new ContextMenu("Change Version...").select();
-		new WaitUntil(new ShellWithTextIsActive("Change Version"), TimePeriod.NORMAL);
-		new DefaultCombo("Version:").setSelection(version);
-		new PushButton("OK").click();
-		new ShellTreeItem("JBoss Maven Integration").setChecked(true);
-		new PushButton("OK").click();
-		new PushButton("Next >").click();
-		new PushButton("Next >").click();
-		new PushButton("Next >").click();
-		assertTrue("Seam project doesn't have war packaging set by default", new DefaultCombo("Packaging:").getSelection().equals("war"));
-		String seamVersion = new LabeledText("Seam Maven version:").getText();
-		if(version.equals("2.3")){
-			assertTrue(version+ " Seam project has " + seamVersion + " set by default", seamVersion.equals(CURRENT_SEAM_2_3));
-		} else if(version.equals("2.2")){
-			assertTrue(version+ " Seam project has " + seamVersion + " set by default", seamVersion.equals(CURRENT_SEAM_2_2));
-		}
-		new PushButton("Next >").click();
-		new DefaultCombo("Type:").setSelection("Disable Library Configuration");
-		new PushButton("Next >").click();
-		if(version.equals("2.3")){
-			new DefaultCombo(0).setSelection(SEAM_2_3_NAME);
-		} else if(version.equals("2.2")){
-			new DefaultCombo(0).setSelection(SEAM_2_2_NAME);
-		}
-		bot.radio(type).click();
-		new PushButton("Finish").click();
-		botUtil.waitForAll(Long.MAX_VALUE);
+	public void createSeam22WebProjectTest(){
+		createSeamProject(SEAM_WEB_PROJECT+"22", SEAM22_NAME, "2.2",false);
+		new WaitWhile(new ProjectHasErrors(SEAM_WEB_PROJECT+"22", ACCEPTED_ERROR_TYPE), TimePeriod.LONG);
+		deleteProjects(true,true);
 	}
 
+	@Test
+	public void createSeam22EarProjectTest(){
+		createSeamProject(SEAM_EAR_PROJECT+"22", SEAM22_NAME, "2.2",true);
+		new WaitWhile(new ProjectHasErrors(SEAM_EAR_PROJECT+"22", ACCEPTED_ERROR_TYPE), TimePeriod.LONG);
+		deleteProjects(true,true);
+	}
+
+	private void createSeamProject(String projectName, String seamRuntime, String seamVersion, boolean EAR){
+		SeamProjectDialog sd = new SeamProjectDialog();
+		sd.addWizardPage(new SeamProjectFifthPage(), 6);
+		sd.open();
+		sd.selectPage(1);
+		SeamProjectFirstPage sf = (SeamProjectFirstPage)sd.getWizardPage();
+		sf.setProjectName(projectName);
+		sf.setRuntime(runtimeName);
+		sf.setServer(serverName);
+		sf.activateFacet("Seam", seamVersion);
+		sf.activateFacet("JBoss Maven Integration", null);
+		sd.selectPage(6);
+		SeamProjectFifthPage sfp = (SeamProjectFifthPage)sd.getWizardPage();
+		sfp.setSeamRuntime(seamRuntime);
+		sfp.toggleEAR(EAR);
+		sd.finish();
+	}
+	
 	protected static void createDriver(String jbossASLocation,String driverLocation) throws ConnectionProfileException,IOException {
 		if (ProfileManager.getInstance().getProfileByName(CONNECTION_PROFILE_NAME) != null) {
 			return;
@@ -205,25 +174,6 @@ public class SeamProjectTest extends AbstractMavenSWTBotTest {
 			ProfileManager.getInstance().createProfile(CONNECTION_PROFILE_NAME,"The JBoss AS Hypersonic embedded database", HSQL_PROFILE_ID, props, "", false);
 		}
 
-	}
-	
-
-	protected static void createSeamRuntime(String name, String seamPath, SeamVersion seamVersion) {
-		SeamRuntime seamRuntime = SeamRuntimeManager.getInstance().findRuntimeByName(name);
-		if (seamRuntime != null) {
-			return;
-		}
-		File seamFolder = new File(seamPath);
-		if(seamFolder.exists() && seamFolder.isDirectory()) {
-			SeamRuntime rt = new SeamRuntime();
-			rt.setHomeDir(seamPath);
-			rt.setName(name);
-			rt.setDefault(true);
-			rt.setVersion(seamVersion);
-			SeamRuntimeManager.getInstance().addRuntime(rt);
-		} else {
-			fail("Invalid seam runtime.");
-		}
 	}
 	
 }

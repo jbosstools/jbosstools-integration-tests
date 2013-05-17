@@ -13,6 +13,7 @@ package org.jboss.tools.maven.ui.bot.test;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.io.UnsupportedEncodingException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -27,19 +28,20 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
+import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
-import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.impl.tree.ShellTreeItem;
+import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
-import org.jboss.tools.ui.bot.ext.SWTUtilExt;
+import org.jboss.tools.maven.ui.bot.test.dialog.DynamicWebProjectFirstPage;
+import org.jboss.tools.maven.ui.bot.test.dialog.DynamicWebProjectThirdPage;
+import org.jboss.tools.maven.ui.bot.test.dialog.DynamicWebProjectWizard;
+import org.jboss.tools.maven.ui.bot.test.dialog.EJBProjectDialog;
+import org.jboss.tools.maven.ui.bot.test.dialog.EJBProjectFirstPage;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
@@ -65,22 +67,21 @@ public abstract class AbstractConfiguratorsTest extends AbstractMavenSWTBotTest{
 	public static final String JBOSS7_AS_HOME=System.getProperty("jbosstools.test.jboss.home.7.1");
 //jpa config, gwt, hibernate
 	
-	private SWTUtilExt botUtil= new SWTUtilExt(bot);
 
 	
-	public void addPersistence(String projectName) throws ParserConfigurationException, SAXException, IOException, CoreException, TransformerException, InterruptedException {
+	public void addPersistence(String projectName) throws ParserConfigurationException, TransformerException, UnsupportedEncodingException, CoreException{
 		PackageExplorer pexplorer = new PackageExplorer();
 		pexplorer.open();
 		pexplorer.getProject(projectName).select();
 		new ContextMenu("New","Other...").select();
 		new WaitUntil(new ShellWithTextIsActive("New"),TimePeriod.NORMAL);
-		new ShellTreeItem("XML","XML File").select();
+		new DefaultTreeItem("XML","XML File").select();
 		new PushButton("Next >").click();
 		new LabeledText("Enter or select the parent folder:").setText(projectName+"/src/META-INF");
 		new LabeledText("File name:").setText("persistence.xml");
 		new PushButton("Finish").click();
-		botUtil.waitForAll(Long.MAX_VALUE);
-		Thread.sleep(1000);
+		new WaitWhile(new ShellWithTextIsActive("New XML File"),TimePeriod.NORMAL);
+		
 		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 	    DocumentBuilder docBuilder = factory.newDocumentBuilder();
@@ -106,97 +107,54 @@ public abstract class AbstractConfiguratorsTest extends AbstractMavenSWTBotTest{
 		DOMSource source = new DOMSource(docPer);
 		trans.transform(source, result);
 		project.getProject().getFolder("src").getFolder("META-INF").getFile("persistence.xml").setContents(new ByteArrayInputStream(xmlAsWriter.toString().getBytes("UTF-8")), 0, null);
-		botUtil.waitForAll(Long.MAX_VALUE);
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
 
-	public void createMavenizedDynamicWebProject(String projectName, boolean runtime) throws Exception{
-		new ShellMenu("File","New","Other...").select();
-		new WaitUntil(new ShellWithTextIsActive("New"),TimePeriod.NORMAL);
-		new ShellTreeItem("Web","Dynamic Web Project").select();
-		new PushButton("Next >").click();
-		new WaitUntil(new ShellWithTextIsActive("New Dynamic Web Project"),TimePeriod.NORMAL);;
-		new LabeledText("Project name:").setText(projectName);
-
-		if(runtime){
-			new PushButton("New Runtime...").click();
-			new WaitUntil(new ShellWithTextIsActive("New Server Runtime Environment"),TimePeriod.NORMAL);
-			new ShellTreeItem("JBoss Community","JBoss 7.1 Runtime").select();
-			new PushButton("Next >").click();
-			new LabeledText("Home Directory").setText(JBOSS7_AS_HOME);
-			new PushButton("Finish").click();
+	public void createWebProject(String name,String runtime, boolean webxml){
+		DynamicWebProjectWizard dw = new DynamicWebProjectWizard();
+		dw.open();
+		dw.selectPage(1);
+		DynamicWebProjectFirstPage dfp = (DynamicWebProjectFirstPage)dw.getWizardPage();
+		dfp.setProjectName(name);
+		if(runtime == null){
+			dfp.setRuntime("<None>");
 		} else {
-			new DefaultCombo("Target runtime",0).setSelection("<None>");
+			dfp.setRuntime(runtime);
 		}
-		new WaitUntil(new ShellWithTextIsActive("New Dynamic Web Project"),TimePeriod.NORMAL);
-		new PushButton("Next >").click();
-		new PushButton("Next >").click();
-		new CheckBox("Generate web.xml deployment descriptor").toggle(true);
-		new PushButton("Finish").click();
-		new WaitWhile(new ShellWithTextIsActive("New Dynamic Web Project"),TimePeriod.LONG);
-		botUtil.waitForAll(Long.MAX_VALUE);
-		PackageExplorer pexplorer = new PackageExplorer();
-		pexplorer.open();
-		pexplorer.getProject(projectName).select();
-		new ContextMenu("Properties").select();
-		new WaitUntil(new ShellWithTextIsActive("Properties for "+projectName),TimePeriod.NORMAL);
-		new ShellTreeItem("Project Facets").select();
-		new ShellTreeItem(1,"JBoss Maven Integration").setChecked(true);
-	    botUtil.waitForAll();
-	    bot.hyperlink("Further configuration required...").click();
-		new PushButton("OK").click();
-		new PushButton("OK").click();
-	    botUtil.waitForAll();
-		assertTrue(projectName+ " doesn't have maven nature",isMavenProject(projectName));
-		updateConf(botUtil,projectName);
-		assertFalse("Project "+projectName+" has "+CDI_NATURE+" nature.",hasNature(projectName, CDI_NATURE)); //false always
-		if(runtime){
-			assertTrue("Project "+projectName+" doesn't have "+JSF_NATURE+" nature.",hasNature(projectName, JSF_NATURE));
-			assertTrue("Project "+projectName+" doesn't have "+JAXRS_NATURE+" nature.",hasNature(projectName, JAXRS_NATURE));
-		} else {
-			assertFalse("Project "+projectName+" has "+JSF_NATURE+" nature.",hasNature(projectName, JSF_NATURE));
-			assertFalse("Project "+projectName+" has "+JAXRS_NATURE+" nature.",hasNature(projectName, JAXRS_NATURE));
-		}
+		dw.selectPage(3);
+		DynamicWebProjectThirdPage dtp = (DynamicWebProjectThirdPage)dw.getWizardPage();
+		dtp.generateWebXml(webxml);
+		dw.finish();
 	}
 	
-	public void createMavenizedEJBProject(String projectName, boolean runtime)throws Exception{
-		new ShellMenu("File","New","Other...").select();
-		new WaitUntil(new ShellWithTextIsActive("New"),TimePeriod.NORMAL);
-		new ShellTreeItem("EJB","EJB Project").select();
-		new PushButton("Next >").click();
-		new WaitUntil(new ShellWithTextIsActive("New EJB Project"),TimePeriod.NORMAL);;
-		new LabeledText("Project name:").setText(projectName);
-
-		if(runtime){
-			new PushButton("New Runtime...").click();
-			new WaitUntil(new ShellWithTextIsActive("New Server Runtime Environment"),TimePeriod.NORMAL);
-			new ShellTreeItem("JBoss Community","JBoss 7.1 Runtime").select();
-			new PushButton("Next >").click();
-			new LabeledText("Home Directory").setText(JBOSS7_AS_HOME);
-			new PushButton("Finish").click();
-		} else {
-			new DefaultCombo("Target runtime",0).setSelection("<None>");
-		}
-		new WaitUntil(new ShellWithTextIsActive("New EJB Project"),TimePeriod.NORMAL);
-		new PushButton("Finish").click();
-
-		botUtil.waitForAll(Long.MAX_VALUE);
-
-		PackageExplorer pexplorer = new PackageExplorer();
-		pexplorer.open();
-		pexplorer.getProject(projectName).select();
-		new ContextMenu("Properties").select();
-		new WaitUntil(new ShellWithTextIsActive("Properties for "+projectName),TimePeriod.NORMAL);
-		new ShellTreeItem("Project Facets").select();
-		new ShellTreeItem(1,"JBoss Maven Integration").setChecked(true);
-	    bot.hyperlink("Further configuration required...").click();
-	   	new DefaultCombo("Packaging:").setSelection("ejb");
-	   	new PushButton("OK").click();
-		new PushButton("OK").click();
-	    botUtil.waitForAll();
+	public void checkProjectWithoutRuntime(String projectName) throws CoreException{
 		assertTrue(projectName+ " doesn't have maven nature",isMavenProject(projectName));
-		updateConf(botUtil,projectName);
-		assertFalse("Project "+projectName+" has "+CDI_NATURE+" nature.",hasNature(projectName, CDI_NATURE));
-		
+		updateConf(projectName);
+		assertFalse("Project "+projectName+" has "+CDI_NATURE+" nature.",hasNature(projectName, CDI_NATURE,null));
+		assertFalse("Project "+projectName+" has "+JSF_NATURE+" nature.",hasNature(projectName, JSF_NATURE,null));
+		assertFalse("Project "+projectName+" has "+JAXRS_NATURE+" nature.",hasNature(projectName, JAXRS_NATURE,null));
+	}
+	
+	public void checkProjectWithRuntime(String projectName) throws CoreException{
+		assertTrue(projectName+ " doesn't have maven nature",isMavenProject(projectName));
+		updateConf(projectName);
+		assertTrue("Project "+projectName+" has "+CDI_NATURE+" nature.",hasNature(projectName, CDI_NATURE,null));
+		assertTrue("Project "+projectName+" doesn't have "+JSF_NATURE+" nature.",hasNature(projectName, JSF_NATURE,null));
+		assertTrue("Project "+projectName+" doesn't have "+JAXRS_NATURE+" nature.",hasNature(projectName, JAXRS_NATURE,null));
+	}
+	
+	public void createEJBProject(String name, String runtime) throws CoreException{
+		EJBProjectDialog ejb = new EJBProjectDialog();
+		ejb.open();
+		ejb.selectPage(1);
+		EJBProjectFirstPage efp = (EJBProjectFirstPage)ejb.getWizardPage();
+		efp.setProjectName(name);
+		if(runtime == null){
+			efp.setRuntime("<None>");
+		} else {
+			efp.setRuntime(runtime);
+		}
+		ejb.finish();
 	}
 	
 	public void addFacesConf(String projectName) throws InterruptedException{
@@ -204,16 +162,16 @@ public abstract class AbstractConfiguratorsTest extends AbstractMavenSWTBotTest{
 		pexplorer.open();
 		pexplorer.getProject(projectName).select();
 		new ContextMenu("New","Other...").select();
-		new ShellTreeItem("JBoss Tools Web","JSF","Faces Config").select();
+		new DefaultTreeItem("JBoss Tools Web","JSF","Faces Config").select();
 		new PushButton("Next >").click();
 		new PushButton("Browse...").click();
-		new ShellTreeItem(projectName,"WebContent","WEB-INF").select();
+		new DefaultTreeItem(projectName,"WebContent","WEB-INF").select();
 		new PushButton("OK").click();
 		new PushButton("Finish").click();
-		updateConf(botUtil,projectName);
+		updateConf(projectName);
 	}
 	
-	public void addServlet(String projectName, String servletName, String servletClass, String load) throws Exception{
+	public void addServlet(String projectName, String servletName, String servletClass, String load) throws ParserConfigurationException, SAXException, IOException, CoreException, TransformerException{
 		IProject facade = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
 		
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -240,14 +198,7 @@ public abstract class AbstractConfiguratorsTest extends AbstractMavenSWTBotTest{
 		DOMSource source = new DOMSource(docPom);
 		trans.transform(source, result);
 		facade.getProject().getFile(WEB_XML_LOCATION).setContents(new ByteArrayInputStream(xmlAsWriter.toString().getBytes("UTF-8")), 0, null);
-		botUtil.waitForAll();
-		updateConf(botUtil,projectName);	
-	}
-	public void clean(){
-		PackageExplorer pexplorer = new PackageExplorer();
-		pexplorer.open();
-		for(Project p: pexplorer.getProjects()){
-			p.delete(true);
-		}
+		new WaitWhile(new JobIsRunning());
+		updateConf(projectName);	
 	}
 }

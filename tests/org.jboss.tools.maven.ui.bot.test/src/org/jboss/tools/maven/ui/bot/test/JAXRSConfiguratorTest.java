@@ -10,7 +10,8 @@
  ******************************************************************************/ 
 package org.jboss.tools.maven.ui.bot.test;
 
-import org.jboss.tools.ui.bot.ext.SWTUtilExt;
+import org.eclipse.core.runtime.CoreException;
+import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
 /**
@@ -18,30 +19,48 @@ import org.junit.Test;
  * 
  */
 public class JAXRSConfiguratorTest extends AbstractConfiguratorsTest{
-	
-	private SWTUtilExt botUtil= new SWTUtilExt(bot);
+
 	
 	@BeforeClass
-	public static void beforeClass(){
+	public static void before(){
 		setPerspective("Java EE");
+	}
+	
+	@After
+	public void deleteProjects(){
+		deleteProjects(true, false);
 	}
 
 	@Test
-	public void testJAXRSConfigurator() throws Exception {
-		createMavenizedDynamicWebProject(PROJECT_NAME_JAXRS+"_noRuntime", false);
-		addDependencies(PROJECT_NAME_JAXRS+"_noRuntime", "com.cedarsoft.rest", "jersey", "1.0.0",null);
-		updateConf(botUtil,PROJECT_NAME_JAXRS+"_noRuntime");
-		assertTrue("Project "+PROJECT_NAME_JAXRS+"_noRuntime"+" with jersey dependency doesn't have "+JAXRS_NATURE+" nature.",hasNature(PROJECT_NAME_JAXRS+"_noRuntime", JAXRS_NATURE));
-		clean();
+	public void testJAXRSConfiguratorJersey() throws CoreException {
+		String projectName = PROJECT_NAME_JAXRS+"_noRuntime";
 		
-		createMavenizedDynamicWebProject(PROJECT_NAME_JAXRS+"_noRuntime", false);
-		addDependencies(PROJECT_NAME_JAXRS+"_noRuntime", "org.jboss.jbossas", "jboss-as-resteasy", "6.1.0.Final",null);
-		updateConf(botUtil,PROJECT_NAME_JAXRS+"_noRuntime");
-		assertTrue("Project "+PROJECT_NAME_JAXRS+"_noRuntime"+" with resteasy dependency doesn't have "+JAXRS_NATURE+" nature.",hasNature(PROJECT_NAME_JAXRS+"_noRuntime", JAXRS_NATURE));
-		clean();
-		
-		createMavenizedDynamicWebProject(PROJECT_NAME_JAXRS, true);
-		assertTrue("Project "+PROJECT_NAME_JAXRS+" doesn't have "+JAXRS_NATURE+" nature.",hasNature(PROJECT_NAME_JAXRS, JAXRS_NATURE));
-	}
+		createWebProject(projectName,null,false);
+		convertToMavenProject(projectName, "war", false);
+		checkProjectWithoutRuntime(projectName);
 
+		addDependency(projectName, "com.cedarsoft.rest", "jersey", "1.0.0");
+		updateConf(projectName);
+		assertTrue("Project "+projectName+" with jersey dependency doesn't have "+JAXRS_NATURE+" nature.",hasNature(projectName, JAXRS_NATURE,null));
+	}
+	@Test
+	public void testJAXRSConfiguratorResteasy() throws CoreException {
+		String projectName = PROJECT_NAME_JAXRS+"_noRuntime";
+		createWebProject(projectName,null,false);
+		convertToMavenProject(projectName, "war", false);
+		
+		checkProjectWithoutRuntime(projectName);
+		
+		addDependency(projectName, "org.jboss.jbossas", "jboss-as-resteasy", "6.1.0.Final");
+		updateConf(projectName);
+		assertTrue("Project "+projectName+" with resteasy dependency doesn't have "+JAXRS_NATURE+" nature.",hasNature(projectName, JAXRS_NATURE,null));
+	}
+	
+	@Test
+	public void testJAXRSConfigurator() throws CoreException {
+		createWebProject(PROJECT_NAME_JAXRS, runtimeName,false);
+		convertToMavenProject(PROJECT_NAME_JAXRS, "war", true);
+		checkProjectWithRuntime(PROJECT_NAME_JAXRS);
+		assertTrue("Project "+PROJECT_NAME_JAXRS+" doesn't have "+JAXRS_NATURE+" nature.",hasNature(PROJECT_NAME_JAXRS, JAXRS_NATURE,null));
+	}
 }
