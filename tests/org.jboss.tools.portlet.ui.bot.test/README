@@ -1,7 +1,6 @@
 Portal
 
     org.jboss.tools.portlet.ui.bot.test
-    Prerequisities - EPP 5.2.2, EPP 4.3, JBoss Portlet Bridge e.g. 2.1
-    Run portlets_prepare_workspace launcher and set up paths to both EPP's and Portlet Bridge
-    Then run AllTestsSuite_singleConfig launcher for each EPP.
-    Test of seam portlet hot deployment sometimes freezes on EPP 5 and manually it is Ok (will be fixed)
+    Prerequisities - EPP 5.2.2, EPP 4.3, JPP 6.0.0, JBoss Portlet Bridge e.g. 2.1
+    Run portlets_prepare_workspace launcher and set up paths to both EPP's and Portlet Bridge.
+    Then run AllTestsSuite_singleConfig launcher for each server configuration (folder /resources/generated_config_files).

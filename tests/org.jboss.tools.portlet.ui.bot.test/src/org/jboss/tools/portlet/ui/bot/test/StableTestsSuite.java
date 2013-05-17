@@ -1,5 +1,7 @@
 package org.jboss.tools.portlet.ui.bot.test;
 
+import org.jboss.tools.portlet.ui.bot.test.compatibility.JBDS5vs7CompatibilityGatein;
+import org.jboss.tools.portlet.ui.bot.test.compatibility.JBDS6vs7CompatibilityGatein;
 import org.jboss.tools.portlet.ui.bot.test.core.CreateJavaPortletGatein;
 import org.jboss.tools.portlet.ui.bot.test.core.CreateJavaPortletJBPortal;
 import org.jboss.tools.portlet.ui.bot.test.core.CreateJavaPortletProject;
@@ -37,7 +39,9 @@ import org.junit.runners.Suite;
 	CreateSeamPortletProject.class,
 	CreateSeamPortletJBPortal.class,
 	CreateSeamPortletGatein.class, 
-	RunSeamPortletOnServer.class
+	RunSeamPortletOnServer.class,
+	JBDS5vs7CompatibilityGatein.class,
+	JBDS6vs7CompatibilityGatein.class
 })
 public class StableTestsSuite {
 
