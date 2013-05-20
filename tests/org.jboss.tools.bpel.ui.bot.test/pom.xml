@@ -18,6 +18,7 @@
 	  <reddeer.site>http://download.jboss.org/jbosstools/builds/staging/RedDeer_master/all/repo</reddeer.site>
 	  <test.class>AllTests</test.class>
 	  <jbtis.site>http://download.jboss.org/jbosstools/updates/integration/juno/integration-stack/aggregate/4.0.0</jbtis.site>
+	  <orbit.site>http://download.eclipse.org/tools/orbit/downloads/drops/R20130517111416/repository</orbit.site>
 	</properties>
 
 	<repositories>
@@ -37,6 +38,18 @@
 	  <repository>
 	    <id>jbtis</id>
 	    <url>${jbtis.site}</url>
+	    <layout>p2</layout>
+	    <snapshots>
+	      <enabled>true</enabled>
+	    </snapshots>
+	    <releases>
+	      <enabled>true</enabled>
+	    </releases>
+	  </repository>
+	  <!-- Eclipse Orbit Repository -->
+	  <repository>
+	    <id>orbit</id>
+	    <url>${orbit.site}</url>
 	    <layout>p2</layout>
 	    <snapshots>
 	      <enabled>true</enabled>
@@ -81,6 +94,12 @@
 		  <dependency>
 		    <type>p2-installable-unit</type>
 		    <artifactId>org.eclipse.jdt.feature.group</artifactId>
+		    <version>0.0.0</version>
+		  </dependency>
+		  <!-- XMLUnit -->
+		  <dependency>
+		    <type>p2-installable-unit</type>
+		    <artifactId>org.custommonkey.xmlunit</artifactId>
 		    <version>0.0.0</version>
 		  </dependency>
 		</dependencies>
