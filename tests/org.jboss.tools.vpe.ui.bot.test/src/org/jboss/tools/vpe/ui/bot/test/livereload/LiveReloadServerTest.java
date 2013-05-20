@@ -15,6 +15,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem;
@@ -113,8 +114,10 @@ public class LiveReloadServerTest extends JBTSWTBotTestCase{
   private boolean isLiveReloadServerDefined(){
     boolean result = false;
     try{
-      servers.findServerByName(LiveReloadServerTest.SERVER_NAME);
-      result = true;
+      SWTBotTreeItem tiServer = servers.findServerByName(LiveReloadServerTest.SERVER_NAME);
+      if (tiServer != null){
+        result = true;      
+      }
     } catch (WidgetNotFoundException wnfe){
       result = false;
     }
