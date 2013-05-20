@@ -55,7 +55,7 @@ public class ManagePaletteGroupsTest extends VPEAutoTestCase {
     if (tiTestPaletteGroup.isChecked()){
       // Check Palette Group hiding
       tiTestPaletteGroup.uncheck();
-      dialogBot.button("Ok").click();
+      dialogBot.button(IDELabel.Button.OK).click();
       assertTrue("Palette Group " + ManagePaletteGroupsTest.TEST_PALETTE_GROUP_LABEL +
         " has to be hidden but is visible.", 
         !SWTBotWebBrowser.paletteContainsRootPaletteCotnainer(botExt, ManagePaletteGroupsTest.TEST_PALETTE_GROUP_LABEL));
@@ -63,7 +63,7 @@ public class ManagePaletteGroupsTest extends VPEAutoTestCase {
     else{
       // Check Palette Group showing
       tiTestPaletteGroup.check();
-      dialogBot.button("Ok").click();
+      dialogBot.button(IDELabel.Button.OK).click();
       assertTrue("Palette Group " + ManagePaletteGroupsTest.TEST_PALETTE_GROUP_LABEL +
         " has to be visible but is hidden.", 
         SWTBotWebBrowser.paletteContainsRootPaletteCotnainer(botExt, ManagePaletteGroupsTest.TEST_PALETTE_GROUP_LABEL));

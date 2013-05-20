@@ -23,7 +23,7 @@ public class BrowserSimContextMenuTest extends BrowserSimTest{
   /**
    * Checks BrowserSim root context menu
    */
-	public void testOpenBrowserSim(){
+	public void testBrowserSimContextMenu(){
 		browserSimHandler = new BrowserSimHandler(bot);
 		Menu browserSimContextMenu = browserSimHandler.openBrowserSimContextMenu();
 		BrowserSimAssertions.assertMenuContent(ContextMenuHelper.getMenuItemLabels(browserSimContextMenu),
@@ -36,6 +36,7 @@ public class BrowserSimContextMenuTest extends BrowserSimTest{
           "Debug",
           "Screenshot",
           "Open Synchronized Window",
+          "Enable LiveReload",
           "",
           "Open in Default Browser",
           "View Page Source",

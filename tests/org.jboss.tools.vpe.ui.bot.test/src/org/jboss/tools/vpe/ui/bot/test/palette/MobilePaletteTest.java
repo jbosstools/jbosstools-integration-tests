@@ -12,10 +12,10 @@
 package org.jboss.tools.vpe.ui.bot.test.palette;
 
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotBrowser;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCheckBox;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCombo;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotStyledText;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
 import org.jboss.tools.ui.bot.ext.SWTJBTExt;
@@ -78,32 +78,32 @@ public class MobilePaletteTest extends VPEAutoTestCase {
     // check init values
     SWTBotText txLabel = bot.textWithLabel("Label:");
     assertText("I agree",txLabel);
-    SWTBotText txCode = bot.text("<label><input type=\"checkbox\" name=\"checkbox-1\"/>I \nagree</label>\n");
+    SWTBotStyledText stCode = bot.styledText("<label><input type=\"checkbox\" name=\"checkbox-1\" id=\"checkbox-1\"/>I \nagree</label>\n");
     SWTBotCheckBox chbMini = bot.checkBoxWithLabel("Mini:");
     assertFalse("Checkbox Mini is checked", chbMini.isChecked());
     SWTBotCombo cmbTheme = bot.comboBoxWithLabel("Theme:");
     assertText("",cmbTheme);
     SWTBotBrowser brPreview = bot.browser();
-    assertTextContains("<input type=\"checkbox\" name=\"checkbox-1\" />", brPreview);
+    assertTextContains("<input type=\"checkbox\" id=\"checkbox-1\" name=\"checkbox-1\" />", brPreview);
     // make changes to attributes
     final String labelValue="##NEW_LABEL##";
     txLabel.setText(labelValue);
     chbMini.click();
     cmbTheme.setText("a");
     bot.sleep(Timing.time3S());
-    assertTextContains("<input type=\"checkbox\" data-theme=\"a\" data-mini=\"true\" class=\"custom\" id=\"checkbox-mini-1\" name=\"checkbox-1\" />", brPreview);
-    assertEquals("<inputtype=\"checkbox\"name=\"checkbox-1\"id=\"checkbox-mini-1\"class=\"custom\"data-mini=\"true\"data-theme=\"a\"/><labelfor=\"checkbox-mini-1\">"
+    assertTextContains("<input type=\"checkbox\" data-theme=\"a\" data-mini=\"true\" class=\"custom\" id=\"checkbox-1\" name=\"checkbox-1\" />", brPreview);
+    assertEquals("<inputtype=\"checkbox\"name=\"checkbox-1\"id=\"checkbox-1\"class=\"custom\"data-mini=\"true\"data-theme=\"a\"/><labelfor=\"checkbox-1\">"
         + labelValue + "</label>",
-      txCode.getText().replaceAll("\n", "").replaceAll(" ", ""));
+        stCode.getText().replaceAll("\n", "").replaceAll(" ", ""));
     bot.button("Hide Preview").click();
     bot.sleep(Timing.time3S());
     assertFalse(brPreview.isVisible());
-    assertFalse(txCode.isVisible());
+    assertFalse(stCode.isVisible());
     bot.button(IDELabel.Button.FINISH).click();
     bot.sleep(Timing.time3S());
     String htmlSourceText = bot.editorByTitle(htmlPageName).toTextEditor().getText();
-    assertContains("<body><input type=\"checkbox\" name=\"checkbox-1\" id=\"checkbox-mini-1\" class=\"custom\" data-mini=\"true\" data-theme=\"a\"/>", htmlSourceText);
-    assertContains("<label for=\"checkbox-mini-1\">" + labelValue + "</label>", htmlSourceText);
+    assertContains("<body><input type=\"checkbox\" name=\"checkbox-1\" id=\"checkbox-1\" class=\"custom\" data-mini=\"true\" data-theme=\"a\"/>", htmlSourceText);
+    assertContains("<label for=\"checkbox-1\">" + labelValue + "</label>", htmlSourceText);
   }
 	@Override
 	protected void closeUnuseDialogs() {
