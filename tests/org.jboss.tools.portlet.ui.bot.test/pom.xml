@@ -14,20 +14,22 @@
 	<packaging>eclipse-test-plugin</packaging>
 
 	<properties>
-		<jbosstools.test.jboss-gatein.home>${requirementsDirectory}/GateIn-3.3.0-GA-jbossas5</jbosstools.test.jboss-gatein.home>
-		<jbosstools.test.jboss-seam-2.2.home>${requirementsDirectory}/jboss-seam-2.2.1.Final</jbosstools.test.jboss-seam-2.2.home> 
+		<jbosstools.test.jboss-gatein-3.5.home>${requirementsDirectory}/GateIn-3.5.0.Final-jbossas7</jbosstools.test.jboss-gatein-3.5.home>
+		<jbosstools.test.jboss-gatein-3.4.home>${requirementsDirectory}/GateIn-3.4.0.Final-jbossas5</jbosstools.test.jboss-gatein-3.4.home>
+		<jbosstools.test.jboss-seam-2.2.home>${requirementsDirectory}/jboss-seam-2.2.2.Final</jbosstools.test.jboss-seam-2.2.home>
+		<jbosstools.test.jboss-seam-2.3.home>${requirementsDirectory}/jboss-seam-2.3.0.Final</jbosstools.test.jboss-seam-2.3.home>
 		<jbosstools.test.jboss-portal.home>${requirementsDirectory}/jboss-portal-2.7.2</jbosstools.test.jboss-portal.home>
-		<jbosstools.test.jboss-seam-2.0.home>${requirementsDirectory}/jboss-seam-2.0.1.GA</jbosstools.test.jboss-seam-2.0.home>
+		<jbosstools.test.jboss-seam-2.0.home>${requirementsDirectory}/jboss-seam-2.0.2.SP1</jbosstools.test.jboss-seam-2.0.home>
 		<jbosstools.test.jboss-portlet-bridge.home>${requirementsDirectory}</jbosstools.test.jboss-portlet-bridge.home>
 		<configurations.dir>resources/project_config_files</configurations.dir>
-		<systemProperties>${integrationTestsSystemProperties} -Djbosstools.test.jboss-gatein.home=${jbosstools.test.jboss-gatein.home} -Djbosstools.test.jboss-seam-2.2.home=${jbosstools.test.jboss-seam-2.2.home} -Djbosstools.test.jboss-portal.home=${jbosstools.test.jboss-portal.home} -Djbosstools.test.jboss-seam-2.0.home=${jbosstools.test.jboss-seam-2.0.home} -Djbosstools.test.jboss-portlet-bridge.home=${jbosstools.test.jboss-portlet-bridge.home} -Dtest.configurations.dir=${configurations.dir}  -Dorg.eclipse.swtbot.screenshots.dir=${project.build.directory}/screenshots</systemProperties>
+		<systemProperties>${integrationTestsSystemProperties} -Djbosstools.test.jboss-gatein-3.4.home=${jbosstools.test.jboss-gatein-3.4.home} -Djbosstools.test.jboss-gatein-3.5.home=${jbosstools.test.jboss-gatein-3.5.home} -Djbosstools.test.jboss-seam-2.2.home=${jbosstools.test.jboss-seam-2.2.home} -Djbosstools.test.jboss-seam-2.3.home=${jbosstools.test.jboss-seam-2.3.home} -Djbosstools.test.jboss-portal.home=${jbosstools.test.jboss-portal.home} -Djbosstools.test.jboss-seam-2.0.home=${jbosstools.test.jboss-seam-2.0.home} -Djbosstools.test.jboss-portlet-bridge.home=${jbosstools.test.jboss-portlet-bridge.home} -Dtest.configurations.dir=${configurations.dir} -Dorg.eclipse.swtbot.screenshots.dir=${project.build.directory}/screenshots</systemProperties>
 		<test.class>org.jboss.tools.portlet.ui.bot.test.AllTestsSuite</test.class>
 		<surefire.timeout>7200</surefire.timeout>
 	</properties>
 
 	<profiles>
 	</profiles>
-	
+
 	<build>
 		<plugins>
 			<plugin>
@@ -35,38 +37,63 @@
 				<artifactId>maven-download-plugin</artifactId>
 				<executions>
 					<execution>
-						<id>install-gatein</id>
+						<id>install-gatein-3.4</id>
 						<phase>pre-integration-test</phase>
 						<goals>
 							<goal>wget</goal>
 						</goals>
 						<configuration>
-							<url>http://downloads.jboss.org/gatein/Releases/Portal/3.3.0.Final/GateIn-3.3.0-GA-jbossas5.zip</url>
+							<url>http://downloads.jboss.org/gatein/Releases/Portal/3.4.0.Final/GateIn-3.4.0.Final-jbossas5.zip</url>
 							<unpack>true</unpack>
+							<md5>3d9ba5aeaac268afd87b4fadf2978a93</md5>
 						</configuration>
 					</execution>
 					<execution>
-						<id>install-seam-2.0.1</id>
+						<id>install-gatein-3.5</id>
 						<phase>pre-integration-test</phase>
 						<goals>
 							<goal>wget</goal>
 						</goals>
 						<configuration>
-							<url>http://repository.jboss.org/sourceforge/jboss-seam-2.0.1.GA.zip</url>
+							<url>http://downloads.jboss.org/gatein/Releases/Portal/3.5.0.Final/GateIn-3.5.0.Final-jbossas7.zip</url>
 							<unpack>true</unpack>
-							<md5>0a1accf94fd37e40ab1091ee593b8b75</md5>
+							<md5>27abad276bbf8183f9dff0f6219938ec</md5>
 						</configuration>
 					</execution>
 					<execution>
-						<id>install-seam-2.2.1</id>
+						<id>install-seam-2.0.2</id>
 						<phase>pre-integration-test</phase>
 						<goals>
 							<goal>wget</goal>
 						</goals>
 						<configuration>
-							<url>http://downloads.sourceforge.net/project/jboss/JBoss%20Seam/2.2.1.Final/jboss-seam-2.2.1.Final.zip</url>
+							<url>http://sourceforge.net/projects/jboss/files/JBoss%20Seam/2.0.2.SP1/jboss-seam-2.0.2.SP1.zip</url>
 							<unpack>true</unpack>
-							<md5>b490d794e805aef78cb9fee510073850</md5>
+							<md5>ddbd3d0e9f566249aa9c28371ab44adf</md5>
+						</configuration>
+					</execution>
+					<execution>
+						<id>install-seam-2.2.2</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<configuration>
+							<url>http://sourceforge.net/projects/jboss/files/JBoss%20Seam/2.2.2.Final/jboss-seam-2.2.2.Final.zip</url>
+							<unpack>true</unpack>
+							<md5>3bdb26921b1ebfb7222968657df95bb3</md5>
+						</configuration>
+					</execution>
+					<execution>
+						<id>install-seam-2.3.0.Final</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<configuration>
+							<url>http://sourceforge.net/projects/jboss/files/JBoss%20Seam/2.3.0.Final/jboss-seam-distribution-2.3.0.Final-dist.zip</url>
+							<unpack>true</unpack>
+							<md5>f5fcb2ae2b17514feb2a2d3bbf5f4e2b</md5>
 						</configuration>
 					</execution>
 					<execution>
@@ -88,9 +115,8 @@
 							<goal>wget</goal>
 						</goals>
 						<configuration>
-							<url>http://sourceforge.net/projects/jboss/files/JBoss%20Portal/JBossPortletBridge-2.1.0.FINAL/JBossPortletBridge-2.1.0.FINAL.zip</url>
+							<url>http://downloads.jboss.org/portletbridge/2.3.1.Final/JBossPortletBridge-2.3.1.Final.zip</url>
 							<unpack>true</unpack>
-							<md5>44a7b67d0b6e0995bec97e8c81bacab3</md5>
 						</configuration>
 					</execution>
 				</executions>
