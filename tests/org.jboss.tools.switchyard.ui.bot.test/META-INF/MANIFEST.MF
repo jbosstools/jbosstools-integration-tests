@@ -1,0 +1,20 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: org.jboss.tools.switchyard.ui.bot.test
+Bundle-SymbolicName: org.jboss.tools.switchyard.ui.bot.test
+Bundle-Version: 4.0.0.qualifier
+Bundle-Activator: org.jboss.tools.switchyard.ui.bot.test.Activator
+Require-Bundle: org.jboss.tools.switchyard.reddeer;bundle-version="4.0.0",
+ org.jboss.reddeer.swt;bundle-version="[0.2.0,0.3.0)",
+ org.jboss.reddeer.eclipse;bundle-version="[0.2.0,0.3.0)",
+ org.jboss.reddeer.workbench;bundle-version="[0.2.0,0.3.0)",
+ org.jboss.reddeer.jface;bundle-version="[0.2.0,0.3.0)",
+ org.jboss.reddeer.junit;bundle-version="[0.2.0,0.3.0)",
+ org.eclipse.swtbot.go;bundle-version="2.0.5",
+ org.custommonkey.xmlunit;bundle-version="1.3.0",
+ org.eclipse.swtbot.eclipse.gef.finder;bundle-version="2.0.5"
+Bundle-ActivationPolicy: lazy
+Import-Package: org.apache.log4j
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-Vendor: JBoss by Red Hat
+Eclipse-RegisterBuddy: org.apache.log4j
