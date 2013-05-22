@@ -56,8 +56,9 @@
 				<module>org.jboss.tools.jbpm.ui.bot.test</module>
 				<module>org.jboss.tools.bpel.reddeer</module>
 				<module>org.jboss.tools.bpel.ui.bot.test</module>
-<!-- JBIDE-13709				<module>org.jboss.tools.esb.ui.bot.test</module>
--->
+				<module>org.jboss.tools.esb.ui.bot.test</module>
+				<module>org.jboss.tools.switchyard.reddeer</module>
+				<module>org.jboss.tools.switchyard.ui.bot.test</module>
 				<module>org.jboss.tools.teiid.reddeer</module>
 				<module>org.jboss.tools.teiid.ui.bot.test</module>
 				<module>org.jboss.tools.modeshape.rest.ui.bot.test</module>
