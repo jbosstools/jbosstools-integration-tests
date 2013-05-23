@@ -1,5 +1,7 @@
 package org.jboss.tools.portlet.ui.bot.matcher.factory;
 
+import org.hamcrest.BaseMatcher;
+import org.jboss.tools.portlet.ui.bot.matcher.AbstractSWTMatcher;
 import org.jboss.tools.portlet.ui.bot.matcher.SWTMatcher;
 import org.jboss.tools.portlet.ui.bot.matcher.console.ConsoleOutputMatcher;
 import org.jboss.tools.portlet.ui.bot.matcher.console.ExceptionInConsoleOutputMatcher;
@@ -21,11 +23,11 @@ public class DefaultMatchersFactory {
 		return new NumberOfErrorsMatcher();
 	}
 	
-	public static SWTMatcher<String> inConsoleOutput(){
+	public static AbstractSWTMatcher<String> inConsoleOutput(){
 		return new ConsoleOutputMatcher();
 	}
 	
-	public static SWTMatcher<Void> exceptionInConsoleOutput(){
+	public static BaseMatcher<Void> exceptionInConsoleOutput(){
 		return new ExceptionInConsoleOutputMatcher();
 	}
 }

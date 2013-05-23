@@ -2,9 +2,8 @@ package org.jboss.tools.portlet.ui.bot.matcher.console;
 
 import static org.jboss.tools.portlet.ui.bot.matcher.factory.DefaultMatchersFactory.inConsoleOutput;
 
+import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
-import org.jboss.tools.portlet.ui.bot.matcher.AbstractSWTMatcher;
-import org.jboss.tools.portlet.ui.bot.matcher.SWTMatcher;
 
 /**
  * Matcher for the current state of workspace - that there is an exception in console output. 
@@ -12,22 +11,23 @@ import org.jboss.tools.portlet.ui.bot.matcher.SWTMatcher;
  * @author Lucia Jelinkova
  *
  */
-public class ExceptionInConsoleOutputMatcher extends AbstractSWTMatcher<Void> {
+public class ExceptionInConsoleOutputMatcher extends BaseMatcher<Void> {
 
-	private SWTMatcher<String> consoleOutputMatcher;
+	private ConsoleOutputMatcher consoleOutputMatcher;
 
 	public ExceptionInConsoleOutputMatcher() {
 		super();
-		consoleOutputMatcher = inConsoleOutput();
+		consoleOutputMatcher = (ConsoleOutputMatcher) inConsoleOutput();
 	}
 	
 	@Override
-	public boolean matchesSafely(Void item) {
-		return consoleOutputMatcher.matches("Exception:");
+	public boolean matches(Object item) {
+		return consoleOutputMatcher.matchesSafely("Exception: ");
 	}
 
 	@Override
 	public void describeTo(Description description) {
 		description.appendText("exception is in console output");
 	}
+
 }

@@ -8,9 +8,9 @@ import static org.jboss.tools.portlet.ui.bot.matcher.factory.DefaultMatchersFact
 import org.hamcrest.Matcher;
 import org.jboss.tools.portlet.ui.bot.task.AbstractSWTTask;
 import org.jboss.tools.portlet.ui.bot.task.SWTBotAware;
-import org.jboss.tools.portlet.ui.bot.task.console.ConsoleClearingTask;
 import org.jboss.tools.portlet.ui.bot.task.server.RunninngProjectOnServerTask;
 import org.jboss.tools.ui.bot.ext.ExampleTest;
+import org.jboss.tools.ui.bot.ext.view.ConsoleView;
 
 /**
  * Common ancestor for example projects tests. 
@@ -22,7 +22,7 @@ public abstract class AbstractPortletExampleTest extends ExampleTest {
 
 	@Override
 	protected void executeExample() {
-		doPerform(new ConsoleClearingTask());
+		new ConsoleView().clearConsole();
 
 		for (String project : getProjectNames()){
 			doPerform(new RunninngProjectOnServerTask(project));			
