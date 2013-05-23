@@ -91,12 +91,17 @@ public class TeiidSuite extends RedDeerSuite {
 		String type = param[0];
 		String version = param[1];
 		String path = new File(param[3]).getAbsolutePath();
-
+		
+		String configFile = "standalone.xml";//default (standalone.xml)
+		if (param.length > 4){
+			configFile = param[4];//teiid designer (standalone-teiid.xml) 
+		}
+		
 		serverName = type + "-" + version;
 
 		ServerPreferencePage serverPP = new ServerPreferencePage();
 		serverPP.open();
-		serverPP.addServerRuntime(serverName, path, getServerRuntime(type, version));
+		serverPP.addServerRuntime(serverName, path, configFile, getServerRuntime(type, version));
 		serverPP.ok();
 
 		ServerWizard serverWizard = new ServerWizard();
