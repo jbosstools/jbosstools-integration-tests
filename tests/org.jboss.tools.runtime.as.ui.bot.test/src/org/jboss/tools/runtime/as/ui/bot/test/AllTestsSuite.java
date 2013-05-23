@@ -1,5 +1,6 @@
 package org.jboss.tools.runtime.as.ui.bot.test;
 
+import org.jboss.tools.runtime.as.ui.bot.test.detector.RuntimeDownload;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.RuntimeDuplications;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.ServerWithSeam;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.seam.seam22.CheckSeam22;
@@ -47,6 +48,7 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
 		RuntimeDuplications.class,
 		ServerWithSeam.class,
+		RuntimeDownload.class,
 		DetectJBoss7.class,
 		OperateJBoss7.class,
 		DetectEAP60.class,
