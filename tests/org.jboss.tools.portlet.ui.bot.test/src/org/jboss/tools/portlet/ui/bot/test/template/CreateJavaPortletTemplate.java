@@ -21,6 +21,7 @@ import org.osgi.framework.Bundle;
  * @author Lucia Jelinkova
  *
  */
+@SuppressWarnings("restriction")
 public abstract class CreateJavaPortletTemplate extends CreatePortletTemplate {
 
 	public static final String CLASS_NAME = "UITestingJavaPortlet";
