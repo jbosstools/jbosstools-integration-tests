@@ -155,7 +155,7 @@ public class ExcludesAnnotationTest extends DeltaspikeTestBase {
 				validationProblemRegex), TimePeriod.NORMAL);
 		
 		insertIntoFile(projectName, "impl1", "package-info.java", 0, 0, 
-				"@org.apache.deltaspike.core.api.exclude.annotation.Exclude");
+				"@org.apache.deltaspike.core.api.exclude.Exclude");
 		
 		new WaitWhile(new SpecificProblemExists(
 				validationProblemRegex), TimePeriod.NORMAL);

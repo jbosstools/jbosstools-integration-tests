@@ -52,7 +52,7 @@ public class ConfigPropertyAnnotationTest extends DeltaspikeTestBase {
 		insertIntoFile(projectName, "test", "Test.java", 7, 0, 
 				"@ConfigProperty(name = \"boolean\") \n");
 		insertIntoFile(projectName, "test", "Test.java", 2, 0, 
-				"import org.apache.deltaspike.core.api.config.annotation.ConfigProperty; \n");
+				"import org.apache.deltaspike.core.api.config.ConfigProperty; \n");
 		
 		new WaitWhile(new SpecificProblemExists(
 				validationProblemRegex), TimePeriod.NORMAL);
@@ -71,7 +71,7 @@ public class ConfigPropertyAnnotationTest extends DeltaspikeTestBase {
 		insertIntoFile(projectName, "test", "Test.java", 8, 0, 
 				"@ConfigProperty(name = \"boolean\") \n");
 		insertIntoFile(projectName, "test", "Test.java", 2, 0, 
-				"import org.apache.deltaspike.core.api.config.annotation.ConfigProperty; \n");
+				"import org.apache.deltaspike.core.api.config.ConfigProperty; \n");
 		
 		new WaitUntil(new SpecificProblemExists(
 				validationProblemRegex), TimePeriod.NORMAL);
