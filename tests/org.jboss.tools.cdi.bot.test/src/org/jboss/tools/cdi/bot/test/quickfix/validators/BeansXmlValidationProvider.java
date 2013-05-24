@@ -41,6 +41,8 @@ public class BeansXmlValidationProvider extends AbstractValidationProvider {
 		
 		problems.add(new ValidationProblem(ProblemsType.ERRORS, ValidationType.NO_INTERCEPTOR,
 				"is not an interceptor class"));
+		problems.add(new ValidationProblem(ProblemsType.WARNINGS, ValidationType.NO_BEANS_XML, 
+				"Missing beans.xml file in the project"));
 		
 	}
 	

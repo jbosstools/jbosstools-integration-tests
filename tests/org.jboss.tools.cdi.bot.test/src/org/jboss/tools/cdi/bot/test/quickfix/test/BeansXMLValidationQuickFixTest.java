@@ -12,8 +12,10 @@
 package org.jboss.tools.cdi.bot.test.quickfix.test;
 
 import org.jboss.tools.cdi.bot.test.annotations.CDIWizardType;
+import org.jboss.tools.cdi.bot.test.annotations.ValidationType;
 import org.jboss.tools.cdi.bot.test.quickfix.base.BeansXMLQuickFixTestBase;
 import org.jboss.tools.ui.bot.ext.Timing;
+import org.junit.After;
 import org.junit.Test;
 
 /**
@@ -24,6 +26,14 @@ import org.junit.Test;
 
 public class BeansXMLValidationQuickFixTest extends BeansXMLQuickFixTestBase {
 
+	@After
+	public void waitForJobs() {
+		
+		editResourceUtil.deleteFolderInProjectExplorer("beans.xml", getProjectName(), 
+				"WebContent", "WEB-INF");
+		util.waitForNonIgnoredJobs();
+	}
+	
 	@Test
 	public void testNoBeanComponent() {
 
@@ -101,6 +111,15 @@ public class BeansXMLValidationQuickFixTest extends BeansXMLQuickFixTestBase {
 		resolveAddNewDecorator(decorator, getPackageName());
 		
 		assertTrue(isBeanXMLValidationErrorEmpty());		
+		
+	}
+	
+	// https://issues.jboss.org/browse/JBIDE-14384
+	@Test
+	public void testNoBeansXmlPresent() {
+		
+		quickFixHelper.checkQuickFix(ValidationType.NO_BEANS_XML, 
+				"Create File beans.xml", getProjectName(), getValidationProvider());
 		
 	}
 	
