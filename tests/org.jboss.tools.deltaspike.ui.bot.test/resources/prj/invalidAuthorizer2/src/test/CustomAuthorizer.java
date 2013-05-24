@@ -1,6 +1,6 @@
 package test;
 
-import org.apache.deltaspike.security.api.authorization.annotation.Secures;
+import org.apache.deltaspike.security.api.authorization.Secures;
 
 public class CustomAuthorizer {
 	   

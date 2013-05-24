@@ -53,7 +53,7 @@ public class MessageBundleAnnotationTest extends DeltaspikeTestBase {
 
 		insertIntoFile(projectName, "test", "CustomInterface.java", 2, 0, "@MessageBundle");
 		insertIntoFile(projectName, "test", "CustomInterface.java", 1, 0, 
-				"import org.apache.deltaspike.core.api.message.annotation.MessageBundle; \n");
+				"import org.apache.deltaspike.core.api.message.MessageBundle; \n");
 		
 		new WaitWhile(new SpecificProblemExists(
 				validationProblemRegex), TimePeriod.NORMAL);
