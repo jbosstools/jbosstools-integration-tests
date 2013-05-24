@@ -29,6 +29,7 @@ import org.jboss.tools.ui.bot.ext.SWTEclipseExt;
 import org.jboss.tools.ui.bot.ext.SWTJBTExt;
 import org.jboss.tools.ui.bot.ext.SWTUtilExt;
 import org.jboss.tools.ui.bot.ext.Timing;
+import org.jboss.tools.ui.bot.ext.condition.ShellIsActiveCondition;
 import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.ext.types.ViewType;
@@ -58,11 +59,11 @@ public class QuickFixHelper {
 			IValidationProvider validationProvider) {
 		SWTBotTreeItem validationProblem = getProblem(
 				validationType, projectName, validationProvider);		
-		assertNotNull(validationProblem);
+		assertNotNull("Expected validation was not found in Problems View", validationProblem);
 		resolveQuickFix(validationProblem, text);
 		validationProblem = getProblem(
 				validationType, projectName, validationProvider);		
-		assertNull(validationProblem);
+		assertNull("Validation problem should be fixed.", validationProblem);
 	}
 	
 	/**
@@ -120,6 +121,14 @@ public class QuickFixHelper {
 		
 		qfWizard.setFix(firstFix).setResource(firstResource).finish();
 		
+		/**
+		 * when creating beans.xml, user has to define location
+		 */
+		if (text.equals("Create File beans.xml")) {
+			bot.waitUntil(new ShellIsActiveCondition("New beans.xml File"));
+			bot.button(IDELabel.Button.FINISH).click();
+		}
+		
 		util.waitForNonIgnoredJobs();
 	}
 	
@@ -161,11 +170,11 @@ public class QuickFixHelper {
 		SWTEclipseExt.showView(bot,ViewType.PROBLEMS);
 		SWTBotTreeItem[] problemsTree = null;
 		if (problemType == ProblemsType.WARNINGS) {
-			problemsTree = ProblemsView.getFilteredWarningsTreeItems(bot, null, "/"
-					+ projectName, null, null);
+			problemsTree = ProblemsView.getFilteredWarningsTreeItems(bot, null, null, 
+					null, "CDI Problem");
 		}else if (problemType == ProblemsType.ERRORS) {
-			problemsTree = ProblemsView.getFilteredErrorsTreeItems(bot, null, "/"
-					+ projectName, null, null);
+			problemsTree = ProblemsView.getFilteredErrorsTreeItems(bot, null, null, 
+					null, "CDI Problem");
 		}
 		return problemsTree;
 	}
