@@ -12,6 +12,7 @@
 package org.jboss.tools.cdi.bot.test.wizard;
 
 import org.jboss.tools.cdi.bot.test.CDITestBase;
+import org.junit.After;
 import org.junit.Test;
 
 public class DynamicWebProjectWithCDITest extends CDITestBase {
@@ -19,8 +20,13 @@ public class DynamicWebProjectWithCDITest extends CDITestBase {
 	@Override	
 	public void prepareWorkspace() {
 		if (!projectHelper.projectExists(getProjectName())) {
-			projectHelper.createCDIProjectWithDynamicWizard(getProjectName());
+			projectHelper.createDynamicWebProject(getProjectName());
 		}
+	}
+	
+	@After
+	public void cleanUp() {
+		packageExplorer.deleteProject(getProjectName(), true);
 	}
 	
 	@Override
@@ -29,14 +35,18 @@ public class DynamicWebProjectWithCDITest extends CDITestBase {
 	}
 	
 	@Test
-	public void testDynamicWebProjectWizard() {
-		if (projectHelper.projectExists(getProjectName())) {
-			LOGGER.info("CDI project was sucessfully created by CDI Web Project wizard");
-			assertTrue(projectHelper.checkCDISupport(getProjectName()));
-			LOGGER.info("Project has correctly set CDI support");					
-		} else {
-			fail("CDI project was not succesfully created by CDI Dynamic Web Project wizard");
-		}
+	public void testAddCDISupportWithOKButton() {
+		
+		projectHelper.addCDISupport(getProjectName());
+		assertTrue(projectHelper.checkCDISupport(getProjectName()));
+		
+	}
+	
+	@Test
+	public void testAddCDISupportWithEnterKey() {
+		
+		projectHelper.addCDISupportWithEnterKey(getProjectName());
+		assertTrue(projectHelper.checkCDISupport(getProjectName()));
 		
 	}
 

@@ -11,6 +11,8 @@
 
 package org.jboss.tools.cdi.bot.test.uiutils;
 
+import org.eclipse.swtbot.swt.finder.keyboard.KeyboardFactory;
+import org.eclipse.swtbot.swt.finder.keyboard.Keystrokes;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
@@ -18,6 +20,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.tools.cdi.bot.test.CDIConstants;
 import org.jboss.tools.cdi.bot.test.uiutils.actions.NewFileWizardAction;
 import org.jboss.tools.cdi.bot.test.uiutils.wizards.DynamicWebProjectWizard;
@@ -147,7 +150,7 @@ public class CDIProjectHelper {
 	 * Method creates new Dynamic Web Project
 	 * @param projectName
 	 */
-	private void createDynamicWebProject(String projectName) {
+	public void createDynamicWebProject(String projectName) {
 		new NewFileWizardAction().run()
 				.selectTemplate(IDELabel.PreferencesDialog.JBOSS_TOOLS_WEB, 
 						IDELabel.JBossCentralEditor.DYNAMIC_WEB_PROJECT).next();
@@ -162,7 +165,23 @@ public class CDIProjectHelper {
 		projectExplorer.selectProject(projectName);
 		new ContextMenu(IDELabel.Menu.PACKAGE_EXPLORER_CONFIGURE, 
 				CDIConstants.ADD_CDI_SUPPORT).select();
+		new DefaultShell("Properties for " + projectName + " (Filtered)");
 		new PushButton(IDELabel.Button.OK).click();
+		bot.waitWhile(new 
+				ProgressInformationShellIsActiveCondition(), 
+				TaskDuration.LONG.getTimeout());
+	}
+	
+	/**
+	 * Method adds CDI support to project with entered name with Enter key
+	 * @param projectName
+	 */
+	public void addCDISupportWithEnterKey(String projectName) {
+		projectExplorer.selectProject(projectName);
+		new ContextMenu(IDELabel.Menu.PACKAGE_EXPLORER_CONFIGURE, 
+				CDIConstants.ADD_CDI_SUPPORT).select();
+		new DefaultShell("Properties for " + projectName + " (Filtered)");
+		KeyboardFactory.getSWTKeyboard().pressShortcut(Keystrokes.CR, Keystrokes.LF);
 		bot.waitWhile(new 
 				ProgressInformationShellIsActiveCondition(), 
 				TaskDuration.LONG.getTimeout());
