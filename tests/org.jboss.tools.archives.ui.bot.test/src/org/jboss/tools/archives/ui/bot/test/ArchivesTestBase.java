@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010-2012 Red Hat, Inc.
+ * Copyright (c) 2010-2013 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -10,26 +10,20 @@
  ******************************************************************************/
 package org.jboss.tools.archives.ui.bot.test;
 
-import static org.junit.Assert.assertThat;
-
-import org.eclipse.swtbot.swt.finder.SWTBot;
-import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
-import org.hamcrest.core.Is;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.jdt.ui.ide.NewJavaProjectWizardDialog;
+import org.jboss.reddeer.eclipse.jdt.ui.ide.NewJavaProjectWizardPage;
+import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.tools.archives.ui.bot.test.explorer.ProjectArchivesExplorer;
-import org.jboss.tools.archives.ui.bot.test.view.ProjectArchivesView;
+import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.tools.archives.reddeer.archives.ui.ProjectArchivesExplorer;
+import org.jboss.tools.archives.reddeer.archives.ui.ProjectArchivesView;
 import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
-import org.jboss.tools.ui.bot.ext.condition.ProgressInformationShellIsActiveCondition;
-import org.jboss.tools.ui.bot.ext.condition.TaskDuration;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
-import org.jboss.tools.ui.bot.ext.entity.JavaProjectEntity;
 import org.jboss.tools.ui.bot.ext.helper.ImportHelper;
-import org.jboss.tools.ui.bot.ext.helper.TreeHelper;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.ext.view.ErrorLogView;
-import org.jboss.tools.ui.bot.ext.view.ServersView;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
@@ -43,14 +37,19 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses({ ArchivesAllBotTests.class })
 public class ArchivesTestBase extends SWTTestExt {
 
+	protected ProjectExplorer projectExplorer = new ProjectExplorer();
+	protected ProjectArchivesView view = new ProjectArchivesView();
+	
 	protected ProjectArchivesView openProjectArchivesView() {
-		ProjectArchivesView view = new ProjectArchivesView();
+		view.open();
 		return view;
 	}
 	
 	protected ProjectArchivesView viewForProject(String projectName) {
-		ProjectArchivesView view = openProjectArchivesView();
-		projectExplorer.selectProject(projectName);
+		view.open();
+		projectExplorer.open();
+		projectExplorer.getProject(projectName).select();
+		view.open();
 		return view;
 	}
 	
@@ -58,95 +57,43 @@ public class ArchivesTestBase extends SWTTestExt {
 		return new ProjectArchivesExplorer(projectName);
 	}
 	
-	protected void assertItemExistsInView(ProjectArchivesView view, String... path) {
-		assertTrue("Item " + path[path.length-1] + 
-				" does not exist in Project Archives View", view.itemExists(path));
-	}
-	
-	protected void assertItemExistsInExplorer(ProjectArchivesExplorer explorer, String... path) {		
-		assertTrue("Item " + path[path.length-1] + 
-				" does not exist in Project Archives explorer", explorer.itemExists(path));
-	}
-	
-	protected void assertItemNotExistsInView(ProjectArchivesView view, String... path) {
-		assertFalse("Item " + path[path.length-1] + 
-				" should not exist in Project Archives View", view.itemExists(path));
-	}
-	
-	protected void assertItemNotExistsInExplorer(ProjectArchivesExplorer explorer, String... path) {
-		assertFalse("Item " + path[path.length-1] + 
-				" should not exist in Project Archives explorer", explorer.itemExists(path));
-	}
-	
-	protected void assertArchiveIsDeployed(String archive) {
-		ServersView serversView = showServersView();
-		SWTBotTreeItem server = findConfiguredServer(serversView);
-		server.collapse();
-		server.expand();
-		boolean found = false;
-		for (String node : server.getNodes()) {
-			if (node.contains(archive)) {
-				found = true;
-				break;
-			}
-		}
-		assertTrue(archive + " was not deployed", found);
-	}
-	
-	protected void assertClearArchivesErrorLog() {
-		
-		assertTrue("Error log contains archive errors", 
-				countOfArchivesErrors() == 0);
-	}
-	
-	protected void assertBuildingArchiveErrorExists(String location, String archive) {
-		
-		ErrorLogView errorLog = new ErrorLogView();
-		
-		SWTBotTreeItem buildingError = null; 
-		
-		for (SWTBotTreeItem ti : errorLog.getMessages()) {
-			String pluginId = ti.cell(1);
-			if (pluginId.contains("org.jboss.ide.eclipse.archives") && 
-				ti.getText().equals("An error occurred while building project archives")) {
-				buildingError = ti;
-			}
-		}
-		
-		assertNotNull("No building archive error was found in error log", buildingError);
-		
-		buildingError.expand();
-		SWTBotTreeItem[] subErrorMessages = buildingError.getItems();
-		assertThat(subErrorMessages.length, Is.is(1));
-		assertThat(subErrorMessages[0].getText(), Is.is("Error creating output file " 
-				+ location + " for node " + archive));
-		
-	}
-	
-	protected void removeArchiveFromServer(String archive) {
-		ServersView serversView = showServersView();
-		serversView.removeProjectFromServers(archive);
-	}
-	
-	protected SWTBotTreeItem findConfiguredServer(ServersView serversView) {
-		SWTBotTreeItem server = null;
+	protected void assertArchiveIsInView(ProjectArchivesView view, 
+			String archiveName) {
 		try {
-			server = serversView.findServerByName(serversView.bot().tree(), 
-				configuredState.getServer().name);			
-		} catch (WidgetNotFoundException exc) {
-			fail("Server is not configured - missing in servers view");
+			view.open();
+			view.getProject().getArchive(archiveName);
+		} catch (Exception sle) {
+			fail("'" + archiveName + "' is not in archives view but it should!");
 		}
-		return server;
 	}
 	
-	private ServersView showServersView() {
-		ServersView serversView = new ServersView();
-		serversView.show();
-		return serversView;
+	protected void assertArchiveIsNotInView(ProjectArchivesView view, 
+			String archiveName) {
+		try {
+			view.open();
+			view.getProject().getArchive(archiveName);
+			fail("'" + archiveName + "' is in archives view but it should not!");
+		} catch (Exception sle) {
+			
+		}
 	}
 	
-	protected static void showErrorView() {
-		new ErrorLogView().show();
+	protected void assertArchiveIsInExplorer(ProjectArchivesExplorer explorer, 
+			String archiveName) {
+		try {
+			explorer.getArchive(archiveName);
+		} catch (Exception sle) {
+			fail("'" + archiveName + "' is not in archives explorer but it should!");
+		}
+	}
+	
+	protected void assertArchiveIsNotInExplorer(ProjectArchivesExplorer explorer, 
+			String archiveName) {
+		try {
+			explorer.getArchive(archiveName);
+			fail("'" + archiveName + "' is in archives explorer but it should not!");
+		} catch (Exception sle) {
+		}
 	}
 	
 	protected static void clearErrorView() {
@@ -154,32 +101,22 @@ public class ArchivesTestBase extends SWTTestExt {
 	}
 	
 	protected static void createJavaProject(String projectName) {
-		JavaProjectEntity jpe = new JavaProjectEntity();
-		jpe.setProjectName(projectName);
-		eclipse.createJavaProject(jpe);
+		NewJavaProjectWizardDialog javaProject = new NewJavaProjectWizardDialog();
+		javaProject.open();
+		
+		NewJavaProjectWizardPage javaWizardPage = javaProject.getFirstPage();
+		javaWizardPage.setProjectName(projectName);
+		
+		javaProject.finish(false);
 	}
 	
-	protected static void importProject(String projectName) {
+	protected static void importArchiveProjectWithoutRuntime(String projectName) {
 		
 		String location = "/resources/prj/" + projectName;
-		importProject(projectName, location, projectName);
+		importArchiveProjectWithoutRuntime(projectName, location, projectName);
 	}
 	
-	protected static void importProject(String projectName, 
-			String projectLocation, String dir) {
-		
-		ImportHelper.importProject(projectLocation, dir, Activator.PLUGIN_ID);
-		eclipse.addConfiguredRuntimeIntoProject(projectName, 
-				configuredState.getServer().name);
-	}
-	
-	protected static void importProjectWithoutRuntime(String projectName) {
-		
-		String location = "/resources/prj/" + projectName;
-		importProjectWithoutRuntime(projectName, location, projectName);
-	}
-	
-	protected static void importProjectWithoutRuntime(String projectName, 
+	protected static void importArchiveProjectWithoutRuntime(String projectName, 
 			String projectLocation, String dir) {
 		ImportHelper.importProject(projectLocation, dir, Activator.PLUGIN_ID);
 	}
@@ -192,18 +129,8 @@ public class ArchivesTestBase extends SWTTestExt {
 		addRemoveArchivesSupport(projectName, false);
 	}
 	
-	protected boolean archiveExplorerExists(String projectName) {
-		SWTBot bot = projectExplorer.bot();
-		try {
-			TreeHelper.expandNode(bot, projectName, "Project Archives");
-			return true;
-		} catch (WidgetNotFoundException exc) {
-			return false;
-		}
-	}
-	
 	private void addRemoveArchivesSupport(String projectName, boolean add) {
-		projectExplorer.selectProject(projectName);
+		projectExplorer.getProject(projectName).select();
 		if (add) {
 			new ContextMenu(IDELabel.Menu.PACKAGE_EXPLORER_CONFIGURE, 
 					IDELabel.Menu.ADD_ARCHIVE_SUPPORT).select();
@@ -211,21 +138,7 @@ public class ArchivesTestBase extends SWTTestExt {
 			new ContextMenu(IDELabel.Menu.PACKAGE_EXPLORER_CONFIGURE, 
 					IDELabel.Menu.REMOVE_ARCHIVE_SUPPORT).select();
 		}
-		bot.waitWhile(new 
-				ProgressInformationShellIsActiveCondition(), 
-				TaskDuration.LONG.getTimeout());
-	}
-	
-	private int countOfArchivesErrors() {
-		ErrorLogView errorLog = new ErrorLogView();
-		int archivesErrorsCount = 0;
-		for (SWTBotTreeItem ti : errorLog.getMessages()) {
-			String pluginId = ti.cell(1);
-			if (pluginId.contains("org.jboss.ide.eclipse.archives")) {
-				archivesErrorsCount++;
-			}
-		}
-		return archivesErrorsCount;
+		new WaitWhile(new JobIsRunning());
 	}
 	
 }

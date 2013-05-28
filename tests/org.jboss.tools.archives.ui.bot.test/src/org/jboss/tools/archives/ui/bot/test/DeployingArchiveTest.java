@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010-2012 Red Hat, Inc.
+ * Copyright (c) 2010-2013 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -10,17 +10,20 @@
  ******************************************************************************/
 package org.jboss.tools.archives.ui.bot.test;
 
-import org.jboss.tools.archives.ui.bot.test.dialog.ArchivePublishSettingsDialog;
-import org.jboss.tools.archives.ui.bot.test.explorer.ProjectArchivesExplorer;
-import org.jboss.tools.archives.ui.bot.test.view.ProjectArchivesView;
-import org.jboss.tools.ui.bot.ext.Timing;
+import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.jboss.tools.archives.reddeer.archives.ui.ArchivePublishDialog;
+import org.jboss.tools.archives.reddeer.archives.ui.ProjectArchivesExplorer;
+import org.jboss.tools.archives.reddeer.component.Archive;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
+import org.jboss.tools.ui.bot.ext.view.ServersView;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
+ * Tests if deploying an archive via archives view and explorer is possible
  * 
  * @author jjankovi
  *
@@ -43,19 +46,21 @@ public class DeployingArchiveTest extends ArchivesTestBase {
 	
 	@BeforeClass
 	public static void setup() {
-		importProjectWithoutRuntime(project);
+		importArchiveProjectWithoutRuntime(project);
 	}
 	
 	@Test
 	public void testDeployingArchiveWithView() {
 		
 		/* prepare view for testing */
-		ProjectArchivesView view = viewForProject(project);
+		view = viewForProject(project);
 		
 		/* publish into server with entered options */
-		publishArchiveInView(view, false, false, 
-				project, PATH_ARCHIVE_1);
-		
+		Archive archive	= view
+			.getProject()
+			.getArchive(PATH_ARCHIVE_1);
+		fillPublishDialog(archive.publishToServer(), false, false);
+				
 		/* test archive is deployed */
 		assertArchiveIsDeployed(project + "/" + ARCHIVE_NAME_1);
 		
@@ -66,11 +71,10 @@ public class DeployingArchiveTest extends ArchivesTestBase {
 		view = viewForProject(project);
 		
 		/* edit publish setting - always publish option */
-		editPublishSettingsArchiveInView(view, true, false, 
-				project, PATH_ARCHIVE_1);
+		fillPublishDialog(archive.editPublishSettings(), true, false);
 		
 		/* publish into server without dialog appears */
-		publishArchiveInView(view, project, PATH_ARCHIVE_1);
+		archive.publishToServer();
 		
 		/* test archive is deployed */
 		assertArchiveIsDeployed(project + "/" + ARCHIVE_NAME_1);
@@ -83,7 +87,9 @@ public class DeployingArchiveTest extends ArchivesTestBase {
 		ProjectArchivesExplorer explorer = explorerForProject(project);
 		
 		/* publish into server with entered options */
-		publishArchiveInExplorer(explorer, false, false, PATH_ARCHIVE_2);
+		Archive archive = explorer
+				.getArchive(PATH_ARCHIVE_2);
+		fillPublishDialog(archive.publishToServer(), false, false);
 		
 		/* test archive is deployed */
 		assertArchiveIsDeployed(project + "/" + ARCHIVE_NAME_2);
@@ -95,100 +101,61 @@ public class DeployingArchiveTest extends ArchivesTestBase {
 		explorer = explorerForProject(project);
 		
 		/* edit publish setting - always publish option */
-		editPublishSettingsArchiveInExplorer(explorer, true, false, PATH_ARCHIVE_2);
+		fillPublishDialog(archive.editPublishSettings(), true, false);
 		
 		/* publish into server without dialog appears */
-		publishArchiveInExplorer(explorer, PATH_ARCHIVE_2);
+		archive.publishToServer();
 		
 		/* test archive is deployed */
 		assertArchiveIsDeployed(project + "/" + ARCHIVE_NAME_2);
 	}
 	
-	private void publishArchiveInView(
-			ProjectArchivesView view, String... archivePath) {
-		view.publishToServer(false, archivePath);
-	}
-	
-	private void publishArchiveInView(
-			ProjectArchivesView view,  
-			boolean alwaysPublish, 
-			boolean autodeploy, String... archivePath) {
-		fillDeployDialogForArchives(true, true, view, 
-				null, alwaysPublish, autodeploy, archivePath);
-		bot.sleep(Timing.time2S());
-	}
-	
-	private void publishArchiveInExplorer(
-			ProjectArchivesExplorer explorer, String archive) {
-		explorer.publishToServer(false, archive);
-	}
-
-	private void publishArchiveInExplorer(
-			ProjectArchivesExplorer explorer, 
-			boolean alwaysPublish,
-			boolean autodeploy, String archive) {
-		fillDeployDialogForArchives(true, true, null, 
-				explorer, alwaysPublish, autodeploy, archive);
-		bot.sleep(Timing.time2S());
-	}
-	
-	private void editPublishSettingsArchiveInView(
-			ProjectArchivesView view, boolean alwaysPublish, 
-			boolean autodeploy, String... archivePath) {
-		fillDeployDialogForArchives(false, true, view, null,
-				alwaysPublish, autodeploy, archivePath);
-	}
-	
-	private void editPublishSettingsArchiveInExplorer(
-			ProjectArchivesExplorer explorer, 
-			boolean alwaysPublish,
-			boolean autodeploy, String archive) {
-		fillDeployDialogForArchives(false, true, null, 
-				explorer, alwaysPublish, autodeploy, archive);
-	}
-	
-	private void fillDeployDialogForArchives(boolean publishContextMenu, 
-			boolean returnDialog, ProjectArchivesView view, 
-			ProjectArchivesExplorer explorer, boolean alwaysPublish, 
-			boolean autodeploy, String... archivePath) {
-		
+	private void fillPublishDialog(ArchivePublishDialog dialog, boolean alwaysPublish, boolean autodeploy) {
 		if (!alwaysPublish && autodeploy) {
 			throw new IllegalArgumentException(
 					"Cannot autodeploy without always publish option checked");
 		}
-		if (view == null && explorer == null) {
-			throw new IllegalArgumentException(
-					"At least one of explorer or view must be provided");
-		}
-		ArchivePublishSettingsDialog dialog = getDialog(publishContextMenu, 
-				view, explorer, returnDialog, archivePath);
-		
 		dialog.selectServers(configuredState.getServer().name);
 		if (alwaysPublish) dialog.checkAlwaysPublish();
 		if (autodeploy) dialog.checkAutoDeploy();
 		dialog.finish();
 	}
-
-	private ArchivePublishSettingsDialog getDialog(boolean publishContextMenu,
-			ProjectArchivesView view, ProjectArchivesExplorer explorer,
-			boolean returnDialog, String[] archivePath) {
-		ArchivePublishSettingsDialog dialog = null;
-		if (publishContextMenu) {
-			if (view == null) {
-				dialog = explorer.publishToServer(returnDialog, archivePath[0]);
-			} else {
-				dialog = view.publishToServer(returnDialog, archivePath);
-			}
-		} else {
-			if (view == null) {
-				dialog = explorer.editPublishSettings(archivePath[0]);
-			} else {
-				dialog = view.editPublishSettings(archivePath);
+	
+	private void removeArchiveFromServer(String archive) {
+		ServersView serversView = showServersView();
+		serversView.removeProjectFromServers(archive);
+	}
+	
+	private void assertArchiveIsDeployed(String archive) {
+		ServersView serversView = showServersView();
+		SWTBotTreeItem server = findConfiguredServer(serversView);
+		server.collapse();
+		server.expand();
+		boolean found = false;
+		for (String node : server.getNodes()) {
+			if (node.contains(archive)) {
+				found = true;
+				break;
 			}
 		}
-		return dialog;
-		
+		assertTrue(archive + " was not deployed", found);
+	}
+	
+	private SWTBotTreeItem findConfiguredServer(ServersView serversView) {
+		SWTBotTreeItem server = null;
+		try {
+			server = serversView.findServerByName(serversView.bot().tree(), 
+				configuredState.getServer().name);			
+		} catch (WidgetNotFoundException exc) {
+			fail("Server is not configured - missing in servers view");
+		}
+		return server;
 	}
 
-	
+
+	private ServersView showServersView() {
+		ServersView serversView = new ServersView();
+		serversView.show();
+		return serversView;
+	}
 }

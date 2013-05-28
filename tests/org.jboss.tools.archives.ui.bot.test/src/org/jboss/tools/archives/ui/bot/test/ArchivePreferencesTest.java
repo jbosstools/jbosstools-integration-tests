@@ -10,13 +10,12 @@
  ******************************************************************************/
 package org.jboss.tools.archives.ui.bot.test;
 
-import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.tree.ShellTreeItem;
+import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.archives.reddeer.archives.ui.MainPreferencePage;
@@ -24,6 +23,7 @@ import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.junit.Test;
 
 /**
+ * Tests global and local archive preferences
  * 
  * @author jjankovi
  *
@@ -59,19 +59,19 @@ public class ArchivePreferencesTest extends ArchivesTestBase {
 		String projectProperties = "Properties for " + projectName;
 		new WaitUntil(new ShellWithTextIsActive(projectProperties));
 		new DefaultShell(projectProperties);
-		new ShellTreeItem("Project Archives").select();
+		new DefaultTreeItem("Project Archives").select();
 	}
 	
 	private void openPropertiesForProject(String projectName) {
 		PackageExplorer packageExplorer = new PackageExplorer();
 		packageExplorer.open();
 		
-		packageExplorer.selectProject(projectName);
+		packageExplorer.getProject(projectName).select();
 		new ContextMenu(IDELabel.Menu.PROPERTIES).select();
 	}
 	
 	private void openGlobalPreferencesFromLocal(String projectName) {
-		bot.link().click();
+		bot.link("<A>Configure Workspace Settings...</A>").click();
 		new WaitUntil(new ShellWithTextIsActive(IDELabel.Shell.PREFERENCES_FILTERED));
 		new DefaultShell(IDELabel.Shell.PREFERENCES_FILTERED);
 		try {
@@ -81,7 +81,7 @@ public class ArchivePreferencesTest extends ArchivesTestBase {
 			new DefaultShell("Properties for " + projectName);
 			new PushButton(IDELabel.Button.CANCEL).click();
 			new WaitWhile(new ShellWithTextIsActive("Properties for " + projectName));
-		}catch (WidgetNotFoundException wnfe) {
+		}catch (Exception wnfe) {
 			fail("Archive global preferences page was not invoked");
 		}
 	}

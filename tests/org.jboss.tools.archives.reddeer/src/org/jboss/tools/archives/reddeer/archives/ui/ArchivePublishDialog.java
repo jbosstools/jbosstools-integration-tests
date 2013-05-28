@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010-2012 Red Hat, Inc.
+ * Copyright (c) 2010-2013 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -8,42 +8,37 @@
  * Contributors:
  * Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.archives.ui.bot.test.dialog;
+package org.jboss.tools.archives.reddeer.archives.ui;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.swtbot.swt.finder.SWTBot;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
-import org.jboss.tools.ui.bot.ext.SWTBotFactory;
-import org.jboss.tools.ui.bot.ext.types.IDELabel;
+import org.jboss.reddeer.swt.api.Table;
+import org.jboss.reddeer.swt.condition.JobIsRunning;
+import org.jboss.reddeer.swt.impl.button.CheckBox;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.table.DefaultTable;
+import org.jboss.reddeer.swt.wait.WaitWhile;
 
 /**
+ * Dialog for deploying archive on servers 
  * 
  * @author jjankovi
  *
  */
-public class ArchivePublishSettingsDialog {
+public class ArchivePublishDialog extends DefaultShell {
 
-	private SWTBotShell shell = null;
-	private SWTBot bot = null;
 	private static final String DIALOG_TITLE = "Archive Publish Settings";
 	
-	
-	public ArchivePublishSettingsDialog() {
-		shell = SWTBotFactory.getBot().shell(getDialogTitle());
-		bot = shell.bot();
+	public ArchivePublishDialog() {
+		super(DIALOG_TITLE);
 	}
 
-	private String getDialogTitle() {
-		return DIALOG_TITLE;
-	}
-	
 	public List<String> getAllServersInDialog() {
 		List<String> serversInDialog = new ArrayList<String>();
 		for (int i = 0; i < table().rowCount(); i++) {
-			serversInDialog.add(table().getTableItem(i).getText());
+			serversInDialog.add(table().cell(i, 0));
 		}
 		return serversInDialog;
 	}
@@ -54,17 +49,17 @@ public class ArchivePublishSettingsDialog {
 		return selectedServers;
 	}
 	
-	public ArchivePublishSettingsDialog selectServers(String... serversToSelect) {
+	public ArchivePublishDialog selectServers(String... serversToSelect) {
 		table().select(serversToSelect);
 		return this;
 	}
 	
-	public ArchivePublishSettingsDialog unselectServers(String... serversToUnselect) {
+	public ArchivePublishDialog unselectServers(String... serversToUnselect) {
 		/* get all selected servers - for future use */
 		List<String> selectedServers = getAllSelectedServersInDialog();
 		
 		/* unselect all servers */
-		table().unselect();
+//		table().unselect();
 		
 		/* from all selected servers remove the ones that should be unselected */
 		for (int i = 0; i < serversToUnselect.length; i++) {
@@ -79,42 +74,42 @@ public class ArchivePublishSettingsDialog {
 		return this;
 	}
 	
-	public ArchivePublishSettingsDialog unselectAllServers() {
-		table().unselect();
+	public ArchivePublishDialog unselectAllServers() {
+//		table().unselect();
 		return this;
 	}
 	
-	public ArchivePublishSettingsDialog checkAlwaysPublish() {
-		this.bot.checkBox(0).select();
+	public ArchivePublishDialog checkAlwaysPublish() {
+		new CheckBox(0).toggle(true);
 		return this; 
 	}
 	
-	public ArchivePublishSettingsDialog uncheckAlwaysPublish() {
-		this.bot.checkBox(0).deselect();
+	public ArchivePublishDialog uncheckAlwaysPublish() {
+		new CheckBox(0).toggle(false);
 		return this; 
 	}
 	
-	public ArchivePublishSettingsDialog checkAutoDeploy() {
-		this.bot.checkBox(1).select();
+	public ArchivePublishDialog checkAutoDeploy() {
+		new CheckBox(1).toggle(true);
 		return this; 
 	}
 	
-	public ArchivePublishSettingsDialog uncheckAutoDeploy() {
-		this.bot.checkBox(1).deselect();
+	public ArchivePublishDialog uncheckAutoDeploy() {
+		new CheckBox(1).toggle(false);
 		return this; 
 	}
 	
-	private SWTBotTable table() {
-		return this.bot.table();
+	private Table table() {
+		return new DefaultTable();
 	}
 	
 	public void cancel() {
-		bot.button(IDELabel.Button.CANCEL).click();
+		new PushButton("Cancel").click();
 	}
 	
 	public void finish() {
-		bot.button(IDELabel.Button.FINISH).click();
-		SWTBotFactory.getUtil().waitForNonIgnoredJobs();
+		new PushButton("Finish").click();
+		new WaitWhile(new JobIsRunning());
 	}
 	
 }

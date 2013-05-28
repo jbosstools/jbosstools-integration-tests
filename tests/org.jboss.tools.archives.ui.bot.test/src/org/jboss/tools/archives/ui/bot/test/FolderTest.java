@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010-2012 Red Hat, Inc.
+ * Copyright (c) 2010-2013 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -10,62 +10,125 @@
  ******************************************************************************/
 package org.jboss.tools.archives.ui.bot.test;
 
-import org.jboss.tools.archives.ui.bot.test.dialog.FolderCreatingDialog;
-import org.jboss.tools.archives.ui.bot.test.explorer.ProjectArchivesExplorer;
-import org.jboss.tools.archives.ui.bot.test.view.ProjectArchivesView;
-import org.junit.BeforeClass;
+import org.eclipse.swtbot.swt.finder.widgets.TimeoutException;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
+import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.tools.archives.reddeer.archives.ui.ProjectArchivesExplorer;
+import org.jboss.tools.archives.reddeer.component.Archive;
+import org.jboss.tools.archives.ui.bot.test.condition.FolderIsInArchive;
+import org.junit.After;
 import org.junit.Test;
 
 /**
+ * Tests if creating, modifying and deleting a folder via 
+ * archives view and explorer is possible.
  * 
  * @author jjankovi
  *
  */
 public class FolderTest extends ArchivesTestBase {
 
-	private static String projectName = "pr2";
+	private static final String PROJECT_1 = "pr2";
+	private static final String PROJECT_2 = "pr5";
 	
-	private final String PATH_SUFFIX = " [/" + projectName + "]"; 
-	private final String ARCHIVE_NAME = projectName + ".jar";
-	private final String ARCHIVE_PATH = 
-			ARCHIVE_NAME + PATH_SUFFIX;
+	private static final String PROJECT_1_ARCHIVE_PATH = PROJECT_1 + ".jar" + 
+			" [/" + PROJECT_1 + "]";
+	private static final String PROJECT_2_ARCHIVE_PATH = PROJECT_2 + ".jar" + 
+			" [/" + PROJECT_2 + "]";
 	
-	@BeforeClass
-	public static void setup() {
-		importProjectWithoutRuntime(projectName);
+	private static final String FOLDER_1= "a";
+	private static final String FOLDER_1_NEW = "new-a";
+	private static final String FOLDER_2 = "b";
+	private static final String FOLDER_2_NEW = "new-b";
+	
+	@After
+	public void cleanUp() {
+		for (Project project : projectExplorer.getProjects()) {
+			project.delete(true);
+		}
 	}
 	
 	@Test
-	public void testCreatingFolderInView() {
-		String folderName = "a";
+	public void testCreatingFolder() {
+		importArchiveProjectWithoutRuntime(PROJECT_1);
 		
-		/* prepare view for testing */
-		ProjectArchivesView view = viewForProject(projectName);
+		view = viewForProject(PROJECT_1);
+		Archive archiveInView = view.getProject().getArchive(PROJECT_1_ARCHIVE_PATH);
+		testCreatingFolder(archiveInView, FOLDER_1);
 		
-		/* create folder */
-		createFolderForArchive(view.createFolder(projectName, ARCHIVE_PATH), folderName);
+		ProjectArchivesExplorer explorer = explorerForProject(PROJECT_1);
+		Archive archiveInExplorer = explorer.getArchive(PROJECT_1_ARCHIVE_PATH);
+		testCreatingFolder(archiveInExplorer, FOLDER_2);
 		
-		/* test if folder was created */
-		assertItemExistsInView(view, projectName, ARCHIVE_PATH, folderName);
 	}
 	
 	@Test
-	public void testCreatingFolderInExplorer() {
-		String folderName = "b";
+	public void testModifyingFolder() {
+		importArchiveProjectWithoutRuntime(PROJECT_2);
 		
-		/* prepare explorer for testing */
-		ProjectArchivesExplorer explorer = explorerForProject(projectName);
+		view = viewForProject(PROJECT_2);
+		Archive archiveInView = view.getProject().getArchive(PROJECT_2_ARCHIVE_PATH);
+		testModifyFolder(archiveInView, FOLDER_1, FOLDER_1_NEW);
 		
-		/* create folder */
-		createFolderForArchive(explorer.createFolder(ARCHIVE_PATH), folderName);
-		
-		/* test if folder was created */
-		assertItemExistsInExplorer(explorer, ARCHIVE_PATH, folderName);
+		ProjectArchivesExplorer explorer = explorerForProject(PROJECT_2);
+		Archive archiveInExplorer = explorer.getArchive(PROJECT_2_ARCHIVE_PATH);
+		testModifyFolder(archiveInExplorer, FOLDER_2, FOLDER_2_NEW);
 	}
 	
-	private void createFolderForArchive(FolderCreatingDialog dialog,
-			String folderName) {
-		dialog.setNameOfFolder(folderName).ok();
+	@Test
+	public void testDeletingFolder() {
+		importArchiveProjectWithoutRuntime(PROJECT_2);
+		
+		view = viewForProject(PROJECT_2);
+		Archive archiveInView = view.getProject().getArchive(PROJECT_2_ARCHIVE_PATH);
+		testDeleteFolder(archiveInView, FOLDER_1);
+		
+		ProjectArchivesExplorer explorer = explorerForProject(PROJECT_2);
+		Archive archiveInExplorer = explorer.getArchive(PROJECT_2_ARCHIVE_PATH);
+		testDeleteFolder(archiveInExplorer, FOLDER_2);
+	}
+	
+	private void testCreatingFolder(Archive archive, String folderName) {
+		
+		archive.newFolder().setNameOfFolder(folderName).ok();
+		
+		try {
+			new WaitUntil(new FolderIsInArchive(archive, folderName));
+		} catch (TimeoutException te) {
+			fail("'" + folderName 
+					 + "' was not created under archive '" 
+					 + archive.getName() + "'!");
+		}
+	}
+	
+	private void testModifyFolder(Archive archive, String folderName, 
+			String folderNewName) {
+		
+		archive.getFolder(folderName).editFolder()
+			.setNameOfFolder(folderNewName).ok();
+		
+		try {
+			new WaitWhile(new FolderIsInArchive(archive, folderName));
+			new WaitUntil(new FolderIsInArchive(archive, folderNewName));
+		} catch (TimeoutException te) {
+			fail("'" + folderName 
+					 + "' was not modified to '" + folderNewName 
+					 + "' under archive '" + archive.getName() + "'!");
+		}
+	}
+	
+	private void testDeleteFolder(Archive archive, String folderName) {
+		
+		archive.getFolder(folderName).deleteFolder(true);
+		
+		try {
+			new WaitWhile(new FolderIsInArchive(archive, folderName));
+		} catch (TimeoutException te) {
+			fail("'" + folderName 
+					 + "' was not deleted under archive '" 
+					 + archive.getName() + "'!");
+		}
 	}
 	
 }
