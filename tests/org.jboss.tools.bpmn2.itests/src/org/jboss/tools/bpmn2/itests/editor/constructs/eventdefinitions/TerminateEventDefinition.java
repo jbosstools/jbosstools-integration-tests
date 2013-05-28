@@ -9,7 +9,7 @@ public class TerminateEventDefinition extends AbstractEventDefinition {
 	}
 	
 	public TerminateEventDefinition(int index) {
-		super("Terminate Event Defnition", index);
+		super("Terminate Event Definition", index);
 	}
 	
 	@Override

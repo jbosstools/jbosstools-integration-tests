@@ -37,6 +37,7 @@ public class JBPM5Parameter extends JBPM5Variable implements IParameter {
 	 */
 	public JBPM5Parameter(String name, JBPM5DataType dataType, IMapping mapping, String sectionName) {
 		super(name, dataType, sectionName);
+		this.mapping = mapping;
 	}
 	
 	/**
@@ -47,9 +48,9 @@ public class JBPM5Parameter extends JBPM5Variable implements IParameter {
 		
 		int index = properties.indexOfSection(sectionName);
 		
-		bot.toolbarButtonWithTooltip("Edit", index);
+		bot.toolbarButtonWithTooltip("Edit", index).click();
 		mapping.add();
-		bot.toolbarButtonWithTooltip("Close");
+		bot.toolbarButtonWithTooltip("Close").click();
 	}
 	
 }

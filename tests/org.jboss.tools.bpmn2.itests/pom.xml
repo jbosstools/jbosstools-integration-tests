@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.jboss.tools.integration-tests</groupId>
@@ -14,14 +13,62 @@
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>eclipse-test-plugin</packaging>
 	<properties>
-		<systemProperties>${integrationTestsSystemProperties} -Dswtbot.test.skip=false -Dtest.configurations.dir=resources/</systemProperties>
-		<surefire.timeout>3600</surefire.timeout>
-		<reddeer.site>http://download.jboss.org/jbosstools/builds/staging/RedDeer_master/all/repo</reddeer.site>
+		<jbpm.site>https://repository.jboss.org/nexus/content/groups/public-jboss/</jbpm.site>
 		<jbtis.site>http://download.jboss.org/jbosstools/updates/integration/juno/integration-stack/aggregate/4.0.0</jbtis.site>
 		<eclipse.graphiti.site>http://download.eclipse.org/graphiti/updates/0.9.0</eclipse.graphiti.site>
+		<systemProperties>${integrationTestsSystemProperties} -Dswtbot.test.skip=false -Dtest.configurations.dir=resources/</systemProperties>
+		<droolsjbpm.version>6.0.0-SNAPSHOT</droolsjbpm.version>
 	</properties>
 
+	<dependencies>
+		<dependency>
+			<groupId>org.kie</groupId>
+			<artifactId>kie-api</artifactId>
+			<version>${droolsjbpm.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.kie</groupId>
+			<artifactId>kie-internal</artifactId>
+			<version>${droolsjbpm.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.drools</groupId>
+			<artifactId>drools-core</artifactId>
+			<version>${droolsjbpm.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.drools</groupId>
+			<artifactId>drools-compiler</artifactId>
+			<version>${droolsjbpm.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.jbpm</groupId>
+			<artifactId>jbpm-flow</artifactId>
+			<version>${droolsjbpm.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jbpm</groupId>
+			<artifactId>jbpm-flow-builder</artifactId>
+			<version>${droolsjbpm.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jbpm</groupId>
+			<artifactId>jbpm-bpmn2</artifactId>
+			<version>${droolsjbpm.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jbpm</groupId>
+			<artifactId>jbpm-audit</artifactId>
+			<version>${droolsjbpm.version}</version>
+		</dependency>
+
+		<!--dependency> <groupId>com.thoughtworks.xstream</groupId> <artifactId>xstream</artifactId> 
+			<version>${droolsjbpm.version}</version> </dependency -->
+	</dependencies>
+
 	<repositories>
+<<<<<<< HEAD
 		<!-- Red Deer Repository -->
 		<repository>
 			<id>red_deer</id>
@@ -35,8 +82,21 @@
 			</releases>
 		</repository>
 		<!-- JBTIS Repository -->
+=======
+>>>>>>> bug fixes, replaced jBPM5 validator with jBPM6, configured maven to compile it all
 		<repository>
-			<id>jbtis</id>
+			<id>jbpm-site</id>
+			<url>${jbpm.site}</url>
+			<layout>default</layout>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+		</repository>
+		<repository>
+			<id>jbtis-site</id>
 			<url>${jbtis.site}</url>
 			<layout>p2</layout>
 			<snapshots>
@@ -47,8 +107,7 @@
 			</releases>
 		</repository>
 		<repository>
-			<!-- Helios -->
-			<id>eclipse-graphiti</id>
+			<id>eclipse-graphiti-site</id>
 			<url>${eclipse.graphiti.site}</url>
 			<layout>p2</layout>
 			<snapshots>
@@ -60,47 +119,87 @@
 		</repository>
 	</repositories>
 
-	<!--build>
+	<build>
 		<plugins>
 			<plugin>
-				<groupId>org.eclipse.tycho</groupId>
-				<artifactId>tycho-surefire-plugin</artifactId>
-				<version>${tychoVersion}</version>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
 				<configuration>
-					<useUIThread>false</useUIThread>
-					<testSuite>org.jboss.tools.bpmn2.ui.bot.test</testSuite>
-					<testClass>org.jboss.tools.bpmn2.ui.bot.test.AllTests</testClass>
-					<dependencies combine.children="append">
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.jboss.ide.eclipse.as.feature.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.guvnor.tools.feature.feature.group</artifactId>
-							<version>5.3.1</version>
-						</dependency>
-					</dependencies>
+					<stripVersion>true</stripVersion>
+					<outputDirectory>lib</outputDirectory>
+					<excludeTransitive>false</excludeTransitive>
+					<excludeScope>system</excludeScope>
 				</configuration>
+				<executions>
+					<execution>
+						<id>copy-jbpm-libs</id>
+						<phase>process-sources</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<groupId>org.kie</groupId>
+									<artifactId>kie-api</artifactId>
+									<version>${droolsjbpm.version}</version>
+								</artifactItem>
+								<artifactItem>
+									<groupId>org.kie</groupId>
+									<artifactId>kie-internal</artifactId>
+									<version>${droolsjbpm.version}</version>
+								</artifactItem>
+								<artifactItem>
+									<groupId>org.drools</groupId>
+									<artifactId>drools-core</artifactId>
+									<version>${droolsjbpm.version}</version>
+								</artifactItem>
+								<artifactItem>
+									<groupId>org.drools</groupId>
+									<artifactId>drools-compiler</artifactId>
+									<version>${droolsjbpm.version}</version>
+								</artifactItem>
+
+								<artifactItem>
+									<groupId>org.jbpm</groupId>
+									<artifactId>jbpm-flow</artifactId>
+									<version>${droolsjbpm.version}</version>
+								</artifactItem>
+								<artifactItem>
+									<groupId>org.jbpm</groupId>
+									<artifactId>jbpm-flow-builder</artifactId>
+									<version>${droolsjbpm.version}</version>
+								</artifactItem>
+								<artifactItem>
+									<groupId>org.jbpm</groupId>
+									<artifactId>jbpm-bpmn2</artifactId>
+									<version>${droolsjbpm.version}</version>
+								</artifactItem>
+								<artifactItem>
+									<groupId>org.jbpm</groupId>
+									<artifactId>jbpm-audit</artifactId>
+									<version>${droolsjbpm.version}</version>
+								</artifactItem>
+							</artifactItems>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
-				<groupId>org.eclipse.tycho</groupId>
-				<artifactId>target-platform-configuration</artifactId>
-				<version>${tychoVersion}</version>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-clean-plugin</artifactId>
 				<configuration>
-					<target>
-						<artifact>
-							<groupId>org.jboss.tools.integration-stack</groupId>
-							<artifactId>target-platform</artifactId>
-							<version>4.0.0-SNAPSHOT</version>
-							<type>target</type>
-							<classifier>base</classifier>
-						</artifact>
-					</target>
+					<filesets>
+						<fileset>
+							<directory>lib</directory>
+							<includes>
+								<include>**/*</include>
+							</includes>
+						</fileset>
+					</filesets>
 				</configuration>
 			</plugin>
 		</plugins>
-	</build-->
+	</build>
 
 </project>

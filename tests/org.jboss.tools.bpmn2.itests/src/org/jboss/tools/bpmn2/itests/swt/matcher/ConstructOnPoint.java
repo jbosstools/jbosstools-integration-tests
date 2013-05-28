@@ -1,5 +1,6 @@
 package org.jboss.tools.bpmn2.itests.swt.matcher;
 
+import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.GraphicalEditPart;
 
@@ -15,18 +16,14 @@ import org.jboss.tools.bpmn2.itests.editor.BPMN2Editor;
  */
 public class ConstructOnPoint<T extends EditPart> extends BaseMatcher<EditPart> {
 
-	private int x;
-	
-	private int y;
+	private Point p;
 	
 	/**
 	 * 
-	 * @param x
-	 * @param y
+	 * @param p
 	 */
-	public ConstructOnPoint(int x, int y) {
-		this.x = x;
-		this.y = y;
+	public ConstructOnPoint(Point p) {
+		this.p = p;
 	}
 
 	/**
@@ -34,7 +31,7 @@ public class ConstructOnPoint<T extends EditPart> extends BaseMatcher<EditPart> 
 	 * @param item
 	 */
 	public boolean matches(Object item) {
-		return new BPMN2Editor().getBounds((GraphicalEditPart) item).contains(x, y);
+		return new BPMN2Editor().getBounds((GraphicalEditPart) item).contains(p);
 	}
 
 	/**
@@ -42,7 +39,7 @@ public class ConstructOnPoint<T extends EditPart> extends BaseMatcher<EditPart> 
 	 * @param description
 	 */
 	public void describeTo(Description description) {
-		description.appendText(" checking point [x,y] = " + "[" + x + ", " + y + "] for editPart presence.");
+		description.appendText(" checking " + p + " for editPart presence.");
 	}
 
 }

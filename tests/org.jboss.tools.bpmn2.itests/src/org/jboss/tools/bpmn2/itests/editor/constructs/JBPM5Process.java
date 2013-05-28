@@ -62,7 +62,8 @@ public class JBPM5Process extends Process {
 	 */
 	public void setAddHoc(boolean b) {
 		properties.selectTab("Process");
-		properties.selectCheckBox(new CheckBox("Ad Hoc"), b);
+//		properties.selectCheckBox(new CheckBox("Ad Hoc"), b);
+		properties.selectCheckBox(new CheckBox(0), b);
 	}
 	
 	/**
@@ -183,10 +184,13 @@ public class JBPM5Process extends Process {
 	public void addLocalVariable(String name, String dataType) {
 		properties.selectTab("Data Items");
 		
-		bot.toolbarButtonWithTooltip("Add", 0).click();
-		bot.textWithLabel("Name").setText(name);
+//		// TBD: the name is not the process name but file name
+//		properties.toolbarButton("Variable List for Process \"" + name + "\"", "Add").click();
 		
-		new JBPM5DataType(dataType).add();
+		bot.toolbarButtonWithTooltip("Add", 1).click();
+		bot.textWithLabel("Name").setText(name);
+
+		new JBPM5DataType(dataType, 1).add();
 		
 		bot.toolbarButtonWithTooltip("Close").click();
 	}
