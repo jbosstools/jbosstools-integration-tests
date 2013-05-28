@@ -33,6 +33,7 @@ public abstract class AbstractGateway extends Construct {
 	 * @param direction
 	 */
 	protected void setDirection(Direction direction) {
+		select();
 		String visibleText = direction.name().charAt(0) + 
 				direction.name().substring(1).toLowerCase();
 		
@@ -44,12 +45,13 @@ public abstract class AbstractGateway extends Construct {
 	 * 
 	 * @param condition
 	 */
-	protected void setCondition(String branch, String condition) {
+	protected void setCondition(String branch, String lang, String condition) {
+		select();
 		properties.selectTab("Gateway");
 		new DefaultTable(0).select(branch, 0);
 		Bot.get().toolbarButtonWithTooltip("Edit").click();
 		new PushButton("Add Condition").click();
-		new DefaultCombo("Script Language").setSelection("XPath");
+		new DefaultCombo("Script Language").setSelection(lang);
 		new LabeledText("Constraint").setText(condition);
 		Bot.get().toolbarButtonWithTooltip("Close").click();
 	}
@@ -59,6 +61,7 @@ public abstract class AbstractGateway extends Construct {
 	 * @param branch
 	 */
 	protected void setDefaultBranch(String branch) {
+		select();
 		properties.selectTab("Gateway");
 		new DefaultTable(0).select(branch, 0);
 		Bot.get().toolbarButtonWithTooltip("Edit").click();

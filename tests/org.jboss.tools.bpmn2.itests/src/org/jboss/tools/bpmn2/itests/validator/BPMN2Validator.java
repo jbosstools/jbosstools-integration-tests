@@ -60,9 +60,9 @@ public class BPMN2Validator {
 	 * @param xmlFile
 	 * @return
 	 */
-	public boolean validate(File xmlFile) throws IOException {
+	public boolean validate(File file) throws IOException {
 		String content = null;
-		FileInputStream stream = new FileInputStream(xmlFile);
+		FileInputStream stream = new FileInputStream(file);
 		try {
 			FileChannel fc = stream.getChannel();
 			MappedByteBuffer bb = fc.map(FileChannel.MapMode.READ_ONLY, 0, fc.size());
@@ -85,7 +85,7 @@ public class BPMN2Validator {
 	 * @param xmlContent
 	 * @return
 	 */
-	public boolean validate(String xmlContent) {
+	public boolean validate(String xml) {
 		try {
 			Source[] sa = schemaList.toArray(new Source[schemaList.size()]); 
 			
@@ -94,7 +94,7 @@ public class BPMN2Validator {
 
 			Validator v = s.newValidator();
 			v.setErrorHandler(new ErrorHandler());
-			v.validate(new StreamSource(new ByteArrayInputStream(xmlContent.getBytes())));
+			v.validate(new StreamSource(new ByteArrayInputStream(xml.getBytes())));
 
 			if (!fatalErrorList.isEmpty()) logIssues(Level.FATAL, fatalErrorList.size() + " Fatal Errors:", fatalErrorList);
 			if (!errorList.isEmpty()) logIssues(Level.ERROR, errorList.size() + " Errors:", errorList);

@@ -60,11 +60,11 @@ public class EventBasedGateway extends AbstractGateway {
 	}
 	
 	/**
-	 * @see org.jboss.tools.bpmn2.itests.editor.constructs.AbstractGateway#setCondition(java.lang.String, java.lang.String)
+	 * @see @see org.jboss.tools.bpmn2.itests.editor.constructs.AbstractGateway#setCondition(java.lang.String, java.lang.String, java.lang.String)
 	 */
 	@Override
-	public void setCondition(String branch, String condition) {
-		super.setCondition(branch, condition);
+	public void setCondition(String branch, String lang, String condition) {
+		super.setCondition(branch, lang, condition);
 	}
 	
 }

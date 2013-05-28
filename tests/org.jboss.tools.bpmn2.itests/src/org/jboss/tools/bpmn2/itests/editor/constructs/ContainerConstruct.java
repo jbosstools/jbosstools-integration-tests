@@ -1,9 +1,11 @@
 package org.jboss.tools.bpmn2.itests.editor.constructs;
 
+import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPart;
 
 import org.jboss.tools.bpmn2.itests.editor.ConstructType;
+import org.jboss.tools.bpmn2.itests.editor.Position;
 import org.jboss.tools.bpmn2.itests.swt.matcher.ConstructOnPoint;
 
 /**
@@ -55,26 +57,37 @@ public class ContainerConstruct extends Construct {
 		/*
 		 * Add the construct
 		 */
-		add(name, type, x, y);
+		add(name, type, new Point(x, y));
 	}
+	
+	/**
+	 * 
+	 * @param nextTo
+	 * @param name
+	 * @param type
+	 * @param position
+	 */
+	public void add(String name, ConstructType type, Construct nextTo, Position position) {
+		add(name, type, findPoint(this, nextTo, position));
+	}
+	
 	
 	/**
 	 * 
 	 * @param name
 	 * @param type
-	 * @param x
-	 * @param y
+	 * @param point
 	 */
-	public void add(String name, ConstructType type, int x, int y) {
-		if (!isAvailable(x, y)) {
-			throw new RuntimeException("[x, y] = " + "[" + x + ", " + y + "] is not available");
+	private void add(String name, ConstructType type, Point point) {
+		if (!isAvailable(point)) {
+			throw new RuntimeException("'" + point + "' is not available");
 		}
 		/*
 		 * Add the construct using the tool in the palette.
 		 */
-		log.info("Adding consturct '" + name + "' of type '" + type + "' to [x, y] = [" + x + ", " + y + "]");
+		log.info("Adding consturct '" + name + "' of type '" + type + "' to '" + point + "'");
 		editor.activateTool(type.toToolName());
-		editor.click(x, y);
+		editor.click(point.x(), point.y());
 		/*
 		 * Set name
 		 */
@@ -89,15 +102,15 @@ public class ContainerConstruct extends Construct {
 	 * @param y
 	 * @return
 	 */
-	protected boolean isAvailable(final int x, final int y) {
+	protected boolean isAvailable(Point point) {
 		/*
 		 * The point must be inside this edit part.
 		 */
-		if (editor.getBounds(editPart).contains(x, y)) {
+		if (editor.getBounds(editPart).contains(point)) {
 			/*
 			 * Check weather the point is not already taken by another child editPart.
 			 */
-			return editor.getEditParts(editPart, new ConstructOnPoint<EditPart>(x, y)).isEmpty();
+			return editor.getEditParts(editPart, new ConstructOnPoint<EditPart>(point)).isEmpty();
 		}
 		/*
 		 * Out of bounds.

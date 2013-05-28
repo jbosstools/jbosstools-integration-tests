@@ -28,18 +28,14 @@ public class CallActivity extends AbstractTask {
 	
 	public void setIndependent(boolean b) {
 		properties.selectTab("Call Activity");
-		CheckBox box = new CheckBox("Wait For Completion");
-		if ((box.isChecked() && !b) || (!box.isChecked() && b)) {
-			box.click();
-		}
+		//properties.selectCheckBox(new CheckBox("Independent"), b);
+		properties.selectCheckBox(new CheckBox(1), b);
 	}
 	
 	public void setWaitForCompletion(boolean b) {
 		properties.selectTab("Call Activity");
-		CheckBox box = new CheckBox("Independent");
-		if ((box.isChecked() && !b) || (!box.isChecked() && b)) {
-			box.click();
-		}
+//		properties.selectCheckBox(new CheckBox("Wait For Completion"), b);
+		properties.selectCheckBox(new CheckBox(0), b);
 	}
 	
 	public void setCalledActivity(String id) {

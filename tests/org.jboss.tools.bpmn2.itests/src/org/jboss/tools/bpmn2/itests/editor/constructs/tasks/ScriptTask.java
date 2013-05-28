@@ -22,7 +22,9 @@ public class ScriptTask extends AbstractTask {
 
 	public void setScript(String language, String script) {
 		properties.selectTab("Script Task");
-		new DefaultCombo("Script Language").setSelection(language);
+		if (language != null && !language.isEmpty()) {
+			new DefaultCombo("Script Language").setSelection(language);
+		}
 		new LabeledText("Script").setText(script);
 	}
 
