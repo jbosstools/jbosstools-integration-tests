@@ -124,7 +124,7 @@ public class QuickFixHelper {
 		/**
 		 * when creating beans.xml, user has to define location
 		 */
-		if (text.equals("Create File beans.xml")) {
+		if (text != null && text.equals("Create File beans.xml")) {
 			bot.waitUntil(new ShellIsActiveCondition("New beans.xml File"));
 			bot.button(IDELabel.Button.FINISH).click();
 		}
