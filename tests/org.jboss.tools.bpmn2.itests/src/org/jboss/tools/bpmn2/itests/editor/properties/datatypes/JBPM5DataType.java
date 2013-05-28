@@ -28,13 +28,14 @@ public class JBPM5DataType extends AbstractDataType {
 
 	public void add() {
 		SWTBot bot = Bot.get();
-		bot.toolbarButtonWithTooltip("Add", index).click();
+//		bot.toolbarButtonWithTooltip("Add", index).click();
+		bot.button(0).click();
 
 		SWTBot dialogBot = Bot.get().shell("Create New Data Type").bot();
 		dialogBot.textWithLabel("Data Type").setText(typeName);
 		dialogBot.button("OK").click();
 		
-		bot.toolbarButtonWithTooltip("Close").click();
+//		bot.toolbarButtonWithTooltip("Close").click();
 	}
 	
 }

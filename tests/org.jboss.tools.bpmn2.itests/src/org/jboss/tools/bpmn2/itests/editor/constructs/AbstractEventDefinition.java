@@ -4,6 +4,7 @@ import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.util.Bot;
+import org.jboss.tools.bpmn2.itests.editor.properties.BPMN2PropertiesView;
 
 /**
  * 
@@ -16,6 +17,8 @@ public abstract class AbstractEventDefinition {
 	private String name;
 
 	protected SWTBot bot;
+	
+	protected BPMN2PropertiesView properties;
 	
 	/**
 	 * Creates a new instance of EventDefinition.
@@ -37,6 +40,7 @@ public abstract class AbstractEventDefinition {
 		this.index = index;
 		
 		this.bot = Bot.get();
+		this.properties = new BPMN2PropertiesView();
 	}
 	
 	/**
@@ -53,7 +57,7 @@ public abstract class AbstractEventDefinition {
 		/*
 		 * Add event definition
 		 */
-		new PushButton(index).click();
+		properties.toolbarButton("Event Definitions", "Add").click();
 		new DefaultTable().select(name);
 		new PushButton("OK").click();
 		/*

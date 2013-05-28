@@ -4,10 +4,35 @@ Bundle-Name: Process Editor SWTBot Tests
 Bundle-SymbolicName: org.jboss.tools.bpmn2.itests
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: org.jboss.tools.bpmn2.itests.test.Activator
+Bundle-ClassPath: .,
+ lib/antlr.jar,
+ lib/drools-compiler.jar,
+ lib/ecj.jar,
+ lib/jbpm-audit.jar,
+ lib/jbpm-flow.jar,
+ lib/kie-api.jar,
+ lib/protobuf-java.jar,
+ lib/xml-apis.jar,
+ lib/xstream.jar,
+ lib/antlr-runtime.jar,
+ lib/drools-core.jar,
+ lib/hibernate-jpa-2.0-api.jar,
+ lib/jbpm-bpmn2.jar,
+ lib/joda-time.jar,
+ lib/kie-internal.jar,
+ lib/slf4j-api.jar,
+ lib/xmlpull.jar,
+ lib/dom4j.jar,
+ lib/drools-persistence-jpa.jar,
+ lib/javassist.jar,
+ lib/jbpm-flow-builder.jar,
+ lib/jta.jar,
+ lib/mvel2.jar,
+ lib/stringtemplate.jar,
+ lib/xpp3_min.jar
 Require-Bundle: 
  org.eclipse.gef;bundle-version="3.7.2",
  org.eclipse.graphiti;bundle-version="0.9.0",
- org.eclipse.graphiti.mm;bundle-version="0.9.0",
  org.eclipse.ui.forms;bundle-version="3.5.200",
  org.eclipse.swtbot.eclipse.gef.finder,
  org.eclipse.swtbot.go;bundle-version="2.0.5",
@@ -18,6 +43,6 @@ Require-Bundle:
  org.jboss.reddeer.junit;bundle-version="0.2.0",
  org.hamcrest;bundle-version="1.1.0"
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Vendor: Eclipse Foundation
 Import-Package: org.apache.log4j

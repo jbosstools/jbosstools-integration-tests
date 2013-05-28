@@ -2,13 +2,22 @@ package org.jboss.tools.bpmn2.itests.editor.constructs;
 
 import static org.hamcrest.Matchers.allOf;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpression;
+import javax.xml.xpath.XPathFactory;
 
 import org.hamcrest.Matcher;
 
 import org.apache.log4j.Logger;
 
+import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPart;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditPart;
@@ -27,6 +36,10 @@ import org.jboss.tools.bpmn2.itests.swt.matcher.ConstructOfType;
 import org.jboss.tools.bpmn2.itests.swt.matcher.ConstructOnPoint;
 import org.jboss.tools.bpmn2.itests.swt.matcher.ConstructWithName;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+
 /**
  * 
  * @author Marek Baluch <mbaluch@redhat.com>
@@ -35,6 +48,7 @@ public class Construct implements IConstruct {
 	
 	protected String name;
 	protected ConstructType type;
+	protected Construct parent;
 	
 	protected BPMN2Editor editor;
 	protected BPMN2PropertiesView properties;
@@ -43,6 +57,13 @@ public class Construct implements IConstruct {
 	protected SWTBotGefEditPart editPart;
 	
 	protected Logger log = Logger.getLogger(getClass());
+	
+	/*
+	 * TBD: 
+	 * 	1) make parent mandatory.
+	 * 	2) if not passed in as parameter then make Process construct the default parent.
+	 * 		- detect using the editor and file name.
+	 */
 	
 	/**
 	 * Creates a new instance of Construct.
@@ -72,6 +93,7 @@ public class Construct implements IConstruct {
 		
 		this.name = name;
 		this.type = type;
+		this.parent = parent;
 		
 		List<Matcher<? extends EditPart>> matchers = new ArrayList<Matcher<? extends EditPart>>();
 		matchers.add(new ConstructOfType<EditPart>(type.name()));
@@ -148,57 +170,13 @@ public class Construct implements IConstruct {
 	public void append(String name, ConstructType constructType, ConnectionType connectionType, Position relativePosition) {
 		log.info("Appending construct name '" + name + "' of type '" + constructType + "' after construct with name '" + this.name + "'.");
 		
-		Rectangle r = editor.getBounds(editPart);
-		
-		int centerX = r.x + (r.width / 2);
-		int centerY = r.y + (r.height / 2);
-		
-		int x = 0;
-		int y = 0;
-		
-		switch (relativePosition) {
-			case NORTH:
-				x = centerX;
-				y = r.y -100;
-				break;
-			case NORTH_EAST:
-				x = r.x + r.width + 75;
-				y = r.y - 100;
-				break;
-			case EAST:
-				x = r.x + r.width + 100;
-				y = centerY;
-				break;
-			case SOUTH_EAST:
-				x = r.x + r.width  + 75;
-				y = r.y + r.height + 100;
-				break;
-			case SOUTH:
-				x = centerX;
-				y = r.y + r.height + 100;
-				break;
-			case SOUTH_WEST:
-				x = r.x - 75;
-				y = r.y + r.height + 100;
-				break;
-			case WEST:
-				x = r.x - 100;
-				y = centerY;
-				break;
-			case NORTH_WEST:
-				x = r.x - 75;
-				y = r.y - 100;
-				break;
-			default:
-				throw new UnsupportedOperationException();
-		}
-		
-		if (!isAvailable(x, y)) {
-			throw new RuntimeException("[x, y] = " + "[" + x + ", " + y + "] is not available");
+		Point point = findPoint(parent, this, relativePosition);
+		if (!isAvailable(point)) {
+			throw new RuntimeException(point + " is not available");
 		}
 		
 		editor.activateTool(constructType.toToolName());
-		editor.click(x, y);
+		editor.click(point.x(), point.y());
 			
 		Construct construct = editor.getLastConstruct(constructType);
 		if (construct == null) throw new RuntimeException("Unexpected error. Could not find added construct.");
@@ -226,10 +204,12 @@ public class Construct implements IConstruct {
 		 * Get the dimensions of the target construct. 
 		 */
 		Rectangle rt = editor.getBounds(construct.editPart);
-		
+		/*
+		 * Create the connection.
+		 */
 		editor.activateTool(connectionType.toName());
-		editor.click(rs.x + (rs.width / 2), rs.y + (rs.height / 2));
-		editor.click(rt.x + (rt.width / 2), rt.y + (rt.height / 2));
+		editor.click(rs.getCenter().x(), rs.getCenter().y());
+		editor.click(rt.getCenter().x(), rt.getCenter().y());
 		editor.activateTool("Select");
 	}
 	
@@ -251,24 +231,153 @@ public class Construct implements IConstruct {
 	
 	/**
 	 * 
-	 * @param x
-	 * @param y
+	 * @param point
 	 * @return
 	 */
-	protected boolean isAvailable(final int x, final int y) {
+	protected boolean isAvailable(Point point) {
 		/*
 		 * Check weather the point is not already taken by another child editPart.
 		 */
-		return editor.getEditParts(editPart.parent(), new ConstructOnPoint<EditPart>(x, y)).isEmpty();
+		return editor.getEditParts(editPart.parent(), new ConstructOnPoint<EditPart>(point)).isEmpty();
 	}
 	
 	/**
-	 * Validate this construct.
+	 * Get a point to which a child can be added inside a parent.
+	 * 
+	 * @param parent
+	 * @param child
+	 * @param position
+	 * @return
+	 */
+	protected Point findPoint(Construct parent, Construct child, Position position) {
+		/*
+		 * Initialize variables.
+		 */
+		Rectangle childRectangle = editor.getBounds(child.getEditPart());
+		
+		int childStartX = childRectangle.x();
+		int childEndX = childRectangle.right();
+		
+		int childStartY = childRectangle.y();
+		int childEndY = childRectangle.bottom();
+		
+		int childCenterX = childRectangle.getCenter().x();
+		int childCenterY = childRectangle.getCenter().y();
+		
+		Point point = new Point(-1, -1);
+		/*
+		 * Assign 'x' and 'y'.
+		 */
+		switch (position) {
+			case NORTH:
+				point.x = childCenterX;
+				point.y = childStartY -100;
+				break;
+			case NORTH_EAST:
+				point.x = childEndX + 75;
+				point.y = childStartY - 100;
+				break;
+			case EAST:
+				point.x = childEndX + 100;
+				point.y = childCenterY;
+				break;
+			case SOUTH_EAST:
+				point.x = childEndX  + 75;
+				point.y = childEndY + 100;
+				break;
+			case SOUTH:
+				point.x = childCenterX;
+				point.y = childEndY + 100;
+				break;
+			case SOUTH_WEST:
+				point.x = childStartX - 75;
+				point.y = childEndY + 100;
+				break;
+			case WEST:
+				point.x = childStartX - 100;
+				point.y = childCenterY;
+				break;
+			case NORTH_WEST:
+				point.x = childStartX - 75;
+				point.y = childStartY - 100;
+				break;
+			default:
+				throw new UnsupportedOperationException();
+		}
+		/*
+		 * Check parent bounds. In case the point (marked as '+') is out of bounds.
+		 * 	- '*'  signals a properly added construct.
+		 * 	- '->' marks a connection between to '*'
+		 * 
+		 *     +
+		 *    ________
+		 * + |        |
+		 *   |        | +
+		 *   | *->*   |
+		 *   |________|
+		 *       +
+         *
+		 */
+		
+		if (parent != null) {
+		
+			Rectangle parentRectangle = editor.getBounds(parent.getEditPart());
+			
+			int parentStartX = parentRectangle.x();
+			int parentEndX = parentRectangle.right();
+			
+			int parentStartY = parentRectangle.y();
+			int parentEndY = parentRectangle.bottom();
+			
+			if (point.x < parentStartX) point.x = parentStartX;
+			if (point.x > parentEndX) point.x = parentEndX;
+			if (point.y < parentStartY) point.y = parentStartY;
+			if (point.y > parentEndY) point.y = parentEndY;
+		}
+		/*
+		 * Return
+		 */
+		return point;
+	}
+	
+	/**
+	 * Validate this construct. At this moment only attributes are validated. Element structure
+	 * is validated using a XSD schema via the BPMN2Validator and or the JBPM6Validator.
+	 * 
+	 * @param attributes expected attribute names
+	 * @param values     expected attribute values
 	 * 
 	 * @return
 	 */
-	public boolean validate() {
-		throw new UnsupportedOperationException();
+	public List<String> validate(String[] attributes, String[] values) {
+		log.info("Validating construct '" + name + "' of type '" + type + "'");
+		/*
+		 * check bounds.
+		 */
+		if (attributes.length != values.length) {
+			throw new RuntimeException("Attribute names size '" + attributes.length + "' is not equal to attribute values size '" + values.length + "'");
+		}
+		/*
+		 * validate attributes
+		 */
+		List<String> errors = new ArrayList<String>();
+		Element e = getEditPartElement();
+		for (int i=0; i<attributes.length; i++) {
+			String attributeName = attributes[i];
+			String actualValue = e.getAttribute(attributeName);
+			String expectedValue = values[i];
+			
+			if (actualValue == null || actualValue.isEmpty()) {
+				errors.add("Missing attribute '" + attributeName + "'");
+			}
+			
+			if (!expectedValue.equals(actualValue)) {
+				errors.add("Expected atribute '" + attributeName + "' to have value '" + expectedValue + "'." +
+						"Found value '" + actualValue + "' instead.");
+			}
+		}
+		
+		return errors;
 	}
 
 	/**
@@ -283,17 +392,54 @@ public class Construct implements IConstruct {
 	 * 
 	 * @return
 	 */
+	public Element getEditPartElement() {
+		/*
+		 * required to store the code to xml
+		 */
+		editor.save();
+		/*
+		 * find the element
+		 */
+		try {
+			InputStream inputStream = new ByteArrayInputStream(editor.getSourceText().getBytes());		
+			Document xmlDocument = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(inputStream);
+					
+			XPathFactory xPathFactory = XPathFactory.newInstance();
+			XPath xPath = xPathFactory.newXPath();
+			XPathExpression xPathExpression = xPath.compile("//*[@name='" + name + "']");
+			
+			NodeList nodeList = (NodeList) xPathExpression.evaluate(xmlDocument, XPathConstants.NODESET);
+			
+			if (nodeList.getLength() == 0 || nodeList.getLength() > 1) {
+				throw new RuntimeException("Found '" + nodeList.getLength() + "' nodes with name '" + name + "'. Expected exactly '1'."); 
+			}
+
+			return (Element) nodeList.item(0);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
 	public String getName() {
 		return name;
 	}
 	
 	/**
-	 * Helper.
+	 * Helper method to see what shells are active and what titles do they
+	 * have.
 	 */
-	public void printShells() {
+	public static void printShells() {
 		for (SWTBotShell s : Bot.get().shells()) {
 			System.out.println(" --- Shell: " + s.getText());
 		}
+	}
+	
+	public BPMN2Editor getEditor() {
+		return editor;
 	}
 	
 }
