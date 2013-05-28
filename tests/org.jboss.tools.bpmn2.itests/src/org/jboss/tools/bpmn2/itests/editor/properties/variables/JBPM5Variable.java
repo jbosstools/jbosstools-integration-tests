@@ -8,7 +8,6 @@ import org.jboss.tools.bpmn2.itests.editor.properties.datatypes.JBPM5DataType;
  */
 public class JBPM5Variable extends AbstractVariable {
 
-	private String name;
 	private JBPM5DataType dataType;
 	
 	/**
@@ -45,9 +44,9 @@ public class JBPM5Variable extends AbstractVariable {
 	 */
 	public void add() {
 		int index = properties.indexOfSection(sectionName);
-		
+
+		bot.toolbarButtonWithTooltip("Add", index).click();
 		bot.textWithLabel("Name").setText(name);
-		bot.toolbarButtonWithTooltip("Add", index);
 		if(dataType != null) {
 			try {
 				bot.comboBoxWithLabel("Data Type").setSelection(dataType.getTypeName());
@@ -55,7 +54,7 @@ public class JBPM5Variable extends AbstractVariable {
 				dataType.add();
 			}
 		}
-		bot.toolbarButtonWithTooltip("Close");
+		bot.toolbarButtonWithTooltip("Close").click();
 	}
 
 }

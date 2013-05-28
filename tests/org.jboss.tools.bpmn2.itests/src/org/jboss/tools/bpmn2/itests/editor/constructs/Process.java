@@ -36,7 +36,8 @@ public class Process extends ContainerConstruct implements IProcess {
 	 */
 	public void setExecutable(boolean b) {
 		properties.selectTab("Process");
-		properties.selectCheckBox(new CheckBox("Is Executable"), b);
+		properties.selectCheckBox(new CheckBox(1), b);
+//		properties.selectCheckBox(new CheckBox("Is Executable"), b);
 	}
 	
  }

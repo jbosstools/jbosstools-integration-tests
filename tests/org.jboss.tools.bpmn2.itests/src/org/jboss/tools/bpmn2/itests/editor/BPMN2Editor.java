@@ -11,13 +11,25 @@ import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.gef.EditDomain;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.GraphicalEditPart;
+import org.eclipse.gef.GraphicalViewer;
+import org.eclipse.gef.palette.PaletteContainer;
+import org.eclipse.gef.palette.PaletteEntry;
+import org.eclipse.gef.palette.ToolEntry;
 import org.eclipse.graphiti.mm.pictograms.PictogramLink;
 import org.eclipse.graphiti.mm.pictograms.Shape;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotMultiPageEditor;
+import org.eclipse.swtbot.eclipse.gef.finder.finders.PaletteFinder;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditPart;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditor;
+import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
+import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
+import org.eclipse.swtbot.swt.finder.results.Result;
+import org.eclipse.swtbot.swt.finder.results.VoidResult;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
+import org.eclipse.ui.IEditorPart;
 
 import org.hamcrest.Matcher;
 
@@ -25,6 +37,7 @@ import org.jboss.reddeer.swt.util.Bot;
 import org.jboss.tools.bpmn2.itests.editor.constructs.Construct;
 import org.jboss.tools.bpmn2.itests.swt.matcher.ConstructAttributeMatchingRegex;
 import org.jboss.tools.bpmn2.itests.swt.matcher.ConstructWithName;
+import org.jboss.tools.bpmn2.itests.swt.matcher.PaletteEntryMatcher;
 
 
 /**
@@ -33,6 +46,8 @@ import org.jboss.tools.bpmn2.itests.swt.matcher.ConstructWithName;
  */
 public class BPMN2Editor extends SWTBotGefEditor {
 
+	private static final int SAVE_SLEEP_TIME = 2000;
+	
 	private Logger log = Logger.getLogger(BPMN2Editor.class);
 	
 	/**
@@ -57,8 +72,10 @@ public class BPMN2Editor extends SWTBotGefEditor {
 	 * @param byLabel
 	 */
 	public void selectEditPart(SWTBotGefEditPart editPart) {
+		if (!getSelectedEditParts().contains(editPart)) {
+			editPart.select();
+		}
 		setFocus();
-		editPart.select();
 	}
 
 	/**
@@ -268,7 +285,107 @@ public class BPMN2Editor extends SWTBotGefEditor {
 		}
 		
 	}
-	
+
+	/**
+	 * @see org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor#save()
+	 */
+	@Override
+	public void save() {
+		try {
+			bot.menu("File").menu("Save").click();
+			try {
+				Thread.sleep(SAVE_SLEEP_TIME);
+			} catch (InterruptedException e) {
+				// ignore
+			}
+			SWTBotShell shell = null;
+			for (SWTBotShell s : Bot.get().shells()) {
+				if (s.getText().equals("Configure BPMN2 Project Nature")) {
+					shell = s;
+				}
+			}
+			if (shell != null) {
+				shell.activate();
+				bot.button("No").click();
+			}
+		} catch (WidgetNotFoundException e) {
+			// ignore
+		}
+	}
+
+	/**
+	 * Activate a tool in a given section.
+	 * 
+	 * @param section
+	 * @param label
+	 * 
+	 * @throws WidgetNotFoundException
+	 */
+	public void activateTool(final String section, final String label) throws WidgetNotFoundException {
+		activateTool(label, Pattern.compile(Pattern.quote(section)));
+	}
+
+	/**
+	 * TODO
+	 * 	1) make recursive for cases when a section contains subsections.
+	 * 		- when a PaletteContainer contain another PaletteContainer.
+	 * 
+	 * @param label
+	 * @param sectionMatcher
+	 */
+	private void activateTool(final String label, final Pattern sectionMatcher) throws WidgetNotFoundException {
+		final WidgetNotFoundException[] exception = new WidgetNotFoundException[1];
+		UIThreadRunnable.syncExec(new VoidResult() {
+			public void run() {
+				
+				GraphicalViewer graphicalViewer = UIThreadRunnable.syncExec(new Result<GraphicalViewer>() {
+					public GraphicalViewer run() {
+						final IEditorPart editor = partReference.getEditor(true);
+						return (GraphicalViewer) editor.getAdapter(GraphicalViewer.class);
+					}
+				});
+				
+				boolean found = false;
+				final EditDomain editDomain = graphicalViewer.getEditDomain();
+				final List<PaletteEntry> paletteEntries = new PaletteFinder(editDomain).findEntries(new PaletteEntryMatcher(sectionMatcher));
+				if (paletteEntries.size() > 0) {
+					for (int i=0; i<paletteEntries.size(); i++) {
+						PaletteEntry paletteEntry = paletteEntries.get(i);
+						
+						// TODO - expand the section?
+						
+						if (paletteEntry instanceof PaletteContainer) {
+							final PaletteContainer entry = (PaletteContainer) paletteEntry;
+							final List<?> childEntries = entry.getChildren();
+							for (int j=0; j<childEntries.size(); j++) {
+								Object object = childEntries.get(j);
+								if (object instanceof ToolEntry) {
+									ToolEntry toolEntry = (ToolEntry) object;
+									if (toolEntry.getLabel().equals(label)) {
+										editDomain.getPaletteViewer().setActiveTool(toolEntry);
+										
+										found = true;
+										break;
+									}
+								}
+							}
+						} else {
+							exception[0] = new WidgetNotFoundException(String.format("%s is not a container entry, it's a %s", sectionMatcher
+								.toString(), paletteEntry.getClass().getName()));
+						}
+					}
+				} 
+				
+				if (!found) {
+					exception[0] = new WidgetNotFoundException(label);
+				}
+			}
+		});
+		if (exception[0] != null) {
+			throw exception[0];
+		}
+	}
+
 //	public void clickContextMenu(String item) {
 //	    // E.g. 'Local History...' which is hidden under 
 //		// the 'Replace With...' menu item. the clicking 
