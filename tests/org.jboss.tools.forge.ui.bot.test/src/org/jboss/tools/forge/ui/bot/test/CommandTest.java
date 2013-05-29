@@ -13,7 +13,7 @@ import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
 import org.junit.Test;
 
-@Require(clearWorkspace=true)
+@Require(clearWorkspace=true, perspective="JBoss")
 public class CommandTest extends ForgeTest {
 
 	private void prepare(){
@@ -35,7 +35,6 @@ public class CommandTest extends ForgeTest {
 		cdWS();
 		clear();
 		pExplorer.deleteAllProjects();
-		
 	}
 	
 	@Test
@@ -51,7 +50,6 @@ public class CommandTest extends ForgeTest {
 		cdWS();
 		clear();
 		pExplorer.deleteAllProjects();
-		
 	}
 	
 	@Test
