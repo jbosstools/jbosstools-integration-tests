@@ -32,7 +32,8 @@ public class PersistenceTest extends ForgeTest {
 			fail("persistence.xml was probably not opened!");
 		}
 		
-		pExplorer.show();	
+		pExplorer.show();
+		bot.sleep(TIME_1S);	
 		assertTrue(pExplorer.existsResource(PROJECT_NAME));
 		assertTrue(pExplorer.existsResource(PROJECT_NAME,"src","main","resources","META-INF", "persistence.xml"));
 		
@@ -68,7 +69,8 @@ public class PersistenceTest extends ForgeTest {
 			fail("persistence.xml was probably not opened!");
 		}
 		
-		pExplorer.show();		
+		pExplorer.show();	
+		bot.sleep(TIME_1S);
 		assertTrue(pExplorer.existsResource(PROJECT_NAME));
 		assertTrue(pExplorer.existsResource(PROJECT_NAME,"src","main","resources","META-INF", "persistence.xml"));
 		
@@ -100,6 +102,7 @@ public class PersistenceTest extends ForgeTest {
 		}
 		
 		pExplorer.show();		
+		bot.sleep(TIME_1S);
 		assertTrue(pExplorer.existsResource(PROJECT_NAME));
 		assertTrue(pExplorer.existsResource(PROJECT_NAME,"src","main","resources","META-INF", "persistence.xml"));
 		
@@ -131,7 +134,8 @@ public class PersistenceTest extends ForgeTest {
 			fail("persistence.xml was probably not opened!");
 		}
 		
-		pExplorer.show();		
+		pExplorer.show();	
+		bot.sleep(TIME_1S);
 		assertTrue(pExplorer.existsResource(PROJECT_NAME));
 		assertTrue(pExplorer.existsResource(PROJECT_NAME,"src","main","resources","META-INF", "persistence.xml"));
 		

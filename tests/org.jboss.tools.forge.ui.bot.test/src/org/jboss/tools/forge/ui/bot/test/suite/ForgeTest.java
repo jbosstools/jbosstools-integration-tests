@@ -47,6 +47,7 @@ public class ForgeTest extends SWTTestExt {
 	public static void cleanup(){
 		pExplorer = new ProjectExplorer();
 		pExplorer.deleteAllProjects();
+		bot.sleep(TIME_5S);
 	}
 	
 	public enum ProjectTypes{

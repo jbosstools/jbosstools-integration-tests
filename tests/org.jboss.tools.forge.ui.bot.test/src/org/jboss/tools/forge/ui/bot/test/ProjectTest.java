@@ -28,6 +28,7 @@ public class ProjectTest extends ForgeTest {
 		assertTrue(ConsoleUtils.waitUntilTextInConsole("***SUCCESS*** Created project [" + PROJECT_NAME + "]", TIME_1S, TIME_20S*3));
 		
 		pExplorer.show();		
+		bot.sleep(TIME_1S);
 		assertTrue(pExplorer.existsResource(PROJECT_NAME));
 		assertTrue(pExplorer.existsResource(PROJECT_NAME, "pom.xml"));
 		
@@ -42,7 +43,7 @@ public class ProjectTest extends ForgeTest {
 		}
 		cdWS();
 		clear();
-		pExplorer.deleteAllProjects();
+		cleanup();
 	}
 	
 	@Test
@@ -53,6 +54,7 @@ public class ProjectTest extends ForgeTest {
 		String text = getStyledText().getText();
 		assertTrue(ConsoleUtils.waitUntilTextInConsole("***SUCCESS*** Created project [" + PROJECT_NAME + "]", TIME_1S, TIME_20S*3));
 		pExplorer.show();
+		bot.sleep(TIME_1S);
 		assertTrue(pExplorer.existsResource(PROJECT_NAME));
 		assertTrue(pExplorer.existsResource(PROJECT_NAME, "pom.xml"));
 		
@@ -67,7 +69,7 @@ public class ProjectTest extends ForgeTest {
 		}
 		cdWS();
 		clear();
-		pExplorer.deleteAllProjects();
+		cleanup();
 	}
 	
 	
