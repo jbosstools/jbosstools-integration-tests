@@ -42,6 +42,10 @@ public class WSTesterParametersDialog {
 		return DIALOG_TITLE;
 	}
 	
+	public boolean isOpened() {
+		return shell.isActive();
+	}
+	
 	public void ok() {
 		bot.button(IDELabel.Button.OK).click();
 	}

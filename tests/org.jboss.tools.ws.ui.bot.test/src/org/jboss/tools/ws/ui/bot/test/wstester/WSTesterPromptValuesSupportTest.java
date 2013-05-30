@@ -54,6 +54,7 @@ public class WSTesterPromptValuesSupportTest extends RESTfulTestBase {
 	
 	@Override
 	public void cleanup() {
+		if (dialog.isOpened()) dialog.cancel();	
 		projectExplorer.deleteAllProjects();
 	}
 	
