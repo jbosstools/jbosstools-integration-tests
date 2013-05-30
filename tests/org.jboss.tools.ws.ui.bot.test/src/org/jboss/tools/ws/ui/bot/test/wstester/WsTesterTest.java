@@ -126,7 +126,7 @@ public class WsTesterTest extends WSTestBase {
         dlg.ok();
         LOGGER.log(Level.INFO, "Request: {0}", wstv.getRequestBody());
         Assert.assertTrue(wstv.getRequestBody().contains(
-                "<tns:echo xmlns:tns=\"http://test.jboss.org/ns\">"));
+                "<echo xmlns=\"http://test.jboss.org/ns\""));
 
         dlg = wstv.getFromWSDL();
         dlg.setURI(uri);
@@ -147,7 +147,7 @@ public class WsTesterTest extends WSTestBase {
         dlg.ok();
         LOGGER.log(Level.INFO, "Request: {0}", wstv.getRequestBody());
         Assert.assertTrue(wstv.getRequestBody().contains(
-                "<tns:GetSearchResults xmlns:tns=\"http://www.ecubicle.net/webservices\">"));
+                "<GetSearchResults xmlns=\"http://www.ecubicle.net/webservices\""));
     }
 
     /**
