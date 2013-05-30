@@ -13,11 +13,18 @@ package org.jboss.tools.ws.ui.bot.test.widgets;
 import java.util.Arrays;
 import java.util.List;
 
-import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotList;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
+import org.eclipse.swtbot.swt.finder.widgets.TimeoutException;
+import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.swt.exception.SWTLayerException;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ws.ui.messages.JBossWSUIMessages;
 
 public class SelectWSDLDialog extends SWTBotShell {
@@ -72,9 +79,22 @@ public class SelectWSDLDialog extends SWTBotShell {
 	}
 
 	public void ok() {
-		bot().button(IDialogConstants.OK_LABEL).click();
-		if (JBossWSUIMessages.JAXRSWSTestView2_Title_Msg_May_Be_Out_of_Date.equals(bot().activeShell().getText())) {
-			bot().activeShell().bot().button("Yes").click();
+		new PushButton(IDELabel.Button.OK).click();
+		
+		// workaround for https://issues.jboss.org/browse/JBIDE-14618
+		try {
+			new WaitUntil(new ShellWithTextIsActive("Progress Information"));
+			new WaitWhile(new ShellWithTextIsActive("Progress Information"));
+		} catch (TimeoutException sle) {
+			// WISE call was pretty quick - no progress information dialog appears
+		}
+		
+		// when replacing some existing WS message, press OK to confirm
+		try {
+			new DefaultShell("Message May Be Incorrect for Selected WSDL");
+			new PushButton(IDELabel.Button.YES).click();;
+		} catch (SWTLayerException sle) {
+			// no WS message replacing - no dialog appeared
 		}
 	}
 
