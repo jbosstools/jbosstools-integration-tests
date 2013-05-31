@@ -1,9 +1,5 @@
 package org.jboss.tools.bpmn2.itests.test.editor.smoke;
 
-import junit.framework.Assert;
-
-import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
-
 import org.jboss.tools.bpmn2.itests.editor.BPMN2Editor;
 import org.jboss.tools.bpmn2.itests.editor.ConnectionType;
 import org.jboss.tools.bpmn2.itests.editor.ConstructType;
@@ -13,27 +9,20 @@ import org.jboss.tools.bpmn2.itests.editor.constructs.events.StartEvent;
 import org.jboss.tools.bpmn2.itests.editor.constructs.gateways.ParallelGateway;
 import org.jboss.tools.bpmn2.itests.editor.constructs.tasks.UserTask;
 import org.jboss.tools.bpmn2.itests.reddeer.requirements.ProcessDefinitionRequirement.ProcessDefinition;
-import org.jboss.tools.bpmn2.itests.validator.BPMN2Validator;
+import org.jboss.tools.bpmn2.itests.test.JBPM6BaseTest;
 
 import org.junit.Test;
 
 /**
- * ISSUES:
- * 	1) setting target namespace to "" on the process will keep the old
- *     value
  *     
  * @author mbaluch
- *
  */
-@ProcessDefinition(name="Evaluation", file="EvaluationProcess.bpmn", project="EmployeeEvaluation")
-public class ModelingSmokeTest extends SWTBotTestCase {
+@ProcessDefinition(name="Evaluation", project="EmployeeEvaluation")
+public class ModelingSmokeTest extends JBPM6BaseTest {
 
 	/**
 	 * ISSUES:
-	 * 	1) empty actor language is valid but cannot be chosen after mvel or java was chosen.
-	 *  2) cannot edit actor, only recreate.
-	 *  3) moving a construct using mouse resets the perspective. So does save (ctrl+s)
-	 *  	- change the placement of an activity using d'n'd
+	 *  1) changing the BPMN2 runtime requires project close/open.   
 	 *  
 	 * @throws Exception
 	 */
@@ -69,16 +58,8 @@ public class ModelingSmokeTest extends SWTBotTestCase {
 		
 		gateway2.append("End", ConstructType.END_EVENT);
 		
-		new BPMN2Editor().save();
-		
-		/*
-		 * Validation
-		 */
 		BPMN2Editor editor = new BPMN2Editor();
-		BPMN2Validator validator = new BPMN2Validator();
-		boolean valid = validator.validate(editor.getSourceText());
-		
-		Assert.assertTrue(valid);
+		editor.save();
 	}
 	
 }
