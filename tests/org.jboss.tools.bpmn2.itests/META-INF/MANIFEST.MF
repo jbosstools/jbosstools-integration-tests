@@ -45,4 +45,5 @@ Require-Bundle:
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Vendor: Eclipse Foundation
+Eclipse-RegisterBuddy: org.apache.log4j
 Import-Package: org.apache.log4j
