@@ -171,10 +171,18 @@ public class QuickFixHelper {
 		SWTBotTreeItem[] problemsTree = null;
 		if (problemType == ProblemsType.WARNINGS) {
 			problemsTree = ProblemsView.getFilteredWarningsTreeItems(bot, null, null, 
-					null, "CDI Problem");
+					projectName, "CDI Problem");
+			if (problemsTree.length == 0) {
+				problemsTree = ProblemsView.getFilteredWarningsTreeItems(bot, null, "/" + projectName, 
+						null, null);
+			}
 		}else if (problemType == ProblemsType.ERRORS) {
 			problemsTree = ProblemsView.getFilteredErrorsTreeItems(bot, null, null, 
-					null, "CDI Problem");
+					projectName, "CDI Problem");
+			if (problemsTree.length == 0) {
+				problemsTree = ProblemsView.getFilteredErrorsTreeItems(bot, null, "/" + projectName, 
+						null, null);
+			}
 		}
 		return problemsTree;
 	}
