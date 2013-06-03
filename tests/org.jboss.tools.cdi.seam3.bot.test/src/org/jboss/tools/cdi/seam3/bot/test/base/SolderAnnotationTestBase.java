@@ -55,10 +55,17 @@ public class SolderAnnotationTestBase extends Seam3TestBase {
 		SWTBotTreeItem[] validationProblems = quickFixHelper.getProblems(
 				ProblemsType.WARNINGS, projectName);
 		assertTrue(validationProblems.length > 0);
-		assertTrue(validationProblems.length == 1);
-		assertContains(noBeanEligible?CDIConstants.NO_BEAN_IS_ELIGIBLE:
-			CDIConstants.MULTIPLE_BEANS, validationProblems[0].getText());
-	
+		String validationMessage = noBeanEligible?
+				CDIConstants.NO_BEAN_IS_ELIGIBLE:
+				CDIConstants.MULTIPLE_BEANS;
+		for (SWTBotTreeItem ti : validationProblems) {
+			if (ti.getText().contains(validationMessage)) {
+				return;
+			}
+		}
+		fail("CDI Validation problem with text '" 
+				+ validationMessage 
+				+ "' was not found!");
 	}
 	
 	/**
