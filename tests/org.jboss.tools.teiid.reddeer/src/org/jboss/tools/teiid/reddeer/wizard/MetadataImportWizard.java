@@ -60,7 +60,7 @@ public class MetadataImportWizard extends TeiidImportWizard {
 		new DefaultTree().getItems().get(0).select();
 		new LabeledText(MODEL_NAME).setText(target);
 		new PushButton("OK").click();
-		// Insure that this dialog is activated
+		Bot.get().shell(DIALOG_TITLE).activate();
 		new DefaultShell(DIALOG_TITLE);
 
 		finish();

@@ -1,6 +1,10 @@
 package org.jboss.tools.teiid.ui.bot.test;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Arrays;
+import java.util.Properties;
 
 import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
 import org.jboss.reddeer.eclipse.datatools.ui.FlatFileProfile;
@@ -12,6 +16,8 @@ import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.wizard.DDLImportWizard;
 import org.jboss.tools.teiid.reddeer.wizard.FlatImportWizard;
+import org.jboss.tools.teiid.reddeer.wizard.HSQLDBDriverWizard;
+import org.jboss.tools.teiid.reddeer.wizard.HSQLDBProfileWizard;
 import org.jboss.tools.teiid.reddeer.wizard.ImportJDBCDatabaseWizard;
 import org.jboss.tools.teiid.reddeer.wizard.MetadataImportWizard;
 import org.jboss.tools.teiid.reddeer.wizard.MetadataImportWizard.ImportType;
@@ -46,7 +52,7 @@ public class ImportWizardTest extends SWTBotTestCase {
 		String jdbcProfile = "HSQLDB Profile";
 		String empModel = "Emp.xmi";
 
-		teiidBot.createDatabaseProfile(jdbcProfile, "resources/db/hsqldb.properties");
+		createHSQLDBProfile(jdbcProfile);
 
 		ImportJDBCDatabaseWizard wizard = new ImportJDBCDatabaseWizard();
 		wizard.setConnectionProfile(jdbcProfile);
@@ -227,5 +233,22 @@ public class ImportWizardTest extends SWTBotTestCase {
 		ModelEditor modelEditor = teiidBot.modelEditor(file);
 		assertNotNull(file + " is not opened!", modelEditor);
 		assertNotNull("Diagram '" + label + "' not found!", modelEditor.getModeDiagram(label));
+	}
+
+	private static void createHSQLDBProfile(String name) {
+		Properties props = new Properties();
+		try {
+			props.load(new FileReader("resources/db/hsqldb.properties"));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			return;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return;
+		}
+		new HSQLDBDriverWizard(props.getProperty("db.jdbc_path")).create();
+		new HSQLDBProfileWizard("HSQLDB Driver", props.getProperty("db.name"),
+				props.getProperty("db.hostname")).setUser(props.getProperty("db.username"))
+				.setPassword(props.getProperty("db.password")).setName(name).create();
 	}
 }
