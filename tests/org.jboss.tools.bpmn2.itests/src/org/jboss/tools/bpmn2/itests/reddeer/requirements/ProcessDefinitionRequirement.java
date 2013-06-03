@@ -9,11 +9,9 @@ import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.junit.requirement.Requirement;
 import org.jboss.reddeer.swt.util.Bot;
 
-import org.jboss.tools.bpmn2.itests.reddeer.EclipseHelper;
 import org.jboss.tools.bpmn2.itests.reddeer.requirements.ProcessDefinitionRequirement.ProcessDefinition;
 import org.jboss.tools.bpmn2.itests.wizard.JBPMProcessWizard;
 import org.jboss.tools.bpmn2.itests.wizard.JavaProjectWizard;
@@ -32,7 +30,7 @@ public class ProcessDefinitionRequirement implements Requirement<ProcessDefiniti
 
 		String project();
 		
-		String file();
+		String profile() default "Full";
 		
 	}
 
@@ -73,14 +71,20 @@ public class ProcessDefinitionRequirement implements Requirement<ProcessDefiniti
 			}
 		}
 		
-		Project p = pe.getProject(d.project());
-		if (p.containsItem(d.file())) {
-			p.getProjectItem(d.file()).delete();
+		// process name
+		String n = d.name().replaceAll("\\s+", "");
+		// process id
+		String i = n.replace("-", "").replace("_", "");
+		// file name
+		String f = n + ".bpmn2";
+		// project name
+		String p = d.project();
+		
+		if (pe.getProject(p).containsItem(f)) {
+			pe.getProject(p).getProjectItem(f).delete();
 		}
 		
-		new JBPMProcessWizard().execute(new String[] {d.project()}, d.file(), d.name(), d.name().replace(" ", ""), "defaultPackage");
-		EclipseHelper.maximizeActiveShell();
-		new PackageExplorer().getProject(d.project()).getProjectItem(d.file()).open();
+		new JBPMProcessWizard().execute(new String[] {p}, f, n, i, "defaultPackage");
 	}
 	
 }
