@@ -57,9 +57,6 @@ public class ModelingSmokeTest extends JBPM6BaseTest {
 		userTask3.connectTo(gateway2);
 		
 		gateway2.append("End", ConstructType.END_EVENT);
-		
-		BPMN2Editor editor = new BPMN2Editor();
-		editor.save();
 	}
 	
 }

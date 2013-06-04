@@ -17,17 +17,25 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses({
 // Wizard tests
 // ------------
-//	ProjectWizardTest.class
-//	ProcessWizardTest.class
-//	Bpmn2ModelWizardTest.class
-//	GenericBpmn2ModelWizardTest.class
-//	JBpmProcessWizardTest.class
+//	ProjectWizardTest.class,
+//	ProcessWizardTest.class,
+//	Bpmn2ModelWizardTest.class,
+//	GenericBpmn2ModelWizardTest.class,
+//	JBpmProcessWizardTest.class,
 // Editor tests
 // ------------
-//	ModelingSmokeTest.class
-//	CallActivityTest.class
-	AdHocProcessTest.class
-//	AdHocSubProcessTest.class
+//	ModelingSmokeTest.class,
+//	CallActivityTest.class,
+//	AdHocProcessTest.class,
+//	AdHocSubProcessTest.class,
+//	AssociationTest.class,
+// Unverified tests
+// ----------------
+//	BooleanStructureReferenceTest.class,
+//	BoundaryConditionalEventOnTaskTest.class,
+//	BusinessRuleTaskTest.class,
+//	CallActivityByNameTest.class,
+//	CompensateEndEventTest.class
 })
 public class AllTests extends TestSuite {
 	
