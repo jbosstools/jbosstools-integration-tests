@@ -1,6 +1,6 @@
-package org.jboss.tools.forge.ui.bot.test;
+package org.jboss.tools.forge.ui.bot.console.test;
 
-import org.jboss.tools.forge.ui.bot.test.suite.ForgeTest;
+import org.jboss.tools.forge.ui.bot.test.suite.ForgeConsoleTestBase;
 import org.jboss.tools.forge.ui.bot.test.util.ConsoleUtils;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.junit.Test;
@@ -10,7 +10,7 @@ import org.junit.Test;
  *
  */
 @Require(clearWorkspace=true)
-public class ScaffoldingTest extends ForgeTest {
+public class ScaffoldingTest extends ForgeConsoleTestBase {
 
 	private static final String specJPAText =     "***SUCCESS*** Installed [forge.spec.jpa] successfully.";
 	private static final String specEJBText =     "***SUCCESS*** Installed [forge.spec.ejb] successfully.";

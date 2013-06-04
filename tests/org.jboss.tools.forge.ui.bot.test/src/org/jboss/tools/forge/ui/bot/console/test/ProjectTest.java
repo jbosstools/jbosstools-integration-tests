@@ -1,9 +1,9 @@
-package org.jboss.tools.forge.ui.bot.test;
+package org.jboss.tools.forge.ui.bot.console.test;
 
 import java.io.IOException;
 
 import org.eclipse.swtbot.swt.finder.utils.SWTUtils;
-import org.jboss.tools.forge.ui.bot.test.suite.ForgeTest;
+import org.jboss.tools.forge.ui.bot.test.suite.ForgeConsoleTestBase;
 import org.jboss.tools.forge.ui.bot.test.util.ConsoleUtils;
 import org.jboss.tools.forge.ui.bot.test.util.ResourceUtils;
 import org.jboss.tools.ui.bot.ext.SWTJBTExt;
@@ -17,7 +17,7 @@ import org.junit.Test;
  *
  */
 @Require(clearWorkspace=true)
-public class ProjectTest extends ForgeTest {
+public class ProjectTest extends ForgeConsoleTestBase {
 
 	@Test
 	public void pomProject() {

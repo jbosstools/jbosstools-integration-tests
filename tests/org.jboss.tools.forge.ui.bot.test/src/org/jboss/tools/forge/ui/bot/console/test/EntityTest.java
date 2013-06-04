@@ -1,10 +1,10 @@
-package org.jboss.tools.forge.ui.bot.test;
+package org.jboss.tools.forge.ui.bot.console.test;
 
 import java.io.IOException;
 
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
-import org.jboss.tools.forge.ui.bot.test.suite.ForgeTest;
+import org.jboss.tools.forge.ui.bot.test.suite.ForgeConsoleTestBase;
 import org.jboss.tools.forge.ui.bot.test.util.ConsoleUtils;
 import org.jboss.tools.forge.ui.bot.test.util.ResourceUtils;
 import org.jboss.tools.ui.bot.ext.SWTUtilExt;
@@ -12,7 +12,7 @@ import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.junit.Test;
 
 @Require(clearWorkspace=true)
-public class EntityTest extends ForgeTest {
+public class EntityTest extends ForgeConsoleTestBase {
 
 	private static final String ENTITY_CREATED = "Created @Entity [" + PACKAGE_NAME + "." + ENTITY_NAME + "]";
 	private static final String FIELD_ADDED = "Added field to " + PACKAGE_NAME  + "." +

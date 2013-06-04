@@ -1,4 +1,4 @@
-package org.jboss.tools.forge.ui.bot.test;
+package org.jboss.tools.forge.ui.bot.console.test;
 
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jface.bindings.keys.KeyStroke;
@@ -7,14 +7,14 @@ import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.keyboard.Keystrokes;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
-import org.jboss.tools.forge.ui.bot.test.suite.ForgeTest;
+import org.jboss.tools.forge.ui.bot.test.suite.ForgeConsoleTestBase;
 import org.jboss.tools.forge.ui.bot.test.util.ConsoleUtils;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
 import org.junit.Test;
 
 @Require(clearWorkspace=true, perspective="JBoss")
-public class CommandTest extends ForgeTest {
+public class CommandTest extends ForgeConsoleTestBase {
 
 	private void prepare(){
 		cdWS();

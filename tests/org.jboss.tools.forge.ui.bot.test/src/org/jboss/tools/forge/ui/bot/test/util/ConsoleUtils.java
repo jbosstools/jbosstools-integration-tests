@@ -1,7 +1,7 @@
 package org.jboss.tools.forge.ui.bot.test.util;
 
 import org.eclipse.swtbot.swt.finder.SWTBot;
-import org.jboss.tools.forge.ui.bot.test.suite.ForgeTest;
+import org.jboss.tools.forge.ui.bot.test.suite.ForgeConsoleTestBase;
 
 public class ConsoleUtils {
 	
@@ -15,18 +15,18 @@ public class ConsoleUtils {
 	 */
 	public static boolean waitUntilTextInConsole(String text, long sleepTime, long timeOut){
 	
-		if(!ForgeTest.isForgeViewActive())
+		if(!ForgeConsoleTestBase.isForgeViewActive())
 			return false;
 		
-		SWTBot viewBot = ForgeTest.getForgeViewBot();		
-		String consoleText = ForgeTest.getStyledText().getText();
+		SWTBot viewBot = ForgeConsoleTestBase.getForgeViewBot();		
+		String consoleText = ForgeConsoleTestBase.getStyledText().getText();
 
 		long estimatedTime = 0;
 		
 		while ((estimatedTime < timeOut) && (!consoleText.contains(text)) ){
 			viewBot.sleep(sleepTime);
 			estimatedTime += sleepTime;
-			consoleText = ForgeTest.getStyledText().getText();
+			consoleText = ForgeConsoleTestBase.getStyledText().getText();
 		}
 		if(consoleText.contains(text))
 			return true;
