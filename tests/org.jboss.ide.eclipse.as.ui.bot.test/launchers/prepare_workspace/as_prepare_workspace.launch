@@ -18,6 +18,7 @@
 <listEntry value="jbosstools.test.jboss-as-4.2.home=${folder_prompt:JBoss AS 4.2 installation directory}"/>
 <listEntry value="jbosstools.test.jboss-as-4.0.home=${folder_prompt:JBoss AS 4.0 installation directory}"/>
 <listEntry value="jbosstools.test.jboss-as-3.2.home=${folder_prompt:JBoss AS 3.2 installation directory}"/>
+<listEntry value="jbosstools.test.jboss-wildfly-8.home=${folder_prompt:WildFly 8 installation directory}"/>
 </listAttribute>
 <stringAttribute key="M2_RUNTIME" value="EMBEDDED"/>
 <booleanAttribute key="M2_SKIP_TESTS" value="false"/>
