@@ -48,9 +48,6 @@ public enum ConstructType {
 		}
 		
 		String menuName = r.toString().trim();
-		if (menuName.startsWith("Ad Hoc")) {
-			menuName = menuName.replace("Ad Hoc", "AdHoc");
-		}
 		
 		return menuName;
 	}
