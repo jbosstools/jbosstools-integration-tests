@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010-2012 Red Hat, Inc.
+ * Copyright (c) 2010-2013 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -10,13 +10,17 @@
  ******************************************************************************/
 package org.jboss.tools.archives.ui.bot.test;
 
-import org.jboss.tools.archives.ui.bot.test.dialog.EditArchiveDialog;
-import org.jboss.tools.archives.ui.bot.test.explorer.ProjectArchivesExplorer;
-import org.jboss.tools.archives.ui.bot.test.view.ProjectArchivesView;
+import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.tools.archives.reddeer.archives.ui.EditArchiveDialog;
+import org.jboss.tools.archives.reddeer.archives.ui.ProjectArchivesExplorer;
+import org.jboss.tools.archives.ui.bot.test.condition.ArchiveIsInExplorer;
+import org.jboss.tools.archives.ui.bot.test.condition.ArchiveIsInView;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
+ * Tests if modifying an archive via 
+ * archives view and explorer is possible.
  * 
  * @author jjankovi
  *
@@ -45,22 +49,25 @@ public class ModifyingArchiveTest extends ArchivesTestBase {
 	
 	@BeforeClass
 	public static void setup() {
-		importProjectWithoutRuntime(project);
+		importArchiveProjectWithoutRuntime(project);
 	}
 	
 	@Test
 	public void testModifyingArchiveWithView() {
 		
 		/* prepare view for testing */
-		ProjectArchivesView view = viewForProject(project);
+		view = viewForProject(project);
 		
 		/* modifying archive name with Project Archive view */
-		EditArchiveDialog dialog = view.editArchive(project, PATH_ARCHIVE_1);
+		EditArchiveDialog dialog = view
+				.getProject()
+				.getArchive(PATH_ARCHIVE_1)
+				.editArchive();
 		editArchive(dialog, ARCHIVE_NAME_1_NEW);
 		
 		/* test archive was modified */
-		assertItemNotExistsInView(view, project, PATH_ARCHIVE_1);
-		assertItemExistsInView(view, project, PATH_ARCHIVE_1_NEW);
+		new WaitUntil(new ArchiveIsInView(PATH_ARCHIVE_1_NEW, view));
+		assertArchiveIsNotInView(view, PATH_ARCHIVE_1);
 	}
 	
 	@Test
@@ -70,12 +77,14 @@ public class ModifyingArchiveTest extends ArchivesTestBase {
 		ProjectArchivesExplorer explorer = new ProjectArchivesExplorer(project);
 		
 		/* modifying archive name with Project Archive explorer */
-		EditArchiveDialog dialog = explorer.editArchive(PATH_ARCHIVE_2);
+		EditArchiveDialog dialog = explorer
+				.getArchive(PATH_ARCHIVE_2)
+				.editArchive();
 		editArchive(dialog, ARCHIVE_NAME_2_NEW);
 		
 		/* test archive was modified */
-		assertItemNotExistsInExplorer(explorer, PATH_ARCHIVE_2);
-		assertItemExistsInExplorer(explorer, PATH_ARCHIVE_2_NEW);
+		new WaitUntil(new ArchiveIsInExplorer(PATH_ARCHIVE_2_NEW, explorer));
+		assertArchiveIsNotInExplorer(explorer, PATH_ARCHIVE_2);
 	}
 	
 	private void editArchive(EditArchiveDialog dialog, String newArchiveName) {

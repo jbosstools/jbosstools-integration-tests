@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010-2012 Red Hat, Inc.
+ * Copyright (c) 2010-2013 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -13,17 +13,20 @@ package org.jboss.tools.archives.ui.bot.test;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
-import org.jboss.tools.archives.ui.bot.test.view.ProjectArchivesView;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 import org.jboss.tools.ui.bot.ext.gen.INewObject;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
+import org.jboss.tools.ui.bot.ext.view.ErrorLogView;
 import org.junit.After;
 import org.junit.Test;
 
 /**
+ * Tests if creating an archive for various types of projects is possible
+ * without archive errors
  * 
  * @author jjankovi
  *
@@ -49,14 +52,16 @@ public class VariousProjectsArchiving extends ArchivesTestBase {
 		clearErrorView();
 		
 		/* open view for project */
-		ProjectArchivesView view = viewForProject(project);
+		view = viewForProject(project);
 		
 		/* create archive */
-		view.createNewJarArchive(project).finish();
+		view
+			.getProject()
+			.newJarArchive()
+			.finish();
 		
 		/* test if archive was created and no error was thrown*/
-		assertItemExistsInView(view, 
-				project, project + ".jar [/" + project + "]");
+		assertArchiveIsInView(view, project + ".jar [/" + project + "]");
 	}
 	
 	@Test
@@ -70,14 +75,16 @@ public class VariousProjectsArchiving extends ArchivesTestBase {
 		clearErrorView();
 		
 		/* open view for project */
-		ProjectArchivesView view = viewForProject(project);
+		view = viewForProject(project);
 		
 		/* create archive */
-		view.createNewJarArchive(project).finish();
+		view
+			.getProject()
+			.newJarArchive()
+			.finish();
 		
 		/* test if archive was created and no error was thrown*/
-		assertItemExistsInView(view, 
-				project, project + ".jar [/" + project + "]");
+		assertArchiveIsInView(view, project + ".jar [/" + project + "]");
 	}
 	
 	private void createDynamicWebProject(String project) {
@@ -110,5 +117,23 @@ public class VariousProjectsArchiving extends ArchivesTestBase {
 		} catch (WidgetNotFoundException exc) {
 			//do nothing here
 		}
+	}
+	
+	private void assertClearArchivesErrorLog() {
+		
+		assertTrue("Error log contains archive errors", 
+				countOfArchivesErrors() == 0);
+	}
+	
+	private int countOfArchivesErrors() {
+		ErrorLogView errorLog = new ErrorLogView();
+		int archivesErrorsCount = 0;
+		for (SWTBotTreeItem ti : errorLog.getMessages()) {
+			String pluginId = ti.cell(1);
+			if (pluginId.contains("org.jboss.ide.eclipse.archives")) {
+				archivesErrorsCount++;
+			}
+		}
+		return archivesErrorsCount;
 	}
 }

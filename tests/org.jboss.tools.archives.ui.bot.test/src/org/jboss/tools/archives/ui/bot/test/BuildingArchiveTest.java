@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010-2012 Red Hat, Inc.
+ * Copyright (c) 2010-2013 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -14,6 +14,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
+ * Tests if building archive via archives view and explorer is possible
  * 
  * @author jjankovi
  *
@@ -29,19 +30,22 @@ public class BuildingArchiveTest extends ArchivesTestBase{
 	
 	@BeforeClass
 	public static void setup() {
-		importProjectWithoutRuntime(projectName);
+		importArchiveProjectWithoutRuntime(projectName);
 	}
 	
 	@Test
 	public void testBuildingArchiveWithView() {
 		viewForProject(projectName)
-			.buildArchiveFull(projectName, ARCHIVE_PATH);
+			.getProject()
+			.getArchive(ARCHIVE_PATH)
+			.buildArchiveFull();
 	}
 	
 	@Test
 	public void testBuildingArchiveWithExplorer() {
 		explorerForProject(projectName)
-			.buildArchiveFull(ARCHIVE_PATH);
+			.getArchive(ARCHIVE_PATH)
+			.buildArchiveFull();
 	}
 	
 }

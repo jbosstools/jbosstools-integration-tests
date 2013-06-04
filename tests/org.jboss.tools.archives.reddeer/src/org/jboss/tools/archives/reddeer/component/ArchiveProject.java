@@ -1,0 +1,51 @@
+/*******************************************************************************
+ * Copyright (c) 2010-2013 Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ * Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/
+package org.jboss.tools.archives.reddeer.component;
+
+import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.tools.archives.reddeer.archives.ui.NewJarDialog;
+
+/**
+ * Archive Project accessible via Project Archives view
+ * 
+ * @author jjankovi
+ *
+ */
+public class ArchiveProject {
+
+	private TreeItem archiveProject;
+	private ArchiveContextMenuAction menuAction;
+
+	public ArchiveProject(TreeItem archiveProject) {
+		this.archiveProject = archiveProject;
+		menuAction = new ArchiveContextMenuAction();
+	}
+	
+	public String getName() {
+		return archiveProject.getText();
+	}
+	
+	public NewJarDialog newJarArchive() {
+		archiveProject.select();
+		return menuAction.createNewJarArchive();
+		
+	}
+	
+	public void buildProjectFull() {
+		archiveProject.select();
+		menuAction.buildProjectFull();
+	}
+	
+	public Archive getArchive(String archiveName) {
+		return new Archive(archiveProject.getItem(archiveName));
+	}
+	
+}
