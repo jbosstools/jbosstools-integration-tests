@@ -66,6 +66,12 @@ import org.jboss.ide.eclipse.as.ui.bot.test.eap6.DeployJSPProjectEAP6Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.eap6.HotDeployJSPFileEAP6Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.eap6.OperateEAP6Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.eap6.UndeployJSPProjectEAP6Server;
+import org.jboss.ide.eclipse.as.ui.bot.test.eap61.CreateEAP61Server;
+import org.jboss.ide.eclipse.as.ui.bot.test.eap61.DeleteServerEAP61Server;
+import org.jboss.ide.eclipse.as.ui.bot.test.eap61.DeployJSPProjectEAP61Server;
+import org.jboss.ide.eclipse.as.ui.bot.test.eap61.HotDeployJSPFileEAP61Server;
+import org.jboss.ide.eclipse.as.ui.bot.test.eap61.OperateEAP61Server;
+import org.jboss.ide.eclipse.as.ui.bot.test.eap61.UndeployJSPProjectEAP61Server;
 import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -73,6 +79,7 @@ import org.junit.runners.Suite;
 @RunWith(RequirementAwareSuite.class)
 @Suite.SuiteClasses({
 		CreateEAP6Server.class,
+		CreateEAP61Server.class,
 		CreateEAP5Server.class,
 		CreateEAP4Server.class,
 		CreateAS71Server.class,
@@ -85,6 +92,7 @@ import org.junit.runners.Suite;
 		CreateAS3Server.class,
 		
 		OperateEAP6Server.class,
+		OperateEAP61Server.class,
 		OperateEAP5Server.class,
 		OperateEAP4Server.class,
 		OperateAS71Server.class,
@@ -97,6 +105,7 @@ import org.junit.runners.Suite;
 		OperateAS40Server.class,
 		
 		DeployJSPProjectEAP6Server.class,
+		DeployJSPProjectEAP61Server.class,
 		DeployJSPProjectEAP5Server.class,
 		DeployJSPProjectEAP4Server.class,
 		DeployJSPProjectAS71Server.class,
@@ -109,6 +118,7 @@ import org.junit.runners.Suite;
 		DeployJSPProjectAS40Server.class,
 		
 		HotDeployJSPFileEAP6Server.class,
+		HotDeployJSPFileEAP61Server.class,
 		HotDeployJSPFileEAP5Server.class,
 		HotDeployJSPFileEAP4Server.class,
 		HotDeployJSPFileAS71Server.class,
@@ -121,6 +131,7 @@ import org.junit.runners.Suite;
 		HotDeployJSPFileAS3Server.class,
 		
 		UndeployJSPProjectEAP6Server.class,
+		UndeployJSPProjectEAP61Server.class,
 		UndeployJSPProjectEAP5Server.class,
 		UndeployJSPProjectEAP4Server.class,
 		UndeployJSPProjectAS71Server.class,
@@ -133,6 +144,7 @@ import org.junit.runners.Suite;
 		UndeployJSPProjectAS40Server.class,
 		
 		DeleteServerEAP6Server.class,
+		DeleteServerEAP61Server.class,
 		DeleteServerEAP5Server.class,
 		DeleteServerEAP4Server.class,
 		DeleteServerAS71Server.class,

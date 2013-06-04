@@ -6,6 +6,7 @@
 <booleanAttribute key="M2_OFFLINE" value="false"/>
 <stringAttribute key="M2_PROFILES" value=""/>
 <listAttribute key="M2_PROPERTIES">
+<listEntry value="jbosstools.test.jboss-eap-6.home=${folder_prompt:EAP 6.1 installation directory}"/>
 <listEntry value="jbosstools.test.jboss-eap-6.home=${folder_prompt:EAP 6 installation directory}"/>
 <listEntry value="jbosstools.test.jboss-eap-5.home=${folder_prompt:EAP 5 installation directory}"/>
 <listEntry value="jbosstools.test.jboss-eap-4.home=${folder_prompt:EAP 4 installation directory}"/>
@@ -18,8 +19,9 @@
 <listEntry value="jbosstools.test.jboss-as-4.0.home=${folder_prompt:JBoss AS 4.0 installation directory}"/>
 <listEntry value="jbosstools.test.jboss-as-3.2.home=${folder_prompt:JBoss AS 3.2 installation directory}"/>
 </listAttribute>
-<stringAttribute key="M2_RUNTIME" value="/home/ljelinko/programs/apache-maven-3.0.3"/>
+<stringAttribute key="M2_RUNTIME" value="EMBEDDED"/>
 <booleanAttribute key="M2_SKIP_TESTS" value="false"/>
+<intAttribute key="M2_THREADS" value="1"/>
 <booleanAttribute key="M2_UPDATE_SNAPSHOTS" value="false"/>
 <booleanAttribute key="M2_WORKSPACE_RESOLUTION" value="false"/>
 <stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="${workspace_loc:/org.jboss.ide.eclipse.as.ui.bot.test/launchers/prepare_workspace}"/>
