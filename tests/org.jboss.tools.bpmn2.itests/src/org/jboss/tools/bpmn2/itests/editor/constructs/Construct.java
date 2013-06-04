@@ -154,6 +154,16 @@ public class Construct implements IConstruct {
 	 * 
 	 * @param name
 	 * @param constructType
+	 * @param position
+	 */
+	public void append(String name, ConstructType constructType, Position position) {
+		append(name, constructType, ConnectionType.SEQUENCE_FLOW, position);
+	}
+	
+	/**
+	 * 
+	 * @param name
+	 * @param constructType
 	 * @param connectionType
 	 */
 	public void append(String name, ConstructType constructType, ConnectionType connectionType) {
@@ -195,7 +205,6 @@ public class Construct implements IConstruct {
 	 */
 	public void connectTo(Construct construct, ConnectionType connectionType) {
 		log.info("Connecting construct name '" + this.name + "' and construct '" + construct.getName() + "'.");
-
 		/*
 		 * Get the dimensions of the source (this) construct. 
 		 */
@@ -206,9 +215,14 @@ public class Construct implements IConstruct {
 		Rectangle rt = editor.getBounds(construct.editPart);
 		/*
 		 * Create the connection.
+		 * 
+		 * Bring forward elements in case they are covered by another bigger
+		 * element. Then perform the clicks.
 		 */
 		editor.activateTool(connectionType.toName());
+		select();
 		editor.click(rs.getCenter().x(), rs.getCenter().y());
+		construct.select();
 		editor.click(rt.getCenter().x(), rt.getCenter().y());
 		editor.activateTool("Select");
 	}

@@ -20,19 +20,20 @@ public class JBPM6BaseTest extends SWTBotTestCase {
 
 	protected Logger log = Logger.getLogger(getClass());  
 	
-	private ProcessDefinition processDefinition;
+	private ProcessDefinition definition;
 	
-	private String editorTitle; 
+	private BPMN2Editor editor; 
 	
 	public JBPM6BaseTest() {
 		/*
 		 * Initialize
 		 */
-		processDefinition = getClass().getAnnotation(ProcessDefinition.class);
-		if (processDefinition == null) {
+		definition = getClass().getAnnotation(ProcessDefinition.class);
+		if (definition == null) {
 			throw new RuntimeException("Validation failed. Missing @ProcessDefinition annotation.");
 		}
-		editorTitle = processDefinition.name().replace("\\s+", "");
+		
+		editor = new BPMN2Editor(definition.name().replace("\\s+", ""));
 	}
 	
 	@Before
@@ -41,28 +42,35 @@ public class JBPM6BaseTest extends SWTBotTestCase {
 		 * Open process definition.
 		 */
 		EclipseHelper.maximizeActiveShell();
-		new PackageExplorer().getProject(processDefinition.project()).getProjectItem(editorTitle + ".bpmn2").open();
+		new PackageExplorer().getProject(definition.project()).getProjectItem(editor.getTitle() + ".bpmn2").open();
 		/*
 		 * Activate requested editing profile.
 		 */
-		new BPMN2Editor(editorTitle).activateTool("Profiles", processDefinition.profile());
+		editor.activateTool("Profiles", definition.profile());
 	}
 	
 	@After
 	public void close() {
-		BPMN2Editor editor = new BPMN2Editor(editorTitle);
-		editor.setFocus();
 		/*
-		 * Validate
+		 * Make sure all content is saved.
 		 */
-		log.info("Validating '" + editorTitle + "'");
+		editor.setFocus();
+		if (editor.isDirty()) editor.save();
+		/*
+		 * Validate.
+		 */
+		log.info("Validating '" + editor.getTitle() + "'");
 		JBPM6Validator validator = new JBPM6Validator();
 		boolean result = validator.validate(editor.getSourceText());
 		Assert.assertTrue(validator.getResultMessage(), result);
 		/*
-		 * Close
+		 * Close.
 		 */
 		editor.close();
+	}
+	
+	public BPMN2Editor getEditor() {
+		return editor;
 	}
 	
 }
