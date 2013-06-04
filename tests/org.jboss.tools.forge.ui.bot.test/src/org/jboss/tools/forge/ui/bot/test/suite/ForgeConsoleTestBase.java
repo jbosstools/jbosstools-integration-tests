@@ -24,7 +24,7 @@ import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
  *
  */
 @Require(server = @Server(type = ServerType.ALL, state = ServerState.Present))
-public class ForgeTest extends SWTTestExt {
+public class ForgeConsoleTestBase extends SWTTestExt {
 
 	protected static final String PROJECT_NAME = "testproject";
 	protected static final String PACKAGE_NAME = "org.jboss.testpackage";

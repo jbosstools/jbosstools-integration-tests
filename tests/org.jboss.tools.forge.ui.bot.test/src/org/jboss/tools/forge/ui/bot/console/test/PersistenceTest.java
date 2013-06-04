@@ -1,11 +1,11 @@
-package org.jboss.tools.forge.ui.bot.test;
+package org.jboss.tools.forge.ui.bot.console.test;
 
 import java.io.IOException;
 
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
-import org.jboss.tools.forge.ui.bot.test.suite.ForgeTest;
+import org.jboss.tools.forge.ui.bot.test.suite.ForgeConsoleTestBase;
 import org.jboss.tools.forge.ui.bot.test.util.ConsoleUtils;
 import org.jboss.tools.forge.ui.bot.test.util.ResourceUtils;
 import org.jboss.tools.ui.bot.ext.SWTUtilExt;
@@ -17,7 +17,7 @@ import org.junit.Test;
  *
  */
 @Require(clearWorkspace=true)
-public class PersistenceTest extends ForgeTest {
+public class PersistenceTest extends ForgeConsoleTestBase {
 
 	@Test
 	public void hibernateJBossAS7(){

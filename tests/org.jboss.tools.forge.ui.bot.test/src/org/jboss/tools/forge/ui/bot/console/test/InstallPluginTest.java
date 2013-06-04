@@ -1,12 +1,12 @@
-package org.jboss.tools.forge.ui.bot.test;
+package org.jboss.tools.forge.ui.bot.console.test;
 
-import org.jboss.tools.forge.ui.bot.test.suite.ForgeTest;
+import org.jboss.tools.forge.ui.bot.test.suite.ForgeConsoleTestBase;
 import org.jboss.tools.forge.ui.bot.test.util.ConsoleUtils;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.junit.Test;
 
 @Require(clearWorkspace=true)
-public class InstallPluginTest extends ForgeTest {
+public class InstallPluginTest extends ForgeConsoleTestBase {
 
 	private void prepare(){
 		cdWS();

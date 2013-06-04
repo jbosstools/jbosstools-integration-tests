@@ -22,7 +22,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarToggleButton;
 import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.internal.WorkbenchPartReference;
-import org.jboss.tools.forge.ui.bot.test.suite.ForgeTest;
+import org.jboss.tools.forge.ui.bot.test.suite.ForgeConsoleTestBase;
 
 
 public class ViewUtils {
@@ -31,7 +31,7 @@ public class ViewUtils {
 		return UIThreadRunnable.syncExec(new ListResult<SWTBotToolbarButton>() {
 
 			public List<SWTBotToolbarButton> run() {
-				SWTBotView view = ForgeTest.openForgeView();
+				SWTBotView view = ForgeConsoleTestBase.openForgeView();
 				IWorkbenchPart obj = ((WorkbenchPartReference) view.getReference()).getPart(false);
 				ToolBar toolbar = null;
 				IToolBarManager t = ((IViewSite)obj.getSite()).getActionBars().getToolBarManager();
