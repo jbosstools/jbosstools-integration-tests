@@ -27,9 +27,6 @@ public class AdHocProcessTest extends JBPM6BaseTest {
 	 */
 	@Test
 	public void runTest() throws Exception {
-		/*
-		 * Modeling
-		 */
 		JBPM5Process process = new JBPM5Process("BPMN2-AdHocProcess");
 		process.setAddHoc(true);
 		process.add("Task 3", ConstructType.SCRIPT_TASK);
@@ -69,11 +66,6 @@ public class AdHocProcessTest extends JBPM6BaseTest {
 		task1.setScript("", "System.out.println(\"Task1\");");
 		
 		process.add("User", ConstructType.USER_TASK, task3, Position.SOUTH);
-		
-		/*
-		 * Validate
-		 */
-		process.getEditor().save();
 	}
 	
 }

@@ -79,7 +79,7 @@ public class ContainerConstruct extends Construct {
 	 * @param point
 	 */
 	private void add(String name, ConstructType type, Point point) {
-		if (!isAvailable(point)) {
+		if (!isInternalAvailable(point)) {
 			throw new RuntimeException("'" + point + "' is not available");
 		}
 		/*
@@ -102,7 +102,7 @@ public class ContainerConstruct extends Construct {
 	 * @param y
 	 * @return
 	 */
-	protected boolean isAvailable(Point point) {
+	protected boolean isInternalAvailable(Point point) {
 		/*
 		 * The point must be inside this edit part.
 		 */
