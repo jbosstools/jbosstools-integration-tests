@@ -14,7 +14,6 @@ import org.eclipse.ui.forms.widgets.ImageHyperlink;
 import org.jboss.tools.central.editors.JBossCentralEditor;
 import org.jboss.tools.central.editors.xpl.TextSearchControl;
 import org.jboss.tools.ui.bot.ext.parts.SWTBotEditorExt;
-import org.jboss.tools.ui.bot.ext.parts.SWTBotHyperlinkExt;
 import org.jboss.tools.ui.bot.ext.widgets.SWTBotImageHyperlink;
 
 public class SWTJBossCentralEditorExt extends SWTBotEditorExt{

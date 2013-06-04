@@ -3,7 +3,10 @@ package org.jboss.tools.central.test.ui.bot;
 import java.io.File;
 import java.io.FileNotFoundException;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotLabel;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.ui.bot.ext.SWTBotFactory;
@@ -11,11 +14,11 @@ import org.jboss.tools.ui.bot.ext.SWTFormsBotExt;
 import org.jboss.tools.ui.bot.ext.SWTOpenExt;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.condition.NonSystemJobRunsCondition;
+import org.jboss.tools.ui.bot.ext.condition.ShellIsActiveCondition;
 import org.jboss.tools.ui.bot.ext.condition.TaskDuration;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.Preference;
-import org.jboss.tools.ui.bot.ext.parts.SWTBotTwistie;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.ext.view.ProblemsView;
 import org.jboss.tools.ui.bot.ext.wizards.SWTBotWizard;
@@ -27,6 +30,20 @@ import org.junit.Test;
 //TODO When testing new build try it with type=ServerType.EAP !!!!
 @Require(clearProjects=false,server=@org.jboss.tools.ui.bot.ext.config.Annotations.Server(type=ServerType.ALL))
 public class CreateProjectsWithServerTest extends SWTTestExt{
+	
+	
+	private class QuickstartCategoryLabel extends SWTBotLabel{
+
+		public QuickstartCategoryLabel(Label widget)
+				throws WidgetNotFoundException {
+			super(widget);
+		}
+		
+		public void select(){
+			notify(SWT.MouseEnter);
+		}
+		
+	}
 	
 	@BeforeClass
 	public static void setup() throws FileNotFoundException{
@@ -158,67 +175,63 @@ public class CreateProjectsWithServerTest extends SWTTestExt{
 	}
 	
 	@Test
-	public void createProjectSectionGWTProjectTest(){
-		checkExample(null, IDELabel.JBossCentralEditor.GWT_WEB_PROJECT, true, false);
+	public void createProjectSectionMavenProjectTest(){
+		bot.hyperlink("Maven Project").click();
+		bot.waitForShell("New Maven Project");
+		bot.activeShell().close();
+		bot.waitWhile(new ShellIsActiveCondition("New Maven Project"));
 	}
 	
-	public void projectExamplesSectionTest(String name, String projectName, String readmeFile){
+	public void projectExamplesSectionTest(String name, String projectName, String category){
 		SWTFormsBotExt formsBot = SWTBotFactory.getFormsBot();
-		if (readmeFile == null){
-			checkExample(formsBot, name, true, projectName);
-		}else{
-			checkExample(formsBot, name, true, false, projectName, readmeFile);
-		}
+//		if (readmeFile == null){
+		QuickstartCategoryLabel label = new QuickstartCategoryLabel(bot.label(category).widget);
+		label.select();
+		checkExample(formsBot, name, true, projectName);
+//		}else{
+//			checkExample(formsBot, name, true, false, projectName, readmeFile);
+//		}
 		canBeDeployedTest();
-	}
-	
-	public void projectExamplesSectionTest(String name, String projectName){
-		projectExamplesSectionTest(name, projectName, null);
 	}
 	
 	@Test
 	public void projectExamplesSectionKitchensinkHTML5Test(){
-		projectExamplesSectionTest("kitchensink-html5-mobile", "jboss-as-kitchensink-html5-mobile");
+		projectExamplesSectionTest("kitchensink-html5-mobile", "jboss-as-kitchensink-html5-mobile", "Mobile Applications");
 	}
 	
 	@Test
 	public void projectExamplesSectionKitchensinkTest(){
-		projectExamplesSectionTest("kitchensink", "jboss-as-kitchensink");
+		projectExamplesSectionTest("kitchensink", "jboss-as-kitchensink", "Web Applications");
 	}
 	
 	@Test
 	public void projectExamplesSectionGreeterTest(){
-		projectExamplesSectionTest("greeter", "jboss-as-greeter");
+		projectExamplesSectionTest("greeter", "jboss-as-greeter", "Web Applications");
 	}
 	
 	@Test
 	public void projectExamplesSectionHelloworldTest(){
-		projectExamplesSectionTest("helloworld", "jboss-as-helloworld");
+		projectExamplesSectionTest("helloworld", "jboss-as-helloworld", "Web Applications");
 	}
 	
 	@Test
 	public void projectExamplesSectionKitchensinkRfTest(){
-		projectExamplesSectionTest("kitchensink-rf", "jboss-as-kitchensink-rf");
+		projectExamplesSectionTest("kitchensink-rf", "jboss-as-kitchensink-rf", "Web Applications");
 	}
 	
 	@Test
 	public void projectExamplesSectionJaxRsClientTest(){
-		projectExamplesSectionTest("jax-rs-client", "jboss-as-jax-rs-client");
+		projectExamplesSectionTest("jax-rs-client", "jboss-as-jax-rs-client", "Back-end Applications");
 	}
 	
 	@Test
 	public void projectExamplesSectionHelloworldJMSTest(){
-		projectExamplesSectionTest("helloworld-jms", "jboss-as-helloworld-jms");
-	}
-	
-	@Test
-	public void projectExamplesSectionHelloworldErraiTest(){
-		projectExamplesSectionTest("helloworld-errai", "jboss-as-helloworld-errai");
+		projectExamplesSectionTest("helloworld-jms", "jboss-as-helloworld-jms", "Back-end Applications");
 	}
 	
 	@Test 
 	public void projectExamplesSectionNumberguessTest(){
-		projectExamplesSectionTest("numberguess", "jboss-as-numberguess");
+		projectExamplesSectionTest("numberguess", "jboss-as-numberguess", "Back-end Applications");
 	}
 	
 	/**
