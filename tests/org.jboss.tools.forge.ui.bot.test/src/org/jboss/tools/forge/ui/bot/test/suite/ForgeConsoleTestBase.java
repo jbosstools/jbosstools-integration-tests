@@ -33,7 +33,6 @@ public class ForgeConsoleTestBase extends SWTTestExt {
 	
 	protected static ProjectExplorer pExplorer = null;
 	
-	
 	@BeforeClass
 	public static void setup(){
 		pExplorer = new ProjectExplorer();
