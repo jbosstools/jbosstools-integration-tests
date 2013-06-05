@@ -1,10 +1,11 @@
-package org.jboss.tools.forge.ui.bot.test;
+package org.jboss.tools.forge.ui.bot.console.test;
 
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTableItem;
 import org.jboss.tools.forge.ui.bot.test.suite.ForgeConsoleTestBase;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
+import org.junit.BeforeClass;
 import org.junit.Test;
 /**
  * 
@@ -14,10 +15,15 @@ import org.junit.Test;
 @Require(clearWorkspace=true)
 public class PreferencesTest extends ForgeConsoleTestBase {
 	
-	private static String FORGE_RUNTIME_NAME = "1.1.3.Final";
-	private static String FORGE_RUNTIME_LOCATION = "/home/psrna/Downloads/forge-distribution-1.1.3.Final";
+	private static String FORGE_RUNTIME_NAME = "";
+	private static String FORGE_RUNTIME_LOCATION = "";
 	
-	
+	@BeforeClass
+	public static void setupProperties(){
+		FORGE_RUNTIME_NAME = System.getProperty("jbosstools.forge-distribution.version");
+		FORGE_RUNTIME_LOCATION = System.getProperty("jbosstools.forge-distribution.home");
+	}
+		
 	@Test
 	public void addAndSelectForgeRuntimeTest(){
 		
@@ -36,6 +42,7 @@ public class PreferencesTest extends ForgeConsoleTestBase {
 		assertFalse(preferences.bot().button("Edit...").isEnabled());
 		assertFalse(preferences.bot().button("Remove").isEnabled());
 		
+		preferences.close();
 	}
 	
 	@Test
@@ -55,6 +62,7 @@ public class PreferencesTest extends ForgeConsoleTestBase {
 		/* Remove button is enabled on highlighted unactive runtime */  
 		preferences.bot().table().getTableItem(FORGE_RUNTIME_NAME).select();  
 		assertTrue(preferences.bot().button("Remove").isEnabled());
+		preferences.bot().button("Remove").setFocus();
 		preferences.bot().button("Remove").click();
 		
 		try{
@@ -63,5 +71,6 @@ public class PreferencesTest extends ForgeConsoleTestBase {
 		}catch(WidgetNotFoundException e){
 			//expected
 		}
+		preferences.close();
 	}	
 }

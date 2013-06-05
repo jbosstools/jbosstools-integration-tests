@@ -14,7 +14,9 @@
 	<packaging>eclipse-test-plugin</packaging>
 	<properties>
 		<jbosstools.test.jboss-as.home>${requirementsDirectory}/jboss-as-7.1.1.Final</jbosstools.test.jboss-as.home>
-		<systemProperties>${integrationTestsSystemProperties} -DJAVA_HOME=${JAVA_HOME} -Dtest.configurations.dir=resources/properties -Djbosstools.test.jboss-as.home=${jbosstools.test.jboss-as.home}</systemProperties>
+		<jbosstools.forge-distribution.version>1.2.0.Final</jbosstools.forge-distribution.version>
+		<jbosstools.forge-distribution.home>${requirementsDirectory}/forge-distribution-1.2.0.Final</jbosstools.forge-distribution.home>
+		<systemProperties>${integrationTestsSystemProperties} -DJAVA_HOME=${JAVA_HOME} -Dtest.configurations.dir=resources/properties -Djbosstools.test.jboss-as.home=${jbosstools.test.jboss-as.home} -Djbosstools.forge-distribution.home=${jbosstools.forge-distribution.home} -Djbosstools.forge-distribution.version=${jbosstools.forge-distribution.version}</systemProperties>
 	</properties>
 
 	<profiles>
