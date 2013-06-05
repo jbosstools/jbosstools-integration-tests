@@ -1,8 +1,6 @@
 package org.jboss.tools.openshift.ui.bot.test;
 
-import org.jboss.tools.openshift.ui.bot.test.domain.RenameDomain;
-import org.jboss.tools.openshift.ui.bot.test.explorer.ConnectionProd;
-import org.jboss.tools.openshift.ui.bot.test.explorer.ManageSSH;
+import org.jboss.tools.openshift.ui.bot.test.explorer.Connection;
 import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
@@ -16,9 +14,7 @@ import org.junit.runners.Suite.SuiteClasses;
  * @author sbunciak
  */
 @SuiteClasses({ 
-	ConnectionProd.class,
-	ManageSSH.class, 
-	RenameDomain.class,
+	Connection.class,
 	})
 @RunWith(RequirementAwareSuite.class)
 public class OpenShiftJenkinsBotTests {

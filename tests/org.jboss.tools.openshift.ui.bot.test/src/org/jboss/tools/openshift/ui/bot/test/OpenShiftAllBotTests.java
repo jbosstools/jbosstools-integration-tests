@@ -10,16 +10,16 @@
  ******************************************************************************/
 package org.jboss.tools.openshift.ui.bot.test;
 
-import org.jboss.tools.openshift.ui.bot.test.app.CreateDeleteEWSApp;
 import org.jboss.tools.openshift.ui.bot.test.app.CreateDeleteJBossApp;
 import org.jboss.tools.openshift.ui.bot.test.app.CreateDeletePHPApp;
 import org.jboss.tools.openshift.ui.bot.test.app.CreateDeletePythonApp;
 import org.jboss.tools.openshift.ui.bot.test.app.CreateDeleteScaledRubyApp;
+import org.jboss.tools.openshift.ui.bot.test.app.RestartApplication;
 import org.jboss.tools.openshift.ui.bot.test.cartridge.EmbedCartridges;
 import org.jboss.tools.openshift.ui.bot.test.domain.CreateDomain;
 import org.jboss.tools.openshift.ui.bot.test.domain.DeleteDomain;
 import org.jboss.tools.openshift.ui.bot.test.domain.RenameDomain;
-import org.jboss.tools.openshift.ui.bot.test.explorer.ConnectionEnterprise;
+import org.jboss.tools.openshift.ui.bot.test.explorer.Connection;
 import org.jboss.tools.openshift.ui.bot.test.explorer.CreateAdapter;
 import org.jboss.tools.openshift.ui.bot.test.explorer.ManageSSH;
 import org.jboss.tools.openshift.ui.bot.test.explorer.OpenShiftDebugFeatures;
@@ -36,24 +36,25 @@ import org.junit.runners.Suite.SuiteClasses;
  * @author sbunciak
  */
 @SuiteClasses({
-	ConnectionEnterprise.class, 
+	Connection.class, 
 	ManageSSH.class, 
 	/* Domain */
 	DeleteDomain.class,
 	CreateDomain.class,
 	RenameDomain.class,
-	/* App */
-	CreateDeleteJBossApp.class,
-	CreateDeleteEWSApp.class,
-	CreateDeletePHPApp.class,
-	CreateDeletePythonApp.class,
-	CreateDeleteScaledRubyApp.class,
-	//RepublishApp.class,
 	/* Cartridge */
 	EmbedCartridges.class,
 	/* Explorer */
 	OpenShiftDebugFeatures.class,
 	CreateAdapter.class,
+	/* App */
+	CreateDeleteJBossApp.class,
+	//CreateDeleteEWSApp.class,
+	CreateDeletePHPApp.class,
+	CreateDeletePythonApp.class,
+	CreateDeleteScaledRubyApp.class,
+	RestartApplication.class,
+	//RepublishApp.class,
 })
 @RunWith(RequirementAwareSuite.class)
 public class OpenShiftAllBotTests {

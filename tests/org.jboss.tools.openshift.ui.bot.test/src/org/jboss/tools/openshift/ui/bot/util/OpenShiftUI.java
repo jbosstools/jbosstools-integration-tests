@@ -87,16 +87,28 @@ public class OpenShiftUI {
 	 *
 	 */
 	public static class AppType {
-		
-		public static final String JBOSS = "jbossas-7";
+		public static final String JBOSS = "JBoss Application Server 7.1";
+		public static final String JBOSS_EAP = "JBoss Enterprise Application Platform 6.0";
+		public static final String JBOSS_EWS = "Tomcat 7 (JBoss EWS 2.0)";
+		public static final String JENKINS = "Jenkins Server 1.4";
+		public static final String PERL = "Perl 5.10";
+		public static final String PHP = "PHP 5.3";
+		public static final String PYTHON = "Python 2.6";
+		public static final String DIY = "Do-It-Yourself 0.1";
+		public static final String RUBY_1_9 = "Ruby 1.9";
+	}
+	// TODO:	
+	// TEMPORARY
+	public static class AppTypeOld {
+
+		public static final String JBOSS = "jbossas-7.1";
 		public static final String JBOSS_EAP = "jbosseap-6.0";
-		public static final String JBOSS_EWS = "jbossews-1.0";
-		public static final String JENKINS = "jenkins-1.4";
+		public static final String JBOSS_EWS = "jbossews-2.0)";
+		
 		public static final String PERL = "perl-5.10";
 		public static final String PHP = "php-5.3";
 		public static final String PYTHON = "python-2.6";
 		public static final String DIY = "diy-0.1";
-		public static final String RUBY_1_8 = "ruby-1.8";
 		public static final String RUBY_1_9 = "ruby-1.9";
 	}
 	
@@ -110,14 +122,13 @@ public class OpenShiftUI {
 		
 		
 		public static final String JENKINS = "jenkins-1.4";
-		public static final String CRON = "cron-1.4";
-		public static final String MYSQL = "mysql-5.1";
-		public static final String POSTGRESQL = "postgresql-8.4";
-		
-		public static final String MONGODB = "mongodb-2.0";
-		public static final String PHPMYADMIN = "phpmyadmin-3.4";
-		public static final String METRICS = "metrics-0.1";
-		public static final String ROCKMONGO = "rockmongo-1.1";
+		public static final String CRON = "Cron 1.4";
+		public static final String MYSQL = "MySQL Database 5.1";
+		public static final String POSTGRESQL = "PostgreSQL Database 8.4";
+		public static final String SWITCHYARD = "SwitchYard 0.6";
+		public static final String MONGODB = "MongoDB NoSQL Database 2.2";
+		public static final String PHPMYADMIN = "phpMyAdmin 3.4";
+		public static final String ROCKMONGO = "RockMongo 1.1";
 	}
 	
 	public static class Labels {
@@ -137,6 +148,7 @@ public class OpenShiftUI {
 		public static final String EXPLORER_PORTS = "Port forwarding...";
 		public static final String BROWSER = "Web Browser";
 		public static final String EXPLORER_ADAPTER = "Create a Server Adapter...";
+		public static final String EXPLORER_RESTART_APP = "Restart";
 		
 	}
 	
@@ -147,8 +159,8 @@ public class OpenShiftUI {
 		public static final String CREATE_DOMAIN = "Create Domain";
 		public static final String EDIT_DOMAIN = "Edit Domain";
 		public static final String CREDENTIALS = "";
-		public static final String SSH_WIZARD = "";
-		public static final String NEW_SSH = "";
+		public static final String SSH_WIZARD = "Manage SSH Keys";
+		public static final String NEW_SSH = "New SSH Key";
 		public static final String DELETE_APP = "Application deletion";
 		public static final String IMPORT_APP = "Import OpenShift Application";
 		public static final String TAIL_FILES = "Tail Files";

@@ -29,12 +29,6 @@ public class DeleteDomain extends SWTTestExt {
 		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 3, TIME_1S);
 
 		// delete
-		/*
-		assertTrue(
-				"Domain is not created - cannot be deleted.",
-				openshiftExplorer.bot().tree().getAllItems()[0].contextMenu(
-						OpenShiftUI.Labels.EXPLORER_DELETE_DOMAIN).isEnabled());
-		*/
 		try {
 			openshiftExplorer.bot().tree().getAllItems()[0].contextMenu(
 					OpenShiftUI.Labels.EXPLORER_DELETE_DOMAIN).click();
