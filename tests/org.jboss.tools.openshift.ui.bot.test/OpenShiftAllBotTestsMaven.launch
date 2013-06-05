@@ -10,9 +10,13 @@
 <listEntry value="configurations.dir=${project_loc}/resources"/>
 <listEntry value="scope=All"/>
 <listEntry value="maven.test.failure.ignore=true"/>
+<listEntry value="libra.server=openshift.redhat.com"/>
+<listEntry value="user.name=sbunciak+jbt@redhat.com"/>
+<listEntry value="user.pwd=rhtest123"/>
 </listAttribute>
 <stringAttribute key="M2_RUNTIME" value="EMBEDDED"/>
 <booleanAttribute key="M2_SKIP_TESTS" value="true"/>
+<intAttribute key="M2_THREADS" value="1"/>
 <booleanAttribute key="M2_UPDATE_SNAPSHOTS" value="true"/>
 <booleanAttribute key="M2_WORKSPACE_RESOLUTION" value="true"/>
 <mapAttribute key="org.eclipse.debug.core.environmentVariables">

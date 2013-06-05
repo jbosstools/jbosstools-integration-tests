@@ -1,5 +1,7 @@
 package org.jboss.tools.openshift.ui.bot.test.domain;
 
+import java.util.Random;
+
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.waits.Conditions;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotButton;
@@ -27,28 +29,30 @@ public class CreateDomain extends SWTTestExt {
 	public void waitNoJobs() {
 		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S, TIME_1S);
 	}
-	
+
 	@Test
 	public void canCreateDomain() {
 		// open OpenShift Explorer
 		SWTBotView openshiftExplorer = open
 				.viewOpen(OpenShiftUI.Explorer.iView);
 
-		openshiftExplorer
-				.bot()
-				.tree()
-				.getAllItems()[0] // get 1st account in OpenShift Explorer
+		openshiftExplorer.bot().tree().getAllItems()[0]
+				// get 1st account in OpenShift Explorer
 				.contextMenu(OpenShiftUI.Labels.EXPLORER_CREATE_EDIT_DOMAIN)
 				.click(); // click on 'Create or Edit Domain'
 
 		bot.waitForShell(OpenShiftUI.Shell.CREATE_DOMAIN, TIME_30S);
-		bot.waitUntil(Conditions.shellIsActive(OpenShiftUI.Shell.CREATE_DOMAIN), TIME_60S);
-		
+		bot.waitUntil(
+				Conditions.shellIsActive(OpenShiftUI.Shell.CREATE_DOMAIN),
+				TIME_60S);
+
 		SWTBotText domainText = bot.text(0);
 
-		assertTrue("Domain should not be set at this stage!", domainText.getText().equals(""));
-		
-		domainText.setText(TestProperties.get("openshift.domain"));
+		assertTrue("Domain should not be set at this stage!", domainText
+				.getText().equals(""));
+
+		domainText.setText(TestProperties.get("openshift.domain")
+				+ new Random().nextInt(10000));
 		log.info("*** OpenShift SWTBot Tests: Domain name set. ***");
 
 		SWTBotButton finishBtn = bot.button(IDELabel.Button.FINISH);

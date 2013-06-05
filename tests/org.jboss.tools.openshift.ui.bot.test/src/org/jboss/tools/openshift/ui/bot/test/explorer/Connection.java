@@ -12,11 +12,19 @@ import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.condition.NonSystemJobRunsCondition;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
+import org.junit.Before;
 import org.junit.Test;
 
 @Require(clearWorkspace = true)
 public class Connection extends SWTTestExt {
 
+	@Before
+	public void setUpServer() {
+		TestProperties.put("openshift.server.url", System.getProperty("libra.server"));
+		TestProperties.put("openshift.user.name", System.getProperty("user.name"));
+		TestProperties.put("openshift.user.pwd", System.getProperty("user.pwd"));
+	}
+	
 	@Test
 	public void canCreateConnectionToOpenShiftAccount() {
 		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S, TIME_1S);

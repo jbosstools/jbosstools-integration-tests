@@ -15,7 +15,7 @@
 	<packaging>eclipse-test-plugin</packaging>
 
 	<properties>
-		<systemProperties>${integrationTestsSystemProperties} -Dtest.configurations.dir=${configurations.dir}</systemProperties>
+		<systemProperties>${integrationTestsSystemProperties} -Dtest.configurations.dir=${configurations.dir} -Dlibra.server=${libra.server} -Duser.name=${user.name} -Duser.pwd=${user.pwd}</systemProperties>
 		<surefire.timeout>10800</surefire.timeout>
 	</properties>
 

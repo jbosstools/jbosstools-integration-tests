@@ -57,7 +57,7 @@ public class CreateAdapter extends SWTTestExt {
 		bot.button(IDELabel.Button.YES).click();
 
 		// create known_hosts since it does not exists any more
-		SWTBotShell khShell = bot.waitForShell("Question");
+		SWTBotShell khShell = bot.waitForShell("Publish " + DYI_APP + "?");
 		if (khShell != null) {
 			bot.button(IDELabel.Button.YES).click();
 		}
@@ -105,7 +105,7 @@ public class CreateAdapter extends SWTTestExt {
 
 		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 2, TIME_1S);
 
-		account.getNode(DYI_APP + " " + OpenShiftUI.AppType.DIY)
+		account.getNode(DYI_APP + " " + OpenShiftUI.AppTypeOld.DIY)
 				.contextMenu(OpenShiftUI.Labels.EXPLORER_DELETE_APP).click();
 
 		bot.waitForShell(OpenShiftUI.Shell.DELETE_APP);
