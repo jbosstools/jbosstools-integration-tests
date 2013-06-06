@@ -2,10 +2,10 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: myRedDeer
 Bundle-SymbolicName: org.jboss.ide.eclipse.as.reddeer;singleton:=true
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 4.1.0.qualifier
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: 
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: org.eclipse.swtbot.go,
  org.jboss.reddeer.jface;bundle-version="0.3.0",
  org.jboss.reddeer.junit;bundle-version="0.3.0",
