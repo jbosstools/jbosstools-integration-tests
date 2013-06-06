@@ -11,9 +11,16 @@ import org.jboss.reddeer.eclipse.datatools.ui.DatabaseProfile;
 import org.jboss.reddeer.eclipse.datatools.ui.DriverDefinition;
 import org.jboss.reddeer.eclipse.datatools.ui.DriverTemplate;
 import org.jboss.reddeer.eclipse.datatools.ui.FlatFileProfile;
+import org.jboss.reddeer.eclipse.datatools.ui.wizard.ConnectionProfileDatabasePage;
 import org.jboss.reddeer.eclipse.datatools.ui.wizard.ConnectionProfileFlatFilePage;
 import org.jboss.reddeer.eclipse.datatools.ui.wizard.ConnectionProfileSelectPage;
 import org.jboss.reddeer.eclipse.datatools.ui.wizard.ConnectionProfileWizard;
+import org.jboss.reddeer.eclipse.datatools.ui.wizard.DriverDefinitionPage;
+import org.jboss.reddeer.eclipse.datatools.ui.wizard.DriverDefinitionWizard;
+import org.jboss.reddeer.swt.impl.button.CheckBox;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.util.Bot;
 import org.jboss.tools.teiid.reddeer.ModelProject;
 import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
@@ -21,6 +28,8 @@ import org.jboss.tools.teiid.reddeer.preference.DriverDefinitionPreferencePageEx
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.view.TeiidView;
 import org.jboss.tools.teiid.reddeer.wizard.ConnectionProfileXmlPage;
+import org.jboss.tools.teiid.reddeer.wizard.HSQLDBDriverWizard;
+import org.jboss.tools.teiid.reddeer.wizard.HSQLDBProfileWizard;
 import org.jboss.tools.teiid.reddeer.wizard.TeiidConnectionProfileWizard;
 
 /**
@@ -89,6 +98,7 @@ public class TeiidBot {
 		wizard.finish();
 	}
 
+
 	public void createDatabaseProfile(String name, String fileName) {
 		Properties props = new Properties();
 		try {
@@ -133,6 +143,37 @@ public class TeiidBot {
 		wizard.open();
 		wizard.createDatabaseProfile(dbProfile);
 	}
+	
+	/**
+	 * Create connection profile to HSQL database
+	 * @param properties path to properties file (e.g. resources/db/mydb.properties)
+	 * @param jdbcProfile name of profile (e.g. HSQLDB Profile)
+	 * @param addDriver true if driver should be added
+	 * @param setLocksFalse true if locks on database shouldn't be created
+	 */
+	public void createHsqlProfile(String properties, String jdbcProfile, boolean addDriver, boolean setLocksFalse){
+		//load properties
+		Properties props = new Properties();
+		try {
+			props.load(new FileReader(properties));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			return;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return;
+		}
+		if (addDriver) {
+			// create new generic driver for HSQL
+			new HSQLDBDriverWizard(props.getProperty("db.jdbc_path")).create();
+		}
+		//create new connection profile to HSQLDB 
+		new HSQLDBProfileWizard("HSQLDB Driver", props.getProperty("db.name"),
+				props.getProperty("db.hostname")).setUser(props.getProperty("db.username"))
+				.setPassword(props.getProperty("db.password")).setName(jdbcProfile).create(setLocksFalse);
+	}
+	
+	
 
 	public String toAbsolutePath(String path) {
 		return new File(path).getAbsolutePath();

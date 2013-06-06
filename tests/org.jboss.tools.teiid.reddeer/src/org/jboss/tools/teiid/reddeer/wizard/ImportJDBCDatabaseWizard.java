@@ -11,6 +11,8 @@ import org.jboss.reddeer.swt.util.Bot;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.tools.teiid.reddeer.condition.IsProjectItemCreated;
+import org.jboss.tools.teiid.reddeer.view.GuidesView;
+import org.jboss.tools.teiid.reddeer.view.ModelExplorerView;
 
 /**
  * Imports JDBC Database to Teiid project.
@@ -40,6 +42,28 @@ public class ImportJDBCDatabaseWizard extends ImportWizardDialog {
 		next();
 		fillFourthPage();
 		finish();
+	}
+	
+	/**
+	 * Create source model for JDBC data source
+	 * @param viaGuides true if should be executed via guides
+	 */
+	public void execute(boolean viaGuides) {
+		if (viaGuides){
+			new GuidesView().chooseAction("Model JDBC Source", "Create source model for JDBC data source");
+			fillFirstPage();
+			next();
+			fillSecondPage();
+			next();
+			fillThirdPage();
+			next();
+			fillFourthPage();
+			finish();
+			new ModelExplorerView().open();
+		} else {
+			execute();
+		}
+		
 	}
 
 	private void fillFirstPage() {
@@ -94,5 +118,9 @@ public class ImportJDBCDatabaseWizard extends ImportWizardDialog {
 	public void finish() {
 		super.finish();
 		new WaitUntil(new IsProjectItemCreated(projectName, modelName), TimePeriod.LONG);
+	}
+	
+	public void finish2(){
+		super.finish();
 	}
 }
