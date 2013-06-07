@@ -10,15 +10,16 @@ import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.swt.util.Bot;
 import org.jboss.tools.switchyard.reddeer.component.Bean;
 import org.jboss.tools.switchyard.reddeer.component.Component;
-import org.jboss.tools.switchyard.reddeer.component.SOAPBinding;
 import org.jboss.tools.switchyard.reddeer.component.Service;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.server.ServerDeployment;
 import org.jboss.tools.switchyard.reddeer.view.JUnitView;
 import org.jboss.tools.switchyard.reddeer.widget.ProjectItemExt;
 import org.jboss.tools.switchyard.reddeer.wizard.PromoteServiceWizard;
+import org.jboss.tools.switchyard.reddeer.wizard.SOAPBindingWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.SwitchYardProjectWizard;
 import org.jboss.tools.switchyard.ui.bot.test.suite.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.tools.switchyard.ui.bot.test.suite.PerspectiveRequirement.Perspective;
 import org.jboss.tools.switchyard.ui.bot.test.suite.ServerRequirement.Server;
 import org.jboss.tools.switchyard.ui.bot.test.suite.ServerRequirement.State;
 import org.jboss.tools.switchyard.ui.bot.test.suite.ServerRequirement.Type;
@@ -46,6 +47,7 @@ import org.junit.Test;
  * 
  */
 @CleanWorkspace
+@Perspective(name = "Java EE")
 @Server(type = Type.ALL, state = State.RUNNING)
 public class SimpleTest extends SWTBotTestCase {
 
@@ -108,20 +110,25 @@ public class SimpleTest extends SWTBotTestCase {
 		editor.typeText(15, 0, "\treturn from.getTextContent().trim();");
 		editor.saveAndClose();
 
-		new Service("ExampleServicePortType").addBinding(new SOAPBinding());
+		new Service("ExampleServicePortType").addBinding("SOAP");
+		new SOAPBindingWizard().setContextpath(PROJECT).finish();
+		
+		new SwitchYardEditor().save();
 
+		/* Deploy Project*/
 		new ServerDeployment("AS-7.1").deployProject(PROJECT);
-
 		ConsoleView consoleView = new ConsoleView();
 		consoleView.open();
-		assertFalse("Deployment error!", consoleView.getConsoleText().toUpperCase().contains("ERROR"));
+		String consoleText = consoleView.getConsoleText().toUpperCase();
+		assertFalse("Deployment error!", consoleText.contains("ERROR"));
 		
-		Bot.get().sleep(60 * 1000);
-		SoapClient.testResponses("http://localhost:8080/ExampleService/ExampleService?wsdl", "Hello");
+		/* Test SOAP Response */
+		SoapClient.testResponses("http://localhost:8080/test/ExampleService?wsdl", "Hello");
 	}
 
 	private SWTBotEclipseEditor openJavaFileFromService(String component) {
 		new Component(component).doubleClick();
+		Bot.get().sleep(1000);
 		return Bot.get().editorByTitle(component + ".java").toTextEditor();
 	}
 

@@ -20,6 +20,7 @@ public class PromoteServiceWizard extends WizardDialog {
 	public static final String DEFAULT_INTERFACE_TYPE = "Java";
 	public static final String DEFAULT_TRANSFORMER_TYPE = "Java Transformer";
 
+	private String name;
 	private String interfaceType;
 	private String interfaceFile;
 	private String transformerType;
@@ -28,6 +29,11 @@ public class PromoteServiceWizard extends WizardDialog {
 	public PromoteServiceWizard() {
 		this.interfaceType = DEFAULT_INTERFACE_TYPE;
 		this.transformerType = DEFAULT_TRANSFORMER_TYPE;
+	}
+
+	public PromoteServiceWizard setName(String name) {
+		this.name = name;
+		return this;
 	}
 
 	public PromoteServiceWizard setInterfaceType(String interfaceType) {
@@ -75,6 +81,14 @@ public class PromoteServiceWizard extends WizardDialog {
 		new DefaultCombo("Transformer Type:").setSelection(transformerType);
 		next();
 		new LabeledText("Name:").setText(transformerName);
+		finish();
+	}
+
+	public void create2() {
+		Bot.get().shell(DIALOG_TITLE).activate();
+		if (name != null) {
+			new LabeledText("Service Name:").setText(name);
+		}
 		finish();
 	}
 }
