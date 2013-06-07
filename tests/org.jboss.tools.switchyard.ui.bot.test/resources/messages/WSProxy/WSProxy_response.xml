@@ -1,0 +1,8 @@
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
+   <SOAP-ENV:Header/>
+   <SOAP-ENV:Body>
+      <ns2:sayHelloResponse xmlns:ns2="urn:webservice:Hello:1.0">
+         <text>Hello apodhrad</text>
+      </ns2:sayHelloResponse>
+   </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>
