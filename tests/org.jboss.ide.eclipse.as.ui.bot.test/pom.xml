@@ -336,6 +336,42 @@
 			</plugin></plugins>
 			</build>
 		</profile>
+		<profile>
+			<id>wildfly8</id>
+			<activation>
+				<property>
+					<name>test.profile</name>
+					<value>wildfly8</value>
+				</property>
+			</activation>
+			<properties>
+				<test.class>org.jboss.ide.eclipse.as.ui.bot.test.Wildfly8CompatibilitySuite</test.class>
+				<jbosstools.test.jboss-wildfly-8.home>${requirementsDirectory}/wildfly-8.0.0.Alpha1</jbosstools.test.jboss-wildfly-8.home>
+				<jbosstools.test.jboss-wildfly-8.url></jbosstools.test.jboss-wildfly-8.url>
+				<jbosstools.test.jboss-wildfly-8.md5>220b246c08a66192b9466f9ac93f1693</jbosstools.test.jboss-wildfly-8.md5>
+				<runtimesProperties>-Djbosstools.test.jboss-wildfly-8.home=${jbosstools.test.jboss-wildfly-8.home} -Dswtbot.test.properties.file=resources/config_files_templates/project/wildfly-8.properties</runtimesProperties>
+			</properties>
+			<build>
+			<plugins><plugin>
+				<groupId>com.googlecode.maven-download-plugin</groupId>
+				<artifactId>maven-download-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>install-wildfly-8</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<configuration>
+							<url>${jbosstools.test.jboss-wildfly-8.url}</url>
+							<md5>${jbosstools.test.jboss-wildfly-8.md5}</md5>
+							<unpack>true</unpack>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin></plugins>
+			</build>
+		</profile>
 	</profiles>
 	
 	<build>
