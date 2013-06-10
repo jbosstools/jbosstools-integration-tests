@@ -20,6 +20,7 @@ import org.junit.Test;
  * folder to the runtime detection and checks if it is correctly recognized and created. 
  *   
  * @author Lucia Jelinkova
+ * @author Petr Suchy
  *
  */
 public abstract class DetectRuntimeTemplate extends RuntimeDetectionTestCase {
@@ -32,11 +33,18 @@ public abstract class DetectRuntimeTemplate extends RuntimeDetectionTestCase {
 
 	@Test
 	public void detectRuntime(){
-		searchingForRuntimesDialog = addPath(RuntimeProperties.getInstance().getRuntimePath(getPathID()));
+		String path = RuntimeProperties.getInstance().getRuntimePath(getPathID());
+		searchingForRuntimesDialog = addPath(path);
 
 		List<Runtime> runtimes = searchingForRuntimesDialog.getRuntimes(); 
-
-		assertThat(runtimes.size(), is(getExpectedRuntimes().size()));
+		int size = runtimes.size();
+		
+		if(size > 0){
+			assertThat(runtimes.size(), is(getExpectedRuntimes().size()));
+		}else{
+			searchingForRuntimesDialog.cancel();
+			throw new AssertionError("No runtime detected in folder: " + path);
+		}
 
 		for (Runtime runtime : getExpectedRuntimes()){
 			assertThat(runtimes, hasItem(new RuntimeMatcher(runtime)));			
