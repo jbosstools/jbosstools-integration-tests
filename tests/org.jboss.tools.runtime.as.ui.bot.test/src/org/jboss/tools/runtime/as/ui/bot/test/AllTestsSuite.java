@@ -41,6 +41,8 @@ import org.jboss.tools.runtime.as.ui.bot.test.detector.server.soap53.DetectSOAP5
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.soap53.OperateSOAP53;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.soap53.standalone.DetectSOAPStandalone53;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.soap53.standalone.OperateSOAPStandalone53;
+import org.jboss.tools.runtime.as.ui.bot.test.detector.server.wildfly8.DetectWildFly8;
+import org.jboss.tools.runtime.as.ui.bot.test.detector.server.wildfly8.OperateWildFly8;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
@@ -49,40 +51,55 @@ import org.junit.runners.Suite;
 		RuntimeDuplications.class,
 		ServerWithSeam.class,
 		RuntimeDownload.class,
+		
+		DetectWildFly8.class,
+		OperateWildFly8.class,
+		
 		DetectJBoss7.class,
 		OperateJBoss7.class,
+		
 		DetectEAP60.class,
 		OperateEAP60.class,
+		
 		DetectEAP61.class,
 		OperateEAP61.class,
+		
 		DetectEAP51.class, 
 		CheckEAP51Seam.class,
 		OperateEAP51.class, 
+		
 		DetectEAP52.class, 
 		CheckEAP52Seam.class,
 		OperateEAP52.class, 
+		
 		DetectEAP4.class, 
 		CheckEAP4Seam.class,
 		OperateEAP4.class,
+		
 		DetectEPP4.class, 
 		CheckEPP4Seam.class,
 		OperateEPP4.class,
+		
 		DetectEPP5.class, 
 		CheckEPP5Seam.class,
 		OperateEPP5.class,
+		
 		DetectEWP5.class, 
 		CheckEWP5Seam.class,
 		OperateEWP5.class,
+		
 		DetectSOAP52.class, 
 		CheckSOAP52Seam.class,
 		OperateSOAP52.class, 
 		DetectSOAPStandalone52.class, 
 		OperateSOAPStandalone52.class,
+		
 		DetectSOAP53.class, 
 		CheckSOAP53Seam.class,
 		OperateSOAP53.class, 
 		DetectSOAPStandalone53.class, 
 		OperateSOAPStandalone53.class,
+		
 		DetectSeam22.class,
 		CheckSeam22.class,
 		DetectSeam23.class,
