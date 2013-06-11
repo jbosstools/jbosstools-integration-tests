@@ -22,6 +22,7 @@
 	<modules>
 		<module>org.jboss.ide.eclipse.as.ui.bot.test</module>
 		<module>org.jboss.ide.eclipse.as.reddeer</module>
+		<module>org.jboss.tools.aerogear.ui.bot.test</module>
 		<module>org.jboss.tools.archives.reddeer</module>
 		<module>org.jboss.tools.archives.ui.bot.test</module>
 		<!-- <module>org.jboss.tools.cdi.bot.test</module>        JBIDE-13323 -->
