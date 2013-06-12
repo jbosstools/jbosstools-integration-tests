@@ -2,6 +2,7 @@ package org.jboss.tools.teiid.reddeer.wizard;
 
 import org.jboss.reddeer.eclipse.jface.wizard.NewWizardDialog;
 import org.jboss.reddeer.swt.util.Bot;
+import org.jboss.tools.teiid.reddeer.view.GuidesView;
 
 /**
  * Creates a new virtual database.
@@ -23,6 +24,22 @@ public class CreateVDB extends NewWizardDialog {
 		open();
 		fillFirstPage();
 		finish();
+	}
+	
+	/**
+	 * Define new VDB
+	 * @param viaGuides true if set via Modelling actions
+	 */
+	public void execute(boolean viaGuides){
+		if (viaGuides){
+			new GuidesView().chooseAction("Model JDBC Source", "Define VDB");
+			Bot.get().button("New...").click();
+			fillFirstPage();
+			finish();
+			Bot.get().button("OK").click();
+		} else {
+			execute();
+		}
 	}
 
 	private void fillFirstPage() {
