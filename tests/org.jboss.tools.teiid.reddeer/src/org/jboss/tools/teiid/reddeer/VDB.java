@@ -3,9 +3,11 @@ package org.jboss.tools.teiid.reddeer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.ProjectItem;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.util.Bot;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
+import org.jboss.tools.teiid.reddeer.view.GuidesView;
 
 /**
  * This class represents a virtual database.
@@ -50,6 +52,21 @@ public class VDB {
 	public void executeVDB() {
 		projectItem.select();
 		new ContextMenu("Modeling", "Execute VDB").select();
+	}
+	
+	/**
+	 * Executes this VDB via Modelling actions guides
+	 * @param viaGuides
+	 */
+	public void executeVDB(boolean viaGuides){
+		if (viaGuides){
+			projectItem.select();
+			new GuidesView().chooseAction("Model JDBC Source", "Execute VDB");
+			//VDB is selected from previous step
+			Bot.get().button("OK").click();
+		} else {
+			executeVDB();
+		}
 	}
 
 	/**
