@@ -84,7 +84,9 @@ public class VisualEditorContextMenuTest extends VPEEditorTestCase {
     jspTextEditor.setFocus();
     jspTextEditor.selectRange(0, 0, 0);
     // Test Context menu for empty page
-    checkMenuContent(webBrowser,new String[] {"",
+    checkMenuContent(webBrowser,new String[] {SWTBotWebBrowser.PASTE_MENU_LABEL,
+      "",
+      "",
       SWTBotWebBrowser.INSERT_AROUND_MENU_LABEL,
       SWTBotWebBrowser.INSERT_BEFORE_MENU_LABEL,
       SWTBotWebBrowser.INSERT_AFTER_MENU_LABEL,
@@ -93,10 +95,7 @@ public class VisualEditorContextMenuTest extends VPEEditorTestCase {
       "",
       SWTBotWebBrowser.ZOOM_MENU_LABEL,
       "",
-      SWTBotWebBrowser.PREFERENCES_MENU_LABEL,
-      "", 
-      SWTBotWebBrowser.PASTE_MENU_LABEL});
-
+      SWTBotWebBrowser.PREFERENCES_MENU_LABEL});
 	}
 	/**
 	 * Checks Context Menu of Plain Text selected within Visual Editor
@@ -108,7 +107,11 @@ public class VisualEditorContextMenuTest extends VPEEditorTestCase {
     jspTextEditor.save();
     jspTextEditor.setFocus();
     jspTextEditor.selectRange(4, 5, 0);
-    checkMenuContent(webBrowser,new String[] {SWTBotWebBrowser.PARENT_TAG_MENU_LABEL + " (body)",
+    checkMenuContent(webBrowser,new String[] {SWTBotWebBrowser.CUT_MENU_LABEL,
+      SWTBotWebBrowser.COPY_MENU_LABEL,
+      SWTBotWebBrowser.PASTE_MENU_LABEL,
+      "",
+      SWTBotWebBrowser.PARENT_TAG_MENU_LABEL + " (body)",
       "",
       SWTBotWebBrowser.INSERT_AROUND_MENU_LABEL,
       SWTBotWebBrowser.INSERT_BEFORE_MENU_LABEL,
@@ -119,11 +122,8 @@ public class VisualEditorContextMenuTest extends VPEEditorTestCase {
       "",
       SWTBotWebBrowser.ZOOM_MENU_LABEL,
       "",
-      SWTBotWebBrowser.PREFERENCES_MENU_LABEL,
-      "",      
-      SWTBotWebBrowser.CUT_MENU_LABEL,
-      SWTBotWebBrowser.COPY_MENU_LABEL,
-      SWTBotWebBrowser.PASTE_MENU_LABEL});
+      SWTBotWebBrowser.PREFERENCES_MENU_LABEL
+     });
 	}
 	 /**
    * Checks Context Menu of Component selected within Visual Editor
@@ -133,7 +133,11 @@ public class VisualEditorContextMenuTest extends VPEEditorTestCase {
   private void checkContextMenuOfComponent(SWTBotWebBrowser webBrowser , SWTBotEclipseEditor jspTextEditor){
     jspTextEditor.setFocus();
     jspTextEditor.selectRange(5, 23, 0);
-    checkMenuContent(webBrowser,new String[] {"<h:outputText> Attributes",
+    checkMenuContent(webBrowser,new String[] {SWTBotWebBrowser.CUT_MENU_LABEL,
+      SWTBotWebBrowser.COPY_MENU_LABEL,
+      SWTBotWebBrowser.PASTE_MENU_LABEL,
+      "",
+      "<h:outputText> Attributes",
       SWTBotWebBrowser.PARENT_TAG_MENU_LABEL + " (body)",
       "",
       SWTBotWebBrowser.INSERT_AROUND_MENU_LABEL,
@@ -146,11 +150,7 @@ public class VisualEditorContextMenuTest extends VPEEditorTestCase {
       "",
       SWTBotWebBrowser.ZOOM_MENU_LABEL,
       "",
-      SWTBotWebBrowser.PREFERENCES_MENU_LABEL,
-      "",
-      SWTBotWebBrowser.CUT_MENU_LABEL,
-      SWTBotWebBrowser.COPY_MENU_LABEL,
-      SWTBotWebBrowser.PASTE_MENU_LABEL});
+      SWTBotWebBrowser.PREFERENCES_MENU_LABEL});
   }
 	@Override
 	protected void closeUnuseDialogs() {
