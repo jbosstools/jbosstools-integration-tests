@@ -212,7 +212,7 @@ public class IDELabel {
 	  public static final String ADD_CONVERTER = "Add Converter";
 	  public static final String ADD_REFERENCED_BEAN = "Add Referenced Bean";
 	  public static final String ADD_RENDER_KIT = "Add Render Kit";
-	  public static final String ADD_RENDER_KIT_JSF2 = "Render Kit...";
+	  public static final String ADD_RENDER_KIT_JSF2 = "New Render Kit";
 	  public static final String ADD_VALIDATOR = "Add Validator";
 	  public static final String ADD_LIBRARY = "Add Library";
 	  public static final String NEW_VIEW = "New View";
