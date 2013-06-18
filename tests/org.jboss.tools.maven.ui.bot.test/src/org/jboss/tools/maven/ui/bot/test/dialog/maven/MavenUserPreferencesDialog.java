@@ -26,5 +26,11 @@ public class MavenUserPreferencesDialog extends PreferencePage{
 			new WaitWhile(new JobIsRunning(),TimePeriod.VERY_LONG);
 		}
 	}
+	@Override
+	public void ok(){
+		new PushButton("Apply").click();
+		new WaitWhile(new JobIsRunning(),TimePeriod.VERY_LONG);
+		super.ok();
+	}
 
 }

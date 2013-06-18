@@ -10,18 +10,14 @@
  ******************************************************************************/ 
 package org.jboss.tools.maven.ui.bot.test;
 
+import static org.junit.Assert.assertTrue;
+
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.ProjectItem;
-import org.jboss.reddeer.swt.condition.JobIsRunning;
-import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
-import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.menu.ShellMenu;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.swt.wait.TimePeriod;
-import org.jboss.reddeer.swt.wait.WaitUntil;
-import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.tools.maven.ui.bot.test.dialog.EARProjectFirstPage;
+import org.jboss.tools.maven.ui.bot.test.dialog.EARProjectSecondPage;
+import org.jboss.tools.maven.ui.bot.test.dialog.EARProjectWizard;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -43,14 +39,12 @@ public class EARProjectTest extends AbstractMavenSWTBotTest{
 	@Test
 	public void testEARProject() throws InterruptedException{
 		createEARProject();		
-		prepareProject(EAR_PROJECT_NAME+"EJB", "5 Maven build...","ejb");
-		prepareProject(EAR_PROJECT_NAME+"Connector", "5 Maven build...","rar");
-		prepareProject(EAR_PROJECT_NAME+"Client", "5 Maven build...","app-client");
-		prepareProject(EAR_PROJECT_NAME+"Web","5 Maven build...","war");
+		prepareProject(EAR_PROJECT_NAME+"EJB", "..Maven build...","ejb");
+		prepareProject(EAR_PROJECT_NAME+"Connector", "..Maven build...","rar");
+		prepareProject(EAR_PROJECT_NAME+"Client", "..Maven build...","app-client");
+		prepareProject(EAR_PROJECT_NAME+"Web","..Maven build...","war");
 		convertToMavenProject(EAR_PROJECT_NAME, "ear",true);
-		//shouldnt this be added during conversion? JBIDE-13781 + <extensions>true</extensions> otherwise fails
-		addPlugin(EAR_PROJECT_NAME, "org.apache.maven.plugins", "maven-acr-plugin", "1.0");
-		buildProject(EAR_PROJECT_NAME, "3 Maven build...", "clean package",true);
+		buildProject(EAR_PROJECT_NAME, "..Maven build...", "clean package",true);
 		ProjectItem targetFiles = getTargetFiles(EAR_PROJECT_NAME);
 		assertTrue(targetFiles.getChild(EAR_PROJECT_NAME+"EJB-0.0.1-SNAPSHOT.jar") != null);
 		assertTrue(targetFiles.getChild(EAR_PROJECT_NAME+"Client-0.0.1-SNAPSHOT.jar") != null);
@@ -74,19 +68,16 @@ public class EARProjectTest extends AbstractMavenSWTBotTest{
 	}
 	
 	public void createEARProject(){
-		new ShellMenu("File","New","Other...").select();
-		new WaitUntil(new ShellWithTextIsActive("New"),TimePeriod.NORMAL);
-		new DefaultTreeItem("Java EE","Enterprise Application Project").select();
-		new PushButton("Next >").click();
-		new LabeledText("Project name:").setText(EAR_PROJECT_NAME);
-		new PushButton("Next >").click();
-		new PushButton("New Module...").click();
-		new WaitUntil(new ShellWithTextIsActive("Create default Java EE modules."),TimePeriod.NORMAL);
-		new PushButton("Finish").click();
-		new WaitUntil(new ShellWithTextIsActive("New EAR Application Project"),TimePeriod.NORMAL);
-		new PushButton("Finish").click();
-		new WaitWhile(new ShellWithTextIsActive("New EAR Application Project"),TimePeriod.LONG);
-		new WaitWhile(new JobIsRunning(),TimePeriod.LONG);
+		EARProjectWizard earw = new EARProjectWizard();
+		earw.open();
+		earw.selectPage(1);
+		EARProjectFirstPage ef = (EARProjectFirstPage)earw.getWizardPage();
+		ef.setProjectName(EAR_PROJECT_NAME);
+		ef.setRuntime("<None>");
+		earw.selectPage(2);
+		EARProjectSecondPage es = (EARProjectSecondPage)earw.getWizardPage();
+		es.addModules();
+		earw.finish();
 	}
 	
 }

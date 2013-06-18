@@ -10,6 +10,9 @@
  ******************************************************************************/ 
 package org.jboss.tools.maven.ui.bot.test;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.StringWriter;
@@ -37,9 +40,6 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
-import org.jboss.tools.maven.ui.bot.test.dialog.DynamicWebProjectFirstPage;
-import org.jboss.tools.maven.ui.bot.test.dialog.DynamicWebProjectThirdPage;
-import org.jboss.tools.maven.ui.bot.test.dialog.DynamicWebProjectWizard;
 import org.jboss.tools.maven.ui.bot.test.dialog.EJBProjectDialog;
 import org.jboss.tools.maven.ui.bot.test.dialog.EJBProjectFirstPage;
 import org.w3c.dom.Document;
@@ -52,16 +52,21 @@ import org.xml.sax.SAXException;
 public abstract class AbstractConfiguratorsTest extends AbstractMavenSWTBotTest{
 	
 	public static final String PROJECT_NAME_JSF="testWEB_JSF";
+	public static final String PROJECT_NAME_PORTLET="testWEB_PORTLET";
 	public static final String PROJECT_NAME_JAXRS="testWEB_JAXRS";
 	public static final String PROJECT_NAME_CDI="testWEB_CDI";
 	public static final String PROJECT_NAME_CDI_EJB="testEJB_CDI";
 	public static final String PROJECT_NAME_SEAM="testWEB_SEAM";
 	public static final String PROJECT_NAME_JPA="testWEB_JPA";
-	public static final String JSF_NATURE="JavaServer Faces";//"org.jboss.tools.jsf.jsfnature";
-	public static final String JAXRS_NATURE="JAX-RS (REST Web Services)";//"org.jboss.tools.ws.jaxrs.nature";
-	public static final String CDI_NATURE="CDI (Contexts and Dependency Injection)";//"org.jboss.tools.cdi.core.cdinature";
-	public static final String SEAM_NATURE="Seam";//"org.jboss.tools.seam.core.seamnature";
-	public static final String JPA_NATURE="JPA";//"org.hibernate.eclipse.console.hibernateNature";
+	public static final String JSF_FACET="JavaServer Faces";//"org.jboss.tools.jsf.jsfnature";
+	public static final String JAXRS_FACET="JAX-RS (REST Web Services)";//"org.jboss.tools.ws.jaxrs.nature";
+	public static final String CDI_FACET="CDI (Contexts and Dependency Injection)";//"org.jboss.tools.cdi.core.cdinature";
+	public static final String SEAM_FACET="Seam";//"org.jboss.tools.seam.core.seamnature";
+	public static final String JPA_FACET="JPA";//"org.hibernate.eclipse.console.hibernateNature";
+	public static final String PORTLET_FACET="JBoss Portlets";
+	public static final String PORTLET_CORE_FACET="JBoss Core Portlet";
+	public static final String PORTLET_JSF_FACET="JBoss JSF Portlet";
+	public static final String PORTLET_SEAM_FACET="JBoss Seam Portlet";
 	
 	public static final String WEB_XML_LOCATION="/WebContent/WEB-INF/web.xml";
 	public static final String JBOSS7_AS_HOME=System.getProperty("jbosstools.test.jboss.home.7.1");
@@ -109,38 +114,21 @@ public abstract class AbstractConfiguratorsTest extends AbstractMavenSWTBotTest{
 		project.getProject().getFolder("src").getFolder("META-INF").getFile("persistence.xml").setContents(new ByteArrayInputStream(xmlAsWriter.toString().getBytes("UTF-8")), 0, null);
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
-
-	public void createWebProject(String name,String runtime, boolean webxml){
-		DynamicWebProjectWizard dw = new DynamicWebProjectWizard();
-		dw.open();
-		dw.selectPage(1);
-		DynamicWebProjectFirstPage dfp = (DynamicWebProjectFirstPage)dw.getWizardPage();
-		dfp.setProjectName(name);
-		if(runtime == null){
-			dfp.setRuntime("<None>");
-		} else {
-			dfp.setRuntime(runtime);
-		}
-		dw.selectPage(3);
-		DynamicWebProjectThirdPage dtp = (DynamicWebProjectThirdPage)dw.getWizardPage();
-		dtp.generateWebXml(webxml);
-		dw.finish();
-	}
 	
 	public void checkProjectWithoutRuntime(String projectName) throws CoreException{
 		assertTrue(projectName+ " doesn't have maven nature",isMavenProject(projectName));
 		updateConf(projectName);
-		assertFalse("Project "+projectName+" has "+CDI_NATURE+" nature.",hasNature(projectName, CDI_NATURE,null));
-		assertFalse("Project "+projectName+" has "+JSF_NATURE+" nature.",hasNature(projectName, JSF_NATURE,null));
-		assertFalse("Project "+projectName+" has "+JAXRS_NATURE+" nature.",hasNature(projectName, JAXRS_NATURE,null));
+		assertFalse("Project "+projectName+" has "+CDI_FACET+" nature.",hasNature(projectName,null, CDI_FACET));
+		assertFalse("Project "+projectName+" has "+JSF_FACET+" nature.",hasNature(projectName,null, JSF_FACET));
+		assertFalse("Project "+projectName+" has "+JAXRS_FACET+" nature.",hasNature(projectName, null, JAXRS_FACET));
 	}
 	
 	public void checkProjectWithRuntime(String projectName) throws CoreException{
 		assertTrue(projectName+ " doesn't have maven nature",isMavenProject(projectName));
 		updateConf(projectName);
-		assertTrue("Project "+projectName+" has "+CDI_NATURE+" nature.",hasNature(projectName, CDI_NATURE,null));
-		assertTrue("Project "+projectName+" doesn't have "+JSF_NATURE+" nature.",hasNature(projectName, JSF_NATURE,null));
-		assertTrue("Project "+projectName+" doesn't have "+JAXRS_NATURE+" nature.",hasNature(projectName, JAXRS_NATURE,null));
+		assertTrue("Project "+projectName+" has "+CDI_FACET+" nature.",hasNature(projectName,null, CDI_FACET));
+		assertTrue("Project "+projectName+" doesn't have "+JSF_FACET+" nature.",hasNature(projectName,null, JSF_FACET));
+		assertTrue("Project "+projectName+" doesn't have "+JAXRS_FACET+" nature.",hasNature(projectName,null, JAXRS_FACET));
 	}
 	
 	public void createEJBProject(String name, String runtime) throws CoreException{

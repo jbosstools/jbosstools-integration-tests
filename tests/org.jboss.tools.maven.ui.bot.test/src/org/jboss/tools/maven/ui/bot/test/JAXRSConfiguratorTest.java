@@ -10,6 +10,8 @@
  ******************************************************************************/ 
 package org.jboss.tools.maven.ui.bot.test;
 
+import static org.junit.Assert.assertTrue;
+
 import org.eclipse.core.runtime.CoreException;
 import org.junit.After;
 import org.junit.BeforeClass;
@@ -28,7 +30,7 @@ public class JAXRSConfiguratorTest extends AbstractConfiguratorsTest{
 	
 	@After
 	public void deleteProjects(){
-		deleteProjects(true, false);
+		deleteProjects(true, true);
 	}
 
 	@Test
@@ -41,7 +43,7 @@ public class JAXRSConfiguratorTest extends AbstractConfiguratorsTest{
 
 		addDependency(projectName, "com.cedarsoft.rest", "jersey", "1.0.0");
 		updateConf(projectName);
-		assertTrue("Project "+projectName+" with jersey dependency doesn't have "+JAXRS_NATURE+" nature.",hasNature(projectName, JAXRS_NATURE,null));
+		assertTrue("Project "+projectName+" with jersey dependency doesn't have "+JAXRS_FACET+" nature.",hasNature(projectName, null, JAXRS_FACET));
 	}
 	@Test
 	public void testJAXRSConfiguratorResteasy() throws CoreException {
@@ -53,14 +55,15 @@ public class JAXRSConfiguratorTest extends AbstractConfiguratorsTest{
 		
 		addDependency(projectName, "org.jboss.jbossas", "jboss-as-resteasy", "6.1.0.Final");
 		updateConf(projectName);
-		assertTrue("Project "+projectName+" with resteasy dependency doesn't have "+JAXRS_NATURE+" nature.",hasNature(projectName, JAXRS_NATURE,null));
+		assertTrue("Project "+projectName+" with resteasy dependency doesn't have "+JAXRS_FACET+" nature.",hasNature(projectName,null, JAXRS_FACET));
 	}
 	
 	@Test
 	public void testJAXRSConfigurator() throws CoreException {
 		createWebProject(PROJECT_NAME_JAXRS, runtimeName,false);
 		convertToMavenProject(PROJECT_NAME_JAXRS, "war", true);
+		updateConf(PROJECT_NAME_JAXRS);
 		checkProjectWithRuntime(PROJECT_NAME_JAXRS);
-		assertTrue("Project "+PROJECT_NAME_JAXRS+" doesn't have "+JAXRS_NATURE+" nature.",hasNature(PROJECT_NAME_JAXRS, JAXRS_NATURE,null));
+		assertTrue("Project "+PROJECT_NAME_JAXRS+" doesn't have "+JAXRS_FACET+" nature.",hasNature(PROJECT_NAME_JAXRS,null, JAXRS_FACET));
 	}
 }

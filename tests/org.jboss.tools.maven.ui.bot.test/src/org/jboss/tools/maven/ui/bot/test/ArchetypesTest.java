@@ -10,6 +10,8 @@
  ******************************************************************************/ 
 package org.jboss.tools.maven.ui.bot.test;
 
+import static org.junit.Assert.assertTrue;
+
 import org.eclipse.core.runtime.CoreException;
 import org.jboss.tools.maven.ui.bot.test.dialog.maven.JBossMavenIntegrationDialog;
 import org.jboss.tools.maven.ui.bot.test.dialog.maven.MavenProjectWizardDialog;
@@ -33,15 +35,13 @@ public class ArchetypesTest extends AbstractMavenSWTBotTest{
 		jm.open();
 		MavenRepositoriesDialog mr = jm.modifyRepositories();
 		mr.removeAllRepos();
-		mr.addRepository(MavenRepositories.JBOSS_REPO, true);
+		mr.chooseRepositoryFromList(MavenRepositories.JBOSS_REPO, true);
 		mr.confirm();
 		jm.ok();
-		
 	}
 	
 	@AfterClass
 	public static void clean(){
-		afterClass();
 		JBossMavenIntegrationDialog jm = new JBossMavenIntegrationDialog();
 		jm.open();
 		MavenRepositoriesDialog mr = jm.modifyRepositories();
@@ -63,11 +63,13 @@ public class ArchetypesTest extends AbstractMavenSWTBotTest{
 	@Test
 	public void createSimpleJarProjectArchetype() throws CoreException{
 		String projectName= "ArchetypeQuickstart";
-		createArchetype(projectName, "Internal", "maven-archetype-quickstart");
+		createArchetype(projectName, "All Catalogs", "maven-archetype-quickstart");
 		assertNoErrors(projectName);
 		assertTrue(isMavenProject(projectName));
 		buildProject(projectName, "..Maven build...","clean package",true); //version is 1.0.0
 	}
+	
+	
 	
 	private void createArchetype(String name, String catalog, String type){
 		MavenProjectWizardDialog md = new MavenProjectWizardDialog();

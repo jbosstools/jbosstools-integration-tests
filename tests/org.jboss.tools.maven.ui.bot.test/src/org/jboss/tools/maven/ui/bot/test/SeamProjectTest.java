@@ -46,11 +46,11 @@ public class SeamProjectTest extends AbstractMavenSWTBotTest {
 	public static final String SEAM_WEB_PROJECT = "seamWeb";
 	public static final String SEAM_EAR_PROJECT = "seamEar";
 	public static final String SEAM_2_3 = System.getProperty("jbosstools.test.seam.2.3.0.home");
-	public static final String SEAM_2_3_NAME = "jboss-seam-2.3.0";
+	public static final String SEAM_2_3_NAME = "jboss-seam-2.3.0.Final";
 	public static final String SEAM_2_2 = System.getProperty("jbosstools.test.seam.2.2.0.home");
-	public static final String SEAM_2_2_NAME = "jboss-seam-2.2.0";
+	public static final String SEAM_2_2_NAME = "jboss-seam-2.2.0.GA";
 	public static final String SEAM_2_1 = System.getProperty("jbosstools.test.seam.2.1.0.home");
-	public static final String SEAM_2_1_NAME = "jboss-seam-2.1.0";
+	public static final String SEAM_2_1_NAME = "jboss-seam-2.1.2";
 	public static final String CONNECTION_PROFILE_NAME = "DefaultDS";
 	public static final String HSQL_DRIVER_DEFINITION_ID ="DriverDefn.Hypersonic DB";
 	public static final String HSQL_DRIVER_NAME ="Hypersonic DB";
@@ -58,8 +58,6 @@ public class SeamProjectTest extends AbstractMavenSWTBotTest {
 	public static final String DTP_DB_URL_PROPERTY_ID = "org.eclipse.datatools.connectivity.db.URL";
 	public static final String HSQL_PROFILE_ID = "org.eclipse.datatools.enablement.hsqldb.connectionProfile";
 	public static final String HSQLDB_DRIVER_LOCATION =System.getProperty("hsqldb.driver");
-	public static final String CURRENT_SEAM_2_3 = "2.3.0.Final";
-	public static final String CURRENT_SEAM_2_2 ="2.2.2.Final";
 	
 	public static final String ACCEPTED_ERROR_TYPE = "Maven Project Build Lifecycle Mapping Problem";
 	

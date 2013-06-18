@@ -39,7 +39,7 @@ public class JSFProjectTest extends AbstractMavenSWTBotTest{
 	@Test
 	public void createJSFProjectTest_AS7_JSFv2() throws CoreException {
 		createJSFProject(PROJECT_NAME7, "JSF 2.0", "JSFKickStartWithoutLibs", runtimeName);
-		convertToMavenProject(PROJECT_NAME7, "war", false);
+		//convertToMavenProject(PROJECT_NAME7, "war", false);
 		activateMavenFacet(PROJECT_NAME7);
 		addDependency(PROJECT_NAME7, GROUPID,ARTIFACTID,JSF_VERSION_2);
 		assertNoErrors(PROJECT_NAME7);
@@ -56,7 +56,7 @@ public class JSFProjectTest extends AbstractMavenSWTBotTest{
 		buildProject(PROJECT_NAME7_v1,"..Maven build...","clean package",true);
 		checkWebTarget(PROJECT_NAME7_v1,PROJECT_NAME7_v1+"-0.0.1-SNAPSHOT");
 	}
-	
+
 	private void createJSFProject(String name, String version, String jsfType, String runtime){
 		JSFProjectDialog jsfd = new JSFProjectDialog();
 		jsfd.open();

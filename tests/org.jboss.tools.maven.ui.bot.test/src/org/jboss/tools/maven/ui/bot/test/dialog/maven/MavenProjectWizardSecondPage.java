@@ -13,7 +13,7 @@ public class MavenProjectWizardSecondPage extends WizardPage{
 	
 	public void selectArchetype(String catalog, String archetype){
 		new DefaultCombo(0).setSelection(catalog);
-		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 		new WaitUntil(new TableHasRows(new DefaultTable()),TimePeriod.LONG);
 		new DefaultTable().select(archetype,1);
 	}

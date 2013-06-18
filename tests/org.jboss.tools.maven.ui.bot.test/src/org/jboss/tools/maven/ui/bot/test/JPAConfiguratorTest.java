@@ -10,6 +10,8 @@
  ******************************************************************************/
 package org.jboss.tools.maven.ui.bot.test;
 
+import static org.junit.Assert.assertTrue;
+
 import java.io.UnsupportedEncodingException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -44,6 +46,6 @@ public class JPAConfiguratorTest extends AbstractConfiguratorsTest {
 		convertToMavenProject(projectNameNoRuntime, "war", false);
 		addPersistence(projectNameNoRuntime);
 		updateConf(projectNameNoRuntime);
-		assertTrue("Project " + projectNameNoRuntime+ " with persistence.xml file doesn't have " + JPA_NATURE+ " nature.",hasNature(projectNameNoRuntime, JPA_NATURE, null));
+		assertTrue("Project " + projectNameNoRuntime+ " with persistence.xml file doesn't have " + JPA_FACET+ " nature.",hasNature(projectNameNoRuntime, null, JPA_FACET));
 	}
 }

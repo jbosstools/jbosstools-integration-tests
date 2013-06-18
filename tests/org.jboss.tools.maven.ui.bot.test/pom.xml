@@ -11,12 +11,11 @@
 	<artifactId>org.jboss.tools.maven.ui.bot.test</artifactId>
 
 	<packaging>eclipse-test-plugin</packaging>
+	<properties>
+		<systemProperties>${integrationTestsSystemProperties} -Dhsqldb.driver=${requirementsDirectory}/hsqldb/hsqldb-1.8.0.10.jar -Djbosstools.test.jboss.home.7.1=${requirementsDirectory}/jboss-as-7.1.1.Final -Djbosstools.test.seam.2.2.0.home=${requirementsDirectory}/jboss-seam-2.2.0.GA -Djbosstools.test.seam.2.3.0.home=${requirementsDirectory}/jboss-seam-2.3.0.Final -Djbosstools.test.seam.2.1.0.home=${requirementsDirectory}/jboss-seam-2.1.2 -Dproject.build.directory=${project.build.directory}</systemProperties>
+	</properties>
 
-		<properties>
-			<systemProperties>${integrationTestsSystemProperties} -Dhsqldb.driver=${requirementsDirectory}/hsqldb/hsqldb-1.8.0.10.jar -Djbosstools.test.jboss.home.7.1=${requirementsDirectory}/jboss-as-7.1.1.Final -Djbosstools.test.seam.2.2.0.home=${requirementsDirectory}/jboss-seam-2.2.0.GA -Djbosstools.test.seam.2.3.0.home=${requirementsDirectory}/jboss-seam-2.3.0.Final -Djbosstools.test.seam.2.1.0.home=${requirementsDirectory}/jboss-seam-2.1.2</systemProperties>
-		</properties>
-
-		<profiles>
+	<profiles>
 		<profile>
 			<activation>
 				<activeByDefault>true</activeByDefault>
@@ -30,11 +29,17 @@
 			<id>jenkins</id>
 			<properties>
 				<suiteClass>org.jboss.tools.maven.ui.bot.test.JenkinsTestSuite</suiteClass>
-			</properties>			
+			</properties>
 		</profile>
 	</profiles>
 
 	<build>
+		<resources>
+			<resource>
+				<directory>usersettings/</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -49,12 +54,12 @@
 						<configuration>
 							<artifactItems>
 								<artifactItem>
-										<groupId>org.jboss.as</groupId>
-										<artifactId>jboss-as-dist</artifactId>
-										<version>7.1.1.Final</version>
-										<type>zip</type>
-									</artifactItem>
-								</artifactItems>
+									<groupId>org.jboss.as</groupId>
+									<artifactId>jboss-as-dist</artifactId>
+									<version>7.1.1.Final</version>
+									<type>zip</type>
+								</artifactItem>
+							</artifactItems>
 							<skip>${skipRequirements}</skip>
 						</configuration>
 					</execution>
@@ -67,13 +72,13 @@
 						<configuration>
 							<artifactItems>
 								<artifactItem>
-										<groupId>hsqldb</groupId>
-										<artifactId>hsqldb</artifactId>
-										<version>1.8.0.10</version>
-										<outputDirectory>${requirementsDirectory}/hsqldb</outputDirectory>
-										<type>jar</type>
-									</artifactItem>
-								</artifactItems>
+									<groupId>hsqldb</groupId>
+									<artifactId>hsqldb</artifactId>
+									<version>1.8.0.10</version>
+									<outputDirectory>${requirementsDirectory}/hsqldb</outputDirectory>
+									<type>jar</type>
+								</artifactItem>
+							</artifactItems>
 							<skip>${skipRequirements}</skip>
 						</configuration>
 					</execution>
@@ -86,13 +91,13 @@
 						<configuration>
 							<artifactItems>
 								<artifactItem>
-										<groupId>org.jboss.seam</groupId>
-  										<artifactId>distribution</artifactId>
-  										<version>2.3.0.Final</version>
-  										<classifier>dist</classifier>
-  										<type>zip</type>
-									</artifactItem>
-								</artifactItems>
+									<groupId>org.jboss.seam</groupId>
+									<artifactId>distribution</artifactId>
+									<version>2.3.0.Final</version>
+									<classifier>dist</classifier>
+									<type>zip</type>
+								</artifactItem>
+							</artifactItems>
 							<skip>${skipRequirements}</skip>
 						</configuration>
 					</execution>
@@ -155,19 +160,13 @@
 						<dependency>
 							<type>p2-installable-unit</type>
 							<artifactId>org.eclipse.wst.web_ui.feature.feature.group</artifactId>
-							<version>0.0.0</version>	
+							<version>0.0.0</version>
 						</dependency>
 						<dependency>
 							<type>p2-installable-unit</type>
 							<artifactId>org.jboss.tools.jsf.feature.feature.group</artifactId>
 							<version>0.0.0</version>
 						</dependency>
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.jboss.tools.common.jdt.feature.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
-
 						<dependency>
 							<type>p2-installable-unit</type>
 							<artifactId>org.jboss.tools.common.jdt.feature.feature.group</artifactId>
@@ -192,60 +191,13 @@
 							<artifactId>org.jboss.ide.eclipse.as.feature.feature.group</artifactId>
 							<version>0.0.0</version>
 						</dependency>
+						
 						<dependency>
 							<type>p2-installable-unit</type>
 							<artifactId>org.eclipse.datatools.enablement.feature.feature.group</artifactId>
 							<version>0.0.0</version>
 						</dependency>
-
-
-
-						<!-- maven -->
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.jboss.tools.maven.jbosspackaging.feature.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.jboss.tools.maven.feature.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.jboss.tools.maven.seam.feature.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.jboss.tools.maven.cdi.feature.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.jboss.tools.maven.hibernate.feature.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.jboss.tools.maven.hibernate.feature.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.jboss.tools.maven.portlet.feature.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.jboss.tools.maven.project.examples.feature.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.jboss.tools.maven.profiles.feature.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
+						 
 						<dependency>
 							<type>p2-installable-unit</type>
 							<artifactId>org.eclipse.egit.feature.group</artifactId>
@@ -255,11 +207,46 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<pluginManagement>
+			<plugins>
+				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											org.apache.maven.plugins
+										</groupId>
+										<artifactId>
+											maven-dependency-plugin
+										</artifactId>
+										<versionRange>
+											[2.4,)
+										</versionRange>
+										<goals>
+											<goal>unpack</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 	</build>
-		<repositories>
+	<repositories>
 		<repository>
 			<id>m2e-wtp</id>
-			<url>http://download.eclipse.org/m2e-wtp/releases/kepler</url>
+			<url>http://download.eclipse.org/m2e-wtp/snapshots/kepler/</url>
 			<layout>p2</layout>
 			<snapshots>
 				<enabled>true</enabled>
