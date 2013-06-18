@@ -10,6 +10,8 @@
  ******************************************************************************/ 
 package org.jboss.tools.maven.ui.bot.test;
 
+import static org.junit.Assert.fail;
+
 import org.eclipse.ui.WorkbenchException;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;

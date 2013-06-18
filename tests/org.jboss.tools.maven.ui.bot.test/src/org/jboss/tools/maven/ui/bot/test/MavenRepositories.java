@@ -1,6 +1,9 @@
 package org.jboss.tools.maven.ui.bot.test;
 
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import org.jboss.tools.maven.ui.bot.test.dialog.maven.JBossMavenIntegrationDialog;
 import org.jboss.tools.maven.ui.bot.test.dialog.maven.MavenRepositoriesDialog;
 import org.jboss.tools.maven.ui.bot.test.utils.RepositoryExists;
@@ -47,7 +50,7 @@ public class MavenRepositories extends AbstractMavenSWTBotTest{
 		JBossMavenIntegrationDialog jm = new JBossMavenIntegrationDialog();
 		jm.open();
 		MavenRepositoriesDialog mr = jm.modifyRepositories();
-		String repoId = mr.addRepository(EAP_REPO, true);
+		String repoId = mr.chooseRepositoryFromList(EAP_REPO, true);
 		mr.confirm();
 		jm.ok();
 		assertTrue("EAP Repository is missing in Maven repositories view", new RepositoryExists(EAP_REPO).test());
@@ -74,7 +77,7 @@ public class MavenRepositories extends AbstractMavenSWTBotTest{
 		JBossMavenIntegrationDialog jm = new JBossMavenIntegrationDialog();
 		jm.open();
 		MavenRepositoriesDialog mr = jm.modifyRepositories();
-		String repoId = mr.addRepository(JBOSS_REPO,true);
+		String repoId = mr.chooseRepositoryFromList(JBOSS_REPO,true);
 		mr.confirm();
 		jm.apply();
 		jm.ok();

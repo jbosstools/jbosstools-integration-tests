@@ -28,7 +28,7 @@ public class JBossMavenIntegrationDialog extends PreferencePage{
 		} catch(TimeoutException ex){
 			
 		}
-		new WaitWhile(new JobIsRunning(),TimePeriod.LONG);
+		new WaitWhile(new JobIsRunning(),TimePeriod.VERY_LONG);
 		super.ok();
 	}
 

@@ -20,12 +20,27 @@ public class MavenRepositoriesDialog{
 		new DefaultShell("Maven Repositories");
 	}
 	
-	public String addRepository(String repo, boolean activeByDefault){
+	public String chooseRepositoryFromList(String repo, boolean activeByDefault){
 		new PushButton(" Add Repository...").click();
 		new DefaultShell("Add Maven Repository");
 		new DefaultCombo("Profile","Profile ID:").setSelection(repo);
 		new CheckBox("Active by default").toggle(activeByDefault);
 		String a =new LabeledText("Name:").getText();
+		String b = new LabeledText("URL:").getText();
+		String nameWithUrl = a+"-"+b;
+		new PushButton("OK").click();
+		return nameWithUrl;
+	}
+	
+	public String addRepository(String repoID, String repoURL, boolean activeByDefault){
+		new PushButton(" Add Repository...").click();
+		new DefaultShell("Add Maven Repository");
+		new DefaultCombo("Profile","Profile ID:").setText(repoID);
+		new CheckBox("Active by default").toggle(activeByDefault);
+		new LabeledText("ID:").setText(repoID);
+		new LabeledText("Name:").setText(repoID);
+		String a =new LabeledText("Name:").getText();
+		new LabeledText("URL:").setText(repoURL);
 		String b = new LabeledText("URL:").getText();
 		String nameWithUrl = a+"-"+b;
 		new PushButton("OK").click();

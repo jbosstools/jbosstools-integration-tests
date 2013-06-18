@@ -10,9 +10,13 @@
  ******************************************************************************/ 
 package org.jboss.tools.maven.ui.bot.test;
 
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.tools.maven.ui.bot.test.dialog.maven.ImportMavenProjectWizard;

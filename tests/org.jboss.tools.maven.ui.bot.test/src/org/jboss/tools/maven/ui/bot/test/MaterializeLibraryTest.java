@@ -10,6 +10,9 @@
  ******************************************************************************/ 
 package org.jboss.tools.maven.ui.bot.test;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
@@ -44,6 +47,7 @@ public class MaterializeLibraryTest extends AbstractMavenSWTBotTest{
 		new DefaultTreeItem("JBoss Tools","Project Examples").select();
 		new CheckBox("Show Project Ready wizard").toggle(false);
 		new CheckBox("Show readme/cheatsheet file").toggle(false);
+		new CheckBox("Show Quick Fix dialog").toggle(false);
 		new PushButton("OK").click();
 	}
 	

@@ -1,6 +1,5 @@
 package org.jboss.tools.maven.ui.bot.test.utils;
 
-import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.condition.WaitCondition;
