@@ -16,6 +16,7 @@ import org.hamcrest.Matcher;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.matcher.WithTooltip;
 import org.jboss.tools.switchyard.reddeer.utils.MouseUtils;
+import org.jboss.tools.switchyard.reddeer.widget.ContextButton;
 
 /**
  * A general switchyard component.
@@ -45,6 +46,11 @@ public class Component {
 		} else {
 			throw new ComponentNotFoundException(matcher, index);
 		}
+	}
+
+	public ContextButton contextButton(String label) {
+		click();
+		return new ContextButton(label);
 	}
 
 	public void select() {

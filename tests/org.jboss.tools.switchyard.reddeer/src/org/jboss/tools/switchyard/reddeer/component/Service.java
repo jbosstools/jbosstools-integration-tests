@@ -1,5 +1,6 @@
 package org.jboss.tools.switchyard.reddeer.component;
 
+import org.jboss.reddeer.eclipse.jface.wizard.WizardDialog;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.widget.ContextButton;
 import org.jboss.tools.switchyard.reddeer.wizard.ServiceTestClassWizard;
@@ -31,14 +32,9 @@ public class Service extends Component {
 		new ServiceTestClassWizard().finish();
 	}
 
-	public void addBinding(String binding) {
+	public WizardDialog addBinding(String binding) {
 		new SwitchYardEditor().activateTool(binding);
 		click();
-	}
-
-	public void addBinding(Binding binding) {
-		binding.activate();
-		click();
-		binding.finish();
+		return new WizardDialog();
 	}
 }
