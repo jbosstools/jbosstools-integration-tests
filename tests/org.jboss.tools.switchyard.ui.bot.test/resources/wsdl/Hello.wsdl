@@ -10,7 +10,7 @@
   </xs:complexType>
 <xs:complexType name="sayHelloResponse">
     <xs:sequence>
-      <xs:element minOccurs="0" name="text" type="xs:string"/>
+      <xs:element minOccurs="0" name="greeting" type="xs:string"/>
     </xs:sequence>
   </xs:complexType>
 </xs:schema>

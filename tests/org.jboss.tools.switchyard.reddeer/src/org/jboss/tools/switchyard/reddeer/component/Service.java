@@ -3,6 +3,7 @@ package org.jboss.tools.switchyard.reddeer.component;
 import org.jboss.reddeer.eclipse.jface.wizard.WizardDialog;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.widget.ContextButton;
+import org.jboss.tools.switchyard.reddeer.wizard.PromoteServiceWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.ServiceTestClassWizard;
 
 /**
@@ -21,9 +22,11 @@ public class Service extends Component {
 		super(tooltip, index);
 	}
 
-	public void promoteService() {
+	public PromoteServiceWizard promoteService() {
 		click();
 		new ContextButton("Promote Service").click();
+		return new PromoteServiceWizard("Promote Component Service");
+
 	}
 
 	public void newServiceTestClass() {
