@@ -8,10 +8,12 @@ import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
  * @author apodhrad
  * 
  */
-public class ReferenceWizard extends ServiceWizard {
+public class ReferenceWizard extends ServiceWizard<ReferenceWizard> {
 
+	public static final String DIALOG_TITLE = "New Reference";
+	
 	public ReferenceWizard() {
-		super();
+		super(DIALOG_TITLE);
 	}
 
 	public ReferenceWizard open() {

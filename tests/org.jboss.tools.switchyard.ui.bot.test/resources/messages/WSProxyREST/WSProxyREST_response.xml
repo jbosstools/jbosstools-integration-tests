@@ -1,8 +1,8 @@
 <SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
    <SOAP-ENV:Header/>
    <SOAP-ENV:Body>
-      <ns2:sayHelloResponse xmlns:ns2="urn:webservice:Hello:1.0">
-         <greeting>Hello apodhrad</greeting>
-      </ns2:sayHelloResponse>
+      <sayHelloResponse xmlns="urn:com.example.switchyard:proxy-rest:1.0">
+         <string>Hello apodhrad</string>
+      </sayHelloResponse>
    </SOAP-ENV:Body>
 </SOAP-ENV:Envelope>
