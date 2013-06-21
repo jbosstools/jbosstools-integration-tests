@@ -2,6 +2,7 @@ package org.jboss.tools.switchyard.reddeer.wizard;
 
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.swt.util.Bot;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 
 /**
@@ -9,10 +10,17 @@ import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
  * @author apodhrad
  * 
  */
-public class CamelJavaWizard extends ServiceWizard {
+public class CamelJavaWizard extends ServiceWizard<CamelJavaWizard> {
+
+	public static final String DIALOG_TITLE = "New Java Class";
 
 	public CamelJavaWizard() {
 		super();
+	}
+
+	public CamelJavaWizard activate() {
+		Bot.get().shell(DIALOG_TITLE).activate();
+		return this;
 	}
 
 	public CamelJavaWizard setName(String name) {
@@ -28,6 +36,12 @@ public class CamelJavaWizard extends ServiceWizard {
 	@Override
 	protected void browse() {
 		new PushButton(2).click();
+	}
+
+	@Override
+	public void finish() {
+		activate();
+		super.finish();
 	}
 
 }
