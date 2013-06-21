@@ -1,5 +1,6 @@
 package org.jboss.tools.switchyard.reddeer.server;
 
+import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServerLabel;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.swt.api.Tree;
@@ -23,6 +24,7 @@ import org.jboss.reddeer.swt.wait.WaitWhile;
 public class ServerDeployment {
 
 	public static final String ADD_REMOVE_LABEL = "Add and Remove...";
+	public static final String FULL_PUBLISH = "Full Publish";
 
 	private String server;
 
@@ -46,8 +48,46 @@ public class ServerDeployment {
 				new PushButton("Finish").click();
 				new WaitWhile(new ShellWithTextIsActive(ADD_REMOVE_LABEL), TimePeriod.LONG);
 				new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-				Bot.get().sleep(60 * 1000);
+				checkDeployment();
 			}
+		}
+	}
+
+	public void fullPublish(String project) {
+		ServersView serversView = new ServersView();
+		serversView.open();
+		Tree tree = new DefaultTree();
+		for (TreeItem item : tree.getItems()) {
+			ServerLabel serverLabel = new ServerLabel(item);
+			if (serverLabel.getName().equals(server)) {
+				item.expand();
+				for (TreeItem treeItem : item.getItems()) {
+					if (treeItem.getText().startsWith(project)) {
+						treeItem.select();
+						clearConsole();
+						new ContextMenu(FULL_PUBLISH).select();
+						checkDeployment();
+					}
+				}
+
+			}
+		}
+	}
+
+	private void clearConsole() {
+		ConsoleView consoleView = new ConsoleView();
+		consoleView.open();
+		consoleView.clearConsole();
+	}
+
+	private void checkDeployment() {
+		Bot.get().sleep(60 * 1000);
+		ConsoleView consoleView = new ConsoleView();
+		consoleView.open();
+		consoleView.clearConsole();
+		String consoleText = consoleView.getConsoleText().toUpperCase();
+		if (consoleText.contains("ERROR")) {
+			throw new RuntimeException("An error occured during full publishing");
 		}
 	}
 }

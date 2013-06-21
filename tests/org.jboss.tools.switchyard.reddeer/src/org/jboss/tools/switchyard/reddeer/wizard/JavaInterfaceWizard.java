@@ -11,21 +11,21 @@ import org.jboss.reddeer.swt.util.Bot;
  * 
  */
 public class JavaInterfaceWizard extends NewWizardDialog {
-	
+
 	public static final String DIALOG_TITLE = "New Java Interface";
 
-	private String name;
-
-	public JavaInterfaceWizard(String name) {
+	public JavaInterfaceWizard() {
 		super("Java", "Interface");
-		this.name = name;
 	}
 
-	@Override
-	public void finish() {
+	public JavaInterfaceWizard activate() {
 		Bot.get().shell(DIALOG_TITLE).activate();
+		return this;
+	}
+
+	public JavaInterfaceWizard setName(String name) {
 		new LabeledText("Name:").setText(name);
-		super.finish();
+		return this;
 	}
 
 }

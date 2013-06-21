@@ -13,11 +13,16 @@ import org.jboss.tools.switchyard.reddeer.widget.Link;
 public class BeanServiceWizard extends NewWizardDialog {
 
 	public static final String DIALOG_TITLE = "New Bean Service";
-	
+
 	private String interfaceName;
 
 	public BeanServiceWizard() {
 		super("SwitchYard", "SwitchYard Bean Component");
+	}
+
+	public BeanServiceWizard activate() {
+		Bot.get().shell(DIALOG_TITLE).activate();
+		return this;
 	}
 
 	public BeanServiceWizard setInterface(String name) {
@@ -27,11 +32,11 @@ public class BeanServiceWizard extends NewWizardDialog {
 
 	@Override
 	public void finish() {
-		Bot.get().shell(DIALOG_TITLE).activate();
+		activate();
 		if (interfaceName != null) {
 			new Link("Interface:").click();
-			new JavaInterfaceWizard(interfaceName).finish();
-			Bot.get().shell(DIALOG_TITLE).activate();
+			new JavaInterfaceWizard().activate().setName(interfaceName).finish();
+			activate();
 		}
 		super.finish();
 	}

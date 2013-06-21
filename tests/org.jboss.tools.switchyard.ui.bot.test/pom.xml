@@ -16,7 +16,7 @@
 	  <systemProperties>${integrationTestsSystemProperties} -Dswtbot.test.properties.file=./swtbot.properties</systemProperties>
 	  <surefire.timeout>10800</surefire.timeout>
 	  <test.class>AllTests</test.class>
-	  <jbtis.site>http://download.jboss.org/jbosstools/updates/integration/juno/integration-stack/aggregate/4.0.0</jbtis.site>
+	  <jbtis.site>http://download.jboss.org/jbosstools/updates/integration/juno/integration-stack/aggregate/4.0.1</jbtis.site>
 	  <orbit.site>http://download.eclipse.org/tools/orbit/downloads/drops/R20130517111416/repository</orbit.site>
 	</properties>
 
@@ -72,6 +72,12 @@
 		    <artifactId>org.jboss.ide.eclipse.as.feature.feature.group</artifactId>
 		    <version>0.0.0</version>
 		  </dependency>
+		  <!-- WS fature -->
+		  <dependency>
+		    <type>p2-installable-unit</type>
+		    <artifactId>org.jboss.tools.ws.feature.feature.group</artifactId>
+		    <version>0.0.0</version>
+		  </dependency>
 		  <!-- This entry should enable creating of default JDK on Mac -->
 		  <dependency>
 		    <type>p2-installable-unit</type>
@@ -91,7 +97,7 @@
 		  <artifact>
 		    <groupId>org.jboss.tools.integration-stack</groupId>
 		    <artifactId>target-platform</artifactId>
-		    <version>4.0.0-SNAPSHOT</version>
+		    <version>4.0.1-SNAPSHOT</version>
 		    <type>target</type>
 		    <classifier>base</classifier>
 		  </artifact>
