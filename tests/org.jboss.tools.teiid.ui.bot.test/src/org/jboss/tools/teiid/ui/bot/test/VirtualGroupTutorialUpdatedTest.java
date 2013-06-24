@@ -102,7 +102,7 @@ public class VirtualGroupTutorialUpdatedTest extends SWTBotTestCase{
 	/**
 	 * Create connection profiles to HSQL databases
 	 */
-	//@Test
+	@Test
 	public void createConnProfiles(){
 		teiidBot.createHsqlProfile(props1, jdbcProfile, true, true);
 		teiidBot.createHsqlProfile(props2, jdbcProfile2, false, true);
@@ -111,19 +111,19 @@ public class VirtualGroupTutorialUpdatedTest extends SWTBotTestCase{
 	/**
 	 * Create data sources for connection profiles
 	 */
-	//@Test
+	@Test
 	public void createSources(){
 		//datasource ds1
 		importFromHsql(jdbcProfile, SOURCE_MODEL_1);
 		
 		//datasource ds2
-		importFromHsql(jdbcProfile2, SOURCE_MODEL_2);//import the same tables
+		importFromHsql(jdbcProfile2, SOURCE_MODEL_2);//import the same tables, other datasource
 	}
 	
 	/**
 	 * Preview data from model
 	 */
-	//@Test
+	@Test
 	public void previewData(){
 		//wait until project is saved
 		new WaitWhile(new IsInProgress(), TimePeriod.LONG);
@@ -157,7 +157,7 @@ public class VirtualGroupTutorialUpdatedTest extends SWTBotTestCase{
 	/**
 	 * Create transformation for virtual view model
 	 */
-	//@Test
+	@Test
 	public void createTransformation() {
 		//create table OnHand
 		ModelExplorerView modelView = TeiidPerspective.getInstance().getModelExplorerView();
@@ -168,7 +168,7 @@ public class VirtualGroupTutorialUpdatedTest extends SWTBotTestCase{
 
 		ModelEditor editor = new ModelEditor(VIRTUAL_MODEL_NAME);
 		editor.show();
-		editor.showTransformation();//tabulky?
+		editor.showTransformation();
 
 		CriteriaBuilder criteriaBuilder = editor.criteriaBuilder();
 		criteriaBuilder.selectRightAttribute(SOURCE_MODEL_1.substring(0, SOURCE_MODEL_1.indexOf('.')).concat(".SUPPLIER"), "SUPPLIER_ID");
@@ -183,7 +183,7 @@ public class VirtualGroupTutorialUpdatedTest extends SWTBotTestCase{
 	/**
 	 * Create VDB
 	 */
-	//@Test
+	@Test
 	public void createVDB() {
 		CreateVDB createVDB = new CreateVDB();
 		createVDB.setFolder(PROJECT_NAME);
@@ -199,7 +199,7 @@ public class VirtualGroupTutorialUpdatedTest extends SWTBotTestCase{
 	/**
 	 * Deploy, execute VDB
 	 */
-	//@Test
+	@Test
 	public void executeVDB() {
 		//switch to teiid designer perspective
 		
@@ -215,7 +215,7 @@ public class VirtualGroupTutorialUpdatedTest extends SWTBotTestCase{
 	/**
 	 * Execute test queries in SQL Scrapbook
 	 */
-	//@Test
+	@Test
 	public void executeSqlQueries() {
 		SQLScrapbookEditor editor = new SQLScrapbookEditor("SQL Scrapbook0");
 		editor.show();
@@ -262,7 +262,7 @@ public class VirtualGroupTutorialUpdatedTest extends SWTBotTestCase{
 	public void createProcedure() {	
 		ModelExplorerView modelView = TeiidPerspective.getInstance().getModelExplorerView();
 		Procedure procedure = modelView.newProcedure(PROJECT_NAME, VIRTUAL_MODEL_NAME, PROCEDURE_NAME,true);
-		ModelExplorerView mev = new ModelExplorerView();//je to nutny podruhe delat?
+		ModelExplorerView mev = new ModelExplorerView();
 		mev.open();
 		new WaitWhile(new IsInProgress(), TimePeriod.LONG);
 		new DefaultTreeItem(0, PROJECT_NAME, VIRTUAL_MODEL_NAME, PROCEDURE_NAME).select();
@@ -272,8 +272,8 @@ public class VirtualGroupTutorialUpdatedTest extends SWTBotTestCase{
 
 		ModelEditor editor = new ModelEditor(VIRTUAL_MODEL_NAME);
 		editor.show();
-		editor.showTransformation();//jakou transformaci to ale otevre? procedury nebo tabulky?
-		editor.setTransformationProcedureBody(VIRTUAL_PROCEDURE_SQL, true);//z "SELECT * FROM PartsVirtual.OnHand;"
+		editor.showTransformation();//opens the actual transformation (procedure)
+		editor.setTransformationProcedureBody(VIRTUAL_PROCEDURE_SQL, true);//"SELECT * FROM PartsVirtual.OnHand;"
 		editor.save();
 
 		//click at T 
@@ -282,7 +282,7 @@ public class VirtualGroupTutorialUpdatedTest extends SWTBotTestCase{
 		//click before ending ;
 		TeiidStyledText styledText = new TeiidStyledText(0);
 		styledText.navigateTo(2, 2);
-		styledText.mouseClickOnCaret();//to presne nechapu co dela - proste klikne tam kde je ted kurzor
+		styledText.mouseClickOnCaret();//clicks on the cursor position
 
 		CriteriaBuilder criteriaBuilder = editor.criteriaBuilder();
 		criteriaBuilder.selectLeftAttribute("PartsVirtual." + VIRTUAL_TABLE_NAME, "QUANTITY");
@@ -291,8 +291,6 @@ public class VirtualGroupTutorialUpdatedTest extends SWTBotTestCase{
 		criteriaBuilder.finish();
 
 		editor.save();
-
-		//assertEquals(PROCEDURE_SQL, editor.getTransformation());
 	}
 	
 	@Test
@@ -303,10 +301,6 @@ public class VirtualGroupTutorialUpdatedTest extends SWTBotTestCase{
 		editor.show();
 		editor.synchronizeAll();
 		editor.save();
-
-		/*assertEquals(ORACLE_MODEL_NAME, editor.getModel(0));
-		assertEquals(SQLSERVER_MODEL_NAME, editor.getModel(1));
-		assertEquals(VIRTUAL_MODEL_NAME, editor.getModel(2));*/
 	}
 
 	@Test
@@ -331,8 +325,6 @@ public class VirtualGroupTutorialUpdatedTest extends SWTBotTestCase{
 		SQLResult result = DatabaseDevelopmentPerspective.getInstance().getSqlResultsView()
 				.getByOperation(TESTSQL_5);
 		assertEquals(SQLResult.STATUS_SUCCEEDED, result.getStatus());
-		// The procedure doesn't return result, is this really intended?
-		// assertEquals(30, result.getCount());
 	}
 
 	@AfterClass
