@@ -69,6 +69,25 @@ public class ModelExplorerView extends WorkbenchView {
 
 		return new Procedure(project, model, procedure);
 	}
+	
+	public Procedure newProcedure(String project, String model, String procedure, boolean procedureNotFunction) {
+		open();
+
+		new DefaultTreeItem(project, model).select();
+		new ContextMenu("New Child", "Procedure...").select();
+		
+		if (procedureNotFunction){
+			//Procedure?/(Function) - OK
+			Bot.get().button("OK").click();
+		}
+		
+		new LabeledText("Name").setText(procedure);
+		
+		//finish
+		Bot.get().button("OK").click();
+
+		return new Procedure(project, model, procedure);
+	}
 
 	public void addTransformationSource(String project, String model, String tableName) {
 		open();
