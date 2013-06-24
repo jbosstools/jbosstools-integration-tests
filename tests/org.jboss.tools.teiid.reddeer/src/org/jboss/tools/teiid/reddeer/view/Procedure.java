@@ -54,20 +54,11 @@ public class Procedure {
 	}
 	
 	private void addParameterName2(String parameter) {
-		System.out.println(Bot.get().tree(0).columnCount());//0
-		/*ModelExplorerView mev = new ModelExplorerView();
-		mev.open();*/
 		new DefaultTreeItem(project, model, procedure).select();
 		new ContextMenu("New Child", "Procedure Parameter").select();
-		new DefaultTreeItem(project, model, procedure, "NewProcedureParameter").select();
-		
-		//System.out.println(new DefaultTree(2).getAllItems().size() + ", " + new DefaultTree(2).getItems().size());
+		new DefaultTreeItem(project, model, procedure, "NewProcedureParameter").select();	
 		new ContextMenu("Rename...").select();//highlights text to be edited
-		//but how to edit it???
-		
-		
 		new DefaultText("NewProcedureParameter").setText(parameter);
-		System.out.println();
 			}
 
 	private void addParameterType(String parameter, String type) {
