@@ -3,10 +3,16 @@ package org.jboss.tools.teiid.ui.bot.test;
 import java.util.Arrays;
 
 import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
+import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.util.Bot;
 import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.teiid.reddeer.ModelProject;
 import org.jboss.tools.teiid.reddeer.VDB;
@@ -22,6 +28,7 @@ import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorerView;
 import org.jboss.tools.teiid.reddeer.view.Procedure;
 import org.jboss.tools.teiid.reddeer.view.SQLResult;
+import org.jboss.tools.teiid.reddeer.widget.TeiidStyledText;
 import org.jboss.tools.teiid.reddeer.wizard.CreateMetadataModel;
 import org.jboss.tools.teiid.reddeer.wizard.CreateVDB;
 import org.jboss.tools.teiid.reddeer.wizard.ImportJDBCDatabaseWizard;
@@ -30,6 +37,7 @@ import org.jboss.tools.teiid.ui.bot.test.requirement.PerspectiveRequirement.Pers
 import org.jboss.tools.teiid.ui.bot.test.requirement.ServerRequirement.Server;
 import org.jboss.tools.teiid.ui.bot.test.requirement.ServerRequirement.State;
 import org.jboss.tools.teiid.ui.bot.test.requirement.ServerRequirement.Type;
+import org.junit.AfterClass;
 import org.junit.Test;
 
 /**
@@ -49,13 +57,13 @@ public class VirtualGroupTutorialUpdatedTest extends SWTBotTestCase{
 	private String jdbcProfile = "HSQLDB Profile";
 	private String jdbcProfile2 = "HSQLDB Profile 2";
 	
-	private String SOURCE_MODEL_1 = "partssupModel1.xmi";
-	private String SOURCE_MODEL_2 = "partssupModel2.xmi";
+	private static String SOURCE_MODEL_1 = "partssupModel1.xmi";
+	private static String SOURCE_MODEL_2 = "partssupModel2.xmi";
 	
 	private String props1 = "resources/db/ds1.properties";
 	private String props2 = "resources/db/ds2.properties";
 
-	private String VIRTUAL_MODEL_NAME = "PartsVirtual.xmi";
+	private static String VIRTUAL_MODEL_NAME = "PartsVirtual.xmi";
 	private static final String VIRTUAL_TABLE_NAME = "OnHand";
 	private static final String PROCEDURE_NAME = "getOnHandByQuantity";
 
@@ -67,14 +75,19 @@ public class VirtualGroupTutorialUpdatedTest extends SWTBotTestCase{
 	private static String TESTSQL_2 = "SELECT * FROM PartsVirtual.OnHand";
 	private static final String TESTSQL_3 = "SELECT * FROM PartsVirtual.OnHand WHERE QUANTITY > 200"; 
 
-private static final String TESTSQL_4 = "SELECT " + "O.SUPPLIER_NAME, " + "O.PART_ID, " + "P.PART_NAME " +
+	private static final String TESTSQL_4 = "SELECT " + "O.SUPPLIER_NAME, " + "O.PART_ID, " + "P.PART_NAME " +
 
 "FROM " + "\"partssupModel1\".PARTS AS P, " + "PartsVirtual.OnHand AS O " + "WHERE "
-+ "(P.PART_ID = O.PART_ID) and " + "(O.SUPPLIER_NAME LIKE '%la%') " + "ORDER BY PART_NAME"; // it
++ "(P.PART_ID = O.PART_ID) and " + "(O.SUPPLIER_NAME LIKE '%la%') " + "ORDER BY PART_NAME"; 
+
+	private static final String TESTSQL_5 = "EXEC PartsVirtual.getOnHandByQuantity( 200 )";
 	
 	private static final String PROCEDURE_SQL = "CREATE VIRTUAL PROCEDURE\n" + "BEGIN\n\t"
 			+ "SELECT * FROM PartsVirtual.OnHand " + "WHERE PartsVirtual.OnHand.QUANTITY = "
 			+ "PartsVirtual.getOnHandByQuantity.qtyIn;\n" + "END";
+
+	private static final String VIRTUAL_PROCEDURE_SQL = "CREATE VIRTUAL PROCEDURE\n" + "BEGIN\n\t"
+			+ "SELECT * FROM PartsVirtual.OnHand;" + "\nEND";
 	
 	
 	/**
@@ -89,7 +102,7 @@ private static final String TESTSQL_4 = "SELECT " + "O.SUPPLIER_NAME, " + "O.PAR
 	/**
 	 * Create connection profiles to HSQL databases
 	 */
-	@Test
+	//@Test
 	public void createConnProfiles(){
 		teiidBot.createHsqlProfile(props1, jdbcProfile, true, true);
 		teiidBot.createHsqlProfile(props2, jdbcProfile2, false, true);
@@ -98,7 +111,7 @@ private static final String TESTSQL_4 = "SELECT " + "O.SUPPLIER_NAME, " + "O.PAR
 	/**
 	 * Create data sources for connection profiles
 	 */
-	@Test
+	//@Test
 	public void createSources(){
 		//datasource ds1
 		importFromHsql(jdbcProfile, SOURCE_MODEL_1);
@@ -110,7 +123,7 @@ private static final String TESTSQL_4 = "SELECT " + "O.SUPPLIER_NAME, " + "O.PAR
 	/**
 	 * Preview data from model
 	 */
-	@Test
+	//@Test
 	public void previewData(){
 		//wait until project is saved
 		new WaitWhile(new IsInProgress(), TimePeriod.LONG);
@@ -121,10 +134,11 @@ private static final String TESTSQL_4 = "SELECT " + "O.SUPPLIER_NAME, " + "O.PAR
 		
 		new WaitWhile(new IsInProgress(), TimePeriod.NORMAL);
 		TeiidPerspective.getInstance().open();
+		new DefaultTreeItem(0, PROJECT_NAME, SOURCE_MODEL_1, "PARTS").select();
 	}
 	
 	/**
-	 * Create view model
+	 * Create virtual view model
 	 */
 	@Test
 	public void createViewModel() {
@@ -141,10 +155,11 @@ private static final String TESTSQL_4 = "SELECT " + "O.SUPPLIER_NAME, " + "O.PAR
 	}
 	
 	/**
-	 * Create transformation
+	 * Create transformation for virtual view model
 	 */
-	@Test
+	//@Test
 	public void createTransformation() {
+		//create table OnHand
 		ModelExplorerView modelView = TeiidPerspective.getInstance().getModelExplorerView();
 		modelView.newBaseTable(PROJECT_NAME, VIRTUAL_MODEL_NAME, VIRTUAL_TABLE_NAME, false);
 		modelView.openTransformationDiagram(PROJECT_NAME, VIRTUAL_MODEL_NAME, VIRTUAL_TABLE_NAME);
@@ -153,7 +168,7 @@ private static final String TESTSQL_4 = "SELECT " + "O.SUPPLIER_NAME, " + "O.PAR
 
 		ModelEditor editor = new ModelEditor(VIRTUAL_MODEL_NAME);
 		editor.show();
-		editor.showTransformation();
+		editor.showTransformation();//tabulky?
 
 		CriteriaBuilder criteriaBuilder = editor.criteriaBuilder();
 		criteriaBuilder.selectRightAttribute(SOURCE_MODEL_1.substring(0, SOURCE_MODEL_1.indexOf('.')).concat(".SUPPLIER"), "SUPPLIER_ID");
@@ -168,7 +183,7 @@ private static final String TESTSQL_4 = "SELECT " + "O.SUPPLIER_NAME, " + "O.PAR
 	/**
 	 * Create VDB
 	 */
-	@Test
+	//@Test
 	public void createVDB() {
 		CreateVDB createVDB = new CreateVDB();
 		createVDB.setFolder(PROJECT_NAME);
@@ -184,7 +199,7 @@ private static final String TESTSQL_4 = "SELECT " + "O.SUPPLIER_NAME, " + "O.PAR
 	/**
 	 * Deploy, execute VDB
 	 */
-	@Test
+	//@Test
 	public void executeVDB() {
 		//switch to teiid designer perspective
 		
@@ -200,7 +215,7 @@ private static final String TESTSQL_4 = "SELECT " + "O.SUPPLIER_NAME, " + "O.PAR
 	/**
 	 * Execute test queries in SQL Scrapbook
 	 */
-	@Test
+	//@Test
 	public void executeSqlQueries() {
 		SQLScrapbookEditor editor = new SQLScrapbookEditor("SQL Scrapbook0");
 		editor.show();
@@ -237,6 +252,136 @@ private static final String TESTSQL_4 = "SELECT " + "O.SUPPLIER_NAME, " + "O.PAR
 
 		result = DatabaseDevelopmentPerspective.getInstance().getSqlResultsView().getByOperation(TESTSQL_4);
 		assertEquals(SQLResult.STATUS_SUCCEEDED, result.getStatus());
+	}
+	
+	
+	/**
+	 * Create procedure
+	 */
+	@Test
+	public void createProcedure() {	
+		ModelExplorerView modelView = TeiidPerspective.getInstance().getModelExplorerView();
+		Procedure procedure = modelView.newProcedure(PROJECT_NAME, VIRTUAL_MODEL_NAME, PROCEDURE_NAME,true);
+		ModelExplorerView mev = new ModelExplorerView();//je to nutny podruhe delat?
+		mev.open();
+		new WaitWhile(new IsInProgress(), TimePeriod.LONG);
+		new DefaultTreeItem(0, PROJECT_NAME, VIRTUAL_MODEL_NAME, PROCEDURE_NAME).select();
+		
+		procedure.addParameter2("qtyIn", "short : xs:int");
+		modelView.openTransformationDiagram(PROJECT_NAME, VIRTUAL_MODEL_NAME, PROCEDURE_NAME);
+
+		ModelEditor editor = new ModelEditor(VIRTUAL_MODEL_NAME);
+		editor.show();
+		editor.showTransformation();//jakou transformaci to ale otevre? procedury nebo tabulky?
+		editor.setTransformationProcedureBody(VIRTUAL_PROCEDURE_SQL, true);//z "SELECT * FROM PartsVirtual.OnHand;"
+		editor.save();
+
+		//click at T 
+		editor.showTransformation();
+		
+		//click before ending ;
+		TeiidStyledText styledText = new TeiidStyledText(0);
+		styledText.navigateTo(2, 2);
+		styledText.mouseClickOnCaret();//to presne nechapu co dela - proste klikne tam kde je ted kurzor
+
+		CriteriaBuilder criteriaBuilder = editor.criteriaBuilder();
+		criteriaBuilder.selectLeftAttribute("PartsVirtual." + VIRTUAL_TABLE_NAME, "QUANTITY");
+		criteriaBuilder.selectRightAttribute("PartsVirtual." + PROCEDURE_NAME, "qtyIn");
+		criteriaBuilder.apply();
+		criteriaBuilder.finish();
+
+		editor.save();
+
+		//assertEquals(PROCEDURE_SQL, editor.getTransformation());
+	}
+	
+	@Test
+	public void updateVDB() {
+		TeiidPerspective.getInstance().getModelExplorerView().open(PROJECT_NAME, VDB_FILE_NAME);
+
+		VDBEditor editor = VDBEditor.getInstance(VDB_FILE_NAME);
+		editor.show();
+		editor.synchronizeAll();
+		editor.save();
+
+		/*assertEquals(ORACLE_MODEL_NAME, editor.getModel(0));
+		assertEquals(SQLSERVER_MODEL_NAME, editor.getModel(1));
+		assertEquals(VIRTUAL_MODEL_NAME, editor.getModel(2));*/
+	}
+
+	@Test
+	public void deployUpdatedVDB() {
+		ModelExplorer modelExplorer = new ModelExplorer();
+		modelExplorer.open();
+		VDB vdb = modelExplorer.getModelProject(PROJECT_NAME).getVDB(VDB_FILE_NAME);
+		// simple execute vdb isn't enough, we have to deploy and then execute
+		// vdb
+		vdb.deployVDB();
+		vdb.executeVDB();
+	}
+
+	@Test
+	public void executeProcedureQuery() {
+		SQLScrapbookEditor editor = new SQLScrapbookEditor("SQL Scrapbook1");
+		editor.show();
+		editor.setDatabase(VDB_NAME);
+		editor.setText(TESTSQL_5);
+		editor.executeAll();
+
+		SQLResult result = DatabaseDevelopmentPerspective.getInstance().getSqlResultsView()
+				.getByOperation(TESTSQL_5);
+		assertEquals(SQLResult.STATUS_SUCCEEDED, result.getStatus());
+		// The procedure doesn't return result, is this really intended?
+		// assertEquals(30, result.getCount());
+	}
+
+	@AfterClass
+	public static void closeScrapbookEditor() {
+		closeScrapbook();
+		closeVDBEditor();
+		closeModelEditor(VIRTUAL_MODEL_NAME);
+		closeModelEditor(SOURCE_MODEL_1);
+		closeModelEditor(SOURCE_MODEL_2);
+		closeAutoConnectToTeiidInstance();
+	}
+
+	private static void closeScrapbook() {
+		try {
+			SQLScrapbookEditor editor = new SQLScrapbookEditor("SQL Scrapbook0");
+			editor.show();
+			editor.close();
+			editor = new SQLScrapbookEditor("SQL Scrapbook1");
+			editor.show();
+			editor.close();
+		} catch (WidgetNotFoundException e) {
+
+		}
+	}
+
+	private static void closeVDBEditor() {
+		try {
+			VDBEditor editor = VDBEditor.getInstance(VDB_NAME + ".vdb");
+			editor.close();
+		} catch (WidgetNotFoundException e) {
+
+		}
+	}
+
+	private static void closeModelEditor(String name) {
+		try {
+			ModelEditor editor = new ModelEditor(name);
+			editor.close();
+		} catch (WidgetNotFoundException e) {
+
+		}
+	}
+
+	private static void closeAutoConnectToTeiidInstance() {
+		try {
+			new DefaultShell("Auto Connect to New Teiid Instance").close();
+		} catch (SWTLayerException e) {
+			// it is ok
+		}
 	}
 		
 	/**
