@@ -18,7 +18,7 @@ import org.jboss.tools.runtime.ui.RuntimeUIActivator;
 public class RuntimeDetectionPreferencesDialog extends PreferencePage {
 
 	public RuntimeDetectionPreferencesDialog() {
-		super("JBoss Tools", "JBoss Tools Runtime Detection");
+		super("JBoss Tools", "JBoss Runtime Detection");
 	}
 	
 	@Override

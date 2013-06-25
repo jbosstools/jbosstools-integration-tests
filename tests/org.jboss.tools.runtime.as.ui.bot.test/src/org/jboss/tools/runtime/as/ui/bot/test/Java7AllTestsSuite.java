@@ -10,9 +10,6 @@ import org.jboss.tools.runtime.as.ui.bot.test.detector.seam.seam23.DetectSeam23;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap4.CheckEAP4Seam;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap4.DetectEAP4;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap4.OperateEAP4;
-import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap51.CheckEAP51Seam;
-import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap51.DetectEAP51;
-import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap51.OperateEAP51;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap52.CheckEAP52Seam;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap52.DetectEAP52;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap52.OperateEAP52;
@@ -23,21 +20,10 @@ import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap61.OperateEAP61
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.epp4.CheckEPP4Seam;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.epp4.DetectEPP4;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.epp4.OperateEPP4;
-import org.jboss.tools.runtime.as.ui.bot.test.detector.server.epp5.CheckEPP5Seam;
-import org.jboss.tools.runtime.as.ui.bot.test.detector.server.epp5.DetectEPP5;
-import org.jboss.tools.runtime.as.ui.bot.test.detector.server.epp5.OperateEPP5;
-import org.jboss.tools.runtime.as.ui.bot.test.detector.server.ewp5.CheckEWP5Seam;
-import org.jboss.tools.runtime.as.ui.bot.test.detector.server.ewp5.DetectEWP5;
-import org.jboss.tools.runtime.as.ui.bot.test.detector.server.ewp5.OperateEWP5;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.jboss7.DetectJBoss7;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.jboss7.OperateJBoss7;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.jpp6.DetectJPP6;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.jpp6.OperateJPP6;
-import org.jboss.tools.runtime.as.ui.bot.test.detector.server.soap52.CheckSOAP52Seam;
-import org.jboss.tools.runtime.as.ui.bot.test.detector.server.soap52.DetectSOAP52;
-import org.jboss.tools.runtime.as.ui.bot.test.detector.server.soap52.OperateSOAP52;
-import org.jboss.tools.runtime.as.ui.bot.test.detector.server.soap52.standalone.DetectSOAPStandalone52;
-import org.jboss.tools.runtime.as.ui.bot.test.detector.server.soap52.standalone.OperateSOAPStandalone52;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.soap53.CheckSOAP53Seam;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.soap53.DetectSOAP53;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.soap53.OperateSOAP53;
@@ -48,14 +34,19 @@ import org.jboss.tools.runtime.as.ui.bot.test.detector.server.wildfly8.OperateWi
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
+/**
+ * Tests with Java SE 1.7 requirement
+ * 
+ * @author Petr Suchy
+ *
+ */
 @RunWith(JBTSuite.class)
 @Suite.SuiteClasses({
-	
+
 		RuntimeDuplications.class,
 		ServerWithSeam.class,
 		RuntimeDownload.class,
 		
-		// Needs Java SE 1.7
 		DetectWildFly8.class,
 		OperateWildFly8.class,
 		
@@ -68,11 +59,6 @@ import org.junit.runners.Suite;
 		DetectEAP61.class,
 		OperateEAP61.class,
 		
-		// Needs Java SE 1.6
-		DetectEAP51.class, 
-		CheckEAP51Seam.class,
-		OperateEAP51.class, 
-		
 		DetectEAP52.class, 
 		CheckEAP52Seam.class,
 		OperateEAP52.class, 
@@ -84,26 +70,9 @@ import org.junit.runners.Suite;
 		DetectEPP4.class, 
 		CheckEPP4Seam.class,
 		OperateEPP4.class,
-
-		// Needs Java SE 1.6		
-		DetectEPP5.class, 
-		CheckEPP5Seam.class,
-		OperateEPP5.class,
 		
 		DetectJPP6.class, 
 		OperateJPP6.class,
-		
-		// Needs Java SE 1.6
-		DetectEWP5.class, 
-		CheckEWP5Seam.class,
-		OperateEWP5.class,
-		
-		// Needs Java SE 1.6
-		DetectSOAP52.class, 
-		CheckSOAP52Seam.class,
-		OperateSOAP52.class, 
-		DetectSOAPStandalone52.class, 
-		OperateSOAPStandalone52.class,
 		
 		DetectSOAP53.class, 
 		CheckSOAP53Seam.class,
@@ -117,6 +86,6 @@ import org.junit.runners.Suite;
 		CheckSeam23.class
 		
 })
-public class AllTestsSuite {
+public class Java7AllTestsSuite {
 
 }
