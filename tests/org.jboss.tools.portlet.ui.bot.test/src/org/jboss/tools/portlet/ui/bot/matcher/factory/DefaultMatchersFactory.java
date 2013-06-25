@@ -1,7 +1,5 @@
 package org.jboss.tools.portlet.ui.bot.matcher.factory;
 
-import org.hamcrest.BaseMatcher;
-import org.jboss.tools.portlet.ui.bot.matcher.AbstractSWTMatcher;
 import org.jboss.tools.portlet.ui.bot.matcher.SWTMatcher;
 import org.jboss.tools.portlet.ui.bot.matcher.console.ConsoleOutputMatcher;
 import org.jboss.tools.portlet.ui.bot.matcher.console.ExceptionInConsoleOutputMatcher;
@@ -11,6 +9,7 @@ import org.jboss.tools.portlet.ui.bot.matcher.problems.NumberOfErrorsMatcher;
  * Factory of matchers for Problems View. 
  * 
  * @author Lucia Jelinkova
+ * @author Petr Suchy
  *
  */
 public class DefaultMatchersFactory {
@@ -23,11 +22,11 @@ public class DefaultMatchersFactory {
 		return new NumberOfErrorsMatcher();
 	}
 	
-	public static AbstractSWTMatcher<String> inConsoleOutput(){
+	public static SWTMatcher<String> inConsoleOutput(){
 		return new ConsoleOutputMatcher();
 	}
 	
-	public static BaseMatcher<Void> exceptionInConsoleOutput(){
+	public static SWTMatcher<Void> exceptionInConsoleOutput(){
 		return new ExceptionInConsoleOutputMatcher();
 	}
 }

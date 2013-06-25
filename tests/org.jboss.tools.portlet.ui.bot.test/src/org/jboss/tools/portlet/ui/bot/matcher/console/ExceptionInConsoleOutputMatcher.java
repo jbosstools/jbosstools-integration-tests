@@ -4,6 +4,7 @@ import static org.jboss.tools.portlet.ui.bot.matcher.factory.DefaultMatchersFact
 
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
+import org.jboss.tools.portlet.ui.bot.matcher.SWTMatcher;
 
 /**
  * Matcher for the current state of workspace - that there is an exception in console output. 
@@ -11,7 +12,7 @@ import org.hamcrest.Description;
  * @author Lucia Jelinkova
  *
  */
-public class ExceptionInConsoleOutputMatcher extends BaseMatcher<Void> {
+public class ExceptionInConsoleOutputMatcher extends BaseMatcher<Void> implements SWTMatcher<Void> {
 
 	private ConsoleOutputMatcher consoleOutputMatcher;
 

@@ -1,9 +1,9 @@
 package org.jboss.tools.portlet.ui.bot.task.dialog.property;
 
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.tools.portlet.ui.bot.task.AbstractSWTTask;
-import org.jboss.tools.ui.bot.ext.SWTBotFactory;
-import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
-import org.jboss.tools.ui.bot.ext.view.PackageExplorer;
 
 public class ProjectPropertyDialogOpenTask extends AbstractSWTTask{
 
@@ -13,15 +13,9 @@ public class ProjectPropertyDialogOpenTask extends AbstractSWTTask{
 
 	@Override
 	public void perform() {
-		PackageExplorer projectExplorer = SWTBotFactory.getPackageexplorer();
-		projectExplorer.show();
-		projectExplorer.selectProject(project);
-		
-		ContextMenuHelper.clickContextMenu(projectExplorer.bot().tree(),
-				"Properties");
-
-		SWTBotFactory.getEclipse().waitForShell("Properties for " + project);
-		getBot().tree().expandNode(propertyPage).select();		
+		new ProjectExplorer().getProject(project).select();
+		new ContextMenu("Properties").select();
+		new DefaultTreeItem(propertyPage).select();
 	}	
 
 	public void setProject(String project) {

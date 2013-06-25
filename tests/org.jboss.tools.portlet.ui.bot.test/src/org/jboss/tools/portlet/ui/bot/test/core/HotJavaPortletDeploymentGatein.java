@@ -1,10 +1,7 @@
 package org.jboss.tools.portlet.ui.bot.test.core;
 
-import static org.jboss.tools.portlet.ui.bot.test.core.CreateJavaPortletProject.PROJECT_NAME;
-
-import org.jboss.tools.portlet.ui.bot.task.wizard.web.jboss.AbstractPortletCreationTask;
-import org.jboss.tools.portlet.ui.bot.task.wizard.web.jboss.JavaPortletCreationTask;
-import org.jboss.tools.portlet.ui.bot.task.wizard.web.jboss.JavaPortletWizardPageFillingTask;
+import org.jboss.tools.portlet.ui.bot.task.wizard.web.jboss.NewJavaPortletDialog;
+import org.jboss.tools.portlet.ui.bot.task.wizard.web.jboss.NewJavaPortletWizardPage;
 import org.jboss.tools.portlet.ui.bot.test.template.CreateJavaPortletTemplate;
 import org.jboss.tools.portlet.ui.bot.test.template.HotDeploymentGateinTemplate;
 
@@ -22,15 +19,14 @@ public class HotJavaPortletDeploymentGatein extends HotDeploymentGateinTemplate 
 	}
 
 	@Override
-	protected AbstractPortletCreationTask createPortlet() {
-		JavaPortletWizardPageFillingTask task = new JavaPortletWizardPageFillingTask();
-		task.setProject(PROJECT_NAME);
-		task.setPackageName(CreateJavaPortletTemplate.PACKAGE_NAME);
-		task.setClassName("HotDeployedJavaPortlet");
-		
-		JavaPortletCreationTask wizardTask = new JavaPortletCreationTask();
-		wizardTask.addWizardPage(task);
-		return wizardTask;
+	protected void createPortlet() {
+		NewJavaPortletDialog dialog = new NewJavaPortletDialog();
+		dialog.open();
+		NewJavaPortletWizardPage page = (NewJavaPortletWizardPage) dialog.getFirstPage();
+		page.setClassName("HotDeployedJavaPortlet");
+		page.setPackage(CreateJavaPortletTemplate.PACKAGE_NAME);
+		page.setProject(CreateJavaPortletProject.PROJECT_NAME);
+		dialog.finish();
 	}
 
 }

@@ -1,20 +1,20 @@
 package org.jboss.tools.portlet.ui.bot.task.wizard.importing.project;
 
-import org.eclipse.swtbot.swt.finder.keyboard.KeyboardFactory;
-import org.eclipse.swtbot.swt.finder.keyboard.Keystrokes;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
+import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
 import org.jboss.tools.portlet.ui.bot.task.AbstractSWTTask;
-import org.jboss.tools.portlet.ui.bot.task.wizard.WizardPageFillingTask;
 
 /**
  * Fills the wizard page for importing existing projects into workspace. 
  * 
  * @author Lucia Jelinkova
+ * @author Petr Suchy
  *
  */
-public class ExistingProjectWizardPageFillingTask extends AbstractSWTTask implements WizardPageFillingTask {
+public class ExistingProjectWizardTask extends AbstractSWTTask {
 
+	private WizardProjectsImportPage page; 
+	
 	private String[] projectNames;
 
 	private String projectPath;
@@ -23,14 +23,18 @@ public class ExistingProjectWizardPageFillingTask extends AbstractSWTTask implem
 
 	private boolean copyProjectsIntoWorkspace;
 
-	public ExistingProjectWizardPageFillingTask() {
+	public ExistingProjectWizardTask() {
 		super();
 	}
 
 	@Override
 	public void perform() {
+		ExternalProjectImportWizardDialog dialog = new ExternalProjectImportWizardDialog();
+		dialog.open();
+		page = dialog.getFirstPage();
 		loadProjects();
 		selectProjects();
+		dialog.finish();
 	}
 
 	private void loadProjects() {
@@ -39,54 +43,30 @@ public class ExistingProjectWizardPageFillingTask extends AbstractSWTTask implem
 		}
 
 		if (projectPath != null){
-			loadProjectsFromFolder();
+			page.setRootDirectory(projectPath);
 			return;
 		}
 
 		if (zipFilePath != null){
-			loadProjectsFromZIP();
+			page.setArchiveFile(zipFilePath);
 			return;
 		}
 
 		throw new IllegalArgumentException("You have to provide either folder or ZIP path");
 	}
 
-	private void loadProjectsFromFolder() {
-		getBot().text(0).setText(projectPath);
-		KeyboardFactory.getAWTKeyboard().pressShortcut(Keystrokes.TAB);
-	}
-
-	private void loadProjectsFromZIP() {
-		getBot().radio("Select archive file:").click();
-		getBot().text(1).setText(zipFilePath);
-		KeyboardFactory.getAWTKeyboard().pressShortcut(Keystrokes.TAB);
-	}
-
 	private void selectProjects() {
 		selectCopyProjectsIntoWorkspace();
-		getBot().button("Deselect All").click();
-		SWTBotTree projectsTree = getBot().treeWithLabel("Projects:");
-		for (String projectName : projectNames){
-			SWTBotTreeItem  projectItem = projectsTree.getTreeItem(getProjectLabel(projectName));
-			projectItem.check();
-		}
+		page.selectProjects(projectNames);
 	}
 
 	private void selectCopyProjectsIntoWorkspace() {
 		if (isFileSystem()){
 			if (copyProjectsIntoWorkspace){
-				getBot().checkBox("Copy projects into workspace").select();
+				page.copyProjectsIntoWorkspace(true);
 			} else {
-				getBot().checkBox("Copy projects into workspace").deselect();
+				page.copyProjectsIntoWorkspace(false);
 			}
-		}
-	}
-
-	private String getProjectLabel(String project){
-		if (isFileSystem()){
-			return project + " (" + projectPath + "/" + project + ")";
-		} else {
-			return project + " (" + project + ")";
 		}
 	}
 
@@ -109,4 +89,5 @@ public class ExistingProjectWizardPageFillingTask extends AbstractSWTTask implem
 	public void setCopyProjectsIntoWorkspace(boolean copyProjectsIntoWorkspace) {
 		this.copyProjectsIntoWorkspace = copyProjectsIntoWorkspace;
 	}
+	
 }

@@ -1,18 +1,15 @@
 package org.jboss.tools.portlet.ui.bot.matcher.workspace.file.xml;
 
-import java.util.Arrays;
 import java.util.List;
 
-import org.eclipse.swtbot.swt.finder.SWTBot;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.hamcrest.Description;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.swt.impl.tree.DefaultTree;
+import org.jboss.reddeer.workbench.editor.DefaultEditor;
 import org.jboss.tools.portlet.ui.bot.entity.WorkspaceFile;
 import org.jboss.tools.portlet.ui.bot.entity.XMLNode;
 import org.jboss.tools.portlet.ui.bot.matcher.JavaPerspectiveAbstractSWTMatcher;
-import org.jboss.tools.ui.bot.ext.SWTBotFactory;
-import org.jboss.tools.ui.bot.ext.SWTEclipseExt;
-import org.jboss.tools.ui.bot.ext.parts.SWTBotEditorExt;
 
 /**
  * Checks if the file contains specified nodes.
@@ -31,31 +28,30 @@ public class XMLFileNodeContentMatcher extends JavaPerspectiveAbstractSWTMatcher
 	
 	@Override
 	protected boolean matchesSafelyInJavaPerspective(WorkspaceFile file) {
-		SWTBotFactory.getPackageexplorer().openFile(file.getProject(), file.getFilePathAsArray());
-		SWTBotEditorExt editor = SWTBotFactory.getBot().swtBotEditorExtByTitle(file.getFileName());
-		SWTBotTree tree = editor.bot().tree();
-		
-		for (XMLNode node : nodes){
-			if (!containsNode(editor.bot(), tree, node)){
-				return false;
+		new PackageExplorer().getProject(file.getProject()).getProjectItem(file.getFilePathAsArray()).open();
+		new DefaultEditor(file.getFileName());
+		List<TreeItem> items = new DefaultTree().getAllItems();
+		for(XMLNode node : nodes){
+			int index = 0;
+			String[] path = node.getPathAsArray();
+			for(TreeItem item : items){
+				if(item.getText().equals(path[0])){
+					index++;
+					while (index < path.length){
+						item = item.getItem(path[index]);
+						index++;
+					}
+					if(!item.getCell(1).equals(node.getContent())){
+						return false;
+					}
+					break;
+				}
 			}
 		}
+		
 		return true;
 	}
-	
-	private boolean containsNode(SWTBot bot, SWTBotTree tree, XMLNode node) {
-		SWTBotTreeItem item = SWTEclipseExt.getTreeItemOnPathStartsWith(bot, tree, 0, node.getNodeName(), getNodePath(node));
-		return item.cell(1).contains(node.getContent());
-	}
 
-	private String[] getNodePath(XMLNode node) {
-		String[] path = node.getPathAsArray();
-		if (path.length <= 1){
-			return new String[0];
-		}
-		return Arrays.copyOfRange(path, 0, path.length - 1);
-	}
-	
 	@Override
 	public void describeTo(Description description) {
 		description.appendText("contains XML nodes: " + nodes);

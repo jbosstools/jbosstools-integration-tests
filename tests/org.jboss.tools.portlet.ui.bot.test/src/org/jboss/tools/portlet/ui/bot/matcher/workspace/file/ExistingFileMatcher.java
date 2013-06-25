@@ -1,21 +1,22 @@
 package org.jboss.tools.portlet.ui.bot.matcher.workspace.file;
 
 import org.hamcrest.Description;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.tools.portlet.ui.bot.entity.WorkspaceFile;
 import org.jboss.tools.portlet.ui.bot.matcher.JavaPerspectiveAbstractSWTMatcher;
-import org.jboss.tools.ui.bot.ext.SWTBotFactory;
 
 /**
  * Checks if the file exists in the project. 
  * 
  * @author Lucia Jelinkova
+ * @author Petr Suchy
  *
  */
 public class ExistingFileMatcher extends JavaPerspectiveAbstractSWTMatcher<WorkspaceFile> {
 
 	@Override
 	protected boolean matchesSafelyInJavaPerspective(WorkspaceFile file) {
-		return SWTBotFactory.getPackageexplorer().isFilePresent(file.getProject(), file.getFilePathAsArray());
+		return new PackageExplorer().getProject(file.getProject()).containsItem(file.getFilePathAsArray());
 	}
 
 	@Override

@@ -9,9 +9,8 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.osgi.baseadaptor.BaseData;
 import org.eclipse.osgi.framework.internal.core.BundleHost;
 import org.jboss.tools.portlet.ui.bot.entity.XMLNode;
-import org.jboss.tools.portlet.ui.bot.task.wizard.web.jboss.AbstractPortletCreationTask;
-import org.jboss.tools.portlet.ui.bot.task.wizard.web.jboss.JavaPortletCreationTask;
-import org.jboss.tools.portlet.ui.bot.task.wizard.web.jboss.JavaPortletWizardPageFillingTask;
+import org.jboss.tools.portlet.ui.bot.task.wizard.web.jboss.NewJavaPortletDialog;
+import org.jboss.tools.portlet.ui.bot.task.wizard.web.jboss.NewJavaPortletWizardPage;
 import org.junit.Before;
 import org.osgi.framework.Bundle;
 
@@ -70,15 +69,15 @@ public abstract class CreateJavaPortletTemplate extends CreatePortletTemplate {
 		return PROJECT_NAME;
 	}
 	
-	protected AbstractPortletCreationTask getCreatePortletTask() {
-		JavaPortletWizardPageFillingTask task = new JavaPortletWizardPageFillingTask();
-		task.setProject(PROJECT_NAME);
-		task.setPackageName(PACKAGE_NAME);
-		task.setClassName(CLASS_NAME);
-		
-		JavaPortletCreationTask wizardTask = new JavaPortletCreationTask();
-		wizardTask.addWizardPage(task);
-		return wizardTask;
+	@Override
+	protected void createPortlet() {
+		NewJavaPortletDialog dialog = new NewJavaPortletDialog();
+		dialog.open();
+		NewJavaPortletWizardPage page = (NewJavaPortletWizardPage) dialog.getFirstPage();
+		page.setClassName(CLASS_NAME);
+		page.setPackage(PACKAGE_NAME);
+		page.setProject(PROJECT_NAME);
+		dialog.finish();
 	}
 	
 	@Override

@@ -4,9 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.jboss.tools.portlet.ui.bot.entity.XMLNode;
-import org.jboss.tools.portlet.ui.bot.task.wizard.WizardPageDefaultsFillingTask;
-import org.jboss.tools.portlet.ui.bot.task.wizard.web.jboss.AbstractPortletCreationTask;
-import org.jboss.tools.portlet.ui.bot.task.wizard.web.jboss.JSFPortletCreationTask;
+import org.jboss.tools.portlet.ui.bot.task.wizard.web.jboss.NewJSFSeamPortletDialog;
 
 /**
  * Creates a new jsf portlet and checks if the right files are generated.  
@@ -19,12 +17,12 @@ public abstract class CreateJSFSeamPortletTemplate extends CreatePortletTemplate
 	private static final String FACES_CLASS_NAME = "javax.portlet.faces.GenericFacesPortlet";
 
 	@Override
-	protected AbstractPortletCreationTask getCreatePortletTask() {
-		JSFPortletCreationTask task = new JSFPortletCreationTask();
-		task.addWizardPage(new WizardPageDefaultsFillingTask());
-		task.addWizardPage(new WizardPageDefaultsFillingTask());
-		task.addWizardPage(new WizardPageDefaultsFillingTask());
-		return task;
+	protected void createPortlet() {
+		NewJSFSeamPortletDialog dialog = new NewJSFSeamPortletDialog();
+		dialog.open();
+		dialog.next();
+		dialog.next();
+		dialog.finish();
 	}
 
 	@Override

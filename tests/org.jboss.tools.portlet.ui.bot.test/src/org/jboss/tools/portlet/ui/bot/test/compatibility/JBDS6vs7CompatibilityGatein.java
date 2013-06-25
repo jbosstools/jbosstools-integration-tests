@@ -5,7 +5,7 @@ import org.jboss.tools.portlet.ui.bot.test.template.JBDSCompatibilityGateinTempl
 /**
  * Tests that project from JBDS 6 can work in JBDS 7 without any problems. 
  * 
- * @author Lucia Jelinkova
+ * @author Petr Suchy
  *
  */
 public class JBDS6vs7CompatibilityGatein extends JBDSCompatibilityGateinTemplate {

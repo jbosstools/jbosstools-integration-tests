@@ -4,10 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hamcrest.Description;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.tools.portlet.ui.bot.entity.WorkspaceFile;
 import org.jboss.tools.portlet.ui.bot.matcher.JavaPerspectiveAbstractSWTMatcher;
-import org.jboss.tools.ui.bot.ext.SWTBotFactory;
 
+/**
+ * Checks if the files exists in the project(s). 
+ * 
+ * @author Lucia Jelinkova
+ * @author Petr Suchy
+ *
+ */
 public class ExistingFilesMatcher extends JavaPerspectiveAbstractSWTMatcher<List<WorkspaceFile>> {
 
 	private List<WorkspaceFile> missingFiles;
@@ -19,7 +26,7 @@ public class ExistingFilesMatcher extends JavaPerspectiveAbstractSWTMatcher<List
 	@Override
 	protected boolean matchesSafelyInJavaPerspective(List<WorkspaceFile> files) {
 		for (WorkspaceFile file : files){
-			boolean isPresent = SWTBotFactory.getPackageexplorer().isFilePresent(file.getProject(), file.getFilePathAsArray());
+			boolean isPresent = new PackageExplorer().getProject(file.getProject()).containsItem(file.getFilePathAsArray());
 			
 			if (!isPresent){
 				missingFiles.add(file);
