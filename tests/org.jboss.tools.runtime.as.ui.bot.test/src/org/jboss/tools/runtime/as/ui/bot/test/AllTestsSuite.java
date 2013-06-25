@@ -31,6 +31,8 @@ import org.jboss.tools.runtime.as.ui.bot.test.detector.server.ewp5.DetectEWP5;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.ewp5.OperateEWP5;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.jboss7.DetectJBoss7;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.jboss7.OperateJBoss7;
+import org.jboss.tools.runtime.as.ui.bot.test.detector.server.jpp6.DetectJPP6;
+import org.jboss.tools.runtime.as.ui.bot.test.detector.server.jpp6.OperateJPP6;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.soap52.CheckSOAP52Seam;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.soap52.DetectSOAP52;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.soap52.OperateSOAP52;
@@ -48,10 +50,12 @@ import org.junit.runners.Suite;
 
 @RunWith(JBTSuite.class)
 @Suite.SuiteClasses({
+	
 		RuntimeDuplications.class,
 		ServerWithSeam.class,
 		RuntimeDownload.class,
 		
+		// Needs Java SE 1.7
 		DetectWildFly8.class,
 		OperateWildFly8.class,
 		
@@ -64,6 +68,7 @@ import org.junit.runners.Suite;
 		DetectEAP61.class,
 		OperateEAP61.class,
 		
+		// Needs Java SE 1.6
 		DetectEAP51.class, 
 		CheckEAP51Seam.class,
 		OperateEAP51.class, 
@@ -79,15 +84,21 @@ import org.junit.runners.Suite;
 		DetectEPP4.class, 
 		CheckEPP4Seam.class,
 		OperateEPP4.class,
-		
+
+		// Needs Java SE 1.6		
 		DetectEPP5.class, 
 		CheckEPP5Seam.class,
 		OperateEPP5.class,
 		
+		DetectJPP6.class, 
+		OperateJPP6.class,
+		
+		// Needs Java SE 1.6
 		DetectEWP5.class, 
 		CheckEWP5Seam.class,
 		OperateEWP5.class,
 		
+		// Needs Java SE 1.6
 		DetectSOAP52.class, 
 		CheckSOAP52Seam.class,
 		OperateSOAP52.class, 
@@ -104,6 +115,7 @@ import org.junit.runners.Suite;
 		CheckSeam22.class,
 		DetectSeam23.class,
 		CheckSeam23.class
+		
 })
 public class AllTestsSuite {
 
