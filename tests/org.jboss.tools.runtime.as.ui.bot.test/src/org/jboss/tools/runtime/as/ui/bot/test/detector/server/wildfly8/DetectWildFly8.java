@@ -21,7 +21,7 @@ public class DetectWildFly8 extends DetectRuntimeTemplate {
 		Runtime expectedServer = new Runtime();
 		expectedServer.setName(SERVER_ID);
 		expectedServer.setVersion("8.0");
-		expectedServer.setType("WildFly");
+		expectedServer.setType("Wildfly");
 		expectedServer.setLocation(RuntimeProperties.getInstance().getRuntimePath(SERVER_ID));
 		return Arrays.asList(expectedServer);
 	}

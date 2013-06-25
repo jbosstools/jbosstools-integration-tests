@@ -50,7 +50,7 @@ public class RuntimeDownload extends RuntimeDetectionTestCase {
 	
 	@Test
 	public void downloadSeam(){
-		downloadRuntime("JBoss Seam 2.2.2.Final");
+		downloadRuntime("JBoss Seam 2.2.2");
 		assertSeamRuntimesNumber(1);
 	}
 	
