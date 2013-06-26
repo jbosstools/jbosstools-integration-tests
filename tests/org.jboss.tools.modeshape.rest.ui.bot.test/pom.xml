@@ -16,7 +16,7 @@
 	  <systemProperties>${integrationTestsSystemProperties} -Dswtbot.test.properties.file=./swtbot.properties</systemProperties>
 	  <surefire.timeout>10800</surefire.timeout>
 	  <testClass>ModeshapeAllTests</testClass>
-	  <jbtis.site>http://download.jboss.org/jbosstools/updates/integration/juno/integration-stack/aggregate/4.0.0</jbtis.site>
+	  <jbtis.site>http://download.jboss.org/jbosstools/updates/integration/juno/integration-stack/aggregate/4.0.1</jbtis.site>
 	</properties>
 
 	<repositories>
@@ -80,7 +80,7 @@
 		  <artifact>
 		    <groupId>org.jboss.tools.integration-stack</groupId>
 		    <artifactId>target-platform</artifactId>
-		    <version>4.0.0-SNAPSHOT</version>
+		    <version>4.0.1-SNAPSHOT</version>
 		    <type>target</type>
 		    <classifier>base</classifier>
 		  </artifact>

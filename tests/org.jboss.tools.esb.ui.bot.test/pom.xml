@@ -15,7 +15,7 @@
 	<properties>
 	  <swtbot.test.properties.file>./swtbot.properties</swtbot.test.properties.file>
 	  <systemProperties>${integrationTestsSystemProperties} -Dswtbot.test.properties.file=${swtbot.test.properties.file}</systemProperties>
-	  <jbtis.site>http://download.jboss.org/jbosstools/updates/integration/juno/integration-stack/aggregate/4.0.0</jbtis.site>
+	  <jbtis.site>http://download.jboss.org/jbosstools/updates/integration/juno/integration-stack/aggregate/4.0.1</jbtis.site>
 	  <test.class>AllTests</test.class>
 	</properties>
 
@@ -76,7 +76,7 @@
 		  <artifact>
 		    <groupId>org.jboss.tools.integration-stack</groupId>
 		    <artifactId>target-platform</artifactId>
-		    <version>4.0.0-SNAPSHOT</version>
+		    <version>4.0.1-SNAPSHOT</version>
 		    <type>target</type>
 		    <classifier>base</classifier>
 		  </artifact>
