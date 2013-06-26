@@ -129,6 +129,20 @@ public class ModelEditor extends SWTBotEditor {
 		styledText.navigateTo(2, procedure.length() / 2);
 		styledText.mouseClickOnCaret();
 	}
+	
+	public void setTransformationProcedureBody(String procedure, boolean emptyTEditor) {
+		String transformationText = getTransformation();//""
+		if (transformationText.equals("")){
+			transformationText = procedure;
+		} else {
+			transformationText = transformationText.replaceAll("<--.*-->;", procedure);
+		}
+		
+		TeiidStyledText styledText = new TeiidStyledText(0);
+		styledText.setText(transformationText);
+		styledText.navigateTo(2, procedure.length() / 2);
+		styledText.mouseClickOnCaret();
+	}
 
 	public String getTransformation() {
 		return bot.styledText(0).getText();

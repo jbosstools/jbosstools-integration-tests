@@ -37,6 +37,28 @@ public class ModelExplorerView extends WorkbenchView {
 		new LabeledText("Name").setText(tableName);
 		new PushButton("OK").click();
 	}
+	
+	/**
+	 * Create new (base) table in view model
+	 * @param project
+	 * @param model
+	 * @param tableName
+	 * @param baseTable true if context menu contains "Base Table"
+	 */
+	public void newBaseTable(String project, String model, String tableName, boolean baseTable) {
+		open();
+
+		new DefaultTreeItem(project, model).select();
+		if (baseTable){
+			new ContextMenu("New Child", "Base Table...").select();
+		} else {
+			new ContextMenu("New Child", "Table...").select();
+		}
+		
+		new DefaultShell("Create Relational Table");
+		new LabeledText("Name").setText(tableName);
+		new PushButton("OK").click();
+	}
 
 	public Procedure newProcedure(String project, String model, String procedure) {
 		open();
@@ -44,6 +66,25 @@ public class ModelExplorerView extends WorkbenchView {
 		new DefaultTreeItem(project, model).select();
 		new ContextMenu("New Child", "Procedure...").select();
 		new LabeledText("NewProcedure").setText(procedure);
+
+		return new Procedure(project, model, procedure);
+	}
+	
+	public Procedure newProcedure(String project, String model, String procedure, boolean procedureNotFunction) {
+		open();
+
+		new DefaultTreeItem(project, model).select();
+		new ContextMenu("New Child", "Procedure...").select();
+		
+		if (procedureNotFunction){
+			//Procedure?/(Function) - OK
+			Bot.get().button("OK").click();
+		}
+		
+		new LabeledText("Name").setText(procedure);
+		
+		//finish
+		Bot.get().button("OK").click();
 
 		return new Procedure(project, model, procedure);
 	}
