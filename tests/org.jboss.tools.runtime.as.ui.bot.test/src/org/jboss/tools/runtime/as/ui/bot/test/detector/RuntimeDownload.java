@@ -65,10 +65,14 @@ public class RuntimeDownload extends RuntimeDetectionTestCase {
 		new RadioButton(0).click();
 		dialog.next();
 		new LabeledText("Install folder:").setText(tmpPath.getAbsolutePath());
-		dialog.finish();
 		
-		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
-
+		//	dialog.finish();  -- does not work (Problem with slow downloading)
+		new PushButton("Finish").click();
+		
+		while(new JobIsRunning().test()){
+			new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
+		}
+		
 		runtimeDetectionPreferences.ok();
 	}
 }

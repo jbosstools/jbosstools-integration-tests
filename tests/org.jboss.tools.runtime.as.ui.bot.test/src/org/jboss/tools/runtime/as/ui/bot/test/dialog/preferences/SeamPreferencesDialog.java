@@ -47,8 +47,12 @@ public class SeamPreferencesDialog extends PreferencePage {
 			table.select(0);
 			new WaitWhile(new JobIsRunning());
 			new WaitUntil(new RemoveButtonEnabled(), TimePeriod.LONG);
+			
 			new PushButton("Remove").click();
 
+			// --
+			// After Keyboard will be implemented in Red Deer
+			// Keyboard.invoke(Key.ENTER);
 			try {
 				Robot robot = new Robot();
 				robot.setAutoWaitForIdle(true);
@@ -57,13 +61,13 @@ public class SeamPreferencesDialog extends PreferencePage {
 			} catch (AWTException e) {
 				throw new RuntimeException("Cannot press shortcut during removing of Seam runtimes", e);
 			}
+			// --
 
 			if (table.rowCount() != (runtimesNumber - i - 1)) {
 				throw new RuntimeException("Error during removing Seam runtimes");
 			} else {
 				open();
 			}
-
 		}
 	}
 
