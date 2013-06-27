@@ -43,8 +43,8 @@ public class ManageSSH extends SWTTestExt {
 		cmds.get(0).click();
 
 		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_20S, TIME_5S);
-		bot.waitForShell(OpenShiftUI.Shell.NEW_SSH);
-		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_20S, TIME_5S);
+//		bot.waitForShell(OpenShiftUI.Shell.NEW_SSH);
+//		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_20S, TIME_5S);
 
 		bot.buttonInGroup("Refresh...", "SSH Public Keys").click();
 		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S, TIME_1S);
