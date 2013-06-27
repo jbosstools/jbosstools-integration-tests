@@ -2,11 +2,9 @@ package org.jboss.tools.bpmn2.itests.test.editor;
 
 import org.jboss.tools.bpmn2.itests.editor.ConstructType;
 import org.jboss.tools.bpmn2.itests.editor.Position;
-import org.jboss.tools.bpmn2.itests.editor.constructs.eventdefinitions.TerminateEventDefinition;
-import org.jboss.tools.bpmn2.itests.editor.constructs.events.EndEvent;
-import org.jboss.tools.bpmn2.itests.editor.constructs.events.StartEvent;
-import org.jboss.tools.bpmn2.itests.editor.constructs.other.AdHocSubProcess;
-import org.jboss.tools.bpmn2.itests.editor.constructs.tasks.ScriptTask;
+import org.jboss.tools.bpmn2.itests.editor.jbpm.activities.AdHocSubProcess;
+import org.jboss.tools.bpmn2.itests.editor.jbpm.activities.ScriptTask;
+import org.jboss.tools.bpmn2.itests.editor.jbpm.startevents.StartEvent;
 import org.jboss.tools.bpmn2.itests.reddeer.requirements.ProcessDefinitionRequirement.ProcessDefinition;
 import org.jboss.tools.bpmn2.itests.test.JBPM6BaseTest;
 import org.junit.Test;
@@ -19,10 +17,10 @@ import org.junit.Test;
 public class AdHocSubProcessTest extends JBPM6BaseTest {
 
 	/**
-	 * This test will fail because of Eclipse BZ-409698.
-	 * 
-	 * ISSUES: May contain another bug. When adding a connection from an element
-	 *         to itself then 'y' is missing in the 'di' element.
+	 * ISSUES: - May contain another bug. When adding a connection from an element
+	 *           to itself then 'y' is missing in the 'di' element.
+	 *         - See ContainerConstruct.add(String, ConstructType) 
+	 *         
 	 */
 	@Test
 	public void runTest() {
@@ -34,10 +32,7 @@ public class AdHocSubProcessTest extends JBPM6BaseTest {
 
 		ScriptTask task3 = new ScriptTask("Goodbye");
 		task3.setScript("", "System.out.println(\"Goodbye World\");");
-		task3.append("EndProcess", ConstructType.END_EVENT);
-		
-		EndEvent end = new EndEvent("EndProcess");
-//		end.addEventDefinition(new TerminateEventDefinition()); // bug
+		task3.append("EndProcess", ConstructType.TERMINATE_END_EVENT);
 		
 		/*
 		 * Finish ad-hoc sub-process.

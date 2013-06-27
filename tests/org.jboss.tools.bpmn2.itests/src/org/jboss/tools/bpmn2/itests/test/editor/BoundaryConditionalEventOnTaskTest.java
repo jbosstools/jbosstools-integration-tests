@@ -2,10 +2,10 @@ package org.jboss.tools.bpmn2.itests.test.editor;
 
 import org.jboss.tools.bpmn2.itests.editor.ConstructType;
 import org.jboss.tools.bpmn2.itests.editor.Position;
-import org.jboss.tools.bpmn2.itests.editor.constructs.JBPM5Process;
-import org.jboss.tools.bpmn2.itests.editor.constructs.events.StartEvent;
-import org.jboss.tools.bpmn2.itests.editor.constructs.tasks.ScriptTask;
-import org.jboss.tools.bpmn2.itests.editor.constructs.tasks.UserTask;
+import org.jboss.tools.bpmn2.itests.editor.jbpm.BPMN2Process;
+import org.jboss.tools.bpmn2.itests.editor.jbpm.activities.ScriptTask;
+import org.jboss.tools.bpmn2.itests.editor.jbpm.activities.UserTask;
+import org.jboss.tools.bpmn2.itests.editor.jbpm.startevents.StartEvent;
 import org.jboss.tools.bpmn2.itests.reddeer.requirements.ProcessDefinitionRequirement.ProcessDefinition;
 import org.jboss.tools.bpmn2.itests.test.JBPM6BaseTest;
 import org.junit.Ignore;
@@ -24,7 +24,7 @@ public class BoundaryConditionalEventOnTaskTest extends JBPM6BaseTest {
 	@Ignore
 	@Test
 	public void runTest() throws Exception {
-		JBPM5Process process = new JBPM5Process("BPMN2-BoundaryConditionalEventOnTask");
+		BPMN2Process process = new BPMN2Process("BPMN2-BoundaryConditionalEventOnTask");
 		process.addDataType("String");
 		process.addLocalVariable("x", "String");
 		

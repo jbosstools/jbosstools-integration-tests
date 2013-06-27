@@ -20,7 +20,6 @@ public class CallActivityByNameTest extends JBPM6BaseTest {
 	@Ignore
 	@Test
 	public void runTest() throws Exception {
-		// TBD
 	}
 	
 }

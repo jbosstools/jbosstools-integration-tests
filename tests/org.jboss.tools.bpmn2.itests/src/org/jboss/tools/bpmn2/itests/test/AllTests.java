@@ -29,11 +29,11 @@ import org.junit.runners.Suite.SuiteClasses;
 //	AdHocProcessTest.class,
 //	AdHocSubProcessTest.class,
 //	AssociationTest.class,
-// Unverified tests
-// ----------------
-//	BooleanStructureReferenceTest.class,
-//	BoundaryConditionalEventOnTaskTest.class,
+//	BooleanStructureReferenceTest.class
 //	BusinessRuleTaskTest.class,
+// TODO tests
+// ----------------
+//	BoundaryConditionalEventOnTaskTest.class,
 //	CallActivityByNameTest.class,
 //	CompensateEndEventTest.class
 })

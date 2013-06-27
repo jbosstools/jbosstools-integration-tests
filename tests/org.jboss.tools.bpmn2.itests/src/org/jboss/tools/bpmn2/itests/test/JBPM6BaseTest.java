@@ -3,7 +3,7 @@ package org.jboss.tools.bpmn2.itests.test;
 import org.apache.log4j.Logger;
 import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
-import org.jboss.tools.bpmn2.itests.editor.BPMN2Editor;
+import org.jboss.tools.bpmn2.itests.reddeer.BPMN2Editor;
 import org.jboss.tools.bpmn2.itests.reddeer.EclipseHelper;
 import org.jboss.tools.bpmn2.itests.reddeer.requirements.ProcessDefinitionRequirement.ProcessDefinition;
 import org.jboss.tools.bpmn2.itests.validator.JBPM6Validator;
