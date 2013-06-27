@@ -8,6 +8,7 @@ import org.jboss.tools.portlet.ui.bot.matcher.AbstractSWTMatcher;
  * Checks if the console contains specified text. 
  * 
  * @author Lucia Jelinkova
+ * @author Petr Suchy
  *
  */
 public class ConsoleOutputMatcher extends AbstractSWTMatcher<String> {

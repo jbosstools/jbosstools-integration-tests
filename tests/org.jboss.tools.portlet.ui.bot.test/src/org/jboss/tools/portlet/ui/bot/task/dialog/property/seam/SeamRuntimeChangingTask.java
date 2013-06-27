@@ -1,5 +1,6 @@
 package org.jboss.tools.portlet.ui.bot.task.dialog.property.seam;
 
+import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.tools.portlet.ui.bot.task.AbstractSWTTask;
 import org.jboss.tools.portlet.ui.bot.task.dialog.property.ProjectPropertyDialogCloseTask;
 import org.jboss.tools.portlet.ui.bot.task.dialog.property.ProjectPropertyDialogOpenTask;
@@ -10,6 +11,7 @@ import org.jboss.tools.portlet.ui.bot.task.dialog.property.ProjectPropertyDialog
  * Requires: Seam runtime already exists. 
  * 
  * @author Lucia Jelinkova
+ * @author Petr Suchy
  *
  */
 public class SeamRuntimeChangingTask extends AbstractSWTTask {
@@ -32,7 +34,7 @@ public class SeamRuntimeChangingTask extends AbstractSWTTask {
 	}
 
 	private void selectRuntime() {
-		getBot().comboBoxWithLabel("Seam 2 Runtime:").setSelection(runtime);
+		new DefaultCombo("Seam 2 Runtime:").setSelection(runtime);
 	}
 
 	private void showPropertyDialog() {

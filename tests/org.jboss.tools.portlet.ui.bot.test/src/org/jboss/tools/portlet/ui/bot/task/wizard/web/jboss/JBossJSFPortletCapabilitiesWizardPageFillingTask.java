@@ -2,7 +2,6 @@ package org.jboss.tools.portlet.ui.bot.task.wizard.web.jboss;
 
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.jboss.tools.portlet.ui.bot.task.AbstractSWTTask;
-import org.jboss.tools.portlet.ui.bot.task.wizard.WizardPageFillingTask;
 
 /**
  * Fills the JBoss JSF portlet specific wizard page (for selection of 
@@ -16,7 +15,7 @@ import org.jboss.tools.portlet.ui.bot.task.wizard.WizardPageFillingTask;
  *
  */
 public class JBossJSFPortletCapabilitiesWizardPageFillingTask extends
-		AbstractSWTTask implements WizardPageFillingTask {
+		AbstractSWTTask{
 
 	public enum Type {
 		DISABLED("Disable Library Configuration"), 

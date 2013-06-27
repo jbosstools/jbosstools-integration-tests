@@ -1,7 +1,6 @@
 package org.jboss.tools.portlet.ui.bot.task.wizard.web.jboss;
 
 import org.jboss.tools.portlet.ui.bot.task.AbstractSWTTask;
-import org.jboss.tools.portlet.ui.bot.task.wizard.WizardPageFillingTask;
 
 /**
  * Fills the JBoss portlet specific wizard page (for selection of 
@@ -11,7 +10,7 @@ import org.jboss.tools.portlet.ui.bot.task.wizard.WizardPageFillingTask;
  *
  */
 public class JBossPortletCapabilitiesWizardPageFillingTask extends
-		AbstractSWTTask implements WizardPageFillingTask {
+		AbstractSWTTask{
 
 	public enum Type {
 		DISABLED("Disable Library Configuration"), 

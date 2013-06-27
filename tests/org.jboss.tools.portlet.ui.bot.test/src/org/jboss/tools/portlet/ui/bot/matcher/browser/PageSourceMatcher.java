@@ -3,18 +3,18 @@ package org.jboss.tools.portlet.ui.bot.matcher.browser;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
-import org.eclipse.swtbot.swt.finder.widgets.TimeoutException;
 import org.hamcrest.Description;
+import org.jboss.reddeer.eclipse.ui.browser.BrowserView;
+import org.jboss.reddeer.swt.condition.WaitCondition;
+import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.tools.portlet.ui.bot.matcher.AbstractSWTMatcher;
-import org.jboss.tools.ui.bot.ext.SWTBotFactory;
-import org.jboss.tools.ui.bot.ext.condition.TaskDuration;
-import org.jboss.tools.ui.bot.ext.parts.SWTBotBrowserExt;
 
 /**
  * Checks if the given page contains specified text. 
  * 
  * @author Lucia Jelinkova
+ * @author Petr Suchy
  *
  */
 public class PageSourceMatcher extends AbstractSWTMatcher<String> {
@@ -23,37 +23,24 @@ public class PageSourceMatcher extends AbstractSWTMatcher<String> {
 
 	private String url;
 	
-	private long timeout;
-	
 	public PageSourceMatcher() {
 		super();
-		timeout = 0;
 	}
 
-	public PageSourceMatcher(TaskDuration timeout) {
-		super();
-		this.timeout = timeout.getTimeout();
-	}
-	
-	public PageSourceMatcher(String url, TaskDuration duration) {
+	public PageSourceMatcher(String url) {
 		this();
 		this.url = url;
-		this.timeout = duration.getTimeout();
 	}
 	
 	@Override
 	public boolean matchesSafely(String item) {
-		SWTBotBrowserExt browser = SWTBotFactory.getBot().browserExt();
+		BrowserView browser = new BrowserView();
+		browser.open();
 		if (url != null){
-			browser.loadUrlToBrowser(url, SWTBotFactory.getBot());
+			browser.openPageURL(url);
 		}
-		
-		try {
-			SWTBotFactory.getBot().waitUntil(new PageContainsTextCondition(browser, item), timeout);
-			return true;
-		} catch (TimeoutException e){
-			return false;
-		}
+		new WaitUntil(new PageContainsTextCondition(browser, item), TimePeriod.NORMAL);
+		return true;
 	}
 
 	@Override
@@ -62,31 +49,31 @@ public class PageSourceMatcher extends AbstractSWTMatcher<String> {
 		description.appendValue(pageText);
 	}
 	
-	private class PageContainsTextCondition extends DefaultCondition {
+	private class PageContainsTextCondition implements WaitCondition {
 
-		private SWTBotBrowserExt browser;
+		private BrowserView browser;
 		
 		private String expectedText;
 
-		public PageContainsTextCondition(SWTBotBrowserExt browser, String item) {
+		public PageContainsTextCondition(BrowserView browser, String item) {
 			this.browser = browser;
 			this.expectedText = item;
 		}
 
 		@Override
-		public boolean test() throws Exception {
+		public boolean test() {
 			pageText = browser.getText();
 			if ("".equals(expectedText)){
 				return pageText.equals(expectedText);
 			}
-			System.out.println(pageText);
 			Pattern p = Pattern.compile(expectedText, Pattern.DOTALL | Pattern.CASE_INSENSITIVE);
 	        Matcher m = p.matcher(pageText);
 			return m.matches();
 		}
 
 		@Override
-		public String getFailureMessage() {
+		public String description() {
+			// TODO Auto-generated method stub
 			return null;
 		}
 	}

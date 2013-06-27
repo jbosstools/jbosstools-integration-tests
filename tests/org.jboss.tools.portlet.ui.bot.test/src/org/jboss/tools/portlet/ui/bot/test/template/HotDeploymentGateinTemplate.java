@@ -5,7 +5,6 @@ import static org.jboss.tools.portlet.ui.bot.matcher.WorkspaceAssert.assertThatI
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.tools.portlet.ui.bot.matcher.console.ConsoleOutputMatcher;
 import org.jboss.tools.portlet.ui.bot.task.editor.CloseAllEditors;
-import org.jboss.tools.portlet.ui.bot.task.wizard.web.jboss.AbstractPortletCreationTask;
 import org.jboss.tools.portlet.ui.bot.test.testcase.SWTTaskBasedTestCase;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
@@ -16,6 +15,7 @@ import org.junit.Test;
  * Creates a new portlet and checks if the project is hot deployed (undeployed and deployed). 
  * 
  * @author Lucia Jelinkova
+ * @author Petr Suchy
  *
  */
 @Require(clearWorkspace=false, clearProjects=false, server=@Server(version="5.0", operator=">", state=ServerState.Running))
@@ -23,7 +23,7 @@ public abstract class HotDeploymentGateinTemplate extends SWTTaskBasedTestCase {
 
 	protected abstract String getProjectName();
 	
-	protected abstract AbstractPortletCreationTask createPortlet();
+	protected abstract void createPortlet();
 	
 	@Test
 	public void hotDeployment(){
@@ -37,8 +37,8 @@ public abstract class HotDeploymentGateinTemplate extends SWTTaskBasedTestCase {
 		ConsoleView console = new ConsoleView();
 		console.clearConsole();
 		
-		bot.sleep(TIME_1S);
-		doPerform(createPortlet());
+		bot.sleep(TIME_5S);
+		createPortlet();
 		bot.sleep(TIME_5S);
 		
 		console.open();

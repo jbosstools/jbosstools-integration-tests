@@ -9,13 +9,13 @@ import static org.jboss.tools.portlet.ui.bot.matcher.factory.WorkspaceMatchersFa
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jboss.reddeer.eclipse.jface.wizard.WizardDialog;
+import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.tools.portlet.ui.bot.entity.FacetDefinition;
 import org.jboss.tools.portlet.ui.bot.entity.WorkspaceFile;
-import org.jboss.tools.portlet.ui.bot.task.facet.FacetsSelectionTask;
-import org.jboss.tools.portlet.ui.bot.task.wizard.WizardOpeningAndFillingTask;
-import org.jboss.tools.portlet.ui.bot.task.wizard.WizardPageFillingTask;
-import org.jboss.tools.portlet.ui.bot.task.wizard.web.DynamicWebProjectCreationTask;
-import org.jboss.tools.portlet.ui.bot.task.wizard.web.DynamicWebProjectWizardPageFillingTask;
+import org.jboss.tools.portlet.ui.bot.task.wizard.web.DynamicWebProjectDialog;
+import org.jboss.tools.portlet.ui.bot.task.wizard.web.DynamicWebProjectWizardPage;
 import org.jboss.tools.portlet.ui.bot.test.testcase.SWTTaskBasedTestCase;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
@@ -28,6 +28,7 @@ import org.junit.Test;
  * concrete implementaions. 
  * 
  * @author Lucia Jelinkova
+ * @author Petr Suchy
  *
  */
 @Require(server=@Server(state=ServerState.Present))
@@ -55,7 +56,7 @@ public abstract class CreatePortletProjectTemplate extends SWTTaskBasedTestCase 
 
 	public abstract List<FacetDefinition> getRequiredFacets();
 
-	public abstract List<WizardPageFillingTask> getAdditionalWizardPages();
+	public abstract void processAdditionalWizardPages(WizardDialog dialog);
 
 	public abstract List<String> getExpectedFiles();
 	
@@ -63,7 +64,7 @@ public abstract class CreatePortletProjectTemplate extends SWTTaskBasedTestCase 
 
 	@Test
 	public void testcreate(){
-		doPerform(getCreateDynamicWebProjectTask());
+		createDynamicWebProject();
 		
 		doAssertThatInWorkspace(0, isNumberOfErrors());
 		doAssertThatInWorkspace(getProjectName(), isExistingProject());
@@ -74,23 +75,22 @@ public abstract class CreatePortletProjectTemplate extends SWTTaskBasedTestCase 
 		}
 	}
 
-	protected WizardOpeningAndFillingTask getCreateDynamicWebProjectTask() {
-		DynamicWebProjectWizardPageFillingTask task = new DynamicWebProjectWizardPageFillingTask();
-		task.setProjectName(getProjectName());
-		task.setWebModuleVersion("2.5");
-		task.setServerName(SWTTestExt.configuredState.getServer().name);
-		task.setSelectFacetsTask(getSelectFacetsTask());
+	protected void createDynamicWebProject() {
+		DynamicWebProjectDialog dialog = new DynamicWebProjectDialog();
+		dialog.open();
 		
-		DynamicWebProjectCreationTask wizardTask = new DynamicWebProjectCreationTask();
-		wizardTask.addWizardPage(task);
-		wizardTask.addAllWizardPages(getAdditionalWizardPages());
-		return wizardTask;
-	}
-
-	protected FacetsSelectionTask getSelectFacetsTask() {
-		FacetsSelectionTask task = new FacetsSelectionTask();
-		task.addAllFacets(getRequiredFacets());
-		return task;
+		DynamicWebProjectWizardPage page = (DynamicWebProjectWizardPage)dialog.getFirstPage();
+		page.setProjectName(getProjectName());
+		page.setServerName(SWTTestExt.configuredState.getServer().name);
+		page.setWebModuleVersion("2.5");
+		page.setFacets(getRequiredFacets());
+		
+		processAdditionalWizardPages(dialog);
+		
+		dialog.finish();
+		if(new ShellWithTextIsActive("Open Associated Perspective?").test()){
+			new PushButton("No").click();
+		}
 	}
 
 	private List<WorkspaceFile> getExpectedWorkspaceFiles(){

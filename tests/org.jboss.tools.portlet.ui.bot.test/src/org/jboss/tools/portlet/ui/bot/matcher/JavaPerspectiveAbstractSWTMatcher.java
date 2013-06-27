@@ -1,6 +1,6 @@
 package org.jboss.tools.portlet.ui.bot.matcher;
 
-import org.jboss.tools.portlet.ui.bot.matcher.perspective.OpenJavaPerspectiveTask;
+import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
 
 /**
  * Matcher that operates in Java Perspective.  
@@ -15,7 +15,7 @@ public abstract class JavaPerspectiveAbstractSWTMatcher<T> extends AbstractSWTMa
 	
 	@Override
 	public final boolean matchesSafely(T item) {
-		performInnerTask(new OpenJavaPerspectiveTask());
+		new JavaPerspective().open();
 		return matchesSafelyInJavaPerspective(item);
 	}
 }

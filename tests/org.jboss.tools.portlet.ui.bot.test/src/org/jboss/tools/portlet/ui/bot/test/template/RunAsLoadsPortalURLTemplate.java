@@ -2,16 +2,10 @@ package org.jboss.tools.portlet.ui.bot.test.template;
 
 import org.jboss.tools.portlet.ui.bot.matcher.browser.BrowserUrlMatcher;
 import org.jboss.tools.portlet.ui.bot.task.SWTTask;
-import org.jboss.tools.portlet.ui.bot.task.facet.Facets;
-import org.jboss.tools.portlet.ui.bot.task.facet.FacetsSelectionTask;
 import org.jboss.tools.portlet.ui.bot.task.server.RunninngProjectOnServerTask;
-import org.jboss.tools.portlet.ui.bot.task.wizard.WizardPageDefaultsFillingTask;
-import org.jboss.tools.portlet.ui.bot.task.wizard.web.DynamicWebProjectCreationTask;
-import org.jboss.tools.portlet.ui.bot.task.wizard.web.DynamicWebProjectWizardPageFillingTask;
-import org.jboss.tools.portlet.ui.bot.task.wizard.web.jboss.JBossPortletCapabilitiesWizardPageFillingTask;
+import org.jboss.tools.portlet.ui.bot.test.core.CreateJavaPortletGatein;
+import org.jboss.tools.portlet.ui.bot.test.core.CreateJavaPortletProject;
 import org.jboss.tools.portlet.ui.bot.test.testcase.SWTTaskBasedTestCase;
-import org.jboss.tools.ui.bot.ext.SWTTestExt;
-import org.jboss.tools.ui.bot.ext.condition.TaskDuration;
 import org.junit.Test;
 
 /**
@@ -20,45 +14,30 @@ import org.junit.Test;
  * This test is ran only once - no need to run it specially for java, jsf and seam portlet. 
  * 
  * @author Lucia Jelinkova
+ * @author Petr Suchy
  *
  */
 public abstract class RunAsLoadsPortalURLTemplate extends SWTTaskBasedTestCase {
 
-	private static final String PROJECT_NAME = "runAsURLTestProject";
+	private static final String PROJECT_NAME = CreateJavaPortletProject.PROJECT_NAME;
 	
 	public abstract String[] getExpectedURLs();
 		
 	@Test
 	public void runAsLoadsPortalURL(){
-		doPerform(createJavaPortletTask());
+		createProject();
+		createJavaPortlet();
 		doPerform(runOnServerTask());
 		
-		doAssertThatInWorkspace(getExpectedURLs(), new BrowserUrlMatcher(TaskDuration.NORMAL));
+		doAssertThatInWorkspace(getExpectedURLs(), new BrowserUrlMatcher());
 	}
 
-	private SWTTask createJavaPortletTask() {
-		DynamicWebProjectCreationTask wizardTask = new DynamicWebProjectCreationTask();
-		wizardTask.addWizardPage(dynamicWebProjectTask());
-		wizardTask.addWizardPage(new WizardPageDefaultsFillingTask());
-		wizardTask.addWizardPage(new WizardPageDefaultsFillingTask());
-		wizardTask.addWizardPage(new JBossPortletCapabilitiesWizardPageFillingTask(JBossPortletCapabilitiesWizardPageFillingTask.Type.RUNTIME_PROVIDER));
-		return wizardTask;
+	private void createProject() {
+		new CreateJavaPortletProject().createDynamicWebProject();
 	}
 	
-	private DynamicWebProjectWizardPageFillingTask dynamicWebProjectTask(){
-		DynamicWebProjectWizardPageFillingTask task = new DynamicWebProjectWizardPageFillingTask();
-		task.setProjectName(PROJECT_NAME);
-		task.setWebModuleVersion("2.5");
-		task.setServerName(SWTTestExt.configuredState.getServer().name);
-		task.setSelectFacetsTask(getFacets());
-		return task;
-	}
-	
-	private FacetsSelectionTask getFacets() {
-		FacetsSelectionTask task = new FacetsSelectionTask();
-		task.addFacet(Facets.JAVA_FACET);
-		task.addFacet(Facets.CORE_PORTLET_FACET);
-		return task;
+	private void createJavaPortlet() {
+		new CreateJavaPortletGatein().createPortlet();
 	}
 	
 	private SWTTask runOnServerTask() {

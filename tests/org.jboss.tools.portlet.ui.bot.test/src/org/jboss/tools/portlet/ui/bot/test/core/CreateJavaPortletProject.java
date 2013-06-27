@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.jboss.reddeer.eclipse.jface.wizard.WizardDialog;
+import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.tools.portlet.ui.bot.entity.FacetDefinition;
 import org.jboss.tools.portlet.ui.bot.task.facet.Facets;
-import org.jboss.tools.portlet.ui.bot.task.wizard.WizardPageDefaultsFillingTask;
-import org.jboss.tools.portlet.ui.bot.task.wizard.WizardPageFillingTask;
 import org.jboss.tools.portlet.ui.bot.task.wizard.web.jboss.JBossPortletCapabilitiesWizardPageFillingTask;
 import org.jboss.tools.portlet.ui.bot.test.template.CreatePortletProjectTemplate;
 
@@ -15,6 +15,7 @@ import org.jboss.tools.portlet.ui.bot.test.template.CreatePortletProjectTemplate
  * Creates a new Dynamic Web Project with the specific JBoss Core Portlet facet. 
  * 
  * @author Lucia Jelinkova
+ * @author Petr Suchy
  *
  */
 public class CreateJavaPortletProject extends CreatePortletProjectTemplate {
@@ -35,12 +36,11 @@ public class CreateJavaPortletProject extends CreatePortletProjectTemplate {
 	}
 	
 	@Override
-	public List<WizardPageFillingTask> getAdditionalWizardPages() {
-		List<WizardPageFillingTask> tasks = new ArrayList<WizardPageFillingTask>();
-		tasks.add(new WizardPageDefaultsFillingTask());
-		tasks.add(new WizardPageDefaultsFillingTask());
-		tasks.add(new JBossPortletCapabilitiesWizardPageFillingTask(JBossPortletCapabilitiesWizardPageFillingTask.Type.RUNTIME_PROVIDER));
-		return tasks;
+	public void processAdditionalWizardPages(WizardDialog dialog) {
+		dialog.next();
+		dialog.next();
+		dialog.next();
+		new DefaultCombo("Type:").setSelection(JBossPortletCapabilitiesWizardPageFillingTask.Type.RUNTIME_PROVIDER.toString());
 	}
 	
 	@Override

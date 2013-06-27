@@ -3,8 +3,7 @@ package org.jboss.tools.portlet.ui.bot.test.template;
 import static org.jboss.tools.portlet.ui.bot.matcher.factory.DefaultMatchersFactory.isNumberOfErrors;
 import static org.jboss.tools.portlet.ui.bot.matcher.factory.WorkspaceMatchersFactory.isExistingProject;
 
-import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
-import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
+import org.jboss.tools.portlet.ui.bot.task.wizard.importing.project.ExistingProjectWizardTask;
 import org.jboss.tools.portlet.ui.bot.test.Activator;
 import org.jboss.tools.portlet.ui.bot.test.testcase.SWTTaskBasedTestCase;
 import org.jboss.tools.ui.bot.ext.SWTUtilExt;
@@ -31,13 +30,14 @@ public abstract class JBDSCompatibilityGateinTemplate extends SWTTaskBasedTestCa
 	@Test
 	public void testCompatibility() {
 		
-		ExternalProjectImportWizardDialog dialog = new ExternalProjectImportWizardDialog();
-		dialog.open();
-		WizardProjectsImportPage wizard = dialog.getFirstPage();
-		wizard.setArchiveFile(getZIPFileLocation());
-		dialog.finish();
-		
 		String[] projects = getProjectNames();
+		
+		ExistingProjectWizardTask task = new ExistingProjectWizardTask();
+		task.setZipFilePath(getZIPFileLocation());
+		task.setProjectNames(projects);
+		task.setCopyProjectsIntoWorkspace(true);
+		doPerform(task);
+		
 		doAssertThatInWorkspace(projects[0], isExistingProject());
 		doAssertThatInWorkspace(projects[1], isExistingProject());
 		doAssertThatInWorkspace(projects[2], isExistingProject());

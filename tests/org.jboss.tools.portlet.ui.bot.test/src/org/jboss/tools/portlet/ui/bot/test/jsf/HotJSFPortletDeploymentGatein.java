@@ -1,15 +1,14 @@
 package org.jboss.tools.portlet.ui.bot.test.jsf;
 
-import org.jboss.tools.portlet.ui.bot.task.wizard.WizardPageDefaultsFillingTask;
-import org.jboss.tools.portlet.ui.bot.task.wizard.web.jboss.AbstractPortletCreationTask;
-import org.jboss.tools.portlet.ui.bot.task.wizard.web.jboss.JSFPortletCreationTask;
-import org.jboss.tools.portlet.ui.bot.task.wizard.web.jboss.JSFPortletWizardPageFillingTask;
+import org.jboss.tools.portlet.ui.bot.task.wizard.web.jboss.NewJSFSeamPortletDialog;
+import org.jboss.tools.portlet.ui.bot.task.wizard.web.jboss.NewJSFSeamPortletWizardPage;
 import org.jboss.tools.portlet.ui.bot.test.template.HotDeploymentGateinTemplate;
 
 /**
  * Creates a java portlet and checks if the project is re-deployed. 
  * 
  * @author Lucia Jelinkova
+ * @author Petr Suchy
  *
  */
 public class HotJSFPortletDeploymentGatein extends HotDeploymentGateinTemplate {
@@ -20,14 +19,14 @@ public class HotJSFPortletDeploymentGatein extends HotDeploymentGateinTemplate {
 	}
 
 	@Override
-	protected AbstractPortletCreationTask createPortlet() {
-		JSFPortletWizardPageFillingTask jsfPage = new JSFPortletWizardPageFillingTask();
-		jsfPage.setName("hotDeployment");
-		
-		JSFPortletCreationTask wizard = new JSFPortletCreationTask();
-		wizard.addWizardPage(new WizardPageDefaultsFillingTask());
-		wizard.addWizardPage(jsfPage);
-		wizard.addWizardPage(new WizardPageDefaultsFillingTask());
-		return wizard;
+	protected void createPortlet() {
+		NewJSFSeamPortletDialog dialog = new NewJSFSeamPortletDialog();
+		dialog.open();
+		dialog.next();
+		NewJSFSeamPortletWizardPage page = (NewJSFSeamPortletWizardPage) dialog.getFirstPage();
+		page.setName("hotDeployment");
+		page.setDisplayName(page.getDisplayName() + " Hot Deploy");
+		page.setTitle(page.getTitle() + " Hot Deploy");
+		dialog.finish();
 	}
 }

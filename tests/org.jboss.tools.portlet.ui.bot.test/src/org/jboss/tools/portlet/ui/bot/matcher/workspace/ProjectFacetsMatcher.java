@@ -3,18 +3,19 @@ package org.jboss.tools.portlet.ui.bot.matcher.workspace;
 import java.util.Arrays;
 import java.util.List;
 
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.hamcrest.Description;
+import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.tools.portlet.ui.bot.entity.FacetDefinition;
 import org.jboss.tools.portlet.ui.bot.matcher.JavaPerspectiveAbstractSWTMatcher;
-import org.jboss.tools.portlet.ui.bot.task.dialog.property.ProjectPropertyDialogCloseTask;
 import org.jboss.tools.portlet.ui.bot.task.dialog.property.ProjectPropertyDialogOpenTask;
-import org.jboss.tools.portlet.ui.bot.task.facet.AbstractFacetTask;
 
 /**
  * Checks if the project has the specified facets. 
  * 
  * @author Lucia Jelinkova
+ * @author Petr Suchy
  *
  */
 public class ProjectFacetsMatcher extends JavaPerspectiveAbstractSWTMatcher<String> {
@@ -29,7 +30,7 @@ public class ProjectFacetsMatcher extends JavaPerspectiveAbstractSWTMatcher<Stri
 	protected boolean matchesSafelyInJavaPerspective(String project) {
 		showPropertyDialog(project);
 		boolean result = checkFacets();
-		performInnerTask(new ProjectPropertyDialogCloseTask());
+		new PushButton("OK").click();
 		return result;
 	}
 
@@ -41,13 +42,18 @@ public class ProjectFacetsMatcher extends JavaPerspectiveAbstractSWTMatcher<Stri
 	}
 
 	private boolean checkFacets() {
-		ValueCheckedTask task = new ValueCheckedTask();
+		boolean allChecked = true;
+		List<TreeItem> items = new DefaultTree(1).getAllItems();
 		for (FacetDefinition facet : facets){
-			task.addFacet(facet);			
+			for(TreeItem item : items){
+				if(item.getText().equals(facet.getName())){
+					allChecked = item.isChecked();
+					break;
+				}
+			}
 		}
-		performInnerTask(task);
 		
-		return task.allChecked;
+		return allChecked;
 	}
 	
 	@Override
@@ -56,12 +62,4 @@ public class ProjectFacetsMatcher extends JavaPerspectiveAbstractSWTMatcher<Stri
 		description.appendValue(facets);
 	}
 	
-	class ValueCheckedTask extends AbstractFacetTask {
-		private boolean allChecked = true;
-		
-		@Override
-		protected void processFacet(FacetDefinition facet, SWTBotTreeItem facetItem) {
-			allChecked = allChecked && facetItem.isChecked();
-		}
-	}
 }

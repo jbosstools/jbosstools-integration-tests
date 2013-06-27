@@ -11,7 +11,6 @@ import java.util.List;
 
 import org.jboss.tools.portlet.ui.bot.entity.WorkspaceFile;
 import org.jboss.tools.portlet.ui.bot.entity.XMLNode;
-import org.jboss.tools.portlet.ui.bot.task.wizard.web.jboss.AbstractPortletCreationTask;
 import org.jboss.tools.portlet.ui.bot.test.testcase.SWTTaskBasedTestCase;
 import org.junit.Test;
 
@@ -38,7 +37,7 @@ public abstract class CreatePortletTemplate extends SWTTaskBasedTestCase {
 
 	protected abstract String getProjectName();
 
-	protected abstract AbstractPortletCreationTask getCreatePortletTask();
+	protected abstract void createPortlet();
 
 	protected abstract List<String> getExpectedFiles();
 
@@ -48,7 +47,7 @@ public abstract class CreatePortletTemplate extends SWTTaskBasedTestCase {
 
 	@Test
 	public void testCreate(){
-		doPerform(getCreatePortletTask());
+		createPortlet();
 
 		doAssertThatInWorkspace(0, isNumberOfErrors());
 		doAssertThatInWorkspace(getExpectedWorkspaceFiles(), exist());

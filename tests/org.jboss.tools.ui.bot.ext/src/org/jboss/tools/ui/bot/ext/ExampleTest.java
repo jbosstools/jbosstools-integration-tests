@@ -97,7 +97,7 @@ public class ExampleTest extends SWTTestExt{
 		log.info("SWTJBTExt.isRunningOnMacOs() = " + SWTJBTExt.isRunningOnMacOs());
 		
 		/* https://issues.jboss.org/browse/JBIDE-13351 - Text changed */
-		log.info("bot.shell(\"Java - Eclipse Platform\").isActive()" + bot.shell("Java - Eclipse Platform").isActive() );
+//		log.info("bot.shell(\"Java - Eclipse Platform\").isActive()" + bot.shell("Java - Eclipse Platform").isActive() );
 		log.info("configuredState.getServer().type" + configuredState.getServer().type);
 		
 		if ( (SWTJBTExt.isRunningOnMacOs()) && (!bot.shell("Java - Eclipse Platform").isActive()) && (configuredState.getServer().type.equals("SOA"))  ){

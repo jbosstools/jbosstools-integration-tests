@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
+import org.jboss.reddeer.eclipse.jface.wizard.WizardDialog;
+import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.util.Bot;
 import org.jboss.tools.portlet.ui.bot.entity.FacetDefinition;
 import org.jboss.tools.portlet.ui.bot.task.facet.Facets;
-import org.jboss.tools.portlet.ui.bot.task.wizard.WizardPageDefaultsFillingTask;
-import org.jboss.tools.portlet.ui.bot.task.wizard.WizardPageFillingTask;
 import org.jboss.tools.portlet.ui.bot.task.wizard.web.jboss.JBossJSFPortletCapabilitiesWizardPageFillingTask;
 import org.jboss.tools.portlet.ui.bot.task.wizard.web.jboss.JBossPortletCapabilitiesWizardPageFillingTask;
 import org.jboss.tools.portlet.ui.bot.test.template.CreatePortletProjectTemplate;
@@ -18,6 +20,7 @@ import org.jboss.tools.ui.bot.ext.config.TestConfigurator;
  * Creates a new Dynamic Web Project with the specific JBoss JSF Portlet facet. 
  * 
  * @author Lucia Jelinkova
+ * @author Petr Suchy
  *
  */
 public class CreateJSFPortletProject extends CreatePortletProjectTemplate{
@@ -40,16 +43,21 @@ public class CreateJSFPortletProject extends CreatePortletProjectTemplate{
 	}
 	
 	@Override
-	public List<WizardPageFillingTask> getAdditionalWizardPages() {
-		List<WizardPageFillingTask> tasks = new ArrayList<WizardPageFillingTask>();
-		tasks.add(new WizardPageDefaultsFillingTask());
-		tasks.add(new WizardPageDefaultsFillingTask());
-		tasks.add(new JBossPortletCapabilitiesWizardPageFillingTask(JBossPortletCapabilitiesWizardPageFillingTask.Type.RUNTIME_PROVIDER));
-		tasks.add(new WizardPageDefaultsFillingTask());
-		tasks.add(new JBossJSFPortletCapabilitiesWizardPageFillingTask(
-				JBossJSFPortletCapabilitiesWizardPageFillingTask.Type.RUNTIME_PROVIDER, 
-				TestConfigurator.currentConfig.getPortletBridge().getLocation()));
-		return tasks;
+	public void processAdditionalWizardPages(WizardDialog dialog) {
+		dialog.next();
+		dialog.next();
+		dialog.next();
+		new DefaultCombo("Type:").setSelection(JBossPortletCapabilitiesWizardPageFillingTask.Type.RUNTIME_PROVIDER.toString());
+		dialog.next();
+		dialog.next();
+		new DefaultCombo("Type:").setSelection(JBossJSFPortletCapabilitiesWizardPageFillingTask.Type.RUNTIME_PROVIDER.toString());
+		
+		// new DefaultText("Portletbridge Runtime") does not work (WidgetNotFoundException)
+		try{
+			Bot.get().textInGroup("Portletbridge Runtime").setText(TestConfigurator.currentConfig.getPortletBridge().getLocation());
+		} catch (WidgetNotFoundException e) {
+			// ok, the portlet bridge is recognized in the server location
+		}
 	}
 	
 	@Override
