@@ -1,4 +1,4 @@
-check.project.nature=true
+check.project.nature=false
 default.model.enablement.profile=
 eclipse.preferences.version=1
 is.expanded=ALWAYS_TRUE
