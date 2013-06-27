@@ -1,8 +1,8 @@
 package org.jboss.tools.bpmn2.itests.test.editor;
 
 import org.jboss.tools.bpmn2.itests.editor.ConstructType;
-import org.jboss.tools.bpmn2.itests.editor.constructs.events.StartEvent;
-import org.jboss.tools.bpmn2.itests.editor.constructs.tasks.BusinessRuleTask;
+import org.jboss.tools.bpmn2.itests.editor.jbpm.activities.BusinessRuleTask;
+import org.jboss.tools.bpmn2.itests.editor.jbpm.startevents.StartEvent;
 import org.jboss.tools.bpmn2.itests.reddeer.requirements.ProcessDefinitionRequirement.ProcessDefinition;
 import org.jboss.tools.bpmn2.itests.test.JBPM6BaseTest;
 import org.junit.Test;
