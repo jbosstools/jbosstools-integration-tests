@@ -1,14 +1,16 @@
 package org.jboss.tools.bpmn2.itests.swt.matcher;
 
 import java.lang.reflect.Method;
+import java.util.List;
 import java.util.regex.Pattern;
 
+import org.eclipse.draw2d.IFigure;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.gef.EditPart;
+import org.eclipse.gef.GraphicalEditPart;
+import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.graphiti.mm.pictograms.PictogramLink;
-import org.eclipse.graphiti.mm.pictograms.Shape;
-
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 
@@ -73,19 +75,41 @@ public class ConstructAttributeMatchingRegex<T extends EditPart> extends BaseMat
 		 * 
 		 * See org.eclipse.graphiti.mm.pictograms.impl.ContainerShapeImpl.getLink();
 		 */
-		if (model instanceof Shape) {
-			Shape shape = (Shape) model;
-			PictogramLink link = shape.getLink();
+		if (model instanceof PictogramElement) {
+			PictogramElement pe = (PictogramElement) model;
+			PictogramLink link = pe.getLink();
 			if (link != null) {
 				EList<EObject> objectList = link.getBusinessObjects();
 				for (EObject eo : objectList) {
-					if (matches(eo, pattern)) {
+					/*
+					 * Make sure we do not include pictogram labels. E.g. gateway has it's name under the pictogram
+					 * and this is a separate object which does not allow actions to be taken on it.
+					 * 
+					 * A label object is represented by the GFMultilineText and must be the only child! Other objects
+					 * may have a label too but these are complex objects not just simple labels.
+					 */
+					if (matches(eo, pattern) && !matches(editPart, "org.eclipse.graphiti.ui.internal.figures.GFMultilineText")) {
 						return true;
 					}
 				}
 			}
 		}
 		return false;
+	}
+	
+	/**
+	 * 
+	 * @param editPart
+	 * @param className
+	 * @return
+	 */
+	public boolean matches(EditPart editPart, String className) {
+			IFigure figure = ((GraphicalEditPart) editPart).getFigure();
+			
+			@SuppressWarnings("unchecked")
+			List<Object> children = figure.getChildren();
+			
+			return (children.size() == 1 && children.get(0).getClass().getName().equals(className));
 	}
 	
 	/**

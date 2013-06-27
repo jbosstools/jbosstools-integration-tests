@@ -1,70 +1,106 @@
 package org.jboss.tools.bpmn2.itests.editor;
 
 /**
+ * TBD: tool names and sections will be required.
  * 
  * @author mbaluch
  */
 public enum ConstructType {
 
-	PROCESS,
+	PROCESS(null, null),
 	
-	AD_HOC_SUB_PROCESS,
-	BUSINESS_RULE_TASK,
-	CALL_ACTIVITY,
-	MANUAL_TASK,
-	RECEIVE_TASK,
-	SCRIPT_TASK,
-	SEND_TASK,
-	SERVICE_TASK,
-	SUB_PROCESS_TASK,
-	TASK,
-	TRANSACTION,
-	USER_TASK,
+	AD_HOC_SUB_PROCESS("Activities", "Ad-Hoc Sub-Process"),
+	SUB_PROCESS("Activities", "Sub-Process"),
+	CALL_ACTIVITY("Activities", "Call Activity"),
+	TASK("Activities", "Task"),
+	MANUAL_TASK("Activities", "Manual Task"),
+	USER_TASK("Activities", "User Task"),
+	SCRIPT_TASK("Activities", "Script Task"),
+	BUSINESS_RULE_TASK("Activities", "Business Rule Task"),
+	SERVICE_TASK("Activities", "Service Task"),
+	SEND_TASK("Activities", "Send Task"),
+	RECEIVE_TASK("Activities", "Receive Task"),
+//	TRANSACTION("TBD", "Transaction"),
 	
-	START_EVENT,
+	COMPENSATION_START_EVENT("Start Events", "Compensation"),
+	CONDITIONAL_START_EVENT("Start Events", "Conditional"),
+	ERROR_START_EVENT("Start Events", "Error"),
+	ESCALATION_START_EVENT("Start Events", "Escalation"),
+	START_EVENT("Start Events", "Start Event"),
+	MESSAGE_START_EVENT("Start Events", "Message"),
+	SIGNAL_START_EVENT("Start Events", "Signal"),
+	TIMER_START_EVENT("Start Events", "Timer"),
 	
-	END_EVENT,
-	INTERMEDIATE_CATCH_EVENT,
-	INTERMEDIATE_THROW_EVENT,
+	CANCEL_END_EVENT("End Events", "Cancel"),
+	COMPENSATION_END_EVENT("End Events", "Compensation"),
+	END_EVENT("End Events", "End Event"),
+	ERROR_END_EVENT("End Events", "Error"),
+	ESCALATION_END_EVENT("End Events", "Escalation"),
+	MESSAGE_END_EVENT("End Events", "Message"),
+	SIGNAL_END_EVENT("End Events", "Signal"),
+	TERMINATE_END_EVENT("End Events", "Terminate"),
 	
-	COMPLEX_GATEWAY,
-	EVENT_BASED_GATEWAY,
-	EXCLUSIVE_GATEWAY,
-	INCLUSIVE_GATEWAY,
-	PARALLEL_GATEWAY,
+	INTERMEDIATE_CATCH_EVENT("TBD", "TBD"),
+	INTERMEDIATE_THROW_EVENT("TBD", "TBD"),
 	
-	LANE,
+//	COMPLEX_GATEWAY("Gateways", "Complex Gateway"),
+	EXCLUSIVE_GATEWAY("Gateways", "Exclusive Gateway"),
+	EVENT_BASED_GATEWAY("Gateways", "Event Based Gateway"),
+	INCLUSIVE_GATEWAY("Gateways", "Inclusive Gateway"),
+	PARALLEL_GATEWAY("Gateways", "Parallel Gateway"),
 	
-	MESSAGE,
-	DATA_OBJECT,
-	DATA_INPUT,
-	DATA_OUTPUT;
+	LANE("Swimlanes", "Lane"),
+
+//	MESSAGE("Data Objects", "Message"),
+//	DATA_INPUT("Data Objects", "Data Input"),
+//	DATA_OUTPUT("Data Objects", "Data Output"),
+	DATA_OBJECT("Data Objects", "Data Object");
 	
-	public String toName() {
-		StringBuilder r = new StringBuilder();
-		for (String w : name().split("_")) {
-			r.append(w.charAt(0) + w.substring(1).toLowerCase());
-			r.append(" ");
-		}
-		
-		String menuName = r.toString().trim();
-		
-		return menuName;
+	private String sectionName;
+	
+	private String paletteToolName;
+	
+	/**
+	 * 
+	 * @param sectionName
+	 * @param paletteToolName
+	 */
+	private ConstructType(String sectionName, String paletteToolName) {
+		this.sectionName = sectionName;
+		this.paletteToolName = paletteToolName;
 	}
 	
+	/**
+	 * Returns the name of the type. E.g. PARALLEL_GATEWAY -> Parallel Gateway. 
+	 * 
+	 * @return
+	 */
 	public String toToolName() {
-		return toName()
-				.replace("Ad Hoc", "Ad-Hoc")
-				.replace("Sub Process", "Sub-Process");
+		return paletteToolName;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public String[] toToolPath() {
+		return new String[] {sectionName, paletteToolName};
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public String toId() {
-		return toName()
-				.replace(" ", "");
-	}
-	
-	public String toId(int sequenceNumber) {
-		return toId() + "_" + sequenceNumber;
+		String name = null;
+		if (sectionName.equals("End Events")) {
+			name = "End Event";
+		} else if (sectionName.equals("Start Events")) {
+			name = "Start Event";
+		} else {
+			name = toToolName();
+		}
+		return name.replace(" ", "").replace("-", "");
 	}
 	
 }

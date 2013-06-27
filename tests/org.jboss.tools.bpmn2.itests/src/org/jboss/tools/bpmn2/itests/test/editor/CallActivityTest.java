@@ -1,17 +1,17 @@
 package org.jboss.tools.bpmn2.itests.test.editor;
 
 import org.jboss.tools.bpmn2.itests.editor.ConstructType;
-import org.jboss.tools.bpmn2.itests.editor.constructs.JBPM5Process;
-import org.jboss.tools.bpmn2.itests.editor.constructs.eventdefinitions.TerminateEventDefinition;
-import org.jboss.tools.bpmn2.itests.editor.constructs.events.EndEvent;
-import org.jboss.tools.bpmn2.itests.editor.constructs.events.StartEvent;
-import org.jboss.tools.bpmn2.itests.editor.constructs.other.CallActivity;
-import org.jboss.tools.bpmn2.itests.editor.properties.variables.JBPM5OutputParameter;
-import org.jboss.tools.bpmn2.itests.editor.properties.variables.JBPM5Parameter;
-import org.jboss.tools.bpmn2.itests.editor.properties.variables.ParameterVariableMapping;
+import org.jboss.tools.bpmn2.itests.editor.jbpm.BPMN2Process;
+import org.jboss.tools.bpmn2.itests.editor.jbpm.FromDataOutput;
+import org.jboss.tools.bpmn2.itests.editor.jbpm.FromVariable;
+import org.jboss.tools.bpmn2.itests.editor.jbpm.InputParameterMapping;
+import org.jboss.tools.bpmn2.itests.editor.jbpm.OutputParameterMapping;
+import org.jboss.tools.bpmn2.itests.editor.jbpm.ToDataInput;
+import org.jboss.tools.bpmn2.itests.editor.jbpm.ToVariable;
+import org.jboss.tools.bpmn2.itests.editor.jbpm.activities.CallActivity;
+import org.jboss.tools.bpmn2.itests.editor.jbpm.startevents.StartEvent;
 import org.jboss.tools.bpmn2.itests.reddeer.requirements.ProcessDefinitionRequirement.ProcessDefinition;
 import org.jboss.tools.bpmn2.itests.test.JBPM6BaseTest;
-
 import org.junit.Test;
 
 /**
@@ -28,7 +28,7 @@ public class CallActivityTest extends JBPM6BaseTest {
 	 */
 	@Test
 	public void runTest() throws Exception {
-		JBPM5Process process = new JBPM5Process("BPMN2-CallActivity");
+		BPMN2Process process = new BPMN2Process("BPMN2-CallActivity");
 		process.addDataType("String");
 		process.addLocalVariable("x", "String");
 		process.addLocalVariable("y", "String");
@@ -40,16 +40,10 @@ public class CallActivityTest extends JBPM6BaseTest {
 		call.setWaitForCompletion(true);
 		call.setIndependent(true);
 		call.setCalledActivity("SubProcess");
-		call.addParameterMapping(new JBPM5Parameter("subX", null, new ParameterVariableMapping("BPMN2-CallActivity/x")));
-		call.addParameterMapping(new JBPM5OutputParameter("subY", null, new ParameterVariableMapping("BPMN2-CallActivity/y")));
+		call.addParameterMapping(new InputParameterMapping(new FromVariable("BPMN2-CallActivity/y"), new ToDataInput("subX")));
+		call.addParameterMapping(new OutputParameterMapping(new FromDataOutput("subY"), new ToVariable("BPMN2-CallActivity/x")));
 		
-		call.append("EndProcess", ConstructType.END_EVENT);
-		
-		EndEvent end = new EndEvent("EndProcess");
-		/*
-		 * ISSUE: Terminate event definition not present
-		 */
-//		end.addEventDefinition(new TerminateEventDefinition());
+		call.append("EndProcess", ConstructType.TERMINATE_END_EVENT);
 	}
 	
 }

@@ -3,18 +3,18 @@ package org.jboss.tools.bpmn2.itests.test.editor;
 import org.jboss.tools.bpmn2.itests.editor.ConnectionType;
 import org.jboss.tools.bpmn2.itests.editor.ConstructType;
 import org.jboss.tools.bpmn2.itests.editor.Position;
-import org.jboss.tools.bpmn2.itests.editor.constructs.JBPM5Process;
-import org.jboss.tools.bpmn2.itests.editor.constructs.eventdefinitions.TerminateEventDefinition;
-import org.jboss.tools.bpmn2.itests.editor.constructs.events.EndEvent;
-import org.jboss.tools.bpmn2.itests.editor.constructs.events.StartEvent;
-import org.jboss.tools.bpmn2.itests.editor.constructs.gateways.ExclusiveGateway;
-import org.jboss.tools.bpmn2.itests.editor.constructs.tasks.ScriptTask;
+import org.jboss.tools.bpmn2.itests.editor.jbpm.BPMN2Process;
+import org.jboss.tools.bpmn2.itests.editor.jbpm.activities.ScriptTask;
+import org.jboss.tools.bpmn2.itests.editor.jbpm.gateways.ExclusiveGateway;
+import org.jboss.tools.bpmn2.itests.editor.jbpm.startevents.StartEvent;
 import org.jboss.tools.bpmn2.itests.reddeer.requirements.ProcessDefinitionRequirement.ProcessDefinition;
 import org.jboss.tools.bpmn2.itests.test.JBPM6BaseTest;
-
 import org.junit.Test;
 
 /**
+ * ISSUES:
+ *     1) When a connection is missing e.g. "Task 3" and "Gateway" are not connected 
+ *        validator does not complain!
  *     
  * @author mbaluch
  */
@@ -27,7 +27,7 @@ public class AdHocProcessTest extends JBPM6BaseTest {
 	 */
 	@Test
 	public void runTest() throws Exception {
-		JBPM5Process process = new JBPM5Process("BPMN2-AdHocProcess");
+		BPMN2Process process = new BPMN2Process("BPMN2-AdHocProcess");
 		process.setAddHoc(true);
 		process.add("Task 3", ConstructType.SCRIPT_TASK);
 
@@ -41,7 +41,7 @@ public class AdHocProcessTest extends JBPM6BaseTest {
 		task3.append("Gateway", ConstructType.EXCLUSIVE_GATEWAY);
 		
 		ExclusiveGateway gateway = new ExclusiveGateway("Gateway");
-		gateway.append("End", ConstructType.END_EVENT, ConnectionType.SEQUENCE_FLOW, Position.NORTH_EAST);
+		gateway.append("End", ConstructType.TERMINATE_END_EVENT, ConnectionType.SEQUENCE_FLOW, Position.NORTH_EAST);
 		gateway.append("Task 4", ConstructType.SCRIPT_TASK, ConnectionType.SEQUENCE_FLOW, Position.SOUTH_EAST);
 		gateway.setCondition("Gateway -> End", "Rule", "org.jbpm.examples.junit.Person()");
 		gateway.setCondition("Gateway -> Task 4", "Rule", "not org.jbpm.examples.junit.Person()");
@@ -49,9 +49,6 @@ public class AdHocProcessTest extends JBPM6BaseTest {
 		ScriptTask task4 = new ScriptTask("Task 4");
 		task4.setScript("", "System.out.println(\"Task4\");");
 
-		EndEvent end = new EndEvent("End");
-//		end.addEventDefinition(new TerminateEventDefinition());
-		
 		/*
 		 * Finish parallel activities
 		 */
