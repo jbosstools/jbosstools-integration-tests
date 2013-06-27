@@ -59,8 +59,8 @@ public class OpenShiftBotTest extends SWTTestExt {
 		bot.textInGroup("New application", 0).typeText(APP_NAME);
 
 		log.info("*** OpenShift SWTBot Tests: Application name set. ***");
-		bot.sleep(TIME_1S  * 3);
-		
+		bot.sleep(TIME_1S * 3);
+
 		bot.comboBoxInGroup("New application").setSelection(APP_TYPE);
 
 		if (scaling) {
@@ -69,21 +69,25 @@ public class OpenShiftBotTest extends SWTTestExt {
 		}
 
 		log.info("*** OpenShift SWTBot Tests: Application type selected. ***");
-		bot.sleep(TIME_1S  * 3);
-		
+		bot.sleep(TIME_1S * 3);
+
 		bot.waitUntil(Conditions.widgetIsEnabled(bot
 				.button(IDELabel.Button.FINISH)));
 		bot.button(IDELabel.Button.FINISH).click();
 
 		log.info("*** OpenShift SWTBot Tests: Application creation started. ***");
 
-		// only for the 1st time - with known_hosts deleting it will appear
-		// every time
-		// add to known_hosts
-		// TODO: add "reachable check" - if unreachable, System.exit();
-		// Waiting for application + APP_NAME
-		// Keep waiting
-		SWTBotShell shell = bot.waitForShell("Question", TIME_60S * 4);
+		SWTBotShell shell;
+		
+		// TODO: workaround for 'embedding DYI'
+		if (APP_TYPE.equals(OpenShiftUI.AppType.DIY)) {
+			shell = bot.waitForShell("Embedded Cartridges", TIME_30S);
+			if (shell != null)
+				bot.button(IDELabel.Button.OK).click();
+		}
+		
+		// with random names it will appear everytime
+		shell = bot.waitForShell("Question", TIME_60S * 4);
 		if (shell == null) {
 			throw new OpenShiftBotTestException(
 					"Waiting for creation of application " + APP_NAME + " "
@@ -91,7 +95,7 @@ public class OpenShiftBotTest extends SWTTestExt {
 		}
 		bot.button(IDELabel.Button.YES).click();
 
-		// create known_hosts since it does not exists any more
+		// publish changes
 		bot.waitForShell("Publish " + APP_NAME + "?", TIME_60S);
 		bot.button(IDELabel.Button.YES).click();
 
@@ -116,6 +120,12 @@ public class OpenShiftBotTest extends SWTTestExt {
 			final String APP_TYPE) {
 		SWTBotView openshiftExplorer = open
 				.viewOpen(OpenShiftUI.Explorer.iView);
+
+		// refresh first (workaround fot dissapearing label issue: JBIDE-14929 )
+		openshiftExplorer.bot().tree().getAllItems()[0].contextMenu(
+				OpenShiftUI.Labels.REFRESH).click();
+
+		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 3, TIME_1S);
 
 		SWTBotTreeItem account = openshiftExplorer.bot().tree().getAllItems()[0]
 				.doubleClick(); // expand account

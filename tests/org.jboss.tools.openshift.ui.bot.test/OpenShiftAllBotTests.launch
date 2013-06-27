@@ -31,7 +31,7 @@
 <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch ${target.arch} -nl ${target.nl} -consoleLog"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="org.jboss.tools.openshift.ui.bot.test"/>
 <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.pde.ui.workbenchClasspathProvider"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dosgi.requiredJavaVersion=1.5 -XX:MaxPermSize=256m -Xms40m -Xmx512m -Dswtbot.test.properties.file=${project_loc}/resources/swtbot.properties -Dusage_reporting_enabled=false -Dlibra.server=https://broker.ose-poc.cloud.corp.redhat.com -Duser.name=sbunciak -Duser.pwd=uvegel4ROV?"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dosgi.requiredJavaVersion=1.5 -XX:MaxPermSize=256m -Xms40m -Xmx512m -Dswtbot.test.properties.file=${project_loc}/resources/swtbot.properties -Dusage_reporting_enabled=false -Dlibra.server=openshift.redhat.com -Duser.name=sbunciak+jbt@redhat.com -Duser.pwd=rhtest123"/>
 <stringAttribute key="pde.version" value="3.3"/>
 <stringAttribute key="product" value="org.eclipse.platform.ide"/>
 <booleanAttribute key="show_selected_only" value="false"/>
