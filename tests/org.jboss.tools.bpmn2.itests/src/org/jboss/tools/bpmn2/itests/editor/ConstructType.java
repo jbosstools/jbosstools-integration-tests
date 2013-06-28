@@ -22,6 +22,14 @@ public enum ConstructType {
 	RECEIVE_TASK("Activities", "Receive Task"),
 //	TRANSACTION("TBD", "Transaction"),
 	
+	BOUNDARY_EVENT("Boundary Events", "Boundary Event"),
+	CONDITIONAL_BOUNDARY_EVENT("Boundary Events", "Conditional"),
+	ERROR_BOUNDARY_EVENT("Boundary Events", "Error"),
+	ESCALATION_BOUNDARY_EVENT("Boundary Events", "Escalation"),
+	MESSAGE_BOUNDARY_EVENT("Boundary Events", "Message"),
+	SIGNAL_BOUNDARY_EVENT("Boundary Events", "Signal"),
+	TIMER_BOUNDARY_EVENT("Boundary Events", "Timer"),
+	
 	COMPENSATION_START_EVENT("Start Events", "Compensation"),
 	CONDITIONAL_START_EVENT("Start Events", "Conditional"),
 	ERROR_START_EVENT("Start Events", "Error"),
@@ -97,6 +105,8 @@ public enum ConstructType {
 			name = "End Event";
 		} else if (sectionName.equals("Start Events")) {
 			name = "Start Event";
+		} else if (sectionName.equals("Boundary Events")) {
+			name = "Boundary Event";
 		} else {
 			name = toToolName();
 		}
