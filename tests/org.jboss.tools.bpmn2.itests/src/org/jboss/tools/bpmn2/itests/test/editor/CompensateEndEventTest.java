@@ -24,8 +24,10 @@ public class CompensateEndEventTest extends JBPM6BaseTest {
 		
 		ScriptTask scriptTask = new ScriptTask("Task");
 		scriptTask.setScript("", "System.out.println(\"Executing task\");");
-		scriptTask.append("CompensateEvent", ConstructType.COMPENSATION_END_EVENT);
+		scriptTask.append("CompensateEndEvent", ConstructType.COMPENSATION_END_EVENT);
 
+		//process.add("CompensateEvent", ConstructType.COMPENSATION_END_EVENT);
+		
 		// TODO: Add boundary event. NOT IN PALETTE. 
 	}
 	

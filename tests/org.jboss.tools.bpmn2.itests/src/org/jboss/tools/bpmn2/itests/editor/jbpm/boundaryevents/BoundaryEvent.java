@@ -1,31 +1,26 @@
 package org.jboss.tools.bpmn2.itests.editor.jbpm.boundaryevents;
 
-import org.jboss.tools.bpmn2.itests.editor.AbstractEvent;
+import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.tools.bpmn2.itests.editor.Construct;
 import org.jboss.tools.bpmn2.itests.editor.ConstructType;
 
 /**
  * 
- * @author Marek Baluch <mbaluch@redhat.com>
+ * @author mbaluch
  */
-public class BoundaryEvent extends AbstractEvent {
+public class BoundaryEvent extends Construct {
 
-	/**
-	 * 
-	 * @param name
-	 * @param type
-	 */
-	public BoundaryEvent(String name, ConstructType type) {
+	public BoundaryEvent(String name) {
+		super(name, ConstructType.BOUNDARY_EVENT);
+	}
+	
+	BoundaryEvent(String name, ConstructType type) {
 		super(name, type);
 	}
-
-	/**
-	 * 
-	 * @param construct
-	 */
-	public void addTo(Construct construct) {
-		editor.activateTool("Boundary Event");
-		editor.click(construct.getName());
+	
+	public void setCancelActivity(boolean b) {
+		properties.selectTab("Event");
+		properties.selectCheckBox(new CheckBox("Cancel Activity"), b);
 	}
 	
 }

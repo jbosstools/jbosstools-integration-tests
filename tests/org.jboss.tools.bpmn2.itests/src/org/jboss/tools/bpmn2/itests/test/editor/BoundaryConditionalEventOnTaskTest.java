@@ -5,23 +5,20 @@ import org.jboss.tools.bpmn2.itests.editor.Position;
 import org.jboss.tools.bpmn2.itests.editor.jbpm.BPMN2Process;
 import org.jboss.tools.bpmn2.itests.editor.jbpm.activities.ScriptTask;
 import org.jboss.tools.bpmn2.itests.editor.jbpm.activities.UserTask;
+import org.jboss.tools.bpmn2.itests.editor.jbpm.boundaryevents.ConditionalBoundaryEvent;
 import org.jboss.tools.bpmn2.itests.editor.jbpm.startevents.StartEvent;
 import org.jboss.tools.bpmn2.itests.reddeer.requirements.ProcessDefinitionRequirement.ProcessDefinition;
 import org.jboss.tools.bpmn2.itests.test.JBPM6BaseTest;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
+ * ISSUE: language should be 'http://www.jboss.org/drools/rule' but it's not available.
  *     
  * @author mbaluch
  */
 @ProcessDefinition(name="BPMN2-BoundaryConditionalEventOnTask", project="EditorTestProject")
 public class BoundaryConditionalEventOnTaskTest extends JBPM6BaseTest {
 
-	/**
-	 * Opened issue: https://bugs.eclipse.org/bugs/show_bug.cgi?id=409841
-	 */
-	@Ignore
 	@Test
 	public void runTest() throws Exception {
 		BPMN2Process process = new BPMN2Process("BPMN2-BoundaryConditionalEventOnTask");
@@ -34,10 +31,13 @@ public class BoundaryConditionalEventOnTaskTest extends JBPM6BaseTest {
 		UserTask userTask1 = new UserTask("User Task");
 		userTask1.addActor("", "john");
 		userTask1.append("User Task 2", ConstructType.USER_TASK, Position.NORTH_EAST);
-		userTask1.append("Condition met", ConstructType.SCRIPT_TASK, Position.SOUTH_EAST);
-		// TBD: Add boundary event to userTask1. Cannot do this. Is this a bug?
-		// 		Is this supported?
+		userTask1.addEvent("Conditional Boundary Event", ConstructType.CONDITIONAL_BOUNDARY_EVENT);
+
+		// ISSUE: language should be 'http://www.jboss.org/drools/rule' but it's not available.
+		ConditionalBoundaryEvent boundaryEvent = new ConditionalBoundaryEvent("Conditional Boundary Event");
+		boundaryEvent.setScript("", "org.jbpm.bpmn2.objects.Person(name == \"john\")");
 		
+		boundaryEvent.append("Condition met", ConstructType.SCRIPT_TASK, Position.SOUTH_EAST);
 		UserTask userTask2 = new UserTask("User Task 2");
 		userTask2.addActor("", "john");
 		userTask2.append("End 1", ConstructType.END_EVENT);

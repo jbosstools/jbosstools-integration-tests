@@ -31,11 +31,10 @@ import org.junit.runners.Suite.SuiteClasses;
 //	AssociationTest.class,
 //	BooleanStructureReferenceTest.class
 //	BusinessRuleTaskTest.class,
+//	BoundaryConditionalEventOnTaskTest.class,
 // TODO tests
 // ----------------
-//	BoundaryConditionalEventOnTaskTest.class,
 //	CallActivityByNameTest.class,
-//	CompensateEndEventTest.class
 })
 public class AllTests extends TestSuite {
 	

@@ -88,7 +88,7 @@ public class UserTask extends AbstractTask {
 	 * @param script
 	 * @param language
 	 */
-	public void addActor(String script, String language) {
+	public void addActor(String language, String script) {
 		properties.selectTab("User Task");
 		properties.toolbarButton("Actors", "Add").click();
 		
