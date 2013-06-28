@@ -43,5 +43,13 @@ public abstract class AbstractTask extends Construct {
 		properties.selectTab("I/O Parameters");
 		parameter.add();
 	}
+
+	/**
+	 * @see org.jboss.tools.bpmn2.itests.editor.Construct#addEvent(java.lang.String, org.jboss.tools.bpmn2.itests.editor.ConstructType)
+	 */
+	@Override
+	public void addEvent(String name, ConstructType eventType) {
+		super.addEvent(name, eventType);
+	}
 	
 }

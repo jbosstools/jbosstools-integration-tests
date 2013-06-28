@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
-
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.emf.common.util.EList;
@@ -30,9 +29,7 @@ import org.eclipse.swtbot.swt.finder.results.Result;
 import org.eclipse.swtbot.swt.finder.results.VoidResult;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.ui.IEditorPart;
-
 import org.hamcrest.Matcher;
-
 import org.jboss.reddeer.swt.util.Bot;
 import org.jboss.tools.bpmn2.itests.editor.Construct;
 import org.jboss.tools.bpmn2.itests.editor.ConstructType;
@@ -73,12 +70,6 @@ public class BPMN2Editor extends SWTBotGefEditor {
 	 * @param byLabel
 	 */
 	public void selectEditPart(SWTBotGefEditPart editPart) {
-//		editPart.select();
-//		editPart.focus();
-		
-//		if (!getSelectedEditParts().contains(editPart)) {
-//			editPart.select();
-//		}
 		select(editPart);
 		setFocus();
 	}

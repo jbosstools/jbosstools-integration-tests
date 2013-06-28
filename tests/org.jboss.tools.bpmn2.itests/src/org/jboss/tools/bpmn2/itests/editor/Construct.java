@@ -27,6 +27,7 @@ import org.jboss.tools.bpmn2.itests.reddeer.BPMN2PropertiesView;
 import org.jboss.tools.bpmn2.itests.swt.matcher.ConstructOfType;
 import org.jboss.tools.bpmn2.itests.swt.matcher.ConstructOnPoint;
 import org.jboss.tools.bpmn2.itests.swt.matcher.ConstructWithName;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -55,7 +56,6 @@ public class Construct {
 	 * 	2) if not passed in as parameter then make Process construct the default parent.
 	 * 		- detect using the editor and file name.
 	 */
-	
 	/**
 	 * Creates a new instance of Construct.
 	 * 
@@ -130,7 +130,31 @@ public class Construct {
 	public void select() {
 		editor.selectEditPart(editPart);
 	}
-	
+
+	/**
+	 * Add a boundary event to this construct.
+	 *  
+	 * @param name
+	 * @param eventType
+	 */
+	protected void addEvent(String name, ConstructType eventType) {
+		if (!eventType.toString().endsWith("BOUNDARY_EVENT")) {
+			throw new IllegalArgumentException("Can add only BOUNDARY_EVENT types.");
+		}
+
+		/*
+		 * Add the event
+		 */
+		Point p = editor.getBounds(editPart).getTopLeft();
+		editor.activateTool(eventType.toToolPath()[0], eventType.toToolPath()[1]);
+		editor.click(p.x(), p.y());
+		
+		/*
+		 * Set the name of the event
+		 */
+		Construct event = editor.getLastConstruct(eventType);
+		event.setName(name);
+	}
 	
 	/**
 	 * 
