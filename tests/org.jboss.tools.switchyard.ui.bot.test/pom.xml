@@ -5,18 +5,18 @@
 	<parent>
                 <groupId>org.jboss.tools.integration-tests</groupId>
 		<artifactId>tests</artifactId>
-		<version>4.0.0-SNAPSHOT</version>
+		<version>4.1.0-SNAPSHOT</version>
 	</parent>
 	<groupId>org.jboss.tools.switchyard</groupId>
 	<artifactId>org.jboss.tools.switchyard.ui.bot.test</artifactId>
-	<version>4.0.0-SNAPSHOT</version>
+	<version>4.1.0-SNAPSHOT</version>
 	<packaging>eclipse-test-plugin</packaging>
 
 	<properties>
 	  <systemProperties>${integrationTestsSystemProperties} -Dswtbot.test.properties.file=./swtbot.properties</systemProperties>
 	  <surefire.timeout>10800</surefire.timeout>
 	  <test.class>AllTests</test.class>
-	  <jbtis.site>http://download.jboss.org/jbosstools/updates/integration/juno/integration-stack/aggregate/4.0.1</jbtis.site>
+	  <jbtis.site>http://download.jboss.org/jbosstools/updates/integration/kepler/integration-stack/aggregate/4.1.0</jbtis.site>
 	  <orbit.site>http://download.eclipse.org/tools/orbit/downloads/drops/R20130517111416/repository</orbit.site>
 	</properties>
 
@@ -97,7 +97,7 @@
 		  <artifact>
 		    <groupId>org.jboss.tools.integration-stack</groupId>
 		    <artifactId>target-platform</artifactId>
-		    <version>4.0.1-SNAPSHOT</version>
+		    <version>4.1.0-SNAPSHOT</version>
 		    <type>target</type>
 		    <classifier>base</classifier>
 		  </artifact>

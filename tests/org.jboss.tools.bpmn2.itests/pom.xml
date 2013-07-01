@@ -6,15 +6,15 @@
 	<parent>
 		<groupId>org.jboss.tools.integration-tests</groupId>
 		<artifactId>tests</artifactId>
-		<version>4.0.0-SNAPSHOT</version>
+		<version>4.1.0-SNAPSHOT</version>
 	</parent>
 	<groupId>org.jboss.tools.bpmn2.tests</groupId>
 	<artifactId>org.jboss.tools.bpmn2.itests</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>4.1.0-SNAPSHOT</version>
 	<packaging>eclipse-test-plugin</packaging>
 	<properties>
 		<jbpm.site>https://repository.jboss.org/nexus/content/groups/public-jboss/</jbpm.site>
-		<jbtis.site>http://download.jboss.org/jbosstools/updates/integration/juno/integration-stack/aggregate/4.0.0</jbtis.site>
+		<jbtis.site>http://download.jboss.org/jbosstools/updates/integration/kepler/integration-stack/aggregate/4.1.0</jbtis.site>
 		<eclipse.graphiti.site>http://download.eclipse.org/graphiti/updates/0.9.0</eclipse.graphiti.site>
 		<systemProperties>${integrationTestsSystemProperties} -Dswtbot.test.skip=false -Dtest.configurations.dir=resources/</systemProperties>
 		<droolsjbpm.version>6.0.0-SNAPSHOT</droolsjbpm.version>
@@ -68,22 +68,6 @@
 	</dependencies>
 
 	<repositories>
-<<<<<<< HEAD
-		<!-- Red Deer Repository -->
-		<repository>
-			<id>red_deer</id>
-			<url>${reddeer.site}</url>
-			<layout>p2</layout>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-		</repository>
-		<!-- JBTIS Repository -->
-=======
->>>>>>> bug fixes, replaced jBPM5 validator with jBPM6, configured maven to compile it all
 		<repository>
 			<id>jbpm-site</id>
 			<url>${jbpm.site}</url>
@@ -95,20 +79,10 @@
 				<enabled>true</enabled>
 			</releases>
 		</repository>
+		<!-- JBTIS Repository -->
 		<repository>
 			<id>jbtis-site</id>
 			<url>${jbtis.site}</url>
-			<layout>p2</layout>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-		</repository>
-		<repository>
-			<id>eclipse-graphiti-site</id>
-			<url>${eclipse.graphiti.site}</url>
 			<layout>p2</layout>
 			<snapshots>
 				<enabled>true</enabled>
@@ -121,6 +95,49 @@
 
 	<build>
 		<plugins>
+		  <!-- BPMN2 Bot Tests -->
+		  <plugin>
+		    <groupId>org.eclipse.tycho</groupId>
+		    <artifactId>tycho-surefire-plugin</artifactId>
+		    <configuration>
+		      <appArgLine>-pluginCustomization resources/config/plugin_customization.ini</appArgLine>
+		      <testSuite>org.jboss.tools.bpmn2.itests</testSuite>
+		      <testClass>org.jboss.tools.bpmn2.itests.test.AllTests</testClass>
+		      <useUIThread>false</useUIThread>
+		      <skip>${swtbot.test.skip}</skip>
+		      <dependencies combine.children="append">
+			<!-- AS fature -->
+			<dependency>
+			  <type>p2-installable-unit</type>
+			  <artifactId>org.jboss.ide.eclipse.as.feature.feature.group</artifactId>
+			  <version>0.0.0</version>
+			</dependency>
+			<!-- This entry should enable creating of default JDK on Mac -->
+			<dependency>
+			  <type>p2-installable-unit</type>
+			  <artifactId>org.eclipse.jdt.feature.group</artifactId>
+			  <version>0.0.0</version>
+			</dependency>
+		      </dependencies>
+		    </configuration>
+		  </plugin>
+		  <!-- JBTIS Target Platform -->
+		  <plugin>
+		    <groupId>org.eclipse.tycho</groupId>
+		    <artifactId>target-platform-configuration</artifactId>
+		    <version>${tychoVersion}</version>
+		    <configuration>
+		      <target>
+			<artifact>
+			  <groupId>org.jboss.tools.integration-stack</groupId>
+			  <artifactId>target-platform</artifactId>
+			  <version>4.1.0-SNAPSHOT</version>
+			  <type>target</type>
+			  <classifier>base</classifier>
+			</artifact>
+		      </target>
+		    </configuration>
+		  </plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>

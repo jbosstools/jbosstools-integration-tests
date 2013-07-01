@@ -9,28 +9,15 @@
     </parent>
     <groupId>org.jboss.tools</groupId>
     <artifactId>org.jboss.tools.drools.ui.bot.test</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>4.1.0-SNAPSHOT</version>
     <packaging>eclipse-test-plugin</packaging>
     <properties>
         <systemProperties>${integrationTestsSystemProperties} -Dswtbot.test.skip=false -Dtest.configurations.dir=resources/</systemProperties>
         <surefire.timeout>3600</surefire.timeout>
-	<reddeer.site>http://download.jboss.org/jbosstools/builds/staging/RedDeer_master/all/repo</reddeer.site>
-	<jbtis.site>http://download.jboss.org/jbosstools/updates/integration/juno/integration-stack/aggregate/4.0.0</jbtis.site>
+	<jbtis.site>http://download.jboss.org/jbosstools/updates/integration/kepler/integration-stack/aggregate/4.1.0</jbtis.site>
     </properties>
 
     <repositories>
-      <!-- Red Deer Repository -->
-      <repository>
-	<id>red_deer</id>
-	<url>${reddeer.site}</url>
-	<layout>p2</layout>
-	<snapshots>
-	  <enabled>true</enabled>
-	</snapshots>
-	<releases>
-	  <enabled>true</enabled>
-	</releases>
-      </repository>
       <!-- JBTIS Repository -->
       <repository>
 	<id>jbtis</id>
@@ -53,6 +40,7 @@
                 <version>${tychoVersion}</version>
                 <configuration>
                     <useUIThread>false</useUIThread>
+		    <skip>${swtbot.test.skip}</skip>
                     <testSuite>org.jboss.tools.drools.ui.bot.test</testSuite>
                     <testClass>org.jboss.tools.drools.ui.bot.test.DroolsAllBotTests</testClass>
                     <dependencies combine.children="append">
@@ -79,7 +67,7 @@
 		  <artifact>
 		    <groupId>org.jboss.tools.integration-stack</groupId>
 		    <artifactId>target-platform</artifactId>
-		    <version>4.0.0-SNAPSHOT</version>
+		    <version>4.1.0-SNAPSHOT</version>
 		    <type>target</type>
 		    <classifier>base</classifier>
 		  </artifact>
