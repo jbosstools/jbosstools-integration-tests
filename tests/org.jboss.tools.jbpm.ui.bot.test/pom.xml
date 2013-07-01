@@ -9,27 +9,14 @@
 	</parent>
 	<groupId>org.jboss.tools.jbpm.tests</groupId>
 	<artifactId>org.jboss.tools.jbpm.ui.bot.test</artifactId>
-	<version>4.5.0-SNAPSHOT</version>
+	<version>4.1.0-SNAPSHOT</version>
 	<packaging>eclipse-test-plugin</packaging>
 	<properties>
 	  <systemProperties>${integrationTestsSystemProperties} -Dswtbot.test.properties.file=./swtbot.properties</systemProperties>
-	  <reddeer.site>http://download.jboss.org/jbosstools/builds/staging/RedDeer_master/all/repo</reddeer.site>
-	  <jbtis.site>http://download.jboss.org/jbosstools/updates/integration/juno/integration-stack/aggregate/4.0.0</jbtis.site>
+	  <jbtis.site>http://download.jboss.org/jbosstools/updates/integration/kepler/integration-stack/aggregate/4.1.0</jbtis.site>
 	</properties>
 
 	<repositories>
-	  <!-- Red Deer Repository -->
-	  <repository>
-	    <id>red_deer</id>
-	    <url>${reddeer.site}</url>
-	    <layout>p2</layout>
-	    <snapshots>
-	      <enabled>true</enabled>
-	    </snapshots>
-	    <releases>
-	      <enabled>true</enabled>
-	    </releases>
-	  </repository>
 	  <!-- JBTIS Repository -->
 	  <repository>
 	    <id>jbtis</id>
@@ -45,87 +32,35 @@
 	</repositories>
 
 	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.eclipse.tycho</groupId>
-				<artifactId>tycho-surefire-plugin</artifactId>
-				<configuration>
-					<useUIThread>false</useUIThread>
-					<skip>${swtbot.test.skip}</skip>
-					<includes>
-						<include>**/JBPMAllTest.class</include>
-					</includes>
-					<dependencies combine.children="append">
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.jboss.tools.jbpm3.feature.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.jboss.tools.jbpm.convert.feature.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.jboss.ide.eclipse.as.feature.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
-					</dependencies>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>com.googlecode.maven-download-plugin</groupId>
-				<artifactId>maven-download-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>install-as-5.1.0</id>
-						<phase>pre-integration-test</phase>
-						<goals>
-							<goal>wget</goal>
-						</goals>
-						<configuration>
-							<url>http://repository.jboss.org/sourceforge/jboss-5.1.0.GA.zip</url>
-							<md5>78322c75ca0c13002a04418b4a8bc920</md5>
-							<unpack>true</unpack>
-						</configuration>
-					</execution>
-					<execution>
-						<id>download-jbpm</id>
-						<phase>pre-integration-test</phase>
-						<goals>
-							<goal>wget</goal>
-						</goals>
-						<configuration>
-							<url>https://repository.jboss.org/nexus/content/groups/public/org/jbpm/jbpm3/jbpm-distribution/3.2.9/jbpm-distribution-3.2.9-installer.jar</url>
-							<unpack>false</unpack>
-							<md5>e2d8624bd181235a34b5f97fb088c589</md5>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<artifactId>maven-antrun-plugin</artifactId>
-				<version>${maven.antrun.plugin.version}</version>
-				<executions>
-					<execution>
-						<id>install-jbpm</id>
-						<phase>pre-integration-test</phase>
-						<goals>
-							<goal>run</goal>
-						</goals>
-						<configuration>
-							<tasks>
-								<java
-									jar="${requirementsDirectory}/jbpm-distribution-3.2.9-installer.jar"
-									dir="${requirementsDirectory}" fork="true">
-									<arg value="../../resources/properties/install-jbpm3.xml" />
-								</java>
-							</tasks>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
+	  <plugins>
+	    <plugin>
+	      <groupId>org.eclipse.tycho</groupId>
+	      <artifactId>tycho-surefire-plugin</artifactId>
+	      <configuration>
+		<useUIThread>false</useUIThread>
+		<skip>${swtbot.test.skip}</skip>
+		<includes>
+		  <include>**/JBPMAllTest.class</include>
+		</includes>
+		<dependencies combine.children="append">
+		  <dependency>
+		    <type>p2-installable-unit</type>
+		    <artifactId>org.jboss.tools.jbpm3.feature.feature.group</artifactId>
+		    <version>0.0.0</version>
+		  </dependency>
+		  <dependency>
+		    <type>p2-installable-unit</type>
+		    <artifactId>org.jboss.tools.jbpm.convert.feature.feature.group</artifactId>
+		    <version>0.0.0</version>
+		  </dependency>
+		  <dependency>
+		    <type>p2-installable-unit</type>
+		    <artifactId>org.jboss.ide.eclipse.as.feature.feature.group</artifactId>
+		    <version>0.0.0</version>
+		  </dependency>
+		</dependencies>
+	      </configuration>
+	    </plugin>
 	    <!-- JBTIS Target Platform -->
 	    <plugin>
 	      <groupId>org.eclipse.tycho</groupId>
@@ -136,13 +71,80 @@
 		  <artifact>
 		    <groupId>org.jboss.tools.integration-stack</groupId>
 		    <artifactId>target-platform</artifactId>
-		    <version>4.0.0-SNAPSHOT</version>
+		    <version>4.1.0-SNAPSHOT</version>
 		    <type>target</type>
 		    <classifier>base</classifier>
 		  </artifact>
 		</target>
 	      </configuration>
 	    </plugin>
-		</plugins>
+	  </plugins>
 	</build>
+
+	<profiles>
+	  <!-- Install JBoss AS 5.1.0 with jBPM 3.2.9 -->
+	  <profile>
+	    <id>as-51</id>
+	    <properties>
+	      <systemProperties>${integrationTestsSystemProperties} -Dswtbot.test.properties.file=./as-51.properties</systemProperties>
+	    </properties>
+	    <build>
+	      <plugins>	  
+		<plugin>
+		  <groupId>com.googlecode.maven-download-plugin</groupId>
+		  <artifactId>maven-download-plugin</artifactId>
+		  <executions>
+		    <execution>
+		      <id>install-as-5.1.0</id>
+		      <phase>pre-integration-test</phase>
+		      <goals>
+			<goal>wget</goal>
+		      </goals>
+		      <configuration>
+			<url>http://repository.jboss.org/sourceforge/jboss-5.1.0.GA.zip</url>
+			<md5>78322c75ca0c13002a04418b4a8bc920</md5>
+			<unpack>true</unpack>
+		      </configuration>
+		    </execution>
+		    <execution>
+		      <id>download-jbpm</id>
+		      <phase>pre-integration-test</phase>
+		      <goals>
+			<goal>wget</goal>
+		      </goals>
+		      <configuration>
+			<url>https://repository.jboss.org/nexus/content/groups/public/org/jbpm/jbpm3/jbpm-distribution/3.2.9/jbpm-distribution-3.2.9-installer.jar</url>
+			<unpack>false</unpack>
+			<md5>e2d8624bd181235a34b5f97fb088c589</md5>
+		      </configuration>
+		    </execution>
+		  </executions>
+		</plugin>
+		<plugin>
+		  <artifactId>maven-antrun-plugin</artifactId>
+		  <version>${maven.antrun.plugin.version}</version>
+		  <executions>
+		    <execution>
+		      <id>install-jbpm</id>
+		      <phase>pre-integration-test</phase>
+		      <goals>
+			<goal>run</goal>
+		      </goals>
+		      <configuration>
+			<tasks>
+			  <java
+			      jar="${requirementsDirectory}/jbpm-distribution-3.2.9-installer.jar"
+			      dir="${requirementsDirectory}" fork="true">
+			    <arg value="../../resources/properties/install-jbpm3.xml" />
+			  </java>
+			</tasks>
+		      </configuration>
+		    </execution>
+		  </executions>
+		</plugin>
+	      </plugins>
+	    </build>
+	  </profile>
+	</profiles>
+
 </project>
