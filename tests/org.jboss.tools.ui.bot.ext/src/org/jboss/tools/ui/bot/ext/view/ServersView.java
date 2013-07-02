@@ -246,7 +246,7 @@ public class ServersView extends ViewBase {
 
 		try {
 			// if there are no servers the following text appears
-			bot.link("<a>No servers available. Define a new server from the new server wizard...</a>");
+			bot.link("<a>No servers are available. Click this link to create a new server...</a>");
 			return false;
 		} catch (WidgetNotFoundException e){
 			// ok, there are some servers, let's check the name
