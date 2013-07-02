@@ -28,9 +28,9 @@ import org.junit.After;
  */
 @Require(perspective="JBoss")
 public class LiveReloadServerTest extends JBTSWTBotTestCase{
-  private static final String SERVER_NAME = "LiveReloadTestServer";
-  private static final String SERVER_HOST = "localhost";
-  private static final int SERVER_PORT = 35729;
+  protected static final String SERVER_NAME = "LiveReloadTestServer";
+  protected static final String SERVER_HOST = "localhost";
+  protected static final int SERVER_PORT = 35729;
   /**
    * Creates and runs LiveReload Server
    */

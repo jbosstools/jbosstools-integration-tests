@@ -47,6 +47,8 @@ import org.jboss.tools.vpe.ui.bot.test.editor.tags.JSFTagsTest;
 import org.jboss.tools.vpe.ui.bot.test.el.ElForBundleValueTest_Jbide10531;
 import org.jboss.tools.vpe.ui.bot.test.jbide.JBIDE4556Test;
 import org.jboss.tools.vpe.ui.bot.test.jbide.JBIDE9445Test_DuplicateSourceMenu;
+import org.jboss.tools.vpe.ui.bot.test.livereload.BrowserSimLiveReloadTest;
+import org.jboss.tools.vpe.ui.bot.test.livereload.LiveReloadServerTest;
 import org.jboss.tools.vpe.ui.bot.test.palette.CancelTagLibDefenitionTest;
 import org.jboss.tools.vpe.ui.bot.test.palette.ImportTagsFromTLDFileTest;
 import org.jboss.tools.vpe.ui.bot.test.palette.ManagePaletteGroupsTest;
@@ -132,7 +134,9 @@ import org.junit.runners.Suite.SuiteClasses;
     ScrollingSynchronizationTest.class,
     ElForBundleValueTest_Jbide10531.class,
     MobilePaletteTest.class,
-    OpenBrowserSimTest.class
+    OpenBrowserSimTest.class,
+    LiveReloadServerTest.class,
+    BrowserSimLiveReloadTest.class    
 })
 public class VPEStableSubsetBotTests extends SWTBotTestCase {
 

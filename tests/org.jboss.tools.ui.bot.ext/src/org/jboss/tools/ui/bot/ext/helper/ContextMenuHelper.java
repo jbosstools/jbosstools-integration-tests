@@ -43,6 +43,7 @@ import org.eclipse.swtbot.swt.finder.results.Result;
 import org.eclipse.swtbot.swt.finder.results.VoidResult;
 import org.eclipse.swtbot.swt.finder.results.WidgetResult;
 import org.eclipse.swtbot.swt.finder.widgets.AbstractSWTBot;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.hamcrest.Matcher;
@@ -91,7 +92,6 @@ public class ContextMenuHelper {
     final List<String> foundMenuItems = new Vector<String>();
     final MenuItem menuItem = UIThreadRunnable
         .syncExec(new WidgetResult<MenuItem>() {
-          @SuppressWarnings("unchecked")
     public MenuItem run() {
             MenuItem menuItem = null;
             Matcher<?> matcher = allOf(instanceOf(MenuItem.class),withMnemonic(text));
@@ -253,7 +253,6 @@ public class ContextMenuHelper {
    */
   public static void clickContextMenu(final Menu topMenu, final String... texts) {
     final MenuItem menuItem = UIThreadRunnable.syncExec(new WidgetResult<MenuItem>() {
-      @SuppressWarnings("unchecked")
       public MenuItem run() {
         MenuItem menuItem = null;
         Menu menu = topMenu;
@@ -382,6 +381,10 @@ public class ContextMenuHelper {
     if (isEnabled){
       UIThreadRunnable.asyncExec(menuItem.getDisplay(), new VoidResult() {
         public void run() {
+          if (((menuItem.getStyle() & SWT.CHECK) == SWT.CHECK) ||
+             ((menuItem.getStyle() & SWT.RADIO) == SWT.RADIO)){
+            menuItem.setSelection(!menuItem.getSelection());
+          }
           log.info("Click on menu item: " + menuItem.getText());
           menuItem.notifyListeners(SWT.Selection, event);
         }
@@ -734,4 +737,15 @@ public class ContextMenuHelper {
       e.printStackTrace();
     }
   }
+  /**
+   * Returns true when menu contains checked menu item with menuItemLabel
+   * @param menu
+   * @param menuItemLabel
+   * @return
+   */
+  public static boolean isMenuItemChecked (final Menu menu , String menuItemLabel){
+    MenuItem menuItem = ContextMenuHelper.getContextMenu(menu, menuItemLabel, true);
+    return new SWTBotMenu(menuItem).isChecked();
+  }
+  
 }

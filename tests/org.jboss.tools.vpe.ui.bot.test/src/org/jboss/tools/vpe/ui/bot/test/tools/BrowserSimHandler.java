@@ -60,7 +60,7 @@ public class BrowserSimHandler {
     BrowserSim browserSim = UIThreadRunnable.syncExec(new Result<BrowserSim>() {
       @Override
       public BrowserSim run() {
-        BrowserSim newBrowserSim = new BrowserSim(url);
+        BrowserSim newBrowserSim = new BrowserSim(url, Display.getCurrent().getActiveShell());
         newBrowserSim.open();
         return newBrowserSim;
       }
@@ -184,6 +184,7 @@ public class BrowserSimHandler {
     return new SWTBotBrowserExt(browserSim.getBrowser());
   }
   public Menu openBrowserSimContextMenu (){
+    browserSimShell.activate();
     getBrowserSimBrowser().setFocus();
     bot.waitUntil(new ShellIsActiveCondition(browserSimShell),Timing.time2S());
     try {
@@ -232,6 +233,7 @@ public class BrowserSimHandler {
    * @param url
    */
   public void loadUrlFromAddressBar (final String url , long timeOut){
+    browserSimShell.activate();
     SWTBotText addressBarText = getAddressText();
     addressBarText.setText(url);
     addressBarText.setFocus();
@@ -251,5 +253,23 @@ public class BrowserSimHandler {
    */
   public void close(){
     browserSimShell.close();
+  }
+  /**
+   * Clicks on BrowserSim context menu specified by menuLabels
+   * @param menuLabels
+   */
+  public void clickContextMenu(String... menuLabels){
+    ContextMenuHelper.clickContextMenu(openBrowserSimContextMenu(),menuLabels);
+  }
+  /**
+   * Sets checked status of BrowserSim context menu item with label menuLabel to checked parameter value
+   * Fires events only if checked status of menu item was changed 
+   * @param checked
+   * @param menuLabel
+   */
+  public void checkContextMenu(boolean checked , String menuLabel){
+    if (ContextMenuHelper.isMenuItemChecked(openBrowserSimContextMenu(), menuLabel) != checked){
+      clickContextMenu(menuLabel);
+    }
   }
 }
