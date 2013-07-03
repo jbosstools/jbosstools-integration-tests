@@ -72,7 +72,7 @@ public abstract class TestParent {
     @BeforeClass
     public static void closeStartUpDialogsAndViews() {
         try {
-            new DefaultShell("JBoss Tools Usage");
+            new DefaultShell("JBoss Developer Studio Usage");
             new PushButton("No").click();
         } catch (Exception ex) {
             LOGGER.info("JBoss Tools Usage dialog was not found.");
