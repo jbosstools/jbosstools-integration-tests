@@ -11,6 +11,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.util.List;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
@@ -22,6 +23,7 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.matcher.RegexMatchers;
 import org.jboss.reddeer.swt.util.Bot;
@@ -166,11 +168,23 @@ public abstract class TestParent {
         Bot.get().saveAllEditors();
         Bot.get().closeAllEditors();
 
-        // delete all projects
+        // refresh and delete all projects (as running the projects creates logs)
         PackageExplorer explorer = new PackageExplorer();
-        explorer.open();
-        for (Project p : explorer.getProjects()) {
-            p.delete(true);
+        while(true) {
+            explorer.open();
+            List<Project> projects = explorer.getProjects();
+
+            if (projects.size() > 0) {
+                String projectName = projects.get(0).getName();
+                explorer.getProject(projectName).select();;
+                new ShellMenu(new RegexMatchers("File.*", "Refresh.*").getMatchers()).select();
+                new WaitWhile(new ShellWithTextIsActive("Refresh"));
+
+                explorer.open();
+                explorer.getProject(projectName).delete(true);
+            } else {
+                break;
+            }
         }
 
         // delete all runtimes
