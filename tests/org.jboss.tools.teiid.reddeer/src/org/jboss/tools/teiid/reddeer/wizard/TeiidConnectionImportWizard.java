@@ -50,11 +50,12 @@ public class TeiidConnectionImportWizard extends ImportWizardDialog{
 		new LabeledText("Name:").setText(dataSourcename);
 		Properties props = loadProperties(properties);
 		//set driver
-		Table table = new DefaultTable(1);
+		Table table = new DefaultTable(0);
 		int originalRowCount = table.rowCount();
 		for (int i = 0; i < originalRowCount; i++){
 			if (table.cell(i, 0).equals(props.getProperty("db.driver"))){
 				table.select(i);
+				break;
 			}
 		}
 		new WaitWhile(new IsInProgress(), TimePeriod.NORMAL);
