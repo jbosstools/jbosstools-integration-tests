@@ -22,6 +22,9 @@ import org.junit.runner.RunWith;
 
 @RunWith(RedDeerSuite.class)
 public class RulesEditorTest extends TestParent {
+    public static final String MESSAGE_TEXT = getTemplateText("MessageClass");
+    public static final String RULE_RESOURCE_TEXT = getTemplateText("DummyRuleFile");
+
     // FIXME RedDeerify when possible
     private SWTBotEclipseEditor rulesEditor;
 
@@ -85,51 +88,4 @@ public class RulesEditorTest extends TestParent {
 
         rulesEditor.close();
     }
-
-
-    public static final String MESSAGE_TEXT =
-            "package com.sample.domain;\n" +
-            "\n" +
-            "public class Message {\n" +
-            "    private String text;\n" +
-            "    private Object parameter;\n" +
-            "\n" +
-            "    public Message() {\n" +
-            "        this(\"\", null);\n" +
-            "    }\n" +
-            "\n" +
-            "    public Message(String text, Object parameter) {\n" +
-            "        this.text = text;\n" +
-            "        this.parameter = parameter;\n" +
-            "    }\n" +
-            "\n" +
-            "    public String getText() {\n" +
-            "        return text;\n" +
-            "    }\n" +
-            "\n" +
-            "    public void setText(String text) {\n" +
-            "        this.text = text;\n" +
-            "    }\n" +
-            "\n" +
-            "    public Object getParameter() {\n" +
-            "        return parameter;\n" +
-            "    }\n" +
-            "\n" +
-            "    public void setParameter(Object parameter) {\n" +
-            "        this.parameter = parameter;\n" +
-            "    }\n" +
-            "\n" +
-            "}\n";
-
-    public static final String RULE_RESOURCE_TEXT =
-            "package com.sample\n" +
-            "\n" +
-            "\n" + // row for imports (2)
-            "\n" +
-            "rule firstRule\n" +
-            "    when\n" +
-            "        $s : String()\n" +
-            "    then\n" +
-            "        System.out.println($s);" +
-            "end\n";
 }
