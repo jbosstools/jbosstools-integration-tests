@@ -8,6 +8,7 @@ import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
+import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
@@ -16,6 +17,7 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.matcher.RegexMatchers;
+import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.drools.reddeer.dialog.DroolsRuntimeDialog;
 import org.jboss.tools.drools.reddeer.perspective.DroolsPerspective;
@@ -26,8 +28,8 @@ import org.jboss.tools.drools.reddeer.test.annotation.UseDefaultRuntime;
 import org.jboss.tools.drools.reddeer.test.annotation.UsePerspective;
 import org.jboss.tools.drools.reddeer.test.util.SmokeTest;
 import org.jboss.tools.drools.reddeer.test.util.TestParent;
-import org.jboss.tools.drools.reddeer.wizard.NewDroolsProjectWizard;
 import org.jboss.tools.drools.reddeer.wizard.NewDroolsProjectSelectRuntimeWizardPage.CodeCompatibility;
+import org.jboss.tools.drools.reddeer.wizard.NewDroolsProjectWizard;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -100,6 +102,39 @@ public class ProjectManagementTest extends TestParent {
     }
 
     @Test
+    @UsePerspective(JavaPerspective.class)
+    public void testRunRulesWithDefaultRuntime() {
+        final String runtimeName = "testRunRulesWithDefaultRuntime";
+        final String projectName = "testRunRulesWithDefaultRuntime";
+        DroolsRuntimesPreferencePage pref = new DroolsRuntimesPreferencePage();
+        pref.open();
+        DroolsRuntimeDialog dialog = pref.addDroolsRuntime();
+        dialog.setName(runtimeName);
+        dialog.createNewRuntime(createTempDir("testRunRulesWithDefaultRuntime"));
+        dialog.ok();
+        pref.setDroolsRuntimeAsDefault(runtimeName);
+        pref.okCloseWarning();
+
+        NewDroolsProjectWizard wiz = new NewDroolsProjectWizard();
+        wiz.createDefaultProjectWithAllSamples(projectName);
+
+        PackageExplorer explorer = new PackageExplorer();
+        explorer.getProject(projectName).getProjectItem("src/main/java").select();
+        new ContextMenu(new RegexMatchers("Source.*", "Organize Imports.*").getMatchers()).select();
+        new WaitWhile(new ShellWithTextIsActive("Progress Information"), TimePeriod.LONG);
+
+        ConsoleView console = new ConsoleView();
+        console.open();
+
+        explorer.getProject(projectName).getProjectItem("src/main/java", "com.sample", "DroolsTest.java").select();
+        new ShellMenu(new RegexMatchers("Run.*", "Run As.*", ".*Java Application.*").getMatchers()).select();
+
+        console.open();
+        Assert.assertNotNull("Console text was empty.", console.getConsoleText());
+        Assert.assertNotSame("Hello World!\nGoodbye cruel world.", console.getConsoleText());
+    }
+
+    @Test
     @UsePerspective(JavaPerspective.class) @UseDefaultRuntime @UseDefaultProject
     public void testRenameProject() {
         final String oldName = DEFAULT_PROJECT_NAME;
@@ -117,8 +152,6 @@ public class ProjectManagementTest extends TestParent {
         new PushButton("OK").click();
         new WaitWhile(new JobIsRunning());
 
-        explorer = new PackageExplorer();
-        explorer.open();
         waitASecond();
         Assert.assertFalse("The original project is still present.", explorer.containsProject(oldName));
         Assert.assertTrue("The renamed project is not present.", explorer.containsProject(newName));
@@ -176,7 +209,6 @@ public class ProjectManagementTest extends TestParent {
         }
 
         PackageExplorer explorer = new PackageExplorer();
-        explorer.open();
         Assert.assertTrue("Project was not created", explorer.containsProject(projectName));
         Assert.assertFalse("Project already has Drools dependencies.", explorer.getProject(projectName).containsItem("Drools Library"));
 
