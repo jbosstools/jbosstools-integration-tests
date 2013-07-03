@@ -46,13 +46,6 @@
 							<skip>${skipRequirements}</skip>
 						</configuration>
 					</execution>
-				</executions>
-			</plugin>
-
-			 <plugin>
-                                <groupId>org.apache.maven.plugins</groupId>
-                                <artifactId>maven-dependency-plugin</artifactId>
-                                <executions>
                                         <execution>
                                                 <id>forge-runtime-1.2.0</id>
                                                 <phase>pre-integration-test</phase>
