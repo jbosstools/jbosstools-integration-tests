@@ -2,8 +2,13 @@ package org.jboss.tools.drools.reddeer.test.util;
 
 import static org.junit.Assert.fail;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Properties;
@@ -182,6 +187,32 @@ public abstract class TestParent {
         dir.mkdirs();
 
         return dir.getAbsolutePath();
+    }
+
+    protected static String getTemplateText(String templateName) {
+        Bundle bundle = Platform.getBundle(Activator.PLUGIN_ID);
+        StringWriter w = new StringWriter();
+        BufferedReader br = null;
+        PrintWriter pw = null;
+        try {
+            br = new BufferedReader(new InputStreamReader(bundle.getResource(templateName).openStream()));
+            pw = new PrintWriter(w);
+            String l;
+            while ((l = br.readLine()) != null) {
+                pw.println(l);
+            }
+        } catch (IOException ex) {
+            
+        } finally {
+            try {
+                br.close();
+            } catch (IOException ex) {
+                throw new RuntimeException("Error closing BufferedReader", ex);
+            }
+            pw.close();
+        }
+
+        return w.toString();
     }
 
     private <T extends Annotation> T getAnnotationOnMethod(String methodName, Class<T> annotationClass) {
