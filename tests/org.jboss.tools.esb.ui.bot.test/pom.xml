@@ -47,14 +47,27 @@
 		<testClass>org.jboss.tools.esb.ui.bot.tests.${test.class}</testClass>
 		<forkedProcessTimeoutInSeconds>7200</forkedProcessTimeoutInSeconds>
 		<dependencies combine.children="append">
+		  <!-- JBoss AS Feature -->
 		  <dependency>
 		    <type>p2-installable-unit</type>
 		    <artifactId>org.jboss.ide.eclipse.as.feature.feature.group</artifactId>
 		    <version>0.0.0</version>
 		  </dependency>
+		  <!-- JBoss ESB Feature -->
+		  <dependency>
+		    <type>p2-installable-unit</type>
+		    <artifactId>org.jboss.tools.esb.feature.feature.group</artifactId>
+		    <version>0.0.0</version>
+		  </dependency><!--
 		  <dependency>
 		    <type>p2-installable-unit</type>
 		    <artifactId>org.jboss.tools.xulrunner.feature.feature.group</artifactId>
+		    <version>0.0.0</version>
+		  </dependency>-->
+		  <!-- JBoss Examples Feature -->
+		  <dependency>
+		    <type>p2-installable-unit</type>
+		    <artifactId>org.jboss.tools.community.project.examples.feature.feature.group</artifactId>
 		    <version>0.0.0</version>
 		  </dependency>
 		  <!-- This entry should enable creating of default JDK on Mac -->

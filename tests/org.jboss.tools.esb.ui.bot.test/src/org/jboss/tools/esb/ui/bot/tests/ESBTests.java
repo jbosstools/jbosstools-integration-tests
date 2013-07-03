@@ -20,7 +20,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	NewProjectUsingRuntime.class,
 	NewProjectUsingBundledInEAP.class,
 	NewProjectUsingBundledInSOA.class,
-//	Editing.class
+	Editing.class
 	})
 @RunWith(RequirementAwareSuite.class)
 public class ESBTests {
