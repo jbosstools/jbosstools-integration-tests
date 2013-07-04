@@ -1,5 +1,7 @@
 package org.jboss.tools.bpmn2.itests.reddeer;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.swt.SWT;
@@ -14,6 +16,7 @@ import org.eclipse.swtbot.swt.finder.results.Result;
 import org.eclipse.swtbot.swt.finder.utils.internal.SiblingFinder;
 import org.eclipse.swtbot.swt.finder.widgets.AbstractSWTBotControl;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCheckBox;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotCombo;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarPushButton;
 import org.eclipse.ui.forms.widgets.Section;
 
@@ -52,6 +55,19 @@ public class BPMN2PropertiesView extends WorkbenchView {
 	 */
 	public String getTitle() {
 		return Bot.get().clabel().getText();
+	}
+	
+	/**
+	 * 
+	 * @param comboBox
+	 * @param item
+	 * @return
+	 */
+	public boolean contains(SWTBotCombo comboBox, String item) {
+		if (item == null || item.isEmpty())
+			return false;
+		
+		return Arrays.asList(comboBox.items()).contains(item);
 	}
 	
 	/**

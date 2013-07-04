@@ -48,12 +48,20 @@ public enum ConstructType {
 	SIGNAL_END_EVENT("End Events", "Signal"),
 	TERMINATE_END_EVENT("End Events", "Terminate"),
 	
-	INTERMEDIATE_CATCH_EVENT("TBD", "TBD"),
-	INTERMEDIATE_THROW_EVENT("TBD", "TBD"),
+	CONDITIONAL_INTERMEDIATE_CATCH_EVENT("Intermediate Catch Events", "Conditional"),
+	MESSAGE_INTERMEDIATE_CATCH_EVENT("Intermediate Catch Events", "Message"),
+	SIGNAL_INTERMEDIATE_CATCH_EVENT("Intermediate Catch Events", "Signal"),
+	TIMER_INTERMEDIATE_CATCH_EVENT("Intermediate Catch Events", "Timer"),
+	
+	COMPENSATION_INTERMEDIATE_THROW_EVENT("Intermediate Throw Events", "Compensation"),
+	ESCALATION_INTERMEDIATE_THROW_EVENT("Intermediate Throw Events", "Escalation"),
+	INTERMEDIATE_THROW_EVENT("Intermediate Throw Events", "Throw Event"),
+	MESSAGE_INTERMEDIATE_THROW_EVENT("Intermediate Throw Events", "Message"),
+	SIGNAL_INTERMEDIATE_THROW_EVENT("Intermediate Throw Events", "Signal"),
 	
 //	COMPLEX_GATEWAY("Gateways", "Complex Gateway"),
 	EXCLUSIVE_GATEWAY("Gateways", "Exclusive Gateway"),
-	EVENT_BASED_GATEWAY("Gateways", "Event Based Gateway"),
+	EVENT_BASED_GATEWAY("Gateways", "Event-Based Gateway"),
 	INCLUSIVE_GATEWAY("Gateways", "Inclusive Gateway"),
 	PARALLEL_GATEWAY("Gateways", "Parallel Gateway"),
 	
@@ -107,6 +115,10 @@ public enum ConstructType {
 			name = "Start Event";
 		} else if (sectionName.equals("Boundary Events")) {
 			name = "Boundary Event";
+		} else if (sectionName.equals("Intermediate Catch Events")) {
+			name = "Intermediate Catch Event";
+		} else if (sectionName.equals("Intermediate Throw Events")) {
+			name = "Intermediate Throw Event";
 		} else {
 			name = toToolName();
 		}
