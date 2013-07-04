@@ -1,9 +1,10 @@
 package org.jboss.tools.bpmn2.itests.editor.jbpm;
 
+import org.eclipse.swtbot.swt.finder.SWTBot;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-
 import org.jboss.tools.bpmn2.itests.editor.Process;
 
 /**
@@ -125,19 +126,26 @@ public class BPMN2Process extends Process {
 		properties.selectTab("Definitions");
 		properties.toolbarButton("Imports", "Add").click();
 		
-//		SWTBot windowBot = Bot.get().shell("Browse for a Java type to Import").bot();
+		String dataTypeLabel = dataType.substring(dataType.lastIndexOf(".") + 1) + " - " + dataType;
+		/*
+		 * Must by typed for the listener to get activated.
+		 */
+		SWTBot windowBot = bot.shell("Browse for a Java type to Import").bot();
+		SWTBotText text = windowBot.textWithLabel("Type:");
+		text.setText(dataType);
+		text.typeText(" ");
+		windowBot.tree().select(dataTypeLabel);
 		
-		new LabeledText("Type:").setText(dataType);
-		new PushButton("OK");
+		new PushButton("OK").click();
 	}
 	
-	public void addMessage(String name, DataType dataType) {
+	public void addMessage(String name, String dataType) {
 		properties.selectTab("Definitions");
 		
 		bot.toolbarButtonWithTooltip("Add", 2).click();
 		bot.textWithLabel("Name").setText(name);
 		
-		dataType.add();
+		new DataType(dataType).add();
 		
 		bot.toolbarButtonWithTooltip("Close").click();
 	}
@@ -146,10 +154,14 @@ public class BPMN2Process extends Process {
 		properties.selectTab("Definitions");
 		
 		bot.toolbarButtonWithTooltip("Add", 3).click();
-		bot.textWithLabel("Name").setText(name);
-		bot.textWithLabel("Error Code").setText(code);
+		if (name != null && !name.isEmpty())
+			bot.textWithLabel("Name").setText(name);
+		if (code != null && !code.isEmpty())
+			bot.textWithLabel("Error Code").setText(code);
 		
-		dataType.add();
+		if (dataType != null) {
+			dataType.add();
+		}
 		
 		bot.toolbarButtonWithTooltip("Close").click();
 	}

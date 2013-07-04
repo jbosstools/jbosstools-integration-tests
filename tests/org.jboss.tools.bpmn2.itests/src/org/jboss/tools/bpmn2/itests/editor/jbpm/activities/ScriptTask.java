@@ -1,5 +1,7 @@
 package org.jboss.tools.bpmn2.itests.editor.jbpm.activities;
 
+import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
+import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.bpmn2.itests.editor.AbstractTask;
@@ -25,7 +27,15 @@ public class ScriptTask extends AbstractTask {
 		if (language != null && !language.isEmpty()) {
 			new DefaultCombo("Script Language").setSelection(language);
 		}
-		new LabeledText("Script").setText(script);
+		
+		/*
+		 * ISSUE: Widget lookup bug. Finds fine the first time but not the second.
+		 */
+		try {
+			new LabeledText("Script").setText(script);
+		} catch (SWTLayerException ex) {
+			bot.textWithLabel("Script").setText(script);
+		}
 	}
 
 	/**

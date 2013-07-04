@@ -2,6 +2,7 @@ package org.jboss.tools.bpmn2.itests.editor.jbpm.activities;
 
 
 import org.eclipse.swtbot.swt.finder.SWTBot;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotCombo;
 
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
@@ -25,9 +26,21 @@ public class SendTask extends AbstractTask {
 		super(name, ConstructType.SEND_TASK);
 	}
 	
-	public void setRuleFlowGroup(String group) {
+	/**
+	 * 
+	 * @param implementation
+	 */
+	public void setImplementation(String implementation) {
 		properties.selectTab("Send Task");
-		new LabeledText("Rule Flow Group").setText(group);
+		new LabeledText("Implementation").setText(implementation);
+	}
+	
+	/**
+	 * 
+	 * @param operation
+	 */
+	public void setOperation(String operation, String inMessage, String outMessage) {
+		throw new UnsupportedOperationException();
 	}
 	
 	/**
@@ -38,17 +51,25 @@ public class SendTask extends AbstractTask {
 	 */
 	public void setMessage(String name, String dataType) {
 		properties.selectTab("Send Task");
-		new PushButton(0).click();
 		
-		SWTBot newMessageBot = Bot.get().shell("Create New Message").bot();
-		newMessageBot.textWithLabel("Name").setText(name);
-		newMessageBot.button(0).click();
+		SWTBotCombo messageBox = bot.comboBoxWithLabel("Message");
+		String messageName = name + "(" + dataType + ")";
+		if (properties.contains(messageBox, messageName)) {
+			messageBox.setSelection(messageName);
+		} else {
+			new PushButton(0).click();
+			
+			SWTBot newMessageBot = Bot.get().shell("Create New Message").bot();
+			newMessageBot.textWithLabel("Name").setText(name);
+			newMessageBot.button(0).click();
+			
+			SWTBot newDataTypeBot = Bot.get().shell("Create New Data Type").bot();
+			newDataTypeBot.textWithLabel("Data Type").setText(dataType);
+			newDataTypeBot.button("OK").click();
+
+			newMessageBot.button("OK").click();
+		}
 		
-		SWTBot newDataTypeBot = Bot.get().shell("Create New Data Type").bot();
-		newDataTypeBot.textWithLabel("Data Type").setText(dataType);
-		newDataTypeBot.button("OK").click();
-		
-		newMessageBot.button("OK").click();
 	}
 
 	/**

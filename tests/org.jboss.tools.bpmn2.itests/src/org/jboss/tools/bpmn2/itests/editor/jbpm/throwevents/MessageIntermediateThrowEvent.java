@@ -1,24 +1,26 @@
-package org.jboss.tools.bpmn2.itests.editor.jbpm.startevents;
+package org.jboss.tools.bpmn2.itests.editor.jbpm.throwevents;
 
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCombo;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.swt.util.Bot;
+import org.jboss.tools.bpmn2.itests.editor.AbstractEvent;
 import org.jboss.tools.bpmn2.itests.editor.ConstructType;
 
 /**
  * 
  * @author Marek Baluch <mbaluch@redhat.com>
  */
-public class MessageStartEvent extends StartEvent {
-
+public class MessageIntermediateThrowEvent extends AbstractEvent {
+	
 	/**
 	 * 
 	 * @param name
 	 */
-	public MessageStartEvent(String name) {
-		super(name, ConstructType.MESSAGE_START_EVENT);
+	public MessageIntermediateThrowEvent(String name) {
+		super(name, ConstructType.MESSAGE_INTERMEDIATE_THROW_EVENT);
 	}
 
 	/**
