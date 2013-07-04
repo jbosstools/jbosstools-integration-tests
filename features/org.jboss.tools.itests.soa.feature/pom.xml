@@ -8,8 +8,36 @@
 	</parent>
 	<groupId>org.jboss.tools.itests.soa.features</groupId>
 	<artifactId>org.jboss.tools.itests.soa.feature</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>4.1.0-SNAPSHOT</version>
 	<packaging>eclipse-feature</packaging>
+	
+	<repositories>
+	  <!-- JBTIS Repository -->
+	  <repository>
+	    <id>jboss-tools-integretion-stack-site</id>
+	    <url>http://download.jboss.org/jbosstools/updates/integration/kepler/integration-stack/aggregate/4.1.0</url>
+	    <layout>p2</layout>
+	    <snapshots>
+	      <enabled>true</enabled>
+	    </snapshots>
+	    <releases>
+	      <enabled>true</enabled>
+	    </releases>
+	  </repository>
+	  <!-- Eclipse Orbit Repository -->
+	  <!-- This repository is used for XML Unit library -->
+	  <repository>
+	    <id>eclipse-orbit-site</id>
+	    <url>http://download.eclipse.org/tools/orbit/downloads/drops/R20130517111416/repository</url>
+	    <layout>p2</layout>
+	    <snapshots>
+	      <enabled>true</enabled>
+	    </snapshots>
+	    <releases>
+	      <enabled>true</enabled>
+	    </releases>
+	  </repository>
+	</repositories>
 	
 	<build>
 		<plugins>

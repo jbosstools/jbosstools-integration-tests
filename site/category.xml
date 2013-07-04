@@ -14,75 +14,10 @@
 	<category-def name="JBoss Tools Core Tests" label="JBoss Tools Core Tests"><description>JBoss Tools Core Tests</description></category-def>
 	<category-def name="SOA/BRMS/EDS Integration Stack Tests" label="SOA/BRMS/EDS Integration Stack Tests"><description>SOA/BRMS/EDS Integration Stack Tests</description></category-def>
 
-<feature url="features/org.jboss.tools.itests.feature_0.0.0.jar" id="org.jboss.tools.itests.feature" version="0.0.0"><category name="JBoss Tools Core Tests"/></feature>
-<!-- <feature url="features/org.jboss.tools.itests.feature.source_0.0.0.jar" id="org.jboss.tools.itests.feature.source" version="0.0.0"><category name="JBoss Tools Core Tests"/></feature> -->
+	<feature url="features/org.jboss.tools.itests.feature_0.0.0.jar" id="org.jboss.tools.itests.feature" version="0.0.0"><category name="JBoss Tools Core Tests"/></feature>
+	<!-- <feature url="features/org.jboss.tools.itests.feature.source_0.0.0.jar" id="org.jboss.tools.itests.feature.source" version="0.0.0"><category name="JBoss Tools Core Tests"/></feature> -->
 
-<!-- <feature url="features/org.jboss.tools.itests.feature_0.0.0.jar" id="org.jboss.tools.itests.feature" version="0.0.0"><category name="SOA/BRMS/EDS Integration Stack Tests"/></feature> -->
-<!-- <feature url="features/org.jboss.tools.itests.soa.feature.source_0.0.0.jar" id="org.jboss.tools.itests.soa.feature.source" version="0.0.0"><category name="SOA/BRMS/EDS Integration Stack Tests"/></feature> -->
-
-<feature url="features/org.jboss.ide.eclipse.archives.test.feature_0.0.0.jar" id="org.jboss.ide.eclipse.archives.test.feature" version="0.0.0"><category name="JBoss Tools Core Tests"/></feature>
-<feature url="features/org.jboss.ide.eclipse.as.test.feature_0.0.0.jar" id="org.jboss.ide.eclipse.as.test.feature" version="0.0.0"><category name="JBoss Tools Core Tests"/></feature>
-<feature url="features/org.jboss.tools.birt.test.feature_0.0.0.jar" id="org.jboss.tools.birt.test.feature" version="0.0.0"><category name="JBoss Tools Core Tests"/></feature>
-<feature url="features/org.jboss.tools.cdi.seam.test.feature_0.0.0.jar" id="org.jboss.tools.cdi.seam.test.feature" version="0.0.0"><category name="JBoss Tools Core Tests"/></feature>
-<feature url="features/org.jboss.tools.cdi.deltaspike.test.feature_0.0.0.jar" id="org.jboss.tools.cdi.deltaspike.test.feature" version="0.0.0"><category name="JBoss Tools Core Tests"/></feature>
-<feature url="features/org.jboss.tools.cdi.test.feature_0.0.0.jar" id="org.jboss.tools.cdi.test.feature" version="0.0.0"><category name="JBoss Tools Core Tests"/></feature>
-<feature url="features/org.jboss.tools.central.test.feature_0.0.0.jar" id="org.jboss.tools.central.test.feature" version="0.0.0"><category name="JBoss Tools Core Tests"/></feature>
-<feature url="features/org.jboss.tools.common.all.test.feature_0.0.0.jar" id="org.jboss.tools.common.all.test.feature" version="0.0.0"><category name="JBoss Tools Core Tests"/></feature>
-<feature url="features/org.jboss.tools.project.examples.test.feature_0.0.0.jar" id="org.jboss.tools.project.examples.test.feature" version="0.0.0"><category name="JBoss Tools Core Tests"/></feature>
-<feature url="features/org.jboss.tools.forge.test.feature_0.0.0.jar" id="org.jboss.tools.forge.test.feature" version="0.0.0"><category name="JBoss Tools Core Tests"/></feature>
-<feature url="features/org.jboss.ide.eclipse.freemarker.test.feature_0.0.0.jar" id="org.jboss.ide.eclipse.freemarker.test.feature" version="0.0.0"><category name="JBoss Tools Core Tests"/></feature>
-<feature url="features/org.hibernate.eclipse.test.feature_0.0.0.jar" id="org.hibernate.eclipse.test.feature" version="0.0.0"><category name="JBoss Tools Core Tests"/></feature>
-<feature url="features/org.jboss.tools.jmx.test.feature_0.0.0.jar" id="org.jboss.tools.jmx.test.feature" version="0.0.0"><category name="JBoss Tools Core Tests"/></feature>
-<feature url="features/org.jboss.tools.jsf.test.feature_0.0.0.jar" id="org.jboss.tools.jsf.test.feature" version="0.0.0"><category name="JBoss Tools Core Tests"/></feature>
-<feature url="features/org.jboss.tools.jst.test.feature_0.0.0.jar" id="org.jboss.tools.jst.test.feature" version="0.0.0"><category name="JBoss Tools Core Tests"/></feature>
-<feature url="features/org.jboss.tools.maven.test.feature_0.0.0.jar" id="org.jboss.tools.maven.test.feature" version="0.0.0"><category name="JBoss Tools Core Tests"/></feature>
-<feature url="features/org.jboss.tools.openshift.express.test.feature_0.0.0.jar" id="org.jboss.tools.openshift.express.test.feature" version="0.0.0"><category name="JBoss Tools Core Tests"/></feature>
-<feature url="features/org.jboss.tools.portlet.test.feature_0.0.0.jar" id="org.jboss.tools.portlet.test.feature" version="0.0.0"><category name="JBoss Tools Core Tests"/></feature>
-<feature url="features/org.jboss.tools.runtime.test.feature_0.0.0.jar" id="org.jboss.tools.runtime.test.feature" version="0.0.0"><category name="JBoss Tools Core Tests"/></feature>
-<feature url="features/org.jboss.tools.seam.test.feature_0.0.0.jar" id="org.jboss.tools.seam.test.feature" version="0.0.0"><category name="JBoss Tools Core Tests"/></feature>
-<feature url="features/org.jboss.tools.test.feature_0.0.0.jar" id="org.jboss.tools.test.feature" version="0.0.0"><category name="JBoss Tools Core Tests"/></feature>
-<feature url="features/org.jboss.tools.usage.test.feature_0.0.0.jar" id="org.jboss.tools.usage.test.feature" version="0.0.0"><category name="JBoss Tools Core Tests"/></feature>
-<feature url="features/org.jboss.tools.vpe.test.feature_0.0.0.jar" id="org.jboss.tools.vpe.test.feature" version="0.0.0"><category name="JBoss Tools Core Tests"/></feature>
-<feature url="features/org.jboss.tools.ws.test.feature_0.0.0.jar" id="org.jboss.tools.ws.test.feature" version="0.0.0"><category name="JBoss Tools Core Tests"/></feature>
-
-<feature url="features/org.jboss.ide.eclipse.archives.test.feature.source_0.0.0.jar" id="org.jboss.ide.eclipse.archives.test.feature.source" version="0.0.0"><category name="JBoss Tools Core Tests"/></feature>
-<feature url="features/org.jboss.ide.eclipse.as.test.feature.source_0.0.0.jar" id="org.jboss.ide.eclipse.as.test.feature.source" version="0.0.0"><category name="JBoss Tools Core Tests"/></feature>
-<feature url="features/org.jboss.tools.birt.test.feature.source_0.0.0.jar" id="org.jboss.tools.birt.test.feature.source" version="0.0.0"><category name="JBoss Tools Core Tests"/></feature>
-<feature url="features/org.jboss.tools.cdi.seam.test.feature.source_0.0.0.jar" id="org.jboss.tools.cdi.seam.test.feature.source" version="0.0.0"><category name="JBoss Tools Core Tests"/></feature>
-<feature url="features/org.jboss.tools.cdi.test.feature.source_0.0.0.jar" id="org.jboss.tools.cdi.test.feature.source" version="0.0.0"><category name="JBoss Tools Core Tests"/></feature>
-<feature url="features/org.jboss.tools.central.test.feature.source_0.0.0.jar" id="org.jboss.tools.central.test.feature.source" version="0.0.0"><category name="JBoss Tools Core Tests"/></feature>
-<feature url="features/org.jboss.tools.common.all.test.feature.source_0.0.0.jar" id="org.jboss.tools.common.all.test.feature.source" version="0.0.0"><category name="JBoss Tools Core Tests"/></feature>
-<feature url="features/org.jboss.tools.project.examples.test.feature.source_0.0.0.jar" id="org.jboss.tools.project.examples.test.feature.source" version="0.0.0"><category name="JBoss Tools Core Tests"/></feature>
-<feature url="features/org.jboss.tools.forge.test.feature.source_0.0.0.jar" id="org.jboss.tools.forge.test.feature.source" version="0.0.0"><category name="JBoss Tools Core Tests"/></feature>
-<feature url="features/org.jboss.ide.eclipse.freemarker.test.feature.source_0.0.0.jar" id="org.jboss.ide.eclipse.freemarker.test.feature.source" version="0.0.0"><category name="JBoss Tools Core Tests"/></feature>
-<feature url="features/org.hibernate.eclipse.test.feature.source_0.0.0.jar" id="org.hibernate.eclipse.test.feature.source" version="0.0.0"><category name="JBoss Tools Core Tests"/></feature>
-<feature url="features/org.jboss.tools.jmx.test.feature.source_0.0.0.jar" id="org.jboss.tools.jmx.test.feature.source" version="0.0.0"><category name="JBoss Tools Core Tests"/></feature>
-<feature url="features/org.jboss.tools.jsf.test.feature.source_0.0.0.jar" id="org.jboss.tools.jsf.test.feature.source" version="0.0.0"><category name="JBoss Tools Core Tests"/></feature>
-<feature url="features/org.jboss.tools.jst.test.feature.source_0.0.0.jar" id="org.jboss.tools.jst.test.feature.source" version="0.0.0"><category name="JBoss Tools Core Tests"/></feature>
-<feature url="features/org.jboss.tools.maven.test.feature.source_0.0.0.jar" id="org.jboss.tools.maven.test.feature.source" version="0.0.0"><category name="JBoss Tools Core Tests"/></feature>
-<feature url="features/org.jboss.tools.openshift.express.test.feature.source_0.0.0.jar" id="org.jboss.tools.openshift.express.test.feature.source" version="0.0.0"><category name="JBoss Tools Core Tests"/></feature>
-<feature url="features/org.jboss.tools.portlet.test.feature.source_0.0.0.jar" id="org.jboss.tools.portlet.test.feature.source" version="0.0.0"><category name="JBoss Tools Core Tests"/></feature>
-<feature url="features/org.jboss.tools.runtime.test.feature.source_0.0.0.jar" id="org.jboss.tools.runtime.test.feature.source" version="0.0.0"><category name="JBoss Tools Core Tests"/></feature>
-<feature url="features/org.jboss.tools.seam.test.feature.source_0.0.0.jar" id="org.jboss.tools.seam.test.feature.source" version="0.0.0"><category name="JBoss Tools Core Tests"/></feature>
-<feature url="features/org.jboss.tools.test.feature.source_0.0.0.jar" id="org.jboss.tools.test.feature.source" version="0.0.0"><category name="JBoss Tools Core Tests"/></feature>
-<feature url="features/org.jboss.tools.usage.test.feature.source_0.0.0.jar" id="org.jboss.tools.usage.test.feature.source" version="0.0.0"><category name="JBoss Tools Core Tests"/></feature>
-<feature url="features/org.jboss.tools.vpe.test.feature.source_0.0.0.jar" id="org.jboss.tools.vpe.test.feature.source" version="0.0.0"><category name="JBoss Tools Core Tests"/></feature>
-<feature url="features/org.jboss.tools.ws.test.feature.source_0.0.0.jar" id="org.jboss.tools.ws.test.feature.source" version="0.0.0"><category name="JBoss Tools Core Tests"/></feature>
-
-<feature url="features/org.jboss.tools.bpel.test.feature_0.0.0.jar" id="org.jboss.tools.bpel.test.feature" version="0.0.0"><category name="SOA/BRMS/EDS Integration Stack Tests"/></feature>
-<!-- JBIDE-13709 <feature url="features/org.jboss.tools.esb.test.feature_0.0.0.jar" id="org.jboss.tools.esb.test.feature" version="0.0.0"><category name="SOA/BRMS/EDS Integration Stack Tests"/></feature> -->
-<feature url="features/org.jboss.tools.jbpm3.test.feature_0.0.0.jar" id="org.jboss.tools.jbpm3.test.feature" version="0.0.0"><category name="SOA/BRMS/EDS Integration Stack Tests"/></feature>
-<feature url="features/org.jboss.tools.modeshape.rest.test.feature_0.0.0.jar" id="org.jboss.tools.modeshape.rest.test.feature" version="0.0.0"><category name="SOA/BRMS/EDS Integration Stack Tests"/></feature>
-<feature url="features/org.jboss.tools.modeshape.jcr.test.feature_0.0.0.jar" id="org.jboss.tools.modeshape.jcr.test.feature" version="0.0.0"><category name="SOA/BRMS/EDS Integration Stack Tests"/></feature>
-<!-- JBIDE-12828 where did this go? <feature url="features/org.jboss.tools.runtime.soa.test.feature_0.0.0.jar" id="org.jboss.tools.runtime.soa.test.feature" version="0.0.0"><category name="SOA/BRMS/EDS Integration Stack Tests"/></feature> -->
-
-<!-- TODO: add source features
-<feature url="features/org.jboss.tools.bpel.test.feature.source_0.0.0.jar" id="org.jboss.tools.bpel.test.feature.source" version="0.0.0"><category name="SOA/BRMS/EDS Integration Stack Tests"/></feature>
-<feature url="features/org.jboss.tools.esb.test.feature.source_0.0.0.jar" id="org.jboss.tools.esb.test.feature.source" version="0.0.0"><category name="SOA/BRMS/EDS Integration Stack Tests"/></feature>
-<feature url="features/org.jboss.tools.jbpm3.test.feature.source_0.0.0.jar" id="org.jboss.tools.jbpm3.test.feature.source" version="0.0.0"><category name="SOA/BRMS/EDS Integration Stack Tests"/></feature>
-<feature url="features/org.jboss.tools.modeshape.rest.test.feature.source_0.0.0.jar" id="org.jboss.tools.modeshape.rest.test.feature.source" version="0.0.0"><category name="SOA/BRMS/EDS Integration Stack Tests"/></feature>
-<feature url="features/org.jboss.tools.modeshape.jcr.test.feature.source_0.0.0.jar" id="org.jboss.tools.modeshape.jcr.test.feature.source" version="0.0.0"><category name="SOA/BRMS/EDS Integration Stack Tests"/></feature>
--->
-<!-- JBIDE-12828 where did this go? <feature url="features/org.jboss.tools.runtime.soa.test.feature.source_0.0.0.jar" id="org.jboss.tools.runtime.soa.test.feature.source" version="0.0.0"><category name="SOA/BRMS/EDS Integration Stack Tests"/></feature> -->
+	<!--feature url="features/org.jboss.tools.itests.soa.feature_0.0.0.jar" id="org.jboss.tools.itests.soa.feature" version="0.0.0"><category name="SOA/BRMS/EDS Integration Stack Tests"/></feature-->
+	<!-- <feature url="features/org.jboss.tools.itests.soa.feature.source_0.0.0.jar" id="org.jboss.tools.itests.soa.feature.source" version="0.0.0"><category name="SOA/BRMS/EDS Integration Stack Tests"/></feature> -->
 
 </site>
