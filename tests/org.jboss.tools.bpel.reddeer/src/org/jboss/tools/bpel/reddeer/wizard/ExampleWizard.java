@@ -1,17 +1,17 @@
 package org.jboss.tools.bpel.reddeer.wizard;
 
 import org.jboss.reddeer.eclipse.jface.wizard.NewWizardDialog;
-import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.tools.bpel.reddeer.condition.IsInProgress;
 
 /**
  * 
  * @author apodhrad
- *
+ * 
  */
 public class ExampleWizard extends NewWizardDialog {
 
@@ -25,9 +25,9 @@ public class ExampleWizard extends NewWizardDialog {
 	public void execute() {
 		open();
 
-		new WaitWhile(new ShellWithTextIsActive("Progress Information"), TimePeriod.LONG);
+		new WaitWhile(new IsInProgress(), TimePeriod.LONG);
 		try {
-			new DefaultTreeItem(1, examplePath).select();
+			new DefaultTreeItem(0, examplePath).select();
 		} catch (Exception e) {
 			throw new RuntimeException("Example '" + arrayToString(examplePath) + "' doesn't exist!");
 		}
