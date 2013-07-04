@@ -3,12 +3,8 @@ package org.jboss.tools.drools.reddeer.dialog;
 import org.drools.eclipse.util.DroolsRuntimeManager;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.tools.drools.reddeer.preference.DroolsRuntimesPreferencePage;
 
 public class DroolsRuntimeDialog {
-
-    public DroolsRuntimeDialog(DroolsRuntimesPreferencePage page) {
-    }
 
     public void setName(String name) {
         // FIXME space behind label text

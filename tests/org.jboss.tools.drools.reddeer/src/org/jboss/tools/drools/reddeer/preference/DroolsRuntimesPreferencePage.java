@@ -20,13 +20,13 @@ public class DroolsRuntimesPreferencePage extends PreferencePage {
 
     public DroolsRuntimeDialog addDroolsRuntime() {
         new PushButton("Add...").click();
-        return new DroolsRuntimeDialog(this);
+        return new DroolsRuntimeDialog();
     }
 
     public DroolsRuntimeDialog editDroolsRuntime(String name) {
         selectDroolsRuntime(name);
         new PushButton("Edit...").click();
-        return new DroolsRuntimeDialog(this);
+        return new DroolsRuntimeDialog();
     }
 
     public void removeDroolsRuntime(String name) {

@@ -1,11 +1,10 @@
 package org.jboss.tools.drools.reddeer.wizard;
 
-import org.jboss.reddeer.eclipse.jface.wizard.WizardDialog;
-import org.jboss.reddeer.eclipse.jface.wizard.WizardPage;
+import org.jboss.reddeer.eclipse.jface.wizard.NewWizardDialog;
 
-public class NewDslWizard extends WizardDialog {
+public class NewDslWizard extends NewWizardDialog {
 
-    public WizardPage getFirstPage() {
+    public NewDslWizardPage getFirstPage() {
         selectPage(1);
         return new NewDslWizardPage();
     }
@@ -15,4 +14,12 @@ public class NewDslWizard extends WizardDialog {
         return new NewDslSamplesWizardPage();
     }
 
+    public void createDefaultDsl(String path, String name) {
+        open();
+        NewDslWizardPage page = getFirstPage();
+        page.setParentFolder(path);
+        page.setDslName(name);
+        getSamplesPage().setAddSampleDsl(true);
+        finish();
+    }
 }
