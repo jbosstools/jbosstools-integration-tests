@@ -86,22 +86,18 @@ public class Construct {
 		this.type = type;
 		this.parent = parent;
 		
-		List<Matcher<? extends EditPart>> matchers = new ArrayList<Matcher<? extends EditPart>>();
-		matchers.add(new ConstructOfType<EditPart>(type.name()));
-		if (name != null) {
-			matchers.add(new ConstructWithName<EditPart>(name));
-		}
+		Matcher<EditPart>/*<? extends EditPart>*/ matcher1 = new ConstructOfType<EditPart>(type.name());
+		Matcher<EditPart>/*<? extends EditPart>*/ allMatcher = allOf(matcher1, new ConstructWithName<EditPart>(name));
 		
-		Matcher<? extends EditPart> matcher = allOf(matchers);
 		if (parent != null) {
-			List<SWTBotGefEditPart> editParts = editor.getEditParts(parent.editPart, matcher);
+			List<SWTBotGefEditPart> editParts = editor.getEditParts(parent.editPart, allMatcher);
 			if (!editParts.isEmpty()) {
 				editPart = editParts.get(index);
 			}
 		} else if (name != null) {
 			editPart = editor.getEditPart(name);
 		} else {
-			editPart = editor.getEditPart(matcher, index);
+			editPart = editor.getEditPart(allMatcher, index);
 		}
 		
 		if (editPart == null) {

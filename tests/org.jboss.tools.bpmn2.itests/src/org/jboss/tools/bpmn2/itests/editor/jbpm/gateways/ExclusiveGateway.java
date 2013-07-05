@@ -1,5 +1,7 @@
 package org.jboss.tools.bpmn2.itests.editor.jbpm.gateways;
 
+import org.jboss.reddeer.swt.impl.table.DefaultTable;
+import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.bpmn2.itests.editor.AbstractGateway;
 import org.jboss.tools.bpmn2.itests.editor.ConstructType;
 
@@ -17,6 +19,20 @@ public class ExclusiveGateway extends AbstractGateway {
 		super(name, ConstructType.EXCLUSIVE_GATEWAY);
 	}
 
+	/**
+	 * 
+	 * @param name
+	 * @param priority
+	 */
+	public void setPriority(String branch, String priority) {
+		select();
+		properties.selectTab("Gateway");
+		new DefaultTable(0).select(branch, 0);
+		properties.toolbarButton("Sequence Flow List", "Edit").click();
+		new LabeledText("Priority").setText(priority);
+		properties.toolbarButton("Sequence Flow Details", "Close").click();
+	}
+	
 	/**
 	 * @see org.jboss.tools.bpmn2.itests.editor.AbstractGateway#setDirection(org.jboss.tools.bpmn2.itests.editor.AbstractGateway.Direction)
 	 */

@@ -33,17 +33,17 @@ Bundle-ClassPath: .,
 Require-Bundle: 
  org.eclipse.gef,
  org.eclipse.graphiti,
- org.eclipse.ui.forms,
  org.eclipse.swtbot.eclipse.gef.finder,
  org.eclipse.swtbot.go,
+ org.eclipse.ui.forms,
  org.jboss.reddeer.swt,
  org.jboss.reddeer.eclipse,
  org.jboss.reddeer.workbench,
  org.jboss.reddeer.jface,
  org.jboss.reddeer.junit,
- org.hamcrest
+ org.hamcrest.library
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Vendor: Eclipse Foundation
 Eclipse-RegisterBuddy: org.apache.log4j
 Import-Package: org.apache.log4j
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6

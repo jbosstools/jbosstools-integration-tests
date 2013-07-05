@@ -1,23 +1,20 @@
-package org.jboss.tools.bpmn2.itests.editor.jbpm.endevents;
+package org.jboss.tools.bpmn2.itests.editor.jbpm.boundaryevents;
 
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCombo;
 import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.bpmn2.itests.editor.ConstructType;
 
 /**
  * 
- * @author Marek Baluch <mbaluch@redhat.com>
+ * @author mbaluch
  */
-public class EscalationEndEvent extends EndEvent {
-	
-	/**
-	 * 
-	 * @param name
-	 */
-	public EscalationEndEvent(String name) {
-		super(name, ConstructType.ESCALATION_END_EVENT);
+public class EscalationBoundaryEvent extends BoundaryEvent {
+
+	public EscalationBoundaryEvent(String name) {
+		super(name, ConstructType.CONDITIONAL_BOUNDARY_EVENT);
 	}
 
 	public void setEscalation(String escalationName, String escalationCode) {
