@@ -48,11 +48,11 @@ public abstract class AbstractGateway extends Construct {
 		select();
 		properties.selectTab("Gateway");
 		new DefaultTable(0).select(branch, 0);
-		Bot.get().toolbarButtonWithTooltip("Edit").click();
+		properties.toolbarButton("Sequence Flow List", "Edit").click();
 		new PushButton("Add Condition").click();
 		new DefaultCombo("Script Language").setSelection(lang);
 		new LabeledText("Constraint").setText(condition);
-		Bot.get().toolbarButtonWithTooltip("Close").click();
+		properties.toolbarButton("Sequence Flow Details", "Close").click();
 	}
 	
 	/**

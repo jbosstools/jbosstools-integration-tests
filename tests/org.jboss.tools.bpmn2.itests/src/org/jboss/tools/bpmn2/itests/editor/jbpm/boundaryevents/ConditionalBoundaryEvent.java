@@ -1,6 +1,5 @@
 package org.jboss.tools.bpmn2.itests.editor.jbpm.boundaryevents;
 
-import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;

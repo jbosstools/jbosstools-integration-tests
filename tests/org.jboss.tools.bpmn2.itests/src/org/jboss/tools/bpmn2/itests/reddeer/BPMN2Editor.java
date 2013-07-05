@@ -225,7 +225,7 @@ public class BPMN2Editor extends SWTBotGefEditor {
 		// e.g. 'Task 10'
 		List<Construct> constructList = new ArrayList<Construct>();
 		
-		Pattern pattern = Pattern.compile(constructType.toId() + "_[0-9]+");
+		Pattern pattern = Pattern.compile(constructType.toId() + "(_)?[0-9]+");
 		List<SWTBotGefEditPart> editPartList = getEditParts(new ConstructAttributeMatchingRegex<EditPart>("id", pattern));
 		
 		for (SWTBotGefEditPart editPart : editPartList) {
