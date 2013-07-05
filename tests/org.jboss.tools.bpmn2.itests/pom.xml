@@ -14,7 +14,7 @@
 	<properties>
 		<jbpm.site>https://repository.jboss.org/nexus/content/groups/public-jboss/</jbpm.site>
 		<jbtis.site>http://download.jboss.org/jbosstools/updates/integration/kepler/integration-stack/aggregate/4.1.0</jbtis.site>
-		<eclipse.graphiti.site>http://download.eclipse.org/graphiti/updates/0.9.0</eclipse.graphiti.site>
+		<eclipse.graphiti.site>http://download.eclipse.org/graphiti/updates/0.10.0</eclipse.graphiti.site>
 		<systemProperties>${integrationTestsSystemProperties} -Dswtbot.test.skip=false -Dtest.configurations.dir=resources/</systemProperties>
 		<droolsjbpm.version>6.0.0-SNAPSHOT</droolsjbpm.version>
 	</properties>
@@ -78,7 +78,6 @@
 				<enabled>true</enabled>
 			</releases>
 		</repository>
-		<!-- JBTIS Repository -->
 		<repository>
 			<id>jbtis-site</id>
 			<url>${jbtis.site}</url>

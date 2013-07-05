@@ -119,7 +119,6 @@ public class BPMN2Process extends Process {
 		properties.toolbarButton("Data Type List", "Add").click();
 		bot.textWithLabel("Data Type").setText(name);
 		bot.toolbarButtonWithTooltip("Close").click();
-//		new JBPM5DataType(name, 0).add();
 	}
 	
 	public void addImport(String dataType) {
