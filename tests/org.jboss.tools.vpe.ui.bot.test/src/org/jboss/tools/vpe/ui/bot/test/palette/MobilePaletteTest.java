@@ -40,7 +40,7 @@ public class MobilePaletteTest extends VPEAutoTestCase {
   /**
    * Checks if Mobile Palette is not present for JSF project 
    */
-	public void xxtestMobilePaletteNotPresentForJSFProject(){
+	public void testMobilePaletteNotPresentForJSFProject(){
 	  openPage();
     openPalette();	
     
@@ -101,7 +101,7 @@ public class MobilePaletteTest extends VPEAutoTestCase {
     assertFalse(stCode.isVisible());
     bot.button(IDELabel.Button.FINISH).click();
     bot.sleep(Timing.time3S());
-    String htmlSourceText = bot.editorByTitle(htmlPageName).toTextEditor().getText();
+    String htmlSourceText = bot.editorByTitle(htmlPageName).toTextEditor().getText().replaceAll("\n","").replaceAll("\t","").replaceAll("\r","");
     assertContains("<body><input type=\"checkbox\" name=\"checkbox-1\" id=\"checkbox-1\" class=\"custom\" data-mini=\"true\" data-theme=\"a\"/>", htmlSourceText);
     assertContains("<label for=\"checkbox-1\">" + labelValue + "</label>", htmlSourceText);
   }

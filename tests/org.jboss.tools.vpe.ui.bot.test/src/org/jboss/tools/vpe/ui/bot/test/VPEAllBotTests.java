@@ -127,7 +127,7 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses({
 	  VisualEditorContextMenuTest.class,
     EditingActionsTest.class,
-		NewXHTMLPageWizardTest.class, 
+		NewXHTMLPageWizardTest.class,
 		CodeCompletionTest.class,
 		ExternalizeStringsDialogTest.class,
 		CancelTagLibDefenitionTest.class,
@@ -227,11 +227,11 @@ import org.junit.runners.Suite.SuiteClasses;
     ScrollingSynchronizationTest.class,
 		ElForBundleValueTest_Jbide10531.class,
 		MobilePaletteTest.class,
-		OpenBrowserSimTest.class,
     BrowserSimLoadUrlTest.class,
     BrowserSimContextMenuTest.class,    
     LiveReloadServerTest.class,
-    BrowserSimLiveReloadTest.class})
+    BrowserSimLiveReloadTest.class,
+    OpenBrowserSimTest.class})
 public class VPEAllBotTests extends SWTBotTestCase{
 
 }

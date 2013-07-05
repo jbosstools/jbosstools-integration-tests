@@ -99,13 +99,16 @@ public class ToolbarTextFormattingTest extends VPEAutoTestCase {
 	  assertToolbarButtonIsEnabled(underlinedButton);
 	  boldButton.click();
 	  jspTextEditor.save();
-	  assertTagIsInserted("b", jspTextEditor.getTextOnCurrentLine(), ToolbarTextFormattingTest.TEXT_TEST_EXPRESSION);
+	  assertTagIsInserted("b", jspTextEditor.getTextOnLine(jspTextEditor.cursorPosition().line -1) 
+	      + jspTextEditor.getTextOnCurrentLine(), ToolbarTextFormattingTest.TEXT_TEST_EXPRESSION);
 	  italicButton.click();
     jspTextEditor.save();
-    assertTagIsInserted("i", jspTextEditor.getTextOnCurrentLine(), ToolbarTextFormattingTest.TEXT_TEST_EXPRESSION, "b");   
+    assertTagIsInserted("i", jspTextEditor.getTextOnLine(jspTextEditor.cursorPosition().line -1)
+        + jspTextEditor.getTextOnCurrentLine(), ToolbarTextFormattingTest.TEXT_TEST_EXPRESSION, "b");   
 	  underlinedButton.click();
     jspTextEditor.save();
-    assertTagIsInserted("u", jspTextEditor.getTextOnCurrentLine(), ToolbarTextFormattingTest.TEXT_TEST_EXPRESSION ,"b","i");
+    assertTagIsInserted("u", jspTextEditor.getTextOnLine(jspTextEditor.cursorPosition().line -1)
+        + jspTextEditor.getTextOnCurrentLine(), ToolbarTextFormattingTest.TEXT_TEST_EXPRESSION ,"b","i");
     bot.sleep(Timing.time2S());
     // Check if Text Format Buttons buttons are toggled
     assertToggleToolbarSelection(true, boldButton);
@@ -120,9 +123,10 @@ public class ToolbarTextFormattingTest extends VPEAutoTestCase {
     boldButton.click();
     jspTextEditor.save();
     String currentLine = jspTextEditor.getTextOnCurrentLine();
+    String expectedLineText = "<f:view>" + ToolbarTextFormattingTest.TEXT_TEST_EXPRESSION;
     assertTrue("Selected line has text: '" + currentLine + "'.\n" +
-        "Expected text is: '" + currentLine.equals(ToolbarTextFormattingTest.TEXT_TEST_EXPRESSION) + "'.",
-      currentLine.equals(ToolbarTextFormattingTest.TEXT_TEST_EXPRESSION));
+        "Expected text is: '" + expectedLineText + "'.",
+      currentLine.equals(expectedLineText));
     // Check if Text Format Buttons buttons are toggled
     assertToggleToolbarSelection(false, boldButton);
     assertToggleToolbarSelection(false, italicButton);
@@ -169,7 +173,7 @@ public class ToolbarTextFormattingTest extends VPEAutoTestCase {
 	  final String expectedLineText = sb.toString();
 	  assertTrue ("Selected line has text: '" + lineText + "'.\n" +
 	      "Expected text is: '" + expectedLineText + "'.",
-	    lineText.equals(expectedLineText ));
+	    lineText.endsWith(expectedLineText ));
 	}
 	 /**
    * Asserts if Toolbar Button is enabled
