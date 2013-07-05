@@ -10,12 +10,11 @@
 	</parent>
 	<groupId>org.jboss.tools.bpmn2.tests</groupId>
 	<artifactId>org.jboss.tools.bpmn2.itests</artifactId>
-	<version>4.1.0-SNAPSHOT</version>
 	<packaging>eclipse-test-plugin</packaging>
 	<properties>
 		<jbpm.site>https://repository.jboss.org/nexus/content/groups/public-jboss/</jbpm.site>
 		<jbtis.site>http://download.jboss.org/jbosstools/updates/integration/kepler/integration-stack/aggregate/4.1.0</jbtis.site>
-		<eclipse.graphiti.site>http://download.eclipse.org/graphiti/updates/0.9.0</eclipse.graphiti.site>
+		<eclipse.graphiti.site>http://download.eclipse.org/graphiti/updates/0.10.0</eclipse.graphiti.site>
 		<systemProperties>${integrationTestsSystemProperties} -Dswtbot.test.skip=false -Dtest.configurations.dir=resources/</systemProperties>
 		<droolsjbpm.version>6.0.0-SNAPSHOT</droolsjbpm.version>
 	</properties>
@@ -79,7 +78,6 @@
 				<enabled>true</enabled>
 			</releases>
 		</repository>
-		<!-- JBTIS Repository -->
 		<repository>
 			<id>jbtis-site</id>
 			<url>${jbtis.site}</url>
@@ -242,6 +240,25 @@
 											<goal>
 												copy-dependencies
 											</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											org.eclipse.tycho
+										</groupId>
+										<artifactId>
+											tycho-packaging-plugin
+										</artifactId>
+										<versionRange>
+											[0.18.0,)
+										</versionRange>
+										<goals>
+											<goal>validate-id</goal>
 										</goals>
 									</pluginExecutionFilter>
 									<action>

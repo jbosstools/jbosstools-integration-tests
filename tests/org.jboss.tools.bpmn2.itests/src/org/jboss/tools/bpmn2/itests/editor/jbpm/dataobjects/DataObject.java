@@ -1,14 +1,17 @@
 package org.jboss.tools.bpmn2.itests.editor.jbpm.dataobjects;
 
 import org.eclipse.swtbot.swt.finder.SWTBot;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotCombo;
 
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.util.Bot;
 
+import org.jboss.tools.bpmn2.itests.editor.ConnectionType;
 import org.jboss.tools.bpmn2.itests.editor.Construct;
 import org.jboss.tools.bpmn2.itests.editor.ConstructType;
+import org.jboss.tools.bpmn2.itests.editor.Position;
 import org.jboss.tools.bpmn2.itests.editor.jbpm.DataType;
 
 /**
@@ -34,19 +37,67 @@ public class DataObject extends Construct {
 	 * 
 	 * @param dataType
 	 */
-	protected void setDataObjectType(DataType dataType) {
+	public void setDataObjectType(String dataType) {
 		properties.selectTab(type.toToolName());
 		
-		try {
-			new DefaultCombo("Item Subject").setSelection(dataType.getName());
-			
-			dataType.add();
-		} catch (Exception e) {
-			new PushButton(0).click();
-			SWTBot viewBot = Bot.get().shell("Create New Data Type").bot();
-			viewBot.textWithLabel("Data Type").setText(dataType.getName());
-			viewBot.button("OK").click();
+		SWTBotCombo nameBox = bot.comboBoxWithLabel("Item Subject");
+		
+		if (properties.contains(nameBox, dataType)) {
+			nameBox.setSelection(dataType);
+		} else {
+			new DataType(dataType).add();
 		}
+	}
+
+	/**
+	 * @see org.jboss.tools.bpmn2.itests.editor.Construct#append(java.lang.String, org.jboss.tools.bpmn2.itests.editor.ConstructType)
+	 */
+	@Override
+	public void append(String name, ConstructType constructType) {
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * @see org.jboss.tools.bpmn2.itests.editor.Construct#append(java.lang.String, org.jboss.tools.bpmn2.itests.editor.ConstructType, org.jboss.tools.bpmn2.itests.editor.Position)
+	 */
+	@Override
+	public void append(String name, ConstructType constructType, Position position) {
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * @see org.jboss.tools.bpmn2.itests.editor.Construct#append(java.lang.String, org.jboss.tools.bpmn2.itests.editor.ConstructType, org.jboss.tools.bpmn2.itests.editor.ConnectionType)
+	 */
+	@Override
+	public void append(String name, ConstructType constructType, ConnectionType connectionType) {
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * @see org.jboss.tools.bpmn2.itests.editor.Construct#append(java.lang.String, org.jboss.tools.bpmn2.itests.editor.ConstructType, org.jboss.tools.bpmn2.itests.editor.ConnectionType, org.jboss.tools.bpmn2.itests.editor.Position)
+	 */
+	@Override
+	public void append(String name, ConstructType constructType, ConnectionType connectionType, Position relativePosition) {
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * @see org.jboss.tools.bpmn2.itests.editor.Construct#connectTo(org.jboss.tools.bpmn2.itests.editor.Construct)
+	 */
+	@Override
+	public void connectTo(Construct construct) {
+		this.connectTo(construct, ConnectionType.ASSOCIATION);
+	}
+
+	/**
+	 * @see org.jboss.tools.bpmn2.itests.editor.Construct#connectTo(org.jboss.tools.bpmn2.itests.editor.Construct, org.jboss.tools.bpmn2.itests.editor.ConnectionType)
+	 */
+	@Override
+	public void connectTo(Construct construct, ConnectionType connectionType) {
+		if (connectionType == ConnectionType.SEQUENCE_FLOW) {
+			throw new UnsupportedOperationException();
+		}
+		super.connectTo(construct, connectionType);
 	}
 	
 }

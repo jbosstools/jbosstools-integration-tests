@@ -1,4 +1,4 @@
-package org.jboss.tools.bpmn2.itests.editor.jbpm.endevents;
+package org.jboss.tools.bpmn2.itests.editor.jbpm.boundaryevents;
 
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
@@ -8,18 +8,25 @@ import org.jboss.tools.bpmn2.itests.editor.ConstructType;
 
 /**
  * 
- * @author Marek Baluch <mbaluch@redhat.com>
+ * @author mbaluch
  */
-public class ErrorEndEvent extends EndEvent {
-	
+public class ErrorBoundaryEvent extends BoundaryEvent {
+
 	/**
 	 * 
 	 * @param name
 	 */
-	public ErrorEndEvent(String name) {
-		super(name, ConstructType.ERROR_END_EVENT);
+	public ErrorBoundaryEvent(String name) {
+		super(name, ConstructType.ERROR_BOUNDARY_EVENT);
 	}
-
+	
+	/**
+	 * TBD: Merge this somehow with the ErrorEndEvent code. It's the same.
+	 * 
+	 * @param errorName
+	 * @param errorCode
+	 * @param errorStructure
+	 */
 	public void setErrorEvent(String errorName, String errorCode, String errorStructure) {
 		properties.selectTab("Event");
 		new DefaultTable().select(0);

@@ -54,7 +54,7 @@ public class ContainerConstruct extends Construct {
 		 * ISSUE: Need to have -5 otherwise it will hit the connection arrow if an activity is under it!!!
 		 * 		  Rerun AdHocSubProcessTest without the -5 to reproduce.
 		 */
-		int y = bounds.y + (bounds.height / 2 - 5);
+		int y = bounds.y + (bounds.height / 10);
 		/*
 		 * Add the construct
 		 */
