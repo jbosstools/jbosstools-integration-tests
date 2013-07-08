@@ -3,12 +3,12 @@ package org.jboss.tools.bpel.reddeer.wizard;
 import org.jboss.reddeer.eclipse.jface.wizard.ImportWizardDialog;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
-import org.jboss.reddeer.swt.impl.text.DefaultText;
+import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 
 /**
  * 
  * @author apodhrad
- *
+ * 
  */
 public class ImportProjectWizard extends ImportWizardDialog {
 
@@ -26,9 +26,9 @@ public class ImportProjectWizard extends ImportWizardDialog {
 
 		if (location.toLowerCase().endsWith(".zip")) {
 			new RadioButton(ARCHIVE_LABEL).click();
-			new DefaultText(2).setText(location);
+			new DefaultCombo(1).setText(location);
 		} else {
-			new DefaultText(1).setText(location);
+			new DefaultCombo(0).setText(location);
 		}
 
 		new PushButton("Refresh").click();

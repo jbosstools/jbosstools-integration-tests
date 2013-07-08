@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: org.jboss.tools.bpel.ui.bot.test
+Bundle-Name: BPEL Test
 Bundle-SymbolicName: org.jboss.tools.bpel.ui.bot.test
 Bundle-Version: 4.1.0.qualifier
 Bundle-Activator: org.jboss.tools.bpel.ui.bot.test.Activator
@@ -17,3 +17,4 @@ Import-Package: org.apache.log4j
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Vendor: JBoss by Red Hat
 Eclipse-RegisterBuddy: org.apache.log4j
+Eclipse-BundleShape: dir
