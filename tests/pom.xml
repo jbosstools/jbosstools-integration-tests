@@ -61,7 +61,8 @@
 				<module>org.jboss.tools.switchyard.ui.bot.test</module>
 				<module>org.jboss.tools.teiid.reddeer</module>
 				<module>org.jboss.tools.teiid.ui.bot.test</module>
-				<module>org.jboss.tools.modeshape.rest.ui.bot.test</module>
+				<module>org.jboss.tools.modeshape.reddeer</module>
+				<module>org.jboss.tools.modeshape.ui.bot.test</module>
 				<module>org.jboss.tools.drools.ui.bot.test</module>
 				<module>org.jboss.tools.bpmn2.itests</module>
 			</modules>

@@ -1,0 +1,18 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: ModeShape Reddeer
+Bundle-SymbolicName: org.jboss.tools.modeshape.reddeer
+Bundle-Version: 4.1.0.qualifier
+Bundle-Activator: org.jboss.tools.modeshape.reddeer.Activator
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Require-Bundle: org.jboss.reddeer.eclipse,
+ org.jboss.reddeer.gef,
+ org.jboss.reddeer.jface,
+ org.jboss.reddeer.junit,
+ org.jboss.reddeer.swt,
+ org.jboss.reddeer.workbench,
+ org.eclipse.swtbot.go
+Export-Package: org.jboss.tools.modeshape.reddeer.shell,
+ org.jboss.tools.modeshape.reddeer.util,
+ org.jboss.tools.modeshape.reddeer.view,
+ org.jboss.tools.modeshape.reddeer.wizard
