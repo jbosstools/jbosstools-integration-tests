@@ -94,7 +94,7 @@ public class BrowserSimLiveReloadTest extends VPEEditorTestCase{
     BrowserSimAssertions.assertBrowserTextContains(browserSimHandler, headingV0);
 		servers.openServerEditor(LiveReloadServerTest.SERVER_NAME);
 		SWTBotEditor edLiveReloadServer = bot.editorByTitle(LiveReloadServerTest.SERVER_NAME);
-		edLiveReloadServer.bot().checkBox("Inject the livreload.js script in HTML pages").click();
+		edLiveReloadServer.bot().checkBox("Inject the livereload.js script in HTML pages").click();
 		edLiveReloadServer.save();
 		edLiveReloadServer.close();
 		servers.restartServer(LiveReloadServerTest.SERVER_NAME);

@@ -134,9 +134,9 @@ import org.junit.runners.Suite.SuiteClasses;
     ScrollingSynchronizationTest.class,
     ElForBundleValueTest_Jbide10531.class,
     MobilePaletteTest.class,
-    OpenBrowserSimTest.class,
     LiveReloadServerTest.class,
-    BrowserSimLiveReloadTest.class    
+    BrowserSimLiveReloadTest.class,
+    OpenBrowserSimTest.class
 })
 public class VPEStableSubsetBotTests extends SWTBotTestCase {
 

@@ -74,7 +74,13 @@ public class OpenBrowserSimTest extends JBTSWTBotTestCase{
           p.getInputStream()));
       while ((line = input.readLine()) != null) {
         if(line.length() > 0){
-          result.add(line.split(" ")[1]);
+          String[] lineSplit = line.split(" ");
+          if (lineSplit.length > 1){
+            result.add(lineSplit[1]);  
+          }
+          else {
+            result.add("[PID]:" + lineSplit[0]);
+          }
         }
       }
       input.close();
