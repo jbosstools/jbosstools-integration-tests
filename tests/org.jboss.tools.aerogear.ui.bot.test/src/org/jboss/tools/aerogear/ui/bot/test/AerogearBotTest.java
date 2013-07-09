@@ -50,15 +50,52 @@ public class AerogearBotTest extends SWTTestExt {
 		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_20S, TIME_1S);
 	}
 
-	public void runTreeItemAsHybridApplication(SWTBotTreeItem treeItem) {
+	public void runTreeItemInAndroidEmulator(SWTBotTreeItem treeItem) {
 		treeItem.select();
 		treeItem.click();
 
 		// TODO: Order/content of context many may change
 		// TODO: Need to check presence of Android SDK installation
-		bot.menu("Run").menu("Run As").menu("2 Run on Android Emulator").click();
-		
+		bot.menu("Run").menu("Run As").menu("2 Run on Android Emulator")
+				.click();
+
 		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 2, TIME_1S);
 	}
 
+	public void runTreeItemOnAndroidDevice(SWTBotTreeItem treeItem) {
+		treeItem.select();
+		treeItem.click();
+
+		// TODO: Order/content of context many may change
+		// TODO: Need to check presence of Android SDK installation
+		bot.menu("Run").menu("Run As").menu("2 Run on Android Emulator")
+				.click();
+
+		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 2, TIME_1S);
+	}
+
+	public void runTreeItemWithCordovaSim(SWTBotTreeItem treeItem) {
+		treeItem.select();
+		treeItem.click();
+		
+		bot.menu("Run").menu("Run As").menu("3 Run with CordovaSim").click();
+		
+		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 2, TIME_1S);
+		bot.sleep(TIME_5S);
+	}
+
+	public void closeCordovaSim() {
+		// TODO: Not implemented yet
+		// Hopefully will get killed by Jenkins
+	}
+	
+	public void openInConfigEditor(SWTBotTreeItem treeItem) {
+		treeItem.select();
+		treeItem.click();
+
+		treeItem.expandNode("www", "config.xml").contextMenu("Open Wit&h")
+				.menu("Cordova Configuration Editor").click();
+
+		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 2, TIME_1S);
+	}
 }
