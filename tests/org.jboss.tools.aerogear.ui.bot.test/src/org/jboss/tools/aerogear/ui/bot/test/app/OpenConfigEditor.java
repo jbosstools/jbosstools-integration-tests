@@ -9,32 +9,33 @@ import org.junit.Before;
 import org.junit.Test;
 
 @Require(clearWorkspace = true)
-public class RunOnAndroid extends AerogearBotTest {
+public class OpenConfigEditor extends AerogearBotTest {
 
-	private String CORDOVA_APP = "Cordova_app_" + new Date().getTime();
+	private final String CORDOVA_APP = "Cordova_app_" + new Date().getTime();
 
 	@Before
-	public void canCreateHybridApplication() {
+	public void canCreateHTMLHybridApplication() {
 		createHTMLHybridMobileApplication(CORDOVA_APP, "Aerogear Cordova Test",
 				"org.jboss.example.cordova");
+
+		assertTrue(projectExplorer.existsResource(CORDOVA_APP));
 	}
 
 	@Test
-	public void canRunOnAndroidEmulator() {
+	public void canOpenConfigXmlEditor() {
 		projectExplorer.selectProject(CORDOVA_APP);
 
-		runTreeItemInAndroidEmulator(bot.tree().expandNode(CORDOVA_APP));
+		openInConfigEditor(bot.tree().expandNode(CORDOVA_APP));
+
+		assertTrue(bot.activeEditor().getTitle()
+				.equalsIgnoreCase("Cordova Configuration Editor"));
 	}
 
-	@Test
-	public void canRunOnAndroidDevice() {
-		projectExplorer.selectProject(CORDOVA_APP);
-
-		runTreeItemInAndroidEmulator(bot.tree().expandNode(CORDOVA_APP));
-	}
-	
 	@After
 	public void deleteHybridApplication() {
+		// close config editor before deleting project
+		bot.activeEditor().close();
+		
 		projectExplorer.deleteProject(CORDOVA_APP, true);
 	}
 

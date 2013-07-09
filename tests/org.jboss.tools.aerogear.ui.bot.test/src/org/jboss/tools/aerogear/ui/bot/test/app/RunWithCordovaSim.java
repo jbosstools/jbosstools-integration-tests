@@ -8,8 +8,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-@Require(clearWorkspace = true)
-public class RunOnAndroid extends AerogearBotTest {
+@Require(clearWorkspace = true, perspective="JBoss")
+public class RunWithCordovaSim extends AerogearBotTest {
 
 	private String CORDOVA_APP = "Cordova_app_" + new Date().getTime();
 
@@ -20,21 +20,17 @@ public class RunOnAndroid extends AerogearBotTest {
 	}
 
 	@Test
-	public void canRunOnAndroidEmulator() {
+	public void canRunWithCordovaSim() {
 		projectExplorer.selectProject(CORDOVA_APP);
 
-		runTreeItemInAndroidEmulator(bot.tree().expandNode(CORDOVA_APP));
+		runTreeItemWithCordovaSim(bot.tree().expandNode(CORDOVA_APP));
 	}
 
-	@Test
-	public void canRunOnAndroidDevice() {
-		projectExplorer.selectProject(CORDOVA_APP);
-
-		runTreeItemInAndroidEmulator(bot.tree().expandNode(CORDOVA_APP));
-	}
-	
 	@After
 	public void deleteHybridApplication() {
+		// close CordovaSim before deleting project
+		closeCordovaSim();
+		
 		projectExplorer.deleteProject(CORDOVA_APP, true);
 	}
 
