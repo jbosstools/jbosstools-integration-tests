@@ -13,26 +13,44 @@ package org.jboss.tools.jbpm.ui.bot.test;
 import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.GraphicalEditPart;
-import org.eclipse.swtbot.eclipse.gef.finder.SWTGefBot;
+import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotMultiPageEditor;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditor;
-import org.jboss.tools.jbpm.ui.bot.test.suite.JBPMTest;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
-import org.jboss.tools.ui.bot.ext.gef.SWTBotGefEditorExt;
-import org.jboss.tools.ui.bot.ext.gef.SWTBotGefFigure;
-import org.jboss.tools.ui.bot.ext.widgets.SWTBotMultiPageEditor;
+import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.swt.util.Bot;
+import org.jboss.tools.jbpm.ui.bot.test.editor.JBPMEditor;
+import org.jboss.tools.jbpm.ui.bot.test.suite.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.tools.jbpm.ui.bot.test.suite.JBPMRequirement.JBPM;
+import org.jboss.tools.jbpm.ui.bot.test.suite.JBPMSuite;
+import org.jboss.tools.jbpm.ui.bot.test.suite.PerspectiveRequirement.Perspective;
+import org.jboss.tools.jbpm.ui.bot.test.wizard.JBPMProjectWizard;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
-@Require(perspective = "jBPM jPDL 3", clearProjects = false, clearWorkspace = false)
-public class GPDTest extends JBPMTest {
+@JBPM
+@CleanWorkspace
+@Perspective(name = "jBPM jPDL 3")
+public class GPDTest extends SWTBotTestCase {
 
-	String[] nodes = { "start", "first", "end" };
+	public static final String PROJECT = "gpdtest";
+
+	@BeforeClass
+	public static void createProject() {
+		/* Create jBPM3 Project */
+		JBPMProjectWizard projectWizard = new JBPMProjectWizard();
+		projectWizard.open();
+		projectWizard.setName(PROJECT).next();
+		projectWizard.setRuntime(JBPMSuite.getJBPMRuntime()).finish();
+	}
 
 	@Test
-	public void selectNodes() {
-		SWTGefBot gefBot = new SWTGefBot();
-		SWTBotGefEditor editor = gefBot.gefEditor("simple");
-		SWTBotMultiPageEditor multi = new SWTBotMultiPageEditor(
-				editor.getReference(), gefBot);
+	public void gpdTest() {
+		/* Open Simple Diagram */
+		new ProjectExplorer().getProject(PROJECT).getProjectItem("src", "main", "jpdl", "simple.jpdl.xml").open();
+
+		/* Find Nodes */
+		final SWTBotGefEditor editor = new JBPMEditor("simple");
+		SWTBotMultiPageEditor multi = new SWTBotMultiPageEditor(editor.getReference(), Bot.get());
 		multi.activatePage("Diagram");
 
 		String[] nodes = { "start", "first", "end" };
@@ -40,27 +58,14 @@ public class GPDTest extends JBPMTest {
 		for (String node : nodes) {
 			editor.getEditPart(node).select();
 		}
-	}
 
-	@Test
-	public void resizeNodes() {
-
-		SWTGefBot gefBot = new SWTGefBot();
-		SWTBotGefEditor editor = gefBot.gefEditor("simple");
-
+		/* Resize Nodes */
 		for (String node : nodes) {
 			editor.getEditPart(node).select().focus();
-			editor.getEditPart(node).resize(PositionConstants.SOUTH_EAST, 100,
-					70);
+			editor.getEditPart(node).resize(PositionConstants.SOUTH_EAST, 100, 70);
 		}
 		editor.save();
-	}
 
-	@Test
-	public void moveNodes() {
-
-		SWTGefBot gefBot = new SWTGefBot();
-		final SWTBotGefEditor editor = gefBot.gefEditor("simple");
 		final Rectangle[] abounds = new Rectangle[1];
 
 		for (final String node : nodes) {
@@ -68,31 +73,20 @@ public class GPDTest extends JBPMTest {
 			bot.getDisplay().syncExec(new Runnable() {
 				@Override
 				public void run() {
-					abounds[0] = ((GraphicalEditPart) editor.getEditPart(node)
-							.part()).getFigure().getBounds();
+					abounds[0] = ((GraphicalEditPart) editor.getEditPart(node).part()).getFigure().getBounds();
 				}
 
 			});
 			Rectangle bounds = abounds[0];
-			editor.drag(editor.getEditPart(node), bounds.x + 100,
-					bounds.y + 100);
+			editor.drag(editor.getEditPart(node), bounds.x + 100, bounds.y + 100);
 		}
 		editor.save();
-	}
 
-	@Test
-	public void renameNodes() {
-		SWTBotGefEditorExt editor = new SWTBotGefEditorExt("simple");
-
+		/* Edit Labels */
 		for (String node : nodes) {
-			SWTBotGefFigure label = editor.labelFigure(node);
-			editor.setLabelText(label, node + "_NEXT");
+			editor.getEditPart(node).activateDirectEdit();
+			editor.directEditType(node + "_NEXT");
 			editor.save();
-			log.info("Label: \"" + label.getText() + "\"");
-			// TODO Bug, label is reported as unchanged although it's not, needs investigation
-			// assertTrue(label.getText().equals(node + "_NEXT"));
-			
 		}
-		bot.sleep(TIME_5S);
 	}
 }

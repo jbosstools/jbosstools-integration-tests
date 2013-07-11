@@ -10,62 +10,33 @@
  ******************************************************************************/
 package org.jboss.tools.jbpm.ui.bot.test;
 
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
-import org.jboss.tools.jbpm.ui.bot.test.suite.JBPMTest;
-import org.jboss.tools.jbpm.ui.bot.test.suite.Project;
-import org.jboss.tools.ui.bot.ext.config.Annotations.JBPM;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
-import org.jboss.tools.ui.bot.ext.config.TestConfigurator;
-import org.jboss.tools.ui.bot.ext.types.EntityType;
-import org.jboss.tools.ui.bot.ext.types.IDELabel;
-import org.jboss.tools.ui.bot.ext.view.PackageExplorer;
+import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.swt.util.Bot;
+import org.jboss.tools.jbpm.ui.bot.test.suite.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.tools.jbpm.ui.bot.test.suite.JBPMRequirement.JBPM;
+import org.jboss.tools.jbpm.ui.bot.test.suite.JBPMSuite;
+import org.jboss.tools.jbpm.ui.bot.test.suite.PerspectiveRequirement.Perspective;
+import org.jboss.tools.jbpm.ui.bot.test.wizard.JBPMProjectWizard;
 import org.junit.Test;
 
-@Require(jbpm=@JBPM, perspective = "jBPM jPDL 3", clearProjects = false)
-public class JBPMProjectTest extends JBPMTest {
+@JBPM
+@CleanWorkspace
+@Perspective(name = "jBPM jPDL 3")
+public class JBPMProjectTest extends SWTBotTestCase {
 
 	@Test
 	public void createProject() {
+		/* Create Project */
+		JBPMProjectWizard projectWizard = new JBPMProjectWizard();
+		projectWizard.open();
+		projectWizard.setName("test").next();
+		projectWizard.setRuntime(JBPMSuite.getJBPMRuntime()).finish();
 
-		// Create project
-		eclipse.createNew(EntityType.JBPM3_PROJECT);
-		bot.textWithLabel("Project name:").setText(Project.PROJECT_NAME);
-		bot.clickButton(IDELabel.Button.NEXT);
-
-		String rtName = "JBPM-"
-				+ TestConfigurator.currentConfig.getJBPM().version;
-
-		// There is a bug related to undefined runtime even if it's defined (FIXED)		
-		// bot.textWithLabel("Name :").setText(rtName);
-		// String rtHome = TestConfigurator.currentConfig.getJBPM().jbpmHome;
-		// bot.textWithLabel("Location :").setText(rtHome);
+		new ProjectExplorer().getProject("test").getProjectItem("src", "main", "jpdl", "simple.jpdl.xml").open();
 		
-		bot.comboBox(0).setSelection(rtName);		
-		String msg3 = "Press next to continue the project creation";
-
-		/*
-		try {
-			bot.text(msg3);
-		} catch (WidgetNotFoundException e) {
-			fail("Missing confirmation during jbpm runtime definition text");
-		}
-		*/
-
-		//bot.clickButton(IDELabel.Button.NEXT);
-		//bot.clickButton(IDELabel.Button.FINISH);
-
-		bot.comboBox().setSelection(rtName);
-
-		SWTBotShell wizard = bot.activeShell();
-		bot.clickButton(IDELabel.Button.FINISH);
-		util.waitForNonIgnoredJobs();
-		eclipse.waitForClosedShell(wizard);
+		Bot.get().editorByTitle("simple");
+	
 	}
 
-	@Test
-	public void openProcess() {
-		PackageExplorer pe = new PackageExplorer();
-		pe.openFile(Project.PROJECT_NAME, "src/main/jpdl", "simple.jpdl.xml");
-		util.waitForNonIgnoredJobs();
-	}
 }
