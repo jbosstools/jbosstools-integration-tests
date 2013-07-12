@@ -5,6 +5,7 @@ import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardDialog;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jface.wizard.NewWizardDialog;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.swt.util.Bot;
 import org.jboss.tools.switchyard.reddeer.component.Component;
 import org.jboss.tools.switchyard.reddeer.component.Reference;
 import org.jboss.tools.switchyard.reddeer.component.Service;
@@ -21,6 +22,7 @@ import org.jboss.tools.switchyard.ui.bot.test.suite.PerspectiveRequirement.Persp
 import org.jboss.tools.switchyard.ui.bot.test.suite.ServerRequirement.Server;
 import org.jboss.tools.switchyard.ui.bot.test.suite.ServerRequirement.State;
 import org.jboss.tools.switchyard.ui.bot.test.suite.ServerRequirement.Type;
+import org.jboss.tools.switchyard.ui.bot.test.suite.SwitchyardSuite;
 import org.jboss.tools.switchyard.ui.bot.test.util.SoapClient;
 import org.junit.Before;
 import org.junit.Test;
@@ -54,7 +56,7 @@ public class WSProxySOAPTest extends SWTBotTestCase {
 		new WebProjectWizard("web").create();
 		new ProjectExplorer().getProject("web").select();
 		new WebServiceWizard("Hello").create();
-		new ServerDeployment("AS-7.1").deployProject("web");
+		new ServerDeployment(SwitchyardSuite.getServerName()).deployProject("web");
 
 		/* Create SwicthYard Project */
 		new SwitchYardProjectWizard(PROJECT).impl("Camel Route").binding("SOAP").create();
@@ -78,15 +80,9 @@ public class WSProxySOAPTest extends SWTBotTestCase {
 		new SwitchYardEditor().save();
 
 		/* Test Web Service Proxy */
-		try {
-			new ServerDeployment("AS-7.1").deployProject(PROJECT);
-			SoapClient.testResponses("http://localhost:8080/proxy/HelloService?wsdl", "WSProxy");
-		} catch (Exception e) {
-			e.printStackTrace();
-			new ServerDeployment("AS-7.1").fullPublish(PROJECT);
-			SoapClient.testResponses("http://localhost:8080/proxy/HelloService?wsdl", "WSProxy");
-		}
-
+		new ServerDeployment(SwitchyardSuite.getServerName()).deployProject(PROJECT);
+		SoapClient.testResponses("http://localhost:8080/proxy/HelloService?wsdl", "WSProxy");
+		Bot.get().sleep(10 * 1000);
 	}
 
 	private class WebServiceWizard extends NewJavaClassWizardDialog {

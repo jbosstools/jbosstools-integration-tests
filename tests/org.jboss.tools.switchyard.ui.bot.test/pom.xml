@@ -13,11 +13,13 @@
 	<packaging>eclipse-test-plugin</packaging>
 
 	<properties>
-	  <systemProperties>${integrationTestsSystemProperties} -Dswtbot.test.properties.file=./swtbot.properties</systemProperties>
+	  <swtbot.properties>./swtbot.properties</swtbot.properties>
+	  <systemProperties>${integrationTestsSystemProperties} -Dswtbot.test.properties.file=${swtbot.properties}</systemProperties>
 	  <surefire.timeout>10800</surefire.timeout>
 	  <test.class>AllTests</test.class>
 	  <jbtis.site>http://download.jboss.org/jbosstools/updates/integration/kepler/integration-stack/aggregate/4.1.0</jbtis.site>
 	  <orbit.site>http://download.eclipse.org/tools/orbit/downloads/drops/R20130517111416/repository</orbit.site>
+	  <maven-download-plugin.version>1.0.0</maven-download-plugin.version>
 	</properties>
 
 	<repositories>
@@ -58,7 +60,7 @@
 		<testSuite>org.jboss.tools.switchyard.ui.bot.test</testSuite>
 		<testClass>org.jboss.tools.switchyard.ui.bot.test.suite.${test.class}</testClass>
 		<useUIThread>false</useUIThread>
-		<skip>${swtbot.test.skip}</skip>
+		<skip>${skipTests}</skip>
 		<dependencies combine.children="append">
 		  <!-- SwitchYard feature -->
 		  <dependency>
@@ -111,7 +113,7 @@
 	  <profile>
 	    <id>switchyard</id>
 	    <properties>
-	      <systemProperties>${integrationTestsSystemProperties} -Dswtbot.test.properties.file=target/switchyard.properties</systemProperties>
+	      <swtbot.properties>${requirementsDirectory}/switchyard.properties</swtbot.properties>
 	    </properties>
 	    <build>
 	      <plugins>
@@ -119,6 +121,7 @@
 		<plugin>
 		  <groupId>com.googlecode.maven-download-plugin</groupId>
 		  <artifactId>maven-download-plugin</artifactId>
+		  <version>${maven-download-plugin.version}</version>
 		  <executions>
 		    <execution>
 		      <id>get-switchyard</id>
@@ -145,7 +148,65 @@
 		      </goals>
 		      <configuration>
 			<tasks>
-			  <echo file="target/switchyard.properties">SERVER=AS,7.1,default,target/requirements/switchyard-as7-0.8</echo>
+			  <echo file="${swtbot.properties}">SERVER=AS,7.1,default,${requirementsDirectory}/switchyard-as7-0.8</echo>
+			</tasks>
+		      </configuration>
+		    </execution>
+		  </executions>
+		</plugin>
+	      </plugins>	      
+	    </build>
+	  </profile>
+	  <profile>
+	    <id>soa600</id>
+	    <properties>
+	      <swtbot.properties>${requirementsDirectory}/soa6.properties</swtbot.properties>
+	    </properties>
+	    <build>
+	      <plugins>
+		<!-- Install SOA 6 -->
+		<plugin>
+		  <groupId>com.googlecode.maven-download-plugin</groupId>
+		  <artifactId>maven-download-plugin</artifactId>
+		  <version>${maven-download-plugin.version}</version>
+		  <executions>
+		    <execution>
+		      <id>get-eap</id>
+		      <phase>pre-integration-test</phase>
+		      <goals>
+			<goal>wget</goal>
+		      </goals>
+		      <configuration>
+			<url>${eap610.url}</url>
+			<unpack>true</unpack>
+		      </configuration>
+		    </execution>
+		    <execution>
+		      <id>get-soa</id>
+		      <phase>pre-integration-test</phase>
+		      <goals>
+			<goal>wget</goal>
+		      </goals>
+		      <configuration>
+			<url>${soa600.url}</url>
+			<unpack>true</unpack>
+		      </configuration>
+		    </execution>
+		  </executions>
+		</plugin>
+		<plugin>
+		  <artifactId>maven-antrun-plugin</artifactId>
+		  <version>${maven.antrun.plugin.version}</version>
+		  <executions>
+		    <execution>
+		      <id>prepare-swtbot</id>
+		      <phase>pre-integration-test</phase>
+		      <goals>
+			<goal>run</goal>
+		      </goals>
+		      <configuration>
+			<tasks>
+			  <echo file="${swtbot.properties}">SERVER=SOA,6.0.0,default,${requirementsDirectory}/jboss-eap-6.1</echo>
 			</tasks>
 		      </configuration>
 		    </execution>

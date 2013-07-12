@@ -4,6 +4,7 @@ import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jface.wizard.NewWizardDialog;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.swt.util.Bot;
 import org.jboss.tools.switchyard.reddeer.component.Component;
 import org.jboss.tools.switchyard.reddeer.component.Reference;
 import org.jboss.tools.switchyard.reddeer.component.Service;
@@ -21,6 +22,7 @@ import org.jboss.tools.switchyard.ui.bot.test.suite.PerspectiveRequirement.Persp
 import org.jboss.tools.switchyard.ui.bot.test.suite.ServerRequirement.Server;
 import org.jboss.tools.switchyard.ui.bot.test.suite.ServerRequirement.State;
 import org.jboss.tools.switchyard.ui.bot.test.suite.ServerRequirement.Type;
+import org.jboss.tools.switchyard.ui.bot.test.suite.SwitchyardSuite;
 import org.jboss.tools.switchyard.ui.bot.test.util.SoapClient;
 import org.junit.Before;
 import org.junit.Test;
@@ -62,7 +64,7 @@ public class WSProxyRESTTest extends SWTBotTestCase {
 				.type("return \"Hello \" + name;").saveAndClose();
 
 		/* Deploy RESTful Service */
-		new ServerDeployment("AS-7.1").deployProject("rest");
+		new ServerDeployment(SwitchyardSuite.getServerName()).deployProject("rest");
 
 		/* Create SwicthYard Project */
 		new SwitchYardProjectWizard(PROJECT).impl("Camel Route").binding("SOAP", "REST").create();
@@ -118,15 +120,9 @@ public class WSProxyRESTTest extends SWTBotTestCase {
 		new SwitchYardEditor().save();
 
 		/* Test Web Service Proxy */
-		try {
-			new ServerDeployment("AS-7.1").deployProject(PROJECT);
-			SoapClient.testResponses("http://localhost:8080/" + PROJECT + "/Hello?wsdl",
-					"WSProxyREST");
-		} catch (Exception e) {
-			new ServerDeployment("AS-7.1").fullPublish(PROJECT);
-			SoapClient.testResponses("http://localhost:8080/" + PROJECT + "/Hello?wsdl",
-					"WSProxyREST");
-		}
+		new ServerDeployment(SwitchyardSuite.getServerName()).deployProject(PROJECT);
+		SoapClient.testResponses("http://localhost:8080/" + PROJECT + "/Hello?wsdl", "WSProxyREST");
+		Bot.get().sleep(10 * 1000);
 	}
 
 	private class RestServiceWizard extends NewWizardDialog {
