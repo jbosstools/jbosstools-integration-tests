@@ -10,32 +10,49 @@
  ******************************************************************************/
 package org.jboss.tools.jbpm.ui.bot.test;
 
-import org.eclipse.swt.graphics.Rectangle;
-import org.jboss.tools.jbpm.ui.bot.test.suite.JBPMTest;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
-import org.jboss.tools.ui.bot.ext.gef.SWTArranger;
-import org.jboss.tools.ui.bot.ext.gef.SWTBotGefEditorExt;
+import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.tools.jbpm.ui.bot.test.editor.JBPMEditor;
+import org.jboss.tools.jbpm.ui.bot.test.suite.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.tools.jbpm.ui.bot.test.suite.JBPMRequirement.JBPM;
+import org.jboss.tools.jbpm.ui.bot.test.suite.JBPMSuite;
+import org.jboss.tools.jbpm.ui.bot.test.suite.PerspectiveRequirement.Perspective;
+import org.jboss.tools.jbpm.ui.bot.test.wizard.JBPMProjectWizard;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
-@Require(perspective = "jBPM jPDL 3", clearProjects = false, clearWorkspace = false)
-public class GPDPaletteTest extends JBPMTest {
+@JBPM
+@CleanWorkspace
+@Perspective(name = "jBPM jPDL 3")
+public class GPDPaletteTest extends SWTBotTestCase {
+
+	public static final String PROJECT = "palettetest";
+
+	@BeforeClass
+	public static void createProject() {
+		/* Create jBPM3 Project */
+		JBPMProjectWizard projectWizard = new JBPMProjectWizard();
+		projectWizard.open();
+		projectWizard.setName(PROJECT).next();
+		projectWizard.setRuntime(JBPMSuite.getJBPMRuntime()).finish();
+	}
 
 	@Test
 	public void insertNodes() {
+		/* Open Simple Diagram */
+		new ProjectExplorer().getProject(PROJECT).getProjectItem("src", "main", "jpdl", "simple.jpdl.xml").open();
 
-		String[] entities = { "Select", "Start", "State", "End", "Fork",
-				"Join", "Decision", "Node", "TaskNode", "MailNode",
-				"ESB Service", "Process State", "Super State", "Transition" };
+		String[] entities = { "Select", "Start", "State", "End", "Fork", "Join", "Decision", "Node", "Task Node",
+				"Mail Node", "ESB Service", "Process State", "Super State", "Transition" };
 
-		SWTBotGefEditorExt editor = new SWTBotGefEditorExt("simple");
-		editor.insertEntity("Node", 100, 100);
-
-		Rectangle cr = editor.getCanvasBounds();		
-		SWTArranger arranger = new SWTArranger();
-		arranger.setOrigin(cr);
-		
-		bot.sleep(TIME_10S);
-		
+		/* Add All Entities */
+		JBPMEditor editor = new JBPMEditor("simple");
+		for (int i = 0; i < entities.length; i++) {
+			int x = 100;
+			int y = 100 + 10 * i;
+			String entity = entities[i];
+			editor.insertEntity(entity, x, y);
+		}
 		editor.save();
 	}
 }

@@ -1,124 +1,58 @@
 package org.jboss.tools.jbpm.ui.bot.test;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.nio.channels.FileChannel;
-
-import org.eclipse.core.runtime.Platform;
-import org.eclipse.swtbot.swt.finder.SWTBot;
-import org.jboss.tools.jbpm.ui.bot.test.Activator;
-import org.jboss.tools.ui.bot.ext.SWTEclipseExt;
-import org.jboss.tools.ui.bot.ext.SWTTestExt;
-import org.jboss.tools.ui.bot.ext.SWTUtilExt;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
-import org.jboss.tools.ui.bot.ext.entity.JavaProjectEntity;
-import org.jboss.tools.ui.bot.ext.gen.ActionItem;
-import org.jboss.tools.ui.bot.ext.types.IDELabel;
+import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
+import org.jboss.reddeer.eclipse.jdt.ui.ide.NewJavaProjectWizardDialog;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.menu.ShellMenu;
+import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.tools.jbpm.ui.bot.test.suite.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.tools.jbpm.ui.bot.test.suite.PerspectiveRequirement.Perspective;
+import org.jboss.tools.jbpm.ui.bot.test.wizard.ExportBPMNWizard;
+import org.jboss.tools.jbpm.ui.bot.test.wizard.ImportFileWizard;
+import org.junit.Before;
 import org.junit.Test;
 
-@Require(clearProjects = true, perspective = "Java")
-public class BPMNConvertCase extends SWTTestExt {
+@CleanWorkspace
+@Perspective(name = "Java")
+public class BPMNConvertCase extends SWTBotTestCase {
 
 	private String projectName = "BPMNConvertProject";
 	private String originalFolder = "original";
 	private String targetFolder = "target";
 	private String file1 = "PolicyPricingProcess.bpmn";
-	private String file2 = "PolicyPricingProcess.bpmn_diagram";
 
-	@Test
-	public void createProject() {
+	@Before
+	public void prepareProject() {
 		// Create Java Project
-		JavaProjectEntity project = new JavaProjectEntity();
-		project.setProjectName(projectName);
-		eclipse.createJavaProject(project);
+		NewJavaProjectWizardDialog projectWizard = new NewJavaProjectWizardDialog();
+		projectWizard.open();
+		projectWizard.getFirstPage().setProjectName(projectName);
+		projectWizard.finish();
 
 		// create original folder
-		packageExplorer.selectProject(projectName);
-		bot.menu("File").menu("New").menu("Folder").click();
-		bot.textWithLabel("Folder name:").setText(originalFolder);
-		open.finish(bot);
+		new PackageExplorer().getProject(projectName).select();
+		new ShellMenu("File", "New", "Folder").select();
+		new LabeledText("Folder name:").setText(originalFolder);
+		new PushButton("Finish").click();
 
 		// create target folder
-		packageExplorer.selectProject(projectName);
-		bot.menu("File").menu("New").menu("Folder").click();
-		bot.textWithLabel("Folder name:").setText(targetFolder);
-		open.finish(bot);
-	}
+		new PackageExplorer().getProject(projectName).select();
+		new ShellMenu("File", "New", "Folder").select();
+		new LabeledText("Folder name:").setText(targetFolder);
+		new PushButton("Finish").click();
 
-	@Test
-	public void importFiles() {
-		// file1
-		File in = SWTUtilExt.getResourceFile(Activator.PLUGIN_ID, "original",
-				file1);
-		File out = new File(Platform.getLocation() + File.separator
-				+ projectName + File.separator + originalFolder
-				+ File.separator + file1);
-		copyFile(in, out);
-
-		// file2
-		in = SWTUtilExt.getResourceFile(Activator.PLUGIN_ID, "original", file2);
-		out = new File(Platform.getLocation() + File.separator + projectName
-				+ File.separator + originalFolder + File.separator + file2);
-		copyFile(in, out);
-
-		// refresh
-		packageExplorer.selectProject(projectName);
-		bot.menu("File").menu("Refresh").click();
-
-		util.waitForNonIgnoredJobs();
-
-		eclipse.openFile(projectName, originalFolder, file1);
-		eclipse.openFile(projectName, originalFolder, file2);
-
-		bot.closeAllEditors();
+		// import files
+		new PackageExplorer().getProject(projectName).getProjectItem(originalFolder).select();
+		new ImportFileWizard().importFile("resources/" + originalFolder, originalFolder);
 	}
 
 	@Test
 	public void convertProcess() {
-		SWTBot viewBot = bot.viewByTitle(IDELabel.View.PACKAGE_EXPLORER).bot();		
-		SWTEclipseExt.selectTreeLocation(viewBot,projectName, originalFolder, file1);
-		
-		open.newExport(ActionItem.Export.BPMNBPMNtojPDL.LABEL);
-		bot.clickButton(IDELabel.Button.NEXT);
-		bot.clickButton(IDELabel.Button.NEXT);
-		bot.clickButton(IDELabel.Button.NEXT);
-
-		bot.tree().expandNode(projectName).select(targetFolder);
-		open.finish(bot);
-
-		// refresh target folder
-		packageExplorer.selectProject(projectName);
-		bot.menu("File").menu("Refresh").click();
-
-		// open converted jbpm file
-		eclipse.openFile(projectName, targetFolder, "jpdl", file1,
-				"Policy Pricing", "processdefinition.xml");
-
-		bot.sleep(TIME_10S);
-	}
-
-	private void copyFile(File in, File out) {
-		try {
-
-			FileChannel inChannel = null;
-			FileChannel outChannel = null;
-
-			inChannel = new FileInputStream(in).getChannel();
-			outChannel = new FileOutputStream(out).getChannel();
-
-			inChannel.transferTo(0, inChannel.size(), outChannel);
-
-			if (inChannel != null)
-				inChannel.close();
-			if (outChannel != null)
-				outChannel.close();
-			log.info("File " + in.getAbsolutePath() + " copied");
-		} catch (Exception e) {
-			log.error(e.getMessage());
-			fail("Error during copying files " + in.getAbsolutePath() + " - "
-					+ e.getMessage());
-		}
+		new PackageExplorer().getProject(projectName).getProjectItem(originalFolder, file1).select();
+		new ExportBPMNWizard().exportFile(projectName, targetFolder);
+		new PackageExplorer().getProject(projectName)
+				.getProjectItem(targetFolder, "jpdl", file1, "Policy Pricing", "processdefinition.xml").open();
 	}
 
 }

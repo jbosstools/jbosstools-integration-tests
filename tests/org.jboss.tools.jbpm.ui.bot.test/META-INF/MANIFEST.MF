@@ -1,21 +1,21 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: jBPM Tools SWTBot Tests
+Bundle-Name: jBPM Tools Bot Tests
 Bundle-SymbolicName: org.jboss.tools.jbpm.ui.bot.test
 Bundle-Version: 4.1.0.qualifier
 Bundle-Activator: org.jboss.tools.jbpm.ui.bot.test.Activator
-Require-Bundle: org.eclipse.ui,
- org.eclipse.core.runtime,
- org.eclipse.swtbot.eclipse.core,
+Require-Bundle: org.eclipse.gef,
+ org.eclipse.swtbot.go,
  org.eclipse.swtbot.eclipse.finder,
  org.eclipse.swtbot.eclipse.gef.finder,
- org.eclipse.swtbot.eclipse.ui,
- org.eclipse.swtbot.go,
- org.eclipse.swtbot.junit4_x,
- org.eclipse.swtbot.swt.finder,
- org.apache.log4j,
- org.junit,
- org.eclipse.gef,
- org.jboss.tools.ui.bot.ext;bundle-version="[4.1.0,4.2.0)"
+ org.jboss.reddeer.eclipse,
+ org.jboss.reddeer.jface,
+ org.jboss.reddeer.junit,
+ org.jboss.reddeer.requirements,
+ org.jboss.reddeer.swt,
+ org.jboss.reddeer.workbench
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Import-Package: org.apache.log4j
+Eclipse-RegisterBuddy: org.apache.log4j
+Eclipse-BundleShape: dir
