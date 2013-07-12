@@ -107,10 +107,21 @@ public class SwitchyardSuite extends RedDeerSuite {
 
 	private static String[] getServerType(String type, String version) {
 		String[] serverType = new String[2];
-		if (type.equals("SOA")) {
+		if (type.equals("EAP")) {
+			serverType[0] = "JBoss Enterprise Middleware";
+			if (version.startsWith("6.0")) {
+				serverType[1] = "JBoss Enterprise Application Platform 6.0";
+			}
+			if (version.startsWith("6.1")) {
+				serverType[1] = "JBoss Enterprise Application Platform 6.1";
+			}
+		} else if (type.equals("SOA")) {
 			serverType[0] = "JBoss Enterprise Middleware";
 			if (version.startsWith("5")) {
 				serverType[1] = "JBoss Enterprise Application Platform 5.x";
+			}
+			if (version.startsWith("6")) {
+				serverType[1] = "JBoss Enterprise Application Platform 6.1";
 			}
 		} else if (type.equals("AS")) {
 			serverType[0] = "JBoss Community";
@@ -123,10 +134,21 @@ public class SwitchyardSuite extends RedDeerSuite {
 
 	private static String[] getServerRuntime(String type, String version) {
 		String[] serverRuntime = new String[2];
-		if (type.equals("SOA")) {
+		if (type.equals("EAP")) {
+			serverRuntime[0] = "JBoss Enterprise Middleware";
+			if (version.startsWith("6.0")) {
+				serverRuntime[1] = "JBoss Enterprise Application Platform 6.0 Runtime";
+			}
+			if (version.startsWith("6.1")) {
+				serverRuntime[1] = "JBoss Enterprise Application Platform 6.1 Runtime";
+			}
+		} else if (type.equals("SOA")) {
 			serverRuntime[0] = "JBoss Enterprise Middleware";
 			if (version.startsWith("5")) {
 				serverRuntime[1] = "JBoss Enterprise Application Platform 5.x Runtime";
+			}
+			if (version.startsWith("6")) {
+				serverRuntime[1] = "JBoss Enterprise Application Platform 6.1 Runtime";
 			}
 		} else if (type.equals("AS")) {
 			serverRuntime[0] = "JBoss Community";

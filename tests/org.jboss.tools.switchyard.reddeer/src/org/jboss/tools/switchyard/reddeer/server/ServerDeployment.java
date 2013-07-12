@@ -49,8 +49,10 @@ public class ServerDeployment {
 				new WaitWhile(new ShellWithTextIsActive(ADD_REMOVE_LABEL), TimePeriod.LONG);
 				new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 				checkDeployment();
+				return;
 			}
 		}
+		throw new RuntimeException("Cannot find server '" + server + "'");
 	}
 
 	public void fullPublish(String project) {

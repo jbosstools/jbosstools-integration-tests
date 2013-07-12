@@ -110,7 +110,7 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 
 	private void selectComponents(List<String[]> components) {
 		for (String[] component : components) {
-			new DefaultTreeItem(1, component).setChecked(true);
+			new DefaultTreeItem(component).setChecked(true);
 		}
 	}
 

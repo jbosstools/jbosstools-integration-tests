@@ -4,6 +4,7 @@ import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.ProjectItem;
+import org.jboss.reddeer.swt.util.Bot;
 import org.jboss.tools.switchyard.reddeer.component.Bean;
 import org.jboss.tools.switchyard.reddeer.component.Component;
 import org.jboss.tools.switchyard.reddeer.component.Service;
@@ -20,6 +21,7 @@ import org.jboss.tools.switchyard.ui.bot.test.suite.PerspectiveRequirement.Persp
 import org.jboss.tools.switchyard.ui.bot.test.suite.ServerRequirement.Server;
 import org.jboss.tools.switchyard.ui.bot.test.suite.ServerRequirement.State;
 import org.jboss.tools.switchyard.ui.bot.test.suite.ServerRequirement.Type;
+import org.jboss.tools.switchyard.ui.bot.test.suite.SwitchyardSuite;
 import org.jboss.tools.switchyard.ui.bot.test.util.SoapClient;
 import org.junit.Test;
 
@@ -108,14 +110,9 @@ public class SimpleTest extends SWTBotTestCase {
 		new SwitchYardEditor().save();
 
 		/* Test SOAP Response */
-		try {
-			new ServerDeployment("AS-7.1").deployProject(PROJECT);
-			SoapClient.testResponses("http://localhost:8080/test/ExampleService?wsdl", "Hello");
-		} catch (Exception e) {
-			e.printStackTrace();
-			new ServerDeployment("AS-7.1").fullPublish(PROJECT);
-			SoapClient.testResponses("http://localhost:8080/test/ExampleService?wsdl", "Hello");
-		}
+		new ServerDeployment(SwitchyardSuite.getServerName()).deployProject(PROJECT);
+		SoapClient.testResponses("http://localhost:8080/test/ExampleService?wsdl", "Hello");
+		Bot.get().sleep(10 * 1000);
 	}
 
 	private static Project getProject() {

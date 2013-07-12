@@ -22,7 +22,7 @@ public class ServerPreferencePage extends PreferencePage {
 
 	public void addServerRuntime(String name, String path, String... type) {
 		new PushButton("Add...").click();
-		new DefaultTreeItem(0, type).select();
+		new DefaultTreeItem(type).select();
 		new PushButton("Next >").click();
 		new LabeledText("Name").setText(name);
 		new LabeledText("Home Directory").setText(path);
