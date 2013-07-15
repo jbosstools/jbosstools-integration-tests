@@ -25,17 +25,11 @@ public class EmbedCartridges extends OpenShiftBotTest {
 	}
 
 	@Test
-	public void canEmbedCron() {
+	public void canEmbedCartridges() {
 		embedCartrige(OpenShiftUI.Cartridge.CRON);
-	}
-
-	@Test
-	public void canEmbedMysql() {
+		
 		embedCartrige(OpenShiftUI.Cartridge.MYSQL);
-	}
-
-	@Test
-	public void canEmbedPgSql() {
+		
 		embedCartrige(OpenShiftUI.Cartridge.POSTGRESQL);
 	}
 

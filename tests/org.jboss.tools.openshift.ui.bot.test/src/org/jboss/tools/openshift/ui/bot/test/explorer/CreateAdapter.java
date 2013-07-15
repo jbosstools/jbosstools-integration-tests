@@ -20,7 +20,8 @@ public class CreateAdapter extends OpenShiftBotTest {
 
 	@Before
 	public void createDYIApp() {
-		createOpenShiftApplication(DYI_APP, OpenShiftUI.AppType.DIY);
+		createOpenShiftApplicationWithoutAdapter(DYI_APP,
+				OpenShiftUI.AppType.DIY);
 	}
 
 	@Test
@@ -30,11 +31,16 @@ public class CreateAdapter extends OpenShiftBotTest {
 
 		SWTBotTreeItem account = openshiftExplorer.bot().tree().getAllItems()[0]
 				.doubleClick(); // expand account
-
+		
 		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 2, TIME_1S);
 
-		account.getNode(0).contextMenu(OpenShiftUI.Labels.EXPLORER_ADAPTER)
-				.click();
+		// refresh explorer
+		openshiftExplorer.bot().tree().getAllItems()[0].contextMenu(
+				OpenShiftUI.Labels.REFRESH).click();
+		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 2, TIME_1S);
+		
+		account.getNode(DYI_APP + " " + OpenShiftUI.AppTypeOld.DIY)
+				.contextMenu(OpenShiftUI.Labels.EXPLORER_ADAPTER).click();
 
 		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 2, TIME_1S);
 		bot.waitForShell(OpenShiftUI.Shell.ADAPTER);

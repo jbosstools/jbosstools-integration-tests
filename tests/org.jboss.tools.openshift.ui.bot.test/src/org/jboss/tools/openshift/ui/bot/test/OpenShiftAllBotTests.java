@@ -50,8 +50,8 @@ import org.junit.runners.Suite.SuiteClasses;
 	/* App */
 	CreateDeleteJBossApp.class,
 	//CreateDeleteEWSApp.class,
-	CreateDeletePHPApp.class,
-	CreateDeletePythonApp.class,
+	//CreateDeletePHPApp.class,
+	//CreateDeletePythonApp.class,
 	CreateDeleteScaledRubyApp.class,
 	RestartApplication.class,
 	//RepublishApp.class,
