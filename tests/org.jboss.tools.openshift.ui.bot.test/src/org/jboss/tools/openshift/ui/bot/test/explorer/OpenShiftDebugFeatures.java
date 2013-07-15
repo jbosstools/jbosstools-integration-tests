@@ -13,6 +13,13 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * Test class for tailing remote files, port forwarding, opening web browser & displaying env.variables.
+ * To prevent creation of OpenShift application for each test, all tests are included in one test method.
+ * 
+ * @author sbunciak
+ *
+ */
 @Require(clearWorkspace = true)
 public class OpenShiftDebugFeatures extends OpenShiftBotTest {
 
@@ -22,8 +29,18 @@ public class OpenShiftDebugFeatures extends OpenShiftBotTest {
 	public void createDYIApp() {
 		createOpenShiftApplication(DYI_APP, OpenShiftUI.AppType.DIY);
 	}
-
+	
 	@Test
+	public void testDebugFeatures() {
+		canTailFiles();
+		
+		canForwardPorts();
+		
+		canOpenWebBrowser();
+		
+		canShowEnvVariables();
+	}
+	
 	public void canTailFiles() {
 		SWTBotView openshiftExplorer = open
 				.viewOpen(OpenShiftUI.Explorer.iView);
@@ -49,7 +66,6 @@ public class OpenShiftDebugFeatures extends OpenShiftBotTest {
 				.getConsoleText().isEmpty());
 	}
 
-	@Test
 	public void canForwardPorts() {
 		SWTBotView openshiftExplorer = open
 				.viewOpen(OpenShiftUI.Explorer.iView);
@@ -70,8 +86,8 @@ public class OpenShiftDebugFeatures extends OpenShiftBotTest {
 		bot.waitForShell(OpenShiftUI.Shell.PORTS);
 		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 2, TIME_1S);
 		bot.sleep(TIME_5S);
-		bot.button("Start All").click(); // TODO
-
+		bot.button("Start All").click(); 
+		
 		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 2, TIME_1S);
 		bot.button("OK").click();
 
@@ -90,7 +106,6 @@ public class OpenShiftDebugFeatures extends OpenShiftBotTest {
 		bot.button("OK").click();
 	}
 
-	@Test
 	public void canOpenWebBrowser() {
 		SWTBotView openshiftExplorer = open
 				.viewOpen(OpenShiftUI.Explorer.iView);
@@ -112,7 +127,6 @@ public class OpenShiftDebugFeatures extends OpenShiftBotTest {
 				.contains("OpenShift"));
 	}
 
-	@Test
 	public void canShowEnvVariables() {
 		SWTBotView openshiftExplorer = open
 				.viewOpen(OpenShiftUI.Explorer.iView);

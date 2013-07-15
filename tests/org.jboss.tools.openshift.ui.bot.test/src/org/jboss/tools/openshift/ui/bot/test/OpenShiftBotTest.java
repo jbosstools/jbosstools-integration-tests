@@ -21,7 +21,7 @@ public class OpenShiftBotTest extends SWTTestExt {
 			final String APP_TYPE) {
 
 		try {
-			createOpenShiftApplicationScaling(APP_NAME, APP_TYPE, false);
+			createOpenShiftApplicationScaling(APP_NAME, APP_TYPE, false, true);
 		} catch (OpenShiftBotTestException e) {
 			log.error("*** OpenShift Endpoint failure. ***", e);
 			System.exit(1);
@@ -33,7 +33,18 @@ public class OpenShiftBotTest extends SWTTestExt {
 			final String APP_TYPE) {
 
 		try {
-			createOpenShiftApplicationScaling(APP_NAME, APP_TYPE, true);
+			createOpenShiftApplicationScaling(APP_NAME, APP_TYPE, true, true);
+		} catch (OpenShiftBotTestException e) {
+			log.error("*** OpenShift Endpoint failure. ***", e);
+			System.exit(1);
+		}
+	}
+	
+	protected void createOpenShiftApplicationWithoutAdapter(final String APP_NAME,
+			final String APP_TYPE) {
+
+		try {
+			createOpenShiftApplicationScaling(APP_NAME, APP_TYPE, false, false);
 		} catch (OpenShiftBotTestException e) {
 			log.error("*** OpenShift Endpoint failure. ***", e);
 			System.exit(1);
@@ -42,7 +53,7 @@ public class OpenShiftBotTest extends SWTTestExt {
 
 	// assumes proper setup of SSH keys
 	private void createOpenShiftApplicationScaling(final String APP_NAME,
-			final String APP_TYPE, final boolean scaling)
+			final String APP_TYPE, final boolean scaling, final boolean createAdapter)
 			throws OpenShiftBotTestException {
 		// open OpenShift Explorer
 		SWTBotView openshiftExplorer = open
@@ -72,6 +83,15 @@ public class OpenShiftBotTest extends SWTTestExt {
 		bot.sleep(TIME_1S * 3);
 
 		bot.waitUntil(Conditions.widgetIsEnabled(bot
+				.button(IDELabel.Button.NEXT)));
+		bot.button(IDELabel.Button.NEXT).click();
+		
+		// create server adapter?
+		if (!createAdapter) {
+			bot.checkBox(1).deselect();
+		}
+		
+		bot.waitUntil(Conditions.widgetIsEnabled(bot
 				.button(IDELabel.Button.FINISH)));
 		bot.button(IDELabel.Button.FINISH).click();
 
@@ -79,15 +99,15 @@ public class OpenShiftBotTest extends SWTTestExt {
 
 		SWTBotShell shell;
 		
-		// TODO: workaround for 'embedding DYI'
-		if (APP_TYPE.equals(OpenShiftUI.AppType.DIY)) {
-			shell = bot.waitForShell("Embedded Cartridges", TIME_30S);
+		// workaround for 'embedding DYI'
+		if (APP_TYPE.equals(OpenShiftUI.AppType.DIY) || scaling) {
+			shell = bot.waitForShell("Embedded Cartridges", 180);
 			if (shell != null)
 				bot.button(IDELabel.Button.OK).click();
 		}
 		
 		// with random names it will appear everytime
-		shell = bot.waitForShell("Question", TIME_60S * 4);
+		shell = bot.waitForShell("Question", 180);
 		if (shell == null) {
 			throw new OpenShiftBotTestException(
 					"Waiting for creation of application " + APP_NAME + " "
@@ -95,25 +115,31 @@ public class OpenShiftBotTest extends SWTTestExt {
 		}
 		bot.button(IDELabel.Button.YES).click();
 
+		bot.sleep(TIME_10S);
+		
 		// publish changes
-		bot.waitForShell("Publish " + APP_NAME + "?", TIME_60S);
-		bot.button(IDELabel.Button.YES).click();
+		if (createAdapter) {
+			bot.waitForShell("Publish " + APP_NAME + "?", -1);
+			bot.button(IDELabel.Button.YES).click();
+			
+			bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 10, TIME_1S);
 
-		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 10, TIME_1S);
+			// check successful build after auto git push
+			console.show();
+			assertTrue(!console.getConsoleText().isEmpty());
 
-		// check successful build after auto git push
-		console.show();
-		assertTrue(!console.getConsoleText().isEmpty());
+			if (!console.getConsoleText().contains("BUILD SUCCESS")
+					&& APP_TYPE.contains("JBoss")) {
+				log.error("*** OpenShift SWTBot Tests: OpenShift build output does not contain succesfull maven build. ***");
+			}
 
-		if (!console.getConsoleText().contains("BUILD SUCCESS")
-				&& APP_TYPE.contains("JBoss")) {
-			log.error("*** OpenShift SWTBot Tests: OpenShift build output does not contain succesfull maven build. ***");
+			servers.show();
+			assertTrue(servers.serverExists(APP_NAME + " at OpenShift"));
+			log.info("*** OpenShift SWTBot Tests: OpenShift Server Adapter created. ***");
+			
+			
 		}
-
-		servers.show();
-		assertTrue(servers.serverExists(APP_NAME + " at OpenShift"));
-
-		log.info("*** OpenShift SWTBot Tests: OpenShift Server Adapter created. ***");
+		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 10, TIME_1S  * 3);
 	}
 
 	protected void deleteOpenShiftApplication(final String APP_NAME,
@@ -144,8 +170,13 @@ public class OpenShiftBotTest extends SWTTestExt {
 				account.getItems().length == 0);
 
 		projectExplorer.show();
+		// manually refresh all projects in project explorer so they can be removed with swt bot
+		for(SWTBotTreeItem item : projectExplorer.bot().tree().getAllItems()) {
+			item.contextMenu("Refresh").click();
+			bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 2, TIME_1S);
+		} 
+		
 		projectExplorer.deleteAllProjects();
-
 		assertFalse("The project still exists!",
 				bot.tree().getAllItems().length > 0);
 

@@ -32,6 +32,11 @@ public class RestartApplication extends OpenShiftBotTest {
 
 		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 2, TIME_1S);
 
+		// refresh explorer
+		openshiftExplorer.bot().tree().getAllItems()[0].contextMenu(
+				OpenShiftUI.Labels.REFRESH).click();
+		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 2, TIME_1S);
+
 		account.getNode(DYI_APP + " " + OpenShiftUI.AppTypeOld.DIY)
 				.contextMenu(OpenShiftUI.Labels.EXPLORER_RESTART_APP).click();
 		
