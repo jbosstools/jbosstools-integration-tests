@@ -12,6 +12,7 @@ import org.jboss.tools.ui.bot.ext.gen.ActionItem.Server.JBossCommunityJBossAS51;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.Server.JBossCommunityJBossAS6x;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.Server.JBossCommunityJBossAS70;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.Server.JBossCommunityJBossAS71;
+import org.jboss.tools.ui.bot.ext.gen.ActionItem.Server.JBossCommunityWildFly8;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.Server.JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform43;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.Server.JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform5x;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.Server.JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform60;
@@ -24,6 +25,7 @@ import org.jboss.tools.ui.bot.ext.gen.ActionItem.ServerRuntime.JBossCommunityJBo
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.ServerRuntime.JBossCommunityJBoss6xRuntime;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.ServerRuntime.JBossCommunityJBoss70Runtime;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.ServerRuntime.JBossCommunityJBoss71Runtime;
+import org.jboss.tools.ui.bot.ext.gen.ActionItem.ServerRuntime.JBossCommunityWildFly8Runtime;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.ServerRuntime.JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform43Runtime;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.ServerRuntime.JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform5xRuntime;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.ServerRuntime.JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform60Runtime;
@@ -134,6 +136,11 @@ public class AddServer extends RequirementBase {
 						JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform60.LABEL);
 			}			
 			
+		}
+		if (TestConfigurator.Values.SERVER_TYPE_WILDFLY.equals(serverType)){
+			if ("8".equals(version)){
+				return new ServerInfo(JBossCommunityWildFly8Runtime.LABEL, JBossCommunityWildFly8.LABEL);
+			}
 		}
 		if (TestConfigurator.Values.SERVER_TYPE_EPP.equals(serverType)) {
 			if ("4.3".equals(version)) {

@@ -62,6 +62,7 @@ public class TestConfigurator {
 		public static final String SERVER_TYPE_EAP = "EAP";
 		public static final String SERVER_TYPE_SOA = "SOA";
 		public static final String SERVER_TYPE_AS = "AS";
+		public static final String SERVER_TYPE_WILDFLY = "WILDFLY";
 		public static final String SERVER_WITH_DEFAULT_JAVA = "default";
 	}
 	/**
