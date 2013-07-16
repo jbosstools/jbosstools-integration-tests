@@ -270,6 +270,10 @@ public class Annotations {
 		 */
 		JPP,
 		/**
+		 * WildFly (successor of JBossAS)
+		 */
+		WildFly,
+		/**
 		 * all server types acceptable
 		 */
 		ALL

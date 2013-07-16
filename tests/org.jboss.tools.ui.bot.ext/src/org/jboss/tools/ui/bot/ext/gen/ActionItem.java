@@ -1698,6 +1698,23 @@ public static String getItemString(IActionItem item) {
 			*/
 			public static final String TEXT_DIRECTORY = "Directory:";
 			}
+		public static class JBossCommunityWildFly8 {
+			/**
+			* represents item : JBoss Community->WildFly 8.0 (Expreimental)
+			*/
+			public static final IServer LABEL = new IServer() {
+				public String getName() { return "WildFly 8.0 (Experimental)";}
+				public List<String> getGroupPath() {
+					List<String> l = new Vector<String>();
+					l.add("JBoss Community");
+					return l;
+				}
+			};
+			/**
+			* text field labeled 'Directory:'
+			*/
+			public static final String TEXT_DIRECTORY = "Directory:";
+			}
 		public static class ApacheTomcatv32Server {
 			/**
 			* represents item : Apache->Tomcat v3.2 Server
@@ -10866,6 +10883,23 @@ public static String getItemString(IActionItem item) {
 			*/
 			public static final String TEXT_DIRECTORY = "Directory:";
 			}
+		public static class JBossCommunityWildFly8Runtime {
+			/**
+			 * reptresents item : WildFly 8.0 Runtime (Experimental)
+			 */
+			public static final IServerRuntime LABEL = new IServerRuntime() {
+				public String getName() { return "WildFly 8.0 Runtime (Experimental)";}
+				public List<String> getGroupPath() {
+					List<String> l = new Vector<String>();
+					l.add("JBoss Community");
+					return l;
+				}
+			};
+			/**
+			 * text field labeled 'Directory:'
+			 */
+			public static final String TEXT_DIRECTORY = "Directory:";
+		}
 		public static class ApacheApacheTomcatv32 {
 			/**
 			* represents item : Apache->Apache Tomcat v3.2
