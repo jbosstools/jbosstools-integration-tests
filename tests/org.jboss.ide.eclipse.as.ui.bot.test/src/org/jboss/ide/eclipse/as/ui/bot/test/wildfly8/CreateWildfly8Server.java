@@ -13,7 +13,7 @@ import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
 import org.jboss.tools.ui.bot.ext.entity.XMLConfiguration;
 
-@Require(server=@Server(type=ServerType.EAP, version="6.1", state=ServerState.Present))
+@Require(server=@Server(type=ServerType.WildFly, version="8", state=ServerState.Present))
 public class CreateWildfly8Server extends CreateServerTemplate {
 
 	@Override
