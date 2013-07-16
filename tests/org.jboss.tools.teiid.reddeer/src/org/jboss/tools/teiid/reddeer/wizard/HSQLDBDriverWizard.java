@@ -7,6 +7,7 @@ import org.jboss.reddeer.eclipse.datatools.ui.wizard.DriverDefinitionPage;
 import org.jboss.reddeer.eclipse.jface.wizard.WizardDialog;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
+import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.util.Bot;
 import org.jboss.tools.teiid.reddeer.preference.DriverDefinitionPreferencePageExt;
@@ -67,7 +68,7 @@ public class HSQLDBDriverWizard {
 		@Override
 		public void setDriverClass(String driverClass) {
 			selectTab(TAB_PROPERTIES);
-			new DefaultTreeItem(1, "General", "Driver Class").doubleClick();
+			new DefaultTreeItem(0, "General", "Driver Class").doubleClick();//kepler 0, juno 1
 			new PushButton("...").click();
 			new DefaultText().setText(driverClass);
 			new PushButton("OK").click();

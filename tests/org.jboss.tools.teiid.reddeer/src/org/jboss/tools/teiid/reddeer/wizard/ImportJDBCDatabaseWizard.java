@@ -114,13 +114,10 @@ public class ImportJDBCDatabaseWizard extends ImportWizardDialog {
 		itemList.add(item);
 	}
 
-	@Override
+	/*@Override
 	public void finish() {
 		super.finish();
-		new WaitUntil(new IsProjectItemCreated(projectName, modelName), TimePeriod.LONG);
-	}
+		new WaitUntil(new IsProjectItemCreated(projectName, modelName), TimePeriod.LONG);//causes infinite loop 
+	}*/
 	
-	public void finish2(){
-		super.finish();
-	}
 }

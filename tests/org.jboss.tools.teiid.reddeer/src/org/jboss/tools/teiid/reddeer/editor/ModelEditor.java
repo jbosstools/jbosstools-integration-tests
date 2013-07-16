@@ -5,10 +5,14 @@ import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.widget
 import static org.hamcrest.core.AllOf.allOf;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
 
+import java.util.List;
+
 import org.eclipse.draw2d.FigureCanvas;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.ImageFigure;
+import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.gef.ui.parts.GraphicalEditor;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
@@ -25,6 +29,8 @@ import org.eclipse.ui.IEditorReference;
 import org.hamcrest.Matcher;
 import org.jboss.reddeer.swt.util.Bot;
 import org.jboss.tools.teiid.reddeer.matcher.IsTransformation;
+import org.jboss.tools.teiid.reddeer.matcher.AttributeMatcher;
+import org.jboss.tools.teiid.reddeer.matcher.MappingClassMatcher;
 import org.jboss.tools.teiid.reddeer.matcher.WaitForFigure;
 import org.jboss.tools.teiid.reddeer.matcher.WithBounds;
 import org.jboss.tools.teiid.reddeer.matcher.WithLabel;
@@ -43,6 +49,8 @@ public class ModelEditor extends SWTBotEditor {
 	public static final String MAPPING_DIAGRAM = "Mapping Diagram";
 	public static final String PACKAGE_DIAGRAM = "Package Diagram";
 	public static final String TABLE_EDITOR = "Table Editor";
+	private static final String DIAGRAM = "Diagram";
+	private static final String INPUT_SET = "Input Set";
 
 	private SWTBotGefViewer viewer;
 
@@ -130,15 +138,21 @@ public class ModelEditor extends SWTBotEditor {
 		styledText.mouseClickOnCaret();
 	}
 	
-	public void setTransformationProcedureBody(String procedure, boolean emptyTEditor) {
+	/**
+	 * 
+	 * @param procedure
+	 * @param notReplacingDefault false if editor contains <--.*--> to be replaced, true otherwise 
+	 */
+	public void setTransformationProcedureBody(String procedure, boolean notReplacingDefault) {
 		String transformationText = getTransformation();//""
-		if (transformationText.equals("")){
+		if (transformationText.equals("") || (notReplacingDefault)){
 			transformationText = procedure;
 		} else {
 			transformationText = transformationText.replaceAll("<--.*-->;", procedure);
 		}
 		
 		TeiidStyledText styledText = new TeiidStyledText(0);
+		styledText.setFocus();
 		styledText.setText(transformationText);
 		styledText.navigateTo(2, procedure.length() / 2);
 		styledText.mouseClickOnCaret();
@@ -224,9 +238,78 @@ public class ModelEditor extends SWTBotEditor {
 		SWTBotGefViewer viewer = getGraphicalViewer(tab);
 		SWTBotGefEditPart editPart = viewer.getEditPart(label);
 		if (editPart != null) {
-			return new ModelDiagram(viewer.getEditPart(label));
+			return new ModelDiagram(editPart);
+			//return new ModelDiagram(viewer.getEditPart(label));
 		} else {
 			return null;
 		}
 	}
+	
+	public void selectParts(List<SWTBotGefEditPart> parts){
+		if (viewer == null){
+			viewer = getGraphicalViewer(MAPPING_DIAGRAM);
+		}
+		viewer.select(parts);
+	}
+	
+	
+	/**
+	 * 
+	 * @param prefix
+	 * @return all attributes (type Label) with name starting with prefix
+	 */
+	public List<SWTBotGefEditPart> getAttributes(String prefix){
+		viewer = getGraphicalViewer(MAPPING_DIAGRAM);
+		AttributeMatcher matcher = AttributeMatcher.createAttributeMatcher();
+		matcher.setPrefix(prefix);
+		return viewer.editParts(matcher); 
+	}
+	
+	
+	/**
+	 * 
+	 * @param prefix
+	 * @return all mapping classes (type Label) with name starting with prefix
+	 */
+	public List<SWTBotGefEditPart> getMappingClasses(String prefix){
+		viewer = getGraphicalViewer(MAPPING_DIAGRAM);
+		MappingClassMatcher matcher = MappingClassMatcher.createMappingClassMatcher();
+		matcher.setPrefix(prefix);
+		return viewer.editParts(matcher);
+	}
+	
+	/**
+	 * 
+	 * @param prefix
+	 * @return list of attributes starting with prefix
+	 */
+	public List<String> namesOfAttributes(String prefix){
+			viewer = getGraphicalViewer(MAPPING_DIAGRAM);
+			AttributeMatcher matcher = AttributeMatcher.createAttributeMatcher();
+			matcher.setPrefix(prefix);
+			List<SWTBotGefEditPart> attributes = viewer.editParts(matcher);//generate list of texts
+			return matcher.getTexts();
+	}
+	
+	
+	public void deleteLabeledItem(String label){
+		viewer = getGraphicalViewer(MAPPING_DIAGRAM);
+		viewer.select(label);
+		viewer.clickContextMenu("Delete");
+		log.info("Deleting labeled item " + label);
+	}
+	
+	public Reconciler openReconciler(){
+		bot.toolbarButtonWithTooltip("Reconcile Transformation SQL with Target Columns").click();
+		SWTBotShell shell = bot.shell("Reconcile Virtual Target Columns");
+		shell.activate();
+		return new Reconciler(shell);
+	}
+	
+	public void openInputSetEditor(){
+		viewer = getGraphicalViewer(DIAGRAM);
+		getModelDiagram(INPUT_SET, DIAGRAM).select();
+		viewer.clickContextMenu("Edit");
+	}
+	
 }

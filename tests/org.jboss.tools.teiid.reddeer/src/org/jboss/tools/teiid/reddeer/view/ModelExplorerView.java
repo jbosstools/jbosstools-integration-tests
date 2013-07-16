@@ -5,6 +5,7 @@ import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.util.Bot;
@@ -55,7 +56,7 @@ public class ModelExplorerView extends WorkbenchView {
 			new ContextMenu("New Child", "Table...").select();
 		}
 		
-		new DefaultShell("Create Relational Table");
+		//new DefaultShell("Create Relational Table");
 		new LabeledText("Name").setText(tableName);
 		new PushButton("OK").click();
 	}

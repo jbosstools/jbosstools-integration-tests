@@ -50,6 +50,9 @@ public class CreateVDB extends NewWizardDialog {
 		// TODO: LabeledText
 		// new LabeledText("VDB Name:").setText(name);
 		Bot.get().textWithLabel("VDB Name:").setText(name);
+		if (this.folder != null){
+			Bot.get().textWithLabel("In Folder:").setText(folder);
+		}
 	}
 
 	public void setName(String name) {
