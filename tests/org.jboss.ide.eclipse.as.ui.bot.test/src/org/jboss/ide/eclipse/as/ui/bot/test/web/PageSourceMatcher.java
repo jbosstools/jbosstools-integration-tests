@@ -48,6 +48,13 @@ public class PageSourceMatcher extends TypeSafeMatcher<String> {
 			SWTBotFactory.getBot().waitUntil(new PageContainsTextCondition(browser, item), timeout);
 			return true;
 		} catch (TimeoutException e){
+		    //reload page without cache and try again
+			browser.executeScript("window.location.reload(true);");
+		}
+		try{
+			SWTBotFactory.getBot().waitUntil(new PageContainsTextCondition(browser, item), timeout);
+			return true;
+		} catch (TimeoutException e){
 			return false;
 		}
 	}

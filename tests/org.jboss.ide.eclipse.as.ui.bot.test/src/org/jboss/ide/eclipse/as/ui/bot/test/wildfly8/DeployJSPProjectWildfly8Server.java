@@ -6,7 +6,7 @@ import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
 
-@Require(server=@Server(type=ServerType.EAP, version="6.1", state=ServerState.Running))
+@Require(server=@Server(type=ServerType.WildFly, version="8", state=ServerState.Running))
 public class DeployJSPProjectWildfly8Server extends DeployJSPProjectTemplate {
 
 	@Override
