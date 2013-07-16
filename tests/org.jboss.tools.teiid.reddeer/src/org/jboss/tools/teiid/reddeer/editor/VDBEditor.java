@@ -33,6 +33,24 @@ public class VDBEditor extends SWTBotEditor {
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
 	
+	/**
+	 * 
+	 * @param projectName
+	 * @param model
+	 * @param longerPath true if path to model contains folders
+	 */
+	public void addModel(boolean longerPath, String... pathToModel){
+		Bot.get().toolbarButtonWithTooltip("Add model").click();
+		
+		SWTBotShell shell = bot.shell("Add File(s) to VDB");
+		shell.activate();
+		shell.bot().tree(0).expandNode(pathToModel).select();
+
+		new PushButton("OK").click();
+		new WaitWhile(new ShellWithTextIsActive(shell.getText()), TimePeriod.LONG);
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+	}
+	
 	public String getModel(int index){
 		return Bot.get().table(0).cell(index, 0);
 	}

@@ -20,6 +20,7 @@ import org.jboss.reddeer.eclipse.datatools.ui.wizard.DriverDefinitionWizard;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.util.Bot;
 import org.jboss.tools.teiid.reddeer.ModelProject;
@@ -30,6 +31,7 @@ import org.jboss.tools.teiid.reddeer.view.TeiidView;
 import org.jboss.tools.teiid.reddeer.wizard.ConnectionProfileXmlPage;
 import org.jboss.tools.teiid.reddeer.wizard.HSQLDBDriverWizard;
 import org.jboss.tools.teiid.reddeer.wizard.HSQLDBProfileWizard;
+import org.jboss.tools.teiid.reddeer.wizard.ImportJDBCDatabaseWizard;
 import org.jboss.tools.teiid.reddeer.wizard.TeiidConnectionProfileWizard;
 
 /**
@@ -201,5 +203,22 @@ public class TeiidBot {
 		}
 
 	}
+	
+	/**
+	 * Save all
+	 */
+	public void saveAll(){
+		new ShellMenu("File", "Save All").select();
+	}
 
+	/**
+	 * Confirm active shell, if appears
+	 */
+	public void closeActiveShell(){
+		try {
+			Bot.get().activeShell().bot().button("Yes").click();
+		} catch (Exception e){
+			System.out.println(e.getMessage());
+		}
+	}
 }

@@ -2,6 +2,8 @@ package org.jboss.tools.teiid.reddeer.view;
 
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.widgetOfType;
 
+import java.util.Arrays;
+
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.reddeer.swt.api.Shell;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
@@ -18,6 +20,7 @@ import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
 import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
+import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.widget.SWTBotGefFigure;
 
 public class Procedure {
@@ -27,11 +30,17 @@ public class Procedure {
 	private String model;
 
 	private String procedure;
+	
+	private String[] pathToModel;
 
 	public Procedure(String project, String model, String procedure) {
 		this.project = project;
 		this.model = model;
 		this.procedure = procedure;
+	}
+	
+	public Procedure(String... pathToModel){
+		this.pathToModel = pathToModel;
 	}
 
 	public void addParameter(String name, String type) {
@@ -42,6 +51,48 @@ public class Procedure {
 	public void addParameter2(String name, String type) {
 		addParameterName2(name);
 		addParameterType2(name, type);
+	}
+	
+	/**
+	 * 
+	 * @param b
+	 * @param name of parameter
+	 */
+	public void addParameter(boolean b, String name){
+		updatePathToModel();
+		String[] pathToProcedure = Arrays.copyOf(pathToModel, pathToModel.length+1);
+		pathToProcedure[pathToProcedure.length-1] = procedure;
+		new DefaultTreeItem(pathToProcedure).select();//procedure
+		new ContextMenu("New Child", "Procedure Parameter").select();
+		
+		String[] pathToNewParam = Arrays.copyOf(pathToProcedure, pathToProcedure.length+1);
+		pathToNewParam[pathToNewParam.length-1] = "NewProcedureParameter";
+		new DefaultTreeItem(pathToNewParam).select();	
+		ModelEditor me = new ModelEditor("BooksInfo.xmi");
+		me.show();
+		ModelExplorerView modelView = TeiidPerspective.getInstance().getModelExplorerView();
+		modelView.open();
+		new DefaultTreeItem(pathToNewParam).select();
+		new ContextMenu("Rename...").select();//highlights text to be edited
+		new DefaultText("NewProcedureParameter").setText(name);
+		new DefaultTreeItem(pathToModel).select();//click somewhere else
+		//me.save();
+	}
+	
+	public void addParameterType(String parameterName, String type, boolean b){
+		updatePathToModel();
+		String[] path = Arrays.copyOf(pathToModel, pathToModel.length+2);
+		path[path.length-2]= procedure;
+		path[path.length-1] = parameterName;
+		
+		new DefaultTreeItem(path).select();
+		new ContextMenu("Modeling", "Set Datatype").select();
+
+		Shell shell = new DefaultShell("Select a Datatype");
+		Bot.get().table().getTableItem(type).select();
+		new PushButton("OK").click();
+		new WaitWhile(new ShellWithTextIsActive(shell.getText()), TimePeriod.LONG);
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
 
 	private void addParameterName(String parameter) {
@@ -81,5 +132,31 @@ public class Procedure {
 		new PushButton("OK").click();
 		new WaitWhile(new ShellWithTextIsActive(shell.getText()), TimePeriod.LONG);
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+	}
+	
+	/**
+	 * Creates a procedure
+	 * @param name of procedure to be created
+	 * @param procedure - true if procedure is created, false if function
+	 */
+	public void create(String name, boolean procedure) {
+		updatePathToModel();
+		this.procedure = name;
+		
+		new DefaultTreeItem(pathToModel).select();
+		new ContextMenu("New Child", "Procedure...").select();
+		if (procedure){
+			new PushButton("OK").click();
+		}
+		new LabeledText("Name").setText(name);
+		new PushButton("OK").click();
+	}
+
+	private void updatePathToModel() {
+		if (pathToModel == null){
+			pathToModel = new String[2];
+			pathToModel[0] = this.project;
+			pathToModel[1] = this.model;
+		}
 	}
 }

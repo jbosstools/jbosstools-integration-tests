@@ -1,10 +1,20 @@
 package org.jboss.tools.teiid.reddeer.wizard;
 
+import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.allOf;
+import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.widgetOfType;
+
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swtbot.swt.finder.SWTBot;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
+import org.hamcrest.Matcher;
 import org.jboss.reddeer.eclipse.jface.wizard.NewWizardDialog;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.table.DefaultTable;
+import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.util.Bot;
 
 /**
@@ -44,6 +54,15 @@ public class CreateMetadataModel extends NewWizardDialog {
 		public static final String FUNCTION = "User Defined Function";
 
 	}
+	
+	public static class ModelBuilder {
+		
+		public static final String TRANSFORM_EXISTING = "Transform from an existing model";
+		
+		public static final String COPY_EXISTING = "Copy from an existing model of the same model class";
+		
+		public static final String BUILD_FROM_XML_SCHEMA = "Build XML documents from XML schema";
+	}
 
 	private String location;
 
@@ -52,6 +71,9 @@ public class CreateMetadataModel extends NewWizardDialog {
 	private String clazz;
 
 	private String type;
+	
+	private String modelBuilder = "";
+
 
 	public CreateMetadataModel() {
 		super("Teiid Designer", "Teiid Metadata Model");
@@ -64,12 +86,55 @@ public class CreateMetadataModel extends NewWizardDialog {
 
 		xsdSchemaSelection();
 	}
+	
+	public void execute(String modelBuilderType, String... pathToExistingModel){
+		open();
+		fillFirstPage(modelBuilderType);
+		fillSecondPage(modelBuilderType, pathToExistingModel);
+		finish();
+	}
+	
+	public void execute(String[] pathToXmlSchema, String rootElement){
+		open();
+		fillFirstPage();
+		if (modelBuilder.equals(ModelBuilder.BUILD_FROM_XML_SCHEMA)){
+			new DefaultTable().select(modelBuilder);
+			next();
+			fillSecondPage(pathToXmlSchema, rootElement);
+		} else {
+			throw new UnsupportedOperationException();
+		}
+		finish();
+	}
 
 	private void fillFirstPage() {
 		new LabeledText("Location:").setText(location);
 		new LabeledText("Model Name:").setText(name);
 		new DefaultCombo("Model Class:").setSelection(clazz);
 		new DefaultCombo("Model Type:").setSelection(type);
+	}
+	
+	private void fillFirstPage(String modelBuilderType) {
+		new LabeledText("Location:").setText(location);
+		new LabeledText("Model Name:").setText(name);
+		new DefaultCombo("Model Class:").setSelection(clazz);
+		new DefaultCombo("Model Type:").setSelection(type);
+		new DefaultTable().select(modelBuilderType);//ModelBuilder.TRANSFORM_EXISTING
+		new PushButton("&Next >").click();
+	}
+	
+	private void fillSecondPage(String modelBuilderType, String... pathToExistingModel){
+		new PushButton("...").click();
+		new DefaultTreeItem(pathToExistingModel).select();
+		new PushButton("OK").click();
+	}
+	
+	private void fillSecondPage(String[] pathToXmlSchema, String rootElement){
+		new PushButton(0).click();
+		new DefaultTreeItem(pathToXmlSchema).select();
+		new PushButton("OK").click();
+		new DefaultTable().select(rootElement);
+		new PushButton(1).click();// >
 	}
 
 	private void xsdSchemaSelection() {
@@ -94,5 +159,9 @@ public class CreateMetadataModel extends NewWizardDialog {
 
 	public void setClass(String clazz) {
 		this.clazz = clazz;
+	}
+	
+	public void setModelBuilder(String modelBuilder) {
+		this.modelBuilder = modelBuilder;
 	}
 }
