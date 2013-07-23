@@ -11,8 +11,8 @@
 <listEntry value="scope=All"/>
 <listEntry value="maven.test.failure.ignore=true"/>
 <listEntry value="libra.server=openshift.redhat.com"/>
-<listEntry value="user.name=sbunciak+jbt@redhat.com"/>
-<listEntry value="user.pwd=rhtest123"/>
+<listEntry value="user.name=${string_prompt:OpenShift user}"/>
+<listEntry value="user.pwd=${string_prompt:OpenShift password}"/>
 </listAttribute>
 <stringAttribute key="M2_RUNTIME" value="EMBEDDED"/>
 <booleanAttribute key="M2_SKIP_TESTS" value="true"/>
@@ -20,7 +20,7 @@
 <booleanAttribute key="M2_UPDATE_SNAPSHOTS" value="true"/>
 <booleanAttribute key="M2_WORKSPACE_RESOLUTION" value="true"/>
 <mapAttribute key="org.eclipse.debug.core.environmentVariables">
-<mapEntry key="DISPLAY" value=":${string_prompt}"/>
+<mapEntry key="DISPLAY" value=":${string_prompt:Display to run the tests}"/>
 </mapAttribute>
 <stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="${workspace_loc:/org.jboss.tools.openshift.ui.bot.test}"/>
 </launchConfiguration>
