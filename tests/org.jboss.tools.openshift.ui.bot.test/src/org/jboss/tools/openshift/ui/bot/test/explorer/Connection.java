@@ -31,6 +31,10 @@ public class Connection extends SWTTestExt {
 
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 		explorer.getConnectionToolButton().click();
+		
+//		TODO: See: https://issues.jboss.org/browse/JBIDE-10939
+//		explorer.show();
+//		explorer.bot().menu("New Connection...").click();
 
 		// open credentials dialog
 		SWTBotShell shell = bot.waitForShell(OpenShiftUI.Shell.CREDENTIALS);
