@@ -7,7 +7,7 @@ import org.hamcrest.Matcher;
 import org.jboss.reddeer.eclipse.ui.views.contentoutline.OutlineView;
 import org.jboss.reddeer.swt.api.Tree;
 import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.impl.tree.ViewTree;
+import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.tools.bpel.reddeer.matcher.TreeItemWithText;
 
 /**
@@ -45,7 +45,7 @@ public class BPELOutlineView extends OutlineView {
 
 	public List<TreeItem> findItems(Matcher<TreeItem> matcher) {
 		List<TreeItem> items = new ArrayList<TreeItem>();
-		Tree tree = new ViewTree();
+		Tree tree = new DefaultTree();
 		List<TreeItem> allItems = tree.getAllItems();
 		for (TreeItem item : allItems) {
 			if (matcher.matches(item)) {
