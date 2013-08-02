@@ -33,6 +33,7 @@ public class ServerDeployment {
 	}
 
 	public void deployProject(String project) {
+		clearConsole();
 		ServersView serversView = new ServersView();
 		serversView.open();
 		Tree tree = new DefaultTree();
@@ -86,7 +87,6 @@ public class ServerDeployment {
 		Bot.get().sleep(60 * 1000);
 		ConsoleView consoleView = new ConsoleView();
 		consoleView.open();
-		consoleView.clearConsole();
 		String consoleText = consoleView.getConsoleText().toUpperCase();
 		if (consoleText.contains("ERROR")) {
 			throw new RuntimeException("An error occured during full publishing");
