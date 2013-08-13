@@ -45,7 +45,7 @@ public class RulesEditorTest extends TestParent {
         // create RuleResource
         NewRuleResourceWizard wiz = new NewRuleResourceWizard();
         wiz.open();
-        wiz.getFirstPage().setParentFolder(DEFAULT_PROJECT_NAME + "/src/main/rules");
+        wiz.getFirstPage().setParentFolder(DEFAULT_RULES_PATH);
         wiz.getFirstPage().setName(name.getMethodName());
         wiz.getFirstPage().setRulePackageName("com.sample");
         wiz.finish();

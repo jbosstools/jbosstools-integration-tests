@@ -54,6 +54,7 @@ public abstract class TestParent {
     protected static final String DEFAULT_DROOLS_RUNTIME_NAME = "defaultTestRuntime";
     protected static final String DEFAULT_DROOLS_RUNTIME_LOCATION;
     protected static final String DEFAULT_PROJECT_NAME = "defaultTestProject";
+    protected static final String DEFAULT_RULES_PATH = DEFAULT_PROJECT_NAME + "/src/main/rules";
     private static final Properties TEST_PARAMS = new Properties();
 
     @Rule
