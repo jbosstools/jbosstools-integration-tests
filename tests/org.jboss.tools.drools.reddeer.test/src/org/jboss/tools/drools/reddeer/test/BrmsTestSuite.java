@@ -2,6 +2,7 @@ package org.jboss.tools.drools.reddeer.test;
 
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.drools.reddeer.test.functional.DroolsRuntimeManagementTest;
+import org.jboss.tools.drools.reddeer.test.functional.NewResourcesTest;
 import org.jboss.tools.drools.reddeer.test.functional.PerspectiveTest;
 import org.jboss.tools.drools.reddeer.test.functional.ProjectManagementTest;
 import org.jboss.tools.drools.reddeer.test.functional.RulesManagementTest;
@@ -13,7 +14,8 @@ import org.junit.runners.Suite.SuiteClasses;
     PerspectiveTest.class,
     DroolsRuntimeManagementTest.class,
     ProjectManagementTest.class,
-    RulesManagementTest.class
+    RulesManagementTest.class,
+    NewResourcesTest.class
 })
 public class BrmsTestSuite {
 
