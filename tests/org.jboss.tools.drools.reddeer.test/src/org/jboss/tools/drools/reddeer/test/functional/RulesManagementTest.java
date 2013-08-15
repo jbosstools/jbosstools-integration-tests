@@ -42,7 +42,7 @@ public class RulesManagementTest extends TestParent {
         wiz.open();
         NewRuleResourceWizardPage page = wiz.getFirstPage();
         page.setParentFolder(DEFAULT_PROJECT_NAME + "/" + RULES_LOCATION);
-        page.setName(resourceName);
+        page.setFileName(resourceName);
         page.setRulePackageName(packageName);
         page.setTypeOfRuleResource(RuleResourceType.individualRule);
         wiz.finish();
@@ -70,7 +70,7 @@ public class RulesManagementTest extends TestParent {
         wiz.open();
         NewRuleResourceWizardPage page = wiz.getFirstPage();
         page.setParentFolder(DEFAULT_PROJECT_NAME + "/" + RULES_LOCATION);
-        page.setName(resourceName);
+        page.setFileName(resourceName);
         page.setRulePackageName(packageName);
         page.setTypeOfRuleResource(RuleResourceType.rulePackage);
         wiz.finish();
