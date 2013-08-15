@@ -181,13 +181,13 @@ public abstract class TestParent {
 
         // refresh and delete all projects (as running the projects creates logs)
         PackageExplorer explorer = new PackageExplorer();
-        while(true) {
+        while (true) {
             explorer.open();
             List<Project> projects = explorer.getProjects();
 
             if (projects.size() > 0) {
                 String projectName = projects.get(0).getName();
-                explorer.getProject(projectName).select();;
+                explorer.getProject(projectName).select();
                 new ShellMenu(new RegexMatchers("File.*", "Refresh.*").getMatchers()).select();
                 new WaitWhile(new ShellWithTextIsActive("Refresh"));
 
@@ -227,7 +227,7 @@ public abstract class TestParent {
                 pw.println(l);
             }
         } catch (IOException ex) {
-            
+            LOGGER.error("Unable to close template stream", ex);
         } finally {
             try {
                 br.close();
