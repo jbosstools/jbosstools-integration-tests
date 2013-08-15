@@ -1,11 +1,10 @@
 package org.jboss.tools.drools.reddeer.wizard;
 
-import org.jboss.reddeer.eclipse.jface.wizard.WizardPage;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 
-public class NewRuleResourceWizardPage extends WizardPage {
+public class NewRuleResourceWizardPage extends NewResourceWizardPage {
 
     public enum RuleResourceType {
         rulePackage("New DRL (rule package)"),
@@ -18,14 +17,6 @@ public class NewRuleResourceWizardPage extends WizardPage {
         public String toString() {
             return label;
         }
-    }
-
-    public void setParentFolder(String parent) {
-        new LabeledText("Enter or select the parent folder:").setText(parent);
-    }
-
-    public void setName(String name) {
-        new LabeledText("File name:").setText(name);
     }
 
     public void setTypeOfRuleResource(RuleResourceType type) {

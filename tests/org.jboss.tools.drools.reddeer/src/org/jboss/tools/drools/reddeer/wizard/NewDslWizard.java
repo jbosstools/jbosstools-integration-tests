@@ -4,6 +4,10 @@ import org.jboss.reddeer.eclipse.jface.wizard.NewWizardDialog;
 
 public class NewDslWizard extends NewWizardDialog {
 
+    public NewDslWizard() {
+        super("Drools", "Domain Specific Language");
+    }
+
     public NewDslWizardPage getFirstPage() {
         selectPage(1);
         return new NewDslWizardPage();
@@ -18,7 +22,7 @@ public class NewDslWizard extends NewWizardDialog {
         open();
         NewDslWizardPage page = getFirstPage();
         page.setParentFolder(path);
-        page.setDslName(name);
+        page.setFileName(name);
         getSamplesPage().setAddSampleDsl(true);
         finish();
     }
