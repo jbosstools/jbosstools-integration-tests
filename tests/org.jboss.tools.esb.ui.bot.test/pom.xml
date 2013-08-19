@@ -15,7 +15,6 @@
 	<properties>
 	  <swtbot.test.properties.file>./swtbot.properties</swtbot.test.properties.file>
 	  <systemProperties>${integrationTestsSystemProperties} -Dswtbot.test.properties.file=${swtbot.test.properties.file}</systemProperties>
-	  <jbtis.site>http://download.jboss.org/jbosstools/updates/integration/kepler/integration-stack/aggregate/4.1.0</jbtis.site>
 	  <test.class>AllTests</test.class>
 	</properties>
 
@@ -89,7 +88,7 @@
 		  <artifact>
 		    <groupId>org.jboss.tools.integration-stack</groupId>
 		    <artifactId>target-platform</artifactId>
-		    <version>4.1.0-SNAPSHOT</version>
+		    <version>${jbtis.version}</version>
 		    <type>target</type>
 		    <classifier>base</classifier>
 		  </artifact>

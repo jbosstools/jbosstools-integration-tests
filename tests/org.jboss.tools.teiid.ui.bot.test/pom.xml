@@ -18,7 +18,6 @@
 	  <test.class>AllTests</test.class>
 	  <jdbc.dir>${requirementsDirectory}/lib</jdbc.dir>
 	  <reddeer.site>http://download.jboss.org/jbosstools/builds/staging/RedDeer_master/all/repo</reddeer.site>
-	  <jbtis.site>http://download.jboss.org/jbosstools/updates/integration/kepler/integration-stack/aggregate/4.1.0</jbtis.site>
 	  <teiid-820final.url>http://sourceforge.net/projects/teiid/files/teiid/8.2/Final/teiid-8.2.0.Final-jboss-dist.zip</teiid-820final.url>
 	  <teiid-830final.url>http://downloads.sourceforge.net/project/teiid/teiid/8.3/Final/teiid-8.3.0.Final-jboss-dist.zip</teiid-830final.url>
 	  <teiid-designer-810Final.site>http://download.jboss.org/jbosstools/updates/release/juno/soa-tooling/teiiddesigner/8.1.0.Final</teiid-designer-810Final.site>
@@ -106,7 +105,7 @@
 		  <artifact>
 		    <groupId>org.jboss.tools.integration-stack</groupId>
 		    <artifactId>target-platform</artifactId>
-		    <version>4.1.0-SNAPSHOT</version>
+		    <version>${jbtis.version}</version>
 		    <type>target</type>
 		    <classifier>base</classifier>
 		  </artifact>
