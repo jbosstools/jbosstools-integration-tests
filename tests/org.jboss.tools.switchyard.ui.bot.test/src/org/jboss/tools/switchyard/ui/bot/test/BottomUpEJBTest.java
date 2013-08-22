@@ -1,13 +1,14 @@
 package org.jboss.tools.switchyard.ui.bot.test;
 
 import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
-import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.swt.condition.TableHasRows;
 import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
+import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.util.Bot;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
@@ -40,11 +41,11 @@ import org.junit.Test;
 @CleanWorkspace
 @Perspective(name = "Java EE")
 @Server(type = Type.ALL, state = State.RUNNING)
-public class BottomUpCamelTest extends SWTBotTestCase {
+public class BottomUpEJBTest extends SWTBotTestCase {
 
-	public static final String PROJECT = "camel_project";
-	public static final String PACKAGE = "com.example.switchyard.camel_project";
-	public static final String JAVA_FILE = "MyRouteBuilder";
+	public static final String PROJECT = "ejb_project";
+	public static final String PACKAGE = "com.example.switchyard.ejb_project";
+	public static final String JAVA_FILE = "HelloBean";
 
 	@Before
 	public void closeSwitchyardFile() {
@@ -57,8 +58,19 @@ public class BottomUpCamelTest extends SWTBotTestCase {
 
 	@Test
 	public void bottomUpCamelTest() throws Exception {
-		new SwitchYardProjectWizard(PROJECT).impl("Camel Route").binding("HTTP").create();
+		new SwitchYardProjectWizard(PROJECT).impl("Bean").binding("HTTP").create();
 		Project project = new ProjectExplorer().getProject(PROJECT);
+
+		// Add EJB dependency
+		project.getProjectItem("pom.xml").open();
+		new DefaultCTabItem("Dependencies").activate();
+		new PushButton("Add...").click();
+		Bot.get().shell("Select Dependency").activate();
+		new LabeledText("Group Id:").setText("javax");
+		new LabeledText("Artifact Id:").setText("javaee-api");
+		new LabeledText("Version: ").setText("6.0");
+		new PushButton("OK").click();
+		Bot.get().activeEditor().saveAndClose();
 
 		// Import java file
 		project.getProjectItem("src/main/java", PACKAGE).select();
@@ -69,22 +81,19 @@ public class BottomUpCamelTest extends SWTBotTestCase {
 		new TextEditor(JAVA_FILE + ".java").deleteLineWith("package")
 				.type("package " + PACKAGE + ";").saveAndClose();
 
-		// Add component
 		new SwitchYardEditor().addComponent("Component");
 		new Component("Component").select();
-		new SwitchYardEditor().activateTool("Camel (Java)");
+		new SwitchYardEditor().activateTool("Bean");
 		new Component("Component").click();
 
-		// Select existing implementation
+		Bot.get().shell("Bean Implementation").activate();
 		new PushButton("Browse...").click();
-		Bot.get().shell("Select entries").activate();
 		new DefaultText(0).setText(JAVA_FILE);
 		new WaitUntil(new TableHasRows(new DefaultTable()));
 		new PushButton("OK").click();
-		Bot.get().shell("Camel Implementation").activate();
+		Bot.get().shell("Bean Implementation").activate();
 		new PushButton("Finish").click();
 
-		// Create new service and interface
 		new Component("Component").contextButton("Service").click();
 		new NewServiceWizard().createJavaInterface("Hello").activate().finish();
 
@@ -95,9 +104,10 @@ public class BottomUpCamelTest extends SWTBotTestCase {
 
 		// Edit the camel route
 		new Component("Component").doubleClick();
-		new TextEditor(JAVA_FILE + ".java").deleteLineWith("file:in")
-				.type("from(\"switchyard://Hello\")").deleteLineWith("file:out").type(";")
-				.saveAndClose();
+		new TextEditor(JAVA_FILE + ".java")
+				.typeAfter("package", "import org.switchyard.component.bean.Service;")
+				.typeBefore("@Stateless", "@Service(Hello.class)").deleteLineWith("HelloBean")
+				.type("public class HelloBean implements Hello {").saveAndClose();
 
 		PromoteServiceWizard wizard = new Service("Hello").promoteService();
 		wizard.activate().setServiceName("HelloService").finish();
@@ -111,10 +121,10 @@ public class BottomUpCamelTest extends SWTBotTestCase {
 		new ServerDeployment().deployProject(PROJECT);
 		String url = "http://localhost:8080/" + PROJECT;
 		HttpClient httpClient = new HttpClient(url);
-		assertEquals("Hello apodhrad", httpClient.send("apodhrad"));
-		assertEquals("Hello JBoss", httpClient.send("JBoss"));
+		assertEquals("EJB: Hello apodhrad", httpClient.send("apodhrad"));
+		assertEquals("EJB: Hello JBoss", httpClient.send("JBoss"));
 
-		new WaitUntil(new ConsoleHasText("Hello JBoss"));
 		new WaitWhile(new ConsoleHasChanged());
 	}
+
 }

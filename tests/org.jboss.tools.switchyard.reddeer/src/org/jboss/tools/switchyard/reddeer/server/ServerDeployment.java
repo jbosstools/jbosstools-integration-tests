@@ -1,5 +1,6 @@
 package org.jboss.tools.switchyard.reddeer.server;
 
+import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServerLabel;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
@@ -14,6 +15,7 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.util.Bot;
 import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 
 /**
@@ -32,7 +34,9 @@ public class ServerDeployment {
 		this.server = server;
 	}
 
-	public void deployProject(String project) {
+	public void deployProject(String project, String checkPhrase) {
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		
 		clearConsole();
 		ServersView serversView = new ServersView();
 		serversView.open();
@@ -49,6 +53,8 @@ public class ServerDeployment {
 				new PushButton("Finish").click();
 				new WaitWhile(new ShellWithTextIsActive(ADD_REMOVE_LABEL), TimePeriod.LONG);
 				new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+				new WaitUntil(new ConsoleHasText("Deployed \"" + checkPhrase + "\""),
+						TimePeriod.LONG);
 				checkDeployment();
 				return;
 			}
@@ -56,7 +62,8 @@ public class ServerDeployment {
 		throw new RuntimeException("Cannot find server '" + server + "'");
 	}
 
-	public void fullPublish(String project) {
+	public void fullPublish(String project, String checkPhrase) {
+		clearConsole();
 		ServersView serversView = new ServersView();
 		serversView.open();
 		Tree tree = new DefaultTree();
@@ -67,8 +74,10 @@ public class ServerDeployment {
 				for (TreeItem treeItem : item.getItems()) {
 					if (treeItem.getText().startsWith(project)) {
 						treeItem.select();
-						clearConsole();
 						new ContextMenu(FULL_PUBLISH).select();
+						new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+						new WaitUntil(new ConsoleHasText("Replaced deployment \"" + checkPhrase
+								+ "\""), TimePeriod.LONG);
 						checkDeployment();
 					}
 				}
@@ -77,19 +86,22 @@ public class ServerDeployment {
 		}
 	}
 
-	private void clearConsole() {
+	protected void clearConsole() {
 		ConsoleView consoleView = new ConsoleView();
 		consoleView.open();
 		consoleView.clearConsole();
 	}
 
-	private void checkDeployment() {
-		Bot.get().sleep(60 * 1000);
+	protected void checkDeployment() {
 		ConsoleView consoleView = new ConsoleView();
 		consoleView.open();
-		String consoleText = consoleView.getConsoleText().toUpperCase();
-		if (consoleText.contains("ERROR")) {
-			throw new RuntimeException("An error occured during full publishing");
+		String consoleText = consoleView.getConsoleText();
+		if (consoleText.toUpperCase().contains("ERROR")) {
+			if(consoleText.contains("JBAS015591")) {
+				// JBAS015591: Cannot register record processor with JMX server
+				return;
+			}
+			throw new RuntimeException("An error occured during deployment\n" + consoleText);
 		}
 	}
 }

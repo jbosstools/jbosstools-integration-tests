@@ -6,6 +6,7 @@ import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.util.Bot;
+import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.switchyard.reddeer.widget.Link;
@@ -32,7 +33,7 @@ public class ServiceWizard<T extends ServiceWizard<?>> extends WizardDialog {
 	@SuppressWarnings("unchecked")
 	public T activate() {
 		Bot.get().shell(dialogTitle).activate();
-		Bot.get().sleep(1000);
+		AbstractWait.sleep(1000);
 		return (T) this;
 	}
 
@@ -44,9 +45,9 @@ public class ServiceWizard<T extends ServiceWizard<?>> extends WizardDialog {
 
 	@SuppressWarnings("unchecked")
 	public T checkInterfaceType(String interfaceType) {
-		Bot.get().sleep(1000);
+		AbstractWait.sleep(1000);
 		new RadioButton(interfaceType).click();
-		Bot.get().sleep(1000);
+		AbstractWait.sleep(1000);
 		return (T) this;
 	}
 

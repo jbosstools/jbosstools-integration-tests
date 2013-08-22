@@ -7,6 +7,7 @@ import org.eclipse.jface.bindings.keys.ParseException;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
 import org.eclipse.swtbot.swt.finder.keyboard.Keystrokes;
 import org.jboss.reddeer.swt.util.Bot;
+import org.jboss.reddeer.swt.wait.AbstractWait;
 
 /**
  * 
@@ -18,12 +19,12 @@ public class TextEditor {
 	private SWTBotEclipseEditor editor;
 
 	public TextEditor(String fileName) {
-		Bot.get().sleep(1000);
+		AbstractWait.sleep(1000);
 		editor = Bot.get().editorByTitle(fileName).toTextEditor();
 	}
 
 	public TextEditor type(String text) {
-		Bot.get().sleep(1000);
+		AbstractWait.sleep(1000);
 		editor.typeText(text);
 		editor.save();
 		return this;
@@ -60,7 +61,7 @@ public class TextEditor {
 	}
 
 	public TextEditor formatText() {
-		Bot.get().sleep(1000);
+		AbstractWait.sleep(1000);
 		try {
 			editor.pressShortcut(Keystrokes.CTRL, Keystrokes.SHIFT, KeyStroke.getInstance("O"));
 			editor.pressShortcut(Keystrokes.CTRL, Keystrokes.SHIFT, KeyStroke.getInstance("F"));

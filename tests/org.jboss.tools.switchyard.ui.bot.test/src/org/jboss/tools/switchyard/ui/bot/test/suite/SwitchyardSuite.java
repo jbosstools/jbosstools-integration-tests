@@ -26,6 +26,7 @@ public class SwitchyardSuite extends RedDeerSuite {
 	public static final String PROPERTIES_FILE = "swtbot.test.properties.file";
 
 	private static String serverName;
+	private static String serverHome;
 
 	public SwitchyardSuite(Class<?> clazz, RunnerBuilder builder) throws InitializationError {
 		super(clazz, foo(builder));
@@ -44,15 +45,22 @@ public class SwitchyardSuite extends RedDeerSuite {
 	}
 
 	private static RunnerBuilder foo(RunnerBuilder builder) {
+		foo();
+		return builder;
+	}
+
+	private static void foo() {
 		Properties props = loadSWTBotProperties();
 		addServer(props.getProperty("SERVER"));
 		closeWelcome();
-
-		return builder;
 	}
 
 	public static String getServerName() {
 		return serverName;
+	}
+	
+	public static String getServerHome() {
+		return serverHome;
 	}
 
 	private static void closeWelcome() {
@@ -93,6 +101,7 @@ public class SwitchyardSuite extends RedDeerSuite {
 		String path = new File(param[3]).getAbsolutePath();
 
 		serverName = type + "-" + version;
+		serverHome = path;
 
 		ServerPreferencePage serverPP = new ServerPreferencePage();
 		serverPP.open();

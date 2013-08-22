@@ -24,6 +24,7 @@ public class HTTPBindingWizard extends WizardDialog {
 	}
 
 	public HTTPBindingWizard setContextpath(String contextPath) {
+		Bot.get().textWithLabel("Context Path").setFocus();
 		new LabeledText("Context Path").setText(contextPath);
 		return this;
 	}

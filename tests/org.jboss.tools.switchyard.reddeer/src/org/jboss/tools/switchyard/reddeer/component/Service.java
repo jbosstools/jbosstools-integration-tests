@@ -32,7 +32,7 @@ public class Service extends Component {
 	public void newServiceTestClass() {
 		click();
 		new ContextButton("New Service Test Class").click();
-		new ServiceTestClassWizard().finish();
+		new ServiceTestClassWizard().activate().finish();
 	}
 
 	public WizardDialog addBinding(String binding) {

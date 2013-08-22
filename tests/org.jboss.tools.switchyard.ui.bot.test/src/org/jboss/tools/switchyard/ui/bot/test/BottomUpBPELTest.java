@@ -4,21 +4,22 @@ import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
-import org.jboss.reddeer.swt.util.Bot;
+import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.switchyard.reddeer.component.Component;
 import org.jboss.tools.switchyard.reddeer.component.Service;
+import org.jboss.tools.switchyard.reddeer.condition.ConsoleHasChanged;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
-import org.jboss.tools.switchyard.reddeer.server.ServerDeployment;
 import org.jboss.tools.switchyard.reddeer.wizard.ImportFileWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.PromoteServiceWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.SOAPBindingWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.SwitchYardProjectWizard;
 import org.jboss.tools.switchyard.ui.bot.test.suite.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.tools.switchyard.ui.bot.test.suite.PerspectiveRequirement.Perspective;
+import org.jboss.tools.switchyard.ui.bot.test.suite.ServerDeployment;
 import org.jboss.tools.switchyard.ui.bot.test.suite.ServerRequirement.Server;
 import org.jboss.tools.switchyard.ui.bot.test.suite.ServerRequirement.State;
 import org.jboss.tools.switchyard.ui.bot.test.suite.ServerRequirement.Type;
-import org.jboss.tools.switchyard.ui.bot.test.suite.SwitchyardSuite;
+import org.jboss.tools.switchyard.ui.bot.test.util.BackupClient;
 import org.jboss.tools.switchyard.ui.bot.test.util.SoapClient;
 import org.junit.Before;
 import org.junit.Test;
@@ -47,7 +48,7 @@ public class BottomUpBPELTest extends SWTBotTestCase {
 	}
 
 	@Test
-	public void bottomUpBPELtest() {
+	public void bottomUpBPELtest() throws Exception {
 		new SwitchYardProjectWizard(PROJECT).impl("BPEL").binding("SOAP").create();
 		new ProjectExplorer().getProject(PROJECT).getProjectItem("src/main/resources").select();
 		new ImportFileWizard().importFile("resources/bpel", "SayHello.bpel");
@@ -80,8 +81,15 @@ public class BottomUpBPELTest extends SWTBotTestCase {
 		new SwitchYardEditor().save();
 
 		/* Test SOAP Response */
-		new ServerDeployment(SwitchyardSuite.getServerName()).deployProject(PROJECT);
-		SoapClient.testResponses(WSDL, "SayHello");
-		Bot.get().sleep(10 * 1000);
+		new ServerDeployment().deployProject(PROJECT);
+		new ServerDeployment().fullPublish(PROJECT);
+		try {
+			SoapClient.testResponses(WSDL, "SayHello");
+		} catch (Exception e) {
+			BackupClient.backupDeployment(PROJECT);
+			throw e;
+		}
+
+		new WaitWhile(new ConsoleHasChanged());
 	}
 }

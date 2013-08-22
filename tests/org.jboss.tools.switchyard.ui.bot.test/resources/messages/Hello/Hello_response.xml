@@ -1,7 +1,7 @@
 <SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
    <SOAP-ENV:Header/>
    <SOAP-ENV:Body>
-      <sayHelloResponse xmlns="urn:com.example.switchyard:test:1.0">
+      <sayHelloResponse xmlns="urn:com.example.switchyard:simple:1.0">
          <string>Hello apodhrad</string>
       </sayHelloResponse>
    </SOAP-ENV:Body>

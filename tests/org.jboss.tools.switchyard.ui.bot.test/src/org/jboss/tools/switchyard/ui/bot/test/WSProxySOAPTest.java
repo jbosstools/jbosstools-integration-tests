@@ -5,13 +5,13 @@ import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardDialog;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jface.wizard.NewWizardDialog;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.util.Bot;
+import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.switchyard.reddeer.component.Component;
 import org.jboss.tools.switchyard.reddeer.component.Reference;
 import org.jboss.tools.switchyard.reddeer.component.Service;
+import org.jboss.tools.switchyard.reddeer.condition.ConsoleHasChanged;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.editor.TextEditor;
-import org.jboss.tools.switchyard.reddeer.server.ServerDeployment;
 import org.jboss.tools.switchyard.reddeer.wizard.CamelJavaWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.ImportFileWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.ReferenceWizard;
@@ -19,10 +19,11 @@ import org.jboss.tools.switchyard.reddeer.wizard.SOAPBindingWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.SwitchYardProjectWizard;
 import org.jboss.tools.switchyard.ui.bot.test.suite.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.tools.switchyard.ui.bot.test.suite.PerspectiveRequirement.Perspective;
+import org.jboss.tools.switchyard.ui.bot.test.suite.ServerDeployment;
 import org.jboss.tools.switchyard.ui.bot.test.suite.ServerRequirement.Server;
 import org.jboss.tools.switchyard.ui.bot.test.suite.ServerRequirement.State;
 import org.jboss.tools.switchyard.ui.bot.test.suite.ServerRequirement.Type;
-import org.jboss.tools.switchyard.ui.bot.test.suite.SwitchyardSuite;
+import org.jboss.tools.switchyard.ui.bot.test.util.BackupClient;
 import org.jboss.tools.switchyard.ui.bot.test.util.SoapClient;
 import org.junit.Before;
 import org.junit.Test;
@@ -38,7 +39,7 @@ import org.junit.Test;
 @Server(type = Type.ALL, state = State.RUNNING)
 public class WSProxySOAPTest extends SWTBotTestCase {
 
-	public static final String PROJECT = "proxy";
+	public static final String PROJECT = "proxy_soap";
 	private static final String WSDL = "Hello.wsdl";
 
 	@Before
@@ -51,12 +52,12 @@ public class WSProxySOAPTest extends SWTBotTestCase {
 	}
 
 	@Test
-	public void wsProxySoapTest() {
+	public void wsProxySoapTest() throws Exception {
 		/* Create Web Service */
 		new WebProjectWizard("web").create();
 		new ProjectExplorer().getProject("web").select();
 		new WebServiceWizard("Hello").create();
-		new ServerDeployment(SwitchyardSuite.getServerName()).deployProject("web");
+		new ServerDeployment().deployProject("web", "web.war");
 
 		/* Create SwicthYard Project */
 		new SwitchYardProjectWizard(PROJECT).impl("Camel Route").binding("SOAP").create();
@@ -80,9 +81,19 @@ public class WSProxySOAPTest extends SWTBotTestCase {
 		new SwitchYardEditor().save();
 
 		/* Test Web Service Proxy */
-		new ServerDeployment(SwitchyardSuite.getServerName()).deployProject(PROJECT);
-		SoapClient.testResponses("http://localhost:8080/proxy/HelloService?wsdl", "WSProxy");
-		Bot.get().sleep(10 * 1000);
+
+		/* Test SOAP Response */
+		new ServerDeployment().deployProject(PROJECT);
+		new ServerDeployment().fullPublish(PROJECT);
+		try {
+			SoapClient.testResponses("http://localhost:8080/" + PROJECT + "/HelloService?wsdl",
+					"WSProxy");
+		} catch (Exception e) {
+			BackupClient.backupDeployment(PROJECT);
+			throw e;
+		}
+
+		new WaitWhile(new ConsoleHasChanged());
 	}
 
 	private class WebServiceWizard extends NewJavaClassWizardDialog {

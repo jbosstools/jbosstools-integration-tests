@@ -3,6 +3,7 @@ package org.jboss.tools.switchyard.reddeer.wizard;
 import org.jboss.reddeer.eclipse.jface.wizard.NewWizardDialog;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.util.Bot;
+import org.jboss.reddeer.swt.wait.AbstractWait;
 
 /**
  * Wizard for creating WSDL from Java.
@@ -20,7 +21,7 @@ public class Java2WSDLWizard extends NewWizardDialog {
 
 	public Java2WSDLWizard activate() {
 		Bot.get().shell(DIALOG_TITLE).activate();
-		Bot.get().sleep(1000);
+		AbstractWait.sleep(1000);
 		return this;
 	}
 
