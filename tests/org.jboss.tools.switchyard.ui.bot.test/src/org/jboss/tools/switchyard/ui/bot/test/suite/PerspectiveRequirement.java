@@ -7,7 +7,10 @@ import java.lang.annotation.Target;
 
 import org.jboss.reddeer.eclipse.ui.perspectives.AbstractPerspective;
 import org.jboss.reddeer.junit.requirement.Requirement;
+import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.util.Bot;
+import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.switchyard.ui.bot.test.suite.PerspectiveRequirement.Perspective;
 
 /**
@@ -41,6 +44,7 @@ public class PerspectiveRequirement implements Requirement<Perspective> {
 	@Override
 	public void fulfill() {
 		new LabeledPerspective(perspective.name()).open();
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
 
 	@Override
