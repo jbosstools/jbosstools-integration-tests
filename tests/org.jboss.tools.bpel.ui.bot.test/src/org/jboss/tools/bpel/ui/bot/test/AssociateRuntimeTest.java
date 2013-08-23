@@ -45,7 +45,7 @@ public class AssociateRuntimeTest extends SWTBotTestCase {
 	private static boolean containsItem(Table table, String item) {
 		int count = table.rowCount();
 		for (int i = 0; i < count; i++) {
-			if (table.cell(i, 0).equals(item)) {
+			if (table.getItem(i).getText(0).equals(item)) {
 				return true;
 			}
 		}
