@@ -30,6 +30,7 @@ public class ModelingSmokeTest extends JBPM6BaseTest {
 		 * Modeling
 		 */
 		StartEvent start = new StartEvent("StartProcess");
+		start.select();
 		start.setName("Start");
 		start.append("Self Evaluation", ConstructType.USER_TASK);
 		

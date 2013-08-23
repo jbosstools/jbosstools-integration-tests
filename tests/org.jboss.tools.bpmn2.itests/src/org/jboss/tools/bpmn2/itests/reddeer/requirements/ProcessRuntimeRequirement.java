@@ -37,7 +37,7 @@ public class ProcessRuntimeRequirement implements Requirement<ProcessRuntime> {
 		DefaultTable table = new DefaultTable();
 		if (table.rowCount() > 0) {
 			for (int row=0; row<table.rowCount(); row++) {
-				if (table.cell(row, 0).equals(name)) {
+				if (table.getItem(row).getText(0).equals(name)) {
 					runtimeFound = true;
 					break;
 				}
@@ -53,7 +53,7 @@ public class ProcessRuntimeRequirement implements Requirement<ProcessRuntime> {
 			Logger.getLogger(ProcessRuntimeRequirement.class).info("jBPM Runtime '" + name + "' added.");
 		}
 		
-		table.check(name);
+		table.getItem(name).setChecked(true);
 		new PushButton("OK").click();
 	}
 

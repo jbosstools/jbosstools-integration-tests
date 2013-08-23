@@ -27,7 +27,7 @@ public class ExclusiveGateway extends AbstractGateway {
 	public void setPriority(String branch, String priority) {
 		select();
 		properties.selectTab("Gateway");
-		new DefaultTable(0).select(branch, 0);
+		new DefaultTable(0).select(branch);
 		properties.toolbarButton("Sequence Flow List", "Edit").click();
 		new LabeledText("Priority").setText(priority);
 		properties.toolbarButton("Sequence Flow Details", "Close").click();

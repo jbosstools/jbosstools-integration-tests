@@ -5,7 +5,6 @@ Bundle-SymbolicName: org.jboss.tools.bpmn2.itests
 Bundle-Version: 4.1.0.qualifier
 Bundle-Activator: org.jboss.tools.bpmn2.itests.test.Activator
 Bundle-ClassPath: .,
- lib/antlr.jar,
  lib/drools-compiler.jar,
  lib/ecj.jar,
  lib/jbpm-audit.jar,
@@ -28,7 +27,6 @@ Bundle-ClassPath: .,
  lib/jbpm-flow-builder.jar,
  lib/jta.jar,
  lib/mvel2.jar,
- lib/stringtemplate.jar,
  lib/xpp3_min.jar
 Require-Bundle: 
  org.eclipse.gef,
