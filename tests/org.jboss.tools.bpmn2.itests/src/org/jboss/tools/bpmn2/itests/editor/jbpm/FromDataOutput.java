@@ -48,7 +48,7 @@ public class FromDataOutput implements IMappingSide {
 			try {
 				new DefaultCombo("Data Type").setSelection(dataType);
 			} catch (Exception e) {
-				new PushButton().click();
+				new PushButton(0).click();
 				SWTBot windowBot = Bot.get().shell("Create New Data Type").bot();
 				windowBot.textWithLabel("Data Type").setText(dataType);
 				windowBot.button("OK").click();

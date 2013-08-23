@@ -5,7 +5,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="resources"/>
 	<classpathentry kind="lib" path="lib/antlr-runtime.jar"/>
-	<classpathentry kind="lib" path="lib/antlr.jar"/>
 	<classpathentry kind="lib" path="lib/dom4j.jar"/>
 	<classpathentry kind="lib" path="lib/drools-compiler.jar"/>
 	<classpathentry kind="lib" path="lib/drools-core.jar"/>
@@ -24,7 +23,6 @@
 	<classpathentry kind="lib" path="lib/mvel2.jar"/>
 	<classpathentry kind="lib" path="lib/protobuf-java.jar"/>
 	<classpathentry kind="lib" path="lib/slf4j-api.jar"/>
-	<classpathentry kind="lib" path="lib/stringtemplate.jar"/>
 	<classpathentry kind="lib" path="lib/xml-apis.jar"/>
 	<classpathentry kind="lib" path="lib/xmlpull.jar"/>
 	<classpathentry kind="lib" path="lib/xpp3_min.jar"/>

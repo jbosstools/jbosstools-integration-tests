@@ -47,7 +47,7 @@ public abstract class AbstractGateway extends Construct {
 	protected void setCondition(String branch, String lang, String condition) {
 		select();
 		properties.selectTab("Gateway");
-		new DefaultTable(0).select(branch, 0);
+		new DefaultTable(0).select(branch);
 		properties.toolbarButton("Sequence Flow List", "Edit").click();
 		new PushButton("Add Condition").click();
 		new DefaultCombo("Script Language").setSelection(lang);
@@ -62,7 +62,7 @@ public abstract class AbstractGateway extends Construct {
 	protected void setDefaultBranch(String branch) {
 		select();
 		properties.selectTab("Gateway");
-		new DefaultTable(0).select(branch, 0);
+		new DefaultTable(0).select(branch);
 		Bot.get().toolbarButtonWithTooltip("Edit").click();
 		Bot.get().checkBox().click();
 		Bot.get().toolbarButtonWithTooltip("Close").click();

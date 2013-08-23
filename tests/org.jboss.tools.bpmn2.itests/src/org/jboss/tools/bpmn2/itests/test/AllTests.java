@@ -3,8 +3,7 @@ package org.jboss.tools.bpmn2.itests.test;
 import junit.framework.TestSuite;
 
 import org.jboss.tools.bpmn2.itests.reddeer.suite.BPMN2Suite;
-import org.jboss.tools.bpmn2.itests.test.editor.*;
-
+import org.jboss.tools.bpmn2.itests.test.editor.smoke.ModelingSmokeTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
@@ -23,7 +22,7 @@ import org.junit.runners.Suite.SuiteClasses;
 //	JBpmProcessWizardTest.class,
 // Editor tests
 // ------------
-//	ModelingSmokeTest.class,
+	ModelingSmokeTest.class,
 //	CallActivityTest.class,
 //	AdHocProcessTest.class,
 //	AdHocSubProcessTest.class,
