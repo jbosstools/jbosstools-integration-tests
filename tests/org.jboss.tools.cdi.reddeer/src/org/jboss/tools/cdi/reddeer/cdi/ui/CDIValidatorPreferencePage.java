@@ -24,4 +24,7 @@ public class CDIValidatorPreferencePage extends PreferencePage {
 		new CheckBox().toggle(false);
 	}
 	
+	public boolean isValidationEnabled() {
+		return new CheckBox().isChecked();
+	}
 }
