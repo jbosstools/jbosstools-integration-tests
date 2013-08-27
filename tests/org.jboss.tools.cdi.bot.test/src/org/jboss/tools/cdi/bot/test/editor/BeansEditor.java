@@ -28,9 +28,8 @@ import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.impl.tree.ShellTreeItem;
-import org.jboss.reddeer.swt.impl.tree.ViewTreeItem;
+import org.jboss.reddeer.swt.impl.text.DefaultText;
+import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.tools.cdi.reddeer.common.model.ui.AddIfClassAvailableDialog;
 import org.jboss.tools.cdi.reddeer.common.model.ui.AddIfSystemPropertyDialog;
@@ -88,7 +87,7 @@ public class BeansEditor extends SWTBotMultiPageEditor {
 	}
 	
 	public void newWeldScan() {
-		new ViewTreeItem(IDELabel.WebProjectsTree.BEANS_XML).select();
+		new DefaultTreeItem(IDELabel.WebProjectsTree.BEANS_XML).select();
 		new ContextMenu("New", "Weld", "Scan...").select();
 	}
 	
@@ -112,7 +111,7 @@ public class BeansEditor extends SWTBotMultiPageEditor {
 	public void removeIncludeExclude(String name) {
 		Table table = getIncludeExcludeTable();
 		for (int i = 0; i < table.rowCount(); i++) {
-			if (table.cell(i, 1).equals(name)) {
+			if (table.getItem(i).getText(1).equals(name)) {
 				table.select(i);
 				break;
 			}
@@ -123,7 +122,7 @@ public class BeansEditor extends SWTBotMultiPageEditor {
 	public void editIncludeExclude(String oldName, String newName, boolean isRegular) {
 		Table table = getIncludeExcludeTable();
 		for (int i = 0; i < table.rowCount(); i++) {
-			if (table.cell(i, 1).equals(oldName)) {
+			if (table.getItem(i).getText(1).equals(oldName)) {
 				table.select(i);
 				break;
 			}
@@ -137,14 +136,14 @@ public class BeansEditor extends SWTBotMultiPageEditor {
 	}
 	
 	public AddIfClassAvailableDialog invokeAddClassAvailableDialog(String property) {
-		new ViewTreeItem("beans.xml", "Scan", property).select();
+		new DefaultTreeItem("beans.xml", "Scan", property).select();
 		new ContextMenu("Add Class Available").select();
 		new WaitUntil(new ShellWithTextIsActive("Add If Class Available"));
 		return new AddIfClassAvailableDialog();
 	}
 	
 	public AddIfSystemPropertyDialog invokeAddIfSystemPropertyDialog(String property) {
-		new ViewTreeItem("beans.xml", "Scan", property).select();
+		new DefaultTreeItem("beans.xml", "Scan", property).select();
 		new ContextMenu("Add System Property").select();
 		new WaitUntil(new ShellWithTextIsActive("Add If System Property"));
 		return new AddIfSystemPropertyDialog();
@@ -152,7 +151,7 @@ public class BeansEditor extends SWTBotMultiPageEditor {
 	
 	public boolean isObjectInEditor(String... path) {
 		try {
-			new ViewTreeItem(path);
+			new DefaultTreeItem(path);
 			return true;
 		} catch (SWTLayerException exc) {
 			return false;
@@ -161,17 +160,20 @@ public class BeansEditor extends SWTBotMultiPageEditor {
 	
 	private void editIncludeExcludeValues(String newName, boolean isRegular) {
 		new PushButton("Edit...").click();
-		new LabeledText("Name:").setText(newName);
+		/*
+		 * Text labeled "Name:"; no direct common parent -> LabeledText can't be used
+		 */
+		new DefaultText(0).setText(newName);
 		new CheckBox().toggle(isRegular);
 	}
 	
 	private void activateScanRoot() {
 		try {
-			new ViewTreeItem(IDELabel.WebProjectsTree.BEANS_XML, "Scan").select();
+			new DefaultTreeItem(IDELabel.WebProjectsTree.BEANS_XML, "Scan").select();
 		} catch (SWTLayerException exc) {
 			// problem when finding beans.xml tree
 			// try to shell tree item with index 1
-			new ShellTreeItem(1, IDELabel.WebProjectsTree.BEANS_XML, "Scan").select();
+			new DefaultTreeItem(1, IDELabel.WebProjectsTree.BEANS_XML, "Scan").select();
 		}
 		
 	}

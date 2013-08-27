@@ -16,9 +16,10 @@ import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.hamcrest.core.Is;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.swt.api.Table;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
-import org.jboss.reddeer.swt.impl.tree.ViewTreeItem;
+import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
 import org.jboss.tools.cdi.bot.test.condition.OpenedEditorHasTitleCondition;
@@ -93,12 +94,13 @@ public class WeldExtensionTest extends CDITestBase {
 		assertTableRowsCount(2);
 		
 		Table includeExcludeTable = beansEditor.getIncludeExcludeTable();
-		assertEquals(includeExcludeTable.cell(0, 0), "include");
-		assertEquals(includeExcludeTable.cell(0, 1), "org.test.add1");
-		assertEquals(includeExcludeTable.cell(0, 2), "true");
-		assertEquals(includeExcludeTable.cell(1, 0), "include");
-		assertEquals(includeExcludeTable.cell(1, 1), "org.test.add2");
-		assertEquals(includeExcludeTable.cell(1, 2), "false");
+		
+		assertEquals(includeExcludeTable.getItem(0).getText(0), "include");
+		assertEquals(includeExcludeTable.getItem(0).getText(1), "org.test.add1");
+		assertEquals(includeExcludeTable.getItem(0).getText(2), "true");
+		assertEquals(includeExcludeTable.getItem(1).getText(0), "include");
+		assertEquals(includeExcludeTable.getItem(1).getText(1), "org.test.add2");
+		assertEquals(includeExcludeTable.getItem(1).getText(2), "false");
 	}
 	
 	private void checkRemoveIncludeExclude() {
@@ -119,9 +121,9 @@ public class WeldExtensionTest extends CDITestBase {
 		bot.editorByTitle(IDELabel.WebProjectsTree.BEANS_XML).setFocus();
 		
 		Table includeExcludeTable = beansEditor.getIncludeExcludeTable();
-		assertEquals(includeExcludeTable.cell(0, 0), "include");
-		assertEquals(includeExcludeTable.cell(0, 1), "org.test.edit1");
-		assertEquals(includeExcludeTable.cell(0, 2), "false");
+		assertEquals(includeExcludeTable.getItem(0).getText(0), "include");
+		assertEquals(includeExcludeTable.getItem(0).getText(1), "org.test.edit1");
+		assertEquals(includeExcludeTable.getItem(0).getText(2), "false");
 	}
 	
 	private void checkClassAvailable() {
@@ -185,7 +187,7 @@ public class WeldExtensionTest extends CDITestBase {
 	private void assertScanCreated() {
 		String errorMessage = "Scan item was not found in Beans editor: ";
 		try {
-			new ViewTreeItem("beans.xml", "Scan");
+			new DefaultTreeItem("beans.xml", "Scan");
 		} catch (SWTLayerException exc) {
 			fail(errorMessage + exc.getMessage());
 		} catch (WidgetNotFoundException exc) {
@@ -209,11 +211,12 @@ public class WeldExtensionTest extends CDITestBase {
 	private void openBeansXml() {
 		PackageExplorer packageExplorer = new PackageExplorer();
 		packageExplorer.open();
-		packageExplorer
-			.selectProject(getProjectName())
-			.getProjectItem(IDELabel.WebProjectsTree.WEB_CONTENT,
-							IDELabel.WebProjectsTree.WEB_INF,
-							IDELabel.WebProjectsTree.BEANS_XML)
+		
+		Project project = packageExplorer.getProject(getProjectName());
+		project.select();
+		project.getProjectItem(IDELabel.WebProjectsTree.WEB_CONTENT,
+				IDELabel.WebProjectsTree.WEB_INF,
+				IDELabel.WebProjectsTree.BEANS_XML)
 			.open();
 		new WaitUntil(
 				new OpenedEditorHasTitleCondition(
