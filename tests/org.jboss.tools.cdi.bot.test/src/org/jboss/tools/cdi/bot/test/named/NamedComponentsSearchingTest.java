@@ -84,20 +84,20 @@ public class NamedComponentsSearchingTest extends CDITestBase {
 				false, false, false, namedParam, null, null, null).finishWithWait();
 				
 		namedDialog = openSearchNamedDialog().setNamedPrefix(namedParam);		
-		assertTrue(namedDialog.matchingItems().size() == 1);
+		assertEquals(1, namedDialog.matchingItems().size());
 		namedDialog.ok();
-		assertTrue(bot.activeEditor().getTitle().equals(beanName + ".java"));
-		assertTrue(bot.activeEditor().toTextEditor().getSelection().equals(beanName));
+		assertEquals(beanName + ".java", bot.activeEditor().getTitle());
+		assertEquals(beanName, bot.activeEditor().toTextEditor().getSelection());
 		
 		editResourceUtil.replaceInEditor(namedParam, changedNamedParam);
 		
 		namedDialog = openSearchNamedDialog().setNamedPrefix(namedParam);		
-		assertTrue(namedDialog.matchingItems().size() == 0);
+		assertEquals(0, namedDialog.matchingItems().size());
 		namedDialog = namedDialog.setNamedPrefix(changedNamedParam);
-		assertTrue(namedDialog.matchingItems().size() == 1);
+		assertEquals(1, namedDialog.matchingItems().size());
 		namedDialog.ok();
-		assertTrue(bot.activeEditor().getTitle().equals(beanName + ".java"));
-		assertTrue(bot.activeEditor().toTextEditor().getSelection().equals(beanName));
+		assertEquals(beanName + ".java", bot.activeEditor().getTitle());
+		assertEquals(beanName, bot.activeEditor().toTextEditor().getSelection());
 		
 	}
 	
@@ -212,9 +212,9 @@ public class NamedComponentsSearchingTest extends CDITestBase {
 		editResourceUtil.replaceInEditor(namedParam, changedNamedParam);
 		
 		namedDialog = openSearchNamedDialog().setNamedPrefix(namedParam);		
-		assertTrue(namedDialog.matchingItems().size() == 0);
+		assertEquals(0, namedDialog.matchingItems().size());
 		namedDialog = namedDialog.setNamedPrefix(changedNamedParam);
-		assertTrue(namedDialog.matchingItems().size() == 1);
+		assertEquals(1, namedDialog.matchingItems().size());
 		namedDialog.ok();
 		assertTrue(bot.activeEditor().getTitle().equals(beanName + ".java"));
 		assertTrue(bot.activeEditor().toTextEditor().getSelection().equals(beanName));

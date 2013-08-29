@@ -40,7 +40,7 @@ public class AssignableDialogFilterTest extends CDITestBase {
 
 		/** test lower and upper case */
 		assignDialog.typeInFilter("cat");
-		assertTrue(assignDialog.getAllBeans().size() == 1);
+		assertEquals(1, assignDialog.getAllBeans().size());
 		assertTrue(assignDialog
 				.getAllBeans()
 				.get(0)

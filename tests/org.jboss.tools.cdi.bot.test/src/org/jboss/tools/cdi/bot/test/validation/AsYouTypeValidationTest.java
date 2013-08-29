@@ -36,6 +36,10 @@ public class AsYouTypeValidationTest extends CDITestBase {
 		bot.activeEditor().save();
 	}
 	
+	/**
+	 * failing
+	 * reported by jjankovi JBIDE-12575
+	 */
 	@Test
 	public void testJavaAYTValidation() {
 		
@@ -64,6 +68,10 @@ public class AsYouTypeValidationTest extends CDITestBase {
 		bot.waitWhile(new AsYouTypeMarkerExistsCondition(ELIGIBLE_VALIDATION_PROBLEM));
 	}
 	
+	/**
+	 * failing
+	 * reported by jjankovi JBIDE-12575
+	 */
 	@Test
 	public void testBeansXmlAYTValidation() {
 		
