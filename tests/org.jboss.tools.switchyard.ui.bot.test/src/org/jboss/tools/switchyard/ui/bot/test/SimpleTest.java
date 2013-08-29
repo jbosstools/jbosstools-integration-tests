@@ -4,13 +4,16 @@ import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.ProjectItem;
-import org.jboss.reddeer.swt.util.Bot;
+import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.switchyard.reddeer.component.Bean;
 import org.jboss.tools.switchyard.reddeer.component.Component;
 import org.jboss.tools.switchyard.reddeer.component.Service;
+import org.jboss.tools.switchyard.reddeer.condition.ConsoleHasChanged;
+import org.jboss.tools.switchyard.reddeer.condition.JUnitHasFinished;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.editor.TextEditor;
-import org.jboss.tools.switchyard.reddeer.server.ServerDeployment;
 import org.jboss.tools.switchyard.reddeer.view.JUnitView;
 import org.jboss.tools.switchyard.reddeer.widget.ProjectItemExt;
 import org.jboss.tools.switchyard.reddeer.wizard.PromoteServiceWizard;
@@ -18,10 +21,11 @@ import org.jboss.tools.switchyard.reddeer.wizard.SOAPBindingWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.SwitchYardProjectWizard;
 import org.jboss.tools.switchyard.ui.bot.test.suite.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.tools.switchyard.ui.bot.test.suite.PerspectiveRequirement.Perspective;
+import org.jboss.tools.switchyard.ui.bot.test.suite.ServerDeployment;
 import org.jboss.tools.switchyard.ui.bot.test.suite.ServerRequirement.Server;
 import org.jboss.tools.switchyard.ui.bot.test.suite.ServerRequirement.State;
 import org.jboss.tools.switchyard.ui.bot.test.suite.ServerRequirement.Type;
-import org.jboss.tools.switchyard.ui.bot.test.suite.SwitchyardSuite;
+import org.jboss.tools.switchyard.ui.bot.test.util.BackupClient;
 import org.jboss.tools.switchyard.ui.bot.test.util.SoapClient;
 import org.junit.Test;
 
@@ -50,8 +54,8 @@ import org.junit.Test;
 @Server(type = Type.ALL, state = State.RUNNING)
 public class SimpleTest extends SWTBotTestCase {
 
-	private static final String PROJECT = "test";
-	private static final String PACKAGE = "com.example.switchyard.test";
+	private static final String PROJECT = "simple";
+	private static final String PACKAGE = "com.example.switchyard.simple";
 
 	@Test
 	public void simpleTest() throws Exception {
@@ -80,10 +84,13 @@ public class SimpleTest extends SWTBotTestCase {
 		ProjectItem item = getProject().getProjectItem("src/test/java", PACKAGE,
 				"ExampleServiceTest.java");
 		new ProjectItemExt(item).runAsJUnitTest();
+		new WaitUntil(new JUnitHasFinished(), TimePeriod.LONG);
 
-		assertEquals("1/1", new JUnitView().getRuns());
-		assertEquals("0", new JUnitView().getErrors());
-		assertEquals("0", new JUnitView().getFailures());
+		JUnitView jUnitView = new JUnitView();
+		jUnitView.open();
+		assertEquals("1/1", new JUnitView().getRunStatus());
+		assertEquals(0, new JUnitView().getNumberOfErrors());
+		assertEquals(0, new JUnitView().getNumberOfFailures());
 
 		PromoteServiceWizard wizard = new Service("ExampleService").promoteService();
 		wizard.activate().createWSDLInterface("ExampleService.wsdl");
@@ -91,16 +98,14 @@ public class SimpleTest extends SWTBotTestCase {
 		wizard.setTransformerType("Java Transformer").next();
 		wizard.setName("ExampleServiceTransformers").finish();
 
-		new ProjectExplorer()
-				.getProject(PROJECT)
-				.getProjectItem("src/main/java", "com.example.switchyard.test",
-						"ExampleServiceTransformers.java").open();
+		new ProjectExplorer().getProject(PROJECT)
+				.getProjectItem("src/main/java", PACKAGE, "ExampleServiceTransformers.java").open();
 		new TextEditor("ExampleServiceTransformers.java")
 				.deleteLineWith("ToSayHello")
 				.type("public static String transformStringToSayHelloResponse(String from) {")
 				.deleteLineWith("return null")
-				.type("return \"<sayHelloResponse xmlns=\\\"urn:com.example.switchyard:test:1.0\\\">"
-						+ "<string>\"+ from + \"</string></sayHelloResponse>\";")
+				.type("return \"<sayHelloResponse xmlns=\\\"urn:com.example.switchyard:" + PROJECT
+						+ ":1.0\\\">" + "<string>\"+ from + \"</string></sayHelloResponse>\";")
 				.deleteLineWith("return null").type("return from.getTextContent().trim();")
 				.saveAndClose();
 
@@ -110,9 +115,17 @@ public class SimpleTest extends SWTBotTestCase {
 		new SwitchYardEditor().save();
 
 		/* Test SOAP Response */
-		new ServerDeployment(SwitchyardSuite.getServerName()).deployProject(PROJECT);
-		SoapClient.testResponses("http://localhost:8080/test/ExampleService?wsdl", "Hello");
-		Bot.get().sleep(10 * 1000);
+		new ServerDeployment().deployProject(PROJECT);
+		new ServerDeployment().fullPublish(PROJECT);
+		try {
+			SoapClient.testResponses("http://localhost:8080/" + PROJECT + "/ExampleService?wsdl",
+					"Hello");
+		} catch (Exception e) {
+			BackupClient.backupDeployment(PROJECT);
+			throw e;
+		}
+
+		new WaitWhile(new ConsoleHasChanged());
 	}
 
 	private static Project getProject() {

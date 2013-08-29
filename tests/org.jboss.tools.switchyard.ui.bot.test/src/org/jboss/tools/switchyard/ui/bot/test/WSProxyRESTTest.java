@@ -4,13 +4,13 @@ import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jface.wizard.NewWizardDialog;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.util.Bot;
+import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.switchyard.reddeer.component.Component;
 import org.jboss.tools.switchyard.reddeer.component.Reference;
 import org.jboss.tools.switchyard.reddeer.component.Service;
+import org.jboss.tools.switchyard.reddeer.condition.ConsoleHasChanged;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.editor.TextEditor;
-import org.jboss.tools.switchyard.reddeer.server.ServerDeployment;
 import org.jboss.tools.switchyard.reddeer.wizard.CamelJavaWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.PromoteServiceWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.RESTBindingWizard;
@@ -19,10 +19,10 @@ import org.jboss.tools.switchyard.reddeer.wizard.SOAPBindingWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.SwitchYardProjectWizard;
 import org.jboss.tools.switchyard.ui.bot.test.suite.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.tools.switchyard.ui.bot.test.suite.PerspectiveRequirement.Perspective;
+import org.jboss.tools.switchyard.ui.bot.test.suite.ServerDeployment;
 import org.jboss.tools.switchyard.ui.bot.test.suite.ServerRequirement.Server;
 import org.jboss.tools.switchyard.ui.bot.test.suite.ServerRequirement.State;
 import org.jboss.tools.switchyard.ui.bot.test.suite.ServerRequirement.Type;
-import org.jboss.tools.switchyard.ui.bot.test.suite.SwitchyardSuite;
 import org.jboss.tools.switchyard.ui.bot.test.util.SoapClient;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,7 +40,7 @@ public class WSProxyRESTTest extends SWTBotTestCase {
 
 	public static final String REST_URL = "http://localhost:8080/rest/MyRESTApplication";
 	public static final String REST_SERVICE = "HelloRESTService";
-	public static final String PROJECT = "proxy-rest";
+	public static final String PROJECT = "proxy_rest";
 	public static final String PACKAGE = "com.example.switchyard.proxy_rest";
 
 	@Before
@@ -64,7 +64,7 @@ public class WSProxyRESTTest extends SWTBotTestCase {
 				.type("return \"Hello \" + name;").saveAndClose();
 
 		/* Deploy RESTful Service */
-		new ServerDeployment(SwitchyardSuite.getServerName()).deployProject("rest");
+		new ServerDeployment().deployProject("rest", "rest.war");
 
 		/* Create SwicthYard Project */
 		new SwitchYardProjectWizard(PROJECT).impl("Camel Route").binding("SOAP", "REST").create();
@@ -95,15 +95,15 @@ public class WSProxyRESTTest extends SWTBotTestCase {
 				.deleteLineWith("ToSayHello")
 				.type("public static String transformStringToSayHelloResponse(String from) {")
 				.deleteLineWith("return null")
-				.type("return \"<sayHelloResponse xmlns=\\\"urn:com.example.switchyard:proxy-rest:1.0\\\">"
-						+ "<string>\"+ from + \"</string></sayHelloResponse>\";")
+				.type("return \"<sayHelloResponse xmlns=\\\"urn:com.example.switchyard:" + PROJECT
+						+ ":1.0\\\">" + "<string>\"+ from + \"</string></sayHelloResponse>\";")
 				.deleteLineWith("return null").type("return from.getTextContent().trim();")
 				.saveAndClose();
 		new SwitchYardEditor().save();
 
 		/* Expose Proxy Service Through SOAP */
 		new Service("HelloPortType").addBinding("SOAP");
-		new SOAPBindingWizard().activate().setContextpath(PROJECT).finish();
+		new SOAPBindingWizard().setContextpath(PROJECT).finish();
 		new SwitchYardEditor().save();
 
 		/* Reference to RESTful Service */
@@ -120,9 +120,10 @@ public class WSProxyRESTTest extends SWTBotTestCase {
 		new SwitchYardEditor().save();
 
 		/* Test Web Service Proxy */
-		new ServerDeployment(SwitchyardSuite.getServerName()).deployProject(PROJECT);
+		new ServerDeployment().deployProject(PROJECT);
 		SoapClient.testResponses("http://localhost:8080/" + PROJECT + "/Hello?wsdl", "WSProxyREST");
-		Bot.get().sleep(10 * 1000);
+		
+		new WaitWhile(new ConsoleHasChanged());
 	}
 
 	private class RestServiceWizard extends NewWizardDialog {

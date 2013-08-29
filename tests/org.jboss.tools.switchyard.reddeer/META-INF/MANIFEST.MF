@@ -15,6 +15,7 @@ Require-Bundle: org.eclipse.gef,
  org.eclipse.swtbot.go,
  org.eclipse.swtbot.eclipse.gef.finder
 Export-Package: org.jboss.tools.switchyard.reddeer.component,
+ org.jboss.tools.switchyard.reddeer.condition,
  org.jboss.tools.switchyard.reddeer.editor,
  org.jboss.tools.switchyard.reddeer.matcher,
  org.jboss.tools.switchyard.reddeer.preference,

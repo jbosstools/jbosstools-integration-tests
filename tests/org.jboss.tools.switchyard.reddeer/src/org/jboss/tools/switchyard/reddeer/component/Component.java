@@ -13,6 +13,7 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditPart;
 import org.eclipse.swtbot.swt.finder.results.Result;
 import org.hamcrest.Matcher;
+import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.matcher.WithTooltip;
 import org.jboss.tools.switchyard.reddeer.utils.MouseUtils;
@@ -49,12 +50,19 @@ public class Component {
 	}
 
 	public ContextButton contextButton(String label) {
-		click();
+		hover();
+		AbstractWait.sleep(1000);
 		return new ContextButton(label);
 	}
 
 	public void select() {
 		editPart.select();
+	}
+	
+	public void hover() {
+		Rectangle rectangle = getDisplayBounds();
+		Point centralPoint = getCentralPoint(rectangle);
+		MouseUtils.mouseMove(centralPoint.x, centralPoint.y);
 	}
 
 	public void click() {

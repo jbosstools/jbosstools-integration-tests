@@ -55,7 +55,7 @@
 	      <groupId>org.eclipse.tycho</groupId>
 	      <artifactId>tycho-surefire-plugin</artifactId>
 	      <configuration>
-		<appArgLine>-pluginCustomization resources/config/plugin_customization.ini</appArgLine>
+		<appArgLine>-pluginCustomization resources/config/plugin_customization.ini -clean</appArgLine>
 		<testSuite>org.jboss.tools.switchyard.ui.bot.test</testSuite>
 		<testClass>org.jboss.tools.switchyard.ui.bot.test.suite.${test.class}</testClass>
 		<useUIThread>false</useUIThread>

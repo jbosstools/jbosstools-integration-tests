@@ -22,6 +22,7 @@ import javax.xml.soap.SOAPMessage;
 import org.custommonkey.xmlunit.Diff;
 import org.custommonkey.xmlunit.XMLUnit;
 import org.eclipse.swtbot.swt.finder.exceptions.AssertionFailedException;
+import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.xml.sax.SAXException;
 
 /**
@@ -71,7 +72,10 @@ public class SoapClient {
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
-			throw new AssertionFailedException("IOException during testing response.");
+			ConsoleView consoleView = new ConsoleView();
+			consoleView.open();
+			throw new AssertionFailedException("IOException during testing response.\n"
+					+ consoleView.getConsoleText());
 		}
 	}
 
