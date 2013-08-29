@@ -17,6 +17,7 @@ import java.util.List;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.tools.ui.bot.ext.helper.TreeHelper;
 
 public class AssignableBeansDialog {
@@ -53,8 +54,9 @@ public class AssignableBeansDialog {
 	}
 	
 	public AssignableBeansDialog typeInFilter(String text) {
-		bot.text().setText(""); // clear filter textbox
-		bot.text().typeText(text);
+		DefaultText filterText = new DefaultText(0);
+		filterText.setText(""); // clear filter textbox
+		filterText.setText(text);
 		return this;
 	}
 	

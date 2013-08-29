@@ -55,6 +55,15 @@ public class OpenOnHelper {
 	 * Applies Open On (F3) on textToSelect within editor with editorTitle and
 	 * checks if expectedOpenedFileName was opened
 	 * 
+	 * <p>
+	 * This test fails if is executed in Xephyr and ibus-daemon is on. Ibus-daemon causes rejection
+	 * of all keyboard events.
+	 * </p><p>
+	 * Related reading (bugreports): <br />
+	 * <a href="https://bugs.launchpad.net/ubuntu/+source/ibus/+bug/481656"> iBus blocks input in Java application </a> <br />
+	 * <a href="https://bugzilla.redhat.com/show_bug.cgi?id=800736"> Freemind (java) loses keyboard input when used with ibus </a>
+	 * </p>
+	 * 
 	 * @param editorTitle
 	 * @param textToSelect
 	 * @param selectionOffset

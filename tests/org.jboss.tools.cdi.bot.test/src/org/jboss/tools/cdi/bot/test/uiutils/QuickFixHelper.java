@@ -13,6 +13,9 @@ package org.jboss.tools.cdi.bot.test.uiutils;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
@@ -168,23 +171,38 @@ public class QuickFixHelper {
 	 */
 	public SWTBotTreeItem[] getProblems(ProblemsType problemType, String projectName) {
 		SWTEclipseExt.showView(bot,ViewType.PROBLEMS);
-		SWTBotTreeItem[] problemsTree = null;
 		if (problemType == ProblemsType.WARNINGS) {
-			problemsTree = ProblemsView.getFilteredWarningsTreeItems(bot, null, null, 
-					projectName, "CDI Problem");
-			if (problemsTree.length == 0) {
-				problemsTree = ProblemsView.getFilteredWarningsTreeItems(bot, null, "/" + projectName, 
-						null, null);
-			}
-		}else if (problemType == ProblemsType.ERRORS) {
-			problemsTree = ProblemsView.getFilteredErrorsTreeItems(bot, null, null, 
-					projectName, "CDI Problem");
-			if (problemsTree.length == 0) {
-				problemsTree = ProblemsView.getFilteredErrorsTreeItems(bot, null, "/" + projectName, 
-						null, null);
-			}
+			SWTBotTreeItem[] projectRelatedProblemItems = ProblemsView.getFilteredWarningsTreeItems(
+					bot, null, null, projectName, "CDI Problem");
+			SWTBotTreeItem[] resourceRelatedProblemItems = ProblemsView.getFilteredWarningsTreeItems(
+					bot, null, "/" + projectName, null, null);
+			SWTBotTreeItem[] result = concatArrays(projectRelatedProblemItems, 
+					resourceRelatedProblemItems);
+			return result;
+		} 
+		if (problemType == ProblemsType.ERRORS) {
+			SWTBotTreeItem[] projectRelatedErrors = ProblemsView.getFilteredErrorsTreeItems(
+					bot, null, null, projectName, "CDI Problem");;
+			SWTBotTreeItem[] resourceRelatedErrors = ProblemsView.getFilteredErrorsTreeItems(
+					bot, null, "/" + projectName, null, null);
+			SWTBotTreeItem[] result = concatArrays(projectRelatedErrors, resourceRelatedErrors);
+			return result;
 		}
-		return problemsTree;
+		return null;
+	}
+	
+	/**
+	 * Array concatenation
+	 * @param aArray
+	 * @param bArray
+	 * @return aArray `concat` bArray
+	 */
+	private static <T> T[] concatArrays(T[] aArray, T[] bArray) {
+		Collection<T> sum = new ArrayList<T>();
+		sum.addAll(Arrays.asList(aArray));
+		sum.addAll(Arrays.asList(bArray));
+		T[] result =  sum.toArray(aArray);
+		return result;
 	}
 	
 	/**
@@ -197,27 +215,6 @@ public class QuickFixHelper {
 		
 		SWTBotTreeItem[] errorProblemsTree = getProblems(ProblemsType.ERRORS, projectName);
 		
-		return joinTwoArrays(warningProblemsTree, errorProblemsTree);
-	}
-	
-	/**
-	 * Method joins two arrays and returns them as one joined array
-	 * @param aArray
-	 * @param bArray
-	 * @return
-	 */
-	private SWTBotTreeItem[] joinTwoArrays(SWTBotTreeItem[] aArray, SWTBotTreeItem[] bArray) {
-		
-		SWTBotTreeItem[] bigArray = new SWTBotTreeItem[aArray.length + bArray.length];
-		
-		for (int i = 0; i < aArray.length; i++) {
-			bigArray[i] = aArray[i];
-		}
-		
-		for (int i = aArray.length; i < aArray.length + bArray.length; i++) {
-			bigArray[i] = bArray[i-aArray.length];
-		}
-		
-		return bigArray;
+		return concatArrays(warningProblemsTree, errorProblemsTree);
 	}
 }

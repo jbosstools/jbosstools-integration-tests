@@ -54,6 +54,9 @@ public class CDIValidatorTest extends CDITestBase {
 		new WaitUntil(new ProblemsExists(), TimePeriod.NORMAL);
 		assertEquals("Warnings node should contain one warning", 
 				problemsView.getAllWarnings().size(), 1);
+		assertEquals("Warning text", 
+				"No bean is eligible for injection to the injection point [JSR-299 §5.2.1]",
+				problemsView.getAllWarnings().get(0).getText());
 		
 	}
 	
