@@ -2,7 +2,10 @@ package org.jboss.tools.drools.reddeer.test.functional;
 
 import java.util.Collection;
 
+import org.apache.log4j.Logger;
 import org.jboss.reddeer.swt.api.Table;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.tools.drools.reddeer.dialog.DroolsRuntimeDialog;
 import org.jboss.tools.drools.reddeer.preference.DroolsRuntimesPreferencePage;
@@ -14,6 +17,7 @@ import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
 public class DroolsRuntimeManagementTest extends TestParent {
+    private static final Logger LOGGER = Logger.getLogger(DroolsRuntimeManagementTest.class);
 
     @Test
     @Category(SmokeTest.class)
@@ -169,6 +173,34 @@ public class DroolsRuntimeManagementTest extends TestParent {
         wiz.ok();
         Assert.assertEquals("Runtime was not created.", 1, pref.getDroolsRuntimes().size());
         pref.ok();
+    }
+
+    @Test
+    public void testApply() {
+        DroolsRuntimesPreferencePage pref = new DroolsRuntimesPreferencePage();
+        pref.open();
+        DroolsRuntimeDialog wiz = pref.addDroolsRuntime();
+        wiz.setName(name.getMethodName());
+        wiz.setLocation(DEFAULT_DROOLS_RUNTIME_LOCATION);
+        Assert.assertTrue("Impossible to use created runtime.", wiz.isValid());
+        wiz.ok();
+
+        Assert.assertEquals("The runtime was not created!", 1, pref.getDroolsRuntimes().size());
+        pref.setDroolsRuntimeAsDefault(name.getMethodName());
+        Assert.assertNotNull("The default runtime was not set!", pref.getDefaultDroolsRuntime());
+        pref.apply();
+        try {
+            new DefaultShell("Warning");
+            new PushButton("OK").click();
+        } catch (Exception ex) {
+            LOGGER.info("'Default runtime changed' warning was not shown.");
+        }
+
+        try {
+            Assert.assertNotNull("The default runtime was reset!", pref.getDefaultDroolsRuntime());
+        } finally {
+            pref.cancel();
+        }
     }
 
     public static void addRuntime(String name, String location, boolean setAsDefault) {
