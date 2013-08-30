@@ -1,9 +1,13 @@
 package org.jboss.tools.drools.reddeer.test.functional;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.ProjectItem;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.reddeer.swt.util.Bot;
 import org.jboss.tools.drools.reddeer.test.annotation.UseDefaultProject;
 import org.jboss.tools.drools.reddeer.test.annotation.UseDefaultRuntime;
 import org.jboss.tools.drools.reddeer.test.annotation.UsePerspective;
@@ -25,73 +29,97 @@ import org.junit.runner.RunWith;
 @RunWith(RedDeerSuite.class)
 @Category(SmokeTest.class)
 public class NewResourcesTest extends TestParent {
+    private static final Pattern RULE_PATTERN = Pattern.compile("(?s)rule.*?when.*?then.*?end");
 
     @Test
     @UsePerspective(JavaPerspective.class) @UseDefaultRuntime @UseDefaultProject
     public void testNewDRL() {
+        final String resourceName = name.getMethodName();
+        final String packageName = "com.redhat";
+
         NewRuleResourceWizard wiz = new NewRuleResourceWizard();
         wiz.open();
         NewRuleResourceWizardPage page = wiz.getFirstPage();
         page.setParentFolder(DEFAULT_RULES_PATH);
-        page.setFileName(name.getMethodName());
+        page.setFileName(resourceName);
+        page.setRulePackageName(packageName);
         page.setTypeOfRuleResource(RuleResourceType.rulePackage);
-        page.setRulePackageName("com.redhat");
         wiz.finish();
 
-        PackageExplorer pkg = new PackageExplorer();
-        pkg.open();
-        ProjectItem item = pkg.getProject(DEFAULT_PROJECT_NAME).getProjectItem("src/main/rules");
-        Assert.assertNotNull(item.getChild(name.getMethodName() + ".drl"));
+        PackageExplorer explorer = new PackageExplorer();
+        explorer.open();
+        Project p = explorer.getProject(DEFAULT_PROJECT_NAME);
+        Assert.assertTrue("Rule resource was not created", p.containsItem(RESOURCES_LOCATION, "rules", resourceName + ".drl"));
+
+        // FIXME Use RedDeer editors when available
+        String text = Bot.get().activeEditor().toTextEditor().getText();
+        Assert.assertTrue("Wrong package declaration.", text.contains("package " + packageName));
+        Matcher m = RULE_PATTERN.matcher(text);
+        Assert.assertTrue("No rule present in file", m.find());
+        Assert.assertTrue("Only one rule present in file", m.find());
+        Assert.assertFalse("More than two rules present in file", m.find());
     }
 
     @Test
     @UsePerspective(JavaPerspective.class) @UseDefaultRuntime @UseDefaultProject
     public void testNewIndividualRule() {
+        final String resourceName = "testCreateIndividualRule";
+        final String packageName = "com.redhat";
+
         NewRuleResourceWizard wiz = new NewRuleResourceWizard();
         wiz.open();
         NewRuleResourceWizardPage page = wiz.getFirstPage();
         page.setParentFolder(DEFAULT_RULES_PATH);
-        page.setFileName(name.getMethodName());
+        page.setFileName(resourceName);
+        page.setRulePackageName(packageName);
         page.setTypeOfRuleResource(RuleResourceType.individualRule);
-        page.setRulePackageName("com.redhat");
         wiz.finish();
 
-        PackageExplorer pkg = new PackageExplorer();
-        pkg.open();
-        ProjectItem item = pkg.getProject(DEFAULT_PROJECT_NAME).getProjectItem("src/main/rules");
-        Assert.assertNotNull(item.getChild(name.getMethodName() + ".drl"));
+        PackageExplorer explorer = new PackageExplorer();
+        explorer.open();
+        Project p = explorer.getProject(DEFAULT_PROJECT_NAME);
+        Assert.assertTrue("Rule resource was not created", p.containsItem(RESOURCES_LOCATION, "rules", resourceName + ".drl"));
+
+        // FIXME Use RedDeer editors when available
+        String text = Bot.get().activeEditor().toTextEditor().getText();
+        Assert.assertTrue("Wrong package declaration.", text.contains("package " + packageName));
+        Matcher m = RULE_PATTERN.matcher(text);
+        Assert.assertTrue("No rule present in file", m.find());
+        Assert.assertFalse("More than one rules present in file", m.find());
     }
 
     @Test
     @UsePerspective(JavaPerspective.class) @UseDefaultRuntime @UseDefaultProject
     public void testNewDsl() {
+        final String resourceName = name.getMethodName();
+
         NewDslWizard wiz = new NewDslWizard();
         wiz.open();
         NewDslWizardPage page = wiz.getFirstPage();
         page.setParentFolder(DEFAULT_RULES_PATH);
-        page.setFileName(name.getMethodName());
+        page.setFileName(resourceName);
+        // generate sample DSL lines
+        wiz.getSamplesPage().setAddSampleDsl(true);
         wiz.finish();
 
         PackageExplorer pkg = new PackageExplorer();
-        pkg.open();
-        ProjectItem item = pkg.getProject(DEFAULT_PROJECT_NAME).getProjectItem("src/main/rules");
-        Assert.assertNotNull(item.getChild(name.getMethodName() + ".dsl"));
+        Assert.assertTrue(pkg.getProject(DEFAULT_PROJECT_NAME).containsItem(RESOURCES_LOCATION, "rules", resourceName + ".dsl"));
     }
 
     @Ignore("Opens the decision table and fails remaining tests")
     @Test
     @UsePerspective(JavaPerspective.class) @UseDefaultRuntime @UseDefaultProject
     public void testNewDecisionTable() {
+        final String resourceName = name.getMethodName();
+
         NewDecisionTableWizard wiz = new NewDecisionTableWizard();
         wiz.open();
         NewDecisionTableWizardPage page = wiz.getFirstPage();
         page.setParentFolder(DEFAULT_RULES_PATH);
-        page.setFileName(name.getMethodName());
+        page.setFileName(resourceName);
         wiz.finish();
 
         PackageExplorer pkg = new PackageExplorer();
-        pkg.open();
-        ProjectItem item = pkg.getProject(DEFAULT_PROJECT_NAME).getProjectItem("src/main/rules");
-        Assert.assertNotNull(item.getChild(name.getMethodName() + ".xls"));
+        Assert.assertTrue(pkg.getProject(DEFAULT_PROJECT_NAME).containsItem(RESOURCES_LOCATION, "rules", resourceName + ".xls"));
     }
 }
