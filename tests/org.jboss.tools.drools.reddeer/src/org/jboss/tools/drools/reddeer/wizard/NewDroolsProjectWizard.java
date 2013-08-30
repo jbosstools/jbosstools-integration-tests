@@ -36,7 +36,8 @@ public class NewDroolsProjectWizard extends NewWizardDialog {
         getSelectSamplesPage().checkAll();
         NewDroolsProjectSelectRuntimeWizardPage runtime = getDroolsRuntimePage();
         runtime.setUseDefaultRuntime(true);
-        runtime.setCodeCompatibleWithVersion(CodeCompatibility.Drools51OrAbove);
+        runtime.setCodeCompatibleWithVersion(CodeCompatibility.Drools60x);
+        runtime.setGAV("com.redhat", "brms-test", "1.0-SNAPSHOT");
         finish();
     }
 }
