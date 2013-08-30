@@ -6,8 +6,7 @@ import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 
 public class NewDroolsProjectSelectRuntimeWizardPage extends WizardPage {
     private static final String LABEL_DROOLS_RUNTIME = "Drools Runtime:";
-    // FIXME space behind the text
-    private static final String LABEL_DROOLS_CODE = "Generate code compatible with: ";
+    private static final String LABEL_DROOLS_CODE = "Generate code compatible with:";
 
     public NewDroolsProjectSelectRuntimeWizardPage() {
     }

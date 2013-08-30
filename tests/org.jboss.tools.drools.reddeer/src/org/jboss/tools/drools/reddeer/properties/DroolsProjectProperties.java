@@ -30,8 +30,7 @@ public class DroolsProjectProperties {
 
     public void setDefaultDroolsRuntime(String runtimeName) {
         setEnableSpecificSettings(true);
-        // FIXME space after label text
-        new DefaultCombo("Drools Runtime: ").setSelection(runtimeName);
+        new DefaultCombo("Drools Runtime:").setSelection(runtimeName);
     }
 
     public void ok() {

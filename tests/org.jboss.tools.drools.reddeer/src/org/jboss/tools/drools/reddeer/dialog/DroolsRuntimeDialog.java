@@ -7,13 +7,11 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
 public class DroolsRuntimeDialog {
 
     public void setName(String name) {
-        // FIXME space behind label text
-        new LabeledText("Name: ").setText(name);
+        new LabeledText("Name:").setText(name);
     }
 
     public void setLocation(String location) {
-        // FIXME space behind label text
-        new LabeledText("Path: ").setText(location);
+        new LabeledText("Path:").setText(location);
     }
 
     public void createNewRuntime(String location) {
