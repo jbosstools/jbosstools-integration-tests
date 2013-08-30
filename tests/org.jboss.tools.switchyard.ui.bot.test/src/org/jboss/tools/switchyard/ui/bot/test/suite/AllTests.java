@@ -3,6 +3,7 @@ package org.jboss.tools.switchyard.ui.bot.test.suite;
 import junit.framework.TestSuite;
 
 import org.jboss.tools.switchyard.ui.bot.test.BottomUpBPELTest;
+import org.jboss.tools.switchyard.ui.bot.test.BottomUpBPMN2Test;
 import org.jboss.tools.switchyard.ui.bot.test.BottomUpCamelTest;
 import org.jboss.tools.switchyard.ui.bot.test.BottomUpEJBTest;
 import org.jboss.tools.switchyard.ui.bot.test.SimpleTest;
@@ -23,7 +24,8 @@ import org.junit.runners.Suite.SuiteClasses;
 	WSProxyRESTTest.class,
 	BottomUpBPELTest.class,
 	BottomUpCamelTest.class,
-	BottomUpEJBTest.class
+	BottomUpEJBTest.class,
+	BottomUpBPMN2Test.class
 })
 @RunWith(SwitchyardSuite.class)
 public class AllTests extends TestSuite {

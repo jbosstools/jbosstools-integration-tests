@@ -73,6 +73,12 @@
 		    <artifactId>org.switchyard.tools.bpel.feature.feature.group</artifactId>
 		    <version>0.0.0</version>
 		  </dependency>
+		  <!-- SwitchYard BPMN2 feature -->
+		  <dependency>
+		    <type>p2-installable-unit</type>
+		    <artifactId>org.switchyard.tools.bpmn2.feature.feature.group</artifactId>
+		    <version>0.0.0</version>
+		  </dependency>
 		  <!-- AS fature -->
 		  <dependency>
 		    <type>p2-installable-unit</type>
