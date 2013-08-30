@@ -11,26 +11,20 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.List;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.Platform;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.lookup.impl.ShellLookup;
-import org.jboss.reddeer.swt.matcher.RegexMatchers;
 import org.jboss.reddeer.swt.util.Bot;
 import org.jboss.reddeer.swt.util.Display;
-import org.jboss.reddeer.swt.wait.TimePeriod;
-import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.reddeer.workbench.editor.DefaultEditor;
+import org.jboss.reddeer.workbench.view.View;
 import org.jboss.tools.drools.reddeer.dialog.DroolsRuntimeDialog;
 import org.jboss.tools.drools.reddeer.preference.DroolsRuntimesPreferencePage;
 import org.jboss.tools.drools.reddeer.preference.DroolsRuntimesPreferencePage.DroolsRuntime;
@@ -42,9 +36,12 @@ import org.jboss.tools.drools.reddeer.wizard.NewDroolsProjectWizard;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.ClassRule;
 import org.junit.Rule;
+import org.junit.internal.AssumptionViolatedException;
 import org.junit.rules.TestName;
 import org.junit.rules.TestWatcher;
+import org.junit.runner.Description;
 import org.junit.runner.RunWith;
 import org.osgi.framework.Bundle;
 
@@ -54,7 +51,8 @@ public abstract class TestParent {
     protected static final String DEFAULT_DROOLS_RUNTIME_NAME = "defaultTestRuntime";
     protected static final String DEFAULT_DROOLS_RUNTIME_LOCATION;
     protected static final String DEFAULT_PROJECT_NAME = "defaultTestProject";
-    protected static final String DEFAULT_RULES_PATH = DEFAULT_PROJECT_NAME + "/src/main/rules";
+    protected static final String RESOURCES_LOCATION = "src/main/resources";
+    protected static final String DEFAULT_RULES_PATH = DEFAULT_PROJECT_NAME + "/" + RESOURCES_LOCATION + "/rules";
     private static final Properties TEST_PARAMS = new Properties();
 
     @Rule
@@ -62,6 +60,33 @@ public abstract class TestParent {
 
     @Rule
     public TestWatcher watcher = new ScreenshotTestWatcher();
+
+    @ClassRule
+    public static TestWatcher classWatcher = new TestWatcher() {
+        @Override
+        protected void starting(Description description) {
+            LOGGER.info(String.format("%n%n%25s Starting [%s]%n", "", description.getClassName()));
+        }
+    };
+
+    @Rule
+    public TestWatcher resultWatcher = new TestWatcher() {
+        protected void starting(Description description) {
+            LOGGER.info(String.format("==== %s ====", description.getMethodName()));
+        };
+
+        protected void succeeded(Description description) {
+            LOGGER.info(String.format("succeded %s - %s", description.getClassName(), description.getMethodName()));
+        };
+
+        protected void skipped(AssumptionViolatedException e, Description description) {
+            LOGGER.info(String.format("skipped %s - %s", description.getClassName(), description.getMethodName()));
+        }
+
+        protected void failed(Throwable e, Description description) {
+            LOGGER.warn(String.format("failed %s - %s", description.getClassName(), description.getMethodName()));
+        };
+    };
 
     static {
         try {
@@ -89,15 +114,13 @@ public abstract class TestParent {
         }
 
         try {
-            // FIXME reddeer when possible
-            Bot.get().viewByTitle("Welcome").close();
+            new View("Welcome") {}.close();
         } catch (Exception ex) {
-            LOGGER.info("Eclipse Welcome editor not found.");
+            LOGGER.info("Eclipse Welcome view not found.");
         }
 
         try {
-            // FIXME reddeer when possible
-            Bot.get().viewByTitle("JBoss Central").close();
+            new DefaultEditor("JBoss Central").close();
         } catch (Exception ex) {
             LOGGER.info("JBoss Central editor was not found.");
         }
@@ -109,11 +132,6 @@ public abstract class TestParent {
                 shell.setMaximized(true);
             }
         });
-    }
-
-    @Before
-    public void logTestName() {
-        LOGGER.info(String.format("***\tStarting %s\t***", name.getMethodName()));
     }
 
     @Before
@@ -160,13 +178,12 @@ public abstract class TestParent {
         if (getAnnotationOnMethod(name.getMethodName(), UseDefaultProject.class) != null) {
             if (!new PackageExplorer().containsProject(DEFAULT_PROJECT_NAME)) {
                 NewDroolsProjectWizard wiz = new NewDroolsProjectWizard();
-                wiz.createDefaultProjectWithAllSamples(DEFAULT_PROJECT_NAME);
-
-                // FIXME workaround for bz#957110 and bz#957122
-                new PackageExplorer().getProject(DEFAULT_PROJECT_NAME).getProjectItem("src/main/java");
-                RegexMatchers m = new RegexMatchers("Source.*", "Organize Imports.*");
-                new ContextMenu(m.getMatchers()).select();
-                new WaitWhile(new ShellWithTextIsActive("Progress Information"), TimePeriod.LONG);
+                //wiz.createDefaultProjectWithAllSamples(DEFAULT_PROJECT_NAME);
+                // FIXME temporarily disable samples other than *.drl (BZ#1001990)
+                wiz.open();
+                wiz.getFirstPage().setProjectName(DEFAULT_PROJECT_NAME);
+                wiz.getDroolsRuntimePage().setGAV("com.redhat", "brms", "6.0.0.ER2-SNAPSHOT");
+                wiz.finish();
             }
         }
     }
@@ -181,21 +198,9 @@ public abstract class TestParent {
 
         // refresh and delete all projects (as running the projects creates logs)
         PackageExplorer explorer = new PackageExplorer();
-        while (true) {
-            explorer.open();
-            List<Project> projects = explorer.getProjects();
-
-            if (projects.size() > 0) {
-                String projectName = projects.get(0).getName();
-                explorer.getProject(projectName).select();
-                new ShellMenu(new RegexMatchers("File.*", "Refresh.*").getMatchers()).select();
-                new WaitWhile(new ShellWithTextIsActive("Refresh"));
-
-                explorer.open();
-                explorer.getProject(projectName).delete(true);
-            } else {
-                break;
-            }
+        while (explorer.getProjects().size() > 0) {
+            explorer.getProjects().get(0).delete(true);
+            explorer = new PackageExplorer();
         }
 
         // delete all runtimes
