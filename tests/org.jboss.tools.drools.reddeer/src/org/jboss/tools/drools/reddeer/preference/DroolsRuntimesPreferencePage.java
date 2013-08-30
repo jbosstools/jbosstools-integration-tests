@@ -6,6 +6,7 @@ import java.util.Collection;
 import org.apache.log4j.Logger;
 import org.jboss.reddeer.eclipse.jface.preference.PreferencePage;
 import org.jboss.reddeer.swt.api.Table;
+import org.jboss.reddeer.swt.api.TableItem;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
@@ -35,18 +36,32 @@ public class DroolsRuntimesPreferencePage extends PreferencePage {
     }
 
     public void setDroolsRuntimeAsDefault(String name) {
-        new DefaultTable().check(name);
+        for (TableItem item : new DefaultTable().getItems()) {
+            if (item.getText(0).equals(name)) {
+                item.setChecked(true);
+            }
+        }
+    }
+
+    public DroolsRuntime getDefaultDroolsRuntime() {
+        for (DroolsRuntime r : getDroolsRuntimes()) {
+            if (r.isDefault()) {
+                return r;
+            }
+        }
+
+        return null;
     }
 
     public Collection<DroolsRuntime> getDroolsRuntimes() {
-        Table table = new DefaultTable();
-
         Collection<DroolsRuntime> result = new ArrayList<DroolsRuntimesPreferencePage.DroolsRuntime>();
         String name, location;
-        for (int i = 0; i < table.rowCount(); i++) {
-            name = table.cell(i, 0);
-            location = table.cell(i, 1);
-            result.add(new DroolsRuntime(name, location));
+        boolean isDefault;
+        for (TableItem item : new DefaultTable().getItems()) {
+            name = item.getText(0);
+            location = item.getText(1);
+            isDefault = item.isChecked();
+            result.add(new DroolsRuntime(name, location, isDefault));
         }
 
         return result;
@@ -55,10 +70,12 @@ public class DroolsRuntimesPreferencePage extends PreferencePage {
     public static class DroolsRuntime {
         private final String name;
         private final String location;
+        private final boolean isDefault;
 
-        public DroolsRuntime(String name, String location) {
+        public DroolsRuntime(String name, String location, boolean isDefault) {
             this.name = name;
             this.location = location;
+            this.isDefault = isDefault;
         }
 
         public String getName() {
@@ -68,11 +85,14 @@ public class DroolsRuntimesPreferencePage extends PreferencePage {
         public String getLocation() {
             return location;
         }
+
+        public boolean isDefault() {
+            return isDefault;
+        }
     }
 
     public boolean okCloseWarning() {
         ok();
-        LOGGER.warn(new DefaultShell().getText());
         try {
             new DefaultShell("Warning");
             new PushButton("OK").click();
@@ -86,7 +106,7 @@ public class DroolsRuntimesPreferencePage extends PreferencePage {
     private void selectDroolsRuntime(String name) {
         Table t = new DefaultTable();
         for (int i = 0; i < t.rowCount(); i++) {
-            if (t.cell(i, 0).equals(name)) {
+            if (t.getItem(i).getText(0).equals(name)) {
                 t.select(i);
                 break;
             }
