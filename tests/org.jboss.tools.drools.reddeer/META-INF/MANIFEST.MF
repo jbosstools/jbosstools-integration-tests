@@ -23,7 +23,8 @@ Require-Bundle:
  org.jboss.reddeer.workbench;bundle-version="0.4.0",
  org.apache.log4j,
  org.drools.eclipse,
- org.eclipse.swtbot.eclipse.finder
+ org.eclipse.swtbot.eclipse.finder,
+ org.hamcrest.library
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Eclipse-RegisterBuddy: org.apache.log4j
