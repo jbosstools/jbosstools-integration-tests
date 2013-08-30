@@ -14,8 +14,8 @@ import org.junit.runners.Suite.SuiteClasses;
     PerspectiveTest.class,
     DroolsRuntimeManagementTest.class,
     ProjectManagementTest.class,
-    RulesManagementTest.class,
-    NewResourcesTest.class
+    NewResourcesTest.class,
+    RulesManagementTest.class
 })
 public class BrmsTestSuite {
 
