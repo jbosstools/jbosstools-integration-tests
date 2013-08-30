@@ -2,8 +2,8 @@ package org.jboss.tools.drools.reddeer.test.functional;
 
 import java.util.Collection;
 
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
-import org.jboss.reddeer.swt.util.Bot;
+import org.jboss.reddeer.swt.api.Table;
+import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.tools.drools.reddeer.dialog.DroolsRuntimeDialog;
 import org.jboss.tools.drools.reddeer.preference.DroolsRuntimesPreferencePage;
 import org.jboss.tools.drools.reddeer.preference.DroolsRuntimesPreferencePage.DroolsRuntime;
@@ -95,12 +95,12 @@ public class DroolsRuntimeManagementTest extends TestParent {
         Assert.assertFalse("Warning was not shown although the default runtime has changed.", warning);
 
         pref.open();
-        SWTBotTable table = Bot.get().table();
+        Table table = new DefaultTable();
         for (int row = 0; row < table.rowCount(); row++) {
-            if (table.cell(row, 0).equals(name1)) {
-                Assert.assertTrue("Default runtime is not checked", table.getTableItem(row).isChecked());
+            if (table.getItem(row).getText(0).equals(name1)) {
+                Assert.assertTrue("Default runtime is not checked", table.getItem(row).isChecked());
             } else {
-                Assert.assertFalse("Other than default runtime is checked", table.getTableItem(row).isChecked());
+                Assert.assertFalse("Other than default runtime is checked", table.getItem(row).isChecked());
             }
         }
 
@@ -109,12 +109,12 @@ public class DroolsRuntimeManagementTest extends TestParent {
         Assert.assertTrue("Warning was  not shown although the default runtime has changed.", warning);
 
         pref.open();
-        table = Bot.get().table();
+        table = new DefaultTable();
         for (int row = 0; row < table.rowCount(); row++) {
-            if (table.cell(row, 0).equals(name2)) {
-                Assert.assertTrue("Default runtime is not checked", table.getTableItem(row).isChecked());
+            if (table.getItem(row).getText(0).equals(name2)) {
+                Assert.assertTrue("Default runtime is not checked", table.getItem(row).isChecked());
             } else {
-                Assert.assertFalse("Other than default runtime is checked", table.getTableItem(row).isChecked());
+                Assert.assertFalse("Other than default runtime is checked", table.getItem(row).isChecked());
             }
         }
     }
@@ -132,30 +132,30 @@ public class DroolsRuntimeManagementTest extends TestParent {
         pref.okCloseWarning();
 
         pref.open();
-        SWTBotTable table = Bot.get().table();
+        Table table = new DefaultTable();
         for (int row = 0; row < table.rowCount(); row++) {
-            if (table.cell(row, 0).equals(name1)) {
-                Assert.assertTrue("Default runtime is not checked", table.getTableItem(row).isChecked());
+            if (table.getItem(row).getText(0).equals(name1)) {
+                Assert.assertTrue("Default runtime is not checked", table.getItem(row).isChecked());
             } else {
-                Assert.assertFalse("Other than default runtime is checked", table.getTableItem(row).isChecked());
+                Assert.assertFalse("Other than default runtime is checked", table.getItem(row).isChecked());
             }
         }
         pref.removeDroolsRuntime(name1);
 
         Assert.assertEquals("Default runtime was not deleted.", 2, pref.getDroolsRuntimes().size());
-        table = Bot.get().table();
+        table = new DefaultTable();
         for (int row = 0; row < table.rowCount(); row++) {
-            Assert.assertFalse("Default runtime is set although it was deleted earlier", table.getTableItem(row).isChecked());
+            Assert.assertFalse("Default runtime is set although it was deleted earlier", table.getItem(row).isChecked());
         }
 
         pref.setDroolsRuntimeAsDefault(name2);
         pref.removeDroolsRuntime(name2);
 
         Assert.assertEquals("Default runtime was not deleted.", 1, pref.getDroolsRuntimes().size());
-        table = Bot.get().table();
-        Assert.assertEquals("Wrong runtimes deleted.", name3, table.cell(0, 0));
+        table = new DefaultTable();
+        Assert.assertEquals("Wrong runtimes deleted.", name3, table.getItem(0).getText(0));
         // we know about this inconsistency
-        Assert.assertFalse("Default runtime is set although it was deleted earlier", table.getTableItem(0).isChecked());
+        Assert.assertFalse("Default runtime is set although it was deleted earlier", table.getItem(0).isChecked());
     }
 
     @Test
