@@ -1,11 +1,11 @@
 package org.jboss.tools.drools.reddeer.test.functional;
 
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
 import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
 import org.eclipse.swtbot.swt.finder.utils.SWTUtils;
 import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardDialog;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.swt.util.Bot;
 import org.jboss.tools.drools.reddeer.perspective.DroolsPerspective;
 import org.jboss.tools.drools.reddeer.test.annotation.UseDefaultProject;
 import org.jboss.tools.drools.reddeer.test.annotation.UseDefaultRuntime;
@@ -38,7 +38,7 @@ public class RulesEditorTest extends TestParent {
         diag.finish();
 
         // FIXME RedDeerify when possible
-        SWTBotEclipseEditor editor = Bot.get().activeEditor().toTextEditor();
+        SWTBotEclipseEditor editor = new SWTWorkbenchBot().activeEditor().toTextEditor();
         editor.setText(MESSAGE_TEXT);
         editor.saveAndClose();
 
@@ -51,7 +51,7 @@ public class RulesEditorTest extends TestParent {
         wiz.finish();
 
         // FIXME RedDeerify when possible
-        rulesEditor = Bot.get().activeEditor().toTextEditor();
+        rulesEditor = new SWTWorkbenchBot().activeEditor().toTextEditor();
         rulesEditor.setText(RULE_RESOURCE_TEXT);
         rulesEditor.save();
     }

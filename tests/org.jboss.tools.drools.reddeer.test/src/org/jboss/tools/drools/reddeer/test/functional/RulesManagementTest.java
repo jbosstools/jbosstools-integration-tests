@@ -1,6 +1,7 @@
 package org.jboss.tools.drools.reddeer.test.functional;
 
 import org.apache.log4j.Logger;
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
@@ -11,7 +12,6 @@ import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.matcher.RegexMatchers;
-import org.jboss.reddeer.swt.util.Bot;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.drools.reddeer.dialog.DroolsRuntimeDialog;
@@ -129,7 +129,7 @@ public class RulesManagementTest extends TestParent {
         explorer.getProject(DEFAULT_PROJECT_NAME).getProjectItem(RESOURCES_LOCATION, "rules", "Sample.drl").select();
         new ContextMenu(new RegexMatchers("Open.*").getMatchers()).select();
 
-        Bot.get().activeEditor().toTextEditor().navigateTo(8, 0);
+        new SWTWorkbenchBot().activeEditor().toTextEditor().navigateTo(8, 0);
         // FIXME workaround to enable Toggle Breakpoint
         new JavaPerspective().open();
         new ShellMenu(new RegexMatchers("Run.*", "Toggle Breakpoint.*").getMatchers()).select();

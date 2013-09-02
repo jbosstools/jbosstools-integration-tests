@@ -15,13 +15,13 @@ import java.util.Properties;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.lookup.impl.ShellLookup;
-import org.jboss.reddeer.swt.util.Bot;
 import org.jboss.reddeer.swt.util.Display;
 import org.jboss.reddeer.workbench.editor.DefaultEditor;
 import org.jboss.reddeer.workbench.view.View;
@@ -190,11 +190,12 @@ public abstract class TestParent {
 
     @After
     public void cleanUp() {
+        SWTWorkbenchBot bot = new SWTWorkbenchBot();
         // close shells
-        Bot.get().closeAllShells();
+        bot.closeAllShells();
         // save and close editors
-        Bot.get().saveAllEditors();
-        Bot.get().closeAllEditors();
+        bot.saveAllEditors();
+        bot.closeAllEditors();
 
         // refresh and delete all projects (as running the projects creates logs)
         PackageExplorer explorer = new PackageExplorer();
