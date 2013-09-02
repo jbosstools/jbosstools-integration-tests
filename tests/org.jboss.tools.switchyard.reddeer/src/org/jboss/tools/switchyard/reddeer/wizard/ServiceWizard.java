@@ -1,13 +1,19 @@
 package org.jboss.tools.switchyard.reddeer.wizard;
 
 import org.jboss.reddeer.eclipse.jface.wizard.WizardDialog;
+import org.jboss.reddeer.swt.api.Shell;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
+import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.swt.condition.TableHasRows;
 import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.util.Bot;
 import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.switchyard.reddeer.widget.Link;
 import org.jboss.tools.switchyard.reddeer.widget.RadioButton;
@@ -54,8 +60,11 @@ public class ServiceWizard<T extends ServiceWizard<?>> extends WizardDialog {
 	@SuppressWarnings("unchecked")
 	public T selectJavaInterface(String javaInterface) {
 		checkInterfaceType("Java").browse();
+		Shell shell = new DefaultShell();
 		new DefaultText().setText(javaInterface);
-		clickOK();
+		new WaitUntil(new TableHasRows(new DefaultTable()));
+		new PushButton("OK").click();
+		new WaitWhile(new ShellWithTextIsActive(shell.getText()));
 		return (T) this;
 	}
 
@@ -84,7 +93,7 @@ public class ServiceWizard<T extends ServiceWizard<?>> extends WizardDialog {
 	public void clickInterface() {
 		new Link("Interface:").click();
 	}
-	
+
 	private void clickOK() {
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		new PushButton("OK").click();
