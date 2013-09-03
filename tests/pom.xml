@@ -17,7 +17,7 @@
             <memoryOptions2>-XX:MaxPermSize=512m</memoryOptions2>
             <swt.bot.test.record.screencast>false</swt.bot.test.record.screencast>
             <integrationTestsSystemProperties>-Dswt.bot.test.record.screencast=${swt.bot.test.record.screencast} -Dorg.eclipse.swtbot.screenshots.dir=${project.build.directory}/screenshots</integrationTestsSystemProperties>
-	    <jbtis.version>4.1.2-SNAPSHOT</jbtis.version>
+	    <jbtis.version>4.1.4.Final</jbtis.version>
 	    <jbtis.site>http://download.jboss.org/jbosstools/updates/integration/kepler/integration-stack/aggregate/4.1.2</jbtis.site>
         </properties>
 
