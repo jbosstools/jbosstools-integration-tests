@@ -13,7 +13,12 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditPart;
 import org.eclipse.swtbot.swt.finder.results.Result;
 import org.hamcrest.Matcher;
+import org.jboss.reddeer.swt.condition.JobIsRunning;
+import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.wait.AbstractWait;
+import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.matcher.WithTooltip;
 import org.jboss.tools.switchyard.reddeer.utils.MouseUtils;
@@ -49,6 +54,15 @@ public class Component {
 		}
 	}
 
+	public void delete() {
+		contextButton("Delete").click();
+		String deleteShellText = "Confirm Delete";
+		new WaitUntil(new ShellWithTextIsActive(deleteShellText));
+		new PushButton("Yes").click();
+		new WaitWhile(new ShellWithTextIsActive(deleteShellText));
+		new WaitWhile(new JobIsRunning());
+	}
+
 	public ContextButton contextButton(String label) {
 		hover();
 		AbstractWait.sleep(1000);
@@ -58,7 +72,7 @@ public class Component {
 	public void select() {
 		editPart.select();
 	}
-	
+
 	public void hover() {
 		Rectangle rectangle = getDisplayBounds();
 		Point centralPoint = getCentralPoint(rectangle);
