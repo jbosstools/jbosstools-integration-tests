@@ -15,7 +15,7 @@ public class CreateRuntimeFromSOA extends SWTTestExt {
 	public void createESBRuntime() {
 		SWTBot wiz = open.preferenceOpen(ActionItem.Preference.JBossToolsJBossESBRuntimes.LABEL);
 		/* https://issues.jboss.org/browse/JBIDE-13351 - Chnaged from "Add" to "Add..." */
-		wiz.button("Add").click();
+		wiz.button("Add...").click();
 		bot.shell(IDELabel.Shell.NEW_ESB_RUNTIME).activate();
 		assertFalse("Finish button must not be enabled when no home dir is defined",bot.button(IDELabel.Button.FINISH).isEnabled());
 		bot.text(1).setText(TestConfigurator.currentConfig.getServer().runtimeHome);
