@@ -21,6 +21,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.tools.esb.ui.bot.tests.editor.Assertions;
 import org.jboss.tools.esb.ui.bot.tests.editor.ESBAction;
 import org.jboss.tools.esb.ui.bot.tests.editor.ESBActionFactory;
@@ -79,8 +80,9 @@ public class Editing extends SWTTestExt {
 		open.finish(wiz);
 		bot.sleep(TIME_5S);
 		assertTrue(bot.editorByTitle("another-esb-config.xml") != null);
-		assertTrue("ESB Editor opened problems",
-				problems.getErrorsNode(bot) == null);
+		ProblemsView problemsView = new ProblemsView();
+		problemsView.open();
+		assertTrue("ESB Editor opened problems", problemsView.getAllErrors().isEmpty());
 	}
 
 	@Test
@@ -205,6 +207,7 @@ public class Editing extends SWTTestExt {
 			}
 		}
 
+		// TODO: https://issues.jboss.org/browse/JBTIS-165
 	}
 	
 	/* Add service is failing on Jenkins - https://issues.jboss.org/browse/JBQA-7100 

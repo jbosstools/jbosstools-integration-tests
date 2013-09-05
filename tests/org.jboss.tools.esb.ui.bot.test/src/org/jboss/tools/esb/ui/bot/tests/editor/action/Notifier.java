@@ -102,12 +102,17 @@ public class Notifier extends ESBAction {
 		Assertions.assertXmlContentExists(editor.toTextEditor().getText(), xpathOrig);	
 		
 		/* Comment out due to - https://issues.jboss.org/browse/JBDS-2167 */
-		bot.button("&Add...").click();		
-		SWTBotTreeItem [] theItems = bot.tree().getAllItems();
-		theItems[0].getNode("esbcontent").expand();
-		theItems[0].getNode("esbcontent").getNode("META-INF").expand();		
-		theItems[0].getNode("esbcontent").getNode("META-INF").getNode("jboss-esb.xml*").select();
-		bot.button("&Finish").click();
+		try {
+//		bot.button("&Add...").click();		
+//		SWTBotTreeItem [] theItems = bot.tree().getAllItems();
+//		theItems[0].getNode("esbcontent").expand();
+//		theItems[0].getNode("esbcontent").getNode("META-INF").expand();		
+//		theItems[0].getNode("esbcontent").getNode("META-INF").getNode("jboss-esb.xml*").select();
+//		bot.button("&Finish").click();
+		}
+		catch(Exception e) {
+			System.out.println();
+		}
 		editor.save();
 	}
 	
