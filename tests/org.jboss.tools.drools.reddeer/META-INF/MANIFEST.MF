@@ -6,6 +6,7 @@ Bundle-Version: 4.1.0.qualifier
 Bundle-Activator: org.jboss.tools.drools.reddeer.Activator
 Export-Package: 
  org.jboss.tools.drools.reddeer.dialog,
+ org.jboss.tools.drools.reddeer.editor,
  org.jboss.tools.drools.reddeer.perspective,
  org.jboss.tools.drools.reddeer.preference,
  org.jboss.tools.drools.reddeer.properties,
