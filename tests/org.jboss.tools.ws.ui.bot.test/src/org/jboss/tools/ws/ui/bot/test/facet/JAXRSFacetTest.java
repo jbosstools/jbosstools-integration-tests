@@ -20,7 +20,7 @@ import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.tree.ShellTreeItem;
+import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
@@ -59,7 +59,6 @@ public class JAXRSFacetTest extends RESTfulTestBase {
 	}
 
 	private void setJAXRSFacet() {
-		
 		invokePropertiesForProject();
 		setJAXRSFacetOnProject();
 		confirmProjectProperties();
@@ -85,9 +84,9 @@ public class JAXRSFacetTest extends RESTfulTestBase {
 	}
 	
 	private void setJAXRSFacetOnProject() {
-		new ShellTreeItem("Project Facets").select();
+		new DefaultTreeItem("Project Facets").select();
 		
-		new ShellTreeItem(1, "JAX-RS (REST Web Services)").setChecked(true);
+		new DefaultTreeItem(1, "JAX-RS (REST Web Services)").setChecked(true);
 		Button okButton = new PushButton(IDELabel.Button.OK);
 		assertFalse("OK Button should be disabled.", okButton.isEnabled());
 		
