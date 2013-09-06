@@ -10,6 +10,30 @@
  ******************************************************************************/
 package org.jboss.tools.ws.ui.bot.test.webservice;
 
+import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.allOf;
+import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.widgetOfType;
+import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.withRegex;
+import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.withText;
+
+import java.util.logging.Level;
+
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swtbot.eclipse.finder.waits.Conditions;
+import org.eclipse.swtbot.eclipse.finder.waits.WaitForView;
+import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
+import org.eclipse.swtbot.swt.finder.keyboard.Keystrokes;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.hamcrest.Matcher;
+import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.swt.exception.SWTLayerException;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.lookup.impl.ShellLookup;
+import org.jboss.reddeer.swt.matcher.RegexMatcher;
+import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.WsWizardBase.Slider_Level;
 import org.junit.Test;
 
@@ -53,7 +77,6 @@ public class TopDownWSTest extends WebServiceTestBase {
 </ns2:methodResponse>
 </soap:Body>
 		 */
-	
 	@Test
 	public void testDevelopService() {
 		setLevel(Slider_Level.DEVELOP);
@@ -90,12 +113,54 @@ public class TopDownWSTest extends WebServiceTestBase {
 		topDownWS();
 	}
 	
-//	@Test
-//	public void testDefaultPkg() {
-//		setLevel(Slider_Level.ASSEMBLE);
-//		topDownWS(null);
-//	}
+	@Test
+	public void testDefaultPkg() {
+		setLevel(Slider_Level.ASSEMBLE);
+		
+		/* There exists WSDL file created in testAssembleService due to using the same Slider_Level */
+		removeWsdlFileFromProject(getWsName() + ".wsdl");
+		
+		topDownWS(null);
+		
+		/* If there were WSDL file than it was also used in web.xml */
+		confirmWebServiceNameOverwrite();
+	}
 
+	private void confirmWebServiceNameOverwrite() {
+		// look up shell
+		try {
+			new DefaultShell("Confirm Web Service Name Overwrite").setAsReference();
+			new PushButton("OK").click();
+		} catch(SWTLayerException e) {
+			LOGGER.log(Level.SEVERE, "No \"Confirm Web Service Name Overwrite\" dialog found!", e);
+			return;
+		}
+	}
+
+	private void removeWsdlFileFromProject(String wsdlFileName) {
+		// select WSDL file
+		SWTBotTreeItem wsdlNode = null;
+		try {
+			SWTBotTree projectsTree = projectExplorer.bot().tree();
+			wsdlNode = projectsTree
+					.expandNode(getWsProjectName())
+					.expandNode("Java Resources")
+					.expandNode("src")
+					.getNode(wsdlFileName);
+		} catch(WidgetNotFoundException e) {
+			LOGGER.log(Level.SEVERE, "Not found "+wsdlFileName+" in the project.", e);
+			return;
+		}
+		// delete
+		wsdlNode.select().pressShortcut(Keystrokes.DELETE);
+		//TODO use ShellWithTextIsActive with new RegexMatcher(...)
+		ShellWithTextIsActive condition = new ShellWithTextIsActive("Delete");
+		new WaitUntil(condition);
+		new DefaultShell().setAsReference();
+		new PushButton("OK").click();
+		new WaitWhile(condition);
+	}
+	
 	private void topDownWS() {
 		topDownWS("ws." + getWsName().toLowerCase());
 	}
