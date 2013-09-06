@@ -190,12 +190,16 @@ public abstract class TestParent {
 
     @After
     public void cleanUp() {
-        SWTWorkbenchBot bot = new SWTWorkbenchBot();
         // close shells
-        bot.closeAllShells();
+        new SWTWorkbenchBot().closeAllShells();
         // save and close editors
-        bot.saveAllEditors();
-        bot.closeAllEditors();
+        while (true) {
+            try {
+                new DefaultEditor().close(true);
+            } catch (Exception ex) {
+                break;
+            }
+        }
 
         // refresh and delete all projects (as running the projects creates logs)
         PackageExplorer explorer = new PackageExplorer();
