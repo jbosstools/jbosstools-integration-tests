@@ -10,16 +10,23 @@
  ******************************************************************************/
 package org.jboss.tools.ws.ui.bot.test.widgets;
 
+import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.widgetOfType;
+import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.withItem;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
 
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.SWTBot;
+import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.results.BoolResult;
 import org.eclipse.swtbot.swt.finder.waits.Conditions;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotButton;
@@ -28,7 +35,10 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotLabel;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.internal.WorkbenchMessages;
 import org.eclipse.ui.internal.ide.IDEWorkbenchMessages;
+import org.hamcrest.MatcherAssert;
+import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.gen.IView;
+import org.jboss.tools.ui.bot.ext.types.IDELabel.ToolbarButton;
 import org.jboss.tools.ui.bot.ext.view.ViewBase;
 import org.jboss.tools.ws.ui.messages.JBossWSUIMessages;
 import org.osgi.framework.Bundle;
@@ -222,11 +232,14 @@ public class WsTesterView extends ViewBase {
 		bot().toolbarButtonWithTooltip(
 				JBossWSUIMessages.JAXRSWSTestView2_Go_Tooltip).click();
 		bot.waitWhile(Conditions
-				.shellIsActive(JBossWSUIMessages.JAXRSWSTestView_Invoke_Label),
-				120000);
+			.shellIsActive(JBossWSUIMessages.JAXRSWSTestView_Invoking_WS_Status),
+			24000);
 	}
 
 	public SelectWSDLDialog getFromWSDL() {
+		// change default value of combo box to "JAX-WS" to activate tool bar button
+		setRequestType(Request_Type.JAX_WS);
+		
 		bot().toolbarButtonWithTooltip(
 				JBossWSUIMessages.JAXRSWSTestView2_GetFromWSDL_Tooltip).click();
 		return new SelectWSDLDialog(bot.activeShell().widget);
