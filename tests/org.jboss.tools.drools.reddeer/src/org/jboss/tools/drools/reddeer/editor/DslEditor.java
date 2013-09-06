@@ -45,17 +45,17 @@ public class DslEditor extends DefaultEditor {
     }
 
     public DslLineDialog add() {
-        new PushButton("Add");
+        new PushButton("Add").click();
         return new DslLineDialog();
     }
 
     public DslLineDialog copy() {
-        new PushButton("Copy");
+        new PushButton("Copy").click();
         return new DslLineDialog();
     }
 
     public DslLineDialog edit() {
-        new PushButton("Edit");
+        new PushButton("Edit").click();
         return new DslLineDialog();
     }
 
@@ -127,6 +127,10 @@ public class DslEditor extends DefaultEditor {
 
         public void setScope(String scope) {
             this.scope = scope;
+        }
+
+        public String toString() {
+            return String.format("DslLine: '[%s]%s=%s'", scope, expression, mapping);
         }
     }
 }
