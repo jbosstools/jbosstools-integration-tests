@@ -30,15 +30,16 @@ public class ApplicationValidationTest extends RESTfulTestBase {
 	public void setup() {		
 		
 	}
-	
+	/**
+	 * Fails due to reported bug JBIDE-15402.
+	 * 
+	 * @see https://issues.jboss.org/browse/JBIDE-15402
+	 */
 	@Test
 	public void testMultipleApplicationClasses() {
 		
 		/* prepare project */
 		importRestWSProject("app1");
-		
-		/* workaround for JBIDE-12690 */
-		jbide12680Workaround("app1", "src", "test", "App.java"); 
 		
 		/* test validation error */
 		assertCountOfApplicationAnnotationValidationWarnings("app1", 2);
@@ -50,9 +51,6 @@ public class ApplicationValidationTest extends RESTfulTestBase {
 		/* prepare project */
 		importRestWSProject("app2");
 		
-		/* workaround for JBIDE-12690 */
-		jbide12680Workaround("app2", "src", "test", "App.java");
-		
 		/* test validation error */
 		assertCountOfApplicationAnnotationValidationWarnings("app2", 2);
 	}
@@ -62,9 +60,6 @@ public class ApplicationValidationTest extends RESTfulTestBase {
 		
 		/* prepare project */
 		importRestWSProject("app3");
-		
-		/* workaround for JBIDE-12690 */
-		jbide12680Workaround("app3", "src", "test", "App.java");
 		
 		/* test validation error */
 		assertCountOfApplicationAnnotationValidationWarnings("app3", 0);
@@ -77,7 +72,7 @@ public class ApplicationValidationTest extends RESTfulTestBase {
 		importRestWSProject("app4");
 		
 		/* workaround for JBIDE-12690 */
-		jbide12680Workaround("app4", "src", "test", "App.java");
+		//jbide12680Workaround("app4", "src", "test", "App.java");
 		
 		/* test validation error */
 		assertCountOfApplicationAnnotationValidationErrors("app4", 1);
@@ -97,7 +92,7 @@ public class ApplicationValidationTest extends RESTfulTestBase {
 		importRestWSProject("app5");
 		
 		/* workaround for JBIDE-12690 */
-		jbide12680Workaround("app5", "src", "test", "App.java");
+		//jbide12680Workaround("app5", "src", "test", "App.java");
 		
 		/* test validation error */
 		assertCountOfApplicationAnnotationValidationErrors("app5", 1);
@@ -110,6 +105,13 @@ public class ApplicationValidationTest extends RESTfulTestBase {
 		assertCountOfApplicationAnnotationValidationErrors("app5", 0);
 	}
 	
+	/**
+	 * Seems like JBIDE-12690 workaround, which was resolved.
+	 * Tests pass also without this workaround.
+	 * 
+	 * @param projectName
+	 * @param path
+	 */
 	private void jbide12680Workaround(String projectName, String... path) {
 		packageExplorer.openFile(projectName, path);
 		String javaClass = obtainClassNameFromPath(path);
