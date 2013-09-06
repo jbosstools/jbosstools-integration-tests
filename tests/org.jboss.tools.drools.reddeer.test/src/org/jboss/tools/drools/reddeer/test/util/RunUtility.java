@@ -56,7 +56,7 @@ public final class RunUtility {
     private static void waitAfterStarting() {
         try {
             new DefaultShell("Progress Information");
-            new WaitWhile(new ShellWithTextIsActive("Progress Information"), TimePeriod.LONG);
+            new WaitWhile(new ShellWithTextIsActive("Progress Information"), TimePeriod.VERY_LONG);
         } catch (Exception ex) {
             LOGGER.debug("'Progress Information' shell was not shown.");
         }
