@@ -40,14 +40,11 @@ public class HTTPMethodAnnotationQuickFixTest extends WSTestBase {
 		String wsProjectName = "httpAnnot1";
 		importWSTestProject(wsProjectName);
 		
-		/* workaround for JBIDE-12690 */
-		jbide12680Workaround(wsProjectName, "src", "test", "MyAnnot.java"); 
-		
 		/* assert that there is one Java problem */
 		assertThat(errorsByType("Java Problem").length, equalTo(1));
 
 		/* get quickfix bot for HttpMethod annotation */
-		QuickFixBot qBot = quickFixBot("@HttpMethod");
+		QuickFixBot qBot = quickFixBot(wsProjectName, "@HttpMethod");
 		
 		/* check that there are quick fixes for both required annotations */
 		qBot.checkQuickFix("Add missing attributes", true);
@@ -57,6 +54,13 @@ public class HTTPMethodAnnotationQuickFixTest extends WSTestBase {
 		assertThat(errorsByType("JAX-RS Problem").length, equalTo(1));
 	}
 	
+	/**
+	 * Fails due to reported bug.
+	 * 
+	 * Pass with workaround for JBIDE-12680 (because it is also workaround for JBIDE-15428)
+	 * 
+	 * @see JBIDE-15428
+	 */
 	@Test
 	public void testTargetRetentionQuickFixes() {
 		
@@ -64,14 +68,11 @@ public class HTTPMethodAnnotationQuickFixTest extends WSTestBase {
 		String wsProjectName = "httpAnnot2";
 		importWSTestProject(wsProjectName);
 		
-		/* workaround for JBIDE-12690 */
-		jbide12680Workaround(wsProjectName, "src", "test", "MyAnnot.java"); 
-		
 		/* assert that there are two JAX-RS errors */
 		assertThat(errorsByType("JAX-RS Problem").length, equalTo(2));
 
 		/* get quickfix bot for MyAnnot annotation */
-		QuickFixBot qBot = quickFixBot("MyAnnot");
+		QuickFixBot qBot = quickFixBot(wsProjectName, "MyAnnot");
 		
 		/* check that there are quick fixes for both required annotations */
 		qBot.checkQuickFix("Add @Target annotation on type MyAnnot", true);
@@ -83,15 +84,29 @@ public class HTTPMethodAnnotationQuickFixTest extends WSTestBase {
 		/* assert that there are no JAX-RS errors */
 		assertThat(errorsByType("JAX-RS Problem").length, equalTo(0));
 	}
-	
+
+	/**
+	 * Workaround for bug reported as JBIDE-12680.
+	 * Bug was resolved, however there is still problem in some cases - JBIDE-15428
+	 * 
+	 * Should be called after importing a project.
+	 * @see JBIDE-15428
+	 * 
+	 * @deprecated bug was resolved
+	 * 
+	 * @param projectName
+	 * @param path
+	 */
 	private void jbide12680Workaround(String projectName, String... path) {
 		SWTBotEditor editor = packageExplorer.openFile(projectName, path);
 		SWTBotEclipseEditor eclipseEditor = editor.toTextEditor();
 		eclipseEditor.insertText(" ");
 		eclipseEditor.save();
 	}
-
-	private QuickFixBot quickFixBot(String underlinedText) {
+	
+	private QuickFixBot quickFixBot(String wsProjectName, String underlinedText) {
+		packageExplorer.openFile(wsProjectName, "src", "test", "MyAnnot.java");
+		
 		SWTBotEditorExt editor = new SWTBotEditorExt(bot.activeEditor().getReference(), bot);
 		SWTBotEclipseEditor eclipseEditor = editor.toTextEditor();
 		int lineIndex = 0;
