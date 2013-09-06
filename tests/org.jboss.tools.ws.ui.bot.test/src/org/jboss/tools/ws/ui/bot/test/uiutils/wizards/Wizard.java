@@ -50,6 +50,7 @@ public class Wizard extends SWTBotShell {
 			sleep(50);
 		}
 		sleep(100);
+		sleep(400); // increased sleep time
 		if (ti != null) {
 			ti.select(item[item.length - 1]);
 		} else {
