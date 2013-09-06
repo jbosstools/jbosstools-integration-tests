@@ -59,6 +59,13 @@ public class PathAnnotationSupportTest extends RESTfulTestBase {
 		testAdvancedRESTServices(restServices);
 	}
 	
+	/**
+	 * Fails due to JBIDE-11766.
+	 * Workaround is possible: delay between typing
+	 *  - add bot.sleep(Timing.time2S()) after replacing the text in editor
+	 * 
+	 * @see https://issues.jboss.org/browse/JBIDE-11766
+	 */
 	@Test
 	public void testEditingSimpleRESTMethods() {
 		
@@ -68,7 +75,7 @@ public class PathAnnotationSupportTest extends RESTfulTestBase {
 		/* replace @DELETE annotation to @GET annotation */
 		resourceHelper.replaceInEditor(editorForClass("restBasic", "src", 
 				"org.rest.test", "RestService.java").toTextEditor(), "@DELETE", "@GET", true);
-		bot.sleep(Timing.time2S());
+		//bot.sleep(Timing.time2S());
 		
 		/* get RESTful services from JAX-RS REST explorer for the project */
 		SWTBotTreeItem[] restServices = restfulServicesForProject("restBasic"); 
@@ -79,6 +86,13 @@ public class PathAnnotationSupportTest extends RESTfulTestBase {
 				RESTFulAnnotations.DELETE.getLabel());
 	}
 	
+	/**
+	 * Fails due to JBIDE-11766.
+	 * Workaround is possible: delay between typing
+	 *  - add bot.sleep(Timing.time2S()) after replacing the text in editor
+	 * 
+	 * @see https://issues.jboss.org/browse/JBIDE-11766
+	 */
 	@Test
 	public void testEditingAdvancedRESTMethods() {
 		
@@ -92,7 +106,7 @@ public class PathAnnotationSupportTest extends RESTfulTestBase {
 				"delete/edited/{id}", true);
 		resourceHelper.replaceInEditor(editor, "@DELETE", "@DELETE"
 				+ LINE_SEPARATOR + "@Produces(\"text/plain\")", true);
-		bot.sleep(Timing.time2S());
+		//bot.sleep(Timing.time2S());
 		
 		/* get RESTful services from JAX-RS REST explorer for the project */
 		SWTBotTreeItem[] restServices = restfulServicesForProject("restAdvanced");
