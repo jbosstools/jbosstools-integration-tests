@@ -13,6 +13,7 @@ package org.jboss.tools.ws.ui.bot.test.rest;
 
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.ui.bot.ext.Timing;
+import org.junit.After;
 import org.junit.Test;
 
 public class QueryAnnotationSupportTest extends RESTfulTestBase {
@@ -81,6 +82,10 @@ public class QueryAnnotationSupportTest extends RESTfulTestBase {
 						queryParam2 + "={" + queryParam2 + ":" + queryType + "}");
 	}
 	
+	/**
+	 * Sometimes fails because project "query2" is already imported,
+	 * which means that projectExplorer.deleteAllProjects() in cleanup() method hadn't worked.
+	 */
 	@Test
 	public void testEditingTypeOfQueryParam() {
 		
