@@ -24,7 +24,7 @@ public class DataType implements IDataType {
 //		bot.toolbarButtonWithTooltip("Add", index).click();
 		bot.button(index).click();
 
-		SWTBot dialogBot = Bot.get().shell("Create New Data Type").bot();
+		SWTBot dialogBot = Bot.get().shell("Create New Item Definition").bot();
 		dialogBot.textWithLabel("Data Type").setText(name);
 		dialogBot.button("OK").click();
 	}
