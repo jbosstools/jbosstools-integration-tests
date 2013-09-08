@@ -4,6 +4,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotCombo;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.swt.util.Bot;
 import org.jboss.tools.bpmn2.itests.editor.ConstructType;
 
 public class SignalIntermediateCatchEvent extends IntermediateCatchEvent {
@@ -22,6 +23,9 @@ public class SignalIntermediateCatchEvent extends IntermediateCatchEvent {
 			nameBox.setSelection(signalName);
 		} else {
 			new PushButton(0).click();
+			// TODO: Looks like IntermediateCatchSignalSingleTest is failing because the
+			//       shell is not active
+			Bot.get().shell("Create New Signal").activate();
 			new LabeledText("Name").setText(signalName);
 			new PushButton("OK").click();
 		}

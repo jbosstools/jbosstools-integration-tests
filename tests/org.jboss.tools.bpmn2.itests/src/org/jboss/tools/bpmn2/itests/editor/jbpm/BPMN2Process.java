@@ -116,7 +116,7 @@ public class BPMN2Process extends Process {
 	 */
 	public void addDataType(String name) {
 		properties.selectTab("Definitions");
-		properties.toolbarButton("Data Type List", "Add").click();
+		properties.toolbarButton("Item Definition List", "Add").click();
 		bot.textWithLabel("Data Type").setText(name);
 		bot.toolbarButtonWithTooltip("Close").click();
 	}
