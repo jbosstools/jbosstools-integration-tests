@@ -25,7 +25,7 @@ import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
  */
 public class TeiidConnectionImportWizard extends ImportWizardDialog{
 
-	//constants - type of data source to be imported
+	// type of data source to be imported
 	public static final String SQLSERVER_TYPE = "SQLSERVER";
 	
 	/**
@@ -53,7 +53,7 @@ public class TeiidConnectionImportWizard extends ImportWizardDialog{
 		Table table = new DefaultTable(0);
 		int originalRowCount = table.rowCount();
 		for (int i = 0; i < originalRowCount; i++){
-			if (table.cell(i, 0).equals(props.getProperty("db.driver"))){
+			if (table.getItem(i).getText(0).equals(props.getProperty("db.driver"))){
 				table.select(i);
 				break;
 			}
@@ -91,7 +91,7 @@ public class TeiidConnectionImportWizard extends ImportWizardDialog{
 		
 		for (int i = 0; i < table.rowCount(); i++){
 			//connection url
-			if (table.cell(i, 0).equals("* connection-url")){
+			if (table.getItem(i).getText(0).equals("* connection-url")){
 				table.select(i);
 				SWTBotTable t = Bot.get().table(1);
 				t.doubleClick(i, 1);
@@ -100,14 +100,14 @@ public class TeiidConnectionImportWizard extends ImportWizardDialog{
 				Bot.get().text(1).setText(url);			
 			}
 			//username
-			if (table.cell(i, 0).equals("user-name")){
+			if (table.getItem(i).getText(0).equals("user-name")){
 				table.select(i);
 				SWTBotTable t = Bot.get().table(1);
 				t.doubleClick(i, 1);
 				Bot.get().text(1).setText(props.getProperty("db.username"));
 			}
 			//password
-			if (table.cell(i, 0).equals("password")){
+			if (table.getItem(i).getText(0).equals("password")){
 				table.select(i);
 				SWTBotTable t = Bot.get().table(1);
 				t.doubleClick(i, 1);
