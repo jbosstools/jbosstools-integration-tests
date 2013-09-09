@@ -35,7 +35,7 @@ public class JBPMPreferencePage extends PreferencePage {
 		Table table = new DefaultTable();
 		int rowCount = table.rowCount();
 		for (int i = 0; i < rowCount; i++) {
-			runtimes.add(table.cell(i, 0));
+			runtimes.add(table.getItem(i).getText(0));
 		}
 		return runtimes;
 	}
