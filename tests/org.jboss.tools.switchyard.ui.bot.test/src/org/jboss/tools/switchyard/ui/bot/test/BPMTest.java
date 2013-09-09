@@ -130,9 +130,9 @@ public class BPMTest extends SWTBotTestCase {
 				.getProjectItem("src/test/java", PACKAGE,
 						PROCESS_GREET + "Test.java");
 		new ProjectItemExt(item).runAsJUnitTest();
-		assertEquals("1/1", new JUnitView().getRuns());
-		assertEquals("0", new JUnitView().getErrors());
-		assertEquals("0", new JUnitView().getFailures());
+		assertEquals("1/1", new JUnitView().getRunStatus());
+		assertEquals("0", new JUnitView().getNumberOfErrors());
+		assertEquals("0", new JUnitView().getNumberOfFailures());
 	}
 
 	private void openFile(String... file) {
