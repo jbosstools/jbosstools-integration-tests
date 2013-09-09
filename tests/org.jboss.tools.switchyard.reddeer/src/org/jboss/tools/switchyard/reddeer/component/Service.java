@@ -40,4 +40,8 @@ public class Service extends Component {
 		click();
 		return new WizardDialog();
 	}
+	
+	public void openTextEditor(){
+		doubleClick();
+	}
 }

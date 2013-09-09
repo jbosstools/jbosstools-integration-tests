@@ -52,4 +52,15 @@ public class Bean extends Component implements ComponentBuilder<Bean> {
 		return new Bean(bean);
 	}
 
+	public Bean create(Integer[] coords) {
+		if (service == null) {
+			throw new IllegalStateException("Service name is not defined!");
+		}
+
+		new SwitchYardEditor().addComponent("Bean", coords);
+		new BeanServiceWizard().setInterface(service).finish();
+		new SwitchYardEditor().save();
+
+		return new Bean(bean);
+	}
 }
