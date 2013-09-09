@@ -19,7 +19,7 @@ public class ImportFileWizard extends ImportWizardDialog {
 
 		open();
 
-		Bot.get().comboBoxWithLabel("From directory:").typeText(file.getAbsolutePath());
+		Bot.get().comboBoxWithLabel("From directory:").typeText(file.getAbsolutePath());//problematic
 		Bot.get().tree().setFocus();
 		Bot.get().tree().getTreeItem(importFolder).check();
 

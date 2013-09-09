@@ -20,6 +20,23 @@ public class DDLImportWizard extends TeiidImportWizard {
 	private String modelFolder;
 	private String modelName;
 	private String modelType;
+	private String dialect;
+	private boolean autoselectDialect = false;
+	
+	//dialects
+	public static final String TEIID = "TEIID";
+	public static final String SQL92 = "SQL92";
+	public static final String ORACLE = "ORACLE";
+	public static final String POSTGRES = "POSTGRES";
+	public static final String DERBY = "DERBY";
+
+	public void setAutoselectDialect(boolean autoselectDialect) {
+		this.autoselectDialect = autoselectDialect;
+	}
+
+	public void setDialect(String dialect) {
+		this.dialect = dialect;
+	}
 
 	public DDLImportWizard() {
 		super("DDL File >> Source or View Model");
@@ -43,8 +60,16 @@ public class DDLImportWizard extends TeiidImportWizard {
 
 	public void execute() {
 		open();
-
-		new DefaultCombo(DDL_FILE).setText(ddlPath);
+		new DefaultCombo(0).setText(ddlPath);
+		if (autoselectDialect){
+			//click on autoselect 
+			Bot.get().checkBox("Auto-select").click();
+		} else {
+			if (dialect != null){
+				//click on combo 
+				new DefaultCombo(1).setSelection(dialect);
+			}
+		}
 		// TODO: LabeledText
 		// new LabeledText(MODEL_NAME).setText(modelName);
 		Bot.get().textWithLabel(MODEL_NAME).setText(modelName);
