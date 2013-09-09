@@ -14,7 +14,16 @@ Require-Bundle: org.jboss.tools.switchyard.reddeer;bundle-version="4.1.0",
  org.eclipse.swtbot.eclipse.gef.finder,
  org.custommonkey.xmlunit;bundle-version="1.3.0"
 Bundle-ActivationPolicy: lazy
-Import-Package: org.apache.log4j
+Import-Package: javassist.bytecode,
+ org.apache.log4j,
+ org.eclipse.graphiti.platform.ga;version="0.10.0",
+ org.jboss.tools.bpmn2.itests.editor,
+ org.jboss.tools.bpmn2.itests.editor.jbpm,
+ org.jboss.tools.bpmn2.itests.editor.jbpm.endevents,
+ org.jboss.tools.bpmn2.itests.editor.jbpm.startevents,
+ org.jboss.tools.bpmn2.itests.editor.jbpm.switchyard,
+ org.jboss.tools.bpmn2.itests.reddeer,
+ org.jbpm.bpmn2.handler
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Vendor: JBoss by Red Hat
 Eclipse-RegisterBuddy: org.apache.log4j
