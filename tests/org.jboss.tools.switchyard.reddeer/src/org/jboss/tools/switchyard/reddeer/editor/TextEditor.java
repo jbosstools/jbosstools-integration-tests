@@ -6,6 +6,8 @@ import org.eclipse.jface.bindings.keys.KeyStroke;
 import org.eclipse.jface.bindings.keys.ParseException;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
 import org.eclipse.swtbot.swt.finder.keyboard.Keystrokes;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.util.Bot;
 import org.jboss.reddeer.swt.wait.AbstractWait;
 
@@ -83,5 +85,18 @@ public class TextEditor {
 			lineNum++;
 		}
 		throw new RuntimeException("Cannot find line with '" + word + "'");
+	}
+	
+	/**
+	 * Generate getters and setters to all attributes
+	 * @param firstAttribute name of first attribute
+	 */
+	public void generateGettersSetters(String firstAttribute){
+		editor.navigateTo(getLineNum(firstAttribute),0);
+		new ShellMenu("Source", "Generate Getters and Setters...").select();
+		Bot.get().sleep(1000);
+		new PushButton("Select All").click();
+		new PushButton("OK").click();
+		editor.save();
 	}
 }

@@ -2,6 +2,7 @@ package org.jboss.tools.switchyard.ui.bot.test.suite;
 
 import junit.framework.TestSuite;
 
+import org.jboss.tools.switchyard.ui.bot.test.BPMTest;
 import org.jboss.tools.switchyard.ui.bot.test.BottomUpBPELTest;
 import org.jboss.tools.switchyard.ui.bot.test.BottomUpBPMN2Test;
 import org.jboss.tools.switchyard.ui.bot.test.BottomUpCamelTest;
