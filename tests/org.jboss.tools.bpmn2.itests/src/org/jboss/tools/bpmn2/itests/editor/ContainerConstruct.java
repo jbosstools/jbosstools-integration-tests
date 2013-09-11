@@ -3,7 +3,6 @@ package org.jboss.tools.bpmn2.itests.editor;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPart;
-
 import org.jboss.tools.bpmn2.itests.swt.matcher.ConstructOnPoint;
 
 /**
@@ -43,21 +42,26 @@ public class ContainerConstruct extends Construct {
 	 * @param type
 	 */
 	public void add(String name, ConstructType type) {
+		String sectionName = type.toToolPath()[0];
+		
 		Rectangle bounds = editor.getBounds(editPart);
-		/*
-		 * 1/10 from the X axis 
-		 */
-		int x = bounds.x + (bounds.width / 8);
-		/* 
-		 * 1/2 from the Y axis
-		 * 
-		 * ISSUE: Need to have -5 otherwise it will hit the connection arrow if an activity is under it!!!
-		 * 		  Rerun AdHocSubProcessTest without the -5 to reproduce.
-		 */
-		int y = bounds.y + (bounds.height / 10);
-		/*
-		 * Add the construct
-		 */
+		int x = 0;
+		int y = 0;
+		
+		
+		if ("Boundary Events".equals(sectionName)) {
+			/*
+			 * Upper left corner
+			 */
+			x = y = 5;
+		} else {
+			x = bounds.x + (bounds.width / 8);
+			/*
+			 * ISSUE: Need to have -5 otherwise it will hit the connection arrow if an activity is under it!!!
+			 * 		  Rerun AdHocSubProcessTest without the -5 to reproduce.
+			 */
+			y = bounds.y + (bounds.height / 10);
+		}
 		add(name, type, new Point(x, y));
 	}
 	

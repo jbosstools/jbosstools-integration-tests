@@ -56,14 +56,15 @@ public class ReceiveTask extends AbstractTask {
 		if (properties.contains(messageBox, messageName)) {
 			messageBox.setSelection(messageName);
 		} else {
-			new PushButton(0).click();
+			// PushButton(0) denotes operation
+			new PushButton(1).click();
 			
 			SWTBot newMessageBot = Bot.get().shell("Create New Message").bot();
 			newMessageBot.textWithLabel("Name").setText(name);
 			newMessageBot.button(0).click();
 			
 			SWTBot newDataTypeBot = Bot.get().shell("Create New Data Type").bot();
-			newDataTypeBot.textWithLabel("Data Type").setText(dataType);
+			newDataTypeBot.textWithLabel("Structure").setText(dataType);
 			newDataTypeBot.button("OK").click();
 
 			newMessageBot.button("OK").click();

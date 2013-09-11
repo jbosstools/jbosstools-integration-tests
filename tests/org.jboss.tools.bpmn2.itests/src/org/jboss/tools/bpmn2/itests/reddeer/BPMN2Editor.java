@@ -23,6 +23,7 @@ import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotMultiPageEditor;
 import org.eclipse.swtbot.eclipse.gef.finder.finders.PaletteFinder;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditPart;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditor;
+import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.results.Result;
@@ -44,7 +45,7 @@ import org.jboss.tools.bpmn2.itests.swt.matcher.PaletteEntryMatcher;
  */
 public class BPMN2Editor extends SWTBotGefEditor {
 
-	private static final int SAVE_SLEEP_TIME = 2000;
+	private static final int SAVE_SLEEP_TIME = 4000;
 	
 	private Logger log = Logger.getLogger(BPMN2Editor.class);
 	
@@ -225,7 +226,7 @@ public class BPMN2Editor extends SWTBotGefEditor {
 		// e.g. 'Task 10'
 		List<Construct> constructList = new ArrayList<Construct>();
 		
-		Pattern pattern = Pattern.compile(constructType.toId() + "(_)?[0-9]+");
+		Pattern pattern = Pattern.compile("_?" + constructType.toId() + "_?[0-9]+");
 		List<SWTBotGefEditPart> editPartList = getEditParts(new ConstructAttributeMatchingRegex<EditPart>("id", pattern));
 		
 		for (SWTBotGefEditPart editPart : editPartList) {
@@ -277,16 +278,12 @@ public class BPMN2Editor extends SWTBotGefEditor {
 			} catch (InterruptedException e) {
 				// ignore
 			}
-			SWTBotShell shell = null;
-			for (SWTBotShell s : Bot.get().shells()) {
-				if (s.getText().equals("Configure BPMN2 Project Nature")) {
-					shell = s;
-				}
-			}
-			if (shell != null) {
-				shell.activate();
-				bot.button("No").click();
-			}
+			
+			SWTBotShell shell = Bot.get().shell("Configure BPMN2 Project Nature");
+			shell.activate();
+			SWTBot shellBot = shell.bot();
+			shellBot.checkBox().click();
+			shellBot.button("No").click();
 		} catch (WidgetNotFoundException e) {
 			// ignore
 		}
