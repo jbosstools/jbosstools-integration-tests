@@ -2,10 +2,11 @@ package org.jboss.tools.drools.reddeer.test.functional;
 
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
-import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
 import org.eclipse.swtbot.swt.finder.utils.SWTUtils;
 import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardDialog;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.tools.drools.reddeer.editor.ContentAssist;
+import org.jboss.tools.drools.reddeer.editor.DrlEditor;
 import org.jboss.tools.drools.reddeer.perspective.DroolsPerspective;
 import org.jboss.tools.drools.reddeer.test.annotation.UseDefaultProject;
 import org.jboss.tools.drools.reddeer.test.annotation.UseDefaultRuntime;
@@ -15,7 +16,6 @@ import org.jboss.tools.drools.reddeer.test.util.TestParent;
 import org.jboss.tools.drools.reddeer.wizard.NewRuleResourceWizard;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
@@ -24,9 +24,6 @@ import org.junit.runner.RunWith;
 public class RulesEditorTest extends TestParent {
     public static final String MESSAGE_TEXT = getTemplateText("MessageClass");
     public static final String RULE_RESOURCE_TEXT = getTemplateText("DummyRuleFile");
-
-    // FIXME RedDeerify when possible
-    private SWTBotEclipseEditor rulesEditor;
 
     @Before
     public void setUpDomainAndRule() {
@@ -50,40 +47,54 @@ public class RulesEditorTest extends TestParent {
         wiz.getFirstPage().setRulePackageName("com.sample");
         wiz.finish();
 
-        // FIXME RedDeerify when possible
-        rulesEditor = new SWTWorkbenchBot().activeEditor().toTextEditor();
-        rulesEditor.setText(RULE_RESOURCE_TEXT);
-        rulesEditor.save();
+        DrlEditor drlEditor = new DrlEditor();
+        drlEditor.setText(RULE_RESOURCE_TEXT);
+        drlEditor.save();
     }
 
-    @Ignore("RedDeer does not offer a reliable way to test autocompletion (yet)")
     @Test @Category(SmokeTest.class)
     @UsePerspective(DroolsPerspective.class) @UseDefaultRuntime @UseDefaultProject
     public void testImportCodeCompletion() {
-        rulesEditor.navigateTo(2, 0);
+        DrlEditor editor = new DrlEditor();
+        editor.setPosition(2, 0);
 
-        final long timeout = SWTBotPreferences.TIMEOUT;
-        System.setProperty(SWTBotPreferences.KEY_TIMEOUT, "60000");
-        try {
-//        System.out.println("*** Auto-completion proposals: ***");
-//        for (String proposal : rulesEditor.getAutoCompleteProposals("message")) {
-//            System.out.println("*** '" + proposal + "'");
-//        }
-        rulesEditor.autoCompleteProposal("", "import ");
-        rulesEditor.autoCompleteProposal("message", "com.sample.domain.Message");
+        ContentAssist assist = editor.createContentAssist();
+        assist.selectItem("import");
 
-        Assert.assertEquals("", "import com.sample.Message", rulesEditor.getTextOnCurrentLine());
-        } finally {
-            System.setProperty(SWTBotPreferences.KEY_TIMEOUT, Long.toString(timeout));
-            SWTBotPreferences.TIMEOUT = timeout;
-        }
+        editor.writeText("message");
+        assist = editor.createContentAssist();
+
+        assist.selectItem("Message - com.sample.domain");
+
+        Assert.assertEquals("Wrong line content", "import com.sample.domain.Message", editor.getTextOnCurrentLine());
+    }
+
+    @Test @Category(SmokeTest.class)
+    @UsePerspective(DroolsPerspective.class) @UseDefaultRuntime @UseDefaultProject
+    public void testRuleCodeCompletion() {
+        DrlEditor editor = new DrlEditor();
+        editor.setPosition(2, 0);
+
+        editor.writeText("import com.sample.domain.Message\n\n");
+
+        ContentAssist assist = editor.createContentAssist();
+        assist.selectItem("rule");
+
+        Assert.assertEquals("Line does not contain rule definition", "rule \"new rule\"", editor.getTextOnCurrentLine());
+
+        editor.setPosition(2, 2);
+        assist = editor.createContentAssist();
+        assist.selectItem("Message");
+
+        Assert.assertEquals("Line does not contain condition", "\t\tMessage(  )", editor.getTextOnCurrentLine());
     }
 
     @Test
     @UsePerspective(DroolsPerspective.class) @UseDefaultRuntime @UseDefaultProject
     public void testShowReteTree() {
-        // FIXME RedDeerify when possible
-        rulesEditor.bot().cTabItem("Rete Tree").activate();
+        DrlEditor rulesEditor = new DrlEditor();
+
+        rulesEditor.showReteTree();
         SWTUtils.captureScreenshot("REVIEW-rete-tree.png");
 
         rulesEditor.close();

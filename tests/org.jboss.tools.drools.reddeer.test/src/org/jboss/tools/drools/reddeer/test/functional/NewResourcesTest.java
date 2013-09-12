@@ -3,11 +3,11 @@ package org.jboss.tools.drools.reddeer.test.functional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.tools.drools.reddeer.editor.DrlEditor;
 import org.jboss.tools.drools.reddeer.test.annotation.UseDefaultProject;
 import org.jboss.tools.drools.reddeer.test.annotation.UseDefaultRuntime;
 import org.jboss.tools.drools.reddeer.test.annotation.UsePerspective;
@@ -51,8 +51,7 @@ public class NewResourcesTest extends TestParent {
         Project p = explorer.getProject(DEFAULT_PROJECT_NAME);
         Assert.assertTrue("Rule resource was not created", p.containsItem(RESOURCES_LOCATION, "rules", resourceName + ".drl"));
 
-        // FIXME Use RedDeer editors when available
-        String text = new SWTWorkbenchBot().activeEditor().toTextEditor().getText();
+        String text = new DrlEditor().getText();
         Assert.assertTrue("Wrong package declaration.", text.contains("package " + packageName));
         Matcher m = RULE_PATTERN.matcher(text);
         Assert.assertTrue("No rule present in file", m.find());
@@ -80,8 +79,7 @@ public class NewResourcesTest extends TestParent {
         Project p = explorer.getProject(DEFAULT_PROJECT_NAME);
         Assert.assertTrue("Rule resource was not created", p.containsItem(RESOURCES_LOCATION, "rules", resourceName + ".drl"));
 
-        // FIXME Use RedDeer editors when available
-        String text = new SWTWorkbenchBot().activeEditor().toTextEditor().getText();
+        String text = new DrlEditor().getText();
         Assert.assertTrue("Wrong package declaration.", text.contains("package " + packageName));
         Matcher m = RULE_PATTERN.matcher(text);
         Assert.assertTrue("No rule present in file", m.find());
