@@ -1,7 +1,5 @@
 package org.jboss.tools.drools.ui.bot.test.util;
 
-import static org.junit.Assert.fail;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -49,12 +47,14 @@ import org.osgi.framework.Bundle;
 @RunWith(RedDeerSuite.class)
 public abstract class TestParent {
     private static final Logger LOGGER = Logger.getLogger(TestParent.class);
+    private static final Properties TEST_PARAMS = new Properties();
+    private static final String LOCAL_RUNTIME = new File("tmp/runtime").getAbsolutePath();
+
     protected static final String DEFAULT_DROOLS_RUNTIME_NAME = "defaultTestRuntime";
     protected static final String DEFAULT_DROOLS_RUNTIME_LOCATION;
     protected static final String DEFAULT_PROJECT_NAME = "defaultTestProject";
     protected static final String RESOURCES_LOCATION = "src/main/resources";
     protected static final String DEFAULT_RULES_PATH = DEFAULT_PROJECT_NAME + "/" + RESOURCES_LOCATION + "/rules";
-    private static final Properties TEST_PARAMS = new Properties();
 
     @Rule
     public TestName name = new TestName();
@@ -98,11 +98,11 @@ public abstract class TestParent {
             TEST_PARAMS.load(is);
             LOGGER.info("Properties for Drools test loaded");
         } catch (Exception ex) {
-            LOGGER.error("Unable to load properties.", ex);
-            fail(ex.getMessage());
+            LOGGER.warn("External properties were not loaded.");
+            //fail(ex.getMessage());
         }
 
-        DEFAULT_DROOLS_RUNTIME_LOCATION = TEST_PARAMS.getProperty("drools.default.location");
+        DEFAULT_DROOLS_RUNTIME_LOCATION = TEST_PARAMS.getProperty("drools.default.location", LOCAL_RUNTIME);
     }
 
     @BeforeClass
@@ -133,6 +133,18 @@ public abstract class TestParent {
                 shell.setMaximized(true);
             }
         });
+
+        // creates the default runtime if it is necessary
+        if (LOCAL_RUNTIME.equals(DEFAULT_DROOLS_RUNTIME_LOCATION)) {
+            new File(LOCAL_RUNTIME).mkdirs();
+            DroolsRuntimesPreferencePage pref = new DroolsRuntimesPreferencePage();
+            pref.open();
+            DroolsRuntimeDialog diag = pref.addDroolsRuntime();
+            diag.setName("creating default runtime");
+            diag.createNewRuntime(LOCAL_RUNTIME);
+            diag.ok();
+            pref.okCloseWarning();
+        }
     }
 
     @Before
