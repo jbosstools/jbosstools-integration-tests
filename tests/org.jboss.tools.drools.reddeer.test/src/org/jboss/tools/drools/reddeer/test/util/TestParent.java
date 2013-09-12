@@ -45,6 +45,7 @@ import org.junit.runner.Description;
 import org.junit.runner.RunWith;
 import org.osgi.framework.Bundle;
 
+@SuppressWarnings("restriction")
 @RunWith(RedDeerSuite.class)
 public abstract class TestParent {
     private static final Logger LOGGER = Logger.getLogger(TestParent.class);
