@@ -1,5 +1,6 @@
 package org.jboss.tools.switchyard.ui.bot.test;
 
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
@@ -9,15 +10,15 @@ import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.util.Bot;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.tools.switchyard.reddeer.binding.BindingWizard;
+import org.jboss.tools.switchyard.reddeer.binding.HTTPBindingPage;
 import org.jboss.tools.switchyard.reddeer.component.Component;
 import org.jboss.tools.switchyard.reddeer.component.Service;
 import org.jboss.tools.switchyard.reddeer.condition.ConsoleHasChanged;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.editor.TextEditor;
-import org.jboss.tools.switchyard.reddeer.wizard.HTTPBindingWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.ImportFileWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.NewServiceWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.PromoteServiceWizard;
@@ -47,6 +48,8 @@ public class BottomUpEJBTest extends SWTBotTestCase {
 	public static final String PACKAGE = "com.example.switchyard.ejb_project";
 	public static final String JAVA_FILE = "HelloBean";
 
+	private SWTWorkbenchBot bot = new SWTWorkbenchBot();
+	
 	@Before
 	public void closeSwitchyardFile() {
 		try {
@@ -65,12 +68,12 @@ public class BottomUpEJBTest extends SWTBotTestCase {
 		project.getProjectItem("pom.xml").open();
 		new DefaultCTabItem("Dependencies").activate();
 		new PushButton("Add...").click();
-		Bot.get().shell("Select Dependency").activate();
+		bot.shell("Select Dependency").activate();
 		new LabeledText("Group Id:").setText("javax");
 		new LabeledText("Artifact Id:").setText("javaee-api");
 		new LabeledText("Version: ").setText("6.0");
 		new PushButton("OK").click();
-		Bot.get().activeEditor().saveAndClose();
+		bot.activeEditor().saveAndClose();
 
 		// Import java file
 		project.getProjectItem("src/main/java", PACKAGE).select();
@@ -86,12 +89,12 @@ public class BottomUpEJBTest extends SWTBotTestCase {
 		new SwitchYardEditor().activateTool("Bean");
 		new Component("Component").click();
 
-		Bot.get().shell("Bean Implementation").activate();
+		bot.shell("Bean Implementation").activate();
 		new PushButton("Browse...").click();
 		new DefaultText(0).setText(JAVA_FILE);
 		new WaitUntil(new TableHasRows(new DefaultTable()));
 		new PushButton("OK").click();
-		Bot.get().shell("Bean Implementation").activate();
+		bot.shell("Bean Implementation").activate();
 		new PushButton("Finish").click();
 
 		new Component("Component").contextButton("Service").click();
@@ -114,8 +117,14 @@ public class BottomUpEJBTest extends SWTBotTestCase {
 
 		// Add HTTP binding
 		new Service("HelloService").addBinding("HTTP");
-		new HTTPBindingWizard().setContextpath(PROJECT).setOperation("sayHello").finish();
+		BindingWizard<HTTPBindingPage> httpWizard = BindingWizard.createHTTPBindingWizard();
+		httpWizard.getBindingPage().setContextPath(PROJECT);
+		httpWizard.getBindingPage().setOperation("sayHello");
+		httpWizard.finish();
+		
 		new SwitchYardEditor().save();
+		
+		
 
 		// Deploy and test the project
 		new ServerDeployment().deployProject(PROJECT);

@@ -7,12 +7,13 @@ import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
 import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
 import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.tools.switchyard.reddeer.binding.BindingWizard;
+import org.jboss.tools.switchyard.reddeer.binding.FileBindingPage;
 import org.jboss.tools.switchyard.reddeer.component.Bean;
 import org.jboss.tools.switchyard.reddeer.component.Component;
 import org.jboss.tools.switchyard.reddeer.component.Service;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.editor.TextEditor;
-import org.jboss.tools.switchyard.reddeer.wizard.FileBindingWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.SwitchYardProjectWizard;
 import org.jboss.tools.switchyard.ui.bot.test.suite.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.tools.switchyard.ui.bot.test.suite.PerspectiveRequirement.Perspective;
@@ -74,10 +75,12 @@ public class FileGatewayTest extends SWTBotTestCase {
 
 		// Add File binding
 		new Service("InfoService").addBinding("File");
-		FileBindingWizard wizard = new FileBindingWizard();
+		BindingWizard<FileBindingPage> wizard = BindingWizard.createFileBindingWizard();
 		String path = new File("target/input").getAbsolutePath();
-		wizard.setDirAutoCreation(true).setMoveDirectory("processed");
-		wizard.setDirectory(path);
+		wizard.getBindingPage().setDirAutoCreation(true);
+		wizard.getBindingPage().setMoveDirectory("processed");
+		wizard.getBindingPage().setDirectory(path);
+		wizard.finish();
 
 		// It's needed to change focuses between text inputs
 		SWTWorkbenchBot bot = new SWTWorkbenchBot();

@@ -1,5 +1,7 @@
 package org.jboss.tools.switchyard.reddeer.wizard;
 
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
+import org.hamcrest.core.IsNull;
 import org.jboss.reddeer.eclipse.jface.wizard.WizardDialog;
 import org.jboss.reddeer.swt.api.Shell;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
@@ -10,7 +12,6 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.util.Bot;
 import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
@@ -26,6 +27,8 @@ import org.jboss.tools.switchyard.reddeer.widget.RadioButton;
 public class ServiceWizard<T extends ServiceWizard<?>> extends WizardDialog {
 
 	private String dialogTitle;
+	// Bot is used for activating dialog at line 43
+	private SWTWorkbenchBot bot = new SWTWorkbenchBot();
 
 	public ServiceWizard() {
 		super();
@@ -38,7 +41,7 @@ public class ServiceWizard<T extends ServiceWizard<?>> extends WizardDialog {
 
 	@SuppressWarnings("unchecked")
 	public T activate() {
-		Bot.get().shell(dialogTitle).activate();
+		bot.shell(dialogTitle).activate();
 		AbstractWait.sleep(1000);
 		return (T) this;
 	}
@@ -62,9 +65,9 @@ public class ServiceWizard<T extends ServiceWizard<?>> extends WizardDialog {
 		checkInterfaceType("Java").browse();
 		Shell shell = new DefaultShell();
 		new DefaultText().setText(javaInterface);
-		new WaitUntil(new TableHasRows(new DefaultTable()));
+		new WaitUntil(new TableHasRows(new DefaultTable()), TimePeriod.LONG);
 		new PushButton("OK").click();
-		new WaitWhile(new ShellWithTextIsActive(shell.getText()));
+		new WaitWhile(new ShellWithTextIsActive(new IsNull<String>()));
 		return (T) this;
 	}
 

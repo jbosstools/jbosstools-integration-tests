@@ -1,5 +1,6 @@
 package org.jboss.tools.switchyard.ui.bot.test;
 
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
 import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
@@ -11,13 +12,13 @@ import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.swt.util.Bot;
 import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.tools.switchyard.reddeer.binding.BindingWizard;
+import org.jboss.tools.switchyard.reddeer.binding.HTTPBindingPage;
 import org.jboss.tools.switchyard.reddeer.component.Component;
 import org.jboss.tools.switchyard.reddeer.component.Service;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.editor.TextEditor;
-import org.jboss.tools.switchyard.reddeer.wizard.HTTPBindingWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.ImportFileWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.NewServiceWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.PromoteServiceWizard;
@@ -50,6 +51,8 @@ public class BottomUpBPMN2Test extends SWTBotTestCase {
 	public static final String PACKAGE = "com.example.switchyard.bpmn2_project";
 	public static final String BPMN2_FILE = "sample.bpmn";
 	public static final String JAVA_FILE = "MyHttpMessageComposer";
+	
+	private SWTWorkbenchBot bot = new SWTWorkbenchBot();
 
 	@Before
 	public void closeSwitchyardFile() {
@@ -86,7 +89,7 @@ public class BottomUpBPMN2Test extends SWTBotTestCase {
 
 		// Select existing implementation
 		new PushButton("Browse...").click();
-		Bot.get().shell("Select Resource").activate();
+		bot.shell("Select Resource").activate();
 		new DefaultText(0).setText(BPMN2_FILE);
 		new WaitUntil(new TableHasRows(new DefaultTable()));
 		new PushButton("OK").click();
@@ -112,18 +115,18 @@ public class BottomUpBPMN2Test extends SWTBotTestCase {
 
 		new DefaultTabItem("Operations").activate();
 		new PushButton("Add").click();
-
-		Bot.get().table(0).click(0, 0);
+		
+		bot.table(0).click(0, 0);
 		new DefaultText(1).setText("sayHello");
 		new DefaultTable(0).select(0);
 
 		new PushButton(2, "Add").click();
-		Bot.get().table(2).click(0, 1);
+		bot.table(2).click(0, 1);
 		new DefaultText(1).setText("name");
 		new DefaultTable(0).select(0);
 
 		new PushButton(3, "Add").click();
-		Bot.get().table(3).click(0, 0);
+		bot.table(3).click(0, 0);
 		new DefaultText(1).setText("result");
 		new DefaultTable(0).select(0);
 
@@ -134,13 +137,13 @@ public class BottomUpBPMN2Test extends SWTBotTestCase {
 
 		// Add HTTP binding
 		new Service("HelloService").addBinding("HTTP");
-		HTTPBindingWizard httpWizard = new HTTPBindingWizard();
-		httpWizard.setContextpath(PROJECT);
-		httpWizard.setOperation("sayHello");
+		BindingWizard<HTTPBindingPage> httpWizard = BindingWizard.createHTTPBindingWizard();
+		httpWizard.getBindingPage().setContextPath(PROJECT);
+		httpWizard.getBindingPage().setOperation("sayHello");
 		httpWizard.next();
-		httpWizard.setMessageComposer(JAVA_FILE);
+		httpWizard.getMessageComposerPage().setMessageComposer(JAVA_FILE);
 		httpWizard.finish();
-
+		
 		new SwitchYardEditor().save();
 
 		// Deploy and test the project

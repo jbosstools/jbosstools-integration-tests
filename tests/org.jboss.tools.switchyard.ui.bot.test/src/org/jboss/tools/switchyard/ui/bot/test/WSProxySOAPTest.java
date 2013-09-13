@@ -6,6 +6,8 @@ import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jface.wizard.NewWizardDialog;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.tools.switchyard.reddeer.binding.BindingWizard;
+import org.jboss.tools.switchyard.reddeer.binding.SOAPBindingPage;
 import org.jboss.tools.switchyard.reddeer.component.Component;
 import org.jboss.tools.switchyard.reddeer.component.Reference;
 import org.jboss.tools.switchyard.reddeer.component.Service;
@@ -15,7 +17,6 @@ import org.jboss.tools.switchyard.reddeer.editor.TextEditor;
 import org.jboss.tools.switchyard.reddeer.wizard.CamelJavaWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.ImportFileWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.ReferenceWizard;
-import org.jboss.tools.switchyard.reddeer.wizard.SOAPBindingWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.SwitchYardProjectWizard;
 import org.jboss.tools.switchyard.ui.bot.test.suite.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.tools.switchyard.ui.bot.test.suite.PerspectiveRequirement.Perspective;
@@ -67,7 +68,9 @@ public class WSProxySOAPTest extends SWTBotTestCase {
 
 		new Service("Hello").promoteService().setServiceName("ProxyService").finish();
 		new Service("ProxyService").addBinding("SOAP");
-		new SOAPBindingWizard().setContextpath(PROJECT).finish();
+		BindingWizard<SOAPBindingPage> soapWizard = BindingWizard.createSOAPBindingWizard();
+		soapWizard.getBindingPage().setContextPath(PROJECT);
+		soapWizard.finish();
 		new Component(PROJECT).contextButton("Reference").click();
 		new ReferenceWizard().selectWSDLInterface(WSDL).setServiceName("HelloService").finish();
 		new Reference("HelloService").promoteReference().setServiceName("HelloService").finish();

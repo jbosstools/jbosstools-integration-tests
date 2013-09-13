@@ -5,13 +5,14 @@ import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.tools.switchyard.reddeer.binding.BindingWizard;
+import org.jboss.tools.switchyard.reddeer.binding.SOAPBindingPage;
 import org.jboss.tools.switchyard.reddeer.component.Component;
 import org.jboss.tools.switchyard.reddeer.component.Service;
 import org.jboss.tools.switchyard.reddeer.condition.ConsoleHasChanged;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.wizard.ImportFileWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.PromoteServiceWizard;
-import org.jboss.tools.switchyard.reddeer.wizard.SOAPBindingWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.SwitchYardProjectWizard;
 import org.jboss.tools.switchyard.ui.bot.test.suite.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.tools.switchyard.ui.bot.test.suite.PerspectiveRequirement.Perspective;
@@ -77,7 +78,10 @@ public class BottomUpBPELTest extends SWTBotTestCase {
 		wizard.activate().setServiceName("SayHelloService").finish();
 
 		new Service("SayHelloService").addBinding("SOAP");
-		new SOAPBindingWizard().setContextpath(PROJECT).finish();
+		BindingWizard<SOAPBindingPage> soapWizard = BindingWizard.createSOAPBindingWizard();
+		soapWizard.getBindingPage().setContextPath(PROJECT);
+		soapWizard.finish();
+		
 		new SwitchYardEditor().save();
 
 		/* Test SOAP Response */
