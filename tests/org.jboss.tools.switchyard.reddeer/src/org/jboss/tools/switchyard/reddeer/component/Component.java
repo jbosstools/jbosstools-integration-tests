@@ -21,6 +21,7 @@ import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.switchyard.reddeer.condition.ContextButtonAppeared;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.matcher.WithTooltip;
+import org.jboss.tools.switchyard.reddeer.preference.PropertiesPreferencePage;
 import org.jboss.tools.switchyard.reddeer.utils.MouseUtils;
 import org.jboss.tools.switchyard.reddeer.widget.ContextButton;
 
@@ -52,6 +53,11 @@ public class Component {
 		} else {
 			throw new ComponentNotFoundException(matcher, index);
 		}
+	}
+
+	public PropertiesPreferencePage showProperties() {
+		contextButton("Properties").click();
+		return new PropertiesPreferencePage();
 	}
 	
 	public void delete() {

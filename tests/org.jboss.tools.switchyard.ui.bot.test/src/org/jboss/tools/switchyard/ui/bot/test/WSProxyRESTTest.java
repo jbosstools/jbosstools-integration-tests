@@ -5,6 +5,9 @@ import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jface.wizard.NewWizardDialog;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.tools.switchyard.reddeer.binding.BindingWizard;
+import org.jboss.tools.switchyard.reddeer.binding.RESTBindingPage;
+import org.jboss.tools.switchyard.reddeer.binding.SOAPBindingPage;
 import org.jboss.tools.switchyard.reddeer.component.Component;
 import org.jboss.tools.switchyard.reddeer.component.Reference;
 import org.jboss.tools.switchyard.reddeer.component.Service;
@@ -13,9 +16,7 @@ import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.editor.TextEditor;
 import org.jboss.tools.switchyard.reddeer.wizard.CamelJavaWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.PromoteServiceWizard;
-import org.jboss.tools.switchyard.reddeer.wizard.RESTBindingWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.ReferenceWizard;
-import org.jboss.tools.switchyard.reddeer.wizard.SOAPBindingWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.SwitchYardProjectWizard;
 import org.jboss.tools.switchyard.ui.bot.test.suite.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.tools.switchyard.ui.bot.test.suite.PerspectiveRequirement.Perspective;
@@ -103,7 +104,10 @@ public class WSProxyRESTTest extends SWTBotTestCase {
 
 		/* Expose Proxy Service Through SOAP */
 		new Service("HelloPortType").addBinding("SOAP");
-		new SOAPBindingWizard().setContextpath(PROJECT).finish();
+		BindingWizard<SOAPBindingPage> soapWizard = BindingWizard.createSOAPBindingWizard();
+		soapWizard.getBindingPage().setContextPath(PROJECT);
+		soapWizard.finish();
+		
 		new SwitchYardEditor().save();
 
 		/* Reference to RESTful Service */
@@ -111,7 +115,10 @@ public class WSProxyRESTTest extends SWTBotTestCase {
 		new ReferenceWizard().selectJavaInterface("Hello").setServiceName(REST_SERVICE).finish();
 		new Reference(REST_SERVICE).promoteReference().finish();
 		new Service(REST_SERVICE).addBinding("REST");
-		new RESTBindingWizard().setAddress(REST_URL).addInterface("Hello").finish();
+		BindingWizard<RESTBindingPage> restWizard = BindingWizard.createRESTBindingWizard();
+		restWizard.getBindingPage().setAddress(REST_URL);
+		restWizard.getBindingPage().addInterface("Hello");
+		wizard.finish();
 
 		/* Edit Camel Route */
 		new Component("Proxy").doubleClick();

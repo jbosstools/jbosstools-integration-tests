@@ -19,3 +19,4 @@ Import-Package: org.apache.log4j
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Vendor: JBoss by Red Hat
 Eclipse-RegisterBuddy: org.apache.log4j
+Eclipse-BundleShape: dir

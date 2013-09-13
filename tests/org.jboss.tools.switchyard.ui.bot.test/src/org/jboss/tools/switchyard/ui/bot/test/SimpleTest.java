@@ -7,6 +7,8 @@ import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.ProjectItem;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.tools.switchyard.reddeer.binding.BindingWizard;
+import org.jboss.tools.switchyard.reddeer.binding.SOAPBindingPage;
 import org.jboss.tools.switchyard.reddeer.component.Bean;
 import org.jboss.tools.switchyard.reddeer.component.Component;
 import org.jboss.tools.switchyard.reddeer.component.Service;
@@ -17,7 +19,6 @@ import org.jboss.tools.switchyard.reddeer.editor.TextEditor;
 import org.jboss.tools.switchyard.reddeer.view.JUnitView;
 import org.jboss.tools.switchyard.reddeer.widget.ProjectItemExt;
 import org.jboss.tools.switchyard.reddeer.wizard.PromoteServiceWizard;
-import org.jboss.tools.switchyard.reddeer.wizard.SOAPBindingWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.SwitchYardProjectWizard;
 import org.jboss.tools.switchyard.ui.bot.test.suite.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.tools.switchyard.ui.bot.test.suite.PerspectiveRequirement.Perspective;
@@ -110,8 +111,10 @@ public class SimpleTest extends SWTBotTestCase {
 				.saveAndClose();
 
 		new Service("ExampleServicePortType").addBinding("SOAP");
-		new SOAPBindingWizard().setContextpath(PROJECT).finish();
-
+		BindingWizard<SOAPBindingPage> soapWizard = BindingWizard.createSOAPBindingWizard();
+		soapWizard.getBindingPage().setContextPath(PROJECT);
+		soapWizard.finish();
+		
 		new SwitchYardEditor().save();
 
 		/* Test SOAP Response */

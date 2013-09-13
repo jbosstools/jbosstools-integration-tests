@@ -1,5 +1,6 @@
 package org.jboss.tools.switchyard.ui.bot.test;
 
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
 import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
@@ -8,15 +9,15 @@ import org.jboss.reddeer.swt.condition.TableHasRows;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
-import org.jboss.reddeer.swt.util.Bot;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.tools.switchyard.reddeer.binding.BindingWizard;
+import org.jboss.tools.switchyard.reddeer.binding.HTTPBindingPage;
 import org.jboss.tools.switchyard.reddeer.component.Component;
 import org.jboss.tools.switchyard.reddeer.component.Service;
 import org.jboss.tools.switchyard.reddeer.condition.ConsoleHasChanged;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.editor.TextEditor;
-import org.jboss.tools.switchyard.reddeer.wizard.HTTPBindingWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.ImportFileWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.NewServiceWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.PromoteServiceWizard;
@@ -45,6 +46,8 @@ public class BottomUpCamelTest extends SWTBotTestCase {
 	public static final String PROJECT = "camel_project";
 	public static final String PACKAGE = "com.example.switchyard.camel_project";
 	public static final String JAVA_FILE = "MyRouteBuilder";
+	
+	private SWTWorkbenchBot bot = new SWTWorkbenchBot();
 
 	@Before
 	public void closeSwitchyardFile() {
@@ -77,11 +80,11 @@ public class BottomUpCamelTest extends SWTBotTestCase {
 
 		// Select existing implementation
 		new PushButton("Browse...").click();
-		Bot.get().shell("Select entries").activate();
+		bot.shell("Select entries").activate();
 		new DefaultText(0).setText(JAVA_FILE);
 		new WaitUntil(new TableHasRows(new DefaultTable()));
 		new PushButton("OK").click();
-		Bot.get().shell("Camel Implementation").activate();
+		bot.shell("Camel Implementation").activate();
 		new PushButton("Finish").click();
 
 		// Create new service and interface
@@ -104,7 +107,11 @@ public class BottomUpCamelTest extends SWTBotTestCase {
 
 		// Add HTTP binding
 		new Service("HelloService").addBinding("HTTP");
-		new HTTPBindingWizard().setContextpath(PROJECT).setOperation("sayHello").finish();
+		BindingWizard<HTTPBindingPage> httpWizard = BindingWizard.createHTTPBindingWizard();
+		httpWizard.getBindingPage().setContextPath(PROJECT);
+		httpWizard.getBindingPage().setOperation("sayHello");
+		httpWizard.finish();
+		
 		new SwitchYardEditor().save();
 
 		// Deploy and test the project
