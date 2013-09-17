@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import org.jboss.reddeer.eclipse.jface.preference.PreferencePage;
+import org.jboss.reddeer.swt.api.TableItem;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.label.DefaultLabel;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
@@ -44,9 +45,10 @@ public class JBossWSRuntimePreferencePage extends PreferencePage {
 		int count = runtimesTable.rowCount();
 		
 		for (int i = 0; i < count; i++) {
-			String name = runtimesTable.cell(i, 1);
-			String version = runtimesTable.cell(i, 2);
-			String path = runtimesTable.cell(i, 3);
+			TableItem row = runtimesTable.getItem(i);			
+			String name = row.getText(1);
+			String version = row.getText(2);
+			String path = row.getText(3);
 			runtimes.add(new JBossWSRuntimeItem(name, version, path));
 		}
 		
