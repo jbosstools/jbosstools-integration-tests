@@ -1,9 +1,5 @@
 package org.jboss.tools.esb.ui.bot.tests.editor.action;
 
-import static org.junit.Assert.fail;
-
-import java.util.List;
-
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
@@ -101,18 +97,19 @@ public class Notifier extends ESBAction {
 		xpathOrig+="/target[@auth='LDAP' and @class='NotifyEmail' and @from='a' and @host='redhat.com' and @sendTo='b' and @subject='c' and @password='thepas$w0rd' and @port='25' and @ccTo='The copier' and @message='The message' and @username='QEuser']";
 		Assertions.assertXmlContentExists(editor.toTextEditor().getText(), xpathOrig);	
 		
-		/* Comment out due to - https://issues.jboss.org/browse/JBDS-2167 */
-		try {
-//		bot.button("&Add...").click();		
-//		SWTBotTreeItem [] theItems = bot.tree().getAllItems();
-//		theItems[0].getNode("esbcontent").expand();
-//		theItems[0].getNode("esbcontent").getNode("META-INF").expand();		
-//		theItems[0].getNode("esbcontent").getNode("META-INF").getNode("jboss-esb.xml*").select();
-//		bot.button("&Finish").click();
+		bot.button("&Add...").click();		
+		SWTBotTreeItem [] theItems = bot.tree().getAllItems();	
+		SWTBotTreeItem metaInf =  theItems[0].getNode("esbcontent").expand().getNode("META-INF");
+		metaInf.expand();
+		SWTBotTreeItem[] items = metaInf.getItems();
+		for (int i = 0; i < items.length; i++) {
+			if(items[i].getText().contains("jboss-esb.xml")) {
+				items[i].select();
+				break;
+			}
 		}
-		catch(Exception e) {
-			System.out.println();
-		}
+		bot.button("&Finish").click();
+		
 		editor.save();
 	}
 	
