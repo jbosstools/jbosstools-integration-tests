@@ -58,6 +58,11 @@ public class DefaultValueAnnotationSupportTest extends RESTfulTestBase {
 						  queryParamType + "=" + defaultValue + "}");
 	}
 	
+	/**
+	 * Fails due to JBIDE-12027
+	 * 
+	 * @see https://issues.jboss.org/browse/JBIDE-12027
+	 */
 	@Test
 	public void testPathParamDefaultValue() {
 

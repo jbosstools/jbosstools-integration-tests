@@ -133,6 +133,10 @@ public class AnnotationPropertiesTest extends RESTfulTestBase {
 	
 	/**
 	 * 1 editing annotation(ant its values) is reflected on JAX-RS explorer
+	 * 
+	 * Fails due to JBIDE-11766.
+	 * 
+	 * @see https://issues.jboss.org/browse/JBIDE-11766
 	 */
 	@Test
 	public void testJaxRSSupport() {
