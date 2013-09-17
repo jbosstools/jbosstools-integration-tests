@@ -144,11 +144,11 @@ public class JBossWSPreferencesTest extends WSTestBase {
 	 * (table/map) 
 	 */
 	private void assertRuntimeProperlyConfiguredInDialog() {
-		assertTrue("JBoss WS Runtime name was not automatically generated", 
-					jbossWsRuntimeDialog.getName() != null && 
+		assertTrue("JBoss WS Runtime name was not automatically generated",
+					jbossWsRuntimeDialog.getName() != null &&
 					!jbossWsRuntimeDialog.getName().isEmpty());
 		
-		assertThat(jbossWsRuntimeDialog.getRuntimeImplementation(), 
+		assertThat(jbossWsRuntimeDialog.getRuntimeImplementation(),
 				Is.is("JBoss Web Services - Stack CXF Runtime Client"));
 			
 		String runtimeVersion = jbossWsRuntimeDialog.getRuntimeVersion();

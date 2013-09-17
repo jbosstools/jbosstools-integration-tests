@@ -45,7 +45,7 @@ public class JBossWSRuntimePreferencePage extends PreferencePage {
 		int count = runtimesTable.rowCount();
 		
 		for (int i = 0; i < count; i++) {
-			TableItem row = runtimesTable.getItem(i);			
+			TableItem row = runtimesTable.getItem(i);
 			String name = row.getText(1);
 			String version = row.getText(2);
 			String path = row.getText(3);
