@@ -65,6 +65,11 @@ public class BottomUpWSTest extends WebServiceTestBase {
 		bottomUpJbossWebService();
 	}
 
+	/**
+	 * Fails due to bug.
+	 * 
+	 * @see https://bugs.eclipse.org/bugs/show_bug.cgi?id=377624
+	 */
 	@Test
 	public void testDeployService() {
 		setLevel(Slider_Level.DEPLOY);
