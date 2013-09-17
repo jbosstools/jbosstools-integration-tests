@@ -13,6 +13,7 @@ package org.jboss.tools.ws.ui.bot.test.preferences;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import org.hamcrest.core.Is;
+import org.hamcrest.core.AnyOf;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.wait.WaitUntil;
@@ -138,6 +139,10 @@ public class JBossWSPreferencesTest extends WSTestBase {
 		runtimePath = jbossWsRuntimeDialog.getHomeFolder();
 	}
 	
+	/**
+	 * TODO create better runtime version assertion that will assert only with expected version defined by used server
+	 * (table/map) 
+	 */
 	private void assertRuntimeProperlyConfiguredInDialog() {
 		assertTrue("JBoss WS Runtime name was not automatically generated", 
 					jbossWsRuntimeDialog.getName() != null && 
@@ -145,9 +150,14 @@ public class JBossWSPreferencesTest extends WSTestBase {
 		
 		assertThat(jbossWsRuntimeDialog.getRuntimeImplementation(), 
 				Is.is("JBoss Web Services - Stack CXF Runtime Client"));
-		assertThat(jbossWsRuntimeDialog.getRuntimeVersion(), Is.is(
-				"4.1.3.Final-redhat-3"));
-		
+			
+		String runtimeVersion = jbossWsRuntimeDialog.getRuntimeVersion();
+		assertTrue("Unknown runtime version: " + runtimeVersion, AnyOf
+				.anyOf(Is.is("4.1.3.Final-redhat-3"), // EAP
+						Is.is("4.0.2.GA") // AS
+						)
+				.matches(runtimeVersion));
+				
 	}
 	
 	private void assertRuntimeConfiguredAccordingToRuntime() {
