@@ -27,7 +27,7 @@ public class ApplicationValidationTest extends RESTfulTestBase {
 
 	
 	@Before
-	public void setup() {		
+	public void setup() {
 		
 	}
 	/**

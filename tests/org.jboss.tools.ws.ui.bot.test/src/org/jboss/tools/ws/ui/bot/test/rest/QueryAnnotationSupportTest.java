@@ -13,7 +13,6 @@ package org.jboss.tools.ws.ui.bot.test.rest;
 
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.ui.bot.ext.Timing;
-import org.junit.After;
 import org.junit.Test;
 
 public class QueryAnnotationSupportTest extends RESTfulTestBase {
@@ -102,8 +101,8 @@ public class QueryAnnotationSupportTest extends RESTfulTestBase {
 				"org.rest.test", "RestService.java"), QUERY_TWO_PARAM_RESOURCE, 
 				"org.rest.test", "RestService",
 				queryParam1, queryType1, queryParam2, queryType2);
-		resourceHelper.replaceInEditor(editorForClass("query2", "src", 
-				"org.rest.test", "RestService.java").toTextEditor(), 
+		resourceHelper.replaceInEditor(editorForClass("query2", "src",
+				"org.rest.test", "RestService.java").toTextEditor(),
 				queryType1, queryTypeNew, true);
 		bot.sleep(Timing.time2S());
 		
