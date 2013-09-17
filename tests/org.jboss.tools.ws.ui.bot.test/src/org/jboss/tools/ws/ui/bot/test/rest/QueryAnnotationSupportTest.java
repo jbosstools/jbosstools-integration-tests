@@ -82,15 +82,22 @@ public class QueryAnnotationSupportTest extends RESTfulTestBase {
 						queryParam2 + "={" + queryParam2 + ":" + queryType + "}");
 	}
 	
-	/**
-	 * Sometimes fails because project "query2" is already imported,
-	 * which means that projectExplorer.deleteAllProjects() in cleanup() method hadn't worked.
-	 */
 	@Test
 	public void testEditingTypeOfQueryParam() {
+		final String query2ProjectName = "query2";
+		
+		/*
+		 * Force deleting project which will be imported.
+		 * 
+		 * Solve problem with already imported "query2" project,
+		 * which is pointing out that projectExplorer.deleteAllProjects() in cleanup() method hadn't worked
+		 */
+		if (projectExists(query2ProjectName)) {
+			 projectExplorer.deleteAllProjects();
+		}
 		
 		/* prepare project anc class */
-		importRestWSProject("query2");
+		importRestWSProject(query2ProjectName);
 		prepareRestfulResource(editorForClass("query2", "src", 
 				"org.rest.test", "RestService.java"), QUERY_TWO_PARAM_RESOURCE, 
 				"org.rest.test", "RestService",
