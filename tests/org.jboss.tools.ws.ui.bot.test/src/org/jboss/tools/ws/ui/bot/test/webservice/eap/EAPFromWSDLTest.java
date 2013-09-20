@@ -27,11 +27,15 @@ import org.eclipse.swtbot.swt.finder.results.Result;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.jboss.reddeer.swt.condition.WaitCondition;
+import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
 import org.jboss.tools.ui.bot.ext.SWTUtilExt;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
+import org.jboss.tools.ws.reddeer.swt.condition.ConsoleContainsText;
 import org.jboss.tools.ws.ui.bot.test.WSAllBotTests;
 import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.WsWizardBase.Slider_Level;
 import org.jboss.tools.ws.ui.bot.test.webservice.TopDownWSTest;
@@ -189,13 +193,18 @@ public class EAPFromWSDLTest extends WebServiceTestBase {
 		
 		eclipse.runJavaApplication(getWsClientProjectName(),
 				"org.jboss.wsclient.clientsample.ClientSample", null);
-		util.waitForNonIgnoredJobs();		
-		String output = console.getConsoleText();
+		util.waitForNonIgnoredJobs();
+		
+		// wait until the client ends (prints the last line)
+		ConsoleContainsText wait = new ConsoleContainsText("Call Over!", console);
+		new WaitUntil(wait, TimePeriod.NORMAL);
+
+		String output = wait.getConsoleText();
 		LOGGER.info(output);
 		Assert.assertTrue(output, output.contains("Server said: 37.5"));
 		Assert.assertTrue(output.contains("Server said: 3512.3699"));
 	}
-
+	
 	private void replaceContent(IFile f, String content) {
 		try {
 			f.delete(true, new NullProgressMonitor());
