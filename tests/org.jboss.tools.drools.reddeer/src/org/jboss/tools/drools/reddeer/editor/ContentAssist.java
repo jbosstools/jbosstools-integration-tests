@@ -11,7 +11,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.texteditor.ITextEditor;
-import org.jboss.reddeer.swt.lookup.impl.ShellLookup;
+import org.jboss.reddeer.swt.lookup.ShellLookup;
 import org.jboss.reddeer.swt.util.Display;
 import org.jboss.reddeer.swt.util.ResultRunnable;
 
