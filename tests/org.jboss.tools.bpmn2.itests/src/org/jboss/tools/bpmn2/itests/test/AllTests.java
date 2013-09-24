@@ -53,13 +53,12 @@ import org.junit.runners.Suite.SuiteClasses;
 	IntermediateCatchSignalSingleTest.class,
 	ExclusiveSplitPriorityTest.class,
 	EventBasedSplitTest.class,
-	BoundaryEscalationEventOnTaskTest.class,
-	InclusiveSplitTest.class
-// Untested tests
-// --------------
+	BoundaryEscalationEventOnTaskTest.class, // Cannot find Escalation_1 - jBPM parser bug!
+	InclusiveSplitTest.class,
+	ConditionalBoundaryEventInterruptingTest.class, // Could not find target node for connection. It is out of bounds (not in the subprocess)
+// Missing features tests
+// ----------------------
 //  OnEntryExitMixedNamespacedScriptProcessTest.class
-//	ConditionalBoundaryEventInterruptingTest.class,
-//	CompensateEndEventTest
 })
 public class AllTests extends TestSuite {
 	// TBD: BPMN2-IntermediateCatchEventTimerCycleWithError.bpmn2

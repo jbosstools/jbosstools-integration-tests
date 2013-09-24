@@ -1,6 +1,7 @@
 package org.jboss.tools.bpmn2.itests.test.editor;
 
 import org.jboss.tools.bpmn2.itests.editor.ConstructType;
+import org.jboss.tools.bpmn2.itests.editor.Position;
 import org.jboss.tools.bpmn2.itests.editor.jbpm.activities.ScriptTask;
 import org.jboss.tools.bpmn2.itests.editor.jbpm.activities.SubProcess;
 import org.jboss.tools.bpmn2.itests.editor.jbpm.activities.Task;
@@ -41,7 +42,7 @@ public class ConditionalBoundaryEventInterruptingTest extends JBPM6BaseTest {
 		
 		ConditionalBoundaryEvent conditionalBoundaryEvent = new ConditionalBoundaryEvent("Conditional Boundary Event Process");
 		conditionalBoundaryEvent.setScript("", "org.jbpm.bpmn2.objects.Person(name == \"john\")");
-		conditionalBoundaryEvent.append("Goodbye", ConstructType.SCRIPT_TASK);
+		conditionalBoundaryEvent.append("Goodbye", ConstructType.SCRIPT_TASK, Position.NORTH);
 		
 		ScriptTask scriptTask = new ScriptTask("Goodbye");
 		scriptTask.setScript("", "System.out.println(\"Condition met\");");

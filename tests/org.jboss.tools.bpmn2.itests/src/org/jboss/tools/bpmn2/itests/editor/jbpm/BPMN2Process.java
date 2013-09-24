@@ -19,6 +19,7 @@ public class BPMN2Process extends Process {
 	 */
 	public BPMN2Process(String name) {
 		super(name);
+		select();
 	}
 	
 	/**
@@ -117,7 +118,7 @@ public class BPMN2Process extends Process {
 	public void addDataType(String name) {
 		properties.selectTab("Definitions");
 		properties.toolbarButton("Data Type List", "Add").click();
-		bot.textWithLabel("Data Type").setText(name);
+		bot.textWithLabel("Structure").setText(name);
 		bot.toolbarButtonWithTooltip("Close").click();
 	}
 	
@@ -145,7 +146,8 @@ public class BPMN2Process extends Process {
 		bot.textWithLabel("Name").setText(name);
 		
 		new DataType(dataType).add();
-		
+
+		maximizeAndRestorePropertiesView();
 		bot.toolbarButtonWithTooltip("Close").click();
 	}
 	
@@ -187,7 +189,7 @@ public class BPMN2Process extends Process {
 		bot.toolbarButtonWithTooltip("Add", 0).click();
 		bot.textWithLabel("Name").setText(name);
 		
-		new DataType(dataType, 0).add();
+		new DataType(dataType).add();
 		
 		bot.toolbarButtonWithTooltip("Close").click();
 	}
@@ -201,12 +203,23 @@ public class BPMN2Process extends Process {
 		bot.toolbarButtonWithTooltip("Add", 1).click();
 		bot.textWithLabel("Name").setText(name);
 
-		new DataType(dataType, 0).add();
+		new DataType(dataType).add();
 		
+		maximizeAndRestorePropertiesView();
 		bot.toolbarButtonWithTooltip("Close").click();
 	}
 	
 	public void addInterface() {
 		throw new UnsupportedOperationException();
+	}
+
+	/*
+	 * Bug in BPMN2 Editor where the close button can be found only after it was made visible. Maximize
+	 * and then restore the window to display the button.
+	 */
+	private void maximizeAndRestorePropertiesView() {
+		for (int i=0; i<2; i++) {
+			properties.maximize();
+		}
 	}
 }
