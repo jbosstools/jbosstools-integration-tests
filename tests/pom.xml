@@ -30,6 +30,7 @@
 		<!-- <module>org.jboss.tools.cdi.bot.test</module>        JBIDE-13323 -->
 		<module>org.jboss.tools.cdi.reddeer</module>         <!-- JBIDE-13323 -->
 		<!-- <module>org.jboss.tools.cdi.seam3.bot.test</module>  JBIDE-13323 -->
+		<module>org.jboss.tools.common.reddeer</module>
 		<module>org.jboss.tools.central.test.ui.bot</module>
 		<module>org.jboss.tools.deltaspike.ui.bot.test</module>		
 		<module>org.jboss.tools.dummy.ui.bot.test</module>
