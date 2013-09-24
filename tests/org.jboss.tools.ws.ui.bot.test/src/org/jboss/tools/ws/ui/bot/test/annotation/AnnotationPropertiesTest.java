@@ -18,10 +18,10 @@ import java.util.List;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.hamcrest.core.Is;
+import org.hamcrest.core.IsNot;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
 import org.jboss.tools.ws.ui.bot.test.uiutils.views.AnnotationPropertiesView;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -30,6 +30,8 @@ import org.junit.Test;
  * 
  * @author jjankovi
  *
+ * Also improve tests (mainly testAbsenceOfAnnotation() and testPresenceOfAnnotation())
+ * 
  */
 public class AnnotationPropertiesTest extends RESTfulTestBase {
 	
@@ -54,11 +56,23 @@ public class AnnotationPropertiesTest extends RESTfulTestBase {
 	/**
 	 * 1 there are no incorrectly checked annotations
 	 * 2 there are no incorrectly unchecked annotations 
+	 * 
+	 * @author rrabara
 	 */
-	@Ignore // not implemented yet
 	@Test
 	public void testAbsenceOfAnnotation() {
+		/** check params of annotation is synchronized **/
+		navigateInActiveEditor(13, 0);
 		
+		annotationsView.show();
+		
+		List<TreeAnnotationItem> allAnnotations = annotationsView.getAllAnnotations();
+
+		List<TreeAnnotationItem> deactiveAnnotations = annotationsView.getAllDeactiveAnnotation();
+		assertThat(deactiveAnnotations.size(), Is.is(allAnnotations.size()-1));
+		for(TreeAnnotationItem item : deactiveAnnotations) {
+			assertThat("path annotation isn't deactivated", item.getText(), IsNot.not("javax.ws.rs.Path"));
+		}
 	}
 	
 	/**
@@ -66,9 +80,15 @@ public class AnnotationPropertiesTest extends RESTfulTestBase {
 	 * 2 there are correctly unchecked annotations
 	 */
 	@Test
-	@Ignore // not implemented yet
 	public void testPresenceOfAnnotation() {
+		/** check params of annotation is synchronized **/
+		navigateInActiveEditor(13, 0);
 		
+		annotationsView.show();
+				
+		List<TreeAnnotationItem> activeAnnotations = annotationsView.getAllActiveAnnotation();
+		assertThat("only one annotation should be active but is "+activeAnnotations.size(),activeAnnotations.size(), Is.is(1));
+		assertThat("path annotation should be active but is "+activeAnnotations.get(0).getText(), activeAnnotations.get(0).getText(), Is.is("javax.ws.rs.Path"));
 	}
 	
 	/**
@@ -83,7 +103,7 @@ public class AnnotationPropertiesTest extends RESTfulTestBase {
 		
 		annotationsView.show();
 		
-		SWTBotTreeItem pathAnnotation = annotationsView.
+		TreeAnnotationItem pathAnnotation = annotationsView.
 				getAnnotation("javax.ws.rs.Path");
 		List<SWTBotTreeItem> values = annotationsView.
 				getAnnotationValues(pathAnnotation);
@@ -133,6 +153,10 @@ public class AnnotationPropertiesTest extends RESTfulTestBase {
 	
 	/**
 	 * 1 editing annotation(ant its values) is reflected on JAX-RS explorer
+	 * 
+	 * Fails due to JBIDE-11766.
+	 * 
+	 * @see https://issues.jboss.org/browse/JBIDE-11766
 	 */
 	@Test
 	public void testJaxRSSupport() {
@@ -142,8 +166,7 @@ public class AnnotationPropertiesTest extends RESTfulTestBase {
 		
 		annotationsView.show();
 		
-		SWTBotTreeItem pathAnnotation = annotationsView.
-				getAnnotation("javax.ws.rs.Path");
+		TreeAnnotationItem pathAnnotation = annotationsView.getAnnotation("javax.ws.rs.Path");
 		
 		annotationsView.changeAnnotationParamValue(
 				pathAnnotation, 
@@ -161,7 +184,7 @@ public class AnnotationPropertiesTest extends RESTfulTestBase {
 		
 		annotationsView.show();
 		
-		SWTBotTreeItem getAnnotation = annotationsView.
+		TreeAnnotationItem getAnnotation = annotationsView.
 				getAnnotation("javax.ws.rs.GET");
 		
 		annotationsView.deactivateAnnotation(getAnnotation);

@@ -70,8 +70,10 @@ public enum ConstructType {
 //	MESSAGE("Data Objects", "Message"),
 //	DATA_INPUT("Data Objects", "Data Input"),
 //	DATA_OUTPUT("Data Objects", "Data Output"),
-	DATA_OBJECT("Data Objects", "Data Object");
+	DATA_OBJECT("Data Objects", "Data Object"),
 	
+	SWITCHYARD_SERVICE_TASK("SwitchYard", "SwitchYard Service Task");
+
 	private String sectionName;
 	
 	private String paletteToolName;
@@ -119,6 +121,8 @@ public enum ConstructType {
 			name = "Intermediate Catch Event";
 		} else if (sectionName.equals("Intermediate Throw Events")) {
 			name = "Intermediate Throw Event";
+		} else if (sectionName.equals("SwitchYard")){
+            name = "Task";	
 		} else {
 			name = toToolName();
 		}

@@ -75,9 +75,10 @@ public class XMLSchemaImportWizard extends TeiidImportWizard {
 				new DefaultText().setText(destination);
 				Bot.get().text().setFocus();
 				
-				for (String schema: schemas){
+				/*for (String schema: schemas){
 					new DefaultTable().check(schema);
-				}
+				}*/
+				new DefaultTable().select(schemas);
 
 				finish();
 			} else {

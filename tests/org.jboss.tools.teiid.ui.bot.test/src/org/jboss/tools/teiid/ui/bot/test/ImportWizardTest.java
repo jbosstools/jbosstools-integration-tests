@@ -76,7 +76,8 @@ public class ImportWizardTest extends SWTBotTestCase {
 		FlatImportWizard importWizard = new FlatImportWizard();
 		importWizard.setProfile(flatFileProfile.getName());
 		importWizard.setName("Item");
-		importWizard.setFile("items.csv");
+		//importWizard.setFile("items.csv");
+		importWizard.setFile("items.csv     <<<<");
 
 		importModel(importWizard);
 
@@ -144,6 +145,7 @@ public class ImportWizardTest extends SWTBotTestCase {
 		DDLImportWizard importWizard = new DDLImportWizard();
 		importWizard.setDdlPath(ddl);
 		importWizard.setModelName("CustomerHsqldb");
+		importWizard.setAutoselectDialect(true);
 
 		importModel(importWizard);
 

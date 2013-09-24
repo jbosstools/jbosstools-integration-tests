@@ -21,16 +21,21 @@ import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.results.Result;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.jboss.reddeer.swt.condition.WaitCondition;
+import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
 import org.jboss.tools.ui.bot.ext.SWTUtilExt;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
+import org.jboss.tools.ws.reddeer.swt.condition.ConsoleContainsText;
 import org.jboss.tools.ws.ui.bot.test.WSAllBotTests;
 import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.WsWizardBase.Slider_Level;
 import org.jboss.tools.ws.ui.bot.test.webservice.TopDownWSTest;
@@ -93,6 +98,9 @@ public class EAPFromWSDLTest extends WebServiceTestBase {
 		return "AreaWSClientProject";
 	}
 
+	protected String getWsClientPackage() {
+		return "org.jboss.wsclient";
+	}
 	protected String getClientEarProjectName() {
 		return getWsClientProjectName() + "EAR";
 	}
@@ -148,6 +156,10 @@ public class EAPFromWSDLTest extends WebServiceTestBase {
 				.contains("<servlet-class>org.jboss.ws.impl.AreaServiceImpl</servlet-class>"));
 		Assert.assertTrue(content
 				.contains("<url-pattern>/AreaService</url-pattern>"));
+		
+		/* workaround problems with generated code that require JAX-WS API 2.2 */
+		jaxWsApi22RequirementWorkaround(getWsProjectName(), getWsPackage());
+		
 		deploymentHelper.runProject(getEarProjectName());
 		deploymentHelper.assertServiceDeployed(deploymentHelper.getWSDLUrl(getWsProjectName(), getWsName()), 10000);
 		servicePassed = true;
@@ -156,7 +168,7 @@ public class EAPFromWSDLTest extends WebServiceTestBase {
 	private void testClient() {
 		Assert.assertTrue("service must exist", servicePassed);
 		clientHelper.createClient(deploymentHelper.getWSDLUrl(getWsProjectName(), getWsName()), 
-				getWsClientProjectName(), Slider_Level.DEVELOP, "org.jboss.wsclient");
+				getWsClientProjectName(), Slider_Level.DEVELOP, getWsClientPackage());
 		IProject p = ResourcesPlugin.getWorkspace().getRoot()
 				.getProject(getWsClientProjectName());
 		String pkg = "org/jboss/wsclient";
@@ -176,15 +188,23 @@ public class EAPFromWSDLTest extends WebServiceTestBase {
 		item.expand();
 		removeRuntimeLibrary(tree, item, bot, util);
 
+		/* workaround problems with generated code that require JAX-WS API 2.2 */
+		jaxWsApi22RequirementWorkaround(getWsClientProjectName(), getWsClientPackage());
+		
 		eclipse.runJavaApplication(getWsClientProjectName(),
 				"org.jboss.wsclient.clientsample.ClientSample", null);
-		util.waitForNonIgnoredJobs();		
-		String output = console.getConsoleText();
+		util.waitForNonIgnoredJobs();
+		
+		// wait until the client ends (prints the last line)
+		ConsoleContainsText wait = new ConsoleContainsText("Call Over!", console);
+		new WaitUntil(wait, TimePeriod.NORMAL);
+
+		String output = wait.getConsoleText();
 		LOGGER.info(output);
 		Assert.assertTrue(output, output.contains("Server said: 37.5"));
 		Assert.assertTrue(output.contains("Server said: 3512.3699"));
 	}
-
+	
 	private void replaceContent(IFile f, String content) {
 		try {
 			f.delete(true, new NullProgressMonitor());
@@ -269,5 +289,36 @@ public class EAPFromWSDLTest extends WebServiceTestBase {
 				return m;
 			}
 		});
+	}
+	
+	/**
+	 * @see https://community.jboss.org/message/732539#732539
+	 * 
+	 * @param projectName
+	 * @param pkgName
+	 */
+	private void jaxWsApi22RequirementWorkaround(String projectName, String pkgName) {
+		SWTBotEclipseEditor editor = packageExplorer
+				.openFile(projectName, "src", pkgName, "AreaService_Service.java")
+				.toTextEditor();
+		
+		String text = editor.getText();
+		boolean putComment = false;
+		StringBuilder output = new StringBuilder();
+		for(String line : text.split(System.getProperty("line.separator")) ) {
+			if(line.contains("This constructor requires JAX-WS API 2.2. You will need to endorse the 2.2")) {
+				putComment = true;
+			}
+			if(putComment) {
+				output.append("//");
+				if( line.contains("}") ) {
+					putComment = false;
+				}
+			}
+			output.append(line);
+			output.append(System.getProperty("line.separator"));
+		}
+		editor.setText(output.toString());
+		editor.saveAndClose();
 	}
 }

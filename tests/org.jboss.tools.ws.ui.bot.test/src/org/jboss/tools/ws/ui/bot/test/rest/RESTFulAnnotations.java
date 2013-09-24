@@ -4,7 +4,7 @@ public enum RESTFulAnnotations {
 	
 	REST_SUPPORT_MENU_LABEL_ADD("Add JAX-RS 1.1 support..."),
 	REST_SUPPORT_MENU_LABEL_REMOVE("Remove JAX-RS 1.1 support..."),
-	REST_EXPLORER_LABEL("JAX-RS REST Web Services"),
+	REST_EXPLORER_LABEL("JAX-RS Web Services"),
 	REST_EXPLORER_LABEL_BUILD("Building RESTful Web Services..."),
 	GET("GET"),
 	POST("POST"),

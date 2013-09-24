@@ -1,0 +1,10 @@
+package com.sample
+
+
+
+rule firstRule
+    when
+        $s : String()
+    then
+        System.out.println($s);
+end

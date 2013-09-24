@@ -7,8 +7,13 @@ Bundle-Activator: org.jboss.tools.ws.reddeer.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.jboss.reddeer.jface,
- org.jboss.reddeer.swt
+ org.jboss.reddeer.swt,
+ org.jboss.tools.ui.bot.ext
 Export-Package: 
+ org.jboss.tools.ws.reddeer.swt.condition,
  org.jboss.tools.ws.reddeer.ws.ui
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
+Import-Package: org.eclipse.swtbot.swt.finder.exceptions,
+ org.eclipse.swtbot.swt.finder.widgets,
+ org.jboss.tools.ui.bot.ext.view

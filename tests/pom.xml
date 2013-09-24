@@ -17,8 +17,8 @@
             <memoryOptions2>-XX:MaxPermSize=512m</memoryOptions2>
             <swt.bot.test.record.screencast>false</swt.bot.test.record.screencast>
             <integrationTestsSystemProperties>-Dswt.bot.test.record.screencast=${swt.bot.test.record.screencast} -Dorg.eclipse.swtbot.screenshots.dir=${project.build.directory}/screenshots</integrationTestsSystemProperties>
-	    <jbtis.version>4.1.4.Final</jbtis.version>
-	    <jbtis.site>http://download.jboss.org/jbosstools/updates/integration/kepler/integration-stack/aggregate/4.1.2</jbtis.site>
+	    <jbtis.version>4.1.5.Alpha5</jbtis.version>
+	    <jbtis.site>http://download.jboss.org/jbosstools/updates/integration/kepler/integration-stack/aggregate/4.1.3.Beta3</jbtis.site>
         </properties>
 
 	<modules>
@@ -82,6 +82,27 @@
 		        <memoryOptions2>-XX:MaxPermSize=384m</memoryOptions2>
 			</properties>
 		</profile>
+        <profile>
+            <id>brms</id>
+            <modules>
+                <module>org.jboss.tools.drools.reddeer</module>
+                <module>org.jboss.tools.drools.ui.bot.test</module>
+            </modules>
+            <repositories>
+                <!-- JBTIS Repository -->
+                <repository>
+                    <id>jbtis</id>
+                    <url>${jbtis.site}</url>
+                    <layout>p2</layout>
+                    <snapshots>
+                        <enabled>true</enabled>
+                    </snapshots>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                </repository>
+            </repositories>
+        </profile>
 	</profiles>	
     <build>
 		<plugins>

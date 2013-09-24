@@ -1,0 +1,34 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Drools Reddeer Framework
+Bundle-SymbolicName: org.jboss.tools.drools.reddeer
+Bundle-Version: 4.1.0.qualifier
+Bundle-Activator: org.jboss.tools.drools.reddeer.Activator
+Export-Package: 
+ org.jboss.tools.drools.reddeer.dialog,
+ org.jboss.tools.drools.reddeer.editor,
+ org.jboss.tools.drools.reddeer.perspective,
+ org.jboss.tools.drools.reddeer.preference,
+ org.jboss.tools.drools.reddeer.properties,
+ org.jboss.tools.drools.reddeer.wizard
+Require-Bundle: 
+ org.eclipse.ui,
+ org.eclipse.ui.editors,
+ org.eclipse.jface.text,
+ org.eclipse.debug.ui,
+ org.eclipse.core.runtime,
+ org.jboss.reddeer.direct;bundle-version="0.4.0",
+ org.jboss.reddeer.eclipse;bundle-version="0.4.0",
+ org.jboss.reddeer.gef;bundle-version="0.4.0",
+ org.jboss.reddeer.jface;bundle-version="0.4.0",
+ org.jboss.reddeer.junit;bundle-version="0.4.0",
+ org.jboss.reddeer.selenium;bundle-version="0.4.0",
+ org.jboss.reddeer.swt;bundle-version="0.4.0",
+ org.jboss.reddeer.workbench;bundle-version="0.4.0",
+ org.apache.log4j,
+ org.drools.eclipse,
+ org.eclipse.swtbot.eclipse.finder,
+ org.hamcrest.library
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Eclipse-RegisterBuddy: org.apache.log4j
