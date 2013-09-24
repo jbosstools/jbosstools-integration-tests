@@ -1,5 +1,6 @@
 check.project.nature=false
 default.model.enablement.profile=
+do.core.validation=true
 eclipse.preferences.version=1
 is.expanded=ALWAYS_TRUE
 is.horizontal=DEFAULT_TRUE

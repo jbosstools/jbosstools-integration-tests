@@ -3,7 +3,6 @@ package org.jboss.tools.bpmn2.itests.editor.jbpm.activities;
 
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCombo;
-
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.util.Bot;
@@ -57,14 +56,15 @@ public class SendTask extends AbstractTask {
 		if (properties.contains(messageBox, messageName)) {
 			messageBox.setSelection(messageName);
 		} else {
-			new PushButton(0).click();
+			// PushButton(0) is denoting the operation definition
+			new PushButton(1).click();
 			
 			SWTBot newMessageBot = Bot.get().shell("Create New Message").bot();
 			newMessageBot.textWithLabel("Name").setText(name);
 			newMessageBot.button(0).click();
 			
 			SWTBot newDataTypeBot = Bot.get().shell("Create New Data Type").bot();
-			newDataTypeBot.textWithLabel("Data Type").setText(dataType);
+			newDataTypeBot.textWithLabel("Structure").setText(dataType);
 			newDataTypeBot.button("OK").click();
 
 			newMessageBot.button("OK").click();

@@ -27,7 +27,7 @@ public class ConditionalStartTest extends JBPM6BaseTest {
 		new BPMN2Process("BPMN2-ConditionalStart").add("StartProcess", ConstructType.CONDITIONAL_START_EVENT);
 		
 		ConditionalStartEvent startEvent = new ConditionalStartEvent("StartProcess");
-		startEvent.setCondition("", "Person(name == \"john\")");
+		startEvent.setCondition("", "org.jbpm.bpmn2.objects.Person(name == \"john\")");
 		startEvent.append("Hello", ConstructType.SCRIPT_TASK);
 		
 		ScriptTask scriptTask = new ScriptTask("Hello");
