@@ -62,6 +62,7 @@ public class BeansEditorTest extends CDITestBase {
 		
 	@BeforeClass
 	public static void setup() {
+		CDITestBase.prepareWorkspaceStatic(CDITestBase.PROJECT_NAME);
 		editResourceUtil.copyResource("resources/beans.xml", descPath);
 		editResourceUtil.copyResource("resources/Foo.jav_", "src/cdi/Foo.java");
 		editResourceUtil.copyResource("resources/Bar.jav_", "src/cdi/Bar.java");
@@ -85,6 +86,7 @@ public class BeansEditorTest extends CDITestBase {
 		addItem(Item.CLASS, getPackageName() + ".Foo");
 		addItem(Item.CLASS, getPackageName() + ".Bar");
 		removeItem(Item.CLASS, getPackageName() + ".Foo");
+		checkResult(Item.CLASS, ".Bar");
 	}
 	
 	@Test
@@ -92,6 +94,7 @@ public class BeansEditorTest extends CDITestBase {
 		addItem(Item.INTERCEPTOR, getPackageName() + ".I1");
 		removeItem(Item.INTERCEPTOR, getPackageName() + ".I1");
 		addItem(Item.INTERCEPTOR, getPackageName() + ".I2");
+		checkResult(Item.INTERCEPTOR, ".I2");
 	}
 
 	
@@ -100,6 +103,7 @@ public class BeansEditorTest extends CDITestBase {
 		addItem(Item.DECORATOR, getPackageName() + ".MapDecorator");
 		addItem(Item.DECORATOR, getPackageName() + ".ComparableDecorator");
 		removeItem(Item.DECORATOR, getPackageName() + ".ComparableDecorator");
+		checkResult(Item.DECORATOR, ".MapDecorator");
 	}
 		
 	
@@ -110,29 +114,22 @@ public class BeansEditorTest extends CDITestBase {
 		removeItem(Item.STEREOTYPE, getPackageName() + ".S3");
 		addItem(Item.STEREOTYPE, getPackageName() + ".S1");
 		removeItem(Item.STEREOTYPE, getPackageName() + ".S2");
+		checkResult(Item.STEREOTYPE, ".S1");
 	}
-	
-	@Test
-	public void testResult() {
+
+	private String getDocumentText() {
 		SWTBotEditor editor = new SWTWorkbenchBot().activeEditor();
 		BeansEditor be = new BeansEditor(editor.getReference(), new SWTWorkbenchBot());
 		be.activatePage("Source");
 		String text = be.toTextEditor().getText();
-		List<Node> nl = getItems(text, Item.INTERCEPTOR);
-		assertEquals(1, nl.size());
-		assertTrue(containsItem(nl, getPackageName() + ".I2"));
-
-		nl = getItems(text, Item.DECORATOR);
-		assertEquals(1, nl.size());
-		assertTrue(containsItem(nl, getPackageName() + ".MapDecorator"));
-
-		nl = getItems(text, Item.CLASS);
-		assertEquals(1, nl.size());
-		assertTrue(containsItem(nl, getPackageName() + ".Bar"));
-
-		nl = getItems(text, Item.STEREOTYPE);
-		assertEquals(1, nl.size());
-		assertTrue(containsItem(nl, getPackageName() + ".S1"));
+		return text;
+	}
+	
+	private void checkResult(Item type, String elementName) {
+		String documentText = getDocumentText();
+		List<Node> nodeList = getItems(documentText, type);
+		assertEquals(1, nodeList.size());
+		assertTrue(containsItem(nodeList, getPackageName() + elementName));
 	}
 	
 	private void addItem(Item item, String name) {
