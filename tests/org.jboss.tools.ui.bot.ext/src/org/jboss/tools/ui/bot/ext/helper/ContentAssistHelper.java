@@ -14,6 +14,7 @@ package org.jboss.tools.ui.bot.ext.helper;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.jboss.tools.ui.bot.ext.FormatUtils;
@@ -61,28 +62,27 @@ public class ContentAssistHelper {
    * @param expectedProposalList
    * @param mustEquals
    */
-  public static SWTBotEditor checkContentAssistContent(SWTBotExt bot,
-      String editorTitle, String textToSelect, int selectionOffset,
-      int selectionLength, int textToSelectIndex, List<String> expectedProposalList,
-      boolean mustEquals) {
+	public static SWTBotEditor checkContentAssistContent(SWTBotExt bot, String editorTitle,
+			String textToSelect, int selectionOffset, int selectionLength, int textToSelectIndex,
+			List<String> expectedProposalList, boolean mustEquals) {
+		
+		SWTJBTExt.selectTextInSourcePane(bot, editorTitle, textToSelect, selectionOffset,
+			selectionLength, textToSelectIndex);
+		
+		bot.sleep(Timing.time1S());
 
-    SWTJBTExt.selectTextInSourcePane(bot,
-        editorTitle, textToSelect, selectionOffset, selectionLength,
-        textToSelectIndex);
+		SWTBotEditorExt editor = SWTTestExt.bot.swtBotEditorExtByTitle(editorTitle);
+		ContentAssistBot contentAssist = editor.contentAssist();
+		List<String> currentProposalList = contentAssist.getProposalList();
+		assertTrue(
+				"Code Assist menu has incorrect menu items.\n"
+						+ "Expected Proposal Menu Labels vs. Current Proposal Menu Labels :\n"
+						+ FormatUtils.getListsDiffFormatted(expectedProposalList,
+								currentProposalList),
+				mustEquals ? expectedProposalList.equals(currentProposalList) : currentProposalList
+						.containsAll(expectedProposalList));
 
-    bot.sleep(Timing.time1S());
-
-    SWTBotEditorExt editor = SWTTestExt.bot.swtBotEditorExtByTitle(editorTitle);
-    ContentAssistBot contentAssist = editor.contentAssist();
-    List<String> currentProposalList = contentAssist.getProposalList();
-    assertTrue("Code Assist menu has incorrect menu items.\n" +
-        "Expected Proposal Menu Labels vs. Current Proposal Menu Labels :\n" + 
-        FormatUtils.getListsDiffFormatted(expectedProposalList,currentProposalList),
-      mustEquals?expectedProposalList.equals(currentProposalList):
-    	  currentProposalList.containsAll(expectedProposalList));
-
-    return editor;
-
+		return editor;
   }
   
   /**

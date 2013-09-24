@@ -7,6 +7,7 @@ import static org.junit.Assert.fail;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -17,7 +18,9 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
+import org.eclipse.swtbot.swt.finder.results.Result;
 import org.eclipse.swtbot.swt.finder.results.VoidResult;
+import org.eclipse.swtbot.swt.finder.waits.ICondition;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.ui.IEditorPart;
@@ -25,16 +28,21 @@ import org.eclipse.ui.editors.text.TextEditor;
 import org.eclipse.ui.forms.editor.FormEditor;
 import org.eclipse.ui.part.MultiPageEditorPart;
 import org.eclipse.ui.texteditor.ITextEditor;
-import org.eclipse.swtbot.swt.finder.results.Result;
 import org.jboss.tools.ui.bot.ext.helper.ReflectionsHelper;
 
 /**
- * This provides working Content assist functionality. 
- * SWTBot (2.0.0#467) functionality provided in SWTEclipseEditor doesn't work (at least on GTK linux) 
+ * This provides working Content assist functionality. SWTBot (2.0.0#467)
+ * functionality provided in SWTEclipseEditor doesn't work (at least on GTK
+ * linux)
+ * 
  * @author jpeterka
- *
+ * 
  */
 public class ContentAssistBot {
+
+	public static final String CONTENT_ASSIST_SHELL_FAILED_TO_OPEN = 
+			"Content assist shell failed to open.";
+	
 	/**
 	 * Performs content assist for given editor and string
 	 * 
@@ -50,24 +58,23 @@ public class ContentAssistBot {
 	// Constructor
 	// ------------------------------------------------------------
 
-	 /**
-   * Basic constructor
-   */
-  public ContentAssistBot(SWTBotEditorExt editor) {
-    this.editor = editor;
-    this.bot = editor.bot();
-  }
-
+	/**
+	 * Basic constructor
+	 */
+	public ContentAssistBot(SWTBotEditorExt editor) {
+		this.editor = editor;
+		this.bot = editor.bot();
+	}
 
 	// ------------------------------------------------------------
 	// Public
 	// ------------------------------------------------------------
 	/**
-	 * Use selected content proposal with given proposal text 
+	 * Use selected content proposal with given proposal text
 	 */
 	public void useProposal(String text) {
 		SWTBotTable table = getProposalTable(openProposalList());
-		List<String> items = getTableItems(table);		
+		List<String> items = getTableItems(table);
 		if (items.contains(text)) {
 			final int index = items.indexOf(text);
 			seletctCCTableItem(table, index);
@@ -75,8 +82,9 @@ public class ContentAssistBot {
 			fail("ContentAssist doens't contain proposed text");
 		}
 	}
+
 	/**
-	 * Use selected content proposal with given proposal index 
+	 * Use selected content proposal with given proposal index
 	 */
 	public void useProposal(int index) {
 		SWTBotTable table = getProposalTable(openProposalList());
@@ -95,37 +103,45 @@ public class ContentAssistBot {
 			log.info("Item i:" + list.get(i));
 		}
 	}
+
 	/**
 	 * Returns proposal list
+	 * 
 	 * @return
 	 */
-  public List<String>getProposalList() {
-    List<String> result = null;
-    SWTBotShell shell = openProposalList();
-    SWTBotTable table = getProposalTable(shell);
-    result = getTableItems(table);
-    shell.close();
-    
-    return result;
-  }
-  /**
-   * Logs proposal list contents, when Content Assist window is already opened
-   * @param shellsBefore - list of shells before Content Assist was invoked
-   * @param shellsAfter - list of shells after Content Assist was invoked
-   * @param closeShell
-   * @return
-   */
-  public List<String>getProposalList(SWTBotShell[] shellsBefore, SWTBotShell[] shellsAfter, boolean closeShell) {
-    List<String> result = null;
-    SWTBotShell caShell = getContentAssistShell(shellsBefore, shellsAfter);
-    SWTBotTable caTable = getProposalTable(caShell);
-    result = getTableItems(caTable);
-    if (closeShell) {
-      caShell.close();
-    }
-        
-    return result;
-  }
+	public List<String> getProposalList() {
+		List<String> result = null;
+		SWTBotShell shell = openProposalList();
+		SWTBotTable table = getProposalTable(shell);
+		result = getTableItems(table);
+		shell.close();
+
+		return result;
+	}
+
+	/**
+	 * Logs proposal list contents, when Content Assist window is already opened
+	 * 
+	 * @param shellsBefore
+	 *            - list of shells before Content Assist was invoked
+	 * @param shellsAfter
+	 *            - list of shells after Content Assist was invoked
+	 * @param closeShell
+	 * @return
+	 */
+	public List<String> getProposalList(SWTBotShell[] shellsBefore, SWTBotShell[] shellsAfter,
+			boolean closeShell) {
+		List<String> result = null;
+		SWTBotShell caShell = getContentAssistShell(shellsBefore, shellsAfter);
+		SWTBotTable caTable = getProposalTable(caShell);
+		result = getTableItems(caTable);
+		if (closeShell) {
+			caShell.close();
+		}
+
+		return result;
+	}
+
 	// ------------------------------------------------------------
 	// Private
 	// ------------------------------------------------------------
@@ -133,91 +149,126 @@ public class ContentAssistBot {
 	 * Invokes ContentAssistProposal shell action
 	 */
 	public void invokeContentAssist() {
+
 		String actionId = "ContentAssistProposal";
-		//final IAction action = ((ITextEditor) partReference.getEditor(false)).getAction(actionId);
+		// final IAction action = ((ITextEditor)
+		// partReference.getEditor(false)).getAction(actionId);
 		Object oEditor = editor.getReference().getEditor(false);
 		ITextEditor textEditor = null;
-    // When editor is instance of FormEditor we have to get editor from page specified by pageIndex
-		if (oEditor instanceof FormEditor){
-		  final FormEditor formEditor = (FormEditor)oEditor;
-		  textEditor = syncExec(new Result<ITextEditor>() {
-        public ITextEditor run() {
-          ITextEditor textEditor = null;
-          Object oEditor2 = formEditor.getActiveEditor();
-          if (oEditor2 instanceof TextEditor){
-            textEditor = (ITextEditor)oEditor2;
-          }
-          return textEditor;
-        }
-      });
-		  
+		// When editor is instance of FormEditor we have to get editor from page
+		// specified by pageIndex
+		if (oEditor instanceof FormEditor) {
+			final FormEditor formEditor = (FormEditor) oEditor;
+			textEditor = syncExec(new Result<ITextEditor>() {
+				public ITextEditor run() {
+					ITextEditor textEditor = null;
+					Object oEditor2 = formEditor.getActiveEditor();
+					if (oEditor2 instanceof TextEditor) {
+						textEditor = (ITextEditor) oEditor2;
+					}
+					return textEditor;
+				}
+			});
+
 		}
-		/* More accurate check here will be 
-		   (oEditor instanceof org.jboss.tools.common.model.ui.editor.EditorPartWrapper)
-		   but using Reflections dependency on org.jboss.tools.common.model.ui.editor is omitted
-		*/   
-		else if (ReflectionsHelper.isClassImplementingMethod(oEditor.getClass(), "getEditor")){
-		  final IEditorPart innerEditor;
-      try {
-        innerEditor = (IEditorPart)ReflectionsHelper.retrieveMethodReturnValue(
-            oEditor.getClass(),
-            "getEditor",
-            oEditor, 
-            IEditorPart.class);
-        if (innerEditor instanceof MultiPageEditorPart){
-          textEditor = syncExec(new Result<ITextEditor>() {
-            public ITextEditor run() {
-              ITextEditor result = null;
-              try {
-                result = (ITextEditor)ReflectionsHelper.retrieveMethodReturnValue(MultiPageEditorPart.class,
-                    "getActiveEditor",
-                    innerEditor, 
-                    IEditorPart.class);
-              } catch (SecurityException e) {
-                e.printStackTrace();
-              } catch (IllegalArgumentException e) {
-                e.printStackTrace();
-              } catch (NoSuchMethodException e) {
-                e.printStackTrace();
-              } catch (IllegalAccessException e) {
-                e.printStackTrace();
-              } catch (InvocationTargetException e) {
-                e.printStackTrace();
-              }
-              return result;
-            }
-          });
-      }
-        
-      } catch (SecurityException e1) {
-        e1.printStackTrace();
-      } catch (IllegalArgumentException e1) {
-        e1.printStackTrace();
-      } catch (NoSuchMethodException e1) {
-        e1.printStackTrace();
-      } catch (IllegalAccessException e1) {
-        e1.printStackTrace();
-      } catch (InvocationTargetException e1) {
-        e1.printStackTrace();
-      }
+		/*
+		 * More accurate check here will be (oEditor instanceof
+		 * org.jboss.tools.common.model.ui.editor.EditorPartWrapper) but using
+		 * Reflections dependency on org.jboss.tools.common.model.ui.editor is
+		 * omitted
+		 */
+		else if (ReflectionsHelper.isClassImplementingMethod(oEditor.getClass(), "getEditor")) {
+			final IEditorPart innerEditor;
+			try {
+				innerEditor = (IEditorPart) ReflectionsHelper.retrieveMethodReturnValue(
+						oEditor.getClass(), "getEditor", oEditor, IEditorPart.class);
+				if (innerEditor instanceof MultiPageEditorPart) {
+					textEditor = syncExec(new Result<ITextEditor>() {
+						public ITextEditor run() {
+							ITextEditor result = null;
+							try {
+								result = (ITextEditor) ReflectionsHelper.retrieveMethodReturnValue(
+										MultiPageEditorPart.class, "getActiveEditor", innerEditor,
+										IEditorPart.class);
+							} catch (SecurityException e) {
+								e.printStackTrace();
+							} catch (IllegalArgumentException e) {
+								e.printStackTrace();
+							} catch (NoSuchMethodException e) {
+								e.printStackTrace();
+							} catch (IllegalAccessException e) {
+								e.printStackTrace();
+							} catch (InvocationTargetException e) {
+								e.printStackTrace();
+							}
+							return result;
+						}
+					});
+				}
+
+			} catch (SecurityException e1) {
+				e1.printStackTrace();
+			} catch (IllegalArgumentException e1) {
+				e1.printStackTrace();
+			} catch (NoSuchMethodException e1) {
+				e1.printStackTrace();
+			} catch (IllegalAccessException e1) {
+				e1.printStackTrace();
+			} catch (InvocationTargetException e1) {
+				e1.printStackTrace();
+			}
+		} else {
+			textEditor = (ITextEditor) oEditor;
 		}
-		else{
-		  textEditor = (ITextEditor)oEditor;
-		}
-/*
-		final IAction action = ((ITextEditor) editor.getReference().getEditor(
-				false)).getAction(actionId);
-*/				
-	  final IAction action = textEditor.getAction(actionId);
+		/*
+		 * final IAction action = ((ITextEditor)
+		 * editor.getReference().getEditor( false)).getAction(actionId);
+		 */
+		final IAction action = textEditor.getAction(actionId);
+		SWTBotShell[] originalShells = bot.shells();
 		syncExec(new VoidResult() {
 			public void run() {
 				action.run();
 			}
 		});
+		bot.waitUntil(new NewShellCreated(originalShells));
+	}
+	
+	private static class NewShellCreated implements ICondition {
+		
+		private final List<SWTBotShell> originalShells;
+		private SWTBot bot;
+
+		public NewShellCreated(SWTBotShell[] originalShells) {
+			this.originalShells = Arrays.asList(originalShells);
+		}
+
+		@Override
+		public boolean test() throws Exception {
+			boolean newExists = false;
+			for (SWTBotShell itemInNewShells : bot.shells()) {
+				if (!originalShells.contains(itemInNewShells)) {
+					newExists = true;
+				}
+			}
+			return newExists;
+		}
+
+		@Override
+		public void init(SWTBot bot) {
+			this.bot = bot;
+		}
+
+		@Override
+		public String getFailureMessage() {
+			return "Content assist shell did not appear";
+		}
+		
 	}
 
 	/**
 	 * Return list of table items. Requires activated proposal table
+	 * 
 	 * @param table
 	 * @return
 	 */
@@ -229,19 +280,21 @@ public class ContentAssistBot {
 		}
 		return list;
 	}
-	
+
 	/**
 	 * Returns proposal table from propsal shell
+	 * 
 	 * @param ccShell
 	 * @return
 	 */
 	private SWTBotTable getProposalTable(SWTBotShell ccShell) {
 		SWTBot ccBot = new SWTBot(ccShell.widget);
-		return ccBot.table();		
+		return ccBot.table();
 	}
 
 	/**
 	 * Opens proposal table
+	 * 
 	 * @return proposal bot shell
 	 */
 	private SWTBotShell openProposalList() {
@@ -249,8 +302,11 @@ public class ContentAssistBot {
 		invokeContentAssist();
 		SWTBotShell[] shells2 = bot.shells();
 		SWTBotShell ccShell = getContentAssistShell(shells1, shells2);
+		if (ccShell == null) {
+			throw new RuntimeException(CONTENT_ASSIST_SHELL_FAILED_TO_OPEN);
+		}
 		return ccShell;
-	
+
 	}
 
 	/**
@@ -293,40 +349,40 @@ public class ContentAssistBot {
 				}
 			}
 			if (found == false) {
-			  // New Shell has to contain table
-			  try{
-			    bs2.bot().table();
-		      ccShell = bs2;
-		      break;
-			  }
-			  catch (WidgetNotFoundException wnfe){
-			    // do nothing
-			  }
+				// New Shell has to contain table
+				try {
+					bs2.bot().table();
+					ccShell = bs2;
+					break;
+				} catch (WidgetNotFoundException wnfe) {
+					// do nothing
+				}
 			}
 		}
 		return ccShell;
 	}
+
 	/**
-	 * Check if contentAssistItemLabel is present within Content Assist and 
+	 * Check if contentAssistItemLabel is present within Content Assist and
 	 * choose it when applyContentAssist is true
+	 * 
 	 * @param contentAssistItemLabel
 	 * @param applyContentAssist
 	 */
-	public void checkContentAssist(String contentAssistItemLabel,boolean applyContentAssist){
-	  List<String> proposalList = getProposalList();
-	  
-	  assertNotNull("Editor Content Assist doesn't containt item with label: " + contentAssistItemLabel +
-	      ". It's null",
-	    proposalList);
-	  
-	  int itemIndex = proposalList.indexOf(contentAssistItemLabel);
-	  
-	  assertTrue("Editor Content Assist doesn't containt item with label: " + contentAssistItemLabel,
-	    itemIndex > -1);
-	  
-	  if (applyContentAssist){
-	    useProposal(itemIndex);
-	  }
-	  
+	public void checkContentAssist(String contentAssistItemLabel, boolean applyContentAssist) {
+		List<String> proposalList = getProposalList();
+
+		assertNotNull("Editor Content Assist doesn't containt item with label: "
+				+ contentAssistItemLabel + ". It's null", proposalList);
+
+		int itemIndex = proposalList.indexOf(contentAssistItemLabel);
+
+		assertTrue("Editor Content Assist doesn't containt item with label: "
+				+ contentAssistItemLabel, itemIndex > -1);
+
+		if (applyContentAssist) {
+			useProposal(itemIndex);
+		}
+
 	}
 }

@@ -23,13 +23,14 @@ import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.results.WidgetResult;
+import org.eclipse.swtbot.swt.finder.utils.Position;
+import org.eclipse.swtbot.swt.finder.waits.ICondition;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCheckBox;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
-import org.eclipse.swtbot.swt.finder.widgets.TimeoutException;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
@@ -638,7 +639,9 @@ public class SWTJBTExt {
     }
     
     if (found) {
-      editor.selectRange(iRow, iStartIndex + selectionOffset, selectionLength);
+      int column = iStartIndex + selectionOffset;
+      editor.selectRange(iRow, column, selectionLength);
+      bot.waitUntil(new CursorAtPosition(editor, new Position(iRow, column)));
     }
     else{
       throw new SelectTextInSourcePaneException ("Wrong parameters specified for method selectTextInSourcePane.\n" + 
@@ -646,10 +649,38 @@ public class SWTJBTExt {
           "' within editor with title " + editorTitle + ".\n" +
           "Editor text is: " + editorText);
     }
-    
     return editor;
-    
   }
+  
+	private static class CursorAtPosition implements ICondition {
+
+		private Position desiredPosition;
+		private Position lastPostion;
+		private SWTBotEclipseEditor editor;
+
+		public CursorAtPosition(SWTBotEclipseEditor editor, Position desiredPosition) {
+			this.desiredPosition = desiredPosition;
+			this.editor = editor;
+		}
+
+		@Override
+		public boolean test() throws Exception {
+			lastPostion = editor.cursorPosition();
+			boolean equals = desiredPosition.equals(lastPostion);
+			return equals;
+		}
+
+		@Override
+		public void init(SWTBot bot) {
+			// nothing
+		}
+
+		@Override
+		public String getFailureMessage() {
+			return "Expected cursor position: " + desiredPosition + ", actual position: " 
+					+ lastPostion; 
+		}
+	}
 
   /**
    * Selects textToSelect within Source Pane of editor with title editorTitle
