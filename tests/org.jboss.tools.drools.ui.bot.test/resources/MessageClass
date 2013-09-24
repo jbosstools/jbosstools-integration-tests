@@ -1,6 +1,8 @@
 package com.sample.domain;
 
 public class Message {
+    public static final Object NO_PARAMETER = new Object();
+
     private String text;
     private Object parameter;
 
@@ -27,6 +29,10 @@ public class Message {
 
     public void setParameter(Object parameter) {
         this.parameter = parameter;
+    }
+
+    public boolean isParameterized() {
+        return this.parameter != NO_PARAMETER;
     }
 
 }
