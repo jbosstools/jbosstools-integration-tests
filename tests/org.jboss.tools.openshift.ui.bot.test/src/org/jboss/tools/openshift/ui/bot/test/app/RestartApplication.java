@@ -27,30 +27,25 @@ public class RestartApplication extends OpenShiftBotTest {
 		SWTBotView openshiftExplorer = open
 				.viewOpen(OpenShiftUI.Explorer.iView);
 
-		SWTBotTreeItem account = openshiftExplorer.bot().tree().getAllItems()[0]
-				.doubleClick(); // expand account
+		SWTBotTreeItem account = openshiftExplorer.bot().tree().getAllItems()[0].expand();
 
-		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 2, TIME_1S);
+		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S, TIME_1S);
 
 		// refresh explorer
-		openshiftExplorer.bot().tree().getAllItems()[0].contextMenu(
+		openshiftExplorer.bot().tree().getAllItems()[0].select().contextMenu(
 				OpenShiftUI.Labels.REFRESH).click();
 		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 2, TIME_1S);
 
-		account.getNode(DYI_APP + " " + OpenShiftUI.AppTypeOld.DIY)
+		account.getNode(0).expand();
+		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S, TIME_1S);
+		
+		account.getNode(0).getNode(DYI_APP + " " + OpenShiftUI.AppType.DIY)
 				.contextMenu(OpenShiftUI.Labels.EXPLORER_RESTART_APP).click();
 		
 		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 3, TIME_1S);
 		
-		openshiftExplorer = open
-				.viewOpen(OpenShiftUI.Explorer.iView);
-
-		account = openshiftExplorer.bot().tree().getAllItems()[0]
-				.doubleClick(); // expand account
-
-		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 2, TIME_1S);
-
-		account.getNode(0).contextMenu(OpenShiftUI.Labels.BROWSER).click();
+		account.getNode(0).getNode(DYI_APP + " " + OpenShiftUI.AppType.DIY)
+				.contextMenu("Show in Web Browser").click();
 
 		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 2, TIME_1S);
 		assertTrue(open.viewOpen(OpenShiftUI.Explorer.iView).getTitle()
@@ -59,6 +54,6 @@ public class RestartApplication extends OpenShiftBotTest {
 
 	@After
 	public void deleteDIYApp() {
-		deleteOpenShiftApplication(DYI_APP, OpenShiftUI.AppTypeOld.DIY);
+		deleteOpenShiftApplication(DYI_APP, OpenShiftUI.AppType.DIY);
 	}
 }

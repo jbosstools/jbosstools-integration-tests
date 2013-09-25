@@ -88,7 +88,7 @@ public class OpenShiftUI {
 	 */
 	public static class AppType {
 		public static final String JBOSS = "JBoss Application Server 7.1" + " (" + AppTypeOld.JBOSS + ")";
-		public static final String JBOSS_EAP = "JBoss Enterprise Application Platform 6.0" + " (" + AppTypeOld.JBOSS_EAP + ")";
+		public static final String JBOSS_EAP = "JBoss Enterprise Application Platform 6.1.0" + " (" + AppTypeOld.JBOSS_EAP + ")";
 		public static final String JBOSS_EWS = "Tomcat 7 (JBoss EWS 2.0)" + " (" + AppTypeOld.JBOSS_EWS + ")";
 		public static final String JENKINS = "Jenkins Server 1.4" + " (" + AppTypeOld.JENKINS + ")";
 		public static final String PERL = "Perl 5.10" + " (" + AppTypeOld.PERL + ")";
@@ -103,8 +103,8 @@ public class OpenShiftUI {
 	public static class AppTypeOld {
 
 		public static final String JBOSS = "jbossas-7.1";
-		public static final String JBOSS_EAP = "jbosseap-6.0";
-		public static final String JBOSS_EWS = "jbossews-2.0)";
+		public static final String JBOSS_EAP = "jbosseap-6";
+		public static final String JBOSS_EWS = "jbossews-2.0";
 		public static final String JENKINS = "jenkins-1.4";
 		public static final String PERL = "perl-5.10";
 		public static final String PHP = "php-5.3";
@@ -123,10 +123,10 @@ public class OpenShiftUI {
 
 		public static final String JENKINS = "Jenkins Client 1.4 (jenkins-client-1.4)";
 		public static final String CRON = "Cron 1.4 (cron-1.4)";
-		public static final String MYSQL = "MySQL Database 5.1 (mysql-5.1)";
-		public static final String POSTGRESQL = "PostgreSQL Database 8.4 (postgresql-8.4)";
+		public static final String MYSQL = "MySQL 5.1 (mysql-5.1)";
+		public static final String POSTGRESQL = "PostgreSQL 9.2 (postgresql-9.2)";
 		public static final String SWITCHYARD = "SwitchYard 0.6 (switchyard-0.6)";
-		public static final String MONGODB = "MongoDB NoSQL Database 2.2 (mongodb-2.2)";
+		public static final String MONGODB = "MongoDB 2.2 (mongodb-2.2)";
 		public static final String PHPMYADMIN = "phpMyAdmin 3.4 (phpmyadmin-3.4)";
 		public static final String ROCKMONGO = "RockMongo 1.1 (rockmongo-1.1)";
 	}
@@ -138,17 +138,20 @@ public class OpenShiftUI {
 		public static final String EXPLORER_CREATE_EDIT_DOMAIN = "Create or Edit Domain...";
 		public static final String EXPLORER_DELETE_DOMAIN = "Delete Domain";
 		public static final String EXPLORER_CREATE_SERVER = "Create a Server Adapter";
-		public static final String EXPLORER_DELETE_APP = "Delete Application(s)";
+		public static final String EXPLORER_DELETE_APP = "Delete Application";
 		public static final String EXPLORER_MANAGE_SSH = "Manage SSH &Keys...";
 		public static final String EDIT_CARTRIDGES = "Edit Embedded Cartridges...";
 		public static final String REFRESH = "Refresh";
 		public static final String EXPLORER_IMPORT_APP = "Import Application...";
 		public static final String EXPLORER_TAIL_FILES = "Tail files...";
-		public static final String EXPLORER_ENV_VAR = "Environment Variables";
+		public static final String EXPLORER_ENV_VAR = "All Environment Variables";
 		public static final String EXPLORER_PORTS = "Port forwarding...";
 		public static final String BROWSER = "Web Browser";
 		public static final String EXPLORER_ADAPTER = "Create a Server Adapter...";
-		public static final String EXPLORER_RESTART_APP = "Restart";
+		public static final String EXPLORER_RESTART_APP = "Restart Application";
+		
+		public static final String MANAGE_DOMAINS = "Manage Domains...";
+		public static final String MANAGE_SSH_KEYS = "Manage SSH Keys...";
 
 	}
 

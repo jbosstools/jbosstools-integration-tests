@@ -12,7 +12,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 @Require(clearWorkspace = true)
-public class CreateDeleteJBossApp extends OpenShiftBotTest {
+public class CreateDeleteScaledJBossApp extends OpenShiftBotTest {
 
 	private final String JBOSS_APP_NAME = TestProperties
 			.get("openshift.jbossapp.name") + new Date().getTime();
@@ -25,7 +25,7 @@ public class CreateDeleteJBossApp extends OpenShiftBotTest {
 
 	@Test
 	public void canCreateJBossApp() {
-		createOpenShiftApplication(JBOSS_APP_NAME,
+		createScaledOpenShiftApplication(JBOSS_APP_NAME,
 				OpenShiftUI.AppType.JBOSS_EAP);
 	}
 

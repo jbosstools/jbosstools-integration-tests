@@ -11,8 +11,8 @@
 <listEntry value="scope=All"/>
 <listEntry value="maven.test.failure.ignore=true"/>
 <listEntry value="libra.server=openshift.redhat.com"/>
-<listEntry value="user.name=${string_prompt:OpenShift user}"/>
-<listEntry value="user.pwd=${string_prompt:OpenShift password}"/>
+<listEntry value="user.name=mlabuda@redhat.com"/>
+<listEntry value="user.pwd=rhqetestjbds19"/>
 </listAttribute>
 <stringAttribute key="M2_RUNTIME" value="EMBEDDED"/>
 <booleanAttribute key="M2_SKIP_TESTS" value="true"/>

@@ -10,10 +10,12 @@
  ******************************************************************************/
 package org.jboss.tools.openshift.ui.bot.test;
 
+import org.jboss.tools.openshift.ui.bot.test.app.CreateDeleteEWSApp;
 import org.jboss.tools.openshift.ui.bot.test.app.CreateDeleteJBossApp;
 import org.jboss.tools.openshift.ui.bot.test.app.CreateDeletePHPApp;
 import org.jboss.tools.openshift.ui.bot.test.app.CreateDeletePythonApp;
 import org.jboss.tools.openshift.ui.bot.test.app.CreateDeleteScaledRubyApp;
+import org.jboss.tools.openshift.ui.bot.test.app.RepublishApp;
 import org.jboss.tools.openshift.ui.bot.test.app.RestartApplication;
 import org.jboss.tools.openshift.ui.bot.test.cartridge.EmbedCartridges;
 import org.jboss.tools.openshift.ui.bot.test.domain.CreateDomain;
@@ -30,31 +32,45 @@ import org.junit.runners.Suite.SuiteClasses;
 /**
  * <b>OpenShift SWTBot TestSuite</b>
  * <br>
- * This bot test will try to demonstrate a new OpenShift Application and domain life cycle, 
- * and is meant to run on machine with OpenShift Enterprise installed to test integration of hosted OpenShift within JBDS.   
+ * Test are runnable against OpenShift online. To be runnable under OpenShift Enterprise
+ * it is required to slightly modify "workflow":
+ * 1) Comment createEnvVariable test in DebugFeatures test pack 
  * 
- * @author sbunciak
+ * <b>
+ * Please do not change the order of tests - relationship between automated tests and TCMS
+ * <b/>
+ * 
+ * @author sbunciak, mlabuda
  */
 @SuiteClasses({
+	/* Connection stuff */
 	Connection.class, 
 	ManageSSH.class, 
-	/* Domain */
-	DeleteDomain.class,
+	
+	/* Domain*/
 	CreateDomain.class,
-	RenameDomain.class,
-	/* Cartridge */
+ 	DeleteDomain.class,
+ 	RenameDomain.class,
+
+	/* Application creation*/
+ 	// TODO create app from github template
+ 	// TODO deploy existing app
+ 	CreateAdapter.class,
 	EmbedCartridges.class,
-	/* Explorer */
+	// TODO Conflict cartridge 
+	RepublishApp.class,
 	OpenShiftDebugFeatures.class,
-	CreateAdapter.class,
-	/* App */
+ 	RestartApplication.class, 
+ 	// TODO import application
+ 	// TODO maven profile
+ 	// TODO multimaven app
+	
+	/* Applications*/ 
 	CreateDeleteJBossApp.class,
-	//CreateDeleteEWSApp.class,
-	//CreateDeletePHPApp.class,
-	//CreateDeletePythonApp.class,
-	CreateDeleteScaledRubyApp.class,
-	RestartApplication.class,
-	//RepublishApp.class,
+	CreateDeleteEWSApp.class, 
+	CreateDeletePHPApp.class,
+	CreateDeletePythonApp.class,
+	CreateDeleteScaledRubyApp.class, 
 })
 @RunWith(RequirementAwareSuite.class)
 public class OpenShiftAllBotTests {
