@@ -4,7 +4,9 @@ import java.util.Date;
 
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.waits.Conditions;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
+import org.jboss.tools.openshift.ui.bot.test.Utils;
 import org.jboss.tools.openshift.ui.bot.util.OpenShiftUI;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.condition.NonSystemJobRunsCondition;
@@ -22,14 +24,13 @@ public class RenameDomain extends SWTTestExt {
 		SWTBotView openshiftExplorer = open
 				.viewOpen(OpenShiftUI.Explorer.iView);
 
+		SWTBotShell[] oldShells = bot.shells();
 		openshiftExplorer.bot().tree().getAllItems()[0]
 				// get 1st account in OpenShift Explorer
 				.contextMenu(OpenShiftUI.Labels.EXPLORER_CREATE_EDIT_DOMAIN)
 				.click(); // click on 'Create or Edit Domain'
 
-		bot.waitForShell(OpenShiftUI.Shell.EDIT_DOMAIN);
-		bot.waitUntil(Conditions.shellIsActive(OpenShiftUI.Shell.EDIT_DOMAIN), TIME_60S);
-
+		Utils.getNewShell(oldShells, bot.shells()).activate();
 		SWTBotText domainText = bot.text(0);
 
 		assertFalse("Domain should be set at this stage!", domainText.getText().equals(""));

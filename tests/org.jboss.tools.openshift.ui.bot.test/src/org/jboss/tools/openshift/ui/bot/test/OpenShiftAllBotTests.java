@@ -36,24 +36,29 @@ import org.junit.runners.Suite.SuiteClasses;
  * @author sbunciak
  */
 @SuiteClasses({
+	/* Connection stuff */
 	Connection.class, 
 	ManageSSH.class, 
+	
 	/* Domain */
-	DeleteDomain.class,
-	CreateDomain.class,
+ 	DeleteDomain.class,
+ 	CreateDomain.class,
 	RenameDomain.class,
+
 	/* Cartridge */
 	EmbedCartridges.class,
+	
 	/* Explorer */
-	OpenShiftDebugFeatures.class,
-	CreateAdapter.class,
+//	OpenShiftDebugFeatures.class,
+//	CreateAdapter.class,
+	
 	/* App */
-	CreateDeleteJBossApp.class,
+//	CreateDeleteJBossApp.class,
 	//CreateDeleteEWSApp.class,
 	//CreateDeletePHPApp.class,
 	//CreateDeletePythonApp.class,
-	CreateDeleteScaledRubyApp.class,
-	RestartApplication.class,
+//	CreateDeleteScaledRubyApp.class,
+//	RestartApplication.class,
 	//RepublishApp.class,
 })
 @RunWith(RequirementAwareSuite.class)

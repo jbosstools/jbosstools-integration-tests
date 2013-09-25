@@ -17,7 +17,7 @@ import org.junit.Test;
 @Require(clearWorkspace = true)
 public class EmbedCartridges extends OpenShiftBotTest {
 
-	private final String DYI_APP = "diyapp" + new Date().getTime();
+	private final String DYI_APP = "dapp" + new Date().getTime();
 
 	@Before
 	public void createDYIApp() {

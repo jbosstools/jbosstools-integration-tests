@@ -3,8 +3,10 @@ package org.jboss.tools.openshift.ui.bot.test.domain;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.waits.Conditions;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotButton;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
 import org.eclipse.swtbot.swt.finder.widgets.TimeoutException;
+import org.jboss.tools.openshift.ui.bot.test.Utils;
 import org.jboss.tools.openshift.ui.bot.util.OpenShiftUI;
 import org.jboss.tools.openshift.ui.bot.util.TestProperties;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
@@ -28,6 +30,9 @@ public class DeleteDomain extends SWTTestExt {
 
 		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 3, TIME_1S);
 
+		
+		SWTBotShell[] oldShells = bot.shells();
+		
 		// delete
 		try {
 			openshiftExplorer.bot().tree().getAllItems()[0].contextMenu(
@@ -36,8 +41,7 @@ public class DeleteDomain extends SWTTestExt {
 			log.error("Domain no longer exists.", e);
 		}
 		
-
-		bot.checkBox().select();
+		Utils.getNewShell(oldShells, bot.shells()).activate();
 		bot.button("OK").click();
 
 		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 4, TIME_1S);

@@ -8,6 +8,8 @@ import java.util.List;
 import org.eclipse.swtbot.eclipse.finder.finders.CommandFinder;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotCommand;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
+import org.jboss.tools.openshift.ui.bot.test.Utils;
 import org.jboss.tools.openshift.ui.bot.util.OpenShiftUI;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.condition.NonSystemJobRunsCondition;
@@ -28,39 +30,40 @@ public class ManageSSH extends SWTTestExt {
 
 		openshiftExplorer.bot().tree().getAllItems()[0].select();
 
+		
 		/*
 		 * Workaround for Command based context menus
 		 */
 		CommandFinder finder = new CommandFinder();
-
 		List<SWTBotCommand> cmds = finder
 				.findCommand(equalTo("Manage SSH Keys..."));
-
+		
 		assertTrue("No command to open SSH Key Management found!",
-				!cmds.isEmpty());
-
+ 			!cmds.isEmpty());
+		
 		// open ssh key management dialog
 		cmds.get(0).click();
 
 		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_20S, TIME_5S);
-//		bot.waitForShell(OpenShiftUI.Shell.NEW_SSH);
-//		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_20S, TIME_5S);
-
+		
+		bot.shell("Manage SSH Keys").activate();
 		bot.buttonInGroup("Refresh...", "SSH Public Keys").click();
 		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S, TIME_1S);
-
+		
 		// delete all keys
 		while (bot.table().rowCount() > 0) {
-			bot.table().getTableItem(0).select();
+			bot.table().getTableItem(0).select();	
+			SWTBotShell[] oldShells = bot.shells();
 			bot.buttonInGroup("Remove...", "SSH Public Keys").click();
-			bot.waitForShell("");
+			Utils.getNewShell(oldShells, bot.shells()).activate();
 			bot.button(IDELabel.Button.OK).click();
 			bot.waitWhile(new NonSystemJobRunsCondition(), TIME_20S, TIME_1S);
 		}
 
 		// create new ssh key
+		SWTBotShell[] oldShells = bot.shells();
 		bot.buttonInGroup("New...", "SSH Public Keys").click();
-		bot.waitForShell("", TIME_10S);
+		Utils.getNewShell(oldShells, bot.shells()).activate();
 		bot.textInGroup("New SSH Key", 0).typeText(SSH_KEY_NAME);
 		bot.textInGroup("New SSH Key", 2).typeText("openshift_id");
 
@@ -71,4 +74,6 @@ public class ManageSSH extends SWTTestExt {
 		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S, TIME_1S);
 	}
 
+
+	
 }
