@@ -54,25 +54,23 @@ public class FlatImportWizard extends TeiidImportWizard {
 	@Override
 	public void execute() {
 		open();
-		new DefaultCombo("Data File Source", 0).setSelection(profile);
+		new DefaultCombo(0).setSelection(profile);
 		setCheckedFile(file, true);
 		// TODO: LabeledText
-		// new LabeledText("Name:").setText(name + "Source");
 		Bot.get().textWithLabel("Name:").setText(name + "Source");
 
 		next();
 		next();
 		if (headerLine > 0) {
-			new CheckBox(LABEL_FORMAT_OPRIONS, "Column names in header").toggle(true);
+			new CheckBox("Column names in header").toggle(true);
 			new LabeledText("Header line #").setText(Integer.toString(headerLine));
 			new LabeledText("Data line #").setText(Integer.toString(dataLine));
 		} else {
-			new CheckBox(LABEL_FORMAT_OPRIONS, "Column names in header").toggle(false);
+			new CheckBox("Column names in header").toggle(false);
 		}
 
 		next();
 		// TODO: LabeledText
-		// new LabeledText("Name:").setText(name + "View");
 		Bot.get().textWithLabel("Name:").setText(name + "View");
 
 		new LabeledText("New view table name:").setText(name + "Table");

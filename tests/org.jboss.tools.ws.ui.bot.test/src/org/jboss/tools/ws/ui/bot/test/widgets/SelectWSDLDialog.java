@@ -20,6 +20,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.TimeoutException;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
+import org.jboss.reddeer.swt.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.wait.WaitUntil;
@@ -85,7 +86,7 @@ public class SelectWSDLDialog extends SWTBotShell {
 		try {
 			new WaitUntil(new ShellWithTextIsActive("Progress Information"));
 			new WaitWhile(new ShellWithTextIsActive("Progress Information"));
-		} catch (TimeoutException sle) {
+		} catch (WaitTimeoutExpiredException sle) {
 			// WISE call was pretty quick - no progress information dialog appears
 		}
 		

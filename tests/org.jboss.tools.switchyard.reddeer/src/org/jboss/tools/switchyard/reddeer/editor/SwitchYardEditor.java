@@ -32,5 +32,9 @@ public class SwitchYardEditor extends SWTBotGefEditor {
 		return mainComponent;
 	}
 	
+	public void addComponent(String component, Integer[] coords) {
+		activateTool(component);
+		mainComponent.click(coords[0], coords[1]);
+	}
 
 }

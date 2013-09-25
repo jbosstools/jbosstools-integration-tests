@@ -63,6 +63,11 @@ public class WSTesterPromptValuesSupportTest extends RESTfulTestBase {
 		return wsProjectName;
 	}
 	
+	/**
+	 * Fails due to JBIDE-13546
+	 * 
+	 * @see https://issues.jboss.org/browse/JBIDE-13546 
+	 */
 	@Test
 	public void testWSParametersDialog() {
 		

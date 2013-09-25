@@ -16,9 +16,9 @@ import org.hamcrest.Matcher;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.tools.switchyard.reddeer.condition.ContextButtonAppeared;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.matcher.WithTooltip;
 import org.jboss.tools.switchyard.reddeer.utils.MouseUtils;
@@ -53,7 +53,7 @@ public class Component {
 			throw new ComponentNotFoundException(matcher, index);
 		}
 	}
-
+	
 	public void delete() {
 		contextButton("Delete").click();
 		String deleteShellText = "Confirm Delete";
@@ -63,9 +63,8 @@ public class Component {
 		new WaitWhile(new JobIsRunning());
 	}
 
-	public ContextButton contextButton(String label) {
-		hover();
-		AbstractWait.sleep(1000);
+	public ContextButton contextButton(final String label) {
+		new WaitUntil(new ContextButtonAppeared(this, label));
 		return new ContextButton(label);
 	}
 

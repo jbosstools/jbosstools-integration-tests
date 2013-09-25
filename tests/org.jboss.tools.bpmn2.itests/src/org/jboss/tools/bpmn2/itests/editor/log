@@ -1,0 +1,132 @@
+36df5b3e (Marek Baluch 2013-04-23 16:50:37 +0200   1) package org.jboss.tools.bpmn2.itests.editor;
+36df5b3e (Marek Baluch 2013-04-23 16:50:37 +0200   2) 
+36df5b3e (Marek Baluch 2013-04-23 16:50:37 +0200   3) /**
+b6d0f8e9 (Marek Baluch 2013-06-27 10:57:57 +0200   4)  * TBD: tool names and sections will be required.
+36df5b3e (Marek Baluch 2013-04-23 16:50:37 +0200   5)  * 
+36df5b3e (Marek Baluch 2013-04-23 16:50:37 +0200   6)  * @author mbaluch
+36df5b3e (Marek Baluch 2013-04-23 16:50:37 +0200   7)  */
+36df5b3e (Marek Baluch 2013-04-23 16:50:37 +0200   8) public enum ConstructType {
+36df5b3e (Marek Baluch 2013-04-23 16:50:37 +0200   9) 
+b6d0f8e9 (Marek Baluch 2013-06-27 10:57:57 +0200  10) 	PROCESS(null, null),
+36df5b3e (Marek Baluch 2013-04-23 16:50:37 +0200  11) 	
+b6d0f8e9 (Marek Baluch 2013-06-27 10:57:57 +0200  12) 	AD_HOC_SUB_PROCESS("Activities", "Ad-Hoc Sub-Process"),
+b6d0f8e9 (Marek Baluch 2013-06-27 10:57:57 +0200  13) 	SUB_PROCESS("Activities", "Sub-Process"),
+b6d0f8e9 (Marek Baluch 2013-06-27 10:57:57 +0200  14) 	CALL_ACTIVITY("Activities", "Call Activity"),
+b6d0f8e9 (Marek Baluch 2013-06-27 10:57:57 +0200  15) 	TASK("Activities", "Task"),
+b6d0f8e9 (Marek Baluch 2013-06-27 10:57:57 +0200  16) 	MANUAL_TASK("Activities", "Manual Task"),
+b6d0f8e9 (Marek Baluch 2013-06-27 10:57:57 +0200  17) 	USER_TASK("Activities", "User Task"),
+b6d0f8e9 (Marek Baluch 2013-06-27 10:57:57 +0200  18) 	SCRIPT_TASK("Activities", "Script Task"),
+b6d0f8e9 (Marek Baluch 2013-06-27 10:57:57 +0200  19) 	BUSINESS_RULE_TASK("Activities", "Business Rule Task"),
+b6d0f8e9 (Marek Baluch 2013-06-27 10:57:57 +0200  20) 	SERVICE_TASK("Activities", "Service Task"),
+b6d0f8e9 (Marek Baluch 2013-06-27 10:57:57 +0200  21) 	SEND_TASK("Activities", "Send Task"),
+b6d0f8e9 (Marek Baluch 2013-06-27 10:57:57 +0200  22) 	RECEIVE_TASK("Activities", "Receive Task"),
+b6d0f8e9 (Marek Baluch 2013-06-27 10:57:57 +0200  23) //	TRANSACTION("TBD", "Transaction"),
+36df5b3e (Marek Baluch 2013-04-23 16:50:37 +0200  24) 	
+a6e36627 (Marek Baluch 2013-06-28 15:30:40 +0200  25) 	BOUNDARY_EVENT("Boundary Events", "Boundary Event"),
+a6e36627 (Marek Baluch 2013-06-28 15:30:40 +0200  26) 	CONDITIONAL_BOUNDARY_EVENT("Boundary Events", "Conditional"),
+a6e36627 (Marek Baluch 2013-06-28 15:30:40 +0200  27) 	ERROR_BOUNDARY_EVENT("Boundary Events", "Error"),
+a6e36627 (Marek Baluch 2013-06-28 15:30:40 +0200  28) 	ESCALATION_BOUNDARY_EVENT("Boundary Events", "Escalation"),
+a6e36627 (Marek Baluch 2013-06-28 15:30:40 +0200  29) 	MESSAGE_BOUNDARY_EVENT("Boundary Events", "Message"),
+a6e36627 (Marek Baluch 2013-06-28 15:30:40 +0200  30) 	SIGNAL_BOUNDARY_EVENT("Boundary Events", "Signal"),
+a6e36627 (Marek Baluch 2013-06-28 15:30:40 +0200  31) 	TIMER_BOUNDARY_EVENT("Boundary Events", "Timer"),
+a6e36627 (Marek Baluch 2013-06-28 15:30:40 +0200  32) 	
+b6d0f8e9 (Marek Baluch 2013-06-27 10:57:57 +0200  33) 	COMPENSATION_START_EVENT("Start Events", "Compensation"),
+b6d0f8e9 (Marek Baluch 2013-06-27 10:57:57 +0200  34) 	CONDITIONAL_START_EVENT("Start Events", "Conditional"),
+b6d0f8e9 (Marek Baluch 2013-06-27 10:57:57 +0200  35) 	ERROR_START_EVENT("Start Events", "Error"),
+b6d0f8e9 (Marek Baluch 2013-06-27 10:57:57 +0200  36) 	ESCALATION_START_EVENT("Start Events", "Escalation"),
+b6d0f8e9 (Marek Baluch 2013-06-27 10:57:57 +0200  37) 	START_EVENT("Start Events", "Start Event"),
+b6d0f8e9 (Marek Baluch 2013-06-27 10:57:57 +0200  38) 	MESSAGE_START_EVENT("Start Events", "Message"),
+b6d0f8e9 (Marek Baluch 2013-06-27 10:57:57 +0200  39) 	SIGNAL_START_EVENT("Start Events", "Signal"),
+b6d0f8e9 (Marek Baluch 2013-06-27 10:57:57 +0200  40) 	TIMER_START_EVENT("Start Events", "Timer"),
+36df5b3e (Marek Baluch 2013-04-23 16:50:37 +0200  41) 	
+b6d0f8e9 (Marek Baluch 2013-06-27 10:57:57 +0200  42) 	CANCEL_END_EVENT("End Events", "Cancel"),
+b6d0f8e9 (Marek Baluch 2013-06-27 10:57:57 +0200  43) 	COMPENSATION_END_EVENT("End Events", "Compensation"),
+b6d0f8e9 (Marek Baluch 2013-06-27 10:57:57 +0200  44) 	END_EVENT("End Events", "End Event"),
+b6d0f8e9 (Marek Baluch 2013-06-27 10:57:57 +0200  45) 	ERROR_END_EVENT("End Events", "Error"),
+b6d0f8e9 (Marek Baluch 2013-06-27 10:57:57 +0200  46) 	ESCALATION_END_EVENT("End Events", "Escalation"),
+b6d0f8e9 (Marek Baluch 2013-06-27 10:57:57 +0200  47) 	MESSAGE_END_EVENT("End Events", "Message"),
+b6d0f8e9 (Marek Baluch 2013-06-27 10:57:57 +0200  48) 	SIGNAL_END_EVENT("End Events", "Signal"),
+b6d0f8e9 (Marek Baluch 2013-06-27 10:57:57 +0200  49) 	TERMINATE_END_EVENT("End Events", "Terminate"),
+36df5b3e (Marek Baluch 2013-04-23 16:50:37 +0200  50) 	
+300fdeab (Marek Baluch 2013-07-05 10:56:07 +0200  51) 	CONDITIONAL_INTERMEDIATE_CATCH_EVENT("Intermediate Catch Events", "Conditional"),
+300fdeab (Marek Baluch 2013-07-05 10:56:07 +0200  52) 	MESSAGE_INTERMEDIATE_CATCH_EVENT("Intermediate Catch Events", "Message"),
+300fdeab (Marek Baluch 2013-07-05 10:56:07 +0200  53) 	SIGNAL_INTERMEDIATE_CATCH_EVENT("Intermediate Catch Events", "Signal"),
+300fdeab (Marek Baluch 2013-07-05 10:56:07 +0200  54) 	TIMER_INTERMEDIATE_CATCH_EVENT("Intermediate Catch Events", "Timer"),
+300fdeab (Marek Baluch 2013-07-05 10:56:07 +0200  55) 	
+300fdeab (Marek Baluch 2013-07-05 10:56:07 +0200  56) 	COMPENSATION_INTERMEDIATE_THROW_EVENT("Intermediate Throw Events", "Compensation"),
+300fdeab (Marek Baluch 2013-07-05 10:56:07 +0200  57) 	ESCALATION_INTERMEDIATE_THROW_EVENT("Intermediate Throw Events", "Escalation"),
+300fdeab (Marek Baluch 2013-07-05 10:56:07 +0200  58) 	INTERMEDIATE_THROW_EVENT("Intermediate Throw Events", "Throw Event"),
+300fdeab (Marek Baluch 2013-07-05 10:56:07 +0200  59) 	MESSAGE_INTERMEDIATE_THROW_EVENT("Intermediate Throw Events", "Message"),
+300fdeab (Marek Baluch 2013-07-05 10:56:07 +0200  60) 	SIGNAL_INTERMEDIATE_THROW_EVENT("Intermediate Throw Events", "Signal"),
+36df5b3e (Marek Baluch 2013-04-23 16:50:37 +0200  61) 	
+b6d0f8e9 (Marek Baluch 2013-06-27 10:57:57 +0200  62) //	COMPLEX_GATEWAY("Gateways", "Complex Gateway"),
+b6d0f8e9 (Marek Baluch 2013-06-27 10:57:57 +0200  63) 	EXCLUSIVE_GATEWAY("Gateways", "Exclusive Gateway"),
+300fdeab (Marek Baluch 2013-07-05 10:56:07 +0200  64) 	EVENT_BASED_GATEWAY("Gateways", "Event-Based Gateway"),
+b6d0f8e9 (Marek Baluch 2013-06-27 10:57:57 +0200  65) 	INCLUSIVE_GATEWAY("Gateways", "Inclusive Gateway"),
+b6d0f8e9 (Marek Baluch 2013-06-27 10:57:57 +0200  66) 	PARALLEL_GATEWAY("Gateways", "Parallel Gateway"),
+36df5b3e (Marek Baluch 2013-04-23 16:50:37 +0200  67) 	
+b6d0f8e9 (Marek Baluch 2013-06-27 10:57:57 +0200  68) 	LANE("Swimlanes", "Lane"),
+b6d0f8e9 (Marek Baluch 2013-06-27 10:57:57 +0200  69) 
+b6d0f8e9 (Marek Baluch 2013-06-27 10:57:57 +0200  70) //	MESSAGE("Data Objects", "Message"),
+b6d0f8e9 (Marek Baluch 2013-06-27 10:57:57 +0200  71) //	DATA_INPUT("Data Objects", "Data Input"),
+b6d0f8e9 (Marek Baluch 2013-06-27 10:57:57 +0200  72) //	DATA_OUTPUT("Data Objects", "Data Output"),
+666b0122 (Marek Baluch 2013-09-24 16:20:23 +0200  73) 	DATA_OBJECT("Data Objects", "Data Object"),
+36df5b3e (Marek Baluch 2013-04-23 16:50:37 +0200  74) 	
+666b0122 (Marek Baluch 2013-09-24 16:20:23 +0200  75) 	SWITCHYARD_SERVICE_TASK("SwitchYard", "SwitchYard Service Task");
+666b0122 (Marek Baluch 2013-09-24 16:20:23 +0200  76) 
+b6d0f8e9 (Marek Baluch 2013-06-27 10:57:57 +0200  77) 	private String sectionName;
+b6d0f8e9 (Marek Baluch 2013-06-27 10:57:57 +0200  78) 	
+b6d0f8e9 (Marek Baluch 2013-06-27 10:57:57 +0200  79) 	private String paletteToolName;
+b6d0f8e9 (Marek Baluch 2013-06-27 10:57:57 +0200  80) 	
+b6d0f8e9 (Marek Baluch 2013-06-27 10:57:57 +0200  81) 	/**
+b6d0f8e9 (Marek Baluch 2013-06-27 10:57:57 +0200  82) 	 * 
+b6d0f8e9 (Marek Baluch 2013-06-27 10:57:57 +0200  83) 	 * @param sectionName
+b6d0f8e9 (Marek Baluch 2013-06-27 10:57:57 +0200  84) 	 * @param paletteToolName
+b6d0f8e9 (Marek Baluch 2013-06-27 10:57:57 +0200  85) 	 */
+b6d0f8e9 (Marek Baluch 2013-06-27 10:57:57 +0200  86) 	private ConstructType(String sectionName, String paletteToolName) {
+b6d0f8e9 (Marek Baluch 2013-06-27 10:57:57 +0200  87) 		this.sectionName = sectionName;
+b6d0f8e9 (Marek Baluch 2013-06-27 10:57:57 +0200  88) 		this.paletteToolName = paletteToolName;
+36df5b3e (Marek Baluch 2013-04-23 16:50:37 +0200  89) 	}
+36df5b3e (Marek Baluch 2013-04-23 16:50:37 +0200  90) 	
+b6d0f8e9 (Marek Baluch 2013-06-27 10:57:57 +0200  91) 	/**
+b6d0f8e9 (Marek Baluch 2013-06-27 10:57:57 +0200  92) 	 * Returns the name of the type. E.g. PARALLEL_GATEWAY -> Parallel Gateway. 
+b6d0f8e9 (Marek Baluch 2013-06-27 10:57:57 +0200  93) 	 * 
+b6d0f8e9 (Marek Baluch 2013-06-27 10:57:57 +0200  94) 	 * @return
+b6d0f8e9 (Marek Baluch 2013-06-27 10:57:57 +0200  95) 	 */
+36df5b3e (Marek Baluch 2013-04-23 16:50:37 +0200  96) 	public String toToolName() {
+b6d0f8e9 (Marek Baluch 2013-06-27 10:57:57 +0200  97) 		return paletteToolName;
+b6d0f8e9 (Marek Baluch 2013-06-27 10:57:57 +0200  98) 	}
+b6d0f8e9 (Marek Baluch 2013-06-27 10:57:57 +0200  99) 	
+b6d0f8e9 (Marek Baluch 2013-06-27 10:57:57 +0200 100) 	/**
+b6d0f8e9 (Marek Baluch 2013-06-27 10:57:57 +0200 101) 	 * 
+b6d0f8e9 (Marek Baluch 2013-06-27 10:57:57 +0200 102) 	 * @return
+b6d0f8e9 (Marek Baluch 2013-06-27 10:57:57 +0200 103) 	 */
+b6d0f8e9 (Marek Baluch 2013-06-27 10:57:57 +0200 104) 	public String[] toToolPath() {
+b6d0f8e9 (Marek Baluch 2013-06-27 10:57:57 +0200 105) 		return new String[] {sectionName, paletteToolName};
+36df5b3e (Marek Baluch 2013-04-23 16:50:37 +0200 106) 	}
+36df5b3e (Marek Baluch 2013-04-23 16:50:37 +0200 107) 
+b6d0f8e9 (Marek Baluch 2013-06-27 10:57:57 +0200 108) 	/**
+b6d0f8e9 (Marek Baluch 2013-06-27 10:57:57 +0200 109) 	 * 
+b6d0f8e9 (Marek Baluch 2013-06-27 10:57:57 +0200 110) 	 * @return
+b6d0f8e9 (Marek Baluch 2013-06-27 10:57:57 +0200 111) 	 */
+36df5b3e (Marek Baluch 2013-04-23 16:50:37 +0200 112) 	public String toId() {
+b6d0f8e9 (Marek Baluch 2013-06-27 10:57:57 +0200 113) 		String name = null;
+b6d0f8e9 (Marek Baluch 2013-06-27 10:57:57 +0200 114) 		if (sectionName.equals("End Events")) {
+b6d0f8e9 (Marek Baluch 2013-06-27 10:57:57 +0200 115) 			name = "End Event";
+b6d0f8e9 (Marek Baluch 2013-06-27 10:57:57 +0200 116) 		} else if (sectionName.equals("Start Events")) {
+b6d0f8e9 (Marek Baluch 2013-06-27 10:57:57 +0200 117) 			name = "Start Event";
+a6e36627 (Marek Baluch 2013-06-28 15:30:40 +0200 118) 		} else if (sectionName.equals("Boundary Events")) {
+a6e36627 (Marek Baluch 2013-06-28 15:30:40 +0200 119) 			name = "Boundary Event";
+300fdeab (Marek Baluch 2013-07-05 10:56:07 +0200 120) 		} else if (sectionName.equals("Intermediate Catch Events")) {
+300fdeab (Marek Baluch 2013-07-05 10:56:07 +0200 121) 			name = "Intermediate Catch Event";
+300fdeab (Marek Baluch 2013-07-05 10:56:07 +0200 122) 		} else if (sectionName.equals("Intermediate Throw Events")) {
+300fdeab (Marek Baluch 2013-07-05 10:56:07 +0200 123) 			name = "Intermediate Throw Event";
+666b0122 (Marek Baluch 2013-09-24 16:20:23 +0200 124) 		} else if (sectionName.equals("SwitchYard")){
+666b0122 (Marek Baluch 2013-09-24 16:20:23 +0200 125)             name = "Task";	
+b6d0f8e9 (Marek Baluch 2013-06-27 10:57:57 +0200 126) 		} else {
+b6d0f8e9 (Marek Baluch 2013-06-27 10:57:57 +0200 127) 			name = toToolName();
+b6d0f8e9 (Marek Baluch 2013-06-27 10:57:57 +0200 128) 		}
+b6d0f8e9 (Marek Baluch 2013-06-27 10:57:57 +0200 129) 		return name.replace(" ", "").replace("-", "");
+36df5b3e (Marek Baluch 2013-04-23 16:50:37 +0200 130) 	}
+36df5b3e (Marek Baluch 2013-04-23 16:50:37 +0200 131) 	
+36df5b3e (Marek Baluch 2013-04-23 16:50:37 +0200 132) }

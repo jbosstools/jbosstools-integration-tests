@@ -1,6 +1,7 @@
 package org.jboss.tools.bpmn2.itests.test.editor;
 
 import org.jboss.tools.bpmn2.itests.editor.ConstructType;
+import org.jboss.tools.bpmn2.itests.editor.Position;
 import org.jboss.tools.bpmn2.itests.editor.jbpm.activities.Task;
 import org.jboss.tools.bpmn2.itests.editor.jbpm.endevents.EndEvent;
 import org.jboss.tools.bpmn2.itests.editor.jbpm.endevents.TerminateEndEvent;
@@ -25,7 +26,7 @@ public class LaneTest extends JBPM6BaseTest {
 	@Test
 	public void runTest() throws Exception {
 		StartEvent start = new StartEvent("StartProcess");
-		start.append("MyLane", ConstructType.LANE);
+		start.append("MyLane", ConstructType.LANE, Position.SOUTH_EAST);
 		
 		Lane lane = new Lane("MyLane");
 		lane.append("EndProcess", ConstructType.TERMINATE_END_EVENT);

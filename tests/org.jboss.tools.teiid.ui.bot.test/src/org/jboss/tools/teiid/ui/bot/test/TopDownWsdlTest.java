@@ -35,6 +35,7 @@ public class TopDownWsdlTest extends SWTBotTestCase {
 	public static final String WS_NAME = "ChkOrdSvc";
 	public static final String CONNECTION_PROFILE = "TopDownWsdl SQL Profile";
 	public static final String VDB_NAME = "testVDB";
+	private static final String VDB_PROPS = "resources/db/vdb-driver.properties";
 
 	private TeiidBot teiidBot;
 
@@ -125,6 +126,8 @@ public class TopDownWsdlTest extends SWTBotTestCase {
 
 		String testSql = "SELECT * FROM ChkOrdSvcResponses.Service1Soap_CheckOrder_OCout";
 		sqlEditor.setText(testSql);
+		//fix driver settings
+		new DataSourceExplorer().setVDBDriver(VDB_PROPS, VDB_NAME);
 		sqlEditor.executeAll();
 
 		SQLResult result = DatabaseDevelopmentPerspective.getInstance().getSqlResultsView()
@@ -150,4 +153,6 @@ public class TopDownWsdlTest extends SWTBotTestCase {
 	private static void open(String... path) {
 		new ModelExplorer().getModelProject(PROJECT_NAME).open(path);
 	}
+	
+	
 }

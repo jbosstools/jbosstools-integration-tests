@@ -5,6 +5,7 @@ Bundle-SymbolicName: org.jboss.tools.switchyard.ui.bot.test
 Bundle-Version: 4.1.0.qualifier
 Bundle-Activator: org.jboss.tools.switchyard.ui.bot.test.Activator
 Require-Bundle: org.jboss.tools.switchyard.reddeer;bundle-version="4.1.0",
+ org.jboss.tools.bpmn2.itests;bundle-version="4.1.0",
  org.jboss.reddeer.swt,
  org.jboss.reddeer.eclipse,
  org.jboss.reddeer.workbench,

@@ -49,7 +49,7 @@ public class IsItemAdded implements WaitCondition {
 		if (tab.equals("Response")) {
 			Table table = new DefaultTable();
 			for (int i = 0; i < table.rowCount(); i++) {
-				result.add(table.cell(i, 0));
+				result.add(table.getItem(i).getText(0));
 			}
 		}
 		return result;

@@ -173,7 +173,7 @@ public class RESTfulTestBase extends WSTestBase {
 	
 	protected void runRestServiceOnConfiguredServer(SWTBotTreeItem webService) {
 		RunOnServerDialog dialog = restfulWizard.runOnServer(webService);
-		dialog.chooseExistingServer().selectServer(configuredState.getServer().name).finish();		
+		dialog.chooseExistingServer().selectServer(configuredState.getServer().name).finish();
 		bot.waitUntil(new ViewIsActive(IDELabel.View.WEB_SERVICE_TESTER), TIME_20S);
 		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_20S);
 	}

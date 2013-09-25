@@ -63,18 +63,17 @@ public class XMLImportWizard extends TeiidImportWizard {
 		}
 
 		next();
-		new DefaultCombo("Data File Source", 0).setSelection(profileName);
+		new DefaultCombo(0).setSelection(profileName);
 		new LabeledText("Name:").setText(name + "Source");
 
 		next();
 		new LabeledText("Root Path").setText(rootPath);
 		for (String[] path : elements) {
-			new DefaultTreeItem(1, path).select();
+			new DefaultTreeItem(0, path).select();
 			new PushButton("Add").click();
 		}
 
 		next();
-		// new LabeledText("Name:").setText(name + "View");
 		Bot.get().textWithLabel("Name:").setText(name + "View");
 		new LabeledText("New view table name:").setText(name + "Table");
 

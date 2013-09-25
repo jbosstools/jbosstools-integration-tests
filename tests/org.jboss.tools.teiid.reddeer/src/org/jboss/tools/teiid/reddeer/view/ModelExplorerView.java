@@ -34,7 +34,7 @@ public class ModelExplorerView extends WorkbenchView {
 
 		new DefaultTreeItem(project, model).select();
 		new ContextMenu("New Child", "Table...").select();
-		new DefaultShell("Create Relational Table");
+		new DefaultShell("Create Relational View Table");
 		new LabeledText("Name").setText(tableName);
 		new PushButton("OK").click();
 	}
