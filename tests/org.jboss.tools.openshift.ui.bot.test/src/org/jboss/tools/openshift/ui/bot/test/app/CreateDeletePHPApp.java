@@ -30,6 +30,6 @@ public class CreateDeletePHPApp extends OpenShiftBotTest {
 	
 	@After
 	public void canDeletePHPApp() {
-		deleteOpenShiftApplication(PHP_APP_NAME, OpenShiftUI.AppTypeOld.PHP);
+		deleteOpenShiftApplication(PHP_APP_NAME, OpenShiftUI.AppType.PHP);
 	}
 }
