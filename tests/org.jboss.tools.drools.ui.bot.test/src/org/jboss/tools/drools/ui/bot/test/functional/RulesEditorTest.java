@@ -129,9 +129,9 @@ public class RulesEditorTest extends TestParent {
     public void testConstraintsCompletion() {
         DrlEditor editor = new DrlEditor();
         editor.setPosition(2, 0);
-        editor.writeText("import com.sample.domain.Message\n\nrule newRule\n\twhen\n\t\tMessage()\n\tthen\nend\n");
+        editor.writeText("import com.sample.domain.Message\n\nrule newRule\n\twhen\n\t\tMessage( )\n\tthen\nend\n");
 
-        editor.setPosition(6, 10);
+        editor.setPosition(6, 11);
 
         ContentAssist assist = editor.createContentAssist();
         List<String> items = assist.getItems();
@@ -140,7 +140,7 @@ public class RulesEditorTest extends TestParent {
         Assert.assertTrue("Parameterized field is not available", items.contains("parameterized"));
 
         assist.selectItem("text");
-        Assert.assertEquals("Wrong text inserted", "\t\tMessage( text  )", editor.getTextOnCurrentLine());
+        Assert.assertEquals("Wrong text inserted", "\t\tMessage( text )", editor.getTextOnCurrentLine());
 
         // finish the constraint
         editor.writeText("!= null, ");
@@ -170,7 +170,7 @@ public class RulesEditorTest extends TestParent {
     @UsePerspective(DroolsPerspective.class) @UseDefaultRuntime @UseDefaultProject
     public void testConsequencesCompletion() {
         DrlEditor editor = new DrlEditor();
-        editor.setPosition(2, 2);
+        editor.setPosition(2, 0);
         editor.writeText("import com.sample.domain.Message\n\nrule newRule\n\twhen\n\t\t$msg: Message()\n\tthen\n\t\t\nend\n");
         editor.setPosition(8, 2);
 
@@ -187,9 +187,9 @@ public class RulesEditorTest extends TestParent {
         Assert.assertTrue("kcontext methods are not available", items.size() > 9);
         Assert.assertTrue("kcontext is missing method getRule()", items.contains("getRule() : Rule - RuleContext"));
         assist.selectItem("getRule() : Rule - RuleContext");
-        Assert.assertEquals("Wrong text", "kcontext.getRule()", editor.getTextOnCurrentLine());
+        Assert.assertEquals("Wrong text", "\t\tkcontext.getRule()", editor.getTextOnCurrentLine());
 
-        editor.writeText(";\n");
+        editor.writeText(";\n\t\t");
         assist = editor.createContentAssist();
         items = assist.getItems();
         Assert.assertTrue("Variable kcontext is unavailable", items.contains("kcontext : RuleContext"));
@@ -208,7 +208,7 @@ public class RulesEditorTest extends TestParent {
         Assert.assertEquals("Some Message methods are missing", 3, items.size());
         Assert.assertTrue("Constant NO_PARAMETER is missing", items.contains("NO_PARAMETER : Object - Message"));
         assist.selectItem("NO_PARAMETER : Object - Message");
-        Assert.assertEquals("Wrong text", "$msg.setParameter(Message.NO_PARAMETER);", editor.getTextOnCurrentLine());
+        Assert.assertEquals("Wrong text", "\t\t$msg.setParameter(Message.NO_PARAMETER);", editor.getTextOnCurrentLine());
 
         editor.save();
         ProblemsView problems = new ProblemsView();
