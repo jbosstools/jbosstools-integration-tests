@@ -14,11 +14,14 @@ import java.util.Properties;
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
+import org.eclipse.swtbot.swt.finder.utils.SWTUtils;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.toolbar.ViewToolItem;
 import org.jboss.reddeer.swt.lookup.ShellLookup;
 import org.jboss.reddeer.swt.util.Display;
 import org.jboss.reddeer.workbench.editor.DefaultEditor;
@@ -49,6 +52,7 @@ public abstract class TestParent {
     private static final Logger LOGGER = Logger.getLogger(TestParent.class);
     private static final Properties TEST_PARAMS = new Properties();
     private static final String LOCAL_RUNTIME = new File("tmp/runtime").getAbsolutePath();
+    private static final File SCREENSHOT_DIR = new File("screenshots");
 
     protected static final String DEFAULT_DROOLS_RUNTIME_NAME = "defaultTestRuntime";
     protected static final String DEFAULT_DROOLS_RUNTIME_LOCATION;
@@ -58,9 +62,6 @@ public abstract class TestParent {
 
     @Rule
     public TestName name = new TestName();
-
-    @Rule
-    public TestWatcher watcher = new ScreenshotTestWatcher();
 
     @ClassRule
     public static TestWatcher classWatcher = new TestWatcher() {
@@ -111,19 +112,19 @@ public abstract class TestParent {
             new DefaultShell("JBoss Developer Studio Usage");
             new PushButton("No").click();
         } catch (Exception ex) {
-            LOGGER.info("JBoss Tools Usage dialog was not found.");
+            LOGGER.debug("JBoss Tools Usage dialog was not found.");
         }
 
         try {
             new View("Welcome") {}.close();
         } catch (Exception ex) {
-            LOGGER.info("Eclipse Welcome view not found.");
+            LOGGER.debug("Eclipse Welcome view not found.");
         }
 
         try {
             new DefaultEditor("JBoss Central").close();
         } catch (Exception ex) {
-            LOGGER.info("JBoss Central editor was not found.");
+            LOGGER.debug("JBoss Central editor was not found.");
         }
 
         // maximizes the window
@@ -203,6 +204,9 @@ public abstract class TestParent {
 
     @After
     public void cleanUp() {
+        // take screenshot before cleaning up
+        takeScreenshot(String.format("%s-%s", getClass().getName(), name.getMethodName()));
+
         // close shells
         new SWTWorkbenchBot().closeAllShells();
         // save and close editors
@@ -219,6 +223,16 @@ public abstract class TestParent {
         while (explorer.getProjects().size() > 0) {
             explorer.getProjects().get(0).delete(true);
             explorer = new PackageExplorer();
+        }
+
+        ConsoleView console = new ConsoleView();
+        console.open();
+        try {
+            // FIXME uncomment once my pull request is applied
+            //console.removeAllTerminatedLaunches();
+            new ViewToolItem("Remove All Terminated Launches").click(); 
+        } catch (Exception ex) {
+            LOGGER.debug("Console was not cleared", ex);
         }
 
         // delete all runtimes
@@ -261,6 +275,16 @@ public abstract class TestParent {
         }
 
         return w.toString();
+    }
+
+    protected static void takeScreenshot(String name) {
+        if (!SCREENSHOT_DIR.exists()) {
+            SCREENSHOT_DIR.mkdirs();
+        }
+
+        int index = SCREENSHOT_DIR.list().length;
+        File screenshotFile = new File(SCREENSHOT_DIR, String.format("%02d-%s.png", index, name ));
+        SWTUtils.captureScreenshot(screenshotFile.getAbsolutePath());
     }
 
     private <T extends Annotation> T getAnnotationOnMethod(String methodName, Class<T> annotationClass) {
