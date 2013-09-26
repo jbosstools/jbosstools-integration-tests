@@ -1,7 +1,6 @@
 package org.jboss.tools.drools.ui.bot.test.functional;
 
 import org.apache.log4j.Logger;
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
@@ -15,13 +14,14 @@ import org.jboss.reddeer.swt.matcher.RegexMatchers;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.drools.reddeer.dialog.DroolsRuntimeDialog;
+import org.jboss.tools.drools.reddeer.editor.DrlEditor;
 import org.jboss.tools.drools.reddeer.perspective.DroolsPerspective;
 import org.jboss.tools.drools.reddeer.preference.DroolsRuntimesPreferencePage;
 import org.jboss.tools.drools.reddeer.wizard.NewDroolsProjectWizard;
 import org.jboss.tools.drools.ui.bot.test.annotation.UseDefaultProject;
 import org.jboss.tools.drools.ui.bot.test.annotation.UseDefaultRuntime;
 import org.jboss.tools.drools.ui.bot.test.annotation.UsePerspective;
-import org.jboss.tools.drools.ui.bot.test.util.ApplicationIsRunning;
+import org.jboss.tools.drools.ui.bot.test.util.ApplicationIsTerminated;
 import org.jboss.tools.drools.ui.bot.test.util.RunUtility;
 import org.jboss.tools.drools.ui.bot.test.util.SmokeTest;
 import org.jboss.tools.drools.ui.bot.test.util.TestParent;
@@ -31,9 +31,9 @@ import org.junit.experimental.categories.Category;
 
 public class RulesManagementTest extends TestParent {
     private static final Logger LOGGER = Logger.getLogger(RulesManagementTest.class);
-    private static final String SUCCESSFUL_RUN_REGEX = "(SLF4J: .*\n)+?" +
-            "kmodules: file:(/.*)+/kmodule.xml\n" +
-            "Hello World\nGoodbye cruel world\n";
+    private static final String DEBUG_REGEX = "(SLF4J: .*\n)+?" +
+            "(kmodules: file:(/.*)+/kmodule.xml\n)?";
+    private static final String SUCCESSFUL_RUN_REGEX = DEBUG_REGEX + "Hello World\nGoodbye cruel world\n";
 
     @Test
     @UsePerspective(JavaPerspective.class) @UseDefaultRuntime @UseDefaultProject
@@ -42,13 +42,14 @@ public class RulesManagementTest extends TestParent {
         console.open();
 
         RunUtility.runAsJavaApplication(true, DEFAULT_PROJECT_NAME, "src/main/java", "com.sample", "DroolsTest.java");
-        new WaitUntil(new ApplicationIsRunning());
+        new WaitUntil(new ApplicationIsTerminated());
+        waitASecond(); // this is quite annoying - the text is updated AFTER the application is terminated
 
         console.open();
         String consoleText = console.getConsoleText();
         Assert.assertNotNull("Console text was empty.", consoleText);
         LOGGER.debug(consoleText);
-        Assert.assertTrue("Unexpected text in console!", consoleText.matches(SUCCESSFUL_RUN_REGEX));
+        Assert.assertTrue("Unexpected text in console\n" + consoleText, consoleText.matches(SUCCESSFUL_RUN_REGEX));
     }
 
     @Test
@@ -58,13 +59,14 @@ public class RulesManagementTest extends TestParent {
         console.open();
 
         RunUtility.runAsJavaApplication(DEFAULT_PROJECT_NAME, "src/main/java", "com.sample", "DroolsTest.java");
-        new WaitUntil(new ApplicationIsRunning());
+        new WaitUntil(new ApplicationIsTerminated());
+        waitASecond(); // this is quite annoying - the text is updated AFTER the application is terminated
 
         console.open();
         String consoleText = console.getConsoleText();
         Assert.assertNotNull("Console text was empty.", consoleText);
         LOGGER.debug(consoleText);
-        Assert.assertTrue("Unexpected text in console!", consoleText.matches(SUCCESSFUL_RUN_REGEX));
+        Assert.assertTrue("Unexpected text in console\n" + consoleText, consoleText.matches(SUCCESSFUL_RUN_REGEX));
     }
 
     @Test
@@ -89,13 +91,14 @@ public class RulesManagementTest extends TestParent {
         console.open();
 
         RunUtility.runAsJavaApplication(projectName, "src/main/java", "com.sample", "DroolsTest.java");
-        new WaitUntil(new ApplicationIsRunning());
+        new WaitUntil(new ApplicationIsTerminated());
+        waitASecond(); // this is quite annoying - the text is updated AFTER the application is terminated
 
         console.open();
         String consoleText = console.getConsoleText();
         Assert.assertNotNull("Console text was empty.", consoleText);
         LOGGER.debug(consoleText);
-        Assert.assertTrue("Unexpected text in console!", consoleText.matches(SUCCESSFUL_RUN_REGEX));
+        Assert.assertTrue("Unexpected text in console\n" + consoleText, consoleText.matches(SUCCESSFUL_RUN_REGEX));
     }
 
     @Test
@@ -121,6 +124,20 @@ public class RulesManagementTest extends TestParent {
         Assert.assertTrue("The renamed project is not present.", explorer.containsProject(newName));
     }
 
+    @Test
+    @UsePerspective(JavaPerspective.class) @UseDefaultRuntime @UseDefaultProject
+    public void testSetBreakpoint() {
+        PackageExplorer explorer = new PackageExplorer();
+        explorer.open();
+        explorer.getProject(DEFAULT_PROJECT_NAME).getProjectItem(RESOURCES_LOCATION, "rules", "Sample.drl").select();
+        new ContextMenu(new RegexMatchers("Open.*").getMatchers()).select();
+
+        DrlEditor editor = new DrlEditor();
+        editor.setPosition(8, 0);
+
+        new ShellMenu(new RegexMatchers("Run.*", "Toggle Breakpoint.*").getMatchers()).select();
+    }
+
     @Test @Category(SmokeTest.class)
     @UsePerspective(DroolsPerspective.class) @UseDefaultRuntime @UseDefaultProject
     public void testDebugRule() {
@@ -129,10 +146,7 @@ public class RulesManagementTest extends TestParent {
         explorer.getProject(DEFAULT_PROJECT_NAME).getProjectItem(RESOURCES_LOCATION, "rules", "Sample.drl").select();
         new ContextMenu(new RegexMatchers("Open.*").getMatchers()).select();
 
-        new SWTWorkbenchBot().activeEditor().toTextEditor().navigateTo(8, 0);
-        // FIXME workaround to enable Toggle Breakpoint
-        new JavaPerspective().open();
-        new ShellMenu(new RegexMatchers("Run.*", "Toggle Breakpoint.*").getMatchers()).select();
+        new DrlEditor().setBreakpoint(8);
 
         RunUtility.debugAsDroolsApplication(DEFAULT_PROJECT_NAME, "src/main/java", "com.sample", "DroolsTest.java");
 
@@ -148,16 +162,11 @@ public class RulesManagementTest extends TestParent {
         String consoleText = console.getConsoleText();
         Assert.assertNotNull("Console text was empty.", consoleText);
         LOGGER.debug(consoleText);
-        Assert.assertTrue("Unexpected text in console!", consoleText.matches(SUCCESSFUL_RUN_REGEX));
+        Assert.assertTrue("Unexpected text in console\n" + consoleText, consoleText.matches(DEBUG_REGEX));
 
         new ShellMenu(new RegexMatchers("Run", "Resume.*").getMatchers()).select();
         console.open();
-        Assert.assertEquals("Wrong console text found!", "Hello World\nGoodbye cruel world", getStringDifference(consoleText, console.getConsoleText()));
-    }
-
-    private String getStringDifference(String original, String current) {
-        Assert.assertTrue("Current text does not start with original!", current.startsWith(original));
-        return current.substring(original.length());
+        Assert.assertTrue("Wrong console text found\n" + consoleText, consoleText.matches(SUCCESSFUL_RUN_REGEX));
     }
 
     /**
