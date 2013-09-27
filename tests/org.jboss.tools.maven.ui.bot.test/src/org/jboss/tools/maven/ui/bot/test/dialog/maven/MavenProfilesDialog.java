@@ -39,17 +39,17 @@ public class MavenProfilesDialog extends WizardDialog{
 	
 	public void activateProfile(String profileName){
 		try{
-			new DefaultTable().check(profileName);
+			new DefaultTable().getItem(profileName).setChecked(true);
 		} catch(IllegalArgumentException ex){
-			new DefaultTable().check(profileName+" (auto activated)");
+			new DefaultTable().getItem(profileName+" (auto activated)").setChecked(true);
 		}
 	}
 	
 	public void deactivateProfile(String profileName){
 		try{
-			new DefaultTable().select(profileName);
+			new DefaultTable().getItem(profileName).setChecked(true);
 		} catch(IllegalArgumentException ex){
-			new DefaultTable().select(profileName+" (auto activated)");
+			new DefaultTable().getItem(profileName+" (auto activated)").setChecked(true);
 		}
 		new PushButton("Deactivate").click();
 	}
@@ -57,7 +57,7 @@ public class MavenProfilesDialog extends WizardDialog{
 	public java.util.List<String> getAllProfiles(){
 		java.util.List<String> profiles = new ArrayList<String>();
 		for(int i=0; i<new DefaultTable().rowCount();i++){
-			profiles.add(new DefaultTable().cell(i, 0));
+			profiles.add(new DefaultTable().getItem(i).getText(0));
 		}
 		return profiles;
 	}

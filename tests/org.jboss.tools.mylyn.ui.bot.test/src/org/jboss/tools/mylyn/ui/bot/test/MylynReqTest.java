@@ -133,8 +133,8 @@ public class MylynReqTest {
 		
 		boolean taskFound = false;
 		for (int i = 0; i < TaskTable.rowCount(); i++) {
-			log.info(TaskTable.cell(i,0));
-			if (TaskTable.cell(i, 0).equals(TASKNAME)) {
+			log.info(TaskTable.getItem(i).getText(0));
+			if (TaskTable.getItem(i).getText(0).equals(TASKNAME)) {
 				taskFound = true;
 			}
 		}		

@@ -14,7 +14,7 @@ public class EclipseShell extends DefaultShell {
 		Bot.get().getDisplay().syncExec(new Runnable() {
 
 			public void run() {
-				shell.widget.setMaximized(true);
+				swtShell.setMaximized(true);
 
 			}
 		});

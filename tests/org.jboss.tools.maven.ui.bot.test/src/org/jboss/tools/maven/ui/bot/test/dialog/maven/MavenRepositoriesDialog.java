@@ -23,7 +23,7 @@ public class MavenRepositoriesDialog{
 	public String chooseRepositoryFromList(String repo, boolean activeByDefault){
 		new PushButton(" Add Repository...").click();
 		new DefaultShell("Add Maven Repository");
-		new DefaultCombo("Profile","Profile ID:").setSelection(repo);
+		new DefaultCombo(0).setSelection(repo);
 		new CheckBox("Active by default").toggle(activeByDefault);
 		String a =new LabeledText("Name:").getText();
 		String b = new LabeledText("URL:").getText();
@@ -35,7 +35,7 @@ public class MavenRepositoriesDialog{
 	public String addRepository(String repoID, String repoURL, boolean activeByDefault){
 		new PushButton(" Add Repository...").click();
 		new DefaultShell("Add Maven Repository");
-		new DefaultCombo("Profile","Profile ID:").setText(repoID);
+		new DefaultCombo(0).setText(repoID);
 		new CheckBox("Active by default").toggle(activeByDefault);
 		new LabeledText("ID:").setText(repoID);
 		new LabeledText("Name:").setText(repoID);
@@ -48,7 +48,7 @@ public class MavenRepositoriesDialog{
 	}
 	
 	public void removeRepo(String repo) {
-		new DefaultTable("Repositories",0).select(repo);
+		new DefaultTable().select(repo);
 		new PushButton(" Remove ").click();
 		new DefaultShell("Question?");
 		new PushButton("Yes").click();
@@ -56,7 +56,7 @@ public class MavenRepositoriesDialog{
 	}
 	
 	public boolean removeAllRepos() {
-		if(new DefaultTable("Repositories",0).rowCount() > 0){
+		if(new DefaultTable().rowCount() > 0){
 			new PushButton(" Remove All ").click();
 			new DefaultShell("Question?");
 			new PushButton("Yes").click();
@@ -67,7 +67,7 @@ public class MavenRepositoriesDialog{
 	}
 	
 	public void editRepo(String repo,boolean activeByDefault,String id, String name,String url){
-		new DefaultTable("Repositories",0).select(repo);
+		new DefaultTable().select(repo);
 		new PushButton(" Edit Repository...").click();
 		new DefaultShell("Edit Maven Repository");
 		new CheckBox("Active by default").toggle(activeByDefault);

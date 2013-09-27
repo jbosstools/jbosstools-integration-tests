@@ -29,12 +29,12 @@ public class DynamicWebProjectWizardPage extends WizardPage {
 	}
 
 	public void setWebModuleVersion(String webModuleVersion) {
-		new DefaultCombo("Dynamic web module version", 0)
+		new DefaultCombo(1)
 				.setSelection(webModuleVersion);
 	}
 
 	public void setServerName(String serverName) {
-		new DefaultCombo("Target runtime", 0).setSelection(serverName);
+		new DefaultCombo(0).setSelection(serverName);
 	}
 
 	public void setFacets(List<FacetDefinition> facets) {

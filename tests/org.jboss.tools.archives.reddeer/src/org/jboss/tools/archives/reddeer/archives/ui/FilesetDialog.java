@@ -67,7 +67,7 @@ public class FilesetDialog extends DefaultShell {
 		List<String> preview = new ArrayList<String>();
 		Table table = new DefaultTable();
 		for (int i = 0; i < table.rowCount(); i++) {
-			preview.add(table.cell(i, 0));
+			preview.add(table.getItem(i).getText(0));
 		}
 		return preview;
 	}
