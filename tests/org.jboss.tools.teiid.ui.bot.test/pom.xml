@@ -28,7 +28,7 @@
 	  <!-- Teiid Repository -->
 	  <repository>
 	    <id>teiid</id>
-	    <url>${teiid-designer.site}</url>
+	    <url>${jbtis.site}</url>
 	    <layout>p2</layout>
 	    <snapshots>
 	      <enabled>true</enabled>
@@ -147,7 +147,7 @@
 			<goal>wget</goal>
 		      </goals>
 		      <configuration>
-			<url>${teiid-830final.url}</url>
+			<url>${teiid-830final.url}</url>-->
 			<unpack>true</unpack>
 			<outputDirectory>${requirementsDirectory}/jboss-as-7.1.1.Final</outputDirectory>
 		      </configuration>
@@ -238,6 +238,129 @@
 	      </plugins>
 	    </build>
 	  </profile>
+
+	<!-- Install EDS/DV, specify -Ddv6.url (EAP6 + teiid 8) -->
+	<profile>
+	    <id>dv6</id>
+	    <properties>
+	      <systemProperties>${integrationTestsSystemProperties} -Dswtbot.test.properties.file=./dv6.properties</systemProperties>
+	    </properties>
+	    <build>
+	      <plugins>
+		<plugin>
+		  <groupId>com.googlecode.maven-download-plugin</groupId>
+		  <artifactId>maven-download-plugin</artifactId>
+		  <executions>
+		    <execution>
+		      <id>get-dv6</id>
+		      <phase>pre-integration-test</phase>
+		      <goals>
+			<goal>wget</goal>
+		      </goals>
+		      <configuration>
+			<url>${dv6.url}</url>
+			<!--<md5>N/A</md5>-->
+			<unpack>true</unpack>
+		      </configuration>
+		    </execution>
+	      </executions>
+		</plugin>
+		<plugin>
+		  <artifactId>maven-antrun-plugin</artifactId>
+		  <version>${maven.antrun.plugin.version}</version>
+		  <executions>
+		    <execution>
+		      <id>prepare-teiid</id>
+		      <phase>pre-integration-test</phase>
+		      <goals>
+			<goal>run</goal>
+		      </goals>
+		      <configuration>
+			<tasks>
+			  <echo file="dv6.properties">SERVER=EAP,6.1,default,target/requirements/jboss-eap-6.1</echo>
+			</tasks>
+		      </configuration>
+		    </execution>
+		  </executions>
+		</plugin>
+	      </plugins>
+	    </build>
+	  </profile>
+
+	<!-- Install AS 5.1.0 and Teiid 7.7.x, use -Pas5-teiid7 (JBoss jdk1.6 contains executable /bin)-->
+	  <profile>
+	    <id>as5-teiid7</id>
+	    <properties>
+	      <systemProperties>${integrationTestsSystemProperties} -Dswtbot.test.properties.file=./as5-teiid7.properties</systemProperties>
+	    </properties>
+	    <build>
+	      <plugins>
+		<plugin>
+		  <groupId>com.googlecode.maven-download-plugin</groupId>
+		  <artifactId>maven-download-plugin</artifactId>
+		  <executions>
+		    <execution>
+		      <id>get-as</id>
+		      <phase>pre-integration-test</phase>
+		      <goals>
+			<goal>wget</goal>
+		      </goals>
+		      <configuration>
+			<url>http://sourceforge.net/projects/jboss/files/JBoss/JBoss-5.1.0.GA/jboss-5.1.0.GA-jdk6.zip</url>
+			<md5>ca64add783eb38c123ddb0dcd8465e3f</md5>
+			<unpack>true</unpack>
+		      </configuration>
+		    </execution>
+		    <execution>
+		      <id>get-teiid</id>
+		      <phase>pre-integration-test</phase>
+		      <goals>
+			<goal>wget</goal>
+		      </goals>
+		      <configuration>
+			<url>http://sourceforge.net/projects/teiid/files/teiid/7.7/Final/teiid-7.7.0.Final-jboss-dist.zip</url>
+			<unpack>true</unpack>
+			<outputDirectory>${requirementsDirectory}/jboss-5.1.0.GA/server/default</outputDirectory>
+		      </configuration>
+		    </execution>
+	      </executions>
+		</plugin>
+		<plugin>
+		  <artifactId>maven-antrun-plugin</artifactId>
+		  <version>${maven.antrun.plugin.version}</version>
+		  <executions>
+		    <execution>
+		      <id>prepare-teiid</id>
+		      <phase>pre-integration-test</phase>
+		      <goals>
+			<goal>run</goal>
+		      </goals>
+		      <configuration>
+			<tasks>
+			  <echo file="as5-teiid7.properties">SERVER=AS,5.1,default,target/requirements/jboss-5.1.0.GA</echo>
+			</tasks>
+		      </configuration>
+		    </execution>
+
+		    <execution>
+		      <id>add-hsqldb-driver</id>
+		      <phase>pre-integration-test</phase>
+		      <goals>
+			<goal>run</goal>
+		      </goals>
+		      <configuration>
+			<tasks>
+			  <copy file="${requirementsDirectory}//hsqldb-2.2.9/hsqldb/lib/hsqldb.jar" tofile="${requirementsDirectory}/jboss-5.1.0.GA/server/default/lib/hsqldb.jar" overwrite="true"/>
+			</tasks>
+		      </configuration>
+		    </execution>
+
+		  </executions>
+		</plugin>
+	      </plugins>
+	    </build>
+	  </profile>
+		
 	</profiles>
 
 </project>

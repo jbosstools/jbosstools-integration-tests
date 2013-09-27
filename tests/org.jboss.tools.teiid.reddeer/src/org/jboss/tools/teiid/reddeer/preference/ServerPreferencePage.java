@@ -30,8 +30,13 @@ public class ServerPreferencePage extends PreferencePage {
 		new PushButton("Next >").click();
 		new LabeledText("Name").setText(name);
 		new LabeledText("Home Directory").setText(path);
+		
 		//set configuration file
-		Bot.get().textWithLabel("Configuration file: ").setText(configFile);
+		if (type[1].matches("JBoss Enterprise Application Platform 6(.*) Runtime") 
+				|| type[1].matches("JBoss AS 7(.*)")
+				|| type[1].matches("WildFly (.*)")){
+			Bot.get().textWithLabel("Configuration file: ").setText(configFile);
+		}
 		new PushButton("Finish").click();
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
