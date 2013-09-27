@@ -38,7 +38,7 @@ public class ArchivePublishDialog extends DefaultShell {
 	public List<String> getAllServersInDialog() {
 		List<String> serversInDialog = new ArrayList<String>();
 		for (int i = 0; i < table().rowCount(); i++) {
-			serversInDialog.add(table().cell(i, 0));
+			serversInDialog.add(table().getItem(i).getText(0));
 		}
 		return serversInDialog;
 	}

@@ -33,7 +33,7 @@ public abstract class NewProjectFirstPage  extends WizardPage{
 	}
 	
 	public void setRuntime(String runtime){
-		new DefaultCombo("Target runtime", 0).setSelection(runtime);
+		new DefaultCombo("Target runtime").setSelection(runtime);
 	}
 
 }

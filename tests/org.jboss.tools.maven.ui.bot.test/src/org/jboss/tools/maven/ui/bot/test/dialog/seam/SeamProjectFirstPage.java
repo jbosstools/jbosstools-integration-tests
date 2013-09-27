@@ -33,10 +33,10 @@ public class SeamProjectFirstPage extends WizardPage{
 	}
 	
 	public void setRuntime(String runtime){
-		new DefaultCombo("Target runtime", 0).setSelection(runtime);
+		new DefaultCombo("Target runtime").setSelection(runtime);
 	}
 	
 	public void setServer(String server){
-		new DefaultCombo("Target Server", 0).setSelection(server);
+		new DefaultCombo("Target Server").setSelection(server);
 	}
 }

@@ -23,7 +23,6 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.swt.impl.tree.ViewTree;
 import org.jboss.reddeer.swt.util.Bot;
 import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.swt.wait.TimePeriod;
@@ -248,7 +247,7 @@ public class MylynBugzillaQueryTest {
 			
 		/* Locate the list of created queries */
 		
-		ViewTree bugzillaTree = new ViewTree();
+		DefaultTree bugzillaTree = new DefaultTree();
 		List<TreeItem> bugzillaQueryItems = bugzillaTree.getAllItems();
 		log.info("Total of query items found = " + bugzillaQueryItems.size());
 		Bot.get().sleep(30000l);

@@ -24,7 +24,7 @@ public class MavenRemoteRepositoriesPreferencePage extends PreferencePage{
 	}
 	
 	public void modifyRepository(Repository oldRepo, Repository newRepo){
-		new DefaultTable("Remote Repositories",0).select(oldRepo.getName());
+		new DefaultTable().select(oldRepo.getName());
 		new PushButton("Edit...").click();
 		new DefaultShell("Edit Repository");
 		new LabeledText("Name:").setText(newRepo.getName());
@@ -35,13 +35,13 @@ public class MavenRemoteRepositoriesPreferencePage extends PreferencePage{
 	}
 	
 	public void deleteRepository(Repository repository){
-		new DefaultTable("Remote Repositories",0).select(repository.getName());
+		new DefaultTable().select(repository.getName());
 		new PushButton("Remove").click();
 	}
 	
 	public Repository getRepository(String name){
 		try{
-			new DefaultTable("Remote Repositories",0).select(name);
+			new DefaultTable().select(name);
 		}	catch(IllegalArgumentException ex){
 			return null;
 		}

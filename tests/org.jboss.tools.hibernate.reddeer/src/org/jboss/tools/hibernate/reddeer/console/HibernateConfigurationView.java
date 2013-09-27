@@ -13,8 +13,8 @@ import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.impl.tree.ShellTreeItem;
-import org.jboss.reddeer.swt.impl.tree.ViewTree;
+import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.reddeer.workbench.view.View;
@@ -30,7 +30,7 @@ public class HibernateConfigurationView extends View {
 	 * @return
 	 */
 	public List<HibernateConfiguration> getConfigurations() {
-		Tree tree = new ViewTree();
+		Tree tree = new DefaultTree();
 		List<TreeItem> allItems = tree.getAllItems();
 		List<HibernateConfiguration> configurations = new ArrayList<HibernateConfiguration>();
 		
@@ -48,7 +48,7 @@ public class HibernateConfigurationView extends View {
 	 * @return
 	 */
 	public boolean contains(String configuration) {	
-		Tree tree = new ViewTree();
+		Tree tree = new DefaultTree();
 		List<TreeItem> allItems = tree.getAllItems();
 		
 		return allItems.contains(configuration);
@@ -63,18 +63,18 @@ public class HibernateConfigurationView extends View {
 		m.select();
 
 		new WaitUntil(new ShellWithTextIsActive("New"));		
-		new ShellTreeItem("Hibernate", "Hibernate Console Configuration").select();
+		new DefaultTreeItem("Hibernate", "Hibernate Console Configuration").select();
 		new PushButton("Next >").click();
 		
 		new WaitUntil(new ShellWithTextIsActive(""));
 		
 		new LabeledText("Name:").setText(configuration.getName());
 		
-		new DefaultText("Project:", 0).setText(configuration.getProject());
-		new DefaultCombo("Database connection:", 0).setSelection(configuration.getDatabaseConnection());
+		new DefaultText(1).setText(configuration.getProject());
+		new DefaultCombo(1).setSelection(configuration.getDatabaseConnection());
 		new LabeledText("Name:").setText(configuration.getName());
-		new DefaultText("Project:", 0).setText(configuration.getProject());
-		new DefaultText("Configuration file:", 0).setText(configuration.getConfigurationFile());
+		new DefaultText(1).setText(configuration.getProject());
+		new DefaultText(3).setText(configuration.getConfigurationFile());
 		
 		new PushButton("Finish").click();
 		new WaitWhile(new ShellWithTextIsActive(""));

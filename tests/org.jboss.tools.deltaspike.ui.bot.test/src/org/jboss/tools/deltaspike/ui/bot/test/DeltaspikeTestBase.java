@@ -35,7 +35,7 @@ import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
-import org.jboss.reddeer.swt.impl.tree.ShellTreeItem;
+import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.matcher.RegexMatchers;
 import org.jboss.reddeer.swt.regex.Regex;
 import org.jboss.reddeer.swt.util.Bot;
@@ -157,7 +157,7 @@ public class DeltaspikeTestBase extends SWTTestExt {
 		/* will be simpler in the future -> new TargetedRuntimesProperties() */
 		new ContextMenu("Properties").select();
 		Shell shell = new DefaultShell();
-		new ShellTreeItem("Targeted Runtimes").select();
+		new DefaultTreeItem("Targeted Runtimes").select();
 		new CheckBox("Show all runtimes").toggle(true);
 		SWTBotTable table = Bot.get().table();
 		for (int i = 0; i < table.rowCount(); i++) {
@@ -189,7 +189,7 @@ public class DeltaspikeTestBase extends SWTTestExt {
 
 		new ContextMenu("Properties").select();
 		new DefaultShell();
-		new ShellTreeItem("Java Build Path").select();
+		new DefaultTreeItem("Java Build Path").select();
 		new DefaultTabItem("Libraries").activate();
 
 		for (File library : libraries) {
@@ -197,8 +197,8 @@ public class DeltaspikeTestBase extends SWTTestExt {
 			new WaitUntil(new ShellWithTextIsActive("JAR Selection"),
 					TimePeriod.NORMAL);
 			new DefaultShell("JAR Selection");
-			new ShellTreeItem(projectName, library.getName()).select();
-			new WaitUntil(new ButtonWithTextIsActive("OK"));
+			new DefaultTreeItem(projectName, library.getName()).select();
+			new WaitUntil(new ButtonWithTextIsActive(new PushButton("OK")));
 			new PushButton("OK").click();
 			new WaitWhile(new ShellWithTextIsActive("JAR Selection"),
 					TimePeriod.NORMAL);
