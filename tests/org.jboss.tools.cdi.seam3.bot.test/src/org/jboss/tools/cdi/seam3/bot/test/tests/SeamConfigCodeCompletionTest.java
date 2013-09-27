@@ -13,9 +13,15 @@ package org.jboss.tools.cdi.seam3.bot.test.tests;
 import java.util.Arrays;
 import java.util.List;
 
+import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
+import org.jboss.reddeer.swt.exception.WaitTimeoutExpiredException;
 import org.jboss.tools.cdi.seam3.bot.test.base.Seam3TestBase;
 import org.jboss.tools.cdi.seam3.bot.test.util.SeamLibrary;
+import org.jboss.tools.ui.bot.ext.SWTJBTExt;
+import org.jboss.tools.ui.bot.ext.SWTUtilExt;
 import org.jboss.tools.ui.bot.ext.helper.ContentAssistHelper;
+import org.jboss.tools.ui.bot.ext.parts.ContentAssistBot;
+import org.jboss.tools.ui.bot.ext.parts.SWTBotEditorExt;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -34,6 +40,7 @@ public class SeamConfigCodeCompletionTest extends Seam3TestBase {
 	public static void setup() {
 		importSeam3ProjectWithLibrary(projectName, SeamLibrary.SOLDER_3_1);
 		openSeamConfig();
+		dryRun();
 	}
 	
 	/**
@@ -242,6 +249,27 @@ public class SeamConfigCodeCompletionTest extends Seam3TestBase {
 				IDELabel.WebProjectsTree.WEB_INF, 
 				SEAM_CONFIG);
 		bot.cTabItem("Source").activate();
+	}
+	
+	/**
+	 * Sometimes the first test fails, because {@code action.run()} call in 
+	 * {@link ContentAssistBot#invokeContentAssist()} doesn't cause new assist shell to appear. 
+	 * This workaround shifts the first call into test initialization phase.
+	 */
+	private static void dryRun() {
+		new SWTUtilExt(bot).waitForNonIgnoredJobs();
+		SWTBotEclipseEditor eclipseEditor = 
+				SWTJBTExt.selectTextInSourcePane(bot, SEAM_CONFIG, "<r:Report >", -1, 0);
+		try {
+			new SWTBotEditorExt(eclipseEditor.getReference(), bot).contentAssist()
+				.getProposalList();
+		} catch (WaitTimeoutExpiredException ex) {
+			// do nothing
+		} catch (RuntimeException ex) {
+			if (!ContentAssistBot.CONTENT_ASSIST_SHELL_FAILED_TO_OPEN.equals(ex.getMessage())) {
+				throw ex;
+			}
+		}
 	}
 	
 }

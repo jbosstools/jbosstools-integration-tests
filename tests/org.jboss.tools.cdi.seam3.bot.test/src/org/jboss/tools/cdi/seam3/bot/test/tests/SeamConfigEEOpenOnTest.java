@@ -10,6 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.cdi.seam3.bot.test.tests;
 
+import org.jboss.reddeer.workbench.editor.DefaultEditor;
 import org.jboss.tools.cdi.seam3.bot.test.base.Seam3TestBase;
 import org.jboss.tools.cdi.seam3.bot.test.util.SeamLibrary;
 import org.jboss.tools.ui.bot.ext.helper.OpenOnHelper;
@@ -31,6 +32,7 @@ public class SeamConfigEEOpenOnTest extends Seam3TestBase {
 	@BeforeClass
 	public static void setup() {
 		importSeam3ProjectWithLibrary(projectName, SeamLibrary.SOLDER_3_1);
+		disableSourceLookup();
 	}
 
 	@Before
@@ -42,7 +44,7 @@ public class SeamConfigEEOpenOnTest extends Seam3TestBase {
 				SEAM_CONFIG).toTextEditor();
 		bot.cTabItem("Source").activate();
 	}
-
+	
 	@Test
 	public void testAlternativeOpenOn() {
 
@@ -163,8 +165,10 @@ public class SeamConfigEEOpenOnTest extends Seam3TestBase {
 
 	}
 
-	private void assertExpectedOpenedClass(String packageName) {
-		assertContains(packageName, bot.activeEditor().toTextEditor().getText());
+	private void assertExpectedOpenedClass(String qualifiedName) {
+		String toolTip = new DefaultEditor().getTitleToolTip();
+		String dotToolTip = toolTip.replace('/', '.');
+		assertContains(qualifiedName, dotToolTip);
 	}
-
+	
 }
