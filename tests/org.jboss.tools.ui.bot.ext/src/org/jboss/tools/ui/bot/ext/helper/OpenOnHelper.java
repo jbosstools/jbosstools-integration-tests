@@ -11,12 +11,18 @@
 
 package org.jboss.tools.ui.bot.ext.helper;
 
+import static org.eclipse.swtbot.swt.finder.SWTBotAssert.assertContains;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.awt.event.KeyEvent;
+import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
+import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.bindings.keys.KeyStroke;
+import org.eclipse.jface.bindings.keys.ParseException;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
@@ -24,12 +30,16 @@ import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.results.VoidResult;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.TimeoutException;
+import org.eclipse.ui.texteditor.ITextEditor;
+import org.jboss.tools.common.model.ui.editor.EditorPartWrapper;
+import org.jboss.tools.common.model.ui.editors.multipage.DefaultMultipageEditor;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
 import org.jboss.tools.ui.bot.ext.SWTJBTExt;
 import org.jboss.tools.ui.bot.ext.SWTUtilExt;
 import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.condition.ActiveEditorHasTitleCondition;
 import org.jboss.tools.ui.bot.ext.condition.ActiveShellContainsWidget;
+import org.jboss.tools.ui.bot.ext.condition.ActiveShellTitleMatches;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 
 /**
@@ -40,6 +50,7 @@ import org.jboss.tools.ui.bot.ext.types.IDELabel;
  * 
  */
 public class OpenOnHelper {
+
 	protected static final Logger log = Logger.getLogger(OpenOnHelper.class);
 
 	public static SWTBotEditor checkOpenOnFileIsOpened(SWTBotExt bot,
@@ -80,8 +91,6 @@ public class OpenOnHelper {
 				bot, editorTitle, textToSelect, selectionOffset,
 				selectionLength, textToSelectIndex);
 
-		bot.sleep(Timing.time3S());
-
 		sourceEditor.setFocus();
 		// process UI Events
 		UIThreadRunnable.syncExec(new VoidResult() {
@@ -89,21 +98,79 @@ public class OpenOnHelper {
 			public void run() {
 			}
 		});
-		bot.sleep(Timing.time3S());
+		
 		new SWTUtilExt(bot).waitForNonIgnoredJobs();
+		
+		String oldWindowTitle = bot.activeShell().getText();
+		assertContains(editorTitle, oldWindowTitle);
+		bot.activeShell().setFocus();
+		
+		openOnUsingKeyStroke(sourceEditor);
+		if (!wasWpenOnSuccessful(bot, oldWindowTitle)) {
+			log.info("openon using F3 keystroke failed");
+			openOnUsingAction();
+		}
+		waitForOpen(bot, oldWindowTitle);
 
-		KeyboardHelper.typeKeyCodeUsingAWT(KeyEvent.VK_F3);
+		return checkActiveEditorTitle(bot, expectedOpenedFileName);
+	}
+
+	private static void waitForOpen(SWTBotExt bot, String oldWindowTitle) {
 		// process UI Events
 		UIThreadRunnable.syncExec(new VoidResult() {
 			@Override
 			public void run() {
 			}
 		});
-		bot.sleep(Timing.time3S());
 		new SWTUtilExt(bot).waitForNonIgnoredJobs();
+		bot.activeEditor().setFocus();
+		bot.waitWhile(new ActiveShellTitleMatches(bot, getSubstringPattern(oldWindowTitle)));
+	}
 
-		return checkActiveEditorTitle(bot, expectedOpenedFileName);
+	private static void openOnUsingKeyStroke(SWTBotEclipseEditor editor) {
+		try {
+			KeyStroke f3KeyStroke = KeyStroke.getInstance("F3");
+			editor.pressShortcut(f3KeyStroke);
+		} catch (ParseException ex) {
+			throw new RuntimeException("Keystroke 'F3' could not be created", ex);
+		}
+	}
 
+	private static boolean wasWpenOnSuccessful(SWTBotExt bot, String oldWindowTitle) {
+		try {
+			waitForOpen(bot, oldWindowTitle);
+		} catch (TimeoutException ex) {
+			return false;
+		}
+		return true;
+	}
+
+	private static void openOnUsingAction() {
+		Display.getDefault().syncExec(new OpenResourceRunnable());
+	}
+	
+	private static class OpenResourceRunnable implements Runnable {
+		/**
+		 * know-how: org.jboss.tools.ui.bot.ext.parts.ContentAssistBot.invokeContentAssist()
+		 * 'F3' key press simulated by direct action invocation; sending keystroke directly
+		 * using {@link java.awt.Robot} was very unreliable
+		 */
+		@Override
+		public void run() {
+			EditorPartWrapper editor = (EditorPartWrapper) new SWTBotExt().activeEditor()
+					.getReference().getEditor(false);
+			DefaultMultipageEditor editor2 = (DefaultMultipageEditor) editor.getEditor();
+			ITextEditor activeEditor = (ITextEditor) editor2.getActiveEditor();
+			IAction openResourceAction = activeEditor.getAction("OpenFileFromSource");
+			assertNotNull("Obtaining open resource editor action", openResourceAction);
+			openResourceAction.run();
+		}
+	}
+	
+	private static String getSubstringPattern(String stringToMatch) {
+		String quoted = Pattern.quote(stringToMatch);
+		String pattern = ".*" + quoted + ".*";
+		return pattern;
 	}
 	
 	public static SWTBotEditor selectOpenOnOption(SWTBotExt bot, String editorTitle, 
