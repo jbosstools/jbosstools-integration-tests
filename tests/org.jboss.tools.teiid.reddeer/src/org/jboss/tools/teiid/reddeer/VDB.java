@@ -42,8 +42,8 @@ public class VDB {
 	public void deployVDB() {
 		projectItem.select();
 		new ContextMenu("Modeling", "Deploy").select();
-		new WaitWhile(new IsInProgress(), TimePeriod.LONG);
-		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		new WaitWhile(new IsInProgress(), TimePeriod.VERY_LONG);
+		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 	}
 
 	/**
@@ -67,6 +67,8 @@ public class VDB {
 		} else {
 			executeVDB();
 		}
+		new WaitWhile(new IsInProgress(), TimePeriod.VERY_LONG);
+		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 	}
 
 	/**

@@ -9,6 +9,9 @@ import java.util.Properties;
 import org.eclipse.swtbot.swt.finder.junit.ScreenshotCaptureListener;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.util.Bot;
+import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
 import org.jboss.tools.teiid.reddeer.preference.ServerPreferencePage;
 import org.jboss.tools.teiid.reddeer.wizard.ServerWizard;
 import org.junit.runner.notification.RunListener;
@@ -80,6 +83,12 @@ public class TeiidSuite extends RedDeerSuite {
 		return props;
 	}
 
+	public static void addServerWithProperties(String propertyFile){
+		System.setProperty(PROPERTIES_FILE, propertyFile);//set -Dswtbot.test.properties.file
+		Properties props = loadSWTBotProperties();
+		addServer(props.getProperty("SERVER"));
+	}
+	
 	private static void addServer(String serverConfig) {
 		if (serverConfig == null) {
 			return;
@@ -99,9 +108,11 @@ public class TeiidSuite extends RedDeerSuite {
 		
 		serverName = type + "-" + version;
 
+		new WaitWhile(new IsInProgress(), TimePeriod.LONG);
 		ServerPreferencePage serverPP = new ServerPreferencePage();
 		serverPP.open();
 		serverPP.addServerRuntime(serverName, path, configFile, getServerRuntime(type, version));
+		new WaitWhile(new IsInProgress(), TimePeriod.LONG);
 		serverPP.ok();
 
 		ServerWizard serverWizard = new ServerWizard();

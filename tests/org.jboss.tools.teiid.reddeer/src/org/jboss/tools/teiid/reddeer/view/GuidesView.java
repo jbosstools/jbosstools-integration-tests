@@ -11,15 +11,6 @@ public class GuidesView {
 
 	private int ACTION_SETS_TREE_INDEX = 2;//TODO hardcoded index; 0 - model explorer view, 1 - model actions, 2 - other 
 	
-	/*public void openGuides(){//presun nekam jinam - vytvorit nejaky GuidesView
-		Bot.get().cTabItem("Guides").activate();
-		Bot.get().comboBox().setSelection("Model JDBC Source");
-		SWTBotTree t = Bot.get().tree(2).select("Define Teiid Model Project");//index hardcoded!
-		t.getTreeItem("Define Teiid Model Project").doubleClick();
-		Bot.get().button("New...").click();
-		//jak zvysit index page...? - to asi nejde, tak zkusim zmenit matcher...
-	}*/
-	
 	/**
 	 * Choose specific action from action set.
 	 * @param actionSet 
@@ -43,10 +34,15 @@ public class GuidesView {
 		new DefaultTreeItem(path).select();
 		Bot.get().button("OK").click();
 		Bot.get().button("OK").click();
+		
 		//setup display property; only 1st time
-		if (calledFirstTime){
+		try {
+			//what property?
 			Bot.get().activeShell().bot().button("Yes").click();
+		} catch (Exception ex){
+			//do nothing
 		}
+		
 		new WaitWhile(new IsInProgress(), TimePeriod.LONG);
 	}
 }

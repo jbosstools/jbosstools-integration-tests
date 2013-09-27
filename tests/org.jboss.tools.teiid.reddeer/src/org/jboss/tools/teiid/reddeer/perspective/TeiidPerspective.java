@@ -29,6 +29,11 @@ public class TeiidPerspective extends AbstractPerspective {
 		return INSTANCE;
 	}
 	
+	/**
+	 * Previous to Kepler
+	 * @return
+	 */
+	@Deprecated
 	public TeiidInstanceView getTeiidInstanceView(){
 		if (teiidInstanceView == null){
 			teiidInstanceView = new TeiidInstanceView();
