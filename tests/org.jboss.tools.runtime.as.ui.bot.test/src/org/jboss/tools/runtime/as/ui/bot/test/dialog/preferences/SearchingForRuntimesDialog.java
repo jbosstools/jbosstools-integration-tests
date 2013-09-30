@@ -18,6 +18,7 @@ import org.jboss.reddeer.swt.util.Display;
 import org.jboss.reddeer.swt.util.ResultRunnable;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.runtime.as.ui.bot.test.entity.Runtime;
+import org.jboss.tools.ui.bot.ext.condition.ShellIsActiveCondition;
 
 public class SearchingForRuntimesDialog {
 	/**
@@ -66,8 +67,9 @@ public class SearchingForRuntimesDialog {
 	
 	public void ok(){
 		Shell shell = new DefaultShell();
+		String title = shell.getText();
 		new PushButton("OK").click();
-		new WaitWhile(new ShellWithTextIsActive(shell.getText()));
+		new WaitWhile(new ShellWithTextIsActive(title));
 	}
 	
 	public void cancel(){
