@@ -16,6 +16,7 @@
 		<eclipse.graphiti.site>http://download.eclipse.org/graphiti/updates/0.10.0</eclipse.graphiti.site>
 		<systemProperties>${integrationTestsSystemProperties} -Dswtbot.test.skip=false -Dtest.configurations.dir=resources/</systemProperties>
 		<droolsjbpm.version>6.0.0.CR4</droolsjbpm.version>
+		<awt.robot>false</awt.robot>
 	</properties>
 
 	<dependencies>
@@ -97,6 +98,9 @@
 		    <groupId>org.eclipse.tycho</groupId>
 		    <artifactId>tycho-surefire-plugin</artifactId>
 		    <configuration>
+		      <systemProperties>
+		        <awt.robot>${awt.robot}</awt.robot>
+		      </systemProperties>
 		      <testSuite>org.jboss.tools.bpmn2.itests</testSuite>
 		      <testClass>org.jboss.tools.bpmn2.itests.test.AllTests</testClass>
 		      <useUIThread>false</useUIThread>
@@ -129,6 +133,9 @@
 		    <artifactId>target-platform-configuration</artifactId>
 		    <version>${tychoVersion}</version>
 		    <configuration>
+		      <systemProperties>
+		        <awt.robot>${awt.robot}</awt.robot>
+		      </systemProperties>
 		      <target>
 			<artifact>
 			  <groupId>org.jboss.tools.integration-stack</groupId>
