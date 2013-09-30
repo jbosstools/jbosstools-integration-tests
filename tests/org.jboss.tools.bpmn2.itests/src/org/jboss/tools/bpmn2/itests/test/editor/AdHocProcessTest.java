@@ -43,8 +43,9 @@ public class AdHocProcessTest extends JBPM6BaseTest {
 		ExclusiveGateway gateway = new ExclusiveGateway("Gateway");
 		gateway.append("End", ConstructType.TERMINATE_END_EVENT, ConnectionType.SEQUENCE_FLOW, Position.NORTH_EAST);
 		gateway.append("Task 4", ConstructType.SCRIPT_TASK, ConnectionType.SEQUENCE_FLOW, Position.SOUTH_EAST);
-		gateway.setCondition("Gateway -> End", "Rule", "org.jbpm.examples.junit.Person()");
-		gateway.setCondition("Gateway -> Task 4", "Rule", "not org.jbpm.examples.junit.Person()");
+		// Rules are not supported anymore
+		gateway.setCondition("Gateway -> End", "Rule", "org.jbpm.bpmn2.objects.Person()");
+		gateway.setCondition("Gateway -> Task 4", "Rule", "not org.jbpm.bpmn2.objects.Person()");
 		
 		ScriptTask task4 = new ScriptTask("Task 4");
 		task4.setScript("", "System.out.println(\"Task4\");");

@@ -1,7 +1,6 @@
 package org.jboss.tools.bpmn2.itests.reddeer;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.swt.SWT;
@@ -10,6 +9,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.swt.widgets.Widget;
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.results.Result;
@@ -17,12 +17,12 @@ import org.eclipse.swtbot.swt.finder.utils.internal.SiblingFinder;
 import org.eclipse.swtbot.swt.finder.widgets.AbstractSWTBotControl;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCheckBox;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCombo;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarPushButton;
 import org.eclipse.ui.forms.widgets.Section;
-
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
-
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.util.Bot;
 import org.jboss.reddeer.workbench.view.impl.WorkbenchView;
@@ -47,6 +47,7 @@ public class BPMN2PropertiesView extends WorkbenchView {
 	 * @param label
 	 */
 	public void selectTab(String label) {
+		open();
 		new ListElement(label).select();
 	}
 
@@ -155,6 +156,35 @@ public class BPMN2PropertiesView extends WorkbenchView {
 				return -1;
 			}
 		});
+	}
+	
+	protected void activateShell(SWTWorkbenchBot bot) {
+		try {
+			bot.activeShell();
+		} catch (WidgetNotFoundException e) {
+			SWTBotShell[] shellArray = bot.shells();
+			for (SWTBotShell shell : shellArray) {
+				if (shell.getText() != null && shell.getText().endsWith("Eclipse Platform")) {
+					shell.activate();
+					return;
+				}
+			}
+			throw new WidgetNotFoundException("Main shell was not found!");
+		}
+	}
+	
+	@Override
+	public void minimize() {
+		SWTWorkbenchBot bot = new SWTWorkbenchBot();
+		activateShell(bot);
+		bot.menu("Window").menu("Navigation").menu("Minimize Active View or Editor").click();
+	}
+	
+	@Override
+	public void maximize() {
+		SWTWorkbenchBot bot = new SWTWorkbenchBot();
+		activateShell(bot);
+		bot.menu("Window").menu("Navigation").menu("Maximize Active View or Editor").click();
 	}
 	
 //	/**

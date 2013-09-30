@@ -1,5 +1,6 @@
 package org.jboss.tools.bpmn2.itests.test.editor;
 
+import org.jboss.tools.bpmn2.itests.editor.ConnectionType;
 import org.jboss.tools.bpmn2.itests.editor.ConstructType;
 import org.jboss.tools.bpmn2.itests.editor.Position;
 import org.jboss.tools.bpmn2.itests.editor.jbpm.BPMN2Process;
@@ -40,6 +41,7 @@ public class DataObjectTest extends JBPM6BaseTest {
 		
 		DataObject object = new DataObject("employee");
 		object.setDataObjectType("String");
+		object.connectTo(script, ConnectionType.DATA_ASSOCIATION);
 	}
 	
 }
