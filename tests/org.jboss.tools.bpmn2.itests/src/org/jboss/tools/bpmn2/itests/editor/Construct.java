@@ -27,7 +27,6 @@ import org.jboss.tools.bpmn2.itests.reddeer.BPMN2PropertiesView;
 import org.jboss.tools.bpmn2.itests.swt.matcher.ConstructOfType;
 import org.jboss.tools.bpmn2.itests.swt.matcher.ConstructOnPoint;
 import org.jboss.tools.bpmn2.itests.swt.matcher.ConstructWithName;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;

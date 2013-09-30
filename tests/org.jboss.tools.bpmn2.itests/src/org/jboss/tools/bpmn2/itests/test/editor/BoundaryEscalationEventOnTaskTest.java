@@ -17,7 +17,7 @@ import org.junit.Test;
  *     
  * @author mbaluch
  */
-@ProcessDefinition(name="BPMN2-BoundaryConditionalEventOnTask", project="EditorTestProject")
+@ProcessDefinition(name="BPMN2-BoundaryEscalationEventOnTask", project="EditorTestProject")
 public class BoundaryEscalationEventOnTaskTest extends JBPM6BaseTest {
 
 	@Test
@@ -28,7 +28,7 @@ public class BoundaryEscalationEventOnTaskTest extends JBPM6BaseTest {
 		ParallelGateway gateway = new ParallelGateway("Split");
 		gateway.append("User Task With Escalation", ConstructType.USER_TASK, Position.NORTH_EAST);
 		gateway.append("User Task", ConstructType.USER_TASK, Position.SOUTH_EAST);
-		
+
 		UserTask userTask1 = new UserTask("User Task With Escalation");
 		userTask1.addActor("", "John");
 		userTask1.append("EscalationEndProcess", ConstructType.ESCALATION_END_EVENT);

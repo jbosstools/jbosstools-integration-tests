@@ -1,13 +1,13 @@
 package org.jboss.tools.bpmn2.itests.test;
 
 import org.apache.log4j.Logger;
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.tools.bpmn2.itests.reddeer.BPMN2Editor;
 import org.jboss.tools.bpmn2.itests.reddeer.EclipseHelper;
 import org.jboss.tools.bpmn2.itests.reddeer.requirements.ProcessDefinitionRequirement.ProcessDefinition;
 import org.jboss.tools.bpmn2.itests.validator.JBPM6Validator;
-
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -47,6 +47,11 @@ public class JBPM6BaseTest extends SWTBotTestCase {
 		 * Activate requested editing profile.
 		 */
 		editor.activateTool("Profiles", definition.profile());
+	}
+	
+	@After 
+	public void closeDialogs() {
+		new SWTWorkbenchBot().closeAllShells();
 	}
 	
 	@After

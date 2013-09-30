@@ -36,7 +36,9 @@ public class ParallelSplitTest extends JBPM6BaseTest {
 		script1.setScript("Java", "System.out.println(\"1\");");
 		script1.append("End1", ConstructType.END_EVENT);
 		
+		// Fails on setScript and I don't know why!
 		ScriptTask script2 = new ScriptTask("Script2");
+		script2.select();
 		script2.setScript("Java", "System.out.println(\"2\");");
 		script2.append("End2", ConstructType.END_EVENT);
 	}
