@@ -1,5 +1,6 @@
 package org.jboss.tools.bpmn2.itests.editor.jbpm.endevents;
 
+import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCombo;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
@@ -30,8 +31,10 @@ public class EscalationEndEvent extends EndEvent {
 			nameBox.setSelection(escalationName);
 		} else {
 			new PushButton(0).click();
-			if (escalationName != null && !escalationName.isEmpty())
+			new SWTBot().shell("Create New Escalation").activate();
+			if (escalationName != null && !escalationName.isEmpty()) {
 				new LabeledText("Name").setText(escalationName);
+			}
 			new LabeledText("Escalation Code").setText(escalationCode);
 			new PushButton("OK").click();
 		}

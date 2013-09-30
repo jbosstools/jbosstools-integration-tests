@@ -56,22 +56,26 @@ public class JBPM6BaseTest extends SWTBotTestCase {
 	
 	@After
 	public void close() {
-		/*
-		 * Make sure all content is saved.
-		 */
-		editor.setFocus();
-		if (editor.isDirty()) editor.save();
-		/*
-		 * Validate.
-		 */
-		log.info("Validating '" + editor.getTitle() + "'");
-		JBPM6Validator validator = new JBPM6Validator();
-		boolean result = validator.validate(editor.getSourceText());
-		Assert.assertTrue(validator.getResultMessage(), result);
-		/*
-		 * Close.
-		 */
-		editor.close();
+		try {
+			/*
+			 * Make sure all content is saved.
+			 */
+			editor.setFocus();
+			if (editor.isDirty()) editor.save();
+			/*
+			 * Validate.
+			 */
+			log.info("Validating '" + editor.getTitle() + "'");
+			JBPM6Validator validator = new JBPM6Validator();
+			boolean result = validator.validate(editor.getSourceText());
+			Assert.assertTrue(validator.getResultMessage(), result);
+		} finally {
+			/*
+			 * Close.
+			 */
+			log.info("Closing '" + editor.getTitle() + "'");
+			editor.close();
+		}
 	}
 	
 	public BPMN2Editor getEditor() {
