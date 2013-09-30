@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.jboss.reddeer.eclipse.jface.preference.PreferencePage;
 import org.jboss.reddeer.swt.api.Table;
+import org.jboss.reddeer.swt.api.TableItem;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.WaitCondition;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
@@ -30,10 +31,11 @@ public class SeamPreferencesDialog extends PreferencePage {
 		Table table = new DefaultTable();
 
 		for (int i = 0; i < table.rowCount(); i++) {
+			TableItem row = table.getItem(i);
 			Runtime runtime = new Runtime();
-			runtime.setName(table.cell(i, 1));
-			runtime.setVersion(table.cell(i, 2));
-			runtime.setLocation(table.cell(i, 3));
+			runtime.setName(row.getText(1));
+			runtime.setVersion(row.getText(2));
+			runtime.setLocation(row.getText(3));
 			runtimes.add(runtime);
 		}
 		return runtimes;
