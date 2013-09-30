@@ -50,7 +50,7 @@ public class FromDataOutput implements IMappingSide {
 			} catch (Exception e) {
 				new PushButton(0).click();
 				SWTBot windowBot = Bot.get().shell("Create New Data Type").bot();
-				windowBot.textWithLabel("Data Type").setText(dataType);
+				windowBot.textWithLabel("Structure").setText(dataType);
 				windowBot.button("OK").click();
 			}
 		}

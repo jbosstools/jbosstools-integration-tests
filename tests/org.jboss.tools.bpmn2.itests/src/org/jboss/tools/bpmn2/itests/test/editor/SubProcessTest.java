@@ -43,25 +43,12 @@ public class SubProcessTest extends JBPM6BaseTest {
 		start2.append("Hello1", ConstructType.SCRIPT_TASK);
 		
 		ScriptTask script1 = new ScriptTask("Hello1");
-		script1.setScript("Java", "System.out.println(\"x = \" + x)");
+		script1.setScript("Java", "System.out.println(\"x = \" + x);");
+		script1.append("Hello2", ConstructType.SCRIPT_TASK, Position.SOUTH);
 		
-		/*
-		 * Goes out of bounds :(.
-		 */
-//		script1.append("Hello2", ConstructType.SCRIPT_TASK, Position.SOUTH);
-//		
-//		ScriptTask script2 = new ScriptTask("Hello2");
-//		script2.setScript("Java", "kcontext.setVariable(\"x\", \"Hello\");");
-//		script2.append("Hello3", ConstructType.SCRIPT_TASK, Position.SOUTH);
-//		
-//		ScriptTask script3 = new ScriptTask("Hello3");
-//		script3.setScript("Java", "System.out.println(\"x = \" + x)");
-//		script3.append("EndSubProcess", ConstructType.END_EVENT);
-		
-		/*
-		 * Just one script task must be sufficient.
-		 */
-		script1.append("EndSubProcess", ConstructType.END_EVENT, Position.SOUTH);
+		ScriptTask script2 = new ScriptTask("Hello2");
+		script2.setScript("Java", "kcontext.setVariable(\"x\", \"Hello\");");
+		script2.append("EndSubProcess", ConstructType.END_EVENT, Position.SOUTH);
 	}
 	
 }

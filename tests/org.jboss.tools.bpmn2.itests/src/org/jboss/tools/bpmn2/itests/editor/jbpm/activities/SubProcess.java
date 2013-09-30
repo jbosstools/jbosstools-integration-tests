@@ -24,7 +24,7 @@ public class SubProcess extends ContainerConstruct {
 		properties.selectTab("Sub Process");
 		properties.toolbarButton("Variable List", "Add").click();
 		new LabeledText("Name").setText(name);
-		new DataType(dataType, 0).add();
+		new DataType(dataType).add();
 		bot.toolbarButtonWithTooltip("Close").click();
 	}
 }

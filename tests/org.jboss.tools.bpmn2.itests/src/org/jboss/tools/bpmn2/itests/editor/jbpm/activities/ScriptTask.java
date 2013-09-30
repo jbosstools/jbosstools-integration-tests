@@ -1,6 +1,5 @@
 package org.jboss.tools.bpmn2.itests.editor.jbpm.activities;
 
-import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.text.LabeledText;

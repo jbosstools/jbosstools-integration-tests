@@ -122,7 +122,7 @@ public enum ConstructType {
 		} else if (sectionName.equals("Intermediate Throw Events")) {
 			name = "Intermediate Throw Event";
 		} else if (sectionName.equals("SwitchYard")){
-            name = "Task";	
+			name = "Task";
 		} else {
 			name = toToolName();
 		}

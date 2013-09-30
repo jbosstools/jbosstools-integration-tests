@@ -40,7 +40,7 @@ public class DataObject extends Construct {
 	public void setDataObjectType(String dataType) {
 		properties.selectTab(type.toToolName());
 		
-		SWTBotCombo nameBox = bot.comboBoxWithLabel("Item Subject");
+		SWTBotCombo nameBox = bot.comboBoxWithLabel("Data Type");
 		
 		if (properties.contains(nameBox, dataType)) {
 			nameBox.setSelection(dataType);
@@ -86,7 +86,7 @@ public class DataObject extends Construct {
 	 */
 	@Override
 	public void connectTo(Construct construct) {
-		this.connectTo(construct, ConnectionType.ASSOCIATION);
+		this.connectTo(construct, ConnectionType.ASSOCIATION_UNDIRECTED);
 	}
 
 	/**

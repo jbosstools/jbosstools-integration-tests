@@ -34,6 +34,7 @@ public class ErrorEndEvent extends EndEvent {
 			// click the add button
 			new PushButton(0).click();
 
+			bot.shell("Create New Error").activate();
 			if (errorName != null)
 				new LabeledText("Name").setText(errorName);
 			if (errorCode != null)

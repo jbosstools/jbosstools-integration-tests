@@ -9,12 +9,14 @@ import org.jboss.tools.bpmn2.itests.editor.jbpm.gateways.ExclusiveGateway;
 import org.jboss.tools.bpmn2.itests.editor.jbpm.startevents.StartEvent;
 import org.jboss.tools.bpmn2.itests.reddeer.requirements.ProcessDefinitionRequirement.ProcessDefinition;
 import org.jboss.tools.bpmn2.itests.test.JBPM6BaseTest;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
  *     
  * @author mbaluch
  */
+
 @ProcessDefinition(name="BPMN2-XPathExpression", project="EditorTestProject")
 public class XPathExpressionTest extends JBPM6BaseTest {
 
@@ -23,7 +25,8 @@ public class XPathExpressionTest extends JBPM6BaseTest {
 	 *  
 	 * @throws Exception
 	 */
-	@Test
+	@Ignore(value = "XPath is not currently supported. Neither in the engine nor in the editor.")
+	@Test()
 	public void runTest() throws Exception {
 		BPMN2Process process = new BPMN2Process("BPMN2-XPathExpression");
 		process.addDataType("org.w3c.dom.Document");

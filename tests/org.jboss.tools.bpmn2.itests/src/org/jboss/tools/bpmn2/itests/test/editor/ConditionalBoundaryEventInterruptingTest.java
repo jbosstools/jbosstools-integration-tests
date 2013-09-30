@@ -1,10 +1,12 @@
 package org.jboss.tools.bpmn2.itests.test.editor;
 
 import org.jboss.tools.bpmn2.itests.editor.ConstructType;
+import org.jboss.tools.bpmn2.itests.editor.Position;
 import org.jboss.tools.bpmn2.itests.editor.jbpm.activities.ScriptTask;
 import org.jboss.tools.bpmn2.itests.editor.jbpm.activities.SubProcess;
 import org.jboss.tools.bpmn2.itests.editor.jbpm.activities.Task;
 import org.jboss.tools.bpmn2.itests.editor.jbpm.boundaryevents.ConditionalBoundaryEvent;
+import org.jboss.tools.bpmn2.itests.editor.jbpm.endevents.EscalationEndEvent;
 import org.jboss.tools.bpmn2.itests.editor.jbpm.startevents.StartEvent;
 import org.jboss.tools.bpmn2.itests.reddeer.requirements.ProcessDefinitionRequirement.ProcessDefinition;
 import org.jboss.tools.bpmn2.itests.test.JBPM6BaseTest;
@@ -35,13 +37,16 @@ public class ConditionalBoundaryEventInterruptingTest extends JBPM6BaseTest {
 		subProcessStartEvent.append("Task", ConstructType.TASK);
 		
 		Task task = new Task("Task");
-		task.append("EscalationEvent", ConstructType.ESCALATION_END_EVENT);
+		task.append("EscalationEvent", ConstructType.ESCALATION_END_EVENT, Position.SOUTH);
+		
+		EscalationEndEvent endEvent = new EscalationEndEvent("EscalationEvent");
+		endEvent.setEscalation("Timeout", "400");
 		
 		subProcess.add("Conditional Boundary Event Process", ConstructType.CONDITIONAL_BOUNDARY_EVENT);
 		
 		ConditionalBoundaryEvent conditionalBoundaryEvent = new ConditionalBoundaryEvent("Conditional Boundary Event Process");
 		conditionalBoundaryEvent.setScript("", "org.jbpm.bpmn2.objects.Person(name == \"john\")");
-		conditionalBoundaryEvent.append("Goodbye", ConstructType.SCRIPT_TASK);
+		conditionalBoundaryEvent.append("Goodbye", ConstructType.SCRIPT_TASK, Position.NORTH);
 		
 		ScriptTask scriptTask = new ScriptTask("Goodbye");
 		scriptTask.setScript("", "System.out.println(\"Condition met\");");

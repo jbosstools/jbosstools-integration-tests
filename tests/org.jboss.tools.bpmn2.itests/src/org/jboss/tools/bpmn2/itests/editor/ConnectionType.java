@@ -2,7 +2,7 @@ package org.jboss.tools.bpmn2.itests.editor;
 
 public enum ConnectionType {
 	
-	ASSOCIATION,
+	DATA_ASSOCIATION,
 	ASSOCIATION_UNDIRECTED,
 	ASSOCIATION_ONE_WAY,
 	SEQUENCE_FLOW;
