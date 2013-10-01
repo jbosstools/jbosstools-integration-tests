@@ -1,7 +1,7 @@
 package org.jboss.tools.switchyard.reddeer.editor;
 
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditor;
-import org.jboss.reddeer.swt.util.Bot;
 import org.jboss.tools.switchyard.reddeer.component.MainComponent;
 
 /**
@@ -13,9 +13,10 @@ import org.jboss.tools.switchyard.reddeer.component.MainComponent;
 public class SwitchYardEditor extends SWTBotGefEditor {
 
 	private MainComponent mainComponent;
-
+	private static SWTWorkbenchBot bot = new SWTWorkbenchBot(); 
+	
 	public SwitchYardEditor() {
-		super(Bot.get().editorByTitle("switchyard.xml").getReference(), Bot.get());
+		super(bot.editorByTitle("switchyard.xml").getReference(), bot);
 		mainComponent = new MainComponent(mainEditPart().children().get(0));
 	}
 

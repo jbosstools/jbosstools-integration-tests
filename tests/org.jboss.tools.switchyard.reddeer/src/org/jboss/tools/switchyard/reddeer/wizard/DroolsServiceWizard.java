@@ -1,8 +1,8 @@
 package org.jboss.tools.switchyard.reddeer.wizard;
 
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.eclipse.jface.wizard.NewWizardDialog;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.util.Bot;
 import org.jboss.tools.switchyard.reddeer.widget.Link;
 
 
@@ -12,12 +12,14 @@ public class DroolsServiceWizard extends NewWizardDialog {
 	private String interfaceName;
 	private String fileName;
 
+	private static SWTWorkbenchBot bot = new SWTWorkbenchBot(); 
+	
 	public DroolsServiceWizard() {
 		super("SwitchYard", "SwitchYard Drools Component");
 	}
 
 	public DroolsServiceWizard activate() {
-		Bot.get().shell(DIALOG_TITLE).activate();
+		bot.shell(DIALOG_TITLE).activate();
 		return this;
 	}
 

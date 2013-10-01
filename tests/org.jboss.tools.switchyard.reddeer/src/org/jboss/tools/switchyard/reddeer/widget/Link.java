@@ -1,7 +1,7 @@
 package org.jboss.tools.switchyard.reddeer.widget;
 
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotLink;
-import org.jboss.reddeer.swt.util.Bot;
 
 /**
  * Represents a link widget.
@@ -12,9 +12,10 @@ import org.jboss.reddeer.swt.util.Bot;
 public class Link {
 
 	private SWTBotLink link;
+	private static SWTWorkbenchBot bot = new SWTWorkbenchBot(); 
 
 	public Link(String label) {
-		link = Bot.get().link("<a>" + label + "</a>");
+		link = bot.link("<a>" + label + "</a>");
 	}
 
 	public void click() {

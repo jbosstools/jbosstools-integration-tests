@@ -2,8 +2,8 @@ package org.jboss.tools.switchyard.reddeer.wizard;
 
 import java.io.File;
 
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.eclipse.jface.wizard.ImportWizardDialog;
-import org.jboss.reddeer.swt.util.Bot;
 
 /**
  * 
@@ -12,6 +12,8 @@ import org.jboss.reddeer.swt.util.Bot;
  */
 public class ImportFileWizard extends ImportWizardDialog {
 
+	private static SWTWorkbenchBot bot = new SWTWorkbenchBot(); 
+	
 	public ImportFileWizard() {
 		super("General", "File System");
 	}
@@ -24,9 +26,9 @@ public class ImportFileWizard extends ImportWizardDialog {
 
 		open();
 
-		Bot.get().comboBoxWithLabel("From directory:").setText(file.getAbsolutePath());
-		Bot.get().tree().setFocus();
-		Bot.get().table().getTableItem(fileName).check();
+		bot.comboBoxWithLabel("From directory:").setText(file.getAbsolutePath());
+		bot.tree().setFocus();
+		bot.table().getTableItem(fileName).check();
 
 		finish();
 	}
@@ -39,9 +41,9 @@ public class ImportFileWizard extends ImportWizardDialog {
 
 		open();
 
-		Bot.get().comboBoxWithLabel("From directory:").typeText(file.getAbsolutePath());
-		Bot.get().tree().setFocus();
-		Bot.get().tree().getTreeItem(importFolder).check();
+		bot.comboBoxWithLabel("From directory:").typeText(file.getAbsolutePath());
+		bot.tree().setFocus();
+		bot.tree().getTreeItem(importFolder).check();
 
 		finish();
 	}

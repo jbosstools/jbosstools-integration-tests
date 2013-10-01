@@ -4,11 +4,11 @@ import java.util.List;
 
 import org.eclipse.jface.bindings.keys.KeyStroke;
 import org.eclipse.jface.bindings.keys.ParseException;
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
 import org.eclipse.swtbot.swt.finder.keyboard.Keystrokes;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
-import org.jboss.reddeer.swt.util.Bot;
 import org.jboss.reddeer.swt.wait.AbstractWait;
 
 /**
@@ -19,10 +19,11 @@ import org.jboss.reddeer.swt.wait.AbstractWait;
 public class TextEditor {
 
 	private SWTBotEclipseEditor editor;
+	private static SWTWorkbenchBot bot = new SWTWorkbenchBot(); 
 
 	public TextEditor(String fileName) {
 		AbstractWait.sleep(1000);
-		editor = Bot.get().editorByTitle(fileName).toTextEditor();
+		editor = bot.editorByTitle(fileName).toTextEditor();
 	}
 
 	public TextEditor type(String text) {
@@ -94,7 +95,7 @@ public class TextEditor {
 	public void generateGettersSetters(String firstAttribute){
 		editor.navigateTo(getLineNum(firstAttribute),0);
 		new ShellMenu("Source", "Generate Getters and Setters...").select();
-		Bot.get().sleep(1000);
+		AbstractWait.sleep(1000);
 		new PushButton("Select All").click();
 		new PushButton("OK").click();
 		editor.save();

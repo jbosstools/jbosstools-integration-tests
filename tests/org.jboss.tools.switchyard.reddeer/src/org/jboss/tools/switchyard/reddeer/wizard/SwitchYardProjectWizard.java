@@ -3,6 +3,7 @@ package org.jboss.tools.switchyard.reddeer.wizard;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.eclipse.jface.wizard.NewWizardDialog;
 import org.jboss.reddeer.swt.api.Button;
 import org.jboss.reddeer.swt.api.Combo;
@@ -12,7 +13,6 @@ import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.swt.util.Bot;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 
@@ -70,7 +70,7 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 	}
 	
 	public SwitchYardProjectWizard activate() {
-		Bot.get().shell(DIALOG_TITLE).activate();
+		new SWTWorkbenchBot().shell(DIALOG_TITLE).activate();
 		return this;
 	}
 
