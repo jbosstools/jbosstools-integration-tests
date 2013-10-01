@@ -1,8 +1,8 @@
 package org.jboss.tools.switchyard.reddeer.wizard;
 
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.eclipse.jface.wizard.NewWizardDialog;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.util.Bot;
 import org.jboss.tools.switchyard.reddeer.widget.Link;
 
 public class BPMServiceWizard extends NewWizardDialog {
@@ -12,6 +12,7 @@ public class BPMServiceWizard extends NewWizardDialog {
 	private String interfaceName;
 	//private String processName;
 	private String bpmnFileName;
+	private static SWTWorkbenchBot bot = new SWTWorkbenchBot(); 
 
 	public BPMServiceWizard() {
 		super("SwitchYard", "SwitchYard BPM Component");//? where is this used? - in topmenuwizard.open(), but the component can't be created this way
@@ -22,7 +23,7 @@ public class BPMServiceWizard extends NewWizardDialog {
 	}*/
 
 	public BPMServiceWizard activate() {
-		Bot.get().shell(DIALOG_TITLE).activate();
+		bot.shell(DIALOG_TITLE).activate();
 		return this;
 	}
 

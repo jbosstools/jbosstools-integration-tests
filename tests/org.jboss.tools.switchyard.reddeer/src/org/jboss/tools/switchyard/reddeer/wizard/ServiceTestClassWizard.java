@@ -1,7 +1,7 @@
 package org.jboss.tools.switchyard.reddeer.wizard;
 
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.eclipse.jface.wizard.WizardDialog;
-import org.jboss.reddeer.swt.util.Bot;
 
 /**
  * Wizard for creating a service test class.
@@ -13,8 +13,10 @@ public class ServiceTestClassWizard extends WizardDialog {
 
 	public static final String DIALOG_TITLE = "Service Test Class";
 
+	private static SWTWorkbenchBot bot = new SWTWorkbenchBot(); 
+	
 	public ServiceTestClassWizard activate() {
-		Bot.get().shell(DIALOG_TITLE).activate();
+		bot.shell(DIALOG_TITLE).activate();
 		return this;
 	}
 

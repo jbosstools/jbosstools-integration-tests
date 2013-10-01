@@ -8,7 +8,7 @@ import java.util.Properties;
 
 import org.eclipse.swtbot.swt.finder.junit.ScreenshotCaptureListener;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.swt.util.Bot;
+import org.jboss.reddeer.workbench.view.impl.WorkbenchView;
 import org.jboss.tools.switchyard.reddeer.preference.ServerPreferencePage;
 import org.jboss.tools.switchyard.reddeer.wizard.ServerWizard;
 import org.junit.runner.notification.RunListener;
@@ -65,7 +65,7 @@ public class SwitchyardSuite extends RedDeerSuite {
 
 	private static void closeWelcome() {
 		try {
-			Bot.get().viewByTitle("Welcome").close();
+			new WorkbenchView("Welcome").close();
 		} catch (Exception ex) {
 			// ok
 		}

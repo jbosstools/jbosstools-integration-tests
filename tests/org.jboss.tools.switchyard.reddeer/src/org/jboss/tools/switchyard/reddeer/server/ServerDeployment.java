@@ -1,5 +1,6 @@
 package org.jboss.tools.switchyard.reddeer.server;
 
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServerLabel;
@@ -13,7 +14,6 @@ import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.swt.util.Bot;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
@@ -28,6 +28,8 @@ public class ServerDeployment {
 	public static final String ADD_REMOVE_LABEL = "Add and Remove...";
 	public static final String FULL_PUBLISH = "Full Publish";
 
+	private static SWTWorkbenchBot bot = new SWTWorkbenchBot(); 
+	
 	private String server;
 
 	public ServerDeployment(String server) {
@@ -46,7 +48,7 @@ public class ServerDeployment {
 			if (serverLabel.getName().equals(server)) {
 				item.select();
 				new ContextMenu(ADD_REMOVE_LABEL).select();
-				Bot.get().shell(ADD_REMOVE_LABEL).activate();
+				bot.shell(ADD_REMOVE_LABEL).activate();
 				new DefaultShell(ADD_REMOVE_LABEL);
 				new DefaultTreeItem(project).select();
 				new PushButton("Add >").click();

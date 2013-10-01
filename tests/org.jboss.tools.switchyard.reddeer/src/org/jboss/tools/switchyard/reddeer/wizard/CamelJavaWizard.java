@@ -1,8 +1,8 @@
 package org.jboss.tools.switchyard.reddeer.wizard;
 
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.util.Bot;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 
 /**
@@ -13,13 +13,14 @@ import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 public class CamelJavaWizard extends ServiceWizard<CamelJavaWizard> {
 
 	public static final String DIALOG_TITLE = "New Java Class";
+	private static SWTWorkbenchBot bot = new SWTWorkbenchBot(); 
 
 	public CamelJavaWizard() {
 		super();
 	}
 
 	public CamelJavaWizard activate() {
-		Bot.get().shell(DIALOG_TITLE).activate();
+		bot.shell(DIALOG_TITLE).activate();
 		return this;
 	}
 

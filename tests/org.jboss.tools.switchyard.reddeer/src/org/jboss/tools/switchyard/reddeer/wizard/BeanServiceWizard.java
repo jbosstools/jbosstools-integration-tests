@@ -1,7 +1,7 @@
 package org.jboss.tools.switchyard.reddeer.wizard;
 
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.eclipse.jface.wizard.NewWizardDialog;
-import org.jboss.reddeer.swt.util.Bot;
 import org.jboss.tools.switchyard.reddeer.widget.Link;
 
 /**
@@ -15,13 +15,14 @@ public class BeanServiceWizard extends NewWizardDialog {
 	public static final String DIALOG_TITLE = "New Bean Service";
 
 	private String interfaceName;
+	private static SWTWorkbenchBot bot = new SWTWorkbenchBot(); 
 
 	public BeanServiceWizard() {
 		super("SwitchYard", "SwitchYard Bean Component");
 	}
 
 	public BeanServiceWizard activate() {
-		Bot.get().shell(DIALOG_TITLE).activate();
+		bot.shell(DIALOG_TITLE).activate();
 		return this;
 	}
 
