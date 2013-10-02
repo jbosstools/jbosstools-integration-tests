@@ -35,6 +35,10 @@ public class ModeshapeWebdav {
 	public ModeshapeWebdav(String repository) {
 		this(HOST, repository, WORKSPACE, PUBLISH_AREA);
 	}
+	
+	public ModeshapeWebdav(String repository, String publishArea) {
+		this(HOST, repository, WORKSPACE, publishArea);
+	}
 
 	public ModeshapeWebdav(String host, String repository, String workspace, String publishArea) {
 		this.host = host;

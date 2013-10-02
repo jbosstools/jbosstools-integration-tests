@@ -4,8 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
+import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.workbench.view.impl.WorkbenchView;
 import org.jboss.tools.modeshape.reddeer.wizard.ModeshapeServerWizard;
 
@@ -66,6 +69,31 @@ public class ModeshapeView extends WorkbenchView {
 			return;
 		}
 		newServer().activate().setUrl(url).setUser(user).setPassword(password).testServerConnection().finish();
+	}
+	
+	/**
+	 * Create new publish area
+	 * @param url
+	 * @param repository
+	 * @param workspace
+	 * @param publishArea 
+	 */
+	public void addPublishArea(String url, String repository, String workspace, String publishArea){
+		if (getPublishAreas(url, repository, workspace).contains(publishArea)){
+			return;
+		}
+		new DefaultTreeItem(url, repository, workspace).select();
+		new ContextMenu("New Publish Area").select();
+		new DefaultText().setText(publishArea);
+		new PushButton("OK").click();
+	}
+	
+	public List<String> getPublishAreas(String url, String repository, String workspace){
+		List<String> publishAreas = new ArrayList<String>();
+		for (TreeItem pa : new DefaultTreeItem(url, repository, workspace).getItems()) {
+			publishAreas.add(pa.getText());
+		} 
+		return publishAreas;
 	}
 
 }

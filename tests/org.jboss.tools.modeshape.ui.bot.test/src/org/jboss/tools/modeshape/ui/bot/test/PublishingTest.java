@@ -6,7 +6,7 @@ import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
 import org.jboss.reddeer.eclipse.jdt.ui.ide.NewJavaProjectWizardDialog;
 import org.jboss.reddeer.eclipse.ui.ide.NewFileCreationWizardDialog;
-import org.jboss.reddeer.swt.util.Bot;
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.tools.modeshape.reddeer.shell.PublishedLocations;
 import org.jboss.tools.modeshape.reddeer.util.ModeshapeWebdav;
 import org.jboss.tools.modeshape.reddeer.view.ModeshapeExplorer;
@@ -37,7 +37,9 @@ public class PublishingTest extends SWTBotTestCase {
 	public static final String SERVER_URL = "http://localhost:8080/modeshape-rest";
 	public static final String USER = "admin";
 	public static final String PASSWORD = "admin";
-
+	public static final String PUBLISH_AREA = "/files";
+	public static final String WORKSPACE = "default";
+	
 	@Test
 	public void publishingTest() throws Exception {
 		/* Create Java Project */
@@ -54,7 +56,7 @@ public class PublishingTest extends SWTBotTestCase {
 		fileWizard.finish();
 
 		/* Edit Text File */
-		SWTBotEditor editor = Bot.get().editorByTitle(FILE_NAME);
+		SWTBotEditor editor = new SWTWorkbenchBot().editorByTitle(FILE_NAME);
 		editor.toTextEditor().typeText(FILE_CONTENT);
 		editor.saveAndClose();
 
@@ -63,7 +65,10 @@ public class PublishingTest extends SWTBotTestCase {
 
 		/* Get ModeSHape Repository */
 		String repository = ModeshapeSuite.getModeshapeRepository();
-
+		
+		/* Add publish area */
+		new ModeshapeView().addPublishArea(SERVER_URL, repository, WORKSPACE, PUBLISH_AREA);
+		
 		/* Publish */
 		new ModeshapeExplorer().publish(PROJECT_NAME).finish();
 		assertTrue(new ModeshapeWebdav(repository).isFileAvailable(PROJECT_NAME + "/" + FILE_NAME, USER, PASSWORD));
