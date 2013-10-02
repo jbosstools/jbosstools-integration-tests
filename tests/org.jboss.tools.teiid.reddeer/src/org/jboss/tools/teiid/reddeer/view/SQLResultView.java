@@ -2,7 +2,7 @@ package org.jboss.tools.teiid.reddeer.view;
 
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
-import org.jboss.reddeer.swt.util.Bot;
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.workbench.view.impl.WorkbenchView;
 
 public class SQLResultView extends WorkbenchView {
@@ -14,7 +14,7 @@ public class SQLResultView extends WorkbenchView {
 	public SQLResult getByOperation(String operation) {
 		SWTBotTreeItem found = null;
 
-		SWTBotTreeItem[] items = Bot.get().tree(1).getAllItems();
+		SWTBotTreeItem[] items = new SWTWorkbenchBot().tree(1).getAllItems();
 		for (SWTBotTreeItem item : items) {
 			if (item.cell(1).trim().equals(operation)) {
 				found = item;

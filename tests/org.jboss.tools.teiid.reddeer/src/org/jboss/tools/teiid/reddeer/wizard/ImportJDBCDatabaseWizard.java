@@ -7,7 +7,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.reddeer.eclipse.jface.wizard.ImportWizardDialog;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.util.Bot;
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.tools.teiid.reddeer.condition.IsProjectItemCreated;
@@ -67,18 +67,18 @@ public class ImportJDBCDatabaseWizard extends ImportWizardDialog {
 	}
 
 	private void fillFirstPage() {
-		Bot.get().comboBoxInGroup("Connection Profile").setSelection(connectionProfile);
+		new SWTWorkbenchBot().comboBoxInGroup("Connection Profile").setSelection(connectionProfile);
 	}
 
 	private void fillSecondPage() {
 		new PushButton("Deselect All").click();
-		Bot.get().tableInGroup("Table Types").select("TABLE");
+		new SWTWorkbenchBot().tableInGroup("Table Types").select("TABLE");
 	}
 
 	private void fillThirdPage() {
 		for (String item : itemList) {
 			String[] itemArray = item.split("/");
-			SWTBotTreeItem treeItem = Bot.get().tree().getTreeItem(itemArray[0]);
+			SWTBotTreeItem treeItem = new SWTWorkbenchBot().tree().getTreeItem(itemArray[0]);
 			for (int i = 1; i < itemArray.length; i++) {
 				treeItem.expand();
 				treeItem = treeItem.getNode(itemArray[i]);
@@ -88,13 +88,13 @@ public class ImportJDBCDatabaseWizard extends ImportWizardDialog {
 	}
 
 	private void fillFourthPage() {
-		Bot.get().checkBoxInGroup("Model Object Names (Tables, Procedures, Columns, etc...)", 0).deselect();
-		Bot.get().textWithLabel("Model Name:").setText(modelName);
-		Bot.get().checkBox("Update (if existing model selected)").deselect();
-		Bot.get().button(1).click();
+		new SWTWorkbenchBot().checkBoxInGroup("Model Object Names (Tables, Procedures, Columns, etc...)", 0).deselect();
+		new SWTWorkbenchBot().textWithLabel("Model Name:").setText(modelName);
+		new SWTWorkbenchBot().checkBox("Update (if existing model selected)").deselect();
+		new SWTWorkbenchBot().button(1).click();
 
 		new DefaultShell("Select a Folder");
-		Bot.get().tree(0).select(projectName);
+		new SWTWorkbenchBot().tree(0).select(projectName);
 		new PushButton("OK").click();
 	}
 

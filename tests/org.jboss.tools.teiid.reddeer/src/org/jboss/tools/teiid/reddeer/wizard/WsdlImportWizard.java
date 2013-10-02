@@ -9,7 +9,7 @@ import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.swt.util.Bot;
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.tools.teiid.reddeer.condition.IsItemAdded;
@@ -106,6 +106,6 @@ public class WsdlImportWizard extends TeiidImportWizard {
 	private void stupidWait() {
 		long time = 10 * 1000;
 		log.info("Stupid waiting for " + time + " ms");
-		Bot.get().sleep(time);
+		new SWTWorkbenchBot().sleep(time);
 	}
 }

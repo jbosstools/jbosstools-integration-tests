@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.jboss.reddeer.eclipse.jface.wizard.NewWizardDialog;
-import org.jboss.reddeer.swt.util.Bot;
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.tools.teiid.reddeer.view.GuidesView;
 
 /**
@@ -43,11 +43,11 @@ public class ModelProjectWizard extends NewWizardDialog {
 	public void create(String name, boolean viaGuides){
 		if (viaGuides){
 			new GuidesView().chooseAction("Model JDBC Source", "Define Teiid Model Project");
-			Bot.get().button("New...").click();
+			new SWTWorkbenchBot().button("New...").click();
 			getWizardPage().fillWizardPage(name);
 			//TODO: select folders - source, schema, view,...
 			finish();
-			Bot.get().shell("Define Model Project").close();//this shell isn't active after executing method create(name)
+			new SWTWorkbenchBot().shell("Define Model Project").close();//this shell isn't active after executing method create(name)
 		} else {
 			create(name);
 		}
@@ -63,18 +63,18 @@ public class ModelProjectWizard extends NewWizardDialog {
 	public void create(String name, boolean viaGuides, String... folders){
 		if (viaGuides){
 			new GuidesView().chooseAction("Model JDBC Source", "Define Teiid Model Project");
-			Bot.get().button("New...").click();
+			new SWTWorkbenchBot().button("New...").click();
 			
 			//New Model Project (1. page)
 			getWizardPage().fillWizardPage(name);
-			Bot.get().button("&Next >").click();
+			new SWTWorkbenchBot().button("&Next >").click();
 			//Project References (2. page)
-			Bot.get().button("&Next >").click();
+			new SWTWorkbenchBot().button("&Next >").click();
 			//Model Project Options (3. page)
 			checkSelectedFolders(folders);
 			finish();
 			
-			Bot.get().shell("Define Model Project").close();//this shell isn't active after executing method create(name)
+			new SWTWorkbenchBot().shell("Define Model Project").close();//this shell isn't active after executing method create(name)
 		} else {
 			create(name);
 		}	
@@ -95,9 +95,9 @@ public class ModelProjectWizard extends NewWizardDialog {
 	
 		for (String folderName : allFoldersMap.keySet()){
 			if (selectedFoldersArray.contains(folderName)){
-				Bot.get().checkBox("Name", allFoldersMap.get(folderName)).select();
+				new SWTWorkbenchBot().checkBox("Name", allFoldersMap.get(folderName)).select();
 			} else {
-				Bot.get().checkBox("Name", allFoldersMap.get(folderName)).deselect();
+				new SWTWorkbenchBot().checkBox("Name", allFoldersMap.get(folderName)).deselect();
 			}
 		}
 		

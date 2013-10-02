@@ -3,7 +3,7 @@ package org.jboss.tools.teiid.reddeer.wizard;
 import java.io.File;
 
 import org.jboss.reddeer.eclipse.jface.wizard.ImportWizardDialog;
-import org.jboss.reddeer.swt.util.Bot;
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 
 public class ImportFileWizard extends ImportWizardDialog {
 
@@ -19,9 +19,9 @@ public class ImportFileWizard extends ImportWizardDialog {
 
 		open();
 
-		Bot.get().comboBoxWithLabel("From directory:").typeText(file.getAbsolutePath());//problematic
-		Bot.get().tree().setFocus();
-		Bot.get().tree().getTreeItem(importFolder).check();
+		new SWTWorkbenchBot().comboBoxWithLabel("From directory:").typeText(file.getAbsolutePath());//problematic
+		new SWTWorkbenchBot().tree().setFocus();
+		new SWTWorkbenchBot().tree().getTreeItem(importFolder).check();
 
 		finish();
 	}

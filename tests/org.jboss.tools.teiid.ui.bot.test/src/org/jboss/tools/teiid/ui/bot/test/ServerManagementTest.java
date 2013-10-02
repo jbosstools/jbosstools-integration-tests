@@ -93,7 +93,7 @@ public class ServerManagementTest extends SWTBotTestCase {
 	/**
 	 * No server defined
 	 */
-	//@Test
+	@Test
 	public void test01() {
 		n++;
 		// preview data - fails on "no teiid instance"

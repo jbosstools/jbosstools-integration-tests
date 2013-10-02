@@ -8,14 +8,14 @@ import org.jboss.reddeer.eclipse.datatools.ui.preference.DriverDefinitionPrefere
 import org.jboss.reddeer.eclipse.datatools.ui.wizard.DriverDefinitionPage;
 import org.jboss.reddeer.eclipse.datatools.ui.wizard.DriverDefinitionWizard;
 import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.util.Bot;
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 
 public class DriverDefinitionPreferencePageExt extends DriverDefinitionPreferencePage {
 
 	@Override
 	public void open() {
 		if (isRunningOnMacOs()) {
-			Bot.get().shells()[0].pressShortcut(SWT.COMMAND, ',');
+			new SWTWorkbenchBot().shells()[0].pressShortcut(SWT.COMMAND, ',');
 		}
 		super.open();
 	}

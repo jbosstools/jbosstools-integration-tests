@@ -3,7 +3,7 @@ package org.jboss.tools.modeshape.reddeer.shell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.util.Bot;
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 
 /**
  * Published Locations Shell
@@ -46,7 +46,7 @@ public class PublishedLocations extends DefaultShell {
 	}
 
 	private String getTableCell(String label) {
-		SWTBotTable table = Bot.get().table();
+		SWTBotTable table = new SWTWorkbenchBot().table();
 		int columnIndex = table.indexOfColumn(label);
 		return table.cell(0, columnIndex);
 	}

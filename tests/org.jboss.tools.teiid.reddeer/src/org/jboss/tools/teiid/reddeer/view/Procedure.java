@@ -15,7 +15,7 @@ import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.swt.util.Bot;
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
@@ -89,7 +89,7 @@ public class Procedure {
 		new ContextMenu("Modeling", "Set Datatype").select();
 
 		Shell shell = new DefaultShell("Select a Datatype");
-		Bot.get().table().getTableItem(type).select();
+		new SWTWorkbenchBot().table().getTableItem(type).select();
 		new PushButton("OK").click();
 		new WaitWhile(new ShellWithTextIsActive(shell.getText()), TimePeriod.LONG);
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
@@ -117,7 +117,7 @@ public class Procedure {
 		new ContextMenu("Modeling", "Set Datatype").select();
 
 		Shell shell = new DefaultShell("Select a Datatype");
-		Bot.get().table().getTableItem(type).select();
+		new SWTWorkbenchBot().table().getTableItem(type).select();
 		new PushButton("OK").click();
 		new WaitWhile(new ShellWithTextIsActive(shell.getText()), TimePeriod.LONG);
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
@@ -128,7 +128,7 @@ public class Procedure {
 		new ContextMenu("Modeling", "Set Datatype").select();
 
 		Shell shell = new DefaultShell("Select a Datatype");
-		Bot.get().table().getTableItem(type).select();
+		new SWTWorkbenchBot().table().getTableItem(type).select();
 		new PushButton("OK").click();
 		new WaitWhile(new ShellWithTextIsActive(shell.getText()), TimePeriod.LONG);
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);

@@ -15,7 +15,7 @@ import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.swt.util.Bot;
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 
 /**
  * Creates a new metadata model.
@@ -140,7 +140,7 @@ public class CreateMetadataModel extends NewWizardDialog {
 	private void xsdSchemaSelection() {
 		if (ModelClass.XSD.equals(clazz)) {
 			new DefaultShell("Model Initializer");
-			Bot.get().table().select("XML Schema (2001)");
+			new SWTWorkbenchBot().table().select("XML Schema (2001)");
 			new PushButton("OK").click();
 		}
 	}

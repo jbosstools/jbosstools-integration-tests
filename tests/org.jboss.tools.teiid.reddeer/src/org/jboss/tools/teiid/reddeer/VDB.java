@@ -3,7 +3,7 @@ package org.jboss.tools.teiid.reddeer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.ProjectItem;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.util.Bot;
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
@@ -63,7 +63,7 @@ public class VDB {
 			projectItem.select();
 			new GuidesView().chooseAction("Model JDBC Source", "Execute VDB");
 			//VDB is selected from previous step
-			Bot.get().button("OK").click();
+			new SWTWorkbenchBot().button("OK").click();
 		} else {
 			executeVDB();
 		}

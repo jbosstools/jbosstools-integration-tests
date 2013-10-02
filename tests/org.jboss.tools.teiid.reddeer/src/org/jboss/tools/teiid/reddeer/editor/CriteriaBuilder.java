@@ -13,7 +13,7 @@ import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
-import org.jboss.reddeer.swt.util.Bot;
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.tools.teiid.reddeer.shell.FunctionExpressionBuilder;
 
 public class CriteriaBuilder {
@@ -166,10 +166,10 @@ public class CriteriaBuilder {
 	
 	public void addConstantsToList(String... constants){
 		//new PushButton("Add...").click();
-		//FunctionExpressionBuilder feb = new FunctionExpressionBuilder(Bot.get().activeShell());
+		//FunctionExpressionBuilder feb = new FunctionExpressionBuilder(new SWTWorkbenchBot().activeShell());
 		for (String constant : constants){
 			new PushButton("Add...").click();
-			FunctionExpressionBuilder feb = new FunctionExpressionBuilder(Bot.get().activeShell());
+			FunctionExpressionBuilder feb = new FunctionExpressionBuilder(new SWTWorkbenchBot().activeShell());
 			feb.setRadioButtonType(RadioButtonType.CONSTANT);
 			new DefaultText(0).setText(constant);
 			feb.apply();

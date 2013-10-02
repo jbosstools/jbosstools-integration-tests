@@ -5,7 +5,7 @@ import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
-import org.jboss.reddeer.swt.util.Bot;
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
 import org.jboss.tools.teiid.reddeer.wizard.CreateMetadataModel;
 import org.jboss.tools.teiid.reddeer.wizard.ModelProjectWizard;
@@ -50,7 +50,7 @@ public class ModelWizardTest extends SWTBotTestCase {
 	public static void saveAllFiles() {
 		try {
 			new ShellMenu("File", "Save All").select();
-			Bot.get().sleep(1000);
+			new SWTWorkbenchBot().sleep(1000);
 		} catch (SWTLayerException swte) {
 			// ok, everything was saved
 		}

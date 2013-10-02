@@ -22,7 +22,7 @@ import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.util.Bot;
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.tools.teiid.reddeer.ModelProject;
 import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
 import org.jboss.tools.teiid.reddeer.preference.DriverDefinitionPreferencePageExt;
@@ -61,8 +61,8 @@ public class TeiidBot {
 	}
 
 	public ModelEditor modelEditor(String title) {
-		SWTBotEditor editor = Bot.get().editorByTitle(title);
-		ModelEditor modelEditor = new ModelEditor(editor.getReference(), Bot.get());
+		SWTBotEditor editor = new SWTWorkbenchBot().editorByTitle(title);
+		ModelEditor modelEditor = new ModelEditor(editor.getReference(), new SWTWorkbenchBot());
 		return modelEditor;
 	}
 
@@ -195,7 +195,7 @@ public class TeiidBot {
 
 			// TODO: LabeledText
 			// flatPage.setHomeFolder(flatProfile.getFolder());
-			Bot.get().text().setText(flatProfile.getFolder());
+			new SWTWorkbenchBot().text().setText(flatProfile.getFolder());
 			flatPage.setCharset(flatProfile.getCharset());
 			flatPage.setStyle(flatProfile.getStyle());
 
@@ -216,7 +216,7 @@ public class TeiidBot {
 	 */
 	public void closeActiveShell(){
 		try {
-			Bot.get().activeShell().bot().button("Yes").click();
+			new SWTWorkbenchBot().activeShell().bot().button("Yes").click();
 		} catch (Exception e){
 			System.out.println(e.getMessage());
 		}

@@ -8,7 +8,7 @@ import java.util.Properties;
 
 import org.eclipse.swtbot.swt.finder.junit.ScreenshotCaptureListener;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.swt.util.Bot;
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
@@ -60,7 +60,7 @@ public class TeiidSuite extends RedDeerSuite {
 
 	private static void closeWelcome() {
 		try {
-			Bot.get().viewByTitle("Welcome").close();
+			new SWTWorkbenchBot().viewByTitle("Welcome").close();
 		} catch (Exception ex) {
 			// ok
 		}
