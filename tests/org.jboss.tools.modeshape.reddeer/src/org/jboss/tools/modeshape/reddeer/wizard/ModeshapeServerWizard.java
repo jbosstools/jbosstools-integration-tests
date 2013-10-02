@@ -5,7 +5,7 @@ import static org.junit.Assert.assertEquals;
 import org.jboss.reddeer.eclipse.jface.wizard.WizardDialog;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.util.Bot;
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 
 /**
  * Wizard for creating new ModeShape server.
@@ -22,7 +22,7 @@ public class ModeshapeServerWizard extends WizardDialog {
 	public static final String LABEL_PASSWORD = "Password:";
 
 	public ModeshapeServerWizard activate() {
-		Bot.get().shell(DIALOG_TITLE).activate();
+		new SWTWorkbenchBot().shell(DIALOG_TITLE).activate();
 		return this;
 	}
 
@@ -43,8 +43,8 @@ public class ModeshapeServerWizard extends WizardDialog {
 
 	public ModeshapeServerWizard testServerConnection() {
 		new PushButton("Test").click();
-		Bot.get().shell("Test Server Connection").activate();
-		String message = Bot.get().label(1).getText();
+		new SWTWorkbenchBot().shell("Test Server Connection").activate();
+		String message = new SWTWorkbenchBot().label(1).getText();
 		assertEquals(message, "Successfully connected using the specified server properties.", message);
 		new PushButton("OK").click();
 

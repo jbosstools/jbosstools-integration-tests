@@ -1,7 +1,7 @@
 package org.jboss.tools.teiid.reddeer.view;
 
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
-import org.jboss.reddeer.swt.util.Bot;
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 
 public class SQLResult {
 
@@ -18,8 +18,8 @@ public class SQLResult {
 	}
 	
 	public int getCount(){
-		Bot.get().cTabItem("Result1").activate();
-		return Bot.get().table().rowCount();
+		new SWTWorkbenchBot().cTabItem("Result1").activate();
+		return new SWTWorkbenchBot().table().rowCount();
 	}
 	
 }

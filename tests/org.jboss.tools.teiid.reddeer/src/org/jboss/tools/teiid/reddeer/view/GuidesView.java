@@ -2,7 +2,7 @@ package org.jboss.tools.teiid.reddeer.view;
 
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.swt.util.Bot;
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
@@ -17,9 +17,9 @@ public class GuidesView {
 	 * @param action
 	 */
 	public void chooseAction(String actionSet, String action){
-		Bot.get().cTabItem("Guides").activate();
-		Bot.get().comboBox().setSelection(actionSet);
-		SWTBotTree t = Bot.get().tree(ACTION_SETS_TREE_INDEX).select(action);//index hardcoded!
+		new SWTWorkbenchBot().cTabItem("Guides").activate();
+		new SWTWorkbenchBot().comboBox().setSelection(actionSet);
+		SWTBotTree t = new SWTWorkbenchBot().tree(ACTION_SETS_TREE_INDEX).select(action);//index hardcoded!
 		t.getTreeItem(action).doubleClick();
 	}
 	
@@ -30,15 +30,15 @@ public class GuidesView {
 	 */
 	public void previewData(boolean calledFirstTime, String... path){
 		new GuidesView().chooseAction("Model JDBC Source", "Preview Data");
-		Bot.get().button("...").click();
+		new SWTWorkbenchBot().button("...").click();
 		new DefaultTreeItem(path).select();
-		Bot.get().button("OK").click();
-		Bot.get().button("OK").click();
+		new SWTWorkbenchBot().button("OK").click();
+		new SWTWorkbenchBot().button("OK").click();
 		
 		//setup display property; only 1st time
 		try {
 			//what property?
-			Bot.get().activeShell().bot().button("Yes").click();
+			new SWTWorkbenchBot().activeShell().bot().button("Yes").click();
 		} catch (Exception ex){
 			//do nothing
 		}

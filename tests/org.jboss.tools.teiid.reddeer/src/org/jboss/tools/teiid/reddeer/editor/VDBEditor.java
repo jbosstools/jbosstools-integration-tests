@@ -5,14 +5,14 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.util.Bot;
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 
 public class VDBEditor extends SWTBotEditor {
 	
 	public VDBEditor(String name){
-		super(Bot.get().editorByTitle(name).getReference(), Bot.get());
+		super(new SWTWorkbenchBot().editorByTitle(name).getReference(), new SWTWorkbenchBot());
 	}
 	
 	public static VDBEditor getInstance(String name){
@@ -22,7 +22,7 @@ public class VDBEditor extends SWTBotEditor {
 	}
 	
 	public void addModel(String projectName, String model){
-		Bot.get().toolbarButtonWithTooltip("Add model").click();
+		new SWTWorkbenchBot().toolbarButtonWithTooltip("Add model").click();
 		
 		SWTBotShell shell = bot.shell("Add File(s) to VDB");
 		shell.activate();
@@ -40,7 +40,7 @@ public class VDBEditor extends SWTBotEditor {
 	 * @param longerPath true if path to model contains folders
 	 */
 	public void addModel(boolean longerPath, String... pathToModel){
-		Bot.get().toolbarButtonWithTooltip("Add model").click();
+		new SWTWorkbenchBot().toolbarButtonWithTooltip("Add model").click();
 		
 		SWTBotShell shell = bot.shell("Add File(s) to VDB");
 		shell.activate();
@@ -52,7 +52,7 @@ public class VDBEditor extends SWTBotEditor {
 	}
 	
 	public String getModel(int index){
-		return Bot.get().table(0).cell(index, 0);
+		return new SWTWorkbenchBot().table(0).cell(index, 0);
 	}
 
 	public void synchronizeAll() {

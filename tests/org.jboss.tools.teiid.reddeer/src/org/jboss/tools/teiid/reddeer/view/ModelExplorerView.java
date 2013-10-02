@@ -8,7 +8,7 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.swt.util.Bot;
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.reddeer.workbench.view.impl.WorkbenchView;
@@ -79,13 +79,13 @@ public class ModelExplorerView extends WorkbenchView {
 		
 		if (procedureNotFunction){
 			//Procedure?/(Function) - OK
-			Bot.get().button("OK").click();
+			new SWTWorkbenchBot().button("OK").click();
 		}
 		
 		new LabeledText("Name").setText(procedure);
 		
 		//finish
-		Bot.get().button("OK").click();
+		new SWTWorkbenchBot().button("OK").click();
 
 		return new Procedure(project, model, procedure);
 	}
@@ -120,13 +120,13 @@ public class ModelExplorerView extends WorkbenchView {
 	public void open(String... filePath) {
 		open();
 
-		Bot.get().tree(0).expandNode(filePath).doubleClick();
+		new SWTWorkbenchBot().tree(0).expandNode(filePath).doubleClick();
 	}
 
 	public void openTransformationDiagram(String... filePath) {
 		open();
 
-		SWTBotTreeItem item = Bot.get().tree(0).expandNode(filePath);
+		SWTBotTreeItem item = new SWTWorkbenchBot().tree(0).expandNode(filePath);
 
 		item.expand();
 		item.getNode("Transformation Diagram").doubleClick();

@@ -11,7 +11,7 @@ import org.jboss.reddeer.eclipse.datatools.ui.FlatFileProfile;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.util.Bot;
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.tools.teiid.reddeer.ModelProject;
 import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
@@ -229,13 +229,13 @@ public class ImportWizardTest extends SWTBotTestCase {
 	}
 
 	private static void checkResource(String... path) {
-		Bot.get().sleep(500);
+		new SWTWorkbenchBot().sleep(500);
 		ModelProject modelproject = new ModelExplorer().getModelProject(MODEL_PROJECT);
 		assertTrue(Arrays.toString(path) + " not created!", modelproject.containsItem(path));
 	}
 
 	private static void checkDiagram(String file, String label) {
-		Bot.get().sleep(500);
+		new SWTWorkbenchBot().sleep(500);
 		Project project = new ProjectExplorer().getProject(MODEL_PROJECT);
 		project.getProjectItem(file).open();
 		ModelEditor modelEditor = teiidBot.modelEditor(file);

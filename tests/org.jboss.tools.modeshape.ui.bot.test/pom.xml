@@ -423,6 +423,55 @@
 	      </plugins>
 	    </build>
 	  </profile>
+
+		  <!-- Install Platform DV 6 -->
+	  <!-- You have to specify dv6.url property -->
+	  <profile>
+	    <id>dv6</id>
+	    <properties>
+		<swtbot.properties>./swtbot.properties</swtbot.properties>
+	    </properties>
+	    <build>
+	      <plugins>
+		<plugin>
+		  <groupId>com.googlecode.maven-download-plugin</groupId>
+		  <artifactId>maven-download-plugin</artifactId>
+		  <executions>
+		    <execution>
+		      <id>get-dv</id>
+		      <phase>pre-integration-test</phase>
+		      <goals>
+			<goal>wget</goal>
+		      </goals>
+		      <configuration>
+			<url>${dv6.url}</url>
+			<unpack>true</unpack>
+		      </configuration>
+		    </execution>
+		  </executions>
+		</plugin>
+		<plugin>
+		  <artifactId>maven-antrun-plugin</artifactId>
+		  <version>1.7</version>
+		  <executions>
+		    <execution>
+		      <id>set-properties</id>
+		      <phase>pre-integration-test</phase>
+		      <goals>
+			<goal>run</goal>
+		      </goals>
+		      <configuration>
+			<target>
+			  <echo file="${requirementsDirectory}/jboss-eap-6.1/standalone/configuration/teiid-security-users.properties">user=user</echo>
+			  <echo file="${swtbot.properties}">SERVER=EAP,6.1,default,target/requirements/jboss-eap-6.1${line.separator}MODESHAPE=dv</echo>
+			</target>
+		      </configuration>
+		    </execution>
+		  </executions>
+		</plugin>
+	      </plugins>
+	    </build>
+	  </profile>
 	</profiles>
 
 </project>

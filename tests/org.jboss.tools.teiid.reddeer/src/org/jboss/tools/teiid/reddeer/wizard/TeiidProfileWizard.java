@@ -4,7 +4,7 @@ import org.jboss.reddeer.eclipse.jface.wizard.NewWizardDialog;
 import org.jboss.reddeer.eclipse.jface.wizard.WizardPage;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.util.Bot;
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 
 /**
  * 
@@ -48,7 +48,7 @@ public abstract class TeiidProfileWizard extends NewWizardDialog {
 		new LabeledText(LABEL_NAME).setText(name);
 		// TODO: LabeledText
 		// new LabeledText(LABEL_DESCRIPTION).setText(description);
-		Bot.get().textWithLabel(LABEL_DESCRIPTION).setText(description);
+		new SWTWorkbenchBot().textWithLabel(LABEL_DESCRIPTION).setText(description);
 
 		next();
 	}

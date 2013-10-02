@@ -32,7 +32,7 @@ import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.swt.util.Bot;
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.teiid.reddeer.VDB;
@@ -145,7 +145,7 @@ public class E2eAudioBooksVdbExecutionTest extends SWTBotTestCase{
 		//delete the offending FK in BOOKS - FK_PUBLISHER
 		//set focus to tree
 		String[] path2 = {PROJECT_NAME, "Books2.xmi", "BOOKS", "FK_PUBLISHER"};
-		//System.out.println(Bot.get().getFocusedWidget().getClass());//class org.eclipse.draw2d.FigureCanvas
+		//System.out.println(new SWTWorkbenchBot().getFocusedWidget().getClass());//class org.eclipse.draw2d.FigureCanvas
 		Matcher matcher2 = allOf(widgetOfType(Tree.class));
 		new SWTBotTree((Tree) new SWTBot().widget(matcher2, 0), matcher2).setFocus();
 		new DefaultTreeItem(0, PROJECT_NAME, SOURCE_MODEL_2+".xmi", "BOOKS", "FK_PUBLISHER").select();
@@ -254,7 +254,7 @@ public class E2eAudioBooksVdbExecutionTest extends SWTBotTestCase{
 		new PushButton("Delete").click();
 		
 		//Rename NAME to pubName
-		SWTBotTable t = Bot.get().table();
+		SWTBotTable t =  new SWTWorkbenchBot().table();
 		t.click(7, 0);
 		new DefaultText("NAME").setText("pubName");
 		
@@ -516,8 +516,8 @@ public class E2eAudioBooksVdbExecutionTest extends SWTBotTestCase{
 		
 		//1st criteria
 		new DefaultTable(0).select(0);
-		Bot.get().toolbarButtonWithTooltip("Edit").click();
-		CriteriaBuilder cb = new CriteriaBuilder(Bot.get().activeShell());
+		new SWTWorkbenchBot().toolbarButtonWithTooltip("Edit").click();
+		CriteriaBuilder cb = new CriteriaBuilder(new SWTWorkbenchBot().activeShell());
 		
 		//COLUMN type
 		cb.selectRadioButton(RadioButtonType.COLUMN, RadioButtonType.LEFT);
@@ -535,13 +535,13 @@ public class E2eAudioBooksVdbExecutionTest extends SWTBotTestCase{
 
 		//2nd criteria
 		new DefaultTable(0).select(1);
-		Bot.get().toolbarButtonWithTooltip("Edit").click();
-		cb = new CriteriaBuilder(Bot.get().activeShell());
+		new SWTWorkbenchBot().toolbarButtonWithTooltip("Edit").click();
+		cb = new CriteriaBuilder(new SWTWorkbenchBot().activeShell());
 		
 		//function
 		cb.selectRadioButton(RadioButtonType.FUNCTION, RadioButtonType.LEFT);
 		new PushButton("Edit...").click();
-		FunctionExpressionBuilder feb = new FunctionExpressionBuilder(Bot.get().activeShell());
+		FunctionExpressionBuilder feb = new FunctionExpressionBuilder(new SWTWorkbenchBot().activeShell());
 		feb.setCategory("STRING");
 		feb.setFunction("LCASE(STRING)");
 		feb.apply();
@@ -554,7 +554,7 @@ public class E2eAudioBooksVdbExecutionTest extends SWTBotTestCase{
 		cb.selectOperator(OperatorType.LIKE);
 		
 		//constant sof%
-		cb = new CriteriaBuilder(Bot.get().activeShell());
+		cb = new CriteriaBuilder(new SWTWorkbenchBot().activeShell());
 		cb.selectRadioButton(RadioButtonType.CONSTANT, RadioButtonType.RIGHT);
 		//cb.setConstant("sof%");
 		new DefaultText(1).setText("sof%");
@@ -563,8 +563,8 @@ public class E2eAudioBooksVdbExecutionTest extends SWTBotTestCase{
 		
 		//3rd criteria
 		new DefaultTable(0).select(2);
-		Bot.get().toolbarButtonWithTooltip("Edit").click();
-		cb = new CriteriaBuilder(Bot.get().activeShell());
+		new SWTWorkbenchBot().toolbarButtonWithTooltip("Edit").click();
+		cb = new CriteriaBuilder(new SWTWorkbenchBot().activeShell());
 		
 		//column TYPE
 		cb.selectRadioButton(RadioButtonType.COLUMN, RadioButtonType.LEFT);
@@ -573,7 +573,7 @@ public class E2eAudioBooksVdbExecutionTest extends SWTBotTestCase{
 		//IN
 		cb.selectOperator(OperatorType.IN);
 		cb.addConstantsToList("Books on Tape", "Audio", "Books on CD");
-		cb = new CriteriaBuilder(Bot.get().activeShell());
+		cb = new CriteriaBuilder(new SWTWorkbenchBot().activeShell());
 		cb.apply();
 		cb.close();
 		
@@ -723,7 +723,7 @@ public class E2eAudioBooksVdbExecutionTest extends SWTBotTestCase{
 		new DefaultTreeItem(PROJECT_NAME, "schemas", SOAPYBOOKS_MODEL+".xmi", BOOKSETMIXED_DOCUMENT).select();
 		
 		//change soap encoding property		
-		SWTBotTree tree = Bot.get().tree(1);
+		SWTBotTree tree = new SWTWorkbenchBot().tree(1);
 
 		SWTBotTreeItem treeItem = tree.getAllItems()[1];
 		SWTBotTreeItem node = treeItem.getNode(3).click(1);
@@ -809,7 +809,7 @@ public class E2eAudioBooksVdbExecutionTest extends SWTBotTestCase{
 	 */
 	private void closeActiveShell(){
 		try {
-			Bot.get().activeShell().bot().button("Yes").click();
+			new SWTWorkbenchBot().activeShell().bot().button("Yes").click();
 		} catch (Exception e){
 			System.out.println(e.getMessage());
 		}

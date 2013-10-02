@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 import org.jboss.reddeer.eclipse.ui.perspectives.AbstractPerspective;
 import org.jboss.reddeer.junit.requirement.Requirement;
-import org.jboss.reddeer.swt.util.Bot;
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.tools.teiid.ui.bot.test.requirement.PerspectiveRequirement.Perspective;
 
 /**
@@ -49,7 +49,7 @@ public class PerspectiveRequirement implements Requirement<Perspective> {
 
 	private void closeWelcome() {
 		try {
-			Bot.get().viewByTitle("Welcome").close();
+			new SWTWorkbenchBot().viewByTitle("Welcome").close();
 		} catch (Exception ex) {
 			// ok
 		}

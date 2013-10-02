@@ -12,7 +12,7 @@ import org.jboss.reddeer.swt.api.Table;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.util.Bot;
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
@@ -93,25 +93,25 @@ public class TeiidConnectionImportWizard extends ImportWizardDialog{
 			//connection url
 			if (table.getItem(i).getText(0).equals("* connection-url")){
 				table.select(i);
-				SWTBotTable t = Bot.get().table(1);
+				SWTBotTable t = new SWTWorkbenchBot().table(1);
 				t.doubleClick(i, 1);
 				String url = "jdbc:sqlserver://"+props.getProperty("db.hostname")
 						+":1433;databasename="+props.getProperty("db.name");
-				Bot.get().text(1).setText(url);			
+				new SWTWorkbenchBot().text(1).setText(url);			
 			}
 			//username
 			if (table.getItem(i).getText(0).equals("user-name")){
 				table.select(i);
-				SWTBotTable t = Bot.get().table(1);
+				SWTBotTable t = new SWTWorkbenchBot().table(1);
 				t.doubleClick(i, 1);
-				Bot.get().text(1).setText(props.getProperty("db.username"));
+				new SWTWorkbenchBot().text(1).setText(props.getProperty("db.username"));
 			}
 			//password
 			if (table.getItem(i).getText(0).equals("password")){
 				table.select(i);
-				SWTBotTable t = Bot.get().table(1);
+				SWTBotTable t = new SWTWorkbenchBot().table(1);
 				t.doubleClick(i, 1);
-				Bot.get().text(1).setText(props.getProperty("db.password"));
+				new SWTWorkbenchBot().text(1).setText(props.getProperty("db.password"));
 				
 				//click somewhere else
 				table.select(i+1);
@@ -146,7 +146,7 @@ public class TeiidConnectionImportWizard extends ImportWizardDialog{
 	public void checkTablesToImport(String projectName, String modelName, List<String> tables){
 		String wholeModelName = "file:/" + projectName + "/" + modelName + ".xmi";
 		for (String table : tables){
-			Bot.get().tree().expandNode(wholeModelName, table).check();
+			new SWTWorkbenchBot().tree().expandNode(wholeModelName, table).check();
 		}
 	}
 

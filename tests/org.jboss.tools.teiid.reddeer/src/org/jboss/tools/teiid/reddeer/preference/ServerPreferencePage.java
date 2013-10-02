@@ -5,7 +5,7 @@ import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.swt.util.Bot;
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 
@@ -35,7 +35,7 @@ public class ServerPreferencePage extends PreferencePage {
 		if (type[1].matches("JBoss Enterprise Application Platform 6(.*) Runtime") 
 				|| type[1].matches("JBoss AS 7(.*)")
 				|| type[1].matches("WildFly (.*)")){
-			Bot.get().textWithLabel("Configuration file: ").setText(configFile);
+			new SWTWorkbenchBot().textWithLabel("Configuration file: ").setText(configFile);
 		}
 		new PushButton("Finish").click();
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);

@@ -10,7 +10,7 @@ import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
-import org.jboss.reddeer.swt.util.Bot;
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 
 /**
  * Wizard for importing relational model from designer text file
@@ -60,7 +60,7 @@ public class MetadataImportWizard extends TeiidImportWizard {
 		new DefaultTree().getItems().get(0).select();
 		new LabeledText(MODEL_NAME).setText(target);
 		new PushButton("OK").click();
-		Bot.get().shell(DIALOG_TITLE).activate();
+		new SWTWorkbenchBot().shell(DIALOG_TITLE).activate();
 		new DefaultShell(DIALOG_TITLE);
 
 		finish();
@@ -68,7 +68,7 @@ public class MetadataImportWizard extends TeiidImportWizard {
 
 	// Workaround due to TEIIDDES-417
 	private void addSelection(String label, final String selection) {
-		SWTBotCombo botCombo = Bot.get().comboBoxWithLabel(SOURCE_LOCATION);
+		SWTBotCombo botCombo = new SWTWorkbenchBot().comboBoxWithLabel(SOURCE_LOCATION);
 		final Combo combo = botCombo.widget;
 		syncExec(new VoidResult() {
 

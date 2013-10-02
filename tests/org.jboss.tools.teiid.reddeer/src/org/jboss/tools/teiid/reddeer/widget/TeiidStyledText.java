@@ -7,7 +7,7 @@ import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.results.VoidResult;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotStyledText;
-import org.jboss.reddeer.swt.util.Bot;
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 
 public class TeiidStyledText extends SWTBotStyledText {
 
@@ -16,7 +16,7 @@ public class TeiidStyledText extends SWTBotStyledText {
 	}
 
 	public TeiidStyledText(int index) {
-		super(Bot.get().styledText(index).widget);
+		super(new SWTWorkbenchBot().styledText(index).widget);
 	}
 
 	/**

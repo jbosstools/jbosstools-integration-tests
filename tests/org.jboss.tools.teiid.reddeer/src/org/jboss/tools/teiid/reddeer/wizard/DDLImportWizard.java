@@ -1,7 +1,7 @@
 package org.jboss.tools.teiid.reddeer.wizard;
 
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
-import org.jboss.reddeer.swt.util.Bot;
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 
 /**
  * Wizard for importing relational model from DDL
@@ -63,7 +63,7 @@ public class DDLImportWizard extends TeiidImportWizard {
 		new DefaultCombo(0).setText(ddlPath);
 		if (autoselectDialect){
 			//click on autoselect 
-			Bot.get().checkBox("Auto-select").click();
+			new SWTWorkbenchBot().checkBox("Auto-select").click();
 		} else {
 			if (dialect != null){
 				//click on combo 
@@ -72,7 +72,7 @@ public class DDLImportWizard extends TeiidImportWizard {
 		}
 		// TODO: LabeledText
 		// new LabeledText(MODEL_NAME).setText(modelName);
-		Bot.get().textWithLabel(MODEL_NAME).setText(modelName);
+		new SWTWorkbenchBot().textWithLabel(MODEL_NAME).setText(modelName);
 
 		next();
 		finish();

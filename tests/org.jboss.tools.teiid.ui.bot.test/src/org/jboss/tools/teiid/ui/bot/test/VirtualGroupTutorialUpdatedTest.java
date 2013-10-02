@@ -10,7 +10,7 @@ import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.swt.util.Bot;
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
@@ -401,7 +401,7 @@ public class VirtualGroupTutorialUpdatedTest extends SWTBotTestCase{
 	 * @param path
 	 */
 	private void checkResource(String... path) {
-		Bot.get().sleep(500);
+		new SWTWorkbenchBot().sleep(500);
 		ModelProject modelproject = teiidBot.modelExplorer().getModelProject(PROJECT_NAME);
 		assertTrue(Arrays.toString(path) + " not created!", modelproject.containsItem(path));
 	}
@@ -418,7 +418,7 @@ public class VirtualGroupTutorialUpdatedTest extends SWTBotTestCase{
 	 */
 	private void closeActiveShell(){
 		try {
-			Bot.get().activeShell().bot().button("Yes").click();
+			new SWTWorkbenchBot().activeShell().bot().button("Yes").click();
 		} catch (Exception e){
 			System.out.println(e.getMessage());
 		}

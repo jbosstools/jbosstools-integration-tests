@@ -14,7 +14,7 @@ import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.swt.util.Bot;
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 
 /**
  * Wizard for importing XML schemas
@@ -70,10 +70,10 @@ public class XMLSchemaImportWizard extends TeiidImportWizard {
 				new RadioButton("Import XML schemas from file system").click();
 				next();
 
-				Bot.get().comboBox().setText(rootPath);
+				new SWTWorkbenchBot().comboBox().setText(rootPath);
 
 				new DefaultText().setText(destination);
-				Bot.get().text().setFocus();
+				new SWTWorkbenchBot().text().setFocus();
 				
 				/*for (String schema: schemas){
 					new DefaultTable().check(schema);

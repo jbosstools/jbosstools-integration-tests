@@ -6,7 +6,7 @@ import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.util.Bot;
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.tools.teiid.reddeer.ModelProject;
 import org.jboss.tools.teiid.reddeer.VDB;
 import org.jboss.tools.teiid.reddeer.editor.CriteriaBuilder;
@@ -356,7 +356,7 @@ public class VirtualGroupTutorialTest extends SWTBotTestCase {
 	}
 
 	private void checkResource(String... path) {
-		Bot.get().sleep(500);
+		new SWTWorkbenchBot().sleep(500);
 		ModelProject modelproject = teiidBot.modelExplorer().getModelProject(PROJECT_NAME);
 		assertTrue(Arrays.toString(path) + " not created!", modelproject.containsItem(path));
 	}

@@ -4,7 +4,7 @@ import org.jboss.reddeer.eclipse.jface.wizard.ImportWizardDialog;
 import org.jboss.reddeer.eclipse.jface.wizard.WizardPage;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
-import org.jboss.reddeer.swt.util.Bot;
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
@@ -58,7 +58,7 @@ public abstract class TeiidImportWizard extends ImportWizardDialog {
 	private void stupidWait() {
 		long time = 10 * 1000;
 		log.info("Stupid waiting for " + time + " ms");
-		Bot.get().sleep(time);
+		new SWTWorkbenchBot().sleep(time);
 	}
 
 	public abstract void execute();

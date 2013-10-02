@@ -1,7 +1,7 @@
 package org.jboss.tools.teiid.reddeer.wizard;
 
 import org.jboss.reddeer.eclipse.jface.wizard.NewWizardDialog;
-import org.jboss.reddeer.swt.util.Bot;
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.tools.teiid.reddeer.view.GuidesView;
 
 /**
@@ -33,10 +33,10 @@ public class CreateVDB extends NewWizardDialog {
 	public void execute(boolean viaGuides){
 		if (viaGuides){
 			new GuidesView().chooseAction("Model JDBC Source", "Define VDB");
-			Bot.get().button("New...").click();
+			new SWTWorkbenchBot().button("New...").click();
 			fillFirstPage();
 			finish();
-			Bot.get().button("OK").click();
+			new SWTWorkbenchBot().button("OK").click();
 		} else {
 			execute();
 		}
@@ -46,12 +46,12 @@ public class CreateVDB extends NewWizardDialog {
 		// TODO: LabeledText
 		// new LabeledText("In Folder:").setText(folder);
 		// TODO: Do we really need to set folder?
-		// Bot.get().textWithLabel("In Folder:").setText(folder);
+		// new SWTWorkbenchBot().textWithLabel("In Folder:").setText(folder);
 		// TODO: LabeledText
 		// new LabeledText("VDB Name:").setText(name);
-		Bot.get().textWithLabel("VDB Name:").setText(name);
+		new SWTWorkbenchBot().textWithLabel("VDB Name:").setText(name);
 		if (this.folder != null){
-			Bot.get().textWithLabel("In Folder:").setText(folder);
+			new SWTWorkbenchBot().textWithLabel("In Folder:").setText(folder);
 		}
 	}
 

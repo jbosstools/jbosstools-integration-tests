@@ -27,7 +27,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotCTabItem;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.ui.IEditorReference;
 import org.hamcrest.Matcher;
-import org.jboss.reddeer.swt.util.Bot;
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.tools.teiid.reddeer.matcher.IsTransformation;
 import org.jboss.tools.teiid.reddeer.matcher.AttributeMatcher;
 import org.jboss.tools.teiid.reddeer.matcher.MappingClassMatcher;
@@ -60,12 +60,12 @@ public class ModelEditor extends SWTBotEditor {
 
 	public ModelEditor(IEditorReference editorReference, SWTWorkbenchBot bot) {
 		super(editorReference, bot);
-		Bot.get().sleep(5 * 1000);
+		new SWTWorkbenchBot().sleep(5 * 1000);
 	}
 
 	public ModelEditor(String title) {
-		super(Bot.get().editorByTitle(title).getReference(), Bot.get());
-		Bot.get().sleep(5 * 1000);
+		super(new SWTWorkbenchBot().editorByTitle(title).getReference(), new SWTWorkbenchBot());
+		new SWTWorkbenchBot().sleep(5 * 1000);
 	}
 
 	private GraphicalEditor getGraphicalEditor(String tabLabel) {
@@ -112,7 +112,7 @@ public class ModelEditor extends SWTBotEditor {
 		viewer = getGraphicalViewer(TRANSFORMATION_DIAGRAM);
 		viewer.editParts(IsTransformation.isTransformation()).get(0).select();
 		viewer.clickContextMenu("Edit");
-		Bot.get().sleep(5 * 1000);
+		new SWTWorkbenchBot().sleep(5 * 1000);
 	}
 
 	public void showMappingTransformation(String label) {
@@ -163,7 +163,7 @@ public class ModelEditor extends SWTBotEditor {
 	}
 
 	public void setTransformation(String text) {
-		Bot.get().styledText(0).setText(text);
+		new SWTWorkbenchBot().styledText(0).setText(text);
 	}
 
 	public void saveAndValidateSql() {

@@ -31,5 +31,5 @@ public class ModeshapeExplorer {
 		new ContextMenu("ModeShape", "Show Published Locations").select();
 		return new PublishedLocations();
 	}
-
+	
 }

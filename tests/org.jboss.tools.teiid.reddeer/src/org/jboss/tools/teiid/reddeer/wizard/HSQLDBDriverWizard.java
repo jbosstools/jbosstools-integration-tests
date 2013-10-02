@@ -9,7 +9,7 @@ import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.swt.util.Bot;
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.tools.teiid.reddeer.preference.DriverDefinitionPreferencePageExt;
 
 /**
@@ -87,7 +87,7 @@ public class HSQLDBDriverWizard {
 
 				@Override
 				public void run() {
-					Bot.get().list().widget.add(item);
+					new SWTWorkbenchBot().list().widget.add(item);
 				}
 			});
 		}

@@ -5,7 +5,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTableItem;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.util.Bot;
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 
 /**
  * Wizard for importing a flat file source into a model project
@@ -57,7 +57,7 @@ public class FlatImportWizard extends TeiidImportWizard {
 		new DefaultCombo(0).setSelection(profile);
 		setCheckedFile(file, true);
 		// TODO: LabeledText
-		Bot.get().textWithLabel("Name:").setText(name + "Source");
+		new SWTWorkbenchBot().textWithLabel("Name:").setText(name + "Source");
 
 		next();
 		next();
@@ -71,7 +71,7 @@ public class FlatImportWizard extends TeiidImportWizard {
 
 		next();
 		// TODO: LabeledText
-		Bot.get().textWithLabel("Name:").setText(name + "View");
+		new SWTWorkbenchBot().textWithLabel("Name:").setText(name + "View");
 
 		new LabeledText("New view table name:").setText(name + "Table");
 
@@ -79,7 +79,7 @@ public class FlatImportWizard extends TeiidImportWizard {
 	}
 
 	protected void setCheckedFile(String fileName, boolean checked) {
-		SWTBotTable table = Bot.get().tableInGroup("Available Data Files");
+		SWTBotTable table = new SWTWorkbenchBot().tableInGroup("Available Data Files");
 		SWTBotTableItem item = table.getTableItem(fileName);
 		if (checked) {
 			item.check();

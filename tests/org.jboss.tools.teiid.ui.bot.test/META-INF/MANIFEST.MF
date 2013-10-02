@@ -8,6 +8,7 @@ Import-Package: org.apache.log4j
 Bundle-Vendor: 
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Eclipse-RegisterBuddy: org.apache.log4j
+Eclipse-BundleShape: dir
 Require-Bundle: org.eclipse.swtbot.eclipse.gef.finder;bundle-version="2.0.5",
  org.eclipse.swtbot.go,
  org.eclipse.gef,

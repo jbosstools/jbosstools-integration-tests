@@ -3,7 +3,7 @@ package org.jboss.tools.teiid.reddeer.editor;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.waits.Conditions;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
-import org.jboss.reddeer.swt.util.Bot;
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 
 
 
@@ -14,21 +14,21 @@ public class SQLScrapbookEditor extends SWTBotEditor {
 	}
 	
 	public SQLScrapbookEditor(String name) {
-		super(Bot.get().editorByTitle(name).getReference(), Bot.get());
+		super(new SWTWorkbenchBot().editorByTitle(name).getReference(), new SWTWorkbenchBot());
 	}
 
 	public void setDatabase(String dbName){
-		Bot.get().comboBoxWithLabel("Database:").setSelection(dbName);
+		new SWTWorkbenchBot().comboBoxWithLabel("Database:").setSelection(dbName);
 	}
 	
 	public void setText(String text){
-		Bot.get().styledText().setText(text);
+		new SWTWorkbenchBot().styledText().setText(text);
 	}
 	
 	public void executeAll(){
-		Bot.get().styledText().contextMenu("Execute All").click();
+		new SWTWorkbenchBot().styledText().contextMenu("Execute All").click();
 		
-		SWTBotShell shell = Bot.get().shell("SQL Statement Execution");
-		Bot.get().waitUntil(Conditions.shellCloses(shell), 60 * 1000);
+		SWTBotShell shell = new SWTWorkbenchBot().shell("SQL Statement Execution");
+		new SWTWorkbenchBot().waitUntil(Conditions.shellCloses(shell), 60 * 1000);
 	}
 }

@@ -11,7 +11,7 @@ import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.swt.util.Bot;
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
@@ -59,7 +59,7 @@ public class TeiidInstanceView extends WorkbenchView {
 	}
 
 	public boolean containsDataSource(String teiidInstance, String datasource) {
-		SWTBot bot = Bot.get();
+		SWTBot bot = new SWTWorkbenchBot();
 		try {
 			SWTBotTreeItem item = bot.tree().expandNode(teiidInstance, "Data Sources");
 			item.getNode(datasource);
@@ -77,7 +77,7 @@ public class TeiidInstanceView extends WorkbenchView {
 	 */
 	@Deprecated
 	public boolean containsVDB(String teiidInstance, String vdb) {
-		SWTBot bot = Bot.get();
+		SWTBot bot = new SWTWorkbenchBot();
 		try {
 			SWTBotTreeItem item = bot.tree().expandNode(teiidInstance, "VDBs");
 			item.getNode(vdb);
@@ -94,7 +94,7 @@ public class TeiidInstanceView extends WorkbenchView {
 	 * @return
 	 */
 	public boolean containsVDB(boolean isKeplerOrMore, String... pathToVDB) {
-		SWTBot bot = Bot.get();
+		SWTBot bot = new SWTWorkbenchBot();
 		try {
 			//SWTBotTreeItem item = bot.tree(TEIID_INSTANCE_TREE_INDEX).expandNode(pathToVDB);new ContextMenu("Refresh");OK; new TeiidInstanceView(true);expand;getNode;
 			new DefaultTreeItem(pathToVDB).select();
@@ -116,7 +116,7 @@ public class TeiidInstanceView extends WorkbenchView {
 	 */
 	@Deprecated
 	public boolean containsTeiidInstance(String name) {
-		SWTBot bot = Bot.get();
+		SWTBot bot = new SWTWorkbenchBot();
 		try {
 			bot.tree().getTreeItem(name);
 			return true;
@@ -138,7 +138,7 @@ public class TeiidInstanceView extends WorkbenchView {
 		
 		//dialog doesn't apper if restart of server precedes setup of default teiid instance
 		try {
-			if (Bot.get().activeShell().getText().equals("Change of Server Version")){
+			if (new SWTWorkbenchBot().activeShell().getText().equals("Change of Server Version")){
 				new PushButton("Yes").click();// save all opened editors
 			} else {
 				new PushButton("No").click();// disconnect from actual teiid instance (Disconnect Current Default Teiid Instance)
