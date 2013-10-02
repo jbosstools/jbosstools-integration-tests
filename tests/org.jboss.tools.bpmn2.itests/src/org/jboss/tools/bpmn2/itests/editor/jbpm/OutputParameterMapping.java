@@ -1,7 +1,6 @@
 package org.jboss.tools.bpmn2.itests.editor.jbpm;
 
 import org.eclipse.swtbot.swt.finder.SWTBot;
-import org.jboss.reddeer.swt.util.Bot;
 import org.jboss.tools.bpmn2.itests.editor.IMappingSide;
 import org.jboss.tools.bpmn2.itests.editor.IParameterMapping;
 import org.jboss.tools.bpmn2.itests.reddeer.BPMN2PropertiesView;
@@ -29,7 +28,7 @@ public class OutputParameterMapping implements IParameterMapping {
 	protected String sectionName;
 	
 	protected BPMN2PropertiesView propertiesView = new BPMN2PropertiesView();
-	protected SWTBot bot = Bot.get();
+	protected SWTBot bot = new SWTBot();
 	
 	protected IMappingSide from;
 	protected IMappingSide to;

@@ -1,7 +1,6 @@
 package org.jboss.tools.bpmn2.itests.editor.jbpm.gateways;
 
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
-import org.jboss.reddeer.swt.util.Bot;
 import org.jboss.tools.bpmn2.itests.editor.AbstractGateway;
 import org.jboss.tools.bpmn2.itests.editor.ConstructType;
 
@@ -48,7 +47,7 @@ public class EventBasedGateway extends AbstractGateway {
 	 */
 	public void setInstantiate(boolean b) {
 		properties.selectTab("Gateway");
-		properties.selectCheckBox(Bot.get().checkBox(), b);
+		properties.selectCheckBox(bot.checkBox(), b);
 	}
 
 	/**

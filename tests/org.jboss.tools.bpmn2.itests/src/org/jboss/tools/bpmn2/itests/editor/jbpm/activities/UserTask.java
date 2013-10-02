@@ -1,11 +1,7 @@
 package org.jboss.tools.bpmn2.itests.editor.jbpm.activities;
 
-import org.eclipse.swtbot.swt.finder.SWTBot;
-
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.util.Bot;
-
 import org.jboss.tools.bpmn2.itests.editor.AbstractTask;
 import org.jboss.tools.bpmn2.itests.editor.ConstructType;
 import org.jboss.tools.bpmn2.itests.editor.IParameterMapping;
@@ -92,7 +88,6 @@ public class UserTask extends AbstractTask {
 		properties.selectTab("User Task");
 		properties.toolbarButton("Actors", "Add").click();
 		
-		SWTBot bot = Bot.get();
 		if (!language.isEmpty()) {
 			bot.comboBoxWithLabel("Script Language").setSelection(language);
 		}

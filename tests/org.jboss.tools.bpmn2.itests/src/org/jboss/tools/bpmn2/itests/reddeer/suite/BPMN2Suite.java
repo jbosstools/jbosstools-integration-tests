@@ -4,9 +4,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.util.Properties;
 
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.swt.finder.junit.ScreenshotCaptureListener;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.swt.util.Bot;
 import org.junit.runner.notification.RunListener;
 import org.junit.runner.notification.RunNotifier;
 import org.junit.runners.model.InitializationError;
@@ -51,7 +51,7 @@ public class BPMN2Suite extends RedDeerSuite {
 
 	private static void closeWelcomeScreen() {
 		try {
-			Bot.get().viewByTitle("Welcome").close();
+			new SWTWorkbenchBot().viewByTitle("Welcome").close();
 		} catch (Exception ex) {
 			// Ignore
 		}

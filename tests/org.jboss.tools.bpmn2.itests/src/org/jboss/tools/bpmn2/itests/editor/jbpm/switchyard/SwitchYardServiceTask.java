@@ -4,7 +4,6 @@ import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.util.Bot;
 import org.jboss.tools.bpmn2.itests.editor.AbstractTask;
 import org.jboss.tools.bpmn2.itests.editor.ConstructType;
 import org.jboss.tools.bpmn2.itests.editor.IParameterMapping;
@@ -22,7 +21,7 @@ public class SwitchYardServiceTask extends AbstractTask{
 		properties.selectTab("Service Task");
 		 
 		new PushButton(0).click();
-		SWTBot viewBot = Bot.get().shell("Create New Operation").bot();
+		SWTBot viewBot = bot.shell("Create New Operation").bot();
 		viewBot.textWithLabel("Name").setText(name);
 		viewBot.button("OK").click();
 	}
@@ -50,8 +49,8 @@ public class SwitchYardServiceTask extends AbstractTask{
 		properties.selectTab("SwitchYard Service Task");
 		/*new DefaultCombo("Script Language").setSelection(scriptLang);
 		new LabeledText("Script").setText(text);*/
-		Bot.get().comboBoxWithLabel("Script Language", type);
-		Bot.get().textWithLabel("Script", type);
+		bot.comboBoxWithLabel("Script Language", type);
+		bot.textWithLabel("Script", type);
 	}
 
 }
