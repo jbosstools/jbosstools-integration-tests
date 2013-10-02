@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.Properties;
 
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.swt.util.Bot;
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.tools.modeshape.reddeer.view.ServerPreferencePage;
 import org.jboss.tools.modeshape.reddeer.wizard.ServerWizard;
 import org.junit.runners.model.InitializationError;
@@ -25,6 +25,8 @@ public class ModeshapeSuite extends RedDeerSuite {
 
 	private static String serverName;
 	private static String serverPath;
+	
+	private static final String TEIID_DRIVER_PATH_sinceDV6 ="/dataVirtualization/jdbc/";
 
 	public ModeshapeSuite(Class<?> clazz, RunnerBuilder builder) throws InitializationError {
 		super(clazz, foo(builder));
@@ -52,7 +54,7 @@ public class ModeshapeSuite extends RedDeerSuite {
 
 	private static void closeWelcome() {
 		try {
-			Bot.get().viewByTitle("Welcome").close();
+			new SWTWorkbenchBot().viewByTitle("Welcome").close();
 		} catch (Exception ex) {
 			// ok
 		}
@@ -103,33 +105,67 @@ public class ModeshapeSuite extends RedDeerSuite {
 
 	private static String[] getServerType(String type, String version) {
 		String[] serverType = new String[2];
-		if (type.equals("SOA")) {
+		if (type.equals("EAP")) {
+            serverType[0] = "JBoss Enterprise Middleware";
+            if (version.startsWith("6.0")) {
+                    serverType[1] = "JBoss Enterprise Application Platform 6.0";
+            }
+            if (version.startsWith("6.1")) {
+                    serverType[1] = "JBoss Enterprise Application Platform 6.1";
+            }
+		} else if (type.equals("SOA")) {
 			serverType[0] = "JBoss Enterprise Middleware";
 			if (version.startsWith("5")) {
 				serverType[1] = "JBoss Enterprise Application Platform 5.x";
+			} if (version.startsWith("6")) {
+                serverType[1] = "JBoss Enterprise Application Platform 6.1";
 			}
 		} else if (type.equals("AS")) {
 			serverType[0] = "JBoss Community";
 			serverType[1] = "JBoss AS " + version;
 		} else {
-			throw new RuntimeException("You have to specify if it is AS or SOA");
+			throw new RuntimeException("You have to specify if it is AS or SOA or EAP");
 		}
 		return serverType;
 	}
 
 	private static String[] getServerRuntime(String type, String version) {
 		String[] serverRuntime = new String[2];
-		if (type.equals("SOA")) {
+		if (type.equals("EAP")) {
+            serverRuntime[0] = "JBoss Enterprise Middleware";
+            if (version.startsWith("6.0")) {
+                    serverRuntime[1] = "JBoss Enterprise Application Platform 6.0 Runtime";
+            }
+            if (version.startsWith("6.1")) {
+                    serverRuntime[1] = "JBoss Enterprise Application Platform 6.1 Runtime";
+            }
+		} else if (type.equals("SOA")) {
 			serverRuntime[0] = "JBoss Enterprise Middleware";
 			if (version.startsWith("5")) {
 				serverRuntime[1] = "JBoss Enterprise Application Platform 5.x Runtime";
+			} else if (version.startsWith("6")) {
+                serverRuntime[1] = "JBoss Enterprise Application Platform 6.1 Runtime";
 			}
 		} else if (type.equals("AS")) {
 			serverRuntime[0] = "JBoss Community";
 			serverRuntime[1] = "JBoss " + version + " Runtime";
 		} else {
-			throw new RuntimeException("You have to specify if it is AS or SOA");
+			throw new RuntimeException("You have to specify if it is AS or SOA or EAP");
 		}
 		return serverRuntime;
 	}
+	
+	public static String getDriverPath(String serverPath){
+		String driverName = "";
+		File dir = new File(serverPath + TEIID_DRIVER_PATH_sinceDV6);
+		for(File file : dir.listFiles()) {
+			if(file.getName().startsWith("teiid-") && file.getName().endsWith(".jar")){
+		    	driverName = file.getName();
+		    	break;
+		    }
+		}
+		return TEIID_DRIVER_PATH_sinceDV6 + driverName;
+	}
+	
+	
 }
