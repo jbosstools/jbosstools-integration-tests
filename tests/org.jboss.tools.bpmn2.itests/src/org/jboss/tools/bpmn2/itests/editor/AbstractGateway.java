@@ -4,7 +4,6 @@ import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.util.Bot;
 
 
 /**
@@ -63,9 +62,9 @@ public abstract class AbstractGateway extends Construct {
 		select();
 		properties.selectTab("Gateway");
 		new DefaultTable(0).select(branch);
-		Bot.get().toolbarButtonWithTooltip("Edit").click();
-		Bot.get().checkBox().click();
-		Bot.get().toolbarButtonWithTooltip("Close").click();
+		bot.toolbarButtonWithTooltip("Edit").click();
+		bot.checkBox().click();
+		bot.toolbarButtonWithTooltip("Close").click();
 	}
 	
 }

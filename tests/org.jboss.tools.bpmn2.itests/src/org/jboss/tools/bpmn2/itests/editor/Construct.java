@@ -21,7 +21,6 @@ import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditPart;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.hamcrest.Matcher;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.util.Bot;
 import org.jboss.tools.bpmn2.itests.reddeer.BPMN2Editor;
 import org.jboss.tools.bpmn2.itests.reddeer.BPMN2PropertiesView;
 import org.jboss.tools.bpmn2.itests.swt.matcher.ConstructOfType;
@@ -79,7 +78,7 @@ public class Construct {
 	public Construct(String name, ConstructType type, Construct parent, int index, boolean select) {
 		this.editor = new BPMN2Editor();
 		this.properties = new BPMN2PropertiesView();
-		this.bot = Bot.get();
+		this.bot = new SWTBot();
 		
 		this.name = name;
 		this.type = type;

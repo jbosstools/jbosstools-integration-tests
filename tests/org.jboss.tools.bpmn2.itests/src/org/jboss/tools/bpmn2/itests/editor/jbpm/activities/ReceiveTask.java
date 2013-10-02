@@ -5,7 +5,6 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotCombo;
 
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.util.Bot;
 import org.jboss.tools.bpmn2.itests.editor.AbstractTask;
 import org.jboss.tools.bpmn2.itests.editor.ConstructType;
 import org.jboss.tools.bpmn2.itests.editor.IParameterMapping;
@@ -59,11 +58,11 @@ public class ReceiveTask extends AbstractTask {
 			// PushButton(0) denotes operation
 			new PushButton(1).click();
 			
-			SWTBot newMessageBot = Bot.get().shell("Create New Message").bot();
+			SWTBot newMessageBot = bot.shell("Create New Message").bot();
 			newMessageBot.textWithLabel("Name").setText(name);
 			newMessageBot.button(0).click();
 			
-			SWTBot newDataTypeBot = Bot.get().shell("Create New Data Type").bot();
+			SWTBot newDataTypeBot = bot.shell("Create New Data Type").bot();
 			newDataTypeBot.textWithLabel("Structure").setText(dataType);
 			newDataTypeBot.button("OK").click();
 

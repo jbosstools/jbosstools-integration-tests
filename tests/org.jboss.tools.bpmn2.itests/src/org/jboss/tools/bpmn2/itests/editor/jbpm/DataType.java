@@ -1,10 +1,10 @@
 package org.jboss.tools.bpmn2.itests.editor.jbpm;
 
+import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.util.Bot;
 import org.jboss.tools.bpmn2.itests.editor.IDataType;
 
 public class DataType implements IDataType {
@@ -18,7 +18,7 @@ public class DataType implements IDataType {
 	public void add() {
 		if (!selectType(name)) {
 			new PushButton(0).click();
-			Bot.get().shell("Create New Data Type").activate();
+			new SWTBot().shell("Create New Data Type").activate();
 			new LabeledText("Structure").setText(name);
 			new PushButton("OK").click();
 		}

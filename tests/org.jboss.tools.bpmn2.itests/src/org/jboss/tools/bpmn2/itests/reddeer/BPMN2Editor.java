@@ -19,6 +19,7 @@ import org.eclipse.gef.palette.PaletteEntry;
 import org.eclipse.gef.palette.ToolEntry;
 import org.eclipse.graphiti.mm.pictograms.PictogramLink;
 import org.eclipse.graphiti.mm.pictograms.Shape;
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotMultiPageEditor;
 import org.eclipse.swtbot.eclipse.gef.finder.finders.PaletteFinder;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditPart;
@@ -31,7 +32,6 @@ import org.eclipse.swtbot.swt.finder.results.VoidResult;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.ui.IEditorPart;
 import org.hamcrest.Matcher;
-import org.jboss.reddeer.swt.util.Bot;
 import org.jboss.tools.bpmn2.itests.editor.Construct;
 import org.jboss.tools.bpmn2.itests.editor.ConstructType;
 import org.jboss.tools.bpmn2.itests.swt.matcher.ConstructAttributeMatchingRegex;
@@ -47,13 +47,15 @@ public class BPMN2Editor extends SWTBotGefEditor {
 
 	private static final int SAVE_SLEEP_TIME = 4000;
 	
-	private Logger log = Logger.getLogger(BPMN2Editor.class);
+	private static Logger log = Logger.getLogger(BPMN2Editor.class);
+	
+	private static SWTWorkbenchBot bot = new SWTWorkbenchBot();
 	
 	/**
 	 * Creates a new instance of Bpmn2Editor.
 	 */
 	public BPMN2Editor() {
-		super(Bot.get().activeEditor().getReference(), Bot.get());
+		super(bot.activeEditor().getReference(), bot);
 	}
 	
 	/**
@@ -62,7 +64,7 @@ public class BPMN2Editor extends SWTBotGefEditor {
 	 * @param title
 	 */
 	public BPMN2Editor(String title) {
-		super(Bot.get().editorByTitle(title).getReference(), Bot.get());
+		super(bot.editorByTitle(title).getReference(), bot);
 	}
 	
 	/**
@@ -279,7 +281,7 @@ public class BPMN2Editor extends SWTBotGefEditor {
 				// ignore
 			}
 			
-			SWTBotShell shell = Bot.get().shell("Configure BPMN2 Project Nature");
+			SWTBotShell shell = bot.shell("Configure BPMN2 Project Nature");
 			shell.activate();
 			SWTBot shellBot = shell.bot();
 			shellBot.checkBox().click();
@@ -367,7 +369,7 @@ public class BPMN2Editor extends SWTBotGefEditor {
 	 * have.
 	 */
 	public static void printShells() {
-		for (SWTBotShell s : Bot.get().shells()) {
+		for (SWTBotShell s : bot.shells()) {
 			System.out.println(" --- Shell: " + s.getText());
 		}
 	}

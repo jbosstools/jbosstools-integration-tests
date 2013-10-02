@@ -1,10 +1,8 @@
 package org.jboss.tools.bpmn2.itests.editor.jbpm.activities;
 
 import org.eclipse.swtbot.swt.finder.SWTBot;
-
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.util.Bot;
 import org.jboss.tools.bpmn2.itests.editor.AbstractTask;
 import org.jboss.tools.bpmn2.itests.editor.ConstructType;
 import org.jboss.tools.bpmn2.itests.editor.IParameterMapping;
@@ -51,7 +49,7 @@ public class CallActivity extends AbstractTask {
 		properties.selectTab("Call Activity");
 		new PushButton(0).click();
 		
-		SWTBot viewBot = Bot.get().shell("Called Activity").bot();
+		SWTBot viewBot = bot.shell("Called Activity").bot();
 		viewBot.text().setText(id);
 		viewBot.button("OK").click();
 		

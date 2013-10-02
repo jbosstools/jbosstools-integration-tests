@@ -1,7 +1,7 @@
 package org.jboss.tools.bpmn2.itests.reddeer;
 
 import org.eclipse.swt.widgets.Shell;
-import org.jboss.reddeer.swt.util.Bot;
+import org.eclipse.swtbot.swt.finder.SWTBot;
 
 public class EclipseHelper {
 	/**
@@ -10,8 +10,8 @@ public class EclipseHelper {
 	 * Taken from ui.bot.ext
 	 */
 	public static void maximizeActiveShell() {
-		final Shell shell = (Shell) (Bot.get().activeShell().widget);
-		Bot.get().getDisplay().syncExec(new Runnable() {
+		final Shell shell = (Shell) (new SWTBot().activeShell().widget);
+		new SWTBot().getDisplay().syncExec(new Runnable() {
 
 			public void run() {
 				shell.setMaximized(true);

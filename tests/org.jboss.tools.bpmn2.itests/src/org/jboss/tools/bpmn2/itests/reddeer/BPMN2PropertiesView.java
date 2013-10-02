@@ -10,6 +10,7 @@ import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.swt.widgets.Widget;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
+import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.results.Result;
@@ -17,14 +18,12 @@ import org.eclipse.swtbot.swt.finder.utils.internal.SiblingFinder;
 import org.eclipse.swtbot.swt.finder.widgets.AbstractSWTBotControl;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCheckBox;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCombo;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarPushButton;
 import org.eclipse.ui.forms.widgets.Section;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.util.Bot;
 import org.jboss.reddeer.workbench.view.impl.WorkbenchView;
 
 /**
@@ -34,6 +33,8 @@ import org.jboss.reddeer.workbench.view.impl.WorkbenchView;
  */
 public class BPMN2PropertiesView extends WorkbenchView {
 
+	SWTBot bot = new SWTBot();
+	
 	/**
 	 * 
 	 */
@@ -55,7 +56,7 @@ public class BPMN2PropertiesView extends WorkbenchView {
 	 * 
 	 */
 	public String getTitle() {
-		return Bot.get().clabel().getText();
+		return bot.clabel().getText();
 	}
 	
 	/**
@@ -102,7 +103,7 @@ public class BPMN2PropertiesView extends WorkbenchView {
 		SWTBotToolbarPushButton toolbarButton = UIThreadRunnable.syncExec(new Result<SWTBotToolbarPushButton>() {
 
 			public SWTBotToolbarPushButton run() {
-				Widget widget = Bot.get().label(section).widget;
+				Widget widget = bot.label(section).widget;
 				Widget[] siblings = new SiblingFinder(widget).run();
 				for (Widget sibling : siblings) {
 					if (sibling instanceof ToolBar) {
@@ -135,7 +136,7 @@ public class BPMN2PropertiesView extends WorkbenchView {
 		return UIThreadRunnable.syncExec(new Result<Integer>() {
 
 			public Integer run() {
-				List<? extends Widget> widgets = Bot.get().widgets(new BaseMatcher<Widget>() {
+				List<? extends Widget> widgets = bot.widgets(new BaseMatcher<Widget>() {
 
 					public void describeTo(Description description) {
 						// ignore
@@ -222,7 +223,7 @@ public class BPMN2PropertiesView extends WorkbenchView {
 		 * @param label
 		 */
 		public ListElement(String label) {
-			canvas = (Canvas) Bot.get().widget(new ListElementWithLabel(label));
+			canvas = (Canvas) bot.widget(new ListElementWithLabel(label));
 		}
 
 		/**

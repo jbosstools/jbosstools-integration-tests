@@ -43,6 +43,7 @@ Require-Bundle:
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: Eclipse Foundation
 Eclipse-RegisterBuddy: org.apache.log4j
+Eclipse-BundleShape: dir
 Import-Package: org.apache.log4j
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: org.jboss.tools.bpmn2.itests.awt,
