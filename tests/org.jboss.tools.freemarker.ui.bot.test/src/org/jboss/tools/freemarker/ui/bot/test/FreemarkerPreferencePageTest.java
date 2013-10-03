@@ -1,32 +1,29 @@
 package org.jboss.tools.freemarker.ui.bot.test;
 
-import java.util.List;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
-import org.jboss.tools.ui.bot.ext.SWTTestExt;
-import org.jboss.tools.ui.bot.ext.gen.ActionItem;
-import org.jboss.tools.ui.bot.ext.helper.SubversiveHelper;
-import org.jboss.tools.ui.bot.ext.types.IDELabel;
+import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
+import org.jboss.reddeer.swt.condition.JobIsRunning;
+import org.jboss.reddeer.swt.handler.WorkbenchHandler;
+import org.jboss.reddeer.swt.test.RedDeerTest;
+import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class FreemarkerPreferencePageTest extends SWTTestExt {
+public class FreemarkerPreferencePageTest extends RedDeerTest {
 
 	@BeforeClass
 		public static void beforeClass() {
-			eclipse.closeView(IDELabel.View.WELCOME);
-			eclipse.closeView(IDELabel.View.JBOSS_CENTRAL);
-			eclipse.closeAllEditors();
-	
-			util.waitForAll();
-			List<SWTBotShell> shells = bot.waitForNumberOfShells(1);
-			SWTBotShell shell = bot.shell(shells.get(0).getText());
-			log.info(shell.getText());
-			shell.activate();
-			shell.setFocus();
-			open.perspective(ActionItem.Perspective.JAVA.LABEL);
-			
-			SubversiveHelper.disableSVNDecoration();
+		JavaPerspective p = new JavaPerspective();
+		p.open();
+		
+		WorkbenchHandler.getInstance().closeAllEditors();
+		new WaitWhile(new JobIsRunning());		
+
+		JavaPerspective jp = new JavaPerspective();
+		jp.open();
+
 		}
 	
 		@Test
