@@ -111,7 +111,8 @@ public class SeamProjectTest extends AbstractMavenSWTBotTest {
 		SeamProjectFirstPage sf = (SeamProjectFirstPage)sd.getWizardPage();
 		sf.setProjectName(projectName);
 		sf.setRuntime(runtimeName);
-		sf.setServer(serverName);
+		System.out.println("+++++++++++++++"+serverName+"++++");
+		//sf.setServer(serverName);
 		sf.activateFacet("Seam", seamVersion);
 		sf.activateFacet("JBoss Maven Integration", null);
 		sd.selectPage(6);

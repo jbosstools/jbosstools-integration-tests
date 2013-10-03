@@ -3,6 +3,7 @@ package org.jboss.tools.maven.ui.bot.test.dialog;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.group.DefaultGroup;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
@@ -32,11 +33,11 @@ public class EARProjectFirstPage extends NewProjectFirstPage{
 	}
 	
 	public void setRuntime(String runtime){
-		new DefaultCombo("Target runtime").setSelection(runtime);
+		new DefaultCombo(new DefaultGroup("Target runtime")).setSelection(runtime);
 	}
 	
 	public void setServer(String server){
-		new DefaultCombo("Target Server").setSelection(server);
+		new DefaultCombo(new DefaultGroup("Target Server")).setSelection(server);
 	}
 
 }

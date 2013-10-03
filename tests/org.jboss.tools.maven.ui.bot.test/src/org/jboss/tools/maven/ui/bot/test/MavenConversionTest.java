@@ -26,6 +26,7 @@ import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.link.DefaultLink;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
@@ -165,8 +166,7 @@ public class MavenConversionTest extends AbstractMavenSWTBotTest{
 	@Test
 	public void testRemoteRepositoriesLinkInConversionWizard(){
 		createWithRuntime();
-		SWTBot b = new SWTBot();
-		b.link(0).click("remote repositories");
+		new DefaultLink("remote repositories").click();
 		boolean shellIsOpened = true;
 		try{
 			new DefaultShell("Preferences (Filtered)");
