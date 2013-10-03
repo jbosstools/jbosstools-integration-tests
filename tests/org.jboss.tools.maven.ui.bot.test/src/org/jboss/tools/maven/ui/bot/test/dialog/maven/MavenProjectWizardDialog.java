@@ -24,12 +24,12 @@ public class MavenProjectWizardDialog extends NewWizardDialog{
 	public void finish() {
 		log.info("Finish wizard");
 
-		DefaultShell shell = new DefaultShell();
+		String shell = new DefaultShell().getText();
 		Button button = new PushButton("Finish");
 		checkButtonEnabled(button);
 		button.click();
 
-		new WaitWhile(new ShellWithTextIsActive(shell.getText()), TimePeriod.LONG);
+		new WaitWhile(new ShellWithTextIsActive(shell), TimePeriod.LONG);
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 	}
 	

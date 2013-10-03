@@ -6,7 +6,8 @@ import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 public class JSFProjectSecondPage extends WizardPage{
 	
 	public void setRuntime(String runtime){
-		new DefaultCombo("Runtime:*").setSelection(runtime);
+		//"Runtime:*"
+		new DefaultCombo(1).setSelection(runtime);
 	}
 
 }
