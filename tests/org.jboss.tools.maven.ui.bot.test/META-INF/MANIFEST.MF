@@ -15,17 +15,10 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.wst.server.core,
  org.eclipse.datatools.connectivity,
  org.eclipse.datatools.connectivity.db.generic,
- 
- org.eclipse.swtbot.swt.finder,
- org.eclipse.swtbot.eclipse.finder,
- org.eclipse.swtbot.forms.finder,
- org.eclipse.swtbot.junit4_x,
- 
  org.eclipse.m2e.wtp,
  org.eclipse.m2e.wtp.jaxrs,
  org.eclipse.m2e.wtp.jsf,
  org.eclipse.m2e.wtp.jpa,
- 
  org.jboss.tools.seam.core,
  org.jboss.tools.maven.ui,
  org.jboss.tools.maven.core,
@@ -37,7 +30,6 @@ Require-Bundle: org.eclipse.ui,
  org.jboss.tools.maven.profiles.ui,
  org.jboss.tools.maven.project.examples,
  org.jboss.tools.maven.seam,
- 
  org.jboss.reddeer.eclipse,
  org.jboss.reddeer.jface,
  org.jboss.reddeer.direct,
@@ -50,7 +42,9 @@ Require-Bundle: org.eclipse.ui,
  org.jboss.reddeer.swt,
  org.jboss.reddeer.swt,
  org.jboss.reddeer.eclipse,
- org.jboss.reddeer.swt
+ org.jboss.reddeer.swt,
+ org.jboss.reddeer.uiforms,
+ org.eclipse.swtbot.swt.finder
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 

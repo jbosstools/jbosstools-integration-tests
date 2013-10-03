@@ -1,6 +1,7 @@
 package org.jboss.tools.maven.ui.bot.test.dialog.maven;
 
 import org.jboss.reddeer.eclipse.jface.preference.PreferencePage;
+import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
@@ -42,7 +43,7 @@ public class MavenRemoteRepositoriesPreferencePage extends PreferencePage{
 	public Repository getRepository(String name){
 		try{
 			new DefaultTable().select(name);
-		}	catch(IllegalArgumentException ex){
+		}	catch(SWTLayerException ex){
 			return null;
 		}
 		new PushButton("Edit...").click();
