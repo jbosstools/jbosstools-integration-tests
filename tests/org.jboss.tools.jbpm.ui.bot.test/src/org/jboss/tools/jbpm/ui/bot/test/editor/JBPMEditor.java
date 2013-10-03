@@ -1,7 +1,7 @@
 package org.jboss.tools.jbpm.ui.bot.test.editor;
 
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditor;
-import org.jboss.reddeer.swt.util.Bot;
 
 /**
  * 
@@ -9,13 +9,15 @@ import org.jboss.reddeer.swt.util.Bot;
  * 
  */
 public class JBPMEditor extends SWTBotGefEditor {
+	
+	protected static SWTWorkbenchBot bot = new SWTWorkbenchBot();
 
 	public JBPMEditor() {
-		super(Bot.get().activeEditor().getReference(), Bot.get());
+		super(bot.activeEditor().getReference(), bot);
 	}
 
 	public JBPMEditor(String title) {
-		super(Bot.get().editorByTitle(title).getReference(), Bot.get());
+		super(bot.editorByTitle(title).getReference(), bot);
 	}
 
 	public void insertEntity(String title, int x, int y) {

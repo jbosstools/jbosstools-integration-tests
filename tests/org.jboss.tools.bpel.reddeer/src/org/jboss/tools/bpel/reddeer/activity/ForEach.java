@@ -1,6 +1,6 @@
 package org.jboss.tools.bpel.reddeer.activity;
 
-import org.jboss.reddeer.swt.util.Bot;
+import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.tools.bpel.reddeer.view.BPELPropertiesView;
 
 /**
@@ -25,8 +25,8 @@ public class ForEach extends Activity {
 	public ForEach setCounterValue(String startExpression, String finalExpression) {
 		BPELPropertiesView properties = new BPELPropertiesView();
 		properties.selectTab("Counter Values");
-		Bot.get().styledText(0).setText(startExpression);
-		Bot.get().styledText(1).setText(finalExpression);
+		new DefaultStyledText(0).setText(startExpression);
+		new DefaultStyledText(1).setText(finalExpression);
 		bpelEditor.save();
 		return this;
 	}

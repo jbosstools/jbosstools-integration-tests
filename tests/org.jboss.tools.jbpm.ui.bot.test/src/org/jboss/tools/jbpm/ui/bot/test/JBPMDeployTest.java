@@ -13,13 +13,14 @@ package org.jboss.tools.jbpm.ui.bot.test;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotMultiPageEditor;
 import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
-import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.util.Bot;
+import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.jbpm.ui.bot.test.editor.JBPMEditor;
 import org.jboss.tools.jbpm.ui.bot.test.suite.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.tools.jbpm.ui.bot.test.suite.JBPMRequirement.JBPM;
@@ -40,6 +41,8 @@ public class JBPMDeployTest extends SWTBotTestCase {
 
 	public static final String PROJECT = "deploytest";
 
+	protected static SWTWorkbenchBot bot = new SWTWorkbenchBot();
+
 	@BeforeClass
 	public static void createProject() {
 		/* Create jBPM3 Project */
@@ -56,7 +59,7 @@ public class JBPMDeployTest extends SWTBotTestCase {
 
 		// Deploy
 		JBPMEditor editor = new JBPMEditor("simple");
-		SWTBotMultiPageEditor multi = new SWTBotMultiPageEditor(editor.getReference(), Bot.get());
+		SWTBotMultiPageEditor multi = new SWTBotMultiPageEditor(editor.getReference(), bot);
 		multi.activatePage("Deployment");
 
 		new LabeledText("Server Name:").setText("127.0.0.1");
@@ -72,34 +75,20 @@ public class JBPMDeployTest extends SWTBotTestCase {
 		editor.setFocus();
 		new ShellMenu("jBPM", "Ping Server").select();
 
-		SWTWorkbenchBot bot = Bot.get();
-		try {
-			bot.sleep(1 * 1000);
-			bot.shell("Password Required").activate();
-			bot.text("User name:").setText("admin");
-			bot.text("Password:").setText("admin");
-			bot.button("OK").click();
-			bot.sleep(1 * 1000);
-		} catch (WidgetNotFoundException e) {
-			// do nothing
-		}
-
 		// Confirm ping message dialog
-		Bot.get().sleep(1 * 1000);
-		Bot.get().shell("Ping Server Successful").activate();
+		new DefaultShell("Ping Server Successful");
 		new PushButton("OK").click();
-		Bot.get().sleep(1 * 1000);
-
+		new WaitWhile(new ShellWithTextIsAvailable("Ping Server Successful"));
+		
 		// Deploy
 		editor.show();
 		editor.setFocus();
 		new ShellMenu("jBPM", "Deploy Process").select();
 
 		// Confirm deployed message dialog
-		bot.sleep(1 * 100);
-		bot.shell("Deployment Successful").activate();
-		bot.button("OK").click();
-		bot.sleep(1 * 1000);
+		new DefaultShell("Deployment Successful");
+		new PushButton("OK").click();
+		new WaitWhile(new ShellWithTextIsAvailable("Deployment Successful"));
 
 		// TODO - check via jpdl console
 	}

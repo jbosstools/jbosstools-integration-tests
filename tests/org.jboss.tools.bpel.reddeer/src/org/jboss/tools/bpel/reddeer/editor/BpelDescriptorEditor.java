@@ -1,7 +1,7 @@
 package org.jboss.tools.bpel.reddeer.editor;
 
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
-import org.jboss.reddeer.swt.util.Bot;
 
 /**
  * 
@@ -9,16 +9,18 @@ import org.jboss.reddeer.swt.util.Bot;
  * 
  */
 public class BpelDescriptorEditor extends SWTBotEditor {
+	
+	private static SWTWorkbenchBot bot = new SWTWorkbenchBot();
 
 	public BpelDescriptorEditor() {
-		super(Bot.get().activeEditor().getReference(), Bot.get());
+		super(bot.activeEditor().getReference(), bot);
 	}
 
 	public void setAssociatedPort(String port) {
-		Bot.get().table().click(0, 1);
-		Bot.get().sleep(1000);
-		Bot.get().ccomboBox("-- none -- ").setSelection(port);
-		Bot.get().table().click(0, 2);
+		bot.table().click(0, 1);
+		bot.sleep(1000);
+		bot.ccomboBox("-- none -- ").setSelection(port);
+		bot.table().click(0, 2);
 		save();
 	}
 

@@ -3,12 +3,12 @@ package org.jboss.tools.bpel.ui.bot.test;
 import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
+import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.tools.bpel.reddeer.activity.Sequence;
 import org.jboss.tools.bpel.reddeer.condition.NoErrorExists;
 import org.jboss.tools.bpel.reddeer.editor.BpelEditor;
-import org.jboss.tools.bpel.reddeer.shell.EclipseShell;
 import org.jboss.tools.bpel.reddeer.wizard.ImportProjectWizard;
 import org.jboss.tools.bpel.ui.bot.test.suite.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.tools.bpel.ui.bot.test.suite.PerspectiveRequirement.Perspective;
@@ -23,7 +23,7 @@ public class AssignActivityTest extends SWTBotTestCase {
 
 	@BeforeClass
 	public static void maximizeEclipse() throws Exception {
-		new EclipseShell().maximize();
+		new WorkbenchShell().maximize();
 	}
 
 	@After

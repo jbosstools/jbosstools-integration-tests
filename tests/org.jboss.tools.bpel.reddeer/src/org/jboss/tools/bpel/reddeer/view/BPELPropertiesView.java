@@ -2,8 +2,9 @@ package org.jboss.tools.bpel.reddeer.view;
 
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
+import org.jboss.reddeer.swt.impl.clabel.DefaultCLabel;
+import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
-import org.jboss.reddeer.swt.util.Bot;
 import org.jboss.reddeer.workbench.view.impl.WorkbenchView;
 import org.jboss.tools.bpel.reddeer.widget.ListElement;
 import org.jboss.tools.bpel.reddeer.widget.QuickPickTree;
@@ -42,7 +43,7 @@ public class BPELPropertiesView extends WorkbenchView {
 	public void setCondition(String condition, String conditionType) {
 		selectDetails();
 		if (condition != null) {
-			Bot.get().styledText().setText(condition);
+			new DefaultStyledText().setText(condition);
 		}
 		if (conditionType != null) {
 			new RadioButton(conditionType).click();
@@ -74,6 +75,6 @@ public class BPELPropertiesView extends WorkbenchView {
 	}
 
 	public String getTitle() {
-		return Bot.get().clabel().getText();
+		return new DefaultCLabel().getText();
 	}
 }

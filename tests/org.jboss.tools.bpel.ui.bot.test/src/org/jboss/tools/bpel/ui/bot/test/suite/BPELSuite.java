@@ -10,7 +10,7 @@ import java.util.Properties;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.api.Tree;
 import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.util.Bot;
+import org.jboss.reddeer.workbench.view.impl.WorkbenchView;
 import org.jboss.tools.bpel.reddeer.view.ServerPreferencePage;
 import org.jboss.tools.bpel.reddeer.wizard.ServerWizard;
 import org.junit.runners.model.InitializationError;
@@ -40,7 +40,7 @@ public class BPELSuite extends RedDeerSuite {
 
 	private static void closeWelcome() {
 		try {
-			Bot.get().viewByTitle("Welcome").close();
+			new WorkbenchView("Welcome").close();
 		} catch (Exception ex) {
 			// ok
 		}

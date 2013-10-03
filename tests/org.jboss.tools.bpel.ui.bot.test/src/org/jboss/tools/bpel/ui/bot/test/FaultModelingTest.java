@@ -3,6 +3,7 @@ package org.jboss.tools.bpel.ui.bot.test;
 import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
+import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.tools.bpel.reddeer.activity.Assign;
 import org.jboss.tools.bpel.reddeer.activity.Catch;
 import org.jboss.tools.bpel.reddeer.activity.CompensationHandler;
@@ -11,7 +12,6 @@ import org.jboss.tools.bpel.reddeer.activity.If;
 import org.jboss.tools.bpel.reddeer.activity.Receive;
 import org.jboss.tools.bpel.reddeer.activity.Scope;
 import org.jboss.tools.bpel.reddeer.activity.Sequence;
-import org.jboss.tools.bpel.reddeer.shell.EclipseShell;
 import org.jboss.tools.bpel.reddeer.wizard.ImportProjectWizard;
 import org.jboss.tools.bpel.ui.bot.test.suite.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.tools.bpel.ui.bot.test.suite.PerspectiveRequirement.Perspective;
@@ -45,7 +45,7 @@ public class FaultModelingTest extends SWTBotTestCase {
 				"resources/projects/" + PROJECT_NAME + ".zip");
 		new ImportProjectWizard(projectLocation).execute();
 
-		new EclipseShell().maximize();
+		new WorkbenchShell().maximize();
 
 		ProjectExplorer projectExplorer = new ProjectExplorer();
 		projectExplorer.open();

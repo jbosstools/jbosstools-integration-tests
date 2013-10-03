@@ -13,7 +13,7 @@ import org.custommonkey.xmlunit.Diff;
 import org.custommonkey.xmlunit.XMLUnit;
 import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
 import org.eclipse.swtbot.swt.finder.exceptions.AssertionFailedException;
-import org.jboss.reddeer.swt.util.Bot;
+import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.tools.bpel.reddeer.server.ServerDeployment;
 import org.jboss.tools.bpel.reddeer.wizard.ExampleWizard;
 import org.jboss.tools.bpel.ui.bot.test.suite.BPELSuite;
@@ -104,7 +104,7 @@ public class ExampleTest extends SWTBotTestCase {
 			String serverName = BPELSuite.getServerName();
 			ServerDeployment server = new ServerDeployment(serverName);
 			server.deployProject(projectName);
-			Bot.get().sleep(5 * 1000);
+			AbstractWait.sleep(5 * 1000);
 		}
 
 		public void testResponses() {

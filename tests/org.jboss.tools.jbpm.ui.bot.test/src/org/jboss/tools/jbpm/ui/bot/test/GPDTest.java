@@ -13,11 +13,11 @@ package org.jboss.tools.jbpm.ui.bot.test;
 import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.GraphicalEditPart;
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotMultiPageEditor;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditor;
 import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.swt.util.Bot;
 import org.jboss.tools.jbpm.ui.bot.test.editor.JBPMEditor;
 import org.jboss.tools.jbpm.ui.bot.test.suite.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.tools.jbpm.ui.bot.test.suite.JBPMRequirement.JBPM;
@@ -33,6 +33,8 @@ import org.junit.Test;
 public class GPDTest extends SWTBotTestCase {
 
 	public static final String PROJECT = "gpdtest";
+	
+	protected static SWTWorkbenchBot bot = new SWTWorkbenchBot();
 
 	@BeforeClass
 	public static void createProject() {
@@ -50,7 +52,7 @@ public class GPDTest extends SWTBotTestCase {
 
 		/* Find Nodes */
 		final SWTBotGefEditor editor = new JBPMEditor("simple");
-		SWTBotMultiPageEditor multi = new SWTBotMultiPageEditor(editor.getReference(), Bot.get());
+		SWTBotMultiPageEditor multi = new SWTBotMultiPageEditor(editor.getReference(), bot);
 		multi.activatePage("Diagram");
 
 		String[] nodes = { "start", "first", "end" };

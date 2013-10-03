@@ -10,9 +10,9 @@
  ******************************************************************************/
 package org.jboss.tools.jbpm.ui.bot.test;
 
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.swt.util.Bot;
 import org.jboss.tools.jbpm.ui.bot.test.suite.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.tools.jbpm.ui.bot.test.suite.JBPMRequirement.JBPM;
 import org.jboss.tools.jbpm.ui.bot.test.suite.JBPMSuite;
@@ -25,6 +25,8 @@ import org.junit.Test;
 @Perspective(name = "jBPM jPDL 3")
 public class JBPMProjectTest extends SWTBotTestCase {
 
+	protected static SWTWorkbenchBot bot = new SWTWorkbenchBot();
+	
 	@Test
 	public void createProject() {
 		/* Create Project */
@@ -35,7 +37,7 @@ public class JBPMProjectTest extends SWTBotTestCase {
 
 		new ProjectExplorer().getProject("test").getProjectItem("src", "main", "jpdl", "simple.jpdl.xml").open();
 		
-		Bot.get().editorByTitle("simple");
+		bot.editorByTitle("simple");
 	
 	}
 

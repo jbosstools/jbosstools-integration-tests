@@ -19,7 +19,6 @@ Export-Package: org.jboss.tools.bpel.reddeer.activity,
  org.jboss.tools.bpel.reddeer.editor,
  org.jboss.tools.bpel.reddeer.matcher,
  org.jboss.tools.bpel.reddeer.server,
- org.jboss.tools.bpel.reddeer.shell,
  org.jboss.tools.bpel.reddeer.view,
  org.jboss.tools.bpel.reddeer.widget,
  org.jboss.tools.bpel.reddeer.wizard

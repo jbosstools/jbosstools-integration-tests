@@ -1,6 +1,5 @@
 package org.jboss.tools.bpel.reddeer.activity;
 
-import org.jboss.reddeer.swt.util.Bot;
 import org.jboss.tools.bpel.reddeer.view.BPELPropertiesView;
 
 /**
@@ -17,8 +16,8 @@ public class CompensateScope extends Activity {
 	public CompensateScope setTargetActivity(String targetActivity) {
 		BPELPropertiesView properties = new BPELPropertiesView();
 		properties.selectDetails();
-		Bot.get().ccomboBox().setSelection(targetActivity);
-		Bot.get().ccomboBox().setFocus();
+		bot.ccomboBox().setSelection(targetActivity);
+		bot.ccomboBox().setFocus();
 		bpelEditor.save();
 		return this;
 	}
