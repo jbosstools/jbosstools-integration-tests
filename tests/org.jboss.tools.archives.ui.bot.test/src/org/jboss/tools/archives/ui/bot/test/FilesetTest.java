@@ -10,8 +10,8 @@
  ******************************************************************************/
 package org.jboss.tools.archives.ui.bot.test;
 
-import org.eclipse.swtbot.swt.finder.widgets.TimeoutException;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
+import org.jboss.reddeer.swt.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.archives.reddeer.archives.ui.ProjectArchivesExplorer;
@@ -103,7 +103,7 @@ public class FilesetTest extends ArchivesTestBase {
 		try {
 			new WaitUntil(new FilesetIsInArchive(
 					archive, formatFileset(projectName, includes, excludes)));
-		} catch (TimeoutException te) {
+		} catch (WaitTimeoutExpiredException te) {
 			fail("'" + formatFileset(projectName, includes, excludes) 
 					 + "' was not created under archive '" 
 					 + archive.getName() + "'!");
@@ -120,7 +120,7 @@ public class FilesetTest extends ArchivesTestBase {
 			new WaitWhile(new FilesetIsInArchive(archive, filesetName));
 			new WaitUntil(new FilesetIsInArchive(archive, 
 					formatFileset(projectName, includes, excludes)));
-		} catch (TimeoutException te) {
+		} catch (WaitTimeoutExpiredException te) {
 			fail("'" + filesetName
 					 + "' was not modified to '" 
 					 + formatFileset(projectName, includes, excludes) 
@@ -134,7 +134,7 @@ public class FilesetTest extends ArchivesTestBase {
 		
 		try {
 			new WaitWhile(new FilesetIsInArchive(archive, filesetName));
-		} catch (TimeoutException te) {
+		} catch (WaitTimeoutExpiredException te) {
 			fail("'" + filesetName 
 					 + "' was not deleted under archive '" 
 					 + archive.getName() + "'!");
