@@ -5,9 +5,10 @@ import static org.hamcrest.core.AllOf.allOf;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditPart;
 import org.hamcrest.Matcher;
-import org.jboss.reddeer.swt.util.Bot;
+import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.tools.bpel.reddeer.editor.BpelEditor;
 import org.jboss.tools.bpel.reddeer.matcher.ActivityOfType;
 import org.jboss.tools.bpel.reddeer.matcher.ActivityWithName;
@@ -46,6 +47,8 @@ public class Activity {
 
 	protected BpelEditor bpelEditor;
 	protected SWTBotGefEditPart editPart;
+	
+	protected static SWTWorkbenchBot bot = new SWTWorkbenchBot();
 
 	protected Logger log = Logger.getLogger(this.getClass());
 
@@ -82,7 +85,7 @@ public class Activity {
 	}
 
 	public void select() {
-		Bot.get().sleep(100);
+		AbstractWait.sleep(1000);
 		bpelEditor.selectEditPart(editPart);
 		new BPELPropertiesView().open();
 		bpelEditor.selectEditPart(editPart);

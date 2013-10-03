@@ -5,7 +5,7 @@ import org.jboss.reddeer.eclipse.jface.wizard.WizardPage;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.util.Bot;
+import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 
 /**
  * 
@@ -109,8 +109,7 @@ public class NewProcessWizard extends NewWizardDialog {
 
 		next();
 
-		Bot.get().tree().expandNode(projectName).select("bpelContent");
-		// new ViewTreeItem(projectName, "bpelContent").select();
+		new DefaultTreeItem(projectName, "bpelContent").select();
 
 		finish();
 	}

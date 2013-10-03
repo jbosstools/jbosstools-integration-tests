@@ -1,7 +1,8 @@
 package org.jboss.tools.bpel.ui.bot.test;
 
 import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
-import org.jboss.reddeer.swt.util.Bot;
+import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
+import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.tools.bpel.reddeer.activity.Assign;
 import org.jboss.tools.bpel.reddeer.activity.Empty;
 import org.jboss.tools.bpel.reddeer.activity.Receive;
@@ -9,7 +10,6 @@ import org.jboss.tools.bpel.reddeer.activity.Reply;
 import org.jboss.tools.bpel.reddeer.activity.Sequence;
 import org.jboss.tools.bpel.reddeer.editor.BpelDescriptorEditor;
 import org.jboss.tools.bpel.reddeer.server.ServerDeployment;
-import org.jboss.tools.bpel.reddeer.shell.EclipseShell;
 import org.jboss.tools.bpel.reddeer.wizard.NewDescriptorWizard;
 import org.jboss.tools.bpel.reddeer.wizard.NewProcessWizard;
 import org.jboss.tools.bpel.reddeer.wizard.NewProjectWizard;
@@ -36,7 +36,8 @@ public class SimpleDeployTest extends SWTBotTestCase {
 
 	@Test
 	public void simpleDeployTest() throws Exception {
-		new EclipseShell().maximize();
+		new WorkbenchShell().maximize();
+		
 		String projectName = "deployTest";
 		String processName = "deployHello";
 
@@ -63,7 +64,7 @@ public class SimpleDeployTest extends SWTBotTestCase {
 		String serverName = BPELSuite.getServerName();
 		ServerDeployment server = new ServerDeployment(serverName);
 		server.deployProject(projectName);
-		Bot.get().sleep(5 * 1000);
+		AbstractWait.sleep(5 * 1000);
 
 		// test the deployed project
 		SoapClient.testResponses(WSDL_URL, "Deploy_Hello");

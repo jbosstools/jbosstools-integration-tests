@@ -1,7 +1,7 @@
 package org.jboss.tools.bpel.ui.bot.test;
 
 import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
-import org.jboss.reddeer.swt.util.Bot;
+import org.jboss.reddeer.workbench.view.impl.WorkbenchView;
 import org.jboss.tools.bpel.reddeer.editor.BpelEditor;
 import org.jboss.tools.bpel.reddeer.wizard.NewProcessWizard;
 import org.jboss.tools.bpel.reddeer.wizard.NewProjectWizard;
@@ -23,7 +23,7 @@ public class WizardTest extends SWTBotTestCase {
 	@BeforeClass
 	public static void closeWelcome() throws Exception {
 		try {
-			Bot.get().viewByTitle("Welcome").close();
+			new WorkbenchView("Welcome").close();
 		} catch (Exception ex) {
 			//
 		}

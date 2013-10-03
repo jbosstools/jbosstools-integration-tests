@@ -3,9 +3,9 @@ package org.jboss.tools.bpel.reddeer.widget;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
-import org.jboss.reddeer.swt.util.Bot;
 
 /**
  * 
@@ -16,10 +16,12 @@ public class QuickPickTree {
 	
 	public static final String LABEL_QUICK_PICK = "Quick Pick:";
 
-	SWTBotTree tree;
+	private static SWTWorkbenchBot bot = new SWTWorkbenchBot();
+	
+	private SWTBotTree tree;
 
 	public QuickPickTree() {
-		tree = Bot.get().treeWithLabel(LABEL_QUICK_PICK);
+		tree = bot.treeWithLabel(LABEL_QUICK_PICK);
 	}
 
 	public void pick(String operation) {

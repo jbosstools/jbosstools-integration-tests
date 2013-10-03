@@ -4,10 +4,10 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Widget;
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.swt.finder.widgets.AbstractSWTBotControl;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
-import org.jboss.reddeer.swt.util.Bot;
 
 /**
  * 
@@ -16,10 +16,12 @@ import org.jboss.reddeer.swt.util.Bot;
  */
 public class ListElement {
 
+	private static SWTWorkbenchBot bot = new SWTWorkbenchBot();
+	
 	private Canvas canvas;
 
 	public ListElement(String label) {
-		canvas = (Canvas) Bot.get().widget(new ListElementWithLabel(label));
+		canvas = (Canvas) bot.widget(new ListElementWithLabel(label));
 	}
 
 	public void select() {

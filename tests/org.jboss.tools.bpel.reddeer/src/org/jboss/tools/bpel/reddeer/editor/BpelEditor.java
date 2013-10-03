@@ -4,10 +4,10 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.eclipse.gef.EditPart;
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditPart;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditor;
 import org.hamcrest.Matcher;
-import org.jboss.reddeer.swt.util.Bot;
 import org.jboss.tools.bpel.reddeer.matcher.ActivityWithName;
 
 /**
@@ -17,14 +17,16 @@ import org.jboss.tools.bpel.reddeer.matcher.ActivityWithName;
  */
 public class BpelEditor extends SWTBotGefEditor {
 
+	private static SWTWorkbenchBot bot = new SWTWorkbenchBot();
+	
 	private Logger log = Logger.getLogger(BpelEditor.class);
 
 	public BpelEditor() {
-		super(Bot.get().activeEditor().getReference(), Bot.get());
+		super(bot.activeEditor().getReference(), bot);
 	}
 
 	public BpelEditor(String title) {
-		super(Bot.get().editorByTitle(title).getReference(), Bot.get());
+		super(bot.editorByTitle(title).getReference(), bot);
 	}
 
 	public String getSource() {
