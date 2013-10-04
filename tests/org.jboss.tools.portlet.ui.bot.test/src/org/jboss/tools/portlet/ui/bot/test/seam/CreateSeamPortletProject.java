@@ -7,8 +7,11 @@ import java.util.List;
 
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.jboss.reddeer.eclipse.jface.wizard.WizardDialog;
+import org.jboss.reddeer.swt.api.Group;
+import org.jboss.reddeer.swt.api.Text;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
-import org.jboss.reddeer.swt.util.Bot;
+import org.jboss.reddeer.swt.impl.group.DefaultGroup;
+import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.tools.portlet.ui.bot.entity.FacetDefinition;
 import org.jboss.tools.portlet.ui.bot.task.facet.Facets;
 import org.jboss.tools.portlet.ui.bot.task.wizard.web.jboss.JBossJSFPortletCapabilitiesWizardPageFillingTask;
@@ -67,7 +70,9 @@ public class CreateSeamPortletProject extends CreatePortletProjectTemplate{
 		
 		// new DefaultText("Portletbridge Runtime") does not work (WidgetNotFoundException)
 		try{
-			Bot.get().textInGroup("Portletbridge Runtime").setText(TestConfigurator.currentConfig.getPortletBridge().getLocation());
+			Group portletbridgeRuntimeGroup = new DefaultGroup("Portletbridge Runtime");
+			Text textFromGroup = new DefaultText(portletbridgeRuntimeGroup);
+			textFromGroup.setText(TestConfigurator.currentConfig.getPortletBridge().getLocation());
 		} catch (WidgetNotFoundException e) {
 			// ok, the portlet bridge is recognized in the server location
 		}
