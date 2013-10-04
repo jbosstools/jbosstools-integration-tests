@@ -18,7 +18,7 @@
             <swt.bot.test.record.screencast>false</swt.bot.test.record.screencast>
             <integrationTestsSystemProperties>-Dswt.bot.test.record.screencast=${swt.bot.test.record.screencast} -Dorg.eclipse.swtbot.screenshots.dir=${project.build.directory}/screenshots</integrationTestsSystemProperties>
 	    <jbtis.version>4.1.5.Alpha5</jbtis.version>
-	    <jbtis.site>http://download.jboss.org/jbosstools/updates/integration/kepler/integration-stack/aggregate/4.1.3.Beta3</jbtis.site>
+	    <jbtis.site>http://download.jboss.org/jbosstools/updates/integration/kepler/integration-stack/aggregate/4.1.3.Beta4</jbtis.site>
         </properties>
 
 	<modules>
