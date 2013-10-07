@@ -64,7 +64,7 @@ public class ServerManagementTest extends SWTBotTestCase {
 	@BeforeClass
 	public static void createModelProject() {
 		if (System.getProperty("swtbot.PLAYBACK_DELAY") == null) {
-			SWTBotPreferences.PLAYBACK_DELAY = 200;
+			SWTBotPreferences.PLAYBACK_DELAY = 2000;
 		} else {
 			SWTBotPreferences.PLAYBACK_DELAY = new Integer(
 					System.getProperty("swtbot.PLAYBACK_DELAY"));// -Dswtbot.PLAYBACK_DELAY
@@ -84,6 +84,7 @@ public class ServerManagementTest extends SWTBotTestCase {
 	 */
 	@Test
 	public void test01() {
+		SWTBotPreferences.PLAYBACK_DELAY = 2000;
 		n++;
 		// preview data - fails on "no teiid instance"
 		assertFalse(canPreviewData("Confirm Enable Preview", "PARTS"));
@@ -112,7 +113,7 @@ public class ServerManagementTest extends SWTBotTestCase {
 			TeiidSuite.addServerWithProperties(properties[i]);// define AS-5,
 																// EAP-6.1
 		}
-		SWTBotPreferences.PLAYBACK_DELAY = 200;
+		SWTBotPreferences.PLAYBACK_DELAY = 2000;
 		System.out.println("---Servers added---");
 		bot.sleep(10000);
 		
@@ -135,6 +136,7 @@ public class ServerManagementTest extends SWTBotTestCase {
 	 */
 	@Test
 	public void test03() {
+		SWTBotPreferences.PLAYBACK_DELAY = 2000;
 		n++;
 		// start server EAP-6.1
 		TeiidInstanceView teiidInstanceView = new TeiidInstanceView(true);
