@@ -8,6 +8,7 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
 
 /**
  * 
@@ -37,6 +38,7 @@ public class ServerPreferencePage extends PreferencePage {
 				|| type[1].matches("WildFly (.*)")){
 			new SWTWorkbenchBot().textWithLabel("Configuration file: ").setText(configFile);
 		}
+		new WaitWhile(new IsInProgress(), TimePeriod.LONG);
 		new PushButton("Finish").click();
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}

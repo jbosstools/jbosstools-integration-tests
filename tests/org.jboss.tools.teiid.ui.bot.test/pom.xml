@@ -159,7 +159,7 @@
 		  <version>${maven.antrun.plugin.version}</version>
 		  <executions>
 		    <execution>
-		      <id>prepare-teiid</id>
+		      <id>prepare-teiid-as-teiid</id>
 		      <phase>pre-integration-test</phase>
 		      <goals>
 			<goal>run</goal>
@@ -243,7 +243,7 @@
 	<profile>
 	    <id>dv6</id>
 	    <properties>
-	      <systemProperties>${integrationTestsSystemProperties} -Dswtbot.test.properties.file=./dv6.properties</systemProperties>
+	     <!-- <systemProperties>${integrationTestsSystemProperties} -Dswtbot.test.properties.file=./dv6.properties</systemProperties>-->
 	    </properties>
 	    <build>
 	      <plugins>
@@ -270,7 +270,7 @@
 		  <version>${maven.antrun.plugin.version}</version>
 		  <executions>
 		    <execution>
-		      <id>prepare-teiid</id>
+		      <id>prepare-teiid-dv6</id>
 		      <phase>pre-integration-test</phase>
 		      <goals>
 			<goal>run</goal>
@@ -278,6 +278,7 @@
 		      <configuration>
 			<tasks>
 			  <echo file="dv6.properties">SERVER=EAP,6.1,default,target/requirements/jboss-eap-6.1</echo>
+			  <echo file="${requirementsDirectory}/jboss-eap-6.1/standalone/configuration/teiid-security-users.properties">user=user</echo>
 			</tasks>
 		      </configuration>
 		    </execution>
@@ -291,7 +292,7 @@
 	  <profile>
 	    <id>as5-teiid7</id>
 	    <properties>
-	      <systemProperties>${integrationTestsSystemProperties} -Dswtbot.test.properties.file=./as5-teiid7.properties</systemProperties>
+	    <!--  <systemProperties>${integrationTestsSystemProperties} -Dswtbot.test.properties.file=./as5-teiid7.properties</systemProperties>-->
 	    </properties>
 	    <build>
 	      <plugins>
@@ -330,7 +331,7 @@
 		  <version>${maven.antrun.plugin.version}</version>
 		  <executions>
 		    <execution>
-		      <id>prepare-teiid</id>
+		      <id>prepare-teiid-as5-teiid7</id>
 		      <phase>pre-integration-test</phase>
 		      <goals>
 			<goal>run</goal>
@@ -338,6 +339,7 @@
 		      <configuration>
 			<tasks>
 			  <echo file="as5-teiid7.properties">SERVER=AS,5.1,default,target/requirements/jboss-5.1.0.GA</echo>
+			  <echo file="${requirementsDirectory}/jboss-5.1.0.GA/server/default/conf/props/teiid-security-users.properties">user=user</echo>
 			</tasks>
 		      </configuration>
 		    </execution>

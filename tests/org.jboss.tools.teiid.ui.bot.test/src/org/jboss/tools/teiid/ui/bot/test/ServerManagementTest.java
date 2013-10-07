@@ -3,14 +3,7 @@ package org.jboss.tools.teiid.ui.bot.test;
 import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
 import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.Server;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
-import org.jboss.reddeer.swt.condition.ShellIsActive;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.button.RadioButton;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
@@ -25,7 +18,7 @@ import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.view.SQLResult;
 import org.jboss.tools.teiid.reddeer.view.TeiidInstanceView;
 import org.jboss.tools.teiid.reddeer.wizard.CreateVDB;
-import org.jboss.tools.teiid.reddeer.wizard.ImportJDBCDatabaseWizard;
+import org.jboss.tools.teiid.reddeer.wizard.ImportProjectWizard;
 import org.jboss.tools.teiid.ui.bot.test.requirement.PerspectiveRequirement.Perspective;
 import org.jboss.tools.teiid.ui.bot.test.suite.TeiidSuite;
 import org.junit.BeforeClass;
@@ -42,12 +35,14 @@ import org.junit.Test;
 public class ServerManagementTest extends SWTBotTestCase {
 
 	public static String[] properties = {
-		"dv6.properties", "as5-teiid7.properties"
+		"dv6.properties"
+		, "as5-teiid7.properties"
 	};
 
 	public static String[] serverNames = { 
 		"EAP-6.1", 
-		"AS-5.1" };
+		"AS-5.1" 
+		};
 
 	private static final String PROJECT_NAME = "ServerMgmtTest";
 	private static final String MODEL_NAME = "partssupModel1.xmi";
@@ -69,32 +64,27 @@ public class ServerManagementTest extends SWTBotTestCase {
 	@BeforeClass
 	public static void createModelProject() {
 		if (System.getProperty("swtbot.PLAYBACK_DELAY") == null) {
-			SWTBotPreferences.PLAYBACK_DELAY = 200;
+			SWTBotPreferences.PLAYBACK_DELAY = 2000;
 		} else {
 			SWTBotPreferences.PLAYBACK_DELAY = new Integer(
 					System.getProperty("swtbot.PLAYBACK_DELAY"));// -Dswtbot.PLAYBACK_DELAY
 		}
 
-		teiidBot.createModelProject(PROJECT_NAME);
-
+		new ImportProjectWizard("resources/projects/ServerMgmtTest.zip").execute();
+		
 		// create HSQL profile
 		teiidBot.createHsqlProfile("resources/db/ds1.properties", jdbcProfile,
 				true, true);
 		
-		ImportJDBCDatabaseWizard wizard = new ImportJDBCDatabaseWizard();
-		wizard.setConnectionProfile(jdbcProfile);
-		wizard.setProjectName(PROJECT_NAME);
-		wizard.setModelName(MODEL_NAME);
-		wizard.addItem("PUBLIC/PUBLIC/TABLE/PARTS");
-		wizard.execute(true);
 
 	}
-
+	
 	/**
 	 * No server defined
 	 */
 	@Test
 	public void test01() {
+		SWTBotPreferences.PLAYBACK_DELAY = 2000;
 		n++;
 		// preview data - fails on "no teiid instance"
 		assertFalse(canPreviewData("Confirm Enable Preview", "PARTS"));
@@ -116,11 +106,17 @@ public class ServerManagementTest extends SWTBotTestCase {
 	 */
 	@Test
 	public void test02() {
+		SWTBotPreferences.PLAYBACK_DELAY = 2000;
+		
 		n++;
 		for (int i = 0; i < properties.length; i++) {
 			TeiidSuite.addServerWithProperties(properties[i]);// define AS-5,
 																// EAP-6.1
 		}
+		SWTBotPreferences.PLAYBACK_DELAY = 2000;
+		System.out.println("---Servers added---");
+		bot.sleep(10000);
+		
 
 		// preview data - fail
 		assertFalse(canPreviewData(TEIID_CONNECTION_FAILURE, "PARTS"));
@@ -140,6 +136,7 @@ public class ServerManagementTest extends SWTBotTestCase {
 	 */
 	@Test
 	public void test03() {
+		SWTBotPreferences.PLAYBACK_DELAY = 2000;
 		n++;
 		// start server EAP-6.1
 		TeiidInstanceView teiidInstanceView = new TeiidInstanceView(true);
@@ -155,19 +152,21 @@ public class ServerManagementTest extends SWTBotTestCase {
 
 		// create VDB - pass
 		assertTrue(canCreateVDB(VDB + n, MODEL_NAME));
-
+		
 		// deploy VDB - pass
 		assertTrue(canDeployVDB(null, VDB + n, createPathToVDB(VDB + n, pathToVDB_EAP6)));
-
+		
 		// execute VDB - pass
 		assertTrue(canExecuteVDB(null, VDB + n, TEST_SQL1));
-
+		
 		// switch back to teiid designer perspective
 		TeiidPerspective.getInstance();
 
 		// stop server EAP-6.1
 		teiidInstanceView.stopServer(serverNames[0]);
 		
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+
 		//server AS-5
 		teiidInstanceView.setDefaultTeiidInstance(AS5_URL);
 		n++;
@@ -186,9 +185,6 @@ public class ServerManagementTest extends SWTBotTestCase {
 
 		// deploy VDB - pass
 		assertTrue(canDeployVDB(null, VDB + n, createPathToVDB(VDB + n, pathToVDB_AS5)));
-
-		//AS5 : data source must be created first
-		//createDataSource();
 		
 		// execute vdb - pass
 		assertTrue(canExecuteVDB(null, VDB + n, TEST_SQL1));
@@ -198,16 +194,10 @@ public class ServerManagementTest extends SWTBotTestCase {
 		
 		// stop server
 		teiidInstanceView.stopServer(serverNames[1]);
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
 
-	private void createDataSource() {
-		new ModelExplorer().getProject(PROJECT_NAME).getProjectItem(MODEL_NAME).select();
-		new ContextMenu("Modeling", "Create Data Source");
-		new RadioButton("Use Connection Profile Info").click();
-		new DefaultCombo("Connection Profile").setSelection(jdbcProfile);
-		new PushButton("Finish").click();
-		
-	}
+	
 
 	private boolean canPreviewData(String message, String tableName) {
 		if (message != null) {
@@ -270,14 +260,15 @@ public class ServerManagementTest extends SWTBotTestCase {
 			return false;
 		}
 		vdb.executeVDB(true);
-
+		
 		SQLScrapbookEditor editor = new SQLScrapbookEditor("SQL Scrapbook0");
 		editor.show();
 
 		// TESTSQL_1
 		editor.setText(sql);
-		editor.executeAll();
-		
+		editor.executeAll(true);
+
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		
 		SQLResult result = DatabaseDevelopmentPerspective.getInstance()
 				.getSqlResultsView().getByOperation(sql);

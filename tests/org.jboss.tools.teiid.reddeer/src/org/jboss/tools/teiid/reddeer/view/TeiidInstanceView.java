@@ -7,6 +7,7 @@ import org.jboss.reddeer.eclipse.wst.server.ui.view.Server;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewEnums.ServerState;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewException;
+import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
@@ -15,6 +16,7 @@ import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.reddeer.workbench.view.impl.WorkbenchView;
 import org.jboss.tools.teiid.reddeer.condition.ServerHasState;
 
@@ -171,7 +173,8 @@ public class TeiidInstanceView extends WorkbenchView {
 		
 		new ContextMenu("Stop").select();
 		AbstractWait.sleep(TimePeriod.SHORT.getSeconds() * 1000);
-		new WaitUntil(new ServerHasState(serverName), TimePeriod.LONG);
+		//new WaitUntil(new ServerHasState(serverName), TimePeriod.LONG);
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
 
 }
