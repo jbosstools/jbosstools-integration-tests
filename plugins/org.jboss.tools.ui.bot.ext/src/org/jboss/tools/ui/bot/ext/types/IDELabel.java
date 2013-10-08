@@ -866,7 +866,7 @@ public class IDELabel {
    public static class JBossCentralEditor{
 	   public static final String JBOSS_CENTRAL = "JBoss Central";
 	   public static final String DYNAMIC_WEB_PROJECT = "Dynamic Web Project";
-	   public static final String JAVA_EE_WEB_PROJECT = "JavaEE Web Project";
+	   public static final String JAVA_EE_WEB_PROJECT = "Java EE Web Project";
 	   public static final String HTML5_PROJECT = "HTML5 Project";
 	   public static final String RICHFACES_PROJECT = "Richfaces Project";
 	   public static final String OPENSHIFT_APP = "OpenShift Application";

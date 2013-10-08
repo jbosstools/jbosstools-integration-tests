@@ -4,22 +4,23 @@ import static org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable.syncExec;
 
 import java.lang.reflect.Field;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.results.StringResult;
 import org.eclipse.swtbot.swt.finder.results.VoidResult;
 import org.eclipse.ui.IEditorReference;
-import org.eclipse.ui.forms.widgets.ImageHyperlink;
 import org.jboss.tools.central.editors.JBossCentralEditor;
 import org.jboss.tools.central.editors.xpl.TextSearchControl;
 import org.jboss.tools.ui.bot.ext.parts.SWTBotEditorExt;
-import org.jboss.tools.ui.bot.ext.widgets.SWTBotImageHyperlink;
 
 public class SWTJBossCentralEditorExt extends SWTBotEditorExt{
 	
 	private TextSearchControl searchControl=null;
-	private SWTBotImageHyperlink swtBotImageHyperlink=null;
 
 	public SWTJBossCentralEditorExt(final IEditorReference editorReference,
 			SWTWorkbenchBot bot) throws WidgetNotFoundException {
@@ -30,7 +31,6 @@ public class SWTJBossCentralEditorExt extends SWTBotEditorExt{
 			public void run() {
 				JBossCentralEditor centralEditor = (JBossCentralEditor) editorReference.getEditor(true);
 				searchControl = getSearchControl(centralEditor);
-				swtBotImageHyperlink = getSwtBotImageHyperlink(centralEditor);
 			}
 		});
 	}
@@ -56,7 +56,48 @@ public class SWTJBossCentralEditorExt extends SWTBotEditorExt{
 	}
 	
 	public void performSearch(){
-		swtBotImageHyperlink.click();
+		try {
+			Field f = TextSearchControl.class.getDeclaredField("textControl");
+			f.setAccessible(true);
+			final Control textControl = (Control)f.get(searchControl);
+			syncExec(new VoidResult() {
+				
+				@Override
+				public void run() {
+					textControl.forceFocus();
+					Event e = new Event();
+					e.keyCode = '\r';
+					e.character = '\r';
+					e.type = SWT.KeyDown;
+					e.widget = textControl;
+					Display.getCurrent().post(e);
+					try {
+						Thread.sleep(50);
+					} catch (InterruptedException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					e = new Event();
+					e.keyCode = '\r';
+					e.character = '\r';
+					e.type = SWT.KeyUp;
+					e.widget = textControl;
+					Display.getCurrent().post(e);
+				}
+			});
+		} catch (SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchFieldException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	private Composite getSearchControlComposite(JBossCentralEditor editor){
@@ -83,10 +124,6 @@ public class SWTJBossCentralEditorExt extends SWTBotEditorExt{
 	
 	private TextSearchControl getSearchControl(JBossCentralEditor editor){
 		return (TextSearchControl) getSearchControlComposite(editor).getChildren()[1];
-	}
-	
-	private SWTBotImageHyperlink getSwtBotImageHyperlink(JBossCentralEditor editor){
-		return new SWTBotImageHyperlink((ImageHyperlink) getSearchControlComposite(editor).getChildren()[0]);
 	}
 
 }
