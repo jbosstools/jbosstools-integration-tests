@@ -4,6 +4,9 @@ import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
 import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
@@ -18,6 +21,7 @@ import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.view.SQLResult;
 import org.jboss.tools.teiid.reddeer.view.TeiidInstanceView;
 import org.jboss.tools.teiid.reddeer.wizard.CreateVDB;
+import org.jboss.tools.teiid.reddeer.wizard.ImportJDBCDatabaseWizard;
 import org.jboss.tools.teiid.reddeer.wizard.ImportProjectWizard;
 import org.jboss.tools.teiid.ui.bot.test.requirement.PerspectiveRequirement.Perspective;
 import org.jboss.tools.teiid.ui.bot.test.suite.TeiidSuite;
@@ -46,7 +50,7 @@ public class ServerManagementTest extends SWTBotTestCase {
 
 	private static final String PROJECT_NAME = "ServerMgmtTest";
 	private static final String MODEL_NAME = "partssupModel1.xmi";
-	private static final String jdbcProfile = "HSQLDB Profile";
+	private static final String HSQLDB_PROFILE = "HSQLDB Profile";
 	private static final String VDB = "vdb";
 	private static int n = -1;
 	private static final String[] pathToVDB_EAP6 = {
@@ -64,19 +68,20 @@ public class ServerManagementTest extends SWTBotTestCase {
 	@BeforeClass
 	public static void createModelProject() {
 		if (System.getProperty("swtbot.PLAYBACK_DELAY") == null) {
-			SWTBotPreferences.PLAYBACK_DELAY = 2000;
+			SWTBotPreferences.PLAYBACK_DELAY = 1000;
 		} else {
 			SWTBotPreferences.PLAYBACK_DELAY = new Integer(
 					System.getProperty("swtbot.PLAYBACK_DELAY"));// -Dswtbot.PLAYBACK_DELAY
 		}
 
-		new ImportProjectWizard("resources/projects/ServerMgmtTest.zip").execute();
-		
 		// create HSQL profile
-		teiidBot.createHsqlProfile("resources/db/ds1.properties", jdbcProfile,
+		teiidBot.createHsqlProfile("resources/db/ds1.properties", HSQLDB_PROFILE,
 				true, true);
 		
-
+		new ImportProjectWizard("resources/projects/ServerMgmtTest.zip").execute(); //incorrect connection profile
+		//set connection profile
+		new ModelExplorer().changeConnectionProfile(HSQLDB_PROFILE, PROJECT_NAME, MODEL_NAME);
+		
 	}
 	
 	/**
@@ -84,7 +89,7 @@ public class ServerManagementTest extends SWTBotTestCase {
 	 */
 	@Test
 	public void test01() {
-		SWTBotPreferences.PLAYBACK_DELAY = 2000;
+		SWTBotPreferences.PLAYBACK_DELAY = 1000;
 		n++;
 		// preview data - fails on "no teiid instance"
 		assertFalse(canPreviewData("Confirm Enable Preview", "PARTS"));
@@ -113,7 +118,7 @@ public class ServerManagementTest extends SWTBotTestCase {
 			TeiidSuite.addServerWithProperties(properties[i]);// define AS-5,
 																// EAP-6.1
 		}
-		SWTBotPreferences.PLAYBACK_DELAY = 2000;
+		SWTBotPreferences.PLAYBACK_DELAY = 1000;
 		System.out.println("---Servers added---");
 		bot.sleep(10000);
 		
@@ -136,7 +141,7 @@ public class ServerManagementTest extends SWTBotTestCase {
 	 */
 	@Test
 	public void test03() {
-		SWTBotPreferences.PLAYBACK_DELAY = 2000;
+		SWTBotPreferences.PLAYBACK_DELAY = 1000;
 		n++;
 		// start server EAP-6.1
 		TeiidInstanceView teiidInstanceView = new TeiidInstanceView(true);
