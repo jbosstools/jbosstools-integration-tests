@@ -5,6 +5,9 @@ import java.util.regex.Pattern;
 
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarPushButton;
+import org.jboss.reddeer.workbench.editor.DefaultEditor;
+import org.jboss.reddeer.workbench.editor.Editor;
+import org.jboss.reddeer.workbench.view.View;
 import org.jboss.tools.central.test.ui.bot.helper.SWTJBossCentralEditorExt;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.condition.BrowserIsLoaded;
@@ -56,7 +59,7 @@ public class BaseFunctionalityTest extends SWTTestExt {
 	public void homeWebTest(){
 		SWTJBossCentralEditorExt editor = new SWTJBossCentralEditorExt(bot.editorByTitle("JBoss Central").getReference(), bot);
 		assertTrue("JBoss Central is not active",editor.isActive());
-		SWTBotToolbarPushButton button = (SWTBotToolbarPushButton) editor.bot().toolbarButtonWithTooltip("JBoss Tools Home");
+		SWTBotToolbarPushButton button = (SWTBotToolbarPushButton) editor.bot().toolbarButtonWithTooltip("JBoss Developer Studio Home");
 		button.click();
 		checkWebPage();
 	}
@@ -100,11 +103,14 @@ public class BaseFunctionalityTest extends SWTTestExt {
 	
 	@Test
 	public void searchTest(){
+		DefaultEditor e = new DefaultEditor();
+		e.maximize();
 		SWTJBossCentralEditorExt editor = new SWTJBossCentralEditorExt(bot.editorByTitle("JBoss Central").getReference(), bot);
 		editor.setSearchText("test search string");
 		assertTrue(editor.getSearchText().equals("test search string"));
 		editor.performSearch();
 		checkWebPage();
+		e.maximize();
 	}
 	
 	private void checkWebPage(){

@@ -5,6 +5,7 @@ import static org.eclipse.swtbot.swt.finder.waits.Conditions.shellIsActive;
 import org.eclipse.swt.SWT;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
+import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.tools.ui.bot.ext.SWTFormsBotExt;
 import org.jboss.tools.ui.bot.ext.condition.TaskDuration;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
@@ -30,12 +31,19 @@ public class CreateProjectsWithJava7Test extends CreateProjectsWithServerTest{
 		}else{
 			setupProject((projectName==null) ? formText : projectName, true, true);
 		}
-		if (ProblemsView.getErrorsNode(bot) != null){
-			for (String error : ProblemsView.getErrorsNode(bot).getNodes()) {
-				log.error("Found error in Problems View: "+error);
+		org.jboss.reddeer.eclipse.ui.problems.ProblemsView problems = new org.jboss.reddeer.eclipse.ui.problems.ProblemsView();
+		if (! problems.getAllErrors().isEmpty()){
+			for (TreeItem item : problems.getAllErrors()){
+				log.error("Found error in Problems View: "+item.getText());
 			}
-			fail("There should be no errors in Problems view");
+			fail("There should be no errors in Problems View");
 		}
+//		if (ProblemsView.getErrorsNode(bot) != null){
+//			for (String error : ProblemsView.getErrorsNode(bot).getNodes()) {
+//				log.error("Found error in Problems View: "+error);
+//			}
+//			fail("There should be no errors in Problems view");
+//		}
 	}
 	
 	private void setupMultiProject(String formText){

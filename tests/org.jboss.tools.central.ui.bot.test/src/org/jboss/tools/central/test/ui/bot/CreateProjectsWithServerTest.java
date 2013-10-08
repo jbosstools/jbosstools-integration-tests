@@ -9,6 +9,10 @@ import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotLabel;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
+import org.jboss.reddeer.swt.condition.WaitCondition;
+import org.jboss.reddeer.swt.exception.WaitTimeoutExpiredException;
+import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.tools.ui.bot.ext.SWTBotFactory;
 import org.jboss.tools.ui.bot.ext.SWTFormsBotExt;
 import org.jboss.tools.ui.bot.ext.SWTOpenExt;
@@ -20,10 +24,10 @@ import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.Preference;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
-import org.jboss.tools.ui.bot.ext.view.ProblemsView;
 import org.jboss.tools.ui.bot.ext.wizards.SWTBotWizard;
 import org.junit.After;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 
@@ -114,7 +118,7 @@ public class CreateProjectsWithServerTest extends SWTTestExt{
 		bot.closeAllShells();
 	}
 	
-	@Test
+	@Test 
 	public void createProjectsSectionTest(){
 		//Openshift app
 		
@@ -168,7 +172,7 @@ public class CreateProjectsWithServerTest extends SWTTestExt{
 		canBeDeployedTest();
 	}
 	
-	@Test
+	@Test @Ignore // JBIDE-14534
 	public void createProjectSectionSpringMVCProjectTest(){
 		checkExample(null, IDELabel.JBossCentralEditor.SPRING_MVC_PROJECT, true, false);
 		canBeDeployedTest();
@@ -183,16 +187,17 @@ public class CreateProjectsWithServerTest extends SWTTestExt{
 	}
 	
 	public void projectExamplesSectionTest(String name, String projectName, String category){
+		importProjectExample(name, projectName, category);
+		canBeDeployedTest();
+	}
+	
+	public void importProjectExample(String name, String projectName, String category){
 		SWTFormsBotExt formsBot = SWTBotFactory.getFormsBot();
-//		if (readmeFile == null){
 		QuickstartCategoryLabel label = new QuickstartCategoryLabel(bot.label(category).widget);
 		label.select();
 		checkExample(formsBot, name, true, projectName);
-//		}else{
-//			checkExample(formsBot, name, true, false, projectName, readmeFile);
-//		}
-		canBeDeployedTest();
 	}
+	
 	
 	@Test
 	public void projectExamplesSectionKitchensinkHTML5Test(){
@@ -220,18 +225,8 @@ public class CreateProjectsWithServerTest extends SWTTestExt{
 	}
 	
 	@Test
-	public void projectExamplesSectionJaxRsClientTest(){
-		projectExamplesSectionTest("jax-rs-client", "jboss-as-jax-rs-client", "Back-end Applications");
-	}
-	
-	@Test
 	public void projectExamplesSectionHelloworldJMSTest(){
 		projectExamplesSectionTest("helloworld-jms", "jboss-as-helloworld-jms", "Back-end Applications");
-	}
-	
-	@Test 
-	public void projectExamplesSectionNumberguessTest(){
-		projectExamplesSectionTest("numberguess", "jboss-as-numberguess", "Back-end Applications");
 	}
 	
 	/**
@@ -267,17 +262,17 @@ public class CreateProjectsWithServerTest extends SWTTestExt{
 		}
 		servers.show();
 		bot.waitWhile(new NonSystemJobRunsCondition(), TaskDuration.LONG.getTimeout());
-		assertNull("Errors node should be null", ProblemsView.getErrorsNode(bot));
+		assertTrue("Errors node should be null", new ProblemsView().getAllErrors().isEmpty());
 		servers.show();
 		bot.waitWhile(new NonSystemJobRunsCondition());
-		SWTBotTreeItem serverTreeItem = servers.findServerByName(servers.bot().tree(), serverName).expand();
+		final SWTBotTreeItem serverTreeItem = servers.findServerByName(servers.bot().tree(), serverName).expand();
 		bot.sleep(TIME_1S);
-		for (SWTBotTreeItem projectName : packageExplorer.show().bot().tree().getAllItems()) {
+		for (final SWTBotTreeItem projectName : packageExplorer.show().bot().tree().getAllItems()) {
+			log.info("Testing project "+projectName.getText());
 			try{
-				log.info("Testing project "+projectName.getText());
-				serverTreeItem.getNode(projectName.getText()+"  [Started, Synchronized]");
+				new WaitUntil(new WaitForProjectDeployed(serverTreeItem, projectName.getText()));
 				log.info("Project: "+projectName.getText()+" is properly deployed.");
-			}catch (WidgetNotFoundException wnfe){
+			}catch (WaitTimeoutExpiredException wnfe){
 				//exception for Java EE Web project. It hase 4 projects, multi, multi-ear, multi-ejb and multi-web.
 				if (!projectName.getText().contains(IDELabel.JBossCentralEditor.JAVA_EE_PROJECT.replaceAll("\\s", ""))){
 					//jms and osgi aren't project, that can be deployed to server
@@ -291,7 +286,7 @@ public class CreateProjectsWithServerTest extends SWTTestExt{
 	}
 	
 	
-	private void checkExample(SWTFormsBotExt formsBot, String formText, boolean readme, boolean blank){
+	public void checkExample(SWTFormsBotExt formsBot, String formText, boolean readme, boolean blank){
 		checkExample(formsBot, formText, readme, blank, null, null);
 	}
 
@@ -315,7 +310,7 @@ public class CreateProjectsWithServerTest extends SWTTestExt{
 	 */
 	
 	protected void checkExample(SWTFormsBotExt formsBot, String formText, boolean readme, boolean blank, String projectName, String readmeFileName){
-		problems.show();
+		new ProblemsView();
 		if (formsBot==null){
 			bot.hyperlink(formText).click();
 		}else{
@@ -374,5 +369,32 @@ public class CreateProjectsWithServerTest extends SWTTestExt{
 		}else{
 			bot.clickButton("Finish");
 		}
+	}
+	
+	class WaitForProjectDeployed implements WaitCondition{
+
+		private String projectName;
+		private SWTBotTreeItem serverTreeItem;
+		
+		public WaitForProjectDeployed(SWTBotTreeItem serverTreeItem, String projectName) {
+			this.projectName = projectName;
+			this.serverTreeItem = serverTreeItem;
+		}
+		
+		@Override
+		public String description() {
+			return "Waiting for " + projectName + " to be deployed";
+		}
+
+		@Override
+		public boolean test() {
+			try{
+				serverTreeItem.getNode(projectName+"  [Started, Synchronized]");
+			}catch(WidgetNotFoundException wnfe){
+				return false;
+			}
+			return true;
+		}
+		
 	}
 }
