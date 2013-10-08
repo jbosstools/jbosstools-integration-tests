@@ -9,26 +9,28 @@ package org.jboss.tools.mylyn.ui.bot.test;
  */
 
 import static org.junit.Assert.*;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import org.apache.log4j.Logger;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.junit.Test;
+import org.jboss.reddeer.eclipse.ui.ide.RepoConnectionDialog;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.swt.util.Bot;
-import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
+import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 
-public class MylynBugzillaQueryTest {
+public class MylynTestBzQuery {
 
 	protected final Logger log = Logger.getLogger(this.getClass());
 	protected final String expectedMylynElements[] = { "Tasks", "Local",
@@ -37,23 +39,6 @@ public class MylynBugzillaQueryTest {
 
 	/* Simple test to verify the operation of anonymous queries of the RH and eclipse bugzilla
 	 * repos through Mylyn. 
-	 * 
-	 * Workarounds to deal with SWTBot/Mylyn issues:
-	 * 
-	 * 1) The query name as displayed by Mylyn can take either form:
-	 *     MylynBugzillaQueryTest - test query   [Red Hat Bugzilla]
-	 *     MylynBugzillaQueryTest - test query
-	 * 
-	 * This test checks for the shorter form as it is a subset of the longer form. 
-	 * 
-	 * 2) SWTBot has problems with the tree of queries displayed by Mylyn. The query names are
-	 * generally displayed, but the resulting set of bugzillas (in this case of this test, these
-	 * sets consist of only one bugzilla) are not. It sometimes helps to expand/double-click 
-	 * the query - but a better workaround is to enter the bugzilla number in the display filter
-	 * text box. 
-	 * 
-	 * Note that these problems are specific to SWTBot - they are not seen in manual use. 
-	 * 
 	 */
 	
 	/* Test for RH bugzilla */
@@ -80,64 +65,66 @@ public class MylynBugzillaQueryTest {
 	 */
 	public void TestBugzillaQuery(String targetRepo, String queryName, String bugzillaSummary, String bugzilla) {
 
+		TestSupport.closeWelcome();
+		
 		String fullBugzillaString = bugzilla + ": " + bugzillaSummary;
 		
-		WorkbenchShell ws = new WorkbenchShell();
-
 		List<TreeItem> repoItems = TestSupport.mylynTestSetup1(log);
 		ArrayList<String> repoList = TestSupport.mylynTestSetup2(repoItems, log);
-		
+
 		// JBDS50_0135 User can connect Bugzilla via Mylyn connectors plugin
 		// JBDS50_0140 Red Hat Bugzilla task repository is available and can be
 		// connected
-		log.info("Step - Validate connection to the Red Hat Bugzilla repo");
+		log.info("Step 4 - Validate connection to the Red Hat Bugzilla repo");
+
 		int elementIndex = repoList.indexOf(targetRepo);
-		repoItems.get(elementIndex).doubleClick();
-		Bot.get().sleep(TimePeriod.NORMAL.getSeconds());
+		log.info("Found: " + repoItems.get(elementIndex).getText());
+		
+		repoItems.get(elementIndex).select();	
+		new ShellMenu("File", "Properties").select();      
+		
+		RepoConnectionDialog theRepoDialog = new RepoConnectionDialog();
+		log.info(theRepoDialog.getText());
 
-		new DefaultShell("Properties for Task Repository");
-		log.info(new PushButton("Validate Settings").getText());
-		log.info(new PushButton("Validate Settings").isEnabled());
-		Bot.get().sleep(TimePeriod.NORMAL.getSeconds());
-		PushButton validate = new PushButton("Validate Settings");
-		validate.click();
-
-		while (!validate.isEnabled()) {
-			Bot.get().sleep(TimePeriod.NORMAL.getSeconds());
-		}
+		AbstractWait.sleep(TimePeriod.NORMAL.getSeconds());
+		theRepoDialog.validateSettings();
 
 		log.info("["
 				+ new LabeledText("Bugzilla Repository Settings").getText()
 				+ "]");
-		assertTrue("Repo Connection Properties Invalid", new LabeledText("Bugzilla Repository Settings").getText().contains("Repository is valid"));
-		new PushButton("Cancel").click();
-
+		assertTrue("Repo Connection Properties Invalid",
+				new LabeledText("Bugzilla Repository Settings").getText()
+						.contains("Repository is valid"));
+			
+		theRepoDialog.finish();
+		AbstractWait.sleep(TimePeriod.NORMAL.getSeconds());
+		
 		log.info("Step - Create a anonymous bugzilla query");
-		Bot.get().sleep(TimePeriod.NORMAL.getSeconds());
+		AbstractWait.sleep(TimePeriod.NORMAL.getSeconds());
 
 		elementIndex = repoList.indexOf(targetRepo);
 		repoItems.get(elementIndex).select();
 
-		Bot.get().sleep(TimePeriod.LONG.getSeconds());
+		AbstractWait.sleep(TimePeriod.NORMAL.getSeconds());
 
 		new ShellMenu("File", "New", "Other...").select();
 		new DefaultShell("New");
-		Bot.get().sleep(TimePeriod.NORMAL.getSeconds());
+		AbstractWait.sleep(TimePeriod.NORMAL.getSeconds());
 		
 		new DefaultTree();
 		DefaultTreeItem theTask = new DefaultTreeItem ("Tasks", "Query");
 		theTask.select();		
 		
-		Bot.get().sleep(TimePeriod.NORMAL.getSeconds());
+		AbstractWait.sleep(TimePeriod.NORMAL.getSeconds());
 		new PushButton("Next >").click();
 
 		new DefaultShell("New Query");
-		Bot.get().sleep(TimePeriod.NORMAL.getSeconds());
+		AbstractWait.sleep(TimePeriod.NORMAL.getSeconds());
 		new PushButton("Next >").click();
-		Bot.get().sleep(TimePeriod.NORMAL.getSeconds());
+		AbstractWait.sleep(TimePeriod.NORMAL.getSeconds());
 
 		new DefaultShell("Edit Query");
-		Bot.get().sleep(TimePeriod.NORMAL.getSeconds());
+		AbstractWait.sleep(TimePeriod.NORMAL.getSeconds());
 		new RadioButton("Create query using form").click();
 		new PushButton("Next >").click();
 		new WaitUntil(new ButtonWithTextIsActive("Cancel"),
@@ -145,12 +132,12 @@ public class MylynBugzillaQueryTest {
 
 		while (!new PushButton("Cancel").isEnabled()) {
 			log.info("I am not ready" + new PushButton("Cancel").isEnabled());
-			Bot.get().sleep(TimePeriod.NORMAL.getSeconds());
+			AbstractWait.sleep(TimePeriod.NORMAL.getSeconds());
 		}
 
 		new DefaultShell("Edit Query");
 			
-		Bot.get().sleep(TimePeriod.NORMAL.getSeconds());
+		AbstractWait.sleep(TimePeriod.NORMAL.getSeconds());
 		
 		/* Slightly different text on JBT3/4)  */ 	
 		log.info("GET Bundle");
@@ -186,79 +173,50 @@ public class MylynBugzillaQueryTest {
 			}
 		}
 		
-		Bot.get().sleep(TimePeriod.NORMAL.getSeconds());
+		AbstractWait.sleep(TimePeriod.NORMAL.getSeconds());
 		new DefaultCombo("Summary:").setText(bugzillaSummary);
-		Bot.get().sleep(TimePeriod.NORMAL.getSeconds());
+		AbstractWait.sleep(TimePeriod.NORMAL.getSeconds());
 		new PushButton("Finish").click();
-		Bot.get().sleep(TimePeriod.LONG.getSeconds());
+		AbstractWait.sleep(TimePeriod.NORMAL.getSeconds());
 
 		new ShellMenu("Window", "Show View", "Other...").select();
-		new DefaultShell("Show View");
 
 		/* Verify that the expected repos are defined */
 		log.info("Step - Verify that the Mylyn query is Present");
+
 		/* Open the Task List view */
-		Bot.get().sleep(TimePeriod.LONG.getSeconds());
+		AbstractWait.sleep(TimePeriod.NORMAL.getSeconds());
 
 		new DefaultTree();
 		theTask = new DefaultTreeItem ("Mylyn", "Task List");
 		theTask.select();	
-		
-		/* Slightly different text after update for 
-		 * http://wiki.eclipse.org/Platform_UI/Juno_Performance_Investigation
-		 * installed - see: 
-		 * https://issues.jboss.org/browse/JBDS-2441
-		 * https://bugs.eclipse.org/bugs/show_bug.cgi?id=385272
-		 */
-		try {
-			new PushButton("OK").click();
-		}
-		catch (org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException E) {
-			new PushButton("ok").click();
-		}		
-		
-		Bot.get().sleep(TimePeriod.LONG.getSeconds());
+
+		new PushButton("OK").click();
+		AbstractWait.sleep(TimePeriod.NORMAL.getSeconds());
 
 		/*
 		 * A full 30 second delay is needed here - or else the test fails to
 		 * locate the widget.
 		 */
-		Bot.get().sleep(30000l);
+		AbstractWait.sleep(30000l);
 
 		/* Dealing with Red Deer incompatibilities on JBT */
-		
 		if (org.eclipse.core.runtime.Platform.getProduct().getName().equals("JBoss Developer Studio")) {
-
-			/* Slightly different text on JBDS5/6 - assume that 5 is running, trap
-			 * an exception use the catch block if it's JBDS6 (same for JBT3/4)
-			 */		
-			if (theVersionString.equals("5")) {
-				log.info ("JBDS 5 is running");
-				new DefaultShell("JBoss - JBoss Central - JBoss Developer Studio");
-			}
-			else if (theVersionString.equals("6")) {
-				log.info ("JBDS 6 is running");
-				new DefaultShell("JBoss - JBoss Developer Studio");
-			}	
-			else if (theVersionString.equals("7")) {
-				log.info ("JBDS 7 is running");
-				new DefaultShell("JBoss - JBoss Developer Studio");
-			}	
-			
+	
 		/* Locate the list of created queries */
-		
 		DefaultTree bugzillaTree = new DefaultTree();
 		List<TreeItem> bugzillaQueryItems = bugzillaTree.getAllItems();
 		log.info("Total of query items found = " + bugzillaQueryItems.size());
-		Bot.get().sleep(30000l);
+		AbstractWait.sleep(30000l);
 		
 		/*
-		 * There seems to be an SWTBot problem here - the full query tree is not
+		 * There seems to be an eclipse problem here - the full query tree is not
 		 * visible unless the first element is expanded - the workaround is to
 		 * expand it.
 		 */
-		Bot.get().text(0).setText("");
-		Bot.get().text(0).setText(bugzilla);	
+		DefaultText eclipseText = new DefaultText();
+		eclipseText.setText("");
+		eclipseText.setText(bugzilla);
 		
 		int TreeItemCounter = 0;
 		for (TreeItem i : bugzillaQueryItems) {
@@ -287,7 +245,7 @@ public class MylynBugzillaQueryTest {
 				bugzillaQueryItem.select();
 				bugzillaQueryItem.doubleClick();
 				bugzillaQueryItem.expand();
-				Bot.get().sleep(30000l);
+				AbstractWait.sleep(30000l);
 				bugzillaQueryItems = bugzillaTree.getAllItems();
 				bugzillaItem = bugzillaQueryItems.get(TreeItemCounter + 1);
 			}
@@ -305,19 +263,19 @@ public class MylynBugzillaQueryTest {
 		}
 		
 		else if (org.eclipse.core.runtime.Platform.getProduct().getName().equals("Eclipse Platform")) {
-		
-			new DefaultShell("Resource - Eclipse Platform");
 			
 		/* Seeing different behavior with JBT - need to explicitly get the query list and results */
-		SWTBotTreeItem [] theQueries =  Bot.get().tree(1).getAllItems();
-		for (SWTBotTreeItem i : theQueries) {
+			DefaultTree theTree = new DefaultTree();
+			List <TreeItem> theQueries =  theTree.getAllItems();
+		
+		for (TreeItem i : theQueries) {
 			log.info(i.getText());
 		}
 		
 		boolean foundQuery = false;
 		boolean foundQueryResults = false;
 		
-		for (SWTBotTreeItem i : theQueries) {
+		for (TreeItem i : theQueries) {			
 			log.info("Looking for query: " + queryName + " found: " + i.getText());
 			if (i.getText().contains(queryName)) {
 				foundQuery = true;
@@ -325,10 +283,10 @@ public class MylynBugzillaQueryTest {
 					
 				i.select();
 				i.doubleClick();
-				Bot.get().sleep(30000l);
+				AbstractWait.sleep(30000l);
 				
-				SWTBotTreeItem [] theQueryResults = i.getItems();
-				for (SWTBotTreeItem q : theQueryResults) {
+				List <TreeItem> theQueryResults = i.getItems();
+				for (TreeItem q : theQueryResults) {
 					log.info("Looking for query results: " + fullBugzillaString + " found: " + q.getText());
 					if (q.getText().contains(fullBugzillaString)) {
 						foundQueryResults = true;

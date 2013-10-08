@@ -1,7 +1,5 @@
 package org.jboss.tools.mylyn.ui.bot.test;
 
-import org.eclipse.swtbot.swt.finder.SWTBot;
-import org.jboss.reddeer.swt.util.Bot;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.condition.WaitCondition;
 /**
@@ -12,11 +10,9 @@ import org.jboss.reddeer.swt.condition.WaitCondition;
 public class ButtonWithTextIsActive implements WaitCondition {
 	
     private String text;
-    private SWTBot bot;
     
     public ButtonWithTextIsActive(String text){
     	this.text = text;
-    	bot = Bot.get();
  	}
 
 	@Override
