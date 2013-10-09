@@ -21,10 +21,12 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
 
@@ -1142,5 +1144,63 @@ public class SWTUtilExt extends SWTUtils {
         }
       },
       timeout);
+    }
+    /**
+     * Gets list of running java processes via calling command jps
+     * @return
+     */
+    public static List<String> getRunningJavaProcesesNames(){
+      List<String> result = new LinkedList<String>();
+      String javaHome = System.getProperty("java.home", "");
+      // search for sdk location instead of jre location
+      if (javaHome.endsWith(File.separator + "jre")){
+        javaHome = javaHome.substring(0,javaHome.length() -4);
+      }
+      String jpsCommand = "jps";
+      if (javaHome.length() > 0) {
+        File javaLocation = new File(javaHome);
+        if (javaLocation.exists() && javaLocation.isDirectory()) {
+          File javaBinLocation = new File(javaLocation, "bin" + File.separator
+              + "jps");
+          if (javaBinLocation.exists()) {
+            jpsCommand = javaBinLocation.getAbsolutePath();
+          }
+        }
+      }
+      String line;
+      Process p;
+      try {
+        p = Runtime.getRuntime().exec(jpsCommand);
+        BufferedReader input = new BufferedReader(new InputStreamReader(
+            p.getInputStream()));
+        while ((line = input.readLine()) != null) {
+          if(line.length() > 0){
+            String[] lineSplit = line.split(" ");
+            if (lineSplit.length > 1){
+              result.add(lineSplit[1]);  
+            }
+            else {
+              result.add("[PID]:" + lineSplit[0]);
+            }
+          }
+        }
+        input.close();
+
+      } catch (IOException ioe) {
+        throw new RuntimeException(ioe);
+      }
+      return result;
+    }
+    /**
+     * Counts running java processes with name processName
+     * @param processName
+     * @return
+     */
+    public static int countJavaProcess(String processName){
+      List<String> runningJavaProcesses = SWTUtilExt.getRunningJavaProcesesNames();
+      List<String> processNameList = new LinkedList<String>();
+      processNameList.add(processName);
+      runningJavaProcesses.retainAll(processNameList);
+      return runningJavaProcesses.size();  
     }
 }
