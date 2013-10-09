@@ -12,11 +12,11 @@ package org.jboss.tools.archives.ui.bot.test;
 
 import static org.junit.Assert.assertThat;
 
+import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.hamcrest.core.Is;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.util.Bot;
 import org.jboss.tools.archives.reddeer.archives.ui.NewJarDialog;
 import org.jboss.tools.archives.reddeer.component.ArchiveProject;
 import org.jboss.tools.ui.bot.ext.view.ErrorLogView;
@@ -57,8 +57,8 @@ public class ArchivesErrorDialogTest extends ArchivesTestBase {
 		 * issue https://github.com/jboss-reddeer/reddeer/issues/169 
 		 * is resolved
 		 */
-		Bot.get().text(1).setText("");
-		Bot.get().text(1).typeText(LOCATION);
+		new SWTBot().text(1).setText("");
+		new SWTBot().text(1).typeText(LOCATION);
 		dialog.finish();
 		
 		/*
