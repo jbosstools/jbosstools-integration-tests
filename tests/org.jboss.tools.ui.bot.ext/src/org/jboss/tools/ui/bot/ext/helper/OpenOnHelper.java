@@ -11,7 +11,6 @@
 
 package org.jboss.tools.ui.bot.ext.helper;
 
-import static org.eclipse.swtbot.swt.finder.SWTBotAssert.assertContains;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -39,7 +38,6 @@ import org.jboss.tools.ui.bot.ext.SWTUtilExt;
 import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.condition.ActiveEditorHasTitleCondition;
 import org.jboss.tools.ui.bot.ext.condition.ActiveShellContainsWidget;
-import org.jboss.tools.ui.bot.ext.condition.ActiveShellTitleMatches;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 
 /**
@@ -101,21 +99,20 @@ public class OpenOnHelper {
 		
 		new SWTUtilExt(bot).waitForNonIgnoredJobs();
 		
-		String oldWindowTitle = bot.activeShell().getText();
-		assertContains(editorTitle, oldWindowTitle);
+		assertTrue(editorTitle.equals(bot.activeEditor().getTitle()));
 		bot.activeShell().setFocus();
 		
 		openOnUsingKeyStroke(sourceEditor);
-		if (!wasWpenOnSuccessful(bot, oldWindowTitle)) {
+		if (!wasWpenOnSuccessful(bot, expectedOpenedFileName)) {
 			log.info("openon using F3 keystroke failed");
 			openOnUsingAction();
+			waitForEditorToOpen(bot, expectedOpenedFileName);
 		}
-		waitForOpen(bot, oldWindowTitle);
-
+		
 		return checkActiveEditorTitle(bot, expectedOpenedFileName);
 	}
 
-	private static void waitForOpen(SWTBotExt bot, String oldWindowTitle) {
+	private static void waitForEditorToOpen(SWTBotExt bot, String editorTitle) {
 		// process UI Events
 		UIThreadRunnable.syncExec(new VoidResult() {
 			@Override
@@ -123,8 +120,9 @@ public class OpenOnHelper {
 			}
 		});
 		new SWTUtilExt(bot).waitForNonIgnoredJobs();
+		bot.waitUntil(new ActiveEditorHasTitleCondition(bot,
+		    editorTitle), Timing.time10S());
 		bot.activeEditor().setFocus();
-		bot.waitWhile(new ActiveShellTitleMatches(bot, getSubstringPattern(oldWindowTitle)));
 	}
 
 	private static void openOnUsingKeyStroke(SWTBotEclipseEditor editor) {
@@ -136,9 +134,9 @@ public class OpenOnHelper {
 		}
 	}
 
-	private static boolean wasWpenOnSuccessful(SWTBotExt bot, String oldWindowTitle) {
+	private static boolean wasWpenOnSuccessful(SWTBotExt bot, String expectedEditorTitle) {
 		try {
-			waitForOpen(bot, oldWindowTitle);
+		  waitForEditorToOpen(bot, expectedEditorTitle);
 		} catch (TimeoutException ex) {
 			return false;
 		}
