@@ -12,14 +12,18 @@ package org.jboss.tools.archives.ui.bot.test;
 
 import static org.junit.Assert.assertThat;
 
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import java.util.List;
+
+import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.hamcrest.core.Is;
+import org.jboss.reddeer.eclipse.ui.views.log.LogView;
+import org.jboss.reddeer.swt.api.Tree;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.util.Bot;
+import org.jboss.reddeer.swt.impl.tree.DefaultTree;
+import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.tools.archives.reddeer.archives.ui.NewJarDialog;
 import org.jboss.tools.archives.reddeer.component.ArchiveProject;
-import org.jboss.tools.ui.bot.ext.view.ErrorLogView;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -38,7 +42,7 @@ public class ArchivesErrorDialogTest extends ArchivesTestBase {
 	
 	@BeforeClass
 	public static void setup() {
-		showErrorView();
+		new LogView().open();
 		clearErrorView();
 		createJavaProject(project);
 	}
@@ -57,8 +61,8 @@ public class ArchivesErrorDialogTest extends ArchivesTestBase {
 		 * issue https://github.com/jboss-reddeer/reddeer/issues/169 
 		 * is resolved
 		 */
-		Bot.get().text(1).setText("");
-		Bot.get().text(1).typeText(LOCATION);
+		new SWTBot().text(1).setText("");
+		new SWTBot().text(1).typeText(LOCATION);
 		dialog.finish();
 		
 		/*
@@ -85,30 +89,26 @@ public class ArchivesErrorDialogTest extends ArchivesTestBase {
 		
 	}
 	
-	private static void showErrorView() {
-		new ErrorLogView().show();
-	}
-	
 	private void assertBuildingArchiveErrorExists(String location, String archive) {
 		
-		ErrorLogView errorLog = new ErrorLogView();
+		LogView logView = new LogView();
+		logView.open();
 		
-		SWTBotTreeItem buildingError = null; 
-		
-		for (SWTBotTreeItem ti : errorLog.getMessages()) {
-			String pluginId = ti.cell(1);
-			if (pluginId.contains("org.jboss.ide.eclipse.archives") && 
-				ti.getText().equals("An error occurred while building project archives")) {
-				buildingError = ti;
+		Tree messages = new DefaultTree();
+		TreeItem buildingError = null;
+		for(TreeItem i: messages.getAllItems()){
+			if (i.getCell(1).contains("org.jboss.ide.eclipse.archives") && 
+					i.getText().equals("An error occurred while building project archives")){
+				buildingError = i;
 			}
 		}
 		
 		assertNotNull("No building archive error was found in error log", buildingError);
 		
 		buildingError.expand();
-		SWTBotTreeItem[] subErrorMessages = buildingError.getItems();
-		assertThat(subErrorMessages.length, Is.is(1));
-		assertThat(subErrorMessages[0].getText(), Is.is("Error creating output file " 
+		List<TreeItem> subErrorMessages = buildingError.getItems();
+		assertThat(subErrorMessages.size(), Is.is(1));
+		assertThat(subErrorMessages.get(0).getText(), Is.is("Error creating output file " 
 				+ location + " for node " + archive));
 		
 	}

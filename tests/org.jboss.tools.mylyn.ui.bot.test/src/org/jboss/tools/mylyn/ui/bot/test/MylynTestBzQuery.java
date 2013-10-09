@@ -275,7 +275,7 @@ public class MylynTestBzQuery {
 		boolean foundQuery = false;
 		boolean foundQueryResults = false;
 		
-		for (TreeItem i : theQueries) {			
+		for (TreeItem i : theQueries) {				
 			log.info("Looking for query: " + queryName + " found: " + i.getText());
 			if (i.getText().contains(queryName)) {
 				foundQuery = true;

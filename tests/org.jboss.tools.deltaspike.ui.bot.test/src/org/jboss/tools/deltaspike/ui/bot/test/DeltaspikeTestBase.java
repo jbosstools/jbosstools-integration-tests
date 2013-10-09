@@ -21,11 +21,11 @@ import java.util.List;
 
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.reddeer.swt.api.Shell;
+import org.jboss.reddeer.swt.api.Table;
 import org.jboss.reddeer.swt.condition.ButtonWithTextIsActive;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
@@ -35,10 +35,10 @@ import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
+import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.matcher.RegexMatchers;
 import org.jboss.reddeer.swt.regex.Regex;
-import org.jboss.reddeer.swt.util.Bot;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
@@ -159,11 +159,11 @@ public class DeltaspikeTestBase extends SWTTestExt {
 		Shell shell = new DefaultShell();
 		new DefaultTreeItem("Targeted Runtimes").select();
 		new CheckBox("Show all runtimes").toggle(true);
-		SWTBotTable table = Bot.get().table();
+		Table table = new DefaultTable();
 		for (int i = 0; i < table.rowCount(); i++) {
-			table.getTableItem(i).uncheck();
+			table.getItem(i).setChecked(false);
 		}
-		table.getTableItem(runtimeName).check();
+		table.getItem(runtimeName).setChecked(true);
 
 		new PushButton("OK").click();
 		new WaitWhile(new ShellWithTextIsActive(shell.getText()),

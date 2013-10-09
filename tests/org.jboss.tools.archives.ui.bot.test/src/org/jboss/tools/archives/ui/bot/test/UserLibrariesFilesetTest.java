@@ -13,9 +13,9 @@ package org.jboss.tools.archives.ui.bot.test;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.swtbot.swt.finder.widgets.TimeoutException;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
+import org.jboss.reddeer.swt.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
@@ -115,7 +115,7 @@ public class UserLibrariesFilesetTest extends ArchivesTestBase {
 		try {
 			new WaitUntil(new UserLibraryFilesetIsInArchive(
 				archive, userLibraryFileset));
-		} catch (TimeoutException te) {
+		} catch (WaitTimeoutExpiredException te) {
 			fail("'" + userLibraryFileset
 					 + "' was not created under archive '" 
 					 + archive.getName() + "'!");
@@ -132,7 +132,7 @@ public class UserLibrariesFilesetTest extends ArchivesTestBase {
 		try {
 			new WaitWhile(new UserLibraryFilesetIsInArchive(archive, userLibrary1));
 			new WaitUntil(new UserLibraryFilesetIsInArchive(archive, userLibrary2));
-		} catch (TimeoutException te) {
+		} catch (WaitTimeoutExpiredException te) {
 			fail("'" + userLibrary1 + "' was not modified to '" 
 					 + userLibrary2 + "' under archive '" 
 					 + archive.getName() + "'!");
@@ -146,7 +146,7 @@ public class UserLibrariesFilesetTest extends ArchivesTestBase {
 		
 		try {
 			new WaitWhile(new UserLibraryFilesetIsInArchive(archive, userLibrary));
-		} catch (TimeoutException te) {
+		} catch (WaitTimeoutExpiredException te) {
 			fail("'" + userLibrary 
 					 + "' was not deleted under archive '" 
 					 + archive.getName() + "'!");

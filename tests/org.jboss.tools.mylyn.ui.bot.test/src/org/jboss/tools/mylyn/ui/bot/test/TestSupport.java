@@ -17,7 +17,7 @@ import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.apache.log4j.Logger;
 import org.eclipse.ui.IViewReference;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.swt.lookup.impl.WorkbenchLookup;
+import org.jboss.reddeer.swt.lookup.WorkbenchLookup;
 
 public class TestSupport {
 	

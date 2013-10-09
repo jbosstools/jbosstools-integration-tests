@@ -508,7 +508,7 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		 * Activate the dialog
 		 */
 		tbButton = bot.toolbarButtonWithTooltip(TOOL_TIP);
-		util.waitWhileToolbarButtonisDisabled(tbButton,Timing.time5S());
+		util.waitForToolbarButtonEnabled(tbButton,Timing.time5S());
     tbButton.click();
 		bot.shell(JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).setFocus();
 		bot.shell(JstUIMessages.EXTERNALIZE_STRINGS_DIALOG_TITLE).activate();

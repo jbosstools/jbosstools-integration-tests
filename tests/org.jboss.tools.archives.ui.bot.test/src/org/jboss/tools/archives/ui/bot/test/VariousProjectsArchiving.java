@@ -10,17 +10,20 @@
  ******************************************************************************/
 package org.jboss.tools.archives.ui.bot.test;
 
-import org.eclipse.swtbot.swt.finder.SWTBot;
-import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.jboss.reddeer.eclipse.ui.views.log.LogView;
+import org.jboss.reddeer.swt.api.Text;
+import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.swt.exception.WaitTimeoutExpiredException;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 import org.jboss.tools.ui.bot.ext.gen.INewObject;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
-import org.jboss.tools.ui.bot.ext.view.ErrorLogView;
 import org.junit.After;
 import org.junit.Test;
 
@@ -98,23 +101,22 @@ public class VariousProjectsArchiving extends ArchivesTestBase {
 		
 	}
 	
-	private void createProject(INewObject object, 
-			String project) {
-		SWTBot bot = open.newObject(object);
-		SWTBotText t = bot.textWithLabel("Project name:");
+	private void createProject(INewObject object,  String project) {
+		open.newObject(object);
+		Text t = new LabeledText("Project name:");
+		//SWTBotText t = bot.textWithLabel("Project name:");
 		t.setFocus();
 		t.setText(project);
-		bot.button(IDELabel.Button.FINISH).click();
+		new PushButton(IDELabel.Button.FINISH).click();
 		handlePerspectivePopUpDialog();
 		util.waitForNonIgnoredJobs();
 	}
 	
 	private void handlePerspectivePopUpDialog() {
 		try {
-			bot.waitForShell(IDELabel.Shell.OPEN_ASSOCIATED_PERSPECTIVE);
-			bot.shell(IDELabel.Shell.OPEN_ASSOCIATED_PERSPECTIVE)
-				.bot().button(IDELabel.Button.NO).click();
-		} catch (WidgetNotFoundException exc) {
+			new DefaultShell(IDELabel.Shell.OPEN_ASSOCIATED_PERSPECTIVE);
+			new PushButton(IDELabel.Button.NO).click();
+		} catch (WaitTimeoutExpiredException exc) {
 			//do nothing here
 		}
 	}
@@ -126,10 +128,12 @@ public class VariousProjectsArchiving extends ArchivesTestBase {
 	}
 	
 	private int countOfArchivesErrors() {
-		ErrorLogView errorLog = new ErrorLogView();
+		LogView view = new LogView();
+		view.open();
+		
 		int archivesErrorsCount = 0;
-		for (SWTBotTreeItem ti : errorLog.getMessages()) {
-			String pluginId = ti.cell(1);
+		for (TreeItem ti : new DefaultTree().getAllItems()) {
+			String pluginId = ti.getCell(1);
 			if (pluginId.contains("org.jboss.ide.eclipse.archives")) {
 				archivesErrorsCount++;
 			}
