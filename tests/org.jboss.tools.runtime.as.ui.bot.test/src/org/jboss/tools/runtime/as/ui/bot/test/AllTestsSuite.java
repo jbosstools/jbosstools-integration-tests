@@ -18,8 +18,12 @@ import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap52.DetectEAP52;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap52.OperateEAP52;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap60.DetectEAP60;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap60.OperateEAP60;
+import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap60x.DetectEAP60x;
+import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap60x.OperateEAP60x;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap61.DetectEAP61;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap61.OperateEAP61;
+import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap61x.DetectEAP61x;
+import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap61x.OperateEAP61x;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.epp4.CheckEPP4Seam;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.epp4.DetectEPP4;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.epp4.OperateEPP4;
@@ -50,7 +54,6 @@ import org.junit.runners.Suite;
 
 @RunWith(JBTSuite.class)
 @Suite.SuiteClasses({
-	
 		RuntimeDuplications.class,
 		ServerWithSeam.class,
 		RuntimeDownload.class,
@@ -65,8 +68,14 @@ import org.junit.runners.Suite;
 		DetectEAP60.class,
 		OperateEAP60.class,
 		
+		DetectEAP60x.class,
+		OperateEAP60x.class,
+		
 		DetectEAP61.class,
 		OperateEAP61.class,
+		
+		DetectEAP61x.class,
+		OperateEAP61x.class,
 		
 		// Needs Java SE 1.6
 		DetectEAP51.class, 
