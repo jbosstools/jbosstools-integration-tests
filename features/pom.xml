@@ -16,13 +16,6 @@
 		<module>org.jboss.tools.itests.feature</module>
 	</modules>
 
-	<profiles>
-	  <profile>
-	    <id>soa</id>
-	    <modules>
-	      <module>org.jboss.tools.itests.soa.feature</module>
-	  </modules></profile>
-	</profiles>
 
 </project>
 

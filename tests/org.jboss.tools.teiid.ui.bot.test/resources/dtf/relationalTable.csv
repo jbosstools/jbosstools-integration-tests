@@ -1,6 +1,0 @@
-TABLE, USER, "User Table"
-COLUMN, nick, VARCHAR, 255, "Nick"
-COLUMN, name, VARCHAR, 255, "Name"
-TABLE, ADDRESS, "Address Table"
-COLUMN, nick, VARCHAR, 255, "Nick"
-COLUMN, address, VARCHAR, 255, "Address"

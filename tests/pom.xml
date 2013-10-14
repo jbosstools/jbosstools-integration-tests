@@ -54,23 +54,6 @@
 	</modules>
 	<profiles>
 		<profile>
-			<id>soa</id>
-			<modules>
-				<module>org.jboss.tools.jbpm.ui.bot.test</module>
-				<module>org.jboss.tools.bpel.reddeer</module>
-				<module>org.jboss.tools.bpel.ui.bot.test</module>
-				<module>org.jboss.tools.esb.ui.bot.test</module>
-				<module>org.jboss.tools.switchyard.reddeer</module>
-				<module>org.jboss.tools.switchyard.ui.bot.test</module>
-				<module>org.jboss.tools.teiid.reddeer</module>
-				<module>org.jboss.tools.teiid.ui.bot.test</module>
-				<module>org.jboss.tools.modeshape.reddeer</module>
-				<module>org.jboss.tools.modeshape.ui.bot.test</module>
-				<module>org.jboss.tools.drools.ui.bot.test</module>
-				<module>org.jboss.tools.bpmn2.itests</module>
-			</modules>
-		</profile>
-		<profile>
 			<id>windows-xp-memory-options</id>
 			<activation>
 				<os>
@@ -83,27 +66,6 @@
 		        <memoryOptions2>-XX:MaxPermSize=384m</memoryOptions2>
 			</properties>
 		</profile>
-        <profile>
-            <id>brms</id>
-            <modules>
-                <module>org.jboss.tools.drools.reddeer</module>
-                <module>org.jboss.tools.drools.ui.bot.test</module>
-            </modules>
-            <repositories>
-                <!-- JBTIS Repository -->
-                <repository>
-                    <id>jbtis</id>
-                    <url>${jbtis.site}</url>
-                    <layout>p2</layout>
-                    <snapshots>
-                        <enabled>true</enabled>
-                    </snapshots>
-                    <releases>
-                        <enabled>true</enabled>
-                    </releases>
-                </repository>
-            </repositories>
-        </profile>
 	</profiles>	
     <build>
 		<plugins>

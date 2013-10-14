@@ -1,8 +1,0 @@
-<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:urn="urn:webservice:Hello:1.0">
-   <soapenv:Header/>
-   <soapenv:Body>
-      <urn:sayHello>
-         <name>apodhrad</name>
-      </urn:sayHello>
-   </soapenv:Body>
-</soapenv:Envelope>

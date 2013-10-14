@@ -1,8 +1,0 @@
-<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:sam="http://eclipse.org/bpel/sample">
-   <soapenv:Header/>
-   <soapenv:Body>
-      <sam:deployHelloRequest>
-         <sam:input>Andrej</sam:input>
-      </sam:deployHelloRequest>
-   </soapenv:Body>
-</soapenv:Envelope>

@@ -1,8 +1,0 @@
-<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
-   <SOAP-ENV:Header/>
-   <SOAP-ENV:Body>
-      <sayHelloResponse xmlns="urn:com.example.switchyard:proxy_rest:1.0">
-         <string>Hello apodhrad</string>
-      </sayHelloResponse>
-   </SOAP-ENV:Body>
-</SOAP-ENV:Envelope>
