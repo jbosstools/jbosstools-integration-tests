@@ -1,8 +1,0 @@
-<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:urn="urn:com.example.switchyard:proxy_rest:1.0">
-   <soapenv:Header/>
-   <soapenv:Body>
-      <urn:sayHello>
-         <urn:string>apodhrad</urn:string>
-      </urn:sayHello>
-   </soapenv:Body>
-</soapenv:Envelope>

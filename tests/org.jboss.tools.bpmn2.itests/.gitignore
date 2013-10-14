@@ -1,8 +1,0 @@
-target
-bin
-screenshots
-resources/swtbot-my.properties
-resources/reddeer-my.xml
-test-output
-lib
-lib/*
