@@ -16,7 +16,9 @@
 	<properties>
 		<requirementsDirectory>${project.build.directory}/requirements</requirementsDirectory>
 		<jboss-eap-6.1.x>${requirementsDirectory}/jboss-eap-6.1.x/jboss-eap-6.1/</jboss-eap-6.1.x>
+		<jbosstools.test.jboss-eap-6.1.x.url>http://download.devel.redhat.com/released/JBEAP-6/6.1.1/jboss-eap-6.1.1.zip</jbosstools.test.jboss-eap-6.1.x.url>
 		<jboss-eap-6.0.x>${requirementsDirectory}/jboss-eap-6.0.x/jboss-eap-6.0/</jboss-eap-6.0.x>
+		<jbosstools.test.jboss-eap-6.0.x.url>http://download.devel.redhat.com/released/JBEAP-6/6.0.1/zip/jboss-eap-6.0.1.zip</jbosstools.test.jboss-eap-6.0.x.url>
 		<jboss-as-7>${requirementsDirectory}/jboss-as-7.1.1.Final/</jboss-as-7>		
 		<jboss-seam-2.2>${requirementsDirectory}/jboss-seam-2.2.2.Final/</jboss-seam-2.2>
 		<jboss-seam-2.3>${requirementsDirectory}/jboss-seam-2.3.0.Final/</jboss-seam-2.3>
