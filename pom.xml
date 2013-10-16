@@ -27,6 +27,11 @@
 			<url>http://download.jboss.org/jbosstools/builds/staging/RedDeer_master/all/repo/</url>
 			<layout>p2</layout>
 		</repository>
+		<repository>
+			<id>jbosstools-integration-tests-site</id>
+			<url>http://download.jboss.org/jbosstools/updates/nightly/integrationtests/trunk/</url>
+			<layout>p2</layout>
+		</repository>
 	</repositories>
 
 </project>
