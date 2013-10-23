@@ -35,8 +35,8 @@ import org.jboss.tools.runtime.as.ui.bot.test.detector.server.ewp5.DetectEWP5;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.ewp5.OperateEWP5;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.jboss7.DetectJBoss7;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.jboss7.OperateJBoss7;
-import org.jboss.tools.runtime.as.ui.bot.test.detector.server.jpp6.DetectJPP6;
-import org.jboss.tools.runtime.as.ui.bot.test.detector.server.jpp6.OperateJPP6;
+import org.jboss.tools.runtime.as.ui.bot.test.detector.server.jpp60.DetectJPP60;
+import org.jboss.tools.runtime.as.ui.bot.test.detector.server.jpp60.OperateJPP60;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.soap52.CheckSOAP52Seam;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.soap52.DetectSOAP52;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.soap52.OperateSOAP52;
@@ -99,8 +99,8 @@ import org.junit.runners.Suite;
 		CheckEPP5Seam.class,
 		OperateEPP5.class,
 		
-		DetectJPP6.class, 
-		OperateJPP6.class,
+		DetectJPP60.class, 
+		OperateJPP60.class,
 		
 		// Needs Java SE 1.6
 		DetectEWP5.class, 
