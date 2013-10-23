@@ -1,4 +1,4 @@
-package org.jboss.tools.runtime.as.ui.bot.test.detector.server.jpp6;
+package org.jboss.tools.runtime.as.ui.bot.test.detector.server.jpp60;
 
 import java.util.Arrays;
 import java.util.List;
@@ -7,7 +7,7 @@ import org.jboss.tools.runtime.as.ui.bot.test.RuntimeProperties;
 import org.jboss.tools.runtime.as.ui.bot.test.entity.Runtime;
 import org.jboss.tools.runtime.as.ui.bot.test.template.DetectRuntimeTemplate;
 
-public class DetectJPP6 extends DetectRuntimeTemplate {
+public class DetectJPP60 extends DetectRuntimeTemplate {
 
 	public static final String SERVER_ID = "jboss-jpp-6.0";
 	

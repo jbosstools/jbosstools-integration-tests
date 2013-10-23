@@ -26,8 +26,10 @@ import org.jboss.tools.runtime.as.ui.bot.test.detector.server.epp4.DetectEPP4;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.epp4.OperateEPP4;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.jboss7.DetectJBoss7;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.jboss7.OperateJBoss7;
-import org.jboss.tools.runtime.as.ui.bot.test.detector.server.jpp6.DetectJPP6;
-import org.jboss.tools.runtime.as.ui.bot.test.detector.server.jpp6.OperateJPP6;
+import org.jboss.tools.runtime.as.ui.bot.test.detector.server.jpp60.DetectJPP60;
+import org.jboss.tools.runtime.as.ui.bot.test.detector.server.jpp60.OperateJPP60;
+import org.jboss.tools.runtime.as.ui.bot.test.detector.server.jpp61.DetectJPP61;
+import org.jboss.tools.runtime.as.ui.bot.test.detector.server.jpp61.OperateJPP61;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.soap53.CheckSOAP53Seam;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.soap53.DetectSOAP53;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.soap53.OperateSOAP53;
@@ -81,8 +83,11 @@ import org.junit.runners.Suite;
 		CheckEPP4Seam.class,
 		OperateEPP4.class,
 		
-		DetectJPP6.class, 
-		OperateJPP6.class,
+		DetectJPP60.class, 
+		OperateJPP60.class,
+		
+		DetectJPP61.class,
+		OperateJPP61.class,
 		
 		DetectSOAP53.class, 
 		CheckSOAP53Seam.class,
