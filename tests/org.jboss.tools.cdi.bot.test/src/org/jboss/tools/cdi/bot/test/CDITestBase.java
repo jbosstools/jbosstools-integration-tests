@@ -13,6 +13,10 @@ package org.jboss.tools.cdi.bot.test;
 
 import java.util.logging.Logger;
 
+import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.lookup.ShellLookup;
+import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.tools.cdi.bot.test.uiutils.AsYouTypeValidationHelper;
 import org.jboss.tools.cdi.bot.test.uiutils.BeansXMLHelper;
 import org.jboss.tools.cdi.bot.test.uiutils.CDIProjectHelper;
@@ -20,6 +24,7 @@ import org.jboss.tools.cdi.bot.test.uiutils.CDIWizardHelper;
 import org.jboss.tools.cdi.bot.test.uiutils.EditorResourceHelper;
 import org.jboss.tools.cdi.bot.test.uiutils.QuickFixHelper;
 import org.jboss.tools.cdi.bot.test.uiutils.wizards.CDIWizardBaseExt;
+import org.jboss.tools.common.reddeer.preferences.SourceLookupPreferencePage;
 import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
@@ -38,8 +43,8 @@ import org.junit.runners.Suite.SuiteClasses;
 		 @SuiteClasses({ CDIAllBotTests.class })
 public class CDITestBase extends SWTTestExt {
 	
-	private String projectName = "CDIProject";
-	private String packageName = "cdi";
+	protected static final String PROJECT_NAME = "CDIProject";
+	protected static final String PACKAGE_NAME = "cdi";
 	
 	protected static final Logger LOGGER = Logger.getLogger(CDITestBase.class.getName());
 	protected static final CDIProjectHelper projectHelper = new CDIProjectHelper(); 
@@ -53,10 +58,14 @@ public class CDITestBase extends SWTTestExt {
 	
 	@Before
 	public void prepareWorkspace() {
-		if (!projectHelper.projectExists(getProjectName())) {
-			importCDITestProject(getProjectName());
-		}
+		prepareWorkspaceStatic(getProjectName());
 	}
+	
+	protected static void prepareWorkspaceStatic(String projectName) {
+		if (!projectHelper.projectExists(projectName)) {
+			importCDITestProject(projectName);
+		}
+	} 
 	
 	@After
 	public void waitForJobs() {
@@ -64,11 +73,11 @@ public class CDITestBase extends SWTTestExt {
 	}
 		
 	protected String getProjectName() {
-		return projectName;
+		return PROJECT_NAME;
 	}
 	
 	protected String getPackageName() {
-		return packageName;
+		return PACKAGE_NAME;
 	}
 	
 	protected static void importCDITestProject(String projectName) {
@@ -86,4 +95,15 @@ public class CDITestBase extends SWTTestExt {
 		eclipse.cleanAllProjects();
 	}
 	
+	protected static void disableSourceLookup() {
+		// wait for some shell to get activated
+		new ShellLookup().getActiveShell();
+		String originalShellText = new DefaultShell().getText();
+		SourceLookupPreferencePage sourceLookupPreferencePage = new SourceLookupPreferencePage();
+		sourceLookupPreferencePage.open();
+		sourceLookupPreferencePage.setSourceAttachment(
+				SourceLookupPreferencePage.SourceAttachmentEnum.NEVER);
+		sourceLookupPreferencePage.ok();
+		new WaitUntil(new ShellWithTextIsActive(originalShellText));
+	}
 }

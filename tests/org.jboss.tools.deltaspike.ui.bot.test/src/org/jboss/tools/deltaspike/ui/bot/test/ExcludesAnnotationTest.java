@@ -18,7 +18,7 @@ import org.jboss.reddeer.swt.api.Shell;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.regex.Regex;
-import org.jboss.reddeer.swt.util.Bot;
+import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
@@ -48,7 +48,7 @@ public class ExcludesAnnotationTest extends DeltaspikeTestBase {
 
 	@After
 	public void closeAllEditors() {
-		Bot.get().closeAllEditors();
+	//	Bot.get().closeAllEditors();
 		projectExplorer.deleteAllProjects();
 	}
 	
@@ -139,7 +139,7 @@ public class ExcludesAnnotationTest extends DeltaspikeTestBase {
 		annotateBean(projectName, "test", "EventProducer1.java", 4, 0, "@Exclude");
 		
 		/** will be deprecated once validation messages are added (JBIDE-11899) **/
-		Bot.get().sleep(Timing.time3S());
+		AbstractWait.sleep(Timing.time3S());
 		
 		checkEventsCount(projectName, "Test.java", 1, "EventProducer2.java");
 		

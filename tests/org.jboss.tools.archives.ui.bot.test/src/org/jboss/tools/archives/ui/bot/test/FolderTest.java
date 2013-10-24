@@ -10,8 +10,8 @@
  ******************************************************************************/
 package org.jboss.tools.archives.ui.bot.test;
 
-import org.eclipse.swtbot.swt.finder.widgets.TimeoutException;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
+import org.jboss.reddeer.swt.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.archives.reddeer.archives.ui.ProjectArchivesExplorer;
@@ -95,7 +95,7 @@ public class FolderTest extends ArchivesTestBase {
 		
 		try {
 			new WaitUntil(new FolderIsInArchive(archive, folderName));
-		} catch (TimeoutException te) {
+		} catch (WaitTimeoutExpiredException te) {
 			fail("'" + folderName 
 					 + "' was not created under archive '" 
 					 + archive.getName() + "'!");
@@ -111,7 +111,7 @@ public class FolderTest extends ArchivesTestBase {
 		try {
 			new WaitWhile(new FolderIsInArchive(archive, folderName));
 			new WaitUntil(new FolderIsInArchive(archive, folderNewName));
-		} catch (TimeoutException te) {
+		} catch (WaitTimeoutExpiredException te) {
 			fail("'" + folderName 
 					 + "' was not modified to '" + folderNewName 
 					 + "' under archive '" + archive.getName() + "'!");
@@ -124,7 +124,7 @@ public class FolderTest extends ArchivesTestBase {
 		
 		try {
 			new WaitWhile(new FolderIsInArchive(archive, folderName));
-		} catch (TimeoutException te) {
+		} catch (WaitTimeoutExpiredException te) {
 			fail("'" + folderName 
 					 + "' was not deleted under archive '" 
 					 + archive.getName() + "'!");

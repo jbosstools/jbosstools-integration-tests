@@ -31,9 +31,9 @@ public class SeamPreferencesDialog extends PreferencePage {
 
 		for (int i = 0; i < table.rowCount(); i++) {
 			Runtime runtime = new Runtime();
-			runtime.setName(table.cell(i, 1));
-			runtime.setVersion(table.cell(i, 2));
-			runtime.setLocation(table.cell(i, 3));
+			runtime.setName(table.getItem(i).getText(1));
+			runtime.setVersion(table.getItem(i).getText(2));
+			runtime.setLocation(table.getItem(i).getText(3));
 			runtimes.add(runtime);
 		}
 		return runtimes;

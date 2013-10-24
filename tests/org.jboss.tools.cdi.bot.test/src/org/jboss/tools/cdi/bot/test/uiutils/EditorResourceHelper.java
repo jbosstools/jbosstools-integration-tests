@@ -80,7 +80,7 @@ public class EditorResourceHelper {
 			boolean closeEdit, String... param) {
 		SWTBotEclipseEditor eclipseEditor = bot.activeEditor().toTextEditor();
 		String s = readStream(resource);
-		String code = MessageFormat.format(s, param);
+		String code = MessageFormat.format(s, (Object[])param);
 		eclipseEditor.selectRange(0, 0, eclipseEditor.getText().length());
 		eclipseEditor.setText(code);
 		if (save) eclipseEditor.save();
@@ -238,7 +238,7 @@ public class EditorResourceHelper {
 	/**
 	 * Method deletes whole web folder with given name for entered project
 	 * @param projectName
-	 * @param packageName
+	 * @param PACKAGE_NAME
 	 */
 	public void deleteWebFolder(String projectName, String folder) {
 		

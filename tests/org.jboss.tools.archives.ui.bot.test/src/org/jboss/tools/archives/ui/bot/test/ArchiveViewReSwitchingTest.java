@@ -13,10 +13,12 @@ package org.jboss.tools.archives.ui.bot.test;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import org.hamcrest.core.Is;
+import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
+import org.jboss.reddeer.eclipse.ui.views.log.LogView;
+import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
+import org.jboss.reddeer.workbench.view.View;
 import org.jboss.tools.archives.reddeer.archives.ui.ProjectArchivesView;
-import org.jboss.tools.ui.bot.ext.view.ErrorLogView;
-import org.jboss.tools.ui.bot.ext.view.ViewBase;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -30,15 +32,17 @@ import org.junit.Test;
 public class ArchiveViewReSwitchingTest extends ArchivesTestBase {
 
 	private static String projectName = "prj";
-	private static ErrorLogView errors = new ErrorLogView();
+	private static LogView logView = new LogView();
+	private static ConsoleView consoleView = new ConsoleView();
+	private static ServersView serversView = new ServersView();
 	
 	@BeforeClass
 	public static void setup() {
 		
 		/* show all tested views */
-		console.show();
-		servers.show();
-		errors.show();
+		consoleView.open();
+		serversView.open();
+		logView.open();
 		
 		/* create test project */
 		createJavaProject(projectName);
@@ -54,13 +58,13 @@ public class ArchiveViewReSwitchingTest extends ArchivesTestBase {
 		assertProjectInArchivesView(view, projectName);
 		
 		/* test reswitching Project Archives view with some other views */
-		reSwitchAndTestArchivesViewWithViews(console, servers, errors);
+		reSwitchAndTestArchivesViewWithViews(consoleView, serversView, logView);
 		
 	}
 	
-	private void reSwitchAndTestArchivesViewWithViews(ViewBase... views) {
-		for (ViewBase view : views) {
-			view.show();
+	private void reSwitchAndTestArchivesViewWithViews(View... views) {
+		for (View view : views) {
+			view.open();
 			assertProjectInArchivesView(openProjectArchivesView(), projectName);
 		}
 	}

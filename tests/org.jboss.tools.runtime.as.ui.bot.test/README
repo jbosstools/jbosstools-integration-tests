@@ -2,7 +2,7 @@ Runtimes
 
     org.jboss.tools.runtime.as.ui.bot.test
     Prerequisities - RedDeer
-    Tested runtimes: JBossAS 7.1.1.Final, EAP 6.0, EAP 5.1, EAP 4.3, EPP 5.2, EPP 4.3, EWP 5.1, SOA-P 5.2, SOA-P 5.2 standalone, SEAM 2.2.2.Final, SEAM 2.3.0.Final
+    Tested runtimes: JBossAS 7.1.1.Final, EAP 6.1, EAP 6.1.x, EAP 6.0, EAP 6.0.x, EAP 5.1, EAP 4.3, EPP 5.2, EPP 4.3, EWP 5.1, SOA-P 5.2, SOA-P 5.2 standalone, SEAM 2.2.2.Final, SEAM 2.3.0.Final
     Run RT_prepare_workspace in Run configuration and set up paths to all tested runtimes
     Then run RT_AllTestsSuite
     You probably will have a problem with some (mostly product) servers, that won't be able to stop - so edit:

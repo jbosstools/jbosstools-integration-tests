@@ -1,6 +1,7 @@
 package org.jboss.tools.maven.ui.bot.test.dialog.maven;
 
 import org.jboss.reddeer.eclipse.jface.preference.PreferencePage;
+import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
@@ -24,7 +25,7 @@ public class MavenRemoteRepositoriesPreferencePage extends PreferencePage{
 	}
 	
 	public void modifyRepository(Repository oldRepo, Repository newRepo){
-		new DefaultTable("Remote Repositories",0).select(oldRepo.getName());
+		new DefaultTable().select(oldRepo.getName());
 		new PushButton("Edit...").click();
 		new DefaultShell("Edit Repository");
 		new LabeledText("Name:").setText(newRepo.getName());
@@ -35,14 +36,14 @@ public class MavenRemoteRepositoriesPreferencePage extends PreferencePage{
 	}
 	
 	public void deleteRepository(Repository repository){
-		new DefaultTable("Remote Repositories",0).select(repository.getName());
+		new DefaultTable().select(repository.getName());
 		new PushButton("Remove").click();
 	}
 	
 	public Repository getRepository(String name){
 		try{
-			new DefaultTable("Remote Repositories",0).select(name);
-		}	catch(IllegalArgumentException ex){
+			new DefaultTable().select(name);
+		}	catch(SWTLayerException ex){
 			return null;
 		}
 		new PushButton("Edit...").click();

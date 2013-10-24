@@ -9,7 +9,6 @@
  * Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
 package org.jboss.tools.archives.ui.bot.test;
-
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.archives.reddeer.archives.ui.ArchivePublishDialog;

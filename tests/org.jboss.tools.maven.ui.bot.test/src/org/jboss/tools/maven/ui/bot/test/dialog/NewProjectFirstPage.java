@@ -4,6 +4,7 @@ import org.jboss.reddeer.eclipse.jface.wizard.WizardPage;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.group.DefaultGroup;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
@@ -33,7 +34,7 @@ public abstract class NewProjectFirstPage  extends WizardPage{
 	}
 	
 	public void setRuntime(String runtime){
-		new DefaultCombo("Target runtime", 0).setSelection(runtime);
+		new DefaultCombo(new DefaultGroup("Target runtime")).setSelection(runtime);
 	}
 
 }

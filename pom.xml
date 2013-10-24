@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.jboss.tools</groupId>
 		<artifactId>parent</artifactId>
-		<version>4.1.0.Final-SNAPSHOT</version>
+		<version>4.1.1.Beta1-SNAPSHOT</version>
 	</parent>
 	<groupId>org.jboss.tools</groupId>
 	<artifactId>integration-tests</artifactId>
@@ -25,6 +25,11 @@
 		<repository>
 			<id>reddeer-nightly-staging-site</id>
 			<url>http://download.jboss.org/jbosstools/builds/staging/RedDeer_master/all/repo/</url>
+			<layout>p2</layout>
+		</repository>
+		<repository>
+			<id>jbosstools-integration-tests-site</id>
+			<url>http://download.jboss.org/jbosstools/updates/nightly/integrationtests/trunk/</url>
 			<layout>p2</layout>
 		</repository>
 	</repositories>

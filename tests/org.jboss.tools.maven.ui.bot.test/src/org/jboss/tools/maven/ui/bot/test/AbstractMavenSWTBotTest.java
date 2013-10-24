@@ -47,10 +47,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.m2e.core.internal.IMavenConstants;
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
-import org.eclipse.swtbot.forms.finder.SWTFormsBot;
-import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
-import org.eclipse.swtbot.swt.finder.widgets.TimeoutException;
+import org.eclipse.ui.forms.widgets.Hyperlink;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.eclipse.wst.server.ui.RuntimePreferencePage;
@@ -62,6 +59,8 @@ import org.jboss.reddeer.eclipse.wst.server.ui.wizard.NewServerWizardDialog;
 import org.jboss.reddeer.eclipse.wst.server.ui.wizard.NewServerWizardPage;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.swt.exception.SWTLayerException;
+import org.jboss.reddeer.swt.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
@@ -70,10 +69,11 @@ import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.matcher.RegexMatchers;
-import org.jboss.reddeer.swt.util.Bot;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.reddeer.uiforms.hyperlink.UIFormHyperlink;
+import org.jboss.reddeer.workbench.view.impl.WorkbenchView;
 import org.jboss.tools.maven.ui.bot.test.dialog.ASRuntimePage;
 import org.jboss.tools.maven.ui.bot.test.dialog.DynamicWebProjectFirstPage;
 import org.jboss.tools.maven.ui.bot.test.dialog.DynamicWebProjectThirdPage;
@@ -101,15 +101,11 @@ public abstract class AbstractMavenSWTBotTest{
 	@BeforeClass 
 	public static void beforeClass(){
 		// close Welcome screen
-		try {
-			SWTBotView activeView = Bot.get().activeView();
-			if (activeView != null && activeView.getTitle().equals("Welcome")){
-			    activeView.close();  
-			}
-		} catch (WidgetNotFoundException exc) {
+		try{
+			new WorkbenchView("Welcome").close();
+		}catch (UnsupportedOperationException ex){
 			// welcome screen not found, no need to close it
 		}
-		
 		
 		MavenPreferencesPage mpreferencesp = new MavenPreferencesPage();
 		mpreferencesp.open();
@@ -309,15 +305,8 @@ public abstract class AbstractMavenSWTBotTest{
 		new WaitUntil(new ShellWithTextIsActive("Properties for "+projectName),TimePeriod.NORMAL);
 		new DefaultTreeItem("Project Facets").select();
 		new DefaultTreeItem(1, "JBoss Maven Integration").setChecked(true);
-		SWTFormsBot x =new SWTFormsBot();
-		x.hyperlink("Further configuration required...").click();
-		try{
+		new UIFormHyperlink("Further configuration required...").activate();
 		new WaitUntil(new ShellWithTextIsActive("Modify Faceted Project"),TimePeriod.NORMAL);
-		}catch(TimeoutException ex){
-			SWTFormsBot xs =new SWTFormsBot();
-			xs.hyperlink("Further configuration required...").click();
-			new WaitUntil(new ShellWithTextIsActive("Modify Faceted Project"),TimePeriod.NORMAL);
-		}
 	    new PushButton("OK").click();
 	    new PushButton("OK").click();
 	    new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);

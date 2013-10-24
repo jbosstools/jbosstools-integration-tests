@@ -109,7 +109,7 @@ public class Seam3TestBase extends CDITestBase {
 			while (iter.hasNext()) {
 				String temp = iter.next();
 				libraryHelper.addLibraryIntoProjectFolder(projectName, temp);
-				LOGGER.info("Library: \"" + libraries + "\" copied");
+				LOGGER.info("Library: \"" + temp + "\" copied");
 				util.waitForNonIgnoredJobs();
 			}
 		} catch (IOException exc) {

@@ -12,12 +12,9 @@
 	-->
 
 	<category-def name="JBoss Tools Core Tests" label="JBoss Tools Core Tests"><description>JBoss Tools Core Tests</description></category-def>
-	<category-def name="SOA/BRMS/EDS Integration Stack Tests" label="SOA/BRMS/EDS Integration Stack Tests"><description>SOA/BRMS/EDS Integration Stack Tests</description></category-def>
 
 	<feature url="features/org.jboss.tools.itests.feature_0.0.0.jar" id="org.jboss.tools.itests.feature" version="0.0.0"><category name="JBoss Tools Core Tests"/></feature>
 	<!-- <feature url="features/org.jboss.tools.itests.feature.source_0.0.0.jar" id="org.jboss.tools.itests.feature.source" version="0.0.0"><category name="JBoss Tools Core Tests"/></feature> -->
 
-	<!--feature url="features/org.jboss.tools.itests.soa.feature_0.0.0.jar" id="org.jboss.tools.itests.soa.feature" version="0.0.0"><category name="SOA/BRMS/EDS Integration Stack Tests"/></feature-->
-	<!-- <feature url="features/org.jboss.tools.itests.soa.feature.source_0.0.0.jar" id="org.jboss.tools.itests.soa.feature.source" version="0.0.0"><category name="SOA/BRMS/EDS Integration Stack Tests"/></feature> -->
 
 </site>

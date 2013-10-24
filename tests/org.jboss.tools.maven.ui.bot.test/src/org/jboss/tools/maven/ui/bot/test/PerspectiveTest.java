@@ -31,7 +31,7 @@ public class PerspectiveTest extends AbstractMavenSWTBotTest {
 	 */
 	@Test
 	public void testJBossPerspective() throws WorkbenchException {
-		setPerspective("JBoss");
+		setPerspective("JBoss (default)");
 		try{
 			new ShellMenu("File","New","Maven Project");
 		} catch (SWTLayerException ex){

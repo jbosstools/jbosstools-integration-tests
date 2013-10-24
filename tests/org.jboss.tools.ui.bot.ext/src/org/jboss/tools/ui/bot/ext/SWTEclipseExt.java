@@ -18,12 +18,14 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.File;
+import java.lang.reflect.Field;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
+import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
@@ -45,6 +47,8 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.eclipse.ui.IWorkbenchListener;
+import org.eclipse.ui.PlatformUI;
 import org.hamcrest.Matcher;
 import org.jboss.tools.ui.bot.ext.condition.ButtonIsDisabled;
 import org.jboss.tools.ui.bot.ext.condition.ShellIsActiveCondition;
@@ -1906,5 +1910,41 @@ public class SWTEclipseExt {
 		util.waitForNonIgnoredJobs();
 		
 	}
-
+	/**
+	 * Returns WokbenchListener list via Reflection
+	 * @return
+	 */
+  public static ListenerList getWorkbenchListeners() {
+    ListenerList result = null;
+    try {
+      Field workbenchListeners = PlatformUI.getWorkbench().getClass().getDeclaredField("workbenchListeners");
+      workbenchListeners.setAccessible(true);
+      result = ((ListenerList)workbenchListeners.get(PlatformUI.getWorkbench()));
+    } catch (SecurityException e) {
+      log.error("Unable to determine list of Workbench Listeners",e);
+    } catch (NoSuchFieldException e) {
+      log.error("Unable to determine list of Workbench Listeners",e);
+    } catch (IllegalArgumentException e) {
+      log.error("Unable to determine list of Workbench Listeners",e);
+    } catch (IllegalAccessException e) {
+      log.error("Unable to determine list of Workbench Listeners",e);   
+    }
+    return result;
+  }
+  /**
+   * Retains all listeners of retainListeners from list of current workbench listeners
+   * @param retainListeners
+   * @return
+   */
+  public static List<IWorkbenchListener> retainFromCurrentWorkbenchListeners(Object[] retainListeners){
+    ListenerList currentListeners = getWorkbenchListeners();
+    for (Object listener : retainListeners){
+      currentListeners.remove(listener);
+    }
+    LinkedList<IWorkbenchListener> result = new LinkedList<IWorkbenchListener>();
+    for (Object listener : currentListeners.getListeners()){
+      result.add((IWorkbenchListener)listener);
+    }
+    return result;
+  }
 }

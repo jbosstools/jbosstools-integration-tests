@@ -16,7 +16,7 @@ import org.jboss.tools.ui.bot.ext.gen.ActionItem.Server.JBossCommunityWildFly8;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.Server.JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform43;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.Server.JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform5x;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.Server.JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform60;
-import org.jboss.tools.ui.bot.ext.gen.ActionItem.Server.JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform61;
+import org.jboss.tools.ui.bot.ext.gen.ActionItem.Server.JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform61AndLater;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.ServerRuntime.JBossCommunityJBoss32Runtime;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.ServerRuntime.JBossCommunityJBoss40Runtime;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.ServerRuntime.JBossCommunityJBoss42Runtime;
@@ -29,7 +29,7 @@ import org.jboss.tools.ui.bot.ext.gen.ActionItem.ServerRuntime.JBossCommunityWil
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.ServerRuntime.JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform43Runtime;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.ServerRuntime.JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform5xRuntime;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.ServerRuntime.JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform60Runtime;
-import org.jboss.tools.ui.bot.ext.gen.ActionItem.ServerRuntime.JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform61Runtime;
+import org.jboss.tools.ui.bot.ext.gen.ActionItem.ServerRuntime.JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform61AndLaterRuntime;
 import org.jboss.tools.ui.bot.ext.gen.IServer;
 import org.jboss.tools.ui.bot.ext.gen.IServerRuntime;
 /**
@@ -129,8 +129,8 @@ public class AddServer extends RequirementBase {
 						JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform5x.LABEL);
 			}
 			if (version!=null && version.equals("6.1")){
-				return new ServerInfo(JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform61Runtime.LABEL,
-						JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform61.LABEL);
+				return new ServerInfo(JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform61AndLaterRuntime.LABEL,
+						JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform61AndLater.LABEL);
 			}else if (version!=null && version.startsWith("6")) {
 				return new ServerInfo(JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform60Runtime.LABEL,
 						JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform60.LABEL);

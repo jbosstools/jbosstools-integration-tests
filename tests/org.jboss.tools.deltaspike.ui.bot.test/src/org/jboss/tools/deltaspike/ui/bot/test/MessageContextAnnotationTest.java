@@ -12,7 +12,6 @@
 package org.jboss.tools.deltaspike.ui.bot.test;
 
 import org.jboss.reddeer.swt.regex.Regex;
-import org.jboss.reddeer.swt.util.Bot;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.deltaspike.ui.bot.test.condition.SpecificProblemExists;
@@ -35,7 +34,7 @@ public class MessageContextAnnotationTest extends DeltaspikeTestBase {
 
 	@After
 	public void closeAllEditors() {
-		Bot.get().closeAllEditors();
+	//	Bot.get().closeAllEditors();
 		projectExplorer.deleteAllProjects();
 	}
 

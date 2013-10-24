@@ -1,53 +1,54 @@
 package org.jboss.tools.mylyn.ui.bot.test;
 
 /* Support routines for Mylyn tests */
-
 import java.util.ArrayList;
 import java.util.List;
+
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
-import org.jboss.reddeer.swt.impl.tree.ViewTree;
-import org.jboss.reddeer.swt.util.Bot;
+import org.jboss.reddeer.swt.util.Display;
+import org.jboss.reddeer.swt.wait.AbstractWait;
+import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.apache.log4j.Logger;
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
-
+import org.eclipse.ui.IViewReference;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.swt.lookup.WorkbenchLookup;
 
 public class TestSupport {
 	
 	protected final static long DELAY = 3000l;
 
-
+	public static void closeWelcome () {	
+		/* close Welcome screen - copied from: class RedDeerTest */
+		for (IViewReference viewReference : WorkbenchLookup.findAllViews()) {
+			if (viewReference.getPartName().equals("Welcome")) {
+				final IViewReference iViewReference = viewReference;
+				Display.syncExec(new Runnable() {
+					@Override
+					public void run() {
+						iViewReference.getPage().hideView(iViewReference);
+					}
+				});
+				break;
+			}
+		}
+	}
+	
 	
 	/* Test Setup part 1 */
 	public static List<TreeItem> mylynTestSetup1 (Logger log) {		
 		
-		/* Added to enable the tests to run from trunk with Kepler - Feb 2013 */
-		Bot.get().sleep(30000l);
-		log.info("Look for and close the welcome tab");	
-		List<SWTBotView> theViews = Bot.get().views();
-		for (SWTBotView theView : theViews) {
-			log.info ("Looking for Welcome - Found view: " + theView.getTitle());
-			if (theView.getTitle().equals("Welcome")) {
-				log.info("Found Welcome view - closing");
-				Bot.get().viewByTitle("Welcome").close();
-			}			
-		}		
+		closeWelcome ();
 				
 		log.info("*** Step - Open the Mylyn View");
 		new ShellMenu("Window", "Show View", "Other...").select();
-		new DefaultShell("Show View");
 
 		/* Verify that the expected repos are defined */
 		log.info("***Step - Verify that the Mylyn Features are Present");
-		DefaultTree FeatureTree = new DefaultTree();
 		DefaultTreeItem taskRepositories = new DefaultTreeItem ("Mylyn", "Task Repositories");
 		taskRepositories.select();		
-//		List<TreeItem> featureItems = FeatureTree.getAllItems();
-//		selectTreeItem(featureItems, "Task Repositories", log);
 		
 		/* Slightly different text after update for 
 		 * http://wiki.eclipse.org/Platform_UI/Juno_Performance_Investigation
@@ -62,7 +63,7 @@ public class TestSupport {
 			new PushButton("ok").click();
 		}
 				
-		Bot.get().sleep(30000l);
+		AbstractWait.sleep(TimePeriod.NORMAL.getSeconds());
 		
 		DefaultTree RepoTree = new DefaultTree();
 		List<TreeItem> repoItems = RepoTree.getAllItems();
@@ -71,7 +72,12 @@ public class TestSupport {
 		
 	} /* method */
 	
-	/* Test Setup part 2 */
+	/* Test Setup part 2 
+	 * 
+	 * This is divided into 2 parts to enable tests to receive both List of repos, 
+	 * and an ArrayList of the same items
+	 * 
+	 * */
 	public static ArrayList<String> mylynTestSetup2 (List<TreeItem> repoItems, Logger log) {
 		ArrayList<String> repoList = new ArrayList<String>();
 		int i = 0;
@@ -82,5 +88,5 @@ public class TestSupport {
 		return repoList;
 		
 	} /* method */
-
+	
 } /* class */

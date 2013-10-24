@@ -13,8 +13,10 @@ package org.jboss.tools.archives.ui.bot.test;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.ide.NewJavaProjectWizardDialog;
 import org.jboss.reddeer.eclipse.jdt.ui.ide.NewJavaProjectWizardPage;
+import org.jboss.reddeer.eclipse.ui.views.log.LogView;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.impl.toolbar.ViewToolItem;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.archives.reddeer.archives.ui.ProjectArchivesExplorer;
 import org.jboss.tools.archives.reddeer.archives.ui.ProjectArchivesView;
@@ -23,7 +25,6 @@ import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.helper.ImportHelper;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
-import org.jboss.tools.ui.bot.ext.view.ErrorLogView;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
@@ -97,7 +98,8 @@ public class ArchivesTestBase extends SWTTestExt {
 	}
 	
 	protected static void clearErrorView() {
-		new ErrorLogView().clear();
+		new LogView().open();
+		new ViewToolItem("Clear Log Viewer").click();
 	}
 	
 	protected static void createJavaProject(String projectName) {

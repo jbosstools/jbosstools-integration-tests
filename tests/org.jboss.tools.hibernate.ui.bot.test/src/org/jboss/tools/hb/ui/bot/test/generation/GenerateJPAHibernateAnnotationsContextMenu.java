@@ -10,7 +10,7 @@ import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
-import org.jboss.reddeer.swt.impl.tree.ViewTreeItem;
+import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.tools.hb.ui.bot.test.HibernateBaseTest;
 import org.jboss.tools.ui.bot.ext.config.Annotations.DB;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
@@ -40,7 +40,7 @@ public class GenerateJPAHibernateAnnotationsContextMenu extends HibernateBaseTes
 		PackageExplorer pe = new PackageExplorer();
 		pe.selectProject(prj);		
 		
-		TreeItem item = new ViewTreeItem(prj,"src",pckg,"Dog.java");
+		TreeItem item = new DefaultTreeItem(prj,"src",pckg,"Dog.java");
 		item.select();
 		
 		Menu menu = new ContextMenu("Source","Generate Hibernate/JPA annotations");
@@ -51,7 +51,7 @@ public class GenerateJPAHibernateAnnotationsContextMenu extends HibernateBaseTes
 		new PushButton("Finish").click();
 		
 		Shell ws = new WorkbenchShell();
-		TreeItem itemre = new ViewTreeItem(prj,"src",pckg,"Dog.java");
+		TreeItem itemre = new DefaultTreeItem(prj,"src",pckg,"Dog.java");
 		item.doubleClick();
 		
 		SWTBotEditor editor = bot.editorByTitle("Dog.java");

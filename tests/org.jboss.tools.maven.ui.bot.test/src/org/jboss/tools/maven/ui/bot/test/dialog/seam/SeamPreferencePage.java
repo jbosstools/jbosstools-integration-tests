@@ -18,7 +18,7 @@ public class SeamPreferencePage extends PreferencePage{
 	
 	public void addRuntime(String name, String seamPath, String seamVersion){
 		for(int i=0; i< new DefaultTable().rowCount(); i++){
-			if(new DefaultTable().cell(i, 3).equals(seamPath)){
+			if(new DefaultTable().getItem(i).getText(3).equals(seamPath)){
 				return; //seam runtime already exists
 			}
 		}

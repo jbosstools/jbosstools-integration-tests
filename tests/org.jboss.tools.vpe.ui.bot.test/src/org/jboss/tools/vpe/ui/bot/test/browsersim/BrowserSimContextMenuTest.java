@@ -37,6 +37,7 @@ public class BrowserSimContextMenuTest extends BrowserSimTest{
           "Screenshot",
           "Open Synchronized Window",
           "Enable LiveReload",
+          "Enable Touch Events",
           "",
           "Open in Default Browser",
           "View Page Source",
