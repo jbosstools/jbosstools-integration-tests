@@ -9,15 +9,21 @@ import static org.jboss.tools.portlet.ui.bot.matcher.factory.WorkspaceMatchersFa
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.jboss.reddeer.eclipse.jface.wizard.WizardDialog;
+import org.jboss.reddeer.swt.api.Group;
+import org.jboss.reddeer.swt.api.Text;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.group.DefaultGroup;
+import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.tools.portlet.ui.bot.entity.FacetDefinition;
 import org.jboss.tools.portlet.ui.bot.entity.WorkspaceFile;
 import org.jboss.tools.portlet.ui.bot.task.wizard.web.DynamicWebProjectDialog;
 import org.jboss.tools.portlet.ui.bot.task.wizard.web.DynamicWebProjectWizardPage;
 import org.jboss.tools.portlet.ui.bot.test.testcase.SWTTaskBasedTestCase;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
+import org.jboss.tools.ui.bot.ext.config.TestConfigurator;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
@@ -93,6 +99,24 @@ public abstract class CreatePortletProjectTemplate extends SWTTaskBasedTestCase 
 		}
 	}
 
+	/**
+	 * Process wizard page JBoss JSF Portlet Capabilities when creating Dynamic Web Project.
+	 * If portlet bridge is not recognized in the server location,
+	 * the location will be set to value listed in configuration file.
+	 * 
+	 */
+	protected void processWizardPageJSFPortletCapabilities() {
+		try{
+			Group portletbridgeRuntimeGroup = new DefaultGroup("JSFPortlet Implementation Library");
+			Text textFromGroup = new DefaultText(portletbridgeRuntimeGroup);
+			String portletBridgeLocation = TestConfigurator.currentConfig.getPortletBridge().getLocation();
+			if(portletBridgeLocation == null)
+				fail("Portlet Bridge location must be defined in configuration file.");
+			textFromGroup.setText(portletBridgeLocation);
+		} catch (WidgetNotFoundException e) {
+			// ok, the portlet bridge is recognized in the server location
+		}
+	}
 	private List<WorkspaceFile> getExpectedWorkspaceFiles(){
 		return wrap(getExpectedFiles());
 	}
