@@ -22,6 +22,9 @@
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-surefire-plugin</artifactId>
 				<configuration>
+
+				<product>org.eclipse.platform.ide</product>
+
 					<useUIThread>false</useUIThread>
 					<testSuite>org.jboss.tools.mylyn.ui.bot.test</testSuite>
 					<testClass>org.jboss.tools.mylyn.ui.bot.test.MylynSuite</testClass>

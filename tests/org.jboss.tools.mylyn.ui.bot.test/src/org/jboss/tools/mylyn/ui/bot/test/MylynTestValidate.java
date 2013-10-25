@@ -63,7 +63,7 @@ public class MylynTestValidate {
 		// connected
 		log.info("Step 4 - Validate connection to the Red Hat Bugzilla repo");
 
-		int elementIndex = repoList.indexOf("Red Hat Bugzilla");
+		int elementIndex = repoList.indexOf("Eclipse.org");
 		log.info("Found: " + repoItems.get(elementIndex).getText());
 		
 		repoItems.get(elementIndex).select();	
@@ -83,16 +83,7 @@ public class MylynTestValidate {
 						.contains("Repository is valid"));
 			
 		theRepoDialog.finish();
-		AbstractWait.sleep(TimePeriod.NORMAL.getSeconds());
-		
-		
-	/////////////////////////////////////////////////////////////
-		
-		
-		
-		
-	/////////////////////////////////////////////////////////////
-		
+		AbstractWait.sleep(TimePeriod.NORMAL.getSeconds());		
 		
 	} /* method */
 

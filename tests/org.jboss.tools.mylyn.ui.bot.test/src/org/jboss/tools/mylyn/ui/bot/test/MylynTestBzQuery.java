@@ -42,7 +42,7 @@ public class MylynTestBzQuery {
 	 */
 	
 	/* Test for RH bugzilla */
-	@Test
+//	@Test
 	public void TestRHBugzilla() {
 		TestBugzillaQuery("Red Hat Bugzilla",
 				"MylynRHBugzillaQueryTest - test query",
@@ -136,7 +136,6 @@ public class MylynTestBzQuery {
 		}
 
 		new DefaultShell("Edit Query");
-			
 		AbstractWait.sleep(TimePeriod.NORMAL.getSeconds());
 		
 		/* Slightly different text on JBT3/4)  */ 	
