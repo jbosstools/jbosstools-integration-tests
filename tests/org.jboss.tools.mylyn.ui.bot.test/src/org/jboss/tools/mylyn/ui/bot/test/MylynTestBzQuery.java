@@ -42,7 +42,7 @@ public class MylynTestBzQuery {
 	 */
 	
 	/* Test for RH bugzilla */
-//	@Test
+	@Test
 	public void TestRHBugzilla() {
 		TestBugzillaQuery("Red Hat Bugzilla",
 				"MylynRHBugzillaQueryTest - test query",
