@@ -1,121 +1,157 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>org.jboss.tools.integration-tests</groupId>
-		<artifactId>tests</artifactId>
-		<version>4.1.0-SNAPSHOT</version>
-	</parent>
 
-	<groupId>org.jboss.tools.mylyn.tests</groupId>
-	<artifactId>org.jboss.tools.mylyn.ui.bot.test</artifactId>
-	<version>4.1.0-SNAPSHOT</version>
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.jboss.tools.integration-tests</groupId>
+        <artifactId>tests</artifactId>
+        <version>4.1.0-SNAPSHOT</version>
+    </parent>
 
-	<packaging>eclipse-test-plugin</packaging>
+    <groupId>org.jboss.tools.mylyn.tests</groupId>
+    <artifactId>org.jboss.tools.mylyn.ui.bot.test</artifactId>
+    <version>4.1.0-SNAPSHOT</version>
+
+    <packaging>eclipse-test-plugin</packaging>
     <properties>
         <systemProperties>${integrationTestsSystemProperties}</systemProperties>
+        <tychoPluginProductParameter>org.eclipse.platform.ide</tychoPluginProductParameter>
     </properties>
     
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.eclipse.tycho</groupId>
-				<artifactId>tycho-surefire-plugin</artifactId>
-				<configuration>
+    <build>
+        <plugins>
 
-				<product>org.eclipse.platform.ide</product>
+            <plugin>
+                <groupId>org.eclipse.tycho</groupId>
+                <artifactId>tycho-surefire-plugin</artifactId>
+                <configuration>
+                    <product>${tychoPluginProductParameter}</product>
+                    <useUIThread>false</useUIThread>
+                    <testSuite>org.jboss.tools.mylyn.ui.bot.test</testSuite>
+                    <testClass>org.jboss.tools.mylyn.ui.bot.test.MylynSuite</testClass>
+                    <skip>${swtbot.test.skip}</skip>
+                    <dependencies combine.children="append">
+                        <dependency>
+                            <type>p2-installable-unit</type>
+                            <artifactId>org.jboss.tools.common.mylyn.feature.feature.group</artifactId>
+                            <version>0.0.0</version>
+                        </dependency>
+                        <dependency>
+                            <type>p2-installable-unit</type>
+                            <artifactId>org.eclipse.mylyn_feature.feature.group</artifactId>
+                            <version>0.0.0</version>
+                        </dependency>
+                        <dependency>
+                            <type>p2-installable-unit</type>
+                            <artifactId>org.eclipse.mylyn.ide_feature.feature.group</artifactId>
+                            <version>0.0.0</version>
+                        </dependency>
+                        <dependency>
+                            <type>p2-installable-unit</type>
+                            <artifactId>org.eclipse.mylyn.commons.feature.group</artifactId>
+                            <version>0.0.0</version>
+                        </dependency>
+                        <dependency>
+                            <type>p2-installable-unit</type>
+                            <artifactId>org.eclipse.mylyn.context_feature.feature.group</artifactId>
+                            <version>0.0.0</version>
+                        </dependency>
+                        <dependency>
+                            <type>p2-installable-unit</type>
+                            <artifactId>org.eclipse.mylyn.bugzilla_feature.feature.group</artifactId>
+                            <version>0.0.0</version>
+                        </dependency>
+                        <dependency>
+                            <type>p2-installable-unit</type>
+                            <artifactId>org.eclipse.mylyn.java_feature.feature.group</artifactId>
+                            <version>0.0.0</version>
+                        </dependency>
+                        <dependency>
+                            <type>p2-installable-unit</type>
+                            <artifactId>org.eclipse.mylyn.pde_feature.feature.group</artifactId>
+                            <version>0.0.0</version>
+                        </dependency>
+                        <dependency>
+                            <type>p2-installable-unit</type>
+                            <artifactId>org.eclipse.mylyn.team_feature.feature.group</artifactId>
+                            <version>0.0.0</version>
+                        </dependency>
+                        <dependency>
+                            <type>p2-installable-unit</type>
+                            <artifactId>org.eclipse.mylyn.versions.feature.group</artifactId>
+                            <version>0.0.0</version>
+                        </dependency>
+                    </dependencies>
+                </configuration>
+            </plugin>
 
-					<useUIThread>false</useUIThread>
-					<testSuite>org.jboss.tools.mylyn.ui.bot.test</testSuite>
-					<testClass>org.jboss.tools.mylyn.ui.bot.test.MylynSuite</testClass>
-					<skip>${swtbot.test.skip}</skip>
-					<dependencies combine.children="append">
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.jboss.tools.common.mylyn.feature.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
+            <plugin>
+                <groupId>org.eclipse.tycho</groupId>
+                <artifactId>target-platform-configuration</artifactId>
+                <version>${tychoVersion}</version>
+                <configuration>
+                    <resolver>p2</resolver>
+                    <ignoreTychoRepositories>true</ignoreTychoRepositories>
+                    <environments>
+                        <environment>
+                            <os>macosx</os>
+                            <ws>cocoa</ws>
+                            <arch>x86</arch>
+                        </environment>
+                        <environment>
+                            <os>macosx</os>
+                            <ws>cocoa</ws>
+                            <arch>x86_64</arch>
+                        </environment>
+                        <environment>
+                            <os>win32</os>
+                            <ws>win32</ws>
+                            <arch>x86</arch>
+                        </environment>
+                        <environment>
+                            <os>win32</os>
+                            <ws>win32</ws>
+                            <arch>x86_64</arch>
+                        </environment>
+                        <environment>
+                            <os>linux</os>
+                            <ws>gtk</ws>
+                            <arch>x86</arch>
+                        </environment>
+                        <environment>
+                            <os>linux</os>
+                            <ws>gtk</ws>
+                            <arch>x86_64</arch>
+                        </environment>
+                    </environments>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
-<dependency><type>p2-installable-unit</type><artifactId>org.eclipse.mylyn_feature.feature.group</artifactId><version>0.0.0</version></dependency>
-<dependency><type>p2-installable-unit</type><artifactId>org.eclipse.mylyn.ide_feature.feature.group</artifactId><version>0.0.0</version></dependency>
-<dependency><type>p2-installable-unit</type><artifactId>org.eclipse.mylyn.commons.feature.group</artifactId><version>0.0.0</version></dependency>
-<dependency><type>p2-installable-unit</type><artifactId>org.eclipse.mylyn.context_feature.feature.group</artifactId><version>0.0.0</version></dependency>
-<dependency><type>p2-installable-unit</type><artifactId>org.eclipse.mylyn.bugzilla_feature.feature.group</artifactId><version>0.0.0</version></dependency>
-<dependency><type>p2-installable-unit</type><artifactId>org.eclipse.mylyn.java_feature.feature.group</artifactId><version>0.0.0</version></dependency>
-<dependency><type>p2-installable-unit</type><artifactId>org.eclipse.mylyn.pde_feature.feature.group</artifactId><version>0.0.0</version></dependency>
-<dependency><type>p2-installable-unit</type><artifactId>org.eclipse.mylyn.team_feature.feature.group</artifactId><version>0.0.0</version></dependency>
-<dependency><type>p2-installable-unit</type><artifactId>org.eclipse.mylyn.versions.feature.group</artifactId><version>0.0.0</version></dependency>
+    <profiles>
+        <profile>
+            <id>mac17</id>	
+            <properties>
+                <systemProperties>-Dawt.toolkit=sun.lwawt.macosx.LWCToolkit</systemProperties>
+            </properties>
+        </profile>
 
-					</dependencies>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.eclipse.tycho</groupId>
-				<artifactId>target-platform-configuration</artifactId>
-				<version>${tychoVersion}</version>
-				<configuration>
-					<resolver>p2</resolver>
-					<ignoreTychoRepositories>true</ignoreTychoRepositories>
-					<environments>
-						<environment>
-							<os>macosx</os>
-							<ws>cocoa</ws>
-							<arch>x86</arch>
-						</environment>
-						<environment>
-							<os>macosx</os>
-							<ws>cocoa</ws>
-							<arch>x86_64</arch>
-						</environment>
-						<environment>
-							<os>win32</os>
-							<ws>win32</ws>
-							<arch>x86</arch>
-						</environment>
-						<environment>
-							<os>win32</os>
-							<ws>win32</ws>
-							<arch>x86_64</arch>
-						</environment>
-						<environment>
-							<os>linux</os>
-							<ws>gtk</ws>
-							<arch>x86</arch>
-						</environment>
-						<environment>
-							<os>linux</os>
-							<ws>gtk</ws>
-							<arch>x86_64</arch>
-						</environment>
-					</environments>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
+    </profiles>
 
-	<profiles>
-		<profile>
-			<id>mac17</id>
-			
-			<properties>
-				<systemProperties>-Dawt.toolkit=sun.lwawt.macosx.LWCToolkit</systemProperties>
-			</properties>
-		</profile>
-	</profiles>
-
-
-	<repositories>
-		<repository>
-      		<id>red_deer</id>
-      		<url>http://download.jboss.org/jbosstools/builds/staging/RedDeer_master/all/repo/</url>
-      		<layout>p2</layout>
-      		<snapshots>
-         		<enabled>true</enabled>
-      		</snapshots>
-      		<releases>
-         		<enabled>true</enabled>
-     		</releases>
-   		</repository>
-	</repositories>
+    <repositories>
+        <repository>
+            <id>red_deer</id>
+            <url>http://download.jboss.org/jbosstools/builds/staging/RedDeer_master/all/repo/</url>
+            <layout>p2</layout>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </repository>
+    </repositories>
 
 </project>
+
