@@ -136,7 +136,6 @@ public class MylynTestBzQuery {
 		}
 
 		new DefaultShell("Edit Query");
-			
 		AbstractWait.sleep(TimePeriod.NORMAL.getSeconds());
 		
 		/* Slightly different text on JBT3/4)  */ 	
