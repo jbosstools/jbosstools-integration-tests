@@ -3,12 +3,12 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-        <groupId>org.jboss.tools.integration-tests</groupId>
-		<artifactId>tests</artifactId>
+		<groupId>org.jboss.tools.integration-tests</groupId>
+		<artifactId>plugins</artifactId>
 		<version>4.1.0-SNAPSHOT</version>
 	</parent>
-	<groupId>org.jboss.ide.eclipse.as</groupId>
-	<artifactId>org.jboss.ide.eclipse.as.reddeer</artifactId>
+	<groupId>org.jboss.tools.ws</groupId>
+	<artifactId>org.jboss.tools.ws.reddeer</artifactId>
 	<version>4.1.0-SNAPSHOT</version>
 
 	<packaging>eclipse-plugin</packaging>

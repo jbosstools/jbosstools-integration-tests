@@ -10,7 +10,7 @@
 	<artifactId>org.jboss.tools.jst.ui.bot.test</artifactId> 
 	<version>4.1.0-SNAPSHOT</version>
 	
-	<packaging>eclipse-plugin</packaging>
+	<packaging>eclipse-test-plugin</packaging>
 	<properties>
 		<coverage.filter>org.jboss.tools.jst*</coverage.filter>
 		<emma.instrument.bundles>org.jboss.tools.jst*</emma.instrument.bundles>

@@ -4,11 +4,11 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.jboss.tools.integration-tests</groupId>
-		<artifactId>tests</artifactId>
+		<artifactId>plugins</artifactId>
 		<version>4.1.0-SNAPSHOT</version>
 	</parent>
-	<groupId>org.jboss.tools.hibernatetools.tests</groupId>
-	<artifactId>org.jboss.tools.hibernate.reddeer</artifactId>
+	<groupId>org.jboss.tools.archives</groupId>
+	<artifactId>org.jboss.tools.archives.reddeer</artifactId>
 	<version>4.1.0-SNAPSHOT</version>
 
 	<packaging>eclipse-plugin</packaging>

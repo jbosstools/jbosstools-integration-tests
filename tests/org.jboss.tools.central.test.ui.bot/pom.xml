@@ -5,7 +5,7 @@
 
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-                <groupId>org.jboss.tools.integration-tests</groupId>
+		<groupId>org.jboss.tools.integration-tests</groupId>
 		<artifactId>tests</artifactId>
 		<version>4.1.0-SNAPSHOT</version>
 	</parent>
@@ -14,6 +14,7 @@
 	<version>4.1.0-SNAPSHOT</version>
 
 	<packaging>eclipse-test-plugin</packaging>
+	
 	<properties>
 		<jbosstools.test.jbossas.home>${requirementsDirectory}/jboss-as-7.1.1.Final</jbosstools.test.jbossas.home>
 		<jbosstools.test.eap.6.0.home>${requirementsDirectory}/jboss-eap-6.0</jbosstools.test.eap.6.0.home>
