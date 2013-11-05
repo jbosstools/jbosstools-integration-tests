@@ -34,7 +34,6 @@
 		<module>org.jboss.tools.freemarker.ui.bot.test</module>
 		<module>org.jboss.tools.hibernate.ui.bot.test</module>
 		<module>org.jboss.tools.jsf.ui.bot.test</module>
-		<module>org.jboss.tools.jst.ui.bot.test</module>
 		<module>org.jboss.tools.maven.ui.bot.test</module>
 		<module>org.jboss.tools.mylyn.ui.bot.test</module>
 		<module>org.jboss.tools.openshift.ui.bot.test</module>
