@@ -16,6 +16,7 @@
 	mvn clean install -P jbosstools-nightly-staging-composite-soa-tooling,multiple.target -Dmaven.test.failure.ignore=true -Dmaven.test.error.ignore=true
 	-->
 	<modules>
+		<module>plugins</module>
 		<module>tests</module>
 		<module>features</module>
 		<module>site</module>
