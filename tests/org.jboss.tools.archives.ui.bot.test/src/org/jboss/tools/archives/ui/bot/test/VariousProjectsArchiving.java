@@ -10,14 +10,13 @@
  ******************************************************************************/
 package org.jboss.tools.archives.ui.bot.test;
 
+import org.jboss.reddeer.eclipse.ui.views.log.LogMessage;
 import org.jboss.reddeer.eclipse.ui.views.log.LogView;
 import org.jboss.reddeer.swt.api.Text;
-import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
@@ -128,12 +127,11 @@ public class VariousProjectsArchiving extends ArchivesTestBase {
 	}
 	
 	private int countOfArchivesErrors() {
-		LogView view = new LogView();
-		view.open();
-		
+		LogView lv = new LogView();
+		lv.open();
 		int archivesErrorsCount = 0;
-		for (TreeItem ti : new DefaultTree().getAllItems()) {
-			String pluginId = ti.getCell(1);
+		for(LogMessage msg: lv.getErrorMessages()){
+			String pluginId = msg.getPlugin();
 			if (pluginId.contains("org.jboss.ide.eclipse.archives")) {
 				archivesErrorsCount++;
 			}
