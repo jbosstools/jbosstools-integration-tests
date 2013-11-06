@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: org.jboss.tools.central.test.ui.bot
-Bundle-SymbolicName: org.jboss.tools.central.test.ui.bot;singleton:=true
+Bundle-SymbolicName: org.jboss.tools.central.ui.bot.test;singleton:=true
 Bundle-Version: 4.1.0.qualifier
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: Red Hat

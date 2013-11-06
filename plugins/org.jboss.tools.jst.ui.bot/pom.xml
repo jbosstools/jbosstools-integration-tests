@@ -6,10 +6,10 @@
 		<artifactId>plugins</artifactId>
 		<version>4.1.0-SNAPSHOT</version>
 	</parent>
-	<groupId>org.jboss.tools.jst.tests</groupId>
+	<groupId>org.jboss.tools.jst</groupId>
 
 	<!-- TODO: since org.jboss.tools.jst.ui.bot.test plugin contains no tests, it should be renamed accordingly -->
-	<artifactId>org.jboss.tools.jst.ui.bot.test</artifactId> 
+	<artifactId>org.jboss.tools.jst.ui.bot</artifactId> 
 	<version>4.1.0-SNAPSHOT</version>
 	
 	<!-- contains no tests, so type is eclipse-plugin -->

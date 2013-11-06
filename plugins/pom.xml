@@ -18,7 +18,7 @@
 		<module>org.jboss.tools.common.reddeer</module>
 		<module>org.jboss.tools.cdi.reddeer</module>
 		<!-- TODO: since org.jboss.tools.jst.ui.bot.test plugin contains no tests, it should be renamed accordingly -->
-		<module>org.jboss.tools.jst.ui.bot.test</module>
+		<module>org.jboss.tools.jst.ui.bot</module>
 		<module>org.jboss.tools.hibernate.reddeer</module>
 		<module>org.jboss.tools.ui.bot.ext</module>
 		<module>org.jboss.tools.ws.reddeer</module>
