@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: JST UI SWTBot Tests
-Bundle-SymbolicName: org.jboss.tools.jst.ui.bot.test;singleton:=true
+Bundle-SymbolicName: org.jboss.tools.jst.ui.bot;singleton:=true
 Bundle-Version: 4.1.0.qualifier
 Bundle-Activator: org.jboss.tools.ui.bot.test.Activator
 Require-Bundle: org.eclipse.core.runtime,
