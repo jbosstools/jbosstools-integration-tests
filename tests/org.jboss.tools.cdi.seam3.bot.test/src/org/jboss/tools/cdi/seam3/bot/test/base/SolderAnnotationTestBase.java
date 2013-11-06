@@ -11,7 +11,9 @@
 
 package org.jboss.tools.cdi.seam3.bot.test.base;
 
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import java.util.List;
+
+import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.tools.cdi.bot.test.CDIConstants;
 import org.jboss.tools.cdi.bot.test.annotations.ProblemsType;
 import org.jboss.tools.ui.bot.ext.helper.OpenOnHelper;
@@ -52,13 +54,13 @@ public class SolderAnnotationTestBase extends Seam3TestBase {
 	 */
 	private void testBeanValidationProblemExists(String projectName, boolean noBeanEligible) {
 		
-		SWTBotTreeItem[] validationProblems = quickFixHelper.getProblems(
+		List<TreeItem> validationProblems = quickFixHelper.getProblems(
 				ProblemsType.WARNINGS, projectName);
-		assertTrue(validationProblems.length > 0);
+		assertTrue(validationProblems.size() > 0);
 		String validationMessage = noBeanEligible?
 				CDIConstants.NO_BEAN_IS_ELIGIBLE:
 				CDIConstants.MULTIPLE_BEANS;
-		for (SWTBotTreeItem ti : validationProblems) {
+		for (TreeItem ti : validationProblems) {
 			if (ti.getText().contains(validationMessage)) {
 				return;
 			}
@@ -109,9 +111,9 @@ public class SolderAnnotationTestBase extends Seam3TestBase {
 			String openedClass, 
 			boolean producer, String producerMethod) {
 		
-		SWTBotTreeItem[] validationProblems = quickFixHelper.getProblems(
+		List<TreeItem> validationProblems = quickFixHelper.getProblems(
 				ProblemsType.WARNINGS, projectName);
-		assertTrue(validationProblems.length == 0);
+		assertTrue(validationProblems.size() == 0);
 		OpenOnHelper.checkOpenOnFileIsOpened(bot, APPLICATION_CLASS, 
 				openOnString, CDIConstants.OPEN_INJECT_BEAN, openedClass + ".java");
 		if (producer) {

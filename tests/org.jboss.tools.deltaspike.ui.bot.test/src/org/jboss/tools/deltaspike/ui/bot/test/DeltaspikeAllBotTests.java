@@ -1,5 +1,13 @@
 /*******************************************************************************
- * Copyright (c) 2010-2013 Red Hat, Inc.
+
+
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * [45Copyright (c) 2010-2013 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -23,7 +31,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	ExcludesAnnotationTest.class,
 	ConfigPropertyAnnotationTest.class,
 	MessageBundleAnnotationTest.class,
-	MessageContextAnnotationTest.class,
+	JmxBroadcaster.class,
 	ExceptionHandlerAnnotationTest.class,
 	ExceptionHandlerMethodsTest.class,
 	SecuresAnnotationTest.class,

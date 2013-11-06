@@ -15,6 +15,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.swt.impl.menu.ShellMenu;
+import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
 import org.jboss.tools.cdi.bot.test.annotations.CDIWizardType;
 import org.jboss.tools.cdi.bot.test.uiutils.wizards.CDIWizardBaseExt;
@@ -67,7 +70,7 @@ public class NamedComponentsSearchingTest extends CDITestBase {
 				false, false, false, namedParam, null, null, null).finishWithWait();
 		
 		namedDialog = openSearchNamedDialog().setNamedPrefix(namedParam);		
-		assertTrue(namedDialog.matchingItems().size() == 1);
+		assertEquals(1,namedDialog.matchingItems().size());
 		namedDialog.ok();
 		assertTrue(bot.activeEditor().getTitle().equals(beanName + ".java"));
 		assertTrue(bot.activeEditor().toTextEditor().getSelection().equals(beanName));
@@ -221,9 +224,9 @@ public class NamedComponentsSearchingTest extends CDITestBase {
 	}
 	
 	
-	private SearchNamedDialogWizard openSearchNamedDialog() {		
-		bot.menu(IDELabel.Menu.NAVIGATE).menu(IDELabel.Menu.OPEN_CDI_NAMED_BEAN).click();
-		bot.waitForShell(IDELabel.Menu.OPEN_CDI_NAMED_BEAN);
+	private SearchNamedDialogWizard openSearchNamedDialog() {
+		new ShellMenu(IDELabel.Menu.NAVIGATE, IDELabel.Menu.OPEN_CDI_NAMED_BEAN).select();
+		new WaitUntil(new ShellWithTextIsActive(IDELabel.Menu.OPEN_CDI_NAMED_BEAN));
 		return new SearchNamedDialogWizard();
 	}
 

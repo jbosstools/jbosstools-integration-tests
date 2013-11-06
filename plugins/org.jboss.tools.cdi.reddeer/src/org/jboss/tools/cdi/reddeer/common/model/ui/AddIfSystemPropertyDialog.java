@@ -38,8 +38,9 @@ public class AddIfSystemPropertyDialog extends DefaultShell {
 	}
 	
 	public void finish() {
+		String shelltext = getText();
 		new PushButton("Finish").click();
-		new WaitWhile(new ShellWithTextIsActive(this.getText()));
+		new WaitWhile(new ShellWithTextIsActive(shelltext));
 	}
 	
 }

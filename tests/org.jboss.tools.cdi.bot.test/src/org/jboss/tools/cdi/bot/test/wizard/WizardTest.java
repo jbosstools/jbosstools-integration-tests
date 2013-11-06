@@ -39,7 +39,7 @@ public class WizardTest extends CDITestBase {
 		/**
 		 * needed for creating non-dependant components
 		 */
-		projectExplorer.selectProject(getProjectName());
+		packageExplorer.selectProject(getProjectName());
 	}
 		
 	@Test

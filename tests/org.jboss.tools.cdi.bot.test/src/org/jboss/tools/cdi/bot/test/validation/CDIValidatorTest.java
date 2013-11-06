@@ -87,8 +87,9 @@ public class CDIValidatorTest extends CDITestBase {
 	private static void closeSettingsChangedShell() {
 		new WaitUntil(new ShellWithTextIsActive("Validator Settings Changed"));
 		DefaultShell shell = new DefaultShell("Validator Settings Changed");
+		String shellText = shell.getText();
 		new PushButton("Yes").click();
-		new WaitWhile(new ShellWithTextIsActive(shell.getText()), TimePeriod.LONG);
+		new WaitWhile(new ShellWithTextIsActive(shellText), TimePeriod.LONG);
 	}
 
 }

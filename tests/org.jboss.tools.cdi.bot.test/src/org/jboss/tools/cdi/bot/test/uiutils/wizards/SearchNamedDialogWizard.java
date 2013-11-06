@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.swtbot.swt.finder.SWTBot;
+import org.jboss.reddeer.swt.impl.table.DefaultTable;
+import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 
@@ -45,9 +47,10 @@ public class SearchNamedDialogWizard extends Wizard {
 	}
 	
 	public List<String> matchingItems() {
-		int tableItemsCount = bot().table(0).rowCount();
+		AbstractWait.sleep(5000);
+		int tableItemsCount = new DefaultTable().rowCount();
 		for (int i = 0; i < tableItemsCount; i++) {
-			String itemInTable = bot().table(0).getTableItem(i).getText();
+			String itemInTable =new DefaultTable().getItem(i).getText();
 			if (itemInTable.contains("Workspace matches")) continue;
 			matchingItems.add(itemInTable);
 		}

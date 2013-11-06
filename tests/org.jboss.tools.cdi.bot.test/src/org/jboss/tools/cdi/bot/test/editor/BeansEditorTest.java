@@ -70,7 +70,7 @@ public class BeansEditorTest extends CDITestBase {
 		 * project should be located in workspace after previous test
 		 */
 		try {
-			projectExplorer.selectProject("CDIProject");
+			packageExplorer.selectProject("CDIProject");
 		} catch (WidgetNotFoundException wnfe) {
 			fail("project should be located in workspace");
 		}

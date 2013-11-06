@@ -28,7 +28,6 @@ public class ExplorerInProjectExplorer implements WaitCondition {
 		this.project = project;
 	}
 	
-	@Override
 	public boolean test() {
 		try {
 			new ProjectArchivesExplorer(project);
@@ -38,7 +37,6 @@ public class ExplorerInProjectExplorer implements WaitCondition {
 		}
 	}
 
-	@Override
 	public String description() {
 		// TODO Auto-generated method stub
 		return null;
