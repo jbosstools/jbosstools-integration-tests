@@ -31,8 +31,9 @@ public class AddIfClassAvailableDialog extends DefaultShell {
 	}
 	
 	public void finish() {
+		String shellText = getText();
 		new PushButton("Finish").click();
-		new WaitWhile(new ShellWithTextIsActive(this.getText()));
+		new WaitWhile(new ShellWithTextIsActive(shellText));
 	}
 	
 }

@@ -13,6 +13,7 @@ package org.jboss.tools.deltaspike.ui.bot.test;
 
 import static org.junit.Assert.assertThat;
 
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.hamcrest.core.IsEqual;
 import org.jboss.reddeer.swt.api.Shell;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
@@ -48,7 +49,7 @@ public class ExcludesAnnotationTest extends DeltaspikeTestBase {
 
 	@After
 	public void closeAllEditors() {
-	//	Bot.get().closeAllEditors();
+		new SWTWorkbenchBot().closeAllEditors();
 		projectExplorer.deleteAllProjects();
 	}
 	

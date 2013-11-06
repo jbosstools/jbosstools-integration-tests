@@ -15,6 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.tools.cdi.bot.test.CDIConstants;
 import org.jboss.tools.cdi.bot.test.annotations.ProblemsType;
 import org.jboss.tools.cdi.bot.test.uiutils.CollectionsUtil;
@@ -109,18 +110,18 @@ public class FullyQualifiedTest extends SolderAnnotationTestBase {
 		packageExplorer.openFile(projectName, CDIConstants.SRC, 
 				getPackageName(), myBean1).toTextEditor();
 		
-		SWTBotTreeItem[] validationProblems = quickFixHelper.getProblems(
+		List<TreeItem> validationProblems = quickFixHelper.getProblems(
 				ProblemsType.ERRORS, projectName);
-		assertTrue(validationProblems.length > 0);
-		assertTrue(validationProblems.length == 1);
-		assertTrue(validationProblems[0].getText().contains("cannot be resolved to a type"));
+		assertTrue(validationProblems.size() > 0);
+		assertTrue(validationProblems.size() == 1);
+		assertTrue(validationProblems.get(0).getText().contains("cannot be resolved to a type"));
 		
 		editResourceUtil.replaceInEditor("cdi.test.MyBean1", "cdi.seam.MyBean2");
 		validationProblems = quickFixHelper.getProblems(
 				ProblemsType.ERRORS, projectName);
-		assertTrue(validationProblems.length > 0);
-		assertTrue(validationProblems.length == 1);
-		assertTrue(validationProblems[0].getText().contains("cannot be resolved to a type"));
+		assertTrue(validationProblems.size() > 0);
+		assertTrue(validationProblems.size() == 1);
+		assertTrue(validationProblems.get(0).getText().contains("cannot be resolved to a type"));
 		
 	}
 

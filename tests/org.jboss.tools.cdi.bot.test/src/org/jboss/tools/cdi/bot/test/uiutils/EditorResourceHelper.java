@@ -24,6 +24,9 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
+import org.jboss.reddeer.swt.condition.JobIsRunning;
+import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.cdi.bot.test.editor.BeansEditorTest;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
 import org.jboss.tools.ui.bot.ext.SWTBotFactory;
@@ -226,6 +229,9 @@ public class EditorResourceHelper {
 	 * @param packageName
 	 */
 	public void deletePackage(String projectName, String packageName) {
+		projectExplorer.selectProject(projectName);
+		new ContextMenu("Refresh").select();
+		new WaitWhile(new JobIsRunning());
 		if (projectExplorer.isFilePresent(projectName, "Java Resources", "JavaSource")) {	
 			String[] path = {projectName, "Java Resources", "JavaSource"};
 			deleteFolderInProjectExplorer(packageName, path);

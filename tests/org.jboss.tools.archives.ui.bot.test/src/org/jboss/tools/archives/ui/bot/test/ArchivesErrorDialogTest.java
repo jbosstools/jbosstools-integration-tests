@@ -91,9 +91,7 @@ public class ArchivesErrorDialogTest extends ArchivesTestBase {
 		
 		LogView errorLog = new LogView();
 		errorLog.open();
-		
 		List<LogMessage> buildingError = null; 
-		
 		for (LogMessage msg : errorLog.getErrorMessages()) {
 			String pluginId = msg.getPlugin();
 			if (pluginId.contains("org.jboss.ide.eclipse.archives") && 

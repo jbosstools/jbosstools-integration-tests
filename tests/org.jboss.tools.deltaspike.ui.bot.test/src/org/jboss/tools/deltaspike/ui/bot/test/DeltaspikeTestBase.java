@@ -164,9 +164,9 @@ public class DeltaspikeTestBase extends SWTTestExt {
 			table.getItem(i).setChecked(false);
 		}
 		table.getItem(runtimeName).setChecked(true);
-
+		String textShell = shell.getText();
 		new PushButton("OK").click();
-		new WaitWhile(new ShellWithTextIsActive(shell.getText()),
+		new WaitWhile(new ShellWithTextIsActive(textShell),
 				TimePeriod.LONG);
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		new WaitWhile(new ShellWithTextIsActive("Progress Information"),
@@ -217,6 +217,8 @@ public class DeltaspikeTestBase extends SWTTestExt {
 				+ "library with property 'deltaspike.libs.dir'",
 				DELTASPIKE_LIBRARY_DIR);
 		List<File> libraryFiles = new ArrayList<File>();
+		FileInputStream istream = null;
+		FileOutputStream ostream = null;
 		try {
 			for (File in : librariesFolder.listFiles()) {
 				if (in.isDirectory() || 
@@ -227,23 +229,28 @@ public class DeltaspikeTestBase extends SWTTestExt {
 						+ projectName + File.separator + File.separator
 						+ in.getName());
 
-				inChannel = new FileInputStream(in).getChannel();
-				outChannel = new FileOutputStream(out).getChannel();
+				istream = new FileInputStream(in);
+				ostream = new FileOutputStream(out);
+				
+				inChannel = istream.getChannel();
+				outChannel = ostream.getChannel();
 
 				inChannel.transferTo(0, inChannel.size(), outChannel);
 				libraryFiles.add(in);
 			}
 		} catch (IOException ioException) {
 
-		}
-
-		try {
-			if (inChannel != null)
-				inChannel.close();
-			if (outChannel != null)
-				outChannel.close();
-		} catch (IOException ioException) {
-
+		} finally {
+			try{
+				if (istream != null){
+					istream.close();
+				}
+				if (ostream != null){
+					ostream.close();
+				}
+			} catch (IOException ex){
+				
+			}
 		}
 		return libraryFiles.toArray(new File[libraryFiles.size()]);
 	}

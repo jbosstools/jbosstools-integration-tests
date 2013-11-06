@@ -9,7 +9,6 @@
 	</parent>
 	<groupId>org.jboss.tools.cdi</groupId>
 	<artifactId>org.jboss.tools.cdi.reddeer</artifactId>
-	<version>4.1.0-SNAPSHOT</version>
 
 	<packaging>eclipse-plugin</packaging>
 

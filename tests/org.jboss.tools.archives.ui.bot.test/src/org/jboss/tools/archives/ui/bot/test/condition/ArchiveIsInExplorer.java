@@ -31,7 +31,6 @@ public class ArchiveIsInExplorer implements WaitCondition {
 		this.projectArchivesExplorer = projectArchivesExplorer;
 	}
 
-	@Override
 	public boolean test() {
 		try {
 			projectArchivesExplorer.getArchive(archiveName);
@@ -41,7 +40,6 @@ public class ArchiveIsInExplorer implements WaitCondition {
 		}
 	}
 
-	@Override
 	public String description() {
 		// TODO Auto-generated method stub
 		return null;
