@@ -11,7 +11,7 @@ public class OperateEAP62Server extends OperateServerTemplate {
 
 	@Override
 	public String getWelcomePageText() {
-		return "Welcome to EAP 6";
+		return "Welcome to JBoss EAP 6";
 	}
 
 }
