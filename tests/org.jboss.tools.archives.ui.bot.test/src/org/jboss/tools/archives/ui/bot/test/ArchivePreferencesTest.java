@@ -13,6 +13,7 @@ package org.jboss.tools.archives.ui.bot.test;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.link.DefaultLink;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
@@ -71,8 +72,7 @@ public class ArchivePreferencesTest extends ArchivesTestBase {
 	}
 	
 	private void openGlobalPreferencesFromLocal(String projectName) {
-		bot.link("<A>Configure Workspace Settings...</A>").click();
-		new WaitUntil(new ShellWithTextIsActive(IDELabel.Shell.PREFERENCES_FILTERED));
+		new DefaultLink("Configure Workspace Settings...").click();
 		new DefaultShell(IDELabel.Shell.PREFERENCES_FILTERED);
 		try {
 			bot.clabel("Project Archives");

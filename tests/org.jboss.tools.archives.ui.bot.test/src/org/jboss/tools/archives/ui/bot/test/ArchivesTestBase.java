@@ -16,7 +16,7 @@ import org.jboss.reddeer.eclipse.jdt.ui.ide.NewJavaProjectWizardPage;
 import org.jboss.reddeer.eclipse.ui.views.log.LogView;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.toolbar.ViewToolItem;
+import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.archives.reddeer.archives.ui.ProjectArchivesExplorer;
 import org.jboss.tools.archives.reddeer.archives.ui.ProjectArchivesView;
@@ -98,8 +98,10 @@ public class ArchivesTestBase extends SWTTestExt {
 	}
 	
 	protected static void clearErrorView() {
-		new LogView().open();
-		new ViewToolItem("Clear Log Viewer").click();
+		LogView lw = new LogView();
+		lw.open();
+		new DefaultTreeItem().select();
+		new ContextMenu("Clear Log Viewer").select();
 	}
 	
 	protected static void createJavaProject(String projectName) {

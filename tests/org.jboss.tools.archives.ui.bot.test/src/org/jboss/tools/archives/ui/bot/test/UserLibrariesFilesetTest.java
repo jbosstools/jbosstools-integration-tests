@@ -10,21 +10,19 @@
  ******************************************************************************/
 package org.jboss.tools.archives.ui.bot.test;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
+import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.archives.reddeer.archives.ui.ProjectArchivesExplorer;
 import org.jboss.tools.archives.reddeer.component.Archive;
 import org.jboss.tools.archives.ui.bot.test.condition.UserLibraryFilesetIsInArchive;
-import org.jboss.tools.ui.bot.ext.gen.IPreference;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.junit.After;
 import org.junit.Before;
@@ -130,8 +128,8 @@ public class UserLibrariesFilesetTest extends ArchivesTestBase {
 			.selectUserLibrary(userLibrary2).finish();
 		
 		try {
-			new WaitWhile(new UserLibraryFilesetIsInArchive(archive, userLibrary1));
-			new WaitUntil(new UserLibraryFilesetIsInArchive(archive, userLibrary2));
+			new WaitUntil(new UserLibraryFilesetIsInArchive(archive, userLibrary1));
+			new WaitWhile(new UserLibraryFilesetIsInArchive(archive, userLibrary2));
 		} catch (WaitTimeoutExpiredException te) {
 			fail("'" + userLibrary1 + "' was not modified to '" 
 					 + userLibrary2 + "' under archive '" 
@@ -164,22 +162,9 @@ public class UserLibrariesFilesetTest extends ArchivesTestBase {
 	}
 	
 	private static void openUserLibraryPreferencePage() {
-		IPreference page = new IPreference() {
-			
-			@Override
-			public String getName() {
-				return "User Libraries";
-			}
-			
-			@Override
-			public List<String> getGroupPath() {
-				List<String> path = new ArrayList<String>();
-				path.add("Java");
-				path.add("Build Path");
-				return path;
-			}
-		};
-		open.preferenceOpen(page);
+		new ShellMenu("Window","Preferences").select();
+		new DefaultShell("Preferences");
+		new DefaultTreeItem("Java","Build Path","User Libraries").select();
 	}
 	
 }
