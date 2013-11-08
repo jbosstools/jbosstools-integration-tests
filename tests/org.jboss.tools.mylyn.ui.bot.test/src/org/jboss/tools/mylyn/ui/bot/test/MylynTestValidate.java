@@ -15,10 +15,12 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.AbstractWait;
+import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.eclipse.mylyn.tasks.ui.view.*;
 import org.jboss.reddeer.eclipse.ui.ide.RepoConnectionDialog;
 //import org.jboss.reddeer.eclipse.mylyn.tasks.ui.wizards.RepoConnectionDialog;
@@ -33,8 +35,6 @@ public class MylynTestValidate {
 
 	@Test
 	public void TestIt() {
-
-		//TestSupport.closeWelcome();
 
 		AbstractWait.sleep(TimePeriod.NORMAL.getSeconds());
 		TaskRepositoriesView view = new TaskRepositoriesView();
@@ -67,8 +67,15 @@ public class MylynTestValidate {
 		log.info("Found: " + repoItems.get(elementIndex).getText());
 		
 		repoItems.get(elementIndex).select();	
-		new ShellMenu("File", "Properties").select();      
-		
+		new ShellMenu("File", "Properties").select();  
+	
+		try {
+			new WaitUntil(new ShellWithTextIsActive("Refreshing repository configuration"), TimePeriod.getCustom(60l)); 
+		}
+		catch (Exception E) {
+			log.info ("Problem with 'Refreshing repository configuration' shell not seen");
+		}		
+			
 		RepoConnectionDialog theRepoDialog = new RepoConnectionDialog();
 		log.info(theRepoDialog.getText());
 
@@ -83,7 +90,9 @@ public class MylynTestValidate {
 						.contains("Repository is valid"));
 			
 		theRepoDialog.finish();
-		AbstractWait.sleep(TimePeriod.NORMAL.getSeconds());		
+		AbstractWait.sleep(TimePeriod.NORMAL.getSeconds());	
+		
+		view.close();
 		
 	} /* method */
 

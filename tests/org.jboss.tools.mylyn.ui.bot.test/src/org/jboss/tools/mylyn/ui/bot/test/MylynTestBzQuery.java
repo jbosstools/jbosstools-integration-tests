@@ -15,8 +15,10 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.junit.Test;
+import org.jboss.reddeer.eclipse.mylyn.tasks.ui.view.TaskRepositoriesView;
 import org.jboss.reddeer.eclipse.ui.ide.RepoConnectionDialog;
 import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
@@ -65,7 +67,11 @@ public class MylynTestBzQuery {
 	 */
 	public void TestBugzillaQuery(String targetRepo, String queryName, String bugzillaSummary, String bugzilla) {
 
-		TestSupport.closeWelcome();
+		AbstractWait.sleep(TimePeriod.NORMAL.getSeconds());
+		TaskRepositoriesView view = new TaskRepositoriesView();
+
+		AbstractWait.sleep(TimePeriod.NORMAL.getSeconds());	
+		view.open();
 		
 		String fullBugzillaString = bugzilla + ": " + bugzillaSummary;
 		
@@ -81,7 +87,14 @@ public class MylynTestBzQuery {
 		log.info("Found: " + repoItems.get(elementIndex).getText());
 		
 		repoItems.get(elementIndex).select();	
-		new ShellMenu("File", "Properties").select();      
+		new ShellMenu("File", "Properties").select();  
+		
+		try {
+			new WaitUntil(new ShellWithTextIsActive("Refreshing repository configuration"), TimePeriod.getCustom(60l)); 
+		}
+		catch (Exception E) {
+			log.info ("Problem with 'Refreshing repository configuration' shell not seen");
+		}		
 		
 		RepoConnectionDialog theRepoDialog = new RepoConnectionDialog();
 		log.info(theRepoDialog.getText());
@@ -127,13 +140,7 @@ public class MylynTestBzQuery {
 		AbstractWait.sleep(TimePeriod.NORMAL.getSeconds());
 		new RadioButton("Create query using form").click();
 		new PushButton("Next >").click();
-		new WaitUntil(new ButtonWithTextIsActive("Cancel"),
-				TimePeriod.VERY_LONG);
-
-		while (!new PushButton("Cancel").isEnabled()) {
-			log.info("I am not ready" + new PushButton("Cancel").isEnabled());
-			AbstractWait.sleep(TimePeriod.NORMAL.getSeconds());
-		}
+		new WaitUntil(new ShellWithTextIsActive("Edit Query"), TimePeriod.getCustom(60l)); 
 
 		new DefaultShell("Edit Query");
 		AbstractWait.sleep(TimePeriod.NORMAL.getSeconds());
@@ -298,6 +305,8 @@ public class MylynTestBzQuery {
 		assertTrue("Found query results: " + fullBugzillaString, foundQueryResults);
 
 		}
+		
+		view.close();
 		
 	} /* method */
 
