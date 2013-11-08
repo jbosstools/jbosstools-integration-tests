@@ -15,6 +15,11 @@
 	<!-- 
 	mvn clean install -P jbosstools-nightly-staging-composite-soa-tooling,multiple.target -Dmaven.test.failure.ignore=true -Dmaven.test.error.ignore=true
 	-->
+
+	<properties>
+		<tycho.scmUrl>scm:git:https://github.com/jbosstools/jbosstools-integration-tests.git</tycho.scmUrl>
+	</properties>
+
 	<modules>
 		<module>plugins</module>
 		<module>tests</module>
