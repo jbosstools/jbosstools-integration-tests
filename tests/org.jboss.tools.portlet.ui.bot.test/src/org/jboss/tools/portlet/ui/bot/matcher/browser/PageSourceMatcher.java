@@ -73,8 +73,7 @@ public class PageSourceMatcher extends AbstractSWTMatcher<String> {
 
 		@Override
 		public String description() {
-			// TODO Auto-generated method stub
-			return null;
+			return "Page in browser view doesn't contain text \""+expectedText+"\"";
 		}
 	}
 }
