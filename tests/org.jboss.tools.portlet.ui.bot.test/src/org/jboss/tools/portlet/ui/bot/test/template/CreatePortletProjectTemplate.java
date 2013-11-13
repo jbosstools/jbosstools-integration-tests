@@ -14,6 +14,7 @@ import org.jboss.reddeer.eclipse.jface.wizard.WizardDialog;
 import org.jboss.reddeer.swt.api.Group;
 import org.jboss.reddeer.swt.api.Text;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.group.DefaultGroup;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
@@ -106,17 +107,28 @@ public abstract class CreatePortletProjectTemplate extends SWTTaskBasedTestCase 
 	 * 
 	 */
 	protected void processWizardPageJSFPortletCapabilities() {
+		Group portletbridgeRuntimeGroup = new DefaultGroup("JSFPortlet Implementation Library");
+		Text text = null;
 		try{
-			Group portletbridgeRuntimeGroup = new DefaultGroup("JSFPortlet Implementation Library");
-			Text textFromGroup = new DefaultText(portletbridgeRuntimeGroup);
-			String portletBridgeLocation = TestConfigurator.currentConfig.getPortletBridge().getLocation();
-			if(portletBridgeLocation == null)
-				fail("Portlet Bridge location must be defined in configuration file.");
-			textFromGroup.setText(portletBridgeLocation);
+			try{//used nested try-catch in order to avoid using multiple exceptions in catch
+				text = new DefaultText(portletbridgeRuntimeGroup);
+			} catch (SWTLayerException e) {
+				throw new WidgetNotFoundException(e.getMessage(), e);
+			}
 		} catch (WidgetNotFoundException e) {
-			// ok, the portlet bridge is recognized in the server location
+			log.info("The portlet bridge is recognized in the server location", e);
+			return;
 		}
+		text.setText(getPortletBridgeLocation());
 	}
+
+	private String getPortletBridgeLocation() {
+		String portletBridgeLocation = TestConfigurator.currentConfig.getPortletBridge().getLocation();
+		if(portletBridgeLocation == null)
+			fail("Portlet Bridge location must be defined in configuration file.");
+		return portletBridgeLocation;
+	}
+
 	private List<WorkspaceFile> getExpectedWorkspaceFiles(){
 		return wrap(getExpectedFiles());
 	}
