@@ -148,7 +148,7 @@ public class OpenShiftUI {
 		public static final String EXPLORER_PORTS = "Port forwarding...";
 		public static final String BROWSER = "Web Browser";
 		public static final String EXPLORER_ADAPTER = "Create a Server Adapter...";
-		public static final String EXPLORER_RESTART_APP = "Restart";
+		public static final String EXPLORER_RESTART_APP = "Restart Application";
 		
 		public static final String MANAGE_DOMAINS = "Manage Domains...";
 		public static final String MANAGE_SSH_KEYS = "Manage SSH Keys...";

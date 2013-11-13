@@ -58,7 +58,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	//OpenShiftDebugFeatures.class,
 	//CreateAdapter.class,
 	
-	/* App */
+	/* Applications*/
 	// STATUS = OK
 	//CreateDeleteJBossApp.class,
 	//CreateDeleteEWSApp.class, 
@@ -67,8 +67,8 @@ import org.junit.runners.Suite.SuiteClasses;
 	//CreateDeleteScaledRubyApp.class,
 	
 	// TODO
-	RestartApplication.class,
-	//RepublishApp.class,
+	//RestartApplication.class, // OK
+	RepublishApp.class,
 })
 @RunWith(RequirementAwareSuite.class)
 public class OpenShiftAllBotTests {
