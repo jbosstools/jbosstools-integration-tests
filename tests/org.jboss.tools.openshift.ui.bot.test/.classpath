@@ -4,7 +4,6 @@
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="resources"/>
-	<classpathentry kind="lib" path="/home/equo/.m2/repository/p2/osgi/bundle/org.jboss.reddeer.junit/0.4.0.201309121853/org.jboss.reddeer.junit-0.4.0.201309121853.jar"/>
-	<classpathentry kind="lib" path="/home/equo/.m2/repository/org/jboss/tools/tests/plugins/org.jboss.tools.ui.bot.ext/4.1.0-SNAPSHOT/org.jboss.tools.ui.bot.ext-4.1.0-SNAPSHOT.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/org.jboss.tools.ui.bot.ext"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

@@ -10,10 +10,12 @@
  ******************************************************************************/
 package org.jboss.tools.openshift.ui.bot.test;
 
+import org.jboss.tools.openshift.ui.bot.test.app.CreateDeleteEWSApp;
 import org.jboss.tools.openshift.ui.bot.test.app.CreateDeleteJBossApp;
 import org.jboss.tools.openshift.ui.bot.test.app.CreateDeletePHPApp;
 import org.jboss.tools.openshift.ui.bot.test.app.CreateDeletePythonApp;
 import org.jboss.tools.openshift.ui.bot.test.app.CreateDeleteScaledRubyApp;
+import org.jboss.tools.openshift.ui.bot.test.app.RepublishApp;
 import org.jboss.tools.openshift.ui.bot.test.app.RestartApplication;
 import org.jboss.tools.openshift.ui.bot.test.cartridge.EmbedCartridges;
 import org.jboss.tools.openshift.ui.bot.test.domain.CreateDomain;
@@ -37,28 +39,35 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @SuiteClasses({
 	/* Connection stuff */
+	// STATUS = OK
 	Connection.class, 
 	ManageSSH.class, 
 	
-	/* Domain */
- 	DeleteDomain.class,
- 	CreateDomain.class,
-	RenameDomain.class,
+	/* Domain*/
+	// STATUS = OK
+ 	//CreateDomain.class,
+ 	//DeleteDomain.class,
+ 	//RenameDomain.class,
 
 	/* Cartridge */
-	EmbedCartridges.class,
-	
+	// STATUS = OK
+	//EmbedCartridges.class,
+		
 	/* Explorer */
-//	OpenShiftDebugFeatures.class,
-//	CreateAdapter.class,
+	// STATUS = OK
+	//OpenShiftDebugFeatures.class,
+	//CreateAdapter.class,
 	
 	/* App */
-//	CreateDeleteJBossApp.class,
-	//CreateDeleteEWSApp.class,
+	// STATUS = OK
+	//CreateDeleteJBossApp.class,
+	//CreateDeleteEWSApp.class, 
 	//CreateDeletePHPApp.class,
 	//CreateDeletePythonApp.class,
-//	CreateDeleteScaledRubyApp.class,
-//	RestartApplication.class,
+	//CreateDeleteScaledRubyApp.class,
+	
+	// TODO
+	RestartApplication.class,
 	//RepublishApp.class,
 })
 @RunWith(RequirementAwareSuite.class)

@@ -29,6 +29,6 @@ public class CreateDeleteEWSApp extends OpenShiftBotTest {
 	@After
 	public void canDeleteEWSApp() {
 		deleteOpenShiftApplication(EWS_APP_NAME,
-				OpenShiftUI.AppTypeOld.JBOSS_EWS);
+				OpenShiftUI.AppType.JBOSS_EWS);
 	}
 }

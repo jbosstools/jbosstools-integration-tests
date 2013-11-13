@@ -32,7 +32,7 @@ public class CreateDeleteScaledRubyApp extends OpenShiftBotTest {
 	@After
 	public void canDeleteRubyApp() {
 		deleteOpenShiftApplication(RUBY_APP_NAME,
-				OpenShiftUI.AppTypeOld.RUBY_1_9);
+				OpenShiftUI.AppType.RUBY_1_9);
 	}
 
 }

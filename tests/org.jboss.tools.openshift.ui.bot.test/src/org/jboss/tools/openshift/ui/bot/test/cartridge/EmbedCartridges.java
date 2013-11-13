@@ -25,14 +25,15 @@ public class EmbedCartridges extends OpenShiftBotTest {
 	}
 
 	@Test
-	public void canEmbedCartridges() {
+	public void canEmbedCartridge() {
 		embedCartrige(OpenShiftUI.Cartridge.CRON);
 		
-		embedCartrige(OpenShiftUI.Cartridge.MYSQL);
+		//embedCartrige(OpenShiftUI.Cartridge.MYSQL);
 		
-		embedCartrige(OpenShiftUI.Cartridge.POSTGRESQL);
+		//embedCartrige(OpenShiftUI.Cartridge.POSTGRESQL);
 	}
 
+	
 	private void embedCartrige(String cartridge) {
 
 		// open OpenShift Explorer
@@ -48,11 +49,14 @@ public class EmbedCartridges extends OpenShiftBotTest {
 		assertTrue(account.getItems().length > 0);
 
 		// click on 'Embedd cartridges'
-		account.getItems()[0].contextMenu(OpenShiftUI.Labels.EDIT_CARTRIDGES)
+		account.getNode(0).doubleClick();
+		
+		account.getNode(0).getNode(0).contextMenu(OpenShiftUI.Labels.EDIT_CARTRIDGES)
 				.click();
-
+		
 		bot.waitForShell(OpenShiftUI.Shell.EDIT_CARTRIDGES);
 
+		bot.shell(OpenShiftUI.Shell.EDIT_CARTRIDGES).activate();
 		SWTBotTable cartridgeTable = bot.tableInGroup("Embeddable Cartridges");
 
 		cartridgeTable.getTableItem(cartridge).toggleCheck();
@@ -67,7 +71,7 @@ public class EmbedCartridges extends OpenShiftBotTest {
 
 	@After
 	public void deleteDIYApp() {
-		deleteOpenShiftApplication(DYI_APP, OpenShiftUI.AppTypeOld.DIY);
+		deleteOpenShiftApplication(DYI_APP, OpenShiftUI.AppType.DIY);
 	}
 
 }

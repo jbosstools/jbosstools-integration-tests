@@ -1,15 +1,9 @@
 package org.jboss.tools.openshift.ui.bot.test.explorer;
 
-import static org.hamcrest.core.IsEqual.equalTo;
-
 import java.util.Date;
-import java.util.List;
 
-import org.eclipse.swtbot.eclipse.finder.finders.CommandFinder;
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotCommand;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
-import org.jboss.tools.openshift.ui.bot.test.Utils;
+import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.tools.openshift.ui.bot.util.OpenShiftUI;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.condition.NonSystemJobRunsCondition;
@@ -24,56 +18,57 @@ public class ManageSSH extends SWTTestExt {
 
 	@Test
 	public void canManageSSHKeys() {
-		// open OpenShift Explorer
+		openSSHShell();
+		
+		// if there exist some keys
+		removeAllKeys();
+
+		createNewSSHKey();
+
+		closeSSHShell();
+	}
+
+	private void openSSHShell() {
 		SWTBotView openshiftExplorer = open
 				.viewOpen(OpenShiftUI.Explorer.iView);
 
 		openshiftExplorer.bot().tree().getAllItems()[0].select();
-
-		
-		/*
-		 * Workaround for Command based context menus
-		 */
-		CommandFinder finder = new CommandFinder();
-		List<SWTBotCommand> cmds = finder
-				.findCommand(equalTo("Manage SSH Keys..."));
-		
-		assertTrue("No command to open SSH Key Management found!",
- 			!cmds.isEmpty());
-		
-		// open ssh key management dialog
-		cmds.get(0).click();
-
+		/* TODO WTF IT IS DOING? this hide menu item New. ContextMenu method disappear submenus...
+		 comment in SWTBotExt is very helpful...:
+		"in e4, if the context menu contains submenus it appears
+		 as disposed after detection, so we use the ContextMenuHelper" */
+		ContextMenu menu = new ContextMenu(OpenShiftUI.Labels.MANAGE_SSH_KEYS);
+		menu.select();		
 		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_20S, TIME_5S);
 		
-		bot.shell("Manage SSH Keys").activate();
+		bot.sleep(2000);
+		bot.shell("Select Domain").activate();
+		bot.sleep(2000);
 		bot.buttonInGroup("Refresh...", "SSH Public Keys").click();
 		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S, TIME_1S);
 		
-		// delete all keys
-		while (bot.table().rowCount() > 0) {
-			bot.table().getTableItem(0).select();	
-			SWTBotShell[] oldShells = bot.shells();
-			bot.buttonInGroup("Remove...", "SSH Public Keys").click();
-			Utils.getNewShell(oldShells, bot.shells()).activate();
-			bot.button(IDELabel.Button.OK).click();
-			bot.waitWhile(new NonSystemJobRunsCondition(), TIME_20S, TIME_1S);
-		}
-
-		// create new ssh key
-		SWTBotShell[] oldShells = bot.shells();
+	}
+	
+	private void createNewSSHKey() {
 		bot.buttonInGroup("New...", "SSH Public Keys").click();
-		Utils.getNewShell(oldShells, bot.shells()).activate();
-		bot.textInGroup("New SSH Key", 0).typeText(SSH_KEY_NAME);
-		bot.textInGroup("New SSH Key", 2).typeText("openshift_id");
+		bot.textInGroup("New SSH Key", 0).setText(SSH_KEY_NAME);
+		bot.textInGroup("New SSH Key", 2).setText("openshift_id");
 
 		bot.button(IDELabel.Button.FINISH).click();
 		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S, TIME_1S);
-
+	}
+	
+	private void removeAllKeys() {
+		while (bot.table().rowCount() > 0) {
+			bot.table(0).getTableItem(0).select();	
+			bot.buttonInGroup("Remove...", "SSH Public Keys").click();
+			bot.button(IDELabel.Button.OK).click();
+			bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S, TIME_5S);
+		}
+	}
+	
+	private void closeSSHShell() {
 		bot.button(IDELabel.Button.OK).click();
 		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S, TIME_1S);
 	}
-
-
-	
 }

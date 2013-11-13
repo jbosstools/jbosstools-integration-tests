@@ -30,6 +30,6 @@ public class CreateDeletePythonApp extends OpenShiftBotTest {
 	
 	@After
 	public void canDeletePythonApp() {
-		deleteOpenShiftApplication(PYTHON_APP_NAME, OpenShiftUI.AppTypeOld.PYTHON);
+		deleteOpenShiftApplication(PYTHON_APP_NAME, OpenShiftUI.AppType.PYTHON);
 	}
 }
