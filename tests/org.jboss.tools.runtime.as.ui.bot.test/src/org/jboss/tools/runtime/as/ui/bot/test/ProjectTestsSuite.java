@@ -9,6 +9,8 @@ import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap60x.DetectEAP60
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap60x.OperateEAP60x;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap61x.DetectEAP61x;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap61x.OperateEAP61x;
+import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap62.DetectEAP62;
+import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap62.OperateEAP62;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.jboss7.DetectJBoss7;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.jboss7.OperateJBoss7;
 import org.junit.runner.RunWith;
@@ -26,6 +28,9 @@ import org.junit.runners.Suite.SuiteClasses;
 		
 		DetectEAP61x.class,
 		OperateEAP61x.class,
+		
+		DetectEAP62.class,
+		OperateEAP62.class,
 		
 		DetectSeam22.class,
 		CheckSeam22.class,
