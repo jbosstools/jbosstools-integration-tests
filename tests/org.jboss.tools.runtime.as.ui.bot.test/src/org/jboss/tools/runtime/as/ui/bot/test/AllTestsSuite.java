@@ -24,6 +24,8 @@ import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap61.DetectEAP61;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap61.OperateEAP61;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap61x.DetectEAP61x;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap61x.OperateEAP61x;
+import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap62.DetectEAP62;
+import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap62.OperateEAP62;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.epp4.CheckEPP4Seam;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.epp4.DetectEPP4;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.epp4.OperateEPP4;
@@ -77,6 +79,9 @@ import org.junit.runners.Suite;
 		DetectEAP61x.class,
 		OperateEAP61x.class,
 		
+		DetectEAP62.class,
+		OperateEAP62.class,
+		
 		// Needs Java SE 1.6
 		DetectEAP51.class, 
 		CheckEAP51Seam.class,
@@ -123,8 +128,7 @@ import org.junit.runners.Suite;
 		DetectSeam22.class,
 		CheckSeam22.class,
 		DetectSeam23.class,
-		CheckSeam23.class
-		
+		CheckSeam23.class,
 })
 public class AllTestsSuite {
 
