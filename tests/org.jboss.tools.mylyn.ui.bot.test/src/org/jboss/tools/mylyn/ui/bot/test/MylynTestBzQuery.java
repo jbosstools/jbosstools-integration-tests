@@ -28,9 +28,11 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
+
+import org.jboss.reddeer.swt.condition.TreeItemHasMinChildren;
+
 
 public class MylynTestBzQuery {
 
@@ -67,10 +69,8 @@ public class MylynTestBzQuery {
 	 */
 	public void TestBugzillaQuery(String targetRepo, String queryName, String bugzillaSummary, String bugzilla) {
 
-		AbstractWait.sleep(TimePeriod.NORMAL.getSeconds());
 		TaskRepositoriesView view = new TaskRepositoriesView();
 
-		AbstractWait.sleep(TimePeriod.NORMAL.getSeconds());	
 		view.open();
 		
 		String fullBugzillaString = bugzilla + ": " + bugzillaSummary;
@@ -99,7 +99,6 @@ public class MylynTestBzQuery {
 		RepoConnectionDialog theRepoDialog = new RepoConnectionDialog();
 		log.info(theRepoDialog.getText());
 
-		AbstractWait.sleep(TimePeriod.NORMAL.getSeconds());
 		theRepoDialog.validateSettings();
 
 		log.info("["
@@ -110,40 +109,30 @@ public class MylynTestBzQuery {
 						.contains("Repository is valid"));
 			
 		theRepoDialog.finish();
-		AbstractWait.sleep(TimePeriod.NORMAL.getSeconds());
-		
 		log.info("Step - Create a anonymous bugzilla query");
-		AbstractWait.sleep(TimePeriod.NORMAL.getSeconds());
 
 		elementIndex = repoList.indexOf(targetRepo);
 		repoItems.get(elementIndex).select();
 
-		AbstractWait.sleep(TimePeriod.NORMAL.getSeconds());
 
 		new ShellMenu("File", "New", "Other...").select();
 		new DefaultShell("New");
-		AbstractWait.sleep(TimePeriod.NORMAL.getSeconds());
 		
 		new DefaultTree();
 		DefaultTreeItem theTask = new DefaultTreeItem ("Tasks", "Query");
 		theTask.select();		
 		
-		AbstractWait.sleep(TimePeriod.NORMAL.getSeconds());
 		new PushButton("Next >").click();
 
 		new DefaultShell("New Query");
-		AbstractWait.sleep(TimePeriod.NORMAL.getSeconds());
 		new PushButton("Next >").click();
-		AbstractWait.sleep(TimePeriod.NORMAL.getSeconds());
 
 		new DefaultShell("Edit Query");
-		AbstractWait.sleep(TimePeriod.NORMAL.getSeconds());
 		new RadioButton("Create query using form").click();
 		new PushButton("Next >").click();
 		new WaitUntil(new ShellWithTextIsActive("Edit Query"), TimePeriod.getCustom(60l)); 
 
 		new DefaultShell("Edit Query");
-		AbstractWait.sleep(TimePeriod.NORMAL.getSeconds());
 		
 		/* Slightly different text on JBT3/4)  */ 	
 		log.info("GET Bundle");
@@ -179,11 +168,8 @@ public class MylynTestBzQuery {
 			}
 		}
 		
-		AbstractWait.sleep(TimePeriod.NORMAL.getSeconds());
 		new DefaultCombo("Summary:").setText(bugzillaSummary);
-		AbstractWait.sleep(TimePeriod.NORMAL.getSeconds());
 		new PushButton("Finish").click();
-		AbstractWait.sleep(TimePeriod.NORMAL.getSeconds());
 
 		new ShellMenu("Window", "Show View", "Other...").select();
 
@@ -191,29 +177,21 @@ public class MylynTestBzQuery {
 		log.info("Step - Verify that the Mylyn query is Present");
 
 		/* Open the Task List view */
-		AbstractWait.sleep(TimePeriod.NORMAL.getSeconds());
 
 		new DefaultTree();
 		theTask = new DefaultTreeItem ("Mylyn", "Task List");
 		theTask.select();	
 
 		new PushButton("OK").click();
-		AbstractWait.sleep(TimePeriod.NORMAL.getSeconds());
-
-		/*
-		 * A full 30 second delay is needed here - or else the test fails to
-		 * locate the widget.
-		 */
-		AbstractWait.sleep(30000l);
 
 		/* Dealing with Red Deer incompatibilities on JBT */
 		if (org.eclipse.core.runtime.Platform.getProduct().getName().equals("JBoss Developer Studio")) {
 	
 		/* Locate the list of created queries */
 		DefaultTree bugzillaTree = new DefaultTree();
+		
 		List<TreeItem> bugzillaQueryItems = bugzillaTree.getAllItems();
 		log.info("Total of query items found = " + bugzillaQueryItems.size());
-		AbstractWait.sleep(30000l);
 		
 		/*
 		 * There seems to be an eclipse problem here - the full query tree is not
@@ -246,15 +224,7 @@ public class MylynTestBzQuery {
 		
 		if (!bugzillaItem.getText().equals(fullBugzillaString)) {
 
-			while (!bugzillaItem.getText().equals(fullBugzillaString)) {
-				log.warn("Query tree not full populated - SWTBot issue - will retry in 30 sec...");
-				bugzillaQueryItem.select();
-				bugzillaQueryItem.doubleClick();
-				bugzillaQueryItem.expand();
-				AbstractWait.sleep(30000l);
-				bugzillaQueryItems = bugzillaTree.getAllItems();
-				bugzillaItem = bugzillaQueryItems.get(TreeItemCounter + 1);
-			}
+			new WaitUntil(new TreeItemHasMinChildren(bugzillaItem, 1), TimePeriod.getCustom(60l)); 
 
 			bugzillaQueryItems = bugzillaTree.getAllItems();
 			for (TreeItem i : bugzillaQueryItems) {
@@ -289,7 +259,7 @@ public class MylynTestBzQuery {
 					
 				i.select();
 				i.doubleClick();
-				AbstractWait.sleep(30000l);
+				new WaitUntil(new TreeItemHasMinChildren(i, 1), TimePeriod.getCustom(60l)); 
 				
 				List <TreeItem> theQueryResults = i.getItems();
 				for (TreeItem q : theQueryResults) {
