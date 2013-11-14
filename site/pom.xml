@@ -42,12 +42,6 @@
 							<goal>generate-repository-facade</goal>
 						</goals>
 						<configuration>
-							<associateSites>
-								<associateSite>http://download.jboss.org/jbosstools/updates/juno/soa-tooling/</associateSite>
-								<associateSite>http://download.jboss.org/jbosstools/updates/juno/</associateSite>
-								<associateSite>http://download.jboss.org/jbosstools/updates/stable/juno/</associateSite>
-								<associateSite>http://download.jboss.org/jbosstools/updates/development/juno/soa-tooling/</associateSite>
-							</associateSites>
 							<siteTemplateFolder>${siteTemplateFolder}</siteTemplateFolder>
 							<symbols>
 								<update.site.name>${update.site.name}</update.site.name>
