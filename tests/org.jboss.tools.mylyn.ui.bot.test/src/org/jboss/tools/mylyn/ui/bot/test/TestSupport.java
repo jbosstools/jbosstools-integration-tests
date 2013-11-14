@@ -9,8 +9,6 @@ import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.util.Display;
-import org.jboss.reddeer.swt.wait.AbstractWait;
-import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.apache.log4j.Logger;
 import org.eclipse.ui.IViewReference;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
@@ -18,8 +16,6 @@ import org.jboss.reddeer.swt.lookup.WorkbenchLookup;
 
 public class TestSupport {
 	
-	protected final static long DELAY = 3000l;
-
 	public static void closeWelcome () {	
 		/* close Welcome screen - copied from: class RedDeerTest */
 		for (IViewReference viewReference : WorkbenchLookup.findAllViews()) {
@@ -62,9 +58,7 @@ public class TestSupport {
 		catch (org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException E) {
 			new PushButton("ok").click();
 		}
-				
-		AbstractWait.sleep(TimePeriod.NORMAL.getSeconds());
-		
+						
 		DefaultTree RepoTree = new DefaultTree();
 		List<TreeItem> repoItems = RepoTree.getAllItems();
 		
