@@ -1,4 +1,4 @@
-package org.jboss.tools.runtime.as.ui.bot.test.detector;
+package org.jboss.tools.runtime.as.ui.bot.test.download;
 
 import java.io.File;
 
@@ -15,17 +15,17 @@ import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.runtime.as.ui.bot.test.template.RuntimeDetectionTestCase;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Test;
 
 /**
- * Downloads several runtimes and checks if they were succesfully downloaded and added
+ * RuntimeDownloadTestBase is base class for testing download of runtime and seam
  * 
  * @author Petr Suchy
+ * @author Radoslav Rabara
  *
  */
-public class RuntimeDownload extends RuntimeDetectionTestCase {
+public class RuntimeDownloadTestBase extends RuntimeDetectionTestCase {
 	
-	File tmpPath;
+	private File tmpPath;
 	
 	@Before
 	public void setUp(){
@@ -42,19 +42,7 @@ public class RuntimeDownload extends RuntimeDetectionTestCase {
 		removeAllSeamRuntimes();
 	}
 	
-	@Test
-	public void downloadAS(){
-		downloadRuntime("JBoss 7.1.0");
-		assertServerRuntimesNumber(1);
-	}
-	
-	@Test
-	public void downloadSeam(){
-		downloadRuntime("JBoss Seam 2.2.2");
-		assertSeamRuntimesNumber(1);
-	}
-	
-	private void downloadRuntime(String runtime){
+	protected void downloadRuntime(String runtime){
 		runtimeDetectionPreferences.open();
 		
 		new PushButton("Download...").click();
@@ -74,5 +62,19 @@ public class RuntimeDownload extends RuntimeDetectionTestCase {
 		}
 		
 		runtimeDetectionPreferences.ok();
+	}
+	
+	protected void downloadAndCheckRuntime(String runtime, int serversCount, int seamsCount) {
+		downloadRuntime(runtime);
+		assertServerRuntimesNumber(serversCount);
+		assertSeamRuntimesNumber(seamsCount);
+	}
+	
+	protected void downloadAndCheckSeam(String seam, int seamsCount) {
+		downloadAndCheckRuntime(seam, 0, seamsCount);
+	}
+	
+	protected void downloadAndCheckServer(String server, int serversCount) {
+		downloadAndCheckRuntime(server, serversCount, 0);
 	}
 }
