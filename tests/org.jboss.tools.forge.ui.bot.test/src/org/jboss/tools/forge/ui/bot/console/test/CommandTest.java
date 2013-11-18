@@ -137,7 +137,7 @@ public class CommandTest extends ForgeConsoleTestBase {
 		assertTrue(askShell.isVisible());
 		
 		askShell.bot().button("Yes").click();
-		util.waitForNonIgnoredJobs();
+		util.waitForNonIgnoredJobs(WAIT_FOR_NON_IGNORED_JOBS_TIMEOUT);
 		
 		assertTrue(bot.activeView().getTitle().equals("Forge Console"));
 		assertTrue(isForgeRunning());

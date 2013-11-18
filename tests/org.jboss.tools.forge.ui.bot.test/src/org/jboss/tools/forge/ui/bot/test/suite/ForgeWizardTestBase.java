@@ -21,6 +21,7 @@ import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
 public class ForgeWizardTestBase extends SWTTestExt {
 	
 	public static String W_PROJECT_NAME = "test_wizard_project";
+	protected static final long WAIT_FOR_NON_IGNORED_JOBS_TIMEOUT = TIME_60S*5;
 	
 	protected static ProjectExplorer pExplorer = null;
 	
@@ -40,7 +41,7 @@ public class ForgeWizardTestBase extends SWTTestExt {
 	public SWTBotWizard openWizard(String name){
 		SWTBotNewObjectWizard w = new SWTBotNewObjectWizard();
 		w.open(name, "JBoss Tools");
-		util.waitForNonIgnoredJobs();
+		util.waitForNonIgnoredJobs(WAIT_FOR_NON_IGNORED_JOBS_TIMEOUT);
 		return w;
 	}
 	

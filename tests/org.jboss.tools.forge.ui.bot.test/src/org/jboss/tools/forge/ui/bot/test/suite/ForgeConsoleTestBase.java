@@ -33,6 +33,8 @@ public class ForgeConsoleTestBase extends SWTTestExt {
 	protected static final String ENTITY_NAME = "testentity";
 	protected static final String FIELD_NAME = "testfield";
 	
+	protected static final long WAIT_FOR_NON_IGNORED_JOBS_TIMEOUT = TIME_60S*5;
+	
 	protected static ProjectExplorer pExplorer = null;
 	
 	@BeforeClass
@@ -64,7 +66,7 @@ public class ForgeConsoleTestBase extends SWTTestExt {
 		getStyledText().setText("Y\n");
 		
 		ConsoleUtils.waitUntilTextInConsole("project [" + PROJECT_NAME + "]", TIME_1S, TIME_20S*3);
-		util.waitForNonIgnoredJobs();
+		util.waitForNonIgnoredJobs(WAIT_FOR_NON_IGNORED_JOBS_TIMEOUT);
 	}
 	
 	protected void createProject(ProjectTypes type){
@@ -77,7 +79,7 @@ public class ForgeConsoleTestBase extends SWTTestExt {
 		getStyledText().setText("Y\n");
 		
 		ConsoleUtils.waitUntilTextInConsole("project [" + PROJECT_NAME + "]", TIME_1S, TIME_20S*3);
-		util.waitForNonIgnoredJobs();
+		util.waitForNonIgnoredJobs(WAIT_FOR_NON_IGNORED_JOBS_TIMEOUT);
 	}
 	
 	protected void createPersistence(){
@@ -95,7 +97,7 @@ public class ForgeConsoleTestBase extends SWTTestExt {
 		getStyledText().setText("N\n"); //extended APIs. Install these as well?
 		
 		ConsoleUtils.waitUntilTextInConsole("persistence.xml", TIME_1S, TIME_20S*3);
-		util.waitForNonIgnoredJobs();
+		util.waitForNonIgnoredJobs(WAIT_FOR_NON_IGNORED_JOBS_TIMEOUT);
 	}
 	
 	protected void createEntity(){
@@ -111,7 +113,7 @@ public class ForgeConsoleTestBase extends SWTTestExt {
 		getStyledText().setText(packageName + "\n");
 		
 		ConsoleUtils.waitUntilTextInConsole(ENTITY_CREATED , TIME_1S, TIME_20S*3);
-		util.waitForNonIgnoredJobs();
+		util.waitForNonIgnoredJobs(WAIT_FOR_NON_IGNORED_JOBS_TIMEOUT);
 		
 	}
 	
@@ -123,7 +125,7 @@ public class ForgeConsoleTestBase extends SWTTestExt {
 		getStyledText().setText("field string --named " + fieldName + "\n" );
 		
 		ConsoleUtils.waitUntilTextInConsole(FIELD_ADDED , TIME_1S, TIME_20S*3);
-		util.waitForNonIgnoredJobs();
+		util.waitForNonIgnoredJobs(WAIT_FOR_NON_IGNORED_JOBS_TIMEOUT);
 	}
 	
 	protected void installPlugin(String pluginName){
@@ -131,7 +133,7 @@ public class ForgeConsoleTestBase extends SWTTestExt {
 		getStyledText().setText("forge install-plugin " + pluginName + "\n");
 		
 		ConsoleUtils.waitUntilTextInConsole("***SUCCESS*** Installed" , TIME_1S, TIME_20S*3);
-		util.waitForNonIgnoredJobs();
+		util.waitForNonIgnoredJobs(WAIT_FOR_NON_IGNORED_JOBS_TIMEOUT);
 		
 		bot.sleep(TIME_1S*2);
 	}
@@ -233,7 +235,7 @@ public class ForgeConsoleTestBase extends SWTTestExt {
 		assertTrue(cell_new.isChecked());
 		
 		preferences.bot().button("OK").click();
-		util.waitForNonIgnoredJobs();
+		util.waitForNonIgnoredJobs(WAIT_FOR_NON_IGNORED_JOBS_TIMEOUT);
 		
 	}
 	
@@ -306,7 +308,7 @@ public class ForgeConsoleTestBase extends SWTTestExt {
 		//workaround:
 		ViewUtils.getToolbarButton("Start the default Forge runtime").click();	
 
-		util.waitForNonIgnoredJobs();
+		util.waitForNonIgnoredJobs(WAIT_FOR_NON_IGNORED_JOBS_TIMEOUT);
 	}
 	
 	public static void stopForge(){
