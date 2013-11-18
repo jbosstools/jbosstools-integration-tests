@@ -11,12 +11,12 @@ import org.junit.Test;
 public class RunWithCordovaSim extends AerogearBotTest {
 	@Test
 	public void canRunWithCordovaSim() {
-		projectExplorer.selectProject(CORDOVA_APP);
+		projectExplorer.selectProject(CORDOVA_PROJECT_NAME);
     final String cordovaSimProcessName = "CordovaSimRunner";
     int countBrowserSimmProcesses = SWTUtilExt.countJavaProcess(cordovaSimProcessName);
     Object[] beforeListeners = SWTEclipseExt.getWorkbenchListeners().getListeners();
     // this also asserts that CordovaSim runs without error within JBT
-    runTreeItemWithCordovaSim(bot.tree().expandNode(CORDOVA_APP));
+    runTreeItemWithCordovaSim(bot.tree().expandNode(CORDOVA_PROJECT_NAME));
     assertTrue("No new CordovaSimm process was started",countBrowserSimmProcesses + 1 == SWTUtilExt.countJavaProcess(cordovaSimProcessName));
     // currently there is no way how to close CordovaSim within running JBT
     // CordovaSim is automatically closed when JBT are but not when run via test

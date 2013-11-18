@@ -9,6 +9,6 @@ public class CreateHybridApplication extends AerogearBotTest {
 	@Test
 	public void canCreateHTMLHybridApplication() {
     // Project is created within setup method
-		assertTrue(projectExplorer.existsResource(CORDOVA_APP));
+		assertTrue(projectExplorer.existsResource(CORDOVA_PROJECT_NAME));
 	}
 }

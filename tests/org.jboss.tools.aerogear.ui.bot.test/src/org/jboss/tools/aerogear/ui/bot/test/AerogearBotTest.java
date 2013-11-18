@@ -17,7 +17,8 @@ import org.junit.Before;
  * 
  */
 public class AerogearBotTest extends SWTTestExt {
-  protected static final String CORDOVA_APP = "Cordova_app";
+  protected static final String CORDOVA_PROJECT_NAME = "Cordova_prj";
+  protected static final String CORDOVA_APP_NAME = "Cordova Test Application";
 
   /**
    * Creates a new hybrid mobile project in workspace.
@@ -97,14 +98,14 @@ public class AerogearBotTest extends SWTTestExt {
 
   @Before
   public void setUp() {
-    createHTMLHybridMobileApplication(AerogearBotTest.CORDOVA_APP,
-        "Aerogear Cordova Test", "org.jboss.example.cordova");
+    createHTMLHybridMobileApplication(AerogearBotTest.CORDOVA_PROJECT_NAME,
+        AerogearBotTest.CORDOVA_APP_NAME, "org.jboss.example.cordova");
 
-    assertTrue(projectExplorer.existsResource(AerogearBotTest.CORDOVA_APP));
+    assertTrue(projectExplorer.existsResource(AerogearBotTest.CORDOVA_PROJECT_NAME));
   }
 
   @After
   public void tearDown() {
-    projectExplorer.deleteProject(AerogearBotTest.CORDOVA_APP, true);
+    projectExplorer.deleteProject(AerogearBotTest.CORDOVA_PROJECT_NAME, true);
   }
 }

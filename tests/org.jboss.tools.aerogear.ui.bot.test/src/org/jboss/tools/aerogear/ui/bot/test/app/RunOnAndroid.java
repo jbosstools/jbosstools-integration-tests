@@ -8,16 +8,16 @@ import org.junit.Test;
 public class RunOnAndroid extends AerogearBotTest {
 	@Test
 	public void canRunOnAndroidEmulator() {
-		projectExplorer.selectProject(CORDOVA_APP);
+		projectExplorer.selectProject(CORDOVA_PROJECT_NAME);
 
-		runTreeItemInAndroidEmulator(bot.tree().expandNode(CORDOVA_APP));
+		runTreeItemInAndroidEmulator(bot.tree().expandNode(CORDOVA_PROJECT_NAME));
 	}
 
 	@Test
 	public void canRunOnAndroidDevice() {
-		projectExplorer.selectProject(CORDOVA_APP);
+		projectExplorer.selectProject(CORDOVA_PROJECT_NAME);
 
-		runTreeItemInAndroidEmulator(bot.tree().expandNode(CORDOVA_APP));
+		runTreeItemInAndroidEmulator(bot.tree().expandNode(CORDOVA_PROJECT_NAME));
 	}
 
 }

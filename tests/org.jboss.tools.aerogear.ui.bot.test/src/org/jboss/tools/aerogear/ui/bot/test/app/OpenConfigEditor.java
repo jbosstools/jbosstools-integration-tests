@@ -8,12 +8,12 @@ import org.junit.Test;
 public class OpenConfigEditor extends AerogearBotTest {
 	@Test
 	public void canOpenConfigXmlEditor() {
-		projectExplorer.selectProject(CORDOVA_APP);
+		projectExplorer.selectProject(CORDOVA_PROJECT_NAME);
 
-		openInConfigEditor(bot.tree().expandNode(CORDOVA_APP));
+		openInConfigEditor(bot.tree().expandNode(CORDOVA_PROJECT_NAME));
 
 		assertTrue(bot.activeEditor().getTitle()
-				.equalsIgnoreCase("Cordova Configuration Editor"));
+				.equalsIgnoreCase(CORDOVA_APP_NAME));
 	}
 	@Override
 	public void tearDown() {
