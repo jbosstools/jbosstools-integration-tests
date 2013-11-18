@@ -13,32 +13,39 @@
 	<name>integration-tests.all</name>
 	<packaging>pom</packaging>
 	<!-- 
-	mvn clean install -P jbosstools-nightly-staging-composite-soa-tooling,multiple.target -Dmaven.test.failure.ignore=true -Dmaven.test.error.ignore=true
+	  Build and run all tests:
+	    mvn clean install -B -U -fae -P pack200 -Djbosstools-nightly=http://download.jboss.org/jbosstools/updates/nightly/core/4.1.kepler/ -Djbosstools-nightly-staging-composite=http://download.jboss.org/jbosstools/builds/staging/_composite_/core/4.1.kepler/ -Dmaven.test.failure.ignore=true -Dmaven.test.error.ignore=true
+	  Build and run no tests:
+	    mvn clean install -B -U -fae -P pack200 -Djbosstools-nightly=http://download.jboss.org/jbosstools/updates/nightly/core/4.1.kepler/ -Djbosstools-nightly-staging-composite=http://download.jboss.org/jbosstools/builds/staging/_composite_/core/4.1.kepler/ -Dmaven.test.failure.ignore=true -Dmaven.test.error.ignore=true -DskipTests
+	  Run tests:
+      mvn verify -B -U -fae -P pack200 -Djbosstools-nightly=http://download.jboss.org/jbosstools/updates/nightly/core/4.1.kepler/ -Djbosstools-nightly-staging-composite=http://download.jboss.org/jbosstools/builds/staging/_composite_/core/4.1.kepler/ -Dmaven.test.failure.ignore=true -Dmaven.test.error.ignore=true -f tests/pom.xml 
 	-->
 
 	<properties>
 		<tycho.scmUrl>scm:git:https://github.com/jbosstools/jbosstools-integration-tests.git</tycho.scmUrl>
+		<!-- URLs needed to resolve dependencies at build time (see <repositories> below) and at install time (see site/pom.xml#associateSites) -->
+		<jbosstools-nightly>http://download.jboss.org/jbosstools/updates/nightly/core/4.1.kepler/</jbosstools-nightly>
+		<reddeer-nightly-staging-site>http://download.jboss.org/jbosstools/builds/staging/RedDeer_master/all/repo/</reddeer-nightly-staging-site>
+		<jbosstools-coretests-site>http://download.jboss.org/jbosstools/updates/nightly/coretests/4.1.kepler/</jbosstools-coretests-site>
 	</properties>
 
 	<modules>
 		<module>plugins</module>
 		<module>tests</module>
-		<module>features</module>
 		<module>site</module>
 	</modules>
 
 	<repositories>
 		<repository>
-			<id>reddeer-nightly-staging-site</id>
-			<url>http://download.jboss.org/jbosstools/builds/staging/RedDeer_master/all/repo/</url>
+			<id>jbosstools-coretests-site</id>
+			<url>${jbosstools-coretests-site}</url>
 			<layout>p2</layout>
-		</repository>
+		</repository> 
 		<repository>
-			<id>jbosstools-integration-tests-site</id>
-			<url>http://download.jboss.org/jbosstools/updates/nightly/integrationtests/trunk/</url>
+			<id>reddeer-nightly-staging-site</id>
+			<url>${reddeer-nightly-staging-site}</url>
 			<layout>p2</layout>
 		</repository>
 	</repositories>
-
 </project>
 

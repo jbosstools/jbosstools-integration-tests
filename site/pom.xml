@@ -13,11 +13,6 @@
 	<name>integration-tests.site</name>
 	<packaging>eclipse-repository</packaging>
 	<repositories>
-		<repository>
-			<id>reddeer-nightly-staging-site</id>
-			<url>http://download.jboss.org/jbosstools/builds/staging/RedDeer_master/all/repo/</url>
-			<layout>p2</layout>
-		</repository>
 	</repositories>
 
 	<properties>
@@ -43,6 +38,12 @@
 						</goals>
 						<configuration>
 							<siteTemplateFolder>${siteTemplateFolder}</siteTemplateFolder>
+              <associateSites>
+              	<!-- installing this content requires: JBT Core site, JBT Core Tests site, and Red Deer site -->
+                <associateSite>${jbosstools-nightly}</associateSite>
+								<associateSite>${jbosstools-coretests-site}</associateSite>
+								<associateSite>${reddeer-nightly-staging-site}</associateSite>
+              </associateSites>							
 							<symbols>
 								<update.site.name>${update.site.name}</update.site.name>
 								<update.site.description>${update.site.description}</update.site.description>
