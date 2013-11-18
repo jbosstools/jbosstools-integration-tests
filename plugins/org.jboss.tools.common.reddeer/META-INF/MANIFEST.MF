@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Reddeer Commons
+Bundle-Name: RedDeer API for Common UI Tests
 Bundle-SymbolicName: org.jboss.tools.common.reddeer
 Bundle-Version: 4.1.0.qualifier
 Bundle-Activator: org.jboss.tools.common.reddeer.Activator
@@ -12,3 +12,6 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Export-Package: org.jboss.tools.common.reddeer.preferences
 Import-Package: org.apache.log4j
+Eclipse-BundleShape: jar
+Bundle-Localization: plugin
+Bundle-Vendor: JBoss by Red Hat

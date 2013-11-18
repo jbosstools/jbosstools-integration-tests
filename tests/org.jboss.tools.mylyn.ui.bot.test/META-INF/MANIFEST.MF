@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Eclipse-RegisterBuddy: org.apache.log4j
 Bundle-ManifestVersion: 2
-Bundle-Name: Test
+Bundle-Name: Mylyn UI Bot Tests
 Bundle-SymbolicName: org.jboss.tools.mylyn.ui.bot.test
 Bundle-Version: 4.1.0.qualifier
 Bundle-Activator: org.jboss.tools.mylyn.ui.bot.test.Activator
@@ -24,3 +24,6 @@ Import-Package: org.eclipse.wst.server.ui.internal.view.servers,
  org.jboss.reddeer.swt.util,
  org.jboss.reddeer.workbench.view,
  org.jboss.reddeer.workbench.view.impl
+Eclipse-BundleShape: jar
+Bundle-Localization: plugin
+Bundle-Vendor: JBoss by Red Hat

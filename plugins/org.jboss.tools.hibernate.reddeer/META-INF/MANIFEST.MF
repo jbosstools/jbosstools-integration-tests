@@ -15,3 +15,6 @@ Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: org.jboss.tools.hibernate.reddeer,
  org.jboss.tools.hibernate.reddeer.console
+Eclipse-BundleShape: jar
+Bundle-Localization: plugin
+Bundle-Vendor: JBoss by Red Hat

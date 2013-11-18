@@ -1,11 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Portal Tests
+Bundle-Name: Portal UI Bot Tests
 Bundle-SymbolicName: org.jboss.tools.portlet.ui.bot.test;singleton:=true
 Bundle-Version: 4.1.0.qualifier
 Bundle-ActivationPolicy: lazy
-Bundle-Vendor: 
- JBoss by Red Hat
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
@@ -24,3 +22,6 @@ Require-Bundle: org.eclipse.ui,
  org.jboss.reddeer.junit
 Import-Package: org.eclipse.core.runtime.adaptor,
  org.eclipse.jst.j2ee.internal.plugin
+Eclipse-BundleShape: jar
+Bundle-Localization: plugin
+Bundle-Vendor: JBoss by Red Hat

@@ -32,5 +32,6 @@ Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Eclipse-RegisterBuddy: org.apache.log4j
 Import-Package: org.eclipse.jdt.internal.ui
-Bundle-Vendor: %providerName
+Eclipse-BundleShape: jar
 Bundle-Localization: plugin
+Bundle-Vendor: %providerName

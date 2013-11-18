@@ -1,13 +1,15 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: org.jboss.tools.central.test.ui.bot
+Bundle-Name: Central UI Bot Tests
 Bundle-SymbolicName: org.jboss.tools.central.ui.bot.test;singleton:=true
 Bundle-Version: 4.1.0.qualifier
 Bundle-ActivationPolicy: lazy
-Bundle-Vendor: Red Hat
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: org.eclipse.swtbot.go,
  org.jboss.tools.ui.bot.ext;bundle-version="[4.1.0,4.2.0)",
  org.eclipse.ui.forms;bundle-version="3.5.101",
  org.jboss.tools.central;bundle-version="1.1.0"
 Import-Package: org.jboss.tools.ui.bot.ext;bundle-version="[4.1.0,4.2.0)"
+Eclipse-BundleShape: jar
+Bundle-Localization: plugin
+Bundle-Vendor: JBoss by Red Hat
