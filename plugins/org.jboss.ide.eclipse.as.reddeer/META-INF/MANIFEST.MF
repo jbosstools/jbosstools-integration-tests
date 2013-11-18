@@ -1,10 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: myRedDeer
+Bundle-Name: RedDeer API for AS UI Tests
 Bundle-SymbolicName: org.jboss.ide.eclipse.as.reddeer;singleton:=true
 Bundle-Version: 4.1.0.qualifier
 Bundle-ActivationPolicy: lazy
-Bundle-Vendor: 
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: org.eclipse.swtbot.go,
  org.jboss.reddeer.jface;bundle-version="0.3.0",
@@ -15,3 +14,6 @@ Require-Bundle: org.eclipse.swtbot.go,
 Bundle-ClassPath: .
 Export-Package: org.jboss.ide.eclipse.as.reddeer.server.requirement
 Import-Package: javax.xml.bind.annotation
+Eclipse-BundleShape: jar
+Bundle-Localization: plugin
+Bundle-Vendor: JBoss by Red Hat

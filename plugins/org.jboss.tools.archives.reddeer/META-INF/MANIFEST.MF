@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Archive Reddeer
+Bundle-Name: RedDeer API for Archives UI Tests
 Bundle-SymbolicName: org.jboss.tools.archives.reddeer
 Bundle-Version: 4.1.0.qualifier
 Bundle-Activator: org.jboss.tools.archives.reddeer.Activator
@@ -17,3 +17,6 @@ Export-Package:
  org.jboss.tools.archives.reddeer.archives.jdt.integration
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Eclipse-BundleShape: jar
+Bundle-Localization: plugin
+Bundle-Vendor: JBoss by Red Hat

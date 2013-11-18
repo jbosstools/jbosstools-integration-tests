@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: WebService SWTBot Tests
+Bundle-Name: Webservices UI Bot Tests
 Bundle-SymbolicName: org.jboss.tools.ws.ui.bot.test
 Bundle-Version: 4.1.0.qualifier
 Bundle-Activator: org.jboss.tools.ws.ui.bot.test.Activator
@@ -41,3 +41,6 @@ Export-Package: org.jboss.tools.ws.ui.bot.test;
    org.osgi.framework,
    org.jboss.tools.ws.ui.bot.test.uiutils.wizards",
  org.jboss.tools.ws.ui.bot.test.webservice.eap
+Eclipse-BundleShape: jar
+Bundle-Localization: plugin
+Bundle-Vendor: JBoss by Red Hat

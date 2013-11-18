@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: CDI SWTBot Test
+Bundle-Name: CDI UI Bot Tests
 Bundle-SymbolicName: org.jboss.tools.cdi.bot.test
 Bundle-Version: 4.1.0.qualifier
 Bundle-Activator: org.jboss.tools.cdi.bot.test.PluginActivator
@@ -43,4 +43,6 @@ Require-Bundle: org.eclipse.core.runtime,
  org.jboss.tools.common.reddeer
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
-
+Eclipse-BundleShape: jar
+Bundle-Localization: plugin
+Bundle-Vendor: JBoss by Red Hat

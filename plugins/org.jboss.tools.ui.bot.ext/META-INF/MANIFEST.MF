@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Ext
+Bundle-Name: org.jboss.tools.ui.bot.ext
 Bundle-SymbolicName: org.jboss.tools.ui.bot.ext
 Bundle-Version: 4.1.0.qualifier
 Bundle-ClassPath: .,
@@ -57,3 +57,6 @@ Import-Package: org.apache.log4j;version="1.2.13",
  org.eclipse.gef,
  org.jboss.tools.ui.bot.ext.helper
 Eclipse-RegisterBuddy: org.apache.log4j
+Eclipse-BundleShape: jar
+Bundle-Localization: plugin
+Bundle-Vendor: JBoss by Red Hat

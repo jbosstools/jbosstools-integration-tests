@@ -1,10 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: org.jboss.tools.forge.ui.bot.test
+Bundle-Name: Forge UI Bot Tests
 Bundle-SymbolicName: org.jboss.tools.forge.ui.bot.test;singleton:=true
 Bundle-Version: 4.1.0.qualifier
 Bundle-ActivationPolicy: lazy
-Bundle-Vendor: JBoss by Red Hat
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Require-Bundle: org.eclipse.swtbot.go,
  org.jboss.tools.ui.bot.ext;bundle-version="[4.1.0,4.2.0)",
@@ -13,3 +12,6 @@ Require-Bundle: org.eclipse.swtbot.go,
  org.jboss.tools.forge.runtime;bundle-version="1.0.0",
  org.jboss.tools.forge.runtime.ext;bundle-version="1.0.0"
 Import-Package: org.eclipse.core.resources
+Eclipse-BundleShape: jar
+Bundle-Localization: plugin
+Bundle-Vendor: JBoss by Red Hat
