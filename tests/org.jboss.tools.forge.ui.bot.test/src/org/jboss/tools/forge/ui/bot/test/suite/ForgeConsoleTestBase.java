@@ -239,6 +239,22 @@ public class ForgeConsoleTestBase extends SWTTestExt {
 		
 	}
 	
+	public static void removeForgeRuntime(String name){
+		
+		SWTBotShell preferences = getFRuntimesPrefShell();
+		SWTBotTableItem cell_embedded = preferences.bot().table().getTableItem("embedded");
+		cell_embedded.check(); //check embedded first
+		
+		SWTBotTableItem cell = preferences.bot().table().getTableItem(name);
+		assertTrue("Forge Runtime to be removed does not exist!", cell != null);
+		cell.select();
+		preferences.bot().button("Remove").setFocus();
+		preferences.bot().button("Remove").click();
+		
+		preferences.bot().button("OK").click();
+		util.waitForNonIgnoredJobs(WAIT_FOR_NON_IGNORED_JOBS_TIMEOUT);
+	}
+	
 	/*
 	 * This is private, use openForgeView method outside this class to get 
 	 * Forge Console View.
