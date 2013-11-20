@@ -74,7 +74,7 @@ public class OpenShiftBotTest extends SWTTestExt {
 		bot.sleep(1000);
 		account.getNode(0).contextMenu("New").click().menu("Application...").click();
 		bot.sleep(3000);
-		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_20S, TIME_1S);
+		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S, TIME_1S);
 
 		// fill app info
 		bot.textInGroup("New application", 0).setText(APP_NAME);

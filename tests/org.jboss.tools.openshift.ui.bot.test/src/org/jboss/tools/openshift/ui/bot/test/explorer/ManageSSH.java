@@ -33,7 +33,7 @@ public class ManageSSH extends SWTTestExt {
 				.viewOpen(OpenShiftUI.Explorer.iView);
 
 		openshiftExplorer.bot().tree().getAllItems()[0].select();
-		/* TODO WTF IT IS DOING? this hide menu item New. ContextMenu method disappear submenus...
+		/* TODO WTF IT IS DOING? this hide menu item New. ContextMenu method let disappear submenus...
 		 comment in SWTBotExt is very helpful...:
 		"in e4, if the context menu contains submenus it appears
 		 as disposed after detection, so we use the ContextMenuHelper" */
@@ -41,7 +41,7 @@ public class ManageSSH extends SWTTestExt {
 		menu.select();		
 		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_20S, TIME_5S);
 		
-		bot.sleep(2000);
+		bot.sleep(5000);
 		bot.shell("Select Domain").activate();
 		bot.sleep(2000);
 		bot.buttonInGroup("Refresh...", "SSH Public Keys").click();
@@ -59,7 +59,8 @@ public class ManageSSH extends SWTTestExt {
 	}
 	
 	private void removeAllKeys() {
-		while (bot.table().rowCount() > 0) {
+		bot.sleep(TIME_1S);
+		while (bot.table(0).rowCount() > 0) {
 			bot.table(0).getTableItem(0).select();	
 			bot.buttonInGroup("Remove...", "SSH Public Keys").click();
 			bot.button(IDELabel.Button.OK).click();

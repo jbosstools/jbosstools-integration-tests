@@ -67,7 +67,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	//CreateDeleteScaledRubyApp.class,
 	
 	// TODO
-	//RestartApplication.class, // OK
+	//RestartApplication.class,
 	RepublishApp.class,
 })
 @RunWith(RequirementAwareSuite.class)

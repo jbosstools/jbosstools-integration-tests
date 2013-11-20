@@ -87,8 +87,7 @@ public class OpenShiftDebugFeatures extends OpenShiftBotTest {
 		openDebugFeature("Show in Web Browser");
 
 		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 2, TIME_1S);
-		assertTrue(open.viewOpen(OpenShiftUI.Explorer.iView).getTitle()
-				.contains("OpenShift"));
+		// TODO find way to verify in internal browser, also in Republish class
 	}
 
 	public void canShowEnvVariables() {
