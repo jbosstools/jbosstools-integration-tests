@@ -35,39 +35,33 @@ import org.junit.runners.Suite.SuiteClasses;
  * This bot test will try to demonstrate a new OpenShift Application and domain life cycle, 
  * and is meant to run on machine with OpenShift Enterprise installed to test integration of hosted OpenShift within JBDS.   
  * 
- * @author sbunciak
+ * @author sbunciak, mlabuda
  */
 @SuiteClasses({
 	/* Connection stuff */
-	// STATUS = OK
 	Connection.class, 
 	ManageSSH.class, 
 	
 	/* Domain*/
-	// STATUS = OK
- 	//CreateDomain.class,
- 	//DeleteDomain.class,
- 	//RenameDomain.class,
+ 	CreateDomain.class,
+ 	DeleteDomain.class,
+ 	RenameDomain.class,
 
 	/* Cartridge */
-	// STATUS = OK
-	//EmbedCartridges.class,
+	EmbedCartridges.class,
 		
 	/* Explorer */
-	// STATUS = OK
-	//OpenShiftDebugFeatures.class,
-	//CreateAdapter.class,
+	OpenShiftDebugFeatures.class,
+	CreateAdapter.class,
 	
 	/* Applications*/
-	// STATUS = OK
-	//CreateDeleteJBossApp.class,
-	//CreateDeleteEWSApp.class, 
-	//CreateDeletePHPApp.class,
-	//CreateDeletePythonApp.class,
-	//CreateDeleteScaledRubyApp.class,
-	
-	// TODO
-	//RestartApplication.class,
+	CreateDeleteJBossApp.class,
+	CreateDeleteEWSApp.class, 
+	CreateDeletePHPApp.class,
+	CreateDeletePythonApp.class,
+	CreateDeleteScaledRubyApp.class,
+
+	RestartApplication.class,
 	RepublishApp.class,
 })
 @RunWith(RequirementAwareSuite.class)

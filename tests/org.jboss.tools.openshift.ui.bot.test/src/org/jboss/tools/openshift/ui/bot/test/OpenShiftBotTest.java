@@ -203,6 +203,8 @@ public class OpenShiftBotTest extends SWTTestExt {
 
 		account.getNode(0).expand();
 		bot.sleep(TIME_5S);
+		int applicationCount = account.getNode(0).getItems().length;
+		bot.sleep(TIME_5S);
 		account.getNode(0).getNode(APP_NAME + " " + APP_TYPE).select().
 				contextMenu(OpenShiftUI.Labels.EXPLORER_DELETE_APP).click();
 		
@@ -214,7 +216,7 @@ public class OpenShiftBotTest extends SWTTestExt {
 		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 2, TIME_1S);
 
 		assertTrue("Application still present in the OpenShift Explorer!",
-				account.getNode(0).getItems().length == 0);
+				account.getNode(0).getItems().length == applicationCount - 1);
 
 		projectExplorer.show();
  		// manually refresh all projects in project explorer so they can be removed with swt bot

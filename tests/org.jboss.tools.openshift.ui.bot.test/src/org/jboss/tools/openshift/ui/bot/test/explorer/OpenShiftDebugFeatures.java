@@ -102,6 +102,10 @@ public class OpenShiftDebugFeatures extends OpenShiftBotTest {
 	public void canCreateEnvVariable() {
 		openDebugFeature("Edit Environment Variables...");
 		
+		// Need fix shell name since JBDS 7.1.0.CR1 or JBT 4.1.1.CR1
+		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 2, TIME_1S);
+		bot.sleep(7000);
+		
 		bot.waitForShell("Select Domain").activate();
 		bot.sleep(1000);
 		
