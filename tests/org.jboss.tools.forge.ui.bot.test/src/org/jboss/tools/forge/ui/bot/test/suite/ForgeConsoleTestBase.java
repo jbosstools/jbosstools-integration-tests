@@ -1,6 +1,7 @@
 package org.jboss.tools.forge.ui.bot.test.suite;
 
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.widgetOfType;
+
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
@@ -14,8 +15,8 @@ import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.ext.view.ProjectExplorer;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import org.junit.After;
+import org.junit.Before;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
@@ -37,8 +38,9 @@ public class ForgeConsoleTestBase extends SWTTestExt {
 	
 	protected static ProjectExplorer pExplorer = null;
 	
-	@BeforeClass
-	public static void setup(){
+	@Before
+	public void setup(){
+				
 		pExplorer = new ProjectExplorer();
 		openForgeView();
 		startForge();
@@ -46,8 +48,11 @@ public class ForgeConsoleTestBase extends SWTTestExt {
 		clear();
 	}
 	
-	@AfterClass
-	public static void cleanup(){
+	@After
+	public void cleanup(){
+
+		cdWS();
+		clear();
 		pExplorer = new ProjectExplorer();
 		pExplorer.deleteAllProjects();
 		bot.sleep(TIME_5S);
@@ -193,10 +198,9 @@ public class ForgeConsoleTestBase extends SWTTestExt {
 	public static String pwd(){
 		
 		getStyledText().setText("pwd\n");
+		bot.sleep(TIME_1S);
 		int line = getStyledText().cursorPosition().line;
-		
 		return getStyledText().getTextOnLine(line - 1);
-		
 	}
 	
 	public static String getForgeVersion(){
