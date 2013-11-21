@@ -6,8 +6,8 @@ import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.view.ProjectExplorer;
 import org.jboss.tools.ui.bot.ext.wizards.SWTBotNewObjectWizard;
 import org.jboss.tools.ui.bot.ext.wizards.SWTBotWizard;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import org.junit.After;
+import org.junit.Before;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
@@ -25,14 +25,14 @@ public class ForgeWizardTestBase extends SWTTestExt {
 	
 	protected static ProjectExplorer pExplorer = null;
 	
-	@BeforeClass
-	public static void setup(){
+	@Before
+	public void setup(){
 		pExplorer = new ProjectExplorer();
 		ForgeConsoleTestBase.openForgeView();
 	}
 	
-	@AfterClass
-	public static void cleanup(){
+	@After
+	public void cleanup(){
 		pExplorer = new ProjectExplorer();
 		pExplorer.deleteAllProjects();
 		bot.sleep(TIME_5S);
@@ -40,9 +40,10 @@ public class ForgeWizardTestBase extends SWTTestExt {
 
 	public SWTBotWizard openWizard(String name){
 		SWTBotNewObjectWizard w = new SWTBotNewObjectWizard();
-		w.open(name, "JBoss Tools");
+		w.open(name, "JBoss Tools", "Forge");
 		util.waitForNonIgnoredJobs(WAIT_FOR_NON_IGNORED_JOBS_TIMEOUT);
 		return w;
 	}
+	
 	
 }

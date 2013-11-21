@@ -2,7 +2,6 @@ package org.jboss.tools.forge.ui.bot.wizard.test;
 
 import org.jboss.tools.forge.ui.bot.test.suite.ForgeWizardTestBase;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
-import org.jboss.tools.ui.bot.ext.wizards.SWTBotNewObjectWizard;
 import org.jboss.tools.ui.bot.ext.wizards.SWTBotWizard;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -13,22 +12,34 @@ public class ProjectWizardTest extends ForgeWizardTestBase {
 	@Test
 	public void createProjectTest(){
 		
-		SWTBotWizard w = openWizard("New Project");
-		w.bot().text(0).setText(W_PROJECT_NAME);
-		w.finishWithWait();
+		//New project wizard is accessible only from Entities From Tables wizard
+		SWTBotWizard w = openWizard("Entities From Tables"); 
+		w.bot().button("New...", 0).click(); //open new project wizard
+		
+		SWTBotWizard pw = new SWTBotWizard();
+		pw.bot().text(0).setText(W_PROJECT_NAME);
+		pw.finishWithWait();
+		
+		w.cancel(); //close Entities From Tables wizard
 		assertTrue(pExplorer.existsResource(W_PROJECT_NAME));
 	}
 	
 	@Test
 	public void validProjectNameTest(){
 		
-		SWTBotWizard w = openWizard("New Project");
-		w.bot().text(0).setText(""); 
-		if(w.canFinish()){
-			w.bot().activeShell().close();
+		//New project wizard is accessible only from Entities From Tables wizard
+		SWTBotWizard w = openWizard("Entities From Tables"); 
+		w.bot().button("New...", 0).click(); //open new project wizard
+		
+		SWTBotWizard pw = new SWTBotWizard();
+		pw.bot().text(0).setText(""); 
+		
+		if(pw.canFinish()){
+			pw.bot().activeShell().close();
 			fail();
 		}
-		w.close();
+		pw.close();
+		w.cancel(); //close Entities From Tables wizard
 	}
 	
 	@Test
