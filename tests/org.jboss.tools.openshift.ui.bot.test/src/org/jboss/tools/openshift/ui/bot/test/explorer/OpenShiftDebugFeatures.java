@@ -4,9 +4,12 @@ import java.util.Date;
 
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.jboss.reddeer.eclipse.ui.browser.BrowserView;
+import org.jboss.reddeer.swt.impl.browser.InternalBrowser;
 import org.jboss.tools.openshift.ui.bot.test.OpenShiftBotTest;
 import org.jboss.tools.openshift.ui.bot.util.OpenShiftExplorerView;
 import org.jboss.tools.openshift.ui.bot.util.OpenShiftUI;
+import org.jboss.tools.openshift.ui.bot.util.OpenShiftUI.WebBrowser;
 import org.jboss.tools.ui.bot.ext.condition.NonSystemJobRunsCondition;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
@@ -33,8 +36,8 @@ public class OpenShiftDebugFeatures extends OpenShiftBotTest {
 	
 	@Test
 	public void testDebugFeatures() {
-		canTailFiles();
-		canForwardPorts();
+		//canTailFiles();
+		//canForwardPorts();
 		canOpenWebBrowser();
 		canShowEnvVariables();
 		canCreateEnvVariable();
@@ -88,6 +91,7 @@ public class OpenShiftDebugFeatures extends OpenShiftBotTest {
 
 		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 2, TIME_1S);
 		// TODO find way to verify in internal browser, also in Republish class
+		// it is web editor!
 	}
 
 	public void canShowEnvVariables() {
@@ -106,7 +110,8 @@ public class OpenShiftDebugFeatures extends OpenShiftBotTest {
 		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 2, TIME_1S);
 		bot.sleep(7000);
 		
-		bot.waitForShell("Select Domain").activate();
+		bot.waitForShell("Manage Application Environment Variable(s) for application " 
+				+ DYI_APP).activate();
 		bot.sleep(1000);
 		
 		bot.button("Add...").click();

@@ -41,9 +41,8 @@ public class ManageSSH extends SWTTestExt {
 		menu.select();		
 		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_20S, TIME_5S);
 		
-		// Need fix shell name since JBDS 7.1.0.CR1 or JBT 4.1.1.CR1
 		bot.sleep(5000);
-		bot.shell("Select Domain").activate();
+		bot.shell("Manage SSH Keys").activate();
 		bot.sleep(2000);
 		bot.buttonInGroup("Refresh...", "SSH Public Keys").click();
 		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S, TIME_1S);

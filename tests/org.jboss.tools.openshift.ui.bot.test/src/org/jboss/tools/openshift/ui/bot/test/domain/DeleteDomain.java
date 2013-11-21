@@ -34,7 +34,7 @@ public class DeleteDomain extends SWTTestExt {
 		openshiftExplorer.bot().tree().getAllItems()[0].contextMenu(
 				OpenShiftUI.Labels.MANAGE_DOMAINS).click();
 		
-		bot.shell("Select Domain").activate();
+		bot.shell("Domains").activate();
 
 		removeDomain();
 		

@@ -37,8 +37,9 @@ public class CreateDomain extends SWTTestExt {
 		SWTBotView openshiftExplorer = open
 				.viewOpen(OpenShiftUI.Explorer.iView);
 
-		openshiftExplorer.bot().tree().getAllItems()[0].contextMenu(OpenShiftUI.Labels.MANAGE_DOMAINS).click();
-		bot.shell("Select Domain");
+		openshiftExplorer.bot().tree().getAllItems()[0].select().contextMenu(OpenShiftUI.Labels.MANAGE_DOMAINS).click();
+		bot.sleep(TIME_5S);
+		bot.shell("Domains");
 		
 		if (runFromCreateDomain) {
 			assertTrue("Domain should not be set at this stage! Remove domains and run tests again", bot.tableInGroup("Domains").rowCount() == 0);

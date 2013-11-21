@@ -27,7 +27,7 @@ public class RenameDomain extends SWTTestExt {
 
 		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_20S, TIME_5S);
 		
-		bot.shell("Select Domain").activate();
+		bot.shell("Domains").activate();
 		
 		String oldDomainName = bot.table(0).getTableItem(0).getText();
 		String newDomainName = oldDomainName.substring(0, oldDomainName.length() - 2);

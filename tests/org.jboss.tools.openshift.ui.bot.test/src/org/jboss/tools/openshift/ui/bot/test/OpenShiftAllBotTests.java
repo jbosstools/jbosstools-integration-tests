@@ -43,7 +43,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	ManageSSH.class, 
 	
 	/* Domain*/
- 	CreateDomain.class,
+	CreateDomain.class,
  	DeleteDomain.class,
  	RenameDomain.class,
 
