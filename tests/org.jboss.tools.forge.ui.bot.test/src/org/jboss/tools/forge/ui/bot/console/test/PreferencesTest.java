@@ -18,10 +18,17 @@ public class PreferencesTest extends ForgeConsoleTestBase {
 	private static String FORGE_RUNTIME_NAME = "";
 	private static String FORGE_RUNTIME_LOCATION = "";
 	
+	public static void runtimeCleanup(){
+		removeForgeRuntime(FORGE_RUNTIME_NAME);
+	}
+	
 	@BeforeClass
 	public static void setupProperties(){
 		FORGE_RUNTIME_NAME = System.getProperty("jbosstools.forge-distribution.version");
 		FORGE_RUNTIME_LOCATION = System.getProperty("jbosstools.forge-distribution.home");
+		
+		assertTrue("'jbosstools.forge-distribution.home' property is not set", FORGE_RUNTIME_LOCATION != null);
+		assertTrue("'jbosstools.forge-distribution.version' property is not set", FORGE_RUNTIME_NAME != null);
 	}
 		
 	@Test
@@ -30,6 +37,8 @@ public class PreferencesTest extends ForgeConsoleTestBase {
 		setForgeRuntime(FORGE_RUNTIME_NAME, FORGE_RUNTIME_LOCATION);
 		assertTrue(isForgeRunning());
 		assertTrue(getForgeVersion().equals(FORGE_RUNTIME_NAME));
+		
+		runtimeCleanup();
 	}
 	
 	@Test
@@ -59,7 +68,7 @@ public class PreferencesTest extends ForgeConsoleTestBase {
 		
 		preferences.bot().table().getTableItem("embedded").check(); //check embedded
 		
-		/* Remove button is enabled on highlighted unactive runtime */  
+		/* Remove button is enabled on highlighted inactive runtime */  
 		preferences.bot().table().getTableItem(FORGE_RUNTIME_NAME).select();  
 		assertTrue(preferences.bot().button("Remove").isEnabled());
 		preferences.bot().button("Remove").setFocus();
