@@ -4,12 +4,9 @@ import java.util.Date;
 
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
-import org.jboss.reddeer.eclipse.ui.browser.BrowserView;
-import org.jboss.reddeer.swt.impl.browser.InternalBrowser;
+import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.tools.openshift.ui.bot.test.OpenShiftBotTest;
-import org.jboss.tools.openshift.ui.bot.util.OpenShiftExplorerView;
 import org.jboss.tools.openshift.ui.bot.util.OpenShiftUI;
-import org.jboss.tools.openshift.ui.bot.util.OpenShiftUI.WebBrowser;
 import org.jboss.tools.ui.bot.ext.condition.NonSystemJobRunsCondition;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
@@ -36,8 +33,8 @@ public class OpenShiftDebugFeatures extends OpenShiftBotTest {
 	
 	@Test
 	public void testDebugFeatures() {
-		//canTailFiles();
-		//canForwardPorts();
+		canTailFiles();
+		canForwardPorts();
 		canOpenWebBrowser();
 		canShowEnvVariables();
 		canCreateEnvVariable();
@@ -55,9 +52,10 @@ public class OpenShiftDebugFeatures extends OpenShiftBotTest {
 		openDebugFeature("Show in Web Browser");
 		
 		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 2, TIME_1S);
-		console.show();
+		ConsoleView consoleView = new ConsoleView();
+		consoleView.open();
 		
-		assertFalse("Remote console should not be empty!", console
+		assertFalse("Remote console should not be empty!", consoleView
 				.getConsoleText().isEmpty());
 	}
 
@@ -72,7 +70,10 @@ public class OpenShiftDebugFeatures extends OpenShiftBotTest {
 		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 2, TIME_1S);
 		bot.button("OK").click();
 
-		assertFalse("Console should not be empty!", console.getConsoleText()
+		ConsoleView consoleView = new ConsoleView();
+		consoleView.open();
+		
+		assertFalse("Console should not be empty!", consoleView.getConsoleText()
 				.isEmpty());
 
 		open.viewOpen(OpenShiftUI.Explorer.iView);
@@ -99,7 +100,9 @@ public class OpenShiftDebugFeatures extends OpenShiftBotTest {
 
 		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 2, TIME_1S);
 
-		assertFalse("Console should not be empty!", console.getConsoleText()
+		ConsoleView consoleView = new ConsoleView();
+		consoleView.open();
+		assertFalse("Console should not be empty!", consoleView.getConsoleText()
 				.isEmpty());
 	}
 

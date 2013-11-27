@@ -11,7 +11,7 @@ import org.jboss.tools.openshift.ui.bot.util.OpenShiftUI;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.condition.NonSystemJobRunsCondition;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
-import org.jboss.tools.ui.bot.ext.view.ConsoleView;
+import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.tools.ui.bot.ext.view.ServersView;
 
 /**
