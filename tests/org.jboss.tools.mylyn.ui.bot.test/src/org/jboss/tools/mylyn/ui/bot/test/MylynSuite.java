@@ -15,7 +15,8 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @SuiteClasses({
 	MylynTestValidate.class,
-	MylynTestBzQuery.class
+	MylynTestBzQuery.class,
+	MylynTestLocalRepo.class
 	})
 
 public class MylynSuite {
