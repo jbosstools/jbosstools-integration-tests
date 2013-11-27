@@ -1,11 +1,11 @@
-package org.jboss.tools.maven.ui.bot.test.dialog.maven;
+package org.jboss.tools.maven.reddeer.preferences;
 
 import org.jboss.reddeer.eclipse.jface.preference.PreferencePage;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 
-public class MavenPreferencesPage extends PreferencePage{
+public class MavenPreferencePage extends PreferencePage{
 	
-	public MavenPreferencesPage(){
+	public MavenPreferencePage(){
 		super("Maven");
 	}
 	

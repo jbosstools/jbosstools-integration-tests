@@ -13,11 +13,11 @@ package org.jboss.tools.maven.ui.bot.test;
 import static org.junit.Assert.assertTrue;
 
 import org.eclipse.core.runtime.CoreException;
-import org.jboss.tools.maven.ui.bot.test.dialog.maven.JBossMavenIntegrationDialog;
-import org.jboss.tools.maven.ui.bot.test.dialog.maven.MavenProjectWizardDialog;
-import org.jboss.tools.maven.ui.bot.test.dialog.maven.MavenProjectWizardSecondPage;
-import org.jboss.tools.maven.ui.bot.test.dialog.maven.MavenProjectWizardThirdPage;
-import org.jboss.tools.maven.ui.bot.test.dialog.maven.MavenRepositoriesDialog;
+import org.jboss.tools.maven.reddeer.preferences.ConfiguratorPreferencePage;
+import org.jboss.tools.maven.reddeer.wizards.ConfigureMavenRepositoriesWizard;
+import org.jboss.tools.maven.reddeer.wizards.MavenProjectWizard;
+import org.jboss.tools.maven.reddeer.wizards.MavenProjectWizardSecondPage;
+import org.jboss.tools.maven.reddeer.wizards.MavenProjectWizardThirdPage;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -31,9 +31,9 @@ public class ArchetypesTest extends AbstractMavenSWTBotTest{
 	@BeforeClass
 	public static void setup(){
 		setPerspective("Java");
-		JBossMavenIntegrationDialog jm = new JBossMavenIntegrationDialog();
+		ConfiguratorPreferencePage jm = new ConfiguratorPreferencePage();
 		jm.open();
-		MavenRepositoriesDialog mr = jm.modifyRepositories();
+		ConfigureMavenRepositoriesWizard mr = jm.configureRepositories();
 		mr.removeAllRepos();
 		mr.chooseRepositoryFromList(MavenRepositories.JBOSS_REPO, true);
 		mr.confirm();
@@ -42,9 +42,9 @@ public class ArchetypesTest extends AbstractMavenSWTBotTest{
 	
 	@AfterClass
 	public static void clean(){
-		JBossMavenIntegrationDialog jm = new JBossMavenIntegrationDialog();
+		ConfiguratorPreferencePage jm = new ConfiguratorPreferencePage();
 		jm.open();
-		MavenRepositoriesDialog mr = jm.modifyRepositories();
+		ConfigureMavenRepositoriesWizard mr = jm.configureRepositories();
 		mr.removeAllRepos();
 		mr.confirm();
 		jm.ok();
@@ -72,7 +72,7 @@ public class ArchetypesTest extends AbstractMavenSWTBotTest{
 	
 	
 	private void createArchetype(String name, String catalog, String type){
-		MavenProjectWizardDialog md = new MavenProjectWizardDialog();
+		MavenProjectWizard md = new MavenProjectWizard();
 		md.open();
 		md.selectPage(2);
 		MavenProjectWizardSecondPage fp = (MavenProjectWizardSecondPage)md.getWizardPage();

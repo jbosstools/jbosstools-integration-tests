@@ -1,0 +1,18 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Maven Reddeer
+Bundle-SymbolicName: org.jboss.tools.maven.reddeer
+Bundle-Version: 4.1.0.qualifier
+Bundle-Activator: org.jboss.tools.maven.reddeer.Activator
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.jboss.reddeer.swt,
+ org.jboss.reddeer.workbench,
+ org.jboss.reddeer.jface,
+ org.jboss.reddeer.eclipse,
+ org.junit;bundle-version="4.8.1"
+Export-Package: org.jboss.tools.maven.reddeer.profiles,
+ org.jboss.tools.maven.reddeer.preferences,
+ org.jboss.tools.maven.reddeer.wizards
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6

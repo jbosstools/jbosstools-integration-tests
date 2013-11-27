@@ -4,8 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
-import org.jboss.tools.maven.ui.bot.test.dialog.maven.MavenRemoteRepositoriesPreferencePage;
-import org.jboss.tools.maven.ui.bot.test.dialog.maven.Repository;
+import org.jboss.tools.maven.reddeer.preferences.RemoteRepositoriesPreferencePage;
+import org.jboss.tools.maven.reddeer.wizards.Repository;
 import org.junit.After;
 import org.junit.Test;
 
@@ -15,7 +15,7 @@ public class RemoteRepositoriesPreferenceTest {
 	
 	@After
 	public void cleanAddedRepo(){
-		MavenRemoteRepositoriesPreferencePage rem = new MavenRemoteRepositoriesPreferencePage();
+		RemoteRepositoriesPreferencePage rem = new RemoteRepositoriesPreferencePage();
 		rem.open();
 		if(rem.getRepository(r.getName())!=null){
 			rem.deleteRepository(r);
@@ -32,7 +32,7 @@ public class RemoteRepositoriesPreferenceTest {
 	
 	@Test
 	public void addRepo(){
-		MavenRemoteRepositoriesPreferencePage rem = new MavenRemoteRepositoriesPreferencePage();
+		RemoteRepositoriesPreferencePage rem = new RemoteRepositoriesPreferencePage();
 		rem.open();
 		rem.addRepository(r);
 		assertNotNull("Repository was not added",rem.getRepository(r.getName()));
@@ -41,7 +41,7 @@ public class RemoteRepositoriesPreferenceTest {
 	
 	@Test
 	public void removeRepo(){
-		MavenRemoteRepositoriesPreferencePage rem = new MavenRemoteRepositoriesPreferencePage();
+		RemoteRepositoriesPreferencePage rem = new RemoteRepositoriesPreferencePage();
 		rem.open();
 		rem.addRepository(r);
 		rem.deleteRepository(r);
@@ -51,7 +51,7 @@ public class RemoteRepositoriesPreferenceTest {
 	
 	@Test
 	public void modifyRepo(){
-		MavenRemoteRepositoriesPreferencePage rem = new MavenRemoteRepositoriesPreferencePage();
+		RemoteRepositoriesPreferencePage rem = new RemoteRepositoriesPreferencePage();
 		rem.open();
 		rem.addRepository(r);
 		Repository r1= new Repository("test1", "testURL1", false);

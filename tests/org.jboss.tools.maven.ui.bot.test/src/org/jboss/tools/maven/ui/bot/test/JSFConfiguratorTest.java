@@ -20,8 +20,8 @@ import javax.xml.transform.TransformerException;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.jboss.tools.maven.ui.bot.test.dialog.maven.JBossMavenIntegrationDialog;
-import org.jboss.tools.maven.ui.bot.test.dialog.maven.MavenRepositoriesDialog;
+import org.jboss.tools.maven.reddeer.preferences.ConfiguratorPreferencePage;
+import org.jboss.tools.maven.reddeer.wizards.ConfigureMavenRepositoriesWizard;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -38,9 +38,9 @@ public class JSFConfiguratorTest extends AbstractConfiguratorsTest{
 	@BeforeClass
 	public static void before(){
 		setPerspective("Java EE");
-		JBossMavenIntegrationDialog jm = new JBossMavenIntegrationDialog();
+		ConfiguratorPreferencePage jm = new ConfiguratorPreferencePage();
 		jm.open();
-		MavenRepositoriesDialog mr = jm.modifyRepositories();
+		ConfigureMavenRepositoriesWizard mr = jm.configureRepositories();
 		mr.addRepository("ACM Repo", MAVEN_ACM_REPO, true);
 		mr.confirm();
 		jm.apply();
@@ -55,9 +55,9 @@ public class JSFConfiguratorTest extends AbstractConfiguratorsTest{
 	
 	@AfterClass
 	public static void cleanRepo(){
-		JBossMavenIntegrationDialog jm = new JBossMavenIntegrationDialog();
+		ConfiguratorPreferencePage jm = new ConfiguratorPreferencePage();
 		jm.open();
-		MavenRepositoriesDialog mr = jm.modifyRepositories();
+		ConfigureMavenRepositoriesWizard mr = jm.configureRepositories();
 		boolean deleted = mr.removeAllRepos();
 		if(deleted){
 			mr.confirm();

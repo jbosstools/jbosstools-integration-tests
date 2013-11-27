@@ -1,4 +1,4 @@
-package org.jboss.tools.maven.ui.bot.test.dialog.maven;
+package org.jboss.tools.maven.reddeer.preferences;
 
 import org.jboss.reddeer.eclipse.jface.preference.PreferencePage;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
@@ -7,10 +7,11 @@ import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.tools.maven.reddeer.wizards.Repository;
 
-public class MavenRemoteRepositoriesPreferencePage extends PreferencePage{
+public class RemoteRepositoriesPreferencePage extends PreferencePage{
 	
-	public MavenRemoteRepositoriesPreferencePage(){
+	public RemoteRepositoriesPreferencePage(){
 		super("JBoss Tools","Remote Repositories");
 	}
 	

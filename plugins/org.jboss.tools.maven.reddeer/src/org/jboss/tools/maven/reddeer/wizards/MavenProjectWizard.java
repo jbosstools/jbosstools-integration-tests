@@ -1,4 +1,4 @@
-package org.jboss.tools.maven.ui.bot.test.dialog.maven;
+package org.jboss.tools.maven.reddeer.wizards;
 
 import org.jboss.reddeer.eclipse.jface.wizard.NewWizardDialog;
 import org.jboss.reddeer.swt.api.Button;
@@ -9,12 +9,12 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 
-public class MavenProjectWizardDialog extends NewWizardDialog{
+public class MavenProjectWizard extends NewWizardDialog{
 	
 	public static final String CATEGORY="Maven";
 	public static final String NAME="Maven Project";
 	
-	public MavenProjectWizardDialog(){
+	public MavenProjectWizard(){
 		super(CATEGORY,NAME);
 		addWizardPage(new MavenProjectWizardSecondPage(), 2);
 		addWizardPage(new MavenProjectWizardThirdPage(), 3);
@@ -22,8 +22,6 @@ public class MavenProjectWizardDialog extends NewWizardDialog{
 	
 	@Override
 	public void finish() {
-		log.info("Finish wizard");
-
 		String shell = new DefaultShell().getText();
 		Button button = new PushButton("Finish");
 		checkButtonEnabled(button);
