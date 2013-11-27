@@ -1,4 +1,4 @@
-package org.jboss.tools.maven.ui.bot.test.dialog.maven;
+package org.jboss.tools.maven.reddeer.profiles;
 
 import java.util.ArrayList;
 
@@ -13,11 +13,11 @@ import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 
-public class MavenProfilesDialog extends WizardDialog{
+public class SelectProfilesDialog extends WizardDialog{
 	
 	private String projectName;
 	
-	public MavenProfilesDialog(String projectName){
+	public SelectProfilesDialog(String projectName){
 		this.projectName=projectName;
 	}
 	

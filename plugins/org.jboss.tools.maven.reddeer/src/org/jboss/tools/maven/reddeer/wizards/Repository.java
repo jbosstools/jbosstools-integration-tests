@@ -1,4 +1,4 @@
-package org.jboss.tools.maven.ui.bot.test.dialog.maven;
+package org.jboss.tools.maven.reddeer.wizards;
 
 public class Repository {
 	

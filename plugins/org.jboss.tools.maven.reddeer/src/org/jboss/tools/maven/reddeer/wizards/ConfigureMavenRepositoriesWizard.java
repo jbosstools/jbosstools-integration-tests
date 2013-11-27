@@ -1,8 +1,7 @@
-package org.jboss.tools.maven.ui.bot.test.dialog.maven;
-
-import org.eclipse.swtbot.swt.finder.widgets.TimeoutException;
+package org.jboss.tools.maven.reddeer.wizards;
 
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.swt.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
@@ -13,7 +12,7 @@ import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 
 
-public class MavenRepositoriesDialog{
+public class ConfigureMavenRepositoriesWizard{
 	
 	public void open(){
 		new PushButton("Configure Maven Repositories...").click();
@@ -90,16 +89,14 @@ public class MavenRepositoriesDialog{
 			new WaitUntil(new ShellWithTextIsActive("Confirm File Update"),TimePeriod.NORMAL);
 			new DefaultShell("Confirm File Update");
 			new PushButton("Yes").click();
-		} catch(TimeoutException ex){
+		} catch(WaitTimeoutExpiredException ex){
 			
 		}
-		new DefaultShell("Preferences");
 	}
 	
 	public void cancel(){
 		new DefaultShell("Maven Repositories");
 		new PushButton("Cancel").click();
-		new DefaultShell("Preferences");
 	}
 
 }

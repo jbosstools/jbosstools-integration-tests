@@ -78,8 +78,6 @@ import org.jboss.tools.maven.ui.bot.test.dialog.ASRuntimePage;
 import org.jboss.tools.maven.ui.bot.test.dialog.DynamicWebProjectFirstPage;
 import org.jboss.tools.maven.ui.bot.test.dialog.DynamicWebProjectThirdPage;
 import org.jboss.tools.maven.ui.bot.test.dialog.DynamicWebProjectWizard;
-import org.jboss.tools.maven.ui.bot.test.dialog.maven.MavenPreferencesPage;
-import org.jboss.tools.maven.ui.bot.test.dialog.maven.MavenUserPreferencesDialog;
 import org.jboss.tools.maven.ui.bot.test.utils.ButtonIsEnabled;
 import org.jboss.tools.maven.ui.bot.test.utils.ProjectIsBuilt;
 import org.jboss.tools.maven.ui.bot.test.utils.ProjectIsNotBuilt;
@@ -89,6 +87,8 @@ import org.jboss.reddeer.eclipse.wst.server.ui.Runtime;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+import org.jboss.tools.maven.reddeer.preferences.MavenUserPreferencePage;
+import org.jboss.tools.maven.reddeer.preferences.MavenPreferencePage;
 
 @SuppressWarnings("restriction")
 public abstract class AbstractMavenSWTBotTest{
@@ -107,12 +107,12 @@ public abstract class AbstractMavenSWTBotTest{
 			// welcome screen not found, no need to close it
 		}
 		
-		MavenPreferencesPage mpreferencesp = new MavenPreferencesPage();
+		MavenPreferencePage mpreferencesp = new MavenPreferencePage();
 		mpreferencesp.open();
 		mpreferencesp.updateIndexesOnStartup(false);
 		mpreferencesp.ok();
 		
-		MavenUserPreferencesDialog mpreferences = new MavenUserPreferencesDialog();
+		MavenUserPreferencePage mpreferences = new MavenUserPreferencePage();
 		mpreferences.open();
 		mpreferences.setUserSettings(new File(USER_SETTINGS).getAbsolutePath());
 		mpreferences.ok();

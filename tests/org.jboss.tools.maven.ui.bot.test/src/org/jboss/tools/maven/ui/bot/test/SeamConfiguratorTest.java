@@ -19,8 +19,8 @@ import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.tools.maven.ui.bot.test.dialog.maven.JBossMavenIntegrationDialog;
-import org.jboss.tools.maven.ui.bot.test.dialog.maven.MavenRepositoriesDialog;
+import org.jboss.tools.maven.reddeer.preferences.ConfiguratorPreferencePage;
+import org.jboss.tools.maven.reddeer.wizards.ConfigureMavenRepositoriesWizard;
 import org.jboss.tools.maven.ui.bot.test.dialog.seam.SeamPreferencePage;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -43,9 +43,9 @@ public class SeamConfiguratorTest extends AbstractConfiguratorsTest{
 		sp.addRuntime(SeamProjectTest.SEAM_2_2_NAME, SeamProjectTest.SEAM_2_2, "2.2");
 		sp.addRuntime(SeamProjectTest.SEAM_2_3_NAME, SeamProjectTest.SEAM_2_3, "2.3");
 		sp.ok();
-		JBossMavenIntegrationDialog jm = new JBossMavenIntegrationDialog();
+		ConfiguratorPreferencePage jm = new ConfiguratorPreferencePage();
 		jm.open();
-		MavenRepositoriesDialog mr = jm.modifyRepositories();
+		ConfigureMavenRepositoriesWizard mr = jm.configureRepositories();
 		mr.chooseRepositoryFromList(MavenRepositories.JBOSS_REPO,true);
 		mr.confirm();
 		jm.apply();
@@ -60,9 +60,9 @@ public class SeamConfiguratorTest extends AbstractConfiguratorsTest{
 	
 	@AfterClass
 	public static void cleanRepo(){
-		JBossMavenIntegrationDialog jm = new JBossMavenIntegrationDialog();
+		ConfiguratorPreferencePage jm = new ConfiguratorPreferencePage();
 		jm.open();
-		MavenRepositoriesDialog mr = jm.modifyRepositories();
+		ConfigureMavenRepositoriesWizard mr = jm.configureRepositories();
 		boolean deleted = mr.removeAllRepos();
 		if(deleted){
 			mr.confirm();

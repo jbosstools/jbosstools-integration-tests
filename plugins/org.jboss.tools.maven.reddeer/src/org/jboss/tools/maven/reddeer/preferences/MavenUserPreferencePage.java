@@ -1,4 +1,4 @@
-package org.jboss.tools.maven.ui.bot.test.dialog.maven;
+package org.jboss.tools.maven.reddeer.preferences;
 
 import org.jboss.reddeer.eclipse.jface.preference.PreferencePage;
 import org.jboss.reddeer.swt.api.Button;
@@ -10,9 +10,9 @@ import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 
-public class MavenUserPreferencesDialog extends PreferencePage{
+public class MavenUserPreferencePage extends PreferencePage{
 	
-	public MavenUserPreferencesDialog(){
+	public MavenUserPreferencePage(){
 		super("Maven","User Settings");
 	}
 	

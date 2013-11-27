@@ -44,10 +44,9 @@ Require-Bundle: org.eclipse.ui,
  org.jboss.reddeer.eclipse,
  org.jboss.reddeer.swt,
  org.jboss.reddeer.uiforms,
- org.eclipse.swtbot.swt.finder
+ org.eclipse.swtbot.swt.finder,
+ org.jboss.tools.maven.reddeer
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Eclipse-BundleShape: jar
-Bundle-Localization: plugin
 Bundle-Vendor: JBoss by Red Hat
-
+Export-Package: org.jboss.tools.maven.ui.bot.test.dialog

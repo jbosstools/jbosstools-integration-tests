@@ -19,10 +19,11 @@ import java.util.List;
 
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
-import org.jboss.tools.maven.ui.bot.test.dialog.maven.ImportMavenProjectWizard;
-import org.jboss.tools.maven.ui.bot.test.dialog.maven.JBossMavenIntegrationDialog;
-import org.jboss.tools.maven.ui.bot.test.dialog.maven.MavenProfilesDialog;
-import org.jboss.tools.maven.ui.bot.test.dialog.maven.MavenRepositoriesDialog;
+import org.jboss.tools.maven.reddeer.preferences.ConfiguratorPreferencePage;
+import org.jboss.tools.maven.reddeer.profiles.SelectProfilesDialog;
+import org.jboss.tools.maven.reddeer.wizards.ConfigureMavenRepositoriesWizard;
+import org.jboss.tools.maven.reddeer.wizards.MavenImportWizard;
+import org.jboss.tools.maven.reddeer.wizards.MavenImportWizardFirstPage;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -44,9 +45,9 @@ public class MavenProfilesTest extends AbstractMavenSWTBotTest {
 	@BeforeClass
 	public static void setup() throws IOException {
 		setPerspective("Java");
-		JBossMavenIntegrationDialog jm = new JBossMavenIntegrationDialog();
+		ConfiguratorPreferencePage jm = new ConfiguratorPreferencePage();
 		jm.open();
-		MavenRepositoriesDialog mr = jm.modifyRepositories();
+		ConfigureMavenRepositoriesWizard mr = jm.configureRepositories();
 		boolean deleted = mr.removeAllRepos();
 		if(deleted){
 			mr.confirm();
@@ -69,7 +70,7 @@ public class MavenProfilesTest extends AbstractMavenSWTBotTest {
 		PackageExplorer pe = new PackageExplorer();
 		pe.open();
 		for(Project p: pe.getProjects()){
-			MavenProfilesDialog mp = new MavenProfilesDialog(p.getName());
+			SelectProfilesDialog mp = new SelectProfilesDialog(p.getName());
 			mp.open();
 			mp.deselectAllProfiles();
 			mp.ok();
@@ -78,7 +79,7 @@ public class MavenProfilesTest extends AbstractMavenSWTBotTest {
 	
 	@Test
 	public void testAutoActivatedProfiles() throws IOException{
-		MavenProfilesDialog mp = new MavenProfilesDialog("simple-jar");
+		SelectProfilesDialog mp = new SelectProfilesDialog("simple-jar");
 		mp.open();
 		List<String> profiles = mp.getAllProfiles();
 		for(String p: profiles){
@@ -93,7 +94,7 @@ public class MavenProfilesTest extends AbstractMavenSWTBotTest {
 	}
 	@Test
 	public void activateAllProfiles() throws IOException{
-		MavenProfilesDialog mp = new MavenProfilesDialog("simple-jar");
+		SelectProfilesDialog mp = new SelectProfilesDialog("simple-jar");
 		mp.open();
 		mp.activateAllProfiles();
 		String profilesText = mp.getActiveProfilesText();
@@ -111,7 +112,7 @@ public class MavenProfilesTest extends AbstractMavenSWTBotTest {
 	}
 	@Test
 	public void activateProfile() throws IOException{
-		MavenProfilesDialog mp = new MavenProfilesDialog("simple-jar");
+		SelectProfilesDialog mp = new SelectProfilesDialog("simple-jar");
 		mp.open();
 		mp.activateProfile(SIMPLE_JAR_ALL_PROFILES[0]);
 		String profilesText = mp.getActiveProfilesText();
@@ -125,7 +126,7 @@ public class MavenProfilesTest extends AbstractMavenSWTBotTest {
 	
 	@Test
 	public void deactivateProfile() throws IOException{
-		MavenProfilesDialog mp = new MavenProfilesDialog("simple-jar");
+		SelectProfilesDialog mp = new SelectProfilesDialog("simple-jar");
 		mp.open();
 		mp.deactivateProfile(AUTOACTIVATED_PROFILE_IN_POM);
 		String profilesText = mp.getActiveProfilesText();
@@ -139,8 +140,8 @@ public class MavenProfilesTest extends AbstractMavenSWTBotTest {
 	}
 	
 	private static void importMavenProject(String pomPath) throws IOException{
-		ImportMavenProjectWizard importWizard = new ImportMavenProjectWizard();
+		MavenImportWizard importWizard = new MavenImportWizard();
 		importWizard.open();
-		importWizard.importProject((new File(pomPath)).getParentFile().getCanonicalPath());
+		((MavenImportWizardFirstPage)importWizard.getFirstPage()).importProject((new File(pomPath)).getParentFile().getCanonicalPath());
 	}
 }
