@@ -35,7 +35,7 @@
 		<module>org.jboss.tools.maven.ui.bot.test</module>
 		<module>org.jboss.tools.mylyn.ui.bot.test</module>
 		<module>org.jboss.tools.openshift.ui.bot.test</module>
-		<!-- <module>org.jboss.tools.portlet.ui.bot.test</module> JBIDE-13324 -->
+		<module>org.jboss.tools.portlet.ui.bot.test</module>
 		<module>org.jboss.tools.runtime.as.ui.bot.test</module>
 		<module>org.jboss.tools.seam.ui.bot.test</module>
 		<module>org.jboss.tools.ui.bot.ext.test</module>
