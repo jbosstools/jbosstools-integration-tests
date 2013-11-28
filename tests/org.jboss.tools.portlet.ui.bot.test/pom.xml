@@ -36,6 +36,10 @@
 			<url>http://download.eclipse.org/technology/swtbot/snapshots</url>
 			<layout>p2</layout>
 		</repository>
+		<repository>
+			<id>jbosstools-experiments</id>
+			<url>https://repository.jboss.org/nexus/content/repositories/jbosstools-experiments/</url>
+		</repository>
 	</repositories>
 
 	<build>
