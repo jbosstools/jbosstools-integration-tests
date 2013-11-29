@@ -8,17 +8,16 @@
  * Contributors:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.aerogear.ui.bot.test.app;
+package org.jboss.tools.aerogear.ui.bot.test;
 
-import org.jboss.tools.aerogear.ui.bot.test.AerogearBotTest;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
-import org.junit.Test;
+import org.jboss.tools.aerogear.ui.bot.test.app.RunOnAndroid;
+import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite.SuiteClasses;
 
-@Require(clearWorkspace = true)
-public class CreateHybridApplication extends AerogearBotTest {
-	@Test
-	public void canCreateHTMLHybridApplication() {
-    // Project is created within setup method
-		assertTrue(projectExplorer.existsResource(CORDOVA_PROJECT_NAME));
-	}
+@SuiteClasses({ 
+	RunOnAndroid.class })
+@RunWith(RequirementAwareSuite.class)
+public class AerogearNonMvnReadyBotTests {
+
 }

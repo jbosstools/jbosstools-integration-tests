@@ -10596,7 +10596,31 @@ public static String getItemString(IActionItem item) {
         }
       };
       }
-		}
+    public static class Android {
+      /**
+      * represents item : Android
+      */
+      public static final IPreference LABEL = new IPreference() {
+        public String getName() { return "Android";}
+        public List<String> getGroupPath() {
+          List<String> l = new Vector<String>();
+          return l;
+        }
+      };
+    }
+    public static class HybridMobile {
+      /**
+      * represents item : Hybrid Mobile
+      */
+      public static final IPreference LABEL = new IPreference() {
+        public String getName() { return "Hybrid Mobile";}
+        public List<String> getGroupPath() {
+          List<String> l = new Vector<String>();
+          return l;
+        }
+      };
+    }
+  }
 
 	public static class ServerRuntime {
 		public static class OracleOracleOC4JStandalone1013 {
@@ -11156,6 +11180,5 @@ public static String getItemString(IActionItem item) {
 				}
 			};
 			}
-
 		}
 }
