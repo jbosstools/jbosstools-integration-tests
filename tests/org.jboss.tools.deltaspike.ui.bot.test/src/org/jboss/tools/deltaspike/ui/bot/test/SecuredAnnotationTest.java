@@ -11,6 +11,7 @@
 
 package org.jboss.tools.deltaspike.ui.bot.test;
 
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.swt.regex.Regex;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
@@ -39,7 +40,7 @@ public class SecuredAnnotationTest extends DeltaspikeTestBase {
 	
 	@After
 	public void closeAllEditors() {
-	//	Bot.get().closeAllEditors();
+		new SWTWorkbenchBot().closeAllEditors();
 		projectExplorer.deleteAllProjects();
 	}
 	

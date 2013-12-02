@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Deltaspike bot tests
+Bundle-Name: Deltaspike UI Bot Tests
 Bundle-SymbolicName: org.jboss.tools.deltaspike.ui.bot.test
 Bundle-Version: 4.1.0.qualifier
 Bundle-Activator: org.jboss.tools.deltaspike.ui.bot.test.Activator
@@ -24,5 +24,6 @@ Require-Bundle: org.eclipse.core.runtime,
  org.jboss.reddeer.junit
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-
-
+Eclipse-BundleShape: jar
+Bundle-Localization: plugin
+Bundle-Vendor: JBoss by Red Hat

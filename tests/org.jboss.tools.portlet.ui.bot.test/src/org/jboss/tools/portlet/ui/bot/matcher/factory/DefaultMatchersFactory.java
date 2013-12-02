@@ -2,6 +2,7 @@ package org.jboss.tools.portlet.ui.bot.matcher.factory;
 
 import org.jboss.tools.portlet.ui.bot.matcher.SWTMatcher;
 import org.jboss.tools.portlet.ui.bot.matcher.console.ConsoleOutputMatcher;
+import org.jboss.tools.portlet.ui.bot.matcher.console.ErrorInConsoleOutputMatcher;
 import org.jboss.tools.portlet.ui.bot.matcher.console.ExceptionInConsoleOutputMatcher;
 import org.jboss.tools.portlet.ui.bot.matcher.problems.NumberOfErrorsMatcher;
 
@@ -28,5 +29,9 @@ public class DefaultMatchersFactory {
 	
 	public static SWTMatcher<Void> exceptionInConsoleOutput(){
 		return new ExceptionInConsoleOutputMatcher();
+	}
+
+	public static SWTMatcher<Void> errorInConsoleOutput(){
+		return new ErrorInConsoleOutputMatcher();
 	}
 }

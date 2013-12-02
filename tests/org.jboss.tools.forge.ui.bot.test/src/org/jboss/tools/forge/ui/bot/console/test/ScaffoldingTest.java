@@ -35,7 +35,7 @@ public class ScaffoldingTest extends ForgeConsoleTestBase {
 		getStyledText().setText("\n"); //subdirectory of web-root
 		
 		bot.sleep(TIME_5S);
-		util.waitForNonIgnoredJobs();
+		util.waitForNonIgnoredJobs(WAIT_FOR_NON_IGNORED_JOBS_TIMEOUT);
 		
 		cdWS();
 		clear();

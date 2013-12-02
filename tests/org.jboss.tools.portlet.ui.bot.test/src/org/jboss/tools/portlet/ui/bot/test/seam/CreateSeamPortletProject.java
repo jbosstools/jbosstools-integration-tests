@@ -68,14 +68,7 @@ public class CreateSeamPortletProject extends CreatePortletProjectTemplate{
 		dialog.next();
 		new DefaultCombo("Type:").setSelection(JBossJSFPortletCapabilitiesWizardPageFillingTask.Type.RUNTIME_PROVIDER.toString());
 		
-		// new DefaultText("Portletbridge Runtime") does not work (WidgetNotFoundException)
-		try{
-			Group portletbridgeRuntimeGroup = new DefaultGroup("Portletbridge Runtime");
-			Text textFromGroup = new DefaultText(portletbridgeRuntimeGroup);
-			textFromGroup.setText(TestConfigurator.currentConfig.getPortletBridge().getLocation());
-		} catch (WidgetNotFoundException e) {
-			// ok, the portlet bridge is recognized in the server location
-		}
+		processWizardPageJSFPortletCapabilities();
 	}
 
 	@Override

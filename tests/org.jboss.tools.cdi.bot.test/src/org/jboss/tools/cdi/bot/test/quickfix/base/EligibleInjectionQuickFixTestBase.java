@@ -11,7 +11,7 @@
 
 package org.jboss.tools.cdi.bot.test.quickfix.base;
 
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
 import org.jboss.tools.cdi.bot.test.annotations.ValidationType;
 import org.jboss.tools.cdi.bot.test.quickfix.injection.QualifierOperation;
@@ -40,7 +40,7 @@ public class EligibleInjectionQuickFixTestBase extends CDITestBase {
 	public void resolveMultipleBeans(ValidationType validationType, String classToQualify, 
 			String qualifier, QualifierOperation operation) {
 		
-		SWTBotTreeItem validationProblem = quickFixHelper.getProblem(
+		TreeItem validationProblem = quickFixHelper.getProblem(
 				validationType, getProjectName(), validationProvider());		
 		assertNotNull(validationProblem);
 		

@@ -11,7 +11,11 @@
 
 package org.jboss.tools.cdi.bot.test.quickfix.base;
 
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import java.util.List;
+
+import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
+import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
 import org.jboss.tools.cdi.bot.test.annotations.CDIWizardType;
 import org.jboss.tools.cdi.bot.test.annotations.ValidationType;
@@ -19,7 +23,6 @@ import org.jboss.tools.cdi.bot.test.quickfix.validators.BeansXmlValidationProvid
 import org.jboss.tools.cdi.bot.test.quickfix.validators.IValidationProvider;
 import org.jboss.tools.cdi.bot.test.uiutils.wizards.CDIWizardBase;
 import org.jboss.tools.cdi.bot.test.uiutils.wizards.QuickFixDialogWizard;
-import org.jboss.tools.ui.bot.ext.view.ProblemsView;
 
 public class BeansXMLQuickFixTestBase extends CDITestBase {
 
@@ -34,8 +37,22 @@ public class BeansXMLQuickFixTestBase extends CDITestBase {
 	 * @return
 	 */
 	public boolean isBeanXMLValidationErrorEmpty() {
-		return ProblemsView.getFilteredErrorsTreeItems(bot, null, "/" + getProjectName(), 
-				"beans.xml", "CDI Problem").length == 0;
+		ProblemsView pv = new ProblemsView();
+		pv.open();
+		AbstractWait.sleep(5000); //time for problems view to refresh
+		List<TreeItem> errors = pv.getAllErrors();
+		boolean toReturn = true;
+		for(TreeItem error: errors){
+			if(error.getCell(2).contains("/"+getProjectName()) &&
+				error.getCell(1).contains("beans.xml") &&
+				error.getCell(4).contains("CDI Problem")) {
+				toReturn = false;
+			}
+ 		}
+		return toReturn;
+		
+		//return ProblemsView.getFilteredErrorsTreeItems(bot, null, "/" + getProjectName(), 
+		//		"beans.xml", "CDI Problem").length == 0;
 	}
 	
 	/**
@@ -154,7 +171,7 @@ public class BeansXMLQuickFixTestBase extends CDITestBase {
 	 */
 	private void openBeanXMLValidationProblem(ValidationType validationProblemType, String projectName) {
 		
-		SWTBotTreeItem validationProblem = quickFixHelper.getProblem(validationProblemType, 
+		TreeItem validationProblem = quickFixHelper.getProblem(validationProblemType, 
 				projectName, validationProvider);		
 		assertNotNull(validationProblem);
 		

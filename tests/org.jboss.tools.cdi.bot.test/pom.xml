@@ -3,15 +3,13 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-                <groupId>org.jboss.tools.integration-tests</groupId>
+        <groupId>org.jboss.tools.integration-tests</groupId>
 		<artifactId>tests</artifactId>
 		<version>4.1.0-SNAPSHOT</version>
 	</parent>
 	<groupId>org.jboss.tools.cdi.tests</groupId>
 	<artifactId>org.jboss.tools.cdi.bot.test</artifactId>
-	<version>4.1.0-SNAPSHOT</version>
 
-	<packaging>eclipse-test-plugin</packaging>
 	<properties>
 		<systemProperties>${integrationTestsSystemProperties} -Dswtbot.test.properties.file=${project.basedir}/properties/swtbot.properties</systemProperties>
 		<surefire.timeout>10800</surefire.timeout>
@@ -46,7 +44,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
-				<version>2.4</version>
 				<executions>
 					<execution>
 						<id>unpack</id>

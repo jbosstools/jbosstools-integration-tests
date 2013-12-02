@@ -32,14 +32,15 @@ public class BrowserUrlMatcher extends AbstractSWTMatcher<String[]> {
 			
 			@Override
 			public boolean test() {
-				return Arrays.asList(acceptedURL).contains(browser.getPageURL());
+				realURL = browser.getPageURL();
+				return Arrays.asList(acceptedURL).contains(realURL);
 			}
 			
 			@Override
 			public String description() {
 				return acceptedURL + "are the only allowed loaded URLs but it was:" + realURL;
 			}
-		},TimePeriod.NORMAL);
+		}, TimePeriod.NORMAL);
 		
 		return true;
 	}
@@ -48,6 +49,4 @@ public class BrowserUrlMatcher extends AbstractSWTMatcher<String[]> {
 	public void describeTo(Description arg0) {
 		// TODO Auto-generated method stub
 	}
-
-
 }

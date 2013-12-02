@@ -16,12 +16,10 @@ import java.util.List;
 
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.hamcrest.core.Is;
+import org.jboss.reddeer.eclipse.ui.views.log.LogMessage;
 import org.jboss.reddeer.eclipse.ui.views.log.LogView;
-import org.jboss.reddeer.swt.api.Tree;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.tree.DefaultTree;
-import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.tools.archives.reddeer.archives.ui.NewJarDialog;
 import org.jboss.tools.archives.reddeer.component.ArchiveProject;
 import org.junit.BeforeClass;
@@ -91,24 +89,21 @@ public class ArchivesErrorDialogTest extends ArchivesTestBase {
 	
 	private void assertBuildingArchiveErrorExists(String location, String archive) {
 		
-		LogView logView = new LogView();
-		logView.open();
-		
-		Tree messages = new DefaultTree();
-		TreeItem buildingError = null;
-		for(TreeItem i: messages.getAllItems()){
-			if (i.getCell(1).contains("org.jboss.ide.eclipse.archives") && 
-					i.getText().equals("An error occurred while building project archives")){
-				buildingError = i;
+		LogView errorLog = new LogView();
+		errorLog.open();
+		List<LogMessage> buildingError = null; 
+		for (LogMessage msg : errorLog.getErrorMessages()) {
+			String pluginId = msg.getPlugin();
+			if (pluginId.contains("org.jboss.ide.eclipse.archives") && 
+				msg.getMessage().equals("An error occurred while building project archives")) {
+				buildingError = msg.getSubLogMessages();
 			}
 		}
 		
 		assertNotNull("No building archive error was found in error log", buildingError);
 		
-		buildingError.expand();
-		List<TreeItem> subErrorMessages = buildingError.getItems();
-		assertThat(subErrorMessages.size(), Is.is(1));
-		assertThat(subErrorMessages.get(0).getText(), Is.is("Error creating output file " 
+		assertThat(buildingError.size(), Is.is(1));
+		assertThat(buildingError.get(0).getMessage(), Is.is("Error creating output file " 
 				+ location + " for node " + archive));
 		
 	}

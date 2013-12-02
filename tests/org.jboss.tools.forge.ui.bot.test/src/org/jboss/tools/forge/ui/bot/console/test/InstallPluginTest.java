@@ -8,10 +8,6 @@ import org.junit.Test;
 @Require(clearWorkspace=true)
 public class InstallPluginTest extends ForgeConsoleTestBase {
 
-	private void prepare(){
-		cdWS();
-		clear();
-	}
 	
 	@Test
 	public void installJBossAS7Test(){
@@ -19,9 +15,8 @@ public class InstallPluginTest extends ForgeConsoleTestBase {
 		final String ASSERT_TEXT =  "***SUCCESS*** Installed from " + 
 									"[https://github.com/forge/plugin-jboss-as.git] " + 
 									"successfully.";
-		prepare();
 		installPlugin("jboss-as-7");
-		assertTrue(ConsoleUtils.waitUntilTextInConsole(ASSERT_TEXT, TIME_1S, TIME_20S*3));
+		assertTrue(ConsoleUtils.waitUntilTextInConsole(ASSERT_TEXT, TIME_1S, TIME_60S*10));
 	}
 	
 	@Test
@@ -30,10 +25,9 @@ public class InstallPluginTest extends ForgeConsoleTestBase {
 		final String ASSERT_TEXT =  "***SUCCESS*** Installed from " + 
 									"[https://github.com/forge/plugin-hibernate-tools.git] " + 
 									"successfully.";
-		
-		prepare();
+
 		installPlugin("hibernate-tools");
-		assertTrue(ConsoleUtils.waitUntilTextInConsole(ASSERT_TEXT, TIME_1S, TIME_20S*3));
+		assertTrue(ConsoleUtils.waitUntilTextInConsole(ASSERT_TEXT, TIME_1S, TIME_60S*10));
 	}		
 	
 	

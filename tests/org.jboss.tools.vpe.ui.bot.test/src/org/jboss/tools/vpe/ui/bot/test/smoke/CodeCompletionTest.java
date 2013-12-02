@@ -71,7 +71,7 @@ public class CodeCompletionTest extends VPEEditorTestCase{
         textForSelection, 
         textForSelection.length(), 
         0, 
-        getJspPageProposalList(),
+        CodeCompletionTest.getJspPageProposalList(),
         false);
     // Check content assist insertion    
     String contentAssistToUse = "h:commandButton"; 
@@ -94,7 +94,7 @@ public class CodeCompletionTest extends VPEEditorTestCase{
         textForSelection, 
         expectedInsertedText.indexOf("action=\"") + 8, 
         0, 
-        getCommandButtonActionAttrProposalList(),
+        CodeCompletionTest.getCommandButtonActionAttrProposalList(),
         false);
     // Check content assist for value attribute of <h:commandButton> tag
     ContentAssistHelper.checkContentAssistContent(SWTTestExt.bot, 
@@ -102,7 +102,7 @@ public class CodeCompletionTest extends VPEEditorTestCase{
         textForSelection, 
         expectedInsertedText.indexOf("value=\"") + 7, 
         0, 
-        getCommandButtonValueAttrProposalList());
+        CodeCompletionTest.getCommandButtonValueAttrProposalList());
   }
   
   /**
@@ -127,18 +127,10 @@ public class CodeCompletionTest extends VPEEditorTestCase{
         tagToSelect.length(),
         0,
         0);
-    List<String> proposals = htmlEditor.contentAssist().getProposalList();
-    StringBuffer sbMissingProposals = new StringBuffer("");
-    for (String expectedItem : getHTML5ProposalList()){
-      if (!proposals.contains(expectedItem)){
-        if (sbMissingProposals.length() != 0){
-          sbMissingProposals.append(",");
-        }
-        sbMissingProposals.append(expectedItem);
-      }
-    }
-    assertTrue("There are missing Code Assist proposals for these HTML 5 tags: " + sbMissingProposals.toString(),
-        sbMissingProposals.length() == 0 );
+    String missingProposalsString = CodeCompletionTest.getMisingProposalsString(htmlEditor.contentAssist().getProposalList(),
+        CodeCompletionTest.getHTML5ProposalList());
+    assertTrue("There are missing Code Assist proposals for these HTML 5 tags: " + missingProposalsString.toString(),
+        missingProposalsString.length() == 0 );
   }
   /**
    * Tests Code Completion for RichFaces tags
@@ -165,19 +157,69 @@ public class CodeCompletionTest extends VPEEditorTestCase{
         tagToSelect.length(),
         0,
         0);
-    List<String> proposals = xhtmlEditor.contentAssist().getProposalList();
-    StringBuffer sbMissingProposals = new StringBuffer("");
-    for (String expectedItem : getRichFacesProposalList()){
-      if (!proposals.contains(expectedItem)){
-        if (sbMissingProposals.length() != 0){
-          sbMissingProposals.append(",");
-        }
-        sbMissingProposals.append(expectedItem);
-      }
-    }
-    assertTrue("There are missing Code Assist proposals for these HTML 5 tags: " + sbMissingProposals.toString(),
-        sbMissingProposals.length() == 0 );
+    String missingProposalsString = CodeCompletionTest.getMisingProposalsString(xhtmlEditor.contentAssist().getProposalList(),
+        CodeCompletionTest.getRichFacesProposalList());
+    assertTrue("There are missing Code Assist proposals for these HTML 5 tags: " + missingProposalsString.toString(),
+        missingProposalsString.length() == 0 );
 
+  }
+  /**
+   * Tests Code Completion for AngularJS tags
+   */
+  public void testCodeCompletionOfAngularJSTags(){
+    createHtmlPage(CodeCompletionTest.HTML_PAGE_NAME);
+    SWTBotExt botExt = new SWTBotExt();
+    SWTBotEditorExt htmlEditor = botExt.swtBotEditorExtByTitle(CodeCompletionTest.HTML_PAGE_NAME);
+    htmlEditor.setText("<!DOCTYPE html>\n" +
+        "<html>\n" +
+        "  <head>\n" +
+        "  </head>\n" +
+        "  <body ng->\n" +
+        "    <input type=\"checkbox\" ng-model=\"checked\" class=\"\"></input>\n" +
+        "  </body>\n" +
+        "</html>");
+    htmlEditor.save();
+    bot.sleep(Timing.time2S());
+    final String tagToSelect = "<body ng-";
+    SWTJBTExt.selectTextInSourcePane(botExt,
+        CodeCompletionTest.HTML_PAGE_NAME,
+        tagToSelect,
+        tagToSelect.length(),
+        0,
+        0);
+    ContentAssistBot contentAssist = htmlEditor.contentAssist();
+    String missingProposalsString = CodeCompletionTest.getMisingProposalsString(contentAssist.getProposalList(),
+      CodeCompletionTest.getAngularJSAttributesProposalList());
+    assertTrue("There are missing Code Assist proposals for these AngularJS attributes: " + missingProposalsString,
+        missingProposalsString.length() == 0 );
+    // Check content assist insertion    
+    String contentAssistToUse = "ng-bind"; 
+    contentAssist.checkContentAssist(contentAssistToUse, true);
+    // close Content Assist window which is automatically opened after previous
+    // Content Assist choice were applied
+    KeyboardHelper.pressKeyCode(htmlEditor.bot().getDisplay(), KeyEvent.VK_ESCAPE);
+    bot.sleep(Timing.time3S());
+    htmlEditor.save();
+    String expectedInsertedText = "<body " + contentAssistToUse + "=\"\">";
+    assertTrue("Editor has to contain text '" + expectedInsertedText + "' but it doesn't\n" +
+        "Editor Text is\n" + htmlEditor.getText(),
+      htmlEditor.getText().contains(expectedInsertedText));
+    // check ng-bing attribute value proposal list
+    missingProposalsString = CodeCompletionTest.getMisingProposalsString(contentAssist.getProposalList(),
+        CodeCompletionTest.getNgBindAttrValueProposalList());
+    assertTrue("There are missing Code Assist proposals for class attribute: " + missingProposalsString,
+          missingProposalsString.length() == 0 );
+    // check class attribute value proposal list
+    SWTJBTExt.selectTextInSourcePane(botExt,
+        CodeCompletionTest.HTML_PAGE_NAME,
+        "class=\"\"",
+        7,
+        0,
+        0);
+    missingProposalsString = CodeCompletionTest.getMisingProposalsString(contentAssist.getProposalList(),
+        CodeCompletionTest.getAngularJSClassAttributeValueProposalList());
+    assertTrue("There are missing Code Assist proposals for class attribute: " + missingProposalsString,
+          missingProposalsString.length() == 0 );
   }
   /**
    * Returns list of expected Content Assist proposals for jsp page within <f:view> tag
@@ -330,5 +372,91 @@ public class CodeCompletionTest extends VPEEditorTestCase{
     result.add("rich:inplaceSelect");
     result.add("rich:select");
     return result;
+  }
+  
+  /**
+   * Returns list of AngularJS attributes which should be in Code Assist proposals 
+   * @return
+   */
+  private static List<String> getAngularJSAttributesProposalList() {
+    List<String> result = new LinkedList<String>();
+    result.add("ng-app");
+    result.add("ng-bind");
+    result.add("ng-bind-html"); 
+    result.add("ng-bind-template"); 
+    result.add("ng-class"); 
+    result.add("ng-class-even"); 
+    result.add("ng-class-odd"); 
+    result.add("ng-click"); 
+    result.add("ng-cloak"); 
+    result.add("ng-controller"); 
+    result.add("ng-dblclick"); 
+    result.add("ng-form"); 
+    result.add("ng-hide"); 
+    result.add("ng-if"); 
+    result.add("ng-include"); 
+    result.add("ng-init"); 
+    result.add("ng-keydown"); 
+    result.add("ng-keypress"); 
+    result.add("ng-keyup"); 
+    result.add("ng-mousedown"); 
+    result.add("ng-mouseenter"); 
+    result.add("ng-mouseleave"); 
+    result.add("ng-mousemove"); 
+    result.add("ng-mouseover"); 
+    result.add("ng-mouseup"); 
+    result.add("ng-non-bindable"); 
+    result.add("ng-pluralize"); 
+    result.add("ng-repeat"); 
+    result.add("ng-repeat-end"); 
+    result.add("ng-repeat-start"); 
+    result.add("ng-selected"); 
+    result.add("ng-show"); 
+    result.add("ng-style"); 
+    result.add("ng-switch"); 
+    result.add("ng-transclude");
+    return result;
+  }
+  
+  /**
+   * Returns list of AngularJS class Code Assist proposals 
+   * @return
+   */
+  private static List<String> getAngularJSClassAttributeValueProposalList() {
+    List<String> result = new LinkedList<String>();
+    result.add("ng-bind: {};");
+    result.add("ng-class-even: {};");
+    result.add("ng-class-odd: {};");
+    result.add("ng-class: {};");
+    result.add("ng-cloak");
+    result.add("ng-form");
+    result.add("ng-include: {};");
+    result.add("ng-init: {};");
+    result.add("ng-style: {};");
+    result.add("ng-transclude: {};"); 
+    return result;
+  }
+  
+  /**
+   * Returns list of expected Content Assist proposals for value of attribute ng-bind
+   * @return
+   */
+  private static List<String> getNgBindAttrValueProposalList(){
+    LinkedList<String> result = new LinkedList<String>();
+    result.add("user : User");
+    return result;
+  }
+  
+  private static String getMisingProposalsString (List<String> currentProposals , List<String> expectedProposals){
+    StringBuffer sbMissingProposals = new StringBuffer("");
+    for (String expectedItem : expectedProposals){
+      if (!currentProposals.contains(expectedItem)){
+        if (sbMissingProposals.length() != 0){
+          sbMissingProposals.append(",");
+        }
+        sbMissingProposals.append(expectedItem);
+      }
+    }
+    return sbMissingProposals.toString();
   }
 }

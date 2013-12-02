@@ -19,12 +19,12 @@ public class CreateWildfly8Server extends CreateServerTemplate {
 	@Override
 	protected void assertEditorPorts() {
 		assertThat("8080", is(editor.getWebPort()));
-		assertThat("9999", is(editor.getManagementPort()));		
+		assertThat("9990", is(editor.getManagementPort()));		
 	}
 
 	@Override
 	protected void assertViewPorts(List<XMLConfiguration> configurations) {
-		assertThat(configurations, hasItem(new XMLConfiguration("JBoss Management", "${jboss.management.native.port:9999}")));
+		assertThat(configurations, hasItem(new XMLConfiguration("JBoss Management", "${jboss.management.http.port:9990}")));
 		assertThat(configurations, hasItem(new XMLConfiguration("JBoss Web", "${jboss.http.port:8080}")));
 		assertThat(configurations, hasItem(new XMLConfiguration("Port Offset", "${jboss.socket.binding.port-offset:0}")));
 	}

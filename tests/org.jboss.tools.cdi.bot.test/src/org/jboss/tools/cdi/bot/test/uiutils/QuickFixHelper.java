@@ -14,13 +14,12 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
+import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.tools.cdi.bot.test.annotations.ProblemsType;
 import org.jboss.tools.cdi.bot.test.annotations.ValidationType;
 import org.jboss.tools.cdi.bot.test.quickfix.validators.IValidationProvider;
@@ -28,15 +27,11 @@ import org.jboss.tools.cdi.bot.test.uiutils.wizards.OpenOnOptionsDialog;
 import org.jboss.tools.cdi.bot.test.uiutils.wizards.QuickFixDialogWizard;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
 import org.jboss.tools.ui.bot.ext.SWTBotFactory;
-import org.jboss.tools.ui.bot.ext.SWTEclipseExt;
 import org.jboss.tools.ui.bot.ext.SWTJBTExt;
 import org.jboss.tools.ui.bot.ext.SWTUtilExt;
 import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.condition.ShellIsActiveCondition;
-import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
-import org.jboss.tools.ui.bot.ext.types.ViewType;
-import org.jboss.tools.ui.bot.ext.view.ProblemsView;
 
 public class QuickFixHelper {
 	
@@ -60,7 +55,7 @@ public class QuickFixHelper {
 	 */
 	public void checkQuickFix(ValidationType validationType, String text, String projectName,
 			IValidationProvider validationProvider) {
-		SWTBotTreeItem validationProblem = getProblem(
+		TreeItem validationProblem = getProblem(
 				validationType, projectName, validationProvider);		
 		assertNotNull("Expected validation was not found in Problems View", validationProblem);
 		resolveQuickFix(validationProblem, text);
@@ -76,11 +71,10 @@ public class QuickFixHelper {
 	 * @param compType
 	 * @return
 	 */
-	public SWTBotTreeItem getProblem(ValidationType validationType, String projectName,
-			IValidationProvider validationProvider) {		
+	public TreeItem getProblem(ValidationType validationType, String projectName, IValidationProvider validationProvider) {		
 		IValidationProvider validationErrorsProvider = validationProvider;
 		List<String> validationProblems = null;
-		SWTBotTreeItem[] problemsInProblemsView = null;
+		List<TreeItem> problemsInProblemsView = null;
 		if (validationErrorsProvider.getAllWarningsAnnotation().contains(validationType)) {
 			validationProblems = validationErrorsProvider.getAllWarningForAnnotationType(validationType);
 			problemsInProblemsView = getProblems(ProblemsType.WARNINGS, projectName);
@@ -88,7 +82,7 @@ public class QuickFixHelper {
 			validationProblems = validationErrorsProvider.getAllErrorsForAnnotationType(validationType);
 			problemsInProblemsView = getProblems(ProblemsType.ERRORS, projectName);
 		}
-		for (SWTBotTreeItem ti: problemsInProblemsView) {
+		for (TreeItem ti: problemsInProblemsView) {
 			for (String validationProblem: validationProblems) {					
 				if (ti.getText().contains(validationProblem)) {										
 					return ti;
@@ -104,7 +98,7 @@ public class QuickFixHelper {
 	 * chooses first option and confirms it (resolve it)
 	 * @param ti
 	 */
-	private void resolveQuickFix(SWTBotTreeItem ti, String text) {
+	private void resolveQuickFix(TreeItem ti, String text) {
 		openQuickFix(ti);
 		
 		QuickFixDialogWizard qfWizard = new QuickFixDialogWizard();
@@ -155,13 +149,9 @@ public class QuickFixHelper {
 	 * Method open context menu for given tree item and opens Quick Fix option
 	 * @param item
 	 */
-	public void openQuickFix(SWTBotTreeItem item) {
-		SWTBotTree problemsTree = bot.viewByTitle(
-				ViewType.PROBLEMS.getViewLabel()).bot().tree();
-		ContextMenuHelper.prepareTreeItemForContextMenu(
-				problemsTree, item);
-		new SWTBotMenu(ContextMenuHelper.getContextMenu(problemsTree, 
-				IDELabel.Menu.QUICK_FIX, false)).click();
+	public void openQuickFix(TreeItem item) {
+		item.select();
+		new ContextMenu(IDELabel.Menu.QUICK_FIX).select();
 	}
 	
 	/**
@@ -169,52 +159,44 @@ public class QuickFixHelper {
 	 * @param problemType
 	 * @return array of problems of given type
 	 */
-	public SWTBotTreeItem[] getProblems(ProblemsType problemType, String projectName) {
-		SWTEclipseExt.showView(bot,ViewType.PROBLEMS);
+	public List<TreeItem> getProblems(ProblemsType problemType, String projectName) {
+		ProblemsView pv = new ProblemsView();
+		pv.open();
+		AbstractWait.sleep(5000); //wait for problems view to refresh
+		List<TreeItem> result = new ArrayList<TreeItem>();
 		if (problemType == ProblemsType.WARNINGS) {
-			SWTBotTreeItem[] projectRelatedProblemItems = ProblemsView.getFilteredWarningsTreeItems(
-					bot, null, null, projectName, "CDI Problem");
-			SWTBotTreeItem[] resourceRelatedProblemItems = ProblemsView.getFilteredWarningsTreeItems(
-					bot, null, "/" + projectName, null, null);
-			SWTBotTreeItem[] result = concatArrays(projectRelatedProblemItems, 
-					resourceRelatedProblemItems);
+			for(TreeItem warning: pv.getAllWarnings()){
+				if(warning.getCell(1).contains(projectName) && warning.getCell(4).equals("CDI Problem")){
+					result.add(warning);
+				} else if (warning.getCell(2).contains(projectName)){
+					result.add(warning);
+				}
+			}
 			return result;
 		} 
 		if (problemType == ProblemsType.ERRORS) {
-			SWTBotTreeItem[] projectRelatedErrors = ProblemsView.getFilteredErrorsTreeItems(
-					bot, null, null, projectName, "CDI Problem");;
-			SWTBotTreeItem[] resourceRelatedErrors = ProblemsView.getFilteredErrorsTreeItems(
-					bot, null, "/" + projectName, null, null);
-			SWTBotTreeItem[] result = concatArrays(projectRelatedErrors, resourceRelatedErrors);
+			for(TreeItem error: pv.getAllErrors()){
+				if(error.getCell(1).contains(projectName) && error.getCell(4).equals("CDI Problem")){
+					result.add(error);
+				} else if (error.getCell(2).contains(projectName)){
+					result.add(error);
+				}
+			}
 			return result;
 		}
 		return null;
 	}
 	
 	/**
-	 * Array concatenation
-	 * @param aArray
-	 * @param bArray
-	 * @return aArray `concat` bArray
-	 */
-	private static <T> T[] concatArrays(T[] aArray, T[] bArray) {
-		Collection<T> sum = new ArrayList<T>();
-		sum.addAll(Arrays.asList(aArray));
-		sum.addAll(Arrays.asList(bArray));
-		T[] result =  sum.toArray(aArray);
-		return result;
-	}
-	
-	/**
 	 * Method gets allProblems in problemsView as array of SWTBotTreeItem
 	 * @return
 	 */
-	public SWTBotTreeItem[] getAllProblems(String projectName) {
+	public  List<TreeItem> getAllProblems(String projectName) {
 		
-		SWTBotTreeItem[] warningProblemsTree = getProblems(ProblemsType.WARNINGS, projectName);
+		 final List<TreeItem> warningProblemsTree = getProblems(ProblemsType.WARNINGS, projectName);
 		
-		SWTBotTreeItem[] errorProblemsTree = getProblems(ProblemsType.ERRORS, projectName);
+		 final List<TreeItem> errorProblemsTree = getProblems(ProblemsType.ERRORS, projectName);
 		
-		return concatArrays(warningProblemsTree, errorProblemsTree);
+		 return new ArrayList<TreeItem>() { { addAll(warningProblemsTree); addAll(errorProblemsTree); } };
 	}
 }

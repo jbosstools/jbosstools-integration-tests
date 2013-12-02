@@ -11,6 +11,7 @@
 
 package org.jboss.tools.cdi.bot.test.beansxml;
 
+import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.tools.cdi.bot.test.CDIConstants;
 import org.jboss.tools.cdi.bot.test.annotations.CDIWizardType;
 import org.jboss.tools.cdi.bot.test.annotations.ValidationType;
@@ -32,7 +33,8 @@ public class BeansXMLValidationTest extends BeansXMLQuickFixTestBase {
 	
 	@BeforeClass
 	public static void setup() {
-		problems.show();		
+		ProblemsView problemsView = new ProblemsView();
+		problemsView.open();
 	}
 	
 	@Test
@@ -49,8 +51,8 @@ public class BeansXMLValidationTest extends BeansXMLQuickFixTestBase {
 		
 		String className = "I1";
 		
-		if (!projectExplorer.isFilePresent(getProjectName(),  
-				(CDIConstants.JAVA_RESOURCES_SRC_FOLDER + getPackageName() + 
+		if (!packageExplorer.isFilePresent(getProjectName(),  
+				(CDIConstants.SRC +"/"+ getPackageName() + 
 				"/" + someBean + ".java").split("/"))) {
 			wizard.createCDIComponent(CDIWizardType.BEAN, someBean, getPackageName(), null);
 		}
@@ -77,8 +79,8 @@ public class BeansXMLValidationTest extends BeansXMLQuickFixTestBase {
 		
 		String className = "D1";
 		
-		if (!projectExplorer.isFilePresent(getProjectName(),  
-				(CDIConstants.JAVA_RESOURCES_SRC_FOLDER + getPackageName() + 
+		if (!packageExplorer.isFilePresent(getProjectName(),  
+				(CDIConstants.SRC +"/"+ getPackageName() + 
 				"/" + someBean + ".java").split("/"))) {
 			wizard.createCDIComponent(CDIWizardType.BEAN, someBean, getPackageName(), null);
 		}
@@ -104,8 +106,8 @@ public class BeansXMLValidationTest extends BeansXMLQuickFixTestBase {
 		
 		String className = "A1";
 		
-		if (!projectExplorer.isFilePresent(getProjectName(),  
-				(CDIConstants.JAVA_RESOURCES_SRC_FOLDER + getPackageName() + 
+		if (!packageExplorer.isFilePresent(getProjectName(),  
+				(CDIConstants.SRC +"/"+ getPackageName() + 
 				"/" + someBean + ".java").split("/"))) {
 			wizard.createCDIComponent(CDIWizardType.BEAN, someBean, getPackageName(), null);
 		}

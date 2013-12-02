@@ -30,7 +30,6 @@ public class FolderIsInArchive implements WaitCondition {
 		this.folder = folder;
 	}
 
-	@Override
 	public boolean test() {
 		try {
 			archive.getArchive(folder);
@@ -40,7 +39,6 @@ public class FolderIsInArchive implements WaitCondition {
 		}
 	}
 
-	@Override
 	public String description() {
 		// TODO Auto-generated method stub
 		return null;

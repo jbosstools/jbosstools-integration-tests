@@ -30,7 +30,6 @@ public class FilesetIsInArchive implements WaitCondition {
 		this.fileset = fileset;
 	}
 
-	@Override
 	public boolean test() {
 		try {
 			archive.getFileset(fileset);
@@ -40,7 +39,6 @@ public class FilesetIsInArchive implements WaitCondition {
 		}
 	}
 
-	@Override
 	public String description() {
 		// TODO Auto-generated method stub
 		return null;

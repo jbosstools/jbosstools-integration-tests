@@ -1,13 +1,12 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: VPE UI SWTBot Tests
+Bundle-Name: VPE UI Bot Tests
 Bundle-SymbolicName: org.jboss.tools.vpe.ui.bot.test
 Bundle-Version: 4.1.0.qualifier
 Bundle-Activator: org.jboss.tools.vpe.ui.bot.test.Activator
-Bundle-Vendor: JBoss by Red Hat
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- org.jboss.tools.jst.ui.bot.test;bundle-version="1.0.0",
+ org.jboss.tools.jst.ui.bot;bundle-version="1.0.0",
  org.eclipse.swtbot.eclipse.core;bundle-version="2.0.0",
  org.eclipse.swtbot.eclipse.finder;bundle-version="2.0.0",
  org.eclipse.swtbot.swt.finder;bundle-version="2.0.0",
@@ -41,3 +40,5 @@ Export-Package: org.jboss.tools.vpe.ui.bot.test,
  org.jboss.tools.vpe.ui.bot.test.jbide,
  org.jboss.tools.vpe.ui.bot.test.tools
 Eclipse-BundleShape: jar
+Bundle-Localization: plugin
+Bundle-Vendor: JBoss by Red Hat

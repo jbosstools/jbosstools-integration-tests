@@ -31,7 +31,6 @@ public class ArchiveIsInView implements WaitCondition {
 		this.projectArchivesView = projectArchivesView;
 	}
 
-	@Override
 	public boolean test() {
 		try {
 			projectArchivesView.getProject().getArchive(archiveName);
@@ -41,7 +40,6 @@ public class ArchiveIsInView implements WaitCondition {
 		}
 	}
 
-	@Override
 	public String description() {
 		// TODO Auto-generated method stub
 		return null;

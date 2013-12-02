@@ -32,7 +32,7 @@ import org.junit.Test;
 public class ArchiveViewReSwitchingTest extends ArchivesTestBase {
 
 	private static String projectName = "prj";
-	private static LogView logView = new LogView();
+	private static LogView errorsView = new LogView();
 	private static ConsoleView consoleView = new ConsoleView();
 	private static ServersView serversView = new ServersView();
 	
@@ -41,8 +41,10 @@ public class ArchiveViewReSwitchingTest extends ArchivesTestBase {
 		
 		/* show all tested views */
 		consoleView.open();
+		
 		serversView.open();
-		logView.open();
+		
+		errorsView.open();
 		
 		/* create test project */
 		createJavaProject(projectName);
@@ -58,7 +60,7 @@ public class ArchiveViewReSwitchingTest extends ArchivesTestBase {
 		assertProjectInArchivesView(view, projectName);
 		
 		/* test reswitching Project Archives view with some other views */
-		reSwitchAndTestArchivesViewWithViews(consoleView, serversView, logView);
+		reSwitchAndTestArchivesViewWithViews(consoleView, serversView, errorsView);
 		
 	}
 	

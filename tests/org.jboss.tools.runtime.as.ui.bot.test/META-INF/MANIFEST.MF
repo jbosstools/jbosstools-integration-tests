@@ -1,11 +1,12 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Runtime Test
+Bundle-Name: AS Runtime UI Bot Tests
 Bundle-SymbolicName: org.jboss.tools.runtime.as.ui.bot.test;singleton:=true
 Bundle-Version: 4.1.0.qualifier
 Bundle-ActivationPolicy: lazy
-Bundle-Vendor: 
- JBoss by Red Hat
+Eclipse-BundleShape: jar
+Bundle-Localization: plugin
+Bundle-Vendor: JBoss by Red Hat
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,

@@ -47,7 +47,7 @@ public class DecoratorFromWebBeanTest extends CDITestBase {
 
 	@After
 	public void cleanUp() {
-		projectExplorer.deleteAllProjects();
+		packageExplorer.deleteAllProjects();
 	}
 	
 	@Test

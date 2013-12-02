@@ -1,6 +1,5 @@
 package org.jboss.tools.runtime.as.ui.bot.test;
 
-import org.jboss.tools.runtime.as.ui.bot.test.detector.RuntimeDownload;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.RuntimeDuplications;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.ServerWithSeam;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.seam.seam22.CheckSeam22;
@@ -21,6 +20,8 @@ import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap61.DetectEAP61;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap61.OperateEAP61;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap61x.DetectEAP61x;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap61x.OperateEAP61x;
+import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap62.DetectEAP62;
+import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap62.OperateEAP62;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.epp4.CheckEPP4Seam;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.epp4.DetectEPP4;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.epp4.OperateEPP4;
@@ -37,6 +38,7 @@ import org.jboss.tools.runtime.as.ui.bot.test.detector.server.soap53.standalone.
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.soap53.standalone.OperateSOAPStandalone53;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.wildfly8.DetectWildFly8;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.wildfly8.OperateWildFly8;
+import org.jboss.tools.runtime.as.ui.bot.test.download.RuntimeDownload;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
@@ -70,6 +72,9 @@ import org.junit.runners.Suite;
 		
 		DetectEAP61x.class,
 		OperateEAP61x.class,
+		
+		DetectEAP62.class,
+		OperateEAP62.class,
 		
 		DetectEAP52.class, 
 		CheckEAP52Seam.class,
