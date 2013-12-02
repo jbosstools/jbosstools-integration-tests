@@ -13,10 +13,13 @@ package org.jboss.tools.aerogear.ui.bot.test;
 import java.util.List;
 import java.util.Vector;
 
+import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.condition.NonSystemJobRunsCondition;
 import org.jboss.tools.ui.bot.ext.gen.INewObject;
+import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.ext.types.PerspectiveType;
 import org.junit.After;
 import org.junit.Before;
@@ -119,5 +122,34 @@ public class AerogearBotTest extends SWTTestExt {
   @After
   public void tearDown() {
     projectExplorer.deleteProject(AerogearBotTest.CORDOVA_PROJECT_NAME, true);
+  }
+  /**
+   * Sets LogCat Filter properties for projoectName via Run Configurations
+   * Currently just adds displaying debug messages to console
+   * and runs project on Android Emulator  
+   * @param projectName
+   */
+  public void setLogCatFilterPropsAndRun(String projectName){
+    bot.menu("Run").menu("Run Configurations...").click();
+    bot.shell("Run Configurations").activate();
+    SWTBotTreeItem tiAndroidEmulator = bot.tree().getTreeItem("Android Emulator");
+    tiAndroidEmulator.select();
+    tiAndroidEmulator.expand();
+    try{
+      tiAndroidEmulator.getNode(projectName).select();
+    } catch (WidgetNotFoundException wnfe){
+      bot.toolbarButtonWithTooltip("New launch configuration").click();
+      bot.textWithLabel("Name:").setText(projectName);
+      bot.textWithLabel("Project:").setText(projectName);
+    }
+    bot.cTabItem(0).activate();
+    SWTBotText txFilter = bot.textWithLabel("Log Filter:");
+    String filter = txFilter.getText();
+    if (!filter.contains("chromium:V")){
+      txFilter.setText("chromium:V " + filter);
+      bot.button(IDELabel.Button.APPLY).click();
+    }
+    bot.button(IDELabel.Button.RUN).click();
+    bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 2, TIME_1S);
   }
 }
