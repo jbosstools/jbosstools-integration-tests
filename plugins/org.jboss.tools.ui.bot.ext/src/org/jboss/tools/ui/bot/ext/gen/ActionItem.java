@@ -1382,8 +1382,24 @@ public static String getItemString(IActionItem item) {
 				}
 			};
 			}
+		
+    public static class LogCat {
+      /**
+       * represents item : Android > LogCat
+       */
+      public static final IView LABEL = new IView() {
+        public String getName() {
+          return "LogCat";
+        }
 
-		}
+        public List<String> getGroupPath() {
+          List<String> l = new Vector<String>();
+          l.add("Android");
+          return l;
+        }
+      };
+    }
+  }
 
 	public static class Server {
 		public static class ApacheTomcatv55Server {
