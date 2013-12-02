@@ -3,15 +3,11 @@ package org.jboss.tools.openshift.ui.bot.test.domain;
 import java.util.Random;
 
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
-import org.eclipse.swtbot.swt.finder.waits.Conditions;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotButton;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
 import org.jboss.tools.openshift.ui.bot.util.OpenShiftUI;
 import org.jboss.tools.openshift.ui.bot.util.TestProperties;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.condition.NonSystemJobRunsCondition;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
-import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -19,7 +15,7 @@ import org.junit.Test;
  * Domain creation consists of creating the SSH key pair, storing user password
  * in the secure storage and creating the domain itself.
  * 
- * @author sbunciak
+ * @author sbunciak, mlabuda
  * 
  */
 @Require(clearWorkspace = true)
@@ -32,40 +28,54 @@ public class CreateDomain extends SWTTestExt {
 
 	@Test
 	public void canCreateDomain() {
+		createDomain(true, false);
+	}
+	 
+	// be sure whether the given openshift server support multiple domains
+	public static void createDomain(boolean runFromCreateDomain, boolean multipleDomain) {
 		// open OpenShift Explorer
 		SWTBotView openshiftExplorer = open
 				.viewOpen(OpenShiftUI.Explorer.iView);
 
-		openshiftExplorer.bot().tree().getAllItems()[0]
-				// get 1st account in OpenShift Explorer
-				.contextMenu(OpenShiftUI.Labels.EXPLORER_CREATE_EDIT_DOMAIN)
-				.click(); // click on 'Create or Edit Domain'
-
-		bot.waitForShell(OpenShiftUI.Shell.CREATE_DOMAIN, TIME_30S);
-		bot.waitUntil(
-				Conditions.shellIsActive(OpenShiftUI.Shell.CREATE_DOMAIN),
-				TIME_60S);
-
-		SWTBotText domainText = bot.text(0);
-
-		assertTrue("Domain should not be set at this stage!", domainText
-				.getText().equals(""));
-
-		domainText.setText(TestProperties.get("openshift.domain")
-				+ new Random().nextInt(10000));
-		log.info("*** OpenShift SWTBot Tests: Domain name set. ***");
-
-		SWTBotButton finishBtn = bot.button(IDELabel.Button.FINISH);
-
-		bot.waitUntil(Conditions.widgetIsEnabled(finishBtn));
-		finishBtn.click();
-
-		// wait while the domain is being created
-		bot.waitUntil(Conditions.shellCloses(bot.activeShell()), TIME_60S * 3,
-				TIME_1S);
+		openshiftExplorer.bot().tree().getAllItems()[0].select().contextMenu(OpenShiftUI.Labels.MANAGE_DOMAINS).click();
+		bot.sleep(TIME_5S);
+		bot.shell("Domains");
+		
+		if (runFromCreateDomain) {
+			assertTrue("Domain should not be set at this stage! Remove domains and run tests again", bot.tableInGroup("Domains").rowCount() == 0);
+		}
+		
+		String domainName = TestProperties.get("openshift.domain") + new Random().nextInt(10000);
+		
+		bot.button("New...").click();
+		bot.sleep(TIME_5S);
+		bot.textWithLabel("Domain name").setText(domainName);
+		bot.sleep(TIME_1S);
+		bot.button("Finish").click();
+		
 		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_20S, TIME_1S);
+		log.info("*** OpenShift SWTBot Tests: Domain created. ***");		
+		
+		if (multipleDomain) {
+			bot.button("New...").click();
+			bot.sleep(TIME_5S);
+			bot.textWithLabel("Domain name").setText("seconddomain69");
+			bot.sleep(TIME_1S);
+			bot.button("Finish").click();
+			
+			bot.waitWhile(new NonSystemJobRunsCondition(), TIME_20S, TIME_1S);
+			log.info("*** OpenShift SWTBot Tests: Second Domain created. ***");
+		}
+		
+		if (multipleDomain) {
+			assertTrue("There is not multiple domains", bot.table(0).rowCount() == 2);
+		} else {
+			assertTrue("Domain does not exist", bot.table(0).rowCount() == 1);
+		}
+		
+		bot.button("OK").click();
 
-		log.info("*** OpenShift SWTBot Tests: Domain created. ***");
+		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_20S, TIME_1S);
 	}
-
+	
 }

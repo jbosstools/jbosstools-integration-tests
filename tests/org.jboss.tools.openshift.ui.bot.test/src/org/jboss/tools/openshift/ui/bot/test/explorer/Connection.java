@@ -28,9 +28,11 @@ public class Connection extends SWTTestExt {
 	@Test
 	public void canCreateConnectionToOpenShiftAccount() {
 		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S, TIME_1S);
-
+		
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
+		bot.sleep(TIME_1S);
 		explorer.getConnectionToolButton().click();
+		bot.sleep(TIME_1S);
 		
 //		TODO: See: https://issues.jboss.org/browse/JBIDE-10939
 //		explorer.show();
@@ -57,7 +59,7 @@ public class Connection extends SWTTestExt {
 			}
 			
 		});
-		bot.comboBox(1).typeText(TestProperties.get("openshift.server.url"));
+		bot.comboBox(1).setText(TestProperties.get("openshift.server.url"));
 
 		// set wrong user credentials
 		bot.text(0).setText(TestProperties.get("openshift.user.name"));
