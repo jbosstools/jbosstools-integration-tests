@@ -16,6 +16,8 @@ import java.util.Vector;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.condition.NonSystemJobRunsCondition;
 import org.jboss.tools.ui.bot.ext.gen.INewObject;
@@ -100,13 +102,9 @@ public class AerogearBotTest extends SWTTestExt {
     bot.sleep(TIME_5S);
   }
 
-  public void openInConfigEditor(SWTBotTreeItem treeItem) {
-    treeItem.select();
-    treeItem.click();
-
-    treeItem.expandNode("www", "config.xml").contextMenu("Open Wit&h")
-        .menu("Cordova Configuration Editor").click();
-
+  public void openInConfigEditor(String projectName) {
+    new DefaultTreeItem(projectName,"www","config.xml").select();
+    new ContextMenu("Open With","Cordova Configuration Editor").select();
     bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 2, TIME_1S);
   }
 
