@@ -10,6 +10,7 @@
 	
 	<groupId>org.jboss.tools.archives.tests</groupId>
 	<artifactId>org.jboss.tools.archives.ui.bot.test</artifactId>
+	<packaging>eclipse-test-plugin</packaging>
 	<properties>
 		<coverage.filter>org.jboss.ide.eclipse.archives.ui*</coverage.filter>
 		<emma.instrument.bundles>org.jboss.ide.eclipse.archives.ui</emma.instrument.bundles>

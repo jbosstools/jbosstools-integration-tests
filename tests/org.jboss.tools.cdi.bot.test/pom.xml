@@ -9,7 +9,7 @@
 	</parent>
 	<groupId>org.jboss.tools.cdi.tests</groupId>
 	<artifactId>org.jboss.tools.cdi.bot.test</artifactId>
-
+    <packaging>eclipse-test-plugin</packaging>
 	<properties>
 		<systemProperties>${integrationTestsSystemProperties} -Dswtbot.test.properties.file=${project.basedir}/properties/swtbot.properties</systemProperties>
 		<surefire.timeout>10800</surefire.timeout>
