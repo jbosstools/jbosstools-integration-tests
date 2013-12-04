@@ -26,7 +26,7 @@
 		<!-- URLs needed to resolve dependencies at build time (see <repositories> below) and at install time (see site/pom.xml#associateSites) -->
 		<jbosstools-nightly>http://download.jboss.org/jbosstools/updates/nightly/core/4.1.kepler/</jbosstools-nightly>
 		<reddeer-nightly-staging-site>http://download.jboss.org/jbosstools/builds/staging/RedDeer_master/all/repo/</reddeer-nightly-staging-site>
-		<jbosstools-coretests-site>http://download.jboss.org/jbosstools/updates/nightly/coretests/4.1.kepler/</jbosstools-coretests-site>
+		<jbosstools-integrationtests-site>http://download.jboss.org/jbosstools/updates/nightly/integrationtests/trunk/</jbosstools-integrationtests-site>
 	</properties>
 
 	<modules>
@@ -37,8 +37,8 @@
 
 	<repositories>
 		<repository>
-			<id>jbosstools-coretests-site</id>
-			<url>${jbosstools-coretests-site}</url>
+			<id>jbosstools-integrationtests-site</id>
+			<url>${jbosstools-integrationtests-site}</url>
 			<layout>p2</layout>
 		</repository> 
 		<repository>
