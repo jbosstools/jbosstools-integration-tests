@@ -70,7 +70,7 @@
 <bundle id="org.jboss.tools.maven.ui.bot.test.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
 <bundle id="org.jboss.tools.mylyn.ui.bot.test.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
 <bundle id="org.jboss.tools.openshift.ui.bot.test.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
-<!-- JBIDE-13324 <bundle id="org.jboss.tools.portlet.ui.bot.test.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle> -->
+<bundle id="org.jboss.tools.portlet.ui.bot.test.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
 <bundle id="org.jboss.tools.runtime.as.ui.bot.test.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
 <bundle id="org.jboss.tools.seam.ui.bot.test.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
 <bundle id="org.jboss.tools.ui.bot.ext.test.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
