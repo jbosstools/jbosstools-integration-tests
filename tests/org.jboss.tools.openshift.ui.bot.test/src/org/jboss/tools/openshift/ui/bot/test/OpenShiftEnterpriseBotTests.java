@@ -32,15 +32,12 @@ import org.junit.runners.Suite.SuiteClasses;
 /**
  * <b>OpenShift SWTBot TestSuite</b>
  * <br>
- * Test are runnable against OpenShift online. To be runnable under OpenShift Enterprise
- * it is required to slightly modify "workflow":
- * 1) Comment createEnvVariable test in DebugFeatures test pack 
- * 
+ * Test for OpenShift Enterprise private cloud. 
  * <b>
  * Please do not change the order of tests - relationship between automated tests and TCMS
  * <b/>
  * 
- * @author sbunciak, mlabuda
+ * @author mlabuda
  */
 @SuiteClasses({
 	/* Connection stuff */
@@ -53,20 +50,27 @@ import org.junit.runners.Suite.SuiteClasses;
  	RenameDomain.class,
 
 	/* Application creation*/
+ 	// TODO create app from github template
+ 	// TODO deploy existing app
  	CreateAdapter.class,
 	EmbedCartridges.class,
+	// TODO Conflict cartridge 
 	RepublishApp.class,
 	OpenShiftDebugFeatures.class,
  	RestartApplication.class, 
-	
+ 	// TODO import application
+ 	// TODO maven profile
+ 	// TODO multimaven app
+ 	
 	/* Applications*/ 
 	CreateDeleteJBossApp.class,
 	CreateDeleteEWSApp.class, 
 	CreateDeletePHPApp.class,
 	CreateDeletePythonApp.class,
 	CreateDeleteScaledRubyApp.class, 
+
 })
 @RunWith(RequirementAwareSuite.class)
-public class OpenShiftAllBotTests {
+public class OpenShiftEnterpriseBotTests {
 	
 }
