@@ -15,6 +15,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.junit.Test;
+import org.jboss.reddeer.eclipse.mylyn.tasks.ui.view.TaskListView;
 import org.jboss.reddeer.eclipse.mylyn.tasks.ui.view.TaskRepositoriesView;
 import org.jboss.reddeer.eclipse.ui.ide.RepoConnectionDialog;
 import org.jboss.reddeer.swt.api.TreeItem;
@@ -30,7 +31,6 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
-
 import org.jboss.reddeer.swt.condition.TreeItemHasMinChildren;
 
 
@@ -171,18 +171,12 @@ public class MylynTestBzQuery {
 		new DefaultCombo("Summary:").setText(bugzillaSummary);
 		new PushButton("Finish").click();
 
-		new ShellMenu("Window", "Show View", "Other...").select();
-
 		/* Verify that the expected repos are defined */
 		log.info("Step - Verify that the Mylyn query is Present");
 
 		/* Open the Task List view */
-
-		new DefaultTree();
-		theTask = new DefaultTreeItem ("Mylyn", "Task List");
-		theTask.select();	
-
-		new PushButton("OK").click();
+		TaskListView listView = new TaskListView();
+		listView.open();
 
 		/* Dealing with Red Deer incompatibilities on JBT */
 		if (org.eclipse.core.runtime.Platform.getProduct().getName().equals("JBoss Developer Studio")) {
@@ -274,8 +268,7 @@ public class MylynTestBzQuery {
 		assertTrue("Found query: " + queryName, foundQuery);
 		assertTrue("Found query results: " + fullBugzillaString, foundQueryResults);
 
-		}
-		
+		}		
 		view.close();
 		
 	} /* method */
