@@ -28,9 +28,9 @@ public class EmbedCartridges extends OpenShiftBotTest {
 	public void canEmbedCartridge() {
 		embedCartrige(OpenShiftUI.Cartridge.CRON);
 		
-		//embedCartrige(OpenShiftUI.Cartridge.MYSQL);
+		embedCartrige(OpenShiftUI.Cartridge.MYSQL);
 		
-		//embedCartrige(OpenShiftUI.Cartridge.POSTGRESQL);
+		embedCartrige(OpenShiftUI.Cartridge.POSTGRESQL_8_4);
 	}
 
 	

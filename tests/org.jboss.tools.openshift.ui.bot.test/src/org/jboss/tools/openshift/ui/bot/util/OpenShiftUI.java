@@ -83,12 +83,12 @@ public class OpenShiftUI {
 	/**
 	 * List of available application type labels
 	 * 
-	 * @author sbunciak
+	 * @author sbunciak, mlabuda
 	 * 
 	 */
 	public static class AppType {
 		public static final String JBOSS = "JBoss Application Server 7.1" + " (" + AppTypeOld.JBOSS + ")";
-		public static final String JBOSS_EAP = "JBoss Enterprise Application Platform 6.1.0" + " (" + AppTypeOld.JBOSS_EAP + ")";
+		public static final String JBOSS_EAP = "JBoss Enterprise Application Platform 6.0" + " (" + AppTypeOld.JBOSS_EAP + ")";
 		public static final String JBOSS_EWS = "Tomcat 7 (JBoss EWS 2.0)" + " (" + AppTypeOld.JBOSS_EWS + ")";
 		public static final String JENKINS = "Jenkins Server 1.4" + " (" + AppTypeOld.JENKINS + ")";
 		public static final String PERL = "Perl 5.10" + " (" + AppTypeOld.PERL + ")";
@@ -103,7 +103,7 @@ public class OpenShiftUI {
 	public static class AppTypeOld {
 
 		public static final String JBOSS = "jbossas-7.1";
-		public static final String JBOSS_EAP = "jbosseap-6";
+		public static final String JBOSS_EAP = "jbosseap-6.0";
 		public static final String JBOSS_EWS = "jbossews-2.0";
 		public static final String JENKINS = "jenkins-1.4";
 		public static final String PERL = "perl-5.10";
@@ -123,7 +123,8 @@ public class OpenShiftUI {
 
 		public static final String JENKINS = "Jenkins Client 1.4 (jenkins-client-1.4)";
 		public static final String CRON = "Cron 1.4 (cron-1.4)";
-		public static final String MYSQL = "MySQL 5.1 (mysql-5.1)";
+		public static final String MYSQL = "MySQL Database 5.1 (mysql-5.1)";
+		public static final String POSTGRESQL_8_4 = "PostgreSQL Database 8.4 (postgresql-8.4)";
 		public static final String POSTGRESQL = "PostgreSQL 9.2 (postgresql-9.2)";
 		public static final String SWITCHYARD = "SwitchYard 0.6 (switchyard-0.6)";
 		public static final String MONGODB = "MongoDB 2.2 (mongodb-2.2)";
