@@ -70,8 +70,21 @@ public class MylynTestLocalRepo {
 		/* Find the task in the repo */
 		TaskListView listView = new TaskListView();
 		listView.open();
-		listView.getTask("Uncategorized", TASKNAME);
-				
+		
+		/* Workaround for intermittent/inconsistent situation where newly created task is not visible.
+		 * Seems to be a timing issue in the UI - dependent on CPU speed? Only seeing this sometimes
+		 * on Jenkins - never locally.
+		 */
+		try {
+			listView.getTask("Uncategorized", TASKNAME);
+		}
+		catch (org.jboss.reddeer.swt.exception.SWTLayerException E) {
+			log.error("Newly created task not found - retrying");
+			listView.close();
+			listView.open();
+			listView.getTask("Uncategorized", TASKNAME);
+		}
+		
 		log.info("Activate the " + TASKNAME + " task");
 		view.activateTask(TASKNAME);
 
