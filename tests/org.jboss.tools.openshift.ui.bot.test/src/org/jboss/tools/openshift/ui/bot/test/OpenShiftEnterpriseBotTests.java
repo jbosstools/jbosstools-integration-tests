@@ -12,8 +12,16 @@ package org.jboss.tools.openshift.ui.bot.test;
 
 import org.jboss.tools.openshift.ui.bot.test.app.CreateDeleteEWSApp;
 import org.jboss.tools.openshift.ui.bot.test.app.CreateDeleteJBossApp;
+import org.jboss.tools.openshift.ui.bot.test.app.CreateDeleteJenkinsApp;
 import org.jboss.tools.openshift.ui.bot.test.app.CreateDeletePHPApp;
+import org.jboss.tools.openshift.ui.bot.test.app.CreateDeletePerlApp;
 import org.jboss.tools.openshift.ui.bot.test.app.CreateDeletePythonApp;
+import org.jboss.tools.openshift.ui.bot.test.app.CreateDeleteRubyApp;
+import org.jboss.tools.openshift.ui.bot.test.app.CreateDeleteScalableEWSApp;
+import org.jboss.tools.openshift.ui.bot.test.app.CreateDeleteScalablePHPApp;
+import org.jboss.tools.openshift.ui.bot.test.app.CreateDeleteScalablePerlApp;
+import org.jboss.tools.openshift.ui.bot.test.app.CreateDeleteScalablePythonApp;
+import org.jboss.tools.openshift.ui.bot.test.app.CreateDeleteScaledJBossApp;
 import org.jboss.tools.openshift.ui.bot.test.app.CreateDeleteScaledRubyApp;
 import org.jboss.tools.openshift.ui.bot.test.app.RepublishApp;
 import org.jboss.tools.openshift.ui.bot.test.app.RestartApplication;
@@ -53,7 +61,7 @@ import org.junit.runners.Suite.SuiteClasses;
  	// TODO create app from github template
  	// TODO deploy existing app
  	CreateAdapter.class,
-	EmbedCartridges.class,
+	EmbedCartridges.class, 
 	// TODO Conflict cartridge 
 	RepublishApp.class,
 	OpenShiftDebugFeatures.class,
@@ -67,6 +75,16 @@ import org.junit.runners.Suite.SuiteClasses;
 	CreateDeleteEWSApp.class, 
 	CreateDeletePHPApp.class,
 	CreateDeletePythonApp.class,
+	CreateDeleteRubyApp.class, 
+	CreateDeleteJenkinsApp.class, 
+	CreateDeletePerlApp.class, 
+	
+	/* Scalable applications */
+	CreateDeleteScalableEWSApp.class, 
+	CreateDeleteScaledJBossApp.class, 
+	CreateDeleteScalablePHPApp.class,
+	CreateDeleteScalablePythonApp.class, 
+	CreateDeleteScalablePerlApp.class, 
 	CreateDeleteScaledRubyApp.class, 
 
 })

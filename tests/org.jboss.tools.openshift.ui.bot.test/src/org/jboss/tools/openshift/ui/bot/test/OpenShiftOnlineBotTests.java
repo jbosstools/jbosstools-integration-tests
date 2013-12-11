@@ -12,7 +12,7 @@ package org.jboss.tools.openshift.ui.bot.test;
 
 import org.jboss.tools.openshift.ui.bot.test.app.RepublishApp;
 import org.jboss.tools.openshift.ui.bot.test.app.RestartApplication;
-import org.jboss.tools.openshift.ui.bot.test.cartridge.EmbedCartridges;
+import org.jboss.tools.openshift.ui.bot.test.cartridge.EmbedCartridge;
 import org.jboss.tools.openshift.ui.bot.test.domain.CreateDomain;
 import org.jboss.tools.openshift.ui.bot.test.domain.DeleteDomain;
 import org.jboss.tools.openshift.ui.bot.test.domain.RenameDomain;
@@ -48,7 +48,7 @@ import org.junit.runners.Suite.SuiteClasses;
  	// TODO create app from github template
  	// TODO deploy existing app
  	CreateAdapter.class,
-	EmbedCartridges.class,
+	EmbedCartridge.class,
 	// TODO Conflict cartridge 
 	RepublishApp.class,
 	OpenShiftDebugFeatures.class,

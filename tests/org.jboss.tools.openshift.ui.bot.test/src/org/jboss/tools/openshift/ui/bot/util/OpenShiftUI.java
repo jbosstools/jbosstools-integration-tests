@@ -82,41 +82,30 @@ public class OpenShiftUI {
 
 	/**
 	 * List of available application type labels
+	 * This list is usable for automated tests on OpenShift Enterprise
+	 * There are many newer versions on OpenShift Online - it would require more
+	 * labels to test them all.
 	 * 
 	 * @author sbunciak, mlabuda
 	 * 
 	 */
 	public static class AppType {
-		public static final String JBOSS = "JBoss Application Server 7.1" + " (" + AppTypeOld.JBOSS + ")";
-		public static final String JBOSS_EAP = "JBoss Enterprise Application Platform 6.0" + " (" + AppTypeOld.JBOSS_EAP + ")";
-		public static final String JBOSS_EWS = "Tomcat 7 (JBoss EWS 2.0)" + " (" + AppTypeOld.JBOSS_EWS + ")";
-		public static final String JENKINS = "Jenkins Server 1.4" + " (" + AppTypeOld.JENKINS + ")";
-		public static final String PERL = "Perl 5.10" + " (" + AppTypeOld.PERL + ")";
-		public static final String PHP = "PHP 5.3" + " (" + AppTypeOld.PHP + ")";
-		public static final String PYTHON = "Python 2.6" + " (" + AppTypeOld.PYTHON + ")";
-		public static final String DIY = "Do-It-Yourself 0.1" + " (" + AppTypeOld.DIY + ")";
-		public static final String RUBY_1_9 = "Ruby 1.9" + " (" + AppTypeOld.RUBY_1_9 + ")";
-	}
-
-	// TODO:
-	// TEMPORARY
-	public static class AppTypeOld {
-
-		public static final String JBOSS = "jbossas-7.1";
-		public static final String JBOSS_EAP = "jbosseap-6.0";
-		public static final String JBOSS_EWS = "jbossews-2.0";
-		public static final String JENKINS = "jenkins-1.4";
-		public static final String PERL = "perl-5.10";
-		public static final String PHP = "php-5.3";
-		public static final String PYTHON = "python-2.6";
-		public static final String DIY = "diy-0.1";
-		public static final String RUBY_1_9 = "ruby-1.9";
+		public static final String JBOSS = "JBoss Application Server 7.1" + " (" + "jbossas-7.1" + ")";
+		public static final String JBOSS_EAP = "JBoss Enterprise Application Platform 6.0" + " (" + "jbosseap-6.0" + ")";
+		public static final String JBOSS_EWS = "Tomcat 7 (JBoss EWS 2.0)" + " (" + "jbossews-2.0" + ")";
+		public static final String JENKINS = "Jenkins Server 1.4" + " (" + "jenkins-1.4" + ")";
+		public static final String PERL = "Perl 5.10" + " (" + "perl-5.10" + ")";
+		public static final String PHP = "PHP 5.3" + " (" + "php-5.3" + ")";
+		public static final String PYTHON = "Python 2.6" + " (" + "python-2.6" + ")";
+		public static final String DIY = "Do-It-Yourself 0.1" + " (" + "diy-0.1" + ")";
+		public static final String RUBY_1_9 = "Ruby 1.9" + " (" + "ruby-1.9" + ")";
 	}
 
 	/**
-	 * List of available cartridge labels
+	 * List of available cartridge labels on OpenShift Enterprise
+	 * There is different list on OpenShift Online - newer versions, more cartridges etc.
 	 * 
-	 * @author sbunciak
+	 * @author sbunciak, mlabuda
 	 * 
 	 */
 	public static class Cartridge {
@@ -124,12 +113,13 @@ public class OpenShiftUI {
 		public static final String JENKINS = "Jenkins Client 1.4 (jenkins-client-1.4)";
 		public static final String CRON = "Cron 1.4 (cron-1.4)";
 		public static final String MYSQL = "MySQL Database 5.1 (mysql-5.1)";
-		public static final String POSTGRESQL_8_4 = "PostgreSQL Database 8.4 (postgresql-8.4)";
-		public static final String POSTGRESQL = "PostgreSQL 9.2 (postgresql-9.2)";
-		public static final String SWITCHYARD = "SwitchYard 0.6 (switchyard-0.6)";
-		public static final String MONGODB = "MongoDB 2.2 (mongodb-2.2)";
-		public static final String PHPMYADMIN = "phpMyAdmin 3.4 (phpmyadmin-3.4)";
+		public static final String POSTGRESQL = "PostgreSQL Database 8.4 (postgresql-8.4)";
+		public static final String MONGODB = "MongoDB NoSQL Database 2.2 (mongodb-2.2)";
+		
+		// Those are for OpenShift Online
 		public static final String ROCKMONGO = "RockMongo 1.1 (rockmongo-1.1)";
+		public static final String PHPMYADMIN = "phpMyAdmin 3.4 (phpmyadmin-3.4)";
+		public static final String SWITCHYARD = "SwitchYard 0.6 (switchyard-0.6)";
 	}
 
 	public static class Labels {
