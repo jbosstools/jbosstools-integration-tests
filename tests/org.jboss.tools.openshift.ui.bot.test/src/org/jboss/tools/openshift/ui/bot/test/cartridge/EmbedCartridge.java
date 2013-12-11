@@ -15,7 +15,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 @Require(clearWorkspace = true)
-public class EmbedCartridges extends OpenShiftBotTest {
+public class EmbedCartridge extends OpenShiftBotTest {
 
 	private final String DYI_APP = "dapp" + new Date().getTime();
 
@@ -25,14 +25,8 @@ public class EmbedCartridges extends OpenShiftBotTest {
 	}
 
 	@Test
-	public void canEmbedCartridges() {
+	public void canEmbedCartridge() {
 		embedCartrige(OpenShiftUI.Cartridge.CRON);
-		
-		embedCartrige(OpenShiftUI.Cartridge.MYSQL);
-		
-		embedCartrige(OpenShiftUI.Cartridge.POSTGRESQL);
-		
-		embedCartrige(OpenShiftUI.Cartridge.MONGODB);
 	}
 
 	

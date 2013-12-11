@@ -31,7 +31,7 @@
 <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch ${target.arch} -nl ${target.nl} -consoleLog"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="org.jboss.tools.openshift.ui.bot.test"/>
 <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.pde.ui.workbenchClasspathProvider"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dosgi.requiredJavaVersion=1.5 -XX:MaxPermSize=256m -Xms40m -Xmx512m -Dswtbot.test.properties.file=${project_loc}/resources/swtbot.properties -Dusage_reporting_enabled=false -Dlibra.server=${string_prompt:OpenShift server} -Duser.name=${string_prompt:OpenShift user} -Duser.pwd=${string_prompt:OpenShift password} -Dusage_reporting_enabled=false"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dosgi.requiredJavaVersion=1.5 -XX:MaxPermSize=256m -Xms40m -Xmx512m -Dswtbot.test.properties.file=${project_loc}/resources/swtbot.properties -Dusage_reporting_enabled=false -Dlibra.server=console.itos.redhat.com -Duser.name=${string_prompt:OpenShift user} -Duser.pwd=${string_prompt:OpenShift password} -Dusage_reporting_enabled=false"/>
 <stringAttribute key="pde.version" value="3.3"/>
 <stringAttribute key="product" value="com.jboss.jbds.product.product"/>
 <booleanAttribute key="show_selected_only" value="false"/>

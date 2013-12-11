@@ -12,27 +12,23 @@ import org.junit.Before;
 import org.junit.Test;
 
 @Require(clearWorkspace = true)
-public class CreateDeleteRubyApp extends OpenShiftBotTest {
-
-	private final String RUBY_APP_NAME = TestProperties
-			.get("openshift.rubyapp.name") + new Date().getTime();
+public class CreateDeletePerlApp extends OpenShiftBotTest {
+	private final String PERL_APP_NAME = TestProperties
+			.get("openshift.perl.name") + new Date().getTime();
 
 	@Before
 	public void cleanUpProject() {
-		TestUtils
-				.cleanupGitFolder(TestProperties.get("openshift.rubyapp.name"));
+		TestUtils.cleanupGitFolder(TestProperties.get("openshift.perl.name"));
 	}
 
 	@Test
-	public void canCreateRubyApp() {
-		createOpenShiftApplication(RUBY_APP_NAME,
-				OpenShiftUI.AppType.RUBY_1_9);
+	public void canCreatePerlApp() {
+		createOpenShiftApplication(PERL_APP_NAME, OpenShiftUI.AppType.PERL);
 	}
 
 	@After
-	public void canDeleteRubyApp() {
-		deleteOpenShiftApplication(RUBY_APP_NAME,
-				OpenShiftUI.AppType.RUBY_1_9);
+	public void canDeletePerlApp() {
+		deleteOpenShiftApplication(PERL_APP_NAME,
+				OpenShiftUI.AppType.PERL);
 	}
-
 }

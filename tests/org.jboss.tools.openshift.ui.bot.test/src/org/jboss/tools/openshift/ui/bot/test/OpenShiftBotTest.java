@@ -114,8 +114,10 @@ public class OpenShiftBotTest extends SWTTestExt {
 		SWTBotShell shell;
 		
 		// workaround for 'embedding DYI' 
-		// scaling are now ok
-		if (APP_TYPE.equals(OpenShiftUI.AppType.DIY)) {
+		// scalable apps and Jenkins app 
+		if (APP_TYPE.equals(OpenShiftUI.AppType.DIY) || 
+				APP_TYPE.equals(OpenShiftUI.AppType.JENKINS) ||
+						scaling == true) {
 			shell = bot.waitForShell("Embedded Cartridges", 300);
 			if (shell != null) {
 				shell.activate();
