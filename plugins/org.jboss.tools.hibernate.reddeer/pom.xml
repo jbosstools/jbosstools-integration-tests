@@ -5,12 +5,10 @@
 	<parent>
 		<groupId>org.jboss.tools.integration-tests</groupId>
 		<artifactId>plugins</artifactId>
-		<version>4.1.0-SNAPSHOT</version>
+		<version>4.2.0-SNAPSHOT</version>
 	</parent>
 	<groupId>org.jboss.tools.hibernatetools.tests</groupId>
 	<artifactId>org.jboss.tools.hibernate.reddeer</artifactId>
-	<version>4.1.0-SNAPSHOT</version>
-
 	<packaging>eclipse-plugin</packaging>
 
 </project>

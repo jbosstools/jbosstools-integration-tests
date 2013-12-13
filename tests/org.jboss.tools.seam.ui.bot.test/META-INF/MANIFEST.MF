@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Seam UI Bot Tests
 Bundle-SymbolicName: org.jboss.tools.seam.ui.bot.test;singleton:=true
-Bundle-Version: 4.1.0.qualifier
+Bundle-Version: 4.2.0.qualifier
 Bundle-Activator: org.jboss.tools.seam.ui.bot.test.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
@@ -13,7 +13,7 @@ Require-Bundle: org.eclipse.ui,
  org.apache.log4j;bundle-version="1.2.13",
  org.junit;bundle-version="4.8.1",
  org.eclipse.datatools.connectivity;bundle-version="1.1.2",
- org.jboss.tools.ui.bot.ext;bundle-version="[4.1.0,4.2.0)"
+ org.jboss.tools.ui.bot.ext;bundle-version="[4.2.0,4.3.0)"
 Eclipse-RegisterBuddy: org.apache.log4j
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6

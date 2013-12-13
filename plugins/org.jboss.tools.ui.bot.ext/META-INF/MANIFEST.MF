@@ -2,28 +2,19 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: SWTBot Extensions
 Bundle-SymbolicName: org.jboss.tools.ui.bot.ext
-Bundle-Version: 4.1.0.qualifier
+Bundle-Version: 4.2.0.qualifier
 Bundle-ClassPath: .,
  resources/drv/hsqldb.jar
 Bundle-Activator: org.jboss.tools.ui.bot.ext.Activator
-Export-Package: 
- org.jboss.tools.ui.bot.ext,
- org.jboss.tools.ui.bot.ext.condition,
- org.jboss.tools.ui.bot.ext.config,
- org.jboss.tools.ui.bot.ext.config.requirement,
- org.jboss.tools.ui.bot.ext.entity,
- org.jboss.tools.ui.bot.ext.gef,
- org.jboss.tools.ui.bot.ext.gen,
- org.jboss.tools.ui.bot.ext.generator,
- org.jboss.tools.ui.bot.ext.helper,
- org.jboss.tools.ui.bot.ext.logging,
- org.jboss.tools.ui.bot.ext.matcher,
- org.jboss.tools.ui.bot.ext.matcher.console,
- org.jboss.tools.ui.bot.ext.parts,
- org.jboss.tools.ui.bot.ext.types,
- org.jboss.tools.ui.bot.ext.view,
- org.jboss.tools.ui.bot.ext.widgets,
- org.jboss.tools.ui.bot.ext.wizards
+Export-Package: org.jboss.tools.ui.bot.ext,org.jboss.tools.ui.bot.ext.
+ condition,org.jboss.tools.ui.bot.ext.config,org.jboss.tools.ui.bot.ex
+ t.config.requirement,org.jboss.tools.ui.bot.ext.entity,org.jboss.tool
+ s.ui.bot.ext.gef,org.jboss.tools.ui.bot.ext.gen,org.jboss.tools.ui.bo
+ t.ext.generator,org.jboss.tools.ui.bot.ext.helper,org.jboss.tools.ui.
+ bot.ext.logging,org.jboss.tools.ui.bot.ext.matcher,org.jboss.tools.ui
+ .bot.ext.matcher.console,org.jboss.tools.ui.bot.ext.parts,org.jboss.t
+ ools.ui.bot.ext.types,org.jboss.tools.ui.bot.ext.view,org.jboss.tools
+ .ui.bot.ext.widgets,org.jboss.tools.ui.bot.ext.wizards
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.swtbot.eclipse.core;bundle-version="2.0.0",
