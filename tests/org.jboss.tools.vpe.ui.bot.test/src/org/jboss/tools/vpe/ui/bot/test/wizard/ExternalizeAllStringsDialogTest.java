@@ -13,7 +13,7 @@ package org.jboss.tools.vpe.ui.bot.test.wizard;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
-import org.jboss.tools.jst.jsp.messages.JstUIMessages;
+import org.jboss.tools.jst.web.ui.internal.editor.messages.JstUIMessages;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.vpe.ui.bot.test.VPEAutoTestCase;
 

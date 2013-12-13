@@ -13,6 +13,7 @@ package org.jboss.tools.vpe.ui.bot.test.tools;
 import org.apache.log4j.Logger;
 import org.eclipse.jface.bindings.keys.KeyStroke;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.browser.ProgressEvent;
 import org.eclipse.swt.browser.ProgressListener;
 import org.eclipse.swt.widgets.Decorations;
@@ -181,7 +182,7 @@ public class BrowserSimHandler {
    * @return
    */
   public SWTBotBrowserExt getBrowserSimBrowser (){
-    return new SWTBotBrowserExt(browserSim.getBrowser());
+    return new SWTBotBrowserExt(((Browser)browserSim.getBrowser()));
   }
   public Menu openBrowserSimContextMenu (){
     browserSimShell.activate();
