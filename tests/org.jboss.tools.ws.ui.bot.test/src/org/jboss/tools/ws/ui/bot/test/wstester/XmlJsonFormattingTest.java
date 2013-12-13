@@ -15,6 +15,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.hamcrest.core.IsEqual;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.ProjectItem;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
@@ -93,9 +94,9 @@ public class XmlJsonFormattingTest extends RESTfulTestBase {
 				IsEqual.equalTo(format.formattedMessage));
 	}
 	
-	private SWTBotTreeItem getProperRestService(RESTFullExplorer explorer, 
+	private ProjectItem getProperRestService(RESTFullExplorer explorer, 
 			Format format) {
-		for (SWTBotTreeItem service : explorer.getAllRestServices()) {
+		for (ProjectItem service : explorer.getAllRestServices()) {
 			if (explorer.getPathForRestFulService(service).contains(
 				format.formatType)) { 
 				return service;

@@ -11,7 +11,10 @@
 
 package org.jboss.tools.ws.ui.bot.test.rest;
 
+import java.util.List;
+
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.ProjectItem;
 import org.jboss.tools.ui.bot.ext.Timing;
 import org.junit.Test;
 
@@ -39,11 +42,11 @@ public class QueryAnnotationSupportTest extends RESTfulTestBase {
 		importRestWSProject("query1");
 		
 		/* get RESTful services from JAX-RS REST explorer for the project */
-		SWTBotTreeItem[] restServices = restfulServicesForProject("query1"); 
-		
+		List<ProjectItem> restServices = restfulServicesForProject("query1"); 
+
 		/* test JAX-RS REST explorer */
 		assertCountOfRESTServices(restServices, 1);	
-		assertExpectedPathOfService(restServices[0], 
+		assertExpectedPathOfService(restServices.get(0), 
 				"/rest?" + queryParam1 + "={" + queryParam1 + ":" + queryType + "}");
 		
 		/* prepare project*/
@@ -54,7 +57,7 @@ public class QueryAnnotationSupportTest extends RESTfulTestBase {
 		
 		/* test JAX-RS REST explorer */
 		assertCountOfRESTServices(restServices, 1);	
-		assertExpectedPathOfService(restServices[0], 
+		assertExpectedPathOfService(restServices.get(0), 
 				"/rest?" + queryParam1 + "={" + queryParam1 + ":" + queryType + "}&" +
 						queryParam2 + "={" + queryParam2 + ":" + queryType + "}");
 	}
@@ -72,11 +75,11 @@ public class QueryAnnotationSupportTest extends RESTfulTestBase {
 		bot.sleep(Timing.time2S());
 		
 		/* get RESTful services from JAX-RS REST explorer for the project */
-		SWTBotTreeItem[] restServices = restfulServicesForProject("query2");
+		List<ProjectItem> restServices = restfulServicesForProject("query2");
 		
 		/* test JAX-RS REST explorer */
 		assertCountOfRESTServices(restServices, 1);
-		assertExpectedPathOfService(restServices[0], 
+		assertExpectedPathOfService(restServices.get(0), 
 				"/rest?" + queryParam1New + "={" + queryParam1New + ":" + queryType + "}&" +
 						queryParam2 + "={" + queryParam2 + ":" + queryType + "}");
 	}
@@ -107,11 +110,11 @@ public class QueryAnnotationSupportTest extends RESTfulTestBase {
 		bot.sleep(Timing.time2S());
 		
 		/* get RESTful services from JAX-RS REST explorer for the project */
-		SWTBotTreeItem[] restServices = restfulServicesForProject("query2");
+		List<ProjectItem> restServices = restfulServicesForProject("query2");
 		
 		/* test JAX-RS REST explorer */
 		assertCountOfRESTServices(restServices, 1);
-		assertExpectedPathOfService(restServices[0], 
+		assertExpectedPathOfService(restServices.get(0), 
 				"/rest?" + queryParam1 + "={" + queryParam1 + ":" + queryTypeNew + "}&" +
 						queryParam2 + "={" + queryParam2 + ":" + queryType2 + "}");
 	}

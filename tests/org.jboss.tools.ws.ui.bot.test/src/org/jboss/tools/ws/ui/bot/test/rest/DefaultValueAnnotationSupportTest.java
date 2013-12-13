@@ -11,7 +11,10 @@
 
 package org.jboss.tools.ws.ui.bot.test.rest;
 
+import java.util.List;
+
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.ProjectItem;
 import org.junit.Test;
 
 public class DefaultValueAnnotationSupportTest extends RESTfulTestBase {
@@ -32,11 +35,11 @@ public class DefaultValueAnnotationSupportTest extends RESTfulTestBase {
 		importRestWSProject("default1");
 		
 		/* get RESTful services from JAX-RS REST explorer for the project */
-		SWTBotTreeItem[] restServices = restfulServicesForProject("default1");
+		List<ProjectItem> restServices = restfulServicesForProject("default1");
 		
 		/* test JAX-RS REST explorer */
 		assertCountOfRESTServices(restServices, 1);
-		assertExpectedPathOfService(restServices[0], 
+		assertExpectedPathOfService(restServices.get(0), 
 				"/rest?" + queryParam + "={" + queryParam + ":" + 
 						  queryParamType + "=" + defaultValue + "}");
 		
@@ -49,11 +52,11 @@ public class DefaultValueAnnotationSupportTest extends RESTfulTestBase {
 		importRestWSProject("default2");
 		
 		/* get RESTful services from JAX-RS REST explorer for the project */
-		SWTBotTreeItem[] restServices = restfulServicesForProject("default2");
+		List<ProjectItem> restServices = restfulServicesForProject("default2");
 		
 		/* test JAX-RS REST explorer */
 		assertCountOfRESTServices(restServices, 1);
-		assertExpectedPathOfService(restServices[0], 
+		assertExpectedPathOfService(restServices.get(0), 
 				"/rest:" + queryParam + "={" + queryParam + ":" + 
 						  queryParamType + "=" + defaultValue + "}");
 	}
@@ -70,11 +73,11 @@ public class DefaultValueAnnotationSupportTest extends RESTfulTestBase {
 		importRestWSProject("default3");
 		
 		/* get RESTful services from JAX-RS REST explorer for the project */
-		SWTBotTreeItem[] restServices = restfulServicesForProject("default3");
+		List<ProjectItem> restServices = restfulServicesForProject("default3");
 		
 		/* test JAX-RS REST explorer */
 		assertCountOfRESTServices(restServices, 1);
-		assertExpectedPathOfService(restServices[0], 
+		assertExpectedPathOfService(restServices.get(0), 
 				"/rest/{" + queryParam + ":" + 
 						  queryParamType + "=" + defaultValue + "}");
 		

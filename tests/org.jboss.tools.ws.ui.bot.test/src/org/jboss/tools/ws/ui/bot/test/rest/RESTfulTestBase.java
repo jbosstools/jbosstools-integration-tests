@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010-2011 Red Hat, Inc.
+ * Copyright (c) 2010-2013 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -11,9 +11,12 @@
 
 package org.jboss.tools.ws.ui.bot.test.rest;
 
+import java.util.List;
+
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.ProjectItem;
 import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.condition.NonSystemJobRunsCondition;
 import org.jboss.tools.ui.bot.ext.condition.ViewIsActive;
@@ -85,29 +88,28 @@ public class RESTfulTestBase extends WSTestBase {
 				+ "project \"" + projectName + "\"", explorer);
 	}
 
-	protected void assertCountOfRESTServices(SWTBotTreeItem[] restServices,
+	protected void assertCountOfRESTServices(List<ProjectItem> restServices,
 			int expectedCount) {
-		assertTrue(restServices.length + " RESTful services"
+		assertTrue(restServices.size() + " RESTful services"
 				+ " was found instead of " + expectedCount,
-				restServices.length == expectedCount);
+				restServices.size() == expectedCount);
 	}
 
-	protected void assertAllRESTServicesInExplorer(SWTBotTreeItem[] restServices) {
+	protected void assertAllRESTServicesInExplorer(List<ProjectItem> restServices) {
 		assertTrue("All RESTful services (GET, DELETE, POST, PUT) "
 				+ "should be present but they are not",
 				allRestServicesArePresent(restServices));
 	}
 
-	protected void assertNotAllRESTServicesInExplorer(
-			SWTBotTreeItem[] restServices) {
+	protected void assertNotAllRESTServicesInExplorer(List<ProjectItem> restServices) {
 		assertFalse("All RESTful services (GET, DELETE, POST, PUT) "
 				+ "shouldnt be present but they are",
 				allRestServicesArePresent(restServices));
 	}
 
-	protected void assertPathOfAllRESTWebServices(
-			SWTBotTreeItem[] restServices, String path) {
-		for (SWTBotTreeItem restService : restServices) {
+	protected void assertPathOfAllRESTWebServices(List<ProjectItem> restServices,
+			String path) {
+		for (ProjectItem restService : restServices) {
 			assertTrue(
 					"RESTful Web Service \""
 							+ restfulWizard.getRestServiceName(restService)
@@ -116,9 +118,9 @@ public class RESTfulTestBase extends WSTestBase {
 		}
 	}
 
-	protected void assertAbsenceOfRESTWebService(SWTBotTreeItem[] restServices,
+	protected void assertAbsenceOfRESTWebService(List<ProjectItem> restServices,
 			String restWebService) {
-		for (SWTBotTreeItem restService : restServices) {
+		for (ProjectItem restService : restServices) {
 			if (restfulWizard.getRestServiceName(restService).equals(
 					restWebService)) {
 				fail("There should not be " + restWebService
@@ -127,10 +129,10 @@ public class RESTfulTestBase extends WSTestBase {
 		}
 	}
 
-	protected void assertPresenceOfRESTWebService(
-			SWTBotTreeItem[] restServices, String restWebService) {
+	protected void assertPresenceOfRESTWebService(List<ProjectItem> restServices,
+			String restWebService) {
 		boolean found = false;
-		for (SWTBotTreeItem restService : restServices) {
+		for (ProjectItem restService : restServices) {
 			if (restfulWizard.getRestServiceName(restService).equals(
 					restWebService)) {
 				found = true;
@@ -141,7 +143,7 @@ public class RESTfulTestBase extends WSTestBase {
 				found);
 	}
 
-	protected void assertExpectedPathOfService(SWTBotTreeItem service,
+	protected void assertExpectedPathOfService(ProjectItem service,
 			String expectedPath) {
 		String path = restfulWizard.getPathForRestFulService(service);
 		assertEquals("Failure when comparing paths = ", expectedPath, path);
@@ -171,14 +173,14 @@ public class RESTfulTestBase extends WSTestBase {
 				foundCount == expectedCount);
 	}
 	
-	protected void runRestServiceOnConfiguredServer(SWTBotTreeItem webService) {
+	protected void runRestServiceOnConfiguredServer(ProjectItem webService) {
 		RunOnServerDialog dialog = restfulWizard.runOnServer(webService);
 		dialog.chooseExistingServer().selectServer(configuredState.getServer().name).finish();
 		bot.waitUntil(new ViewIsActive(IDELabel.View.WEB_SERVICE_TESTER), TIME_20S);
 		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_20S);
 	}
-	
-	protected SWTBotTreeItem[] restfulServicesForProject(String projectName) {
+
+	protected List<ProjectItem> restfulServicesForProject(String projectName) {
 		restfulWizard = new RESTFullExplorer(projectName);
 		return restfulWizard.getAllRestServices();
 	}
@@ -202,15 +204,14 @@ public class RESTfulTestBase extends WSTestBase {
 		bot.sleep(Timing.time2S());
 	}
 
-	private boolean allRestServicesArePresent(SWTBotTreeItem[] restServices) {
-
+	private boolean allRestServicesArePresent(List<ProjectItem> restServices) {
 		String[] restMethods = { RESTFulAnnotations.GET.getLabel(),
 				RESTFulAnnotations.POST.getLabel(),
 				RESTFulAnnotations.POST.getLabel(),
 				RESTFulAnnotations.DELETE.getLabel() };
 		for (String restMethod : restMethods) {
 			boolean serviceFound = false;
-			for (SWTBotTreeItem restService : restServices) {
+			for (ProjectItem restService : restServices) {
 				if (restfulWizard.getRestServiceName(restService).equals(
 						restMethod)) {
 					serviceFound = true;

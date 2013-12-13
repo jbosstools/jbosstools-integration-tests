@@ -11,54 +11,53 @@
 
 package org.jboss.tools.ws.ui.bot.test.uiutils;
 
+import java.util.List;
+
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.ProjectItem;
 import org.jboss.reddeer.swt.api.Menu;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.matcher.RegexMatchers;
-import org.jboss.tools.ui.bot.ext.SWTBotFactory;
-import org.jboss.tools.ui.bot.ext.view.ProjectExplorer;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTFulAnnotations;
 
 public class RESTFullExplorer {
-
-	private SWTBotTreeItem restFulExplorer;
 	
-	private ProjectExplorer projectExplorer = SWTBotFactory.getProjectexplorer();
+	private ProjectItem restFulExplorer;
 	
 	public RESTFullExplorer(String wsProjectName) {
-		String[] pathToRestExplorer = {wsProjectName};
-		/** workaround when project in project explorer is not expanded **/
-		String[] pathToProject = {};
-		SWTBotTreeItem ti = projectExplorer.selectTreeItem(wsProjectName, pathToProject);
-		ti.expand();
-		ti.collapse();
-		ti.expand();
+		Project project = new ProjectExplorer().getProject(wsProjectName);
 		
-		restFulExplorer = projectExplorer.selectTreeItem(
-				RESTFulAnnotations.REST_EXPLORER_LABEL.getLabel(), 
-				pathToRestExplorer).expand().collapse().expand();
+		/* REDDEER-369
+		 * workaround for bug that will show project with no items
+		 */
+		project.getTreeItem().expand();
+		project.getTreeItem().collapse();
+		
+		/* open JAX-RS / RESTful Explorer */
+		restFulExplorer = project.getProjectItem(RESTFulAnnotations.REST_EXPLORER_LABEL.getLabel());
+		restFulExplorer.open();
 	}
 	
 	/**
 	 * 
 	 * @return
 	 */
-	public SWTBotTreeItem[] getAllRestServices() {
-		return restFulExplorer.getItems();
+	public List<ProjectItem> getAllRestServices() {
+		return restFulExplorer.getChildren();
 	}
 	
-	public SWTBotTreeItem restService(String method) {
-		SWTBotTreeItem getMethod = null;
-		for (SWTBotTreeItem ti : getAllRestServices()) {
+	public ProjectItem restService(String method) {
+		for (ProjectItem ti : getAllRestServices()) {
 			if (ti.getText().contains(method)) {
-				getMethod = ti;
-				break;
+				return ti;
 			}
 		}
-		return getMethod;
+		return null;
 	}
 	
-	public RunOnServerDialog runOnServer(SWTBotTreeItem service) {
+	public RunOnServerDialog runOnServer(ProjectItem service) {
 		service.select();
 		
 		Menu menu = new ContextMenu(new RegexMatchers(
@@ -73,9 +72,9 @@ public class RESTFullExplorer {
 	 * @param restService
 	 * @return
 	 */
-	public SWTBotTreeItem[] getAllInfoAboutRestService(SWTBotTreeItem restService) {
-		restService.expand();
-		return restService.getItems();
+	public List<ProjectItem> getAllInfoAboutRestService(ProjectItem restService) {
+		restService.open();
+		return restService.getChildren();
 	}
 	
 	/**
@@ -83,8 +82,8 @@ public class RESTFullExplorer {
 	 * @param restService
 	 * @return
 	 */
-	public String getConsumesInfo(SWTBotTreeItem restService) {
-		for (SWTBotTreeItem ti: getAllInfoAboutRestService(restService)) {
+	public String getConsumesInfo(ProjectItem restService) {
+		for (ProjectItem ti: getAllInfoAboutRestService(restService)) {
 			if (ti.getText().contains("consumes:")) {
 				return ti.getText().split(" ")[1];
 			}
@@ -97,8 +96,8 @@ public class RESTFullExplorer {
 	 * @param restService
 	 * @return
 	 */
-	public String getProducesInfo(SWTBotTreeItem restService) {
-		for (SWTBotTreeItem ti: getAllInfoAboutRestService(restService)) {
+	public String getProducesInfo(ProjectItem restService) {
+		for (ProjectItem ti: getAllInfoAboutRestService(restService)) {
 			if (ti.getText().contains("produces:")) {
 				return ti.getText().split(" ")[1];
 			}
@@ -111,8 +110,8 @@ public class RESTFullExplorer {
 	 * @param restService
 	 * @return
 	 */
-	public String getClassMethodName(SWTBotTreeItem restService) {
-		for (SWTBotTreeItem ti: getAllInfoAboutRestService(restService)) {
+	public String getClassMethodName(ProjectItem restService) {
+		for (ProjectItem ti: getAllInfoAboutRestService(restService)) {
 			if (!ti.getText().contains("produces:") && !ti.getText().contains("consumes:")) {
 				return ti.getText();
 			}
@@ -125,7 +124,7 @@ public class RESTFullExplorer {
 	 * @param restService
 	 * @return
 	 */
-	public String getRestServiceName(SWTBotTreeItem restService) {
+	public String getRestServiceName(ProjectItem restService) {
 		return restService.getText().split(" ")[0];
 	}
 	
@@ -134,7 +133,7 @@ public class RESTFullExplorer {
 	 * @param restService
 	 * @return
 	 */
-	public String getPathForRestFulService(SWTBotTreeItem restService) {		
+	public String getPathForRestFulService(ProjectItem restService) {
 		return restService.getText().split(" ")[1];
 	}
 	
