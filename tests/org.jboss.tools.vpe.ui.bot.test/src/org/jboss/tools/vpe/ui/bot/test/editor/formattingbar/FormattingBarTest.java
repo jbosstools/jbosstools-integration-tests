@@ -10,7 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.vpe.ui.bot.test.editor.formattingbar;
 
-import org.jboss.tools.jst.jsp.messages.JstUIMessages;
+import org.jboss.tools.jst.web.ui.internal.editor.messages.JstUIMessages;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
 import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.parts.SWTBotEditorExt;

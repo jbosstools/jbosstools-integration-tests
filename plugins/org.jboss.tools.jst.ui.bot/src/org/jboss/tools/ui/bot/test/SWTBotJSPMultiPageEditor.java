@@ -8,8 +8,8 @@ import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.ui.IEditorReference;
 import org.hamcrest.SelfDescribing;
-import org.jboss.tools.jst.jsp.jspeditor.JSPMultiPageEditor;
-import org.jboss.tools.jst.jsp.jspeditor.JSPMultiPageEditorPart;
+import org.jboss.tools.jst.web.ui.internal.editor.jspeditor.JSPMultiPageEditor;
+import org.jboss.tools.jst.web.ui.internal.editor.jspeditor.JSPMultiPageEditorPart;
 import org.jboss.tools.jst.ui.bot.test.utils.ImplementationChangedException;
 
 /**
