@@ -68,7 +68,7 @@ public class JAXRSFacetTest extends RESTfulTestBase {
 	private void checkJAXRSTooling() {
 		RESTFullExplorer restExplorer = new RESTFullExplorer(wsProjectName);
 		assertThat("Different count of rest services was expected", 
-				restExplorer.getAllRestServices().length, Is.is(1));
+				restExplorer.getAllRestServices().size(), Is.is(1));
 			
 	}
 

@@ -81,7 +81,7 @@ public class WSTesterPromptValuesSupportTest extends RESTfulTestBase {
 		restExplorer = new RESTFullExplorer(getWsProjectName());
 		
 		RunOnServerDialog dialog = restExplorer.runOnServer(
-				restExplorer.getAllRestServices()[0]);
+				restExplorer.getAllRestServices().get(0));
 		dialog.chooseExistingServer();
 		dialog.finish();
 		

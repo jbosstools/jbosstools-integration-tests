@@ -11,8 +11,17 @@
 
 package org.jboss.tools.ws.ui.bot.test.rest;
 
+import java.util.List;
+
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.ProjectItem;
+
+import org.jboss.reddeer.swt.condition.JobIsRunning;
+import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.junit.Ignore;
 import org.jboss.tools.ui.bot.ext.Timing;
 import org.junit.Test;
 
@@ -36,8 +45,8 @@ public class PathAnnotationSupportTest extends RESTfulTestBase {
 		importRestWSProject("restBasic");
 		
 		/* get RESTful services from JAX-RS REST explorer for the project */
-		SWTBotTreeItem[] restServices = restfulServicesForProject("restBasic");
-		
+		List<ProjectItem> restServices = restfulServicesForProject("restBasic");
+
 		/* test JAX-RS REST explorer */
 		assertCountOfRESTServices(restServices, 4);		
 		assertAllRESTServicesInExplorer(restServices);
@@ -51,7 +60,7 @@ public class PathAnnotationSupportTest extends RESTfulTestBase {
 		importRestWSProject("restAdvanced");
 		
 		/* get RESTful services from JAX-RS REST explorer for the project */
-		SWTBotTreeItem[] restServices = restfulServicesForProject("restAdvanced");
+		List<ProjectItem> restServices = restfulServicesForProject("restAdvanced");
 		
 		/* test JAX-RS REST explorer */
 		assertCountOfRESTServices(restServices, 4);		
@@ -59,13 +68,6 @@ public class PathAnnotationSupportTest extends RESTfulTestBase {
 		testAdvancedRESTServices(restServices);
 	}
 	
-	/**
-	 * Fails due to JBIDE-11766.
-	 * Workaround is possible: delay between typing
-	 *  - add bot.sleep(Timing.time2S()) after replacing the text in editor
-	 * 
-	 * @see https://issues.jboss.org/browse/JBIDE-11766
-	 */
 	@Test
 	public void testEditingSimpleRESTMethods() {
 		
@@ -75,10 +77,9 @@ public class PathAnnotationSupportTest extends RESTfulTestBase {
 		/* replace @DELETE annotation to @GET annotation */
 		resourceHelper.replaceInEditor(editorForClass("restBasic", "src",
 				"org.rest.test", "RestService.java").toTextEditor(), "@DELETE", "@GET", true);
-		//bot.sleep(Timing.time2S());
 		
 		/* get RESTful services from JAX-RS REST explorer for the project */
-		SWTBotTreeItem[] restServices = restfulServicesForProject("restBasic"); 
+		List<ProjectItem> restServices = restfulServicesForProject("restBasic"); 
 		
 		/* test JAX-RS REST explorer */
 		assertNotAllRESTServicesInExplorer(restServices);
@@ -87,11 +88,11 @@ public class PathAnnotationSupportTest extends RESTfulTestBase {
 	}
 	
 	/**
-	 * Fails due to JBIDE-11766.
+	 * Fails due to JBIDE-16163.
 	 * Workaround is possible: delay between typing
 	 *  - add bot.sleep(Timing.time2S()) after replacing the text in editor
 	 * 
-	 * @see https://issues.jboss.org/browse/JBIDE-11766
+	 * @see https://issues.jboss.org/browse/JBIDE-16163
 	 */
 	@Test
 	public void testEditingAdvancedRESTMethods() {
@@ -109,8 +110,8 @@ public class PathAnnotationSupportTest extends RESTfulTestBase {
 		//bot.sleep(Timing.time2S());
 		
 		/* get RESTful services from JAX-RS REST explorer for the project */
-		SWTBotTreeItem[] restServices = restfulServicesForProject("restAdvanced");
-		
+		List<ProjectItem> restServices = restfulServicesForProject("restAdvanced");
+
 		/* test JAX-RS REST explorer */
 		testEditedDeleteRestWebResource(restServices);
 	}
@@ -126,15 +127,14 @@ public class PathAnnotationSupportTest extends RESTfulTestBase {
 		bot.sleep(Timing.time2S());
 		
 		/* get RESTful services from JAX-RS REST explorer for the project */
-		SWTBotTreeItem[] restServices = restfulServicesForProject("restBasic");  
+		List<ProjectItem> restServices = restfulServicesForProject("restBasic");
 		
 		/* none of REST web services found */
 		assertCountOfRESTServices(restServices, 0);
 	}
 
-	private void testEditedDeleteRestWebResource(
-			SWTBotTreeItem[] restServices) {
-		for (SWTBotTreeItem restService : restServices) {
+	private void testEditedDeleteRestWebResource(List<ProjectItem> restServices) {
+		for (ProjectItem restService : restServices) {
 			if (restfulWizard.getRestServiceName(restService).equals(RESTFulAnnotations.DELETE.getLabel())) {
 				assertTrue(restfulWizard.getPathForRestFulService(restService).equals("/rest/delete/edited/{id}"));
 				assertTrue(restfulWizard.getProducesInfo(restService).equals("text/plain"));
@@ -142,9 +142,8 @@ public class PathAnnotationSupportTest extends RESTfulTestBase {
 		}
 	}
 
-	private void testAdvancedRESTServices(
-			SWTBotTreeItem[] restServices) {
-		for (SWTBotTreeItem restService : restServices) {
+	private void testAdvancedRESTServices(List<ProjectItem> restServices) {
+		for (ProjectItem restService : restServices) {
 			if (restfulWizard.getRestServiceName(restService).equals(RESTFulAnnotations.GET.getLabel())) {
 				assertTrue(restfulWizard.getPathForRestFulService(restService).equals("/rest/{id}"));
 				assertTrue(restfulWizard.getConsumesInfo(restService).equals("*/*"));

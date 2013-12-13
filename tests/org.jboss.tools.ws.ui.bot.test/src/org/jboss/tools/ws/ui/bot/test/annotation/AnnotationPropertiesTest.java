@@ -20,6 +20,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.hamcrest.core.Is;
 import org.hamcrest.core.IsNot;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.ProjectItem;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
 import org.jboss.tools.ws.ui.bot.test.uiutils.views.AnnotationPropertiesView;
 import org.junit.Test;
@@ -173,7 +174,7 @@ public class AnnotationPropertiesTest extends RESTfulTestBase {
 				annotationsView.getAnnotationValues(pathAnnotation).get(0).getText(), 
 				"/edit");
 		
-		for (SWTBotTreeItem service : restfulServicesForProject(getWsProjectName())) {
+		for (ProjectItem service : restfulServicesForProject(getWsProjectName())) {
 			String path = restfulWizard.getPathForRestFulService(service);
 			assertDoesNotContain("rest", path);
 			assertContains("edit", path);	
@@ -189,7 +190,7 @@ public class AnnotationPropertiesTest extends RESTfulTestBase {
 		
 		annotationsView.deactivateAnnotation(getAnnotation);
 		
-		assertThat(restfulServicesForProject(getWsProjectName()).length, Is.is(3));
+		assertThat(restfulServicesForProject(getWsProjectName()).size(), Is.is(3));
 		
 		
 	}

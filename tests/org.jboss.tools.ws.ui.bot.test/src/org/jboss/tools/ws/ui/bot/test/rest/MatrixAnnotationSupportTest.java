@@ -11,7 +11,10 @@
 
 package org.jboss.tools.ws.ui.bot.test.rest;
 
+import java.util.List;
+
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.ProjectItem;
 import org.jboss.tools.ui.bot.ext.Timing;
 import org.junit.Test;
 
@@ -39,11 +42,11 @@ public class MatrixAnnotationSupportTest extends RESTfulTestBase {
 	public void testMatrixParamSupport() {
 
 		/* get RESTful services from JAX-RS REST explorer for the project */
-		SWTBotTreeItem[] restServices = restfulServicesForProject("matrix1");
+		List<ProjectItem> restServices = restfulServicesForProject("matrix1");
 		
 		/* test JAX-RS REST explorer */
 		assertCountOfRESTServices(restServices, 1);	
-		assertExpectedPathOfService(restServices[0], 
+		assertExpectedPathOfService(restServices.get(0), 
 				"/rest;" + matrixParam1 + "={" + matrixParamType1 + "};"
 						+ matrixParam2 + "={" + matrixParamType2 + "}");
 
@@ -59,11 +62,11 @@ public class MatrixAnnotationSupportTest extends RESTfulTestBase {
 		bot.sleep(Timing.time2S());
 
 		/* get RESTful services from JAX-RS REST explorer for the project */
-		SWTBotTreeItem[] restServices = restfulServicesForProject("matrix1");
+		List<ProjectItem> restServices = restfulServicesForProject("matrix1");
 
 		/* test JAX-RS REST explorer */
 		assertCountOfRESTServices(restServices, 1);	
-		assertExpectedPathOfService(restServices[0], 
+		assertExpectedPathOfService(restServices.get(0), 
 				"/rest;" + matrixParamNew + "={" + matrixParamType1 + "};"
 						+ matrixParam2 + "={" + matrixParamType2 + "}");
 	}
@@ -78,11 +81,11 @@ public class MatrixAnnotationSupportTest extends RESTfulTestBase {
 		bot.sleep(Timing.time2S());
 
 		/* get RESTful services from JAX-RS REST explorer for the project */
-		SWTBotTreeItem[] restServices = restfulServicesForProject("matrix1");
+		List<ProjectItem> restServices = restfulServicesForProject("matrix1");
 		
 		/* test JAX-RS REST explorer */
 		assertCountOfRESTServices(restServices, 1);	
-		assertExpectedPathOfService(restServices[0], 
+		assertExpectedPathOfService(restServices.get(0), 
 				"/rest;" + matrixParam1 + "={" + matrixParamTypeNew + "};"
 						+ matrixParam2 + "={" + matrixParamType2 + "}");
 	}
