@@ -31,10 +31,6 @@ public class MylynTestLocalRepo {
 	protected final String TASKNAME = DEFAULT_TASKNAME + " - a sample task in Mylyn Local Repo";
 	protected final String UPDATED_TASKNAME = TASKNAME + " - updated";
 	
-	protected final String DEFAULT_TASKNOTE = "Notes";
-	protected final String TASKNOTE = "a sample note for a sample task in Mylyn Local Repo";
-	protected final String UPDATED_TASKNOTE = TASKNOTE + " - updated";
-
 	@Test
 	public void TestIt() {
 
@@ -51,15 +47,12 @@ public class MylynTestLocalRepo {
 		
 		/* Verify that the newly created task is populated with the expected default values */
 		assertEquals ("Failed to find default task name", DEFAULT_TASKNAME, new DefaultStyledText(DEFAULT_TASKNAME).getText());
-		assertEquals ("Failed to find default task notes", DEFAULT_TASKNOTE, new DefaultStyledText(DEFAULT_TASKNOTE).getText());
 		assertFalse ("Complete button was incorrectly selected", new RadioButton("Complete").isSelected());
 		assertTrue ("Incomplete button was incorrectly not selected", new RadioButton("Incomplete").isSelected());
 		
 		/* Set values in the new task, and verify the values */		
-		new DefaultStyledText(DEFAULT_TASKNAME).setText(TASKNAME);		
-		new DefaultStyledText(DEFAULT_TASKNOTE).setText(TASKNOTE);
+		new DefaultStyledText(DEFAULT_TASKNAME).setText(TASKNAME);	
 		assertEquals ("Failed to find task name", TASKNAME, new DefaultStyledText(TASKNAME).getText());
-		assertEquals ("Failed to find task notes", TASKNOTE, new DefaultStyledText(TASKNOTE).getText());
 					
 		/* Save the newly created task to the local repo */
 		log.info("Saving task " + TASKNAME + " to local repo");
@@ -93,12 +86,10 @@ public class MylynTestLocalRepo {
 		view.openTask(TASKNAME);
 		
 		new DefaultStyledText(TASKNAME).setText(UPDATED_TASKNAME);
-		new DefaultStyledText(TASKNOTE).setText(UPDATED_TASKNOTE);
 		view.saveTask();
 		
 		/* Verify that the newly created task is populated with the expected default values */
 		assertEquals ("Failed to find task name", UPDATED_TASKNAME, new DefaultStyledText(UPDATED_TASKNAME).getText());
-		assertEquals ("Failed to find task notes", UPDATED_TASKNOTE, new DefaultStyledText(UPDATED_TASKNOTE).getText());
 		assertFalse ("Complete button was incorrectly selected", new RadioButton("Complete").isSelected());
 		assertTrue ("Incomplete button was incorrectly not selected", new RadioButton("Incomplete").isSelected());
 		
