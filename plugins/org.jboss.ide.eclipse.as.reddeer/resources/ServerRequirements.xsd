@@ -40,6 +40,7 @@
         		<xs:enumeration value="6.x"></xs:enumeration>
         		<xs:enumeration value="7.0"></xs:enumeration>
         		<xs:enumeration value="7.1"></xs:enumeration>
+        		<xs:enumeration value="8.0"></xs:enumeration>
         	</xs:restriction>
         </xs:simpleType>
 
@@ -48,7 +49,8 @@
         		<xs:enumeration value="4.3"></xs:enumeration>
         		<xs:enumeration value="5.x"></xs:enumeration>
         		<xs:enumeration value="6.0"></xs:enumeration>
-        		<xs:enumeration value="6.1(Tech Preview)"></xs:enumeration>
+        		<xs:enumeration value="6.1"></xs:enumeration>
+        		<xs:enumeration value="6.2"></xs:enumeration>
         	</xs:restriction>
         </xs:simpleType>
 

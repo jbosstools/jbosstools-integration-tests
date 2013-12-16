@@ -43,8 +43,16 @@ public class ServerRequirementConfig {
 	@XmlRootElement(name="familyAS", namespace="http://www.jboss.org/NS/ServerReq")
 	public static class FamilyAS implements ServerFamily {
 
-		private String label = "JBoss AS";
+		private final String category = "JBoss Community";
+		
+		private final String label = "JBoss AS";
+		
 		private String version;	
+		
+		@Override
+		public String getCategory() {
+			return category;
+		}
 		
 		@Override
 		public String getLabel() {
@@ -66,8 +74,16 @@ public class ServerRequirementConfig {
 	@XmlRootElement(name="familyEAP", namespace="http://www.jboss.org/NS/ServerReq")
 	public static class FamilyEAP implements ServerFamily {
 
-		private String label = "JBoss Enterprise Application Platform";
+		private final String category = "JBoss Enterprise Middleware";
+		
+		private final String label = "JBoss Enterprise Application Platform";
+		
 		private String version;
+		
+		@Override
+		public String getCategory() {
+			return category;
+		}
 		
 		@Override
 		public String getLabel() {
@@ -89,10 +105,24 @@ public class ServerRequirementConfig {
 	
 	public interface ServerFamily {
 		
+		public String getCategory();
+		
 		public String getLabel();
 		
 		public String getVersion();
 		
 	}
 	
+	public boolean equals(Object arg) {
+		if(arg == null || !(arg instanceof ServerRequirementConfig))
+			return false;
+		if(arg == this)
+			return true;
+		ServerRequirementConfig conf = (ServerRequirementConfig) arg;
+		ServerFamily family1 = this.getServerFamily();
+		ServerFamily family2 = conf.getServerFamily();
+		if(!runtime.equals(conf.runtime) || (family1 == null && family2 != null))
+			return false;
+		return family1.getLabel().equals(family2.getLabel()) && family1.getVersion().equals(family2.getVersion());
+	}
 }
