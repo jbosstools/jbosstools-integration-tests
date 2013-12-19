@@ -1400,6 +1400,8 @@ public static String getItemString(IActionItem item) {
       };
     }
   }
+	
+	private static final String EAP_SERVER_CATEGORY = "Red Hat JBoss Middleware";
 
 	public static class Server {
 		public static class ApacheTomcatv55Server {
@@ -1565,7 +1567,7 @@ public static String getItemString(IActionItem item) {
 				public String getName() { return "JBoss Enterprise Application Platform 4.3";}
 				public List<String> getGroupPath() {
 					List<String> l = new Vector<String>();
-					l.add("JBoss Enterprise Middleware");
+					l.add(EAP_SERVER_CATEGORY);
 					return l;
 				}
 			};
@@ -1890,7 +1892,7 @@ public static String getItemString(IActionItem item) {
 				public String getName() { return "JBoss Enterprise Application Platform 5.x";}
 				public List<String> getGroupPath() {
 					List<String> l = new Vector<String>();
-					l.add("JBoss Enterprise Middleware");
+					l.add(EAP_SERVER_CATEGORY);
 					return l;
 				}
 			};
@@ -1907,7 +1909,7 @@ public static String getItemString(IActionItem item) {
 				public String getName() { return "JBoss Enterprise Application Platform 6.0";}
 				public List<String> getGroupPath() {
 					List<String> l = new Vector<String>();
-					l.add("JBoss Enterprise Middleware");
+					l.add(EAP_SERVER_CATEGORY);
 					return l;
 				}
 			};
@@ -1924,7 +1926,7 @@ public static String getItemString(IActionItem item) {
 				public String getName() { return "JBoss Enterprise Application Platform 6.1+";}
 				public List<String> getGroupPath() {
 					List<String> l = new Vector<String>();
-					l.add("JBoss Enterprise Middleware");
+					l.add(EAP_SERVER_CATEGORY);
 					return l;
 				}
 			};
@@ -10685,7 +10687,7 @@ public static String getItemString(IActionItem item) {
 				public String getName() { return "JBoss Enterprise Application Platform 4.3 Runtime";}
 				public List<String> getGroupPath() {
 					List<String> l = new Vector<String>();
-					l.add("JBoss Enterprise Middleware");
+					l.add(EAP_SERVER_CATEGORY);
 					return l;
 				}
 			};
@@ -10761,7 +10763,7 @@ public static String getItemString(IActionItem item) {
 				public String getName() { return "JBoss Enterprise Application Platform 5.x Runtime";}
 				public List<String> getGroupPath() {
 					List<String> l = new Vector<String>();
-					l.add("JBoss Enterprise Middleware");
+					l.add(EAP_SERVER_CATEGORY);
 					return l;
 				}
 			};
@@ -10778,7 +10780,7 @@ public static String getItemString(IActionItem item) {
 				public String getName() { return "JBoss Enterprise Application Platform 6.0 Runtime";}
 				public List<String> getGroupPath() {
 					List<String> l = new Vector<String>();
-					l.add("JBoss Enterprise Middleware");
+					l.add(EAP_SERVER_CATEGORY);
 					return l;
 				}
 			};
@@ -10795,7 +10797,7 @@ public static String getItemString(IActionItem item) {
 				public String getName() { return "JBoss Enterprise Application Platform 6.1+ Runtime";}
 				public List<String> getGroupPath() {
 					List<String> l = new Vector<String>();
-					l.add("JBoss Enterprise Middleware");
+					l.add(EAP_SERVER_CATEGORY);
 					return l;
 				}
 			};
