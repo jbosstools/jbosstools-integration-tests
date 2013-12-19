@@ -25,8 +25,8 @@
 		<tycho.scmUrl>scm:git:https://github.com/jbosstools/jbosstools-integration-tests.git</tycho.scmUrl>
 		<!-- URLs needed to resolve dependencies at build time (see <repositories> below) and at install time (see site/pom.xml#associateSites) -->
 		<jbosstools-nightly>http://download.jboss.org/jbosstools/updates/nightly/core/4.1.kepler/</jbosstools-nightly>
-		<reddeer-nightly-staging-site>http://download.jboss.org/jbosstools/builds/staging/RedDeer_master/all/repo/</reddeer-nightly-staging-site>
-		<jbosstools-integrationtests-site>http://download.jboss.org/jbosstools/updates/nightly/integrationtests/trunk/</jbosstools-integrationtests-site>
+		<reddeer-stable-site>http://download.jboss.org/jbosstools/updates/stable/kepler/core/reddeer/0.4.1/</reddeer-stable-site>
+		<jbosstools-integrationtests-site>http://download.jboss.org/jbosstools/updates/nightly/integrationtests/4.1.kepler/</jbosstools-integrationtests-site>
 	</properties>
 
 	<modules>
@@ -42,8 +42,8 @@
 			<layout>p2</layout>
 		</repository> 
 		<repository>
-			<id>reddeer-nightly-staging-site</id>
-			<url>${reddeer-nightly-staging-site}</url>
+			<id>reddeer-stable-site</id>
+			<url>${reddeer-stable-site}</url>
 			<layout>p2</layout>
 		</repository>
 	</repositories>
