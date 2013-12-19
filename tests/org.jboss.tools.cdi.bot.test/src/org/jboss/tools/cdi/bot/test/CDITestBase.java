@@ -97,7 +97,7 @@ public class CDITestBase extends SWTTestExt {
 	
 	protected static void disableSourceLookup() {
 		// wait for some shell to get activated
-		new ShellLookup().getActiveShell();
+		ShellLookup.getInstance().getActiveShell();
 		String originalShellText = new DefaultShell().getText();
 		SourceLookupPreferencePage sourceLookupPreferencePage = new SourceLookupPreferencePage();
 		sourceLookupPreferencePage.open();
