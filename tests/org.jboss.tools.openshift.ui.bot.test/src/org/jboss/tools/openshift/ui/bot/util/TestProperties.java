@@ -5,8 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
 
-import org.apache.log4j.Logger;
-
 /**
  * Just static properties holder
  * 
@@ -24,11 +22,7 @@ public class TestProperties {
                     "resources/openshift.ui.bot.test.properties"));
 
         } catch (FileNotFoundException e) {
-            Logger.getLogger(TestProperties.class).error(
-                    "Property file not found !", e);
         } catch (IOException e) {
-            Logger.getLogger(TestProperties.class).error(
-                    "IO Exception !", e);
         }
 
     }

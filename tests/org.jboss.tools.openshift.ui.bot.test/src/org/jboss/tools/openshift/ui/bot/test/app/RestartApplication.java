@@ -1,59 +1,61 @@
 package org.jboss.tools.openshift.ui.bot.test.app;
 
 import java.util.Date;
-
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.swt.condition.JobIsRunning;
+import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.impl.tree.DefaultTree;
+import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.openshift.ui.bot.test.OpenShiftBotTest;
-import org.jboss.tools.openshift.ui.bot.util.OpenShiftUI;
-import org.jboss.tools.ui.bot.ext.condition.NonSystemJobRunsCondition;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
+import org.jboss.tools.openshift.ui.bot.util.OpenShiftExplorerView;
+import org.jboss.tools.openshift.ui.bot.util.OpenShiftLabel;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-@Require(clearWorkspace = true)
 public class RestartApplication extends OpenShiftBotTest {
 
 	private final String DYI_APP = "diyapp" + new Date().getTime();
 
 	@Before
 	public void createDYIApp() {
-		createOpenShiftApplication(DYI_APP, OpenShiftUI.AppType.DIY);
+		createOpenShiftApplication(DYI_APP, OpenShiftLabel.AppType.DIY);
 	}
 
 	@Test
 	public void canRestartDYIApplicationViaExplorer() {
-		SWTBotView openshiftExplorer = open
-				.viewOpen(OpenShiftUI.Explorer.iView);
-
-		SWTBotTreeItem account = openshiftExplorer.bot().tree().getAllItems()[0].expand();
-
-		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S, TIME_1S);
-
-		// refresh explorer
-		openshiftExplorer.bot().tree().getAllItems()[0].select().contextMenu(
-				OpenShiftUI.Labels.REFRESH).click();
-		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 2, TIME_1S);
-
-		account.getNode(0).expand();
-		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S, TIME_1S);
+		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
+		explorer.open();
 		
-		account.getNode(0).getNode(DYI_APP + " " + OpenShiftUI.AppType.DIY)
-				.contextMenu(OpenShiftUI.Labels.EXPLORER_RESTART_APP).click();
+		TreeItem connection = new DefaultTree().getItems().get(0);
+		connection.expand();
 		
-		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 3, TIME_1S);
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		
-		account.getNode(0).getNode(DYI_APP + " " + OpenShiftUI.AppType.DIY)
-				.contextMenu("Show in Web Browser").click();
-
-		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 2, TIME_1S);
-		assertTrue(open.viewOpen(OpenShiftUI.Explorer.iView).getTitle()
-				.contains("OpenShift"));
+		connection.select();
+		new ContextMenu(OpenShiftLabel.Labels.REFRESH).select();
+		
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		
+		connection.getItems().get(0).expand();
+		
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		
+		connection.getItems().get(0).getItem(DYI_APP + " " + OpenShiftLabel.AppType.DIY).select();
+		new ContextMenu(OpenShiftLabel.Labels.EXPLORER_RESTART_APP).select();
+		
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		
+		connection.getItems().get(0).getItem(DYI_APP + " " + OpenShiftLabel.AppType.DIY).select();
+		new ContextMenu("Show in Web Browser").select();
+		
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		// TODO showed in web browser correctly
 	}
 
 	@After
 	public void deleteDIYApp() {
-		deleteOpenShiftApplication(DYI_APP, OpenShiftUI.AppType.DIY);
+		deleteOpenShiftApplication(DYI_APP, OpenShiftLabel.AppType.DIY);
 	}
 }

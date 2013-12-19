@@ -1,25 +1,29 @@
 package org.jboss.tools.openshift.ui.bot.test.explorer;
 
-import org.eclipse.swtbot.swt.finder.SWTBot;
-import org.eclipse.swtbot.swt.finder.waits.Conditions;
-import org.eclipse.swtbot.swt.finder.waits.ICondition;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotButton;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import org.jboss.reddeer.junit.logging.Logger;
+import org.jboss.reddeer.swt.condition.JobIsRunning;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.tree.DefaultTree;
+import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.reddeer.workbench.view.impl.WorkbenchView;
 import org.jboss.tools.openshift.ui.bot.util.OpenShiftExplorerView;
-import org.jboss.tools.openshift.ui.bot.util.OpenShiftUI;
 import org.jboss.tools.openshift.ui.bot.util.TestProperties;
-import org.jboss.tools.ui.bot.ext.SWTTestExt;
-import org.jboss.tools.ui.bot.ext.condition.NonSystemJobRunsCondition;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
-import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.junit.Before;
 import org.junit.Test;
 
-@Require(clearWorkspace = true)
-public class Connection extends SWTTestExt {
+public class Connection {
 
 	@Before
 	public void setUpServer() {
+		try {
+			new WorkbenchView("Welcome").close();
+		} catch (UnsupportedOperationException ex) {}
+		
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		
 		TestProperties.put("openshift.server.url", System.getProperty("libra.server"));
 		TestProperties.put("openshift.user.name", System.getProperty("user.name"));
 		TestProperties.put("openshift.user.pwd", System.getProperty("user.pwd"));
@@ -27,68 +31,31 @@ public class Connection extends SWTTestExt {
 	
 	@Test
 	public void canCreateConnectionToOpenShiftAccount() {
-		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S, TIME_1S);
+		OpenShiftExplorerView openshiftView = new OpenShiftExplorerView();
+		openshiftView.openConnectionShell();
 		
-		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
-		bot.sleep(TIME_1S);
-		explorer.getConnectionToolButton().click();
-		bot.sleep(TIME_1S);
-		
-//		TODO: See: https://issues.jboss.org/browse/JBIDE-10939
-//		explorer.show();
-//		explorer.bot().menu("New Connection...").click();
-
-		// open credentials dialog
-		SWTBotShell shell = bot.waitForShell(OpenShiftUI.Shell.CREDENTIALS);
-		// select openshift url
-		bot.checkBox(0).deselect();
-		bot.waitWhile(new ICondition() {
-			@Override
-			public boolean test() throws Exception {
-				// TODO Auto-generated method stub
-				return !bot.comboBox(1).isEnabled();
-			}
-			@Override
-			public String getFailureMessage() {
-				// TODO Auto-generated method stub
-				return "blah";
-			}
-			@Override
-			public void init(SWTBot bot) {
-				// TODO Auto-generated method stub
-			}
-			
-		});
-		bot.comboBox(1).setText(TestProperties.get("openshift.server.url"));
-
-		// set wrong user credentials
-		bot.text(0).setText(TestProperties.get("openshift.user.name"));
-		bot.text(1).setText(TestProperties.get("openshift.user.wrongpwd"));
-		bot.checkBox(1).deselect();
-
-		SWTBotButton finishButton = bot.button(IDELabel.Button.FINISH);
-		// try to move forward
-		finishButton.click();
-
+		// wrong credentials
+		openshiftView.connectToOpenShift(TestProperties.get("openshift.server.url"), TestProperties.get("openshift.user.name"),
+				TestProperties.get("openshift.user.wrongpwd"), false);
+				
 		// wait for credentials validation
-		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S);
-
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		
 		assertFalse("Finish button shouldn't be enabled.",
-				finishButton.isEnabled());
+				new PushButton("Finish").isEnabled());
 
-		// set correct user credentials and do not save it to secure storage
-		bot.text(0).setText(TestProperties.get("openshift.user.name"));
-		bot.text(1).setText(TestProperties.get("openshift.user.pwd"));
-		bot.checkBox(1).deselect();
-		// create connection to OpenShift account
-		finishButton.click();
-
-		// wait for credentials validation
-		bot.waitUntil(Conditions.shellCloses(shell), TIME_20S);
-		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S, TIME_1S);
-
-		log.info("*** OpenShift SWTBot Tests: Credentials validated. ***");
-		log.info("*** OpenShift SWTBot Tests: Connection to OpenShift established. ***");
+		// set correct user credentials
+		openshiftView.connectToOpenShift(TestProperties.get("openshift.server.url"), TestProperties.get("openshift.user.name"),
+				TestProperties.get("openshift.user.pwd"), false);
+		
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		
+		openshiftView.open();
+		assertTrue("Connection has not been established", new DefaultTree().getItems().size() > 0);
+		
+		Logger logger = new Logger(this.getClass());
+		logger.info("*** OpenShift RedDeer Tests: Credentials validated. ***");
+		logger.info("*** OpenShift RedDeer Tests: Connection to OpenShift established. ***");
 	}
 	
 }
