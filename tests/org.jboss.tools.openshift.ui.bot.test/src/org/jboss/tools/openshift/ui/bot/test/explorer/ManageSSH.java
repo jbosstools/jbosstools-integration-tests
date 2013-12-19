@@ -1,18 +1,24 @@
 package org.jboss.tools.openshift.ui.bot.test.explorer;
 
 import java.util.Date;
-
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
+import org.jboss.reddeer.swt.condition.ButtonWithTextIsActive;
+import org.jboss.reddeer.swt.condition.JobIsRunning;
+import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.tools.openshift.ui.bot.util.OpenShiftUI;
-import org.jboss.tools.ui.bot.ext.SWTTestExt;
-import org.jboss.tools.ui.bot.ext.condition.NonSystemJobRunsCondition;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
-import org.jboss.tools.ui.bot.ext.types.IDELabel;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.table.DefaultTable;
+import org.jboss.reddeer.swt.impl.text.DefaultText;
+import org.jboss.reddeer.swt.impl.tree.DefaultTree;
+import org.jboss.reddeer.swt.wait.AbstractWait;
+import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.tools.openshift.ui.bot.util.OpenShiftExplorerView;
+import org.jboss.tools.openshift.ui.bot.util.OpenShiftLabel;
 import org.junit.Test;
 
-@Require(clearWorkspace = true)
-public class ManageSSH extends SWTTestExt {
+public class ManageSSH {
 
 	public static final String SSH_KEY_NAME = "id" + new Date().getTime();
 
@@ -29,47 +35,66 @@ public class ManageSSH extends SWTTestExt {
 	}
 
 	private void openSSHShell() {
-		SWTBotView openshiftExplorer = open
-				.viewOpen(OpenShiftUI.Explorer.iView);
+		OpenShiftExplorerView openshiftExplorer = new OpenShiftExplorerView();
+		openshiftExplorer.open();
 
-		openshiftExplorer.bot().tree().getAllItems()[0].select();
-		/* TODO WTF IT IS DOING? this hide menu item New. ContextMenu method let disappear submenus...
-		 comment in SWTBotExt is very helpful...:
-		"in e4, if the context menu contains submenus it appears
-		 as disposed after detection, so we use the ContextMenuHelper" */
-		ContextMenu menu = new ContextMenu(OpenShiftUI.Labels.MANAGE_SSH_KEYS);
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		
+		DefaultTree connection = new DefaultTree(0);
+		connection.getItems().get(0).select();
+		
+		ContextMenu menu = new ContextMenu(OpenShiftLabel.Labels.MANAGE_SSH_KEYS);
 		menu.select();		
-		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_20S, TIME_5S);
 		
-		bot.sleep(5000);
-		bot.shell("Manage SSH Keys").activate();
-		bot.sleep(2000);
-		bot.buttonInGroup("Refresh...", "SSH Public Keys").click();
-		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S, TIME_1S);
+		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
+		new WaitUntil(new ShellWithTextIsAvailable("Manage SSH Keys"), TimePeriod.LONG);
 		
-	}
-	
-	private void createNewSSHKey() {
-		bot.buttonInGroup("New...", "SSH Public Keys").click();
-		bot.textInGroup("New SSH Key", 0).setText(SSH_KEY_NAME);
-		bot.textInGroup("New SSH Key", 2).setText("openshift_id");
-
-		bot.button(IDELabel.Button.FINISH).click();
-		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S, TIME_1S);
+		new DefaultShell("Manage SSH Keys").setFocus();
+		new PushButton("Refresh...").click();
+		
+		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 	}
 	
 	private void removeAllKeys() {
-		bot.sleep(TIME_1S);
-		while (bot.table(0).rowCount() > 0) {
-			bot.table(0).getTableItem(0).select();	
-			bot.buttonInGroup("Remove...", "SSH Public Keys").click();
-			bot.button(IDELabel.Button.OK).click();
-			bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S, TIME_5S);
+		new DefaultShell("Manage SSH Keys").setFocus();
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		
+		// bcs. of not accessible table SOMETIMES
+		AbstractWait.sleep(3000);
+		
+		while (new DefaultTable().getItems().size() > 0) {
+			new DefaultTable().getItem(0).select();
+			new WaitUntil(new ButtonWithTextIsActive(new PushButton("Remove...")), TimePeriod.LONG);
+			new PushButton("Remove...").click();
+			
+			new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+			
+			new PushButton(OpenShiftLabel.Button.OK).click();
+			
+			new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		}
+	}
+		
+	private void createNewSSHKey() {
+		new PushButton("New...").click();
+		
+		new WaitUntil(new ShellWithTextIsAvailable("New SSH Key"), TimePeriod.LONG);
+		
+		new DefaultShell("New SSH Key").setFocus();
+		
+		new DefaultText(0).setText(SSH_KEY_NAME);
+		new DefaultText(2).setText("openshift_id");
+
+		new PushButton(OpenShiftLabel.Button.FINISH).click();
+
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
 	
 	private void closeSSHShell() {
-		bot.button(IDELabel.Button.OK).click();
-		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S, TIME_1S);
+		new DefaultShell("Manage SSH Keys").setFocus();
+		
+		new PushButton(OpenShiftLabel.Button.OK).click();
+		
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
 }

@@ -12,18 +12,20 @@
 	<version>4.2.0-SNAPSHOT</version>
 	<name>integration-tests.all</name>
 	<packaging>pom</packaging>
-	<!-- 
-	  Build and run all tests:
-	    mvn clean install -B -U -fae -P pack200 -Djbosstools-nightly=http://download.jboss.org/jbosstools/updates/nightly/core/4.1.kepler/ -Djbosstools-nightly-staging-composite=http://download.jboss.org/jbosstools/builds/staging/_composite_/core/4.1.kepler/ -Dmaven.test.failure.ignore=true -Dmaven.test.error.ignore=true
-	  Build and run no tests:
-	    mvn clean install -B -U -fae -P pack200 -Djbosstools-nightly=http://download.jboss.org/jbosstools/updates/nightly/core/4.1.kepler/ -Djbosstools-nightly-staging-composite=http://download.jboss.org/jbosstools/builds/staging/_composite_/core/4.1.kepler/ -Dmaven.test.failure.ignore=true -Dmaven.test.error.ignore=true -DskipTests
-	  Run tests:
-      mvn verify -B -U -fae -P pack200 -Djbosstools-nightly=http://download.jboss.org/jbosstools/updates/nightly/core/4.1.kepler/ -Djbosstools-nightly-staging-composite=http://download.jboss.org/jbosstools/builds/staging/_composite_/core/4.1.kepler/ -Dmaven.test.failure.ignore=true -Dmaven.test.error.ignore=true -f tests/pom.xml 
-	-->
+	<!-- Build and run all tests: mvn clean install -B -U -fae -P pack200 -Djbosstools-nightly=http://download.jboss.org/jbosstools/updates/nightly/core/4.1.kepler/ 
+		-Djbosstools-nightly-staging-composite=http://download.jboss.org/jbosstools/builds/staging/_composite_/core/4.1.kepler/ 
+		-Dmaven.test.failure.ignore=true -Dmaven.test.error.ignore=true Build and 
+		run no tests: mvn clean install -B -U -fae -P pack200 -Djbosstools-nightly=http://download.jboss.org/jbosstools/updates/nightly/core/4.1.kepler/ 
+		-Djbosstools-nightly-staging-composite=http://download.jboss.org/jbosstools/builds/staging/_composite_/core/4.1.kepler/ 
+		-Dmaven.test.failure.ignore=true -Dmaven.test.error.ignore=true -DskipTests 
+		Run tests: mvn verify -B -U -fae -P pack200 -Djbosstools-nightly=http://download.jboss.org/jbosstools/updates/nightly/core/4.1.kepler/ 
+		-Djbosstools-nightly-staging-composite=http://download.jboss.org/jbosstools/builds/staging/_composite_/core/4.1.kepler/ 
+		-Dmaven.test.failure.ignore=true -Dmaven.test.error.ignore=true -f tests/pom.xml -->
 
 	<properties>
 		<tycho.scmUrl>scm:git:https://github.com/jbosstools/jbosstools-integration-tests.git</tycho.scmUrl>
-		<!-- URLs needed to resolve dependencies at build time (see <repositories> below) and at install time (see site/pom.xml#associateSites) -->
+		<!-- URLs needed to resolve dependencies at build time (see <repositories> 
+			below) and at install time (see site/pom.xml#associateSites) -->
 		<reddeer-nightly-staging-site>http://download.jboss.org/jbosstools/builds/staging/RedDeer_master/all/repo/</reddeer-nightly-staging-site>
 		<jbosstools-integrationtests-site>http://download.jboss.org/jbosstools/updates/nightly/integrationtests/master/</jbosstools-integrationtests-site>
 		<jbosstools-site>http://download.jboss.org/jbosstools/updates/nightly/core/${jbosstools-site-stream}/</jbosstools-site>
@@ -41,7 +43,7 @@
 			<id>jbosstools-integrationtests-site</id>
 			<url>${jbosstools-integrationtests-site}</url>
 			<layout>p2</layout>
-		</repository> 
+		</repository>
 		<repository>
 			<id>reddeer-nightly-staging-site</id>
 			<url>${reddeer-nightly-staging-site}</url>

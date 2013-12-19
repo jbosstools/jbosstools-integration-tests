@@ -10,6 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.openshift.ui.bot.test;
 
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.openshift.ui.bot.test.app.CreateDeleteEWSApp;
 import org.jboss.tools.openshift.ui.bot.test.app.CreateDeleteJBossApp;
 import org.jboss.tools.openshift.ui.bot.test.app.CreateDeleteJenkinsApp;
@@ -33,12 +34,11 @@ import org.jboss.tools.openshift.ui.bot.test.explorer.Connection;
 import org.jboss.tools.openshift.ui.bot.test.explorer.CreateAdapter;
 import org.jboss.tools.openshift.ui.bot.test.explorer.ManageSSH;
 import org.jboss.tools.openshift.ui.bot.test.explorer.OpenShiftDebugFeatures;
-import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
 /**
- * <b>OpenShift SWTBot TestSuite</b>
+ * <b>OpenShift RedDeer TestSuite</b>
  * <br>
  * Test for OpenShift Enterprise private cloud. 
  * <b>
@@ -47,6 +47,7 @@ import org.junit.runners.Suite.SuiteClasses;
  * 
  * @author mlabuda
  */
+@RunWith(RedDeerSuite.class)
 @SuiteClasses({
 	/* Connection stuff */
 	Connection.class, 
@@ -88,7 +89,6 @@ import org.junit.runners.Suite.SuiteClasses;
 	CreateDeleteScaledRubyApp.class, 
 
 })
-@RunWith(RequirementAwareSuite.class)
 public class OpenShiftEnterpriseBotTests {
 	
 }

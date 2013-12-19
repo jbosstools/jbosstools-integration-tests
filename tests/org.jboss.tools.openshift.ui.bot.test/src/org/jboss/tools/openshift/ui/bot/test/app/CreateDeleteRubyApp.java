@@ -2,16 +2,16 @@ package org.jboss.tools.openshift.ui.bot.test.app;
 
 import java.util.Date;
 
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.tools.openshift.ui.bot.test.OpenShiftBotTest;
-import org.jboss.tools.openshift.ui.bot.util.OpenShiftUI;
+import org.jboss.tools.openshift.ui.bot.util.OpenShiftLabel;
 import org.jboss.tools.openshift.ui.bot.util.TestProperties;
 import org.jboss.tools.openshift.ui.bot.util.TestUtils;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-@Require(clearWorkspace = true)
+@CleanWorkspace
 public class CreateDeleteRubyApp extends OpenShiftBotTest {
 
 	private final String RUBY_APP_NAME = TestProperties
@@ -26,13 +26,13 @@ public class CreateDeleteRubyApp extends OpenShiftBotTest {
 	@Test
 	public void canCreateRubyApp() {
 		createOpenShiftApplication(RUBY_APP_NAME,
-				OpenShiftUI.AppType.RUBY_1_9);
+				OpenShiftLabel.AppType.RUBY_1_9);
 	}
 
 	@After
 	public void canDeleteRubyApp() {
 		deleteOpenShiftApplication(RUBY_APP_NAME,
-				OpenShiftUI.AppType.RUBY_1_9);
+				OpenShiftLabel.AppType.RUBY_1_9);
 	}
 
 }

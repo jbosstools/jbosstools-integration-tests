@@ -1,162 +1,176 @@
 package org.jboss.tools.openshift.ui.bot.test.explorer;
 
-import java.util.Date;
+import static org.junit.Assert.assertFalse;
 
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import java.util.Date;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
+import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.swt.condition.JobIsRunning;
+import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.text.DefaultText;
+import org.jboss.reddeer.swt.impl.tree.DefaultTree;
+import org.jboss.reddeer.swt.wait.AbstractWait;
+import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.openshift.ui.bot.test.OpenShiftBotTest;
-import org.jboss.tools.openshift.ui.bot.util.OpenShiftUI;
-import org.jboss.tools.ui.bot.ext.condition.NonSystemJobRunsCondition;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
-import org.jboss.tools.ui.bot.ext.types.IDELabel;
+import org.jboss.tools.openshift.ui.bot.util.OpenShiftExplorerView;
+import org.jboss.tools.openshift.ui.bot.util.OpenShiftLabel;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Test class for tailing remote files, port forwarding, opening web browser & displaying env.variables.
- * To prevent creation of OpenShift application for each test, all tests are included in one test method.
- * 
- * @author sbunciak, mlabuda
- *
- */
-@Require(clearWorkspace = true)
+* Test class for tailing remote files, port forwarding, opening web browser & displaying env.variables.
+* To prevent creation of OpenShift application for each test, all tests are included in one test method.
+*
+* @author mlabuda
+*
+*/
 public class OpenShiftDebugFeatures extends OpenShiftBotTest {
 
-	private final String DYI_APP = "diyapp" + new Date().getTime();
+        private final String DYI_APP = "diyapp" + new Date().getTime();
 
-	@Before
-	public void createDYIApp() {
-		createOpenShiftApplication(DYI_APP, OpenShiftUI.AppType.DIY);
-	}
-	
-	@Test
-	public void testDebugFeatures() {
-		canTailFiles();
-		canForwardPorts();
-		canOpenWebBrowser();
-		canShowEnvVariables();
-		canCreateEnvVariable();
-	}
-	
-	public void canTailFiles() {
-		openDebugFeature(OpenShiftUI.Labels.EXPLORER_TAIL_FILES);
-		bot.sleep(5000);
-		
-		bot.waitForShell(OpenShiftUI.Shell.TAIL_FILES);
-		bot.sleep(1000);
-		bot.button(IDELabel.Button.FINISH).click();
-		
-		// invoke another action for more log
-		openDebugFeature("Show in Web Browser");
-		
-		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 2, TIME_1S);
-		ConsoleView consoleView = new ConsoleView();
-		consoleView.open();
-		
-		assertFalse("Remote console should not be empty!", consoleView
-				.getConsoleText().isEmpty());
-	}
+        @Before
+        public void createDYIApp() {
+                createOpenShiftApplication(DYI_APP, OpenShiftLabel.AppType.DIY);
+        }
+       
+        @Test
+        public void testDebufFeaures() {
+        	canTailFiles();
+        	canForwardPorts();
+        	canOpenWebBrowser();
+        	canShowEnvVariables();
+        	canCreateEnvVariable();
+        }
+        
+        public void canTailFiles() {
+                openDebugFeature(OpenShiftLabel.Labels.EXPLORER_TAIL_FILES);
+                
+                new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.TAIL_FILES), TimePeriod.LONG);
+                
+                new DefaultShell(OpenShiftLabel.Shell.TAIL_FILES).setFocus();
+                new PushButton(OpenShiftLabel.Button.FINISH).click();
+                
+                // invoke another action for more log
+                openDebugFeature("Show in Web Browser");
+                
+                ConsoleView consoleView = new ConsoleView();
+                consoleView.open();
+                
+                assertFalse("Remote console should not be empty!", consoleView
+                                .getConsoleText().isEmpty());
+                new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+        }
 
-	public void canForwardPorts() {
-		openDebugFeature(OpenShiftUI.Labels.EXPLORER_PORTS);
+        public void canForwardPorts() {
+                openDebugFeature(OpenShiftLabel.Labels.EXPLORER_PORTS);
 
-		bot.waitForShell(OpenShiftUI.Shell.PORTS);
-		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 2, TIME_1S);
-		bot.sleep(TIME_5S);
-		bot.button("Start All").click(); 
-		
-		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 2, TIME_1S);
-		bot.button("OK").click();
+                new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.PORTS), TimePeriod.LONG);
+                
+                new DefaultShell(OpenShiftLabel.Shell.PORTS).setFocus();
+                new PushButton("Start All").click();
+                
+                AbstractWait.sleep(5000);
 
-		ConsoleView consoleView = new ConsoleView();
-		consoleView.open();
-		
-		assertFalse("Console should not be empty!", consoleView.getConsoleText()
-				.isEmpty());
+                new PushButton("OK").click();
 
-		open.viewOpen(OpenShiftUI.Explorer.iView);
-		openDebugFeature(OpenShiftUI.Labels.EXPLORER_PORTS);
-		
-		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 2, TIME_1S);
-		bot.waitForShell(OpenShiftUI.Shell.PORTS);
+                ConsoleView consoleView = new ConsoleView();
+                consoleView.open();
+                
+                assertFalse("Console should not be empty!", consoleView.getConsoleText()
+                                .isEmpty());
 
-		bot.button("Stop All").click();
-		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 2, TIME_1S);
-		bot.button("OK").click();
-	}
+                openDebugFeature(OpenShiftLabel.Labels.EXPLORER_PORTS);
+                
+                new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.PORTS), TimePeriod.LONG);
+                
+                new DefaultShell(OpenShiftLabel.Shell.PORTS).setFocus();
+                new PushButton("Stop All").click();
+                
+                AbstractWait.sleep(5000);
+                
+                new PushButton("OK").click();
+                new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+        }
 
-	public void canOpenWebBrowser() {
-		openDebugFeature("Show in Web Browser");
+        public void canOpenWebBrowser() {
+                openDebugFeature("Show in Web Browser");
 
-		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 2, TIME_1S);
-		// TODO find way to verify in internal browser, also in Republish class
-		// it is web editor!
-	}
+                new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+                // TODO find way to verify in internal browser, also in Republish class
+                // it is browser editor
+        }
 
-	public void canShowEnvVariables() {
-		openDebugFeature(OpenShiftUI.Labels.EXPLORER_ENV_VAR);
+        public void canShowEnvVariables() {
+                openDebugFeature(OpenShiftLabel.Labels.EXPLORER_ENV_VAR);
 
-		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 2, TIME_1S);
+                new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 
-		ConsoleView consoleView = new ConsoleView();
-		consoleView.open();
-		assertFalse("Console should not be empty!", consoleView.getConsoleText()
-				.isEmpty());
-	}
+                ConsoleView consoleView = new ConsoleView();
+                consoleView.open();
+                assertFalse("Console should not be empty!", consoleView.getConsoleText()
+                                .isEmpty());
+                new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+        }
 
-	public void canCreateEnvVariable() {
-		openDebugFeature("Edit Environment Variables...");
-		
-		// Need fix shell name since JBDS 7.1.0.CR1 or JBT 4.1.1.CR1
-		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 2, TIME_1S);
-		bot.sleep(7000);
-		
-		bot.waitForShell("Manage Application Environment Variable(s) for application " 
-				+ DYI_APP).activate();
-		bot.sleep(1000);
-		
-		bot.button("Add...").click();
-		bot.waitForShell("Edit Environment variable").activate();
-		
-		bot.text(0).setText("myVariable");
-		bot.text(1).setText("myValue");
-		bot.sleep(TIME_1S);
-		
-		bot.button("OK").click();
-		bot.sleep(3000);
-		
-		bot.button("Finish").click();
-		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S, TIME_1S);
-	}
-	
-	
-	private void openDebugFeature(String label) {
-		SWTBotView openshiftExplorer = open
-				.viewOpen(OpenShiftUI.Explorer.iView);
+        public void canCreateEnvVariable() {
+                openDebugFeature("Edit Environment Variables...");
+                
+                new WaitUntil(new ShellWithTextIsAvailable(
+                		"Manage Application Environment Variable(s) for application " + DYI_APP), 
+                		TimePeriod.LONG);
+                
+                new DefaultShell("Manage Application Environment Variable(s) for application " + 
+                		DYI_APP).setFocus();
+                new PushButton("Add...").click();
+                
+                new WaitUntil(new ShellWithTextIsAvailable("Edit Environment variable"), TimePeriod.LONG);
+                
+                new DefaultShell("Edit Environment variable").setFocus();
+                new DefaultText(0).setText("myVariable");
+                new DefaultText(1).setText("myValue");
+                new PushButton("OK").click();
 
-		SWTBotTreeItem account = openshiftExplorer.bot().tree().getAllItems()[0];
-		account.contextMenu("Refresh").click();
-		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 3, TIME_1S);
-		
-		account.expand();
-		bot.sleep(3000);
-				
-		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 3, TIME_1S);
-		
-		account.getNode(0).expand();
-		bot.sleep(3000);
-				
-		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 3, TIME_1S);
-		
-		account.getNode(0).getNode(0).select().contextMenu(label).click();
-	}
-	
-	@After
-	public void deleteDIYApp() {
-		deleteOpenShiftApplication(DYI_APP, OpenShiftUI.AppType.DIY);
-	}
-	
+                new WaitUntil(new ShellWithTextIsAvailable("Manage Application Environment Variable(s) for application " + 
+                		DYI_APP), TimePeriod.LONG);
+                
+                new DefaultShell("Manage Application Environment Variable(s) for application " + 
+                		DYI_APP).setFocus();
+                new PushButton("Finish").click();
+                
+                new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+        }
+        
+        private void openDebugFeature(String label) {
+		        OpenShiftExplorerView explorer = new OpenShiftExplorerView();
+		        explorer.open();
+
+		        TreeItem connection = new DefaultTree().getItems().get(0);
+		        connection.select();
+		        new ContextMenu("Refresh").select();
+		        
+		        new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		        
+		        connection.expand();
+		        
+		        new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		        
+		        connection.getItems().get(0).expand();
+		        
+		        new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		        
+		        connection.getItems().get(0).getItems().get(0).select();
+		        new ContextMenu(label).select();
+        }
+        
+        @After
+        public void deleteDIYApp() {
+                deleteOpenShiftApplication(DYI_APP, OpenShiftLabel.AppType.DIY);
+        }   
 
 }
