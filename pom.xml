@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.jboss.tools</groupId>
 		<artifactId>parent</artifactId>
-		<version>4.2.0.Alpha1-SNAPSHOT</version>
+		<version>4.2.0.Alpha2-SNAPSHOT</version>
 	</parent>
 	<groupId>org.jboss.tools</groupId>
 	<artifactId>integration-tests</artifactId>
@@ -25,7 +25,7 @@
 		<tycho.scmUrl>scm:git:https://github.com/jbosstools/jbosstools-integration-tests.git</tycho.scmUrl>
 		<!-- URLs needed to resolve dependencies at build time (see <repositories> below) and at install time (see site/pom.xml#associateSites) -->
 		<reddeer-nightly-staging-site>http://download.jboss.org/jbosstools/builds/staging/RedDeer_master/all/repo/</reddeer-nightly-staging-site>
-		<jbosstools-integrationtests-site>http://download.jboss.org/jbosstools/updates/nightly/integrationtests/4.1.kepler/</jbosstools-integrationtests-site>
+		<jbosstools-integrationtests-site>http://download.jboss.org/jbosstools/updates/nightly/integrationtests/master/</jbosstools-integrationtests-site>
 	</properties>
 
 	<modules>
