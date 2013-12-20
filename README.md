@@ -80,3 +80,36 @@ And then [generate a pull-request](http://help.github.com/pull-requests/) where 
 review the proposed changes, comment on them, discuss them with you,
 and if everything is good merge the changes right into the official
 repository.
+
+## Branching process check-list
+
+Integration Tests have different life cycle than other repos in JBT - we typically 
+don’t need to develop tests for next versions of JBT until the current version under 
+development is released. So while we’re testing the current version, we’re using master.
+
+Once a major version of JBT is released (e.g. JBT 4.1.1.Final), create a branch, 
+e.g. jbosstools-4.1.x
+
+In the newly created maintenance branch, these steps are needed:
+
+*   Fix RedDeer repo url in root pom.xml to point to something stable rather then the ever-moving RedDeer master repo
+
+*   Update integration tests repo url in root pom.xml to point to a maintenance repo, e.g.:
+    
+         http://download.jboss.org/jbosstools/updates/nightly/integrationtests/4.1.kepler/
+
+In the master branch, these steps are needed:
+
+*   Update parent pom dependency to new version, e.g. 4.2.0.Alpha1-SNAPSHOT
+
+*   Update integration tests repo url in root pom.xml 
+
+*   Update all plugins/tests/poms version to the new version:
+
+        $ mvn org.eclipse.tycho:tycho-versions-plugin:set-version -DnewVersion=<version> 
+
+    where version is e.g. 4.2.0-SNAPSHOT
+
+*   Update range for bot.ext in all manifests to the new version, e.g.:
+
+        $ find . -iname manifest.mf|xargs perl -pi -e 's/\[4.1.0,4.2.0\)/[4.2.0,4.3.0)/' 
