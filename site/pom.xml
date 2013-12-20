@@ -15,9 +15,9 @@
 	</repositories>
 
 	<properties>
-		<update.site.name>JBoss Tools 4.1 - Integration Tests</update.site.name>
+		<update.site.name>JBoss Tools 4.2 - Integration Tests</update.site.name>
 		<update.site.description>Nightly Build</update.site.description>
-		<target.eclipse.version>4.3 (Kepler)</target.eclipse.version>
+		<target.eclipse.version>4.4 (Luna)</target.eclipse.version>
 		<siteTemplateFolder>siteTemplateFolder</siteTemplateFolder>
 	</properties>
 
