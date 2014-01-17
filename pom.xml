@@ -26,6 +26,8 @@
 		<!-- URLs needed to resolve dependencies at build time (see <repositories> below) and at install time (see site/pom.xml#associateSites) -->
 		<reddeer-nightly-staging-site>http://download.jboss.org/jbosstools/builds/staging/RedDeer_master/all/repo/</reddeer-nightly-staging-site>
 		<jbosstools-integrationtests-site>http://download.jboss.org/jbosstools/updates/nightly/integrationtests/master/</jbosstools-integrationtests-site>
+		<jbosstools-site>http://download.jboss.org/jbosstools/updates/nightly/core/${jbosstools-site-stream}/</jbosstools-site>
+		<jbosstools-tests-site>http://download.jboss.org/jbosstools/updates/nightly/coretests/${jbosstools-site-stream}/</jbosstools-tests-site>
 	</properties>
 
 	<modules>
@@ -44,6 +46,16 @@
 			<id>reddeer-nightly-staging-site</id>
 			<url>${reddeer-nightly-staging-site}</url>
 			<layout>p2</layout>
+		</repository>
+		<repository>
+			<id>jbosstools</id>
+			<layout>p2</layout>
+			<url>${jbosstools-site}</url>
+		</repository>
+		<repository>
+			<id>jbosstools-tests</id>
+			<layout>p2</layout>
+			<url>${jbosstools-tests-site}</url>
 		</repository>
 	</repositories>
 </project>
