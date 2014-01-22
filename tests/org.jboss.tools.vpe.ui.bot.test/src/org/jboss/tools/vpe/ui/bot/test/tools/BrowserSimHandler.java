@@ -35,7 +35,9 @@ import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
 import org.jboss.tools.ui.bot.ext.helper.ReflectionsHelper;
 import org.jboss.tools.ui.bot.ext.parts.SWTBotBrowserExt;
 import org.jboss.tools.vpe.browsersim.BrowserSimRunner;
+import org.jboss.tools.vpe.browsersim.browser.PlatformUtil;
 import org.jboss.tools.vpe.browsersim.ui.BrowserSim;
+import org.jboss.tools.vpe.browsersim.util.BrowserSimUtil;
 
 /**
  * Handles testing functionality for BrowserSim
@@ -58,11 +60,22 @@ public class BrowserSimHandler {
    */
   public BrowserSimHandler(final String url , SWTBot bot , long timeOut){
     this.bot = bot;
+    final boolean isJavaFxAvailable;
+    
+    if (PlatformUtil.OS_LINUX.equals(PlatformUtil.getOs())) {
+      isJavaFxAvailable = false; // JavaFx web engine is not supported on Linux
+    } else {
+      isJavaFxAvailable = BrowserSimUtil.loadJavaFX();
+      if (isJavaFxAvailable) {
+        BrowserSimUtil.loadEngines();
+      }
+    }
+        
     BrowserSim browserSim = UIThreadRunnable.syncExec(new Result<BrowserSim>() {
       @Override
       public BrowserSim run() {
         BrowserSim newBrowserSim = new BrowserSim(url, Display.getCurrent().getActiveShell());
-        newBrowserSim.open();
+        newBrowserSim.open(false);
         return newBrowserSim;
       }
     });
