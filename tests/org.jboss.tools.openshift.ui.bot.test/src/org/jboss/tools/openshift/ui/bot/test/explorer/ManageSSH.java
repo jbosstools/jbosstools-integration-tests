@@ -63,7 +63,7 @@ public class ManageSSH {
 		AbstractWait.sleep(3000);
 		
 		while (new DefaultTable().getItems().size() > 0) {
-			new DefaultTable().getItem(0).select();
+			new DefaultTable().getItems().get(0).select();
 			new WaitUntil(new ButtonWithTextIsActive(new PushButton("Remove...")), TimePeriod.LONG);
 			new PushButton("Remove...").click();
 			

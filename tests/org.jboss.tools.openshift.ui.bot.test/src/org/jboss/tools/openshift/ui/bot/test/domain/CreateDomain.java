@@ -90,6 +90,8 @@ public class CreateDomain {
 			new DefaultShell("Domains").setFocus();
 		}
 		
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		
 		if (multipleDomain) {
 			assertTrue("There is not multiple domains", new DefaultTable().rowCount() == 2);
 		} else {
