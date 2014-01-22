@@ -30,6 +30,7 @@ public class OpenShiftLabel {
 		
 		// Those are for OpenShift Online
 		public static final String CRON_ONLINE = "Cron 1.4 (cron-1.4)";
+		public static final String MYSQL_ONLINE = "MySQL 5.1 (mysql-5.1)";
 	}
 	
 	public static class Labels {
@@ -67,6 +68,7 @@ public class OpenShiftLabel {
 		public static final String FINISH = "Finish";
 		public static final String OK = "OK";
 		public static final String YES = "Yes";
+		public static final String ADVANCED = " Advanced >> ";
 	}
 	
 }

@@ -11,6 +11,7 @@
 package org.jboss.tools.openshift.ui.bot.test;
 
 import org.jboss.tools.openshift.ui.bot.test.app.CreateAdapterFromServerView;
+import org.jboss.tools.openshift.ui.bot.test.app.CreateApplicationFromGithub;
 import org.jboss.tools.openshift.ui.bot.test.app.RepublishApp;
 import org.jboss.tools.openshift.ui.bot.test.app.RestartApplication;
 import org.jboss.tools.openshift.ui.bot.test.cartridge.EmbedCartridge;
@@ -48,7 +49,7 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
  	RenameDomain.class,
 
 	/* Application */
- 	// TODO create app from github template
+ 	CreateApplicationFromGithub.class,
  	// TODO deploy existing app
  	CreateAdapter.class,
  	CreateAdapterFromServerView.class,
