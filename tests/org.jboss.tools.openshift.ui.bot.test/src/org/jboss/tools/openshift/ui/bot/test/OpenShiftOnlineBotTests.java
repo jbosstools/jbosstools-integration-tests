@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007-20013 Red Hat, Inc.
+ * Copyright (c) 2007-2014 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -10,6 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.openshift.ui.bot.test;
 
+import org.jboss.tools.openshift.ui.bot.test.app.CreateAdapterFromServerView;
 import org.jboss.tools.openshift.ui.bot.test.app.RepublishApp;
 import org.jboss.tools.openshift.ui.bot.test.app.RestartApplication;
 import org.jboss.tools.openshift.ui.bot.test.cartridge.EmbedCartridge;
@@ -20,12 +21,13 @@ import org.jboss.tools.openshift.ui.bot.test.explorer.Connection;
 import org.jboss.tools.openshift.ui.bot.test.explorer.CreateAdapter;
 import org.jboss.tools.openshift.ui.bot.test.explorer.ManageSSH;
 import org.jboss.tools.openshift.ui.bot.test.explorer.OpenShiftDebugFeatures;
-import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
+import org.jboss.tools.openshift.ui.bot.util.CleanUp;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 
 /**
- * <b>OpenShift SWTBot TestSuite</b>
+ * <b>OpenShift RedDeer TestSuite</b>
  * <br>
  * Tests for OpenShift Online - production.
  * <b>
@@ -34,31 +36,33 @@ import org.junit.runners.Suite.SuiteClasses;
  * 
  * @author mlabuda
  */
+@RunWith(RedDeerSuite.class)
 @SuiteClasses({
-	/* Connection stuff */
+	/* Connection */
 	Connection.class, 
 	ManageSSH.class, 
 	
-	/* Domain*/
+	/* Domain */
 	CreateDomain.class,
  	DeleteDomain.class,
  	RenameDomain.class,
 
-	/* Application creation*/
+	/* Application */
  	// TODO create app from github template
  	// TODO deploy existing app
  	CreateAdapter.class,
+ 	CreateAdapterFromServerView.class,
 	EmbedCartridge.class,
 	// TODO Conflict cartridge 
 	RepublishApp.class,
 	OpenShiftDebugFeatures.class,
- 	RestartApplication.class, 
+ 	RestartApplication.class,
  	// TODO import application
  	// TODO maven profile
  	// TODO multimaven app
-
+ 	
+ 	CleanUp.class
 })
-@RunWith(RequirementAwareSuite.class)
 public class OpenShiftOnlineBotTests {
 	
 }

@@ -1,23 +1,24 @@
 package org.jboss.tools.openshift.ui.bot.test.app;
 
 import java.util.Date;
-
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.browser.Browser;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
-import org.jboss.reddeer.eclipse.ui.browser.BrowserView;
-import org.jboss.reddeer.swt.impl.browser.InternalBrowser;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
+import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.swt.condition.JobIsRunning;
+import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.swt.exception.WaitTimeoutExpiredException;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
+import org.jboss.reddeer.swt.impl.tree.DefaultTree;
+import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.reddeer.workbench.editor.TextEditor;
 import org.jboss.tools.openshift.ui.bot.test.OpenShiftBotTest;
-import org.jboss.tools.openshift.ui.bot.util.OpenShiftUI;
-import org.jboss.tools.openshift.ui.bot.util.OpenShiftUI.WebBrowser;
-import org.jboss.tools.ui.bot.ext.condition.NonSystemJobRunsCondition;
-import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
-import org.jboss.tools.ui.bot.ext.parts.SWTBotBrowserExt;
-import org.jboss.tools.ui.bot.ext.types.IDELabel;
+import org.jboss.tools.openshift.ui.bot.util.OpenShiftExplorerView;
+import org.jboss.tools.openshift.ui.bot.util.OpenShiftLabel;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,75 +27,82 @@ public class RepublishApp extends OpenShiftBotTest {
 
 	private final String DYI_APP = "diyapp" + new Date().getTime();
 	
+	
+	private final String text = "<!doctype html> <html lang=\"en\"> <head> <meta charset=\"utf-8\"> " +
+			"<meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge,chrome=1\">  <title>Welcome to OpSh</title>" +
+			" <style> </head> <body> </body> </html>";
+	
 	@Before
 	public void createDYIApp() {
-		createOpenShiftApplication(DYI_APP, OpenShiftUI.AppType.DIY);
+		createOpenShiftApplication(DYI_APP, OpenShiftLabel.AppType.DIY);
 	}
 	
 	@Test
 	public void canModifyAndRepublishApp() {
-		projectExplorer.show();
-		bot.sleep(TIME_1S);
+		ProjectExplorer projectExplorer = new ProjectExplorer();
+		projectExplorer.open();
+		
+		Project project = projectExplorer.getProjects().get(0);
+		project.select();
+		project.getProjectItem("diy", "index.html").open();
+		
+		TextEditor editor = new TextEditor("index.html");
+		editor.setText(text);
+		editor.save();
+		editor.close();
+		
+		projectExplorer.open();
+		projectExplorer.getProjects().get(0).select();
+		new ContextMenu("Team", "Commit...").select();
+		
+		try {
+			new WaitUntil(new ShellWithTextIsAvailable("Identify Yourself"), TimePeriod.LONG);
+			new DefaultShell("Identify Yourself").setFocus();
+			new PushButton("OK").click();
+		} catch (WaitTimeoutExpiredException ex) {}
+		
+		new WaitUntil(new ShellWithTextIsAvailable("Commit Changes"), TimePeriod.LONG);
+		
+		new DefaultShell("Commit Changes").setFocus();		
+		new DefaultStyledText().setText("Commit");
+		new PushButton("Commit and Push").click();
+		
+		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
+		
+		new WaitUntil(new ShellWithTextIsAvailable("Push Results: " + DYI_APP + " - origin"));
+		new DefaultShell("Push Results: " + DYI_APP + " - origin").setFocus();
+		new PushButton("OK").click();
+		
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		
+		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
+		explorer.open();
+		
+		TreeItem connection = new DefaultTree().getAllItems().get(0);
+		connection.select();
+		new ContextMenu("Refresh").select();
+		
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		
+		connection.expand();
+		
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		
+		connection.getItems().get(0).expand();
+		
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		
+		connection.getItems().get(0).getItems().get(0).select();
+		new ContextMenu("Show in Web Browser").select();
 
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		
-		// TODO modify web page and check changes
-		SWTBotEditor indexEditor = projectExplorer.openFile(
-				DYI_APP + "  [" + DYI_APP + " master]", "diy", "index.html");
-		bot.sleep(TIME_5S);
-		
-		indexEditor.toTextEditor().selectLine(5);
-		indexEditor.toTextEditor().insertText(" <title>Welcome to OpSh</title>");
-		indexEditor.save();
-		
-		projectExplorer.show();
-		projectExplorer.bot().tree().select(0);
-		ContextMenuHelper.clickContextMenu(projectExplorer.bot().tree(),
-				"Team", "Commit...");
-		
-		// if the auth shell appears click on OK
-		if (bot.waitForShell("Identify Yourself") != null) {
-			bot.button("OK").click();
-		}
-
-		bot.waitForShell("Commit Changes");
-		bot.styledText(0).setText("comment");
-
-		bot.button("Commit and Push").click();
-		bot.sleep(TIME_1S);
-		
-		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_UNLIMITED, TIME_1S);
-
-		bot.button("OK").click();
-
-		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_UNLIMITED, TIME_1S);
-
-		SWTBotView openshiftExplorer = open
-				.viewOpen(OpenShiftUI.Explorer.iView);
-
-		SWTBotTreeItem account = openshiftExplorer.bot().tree().getAllItems()[0];
-		account.contextMenu("Refresh").click();
-		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 3, TIME_1S);
-		
-		account.expand();
-		bot.sleep(3000);
-				
-		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 3, TIME_1S);
-		
-		account.getNode(0).expand();
-		bot.sleep(3000);
-				
-		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 3, TIME_1S);
-		
-		account.getNode(0).getNode(0).select().contextMenu("Show in Web Browser").click();
-		
-		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 2, TIME_1S);
-
-		//TODO find a way to verify browsed page, also in DebugFeature
+		//TODO verify title with Browser Editor
 	}
 
 	@After
 	public void deleteDIYApp() {
-		deleteOpenShiftApplication(DYI_APP, OpenShiftUI.AppType.DIY);
+		deleteOpenShiftApplication(DYI_APP, OpenShiftLabel.AppType.DIY);
 	}
 	
 }
