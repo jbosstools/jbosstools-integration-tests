@@ -182,16 +182,24 @@ public class OpenShiftBotTest {
 		connection.select();
 		new ContextMenu(OpenShiftLabel.Labels.REFRESH).select();
 
-		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);	
+		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);	
+		
+		connection.select();
+		if (!connection.isExpanded()) {
+			connection.doubleClick();
+		}
+		
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		
 		TreeItem domainItem = connection.getItems().get(0);
 		domainItem.select();
-		domainItem.doubleClick();
+		if (!domainItem.isExpanded()) {
+			domainItem.doubleClick();
+		}
 		
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		
 		int applicationCount = domainItem.getItems().size();
-		
 		domainItem.getItem(APP_NAME + " " + APP_TYPE).select();
 		new ContextMenu(OpenShiftLabel.Labels.DELETE_APP).select();
 		
