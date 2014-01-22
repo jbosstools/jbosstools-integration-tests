@@ -170,7 +170,7 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase {
     } catch (WidgetNotFoundException wnfe) {
       SWTBot wiz = open.newObject(JBossToolsWebJSFJSFProject.LABEL);
       wiz.textWithLabel("Project Name*").setText(jsfProjectName); //$NON-NLS-1$
-      wiz.comboBoxWithLabel("Template*").setSelection("JSFKickStartWithoutLibs"); //$NON-NLS-1$ //$NON-NLS-2$
+      wiz.comboBoxWithLabel("Project Template*").setSelection("JSFKickStartWithoutLibs"); //$NON-NLS-1$ //$NON-NLS-2$
       wiz.button("Next >").click(); //$NON-NLS-1$
       wiz.comboBoxWithLabel("Runtime:*").setSelection(SWTTestExt.configuredState.getServer().name); //$NON-NLS-1$ //$NON-NLS-2$
       open.finish(wiz);
@@ -199,7 +199,7 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase {
       bot.button("Next >").click(); //$NON-NLS-1$
       bot.textWithLabel("Project Name*").setText(faceletsProjectName); //$NON-NLS-1$
       bot.comboBoxWithLabel("JSF Environment*").setSelection("JSF 1.2 with Facelets"); //$NON-NLS-1$ //$NON-NLS-2$
-      bot.comboBoxWithLabel("Template*").setSelection("FaceletsKickStartWithoutLibs"); //$NON-NLS-1$ //$NON-NLS-2$
+      bot.comboBoxWithLabel("Project Template*").setSelection("FaceletsKickStartWithoutLibs"); //$NON-NLS-1$ //$NON-NLS-2$
       bot.button("Next >").click(); //$NON-NLS-1$
 
       bot.comboBoxWithLabel("Runtime:*").setSelection(SWTTestExt.configuredState.getServer().name); //$NON-NLS-1$ //$NON-NLS-2$
