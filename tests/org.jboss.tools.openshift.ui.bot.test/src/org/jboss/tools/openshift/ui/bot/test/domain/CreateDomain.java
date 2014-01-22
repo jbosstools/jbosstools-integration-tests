@@ -1,29 +1,36 @@
 package org.jboss.tools.openshift.ui.bot.test.domain;
 
-import java.util.Random;
+import static org.junit.Assert.assertTrue;
 
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
-import org.jboss.tools.openshift.ui.bot.util.OpenShiftUI;
+import java.util.Random;
+import org.jboss.reddeer.junit.logging.Logger;
+import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.reddeer.swt.condition.JobIsRunning;
+import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.table.DefaultTable;
+import org.jboss.reddeer.swt.impl.text.DefaultText;
+import org.jboss.reddeer.swt.impl.tree.DefaultTree;
+import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.tools.openshift.ui.bot.util.OpenShiftExplorerView;
+import org.jboss.tools.openshift.ui.bot.util.OpenShiftLabel;
 import org.jboss.tools.openshift.ui.bot.util.TestProperties;
-import org.jboss.tools.ui.bot.ext.SWTTestExt;
-import org.jboss.tools.ui.bot.ext.condition.NonSystemJobRunsCondition;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Domain creation consists of creating the SSH key pair, storing user password
- * in the secure storage and creating the domain itself.
  * 
- * @author sbunciak, mlabuda
+ * @author  mlabuda
  * 
  */
-@Require(clearWorkspace = true)
-public class CreateDomain extends SWTTestExt {
+public class CreateDomain {
 
 	@Before
 	public void waitNoJobs() {
-		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S, TIME_1S);
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
 
 	@Test
@@ -31,51 +38,69 @@ public class CreateDomain extends SWTTestExt {
 		createDomain(true, false);
 	}
 	 
-	// be sure whether the given openshift server support multiple domains
+	// be sure that the given openshift server support multiple domains
 	public static void createDomain(boolean runFromCreateDomain, boolean multipleDomain) {
-		// open OpenShift Explorer
-		SWTBotView openshiftExplorer = open
-				.viewOpen(OpenShiftUI.Explorer.iView);
+		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
+		explorer.open();
 
-		openshiftExplorer.bot().tree().getAllItems()[0].select().contextMenu(OpenShiftUI.Labels.MANAGE_DOMAINS).click();
-		bot.sleep(TIME_5S);
-		bot.shell("Domains");
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		
+		DefaultTree connection = new DefaultTree(0);
+		connection.setFocus();
+		connection.getItems().get(0).select();
+		new ContextMenu(OpenShiftLabel.Labels.MANAGE_DOMAINS).select();
+		
+		new WaitUntil(new ShellWithTextIsAvailable("Domains"), TimePeriod.LONG);
+		
+		new DefaultShell("Domains").setFocus();
 		
 		if (runFromCreateDomain) {
-			assertTrue("Domain should not be set at this stage! Remove domains and run tests again", bot.tableInGroup("Domains").rowCount() == 0);
+			assertTrue("Domain should not be set at this stage! Remove domains and run tests again", new DefaultTable().rowCount() == 0);
 		}
 		
 		String domainName = TestProperties.get("openshift.domain") + new Random().nextInt(10000);
 		
-		bot.button("New...").click();
-		bot.sleep(TIME_5S);
-		bot.textWithLabel("Domain name").setText(domainName);
-		bot.sleep(TIME_1S);
-		bot.button("Finish").click();
+		new PushButton("New...").click();
 		
-		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_20S, TIME_1S);
-		log.info("*** OpenShift SWTBot Tests: Domain created. ***");		
+		new WaitUntil(new ShellWithTextIsAvailable("Create Domain"), TimePeriod.LONG);
+		
+		new DefaultShell("Create Domain").setFocus();
+		new DefaultText(0).setText(domainName);
+		new PushButton("Finish").click();
+		
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		
+		Logger logger = new Logger(CreateDomain.class);
+		logger.info("*** OpenShift RedDeer Tests: Domain created. ***");		
+		
+		new DefaultShell("Domains").setFocus();
 		
 		if (multipleDomain) {
-			bot.button("New...").click();
-			bot.sleep(TIME_5S);
-			bot.textWithLabel("Domain name").setText("seconddomain69");
-			bot.sleep(TIME_1S);
-			bot.button("Finish").click();
+			new PushButton("New...").click();
 			
-			bot.waitWhile(new NonSystemJobRunsCondition(), TIME_20S, TIME_1S);
-			log.info("*** OpenShift SWTBot Tests: Second Domain created. ***");
+			new WaitUntil(new ShellWithTextIsAvailable("Create Domain"), TimePeriod.LONG);
+			
+			new DefaultShell("Create Domain").setFocus();
+			new DefaultText().setText("seconddomain69");
+			new PushButton("Finish").click();
+			
+			new WaitWhile(new JobIsRunning(),TimePeriod.LONG);
+			logger.info("*** OpenShift RedDeer Tests: Second Domain created. ***");
+			
+			new DefaultShell("Domains").setFocus();
 		}
+		
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		
 		if (multipleDomain) {
-			assertTrue("There is not multiple domains", bot.table(0).rowCount() == 2);
+			assertTrue("There is not multiple domains", new DefaultTable().rowCount() == 2);
 		} else {
-			assertTrue("Domain does not exist", bot.table(0).rowCount() == 1);
+			assertTrue("Domain does not exist", new DefaultTable().rowCount() == 1);
 		}
 		
-		bot.button("OK").click();
+		new PushButton("OK").click();
 
-		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_20S, TIME_1S);
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
 	
 }

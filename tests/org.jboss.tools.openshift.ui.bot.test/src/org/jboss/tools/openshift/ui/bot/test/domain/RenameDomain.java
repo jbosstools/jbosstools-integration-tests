@@ -1,17 +1,22 @@
 package org.jboss.tools.openshift.ui.bot.test.domain;
 
-import java.util.Random;
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
-import org.eclipse.swtbot.swt.finder.waits.Conditions;
-import org.jboss.tools.openshift.ui.bot.util.OpenShiftUI;
-import org.jboss.tools.openshift.ui.bot.util.TestProperties;
-import org.jboss.tools.ui.bot.ext.SWTTestExt;
-import org.jboss.tools.ui.bot.ext.condition.NonSystemJobRunsCondition;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
+import org.jboss.reddeer.junit.logging.Logger;
+import org.jboss.reddeer.swt.condition.JobIsRunning;
+import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.table.DefaultTable;
+import org.jboss.reddeer.swt.impl.text.DefaultText;
+import org.jboss.reddeer.swt.impl.tree.DefaultTree;
+import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.tools.openshift.ui.bot.util.OpenShiftExplorerView;
+import org.jboss.tools.openshift.ui.bot.util.OpenShiftLabel;
 import org.junit.Test;
 
-@Require(clearWorkspace = true)
-public class RenameDomain extends SWTTestExt {
+public class RenameDomain {
 
 	@Test
 	public void canRenameDomain() {
@@ -19,35 +24,41 @@ public class RenameDomain extends SWTTestExt {
 	}
 	
 	private void renameDomain() {
-		// open OpenShift Explorer
-		SWTBotView openshiftExplorer = open
-				.viewOpen(OpenShiftUI.Explorer.iView);
-
-		openshiftExplorer.bot().tree().getAllItems()[0].contextMenu(OpenShiftUI.Labels.MANAGE_DOMAINS).click();
-
-		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_20S, TIME_5S);
+		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
+		explorer.open();
 		
-		bot.shell("Domains").activate();
+		DefaultTree connection = new DefaultTree(0);
+		connection.setFocus();
+		new ContextMenu(OpenShiftLabel.Labels.MANAGE_DOMAINS).select();
+
+		new WaitUntil(new ShellWithTextIsAvailable("Domains"), TimePeriod.LONG);
 		
-		String oldDomainName = bot.table(0).getTableItem(0).getText();
+		new DefaultShell("Domains").setFocus();
+		
+		String oldDomainName = new DefaultTable(0).getItem(0).getText();
 		String newDomainName = oldDomainName.substring(0, oldDomainName.length() - 2);
 		
-		bot.table(0).getTableItem(0).select();
-		bot.button("Edit...").click();
-		bot.sleep(TIME_1S);
-		bot.text(0).setText(newDomainName);
-		bot.sleep(TIME_5S);
-		bot.button("Finish").click();
+		new DefaultTable(0).getItem(0).select();
+		new PushButton("Edit...").click();
+		new DefaultText(0).setText(newDomainName);
+		new PushButton("Finish").click();
 		
-		bot.waitUntil(Conditions.shellCloses(bot.activeShell()), TIME_60S + TIME_30S);
-		log.info("*** OpenShift SWTBot Tests: Domain renamed. ***");
-
-		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_20S, TIME_1S);
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		Logger logger = new Logger(this.getClass());
 		
-		openshiftExplorer.bot().tree().getAllItems()[0].contextMenu(
-				OpenShiftUI.Labels.REFRESH).click();
+		logger.info("*** OpenShift RedDeer Tests: Domain renamed. ***");
 
-		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 3, TIME_1S);
+		new WaitUntil(new ShellWithTextIsAvailable("Domains"), TimePeriod.LONG);
+		
+		new DefaultShell("Domains").setFocus();
+		new PushButton("OK").click();
+		
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		
+		connection.setFocus();
+		new ContextMenu(OpenShiftLabel.Labels.REFRESH).select();
+
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
 
 }

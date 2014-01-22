@@ -1,73 +1,76 @@
 package org.jboss.tools.openshift.ui.bot.test.cartridge;
 
-import java.util.Date;
+import static org.junit.Assert.assertTrue;
 
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import java.util.Date;
+import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.swt.condition.JobIsRunning;
+import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.table.DefaultTable;
+import org.jboss.reddeer.swt.impl.tree.DefaultTree;
+import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.openshift.ui.bot.test.OpenShiftBotTest;
-import org.jboss.tools.openshift.ui.bot.util.OpenShiftUI;
-import org.jboss.tools.ui.bot.ext.condition.NonSystemJobRunsCondition;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
-import org.jboss.tools.ui.bot.ext.types.IDELabel;
+import org.jboss.tools.openshift.ui.bot.util.OpenShiftExplorerView;
+import org.jboss.tools.openshift.ui.bot.util.OpenShiftLabel;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-@Require(clearWorkspace = true)
 public class EmbedCartridge extends OpenShiftBotTest {
 
-	private final String DYI_APP = "dapp" + new Date().getTime();
+	private final String DYI_APP = "diyapp" + new Date().getTime();
 
 	@Before
 	public void createDYIApp() {
-		createOpenShiftApplication(DYI_APP, OpenShiftUI.AppType.DIY);
+		createOpenShiftApplication(DYI_APP, OpenShiftLabel.AppType.DIY);
 	}
 
 	@Test
 	public void canEmbedCartridge() {
-		embedCartrige(OpenShiftUI.Cartridge.CRON);
+		embedCartrige(OpenShiftLabel.Cartridge.CRON_ONLINE);
 	}
 
 	
-	private void embedCartrige(String cartridge) {
-
-		// open OpenShift Explorer
-		SWTBotView openshiftExplorer = open
-				.viewOpen(OpenShiftUI.Explorer.iView);
-
-		// get 1st account in OpenShift Explorer
-		SWTBotTreeItem account = openshiftExplorer.bot().tree().getAllItems()[0]
-				.doubleClick(); // expand the account
-
-		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_20S, TIME_1S);
-
-		assertTrue(account.getItems().length > 0);
-
-		// click on 'Embedd cartridges'
-		account.getNode(0).doubleClick();
+	public static void embedCartrige(String cartridge) {
+		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
+		explorer.open();
 		
-		account.getNode(0).getNode(0).contextMenu(OpenShiftUI.Labels.EDIT_CARTRIDGES)
-				.click();
+		TreeItem connection = new DefaultTree().getAllItems().get(0);
+		connection.expand();
 		
-		bot.waitForShell(OpenShiftUI.Shell.EDIT_CARTRIDGES);
-
-		bot.shell(OpenShiftUI.Shell.EDIT_CARTRIDGES).activate();
-		SWTBotTable cartridgeTable = bot.tableInGroup("Embeddable Cartridges");
-
-		cartridgeTable.getTableItem(cartridge).toggleCheck();
-
-		bot.button(IDELabel.Button.FINISH).click();
-
-		bot.waitForShell("Embedded Cartridges", TIME_60S * 3);
-		bot.button(IDELabel.Button.OK).click();
-
-		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_20S, TIME_1S);
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		
+		assertTrue(connection.getItems().size() > 0);
+		
+		connection.getItems().get(0).doubleClick();;
+		
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		
+		connection.getItems().get(0).getItems().get(0).select();
+		new ContextMenu(OpenShiftLabel.Labels.EDIT_CARTRIDGES).select();
+		
+		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.EDIT_CARTRIDGES));
+		
+		new DefaultShell(OpenShiftLabel.Shell.EDIT_CARTRIDGES).setFocus();
+		new DefaultTable().getItem(cartridge).setChecked(true);
+		new PushButton(OpenShiftLabel.Button.FINISH).click();
+		
+		new WaitUntil(new ShellWithTextIsAvailable("Embedded Cartridges"), TimePeriod.LONG);
+		
+		new DefaultShell("Embedded Cartridges").setFocus();
+		new PushButton(OpenShiftLabel.Button.OK).click();
+	
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
 
 	@After
 	public void deleteDIYApp() {
-		deleteOpenShiftApplication(DYI_APP, OpenShiftUI.AppType.DIY);
+		deleteOpenShiftApplication(DYI_APP, OpenShiftLabel.AppType.DIY);
 	}
 
 }

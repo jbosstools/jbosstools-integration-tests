@@ -1,153 +1,137 @@
 package org.jboss.tools.openshift.ui.bot.test;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Priority;
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
-import org.eclipse.swtbot.swt.finder.waits.Conditions;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
-import org.jboss.tools.openshift.ui.bot.util.OpenShiftUI;
-import org.jboss.tools.ui.bot.ext.SWTTestExt;
-import org.jboss.tools.ui.bot.ext.condition.NonSystemJobRunsCondition;
-import org.jboss.tools.ui.bot.ext.types.IDELabel;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import java.util.List;
+
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
-import org.jboss.tools.ui.bot.ext.view.ServersView;
+import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
+import org.jboss.reddeer.junit.logging.Logger;
+import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.swt.condition.JobIsRunning;
+import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.swt.impl.button.CheckBox;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.swt.impl.tree.DefaultTree;
+import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.tools.openshift.ui.bot.util.OpenShiftExplorerView;
+import org.jboss.tools.openshift.ui.bot.util.OpenShiftLabel;
 
 /**
  * Base class for OpenShift SWTBot Tests
  * 
- * @author sbunciak
+ * @author mlabuda, sbunciak
  * 
  */
-public class OpenShiftBotTest extends SWTTestExt {
+public class OpenShiftBotTest {
 
-	protected void createOpenShiftApplication(final String APP_NAME,
+	private static Logger logger = new Logger(OpenShiftBotTest.class);
+	
+	public static void createOpenShiftApplication(final String APP_NAME,
 			final String APP_TYPE) {
 
 		try {
 			createOpenShiftApplicationScaling(APP_NAME, APP_TYPE, false, true);
-		} catch (OpenShiftBotTestException e) {
-			log.error("*** OpenShift Endpoint failure. ***", e);
+		} catch (OpenShiftTestException e) {
+			logger.error("*** OpenShift Endpoint failure. ***", e);
 			System.exit(1);
 		}
 
 	}
 
-	protected void createScaledOpenShiftApplication(final String APP_NAME,
+	public static void createScaledOpenShiftApplication(final String APP_NAME,
 			final String APP_TYPE) {
 
 		try {
 			createOpenShiftApplicationScaling(APP_NAME, APP_TYPE, true, true);
-		} catch (OpenShiftBotTestException e) {
-			log.error("*** OpenShift Endpoint failure. ***", e);
+		} catch (OpenShiftTestException e) {
+			logger.error("*** OpenShift Endpoint failure. ***", e);
 			System.exit(1);
 		}
 	}
 	
-	protected void createOpenShiftApplicationWithoutAdapter(final String APP_NAME,
+	public static void createOpenShiftApplicationWithoutAdapter(final String APP_NAME,
 			final String APP_TYPE) {
 
 		try {
 			createOpenShiftApplicationScaling(APP_NAME, APP_TYPE, false, false);
-		} catch (OpenShiftBotTestException e) {
-			log.error("*** OpenShift Endpoint failure. ***", e);
+		} catch (OpenShiftTestException e) {
+			logger.error("*** OpenShift Endpoint failure. ***", e);
 			System.exit(1);
 		}
 	}
 
 	// assumes proper setup of SSH keys
-	private void createOpenShiftApplicationScaling(final String APP_NAME,
+	public static void createOpenShiftApplicationScaling(final String APP_NAME,
 			final String APP_TYPE, final boolean scaling, final boolean createAdapter)
-			throws OpenShiftBotTestException {
+			throws OpenShiftTestException {
+		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
+		explorer.open();
+
+		DefaultTree connection = new DefaultTree(0);
+		connection.setFocus();
+		connection.getItems().get(0).expand();
 		
-		// reopen OpenShift Explorer
-		// workaround - missing menu
-		bot.viewByTitle("OpenShift Explorer").close();
-		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_5S, TIME_1S);
-		SWTBotView openshiftExplorer = open.viewOpen(OpenShiftUI.Explorer.iView);
-
-		SWTBotTreeItem account = openshiftExplorer.bot().tree().getAllItems()[0].doubleClick();
-		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_20S, TIME_1S);
-		account.getNode(0).select();
-
-		bot.sleep(1000);
-		account.getNode(0).contextMenu("New").click().menu("Application...").click();
-		bot.sleep(3000);
-		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S, TIME_1S);
-
-		// fill app info
-		bot.textInGroup("New application", 0).setText(APP_NAME);
-
-		log.info("*** OpenShift SWTBot Tests: Application name set. ***");
-		bot.sleep(TIME_5S);
-
-		bot.comboBoxInGroup("New application").setSelection(APP_TYPE);
-
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		
+		connection.getItems().get(0).select();
+		new ContextMenu("New", "Application...").select();
+		
+		new WaitUntil(new ShellWithTextIsAvailable("New OpenShift Application"), TimePeriod.LONG);
+		
+		new DefaultShell("New OpenShift Application").setFocus();
+		new LabeledText("Name:").setText(APP_NAME);
+		logger.info("*** OpenShift RedDeer Tests: Application name set. ***");
+		new DefaultCombo(1).setSelection(APP_TYPE);
+		logger.info("*** OpenShift RedDeer Tests: Application type selected. ***");
 		if (scaling) {
-			/* Enable scaling */
-			bot.checkBoxInGroup("New application").select();
+			new CheckBox(1).click();
 		}
-
-		log.info("*** OpenShift SWTBot Tests: Application type selected. ***");
-		bot.sleep(TIME_1S * 3);
-
-		bot.waitUntil(Conditions.widgetIsEnabled(bot
-				.button(IDELabel.Button.NEXT)));
-		bot.button(IDELabel.Button.NEXT).click();
+		new PushButton(OpenShiftLabel.Button.NEXT).click();
 		
 		// create server adapter?
 		if (!createAdapter) {
-			bot.checkBox(1).deselect();
-		}
+			if (new CheckBox(1).isChecked()) {
+				new CheckBox(1).click();
+			}
+		}	
+		new PushButton(OpenShiftLabel.Button.NEXT).click();
 		
-		bot.waitUntil(Conditions.widgetIsEnabled(bot
-				.button(IDELabel.Button.NEXT)));
-		bot.button(IDELabel.Button.NEXT).click();
+		new PushButton(OpenShiftLabel.Button.FINISH).click();
 		
-		bot.waitUntil(Conditions.widgetIsEnabled(bot
-				.button(IDELabel.Button.FINISH)));
-		bot.button(IDELabel.Button.FINISH).click();
+		logger.info("*** OpenShift RedDeer Tests: Application creation started. ***");
 
-		log.info("*** OpenShift SWTBot Tests: Application creation started. ***");
-
-		SWTBotShell shell;
-		
 		// workaround for 'embedding DYI' 
 		// scalable apps and Jenkins app 
-		if (APP_TYPE.equals(OpenShiftUI.AppType.DIY) || 
-				APP_TYPE.equals(OpenShiftUI.AppType.JENKINS) ||
+		if (APP_TYPE.equals(OpenShiftLabel.AppType.DIY) || 
+				APP_TYPE.equals(OpenShiftLabel.AppType.JENKINS) ||
 						scaling == true) {
-			shell = bot.waitForShell("Embedded Cartridges", 300);
-			if (shell != null) {
-				shell.activate();
-				bot.sleep(3000);
-				bot.button(IDELabel.Button.OK).click();
-			}
+			new WaitUntil(new ShellWithTextIsAvailable("Embedded Cartridges"), TimePeriod.VERY_LONG);
+			new DefaultShell("Embedded Cartridges").setFocus();
+			new PushButton(OpenShiftLabel.Button.OK).click();
 		}
 		
-		// with random names it will appear everytime
-		shell = bot.waitForShell("Question", 450);
-		if (shell == null) {
-			throw new OpenShiftBotTestException(
-					"Waiting for creation of application " + APP_NAME + " "
-							+ APP_TYPE + " timeouted.");
-		}
-		
-		bot.sleep(TIME_5S);
-		shell.activate();
-		bot.sleep(TIME_5S);
-		shell.bot().button(IDELabel.Button.YES).click();
-		bot.sleep(TIME_1S);
+		new WaitUntil(new ShellWithTextIsAvailable("Question"), TimePeriod.LONG);
+		DefaultShell question = new DefaultShell("Question");
+		question.setFocus();
+		new PushButton(OpenShiftLabel.Button.YES).click();
 		
 		// publish changes
 		if (createAdapter) {
-			bot.waitForShell("Publish " + APP_NAME + "?", 450);
-			bot.shell("Publish " + APP_NAME + "?").activate();
-			bot.sleep(TIME_5S);
-			bot.button(IDELabel.Button.YES).click();
+			new WaitUntil(new ShellWithTextIsAvailable("Publish " + APP_NAME + "?"), TimePeriod.LONG);
+			new DefaultShell("Publish " + APP_NAME + "?").setFocus();
+			new PushButton(OpenShiftLabel.Button.YES).click();
 			
-			bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 6, TIME_1S);
+			new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 
 			// check successful build after auto git push
 			ConsoleView consoleView = new ConsoleView();
@@ -155,84 +139,106 @@ public class OpenShiftBotTest extends SWTTestExt {
 
 			if (!consoleView.getConsoleText().contains("BUILD SUCCESS")
 					&& APP_TYPE.contains("JBoss")) {
-				log.error("*** OpenShift SWTBot Tests: OpenShift build output does not contain succesfull maven build. ***");
+				logger.error("*** OpenShift RedDeer Tests: OpenShift build output does not contain succesfull maven build. ***");
 			}
-
-			ServersView serverView = new ServersView();
-			serverView.show();
-			bot.sleep(TIME_1S);
 			
-			// Republish if there are local changes - workaround - it doesnt work all the time bcs.
-			// sometimes after republish still persist Republish instead of Synchronized in lable
-			for (int i=0; i < 4; i++) {
-				if (serverView.serverExists(APP_NAME + " at OpenShift  [Started, Republish]")) {
-					serverView.findServerByName(APP_NAME + " at OpenShift  [Started, Republish]").contextMenu("Publish").click();
-					bot.sleep(TIME_1S);
-					
-					bot.waitForShell("Publish " + APP_NAME + "?", 450);
-					bot.shell("Publish " + APP_NAME + "?").activate();
-					bot.sleep(TIME_5S);
-					bot.button(IDELabel.Button.YES).click();
-					
-					bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 3, TIME_1S  * 3);
-					bot.sleep(TIME_5S);
-				} else {
+			ServersView serverView = new ServersView();
+			serverView.open();
+			
+			// WORKAROUND bcs SERVER IN REDDEER DOES NOT WORK
+			List<TreeItem> servers = new DefaultTree().getItems();
+			TreeItem server = null;
+			for (TreeItem item: servers) {
+				String serverName = item.getText().split("\\[")[0];
+				if (serverName.equals(APP_NAME + " at OpenShift  ")) {
+					server = item;
 					break;
 				}
 			}
 			
-			serverView.show();
-			assertTrue(serverView.serverExists(APP_NAME + " at OpenShift  [Started, Synchronized]"));
-			log.info("*** OpenShift SWTBot Tests: OpenShift Server Adapter created. ***");
+			server.select();
+			new ContextMenu("Publish").select();
+			
+			new WaitUntil(new ShellWithTextIsAvailable("Publish " + APP_NAME + "?"), TimePeriod.LONG);	
+			new DefaultShell("Publish " + APP_NAME + "?").setFocus();
+			new PushButton(OpenShiftLabel.Button.YES).click();
+		
+			new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
+			
+			serverView.open();
+			assertTrue("Adapter does not exists", 
+					serverView.getServer(APP_NAME + " at OpenShift") != null);
+			logger.info("*** OpenShift RedDeer Tests: OpenShift Server Adapter created. ***");
 		}
-		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 10, TIME_1S  * 3);
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
 
-	protected void deleteOpenShiftApplication(final String APP_NAME,
+	public static void deleteOpenShiftApplication(final String APP_NAME,
 			final String APP_TYPE) {
-		SWTBotView openshiftExplorer = open
-				.viewOpen(OpenShiftUI.Explorer.iView);
-
-		// refresh first (workaround fot dissapearing label issue: JBIDE-14929 )
-		openshiftExplorer.bot().tree().getAllItems()[0].contextMenu(
-				OpenShiftUI.Labels.REFRESH).click();
-
-		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 3, TIME_1S);
-
-		SWTBotTreeItem account = openshiftExplorer.bot().tree().getAllItems()[0].expand();
-
-		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 2, TIME_1S);
-
-		account.getNode(0).expand();
-		bot.sleep(TIME_5S);
-		int applicationCount = account.getNode(0).getItems().length;
-		bot.sleep(TIME_5S);
-		account.getNode(0).getNode(APP_NAME + " " + APP_TYPE).select().
-				contextMenu(OpenShiftUI.Labels.EXPLORER_DELETE_APP).click();
+		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
+		explorer.open();
 		
-		bot.waitForShell(OpenShiftUI.Shell.DELETE_APP);
-		bot.sleep(TIME_5S);
-				
-		bot.shell(OpenShiftUI.Shell.DELETE_APP).activate();
-		bot.button("OK").click();
-		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 2, TIME_1S);
+		TreeItem connection = new DefaultTree().getItems().get(0);
+		connection.select();
+		new ContextMenu(OpenShiftLabel.Labels.REFRESH).select();
 
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);	
+		
+		TreeItem domainItem = connection.getItems().get(0);
+		domainItem.select();
+		domainItem.doubleClick();
+		
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		
+		int applicationCount = domainItem.getItems().size();
+		
+		domainItem.getItem(APP_NAME + " " + APP_TYPE).select();
+		new ContextMenu(OpenShiftLabel.Labels.DELETE_APP).select();
+		
+		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.DELETE_APP), TimePeriod.LONG);
+		
+		new DefaultShell(OpenShiftLabel.Shell.DELETE_APP).setFocus();
+		new PushButton("OK").click();
+		
+		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
+		
 		assertTrue("Application still present in the OpenShift Explorer!",
-				account.getNode(0).getItems().length == applicationCount - 1);
+				domainItem.getItems().size() == applicationCount - 1);
 
-		projectExplorer.show();
- 		// manually refresh all projects in project explorer so they can be removed with swt bot
-		for(SWTBotTreeItem item : projectExplorer.bot().tree().getAllItems()) {
-			item.contextMenu("Refresh").click();
-			bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 2, TIME_1S);
-		} 
+		ProjectExplorer projectExplorer = new ProjectExplorer();
+		projectExplorer.open();
+		List<Project> projects = projectExplorer.getProjects();
+		for (Project project: projects) {
+			project.delete(true);
+			new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		}
 		
-		projectExplorer.deleteAllProjects();
 		assertFalse("The project still exists!",
-				projectExplorer.bot().tree().getAllItems().length > 0);
+				projectExplorer.getProjects().size() > 0);
 
-		servers.show();
-		servers.deleteServer(APP_NAME + " at OpenShift");
+		ServersView serversView = new ServersView();
+		serversView.open();
+		
+		// Workaround bcs. of reddeer server deletion does not work on openshift adapters
+		// soon (hopefuly) will be used:
+		// serversView.getServer(APP_NAME + " at OpenShift").delete();
+		List<TreeItem> servers = new DefaultTree().getItems();
+		TreeItem server = null;
+		for (TreeItem item: servers) {
+			String serverName = item.getText().split("\\[")[0];
+			if (serverName.equals(APP_NAME + " at OpenShift  ")) {
+				server = item;
+				break;
+			}
+		}	
+		
+		server.select();
+		new ContextMenu("Delete").select();	
+		new WaitUntil(new ShellWithTextIsAvailable("Delete Server"), TimePeriod.NORMAL);
+		new DefaultShell("Delete Server").setFocus();
+		new PushButton("OK").click();
+		
+		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 	}
 
 }

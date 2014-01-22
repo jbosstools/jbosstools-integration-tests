@@ -1,10 +1,10 @@
 package org.jboss.tools.openshift.ui.bot.test;
 
-public class OpenShiftBotTestException extends Exception {
+public class OpenShiftTestException extends Exception {
 
 	private static final long serialVersionUID = -4941409809525256859L;
 
-	public OpenShiftBotTestException(String string) {
+	public OpenShiftTestException(String string) {
 		super(string);
 	}
 

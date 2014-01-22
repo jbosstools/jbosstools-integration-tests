@@ -1,73 +1,90 @@
 package org.jboss.tools.openshift.ui.bot.test.explorer;
 
-import java.util.Date;
+import static org.junit.Assert.assertTrue;
 
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import java.util.Date;
+import java.util.List;
+import org.jboss.reddeer.eclipse.wst.server.ui.view.Server;
+import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
+import org.jboss.reddeer.junit.logging.Logger;
+import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.swt.condition.JobIsRunning;
+import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.tree.DefaultTree;
+import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.openshift.ui.bot.test.OpenShiftBotTest;
-import org.jboss.tools.openshift.ui.bot.util.OpenShiftUI;
-import org.jboss.tools.ui.bot.ext.condition.NonSystemJobRunsCondition;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
-import org.jboss.tools.ui.bot.ext.types.IDELabel;
+import org.jboss.tools.openshift.ui.bot.util.OpenShiftExplorerView;
+import org.jboss.tools.openshift.ui.bot.util.OpenShiftLabel;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-@Require(clearWorkspace = true)
-public class CreateAdapter extends OpenShiftBotTest {
+public class CreateAdapter {
 
 	private final String DYI_APP = "diyapp" + new Date().getTime();
 	
 	@Before
 	public void createDIYApp() {
-		createOpenShiftApplicationWithoutAdapter(DYI_APP, OpenShiftUI.AppType.DIY);
+		OpenShiftBotTest.createOpenShiftApplicationWithoutAdapter(DYI_APP, OpenShiftLabel.AppType.DIY);
 	}
 	
 	@Test
 	public void canCreateAdapterViaServers() {
-		SWTBotView openshiftExplorer = open
-				.viewOpen(OpenShiftUI.Explorer.iView);
+		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
+		explorer.open();
 
-		// refresh explorer
-		openshiftExplorer.bot().tree().getAllItems()[0].contextMenu(
-				OpenShiftUI.Labels.REFRESH).click();
-		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 2, TIME_1S);
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		
+		TreeItem connection = new DefaultTree().getItems().get(0);
+		connection.select();
+		new ContextMenu(OpenShiftLabel.Labels.REFRESH);
 
-		SWTBotTreeItem account = openshiftExplorer.bot().tree().getAllItems()[0];
-		account.contextMenu("Refresh").click();
-		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 3, TIME_1S);
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		
-		account.expand();
-		bot.sleep(3000);
+		connection.select();
+		TreeItem domainItem = connection.getItems().get(0);
+		domainItem.select();
+		if (!domainItem.isExpanded()) {
+			domainItem.doubleClick();
+		}
+		
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 				
-		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 3, TIME_1S);
+		domainItem.getItem(DYI_APP + " " + OpenShiftLabel.AppType.DIY).select();
+		new ContextMenu(OpenShiftLabel.Labels.EXPLORER_ADAPTER).select();
 		
-		account.getNode(0).expand();
-		bot.sleep(3000);
-				
-		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 3, TIME_1S);
+		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.ADAPTER), TimePeriod.LONG);
 		
-		account.getNode(0).getNode(0).select().contextMenu(OpenShiftUI.Labels.EXPLORER_ADAPTER).click();
-		bot.sleep(TIME_1S);
-				
-		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 2, TIME_1S);
-		bot.waitForShell(OpenShiftUI.Shell.ADAPTER);
+		new DefaultShell(OpenShiftLabel.Shell.ADAPTER).setFocus();
+		new PushButton(OpenShiftLabel.Button.NEXT).click();
+		new DefaultCombo(1).setSelection(0);
+		new PushButton(OpenShiftLabel.Button.FINISH).click();
+		
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		
+		ServersView serverView = new ServersView();
+		serverView.open();
+		List<Server> servers = serverView.getServers();
+		boolean adapterExists = false;
+		for (Server server: servers) {
+			if (server.getLabel().getName().equals(DYI_APP + " at OpenShift")) {
+				adapterExists = true;
+			}
+		}
+		assertTrue(adapterExists);
 
-		bot.button(IDELabel.Button.NEXT).click();
-		bot.comboBox(1).setSelection(0);
-		bot.button(IDELabel.Button.FINISH).click();
-
-		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 2, TIME_1S);
-
-		servers.show();
-		assertTrue(servers.serverExists(DYI_APP + " at OpenShift"));
-
-		log.info("*** OpenShift SWTBot Tests: OpenShift Server Adapter created. ***");
+		Logger logger = new Logger(this.getClass());
+		logger.info("*** OpenShift RedDeer Tests: OpenShift Server Adapter created. ***");
 	}
 
 	@After
 	public void deleteDIYApp() {
-		deleteOpenShiftApplication(DYI_APP, OpenShiftUI.AppType.DIY);
+		OpenShiftBotTest.deleteOpenShiftApplication(DYI_APP, OpenShiftLabel.AppType.DIY);
 	}
 }
