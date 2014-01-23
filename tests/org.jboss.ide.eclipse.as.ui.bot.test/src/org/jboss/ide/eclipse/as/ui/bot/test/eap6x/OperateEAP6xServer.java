@@ -1,4 +1,4 @@
-package org.jboss.ide.eclipse.as.ui.bot.test.eap6;
+package org.jboss.ide.eclipse.as.ui.bot.test.eap6x;
 
 import org.jboss.ide.eclipse.as.ui.bot.test.template.OperateServerTemplate;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
@@ -6,17 +6,12 @@ import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
 
-/**
- * 
- * @see OperateServerTemplate
- * @author Lucia Jelinkova
- *
- */
-@Require(server=@Server(type=ServerType.EAP, version="6", state=ServerState.NotRunning))
-public class OperateEAP6Server extends OperateServerTemplate {
+@Require(server=@Server(type=ServerType.EAP, version="6.1", state=ServerState.NotRunning))
+public class OperateEAP6xServer extends OperateServerTemplate {
 
 	@Override
 	public String getWelcomePageText() {
-		return "Welcome to EAP 6";
+		return "Welcome to JBoss EAP 6";
 	}
+
 }

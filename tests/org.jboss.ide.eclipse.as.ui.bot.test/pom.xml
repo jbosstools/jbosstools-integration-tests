@@ -52,7 +52,8 @@
 				<jbosstools.test.jboss-as-6.x.home>${requirementsDirectory}/jboss-6.1.0.Final</jbosstools.test.jboss-as-6.x.home>
 				<jbosstools.test.jboss-as-7.0.home>${requirementsDirectory}/jboss-as-7.0.2.Final</jbosstools.test.jboss-as-7.0.home>
 				<jbosstools.test.jboss-as-7.1.home>${requirementsDirectory}/jboss-as-7.1.1.Final</jbosstools.test.jboss-as-7.1.home>
-				<runtimesProperties>-Djbosstools.test.jboss-as-3.2.home=${jbosstools.test.jboss-as-3.2.home} -Djbosstools.test.jboss-as-4.0.home=${jbosstools.test.jboss-as-4.0.home} -Djbosstools.test.jboss-as-4.2.home=${jbosstools.test.jboss-as-4.2.home} -Djbosstools.test.jboss-as-5.0.home=${jbosstools.test.jboss-as-5.0.home} -Djbosstools.test.jboss-as-5.1.home=${jbosstools.test.jboss-as-5.1.home} -Djbosstools.test.jboss-as-6.x.home=${jbosstools.test.jboss-as-6.x.home} -Djbosstools.test.jboss-as-7.0.home=${jbosstools.test.jboss-as-7.0.home} -Djbosstools.test.jboss-as-7.1.home=${jbosstools.test.jboss-as-7.1.home} -Dtest.configurations.dir=resources/config_files_templates/project</runtimesProperties>
+				<jbosstools.test.jboss-wildfly-8.home>${requirementsDirectory}/wildfly-8.0.0.CR1</jbosstools.test.jboss-wildfly-8.home>
+				<runtimesProperties>-Djbosstools.test.jboss-as-3.2.home=${jbosstools.test.jboss-as-3.2.home} -Djbosstools.test.jboss-as-4.0.home=${jbosstools.test.jboss-as-4.0.home} -Djbosstools.test.jboss-as-4.2.home=${jbosstools.test.jboss-as-4.2.home} -Djbosstools.test.jboss-as-5.0.home=${jbosstools.test.jboss-as-5.0.home} -Djbosstools.test.jboss-as-5.1.home=${jbosstools.test.jboss-as-5.1.home} -Djbosstools.test.jboss-as-6.x.home=${jbosstools.test.jboss-as-6.x.home} -Djbosstools.test.jboss-as-7.0.home=${jbosstools.test.jboss-as-7.0.home} -Djbosstools.test.jboss-as-7.1.home=${jbosstools.test.jboss-as-7.1.home} -Djbosstools.test.jboss-wildfly-8.home=${jbosstools.test.jboss-wildfly-8.home} -Dtest.configurations.dir=resources/config_files_templates/project</runtimesProperties>
 			</properties>
 			<build>
 			<plugins><plugin>
@@ -160,6 +161,17 @@
 							<unpack>true</unpack>
 						</configuration>
 					</execution>
+					<execution>
+						<id>install-wildfly-8</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<configuration>
+							<url>http://download.jboss.org/wildfly/8.0.0.CR1/wildfly-8.0.0.CR1.zip</url>
+							<unpack>true</unpack>
+						</configuration>
+					</execution>
 				</executions>
 			</plugin></plugins>
 			</build>
@@ -178,7 +190,8 @@
 				<jbosstools.test.jboss-as-6.x.home>${requirementsDirectory}/jboss-6.1.0.Final</jbosstools.test.jboss-as-6.x.home>
 				<jbosstools.test.jboss-as-7.0.home>${requirementsDirectory}/jboss-as-7.0.2.Final</jbosstools.test.jboss-as-7.0.home>
 				<jbosstools.test.jboss-as-7.1.home>${requirementsDirectory}/jboss-as-7.1.1.Final</jbosstools.test.jboss-as-7.1.home>
-				<runtimesProperties>-Djbosstools.test.jboss-as-6.x.home=${jbosstools.test.jboss-as-6.x.home} -Djbosstools.test.jboss-as-7.0.home=${jbosstools.test.jboss-as-7.0.home} -Djbosstools.test.jboss-as-7.1.home=${jbosstools.test.jboss-as-7.1.home} -Dtest.configurations.dir=resources/config_files_templates/project</runtimesProperties>
+				<jbosstools.test.jboss-wildfly-8.home>${requirementsDirectory}/wildfly-8.0.0.CR1</jbosstools.test.jboss-wildfly-8.home>
+				<runtimesProperties>-Djbosstools.test.jboss-wildfly-8.home=${jbosstools.test.jboss-wildfly-8.home} -Djbosstools.test.jboss-as-6.x.home=${jbosstools.test.jboss-as-6.x.home} -Djbosstools.test.jboss-as-7.0.home=${jbosstools.test.jboss-as-7.0.home} -Djbosstools.test.jboss-as-7.1.home=${jbosstools.test.jboss-as-7.1.home} -Dtest.configurations.dir=resources/config_files_templates/project</runtimesProperties>
 			</properties>
 			<build>
 			<plugins><plugin>
@@ -218,6 +231,17 @@
 						<configuration>
 							<url>http://download.jboss.org/jbossas/7.1/jboss-as-7.1.1.Final/jboss-as-7.1.1.Final.zip</url>
 							<md5>175c92545454f4e7270821f4b8326c4e</md5>
+							<unpack>true</unpack>
+						</configuration>
+					</execution>
+				<execution>
+						<id>install-wildfly-8</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<configuration>
+							<url>http://download.jboss.org/wildfly/8.0.0.CR1/wildfly-8.0.0.CR1.zip</url>
 							<unpack>true</unpack>
 						</configuration>
 					</execution>
@@ -263,19 +287,19 @@
 			</build>
 		</profile>
 		<profile>
-			<id>eap6</id>
+			<id>eap60</id>
 			<activation>
 				<property>
 					<name>test.profile</name>
-					<value>eap6</value>
+					<value>eap60</value>
 				</property>
 			</activation>
 			<properties>
-				<test.class>org.jboss.ide.eclipse.as.ui.bot.test.EAP6CompatibilitySuite</test.class>
-				<jbosstools.test.jboss-eap-6.home>${requirementsDirectory}/jboss-eap-6.0</jbosstools.test.jboss-eap-6.home>
-				<jbosstools.test.jboss-eap-6.url></jbosstools.test.jboss-eap-6.url>
-				<jbosstools.test.jboss-eap-6.md5>ca0e20c5523281233888c296689b7172</jbosstools.test.jboss-eap-6.md5>
-				<runtimesProperties>-Djbosstools.test.jboss-eap-6.home=${jbosstools.test.jboss-eap-6.home} -Dswtbot.test.properties.file=resources/config_files_templates/product/eap-6.properties</runtimesProperties>
+				<test.class>org.jboss.ide.eclipse.as.ui.bot.test.EAP60CompatibilitySuite</test.class>
+				<jbosstools.test.jboss-eap-6.0.home>${requirementsDirectory}/jboss-eap-6.0</jbosstools.test.jboss-eap-6.0.home>
+				<jbosstools.test.jboss-eap-6.0.url></jbosstools.test.jboss-eap-6.0.url>
+				<jbosstools.test.jboss-eap-6.0.md5>ca0e20c5523281233888c296689b7172</jbosstools.test.jboss-eap-6.0.md5>
+				<runtimesProperties>-Djbosstools.test.jboss-eap-6.0.home=${jbosstools.test.jboss-eap-6.0.home} -Dswtbot.test.properties.file=resources/config_files_templates/product/eap-6.0.properties</runtimesProperties>
 			</properties>
 			<build>
 			<plugins><plugin>
@@ -283,14 +307,14 @@
 				<artifactId>maven-download-plugin</artifactId>
 				<executions>
 					<execution>
-						<id>install-eap-6</id>
+						<id>install-eap-6.0</id>
 						<phase>pre-integration-test</phase>
 						<goals>
 							<goal>wget</goal>
 						</goals>
 						<configuration>
-							<url>${jbosstools.test.jboss-eap-6.url}</url>
-							<md5>${jbosstools.test.jboss-eap-6.md5}</md5>
+							<url>${jbosstools.test.jboss-eap-6.0.url}</url>
+							<md5>${jbosstools.test.jboss-eap-6.0.md5}</md5>
 							<unpack>true</unpack>
 						</configuration>
 					</execution>
@@ -299,19 +323,19 @@
 			</build>
 		</profile>
 		<profile>
-			<id>eap61</id>
+			<id>eap6x</id>
 			<activation>
 				<property>
 					<name>test.profile</name>
-					<value>eap61</value>
+					<value>eap6x</value>
 				</property>
 			</activation>
 			<properties>
-				<test.class>org.jboss.ide.eclipse.as.ui.bot.test.EAP6CompatibilitySuite</test.class>
-				<jbosstools.test.jboss-eap-6.1.home>${requirementsDirectory}/jboss-eap-6.1</jbosstools.test.jboss-eap-6.1.home>
-				<jbosstools.test.jboss-eap-6.1.url></jbosstools.test.jboss-eap-6.1.url>
-				<jbosstools.test.jboss-eap-6.1.md5>ff56dc5dc233dc4e0e153e3cfb2ecb1c</jbosstools.test.jboss-eap-6.1.md5>
-				<runtimesProperties>-Djbosstools.test.jboss-eap-6.1.home=${jbosstools.test.jboss-eap-6.1.home} -Dswtbot.test.properties.file=resources/config_files_templates/product/eap-6.1.properties</runtimesProperties>
+				<test.class>org.jboss.ide.eclipse.as.ui.bot.test.EAP6xCompatibilitySuite</test.class>
+				<jbosstools.test.jboss-eap-6.x.home>${requirementsDirectory}/jboss-eap-6.2</jbosstools.test.jboss-eap-6.x.home>
+				<jbosstools.test.jboss-eap-6.x.url></jbosstools.test.jboss-eap-6.x.url>
+				<jbosstools.test.jboss-eap-6.x.md5>c</jbosstools.test.jboss-eap-6.x.md5>
+				<runtimesProperties>-Djbosstools.test.jboss-eap-6.x.home=${jbosstools.test.jboss-eap-6.x.home} -Dswtbot.test.properties.file=resources/config_files_templates/product/eap-6.x.properties</runtimesProperties>
 			</properties>
 			<build>
 			<plugins><plugin>
@@ -319,50 +343,14 @@
 				<artifactId>maven-download-plugin</artifactId>
 				<executions>
 					<execution>
-						<id>install-eap-6.1</id>
+						<id>install-eap-6.x</id>
 						<phase>pre-integration-test</phase>
 						<goals>
 							<goal>wget</goal>
 						</goals>
 						<configuration>
-							<url>${jbosstools.test.jboss-eap-6.1.url}</url>
-							<md5>${jbosstools.test.jboss-eap-6.1.md5}</md5>
-							<unpack>true</unpack>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin></plugins>
-			</build>
-		</profile>
-		<profile>
-			<id>eap62</id>
-			<activation>
-				<property>
-					<name>test.profile</name>
-					<value>eap62</value>
-				</property>
-			</activation>
-			<properties>
-				<test.class>org.jboss.ide.eclipse.as.ui.bot.test.EAP62CompatibilitySuite</test.class>
-				<jbosstools.test.jboss-eap-6.2.home>${requirementsDirectory}/jboss-eap-6.2</jbosstools.test.jboss-eap-6.2.home>
-				<jbosstools.test.jboss-eap-6.2.url></jbosstools.test.jboss-eap-6.2.url>
-				<jbosstools.test.jboss-eap-6.2.md5>c</jbosstools.test.jboss-eap-6.2.md5>
-				<runtimesProperties>-Djbosstools.test.jboss-eap-6.1.home=${jbosstools.test.jboss-eap-6.2.home} -Dswtbot.test.properties.file=resources/config_files_templates/product/eap-6.1.properties</runtimesProperties>
-			</properties>
-			<build>
-			<plugins><plugin>
-				<groupId>com.googlecode.maven-download-plugin</groupId>
-				<artifactId>maven-download-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>install-eap-6.1</id>
-						<phase>pre-integration-test</phase>
-						<goals>
-							<goal>wget</goal>
-						</goals>
-						<configuration>
-							<url>${jbosstools.test.jboss-eap-6.2.url}</url>
-							<md5>${jbosstools.test.jboss-eap-6.2.md5}</md5>
+							<url>${jbosstools.test.jboss-eap-6.x.url}</url>
+							<md5>${jbosstools.test.jboss-eap-6.x.md5}</md5>
 							<unpack>true</unpack>
 						</configuration>
 					</execution>
