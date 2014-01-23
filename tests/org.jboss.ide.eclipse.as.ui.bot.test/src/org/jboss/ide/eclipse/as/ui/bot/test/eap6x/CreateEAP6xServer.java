@@ -1,4 +1,4 @@
-package org.jboss.ide.eclipse.as.ui.bot.test.eap62;
+package org.jboss.ide.eclipse.as.ui.bot.test.eap6x;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -15,7 +15,7 @@ import org.jboss.tools.ui.bot.ext.entity.XMLConfiguration;
 
 
 @Require(server=@Server(type=ServerType.EAP, version="6.1", state=ServerState.Present))
-public class CreateEAP62Server extends CreateServerTemplate {
+public class CreateEAP6xServer extends CreateServerTemplate {
 
 	@Override
 	protected void assertEditorPorts() {
