@@ -24,6 +24,7 @@
 		<module>org.jboss.tools.maven.reddeer</module>
 		<module>org.jboss.tools.jsf.reddeer</module>
 		<module>org.jboss.tools.seam.reddeer</module>
+		<module>org.jboss.tools.perf.test.core</module>
 	</modules>
 </project>
 
