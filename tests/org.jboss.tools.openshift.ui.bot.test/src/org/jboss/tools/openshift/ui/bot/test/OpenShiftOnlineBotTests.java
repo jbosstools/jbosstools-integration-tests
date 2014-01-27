@@ -21,6 +21,7 @@ import org.jboss.tools.openshift.ui.bot.test.domain.RenameDomain;
 import org.jboss.tools.openshift.ui.bot.test.explorer.Connection;
 import org.jboss.tools.openshift.ui.bot.test.explorer.CreateAdapter;
 import org.jboss.tools.openshift.ui.bot.test.explorer.ManageSSH;
+import org.jboss.tools.openshift.ui.bot.test.explorer.MultipleAccounts;
 import org.jboss.tools.openshift.ui.bot.test.explorer.OpenShiftDebugFeatures;
 import org.jboss.tools.openshift.ui.bot.util.CleanUp;
 import org.junit.runner.RunWith;
@@ -41,6 +42,7 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
 @SuiteClasses({
 	/* Connection */
 	Connection.class, 
+	MultipleAccounts.class,
 	ManageSSH.class, 
 	
 	/* Domain */
