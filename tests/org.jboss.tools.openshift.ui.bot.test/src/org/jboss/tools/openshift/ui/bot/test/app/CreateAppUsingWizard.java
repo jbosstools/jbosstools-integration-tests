@@ -17,10 +17,8 @@ import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
-import org.jboss.reddeer.swt.lookup.ShellLookup;
 import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
@@ -53,11 +51,7 @@ public class CreateAppUsingWizard {
 		
 		new WaitUntil(new ShellWithTextIsAvailable("New OpenShift Application"), TimePeriod.LONG);
 
-		new DefaultShell("New OpenShift Application").setFocus();
-		if (new CheckBox(1).isChecked()) {
-			new CheckBox(1).click();
-		}
-		new DefaultText(1).setText(System.getProperty("user.pwd"));
+		new DefaultCombo().setSelection(0);
 		new WaitUntil(new ButtonWithTextIsActive(new PushButton(OpenShiftLabel.Button.NEXT)));
 		new PushButton(OpenShiftLabel.Button.NEXT).click();
 		
@@ -65,7 +59,6 @@ public class CreateAppUsingWizard {
 		
 		new DefaultShell("New OpenShift Application").setFocus();
 		
-		// ffs
 		AbstractWait.sleep(10000);
 		
 		new LabeledText("Name:").setText(APP_NAME);

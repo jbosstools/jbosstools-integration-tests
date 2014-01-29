@@ -32,10 +32,14 @@ import org.junit.Test;
 */
 public class OpenShiftDebugFeatures extends OpenShiftBotTest {
 
-        private final String DYI_APP = "diyapp" + new Date().getTime();
+        public static final String DYI_APP = "diyapp" + new Date().getTime();
 
         @Before
-        public void createDYIApp() {
+        public void createDIYApplication() {
+        	createDYIApp();
+        }
+        
+        public static void createDYIApp() {
                 createOpenShiftApplication(DYI_APP, OpenShiftLabel.AppType.DIY);
         }
        
@@ -48,7 +52,7 @@ public class OpenShiftDebugFeatures extends OpenShiftBotTest {
         	canCreateEnvVariable();
         }
         
-        public void canTailFiles() {
+        public static void canTailFiles() {
                 openDebugFeature(OpenShiftLabel.Labels.EXPLORER_TAIL_FILES);
                 
                 new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.TAIL_FILES), TimePeriod.LONG);
@@ -67,7 +71,7 @@ public class OpenShiftDebugFeatures extends OpenShiftBotTest {
                 new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
         }
 
-        public void canForwardPorts() {
+        public static void canForwardPorts() {
                 openDebugFeature(OpenShiftLabel.Labels.EXPLORER_PORTS);
 
                 new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.PORTS), TimePeriod.LONG);
@@ -98,7 +102,7 @@ public class OpenShiftDebugFeatures extends OpenShiftBotTest {
                 new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
         }
 
-        public void canOpenWebBrowser() {
+        public static void canOpenWebBrowser() {
                 openDebugFeature("Show in Web Browser");
 
                 new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
@@ -106,7 +110,7 @@ public class OpenShiftDebugFeatures extends OpenShiftBotTest {
                 // it is browser editor
         }
 
-        public void canShowEnvVariables() {
+        public static void canShowEnvVariables() {
                 openDebugFeature(OpenShiftLabel.Labels.EXPLORER_ENV_VAR);
 
                 new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
@@ -118,7 +122,7 @@ public class OpenShiftDebugFeatures extends OpenShiftBotTest {
                 new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
         }
 
-        public void canCreateEnvVariable() {
+        public static void canCreateEnvVariable() {
                 openDebugFeature("Edit Environment Variables...");
                 
                 new WaitUntil(new ShellWithTextIsAvailable(
@@ -146,7 +150,7 @@ public class OpenShiftDebugFeatures extends OpenShiftBotTest {
                 new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
         }
         
-        private void openDebugFeature(String label) {
+        private static void openDebugFeature(String label) {
 		        OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 		        explorer.open();
 
@@ -169,7 +173,11 @@ public class OpenShiftDebugFeatures extends OpenShiftBotTest {
         }
         
         @After
-        public void deleteDIYApp() {
+        public void deleteDIYApplication() {
+        	deleteDIYApp();
+        }
+        
+        public static void deleteDIYApp() {
                 deleteOpenShiftApplication(DYI_APP, OpenShiftLabel.AppType.DIY);
         }   
 
