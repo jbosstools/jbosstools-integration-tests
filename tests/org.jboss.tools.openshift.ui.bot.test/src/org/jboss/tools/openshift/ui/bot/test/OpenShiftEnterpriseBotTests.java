@@ -11,6 +11,9 @@
 package org.jboss.tools.openshift.ui.bot.test;
 
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.tools.openshift.ui.bot.test.app.CreateAdapterFromServerView;
+import org.jboss.tools.openshift.ui.bot.test.app.CreateAppUsingWizard;
+import org.jboss.tools.openshift.ui.bot.test.app.CreateApplicationFromGithubEnterprise;
 import org.jboss.tools.openshift.ui.bot.test.app.CreateDeleteEWSApp;
 import org.jboss.tools.openshift.ui.bot.test.app.CreateDeleteJBossApp;
 import org.jboss.tools.openshift.ui.bot.test.app.CreateDeleteJenkinsApp;
@@ -33,7 +36,8 @@ import org.jboss.tools.openshift.ui.bot.test.domain.RenameDomain;
 import org.jboss.tools.openshift.ui.bot.test.explorer.Connection;
 import org.jboss.tools.openshift.ui.bot.test.explorer.CreateAdapter;
 import org.jboss.tools.openshift.ui.bot.test.explorer.ManageSSH;
-import org.jboss.tools.openshift.ui.bot.test.explorer.OpenShiftDebugFeatures;
+import org.jboss.tools.openshift.ui.bot.test.explorer.OpenShiftEnterpriseDebugFeatures;
+import org.jboss.tools.openshift.ui.bot.util.CleanUp;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
@@ -59,13 +63,15 @@ import org.junit.runners.Suite.SuiteClasses;
  	RenameDomain.class,
 
 	/* Application creation*/
- 	// TODO create app from github template
+ 	CreateAppUsingWizard.class,
+ 	CreateApplicationFromGithubEnterprise.class,
  	// TODO deploy existing app
  	CreateAdapter.class,
+ 	CreateAdapterFromServerView.class,
 	EmbedCartridges.class, 
 	// TODO Conflict cartridge 
 	RepublishApp.class,
-	OpenShiftDebugFeatures.class,
+	OpenShiftEnterpriseDebugFeatures.class,
  	RestartApplication.class, 
  	// TODO import application
  	// TODO maven profile
@@ -87,7 +93,8 @@ import org.junit.runners.Suite.SuiteClasses;
 	CreateDeleteScalablePythonApp.class, 
 	CreateDeleteScalablePerlApp.class, 
 	CreateDeleteScaledRubyApp.class, 
-
+	
+	CleanUp.class
 })
 public class OpenShiftEnterpriseBotTests {
 	

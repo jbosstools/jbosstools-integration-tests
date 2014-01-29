@@ -27,7 +27,11 @@ public class CreateApplicationFromGithub {
 	private static final String URL = "https://github.com/openshift/wordpress-example";
 	
 	@Test
-	public void createAppFromGithub() {
+	public void createAppFromGithubTemplate() {
+		createAppFromGithub(OpenShiftLabel.Cartridge.MYSQL_ONLINE);
+	}
+	
+	public static void createAppFromGithub(String mySQLLabel) {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 		explorer.open();
 		
@@ -40,7 +44,7 @@ public class CreateApplicationFromGithub {
 		new DefaultShell("New OpenShift Application").setFocus();
 		new LabeledText("Name:").setText(APP_NAME);
 		new DefaultCombo(1).setSelection(OpenShiftLabel.AppType.PHP);
-		new DefaultTable().getItem(OpenShiftLabel.Cartridge.MYSQL_ONLINE).setChecked(true);
+		new DefaultTable().getItem(mySQLLabel).setChecked(true);
 		new PushButton(OpenShiftLabel.Button.ADVANCED).click();
 		new CheckBox(2).click();
 		new LabeledText("Source code:").setText(URL);
@@ -76,7 +80,11 @@ public class CreateApplicationFromGithub {
 	}
 
 	@After
-	public void deleteApp() {
+	public void deleteApplication() {
+		deleteApp();
+	}
+	
+	public static void deleteApp() {
 		OpenShiftBotTest.deleteOpenShiftApplication(APP_NAME, OpenShiftLabel.AppType.PHP);
 	}
 }
