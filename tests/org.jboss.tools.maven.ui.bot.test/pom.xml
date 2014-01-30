@@ -141,8 +141,8 @@
 					<skip>${swtbot.test.skip}</skip>
 					<testSuite>org.jboss.tools.maven.ui.bot.test</testSuite>
 					<testClass>${suiteClass}</testClass>
-					<dependencies>
-						<dependency combine.children="append">
+					<dependencies combine.children="append">
+						<dependency>
 							<type>p2-installable-unit</type>
 							<artifactId>org.eclipse.jst.enterprise_ui.feature.feature.group</artifactId>
 							<version>0.0.0</version>
