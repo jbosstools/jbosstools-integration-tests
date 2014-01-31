@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * 
- * @author psrna
+ * @author psrna, Radoslav Rabara
  *
  */
 

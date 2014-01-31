@@ -22,11 +22,11 @@ import org.jboss.reddeer.swt.api.Combo;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.workbench.view.impl.WorkbenchView;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirementConfig.FamilyAS;
 
 /**
  * 
- * @author psrna
- * @author Radoslav Rabara
+ * @author psrna, Radoslav Rabara
  *
  */
 
@@ -43,14 +43,19 @@ public class ServerRequirement implements Requirement<Server>, CustomConfigurati
 	@Target(ElementType.TYPE)
 	public @interface Server {
 		ServerReqState state() default ServerReqState.RUNNING;
+		ServerReqType type() default ServerReqType.ANY;
+		String version() default "";
+		ServerReqOperator operator() default ServerReqOperator.EQUALS;
 	}
 	
 	
 	@Override
 	public boolean canFulfill() {
-		//Server can be always added.
-		//However, when something goes wrong then AssertionError is thrown
-		return true;
+		//requirement can be fulfilled only when required server's type and version matches to
+		//configured server's type and version
+		return ServerMatcher.matchServerType(server.type(), config.getServerFamily()) &&
+				ServerMatcher.matchServerVersion(server.version(), server.operator(),
+				config.getServerFamily().getVersion());
 	}
 
 	@Override
@@ -161,9 +166,13 @@ public class ServerRequirement implements Requirement<Server>, CustomConfigurati
 			}
 		}
 		if (server instanceof FamilyEAP) {
-			if (server.getVersion().equals("6.1")
-					|| server.getVersion().equals("6.2")) {
-				return config.getServerFamily().getLabel() + " " + "6.1+";
+			String version = server.getVersion();
+			if (version.equals("6.1")
+					|| version.equals("6.2")) {
+				return config.getServerFamily().getLabel() + " 6.1+";
+			}
+			if (version.startsWith("5")) {
+				return config.getServerFamily().getLabel() + " 5.x";
 			}
 		}
 		return config.getServerFamily().getLabel() + " "
@@ -178,7 +187,7 @@ public class ServerRequirement implements Requirement<Server>, CustomConfigurati
 		return getServerTypeLabelText() + " Runtime";
 	}
 
-	public void setupServerAdapter() {
+	protected void setupServerAdapter() {
 		NewServerWizardDialog serverW = new NewServerWizardDialog();
 		try {
 			serverW.open();
@@ -252,7 +261,7 @@ public class ServerRequirement implements Requirement<Server>, CustomConfigurati
 		}
 	}
 	
-	public void startServer() {
+	protected void startServer() {
 		ServersView sw = new ServersView();
 		sw.getServer(getServerNameLabelText()).start();
 	}

@@ -1,4 +1,4 @@
-package org.jboss.ide.eclipse.as.reddeer.server.example;
+package org.jboss.ide.eclipse.as.reddeer.server.example.simple;
 
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.Server;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
