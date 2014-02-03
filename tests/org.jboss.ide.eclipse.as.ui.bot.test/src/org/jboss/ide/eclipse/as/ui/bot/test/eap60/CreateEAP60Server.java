@@ -1,17 +1,20 @@
 package org.jboss.ide.eclipse.as.ui.bot.test.eap60;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.IsCollectionContaining.hasItem;
-import static org.hamcrest.core.Is.is;
-
 import java.util.List;
 
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqState;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.template.CreateServerTemplate;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
-import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
-import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.tools.ui.bot.ext.entity.XMLConfiguration;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsCollectionContaining.hasItem;
 
 /**
  *
@@ -19,9 +22,18 @@ import org.jboss.tools.ui.bot.ext.entity.XMLConfiguration;
  * @author Lucia Jelinkova
  *
  */
-@Require(server=@Server(type=ServerType.EAP, version="6", state=ServerState.Present))
+@CleanWorkspace
+@Server(state=ServerReqState.PRESENT, type=ServerReqType.EAP, version="6.0")
 public class CreateEAP60Server extends CreateServerTemplate {
 
+	@InjectRequirement
+	protected ServerRequirement requirement;
+	
+	@Override
+	protected String getServerName() {
+		return requirement.getServerNameLabelText();
+	} 
+	
 	@Override
 	protected void assertEditorPorts() {
 		assertThat("8080", is(editor.getWebPort()));

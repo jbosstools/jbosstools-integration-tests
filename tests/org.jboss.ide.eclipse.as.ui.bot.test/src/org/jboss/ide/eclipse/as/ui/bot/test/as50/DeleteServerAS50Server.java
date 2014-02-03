@@ -1,12 +1,20 @@
 package org.jboss.ide.eclipse.as.ui.bot.test.as50;
 
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqState;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.template.DeleteServerTemplate;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
-import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
-import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 
-@Require(server=@Server(type=ServerType.JbossAS, version="5.0", state=ServerState.Present))
+@Server(state=ServerReqState.PRESENT, type=ServerReqType.AS, version="5.0")
 public class DeleteServerAS50Server extends DeleteServerTemplate {
 
+	@InjectRequirement
+	protected ServerRequirement requirement;
+	
+	@Override
+	protected String getServerName() {
+		return requirement.getServerNameLabelText();
+	} 
 }

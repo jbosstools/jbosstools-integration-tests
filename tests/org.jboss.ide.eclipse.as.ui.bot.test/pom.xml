@@ -53,7 +53,7 @@
 				<jbosstools.test.jboss-as-7.0.home>${requirementsDirectory}/jboss-as-7.0.2.Final</jbosstools.test.jboss-as-7.0.home>
 				<jbosstools.test.jboss-as-7.1.home>${requirementsDirectory}/jboss-as-7.1.1.Final</jbosstools.test.jboss-as-7.1.home>
 				<jbosstools.test.jboss-wildfly-8.home>${requirementsDirectory}/wildfly-8.0.0.CR1</jbosstools.test.jboss-wildfly-8.home>
-				<runtimesProperties>-Djbosstools.test.jboss-as-3.2.home=${jbosstools.test.jboss-as-3.2.home} -Djbosstools.test.jboss-as-4.0.home=${jbosstools.test.jboss-as-4.0.home} -Djbosstools.test.jboss-as-4.2.home=${jbosstools.test.jboss-as-4.2.home} -Djbosstools.test.jboss-as-5.0.home=${jbosstools.test.jboss-as-5.0.home} -Djbosstools.test.jboss-as-5.1.home=${jbosstools.test.jboss-as-5.1.home} -Djbosstools.test.jboss-as-6.x.home=${jbosstools.test.jboss-as-6.x.home} -Djbosstools.test.jboss-as-7.0.home=${jbosstools.test.jboss-as-7.0.home} -Djbosstools.test.jboss-as-7.1.home=${jbosstools.test.jboss-as-7.1.home} -Djbosstools.test.jboss-wildfly-8.home=${jbosstools.test.jboss-wildfly-8.home} -Dtest.configurations.dir=resources/config_files_templates/project</runtimesProperties>
+				<runtimesProperties>-Djbosstools.test.jboss-as-3.2.home=${jbosstools.test.jboss-as-3.2.home} -Djbosstools.test.jboss-as-4.0.home=${jbosstools.test.jboss-as-4.0.home} -Djbosstools.test.jboss-as-4.2.home=${jbosstools.test.jboss-as-4.2.home} -Djbosstools.test.jboss-as-5.0.home=${jbosstools.test.jboss-as-5.0.home} -Djbosstools.test.jboss-as-5.1.home=${jbosstools.test.jboss-as-5.1.home} -Djbosstools.test.jboss-as-6.x.home=${jbosstools.test.jboss-as-6.x.home} -Djbosstools.test.jboss-as-7.0.home=${jbosstools.test.jboss-as-7.0.home} -Djbosstools.test.jboss-as-7.1.home=${jbosstools.test.jboss-as-7.1.home} -Djbosstools.test.jboss-wildfly-8.home=${jbosstools.test.jboss-wildfly-8.home} -Dreddeer.config=target/classes/project</runtimesProperties>
 			</properties>
 			<build>
 			<plugins><plugin>
@@ -191,7 +191,7 @@
 				<jbosstools.test.jboss-as-7.0.home>${requirementsDirectory}/jboss-as-7.0.2.Final</jbosstools.test.jboss-as-7.0.home>
 				<jbosstools.test.jboss-as-7.1.home>${requirementsDirectory}/jboss-as-7.1.1.Final</jbosstools.test.jboss-as-7.1.home>
 				<jbosstools.test.jboss-wildfly-8.home>${requirementsDirectory}/wildfly-8.0.0.CR1</jbosstools.test.jboss-wildfly-8.home>
-				<runtimesProperties>-Djbosstools.test.jboss-wildfly-8.home=${jbosstools.test.jboss-wildfly-8.home} -Djbosstools.test.jboss-as-6.x.home=${jbosstools.test.jboss-as-6.x.home} -Djbosstools.test.jboss-as-7.0.home=${jbosstools.test.jboss-as-7.0.home} -Djbosstools.test.jboss-as-7.1.home=${jbosstools.test.jboss-as-7.1.home} -Dtest.configurations.dir=resources/config_files_templates/project</runtimesProperties>
+				<runtimesProperties>-Djbosstools.test.jboss-wildfly-8.home=${jbosstools.test.jboss-wildfly-8.home} -Djbosstools.test.jboss-as-6.x.home=${jbosstools.test.jboss-as-6.x.home} -Djbosstools.test.jboss-as-7.0.home=${jbosstools.test.jboss-as-7.0.home} -Djbosstools.test.jboss-as-7.1.home=${jbosstools.test.jboss-as-7.1.home} -Dreddeer.config=target/classes/project</runtimesProperties>
 			</properties>
 			<build>
 			<plugins><plugin>
@@ -263,7 +263,7 @@
 				<jbosstools.test.jboss-eap-5.home>${requirementsDirectory}/jboss-eap-5.1/jboss-as</jbosstools.test.jboss-eap-5.home>
 				<jbosstools.test.jboss-eap-5.url>url/to/jboss-eap-noauth-5.1.2.zip</jbosstools.test.jboss-eap-5.url>
 				<jbosstools.test.jboss-eap-5.md5>82fac5578a5ed96d68592ac58f9c35e4</jbosstools.test.jboss-eap-5.md5>
-				<runtimesProperties>-Djbosstools.test.jboss-eap-5.home=${jbosstools.test.jboss-eap-5.home} -Dswtbot.test.properties.file=resources/config_files_templates/product/eap-5.properties</runtimesProperties>
+				<runtimesProperties>-Djbosstools.test.jboss-eap-5.home=${jbosstools.test.jboss-eap-5.home} -Dreddeer.config=target/classes/product/eap-5.xml</runtimesProperties>
 			</properties>
 			<build>
 			<plugins><plugin>
@@ -299,7 +299,7 @@
 				<jbosstools.test.jboss-eap-6.0.home>${requirementsDirectory}/jboss-eap-6.0</jbosstools.test.jboss-eap-6.0.home>
 				<jbosstools.test.jboss-eap-6.0.url></jbosstools.test.jboss-eap-6.0.url>
 				<jbosstools.test.jboss-eap-6.0.md5>ca0e20c5523281233888c296689b7172</jbosstools.test.jboss-eap-6.0.md5>
-				<runtimesProperties>-Djbosstools.test.jboss-eap-6.0.home=${jbosstools.test.jboss-eap-6.0.home} -Dswtbot.test.properties.file=resources/config_files_templates/product/eap-6.0.properties</runtimesProperties>
+				<runtimesProperties>-Djbosstools.test.jboss-eap-6.0.home=${jbosstools.test.jboss-eap-6.0.home} -Dreddeer.config=target/classes/product/eap-6.0.xml</runtimesProperties>
 			</properties>
 			<build>
 			<plugins><plugin>
@@ -335,7 +335,7 @@
 				<jbosstools.test.jboss-eap-6.x.home>${requirementsDirectory}/jboss-eap-6.2</jbosstools.test.jboss-eap-6.x.home>
 				<jbosstools.test.jboss-eap-6.x.url></jbosstools.test.jboss-eap-6.x.url>
 				<jbosstools.test.jboss-eap-6.x.md5>c</jbosstools.test.jboss-eap-6.x.md5>
-				<runtimesProperties>-Djbosstools.test.jboss-eap-6.x.home=${jbosstools.test.jboss-eap-6.x.home} -Dswtbot.test.properties.file=resources/config_files_templates/product/eap-6.x.properties</runtimesProperties>
+				<runtimesProperties>-Djbosstools.test.jboss-eap-6.x.home=${jbosstools.test.jboss-eap-6.x.home} -Dreddeer.config=target/classes/product/eap-6.x.xml</runtimesProperties>
 			</properties>
 			<build>
 			<plugins><plugin>
@@ -371,7 +371,7 @@
 				<jbosstools.test.jboss-wildfly-8.home>${requirementsDirectory}/wildfly-8.0.0.Alpha1</jbosstools.test.jboss-wildfly-8.home>
 				<jbosstools.test.jboss-wildfly-8.url></jbosstools.test.jboss-wildfly-8.url>
 				<jbosstools.test.jboss-wildfly-8.md5>220b246c08a66192b9466f9ac93f1693</jbosstools.test.jboss-wildfly-8.md5>
-				<runtimesProperties>-Djbosstools.test.jboss-wildfly-8.home=${jbosstools.test.jboss-wildfly-8.home} -Dswtbot.test.properties.file=resources/config_files_templates/project/wildfly-8.properties</runtimesProperties>
+				<runtimesProperties>-Djbosstools.test.jboss-wildfly-8.home=${jbosstools.test.jboss-wildfly-8.home} -Dreddeer.config=target/classes/project/wildfly-8.xml</runtimesProperties>
 			</properties>
 			<build>
 			<plugins><plugin>
@@ -397,6 +397,16 @@
 	</profiles>
 	
 	<build>
+		<resources>
+				<resource>
+				<directory>resources/config_files_templates</directory>
+				<includes>
+					<include>project/*</include>
+					<include>product/*</include>
+				</includes>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
 		<plugins>
 			<plugin>
 				<groupId>com.googlecode.maven-download-plugin</groupId>

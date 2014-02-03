@@ -26,11 +26,10 @@ import org.jboss.ide.eclipse.as.ui.bot.test.wildfly8.HotDeployJSPFileWildfly8Ser
 import org.jboss.ide.eclipse.as.ui.bot.test.wildfly8.OperateWildfly8Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.wildfly8.ServerStateDetectorsWildfly8Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.wildfly8.UndeployJSPProjectWildfly8Server;
-import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
-@RunWith(RequirementAwareSuite.class)
+@RunWith(JBTTestSuite.class)
 @Suite.SuiteClasses({
 		CreateWildfly8Server.class,
 		OperateWildfly8Server.class,

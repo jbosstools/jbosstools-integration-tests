@@ -24,13 +24,18 @@ public abstract class CreateServerTemplate extends SWTTestExt {
 	
 	@Test
 	public void createServer(){
-		editor = new ServerEditor(configuredState.getServer().name);
+		new org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView().open();
+		editor = new ServerEditor(getServerName());
 		editor.open();
 		
 		assertEditorPorts();
 		
 		ServersView view = new ServersView();
-		List<XMLConfiguration> configurations = view.getXMLConfiguration(configuredState.getServer().name, "Ports");
+		List<XMLConfiguration> configurations = view.getXMLConfiguration(getServerName(), "Ports");
 		assertViewPorts(configurations);
+	}
+	
+	protected String getServerName(){
+		return configuredState.getServer().name;
 	}
 }

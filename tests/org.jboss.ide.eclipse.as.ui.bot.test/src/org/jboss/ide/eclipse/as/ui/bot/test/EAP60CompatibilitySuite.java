@@ -6,11 +6,10 @@ import org.jboss.ide.eclipse.as.ui.bot.test.eap60.DeployJSPProjectEAP60Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.eap60.HotDeployJSPFileEAP60Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.eap60.OperateEAP60Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.eap60.UndeployJSPProjectEAP60Server;
-import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
-@RunWith(RequirementAwareSuite.class)
+@RunWith(JBTTestSuite.class)
 @Suite.SuiteClasses({
 		CreateEAP60Server.class, 
 		OperateEAP60Server.class,
