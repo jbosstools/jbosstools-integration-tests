@@ -40,10 +40,16 @@ public class CreateAdapterFromServerView {
 		new WaitUntil(new ShellWithTextIsAvailable("New Server"), TimePeriod.NORMAL);
 		
 		new DefaultShell("New Server").setFocus();
-		TreeItem openShiftItem = new DefaultTree().getItems().get(5);
+		List<TreeItem> items = new DefaultTree().getAllItems();
+		TreeItem openShiftItem = null;
+		for (TreeItem item: items) {
+			String label = item.getText();
+			if (label.equals("OpenShift Server")) {
+				openShiftItem = item;
+				break;
+			}
+		}
 		openShiftItem.select();
-		openShiftItem.expand();
-		openShiftItem.getItems().get(0).select();
 		
 		new WaitUntil(new ButtonWithTextIsActive(new PushButton(OpenShiftLabel.Button.NEXT)), TimePeriod.LONG);
 		new PushButton(OpenShiftLabel.Button.NEXT).click();
