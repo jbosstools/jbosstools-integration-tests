@@ -5,6 +5,7 @@ import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
+import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.swt.impl.toolbar.ViewToolItem;
 import org.jboss.reddeer.workbench.view.View;
 
@@ -24,7 +25,7 @@ public class OpenShiftExplorerView extends View {
 	
 	public void openConnectionShell() {
 		open();
-		ViewToolItem connectionButton = new ViewToolItem("Connect to OpenShift");
+		DefaultToolItem connectionButton = new DefaultToolItem("Connect to OpenShift");
 		connectionButton.click();
 	}
 	
