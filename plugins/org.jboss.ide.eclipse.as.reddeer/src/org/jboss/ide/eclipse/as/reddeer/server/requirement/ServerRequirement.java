@@ -34,7 +34,7 @@ public class ServerRequirement implements Requirement<Server>, CustomConfigurati
 
 	private static final Logger LOGGER = Logger.getLogger(ServerRequirement.class);
 	
-	private static ConfiguredServerInfo currentState;
+	private static ConfiguredServerInfo lastServerConfiguration;
 	
 	private ServerRequirementConfig config;
 	private Server server;
@@ -45,7 +45,7 @@ public class ServerRequirement implements Requirement<Server>, CustomConfigurati
 		ServerReqState state() default ServerReqState.RUNNING;
 		ServerReqType type() default ServerReqType.ANY;
 		String version() default "";
-		ServerReqOperator operator() default ServerReqOperator.EQUALS;
+		ServerReqOperator operator() default ServerReqOperator.EQUAL;
 	}
 	
 	
@@ -61,7 +61,7 @@ public class ServerRequirement implements Requirement<Server>, CustomConfigurati
 	@Override
 	public void fulfill() {
 		try {
-			if(currentState == null) {
+			if(lastServerConfiguration == null) {
 				//close welcome screen
 				try {
 					new WorkbenchView("Welcome").close();
@@ -71,7 +71,7 @@ public class ServerRequirement implements Requirement<Server>, CustomConfigurati
 
 				throw new ServerIsNotSetException();
 			} else {
-				if(!config.equals(currentState.getConfig())) {
+				if(!config.equals(lastServerConfiguration.getConfig())) {
 					//different config = different server
 					removeLastRequiredServer();
 					throw new ServerIsNotSetException();
@@ -83,7 +83,7 @@ public class ServerRequirement implements Requirement<Server>, CustomConfigurati
 		} catch(ServerIsNotSetException e) {
 			LOGGER.info("Setup server");
 			setupServerAdapter();
-			currentState = new ConfiguredServerInfo(getServerNameLabelText(), config);
+			lastServerConfiguration = new ConfiguredServerInfo(getServerNameLabelText(), config);
 			if(server.state() == ServerReqState.RUNNING){
 				startServer();
 			}
@@ -91,7 +91,7 @@ public class ServerRequirement implements Requirement<Server>, CustomConfigurati
 	}
 
 	private void setupServerState() throws NoServerFoundException {
-		LOGGER.info("Checking the state of the server '"+currentState.getServerName()+"'");
+		LOGGER.info("Checking the state of the server '"+lastServerConfiguration.getServerName()+"'");
 		
 		org.jboss.reddeer.eclipse.wst.server.ui.view.Server serverInView = getConfiguredServer();
 		
@@ -113,22 +113,18 @@ public class ServerRequirement implements Requirement<Server>, CustomConfigurati
 		}
 	}
 	
-	private void removeLastRequiredServer() throws NoServerFoundException {		
+	private void removeLastRequiredServer() throws NoServerFoundException {
 		org.jboss.reddeer.eclipse.wst.server.ui.view.Server serverInView = getConfiguredServer();
-		//if server is not stopped than stop the server
-		if(serverInView.getLabel().getState() == ServerState.STARTED) {
-			serverInView.stop();
-		}
 		//remove server added by last requirement
-		serverInView.delete();
+		serverInView.delete(true);
 		//current state = there is no server defined
-		currentState = null;
+		lastServerConfiguration = null;
 	}
 	
 	private org.jboss.reddeer.eclipse.wst.server.ui.view.Server getConfiguredServer()
 				throws NoServerFoundException {
 		ServersView serversView = new ServersView();
-		final String serverName = currentState.getServerName();
+		final String serverName = lastServerConfiguration.getServerName();
 		try {
 			return serversView.getServer(serverName);
 		} catch(EclipseLayerException e) {

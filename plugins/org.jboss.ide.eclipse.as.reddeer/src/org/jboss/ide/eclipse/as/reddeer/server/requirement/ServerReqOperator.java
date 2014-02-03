@@ -10,7 +10,7 @@ public enum ServerReqOperator {
 	/**
 	 * =
 	 */
-	EQUALS,
+	EQUAL,
 	
 	/**
 	 * !=
