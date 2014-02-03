@@ -189,7 +189,7 @@ public class RequirementAwareSuite extends Suite {
 
 		@Override
 		protected String testName(FrameworkMethod method) {
-			return config.getPropName() + " - " + method.getName();
+			return method.getName() + " - " + config.getPropName();
 		}
 
 		@Override
@@ -403,8 +403,8 @@ public class RequirementAwareSuite extends Suite {
 			try {
 				TestConfiguration config = new TestConfiguration(entry.getKey()
 						.toString(), entry.getValue().toString());
-				String suiteName = config.getPropName() + " - "
-						+ klass.getCanonicalName();
+				String suiteName = klass.getCanonicalName() + " - "
+						+ config.getPropName();
 				log.info("Determine whether test classes meet configuration");
 				NamedSuite suite = new NamedSuite(klass,new RequirementAwareRunnerBuilder(config), suiteName);
 				// when no class mathces given config, do not init it 
