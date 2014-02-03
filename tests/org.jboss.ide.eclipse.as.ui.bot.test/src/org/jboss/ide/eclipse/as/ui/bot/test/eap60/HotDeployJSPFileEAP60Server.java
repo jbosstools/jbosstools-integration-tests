@@ -1,12 +1,11 @@
 package org.jboss.ide.eclipse.as.ui.bot.test.eap60;
 
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqState;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.template.HotDeployJSPFileTemplate;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
-import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
-import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
 
-@Require(server=@Server(type=ServerType.EAP, version="6", state=ServerState.Running), clearWorkspace=false, clearProjects=false)
+@Server(state=ServerReqState.RUNNING, type=ServerReqType.EAP, version="6.0")
 public class HotDeployJSPFileEAP60Server extends HotDeployJSPFileTemplate {
 
 }

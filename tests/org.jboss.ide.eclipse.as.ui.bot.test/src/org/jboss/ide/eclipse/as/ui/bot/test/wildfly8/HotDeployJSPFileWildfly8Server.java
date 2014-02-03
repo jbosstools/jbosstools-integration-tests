@@ -1,12 +1,12 @@
 package org.jboss.ide.eclipse.as.ui.bot.test.wildfly8;
 
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqOperator;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqState;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.template.HotDeployJSPFileTemplate;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
-import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
-import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
 
-@Require(server=@Server(type=ServerType.WildFly, version="8", state=ServerState.Running), clearWorkspace=false, clearProjects=false)
+@Server(state=ServerReqState.RUNNING, type=ServerReqType.WILDFLY, version="8.0", operator=ServerReqOperator.GREATER_OR_EQUAL)
 public class HotDeployJSPFileWildfly8Server extends HotDeployJSPFileTemplate {
 
 }

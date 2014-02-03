@@ -1,7 +1,6 @@
 package org.jboss.ide.eclipse.as.ui.bot.test.template;
 
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ui.bot.ext.view.ServersView;
 import org.junit.Test;
@@ -15,15 +14,18 @@ import org.junit.Test;
  * @author Lucia Jelinkova
  *
  */
-@Require(server=@Server)
 public abstract class DeleteServerTemplate extends SWTTestExt {
 
 	private ServersView serversView = new ServersView();
 	
 	@Test
 	public void deleteServer(){
-		serversView.deleteServer(configuredState.getServer().name);
+		serversView.deleteServer(getServerName());
 
 		assertFalse(serversView.serverExists(configuredState.getServer().name));
+	}
+	
+	protected String getServerName(){
+		return configuredState.getServer().name;
 	}
 }

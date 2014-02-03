@@ -1,15 +1,16 @@
 package org.jboss.ide.eclipse.as.ui.bot.test.template;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsNot.not;
-
 import org.jboss.ide.eclipse.as.ui.bot.test.web.PageSourceMatcher;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.condition.TaskDuration;
 import org.jboss.tools.ui.bot.ext.matcher.console.ConsoleOutputMatcher;
 import org.jboss.tools.ui.bot.ext.view.ServersView;
 import org.junit.Test;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNot.not;
 
 /**
  * Starts, restarts and stops the server and checks:
@@ -27,10 +28,6 @@ public abstract class OperateServerTemplate extends SWTTestExt {
 
 	public abstract String getWelcomePageText();
 	
-	protected String getServerName(){
-		return configuredState.getServer().name;
-	}
-
 	@Test
 	public void operateServer(){
 		startServer();
@@ -40,7 +37,7 @@ public abstract class OperateServerTemplate extends SWTTestExt {
 	
 	public void startServer(){
 		serversView.startServer(getServerName());
-		serversView.openWebPage(configuredState.getServer().name);
+		serversView.openWebPage(getServerName());
 		
 		assertNoException("Starting server");
 		assertServerState("Starting server", "Started");
@@ -49,7 +46,7 @@ public abstract class OperateServerTemplate extends SWTTestExt {
 
 	public void restartServer(){
 		serversView.restartServer(getServerName());
-		serversView.openWebPage(configuredState.getServer().name);
+		serversView.openWebPage(getServerName());
 		
 		assertNoException("Restarting server");
 		assertServerState("Restarting server", "Started");
@@ -63,6 +60,10 @@ public abstract class OperateServerTemplate extends SWTTestExt {
 		assertServerState("Stopping server", "Stopped");
 	}
 
+	protected String getServerName(){
+		return configuredState.getServer().name;
+	}
+	
 	protected void assertNoException(String message) {
 		assertThat(message, "Exception:", not(new ConsoleOutputMatcher()));
 	}
@@ -72,7 +73,7 @@ public abstract class OperateServerTemplate extends SWTTestExt {
 	}
 	
 	private void assertWebPageContains(String string) {
-		serversView.openWebPage(configuredState.getServer().name);
+		serversView.openWebPage(getServerName());
 		assertThat(string, new PageSourceMatcher(TaskDuration.NORMAL));
 	}
 }

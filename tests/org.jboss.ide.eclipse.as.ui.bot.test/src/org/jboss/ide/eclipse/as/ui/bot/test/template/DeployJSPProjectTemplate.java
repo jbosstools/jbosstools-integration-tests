@@ -1,8 +1,5 @@
 package org.jboss.ide.eclipse.as.ui.bot.test.template;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.IsNot.not;
-
 import org.jboss.ide.eclipse.as.ui.bot.test.Activator;
 import org.jboss.ide.eclipse.as.ui.bot.test.web.PageSourceMatcher;
 import org.jboss.ide.eclipse.as.ui.bot.test.wizard.ImportProjectWizard;
@@ -13,6 +10,10 @@ import org.jboss.tools.ui.bot.ext.matcher.console.ConsoleOutputMatcher;
 import org.jboss.tools.ui.bot.ext.view.ServersView;
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+
+import static org.hamcrest.core.IsNot.not;
 
 /**
  * Imports pre-prepared JSP project and adds it into the server. Checks:
@@ -43,17 +44,21 @@ public abstract class DeployJSPProjectTemplate extends SWTTestExt {
 	@Test
 	public void deployProject(){
 		ServersView serversView = new ServersView();
-		serversView.addProjectToServer(PROJECT_NAME, configuredState.getServer().name);
+		serversView.addProjectToServer(PROJECT_NAME, getServerName());
 
 		// console
 		assertThat(getConsoleMessage(), new ConsoleOutputMatcher(TaskDuration.NORMAL));
 		assertThat("Exception:", not(new ConsoleOutputMatcher()));
 		// web
-		serversView.openWebPage(configuredState.getServer().name, PROJECT_NAME);
+		serversView.openWebPage(getServerName(), PROJECT_NAME);
 		assertThat("Hello tests!", new PageSourceMatcher(TaskDuration.SHORT));
 		// view
-		assertTrue("Server contains project", serversView.containsProject(configuredState.getServer().name, PROJECT_NAME));
-		assertEquals("Started", serversView.getServerStatus(configuredState.getServer().name));
-		assertEquals("Synchronized", serversView.getServerPublishStatus(configuredState.getServer().name));
+		assertTrue("Server contains project", serversView.containsProject(getServerName(), PROJECT_NAME));
+		assertEquals("Started", serversView.getServerStatus(getServerName()));
+		assertEquals("Synchronized", serversView.getServerPublishStatus(getServerName()));
+	}
+	
+	protected String getServerName(){
+		return configuredState.getServer().name;
 	}
 }

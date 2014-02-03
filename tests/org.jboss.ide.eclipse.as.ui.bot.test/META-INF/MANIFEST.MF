@@ -15,7 +15,10 @@ Require-Bundle: org.eclipse.ui,
  org.hamcrest.core;bundle-version="1.3.0",
  org.eclipse.ui.forms;bundle-version="3.5.0",
  org.jboss.reddeer.eclipse;bundle-version="0.5.0",
- org.jboss.reddeer.workbench;bundle-version="0.5.0"
+ org.jboss.reddeer.workbench;bundle-version="0.5.0",
+ org.jboss.reddeer.junit;bundle-version="0.5.0",
+ org.jboss.ide.eclipse.as.reddeer;bundle-version="4.2.0",
+ org.jboss.reddeer.requirements;bundle-version="0.5.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: org.eclipse.core.resources,

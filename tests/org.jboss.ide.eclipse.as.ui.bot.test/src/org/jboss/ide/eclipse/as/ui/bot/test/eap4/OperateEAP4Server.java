@@ -1,19 +1,28 @@
 package org.jboss.ide.eclipse.as.ui.bot.test.eap4;
 
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqState;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.template.OperateServerTemplate;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
-import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
-import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 
 /**
  * @see OperateServerTemplate
  * @author Lucia Jelinkova
  *
  */
-@Require(server=@Server(type=ServerType.EAP, version="4.3", state=ServerState.NotRunning))
+@Server(state=ServerReqState.STOPPED, type=ServerReqType.EAP, version="4.3")
 public class OperateEAP4Server extends OperateServerTemplate {
 
+	@InjectRequirement
+	protected ServerRequirement requirement;
+	
+	@Override
+	protected String getServerName() {
+		return requirement.getServerNameLabelText();
+	} 
+	
 	@Override
 	public String getWelcomePageText() {
 		return "JBoss Management";

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        elementFormDefault="qualified" 
+        targetNamespace="http://www.jboss.org/NS/ServerReq"
+        xmlns:server="http://www.jboss.org/NS/ServerReq" 
+        xmlns:rd="http://www.jboss.org/NS/Req">
+        
+        <!-- Import basic RedDeer requirements -->
+        <xs:import namespace="http://www.jboss.org/NS/Req" schemaLocation="http://cloud.github.com/downloads/jboss-reddeer/reddeer/RedDeerSchema.xsd" />
+
+        <!-- Specify user-requirement -->
+        <xs:element name="server-requirement"
+        	type="server:serverRequirementType"
+        	substitutionGroup="rd:abstractRequirement">
+        	<xs:annotation>
+        		<xs:documentation>Some documentation</xs:documentation>
+        	</xs:annotation>
+        </xs:element>
+
+        <!-- type for user-requirement -->
+        <xs:complexType name="serverRequirementType">
+                <xs:complexContent>
+                        <xs:extension base="rd:abstractRequirementType">
+                                <xs:sequence>
+                    				<xs:element name="type" maxOccurs="1" minOccurs="1" type="server:serverType"/>
+                    				<xs:element name="runtime" type="xs:string" minOccurs="1" maxOccurs="1" />
+                                </xs:sequence>
+                        </xs:extension>
+                </xs:complexContent>
+        </xs:complexType>
+
+        <xs:simpleType name="versionAS">
+        	<xs:restriction base="xs:string">
+        		<xs:enumeration value="3.2"></xs:enumeration>
+        		<xs:enumeration value="4.0"></xs:enumeration>
+        		<xs:enumeration value="4.2"></xs:enumeration>
+        		<xs:enumeration value="5.0"></xs:enumeration>
+        		<xs:enumeration value="5.1"></xs:enumeration>
+        		<xs:enumeration value="6.x"></xs:enumeration>
+        		<xs:enumeration value="7.0"></xs:enumeration>
+        		<xs:enumeration value="7.1"></xs:enumeration>
+        	</xs:restriction>
+        </xs:simpleType>
+
+        <xs:simpleType name="versionEAP">
+        	<xs:restriction base="xs:string">
+        		<xs:enumeration value="4.3"></xs:enumeration>
+        		<xs:enumeration value="5.x"></xs:enumeration>
+        		<xs:enumeration value="6.0"></xs:enumeration>
+        		<xs:enumeration value="6.1+"></xs:enumeration>
+        	</xs:restriction>
+        </xs:simpleType>
+
+        <xs:simpleType name="versionWildFly">
+        	<xs:restriction base="xs:string">
+        		<xs:enumeration value="8.0"></xs:enumeration>
+        	</xs:restriction>
+        </xs:simpleType>
+
+        <xs:complexType name="familyAS">
+        	<xs:attribute name="version" type="server:versionAS"></xs:attribute>
+        </xs:complexType>
+
+        <xs:complexType name="familyEAP">
+        	<xs:attribute name="version" type="server:versionEAP"></xs:attribute>
+        </xs:complexType>
+
+        <xs:complexType name="familyWildFly">
+        	<xs:attribute name="version" type="server:versionWildFly"></xs:attribute>
+        </xs:complexType>
+
+        <xs:complexType name="serverType">
+        	<xs:choice>
+        		<xs:element name="familyAS" type="server:familyAS"></xs:element>
+        		<xs:element name="familyEAP" type="server:familyEAP"></xs:element>
+        		<xs:element name="familyWildFly" type="server:familyWildFly"></xs:element>
+        	</xs:choice>
+        </xs:complexType>
+</xs:schema>
