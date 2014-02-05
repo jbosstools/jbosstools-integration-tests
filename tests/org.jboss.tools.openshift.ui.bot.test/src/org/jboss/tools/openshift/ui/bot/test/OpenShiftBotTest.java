@@ -111,7 +111,9 @@ public class OpenShiftBotTest {
 		logger.info("*** OpenShift RedDeer Tests: Application creation started. ***");
 
 		// workaround for 'embedding DYI' 
-		// scalable apps and Jenkins app 
+		// scalable apps and Jenkins app
+		// FAIL ON ONLINE bcs. there is no shell for scalable app.
+		// JBIDE 16040 
 		if (APP_TYPE.equals(OpenShiftLabel.AppType.DIY) || 
 				APP_TYPE.equals(OpenShiftLabel.AppType.JENKINS) ||
 						scaling == true) {
