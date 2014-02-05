@@ -1,7 +1,7 @@
 package org.jboss.tools.openshift.ui.bot.test;
 
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.tools.openshift.ui.bot.test.app.CreateAppUsingWizard;
+import org.jboss.tools.openshift.ui.bot.test.app.ImportApplicationFromOpenShift;
 import org.jboss.tools.openshift.ui.bot.test.domain.CreateDomain;
 import org.jboss.tools.openshift.ui.bot.test.explorer.Connection;
 import org.jboss.tools.openshift.ui.bot.test.explorer.ManageSSH;
@@ -16,6 +16,8 @@ import org.junit.runners.Suite.SuiteClasses;
 	Connection.class,	
 	ManageSSH.class, 
 	CreateDomain.class,
+	
+	ImportApplicationFromOpenShift.class,
 	
 	CleanUp.class
 })

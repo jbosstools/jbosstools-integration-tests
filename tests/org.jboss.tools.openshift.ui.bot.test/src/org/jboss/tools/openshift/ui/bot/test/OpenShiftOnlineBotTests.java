@@ -13,6 +13,7 @@ package org.jboss.tools.openshift.ui.bot.test;
 import org.jboss.tools.openshift.ui.bot.test.app.CreateAdapterFromServerView;
 import org.jboss.tools.openshift.ui.bot.test.app.CreateAppUsingWizard;
 import org.jboss.tools.openshift.ui.bot.test.app.CreateApplicationFromGithub;
+import org.jboss.tools.openshift.ui.bot.test.app.ImportApplicationFromOpenShift;
 import org.jboss.tools.openshift.ui.bot.test.app.RepublishApp;
 import org.jboss.tools.openshift.ui.bot.test.app.RestartApplication;
 import org.jboss.tools.openshift.ui.bot.test.cartridge.EmbedCartridge;
@@ -57,12 +58,12 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
  	// TODO deploy existing app
  	CreateAdapter.class,
  	CreateAdapterFromServerView.class,
+ 	ImportApplicationFromOpenShift.class,
 	EmbedCartridge.class,
 	// TODO Conflict cartridge 
 	RepublishApp.class,
 	OpenShiftDebugFeatures.class,
  	RestartApplication.class,
- 	// TODO import application
  	// TODO maven profile
  	// TODO multimaven app
  	
