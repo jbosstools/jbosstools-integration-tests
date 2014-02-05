@@ -60,8 +60,8 @@ public class CreateAdapterFromServerView {
 		List<TreeItem> servers = new DefaultTree().getItems();
 		TreeItem server = null;
 		for (TreeItem item: servers) {
-			String serverName = item.getText().split("\\[")[0];
-			if (serverName.equals(DYI_APP + " at OpenShift  ")) {
+			String serverName = item.getText().split(" ")[0];
+			if (serverName.equals(DYI_APP)) {
 				server = item;
 				break;
 			}
