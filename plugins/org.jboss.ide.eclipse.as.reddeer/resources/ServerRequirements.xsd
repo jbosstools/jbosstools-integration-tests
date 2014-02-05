@@ -40,7 +40,6 @@
         		<xs:enumeration value="6.x"></xs:enumeration>
         		<xs:enumeration value="7.0"></xs:enumeration>
         		<xs:enumeration value="7.1"></xs:enumeration>
-        		<xs:enumeration value="8.0"></xs:enumeration>
         	</xs:restriction>
         </xs:simpleType>
 
@@ -49,8 +48,13 @@
         		<xs:enumeration value="4.3"></xs:enumeration>
         		<xs:enumeration value="5.x"></xs:enumeration>
         		<xs:enumeration value="6.0"></xs:enumeration>
-        		<xs:enumeration value="6.1"></xs:enumeration>
-        		<xs:enumeration value="6.2"></xs:enumeration>
+        		<xs:enumeration value="6.1+"></xs:enumeration>
+        	</xs:restriction>
+        </xs:simpleType>
+
+        <xs:simpleType name="versionWildFly">
+        	<xs:restriction base="xs:string">
+        		<xs:enumeration value="8.0"></xs:enumeration>
         	</xs:restriction>
         </xs:simpleType>
 
@@ -62,11 +66,15 @@
         	<xs:attribute name="version" type="server:versionEAP"></xs:attribute>
         </xs:complexType>
 
+        <xs:complexType name="familyWildFly">
+        	<xs:attribute name="version" type="server:versionWildFly"></xs:attribute>
+        </xs:complexType>
 
         <xs:complexType name="serverType">
         	<xs:choice>
         		<xs:element name="familyAS" type="server:familyAS"></xs:element>
         		<xs:element name="familyEAP" type="server:familyEAP"></xs:element>
+        		<xs:element name="familyWildFly" type="server:familyWildFly"></xs:element>
         	</xs:choice>
         </xs:complexType>
 </xs:schema>
