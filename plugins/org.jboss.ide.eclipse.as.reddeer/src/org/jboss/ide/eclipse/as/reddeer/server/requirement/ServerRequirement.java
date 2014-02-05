@@ -6,10 +6,9 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import org.apache.log4j.Logger;
+import org.jboss.ide.eclipse.as.reddeer.server.family.FamilyWildFly;
+import org.jboss.ide.eclipse.as.reddeer.server.family.ServerFamily;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.Server;
-import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirementConfig.FamilyAS;
-import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirementConfig.FamilyEAP;
-import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirementConfig.ServerFamily;
 import org.jboss.ide.eclipse.as.reddeer.server.wizard.NewServerWizardDialog;
 import org.jboss.ide.eclipse.as.reddeer.server.wizard.page.DefineNewServerWizardPage;
 import org.jboss.ide.eclipse.as.reddeer.server.wizard.page.JBossRuntimeWizardPage;
@@ -22,7 +21,6 @@ import org.jboss.reddeer.swt.api.Combo;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.workbench.view.impl.WorkbenchView;
-import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirementConfig.FamilyAS;
 
 /**
  * 
@@ -60,37 +58,22 @@ public class ServerRequirement implements Requirement<Server>, CustomConfigurati
 
 	@Override
 	public void fulfill() {
-		try {
-			if(lastServerConfiguration == null) {
-				//close welcome screen
-				try {
-					new WorkbenchView("Welcome").close();
-				} catch(Exception e){
-					//do nothing
-				}
-
-				throw new ServerIsNotSetException();
-			} else {
-				if(!config.equals(lastServerConfiguration.getConfig())) {
-					//different config = different server
-					removeLastRequiredServer();
-					throw new ServerIsNotSetException();
-				} else {
-					//the same config = the same server
-					setupServerState();
-				} 
+		if(lastServerConfiguration != null) {
+			boolean differentConfig = !config.equals(lastServerConfiguration.getConfig());
+			if(differentConfig) {
+				removeLastRequiredServer();
+				lastServerConfiguration = null;
 			}
-		} catch(ServerIsNotSetException e) {
+		}
+		if(lastServerConfiguration == null || !isLastConfiguredServerPresent()) {
 			LOGGER.info("Setup server");
 			setupServerAdapter();
 			lastServerConfiguration = new ConfiguredServerInfo(getServerNameLabelText(), config);
-			if(server.state() == ServerReqState.RUNNING){
-				startServer();
-			}
 		}
+		setupServerState();
 	}
 
-	private void setupServerState() throws NoServerFoundException {
+	private void setupServerState() throws ConfiguredServerNotFoundException {
 		LOGGER.info("Checking the state of the server '"+lastServerConfiguration.getServerName()+"'");
 		
 		org.jboss.reddeer.eclipse.wst.server.ui.view.Server serverInView = getConfiguredServer();
@@ -108,37 +91,48 @@ public class ServerRequirement implements Requirement<Server>, CustomConfigurati
 				break;
 			default:
 				new AssertionError("It was expected to have server in "
-					+ServerState.STARTED+" or "+ServerState.STOPPED+"state."
-							+ " Not in state "+state+".");
+						+ ServerState.STARTED + " or " + ServerState.STOPPED
+						+ "state." + " Not in state "+state+".");
 		}
 	}
 	
-	private void removeLastRequiredServer() throws NoServerFoundException {
-		org.jboss.reddeer.eclipse.wst.server.ui.view.Server serverInView = getConfiguredServer();
-		//remove server added by last requirement
-		serverInView.delete(true);
+	private void removeLastRequiredServer() {
+		try {
+			org.jboss.reddeer.eclipse.wst.server.ui.view.Server serverInView = getConfiguredServer();
+			//remove server added by last requirement
+			serverInView.delete(true);
+		} catch(ConfiguredServerNotFoundException e) {
+			//server had been already removed
+		}
 		//current state = there is no server defined
 		lastServerConfiguration = null;
 	}
 	
 	private org.jboss.reddeer.eclipse.wst.server.ui.view.Server getConfiguredServer()
-				throws NoServerFoundException {
+			throws ConfiguredServerNotFoundException {
 		ServersView serversView = new ServersView();
 		final String serverName = lastServerConfiguration.getServerName();
 		try {
 			return serversView.getServer(serverName);
 		} catch(EclipseLayerException e) {
-			//server had been removed
-			LOGGER.warn("Server had been removed "+serverName+".");
-			throw new NoServerFoundException();
+			LOGGER.warn("Server \"" + serverName + "\" not found. It had been removed.");
+			throw new ConfiguredServerNotFoundException();
 		}
+	}
+	
+	private boolean isLastConfiguredServerPresent() {
+		try {
+			getConfiguredServer();
+		} catch(ConfiguredServerNotFoundException e) {
+			return false;
+		}
+		return true;
 	}
 	
 	@Override
 	public void setDeclaration(Server server) {
 		this.server = server;
 	}
-	
 
 	@Override
 	public Class getConfigurationClass() {
@@ -156,19 +150,9 @@ public class ServerRequirement implements Requirement<Server>, CustomConfigurati
 	
 	public String getServerTypeLabelText() {
 		ServerFamily server = config.getServerFamily();
-		if (server instanceof FamilyAS) {
+		if (server instanceof FamilyWildFly) {
 			if (server.getVersion().equals("8.0")) {
 				return "WildFly 8.0 (Experimental)";
-			}
-		}
-		if (server instanceof FamilyEAP) {
-			String version = server.getVersion();
-			if (version.equals("6.1")
-					|| version.equals("6.2")) {
-				return config.getServerFamily().getLabel() + " 6.1+";
-			}
-			if (version.startsWith("5")) {
-				return config.getServerFamily().getLabel() + " 5.x";
 			}
 		}
 		return config.getServerFamily().getLabel() + " "
@@ -257,27 +241,14 @@ public class ServerRequirement implements Requirement<Server>, CustomConfigurati
 		}
 	}
 	
-	protected void startServer() {
-		ServersView sw = new ServersView();
-		sw.getServer(getServerNameLabelText()).start();
-	}
-	
 	/**
-	 * Internal exception indicates that server must be set
+	 * Configured server was not found.
 	 * 
 	 * @author rrabara
+	 *
 	 */
-	private class ServerIsNotSetException extends Exception {
+	private class ConfiguredServerNotFoundException extends RuntimeException {
 		
 	}
-	
-	/**
-	 * Internal exception indicates aborting of procedure due to missing server
-	 * 
-	 * @author rrabara
-	 * @see ServerIsNotSetException
-	 */
-	private class NoServerFoundException extends ServerIsNotSetException {
-		
-	}
+
 }

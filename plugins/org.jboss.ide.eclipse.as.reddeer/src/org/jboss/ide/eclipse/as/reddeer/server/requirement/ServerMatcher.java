@@ -1,8 +1,9 @@
 package org.jboss.ide.eclipse.as.reddeer.server.requirement;
 
-import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirementConfig.FamilyAS;
-import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirementConfig.FamilyEAP;
-import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirementConfig.ServerFamily;
+import org.jboss.ide.eclipse.as.reddeer.server.family.FamilyAS;
+import org.jboss.ide.eclipse.as.reddeer.server.family.FamilyEAP;
+import org.jboss.ide.eclipse.as.reddeer.server.family.FamilyWildFly;
+import org.jboss.ide.eclipse.as.reddeer.server.family.ServerFamily;
 
 /**
  * Provides methods for matching required server to configured server
@@ -16,7 +17,7 @@ class ServerMatcher {
 		return serverType == ServerReqType.ANY
 				|| (serverType == ServerReqType.AS && configServerType instanceof FamilyAS)
 				|| (serverType == ServerReqType.EAP && configServerType instanceof FamilyEAP)
-				|| (serverType == ServerReqType.WILDFLY && configServerType instanceof FamilyAS);
+				|| (serverType == ServerReqType.WILDFLY && configServerType instanceof FamilyWildFly);
 	}
 
 	static boolean matchServerVersion(String serverVersion, ServerReqOperator operator,
@@ -48,7 +49,7 @@ class ServerMatcher {
 
 	private static int parseServerVersionNumber(String version)
 			throws NumberFormatException {
-		version = version.replaceAll("\\.", "");
+		version = version.replaceAll("[.x+]", "");
 		int addZeros = 4 - version.length();
 		while (addZeros > 0) {
 			version += "0";
@@ -57,14 +58,14 @@ class ServerMatcher {
 		return Integer.parseInt(version);
 	}
 
-	private static final String versionFormatLogMessage = "Use format ##.## or ##.#.# (e.g. \"8.1\", \"5.2.2\")";
+	private static final String versionFormatLogMessage = "Use format ##.## or ##.x (e.g. \"8.1\", \"5.2.2\", \"6.x\")";
 
 	private static int parseRequiredServerVersion(String version) {
 		try {
 			return parseServerVersionNumber(version);
 		} catch (NumberFormatException e) {
 			throw new IllegalArgumentException(
-					"Wrong format of server version in server requirement. "+versionFormatLogMessage);
+					"Wrong format of server version in server requirement \"" + version + "\".\n"+versionFormatLogMessage);
 		}
 	}
 
@@ -73,7 +74,7 @@ class ServerMatcher {
 			return parseServerVersionNumber(configVersion);
 		} catch (NumberFormatException e) {
 			throw new IllegalArgumentException(
-					"Wrong format of server version in configuration file. "+versionFormatLogMessage);
+					"Wrong format of server version in configuration file \"" + configVersion + "\".\n"+versionFormatLogMessage);
 		}
 	}
 }
