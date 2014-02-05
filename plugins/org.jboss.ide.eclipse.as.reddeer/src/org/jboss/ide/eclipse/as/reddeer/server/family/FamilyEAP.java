@@ -14,7 +14,7 @@ public class FamilyEAP implements ServerFamily {
 
 	private final String category = "JBoss Enterprise Middleware";
 	
-	private final String label = "JBoss Enterprise Application Platform";
+	private final String label = "Red Hat JBoss Middleware";
 	
 	@XmlAttribute(name="version")
 	private String version;
