@@ -229,9 +229,6 @@ public class OpenShiftBotTest {
 		ServersView serversView = new ServersView();
 		serversView.open();
 		
-		// Workaround bcs. of reddeer server deletion does not work on openshift adapters
-		// soon (hopefuly) will be used:
-		// serversView.getServer(APP_NAME + " at OpenShift").delete();
 		List<TreeItem> servers = new DefaultTree().getItems();
 		TreeItem server = null;
 		for (TreeItem item: servers) {

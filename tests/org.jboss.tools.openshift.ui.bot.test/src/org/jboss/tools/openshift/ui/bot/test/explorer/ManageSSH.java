@@ -59,6 +59,9 @@ public class ManageSSH {
 		new DefaultShell("Manage SSH Keys").setFocus();
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		
+		new PushButton("Refresh...").click();
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		
 		// bcs. of not accessible table SOMETIMES
 		AbstractWait.sleep(3000);
 		

@@ -27,6 +27,7 @@ import org.jboss.tools.openshift.ui.bot.test.app.CreateDeleteScalablePerlApp;
 import org.jboss.tools.openshift.ui.bot.test.app.CreateDeleteScalablePythonApp;
 import org.jboss.tools.openshift.ui.bot.test.app.CreateDeleteScaledJBossApp;
 import org.jboss.tools.openshift.ui.bot.test.app.CreateDeleteScaledRubyApp;
+import org.jboss.tools.openshift.ui.bot.test.app.ImportApplicationFromOpenShift;
 import org.jboss.tools.openshift.ui.bot.test.app.RepublishApp;
 import org.jboss.tools.openshift.ui.bot.test.app.RestartApplication;
 import org.jboss.tools.openshift.ui.bot.test.cartridge.EmbedCartridges;
@@ -63,6 +64,7 @@ import org.junit.runners.Suite.SuiteClasses;
  	RenameDomain.class,
 
 	/* Application creation*/
+ 	ImportApplicationFromOpenShift.class,
  	CreateAppUsingWizard.class,
  	CreateApplicationFromGithubEnterprise.class,
  	// TODO deploy existing app
@@ -73,7 +75,6 @@ import org.junit.runners.Suite.SuiteClasses;
 	RepublishApp.class,
 	OpenShiftEnterpriseDebugFeatures.class,
  	RestartApplication.class, 
- 	// TODO import application
  	// TODO maven profile
  	// TODO multimaven app
  	
