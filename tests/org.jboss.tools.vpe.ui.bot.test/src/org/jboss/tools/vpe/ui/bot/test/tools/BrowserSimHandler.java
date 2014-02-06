@@ -52,6 +52,17 @@ public class BrowserSimHandler {
   private BrowserSim browserSim;
   private SWTBotShell browserSimShell;
   private SWTBot bot;
+  
+  private static boolean isJavaFxAvailable;
+  
+  static {
+    if (PlatformUtil.OS_LINUX.equals(PlatformUtil.getOs())) {
+      isJavaFxAvailable = false; // JavaFx web engine is not supported on Linux
+    } else {
+      isJavaFxAvailable = BrowserSimUtil.loadJavaFX();
+    }
+      //TODO: add engines initialization once done properly in JBT
+    }
   /**
    * Opens BrowserSim with url and waits tiemOut for page to be fully loaded
    * @param url - url of page to open in BrowserSim
@@ -59,23 +70,14 @@ public class BrowserSimHandler {
    * @return
    */
   public BrowserSimHandler(final String url , SWTBot bot , long timeOut){
-    this.bot = bot;
-    final boolean isJavaFxAvailable;
     
-    if (PlatformUtil.OS_LINUX.equals(PlatformUtil.getOs())) {
-      isJavaFxAvailable = false; // JavaFx web engine is not supported on Linux
-    } else {
-      isJavaFxAvailable = BrowserSimUtil.loadJavaFX();
-      if (isJavaFxAvailable) {
-        BrowserSimUtil.loadEngines();
-      }
-    }
-        
+    this.bot = bot;
+            
     BrowserSim browserSim = UIThreadRunnable.syncExec(new Result<BrowserSim>() {
       @Override
       public BrowserSim run() {
         BrowserSim newBrowserSim = new BrowserSim(url, Display.getCurrent().getActiveShell());
-        newBrowserSim.open(false);
+        newBrowserSim.open(isJavaFxAvailable);
         return newBrowserSim;
       }
     });
