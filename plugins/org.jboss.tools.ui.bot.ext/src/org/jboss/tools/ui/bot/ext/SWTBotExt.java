@@ -10,6 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.ui.bot.ext;
 
+import static org.eclipse.swtbot.eclipse.finder.matchers.WidgetMatcherFactory.withTitle;
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.allOf;
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.widgetOfType;
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.withStyle;
@@ -26,8 +27,10 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
+import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
+import org.eclipse.swtbot.swt.finder.matchers.AbstractMatcher;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotButton;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCCombo;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCheckBox;
@@ -35,9 +38,12 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
+import org.eclipse.ui.IViewReference;
+import org.eclipse.ui.IWorkbenchPartReference;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.forms.widgets.Twistie;
+import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.jboss.tools.ui.bot.ext.parts.SWTBotBrowserExt;
 import org.jboss.tools.ui.bot.ext.parts.SWTBotEditorExt;
@@ -338,4 +344,38 @@ public class SWTBotExt extends SWTWorkbenchBot {
         }
         return checkBoxes;
     }
+
+	@Override
+	public SWTBotView viewByTitle(String title) {
+		SWTBotView view;
+		try {
+			view = super.viewByTitle(title);
+		} catch (WidgetNotFoundException wnfe) {
+			Matcher<IViewReference> withTitlePrefix = new WithTitlePrefix<IViewReference>(title);
+			view = view(withTitlePrefix);
+		}
+		return view;
+	}
+
+	private class WithTitlePrefix<T extends IWorkbenchPartReference> extends
+			AbstractMatcher<T> {
+		private String titlePrefix;
+		/**
+		 * @param titlePrefix
+		 */
+		public WithTitlePrefix(String titlePrefix) {
+			this.titlePrefix = titlePrefix;
+		}
+		public void describeTo(Description description) {
+			description.appendText("with title prefix '" + titlePrefix + "'");
+		}
+		@Override
+		protected boolean doMatch(Object item) {
+			if (item instanceof IWorkbenchPartReference) {
+				IWorkbenchPartReference part = (IWorkbenchPartReference) item;
+				return part.getTitle().startsWith(titlePrefix);
+			}
+			return false;
+		}
+	}
 }
