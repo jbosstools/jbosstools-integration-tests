@@ -826,7 +826,7 @@ public class IDELabel {
      
      public static final String PROJECT_NAME_LABEL = "Project Name*";
      public static final String JSF_ENVIRONMENT_LABEL = "JSF Environment*";
-     public static final String TEMPLATE_LABEL = "Template*";
+     public static final String TEMPLATE_LABEL = "Project Template*";
      public static final String RUNTIME_LABEL = "Runtime:*";
      public static final String HOME_DIRECTORY_LABEL = "Home Directory";
    }

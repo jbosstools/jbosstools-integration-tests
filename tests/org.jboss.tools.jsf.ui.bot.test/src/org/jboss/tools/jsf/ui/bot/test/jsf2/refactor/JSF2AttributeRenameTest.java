@@ -28,7 +28,7 @@ public class JSF2AttributeRenameTest extends JSF2AbstractRefactorTest {
 		packageExplorer.show();
 		packageExplorer.bot().tree().setFocus();
 		editor.setFocus();
-		bot.menu("Refactor").menu("Rename").click(); //$NON-NLS-1$ //$NON-NLS-2$
+		bot.menu("Refactor").menu("Rename Composite Component Attribute").click(); //$NON-NLS-1$ //$NON-NLS-2$
 		SWTBotShell shell = bot.shell("Rename Composite Attribute").activate(); //$NON-NLS-1$
 		bot.textWithLabel("New name:").setText("echo1"); //$NON-NLS-1$ //$NON-NLS-2$
 		bot.button("Preview >").click(); //$NON-NLS-1$
