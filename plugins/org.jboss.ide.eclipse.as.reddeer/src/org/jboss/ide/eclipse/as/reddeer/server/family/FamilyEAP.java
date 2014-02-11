@@ -12,9 +12,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name="familyEAP", namespace="http://www.jboss.org/NS/ServerReq")
 public class FamilyEAP implements ServerFamily {
 
-	private final String category = "JBoss Enterprise Middleware";
+	private final String category = "Red Hat JBoss Middleware";
 	
-	private final String label = "Red Hat JBoss Middleware";
+	private final String label = "JBoss Enterprise Application Platform";
 	
 	@XmlAttribute(name="version")
 	private String version;
