@@ -1,13 +1,13 @@
 package org.jboss.ide.eclipse.as.ui.bot.test.template;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-
-import org.jboss.ide.eclipse.as.ui.bot.test.web.PageSourceMatcher;
-import org.jboss.ide.eclipse.as.ui.bot.test.wizard.NewFileWizard;
-import org.jboss.tools.ui.bot.ext.SWTBotFactory;
-import org.jboss.tools.ui.bot.ext.SWTTestExt;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
+import org.jboss.reddeer.eclipse.ui.browser.BrowserView;
+import org.jboss.reddeer.eclipse.ui.ide.NewFileCreationWizardDialog;
+import org.jboss.reddeer.eclipse.ui.ide.NewFileCreationWizardPage;
+import org.jboss.reddeer.workbench.editor.TextEditor;
 import org.junit.Test;
+
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * Adds a new jsp file into the jsp project and checks it is hot deployed:
@@ -21,7 +21,7 @@ import org.junit.Test;
  * @author Lucia Jelinkova
  *
  */
-public abstract class HotDeployJSPFileTemplate extends SWTTestExt {
+public abstract class HotDeployJSPFileTemplate {
 
 	public static final String JSP_CONTENT = 
 				"<%@ page language=\"java\" contentType=\"text/html; charset=UTF-8\" pageEncoding=\"UTF-8\"%> \n" + 
@@ -29,13 +29,21 @@ public abstract class HotDeployJSPFileTemplate extends SWTTestExt {
 	
 	@Test
 	public void hotDeployment(){
-		NewFileWizard wizard = new NewFileWizard();
-		wizard.setPath(DeployJSPProjectTemplate.PROJECT_NAME, "WebContent");
-		wizard.setFileName("hot.jsp");
-		wizard.setText(JSP_CONTENT);
-		wizard.execute();
+		NewFileCreationWizardDialog newFileDialog = new NewFileCreationWizardDialog();
+		newFileDialog.open();
+		NewFileCreationWizardPage page = newFileDialog.getFirstPage();
+		page.setFileName("hot.jsp");
+		page.setFolderPath(DeployJSPProjectTemplate.PROJECT_NAME, "WebContent");
+		newFileDialog.finish();
 		
-		SWTBotFactory.getBot().sleep(5000);
-		assertThat("Hot deployment", new PageSourceMatcher("http://localhost:8080/" + DeployJSPProjectTemplate.PROJECT_NAME + "/hot.jsp"));
+		TextEditor editor = new TextEditor();
+		editor.setText(JSP_CONTENT);
+		editor.save();
+		
+		BrowserView browserView = new BrowserView();
+		browserView.open();
+		browserView.openPageURL("http://localhost:8080/" + DeployJSPProjectTemplate.PROJECT_NAME + "/hot.jsp");
+		browserView.getText();
+		assertThat(browserView.getText(), containsString("Hot deployment"));
 	}
 }

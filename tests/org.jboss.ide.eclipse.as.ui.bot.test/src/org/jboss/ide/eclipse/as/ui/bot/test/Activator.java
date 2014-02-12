@@ -1,5 +1,9 @@
 package org.jboss.ide.eclipse.as.ui.bot.test;
 
+import java.io.IOException;
+
+import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.Platform;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
@@ -29,4 +33,15 @@ public class Activator implements BundleActivator {
 		Activator.context = null;
 	}
 
+	 public static String getPathToFileWithinPlugin(String fileName) {
+
+		    String filePath = null;
+		    try {
+		      filePath = FileLocator.toFileURL(
+		          Platform.getBundle(PLUGIN_ID).getEntry("/")).getFile() + fileName;
+		    } catch (IOException e) {
+		      throw new IllegalStateException("Cannot locate file " + fileName + " in plugin " + PLUGIN_ID);
+		    }
+		    return filePath;
+		  }
 }
