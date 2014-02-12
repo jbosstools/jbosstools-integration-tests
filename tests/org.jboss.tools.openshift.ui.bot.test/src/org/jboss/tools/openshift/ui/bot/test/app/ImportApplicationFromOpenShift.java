@@ -84,7 +84,7 @@ public class ImportApplicationFromOpenShift {
 		new DefaultShell("Publish " + DIY_APP + "?").setFocus();
 		new PushButton(OpenShiftLabel.Button.YES).click();
 		
-		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 		
 		ConsoleView console = new ConsoleView();
 		assertFalse(console.getConsoleText().isEmpty());
