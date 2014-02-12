@@ -1,16 +1,22 @@
 package org.jboss.ide.eclipse.as.ui.bot.test.template;
 
-import org.jboss.ide.eclipse.as.ui.bot.test.web.PageSourceMatcher;
-import org.jboss.tools.ui.bot.ext.SWTTestExt;
-import org.jboss.tools.ui.bot.ext.condition.TaskDuration;
-import org.jboss.tools.ui.bot.ext.matcher.console.ConsoleOutputMatcher;
-import org.jboss.tools.ui.bot.ext.view.ServersView;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
+import org.jboss.ide.eclipse.as.reddeer.server.view.JBossServer;
+import org.jboss.ide.eclipse.as.reddeer.server.view.JBossServerView;
+import org.jboss.ide.eclipse.as.ui.bot.test.condition.BrowserContainsTextCondition;
+import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
+import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewEnums.ServerState;
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
+import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.junit.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsNot.not;
+
+import static org.junit.Assert.assertFalse;
+
 
 /**
  * Starts, restarts and stops the server and checks:
@@ -22,58 +28,64 @@ import static org.hamcrest.core.IsNot.not;
  * @author Lucia Jelinkova
  *
  */
-public abstract class OperateServerTemplate extends SWTTestExt {
+public abstract class OperateServerTemplate {
 
-	protected ServersView serversView = new ServersView();
-
-	public abstract String getWelcomePageText();
+	@InjectRequirement
+	protected ServerRequirement requirement;
 	
+	public abstract String getWelcomePageText();
+
 	@Test
 	public void operateServer(){
 		startServer();
 		restartServer();
 		stopServer();
 	}
-	
+
 	public void startServer(){
-		serversView.startServer(getServerName());
-		serversView.openWebPage(getServerName());
-		
+		getServer().start();
+
 		assertNoException("Starting server");
-		assertServerState("Starting server", "Started");
+		assertServerState("Starting server", ServerState.STARTED);
 		assertWebPageContains(getWelcomePageText());
 	}
 
 	public void restartServer(){
-		serversView.restartServer(getServerName());
-		serversView.openWebPage(getServerName());
-		
+		getServer().restart();
+
 		assertNoException("Restarting server");
-		assertServerState("Restarting server", "Started");
+		assertServerState("Restarting server", ServerState.STARTED);
 		assertWebPageContains(getWelcomePageText());
 	}
 
 	public void stopServer(){
-		serversView.stopServer(getServerName());
-		
+		getServer().stop();
+
 		assertNoException("Stopping server");
-		assertServerState("Stopping server", "Stopped");
+		assertServerState("Stopping server", ServerState.STOPPED);
 	}
 
-	protected String getServerName(){
-		return configuredState.getServer().name;
-	}
-	
 	protected void assertNoException(String message) {
-		assertThat(message, "Exception:", not(new ConsoleOutputMatcher()));
+		ConsoleView consoleView = new ConsoleView();
+		consoleView.open();
+		assertFalse(consoleView.getConsoleText().contains("Exception"));
 	}
 
-	protected void assertServerState(String message, String state) {
-		assertThat(message, serversView.getServerStatus(getServerName()), is(state));
+	protected void assertServerState(String message, ServerState state) {
+		assertThat(message, getServer().getLabel().getState(), is(state));
+	}
+
+	private void assertWebPageContains(String string) {
+		getServer().openWebPage();
+		new WaitUntil(new BrowserContainsTextCondition(string), TimePeriod.NORMAL);
 	}
 	
-	private void assertWebPageContains(String string) {
-		serversView.openWebPage(getServerName());
-		assertThat(string, new PageSourceMatcher(TaskDuration.NORMAL));
+	protected String getServerName() {
+		return requirement.getServerNameLabelText();
+	} 
+
+	protected JBossServer getServer() {
+		JBossServerView view = new JBossServerView();
+		return view.getServer(getServerName());
 	}
 }

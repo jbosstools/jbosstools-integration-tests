@@ -9,8 +9,8 @@ import org.jboss.ide.eclipse.as.reddeer.server.family.FamilyWildFly;
 import org.jboss.ide.eclipse.as.reddeer.server.family.ServerFamily;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.Server;
 import org.jboss.ide.eclipse.as.reddeer.server.wizard.NewServerWizardDialog;
-import org.jboss.ide.eclipse.as.reddeer.server.wizard.page.NewServerWizardPageWithErrorCheck;
 import org.jboss.ide.eclipse.as.reddeer.server.wizard.page.JBossRuntimeWizardPage;
+import org.jboss.ide.eclipse.as.reddeer.server.wizard.page.NewServerWizardPageWithErrorCheck;
 import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewEnums.ServerState;
@@ -131,7 +131,7 @@ public class ServerRequirement implements Requirement<Server>, CustomConfigurati
 	}
 
 	@Override
-	public Class getConfigurationClass() {
+	public Class<ServerRequirementConfig> getConfigurationClass() {
 		return ServerRequirementConfig.class;
 	}
 
@@ -202,6 +202,8 @@ public class ServerRequirement implements Requirement<Server>, CustomConfigurati
 	 *
 	 */
 	private class ConfiguredServerNotFoundException extends RuntimeException {
+
+		private static final long serialVersionUID = -1049073209937853734L;
 		
 	}
 

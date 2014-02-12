@@ -1,8 +1,10 @@
 package org.jboss.ide.eclipse.as.ui.bot.test.template;
 
-import org.jboss.tools.ui.bot.ext.SWTTestExt;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
-import org.jboss.tools.ui.bot.ext.view.ServersView;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
+import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
+import org.jboss.reddeer.eclipse.wst.server.ui.view.Server;
+import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.junit.Test;
 
 /**
@@ -14,18 +16,20 @@ import org.junit.Test;
  * @author Lucia Jelinkova
  *
  */
-public abstract class DeleteServerTemplate extends SWTTestExt {
+public abstract class DeleteServerTemplate {
 
+	@InjectRequirement
+	protected ServerRequirement requirement;
+	
 	private ServersView serversView = new ServersView();
 	
-	@Test
+	@Test(expected=EclipseLayerException.class)
 	public void deleteServer(){
-		serversView.deleteServer(getServerName());
+		serversView.getServer(getServerName()).delete();
+		serversView.getServer(getServerName());
+	}
 
-		assertFalse(serversView.serverExists(configuredState.getServer().name));
-	}
-	
-	protected String getServerName(){
-		return configuredState.getServer().name;
-	}
+	protected String getServerName() {
+		return requirement.getServerNameLabelText();
+	} 
 }

@@ -2,10 +2,12 @@ package org.jboss.ide.eclipse.as.ui.bot.test.template;
 
 import java.util.List;
 
-import org.jboss.ide.eclipse.as.ui.bot.test.editor.ServerEditor;
-import org.jboss.tools.ui.bot.ext.SWTTestExt;
-import org.jboss.tools.ui.bot.ext.entity.XMLConfiguration;
-import org.jboss.tools.ui.bot.ext.view.ServersView;
+import org.jboss.ide.eclipse.as.reddeer.server.editor.JBossServerEditor;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
+import org.jboss.ide.eclipse.as.reddeer.server.view.JBossServer;
+import org.jboss.ide.eclipse.as.reddeer.server.view.JBossServerView;
+import org.jboss.ide.eclipse.as.reddeer.server.view.XMLConfiguration;
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.junit.Test;
 
 /**
@@ -14,9 +16,12 @@ import org.junit.Test;
  * @author Lucia Jelinkova
  *
  */
-public abstract class CreateServerTemplate extends SWTTestExt {
+public abstract class CreateServerTemplate {
 
-	protected ServerEditor editor;
+	@InjectRequirement
+	protected ServerRequirement requirement;
+	
+	protected JBossServerEditor editor;
 	
 	protected abstract void assertEditorPorts();
 	
@@ -24,18 +29,17 @@ public abstract class CreateServerTemplate extends SWTTestExt {
 	
 	@Test
 	public void createServer(){
-		new org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView().open();
-		editor = new ServerEditor(getServerName());
-		editor.open();
-		
+		JBossServerView jbossView = new JBossServerView();
+		JBossServer server = jbossView.getServer(getServerName());
+		editor = server.open();
+
 		assertEditorPorts();
 		
-		ServersView view = new ServersView();
-		List<XMLConfiguration> configurations = view.getXMLConfiguration(getServerName(), "Ports");
+		List<XMLConfiguration> configurations = server.getXMLConfiguration("Ports");
 		assertViewPorts(configurations);
 	}
-	
-	protected String getServerName(){
-		return configuredState.getServer().name;
+
+	protected String getServerName() {
+		return requirement.getServerNameLabelText();
 	}
 }

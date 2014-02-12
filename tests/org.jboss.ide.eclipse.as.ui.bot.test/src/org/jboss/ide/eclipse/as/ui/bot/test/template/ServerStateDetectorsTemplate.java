@@ -1,10 +1,12 @@
 package org.jboss.ide.eclipse.as.ui.bot.test.template;
 
-import org.jboss.ide.eclipse.as.ui.bot.test.editor.ServerEditor;
-import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
+import org.jboss.ide.eclipse.as.reddeer.server.editor.JBossServerEditor;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
+import org.jboss.ide.eclipse.as.reddeer.server.view.JBossServerView;
+import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewEnums.ServerState;
-import org.jboss.tools.ui.bot.ext.SWTTestExt;
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -12,19 +14,24 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 import static org.hamcrest.core.Is.is;
 
+import static org.junit.Assert.assertFalse;
+
 /**
  * Checks the server startup / shutdown with different startup/shutdown pollers.  
  * 
  * @author Lucia Jelinkova
  *
  */
-public abstract class ServerStateDetectorsTemplate extends SWTTestExt{
+public abstract class ServerStateDetectorsTemplate {
 	
 	public static final String TIMEOUT_POLLER = "Timeout";
 	
 	public static final String WEB_PORT_POLLER = "Web Port";
 	
 	public static final String PROCESS_TERMINATED_POLLER = "Process Terminated";
+	
+	@InjectRequirement
+	protected ServerRequirement requirement;
 	
 	private ServersView serversView;
 	
@@ -34,10 +41,6 @@ public abstract class ServerStateDetectorsTemplate extends SWTTestExt{
 	}
 	
 	protected abstract String getManagerServicePoller();
-	
-	protected String getServerName(){
-		return configuredState.getServer().name;
-	}
 	
 	@Test
 	public void timeoutPollers(){
@@ -92,7 +95,9 @@ public abstract class ServerStateDetectorsTemplate extends SWTTestExt{
 	}
 
 	protected void assertNoException(String message) {
-		assertFalse(message, new ConsoleHasText("Exception:").test());
+		ConsoleView consoleView = new ConsoleView();
+		consoleView.open();
+		assertFalse(consoleView.getConsoleText().contains("Exception"));
 	}
 
 	protected void assertServerState(String message, ServerState state) {
@@ -100,8 +105,7 @@ public abstract class ServerStateDetectorsTemplate extends SWTTestExt{
 	}
 
 	protected void setTimeouts(int timeout){
-		ServerEditor editor = new ServerEditor(getServerName());
-		editor.open();
+		JBossServerEditor editor = new JBossServerView().getServer(getServerName()).open();
 		
 		editor.setStartTimeout(20);
 		editor.setStopTimeout(20);
@@ -109,11 +113,14 @@ public abstract class ServerStateDetectorsTemplate extends SWTTestExt{
 	}
 	
 	protected void setPollers(String startupPoller, String shutdownPoller){
-		ServerEditor editor = new ServerEditor(getServerName());
-		editor.open();
+		JBossServerEditor editor = new JBossServerView().getServer(getServerName()).open();
 		
 		editor.setStartupPoller(startupPoller);
 		editor.setShutdownPoller(shutdownPoller);
 		editor.save();
+	}
+	
+	protected String getServerName() {
+		return requirement.getServerNameLabelText();
 	}
 }
