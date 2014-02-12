@@ -5,14 +5,10 @@ import static org.jboss.tools.portlet.ui.bot.test.core.CreateJavaPortletProject.
 import java.util.Arrays;
 import java.util.List;
 
-import org.eclipse.core.runtime.Platform;
-import org.eclipse.osgi.baseadaptor.BaseData;
-import org.eclipse.osgi.framework.internal.core.BundleHost;
 import org.jboss.tools.portlet.ui.bot.entity.XMLNode;
 import org.jboss.tools.portlet.ui.bot.task.wizard.web.jboss.NewJavaPortletDialog;
 import org.jboss.tools.portlet.ui.bot.task.wizard.web.jboss.NewJavaPortletWizardPage;
 import org.junit.Before;
-import org.osgi.framework.Bundle;
 
 /**
  * Creates a new java portlet and checks if the right files are generated.  
@@ -41,29 +37,8 @@ public abstract class CreateJavaPortletTemplate extends CreatePortletTemplate {
 	@Before
 	public void setUp() throws Exception {
 		super.setUp();
-		removeSlash("org.eclipse.jst.j2ee");
-		removeSlash("org.eclipse.jst.j2ee.web");
-		removeSlash("org.jboss.tools.portlet.ui");
 	}
-	
-	private void removeSlash(String pluginName){
-		Bundle bundle = Platform.getBundle(pluginName);
-		if (bundle instanceof BundleHost){
-			BundleHost bundleHost = (BundleHost) bundle;
-			if (bundleHost.getBundleData() instanceof BaseData){
-				BaseData baseData = (BaseData) bundleHost.getBundleData();
-				if (baseData.getLocation().endsWith("/")){
-					baseData.setLocation(baseData.getLocation().substring(0, baseData.getLocation().length() - 1));
-				}
-				System.out.println("Location of bundle is: " + bundle.getLocation());
-			} else {
-				System.out.println("The BundleHost data is not of type BaseData");
-			}
-		} else {
-			System.out.println("The bundle is not of type BundleHost");
-		}
-	}
-	
+
 	@Override
 	protected String getProjectName() {
 		return PROJECT_NAME;
