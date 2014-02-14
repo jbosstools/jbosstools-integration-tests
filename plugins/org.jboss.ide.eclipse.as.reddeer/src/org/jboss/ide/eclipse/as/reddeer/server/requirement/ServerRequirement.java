@@ -17,10 +17,6 @@ import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewEnums.ServerState
 import org.jboss.reddeer.junit.logging.Logger;
 import org.jboss.reddeer.junit.requirement.CustomConfiguration;
 import org.jboss.reddeer.junit.requirement.Requirement;
-import org.jboss.reddeer.swt.api.Combo;
-import org.jboss.reddeer.swt.exception.SWTLayerException;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
-import org.jboss.reddeer.workbench.view.impl.WorkbenchView;
 
 /**
  * 
@@ -176,71 +172,29 @@ public class ServerRequirement implements Requirement<Server>, CustomConfigurati
 	
 			sp.selectType(config.getServerFamily().getCategory(),
 					getServerTypeLabelText());
-			checkIfThereIsAnyOtherServerWithTheSameType();
-			
 			sp.setName(getServerNameLabelText());
-			checkTheServerName();
+			
+			sp.checkErrors();
 			
 			serverW.next();
 			
 			JBossRuntimeWizardPage rp = new JBossRuntimeWizardPage();
 			
 			rp.setRuntimeName(getRuntimeNameLabelText());
-			checkTheServerName();
-			
 			rp.setRuntimeDir(config.getRuntime());
-			checkTheHomeDirectory();
 			
-			checkOtherErrors();
+			rp.checkErrors();
 			
 			serverW.finish();
+		} catch(RuntimeException e) {
+			serverW.cancel();
+			throw e;
 		} catch(AssertionError e) {
 			serverW.cancel();
 			throw e;
 		}
 	}
-	
-	private void checkIfThereIsAnyOtherServerWithTheSameType() {
-		try {
-			//combo box indicate other servers with the same type
-			Combo combo = new DefaultCombo();
-			throw new AssertionError("There is another server with the same type.\n"
-					+ "Type: "+getServerTypeLabelText()+"\n"
-					+ "Present server: "+combo.getText());
-		} catch(SWTLayerException e) {
-			//combo box is not present so there is not any other server with the same type
-		}
-	}
 
-	private void checkTheServerName() {
-		String text = new org.jboss.reddeer.swt.impl.text.DefaultText(3).getText();
-		if(text.contains("The server name is already in use. Specify a different name.")) {
-			throw new AssertionError("The server name '"+getServerNameLabelText()+"' is already in use.");
-		}
-		if(text.contains("The name field must not be blank")) {
-			throw new AssertionError("The server name '"+getServerNameLabelText()+"' is empty.");
-		}
-	}
-	
-	private void checkTheHomeDirectory() {
-		String text = new org.jboss.reddeer.swt.impl.text.DefaultText(3).getText();
-		if(text.contains("The home directory does not exist or is not a directory.")) {
-			throw new AssertionError("The home directory '"+config.getRuntime()+"'"
-					+" does not exist or is not a directory.");
-		}
-		if(text.contains("The home directory is missing a required file or folder:")) {
-			throw new AssertionError("The home directory '"+config.getRuntime()+"'"
-					+" is missing a required file or folder:"+text.split(":")[1]);
-		}
-	}
-	
-	private void checkOtherErrors() {
-		String text = new org.jboss.reddeer.swt.impl.text.DefaultText(3).getText();
-		if(text.contains("No valid JREs found for execution environment")) {
-			throw new AssertionError(text);
-		}
-	}
-	
 	/**
 	 * Configured server was not found.
 	 * 
