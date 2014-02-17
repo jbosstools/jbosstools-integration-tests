@@ -23,7 +23,7 @@ import static org.junit.Assert.fail;
 *
 */
 @CleanWorkspace
-@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.EAP, version="4.3")
+@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.EAP4_3)
 public class CreateEAP4Server extends CreateServerTemplate {
 
 	@Override

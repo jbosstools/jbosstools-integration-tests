@@ -23,7 +23,7 @@ import static org.junit.Assert.fail;
 *
 */
 @CleanWorkspace
-@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.AS, version="6")
+@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.AS6x)
 public class CreateAS6Server extends CreateServerTemplate {
 
 	@Override

@@ -4,6 +4,7 @@ import org.jboss.ide.eclipse.as.reddeer.server.family.FamilyAS;
 import org.jboss.ide.eclipse.as.reddeer.server.family.FamilyEAP;
 import org.jboss.ide.eclipse.as.reddeer.server.family.FamilyWildFly;
 import org.jboss.ide.eclipse.as.reddeer.server.family.ServerFamily;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType.ServerReqFamily;
 
 /**
  * Provides methods for matching required server to configured server
@@ -13,22 +14,23 @@ import org.jboss.ide.eclipse.as.reddeer.server.family.ServerFamily;
  */
 class ServerMatcher {
 
-	static boolean matchServerType(ServerReqType serverType, ServerFamily configServerType) {
-		return serverType == ServerReqType.ANY
-				|| (serverType == ServerReqType.AS && configServerType instanceof FamilyAS)
-				|| (serverType == ServerReqType.EAP && configServerType instanceof FamilyEAP)
-				|| (serverType == ServerReqType.WILDFLY && configServerType instanceof FamilyWildFly);
+	static boolean matchServerFamily(ServerReqFamily serverFamily, ServerFamily configServerType) {
+		return serverFamily == ServerReqFamily.ANY
+				|| (serverFamily == ServerReqFamily.AS && configServerType instanceof FamilyAS)
+				|| (serverFamily == ServerReqFamily.EAP && configServerType instanceof FamilyEAP)
+				|| (serverFamily == ServerReqFamily.WILDFLY && configServerType instanceof FamilyWildFly);
 	}
 
-	static boolean matchServerVersion(String serverVersion, ServerReqOperator operator,
+	static boolean matchServerVersion(String requiredVersion, ServerReqVersion versionMatcher,
 			String configVersion) {
-		if (serverVersion == null || serverVersion.length() == 0)
+		if (requiredVersion == null || requiredVersion.length() == 0) {
 			return true;
+		}
 		
-		int versionNum = parseRequiredServerVersion(serverVersion);
-		int configVersionNum = parseConfigServerVersion(configVersion);
+		int versionNum = parseServerVersionNumber(requiredVersion);
+		int configVersionNum = parseServerVersionNumber(configVersion);
 
-		switch (operator) {
+		switch (versionMatcher) {
 		case EQUAL:
 			return versionNum == configVersionNum;
 		case NOT_EQUAL:
@@ -43,38 +45,35 @@ class ServerMatcher {
 			return configVersionNum <= versionNum;
 		}
 
-		throw new IllegalArgumentException("Operator " + operator
+		throw new IllegalArgumentException("Version matcher " + versionMatcher
 				+ " was not recognized!");
 	}
 
-	private static int parseServerVersionNumber(String version)
-			throws NumberFormatException {
-		version = version.replaceAll("[.x+]", "");
-		int addZeros = 4 - version.length();
-		while (addZeros > 0) {
-			version += "0";
-			addZeros--;
+	/**
+	 * Parse version number.
+	 * Distinct only major and minor versions. Minor version can be just single digit.
+	 * 
+	 * @param version version number in format ## (just major version) or ##.# (major and minor version)
+	 * @return version number in format MAJOR_VERSION*10+MINOR_VERSION
+	 * 
+	 */
+	private static int parseServerVersionNumber(String version) {
+		version = version.replaceAll("[^0-9.]", "");
+		int idx = version.indexOf(".");
+		boolean onlyMajorVersion = idx == 0;
+		boolean onlyMajorVersionEndingWithDot = idx+1 == version.length(); //e.g. 6.x -> 6.
+		if(onlyMajorVersion || onlyMajorVersionEndingWithDot) { //only major version
+			return Integer.parseInt(version.replaceAll("[.]", ""))*10;
 		}
-		return Integer.parseInt(version);
-	}
-
-	private static final String versionFormatLogMessage = "Use format ##.## or ##.x (e.g. \"8.1\", \"5.2.2\", \"6.x\")";
-
-	private static int parseRequiredServerVersion(String version) {
-		try {
-			return parseServerVersionNumber(version);
-		} catch (NumberFormatException e) {
-			throw new IllegalArgumentException(
-					"Wrong format of server version in server requirement \"" + version + "\".\n"+versionFormatLogMessage);
+		
+		//distinct major and minor version
+		String majorVersion = version.substring(0, idx);
+		String minorVersion = version.substring(idx+1, version.length());
+		if (minorVersion.length() > 1) {
+			throw new IllegalArgumentException("Version '" + version
+						+ "' must have format ## or ##.#");
 		}
-	}
-
-	private static int parseConfigServerVersion(String configVersion) {
-		try {
-			return parseServerVersionNumber(configVersion);
-		} catch (NumberFormatException e) {
-			throw new IllegalArgumentException(
-					"Wrong format of server version in configuration file \"" + configVersion + "\".\n"+versionFormatLogMessage);
-		}
+		return Integer.parseInt(majorVersion) * 10
+				+ Integer.parseInt(minorVersion);
 	}
 }

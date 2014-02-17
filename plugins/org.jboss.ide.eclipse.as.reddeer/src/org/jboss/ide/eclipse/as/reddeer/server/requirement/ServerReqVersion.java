@@ -1,12 +1,12 @@
 package org.jboss.ide.eclipse.as.reddeer.server.requirement;
 
 /**
- * Enumeration of operators used to match server's version
+ * Enumeration of version matchers.
  * 
  * @author Radoslav Rabara
  *
  */
-public enum ServerReqOperator {
+public enum ServerReqVersion {
 	/**
 	 * =
 	 */

@@ -21,7 +21,7 @@ import static org.hamcrest.core.IsCollectionContaining.hasItem;
  *
  */
 @CleanWorkspace
-@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.EAP, version="6.0")
+@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.EAP6_0)
 public class CreateEAP60Server extends CreateServerTemplate {
 
 	@Override

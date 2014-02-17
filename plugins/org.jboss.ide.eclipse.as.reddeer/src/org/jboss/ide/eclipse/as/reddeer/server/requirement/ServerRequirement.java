@@ -38,8 +38,7 @@ public class ServerRequirement implements Requirement<JBossServer>, CustomConfig
 	public @interface JBossServer {
 		ServerReqState state() default ServerReqState.RUNNING;
 		ServerReqType type() default ServerReqType.ANY;
-		String version() default "";
-		ServerReqOperator operator() default ServerReqOperator.EQUAL;
+		ServerReqVersion version() default ServerReqVersion.EQUAL;
 	}
 	
 	
@@ -47,8 +46,8 @@ public class ServerRequirement implements Requirement<JBossServer>, CustomConfig
 	public boolean canFulfill() {
 		//requirement can be fulfilled only when required server's type and version matches to
 		//configured server's type and version
-		return ServerMatcher.matchServerType(server.type(), config.getServerFamily()) &&
-				ServerMatcher.matchServerVersion(server.version(), server.operator(),
+		return ServerMatcher.matchServerFamily(server.type().getFamily(), config.getServerFamily()) &&
+				ServerMatcher.matchServerVersion(server.type().getVersion(), server.version(),
 				config.getServerFamily().getVersion());
 	}
 

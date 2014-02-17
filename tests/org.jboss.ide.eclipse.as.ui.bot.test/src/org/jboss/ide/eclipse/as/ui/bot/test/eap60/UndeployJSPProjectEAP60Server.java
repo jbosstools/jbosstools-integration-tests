@@ -11,7 +11,7 @@ import org.jboss.ide.eclipse.as.ui.bot.test.template.UndeployJSPProjectTemplate;
  * @author Lucia Jelinkova
  *
  */
-@JBossServer(state=ServerReqState.RUNNING, type=ServerReqType.EAP, version="6.0")
+@JBossServer(state=ServerReqState.RUNNING, type=ServerReqType.EAP6_0)
 public class UndeployJSPProjectEAP60Server extends UndeployJSPProjectTemplate {
 
 	@Override
