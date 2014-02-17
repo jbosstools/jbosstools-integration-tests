@@ -10,7 +10,7 @@ import org.jboss.ide.eclipse.as.ui.bot.test.template.DeployJSPProjectTemplate;
  * @author Lucia Jelinkova
  *
  */
-@JBossServer(state=ServerReqState.RUNNING, type=ServerReqType.EAP, version="6.0")
+@JBossServer(state=ServerReqState.RUNNING, type=ServerReqType.EAP6_0)
 public class DeployJSPProjectEAP60Server extends DeployJSPProjectTemplate {
 
 	@Override

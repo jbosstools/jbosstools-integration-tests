@@ -23,7 +23,7 @@ import static org.hamcrest.core.IsCollectionContaining.hasItem;
  *
  */
 @CleanWorkspace
-@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.AS, version="7.0")
+@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.AS7_0)
 public class CreateAS70Server extends CreateServerTemplate {
 
 	@Override

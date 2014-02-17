@@ -10,7 +10,7 @@ import org.jboss.ide.eclipse.as.ui.bot.test.template.OperateServerTemplate;
  * @author Lucia Jelinkova
  *
  */
-@JBossServer(state=ServerReqState.STOPPED, type=ServerReqType.AS, version="5.0")
+@JBossServer(state=ServerReqState.STOPPED, type=ServerReqType.AS5_0)
 public class OperateAS50Server extends OperateServerTemplate {
 
 	@Override

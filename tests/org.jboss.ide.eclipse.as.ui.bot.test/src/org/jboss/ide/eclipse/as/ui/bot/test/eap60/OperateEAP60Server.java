@@ -11,7 +11,7 @@ import org.jboss.ide.eclipse.as.ui.bot.test.template.OperateServerTemplate;
  * @author Lucia Jelinkova
  *
  */
-@JBossServer(state=ServerReqState.STOPPED, type=ServerReqType.EAP, version="6.0")
+@JBossServer(state=ServerReqState.STOPPED, type=ServerReqType.EAP6_0)
 public class OperateEAP60Server extends OperateServerTemplate {
 
 	@Override

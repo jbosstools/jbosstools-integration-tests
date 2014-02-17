@@ -3,7 +3,7 @@ package org.jboss.ide.eclipse.as.ui.bot.test.wildfly8;
 
 import java.util.List;
 
-import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqOperator;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqVersion;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqState;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
@@ -17,7 +17,7 @@ import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsCollectionContaining.hasItem;
 
 @CleanWorkspace
-@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY, version="8.0", operator=ServerReqOperator.GREATER_OR_EQUAL)
+@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY8_0, version=ServerReqVersion.GREATER_OR_EQUAL)
 public class CreateWildfly8Server extends CreateServerTemplate {
 
 	@Override

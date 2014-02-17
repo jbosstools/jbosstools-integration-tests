@@ -21,7 +21,7 @@ import static org.junit.Assert.fail;
 * @author Lucia Jelinkova
 *
 */
-@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.AS, version="3.2")
+@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.AS3_2)
 @CleanWorkspace
 public class CreateAS3Server extends CreateServerTemplate {
 

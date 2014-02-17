@@ -6,7 +6,7 @@ import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.ide.eclipse.as.ui.bot.test.template.ServerStateDetectorsTemplate;
 
-@JBossServer(state=ServerReqState.STOPPED, type=ServerReqType.AS, version="7.1")
+@JBossServer(state=ServerReqState.STOPPED, type=ServerReqType.AS7_1)
 public class ServerStateDetectorsAS71Server extends ServerStateDetectorsTemplate{
 	
 	@Override
