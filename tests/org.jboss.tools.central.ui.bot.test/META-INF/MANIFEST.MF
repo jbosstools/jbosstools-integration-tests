@@ -16,3 +16,4 @@ Import-Package: org.jboss.tools.ui.bot.ext;bundle-version="[4.2.0,4.3.0)"
 Eclipse-BundleShape: jar
 Bundle-Localization: plugin
 Bundle-Vendor: JBoss by Red Hat
+Export-Package: org.jboss.tools.central.test.ui.bot.api.test
