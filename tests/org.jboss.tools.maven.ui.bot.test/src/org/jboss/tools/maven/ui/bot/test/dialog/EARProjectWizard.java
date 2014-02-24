@@ -9,7 +9,7 @@ public class EARProjectWizard extends NewWizardDialog{
 	
 	public EARProjectWizard(){
 		super(CATEGORY,NAME);
-		addWizardPage(new EARProjectFirstPage(),1);
-		addWizardPage(new EARProjectSecondPage(),2);
+		addWizardPage(new EARProjectFirstPage(),0);
+		addWizardPage(new EARProjectSecondPage(),1);
 	}
 }

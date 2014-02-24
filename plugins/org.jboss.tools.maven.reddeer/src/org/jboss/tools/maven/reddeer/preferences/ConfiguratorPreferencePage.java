@@ -11,7 +11,7 @@ public class ConfiguratorPreferencePage extends PreferencePage{
 	}
 	
 	public ConfigureMavenRepositoriesWizard configureRepositories(){
-		new PushButton("Configure Maven Repositories...");
+		new PushButton("Configure Maven Repositories...").click();
 		return new ConfigureMavenRepositoriesWizard();
 	}
 

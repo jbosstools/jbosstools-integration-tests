@@ -12,7 +12,7 @@ public class MavenImportWizard extends WizardDialog{
 	
 	public MavenImportWizard(){
 		super();
-		addWizardPage(new MavenImportWizardFirstPage(), 1);
+		addWizardPage(new MavenImportWizardFirstPage(), 0);
 		
 	}
 	

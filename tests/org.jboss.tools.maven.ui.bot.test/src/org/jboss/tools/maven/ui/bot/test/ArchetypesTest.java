@@ -34,6 +34,7 @@ public class ArchetypesTest extends AbstractMavenSWTBotTest{
 		ConfiguratorPreferencePage jm = new ConfiguratorPreferencePage();
 		jm.open();
 		ConfigureMavenRepositoriesWizard mr = jm.configureRepositories();
+		mr.open();
 		mr.removeAllRepos();
 		mr.chooseRepositoryFromList(MavenRepositories.JBOSS_REPO, true);
 		mr.confirm();
@@ -74,10 +75,10 @@ public class ArchetypesTest extends AbstractMavenSWTBotTest{
 	private void createArchetype(String name, String catalog, String type){
 		MavenProjectWizard md = new MavenProjectWizard();
 		md.open();
-		md.selectPage(2);
+		md.selectPage(1);
 		MavenProjectWizardSecondPage fp = (MavenProjectWizardSecondPage)md.getWizardPage();
 		fp.selectArchetype(catalog, type);
-		md.selectPage(3);
+		md.selectPage(2);
 		MavenProjectWizardThirdPage tp = (MavenProjectWizardThirdPage)md.getWizardPage();
 		tp.setGAV(name, name, null);
 		md.finish();

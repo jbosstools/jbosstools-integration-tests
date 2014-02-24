@@ -10,6 +10,6 @@ public class EJBProjectDialog extends NewWizardDialog{
 	
 	public EJBProjectDialog(){
 		super(CATEGORY,NAME);
-		addWizardPage(new EJBProjectFirstPage(), 1);
+		addWizardPage(new EJBProjectFirstPage(), 0);
 	}
 }

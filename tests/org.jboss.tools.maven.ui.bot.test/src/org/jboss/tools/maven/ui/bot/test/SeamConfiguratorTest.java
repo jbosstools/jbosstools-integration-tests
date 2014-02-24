@@ -21,7 +21,7 @@ import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.tools.maven.reddeer.preferences.ConfiguratorPreferencePage;
 import org.jboss.tools.maven.reddeer.wizards.ConfigureMavenRepositoriesWizard;
-import org.jboss.tools.maven.ui.bot.test.dialog.seam.SeamPreferencePage;
+import org.jboss.tools.seam.reddeer.preferences.SeamPreferencePage;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;

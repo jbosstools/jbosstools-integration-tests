@@ -30,11 +30,11 @@ import org.eclipse.datatools.connectivity.drivers.models.TemplateDescriptor;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
-import org.jboss.tools.maven.ui.bot.test.dialog.seam.SeamPreferencePage;
-import org.jboss.tools.maven.ui.bot.test.dialog.seam.SeamProjectDialog;
-import org.jboss.tools.maven.ui.bot.test.dialog.seam.SeamProjectFifthPage;
-import org.jboss.tools.maven.ui.bot.test.dialog.seam.SeamProjectFirstPage;
 import org.jboss.tools.maven.ui.bot.test.utils.ProjectHasErrors;
+import org.jboss.tools.seam.reddeer.preferences.SeamPreferencePage;
+import org.jboss.tools.seam.reddeer.wizards.SeamProjectDialog;
+import org.jboss.tools.seam.reddeer.wizards.SeamProjectFifthPage;
+import org.jboss.tools.seam.reddeer.wizards.SeamProjectFirstPage;
 import org.junit.BeforeClass;
 import org.junit.Test;
 /**

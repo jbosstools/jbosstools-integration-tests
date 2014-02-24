@@ -128,7 +128,7 @@ public class MavenProfilesTest extends AbstractMavenSWTBotTest {
 	public void deactivateProfile() throws IOException{
 		SelectProfilesDialog mp = new SelectProfilesDialog("simple-jar");
 		mp.open();
-		mp.deactivateProfile(AUTOACTIVATED_PROFILE_IN_POM);
+		mp.deactivateProfile(AUTOACTIVATED_PROFILE_IN_POM+" (auto activated)");
 		String profilesText = mp.getActiveProfilesText();
 		mp.ok();
 		String[] profiles = profilesText.split(", ");

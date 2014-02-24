@@ -39,17 +39,18 @@ public class SelectProfilesDialog extends WizardDialog{
 	
 	public void activateProfile(String profileName){
 		try{
-			new DefaultTable().getItem(profileName).setChecked(true);
+			new DefaultTable().getItem(profileName).select();
 		} catch(IllegalArgumentException ex){
-			new DefaultTable().getItem(profileName+" (auto activated)").setChecked(true);
+			new DefaultTable().getItem(profileName+" (auto activated)").select();
 		}
+		new PushButton("Activate").click();
 	}
 	
 	public void deactivateProfile(String profileName){
 		try{
-			new DefaultTable().getItem(profileName).setChecked(true);
+			new DefaultTable().getItem(profileName).select();
 		} catch(IllegalArgumentException ex){
-			new DefaultTable().getItem(profileName+" (auto activated)").setChecked(true);
+			new DefaultTable().getItem(profileName+" (auto activated)").select();
 		}
 		new PushButton("Deactivate").click();
 	}
