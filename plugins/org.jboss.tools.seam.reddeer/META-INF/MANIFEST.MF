@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Seam Reddeer
+Bundle-SymbolicName: org.jboss.tools.seam.reddeer
+Bundle-Version: 4.2.0.qualifier
+Bundle-Activator: org.jboss.tools.seam.reddeer.Activator
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.jboss.reddeer.swt,
+ org.jboss.reddeer.jface,
+ org.jboss.reddeer.eclipse,
+ org.junit;bundle-version="4.8.1"
+Export-Package: 
+ org.jboss.tools.seam.reddeer.preferences,
+ org.jboss.tools.seam.reddeer.wizards
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
