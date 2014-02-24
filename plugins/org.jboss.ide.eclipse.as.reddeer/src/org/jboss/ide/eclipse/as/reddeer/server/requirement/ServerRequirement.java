@@ -172,7 +172,7 @@ public class ServerRequirement implements Requirement<Server>, CustomConfigurati
 		try {
 			serverW.open();
 			
-			DefineNewServerWizardPage sp = new DefineNewServerWizardPage(serverW);
+			DefineNewServerWizardPage sp = new DefineNewServerWizardPage();
 	
 			sp.selectType(config.getServerFamily().getCategory(),
 					getServerTypeLabelText());
