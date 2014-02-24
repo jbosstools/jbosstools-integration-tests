@@ -1,9 +1,7 @@
 package org.jboss.ide.eclipse.as.reddeer.server.wizard.page;
 
-import org.jboss.reddeer.eclipse.jface.wizard.WizardDialog;
 import org.jboss.reddeer.eclipse.wst.server.ui.wizard.NewServerWizardPage;
 import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 
 /**
@@ -16,10 +14,6 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTree;
  */
 public class DefineNewServerWizardPage extends NewServerWizardPage {
 	
-	public DefineNewServerWizardPage(WizardDialog parentDialog) {
-		super(parentDialog);
-	}
-
 	/**
 	 * Selects server of specified type in specified category.
 	 * 
