@@ -22,6 +22,7 @@
 		<module>org.jboss.tools.ui.bot.ext</module>
 		<module>org.jboss.tools.ws.reddeer</module>
 		<module>org.jboss.tools.maven.reddeer</module>
+		<module>org.jboss.tools.seam.reddeer</module>
 	</modules>
 </project>
 
