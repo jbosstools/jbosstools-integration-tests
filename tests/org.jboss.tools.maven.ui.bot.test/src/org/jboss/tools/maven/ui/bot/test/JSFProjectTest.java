@@ -12,9 +12,9 @@ package org.jboss.tools.maven.ui.bot.test;
 
 
 import org.eclipse.core.runtime.CoreException;
-import org.jboss.tools.maven.ui.bot.test.dialog.jsf.JSFProjectDialog;
-import org.jboss.tools.maven.ui.bot.test.dialog.jsf.JSFProjectFirstPage;
-import org.jboss.tools.maven.ui.bot.test.dialog.jsf.JSFProjectSecondPage;
+import org.jboss.tools.jsf.reddeer.ui.JSFNewProjectFirstPage;
+import org.jboss.tools.jsf.reddeer.ui.JSFNewProjectSecondPage;
+import org.jboss.tools.jsf.reddeer.ui.JSFNewProjectWizard;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -58,15 +58,15 @@ public class JSFProjectTest extends AbstractMavenSWTBotTest{
 	}
 
 	private void createJSFProject(String name, String version, String jsfType, String runtime){
-		JSFProjectDialog jsfd = new JSFProjectDialog();
+		JSFNewProjectWizard jsfd = new JSFNewProjectWizard();
 		jsfd.open();
 		jsfd.selectPage(1);
-		JSFProjectFirstPage fp = (JSFProjectFirstPage)jsfd.getWizardPage();
+		JSFNewProjectFirstPage fp = (JSFNewProjectFirstPage)jsfd.getWizardPage();
 		fp.setProjectName(name);
 		fp.setJSFVersion(version);
 		fp.setJSFType(jsfType);
 		jsfd.selectPage(2);
-		JSFProjectSecondPage sp = (JSFProjectSecondPage)jsfd.getWizardPage();
+		JSFNewProjectSecondPage sp = (JSFNewProjectSecondPage)jsfd.getWizardPage();
 		sp.setRuntime(runtime);
 		jsfd.finish();
 		

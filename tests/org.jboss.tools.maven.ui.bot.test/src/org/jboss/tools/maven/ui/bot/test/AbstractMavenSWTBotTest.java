@@ -47,9 +47,11 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.m2e.core.internal.IMavenConstants;
-import org.eclipse.ui.forms.widgets.Hyperlink;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
+import org.jboss.reddeer.eclipse.jst.servlet.ui.WebProjectFirstPage;
+import org.jboss.reddeer.eclipse.jst.servlet.ui.WebProjectThirdPage;
+import org.jboss.reddeer.eclipse.jst.servlet.ui.WebProjectWizard;
 import org.jboss.reddeer.eclipse.wst.server.ui.RuntimePreferencePage;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.Server;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
@@ -59,8 +61,7 @@ import org.jboss.reddeer.eclipse.wst.server.ui.wizard.NewServerWizardDialog;
 import org.jboss.reddeer.eclipse.wst.server.ui.wizard.NewServerWizardPage;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
-import org.jboss.reddeer.swt.exception.SWTLayerException;
-import org.jboss.reddeer.swt.exception.WaitTimeoutExpiredException;
+import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
@@ -75,10 +76,6 @@ import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.reddeer.uiforms.hyperlink.UIFormHyperlink;
 import org.jboss.reddeer.workbench.view.impl.WorkbenchView;
 import org.jboss.tools.maven.ui.bot.test.dialog.ASRuntimePage;
-import org.jboss.tools.maven.ui.bot.test.dialog.DynamicWebProjectFirstPage;
-import org.jboss.tools.maven.ui.bot.test.dialog.DynamicWebProjectThirdPage;
-import org.jboss.tools.maven.ui.bot.test.dialog.DynamicWebProjectWizard;
-import org.jboss.tools.maven.ui.bot.test.utils.ButtonIsEnabled;
 import org.jboss.tools.maven.ui.bot.test.utils.ProjectIsBuilt;
 import org.jboss.tools.maven.ui.bot.test.utils.ProjectIsNotBuilt;
 import org.junit.AfterClass;
@@ -323,7 +320,7 @@ public abstract class AbstractMavenSWTBotTest{
 		new PushButton("Finish").click();
 		if(withDependencies){
 			new WaitUntil(new ShellWithTextIsActive("Convert to Maven Dependencies"),TimePeriod.NORMAL);
-			new WaitUntil(new ButtonIsEnabled("Finish"), TimePeriod.LONG);
+			new WaitUntil(new WidgetIsEnabled(new PushButton("Finish")), TimePeriod.LONG);
 			new PushButton("Finish").click();
 		} else {
 			new WaitWhile(new ShellWithTextIsActive("Create new POM"),TimePeriod.NORMAL);
@@ -345,19 +342,19 @@ public abstract class AbstractMavenSWTBotTest{
 	
 
 	public void createWebProject(String name,String runtime, boolean webxml){
-		DynamicWebProjectWizard dw = new DynamicWebProjectWizard();
+		WebProjectWizard dw = new WebProjectWizard();
 		dw.open();
-		dw.selectPage(1);
-		DynamicWebProjectFirstPage dfp = (DynamicWebProjectFirstPage)dw.getWizardPage();
+		dw.selectPage(0);
+		WebProjectFirstPage dfp = (WebProjectFirstPage)dw.getWizardPage();
 		dfp.setProjectName(name);
 		if(runtime == null){
-			dfp.setRuntime("<None>");
+			dfp.setTargetRuntime("<None>");
 		} else {
-			dfp.setRuntime(runtime);
+			dfp.setTargetRuntime(runtime);
 		}
-		dw.selectPage(3);
-		DynamicWebProjectThirdPage dtp = (DynamicWebProjectThirdPage)dw.getWizardPage();
-		dtp.generateWebXml(webxml);
+		dw.selectPage(2);
+		WebProjectThirdPage dtp = (WebProjectThirdPage)dw.getWizardPage();
+		dtp.setGenerateWebXmlDeploymentDescriptor(webxml);
 		dw.finish();
 	}
 	

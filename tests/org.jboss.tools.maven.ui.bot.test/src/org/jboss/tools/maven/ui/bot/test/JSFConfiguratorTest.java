@@ -34,6 +34,7 @@ import org.xml.sax.SAXException;
 public class JSFConfiguratorTest extends AbstractConfiguratorsTest{
 	
 	public static final String MAVEN_ACM_REPO = "http://maven.acm-sl.org/artifactory/libs-releases/";
+	public static final String JBOSS_REPO = "jboss-public-repository";
 	
 	@BeforeClass
 	public static void before(){
@@ -42,6 +43,7 @@ public class JSFConfiguratorTest extends AbstractConfiguratorsTest{
 		jm.open();
 		ConfigureMavenRepositoriesWizard mr = jm.configureRepositories();
 		mr.addRepository("ACM Repo", MAVEN_ACM_REPO, true);
+		mr.chooseRepositoryFromList(JBOSS_REPO, true);
 		mr.confirm();
 		jm.apply();
 		jm.ok();

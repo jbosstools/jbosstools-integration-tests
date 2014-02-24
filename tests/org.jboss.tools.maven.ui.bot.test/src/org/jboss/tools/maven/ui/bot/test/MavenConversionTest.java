@@ -17,11 +17,11 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -30,13 +30,13 @@ import org.jboss.reddeer.swt.impl.link.DefaultLink;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
+import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
-import org.jboss.tools.maven.ui.bot.test.utils.ButtonIsEnabled;
 import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -103,8 +103,7 @@ public class MavenConversionTest extends AbstractMavenSWTBotTest{
 	@Test
 	public void changeIdentifiedDependency(){
 		createWithRuntime();
-		SWTBot b = new SWTBot();
-		b.table().doubleClick(1, 2);
+		new DefaultTable().getItem(1).doubleClick(2);
 		
 		new DefaultShell("Edit dependency");
 		new LabeledText("Group Id:").setText("maven.conversion.test.groupID");
@@ -116,7 +115,7 @@ public class MavenConversionTest extends AbstractMavenSWTBotTest{
 		new CheckBox("Optional").toggle(true);
 		new PushButton("OK").click();
 		new DefaultShell("Convert to Maven Dependencies");
-		new WaitUntil(new ButtonIsEnabled("Finish"));
+		new WaitUntil(new WidgetIsEnabled(new PushButton("Finish")));
 		new PushButton("Finish").click();
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		Map<Object,Object> toCheck = new HashMap<Object, Object>();
@@ -134,8 +133,7 @@ public class MavenConversionTest extends AbstractMavenSWTBotTest{
 	@Test
 	public void testAddRepositoryLinkInConversionWizard(){
 		createWithRuntime();
-		SWTBot b = new SWTBot();
-		b.table().doubleClick(1, 2);
+		new DefaultTable().getItem(1).doubleClick(2);
 		
 		new DefaultShell("Edit dependency");
 		new LabeledText("Group Id:").setText("antlr");
@@ -144,7 +142,7 @@ public class MavenConversionTest extends AbstractMavenSWTBotTest{
 		new DefaultCombo("Type:").setText("jar");
 		new PushButton("OK").click();
 		new DefaultShell("Convert to Maven Dependencies");
-		b.link(0).click("here");
+		new DefaultLink(0).click();
 		boolean shellIsOpened = true;
 		try{
 			new DefaultShell("Maven Repositories");
@@ -193,7 +191,7 @@ public class MavenConversionTest extends AbstractMavenSWTBotTest{
 		new DefaultShell("Create new POM");
 		new PushButton("Finish").click();
 		new DefaultShell("Convert to Maven Dependencies");
-		new WaitUntil(new ButtonIsEnabled("Finish"), TimePeriod.LONG);
+		new WaitUntil(new WidgetIsEnabled(new PushButton("Finish")), TimePeriod.LONG);
 	}
 		
 	

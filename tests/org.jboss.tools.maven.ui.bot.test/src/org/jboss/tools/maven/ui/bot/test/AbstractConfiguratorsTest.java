@@ -138,9 +138,9 @@ public abstract class AbstractConfiguratorsTest extends AbstractMavenSWTBotTest{
 		EJBProjectFirstPage efp = (EJBProjectFirstPage)ejb.getWizardPage();
 		efp.setProjectName(name);
 		if(runtime == null){
-			efp.setRuntime("<None>");
+			efp.setTargetRuntime("<None>");
 		} else {
-			efp.setRuntime(runtime);
+			efp.setTargetRuntime(runtime);
 		}
 		ejb.finish();
 	}

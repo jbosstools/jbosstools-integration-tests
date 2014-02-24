@@ -16,15 +16,14 @@ public class MavenProjectWizard extends NewWizardDialog{
 	
 	public MavenProjectWizard(){
 		super(CATEGORY,NAME);
-		addWizardPage(new MavenProjectWizardSecondPage(), 2);
-		addWizardPage(new MavenProjectWizardThirdPage(), 3);
+		addWizardPage(new MavenProjectWizardSecondPage(), 1);
+		addWizardPage(new MavenProjectWizardThirdPage(), 2);
 	}
 	
 	@Override
 	public void finish() {
 		String shell = new DefaultShell().getText();
 		Button button = new PushButton("Finish");
-		checkButtonEnabled(button);
 		button.click();
 
 		new WaitWhile(new ShellWithTextIsActive(shell), TimePeriod.LONG);

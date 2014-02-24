@@ -16,7 +16,7 @@ public class MavenProjectWizardSecondPage extends WizardPage{
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 		new WaitUntil(new TableHasRows(new DefaultTable()),TimePeriod.LONG);
 		// TODO: RedDeer has to be enhanced to find item by text of other rows then just first one
-		new DefaultTable().getItem(archetype,1);
+		new DefaultTable().getItem(archetype,1).select();
 	}
 
 }

@@ -17,6 +17,7 @@ import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
@@ -28,7 +29,6 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
-import org.jboss.tools.maven.ui.bot.test.utils.ButtonIsEnabled;
 import org.junit.Before;
 import org.junit.Test;
 /**
@@ -55,7 +55,7 @@ public class MaterializeLibraryTest extends AbstractMavenSWTBotTest{
 	public void testMaterializeLibrary() throws Exception{
 		new ShellMenu("File","New","Example...").select();
 		new DefaultTreeItem("JBoss Tools","Project Examples").select();
-		new WaitUntil(new ButtonIsEnabled("Next >"), TimePeriod.NORMAL);
+		new WaitUntil(new WidgetIsEnabled(new PushButton("Next >")), TimePeriod.NORMAL);
 		new PushButton("Next >").click();
 		new WaitUntil(new ShellWithTextIsActive("New Project Example"), TimePeriod.NORMAL);
 		new DefaultTreeItem("JBoss Maven Archetypes","Spring MVC Project").select();
