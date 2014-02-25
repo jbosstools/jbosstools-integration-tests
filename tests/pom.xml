@@ -41,6 +41,7 @@
 		<module>org.jboss.tools.ui.bot.ext.test</module>
 		<module>org.jboss.tools.vpe.ui.bot.test</module>
 		<module>org.jboss.tools.ws.ui.bot.test</module>
+		<module>org.jboss.tools.usercase.ticketmonster.ui.bot.test</module>
 	</modules>
 	<profiles>
 		<profile>
