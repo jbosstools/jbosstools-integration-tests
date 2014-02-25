@@ -1,0 +1,21 @@
+public class TicketCategory {
+/* Declaration of fields */
+/**
+* <p>
+* The description of the of ticket category.
+* </p>
+*
+*/
+private String description;
+/* Boilerplate getters and setters */
+public String getDescription() {
+return description;
+}
+public void setDescription(String description) {
+this.description = description;
+}
+@Override
+public String toString() {
+return description;
+}
+}

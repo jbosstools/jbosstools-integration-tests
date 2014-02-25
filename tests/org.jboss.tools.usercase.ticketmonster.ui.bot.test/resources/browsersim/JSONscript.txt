@@ -1,0 +1,10 @@
+$.getJSON("rest/events", function(events) {
+	// console.log("returned are " + events);
+	var listOfEvents = $("#listOfItems");
+	listOfEvents.empty();
+	$.each(events, function(index, event) {
+		// console.log(event.name);
+		listOfEvents.append("<li><a href='#'>" + event.name + "</a>");
+	});
+	listOfEvents.listview("refresh");
+});
