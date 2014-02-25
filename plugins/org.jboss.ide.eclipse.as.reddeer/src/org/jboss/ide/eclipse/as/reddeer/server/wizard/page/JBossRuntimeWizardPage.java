@@ -7,10 +7,15 @@ import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 
 /**
+ * Represents JBoss Runtime page displayed when adding JBoss Runtime via New Server dialog.
+ * It's the next page displayed after invoking next page from New Server page,
+ * only when any JBoss Runtime was selected on New Server page.
  * 
  * @author psrna
- *
+ * @author Radoslav Rabara
+ * 
  */
+
 public class JBossRuntimeWizardPage {
 	
 	private static final Logger LOGGER = Logger.getLogger(JBossRuntimeWizardPage.class);

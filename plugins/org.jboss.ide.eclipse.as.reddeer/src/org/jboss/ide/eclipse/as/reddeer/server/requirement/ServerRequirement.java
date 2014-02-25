@@ -9,7 +9,7 @@ import org.jboss.ide.eclipse.as.reddeer.server.family.FamilyWildFly;
 import org.jboss.ide.eclipse.as.reddeer.server.family.ServerFamily;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.Server;
 import org.jboss.ide.eclipse.as.reddeer.server.wizard.NewServerWizardDialog;
-import org.jboss.ide.eclipse.as.reddeer.server.wizard.page.DefineNewServerWizardPage;
+import org.jboss.ide.eclipse.as.reddeer.server.wizard.page.NewServerWizardPageWithErrorCheck;
 import org.jboss.ide.eclipse.as.reddeer.server.wizard.page.JBossRuntimeWizardPage;
 import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
@@ -168,7 +168,7 @@ public class ServerRequirement implements Requirement<Server>, CustomConfigurati
 		try {
 			serverW.open();
 			
-			DefineNewServerWizardPage sp = new DefineNewServerWizardPage();
+			NewServerWizardPageWithErrorCheck sp = new NewServerWizardPageWithErrorCheck();
 	
 			sp.selectType(config.getServerFamily().getCategory(),
 					getServerTypeLabelText());
