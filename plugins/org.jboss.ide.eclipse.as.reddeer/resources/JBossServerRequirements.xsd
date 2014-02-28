@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	elementFormDefault="qualified" targetNamespace="http://www.jboss.org/NS/ServerReq"
+	xmlns:server="http://www.jboss.org/NS/ServerReq">
+
+	<!-- Include basic server requirements -->
+	<xs:include schemaLocation="http://www.jboss.org/schema/reddeer/ServerRequirementsBase.xsd"></xs:include> 
+
+	<xs:simpleType name="versionAS">
+		<xs:restriction base="server:abstractVersion">
+			<xs:enumeration value="3.2" />
+			<xs:enumeration value="4.0" />
+			<xs:enumeration value="4.2" />
+			<xs:enumeration value="5.0" />
+			<xs:enumeration value="5.1" />
+			<xs:enumeration value="6.x" />
+			<xs:enumeration value="7.0" />
+			<xs:enumeration value="7.1" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="versionEAP">
+		<xs:restriction base="server:abstractVersion">
+			<xs:enumeration value="4.3" />
+			<xs:enumeration value="5.x" />
+			<xs:enumeration value="6.0" />
+			<xs:enumeration value="6.1+" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="versionWildFly">
+		<xs:restriction base="server:abstractVersion">
+			<xs:enumeration value="8.0" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="familyAS">
+		<xs:complexContent>
+			<xs:restriction base="server:abstractFamily">
+				<xs:attribute name="version" type="server:versionAS"
+					use="required" />
+			</xs:restriction>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="familyEAP">
+		<xs:complexContent>
+			<xs:restriction base="server:abstractFamily">
+				<xs:attribute name="version" type="server:versionEAP"
+					use="required" />
+			</xs:restriction>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="familyWildFly">
+		<xs:complexContent>
+			<xs:restriction base="server:abstractFamily">
+				<xs:attribute name="version" type="server:versionWildFly"
+					use="required" />
+			</xs:restriction>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<!-- Definitions of all allowed server families -->
+	<xs:element name="familyAS" type="server:familyAS"
+		substitutionGroup="server:abstractFamily" />
+	<xs:element name="familyEAP" type="server:familyEAP"
+		substitutionGroup="server:abstractFamily" />
+	<xs:element name="familyWildFly" type="server:familyWildFly"
+		substitutionGroup="server:abstractFamily" />
+
+	<xs:complexType name="jbossServerType">
+		<xs:complexContent>
+			<xs:restriction base="server:serverType">
+				<xs:choice>
+					<xs:element ref="server:familyAS" />
+					<xs:element ref="server:familyEAP" />
+					<xs:element ref="server:familyWildFly" />
+				</xs:choice>
+			</xs:restriction>
+		</xs:complexContent>
+	</xs:complexType>
+</xs:schema>

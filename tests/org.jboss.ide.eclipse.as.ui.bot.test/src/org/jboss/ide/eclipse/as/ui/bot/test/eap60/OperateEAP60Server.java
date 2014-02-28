@@ -2,7 +2,7 @@ package org.jboss.ide.eclipse.as.ui.bot.test.eap60;
 
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqState;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
-import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.Server;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.ide.eclipse.as.ui.bot.test.template.OperateServerTemplate;
 
 /**
@@ -11,7 +11,7 @@ import org.jboss.ide.eclipse.as.ui.bot.test.template.OperateServerTemplate;
  * @author Lucia Jelinkova
  *
  */
-@Server(state=ServerReqState.STOPPED, type=ServerReqType.EAP, version="6.0")
+@JBossServer(state=ServerReqState.STOPPED, type=ServerReqType.EAP, version="6.0")
 public class OperateEAP60Server extends OperateServerTemplate {
 
 	@Override
