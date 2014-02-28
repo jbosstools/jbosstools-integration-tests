@@ -2,7 +2,7 @@ package org.jboss.ide.eclipse.as.ui.bot.test.as40;
 
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqState;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
-import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.Server;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.ide.eclipse.as.ui.bot.test.template.OperateServerTemplate;
 
 /**
@@ -10,7 +10,7 @@ import org.jboss.ide.eclipse.as.ui.bot.test.template.OperateServerTemplate;
  * @author Lucia Jelinkova
  *
  */
-@Server(state=ServerReqState.STOPPED, type=ServerReqType.AS, version="4.0")
+@JBossServer(state=ServerReqState.STOPPED, type=ServerReqType.AS, version="4.0")
 public class OperateAS40Server extends OperateServerTemplate {
 
 	@Override

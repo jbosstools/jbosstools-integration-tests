@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 import org.jboss.ide.eclipse.as.reddeer.server.family.FamilyWildFly;
 import org.jboss.ide.eclipse.as.reddeer.server.family.ServerFamily;
-import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.Server;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.ide.eclipse.as.reddeer.server.wizard.NewServerWizardDialog;
 import org.jboss.ide.eclipse.as.reddeer.server.wizard.page.JBossRuntimeWizardPage;
 import org.jboss.ide.eclipse.as.reddeer.server.wizard.page.NewServerWizardPageWithErrorCheck;
@@ -24,18 +24,18 @@ import org.jboss.reddeer.junit.requirement.Requirement;
  *
  */
 
-public class ServerRequirement implements Requirement<Server>, CustomConfiguration<ServerRequirementConfig> {
+public class ServerRequirement implements Requirement<JBossServer>, CustomConfiguration<ServerRequirementConfig> {
 
 	private static final Logger LOGGER = Logger.getLogger(ServerRequirement.class);
 	
 	private static ConfiguredServerInfo lastServerConfiguration;
 	
 	private ServerRequirementConfig config;
-	private Server server;
+	private JBossServer server;
 	
 	@Retention(RetentionPolicy.RUNTIME)
 	@Target(ElementType.TYPE)
-	public @interface Server {
+	public @interface JBossServer {
 		ServerReqState state() default ServerReqState.RUNNING;
 		ServerReqType type() default ServerReqType.ANY;
 		String version() default "";
@@ -126,7 +126,7 @@ public class ServerRequirement implements Requirement<Server>, CustomConfigurati
 	}
 	
 	@Override
-	public void setDeclaration(Server server) {
+	public void setDeclaration(JBossServer server) {
 		this.server = server;
 	}
 

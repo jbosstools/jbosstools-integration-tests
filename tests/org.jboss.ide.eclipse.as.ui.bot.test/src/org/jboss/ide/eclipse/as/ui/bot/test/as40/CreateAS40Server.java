@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqState;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
-import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.Server;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.ide.eclipse.as.reddeer.server.view.XMLConfiguration;
 import org.jboss.ide.eclipse.as.ui.bot.test.template.CreateServerTemplate;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
@@ -22,7 +22,7 @@ import static org.junit.Assert.fail;
 *
 */
 @CleanWorkspace
-@Server(state=ServerReqState.PRESENT, type=ServerReqType.AS, version="4.0")
+@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.AS, version="4.0")
 public class CreateAS40Server extends CreateServerTemplate {
 
 	@Override
