@@ -16,7 +16,7 @@
             <surefire.timeout>7200</surefire.timeout>
             <memoryOptions2>-XX:MaxPermSize=512m</memoryOptions2>
             <swt.bot.test.record.screencast>false</swt.bot.test.record.screencast>
-            <integrationTestsSystemProperties>-Dswt.bot.test.record.screencast=${swt.bot.test.record.screencast} -Dorg.eclipse.swtbot.screenshots.dir=${project.build.directory}/screenshots</integrationTestsSystemProperties>
+            <integrationTestsSystemProperties>-Dswt.bot.test.record.screencast=${swt.bot.test.record.screencast} -Dorg.eclipse.swtbot.screenshots.dir=${project.build.directory}/screenshots -Dusage_reporting_enabled=false -Dcom.atlassian.connector.eclipse.monitor.usage.first.time=false -Dcom.atlassian.connector.eclipse.monitor.usage.enabled=false</integrationTestsSystemProperties>
         </properties>
 
 	<modules>
