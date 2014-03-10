@@ -1,10 +1,10 @@
 package org.jboss.ide.eclipse.as.reddeer.server.editor;
 
 import org.jboss.reddeer.swt.lookup.WidgetLookup;
-import org.jboss.reddeer.swt.matcher.TextMatcher;
+import org.jboss.reddeer.swt.matcher.WithTextMatcher;
 import org.jboss.reddeer.swt.util.Display;
 import org.jboss.reddeer.swt.widgets.Widget;
-import org.jboss.reddeer.uiforms.hyperlink.UIFormHyperlink;
+import org.jboss.reddeer.uiforms.impl.hyperlink.DefaultHyperlink;
 
 public class Section implements Widget {
 
@@ -17,7 +17,7 @@ public class Section implements Widget {
 	}
 	
 	public Section(String title) {
-		swtSection = WidgetLookup.getInstance().activeWidget(null, org.eclipse.ui.forms.widgets.Section.class, 0, new TextMatcher(title));
+		swtSection = WidgetLookup.getInstance().activeWidget(null, org.eclipse.ui.forms.widgets.Section.class, 0, new WithTextMatcher(title));
 		this.title = title;
 	}
 	
@@ -28,7 +28,7 @@ public class Section implements Widget {
 
 	@Override
 	public boolean isEnabled() {
-		return WidgetLookup.getInstance().isEnabled(swtSection);
+		return swtSection.isEnabled();
 	}
 
 	public void open(){
@@ -41,8 +41,8 @@ public class Section implements Widget {
 			@Override
 			public void run() {
 				if (!swtSection.isExpanded()){
-					new UIFormHyperlink(title).activate();
-				}					
+					new DefaultHyperlink(title).activate();
+				}
 			}
 		});
 	}
