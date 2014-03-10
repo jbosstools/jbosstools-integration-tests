@@ -8,6 +8,9 @@ public class OpenShiftLabel {
 		public static final String JBOSS_EAP = "JBoss Enterprise Application Platform 6.0" + " (" + "jbosseap-6.0" + ")";
 		public static final String JENKINS = "Jenkins Server 1.4" + " (" + "jenkins-1.4" + ")";
 			
+		// OpenShift Online applications labels
+		public static final String JBOSS_EAP_ONLINE = "JBoss Enterprise Application Platform 6" + " (" + "jbosseap-6" + ")";
+		
 		// Shared applications labels (both OpenShift Online and OpenShift Enterprise)
 		public static final String DIY = "Do-It-Yourself 0.1" + " (" + "diy-0.1" + ")";
 		public static final String JBOSS_EWS = "Tomcat 7 (JBoss EWS 2.0)" + " (" + "jbossews-2.0" + ")";

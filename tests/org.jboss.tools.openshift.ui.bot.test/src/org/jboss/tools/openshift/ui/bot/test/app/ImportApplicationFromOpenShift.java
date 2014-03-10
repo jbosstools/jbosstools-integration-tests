@@ -69,7 +69,7 @@ public class ImportApplicationFromOpenShift {
 		domain.getItem(DIY_APP + " " + OpenShiftLabel.AppType.DIY).select();
 		new ContextMenu(OpenShiftLabel.Labels.EXPLORER_IMPORT_APP).select();
 		
-		new WaitUntil(new ShellWithTextIsAvailable("Import OpenShift Application"), TimePeriod.LONG);
+		new WaitUntil(new ShellWithTextIsAvailable("Import OpenShift Application"), TimePeriod.VERY_LONG);
 		
 		new DefaultShell("Import OpenShift Application").setFocus();
 		
@@ -79,7 +79,7 @@ public class ImportApplicationFromOpenShift {
 		new PushButton(OpenShiftLabel.Button.NEXT).click();
 		new PushButton(OpenShiftLabel.Button.FINISH).click();
 		
-		new WaitUntil(new ShellWithTextIsAvailable("Publish " + DIY_APP + "?"), TimePeriod.LONG);
+		new WaitUntil(new ShellWithTextIsAvailable("Publish " + DIY_APP + "?"), TimePeriod.VERY_LONG);
 		
 		new DefaultShell("Publish " + DIY_APP + "?").setFocus();
 		new PushButton(OpenShiftLabel.Button.YES).click();
