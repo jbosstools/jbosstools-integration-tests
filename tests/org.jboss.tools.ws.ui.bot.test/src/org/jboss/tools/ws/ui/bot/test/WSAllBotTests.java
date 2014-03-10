@@ -13,6 +13,7 @@ package org.jboss.tools.ws.ui.bot.test;
 import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
 import org.jboss.tools.ws.ui.bot.test.annotation.AnnotationPropertiesTest;
 import org.jboss.tools.ws.ui.bot.test.annotation.HTTPMethodAnnotationQuickFixTest;
+import org.jboss.tools.ws.ui.bot.test.cxf.CxfWsClientTest;
 import org.jboss.tools.ws.ui.bot.test.facet.JAXRSFacetTest;
 import org.jboss.tools.ws.ui.bot.test.integration.JAXRSToolingIntegrationTest;
 import org.jboss.tools.ws.ui.bot.test.integration.SOAPWSToolingIntegrationTest;
@@ -45,6 +46,7 @@ import org.junit.runners.Suite.SuiteClasses;
  * 
  * @author Lukas Jungmann
  * @author jjankovi
+ * @author Radoslav Rabara
  */
 @RunWith(RequirementAwareSuite.class)
 @SuiteClasses({
@@ -74,7 +76,8 @@ import org.junit.runners.Suite.SuiteClasses;
 	WsClientTest.class,
 	WsTesterTest.class,
 	EAPFromJavaTest.class,
-	EAPFromWSDLTest.class
+	EAPFromWSDLTest.class,
+	CxfWsClientTest.class
 	})
 public class WSAllBotTests extends AbstractTestSuite {
 	

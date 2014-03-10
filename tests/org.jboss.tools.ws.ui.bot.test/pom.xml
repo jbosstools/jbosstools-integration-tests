@@ -13,6 +13,10 @@
 	<artifactId>org.jboss.tools.ws.ui.bot.test</artifactId>
 	<packaging>eclipse-test-plugin</packaging>
 	<properties>
+		<apache-cxf-2.x>${project.build.directory}/requirements/apache-cxf-2.x/apache-cxf-2.4.6/</apache-cxf-2.x>
+		<apache-cxf-2.x.url>http://archive.apache.org/dist/cxf/2.4.6/apache-cxf-2.4.6.zip</apache-cxf-2.x.url>
+		<apache-cxf-2.x.md5>ebaab4357812b22c17eadb30b563c7b8</apache-cxf-2.x.md5>
+
 		<systemProperties>${integrationTestsSystemProperties} -Dswtbot.test.properties.file=${project.basedir}/properties/swtbot.properties</systemProperties>
 		<surefire.timeout>10800</surefire.timeout>
 	</properties>
@@ -41,6 +45,26 @@
 									<type>zip</type>
 								</artifactItem>
 							</artifactItems>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>com.googlecode.maven-download-plugin</groupId>
+				<artifactId>maven-download-plugin</artifactId>
+				<version>1.0.0</version>
+				<executions>
+					<execution>
+						<id>install-apache-cxf-2.x</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<configuration>
+							<url>${apache-cxf-2.x.url}</url>
+							<unpack>true</unpack>
+							<md5>${apache-cxf-2.x.md5}</md5>
+							<outputDirectory>${apache-cxf-2.x}</outputDirectory>
 						</configuration>
 					</execution>
 				</executions>
@@ -77,6 +101,31 @@
 						</dependency>
 					</dependencies>
 				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.5</version>
+				<executions>
+					<execution>
+						<id>copy-resources</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>resources</outputDirectory>
+							<resources>
+								<resource>
+									<directory>resources/properties/template</directory>
+									<filtering>true</filtering>
+									<includes>
+										<include>ws.properties</include>
+									</includes>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
