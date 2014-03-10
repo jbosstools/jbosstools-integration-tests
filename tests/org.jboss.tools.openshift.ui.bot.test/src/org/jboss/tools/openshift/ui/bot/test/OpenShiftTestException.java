@@ -10,6 +10,6 @@ public class OpenShiftTestException extends Exception {
 
 	@Override
 	public String toString() {
-		return "*** OpenShift SWTBot Tests: " + super.toString() + " ***";
+		return "*** OpenShift Tests: " + super.toString() + " ***";
 	}
 }
