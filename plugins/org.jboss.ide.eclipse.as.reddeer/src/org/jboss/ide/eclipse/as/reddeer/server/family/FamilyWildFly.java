@@ -14,7 +14,7 @@ public class FamilyWildFly implements ServerFamily {
 
 	private final String category = "JBoss Community";
 	
-	private final String label = "JBoss Enterprise Application Platform";
+	private final String label = "WildFly";
 	
 	@XmlAttribute(name="version")
 	private String version;
