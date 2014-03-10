@@ -10,26 +10,18 @@
  ******************************************************************************/
 package org.jboss.tools.ws.ui.bot.test.uiutils.wizards;
 
-import org.eclipse.swt.widgets.Shell;
-
 public class WebServiceClientWizard extends WsWizardBase {
 
-	public WebServiceClientWizard() {
-		super();
-	}
-	
-	public WebServiceClientWizard(Shell shell) {
-		super(shell);
-	}
-	
 	@Override
-	protected String getSourceComboLabel() {
+	public String getSourceComboLabel() {
 		return "Service definition:";
 	}
 
-	public WebServiceClientWizard setClientProject(String name) {
-		setTargetProject("Client project:", name, "Specify Client Project Settings");
-		return this;
+	public void setClientProject(String name) {
+		setTargetProject("Client project:", name);//, "Specify Client Project Settings"
 	}
-
+	
+	public void setClientEARProject(String name) {
+		setTargetProject("Client EAR project:", name);
+	}
 }

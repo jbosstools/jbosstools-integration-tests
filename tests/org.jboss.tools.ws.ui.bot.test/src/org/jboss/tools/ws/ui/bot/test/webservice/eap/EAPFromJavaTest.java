@@ -26,6 +26,7 @@ import org.jboss.tools.ws.ui.bot.test.WSAllBotTests;
 import org.jboss.tools.ws.ui.bot.test.uiutils.actions.NewFileWizardAction;
 import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.Wizard;
 import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.WsWizardBase.Slider_Level;
+import org.jboss.tools.ws.ui.bot.test.webservice.WebServiceRuntime;
 import org.jboss.tools.ws.ui.bot.test.webservice.WebServiceTestBase;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -132,8 +133,8 @@ public class EAPFromJavaTest extends WebServiceTestBase {
 
     private void testClient() {
         Assert.assertTrue("service must exist", servicePassed);
-        clientHelper.createClient(deploymentHelper.getWSDLUrl(getWsProjectName(), getWsName()), 
-        			getWsClientProjectName(), getLevel(), "");
+        clientHelper.createClient(deploymentHelper.getWSDLUrl(getWsProjectName(), getWsName()),
+        		WebServiceRuntime.JBOSS_WS, getWsClientProjectName(), getEarProjectName(), getLevel(), "");
         IProject p = ResourcesPlugin.getWorkspace().getRoot().getProject(getWsClientProjectName());
         String pkg = "test/ws";
         String cls = "src/" + pkg + "/EchoService.java";

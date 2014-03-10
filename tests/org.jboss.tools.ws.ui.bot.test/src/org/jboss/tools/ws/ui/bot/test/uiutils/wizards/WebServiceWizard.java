@@ -32,19 +32,10 @@ public class WebServiceWizard extends WsWizardBase {
 			return prefix + " Java bean Web Service";
 		}
 	}
-	
-	public WebServiceWizard() {
-		super();
-	}
-	
-	public WebServiceWizard(Shell shell) {
-		super(shell);
-	}
 
-	public WebServiceWizard setServiceType(Service_Type type) {
+	public void setServiceType(Service_Type type) {
     	setFocus();
 		bot().comboBoxWithLabel("Web service type:").setSelection(type.getDescription());
-		return this;
 	}
 	
 	public Service_Type getServiceType() {
@@ -69,34 +60,26 @@ public class WebServiceWizard extends WsWizardBase {
 		return s;
 	}
 	
-	public WebServiceWizard setServiceProject(String name) {
+	public void setServiceProject(String name) {
 		setTargetProject("Service project:", name);
-		return this;
-	}
-
-	public WebServiceWizard setServiceEARProject(String name) {
-		setTargetProject("Service EAR project:", name);
-		return this;
 	}
 	
-	public WebServiceWizard setServiceSlider(Slider_Level level) {
+	public void setServiceEARProject(String name) {
+		setTargetProject("Service EAR project:", name);
+	}
+	
+	public void setServiceSlider(Slider_Level level) {
 		if (Slider_Level.NO_CLIENT == level) {
 			throw new UnsupportedOperationException("Unsupported level: " + level);
 		}
 		setSlider(level, 0);
-		return this;
 	}
 	
-	public WebServiceWizard setClientSlider(Slider_Level level) {
+	public void setClientSlider(Slider_Level level) {
 		setSlider(level, 1);
-		return this;
 	}
 	
 	public boolean isClientEnabled() {
 		return isScaleEnabled(1);
-	}
-	
-	private void setTargetProject(String label, String name) {
-		setTargetProject(label, name, "Specify Service Project Settings");
 	}
 }

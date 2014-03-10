@@ -14,19 +14,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.swt.widgets.Scale;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotCombo;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
-import org.eclipse.ui.forms.widgets.Hyperlink;
-import org.jboss.tools.ui.bot.ext.parts.SWTBotHyperlinkExt;
+import org.hamcrest.core.AnyOf;
+import org.hamcrest.core.Is;
+import org.hamcrest.core.StringStartsWith;
+import org.jboss.reddeer.swt.api.Combo;
+import org.jboss.reddeer.swt.api.Group;
+import org.jboss.reddeer.swt.api.Text;
+import org.jboss.reddeer.swt.exception.SWTLayerException;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
+import org.jboss.reddeer.swt.impl.group.DefaultGroup;
+import org.jboss.reddeer.swt.impl.text.DefaultText;
+import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.swt.matcher.WithLabelMatcher;
+import org.jboss.reddeer.swt.matcher.WithMnemonicTextMatcher;
+import org.jboss.reddeer.uiforms.impl.hyperlink.DefaultHyperlink;
 import org.jboss.tools.ui.bot.ext.parts.SWTBotScaleExt;
 
 public abstract class WsWizardBase extends Wizard {
 
     public enum Slider_Level {
-	TEST, START, INSTALL, DEPLOY, ASSEMBLE, DEVELOP, NO_CLIENT;
+		TEST, START, INSTALL, DEPLOY, ASSEMBLE, DEVELOP, NO_CLIENT;
 
         @Override
         public String toString() {
@@ -34,119 +44,75 @@ public abstract class WsWizardBase extends Wizard {
         }
     }
 
-    public WsWizardBase() {
-        super();
-    }
+	protected abstract String getSourceComboLabel();
+	
+	public void setSource(String source) {
+		Combo c = new LabeledCombo(getSourceComboLabel());
+		c.setText(source);
+	}
+	
+	public void setServerRuntime(String name) {
+		new DefaultHyperlink(
+				new WithMnemonicTextMatcher(StringStartsWith.startsWith("Server runtime:"))
+				).activate();
+		new DefaultTreeItem(new DefaultGroup("Server runtime:"), "Existing Servers", name).select();
+		new PushButton("OK").click();
+	}
 
-    public WsWizardBase(Shell shell) {
-        super(shell);
-    }
+	public void setWebServiceRuntime(String name) {
+		new DefaultHyperlink(
+				new WithMnemonicTextMatcher(StringStartsWith.startsWith("Web service runtime:"))
+				).activate();
+		Group runtimeGroup = new DefaultGroup("Web service runtime:");
+		new DefaultTreeItem(runtimeGroup, name).select();
+		new PushButton("OK").click();
+	}
 
-    public WsWizardBase setSource(String s) {
-    	setFocus();
-        SWTBotCombo c = bot().comboBoxWithLabel(getSourceComboLabel());
-        c.setText(s);
-        return this;
-    }
+	protected void setTargetProject(String label, String name) {
+		new DefaultHyperlink(
+				new WithMnemonicTextMatcher(StringStartsWith.startsWith(label))
+				).activate();
+		Combo c = new LabeledCombo(label);
+		//TODO: setText when <var>name</var> is not present in combo
+		try {
+			c.setSelection(name);
+		} catch(SWTLayerException e) {
+			c.setText(name);
+		}
+		new PushButton("OK").click();
+	}
 
-    public WsWizardBase setServerRuntime(String name) {
-        setServerRuntime(name, 0);
-        return this;
-    }
+	public void setSlider(Slider_Level level, int idx) {
+		scale(idx).setSelection(level.ordinal());
+	}
 
-    public WsWizardBase setWebServiceRuntime(String name) {
-        setWebServiceRuntime(name, 0);
-        return this;
-    }
+	// second panel
+	public void setPackageName(String pkg) {
+		//there can be text field or combo box
+		try {
+			Text pkgText = new DefaultText(new WithLabelMatcher(AnyOf.anyOf(
+					Is.is("Package name"),
+					Is.is("Package Name:")
+					)));
+			pkgText.setText(pkg);
+		} catch(SWTLayerException e) {
+			DefaultCombo combo = new DefaultCombo(0);
+			combo.setSelection("/"+pkg.replaceAll(".", "/"));
+		}
+	}
 
-    protected abstract String getSourceComboLabel();
+	protected boolean isScaleEnabled(int i) {
+		return scale(i).isEnabled();
+	}
 
-    protected WsWizardBase setServerRuntime(String name, int idx) {
-    	setFocus();
-        findLink("Server runtime:").get(idx).click();
-        SWTBotShell sh = bot().activeShell();
-        SWTBotTree tree = sh.bot().treeInGroup("Server runtime:");
-        tree.expandNode("Existing Servers", name).select();
-        sh.bot().button("OK").click();
-        sleep(50);
-        return this;
-    }
-
-    protected WsWizardBase setWebServiceRuntime(String name, int idx) {
-    	setFocus();
-    	sleep(100);
-        findLink("Web service runtime:").get(idx).click();
-        sleep(100);
-        SWTBotShell sh = bot().activeShell();
-        sleep(100);
-        SWTBotTree tree = sh.bot().treeInGroup("Web service runtime:");
-        tree.select(name);
-        sh.bot().button("OK").click();
-        sleep(50);
-        return this;
-    }
-
-    protected WsWizardBase setTargetProject(String label, String name, String shellTitle) {
-    	setFocus();
-    	sleep(100);
-        findLink(label).get(0).click();
-        sleep(100);
-        SWTBotShell sh = bot().shell(shellTitle);
-        sh.setFocus();
-        SWTBotCombo c = sh.bot().comboBoxWithLabel(label);
-        String[] items = c.items();
-        boolean found = false;
-        for (String item : items) {
-            if (item.equals(name)) {
-                found = true;
-                break;
-            }
-        }
-        if (found) {
-            c.setSelection(name);
-        } else {
-            c.setText(name);
-        }
-        sh.bot().button("OK").click();
-        sleep(50);
-        return this;
-    }
-
-    public WsWizardBase setSlider(Slider_Level level, int idx) {
-        scale(idx).setSelection(level.ordinal());
-        return this;
-    }
-
-    //second panel
-    public WsWizardBase setPackageName(String pkg) {
-    	setFocus();
-        bot().textWithLabel("Package name").typeText(pkg);
-        return this;
-    }
-
-    protected boolean isScaleEnabled(int i) {
-        return scale(i).isEnabled();
-    }
-
-    private List<SWTBotHyperlinkExt> findLink(String text) {
-    	setFocus();
-        List<? extends Hyperlink> widgets = bot().widgets(WidgetMatcherFactory.widgetOfType(Hyperlink.class));
-        List<SWTBotHyperlinkExt> ret = new ArrayList<SWTBotHyperlinkExt>();
-        for (Hyperlink h : widgets) {
-            if (h.getText().indexOf(text) > -1) {
-                ret.add(new SWTBotHyperlinkExt(h));
-            }
-        }
-        return ret;
-    }
-
-    private SWTBotScaleExt scale(int i) {
-    	setFocus();
-        List<? extends Scale> widgets = bot().widgets(WidgetMatcherFactory.widgetOfType(Scale.class));
-        List<SWTBotScaleExt> ret = new ArrayList<SWTBotScaleExt>();
-        for (Scale s : widgets) {
-            ret.add(new SWTBotScaleExt(s));
-        }
-        return ret.get(i);
-    }
+	private SWTBotScaleExt scale(int i) {
+		setFocus();
+		List<? extends Scale> widgets = bot().widgets(
+				WidgetMatcherFactory.widgetOfType(Scale.class));
+		List<SWTBotScaleExt> ret = new ArrayList<SWTBotScaleExt>();
+		for (Scale s : widgets) {
+			ret.add(new SWTBotScaleExt(s));
+		}
+		return ret.get(i);
+	}
 }

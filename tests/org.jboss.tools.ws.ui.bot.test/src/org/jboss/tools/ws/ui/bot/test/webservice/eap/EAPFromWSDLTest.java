@@ -27,6 +27,8 @@ import org.eclipse.swtbot.swt.finder.results.Result;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
+import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.swt.condition.WaitCondition;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
@@ -39,6 +41,7 @@ import org.jboss.tools.ws.reddeer.swt.condition.ConsoleContainsText;
 import org.jboss.tools.ws.ui.bot.test.WSAllBotTests;
 import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.WsWizardBase.Slider_Level;
 import org.jboss.tools.ws.ui.bot.test.webservice.TopDownWSTest;
+import org.jboss.tools.ws.ui.bot.test.webservice.WebServiceRuntime;
 import org.jboss.tools.ws.ui.bot.test.webservice.WebServiceTestBase;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -128,7 +131,7 @@ public class EAPFromWSDLTest extends WebServiceTestBase {
 	
 	private void testService() {
 		topDownWS(TopDownWSTest.class.getResourceAsStream("/resources/jbossws/AreaService.wsdl"),
-				getWsPackage());
+				WebServiceRuntime.JBOSS_WS, getWsPackage());
 
 		IProject project = ResourcesPlugin.getWorkspace().getRoot()
 				.getProject(getWsProjectName());
@@ -167,8 +170,9 @@ public class EAPFromWSDLTest extends WebServiceTestBase {
 
 	private void testClient() {
 		Assert.assertTrue("service must exist", servicePassed);
-		clientHelper.createClient(deploymentHelper.getWSDLUrl(getWsProjectName(), getWsName()), 
-				getWsClientProjectName(), Slider_Level.DEVELOP, getWsClientPackage());
+		clientHelper.createClient(deploymentHelper.getWSDLUrl(getWsProjectName(), getWsName()),
+				WebServiceRuntime.JBOSS_WS, getWsClientProjectName(), getEarProjectName(), 
+				Slider_Level.DEVELOP, getWsClientPackage());
 		IProject p = ResourcesPlugin.getWorkspace().getRoot()
 				.getProject(getWsClientProjectName());
 		String pkg = "org/jboss/wsclient";
@@ -196,13 +200,13 @@ public class EAPFromWSDLTest extends WebServiceTestBase {
 		util.waitForNonIgnoredJobs();
 		
 		// wait until the client ends (prints the last line)
-		ConsoleContainsText wait = new ConsoleContainsText("Call Over!", console);
-		new WaitUntil(wait, TimePeriod.NORMAL);
+		new WaitUntil(new ConsoleHasText("Call Over!"), TimePeriod.NORMAL);
 
-		String output = wait.getConsoleText();
-		LOGGER.info(output);
-		Assert.assertTrue(output, output.contains("Server said: 37.5"));
-		Assert.assertTrue(output.contains("Server said: 3512.3699"));
+		ConsoleView cw = new ConsoleView();
+		String consoleOutput = cw.getConsoleText();
+		LOGGER.info(consoleOutput);
+		Assert.assertTrue(consoleOutput, consoleOutput.contains("Server said: 37.5"));
+		Assert.assertTrue(consoleOutput.contains("Server said: 3512.3699"));
 	}
 	
 	private void replaceContent(IFile f, String content) {

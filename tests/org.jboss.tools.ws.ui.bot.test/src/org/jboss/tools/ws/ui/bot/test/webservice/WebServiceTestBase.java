@@ -52,7 +52,7 @@ public class WebServiceTestBase extends WSTestBase {
 	 * @param input
 	 * @param pkg
 	 */
-	protected void topDownWS(InputStream input, String pkg) {
+	protected void topDownWS(InputStream input, WebServiceRuntime serviceRuntime, String pkg) {
 		String s = resourceHelper.readStream(input);
 		String[] tns = getWsPackage().split("\\.");
 		StringBuilder sb = new StringBuilder();
@@ -109,7 +109,7 @@ public class WebServiceTestBase extends WSTestBase {
 		wsw.setServiceType(t);
 		wsw.setSource(source);
 		wsw.setServerRuntime(configuredState.getServer().name);
-		wsw.setWebServiceRuntime("JBossWS");
+		wsw.setWebServiceRuntime("JBossWS");//TODO: cxf
 		wsw.setServiceProject(getWsProjectName());
 		wsw.setServiceEARProject(getEarProjectName());
 		wsw.setServiceSlider(level);
