@@ -64,9 +64,12 @@ public class WSTesterPromptValuesSupportTest extends RESTfulTestBase {
 	}
 	
 	/**
-	 * Fails due to JBIDE-13546
+	 * Fails due to JBIDE-13546, JBIDE-13111 (OK button is always enabled - see
+	 * comment)
 	 * 
-	 * @see https://issues.jboss.org/browse/JBIDE-13546 
+	 * 
+	 * @see https://issues.jboss.org/browse/JBIDE-13546
+	 * @see https://issues.jboss.org/browse/JBIDE-13111
 	 */
 	@Test
 	public void testWSParametersDialog() {
