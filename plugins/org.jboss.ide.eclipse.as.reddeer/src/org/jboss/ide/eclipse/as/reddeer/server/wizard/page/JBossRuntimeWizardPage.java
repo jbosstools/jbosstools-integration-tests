@@ -20,27 +20,27 @@ public class JBossRuntimeWizardPage {
 	
 	private static final Logger LOGGER = Logger.getLogger(JBossRuntimeWizardPage.class);
 	
-	private final String runtimeNameLabel = "Name";
+	private static final String RUNTIME_NAME_LABEL = "Name";
 	
-	private final String homeDirectoryLabel = "Home Directory";
+	private static final String HOME_DIRECTORY_LABEL = "Home Directory";
 	
 	public void setRuntimeName(String name){
-		 new LabeledText(runtimeNameLabel).setText(name);
+		 new LabeledText(RUNTIME_NAME_LABEL).setText(name);
 	}
 
 	public String getRuntimeName() {
-		return new LabeledText(runtimeNameLabel).getText();
+		return new LabeledText(RUNTIME_NAME_LABEL).getText();
 	}
 
 	public void setRuntimeDir(String path){
 		if(!new File(path).exists()) {
 			throw new IllegalArgumentException("Path doesn't exist: "+path);
 		}
-		new LabeledText(homeDirectoryLabel).setText(path);
+		new LabeledText(HOME_DIRECTORY_LABEL).setText(path);
 	}
 
 	public String getRuntimeDir() {
-		return new LabeledText(homeDirectoryLabel).getText();
+		return new LabeledText(HOME_DIRECTORY_LABEL).getText();
 	}
 
 	public void checkErrors() {
