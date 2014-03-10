@@ -79,14 +79,14 @@ public class CreateAppUsingWizard {
 		new DefaultShell("Embedded Cartridges").setFocus();
 		new PushButton(OpenShiftLabel.Button.OK).click();
 		
-		new WaitUntil(new ShellWithTextIsAvailable("Question"), TimePeriod.LONG);
+		new WaitUntil(new ShellWithTextIsAvailable("Question"), TimePeriod.VERY_LONG);
 		DefaultShell question = new DefaultShell("Question");
 		question.setFocus();
 		new PushButton(OpenShiftLabel.Button.YES).click();
 		
 		appCreated = true;
 		
-		new WaitUntil(new ShellWithTextIsAvailable("Publish " + APP_NAME + "?"), TimePeriod.LONG);
+		new WaitUntil(new ShellWithTextIsAvailable("Publish " + APP_NAME + "?"), TimePeriod.VERY_LONG);
 		new DefaultShell("Publish " + APP_NAME + "?").setFocus();
 		new PushButton(OpenShiftLabel.Button.YES).click();
 		
@@ -113,7 +113,7 @@ public class CreateAppUsingWizard {
 		server.select();
 		new ContextMenu("Publish").select();
 		
-		new WaitUntil(new ShellWithTextIsAvailable("Publish " + APP_NAME + "?"), TimePeriod.LONG);	
+		new WaitUntil(new ShellWithTextIsAvailable("Publish " + APP_NAME + "?"), TimePeriod.VERY_LONG);	
 		new DefaultShell("Publish " + APP_NAME + "?").setFocus();
 		new PushButton(OpenShiftLabel.Button.YES).click();
 	
