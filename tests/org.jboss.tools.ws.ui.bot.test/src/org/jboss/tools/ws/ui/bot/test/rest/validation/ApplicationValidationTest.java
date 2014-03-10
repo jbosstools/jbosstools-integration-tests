@@ -31,9 +31,8 @@ public class ApplicationValidationTest extends RESTfulTestBase {
 		
 	}
 	/**
-	 * Fails due to reported bug JBIDE-15402.
-	 * 
-	 * @see https://issues.jboss.org/browse/JBIDE-15402
+	 * Resolved - Doubled warnings Multiple JAX-RS Activators
+	 * {@link https://issues.jboss.org/browse/JBIDE-15402}
 	 */
 	@Test
 	public void testMultipleApplicationClasses() {
@@ -42,7 +41,7 @@ public class ApplicationValidationTest extends RESTfulTestBase {
 		importRestWSProject("app1");
 		
 		/* test validation error */
-		assertCountOfApplicationAnnotationValidationWarnings("app1", 2);
+		assertCountOfApplicationAnnotationValidationErrors("app1", 2);
 	}
 	
 	@Test
@@ -52,7 +51,7 @@ public class ApplicationValidationTest extends RESTfulTestBase {
 		importRestWSProject("app2");
 		
 		/* test validation error */
-		assertCountOfApplicationAnnotationValidationWarnings("app2", 2);
+		assertCountOfApplicationAnnotationValidationErrors("app2", 2);
 	}
 	
 	@Test
@@ -63,6 +62,7 @@ public class ApplicationValidationTest extends RESTfulTestBase {
 		
 		/* test validation error */
 		assertCountOfApplicationAnnotationValidationWarnings("app3", 0);
+		assertCountOfApplicationAnnotationValidationErrors("app3", 0);
 	}
 	
 	@Test

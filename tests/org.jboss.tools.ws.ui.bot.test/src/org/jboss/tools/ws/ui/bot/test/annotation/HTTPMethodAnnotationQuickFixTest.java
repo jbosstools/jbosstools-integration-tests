@@ -55,11 +55,9 @@ public class HTTPMethodAnnotationQuickFixTest extends WSTestBase {
 	}
 	
 	/**
-	 * Fails due to reported bug.
-	 * 
-	 * Pass with workaround for JBIDE-12680 (because it is also workaround for JBIDE-15428)
-	 * 
-	 * @see JBIDE-15428
+	 * Resolved - o JAX-RS problems when importing a project that contains
+	 * HTTPMethod annotation without @Target and @Retention
+	 * {@link https://issues.jboss.org/browse/JBIDE-15428}
 	 */
 	@Test
 	public void testTargetRetentionQuickFixes() {

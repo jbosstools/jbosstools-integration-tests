@@ -78,6 +78,11 @@ public class TopDownWSTest extends WebServiceTestBase {
 		topDownWS();
 	}
 	
+	/**
+	 * Fails due to reported bug
+	 * 
+	 * @see https://bugs.eclipse.org/bugs/show_bug.cgi?id=377624
+	 */
 	@Test
 	public void testDeployService() {
 		setLevel(Slider_Level.DEPLOY);
@@ -90,12 +95,20 @@ public class TopDownWSTest extends WebServiceTestBase {
 		topDownWS();
 	}
 	
+	/**
+	 * Fails due to JBIDE-16066
+	 * @see https://issues.jboss.org/browse/JBIDE-16066
+	 */
 	@Test
 	public void testStartService() {
 		setLevel(Slider_Level.START);
 		topDownWS();
 	}
 	
+	/**
+	 * Fails due to JBIDE-16066
+	 * @see https://issues.jboss.org/browse/JBIDE-16066
+	 */
 	@Test
 	public void testTestService() {
 		setLevel(Slider_Level.TEST);
