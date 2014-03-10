@@ -144,12 +144,6 @@ public class ServerRequirement implements Requirement<JBossServer>, CustomConfig
 	}
 	
 	public String getServerTypeLabelText() {
-		ServerFamily server = config.getServerFamily();
-		if (server instanceof FamilyWildFly) {
-			if (server.getVersion().equals("8.0")) {
-				return "WildFly 8.0 (Experimental)";
-			}
-		}
 		return config.getServerFamily().getLabel() + " "
 				+ config.getServerFamily().getVersion();
 	}
