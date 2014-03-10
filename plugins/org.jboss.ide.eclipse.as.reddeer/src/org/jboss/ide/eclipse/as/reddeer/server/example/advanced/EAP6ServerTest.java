@@ -1,4 +1,4 @@
-package org.jboss.ide.eclipse.as.reddeer.server.example.simple.advanced;
+package org.jboss.ide.eclipse.as.reddeer.server.example.advanced;
 
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqState;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
