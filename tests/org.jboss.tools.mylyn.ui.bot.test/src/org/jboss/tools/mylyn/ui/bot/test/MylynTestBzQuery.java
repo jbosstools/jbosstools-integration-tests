@@ -27,6 +27,7 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.wait.TimePeriod;
@@ -134,8 +135,8 @@ public class MylynTestBzQuery {
 
 		new DefaultShell("Edit Query");
 		new LabeledText("Title:").setText(queryName);
-
-		new DefaultCombo("Summary:").setText(bugzillaSummary);
+		
+		new LabeledCombo("Summary:").setText(bugzillaSummary);
 		new PushButton("Finish").click();
 
 		/* Verify that the expected repos are defined */
