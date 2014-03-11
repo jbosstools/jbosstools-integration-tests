@@ -6,10 +6,11 @@ import org.jboss.ide.eclipse.as.ui.bot.test.eap5.DeployJSPProjectEAP5Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.eap5.HotDeployJSPFileEAP5Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.eap5.OperateEAP5Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.eap5.UndeployJSPProjectEAP5Server;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
-@RunWith(JBTTestSuite.class)
+@RunWith(RedDeerSuite.class)
 @Suite.SuiteClasses({
 		CreateEAP5Server.class, 
 		OperateEAP5Server.class,
