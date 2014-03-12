@@ -1,0 +1,50 @@
+<archives xmlns="http://www.w3schools.com"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.w3schools.com ../schema/JBossExampleSchema.xsd">
+	<!-- <archive url="http://download.eng.brq.redhat.com/devel/candidates/JBEAP/JBEAP-6.3.0.DR3/jboss-eap-6.3.0.DR3-quickstarts.zip">	
+		<name>EAP-examples</name>
+		<examples>
+			<example path=""/>
+		</examples>
+	</archive> -->	
+	<archive url="http://download.eng.brq.redhat.com/devel/candidates/JBWFK/2.5.0.ER1/jboss-wfk-2.5.0.ER1-quickstarts.zip">
+		<name>WFK-examples</name>
+		<examples>
+			<example path="jboss-wfk-quickstarts-2.5.0.ER1b/cdi-add-interceptor-binding"/>
+			<example path="jboss-wfk-quickstarts-2.5.0.ER1b/contacts-mobile-basic"/>
+			<example path="jboss-wfk-quickstarts-2.5.0.ER1b/deltaspike-authorization"/>
+			<example path="jboss-wfk-quickstarts-2.5.0.ER1b/deltaspike-beanbuilder"/>
+			<example path="jboss-wfk-quickstarts-2.5.0.ER1b/deltaspike-beanmanagerprovider"/>
+			<example path="jboss-wfk-quickstarts-2.5.0.ER1b/deltaspike-deactivable"/>
+			<example path="jboss-wfk-quickstarts-2.5.0.ER1b/deltaspike-exception-handling"/>
+			<example path="jboss-wfk-quickstarts-2.5.0.ER1b/deltaspike-helloworld-jms"/>
+			<example path="jboss-wfk-quickstarts-2.5.0.ER1b/deltaspike-partialbean-advanced"/>
+			<example path="jboss-wfk-quickstarts-2.5.0.ER1b/deltaspike-partialbean-basic"/>
+			<example path="jboss-wfk-quickstarts-2.5.0.ER1b/deltaspike-projectstage"/>
+			<example path="jboss-wfk-quickstarts-2.5.0.ER1b/helloworld-errai"/>
+			<example path="jboss-wfk-quickstarts-2.5.0.ER1b/helloworld-gwt"/>
+			<example path="jboss-wfk-quickstarts-2.5.0.ER1b/helloworld-html5"/>
+			<example path="jboss-wfk-quickstarts-2.5.0.ER1b/helloworld-rf"/>
+			<example path="jboss-wfk-quickstarts-2.5.0.ER1b/kitchensink-angularjs"/>
+			<example path="jboss-wfk-quickstarts-2.5.0.ER1b/kitchensink-angularjs-bootstrap"/>
+			<example path="jboss-wfk-quickstarts-2.5.0.ER1b/kitchensink-backbone"/> 
+			<!-- Cordova examples are nothing else but general project. Maybe import of general project will be supported later
+				<example path="jboss-wfk-quickstarts-2.5.0.ER1b/kitchensink-cordova"/>
+				<example path="jboss-wfk-quickstarts-2.5.0.ER1b/kitchensink-cordova-contacts"/>
+			 -->	
+			<example path="jboss-wfk-quickstarts-2.5.0.ER1b/kitchensink-deltaspike"/>
+			<example path="jboss-wfk-quickstarts-2.5.0.ER1b/kitchensink-html5-mobile"/>
+			<example path="jboss-wfk-quickstarts-2.5.0.ER1b/kitchensink-rf"/>
+			<example path="jboss-wfk-quickstarts-2.5.0.ER1b/richfaces-validation"/>
+			<example path="jboss-wfk-quickstarts-2.5.0.ER1b/shrinkwrap-resolver"/>
+			<example path="jboss-wfk-quickstarts-2.5.0.ER1b/spring-greeter"/>
+			<example path="jboss-wfk-quickstarts-2.5.0.ER1b/spring-kitchensink-asyncrequestmapping"/>
+			<example path="jboss-wfk-quickstarts-2.5.0.ER1b/spring-kitchensink-basic"/>
+			<example path="jboss-wfk-quickstarts-2.5.0.ER1b/spring-kitchensink-controlleradvice"/>
+		 	<example path="jboss-wfk-quickstarts-2.5.0.ER1b/spring-kitchensink-matrixvariables"/>
+			<example path="jboss-wfk-quickstarts-2.5.0.ER1b/spring-kitchensink-springmvctest"/>
+			<example path="jboss-wfk-quickstarts-2.5.0.ER1b/spring-petclinic"/>
+			<example path="jboss-wfk-quickstarts-2.5.0.ER1b/spring-resteasy"/> 
+		</examples>
+	</archive>
+</archives>
