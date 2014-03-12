@@ -4,7 +4,8 @@ import org.jboss.ide.eclipse.as.reddeer.server.view.JBossServer;
 import org.jboss.reddeer.eclipse.wst.server.ui.editor.ServerEditor;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.spinner.DefaultSpinner;
-import org.jboss.reddeer.swt.matcher.LabelMatcher;
+import org.jboss.reddeer.swt.matcher.WithLabelMatcher;
+import org.jboss.reddeer.uiforms.impl.section.DefaultSection;
 
 /**
  * Represents a server editor with entries specific for JBoss servers {@link JBossServer}
@@ -18,7 +19,7 @@ public class JBossServerEditor extends ServerEditor {
 	}
 
 	protected void openSection(final String title){
-		new org.jboss.ide.eclipse.as.reddeer.server.editor.Section(title).open();
+		new DefaultSection(title).setExpanded(true);
 	}
 
 	public JBossServerLaunchConfiguration openLaunchConfiguration(){
@@ -30,12 +31,12 @@ public class JBossServerEditor extends ServerEditor {
 
 	public void setStartTimeout(int timeout){
 		openSection("Timeouts");
-		new DefaultSpinner(new LabelMatcher("Start (in seconds):")).setValue(timeout);
+		new DefaultSpinner(new WithLabelMatcher("Start (in seconds):")).setValue(timeout);
 	}
 
 	public void setStopTimeout(int timeout){
 		openSection("Timeouts");
-		new DefaultSpinner(new LabelMatcher("Stop (in seconds):")).setValue(timeout);
+		new DefaultSpinner(new WithLabelMatcher("Stop (in seconds):")).setValue(timeout);
 	}
 
 	public String getStartupPoller(){

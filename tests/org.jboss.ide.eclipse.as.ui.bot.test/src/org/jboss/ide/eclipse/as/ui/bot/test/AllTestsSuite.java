@@ -74,10 +74,11 @@ import org.jboss.ide.eclipse.as.ui.bot.test.eap6x.HotDeployJSPFileEAP6xServer;
 import org.jboss.ide.eclipse.as.ui.bot.test.eap6x.OperateEAP6xServer;
 import org.jboss.ide.eclipse.as.ui.bot.test.eap6x.ServerStateDetectorsEAP6xServer;
 import org.jboss.ide.eclipse.as.ui.bot.test.eap6x.UndeployJSPProjectEAP6xServer;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
-@RunWith(JBTTestSuite.class)
+@RunWith(RedDeerSuite.class)
 @Suite.SuiteClasses({
 		CreateEAP6xServer.class,
 		CreateEAP60Server.class,
