@@ -2,7 +2,6 @@ package org.jboss.ide.eclipse.as.ui.bot.test.template;
 
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.view.JBossServer;
-import org.jboss.ide.eclipse.as.reddeer.server.view.JBossServerModule;
 import org.jboss.ide.eclipse.as.reddeer.server.view.JBossServerView;
 import org.jboss.ide.eclipse.as.ui.bot.test.Activator;
 import org.jboss.ide.eclipse.as.ui.bot.test.condition.BrowserContainsTextCondition;
@@ -72,10 +71,8 @@ public abstract class DeployJSPProjectTemplate {
 		new WaitUntil(new ConsoleHasText(getConsoleMessage()));
 		assertFalse(new ConsoleHasText("Exception").test());
 		// web
-		// TODO https://github.com/jboss-reddeer/reddeer/issues/478
 		serversView.open();
-		((JBossServerModule) server.getModules().get(0)).openWebPage();
-//		server.getModule(PROJECT_NAME).openWebPage();
+		server.getModule(PROJECT_NAME).openWebPage();
 		new WaitUntil(new BrowserContainsTextCondition("Hello tests!"), TimePeriod.NORMAL);
 		// view
 		assertThat(getServer().getLabel().getState(), is(ServerState.STARTED));
