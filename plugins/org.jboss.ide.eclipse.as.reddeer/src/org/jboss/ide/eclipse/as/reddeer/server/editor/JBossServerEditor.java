@@ -2,7 +2,7 @@ package org.jboss.ide.eclipse.as.reddeer.server.editor;
 
 import org.jboss.ide.eclipse.as.reddeer.server.view.JBossServer;
 import org.jboss.reddeer.eclipse.wst.server.ui.editor.ServerEditor;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.spinner.DefaultSpinner;
 import org.jboss.reddeer.swt.matcher.LabelMatcher;
 
@@ -39,19 +39,19 @@ public class JBossServerEditor extends ServerEditor {
 	}
 
 	public String getStartupPoller(){
-		return new DefaultCombo("Startup Poller").getText();
+		return new LabeledCombo("Startup Poller").getText();
 	}
 
 	public void setStartupPoller(String text){
-		new DefaultCombo("Startup Poller").setText(text);
+		new LabeledCombo("Startup Poller").setText(text);
 	}
 
 	public String getShutdownPoller(){
-		return new DefaultCombo("Shutdown Poller").getText();
+		return new LabeledCombo("Shutdown Poller").getText();
 	}
 
 	public void setShutdownPoller(String text){
-		new DefaultCombo("Shutdown Poller").setText(text);
+		new LabeledCombo("Shutdown Poller").setText(text);
 	}
 
 	public String getWebPort(){
