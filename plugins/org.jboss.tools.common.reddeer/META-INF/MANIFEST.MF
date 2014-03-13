@@ -10,7 +10,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.jboss.reddeer.junit
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
-Export-Package: org.jboss.tools.common.reddeer.preferences
+Export-Package: org.jboss.tools.common.reddeer.preferences,
+ org.jboss.tools.common.reddeer.label
 Import-Package: org.apache.log4j
 Eclipse-BundleShape: jar
 Bundle-Localization: plugin
