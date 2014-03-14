@@ -10,9 +10,13 @@
  ******************************************************************************/
 package org.jboss.tools.archives.ui.bot.test;
 
+import static org.junit.Assert.fail;
+
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.clabel.DefaultCLabel;
 import org.jboss.reddeer.swt.impl.link.DefaultLink;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
@@ -20,7 +24,7 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.archives.reddeer.archives.ui.MainPreferencePage;
-import org.jboss.tools.ui.bot.ext.types.IDELabel;
+import org.jboss.tools.common.reddeer.label.IDELabel;
 import org.junit.Test;
 
 /**
@@ -29,6 +33,7 @@ import org.junit.Test;
  * @author jjankovi
  *
  */
+@CleanWorkspace
 public class ArchivePreferencesTest extends ArchivesTestBase {
 
 	private static String projectName = "prj";
@@ -75,7 +80,7 @@ public class ArchivePreferencesTest extends ArchivesTestBase {
 		new DefaultLink("Configure Workspace Settings...").click();
 		new DefaultShell(IDELabel.Shell.PREFERENCES_FILTERED);
 		try {
-			bot.clabel("Project Archives");
+			new DefaultCLabel("Project Archives");
 			new PushButton(IDELabel.Button.CANCEL).click();
 			new WaitWhile(new ShellWithTextIsActive(IDELabel.Shell.PREFERENCES_FILTERED));
 			new DefaultShell("Properties for " + projectName);

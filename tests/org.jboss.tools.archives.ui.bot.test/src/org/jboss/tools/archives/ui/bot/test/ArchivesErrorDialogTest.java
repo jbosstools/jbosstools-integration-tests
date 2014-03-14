@@ -10,16 +10,20 @@
  ******************************************************************************/
 package org.jboss.tools.archives.ui.bot.test;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
 import java.util.List;
 
-import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.hamcrest.core.Is;
 import org.jboss.reddeer.eclipse.ui.views.log.LogMessage;
 import org.jboss.reddeer.eclipse.ui.views.log.LogView;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.swt.api.Text;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.text.DefaultText;
+import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
 import org.jboss.tools.archives.reddeer.archives.ui.NewJarDialog;
 import org.jboss.tools.archives.reddeer.component.ArchiveProject;
 import org.junit.BeforeClass;
@@ -32,6 +36,7 @@ import org.junit.Test;
  * @author jjankovi
  *
  */
+@CleanWorkspace
 public class ArchivesErrorDialogTest extends ArchivesTestBase {
 
 	private static String project = "prj";
@@ -59,8 +64,9 @@ public class ArchivesErrorDialogTest extends ArchivesTestBase {
 		 * issue https://github.com/jboss-reddeer/reddeer/issues/169 
 		 * is resolved
 		 */
-		new SWTBot().text(1).setText("");
-		new SWTBot().text(1).typeText(LOCATION);
+		Text t = new DefaultText(1);
+		t.setText("");
+		KeyboardFactory.getKeyboard().type(LOCATION);
 		dialog.finish();
 		
 		/*

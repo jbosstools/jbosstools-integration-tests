@@ -14,17 +14,10 @@
 	<properties>
 		<coverage.filter>org.jboss.ide.eclipse.archives.ui*</coverage.filter>
 		<emma.instrument.bundles>org.jboss.ide.eclipse.archives.ui</emma.instrument.bundles>
-		<systemProperties>${integrationTestsSystemProperties} -Dswtbot.test.properties.file=${project.basedir}/properties/swtbot.properties</systemProperties>
+	<!--	<systemProperties>${integrationTestsSystemProperties} -Dswtbot.test.properties.file=${project.basedir}/properties/swtbot.properties</systemProperties> -->
 		<suiteClass>org.jboss.tools.archives.ui.bot.test.ArchivesAllBotTests</suiteClass>
+		<systemProperties>-Djbosstools.test.jboss-as-7.1.home=${requirementsDirectory}/jboss-as-7.1.1.Final -Dreddeer.config=resources/servers</systemProperties>
 	</properties>
-	<profiles>
-		<profile>
-			<id>jenkins</id>
-			<properties>
-				<suiteClass>org.jboss.tools.archives.ui.bot.test.JenkinsTestSuite</suiteClass>
-			</properties>			
-		</profile>
-	</profiles>
 	<build>
 		<plugins>
 			<plugin>
@@ -116,6 +109,24 @@
 							</pluginExecutions>
 						</lifecycleMappingMetadata>
 					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>com.googlecode.maven-download-plugin</groupId>
+					<artifactId>maven-download-plugin</artifactId>
+					<executions>
+						<execution>
+							<id>install-as-7.1.1</id>
+							<phase>pre-integration-test</phase>
+							<goals>
+								<goal>wget</goal>
+							</goals>
+							<configuration>
+								<url>http://download.jboss.org/jbossas/7.1/jboss-as-7.1.1.Final/jboss-as-7.1.1.Final.zip</url>
+								<md5>175c92545454f4e7270821f4b8326c4e</md5>
+								<unpack>true</unpack>
+							</configuration>
+						</execution>
+					</executions>
 				</plugin>
 			</plugins>
 		</pluginManagement>

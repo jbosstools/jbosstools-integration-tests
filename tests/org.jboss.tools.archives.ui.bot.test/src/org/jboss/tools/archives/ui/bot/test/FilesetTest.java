@@ -10,7 +10,10 @@
  ******************************************************************************/
 package org.jboss.tools.archives.ui.bot.test;
 
+import static org.junit.Assert.fail;
+
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.swt.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
@@ -27,6 +30,7 @@ import org.junit.Test;
  * @author jjankovi
  *
  */
+@CleanWorkspace
 public class FilesetTest extends ArchivesTestBase {
 
 	private static final String PROJECT_1 = "pr2";

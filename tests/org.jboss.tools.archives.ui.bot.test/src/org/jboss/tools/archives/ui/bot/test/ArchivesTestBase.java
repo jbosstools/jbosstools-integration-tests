@@ -10,33 +10,36 @@
  ******************************************************************************/
 package org.jboss.tools.archives.ui.bot.test;
 
+
+import static org.junit.Assert.fail;
+
+import java.io.File;
+import java.io.IOException;
+
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.ide.NewJavaProjectWizardDialog;
 import org.jboss.reddeer.eclipse.jdt.ui.ide.NewJavaProjectWizardPage;
+import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
 import org.jboss.reddeer.eclipse.ui.views.log.LogView;
+import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
+import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.archives.reddeer.archives.ui.ProjectArchivesExplorer;
 import org.jboss.tools.archives.reddeer.archives.ui.ProjectArchivesView;
-import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
-import org.jboss.tools.ui.bot.ext.SWTTestExt;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
-import org.jboss.tools.ui.bot.ext.helper.ImportHelper;
-import org.jboss.tools.ui.bot.ext.types.IDELabel;
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite.SuiteClasses;
+import org.jboss.tools.common.reddeer.label.IDELabel;
 
 /**
  * 
  * @author jjankovi
  *
  */
-@Require(clearProjects = true, perspective = "Java")
-@RunWith(RequirementAwareSuite.class)
-@SuiteClasses({ ArchivesAllBotTests.class })
-public class ArchivesTestBase extends SWTTestExt {
+@CleanWorkspace
+@OpenPerspective(JavaPerspective.class)
+public class ArchivesTestBase{
 
 	protected ProjectExplorer projectExplorer = new ProjectExplorer();
 	protected ProjectArchivesView view = new ProjectArchivesView();
@@ -100,8 +103,7 @@ public class ArchivesTestBase extends SWTTestExt {
 	protected static void clearErrorView() {
 		LogView lw = new LogView();
 		lw.open();
-		new DefaultTreeItem().select();
-		new ContextMenu("Clear Log Viewer").select();
+		lw.clearLog();
 	}
 	
 	protected static void createJavaProject(String projectName) {
@@ -116,13 +118,18 @@ public class ArchivesTestBase extends SWTTestExt {
 	
 	protected static void importArchiveProjectWithoutRuntime(String projectName) {
 		
-		String location = "/resources/prj/" + projectName;
-		importArchiveProjectWithoutRuntime(projectName, location, projectName);
-	}
-	
-	protected static void importArchiveProjectWithoutRuntime(String projectName, 
-			String projectLocation, String dir) {
-		ImportHelper.importProject(projectLocation, dir, Activator.PLUGIN_ID);
+		String location = "resources/prj/" + projectName;
+		
+		ExternalProjectImportWizardDialog importDialog = new ExternalProjectImportWizardDialog();
+		importDialog.open();
+		WizardProjectsImportPage importPage = (WizardProjectsImportPage)importDialog.getFirstPage();
+		try {
+			importPage.setRootDirectory((new File(location)).getCanonicalPath());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		importPage.copyProjectsIntoWorkspace(true);
+		importDialog.finish();
 	}
 	
 	protected void addArchivesSupport(String projectName) {

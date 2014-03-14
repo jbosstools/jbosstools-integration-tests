@@ -10,6 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.archives.ui.bot.test;
 
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.tools.archives.reddeer.archives.ui.EditArchiveDialog;
 import org.jboss.tools.archives.reddeer.archives.ui.ProjectArchivesExplorer;
@@ -25,6 +26,7 @@ import org.junit.Test;
  * @author jjankovi
  *
  */
+@CleanWorkspace
 public class ModifyingArchiveTest extends ArchivesTestBase {
 
 	private static String project = "pr3";

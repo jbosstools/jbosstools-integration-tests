@@ -11,11 +11,13 @@
 package org.jboss.tools.archives.ui.bot.test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.fail;
 
 import org.hamcrest.core.Is;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.eclipse.ui.views.log.LogView;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.workbench.view.View;
 import org.jboss.tools.archives.reddeer.archives.ui.ProjectArchivesView;
@@ -29,6 +31,7 @@ import org.junit.Test;
  * @author jjankovi
  *
  */
+@CleanWorkspace
 public class ArchiveViewReSwitchingTest extends ArchivesTestBase {
 
 	private static String projectName = "prj";

@@ -10,19 +10,30 @@
  ******************************************************************************/
 package org.jboss.tools.archives.ui.bot.test;
 
+import static org.junit.Assert.assertTrue;
+
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqState;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
+import org.jboss.reddeer.eclipse.jst.servlet.ui.WebProjectFirstPage;
+import org.jboss.reddeer.eclipse.jst.servlet.ui.WebProjectWizard;
+import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.eclipse.ui.views.log.LogMessage;
 import org.jboss.reddeer.eclipse.ui.views.log.LogView;
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.swt.api.Text;
-import org.jboss.reddeer.swt.exception.WaitTimeoutExpiredException;
+import org.jboss.reddeer.swt.condition.JobIsRunning;
+import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
-import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
-import org.jboss.tools.ui.bot.ext.gen.ActionItem;
-import org.jboss.tools.ui.bot.ext.gen.INewObject;
-import org.jboss.tools.ui.bot.ext.types.IDELabel;
+import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.tools.common.reddeer.label.IDELabel;
 import org.junit.After;
 import org.junit.Test;
 
@@ -33,10 +44,13 @@ import org.junit.Test;
  * @author jjankovi
  *
  */
-@Require(clearProjects = true, perspective = "Java",
-		 server = @Server(state = ServerState.NotRunning, 
-		 version = "6.0", operator = ">="))
+@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.AS7_1)
+@CleanWorkspace
+@OpenPerspective(JavaEEPerspective.class)
 public class VariousProjectsArchiving extends ArchivesTestBase {
+	
+	@InjectRequirement
+	protected ServerRequirement requirement;
 	
 	@After
 	public void checkErrorLog() {
@@ -48,7 +62,7 @@ public class VariousProjectsArchiving extends ArchivesTestBase {
 		String project = "pr1";
 		
 		/* create dynamic web project */
-		createDynamicWebProject(project);
+		createDynamicWebProject(project, requirement.getRuntimeNameLabelText());
 		
 		/* clear error view before creating an archive */
 		clearErrorView();
@@ -89,33 +103,36 @@ public class VariousProjectsArchiving extends ArchivesTestBase {
 		assertArchiveIsInView(view, project + ".jar [/" + project + "]");
 	}
 	
-	private void createDynamicWebProject(String project) {
-		createProject(ActionItem.NewObject.
-				WebDynamicWebProject.LABEL, project);
+	private void createDynamicWebProject(String project, String targetRuntime) {
+		WebProjectWizard ww = new WebProjectWizard();
+		ww.open();
+		WebProjectFirstPage fp = (WebProjectFirstPage)ww.getWizardPage(0);
+		fp.setProjectName(project);
+		fp.setTargetRuntime(targetRuntime);
+		ww.finish();
 	}
 	
 	private void createEJBProject(String project) {
-		createProject(ActionItem.NewObject.
-				EJBEJBProject.LABEL, project);
-		
+		createProject(project,"EJB","EJB Project");
 	}
 	
-	private void createProject(INewObject object,  String project) {
-		open.newObject(object);
+	private void createProject(String project, String... wizard) {
+		new ShellMenu("File","New","Other...").select();
+		new DefaultShell("New");
+		new DefaultTreeItem(wizard).select();
+		new PushButton("Next >").click();
 		Text t = new LabeledText("Project name:");
-		//SWTBotText t = bot.textWithLabel("Project name:");
-		t.setFocus();
 		t.setText(project);
-		new PushButton(IDELabel.Button.FINISH).click();
+		new PushButton("Finish").click();
 		handlePerspectivePopUpDialog();
-		util.waitForNonIgnoredJobs();
+		new WaitWhile(new JobIsRunning());
 	}
 	
 	private void handlePerspectivePopUpDialog() {
 		try {
 			new DefaultShell(IDELabel.Shell.OPEN_ASSOCIATED_PERSPECTIVE);
 			new PushButton(IDELabel.Button.NO).click();
-		} catch (WaitTimeoutExpiredException exc) {
+		} catch (SWTLayerException exc) {
 			//do nothing here
 		}
 	}
