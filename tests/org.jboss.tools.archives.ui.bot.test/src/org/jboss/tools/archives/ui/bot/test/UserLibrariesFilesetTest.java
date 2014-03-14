@@ -10,7 +10,10 @@
  ******************************************************************************/
 package org.jboss.tools.archives.ui.bot.test;
 
+import static org.junit.Assert.fail;
+
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -23,7 +26,7 @@ import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.archives.reddeer.archives.ui.ProjectArchivesExplorer;
 import org.jboss.tools.archives.reddeer.component.Archive;
 import org.jboss.tools.archives.ui.bot.test.condition.UserLibraryFilesetIsInArchive;
-import org.jboss.tools.ui.bot.ext.types.IDELabel;
+import org.jboss.tools.common.reddeer.label.IDELabel;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -36,6 +39,7 @@ import org.junit.Test;
  * @author jjankovi
  *
  */
+@CleanWorkspace
 public class UserLibrariesFilesetTest extends ArchivesTestBase {
 
 	private static String PROJECT_NAME= "pr2";

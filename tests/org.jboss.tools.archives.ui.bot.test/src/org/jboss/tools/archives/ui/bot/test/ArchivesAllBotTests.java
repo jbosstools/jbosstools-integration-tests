@@ -10,7 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.archives.ui.bot.test;
 
-import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
@@ -18,7 +18,7 @@ import org.junit.runners.Suite.SuiteClasses;
  *
  * @author Jaroslav Jankovic
  */
-@RunWith(RequirementAwareSuite.class)
+@RunWith(RedDeerSuite.class)
 @SuiteClasses({
 	ViewIsPresentTest.class,
 	ArchivePreferencesTest.class,

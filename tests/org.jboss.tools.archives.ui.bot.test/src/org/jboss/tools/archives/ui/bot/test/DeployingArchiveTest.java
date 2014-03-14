@@ -9,15 +9,24 @@
  * Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
 package org.jboss.tools.archives.ui.bot.test;
-import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import static org.junit.Assert.assertTrue;
+
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqState;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
+import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
+import org.jboss.reddeer.eclipse.wst.server.ui.wizard.ModifyModulesDialog;
+import org.jboss.reddeer.eclipse.wst.server.ui.wizard.ModifyModulesPage;
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.tools.archives.reddeer.archives.ui.ArchivePublishDialog;
 import org.jboss.tools.archives.reddeer.archives.ui.ProjectArchivesExplorer;
 import org.jboss.tools.archives.reddeer.component.Archive;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
-import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
-import org.jboss.tools.ui.bot.ext.view.ServersView;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -27,9 +36,9 @@ import org.junit.Test;
  * @author jjankovi
  *
  */
-@Require(clearProjects = true, perspective = "Java",
-		 server = @Server(state = ServerState.NotRunning, 
-		 version = "6.0", operator = ">="))
+@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.AS7_1)
+@CleanWorkspace
+@OpenPerspective(JavaPerspective.class)
 public class DeployingArchiveTest extends ArchivesTestBase {
 
 	private static String project = "pr3";
@@ -42,6 +51,9 @@ public class DeployingArchiveTest extends ArchivesTestBase {
 			ARCHIVE_NAME_1 + PATH_SUFFIX;
 	private final String PATH_ARCHIVE_2 = 
 			ARCHIVE_NAME_2 + PATH_SUFFIX;
+	
+	@InjectRequirement
+	protected ServerRequirement requirement;
 	
 	@BeforeClass
 	public static void setup() {
@@ -114,47 +126,39 @@ public class DeployingArchiveTest extends ArchivesTestBase {
 			throw new IllegalArgumentException(
 					"Cannot autodeploy without always publish option checked");
 		}
-		dialog.selectServers(configuredState.getServer().name);
+		dialog.selectServers(requirement.getServerNameLabelText());
 		if (alwaysPublish) dialog.checkAlwaysPublish();
 		if (autodeploy) dialog.checkAutoDeploy();
 		dialog.finish();
 	}
 	
 	private void removeArchiveFromServer(String archive) {
-		ServersView serversView = showServersView();
-		serversView.removeProjectFromServers(archive);
+		ServersView serversView = new ServersView();
+		serversView.open();
+		ModifyModulesDialog md = serversView.getServer(requirement.getServerNameLabelText()).addAndRemoveModules();
+		ModifyModulesPage mp = md.getFirstPage();
+		mp.remove(archive);
+		md.finish();
+	
 	}
 	
 	private void assertArchiveIsDeployed(String archive) {
-		ServersView serversView = showServersView();
-		SWTBotTreeItem server = findConfiguredServer(serversView);
-		server.collapse();
-		server.expand();
+		ServersView sview = new ServersView();
+		sview.open();
 		boolean found = false;
-		for (String node : server.getNodes()) {
-			if (node.contains(archive)) {
-				found = true;
-				break;
+		for(TreeItem i: new DefaultTree().getItems()){
+			if(i.getText().contains(requirement.getServerNameLabelText())){
+				for (TreeItem node : i.getItems()) {
+					System.out.println(node.getText());
+					System.out.println(archive);
+					String[] nodeParsed = node.getText().split(" ");
+					if (nodeParsed[0].equals(archive)) {
+						found = true;
+						break;
+					}
+				}
 			}
 		}
 		assertTrue(archive + " was not deployed", found);
-	}
-	
-	private SWTBotTreeItem findConfiguredServer(ServersView serversView) {
-		SWTBotTreeItem server = null;
-		try {
-			server = serversView.findServerByName(serversView.bot().tree(), 
-				configuredState.getServer().name);			
-		} catch (WidgetNotFoundException exc) {
-			fail("Server is not configured - missing in servers view");
-		}
-		return server;
-	}
-
-
-	private ServersView showServersView() {
-		ServersView serversView = new ServersView();
-		serversView.show();
-		return serversView;
 	}
 }

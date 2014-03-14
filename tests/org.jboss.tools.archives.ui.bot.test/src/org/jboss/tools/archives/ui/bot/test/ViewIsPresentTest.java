@@ -10,9 +10,10 @@
  ******************************************************************************/
 package org.jboss.tools.archives.ui.bot.test;
 
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.workbench.condition.ViewWithToolTipIsActive;
-import org.jboss.tools.ui.bot.ext.types.IDELabel;
+import org.jboss.tools.common.reddeer.label.IDELabel;
 import org.junit.Test;
 
 /**
@@ -22,6 +23,7 @@ import org.junit.Test;
  * @author jjankovi
  *
  */
+@CleanWorkspace
 public class ViewIsPresentTest extends ArchivesTestBase {
 
 	@Test

@@ -5,22 +5,19 @@ Bundle-SymbolicName: org.jboss.tools.archives.ui.bot.test
 Bundle-Version: 4.2.0.qualifier
 Bundle-Activator: org.jboss.tools.archives.ui.bot.test.Activator
 Require-Bundle: org.eclipse.core.runtime,
- org.eclipse.swtbot.eclipse.core;bundle-version="2.0.0",
- org.eclipse.swtbot.eclipse.finder;bundle-version="2.0.0",
- org.eclipse.swtbot.junit4_x;bundle-version="2.0.0",
- org.eclipse.swtbot.swt.finder;bundle-version="2.0.0",
  org.junit;bundle-version="4.8.1",
  org.apache.log4j;bundle-version="1.2.15",
  org.eclipse.ui;bundle-version="3.6.0",
- org.jboss.tools.ui.bot.ext;bundle-version="[4.2.0,4.3.0)",
  org.jboss.reddeer.swt,
  org.jboss.reddeer.jface,
  org.jboss.reddeer.eclipse,
  org.jboss.reddeer.workbench,
+ org.jboss.reddeer.requirements,
+ org.jboss.tools.common.reddeer,
  org.jboss.tools.archives.reddeer,
- org.eclipse.core.resources;bundle-version="3.6.0"
+ org.eclipse.core.resources;bundle-version="3.6.0",
+ org.jboss.ide.eclipse.as.reddeer,
+ org.jboss.reddeer.junit
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Eclipse-BundleShape: jar
-Bundle-Localization: plugin
 Bundle-Vendor: JBoss by Red Hat

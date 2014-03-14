@@ -10,6 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.archives.ui.bot.test;
 
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -19,6 +20,7 @@ import org.junit.Test;
  * @author jjankovi
  *
  */
+@CleanWorkspace
 public class BuildingArchiveNode extends ArchivesTestBase {
 
 	private static String projectName = "pr2";
