@@ -4,6 +4,7 @@ import org.jboss.ide.eclipse.as.reddeer.server.view.JBossServer;
 import org.jboss.reddeer.eclipse.wst.server.ui.editor.ServerEditor;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.spinner.DefaultSpinner;
+import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.matcher.WithLabelMatcher;
 import org.jboss.reddeer.uiforms.impl.section.DefaultSection;
 
@@ -56,22 +57,18 @@ public class JBossServerEditor extends ServerEditor {
 	}
 
 	public String getWebPort(){
-		//		return SWTBotFactory.getBot().textWithLabel("Web").getText();
-		throw new UnsupportedOperationException();
+		return new LabeledText("Web").getText();
 	}
 
 	public String getJNDIPort(){
-		//		return SWTBotFactory.getBot().textWithLabel("JNDI").getText();
-		throw new UnsupportedOperationException();
+		return new LabeledText("JNDI").getText();
 	}
 
 	public String getJMXPort(){
-		//		return SWTBotFactory.getBot().textWithLabel("JMX RMI").getText();
-		throw new UnsupportedOperationException();
+		return new LabeledText("JMX RMI").getText();
 	}
 
 	public String getManagementPort(){
-		//		return SWTBotFactory.getBot().textWithLabel("Management").getText();
-		throw new UnsupportedOperationException();
+		return new LabeledText("Management").getText();
 	}
 }
