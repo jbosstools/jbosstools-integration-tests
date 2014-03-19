@@ -11,6 +11,8 @@ public class DetectWildFly8 extends DetectRuntimeTemplate {
 
 	public static final String SERVER_ID = "wildfly-8.0";
 	
+	public static final String SERVER_NAME = "wildfly-8.0.0.Final";
+	
 	@Override
 	protected String getPathID() {
 		return SERVER_ID;
@@ -19,7 +21,7 @@ public class DetectWildFly8 extends DetectRuntimeTemplate {
 	@Override
 	protected List<Runtime> getExpectedRuntimes() {
 		Runtime expectedServer = new Runtime();
-		expectedServer.setName(SERVER_ID);
+		expectedServer.setName(SERVER_NAME);
 		expectedServer.setVersion("8.0");
 		expectedServer.setType("Wildfly");
 		expectedServer.setLocation(RuntimeProperties.getInstance().getRuntimePath(SERVER_ID));

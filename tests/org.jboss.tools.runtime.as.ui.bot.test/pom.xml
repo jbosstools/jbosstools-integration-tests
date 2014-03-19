@@ -24,7 +24,10 @@
 		<jboss-eap-6.0.x>${requirementsDirectory}/jboss-eap-6.0.x/jboss-eap-6.0/</jboss-eap-6.0.x>
 		<jbosstools.test.jboss-eap-6.0.x.url>http://download.devel.redhat.com/released/JBEAP-6/6.0.1/zip/jboss-eap-6.0.1.zip</jbosstools.test.jboss-eap-6.0.x.url>
 
-		<jboss-as-7>${requirementsDirectory}/jboss-as-7.1.1.Final/</jboss-as-7>		
+		<jboss-as-7>${requirementsDirectory}/jboss-as-7.1.1.Final/</jboss-as-7>
+
+		<wildfly-8.0>${requirementsDirectory}/wildfly-8.0.0.Final/</wildfly-8.0>
+
 		<jboss-seam-2.2>${requirementsDirectory}/jboss-seam-2.2.2.Final/</jboss-seam-2.2>
 		<jboss-seam-2.3>${requirementsDirectory}/jboss-seam-2.3.0.Final/</jboss-seam-2.3>
 		<test.class>org.jboss.tools.runtime.as.ui.bot.test.ProjectTestsSuite</test.class>
@@ -66,6 +69,24 @@
 									<groupId>org.jboss.as</groupId>
 									<artifactId>jboss-as-dist</artifactId>
 									<version>7.1.1.Final</version>
+									<type>zip</type>
+								</artifactItem>
+							</artifactItems>
+							<outputDirectory>${requirementsDirectory}</outputDirectory>
+						</configuration>
+					</execution>
+					<execution>
+						<id>install-widlfly</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>unpack</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<groupId>org.wildfly</groupId>
+									<artifactId>wildfly-dist</artifactId>
+									<version>8.0.0.Final</version>
 									<type>zip</type>
 								</artifactItem>
 							</artifactItems>

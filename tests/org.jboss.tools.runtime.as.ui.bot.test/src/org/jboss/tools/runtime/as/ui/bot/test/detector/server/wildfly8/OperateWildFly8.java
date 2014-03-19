@@ -6,6 +6,6 @@ public class OperateWildFly8 extends OperateServerTemplate {
 
 	@Override
 	protected String getServerName() {
-		return DetectWildFly8.SERVER_ID;
+		return DetectWildFly8.SERVER_NAME;
 	}
 }
