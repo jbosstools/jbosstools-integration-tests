@@ -22,34 +22,28 @@ public class NewServerWizardPageWithErrorCheck extends NewServerWizardPage {
 	}
 
 	public void checkErrors() {
-		checkIfThereIsAnotherServerWithSameType();
-		
+		String errorText = getErrorText();
+		if(errorText == null)
+			return;
+		checkServerName(errorText);
+	}
+
+	private String getErrorText() {
 		String text;
 		try {
 			text = new LabeledText("Define a New Server").getText();
 			log.info("Found error text: " + text);
 		} catch(SWTLayerException e) {
 			log.info("No error text found.");
-			return;
+			return null;
 		}
-		
-		checkServerName(text);
+		return text;
 	}
-
-	private void checkIfThereIsAnotherServerWithSameType() {
-		try {
-			//combo box indicates that there are present other servers with the same type
-			Combo combo = new DefaultCombo();
-			throw new AssertionError("There is another server with the same type.\n"
-					+ "Present server: "+combo.getText());
-		} catch(SWTLayerException e) {
-			//combo box is not present so there is not any other server with the same type
-		}
-	}
-
+	
 	private void checkServerName(String errorText) {
 		if(errorText.contains("The server name is already in use. Specify a different name.")) {
-			throw new AssertionError("The server name '"+getServerName()+"' is already in use.");
+			throw new AssertionError("The server name '" + getServerName() + "' is already in use.");
 		}
 	}
 }
+

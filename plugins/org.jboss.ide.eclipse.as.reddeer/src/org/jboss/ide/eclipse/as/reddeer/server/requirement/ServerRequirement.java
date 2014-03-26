@@ -5,11 +5,10 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.jboss.ide.eclipse.as.reddeer.server.family.FamilyWildFly;
-import org.jboss.ide.eclipse.as.reddeer.server.family.ServerFamily;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.ide.eclipse.as.reddeer.server.wizard.NewServerWizardDialog;
 import org.jboss.ide.eclipse.as.reddeer.server.wizard.page.JBossRuntimeWizardPage;
+import org.jboss.ide.eclipse.as.reddeer.server.wizard.page.NewServerAdapterPage;
 import org.jboss.ide.eclipse.as.reddeer.server.wizard.page.NewServerWizardPageWithErrorCheck;
 import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
@@ -55,12 +54,12 @@ public class ServerRequirement implements Requirement<JBossServer>, CustomConfig
 	public void fulfill() {
 		if(lastServerConfiguration != null) {
 			boolean differentConfig = !config.equals(lastServerConfiguration.getConfig());
-			if(differentConfig) {
+			if (differentConfig) {
 				removeLastRequiredServer();
 				lastServerConfiguration = null;
 			}
 		}
-		if(lastServerConfiguration == null || !isLastConfiguredServerPresent()) {
+		if (lastServerConfiguration == null || !isLastConfiguredServerPresent()) {
 			LOGGER.info("Setup server");
 			setupServerAdapter();
 			lastServerConfiguration = new ConfiguredServerInfo(getServerNameLabelText(), config);
@@ -171,8 +170,12 @@ public class ServerRequirement implements Requirement<JBossServer>, CustomConfig
 			
 			serverW.next();
 			
-			JBossRuntimeWizardPage rp = new JBossRuntimeWizardPage();
+			NewServerAdapterPage ap = new NewServerAdapterPage();
+			ap.checkErrors();
 			
+			serverW.next();
+			
+			JBossRuntimeWizardPage rp = new JBossRuntimeWizardPage();
 			rp.setRuntimeName(getRuntimeNameLabelText());
 			rp.setRuntimeDir(config.getRuntime());
 			
