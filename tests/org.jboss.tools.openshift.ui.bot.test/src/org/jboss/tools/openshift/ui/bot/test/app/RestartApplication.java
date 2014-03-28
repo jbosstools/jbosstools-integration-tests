@@ -42,12 +42,12 @@ public class RestartApplication extends OpenShiftBotTest {
 		
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		
-		connection.getItems().get(0).getItem(DYI_APP + " " + OpenShiftLabel.AppType.DIY).select();
+		connection.getItems().get(0).getItem(DYI_APP + " " + OpenShiftLabel.AppType.DIY_TREE).select();
 		new ContextMenu(OpenShiftLabel.Labels.EXPLORER_RESTART_APP).select();
 		
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		
-		connection.getItems().get(0).getItem(DYI_APP + " " + OpenShiftLabel.AppType.DIY).select();
+		connection.getItems().get(0).getItem(DYI_APP + " " + OpenShiftLabel.AppType.DIY_TREE).select();
 		new ContextMenu("Show in Web Browser").select();
 		
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
@@ -56,6 +56,6 @@ public class RestartApplication extends OpenShiftBotTest {
 
 	@After
 	public void deleteDIYApp() {
-		deleteOpenShiftApplication(DYI_APP, OpenShiftLabel.AppType.DIY);
+		deleteOpenShiftApplication(DYI_APP, OpenShiftLabel.AppType.DIY_TREE);
 	}
 }

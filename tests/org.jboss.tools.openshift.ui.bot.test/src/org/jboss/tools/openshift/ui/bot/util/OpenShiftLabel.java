@@ -3,22 +3,30 @@ package org.jboss.tools.openshift.ui.bot.util;
 public class OpenShiftLabel {
 
 	public static class AppType {
-		// Pure OpenShift Enterprise applications labels
-		public static final String JBOSS = "JBoss Application Server 7.1" + " (" + "jbossas-7.1" + ")";
-		public static final String JBOSS_EAP = "JBoss Enterprise Application Platform 6.0" + " (" + "jbosseap-6.0" + ")";
-		public static final String JENKINS = "Jenkins Server 1.4" + " (" + "jenkins-1.4" + ")";
-			
-		// OpenShift Online applications labels
-		public static final String JBOSS_EAP_ONLINE = "JBoss Enterprise Application Platform 6" + " (" + "jbosseap-6" + ")";
+		public static final String DIY = "Do-It-Yourself 0.1" + " " + "diy-0.1";
+		public static final String JBOSS_AS = "JBoss Application Server 7.1" + " " + "jbossas-7.1";
+		public static final String JBOSS_EAP_ENTERPRISE = "JBoss Enterprise Application Platform 6.0" + " " + "jbosseap-6.0";
+		public static final String JBOSS_EAP_ONLINE = "JBoss Enterprise Application Platform 6" + " " + "jbosseap-6";
+		public static final String JBOSS_EWS = "Tomcat 7 (JBoss EWS 2.0)" + " " + "jbossews-2.0";
+		public static final String JENKINS = "Jenkins Server 1.4" + " " + "jenkins-1.4";
+		public static final String PERL = "Perl 5.10" + " " + "perl-5.10";
+		public static final String PHP = "PHP 5.3" + " " + "php-5.3";
+		public static final String PYTHON = "Python 2.6" + " " + "python-2.6";
+		public static final String RUBY_1_9 = "Ruby 1.9" + " " + "ruby-1.9";
 		
-		// Shared applications labels (both OpenShift Online and OpenShift Enterprise)
-		public static final String DIY = "Do-It-Yourself 0.1" + " (" + "diy-0.1" + ")";
-		public static final String JBOSS_EWS = "Tomcat 7 (JBoss EWS 2.0)" + " (" + "jbossews-2.0" + ")";
-		public static final String PERL = "Perl 5.10" + " (" + "perl-5.10" + ")";
-		public static final String PHP = "PHP 5.3" + " (" + "php-5.3" + ")";
-		public static final String PYTHON = "Python 2.6" + " (" + "python-2.6" + ")";
-		public static final String RUBY_1_9 = "Ruby 1.9" + " (" + "ruby-1.9" + ")";
-	}
+		// Bcs. in explorer tree are with parenthesis
+		public static final String DIY_TREE = "Do-It-Yourself 0.1" + " (" + "diy-0.1" + ")";
+		public static final String JBOSS_AS_TREE = "JBoss Application Server 7.1" + " (" + "jbossas-7.1" + ")";
+		public static final String JBOSS_EAP_ENTERPRISE_TREE = "JBoss Enterprise Application Platform 6.0" + " (" + "jbosseap-6.0" + ")";
+		public static final String JBOSS_EAP_ONLINE_TREE = "JBoss Enterprise Application Platform 6" + " (" + "jbosseap-6" + ")";
+		public static final String JBOSS_EWS_TREE = "Tomcat 7 (JBoss EWS 2.0)" + " (" + "jbossews-2.0" + ")";
+		public static final String JENKINS_TREE = "Jenkins Server 1.4" + " (" + "jenkins-1.4" + ")";
+		public static final String PERL_TREE = "Perl 5.10" + " (" + "perl-5.10" + ")";
+		public static final String PHP_TREE = "PHP 5.3" + " (" + "php-5.3" + ")";
+		public static final String PYTHON_TREE = "Python 2.6" + " (" + "python-2.6" + ")";
+		public static final String RUBY_1_9_TREE = "Ruby 1.9" + " (" + "ruby-1.9" + ")";
+		}
+	
 
 	public static class Cartridge {
 		// OpenShift Online and OpenShift Enterprise
@@ -49,7 +57,7 @@ public class OpenShiftLabel {
 		public static final String EDIT_CARTRIDGES = "Edit Embedded Cartridges...";
 		public static final String EXPLORER_IMPORT_APP = "Import Application...";
 		public static final String EXPLORER_TAIL_FILES = "Tail files...";
-		public static final String EXPLORER_ENV_VAR = "All Environment Variables";
+		public static final String EXPLORER_ENV_VAR = "Environment Variables";
 		public static final String EXPLORER_PORTS = "Port forwarding...";
 		public static final String BROWSER = "Web Browser";
 		public static final String EXPLORER_ADAPTER = "Create a Server Adapter...";
@@ -60,7 +68,7 @@ public class OpenShiftLabel {
 	public static class Shell {
 		public static final String DELETE_APP = "Application deletion";
 		public static final String TAIL_FILES = "Tail Files";
-		public static final String PORTS = "";
+		public static final String PORTS = "Application port forwarding";
 		public static final String ADAPTER = "New Server";
 		public static final String EDIT_CARTRIDGES = "Edit Embedded Cartridges";
 	}

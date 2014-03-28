@@ -28,7 +28,7 @@ public class MultipleAccounts {
 	
 	@Before
 	public void beforeTest() {
-		AbstractWait.sleep(10000);
+		AbstractWait.sleep(TimePeriod.NORMAL);
 	}
 	
 	@Test

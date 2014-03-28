@@ -6,7 +6,7 @@ import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
-import org.jboss.reddeer.workbench.view.View;
+import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
 
 /**
  * 
@@ -16,7 +16,7 @@ import org.jboss.reddeer.workbench.view.View;
  * @author mlabuda@redhat.com
  *
  */
-public class OpenShiftExplorerView extends View {
+public class OpenShiftExplorerView extends WorkbenchView {
 
 	public OpenShiftExplorerView() {
 		super("JBoss Tools", "OpenShift Explorer");

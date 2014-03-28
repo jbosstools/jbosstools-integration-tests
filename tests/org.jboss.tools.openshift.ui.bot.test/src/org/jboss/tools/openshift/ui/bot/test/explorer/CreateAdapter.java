@@ -56,7 +56,7 @@ public class CreateAdapter {
 		
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 				
-		domainItem.getItem(DYI_APP + " " + OpenShiftLabel.AppType.DIY).select();
+		domainItem.getItem(DYI_APP + " " + OpenShiftLabel.AppType.DIY_TREE).select();
 		new ContextMenu(OpenShiftLabel.Labels.EXPLORER_ADAPTER).select();
 		
 		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.ADAPTER), TimePeriod.LONG);
@@ -85,6 +85,6 @@ public class CreateAdapter {
 
 	@After
 	public void deleteDIYApp() {
-		OpenShiftBotTest.deleteOpenShiftApplication(DYI_APP, OpenShiftLabel.AppType.DIY);
+		OpenShiftBotTest.deleteOpenShiftApplication(DYI_APP, OpenShiftLabel.AppType.DIY_TREE);
 	}
 }

@@ -72,6 +72,6 @@ public class CreateAdapterFromServerView {
 	
 	@After
 	public void deleteApp() {
-		OpenShiftBotTest.deleteOpenShiftApplication(DYI_APP, OpenShiftLabel.AppType.DIY);
+		OpenShiftBotTest.deleteOpenShiftApplication(DYI_APP, OpenShiftLabel.AppType.DIY_TREE);
 	}
 }

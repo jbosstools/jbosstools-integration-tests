@@ -17,12 +17,12 @@ public class ImportAndDeployGitHubProjectEnterprise {
 	
 	@Test
 	public void testDeployGitApp() {
-		ImportAndDeployGitHubProject.deployGitApp(OpenShiftLabel.AppType.JBOSS_EAP);
+		ImportAndDeployGitHubProject.deployGitApp(OpenShiftLabel.AppType.JBOSS_EAP_ENTERPRISE);
 	}
 
 	@AfterClass
 	public static void deleteApplication() {
-		OpenShiftBotTest.deleteOpenShiftApplication("jbosseapapp", OpenShiftLabel.AppType.JBOSS_EAP);
+		OpenShiftBotTest.deleteOpenShiftApplication("jbosseapapp", OpenShiftLabel.AppType.JBOSS_EAP_ENTERPRISE_TREE);
 	}
 	
 }

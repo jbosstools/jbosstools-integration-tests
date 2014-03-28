@@ -66,7 +66,7 @@ public class ImportApplicationFromOpenShift {
 		
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		
-		domain.getItem(DIY_APP + " " + OpenShiftLabel.AppType.DIY).select();
+		domain.getItem(DIY_APP + " " + OpenShiftLabel.AppType.DIY_TREE).select();
 		new ContextMenu(OpenShiftLabel.Labels.EXPLORER_IMPORT_APP).select();
 		
 		new WaitUntil(new ShellWithTextIsAvailable("Import OpenShift Application"), TimePeriod.VERY_LONG);
@@ -112,7 +112,7 @@ public class ImportApplicationFromOpenShift {
 	
 	@After
 	public void deleteApp() {
-		OpenShiftBotTest.deleteOpenShiftApplication(DIY_APP, OpenShiftLabel.AppType.DIY);
+		OpenShiftBotTest.deleteOpenShiftApplication(DIY_APP, OpenShiftLabel.AppType.DIY_TREE);
 	}
 	
 	private void removeApp() {

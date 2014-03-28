@@ -2,6 +2,7 @@ package org.jboss.tools.openshift.ui.bot.test.app;
 
 import static org.junit.Assert.assertTrue;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
@@ -11,12 +12,13 @@ import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.ButtonWithTextIsActive;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.wait.AbstractWait;
@@ -32,8 +34,7 @@ import org.junit.Test;
 public class CreateAppUsingWizard {
 
 	public static final String APP_NAME = "diy" + System.currentTimeMillis();
-	public static final String APP_TYPE = OpenShiftLabel.AppType.DIY;
-	
+
 	private static Logger logger = new Logger(CreateAppUsingWizard.class);
 	
 	private boolean appCreated = false;
@@ -41,12 +42,12 @@ public class CreateAppUsingWizard {
 	@Before
 	public void waiting() {
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-		new DefaultShell().setFocus();
+		new WorkbenchShell().setFocus();
 	}
 	
 	@Test
 	public void createApplicationUsingOpenShiftWizard() {
-		AbstractWait.sleep(5000);
+		AbstractWait.sleep(TimePeriod.SHORT);
 		new ShellMenu("File", "New", "OpenShift Application").select();
 		
 		new WaitUntil(new ShellWithTextIsAvailable("New OpenShift Application"), TimePeriod.LONG);
@@ -58,18 +59,32 @@ public class CreateAppUsingWizard {
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		
 		new DefaultShell("New OpenShift Application").setFocus();
+		if (!(new RadioButton(1).isSelected())) {
+			new RadioButton(1).click();
+		}
 		
-		AbstractWait.sleep(10000);
+		Iterator<TreeItem> iterator = new DefaultTree().getAllItems().iterator();
+		while(iterator.hasNext()) {
+			TreeItem cartridgeItem = iterator.next();
+			if (cartridgeItem.getText().equals(OpenShiftLabel.AppType.DIY)) {
+				cartridgeItem.select();
+				logger.info("*** OpenShift RedDeer Tests: Application type selected. ***");
+				break;
+			}
+		}
 		
-		new LabeledText("Name:").setText(APP_NAME);
-		logger.info("*** Application name set ***");
-		new DefaultCombo(1).setSelection(APP_TYPE);
-		logger.info("*** Application type selected ***");
+		new WaitUntil(new ButtonWithTextIsActive(new PushButton(
+				OpenShiftLabel.Button.NEXT)), TimePeriod.LONG);
+		
 		new PushButton(OpenShiftLabel.Button.NEXT).click();
-	
-		if (!new CheckBox(1).isChecked()) {
-			new CheckBox(1).click();
-		}	
+		
+		// bcs there is no running job it is required to verify this way
+		new WaitUntil(new ButtonWithTextIsActive(new PushButton(
+				OpenShiftLabel.Button.BACK)), TimePeriod.LONG);
+
+		new LabeledText("Name:").setText(APP_NAME);
+		logger.info("*** OpenShift RedDeer Tests: Application name set. ***");
+		
 		new PushButton(OpenShiftLabel.Button.NEXT).click();
 		
 		new PushButton(OpenShiftLabel.Button.FINISH).click();
@@ -129,7 +144,7 @@ public class CreateAppUsingWizard {
 	@After
 	public void deleteApplication() {
 		if (appCreated) {
-			OpenShiftBotTest.deleteOpenShiftApplication(APP_NAME, APP_TYPE);
+			OpenShiftBotTest.deleteOpenShiftApplication(APP_NAME, OpenShiftLabel.AppType.DIY_TREE);
 		}
 	}
 }

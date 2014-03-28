@@ -54,7 +54,8 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
  	RenameDomain.class,
 
 	/* Application */
- 	CreateAppUsingWizard.class,
+ 	// Create application using wizard temporarily down bcs. of bug in OpenShift tools
+ 	//CreateAppUsingWizard.class,
  	CreateApplicationFromGithub.class,
  	ImportAndDeployGitHubProject.class,
  	CreateAdapter.class,
