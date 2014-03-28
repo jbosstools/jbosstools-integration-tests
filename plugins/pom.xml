@@ -26,6 +26,6 @@
 		<module>org.jboss.tools.jst.reddeer</module>
 		<module>org.jboss.tools.seam.reddeer</module>
 		<module>org.jboss.tools.perf.test.core</module>
+		<module>org.jboss.tools.mylyn.reddeer</module>
 	</modules>
 </project>
-

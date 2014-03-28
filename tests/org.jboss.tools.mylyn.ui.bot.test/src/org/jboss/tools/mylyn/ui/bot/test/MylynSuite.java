@@ -14,9 +14,10 @@ import org.junit.runners.Suite.SuiteClasses;
 @RunWith(Suite.class)
 
 @SuiteClasses({
+	MylynTestJenkins.class,
 	MylynTestValidate.class,
-	MylynTestBzQuery.class,
-	MylynTestLocalRepo.class
+	MylynTestLocalRepo.class,
+	MylynTestBzQuery.class
 	})
 
 public class MylynSuite {
