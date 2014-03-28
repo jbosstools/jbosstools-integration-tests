@@ -17,7 +17,8 @@ Require-Bundle: org.eclipse.ui,
  org.jboss.tools.ui.bot.ext;bundle-version="[4.2.0,4.3.0)",
  org.eclipse.gef,
  org.jboss.tools.vpe.ui.bot.test;bundle-version="3.4.0",
- org.jboss.tools.jst.ui.bot
+ org.jboss.tools.jst.ui.bot,
+ org.jboss.tools.perf.test.core;bundle-version="4.2.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: org.jboss.tools.ui.bot.test,

@@ -171,7 +171,13 @@ public class RequirementAwareSuite extends Suite {
 			cleanUp.incrPlanned(getChildren().size() - 1);
 			// ensure that we have exactly 1 cleanup listener registered
 			notifier.removeListener(cleanUp);
+			for (RunListener listener : getRunListenersToRemove()){
+			  notifier.removeListener(listener);
+			};
 			notifier.addListener(cleanUp);
+			for (RunListener listener : getRunListenersToAdd()){
+        notifier.addListener(listener);
+      };
 			// adding ability to create screen shot (taken from
 			// SWTBotJunit4ClassRunner)
 			RunListener failureSpy = new ScreenshotCaptureListener();
@@ -526,4 +532,20 @@ public class RequirementAwareSuite extends Suite {
         new RuntimeException("Unable to stop Screen Recorder.\nScreen Recorder was not properly initilized");
     }
   }
+  /**
+   * Hook to add @RunListener(s) to @ReqAwareClassRunner
+   * @return array of RunListeners to be added to @ReqAwareClassRunner
+   * they will be notified for RunListener events during test run
+   */
+  public RunListener[] getRunListenersToAdd (){
+    return null;
+  }
+  /**
+   * Hook to remove @RunListener(s) to @ReqAwareClassRunner
+   * @return array of RunListeners to be removed from @ReqAwareClassRunner RunListeners
+   */
+  public RunListener[] getRunListenersToRemove (){
+    return null;
+  }
+  
 }
