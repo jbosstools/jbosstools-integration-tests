@@ -15,7 +15,7 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
-import org.jboss.reddeer.workbench.editor.TextEditor;
+import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.openshift.ui.bot.test.OpenShiftBotTest;
 import org.jboss.tools.openshift.ui.bot.util.OpenShiftExplorerView;
 import org.jboss.tools.openshift.ui.bot.util.OpenShiftLabel;
@@ -102,7 +102,7 @@ public class RepublishApp extends OpenShiftBotTest {
 
 	@After
 	public void deleteDIYApp() {
-		deleteOpenShiftApplication(DYI_APP, OpenShiftLabel.AppType.DIY);
+		deleteOpenShiftApplication(DYI_APP, OpenShiftLabel.AppType.DIY_TREE);
 	}
 	
 }

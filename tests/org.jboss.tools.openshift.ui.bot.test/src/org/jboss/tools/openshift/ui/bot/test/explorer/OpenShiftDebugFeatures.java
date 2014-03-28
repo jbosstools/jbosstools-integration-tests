@@ -79,7 +79,7 @@ public class OpenShiftDebugFeatures extends OpenShiftBotTest {
                 new DefaultShell(OpenShiftLabel.Shell.PORTS).setFocus();
                 new PushButton("Start All").click();
                 
-                AbstractWait.sleep(5000);
+                AbstractWait.sleep(TimePeriod.NORMAL);
 
                 new PushButton("OK").click();
 
@@ -96,7 +96,7 @@ public class OpenShiftDebugFeatures extends OpenShiftBotTest {
                 new DefaultShell(OpenShiftLabel.Shell.PORTS).setFocus();
                 new PushButton("Stop All").click();
                 
-                AbstractWait.sleep(5000);
+                AbstractWait.sleep(TimePeriod.NORMAL);
                 
                 new PushButton("OK").click();
                 new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
@@ -178,7 +178,7 @@ public class OpenShiftDebugFeatures extends OpenShiftBotTest {
         }
         
         public static void deleteDIYApp() {
-                deleteOpenShiftApplication(DYI_APP, OpenShiftLabel.AppType.DIY);
+                deleteOpenShiftApplication(DYI_APP, OpenShiftLabel.AppType.DIY_TREE);
         }   
 
 }

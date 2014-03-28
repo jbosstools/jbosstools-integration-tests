@@ -26,12 +26,12 @@ public class CreateDeleteScaledJBossApp extends OpenShiftBotTest {
 	@Test
 	public void canCreateScalableJBossApp() {
 		createScaledOpenShiftApplication(JBOSS_APP_NAME,
-				OpenShiftLabel.AppType.JBOSS_EAP);
+				OpenShiftLabel.AppType.JBOSS_EAP_ENTERPRISE);
 	}
 
 	@After
 	public void canDeleteScalableJBossApp() {
 		deleteOpenShiftApplication(JBOSS_APP_NAME,
-				OpenShiftLabel.AppType.JBOSS_EAP);
+				OpenShiftLabel.AppType.JBOSS_EAP_ENTERPRISE_TREE);
 	}
 }

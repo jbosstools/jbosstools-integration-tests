@@ -35,7 +35,7 @@ import org.jboss.tools.openshift.ui.bot.test.cartridge.EmbedCartridges;
 import org.jboss.tools.openshift.ui.bot.test.domain.CreateDomain;
 import org.jboss.tools.openshift.ui.bot.test.domain.DeleteDomain;
 import org.jboss.tools.openshift.ui.bot.test.domain.RenameDomain;
-import org.jboss.tools.openshift.ui.bot.test.explorer.Connection;
+import org.jboss.tools.openshift.ui.bot.test.explorer.ConnectionEnterprise;
 import org.jboss.tools.openshift.ui.bot.test.explorer.CreateAdapter;
 import org.jboss.tools.openshift.ui.bot.test.explorer.ManageSSH;
 import org.jboss.tools.openshift.ui.bot.test.explorer.OpenShiftEnterpriseDebugFeatures;
@@ -56,7 +56,7 @@ import org.junit.runners.Suite.SuiteClasses;
 @RunWith(RedDeerSuite.class)
 @SuiteClasses({
 	/* Connection stuff */
-	Connection.class, 
+	ConnectionEnterprise.class, 
 	ManageSSH.class, 
 	
 	/* Domain*/
@@ -66,10 +66,11 @@ import org.junit.runners.Suite.SuiteClasses;
 
 	/* Application creation*/
  	ImportApplicationFromOpenShift.class,
- 	CreateAppUsingWizard.class,
+ // Create application using wizard temporarily down
+ 	//CreateAppUsingWizard.class,
 	ImportAndDeployGitHubProjectEnterprise.class,
-	// Create app from github is temporarily down bcs. of broken example and enterprise 
-//	CreateApplicationFromGithubEnterprise.class,
+ // Create app from github is temporarily down bcs. of broken example and enterprise 
+    //CreateApplicationFromGithubEnterprise.class,
  	CreateAdapter.class,
 	CreateAdapterFromServerView.class,
 	EmbedCartridges.class, 

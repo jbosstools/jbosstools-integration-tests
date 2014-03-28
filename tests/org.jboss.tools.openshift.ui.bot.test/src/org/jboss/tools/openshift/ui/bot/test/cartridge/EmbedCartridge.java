@@ -70,7 +70,7 @@ public class EmbedCartridge extends OpenShiftBotTest {
 
 	@After
 	public void deleteDIYApp() {
-		deleteOpenShiftApplication(DYI_APP, OpenShiftLabel.AppType.DIY);
+		deleteOpenShiftApplication(DYI_APP, OpenShiftLabel.AppType.DIY_TREE);
 	}
 
 }

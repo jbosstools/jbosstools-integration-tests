@@ -1,12 +1,14 @@
 package org.jboss.tools.openshift.ui.bot.test.app;
 
+import java.util.Iterator;
+
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.ButtonWithTextIsActive;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
@@ -42,17 +44,50 @@ public class CreateApplicationFromGithub {
 		new WaitUntil(new ShellWithTextIsAvailable("New OpenShift Application"), TimePeriod.LONG);
 		
 		new DefaultShell("New OpenShift Application").setFocus();
+		if (!(new RadioButton(1).isSelected())) {
+			new RadioButton(1).click();
+		}
+		
+		Iterator<TreeItem> iterator = new DefaultTree().getAllItems().iterator();
+		while(iterator.hasNext()) {
+			TreeItem cartridgeItem = iterator.next();
+			if (cartridgeItem.getText().equals(OpenShiftLabel.AppType.PHP)) {
+				cartridgeItem.select();
+				break;
+			}
+		}
+
+		new WaitUntil(new ButtonWithTextIsActive(new PushButton(
+				OpenShiftLabel.Button.NEXT)), TimePeriod.LONG);
+		
+		new PushButton(OpenShiftLabel.Button.NEXT).click();
+		
+		// bcs there is no running job it is required to verify this way
+		new WaitUntil(new ButtonWithTextIsActive(new PushButton(
+				OpenShiftLabel.Button.BACK)), TimePeriod.LONG);
+		
 		new LabeledText("Name:").setText(APP_NAME);
-		new DefaultCombo(1).setSelection(OpenShiftLabel.AppType.PHP);
+		
+		new PushButton("Add...").click();
+		
+		new WaitUntil(new ShellWithTextIsAvailable("Add Embedded Cartridges"),
+				TimePeriod.NORMAL);
+		
+		new DefaultShell("Add Embedded Cartridges").setFocus();
 		new DefaultTable().getItem(mySQLLabel).setChecked(true);
+		new PushButton("OK").click();
+		
+		new DefaultShell("New OpenShift Application").setFocus();
+		
 		new PushButton(OpenShiftLabel.Button.ADVANCED).click();
-		new CheckBox(2).click();
+		new CheckBox(1).click();
 		new LabeledText("Source code:").setText(URL);
 		
 		new WaitUntil(new ButtonWithTextIsActive(new PushButton(OpenShiftLabel.Button.NEXT)), TimePeriod.NORMAL);
 		
 		new PushButton(OpenShiftLabel.Button.NEXT).click();
 		new PushButton(OpenShiftLabel.Button.NEXT).click();
+		
 		
 		new WaitUntil(new ButtonWithTextIsActive(new PushButton(OpenShiftLabel.Button.FINISH)), TimePeriod.NORMAL);
 		
@@ -85,6 +120,6 @@ public class CreateApplicationFromGithub {
 	}
 	
 	public static void deleteApp() {
-		OpenShiftBotTest.deleteOpenShiftApplication(APP_NAME, OpenShiftLabel.AppType.PHP);
+		OpenShiftBotTest.deleteOpenShiftApplication(APP_NAME, OpenShiftLabel.AppType.PHP_TREE);
 	}
 }

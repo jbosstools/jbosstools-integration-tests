@@ -1,12 +1,15 @@
 package org.jboss.tools.openshift.ui.bot.test.app;
 
+import java.util.Iterator;
+
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.ButtonWithTextIsActive;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
@@ -44,7 +47,7 @@ public class ImportAndDeployGitHubProject {
 		new PushButton(OpenShiftLabel.Button.NEXT).click();;
 		
 		new LabeledText("URI:").setText(
-				"https://github.com/mlabuda/jboss-eap-application");
+				"https://github.com/mlabuda/jboss-eap-application.git");
 		
 		new WaitUntil(new ButtonWithTextIsActive(new PushButton(OpenShiftLabel.Button.NEXT)), TimePeriod.NORMAL);
 		new PushButton(OpenShiftLabel.Button.NEXT).click();;
@@ -89,8 +92,29 @@ public class ImportAndDeployGitHubProject {
 		new WaitUntil(new ShellWithTextIsAvailable("New OpenShift Application"), TimePeriod.LONG);
 		
 		new DefaultShell("New OpenShift Application").setFocus();
+		if (!(new RadioButton(1).isSelected())) {
+			new RadioButton(1).click();
+		}
+		
+		Iterator<TreeItem> iterator = new DefaultTree().getAllItems().iterator();
+		while(iterator.hasNext()) {
+			TreeItem cartridgeItem = iterator.next();
+			if (cartridgeItem.getText().equals(appType)) {
+				cartridgeItem.select();
+				break;
+			}
+		}
+		
+		new WaitUntil(new ButtonWithTextIsActive(new PushButton(
+				OpenShiftLabel.Button.NEXT)), TimePeriod.LONG);
+		
+		new PushButton(OpenShiftLabel.Button.NEXT).click();
+		
+		// bcs there is no running job it is required to verify this way
+		new WaitUntil(new ButtonWithTextIsActive(new PushButton(
+				OpenShiftLabel.Button.BACK)), TimePeriod.LONG);
+
 		new LabeledText("Name:").setText("jbosseapapp");
-		new DefaultCombo(1).setSelection(appType);
 		
 		new WaitUntil(new ButtonWithTextIsActive(new PushButton(OpenShiftLabel.Button.NEXT)), TimePeriod.NORMAL);
 		new PushButton(OpenShiftLabel.Button.NEXT).click();
@@ -137,7 +161,7 @@ public class ImportAndDeployGitHubProject {
 	
 	@AfterClass
 	public static void deleteApplication() { 
-		OpenShiftBotTest.deleteOpenShiftApplication("jbosseapapp", OpenShiftLabel.AppType.JBOSS_EAP_ONLINE);
+		OpenShiftBotTest.deleteOpenShiftApplication("jbosseapapp", OpenShiftLabel.AppType.JBOSS_EAP_ONLINE_TREE);
 	}
 	
 }

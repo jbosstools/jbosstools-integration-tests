@@ -63,7 +63,7 @@ public class ManageSSH {
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		
 		// bcs. of not accessible table SOMETIMES
-		AbstractWait.sleep(3000);
+		AbstractWait.sleep(TimePeriod.NORMAL);
 		
 		while (new DefaultTable().getItems().size() > 0) {
 			new DefaultTable().getItems().get(0).select();

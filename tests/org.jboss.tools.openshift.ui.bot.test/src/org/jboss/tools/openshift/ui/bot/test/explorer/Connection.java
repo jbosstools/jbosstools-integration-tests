@@ -2,15 +2,17 @@ package org.jboss.tools.openshift.ui.bot.test.explorer;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+
 import org.jboss.reddeer.junit.logging.Logger;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitWhile;
-import org.jboss.reddeer.workbench.view.impl.WorkbenchView;
+import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
 import org.jboss.tools.openshift.ui.bot.util.OpenShiftExplorerView;
 import org.jboss.tools.openshift.ui.bot.util.TestProperties;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,6 +20,10 @@ public class Connection {
 
 	@Before
 	public void setUpServer() {
+		prepareTest();
+	}
+	
+	public static void prepareTest() {
 		try {
 			new WorkbenchView("Welcome").close();
 		} catch (UnsupportedOperationException ex) {}
@@ -31,6 +37,10 @@ public class Connection {
 	
 	@Test
 	public void canCreateConnectionToOpenShiftAccount() {
+		createConnectionToOpenShift();
+	}
+	
+	public static void createConnectionToOpenShift() {
 		OpenShiftExplorerView openshiftView = new OpenShiftExplorerView();
 		openshiftView.openConnectionShell();
 		
@@ -47,15 +57,21 @@ public class Connection {
 		// set correct user credentials
 		openshiftView.connectToOpenShift(TestProperties.get("openshift.server.url"), TestProperties.get("openshift.user.name"),
 				TestProperties.get("openshift.user.pwd"), false);
-		
+	}
+	
+	@After
+	public void verifyConnection() {
+		verifyConnectionEstablishment();
+	}
+	
+	public static void verifyConnectionEstablishment() {
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		
-		openshiftView.open();
+		new OpenShiftExplorerView().open();
 		assertTrue("Connection has not been established", new DefaultTree().getItems().size() > 0);
 		
-		Logger logger = new Logger(this.getClass());
+		Logger logger = new Logger(Connection.class);
 		logger.info("*** OpenShift RedDeer Tests: Credentials validated. ***");
 		logger.info("*** OpenShift RedDeer Tests: Connection to OpenShift established. ***");
 	}
-	
 }
