@@ -17,9 +17,10 @@ import org.eclipse.core.runtime.CoreException;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.tools.maven.reddeer.preferences.ConfiguratorPreferencePage;
+import org.jboss.tools.maven.reddeer.maven.ui.preferences.ConfiguratorPreferencePage;
 import org.jboss.tools.maven.reddeer.wizards.ConfigureMavenRepositoriesWizard;
 import org.jboss.tools.seam.reddeer.preferences.SeamPreferencePage;
 import org.junit.After;
@@ -180,7 +181,7 @@ public class SeamConfiguratorTest extends AbstractConfiguratorsTest{
 		p.getProject(project).select();
 		new ContextMenu("Properties").select();
 		new DefaultTreeItem("Seam Settings").select();
-		String runtime =  new DefaultCombo("Seam Runtime:").getSelection();
+		String runtime =  new LabeledCombo("Seam Runtime:").getSelection();
 		new PushButton("OK").click();
 		return runtime;
 	}

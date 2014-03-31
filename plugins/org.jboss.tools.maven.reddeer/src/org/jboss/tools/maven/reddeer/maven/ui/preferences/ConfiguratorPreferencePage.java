@@ -1,4 +1,4 @@
-package org.jboss.tools.maven.reddeer.preferences;
+package org.jboss.tools.maven.reddeer.maven.ui.preferences;
 
 import org.jboss.reddeer.eclipse.jface.preference.PreferencePage;
 import org.jboss.reddeer.swt.impl.button.PushButton;

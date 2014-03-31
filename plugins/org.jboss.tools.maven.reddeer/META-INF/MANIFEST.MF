@@ -11,7 +11,10 @@ Require-Bundle: org.eclipse.ui,
  org.jboss.reddeer.jface,
  org.jboss.reddeer.eclipse,
  org.junit;bundle-version="4.8.1"
-Export-Package: org.jboss.tools.maven.reddeer.profiles,org.jboss.tools
- .maven.reddeer.preferences,org.jboss.tools.maven.reddeer.wizards
+Export-Package: org.jboss.tools.maven.reddeer.maven.sourcelookup.ui.preferences,
+ org.jboss.tools.maven.reddeer.maven.ui.preferences,
+ org.jboss.tools.maven.reddeer.preferences,
+ org.jboss.tools.maven.reddeer.profiles,
+ org.jboss.tools.maven.reddeer.wizards
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6

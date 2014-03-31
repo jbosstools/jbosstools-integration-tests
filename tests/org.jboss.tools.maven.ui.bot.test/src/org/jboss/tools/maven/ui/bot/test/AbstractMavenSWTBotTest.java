@@ -136,8 +136,7 @@ public abstract class AbstractMavenSWTBotTest{
 		NewRuntimeWizardDialog rd = rp.addRuntime();
 		rd.addWizardPage(new ASRuntimePage(), 1);
 		((NewRuntimeWizardPage)rd.getFirstPage()).selectType("JBoss Community","JBoss 7.1 Runtime");
-		rd.selectPage(1);
-		ASRuntimePage as = (ASRuntimePage)rd.getWizardPage();
+		ASRuntimePage as = (ASRuntimePage)rd.getWizardPage(1);
 		as.setHomeDirectory(JBOSS_AS_7_1);
 		String name = as.getName();
 		rd.finish();
@@ -158,6 +157,8 @@ public abstract class AbstractMavenSWTBotTest{
 		sp.selectType("JBoss Community","JBoss AS 7.1");
 		String name = "AS7.1";
 		sp.setName("AS7.1");
+		//needed because of bug in 800Beta1
+		new PushButton("Next >").click();
 		ns.finish();
 		return name;
 		

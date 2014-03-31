@@ -13,7 +13,7 @@ package org.jboss.tools.maven.ui.bot.test;
 import static org.junit.Assert.assertTrue;
 
 import org.eclipse.core.runtime.CoreException;
-import org.jboss.tools.maven.reddeer.preferences.ConfiguratorPreferencePage;
+import org.jboss.tools.maven.reddeer.maven.ui.preferences.ConfiguratorPreferencePage;
 import org.jboss.tools.maven.reddeer.wizards.ConfigureMavenRepositoriesWizard;
 import org.jboss.tools.maven.reddeer.wizards.MavenProjectWizard;
 import org.jboss.tools.maven.reddeer.wizards.MavenProjectWizardSecondPage;
@@ -34,7 +34,6 @@ public class ArchetypesTest extends AbstractMavenSWTBotTest{
 		ConfiguratorPreferencePage jm = new ConfiguratorPreferencePage();
 		jm.open();
 		ConfigureMavenRepositoriesWizard mr = jm.configureRepositories();
-		mr.open();
 		mr.removeAllRepos();
 		mr.chooseRepositoryFromList(MavenRepositories.JBOSS_REPO, true);
 		mr.confirm();
@@ -51,8 +50,8 @@ public class ArchetypesTest extends AbstractMavenSWTBotTest{
 		jm.ok();
 	}
 	
-	
-	@Test
+	//not in jbds/jbt anymore
+	//@Test
 	public void createSimpleJSFProjectArchetype() throws CoreException{
 		String projectName= "JsfQuickstart";
 		createArchetype(projectName, "Nexus Indexer", "maven-archetype-jsfwebapp");

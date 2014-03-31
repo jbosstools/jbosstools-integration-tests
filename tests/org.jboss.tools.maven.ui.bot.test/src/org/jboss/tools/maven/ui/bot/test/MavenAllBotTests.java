@@ -21,11 +21,11 @@ import org.junit.runners.Suite;
  */
 @RunWith(RedDeerSuite.class)
 @Suite.SuiteClasses({
-
+/*
 	ArchetypesTest.class,
 	
 	PerspectiveTest.class,
-	MavenProfilesTest.class,
+//	/MavenProfilesTest.class,
 	MaterializeLibraryTest.class,
 
 	EARProjectTest.class,
@@ -34,14 +34,19 @@ import org.junit.runners.Suite;
 	
 	JPAConfiguratorTest.class,
 	JSFConfiguratorTest.class,
+	
 	SeamConfiguratorTest.class,
 
 	CDIConfiguratorTest.class, 
 	JAXRSConfiguratorTest.class,
 	PortletConfiguratorTest.class,
+	
 	MavenRepositories.class,
+	*/
 	MavenConversionTest.class,
-	RemoteRepositoriesPreferenceTest.class
+	RemoteRepositoriesPreferenceTest.class,
+	
+	SourceLookupTest.class
 })
 public class MavenAllBotTests {
 
