@@ -60,13 +60,11 @@ public class JSFProjectTest extends AbstractMavenSWTBotTest{
 	private void createJSFProject(String name, String version, String jsfType, String runtime){
 		JSFNewProjectWizard jsfd = new JSFNewProjectWizard();
 		jsfd.open();
-		jsfd.selectPage(1);
-		JSFNewProjectFirstPage fp = (JSFNewProjectFirstPage)jsfd.getWizardPage();
+		JSFNewProjectFirstPage fp = (JSFNewProjectFirstPage)jsfd.getWizardPage(0);
 		fp.setProjectName(name);
 		fp.setJSFVersion(version);
 		fp.setJSFType(jsfType);
-		jsfd.selectPage(2);
-		JSFNewProjectSecondPage sp = (JSFNewProjectSecondPage)jsfd.getWizardPage();
+		JSFNewProjectSecondPage sp = (JSFNewProjectSecondPage)jsfd.getWizardPage(1);
 		sp.setRuntime(runtime);
 		jsfd.finish();
 		

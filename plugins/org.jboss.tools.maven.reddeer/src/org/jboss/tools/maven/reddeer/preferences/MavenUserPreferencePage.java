@@ -4,6 +4,7 @@ import org.jboss.reddeer.eclipse.jface.preference.PreferencePage;
 import org.jboss.reddeer.swt.api.Button;
 import org.jboss.reddeer.swt.api.Text;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
+import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.wait.TimePeriod;
@@ -17,12 +18,22 @@ public class MavenUserPreferencePage extends PreferencePage{
 	}
 	
 	public void setUserSettings(String pathToSettings){
-		Text text = new DefaultText(1);
+		Text text = null;
+		for(int i=0;i<10;i++){
+			text = new DefaultText(i);
+			if(text.getText().contains("settings.xml")){
+				break;
+			}
+		}
+		//if(text.isReadOnly()){
+		//	//settings.xml not found and thats why theres another text
+		//	text = new DefaultText(1);
+		//}
 		if(!text.getText().equals(pathToSettings)){
 			text.setText(pathToSettings);
 			Button button = new PushButton("Update Settings");
 			button.click();
-			new WaitUntil(new JobIsRunning(),TimePeriod.NORMAL);
+			new WaitUntil(new JobIsRunning(),TimePeriod.NORMAL,false);
 			new WaitWhile(new JobIsRunning(),TimePeriod.VERY_LONG);
 		}
 	}

@@ -19,7 +19,7 @@ import java.util.List;
 
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
-import org.jboss.tools.maven.reddeer.preferences.ConfiguratorPreferencePage;
+import org.jboss.tools.maven.reddeer.maven.ui.preferences.ConfiguratorPreferencePage;
 import org.jboss.tools.maven.reddeer.profiles.SelectProfilesDialog;
 import org.jboss.tools.maven.reddeer.wizards.ConfigureMavenRepositoriesWizard;
 import org.jboss.tools.maven.reddeer.wizards.MavenImportWizard;

@@ -164,7 +164,7 @@ public class MavenConversionTest extends AbstractMavenSWTBotTest{
 	@Test
 	public void testRemoteRepositoriesLinkInConversionWizard(){
 		createWithRuntime();
-		new DefaultLink("remote repositories").click();
+		new DefaultLink("Manage remote repositories used to identify dependencies.").click();
 		boolean shellIsOpened = true;
 		try{
 			new DefaultShell("Preferences (Filtered)");

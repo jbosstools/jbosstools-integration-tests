@@ -3,7 +3,7 @@ package org.jboss.tools.maven.reddeer.wizards;
 import org.jboss.reddeer.swt.api.Group;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.group.DefaultGroup;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 
@@ -11,12 +11,12 @@ public class AddRepositoryDialog {
 	
 	public void chooseRepositoryFromList(String repo){
 		Group profileGroup = new DefaultGroup("Profile");
-		new DefaultCombo(profileGroup, "Profile ID:").setSelection(repo);
+		new LabeledCombo(profileGroup, "Profile ID:").setSelection(repo);
 	}
 	
 	public String getProfileID(){
 		Group profileGroup = new DefaultGroup("Profile");
-		return new DefaultCombo(profileGroup, "Profile ID:").getText();
+		return new LabeledCombo(profileGroup, "Profile ID:").getText();
 	}
 	
 	public String getRepositoryID(){
@@ -41,7 +41,7 @@ public class AddRepositoryDialog {
 	
 	public void setProfileID(String profileID){
 		Group profileGroup = new DefaultGroup("Profile");
-		new DefaultCombo(profileGroup, "Profile ID:").setText(profileID);
+		new LabeledCombo(profileGroup, "Profile ID:").setText(profileID);
 	}
 	
 	public void setRepositoryID(String repoID){

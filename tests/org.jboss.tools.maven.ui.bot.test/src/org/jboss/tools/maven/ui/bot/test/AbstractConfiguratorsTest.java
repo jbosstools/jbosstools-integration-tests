@@ -134,8 +134,7 @@ public abstract class AbstractConfiguratorsTest extends AbstractMavenSWTBotTest{
 	public void createEJBProject(String name, String runtime) throws CoreException{
 		EJBProjectDialog ejb = new EJBProjectDialog();
 		ejb.open();
-		ejb.selectPage(1);
-		EJBProjectFirstPage efp = (EJBProjectFirstPage)ejb.getWizardPage();
+		EJBProjectFirstPage efp = (EJBProjectFirstPage)ejb.getWizardPage(0);
 		efp.setProjectName(name);
 		if(runtime == null){
 			efp.setTargetRuntime("<None>");

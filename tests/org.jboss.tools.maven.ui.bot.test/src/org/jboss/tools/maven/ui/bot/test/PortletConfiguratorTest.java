@@ -2,7 +2,7 @@ package org.jboss.tools.maven.ui.bot.test;
 
 import static org.junit.Assert.assertTrue;
 
-import org.jboss.tools.maven.reddeer.preferences.ConfiguratorPreferencePage;
+import org.jboss.tools.maven.reddeer.maven.ui.preferences.ConfiguratorPreferencePage;
 import org.jboss.tools.maven.reddeer.wizards.ConfigureMavenRepositoriesWizard;
 import org.junit.After;
 import org.junit.AfterClass;

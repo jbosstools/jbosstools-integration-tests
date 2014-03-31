@@ -14,10 +14,11 @@ import static org.junit.Assert.assertTrue;
 
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.ProjectItem;
+import org.jboss.reddeer.eclipse.jst.j2ee.ui.project.facet.EarProjectFirstPage;
+import org.jboss.reddeer.eclipse.jst.j2ee.ui.project.facet.EarProjectInstallPage;
+import org.jboss.reddeer.eclipse.jst.j2ee.ui.project.facet.EarProjectWizard;
+import org.jboss.reddeer.eclipse.jst.j2ee.wizard.NewJ2EEComponentSelectionPage;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.tools.maven.ui.bot.test.dialog.EARProjectFirstPage;
-import org.jboss.tools.maven.ui.bot.test.dialog.EARProjectSecondPage;
-import org.jboss.tools.maven.ui.bot.test.dialog.EARProjectWizard;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -68,15 +69,16 @@ public class EARProjectTest extends AbstractMavenSWTBotTest{
 	}
 	
 	public void createEARProject(){
-		EARProjectWizard earw = new EARProjectWizard();
+		EarProjectWizard earw = new EarProjectWizard();
 		earw.open();
 		earw.selectPage(0);
-		EARProjectFirstPage ef = (EARProjectFirstPage)earw.getWizardPage();
+		EarProjectFirstPage ef = (EarProjectFirstPage)earw.getWizardPage(0);
 		ef.setProjectName(EAR_PROJECT_NAME);
 		ef.setTargetRuntime("<None>");
 		earw.selectPage(1);
-		EARProjectSecondPage es = (EARProjectSecondPage)earw.getWizardPage();
-		es.addModules();
+		EarProjectInstallPage es = (EarProjectInstallPage)earw.getWizardPage(1);
+		NewJ2EEComponentSelectionPage p = es.newModule();
+		p.finish();
 		earw.finish();
 	}
 	

@@ -105,18 +105,14 @@ public class SeamProjectTest extends AbstractMavenSWTBotTest {
 
 	private void createSeamProject(String projectName, String seamRuntime, String seamVersion, boolean EAR){
 		SeamProjectDialog sd = new SeamProjectDialog();
-		sd.addWizardPage(new SeamProjectFifthPage(), 6);
 		sd.open();
-		sd.selectPage(1);
-		SeamProjectFirstPage sf = (SeamProjectFirstPage)sd.getWizardPage();
+		SeamProjectFirstPage sf = (SeamProjectFirstPage)sd.getWizardPage(0);
 		sf.setProjectName(projectName);
 		sf.setRuntime(runtimeName);
-		System.out.println("+++++++++++++++"+serverName+"++++");
 		//sf.setServer(serverName);
 		sf.activateFacet("Seam", seamVersion);
 		sf.activateFacet("JBoss Maven Integration", null);
-		sd.selectPage(6);
-		SeamProjectFifthPage sfp = (SeamProjectFifthPage)sd.getWizardPage();
+		SeamProjectFifthPage sfp = (SeamProjectFifthPage)sd.getWizardPage(5);
 		sfp.setSeamRuntime(seamRuntime);
 		sfp.toggleEAR(EAR);
 		sd.finish();

@@ -4,7 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
-import org.jboss.tools.maven.reddeer.preferences.RemoteRepositoriesPreferencePage;
+import org.jboss.tools.maven.reddeer.maven.ui.preferences.RemoteRepositoriesPreferencePage;
 import org.jboss.tools.maven.reddeer.wizards.Repository;
 import org.junit.After;
 import org.junit.Test;

@@ -20,7 +20,7 @@ import javax.xml.transform.TransformerException;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.jboss.tools.maven.reddeer.preferences.ConfiguratorPreferencePage;
+import org.jboss.tools.maven.reddeer.maven.ui.preferences.ConfiguratorPreferencePage;
 import org.jboss.tools.maven.reddeer.wizards.ConfigureMavenRepositoriesWizard;
 import org.junit.After;
 import org.junit.AfterClass;
