@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: SWTBot Extensions
+Bundle-Name: Performance Tests Core
 Bundle-SymbolicName: org.jboss.tools.perf.test.core
 Bundle-Version: 4.2.0.qualifier
 Bundle-ClassPath: .,
