@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: JST Reddeer
+Bundle-SymbolicName: org.jboss.tools.jst.reddeer
+Bundle-Version: 4.2.0.qualifier
+Bundle-Activator: org.jboss.tools.jst.reddeer.Activator
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.jboss.reddeer.swt,
+ org.jboss.reddeer.jface,
+ org.jboss.reddeer.eclipse
+Export-Package: org.jboss.tools.jst.reddeer.web.ui
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
