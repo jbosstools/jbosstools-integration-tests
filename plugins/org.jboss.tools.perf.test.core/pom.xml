@@ -98,5 +98,10 @@
 			<name>JBoss Thirdparty Uploads</name>
 			<url>https://repository.jboss.org/nexus/content/repositories/thirdparty-uploads</url>
 		</repository>
+		<repository>
+			<id>jbosstools-experiments</id>
+			<name>JBoss Tools Experiments</name>
+			<url>https://repository.jboss.org/nexus/content/repositories/jbosstools-experiments/</url>
+		</repository>
 	</repositories>
 </project>
