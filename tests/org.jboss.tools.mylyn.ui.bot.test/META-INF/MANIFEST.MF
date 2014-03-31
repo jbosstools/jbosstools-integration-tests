@@ -11,7 +11,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.swtbot.go;bundle-version="2.0.5",
  org.jboss.reddeer.swt,
  org.jboss.reddeer.eclipse,
- org.jboss.tools.mylyn.hudson.reddeer
+ org.jboss.tools.mylyn.reddeer
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: org.eclipse.wst.server.ui.internal.view.servers,
@@ -25,9 +25,9 @@ Import-Package: org.eclipse.wst.server.ui.internal.view.servers,
  org.jboss.reddeer.swt.util,
  org.jboss.reddeer.workbench.view,
  org.jboss.reddeer.workbench.view.impl,
- org.jboss.tools.mylyn.hudson.reddeer.mylynBuild,
- org.jboss.tools.mylyn.hudson.reddeer.view,
- org.jboss.tools.mylyn.hudson.reddeer.wizard
+ org.jboss.tools.mylyn.reddeer.mylynBuild,
+ org.jboss.tools.mylyn.reddeer.view,
+ org.jboss.tools.mylyn.reddeer.wizard
 Eclipse-BundleShape: jar
 Bundle-Localization: plugin
 Bundle-Vendor: JBoss by Red Hat

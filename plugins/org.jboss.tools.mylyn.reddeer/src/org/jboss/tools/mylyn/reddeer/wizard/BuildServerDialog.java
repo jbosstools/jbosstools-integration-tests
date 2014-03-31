@@ -1,4 +1,4 @@
-package org.jboss.tools.mylyn.hudson.reddeer.wizard;
+package org.jboss.tools.mylyn.reddeer.wizard;
 
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.impl.button.PushButton;

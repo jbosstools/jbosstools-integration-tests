@@ -25,9 +25,9 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.eclipse.mylyn.tasks.ui.view.*;
-import org.jboss.tools.mylyn.hudson.reddeer.*;
-import org.jboss.tools.mylyn.hudson.reddeer.view.MylynBuildView;
-import org.jboss.tools.mylyn.hudson.reddeer.wizard.BuildServerDialog;
+import org.jboss.tools.mylyn.reddeer.*;
+import org.jboss.tools.mylyn.reddeer.wizard.BuildServerDialog;
+import org.jboss.tools.mylyn.reddeer.view.MylynBuildView;
 import org.jboss.reddeer.swt.condition.ShellIsActive;
 
 public class MylynTestJenkins {

@@ -1,4 +1,4 @@
-package org.jboss.tools.mylyn.hudson.reddeer.view;
+package org.jboss.tools.mylyn.reddeer.view;
 
 import static org.junit.Assert.*;
 
@@ -22,7 +22,7 @@ import org.jboss.reddeer.swt.impl.link.DefaultLink;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
-import org.jboss.tools.mylyn.hudson.reddeer.mylynBuild.MylynBuild;
+import org.jboss.tools.mylyn.reddeer.mylynBuild.MylynBuild;
 
 /**
  * Represents the Build List view - to support Mylyn automated tests. 

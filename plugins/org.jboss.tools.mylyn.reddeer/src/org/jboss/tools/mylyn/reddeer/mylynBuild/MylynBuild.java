@@ -1,4 +1,4 @@
-package org.jboss.tools.mylyn.hudson.reddeer.mylynBuild;
+package org.jboss.tools.mylyn.reddeer.mylynBuild;
 
 import org.jboss.reddeer.junit.logging.Logger;
 import org.jboss.reddeer.swt.api.TreeItem;
