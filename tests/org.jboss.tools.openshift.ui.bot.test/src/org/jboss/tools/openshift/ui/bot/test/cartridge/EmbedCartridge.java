@@ -32,7 +32,7 @@ public class EmbedCartridge extends OpenShiftBotTest {
 
 	@Test
 	public void canEmbedCartridge() {
-		embedCartrige(OpenShiftLabel.Cartridge.CRON_ONLINE);
+		embedCartrige(OpenShiftLabel.Cartridge.CRON);
 	}
 
 	
@@ -60,7 +60,7 @@ public class EmbedCartridge extends OpenShiftBotTest {
 		new DefaultTable().getItem(cartridge).setChecked(true);
 		new PushButton(OpenShiftLabel.Button.FINISH).click();
 		
-		new WaitUntil(new ShellWithTextIsAvailable("Embedded Cartridges"), TimePeriod.LONG);
+		new WaitUntil(new ShellWithTextIsAvailable("Embedded Cartridges"), TimePeriod.VERY_LONG);
 		
 		new DefaultShell("Embedded Cartridges").setFocus();
 		new PushButton(OpenShiftLabel.Button.OK).click();

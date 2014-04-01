@@ -10,6 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.openshift.ui.bot.test;
 
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.openshift.ui.bot.test.app.CreateAdapterFromServerView;
 import org.jboss.tools.openshift.ui.bot.test.app.CreateAppUsingWizard;
 import org.jboss.tools.openshift.ui.bot.test.app.CreateApplicationFromGithub;
@@ -18,8 +19,8 @@ import org.jboss.tools.openshift.ui.bot.test.app.ImportApplicationFromOpenShift;
 import org.jboss.tools.openshift.ui.bot.test.app.RepublishApp;
 import org.jboss.tools.openshift.ui.bot.test.app.RestartApplication;
 import org.jboss.tools.openshift.ui.bot.test.cartridge.EmbedCartridge;
-import org.jboss.tools.openshift.ui.bot.test.domain.CreateDomain;
-import org.jboss.tools.openshift.ui.bot.test.domain.DeleteDomain;
+import org.jboss.tools.openshift.ui.bot.test.domain.CreateMultipleDomain;
+import org.jboss.tools.openshift.ui.bot.test.domain.DeleteMultipleDomain;
 import org.jboss.tools.openshift.ui.bot.test.domain.RenameDomain;
 import org.jboss.tools.openshift.ui.bot.test.explorer.Connection;
 import org.jboss.tools.openshift.ui.bot.test.explorer.CreateAdapter;
@@ -29,7 +30,6 @@ import org.jboss.tools.openshift.ui.bot.test.explorer.OpenShiftDebugFeatures;
 import org.jboss.tools.openshift.ui.bot.util.CleanUp;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
 
 /**
  * <b>OpenShift RedDeer TestSuite</b>
@@ -49,25 +49,22 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
 	ManageSSH.class, 
 	
 	/* Domain */
-	CreateDomain.class,
- 	DeleteDomain.class,
+	CreateMultipleDomain.class,
+ 	DeleteMultipleDomain.class,
  	RenameDomain.class,
 
 	/* Application */
- 	// Create application using wizard temporarily down bcs. of bug in OpenShift tools
- 	//CreateAppUsingWizard.class,
- 	CreateApplicationFromGithub.class,
  	ImportAndDeployGitHubProject.class,
+ 	ImportApplicationFromOpenShift.class,
+ 	CreateAppUsingWizard.class,
+ 	CreateApplicationFromGithub.class,
  	CreateAdapter.class,
  	CreateAdapterFromServerView.class,
- 	ImportApplicationFromOpenShift.class,
 	EmbedCartridge.class,
 	// TODO Conflict cartridge 
 	RepublishApp.class,
 	OpenShiftDebugFeatures.class,
  	RestartApplication.class,
- 	// TODO maven profile
- 	// TODO multimaven app
  	
  	CleanUp.class
 })

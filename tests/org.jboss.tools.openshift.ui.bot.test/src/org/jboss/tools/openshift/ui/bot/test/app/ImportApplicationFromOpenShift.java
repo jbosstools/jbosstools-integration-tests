@@ -1,6 +1,7 @@
 package org.jboss.tools.openshift.ui.bot.test.app;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
@@ -9,7 +10,6 @@ import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.condition.ButtonWithTextIsActive;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
@@ -118,7 +118,7 @@ public class ImportApplicationFromOpenShift {
 	private void removeApp() {
 		ProjectExplorer projectExplorer = new ProjectExplorer();
 		projectExplorer.open();
-		Project project = projectExplorer.getProjects().get(0);
+		Project project = projectExplorer.getProject(DIY_APP);
 		project.select();
 	    new ContextMenu("Delete").select();
 		new DefaultShell("Delete Resources");

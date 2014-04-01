@@ -2,7 +2,6 @@ package org.jboss.tools.openshift.ui.bot.test.app;
 
 import java.util.Date;
 
-import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.tools.openshift.ui.bot.test.OpenShiftBotTest;
 import org.jboss.tools.openshift.ui.bot.util.OpenShiftLabel;
 import org.jboss.tools.openshift.ui.bot.util.TestProperties;
@@ -11,7 +10,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-@CleanWorkspace
 public class CreateDeletePHPApp extends OpenShiftBotTest {
 
 	private final String PHP_APP_NAME = TestProperties
@@ -30,6 +28,6 @@ public class CreateDeletePHPApp extends OpenShiftBotTest {
 	
 	@After
 	public void canDeletePHPApp() {
-		deleteOpenShiftApplication(PHP_APP_NAME, OpenShiftLabel.AppType.PHP);
+		deleteOpenShiftApplication(PHP_APP_NAME, OpenShiftLabel.AppType.PHP_TREE);
 	}
 }

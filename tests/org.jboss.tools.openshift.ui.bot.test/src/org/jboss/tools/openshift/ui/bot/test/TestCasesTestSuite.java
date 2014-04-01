@@ -1,7 +1,6 @@
 package org.jboss.tools.openshift.ui.bot.test;
 
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.tools.openshift.ui.bot.test.app.CreateAppUsingWizard;
 import org.jboss.tools.openshift.ui.bot.test.domain.CreateDomain;
 import org.jboss.tools.openshift.ui.bot.test.explorer.Connection;
 import org.jboss.tools.openshift.ui.bot.test.explorer.ManageSSH;
@@ -17,8 +16,8 @@ import org.junit.runners.Suite.SuiteClasses;
 	ManageSSH.class, 
 	CreateDomain.class,
 	
-	CreateAppUsingWizard.class,
-	
+	// HERE GOES TEST CLASS
+ 	
 	CleanUp.class
 })
 public class TestCasesTestSuite {

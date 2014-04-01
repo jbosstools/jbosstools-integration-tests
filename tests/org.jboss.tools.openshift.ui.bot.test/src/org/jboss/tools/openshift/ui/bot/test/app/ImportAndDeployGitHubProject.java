@@ -1,8 +1,12 @@
 package org.jboss.tools.openshift.ui.bot.test.app;
 
+import static org.junit.Assert.assertTrue;
+
 import java.util.Iterator;
 
-import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.tools.openshift.ui.bot.util.TestUtils;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.ButtonWithTextIsActive;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
@@ -10,9 +14,11 @@ import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
+import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
@@ -22,15 +28,23 @@ import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.openshift.ui.bot.test.OpenShiftBotTest;
 import org.jboss.tools.openshift.ui.bot.util.OpenShiftExplorerView;
 import org.jboss.tools.openshift.ui.bot.util.OpenShiftLabel;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
-@CleanWorkspace
+/**
+ * This test class consists of 2 test cases:
+ * - existing project can be deployed to OpenShift
+ * - openShift Maven profile is added to pom.xml when enabling OpenShift deployment
+ * 
+ * @author mlabuda
+ *
+ */
 public class ImportAndDeployGitHubProject {
 
-	@BeforeClass
-	public static void importApplication() {
+	@Before
+	public void importApplication() {
+		TestUtils.cleanupGitFolder("jboss-eap-application");
 		new ShellMenu("File", "Import...").select();
 		
 		new WaitUntil(new ShellWithTextIsAvailable("Import"), TimePeriod.LONG);
@@ -73,10 +87,12 @@ public class ImportAndDeployGitHubProject {
 	
 	@Test
 	public void testDeployGitApp() {
-		deployGitApp(OpenShiftLabel.AppType.JBOSS_EAP_ONLINE);
+		deployGitApp(OpenShiftLabel.AppType.JBOSS_EAP);
+
+		checkOpenShiftMavenProfile();
 	}
 		
-	public static void deployGitApp(String appType) {
+	private void deployGitApp(String appType) {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 		explorer.open();
 		
@@ -159,9 +175,28 @@ public class ImportAndDeployGitHubProject {
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 	}
 	
-	@AfterClass
-	public static void deleteApplication() { 
-		OpenShiftBotTest.deleteOpenShiftApplication("jbosseapapp", OpenShiftLabel.AppType.JBOSS_EAP_ONLINE_TREE);
+	private void checkOpenShiftMavenProfile() {
+		ProjectExplorer projectExplorer = new ProjectExplorer();
+		Project project = projectExplorer.getProject("jboss-javaee6-webapp");
+		
+		TreeItem projectItem = project.getTreeItem();
+		projectItem.select();
+		projectItem.expand();
+		projectItem.collapse();
+		projectItem.expand();
+		
+		project.getProjectItem("pom.xml").open();
+		
+		new DefaultCTabItem("pom.xml").activate();
+
+		String pomText = new DefaultStyledText().getText();
+		
+		assertTrue("Maven profile has not been added into pom.xml", pomText.contains("<id>openshift</id>"));
+	}
+	
+	@After
+	public void deleteApplication() { 
+		OpenShiftBotTest.deleteOpenShiftApplication("jbosseapapp", OpenShiftLabel.AppType.JBOSS_EAP_TREE);
 	}
 	
 }

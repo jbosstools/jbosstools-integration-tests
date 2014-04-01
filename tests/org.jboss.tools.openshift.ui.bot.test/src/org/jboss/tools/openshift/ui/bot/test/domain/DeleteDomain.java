@@ -31,7 +31,7 @@ public class DeleteDomain {
 		CreateDomain.createDomain(false, false);
 	}
 	
-	private void destroyDomain(boolean multipleDomain) {
+	public static void destroyDomain(boolean multipleDomain) {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 		explorer.open();
 
@@ -66,7 +66,7 @@ public class DeleteDomain {
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
 	
-	private void removeDomain() {
+	private static void removeDomain() {
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		new DefaultTable(0).select(0);
 		

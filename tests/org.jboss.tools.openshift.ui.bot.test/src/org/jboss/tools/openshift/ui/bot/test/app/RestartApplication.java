@@ -48,9 +48,11 @@ public class RestartApplication extends OpenShiftBotTest {
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		
 		connection.getItems().get(0).getItem(DYI_APP + " " + OpenShiftLabel.AppType.DIY_TREE).select();
-		new ContextMenu("Show in Web Browser").select();
 		
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		//new ContextMenu("Show in Web Browser").select();
+		
+		//new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		// TODO showed in web browser correctly
 	}
 

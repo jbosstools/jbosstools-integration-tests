@@ -85,8 +85,19 @@ public class CreateAppUsingWizard {
 		new LabeledText("Name:").setText(APP_NAME);
 		logger.info("*** OpenShift RedDeer Tests: Application name set. ***");
 		
+		new WaitUntil(new ButtonWithTextIsActive(new PushButton(
+				OpenShiftLabel.Button.NEXT)), TimePeriod.NORMAL);
+		
+		new PushButton(OpenShiftLabel.Button.NEXT).click();
+
+		new WaitUntil(new ButtonWithTextIsActive(new PushButton(
+				OpenShiftLabel.Button.NEXT)), TimePeriod.NORMAL);
+		
 		new PushButton(OpenShiftLabel.Button.NEXT).click();
 		
+		new WaitUntil(new ButtonWithTextIsActive(new PushButton(
+				OpenShiftLabel.Button.FINISH)), TimePeriod.NORMAL);
+
 		new PushButton(OpenShiftLabel.Button.FINISH).click();
 		
 		// BCS of DIY app

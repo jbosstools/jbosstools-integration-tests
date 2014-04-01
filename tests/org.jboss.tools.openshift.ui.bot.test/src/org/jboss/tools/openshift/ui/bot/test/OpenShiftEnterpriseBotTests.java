@@ -27,7 +27,7 @@ import org.jboss.tools.openshift.ui.bot.test.app.CreateDeleteScalablePerlApp;
 import org.jboss.tools.openshift.ui.bot.test.app.CreateDeleteScalablePythonApp;
 import org.jboss.tools.openshift.ui.bot.test.app.CreateDeleteScaledJBossApp;
 import org.jboss.tools.openshift.ui.bot.test.app.CreateDeleteScaledRubyApp;
-import org.jboss.tools.openshift.ui.bot.test.app.ImportAndDeployGitHubProjectEnterprise;
+import org.jboss.tools.openshift.ui.bot.test.app.ImportAndDeployGitHubProject;
 import org.jboss.tools.openshift.ui.bot.test.app.ImportApplicationFromOpenShift;
 import org.jboss.tools.openshift.ui.bot.test.app.RepublishApp;
 import org.jboss.tools.openshift.ui.bot.test.app.RestartApplication;
@@ -65,12 +65,10 @@ import org.junit.runners.Suite.SuiteClasses;
  	RenameDomain.class,
 
 	/* Application creation*/
+ 	ImportAndDeployGitHubProject.class, 
  	ImportApplicationFromOpenShift.class,
- // Create application using wizard temporarily down
- 	//CreateAppUsingWizard.class,
-	ImportAndDeployGitHubProjectEnterprise.class,
- // Create app from github is temporarily down bcs. of broken example and enterprise 
-    //CreateApplicationFromGithubEnterprise.class,
+ 	CreateAppUsingWizard.class,
+    CreateApplicationFromGithubEnterprise.class,
  	CreateAdapter.class,
 	CreateAdapterFromServerView.class,
 	EmbedCartridges.class, 
@@ -78,8 +76,6 @@ import org.junit.runners.Suite.SuiteClasses;
 	RepublishApp.class,
 	OpenShiftEnterpriseDebugFeatures.class,
  	RestartApplication.class, 
- 	// TODO maven profile
- 	// TODO multimaven app
  	
 	/* Applications*/ 
 	CreateDeleteJBossApp.class,

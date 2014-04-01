@@ -2,7 +2,6 @@ package org.jboss.tools.openshift.ui.bot.test.app;
 
 import java.util.Date;
 
-import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.tools.openshift.ui.bot.test.OpenShiftBotTest;
 import org.jboss.tools.openshift.ui.bot.util.OpenShiftLabel;
 import org.jboss.tools.openshift.ui.bot.util.TestProperties;
@@ -11,7 +10,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-@CleanWorkspace
 public class CreateDeletePythonApp extends OpenShiftBotTest {
 
 	private final String PYTHON_APP_NAME = TestProperties
@@ -30,6 +28,6 @@ public class CreateDeletePythonApp extends OpenShiftBotTest {
 	
 	@After
 	public void canDeletePythonApp() {
-		deleteOpenShiftApplication(PYTHON_APP_NAME, OpenShiftLabel.AppType.PYTHON);
+		deleteOpenShiftApplication(PYTHON_APP_NAME, OpenShiftLabel.AppType.PYTHON_TREE);
 	}
 }

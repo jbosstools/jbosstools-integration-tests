@@ -52,7 +52,7 @@ public class RepublishApp extends OpenShiftBotTest {
 		editor.close();
 		
 		projectExplorer.open();
-		projectExplorer.getProjects().get(0).select();
+		projectExplorer.getProject(DYI_APP).select();
 		new ContextMenu("Team", "Commit...").select();
 		
 		try {
@@ -93,10 +93,11 @@ public class RepublishApp extends OpenShiftBotTest {
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		
 		connection.getItems().get(0).getItems().get(0).select();
-		new ContextMenu("Show in Web Browser").select();
-
+		
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		
+		//new ContextMenu("Show in Web Browser").select();
+		//new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		//TODO verify title with Browser Editor
 	}
 

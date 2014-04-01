@@ -31,7 +31,7 @@ public class OpenShiftEnterpriseDebugFeatures extends OpenShiftBotTest {
         @After
         public void deleteDIYApp() {
                 OpenShiftDebugFeatures.deleteOpenShiftApplication(
-                		OpenShiftDebugFeatures.DYI_APP, OpenShiftLabel.AppType.DIY);
+                		OpenShiftDebugFeatures.DYI_APP, OpenShiftLabel.AppType.DIY_TREE);
         }   
 
 }

@@ -15,6 +15,12 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * Connection to OpenShift enterprise has different steps - while establishing connection
+ * there is a certificate acceptance dialog that user accept certificate of the given OSE.
+ * @author mlabuda
+ *
+ */
 public class ConnectionEnterprise extends Connection {
 	
 	@Before
