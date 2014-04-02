@@ -11,6 +11,7 @@
 
 package org.jboss.tools.ws.ui.bot.test.rest;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
@@ -103,7 +104,8 @@ public class RESTfulTestBase extends WSTestBase {
 
 	protected void assertNotAllRESTServicesInExplorer(List<ProjectItem> restServices) {
 		assertFalse("All RESTful services (GET, DELETE, POST, PUT) "
-				+ "shouldnt be present but they are",
+				+ "shouldnt be present but they are"
+				+ Arrays.toString(parseRestServices(restServices)),
 				allRestServicesArePresent(restServices));
 	}
 
@@ -222,5 +224,13 @@ public class RESTfulTestBase extends WSTestBase {
 				return false;
 		}
 		return true;
+	}
+	
+	private String[] parseRestServices(List<ProjectItem> restServices) {
+		String[] services = new String[restServices.size()];
+		for(int i=0;i<restServices.size();i++) {
+			services[i] = restfulWizard.getRestServiceName(restServices.get(i));
+		}
+		return services;
 	}
 }

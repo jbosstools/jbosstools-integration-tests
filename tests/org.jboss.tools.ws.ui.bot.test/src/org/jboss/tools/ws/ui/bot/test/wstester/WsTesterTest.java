@@ -301,15 +301,14 @@ public class WsTesterTest extends WSTestBase {
     }
 
     private void checkResponse(String rsp, String expContent) {
-        try {
-            Assert.assertTrue(rsp, rsp.contains(expContent));
-        } catch (AssertionError t) {
-            if (rsp.contains("503")) {
-                LOGGER.log(Level.WARNING, "Service Unavailable: {0}", SERVICE_URL);
-            } else {
-                throw t;
-            }
-        }
+    	if(!rsp.contains(expContent)) {
+    		if (rsp.contains("503")) { //503 Service Unavailable
+    			throw new AssertionError("Service Unavailable: " + SERVICE_URL);
+    		} else {
+                throw new AssertionError("Response doesn't contains \"" + expContent + "\""
+                		+ "\nResponse was:" + rsp);
+    		}
+    	}
     }
 
     private File prepareWsdl() {
