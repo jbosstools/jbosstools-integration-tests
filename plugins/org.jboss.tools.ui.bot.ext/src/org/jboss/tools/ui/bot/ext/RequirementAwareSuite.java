@@ -171,13 +171,19 @@ public class RequirementAwareSuite extends Suite {
 			cleanUp.incrPlanned(getChildren().size() - 1);
 			// ensure that we have exactly 1 cleanup listener registered
 			notifier.removeListener(cleanUp);
-			for (RunListener listener : getRunListenersToRemove()){
-			  notifier.removeListener(listener);
-			};
+			RunListener[] listenersToRemove = getRunListenersToRemove();
+			if (listenersToRemove != null) {
+				for (RunListener listener : listenersToRemove) {
+					notifier.removeListener(listener);
+				}
+			}
 			notifier.addListener(cleanUp);
-			for (RunListener listener : getRunListenersToAdd()){
-        notifier.addListener(listener);
-      };
+			RunListener[] listenersToAdd = getRunListenersToAdd();
+			if (listenersToAdd != null) {
+				for (RunListener listener : listenersToAdd) {
+					notifier.addListener(listener);
+				}
+			}
 			// adding ability to create screen shot (taken from
 			// SWTBotJunit4ClassRunner)
 			RunListener failureSpy = new ScreenshotCaptureListener();
