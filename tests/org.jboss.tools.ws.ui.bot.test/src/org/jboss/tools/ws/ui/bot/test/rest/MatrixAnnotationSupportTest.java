@@ -24,9 +24,9 @@ public class MatrixAnnotationSupportTest extends RESTfulTestBase {
 	private String matrixParam1 = "author";
 	private String matrixParam2 = "country";
 	private String matrixParamNew = "library";
-	private String matrixParamType1 = "java.lang.String";
-	private String matrixParamType2 = "java.lang.Integer";
-	private String matrixParamTypeNew = "java.lang.Long";
+	private String matrixParamType1 = "String";
+	private String matrixParamType2 = "Integer";
+	private String matrixParamTypeNew = "Long";
 
 	@Override
 	protected String getWsProjectName() {

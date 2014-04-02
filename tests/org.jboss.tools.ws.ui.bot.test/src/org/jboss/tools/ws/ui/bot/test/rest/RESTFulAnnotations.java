@@ -2,8 +2,8 @@ package org.jboss.tools.ws.ui.bot.test.rest;
 
 public enum RESTFulAnnotations {
 	
-	REST_SUPPORT_MENU_LABEL_ADD("Add JAX-RS 1.1 support..."),
-	REST_SUPPORT_MENU_LABEL_REMOVE("Remove JAX-RS 1.1 support..."),
+	REST_SUPPORT_MENU_LABEL_ADD("Add JAX-RS Support..."),
+	REST_SUPPORT_MENU_LABEL_REMOVE("Remove JAX-RS Support..."),
 	REST_EXPLORER_LABEL("JAX-RS Web Services"),
 	REST_EXPLORER_LABEL_BUILD("Building RESTful Web Services..."),
 	GET("GET"),
