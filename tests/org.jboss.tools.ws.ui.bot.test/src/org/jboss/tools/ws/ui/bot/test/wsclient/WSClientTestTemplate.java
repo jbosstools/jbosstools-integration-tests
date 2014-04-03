@@ -120,10 +120,10 @@ public class WSClientTestTemplate extends WSTestBase {
 			pkg.delete();
 		}
 	}
-	
+
 	protected void clientTest(String targetPkg) {
 		clientHelper.createClient(
-				"http://footballpool.dataaccess.eu/data/info.wso?WSDL",
+				 "http://soaptest.parasoft.com/calculator.wsdl",
 				serviceRuntime,
 				getWsProjectName(),
 				getEarProjectName(),
@@ -137,11 +137,20 @@ public class WSClientTestTemplate extends WSTestBase {
 	
 	private void assertThatExpectedFilesExists(String targetPkg) {
 		IProject p = ResourcesPlugin.getWorkspace().getRoot().getProject(getWsProjectName());
-		String pkg = (targetPkg != null && !"".equals(targetPkg.trim())) ? getWsPackage() : "eu.dataaccess.footballpool";
-		String pkgPath = pkg.replace('.', '/');
+		String pkg = (targetPkg != null && !"".equals(targetPkg.trim())) ? getWsPackage() :
+			"com.parasoft.wsdl.calculator";
+		String src = "src/" + pkg.replace('.', '/') + "/";
 		String[] expectedFiles = {
-				"src/" + pkgPath + "/Info.java",
-				"src/" + pkgPath + "/"+getSampleClientFileName()};
+				src + "ICalculator.java",
+				src + "Add.java",
+				src + "AddResponse.java",
+				src + "Divide.java",
+				src + "DivideResponse.java",
+				src + "Multiply.java",
+				src + "MultiplyResponse.java",
+				src + "Subtract.java",
+				src + "SubtractResponse.java",
+				src + getSampleClientFileName()};
 		for(String file : expectedFiles) {
 			Assert.assertTrue("File " + file + " was not created", p.getFile(file).exists());
 		}
@@ -153,13 +162,10 @@ public class WSClientTestTemplate extends WSTestBase {
 		case START:
 		case INSTALL:
 		case DEPLOY:
-			try{
-				if(!clientHelper.projectIsDeployed(configuredState.getServer().name, getEarProjectName())) {
-					fail("Project was not found on the server.");
-				}
-			} catch(SWTException e) {
-				
+			if(!clientHelper.projectIsDeployed(configuredState.getServer().name, getEarProjectName())) {
+				fail("Project was not found on the server.");
 			}
 		}
 	}
 }
+

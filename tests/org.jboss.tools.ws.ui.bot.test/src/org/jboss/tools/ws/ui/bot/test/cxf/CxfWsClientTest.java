@@ -41,7 +41,7 @@ public class CxfWsClientTest extends WSClientTestTemplate {
 
 	@Override
 	protected String getSampleClientFileName() {
-		return "InfoSoapType_InfoSoap_Client.java";	
+		return "ICalculator_ICalculator_Client.java";
 	}
 	
 	@BeforeClass

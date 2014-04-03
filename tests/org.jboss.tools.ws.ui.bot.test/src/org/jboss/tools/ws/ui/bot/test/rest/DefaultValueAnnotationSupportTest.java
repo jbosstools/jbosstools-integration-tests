@@ -21,7 +21,7 @@ public class DefaultValueAnnotationSupportTest extends RESTfulTestBase {
 	
 	private String queryParam = "param";
 	private String defaultValue = "abc";
-	private String queryParamType = "java.lang.String";
+	private String queryParamType = "String";
 	
 	@Override
 	public void setup() {
@@ -40,8 +40,7 @@ public class DefaultValueAnnotationSupportTest extends RESTfulTestBase {
 		/* test JAX-RS REST explorer */
 		assertCountOfRESTServices(restServices, 1);
 		assertExpectedPathOfService(restServices.get(0), 
-				"/rest?" + queryParam + "={" + queryParam + ":" + 
-						  queryParamType + "=" + defaultValue + "}");
+				"/rest?" + queryParam + "={" + queryParamType + "=" + defaultValue + "}");
 		
 	}
 	
@@ -62,8 +61,7 @@ public class DefaultValueAnnotationSupportTest extends RESTfulTestBase {
 		/* test JAX-RS REST explorer */
 		assertCountOfRESTServices(restServices, 1);
 		assertExpectedPathOfService(restServices.get(0), 
-				"/rest:" + queryParam + "={" + queryParam + ":" + 
-						  queryParamType + "=" + defaultValue + "}");
+				"/rest:" + queryParam + "={" + queryParamType + "=" + defaultValue + "}");
 	}
 	
 	/**
@@ -83,8 +81,7 @@ public class DefaultValueAnnotationSupportTest extends RESTfulTestBase {
 		/* test JAX-RS REST explorer */
 		assertCountOfRESTServices(restServices, 1);
 		assertExpectedPathOfService(restServices.get(0), 
-				"/rest/{" + queryParam + ":" + 
-						  queryParamType + "=" + defaultValue + "}");
+				"/rest/{" + queryParamType + "=" + defaultValue + "}");
 		
 	}
 	

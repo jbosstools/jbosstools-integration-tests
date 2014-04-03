@@ -14,14 +14,7 @@ package org.jboss.tools.ws.ui.bot.test.rest;
 import java.util.List;
 
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.ProjectItem;
-
-import org.jboss.reddeer.swt.condition.JobIsRunning;
-import org.jboss.reddeer.swt.wait.TimePeriod;
-import org.jboss.reddeer.swt.wait.WaitUntil;
-import org.jboss.reddeer.swt.wait.WaitWhile;
-import org.junit.Ignore;
 import org.jboss.tools.ui.bot.ext.Timing;
 import org.junit.Test;
 
@@ -72,6 +65,7 @@ public class PathAnnotationSupportTest extends RESTfulTestBase {
 	public void testEditingSimpleRESTMethods() {
 		
 		/* import project */
+
 		importRestWSProject("restBasic");
 		
 		/* replace @DELETE annotation to @GET annotation */
@@ -136,8 +130,8 @@ public class PathAnnotationSupportTest extends RESTfulTestBase {
 	private void testEditedDeleteRestWebResource(List<ProjectItem> restServices) {
 		for (ProjectItem restService : restServices) {
 			if (restfulWizard.getRestServiceName(restService).equals(RESTFulAnnotations.DELETE.getLabel())) {
-				assertTrue(restfulWizard.getPathForRestFulService(restService).equals("/rest/delete/edited/{id}"));
-				assertTrue(restfulWizard.getProducesInfo(restService).equals("text/plain"));
+				assertEquals("Path of DELETE operation ", restfulWizard.getPathForRestFulService(restService), "/rest/delete/edited/{id:int}");
+				assertEquals("Produces info of DELETE operation ", restfulWizard.getProducesInfo(restService), "text/plain");
 			}
 		}
 	}
@@ -145,24 +139,24 @@ public class PathAnnotationSupportTest extends RESTfulTestBase {
 	private void testAdvancedRESTServices(List<ProjectItem> restServices) {
 		for (ProjectItem restService : restServices) {
 			if (restfulWizard.getRestServiceName(restService).equals(RESTFulAnnotations.GET.getLabel())) {
-				assertTrue(restfulWizard.getPathForRestFulService(restService).equals("/rest/{id}"));
-				assertTrue(restfulWizard.getConsumesInfo(restService).equals("*/*"));
-				assertTrue(restfulWizard.getProducesInfo(restService).equals("text/plain"));
+				assertTrue("Path of GET operation ", restfulWizard.getPathForRestFulService(restService).equals("/rest/{id:int}"));
+				assertTrue("Consumes info of GET operation ", restfulWizard.getConsumesInfo(restService).equals("*/*"));
+				assertTrue("Produces info of GET operation ", restfulWizard.getProducesInfo(restService).equals("text/plain"));
 			}
 			if (restfulWizard.getRestServiceName(restService).equals(RESTFulAnnotations.PUT.getLabel())) {
-				assertTrue(restfulWizard.getPathForRestFulService(restService).equals("/rest/put/{id}"));
-				assertTrue(restfulWizard.getConsumesInfo(restService).equals("text/plain"));
-				assertTrue(restfulWizard.getProducesInfo(restService).equals("*/*"));
+				assertTrue("Path of PUT operation ", restfulWizard.getPathForRestFulService(restService).equals("/rest/put/{id:int}"));
+				assertTrue("Consumes info of PUT operation ", restfulWizard.getConsumesInfo(restService).equals("text/plain"));
+				assertTrue("Produces info of PUT operation ", restfulWizard.getProducesInfo(restService).equals("*/*"));
 			}
 			if (restfulWizard.getRestServiceName(restService).equals(RESTFulAnnotations.POST.getLabel())) {
-				assertTrue(restfulWizard.getPathForRestFulService(restService).equals("/rest/post/{id}"));
-				assertTrue(restfulWizard.getConsumesInfo(restService).equals("text/plain"));
-				assertTrue(restfulWizard.getProducesInfo(restService).equals("text/plain"));
+				assertTrue("Path of POST operation ", restfulWizard.getPathForRestFulService(restService).equals("/rest/post/{id:int}"));
+				assertTrue("Consumes info of POST operation ", restfulWizard.getConsumesInfo(restService).equals("text/plain"));
+				assertTrue("Produces info of POST operation ", restfulWizard.getProducesInfo(restService).equals("text/plain"));
 			}
-			if (restfulWizard.getRestServiceName(restService).equals(RESTFulAnnotations.DELETE.getLabel())) {				
-				assertTrue(restfulWizard.getPathForRestFulService(restService).equals("/rest/delete/{id}"));
-				assertTrue(restfulWizard.getConsumesInfo(restService).equals("*/*"));
-				assertTrue(restfulWizard.getProducesInfo(restService).equals("*/*"));
+			if (restfulWizard.getRestServiceName(restService).equals(RESTFulAnnotations.DELETE.getLabel())) {
+				assertEquals("Path of DELETE operation ", restfulWizard.getPathForRestFulService(restService), "/rest/delete/{id:int}");
+				assertEquals("Consumes info of DELETE operation ", restfulWizard.getConsumesInfo(restService), "*/*");
+				assertEquals("Produces info of DELETE operation ", restfulWizard.getProducesInfo(restService), "*/*");
 			}			
 		}
 	}

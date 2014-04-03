@@ -24,11 +24,11 @@ public class QueryAnnotationSupportTest extends RESTfulTestBase {
 	
 	private String queryParam1 = "param1";
 	private String queryParam2 = "param2";
-	private String queryType = "java.lang.String";
+	private String queryType = "String";
 	private String queryParam1New = "newParam1";
-	private String queryType1 = "java.lang.String";
-	private String queryType2 = "java.lang.Integer";
-	private String queryTypeNew = "java.lang.Long";
+	private String queryType1 = "String";
+	private String queryType2 = "Integer";
+	private String queryTypeNew = "Long";
 	
 	@Override
 	public void setup() {
@@ -47,7 +47,7 @@ public class QueryAnnotationSupportTest extends RESTfulTestBase {
 		/* test JAX-RS REST explorer */
 		assertCountOfRESTServices(restServices, 1);	
 		assertExpectedPathOfService(restServices.get(0), 
-				"/rest?" + queryParam1 + "={" + queryParam1 + ":" + queryType + "}");
+				"/rest?" + queryParam1 + "={" + queryType + "}");
 		
 		/* prepare project*/
 		importRestWSProject("query2");
@@ -58,8 +58,8 @@ public class QueryAnnotationSupportTest extends RESTfulTestBase {
 		/* test JAX-RS REST explorer */
 		assertCountOfRESTServices(restServices, 1);	
 		assertExpectedPathOfService(restServices.get(0), 
-				"/rest?" + queryParam1 + "={" + queryParam1 + ":" + queryType + "}&" +
-						queryParam2 + "={" + queryParam2 + ":" + queryType + "}");
+				"/rest?" + queryParam1 + "={" + queryType + "}&" +
+						queryParam2 + "={" + queryType + "}");
 	}
 
 	@Test
@@ -80,8 +80,8 @@ public class QueryAnnotationSupportTest extends RESTfulTestBase {
 		/* test JAX-RS REST explorer */
 		assertCountOfRESTServices(restServices, 1);
 		assertExpectedPathOfService(restServices.get(0), 
-				"/rest?" + queryParam1New + "={" + queryParam1New + ":" + queryType + "}&" +
-						queryParam2 + "={" + queryParam2 + ":" + queryType + "}");
+				"/rest?" + queryParam1New + "={" + queryType + "}&" +
+						queryParam2 + "={" + queryType + "}");
 	}
 	
 	@Test
@@ -115,7 +115,7 @@ public class QueryAnnotationSupportTest extends RESTfulTestBase {
 		/* test JAX-RS REST explorer */
 		assertCountOfRESTServices(restServices, 1);
 		assertExpectedPathOfService(restServices.get(0), 
-				"/rest?" + queryParam1 + "={" + queryParam1 + ":" + queryTypeNew + "}&" +
-						queryParam2 + "={" + queryParam2 + ":" + queryType2 + "}");
+				"/rest?" + queryParam1 + "={" + queryTypeNew + "}&" +
+						queryParam2 + "={" + queryType2 + "}");
 	}
 }

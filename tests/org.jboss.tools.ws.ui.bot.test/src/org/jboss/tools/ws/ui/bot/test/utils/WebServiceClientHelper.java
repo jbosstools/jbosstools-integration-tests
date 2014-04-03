@@ -88,16 +88,12 @@ public class WebServiceClientHelper extends SWTTestExt {
 		if (consoleText.contains("ERROR")) {
 			consoleView.clearConsole();
 			String deploymentInfoMessage = " [deployment status: ";
-			try {
-				if(projectIsDeployed(serverName, projectName)) {
-					deploymentInfoMessage += "deployed";
-				} else {
-					deploymentInfoMessage += "NOT DEPLOYED";
-				}
-				deploymentInfoMessage += "]";
-			} catch(SWTException e) {
-				deploymentInfoMessage = ""; //there is no information about deployment status
+			if(projectIsDeployed(serverName, projectName)) {
+				deploymentInfoMessage += "deployed";
+			} else {
+				deploymentInfoMessage += "NOT DEPLOYED";
 			}
+			deploymentInfoMessage += "]";
 			
 			fail("Console contains error"
 					+ deploymentInfoMessage
@@ -132,10 +128,6 @@ public class WebServiceClientHelper extends SWTTestExt {
 			return true;
 		} catch(EclipseLayerException e) {
 			return false;
-		} catch(SWTException e) {
-			log.log(Priority.ERROR, "Server#getModule(String) is still not fixed! "
-					+ "Can't verify if the specified module '" + projectName + "' is deployed.");
-			throw e;
 		}
 	}
 }

@@ -18,6 +18,7 @@ import org.jboss.reddeer.swt.api.Button;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
@@ -111,7 +112,7 @@ public class JAXRSFacetTest extends RESTfulTestBase {
 		
 		new WaitUntil(new ShellWithTextIsActive("Modify Faceted Project"));
 		new DefaultShell();
-		new DefaultCombo("Type:").setSelection("Pure JEE6 Implementation");
+		new LabeledCombo("Type:").setSelection("Pure JEE6 Implementation");
 		
 		Button okButton = new PushButton(IDELabel.Button.OK);
 		assertTrue("OK Button should be enabled.", okButton.isEnabled());

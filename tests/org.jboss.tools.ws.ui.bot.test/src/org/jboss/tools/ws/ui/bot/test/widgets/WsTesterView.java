@@ -36,6 +36,9 @@ import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.internal.WorkbenchMessages;
 import org.eclipse.ui.internal.ide.IDEWorkbenchMessages;
 import org.hamcrest.MatcherAssert;
+import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.gen.IView;
 import org.jboss.tools.ui.bot.ext.types.IDELabel.ToolbarButton;
@@ -231,9 +234,7 @@ public class WsTesterView extends ViewBase {
 	public void invoke() {
 		bot().toolbarButtonWithTooltip(
 				JBossWSUIMessages.JAXRSWSTestView2_Go_Tooltip).click();
-		bot.waitWhile(Conditions
-			.shellIsActive(JBossWSUIMessages.JAXRSWSTestView_Invoking_WS_Status),
-			24000);
+		new WaitWhile(new ShellWithTextIsActive(JBossWSUIMessages.JAXRSWSTestView_Invoking_WS_Status), TimePeriod.getCustom(24));
 	}
 
 	public SelectWSDLDialog getFromWSDL() {
