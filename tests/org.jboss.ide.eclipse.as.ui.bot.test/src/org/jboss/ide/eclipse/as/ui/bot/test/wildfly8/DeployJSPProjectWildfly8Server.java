@@ -11,7 +11,7 @@ public class DeployJSPProjectWildfly8Server extends DeployJSPProjectTemplate {
 
 	@Override
 	protected String getConsoleMessage() {
-		return "Register web context: /" + PROJECT_NAME;
+		return "Registered web context: /" + PROJECT_NAME;
 	}
 
 }

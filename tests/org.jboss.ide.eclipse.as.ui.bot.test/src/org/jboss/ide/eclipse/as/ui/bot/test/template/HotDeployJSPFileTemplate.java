@@ -3,7 +3,8 @@ package org.jboss.ide.eclipse.as.ui.bot.test.template;
 import org.jboss.reddeer.eclipse.ui.browser.BrowserView;
 import org.jboss.reddeer.eclipse.ui.ide.NewFileCreationWizardDialog;
 import org.jboss.reddeer.eclipse.ui.ide.NewFileCreationWizardPage;
-import org.jboss.reddeer.workbench.editor.TextEditor;
+import org.jboss.reddeer.eclipse.wst.server.ui.view.Server;
+import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.containsString;
