@@ -2,14 +2,12 @@ package org.jboss.tools.openshift.ui.bot.test.cartridge;
 
 import java.util.Date;
 
-import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.tools.openshift.ui.bot.test.OpenShiftBotTest;
 import org.jboss.tools.openshift.ui.bot.util.OpenShiftLabel;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-@CleanWorkspace
 public class EmbedCartridges extends OpenShiftBotTest {
 
 	private final String DYI_APP = "dapp" + new Date().getTime();
@@ -32,7 +30,7 @@ public class EmbedCartridges extends OpenShiftBotTest {
 
 	@After
 	public void deleteDIYApp() {
-		deleteOpenShiftApplication(DYI_APP, OpenShiftLabel.AppType.DIY);
+		deleteOpenShiftApplication(DYI_APP, OpenShiftLabel.AppType.DIY_TREE);
 	}
 
 }

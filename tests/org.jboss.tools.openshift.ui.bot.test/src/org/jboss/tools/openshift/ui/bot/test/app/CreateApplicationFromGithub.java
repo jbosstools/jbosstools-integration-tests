@@ -30,7 +30,7 @@ public class CreateApplicationFromGithub {
 	
 	@Test
 	public void createAppFromGithubTemplate() {
-		createAppFromGithub(OpenShiftLabel.Cartridge.MYSQL_ONLINE);
+		createAppFromGithub(OpenShiftLabel.Cartridge.MYSQL);
 	}
 	
 	public static void createAppFromGithub(String mySQLLabel) {
@@ -74,6 +74,7 @@ public class CreateApplicationFromGithub {
 				TimePeriod.NORMAL);
 		
 		new DefaultShell("Add Embedded Cartridges").setFocus();
+		new DefaultTable().getItem(mySQLLabel).select();
 		new DefaultTable().getItem(mySQLLabel).setChecked(true);
 		new PushButton("OK").click();
 		

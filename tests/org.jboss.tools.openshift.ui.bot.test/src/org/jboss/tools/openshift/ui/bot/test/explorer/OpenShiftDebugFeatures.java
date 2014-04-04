@@ -24,8 +24,12 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
-* Test class for tailing remote files, port forwarding, opening web browser & displaying env.variables.
-* To prevent creation of OpenShift application for each test, all tests are included in one test method.
+* This test class consist of more test cases. List is following:
+* - tailing remote files
+* - port forwarding
+* - open web browser
+* - create environment variable
+* - show environment variables
 *
 * @author mlabuda
 *

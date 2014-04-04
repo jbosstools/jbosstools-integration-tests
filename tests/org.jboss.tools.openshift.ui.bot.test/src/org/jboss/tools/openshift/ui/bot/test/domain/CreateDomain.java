@@ -87,6 +87,8 @@ public class CreateDomain {
 			new WaitWhile(new JobIsRunning(),TimePeriod.LONG);
 			logger.info("*** OpenShift RedDeer Tests: Second Domain created. ***");
 			
+			new WaitUntil(new ShellWithTextIsAvailable("Domains"), TimePeriod.NORMAL);
+			
 			new DefaultShell("Domains").setFocus();
 		}
 		
