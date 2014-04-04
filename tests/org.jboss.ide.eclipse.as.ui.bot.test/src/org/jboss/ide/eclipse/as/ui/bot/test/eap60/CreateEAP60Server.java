@@ -26,8 +26,8 @@ public class CreateEAP60Server extends CreateServerTemplate {
 
 	@Override
 	protected void assertEditorPorts() {
-		assertThat("8080", is(editor.getWebPort()));
-		assertThat("9999", is(editor.getManagementPort()));		
+		assertThat(editor.getWebPort(), is("8080"));
+		assertThat(editor.getManagementPort(), is("9999"));		
 	}
 
 	@Override

@@ -28,9 +28,9 @@ public class CreateAS6Server extends CreateServerTemplate {
 
 	@Override
 	protected void assertEditorPorts() {
-		assertThat("8080", is(editor.getWebPort()));
-		assertThat("1099", is(editor.getJNDIPort()));		
-		assertThat("1090", is(editor.getJMXPort()));
+		assertThat(editor.getWebPort(), is("8080"));
+		assertThat(editor.getJNDIPort(), is("1099"));		
+		assertThat(editor.getJMXPort(), is("1090"));
 	}
 
 	@Override

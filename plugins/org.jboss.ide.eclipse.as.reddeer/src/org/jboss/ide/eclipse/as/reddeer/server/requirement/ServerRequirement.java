@@ -6,12 +6,12 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
+import org.jboss.ide.eclipse.as.reddeer.server.view.JBossServerView;
 import org.jboss.ide.eclipse.as.reddeer.server.wizard.NewServerWizardDialog;
 import org.jboss.ide.eclipse.as.reddeer.server.wizard.page.JBossRuntimeWizardPage;
 import org.jboss.ide.eclipse.as.reddeer.server.wizard.page.NewServerAdapterPage;
 import org.jboss.ide.eclipse.as.reddeer.server.wizard.page.NewServerWizardPageWithErrorCheck;
 import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewEnums.ServerState;
 import org.jboss.reddeer.junit.logging.Logger;
 import org.jboss.reddeer.junit.requirement.CustomConfiguration;
@@ -70,7 +70,7 @@ public class ServerRequirement implements Requirement<JBossServer>, CustomConfig
 	private void setupServerState() throws ConfiguredServerNotFoundException {
 		LOGGER.info("Checking the state of the server '"+lastServerConfiguration.getServerName()+"'");
 		
-		org.jboss.reddeer.eclipse.wst.server.ui.view.Server serverInView = getConfiguredServer();
+		org.jboss.ide.eclipse.as.reddeer.server.view.JBossServer serverInView = getConfiguredServer();
 		
 		ServerState state = serverInView.getLabel().getState();
 		ServerReqState requiredState = server.state();
@@ -92,7 +92,7 @@ public class ServerRequirement implements Requirement<JBossServer>, CustomConfig
 	
 	private void removeLastRequiredServer() {
 		try {
-			org.jboss.reddeer.eclipse.wst.server.ui.view.Server serverInView = getConfiguredServer();
+			org.jboss.ide.eclipse.as.reddeer.server.view.JBossServer serverInView = getConfiguredServer();
 			//remove server added by last requirement
 			serverInView.delete(true);
 		} catch(ConfiguredServerNotFoundException e) {
@@ -102,9 +102,9 @@ public class ServerRequirement implements Requirement<JBossServer>, CustomConfig
 		lastServerConfiguration = null;
 	}
 	
-	private org.jboss.reddeer.eclipse.wst.server.ui.view.Server getConfiguredServer()
+	private org.jboss.ide.eclipse.as.reddeer.server.view.JBossServer getConfiguredServer()
 			throws ConfiguredServerNotFoundException {
-		ServersView serversView = new ServersView();
+		JBossServerView serversView = new JBossServerView();
 		final String serverName = lastServerConfiguration.getServerName();
 		try {
 			return serversView.getServer(serverName);

@@ -27,8 +27,8 @@ public class CreateAS42Server extends CreateServerTemplate {
 
 	@Override
 	protected void assertEditorPorts() {
-		assertThat("8080", is(editor.getWebPort()));
-		assertThat("1099", is(editor.getJNDIPort()));		
+		assertThat(editor.getWebPort(), is("8080"));
+		assertThat(editor.getJNDIPort(), is("1099"));		
 	}
 
 	@Override

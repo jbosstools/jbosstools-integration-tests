@@ -22,8 +22,8 @@ public class CreateWildfly8Server extends CreateServerTemplate {
 
 	@Override
 	protected void assertEditorPorts() {
-		assertThat("8080", is(editor.getWebPort()));
-		assertThat("9990", is(editor.getManagementPort()));		
+		assertThat(editor.getWebPort(), is("8080"));
+		assertThat(editor.getManagementPort(), is("9990"));		
 	}
 
 	@Override

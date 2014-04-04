@@ -2,9 +2,9 @@ package org.jboss.ide.eclipse.as.ui.bot.test.eap6x;
 
 import java.util.List;
 
-import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqVersion;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqState;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqVersion;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.ide.eclipse.as.reddeer.server.view.XMLConfiguration;
 import org.jboss.ide.eclipse.as.ui.bot.test.template.CreateServerTemplate;
@@ -21,8 +21,8 @@ public class CreateEAP6xServer extends CreateServerTemplate {
 
 	@Override
 	protected void assertEditorPorts() {
-		assertThat("8080", is(editor.getWebPort()));
-		assertThat("9999", is(editor.getManagementPort()));
+		assertThat(editor.getWebPort(), is("8080"));
+		assertThat(editor.getManagementPort(), is("9999"));		
 	}
 
 	@Override

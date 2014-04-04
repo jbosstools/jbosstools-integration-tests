@@ -7,9 +7,13 @@ import org.jboss.ide.eclipse.as.reddeer.server.editor.JBossServerEditor;
 import org.jboss.reddeer.eclipse.wst.server.ui.editor.ServerEditor;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.Server;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServerModule;
+import org.jboss.reddeer.swt.api.Shell;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.WaitCondition;
+import org.jboss.reddeer.swt.exception.SWTLayerException;
+import org.jboss.reddeer.swt.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 
 /**
@@ -22,46 +26,47 @@ import org.jboss.reddeer.swt.wait.WaitUntil;
 public class JBossServer extends Server {
 
 	public static final String XML_LABEL_DECORATION_SEPARATOR = "   ";
-	
+
 	public JBossServer(TreeItem treeItem) {
 		super(treeItem);
 	}
-	
+
 	@Override
 	public JBossServerEditor open() {
 		ServerEditor editor = super.open();
-		
+
 		if (!(editor instanceof JBossServerEditor)){
 			throw new IllegalStateException("Unexpected ServerEditor subtype. Expected: " + JBossServerEditor.class + " but was: " + editor.getClass());
 		}
 		return (JBossServerEditor) editor;
 	}
-	
-	@Override
-	protected ServerEditor createServerEditor(String title) {
-		return new JBossServerEditor(title);
-	}
-	
-	@Override
-	protected ServerModule createServerModule(TreeItem item) {
-		return new JBossServerModule(item);
-	}
-	
+
 	@Override
 	public JBossServerModule getModule(String name) {
 		ServerModule module = super.getModule(name);
-		
+
 		if (!(module instanceof JBossServerModule)){
 			throw new IllegalStateException("Unexpected ServerModule subtype. Expected: " + JBossServerModule.class + " but was: " + module.getClass());
 		}
 		return (JBossServerModule) module;
 	}
-	
+
 	public void openWebPage(){
 		select();
 		new ContextMenu("Show In", "Web Browser").select();
 	}
-	
+
+	@Override
+	public void start() {
+		checkServerAlreadyRunningDialog();
+		try {
+			super.start();
+		} catch (WaitTimeoutExpiredException e){
+			checkServerAlreadyRunningDialog();
+			throw e;
+		}
+	}
+
 	/**
 	 * Retrieves the XML configuration items listed under the specified category. 
 	 * 
@@ -70,9 +75,9 @@ public class JBossServer extends Server {
 	 */
 	public List<XMLConfiguration> getXMLConfiguration(String categoryName){
 		TreeItem categoryItem = treeItem.getItem("XML Configuration").getItem(categoryName);
-		
+
 		new WaitUntil(new TreeItemLabelDecorated(categoryItem.getItems().get(0)));
-		
+
 		List<XMLConfiguration> configurations = new ArrayList<XMLConfiguration>();
 		for (final TreeItem item : categoryItem.getItems()){
 			String[] columns = item.getText().split(XML_LABEL_DECORATION_SEPARATOR);
@@ -85,6 +90,26 @@ public class JBossServer extends Server {
 		}
 		return configurations;
 	}
+
+	@Override
+	protected ServerEditor createServerEditor(String title) {
+		return new JBossServerEditor(title);
+	}
+
+	@Override
+	protected ServerModule createServerModule(TreeItem item) {
+		return new JBossServerModule(item);
+	}
+
+	private void checkServerAlreadyRunningDialog() {
+		try {
+			Shell shell = new DefaultShell("Server already running on localhost");
+			shell.close();
+			throw new ServerAlreadyStartedException();
+		} catch (SWTLayerException e){
+			// do nothing
+		}
+	}
 	
 	/**
 	 * Checks if the tree item label is decorated. In case of server, the separator is "  ".
@@ -95,7 +120,7 @@ public class JBossServer extends Server {
 	private static class TreeItemLabelDecorated implements WaitCondition {
 
 		private TreeItem item;
-		
+
 		private TreeItemLabelDecorated(TreeItem item) {
 			super();
 			this.item = item;
@@ -109,6 +134,15 @@ public class JBossServer extends Server {
 		@Override
 		public String description() {
 			return "Expected the tree item to be decorated with separator '" + XML_LABEL_DECORATION_SEPARATOR + "'";
+		}
+	}
+
+	class ServerAlreadyStartedException extends RuntimeException {
+
+		private static final long serialVersionUID = 1L;
+		
+		public ServerAlreadyStartedException() {
+			super("Server already running on localhost");
 		}
 	}
 }
