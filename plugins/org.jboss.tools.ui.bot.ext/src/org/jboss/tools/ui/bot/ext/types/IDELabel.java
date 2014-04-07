@@ -141,6 +141,7 @@ public class IDELabel {
 		public static final String CONFIGURE_VARIABLES = "Configure Variables...";
 		public static final String BROWSE = "Browse...";
 		public static final String ADD_LIBRARY = "Add Library...";
+		public static final String DOWNLOAD = "Download...";
 	}
 
 	public class Shell {
@@ -234,6 +235,7 @@ public class IDELabel {
 	  public static final String PROGRESS_INFORMATION = "Progress Information";
     public static final String REMEMBER_MY_DECISION = "Remember my decision";
     public static final String NEW_FOLDER = "New Folder";
+    public static final String DOWNLOAD_HYBRID_MOBILE_ENGINE = "Download Hybrid Mobile Engine";
 	}
 
 	public class EntityGroup {
