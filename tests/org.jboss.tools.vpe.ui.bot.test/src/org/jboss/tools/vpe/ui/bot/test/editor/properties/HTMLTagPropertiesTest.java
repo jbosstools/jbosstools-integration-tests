@@ -14,6 +14,9 @@ package org.jboss.tools.vpe.ui.bot.test.editor.properties;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTabItem;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTableItem;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
@@ -66,7 +69,6 @@ public class HTMLTagPropertiesTest extends VPEAutoTestCase {
     eclipse.openFile(VPEAutoTestCase.DYNAMIC_WEB_TEST_PROJECT_NAME, 
         "WebContent",
         htmlPageName);
-    
     SWTJBTExt.selectTextInSourcePane(botExt,
         htmlPageName,
         "<fieldset ",
@@ -74,13 +76,21 @@ public class HTMLTagPropertiesTest extends VPEAutoTestCase {
         0,
         0);
     SWTBot propBot = eclipse.showView(ViewType.PROPERTIES);
-    SWTBotTree tree = propBot.tree();
+    final SWTBotTabItem[] tabItems = new SWTBotTabItem[]{bot.tabItem("jQuery"),
+        bot.tabItem("HTML"),
+        bot.tabItem("All")};
     // Check properties for <fieldset> tag
-    HTMLTagPropertiesTest.checkProperty(tree, "Often used");
-    HTMLTagPropertiesTest.checkProperty(tree, "Advanced jQuery");
-    HTMLTagPropertiesTest.checkProperty(tree, "Advanced HTML");
-    HTMLTagPropertiesTest.checkProperty(tree, "Advanced jQuery","data-enhance");
-    HTMLTagPropertiesTest.checkProperty(tree, "Advanced jQuery","data-ajax");
+    tabItems[2].activate();
+    SWTBotTable table = propBot.table();
+    HTMLTagPropertiesTest.checkProperty(table, "id");
+    HTMLTagPropertiesTest.checkProperty(table, "data-enhance");
+    HTMLTagPropertiesTest.checkProperty(table, "data-ajax");
+    tabItems[1].activate();
+    assertTrue("ID attribute has to have value 'collapsible-1'",
+      bot.textWithLabel("ID:").getText().equals("collapsible-1"));
+    tabItems[0].activate();
+    assertTrue("Data Role attribute has to have value 'collapsible'",
+        bot.comboBoxWithLabel("Data Role:").getText().equals("collapsible"));
     // Check properties for <input> tag
     SWTJBTExt.selectTextInSourcePane(botExt,
         htmlPageName,
@@ -88,12 +98,20 @@ public class HTMLTagPropertiesTest extends VPEAutoTestCase {
         3, 
         0,
         0);
-    HTMLTagPropertiesTest.checkProperty(tree, "Often used");
-    HTMLTagPropertiesTest.checkProperty(tree, "Advanced jQuery");
-    HTMLTagPropertiesTest.checkProperty(tree, "Advanced HTML");
-    HTMLTagPropertiesTest.checkProperty(tree, "Advanced jQuery","data-mini");
-    HTMLTagPropertiesTest.checkProperty(tree, "Advanced jQuery","data-role");
-    
+    tabItems[2].activate();
+    HTMLTagPropertiesTest.checkProperty(table, "id");
+    HTMLTagPropertiesTest.checkProperty(table, "data-mini");
+    HTMLTagPropertiesTest.checkProperty(table, "data-role");
+    tabItems[1].activate();
+    assertTrue("ID attribute has to have value 'checkbox-1'",
+      bot.textWithLabel("ID:").getText().equals("checkbox-1"));
+    assertTrue("Name attribute has to have value 'checkbox-1'",
+        bot.textWithLabel("Name:").getText().equals("checkbox-1"));
+    assertTrue("Type attribute has to have value 'checkbox'",
+        bot.comboBoxWithLabel("Type:").getText().equals("checkbox"));
+    tabItems[0].activate();
+    assertTrue("Data Role attribute has to have empty value",
+        bot.comboBoxWithLabel("Data Role:").getText().equals(""));    
   }
 	@Override
 	protected void closeUnuseDialogs() {
@@ -105,21 +123,13 @@ public class HTMLTagPropertiesTest extends VPEAutoTestCase {
 		return bot.activeShell().getText().equals(IDELabel.Shell.INSERT_TAG);
 	}
 	
-	private static SWTBotTreeItem checkProperty (SWTBotTree tree , String... path){
-	  SWTBotTreeItem item = null;
-	  StringBuffer sbPath = new StringBuffer("");
+	private static SWTBotTableItem checkProperty (SWTBotTable table , String propName){
+	  SWTBotTableItem tableItem = null;
 	  try{
-	    sbPath.append(path[0]);
-	    item = tree.getTreeItem(path[0]);
-	    if (path.length > 1){
-	      sbPath.append(", ");
-	      sbPath.append(path[1]);
-	      item.expand();
-	      item = item.getNode(path[1]);
-	    }
+	    tableItem = table.getTableItem(propName);
 	  } catch (WidgetNotFoundException wnf){
-	    fail("Unable to find property: " + sbPath.toString());	    
+	    fail("Unable to find property: " + propName);	    
 	  }
-	  return item;	  
+	  return tableItem;	  
 	}
 }
