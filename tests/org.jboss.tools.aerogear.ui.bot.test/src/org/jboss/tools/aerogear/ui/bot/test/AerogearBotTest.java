@@ -13,12 +13,15 @@ package org.jboss.tools.aerogear.ui.bot.test;
 import java.util.List;
 import java.util.Vector;
 
+import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
+import org.eclipse.swtbot.swt.finder.waits.ICondition;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
+import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.condition.NonSystemJobRunsCondition;
 import org.jboss.tools.ui.bot.ext.gen.INewObject;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
@@ -34,7 +37,7 @@ import org.junit.Before;
  */
 public class AerogearBotTest extends SWTTestExt {
   protected static final String CORDOVA_PROJECT_NAME = "Cordova_prj";
-  protected static final String CORDOVA_APP_NAME = "Cordova Test Application";
+  protected static final String CORDOVA_APP_NAME = "Cordova prj";
 
   /**
    * Creates a new hybrid mobile project in workspace.
@@ -63,9 +66,38 @@ public class AerogearBotTest extends SWTTestExt {
     });
 
     bot.text(0).typeText(projectName);
-    bot.textInGroup("Mobile Application", 0).typeText(appName);
-    bot.textInGroup("Mobile Application", 1).typeText(appId);
-    bot.button("Finish").click();
+    
+    bot.button(IDELabel.Button.NEXT).click();
+    
+    if (bot.table().rowCount() == 0){
+      // Download mobile engine
+      bot.button(IDELabel.Button.DOWNLOAD).click();
+      bot.shell(IDELabel.Shell.DOWNLOAD_HYBRID_MOBILE_ENGINE).activate();
+      // currently first selection is version 3.4.1 and is supported only on Mac OS
+      // therefore selecting second item
+      bot.comboBoxWithLabel("Version:").setSelection(1);
+      bot.table().getTableItem(0).check();
+      bot.button(IDELabel.Button.OK).click();
+      bot.waitWhile(new ICondition() {
+        @Override
+        public boolean test() throws Exception {
+          return bot.activeShell().getText().equals(IDELabel.Shell.DOWNLOAD_HYBRID_MOBILE_ENGINE);
+        }
+        @Override
+        public void init(SWTBot bot) {
+        }
+        @Override
+        public String getFailureMessage() {
+          return "Shel wit text " 
+            + IDELabel.Shell.DOWNLOAD_HYBRID_MOBILE_ENGINE
+            + " is still active";
+        }
+      }, Timing.time60S());
+    }
+    // select first engine in table
+    bot.table().getTableItem(0).check();
+    
+    bot.button(IDELabel.Button.FINISH).click();
 
     bot.waitWhile(new NonSystemJobRunsCondition(), TIME_20S, TIME_1S);
   }
