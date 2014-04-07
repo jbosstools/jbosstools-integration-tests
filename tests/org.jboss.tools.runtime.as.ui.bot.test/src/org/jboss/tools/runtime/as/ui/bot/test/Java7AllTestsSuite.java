@@ -22,6 +22,10 @@ import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap61x.DetectEAP61
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap61x.OperateEAP61x;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap62.DetectEAP62;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap62.OperateEAP62;
+import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap62x.DetectEAP62x;
+import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap62x.OperateEAP62x;
+import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap63.DetectEAP63;
+import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap63.OperateEAP63;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.epp4.CheckEPP4Seam;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.epp4.DetectEPP4;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.epp4.OperateEPP4;
@@ -31,6 +35,8 @@ import org.jboss.tools.runtime.as.ui.bot.test.detector.server.jpp60.DetectJPP60;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.jpp60.OperateJPP60;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.jpp61.DetectJPP61;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.jpp61.OperateJPP61;
+import org.jboss.tools.runtime.as.ui.bot.test.detector.server.jpp61x.DetectJPP61x;
+import org.jboss.tools.runtime.as.ui.bot.test.detector.server.jpp61x.OperateJPP61x;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.soap53.CheckSOAP53Seam;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.soap53.DetectSOAP53;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.soap53.OperateSOAP53;
@@ -46,7 +52,7 @@ import org.junit.runners.Suite;
  * Tests with Java SE 1.7 requirement
  * 
  * @author Petr Suchy
- *
+ * @author Radoslav Rabara
  */
 @RunWith(JBTSuite.class)
 @Suite.SuiteClasses({
@@ -61,20 +67,26 @@ import org.junit.runners.Suite;
 		DetectJBoss7.class,
 		OperateJBoss7.class,
 		
-		DetectEAP60.class,
-		OperateEAP60.class,
+		DetectEAP63.class,
+		OperateEAP63.class,
 		
-		DetectEAP60x.class,
-		OperateEAP60x.class,
+		DetectEAP62x.class,
+		OperateEAP62x.class,
 		
-		DetectEAP61.class,
-		OperateEAP61.class,
+		DetectEAP62.class,
+		OperateEAP62.class,
 		
 		DetectEAP61x.class,
 		OperateEAP61x.class,
 		
-		DetectEAP62.class,
-		OperateEAP62.class,
+		DetectEAP61.class,
+		OperateEAP61.class,
+		
+		DetectEAP60x.class,
+		OperateEAP60x.class,
+		
+		DetectEAP60.class,
+		OperateEAP60.class,
 		
 		DetectEAP52.class, 
 		CheckEAP52Seam.class,
@@ -90,6 +102,9 @@ import org.junit.runners.Suite;
 		
 		DetectJPP60.class, 
 		OperateJPP60.class,
+		
+		DetectJPP61x.class,
+		OperateJPP61x.class,
 		
 		DetectJPP61.class,
 		OperateJPP61.class,

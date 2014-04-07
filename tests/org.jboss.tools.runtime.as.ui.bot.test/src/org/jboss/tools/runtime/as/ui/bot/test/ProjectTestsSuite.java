@@ -10,14 +10,26 @@ import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap61x.DetectEAP61
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap61x.OperateEAP61x;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap62.DetectEAP62;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap62.OperateEAP62;
+import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap62x.DetectEAP62x;
+import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap62x.OperateEAP62x;
+import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap63.DetectEAP63;
+import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap63.OperateEAP63;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.jboss7.DetectJBoss7;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.jboss7.OperateJBoss7;
+import org.jboss.tools.runtime.as.ui.bot.test.detector.server.jpp61x.DetectJPP61x;
+import org.jboss.tools.runtime.as.ui.bot.test.detector.server.jpp61x.OperateJPP61x;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.wildfly8.DetectWildFly8;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.wildfly8.OperateWildFly8;
 import org.jboss.tools.runtime.as.ui.bot.test.download.RuntimeDownload;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
+/**
+ * Mavenized test suite
+ * 
+ * @author Petr Suchy
+ * @author Radoslav Rabara
+ */
 @RunWith(JBTSuite.class)
 @SuiteClasses({
 		RuntimeDownload.class,
@@ -28,14 +40,23 @@ import org.junit.runners.Suite.SuiteClasses;
 		DetectJBoss7.class,
 		OperateJBoss7.class,
 		
-		DetectEAP60x.class,
-		OperateEAP60x.class,
+//		DetectEAP63.class,
+//		OperateEAP63.class,
+		
+		DetectEAP62x.class,
+		OperateEAP62x.class,
+		
+		DetectEAP62.class,
+		OperateEAP62.class,
 		
 		DetectEAP61x.class,
 		OperateEAP61x.class,
 		
-		DetectEAP62.class,
-		OperateEAP62.class,
+		DetectEAP60x.class,
+		OperateEAP60x.class,
+		
+		DetectJPP61x.class,
+		OperateJPP61x.class,
 		
 		DetectSeam22.class,
 		CheckSeam22.class,

@@ -40,7 +40,7 @@ import org.junit.runners.Suite;
 		
 		DetectSOAP52.class, 
 		CheckSOAP52Seam.class,
-		OperateSOAP52.class, 
+		OperateSOAP52.class,
 		DetectSOAPStandalone52.class, 
 		OperateSOAPStandalone52.class,
 	
