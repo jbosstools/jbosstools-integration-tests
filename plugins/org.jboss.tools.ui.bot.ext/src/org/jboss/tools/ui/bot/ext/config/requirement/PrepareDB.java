@@ -50,7 +50,8 @@ public class PrepareDB extends RequirementBase {
 		entity.setUser(configuration.getDB().username);
 		entity.setPassword(configuration.getDB().password);
 		entity.setDriverTemplateDescId(DatabaseHelper.getDriverTemplate(configuration.getDB().dbType));
-
+		entity.setDriverClass(configuration.getDB().driverClass);
+		
 		try {
 			DatabaseHelper.createDriver(entity);
 		} catch (ConnectionProfileException e) {

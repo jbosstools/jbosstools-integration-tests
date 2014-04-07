@@ -13,82 +13,110 @@ package org.jboss.tools.ui.bot.ext.types;
 /**
  * Driver entity for usage for DatabaseHelper
  * @author jpeterka
- *
+ * @author Radoslav Rabara
  */
 public class DriverEntity {
 	/*
 	 * Defaults for Hibernate
 	 */
-	String instanceName = "Hypersonic DB";
-	String drvPath = "";
-	String jdbcString = "";
-	String profileName = "DefaultDS";
-	String profileDescription = "Hypersonic embedded database";
-	String databaseName = "Default";
-	String user = "sa";
-	String pwd = "";
-	String driverTemplateDescId = "org.eclipse.datatools.enablement.hsqldb.1_8.driver";
-	String driverDefId = "DriverDefn.Hypersonic DB";
+	private String instanceName = "Hypersonic DB";
+	private String drvPath = "";
+	private String jdbcString = "";
+	private String profileName = "DefaultDS";
+	private String profileDescription = "Hypersonic embedded database";
+	private String databaseName = "Default";
+	private String user = "sa";
+	private String pwd = "";
+	private String driverTemplateDescId = "org.eclipse.datatools.enablement.hsqldb.1_8.driver";
+	private String driverDefId = "DriverDefn.Hypersonic DB";
+	private String driverClass = null;
 	
 	public String getInstanceName() {
 		return instanceName;
 	}
+	
 	public void setInstanceName(String instanceName) {
 		this.instanceName = instanceName;
 	}
+	
 	public String getDrvPath() {
 		return drvPath;
 	}
+	
 	public void setDrvPath(String drvPath) {
 		this.drvPath = drvPath;
 	}
+	
 	public String getJdbcString() {
 		return jdbcString;
 	}
+	
 	public void setJdbcString(String jdbcString) {
 		this.jdbcString = jdbcString;
 	}
+	
 	public String getProfileName() {
 		return profileName;
 	}
+	
 	public String getUser(){
 		return user;
 	}
-	public String getPassword(){
-		return pwd;
-	}
-	public String getDriverTemplateDescId(){
-		return driverTemplateDescId;
-	}
-	public String getDriverDefId(){
-		return driverDefId;
-	}
-	public void setProfileName(String profileName) {
-		this.profileName = profileName;
-	}
-	public String getProfileDescription() {
-		return profileDescription;
-	}
-	public void setProfileDescription(String profileDescription) {
-		this.profileDescription = profileDescription;
-	}
-	public String getDatabaseName() {
-		return databaseName;
-	}
-	public void setDatabaseName(String databaseName) {
-		this.databaseName = databaseName;
-	}
-	public void setPassword(String pwd){
-		this.pwd = pwd;
-	}
+	
 	public void setUser(String user){
 		this.user = user;
 	}
-	public void setDriverTemplateDescId(String id){
-		this.driverTemplateDescId = id; 
+	
+	public String getPassword(){
+		return pwd;
 	}
+	
+	public void setPassword(String pwd){
+		this.pwd = pwd;
+	}
+	
+	public String getDriverTemplateDescId(){
+		return driverTemplateDescId;
+	}
+	
+	public void setDriverTemplateDescId(String id){
+		this.driverTemplateDescId = id;
+	}
+	
+	public String getDriverDefId(){
+		return driverDefId;
+	}
+	
 	public void setDriverDefId(String id){
 		this.driverDefId = id;
+	}
+	
+	public void setProfileName(String profileName) {
+		this.profileName = profileName;
+	}
+	
+	public String getProfileDescription() {
+		return profileDescription;
+	}
+	
+	public void setProfileDescription(String profileDescription) {
+		this.profileDescription = profileDescription;
+	}
+	
+	public String getDatabaseName() {
+		return databaseName;
+	}
+	
+	public void setDatabaseName(String databaseName) {
+		this.databaseName = databaseName;
+	}
+	
+	public String getDriverClass() {
+		return driverClass;
+	}
+	
+	public void setDriverClass(String driverClass) {
+		this.driverClass = driverClass;
 	}
 	
 }
