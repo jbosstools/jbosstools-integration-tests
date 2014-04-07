@@ -60,6 +60,7 @@ public class DatabaseHelper {
 	 * @return driver instance
 	 */
 	public static void createDriver(DriverEntity entity, String profileName) throws ConnectionProfileException {
+		String driverClass = entity.getDriverClass();
 		String driverPath;
 		try {
 			driverPath = new File(entity.getDrvPath()).getCanonicalPath(); //$NON-NLS-1$
@@ -68,7 +69,7 @@ public class DatabaseHelper {
 					Activator.PLUGIN_ID, "Can't get driver' path", e));
 			return;
 		}
-
+		
 		DriverInstance driver = DriverManager.getInstance().getDriverInstanceByName(entity.getInstanceName());
 		if (driver == null) {
 			TemplateDescriptor descr = TemplateDescriptor.getDriverTemplateDescriptor(entity.getDriverTemplateDescId());
@@ -89,7 +90,10 @@ public class DatabaseHelper {
 			props.setProperty("org.eclipse.datatools.connectivity.db.URL", entity.getJdbcString());
 			props.setProperty(IDriverMgmtConstants.PROP_DEFN_TYPE, descr.getId());
 			props.setProperty(IDriverMgmtConstants.PROP_DEFN_JARLIST, driverPath);
-
+			if(driverClass != null) {
+				props.setProperty(IDriverMgmtConstants.PROP_DEFN_CLASS, driverClass);
+			}
+			
 			instance.setBaseProperties(props);
 			DriverManager.getInstance().removeDriverInstance(instance.getID());
 			System.gc();
@@ -110,7 +114,9 @@ public class DatabaseHelper {
 			props.setProperty(IDBConnectionProfileConstants.SAVE_PASSWORD_PROP_ID, "false"); //$NON-NLS-1$ 
 			props.setProperty(IDBDriverDefinitionConstants.USERNAME_PROP_ID, entity.getUser()/*driver.getProperty(IDBDriverDefinitionConstants.USERNAME_PROP_ID)*/);
 			props.setProperty(IDBDriverDefinitionConstants.URL_PROP_ID, driver.getProperty(IDBDriverDefinitionConstants.URL_PROP_ID));
-
+			if(driverClass != null) {
+				props.setProperty(IDBDriverDefinitionConstants.DRIVER_CLASS_PROP_ID, driverClass);
+			}
 			ProfileManager.getInstance().createProfile(entity.getProfileName(),	entity.getProfileDescription(), IDBConnectionProfileConstants.CONNECTION_PROFILE_ID, props, "", false); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		}
 	}
@@ -186,7 +192,9 @@ public class DatabaseHelper {
 	 * 
 	 */
 	public enum DBType {
-		hsqldb18, db2_97, mssql2005, mssql2008, mysql50, mysql51, oracle10g, oracle11gR1, oracle11gR1RAC, oracle11gR2, oracle11gR2RAC, postgresql82, postgresql83, postgresql84, sybase15, teiid
+		hsqldb18, db2_97, mssql2005, mssql2008, mysql50, mysql51, oracle10g, oracle11gR1,
+		oracle11gR1RAC, oracle11gR2, oracle11gR2RAC, postgresql82, postgresql83, postgresql84,
+		sybase15, teiid, defaultdb
 	}
 	
 	/**
@@ -233,6 +241,9 @@ public class DatabaseHelper {
 			break;
 		case teiid:
 			ret = "org.teiid.datatools.connectivity.driver.serverDriverTemplate";
+			break;
+		case defaultdb:
+			ret = "org.eclipse.datatools.connectivity.db.generic.genericDriverTemplate";
 			break;
 		default:
 			fail("Unknown db type");
