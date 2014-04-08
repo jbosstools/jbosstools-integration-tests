@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.Properties;
 
 import org.jboss.tools.ui.bot.ext.SWTUtilExt;
-import org.jboss.tools.ws.reddeer.ws.ui.WsCxf2xPreferencePage;
+import org.jboss.tools.ws.reddeer.ui.preferences.WsCxf2xPreferencePage;
 import org.jboss.tools.ws.ui.bot.test.Activator;
 import org.jboss.tools.ws.ui.bot.test.webservice.WebServiceRuntime;
 import org.jboss.tools.ws.ui.bot.test.wsclient.WSClientTestTemplate;

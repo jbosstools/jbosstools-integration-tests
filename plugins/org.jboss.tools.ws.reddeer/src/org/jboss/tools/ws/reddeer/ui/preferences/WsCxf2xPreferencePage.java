@@ -1,4 +1,4 @@
-package org.jboss.tools.ws.reddeer.ws.ui;
+package org.jboss.tools.ws.reddeer.ui.preferences;
 
 import org.jboss.reddeer.eclipse.jface.preference.PreferencePage;
 import org.jboss.reddeer.swt.api.Table;

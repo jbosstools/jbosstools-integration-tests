@@ -1,4 +1,4 @@
-package org.jboss.tools.ws.reddeer.ws.ui;
+package org.jboss.tools.ws.reddeer.ui.preferences;
 
 import java.util.ArrayList;
 import java.util.Collection;
