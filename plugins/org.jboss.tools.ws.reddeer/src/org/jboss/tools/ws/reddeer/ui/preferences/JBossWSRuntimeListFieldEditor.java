@@ -1,7 +1,8 @@
-package org.jboss.tools.ws.reddeer.ws.ui;
+package org.jboss.tools.ws.reddeer.ui.preferences;
 
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.label.DefaultLabel;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
@@ -31,11 +32,11 @@ public class JBossWSRuntimeListFieldEditor extends DefaultShell {
 	}
 	
 	public void setVersion(JBossWSRuntimeVersion version) {
-		new DefaultCombo("Version:").setSelection(version.version());
+		new LabeledCombo("Version:").setSelection(version.version());
 	}
 	
 	public String getVersion() {
-		return new DefaultCombo("Version").getSelection();
+		return new LabeledCombo("Version").getSelection();
 	}
 	
 	public void setHomeFolder(String homeFolderLocation) {

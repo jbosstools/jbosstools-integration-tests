@@ -12,17 +12,20 @@ package org.jboss.tools.ws.ui.bot.test.wstester;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 
+import java.util.List;
+
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.hamcrest.core.Is;
+import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.tools.ui.bot.ext.condition.ShellIsActiveCondition;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
+import org.jboss.tools.ws.reddeer.ui.dialogs.WSTesterParametersDialog;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
 import org.jboss.tools.ws.ui.bot.test.uiutils.RESTFullExplorer;
 import org.jboss.tools.ws.ui.bot.test.uiutils.RunOnServerDialog;
-import org.jboss.tools.ws.ui.bot.test.uiutils.WSTesterParametersDialog;
 import org.jboss.tools.ws.ui.bot.test.widgets.WsTesterView;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -112,7 +115,7 @@ public class WSTesterPromptValuesSupportTest extends RESTfulTestBase {
 	public void testResponse() {
 		invokeWSParametersDialog();
 		
-		SWTBotTreeItem[] parameters = dialog.getAllParameters();
+		List<TreeItem> parameters = dialog.getAllParameters();
 		setParametersValues(parameters);
 		dialog.ok();
 		
@@ -141,8 +144,8 @@ public class WSTesterPromptValuesSupportTest extends RESTfulTestBase {
 		//@see https://issues.jboss.org/browse/JBIDE-13111
 //		assertThat(dialog.isOkButtonEnabled(), Is.is(false));
 		
-		SWTBotTreeItem[] parameters = dialog.getAllParameters();
-		assertThat(dialog.getAllParameters().length, Is.is(3));
+		List<TreeItem> parameters = dialog.getAllParameters();
+		assertThat(dialog.getAllParameters().size(), Is.is(3));
 		
 		checkAllParametersWereLoaded(parameters);
 		checkAllDefaultParametersValues(parameters);
@@ -171,44 +174,44 @@ public class WSTesterPromptValuesSupportTest extends RESTfulTestBase {
 		return new DefaultText(0).getText();
 	}
 	
-	private void checkAllParametersWereLoaded(SWTBotTreeItem[] parameters) {
+	private void checkAllParametersWereLoaded(List<TreeItem> parameters) {
 		
 		assertThat("First parameter name is wrong", 
-				dialog.getParameterName(parameters[0]), Is.is("id* "));
+				dialog.getParameterName(parameters.get(0)), Is.is("id* "));
 		assertThat("Second parameter name is wrong", 
-				dialog.getParameterName(parameters[1]), Is.is("m1"));
+				dialog.getParameterName(parameters.get(1)), Is.is("m1"));
 		assertThat("Third parameter name is wrong",
-				dialog.getParameterName(parameters[2]), Is.is("q1"));
+				dialog.getParameterName(parameters.get(2)), Is.is("q1"));
 		
 	}
 	
-	private void checkAllDefaultParametersValues(SWTBotTreeItem[] parameters) {
+	private void checkAllDefaultParametersValues(List<TreeItem> parameters) {
 		
 		assertThat("Default value of id is wrong", 
-				dialog.getParameterValue(parameters[0]), Is.is("0"));
+				dialog.getParameterValue(parameters.get(0)), Is.is("0"));
 		assertThat("Default value of id is wrong", 
-				dialog.getParameterValue(parameters[1]), Is.is("m1"));
+				dialog.getParameterValue(parameters.get(1)), Is.is("m1"));
 		assertThat("Default value of id is wrong", 
-				dialog.getParameterValue(parameters[2]), Is.is("q1"));
+				dialog.getParameterValue(parameters.get(2)), Is.is("q1"));
 		
 	}
 	
-	private void checkAllParametersTypes(SWTBotTreeItem[] parameters) {
+	private void checkAllParametersTypes(List<TreeItem> parameters) {
 		
 		assertThat("Type of id is wrong", 
-				dialog.getParameterType(parameters[0]), Is.is("java.lang.Integer"));
+				dialog.getParameterType(parameters.get(0)), Is.is("Integer"));
 		assertThat("Type of m1 is wrong", 
-				dialog.getParameterType(parameters[1]), Is.is("java.lang.String"));
+				dialog.getParameterType(parameters.get(1)), Is.is("String"));
 		assertThat("Type of q1 is wrong", 
-				dialog.getParameterType(parameters[2]), Is.is("java.lang.String"));
+				dialog.getParameterType(parameters.get(2)), Is.is("String"));
 		
 	}
 	
-	private void setParametersValues(SWTBotTreeItem[] parameters) {
+	private void setParametersValues(List<TreeItem> parameters) {
 		
-		dialog.setParameterValue(parameters[0], "1");
-		dialog.setParameterValue(parameters[1], "matrix");
-		dialog.setParameterValue(parameters[2], "query");
+		dialog.setParameterValue(parameters.get(0), "1");
+		dialog.setParameterValue(parameters.get(1), "matrix");
+		dialog.setParameterValue(parameters.get(2), "query");
 		
 	}
 	

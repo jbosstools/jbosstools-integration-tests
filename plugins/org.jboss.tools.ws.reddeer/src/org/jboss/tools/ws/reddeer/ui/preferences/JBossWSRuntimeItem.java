@@ -1,4 +1,4 @@
-package org.jboss.tools.ws.reddeer.ws.ui;
+package org.jboss.tools.ws.reddeer.ui.preferences;
 
 /**
  * Model for jboss ws runtime encapsulates one instance of such an object 
