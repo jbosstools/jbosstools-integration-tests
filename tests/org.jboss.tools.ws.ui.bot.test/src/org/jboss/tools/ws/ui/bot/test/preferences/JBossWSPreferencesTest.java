@@ -153,7 +153,7 @@ public class JBossWSPreferencesTest extends WSTestBase {
 			
 		String runtimeVersion = jbossWsRuntimeDialog.getRuntimeVersion();
 		assertTrue("Unknown runtime version: " + runtimeVersion, AnyOf
-				.anyOf(Is.is("4.1.3.Final-redhat-3"), // EAP
+				.anyOf(Is.is("4.2.3.Final-redhat-1"), // EAP
 						Is.is("4.0.2.GA") // AS
 						)
 				.matches(runtimeVersion));
