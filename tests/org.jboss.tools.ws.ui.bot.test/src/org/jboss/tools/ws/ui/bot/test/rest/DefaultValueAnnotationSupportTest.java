@@ -19,15 +19,20 @@ import org.junit.Test;
 
 public class DefaultValueAnnotationSupportTest extends RESTfulTestBase {
 	
-	private String queryParam = "param";
+	private String paramName = "param";
 	private String defaultValue = "abc";
-	private String queryParamType = "String";
+	private String paramType = "String";
 	
 	@Override
 	public void setup() {
 	
 	}
 	
+	/**
+	 * Fails due to JBIDE-17011
+	 * 
+	 * @see https://issues.jboss.org/browse/JBIDE-17011
+	 */
 	@Test
 	public void testQueryParamDefaultValue() {
 		
@@ -40,14 +45,15 @@ public class DefaultValueAnnotationSupportTest extends RESTfulTestBase {
 		/* test JAX-RS REST explorer */
 		assertCountOfRESTServices(restServices, 1);
 		assertExpectedPathOfService(restServices.get(0), 
-				"/rest?" + queryParam + "={" + queryParamType + "=" + defaultValue + "}");
+				"/rest?" + paramName + "={" + paramType + "=" + defaultValue + "}");
 		
 	}
 	
 	/**
-	 * Fails due to JBIDE-12027
+	 * Fails due to JBIDE-12027, JBIDE-17011
 	 * 
 	 * @see https://issues.jboss.org/browse/JBIDE-12027
+	 * @see https://issues.jboss.org/browse/JBIDE-17011
 	 */
 	@Test
 	public void testMatrixParamDefaultValue() {
@@ -61,7 +67,7 @@ public class DefaultValueAnnotationSupportTest extends RESTfulTestBase {
 		/* test JAX-RS REST explorer */
 		assertCountOfRESTServices(restServices, 1);
 		assertExpectedPathOfService(restServices.get(0), 
-				"/rest:" + queryParam + "={" + queryParamType + "=" + defaultValue + "}");
+				"/rest;" + paramName + "={" + paramType + "=" + defaultValue + "}");
 	}
 	
 	/**
@@ -81,7 +87,7 @@ public class DefaultValueAnnotationSupportTest extends RESTfulTestBase {
 		/* test JAX-RS REST explorer */
 		assertCountOfRESTServices(restServices, 1);
 		assertExpectedPathOfService(restServices.get(0), 
-				"/rest/{" + queryParamType + "=" + defaultValue + "}");
+				"/rest/{" + paramName +":" + paramType + "=" + defaultValue + "}");
 		
 	}
 	
