@@ -4,6 +4,7 @@ import org.jboss.reddeer.eclipse.jface.wizard.WizardPage;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.group.DefaultGroup;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
@@ -25,7 +26,7 @@ public class SeamProjectFirstPage extends WizardPage{
 		if(version!=null){
 			new ContextMenu("Change Version...").select();
 			new WaitUntil(new ShellWithTextIsActive("Change Version"), TimePeriod.NORMAL);
-			new DefaultCombo("Version:").setSelection(version);
+			new LabeledCombo("Version:").setSelection(version);
 			new PushButton("OK").click();
 			new WaitUntil(new ShellWithTextIsActive("Project Facets"), TimePeriod.NORMAL);
 		}

@@ -10,7 +10,7 @@ import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.swt.wait.WaitWhile;
-import org.jboss.reddeer.workbench.editor.DefaultEditor;
+import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.junit.Before;
 import org.junit.Test;
 

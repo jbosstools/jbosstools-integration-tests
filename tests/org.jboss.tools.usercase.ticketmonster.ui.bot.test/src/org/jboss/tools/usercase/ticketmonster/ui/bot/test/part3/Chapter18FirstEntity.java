@@ -5,9 +5,8 @@ import static org.junit.Assert.assertTrue;
 import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardDialog;
 import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardPage;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
-import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
-import org.jboss.reddeer.workbench.editor.DefaultEditor;
+import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.usercase.ticketmonster.ui.bot.test.wizard.GenerateHashCodeAndEqualsDialog;
 import org.junit.Before;
 import org.junit.Test;
@@ -38,9 +37,8 @@ public class Chapter18FirstEntity extends AbstractPart3Test{
 		new DefaultEditor("TicketCategory.java");
 		GenerateHashCodeAndEqualsDialog hashAndEqualsDialog = new GenerateHashCodeAndEqualsDialog();
 		hashAndEqualsDialog.open(false);
-		for(TreeItem i: hashAndEqualsDialog.getFields()){
-			assertTrue(i.isChecked());
-		}
+		assertTrue(hashAndEqualsDialog.getFields().size() == 1);
+		assertTrue(hashAndEqualsDialog.getFields().get(0).isChecked());
 		hashAndEqualsDialog.ok();
 		assertTrue(new DefaultStyledText().getText().contains("equals(Object obj)"));
 		assertTrue(new DefaultStyledText().getText().contains("hashCode()"));

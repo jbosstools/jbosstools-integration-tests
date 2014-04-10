@@ -4,7 +4,7 @@ import org.jboss.reddeer.eclipse.jface.preference.PreferencePage;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.wait.TimePeriod;
@@ -26,7 +26,7 @@ public class SeamPreferencePage extends PreferencePage{
 		new WaitUntil(new ShellWithTextIsActive("New Seam Runtime"),TimePeriod.NORMAL);
 		new LabeledText("Home Folder:").setText(seamPath);
 		new LabeledText("Name:").setText(name);
-		new DefaultCombo("Version:").setSelection(seamVersion);
+		new LabeledCombo("Version:").setSelection(seamVersion);
 		new WaitUntil(new WidgetIsEnabled(new PushButton("Finish")));
 		new PushButton("Finish").click();
 		new WaitUntil(new ShellWithTextIsActive("Preferences"),TimePeriod.NORMAL);

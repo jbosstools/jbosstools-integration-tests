@@ -2,26 +2,20 @@ package org.jboss.tools.usercase.ticketmonster.ui.bot.test.wizard;
 
 import org.jboss.reddeer.eclipse.jface.wizard.WizardDialog;
 import org.jboss.reddeer.swt.api.Button;
-import org.jboss.reddeer.swt.api.Shell;
-import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.wait.TimePeriod;
-import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.tools.usercase.ticketmonster.ui.bot.test.condition.RuntimeIsDownloaded;
 
 public class DownloadRuntimeDialog extends WizardDialog{
-	
-	private boolean eapDialog;
-	
-	public DownloadRuntimeDialog(){
-		this.eapDialog = false;
-	}
-		
+
 	public void eapDialog(){
-		this.eapDialog = true;
 		addWizardPage(new DownloadRuntimeFirstPage(), 0);
-		addWizardPage(new DownloadRuntimeSecondPage(), 1);
-		addWizardPage(new DownloadEAPRuntimeThirdPage(), 2);
+		addWizardPage(new TaskWizardPage(), 1);
+		addWizardPage(new DownloadRuntimeSecondPage(), 2);
+		addWizardPage(new DownloadRuntimeThirdPage(), 3);
 	}
 	
 	public void asDialog(){
@@ -36,10 +30,8 @@ public class DownloadRuntimeDialog extends WizardDialog{
 		new DefaultShell();
 		Button button = new PushButton("Finish");
 		button.click();
-		if(!eapDialog){
-			Shell activeShell = new DefaultShell("Download 'JBoss AS 7.1.1 (Brontes)");
-			new WaitWhile(new ShellWithTextIsActive(activeShell.getText()),TimePeriod.VERY_LONG);
-		}
+		new WaitUntil(new JobIsRunning(), TimePeriod.NORMAL, false);
+		new WaitUntil(new RuntimeIsDownloaded(), TimePeriod.VERY_LONG);
 		new DefaultShell("New Project Example");
 	}
 

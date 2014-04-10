@@ -2,16 +2,16 @@ package org.jboss.tools.usercase.ticketmonster.ui.bot.test.wizard;
 
 import org.jboss.reddeer.eclipse.jface.wizard.WizardPage;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 
 public class NewExampleWizardSecondPage extends WizardPage{
 	
 	public String getProjectName(){
-		return new DefaultCombo("Project name").getText();
+		return new  LabeledCombo("Project name").getText();
 	}
 	
 	public String getPackage(){
-		return new DefaultCombo("Package").getText();
+		return new  LabeledCombo("Package").getText();
 	}
 	
 	public boolean isUseDefaultWorkspace(){
@@ -19,15 +19,15 @@ public class NewExampleWizardSecondPage extends WizardPage{
 	}
 	
 	public String setWorkspaceLocation(){
-		return new DefaultCombo("Location:").getText();
+		return new  LabeledCombo("Location:").getText();
 	}
 	
 	public void setProjectName(String projectName){
-		new DefaultCombo("Project name").setText(projectName);
+		new LabeledCombo("Project name").setText(projectName);
 	}
 	
 	public void setPackage(String pckg){
-		new DefaultCombo("Package").setText(pckg);
+		new  LabeledCombo("Package").setText(pckg);
 	}
 	
 	public void useDefaultWorkspace(boolean useDefault){
@@ -35,7 +35,7 @@ public class NewExampleWizardSecondPage extends WizardPage{
 	}
 	
 	public void setWorkspaceLocation(String location){
-		new DefaultCombo("Location:").setText(location);
+		new  LabeledCombo("Location:").setText(location);
 	}
 	
 	

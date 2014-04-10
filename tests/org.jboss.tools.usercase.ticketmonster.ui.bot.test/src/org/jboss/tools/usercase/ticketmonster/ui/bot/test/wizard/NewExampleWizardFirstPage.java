@@ -8,7 +8,7 @@ import org.jboss.reddeer.swt.api.Group;
 import org.jboss.reddeer.swt.api.Table;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.group.DefaultGroup;
-import org.jboss.reddeer.swt.impl.link.DefaultLink;
+import org.jboss.reddeer.swt.impl.link.AnchorLink;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.tools.maven.reddeer.wizards.AddRepositoryDialog;
@@ -34,8 +34,8 @@ public class NewExampleWizardFirstPage extends WizardPage{
 	}
 	
 	public AddRepositoryDialog addEAPMavenRepositoryUsingWarningLink(){
-		new DefaultLink("Red Hat Maven repository").click();
-		new DefaultShell("Add Maven Repository");
+		new AnchorLink("repository").click();
+		new DefaultShell("Edit Maven Repository");
 		return new AddRepositoryDialog();
 	}
 

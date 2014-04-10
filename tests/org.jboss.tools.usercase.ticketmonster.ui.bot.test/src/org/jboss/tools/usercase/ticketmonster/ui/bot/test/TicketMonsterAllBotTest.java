@@ -25,7 +25,6 @@ import org.junit.runners.Suite;
 	Chapter13Deplyment.class,
 	Chapter14REST.class,
 	Chapter15JQuery.class,
-
 	Chapter18FirstEntity.class,
 	Chapter19DatabaseDesign.class
 	

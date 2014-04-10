@@ -17,7 +17,7 @@ public class SeamProjectDialog extends NewWizardDialog{
 	public SeamProjectDialog(){
 		super(CATEGORY,NAME);
 		addWizardPage(new SeamProjectFirstPage(), 0);
-		addWizardPage(new SeamProjectFifthPage(), 4);
+		addWizardPage(new SeamProjectFifthPage(), 5);
 	}
 	
 	@Override
@@ -27,7 +27,7 @@ public class SeamProjectDialog extends NewWizardDialog{
 		Button button = new PushButton("Finish");
 		button.click();
 
-		new WaitWhile(new ShellWithTextIsActive(shell.getText()), TimePeriod.VERY_LONG);
+		new WaitWhile(new ShellWithTextIsActive(shell.getText()), TimePeriod.getCustom(TimePeriod.VERY_LONG.getSeconds()*2));
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 	}
 	
