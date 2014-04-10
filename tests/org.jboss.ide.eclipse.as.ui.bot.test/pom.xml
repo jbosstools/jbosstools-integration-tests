@@ -52,7 +52,7 @@
 				<jbosstools.test.jboss-as-6.x.home>${requirementsDirectory}/jboss-6.1.0.Final</jbosstools.test.jboss-as-6.x.home>
 				<jbosstools.test.jboss-as-7.0.home>${requirementsDirectory}/jboss-as-7.0.2.Final</jbosstools.test.jboss-as-7.0.home>
 				<jbosstools.test.jboss-as-7.1.home>${requirementsDirectory}/jboss-as-7.1.1.Final</jbosstools.test.jboss-as-7.1.home>
-				<jbosstools.test.jboss-wildfly-8.home>${requirementsDirectory}/wildfly-8.0.0.CR1</jbosstools.test.jboss-wildfly-8.home>
+				<jbosstools.test.jboss-wildfly-8.home>${requirementsDirectory}/wildfly-8.0.0.Final</jbosstools.test.jboss-wildfly-8.home>
 				<runtimesProperties>-Djbosstools.test.jboss-as-3.2.home=${jbosstools.test.jboss-as-3.2.home} -Djbosstools.test.jboss-as-4.0.home=${jbosstools.test.jboss-as-4.0.home} -Djbosstools.test.jboss-as-4.2.home=${jbosstools.test.jboss-as-4.2.home} -Djbosstools.test.jboss-as-5.0.home=${jbosstools.test.jboss-as-5.0.home} -Djbosstools.test.jboss-as-5.1.home=${jbosstools.test.jboss-as-5.1.home} -Djbosstools.test.jboss-as-6.x.home=${jbosstools.test.jboss-as-6.x.home} -Djbosstools.test.jboss-as-7.0.home=${jbosstools.test.jboss-as-7.0.home} -Djbosstools.test.jboss-as-7.1.home=${jbosstools.test.jboss-as-7.1.home} -Djbosstools.test.jboss-wildfly-8.home=${jbosstools.test.jboss-wildfly-8.home} -Dreddeer.config=target/classes/project</runtimesProperties>
 			</properties>
 			<build>
@@ -168,7 +168,7 @@
 							<goal>wget</goal>
 						</goals>
 						<configuration>
-							<url>http://download.jboss.org/wildfly/8.0.0.CR1/wildfly-8.0.0.CR1.zip</url>
+							<url>http://download.jboss.org/wildfly/8.0.0.Final/wildfly-8.0.0.Final.zip</url>
 							<unpack>true</unpack>
 						</configuration>
 					</execution>
@@ -190,7 +190,7 @@
 				<jbosstools.test.jboss-as-6.x.home>${requirementsDirectory}/jboss-6.1.0.Final</jbosstools.test.jboss-as-6.x.home>
 				<jbosstools.test.jboss-as-7.0.home>${requirementsDirectory}/jboss-as-7.0.2.Final</jbosstools.test.jboss-as-7.0.home>
 				<jbosstools.test.jboss-as-7.1.home>${requirementsDirectory}/jboss-as-7.1.1.Final</jbosstools.test.jboss-as-7.1.home>
-				<jbosstools.test.jboss-wildfly-8.home>${requirementsDirectory}/wildfly-8.0.0.CR1</jbosstools.test.jboss-wildfly-8.home>
+				<jbosstools.test.jboss-wildfly-8.home>${requirementsDirectory}/wildfly-8.0.0.Final</jbosstools.test.jboss-wildfly-8.home>
 				<runtimesProperties>-Djbosstools.test.jboss-wildfly-8.home=${jbosstools.test.jboss-wildfly-8.home} -Djbosstools.test.jboss-as-6.x.home=${jbosstools.test.jboss-as-6.x.home} -Djbosstools.test.jboss-as-7.0.home=${jbosstools.test.jboss-as-7.0.home} -Djbosstools.test.jboss-as-7.1.home=${jbosstools.test.jboss-as-7.1.home} -Dreddeer.config=target/classes/project</runtimesProperties>
 			</properties>
 			<build>
@@ -241,7 +241,7 @@
 							<goal>wget</goal>
 						</goals>
 						<configuration>
-							<url>http://download.jboss.org/wildfly/8.0.0.CR1/wildfly-8.0.0.CR1.zip</url>
+							<url>http://download.jboss.org/wildfly/8.0.0.Final/wildfly-8.0.0.Final.zip</url>
 							<unpack>true</unpack>
 						</configuration>
 					</execution>
@@ -368,7 +368,7 @@
 			</activation>
 			<properties>
 				<test.class>org.jboss.ide.eclipse.as.ui.bot.test.Wildfly8CompatibilitySuite</test.class>
-				<jbosstools.test.jboss-wildfly-8.home>${requirementsDirectory}/wildfly-8.0.0.Alpha1</jbosstools.test.jboss-wildfly-8.home>
+				<jbosstools.test.jboss-wildfly-8.home>${requirementsDirectory}/wildfly-8.0.0.Final</jbosstools.test.jboss-wildfly-8.home>
 				<jbosstools.test.jboss-wildfly-8.url></jbosstools.test.jboss-wildfly-8.url>
 				<jbosstools.test.jboss-wildfly-8.md5>220b246c08a66192b9466f9ac93f1693</jbosstools.test.jboss-wildfly-8.md5>
 				<runtimesProperties>-Djbosstools.test.jboss-wildfly-8.home=${jbosstools.test.jboss-wildfly-8.home} -Dreddeer.config=target/classes/project/wildfly-8.xml</runtimesProperties>
@@ -385,8 +385,7 @@
 							<goal>wget</goal>
 						</goals>
 						<configuration>
-							<url>${jbosstools.test.jboss-wildfly-8.url}</url>
-							<md5>${jbosstools.test.jboss-wildfly-8.md5}</md5>
+							<url>http://download.jboss.org/wildfly/8.0.0.Final/wildfly-8.0.0.Final.zip</url>
 							<unpack>true</unpack>
 						</configuration>
 					</execution>
