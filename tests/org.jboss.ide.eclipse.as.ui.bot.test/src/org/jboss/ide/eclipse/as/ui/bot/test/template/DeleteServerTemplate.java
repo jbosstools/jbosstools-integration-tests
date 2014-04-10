@@ -25,7 +25,7 @@ public abstract class DeleteServerTemplate {
 	
 	@Test(expected=EclipseLayerException.class)
 	public void deleteServer(){
-		serversView.getServer(getServerName()).delete();
+		serversView.getServer(getServerName()).delete(true);
 		serversView.getServer(getServerName());
 	}
 
