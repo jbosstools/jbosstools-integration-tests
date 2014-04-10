@@ -2,6 +2,7 @@ package org.jboss.tools.usercase.ticketmonster.ui.bot.test.part3;
 
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
+import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.tools.usercase.ticketmonster.ui.bot.test.TicketMonsterBaseTest;
 
 public class AbstractPart3Test extends TicketMonsterBaseTest{
@@ -31,6 +32,8 @@ public class AbstractPart3Test extends TicketMonsterBaseTest{
 		deleteIfExists("src","main","webapp","WEB-INF","faces-config.xml");
 		deleteIfExists("src","main","webapp","mobile.html");
 			
+		ticketMonsterProject.getProjectItem("src","main","resources","import.sql").select();
+		new ContextMenu("Open With","Text Editor").select();
 		ticketMonsterProject.getProjectItem("src","main","resources","import.sql").open();
 		replaceEditorContentWithFile("import.sql","resources/commands/importSQL.txt", 0, 0, true, true);
 	}

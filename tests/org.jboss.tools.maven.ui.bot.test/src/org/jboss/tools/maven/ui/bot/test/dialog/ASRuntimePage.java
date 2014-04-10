@@ -9,6 +9,10 @@ public class ASRuntimePage extends WizardPage{
 		new LabeledText("Home Directory").setText(directory);
 	}
 	
+	public void setName(String name){
+		new LabeledText("Name").setText(name);
+	}
+	
 	public String getName(){
 		return new LabeledText("Name").getText();
 	}

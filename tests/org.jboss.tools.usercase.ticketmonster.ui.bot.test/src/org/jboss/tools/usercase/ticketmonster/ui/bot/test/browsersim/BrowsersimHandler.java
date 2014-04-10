@@ -1,8 +1,5 @@
 package org.jboss.tools.usercase.ticketmonster.ui.bot.test.browsersim;
 
-import java.awt.AWTException;
-import java.awt.Robot;
-import java.awt.event.KeyEvent;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -18,6 +15,7 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.util.Display;
 import org.jboss.reddeer.swt.util.ResultRunnable;
 import org.jboss.reddeer.swt.wait.AbstractWait;
+import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.tools.vpe.browsersim.ui.BrowserSim;
 import org.jboss.tools.vpe.browsersim.BrowserSimRunner;
 
@@ -106,16 +104,6 @@ public class BrowsersimHandler {
     	browserSimShell = new DefaultShell();
     	//ticketmonster javascript info
     	if (!url.equalsIgnoreCase(BrowserSimRunner.ABOUT_BLANK) && url != null){
-    		AbstractWait.sleep(5000);
-    		Robot robot = null;
-			try {
-				robot = new Robot();
-			} catch (AWTException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} 
-    		robot.keyPress(KeyEvent.VK_ENTER);  
-    	    robot.keyRelease(KeyEvent.VK_ENTER);  
     		waitWhileUrlIsLoading();
     	}
     }
@@ -143,7 +131,7 @@ public class BrowsersimHandler {
       addProgressListener(pr);
       boolean isCompleted = isUrlLoadingCompleted();
       while (!isCompleted && (System.currentTimeMillis() < startTime + 5000)){
-        AbstractWait.sleep(500);
+        AbstractWait.sleep(TimePeriod.SHORT);
         isCompleted = isUrlLoadingCompleted();
       }
       removeProgressListener(pr);

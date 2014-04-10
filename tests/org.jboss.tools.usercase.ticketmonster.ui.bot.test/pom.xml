@@ -10,7 +10,7 @@
 	<artifactId>org.jboss.tools.usercase.ticketmonster.ui.bot.test</artifactId>
 	<packaging>eclipse-test-plugin</packaging>
 	<properties>
-		<systemProperties>-Dproject.build.directory=${project.build.directory} -Dh2consolelocation=${requirementsDirectory}/</systemProperties>
+		<systemProperties>-Djsse.enableSNIExtension=false -Dh2consolelocation=${requirementsDirectory}/ -Djbosstools.test.jboss.eap.home.6.1=${requirementsDirectory}/jboss-eap-6.1 -Djboss.username=${jboss.username} -Djboss.password=${jboss.password}</systemProperties>
 	</properties>
 	<build>
 		<resources>
@@ -30,6 +30,39 @@
 					<testClass>org.jboss.tools.usercase.ticketmonster.ui.bot.test.TicketMonsterAllBotTest</testClass>
 				</configuration>
 			</plugin>
+			
+			<plugin>
+					<groupId>com.googlecode.maven-download-plugin</groupId>
+					<artifactId>maven-download-plugin</artifactId>
+					<executions>
+					<!-- 
+						<execution>
+							<id>download_h2console</id>
+							<phase>pre-integration-test</phase>
+							<goals>
+								<goal>wget</goal>
+							</goals>
+							<configuration>
+								<url>http://github.com/jboss-developer/jboss-eap-quickstarts/raw/6.3.x-develop/h2-console/h2console.war</url>
+								<unpack>false</unpack>
+								<md5>add18b9f953221ff565cf7a34aac0ed9</md5>
+							</configuration>
+						</execution>
+						 -->
+						<execution>
+							<id>install-eap-6</id>
+							<phase>pre-integration-test</phase>
+							<goals>
+								<goal>wget</goal>
+							</goals>
+							<configuration>
+								<url>${jbosstools.test.jboss-eap-6.url}</url>
+								<md5>${jbosstools.test.jboss-eap-6.md5}</md5>
+								<unpack>true</unpack>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
 		</plugins>
 		<pluginManagement>
 			<plugins>
@@ -59,31 +92,7 @@
 						</lifecycleMappingMetadata>
 					</configuration>
 				</plugin>
-				<plugin>
-					<groupId>com.googlecode.maven-download-plugin</groupId>
-					<artifactId>maven-download-plugin</artifactId>
-					<executions>
-						<execution>
-							<id>download_h2console</id>
-							<phase>pre-integration-test</phase>
-							<goals>
-								<goal>wget</goal>
-							</goals>
-							<configuration>
-								<url>https://github.com/jboss-developer/jboss-eap-quickstarts/blob/master/h2-console/h2console.war?raw=true</url>
-								<unpack>false</unpack>
-								<md5>add18b9f953221ff565cf7a34aac0ed9</md5>
-							</configuration>
-						</execution>
-					</executions>
-				</plugin>
 			</plugins>
 		</pluginManagement>
 	</build>
-	<repositories>
-     <repository>
-        <id>m2e-egit</id>
-        <url>http://repository.tesla.io:8081/nexus/content/sites/m2e.extras/m2eclipse-egit/0.14.0/N/0.14.0.201305250025/</url>
-       	<layout>p2</layout>       
-     </repository></repositories>
 </project>

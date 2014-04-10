@@ -2,7 +2,7 @@ package org.jboss.tools.usercase.ticketmonster.ui.bot.test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNotNull;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -17,6 +17,7 @@ import java.util.Scanner;
 import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
 import org.jboss.reddeer.eclipse.condition.ProblemsExists;
 import org.jboss.reddeer.eclipse.condition.ServerExists;
+import org.jboss.reddeer.eclipse.condition.ProblemsExists.ProblemType;
 import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
 import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardDialog;
 import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardPage;
@@ -28,25 +29,27 @@ import org.jboss.reddeer.eclipse.wst.server.ui.wizard.NewRuntimeWizardDialog;
 import org.jboss.reddeer.eclipse.wst.server.ui.wizard.NewRuntimeWizardPage;
 import org.jboss.reddeer.eclipse.wst.server.ui.wizard.NewServerWizardDialog;
 import org.jboss.reddeer.swt.api.Table;
-import org.jboss.reddeer.swt.condition.JobIsRunning;
+import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
-import org.jboss.reddeer.workbench.editor.DefaultEditor;
-import org.jboss.reddeer.workbench.editor.Editor;
-import org.jboss.reddeer.workbench.view.impl.WorkbenchView;
+import org.jboss.reddeer.workbench.api.Editor;
+import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
+import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
 import org.jboss.tools.maven.reddeer.maven.ui.preferences.ConfiguratorPreferencePage;
 import org.jboss.tools.maven.reddeer.preferences.MavenPreferencePage;
 import org.jboss.tools.maven.reddeer.preferences.MavenUserPreferencePage;
-import org.jboss.tools.maven.reddeer.wizards.AddRepositoryDialog;
 import org.jboss.tools.maven.reddeer.wizards.ConfigureMavenRepositoriesWizard;
 import org.jboss.tools.maven.ui.bot.test.dialog.ASRuntimePage;
+import org.jboss.tools.usercase.ticketmonster.ui.bot.test.wizard.DownloadRuntimeDialog;
+import org.jboss.tools.usercase.ticketmonster.ui.bot.test.wizard.DownloadRuntimeFirstPage;
+import org.jboss.tools.usercase.ticketmonster.ui.bot.test.wizard.DownloadRuntimeSecondPage;
+import org.jboss.tools.usercase.ticketmonster.ui.bot.test.wizard.DownloadRuntimeThirdPage;
 import org.jboss.tools.usercase.ticketmonster.ui.bot.test.wizard.ExampleRequirement;
 import org.jboss.tools.usercase.ticketmonster.ui.bot.test.wizard.JBossRuntimeDetectionPreferencePage;
 import org.jboss.tools.usercase.ticketmonster.ui.bot.test.wizard.NewExampleWizard;
@@ -55,6 +58,7 @@ import org.jboss.tools.usercase.ticketmonster.ui.bot.test.wizard.NewExampleWizar
 import org.jboss.tools.usercase.ticketmonster.ui.bot.test.wizard.NewExampleWizardThirdPage;
 import org.jboss.tools.usercase.ticketmonster.ui.bot.test.wizard.NewJavaEnumWizardDialog;
 import org.jboss.tools.usercase.ticketmonster.ui.bot.test.wizard.NewJavaEnumWizardPage;
+import org.jboss.tools.usercase.ticketmonster.ui.bot.test.wizard.TaskWizardPage;
 import org.junit.BeforeClass;
 
 public class TicketMonsterBaseTest {
@@ -62,6 +66,8 @@ public class TicketMonsterBaseTest {
 	public static final String USER_SETTINGS = "target/classes/settings.xml"; 
 	public static final String JBOSS_AS_DOWNLOAD_DIR = "target/requirements/downloadedJBossAS";
 	public static final String JBOSS_EAP_6_1 = System.getProperty("jbosstools.test.jboss.eap.home.6.1");
+	public static final String JBOSS_USERNAME = System.getProperty("jboss.username");
+	public static final String JBOSS_PASSWORD = System.getProperty("jboss.password");
 	public static final String JAVA_EE_PROJECT = "Java EE Web Project";
 	public static final String JAVA_EE_PROJECT_G = "org.jboss.tools.examples";
 	public static final String JAVA_EE_PROJECT_P = "org.jboss.tools.examples";
@@ -73,7 +79,8 @@ public class TicketMonsterBaseTest {
 	public static final String JBOSS_AS_71_NAME = "JBoss AS 7.1.1 (Brontes)";
 	public static final String JBOSS_AS_71_RUNTIME = "jboss-as-7.1.1.Final Runtime";
 	public static final String EAP_61_NAME = "JBoss EAP 6.1.0";
-	public static final String EAP_61_RUNTIME = "JBoss EAP 6.1+ Runtime";
+	public static final String EAP_61_RUNTIME = "jboss-eap-6.1 Runtime";
+	public static final String EAP_61_NAME_WITHOUT_RUNTIME = "jboss-eap-6.1";
 	public static final String TICKET_MONSTER_NAME = "ticket-monster";
 	public static final String TICKET_MONSTER_PACKAGE = "org.jboss.jdf.example.ticketmonster";
 	public static final String ENTERPRISE_BOM_VERSION = "1.0.4.Final-redhat-4";
@@ -118,31 +125,18 @@ public class TicketMonsterBaseTest {
 			return;
 		}
 		removeRepos();
+		addEnterpriseRepo();
 		NewExampleWizard wz = new NewExampleWizard();
 		wz.open(JAVA_EE_PROJECT);
-		NewExampleWizardFirstPage fp = (NewExampleWizardFirstPage)wz.getWizardPage();
+		NewExampleWizardFirstPage fp = (NewExampleWizardFirstPage)wz.getWizardPage(0);
 		List<ExampleRequirement> reqs = fp.getRequirements();
 		assertFalse(reqs.get(0).isMet());
-		new DefaultShell();
 		installRuntime(EAP_61_NAME, wz, true);
 		fp.setTargetRuntime(EAP_61_RUNTIME);
-		AbstractWait.sleep(1000);
-		//assertTrue(fp.warningIsVisible());
-		AddRepositoryDialog repoPage= fp.addEAPMavenRepositoryUsingWarningLink();
-		assertEquals(RED_HAT_REPO_ID,repoPage.getProfileID());
-		assertEquals(RED_HAT_REPO_ID,repoPage.getRepositoryID());
-		assertEquals(RED_HAT_REPO_NAME,repoPage.getRepositoryName());
-		assertEquals(RED_HAT_REPO_URL,repoPage.getRepositoryURL());
-		assertTrue(repoPage.isActiveByDefault());
-		repoPage.ok();
-		ConfigureMavenRepositoriesWizard repoDialog = new ConfigureMavenRepositoriesWizard();
-		repoDialog.confirm();
-		wz.selectPage(1);
-		NewExampleWizardSecondPage sp = (NewExampleWizardSecondPage)wz.getWizardPage();
+		NewExampleWizardSecondPage sp = (NewExampleWizardSecondPage)wz.getWizardPage(1);
 		sp.setProjectName(TICKET_MONSTER_NAME);
 		sp.setPackage(TICKET_MONSTER_PACKAGE);
-		wz.selectPage(2);
-		NewExampleWizardThirdPage tp = (NewExampleWizardThirdPage)wz.getWizardPage();
+		NewExampleWizardThirdPage tp = (NewExampleWizardThirdPage)wz.getWizardPage(2);
 		assertEquals(TICKET_MONSTER_PACKAGE,tp.getGroupID());
 		assertEquals(TICKET_MONSTER_NAME, tp.getArtifactID());
 		assertEquals(TICKET_MONSTER_PACKAGE, tp.getPackage());
@@ -150,13 +144,14 @@ public class TicketMonsterBaseTest {
 		version = table.getItem("jboss-bom-enterprise-version").getText(1);
 		assertEquals("true", table.getItem("enterprise").getText(1));
 		wz.finish(TICKET_MONSTER_NAME);
-		new WaitUntil(new ProblemsExists());
+		new WaitWhile(new ProblemsExists(ProblemType.ERROR));
 		pe.open();
 		pe.getProject(TICKET_MONSTER_NAME);
+		createEAPServerRuntime();
 	}
-	
+
 	protected void installRuntime(String runtimeName,NewExampleWizard wz, boolean eap){
-		NewExampleWizardFirstPage fp = (NewExampleWizardFirstPage)wz.getWizardPage();
+		NewExampleWizardFirstPage fp = (NewExampleWizardFirstPage)wz.getWizardPage(0);
 		List<ExampleRequirement> reqs = fp.getRequirements();
 		
 		JBossRuntimeDetectionPreferencePage runtimePage = reqs.get(0).install();
@@ -165,28 +160,59 @@ public class TicketMonsterBaseTest {
 		//avoiding native dialog
 		
 		createEAPRuntime(JBOSS_EAP_6_1);
+	}
+	
+	protected void downloadAndInstallRuntime(String runtimeName,NewExampleWizard wz, boolean eap){
+		NewExampleWizardFirstPage fp = (NewExampleWizardFirstPage)wz.getWizardPage(0);
+		DownloadRuntimeDialog downloadRuntime = null;
+		for(ExampleRequirement er: fp.getRequirements()){
+			if(er.getType().equals("server/runtime")){
+				downloadRuntime = er.downloadAndInstall();
+				break;
+			}
+		}
+		assertNotNull("No requirement with server/runtime type found",downloadRuntime);
+		if(eap){
+			downloadRuntime.eapDialog();
+		} else {
+			downloadRuntime.asDialog();
+		}
+		DownloadRuntimeFirstPage downloadFirst = (DownloadRuntimeFirstPage)downloadRuntime.getWizardPage(0);
+		downloadFirst.selectRuntime(runtimeName);
+		int eapPages = 0;
+		if(eap){
+			eapPages = 1;
+			TaskWizardPage downloadTask = (TaskWizardPage)downloadRuntime.getWizardPage(1);
+			downloadTask.setUsername(JBOSS_USERNAME);
+			downloadTask.setPassword(JBOSS_PASSWORD);
+			downloadTask.validateCredentials();
+		}
+		DownloadRuntimeSecondPage downloadSecond = (DownloadRuntimeSecondPage)downloadRuntime.getWizardPage(1+eapPages);
+		downloadSecond.acceptLicense(true);
+		DownloadRuntimeThirdPage downloadThird = (DownloadRuntimeThirdPage)downloadRuntime.getWizardPage(2+eapPages);
+		downloadThird.setDownloadFolder(new File(JBOSS_AS_DOWNLOAD_DIR).getAbsolutePath());
+		downloadThird.setInstallFolder(new File(JBOSS_AS_DOWNLOAD_DIR).getAbsolutePath());
+		downloadRuntime.finish();
 		
 	}
 	
-	private static String createEAPRuntime(String homeDir){
+	
+	private static void createEAPRuntime(String homeDir){
 		RuntimePreferencePage rp = new RuntimePreferencePage();
 		rp.open();
 		for(Runtime runtime: rp.getServerRuntimes()){
-			if(runtime.getType().equals("EAP 6.1 Runtime")){
+			if(runtime.getName().equals(EAP_61_RUNTIME)){
 				rp.ok();
-				return runtime.getName();
 			}
 		}
 		NewRuntimeWizardDialog rd = rp.addRuntime();
 		rd.addWizardPage(new ASRuntimePage(), 1);
-		((NewRuntimeWizardPage)rd.getFirstPage()).selectType("JBoss Enterprise Middleware","JBoss Enterprise Application Platform 6.1+ Runtime");
-		rd.selectPage(1);
-		ASRuntimePage as = (ASRuntimePage)rd.getWizardPage();
+		((NewRuntimeWizardPage)rd.getFirstPage()).selectType("Red Hat JBoss Middleware","JBoss Enterprise Application Platform 6.1+ Runtime");
+		ASRuntimePage as = (ASRuntimePage)rd.getWizardPage(1);
 		as.setHomeDirectory(homeDir);
-		String name = as.getName();
+		as.setName(EAP_61_RUNTIME);
 		rd.finish();
 		rp.ok();
-		return name;
 	}
 	
 
@@ -199,6 +225,15 @@ public class TicketMonsterBaseTest {
 		} else {
 			rd.cancel();
 		}
+		new ConfiguratorPreferencePage().ok();
+	}
+	
+	protected void addEnterpriseRepo(){
+		new ConfiguratorPreferencePage().open();
+		ConfigureMavenRepositoriesWizard rd = new ConfigureMavenRepositoriesWizard();
+		rd.open();
+		rd.chooseRepositoryFromList("redhat-techpreview-all-repository", true);
+		rd.confirm();
 		new ConfiguratorPreferencePage().ok();
 	}
 	
@@ -322,8 +357,7 @@ public class TicketMonsterBaseTest {
 		new DefaultTreeItem("localhost",targetedRuntime).select();
 		new PushButton("Next >").click();
 		new PushButton("Finish").click();
-		new WaitWhile(new JobIsRunning());
-		new WaitUntil(new JobIsRunning(),TimePeriod.LONG,false);
+		new WaitWhile(new ShellWithTextIsActive("Run On Server"));
 		new WaitUntil(new ConsoleHasText("Deployed \""+projectName+".war\""),TimePeriod.LONG);
 	}
 	
@@ -331,12 +365,14 @@ public class TicketMonsterBaseTest {
 		ServersView sview = new ServersView();
 		sview.open();
 		try{
-			sview.getServer("JBoss EAP 6.1+ Runtime Server");
+			sview.getServer(EAP_61_NAME_WITHOUT_RUNTIME);
 		} catch(EclipseLayerException ex){
 			NewServerWizardDialog sdialog = sview.newServer();
-			sdialog.getFirstPage().selectType("JBoss Enterprise Middleware","JBoss Enterprise Application Platform 6.1+");
+			sdialog.getFirstPage().selectType("Red Hat JBoss Middleware","JBoss Enterprise Application Platform 6.1+");
+			sdialog.getFirstPage().setName(EAP_61_NAME_WITHOUT_RUNTIME);
+			sdialog.next();
 			sdialog.finish();
-			new WaitUntil(new ServerExists("JBoss EAP 6.1+ Runtime Server"));
+			new WaitUntil(new ServerExists(EAP_61_NAME_WITHOUT_RUNTIME));
 		}
 	}
 	
@@ -346,7 +382,6 @@ public class TicketMonsterBaseTest {
 		try {
 			scanner = new Scanner(new URL(url).openStream(), "UTF-8");
 			urlContent = scanner.useDelimiter("\\A").next();
-			System.out.println(urlContent);
 			replaceEditorContentWithText(editor, urlContent, line, column, deletecontent, save);
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block

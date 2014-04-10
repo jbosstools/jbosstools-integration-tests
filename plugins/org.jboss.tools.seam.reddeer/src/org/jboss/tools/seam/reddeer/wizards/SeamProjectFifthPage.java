@@ -2,12 +2,12 @@ package org.jboss.tools.seam.reddeer.wizards;
 
 import org.jboss.reddeer.eclipse.jface.wizard.WizardPage;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 
 public class SeamProjectFifthPage extends WizardPage{
 	
 	public void setSeamRuntime(String runtime){
-		new DefaultCombo("Seam Runtime:").setSelection(runtime);
+		new LabeledCombo("Seam Runtime:").setSelection(runtime);
 	}
 	
 	public void toggleEAR(boolean toggle){

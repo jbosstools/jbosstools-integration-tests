@@ -8,7 +8,6 @@ import java.io.FileReader;
 import java.io.IOException;
 
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.eclipse.ui.views.contentoutline.OutlineView;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
@@ -19,9 +18,9 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
-import org.jboss.reddeer.workbench.editor.DefaultEditor;
-import org.jboss.reddeer.workbench.editor.TextEditor;
-import org.jboss.reddeer.workbench.view.impl.WorkbenchView;
+import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
+import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
 import org.jboss.tools.usercase.ticketmonster.ui.bot.test.condition.ForgeContainsText;
 import org.jboss.tools.usercase.ticketmonster.ui.bot.test.forge.ForgeConsole;
 import org.junit.Before;
@@ -29,7 +28,6 @@ import org.junit.Test;
 
 public class Chapter10ForgeEntityTest extends AbstractPart2Test{
 	
-	private Project ticketMonsterProject;
 	private ForgeConsole forge;
 	
 	public static final String FORGE_ENTITY="entity --named Event --package org.jboss.jdf.example.ticketmonster.model";
