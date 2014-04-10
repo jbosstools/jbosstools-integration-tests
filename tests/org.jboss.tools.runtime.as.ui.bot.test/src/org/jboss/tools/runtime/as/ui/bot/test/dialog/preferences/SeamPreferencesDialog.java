@@ -53,14 +53,7 @@ public class SeamPreferencesDialog extends PreferencePage {
 			// --
 			// After Keyboard will be implemented in Red Deer
 			// Keyboard.invoke(Key.ENTER);
-			try {
-				Robot robot = new Robot();
-				robot.setAutoWaitForIdle(true);
-				robot.keyPress(KeyEvent.VK_ENTER);
-				robot.keyRelease(KeyEvent.VK_ENTER);
-			} catch (AWTException e) {
-				throw new RuntimeException("Cannot press shortcut during removing of Seam runtimes", e);
-			}
+			new PushButton("OK").click();
 			// --
 
 			if (table.rowCount() != (runtimesNumber - i - 1)) {
