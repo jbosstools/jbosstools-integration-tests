@@ -6,6 +6,8 @@ import org.jboss.tools.runtime.as.ui.bot.test.detector.seam.seam22.CheckSeam22;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.seam.seam22.DetectSeam22;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.seam.seam23.CheckSeam23;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.seam.seam23.DetectSeam23;
+import org.jboss.tools.runtime.as.ui.bot.test.detector.seam.seam23x.CheckSeam23x;
+import org.jboss.tools.runtime.as.ui.bot.test.detector.seam.seam23x.DetectSeam23x;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap4.CheckEAP4Seam;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap4.DetectEAP4;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap4.OperateEAP4;
@@ -100,14 +102,14 @@ import org.junit.runners.Suite;
 		CheckEPP4Seam.class,
 		OperateEPP4.class,
 		
-		DetectJPP60.class, 
-		OperateJPP60.class,
-		
 		DetectJPP61x.class,
 		OperateJPP61x.class,
 		
 		DetectJPP61.class,
 		OperateJPP61.class,
+		
+		DetectJPP60.class,
+		OperateJPP60.class,
 		
 		DetectSOAP53.class, 
 		CheckSOAP53Seam.class,
@@ -115,11 +117,14 @@ import org.junit.runners.Suite;
 		DetectSOAPStandalone53.class, 
 		OperateSOAPStandalone53.class,
 		
-		DetectSeam22.class,
-		CheckSeam22.class,
-		DetectSeam23.class,
-		CheckSeam23.class
+		DetectSeam23x.class,
+		CheckSeam23x.class,
 		
+		DetectSeam23.class,
+		CheckSeam23.class,
+		
+		DetectSeam22.class,
+		CheckSeam22.class
 })
 public class Java7AllTestsSuite {
 
