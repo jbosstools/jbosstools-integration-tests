@@ -34,6 +34,8 @@ public class MylynTestLocalRepo {
 	@Test
 	public void TestIt() {
 
+		TestSupport.closeWelcome();
+		
 		/* Verify Local task repository can be found */
 		TaskRepositoriesView view = new TaskRepositoriesView();	
 		view.open();
