@@ -10,15 +10,34 @@
  ******************************************************************************/
 package org.jboss.tools.aerogear.ui.bot.test.app;
 
+import java.io.File;
+
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.aerogear.ui.bot.test.AerogearBotTest;
+import org.jboss.tools.ui.bot.ext.SWTBotExt;
+import org.jboss.tools.ui.bot.ext.SWTEclipseExt;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
+import org.jboss.tools.ui.bot.ext.view.ProblemsView;
 import org.junit.Test;
 
 @Require(clearWorkspace = true)
 public class CreateHybridApplication extends AerogearBotTest {
 	@Test
 	public void canCreateHTMLHybridApplication() {
-    // Project is created within setup method
+	  SWTBotExt botExt = new SWTBotExt();
+	  // Project is created within setup method
 		assertTrue(projectExplorer.existsResource(CORDOVA_PROJECT_NAME));
+		// Check there is no error/warning on Hybrid Mobile Project
+		projectExplorer.selectProject(CORDOVA_PROJECT_NAME);
+    SWTBotTreeItem[] errors = ProblemsView.getFilteredErrorsTreeItems(botExt,
+        null, File.separator + CORDOVA_PROJECT_NAME, null, null);
+    assertTrue("There were these errors for " + CORDOVA_PROJECT_NAME
+        + " project " + SWTEclipseExt.getFormattedTreeNodesText(errors),
+        errors == null || errors.length == 0);
+    SWTBotTreeItem[] warnings = ProblemsView.getFilteredWarningsTreeItems(
+        botExt, null, File.separator + CORDOVA_PROJECT_NAME, null, null);
+    assertTrue("There were these warnings for " + CORDOVA_PROJECT_NAME
+        + " project " + SWTEclipseExt.getFormattedTreeNodesText(warnings),
+        warnings == null || warnings.length == 0);
 	}
 }
