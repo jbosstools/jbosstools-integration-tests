@@ -19,7 +19,7 @@ import org.jboss.reddeer.eclipse.ui.views.log.LogView;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
-import org.jboss.reddeer.workbench.view.View;
+import org.jboss.reddeer.workbench.api.View;
 import org.jboss.tools.archives.reddeer.archives.ui.ProjectArchivesView;
 import org.junit.BeforeClass;
 import org.junit.Test;
