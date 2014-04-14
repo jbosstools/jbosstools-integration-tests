@@ -21,7 +21,6 @@ import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.eclipse.mylyn.tasks.ui.view.*;
 import org.jboss.reddeer.eclipse.ui.ide.RepoConnectionDialog;
-
 import org.jboss.reddeer.swt.condition.ShellIsActive;
 
 public class MylynTestValidate {
@@ -34,6 +33,8 @@ public class MylynTestValidate {
 
 	@Test
 	public void TestIt() {
+		
+		TestSupport.closeWelcome();
 
 		TaskRepositoriesView view = new TaskRepositoriesView();
 		
