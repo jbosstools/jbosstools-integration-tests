@@ -36,8 +36,13 @@
 		<jbosstools.test.jboss-jpp-6.1.x.url>http://download.devel.redhat.com/released/JBossEPP/6.1.1/jboss-portal-6.1.1.zip</jbosstools.test.jboss-jpp-6.1.x.url>
 		<jbosstools.test.jboss-jpp-6.1.x.md5>bc0e59f9ad4ab248f6b8542135b11599</jbosstools.test.jboss-jpp-6.1.x.md5>
 		
-		<jboss-seam-2.2>${requirementsDirectory}/jboss-seam-2.2.2.Final/</jboss-seam-2.2>
+		<jboss-seam-2.3.x>${requirementsDirectory}/jboss-seam-2.3.x/jboss-wfk-2.5.0/jboss-seam-2.3.3.Final-redhat-1/</jboss-seam-2.3.x>
+		<jboss-seam-2.3.x.url>http://download.devel.redhat.com/released/JBossWFK/2.5.0/jboss-wfk-2.5.0-seam23-bin.zip</jboss-seam-2.3.x.url>
+		<jboss-seam-2.3.x.md5>e1dfbf8b2cb7c1c09f5e93c380548ee8</jboss-seam-2.3.x.md5>
+		
 		<jboss-seam-2.3>${requirementsDirectory}/jboss-seam-2.3.0.Final/</jboss-seam-2.3>
+		<jboss-seam-2.2.2>${requirementsDirectory}/jboss-seam-2.2.2.Final/</jboss-seam-2.2.2>
+		
 		<test.class>org.jboss.tools.runtime.as.ui.bot.test.ProjectTestsSuite</test.class>
 		<surefire.timeout>7200</surefire.timeout>
 		<systemProperties>${integrationTestsSystemProperties}</systemProperties>
@@ -174,16 +179,16 @@
 						</configuration>
 					</execution>
 					<execution>
-						<id>install-seam-2.2.2.Final</id>
+						<id>install-seam-2.3.x</id>
 						<phase>pre-integration-test</phase>
 						<goals>
 							<goal>wget</goal>
 						</goals>
 						<configuration>
-							<url>http://sourceforge.net/projects/jboss/files/JBoss%20Seam/2.2.2.Final/jboss-seam-2.2.2.Final.zip</url>
+							<url>${jboss-seam-2.3.x.url}</url>
 							<unpack>true</unpack>
-							<md5>3bdb26921b1ebfb7222968657df95bb3</md5>
-							<outputDirectory>${requirementsDirectory}/</outputDirectory>
+							<md5>${jboss-seam-2.3.x.md5}</md5>
+							<outputDirectory>${requirementsDirectory}/jboss-seam-2.3.x/</outputDirectory>
 						</configuration>
 					</execution>
 					<execution>
@@ -196,6 +201,19 @@
 							<url>http://sourceforge.net/projects/jboss/files/JBoss%20Seam/2.3.0.Final/jboss-seam-distribution-2.3.0.Final-dist.zip</url>
 							<unpack>true</unpack>
 							<md5>f5fcb2ae2b17514feb2a2d3bbf5f4e2b</md5>
+							<outputDirectory>${requirementsDirectory}/</outputDirectory>
+						</configuration>
+					</execution>
+					<execution>
+						<id>install-seam-2.2.2.Final</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<configuration>
+							<url>http://sourceforge.net/projects/jboss/files/JBoss%20Seam/2.2.2.Final/jboss-seam-2.2.2.Final.zip</url>
+							<unpack>true</unpack>
+							<md5>3bdb26921b1ebfb7222968657df95bb3</md5>
 							<outputDirectory>${requirementsDirectory}/</outputDirectory>
 						</configuration>
 					</execution>
