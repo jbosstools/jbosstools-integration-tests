@@ -85,19 +85,19 @@ public class ImportJSF12ProjectFromJBDS4x extends JSFAutoTestCase{
       // check if imported project has no errors and no warnings
       assertTrue("There were these errors when importing "
           + ImportJSF12ProjectFromJBDS4x.PROJECT_TO_IMPORT_NAME 
-          + " project" 
+          + " project " 
           + SWTEclipseExt.getFormattedTreeNodesText(errors),
           errors == null || errors.length == 0);
-      SWTBotTreeItem[] warnings = ProblemsView.getFilteredErrorsTreeItems(botExt, 
+      SWTBotTreeItem[] warnings = ProblemsView.getFilteredWarningsTreeItems(botExt, 
           null, 
           File.separator + ImportJSF12ProjectFromJBDS4x.PROJECT_TO_IMPORT_NAME, 
           null,
           null);
       assertTrue("There were these warnings when importing "
           + ImportJSF12ProjectFromJBDS4x.PROJECT_TO_IMPORT_NAME 
-          + " project" 
+          + " project " 
           + SWTEclipseExt.getFormattedTreeNodesText(warnings),
-          errors == null || errors.length == 0);
+          warnings == null || warnings.length == 0);
     }catch (IOException ioe){
       throw new RuntimeException("Unable to copy and unzip necessary files from plugin's resources directory",ioe);
     }catch (Exception e){
