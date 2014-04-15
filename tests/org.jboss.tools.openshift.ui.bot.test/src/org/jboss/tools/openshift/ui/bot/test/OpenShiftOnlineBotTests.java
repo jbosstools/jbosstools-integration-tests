@@ -11,13 +11,13 @@
 package org.jboss.tools.openshift.ui.bot.test;
 
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.tools.openshift.ui.bot.test.app.CreateAdapterFromServerView;
-import org.jboss.tools.openshift.ui.bot.test.app.CreateAppUsingWizard;
-import org.jboss.tools.openshift.ui.bot.test.app.CreateApplicationFromGithub;
-import org.jboss.tools.openshift.ui.bot.test.app.ImportAndDeployGitHubProject;
-import org.jboss.tools.openshift.ui.bot.test.app.ImportApplicationFromOpenShift;
-import org.jboss.tools.openshift.ui.bot.test.app.RepublishApp;
-import org.jboss.tools.openshift.ui.bot.test.app.RestartApplication;
+import org.jboss.tools.openshift.ui.bot.test.application.CreateAdapterFromServerView;
+import org.jboss.tools.openshift.ui.bot.test.application.CreateApplicationThroughShellMenu;
+import org.jboss.tools.openshift.ui.bot.test.application.CreateApplicationFromGithub;
+import org.jboss.tools.openshift.ui.bot.test.application.ImportAndDeployGitHubProject;
+import org.jboss.tools.openshift.ui.bot.test.application.ImportApplicationFromOpenShift;
+import org.jboss.tools.openshift.ui.bot.test.application.RepublishApplication;
+import org.jboss.tools.openshift.ui.bot.test.application.RestartApplication;
 import org.jboss.tools.openshift.ui.bot.test.cartridge.EmbedCartridge;
 import org.jboss.tools.openshift.ui.bot.test.domain.CreateMultipleDomain;
 import org.jboss.tools.openshift.ui.bot.test.domain.DeleteMultipleDomain;
@@ -56,13 +56,13 @@ import org.junit.runners.Suite.SuiteClasses;
 	/* Application */
  	ImportAndDeployGitHubProject.class,
  	ImportApplicationFromOpenShift.class,
- 	CreateAppUsingWizard.class,
+ 	CreateApplicationThroughShellMenu.class,
  	CreateApplicationFromGithub.class,
  	CreateAdapter.class,
  	CreateAdapterFromServerView.class,
 	EmbedCartridge.class,
 	// TODO Conflict cartridge 
-	RepublishApp.class,
+	RepublishApplication.class,
 	OpenShiftDebugFeatures.class,
  	RestartApplication.class,
  	

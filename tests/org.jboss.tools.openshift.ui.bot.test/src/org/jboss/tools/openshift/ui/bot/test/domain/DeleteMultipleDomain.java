@@ -5,7 +5,7 @@ import org.junit.Test;
 
 /**
  * 
- * @author mlabuda
+ * @author mlabuda@redhat.com
  *
  */
 public class DeleteMultipleDomain {

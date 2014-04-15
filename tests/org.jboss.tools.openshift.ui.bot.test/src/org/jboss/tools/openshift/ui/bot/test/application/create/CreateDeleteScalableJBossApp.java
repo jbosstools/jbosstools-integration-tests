@@ -1,8 +1,9 @@
-package org.jboss.tools.openshift.ui.bot.test.app;
+package org.jboss.tools.openshift.ui.bot.test.application.create;
 
 import java.util.Date;
 
-import org.jboss.tools.openshift.ui.bot.test.OpenShiftBotTest;
+import org.jboss.tools.openshift.ui.bot.test.application.wizard.DeleteApplication;
+import org.jboss.tools.openshift.ui.bot.test.application.wizard.NewApplicationTemplates;
 import org.jboss.tools.openshift.ui.bot.util.OpenShiftLabel;
 import org.jboss.tools.openshift.ui.bot.util.TestProperties;
 import org.jboss.tools.openshift.ui.bot.util.TestUtils;
@@ -11,7 +12,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 
-public class CreateDeleteScaledJBossApp extends OpenShiftBotTest {
+public class CreateDeleteScalableJBossApp {
 
 	private final String JBOSS_APP_NAME = TestProperties
 			.get("openshift.jbossapp.name") + new Date().getTime();
@@ -24,13 +25,12 @@ public class CreateDeleteScaledJBossApp extends OpenShiftBotTest {
 
 	@Test
 	public void canCreateScalableJBossApp() {
-		createScaledOpenShiftApplication(JBOSS_APP_NAME,
-				OpenShiftLabel.AppType.JBOSS_EAP);
+		new NewApplicationTemplates(false).createSimpleApplicationWithoutCartridges(
+				OpenShiftLabel.AppType.JBOSS_EAP, JBOSS_APP_NAME, true, true, true);
 	}
 
 	@After
 	public void canDeleteScalableJBossApp() {
-		deleteOpenShiftApplication(JBOSS_APP_NAME,
-				OpenShiftLabel.AppType.JBOSS_EAP_TREE);
+		new DeleteApplication(JBOSS_APP_NAME, OpenShiftLabel.AppType.JBOSS_EAP_TREE).perform();
 	}
 }

@@ -3,6 +3,7 @@ package org.jboss.tools.openshift.ui.bot.test.explorer;
 import static org.junit.Assert.assertFalse;
 
 import java.util.Date;
+
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
@@ -16,7 +17,8 @@ import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
-import org.jboss.tools.openshift.ui.bot.test.OpenShiftBotTest;
+import org.jboss.tools.openshift.ui.bot.test.application.wizard.DeleteApplication;
+import org.jboss.tools.openshift.ui.bot.test.application.wizard.NewApplicationTemplates;
 import org.jboss.tools.openshift.ui.bot.util.OpenShiftExplorerView;
 import org.jboss.tools.openshift.ui.bot.util.OpenShiftLabel;
 import org.junit.After;
@@ -34,9 +36,9 @@ import org.junit.Test;
 * @author mlabuda
 *
 */
-public class OpenShiftDebugFeatures extends OpenShiftBotTest {
+public class OpenShiftDebugFeatures {
 
-        public static final String DYI_APP = "diyapp" + new Date().getTime();
+        public static final String DIY_APP = "diyapp" + new Date().getTime();
 
         @Before
         public void createDIYApplication() {
@@ -44,7 +46,8 @@ public class OpenShiftDebugFeatures extends OpenShiftBotTest {
         }
         
         public static void createDYIApp() {
-                createOpenShiftApplication(DYI_APP, OpenShiftLabel.AppType.DIY);
+                new NewApplicationTemplates(false).createSimpleApplicationWithoutCartridges(
+                		OpenShiftLabel.AppType.DIY, DIY_APP, false, true, true);
         }
        
         @Test
@@ -130,11 +133,11 @@ public class OpenShiftDebugFeatures extends OpenShiftBotTest {
                 openDebugFeature("Edit Environment Variables...");
                 
                 new WaitUntil(new ShellWithTextIsAvailable(
-                		"Manage Application Environment Variable(s) for application " + DYI_APP), 
+                		"Manage Application Environment Variable(s) for application " + DIY_APP), 
                 		TimePeriod.LONG);
                 
                 new DefaultShell("Manage Application Environment Variable(s) for application " + 
-                		DYI_APP).setFocus();
+                		DIY_APP).setFocus();
                 new PushButton("Add...").click();
                 
                 new WaitUntil(new ShellWithTextIsAvailable("Edit Environment variable"), TimePeriod.LONG);
@@ -145,10 +148,10 @@ public class OpenShiftDebugFeatures extends OpenShiftBotTest {
                 new PushButton("OK").click();
 
                 new WaitUntil(new ShellWithTextIsAvailable("Manage Application Environment Variable(s) for application " + 
-                		DYI_APP), TimePeriod.LONG);
+                		DIY_APP), TimePeriod.LONG);
                 
                 new DefaultShell("Manage Application Environment Variable(s) for application " + 
-                		DYI_APP).setFocus();
+                		DIY_APP).setFocus();
                 new PushButton("Finish").click();
                 
                 new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
@@ -182,7 +185,7 @@ public class OpenShiftDebugFeatures extends OpenShiftBotTest {
         }
         
         public static void deleteDIYApp() {
-                deleteOpenShiftApplication(DYI_APP, OpenShiftLabel.AppType.DIY_TREE);
+                new DeleteApplication(DIY_APP, OpenShiftLabel.AppType.DIY_TREE).perform();
         }   
 
 }

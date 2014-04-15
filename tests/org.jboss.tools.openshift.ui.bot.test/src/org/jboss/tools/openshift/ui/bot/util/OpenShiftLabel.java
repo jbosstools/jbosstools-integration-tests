@@ -63,16 +63,24 @@ public class OpenShiftLabel {
 		public static final String TAIL_FILES = "Tail Files";
 		public static final String PORTS = "Application port forwarding";
 		public static final String ADAPTER = "New Server";
+		public static final String ADD_CARTRIDGES = "Add Embedded Cartridges";
 		public static final String EDIT_CARTRIDGES = "Edit Embedded Cartridges";
+		public static final String NEW_APP_WIZARD = "New OpenShift Application";
+		public static final String ENV_VARS = "Create Environment Variable(s)";
+		public static final String EDIT_ENV_VAR = "Edit Environment variable";
 	}
 	
 	public class Button {
+		public static final String ADD = "Add...";
+		public static final String ENV_VAR = "Environment Variables...";
 		public static final String NEXT = "Next >";
 		public static final String BACK = "< Back";
 		public static final String FINISH = "Finish";
+		public static final String CANCEL = "Cancel";
 		public static final String OK = "OK";
 		public static final String YES = "Yes";
 		public static final String ADVANCED = " Advanced >> ";
+		public static final String BROWSE = "Browse...";
 	}
 	
 }

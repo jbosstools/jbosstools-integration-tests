@@ -4,6 +4,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Date;
 import java.util.List;
+
 import org.jboss.reddeer.eclipse.wst.server.ui.view.Server;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.junit.logging.Logger;
@@ -18,7 +19,8 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
-import org.jboss.tools.openshift.ui.bot.test.OpenShiftBotTest;
+import org.jboss.tools.openshift.ui.bot.test.application.wizard.DeleteApplication;
+import org.jboss.tools.openshift.ui.bot.test.application.wizard.NewApplicationTemplates;
 import org.jboss.tools.openshift.ui.bot.util.OpenShiftExplorerView;
 import org.jboss.tools.openshift.ui.bot.util.OpenShiftLabel;
 import org.junit.After;
@@ -27,11 +29,12 @@ import org.junit.Test;
 
 public class CreateAdapter {
 
-	private final String DYI_APP = "diyapp" + new Date().getTime();
+	private final String DIY_APP = "diyapp" + new Date().getTime();
 	
 	@Before
 	public void createDIYApp() {
-		OpenShiftBotTest.createOpenShiftApplicationWithoutAdapter(DYI_APP, OpenShiftLabel.AppType.DIY);
+		new NewApplicationTemplates(false).createSimpleApplicationWithoutCartridges(
+				OpenShiftLabel.AppType.DIY, DIY_APP, false, true, false);
 	}
 	
 	@Test
@@ -56,7 +59,7 @@ public class CreateAdapter {
 		
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 				
-		domainItem.getItem(DYI_APP + " " + OpenShiftLabel.AppType.DIY_TREE).select();
+		domainItem.getItem(DIY_APP + " " + OpenShiftLabel.AppType.DIY_TREE).select();
 		new ContextMenu(OpenShiftLabel.Labels.EXPLORER_ADAPTER).select();
 		
 		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.ADAPTER), TimePeriod.LONG);
@@ -73,7 +76,7 @@ public class CreateAdapter {
 		List<Server> servers = serverView.getServers();
 		boolean adapterExists = false;
 		for (Server server: servers) {
-			if (server.getLabel().getName().equals(DYI_APP + " at OpenShift")) {
+			if (server.getLabel().getName().equals(DIY_APP + " at OpenShift")) {
 				adapterExists = true;
 			}
 		}
@@ -85,6 +88,6 @@ public class CreateAdapter {
 
 	@After
 	public void deleteDIYApp() {
-		OpenShiftBotTest.deleteOpenShiftApplication(DYI_APP, OpenShiftLabel.AppType.DIY_TREE);
+		new DeleteApplication(DIY_APP, OpenShiftLabel.AppType.DIY_TREE).perform();
 	}
 }

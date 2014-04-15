@@ -1,7 +1,5 @@
 package org.jboss.tools.openshift.ui.bot.test.explorer;
 
-import org.jboss.tools.openshift.ui.bot.test.OpenShiftBotTest;
-import org.jboss.tools.openshift.ui.bot.util.OpenShiftLabel;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,7 +11,7 @@ import org.junit.Test;
 * @author mlabuda
 *
 */
-public class OpenShiftEnterpriseDebugFeatures extends OpenShiftBotTest {
+public class OpenShiftEnterpriseDebugFeatures {
 
         @Before
         public void createDYIApp() {
@@ -30,8 +28,7 @@ public class OpenShiftEnterpriseDebugFeatures extends OpenShiftBotTest {
         
         @After
         public void deleteDIYApp() {
-                OpenShiftDebugFeatures.deleteOpenShiftApplication(
-                		OpenShiftDebugFeatures.DYI_APP, OpenShiftLabel.AppType.DIY_TREE);
+                OpenShiftDebugFeatures.deleteDIYApp();
         }   
 
 }
