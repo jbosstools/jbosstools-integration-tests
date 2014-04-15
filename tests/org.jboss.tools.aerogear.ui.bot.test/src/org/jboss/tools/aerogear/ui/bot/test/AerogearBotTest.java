@@ -36,8 +36,8 @@ import org.junit.Before;
  * 
  */
 public class AerogearBotTest extends SWTTestExt {
-  protected static final String CORDOVA_PROJECT_NAME = "Cordova_prj";
-  protected static final String CORDOVA_APP_NAME = "Cordova prj";
+  protected static final String CORDOVA_PROJECT_NAME = "CordovaTestProject";
+  protected static final String CORDOVA_APP_NAME = "CordovaTestApp";
 
   /**
    * Creates a new hybrid mobile project in workspace.
@@ -66,6 +66,7 @@ public class AerogearBotTest extends SWTTestExt {
     });
 
     bot.text(0).typeText(projectName);
+    bot.text(2).setText(appName);
     
     bot.button(IDELabel.Button.NEXT).click();
     
