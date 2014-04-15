@@ -11,11 +11,15 @@
 package org.jboss.tools.aerogear.ui.bot.test;
 
 import org.jboss.tools.aerogear.ui.bot.test.app.RunOnAndroid;
+import org.jboss.tools.aerogear.ui.bot.test.export.ExportMobileApplication;
+import org.jboss.tools.aerogear.ui.bot.test.export.ExportNativePlatformProject;
 import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
 @SuiteClasses({ 
+  ExportMobileApplication.class,
+  ExportNativePlatformProject.class,
 	RunOnAndroid.class })
 @RunWith(RequirementAwareSuite.class)
 public class AerogearNonMvnReadyBotTests {

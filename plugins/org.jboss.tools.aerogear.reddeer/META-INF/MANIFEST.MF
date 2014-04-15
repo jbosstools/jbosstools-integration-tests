@@ -1,0 +1,18 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: RedDeer API for Aerogear UI Tests
+Bundle-SymbolicName: org.jboss.tools.aerogear.reddeer
+Bundle-Version: 4.2.0.qualifier
+Bundle-Activator: org.jboss.tools.aerogear.reddeer.Activator
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.junit;bundle-version="4.8.1",
+ org.jboss.reddeer.jface;bundle-version="0.6.0",
+ org.jboss.reddeer.swt;bundle-version="0.6.0",
+ org.jboss.reddeer.junit;bundle-version="0.6.0"
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Eclipse-BundleShape: jar
+Bundle-Vendor: JBoss by Red Hat
+Export-Package: org.jboss.tools.aerogear.reddeer.ui.preferences,
+ org.jboss.tools.aerogear.reddeer.ui.wizard.export

@@ -14,6 +14,7 @@
 	
 	<modules>
 		<module>org.jboss.ide.eclipse.as.reddeer</module>
+		<module>org.jboss.tools.aerogear.reddeer</module>
 		<module>org.jboss.tools.archives.reddeer</module>
 		<module>org.jboss.tools.cdi.reddeer</module>
 		<module>org.jboss.tools.common.reddeer</module>
