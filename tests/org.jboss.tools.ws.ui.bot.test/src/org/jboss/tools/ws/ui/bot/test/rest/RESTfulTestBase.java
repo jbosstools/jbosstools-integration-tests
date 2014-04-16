@@ -200,7 +200,7 @@ public class RESTfulTestBase extends WSTestBase {
 			String resourceFile, Object... parameters) {
 		String streamPath = "/resources/restful/" + resourceFile;
 		resourceHelper.copyResourceToClassWithSave(editor,
-				QueryAnnotationSupportTest.class
+				QueryParamAnnotationSupportTest.class
 						.getResourceAsStream(streamPath), true, false,
 				parameters);
 		bot.sleep(Timing.time2S());
