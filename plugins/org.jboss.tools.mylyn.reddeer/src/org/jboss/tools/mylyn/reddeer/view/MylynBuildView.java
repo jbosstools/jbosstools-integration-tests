@@ -16,13 +16,13 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
-import org.jboss.reddeer.workbench.view.View;
 import org.jboss.reddeer.swt.condition.TreeItemHasMinChildren;
 import org.jboss.reddeer.swt.impl.link.DefaultLink;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.tools.mylyn.reddeer.mylynBuild.MylynBuild;
+import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
 
 /**
  * Represents the Build List view - to support Mylyn automated tests. 
@@ -30,7 +30,7 @@ import org.jboss.tools.mylyn.reddeer.mylynBuild.MylynBuild;
  * @author ldimaggi
  *
  */
-public class MylynBuildView extends View {
+public class MylynBuildView extends WorkbenchView {
 	
 	public static final String TITLE = "Builds";
 	

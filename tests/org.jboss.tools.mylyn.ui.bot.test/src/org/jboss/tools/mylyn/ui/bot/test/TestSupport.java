@@ -16,28 +16,9 @@ import org.jboss.reddeer.swt.lookup.WorkbenchLookup;
 
 public class TestSupport {
 	
-	public static void closeWelcome () {	
-		/* close Welcome screen - copied from: class RedDeerTest */
-		for (IViewReference viewReference : WorkbenchLookup.findAllViews()) {
-			if (viewReference.getPartName().equals("Welcome")) {
-				final IViewReference iViewReference = viewReference;
-				Display.syncExec(new Runnable() {
-					@Override
-					public void run() {
-						iViewReference.getPage().hideView(iViewReference);
-					}
-				});
-				break;
-			}
-		}
-	}
-	
-	
 	/* Test Setup part 1 */
 	public static List<TreeItem> mylynTestSetup1 (Logger log) {		
 		
-		closeWelcome ();
-				
 		log.info("*** Step - Open the Mylyn View");
 		new ShellMenu("Window", "Show View", "Other...").select();
 
