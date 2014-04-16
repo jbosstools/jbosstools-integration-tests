@@ -12,7 +12,8 @@ Require-Bundle: org.eclipse.ui,
  org.jboss.reddeer.swt,
  org.jboss.reddeer.eclipse,
  org.jboss.tools.mylyn.reddeer,
- org.jboss.reddeer.workbench
+ org.jboss.reddeer.workbench,
+ org.jboss.reddeer.junit
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: org.eclipse.wst.server.ui.internal.view.servers,
@@ -32,5 +33,3 @@ Import-Package: org.eclipse.wst.server.ui.internal.view.servers,
 Eclipse-BundleShape: jar
 Bundle-Localization: plugin
 Bundle-Vendor: JBoss by Red Hat
-
-

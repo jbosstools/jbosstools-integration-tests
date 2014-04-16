@@ -43,9 +43,7 @@ public class MylynTestJenkins {
 
 	@Test
 	public void TestIt() {
-		
-		TestSupport.closeWelcome();
-
+	
 		BuildServerDialog buildServerDialog = null;
 		MylynBuildView view = new MylynBuildView();
 

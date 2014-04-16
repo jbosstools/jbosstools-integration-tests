@@ -34,8 +34,6 @@ public class MylynTestValidate {
 	@Test
 	public void TestIt() {
 		
-		TestSupport.closeWelcome();
-
 		TaskRepositoriesView view = new TaskRepositoriesView();
 		
 		view.open();
