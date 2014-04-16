@@ -1,5 +1,5 @@
  /*******************************************************************************
-  * Copyright (c) 2007-2011 Red Hat, Inc.
+  * Copyright (c) 2007-2014 Red Hat, Inc.
   * Distributed under license by Red Hat, Inc. All rights reserved.
   * This program is made available under the terms of the
   * Eclipse Public License v1.0 which accompanies this distribution,
@@ -19,11 +19,12 @@ import org.jboss.tools.ws.ui.bot.test.integration.JAXRSToolingIntegrationTest;
 import org.jboss.tools.ws.ui.bot.test.integration.SOAPWSToolingIntegrationTest;
 import org.jboss.tools.ws.ui.bot.test.preferences.JBossWSPreferencesTest;
 import org.jboss.tools.ws.ui.bot.test.rest.DefaultValueAnnotationSupportTest;
-import org.jboss.tools.ws.ui.bot.test.rest.MatrixAnnotationSupportTest;
-import org.jboss.tools.ws.ui.bot.test.rest.PathAnnotationSupportTest;
-import org.jboss.tools.ws.ui.bot.test.rest.QueryAnnotationSupportTest;
+import org.jboss.tools.ws.ui.bot.test.rest.MatrixParamAnnotationSupportTest;
+import org.jboss.tools.ws.ui.bot.test.rest.PathParamAnnotationSupportTest;
+import org.jboss.tools.ws.ui.bot.test.rest.QueryParamAnnotationSupportTest;
 import org.jboss.tools.ws.ui.bot.test.rest.completion.RESTfulCompletionTest;
 import org.jboss.tools.ws.ui.bot.test.rest.explorer.RESTfulExplorerTest;
+import org.jboss.tools.ws.ui.bot.test.rest.explorer.RESTfulSupportTest;
 import org.jboss.tools.ws.ui.bot.test.rest.validation.ApplicationValidationTest;
 import org.jboss.tools.ws.ui.bot.test.rest.validation.JaxRsValidatorTest;
 import org.jboss.tools.ws.ui.bot.test.rest.validation.RESTfulValidationTest;
@@ -57,10 +58,11 @@ import org.junit.runners.Suite.SuiteClasses;
 	SimpleSoapWebServiceTest.class,
 	SimpleRESTWebServiceTest.class,
 	AnnotationPropertiesTest.class,
-	RESTfulExplorerTest.class, 
-	PathAnnotationSupportTest.class, 
-	QueryAnnotationSupportTest.class,
-	MatrixAnnotationSupportTest.class,
+	RESTfulSupportTest.class,
+	RESTfulExplorerTest.class,
+	PathParamAnnotationSupportTest.class,
+	QueryParamAnnotationSupportTest.class,
+	MatrixParamAnnotationSupportTest.class,
 	DefaultValueAnnotationSupportTest.class,
 	RESTfulValidationTest.class,
 	RESTfulCompletionTest.class,
