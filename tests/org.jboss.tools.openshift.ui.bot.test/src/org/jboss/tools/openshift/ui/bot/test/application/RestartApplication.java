@@ -1,26 +1,34 @@
-package org.jboss.tools.openshift.ui.bot.test.app;
+package org.jboss.tools.openshift.ui.bot.test.application;
+
+import static org.junit.Assert.assertTrue;
 
 import java.util.Date;
+
+import org.jboss.reddeer.eclipse.ui.browser.BrowserEditor;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
+import org.jboss.reddeer.swt.condition.PageIsLoaded;
+import org.jboss.reddeer.swt.impl.browser.InternalBrowser;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
+import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitWhile;
-import org.jboss.tools.openshift.ui.bot.test.OpenShiftBotTest;
+import org.jboss.tools.openshift.ui.bot.test.application.wizard.DeleteApplication;
+import org.jboss.tools.openshift.ui.bot.test.application.wizard.NewApplicationTemplates;
 import org.jboss.tools.openshift.ui.bot.util.OpenShiftExplorerView;
 import org.jboss.tools.openshift.ui.bot.util.OpenShiftLabel;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class RestartApplication extends OpenShiftBotTest {
+public class RestartApplication {
 
-	private final String DYI_APP = "diyapp" + new Date().getTime();
+	private final String DIY_APP = "diyapp" + new Date().getTime();
 
 	@Before
 	public void createDYIApp() {
-		createOpenShiftApplication(DYI_APP, OpenShiftLabel.AppType.DIY);
+		new NewApplicationTemplates(false).createSimpleApplicationWithoutCartridges(OpenShiftLabel.AppType.DIY, DIY_APP, false, true, true);
 	}
 
 	@Test
@@ -42,22 +50,27 @@ public class RestartApplication extends OpenShiftBotTest {
 		
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		
-		connection.getItems().get(0).getItem(DYI_APP + " " + OpenShiftLabel.AppType.DIY_TREE).select();
+		connection.getItems().get(0).getItem(DIY_APP + " " + OpenShiftLabel.AppType.DIY_TREE).select();
 		new ContextMenu(OpenShiftLabel.Labels.EXPLORER_RESTART_APP).select();
 		
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		
-		connection.getItems().get(0).getItem(DYI_APP + " " + OpenShiftLabel.AppType.DIY_TREE).select();
+		connection.getItems().get(0).getItem(DIY_APP + " " + OpenShiftLabel.AppType.DIY_TREE).select();
 		
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-		//new ContextMenu("Show in Web Browser").select();
 		
-		//new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-		// TODO showed in web browser correctly
+		new ContextMenu("Show in Web Browser").select();
+		
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		
+		// To be sure that page is loaded
+		AbstractWait.sleep(TimePeriod.NORMAL);
+		
+		assertTrue(new InternalBrowser().getText().contains("Welcome to OpenShift"));
 	}
 
 	@After
 	public void deleteDIYApp() {
-		deleteOpenShiftApplication(DYI_APP, OpenShiftLabel.AppType.DIY_TREE);
+		new DeleteApplication(DIY_APP, OpenShiftLabel.AppType.DIY_TREE).perform();
 	}
 }

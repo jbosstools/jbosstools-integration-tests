@@ -21,7 +21,7 @@ import org.junit.Test;
  * @author mlabuda
  *
  */
-public class ConnectionEnterprise extends Connection {
+public class ConnectionEnterprise {
 	
 	@Before
 	public void setUpServer() {

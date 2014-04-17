@@ -1,6 +1,7 @@
-package org.jboss.tools.openshift.ui.bot.test.app;
+package org.jboss.tools.openshift.ui.bot.test.application;
 
 import java.util.Date;
+
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.swt.api.TreeItem;
@@ -16,14 +17,15 @@ import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
-import org.jboss.tools.openshift.ui.bot.test.OpenShiftBotTest;
+import org.jboss.tools.openshift.ui.bot.test.application.wizard.DeleteApplication;
+import org.jboss.tools.openshift.ui.bot.test.application.wizard.NewApplicationTemplates;
 import org.jboss.tools.openshift.ui.bot.util.OpenShiftExplorerView;
 import org.jboss.tools.openshift.ui.bot.util.OpenShiftLabel;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class RepublishApp extends OpenShiftBotTest {
+public class RepublishApplication {
 
 	private final String DYI_APP = "diyapp" + new Date().getTime();
 	
@@ -34,7 +36,8 @@ public class RepublishApp extends OpenShiftBotTest {
 	
 	@Before
 	public void createDYIApp() {
-		createOpenShiftApplication(DYI_APP, OpenShiftLabel.AppType.DIY);
+		new NewApplicationTemplates(false).createSimpleApplicationWithoutCartridges(
+				OpenShiftLabel.AppType.DIY, DYI_APP, false, true, true);
 	}
 	
 	@Test
@@ -50,6 +53,8 @@ public class RepublishApp extends OpenShiftBotTest {
 		editor.setText(text);
 		editor.save();
 		editor.close();
+		
+		// shell "Internal Error"; "No" button
 		
 		projectExplorer.open();
 		projectExplorer.getProject(DYI_APP).select();
@@ -103,7 +108,7 @@ public class RepublishApp extends OpenShiftBotTest {
 
 	@After
 	public void deleteDIYApp() {
-		deleteOpenShiftApplication(DYI_APP, OpenShiftLabel.AppType.DIY_TREE);
+		new DeleteApplication(DYI_APP, OpenShiftLabel.AppType.DIY_TREE).perform();
 	}
 	
 }

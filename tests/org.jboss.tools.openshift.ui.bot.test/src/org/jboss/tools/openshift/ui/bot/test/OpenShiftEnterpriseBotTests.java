@@ -11,26 +11,26 @@
 package org.jboss.tools.openshift.ui.bot.test;
 
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.tools.openshift.ui.bot.test.app.CreateAdapterFromServerView;
-import org.jboss.tools.openshift.ui.bot.test.app.CreateAppUsingWizard;
-import org.jboss.tools.openshift.ui.bot.test.app.CreateApplicationFromGithubEnterprise;
-import org.jboss.tools.openshift.ui.bot.test.app.CreateDeleteEWSApp;
-import org.jboss.tools.openshift.ui.bot.test.app.CreateDeleteJBossApp;
-import org.jboss.tools.openshift.ui.bot.test.app.CreateDeleteJenkinsApp;
-import org.jboss.tools.openshift.ui.bot.test.app.CreateDeletePHPApp;
-import org.jboss.tools.openshift.ui.bot.test.app.CreateDeletePerlApp;
-import org.jboss.tools.openshift.ui.bot.test.app.CreateDeletePythonApp;
-import org.jboss.tools.openshift.ui.bot.test.app.CreateDeleteRubyApp;
-import org.jboss.tools.openshift.ui.bot.test.app.CreateDeleteScalableEWSApp;
-import org.jboss.tools.openshift.ui.bot.test.app.CreateDeleteScalablePHPApp;
-import org.jboss.tools.openshift.ui.bot.test.app.CreateDeleteScalablePerlApp;
-import org.jboss.tools.openshift.ui.bot.test.app.CreateDeleteScalablePythonApp;
-import org.jboss.tools.openshift.ui.bot.test.app.CreateDeleteScaledJBossApp;
-import org.jboss.tools.openshift.ui.bot.test.app.CreateDeleteScaledRubyApp;
-import org.jboss.tools.openshift.ui.bot.test.app.ImportAndDeployGitHubProject;
-import org.jboss.tools.openshift.ui.bot.test.app.ImportApplicationFromOpenShift;
-import org.jboss.tools.openshift.ui.bot.test.app.RepublishApp;
-import org.jboss.tools.openshift.ui.bot.test.app.RestartApplication;
+import org.jboss.tools.openshift.ui.bot.test.application.CreateAdapterFromServerView;
+import org.jboss.tools.openshift.ui.bot.test.application.CreateApplicationThroughShellMenu;
+import org.jboss.tools.openshift.ui.bot.test.application.CreateApplicationFromGithub;
+import org.jboss.tools.openshift.ui.bot.test.application.ImportAndDeployGitHubProject;
+import org.jboss.tools.openshift.ui.bot.test.application.ImportApplicationFromOpenShift;
+import org.jboss.tools.openshift.ui.bot.test.application.RepublishApplication;
+import org.jboss.tools.openshift.ui.bot.test.application.RestartApplication;
+import org.jboss.tools.openshift.ui.bot.test.application.create.CreateDeleteEWSApp;
+import org.jboss.tools.openshift.ui.bot.test.application.create.CreateDeleteJBossApp;
+import org.jboss.tools.openshift.ui.bot.test.application.create.CreateDeleteJenkinsApp;
+import org.jboss.tools.openshift.ui.bot.test.application.create.CreateDeletePHPApp;
+import org.jboss.tools.openshift.ui.bot.test.application.create.CreateDeletePerlApp;
+import org.jboss.tools.openshift.ui.bot.test.application.create.CreateDeletePythonApp;
+import org.jboss.tools.openshift.ui.bot.test.application.create.CreateDeleteRubyApp;
+import org.jboss.tools.openshift.ui.bot.test.application.create.CreateDeleteScalableEWSApp;
+import org.jboss.tools.openshift.ui.bot.test.application.create.CreateDeleteScalablePHPApp;
+import org.jboss.tools.openshift.ui.bot.test.application.create.CreateDeleteScalablePerlApp;
+import org.jboss.tools.openshift.ui.bot.test.application.create.CreateDeleteScalablePythonApp;
+import org.jboss.tools.openshift.ui.bot.test.application.create.CreateDeleteScalableJBossApp;
+import org.jboss.tools.openshift.ui.bot.test.application.create.CreateDeleteScalableRubyApp;
 import org.jboss.tools.openshift.ui.bot.test.cartridge.EmbedCartridges;
 import org.jboss.tools.openshift.ui.bot.test.domain.CreateDomain;
 import org.jboss.tools.openshift.ui.bot.test.domain.DeleteDomain;
@@ -38,6 +38,7 @@ import org.jboss.tools.openshift.ui.bot.test.domain.RenameDomain;
 import org.jboss.tools.openshift.ui.bot.test.explorer.ConnectionEnterprise;
 import org.jboss.tools.openshift.ui.bot.test.explorer.CreateAdapter;
 import org.jboss.tools.openshift.ui.bot.test.explorer.ManageSSH;
+import org.jboss.tools.openshift.ui.bot.test.explorer.MultipleAccounts;
 import org.jboss.tools.openshift.ui.bot.test.explorer.OpenShiftEnterpriseDebugFeatures;
 import org.jboss.tools.openshift.ui.bot.util.CleanUp;
 import org.junit.runner.RunWith;
@@ -57,6 +58,7 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses({
 	/* Connection stuff */
 	ConnectionEnterprise.class, 
+	MultipleAccounts.class,
 	ManageSSH.class, 
 	
 	/* Domain*/
@@ -67,13 +69,13 @@ import org.junit.runners.Suite.SuiteClasses;
 	/* Application creation*/
  	ImportAndDeployGitHubProject.class, 
  	ImportApplicationFromOpenShift.class,
- 	CreateAppUsingWizard.class,
-    CreateApplicationFromGithubEnterprise.class,
+ 	CreateApplicationThroughShellMenu.class,
+    CreateApplicationFromGithub.class,
  	CreateAdapter.class,
 	CreateAdapterFromServerView.class,
 	EmbedCartridges.class, 
 	// TODO Conflict cartridge 
-	RepublishApp.class,
+	RepublishApplication.class,
 	OpenShiftEnterpriseDebugFeatures.class,
  	RestartApplication.class, 
  	
@@ -88,11 +90,11 @@ import org.junit.runners.Suite.SuiteClasses;
 	
 	/* Scalable applications */
 	CreateDeleteScalableEWSApp.class, 
-	CreateDeleteScaledJBossApp.class, 
+	CreateDeleteScalableJBossApp.class, 
 	CreateDeleteScalablePHPApp.class,
 	CreateDeleteScalablePythonApp.class, 
 	CreateDeleteScalablePerlApp.class, 
-	CreateDeleteScaledRubyApp.class, 
+	CreateDeleteScalableRubyApp.class, 
 	
 	CleanUp.class
 })

@@ -1,4 +1,4 @@
-package org.jboss.tools.openshift.ui.bot.test.app;
+package org.jboss.tools.openshift.ui.bot.test.application;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -6,14 +6,11 @@ import static org.junit.Assert.assertTrue;
 import java.util.List;
 
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
-import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
@@ -21,7 +18,8 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
-import org.jboss.tools.openshift.ui.bot.test.OpenShiftBotTest;
+import org.jboss.tools.openshift.ui.bot.test.application.wizard.DeleteApplication;
+import org.jboss.tools.openshift.ui.bot.test.application.wizard.NewApplicationTemplates;
 import org.jboss.tools.openshift.ui.bot.util.OpenShiftExplorerView;
 import org.jboss.tools.openshift.ui.bot.util.OpenShiftLabel;
 import org.junit.After;
@@ -34,11 +32,10 @@ public class ImportApplicationFromOpenShift {
 	
 	@Before
 	public void createApp() {
-		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
+		new NewApplicationTemplates(false).createSimpleApplicationWithoutCartridges(
+				OpenShiftLabel.AppType.DIY, DIY_APP, false, true, false);
 		
-		OpenShiftBotTest.createOpenShiftApplicationWithoutAdapter(DIY_APP, OpenShiftLabel.AppType.DIY);
-		
-		removeApp();
+		new DeleteApplication(DIY_APP, OpenShiftLabel.AppType.DIY).deleteProject();
 	}
 	
 	@Test
@@ -112,23 +109,6 @@ public class ImportApplicationFromOpenShift {
 	
 	@After
 	public void deleteApp() {
-		OpenShiftBotTest.deleteOpenShiftApplication(DIY_APP, OpenShiftLabel.AppType.DIY_TREE);
+		new DeleteApplication(DIY_APP, OpenShiftLabel.AppType.DIY_TREE).perform();
 	}
-	
-	private void removeApp() {
-		ProjectExplorer projectExplorer = new ProjectExplorer();
-		projectExplorer.open();
-		Project project = projectExplorer.getProject(DIY_APP);
-		project.select();
-	    new ContextMenu("Delete").select();
-		new DefaultShell("Delete Resources");
-		if (!new CheckBox(0).isChecked()) {
-			new CheckBox(0).click();
-		}
-		DefaultShell shell = new DefaultShell();
-		String deleteShellText = shell.getText();
-		new PushButton("OK").click();
-		new WaitWhile(new ShellWithTextIsActive(deleteShellText),TimePeriod.LONG);
-		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-	}	
 }
