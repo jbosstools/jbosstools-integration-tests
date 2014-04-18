@@ -4,9 +4,10 @@ import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.wait.WaitUntil;
-import org.jboss.reddeer.workbench.view.View;
+import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
 
-public class KnownConfigurationsView extends View {
+public class KnownConfigurationsView extends WorkbenchView
+{
 	
 	public KnownConfigurationsView() {
 		super("Hibernate Configurations");

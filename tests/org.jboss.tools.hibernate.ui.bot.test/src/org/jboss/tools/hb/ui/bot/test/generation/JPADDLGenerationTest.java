@@ -1,14 +1,11 @@
 package org.jboss.tools.hb.ui.bot.test.generation;
 
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
-import org.jboss.tools.hb.ui.bot.common.ConfigurationFile;
-import org.jboss.tools.hb.ui.bot.common.PersistenceXML;
-import org.jboss.tools.hb.ui.bot.test.HibernateBaseTest;
-import org.jboss.tools.ui.bot.ext.config.Annotations.DB;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
-import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
-import org.jboss.tools.ui.bot.ext.types.IDELabel;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.tools.hibernate.reddeer.console.HibernateConfiguration;
+import org.jboss.tools.hibernate.reddeer.test.HibernateRedDeerTest;
 import org.junit.Test;
 
 /**
@@ -16,8 +13,7 @@ import org.junit.Test;
  * @author jpeterka
  *
  */
-@Require(db = @DB, clearProjects = true, perspective = "JPA")
-public class JPADDLGenerationTest extends HibernateBaseTest {
+public class JPADDLGenerationTest extends HibernateRedDeerTest {
 	
 	final String prj = "jpatest35";
 	final String out = "src";
@@ -25,39 +21,41 @@ public class JPADDLGenerationTest extends HibernateBaseTest {
 	
 	@Test
 	public void jpaDDLGenerationTest() {
-		importTestProject("/resources/prj/hibernatelib");
-		importTestProject("/resources/prj/" + prj);
+		importProject("/resources/prj/hibernatelib");
+		importProject("/resources/prj/" + prj);
 		createHBConfigurationAndSetPersistence();
 		generateDDLFromEntities();
 	}
 	
 	private void createHBConfigurationAndSetPersistence() {
-		ConfigurationFile.create(new String[]{prj,"src"}, hbcfg,false);
-		PersistenceXML.openPersistenceXML(prj);
-		PersistenceXML.setHibernateConfiguration(hbcfg);		
+		HibernateConfiguration c = new HibernateConfiguration();
+		c.setProject(prj);
+		ProjectExplorer pe = new ProjectExplorer();
+		pe.open();
+		new DefaultTreeItem(prj,"src",hbcfg).select();
 	}
 	
 	private void generateDDLFromEntities() {
 		// Select project
-		SWTBotView viewBot = bot.viewByTitle(IDELabel.View.PROJECT_EXPLORER);
-		SWTBotTree tree = viewBot.bot().tree().select(prj);
+		ProjectExplorer p = new ProjectExplorer();
+		p.selectProjects(prj);
 		
 		// JPA Tools -> Generate Tables From Entities
 		// workaround for https://issues.jboss.org/browse/JBIDE-12796
 		try {
-			ContextMenuHelper.clickContextMenu(tree, "JPA Tools",
-				"Generate Tables from Entities...");
+			new ContextMenu("JPA Tools",
+				"Generate Tables from Entities...").select();
 		}
 		catch(Exception e) {
-			ContextMenuHelper.clickContextMenu(tree, "JPA Tools",
+			new ContextMenu("JPA Tools",
 					"Generate Tables from Entities...");
 		}
 
 		
 		// DDL Generation Dialog
 		String outputDir = prj + "/" + out;
-		bot.textWithLabel("Output directory:").setText(outputDir);
-		bot.textWithLabel("File name").setText(out);
+		new LabeledText("Output directory:").setText(outputDir);
+		new LabeledText("File name").setText(out);
 
 		// temporarily disabled until fixe db harming
 		// bot.button(IDELabel.Button.FINISH).click();

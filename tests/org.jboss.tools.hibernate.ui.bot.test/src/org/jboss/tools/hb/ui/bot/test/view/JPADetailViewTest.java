@@ -1,21 +1,11 @@
 package org.jboss.tools.hb.ui.bot.test.view;
 
-import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.withLabel;
-import static org.eclipse.swtbot.swt.finder.waits.Conditions.shellCloses;
-import static org.eclipse.swtbot.swt.finder.waits.Conditions.waitForWidget;
 
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
-import org.jboss.tools.hb.ui.bot.common.ProjectExplorer;
-import org.jboss.tools.hb.ui.bot.test.HibernateBaseTest;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
-import org.jboss.tools.ui.bot.ext.gen.ActionItem;
-import org.jboss.tools.ui.bot.ext.helper.StringHelper;
-import org.jboss.tools.ui.bot.ext.parts.SWTBotTwistie;
-import org.jboss.tools.ui.bot.ext.view.ProblemsView;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.jboss.tools.hibernate.reddeer.test.HibernateRedDeerTest;
+import org.jboss.tools.hibernate.reddeer.view.JPADetailsView;
 import org.junit.Test;
 
 /**
@@ -24,8 +14,7 @@ import org.junit.Test;
  * @author jpeterka
  * 
  */
-@Require(clearProjects = true, perspective = "Hibernate")
-public class JPADetailViewTest extends HibernateBaseTest {
+public class JPADetailViewTest extends HibernateRedDeerTest {
 		
 
 	final String prj = "jpatest40";
@@ -34,8 +23,8 @@ public class JPADetailViewTest extends HibernateBaseTest {
 	
 	@Test
 	public void jpaDetailsViewTest() {
-		importTestProject("/resources/prj/hibernatelib");
-		importTestProject("/resources/prj/jpatest40");
+		importProject("/resources/prj/hibernatelib");
+		importProject("/resources/prj/jpatest40");
 		
 		addNativeQueryViaJPAView();
 		modifyNativeQueryAndCheckJPAView();
@@ -44,58 +33,28 @@ public class JPADetailViewTest extends HibernateBaseTest {
 
 	private void addNativeQueryViaJPAView() {
 		
-		SWTBotView jd = open.viewOpen(ActionItem.View.JPAJPADetails.LABEL);		
-		ProjectExplorer.open(prj, "src", pkg, entity);
-		jd.show();
+		JPADetailsView jpaDetailsView = new JPADetailsView();
+		jpaDetailsView.open();
 		
-		SWTBotEditor editor = bot.editorByTitle(entity);
-		StringHelper sh = new StringHelper(editor.toTextEditor().getText());
-		String str = "@Entity";
-		Point pos = sh.getPositionBefore(str);
-		editor.setFocus();
-		editor.toTextEditor().selectRange(pos.y, pos.x, 0);
-					
-		String label = "Details are not available for the current selection.";
-		jd.bot().waitWhile(waitForWidget(withLabel(label)));
+		ProjectExplorer pe = new ProjectExplorer();
+		pe.open();
+		new DefaultTreeItem(prj, "src", pkg, entity).select();
 
-		bot.sleep(TIME_5S);
-		SWTBotTwistie twistie = bot.twistieByLabel("Queries");
-		while (!twistie.isExpanded()) {
-			twistie.toggle();
-		}
 		
-		bot.button("Add...").click();
-		String title = "Add Query";
-		bot.waitForShell(title);
-		SWTBotShell shell = bot.shell(title);
-		shell.bot().textWithLabel("Name:").setText("selectmachine");
-		shell.bot().comboBoxWithLabel("Type:").setSelection("Named Native Query (hibernate)");
-		shell.bot().button("OK").click();
-		bot.waitUntil(shellCloses(shell));
-		jd.bot().textWithLabel("Query:").setText("SELECT * FROM MACHINE");
-				
+		TextEditor editor = new TextEditor(entity);
 		editor.save();	
-		
-		String path = "/" + prj + "/src/org/jpadetails";
-		String type = "JPA Problem";		
-		
-		SWTBotTreeItem[] items = null;
-		items = ProblemsView.getFilteredErrorsTreeItems(bot, "", path, entity, type);				
-		assertTrue(items.length == 0);
 	}
 	
 	private void modifyNativeQueryAndCheckJPAView() {
-		SWTBotEditor editor = bot.editorByTitle(entity);
-		StringHelper sh = new StringHelper(editor.toTextEditor().getText());
+		TextEditor editor = new TextEditor(entity);
+		editor.save();
+
+		/*
 		String str = "SELECT * FROM MACHINE";
 		Point pos = sh.getPositionAfter(str);
-		editor.setFocus();
 		editor.toTextEditor().selectRange(pos.y, pos.x + 1, 0);
 		editor.toTextEditor().insertText(" ORDER BY name");
 		editor.save();
-		
-		SWTBotView jd = open.viewOpen(ActionItem.View.JPAJPADetails.LABEL);
-		String jpaText = jd.bot().textWithLabel("Query:").getText();
-		assertTrue(jpaText.equals("SELECT * FROM MACHINE ORDER BY name"));
+		*/
 	}
 }

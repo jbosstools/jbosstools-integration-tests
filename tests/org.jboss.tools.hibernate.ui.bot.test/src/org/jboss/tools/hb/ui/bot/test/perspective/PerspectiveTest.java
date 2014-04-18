@@ -1,8 +1,7 @@
 package org.jboss.tools.hb.ui.bot.test.perspective;
 
-import org.jboss.tools.hb.ui.bot.test.HibernateBaseTest;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
-import org.jboss.tools.ui.bot.ext.gen.ActionItem;
+import org.jboss.tools.hibernate.reddeer.console.HibernateConfigurationView;
+import org.jboss.tools.hibernate.reddeer.test.HibernateRedDeerTest;
 import org.junit.Test;
 
 /**
@@ -12,14 +11,11 @@ import org.junit.Test;
  * @author jpeterka
  * 
  */
-@Require(clearProjects = false, perspective = "Hibernate")
-public class PerspectiveTest extends HibernateBaseTest {
+public class PerspectiveTest extends HibernateRedDeerTest {
 		
 	@Test
 	public void openPerspectiveElements() {
-		open.perspective(ActionItem.Perspective.HIBERNATE.LABEL);
-		open.viewOpen(ActionItem.View.HibernateHibernateConfigurations.LABEL);
-		open.viewOpen(ActionItem.View.HibernateHibernateDynamicSQLPreview.LABEL);
-		open.viewOpen(ActionItem.View.HibernateHibernateQueryResult.LABEL);
+		HibernateConfigurationView v = new HibernateConfigurationView();
+		v.open();
 	}
 }

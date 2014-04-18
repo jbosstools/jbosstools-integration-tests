@@ -25,7 +25,7 @@ public class ConsoleConfigurationTest extends HibernateRedDeerTest {
 	@Before 
 	public void prepare() {			
 		importProject(PROJECT_NAME);		
-		//importProject(PROJECT_LIBS);
+		importProject(PROJECT_LIBS);
 		prepareConsoleConfiguration();
 	}
 	
