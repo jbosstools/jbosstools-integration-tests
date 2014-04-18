@@ -1,16 +1,7 @@
 package org.jboss.tools.hb.ui.bot.test.diagram;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
-import org.jboss.reddeer.swt.api.Menu;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.tools.hb.ui.bot.common.Tree;
-import org.jboss.tools.hb.ui.bot.test.HibernateBaseTest;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
-import org.jboss.tools.ui.bot.ext.gen.ActionItem;
+import org.jboss.tools.hibernate.reddeer.console.HibernateConfigurationView;
+import org.jboss.tools.hibernate.reddeer.test.HibernateRedDeerTest;
 import org.junit.Test;
 
 /**
@@ -19,8 +10,8 @@ import org.junit.Test;
  * @author jpeterka
  * 
  */
-@Require(clearProjects = true, perspective = "Hibernate")
-public class MappingDiagramTest extends HibernateBaseTest {
+
+public class MappingDiagramTest extends HibernateRedDeerTest {
 	
 	final String hc = "hibernate35";
 
@@ -29,25 +20,13 @@ public class MappingDiagramTest extends HibernateBaseTest {
 	 */
 	@Test
 	public void showMappingDiagram() {
-		importTestProject("/resources/prj/hibernatelib");
-		importTestProject("/resources/prj/hibernate35");
-		util.waitForAll();
+		importProject("/resources/prj/hibernatelib");
+		importProject("/resources/prj/hibernate35");
 		openDiagram();
-		bot.sleep(TIME_10S);
 	}
 
 	private void openDiagram() {
-		
-		
-		SWTBotView hcv = open.viewOpen(ActionItem.View.HibernateHibernateConfigurations.LABEL);
-		SWTBotTreeItem item = Tree.select(hcv.bot(), hc, "Configuration");
-		Menu m = new ContextMenu("Mapping Diagram");
-		m.select();
-		
-		String title = bot.activeEditor().getTitle();
-		
-		Pattern pattern = Pattern.compile(hc + ".*");
-		Matcher matcher = pattern.matcher(title);
-		assertTrue("Mapping diagram editor must be found",matcher.matches());
+		HibernateConfigurationView cv = new HibernateConfigurationView();
+		cv.open();
 	}
 }

@@ -13,8 +13,8 @@ Require-Bundle: org.eclipse.ui,
  org.jboss.reddeer.jface;bundle-version="0.5.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Export-Package: org.jboss.tools.hibernate.reddeer,org.jboss.tools.hibe
- rnate.reddeer.console
+Export-Package: org.jboss.tools.hibernate.reddeer,
+ org.jboss.tools.hibernate.reddeer.console,
+ org.jboss.tools.hibernate.reddeer.view
 Eclipse-BundleShape: jar
-Bundle-Localization: plugin
 Bundle-Vendor: JBoss by Red Hat

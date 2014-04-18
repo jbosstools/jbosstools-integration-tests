@@ -1,8 +1,7 @@
 package org.jboss.tools.hb.ui.bot.test.perspective;
 
-import org.jboss.tools.hb.ui.bot.test.HibernateBaseTest;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
-import org.jboss.tools.ui.bot.ext.gen.ActionItem;
+import org.jboss.tools.hibernate.reddeer.test.HibernateRedDeerTest;
+import org.jboss.tools.hibernate.reddeer.view.JPADetailsView;
 import org.junit.Test;
 
 /**
@@ -11,14 +10,12 @@ import org.junit.Test;
  * @author jpeterka
  * 
  */
-@Require(clearProjects = false, perspective = "JPA")
-public class JPAPerspectiveTest extends HibernateBaseTest {
+
+public class JPAPerspectiveTest extends HibernateRedDeerTest {
 
 	@Test
 	public void openPerspectiveElements() {
-		open.perspective(ActionItem.Perspective.JPA.LABEL);
-		open.viewOpen(ActionItem.View.JPAJPAStructure.LABEL);
-		open.viewOpen(ActionItem.View.JPAJPADetails.LABEL);
-		open.viewOpen(ActionItem.View.DataManagementDataSourceExplorer.LABEL);
+		JPADetailsView v = new JPADetailsView();
+		v.open();
 	}
 }

@@ -1,17 +1,11 @@
 package org.jboss.tools.hb.ui.bot.test.generation;
 
-import static org.eclipse.swtbot.swt.finder.waits.Conditions.shellCloses;
-import static org.eclipse.swtbot.swt.finder.waits.Conditions.shellIsActive;
-
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
-import org.jboss.tools.hb.ui.bot.common.Tree;
-import org.jboss.tools.hb.ui.bot.test.HibernateBaseTest;
-import org.jboss.tools.ui.bot.ext.config.Annotations.DB;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
-import org.jboss.tools.ui.bot.ext.gen.ActionItem;
-import org.jboss.tools.ui.bot.ext.types.IDELabel;
+import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.tools.hibernate.reddeer.test.HibernateRedDeerTest;
 import org.junit.Test;
 
 /**
@@ -20,35 +14,25 @@ import org.junit.Test;
  * @author jpeterka
  * 
  */
-@Require(db = @DB, clearProjects = true, perspective = "Hibernate")
-public class RunSchemaExportTest extends HibernateBaseTest {
+public class RunSchemaExportTest extends HibernateRedDeerTest {
 
 
 	final String hc = "pre-hibernate40";
 	
 	@Test
 	public void runSchemaExportTest() {
-		importTestProject("/resources/prj/hibernatelib");
-		importTestProject("/resources/prj/hibernate40");
-		util.waitForAll();
+		importProject("/resources/prj/hibernatelib");
+		importProject("/resources/prj/hibernate40");
 		runShemaExport();
 	}
 
 	private void runShemaExport() {
-		SWTBotView hcv = open.viewOpen(ActionItem.View.HibernateHibernateConfigurations.LABEL);
-		Tree.select(hcv.bot(), hc, "Configuration");
-		SWTBotTreeItem item = Tree.select(hcv.bot(), hc);
-		item.contextMenu("Run SchemaExport").click();
+		DefaultTreeItem ti = new DefaultTreeItem(hc, "Configuration");
+		ti.select();
+		new ContextMenu("Run SchemaExport").select();
 		
 		String title = "Run SchemaExport";
-		bot.waitUntil(shellIsActive(title ));
-		SWTBotShell shell = bot.shell(title);
-		
-		// temporarily disabled until avoid db harm
-		// shell.bot().button(IDELabel.Button.YES).click();
-		// bot.waitUntil(shellCloses(shell));
-		
-		//SWTBotTreeItem selectNode = ConsoleConfiguration.selectNode(hc,"Configuration","Database","Public");
-		//assertTrue(selectNode.getNodes().size() != 0);
+		new WaitUntil(new ShellWithTextIsActive(title));
+		new DefaultShell(title);
 	}
 }

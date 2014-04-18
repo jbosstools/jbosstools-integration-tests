@@ -1,19 +1,10 @@
 package org.jboss.tools.hb.ui.bot.test.ant;
 
-import static org.eclipse.swtbot.swt.finder.waits.Conditions.shellIsActive;
-
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
-import org.jboss.tools.hb.ui.bot.common.ProjectExplorer;
-import org.jboss.tools.hb.ui.bot.common.Tree;
-import org.jboss.tools.hb.ui.bot.test.HibernateBaseTest;
-import org.jboss.tools.ui.bot.ext.SWTBotExt;
-import org.jboss.tools.ui.bot.ext.SWTOpenExt;
-import org.jboss.tools.ui.bot.ext.config.Annotations.DB;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
-import org.jboss.tools.ui.bot.ext.gen.ActionItem;
-import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
-import org.jboss.tools.ui.bot.ext.types.IDELabel;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
+import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
+import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.junit.Test;
 
 /**
@@ -23,49 +14,39 @@ import org.junit.Test;
  * @author jpeterka
  * 
  */
-@Require(db = @DB, clearProjects = true, perspective = "Hibernate")
-public class ExportAntCodeGenerationTest extends HibernateBaseTest {
+public class ExportAntCodeGenerationTest {
 	final String prjName = "hibernate35";
 	final String genCfg = "hb35hsqldb";
 	final String antCfg = "build.hb.xml";
 
 	@Test
 	public void hibernateCodeGeneration() {
-		importTestProject("/resources/prj/hibernatelib");
-		importTestProject("/resources/prj/hibernate35");
+		
+		ExternalProjectImportWizardDialog d = new ExternalProjectImportWizardDialog();
+		d.open();
+		WizardProjectsImportPage firstPage = d.getFirstPage();
+		firstPage.setRootDirectory("/resources/prj/");
+		firstPage.selectProjects("hibernatelib","hibernate35");
+		
 		exportAntCodeGeneration();
 		checkGeneratedAntcode();
+		
+		d.finish();
 	}
 
 	private void exportAntCodeGeneration() {
-		SWTBotExt bot = new SWTBotExt();
-		SWTOpenExt open = new SWTOpenExt(bot);
-		SWTBotView view = open
-				.viewOpen(ActionItem.View.GeneralProjectExplorer.LABEL);
-		Tree.select(view.bot(), prjName);
-		ContextMenuHelper.clickContextMenu(view.bot().tree(), "Export...");
+		
+		ProjectExplorer projectExplorer = new ProjectExplorer();
+		projectExplorer.getProject(prjName).select();
+		new ContextMenu("Export...").select();
 
-		String st1 = "Export";
-		bot.waitUntil(shellIsActive(st1));
-		SWTBotShell shell = bot.shell(st1);
-		Tree.select(shell.bot(), "Hibernate", "Ant Code Generation");
-		shell.bot().button(IDELabel.Button.NEXT).click();
-
-		String st2 = "Export Hibernate Code Generation Configuration to Ant Script";
-		bot.waitUntil(shellIsActive(st2));
-		SWTBotShell shell2 = bot.shell(st2);
-
-		shell2.bot()
-				.comboBoxWithLabel("Hibernate Code Generation Configurations:")
-				.setSelection(genCfg);
-		shell2.bot().textWithLabel("File name:").setText(antCfg);
-		shell2.bot().button(IDELabel.Button.FINISH).click();
-
-		bot.waitForNumberOfShells(1);
+		new DefaultTreeItem("Hibernate", "Ant Code Generation").select();
 	}
 
 	private void checkGeneratedAntcode() {
-		ProjectExplorer.open(prjName, antCfg);		
+		ProjectExplorer projectExplorer = new ProjectExplorer();
+		projectExplorer.open();
+		projectExplorer.selectProjects(prjName);
 	}
 
 }

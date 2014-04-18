@@ -1,22 +1,19 @@
 package org.jboss.tools.hb.ui.bot.test.view;
 
-import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.withLabel;
-import static org.eclipse.swtbot.swt.finder.waits.Conditions.waitForWidget;
+import static org.junit.Assert.assertTrue;
 
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
-import org.jboss.tools.hb.ui.bot.common.ProjectExplorer;
-import org.jboss.tools.hb.ui.bot.test.HibernateBaseTest;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
-import org.jboss.tools.ui.bot.ext.gen.ActionItem;
-import org.jboss.tools.ui.bot.ext.helper.StringHelper;
-import org.jboss.tools.ui.bot.ext.parts.SWTBotTwistie;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
+import org.jboss.reddeer.swt.impl.table.DefaultTable;
+import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.jboss.tools.hb.ui.bot.common.StringHelper;
+import org.jboss.tools.hibernate.reddeer.test.HibernateRedDeerTest;
+import org.jboss.tools.hibernate.reddeer.view.JPADetailsView;
 import org.junit.Test;
 
-@Require(clearProjects = true, perspective = "JPA")
-public class PackageInfoTest extends HibernateBaseTest {
+public class PackageInfoTest extends HibernateRedDeerTest {
 	final String prj = "jpatest40";
 	final String pkg = "org.packageinfo";
 	final String pkginfo = "package-info.java";
@@ -24,43 +21,38 @@ public class PackageInfoTest extends HibernateBaseTest {
 	
 	@Test
 	public void jpaDetailsViewTest() {
-		importTestProject("/resources/prj/hibernatelib");
-		importTestProject("/resources/prj/jpatest40");
+		importProject("/resources/prj/hibernatelib");
+		importProject("/resources/prj/jpatest40");
 		
 		checkGeneratorInPackageInJPADetailsView();
 	}
 
-
 	private void checkGeneratorInPackageInJPADetailsView() {
-		
-		SWTBotView jd = open.viewOpen(ActionItem.View.JPAJPADetails.LABEL);		
-		ProjectExplorer.open(prj, "src", pkg, pkginfo);
-		jd.show();
-		
-		SWTBotEditor editor = bot.editorByTitle(pkginfo);
-		StringHelper sh = new StringHelper(editor.toTextEditor().getText());
-		String str = "@GenericGenerator";
-		Point pos = sh.getPositionBefore(str);
-		editor.setFocus();
-		editor.toTextEditor().selectRange(pos.y, pos.x, 0);
-					
-		String label = "Details are not available for the current selection.";
-		jd.bot().waitWhile(waitForWidget(withLabel(label)));
-		jd.setFocus();
+	
 
-		SWTBotTwistie twistie = bot.twistieByLabel("Generic Generators");
-		while (!twistie.isExpanded()) {
-			twistie.toggle();
-		}
+		JPADetailsView v = new JPADetailsView();
+		v.open();
+		ProjectExplorer p = new ProjectExplorer();
+		p.open();
+		DefaultTreeItem i = new DefaultTreeItem(prj, "src", pkg, pkginfo);
+		i.select();
+		
+		
+		TextEditor editor = new TextEditor(pkginfo);
+		StringHelper sh = new StringHelper(editor.getText());
+		
+		String str = "@GenericGenerator";
+		sh.getPositionBefore(str);
+		// editor..selectRange(pos.y, pos.x, 0);					
 		
 		final String genname = "myuuidgen";
 		final String strategy = "uuid";
-		SWTBotTable table = jd.bot().table(1);
+		DefaultTable table = new DefaultTable();
 		assertTrue(table.containsItem(genname));
-		table.getTableItem(genname).select();
+		table.getItem(genname).select();
 		
-		assertTrue(jd.bot().textWithLabel("Name:").getText().equals(genname));
-		assertTrue(jd.bot().comboBoxWithLabel("Strategy:").getText().equals(strategy));
+		assertTrue(new LabeledText("Name:").getText().equals(genname));
+		assertTrue(new LabeledCombo("Strategy:").getText().equals(strategy));
 	}
 	
 }

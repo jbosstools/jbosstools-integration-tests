@@ -1,11 +1,14 @@
 package org.jboss.tools.hb.ui.bot.test.jpa;
 
-import org.jboss.tools.hb.ui.bot.test.HibernateBaseTest;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
-import org.jboss.tools.ui.bot.ext.types.EntityType;
-import org.jboss.tools.ui.bot.ext.types.IDELabel;
+import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.swt.impl.button.FinishButton;
+import org.jboss.reddeer.swt.impl.button.NextButton;
+import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.menu.ShellMenu;
+import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.tools.hibernate.reddeer.test.HibernateRedDeerTest;
 import org.junit.Test;
-import org.osgi.framework.Version;
 
 /**
  * Create JPA Project ui bot test
@@ -14,8 +17,7 @@ import org.osgi.framework.Version;
  * @author jpeterka
  * 
  */
-@Require(clearProjects = true, perspective="JPA")
-public class CreateJPAProjectTest extends HibernateBaseTest {
+public class CreateJPAProjectTest extends HibernateRedDeerTest {
 	
 	final String prj = "jpa35test";
 	
@@ -25,26 +27,21 @@ public class CreateJPAProjectTest extends HibernateBaseTest {
 	}
 
 	private void createProject() {
-		EntityType type = EntityType.JPA_PROJECT;
-		eclipse.createNew(type);
+		new ShellMenu("File","New","JPA Project").select();
 
 		// JPA Project Page
-		eclipse.waitForShell("New JPA Project");
-		bot.textWithLabel("Project name:").setText(prj); 	
-		bot.button(IDELabel.Button.NEXT).click();
+		new WaitUntil(new ShellWithTextIsActive("New JPA Project"));
+		new LabeledText("Project name:").setText(prj);
+		new NextButton().click();
+		
 		// Java Page
-		bot.button(IDELabel.Button.NEXT).click();
+		new NextButton().click();
 		// JPA Facet Page
-		Version version = jbt.getJBTVersion();
-		if ((version.getMajor() == 3) && (version.getMinor() == 1))		
-			bot.comboBoxInGroup("Platform").setSelection("Hibernate");
-		else
-			bot.comboBoxInGroup("Platform").setSelection("Hibernate (JPA 2.x)");		
-		bot.comboBoxInGroup("JPA implementation").setSelection("Disable Library Configuration");		
+		new DefaultCombo(0).setSelection("Hibernate (JPA 2.1)");
+		new DefaultCombo(0).setSelection("Disable Library Configuration");	
 
 		// Finish
-		bot.button(IDELabel.Button.FINISH).click();
-		eclipse.waitForClosedShell(bot.shell("New JPA Project"));
-		util.waitForNonIgnoredJobs();
+		new FinishButton().click();
+		new WaitUntil(new ShellWithTextIsActive("New JPA Project"));
 	}
 }
