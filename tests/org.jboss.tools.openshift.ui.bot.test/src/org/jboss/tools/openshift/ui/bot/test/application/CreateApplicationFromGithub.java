@@ -20,6 +20,6 @@ public class CreateApplicationFromGithub {
 
 	@After	
 	public void deleteApp() {
-		new DeleteApplication(APP_NAME, OpenShiftLabel.AppType.PHP_TREE).perform();
+		new DeleteApplication(APP_NAME).perform();
 	}
 }

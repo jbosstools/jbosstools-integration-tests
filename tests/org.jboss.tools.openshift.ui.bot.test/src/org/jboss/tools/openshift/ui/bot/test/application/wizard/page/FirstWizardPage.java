@@ -1,6 +1,5 @@
 package org.jboss.tools.openshift.ui.bot.test.application.wizard.page;
 
-import java.util.Iterator;
 import java.util.List;
 
 import org.jboss.reddeer.swt.api.TreeItem;
@@ -25,12 +24,12 @@ public class FirstWizardPage {
 	}
 	
 	/**
-	 * Create application from existing one on the given connection.
+	 * Import existing application one on the given connection.
 	 * 
 	 * @param domain of application
 	 * @param applicationName
 	 */
-	public void createFromExisting(String domain, String applicationName) {
+	public void importExistingApplication(String domain, String applicationName) {
 		if (!(new RadioButton(0).isSelected())) {
 			new RadioButton(0).click();
 		}

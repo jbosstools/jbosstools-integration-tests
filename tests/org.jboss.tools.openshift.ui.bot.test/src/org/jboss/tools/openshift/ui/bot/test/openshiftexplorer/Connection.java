@@ -1,4 +1,4 @@
-package org.jboss.tools.openshift.ui.bot.test.explorer;
+package org.jboss.tools.openshift.ui.bot.test.openshiftexplorer;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -7,11 +7,10 @@ import org.jboss.reddeer.junit.logging.Logger;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
+import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
-import org.jboss.tools.openshift.ui.bot.util.OpenShiftExplorerView;
-import org.jboss.tools.openshift.ui.bot.util.TestProperties;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,10 +28,6 @@ public class Connection {
 		} catch (UnsupportedOperationException ex) {}
 		
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-		
-		TestProperties.put("openshift.server.url", System.getProperty("libra.server"));
-		TestProperties.put("openshift.user.name", System.getProperty("user.name"));
-		TestProperties.put("openshift.user.pwd", System.getProperty("user.pwd"));
 	}
 	
 	@Test
@@ -45,8 +40,8 @@ public class Connection {
 		openshiftView.openConnectionShell();
 		
 		// wrong credentials
-		openshiftView.connectToOpenShift(TestProperties.get("openshift.server.url"), TestProperties.get("openshift.user.name"),
-				TestProperties.get("openshift.user.wrongpwd"), false);
+		openshiftView.connectToOpenShift(System.getProperty("libra.server"), 
+				System.getProperty("user.name"), "wtffailpwd", false);
 				
 		// wait for credentials validation
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
@@ -55,18 +50,19 @@ public class Connection {
 				new PushButton("Finish").isEnabled());
 
 		// set correct user credentials
-		openshiftView.connectToOpenShift(TestProperties.get("openshift.server.url"), TestProperties.get("openshift.user.name"),
-				TestProperties.get("openshift.user.pwd"), false);
+		openshiftView.connectToOpenShift(System.getProperty("libra.server"), 
+				System.getProperty("user.name"), System.getProperty("user.pwd"), false);
+		
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
 	
 	@After
 	public void verifyConnection() {
+		AbstractWait.sleep(TimePeriod.SHORT);
 		verifyConnectionEstablishment();
 	}
 	
 	public static void verifyConnectionEstablishment() {
-		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-		
 		new OpenShiftExplorerView().open();
 		assertTrue("Connection has not been established", new DefaultTree().getItems().size() > 0);
 		

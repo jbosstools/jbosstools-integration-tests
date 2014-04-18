@@ -7,10 +7,10 @@ import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.tools.openshift.ui.bot.test.openshiftexplorer.OpenShiftExplorerView;
 import org.junit.After;
 import org.junit.Test;
 
@@ -30,10 +30,12 @@ public class CleanUp {
 	@After
 	public void cleanUp() {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
+		explorer.close();
 		explorer.open();
 		
-		TreeItem connection = new DefaultTree().getAllItems().get(0);
+		TreeItem connection = explorer.getConnection();
 		connection.select();
+		
 		connection.expand();
 		
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);

@@ -16,6 +16,7 @@ import org.jboss.tools.openshift.ui.bot.test.application.wizard.page.FirstWizard
 import org.jboss.tools.openshift.ui.bot.test.application.wizard.page.FourthWizardPage;
 import org.jboss.tools.openshift.ui.bot.test.application.wizard.page.SecondWizardPage;
 import org.jboss.tools.openshift.ui.bot.test.application.wizard.page.ThirdWizardPage;
+import org.jboss.tools.openshift.ui.bot.test.openshiftexplorer.OpenShiftExplorerView;
 import org.jboss.tools.openshift.ui.bot.util.OpenShiftLabel;
 
 /**
@@ -33,14 +34,14 @@ public class NewApplicationWizard {
 	public NewApplicationWizard() {
 	}
 	
-	public void createNewApplicationFromExisting(String domain, String existingAppName,
+	public void importExistingApplication(String domain, String existingAppName,
 			String appName, boolean scalable, boolean smallGear, boolean createEnvironmentVariable,
 			String sourceCodeURL, String embeddedURL, boolean createAdapter,
 			String deployProject, String gitDest, String gitRemoteName, 
 			String... embeddedCartridges) {
 		
 		FirstWizardPage first = new FirstWizardPage();
-		first.createFromExisting(domain, existingAppName);
+		first.importExistingApplication(domain, existingAppName);
 		
 		next();
 		
@@ -156,12 +157,18 @@ public class NewApplicationWizard {
 			new DefaultShell("Attempt push force ?").setFocus();
 			
 			new PushButton(OpenShiftLabel.Button.YES).click();
+			new WaitWhile(new JobIsRunning(), TimePeriod.getCustom(500));
 		}
 		
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 	}
 			
 	public void verifyApplication(String appName) {
+		// Verify in OpenShift explorer
+		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
+		assertTrue("Application " + appName + 
+				" has not been created", explorer.applicationExists(appName));
+		
 		// Verify in console
 		ConsoleView consoleView = new ConsoleView();
 		consoleView.open();

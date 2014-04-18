@@ -1,10 +1,9 @@
 package org.jboss.tools.openshift.ui.bot.test.application;
 
+import static org.junit.Assert.assertTrue;
+
 import java.util.Date;
 
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
-import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.exception.WaitTimeoutExpiredException;
@@ -12,14 +11,15 @@ import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
-import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.openshift.ui.bot.test.application.wizard.DeleteApplication;
 import org.jboss.tools.openshift.ui.bot.test.application.wizard.NewApplicationTemplates;
-import org.jboss.tools.openshift.ui.bot.util.OpenShiftExplorerView;
+import org.jboss.tools.openshift.ui.bot.test.customizedexplorer.CustomizedProject;
+import org.jboss.tools.openshift.ui.bot.test.customizedexplorer.CustomizedProjectExplorer;
+import org.jboss.tools.openshift.ui.bot.test.openshiftexplorer.OpenShiftExplorerView;
 import org.jboss.tools.openshift.ui.bot.util.OpenShiftLabel;
 import org.junit.After;
 import org.junit.Before;
@@ -27,37 +27,35 @@ import org.junit.Test;
 
 public class RepublishApplication {
 
-	private final String DYI_APP = "diyapp" + new Date().getTime();
+	private final String DIY_APP = "diyapp" + new Date().getTime();
 	
 	
-	private final String text = "<!doctype html> <html lang=\"en\"> <head> <meta charset=\"utf-8\"> " +
+	public static final String TEXT = "<!doctype html> <html lang=\"en\"> <head> <meta charset=\"utf-8\"> " +
 			"<meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge,chrome=1\">  <title>Welcome to OpSh</title>" +
-			" <style> </head> <body> </body> </html>";
+			" </head> <body>OpSh</body> </html>";
 	
 	@Before
 	public void createDYIApp() {
 		new NewApplicationTemplates(false).createSimpleApplicationWithoutCartridges(
-				OpenShiftLabel.AppType.DIY, DYI_APP, false, true, true);
+				OpenShiftLabel.AppType.DIY, DIY_APP, false, true, true);
 	}
 	
 	@Test
 	public void canModifyAndRepublishApp() {
-		ProjectExplorer projectExplorer = new ProjectExplorer();
+		CustomizedProjectExplorer projectExplorer = new CustomizedProjectExplorer();
 		projectExplorer.open();
 		
-		Project project = projectExplorer.getProjects().get(0);
+		CustomizedProject project = projectExplorer.getProject(DIY_APP);
 		project.select();
-		project.getProjectItem("diy", "index.html").open();
+		project.openFile("diy", "index.html");
 		
 		TextEditor editor = new TextEditor("index.html");
-		editor.setText(text);
+		editor.setText(TEXT);
 		editor.save();
 		editor.close();
 		
-		// shell "Internal Error"; "No" button
-		
 		projectExplorer.open();
-		projectExplorer.getProject(DYI_APP).select();
+		projectExplorer.getProject(DIY_APP).select();
 		new ContextMenu("Team", "Commit...").select();
 		
 		try {
@@ -74,41 +72,26 @@ public class RepublishApplication {
 		
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 		
-		new WaitUntil(new ShellWithTextIsAvailable("Push Results: " + DYI_APP + " - origin"));
-		new DefaultShell("Push Results: " + DYI_APP + " - origin").setFocus();
+		new WaitUntil(new ShellWithTextIsAvailable("Push Results: " + DIY_APP + " - origin"));
+		new DefaultShell("Push Results: " + DIY_APP + " - origin").setFocus();
 		new PushButton("OK").click();
 		
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		
-		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
-		explorer.open();
+		OpenShiftExplorerView explorer = new OpenShiftExplorerView();;
+		explorer.getConnection().select();
 		
-		TreeItem connection = new DefaultTree().getAllItems().get(0);
-		connection.select();
 		new ContextMenu("Refresh").select();
 		
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		
-		connection.expand();
-		
-		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-		
-		connection.getItems().get(0).expand();
-		
-		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-		
-		connection.getItems().get(0).getItems().get(0).select();
-		
-		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-		
-		//new ContextMenu("Show in Web Browser").select();
-		//new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-		//TODO verify title with Browser Editor
+		assertTrue("Verification failed, browser does not contain required text", 
+				explorer.verifyApplicationInBrowser(DIY_APP, "OpSh"));
 	}
 
 	@After
 	public void deleteDIYApp() {
-		new DeleteApplication(DYI_APP, OpenShiftLabel.AppType.DIY_TREE).perform();
+		new DeleteApplication(DIY_APP).perform();
 	}
 	
 }

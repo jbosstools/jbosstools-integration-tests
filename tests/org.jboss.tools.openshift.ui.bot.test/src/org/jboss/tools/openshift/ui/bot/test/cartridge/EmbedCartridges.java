@@ -21,18 +21,18 @@ public class EmbedCartridges {
 
 	@Test
 	public void canEmbedCartridges() {
-		EmbedCartridge.embedCartrige(OpenShiftLabel.Cartridge.CRON);
+		EmbedCartridge.embedCartrige(DIY_APP, OpenShiftLabel.Cartridge.CRON);
 		
-		EmbedCartridge.embedCartrige(OpenShiftLabel.Cartridge.MYSQL);
+		EmbedCartridge.embedCartrige(DIY_APP, OpenShiftLabel.Cartridge.MYSQL);
 		
-		EmbedCartridge.embedCartrige(OpenShiftLabel.Cartridge.POSTGRESQL);
+		EmbedCartridge.embedCartrige(DIY_APP, OpenShiftLabel.Cartridge.POSTGRESQL);
 		
-		EmbedCartridge.embedCartrige(OpenShiftLabel.Cartridge.MONGODB);
+		EmbedCartridge.embedCartrige(DIY_APP, OpenShiftLabel.Cartridge.MONGODB);
 	}
 
 	@After
 	public void deleteDIYApp() {
-		new DeleteApplication(DIY_APP, OpenShiftLabel.AppType.DIY_TREE).perform();
+		new DeleteApplication(DIY_APP).perform();
 	}
 
 }

@@ -1,4 +1,4 @@
-package org.jboss.tools.openshift.ui.bot.test.explorer;
+package org.jboss.tools.openshift.ui.bot.test.openshiftexplorer;
 
 import static org.junit.Assert.assertFalse;
 
@@ -12,14 +12,12 @@ import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
-import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.openshift.ui.bot.test.application.wizard.DeleteApplication;
 import org.jboss.tools.openshift.ui.bot.test.application.wizard.NewApplicationTemplates;
-import org.jboss.tools.openshift.ui.bot.util.OpenShiftExplorerView;
 import org.jboss.tools.openshift.ui.bot.util.OpenShiftLabel;
 import org.junit.After;
 import org.junit.Before;
@@ -159,23 +157,16 @@ public class OpenShiftDebugFeatures {
         
         private static void openDebugFeature(String label) {
 		        OpenShiftExplorerView explorer = new OpenShiftExplorerView();
-		        explorer.open();
 
-		        TreeItem connection = new DefaultTree().getItems().get(0);
+		        TreeItem connection = explorer.getConnection();
 		        connection.select();
+		        
 		        new ContextMenu("Refresh").select();
 		        
 		        new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		        
-		        connection.expand();
+		        explorer.getApplication(DIY_APP).select();
 		        
-		        new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-		        
-		        connection.getItems().get(0).expand();
-		        
-		        new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-		        
-		        connection.getItems().get(0).getItems().get(0).select();
 		        new ContextMenu(label).select();
         }
         
@@ -185,7 +176,7 @@ public class OpenShiftDebugFeatures {
         }
         
         public static void deleteDIYApp() {
-                new DeleteApplication(DIY_APP, OpenShiftLabel.AppType.DIY_TREE).perform();
+                new DeleteApplication(DIY_APP).perform();
         }   
 
 }

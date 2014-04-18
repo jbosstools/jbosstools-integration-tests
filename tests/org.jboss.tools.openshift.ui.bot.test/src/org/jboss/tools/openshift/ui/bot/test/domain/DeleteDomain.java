@@ -2,6 +2,7 @@ package org.jboss.tools.openshift.ui.bot.test.domain;
 
 import static org.junit.Assert.assertTrue;
 
+import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.ButtonWithTextIsActive;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
@@ -10,11 +11,10 @@ import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
-import org.jboss.tools.openshift.ui.bot.util.OpenShiftExplorerView;
+import org.jboss.tools.openshift.ui.bot.test.openshiftexplorer.OpenShiftExplorerView;
 import org.jboss.tools.openshift.ui.bot.util.OpenShiftLabel;
 import org.junit.After;
 import org.junit.Test;
@@ -37,16 +37,15 @@ public class DeleteDomain {
 	
 	public static void destroyDomain(boolean multipleDomain) {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
-		explorer.open();
-
-		// refresh first
-		DefaultTree connection = new DefaultTree(0);
-		connection.setFocus();
+		
+		TreeItem connection = explorer.getConnection();
+		connection.select();
+		
 		new ContextMenu(OpenShiftLabel.Labels.REFRESH).select();
 		
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		
-		connection.setFocus();
+		connection.select();
 		new ContextMenu(OpenShiftLabel.Labels.MANAGE_DOMAINS).select();
 		
 		new WaitUntil(new ShellWithTextIsAvailable("Domains"), TimePeriod.LONG);
