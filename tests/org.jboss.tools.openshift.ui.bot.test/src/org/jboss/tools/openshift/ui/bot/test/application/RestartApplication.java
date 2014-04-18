@@ -4,11 +4,8 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Date;
 
-import org.jboss.reddeer.eclipse.ui.browser.BrowserEditor;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
-import org.jboss.reddeer.swt.condition.PageIsLoaded;
-import org.jboss.reddeer.swt.impl.browser.InternalBrowser;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.wait.AbstractWait;
@@ -16,7 +13,7 @@ import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.openshift.ui.bot.test.application.wizard.DeleteApplication;
 import org.jboss.tools.openshift.ui.bot.test.application.wizard.NewApplicationTemplates;
-import org.jboss.tools.openshift.ui.bot.util.OpenShiftExplorerView;
+import org.jboss.tools.openshift.ui.bot.test.openshiftexplorer.OpenShiftExplorerView;
 import org.jboss.tools.openshift.ui.bot.util.OpenShiftLabel;
 import org.junit.After;
 import org.junit.Before;
@@ -46,31 +43,20 @@ public class RestartApplication {
 		
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		
-		connection.getItems().get(0).expand();
-		
-		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-		
-		connection.getItems().get(0).getItem(DIY_APP + " " + OpenShiftLabel.AppType.DIY_TREE).select();
+		explorer.getApplication(DIY_APP).select();
+	
 		new ContextMenu(OpenShiftLabel.Labels.EXPLORER_RESTART_APP).select();
-		
-		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-		
-		connection.getItems().get(0).getItem(DIY_APP + " " + OpenShiftLabel.AppType.DIY_TREE).select();
-		
-		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-		
-		new ContextMenu("Show in Web Browser").select();
 		
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		
 		// To be sure that page is loaded
 		AbstractWait.sleep(TimePeriod.NORMAL);
 		
-		assertTrue(new InternalBrowser().getText().contains("Welcome to OpenShift"));
+		assertTrue(explorer.verifyApplicationInBrowser(DIY_APP, "Welcome to OpenShift"));
 	}
 
 	@After
 	public void deleteDIYApp() {
-		new DeleteApplication(DIY_APP, OpenShiftLabel.AppType.DIY_TREE).perform();
+		new DeleteApplication(DIY_APP).perform();
 	}
 }

@@ -5,7 +5,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.swt.api.TreeItem;
@@ -20,7 +19,9 @@ import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.openshift.ui.bot.test.application.wizard.DeleteApplication;
 import org.jboss.tools.openshift.ui.bot.test.application.wizard.NewApplicationTemplates;
-import org.jboss.tools.openshift.ui.bot.util.OpenShiftExplorerView;
+import org.jboss.tools.openshift.ui.bot.test.application.wizard.NewApplicationWizard;
+import org.jboss.tools.openshift.ui.bot.test.customizedexplorer.CustomizedProjectExplorer;
+import org.jboss.tools.openshift.ui.bot.test.openshiftexplorer.OpenShiftExplorerView;
 import org.jboss.tools.openshift.ui.bot.util.OpenShiftLabel;
 import org.junit.After;
 import org.junit.Before;
@@ -32,10 +33,8 @@ public class ImportApplicationFromOpenShift {
 	
 	@Before
 	public void createApp() {
-		new NewApplicationTemplates(false).createSimpleApplicationWithoutCartridges(
-				OpenShiftLabel.AppType.DIY, DIY_APP, false, true, false);
-		
-		new DeleteApplication(DIY_APP, OpenShiftLabel.AppType.DIY).deleteProject();
+		new NewApplicationTemplates(false).createApplicationWithoutImportingIntoWorkspace(
+				OpenShiftLabel.AppType.DIY, DIY_APP, false, true);
 	}
 	
 	@Test
@@ -49,21 +48,8 @@ public class ImportApplicationFromOpenShift {
 		
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 		
-		if (!connection.isExpanded()) {
-			connection.doubleClick();
-		}
+		explorer.getApplication(DIY_APP).select();
 		
-		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-		
-		TreeItem domain = connection.getItems().get(0);
-		domain.select();
-		if (!domain.isExpanded()) {
-			domain.doubleClick();
-		}
-		
-		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-		
-		domain.getItem(DIY_APP + " " + OpenShiftLabel.AppType.DIY_TREE).select();
 		new ContextMenu(OpenShiftLabel.Labels.EXPLORER_IMPORT_APP).select();
 		
 		new WaitUntil(new ShellWithTextIsAvailable("Import OpenShift Application"), TimePeriod.VERY_LONG);
@@ -76,20 +62,15 @@ public class ImportApplicationFromOpenShift {
 		new PushButton(OpenShiftLabel.Button.NEXT).click();
 		new PushButton(OpenShiftLabel.Button.FINISH).click();
 		
-		new WaitUntil(new ShellWithTextIsAvailable("Publish " + DIY_APP + "?"), TimePeriod.VERY_LONG);
-		
-		new DefaultShell("Publish " + DIY_APP + "?").setFocus();
-		new PushButton(OpenShiftLabel.Button.YES).click();
-		
-		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
+		new NewApplicationWizard().postCreateSteps(DIY_APP, false, true);
 		
 		ConsoleView console = new ConsoleView();
 		assertFalse(console.getConsoleText().isEmpty());
 		
-		ProjectExplorer projectExplorer = new ProjectExplorer();
+		CustomizedProjectExplorer projectExplorer = new CustomizedProjectExplorer();
 		projectExplorer.open();
 		assertTrue("Project has not been imported into workspace", 
-				projectExplorer.getProjects().get(0).getName().split(" ")[0].equals(DIY_APP));
+				projectExplorer.containsProject(DIY_APP));
 		
 		ServersView serverView = new ServersView();
 		serverView.open();
@@ -109,6 +90,6 @@ public class ImportApplicationFromOpenShift {
 	
 	@After
 	public void deleteApp() {
-		new DeleteApplication(DIY_APP, OpenShiftLabel.AppType.DIY_TREE).perform();
+		new DeleteApplication(DIY_APP).perform();
 	}
 }

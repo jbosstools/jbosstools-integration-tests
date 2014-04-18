@@ -1,4 +1,4 @@
-package org.jboss.tools.openshift.ui.bot.test.explorer;
+package org.jboss.tools.openshift.ui.bot.test.openshiftexplorer;
 
 import org.junit.After;
 import org.junit.Before;

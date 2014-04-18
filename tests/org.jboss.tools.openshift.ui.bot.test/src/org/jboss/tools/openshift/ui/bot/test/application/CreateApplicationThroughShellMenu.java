@@ -18,7 +18,7 @@ public class CreateApplicationThroughShellMenu {
 	
 	@After
 	public void deleteApplication() {
-		new DeleteApplication(APP_NAME, OpenShiftLabel.AppType.DIY_TREE).perform();
+		new DeleteApplication(APP_NAME).perform();
 	}
 }
 

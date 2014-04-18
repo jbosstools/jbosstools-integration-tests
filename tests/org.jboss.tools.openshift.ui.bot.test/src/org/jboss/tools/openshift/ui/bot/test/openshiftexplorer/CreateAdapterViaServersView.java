@@ -1,4 +1,4 @@
-package org.jboss.tools.openshift.ui.bot.test.explorer;
+package org.jboss.tools.openshift.ui.bot.test.openshiftexplorer;
 
 import static org.junit.Assert.assertTrue;
 
@@ -15,19 +15,17 @@ import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.openshift.ui.bot.test.application.wizard.DeleteApplication;
 import org.jboss.tools.openshift.ui.bot.test.application.wizard.NewApplicationTemplates;
-import org.jboss.tools.openshift.ui.bot.util.OpenShiftExplorerView;
 import org.jboss.tools.openshift.ui.bot.util.OpenShiftLabel;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class CreateAdapter {
+public class CreateAdapterViaServersView {
 
 	private final String DIY_APP = "diyapp" + new Date().getTime();
 	
@@ -40,26 +38,16 @@ public class CreateAdapter {
 	@Test
 	public void canCreateAdapterViaServers() {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
-		explorer.open();
 
-		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-		
-		TreeItem connection = new DefaultTree().getItems().get(0);
+		TreeItem connection = explorer.getConnection();
 		connection.select();
+		
 		new ContextMenu(OpenShiftLabel.Labels.REFRESH);
 
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		
-		connection.select();
-		TreeItem domainItem = connection.getItems().get(0);
-		domainItem.select();
-		if (!domainItem.isExpanded()) {
-			domainItem.doubleClick();
-		}
+		explorer.getApplication(DIY_APP).select();
 		
-		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-				
-		domainItem.getItem(DIY_APP + " " + OpenShiftLabel.AppType.DIY_TREE).select();
 		new ContextMenu(OpenShiftLabel.Labels.EXPLORER_ADAPTER).select();
 		
 		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.ADAPTER), TimePeriod.LONG);
@@ -88,6 +76,6 @@ public class CreateAdapter {
 
 	@After
 	public void deleteDIYApp() {
-		new DeleteApplication(DIY_APP, OpenShiftLabel.AppType.DIY_TREE).perform();
+		new DeleteApplication(DIY_APP).perform();
 	}
 }

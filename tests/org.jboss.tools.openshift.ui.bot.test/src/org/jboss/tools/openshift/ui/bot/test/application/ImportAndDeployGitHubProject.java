@@ -2,9 +2,6 @@ package org.jboss.tools.openshift.ui.bot.test.application;
 
 import static org.junit.Assert.assertTrue;
 
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
-import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.ButtonWithTextIsActive;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
@@ -21,6 +18,8 @@ import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.openshift.ui.bot.test.application.wizard.DeleteApplication;
 import org.jboss.tools.openshift.ui.bot.test.application.wizard.NewApplicationTemplates;
+import org.jboss.tools.openshift.ui.bot.test.customizedexplorer.CustomizedProject;
+import org.jboss.tools.openshift.ui.bot.test.customizedexplorer.CustomizedProjectExplorer;
 import org.jboss.tools.openshift.ui.bot.util.OpenShiftLabel;
 import org.jboss.tools.openshift.ui.bot.util.TestUtils;
 import org.junit.After;
@@ -91,16 +90,10 @@ public class ImportAndDeployGitHubProject {
 	}
 		
 	private void checkOpenShiftMavenProfile() {
-		ProjectExplorer projectExplorer = new ProjectExplorer();
-		Project project = projectExplorer.getProject("jboss-javaee6-webapp");
+		CustomizedProjectExplorer projectExplorer = new CustomizedProjectExplorer();
+		CustomizedProject project = projectExplorer.getProject("jboss-javaee6-webapp");
 		
-		TreeItem projectItem = project.getTreeItem();
-		projectItem.select();
-		projectItem.expand();
-		projectItem.collapse();
-		projectItem.expand();
-		
-		project.getProjectItem("pom.xml").open();
+		project.openFile("pom.xml");
 		
 		new DefaultCTabItem("pom.xml").activate();
 
@@ -110,8 +103,11 @@ public class ImportAndDeployGitHubProject {
 	}
 	
 	@After
-	public void deleteApplication() { 
-		new DeleteApplication(APP_NAME, OpenShiftLabel.AppType.JBOSS_EAP_TREE).perform();
+	public void deleteApplication() {
+		// Bcs. local and remote app names are different, it is not possible use perform
+		new DeleteApplication("jboss-javaee6-webapp").deleteProject();
+		new DeleteApplication(APP_NAME).deleteServerAdapter();
+		new DeleteApplication(APP_NAME).deleteOpenShiftApplication();
 	}
 	
 }

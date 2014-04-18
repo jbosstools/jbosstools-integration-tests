@@ -1,6 +1,8 @@
-package org.jboss.tools.openshift.ui.bot.test.explorer;
+package org.jboss.tools.openshift.ui.bot.test.openshiftexplorer;
 
 import java.util.Date;
+
+import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.ButtonWithTextIsActive;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
@@ -9,12 +11,10 @@ import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
-import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
-import org.jboss.tools.openshift.ui.bot.util.OpenShiftExplorerView;
 import org.jboss.tools.openshift.ui.bot.util.OpenShiftLabel;
 import org.junit.Test;
 
@@ -35,13 +35,10 @@ public class ManageSSH {
 	}
 
 	private void openSSHShell() {
-		OpenShiftExplorerView openshiftExplorer = new OpenShiftExplorerView();
-		openshiftExplorer.open();
-
-		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 		
-		DefaultTree connection = new DefaultTree(0);
-		connection.getItems().get(0).select();
+		TreeItem connection = explorer.getConnection();
+		connection.select();
 		
 		ContextMenu menu = new ContextMenu(OpenShiftLabel.Labels.MANAGE_SSH_KEYS);
 		menu.select();		

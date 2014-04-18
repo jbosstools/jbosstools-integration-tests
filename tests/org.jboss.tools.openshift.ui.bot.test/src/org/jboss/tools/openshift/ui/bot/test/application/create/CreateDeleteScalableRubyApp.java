@@ -5,22 +5,12 @@ import java.util.Date;
 import org.jboss.tools.openshift.ui.bot.test.application.wizard.DeleteApplication;
 import org.jboss.tools.openshift.ui.bot.test.application.wizard.NewApplicationTemplates;
 import org.jboss.tools.openshift.ui.bot.util.OpenShiftLabel;
-import org.jboss.tools.openshift.ui.bot.util.TestProperties;
-import org.jboss.tools.openshift.ui.bot.util.TestUtils;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 public class CreateDeleteScalableRubyApp {
 
-	private final String RUBY_APP_NAME = TestProperties
-			.get("openshift.rubyapp.name") + new Date().getTime();
-
-	@Before
-	public void cleanUpProject() {
-		TestUtils
-				.cleanupGitFolder(TestProperties.get("openshift.rubyapp.name"));
-	}
+	private final String RUBY_APP_NAME = "srubyapp" + new Date().getTime();
 
 	@Test
 	public void canCreateScalableRubyApp() {
@@ -30,7 +20,7 @@ public class CreateDeleteScalableRubyApp {
 
 	@After
 	public void canDeleteScalableRubyApp() {
-		new DeleteApplication(RUBY_APP_NAME, OpenShiftLabel.AppType.RUBY_1_9_TREE).perform();
+		new DeleteApplication(RUBY_APP_NAME).perform();
 	}
 
 }

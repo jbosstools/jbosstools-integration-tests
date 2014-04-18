@@ -1,4 +1,4 @@
-package org.jboss.tools.openshift.ui.bot.test.explorer;
+package org.jboss.tools.openshift.ui.bot.test.openshiftexplorer;
 
 import static org.junit.Assert.assertFalse;
 
@@ -9,8 +9,6 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
-import org.jboss.tools.openshift.ui.bot.util.OpenShiftExplorerView;
-import org.jboss.tools.openshift.ui.bot.util.TestProperties;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,8 +32,8 @@ public class ConnectionEnterprise {
 		openshiftView.openConnectionShell();
 		
 		// wrong credentials
-		openshiftView.connectToOpenShift(TestProperties.get("openshift.server.url"), TestProperties.get("openshift.user.name"),
-				TestProperties.get("openshift.user.wrongpwd"), false);
+		openshiftView.connectToOpenShift(System.getProperty("libra.server"), 
+				System.getProperty("user.name"), "wtffailpwd", false);
 				
 		acceptCertificate();
 		
@@ -46,8 +44,8 @@ public class ConnectionEnterprise {
 				new PushButton("Finish").isEnabled());
 
 		// set correct user credentials
-		openshiftView.connectToOpenShift(TestProperties.get("openshift.server.url"), TestProperties.get("openshift.user.name"),
-				TestProperties.get("openshift.user.pwd"), false);
+		openshiftView.connectToOpenShift(System.getProperty("libra.server"), 
+				System.getProperty("user.name"), System.getProperty("user.pwd"), false);
 	}
 	
 	private void acceptCertificate() {

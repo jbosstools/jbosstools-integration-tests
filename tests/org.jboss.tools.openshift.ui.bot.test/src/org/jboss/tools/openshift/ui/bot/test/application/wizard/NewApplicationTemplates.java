@@ -1,5 +1,11 @@
 package org.jboss.tools.openshift.ui.bot.test.application.wizard;
 
+import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.swt.exception.WaitTimeoutExpiredException;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.tools.openshift.ui.bot.util.OpenShiftLabel;
 
 /**
@@ -100,5 +106,50 @@ public class NewApplicationTemplates {
 		wizard.postCreateSteps(project, isEmbeddedDialog, true, true, true);
 		
 		wizard.verifyApplication(appName);
+	}
+	
+	/**
+	 * Create application on default cartridge and do not import it into workspace.
+	 * This is useful for test cases with importing.
+	 */
+	public void createApplicationWithoutImportingIntoWorkspace(String baseCartridge, 
+			String appName, boolean scalable, boolean smallGears) {
+		
+		NewApplicationWizard wizard = new NewApplicationWizard();
+		wizard.createNewApplicationDefaultCartridge(baseCartridge, appName, scalable, 
+				smallGears, false, null, null, false, null, null, null, (String[]) null);
+		
+		boolean isEmbeddedDialog = baseCartridge.equals(OpenShiftLabel.AppType.DIY) ||
+				baseCartridge.equals(OpenShiftLabel.AppType.JENKINS);
+		
+		if (isEmbeddedDialog) {
+			new WaitUntil(new ShellWithTextIsAvailable("Embedded Cartridges"), TimePeriod.VERY_LONG);
+			
+			new DefaultShell("Embedded Cartridges").setFocus();
+			new PushButton(OpenShiftLabel.Button.OK).click();
+		}
+		
+		new WaitUntil(new ShellWithTextIsAvailable("Question"), TimePeriod.VERY_LONG);
+		
+		new DefaultShell("Question").setFocus();
+		
+		new PushButton(OpenShiftLabel.Button.NO).click();
+		
+		try {
+		new WaitUntil(new ShellWithTextIsAvailable("Problem Occured"), TimePeriod.NORMAL);
+		
+		new DefaultShell("Problem Occured").setFocus();
+		
+		new PushButton(OpenShiftLabel.Button.OK).click();
+		} catch (WaitTimeoutExpiredException ex) {
+			
+		}
+			
+		new WaitUntil(new ShellWithTextIsAvailable(
+				OpenShiftLabel.Shell.NEW_APP_WIZARD), TimePeriod.VERY_LONG);
+		
+		new DefaultShell(OpenShiftLabel.Shell.NEW_APP_WIZARD).setFocus();
+		
+		new PushButton(OpenShiftLabel.Button.CANCEL).click();
 	}
 }

@@ -5,22 +5,12 @@ import java.util.Date;
 import org.jboss.tools.openshift.ui.bot.test.application.wizard.DeleteApplication;
 import org.jboss.tools.openshift.ui.bot.test.application.wizard.NewApplicationTemplates;
 import org.jboss.tools.openshift.ui.bot.util.OpenShiftLabel;
-import org.jboss.tools.openshift.ui.bot.util.TestProperties;
-import org.jboss.tools.openshift.ui.bot.util.TestUtils;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 public class CreateDeleteJenkinsApp {
 
-	private final String JENKINS_APP_NAME = TestProperties
-			.get("openshift.jenkins.name") + new Date().getTime();
-	
-	@Before
-	public void cleanUpProject() {
-		TestUtils.cleanupGitFolder(TestProperties
-				.get("openshift.jenkins.name"));
-	}
+	private final String JENKINS_APP_NAME = "jenkinsapp"+ new Date().getTime();
 	
 	@Test
 	public void canCreateJenkinsApp() {
@@ -30,6 +20,6 @@ public class CreateDeleteJenkinsApp {
 	
 	@After
 	public void canDeleteJenkinsApp() {
-		new DeleteApplication(JENKINS_APP_NAME, OpenShiftLabel.AppType.JENKINS_TREE).perform();
+		new DeleteApplication(JENKINS_APP_NAME).perform();
 	}
 }

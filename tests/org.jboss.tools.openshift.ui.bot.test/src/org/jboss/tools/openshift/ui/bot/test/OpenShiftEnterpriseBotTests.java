@@ -14,6 +14,7 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.openshift.ui.bot.test.application.CreateAdapterFromServerView;
 import org.jboss.tools.openshift.ui.bot.test.application.CreateApplicationThroughShellMenu;
 import org.jboss.tools.openshift.ui.bot.test.application.CreateApplicationFromGithub;
+import org.jboss.tools.openshift.ui.bot.test.application.DeployApplicationBinary;
 import org.jboss.tools.openshift.ui.bot.test.application.ImportAndDeployGitHubProject;
 import org.jboss.tools.openshift.ui.bot.test.application.ImportApplicationFromOpenShift;
 import org.jboss.tools.openshift.ui.bot.test.application.RepublishApplication;
@@ -35,11 +36,11 @@ import org.jboss.tools.openshift.ui.bot.test.cartridge.EmbedCartridges;
 import org.jboss.tools.openshift.ui.bot.test.domain.CreateDomain;
 import org.jboss.tools.openshift.ui.bot.test.domain.DeleteDomain;
 import org.jboss.tools.openshift.ui.bot.test.domain.RenameDomain;
-import org.jboss.tools.openshift.ui.bot.test.explorer.ConnectionEnterprise;
-import org.jboss.tools.openshift.ui.bot.test.explorer.CreateAdapter;
-import org.jboss.tools.openshift.ui.bot.test.explorer.ManageSSH;
-import org.jboss.tools.openshift.ui.bot.test.explorer.MultipleAccounts;
-import org.jboss.tools.openshift.ui.bot.test.explorer.OpenShiftEnterpriseDebugFeatures;
+import org.jboss.tools.openshift.ui.bot.test.openshiftexplorer.ConnectionEnterprise;
+import org.jboss.tools.openshift.ui.bot.test.openshiftexplorer.CreateAdapterViaServersView;
+import org.jboss.tools.openshift.ui.bot.test.openshiftexplorer.ManageSSH;
+import org.jboss.tools.openshift.ui.bot.test.openshiftexplorer.MultipleAccounts;
+import org.jboss.tools.openshift.ui.bot.test.openshiftexplorer.OpenShiftEnterpriseDebugFeatures;
 import org.jboss.tools.openshift.ui.bot.util.CleanUp;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
@@ -71,7 +72,8 @@ import org.junit.runners.Suite.SuiteClasses;
  	ImportApplicationFromOpenShift.class,
  	CreateApplicationThroughShellMenu.class,
     CreateApplicationFromGithub.class,
- 	CreateAdapter.class,
+    DeployApplicationBinary.class,
+ 	CreateAdapterViaServersView.class,
 	CreateAdapterFromServerView.class,
 	EmbedCartridges.class, 
 	// TODO Conflict cartridge 

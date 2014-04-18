@@ -83,6 +83,6 @@ public class CreateAdapterFromServerView {
 	
 	@After
 	public void deleteApp() {
-		new DeleteApplication(DIY_APP, OpenShiftLabel.AppType.DIY_TREE).perform();
+		new DeleteApplication(DIY_APP).perform();
 	}
 }
