@@ -219,6 +219,12 @@ public class TestConfigurator {
 				ReasonLogger.serverTypeMatch(s.type().toString(), currentConfig.getServer().type);
 				return null;
 			}
+			if (s.type().equals(ServerType.WildFly)
+					&& !currentConfig.getServer().type
+							.equals(Values.SERVER_TYPE_WILDFLY)) {
+				ReasonLogger.serverTypeMatch(s.type().toString(), currentConfig.getServer().type);
+				return null;
+			}
 			if (s.type().equals(ServerType.EPP)
 					&& !currentConfig.getServer().type
 							.equals(Values.SERVER_TYPE_EPP)) {

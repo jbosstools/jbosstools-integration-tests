@@ -138,7 +138,7 @@ public class AddServer extends RequirementBase {
 			
 		}
 		if (TestConfigurator.Values.SERVER_TYPE_WILDFLY.equals(serverType)){
-			if ("8".equals(version)){
+			if (version != null && version.startsWith("8")){
 				return new ServerInfo(JBossCommunityWildFly8Runtime.LABEL, JBossCommunityWildFly8.LABEL);
 			}
 		}
