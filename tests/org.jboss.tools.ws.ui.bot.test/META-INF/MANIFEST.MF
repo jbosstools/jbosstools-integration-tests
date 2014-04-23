@@ -29,7 +29,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.jst.ws.cxf.ui;bundle-version="1.0.200",
  org.jboss.reddeer.uiforms;bundle-version="0.5.0"
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Eclipse-RegisterBuddy: org.apache.log4j
 Bundle-ClassPath: .
 Export-Package: org.jboss.tools.ws.ui.bot.test; uses:="org.eclipse.ui.

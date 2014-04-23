@@ -12,8 +12,8 @@ package org.jboss.tools.ws.ui.bot.test.preferences;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 
+import org.hamcrest.Matcher;
 import org.hamcrest.core.Is;
-import org.hamcrest.core.AnyOf;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.wait.WaitUntil;
@@ -152,11 +152,24 @@ public class JBossWSPreferencesTest extends WSTestBase {
 				Is.is("JBoss Web Services - Stack CXF Runtime Client"));
 			
 		String runtimeVersion = jbossWsRuntimeDialog.getRuntimeVersion();
-		assertTrue("Unknown runtime version: " + runtimeVersion, AnyOf
-				.anyOf(Is.is("4.2.3.Final-redhat-1"), // EAP
-						Is.is("4.0.2.GA") // AS
-						)
-				.matches(runtimeVersion));
+		
+		String expectedVersion;
+		switch(configuredState.getServer().type) {
+		case "WILDFLY":
+			expectedVersion = "4.2.3.Final";
+			break;
+		case "EAP":
+			expectedVersion = "4.2.3.Final-redhat-1";
+			break;
+		case "AS":
+			expectedVersion = "4.0.2.GA";
+			break;
+		default:
+			log.warn("Unrecognized server.");
+			expectedVersion = "";
+		}
+		assertTrue("Unknown runtime version: " + runtimeVersion, 
+				Is.is(expectedVersion).matches(runtimeVersion));
 				
 	}
 	
