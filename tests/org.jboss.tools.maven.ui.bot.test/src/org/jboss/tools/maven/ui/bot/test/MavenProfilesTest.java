@@ -142,6 +142,6 @@ public class MavenProfilesTest extends AbstractMavenSWTBotTest {
 	private static void importMavenProject(String pomPath) throws IOException{
 		MavenImportWizard importWizard = new MavenImportWizard();
 		importWizard.open();
-		((MavenImportWizardFirstPage)importWizard.getFirstPage()).importProject((new File(pomPath)).getParentFile().getCanonicalPath());
+		((MavenImportWizardFirstPage)importWizard.getWizardPage(0)).importProject((new File(pomPath)).getParentFile().getCanonicalPath());
 	}
 }

@@ -16,6 +16,7 @@ import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.wait.AbstractWait;
+import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.maven.reddeer.maven.sourcelookup.ui.preferences.SourceLookupPreferencePage;
 import org.jboss.tools.maven.reddeer.maven.sourcelookup.ui.preferences.SourceLookupPreferencePage.SourceAttachment;
@@ -66,7 +67,7 @@ public class SourceLookupTest extends AbstractMavenSWTBotTest{
 		}
 		new PushButton("Yes").click();
 		//wait for source download
-		AbstractWait.sleep(5000);
+		AbstractWait.sleep(TimePeriod.NORMAL);
 		TextEditor ed = new TextEditor("Entities.class");
 		assertEquals(ed.getText().replace(" ", "").replaceAll("\\r\\n", ""), readFile("resources/classes/Entities").replace(" ", "").replace("\n", ""));
 	}
