@@ -17,6 +17,8 @@ import java.util.List;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.ProjectItem;
 import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.condition.NonSystemJobRunsCondition;
@@ -62,8 +64,12 @@ public class RESTfulTestBase extends WSTestBase {
 	}
 	
 	@Override
-	public void cleanup() {		
-		 projectExplorer.deleteAllProjects();
+	public void cleanup() {
+		ProjectExplorer pe = new ProjectExplorer();
+		pe.open();
+		for(Project p : pe.getProjects()) {
+			p.delete(true);
+		}
 	}
 
 	protected static void importRestWSProject(String projectName) {
@@ -151,28 +157,42 @@ public class RESTfulTestBase extends WSTestBase {
 		assertEquals("Failure when comparing paths = ", expectedPath, path);
 	}
 
-	protected void assertCountOfPathAnnotationValidationErrors(String projectName,
-			int expectedCount) {
-		int foundErrors = restfulHelper.getPathAnnotationValidationErrors(projectName).length;
+	protected void assertCountOfPathAnnotationValidationErrors(String projectName, int expectedCount) {
+		SWTBotTreeItem[] errors = restfulHelper.getPathAnnotationValidationErrors(projectName);
+		int foundErrors = errors.length;
 		assertCountOfValidationError(expectedCount, foundErrors);
 	}
 	
 	protected void assertCountOfApplicationAnnotationValidationWarnings(String projectName,
 			int expectedCount) {
-		int foundProblems = restfulHelper.getRESTValidationWarnings(projectName, null).length;
+		int foundProblems = restfulHelper.getRESTValidationWarnings(projectName).length;
+		assertCountOfValidationWarning(expectedCount, foundProblems);
+	}
+	
+	protected void assertCountOfApplicationAnnotationValidationErrors(String projectName,
+			String description, int expectedCount) {
+		int foundProblems = restfulHelper.getRESTValidationErrors(projectName, description).length;
 		assertCountOfValidationError(expectedCount, foundProblems);
 	}
 	
 	protected void assertCountOfApplicationAnnotationValidationErrors(String projectName,
 			int expectedCount) {
-		int foundProblems = restfulHelper.getRESTValidationErrors(projectName, null).length;
+		int foundProblems = restfulHelper.getRESTValidationErrors(projectName).length;
 		assertCountOfValidationError(expectedCount, foundProblems);
 	}
 	
-	private void assertCountOfValidationError(int expectedCount, int foundCount) {
-		assertTrue("Expected count of validation errors: " + expectedCount
-				+ ". Count of found validation errors: " + foundCount,
+	private void assertCountOfValidationProblem(String problemType, int expectedCount, int foundCount) {
+		assertTrue("Expected count of validation " + problemType + "s: " + expectedCount
+				+ ". Count of found validation " + problemType + "s: " + foundCount,
 				foundCount == expectedCount);
+	}
+	
+	private void assertCountOfValidationError(int expectedCount, int foundCount) {
+		assertCountOfValidationProblem("error", expectedCount, foundCount);
+	}
+	
+	private void assertCountOfValidationWarning(int expectedCount, int foundCount) {
+		assertCountOfValidationProblem("warning", expectedCount, foundCount);
 	}
 	
 	protected void runRestServiceOnConfiguredServer(ProjectItem webService) {

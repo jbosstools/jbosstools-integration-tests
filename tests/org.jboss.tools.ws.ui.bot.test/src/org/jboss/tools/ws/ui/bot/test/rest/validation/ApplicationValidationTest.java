@@ -42,6 +42,7 @@ public class ApplicationValidationTest extends RESTfulTestBase {
 		
 		/* test validation error */
 		assertCountOfApplicationAnnotationValidationErrors("app1", 2);
+		assertCountOfApplicationAnnotationValidationErrors("app1", "Multiple JAX-RS Activators", 2);
 	}
 	
 	@Test
@@ -52,6 +53,7 @@ public class ApplicationValidationTest extends RESTfulTestBase {
 		
 		/* test validation error */
 		assertCountOfApplicationAnnotationValidationErrors("app2", 2);
+		assertCountOfApplicationAnnotationValidationErrors("app2", "Multiple JAX-RS Activators", 2);
 	}
 	
 	@Test
@@ -71,9 +73,6 @@ public class ApplicationValidationTest extends RESTfulTestBase {
 		/* prepare project */
 		importRestWSProject("app4");
 		
-		/* workaround for JBIDE-12690 */
-		//jbide12680Workaround("app4", "src", "test", "App.java");
-		
 		/* test validation error */
 		assertCountOfApplicationAnnotationValidationErrors("app4", 1);
 		
@@ -91,9 +90,6 @@ public class ApplicationValidationTest extends RESTfulTestBase {
 		/* prepare project */
 		importRestWSProject("app5");
 		
-		/* workaround for JBIDE-12690 */
-		//jbide12680Workaround("app5", "src", "test", "App.java");
-		
 		/* test validation error */
 		assertCountOfApplicationAnnotationValidationErrors("app5", 1);
 		
@@ -103,23 +99,6 @@ public class ApplicationValidationTest extends RESTfulTestBase {
 		
 		/* test validation error */
 		assertCountOfApplicationAnnotationValidationErrors("app5", 0);
-	}
-	
-	/**
-	 * Seems like JBIDE-12690 workaround, which was resolved.
-	 * Tests pass also without this workaround.
-	 * 
-	 * @param projectName
-	 * @param path
-	 */
-	private void jbide12680Workaround(String projectName, String... path) {
-		packageExplorer.openFile(projectName, path);
-		String javaClass = obtainClassNameFromPath(path);
-		bot.waitUntil(new ActiveEditorHasTitleCondition(bot, javaClass));
-		SWTBotEclipseEditor eclipseEditor = bot.activeEditor().toTextEditor();
-		eclipseEditor.insertText(" ");
-		bot.sleep(Timing.time1S());
-		eclipseEditor.save();
 	}
 
 	private String obtainClassNameFromPath(String... path) {
