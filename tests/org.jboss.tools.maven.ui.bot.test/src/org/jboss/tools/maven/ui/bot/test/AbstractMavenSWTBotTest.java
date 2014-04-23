@@ -69,12 +69,12 @@ import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.swt.matcher.RegexMatchers;
+import org.jboss.reddeer.swt.matcher.WithRegexMatchers;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
-import org.jboss.reddeer.uiforms.hyperlink.UIFormHyperlink;
-import org.jboss.reddeer.workbench.view.impl.WorkbenchView;
+import org.jboss.reddeer.uiforms.impl.hyperlink.DefaultHyperlink;
+import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
 import org.jboss.tools.maven.ui.bot.test.dialog.ASRuntimePage;
 import org.jboss.tools.maven.ui.bot.test.utils.ProjectIsBuilt;
 import org.jboss.tools.maven.ui.bot.test.utils.ProjectIsNotBuilt;
@@ -239,7 +239,7 @@ public abstract class AbstractMavenSWTBotTest{
 		PackageExplorer pexplorer = new PackageExplorer();
 		pexplorer.open();
 		pexplorer.getProject(projectName).select();
-		RegexMatchers m = new RegexMatchers("Run As",mavenBuild);
+		WithRegexMatchers m = new WithRegexMatchers("Run As",mavenBuild);
 		new ContextMenu(m.getMatchers()).select();
 		new WaitUntil(new ShellWithTextIsActive("Edit Configuration"),TimePeriod.NORMAL);
 		new LabeledText("Goals:").setText(goals);
@@ -303,7 +303,7 @@ public abstract class AbstractMavenSWTBotTest{
 		new WaitUntil(new ShellWithTextIsActive("Properties for "+projectName),TimePeriod.NORMAL);
 		new DefaultTreeItem("Project Facets").select();
 		new DefaultTreeItem(1, "JBoss Maven Integration").setChecked(true);
-		new UIFormHyperlink("Further configuration required...").activate();
+		new DefaultHyperlink("Further configuration required...").activate();
 		new WaitUntil(new ShellWithTextIsActive("Modify Faceted Project"),TimePeriod.NORMAL);
 	    new PushButton("OK").click();
 	    new PushButton("OK").click();
@@ -345,16 +345,14 @@ public abstract class AbstractMavenSWTBotTest{
 	public void createWebProject(String name,String runtime, boolean webxml){
 		WebProjectWizard dw = new WebProjectWizard();
 		dw.open();
-		dw.selectPage(0);
-		WebProjectFirstPage dfp = (WebProjectFirstPage)dw.getWizardPage();
+		WebProjectFirstPage dfp = (WebProjectFirstPage)dw.getWizardPage(0);
 		dfp.setProjectName(name);
 		if(runtime == null){
 			dfp.setTargetRuntime("<None>");
 		} else {
 			dfp.setTargetRuntime(runtime);
 		}
-		dw.selectPage(2);
-		WebProjectThirdPage dtp = (WebProjectThirdPage)dw.getWizardPage();
+		WebProjectThirdPage dtp = (WebProjectThirdPage)dw.getWizardPage(2);
 		dtp.setGenerateWebXmlDeploymentDescriptor(webxml);
 		dw.finish();
 	}

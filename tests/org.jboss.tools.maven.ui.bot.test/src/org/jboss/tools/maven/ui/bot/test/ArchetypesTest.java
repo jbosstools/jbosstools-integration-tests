@@ -74,11 +74,9 @@ public class ArchetypesTest extends AbstractMavenSWTBotTest{
 	private void createArchetype(String name, String catalog, String type){
 		MavenProjectWizard md = new MavenProjectWizard();
 		md.open();
-		md.selectPage(1);
-		MavenProjectWizardSecondPage fp = (MavenProjectWizardSecondPage)md.getWizardPage();
+		MavenProjectWizardSecondPage fp = (MavenProjectWizardSecondPage)md.getWizardPage(1);
 		fp.selectArchetype(catalog, type);
-		md.selectPage(2);
-		MavenProjectWizardThirdPage tp = (MavenProjectWizardThirdPage)md.getWizardPage();
+		MavenProjectWizardThirdPage tp = (MavenProjectWizardThirdPage)md.getWizardPage(2);
 		tp.setGAV(name, name, null);
 		md.finish();
 	}
