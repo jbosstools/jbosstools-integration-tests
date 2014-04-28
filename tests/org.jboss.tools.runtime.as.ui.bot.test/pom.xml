@@ -13,44 +13,158 @@
 
 	<properties>
 		<requirementsDirectory>${project.build.directory}/requirements</requirementsDirectory>
-		
-		<jboss-eap-6.2.x>${requirementsDirectory}/jboss-eap-6.2.x/jboss-eap-6.2</jboss-eap-6.2.x>
-		<jbosstools.test.jboss-eap-6.2.x.url>http://download.devel.redhat.com/released/JBEAP-6/6.2.2/jboss-eap-6.2.2-full-build.zip</jbosstools.test.jboss-eap-6.2.x.url>
-		<jbosstools.test.jboss-eap-6.2.x.md5>1727e5723de123c2470c134e4a25e9cf</jbosstools.test.jboss-eap-6.2.x.md5>
-		
-		<jboss-eap-6.2>${requirementsDirectory}/jboss-eap-6.2/</jboss-eap-6.2>
-		<jbosstools.test.jboss-eap-6.2.url>http://download.devel.redhat.com/released/JBEAP-6/6.2.0/jboss-eap-6.2.0.zip</jbosstools.test.jboss-eap-6.2.url>
-		<jbosstools.test.jboss-eap-6.2.md5>03ec01654cf4aee8c8e26313fae68c16</jbosstools.test.jboss-eap-6.2.md5>
-
-		<jboss-eap-6.1.x>${requirementsDirectory}/jboss-eap-6.1.x/jboss-eap-6.1/</jboss-eap-6.1.x>
-		<jbosstools.test.jboss-eap-6.1.x.url>http://download.devel.redhat.com/released/JBEAP-6/6.1.1/jboss-eap-6.1.1.zip</jbosstools.test.jboss-eap-6.1.x.url>
-
-		<jboss-eap-6.0.x>${requirementsDirectory}/jboss-eap-6.0.x/jboss-eap-6.0/</jboss-eap-6.0.x>
-		<jbosstools.test.jboss-eap-6.0.x.url>http://download.devel.redhat.com/released/JBEAP-6/6.0.1/zip/jboss-eap-6.0.1.zip</jbosstools.test.jboss-eap-6.0.x.url>
-
-		<jboss-as-7>${requirementsDirectory}/jboss-as-7.1.1.Final/</jboss-as-7>
 
 		<wildfly-8.0>${requirementsDirectory}/wildfly-8.0.0.Final/</wildfly-8.0>
 
-		<jboss-jpp-6.1.x>${requirementsDirectory}/jboss-jpp-6.1.x/jboss-portal-6.1/</jboss-jpp-6.1.x>
-		<jbosstools.test.jboss-jpp-6.1.x.url>http://download.devel.redhat.com/released/JBossEPP/6.1.1/jboss-portal-6.1.1.zip</jbosstools.test.jboss-jpp-6.1.x.url>
-		<jbosstools.test.jboss-jpp-6.1.x.md5>bc0e59f9ad4ab248f6b8542135b11599</jbosstools.test.jboss-jpp-6.1.x.md5>
-		
-		<jboss-seam-2.3.x>${requirementsDirectory}/jboss-seam-2.3.x/jboss-wfk-2.5.0/jboss-seam-2.3.3.Final-redhat-1/</jboss-seam-2.3.x>
-		<jboss-seam-2.3.x.url>http://download.devel.redhat.com/released/JBossWFK/2.5.0/jboss-wfk-2.5.0-seam23-bin.zip</jboss-seam-2.3.x.url>
-		<jboss-seam-2.3.x.md5>e1dfbf8b2cb7c1c09f5e93c380548ee8</jboss-seam-2.3.x.md5>
-		
+		<jboss-as-7>${requirementsDirectory}/jboss-as-7.1.1.Final/</jboss-as-7>
+
 		<jboss-seam-2.3>${requirementsDirectory}/jboss-seam-2.3.0.Final/</jboss-seam-2.3>
 		<jboss-seam-2.2.2>${requirementsDirectory}/jboss-seam-2.2.2.Final/</jboss-seam-2.2.2>
-		
+
 		<test.class>org.jboss.tools.runtime.as.ui.bot.test.ProjectTestsSuite</test.class>
 		<surefire.timeout>7200</surefire.timeout>
 		<systemProperties>${integrationTestsSystemProperties}</systemProperties>
 	</properties>
 
 	<profiles>
+		<profile>
+			<id>products</id>
+			<properties>
+				<test.class>org.jboss.tools.runtime.as.ui.bot.test.StableTestsSuite</test.class>
+
+				<jboss-eap-6.3>${requirementsDirectory}/jboss-eap-6.3/</jboss-eap-6.3>
+				<jboss-eap-6.2.x>${requirementsDirectory}/jboss-eap-6.2.x/jboss-eap-6.2</jboss-eap-6.2.x>
+				<jboss-eap-6.2>${requirementsDirectory}/jboss-eap-6.2/</jboss-eap-6.2>
+				<jboss-eap-6.1.x>${requirementsDirectory}/jboss-eap-6.1.x/jboss-eap-6.1/</jboss-eap-6.1.x>
+				<jboss-eap-6.0.x>${requirementsDirectory}/jboss-eap-6.0.x/jboss-eap-6.0/</jboss-eap-6.0.x>
+
+				<jboss-jpp-6.1.x>${requirementsDirectory}/jboss-jpp-6.1.x/jboss-portal-6.1/</jboss-jpp-6.1.x>
+
+				<jboss-seam-2.3.x>${requirementsDirectory}/jboss-seam-2.3.x/jboss-wfk-2.5.0/jboss-seam-2.3.3.Final-redhat-1/</jboss-seam-2.3.x>
+			</properties>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>properties-maven-plugin</artifactId>
+						<version>1.0-alpha-2</version>
+						<executions>
+							<execution>
+								<phase>initialize</phase>
+								<goals>
+									<goal>read-project-properties</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<files>
+								<file>resources/products-download.properties</file>
+							</files>
+						</configuration>
+					</plugin>
+					<plugin>
+						<groupId>com.googlecode.maven-download-plugin</groupId>
+						<artifactId>maven-download-plugin</artifactId>
+						<version>1.0.0</version>
+						<executions>
+							<execution>
+								<id>install-eap-6.3</id>
+								<phase>pre-integration-test</phase>
+								<goals>
+									<goal>wget</goal>
+								</goals>
+								<configuration>
+									<url>${jbosstools.test.jboss-eap-6.3.url}</url>
+									<unpack>true</unpack>
+									<md5>${jbosstools.test.jboss-eap-6.3.md5}</md5>
+									<outputDirectory>${requirementsDirectory}/</outputDirectory>
+								</configuration>
+							</execution>
+							<execution>
+								<id>install-eap-6.2.x</id>
+								<phase>pre-integration-test</phase>
+								<goals>
+									<goal>wget</goal>
+								</goals>
+								<configuration>
+									<url>${jbosstools.test.jboss-eap-6.2.x.url}</url>
+									<unpack>true</unpack>
+									<md5>${jbosstools.test.jboss-eap-6.2.x.md5}</md5>
+									<outputDirectory>${requirementsDirectory}/jboss-eap-6.2.x/</outputDirectory>
+								</configuration>
+							</execution>
+							<execution>
+								<id>install-eap-6.2</id>
+								<phase>pre-integration-test</phase>
+								<goals>
+									<goal>wget</goal>
+								</goals>
+								<configuration>
+									<url>${jbosstools.test.jboss-eap-6.2.url}</url>
+									<unpack>true</unpack>
+									<md5>${jbosstools.test.jboss-eap-6.2.md5}</md5>
+									<outputDirectory>${requirementsDirectory}/</outputDirectory>
+								</configuration>
+							</execution>
+							<execution>
+								<id>install-eap-6.1.x</id>
+								<phase>pre-integration-test</phase>
+								<goals>
+									<goal>wget</goal>
+								</goals>
+								<configuration>
+									<url>${jbosstools.test.jboss-eap-6.1.x.url}</url>
+									<unpack>true</unpack>
+									<md5>${jbosstools.test.jboss-eap-6.1.x.md5}</md5>
+									<outputDirectory>${requirementsDirectory}/jboss-eap-6.1.x/</outputDirectory>
+								</configuration>
+							</execution>
+							<execution>
+								<id>install-eap-6.0.x</id>
+								<phase>pre-integration-test</phase>
+								<goals>
+									<goal>wget</goal>
+								</goals>
+								<configuration>
+									<url>${jbosstools.test.jboss-eap-6.0.x.url}</url>
+									<unpack>true</unpack>
+									<md5>${jbosstools.test.jboss-eap-6.0.x.md5}</md5>
+									<outputDirectory>${requirementsDirectory}/jboss-eap-6.0.x/</outputDirectory>
+								</configuration>
+							</execution>
+							<execution>
+								<id>install-jpp-6.1.x</id>
+								<phase>pre-integration-test</phase>
+								<goals>
+									<goal>wget</goal>
+								</goals>
+								<configuration>
+									<url>${jbosstools.test.jboss-jpp-6.1.x.url}</url>
+									<unpack>true</unpack>
+									<md5>${jbosstools.test.jboss-jpp-6.1.x.md5}</md5>
+									<outputDirectory>${requirementsDirectory}/jboss-jpp-6.1.x/</outputDirectory>
+								</configuration>
+							</execution>
+							<execution>
+								<id>install-seam-2.3.x</id>
+								<phase>pre-integration-test</phase>
+								<goals>
+									<goal>wget</goal>
+								</goals>
+								<configuration>
+									<url>${jboss-seam-2.3.x.url}</url>
+									<unpack>true</unpack>
+									<md5>${jboss-seam-2.3.x.md5}</md5>
+									<outputDirectory>${requirementsDirectory}/jboss-seam-2.3.x/</outputDirectory>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
 	</profiles>
-	
+
 	<pluginRepositories>
 		<pluginRepository>
 			<id>sonatype-public-repository</id>
@@ -69,7 +183,25 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
-				<executions>
+				<executions>					
+					<execution>
+						<id>install-widlfly-8.0.0</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>unpack</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<groupId>org.wildfly</groupId>
+									<artifactId>wildfly-dist</artifactId>
+									<version>8.0.0.Final</version>
+									<type>zip</type>
+								</artifactItem>
+							</artifactItems>
+							<outputDirectory>${requirementsDirectory}</outputDirectory>
+						</configuration>
+					</execution>
 					<execution>
 						<id>install-as</id>
 						<phase>pre-integration-test</phase>
@@ -88,24 +220,6 @@
 							<outputDirectory>${requirementsDirectory}</outputDirectory>
 						</configuration>
 					</execution>
-					<execution>
-						<id>install-widlfly</id>
-						<phase>pre-integration-test</phase>
-						<goals>
-							<goal>unpack</goal>
-						</goals>
-						<configuration>
-							<artifactItems>
-								<artifactItem>
-									<groupId>org.wildfly</groupId>
-									<artifactId>wildfly-dist</artifactId>
-									<version>8.0.0.Final</version>
-									<type>zip</type>
-								</artifactItem>
-							</artifactItems>
-							<outputDirectory>${requirementsDirectory}</outputDirectory>
-						</configuration>
-					</execution>
 				</executions>
 			</plugin>
 			<plugin>
@@ -113,84 +227,6 @@
 				<artifactId>maven-download-plugin</artifactId>
 				<version>1.0.0</version>
 				<executions>
-					<execution>
-						<id>install-eap-6.2.x</id>
-						<phase>pre-integration-test</phase>
-						<goals>
-							<goal>wget</goal>
-						</goals>
-						<configuration>
-							<url>${jbosstools.test.jboss-eap-6.2.x.url}</url>
-							<unpack>true</unpack>
-							<md5>${jbosstools.test.jboss-eap-6.2.x.md5}</md5>
-							<outputDirectory>${requirementsDirectory}/jboss-eap-6.2.x/</outputDirectory>
-						</configuration>
-					</execution>
-					<execution>
-						<id>install-eap-6.2</id>
-						<phase>pre-integration-test</phase>
-						<goals>
-							<goal>wget</goal>
-						</goals>
-						<configuration>
-							<url>${jbosstools.test.jboss-eap-6.2.url}</url>
-							<unpack>true</unpack>
-							<md5>${jbosstools.test.jboss-eap-6.2.md5}</md5>
-							<outputDirectory>${requirementsDirectory}/</outputDirectory>
-						</configuration>
-					</execution>
-					<execution>
-						<id>install-eap-6.1.x</id>
-						<phase>pre-integration-test</phase>
-						<goals>
-							<goal>wget</goal>
-						</goals>
-						<configuration>
-							<url>${jbosstools.test.jboss-eap-6.1.x.url}</url>
-							<unpack>true</unpack>
-							<md5>${jbosstools.test.jboss-eap-6.1.x.md5}</md5>
-							<outputDirectory>${requirementsDirectory}/jboss-eap-6.1.x/</outputDirectory>
-						</configuration>
-					</execution>
-					<execution>
-						<id>install-eap-6.0.x</id>
-						<phase>pre-integration-test</phase>
-						<goals>
-							<goal>wget</goal>
-						</goals>
-						<configuration>
-							<url>${jbosstools.test.jboss-eap-6.0.x.url}</url>
-							<unpack>true</unpack>
-							<md5>${jbosstools.test.jboss-eap-6.0.x.md5}</md5>
-							<outputDirectory>${requirementsDirectory}/jboss-eap-6.0.x/</outputDirectory>
-						</configuration>
-					</execution>
-					<execution>
-						<id>install-jpp-6.1.x</id>
-						<phase>pre-integration-test</phase>
-						<goals>
-							<goal>wget</goal>
-						</goals>
-						<configuration>
-							<url>${jbosstools.test.jboss-jpp-6.1.x.url}</url>
-							<unpack>true</unpack>
-							<md5>${jbosstools.test.jboss-jpp-6.1.x.md5}</md5>
-							<outputDirectory>${requirementsDirectory}/jboss-jpp-6.1.x/</outputDirectory>
-						</configuration>
-					</execution>
-					<execution>
-						<id>install-seam-2.3.x</id>
-						<phase>pre-integration-test</phase>
-						<goals>
-							<goal>wget</goal>
-						</goals>
-						<configuration>
-							<url>${jboss-seam-2.3.x.url}</url>
-							<unpack>true</unpack>
-							<md5>${jboss-seam-2.3.x.md5}</md5>
-							<outputDirectory>${requirementsDirectory}/jboss-seam-2.3.x/</outputDirectory>
-						</configuration>
-					</execution>
 					<execution>
 						<id>install-seam-2.3.0.Final</id>
 						<phase>pre-integration-test</phase>
@@ -238,12 +274,13 @@
 							<artifactId>org.jboss.tools.runtime.core.feature.feature.group</artifactId>
 							<version>0.0.0</version>
 						</dependency>
-						<!-- JBIDE-12583 o.j.t.runtime.as.detector classes are now in o.j.i.e.as.core, so use o.j.i.e.as.feature instead -->
+						<!-- JBIDE-12583 o.j.t.runtime.as.detector classes are now in o.j.i.e.as.core, 
+							so use o.j.i.e.as.feature instead -->
 						<dependency>
-                                                        <type>p2-installable-unit</type>
-                                                        <artifactId>org.jboss.ide.eclipse.as.feature.feature.group</artifactId>
-                                                        <version>0.0.0</version>
-                                                </dependency>
+							<type>p2-installable-unit</type>
+							<artifactId>org.jboss.ide.eclipse.as.feature.feature.group</artifactId>
+							<version>0.0.0</version>
+						</dependency>
 						<dependency>
 							<type>p2-installable-unit</type>
 							<artifactId>org.jboss.tools.seam.feature.feature.group</artifactId>
