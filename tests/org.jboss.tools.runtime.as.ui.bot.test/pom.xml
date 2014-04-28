@@ -15,8 +15,8 @@
 		<requirementsDirectory>${project.build.directory}/requirements</requirementsDirectory>
 		
 		<jboss-eap-6.2.x>${requirementsDirectory}/jboss-eap-6.2.x/jboss-eap-6.2</jboss-eap-6.2.x>
-		<jbosstools.test.jboss-eap-6.2.x.url>http://download.devel.redhat.com/released/JBEAP-6/6.2.2/jboss-eap-6.2.2-full-build.zip</jbosstools.test.jboss-eap-6.2.x.url>
-		<jbosstools.test.jboss-eap-6.2.x.md5>1727e5723de123c2470c134e4a25e9cf</jbosstools.test.jboss-eap-6.2.x.md5>
+		<jbosstools.test.jboss-eap-6.2.x.url>http://machydra.brq.redhat.com/eap/jboss-eap-6.2.2-patched.zip</jbosstools.test.jboss-eap-6.2.x.url>
+		<jbosstools.test.jboss-eap-6.2.x.md5>043ebfa9793fba85a89fb0384d68be81</jbosstools.test.jboss-eap-6.2.x.md5>
 		
 		<jboss-eap-6.2>${requirementsDirectory}/jboss-eap-6.2/</jboss-eap-6.2>
 		<jbosstools.test.jboss-eap-6.2.url>http://download.devel.redhat.com/released/JBEAP-6/6.2.0/jboss-eap-6.2.0.zip</jbosstools.test.jboss-eap-6.2.url>
