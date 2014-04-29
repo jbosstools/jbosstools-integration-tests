@@ -14,6 +14,7 @@
 	<properties>
 		<requirementsDirectory>${project.build.directory}/requirements</requirementsDirectory>
 
+		<wildfly-8.1>${requirementsDirectory}/wildfly-8.1.0.CR1/</wildfly-8.1>
 		<wildfly-8.0>${requirementsDirectory}/wildfly-8.0.0.Final/</wildfly-8.0>
 
 		<jboss-as-7>${requirementsDirectory}/jboss-as-7.1.1.Final/</jboss-as-7>
@@ -183,7 +184,25 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
-				<executions>					
+				<executions>
+					<execution>
+						<id>install-widlfly-8.1.0</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>unpack</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<groupId>org.wildfly</groupId>
+									<artifactId>wildfly-dist</artifactId>
+									<version>8.1.0.CR1</version>
+									<type>zip</type>
+								</artifactItem>
+							</artifactItems>
+							<outputDirectory>${requirementsDirectory}</outputDirectory>
+						</configuration>
+					</execution>
 					<execution>
 						<id>install-widlfly-8.0.0</id>
 						<phase>pre-integration-test</phase>

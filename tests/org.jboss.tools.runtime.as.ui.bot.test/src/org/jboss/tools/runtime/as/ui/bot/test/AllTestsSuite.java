@@ -60,6 +60,8 @@ import org.jboss.tools.runtime.as.ui.bot.test.detector.server.soap53.standalone.
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.soap53.standalone.OperateSOAPStandalone53;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.wildfly8.DetectWildFly8;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.wildfly8.OperateWildFly8;
+import org.jboss.tools.runtime.as.ui.bot.test.detector.server.wildfly81.DetectWildFly81;
+import org.jboss.tools.runtime.as.ui.bot.test.detector.server.wildfly81.OperateWildFly81;
 import org.jboss.tools.runtime.as.ui.bot.test.download.AllRuntimeDownload;
 import org.jboss.tools.runtime.as.ui.bot.test.download.RuntimeDownload;
 import org.junit.runner.RunWith;
@@ -72,6 +74,9 @@ import org.junit.runners.Suite;
 		RuntimeDownload.class,
 		
 		// Needs Java SE 1.7
+		DetectWildFly81.class,
+		OperateWildFly81.class,
+		
 		DetectWildFly8.class,
 		OperateWildFly8.class,
 		
