@@ -158,41 +158,46 @@ public class RESTfulTestBase extends WSTestBase {
 	}
 
 	protected void assertCountOfPathAnnotationValidationErrors(String projectName, int expectedCount) {
-		SWTBotTreeItem[] errors = restfulHelper.getPathAnnotationValidationErrors(projectName);
-		int foundErrors = errors.length;
-		assertCountOfValidationError(expectedCount, foundErrors);
+		assertCountOfValidationError(
+				restfulHelper.getPathAnnotationValidationErrors(projectName),
+				expectedCount);
 	}
 	
 	protected void assertCountOfApplicationAnnotationValidationWarnings(String projectName,
 			int expectedCount) {
-		int foundProblems = restfulHelper.getRESTValidationWarnings(projectName).length;
-		assertCountOfValidationWarning(expectedCount, foundProblems);
+		assertCountOfValidationWarning(
+				restfulHelper.getRESTValidationWarnings(projectName),
+				expectedCount);
 	}
 	
 	protected void assertCountOfApplicationAnnotationValidationErrors(String projectName,
 			String description, int expectedCount) {
-		int foundProblems = restfulHelper.getRESTValidationErrors(projectName, description).length;
-		assertCountOfValidationError(expectedCount, foundProblems);
+		assertCountOfValidationError(
+				restfulHelper.getRESTValidationErrors(projectName, description),
+				expectedCount);
 	}
 	
 	protected void assertCountOfApplicationAnnotationValidationErrors(String projectName,
 			int expectedCount) {
-		int foundProblems = restfulHelper.getRESTValidationErrors(projectName).length;
-		assertCountOfValidationError(expectedCount, foundProblems);
+		assertCountOfValidationError(
+				restfulHelper.getRESTValidationErrors(projectName),
+				expectedCount);
 	}
 	
-	private void assertCountOfValidationProblem(String problemType, int expectedCount, int foundCount) {
+	private void assertCountOfValidationProblem(String problemType, SWTBotTreeItem[] problems, int expectedCount) {
+		int foundCount = problems.length;
 		assertTrue("Expected count of validation " + problemType + "s: " + expectedCount
-				+ ". Count of found validation " + problemType + "s: " + foundCount,
+				+ ".\nCount of found validation " + problemType + "s: " + foundCount
+				+ " - " + Arrays.toString(problems),
 				foundCount == expectedCount);
 	}
 	
-	private void assertCountOfValidationError(int expectedCount, int foundCount) {
-		assertCountOfValidationProblem("error", expectedCount, foundCount);
+	private void assertCountOfValidationError(SWTBotTreeItem[] errors, int expectedCount) {
+		assertCountOfValidationProblem("error", errors, expectedCount);
 	}
 	
-	private void assertCountOfValidationWarning(int expectedCount, int foundCount) {
-		assertCountOfValidationProblem("warning", expectedCount, foundCount);
+	private void assertCountOfValidationWarning(SWTBotTreeItem[] warnings, int expectedCount) {
+		assertCountOfValidationProblem("warning", warnings, expectedCount);
 	}
 	
 	protected void runRestServiceOnConfiguredServer(ProjectItem webService) {

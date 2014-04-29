@@ -21,6 +21,7 @@ import org.jboss.tools.ws.ui.bot.test.preferences.JBossWSPreferencesTest;
 import org.jboss.tools.ws.ui.bot.test.rest.DefaultValueAnnotationSupportTest;
 import org.jboss.tools.ws.ui.bot.test.rest.FiltersInterceptorsSupportTest;
 import org.jboss.tools.ws.ui.bot.test.rest.MatrixParamAnnotationSupportTest;
+import org.jboss.tools.ws.ui.bot.test.rest.NameBindingAnnotationSupportTest;
 import org.jboss.tools.ws.ui.bot.test.rest.PathParamAnnotationSupportTest;
 import org.jboss.tools.ws.ui.bot.test.rest.QueryParamAnnotationSupportTest;
 import org.jboss.tools.ws.ui.bot.test.rest.completion.RESTfulCompletionTest;
@@ -50,7 +51,7 @@ import org.junit.runners.Suite.SuiteClasses;
  * @author Lukas Jungmann
  * @author jjankovi
  * @author Radoslav Rabara
- *
+ * 
  */
 @RunWith(RequirementAwareSuite.class)
 @SuiteClasses({
@@ -77,6 +78,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	JaxRsValidatorTest.class,
 	HTTPMethodAnnotationQuickFixTest.class,
 	FiltersInterceptorsSupportTest.class,
+	NameBindingAnnotationSupportTest.class,
 	BottomUpWSTest.class,
 	TopDownWSTest.class,
 	WsClientTest.class,
