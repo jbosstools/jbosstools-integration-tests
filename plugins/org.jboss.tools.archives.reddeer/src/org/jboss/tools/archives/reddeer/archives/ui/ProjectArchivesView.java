@@ -12,7 +12,7 @@ package org.jboss.tools.archives.reddeer.archives.ui;
 
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.workbench.view.impl.WorkbenchView;
+import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
 import org.jboss.tools.archives.reddeer.component.ArchiveProject;
 
 /**
