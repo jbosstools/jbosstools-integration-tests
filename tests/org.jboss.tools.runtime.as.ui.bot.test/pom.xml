@@ -42,6 +42,8 @@
 				<jboss-jpp-6.1.x>${requirementsDirectory}/jboss-jpp-6.1.x/jboss-portal-6.1/</jboss-jpp-6.1.x>
 
 				<jboss-seam-2.3.x>${requirementsDirectory}/jboss-seam-2.3.x/jboss-wfk-2.5.0/jboss-seam-2.3.3.Final-redhat-1/</jboss-seam-2.3.x>
+				
+				<product-download-properties-file>resources/products-download.properties</product-download-properties-file>
 			</properties>
 			<build>
 				<plugins>
@@ -59,7 +61,7 @@
 						</executions>
 						<configuration>
 							<files>
-								<file>resources/products-download.properties</file>
+								<file>${product-download-properties-file}</file>
 							</files>
 						</configuration>
 					</plugin>
