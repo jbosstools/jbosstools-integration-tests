@@ -14,7 +14,6 @@ package org.jboss.tools.ws.ui.bot.test.rest;
 import java.util.List;
 
 import javax.ws.rs.MatrixParam;
-import javax.ws.rs.QueryParam;
 
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.ProjectItem;
 import org.jboss.tools.ui.bot.ext.Timing;

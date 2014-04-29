@@ -82,25 +82,6 @@ public class HTTPMethodAnnotationQuickFixTest extends WSTestBase {
 		/* assert that there are no JAX-RS errors */
 		assertThat(errorsByType("JAX-RS Problem").length, equalTo(0));
 	}
-
-	/**
-	 * Workaround for bug reported as JBIDE-12680.
-	 * Bug was resolved, however there is still problem in some cases - JBIDE-15428
-	 * 
-	 * Should be called after importing a project.
-	 * @see JBIDE-15428
-	 * 
-	 * @deprecated bug was resolved
-	 * 
-	 * @param projectName
-	 * @param path
-	 */
-	private void jbide12680Workaround(String projectName, String... path) {
-		SWTBotEditor editor = packageExplorer.openFile(projectName, path);
-		SWTBotEclipseEditor eclipseEditor = editor.toTextEditor();
-		eclipseEditor.insertText(" ");
-		eclipseEditor.save();
-	}
 	
 	private QuickFixBot quickFixBot(String wsProjectName, String underlinedText) {
 		packageExplorer.openFile(wsProjectName, "src", "test", "MyAnnot.java");
