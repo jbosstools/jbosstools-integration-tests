@@ -1,7 +1,7 @@
 package org.jboss.tools.central.test.ui.bot.api;
 
 import org.jboss.reddeer.swt.impl.toolbar.WorkbenchToolItem;
-import org.jboss.reddeer.workbench.editor.DefaultEditor;
+import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.central.test.ui.bot.CreateProjectsWithServerTest;
 
 public class CentralProjects {

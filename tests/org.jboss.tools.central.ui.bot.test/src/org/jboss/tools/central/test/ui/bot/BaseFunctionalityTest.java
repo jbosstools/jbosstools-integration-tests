@@ -5,9 +5,7 @@ import java.util.regex.Pattern;
 
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarPushButton;
-import org.jboss.reddeer.workbench.editor.DefaultEditor;
-import org.jboss.reddeer.workbench.editor.Editor;
-import org.jboss.reddeer.workbench.view.View;
+import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.central.test.ui.bot.helper.SWTJBossCentralEditorExt;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.condition.BrowserIsLoaded;
