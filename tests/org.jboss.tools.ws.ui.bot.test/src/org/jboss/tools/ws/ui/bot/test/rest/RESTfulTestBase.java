@@ -11,15 +11,19 @@
 
 package org.jboss.tools.ws.ui.bot.test.rest;
 
+import static org.junit.Assert.assertThat;
+
 import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.hamcrest.core.Is;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.ProjectItem;
+import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.condition.NonSystemJobRunsCondition;
 import org.jboss.tools.ui.bot.ext.condition.ViewIsActive;
@@ -84,6 +88,16 @@ public class RESTfulTestBase extends WSTestBase {
 		}
 	}
 
+	protected void importAndCheckErrors(String projectName) {
+		importRestWSProject(projectName);
+
+		assertCountOfApplicationAnnotationValidationErrors(projectName, 0);
+		List<TreeItem> errors = new org.jboss.reddeer.eclipse.ui.problems.ProblemsView()
+				.getAllErrors();
+		assertThat("There are errors " + Arrays.toString(errors.toArray()),
+				errors.size(), Is.is(0));
+	}
+	
 	protected void assertRestFullSupport(String projectName) {
 		RESTFullExplorer explorer = null;
 		try {

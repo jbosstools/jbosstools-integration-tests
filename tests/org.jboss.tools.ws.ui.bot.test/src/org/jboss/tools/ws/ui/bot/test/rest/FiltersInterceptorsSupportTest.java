@@ -7,13 +7,8 @@ import java.util.List;
 
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.hamcrest.core.Is;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
@@ -84,16 +79,6 @@ public class FiltersInterceptorsSupportTest extends RESTfulTestBase {
 	private void interceptorSupportTest(String projectName) {
 		importAndCheckErrors(projectName);
 		providerValidationWarning(projectName, "Interceptor");
-	}
-	
-	private void importAndCheckErrors(String projectName) {
-		importRestWSProject(projectName);
-
-		assertCountOfApplicationAnnotationValidationErrors(projectName, 0);
-		List<TreeItem> errors = new org.jboss.reddeer.eclipse.ui.problems.ProblemsView()
-				.getAllErrors();
-		assertThat("There are errors " + Arrays.toString(errors.toArray()),
-				errors.size(), Is.is(0));
 	}
 
 	private void providerValidationWarning(String projectName, String className) {
