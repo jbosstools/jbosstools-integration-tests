@@ -23,6 +23,7 @@ import org.jboss.tools.ws.ui.bot.test.rest.FiltersInterceptorsSupportTest;
 import org.jboss.tools.ws.ui.bot.test.rest.MatrixParamAnnotationSupportTest;
 import org.jboss.tools.ws.ui.bot.test.rest.NameBindingAnnotationSupportTest;
 import org.jboss.tools.ws.ui.bot.test.rest.PathParamAnnotationSupportTest;
+import org.jboss.tools.ws.ui.bot.test.rest.PreMatchingAnnotationSupportTest;
 import org.jboss.tools.ws.ui.bot.test.rest.QueryParamAnnotationSupportTest;
 import org.jboss.tools.ws.ui.bot.test.rest.completion.RESTfulCompletionTest;
 import org.jboss.tools.ws.ui.bot.test.rest.explorer.RESTfulExplorerTest;
@@ -79,6 +80,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	HTTPMethodAnnotationQuickFixTest.class,
 	FiltersInterceptorsSupportTest.class,
 	NameBindingAnnotationSupportTest.class,
+	PreMatchingAnnotationSupportTest.class,
 	BottomUpWSTest.class,
 	TopDownWSTest.class,
 	WsClientTest.class,

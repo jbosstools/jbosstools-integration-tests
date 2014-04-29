@@ -118,24 +118,10 @@ public class NameBindingAnnotationSupportTest extends RESTfulTestBase {
 		importRestWSProject(projectName);
 		
 		//remove Filter.java
-		ProjectExplorer pe = new ProjectExplorer();
-		pe.open();
-		Project project = pe.getProject(projectName);
-		
 		org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer pa = new org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer();
 		pa.getProject(projectName).getProjectItem("src", "org.rest.test", "Filter.java").delete();
 				
 		assertCountOfApplicationAnnotationValidationErrors(projectName, 1);
 		assertCountOfApplicationAnnotationValidationErrors(projectName, "no Filter or Interceptor", 1);
-	}
-
-	private void importAndCheckErrors(String projectName) {
-		importRestWSProject(projectName);
-
-		assertCountOfApplicationAnnotationValidationErrors(projectName, 0);
-		List<TreeItem> errors = new org.jboss.reddeer.eclipse.ui.problems.ProblemsView()
-				.getAllErrors();
-		assertThat("There are errors " + Arrays.toString(errors.toArray()),
-				errors.size(), Is.is(0));
 	}
 }
