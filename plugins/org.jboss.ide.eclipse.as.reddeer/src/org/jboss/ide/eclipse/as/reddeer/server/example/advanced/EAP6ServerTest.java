@@ -1,9 +1,9 @@
 package org.jboss.ide.eclipse.as.reddeer.server.example.advanced;
 
-import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqState;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 

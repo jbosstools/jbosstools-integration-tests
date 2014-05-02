@@ -12,7 +12,6 @@ package org.jboss.tools.archives.ui.bot.test;
 
 import static org.junit.Assert.assertTrue;
 
-import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqState;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
@@ -24,6 +23,7 @@ import org.jboss.reddeer.eclipse.ui.views.log.LogView;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.api.Text;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
@@ -62,7 +62,7 @@ public class VariousProjectsArchiving extends ArchivesTestBase {
 		String project = "pr1";
 		
 		/* create dynamic web project */
-		createDynamicWebProject(project, requirement.getRuntimeNameLabelText());
+		createDynamicWebProject(project, requirement.getRuntimeNameLabelText(requirement.getConfig()));
 		
 		/* clear error view before creating an archive */
 		clearErrorView();

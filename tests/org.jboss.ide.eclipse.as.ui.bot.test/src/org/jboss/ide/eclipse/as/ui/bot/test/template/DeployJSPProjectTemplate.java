@@ -92,6 +92,6 @@ public abstract class DeployJSPProjectTemplate {
 	}
 
 	protected String getServerName() {
-		return requirement.getServerNameLabelText();
+		return requirement.getServerNameLabelText(requirement.getConfig());
 	} 
 }

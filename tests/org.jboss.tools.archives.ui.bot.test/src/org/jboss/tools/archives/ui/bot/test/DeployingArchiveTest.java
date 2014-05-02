@@ -13,7 +13,6 @@ import static org.junit.Assert.assertTrue;
 
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqState;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
@@ -22,6 +21,7 @@ import org.jboss.reddeer.eclipse.wst.server.ui.wizard.ModifyModulesPage;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.tools.archives.reddeer.archives.ui.ArchivePublishDialog;
@@ -126,7 +126,7 @@ public class DeployingArchiveTest extends ArchivesTestBase {
 			throw new IllegalArgumentException(
 					"Cannot autodeploy without always publish option checked");
 		}
-		dialog.selectServers(requirement.getServerNameLabelText());
+		dialog.selectServers(requirement.getServerNameLabelText(requirement.getConfig()));
 		if (alwaysPublish) dialog.checkAlwaysPublish();
 		if (autodeploy) dialog.checkAutoDeploy();
 		dialog.finish();
@@ -135,7 +135,7 @@ public class DeployingArchiveTest extends ArchivesTestBase {
 	private void removeArchiveFromServer(String archive) {
 		ServersView serversView = new ServersView();
 		serversView.open();
-		ModifyModulesDialog md = serversView.getServer(requirement.getServerNameLabelText()).addAndRemoveModules();
+		ModifyModulesDialog md = serversView.getServer(requirement.getServerNameLabelText(requirement.getConfig())).addAndRemoveModules();
 		ModifyModulesPage mp = md.getFirstPage();
 		mp.remove(archive);
 		md.finish();
@@ -147,7 +147,7 @@ public class DeployingArchiveTest extends ArchivesTestBase {
 		sview.open();
 		boolean found = false;
 		for(TreeItem i: new DefaultTree().getItems()){
-			if(i.getText().contains(requirement.getServerNameLabelText())){
+			if(i.getText().contains(requirement.getServerNameLabelText(requirement.getConfig()))){
 				for (TreeItem node : i.getItems()) {
 					System.out.println(node.getText());
 					System.out.println(archive);

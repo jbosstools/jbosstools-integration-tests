@@ -8,6 +8,8 @@ import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.jboss.ide.eclipse.as.reddeer.server.family.*;
+import org.jboss.reddeer.requirements.server.IServerFamily;
+import org.jboss.reddeer.requirements.server.IServerReqConfig;
 
 /**
  * 
@@ -16,7 +18,7 @@ import org.jboss.ide.eclipse.as.reddeer.server.family.*;
  */
 
 @XmlRootElement(name="server-requirement", namespace="http://www.jboss.org/NS/ServerReq")
-public class ServerRequirementConfig {
+public class ServerRequirementConfig implements IServerReqConfig {
 	
 	private String runtime;
 	
@@ -26,9 +28,9 @@ public class ServerRequirementConfig {
 		@XmlElement(name="familyEAP", namespace="http://www.jboss.org/NS/ServerReq", type = FamilyEAP.class),
 		@XmlElement(name="familyWildFly", namespace="http://www.jboss.org/NS/ServerReq", type = FamilyWildFly.class)
 	})
-	private List<ServerFamily> family;
+	private List<IServerFamily> family;
 	
-	public ServerFamily getServerFamily(){
+	public IServerFamily getServerFamily(){
 		return this.family.get(0); //always: size() == 1 
 	}
 	
@@ -47,8 +49,8 @@ public class ServerRequirementConfig {
 		if(arg == this)
 			return true;
 		ServerRequirementConfig conf = (ServerRequirementConfig) arg;
-		ServerFamily family1 = this.getServerFamily();
-		ServerFamily family2 = conf.getServerFamily();
+		IServerFamily family1 = this.getServerFamily();
+		IServerFamily family2 = conf.getServerFamily();
 		if(!runtime.equals(conf.runtime) || (family1 == null && family2 != null))
 			return false;
 		return family1.getLabel().equals(family2.getLabel()) && family1.getVersion().equals(family2.getVersion());

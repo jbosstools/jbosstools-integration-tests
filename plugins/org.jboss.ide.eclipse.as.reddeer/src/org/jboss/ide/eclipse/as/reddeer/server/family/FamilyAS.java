@@ -2,6 +2,7 @@ package org.jboss.ide.eclipse.as.reddeer.server.family;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
+import org.jboss.reddeer.requirements.server.IServerFamily;
 
 /**
  * Server family: Application Server
@@ -10,7 +11,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  *
  */
 @XmlRootElement(name="familyAS", namespace="http://www.jboss.org/NS/ServerReq")
-public class FamilyAS implements ServerFamily {
+public class FamilyAS implements IServerFamily {
 
 	private final String category = "JBoss Community";
 	
