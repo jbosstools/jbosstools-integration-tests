@@ -16,7 +16,7 @@ import org.jboss.tools.openshift.ui.bot.test.application.wizard.page.FirstWizard
 import org.jboss.tools.openshift.ui.bot.test.application.wizard.page.FourthWizardPage;
 import org.jboss.tools.openshift.ui.bot.test.application.wizard.page.SecondWizardPage;
 import org.jboss.tools.openshift.ui.bot.test.application.wizard.page.ThirdWizardPage;
-import org.jboss.tools.openshift.ui.bot.test.openshiftexplorer.OpenShiftExplorerView;
+import org.jboss.tools.openshift.ui.bot.util.OpenShiftExplorerView;
 import org.jboss.tools.openshift.ui.bot.util.OpenShiftLabel;
 
 /**

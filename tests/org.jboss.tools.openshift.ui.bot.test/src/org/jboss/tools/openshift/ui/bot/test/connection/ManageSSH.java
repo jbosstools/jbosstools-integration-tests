@@ -1,4 +1,4 @@
-package org.jboss.tools.openshift.ui.bot.test.openshiftexplorer;
+package org.jboss.tools.openshift.ui.bot.test.connection;
 
 import java.util.Date;
 
@@ -15,6 +15,7 @@ import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.tools.openshift.ui.bot.util.OpenShiftExplorerView;
 import org.jboss.tools.openshift.ui.bot.util.OpenShiftLabel;
 import org.junit.Test;
 

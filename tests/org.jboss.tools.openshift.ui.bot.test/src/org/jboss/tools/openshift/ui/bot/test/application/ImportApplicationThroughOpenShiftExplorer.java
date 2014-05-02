@@ -21,13 +21,13 @@ import org.jboss.tools.openshift.ui.bot.test.application.wizard.DeleteApplicatio
 import org.jboss.tools.openshift.ui.bot.test.application.wizard.NewApplicationTemplates;
 import org.jboss.tools.openshift.ui.bot.test.application.wizard.NewApplicationWizard;
 import org.jboss.tools.openshift.ui.bot.test.customizedexplorer.CustomizedProjectExplorer;
-import org.jboss.tools.openshift.ui.bot.test.openshiftexplorer.OpenShiftExplorerView;
+import org.jboss.tools.openshift.ui.bot.util.OpenShiftExplorerView;
 import org.jboss.tools.openshift.ui.bot.util.OpenShiftLabel;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class ImportApplicationFromOpenShift {
+public class ImportApplicationThroughOpenShiftExplorer {
 
 	private String DIY_APP = "diyapp" + System.currentTimeMillis();
 	

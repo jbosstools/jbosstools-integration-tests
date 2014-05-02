@@ -14,7 +14,7 @@ import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
-import org.jboss.tools.openshift.ui.bot.test.openshiftexplorer.OpenShiftExplorerView;
+import org.jboss.tools.openshift.ui.bot.util.OpenShiftExplorerView;
 import org.jboss.tools.openshift.ui.bot.util.OpenShiftLabel;
 import org.junit.After;
 import org.junit.Test;
