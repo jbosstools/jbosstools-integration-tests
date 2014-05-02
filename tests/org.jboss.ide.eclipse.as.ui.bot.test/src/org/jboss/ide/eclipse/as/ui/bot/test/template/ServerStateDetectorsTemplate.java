@@ -121,6 +121,6 @@ public abstract class ServerStateDetectorsTemplate {
 	}
 	
 	protected String getServerName() {
-		return requirement.getServerNameLabelText();
+		return requirement.getServerNameLabelText(requirement.getConfig());
 	}
 }

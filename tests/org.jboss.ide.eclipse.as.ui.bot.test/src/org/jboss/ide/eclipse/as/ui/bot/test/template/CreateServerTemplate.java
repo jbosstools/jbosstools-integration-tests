@@ -40,6 +40,6 @@ public abstract class CreateServerTemplate {
 	}
 
 	protected String getServerName() {
-		return requirement.getServerNameLabelText();
+		return requirement.getServerNameLabelText(requirement.getConfig());
 	}
 }

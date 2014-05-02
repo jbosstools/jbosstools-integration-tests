@@ -16,6 +16,9 @@ import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewEnums.ServerState
 import org.jboss.reddeer.junit.logging.Logger;
 import org.jboss.reddeer.junit.requirement.CustomConfiguration;
 import org.jboss.reddeer.junit.requirement.Requirement;
+import org.jboss.reddeer.requirements.server.ConfiguredServerInfo;
+import org.jboss.reddeer.requirements.server.ServerReqBase;
+import org.jboss.reddeer.requirements.server.ServerReqState;
 
 /**
  * 
@@ -23,7 +26,7 @@ import org.jboss.reddeer.junit.requirement.Requirement;
  *
  */
 
-public class ServerRequirement implements Requirement<JBossServer>, CustomConfiguration<ServerRequirementConfig> {
+public class ServerRequirement extends ServerReqBase implements Requirement<JBossServer>, CustomConfiguration<ServerRequirementConfig> {
 
 	private static final Logger LOGGER = Logger.getLogger(ServerRequirement.class);
 	
@@ -55,73 +58,18 @@ public class ServerRequirement implements Requirement<JBossServer>, CustomConfig
 		if(lastServerConfiguration != null) {
 			boolean differentConfig = !config.equals(lastServerConfiguration.getConfig());
 			if (differentConfig) {
-				removeLastRequiredServer();
+				removeLastRequiredServer(lastServerConfiguration);
 				lastServerConfiguration = null;
 			}
 		}
-		if (lastServerConfiguration == null || !isLastConfiguredServerPresent()) {
+		if (lastServerConfiguration == null || !isLastConfiguredServerPresent(lastServerConfiguration)) {
 			LOGGER.info("Setup server");
 			setupServerAdapter();
-			lastServerConfiguration = new ConfiguredServerInfo(getServerNameLabelText(), config);
+			lastServerConfiguration = new ConfiguredServerInfo(getServerNameLabelText(config), config);
 		}
-		setupServerState();
-	}
-
-	private void setupServerState() throws ConfiguredServerNotFoundException {
-		LOGGER.info("Checking the state of the server '"+lastServerConfiguration.getServerName()+"'");
-		
-		org.jboss.ide.eclipse.as.reddeer.server.view.JBossServer serverInView = getConfiguredServer();
-		
-		ServerState state = serverInView.getLabel().getState();
-		ServerReqState requiredState = server.state();
-		switch(state) {
-			case STARTED:
-				if(requiredState == ServerReqState.STOPPED)
-					serverInView.stop();
-				break;
-			case STOPPED:
-				if(requiredState == ServerReqState.RUNNING)
-					serverInView.start();
-				break;
-			default:
-				new AssertionError("It was expected to have server in "
-						+ ServerState.STARTED + " or " + ServerState.STOPPED
-						+ "state." + " Not in state "+state+".");
-		}
+		setupServerState(server.state(), lastServerConfiguration);
 	}
 	
-	private void removeLastRequiredServer() {
-		try {
-			org.jboss.ide.eclipse.as.reddeer.server.view.JBossServer serverInView = getConfiguredServer();
-			//remove server added by last requirement
-			serverInView.delete(true);
-		} catch(ConfiguredServerNotFoundException e) {
-			//server had been already removed
-		}
-		//current state = there is no server defined
-		lastServerConfiguration = null;
-	}
-	
-	private org.jboss.ide.eclipse.as.reddeer.server.view.JBossServer getConfiguredServer()
-			throws ConfiguredServerNotFoundException {
-		JBossServerView serversView = new JBossServerView();
-		final String serverName = lastServerConfiguration.getServerName();
-		try {
-			return serversView.getServer(serverName);
-		} catch(EclipseLayerException e) {
-			LOGGER.warn("Server \"" + serverName + "\" not found. It had been removed.");
-			throw new ConfiguredServerNotFoundException();
-		}
-	}
-	
-	private boolean isLastConfiguredServerPresent() {
-		try {
-			getConfiguredServer();
-		} catch(ConfiguredServerNotFoundException e) {
-			return false;
-		}
-		return true;
-	}
 	
 	@Override
 	public void setDeclaration(JBossServer server) {
@@ -142,18 +90,6 @@ public class ServerRequirement implements Requirement<JBossServer>, CustomConfig
 		return this.config;
 	}
 	
-	public String getServerTypeLabelText() {
-		return config.getServerFamily().getLabel() + " "
-				+ config.getServerFamily().getVersion();
-	}
-	
-	public String getServerNameLabelText() {
-		return getServerTypeLabelText() + " Server";
-	}
-
-	public String getRuntimeNameLabelText() {
-		return getServerTypeLabelText() + " Runtime";
-	}
 
 	protected void setupServerAdapter() {
 		NewServerWizardDialog serverW = new NewServerWizardDialog();
@@ -163,8 +99,8 @@ public class ServerRequirement implements Requirement<JBossServer>, CustomConfig
 			NewServerWizardPageWithErrorCheck sp = new NewServerWizardPageWithErrorCheck();
 	
 			sp.selectType(config.getServerFamily().getCategory(),
-					getServerTypeLabelText());
-			sp.setName(getServerNameLabelText());
+					getServerTypeLabelText(config));
+			sp.setName(getServerNameLabelText(config));
 			
 			sp.checkErrors();
 			
@@ -176,7 +112,7 @@ public class ServerRequirement implements Requirement<JBossServer>, CustomConfig
 			serverW.next();
 			
 			JBossRuntimeWizardPage rp = new JBossRuntimeWizardPage();
-			rp.setRuntimeName(getRuntimeNameLabelText());
+			rp.setRuntimeName(getRuntimeNameLabelText(config));
 			rp.setRuntimeDir(config.getRuntime());
 			
 			rp.checkErrors();
@@ -189,18 +125,6 @@ public class ServerRequirement implements Requirement<JBossServer>, CustomConfig
 			serverW.cancel();
 			throw e;
 		}
-	}
-
-	/**
-	 * Configured server was not found.
-	 * 
-	 * @author rrabara
-	 *
-	 */
-	private class ConfiguredServerNotFoundException extends RuntimeException {
-
-		private static final long serialVersionUID = -1049073209937853734L;
-		
 	}
 
 }

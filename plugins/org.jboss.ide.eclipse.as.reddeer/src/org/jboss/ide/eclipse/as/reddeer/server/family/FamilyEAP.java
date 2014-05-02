@@ -3,6 +3,8 @@ package org.jboss.ide.eclipse.as.reddeer.server.family;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.jboss.reddeer.requirements.server.IServerFamily;
+
 /**
  * Server family: Enterprise Application Platform
  * 
@@ -10,7 +12,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  *
  */
 @XmlRootElement(name="familyEAP", namespace="http://www.jboss.org/NS/ServerReq")
-public class FamilyEAP implements ServerFamily {
+public class FamilyEAP implements IServerFamily {
 
 	private final String category = "Red Hat JBoss Middleware";
 	

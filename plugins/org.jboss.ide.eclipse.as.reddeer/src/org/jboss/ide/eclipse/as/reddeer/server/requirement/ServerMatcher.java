@@ -3,8 +3,8 @@ package org.jboss.ide.eclipse.as.reddeer.server.requirement;
 import org.jboss.ide.eclipse.as.reddeer.server.family.FamilyAS;
 import org.jboss.ide.eclipse.as.reddeer.server.family.FamilyEAP;
 import org.jboss.ide.eclipse.as.reddeer.server.family.FamilyWildFly;
-import org.jboss.ide.eclipse.as.reddeer.server.family.ServerFamily;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType.ServerReqFamily;
+import org.jboss.reddeer.requirements.server.IServerFamily;
 
 /**
  * Provides methods for matching required server to configured server
@@ -14,7 +14,7 @@ import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType.ServerR
  */
 class ServerMatcher {
 
-	static boolean matchServerFamily(ServerReqFamily serverFamily, ServerFamily configServerType) {
+	static boolean matchServerFamily(ServerReqFamily serverFamily, IServerFamily configServerType) {
 		return serverFamily == ServerReqFamily.ANY
 				|| (serverFamily == ServerReqFamily.AS && configServerType instanceof FamilyAS)
 				|| (serverFamily == ServerReqFamily.EAP && configServerType instanceof FamilyEAP)

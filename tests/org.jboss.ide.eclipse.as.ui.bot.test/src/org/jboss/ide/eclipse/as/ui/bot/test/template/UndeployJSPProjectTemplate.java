@@ -58,6 +58,6 @@ public abstract class UndeployJSPProjectTemplate {
 	}
 	
 	protected String getServerName() {
-		return requirement.getServerNameLabelText();
+		return requirement.getServerNameLabelText(requirement.getConfig());
 	} 
 }

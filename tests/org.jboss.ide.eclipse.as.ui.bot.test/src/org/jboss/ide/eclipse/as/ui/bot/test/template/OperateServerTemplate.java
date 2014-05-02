@@ -81,7 +81,7 @@ public abstract class OperateServerTemplate {
 	}
 	
 	protected String getServerName() {
-		return requirement.getServerNameLabelText();
+		return requirement.getServerNameLabelText(requirement.getConfig());
 	} 
 
 	protected JBossServer getServer() {
