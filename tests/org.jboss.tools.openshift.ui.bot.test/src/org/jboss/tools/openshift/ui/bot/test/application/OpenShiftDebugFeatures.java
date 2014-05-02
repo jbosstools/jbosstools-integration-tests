@@ -1,4 +1,4 @@
-package org.jboss.tools.openshift.ui.bot.test.openshiftexplorer;
+package org.jboss.tools.openshift.ui.bot.test.application;
 
 import static org.junit.Assert.assertFalse;
 
@@ -18,6 +18,7 @@ import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.openshift.ui.bot.test.application.wizard.DeleteApplication;
 import org.jboss.tools.openshift.ui.bot.test.application.wizard.NewApplicationTemplates;
+import org.jboss.tools.openshift.ui.bot.util.OpenShiftExplorerView;
 import org.jboss.tools.openshift.ui.bot.util.OpenShiftLabel;
 import org.junit.After;
 import org.junit.Before;

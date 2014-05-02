@@ -1,4 +1,4 @@
-package org.jboss.tools.openshift.ui.bot.test.openshiftexplorer;
+package org.jboss.tools.openshift.ui.bot.test.connection;
 
 import static org.junit.Assert.assertFalse;
 
@@ -9,6 +9,7 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.tools.openshift.ui.bot.util.OpenShiftExplorerView;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

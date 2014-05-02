@@ -1,4 +1,4 @@
-package org.jboss.tools.openshift.ui.bot.test.openshiftexplorer;
+package org.jboss.tools.openshift.ui.bot.test.adapter;
 
 import static org.junit.Assert.assertTrue;
 
@@ -20,12 +20,13 @@ import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.openshift.ui.bot.test.application.wizard.DeleteApplication;
 import org.jboss.tools.openshift.ui.bot.test.application.wizard.NewApplicationTemplates;
+import org.jboss.tools.openshift.ui.bot.util.OpenShiftExplorerView;
 import org.jboss.tools.openshift.ui.bot.util.OpenShiftLabel;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class CreateAdapterViaServersView {
+public class CreateAdapterFromExplorer {
 
 	private final String DIY_APP = "diyapp" + new Date().getTime();
 	
@@ -36,7 +37,7 @@ public class CreateAdapterViaServersView {
 	}
 	
 	@Test
-	public void canCreateAdapterViaServers() {
+	public void canCreateAdapterFromExplorer() {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 
 		TreeItem connection = explorer.getConnection();

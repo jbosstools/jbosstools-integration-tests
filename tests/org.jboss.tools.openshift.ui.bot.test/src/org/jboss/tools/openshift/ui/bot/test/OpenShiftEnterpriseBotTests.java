@@ -11,12 +11,16 @@
 package org.jboss.tools.openshift.ui.bot.test;
 
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.tools.openshift.ui.bot.test.application.CreateAdapterFromServerView;
+import org.jboss.tools.openshift.ui.bot.test.adapter.CreateAdapterFromServerView;
+import org.jboss.tools.openshift.ui.bot.test.adapter.CreateAdapterFromExplorer;
+import org.jboss.tools.openshift.ui.bot.test.adapter.SwitchProjectDeployment;
 import org.jboss.tools.openshift.ui.bot.test.application.CreateApplicationThroughShellMenu;
 import org.jboss.tools.openshift.ui.bot.test.application.CreateApplicationFromGithub;
 import org.jboss.tools.openshift.ui.bot.test.application.DeployApplicationBinary;
 import org.jboss.tools.openshift.ui.bot.test.application.ImportAndDeployGitHubProject;
-import org.jboss.tools.openshift.ui.bot.test.application.ImportApplicationFromOpenShift;
+import org.jboss.tools.openshift.ui.bot.test.application.ImportApplicationThroughOpenShiftExplorer;
+import org.jboss.tools.openshift.ui.bot.test.application.ImportApplicationThroughServersView;
+import org.jboss.tools.openshift.ui.bot.test.application.OpenShiftEnterpriseDebugFeatures;
 import org.jboss.tools.openshift.ui.bot.test.application.RepublishApplication;
 import org.jboss.tools.openshift.ui.bot.test.application.RestartApplication;
 import org.jboss.tools.openshift.ui.bot.test.application.create.CreateDeleteEWSApp;
@@ -33,14 +37,12 @@ import org.jboss.tools.openshift.ui.bot.test.application.create.CreateDeleteScal
 import org.jboss.tools.openshift.ui.bot.test.application.create.CreateDeleteScalableJBossApp;
 import org.jboss.tools.openshift.ui.bot.test.application.create.CreateDeleteScalableRubyApp;
 import org.jboss.tools.openshift.ui.bot.test.cartridge.EmbedCartridges;
+import org.jboss.tools.openshift.ui.bot.test.connection.ConnectionEnterprise;
+import org.jboss.tools.openshift.ui.bot.test.connection.ManageSSH;
+import org.jboss.tools.openshift.ui.bot.test.connection.MultipleAccounts;
 import org.jboss.tools.openshift.ui.bot.test.domain.CreateDomain;
 import org.jboss.tools.openshift.ui.bot.test.domain.DeleteDomain;
 import org.jboss.tools.openshift.ui.bot.test.domain.RenameDomain;
-import org.jboss.tools.openshift.ui.bot.test.openshiftexplorer.ConnectionEnterprise;
-import org.jboss.tools.openshift.ui.bot.test.openshiftexplorer.CreateAdapterViaServersView;
-import org.jboss.tools.openshift.ui.bot.test.openshiftexplorer.ManageSSH;
-import org.jboss.tools.openshift.ui.bot.test.openshiftexplorer.MultipleAccounts;
-import org.jboss.tools.openshift.ui.bot.test.openshiftexplorer.OpenShiftEnterpriseDebugFeatures;
 import org.jboss.tools.openshift.ui.bot.util.CleanUp;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
@@ -69,12 +71,14 @@ import org.junit.runners.Suite.SuiteClasses;
 
 	/* Application creation*/
  	ImportAndDeployGitHubProject.class, 
- 	ImportApplicationFromOpenShift.class,
+ 	ImportApplicationThroughOpenShiftExplorer.class,
+ 	ImportApplicationThroughServersView.class,
  	CreateApplicationThroughShellMenu.class,
     CreateApplicationFromGithub.class,
     DeployApplicationBinary.class,
- 	CreateAdapterViaServersView.class,
+ 	CreateAdapterFromExplorer.class,
 	CreateAdapterFromServerView.class,
+	SwitchProjectDeployment.class,
 	EmbedCartridges.class, 
 	// TODO Conflict cartridge 
 	RepublishApplication.class,
