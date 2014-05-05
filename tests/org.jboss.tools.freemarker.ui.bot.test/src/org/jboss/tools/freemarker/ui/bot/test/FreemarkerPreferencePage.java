@@ -1,17 +1,17 @@
 package org.jboss.tools.freemarker.ui.bot.test;
 
-import org.jboss.reddeer.eclipse.jface.preference.PreferencePage;
+import org.jboss.reddeer.eclipse.jface.preference.WindowPreferencePage;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 
 
-public class FreemarkerPreferencePage extends PreferencePage {
+public class FreemarkerPreferencePage extends WindowPreferencePage {
 
 	public FreemarkerPreferencePage() {
 		super("FreeMarker Editor");		
 	}
 	
 	public void setHighLightRelatedDirectives(boolean value) {
-		CheckBox cb = new CheckBox("Highlight Related Directives");
+		CheckBox cb = new CheckBox();
 		cb.toggle(value);
 	}
 
