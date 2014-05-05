@@ -30,12 +30,12 @@ public class ManageSSH {
 		// if there exist some keys
 		removeAllKeys();
 
-		createNewSSHKey();
+		createNewSSHKey(SSH_KEY_NAME);
 
 		closeSSHShell();
 	}
 
-	private void openSSHShell() {
+	public static void openSSHShell() {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 		
 		TreeItem connection = explorer.getConnection();
@@ -53,7 +53,7 @@ public class ManageSSH {
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 	}
 	
-	private void removeAllKeys() {
+	public static void removeAllKeys() {
 		new DefaultShell("Manage SSH Keys").setFocus();
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		
@@ -76,14 +76,14 @@ public class ManageSSH {
 		}
 	}
 		
-	private void createNewSSHKey() {
+	public static void createNewSSHKey(String keyName) {
 		new PushButton("New...").click();
 		
 		new WaitUntil(new ShellWithTextIsAvailable("New SSH Key"), TimePeriod.LONG);
 		
 		new DefaultShell("New SSH Key").setFocus();
 		
-		new DefaultText(0).setText(SSH_KEY_NAME);
+		new DefaultText(0).setText(keyName);
 		new DefaultText(2).setText("openshift_id");
 
 		new PushButton(OpenShiftLabel.Button.FINISH).click();
@@ -91,7 +91,7 @@ public class ManageSSH {
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
 	
-	private void closeSSHShell() {
+	public static void closeSSHShell() {
 		new DefaultShell("Manage SSH Keys").setFocus();
 		
 		new PushButton(OpenShiftLabel.Button.OK).click();

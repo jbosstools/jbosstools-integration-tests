@@ -6,6 +6,7 @@ import java.util.Random;
 
 import org.jboss.reddeer.junit.logging.Logger;
 import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.swt.condition.ButtonWithTextIsActive;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -79,6 +80,10 @@ public class CreateDomain {
 			
 			new DefaultShell("Create Domain").setFocus();
 			new DefaultText().setText("seconddomain69");
+			
+			new WaitUntil(new ButtonWithTextIsActive(new PushButton(
+					OpenShiftLabel.Button.FINISH)), TimePeriod.NORMAL);
+			
 			new PushButton("Finish").click();
 			
 			new WaitWhile(new JobIsRunning(),TimePeriod.LONG);

@@ -16,6 +16,8 @@ import org.jboss.tools.openshift.ui.bot.test.adapter.CreateAdapterFromExplorer;
 import org.jboss.tools.openshift.ui.bot.test.adapter.SwitchProjectDeployment;
 import org.jboss.tools.openshift.ui.bot.test.application.CreateApplicationThroughShellMenu;
 import org.jboss.tools.openshift.ui.bot.test.application.CreateApplicationFromGithub;
+import org.jboss.tools.openshift.ui.bot.test.application.CreateApplicationWithDifferentGearSize;
+import org.jboss.tools.openshift.ui.bot.test.application.CreateApplicationWithoutSSHKey;
 import org.jboss.tools.openshift.ui.bot.test.application.DeployApplicationBinary;
 import org.jboss.tools.openshift.ui.bot.test.application.ImportAndDeployGitHubProject;
 import org.jboss.tools.openshift.ui.bot.test.application.ImportApplicationThroughOpenShiftExplorer;
@@ -36,6 +38,7 @@ import org.jboss.tools.openshift.ui.bot.test.application.create.CreateDeleteScal
 import org.jboss.tools.openshift.ui.bot.test.application.create.CreateDeleteScalablePythonApp;
 import org.jboss.tools.openshift.ui.bot.test.application.create.CreateDeleteScalableJBossApp;
 import org.jboss.tools.openshift.ui.bot.test.application.create.CreateDeleteScalableRubyApp;
+import org.jboss.tools.openshift.ui.bot.test.cartridge.CannotEmbedConflictCartridges;
 import org.jboss.tools.openshift.ui.bot.test.cartridge.EmbedCartridges;
 import org.jboss.tools.openshift.ui.bot.test.connection.ConnectionEnterprise;
 import org.jboss.tools.openshift.ui.bot.test.connection.ManageSSH;
@@ -49,11 +52,7 @@ import org.junit.runners.Suite.SuiteClasses;
 
 /**
  * <b>OpenShift RedDeer TestSuite</b>
- * <br>
  * Test for OpenShift Enterprise private cloud. 
- * <b>
- * Please do not change the order of tests - relationship between automated tests and TCMS
- * <b/>
  * 
  * @author mlabuda
  */
@@ -75,12 +74,14 @@ import org.junit.runners.Suite.SuiteClasses;
  	ImportApplicationThroughServersView.class,
  	CreateApplicationThroughShellMenu.class,
     CreateApplicationFromGithub.class,
+    CreateApplicationWithoutSSHKey.class,
+    CreateApplicationWithDifferentGearSize.class,
     DeployApplicationBinary.class,
  	CreateAdapterFromExplorer.class,
 	CreateAdapterFromServerView.class,
 	SwitchProjectDeployment.class,
 	EmbedCartridges.class, 
-	// TODO Conflict cartridge 
+	CannotEmbedConflictCartridges.class,
 	RepublishApplication.class,
 	OpenShiftEnterpriseDebugFeatures.class,
  	RestartApplication.class, 
