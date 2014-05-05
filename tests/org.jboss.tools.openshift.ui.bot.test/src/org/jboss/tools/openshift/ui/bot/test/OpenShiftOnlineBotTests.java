@@ -24,6 +24,7 @@ import org.jboss.tools.openshift.ui.bot.test.application.OpenShiftDebugFeatures;
 import org.jboss.tools.openshift.ui.bot.test.application.RepublishApplication;
 import org.jboss.tools.openshift.ui.bot.test.application.RestartApplication;
 import org.jboss.tools.openshift.ui.bot.test.application.create.CreateDeleteScalablePythonApp;
+import org.jboss.tools.openshift.ui.bot.test.cartridge.CannotEmbedConflictCartridges;
 import org.jboss.tools.openshift.ui.bot.test.cartridge.EmbedCartridge;
 import org.jboss.tools.openshift.ui.bot.test.connection.Connection;
 import org.jboss.tools.openshift.ui.bot.test.connection.ManageSSH;
@@ -67,9 +68,9 @@ import org.junit.runners.Suite.SuiteClasses;
  	CreateAdapterFromExplorer.class,
  	CreateAdapterFromServerView.class,
 	EmbedCartridge.class,
+	CannotEmbedConflictCartridges.class,
 	SwitchProjectDeployment.class,
 	CreateDeleteScalablePythonApp.class,
-	// TODO Conflict cartridge 
 	RepublishApplication.class,
 	OpenShiftDebugFeatures.class,
  	RestartApplication.class,

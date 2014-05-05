@@ -1,6 +1,6 @@
 package org.jboss.tools.openshift.ui.bot.test.connection;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
@@ -41,6 +41,9 @@ public class MultipleAccounts {
 		explorer.connectToOpenShift(server, username, password, false);
 		
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+
+		// bcs. it is not tracked as job and it takes more time then all jobs are finished
+		AbstractWait.sleep(TimePeriod.getCustom(5));
 		
 		explorer.open();
 		

@@ -27,7 +27,7 @@ public class OpenShiftLabel {
 	
 
 	public static class Cartridge {
-		public static final String JENKINS = "Jenkins Client 1.4 (jenkins-client-1.4)";
+		public static final String JENKINS = "Jenkins Client (jenkins-client-1)";
 		public static final String CRON = "Cron 1.4 (cron-1.4)";
 		public static final String MYSQL = "MySQL 5.1 (mysql-5.1)";
 		public static final String POSTGRESQL = "PostgreSQL 8.4 (postgresql-8.4)";
