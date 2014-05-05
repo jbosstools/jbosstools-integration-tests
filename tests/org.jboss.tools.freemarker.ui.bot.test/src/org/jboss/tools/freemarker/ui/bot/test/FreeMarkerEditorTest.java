@@ -34,10 +34,8 @@ import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.handler.WorkbenchHandler;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.swt.test.RedDeerTest;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
-import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -47,7 +45,7 @@ import org.junit.Test;
  * @author Jiri Peterka
  *
  */
-public class FreeMarkerEditorTest extends RedDeerTest {
+public class FreeMarkerEditorTest {
 
 	private Logger log = Logger.getLogger(FreeMarkerEditorTest.class);
 	private String prj = "org.jboss.tools.freemarker.testprj";
@@ -56,9 +54,6 @@ public class FreeMarkerEditorTest extends RedDeerTest {
 	public static void beforeClass() {
 		JavaPerspective p = new JavaPerspective();
 		p.open();
-		
-		new WorkbenchView("Welcome").close();
-		//new WorkbenchView("JBoss Central").close();
 		WorkbenchHandler.getInstance().closeAllEditors();
 		new WaitWhile(new JobIsRunning());		
 
