@@ -18,7 +18,12 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-
+/**
+ * Test capabilities of having more accounts to OpenShift server in OpenShift explorer
+ * 
+ * @author mlabuda@redhat.com
+ *
+ */
 public class MultipleAccounts {
 
 	private static final String server = "openshift.redhat.com";

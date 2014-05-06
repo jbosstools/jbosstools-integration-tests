@@ -38,13 +38,10 @@ import org.junit.runners.Suite.SuiteClasses;
 
 /**
  * <b>OpenShift RedDeer TestSuite</b>
- * <br>
- * Tests for OpenShift Online - production.
- * <b>
- * Please do not change the order of tests - relationship between automated tests and TCMS
- * <b/>
  * 
- * @author mlabuda
+ * Tests for OpenShift Online.
+ * 
+ * @author mlabuda@redhat.com
  */
 @RunWith(RedDeerSuite.class)
 @SuiteClasses({

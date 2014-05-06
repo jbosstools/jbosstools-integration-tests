@@ -8,7 +8,7 @@ import org.junit.Test;
 * Test class for tailing remote files, port forwarding, opening web browser & displaying env.variables.
 * To prevent creation of OpenShift application for each test, all tests are included in one test method.
 *
-* @author mlabuda
+* @author mlabuda@redhat.com
 *
 */
 public class OpenShiftEnterpriseDebugFeatures {

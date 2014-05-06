@@ -19,6 +19,13 @@ import org.jboss.tools.openshift.ui.bot.util.OpenShiftExplorerView;
 import org.jboss.tools.openshift.ui.bot.util.OpenShiftLabel;
 import org.junit.Test;
 
+/**
+ * Test remove and add SSH keys to an OpenShift server 
+ * (uploading public keys to PaaS) and create new SSH key.
+ * 
+ * @author mlabuda@redhat.com
+ *
+ */
 public class ManageSSH {
 
 	public static final String SSH_KEY_NAME = "id" + new Date().getTime();

@@ -14,9 +14,11 @@ import org.junit.After;
 import org.junit.Test;
 
 /** 
- * Purpose of this class is to be called after all tests - it just remove domain
+ * This "test" perform clean up. Clean up consists of deleting domain 
+ * with applications on an OpenShift connection to let the connection 
+ * be prepared for another run.
  * 
- * @author mlabuda
+ * @author mlabuda@redhat.com
  *
  */
 public class CleanUp {

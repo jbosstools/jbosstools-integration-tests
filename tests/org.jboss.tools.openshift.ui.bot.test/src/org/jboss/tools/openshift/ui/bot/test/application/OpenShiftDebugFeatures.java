@@ -32,7 +32,7 @@ import org.junit.Test;
 * - create environment variable
 * - show environment variables
 *
-* @author mlabuda
+* @author mlabuda@redhat.com
 *
 */
 public class OpenShiftDebugFeatures {

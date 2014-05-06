@@ -14,6 +14,7 @@ public class OpenShiftLabel {
 		public static final String RUBY_1_9 = "Ruby 1.9" + " " + "ruby-1.9";
 		
 		// Bcs. in explorer tree are with parenthesis
+		// This is currently not used bcs. of changes in parsing on an OpenShift connection
 		public static final String DIY_TREE = "Do-It-Yourself 0.1" + " (" + "diy-0.1" + ")";
 		public static final String JBOSS_AS_TREE = "JBoss Application Server 7.1" + " (" + "jbossas-7.1" + ")";
 		public static final String JBOSS_EAP_TREE = "JBoss Enterprise Application Platform 6" + " (" + "jbosseap-6" + ")";

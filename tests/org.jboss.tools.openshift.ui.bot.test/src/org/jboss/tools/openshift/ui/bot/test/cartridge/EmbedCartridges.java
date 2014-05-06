@@ -9,6 +9,12 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * Test embedding various cartridges - CRON, MySQL, PostgreSQL, Mongo DB
+ * 
+ * @author mlabuda@redhat.com
+ *
+ */
 public class EmbedCartridges {
 
 	private final String DIY_APP = "dapp" + new Date().getTime();

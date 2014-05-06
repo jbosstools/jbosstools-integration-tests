@@ -26,6 +26,11 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * 
+ * @author mlabuda@redhat.com
+ *
+ */
 public class CreateAdapterFromExplorer {
 
 	private final String DIY_APP = "diyapp" + new Date().getTime();
