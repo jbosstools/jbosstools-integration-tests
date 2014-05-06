@@ -27,6 +27,11 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * 
+ * @author mlabuda@redhat.com
+ *
+ */
 public class ImportApplicationThroughOpenShiftExplorer {
 
 	private String DIY_APP = "diyapp" + System.currentTimeMillis();

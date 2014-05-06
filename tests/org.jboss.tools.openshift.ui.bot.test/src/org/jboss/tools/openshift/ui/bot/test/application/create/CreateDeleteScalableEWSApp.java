@@ -8,6 +8,11 @@ import org.jboss.tools.openshift.ui.bot.util.OpenShiftLabel;
 import org.junit.After;
 import org.junit.Test;
 
+/**
+ * 
+ * @author mlabuda@redhat.com
+ *
+ */
 public class CreateDeleteScalableEWSApp {
 
 	private final String EWS_APP_NAME = "sewsapp" + new Date().getTime();

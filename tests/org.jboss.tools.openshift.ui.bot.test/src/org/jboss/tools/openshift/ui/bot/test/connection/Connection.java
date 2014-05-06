@@ -16,6 +16,12 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * Test create a new connection to OpenShift Online server
+ * 
+ * @author mlabuda@redhat.com
+ *
+ */
 public class Connection {
 
 	@Before
@@ -65,6 +71,9 @@ public class Connection {
 	
 	public static void verifyConnectionEstablishment() {
 		new OpenShiftExplorerView().open();
+		// Sometimes it takes times
+		AbstractWait.sleep(TimePeriod.SHORT);
+		
 		assertTrue("Connection has not been established", new DefaultTree().getItems().size() > 0);
 		
 		Logger logger = new Logger(Connection.class);

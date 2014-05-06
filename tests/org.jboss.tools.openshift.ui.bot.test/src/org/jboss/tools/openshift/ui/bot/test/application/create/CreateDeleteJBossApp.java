@@ -8,6 +8,11 @@ import org.jboss.tools.openshift.ui.bot.util.OpenShiftLabel;
 import org.junit.After;
 import org.junit.Test;
 
+/**
+ * 
+ * @author mlabuda@redhat.com
+ *
+ */
 public class CreateDeleteJBossApp {
 
 	private final String JBOSS_APP_NAME = "eapapp" + new Date().getTime();

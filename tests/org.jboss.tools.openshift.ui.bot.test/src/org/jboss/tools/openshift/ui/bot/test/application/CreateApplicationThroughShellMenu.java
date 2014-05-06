@@ -6,6 +6,11 @@ import org.jboss.tools.openshift.ui.bot.util.OpenShiftLabel;
 import org.junit.After;
 import org.junit.Test;
 
+/**
+ * 
+ * @author mlabuda@redhat.com
+ *
+ */
 public class CreateApplicationThroughShellMenu {
 
 	public static final String APP_NAME = "diy" + System.currentTimeMillis();

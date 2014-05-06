@@ -6,6 +6,7 @@ import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
@@ -15,9 +16,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Connection to OpenShift enterprise has different steps - while establishing connection
- * there is a certificate acceptance dialog that user accept certificate of the given OSE.
- * @author mlabuda
+ * Connection to OpenShift Enterprise instance has additional step.
+ * Before establishing a connection it is required to accept a certificate.
+ *  
+ * @author mlabuda@redhat.com
  *
  */
 public class ConnectionEnterprise {
@@ -60,6 +62,8 @@ public class ConnectionEnterprise {
 	
 	@After
 	public void verifyConnection() {
+		AbstractWait.sleep(TimePeriod.getCustom(5));
+		
 		Connection.verifyConnectionEstablishment();
 	}
 	

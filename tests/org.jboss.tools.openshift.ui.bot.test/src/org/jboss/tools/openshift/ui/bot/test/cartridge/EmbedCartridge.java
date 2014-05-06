@@ -19,6 +19,12 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * Test embedding CRON cartridge into an application.
+ * 
+ * @author mlabuda@redhat.com
+ *
+ */
 public class EmbedCartridge {
 
 	private final String DIY_APP = "diyapp" + new Date().getTime();

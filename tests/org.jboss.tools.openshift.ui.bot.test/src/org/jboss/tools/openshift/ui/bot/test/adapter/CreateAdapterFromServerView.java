@@ -26,7 +26,7 @@ import org.junit.Test;
  * Consist of 2 test cases:
  * - create application without server adapter
  * - create server adapter from Servers view
- * @author mlabuda
+ * @author mlabuda@redhat.com
  *
  */
 public class CreateAdapterFromServerView {

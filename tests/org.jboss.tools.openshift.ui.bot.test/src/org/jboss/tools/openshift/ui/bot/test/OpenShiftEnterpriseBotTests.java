@@ -14,6 +14,7 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.openshift.ui.bot.test.adapter.CreateAdapterFromServerView;
 import org.jboss.tools.openshift.ui.bot.test.adapter.CreateAdapterFromExplorer;
 import org.jboss.tools.openshift.ui.bot.test.adapter.SwitchProjectDeployment;
+import org.jboss.tools.openshift.ui.bot.test.application.CreateApplicationDownloadableCartridge;
 import org.jboss.tools.openshift.ui.bot.test.application.CreateApplicationThroughShellMenu;
 import org.jboss.tools.openshift.ui.bot.test.application.CreateApplicationFromGithub;
 import org.jboss.tools.openshift.ui.bot.test.application.CreateApplicationWithDifferentGearSize;
@@ -54,19 +55,22 @@ import org.junit.runners.Suite.SuiteClasses;
  * <b>OpenShift RedDeer TestSuite</b>
  * Test for OpenShift Enterprise private cloud. 
  * 
- * @author mlabuda
+ * @author mlabuda@redhat.com
  */
 @RunWith(RedDeerSuite.class)
 @SuiteClasses({
 	/* Connection stuff */
 	ConnectionEnterprise.class, 
-	MultipleAccounts.class,
-	ManageSSH.class, 
+	MultipleAccounts.class, 
 	
 	/* Domain*/
 	CreateDomain.class,
  	DeleteDomain.class,
  	RenameDomain.class,
+ 	
+ 	/* SSH */
+    CreateApplicationWithoutSSHKey.class,
+	ManageSSH.class,
 
 	/* Application creation*/
  	ImportAndDeployGitHubProject.class, 
@@ -74,13 +78,13 @@ import org.junit.runners.Suite.SuiteClasses;
  	ImportApplicationThroughServersView.class,
  	CreateApplicationThroughShellMenu.class,
     CreateApplicationFromGithub.class,
-    CreateApplicationWithoutSSHKey.class,
+    CreateApplicationDownloadableCartridge.class,
     CreateApplicationWithDifferentGearSize.class,
     DeployApplicationBinary.class,
  	CreateAdapterFromExplorer.class,
 	CreateAdapterFromServerView.class,
 	SwitchProjectDeployment.class,
-	EmbedCartridges.class, 
+	EmbedCartridges.class,
 	CannotEmbedConflictCartridges.class,
 	RepublishApplication.class,
 	OpenShiftEnterpriseDebugFeatures.class,

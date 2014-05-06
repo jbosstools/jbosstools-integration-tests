@@ -21,6 +21,16 @@ import org.jboss.reddeer.swt.reference.ReferencedComposite;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 
+/**
+ * Customized project allow to work with git projects.
+ * Delete some customized project do not fail in case of failure, 
+ * just flush message on error log - it is caused by upstream bug 
+ * and this is workaround for it (tests pass although project has not
+ * been deleted from workspace) 
+ * 
+ * @author mlabuda@redhat.com
+ *
+ */
 public class CustomizedProject {
 
 	private Logger logger = new Logger(CustomizedProject.class);

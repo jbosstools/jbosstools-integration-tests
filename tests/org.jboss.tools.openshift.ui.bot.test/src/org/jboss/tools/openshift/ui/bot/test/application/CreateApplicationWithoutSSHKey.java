@@ -14,16 +14,21 @@ import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.openshift.ui.bot.test.connection.ManageSSH;
 import org.jboss.tools.openshift.ui.bot.util.OpenShiftExplorerView;
 import org.jboss.tools.openshift.ui.bot.util.OpenShiftLabel;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * Try to create new app. Assert that before test there is no SSH key 
+ * uploaded on PaaS and SSH key is created after this test.
+ * 
+ * 
+ * @author mlabuda@redhat.com
+ *
+ */
 public class CreateApplicationWithoutSSHKey {
 
-	private String SSH_KEY_NAME = "newid" + System.currentTimeMillis();
-	
 	@Before
-	public void removeAllSSHKeys() {
+	public void removePossibleSSHKeys() {
 		ManageSSH.openSSHShell();
 		ManageSSH.removeAllKeys();
 		ManageSSH.closeSSHShell();
@@ -38,22 +43,15 @@ public class CreateApplicationWithoutSSHKey {
 		
 		try {
 			new WaitUntil(new ShellWithTextIsAvailable("No SSH Keys"), TimePeriod.NORMAL);
+			
+			new DefaultShell("No SSH Keys").setFocus();
+			new PushButton(OpenShiftLabel.Button.CANCEL).click();
 			// pass
 		} catch (WaitTimeoutExpiredException ex) {
 			fail("There is no SSH key. You should not be able to create app.");
 		}
-		
-		new DefaultShell("No SSH Keys").setFocus();
-		new PushButton(OpenShiftLabel.Button.CANCEL).click();
-		
-		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-	}
 	
-	@After
-	public void recreateSSHKey() {
-		ManageSSH.openSSHShell();
-		ManageSSH.createNewSSHKey(SSH_KEY_NAME);
-		ManageSSH.closeSSHShell();
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
 	
 }

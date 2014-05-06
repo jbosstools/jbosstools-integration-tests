@@ -31,7 +31,7 @@ import org.junit.Test;
  * - existing project can be deployed to OpenShift
  * - openShift Maven profile is added to pom.xml when enabling OpenShift deployment
  * 
- * @author mlabuda
+ * @author mlabuda@redhat.com
  *
  */
 public class ImportAndDeployGitHubProject {

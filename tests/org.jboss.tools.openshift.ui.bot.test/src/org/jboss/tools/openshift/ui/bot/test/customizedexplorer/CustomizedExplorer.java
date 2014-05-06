@@ -8,6 +8,11 @@ import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
 
+/**
+ * Abstract explorer. Similar to RedDeer Explorer.
+ * @author mlabuda@redhat.com
+ *
+ */
 public abstract class CustomizedExplorer extends WorkbenchView {
 
 	public CustomizedExplorer(String viewTitle) {

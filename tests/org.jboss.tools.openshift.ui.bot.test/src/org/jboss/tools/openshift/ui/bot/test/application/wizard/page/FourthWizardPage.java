@@ -9,6 +9,11 @@ import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.tools.openshift.ui.bot.util.OpenShiftLabel;
 
+/**
+ * 
+ * @author mlabuda@redhat.com
+ *
+ */
 public class FourthWizardPage {
 
 	
