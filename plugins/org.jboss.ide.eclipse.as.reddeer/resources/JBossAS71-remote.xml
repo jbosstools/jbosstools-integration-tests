@@ -13,6 +13,12 @@
 				<server:familyAS version="7.1"></server:familyAS>
 			</server:type>
 			<server:runtime>/path/to/jboss-as-7.1.1.Final</server:runtime>
+			<server:remote>
+				<server:host>host.example.com</server:host>
+				<server:remote-server-home>/path/to/remote/server/home</server:remote-server-home>
+				<server:username>user</server:username>
+				<server:password>pass</server:password>
+			</server:remote>
 		</server:jboss-server-requirement>
 	</requirements>
 </testrun>

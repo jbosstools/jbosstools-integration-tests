@@ -4,7 +4,7 @@
 	xmlns:server="http://www.jboss.org/NS/ServerReq">
 
 	<!-- Include basic server requirements -->
-	<xs:include schemaLocation="http://www.jboss.org/schema/reddeer/ServerRequirementsBase.xsd"></xs:include> 
+	<xs:include schemaLocation="http://www.jboss.org/schema/reddeer/ServerRequirementsBase.xsd"/>
 
 	<xs:simpleType name="versionAS">
 		<xs:restriction base="server:abstractVersion">
@@ -68,6 +68,30 @@
 		substitutionGroup="server:abstractFamily" />
 	<xs:element name="familyWildFly" type="server:familyWildFly"
 		substitutionGroup="server:abstractFamily" />
+
+	<xs:complexType name="remoteType">
+		<xs:sequence>
+			<xs:element name="host" minOccurs="1" maxOccurs="1" type="xs:string"/>
+			<xs:element name="remote-server-home" minOccurs="1" maxOccurs="1" type="xs:string"/>
+			<xs:element name="username" minOccurs="1" maxOccurs="1" type="xs:string"/>
+			<xs:element name="password" minOccurs="1" maxOccurs="1" type="xs:string"/>
+			<xs:element name="isExternallyManaged" minOccurs="0" maxOccurs="1" type="xs:boolean"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+		
+	<xs:element name="jboss-server-requirement" type="server:jbossServerRequirementType" 
+		substitutionGroup="server:server-requirement" />
+		
+	<xs:complexType name="jbossServerRequirementType">
+		<xs:complexContent>
+			<xs:extension base="server:serverRequirementType">
+				<xs:sequence>
+					<xs:element name="remote" type="server:remoteType" minOccurs="0" maxOccurs="1"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
 
 	<xs:complexType name="jbossServerType">
 		<xs:complexContent>
