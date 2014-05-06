@@ -7,11 +7,11 @@
 						http://www.jboss.org/NS/ServerReq http://www.jboss.org/schema/reddeer/JBossServerRequirements.xsd">
 
 	<requirements>
-		<server:server-requirement name="JBoss-7.1">
+		<server:jboss-server-requirement name="JBoss-7.1">
 			<server:type>
 				<server:familyAS version="7.1"></server:familyAS>
 			</server:type>
 			<server:runtime>${jboss-as-7.1.home}</server:runtime>
-		</server:server-requirement>
+		</server:jboss-server-requirement>
 	</requirements>
 </testrun>

@@ -7,11 +7,11 @@
 						http://www.jboss.org/NS/ServerReq http://www.jboss.org/schema/reddeer/JBossServerRequirements.xsd">
 
 	<requirements>
-		<server:server-requirement name="JBoss-3.2">
+		<server:jboss-server-requirement name="JBoss-3.2">
 			<server:type>
 				<server:familyAS version="3.2"></server:familyAS>
 			</server:type>
 			<server:runtime>${jbosstools.test.jboss-as-3.2.home}</server:runtime>
-		</server:server-requirement>
+		</server:jboss-server-requirement>
 	</requirements>
 </testrun>

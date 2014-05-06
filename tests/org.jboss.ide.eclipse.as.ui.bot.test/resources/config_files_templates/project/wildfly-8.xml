@@ -7,11 +7,11 @@
 						http://www.jboss.org/NS/ServerReq http://www.jboss.org/schema/reddeer/JBossServerRequirements.xsd">
 
 	<requirements>
-		<server:server-requirement name="Wildfly-6">
+		<server:jboss-server-requirement name="Wildfly-6">
 			<server:type>
 				<server:familyWildFly version="8.0"></server:familyWildFly>
 			</server:type>
 			<server:runtime>${jbosstools.test.jboss-wildfly-8.home}</server:runtime>
-		</server:server-requirement>
+		</server:jboss-server-requirement>
 	</requirements>
 </testrun>
