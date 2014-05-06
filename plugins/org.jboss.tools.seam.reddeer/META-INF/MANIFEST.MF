@@ -9,7 +9,8 @@ Require-Bundle: org.eclipse.ui,
  org.jboss.reddeer.swt,
  org.jboss.reddeer.jface,
  org.jboss.reddeer.eclipse,
- org.junit;bundle-version="4.8.1"
+ org.junit;bundle-version="4.8.1",
+ org.jboss.reddeer.workbench
 Export-Package: 
  org.jboss.tools.seam.reddeer.preferences,
  org.jboss.tools.seam.reddeer.wizards
