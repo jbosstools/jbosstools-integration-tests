@@ -46,7 +46,7 @@ public class NewServerAdapterPage extends WizardPage {
 		}
 	}
 	
-	private static final String NEW_RUNTIME_LABEL = "New...";
+	private static final String NEW_RUNTIME_LABEL = "Create new runtime (next page)";
 	
 	public List<String> getRuntimes() {
 		List<String> items = new LinkedList<String>(getRuntimeCombo().getItems());
@@ -78,7 +78,7 @@ public class NewServerAdapterPage extends WizardPage {
 	}
 	
 	private Combo getRuntimeCombo() {
-		return new DefaultCombo(1);
+		return new DefaultCombo(0);
 	}
 	
 	public enum Profile {
