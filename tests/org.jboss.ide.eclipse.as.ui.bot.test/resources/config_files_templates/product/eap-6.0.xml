@@ -7,11 +7,11 @@
 						http://www.jboss.org/NS/ServerReq http://www.jboss.org/schema/reddeer/JBossServerRequirements.xsd">
 
 	<requirements>
-		<server:server-requirement name="EAP-6.0">
+		<server:jboss-server-requirement name="EAP-6.0">
 			<server:type>
 				<server:familyEAP version="6.0"></server:familyEAP>
 			</server:type>
 			<server:runtime>${jbosstools.test.jboss-eap-6.0.home}</server:runtime>
-		</server:server-requirement>
+		</server:jboss-server-requirement>
 	</requirements>
 </testrun>

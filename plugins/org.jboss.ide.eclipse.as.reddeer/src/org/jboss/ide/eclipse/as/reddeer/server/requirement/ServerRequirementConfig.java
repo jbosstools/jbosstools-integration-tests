@@ -17,7 +17,7 @@ import org.jboss.reddeer.requirements.server.IServerReqConfig;
  *
  */
 
-@XmlRootElement(name="server-requirement", namespace="http://www.jboss.org/NS/ServerReq")
+@XmlRootElement(name="jboss-server-requirement", namespace="http://www.jboss.org/NS/ServerReq")
 public class ServerRequirementConfig implements IServerReqConfig {
 	
 	private String runtime;
