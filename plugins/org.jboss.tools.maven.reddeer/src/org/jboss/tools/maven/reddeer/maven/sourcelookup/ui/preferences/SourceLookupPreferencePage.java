@@ -1,12 +1,12 @@
 package org.jboss.tools.maven.reddeer.maven.sourcelookup.ui.preferences;
 
-import org.jboss.reddeer.eclipse.jface.preference.PreferencePage;
 import org.jboss.reddeer.swt.api.Group;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.group.DefaultGroup;
+import org.jboss.reddeer.workbench.preference.WorkbenchPreferencePage;
 
-public class SourceLookupPreferencePage extends PreferencePage{
+public class SourceLookupPreferencePage extends WorkbenchPreferencePage{
 	
 	private static final String ADD_JBOSS="Automatically add the JBoss Maven source container to all JBoss AS launch configurations";
 	

@@ -1,10 +1,10 @@
 package org.jboss.tools.freemarker.ui.bot.test;
 
-import org.jboss.reddeer.eclipse.jface.preference.WindowPreferencePage;
+import org.jboss.reddeer.workbench.preference.WorkbenchPreferencePage;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 
 
-public class FreemarkerPreferencePage extends WindowPreferencePage {
+public class FreemarkerPreferencePage extends WorkbenchPreferencePage {
 
 	public FreemarkerPreferencePage() {
 		super("FreeMarker Editor");		

@@ -1,6 +1,5 @@
 package org.jboss.tools.maven.reddeer.preferences;
 
-import org.jboss.reddeer.eclipse.jface.preference.PreferencePage;
 import org.jboss.reddeer.swt.api.Button;
 import org.jboss.reddeer.swt.api.Text;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
@@ -9,8 +8,9 @@ import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.reddeer.workbench.preference.WorkbenchPreferencePage;
 
-public class MavenUserPreferencePage extends PreferencePage{
+public class MavenUserPreferencePage extends WorkbenchPreferencePage{
 	
 	public MavenUserPreferencePage(){
 		super("Maven","User Settings");
@@ -31,6 +31,17 @@ public class MavenUserPreferencePage extends PreferencePage{
 			new WaitUntil(new JobIsRunning(),TimePeriod.NORMAL,false);
 			new WaitWhile(new JobIsRunning(),TimePeriod.VERY_LONG);
 		}
+	}
+	
+	public String getUserSettings(){
+		Text text = null;
+		for(int i=0;i<10;i++){
+			text = new DefaultText(i);
+			if(text.getText().contains("settings") && text.getText().contains(".xml")){
+				break;
+			}
+		}
+		return text.getText();
 	}
 	
 	@Override
