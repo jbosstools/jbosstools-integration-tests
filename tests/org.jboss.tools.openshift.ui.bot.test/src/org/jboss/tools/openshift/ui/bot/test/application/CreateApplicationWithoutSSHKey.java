@@ -19,7 +19,8 @@ import org.junit.Test;
 
 /**
  * Try to create new app. Assert that before test there is no SSH key 
- * uploaded on PaaS and SSH key is created after this test.
+ * uploaded on PaaS and SSH key is created after this test. To ensure this,
+ * run this test between creating domain (after) and setting SSH keys (before).
  * 
  * 
  * @author mlabuda@redhat.com

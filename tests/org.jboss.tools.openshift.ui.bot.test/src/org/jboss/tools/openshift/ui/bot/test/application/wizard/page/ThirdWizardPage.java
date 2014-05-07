@@ -11,6 +11,9 @@ import org.jboss.tools.openshift.ui.bot.util.OpenShiftLabel;
 
 /**
  * 
+ * Third wizard page of a New application wizard. This page set up a server 
+ * adapter for a new application.
+ * 
  * @author mlabuda@redhat.com
  *
  */

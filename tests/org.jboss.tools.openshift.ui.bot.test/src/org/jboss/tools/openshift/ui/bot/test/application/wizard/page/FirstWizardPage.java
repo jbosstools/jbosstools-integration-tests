@@ -17,6 +17,11 @@ import org.jboss.tools.openshift.ui.bot.util.OpenShiftLabel;
 
 /**
  * 
+ * First wizard page of a New application wizard. There are possible to either
+ * create a new applicatiom from existing one or create a new application on 
+ * some cartridge (basic, downloadable). Also there is possibility to create a 
+ * quickstart
+ *  
  * @author mlabuda@redhat.com
  *
  */

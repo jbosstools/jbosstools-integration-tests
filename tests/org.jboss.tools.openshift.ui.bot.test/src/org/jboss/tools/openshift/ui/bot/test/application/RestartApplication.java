@@ -21,6 +21,9 @@ import org.junit.Test;
 
 /**
  * 
+ * Test create a new DIY application and try to restart it through a OpenShift
+ * explorer view.
+ * 
  * @author mlabuda@redhat.com
  *
  */

@@ -16,6 +16,9 @@ import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.tools.openshift.ui.bot.util.OpenShiftLabel;
 
 /**
+ * Second wizard page of a New application wizard. This page is responsible for
+ * application details - domain, application name, gears, scalability, 
+ * embeddable cartridges, environment variables and source code.s
  * 
  * @author mlabuda@redhat.com
  *

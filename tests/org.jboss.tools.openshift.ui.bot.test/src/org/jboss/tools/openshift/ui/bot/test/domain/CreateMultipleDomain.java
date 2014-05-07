@@ -9,6 +9,11 @@ import org.junit.Test;
 
 /**
  * 
+ * Test capabilities of creating multiple domains on a OpenShift connection.
+ * Assert, before using, that the given OpenShift server supports multiple domains
+ * and that you are using account supporting this feature (an account has to have
+ * appropriate plan).
+ * 
  * @author mlabuda@redhat.com
  *
  */

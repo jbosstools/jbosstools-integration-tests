@@ -7,6 +7,7 @@ import org.junit.Test;
 
 /**
  * Test capabilities of creating new application on a downloadable cartridge.
+ * By default is used Haskell application
  * 
  * @author mlabuda@redhat.com
  *

@@ -27,6 +27,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
+ * Create adapter from OpenShift explorer view. At first application is created 
+ * without server adapter. After that OpenShift server adapter is created from
+ * OpenShift explorer view.
  * 
  * @author mlabuda@redhat.com
  *

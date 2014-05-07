@@ -1,5 +1,16 @@
 package org.jboss.tools.openshift.ui.bot.util;
 
+/**
+ * Various labels:
+ * - application types
+ * - shell titles
+ * - button labels
+ * - cartridge names
+ * - and other labels
+ * 
+ * @author mlabuda@redhat.com
+ *
+ */
 public class OpenShiftLabel {
 
 	public static class AppType {

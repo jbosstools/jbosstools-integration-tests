@@ -5,6 +5,9 @@ import org.junit.Test;
 
 /**
  * 
+ * Delete multiple domains on a connection. Assert that a connection contains 
+ * multiple domains - it used CreateMultipleDomain before calling this test.
+ * 
  * @author mlabuda@redhat.com
  *
  */

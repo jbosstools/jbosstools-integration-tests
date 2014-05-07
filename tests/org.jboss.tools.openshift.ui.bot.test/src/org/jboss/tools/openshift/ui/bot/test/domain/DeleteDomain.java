@@ -20,6 +20,7 @@ import org.junit.After;
 import org.junit.Test;
 
 /**
+ * Test capabilities of removing domain.
  * 
  * @author mlabuda@redhat.com
  */

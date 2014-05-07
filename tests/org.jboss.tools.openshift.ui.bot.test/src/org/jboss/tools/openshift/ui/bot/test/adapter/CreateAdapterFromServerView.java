@@ -23,9 +23,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Consist of 2 test cases:
- * - create application without server adapter
- * - create server adapter from Servers view
+ * 
+ * Create adapter from Servers view. At first application is created 
+ * without server adapter. After that OpenShift server adapter is created from
+ * Servers view.
+ * 
  * @author mlabuda@redhat.com
  *
  */

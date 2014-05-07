@@ -27,6 +27,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
+ * This test create application on a OpenShift server without importing it into 
+ * a workspace. Then attempt to import this application is executed through
+ * Servers view right before creating OpenShift server adapter.
  * 
  * @author mlabuda@redhat.com
  *

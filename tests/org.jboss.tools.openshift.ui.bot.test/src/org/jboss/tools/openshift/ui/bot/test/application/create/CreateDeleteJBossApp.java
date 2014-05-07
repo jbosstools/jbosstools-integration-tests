@@ -9,6 +9,7 @@ import org.junit.After;
 import org.junit.Test;
 
 /**
+ * Test capabilities of create/delete JBoss EAP application on a OpenShift server.
  * 
  * @author mlabuda@redhat.com
  *
