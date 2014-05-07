@@ -26,6 +26,9 @@ import org.junit.Test;
 
 /**
  * 
+ * Try to switch deployment folder in workspace. In server adapter properties
+ * is changed location to folder Servers. 
+ * 
  * @author mlabuda@redhat.com
  *
  */

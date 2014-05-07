@@ -17,6 +17,7 @@ import org.jboss.tools.openshift.ui.bot.util.OpenShiftLabel;
 import org.junit.Test;
 
 /**
+ * Test capabilites of renaming domain name.
  * 
  * @author mlabuda@redhat.com
  */

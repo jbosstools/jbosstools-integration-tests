@@ -7,6 +7,9 @@ import org.junit.After;
 import org.junit.Test;
 
 /**
+ * Test capabilities of create application on a github template. Wordpress application
+ * is chosen as a template, which is build upon a PHP basic cartridge with a MySQL embedded
+ * cartridge.
  * 
  * @author mlabuda@redhat.com
  *

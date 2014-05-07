@@ -27,6 +27,10 @@ import org.junit.Test;
 
 /**
  * 
+ * Test republishing of an application. Simple DIY application is created, then
+ * web site text is changed and pushed to OpenShift. Finally it is verified
+ * whether, whether changes has been successfully published.
+ * 
  * @author mlabuda@redhat.com
  *
  */

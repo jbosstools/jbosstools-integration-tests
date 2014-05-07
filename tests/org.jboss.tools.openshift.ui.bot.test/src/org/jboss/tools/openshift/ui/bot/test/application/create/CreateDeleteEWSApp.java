@@ -10,6 +10,8 @@ import org.junit.Test;
 
 /**
  * 
+ * Test capabilities of create/delete EWS application on a OpenShift server.
+ * 
  * @author mlabuda@redhat.com
  *
  */

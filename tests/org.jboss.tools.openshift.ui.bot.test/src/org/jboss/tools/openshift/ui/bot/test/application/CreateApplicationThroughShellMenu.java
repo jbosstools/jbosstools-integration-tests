@@ -8,6 +8,8 @@ import org.junit.Test;
 
 /**
  * 
+ * Test try to create a new application through a menu bar on a workbench shell.
+ * 
  * @author mlabuda@redhat.com
  *
  */

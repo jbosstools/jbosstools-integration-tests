@@ -2,6 +2,8 @@ package org.jboss.tools.openshift.ui.bot.util;
 
 /**
  * 
+ * Exception for handling exceptional situations in OpenShift tests.
+ * 
  * @author mlabuda@redhat.com
  *
  */

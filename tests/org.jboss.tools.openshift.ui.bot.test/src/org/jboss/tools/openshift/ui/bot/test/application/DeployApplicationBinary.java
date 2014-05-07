@@ -13,7 +13,6 @@ import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
@@ -39,6 +38,9 @@ import org.junit.Test;
  * - set up OpenShift marker for skip_maven_build
  * - modify and build application
  * - binary deployment (.war deployment)
+ * 
+ * This is not typical binary deployment - specific OpenShift binary deployment 
+ * using OpenShift packaging. Just binary deployment of java application.
  * 
  * @author mlabuda@redhat.com
  *
@@ -119,9 +121,6 @@ public class DeployApplicationBinary {
 		project.select();
 		project.getCustomizedProjectItem("src", "main", "webapp", "index.html").doubleClick();
 		
-		// Workaround for GTK 3 to close error shells caused by xulrunner
-		doGTKworkaround();
-		
 		TextEditor editor = new TextEditor("index.html");
 		editor.setText(RepublishApplication.TEXT);
 		editor.save();
@@ -195,10 +194,6 @@ public class DeployApplicationBinary {
 		
 		assertTrue("Changes has not been successfully deployed", 
 				explorer.verifyApplicationInBrowser(APP_NAME, "OpSh"));
-	}
-	
-	private void doGTKworkaround() {
-		new WorkbenchShell().closeAllShells(); 
 	}
 	
 	private void publish() {

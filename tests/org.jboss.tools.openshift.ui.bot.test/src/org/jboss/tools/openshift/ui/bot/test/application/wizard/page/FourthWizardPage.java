@@ -11,6 +11,9 @@ import org.jboss.tools.openshift.ui.bot.util.OpenShiftLabel;
 
 /**
  * 
+ * Fourth wizard page of a New application wizard. This page is related
+ * to git configuration.
+ * 
  * @author mlabuda@redhat.com
  *
  */

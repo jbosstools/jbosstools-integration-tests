@@ -8,7 +8,8 @@ import org.junit.After;
 import org.junit.Test;
 
 /**
- * Create application with different (medium) gear size.
+ * Create application with different gear size. Applications are typically created
+ * with on a small gear. This test try to create application on a medium gear.
  * 
  * @author mlabuda@redhat.com
  *

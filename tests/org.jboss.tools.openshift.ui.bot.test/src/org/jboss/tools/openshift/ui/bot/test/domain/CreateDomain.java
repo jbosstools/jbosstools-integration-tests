@@ -23,6 +23,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
+ * Create a new domain on a OpenShift connection.
  * 
  * @author  mlabuda@redhat.com
  * 
