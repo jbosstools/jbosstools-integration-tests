@@ -3,12 +3,12 @@ package org.jboss.tools.portlet.ui.bot.test.compatibility;
 import org.jboss.tools.portlet.ui.bot.test.template.JBDSCompatibilityGateinTemplate;
 
 /**
- * Tests that project from JBDS 6 can work in JBDS 7 without any problems. 
+ * Tests that project from JBDS 6 can work in JBDS 7/8 without any problems.
  * 
  * @author Petr Suchy
  *
  */
-public class JBDS6vs7CompatibilityGatein extends JBDSCompatibilityGateinTemplate {
+public class JBDS6CompatibilityGatein extends JBDSCompatibilityGateinTemplate {
 
 	private static final String ZIP_FILE = "resources/compatibility/jbds6-compatibility.zip";
 	

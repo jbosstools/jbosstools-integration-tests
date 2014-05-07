@@ -153,6 +153,13 @@
 									<type>zip</type>
 									<destFileName>jbds6-compatibility.zip</destFileName>
 								</artifactItem>
+								<artifactItem>
+									<groupId>org.jboss.tools.portlet.tests</groupId>
+									<artifactId>org.jboss.tools.portlet.ui.bot.tests.compatibility.jbds7</artifactId>
+									<version>4.2.0</version>
+									<type>zip</type>
+									<destFileName>jbds7-compatibility.zip</destFileName>
+								</artifactItem>
 							</artifactItems>
 							<outputDirectory>${basedir}/resources/compatibility/</outputDirectory>
 						</configuration>
