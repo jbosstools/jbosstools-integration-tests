@@ -24,7 +24,12 @@
 	<properties>
 		<tycho.scmUrl>scm:git:https://github.com/jbosstools/jbosstools-integration-tests.git</tycho.scmUrl>
 		<!-- URLs needed to resolve dependencies at build time (see <repositories> below) and at install time (see site/pom.xml#associateSites) -->
-		<reddeer-nightly-staging-site>http://download.jboss.org/jbosstools/builds/staging/RedDeer_master/all/repo/</reddeer-nightly-staging-site>
+
+		<!-- predefined RedDeer sites, if you need to change default please redefine reddeer-site property in your test -->
+		<reddeer-master-site>http://download.jboss.org/jbosstools/builds/staging/RedDeer_master/all/repo/</reddeer-master-site>
+		<reddeer-stable-site>http://download.jboss.org/jbosstools/updates/stable/luna/core/reddeer/0.5.0/</reddeer-stable-site>
+		<reddeer-site>${reddeer-master-site}</reddeer-site>
+
 		<jbosstools-integrationtests-site>http://download.jboss.org/jbosstools/updates/nightly/integrationtests/master/</jbosstools-integrationtests-site>
 		<jbosstools-site>http://download.jboss.org/jbosstools/updates/nightly/core/${jbosstools-site-stream}/</jbosstools-site>
 		<jbosstools-tests-site>http://download.jboss.org/jbosstools/updates/nightly/coretests/${jbosstools-site-stream}/</jbosstools-tests-site>
@@ -43,8 +48,8 @@
 			<layout>p2</layout>
 		</repository> 
 		<repository>
-			<id>reddeer-nightly-staging-site</id>
-			<url>${reddeer-nightly-staging-site}</url>
+			<id>reddeer-site</id>
+			<url>${reddeer-site}</url>
 			<layout>p2</layout>
 		</repository>
 		<repository>
