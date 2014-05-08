@@ -109,7 +109,8 @@ public class MylynTestBzQuery {
 				new LabeledText("Bugzilla Repository Settings").getText()
 				.contains("Repository is valid"));
 
-		theRepoDialog.finish();
+
+		theRepoDialog.cancel();
 		log.info("Step - Create a anonymous bugzilla query");
 
 		elementIndex = repoList.indexOf(targetRepo);
@@ -181,8 +182,8 @@ public class MylynTestBzQuery {
 		assertTrue("Found query: " + queryName, foundQuery);
 		assertTrue("Found query results: " + fullBugzillaString, foundQueryResults);
 
-
 		view.close();
+		listView.close();
 
 	} /* method */
 

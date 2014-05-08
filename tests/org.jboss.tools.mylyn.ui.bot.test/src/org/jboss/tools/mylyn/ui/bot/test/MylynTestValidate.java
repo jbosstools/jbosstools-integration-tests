@@ -15,6 +15,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.wait.TimePeriod;
@@ -83,7 +84,7 @@ public class MylynTestValidate {
 				new LabeledText("Bugzilla Repository Settings").getText()
 						.contains("Repository is valid"));
 			
-		theRepoDialog.finish();
+		theRepoDialog.cancel();
 		
 		view.close();
 		

@@ -69,7 +69,6 @@ public class MylynTestJenkins {
 		new PushButton("Finish").click();
 
 		view.open();
-		new DefaultToolItem("Refresh").click();
 
 		List <TreeItem> theItems = new DefaultTree().getAllItems();
 		for (TreeItem theItem : theItems) {
