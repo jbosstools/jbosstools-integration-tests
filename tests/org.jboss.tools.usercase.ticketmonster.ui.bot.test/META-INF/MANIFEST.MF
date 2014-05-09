@@ -7,8 +7,7 @@ Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: org.jboss.tools.usercase.ticketmonster.ui.bot.test,
  org.jboss.tools.usercase.ticketmonster.ui.bot.test.condition,
- org.jboss.tools.usercase.ticketmonster.ui.bot.test.part2,
- org.jboss.tools.usercase.ticketmonster.ui.bot.test.wizard
+ org.jboss.tools.usercase.ticketmonster.ui.bot.test.part2
 Require-Bundle: org.jboss.reddeer.junit,
  org.junit,
  org.eclipse.swt,
@@ -23,5 +22,7 @@ Require-Bundle: org.jboss.reddeer.junit,
  org.jboss.tools.maven.reddeer,
  org.jboss.tools.vpe.browsersim,
  org.jboss.tools.vpe.browsersim.browser,
- org.jboss.tools.maven.ui.bot.test
+ org.jboss.tools.maven.ui.bot.test,
+ org.jboss.tools.central.reddeer,
+ org.jboss.tools.runtime.reddeer
 

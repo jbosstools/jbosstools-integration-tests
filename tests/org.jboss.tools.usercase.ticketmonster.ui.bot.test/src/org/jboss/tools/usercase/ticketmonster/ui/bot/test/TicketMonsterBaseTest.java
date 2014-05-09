@@ -19,6 +19,8 @@ import org.jboss.reddeer.eclipse.condition.ProblemsExists;
 import org.jboss.reddeer.eclipse.condition.ServerExists;
 import org.jboss.reddeer.eclipse.condition.ProblemsExists.ProblemType;
 import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
+import org.jboss.reddeer.eclipse.jdt.ui.NewEnumWizardDialog;
+import org.jboss.reddeer.eclipse.jdt.ui.NewEnumWizardPage;
 import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardDialog;
 import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardPage;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
@@ -41,24 +43,21 @@ import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.reddeer.workbench.api.Editor;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
+import org.jboss.tools.central.reddeer.wizards.JBossCentralProjectWizard;
 import org.jboss.tools.maven.reddeer.maven.ui.preferences.ConfiguratorPreferencePage;
 import org.jboss.tools.maven.reddeer.preferences.MavenPreferencePage;
 import org.jboss.tools.maven.reddeer.preferences.MavenUserPreferencePage;
+import org.jboss.tools.maven.reddeer.project.examples.wizard.ArchetypeExamplesWizardFirstPage;
+import org.jboss.tools.maven.reddeer.project.examples.wizard.ArchetypeExamplesWizardPage;
+import org.jboss.tools.maven.reddeer.project.examples.wizard.ExampleRequirement;
+import org.jboss.tools.maven.reddeer.project.examples.wizard.NewProjectExamplesStacksRequirementsPage;
 import org.jboss.tools.maven.reddeer.wizards.ConfigureMavenRepositoriesWizard;
 import org.jboss.tools.maven.ui.bot.test.dialog.ASRuntimePage;
-import org.jboss.tools.usercase.ticketmonster.ui.bot.test.wizard.DownloadRuntimeDialog;
-import org.jboss.tools.usercase.ticketmonster.ui.bot.test.wizard.DownloadRuntimeFirstPage;
-import org.jboss.tools.usercase.ticketmonster.ui.bot.test.wizard.DownloadRuntimeSecondPage;
-import org.jboss.tools.usercase.ticketmonster.ui.bot.test.wizard.DownloadRuntimeThirdPage;
-import org.jboss.tools.usercase.ticketmonster.ui.bot.test.wizard.ExampleRequirement;
-import org.jboss.tools.usercase.ticketmonster.ui.bot.test.wizard.JBossRuntimeDetectionPreferencePage;
-import org.jboss.tools.usercase.ticketmonster.ui.bot.test.wizard.NewExampleWizard;
-import org.jboss.tools.usercase.ticketmonster.ui.bot.test.wizard.NewExampleWizardFirstPage;
-import org.jboss.tools.usercase.ticketmonster.ui.bot.test.wizard.NewExampleWizardSecondPage;
-import org.jboss.tools.usercase.ticketmonster.ui.bot.test.wizard.NewExampleWizardThirdPage;
-import org.jboss.tools.usercase.ticketmonster.ui.bot.test.wizard.NewJavaEnumWizardDialog;
-import org.jboss.tools.usercase.ticketmonster.ui.bot.test.wizard.NewJavaEnumWizardPage;
-import org.jboss.tools.usercase.ticketmonster.ui.bot.test.wizard.TaskWizardPage;
+import org.jboss.tools.runtime.reddeer.wizard.DownloadRuntimesTaskWizard;
+import org.jboss.tools.runtime.reddeer.wizard.TaskWizardFirstPage;
+import org.jboss.tools.runtime.reddeer.wizard.TaskWizardLoginPage;
+import org.jboss.tools.runtime.reddeer.wizard.TaskWizardSecondPage;
+import org.jboss.tools.runtime.reddeer.wizard.TaskWizardThirdPage;
 import org.junit.BeforeClass;
 
 public class TicketMonsterBaseTest {
@@ -126,17 +125,17 @@ public class TicketMonsterBaseTest {
 		}
 		removeRepos();
 		addEnterpriseRepo();
-		NewExampleWizard wz = new NewExampleWizard();
+		JBossCentralProjectWizard wz = new JBossCentralProjectWizard();
 		wz.open(JAVA_EE_PROJECT);
-		NewExampleWizardFirstPage fp = (NewExampleWizardFirstPage)wz.getWizardPage(0);
+		NewProjectExamplesStacksRequirementsPage fp = (NewProjectExamplesStacksRequirementsPage)wz.getWizardPage(0);
 		List<ExampleRequirement> reqs = fp.getRequirements();
 		assertFalse(reqs.get(0).isMet());
 		installRuntime(EAP_61_NAME, wz, true);
 		fp.setTargetRuntime(EAP_61_RUNTIME);
-		NewExampleWizardSecondPage sp = (NewExampleWizardSecondPage)wz.getWizardPage(1);
+		ArchetypeExamplesWizardFirstPage sp = (ArchetypeExamplesWizardFirstPage)wz.getWizardPage(1);
 		sp.setProjectName(TICKET_MONSTER_NAME);
 		sp.setPackage(TICKET_MONSTER_PACKAGE);
-		NewExampleWizardThirdPage tp = (NewExampleWizardThirdPage)wz.getWizardPage(2);
+		ArchetypeExamplesWizardPage tp = (ArchetypeExamplesWizardPage)wz.getWizardPage(2);
 		assertEquals(TICKET_MONSTER_PACKAGE,tp.getGroupID());
 		assertEquals(TICKET_MONSTER_NAME, tp.getArtifactID());
 		assertEquals(TICKET_MONSTER_PACKAGE, tp.getPackage());
@@ -150,21 +149,22 @@ public class TicketMonsterBaseTest {
 		createEAPServerRuntime();
 	}
 
-	protected void installRuntime(String runtimeName,NewExampleWizard wz, boolean eap){
-		NewExampleWizardFirstPage fp = (NewExampleWizardFirstPage)wz.getWizardPage(0);
+	protected void installRuntime(String runtimeName,JBossCentralProjectWizard wz, boolean eap){
+		NewProjectExamplesStacksRequirementsPage fp = (NewProjectExamplesStacksRequirementsPage)wz.getWizardPage(0);
 		List<ExampleRequirement> reqs = fp.getRequirements();
 		
-		JBossRuntimeDetectionPreferencePage runtimePage = reqs.get(0).install();
-		assertEquals("JBoss Runtime Detection",runtimePage.getName());
 		
-		//avoiding native dialog
+		reqs.get(0).install();
+		assertEquals("JBoss Runtime Detection",new DefaultShell());
+		
+		//avoiding native dialog	
 		
 		createEAPRuntime(JBOSS_EAP_6_1);
 	}
 	
-	protected void downloadAndInstallRuntime(String runtimeName,NewExampleWizard wz, boolean eap){
-		NewExampleWizardFirstPage fp = (NewExampleWizardFirstPage)wz.getWizardPage(0);
-		DownloadRuntimeDialog downloadRuntime = null;
+	protected void downloadAndInstallRuntime(String runtimeName,JBossCentralProjectWizard wz, boolean eap){
+		NewProjectExamplesStacksRequirementsPage fp = (NewProjectExamplesStacksRequirementsPage)wz.getWizardPage(0);
+		DownloadRuntimesTaskWizard downloadRuntime = null;
 		for(ExampleRequirement er: fp.getRequirements()){
 			if(er.getType().equals("server/runtime")){
 				downloadRuntime = er.downloadAndInstall();
@@ -177,19 +177,19 @@ public class TicketMonsterBaseTest {
 		} else {
 			downloadRuntime.asDialog();
 		}
-		DownloadRuntimeFirstPage downloadFirst = (DownloadRuntimeFirstPage)downloadRuntime.getWizardPage(0);
+		TaskWizardFirstPage downloadFirst = (TaskWizardFirstPage)downloadRuntime.getWizardPage(0);
 		downloadFirst.selectRuntime(runtimeName);
 		int eapPages = 0;
 		if(eap){
 			eapPages = 1;
-			TaskWizardPage downloadTask = (TaskWizardPage)downloadRuntime.getWizardPage(1);
+			TaskWizardLoginPage downloadTask = (TaskWizardLoginPage)downloadRuntime.getWizardPage(1);
 			downloadTask.setUsername(JBOSS_USERNAME);
 			downloadTask.setPassword(JBOSS_PASSWORD);
 			downloadTask.validateCredentials();
 		}
-		DownloadRuntimeSecondPage downloadSecond = (DownloadRuntimeSecondPage)downloadRuntime.getWizardPage(1+eapPages);
+		TaskWizardSecondPage downloadSecond = (TaskWizardSecondPage)downloadRuntime.getWizardPage(1+eapPages);
 		downloadSecond.acceptLicense(true);
-		DownloadRuntimeThirdPage downloadThird = (DownloadRuntimeThirdPage)downloadRuntime.getWizardPage(2+eapPages);
+		TaskWizardThirdPage downloadThird = (TaskWizardThirdPage)downloadRuntime.getWizardPage(2+eapPages);
 		downloadThird.setDownloadFolder(new File(JBOSS_AS_DOWNLOAD_DIR).getAbsolutePath());
 		downloadThird.setInstallFolder(new File(JBOSS_AS_DOWNLOAD_DIR).getAbsolutePath());
 		downloadRuntime.finish();
@@ -248,9 +248,9 @@ public class TicketMonsterBaseTest {
 	}
 	
 	protected void createEnumClass(String name, String classPackage){
-		NewJavaEnumWizardDialog newEnum  = new NewJavaEnumWizardDialog();
+		NewEnumWizardDialog newEnum  = new NewEnumWizardDialog();
 		newEnum.open();
-		NewJavaEnumWizardPage newEnumPage = newEnum.getFirstPage();
+		NewEnumWizardPage newEnumPage = newEnum.getFirstPage();
 		newEnumPage.setName(name);
 		newEnumPage.setPackage(classPackage);
 		newEnumPage.setSourceFolder(TICKET_MONSTER_NAME+"/src/main/java");
