@@ -18,7 +18,6 @@ import javax.ws.rs.PathParam;
 
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.ProjectItem;
 import org.jboss.tools.ui.bot.ext.Timing;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
