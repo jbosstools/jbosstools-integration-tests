@@ -135,6 +135,8 @@ public class JAXRSToolingIntegrationTest extends RESTfulTestBase {
 		
 		invokeMethodInWSTester(wsTesterView, Request_Type.POST);
 		assertFalse(wsTesterView.getResponseBody().equals("GET method"));
+		
+		assertTrue("There is no header", wsTesterView.getResponseHeaders().length > 0);
 		assertEquals("[HTTP/1.1 405 Method Not Allowed]", wsTesterView.getResponseHeaders()[0]);
 	}
 	

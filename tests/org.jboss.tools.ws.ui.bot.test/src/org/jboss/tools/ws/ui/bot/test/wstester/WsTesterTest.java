@@ -66,8 +66,12 @@ public class WsTesterTest extends WSTestBase {
     @Test
     public void testUI() {
         WsTesterView wstv = new WsTesterView();
+        
         SWTBotView viewBot = wstv.show();
         Assert.assertTrue("Tester View is not active", viewBot.isActive());
+        
+        assertDefaultRequestType(Request_Type.GET, wstv.getRequestType());
+        
         wstv.setRequestType(Request_Type.PUT);
         Assert.assertEquals(Request_Type.PUT, wstv.getRequestType());
         wstv.setRequestType(Request_Type.JAX_WS);
@@ -393,5 +397,9 @@ public class WsTesterTest extends WSTestBase {
                 dlg.close();
             }
         }
+    }
+    
+    private void assertDefaultRequestType(Request_Type defaultRequest, Request_Type requestType) {
+        Assert.assertTrue("Default value of Request Type wasn't " + defaultRequest + " but was " + requestType, requestType == defaultRequest);
     }
 }

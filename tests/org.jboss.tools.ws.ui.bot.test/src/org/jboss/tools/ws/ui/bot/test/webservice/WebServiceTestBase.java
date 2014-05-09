@@ -22,10 +22,20 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
+import org.jboss.reddeer.swt.api.Shell;
+import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.swt.exception.SWTLayerException;
+import org.jboss.reddeer.swt.exception.WaitTimeoutExpiredException;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.text.DefaultText;
+import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.tools.ws.ui.bot.test.WSTestBase;
 import org.jboss.tools.ws.ui.bot.test.uiutils.actions.NewFileWizardAction;
 import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.WebServiceWizard;
 import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.WebServiceWizard.Service_Type;
+import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.Wizard;
 import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.WsWizardBase.Slider_Level;
 import org.junit.Assert;
 
@@ -116,11 +126,14 @@ public class WebServiceTestBase extends WSTestBase {
 		if (wsw.isClientEnabled()) {
 			wsw.setClientSlider(Slider_Level.NO_CLIENT);
 		}
-		if (pkg != null && pkg.trim().length() > 0) {
-			wsw.next();			
-			wsw.setPackageName(pkg);
-		}
 		wsw.next();
+		
+		checkErrorDialog(wsw);
+		
+		if (pkg != null && pkg.trim().length() > 0) {
+			wsw.setPackageName(pkg);
+			wsw.next();
+		}
 		wsw.finish();
 		util.waitForNonIgnoredJobs();
 		
@@ -133,6 +146,22 @@ public class WebServiceTestBase extends WSTestBase {
 			sh.bot().button(0).click();
 			wsw.cancel();
 			Assert.fail(msg);
+		}
+	}
+	
+	private void checkErrorDialog(Wizard openedWizard) {
+		Shell shell = new DefaultShell();
+		String text = shell.getText();
+		if (text.contains("Error")) {
+			String msg = "<no text>";
+			try {
+				msg = new DefaultText().getText();
+			} catch (SWTLayerException e) {
+
+			}
+			new PushButton(0).click();
+			openedWizard.cancel();
+			Assert.fail(text + msg);
 		}
 	}
 
