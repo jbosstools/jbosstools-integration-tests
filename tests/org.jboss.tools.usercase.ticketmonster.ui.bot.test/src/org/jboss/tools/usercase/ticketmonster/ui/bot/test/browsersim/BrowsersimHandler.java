@@ -16,7 +16,9 @@ import org.jboss.reddeer.swt.util.Display;
 import org.jboss.reddeer.swt.util.ResultRunnable;
 import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.tools.vpe.browsersim.browser.PlatformUtil;
 import org.jboss.tools.vpe.browsersim.ui.BrowserSim;
+import org.jboss.tools.vpe.browsersim.util.BrowserSimUtil;
 import org.jboss.tools.vpe.browsersim.BrowserSimRunner;
 
 public class BrowsersimHandler {
@@ -27,7 +29,28 @@ public class BrowsersimHandler {
 	private boolean urlLoadingCompleted = false;
 	private boolean urlLoadingChanged = false;
 	
+	private static boolean isJavaFxAvailable;
+	private static boolean isWebKitAvailable;
 	
+	static {
+	    String platform = PlatformUtil.getOs();
+	    isJavaFxAvailable = false;
+	    isWebKitAvailable = true;
+	    
+	    boolean isLinux = PlatformUtil.OS_LINUX.equals(platform);
+	    
+	    // Trying to load javaFx libs except Linux GTK3 case
+	    if (!(isLinux && !BrowserSimUtil.isRunningAgainstGTK2())) {
+	      isJavaFxAvailable = BrowserSimUtil.loadJavaFX();
+	    }
+	    
+	    //check if AAS is installed on Windows
+	    boolean isWindows = PlatformUtil.OS_WIN32.equals(platform);
+	    if (isWindows && !BrowserSimUtil.isWindowsSwtWebkitInstalled()) {
+	      isWebKitAvailable = false;
+	    }
+	      //TODO: add engines initialization once done properly in JBT
+	    }
 	 /**
      * Gets list of running java processes via calling command jps
      * @return
@@ -95,7 +118,7 @@ public class BrowsersimHandler {
     		@Override
     	    public BrowserSim run() {
     			BrowserSim newBrowserSim = new BrowserSim(url, Display.getDisplay().getActiveShell());
-    	        newBrowserSim.open(false);
+    	        newBrowserSim.open(isJavaFxAvailable,isWebKitAvailable);
     	        return newBrowserSim;
     	    }
     		
