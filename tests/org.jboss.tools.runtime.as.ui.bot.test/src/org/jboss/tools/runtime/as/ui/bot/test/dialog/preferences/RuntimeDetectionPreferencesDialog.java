@@ -1,7 +1,14 @@
 package org.jboss.tools.runtime.as.ui.bot.test.dialog.preferences;
 
+import static org.junit.Assert.assertTrue;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.jboss.reddeer.eclipse.jface.preference.PreferencePage;
+import org.jboss.reddeer.swt.api.Button;
 import org.jboss.reddeer.swt.api.Table;
+import org.jboss.reddeer.swt.api.TableItem;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.WaitCondition;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
@@ -12,9 +19,14 @@ import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
-import org.jboss.tools.runtime.core.model.RuntimePath;
-import org.jboss.tools.runtime.ui.RuntimeUIActivator;
 
+/**
+ * 
+ * @author ljelinkova
+ * @author psuchy
+ * @author rrabara
+ *
+ */
 public class RuntimeDetectionPreferencesDialog extends PreferencePage {
 
 	public RuntimeDetectionPreferencesDialog() {
@@ -26,13 +38,6 @@ public class RuntimeDetectionPreferencesDialog extends PreferencePage {
 		new WaitWhile(new JobIsRunning());
 		super.ok();
 	}
-	
-	public SearchingForRuntimesDialog addPath(final String path){
-		RuntimeUIActivator.getDefault().getModel().addRuntimePath(new RuntimePath(path));
-		cancel();
-		open();
-		return new SearchingForRuntimesDialog();
-	}
 
 	public void removeAllPaths(){
 		Table table = new DefaultTable();
@@ -40,10 +45,21 @@ public class RuntimeDetectionPreferencesDialog extends PreferencePage {
 		int pathsNumber = table.rowCount();
 		for (int i = 0; i < pathsNumber; i++){
 			table.select(0);
-			new PushButton("Remove").click();
+			Button removeButton = new PushButton("Remove");
+			assertTrue("Remove button is not enabled", removeButton.isEnabled());
+			removeButton.click();
 		}
 	}
 
+	public List<String> getAllPaths() {
+		Table table = new DefaultTable();
+		List<String> paths = new ArrayList<String>();
+		for(TableItem ti : table.getItems()) {
+			paths.add(ti.getText(0));
+		}
+		return paths;
+	}
+	
 	public SearchingForRuntimesDialog search(){
 		new PushButton("Search...").click();
 		new DefaultShell("Searching for runtimes...");
