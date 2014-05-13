@@ -18,9 +18,15 @@ import org.jboss.reddeer.swt.util.Display;
 import org.jboss.reddeer.swt.util.ResultRunnable;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.runtime.as.ui.bot.test.entity.Runtime;
-import org.jboss.tools.ui.bot.ext.condition.ShellIsActiveCondition;
 
-public class SearchingForRuntimesDialog {
+public class SearchingForRuntimesDialog extends DefaultShell {
+	
+	public static final String DIALOG_TITLE = "Searching for runtimes...";
+	
+	public SearchingForRuntimesDialog() {
+		super(DIALOG_TITLE);
+	}
+	
 	/**
 	 * We get columns names and their indexes.
 	 * 

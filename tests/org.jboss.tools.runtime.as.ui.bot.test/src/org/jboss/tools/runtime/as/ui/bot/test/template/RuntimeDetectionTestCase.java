@@ -25,10 +25,13 @@ public abstract class RuntimeDetectionTestCase {
 	protected RuntimePreferencePage serverRuntimesPreferences = new RuntimePreferencePage();
 	
 	protected SearchingForRuntimesDialog addPath(String path){
-		runtimeDetectionPreferences = new RuntimeDetectionPreferencesDialog();
 		RuntimeUIActivator.getDefault().getModel().addRuntimePath(new RuntimePath(path));
+		runtimeDetectionPreferences = new RuntimeDetectionPreferencesDialog();
 		runtimeDetectionPreferences.open();
-		runtimeDetectionPreferences.addPath(path);
+		if(!runtimeDetectionPreferences.getAllPaths().contains(path)) {
+			runtimeDetectionPreferences.cancel();
+			runtimeDetectionPreferences.open();
+		}
 		return runtimeDetectionPreferences.search();
 	}
 	
