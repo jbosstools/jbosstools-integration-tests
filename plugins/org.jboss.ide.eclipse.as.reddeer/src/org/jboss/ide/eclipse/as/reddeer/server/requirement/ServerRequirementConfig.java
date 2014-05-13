@@ -43,6 +43,13 @@ public class ServerRequirementConfig implements IServerReqConfig {
 		this.runtime = runtime;
 	}
 	
+	@XmlElement(namespace="http://www.jboss.org/NS/ServerReq")
+	private Remote remote;
+	
+	public Remote getRemote(){
+		return remote;
+	}
+	
 	public boolean equals(Object arg) {
 		if(arg == null || !(arg instanceof ServerRequirementConfig))
 			return false;
@@ -55,4 +62,61 @@ public class ServerRequirementConfig implements IServerReqConfig {
 			return false;
 		return family1.getLabel().equals(family2.getLabel()) && family1.getVersion().equals(family2.getVersion());
 	}
+	
+	@XmlRootElement(name="remote", namespace="http://www.jboss.org/NS/ServerReq")
+	public static class Remote {
+		
+
+		private String host;
+		private String remoteServerHome;
+		private String username;
+		private String password;
+		private boolean isExternallyManaged;
+		
+		public String getHost() {
+			return host;
+		}
+		
+		@XmlElement(namespace="http://www.jboss.org/NS/ServerReq")
+		public void setHost(String hostname) {
+			this.host = hostname;
+		}
+		
+		public String getRemoteServerHome(){
+			return remoteServerHome;
+		}
+		
+		@XmlElement(namespace="http://www.jboss.org/NS/ServerReq", name="remote-server-home")
+		public void setRemoteServerHome(String home){
+			this.remoteServerHome = home;
+		}
+		
+		public String getUsername(){
+			return username;
+		}
+		
+		@XmlElement(namespace="http://www.jboss.org/NS/ServerReq")
+		public void setUsername(String username){
+			this.username = username;
+		}
+		
+		public String getPassword(){
+			return password;
+		}
+		
+		@XmlElement(namespace="http://www.jboss.org/NS/ServerReq")
+		public void setPassword(String password){
+			this.password = password;
+		}
+		
+		public boolean getIsExternallyManaged(){
+			return isExternallyManaged;
+		}
+		
+		@XmlElement(namespace="http://www.jboss.org/NS/ServerReq")
+		public void setIsExternallyManaged(boolean isExternallyManaged){
+			this.isExternallyManaged = isExternallyManaged;
+		}
+	}
+	
 }
