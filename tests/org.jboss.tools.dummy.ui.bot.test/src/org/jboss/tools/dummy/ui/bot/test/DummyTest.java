@@ -9,6 +9,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
+import org.jboss.tools.ui.bot.ext.MacSpecifics;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -25,6 +26,7 @@ public class DummyTest {
 	
 	@BeforeClass
 	public static void before() {		
+		MacSpecifics.setupToolkit();
 	}
 
 	@Test
