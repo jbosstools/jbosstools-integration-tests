@@ -1,4 +1,4 @@
-sspackage org.jboss.tools.ui.bot.ext;
+package org.jboss.tools.ui.bot.ext;
 
 import org.apache.log4j.Logger;
 import org.jboss.tools.ui.bot.ext.config.TestConfigurator;
