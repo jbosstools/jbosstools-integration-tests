@@ -24,6 +24,7 @@ import org.jboss.tools.portlet.ui.bot.task.wizard.web.DynamicWebProjectDialog;
 import org.jboss.tools.portlet.ui.bot.task.wizard.web.DynamicWebProjectWizardPage;
 import org.jboss.tools.portlet.ui.bot.test.testcase.SWTTaskBasedTestCase;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
+import org.jboss.tools.ui.bot.ext.config.ConfiguredState.Seam;
 import org.jboss.tools.ui.bot.ext.config.TestConfigurator;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
@@ -89,7 +90,7 @@ public abstract class CreatePortletProjectTemplate extends SWTTaskBasedTestCase 
 		DynamicWebProjectWizardPage page = (DynamicWebProjectWizardPage)dialog.getFirstPage();
 		page.setProjectName(getProjectName());
 		page.setServerName(SWTTestExt.configuredState.getServer().name);
-		page.setWebModuleVersion("2.5");
+		page.setWebModuleVersion(getWebModuleVersion());
 		page.setFacets(getRequiredFacets());
 		
 		processAdditionalWizardPages(dialog);
@@ -100,6 +101,12 @@ public abstract class CreatePortletProjectTemplate extends SWTTaskBasedTestCase 
 		}
 	}
 
+	protected String getWebModuleVersion() {
+		Seam seam = configuredState.getSeam();
+		if(seam != null && seam.version != null && seam.version.equals("2.3"))
+			return "3.0";
+		return "2.5";
+	}
 	/**
 	 * Process wizard page JBoss JSF Portlet Capabilities when creating Dynamic Web Project.
 	 * If portlet bridge is not recognized in the server location,

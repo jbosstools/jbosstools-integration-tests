@@ -6,19 +6,13 @@ import java.util.Collections;
 import java.util.List;
 
 import org.jboss.reddeer.eclipse.jface.wizard.WizardDialog;
-import org.jboss.reddeer.swt.api.Group;
-import org.jboss.reddeer.swt.api.Text;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
-import org.jboss.reddeer.swt.impl.group.DefaultGroup;
-import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.tools.portlet.ui.bot.entity.FacetDefinition;
 import org.jboss.tools.portlet.ui.bot.task.facet.Facets;
 import org.jboss.tools.portlet.ui.bot.task.wizard.web.jboss.JBossJSFPortletCapabilitiesWizardPageFillingTask;
 import org.jboss.tools.portlet.ui.bot.task.wizard.web.jboss.JBossPortletCapabilitiesWizardPageFillingTask;
 import org.jboss.tools.portlet.ui.bot.test.template.CreatePortletProjectTemplate;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
-import org.jboss.tools.ui.bot.ext.config.TestConfigurator;
 import org.jboss.tools.ui.bot.ext.config.Annotations.DB;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Seam;
@@ -73,7 +67,7 @@ public class CreateSeamPortletProject extends CreatePortletProjectTemplate{
 
 	@Override
 	public List<String> getExpectedFiles() {
-		return Arrays.asList(
+		List<String> expectedFiles = new ArrayList<String>(Arrays.asList(
 				WEB_XML, 
 				PORTLET_XML, 
 				PORTLET_LIBRARIES, 
@@ -81,7 +75,12 @@ public class CreateSeamPortletProject extends CreatePortletProjectTemplate{
 				WEB_APP_LIBRARIES,
 				PAGES_XML, 
 				COMPONENTS_XML, 
-				JBOSS_WEB_XML);
+				JBOSS_WEB_XML));
+		//jboss-web.xml have been removed since seam 2.3 https://issues.jboss.org/browse/JBSEAM-4915
+		if(configuredState.getSeam().version.equals("2.3")) {
+			expectedFiles.remove(JBOSS_WEB_XML);
+		}
+		return expectedFiles;
 	}
 	
 	@Override
