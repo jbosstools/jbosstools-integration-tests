@@ -1,34 +1,17 @@
 package org.jboss.tools.portlet.ui.bot.matcher.console;
 
-import static org.jboss.tools.portlet.ui.bot.matcher.factory.DefaultMatchersFactory.inConsoleOutput;
-
-import org.hamcrest.BaseMatcher;
-import org.hamcrest.Description;
-import org.jboss.tools.portlet.ui.bot.matcher.SWTMatcher;
-
 /**
- * Matcher for the current state of workspace - that there is an exception in console output. 
+ * Matcher for the current state of workspace - that there is an error in console output.
  * 
+ * @author Radoslav Rabara
  * @author Lucia Jelinkova
- *
+ * 
+ * @see ServerErrorInConsoleOutputMatcher
  */
-public class ErrorInConsoleOutputMatcher extends BaseMatcher<Void> implements SWTMatcher<Void> {
-
-	private ConsoleOutputMatcher consoleOutputMatcher;
+public class ErrorInConsoleOutputMatcher extends StringInConsoleOutputMatcher {
 
 	public ErrorInConsoleOutputMatcher() {
-		super();
-		consoleOutputMatcher = (ConsoleOutputMatcher) inConsoleOutput();
+		super("Error: ");
 	}
 	
-	@Override
-	public boolean matches(Object item) {
-		return consoleOutputMatcher.matchesSafely("Error: ");
-	}
-
-	@Override
-	public void describeTo(Description description) {
-		description.appendText("error is in console output");
-	}
-
 }

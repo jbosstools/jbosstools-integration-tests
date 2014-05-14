@@ -19,8 +19,8 @@ public class WorkspaceAssert {
 
 	public static void assertThatInWorkspace(String reason, Matcher<Void> matcher) {
 		if (!matcher.matches(null)) {
-			Description description = new StringDescription();
-			description.appendText(reason)
+			Description description = new StringDescription()
+			.appendText(reason)
 			.appendText("\nExpected that ")
 			.appendDescriptionOf(matcher)
 			.appendText("\n");
@@ -35,8 +35,8 @@ public class WorkspaceAssert {
 
 	public static <T> void assertThatInWorkspace(String reason, T actual, Matcher<T> matcher) {
 		if (!matcher.matches(actual)) {
-			Description description = new StringDescription();
-			description.appendText(reason)
+			Description description = new StringDescription()
+			.appendText(reason)
 			.appendText("\nExpected that ")
 			.appendValue(actual)
 			.appendText(" ")

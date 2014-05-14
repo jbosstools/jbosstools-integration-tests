@@ -4,6 +4,7 @@ import org.jboss.tools.portlet.ui.bot.matcher.SWTMatcher;
 import org.jboss.tools.portlet.ui.bot.matcher.console.ConsoleOutputMatcher;
 import org.jboss.tools.portlet.ui.bot.matcher.console.ErrorInConsoleOutputMatcher;
 import org.jboss.tools.portlet.ui.bot.matcher.console.ExceptionInConsoleOutputMatcher;
+import org.jboss.tools.portlet.ui.bot.matcher.console.ServerErrorInConsoleOutputMatcher;
 import org.jboss.tools.portlet.ui.bot.matcher.problems.NumberOfErrorsMatcher;
 
 /**
@@ -33,5 +34,9 @@ public class DefaultMatchersFactory {
 
 	public static SWTMatcher<Void> errorInConsoleOutput(){
 		return new ErrorInConsoleOutputMatcher();
+	}
+	
+	public static SWTMatcher<Void> serverErrorInConsoleOutput(){
+		return new ServerErrorInConsoleOutputMatcher();
 	}
 }
