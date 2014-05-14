@@ -26,7 +26,7 @@ public class MacSpecifics {
 		 String javaVersion = System.getProperty("java.specification.version");
 		  log.info("Is running on MacOS: " + SWTJBTExt.isRunningOnMacOs());
 		  log.info("Java version: " + javaVersion);
-		  if ("1.7".equals(javaVersion)){
+		  if ("1.7".equals(javaVersion) || "1.8".equals(javaVersion)){
 			  log.info("default AWT toolkit: " + System.getProperty("awt.toolkit"));
 			  System.setProperty("awt.toolkit", "sun.lwawt.macosx.LWCToolkit");
 			  log.info("AWT toolkit changed to: " + System.getProperty("awt.toolkit"));
