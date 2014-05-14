@@ -9,7 +9,7 @@ import org.junit.Test;
  * @author Radoslav Rabara
  * @version JBDS 7.0.1
  */
-public class AllRuntimeDownload extends RuntimeDownloadTestBase {
+public class AllRuntimeDownload extends ProjectRuntimeDownloadTestBase {
 	
 	@Test
 	public void gateInPortal360(){

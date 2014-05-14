@@ -46,7 +46,8 @@ import org.jboss.tools.runtime.as.ui.bot.test.detector.server.soap53.standalone.
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.soap53.standalone.OperateSOAPStandalone53;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.wildfly8.DetectWildFly8;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.wildfly8.OperateWildFly8;
-import org.jboss.tools.runtime.as.ui.bot.test.download.RuntimeDownload;
+import org.jboss.tools.runtime.as.ui.bot.test.download.ProductRuntimeDownload;
+import org.jboss.tools.runtime.as.ui.bot.test.download.ProjectRuntimeDownload;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
@@ -61,7 +62,8 @@ import org.junit.runners.Suite;
 
 		RuntimeDuplications.class,
 		ServerWithSeam.class,
-		RuntimeDownload.class,
+		ProjectRuntimeDownload.class,
+		ProductRuntimeDownload.class,
 		
 		DetectWildFly8.class,
 		OperateWildFly8.class,
