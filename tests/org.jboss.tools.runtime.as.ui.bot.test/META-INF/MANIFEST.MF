@@ -22,4 +22,5 @@ Require-Bundle: org.eclipse.ui,
  org.jboss.reddeer.eclipse,
  org.jboss.reddeer.workbench,
  org.jboss.reddeer.junit
+Import-Package: org.jboss.tools.runtime.reddeer.wizard
 

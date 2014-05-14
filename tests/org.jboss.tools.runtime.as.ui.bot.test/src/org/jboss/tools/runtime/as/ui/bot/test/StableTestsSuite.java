@@ -24,7 +24,8 @@ import org.jboss.tools.runtime.as.ui.bot.test.detector.server.wildfly8.DetectWil
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.wildfly8.OperateWildFly8;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.wildfly81.DetectWildFly81;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.wildfly81.OperateWildFly81;
-import org.jboss.tools.runtime.as.ui.bot.test.download.RuntimeDownload;
+import org.jboss.tools.runtime.as.ui.bot.test.download.ProductRuntimeDownload;
+import org.jboss.tools.runtime.as.ui.bot.test.download.ProjectRuntimeDownload;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
@@ -37,7 +38,8 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @RunWith(JBTSuite.class)
 @SuiteClasses({
-		RuntimeDownload.class,
+		ProjectRuntimeDownload.class,
+		ProductRuntimeDownload.class,
 		
 		DetectWildFly81.class,
 		OperateWildFly81.class,
