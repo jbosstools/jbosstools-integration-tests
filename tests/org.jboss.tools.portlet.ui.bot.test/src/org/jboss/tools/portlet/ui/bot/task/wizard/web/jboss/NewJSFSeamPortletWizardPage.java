@@ -3,6 +3,7 @@ package org.jboss.tools.portlet.ui.bot.task.wizard.web.jboss;
 import org.jboss.reddeer.eclipse.jface.wizard.WizardDialog;
 import org.jboss.reddeer.eclipse.jface.wizard.WizardPage;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 
 /**
@@ -12,10 +13,6 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
  * 
  */
 public class NewJSFSeamPortletWizardPage extends WizardPage {
-
-	public NewJSFSeamPortletWizardPage(WizardDialog wizardDialog) {
-		super(wizardDialog, 0);
-	}
 
 	public void setName(String name) {
 		new LabeledText("Name:").setText(name);
@@ -38,7 +35,7 @@ public class NewJSFSeamPortletWizardPage extends WizardPage {
 	}
 
 	public void setProject(String projectName) {
-		new DefaultCombo("Project:").setSelection(projectName);
+		new LabeledCombo("Project:").setSelection(projectName);
 	}
 
 }

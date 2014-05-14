@@ -17,7 +17,7 @@ public class NewJSFSeamPortletDialog extends NewWizardDialog {
 
 	@Override
 	public WizardPage getFirstPage() {
-		return new NewJSFSeamPortletWizardPage(this);
+		return new NewJSFSeamPortletWizardPage();
 	}
 
 }
