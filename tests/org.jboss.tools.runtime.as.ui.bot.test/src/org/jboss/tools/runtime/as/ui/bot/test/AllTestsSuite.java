@@ -63,7 +63,8 @@ import org.jboss.tools.runtime.as.ui.bot.test.detector.server.wildfly8.OperateWi
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.wildfly81.DetectWildFly81;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.wildfly81.OperateWildFly81;
 import org.jboss.tools.runtime.as.ui.bot.test.download.AllRuntimeDownload;
-import org.jboss.tools.runtime.as.ui.bot.test.download.RuntimeDownload;
+import org.jboss.tools.runtime.as.ui.bot.test.download.ProductRuntimeDownload;
+import org.jboss.tools.runtime.as.ui.bot.test.download.ProjectRuntimeDownload;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
@@ -71,7 +72,8 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
 		RuntimeDuplications.class,
 		ServerWithSeam.class,
-		RuntimeDownload.class,
+		ProjectRuntimeDownload.class,
+		ProductRuntimeDownload.class,
 		
 		// Needs Java SE 1.7
 		DetectWildFly81.class,
