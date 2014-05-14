@@ -7,6 +7,7 @@ import org.jboss.reddeer.eclipse.jface.wizard.WizardPage;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
@@ -56,7 +57,7 @@ public class DynamicWebProjectWizardPage extends WizardPage {
 		if (facet.getVersion() != null){
 			facetTreeItem.select();
 			new ContextMenu("Change Version...").select();
-			new DefaultCombo("Version:").setSelection(facet.getVersion());
+			new LabeledCombo("Version:").setSelection(facet.getVersion());
 			new PushButton("OK").click();
 		}
 	}

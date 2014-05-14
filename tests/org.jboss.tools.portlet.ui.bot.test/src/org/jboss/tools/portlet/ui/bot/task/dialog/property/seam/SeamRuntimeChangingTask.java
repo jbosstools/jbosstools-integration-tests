@@ -1,6 +1,7 @@
 package org.jboss.tools.portlet.ui.bot.task.dialog.property.seam;
 
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.tools.portlet.ui.bot.task.AbstractSWTTask;
 import org.jboss.tools.portlet.ui.bot.task.dialog.property.ProjectPropertyDialogCloseTask;
 import org.jboss.tools.portlet.ui.bot.task.dialog.property.ProjectPropertyDialogOpenTask;
@@ -34,7 +35,7 @@ public class SeamRuntimeChangingTask extends AbstractSWTTask {
 	}
 
 	private void selectRuntime() {
-		new DefaultCombo("Seam 2 Runtime:").setSelection(runtime);
+		new LabeledCombo("Seam 2 Runtime:").setSelection(runtime);
 	}
 
 	private void showPropertyDialog() {

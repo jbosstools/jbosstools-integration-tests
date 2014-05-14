@@ -5,11 +5,11 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.jboss.reddeer.eclipse.jface.wizard.WizardDialog;
 import org.jboss.reddeer.swt.api.Group;
 import org.jboss.reddeer.swt.api.Text;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.group.DefaultGroup;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.tools.portlet.ui.bot.entity.FacetDefinition;
@@ -60,13 +60,13 @@ public class CreateSeamPortletProject extends CreatePortletProjectTemplate{
 		dialog.next();
 		dialog.next();
 		dialog.next();
-		new DefaultCombo("Type:").setSelection(JBossPortletCapabilitiesWizardPageFillingTask.Type.RUNTIME_PROVIDER.toString());
+		new LabeledCombo("Type:").setSelection(JBossPortletCapabilitiesWizardPageFillingTask.Type.RUNTIME_PROVIDER.toString());
 		dialog.next();
 		dialog.next();
-		new DefaultCombo("Database Type:").setSelection("HSQL");
-		new DefaultCombo("Connection profile:").setSelection(SWTTestExt.configuredState.getDB().name);
+		new LabeledCombo("Database Type:").setSelection("HSQL");
+		new LabeledCombo("Connection profile:").setSelection(SWTTestExt.configuredState.getDB().name);
 		dialog.next();
-		new DefaultCombo("Type:").setSelection(JBossJSFPortletCapabilitiesWizardPageFillingTask.Type.RUNTIME_PROVIDER.toString());
+		new LabeledCombo("Type:").setSelection(JBossJSFPortletCapabilitiesWizardPageFillingTask.Type.RUNTIME_PROVIDER.toString());
 		
 		processWizardPageJSFPortletCapabilities();
 	}
