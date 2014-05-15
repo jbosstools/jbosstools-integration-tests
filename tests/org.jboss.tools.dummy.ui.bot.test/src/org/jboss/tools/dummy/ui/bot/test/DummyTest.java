@@ -1,18 +1,20 @@
 package org.jboss.tools.dummy.ui.bot.test;
 
 
-import static org.eclipse.swtbot.swt.finder.waits.Conditions.shellIsActive;
-import static org.junit.Assert.assertEquals;
-
 import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
+import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
 import org.jboss.tools.ui.bot.ext.MacSpecifics;
+import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import static org.eclipse.swtbot.swt.finder.waits.Conditions.shellIsActive;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * Dummy bot tests - designed to test jenkins slaves
@@ -34,9 +36,9 @@ public class DummyTest {
 		String pref = "Preferences";
 		String window = "Window";
 
-		SWTWorkbenchBot bot = new SWTWorkbenchBot();
+ 		SWTWorkbenchBot bot = new SWTWorkbenchBot();
 		if (isOSX()) {
-			bot.shells()[0].pressShortcut(SWT.COMMAND, ',');  
+			KeyboardFactory.getKeyboard().invokeKeyCombination(SWT.COMMAND, ',');
 		}
 		else {		
 			bot.menu(window).menu(pref).click();
