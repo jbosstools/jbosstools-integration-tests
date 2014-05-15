@@ -13,7 +13,7 @@ import org.jboss.tools.ui.bot.ext.config.TestConfigurator;
 public class Timing {
 
 	private static final Logger log = Logger.getLogger(Timing.class);
-	private boolean ibaa = true;	
+	private boolean ibaaa = true;	
 	public static double multiplier=1.0;
 	
 	static {
