@@ -6,6 +6,7 @@ import java.util.List;
 import org.jboss.reddeer.eclipse.jface.wizard.WizardPage;
 import org.jboss.reddeer.swt.api.Group;
 import org.jboss.reddeer.swt.api.Table;
+import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.group.DefaultGroup;
 import org.jboss.reddeer.swt.impl.link.AnchorLink;
@@ -17,6 +18,25 @@ public class NewProjectExamplesStacksRequirementsPage extends WizardPage{
 	
 	public void setTargetRuntime(String selection){
 		new DefaultCombo(0).setSelection(selection);
+	}
+	
+	
+	/**
+	 * Sets nth target runtime.
+	 * @param index
+	 */
+	public void setTargetRuntime(int index){
+		new DefaultCombo(0).setSelection(index);
+	}
+	
+	
+	/**
+	 * Toggles blank project checkbox
+	 * @param blank
+	 */
+	public void toggleBlank(boolean blank){
+		CheckBox ch = new CheckBox("Create a blank project");
+		ch.toggle(blank);
 	}
 	
 	public List<ExampleRequirement> getRequirements(){

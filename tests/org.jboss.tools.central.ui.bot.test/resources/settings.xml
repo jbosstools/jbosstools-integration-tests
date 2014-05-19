@@ -15,7 +15,7 @@
 				<repository>
 					<id>jboss-public-repository-group</id>
 					<name>JBoss Public Maven Repository Group</name>
-					<url>https://repository.jboss.org/nexus/content/groups/public-jboss/</url>
+						<url>https://repository.jboss.org/nexus/content/groups/developer/</url>
 					<layout>default</layout>
 					<releases>
 						<enabled>true</enabled>
@@ -31,7 +31,7 @@
 				<pluginRepository>
 					<id>jboss-public-repository-group</id>
 					<name>JBoss Public Maven Repository Group</name>
-					<url>https://repository.jboss.org/nexus/content/groups/public-jboss/</url>
+						<url>https://repository.jboss.org/nexus/content/groups/developer/</url>
 					<layout>default</layout>
 					<releases>
 						<enabled>true</enabled>
@@ -50,7 +50,7 @@
 			<repositories>
 				<repository>
 					<id>jboss-eap</id>
-					<url>http://maven.repository.redhat.com/techpreview/all/</url>
+						<url>http://maven.repository.redhat.com/techpreview/all/</url>
 					<releases>
 						<enabled>true</enabled>
 					</releases>
@@ -63,34 +63,6 @@
 				<pluginRepository>
 					<id>jboss-eap-maven-plugin-repository</id>
 					<url>http://maven.repository.redhat.com/techpreview/all/</url>
-					<releases>
-						<enabled>true</enabled>
-					</releases>
-					<snapshots>
-						<enabled>false</enabled>
-					</snapshots>
-				</pluginRepository>
-			</pluginRepositories>
-		</profile>
-
-		<profile>
-			<id>jboss-eap-maven-repository</id>
-			<repositories>
-				<repository>
-					<id>jboss-eap</id>
-					<url>file:///home/rax/maven%20Repository/jboss-eap-6.0.1-maven-repository</url>
-					<releases>
-						<enabled>true</enabled>
-					</releases>
-					<snapshots>
-						<enabled>false</enabled>
-					</snapshots>
-				</repository>
-			</repositories>
-			<pluginRepositories>
-				<pluginRepository>
-					<id>jboss-eap-maven-plugin-repository</id>
-					<url>file:///home/rax/maven%20Repository/jboss-eap-6.0.1-maven-repository</url>
 					<releases>
 						<enabled>true</enabled>
 					</releases>

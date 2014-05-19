@@ -35,6 +35,18 @@ public class JBossCentralProjectWizard extends WizardDialog{
 	}
 	
 	public void finish(String projectName){
+		finish(projectName, false);
+	}
+	
+	
+	/**
+	 * Finishes this wizard and waits for a long time.  
+	 * 
+	 * @param projectName
+	 * @param empty true if it's empty project. It means that readme is not demanded (empty project does not have readme).
+	 */
+	
+	public void finish(String projectName, boolean empty){
 		log.info("Finish example wizard");
 
 		DefaultShell shell = new DefaultShell();
@@ -45,8 +57,10 @@ public class JBossCentralProjectWizard extends WizardDialog{
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 		new DefaultShell("New Project Example");
 		assertFalse(new CheckBox("Show the Quick Fix dialog").isEnabled());
-		assertTrue(new CheckBox("Show '/"+projectName+"/README.md' for further instructions").isEnabled());
-		assertTrue(new CheckBox("Show '/"+projectName+"/README.md' for further instructions").isChecked());
+		if (!empty){
+			assertTrue(new CheckBox("Show '/"+projectName+"/README.md' for further instructions").isEnabled());
+			assertTrue(new CheckBox("Show '/"+projectName+"/README.md' for further instructions").isChecked());
+		}
 		assertTrue(new CheckBox("Do not show this page again").isEnabled());
 		assertFalse(new CheckBox("Do not show this page again").isChecked());
 		new PushButton("Finish").click();
