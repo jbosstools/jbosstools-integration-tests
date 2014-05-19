@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Central Reddeer
 Bundle-SymbolicName: org.jboss.tools.central.reddeer
 Bundle-Version: 4.2.0.qualifier
-Bundle-Activator: org.jboss.tools.maven.central.Activator
+Bundle-Activator: org.jboss.tools.central.reddeer.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.jboss.reddeer.swt,
@@ -14,7 +14,10 @@ Require-Bundle: org.eclipse.ui,
  org.jboss.reddeer.uiforms,
  org.jboss.reddeer.junit,
  org.jboss.tools.runtime.reddeer,
- org.jboss.tools.maven.reddeer
+ org.jboss.tools.maven.reddeer,
+ org.jboss.ide.eclipse.as.reddeer
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Export-Package: org.jboss.tools.central.reddeer.wizards
+Export-Package: org.jboss.tools.central.reddeer.api,
+ org.jboss.tools.central.reddeer.projects,
+ org.jboss.tools.central.reddeer.wizards
