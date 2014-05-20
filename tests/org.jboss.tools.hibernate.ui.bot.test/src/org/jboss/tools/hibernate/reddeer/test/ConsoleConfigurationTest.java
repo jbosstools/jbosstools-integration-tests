@@ -22,7 +22,6 @@ import org.junit.runner.RunWith;
  *
  */
 @RunWith(RedDeerSuite.class)
-@Database(name = "any")
 public class ConsoleConfigurationTest extends HibernateRedDeerTest {
 
 	private String PROJECT_NAME = "consoletest";
@@ -76,8 +75,7 @@ public class ConsoleConfigurationTest extends HibernateRedDeerTest {
 		s2.close();
 		
 		v.open();
-		v.selectConsole(CONSOLE_NAME);
-		v.selectNode(CONSOLE_NAME,"Database","PUBLIC","ACTOR");
+		v.selectNode(CONSOLE_NAME,"Database","SAKILA.PUBLIC","ACTOR");
 	}
 	
 	
