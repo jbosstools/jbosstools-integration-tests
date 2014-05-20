@@ -19,9 +19,9 @@ public class NewHibernateConfigurationWizard extends NewWizardDialog{
 		int index = getPageIndex();
 		
 		switch (index) {
-		case 1: 
+		case 0: 
 			return new NewConfigurationLocationPage();
-		case 2: 
+		case 1: 
 			return new NewConfigurationSettingPage();
 		default:
 			throw new UnsupportedOperationException("page is not implemented");

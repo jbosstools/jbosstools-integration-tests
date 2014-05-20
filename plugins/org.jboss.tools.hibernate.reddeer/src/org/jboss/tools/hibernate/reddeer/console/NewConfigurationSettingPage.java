@@ -3,6 +3,7 @@ package org.jboss.tools.hibernate.reddeer.console;
 import org.jboss.reddeer.eclipse.jface.wizard.WizardPage;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 
 /**
@@ -13,15 +14,15 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
 public class NewConfigurationSettingPage extends WizardPage {
 	
 	public void setDatabaseDialect(String dialect) {
-		new DefaultCombo("Database dialect:").setSelection(dialect);
+		new LabeledCombo("Database dialect:").setSelection(dialect);
 	}
 	
 	public void setDriverClass(String driverClass) {
-		new DefaultCombo("Driver class:").setSelection(driverClass);
+		new LabeledCombo("Driver class:").setSelection(driverClass);
 	}
 	
 	public void setConnectionURL(String url) {
-		new DefaultCombo("Connection URL:").setText(url);
+		new LabeledCombo("Connection URL:").setText(url);
 	}
 	
 	public void setUsername(String username) {
