@@ -2,6 +2,7 @@ package org.jboss.tools.hibernate.reddeer.test;
 
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.reddeer.requirements.db.DatabaseRequirement.Database;
 import org.jboss.tools.hibernate.reddeer.console.EditConfigurationMainPage;
 import org.jboss.tools.hibernate.reddeer.console.EditConfigurationMainPage.PredefinedConnection;
 import org.jboss.tools.hibernate.reddeer.console.EditConfigurationShell;
@@ -14,7 +15,14 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+/**
+ * Console configuration test
+ * Creates Hibernate Configuration file (cfg.xml)
+ * @author Jiri Peterka
+ *
+ */
 @RunWith(RedDeerSuite.class)
+@Database(name = "any")
 public class ConsoleConfigurationTest extends HibernateRedDeerTest {
 
 	private String PROJECT_NAME = "consoletest";
@@ -42,7 +50,6 @@ public class ConsoleConfigurationTest extends HibernateRedDeerTest {
 		p2.setConnectionURL(p.getProperty(RuntimeDBProperty.jdbc));
 		p2.setUsername(p.getProperty(RuntimeDBProperty.username));			
 		wizard.finish();
-		
 	}
 
 	@Test
