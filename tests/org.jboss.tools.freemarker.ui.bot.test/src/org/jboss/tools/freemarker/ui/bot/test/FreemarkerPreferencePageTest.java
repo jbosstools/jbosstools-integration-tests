@@ -40,6 +40,9 @@ public class FreemarkerPreferencePageTest {
 		page.open();
 		boolean highLightRelatedDirectives = page
 				.getHighLightRelatedDirectives();
+		page.apply();
+		page.ok();		
+		
 		assertFalse(highLightRelatedDirectives);
 	}
 }
