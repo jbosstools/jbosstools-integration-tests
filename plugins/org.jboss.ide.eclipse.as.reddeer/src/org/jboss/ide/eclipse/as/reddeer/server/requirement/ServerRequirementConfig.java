@@ -55,7 +55,13 @@ public class ServerRequirementConfig implements IServerReqConfig {
 			return false;
 		if(arg == this)
 			return true;
+		
 		ServerRequirementConfig conf = (ServerRequirementConfig) arg;
+		
+		if((this.getRuntime() == null && conf.getRuntime() != null) ||
+		   (this.getRuntime() != null && conf.getRuntime() == null))
+			return false;
+	
 		IServerFamily family1 = this.getServerFamily();
 		IServerFamily family2 = conf.getServerFamily();
 		if(!runtime.equals(conf.runtime) || (family1 == null && family2 != null))
