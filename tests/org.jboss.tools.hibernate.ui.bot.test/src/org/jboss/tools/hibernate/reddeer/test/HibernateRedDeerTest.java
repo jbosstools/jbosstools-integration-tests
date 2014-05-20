@@ -14,14 +14,14 @@ import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPag
 import org.jboss.reddeer.swt.test.RedDeerTest;
 import org.jboss.tools.hibernate.ui.bot.testcase.Activator;
 
-public class HibernateRedDeerTest extends RedDeerTest{
+public class HibernateRedDeerTest {
 	
 	Properties p;
 	
 	public HibernateRedDeerTest() {
 		super();
 		p = new Properties();
-		String path = getResourceAbsolutePath(Activator.PLUGIN_ID, "resources/hsqldb18_settings.properties");
+		String path = getResourceAbsolutePath(Activator.PLUGIN_ID, "resources/h2_settings.properties");
 		try {
 			p.load(new FileInputStream(path));
 		} catch (IOException e) {
