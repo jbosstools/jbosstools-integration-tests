@@ -30,7 +30,7 @@
 
 	<xs:simpleType name="versionWildFly">
 		<xs:restriction base="server:abstractVersion">
-			<xs:enumeration value="8.0" />
+			<xs:enumeration value="8.x" />
 		</xs:restriction>
 	</xs:simpleType>
 

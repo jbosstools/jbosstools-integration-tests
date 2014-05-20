@@ -7,7 +7,7 @@ import org.jboss.ide.eclipse.as.ui.bot.test.template.DeployJSPProjectTemplate;
 import org.jboss.ide.eclipse.as.ui.bot.test.template.UndeployJSPProjectTemplate;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 
-@JBossServer(state=ServerReqState.RUNNING, type=ServerReqType.WILDFLY8_0, version=ServerReqVersion.GREATER_OR_EQUAL)
+@JBossServer(state=ServerReqState.RUNNING, type=ServerReqType.WILDFLY8x, version=ServerReqVersion.GREATER_OR_EQUAL)
 public class UndeployJSPProjectWildfly8Server extends UndeployJSPProjectTemplate {
 
 	@Override

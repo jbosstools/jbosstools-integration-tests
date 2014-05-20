@@ -90,9 +90,9 @@ public enum ServerReqType {
 	 */
 	WILDFLY(ServerReqFamily.WILDFLY),
 	/**
-	 * WildFly 8.0
+	 * WildFly 8.x
 	 */
-	WILDFLY8_0(ServerReqFamily.WILDFLY, "8.0 (Experimental)");
+	WILDFLY8x(ServerReqFamily.WILDFLY, "8.x");
 
 
 	private String version;
