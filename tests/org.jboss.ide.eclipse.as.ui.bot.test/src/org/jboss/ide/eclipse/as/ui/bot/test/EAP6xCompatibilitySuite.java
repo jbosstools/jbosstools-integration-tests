@@ -22,8 +22,4 @@ import org.junit.runners.Suite;
 
 public class EAP6xCompatibilitySuite {
 	
-	public EAP6xCompatibilitySuite() {
-		// TODO Auto-generated constructor stub
-	}
-
 }
