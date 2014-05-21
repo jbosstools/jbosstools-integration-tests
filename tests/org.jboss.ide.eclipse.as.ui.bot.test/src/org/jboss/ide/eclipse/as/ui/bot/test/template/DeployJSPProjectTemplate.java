@@ -1,14 +1,17 @@
 package org.jboss.ide.eclipse.as.ui.bot.test.template;
 
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
-
 import org.jboss.ide.eclipse.as.reddeer.server.view.JBossServer;
 import org.jboss.ide.eclipse.as.reddeer.server.view.JBossServerView;
 import org.jboss.ide.eclipse.as.ui.bot.test.Activator;
 import org.jboss.ide.eclipse.as.ui.bot.test.condition.BrowserContainsTextCondition;
 import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
+import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
+import org.jboss.reddeer.eclipse.wst.common.project.facet.ui.RuntimesPropertyPage;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.Server;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewEnums.ServerPublishState;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewEnums.ServerState;
@@ -58,6 +61,12 @@ public abstract class DeployJSPProjectTemplate {
 		page.selectProjects(PROJECT_NAME);
 		
 		dialog.finish();
+		
+		Project project = new ProjectExplorer().getProject(PROJECT_NAME);
+		RuntimesPropertyPage targetedRuntimes = new RuntimesPropertyPage(project);
+		targetedRuntimes.open();
+		targetedRuntimes.selectRuntime(requirement.getRuntimeNameLabelText(requirement.getConfig()));
+		targetedRuntimes.ok();
 	}
 
 	@Test
@@ -78,6 +87,8 @@ public abstract class DeployJSPProjectTemplate {
 		// view
 		assertThat(getServer().getLabel().getState(), is(ServerState.STARTED));
 		assertThat(getServer().getLabel().getPublishState(), is(ServerPublishState.SYNCHRONIZED));
+		// problems
+		assertThat(new ProblemsView().getAllErrors().size(), is(0));
 	}
 
 	private void addModule(JBossServer server) {
