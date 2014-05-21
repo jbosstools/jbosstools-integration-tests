@@ -1,24 +1,33 @@
 package org.jboss.ide.eclipse.as.reddeer.server.requirement;
 
+import static org.junit.Assert.assertTrue;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.ide.eclipse.as.reddeer.server.view.JBossServerView;
 import org.jboss.ide.eclipse.as.reddeer.server.wizard.NewServerWizardDialog;
 import org.jboss.ide.eclipse.as.reddeer.server.wizard.page.JBossRuntimeWizardPage;
 import org.jboss.ide.eclipse.as.reddeer.server.wizard.page.NewServerAdapterPage;
+import org.jboss.ide.eclipse.as.reddeer.server.wizard.page.NewServerAdapterPage.Profile;
 import org.jboss.ide.eclipse.as.reddeer.server.wizard.page.NewServerWizardPageWithErrorCheck;
-import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewEnums.ServerState;
+import org.jboss.ide.eclipse.as.reddeer.server.wizard.page.NewServerRSIWizardPage;
+import org.jboss.reddeer.eclipse.rse.ui.view.System;
+import org.jboss.reddeer.eclipse.rse.ui.view.SystemView;
+import org.jboss.reddeer.eclipse.rse.ui.wizard.NewConnectionWizardDialog;
+import org.jboss.reddeer.eclipse.rse.ui.wizard.NewConnectionWizardMainPage;
+import org.jboss.reddeer.eclipse.rse.ui.wizard.NewConnectionWizardSelectionPage;
+import org.jboss.reddeer.eclipse.rse.ui.wizard.NewConnectionWizardSelectionPage.SystemType;
 import org.jboss.reddeer.junit.logging.Logger;
 import org.jboss.reddeer.junit.requirement.CustomConfiguration;
 import org.jboss.reddeer.junit.requirement.Requirement;
 import org.jboss.reddeer.requirements.server.ConfiguredServerInfo;
+import org.jboss.reddeer.requirements.server.IServerReqConfig;
 import org.jboss.reddeer.requirements.server.ServerReqBase;
 import org.jboss.reddeer.requirements.server.ServerReqState;
+
 
 /**
  * 
@@ -64,12 +73,16 @@ public class ServerRequirement extends ServerReqBase implements Requirement<JBos
 		}
 		if (lastServerConfiguration == null || !isLastConfiguredServerPresent(lastServerConfiguration)) {
 			LOGGER.info("Setup server");
-			setupServerAdapter();
+			if(config.getRemote() == null)
+				setupLocalServerAdapter();
+			else
+				setupRemoteServerAdapter();
 			lastServerConfiguration = new ConfiguredServerInfo(getServerNameLabelText(config), config);
 		}
 		setupServerState(server.state(), lastServerConfiguration);
 	}
 	
+
 	
 	@Override
 	public void setDeclaration(JBossServer server) {
@@ -89,35 +102,109 @@ public class ServerRequirement extends ServerReqBase implements Requirement<JBos
 	public ServerRequirementConfig getConfig() {
 		return this.config;
 	}
-	
 
-	protected void setupServerAdapter() {
+	@Override
+	public String getServerNameLabelText(IServerReqConfig config) {
+		if(this.config.getRemote() == null)
+			return super.getServerNameLabelText(config);
+		else
+			return super.getServerTypeLabelText(config) + " Remote Server";
+	}
+	
+	protected void setupLocalServerAdapter() {
 		NewServerWizardDialog serverW = new NewServerWizardDialog();
 		try {
 			serverW.open();
-			
+
 			NewServerWizardPageWithErrorCheck sp = new NewServerWizardPageWithErrorCheck();
-	
+
 			sp.selectType(config.getServerFamily().getCategory(),
 					getServerTypeLabelText(config));
 			sp.setName(getServerNameLabelText(config));
-			
+
 			sp.checkErrors();
-			
+
 			serverW.next();
-			
+
 			NewServerAdapterPage ap = new NewServerAdapterPage();
 			ap.checkErrors();
-			
+
+			serverW.next();
+
+			setupRuntime();
+
+			serverW.finish();
+		} catch(RuntimeException e) {
+			serverW.cancel();
+			throw e;
+		} catch(AssertionError e) {
+			serverW.cancel();
+			throw e;
+		}
+	}
+	
+	protected void setupRuntime(){
+		
+		JBossRuntimeWizardPage rp = new JBossRuntimeWizardPage();
+		rp.setRuntimeName(getRuntimeNameLabelText(config));
+		rp.setRuntimeDir(config.getRuntime());
+
+		rp.checkErrors();
+		
+	}
+
+	protected void setupRemoteSystem(){
+		
+		SystemView sview = new SystemView();
+		NewConnectionWizardDialog connW = sview.newConnection();
+		NewConnectionWizardSelectionPage sp = new NewConnectionWizardSelectionPage();
+		sp.selectSystemType(SystemType.SSH_ONLY);
+		connW.next();
+		NewConnectionWizardMainPage mp = new NewConnectionWizardMainPage();
+		mp.setHostName(config.getRemote().getHost());
+		connW.finish();
+		
+		System system = sview.getSystem(config.getRemote().getHost());
+		system.connect(config.getRemote().getUsername(), config.getRemote().getPassword());
+				
+		assertTrue(system.isConnected());
+		
+	}
+	
+	protected void setupRemoteServerAdapter() {
+		NewServerWizardDialog serverW = new NewServerWizardDialog();
+		try {
+			//setup remote system first
+			setupRemoteSystem();
+
+			//-- Open 'New Server' wizard 
+			serverW.open();
+			//-- Select the server type and fill in server name, then continue on next page
+			NewServerWizardPageWithErrorCheck sp = new NewServerWizardPageWithErrorCheck();
+			sp.selectType(config.getServerFamily().getCategory(),getServerTypeLabelText(config));
+			sp.setName(getServerNameLabelText(config));
+			sp.checkErrors();
 			serverW.next();
 			
-			JBossRuntimeWizardPage rp = new JBossRuntimeWizardPage();
-			rp.setRuntimeName(getRuntimeNameLabelText(config));
-			rp.setRuntimeDir(config.getRuntime());
+			//-- Select server profile (Remote)
+			NewServerAdapterPage ap = new NewServerAdapterPage();
+			ap.setProfile(Profile.REMOTE);
+			//Remote server can be configured without local runtime if runtime is not specified
+			if(config.getRuntime() == null)
+				ap.setAssignRuntime(false);
+			serverW.next();
 			
-			rp.checkErrors();
+			if(config.getRuntime() != null){
+				//create new runtime
+				setupRuntime();
+				serverW.next();
+			}
 			
+			NewServerRSIWizardPage rsp = new NewServerRSIWizardPage();
+			rsp.setRemoteServerHome(config.getRemote().getRemoteServerHome());
+			rsp.selectHost(config.getRemote().getHost()); //host was configured in setupRemoteSystem 
 			serverW.finish();
+			
 		} catch(RuntimeException e) {
 			serverW.cancel();
 			throw e;

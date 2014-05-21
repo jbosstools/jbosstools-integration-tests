@@ -7,6 +7,7 @@ import java.util.List;
 import org.jboss.reddeer.eclipse.jface.wizard.WizardPage;
 import org.jboss.reddeer.swt.api.Combo;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
+import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 /**
  * Create a New Server Adapter wizard page<br/>
@@ -22,21 +23,23 @@ import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 public class NewServerAdapterPage extends WizardPage {
 	
 	public void setProfile(Profile profile) {
-		getProfileCombo().setText(profile.getLabel());
+		
+		switch (profile) {
+		case REMOTE:
+			new RadioButton("Remote").click();;
+			break;
+		default:
+			new RadioButton("Local").click();
+			break;
+		}
+		
 	}
 	
 	public Profile getProfile() {
-		String profileLabel = getProfileCombo().getText();
-		for(Profile profile : Profile.values()) {
-			if(profile.getLabel().equals(profileLabel)) {
-				return profile;
-			}
-		}
-		throw new AssertionError("Unrecognized profile: " + profileLabel);
-	}
-	
-	private Combo getProfileCombo() {
-		return new DefaultCombo(0);
+		if(new RadioButton("Local").isSelected())
+			return Profile.LOCAL;
+		else
+			return Profile.REMOTE;
 	}
 	
 	public void setAssignRuntime(boolean assign) {
@@ -83,7 +86,6 @@ public class NewServerAdapterPage extends WizardPage {
 	
 	public enum Profile {
 		LOCAL("Local"), REMOTE("Remote");
-		//TODO: Add profiles preferring management operations
 		
 		private String label;
 		
@@ -97,6 +99,9 @@ public class NewServerAdapterPage extends WizardPage {
 	}
 
 	public void checkErrors() {
+		//TODO revisit: What if runtime exist but the server is remote instead of local
+		// will it result in error? (yes- but should not)
+		
 		List<String> runtimes = getRuntimes();
 		
 		boolean anotherServerWithSameType = runtimes.size() > 0;		
