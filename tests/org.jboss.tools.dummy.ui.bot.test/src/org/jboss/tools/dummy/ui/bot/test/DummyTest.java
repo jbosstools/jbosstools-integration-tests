@@ -1,52 +1,35 @@
 package org.jboss.tools.dummy.ui.bot.test;
 
 
-import org.apache.log4j.Logger;
-import org.eclipse.swt.SWT;
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
-import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
-import org.jboss.tools.ui.bot.ext.MacSpecifics;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
+import org.jboss.reddeer.junit.logging.Logger;
+import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
+import org.jboss.reddeer.workbench.preference.WorkbenchPreferencePage;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import static org.eclipse.swtbot.swt.finder.waits.Conditions.shellIsActive;
-
-import static org.junit.Assert.assertEquals;
-
 /**
- * Dummy bot tests - designed to test jenkins slaves
+ * Dummy bot tests - designed to test Jenkins slaves 
  * @author jpeterka
  *
  */
-@Require
 public class DummyTest {
 	
-	Logger log = Logger.getLogger("");
+	Logger log = Logger.getLogger(DummyTest.class);
 	
 	@BeforeClass
 	public static void before() {		
-		MacSpecifics.setupToolkit();
 	}
 
 	@Test
 	public void dummyTest() {
-		String pref = "Preferences";
-		String window = "Window";
 
- 		SWTWorkbenchBot bot = new SWTWorkbenchBot();
-		if (isOSX()) {
-			KeyboardFactory.getKeyboard().invokeKeyCombination(SWT.COMMAND, ',');
-		}
-		else {		
-			bot.menu(window).menu(pref).click();
-		}
-		bot.waitUntil(shellIsActive(pref), 10000);
-		SWTBotShell shell = bot.shell(pref);
-		assertEquals(pref,shell.getText());
-		bot.activeShell().close();
+		WorkbenchPreferencePage page;
+		page = new WorkbenchPreferencePage("General");	
+		page.open();
+		page.cancel();
+
+		new WorkbenchShell();
 	}
 	
 	@Test
@@ -61,14 +44,5 @@ public class DummyTest {
 	
 	@AfterClass
 	public static void after() {
-		SWTWorkbenchBot bot = new SWTWorkbenchBot();
-		bot.closeAllShells();
-	}
-	
-	public boolean isOSX() {
-	    String osName = System.getProperty("os.name");
-	    boolean osX = osName.contains("OS X");
-	    log.info("OS Name: " + osName);    	
-	    return osX;
 	}
 }
