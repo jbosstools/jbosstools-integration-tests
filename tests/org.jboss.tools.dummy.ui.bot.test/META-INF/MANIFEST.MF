@@ -7,10 +7,12 @@ Bundle-Version: 4.2.0.qualifier
 Bundle-Activator: org.jboss.tools.dummy.ui.bot.test.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- org.apache.log4j,
- org.eclipse.swtbot.go;bundle-version="2.0.5",
- org.jboss.tools.ui.bot.ext;bundle-version="[4.2.0,4.3.0)",
- org.jboss.reddeer.swt;bundle-version="0.6.0"
+ org.jboss.reddeer.swt;bundle-version="0.6.0",
+ org.junit,
+ org.jboss.reddeer.eclipse;bundle-version="0.6.0",
+ org.jboss.reddeer.workbench;bundle-version="0.6.0",
+ org.jboss.reddeer.junit;bundle-version="0.6.0",
+ org.jboss.reddeer.jface;bundle-version="0.6.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Eclipse-BundleShape: jar
