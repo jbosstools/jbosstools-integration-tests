@@ -12,6 +12,12 @@
 package org.jboss.tools.cdi.bot.test.quickfix.test;
 
 
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
+import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
 import org.jboss.tools.cdi.bot.test.annotations.CDIWizardType;
 import org.jboss.tools.cdi.bot.test.annotations.ValidationType;
@@ -24,7 +30,9 @@ import org.junit.Test;
  * 
  * @author Jaroslav Jankovic
  */
-
+@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.AS7_1)
+@OpenPerspective(JavaEEPerspective.class)
+@CleanWorkspace
 public class StereotypeValidationQuickFixTest extends CDITestBase {
 	
 	private static IValidationProvider validationProvider = new StereotypeValidationProvider();
@@ -41,13 +49,13 @@ public class StereotypeValidationQuickFixTest extends CDITestBase {
 		
 		wizard.createCDIComponent(CDIWizardType.STEREOTYPE, className, getPackageName(), null);
 		
-		editResourceUtil.replaceInEditor("@Target({ TYPE, METHOD, FIELD })", 
+		editResourceUtil.replaceInEditor(className+".java","@Target({ TYPE, METHOD, FIELD })", 
 				"@Target({ TYPE, FIELD })");
 		
 		quickFixHelper.checkQuickFix(ValidationType.TARGET, "@Target({TYPE, METHOD, FIELD})", 
 				getProjectName(), validationProvider());
 
-		editResourceUtil.replaceInEditor("@Target({TYPE, METHOD, FIELD})", "");
+		editResourceUtil.replaceInEditor(className+".java","@Target({TYPE, METHOD, FIELD})", "");
 		
 		quickFixHelper.checkQuickFix(ValidationType.TARGET, getProjectName(), validationProvider());
 	}
@@ -60,11 +68,11 @@ public class StereotypeValidationQuickFixTest extends CDITestBase {
 
 		wizard.createCDIComponent(CDIWizardType.STEREOTYPE, className, getPackageName(), null);
 		
-		editResourceUtil.replaceInEditor("@Retention(RUNTIME)", "@Retention(CLASS)");
+		editResourceUtil.replaceInEditor(className+".java","@Retention(RUNTIME)", "@Retention(CLASS)");
 		
 		quickFixHelper.checkQuickFix(ValidationType.RETENTION, getProjectName(), validationProvider());
 				
-		editResourceUtil.replaceInEditor("@Retention(RUNTIME)", "");
+		editResourceUtil.replaceInEditor(className+".java","@Retention(RUNTIME)", "");
 		
 		quickFixHelper.checkQuickFix(ValidationType.RETENTION, getProjectName(), validationProvider());
 		
@@ -79,7 +87,7 @@ public class StereotypeValidationQuickFixTest extends CDITestBase {
 		wizard.createCDIComponentWithContent(CDIWizardType.STEREOTYPE, className, 
 				getPackageName(), null, "/resources/quickfix/stereotype/StereotypeWithNamed.java.cdi");
 	
-		editResourceUtil.replaceInEditor("StereotypeComponent", className);
+		editResourceUtil.replaceInEditor(className+".java","StereotypeComponent", className);
 		
 		quickFixHelper.checkQuickFix(ValidationType.NAMED, getProjectName(), validationProvider());
 		
@@ -94,7 +102,7 @@ public class StereotypeValidationQuickFixTest extends CDITestBase {
 		wizard.createCDIComponentWithContent(CDIWizardType.STEREOTYPE, className, 
 				getPackageName(), null, "/resources/quickfix/stereotype/StereotypeWithTyped.java.cdi");
 		
-		editResourceUtil.replaceInEditor("StereotypeComponent", className);
+		editResourceUtil.replaceInEditor(className+".java","StereotypeComponent", className);
 		
 		quickFixHelper.checkQuickFix(ValidationType.TYPED, getProjectName(), validationProvider());
 		

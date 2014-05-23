@@ -16,7 +16,7 @@ import org.jboss.tools.archives.reddeer.archives.ui.EditArchiveDialog;
 import org.jboss.tools.archives.reddeer.archives.ui.ProjectArchivesExplorer;
 import org.jboss.tools.archives.ui.bot.test.condition.ArchiveIsInExplorer;
 import org.jboss.tools.archives.ui.bot.test.condition.ArchiveIsInView;
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -49,8 +49,8 @@ public class ModifyingArchiveTest extends ArchivesTestBase {
 	private final String PATH_ARCHIVE_2_NEW = 
 			ARCHIVE_NAME_2_NEW + PATH_SUFFIX;
 	
-	@BeforeClass
-	public static void setup() {
+	@Before
+	public void setup() {
 		importArchiveProjectWithoutRuntime(project);
 	}
 	

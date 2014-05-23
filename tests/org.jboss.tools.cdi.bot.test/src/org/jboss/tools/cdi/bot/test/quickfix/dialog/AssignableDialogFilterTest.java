@@ -11,12 +11,29 @@
 
 package org.jboss.tools.cdi.bot.test.quickfix.dialog;
 
-import org.jboss.tools.cdi.bot.test.CDIConstants;
+import static org.junit.Assert.*;
+
+import org.eclipse.swt.SWT;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.requirements.server.ServerReqState;
+import org.jboss.reddeer.swt.impl.menu.ShellMenu;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.table.DefaultTableItem;
+import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
+import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.jboss.tools.cdi.reddeer.CDIConstants;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
-import org.jboss.tools.cdi.bot.test.uiutils.wizards.AssignableBeansDialog;
-import org.jboss.tools.ui.bot.ext.helper.OpenOnHelper;
+import org.jboss.tools.cdi.reddeer.cdi.text.ext.hyperlink.AssignableBeansDialog;
 import org.junit.Test;
 
+@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.AS7_1)
+@OpenPerspective(JavaEEPerspective.class)
+@CleanWorkspace
 public class AssignableDialogFilterTest extends CDITestBase {
 
 	private String appClass = "App.java";
@@ -28,15 +45,18 @@ public class AssignableDialogFilterTest extends CDITestBase {
 
 	@Test
 	public void testFilterAssignableBeans() {
+		PackageExplorer pe = new PackageExplorer();
+		pe.open();
+		pe.getProject(getProjectName()).getProjectItem(CDIConstants.SRC,
+				getPackageName(), appClass).open();
+		TextEditor ed = new TextEditor(appClass);
+		ed.selectText("animal");
+		new ShellMenu("Navigate","Open Hyperlink").select();
+		new DefaultShell();
+		new DefaultTableItem(CDIConstants.SHOW_ALL_ASSIGNABLE).select();
+		KeyboardFactory.getKeyboard().invokeKeyCombination(SWT.CR);
 
-		packageExplorer.openFile(getProjectName(), CDIConstants.SRC,
-				getPackageName(), appClass).toTextEditor();
-
-		OpenOnHelper.selectOpenOnOption(bot, appClass, "animal",
-				CDIConstants.SHOW_ALL_ASSIGNABLE);
-
-		AssignableBeansDialog assignDialog = new AssignableBeansDialog(
-				bot.shell("Assignable Beans"));
+		AssignableBeansDialog assignDialog = new AssignableBeansDialog();
 
 		/** test lower and upper case */
 		assignDialog.typeInFilter("cat");
@@ -77,20 +97,25 @@ public class AssignableDialogFilterTest extends CDITestBase {
 		/** test non-existing bean */
 		assignDialog.typeInFilter("?*?s");
 		assertTrue(assignDialog.getAllBeans().size() == 0);
+		assignDialog.close();
 
 	}
 
 	@Test
 	public void testFilterNonAssignableBeans() {
 
-		packageExplorer.openFile(getProjectName(), CDIConstants.SRC,
-				getPackageName(), appClass).toTextEditor();
+		PackageExplorer pe = new PackageExplorer();
+		pe.open();
+		pe.getProject(getProjectName()).getProjectItem(CDIConstants.SRC,
+				getPackageName(), appClass).open();
+		TextEditor ed = new TextEditor(appClass);
+		ed.selectText("animal");
+		new ShellMenu("Navigate","Open Hyperlink").select();
+		new DefaultShell();
+		new DefaultTableItem(CDIConstants.SHOW_ALL_ASSIGNABLE).select();
+		KeyboardFactory.getKeyboard().invokeKeyCombination(SWT.CR);
 
-		OpenOnHelper.selectOpenOnOption(bot, appClass, "animal",
-				CDIConstants.SHOW_ALL_ASSIGNABLE);
-
-		AssignableBeansDialog assignDialog = new AssignableBeansDialog(
-				bot.shell("Assignable Beans"));
+		AssignableBeansDialog assignDialog = new AssignableBeansDialog();
 
 		assignDialog.hideDecorators();
 
@@ -114,6 +139,7 @@ public class AssignableDialogFilterTest extends CDITestBase {
 		/** test '?' asterisk */
 		assignDialog.typeInFilter("??i");
 		assertTrue(assignDialog.getAllBeans().size() == 0);
+		assignDialog.close();
 
 	}
 

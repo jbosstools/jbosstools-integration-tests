@@ -11,8 +11,12 @@
 
 package org.jboss.tools.cdi.bot.test.uiutils;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.channels.FileChannel;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Scanner;
@@ -20,35 +24,25 @@ import java.util.Scanner;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
+import org.jboss.reddeer.eclipse.jface.text.contentassist.ContentAssistant;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
+import org.jboss.reddeer.swt.wait.AbstractWait;
+import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitWhile;
-import org.jboss.tools.cdi.bot.test.editor.BeansEditorTest;
-import org.jboss.tools.ui.bot.ext.SWTBotExt;
-import org.jboss.tools.ui.bot.ext.SWTBotFactory;
-import org.jboss.tools.ui.bot.ext.SWTJBTExt;
-import org.jboss.tools.ui.bot.ext.SWTTestExt;
-import org.jboss.tools.ui.bot.ext.SWTUtilExt;
-import org.jboss.tools.ui.bot.ext.Timing;
-import org.jboss.tools.ui.bot.ext.helper.TreeHelper;
-import org.jboss.tools.ui.bot.ext.parts.ContentAssistBot;
-import org.jboss.tools.ui.bot.ext.parts.SWTBotEditorExt;
-import org.jboss.tools.ui.bot.ext.types.IDELabel;
-import org.jboss.tools.ui.bot.ext.view.ExplorerBase;
-import org.jboss.tools.ui.bot.ext.view.ProjectExplorer;
+import org.jboss.reddeer.workbench.api.Editor;
+import org.jboss.reddeer.workbench.exception.WorkbenchPartNotFound;
+import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
+import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 
 public class EditorResourceHelper {
 	
-	SWTBotExt bot = SWTBotFactory.getBot();
-	SWTUtilExt util = SWTBotFactory.getUtil();
-	ProjectExplorer projectExplorer = SWTBotFactory.getProjectexplorer();
 	
-	public void replaceClassContentByResource(InputStream resource, boolean closeEdit) {
-		replaceClassContentByResource(resource, true, closeEdit);
+	public void replaceClassContentByResource(String editorName, InputStream resource, boolean closeEdit) {
+		replaceClassContentByResource(editorName, resource, true, closeEdit);
 	}
 	
 	/**
@@ -59,17 +53,17 @@ public class EditorResourceHelper {
 	 * @param resource
 	 * @param closeEdit
 	 */
-	public void replaceClassContentByResource(InputStream resource, boolean save, boolean closeEdit) {
-		SWTBotEclipseEditor eclipseEditor = bot.activeEditor().toTextEditor();
-		eclipseEditor.selectRange(0, 0, eclipseEditor.getText().length());
+	public void replaceClassContentByResource(String editorName, InputStream resource, boolean save, boolean closeEdit) {
 		String code = readStream(resource);
-		eclipseEditor.setText(code);
-		if (save) eclipseEditor.save();
-		if (closeEdit) eclipseEditor.close();
+		DefaultEditor e = new DefaultEditor(editorName);
+		new DefaultStyledText().setText("");
+		new DefaultStyledText().setText(code);
+		if (save) e.save();
+		if (closeEdit) e.close();
 	}
 	
-	public void replaceClassContentByResource(InputStream resource, boolean closeEdit, String... param) {
-		replaceClassContentByResource(resource, true, closeEdit, param);
+	public void replaceClassContentByResource(String editorName, InputStream resource, boolean closeEdit, String... param) {
+		replaceClassContentByResource(editorName, resource, true, closeEdit, param);
 	}
 	
 	/**
@@ -79,15 +73,14 @@ public class EditorResourceHelper {
 	 * @param closeEdit
 	 * @param param
 	 */
-	public void replaceClassContentByResource(InputStream resource, boolean save, 
+	public void replaceClassContentByResource(String editorName, InputStream resource, boolean save, 
 			boolean closeEdit, String... param) {
-		SWTBotEclipseEditor eclipseEditor = bot.activeEditor().toTextEditor();
 		String s = readStream(resource);
 		String code = MessageFormat.format(s, (Object[])param);
-		eclipseEditor.selectRange(0, 0, eclipseEditor.getText().length());
-		eclipseEditor.setText(code);
-		if (save) eclipseEditor.save();
-		if (closeEdit) eclipseEditor.close();
+		TextEditor e = new TextEditor(editorName);
+		e.setText(code);
+		if (save) e.save();
+		if (closeEdit) e.close();
 	}
 	
 	/**
@@ -98,30 +91,31 @@ public class EditorResourceHelper {
 	public void copyResource(String src, String target) {
 		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProjects()[0];
 		IFile f = project.getFile(target);
-		if (f.exists()) {			
-			try {
-				f.delete(true, new NullProgressMonitor());
-			} catch (CoreException ce) {				
-			}
-		}
-		InputStream is = null;
+		String targetAbsolute = f.getLocationURI().getPath();
+		FileChannel inputChannel = null;
+		FileChannel outputChannel = null;
 		try {
-			is = BeansEditorTest.class.getResourceAsStream(src);
-			f.create(is, true, new NullProgressMonitor());
-		} catch (CoreException ce) {			
+			System.out.println(new File(src).getAbsolutePath());
+			System.out.println(targetAbsolute);
+			inputChannel = new FileInputStream(new File(src).getAbsolutePath()).getChannel();
+			outputChannel = new FileOutputStream(targetAbsolute).getChannel();
+			outputChannel.transferFrom(inputChannel, 0, inputChannel.size());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		} finally {
-			if (is != null) {
-				try {
-					is.close();
-				} catch (IOException ioe) {
-					//ignore
-				}
+			try {
+				inputChannel.close();
+				outputChannel.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
 	}
 
-	public void replaceInEditor(String target, String replacement) {
-		replaceInEditor(target, replacement, true);
+	public void replaceInEditor(String editorName, String target, String replacement) {
+		replaceInEditor(editorName, target, replacement, true);
 	}
 	
 	/**
@@ -130,14 +124,26 @@ public class EditorResourceHelper {
 	 * @param target
 	 * @param replacement
 	 */
-	public void replaceInEditor(String target, String replacement, boolean save) {
-		SWTBotEclipseEditor eclipseEditor = bot.activeEditor().toTextEditor();
-		eclipseEditor.selectRange(0, 0, eclipseEditor.getText().length());
-		eclipseEditor.setText(eclipseEditor.getText().replace(
+	public void replaceInEditor(String editorName, String target, String replacement, boolean save) {
+		
+		try{
+			TextEditor editor = new TextEditor(editorName);
+			editor.setText(editor.getText().replace(
 				target + (replacement.equals("") ? System
 								.getProperty("line.separator") : ""),
-				replacement));		
-		if (save) eclipseEditor.save();
+				replacement));
+			if (save) editor.save();
+		} catch (WorkbenchPartNotFound ex){
+			Editor textEditor = new DefaultEditor(editorName);
+			DefaultStyledText dt = new DefaultStyledText();
+			String text = dt.getText();
+			dt.setText("");
+			dt.setText(text.replace(
+					target + (replacement.equals("") ? System
+									.getProperty("line.separator") : ""),
+					replacement));		
+			if (save) textEditor.save();
+		}
 	}
 	
 	/**
@@ -148,79 +154,21 @@ public class EditorResourceHelper {
 	 * @param insertText
 	 */
 	public void insertInEditor(int line, int column, String insertText) {
-		SWTBotEclipseEditor eclipseEditor = bot.activeEditor().toTextEditor();
-		eclipseEditor.toTextEditor().insertText(line, column, insertText);
-		bot.sleep(Timing.time1S());
-		eclipseEditor.save();
+		TextEditor textEditor = new TextEditor();
+		textEditor.insertLine(line, insertText);
+		textEditor.save();
 	}
 	
-	/**
-	 * Method returns proposal list for given text on given position
-	 * @param editorTitle
-	 * @param textToSelect
-	 * @param selectionOffset
-	 * @param selectionLength
-	 * @return
-	 */
-	public List<String> getProposalList(String editorTitle, String textToSelect, int selectionOffset,
-			int selectionLength) {
-		SWTJBTExt.selectTextInSourcePane(bot,
-		        editorTitle, textToSelect, selectionOffset, selectionLength,
-		        0);
-
-		bot.sleep(Timing.time1S());
-		    
-		SWTBotEditorExt editor = SWTTestExt.bot.swtBotEditorExtByTitle(editorTitle);
-		ContentAssistBot contentAssist = editor.contentAssist();
-		List<String> currentProposalList = contentAssist.getProposalList();
-		return currentProposalList;
-	}
 	
-	/**
-	 * in explorer base View, the file which is located in "sourceFolder" 
-	 * is moved to location "destFolder" 
-	 * @param file
-	 * @param sourceFolder
-	 * @param destFolder
-	 */
-	public void moveFileInExplorerBase(ExplorerBase explorerBase, 
-			String file, String sourceFolder, String destFolder) {
-		
-		explorerBase.selectTreeItem(file, sourceFolder.split("/"));		
-		
-		bot.menu(IDELabel.Menu.FILE).menu(IDELabel.Menu.MOVE).click();
-		bot.waitForShell(IDELabel.Shell.MOVE);
-		
-		SWTBotTree tree = bot.activeShell().bot().tree();	
-		tree.collapseNode(destFolder.split("/")[0]);		
-		
-		TreeHelper.expandNode(bot, destFolder.split("/")).select();		
-		
-		bot.button(IDELabel.Button.OK).click();		
-		util.waitForNonIgnoredJobs();
-	}
 	
-	/**
-	 * in explorer base View, the file which is located in "path" 
-	 * is renamed to newFileName value 
-	 * @param explorerBase
-	 * @param file
-	 * @param path
-	 * @param newFileName
-	 */
-	public void renameFileInExplorerBase(ExplorerBase explorerBase, 
-			String file, String path, String newFileName) {
-		
-		explorerBase.selectTreeItem(file, path.split("/"));		
-		
-		bot.menu(IDELabel.Menu.FILE).menu(IDELabel.Menu.RENAME_WITH_DOTS).click();
-		bot.waitForShell(IDELabel.Shell.RENAME_RESOURCE);
-		
-		bot.text().setText(newFileName);	
-		
-		bot.button(IDELabel.Button.OK).click();		
-		util.waitForNonIgnoredJobs();
-		
+	public List<String> getProposalList(String editorTitle, String textToSelect) {
+		Editor editor = new DefaultEditor(editorTitle);
+		DefaultStyledText dt = new DefaultStyledText();
+		dt.selectPosition(dt.getPositionOfText(textToSelect));
+		ContentAssistant cs = editor.openContentAssistant();
+		List<String> proposals = cs.getProposals();
+		cs.close();
+		return proposals;
 	}
 	
 	/**
@@ -229,16 +177,12 @@ public class EditorResourceHelper {
 	 * @param packageName
 	 */
 	public void deletePackage(String projectName, String packageName) {
-		projectExplorer.selectProject(projectName);
+		PackageExplorer pe = new PackageExplorer();
+		pe.open();
+		pe.getProject(projectName).select();
 		new ContextMenu("Refresh").select();
 		new WaitWhile(new JobIsRunning());
-		if (projectExplorer.isFilePresent(projectName, "Java Resources", "JavaSource")) {	
-			String[] path = {projectName, "Java Resources", "JavaSource"};
-			deleteFolderInProjectExplorer(packageName, path);
-		}else {
-			String[] path = {projectName, "Java Resources", "src"};
-			deleteFolderInProjectExplorer(packageName, path);
-		}		
+		deleteInProjectExplorer(projectName, "src",packageName);	
 	}
 	
 	/**
@@ -246,10 +190,8 @@ public class EditorResourceHelper {
 	 * @param projectName
 	 * @param PACKAGE_NAME
 	 */
-	public void deleteWebFolder(String projectName, String folder) {
-		
-		String[] path = {projectName, "WebContent"};
-		deleteFolderInProjectExplorer(folder, path);
+	public void deleteWebFolder(String projectName) {
+		deleteInProjectExplorer(projectName, "WebContent");
 		
 	}
 	
@@ -258,14 +200,13 @@ public class EditorResourceHelper {
 	 * @param folderName
 	 * @param path
 	 */
-	public void deleteFolderInProjectExplorer(String folderName, String... path) {
-				
-		projectExplorer.selectTreeItem(folderName, path); 				
-		
-		bot.menu(IDELabel.Menu.EDIT).menu(IDELabel.Menu.DELETE).click();
-		bot.waitForShell(IDELabel.Shell.CONFIRM_DELETE);
-		bot.shell(IDELabel.Shell.CONFIRM_DELETE).bot().button(IDELabel.Button.OK).click();
-		util.waitForNonIgnoredJobs();
+	public void deleteInProjectExplorer(String projectName, String... path) {
+		PackageExplorer pe = new PackageExplorer();
+		Project p = pe.getProject(projectName);
+		p.select();
+		//refresh project due to bug in eclipse - new packages are shown outside of src
+		new ContextMenu("Refresh").select();
+		p.getProjectItem(path).delete();
 	}
 
 	/**

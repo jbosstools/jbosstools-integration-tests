@@ -11,12 +11,29 @@
 
 package org.jboss.tools.cdi.bot.test.openon;
 
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
-import org.jboss.tools.cdi.bot.test.CDIConstants;
+import static org.junit.Assert.*;
+
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
+import org.jboss.reddeer.eclipse.jface.text.contentassist.ContentAssistant;
+import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.requirements.server.ServerReqState;
+import org.jboss.reddeer.swt.api.Shell;
+import org.jboss.reddeer.swt.api.Table;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
+import org.jboss.reddeer.swt.impl.table.DefaultTable;
+import org.jboss.reddeer.swt.wait.AbstractWait;
+import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.reddeer.workbench.api.Editor;
+import org.jboss.reddeer.workbench.condition.EditorWithTitleIsActive;
+import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
+import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.jboss.tools.cdi.reddeer.CDIConstants;
 import org.jboss.tools.cdi.bot.test.annotations.CDIWizardType;
-import org.jboss.tools.ui.bot.ext.Timing;
-import org.jboss.tools.ui.bot.ext.helper.OpenOnHelper;
 import org.junit.Test;
 
 /**
@@ -25,7 +42,9 @@ import org.junit.Test;
  * @author Jaroslav Jankovic
  * 
  */
-
+@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.AS7_1)
+@OpenPerspective(JavaEEPerspective.class)
+@CleanWorkspace
 public class OpenOnTest extends OpenOnBase {
 
 	@Test
@@ -68,21 +87,24 @@ public class OpenOnTest extends OpenOnBase {
 				getPackageName(), null,
 				"/resources/openon/BeanWithDisposerAndProducer.java.cdi");
 
-		editResourceUtil.replaceInEditor("BeanComponent", className);
-
-		bot.sleep(Timing.time2S());
-
-		OpenOnHelper.selectOpenOnOption(bot, className + ".java",
-				"disposeMethod", "Open Bound Producer");
-
-		OpenOnHelper.selectOpenOnOption(bot, className + ".java",
-				"disposeMethod", "Open Bound Producer");
-		assertTrue(bot.activeEditor().toTextEditor().getSelection()
+		editResourceUtil.replaceInEditor(className+".java","BeanComponent", className);
+		
+		Editor e = new DefaultEditor(className + ".java");
+		new DefaultStyledText().selectText("disposeMethod");
+		AbstractWait.sleep(TimePeriod.SHORT);
+		ContentAssistant ca = e.openOpenOnAssistant();
+		ca.chooseProposal("Open Bound Producer Method produceMethod");
+		
+		assertTrue(new DefaultStyledText().getSelectionText()
 				.equals("produceMethod"));
+		
+		e = new DefaultEditor(className + ".java");
+		new DefaultStyledText().selectText("produceMethod");
+		AbstractWait.sleep(TimePeriod.SHORT);
+		ca = e.openOpenOnAssistant();
+		ca.chooseProposal("Open Bound Disposer Method disposeMethod");
 
-		OpenOnHelper.selectOpenOnOption(bot, className + ".java",
-				"produceMethod", "Open Bound Disposer");
-		assertTrue(bot.activeEditor().toTextEditor().getSelection()
+		assertTrue(new DefaultStyledText().getSelectionText()
 				.equals("disposeMethod"));
 
 	}
@@ -96,17 +118,31 @@ public class OpenOnTest extends OpenOnBase {
 				"ObserverBean", getPackageName(), null,
 				"/resources/openon/ObserverBean.java.cdi");
 
-		bot.editorByTitle("EventBean.java").show();
-		editResourceUtil.replaceInEditor(" event", " event");
+		new TextEditor("EventBean.java");
+		editResourceUtil.replaceInEditor("EventBean.java"," event", " event");
 
-		OpenOnHelper.selectOpenOnOption(bot, "ObserverBean.java",
-				"observerMethod", "Open CDI Event");
-		assertTrue(bot.activeEditor().toTextEditor().getSelection()
+		Editor e = new DefaultEditor("ObserverBean.java");
+		new DefaultStyledText().selectText("observerMethod");
+		AbstractWait.sleep(TimePeriod.SHORT);
+		ContentAssistant ca = e.openOpenOnAssistant();
+		ca.chooseProposal("Open CDI Event EventBean.event");
+		
+		assertTrue(new DefaultStyledText().getSelectionText()
 				.equals("event"));
 		
-		OpenOnHelper.selectOpenOnOption(bot, "EventBean.java",
-				"Event<ObserverBean> event", "Open CDI Observer Method");
-		assertTrue(bot.activeEditor().toTextEditor().getSelection()
+		
+		e = new DefaultEditor("EventBean.java");
+		new DefaultStyledText().selectText("Event<ObserverBean> event");
+		AbstractWait.sleep(TimePeriod.SHORT);
+		ca = e.openOpenOnAssistant();
+		for(String p: ca.getProposals()){
+			if(p.startsWith("Open CDI Observer")){
+				ca.chooseProposal(p);
+				break;
+			}
+		}
+		
+		assertTrue(new DefaultStyledText().getSelectionText()
 				.equals("observerMethod"));
 		
 	}
@@ -141,28 +177,40 @@ public class OpenOnTest extends OpenOnBase {
 				getPackageName(), null,
 				"/resources/openon/InjectedPoints/MainBean.java.cdi");
 
-		util.waitForNonIgnoredJobs();
-
 	}
 
 	private void checkInjectedPoint(String injectedPoint, String option) {
-		OpenOnHelper.selectOpenOnOption(bot, "MainBean.java", injectedPoint, option);
-		SWTBotEditor editor = bot.activeEditor();
+		Editor e = new DefaultEditor("MainBean.java");
+		new DefaultStyledText().selectText(injectedPoint);
+		AbstractWait.sleep(TimePeriod.SHORT);
+		ContentAssistant ca = e.openOpenOnAssistant();
+		for(String p: ca.getProposals()){
+			if(p.startsWith(option)){
+				ca.chooseProposal(p);
+				break;
+			}
+		}
+		
+		//OpenOnHelper.selectOpenOnOption(bot, "MainBean.java", injectedPoint, option);
+		//SWTBotEditor editor = bot.activeEditor();
 		if (option.equals("Open @Inject Bean")) {
 			LOGGER.info("Testing injected point: \"" + injectedPoint
 					+ "\" started");
-			assertTrue(editor.getTitle().equals("MyBean4.java"));
-			assertTrue(editor.toTextEditor().getSelection().equals("MyBean4"));
+			new WaitUntil(new EditorWithTitleIsActive("MyBean4.java"));
+			assertTrue(new DefaultStyledText().getSelectionText().equals("MyBean4"));
 			LOGGER.info("Testing injected point: \"" + injectedPoint
 					+ "\" ended");
 		} else {
-			SWTBotTable assignBeans = bot.table(0);
-			assertTrue(checkAllAssignBeans(injectedPoint, assignBeans));
+			Shell s = new DefaultShell("Assignable Beans");
+			Table assignBeans = new DefaultTable();
+			boolean check = checkAllAssignBeans(injectedPoint, assignBeans);
+			s.close();
+			assertTrue(check);
 		}
 	}
-
+	
 	private boolean checkAllAssignBeans(String injectedPoint,
-			SWTBotTable assignBeans) {
+			Table assignBeans) {
 		String packageProjectPath = getPackageName() + " - /"
 				+ getProjectName() + "/src";
 		String paramAssignBean = "XXX - " + packageProjectPath;
@@ -294,5 +342,4 @@ public class OpenOnTest extends OpenOnBase {
 		LOGGER.info("Testing injected point: \"" + injectedPoint + "\" ended");
 		return allassignBeans;
 	}
-
 }

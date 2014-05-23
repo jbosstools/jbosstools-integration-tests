@@ -11,18 +11,23 @@
 
 package org.jboss.tools.cdi.bot.test.quickfix.base;
 
-import java.util.List;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.wait.AbstractWait;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
+import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
-import org.jboss.tools.cdi.bot.test.annotations.CDIWizardType;
 import org.jboss.tools.cdi.bot.test.annotations.ValidationType;
 import org.jboss.tools.cdi.bot.test.quickfix.validators.BeansXmlValidationProvider;
 import org.jboss.tools.cdi.bot.test.quickfix.validators.IValidationProvider;
-import org.jboss.tools.cdi.bot.test.uiutils.wizards.CDIWizardBase;
-import org.jboss.tools.cdi.bot.test.uiutils.wizards.QuickFixDialogWizard;
+import org.jboss.tools.cdi.reddeer.cdi.ui.NewBeanCreationWizard;
+import org.jboss.tools.cdi.reddeer.cdi.ui.NewDecoratorCreationWizard;
+import org.jboss.tools.cdi.reddeer.cdi.ui.NewInterceptorCreationWizard;
+import org.jboss.tools.cdi.reddeer.cdi.ui.NewStereotypeCreationWizard;
+import org.jboss.tools.cdi.reddeer.cdi.ui.wizard.QuickFixWizard;
 
 public class BeansXMLQuickFixTestBase extends CDITestBase {
 
@@ -30,29 +35,6 @@ public class BeansXMLQuickFixTestBase extends CDITestBase {
 	
 	public IValidationProvider getValidationProvider() {
 		return validationProvider;
-	}
-	
-	/**
-	 * Method checks if there is no beans.xml validation error
-	 * @return
-	 */
-	public boolean isBeanXMLValidationErrorEmpty() {
-		ProblemsView pv = new ProblemsView();
-		pv.open();
-		AbstractWait.sleep(5000); //time for problems view to refresh
-		List<TreeItem> errors = pv.getAllErrors();
-		boolean toReturn = true;
-		for(TreeItem error: errors){
-			if(error.getCell(2).contains("/"+getProjectName()) &&
-				error.getCell(1).contains("beans.xml") &&
-				error.getCell(4).contains("CDI Problem")) {
-				toReturn = false;
-			}
- 		}
-		return toReturn;
-		
-		//return ProblemsView.getFilteredErrorsTreeItems(bot, null, "/" + getProjectName(), 
-		//		"beans.xml", "CDI Problem").length == 0;
 	}
 	
 	/**
@@ -66,9 +48,12 @@ public class BeansXMLQuickFixTestBase extends CDITestBase {
 	public void resolveAddNewAlternative(String name, String pkg) {
 		
 		openBeanXMLValidationProblem(ValidationType.NO_CLASS, getProjectName());
-		CDIWizardBase cdiWizardBase = new CDIWizardBase(CDIWizardType.BEAN);
-		if (cdiWizardBase.isAlternative() && cdiWizardBase.canFinish()) {
-			cdiWizardBase.setName(name).setPackage(pkg).finishWithWait();
+		NewBeanCreationWizard bw = new NewBeanCreationWizard();
+		if (bw.isAlternative() && new PushButton("Finish").isEnabled()) {
+			bw.setName(name);
+			bw.setPackage(pkg);
+			bw.finish();
+			new DefaultEditor(name+".java");
 		}else {
 			fail("Dialog can't be finishWithWaited");
 		}
@@ -86,9 +71,12 @@ public class BeansXMLQuickFixTestBase extends CDITestBase {
 	public void resolveAddNewStereotype(String name, String pkg) {
 		
 		openBeanXMLValidationProblem(ValidationType.NO_ANNOTATION, getProjectName());
-		CDIWizardBase cdiWizardBase = new CDIWizardBase(CDIWizardType.STEREOTYPE);
-		if (cdiWizardBase.isAlternative() && cdiWizardBase.canFinish()) {
-			cdiWizardBase.setName(name).setPackage(pkg).finishWithWait();
+		NewStereotypeCreationWizard sw = new NewStereotypeCreationWizard();
+		if (sw.isAlternative()  && new PushButton("Finish").isEnabled()) {
+			sw.setName(name);
+			sw.setPackage(pkg);
+			sw.finish();
+			new DefaultEditor(name+".java");
 		}else {
 			fail("Dialog can't be finishWithWaited");
 		}
@@ -106,10 +94,13 @@ public class BeansXMLQuickFixTestBase extends CDITestBase {
 	public void resolveAddNewDecorator(String name, String pkg) {
 		
 		openBeanXMLValidationProblem(ValidationType.NO_CLASS, getProjectName());
-		CDIWizardBase cdiWizardBase = new CDIWizardBase(CDIWizardType.DECORATOR);		
-		cdiWizardBase.addInterface("java.util.List");
-		if (cdiWizardBase.canFinish()) {
-			cdiWizardBase.setName(name).setPackage(pkg).finishWithWait();
+		NewDecoratorCreationWizard dw = new NewDecoratorCreationWizard();
+		dw.addDecoratedTypeInterfaces("java.util.List");
+		if (new PushButton("Finish").isEnabled()) {
+			dw.setName(name);
+			dw.setPackage(pkg);
+			dw.finish();
+			new DefaultEditor(name+".java");
 		} else {
 			fail("Dialog can't be finishWithWaited");
 		}
@@ -127,13 +118,11 @@ public class BeansXMLQuickFixTestBase extends CDITestBase {
 	public void resolveAddNewInterceptor(String name, String pkg) {
 		
 		openBeanXMLValidationProblem(ValidationType.NO_CLASS, getProjectName());
-		CDIWizardBase cdiWizardBase = new CDIWizardBase(CDIWizardType.INTERCEPTOR);
-		if (cdiWizardBase.canFinish()) {
-			cdiWizardBase.setName(name).setPackage(pkg).finishWithWait();
-		}else {
-			fail("Dialog can't be finishWithWaited");
-		}
-		
+		NewInterceptorCreationWizard iw = new NewInterceptorCreationWizard();
+		iw.setName(name);
+		iw.setPackage(pkg);
+		iw.finish();
+		new DefaultEditor(name+".java");
 	}
 	
 	/**
@@ -145,7 +134,7 @@ public class BeansXMLQuickFixTestBase extends CDITestBase {
 	public void resolveAddAlternativeToBean(String name) {
 		
 		openBeanXMLValidationProblem(ValidationType.NO_ALTERNATIVE, getProjectName());
-		String content = bot.editorByTitle(name + ".java").toTextEditor().getText();
+		String content = new TextEditor(name + ".java").getText();
 		assertTrue(content.contains("@Alternative"));
 		
 	}
@@ -159,7 +148,7 @@ public class BeansXMLQuickFixTestBase extends CDITestBase {
 	public void resolveAddAlternativeToStereotype(String name) {
 		
 		openBeanXMLValidationProblem(ValidationType.NO_ALTERNATIVE_STEREOTYPE, getProjectName());
-		String content = bot.editorByTitle(name + ".java").toTextEditor().getText();
+		String content = new TextEditor(name + ".java").getText();
 		assertTrue(content.contains("@Alternative"));
 		
 	}
@@ -176,10 +165,10 @@ public class BeansXMLQuickFixTestBase extends CDITestBase {
 		assertNotNull(validationProblem);
 		
 		quickFixHelper.openQuickFix(validationProblem);	
-		QuickFixDialogWizard qfWizard = new QuickFixDialogWizard();
+		QuickFixWizard qfWizard = new QuickFixWizard();
 		qfWizard.setFix(qfWizard.getDefaultCDIQuickFix());
 		qfWizard.setResource(qfWizard.getResources().get(0));
-		qfWizard.finishWithWait();
+		qfWizard.finish();
 	}
 	
 }

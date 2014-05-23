@@ -12,7 +12,6 @@ package org.jboss.tools.archives.ui.bot.test;
 
 import static org.junit.Assert.fail;
 
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.swt.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.swt.wait.WaitUntil;
@@ -20,7 +19,6 @@ import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.archives.reddeer.archives.ui.ProjectArchivesExplorer;
 import org.jboss.tools.archives.reddeer.component.Archive;
 import org.jboss.tools.archives.ui.bot.test.condition.FolderIsInArchive;
-import org.junit.After;
 import org.junit.Test;
 
 /**
@@ -45,13 +43,6 @@ public class FolderTest extends ArchivesTestBase {
 	private static final String FOLDER_1_NEW = "new-a";
 	private static final String FOLDER_2 = "b";
 	private static final String FOLDER_2_NEW = "new-b";
-	
-	@After
-	public void cleanUp() {
-		for (Project project : projectExplorer.getProjects()) {
-			project.delete(true);
-		}
-	}
 	
 	@Test
 	public void testCreatingFolder() {

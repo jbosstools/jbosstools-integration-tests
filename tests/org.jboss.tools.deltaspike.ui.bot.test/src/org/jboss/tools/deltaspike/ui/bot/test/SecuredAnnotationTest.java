@@ -11,13 +11,23 @@
 
 package org.jboss.tools.deltaspike.ui.bot.test;
 
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
+import org.jboss.reddeer.eclipse.jface.text.contentassist.ContentAssistant;
+import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.regex.Regex;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.deltaspike.ui.bot.test.condition.SpecificProblemExists;
-import org.jboss.tools.ui.bot.ext.helper.OpenOnHelper;
 import org.junit.After;
 import org.junit.Test;
 
@@ -30,6 +40,9 @@ import org.junit.Test;
  * @author jjankovi
  *
  */
+@CleanWorkspace
+@OpenPerspective(JavaEEPerspective.class)
+@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.AS7_1)
 public class SecuredAnnotationTest extends DeltaspikeTestBase {
 
 	private Regex ambiguousAuthorizerProblem = new Regex(
@@ -38,17 +51,23 @@ public class SecuredAnnotationTest extends DeltaspikeTestBase {
 	private Regex noMatchingAuthorizerProblem = new Regex(
 			"No matching authorizer found.*");
 	
+	@InjectRequirement
+	private static ServerRequirement sr;
+	
 	@After
 	public void closeAllEditors() {
-		new SWTWorkbenchBot().closeAllEditors();
-		projectExplorer.deleteAllProjects();
+		PackageExplorer pe = new PackageExplorer();
+		pe.open();
+		for(Project p: pe.getProjects()){
+			p.delete(true);
+		}
 	}
 	
 	@Test
 	public void testAmbiguousAuthorizers() {
 		
 		String projectName = "ambiguousAuthorizers";
-		importDeltaspikeProject(projectName);
+		importDeltaspikeProject(projectName,sr);
 		
 		new WaitUntil(new SpecificProblemExists(
 				ambiguousAuthorizerProblem), TimePeriod.NORMAL);
@@ -58,16 +77,18 @@ public class SecuredAnnotationTest extends DeltaspikeTestBase {
 		new WaitWhile(new SpecificProblemExists(
 				ambiguousAuthorizerProblem), TimePeriod.NORMAL);
 		
-		OpenOnHelper.checkOpenOnFileIsOpened(bot, "SecuredBean.java",
-				"doSomething", "Open authorizer method CustomAuthorizer.check3()",
-				"CustomAuthorizer.java");
+		TextEditor e = new TextEditor("SecuredBean.java");
+		e.selectText("doSomething");
+		ContentAssistant ca = e.openOpenOnAssistant();
+		ca.chooseProposal("Open authorizer method CustomAuthorizer.check3()");
+		new TextEditor("CustomAuthorizer.java");
 	}
 	
 	@Test
 	public void testNotDeclaredSecurityBindingInAuthorizer() {
 		
 		String projectName = "noAuthorizer";
-		importDeltaspikeProject(projectName);
+		importDeltaspikeProject(projectName,sr);
 		
 		new WaitUntil(new SpecificProblemExists(
 				noMatchingAuthorizerProblem), TimePeriod.NORMAL);
@@ -77,9 +98,11 @@ public class SecuredAnnotationTest extends DeltaspikeTestBase {
 		new WaitWhile(new SpecificProblemExists(
 				noMatchingAuthorizerProblem), TimePeriod.NORMAL);
 		
-		OpenOnHelper.checkOpenOnFileIsOpened(bot, "SecuredBean.java",
-				"doSomething", "Open authorizer method CustomAuthorizer.check()",
-				"CustomAuthorizer.java");
+		TextEditor e = new TextEditor("SecuredBean.java");
+		e.selectText("doSomething");
+		ContentAssistant ca = e.openOpenOnAssistant();
+		ca.chooseProposal("Open authorizer method CustomAuthorizer.check()");
+		new TextEditor("CustomAuthorizer.java");
 		
 	}
 	

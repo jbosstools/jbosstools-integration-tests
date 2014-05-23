@@ -13,16 +13,21 @@ package org.jboss.tools.cdi.seam3.bot.test.tests;
 import java.util.Arrays;
 import java.util.List;
 
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
-import org.jboss.reddeer.swt.exception.WaitTimeoutExpiredException;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.eclipse.jface.text.contentassist.ContentAssistant;
+import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.requirements.server.ServerReqState;
+import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
+import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
+import org.jboss.reddeer.workbench.api.Editor;
+import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.cdi.seam3.bot.test.base.Seam3TestBase;
 import org.jboss.tools.cdi.seam3.bot.test.util.SeamLibrary;
-import org.jboss.tools.ui.bot.ext.SWTJBTExt;
-import org.jboss.tools.ui.bot.ext.SWTUtilExt;
-import org.jboss.tools.ui.bot.ext.helper.ContentAssistHelper;
-import org.jboss.tools.ui.bot.ext.parts.ContentAssistBot;
-import org.jboss.tools.ui.bot.ext.parts.SWTBotEditorExt;
-import org.jboss.tools.ui.bot.ext.types.IDELabel;
+import org.jboss.tools.common.reddeer.label.IDELabel;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -31,6 +36,9 @@ import org.junit.Test;
  * @author jjankovi
  *
  */
+@CleanWorkspace
+@OpenPerspective(JavaEEPerspective.class)
+@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.AS7_1)
 public class SeamConfigCodeCompletionTest extends Seam3TestBase {
 
 	private static String projectName = "seamConfigCodeCompletion";
@@ -40,7 +48,6 @@ public class SeamConfigCodeCompletionTest extends Seam3TestBase {
 	public static void setup() {
 		importSeam3ProjectWithLibrary(projectName, SeamLibrary.SOLDER_3_1);
 		openSeamConfig();
-		dryRun();
 	}
 	
 	/**
@@ -51,8 +58,14 @@ public class SeamConfigCodeCompletionTest extends Seam3TestBase {
 	public void testClassesCodeCompletion() {
 
 		List<String> expectedProposalList = Arrays.asList("r:Envelope - test","r:Report - test");
-		ContentAssistHelper.checkContentAssistContent(bot, 
-				SEAM_CONFIG, "<r:Report >", -1, 0, expectedProposalList, false);
+		Editor e = new DefaultEditor(SEAM_CONFIG);
+		new DefaultStyledText().selectPosition(new DefaultStyledText().getPositionOfText("<r:Report >"));
+		
+		ContentAssistant ca = e.openContentAssistant();
+		List<String> proposals = ca.getProposals();
+		ca.close();
+		proposals.containsAll(expectedProposalList);
+
 		
 	}
 	
@@ -64,8 +77,14 @@ public class SeamConfigCodeCompletionTest extends Seam3TestBase {
 	public void testAnnotationsCodeCompletion() {
 		
 		List<String> expectedProposalList = Arrays.asList("r:Q1 - test","r:S1 - test");
-		ContentAssistHelper.checkContentAssistContent(bot, 
-				SEAM_CONFIG, "<r:Report >", -1, 0, expectedProposalList, false);
+		Editor e = new DefaultEditor(SEAM_CONFIG);
+		new DefaultStyledText().selectPosition(new DefaultStyledText().getPositionOfText("<r:Report >"));
+		
+		ContentAssistant ca = e.openContentAssistant();
+		List<String> proposals = ca.getProposals();
+		ca.close();
+		proposals.containsAll(expectedProposalList);
+		
 		
 	}
 	
@@ -77,8 +96,13 @@ public class SeamConfigCodeCompletionTest extends Seam3TestBase {
 	public void testClassInFieldsCodeCompletion() {
 		
 		List<String> expectedProposalList = Arrays.asList("annotatedValue");
-		ContentAssistHelper.checkContentAssistContent(bot, 
-				SEAM_CONFIG, "<r:Report >", 10, 0, expectedProposalList, false);
+		Editor e = new DefaultEditor(SEAM_CONFIG);
+		new DefaultStyledText().selectPosition(new DefaultStyledText().getPositionOfText("<r:Report >")+10);
+		
+		ContentAssistant ca = e.openContentAssistant();
+		List<String> proposals = ca.getProposals();
+		ca.close();
+		proposals.containsAll(expectedProposalList);
 		
 	}
 	
@@ -87,11 +111,17 @@ public class SeamConfigCodeCompletionTest extends Seam3TestBase {
 		Suggest all methods available if Report is annotation type.
 	 */
 	@Test
-	public void testAnnotationInMethodsCodeCompletion() {
-		
+	public void testAnnotationInMethodsCodeCompletion() {		
 		List<String> expectedProposalList = Arrays.asList("someMethod");
-		ContentAssistHelper.checkContentAssistContent(bot, 
-				SEAM_CONFIG, "<r:S1 >", 6, 0, expectedProposalList, false);
+		
+		Editor e = new DefaultEditor(SEAM_CONFIG);
+		new DefaultStyledText().selectPosition(new DefaultStyledText().getPositionOfText("<r:S1 >")+6);
+		
+		ContentAssistant ca = e.openContentAssistant();
+		List<String> proposals = ca.getProposals();
+		ca.close();
+		proposals.containsAll(expectedProposalList);
+		
 		
 	}
 	
@@ -103,8 +133,15 @@ public class SeamConfigCodeCompletionTest extends Seam3TestBase {
 	public void testReplacesModifiesCodeCompletion() {
 		
 		List<String> expectedProposalList = Arrays.asList("s:replaces", "s:modifies");
-		ContentAssistHelper.checkContentAssistContent(bot, 
-				SEAM_CONFIG, "<r:Report >", 11, 0, expectedProposalList, false);
+		
+		Editor e = new DefaultEditor(SEAM_CONFIG);
+		new DefaultStyledText().selectPosition(new DefaultStyledText().getPositionOfText("<r:Report >")+11);
+		
+		ContentAssistant ca = e.openContentAssistant();
+		List<String> proposals = ca.getProposals();
+		ca.close();
+		proposals.containsAll(expectedProposalList);
+		
 		
 	}
 	
@@ -116,8 +153,14 @@ public class SeamConfigCodeCompletionTest extends Seam3TestBase {
 	public void testParametersCodeCompletion() {
 		
 		List<String> expectedProposalList = Arrays.asList("s:parameters");
-		ContentAssistHelper.checkContentAssistContent(bot, 
-				SEAM_CONFIG, "<r:Report >", 11, 0, expectedProposalList, false);
+		
+		Editor e = new DefaultEditor(SEAM_CONFIG);
+		new DefaultStyledText().selectPosition(new DefaultStyledText().getPositionOfText("<r:Report >")+11);
+		
+		ContentAssistant ca = e.openContentAssistant();
+		List<String> proposals = ca.getProposals();
+		ca.close();
+		proposals.containsAll(expectedProposalList);
 		
 	}
 	
@@ -129,8 +172,15 @@ public class SeamConfigCodeCompletionTest extends Seam3TestBase {
 	public void testClassFieldsAndMethodsCodeCompletion() {
 		
 		List<String> expectedProposalList = Arrays.asList("r:value", "r:someMethod");
-		ContentAssistHelper.checkContentAssistContent(bot, 
-				SEAM_CONFIG, "<r:Envelope >", 13, 0, expectedProposalList, false);
+		
+		Editor e = new DefaultEditor(SEAM_CONFIG);
+		new DefaultStyledText().selectPosition(new DefaultStyledText().getPositionOfText("<r:Envelope >")+13);
+		
+		ContentAssistant ca = e.openContentAssistant();
+		List<String> proposals = ca.getProposals();
+		ca.close();
+		proposals.containsAll(expectedProposalList);
+		
 		
 	}
 	
@@ -142,8 +192,15 @@ public class SeamConfigCodeCompletionTest extends Seam3TestBase {
 	public void testAnnotationMethodsCodeCompletion() {
 		
 		List<String> expectedProposalList = Arrays.asList("r:someMethod");
-		ContentAssistHelper.checkContentAssistContent(bot, 
-				SEAM_CONFIG, "<r:S1 >", 7, 0, expectedProposalList, false);
+		
+		Editor e = new DefaultEditor(SEAM_CONFIG);
+		new DefaultStyledText().selectPosition(new DefaultStyledText().getPositionOfText("<r:S1 >")+7);
+		
+		ContentAssistant ca = e.openContentAssistant();
+		List<String> proposals = ca.getProposals();
+		ca.close();
+		proposals.containsAll(expectedProposalList);
+		
 		
 	}
 	
@@ -155,8 +212,14 @@ public class SeamConfigCodeCompletionTest extends Seam3TestBase {
 	public void testAnnotationsInPackageCodeCompletion() {
 		
 		List<String> expectedProposalList = Arrays.asList("r:Q1 - test", "r:S1 - test");
-		ContentAssistHelper.checkContentAssistContent(bot, 
-				SEAM_CONFIG, "<r:Report >", 11, 0, expectedProposalList, false);
+		
+		Editor e = new DefaultEditor(SEAM_CONFIG);
+		new DefaultStyledText().selectPosition(new DefaultStyledText().getPositionOfText("<r:Report >")+11);
+		
+		ContentAssistant ca = e.openContentAssistant();
+		List<String> proposals = ca.getProposals();
+		ca.close();
+		proposals.containsAll(expectedProposalList);
 		
 	}
 	
@@ -168,8 +231,16 @@ public class SeamConfigCodeCompletionTest extends Seam3TestBase {
 	public void testValueCodeCompletion() {
 		
 		List<String> expectedProposalList = Arrays.asList("s:value");
-		ContentAssistHelper.checkContentAssistContent(bot, 
-				SEAM_CONFIG, "<r:annotatedValue>", 18, 0, expectedProposalList, false);
+		
+		
+		Editor e = new DefaultEditor(SEAM_CONFIG);
+		new DefaultStyledText().selectPosition(new DefaultStyledText().getPositionOfText("<r:annotatedValue>")+18);
+		
+		ContentAssistant ca = e.openContentAssistant();
+		List<String> proposals = ca.getProposals();
+		ca.close();
+		proposals.containsAll(expectedProposalList);
+		
 		
 	}
 	
@@ -181,8 +252,14 @@ public class SeamConfigCodeCompletionTest extends Seam3TestBase {
 	public void testEntryCodeCompletion() {
 		
 		List<String> expectedProposalList = Arrays.asList("s:entry");
-		ContentAssistHelper.checkContentAssistContent(bot, 
-				SEAM_CONFIG, "<r:annotatedValue>", 18, 0, expectedProposalList, false);
+		
+		Editor e = new DefaultEditor(SEAM_CONFIG);
+		new DefaultStyledText().selectPosition(new DefaultStyledText().getPositionOfText("<r:annotatedValue>")+18);
+		
+		ContentAssistant ca = e.openContentAssistant();
+		List<String> proposals = ca.getProposals();
+		ca.close();
+		proposals.containsAll(expectedProposalList);
 		
 	}
 	
@@ -194,8 +271,14 @@ public class SeamConfigCodeCompletionTest extends Seam3TestBase {
 	public void testMethodParametersCodeCompletion() {
 	
 		List<String> expectedProposalList = Arrays.asList("s:parameters");
-		ContentAssistHelper.checkContentAssistContent(bot, 
-				SEAM_CONFIG, "<r:someMethod>", 14, 0, expectedProposalList, false);
+		Editor e = new DefaultEditor(SEAM_CONFIG);
+		new DefaultStyledText().selectPosition(new DefaultStyledText().getPositionOfText("<r:someMethod>")+14);
+		
+		ContentAssistant ca = e.openContentAssistant();
+		List<String> proposals = ca.getProposals();
+		ca.close();
+		proposals.containsAll(expectedProposalList);
+		
 		
 	}
 	
@@ -207,9 +290,15 @@ public class SeamConfigCodeCompletionTest extends Seam3TestBase {
 	public void testValueAndKeyCodeCompletion() {
 		
 		List<String> expectedProposalList = Arrays.asList("s:key", "s:value");
-		ContentAssistHelper.checkContentAssistContent(bot, 
-				SEAM_CONFIG, "<s:entry>", 9, 0, expectedProposalList, false);
 		
+		Editor e = new DefaultEditor(SEAM_CONFIG);
+		new DefaultStyledText().selectPosition(new DefaultStyledText().getPositionOfText("<s:entry>")+9);
+		
+		ContentAssistant ca = e.openContentAssistant();
+		List<String> proposals = ca.getProposals();
+		ca.close();
+		proposals.containsAll(expectedProposalList);
+
 	}
 	
 	/**
@@ -221,11 +310,22 @@ public class SeamConfigCodeCompletionTest extends Seam3TestBase {
 		
 		List<String> expectedProposalList = Arrays.asList("r:Report - test", 
 				"r:Envelope - test", "r:Q1 - test", "r:S1 - test");
-		ContentAssistHelper.checkContentAssistContent(bot, 
-				SEAM_CONFIG, "<s:value>", 9, 0, expectedProposalList, false);
 		
-		ContentAssistHelper.checkContentAssistContent(bot, 
-				SEAM_CONFIG, "<s:key>", 7, 0, expectedProposalList, false);
+		Editor e = new DefaultEditor(SEAM_CONFIG);
+		new DefaultStyledText().selectPosition(new DefaultStyledText().getPositionOfText("<s:value>")+9);
+		
+		ContentAssistant ca = e.openContentAssistant();
+		List<String> proposals = ca.getProposals();
+		ca.close();
+		proposals.containsAll(expectedProposalList);
+		
+		e = new DefaultEditor(SEAM_CONFIG);
+		new DefaultStyledText().selectPosition(new DefaultStyledText().getPositionOfText("<s:key>")+7);
+		
+		ca = e.openContentAssistant();
+		proposals = ca.getProposals();
+		ca.close();
+		proposals.containsAll(expectedProposalList);
 		
 	}
 	
@@ -237,39 +337,24 @@ public class SeamConfigCodeCompletionTest extends Seam3TestBase {
 	public void testAvailablePackagesCompletion() {
 		
 		List<String> expectedProposalList = Arrays.asList("test", "org", "com");
-		ContentAssistHelper.checkContentAssistContent(bot, 
-				SEAM_CONFIG, "xmlns:s=\"", 9, 0, expectedProposalList, false);
+		
+		Editor e = new DefaultEditor(SEAM_CONFIG);
+		new DefaultStyledText().selectPosition(new DefaultStyledText().getPositionOfText("xmlns:s=\"")+9);
+		
+		ContentAssistant ca = e.openContentAssistant();
+		List<String> proposals = ca.getProposals();
+		ca.close();
+		proposals.containsAll(expectedProposalList);
 		
 	}
 	
 	private static void openSeamConfig() {
-		packageExplorer.openFile(
-				projectName, 
-				IDELabel.WebProjectsTree.WEB_CONTENT, 
-				IDELabel.WebProjectsTree.WEB_INF, 
-				SEAM_CONFIG);
-		bot.cTabItem("Source").activate();
-	}
-	
-	/**
-	 * Sometimes the first test fails, because {@code action.run()} call in 
-	 * {@link ContentAssistBot#invokeContentAssist()} doesn't cause new assist shell to appear. 
-	 * This workaround shifts the first call into test initialization phase.
-	 */
-	private static void dryRun() {
-		new SWTUtilExt(bot).waitForNonIgnoredJobs();
-		SWTBotEclipseEditor eclipseEditor = 
-				SWTJBTExt.selectTextInSourcePane(bot, SEAM_CONFIG, "<r:Report >", -1, 0);
-		try {
-			new SWTBotEditorExt(eclipseEditor.getReference(), bot).contentAssist()
-				.getProposalList();
-		} catch (WaitTimeoutExpiredException ex) {
-			// do nothing
-		} catch (RuntimeException ex) {
-			if (!ContentAssistBot.CONTENT_ASSIST_SHELL_FAILED_TO_OPEN.equals(ex.getMessage())) {
-				throw ex;
-			}
-		}
+		PackageExplorer pe = new PackageExplorer();
+		pe.open();
+		pe.getProject(projectName).getProjectItem(IDELabel.WebProjectsTree.WEB_CONTENT,
+				IDELabel.WebProjectsTree.WEB_INF, SEAM_CONFIG).open();
+		new DefaultEditor(SEAM_CONFIG);
+		new DefaultCTabItem("Source").activate();
 	}
 	
 }

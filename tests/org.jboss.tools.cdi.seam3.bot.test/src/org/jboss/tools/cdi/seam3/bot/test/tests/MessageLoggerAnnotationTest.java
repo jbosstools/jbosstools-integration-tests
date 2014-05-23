@@ -10,9 +10,16 @@
  ******************************************************************************/
 package org.jboss.tools.cdi.seam3.bot.test.tests;
 
-import org.jboss.tools.cdi.bot.test.annotations.ValidationType;
-import org.jboss.tools.cdi.bot.test.quickfix.validators.BeanValidationProvider;
-import org.jboss.tools.cdi.bot.test.quickfix.validators.IValidationProvider;
+import static org.junit.Assert.*;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
+import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.requirements.server.ServerReqState;
+import org.jboss.tools.cdi.reddeer.annotation.ValidationType;
+import org.jboss.tools.cdi.reddeer.validators.BeanValidationProvider;
+import org.jboss.tools.cdi.reddeer.validators.IValidationProvider;
 import org.jboss.tools.cdi.seam3.bot.test.base.Seam3TestBase;
 import org.jboss.tools.cdi.seam3.bot.test.util.SeamLibrary;
 import org.junit.BeforeClass;
@@ -23,6 +30,9 @@ import org.junit.Test;
  * @author jjankovi
  *
  */
+@CleanWorkspace
+@OpenPerspective(JavaEEPerspective.class)
+@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.AS7_1)
 public class MessageLoggerAnnotationTest extends Seam3TestBase {
 
 	private static String projectName = "messageLogger";

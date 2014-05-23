@@ -11,15 +11,23 @@
 
 package org.jboss.tools.cdi.bot.test.quickfix.base;
 
+import static org.junit.Assert.assertNotNull;
+
 import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.wait.AbstractWait;
+import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
 import org.jboss.tools.cdi.bot.test.annotations.ValidationType;
+import org.jboss.tools.cdi.bot.test.condition.SpecifyBeanWizardHasQualifier;
 import org.jboss.tools.cdi.bot.test.quickfix.injection.QualifierOperation;
 import org.jboss.tools.cdi.bot.test.quickfix.validators.BeanValidationProvider;
 import org.jboss.tools.cdi.bot.test.quickfix.validators.IValidationProvider;
-import org.jboss.tools.cdi.bot.test.uiutils.wizards.QuickFixDialogWizard;
-import org.jboss.tools.cdi.bot.test.uiutils.wizards.SpecifyBeanDialogWizard;
-import org.jboss.tools.ui.bot.ext.Timing;
+import org.jboss.tools.cdi.reddeer.cdi.ui.NewQualifierCreationWizard;
+import org.jboss.tools.cdi.reddeer.cdi.ui.wizard.QuickFixWizard;
+import org.jboss.tools.cdi.reddeer.cdi.ui.wizard.SpecifyBeanWizard;
+import org.jboss.tools.cdi.reddeer.condition.QualifierIsFound;
 
 public class EligibleInjectionQuickFixTestBase extends CDITestBase {
 	
@@ -45,17 +53,19 @@ public class EligibleInjectionQuickFixTestBase extends CDITestBase {
 		assertNotNull(validationProblem);
 		
 		quickFixHelper.openQuickFix(validationProblem);
-		QuickFixDialogWizard quickFixWizard = new QuickFixDialogWizard();
+		QuickFixWizard quickFixWizard = new QuickFixWizard();
 		for (String availableFix : quickFixWizard.getAvailableFixes()) {
 			if (availableFix.contains(classToQualify)) {
-				quickFixWizard.setFix(availableFix).
-				setResource(quickFixWizard.getResources().get(0)).
-				finish();
+				quickFixWizard.setFix(availableFix);
+				quickFixWizard.setResource(quickFixWizard.getResources().get(0));
+				quickFixWizard.finish();
+				break;
 			}
 		}
 	
-		SpecifyBeanDialogWizard spBeanDialogWizard = new SpecifyBeanDialogWizard();
+		SpecifyBeanWizard spBeanDialogWizard = new SpecifyBeanWizard();
 		if (operation == QualifierOperation.ADD) {
+			new WaitUntil(new SpecifyBeanWizardHasQualifier(spBeanDialogWizard, qualifier + " - " + getPackageName()),TimePeriod.getCustom(TimePeriod.NORMAL.getSeconds()*2),false);
 			boolean qualifFound = false;
 			for (String availQualifer : spBeanDialogWizard.getAvailableQualifiers()) {
 				if (availQualifer.equals(qualifier + " - " + getPackageName())) {
@@ -66,9 +76,11 @@ public class EligibleInjectionQuickFixTestBase extends CDITestBase {
 			// there was no such qualifer, it has to be created, after creation it 
 			// has to be added to in Bean qualifiers
 			if (!qualifFound) {
-				spBeanDialogWizard.createNewQualifier(qualifier, getPackageName()).
-				setName(qualifier).finish();
-				bot.sleep(Timing.time2S());
+				NewQualifierCreationWizard qw = spBeanDialogWizard.createNewQualifier(qualifier, getPackageName());
+				qw.setName(qualifier);
+				qw.finish();
+				new DefaultShell("Specify CDI Bean for the Injection Point");
+				new WaitUntil(new SpecifyBeanWizardHasQualifier(spBeanDialogWizard, qualifier + " - " + getPackageName()),TimePeriod.getCustom(TimePeriod.NORMAL.getSeconds()*2),false);
 				for (String availQualifer : spBeanDialogWizard.getAvailableQualifiers()) {
 					if (availQualifer.equals(qualifier + " - " + getPackageName())) {						
 						spBeanDialogWizard.addQualifier(availQualifer);
@@ -77,6 +89,7 @@ public class EligibleInjectionQuickFixTestBase extends CDITestBase {
 			}
 			
 		} else {
+			new WaitUntil(new QualifierIsFound(spBeanDialogWizard,qualifier + " - " + getPackageName()));
 			for (String inBeanQualifer : spBeanDialogWizard.getInBeanQualifiers()) {
 				if (inBeanQualifer.equals(qualifier + " - " + getPackageName())) {
 					spBeanDialogWizard.removeQualifier(inBeanQualifer);
@@ -85,8 +98,6 @@ public class EligibleInjectionQuickFixTestBase extends CDITestBase {
 		}
 		
 		spBeanDialogWizard.finish();
-		
-		util.waitForNonIgnoredJobs();
 	}
 
 }

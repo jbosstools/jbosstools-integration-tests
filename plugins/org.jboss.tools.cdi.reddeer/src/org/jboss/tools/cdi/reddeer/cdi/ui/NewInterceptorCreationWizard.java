@@ -1,11 +1,16 @@
 package org.jboss.tools.cdi.reddeer.cdi.ui;
 
 import org.jboss.reddeer.eclipse.jface.wizard.NewWizardDialog;
+import org.jboss.reddeer.swt.api.Table;
+import org.jboss.reddeer.swt.api.TableItem;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.tools.cdi.reddeer.condition.TableItemIsFound;
 
 public class NewInterceptorCreationWizard extends NewWizardDialog{
 	
@@ -45,6 +50,14 @@ public class NewInterceptorCreationWizard extends NewWizardDialog{
 		new PushButton("Add").click();
 		new DefaultShell("Select Interceptor Binding Annotation Type");
 		new DefaultText(0).setText(bindings);
+		Table t = new DefaultTable();
+		new WaitUntil(new TableItemIsFound(t, bindings));
+		for(TableItem i: t.getItems()){
+			if(i.getText().contains(bindings)){
+				i.select();
+				break;
+			}
+		}
 		new PushButton("OK").click();
 		new DefaultShell("New Interceptor");
 	}

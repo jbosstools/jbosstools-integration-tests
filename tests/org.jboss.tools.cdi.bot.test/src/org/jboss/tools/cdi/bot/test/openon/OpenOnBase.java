@@ -11,10 +11,13 @@
 
 package org.jboss.tools.cdi.bot.test.openon;
 
+import org.eclipse.swt.SWT;
+import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
+import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
+import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
 import org.jboss.tools.cdi.bot.test.annotations.CDIWizardType;
-import org.jboss.tools.ui.bot.ext.helper.OpenOnHelper;
-import org.jboss.tools.ui.bot.ext.types.IDELabel;
+import org.jboss.tools.cdi.reddeer.common.model.ui.editor.EditorPartWrapper;
 
 /**
  * test base for OpenOn-like CDI tests
@@ -84,10 +87,11 @@ public class OpenOnBase extends CDITestBase {
 	}
 	
 	private void checkOpenOnBeanXml(String packageName, String className) {
-		bot.editorByTitle(IDELabel.WebProjectsTree.BEANS_XML).show();
-		bot.cTabItem("Source").activate();
-		OpenOnHelper.checkOpenOnFileIsOpened(bot, IDELabel.WebProjectsTree.BEANS_XML, 
-				packageName + "." + className, className + ".java");
+		EditorPartWrapper beans = new EditorPartWrapper();
+		beans.activateSourcePage();
+		new DefaultStyledText().selectText(packageName + "." + className);
+		KeyboardFactory.getKeyboard().invokeKeyCombination(SWT.F3);
+		new DefaultEditor(className+".java");
 	}
 
 }

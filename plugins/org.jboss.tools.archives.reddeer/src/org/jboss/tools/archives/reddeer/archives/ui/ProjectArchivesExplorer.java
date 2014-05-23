@@ -40,6 +40,7 @@ public class ProjectArchivesExplorer {
 	
 	private void openExplorer(String project) {
 		projectExplorer.open();
+		projectExplorer.getProject(project).select();
 		explorer = new DefaultTreeItem(project, PROJECT_ARCHIVES_NODE);
 	}
 	

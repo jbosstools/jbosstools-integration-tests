@@ -11,10 +11,19 @@
 
 package org.jboss.tools.cdi.bot.test.validation;
 
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
+import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.requirements.server.ServerReqState;
+import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.reddeer.workbench.exception.WorkbenchPartNotFound;
+import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
 import org.jboss.tools.cdi.bot.test.annotations.CDIWizardType;
-import org.jboss.tools.cdi.bot.test.condition.AsYouTypeMarkerExistsCondition;
-import org.jboss.tools.ui.bot.ext.Timing;
+import org.jboss.tools.cdi.reddeer.condition.AsYouTypeMarkerExists;
 import org.junit.After;
 import org.junit.Test;
 
@@ -24,6 +33,11 @@ import org.junit.Test;
  * @author jjankovi
  * 
  */
+@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.AS7_1)
+@OpenPerspective(JavaEEPerspective.class)
+@CleanWorkspace
+
+//https://issues.jboss.org/browse/JBIDE-17294
 public class AsYouTypeValidationTest extends CDITestBase {
 
 	private static final String ELIGIBLE_VALIDATION_PROBLEM = "Multiple beans are eligible " +
@@ -33,7 +47,11 @@ public class AsYouTypeValidationTest extends CDITestBase {
 	
 	@After
 	public void cleanUp() {
-		bot.activeEditor().save();
+		try{
+			new DefaultEditor().save();
+		} catch (WorkbenchPartNotFound ex){
+			
+		}
 	}
 	
 	/**
@@ -49,23 +67,24 @@ public class AsYouTypeValidationTest extends CDITestBase {
 		//=======================================================================
 		// 	Invoke as-you-type validation marker appearance without saving file
 		//=======================================================================
+		new WaitUntil(new AsYouTypeMarkerExists("TODO Auto-generated constructor stub"));
 		
-		editResourceUtil.replaceInEditor("// TODO Auto-generated constructor stub", "");
+		editResourceUtil.replaceInEditor("Test.java","// TODO Auto-generated constructor stub", "");
 		
-		bot.waitWhile(new AsYouTypeMarkerExistsCondition("TODO Auto-generated constructor stub"));
+		new WaitWhile(new AsYouTypeMarkerExists("TODO Auto-generated constructor stub"));
 		
-		editResourceUtil.replaceClassContentByResource(AsYouTypeValidationTest.class.
+		editResourceUtil.replaceClassContentByResource("Test.java",AsYouTypeValidationTest.class.
 				getResourceAsStream("/resources/validation/Test1.java.cdi"), 
 				false, false, getPackageName(), "Test");
 		
-		bot.waitUntil(new AsYouTypeMarkerExistsCondition(ELIGIBLE_VALIDATION_PROBLEM));
+		new WaitUntil(new AsYouTypeMarkerExists(ELIGIBLE_VALIDATION_PROBLEM));
 		
 		//==========================================================================
 		// 	Invoke as-you-type validation marker disappearance without saving file
 		//==========================================================================
 		
-		editResourceUtil.replaceInEditor("@Inject ", "@Inject @Named ", false);
-		bot.waitWhile(new AsYouTypeMarkerExistsCondition(ELIGIBLE_VALIDATION_PROBLEM));
+		editResourceUtil.replaceInEditor("Test.java","@Inject ", "@Inject @Named ", false);
+		new WaitWhile(new AsYouTypeMarkerExists(ELIGIBLE_VALIDATION_PROBLEM));
 	}
 	
 	/**
@@ -88,16 +107,15 @@ public class AsYouTypeValidationTest extends CDITestBase {
 		beansHelper.createBeansXMLWithAlternative(getProjectName(), 
 				getPackageName(), "A1", false);
 		
-		bot.waitUntil(new AsYouTypeMarkerExistsCondition(BEAN_IS_NOT_ALTERNATIVE), 
-				Timing.time10S());
+		new WaitUntil(new AsYouTypeMarkerExists(BEAN_IS_NOT_ALTERNATIVE));
 		
 		//==========================================================================
 		// 	Invoke as-you-type validation marker disappearance without saving file
 		//==========================================================================
 		
-		editResourceUtil.replaceInEditor("A1", "A2", false);
+		editResourceUtil.replaceInEditor("beans.xml","A1", "A2", false);
 		
-		bot.waitWhile(new AsYouTypeMarkerExistsCondition(BEAN_IS_NOT_ALTERNATIVE));
+		new WaitWhile(new AsYouTypeMarkerExists(BEAN_IS_NOT_ALTERNATIVE));
 	}
 	
 }

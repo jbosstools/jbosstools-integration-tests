@@ -13,34 +13,34 @@ package org.jboss.tools.cdi.bot.test.uiutils;
 
 import java.util.List;
 
-import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
+import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.cdi.bot.test.annotations.CDIWizardType;
-import org.jboss.tools.cdi.bot.test.condition.OpenedEditorHasTitleCondition;
-import org.jboss.tools.cdi.bot.test.uiutils.wizards.CDIWizardBaseExt;
-import org.jboss.tools.ui.bot.ext.SWTBotExt;
-import org.jboss.tools.ui.bot.ext.SWTBotFactory;
-import org.jboss.tools.ui.bot.ext.SWTOpenExt;
-import org.jboss.tools.ui.bot.ext.SWTUtilExt;
+import org.jboss.tools.cdi.reddeer.cdi.ui.NewAnnotationLiteralCreationWizard;
+import org.jboss.tools.cdi.reddeer.cdi.ui.NewBeanCreationWizard;
+import org.jboss.tools.cdi.reddeer.cdi.ui.NewBeansXMLCreationWizard;
+import org.jboss.tools.cdi.reddeer.cdi.ui.NewDecoratorCreationWizard;
+import org.jboss.tools.cdi.reddeer.cdi.ui.NewInterceptorBindingCreationWizard;
+import org.jboss.tools.cdi.reddeer.cdi.ui.NewInterceptorCreationWizard;
+import org.jboss.tools.cdi.reddeer.cdi.ui.NewQualifierCreationWizard;
+import org.jboss.tools.cdi.reddeer.cdi.ui.NewScopeCreationWizard;
+import org.jboss.tools.cdi.reddeer.cdi.ui.NewStereotypeCreationWizard;
 
 public class CDIWizardHelper {
-	
-	private SWTBotExt bot = SWTBotFactory.getBot();
-	private SWTUtilExt util = SWTBotFactory.getUtil();
-	private SWTOpenExt open = SWTBotFactory.getOpen();
 	private EditorResourceHelper editResourceUtil = new EditorResourceHelper();
-	private CDIWizardBaseExt wizardExt = new CDIWizardBaseExt();
 	
 	/**
 	 * Method creates Java Annotation with selected name and package	 
 	 * @param name
 	 * @param packageName
 	 */
+	/*
 	public void createAnnotation(String name, String packageName) {
 		wizardExt.annotation(open, util, packageName, name);
 		new WaitUntil(new OpenedEditorHasTitleCondition(name + ".java"));
 		bot.editorByTitle(name + ".java").show();
 	}
-	
+	*/
 	/**
 	 * Method creates CDI component 
 	 * 	 
@@ -49,6 +49,7 @@ public class CDIWizardHelper {
 	 * @param packageName
 	 * @param necessaryParam
 	 */
+	
 	public void createCDIComponent(CDIWizardType component, String name,
 			String packageName, String necessaryParam) {			
 		createComponent(component, name, packageName, necessaryParam);
@@ -56,8 +57,7 @@ public class CDIWizardHelper {
 		if (name.contains(".xml")) {
 			editorTitle = name;
 		}
-		new WaitUntil(new OpenedEditorHasTitleCondition(editorTitle));
-		bot.editorByTitle(editorTitle).show();
+		new DefaultEditor(editorTitle);
 	}
 	
 	/**
@@ -68,15 +68,37 @@ public class CDIWizardHelper {
 	 * @param necessaryParam
 	 * @param resource
 	 */
+	
 	public void createCDIComponentWithContent(CDIWizardType component, String name,
 			String packageName, String necessaryParam, String resource) {			
 		createCDIComponent(component, name, packageName, necessaryParam);
-		if (!bot.activeEditor().getTitle().equals(name + ".java")) {
-			bot.editorByTitle(name + ".java").show();
-		}
-		editResourceUtil.replaceClassContentByResource(
+		new DefaultEditor(name + ".java");
+		editResourceUtil.replaceClassContentByResource(name+".java",
 				CDIWizardHelper.class.getResourceAsStream(resource), false);
 	}
+	
+	/**
+	 * Method creates CDI component with content of resource
+	 * @param component
+	 * @param name
+	 * @param packageName
+	 * @param necessaryParam
+	 * @param resource
+	 */
+	public void createCDIBeanComponentWithContent(String name,
+			String packageName, String necessaryParam, String resource) {			
+		NewBeanCreationWizard bw = new NewBeanCreationWizard();
+		bw.open();
+		bw.setName(name);
+		bw.setPackage(packageName);
+		bw.finish();
+
+		new TextEditor(name+".java");
+
+		editResourceUtil.replaceClassContentByResource(name+".java",
+				CDIWizardHelper.class.getResourceAsStream(resource), false);
+	}
+	
 	
 	/**
 	 * Method creates larger number("amount") of the same component. 	 
@@ -87,6 +109,7 @@ public class CDIWizardHelper {
 	 * @param necessaryParam
 	 * @param differentPackages
 	 */
+	
 	public void createCDIComponents(CDIWizardType component, int amount, String baseName, 
 			String packageBaseName, String necessaryParam, boolean differentPackages) {
 		
@@ -106,6 +129,7 @@ public class CDIWizardHelper {
 	 * @param necessaryParam
 	 * @param differentPackages
 	 */
+	
 	public void createCDIComponents(CDIWizardType component, String packageBaseName, 
 			List<String> classNames, String necessaryParam, boolean differentPackages) {
 		if (classNames == null) {
@@ -130,6 +154,7 @@ public class CDIWizardHelper {
 	 * @param packageName
 	 * @param necessaryParam
 	 */
+	
 	private void createComponent(CDIWizardType component, String name,
 			String packageName, String necessaryParam) {
 		switch (component) {
@@ -144,14 +169,39 @@ public class CDIWizardHelper {
 					alternative = true;
 				}
 			}
-			wizardExt.stereotype(packageName, name, null, null, false, false, alternative, regInBeansXml,
-					false).finish();
+			
+			NewStereotypeCreationWizard nb = new NewStereotypeCreationWizard();
+			nb.open();
+			nb.setName(name);
+			nb.setPackage(packageName);
+			nb.setInherited(false);
+			nb.setNamed(true);
+			nb.setAlternative(alternative);
+			nb.setGenerateComments(false);
+			nb.setRegisterInBeans(regInBeansXml);
+			nb.finish();
+			
 			break;
 		case QUALIFIER:
-			wizardExt.qualifier(packageName, name, false, false).finish();
+			
+			NewQualifierCreationWizard qb = new NewQualifierCreationWizard();
+			qb.open();
+			qb.setName(name);
+			qb.setPackage(packageName);
+			qb.setInherited(false);
+			qb.setGenerateComments(false);
+			qb.finish();
 			break;
 		case SCOPE:
-			wizardExt.scope(packageName, name, false, false, true, false).finish();
+			NewScopeCreationWizard sw = new NewScopeCreationWizard();
+			sw.open();
+			sw.setName(name);
+			sw.setPackage(packageName);
+			sw.setInherited(false);
+			sw.setGenerateComments(false);
+			sw.setNormalScope(true);
+			sw.setPassivating(false);
+			sw.finish();
 			break;
 		case BEAN:
 			alternative = false;
@@ -164,24 +214,64 @@ public class CDIWizardHelper {
 					alternative = true;
 				}
 			}
-			wizardExt.bean(packageName, name, true, false, false, false, alternative, regInBeansXml, null, null,
-					null, null).finish();
+			NewBeanCreationWizard nb1 = new NewBeanCreationWizard();
+			nb1.open();
+			nb1.setName(name);
+			nb1.setPackage(packageName);
+			nb1.setPublic(true);
+			nb1.setAbstract(false);
+			nb1.setFinal(false);
+			nb1.setGenerateComments(false);
+			nb1.setAlternative(alternative);
+			nb1.setRegisterInBeans(regInBeansXml);
+			nb1.finish();
 			break;
 		case INTERCEPTOR:
-			wizardExt.interceptor(packageName, name, null, null, null, false).finish();
+			NewInterceptorCreationWizard iw = new NewInterceptorCreationWizard();
+			iw.open();
+			iw.setName(name);
+			iw.setPackage(packageName);
+			iw.setGenerateComments(false);
+			iw.finish();
 			break;
 		case DECORATOR:
-			wizardExt.decorator(packageName, name, necessaryParam, null, true, false, false, false)
-					.finish();
+			NewDecoratorCreationWizard dw = new NewDecoratorCreationWizard();
+			dw.open();
+			dw.setName(name);
+			dw.setPackage(packageName);
+			dw.addDecoratedTypeInterfaces(necessaryParam);
+			dw.setPublic(true);
+			dw.setAbstract(false);
+			dw.setFinal(false);
+			dw.setGenerateComments(false);
+			dw.finish();
 			break;
 		case ANNOTATION_LITERAL:
-			wizardExt.annLiteral(packageName, name, true, false, false, false, null).finish();
+			NewAnnotationLiteralCreationWizard aw = new NewAnnotationLiteralCreationWizard();
+			aw.open();
+			aw.setName(name);
+			aw.setPackage(packageName);
+			aw.setPublic(true);
+			aw.setAbstract(false);
+			aw.setFinal(false);
+			aw.setGenerateComments(false);
+			aw.addQualifier(aw.getQualifiers().get(0));
+			aw.finish();
 			break;
 		case INTERCEPTOR_BINDING:
-			wizardExt.binding(packageName, name, null, true, false).finish();
+			NewInterceptorBindingCreationWizard bw = new NewInterceptorBindingCreationWizard();
+			bw.open();
+			bw.setName(name);
+			bw.setPackage(packageName);
+			bw.setInherited(true);
+			bw.setGenerateComments(false);
+			bw.finish();
 			break;
 		case BEANS_XML:
-			wizardExt.beansXML(packageName).finish();			
+			NewBeansXMLCreationWizard xw = new NewBeansXMLCreationWizard();
+			xw.open();
+			xw.setSourceFolder(packageName.split("."));
+			xw.finish();		
 			break;
 		}					
 	}

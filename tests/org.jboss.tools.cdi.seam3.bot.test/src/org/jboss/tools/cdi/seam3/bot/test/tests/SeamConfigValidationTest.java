@@ -10,11 +10,22 @@
  ******************************************************************************/
 package org.jboss.tools.cdi.seam3.bot.test.tests;
 
-import org.eclipse.core.resources.IMarker;
+import static org.junit.Assert.*;
+
+import java.util.List;
+
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.requirements.server.ServerReqState;
+import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
+import org.jboss.reddeer.workbench.impl.editor.Marker;
 import org.jboss.tools.cdi.seam3.bot.test.base.Seam3TestBase;
 import org.jboss.tools.cdi.seam3.bot.test.util.SeamLibrary;
-import org.jboss.tools.ui.bot.ext.helper.MarkerHelper;
-import org.jboss.tools.ui.bot.ext.types.IDELabel;
+import org.jboss.tools.common.reddeer.label.IDELabel;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -23,29 +34,31 @@ import org.junit.Test;
  * @author jjankovi
  *
  */
+@CleanWorkspace
+@OpenPerspective(JavaEEPerspective.class)
+@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.AS7_1)
 public class SeamConfigValidationTest extends Seam3TestBase {
 
 	private static String projectName = "seamConfigValidation";
 	private static final String SEAM_CONFIG = "seam-beans.xml";
-	private static IMarker[] markers = null;
+	private static List<Marker> markers = null;
 	
 	@BeforeClass
 	public static void setup() {
 		importSeam3ProjectWithLibrary(projectName, SeamLibrary.SOLDER_3_1);
-		openSeamConfig();
 		getAllSeamConfigMarkers();
-		assertExpectedCount(markers.length, 4);
+		assertExpectedCount(markers.size(), 4);
 	}
 	
 	@Test
 	public void testNonExistedField() {
 		
 		/* get marker by its location */
-		IMarker marker = getMarkerByLocation(markers, 8);
+		Marker marker = getMarkerByLocation(markers, 8);
 		assertNotNull(marker);
 		
 		/* test the message of marker */
-		assertMessageContainsExpectedValue(MarkerHelper.getMarkerMessage(marker), 
+		assertMessageContainsExpectedValue(marker.getText(), 
 				"Cannot resolve field or method");
 	}
 	
@@ -53,11 +66,11 @@ public class SeamConfigValidationTest extends Seam3TestBase {
 	public void testNonExistedConstructor() {
 	
 		/* get marker by its location */
-		IMarker marker = getMarkerByLocation(markers, 11);
+		Marker marker = getMarkerByLocation(markers, 11);
 		assertNotNull(marker);
 		
 		/* test the message of marker */
-		assertMessageContainsExpectedValue(MarkerHelper.getMarkerMessage(marker), 
+		assertMessageContainsExpectedValue(marker.getText(), 
 				"Cannot resolve constructor");
 		
 	}
@@ -66,11 +79,11 @@ public class SeamConfigValidationTest extends Seam3TestBase {
 	public void testNonSupportedParameters() {
 		
 		/* get marker by its location */
-		IMarker marker = getMarkerByLocation(markers,15);
+		Marker marker = getMarkerByLocation(markers,15);
 		assertNotNull(marker);
 		
 		/* test the message of marker */
-		assertMessageContainsExpectedValue(MarkerHelper.getMarkerMessage(marker), 
+		assertMessageContainsExpectedValue(marker.getText(), 
 				"Cannot resolve method");
 		
 	}
@@ -79,35 +92,22 @@ public class SeamConfigValidationTest extends Seam3TestBase {
 	public void testNonExistedClass() {
 		
 		/* get marker by its location */
-		IMarker marker = getMarkerByLocation(markers, 24);
+		Marker marker = getMarkerByLocation(markers, 24);
 		assertNotNull(marker);
 		
 		/* test the message of marker */
-		assertMessageContainsExpectedValue(MarkerHelper.getMarkerMessage(marker), 
+		assertMessageContainsExpectedValue(marker.getText(), 
 				"Cannot resolve type");
 		
 	}
 	
 	private static void getAllSeamConfigMarkers() {
-		markers = getMarkersForResource(
-				SEAM_CONFIG, 
-				projectName, 
-				IDELabel.WebProjectsTree.WEB_CONTENT, 
-				IDELabel.WebProjectsTree.WEB_INF);
-	}
-
-	private static void openSeamConfig() {
-		packageExplorer.openFile(
-				projectName, 
-				IDELabel.WebProjectsTree.WEB_CONTENT, 
-				IDELabel.WebProjectsTree.WEB_INF, 
-				SEAM_CONFIG);
-		bot.cTabItem("Source").activate();
-	}
-	
-	private static IMarker[] getMarkersForResource(String resource, String ... path) {
-		MarkerHelper markerHelper = new MarkerHelper(resource, path);
-		return markerHelper.getMarkers();
+		PackageExplorer pe = new PackageExplorer();
+		pe.open();
+		pe.getProject(projectName).getProjectItem(IDELabel.WebProjectsTree.WEB_CONTENT, 
+				IDELabel.WebProjectsTree.WEB_INF, SEAM_CONFIG).open();
+		
+		markers = new DefaultEditor(SEAM_CONFIG).getMarkers();
 	}
 	
 	private static void assertExpectedCount(int realCount, int expectedCount) {
@@ -119,15 +119,9 @@ public class SeamConfigValidationTest extends Seam3TestBase {
 				+ knowsIssue, realCount == expectedCount);
 	}
 	
-	private IMarker getMarkerByLocation(IMarker[] markers, int location) {
-		for (IMarker m : markers) {
-			int markerLocation;
-			try {
-				markerLocation = Integer.parseInt(MarkerHelper.getMarkerLineNumber(m));
-			} catch (NumberFormatException nfe) {
-				return null;
-			}
-			if (markerLocation == location) {
+	private Marker getMarkerByLocation(List<Marker> markers, int location) {
+		for (Marker m : markers) {
+			if (m.getLineNumber() == location) {
 				return m;
 			}
 		}
@@ -137,7 +131,7 @@ public class SeamConfigValidationTest extends Seam3TestBase {
 	private void assertMessageContainsExpectedValue(String message,
 			String... expectedValues) {
 		for (String value : expectedValues) {
-			assertContains(value, message);
+			assertTrue(value.contains(message));
 		}
 	}
 

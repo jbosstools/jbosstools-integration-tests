@@ -12,6 +12,12 @@
 package org.jboss.tools.cdi.bot.test.quickfix.test;
 
 
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
+import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
 import org.jboss.tools.cdi.bot.test.annotations.CDIWizardType;
 import org.jboss.tools.cdi.bot.test.annotations.ValidationType;
@@ -24,7 +30,9 @@ import org.junit.Test;
  * 
  * @author Jaroslav Jankovic
  */
-
+@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.AS7_1)
+@OpenPerspective(JavaEEPerspective.class)
+@CleanWorkspace
 public class DecoratorValidationQuickFixTest extends CDITestBase {
 	
 	private static IValidationProvider validationProvider = new DecoratorValidationProvider();
@@ -44,7 +52,7 @@ public class DecoratorValidationQuickFixTest extends CDITestBase {
 				getPackageName(), "java.util.Set", "/resources/quickfix/decorator/" +
 						"DecoratorWithStateless.java.cdi");
 		
-		editResourceUtil.replaceInEditor("DecoratorComponent", className);
+		editResourceUtil.replaceInEditor(className+".java","DecoratorComponent", className);
 		
 		quickFixHelper.checkQuickFix(ValidationType.STATELESS, getProjectName(), validationProvider());
 			
@@ -60,7 +68,7 @@ public class DecoratorValidationQuickFixTest extends CDITestBase {
 				getPackageName(), "java.util.Set", "/resources/quickfix/decorator/" +
 						"DecoratorWithNamed.java.cdi");
 	
-		editResourceUtil.replaceInEditor("DecoratorComponent", className);
+		editResourceUtil.replaceInEditor(className+".java","DecoratorComponent", className);
 		
 		quickFixHelper.checkQuickFix(ValidationType.NAMED, getProjectName(), validationProvider());
 		
@@ -76,7 +84,7 @@ public class DecoratorValidationQuickFixTest extends CDITestBase {
 				getPackageName(), "java.util.Set", "/resources/quickfix/decorator/" +
 						"DecoratorWithProducer.java.cdi");
 		
-		editResourceUtil.replaceInEditor("DecoratorComponent", className);
+		editResourceUtil.replaceInEditor(className+".java","DecoratorComponent", className);
 		
 		quickFixHelper.checkQuickFix(ValidationType.PRODUCES, getProjectName(), validationProvider());
 		
@@ -92,7 +100,7 @@ public class DecoratorValidationQuickFixTest extends CDITestBase {
 				getPackageName(), "java.util.Set", "/resources/quickfix/decorator/" +
 						"DecoratorWithDisposes.java.cdi");
 		
-		editResourceUtil.replaceInEditor("DecoratorComponent", className);
+		editResourceUtil.replaceInEditor(className+".java","DecoratorComponent", className);
 		
 		quickFixHelper.checkQuickFix(ValidationType.DISPOSES, getProjectName(), validationProvider());
 		
@@ -108,10 +116,10 @@ public class DecoratorValidationQuickFixTest extends CDITestBase {
 				getPackageName(), "java.util.Set", "/resources/quickfix/decorator/" +
 				"DecoratorWithDisposes.java.cdi");
 		
-		editResourceUtil.replaceInEditor("import javax.enterprise.inject.Disposes;", 
+		editResourceUtil.replaceInEditor(className+".java","import javax.enterprise.inject.Disposes;", 
 				"import javax.enterprise.event.Observes;");
-		editResourceUtil.replaceInEditor("@Disposes", "@Observes");
-		editResourceUtil.replaceInEditor("DecoratorComponent", className);
+		editResourceUtil.replaceInEditor(className+".java","@Disposes", "@Observes");
+		editResourceUtil.replaceInEditor(className+".java","DecoratorComponent", className);
 		
 		quickFixHelper.checkQuickFix(ValidationType.OBSERVES, getProjectName(), validationProvider());
 			
@@ -127,7 +135,7 @@ public class DecoratorValidationQuickFixTest extends CDITestBase {
 				getPackageName(), "java.util.Set", "/resources/quickfix/decorator/" +
 						"DecoratorWithSpecializes.java.cdi");
 		
-		editResourceUtil.replaceInEditor("DecoratorComponent", className);
+		editResourceUtil.replaceInEditor(className+".java","DecoratorComponent", className);
 		
 		quickFixHelper.checkQuickFix(ValidationType.SPECIALIZES, getProjectName(), validationProvider());
 			

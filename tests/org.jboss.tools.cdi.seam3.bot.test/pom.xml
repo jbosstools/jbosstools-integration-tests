@@ -11,18 +11,11 @@
 	
 	<packaging>eclipse-test-plugin</packaging>
 	<properties>
-		<systemProperties>${integrationTestsSystemProperties} -Dswtbot.test.properties.file=${project.basedir}/properties/swtbot.properties</systemProperties>
+		<systemProperties>${integrationTestsSystemProperties} -Dreddeer.config=target/classes/servers -Djbosstools.test.jboss-as-7.1.home=${jbosstools.test.jboss-as-7.1.home}</systemProperties>
 		<surefire.timeout>10800</surefire.timeout>
 		<suiteClass>org.jboss.tools.cdi.seam3.bot.test.CDISeam3AllBotTests</suiteClass>
+		<jbosstools.test.jboss-as-7.1.home>${requirementsDirectory}/jboss-as-7.1.1.Final</jbosstools.test.jboss-as-7.1.home>
 	</properties>
-	<profiles>
-		<profile>
-			<id>jenkins</id>
-			<properties>
-				<suiteClass>org.jboss.tools.cdi.seam3.bot.test.JenkinsTestSuite</suiteClass>
-			</properties>			
-		</profile>
-	</profiles>
 	<build>
 		<plugins>
 			<plugin>
@@ -41,7 +34,7 @@
 								<artifactItem>
 									<groupId>org.jboss.as</groupId>
 									<artifactId>jboss-as-dist</artifactId>
-									<version>7.0.2.Final</version>
+									<version>7.1.1.Final</version>
 									<type>zip</type>
 								</artifactItem>
 							</artifactItems>
@@ -83,5 +76,14 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<resources>
+				<resource>
+				<directory>resources</directory>
+				<includes>
+					<include>servers/*</include>
+				</includes>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
 	</build>
 </project>

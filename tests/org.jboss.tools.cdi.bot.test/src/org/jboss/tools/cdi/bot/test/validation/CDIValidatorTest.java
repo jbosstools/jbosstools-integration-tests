@@ -1,7 +1,14 @@
 package org.jboss.tools.cdi.bot.test.validation;
 
+import static org.junit.Assert.*;
+import org.jboss.reddeer.requirements.server.ServerReqState;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.reddeer.eclipse.condition.ProblemsExists;
+import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -21,11 +28,13 @@ import org.junit.Test;
  * @author jjankovi
  *
  */
+@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.AS7_1)
+@OpenPerspective(JavaEEPerspective.class)
+@CleanWorkspace
 public class CDIValidatorTest extends CDITestBase {
 	
 	private final static CDIValidatorPreferencePage 
 		cdiValidatorPage = new CDIValidatorPreferencePage();
-	private final ProblemsView problemsView = new ProblemsView();
 	
 	
 	@Override
@@ -40,16 +49,14 @@ public class CDIValidatorTest extends CDITestBase {
 	
 	@Test
 	public void testValidatorInPreferences() {
-		
 		cdiValidatorPage.open();
-		cdiValidatorPage.cancel();
-		
+		cdiValidatorPage.cancel();	
 	}
 	
 	@Test
 	public void testEnabledValidator() {
-		
 		modifyCDIValidatorState(true);
+		ProblemsView problemsView = new ProblemsView();
 		problemsView.open();
 		new WaitUntil(new ProblemsExists(), TimePeriod.NORMAL);
 		assertEquals("Warnings node should contain one warning", 
@@ -57,16 +64,13 @@ public class CDIValidatorTest extends CDITestBase {
 		assertEquals("Warning text", 
 				"No bean is eligible for injection to the injection point [JSR-299 §5.2.1]",
 				problemsView.getAllWarnings().get(0).getText());
-		
 	}
 	
 	@Test
 	public void testDisabledValidator() {
-		
 		modifyCDIValidatorState(false);
 		new WaitWhile(new ProblemsExists(), TimePeriod.NORMAL);
 		modifyCDIValidatorState(true);
-		
 	}
 	
 	private static void modifyCDIValidatorState(boolean enable) {

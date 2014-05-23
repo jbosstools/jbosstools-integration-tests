@@ -12,11 +12,24 @@
 package org.jboss.tools.cdi.seam3.bot.test.tests;
 
 
-import org.jboss.tools.cdi.bot.test.CDIConstants;
+import static org.junit.Assert.*;
+
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.eclipse.jface.text.contentassist.ContentAssistant;
+import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.requirements.server.ServerReqState;
+import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
+import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.jboss.tools.cdi.reddeer.CDIConstants;
 import org.jboss.tools.cdi.seam3.bot.test.base.Seam3TestBase;
 import org.jboss.tools.cdi.seam3.bot.test.util.SeamLibrary;
-import org.jboss.tools.ui.bot.ext.helper.OpenOnHelper;
-import org.jboss.tools.ui.bot.ext.types.IDELabel;
+import org.jboss.tools.common.reddeer.label.IDELabel;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -25,10 +38,15 @@ import org.junit.Test;
  * 
  * @author Jaroslav Jankovic
  */
-
+@CleanWorkspace
+@OpenPerspective(JavaEEPerspective.class)
+@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.AS7_1)
 public class ResourceOpenOnTest extends Seam3TestBase {
 
 	private static String projectName = "resource";
+	
+	@InjectRequirement
+	protected ServerRequirement requirement;
 	
 	@BeforeClass
 	public static void setup() {
@@ -42,30 +60,32 @@ public class ResourceOpenOnTest extends Seam3TestBase {
 	public void testResourceOpenOn() {
 			
 		String className = "MyBean.java";
+		PackageExplorer pe = new PackageExplorer();
+		pe.open();
+		pe.getProject(projectName).getProjectItem(CDIConstants.SRC, "cdi.seam", className).open();
 		
-		packageExplorer.openFile(projectName, CDIConstants.SRC, 
-				"cdi.seam", className);
-
-		OpenOnHelper.checkOpenOnFileIsOpened(bot, className, 
-				CDIConstants.RESOURCE_ANNOTATION, "Open Resource", 
-				IDELabel.WebProjectsTree.BEANS_XML);
+		TextEditor te = new TextEditor(className);
+		te.selectText(CDIConstants.RESOURCE_ANNOTATION);
+		ContentAssistant ca = te.openOpenOnAssistant();
+		assertTrue(ca == null);
+		new DefaultEditor(IDELabel.WebProjectsTree.BEANS_XML);
 		
-		editResourceUtil.moveFileInExplorerBase(
-				packageExplorer, 
-				IDELabel.WebProjectsTree.BEANS_XML, 
-				projectName + "/" + IDELabel.WebProjectsTree.WEB_CONTENT + 
-				"/" + IDELabel.WebProjectsTree.WEB_INF,
-				projectName + "/" + IDELabel.WebProjectsTree.WEB_CONTENT + 
-				"/" + CDIConstants.META_INF);
+		String[] source = {IDELabel.WebProjectsTree.WEB_CONTENT,
+				IDELabel.WebProjectsTree.WEB_INF,IDELabel.WebProjectsTree.BEANS_XML};
+		
+		String[] dest = {projectName, IDELabel.WebProjectsTree.WEB_CONTENT, CDIConstants.META_INF};
+		
+		editResourceUtil.moveFileInExplorerBase(projectName, source, dest);
 		LOGGER.info("bean.xml was moved to META-INF");
 		
-		bot.swtBotEditorExtByTitle(className).show();
+		new DefaultEditor(className);
 		editResourceUtil.replaceInEditor("WEB", "META");
 		
-		OpenOnHelper.checkOpenOnFileIsOpened(bot, className, 
-				CDIConstants.RESOURCE_ANNOTATION, "Open Resource", 
-				IDELabel.WebProjectsTree.BEANS_XML);
-		
+		te = new TextEditor(className);
+		te.selectText(CDIConstants.RESOURCE_ANNOTATION);
+		ca = te.openOpenOnAssistant();
+		assertTrue(ca == null);
+		new DefaultEditor(IDELabel.WebProjectsTree.BEANS_XML);
 	}
 	
 }

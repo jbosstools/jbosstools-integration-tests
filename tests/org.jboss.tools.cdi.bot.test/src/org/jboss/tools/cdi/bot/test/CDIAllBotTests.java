@@ -10,6 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.cdi.bot.test;
 
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.cdi.bot.test.beansxml.BeansXMLCompletionTest;
 import org.jboss.tools.cdi.bot.test.beansxml.BeansXMLValidationTest;
 import org.jboss.tools.cdi.bot.test.decorator.DecoratorFromWebBeanTest;
@@ -38,7 +39,6 @@ import org.jboss.tools.cdi.bot.test.wizard.ConfigurationPresetTest;
 import org.jboss.tools.cdi.bot.test.wizard.DynamicWebProjectWithCDITest;
 import org.jboss.tools.cdi.bot.test.wizard.FacetTest;
 import org.jboss.tools.cdi.bot.test.wizard.WizardTest;
-import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
@@ -47,11 +47,12 @@ import org.junit.runners.Suite.SuiteClasses;
  * @author Lukas Jungmann
  * @author Jaroslav Jankovic
  */
-@RunWith(RequirementAwareSuite.class)
+@RunWith(RedDeerSuite.class)
 @SuiteClasses({	
 //	PerspectiveTest.class,  // not included in JBDS anymore
 	
 	ConfigurationPresetTest.class,
+	
 	FacetTest.class, 
 	CDIWebProjectWizardTest.class,
 	DynamicWebProjectWithCDITest.class,
@@ -59,17 +60,27 @@ import org.junit.runners.Suite.SuiteClasses;
 	WizardTest.class,
 	BeansEditorTest.class,
 	WeldExtensionTest.class,
-	NamedRefactoringTest.class,
+	//NamedRefactoringTest.class,
 	NamedComponentsSearchingTest.class,
-	BeansXMLValidationTest.class,			
-	BeansXMLCompletionTest.class,	
+	BeansXMLValidationTest.class,
+	BeansXMLCompletionTest.class,
+	
 	BeansXMLValidationQuickFixTest.class,
+	
+	
 	AsYouTypeValidationTest.class,
+	
+	
 	DecoratorFromWebBeanTest.class,
 	ProblemEligibleInjectionTest.class,
+	
+	
 	AllAssignableDialogTest.class,
+	
+	
 	AssignableDialogFilterTest.class,
 	QuickFixProposalsDescriptionTest.class,
+	
 	StereotypeValidationQuickFixTest.class,
 	QualifierValidationQuickFixTest.class,
 	ScopeValidationQuickFixTest.class,
@@ -77,9 +88,11 @@ import org.junit.runners.Suite.SuiteClasses;
 	InterceptorValidationQuickFixTest.class,
 	DecoratorValidationQuickFixTest.class,
 	IBindingValidationQuickFixTest.class,
+	
 	OpenOnTest.class,
 	FindObserverForEventTest.class
+	
 })
-public class CDIAllBotTests extends AbstractTestSuite {
+public class CDIAllBotTests {
 		
 }

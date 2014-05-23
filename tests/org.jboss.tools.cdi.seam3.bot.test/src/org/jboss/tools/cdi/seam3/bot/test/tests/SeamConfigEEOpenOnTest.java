@@ -10,11 +10,22 @@
  ******************************************************************************/
 package org.jboss.tools.cdi.seam3.bot.test.tests;
 
+import static org.junit.Assert.*;
+import org.eclipse.swt.SWT;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.requirements.server.ServerReqState;
+import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
+import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
+import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.cdi.seam3.bot.test.base.Seam3TestBase;
 import org.jboss.tools.cdi.seam3.bot.test.util.SeamLibrary;
-import org.jboss.tools.ui.bot.ext.helper.OpenOnHelper;
-import org.jboss.tools.ui.bot.ext.types.IDELabel;
+import org.jboss.tools.common.reddeer.label.IDELabel;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -24,6 +35,9 @@ import org.junit.Test;
  * @author jjankovi
  * 
  */
+@CleanWorkspace
+@OpenPerspective(JavaEEPerspective.class)
+@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.AS7_1)
 public class SeamConfigEEOpenOnTest extends Seam3TestBase {
 
 	private static String projectName = "seamConfigEEOpenOn";
@@ -37,20 +51,21 @@ public class SeamConfigEEOpenOnTest extends Seam3TestBase {
 
 	@Before
 	public void openSeamConfig() {
-		packageExplorer.openFile(
-				projectName, 
-				IDELabel.WebProjectsTree.WEB_CONTENT,
-				IDELabel.WebProjectsTree.WEB_INF, 
-				SEAM_CONFIG).toTextEditor();
-		bot.cTabItem("Source").activate();
+		PackageExplorer pe = new PackageExplorer();
+		pe.open();
+		pe.getProject(projectName).getProjectItem(IDELabel.WebProjectsTree.WEB_CONTENT,
+				IDELabel.WebProjectsTree.WEB_INF, SEAM_CONFIG).open();
+		new DefaultEditor(SEAM_CONFIG);
+		new DefaultCTabItem("Source").activate();
 	}
 	
 	@Test
 	public void testAlternativeOpenOn() {
 
 		/* open on bean class */
-		OpenOnHelper.checkOpenOnFileIsOpened(bot, SEAM_CONFIG, "s:Alternative",
-				"Alternative.class");
+		new DefaultStyledText().selectText("s:Alternative");
+		KeyboardFactory.getKeyboard().invokeKeyCombination(SWT.F3);
+		new DefaultEditor("Alternative.class");
 
 		/* test opened object */
 		assertExpectedOpenedClass("javax.enterprise.inject.Alternative");
@@ -61,8 +76,9 @@ public class SeamConfigEEOpenOnTest extends Seam3TestBase {
 	public void testDecoratorOpenOn() {
 
 		/* open on bean class */
-		OpenOnHelper.checkOpenOnFileIsOpened(bot, SEAM_CONFIG, "s:Decorator",
-				"Decorator.class");
+		new DefaultStyledText().selectText("s:Decorator");
+		KeyboardFactory.getKeyboard().invokeKeyCombination(SWT.F3);
+		new DefaultEditor("Decorator.class");
 
 		/* test opened object */
 		assertExpectedOpenedClass("javax.decorator.Decorator");
@@ -73,8 +89,9 @@ public class SeamConfigEEOpenOnTest extends Seam3TestBase {
 	public void testInjectOpenOn() {
 
 		/* open on bean class */
-		OpenOnHelper.checkOpenOnFileIsOpened(bot, SEAM_CONFIG, "s:Inject",
-				"Inject.class");
+		new DefaultStyledText().selectText("s:Inject");
+		KeyboardFactory.getKeyboard().invokeKeyCombination(SWT.F3);
+		new DefaultEditor("Inject.class");
 
 		/* test opened object */
 		assertExpectedOpenedClass("javax.inject.Inject");
@@ -85,9 +102,9 @@ public class SeamConfigEEOpenOnTest extends Seam3TestBase {
 	public void testInterceptorOpenOn() {
 
 		/* open on bean class */
-		OpenOnHelper.checkOpenOnFileIsOpened(bot, SEAM_CONFIG, "s:Interceptor",
-				"Interceptor.class");
-
+		new DefaultStyledText().selectText("s:Interceptor");
+		KeyboardFactory.getKeyboard().invokeKeyCombination(SWT.F3);
+		new DefaultEditor("Interceptor.class");
 		/* test opened object */
 		assertExpectedOpenedClass("javax.interceptor.Interceptor");
 
@@ -97,8 +114,9 @@ public class SeamConfigEEOpenOnTest extends Seam3TestBase {
 	public void testInterceptorBindingOpenOn() {
 
 		/* open on bean class */
-		OpenOnHelper.checkOpenOnFileIsOpened(bot, SEAM_CONFIG,
-				"s:InterceptorBinding", "InterceptorBinding.class");
+		new DefaultStyledText().selectText("s:InterceptorBinding");
+		KeyboardFactory.getKeyboard().invokeKeyCombination(SWT.F3);
+		new DefaultEditor("InterceptorBinding.class");
 
 		/* test opened object */
 		assertExpectedOpenedClass("javax.interceptor.InterceptorBinding");
@@ -109,8 +127,9 @@ public class SeamConfigEEOpenOnTest extends Seam3TestBase {
 	public void testObservesOpenOn() {
 
 		/* open on bean class */
-		OpenOnHelper.checkOpenOnFileIsOpened(bot, SEAM_CONFIG, "s:Observes",
-				"Observes.class");
+		new DefaultStyledText().selectText("s:Observes");
+		KeyboardFactory.getKeyboard().invokeKeyCombination(SWT.F3);
+		new DefaultEditor("Observes.class");
 
 		/* test opened object */
 		assertExpectedOpenedClass("javax.enterprise.event.Observes");
@@ -121,8 +140,9 @@ public class SeamConfigEEOpenOnTest extends Seam3TestBase {
 	public void testProducesOpenOn() {
 
 		/* open on bean class */
-		OpenOnHelper.checkOpenOnFileIsOpened(bot, SEAM_CONFIG, "s:Produces",
-				"Produces.class");
+		new DefaultStyledText().selectText("s:Produces");
+		KeyboardFactory.getKeyboard().invokeKeyCombination(SWT.F3);
+		new DefaultEditor("Produces.class");
 
 		/* test opened object */
 		assertExpectedOpenedClass("javax.enterprise.inject.Produces");
@@ -133,8 +153,9 @@ public class SeamConfigEEOpenOnTest extends Seam3TestBase {
 	public void testQualifierOpenOn() {
 
 		/* open on bean class */
-		OpenOnHelper.checkOpenOnFileIsOpened(bot, SEAM_CONFIG, "s:Qualifier",
-				"Qualifier.class");
+		new DefaultStyledText().selectText("s:Qualifier");
+		KeyboardFactory.getKeyboard().invokeKeyCombination(SWT.F3);
+		new DefaultEditor("Qualifier.class");
 
 		/* test opened object */
 		assertExpectedOpenedClass("javax.inject.Qualifier");
@@ -145,8 +166,9 @@ public class SeamConfigEEOpenOnTest extends Seam3TestBase {
 	public void testSpecializesOpenOn() {
 
 		/* open on bean class */
-		OpenOnHelper.checkOpenOnFileIsOpened(bot, SEAM_CONFIG, "s:Specializes",
-				"Specializes.class");
+		new DefaultStyledText().selectText("s:Specializes");
+		KeyboardFactory.getKeyboard().invokeKeyCombination(SWT.F3);
+		new DefaultEditor("Specializes.class");
 
 		/* test opened object */
 		assertExpectedOpenedClass("javax.enterprise.inject.Specializes");
@@ -157,8 +179,9 @@ public class SeamConfigEEOpenOnTest extends Seam3TestBase {
 	public void testStereotypeOpenOn() {
 
 		/* open on bean class */
-		OpenOnHelper.checkOpenOnFileIsOpened(bot, SEAM_CONFIG, "s:Stereotype",
-				"Stereotype.class");
+		new DefaultStyledText().selectText("s:Stereotype");
+		KeyboardFactory.getKeyboard().invokeKeyCombination(SWT.F3);
+		new DefaultEditor("Stereotype.class");
 
 		/* test opened object */
 		assertExpectedOpenedClass("javax.enterprise.inject.Stereotype");
@@ -168,7 +191,7 @@ public class SeamConfigEEOpenOnTest extends Seam3TestBase {
 	private void assertExpectedOpenedClass(String qualifiedName) {
 		String toolTip = new DefaultEditor().getTitleToolTip();
 		String dotToolTip = toolTip.replace('/', '.');
-		assertContains(qualifiedName, dotToolTip);
+		assertTrue(qualifiedName.contains(dotToolTip));
 	}
 	
 }

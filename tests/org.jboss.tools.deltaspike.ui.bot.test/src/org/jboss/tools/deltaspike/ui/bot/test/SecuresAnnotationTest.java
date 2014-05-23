@@ -10,8 +10,16 @@
  ******************************************************************************/
 
 package org.jboss.tools.deltaspike.ui.bot.test;
-
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
+import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.regex.Regex;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
@@ -29,6 +37,9 @@ import org.junit.Test;
  * @author jjankovi
  *
  */
+@CleanWorkspace
+@OpenPerspective(JavaEEPerspective.class)
+@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.AS7_1)
 public class SecuresAnnotationTest extends DeltaspikeTestBase {
 
 	private Regex returnValueAuthorizerProblem = new Regex(
@@ -37,17 +48,23 @@ public class SecuresAnnotationTest extends DeltaspikeTestBase {
 	private Regex notDeclaredSecurityBindingProblem = new Regex(
 			"Authorizer method .* does not declare a security binding type");
 	
+	@InjectRequirement
+	private ServerRequirement sr;
+	
 	@After
 	public void closeAllEditors() {
-		new SWTWorkbenchBot().closeAllEditors();
-		projectExplorer.deleteAllProjects();
+		PackageExplorer pe = new PackageExplorer();
+		pe.open();
+		for(Project p: pe.getProjects()){
+			p.delete(true);
+		}
 	}
 	
 	@Test
 	public void testInvalidAuthorizerReturnValue() {
 		
 		String projectName = "invalidAuthorizer1";
-		importDeltaspikeProject(projectName);
+		importDeltaspikeProject(projectName,sr);
 		
 		new WaitUntil(new SpecificProblemExists(
 				returnValueAuthorizerProblem), TimePeriod.NORMAL);
@@ -65,7 +82,7 @@ public class SecuresAnnotationTest extends DeltaspikeTestBase {
 	public void testNotDeclaredSecurityBindingInAuthorizer() {
 		
 		String projectName = "invalidAuthorizer2";
-		importDeltaspikeProject(projectName);
+		importDeltaspikeProject(projectName,sr);
 		
 		new WaitUntil(new SpecificProblemExists(
 				notDeclaredSecurityBindingProblem), TimePeriod.NORMAL);

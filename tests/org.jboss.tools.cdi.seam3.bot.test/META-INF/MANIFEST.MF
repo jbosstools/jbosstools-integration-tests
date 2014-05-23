@@ -5,19 +5,20 @@ Bundle-SymbolicName: org.jboss.tools.cdi.seam3.bot.test
 Bundle-Version: 4.2.0.qualifier
 Bundle-Activator: org.jboss.tools.cdi.seam3.bot.test.Activator
 Require-Bundle: org.eclipse.core.runtime,
- org.eclipse.swtbot.eclipse.core;bundle-version="2.0.0",
- org.eclipse.swtbot.eclipse.finder;bundle-version="2.0.0",
- org.eclipse.swtbot.junit4_x;bundle-version="2.0.0",
- org.eclipse.swtbot.swt.finder;bundle-version="2.0.0",
  org.junit;bundle-version="4.8.1",
  org.apache.log4j;bundle-version="1.2.15",
- org.eclipse.ui;bundle-version="3.6.0",
- org.jboss.tools.ui.bot.ext;bundle-version="[4.2.0,4.3.0)",
- org.eclipse.core.resources;bundle-version="3.6.0",
- org.jboss.tools.cdi.bot.test;bundle-version="1.2.0",
+ org.eclipse.ui,
+ org.eclipse.core.resources,
  org.jboss.reddeer.swt,
  org.jboss.reddeer.workbench,
- org.jboss.tools.maven.sourcelookup.ui;bundle-version="1.5.1"
+ org.jboss.reddeer.junit,
+ org.jboss.reddeer.requirements,
+ org.jboss.ide.eclipse.as.reddeer,
+ org.jboss.reddeer.eclipse,
+ org.jboss.reddeer.jface,
+ org.jboss.reddeer.junit.extension,
+ org.jboss.tools.cdi.reddeer,
+ org.jboss.tools.common.reddeer
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Eclipse-BundleShape: jar

@@ -12,7 +12,7 @@ package org.jboss.tools.archives.ui.bot.test;
 
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.tools.archives.reddeer.archives.ui.ProjectArchivesExplorer;
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -47,8 +47,8 @@ public class DeletingArchiveTest extends ArchivesTestBase {
 			project + "db.jar";
 	private static final String PATH_SUFFIX = " [/" + project + "]"; 
 	
-	@BeforeClass
-	public static void setup() {
+	@Before
+	public void setup() {
 		importArchiveProjectWithoutRuntime(project);
 	}
 	

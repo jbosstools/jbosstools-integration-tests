@@ -10,10 +10,22 @@
  ******************************************************************************/
 package org.jboss.tools.cdi.seam3.bot.test.tests;
 
+import static org.junit.Assert.*;
+import org.eclipse.swt.SWT;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.requirements.server.ServerReqState;
+import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
+import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
+import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
+import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.cdi.seam3.bot.test.base.Seam3TestBase;
 import org.jboss.tools.cdi.seam3.bot.test.util.SeamLibrary;
-import org.jboss.tools.ui.bot.ext.helper.OpenOnHelper;
-import org.jboss.tools.ui.bot.ext.types.IDELabel;
+import org.jboss.tools.common.reddeer.label.IDELabel;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -23,6 +35,9 @@ import org.junit.Test;
  * @author jjankovi
  * 
  */
+@CleanWorkspace
+@OpenPerspective(JavaEEPerspective.class)
+@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.AS7_1)
 public class SeamConfigClassBaseOpenOnTest extends Seam3TestBase {
 
 	private static final String projectName = "seamConfigOpenOn";
@@ -31,24 +46,26 @@ public class SeamConfigClassBaseOpenOnTest extends Seam3TestBase {
 	@BeforeClass
 	public static void setup() {
 		importSeam3ProjectWithLibrary(projectName, SeamLibrary.SOLDER_3_1);
-		disableSourceLookup();
+		//disableSourceLookup();
 	}
 
 	@Before
 	public void openSeamConfig() {
-		packageExplorer.openFile(projectName, 
-				IDELabel.WebProjectsTree.WEB_CONTENT,
-				IDELabel.WebProjectsTree.WEB_INF, 
-				SEAM_CONFIG).toTextEditor();
-		bot.cTabItem("Source").activate();
+
+		PackageExplorer pe = new PackageExplorer();
+		pe.open();
+		pe.getProject(projectName).getProjectItem(IDELabel.WebProjectsTree.WEB_CONTENT,
+				IDELabel.WebProjectsTree.WEB_INF, SEAM_CONFIG).open();
+		new DefaultEditor(SEAM_CONFIG);
+		new DefaultCTabItem("Source").activate();
 	}
 
 	@Test
 	public void testBeanOpenOn() {
-
 		/* open on bean class */
-		OpenOnHelper.checkOpenOnFileIsOpened(bot, SEAM_CONFIG, "b:Bean1",
-				"Bean1.java");
+		new DefaultStyledText().selectText("b:Bean1");
+		KeyboardFactory.getKeyboard().invokeKeyCombination(SWT.F3);
+		new DefaultEditor("Bean1.java");
 
 		/* test opened object */
 		assertExpectedSelection("Bean1");
@@ -58,8 +75,9 @@ public class SeamConfigClassBaseOpenOnTest extends Seam3TestBase {
 	public void testConstructorOpenOn() {
 
 		/* open on bean class */
-		OpenOnHelper.checkOpenOnFileIsOpened(bot, SEAM_CONFIG, "s:parameters",
-				"Bean1.java");
+		new DefaultStyledText().selectText("s:parameters");
+		KeyboardFactory.getKeyboard().invokeKeyCombination(SWT.F3);
+		new DefaultEditor("Bean1.java");
 
 		/* test opened object */
 		assertExpectedSelection("Bean1");
@@ -69,8 +87,9 @@ public class SeamConfigClassBaseOpenOnTest extends Seam3TestBase {
 	public void testFieldOpenOn() {
 
 		/* open on bean class */
-		OpenOnHelper.checkOpenOnFileIsOpened(bot, SEAM_CONFIG, "b:value",
-				"Bean1.java");
+		new DefaultStyledText().selectText("b:value");
+		KeyboardFactory.getKeyboard().invokeKeyCombination(SWT.F3);
+		new DefaultEditor("Bean1.java");
 
 		/* test opened object */
 		assertExpectedSelection("value");
@@ -80,16 +99,16 @@ public class SeamConfigClassBaseOpenOnTest extends Seam3TestBase {
 	public void testMethodOpenOn() {
 
 		/* open on bean class */
-		OpenOnHelper.checkOpenOnFileIsOpened(bot, SEAM_CONFIG, "b:method",
-				"Bean1.java");
+		new DefaultStyledText().selectText("b:method");
+		KeyboardFactory.getKeyboard().invokeKeyCombination(SWT.F3);
+		new DefaultEditor("Bean1.java");
 
 		/* test opened object */
 		assertExpectedSelection("method");
 	}
 
 	private void assertExpectedSelection(String selectedString) {
-		assertEquals(selectedString, bot.activeEditor().toTextEditor()
-				.getSelection());
+		assertEquals(selectedString, new DefaultStyledText().getSelectionText());
 	}
 
 }

@@ -12,7 +12,6 @@ package org.jboss.tools.archives.ui.bot.test;
 
 import static org.junit.Assert.fail;
 
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.swt.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.swt.wait.WaitUntil;
@@ -20,7 +19,6 @@ import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.archives.reddeer.archives.ui.ProjectArchivesExplorer;
 import org.jboss.tools.archives.reddeer.component.Archive;
 import org.jboss.tools.archives.ui.bot.test.condition.FilesetIsInArchive;
-import org.junit.After;
 import org.junit.Test;
 
 /**
@@ -48,13 +46,6 @@ public class FilesetTest extends ArchivesTestBase {
 	private static final String EXCLUDES_2 = "*jar";
 	
 	private static final String INCLUDES_NEW = ".classpath";
-	
-	@After
-	public void cleanUp() {
-		for (Project project : projectExplorer.getProjects()) {
-			project.delete(true);
-		}
-	}
 	
 	@Test
 	public void testCreatingFileset() {

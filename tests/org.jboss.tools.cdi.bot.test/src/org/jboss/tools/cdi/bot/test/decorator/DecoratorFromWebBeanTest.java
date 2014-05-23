@@ -10,15 +10,22 @@
  ******************************************************************************/
 package org.jboss.tools.cdi.bot.test.decorator;
 
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
-import org.jboss.tools.cdi.bot.test.CDIConstants;
+import static org.junit.Assert.*;
+import org.jboss.reddeer.requirements.server.ServerReqState;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
+import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
+import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.jboss.tools.cdi.reddeer.CDIConstants;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
-import org.jboss.tools.cdi.bot.test.annotations.CDIWizardType;
-import org.jboss.tools.cdi.bot.test.editor.BeansEditor;
-import org.jboss.tools.cdi.bot.test.uiutils.actions.NewCDIFileWizard;
-import org.jboss.tools.cdi.bot.test.uiutils.wizards.CDIWizardBase;
+import org.jboss.tools.cdi.reddeer.cdi.ui.NewDecoratorCreationWizard;
+import org.jboss.tools.cdi.reddeer.common.model.ui.editor.EditorPartWrapper;
 import org.junit.After;
 import org.junit.Test;
 
@@ -30,6 +37,9 @@ import org.junit.Test;
  * 
  */
 
+@CleanWorkspace
+@OpenPerspective(JavaEEPerspective.class)
+@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.AS7_1)
 public class DecoratorFromWebBeanTest extends CDITestBase {
 	
 	private static final String ACCOUNT = "Account";
@@ -47,49 +57,54 @@ public class DecoratorFromWebBeanTest extends CDITestBase {
 
 	@After
 	public void cleanUp() {
-		packageExplorer.deleteAllProjects();
+		PackageExplorer pe = new PackageExplorer();
+		pe.open();
+		for(Project p: pe.getProjects()){
+			p.delete(true);
+		}
 	}
 	
 	@Test
 	public void testCreatingDecoratorWithMenu() {
 		
-		String[] path = (getProjectName() + "/" + CDIConstants.SRC
-				+ "/" + getPackageName()).split("/");
+		PackageExplorer pe = new PackageExplorer();
+		pe.open();
+		pe.getProject(getProjectName()).getProjectItem(CDIConstants.SRC,getPackageName(),ACCOUNT_JAVA).select();
 		
-		packageExplorer.show();
-		packageExplorer.selectTreeItem(ACCOUNT_JAVA, path);
 		
-		CDIWizardBase decoratorWizard = new NewCDIFileWizard(
-				CDIWizardType.DECORATOR).run();
+		NewDecoratorCreationWizard dw = new NewDecoratorCreationWizard();
+		dw.open();
 		
-		assertTrue(decoratorWizard.getName().equals(ACCOUNT_DECORATOR));
+		assertTrue(dw.getName().equals(ACCOUNT_DECORATOR));
 		
-		assertTrue(decoratorWizard.getDecoratedInterfaces().size() == 1);
+		assertTrue(dw.getDecoratedTypeInterfaces().size() == 1);
 		
-		assertTrue(decoratorWizard.getDecoratedInterfaces().
-				get(0).equals(getPackageName() + "." + ACCOUNT));
+		assertTrue(dw.getDecoratedTypeInterfaces().
+				get(0).getText().equals(getPackageName() + "." + ACCOUNT));
 		
-		assertTrue(decoratorWizard.canFinish());
+		assertTrue(new PushButton("Finish").isEnabled());
 		
-		decoratorWizard.finishWithWait();
+		dw.finish();
 		
-		packageExplorer.openFile(getProjectName(), 
-				CDIConstants.WEB_INF_BEANS_XML_PATH.split("/"));
+		pe.open();
+		pe.getProject(getProjectName()).getProjectItem(CDIConstants.WEB_INF_BEANS_XML_PATH.split("/")).open();
 		
-		SWTBotEditor editor = new SWTWorkbenchBot().activeEditor();
-		BeansEditor be = new BeansEditor(editor.getReference(), new SWTWorkbenchBot());
-		be.activatePage("Source");
-		SWTBotEclipseEditor activeEditor = bot.activeEditor().toTextEditor(); 
+		EditorPartWrapper ew = new EditorPartWrapper();
+		ew.activateSourcePage();
 		
-		assertTrue(activeEditor.getText().contains("\n <decorators>\n  " +
-				"<class>cdi.AccountDecorator</class>\n </decorators>"));
+		assertTrue(new DefaultStyledText().getText().contains(System.getProperty("line.separator")+
+				" <decorators>"+System.getProperty("line.separator")+"  " +
+				"<class>cdi.AccountDecorator</class>"+System.getProperty("line.separator")+" </decorators>"));
 		
-		activeEditor = packageExplorer.openFile(getProjectName(), CDIConstants.SRC, 
-				getPackageName(), ACCOUNT_DECORATOR_JAVA).toTextEditor();
+		pe.getProject(getProjectName()).getProjectItem(CDIConstants.SRC, 
+				getPackageName(), ACCOUNT_DECORATOR_JAVA).open();
+		
+		TextEditor activeEditor = new TextEditor(ACCOUNT_DECORATOR_JAVA);
 		
 		assertTrue(activeEditor.getText().contains("@Decorator"));
-		assertTrue(activeEditor.getText().contains("@Inject\n\t@Delegate\n\t@Any" +
-				"\n\tprivate Account account;"));
+		assertTrue(activeEditor.getText().contains("@Inject"+System.getProperty("line.separator")+"\t@Delegate"+
+				System.getProperty("line.separator")+"\t@Any" +
+				System.getProperty("line.separator")+"\tprivate Account account;"));
 		assertTrue(activeEditor.getText().contains("BigDecimal getBalance()"));
 		assertTrue(activeEditor.getText().contains("User getOwner()"));
 		assertTrue(activeEditor.getText().contains("void withdraw(BigDecimal amount)"));
@@ -101,30 +116,33 @@ public class DecoratorFromWebBeanTest extends CDITestBase {
 	@Test
 	public void testCreatingDecoratorWithWizard() {
 		
-		CDIWizardBase decoratorWizard = new NewCDIFileWizard(
-				CDIWizardType.DECORATOR).run();
-		decoratorWizard.setName(ACCOUNT_DECORATOR).
-			setPackage(getPackageName()).
-			addInterface(getPackageName() + "." + ACCOUNT).
-			finishWithWait();
+		NewDecoratorCreationWizard dw = new NewDecoratorCreationWizard();
+		dw.open();
+		dw.setName(ACCOUNT_DECORATOR);
+		dw.setPackage(getPackageName());
+		dw.addDecoratedTypeInterfaces(getPackageName() + "." + ACCOUNT);
+		dw.finish();
+	
+		PackageExplorer pe = new PackageExplorer();
+		pe.open();
+		pe.getProject(getProjectName()).getProjectItem(CDIConstants.WEB_INF_BEANS_XML_PATH.split("/")).open();
 		
-		packageExplorer.openFile(getProjectName(), 
-				CDIConstants.WEB_INF_BEANS_XML_PATH.split("/"));
-		
-		SWTBotEditor editor = new SWTWorkbenchBot().activeEditor();
-		BeansEditor be = new BeansEditor(editor.getReference(), new SWTWorkbenchBot());
-		be.activatePage("Source");
-		SWTBotEclipseEditor activeEditor = bot.activeEditor().toTextEditor();
+		EditorPartWrapper ew = new EditorPartWrapper();
+		ew.activateSourcePage();
 
-		assertTrue(activeEditor.getText().contains("\n <decorators>\n  " +
-				"<class>cdi.AccountDecorator</class>\n </decorators>"));
+		assertTrue(new DefaultStyledText().getText().contains(System.getProperty("line.separator")+
+				" <decorators>"+System.getProperty("line.separator")+"  " +
+				"<class>cdi.AccountDecorator</class>"+System.getProperty("line.separator")+" </decorators>"));
 		
-		activeEditor = packageExplorer.openFile(getProjectName(), CDIConstants.SRC, 
-				getPackageName(), ACCOUNT_DECORATOR_JAVA).toTextEditor();
+		pe.getProject(getProjectName()).getProjectItem(CDIConstants.SRC, 
+				getPackageName(), ACCOUNT_DECORATOR_JAVA).open();
+		
+		TextEditor activeEditor = new TextEditor(ACCOUNT_DECORATOR_JAVA);
 		
 		assertTrue(activeEditor.getText().contains("@Decorator"));
-		assertTrue(activeEditor.getText().contains("@Inject\n\t@Delegate\n\t@Any" +
-				"\n\tprivate Account account;"));
+		assertTrue(activeEditor.getText().contains("@Inject"+System.getProperty("line.separator")+"\t@Delegate"
+				+ System.getProperty("line.separator")+"\t@Any" +
+				System.getProperty("line.separator")+"\tprivate Account account;"));
 		assertTrue(activeEditor.getText().contains("BigDecimal getBalance()"));
 		assertTrue(activeEditor.getText().contains("User getOwner()"));
 		assertTrue(activeEditor.getText().contains("void withdraw(BigDecimal amount)"));

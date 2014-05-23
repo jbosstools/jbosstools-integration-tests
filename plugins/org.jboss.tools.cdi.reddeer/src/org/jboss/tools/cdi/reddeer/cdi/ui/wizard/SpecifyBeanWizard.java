@@ -19,6 +19,7 @@ public class SpecifyBeanWizard {
 	private List<String> inBeanQualifiers = null;
 	
 	public SpecifyBeanWizard() {
+		new DefaultShell("Specify CDI Bean for the Injection Point");
 	}
 	
 	public void add() {

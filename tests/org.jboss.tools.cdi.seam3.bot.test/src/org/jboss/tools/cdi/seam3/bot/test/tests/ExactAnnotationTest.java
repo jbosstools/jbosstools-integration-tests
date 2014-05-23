@@ -11,7 +11,16 @@
 
 package org.jboss.tools.cdi.seam3.bot.test.tests;
 
-import org.jboss.tools.cdi.bot.test.CDIConstants;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
+import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.requirements.server.ServerReqState;
+import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
+import org.jboss.tools.cdi.reddeer.CDIConstants;
 import org.jboss.tools.cdi.seam3.bot.test.base.SolderAnnotationTestBase;
 import org.jboss.tools.cdi.seam3.bot.test.util.SeamLibrary;
 import org.junit.After;
@@ -22,6 +31,9 @@ import org.junit.Test;
  * @author jjankovi
  *
  */
+@CleanWorkspace
+@OpenPerspective(JavaEEPerspective.class)
+@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.AS7_1)
 public class ExactAnnotationTest extends SolderAnnotationTestBase {
 
 	private static final String EXACT_INTERFACE = "exact-interface";
@@ -29,7 +41,11 @@ public class ExactAnnotationTest extends SolderAnnotationTestBase {
 	
 	@After
 	public void waitForJobs() {
-		projectExplorer.deleteAllProjects();
+		PackageExplorer pe = new PackageExplorer();
+		pe.open();
+		for(Project p: pe.getProjects()){
+			p.delete(true);
+		}
 	} 
 	
 	@Test
@@ -54,16 +70,18 @@ public class ExactAnnotationTest extends SolderAnnotationTestBase {
 		
 		importSeam3ProjectWithLibrary(projectName, SeamLibrary.SOLDER_3_1);
 		
-		packageExplorer.openFile(projectName, CDIConstants.SRC, 
-				getPackageName(), APPLICATION_CLASS).toTextEditor();
+		PackageExplorer pe = new PackageExplorer();
+		pe.open();
+		pe.getProject(projectName).getProjectItem(CDIConstants.SRC, getPackageName(), APPLICATION_CLASS).open();
+		new DefaultEditor(APPLICATION_CLASS);
 		
 		testMultipleBeansValidationProblemExists(projectName);
 				
 		editResourceUtil.replaceInEditor(managerClass, peopleManager + ".class");
 		testProperInjectBean(projectName, peopleManager + ".class", 
 				peopleManager);
-
-		bot.editorByTitle(APPLICATION_CLASS).show();
+		
+		new DefaultEditor(APPLICATION_CLASS);
 		
 		editResourceUtil.replaceInEditor(peopleManager + ".class", otherManager + ".class");
 		testProperInjectBean(projectName, otherManager + ".class", 

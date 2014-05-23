@@ -10,7 +10,9 @@
  ******************************************************************************/
 package org.jboss.tools.archives.ui.bot.test;
 
-import org.junit.BeforeClass;
+import static org.junit.Assert.assertTrue;
+
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -22,9 +24,10 @@ import org.junit.Test;
 public class BuildingProjectTest extends ArchivesTestBase {
 
 	private static String projectName = "pr1";
+	private final String ARCHIVE_NAME = projectName + ".jar";
 	
-	@BeforeClass
-	public static void setup() {
+	@Before
+	public void setup() {
 		importArchiveProjectWithoutRuntime(projectName);
 	}
 	
@@ -33,12 +36,14 @@ public class BuildingProjectTest extends ArchivesTestBase {
 		viewForProject(projectName)
 			.getProject()
 			.buildProjectFull();
+		assertTrue(projectExplorer.getProject(projectName).containsItem(ARCHIVE_NAME));
 	}
 	
 	@Test
 	public void testBuildingProjectWithExplorer() {
 		explorerForProject(projectName)
 			.buildProjectFull();
+		assertTrue(projectExplorer.getProject(projectName).containsItem(ARCHIVE_NAME));
 	}
 	
 }

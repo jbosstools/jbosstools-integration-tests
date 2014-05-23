@@ -1,11 +1,18 @@
 package org.jboss.tools.deltaspike.ui.bot.test;
 
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
+import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.label.DefaultLabel;
 import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.reddeer.uiforms.impl.hyperlink.DefaultHyperlink;
 import org.jboss.tools.cdi.reddeer.cdi.ui.CDIValidatorPreferencePage;
-import org.jboss.tools.ui.bot.ext.types.IDELabel;
+import org.jboss.tools.common.reddeer.label.IDELabel;
 import org.junit.Test;
 
 /**
@@ -14,6 +21,9 @@ import org.junit.Test;
  * @author jjankovi
  *
  */
+@CleanWorkspace
+@OpenPerspective(JavaEEPerspective.class)
+@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.AS7_1)
 public class ValidationsInPreferenceTest extends DeltaspikeTestBase {
 
 	@Test
@@ -21,8 +31,11 @@ public class ValidationsInPreferenceTest extends DeltaspikeTestBase {
 		
 		new CDIValidatorPreferencePage().open();
 		
-		bot.twistieByLabel("Extensions").toggle();
-		bot.twistieByLabel("Deltaspike").toggle();
+		new DefaultHyperlink("Extensions").activate();
+		new DefaultHyperlink("Deltaspike").activate();
+		
+		//bot.twistieByLabel("Extensions").toggle();
+		//bot.twistieByLabel("Deltaspike").toggle();
 		
 		checkDeltaspikeValidationPresense();
 		

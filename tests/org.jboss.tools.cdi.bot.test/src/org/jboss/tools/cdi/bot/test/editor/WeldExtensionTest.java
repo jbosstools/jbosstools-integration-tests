@@ -10,23 +10,31 @@
  ******************************************************************************/
 package org.jboss.tools.cdi.bot.test.editor;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
-import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.hamcrest.core.Is;
+import org.jboss.reddeer.requirements.server.ServerReqState;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
+import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.swt.api.Table;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.reddeer.workbench.exception.WorkbenchPartNotFound;
+import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
-import org.jboss.tools.cdi.bot.test.condition.OpenedEditorHasTitleCondition;
 import org.jboss.tools.cdi.reddeer.common.model.ui.AddIfClassAvailableDialog;
 import org.jboss.tools.cdi.reddeer.common.model.ui.AddIfSystemPropertyDialog;
 import org.jboss.tools.cdi.reddeer.common.model.ui.AddIncludeExcludeDialog;
-import org.jboss.tools.ui.bot.ext.types.IDELabel;
+import org.jboss.tools.cdi.reddeer.common.model.ui.editor.EditorPartWrapper;
+import org.jboss.tools.common.reddeer.label.IDELabel;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
@@ -39,9 +47,12 @@ import org.junit.Test;
  * @author jjankovi
  *
  */
+@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.AS7_1)
+@OpenPerspective(JavaEEPerspective.class)
+@CleanWorkspace
 public class WeldExtensionTest extends CDITestBase {
 
-	private BeansEditor beansEditor;
+	private EditorPartWrapper beansEditor;
 	
 	@Override
 	protected String getProjectName() {
@@ -53,7 +64,7 @@ public class WeldExtensionTest extends CDITestBase {
 		if (!projectHelper.projectExists(getProjectName())) {
 			projectHelper.createCDIProjectWithCDIWizard(getProjectName());
 		}
-		if (beansXmlNotOpened()) {
+		if (!beansXmlNotOpened()) {
 			openBeansXml();
 		}
 	}
@@ -110,7 +121,7 @@ public class WeldExtensionTest extends CDITestBase {
 		
 		beansEditor.removeIncludeExclude("org.test.remove1");
 		saveBeansXmlEditor();
-		bot.editorByTitle(IDELabel.WebProjectsTree.BEANS_XML).setFocus();
+		new DefaultEditor(IDELabel.WebProjectsTree.BEANS_XML);
 		
 		assertTableRowsCount(2);
 	}
@@ -118,7 +129,7 @@ public class WeldExtensionTest extends CDITestBase {
 	private void checkEditIncludeExclude() {
 		beansEditor.editIncludeExclude("org.test.add1", "org.test.edit1", false);
 		saveBeansXmlEditor();
-		bot.editorByTitle(IDELabel.WebProjectsTree.BEANS_XML).setFocus();
+		new DefaultEditor(IDELabel.WebProjectsTree.BEANS_XML);
 		
 		Table includeExcludeTable = beansEditor.getIncludeExcludeTable();
 		assertEquals(includeExcludeTable.getItem(0).getText(0), "include");
@@ -133,7 +144,7 @@ public class WeldExtensionTest extends CDITestBase {
 		dialog.finish();
 		
 		saveBeansXmlEditor();
-		bot.editorByTitle(IDELabel.WebProjectsTree.BEANS_XML).setFocus();
+		new DefaultEditor(IDELabel.WebProjectsTree.BEANS_XML);
 		
 		assertTrue("'class1' is not in beans editor", beansEditor.isObjectInEditor(
 				IDELabel.WebProjectsTree.BEANS_XML, 
@@ -150,7 +161,7 @@ public class WeldExtensionTest extends CDITestBase {
 		dialog.finish();
 		
 		saveBeansXmlEditor();
-		bot.editorByTitle(IDELabel.WebProjectsTree.BEANS_XML).setFocus();
+		new DefaultEditor(IDELabel.WebProjectsTree.BEANS_XML);
 		
 		assertTrue("'property name' is not in beans editor", beansEditor.isObjectInEditor(
 				IDELabel.WebProjectsTree.BEANS_XML, 
@@ -190,22 +201,20 @@ public class WeldExtensionTest extends CDITestBase {
 			new DefaultTreeItem("beans.xml", "Scan");
 		} catch (SWTLayerException exc) {
 			fail(errorMessage + exc.getMessage());
-		} catch (WidgetNotFoundException exc) {
-			fail(errorMessage + exc.getMessage());
 		}
 	}
 
 	private boolean beansXmlNotOpened() {
-		for (SWTBotEditor editor : bot.editors()) {
-			if (editor.getTitle().equals("beans.xml")) {
-				return false;
-			}
+		try{
+			beansEditor = new EditorPartWrapper();
+		} catch (WorkbenchPartNotFound ex){
+			return false;
 		}
 		return true;
 	}
 	
 	private static void saveBeansXmlEditor() {
-		bot.editorByTitle(IDELabel.WebProjectsTree.BEANS_XML).save();
+		new EditorPartWrapper().save();
 	}
 
 	private void openBeansXml() {
@@ -218,11 +227,7 @@ public class WeldExtensionTest extends CDITestBase {
 				IDELabel.WebProjectsTree.WEB_INF,
 				IDELabel.WebProjectsTree.BEANS_XML)
 			.open();
-		new WaitUntil(
-				new OpenedEditorHasTitleCondition(
-					IDELabel.WebProjectsTree.BEANS_XML));
-		
-		beansEditor = new BeansEditor(bot.activeEditor().getReference(), bot);
+		beansEditor = new EditorPartWrapper();
 	}
 	
 	private void assertTableRowsCount(int expectedRowCount) {

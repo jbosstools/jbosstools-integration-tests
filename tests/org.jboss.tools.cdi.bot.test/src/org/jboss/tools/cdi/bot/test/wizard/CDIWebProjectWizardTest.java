@@ -11,10 +11,21 @@
 
 package org.jboss.tools.cdi.bot.test.wizard;
 
-import org.jboss.tools.cdi.bot.test.CDIConstants;
+import static org.junit.Assert.*;
+import org.jboss.reddeer.requirements.server.ServerReqState;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.tools.cdi.reddeer.CDIConstants;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
 import org.junit.Test;
 
+@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.AS7_1)
+@OpenPerspective(JavaEEPerspective.class)
+@CleanWorkspace
 public class CDIWebProjectWizardTest extends CDITestBase {
 
 	@Override	
@@ -32,12 +43,11 @@ public class CDIWebProjectWizardTest extends CDITestBase {
 	@Test
 	public void testCDIWizard() {
 		if (projectHelper.projectExists(getProjectName())) {
-			LOGGER.info("CDI project was sucessfully created by CDI Web Project wizard");
+			PackageExplorer pe = new PackageExplorer();
+			pe.open();
 			assertTrue(projectHelper.checkCDISupport(getProjectName()));
-			LOGGER.info("Project has correctly set CDI support");		
 			assertTrue("Error: beans.xml should be created when using CDI Web Project wizard", 
-					packageExplorer.isFilePresent(getProjectName(),
-							CDIConstants.WEB_INF_BEANS_XML_PATH.split("/")));
+					pe.getProject(getProjectName()).containsItem(CDIConstants.WEB_INF_BEANS_XML_PATH.split("/")));
 		} else {
 			fail("CDI project was not succesfully created by CDI Web Project wizard");
 		}

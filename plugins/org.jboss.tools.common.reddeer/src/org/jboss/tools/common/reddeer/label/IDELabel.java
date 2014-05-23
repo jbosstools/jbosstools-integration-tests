@@ -78,7 +78,7 @@ public class IDELabel {
     public static final String GUVNOR_SWITCH_TO_VERSION = "Switch to Version...";
     public static final String NAVIGATION = "Navigation";
     public static final String MAXIMIZE_ACTIVE_VIEW_OR_EDITOR = "Maximize Active View or Editor";
-    public static final String OPEN_CDI_NAMED_BEAN = "Open CDI Named Bean";
+    public static final String OPEN_CDI_NAMED_BEAN = "Open CDI Named Bean...";
     public static final String REFRESH = "Refresh";
     public static final String CUT = "Cut";
     public static final String COPY = "Copy";

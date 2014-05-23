@@ -9,36 +9,32 @@
  * Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
 
+
 package org.jboss.tools.cdi.bot.test.uiutils;
 
-import org.eclipse.swtbot.swt.finder.keyboard.KeyboardFactory;
-import org.eclipse.swtbot.swt.finder.keyboard.Keystrokes;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import static org.junit.Assert.*;
+import org.eclipse.swt.SWT;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
-import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.eclipse.jst.servlet.ui.WebProjectFirstPage;
+import org.jboss.reddeer.eclipse.jst.servlet.ui.WebProjectWizard;
+import org.jboss.reddeer.swt.condition.JobIsRunning;
+import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.swt.exception.WaitTimeoutExpiredException;
+import org.jboss.reddeer.swt.impl.button.CancelButton;
+import org.jboss.reddeer.swt.impl.button.CheckBox;
+import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.tools.cdi.bot.test.CDIConstants;
-import org.jboss.tools.cdi.bot.test.uiutils.actions.NewFileWizardAction;
-import org.jboss.tools.cdi.bot.test.uiutils.wizards.DynamicWebProjectWizard;
-import org.jboss.tools.ui.bot.ext.SWTBotExt;
-import org.jboss.tools.ui.bot.ext.SWTBotFactory;
-import org.jboss.tools.ui.bot.ext.SWTUtilExt;
-import org.jboss.tools.ui.bot.ext.condition.ProgressInformationShellIsActiveCondition;
-import org.jboss.tools.ui.bot.ext.condition.ShellIsActiveCondition;
-import org.jboss.tools.ui.bot.ext.condition.TaskDuration;
-import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
-import org.jboss.tools.ui.bot.ext.types.IDELabel;
-import org.jboss.tools.ui.bot.ext.view.ProjectExplorer;
+import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
+import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.tools.cdi.reddeer.CDIConstants;
+import org.jboss.tools.cdi.reddeer.cdi.ui.CDIProjectWizard;
+import org.jboss.tools.common.reddeer.label.IDELabel;
 
 public class CDIProjectHelper {
 	
-	private SWTBotExt bot = SWTBotFactory.getBot();
-	private SWTUtilExt util = SWTBotFactory.getUtil();
-	private ProjectExplorer projectExplorer = SWTBotFactory.getProjectexplorer();
 	
 	/**
 	 * Method creates new CDI Project with CDI Web Project wizard
@@ -46,9 +42,11 @@ public class CDIProjectHelper {
 	 */
 	public void createCDIProjectWithCDIWizard(String projectName) {
 		
-		new NewFileWizardAction().run()
-			.selectTemplate(CDIConstants.CDI_GROUP, CDIConstants.CDI_WEB_PROJECT).next();
-		new DynamicWebProjectWizard().setProjectName(projectName).finishWithWait();		
+		CDIProjectWizard cw = new CDIProjectWizard();
+		cw.open();
+		WebProjectFirstPage wp = (WebProjectFirstPage)cw.getWizardPage(0);
+		wp.setProjectName(projectName);
+		cw.finish();
 	}
 	
 	/**
@@ -66,10 +64,18 @@ public class CDIProjectHelper {
 	 * @param projectName
 	 */
 	public void createDynamicWebProjectWithCDIPreset(String projectName) {
-		new NewFileWizardAction().run()
-				.selectTemplate(IDELabel.PreferencesDialog.JBOSS_TOOLS_WEB, 
-						IDELabel.JBossCentralEditor.DYNAMIC_WEB_PROJECT).next();
-		new DynamicWebProjectWizard().setProjectName(projectName).setCDIPreset().finishWithWait();
+		WebProjectWizard ww = new WebProjectWizard();
+		ww.open();
+		WebProjectFirstPage fp = (WebProjectFirstPage)ww.getWizardPage(0);
+		fp.setProjectName(projectName);
+		fp.setConfiguration("Dynamic Web Project with CDI 1.0 (Context and Dependency Injection)");
+		ww.finish();
+	}
+	
+	public boolean projectExists(String projectName){
+		PackageExplorer pe = new PackageExplorer();
+		pe.open();
+		return pe.containsProject(projectName);
 	}
 	
 	/**
@@ -77,27 +83,19 @@ public class CDIProjectHelper {
 	 * @param projectName
 	 */
 	public void createDynamicWebProjectWithCDIFacets(String projectName) {
-		new NewFileWizardAction().run()
-				.selectTemplate(IDELabel.PreferencesDialog.JBOSS_TOOLS_WEB, 
-						IDELabel.JBossCentralEditor.DYNAMIC_WEB_PROJECT).next();
-		new DynamicWebProjectWizard().setProjectName(projectName).setCDIFacet().finishWithWait();
-	}
-	
-	/**
-	 * Methods checks if project with entered name exists in actual workspace
-	 * @param projectName
-	 * @return 
-	 */
-	public boolean projectExists(String projectName) {
-		PackageExplorer packageExplorer = new PackageExplorer();
-		packageExplorer.open();
-		return packageExplorer.containsProject(projectName);
+		WebProjectWizard ww = new WebProjectWizard();
+		ww.open();
+		WebProjectFirstPage fp = (WebProjectFirstPage)ww.getWizardPage(0);
+		fp.setProjectName(projectName);
+		fp.activateFacet(CDIConstants.CDI_FACET, null);
+		ww.finish();
 	}
 	
 	/**
 	 * Set system default jdk in the project
 	 * @param projectName
 	 */
+	/*
 	public void addDefaultJDKIntoProject(String projectName) {
 		
 		projectExplorer.selectProject(projectName);
@@ -115,7 +113,7 @@ public class CDIProjectHelper {
 				LIBRARIES_TAB_LABEL).activate();
 		SWTBotTree librariesTree = bot.treeWithLabel(
 				"JARs and class folders on the build path:");
-		/** remove jdk currently configured on project */
+		
 		for (int i = 0; i < librariesTree.rowCount(); i++) {
 			SWTBotTreeItem libraryItem = librariesTree.
 					getAllItems()[i];
@@ -127,7 +125,7 @@ public class CDIProjectHelper {
 		}
 		bot.button(IDELabel.Button.REMOVE).click();
 		
-		/** add default jdk of system */
+		
 		bot.button(IDELabel.Button.ADD_LIBRARY).click();
 		bot.waitForShell(IDELabel.Shell.ADD_LIBRARY);
 		SWTBotShell libraryShell = bot.shell(
@@ -145,16 +143,17 @@ public class CDIProjectHelper {
 		util.waitForNonIgnoredJobs();
 		
 	}
-	
+	*/
 	/**
 	 * Method creates new Dynamic Web Project
 	 * @param projectName
 	 */
 	public void createDynamicWebProject(String projectName) {
-		new NewFileWizardAction().run()
-				.selectTemplate(IDELabel.PreferencesDialog.JBOSS_TOOLS_WEB, 
-						IDELabel.JBossCentralEditor.DYNAMIC_WEB_PROJECT).next();
-		new DynamicWebProjectWizard().setProjectName(projectName).finishWithWait();
+		WebProjectWizard ww = new WebProjectWizard();
+		ww.open();
+		WebProjectFirstPage fp = (WebProjectFirstPage)ww.getWizardPage(0);
+		fp.setProjectName(projectName);
+		ww.finish();
 	}
 	
 	/**
@@ -162,14 +161,14 @@ public class CDIProjectHelper {
 	 * @param projectName
 	 */
 	public void addCDISupport(String projectName) {
-		projectExplorer.selectProject(projectName);
+		PackageExplorer pe = new PackageExplorer();
+		pe.open();
+		pe.getProject(projectName).select();
 		new ContextMenu(IDELabel.Menu.PACKAGE_EXPLORER_CONFIGURE, 
 				CDIConstants.ADD_CDI_SUPPORT).select();
 		new DefaultShell("Properties for " + projectName + " (Filtered)");
-		new PushButton(IDELabel.Button.OK).click();
-		bot.waitWhile(new 
-				ProgressInformationShellIsActiveCondition(), 
-				TaskDuration.LONG.getTimeout());
+		new OkButton().click();
+		new WaitWhile(new JobIsRunning(),TimePeriod.LONG);
 	}
 	
 	/**
@@ -177,14 +176,26 @@ public class CDIProjectHelper {
 	 * @param projectName
 	 */
 	public void addCDISupportWithEnterKey(String projectName) {
-		projectExplorer.selectProject(projectName);
+		PackageExplorer pe = new PackageExplorer();
+		pe.open();
+		pe.getProject(projectName).select();
 		new ContextMenu(IDELabel.Menu.PACKAGE_EXPLORER_CONFIGURE, 
 				CDIConstants.ADD_CDI_SUPPORT).select();
 		new DefaultShell("Properties for " + projectName + " (Filtered)");
-		KeyboardFactory.getSWTKeyboard().pressShortcut(Keystrokes.CR, Keystrokes.LF);
-		bot.waitWhile(new 
-				ProgressInformationShellIsActiveCondition(), 
-				TaskDuration.LONG.getTimeout());
+		KeyboardFactory.getKeyboard().invokeKeyCombination(SWT.CR);
+		try{
+			new WaitWhile(new ShellWithTextIsAvailable("Properties for " + projectName + " (Filtered)"));
+		} catch (WaitTimeoutExpiredException ex){
+			//try Win OS enter
+			KeyboardFactory.getKeyboard().invokeKeyCombination(SWT.LF);
+			try{
+				new WaitWhile(new ShellWithTextIsAvailable("Properties for " + projectName + " (Filtered)"));
+			} catch (WaitTimeoutExpiredException e){
+				new CancelButton().click();
+				fail("Shell doesnt react on enter key press");
+			}
+		}
+		new WaitWhile(new JobIsRunning(),TimePeriod.LONG);
 	}
 	
 	/**
@@ -193,16 +204,14 @@ public class CDIProjectHelper {
 	 * @return
 	 */
 	public boolean checkCDISupport(String projectName) {
-		projectExplorer.selectProject(projectName);
-		
-		SWTBotTree tree = projectExplorer.bot().tree();
-		ContextMenuHelper.prepareTreeItemForContextMenu(tree);
-	    new SWTBotMenu(ContextMenuHelper.getContextMenu(
-	    		tree,IDELabel.Menu.PROPERTIES,false)).click();
-	    
-	    bot.tree().expandNode(CDIConstants.CDI_PROPERTIES_SETTINGS).select();	    	    
-		boolean isCDISupported = bot.checkBox().isChecked();
-		bot.button(IDELabel.Button.CANCEL).click();
+		PackageExplorer pe = new PackageExplorer();
+		pe.open();
+		pe.getProject(projectName).select();
+		new ContextMenu("Properties").select();
+		new DefaultShell("Properties for "+projectName);
+		new DefaultTreeItem(CDIConstants.CDI_PROPERTIES_SETTINGS).select();
+		boolean isCDISupported = new CheckBox().isChecked();
+		new CancelButton().click();
 		return isCDISupported;
 	}
 	

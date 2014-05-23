@@ -11,6 +11,14 @@
 
 package org.jboss.tools.cdi.bot.test.quickfix.injection;
 
+import static org.junit.Assert.*;
+import org.jboss.reddeer.requirements.server.ServerReqState;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
+import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.cdi.bot.test.annotations.CDIWizardType;
 import org.jboss.tools.cdi.bot.test.annotations.ValidationType;
 import org.jboss.tools.cdi.bot.test.quickfix.base.EligibleInjectionQuickFixTestBase;
@@ -23,7 +31,9 @@ import org.junit.Test;
  * @author jjankovi
  *
  */
-
+@CleanWorkspace
+@OpenPerspective(JavaEEPerspective.class)
+@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.AS7_1)
 public class ProblemEligibleInjectionTest extends EligibleInjectionQuickFixTestBase {
 	
 	private static final String ANIMAL = "Animal";
@@ -34,7 +44,6 @@ public class ProblemEligibleInjectionTest extends EligibleInjectionQuickFixTestB
 	@After
 	public void waitForJobs() {
 		editResourceUtil.deletePackage(getProjectName(), getPackageName());		
-		util.waitForNonIgnoredJobs();
 	}
 	
 	@Test
@@ -57,11 +66,10 @@ public class ProblemEligibleInjectionTest extends EligibleInjectionQuickFixTestB
 
 		resolveMultipleBeans(ValidationType.MULTIPLE_BEAN_ELIGIBLE, DOG, QUALIFIER, QualifierOperation.ADD);
 
-		bot.editorByTitle(BROKEN_FARM + ".java").show();		
-		String code = bot.activeEditor().toTextEditor().getText();
-		assertTrue(code.contains("@Inject @" + QUALIFIER));
-		code = bot.editorByTitle(DOG + ".java").toTextEditor().getText();
-		assertTrue(code.contains("@" + QUALIFIER));
+		TextEditor textEditor = new TextEditor(BROKEN_FARM + ".java");
+		assertTrue(textEditor.getText().contains("@Inject @" + QUALIFIER));
+		textEditor = new TextEditor(DOG + ".java");
+		assertTrue(textEditor.getText().contains("@" + QUALIFIER));
 	}
 	
 	@Test
@@ -81,11 +89,10 @@ public class ProblemEligibleInjectionTest extends EligibleInjectionQuickFixTestB
 		
 		resolveMultipleBeans(ValidationType.MULTIPLE_BEAN_ELIGIBLE, DOG, QUALIFIER, QualifierOperation.ADD);
 
-		bot.editorByTitle(BROKEN_FARM + ".java").show();
-		String code = bot.activeEditor().toTextEditor().getText();
-		assertTrue(code.contains("@Inject @" + QUALIFIER));
-		code = bot.editorByTitle(DOG + ".java").toTextEditor().getText();
-		assertTrue(code.contains("@" + QUALIFIER));
+		TextEditor textEditor = new TextEditor(BROKEN_FARM + ".java");
+		assertTrue(textEditor.getText().contains("@Inject @" + QUALIFIER));
+		textEditor = new TextEditor(DOG + ".java");
+		assertTrue(textEditor.getText().contains("@" + QUALIFIER));
 	}
 	
 	@Test
@@ -108,11 +115,10 @@ public class ProblemEligibleInjectionTest extends EligibleInjectionQuickFixTestB
 
 		resolveMultipleBeans(ValidationType.MULTIPLE_BEAN_ELIGIBLE, DOG, QUALIFIER, QualifierOperation.REMOVE);
 		
-		bot.editorByTitle(BROKEN_FARM + ".java").show();
-		String code = bot.activeEditor().toTextEditor().getText();
-		assertTrue(code.contains("@Inject private") || code.contains("@Inject  private"));
-		code = bot.editorByTitle(DOG + ".java").toTextEditor().getText();
-		assertTrue(!code.contains("@" + QUALIFIER));
+		TextEditor textEditor = new TextEditor(BROKEN_FARM + ".java");
+		assertTrue(textEditor.getText().contains("@Inject private") ||textEditor.getText().contains("@Inject  private"));
+		textEditor = new TextEditor(DOG + ".java");
+		assertTrue(!textEditor.getText().contains("@" + QUALIFIER));
 	}
 	
 	@Test
@@ -135,11 +141,9 @@ public class ProblemEligibleInjectionTest extends EligibleInjectionQuickFixTestB
 
 		resolveMultipleBeans(ValidationType.NO_BEAN_ELIGIBLE, DOG, QUALIFIER, QualifierOperation.ADD);
 
-		bot.editorByTitle(BROKEN_FARM + ".java").show();
-		String code = bot.activeEditor().toTextEditor().getText();
-		assertTrue(code.contains("@Inject @" + QUALIFIER));
-		code = bot.editorByTitle(DOG + ".java").toTextEditor().getText();
-		assertTrue(code.contains("@" + QUALIFIER));
+		TextEditor textEditor = new TextEditor(BROKEN_FARM + ".java");
+		textEditor = new TextEditor(DOG + ".java");
+		assertTrue(textEditor.getText().contains("@" + QUALIFIER));
 		
 	}
 	
@@ -164,11 +168,10 @@ public class ProblemEligibleInjectionTest extends EligibleInjectionQuickFixTestB
 
 		resolveMultipleBeans(ValidationType.NO_BEAN_ELIGIBLE, DOG, QUALIFIER, QualifierOperation.REMOVE);
 
-		bot.editorByTitle(BROKEN_FARM + ".java").show();
-		String code = bot.activeEditor().toTextEditor().getText();
-		assertTrue(code.contains("@Inject private") || code.contains("@Inject  private"));
-		code = bot.editorByTitle(DOG + ".java").toTextEditor().getText();
-		assertFalse(code.contains("@" + QUALIFIER));
+		TextEditor textEditor = new TextEditor(BROKEN_FARM + ".java");
+		assertTrue(textEditor.getText().contains("@Inject private") || textEditor.getText().contains("@Inject  private"));
+		textEditor = new TextEditor(DOG + ".java");
+		assertFalse(textEditor.getText().contains("@" + QUALIFIER));
 		
 	}
 

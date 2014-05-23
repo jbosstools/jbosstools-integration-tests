@@ -12,6 +12,12 @@
 package org.jboss.tools.cdi.bot.test.quickfix.test;
 
 
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
+import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
 import org.jboss.tools.cdi.bot.test.annotations.CDIWizardType;
 import org.jboss.tools.cdi.bot.test.annotations.ValidationType;
@@ -24,7 +30,9 @@ import org.junit.Test;
  * 
  * @author Jaroslav Jankovic
  */
-
+@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.AS7_1)
+@OpenPerspective(JavaEEPerspective.class)
+@CleanWorkspace
 public class InterceptorValidationQuickFixTest extends CDITestBase {
 	
 	private static IValidationProvider validationProvider = new InterceptorValidationProvider();
@@ -43,7 +51,7 @@ public class InterceptorValidationQuickFixTest extends CDITestBase {
 				getPackageName(), null, "/resources/quickfix/interceptor/" +
 						"InterceptorWithStateless.java.cdi");
 
-		editResourceUtil.replaceInEditor("InterceptorComponent", className);
+		editResourceUtil.replaceInEditor(className+".java","InterceptorComponent", className);
 		
 		quickFixHelper.checkQuickFix(ValidationType.STATELESS, getProjectName(), validationProvider());
 			
@@ -59,7 +67,7 @@ public class InterceptorValidationQuickFixTest extends CDITestBase {
 				getPackageName(), null, "/resources/quickfix/interceptor/" +
 						"InterceptorWithNamed.java.cdi");
 
-		editResourceUtil.replaceInEditor("InterceptorComponent", className);
+		editResourceUtil.replaceInEditor(className+".java","InterceptorComponent", className);
 		
 		quickFixHelper.checkQuickFix(ValidationType.NAMED, getProjectName(), validationProvider());
 		
@@ -75,7 +83,7 @@ public class InterceptorValidationQuickFixTest extends CDITestBase {
 				getPackageName(), null, "/resources/quickfix/interceptor/" +
 						"InterceptorWithProducer.java.cdi");
 
-		editResourceUtil.replaceInEditor("InterceptorComponent", className);
+		editResourceUtil.replaceInEditor(className+".java","InterceptorComponent", className);
 		
 		quickFixHelper.checkQuickFix(ValidationType.PRODUCES, getProjectName(), validationProvider());
 		
@@ -91,7 +99,7 @@ public class InterceptorValidationQuickFixTest extends CDITestBase {
 				getPackageName(), null, "/resources/quickfix/interceptor/" +
 						"InterceptorWithDisposes.java.cdi");
 
-		editResourceUtil.replaceInEditor("InterceptorComponent", className);
+		editResourceUtil.replaceInEditor(className+".java","InterceptorComponent", className);
 		
 		quickFixHelper.checkQuickFix(ValidationType.DISPOSES, getProjectName(), validationProvider());
 		
@@ -107,10 +115,10 @@ public class InterceptorValidationQuickFixTest extends CDITestBase {
 				getPackageName(), null, "/resources/quickfix/interceptor/" +
 						"InterceptorWithDisposes.java.cdi");
 		
-		editResourceUtil.replaceInEditor("import javax.enterprise.inject.Disposes;", 
+		editResourceUtil.replaceInEditor(className+".java","import javax.enterprise.inject.Disposes;", 
 				"import javax.enterprise.event.Observes;");
-		editResourceUtil.replaceInEditor("@Disposes", "@Observes");
-		editResourceUtil.replaceInEditor("InterceptorComponent", className);
+		editResourceUtil.replaceInEditor(className+".java","@Disposes", "@Observes");
+		editResourceUtil.replaceInEditor(className+".java","InterceptorComponent", className);
 		
 		quickFixHelper.checkQuickFix(ValidationType.OBSERVES, getProjectName(), validationProvider());
 			
@@ -126,7 +134,7 @@ public class InterceptorValidationQuickFixTest extends CDITestBase {
 				getPackageName(), null, "/resources/quickfix/interceptor/" +
 						"InterceptorWithSpecializes.java.cdi");
 
-		editResourceUtil.replaceInEditor("InterceptorComponent", className);
+		editResourceUtil.replaceInEditor(className+".java","InterceptorComponent", className);
 		
 		quickFixHelper.checkQuickFix(ValidationType.SPECIALIZES, getProjectName(), validationProvider());
 			

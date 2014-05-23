@@ -18,25 +18,19 @@ import java.util.List;
 
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.impl.menu.ShellMenu;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.wait.AbstractWait;
+import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.tools.cdi.bot.test.annotations.ProblemsType;
 import org.jboss.tools.cdi.bot.test.annotations.ValidationType;
 import org.jboss.tools.cdi.bot.test.quickfix.validators.IValidationProvider;
-import org.jboss.tools.cdi.bot.test.uiutils.wizards.OpenOnOptionsDialog;
-import org.jboss.tools.cdi.bot.test.uiutils.wizards.QuickFixDialogWizard;
-import org.jboss.tools.ui.bot.ext.SWTBotExt;
-import org.jboss.tools.ui.bot.ext.SWTBotFactory;
-import org.jboss.tools.ui.bot.ext.SWTJBTExt;
-import org.jboss.tools.ui.bot.ext.SWTUtilExt;
-import org.jboss.tools.ui.bot.ext.Timing;
-import org.jboss.tools.ui.bot.ext.condition.ShellIsActiveCondition;
-import org.jboss.tools.ui.bot.ext.types.IDELabel;
+import org.jboss.tools.cdi.reddeer.cdi.ui.wizard.QuickFixWizard;
+import org.jboss.tools.common.reddeer.label.IDELabel;
 
 public class QuickFixHelper {
-	
-	private SWTUtilExt util = SWTBotFactory.getUtil();
-	private SWTBotExt bot = SWTBotFactory.getBot();
 	
 	
 	public void checkQuickFix(ValidationType validationType, String projectName,
@@ -53,6 +47,7 @@ public class QuickFixHelper {
 	 * @param validationType
 	 * @param compType
 	 */
+	
 	public void checkQuickFix(ValidationType validationType, String text, String projectName,
 			IValidationProvider validationProvider) {
 		TreeItem validationProblem = getProblem(
@@ -72,14 +67,13 @@ public class QuickFixHelper {
 	 * @return
 	 */
 	public TreeItem getProblem(ValidationType validationType, String projectName, IValidationProvider validationProvider) {		
-		IValidationProvider validationErrorsProvider = validationProvider;
 		List<String> validationProblems = null;
 		List<TreeItem> problemsInProblemsView = null;
-		if (validationErrorsProvider.getAllWarningsAnnotation().contains(validationType)) {
-			validationProblems = validationErrorsProvider.getAllWarningForAnnotationType(validationType);
+		if (validationProvider.getAllWarningsAnnotation().contains(validationType)) {
+			validationProblems = validationProvider.getAllWarningForAnnotationType(validationType);
 			problemsInProblemsView = getProblems(ProblemsType.WARNINGS, projectName);
 		} else {
-			validationProblems = validationErrorsProvider.getAllErrorsForAnnotationType(validationType);
+			validationProblems = validationProvider.getAllErrorsForAnnotationType(validationType);
 			problemsInProblemsView = getProblems(ProblemsType.ERRORS, projectName);
 		}
 		for (TreeItem ti: problemsInProblemsView) {
@@ -98,16 +92,12 @@ public class QuickFixHelper {
 	 * chooses first option and confirms it (resolve it)
 	 * @param ti
 	 */
+	
 	private void resolveQuickFix(TreeItem ti, String text) {
 		openQuickFix(ti);
 		
-		QuickFixDialogWizard qfWizard = new QuickFixDialogWizard();
+		QuickFixWizard qfWizard = new QuickFixWizard();
 		
-		/**
-		 * if text is not specified, choose the first CDI 
-		 * quickfix available proposal. Otherwise choose
-		 * the one contains entered text
-		 */
 		String firstFix = null;
 		if (text == null) {
 			 firstFix = qfWizard.getDefaultCDIQuickFix();
@@ -116,17 +106,14 @@ public class QuickFixHelper {
 		}
 		String firstResource = qfWizard.getResources().get(0);
 		
-		qfWizard.setFix(firstFix).setResource(firstResource).finish();
+		qfWizard.setFix(firstFix);
+		qfWizard.setResource(firstResource);
+		qfWizard.finish();
 		
-		/**
-		 * when creating beans.xml, user has to define location
-		 */
 		if (text != null && text.equals("Create File beans.xml")) {
-			bot.waitUntil(new ShellIsActiveCondition("New beans.xml File"));
-			bot.button(IDELabel.Button.FINISH).click();
+			new DefaultShell("New beans.xml File");
+			new PushButton(IDELabel.Button.FINISH).click();
 		}
-		
-		util.waitForNonIgnoredJobs();
 	}
 	
 	/**
@@ -136,13 +123,10 @@ public class QuickFixHelper {
 	 * @param titleName
 	 * @return
 	 */
-	public OpenOnOptionsDialog openOnDialog(String openOnString, String titleName) {
-		SWTJBTExt.selectTextInSourcePane(bot, titleName,
-				openOnString, 0, openOnString.length());
-		bot.menu(IDELabel.Menu.EDIT).menu(IDELabel.Menu.QUICK_FIX).click();	
-		bot.sleep(Timing.time1S());
-		
-		return new OpenOnOptionsDialog(bot);
+	
+	public void openOnDialog() {
+		new ShellMenu(IDELabel.Menu.EDIT,IDELabel.Menu.QUICK_FIX).select();	
+		new DefaultShell();
 	}
 	
 	/**
@@ -162,7 +146,7 @@ public class QuickFixHelper {
 	public List<TreeItem> getProblems(ProblemsType problemType, String projectName) {
 		ProblemsView pv = new ProblemsView();
 		pv.open();
-		AbstractWait.sleep(5000); //wait for problems view to refresh
+		AbstractWait.sleep(TimePeriod.NORMAL); //wait for problems view to refresh
 		List<TreeItem> result = new ArrayList<TreeItem>();
 		if (problemType == ProblemsType.WARNINGS) {
 			for(TreeItem warning: pv.getAllWarnings()){

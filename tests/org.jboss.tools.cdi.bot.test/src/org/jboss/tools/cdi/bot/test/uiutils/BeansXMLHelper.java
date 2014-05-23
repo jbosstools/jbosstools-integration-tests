@@ -11,13 +11,14 @@
 
 package org.jboss.tools.cdi.bot.test.uiutils;
 
-import org.jboss.tools.cdi.bot.test.CDIConstants;
-import org.jboss.tools.cdi.bot.test.annotations.CDIWizardType;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
+import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
+import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
+import org.jboss.tools.cdi.reddeer.CDIConstants;
 import org.jboss.tools.cdi.bot.test.openon.OpenOnTest;
-import org.jboss.tools.ui.bot.ext.SWTBotExt;
-import org.jboss.tools.ui.bot.ext.SWTBotFactory;
-import org.jboss.tools.ui.bot.ext.types.IDELabel;
-import org.jboss.tools.ui.bot.ext.view.PackageExplorer;
+import org.jboss.tools.cdi.reddeer.cdi.ui.NewBeansXMLCreationWizard;
+import org.jboss.tools.common.reddeer.label.IDELabel;
 
 /**
  * Helper for beans.xml validation
@@ -40,11 +41,8 @@ public class BeansXMLHelper {
 			+ "beansXmlWithStereotype.xml.cdi";
 	private static final String BEANS_XML_WITH_ALTERNATIVE = "/resources/beansXML/"
 			+ "beansXmlWithAlternative.xml.cdi";
-
-	private SWTBotExt bot = SWTBotFactory.getBot();
-	private PackageExplorer packageExplorer = SWTBotFactory.getPackageexplorer();
+	
 	private EditorResourceHelper editResourceUtil = new EditorResourceHelper();
-	private CDIWizardHelper wizard = new CDIWizardHelper();
 	
 	/**
 	 * Methods creates beans.xml with no tags for entered project.
@@ -85,10 +83,10 @@ public class BeansXMLHelper {
 		createBeansXML(projectName);
 		replaceBeansXMLContent(projectName, BEANS_XML_WITH_INTERCEPTOR);
 		if (className == null || className.length() == 0) {
-			editResourceUtil.replaceInEditor("<class>Component</class>",
+			editResourceUtil.replaceInEditor("beans.xml","<class>Component</class>",
 					"<class></class>");
 		} else {
-			editResourceUtil.replaceInEditor("Component", packageName + "."
+			editResourceUtil.replaceInEditor("beans.xml","Component", packageName + "."
 					+ className);
 		}
 
@@ -110,10 +108,10 @@ public class BeansXMLHelper {
 		createBeansXML(projectName);
 		replaceBeansXMLContent(projectName, BEANS_XML_WITH_DECORATOR);
 		if (className == null || className.length() == 0) {
-			editResourceUtil.replaceInEditor("<class>Component</class>",
+			editResourceUtil.replaceInEditor("beans.xml","<class>Component</class>",
 					"<class></class>");
 		} else {
-			editResourceUtil.replaceInEditor("Component", packageName + "."
+			editResourceUtil.replaceInEditor("beans.xml","Component", packageName + "."
 					+ className);
 		}
 
@@ -135,11 +133,11 @@ public class BeansXMLHelper {
 		createBeansXML(projectName);
 		replaceBeansXMLContent(projectName, BEANS_XML_WITH_STEREOTYPE);
 		if (className == null || className.length() == 0) {
-			editResourceUtil.replaceInEditor(
+			editResourceUtil.replaceInEditor("beans.xml",
 					"<stereotype>Component</stereotype>",
 					"<stereotype></stereotype>");
 		} else {
-			editResourceUtil.replaceInEditor("Component", packageName + "."
+			editResourceUtil.replaceInEditor("beans.xml","Component", packageName + "."
 					+ className);
 		}
 
@@ -166,10 +164,10 @@ public class BeansXMLHelper {
 		createBeansXML(projectName);
 		replaceBeansXMLContent(projectName, BEANS_XML_WITH_ALTERNATIVE);
 		if (className == null || className.length() == 0) {
-			editResourceUtil.replaceInEditor("<class>Component</class>",
+			editResourceUtil.replaceInEditor("beans.xml","<class>Component</class>",
 					"<class></class>");
 		} else {
-			editResourceUtil.replaceInEditor("Component", packageName + "."
+			editResourceUtil.replaceInEditor("beans.xml","Component", packageName + "."
 					+ className, save);
 		}
 	}
@@ -180,16 +178,20 @@ public class BeansXMLHelper {
 	 * 
 	 * @param projectName
 	 */
+	
 	private void createBeansXML(String projectName) {
-
-		if (!packageExplorer.isFilePresent(projectName,
+		Project p = new PackageExplorer().getProject(projectName);
+		
+		if (!p.containsItem(
 				CDIConstants.META_INF_BEANS_XML_PATH.split("/"))
-				&& !packageExplorer.isFilePresent(projectName,
+				&& !p.containsItem(
 						CDIConstants.WEB_INF_BEANS_XML_PATH.split("/"))) {
-
-			wizard.createCDIComponent(CDIWizardType.BEANS_XML, "beans.xml",
-					projectName + "/" + IDELabel.WebProjectsTree.WEB_CONTENT + "/"
-							+ IDELabel.WebProjectsTree.WEB_INF, null);
+			
+			NewBeansXMLCreationWizard xw = new NewBeansXMLCreationWizard();
+			xw.open();
+			xw.setSourceFolder(projectName,IDELabel.WebProjectsTree.WEB_CONTENT,
+					IDELabel.WebProjectsTree.WEB_INF);
+			xw.finish();
 		}
 	}
 
@@ -201,19 +203,20 @@ public class BeansXMLHelper {
 	 * @param projectName
 	 * @param path
 	 */
+	
 	private void replaceBeansXMLContent(String projectName, String path) {
-
-		if (packageExplorer.isFilePresent(projectName,
-				CDIConstants.WEB_INF_BEANS_XML_PATH.split("/"))) {
-			packageExplorer.openFile(projectName,
-					CDIConstants.WEB_INF_BEANS_XML_PATH.split("/"));
+		Project p = new PackageExplorer().getProject(projectName);
+		
+		if (p.containsItem(CDIConstants.WEB_INF_BEANS_XML_PATH.split("/"))) {
+			p.getProjectItem(CDIConstants.WEB_INF_BEANS_XML_PATH.split("/")).open();
 		} else {
-			packageExplorer.openFile(projectName,
-					CDIConstants.META_INF_BEANS_XML_PATH.split("/"));
+			p.getProjectItem(CDIConstants.META_INF_BEANS_XML_PATH.split("/")).open();
 		}
-		bot.cTabItem("Source").activate();
-		editResourceUtil.replaceClassContentByResource(
+		new DefaultEditor("beans.xml");
+		new DefaultCTabItem("Source").activate();
+		editResourceUtil.replaceClassContentByResource("beans.xml",
 				OpenOnTest.class.getResourceAsStream(path), false);
 	}
+	
 
 }
