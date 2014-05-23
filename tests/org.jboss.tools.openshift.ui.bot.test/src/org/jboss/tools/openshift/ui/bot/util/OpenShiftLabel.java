@@ -61,17 +61,16 @@ public class OpenShiftLabel {
 		// Application context menu
 		public static final String EDIT_CARTRIDGES = "Edit Embedded Cartridges...";
 		public static final String EXPLORER_IMPORT_APP = "Import Application...";
-		public static final String EXPLORER_TAIL_FILES = "Tail files...";
-		public static final String EXPLORER_ENV_VAR = "Environment Variables";
-		public static final String EXPLORER_PORTS = "Port forwarding...";
+		public static final String EXPLORER_TAIL_FILES = "Tail Files...";
+		public static final String EXPLORER_ENV_VAR = "List All Environment Variables";
+		public static final String EXPLORER_PORTS = "Port Forwarding...";
 		public static final String BROWSER = "Web Browser";
-		public static final String EXPLORER_ADAPTER = "Create a Server Adapter...";
 		public static final String EXPLORER_RESTART_APP = "Restart Application";
-		public static final String DELETE_APP = "Delete Application";
+		public static final String DELETE_APP = "Delete Application...";
 	}
 	
 	public static class Shell {
-		public static final String DELETE_APP = "Application deletion";
+		public static final String DELETE_APP = "Application removal";
 		public static final String TAIL_FILES = "Tail Files";
 		public static final String PORTS = "Application port forwarding";
 		public static final String ADAPTER = "New Server";

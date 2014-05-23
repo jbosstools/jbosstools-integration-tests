@@ -67,7 +67,7 @@ public class OpenShiftDebugFeatures {
                 new PushButton(OpenShiftLabel.Button.FINISH).click();
                 
                 // invoke another action for more log
-                openDebugFeature("Show in Web Browser");
+                openDebugFeature("Show In", "Web Browser");
                 
                 ConsoleView consoleView = new ConsoleView();
                 consoleView.open();
@@ -109,7 +109,7 @@ public class OpenShiftDebugFeatures {
         }
 
         public static void canOpenWebBrowser() {
-                openDebugFeature("Show in Web Browser");
+                openDebugFeature("Show In", "Web Browser");
 
                 new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
                 // TODO find way to verify in internal browser, also in Republish class
@@ -129,7 +129,7 @@ public class OpenShiftDebugFeatures {
         }
 
         public static void canCreateEnvVariable() {
-                openDebugFeature("Edit Environment Variables...");
+                openDebugFeature("Edit User Environment Variables...");
                 
                 new WaitUntil(new ShellWithTextIsAvailable(
                 		"Manage Application Environment Variable(s) for application " + DIY_APP), 
@@ -156,7 +156,7 @@ public class OpenShiftDebugFeatures {
                 new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
         }
         
-        private static void openDebugFeature(String label) {
+        private static void openDebugFeature(String... path) {
 		        OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 
 		        TreeItem connection = explorer.getConnection();
@@ -168,7 +168,7 @@ public class OpenShiftDebugFeatures {
 		        
 		        explorer.getApplication(DIY_APP).select();
 		        
-		        new ContextMenu(label).select();
+		        new ContextMenu(path).select();
         }
         
         @After

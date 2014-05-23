@@ -37,7 +37,7 @@ public class OpenShiftExplorerView extends WorkbenchView {
 	 */
 	public void openConnectionShell() {
 		open();
-		DefaultToolItem connectionButton = new DefaultToolItem("Connect to OpenShift");
+		DefaultToolItem connectionButton = new DefaultToolItem("Connection...");
 		connectionButton.click();
 	}
 	
@@ -138,7 +138,7 @@ public class OpenShiftExplorerView extends WorkbenchView {
 				
 		AbstractWait.sleep(TimePeriod.getCustom(15));
 		
-		new ContextMenu("Show in Web Browser").select();
+		new ContextMenu("Show In", "Web Browser").select();
 		
 		// To be sure that page is loaded
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);

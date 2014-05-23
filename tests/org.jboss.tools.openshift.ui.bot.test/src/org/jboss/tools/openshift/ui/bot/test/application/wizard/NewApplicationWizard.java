@@ -57,7 +57,7 @@ public class NewApplicationWizard {
 			String... embeddedCartridges) {
 		
 		FirstWizardPage first = new FirstWizardPage();
-		first.createNewApplication(cartridge);
+		first.createNewApplicationOnBasicCartridge(cartridge);
 		
 		next();
 		

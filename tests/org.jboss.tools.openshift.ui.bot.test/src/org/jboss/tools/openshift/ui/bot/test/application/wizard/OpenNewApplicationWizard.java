@@ -1,5 +1,6 @@
 package org.jboss.tools.openshift.ui.bot.test.application.wizard;
 
+import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.ButtonWithTextIsActive;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
@@ -10,6 +11,7 @@ import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
+import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
@@ -51,7 +53,20 @@ public class OpenNewApplicationWizard {
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		new WorkbenchShell().setFocus();
 		
-		new ShellMenu("File", "New", "OpenShift Application").select();
+		new ShellMenu("File", "New", "Other...").select();
+		
+		new WaitUntil(new ShellWithTextIsAvailable("New"), TimePeriod.NORMAL);
+		
+		new DefaultShell("New").setFocus();
+		TreeItem openShift = new DefaultTreeItem("OpenShift");
+		openShift.select();
+		openShift.expand();
+		openShift.getItem("OpenShift Application").select();
+		
+		new WaitUntil(new ButtonWithTextIsActive(new PushButton(OpenShiftLabel.Button.NEXT)),
+				TimePeriod.NORMAL);
+		
+		new PushButton(OpenShiftLabel.Button.NEXT).click();
 		
 		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.NEW_APP_WIZARD),
 				TimePeriod.LONG);
