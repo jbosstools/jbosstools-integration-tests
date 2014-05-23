@@ -44,6 +44,7 @@ public class Connection {
 	
 	public static void createConnectionToOpenShift() {
 		OpenShiftExplorerView openshiftView = new OpenShiftExplorerView();
+		openshiftView.open();
 		openshiftView.openConnectionShell();
 		
 		// wrong credentials

@@ -57,7 +57,7 @@ public class CreateAdapterFromExplorer {
 		
 		explorer.getApplication(DIY_APP).select();
 		
-		new ContextMenu(OpenShiftLabel.Labels.EXPLORER_ADAPTER).select();
+		new ContextMenu("New", "Server Adapter...").select();
 		
 		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.ADAPTER), TimePeriod.LONG);
 		

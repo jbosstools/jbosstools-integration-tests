@@ -1,7 +1,6 @@
 package org.jboss.tools.openshift.ui.bot.test;
 
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.tools.openshift.ui.bot.test.application.ImportApplicationThroughOpenShiftExplorer;
 import org.jboss.tools.openshift.ui.bot.test.connection.Connection;
 import org.jboss.tools.openshift.ui.bot.test.connection.ManageSSH;
 import org.jboss.tools.openshift.ui.bot.test.domain.CreateDomain;
@@ -16,7 +15,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	ManageSSH.class, 
 	CreateDomain.class,
 	
-	ImportApplicationThroughOpenShiftExplorer.class,
+	// Here place a test class
 	
 	CleanUp.class
 })

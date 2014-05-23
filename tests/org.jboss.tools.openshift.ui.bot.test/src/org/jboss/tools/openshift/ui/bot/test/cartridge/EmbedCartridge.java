@@ -51,6 +51,7 @@ public class EmbedCartridge {
 		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.EDIT_CARTRIDGES));
 		
 		new DefaultShell(OpenShiftLabel.Shell.EDIT_CARTRIDGES).setFocus();
+		new DefaultTable().getItem(cartridge).select();
 		new DefaultTable().getItem(cartridge).setChecked(true);
 		new PushButton(OpenShiftLabel.Button.FINISH).click();
 		

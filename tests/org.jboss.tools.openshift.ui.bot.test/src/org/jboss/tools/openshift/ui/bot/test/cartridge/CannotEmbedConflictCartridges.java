@@ -47,6 +47,7 @@ public class CannotEmbedConflictCartridges {
 		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.EDIT_CARTRIDGES));
 		
 		new DefaultShell(OpenShiftLabel.Shell.EDIT_CARTRIDGES).setFocus();
+		new DefaultTable().getItem(OpenShiftLabel.Cartridge.JENKINS).select();
 		new DefaultTable().getItem(OpenShiftLabel.Cartridge.JENKINS).setChecked(true);
 		
 		new WaitUntil(new ShellWithTextIsAvailable("Add Cartridges"), TimePeriod.NORMAL);

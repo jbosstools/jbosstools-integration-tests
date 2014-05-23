@@ -77,12 +77,31 @@ public class FirstWizardPage {
 	 * 
 	 * @param base cartridge of application
 	 */
-	public void createNewApplication(String cartridge) {
+	public void createNewApplicationOnBasicCartridge(String cartridge) {
+		createNewApplication(true, cartridge);
+	}
+	
+	public void createNewApplicationFromQuickstart(String quickstart) {
+		createNewApplication(false, quickstart);
+	}
+	
+	// basic cartridge is true in case of basic cartridge, false in case of quickstart
+	// cartridge is either application platform cartridge or quickstart cartridge
+	private void createNewApplication(boolean basicCartridge, String cartridge) {
 		if (!(new RadioButton(1).isSelected())) {
 			new RadioButton(1).click();
 		}
 		
-		new DefaultTreeItem(cartridge).select();
+		// basic cart or quickstart
+		TreeItem category;
+		if (basicCartridge) {
+			category = new DefaultTreeItem("Basic Cartridges");
+		} else {
+			category = new DefaultTreeItem("Quickstarts");
+		}
+		
+		category.expand();
+		category.getItem(cartridge).select();
 	}
 	
 	/**
@@ -91,7 +110,11 @@ public class FirstWizardPage {
 	 * @param URL of downloadable cartridge manifest
 	 */
 	public void createNewApplicationFromDownloadableCartridge(String URL) {
-		createNewApplication(DOWNLOADABLE_CARTRIDGE);
+		if (!(new RadioButton(1).isSelected())) {
+			new RadioButton(1).click();
+		}
+		
+		new DefaultTreeItem(DOWNLOADABLE_CARTRIDGE).select();
 		
 		new LabeledText("Cartridge URL:").setText(URL);
 	}
