@@ -33,23 +33,18 @@ public class BrowsersimHandler {
 	private static boolean isWebKitAvailable;
 	
 	static {
-	    String platform = PlatformUtil.getOs();
-	    isJavaFxAvailable = false;
-	    isWebKitAvailable = true;
-	    
-	    boolean isLinux = PlatformUtil.OS_LINUX.equals(platform);
-	    
-	    // Trying to load javaFx libs except Linux GTK3 case
-	    if (!(isLinux && !BrowserSimUtil.isRunningAgainstGTK2())) {
-	      isJavaFxAvailable = BrowserSimUtil.loadJavaFX();
-	    }
-	    
-	    //check if AAS is installed on Windows
-	    boolean isWindows = PlatformUtil.OS_WIN32.equals(platform);
-	    if (isWindows && !BrowserSimUtil.isWindowsSwtWebkitInstalled()) {
-	      isWebKitAvailable = false;
-	    }
-	      //TODO: add engines initialization once done properly in JBT
+	  String platform = PlatformUtil.getOs();
+    isJavaFxAvailable = false;
+    
+    
+    boolean isLinux = PlatformUtil.OS_LINUX.equals(platform);
+
+    // Trying to load javaFx libs except Linux GTK3 case
+    if (!(isLinux && !BrowserSimUtil.isRunningAgainstGTK2())) {
+      isJavaFxAvailable = BrowserSimUtil.loadJavaFX();
+    }
+    
+    isWebKitAvailable = BrowserSimUtil.isWebkitAvailable();
 	    }
 	 /**
      * Gets list of running java processes via calling command jps
