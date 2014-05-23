@@ -11,38 +11,42 @@
 
 package org.jboss.tools.cdi.bot.test.jsf;
 
+import static org.junit.Assert.fail;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
-import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
-import org.jboss.tools.cdi.bot.test.CDIConstants;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.swt.exception.SWTLayerException;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.workbench.exception.WorkbenchPartNotFound;
+import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
+import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.jboss.tools.cdi.reddeer.CDIConstants;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
-import org.jboss.tools.cdi.bot.test.annotations.JSFEnvironment;
-import org.jboss.tools.cdi.bot.test.annotations.JSFTemplate;
-import org.jboss.tools.cdi.bot.test.uiutils.actions.NewJSFProjectWizard;
-import org.jboss.tools.cdi.bot.test.uiutils.actions.NewXHTMLFileWizard;
-import org.jboss.tools.cdi.bot.test.uiutils.wizards.CDIRefactorWizard;
-import org.jboss.tools.cdi.bot.test.uiutils.wizards.XHTMLDialogWizard;
-import org.jboss.tools.ui.bot.ext.SWTJBTExt;
-import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
-import org.jboss.tools.ui.bot.ext.types.IDELabel;
+import org.jboss.tools.cdi.reddeer.cdi.ui.wizard.CDIRefactorWizard;
+import org.jboss.tools.common.reddeer.label.IDELabel;
+import org.jboss.tools.jsf.reddeer.ui.JSFNewProjectFirstPage;
+import org.jboss.tools.jsf.reddeer.ui.JSFNewProjectWizard;
+import org.jboss.tools.jst.reddeer.web.ui.NewXHTMLFileWizardPage;
+import org.jboss.tools.jst.reddeer.web.ui.NewXHTMLWizard;
 import org.junit.Before;
 
 public class JSFTestBase extends CDITestBase {
 	
 	private static final Logger LOGGER = Logger.getLogger(JSFTestBase.class.getName());
-	private JSFEnvironment env = JSFEnvironment.JSF_20;
-	private JSFTemplate template = JSFTemplate.BLANK_LIBS;
+	private String env = "JSF 2.0";
+	private String template = "JSFBlankWithLibs";
 	protected static final String WEB_FOLDER = "pages";
 	
-	public JSFEnvironment getEnv() {
+	public String getEnv() {
 		return env; 
 	}
 	
-	public JSFTemplate getTemplate() {
+	public String getTemplate() {
 		return template;
 	}
 	
@@ -60,10 +64,14 @@ public class JSFTestBase extends CDITestBase {
 	 * @param pageName
 	 */
 	protected void createXHTMLPage(String pageName) {
-		XHTMLDialogWizard xhtmlWizard = new NewXHTMLFileWizard().run();
-		xhtmlWizard.setDestination(getProjectName() + "/" 
+		NewXHTMLWizard xhtmlWizard = new NewXHTMLWizard();
+		xhtmlWizard.open();
+		NewXHTMLFileWizardPage page = (NewXHTMLFileWizardPage)xhtmlWizard.getWizardPage(0);
+		page.setParentFolder(getProjectName() + "/" 
 				+ IDELabel.WebProjectsTree.WEB_CONTENT 
-				+ "/" + WEB_FOLDER).setName(pageName).finishWithWait();
+				+ "/" + WEB_FOLDER);
+		page.setFileName(pageName);
+		xhtmlWizard.finish();
 	}
 	
 	/**
@@ -72,7 +80,7 @@ public class JSFTestBase extends CDITestBase {
 	 */
 	protected void createXHTMLPageWithContent(String pageName, String resource) {
 		createXHTMLPage(pageName);
-		editResourceUtil.replaceClassContentByResource(JSFTestBase.class.
+		editResourceUtil.replaceClassContentByResource(pageName, JSFTestBase.class.
 				getResourceAsStream(resource), false);
 	}
 	
@@ -89,11 +97,12 @@ public class JSFTestBase extends CDITestBase {
 					"annotation in class:" + className);
 		}
 		String renameContextMenuText = "Rename '" + 
-					parseNamedAnnotation(className, text) + 
-					"' Named Bean ";
-		openContextMenuForTextInEditor(text, bot.editorByTitle(className + ".java"), 
-				IDELabel.Menu.CDI_REFACTOR, renameContextMenuText);
-		bot.waitForShell("Refactoring");	
+				parseNamedAnnotation(className, text) + 
+				"' Named Bean ";
+		//TODO
+		new TextEditor(className + ".java").selectText(text);
+		new ContextMenu(IDELabel.Menu.CDI_REFACTOR,renameContextMenuText).select();
+		new DefaultShell("Refactoring");	
 	}
 	
 	/**
@@ -103,14 +112,18 @@ public class JSFTestBase extends CDITestBase {
 	 */
 	private String getNamedAnnotationForClass(String className) {
 		try {
-			bot.editorByTitle(className + ".java").show();
-		} catch (WidgetNotFoundException exc) {
-			projectExplorer.openFile(getProjectName(), CDIConstants.JAVA_RESOURCES, CDIConstants.JAVA_SOURCE, 
-									 getPackageName(), className);
+			new DefaultEditor(className+".java");
+		} catch (WorkbenchPartNotFound exc) {
+			PackageExplorer pe = new PackageExplorer();
+			pe.open();
+			pe.getProject(getProjectName()).getProjectItem(CDIConstants.JAVA_RESOURCES, CDIConstants.JAVA_SOURCE, 
+					 getPackageName(), className);
 		}
 		
-		SWTBotEclipseEditor activeEditor = bot.activeEditor().toTextEditor();
-		for (String line : activeEditor.getLines()) {
+		
+		TextEditor activeEditor = new TextEditor(className+".java");
+		for(int i=0;i<activeEditor.getNumberOfLines();i++){
+			String line = activeEditor.getTextAtLine(i);
 			if (line.contains("@Named") &&
 					!line.contains("//") && !line.contains("*")) {
 				return line;
@@ -133,23 +146,17 @@ public class JSFTestBase extends CDITestBase {
 		}
 		
 	}
-
-	/**
-	 * Method opens context menu for text in eclipse editor
-	 * @param text
-	 * @param menu
-	 */
+/*
 	protected void openContextMenuForTextInEditor(final String text, 
-			final SWTBotEditor editorTitle, final String... menu) {
-		assert menu.length > 0;		
-		editorTitle.show();
+			final TextEditor editorTitle, final String... menu) {
+		assert menu.length > 0;	
 		SWTJBTExt.selectTextInSourcePane(bot, editorTitle.getTitle(), 
 				text, 0, text.length());	
 					
 		ContextMenuHelper.clickContextMenu(editorTitle, menu);
 		
 	}
-	
+*/	
 	/**
 	 * Method changes @Named annotation to "newNamed" for selected class
 	 * @param className
@@ -162,15 +169,15 @@ public class JSFTestBase extends CDITestBase {
 			openContextMenuForCDIRefactor(className);
 			
 			CDIRefactorWizard cdiRefactorWizard = new CDIRefactorWizard();
-			cdiRefactorWizard = cdiRefactorWizard.setName(newNamed);
-			cdiRefactorWizard = cdiRefactorWizard.next();
+			cdiRefactorWizard.setName(newNamed);
+			cdiRefactorWizard.next();
 			affectedFiles = cdiRefactorWizard.getAffectedFiles();
 			cdiRefactorWizard.finish();
 		} catch (AnnotationException exc) {
 			LOGGER.info("There is no named annotation in tested class");
 			fail(exc.getMessage());
-		} catch (WidgetNotFoundException exc) {
-			bot.activeShell().bot().button("Close").click();
+		} catch (SWTLayerException exc) {
+			new PushButton("Close").click();
 		}
 		return affectedFiles;
 	}
@@ -182,8 +189,8 @@ public class JSFTestBase extends CDITestBase {
 	 * @param env
 	 * @param template
 	 */
-	private void createJSFProjectWithCDISupport(String projectName, JSFEnvironment env, 
-			JSFTemplate template) {
+	private void createJSFProjectWithCDISupport(String projectName, String env, 
+			String template) {
 		
 		createJSFProject(projectName, env, template);
 		projectHelper.addCDISupport(projectName);
@@ -196,24 +203,15 @@ public class JSFTestBase extends CDITestBase {
 	 * @param env
 	 * @param template
 	 */
-	private void createJSFProject(String projectName, JSFEnvironment env, 
-			JSFTemplate template) {				
-		new NewJSFProjectWizard().run().
-			setName(getProjectName()).
-			setEnvironment(env).
-			setJSFTemplate(template).		
-			finish();		
-		/*
-		 * workaround for non Web Perspective, click No button
-		 * to not change perspective to Web Perspectives
-		 * 
-		 */
-		try {
-			bot.button("No").click();
-		} catch (WidgetNotFoundException exc) {
-			log.info("There is no dialog to change perspective.");
-		}
-		util.waitForNonIgnoredJobs();						
+	private void createJSFProject(String projectName, String env, 
+			String template) {		
+		JSFNewProjectWizard jw = new JSFNewProjectWizard();
+		jw.open();
+		JSFNewProjectFirstPage fp = (JSFNewProjectFirstPage)jw.getWizardPage(0);
+		fp.setProjectName(getProjectName());
+		fp.setJSFType(template);
+		fp.setJSFVersion(env);
+		jw.finish();
 	}
 				
 }

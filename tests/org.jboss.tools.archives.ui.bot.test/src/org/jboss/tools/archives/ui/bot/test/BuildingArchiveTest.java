@@ -10,8 +10,10 @@
  ******************************************************************************/
 package org.jboss.tools.archives.ui.bot.test;
 
+import static org.junit.Assert.*;
+
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -30,8 +32,8 @@ public class BuildingArchiveTest extends ArchivesTestBase{
 	private final String ARCHIVE_PATH = 
 			ARCHIVE_NAME + PATH_SUFFIX;
 	
-	@BeforeClass
-	public static void setup() {
+	@Before
+	public void setup() {
 		importArchiveProjectWithoutRuntime(projectName);
 	}
 	
@@ -41,6 +43,7 @@ public class BuildingArchiveTest extends ArchivesTestBase{
 			.getProject()
 			.getArchive(ARCHIVE_PATH)
 			.buildArchiveFull();
+		assertTrue(projectExplorer.getProject(projectName).containsItem(ARCHIVE_NAME));
 	}
 	
 	@Test
@@ -48,6 +51,7 @@ public class BuildingArchiveTest extends ArchivesTestBase{
 		explorerForProject(projectName)
 			.getArchive(ARCHIVE_PATH)
 			.buildArchiveFull();
+		assertTrue(projectExplorer.getProject(projectName).containsItem(ARCHIVE_NAME));
 	}
 	
 }

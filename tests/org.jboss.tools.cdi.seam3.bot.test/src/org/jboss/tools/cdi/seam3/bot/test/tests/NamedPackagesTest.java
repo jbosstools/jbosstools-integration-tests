@@ -11,11 +11,22 @@
 
 package org.jboss.tools.cdi.seam3.bot.test.tests;
 
+import static org.junit.Assert.*;
+
 import java.util.Arrays;
 import java.util.List;
 
-import org.jboss.tools.cdi.bot.test.CDIConstants;
-import org.jboss.tools.cdi.bot.test.uiutils.CollectionsUtil;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
+import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.requirements.server.ServerReqState;
+import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
+import org.jboss.tools.cdi.reddeer.CDIConstants;
+import org.jboss.tools.cdi.reddeer.uiutils.CollectionsUtil;
 import org.jboss.tools.cdi.seam3.bot.test.base.Seam3TestBase;
 import org.jboss.tools.cdi.seam3.bot.test.util.SeamLibrary;
 import org.junit.After;
@@ -26,6 +37,9 @@ import org.junit.Test;
  * @author jjankovi
  *
  */
+@CleanWorkspace
+@OpenPerspective(JavaEEPerspective.class)
+@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.AS7_1)
 public class NamedPackagesTest extends Seam3TestBase {
 
 	private static final String CDI_SEAM_PACKAGE = "cdi.seam";
@@ -40,7 +54,11 @@ public class NamedPackagesTest extends Seam3TestBase {
 	
 	@After
 	public void waitForJobs() {
-		projectExplorer.deleteAllProjects();		
+		PackageExplorer pe = new PackageExplorer();
+		pe.open();
+		for(Project p: pe.getProjects()){
+			p.delete(true);
+		}		
 	} 
 	
 	@Test
@@ -48,10 +66,12 @@ public class NamedPackagesTest extends Seam3TestBase {
 		
 		importSeam3ProjectWithLibrary(projectName, SeamLibrary.SOLDER_3_1);
 		
-		packageExplorer.openFile(projectName, CDIConstants.SRC, 
-				ORG_JBOSS_PACKAGE, MANAGER_JAVA).toTextEditor();
-		List<String> beansProposal = editResourceUtil.getProposalList(
-				MANAGER_JAVA, "\"#{}\"", 3, 0);
+		PackageExplorer pe = new PackageExplorer();
+		pe.open();
+		pe.getProject(projectName).getProjectItem(CDIConstants.SRC, ORG_JBOSS_PACKAGE, MANAGER_JAVA).open();
+		new DefaultEditor(MANAGER_JAVA);
+		
+		List<String> beansProposal = editResourceUtil.getProposalList(MANAGER_JAVA, "\"#{}\"",3);
 		List<String> nonexpectedList = Arrays.asList("bean1 : Bean1", "bean2 : Bean2", 
 				"bean3 : Bean3", "bean4 : Bean4");
 		assertTrue(CollectionsUtil.checkNoMatch(beansProposal, nonexpectedList));
@@ -63,14 +83,17 @@ public class NamedPackagesTest extends Seam3TestBase {
 		
 		importSeam3ProjectWithLibrary(projectName, SeamLibrary.SOLDER_3_1);
 		
-		editResourceUtil.renameFileInExplorerBase(packageExplorer, PACKAGE_INFO_JAVA_CDI, 
-				projectName + "/" + CDIConstants.SRC + "/" + CDI_SEAM_PACKAGE, PACKAGE_INFO_JAVA);
-		eclipse.cleanAllProjects();
+		editResourceUtil.renameFileInExplorerBase(projectName, PACKAGE_INFO_JAVA, 
+				CDIConstants.SRC,CDI_SEAM_PACKAGE, PACKAGE_INFO_JAVA_CDI);
+		cleanProjects();
 		
-		packageExplorer.openFile(projectName, CDIConstants.SRC, 
-				ORG_JBOSS_PACKAGE, MANAGER_JAVA).toTextEditor();
+		PackageExplorer pe = new PackageExplorer();
+		pe.open();
+		pe.getProject(projectName).getProjectItem(CDIConstants.SRC, ORG_JBOSS_PACKAGE, MANAGER_JAVA).open();
+		new DefaultEditor(MANAGER_JAVA);
+
 		List<String> beansProposal = editResourceUtil.getProposalList(
-				MANAGER_JAVA, "\"#{}\"", 3, 0);
+				MANAGER_JAVA, "\"#{}\"",3);
 		
 		List<String> nonExpectedList = Arrays.asList("bean3 : Bean3", "bean4 : Bean4");
 		assertTrue(CollectionsUtil.checkNoMatch(beansProposal, nonExpectedList));
@@ -84,16 +107,19 @@ public class NamedPackagesTest extends Seam3TestBase {
 		
 		importSeam3ProjectWithLibrary(projectName, SeamLibrary.SOLDER_3_1);
 		
-		editResourceUtil.renameFileInExplorerBase(packageExplorer, PACKAGE_INFO_JAVA_CDI, 
-				projectName + "/" + CDIConstants.SRC + "/" + CDI_SEAM_PACKAGE, PACKAGE_INFO_JAVA);
-		editResourceUtil.renameFileInExplorerBase(packageExplorer, PACKAGE_INFO_JAVA_CDI, 
-				projectName + "/" + CDIConstants.SRC + "/" + CDI_TEST_PACKAGE, PACKAGE_INFO_JAVA);
-		eclipse.cleanAllProjects();
+		editResourceUtil.renameFileInExplorerBase(projectName, PACKAGE_INFO_JAVA, 
+				CDIConstants.SRC,CDI_SEAM_PACKAGE, PACKAGE_INFO_JAVA_CDI);
+		editResourceUtil.renameFileInExplorerBase(projectName, PACKAGE_INFO_JAVA, 
+				CDIConstants.SRC,CDI_TEST_PACKAGE, PACKAGE_INFO_JAVA_CDI);
+		cleanProjects();
 		
-		packageExplorer.openFile(projectName, CDIConstants.SRC, 
-				ORG_JBOSS_PACKAGE, MANAGER_JAVA).toTextEditor();
+		PackageExplorer pe = new PackageExplorer();
+		pe.open();
+		pe.getProject(projectName).getProjectItem(CDIConstants.SRC, ORG_JBOSS_PACKAGE, MANAGER_JAVA).open();
+		new DefaultEditor(MANAGER_JAVA);
+		
 		List<String> beansProposal = editResourceUtil.getProposalList(
-				MANAGER_JAVA, "\"#{}\"", 3, 0);
+				MANAGER_JAVA, "\"#{}\"",3);
 		
 		List<String> expectedList = Arrays.asList("bean1 : Bean1", "bean2 : Bean2", 
 				"bean3 : Bean3", "bean4 : Bean4");

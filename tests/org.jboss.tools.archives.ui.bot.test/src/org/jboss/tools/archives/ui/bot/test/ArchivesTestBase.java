@@ -19,6 +19,7 @@ import java.io.IOException;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.ide.NewJavaProjectWizardDialog;
 import org.jboss.reddeer.eclipse.jdt.ui.ide.NewJavaProjectWizardPage;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
 import org.jboss.reddeer.eclipse.ui.views.log.LogView;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
@@ -31,6 +32,7 @@ import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.archives.reddeer.archives.ui.ProjectArchivesExplorer;
 import org.jboss.tools.archives.reddeer.archives.ui.ProjectArchivesView;
 import org.jboss.tools.common.reddeer.label.IDELabel;
+import org.junit.After;
 
 /**
  * 
@@ -43,6 +45,17 @@ public class ArchivesTestBase{
 
 	protected ProjectExplorer projectExplorer = new ProjectExplorer();
 	protected ProjectArchivesView view = new ProjectArchivesView();
+	
+	@After
+	public void cleanUp() {
+		projectExplorer.open();
+		for (Project project : projectExplorer.getProjects()) {
+		    project.select();
+		    new ContextMenu("Refresh").select();
+		    new WaitWhile(new JobIsRunning());
+			project.delete(true);
+		}
+	}
 	
 	protected ProjectArchivesView openProjectArchivesView() {
 		view.open();
@@ -141,6 +154,7 @@ public class ArchivesTestBase{
 	}
 	
 	private void addRemoveArchivesSupport(String projectName, boolean add) {
+		projectExplorer.open();
 		projectExplorer.getProject(projectName).select();
 		if (add) {
 			new ContextMenu(IDELabel.Menu.PACKAGE_EXPLORER_CONFIGURE, 

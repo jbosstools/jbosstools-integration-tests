@@ -11,10 +11,26 @@
 
 package org.jboss.tools.cdi.bot.test.openon;
 
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
+
+import static org.junit.Assert.*;
+
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
+import org.jboss.reddeer.eclipse.jface.text.contentassist.ContentAssistant;
+import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.requirements.server.ServerReqState;
+import org.jboss.reddeer.swt.api.Shell;
+import org.jboss.reddeer.swt.api.Table;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
+import org.jboss.reddeer.swt.impl.table.DefaultTable;
+import org.jboss.reddeer.swt.wait.AbstractWait;
+import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.workbench.api.Editor;
+import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.cdi.bot.test.annotations.CDIWizardType;
-import org.jboss.tools.ui.bot.ext.helper.OpenOnHelper;
 import org.junit.Test;
 
 /**
@@ -22,7 +38,9 @@ import org.junit.Test;
  * 
  * @author Jaroslav Jankovic
  */
-
+@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.AS7_1)
+@OpenPerspective(JavaEEPerspective.class)
+@CleanWorkspace
 public class FindObserverForEventTest extends OpenOnBase {
 
 	@Test
@@ -81,38 +99,48 @@ public class FindObserverForEventTest extends OpenOnBase {
 		
 		wizard.createCDIComponentWithContent(CDIWizardType.BEAN, "ObserverBean", 
 				getPackageName(), null, "/resources/events/ObserverBean.java.cdi");
-		
-		util.waitForNonIgnoredJobs();
 	}
 
 	private void checkEventsAndObserver(String name, String className,
 			String option) {
-		SWTBotEditor openedEditor = OpenOnHelper.selectOpenOnOption(
-				bot, className, name, option);
+		
+		Editor e = new DefaultEditor(className);
+		new DefaultStyledText().selectText(name);
+		AbstractWait.sleep(TimePeriod.SHORT);
+		ContentAssistant ca = e.openOpenOnAssistant();
+		for(String p: ca.getProposals()){
+			if(p.startsWith(option)){
+				ca.chooseProposal(p);
+				break;
+			}
+		}
+		
 		if (option.equals("Open CDI Event")) {
 			if (name.equals("observeQ1MyBean2")) {
 				LOGGER.info("Testing observer: observeQ1MyBean2 started");
-				assertTrue(openedEditor.toTextEditor().getSelection().equals("myBean2Q1Event"));
+				assertTrue(new DefaultStyledText().getSelectionText().equals("myBean2Q1Event"));
 				LOGGER.info("Testing observer: observeQ1MyBean2 ended");
 			}else {  
 				//observeQ1MyBean2
 				LOGGER.info("Testing observer: observeQ1MyBean2 started");
-				assertTrue(openedEditor.toTextEditor().getSelection().equals("myBean2Q2Event"));
+				assertTrue(new DefaultStyledText().getSelectionText().equals("myBean2Q2Event"));
 				LOGGER.info("Testing observer: observeQ1MyBean2 ended");
 			}			
 		} else {
-			SWTBotTable observerTable = bot.activeShell().bot().table(0);
+			Shell s = new DefaultShell();
+			Table observerTable = new DefaultTable();
 			if (className.equals("EventsProducer.java")) {
 				assertTrue(checkAllObserverMethodsForEvent(name, observerTable)); 
 			}
 			if (className.equals("ObserverBean.java")) {
 				assertTrue(checkAllEventsForObserverMethod(name, observerTable)); 
 			}
+			s.close();
 		}
 	}
 
 	private boolean checkAllObserverMethodsForEvent(String eventName, 
-			SWTBotTable observerTable) {
+			Table observerTable) {
 		String observerClass = "ObserverBean";
 		String packageProjectPath = getPackageName() + " - /" + getProjectName() + "/src";
 		String parametrizedEventItem = observerClass + ".observeXXX() - " + packageProjectPath;
@@ -198,7 +226,7 @@ public class FindObserverForEventTest extends OpenOnBase {
 	}
 
 	private boolean checkAllEventsForObserverMethod(String observerName,
-			SWTBotTable eventsTable) {
+			Table eventsTable) {
 		String eventsClass = "EventsProducer";
 		String packageProjectPath = getPackageName() + " - /" + getProjectName() + "/src";
 		String parametrizedEventItem = eventsClass + ".myBeanXXX - " + packageProjectPath;

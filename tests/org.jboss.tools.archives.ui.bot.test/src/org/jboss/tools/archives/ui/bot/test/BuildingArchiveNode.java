@@ -10,7 +10,11 @@
  ******************************************************************************/
 package org.jboss.tools.archives.ui.bot.test;
 
+import static org.junit.Assert.*;
+
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.swt.condition.JobIsRunning;
+import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -40,6 +44,9 @@ public class BuildingArchiveNode extends ArchivesTestBase {
 		view = viewForProject(projectName);
 		view.getProject().getArchive(ARCHIVE_PATH);
 		view.buildArchiveNode();
+		new WaitWhile(new JobIsRunning());
+		projectExplorer.open();
+		assertTrue(projectExplorer.getProject(projectName).containsItem(ARCHIVE_NAME));
 	}
 	
 }

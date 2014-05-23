@@ -27,7 +27,7 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.tools.archives.reddeer.archives.ui.ArchivePublishDialog;
 import org.jboss.tools.archives.reddeer.archives.ui.ProjectArchivesExplorer;
 import org.jboss.tools.archives.reddeer.component.Archive;
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -55,8 +55,8 @@ public class DeployingArchiveTest extends ArchivesTestBase {
 	@InjectRequirement
 	protected ServerRequirement requirement;
 	
-	@BeforeClass
-	public static void setup() {
+	@Before
+	public void setup() {
 		importArchiveProjectWithoutRuntime(project);
 	}
 	

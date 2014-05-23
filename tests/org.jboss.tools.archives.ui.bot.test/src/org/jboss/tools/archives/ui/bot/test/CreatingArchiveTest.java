@@ -13,7 +13,7 @@ package org.jboss.tools.archives.ui.bot.test;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.tools.archives.reddeer.archives.ui.NewJarDialog;
 import org.jboss.tools.archives.reddeer.archives.ui.ProjectArchivesExplorer;
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -47,8 +47,8 @@ public class CreatingArchiveTest extends ArchivesTestBase {
 			ARCHIVE_NO_COMPRESSION_2 + PATH_SUFFIX;
 	
 	
-	@BeforeClass
-	public static void setup() {
+	@Before
+	public void setup() {
 		importArchiveProjectWithoutRuntime(project);
 	}
 	

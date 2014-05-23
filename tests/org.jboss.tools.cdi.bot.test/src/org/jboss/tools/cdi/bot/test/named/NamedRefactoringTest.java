@@ -11,11 +11,20 @@
 
 package org.jboss.tools.cdi.bot.test.named;
 
+import static org.junit.Assert.*;
+
 import java.util.Arrays;
 import java.util.Collection;
-
-import org.jboss.tools.cdi.bot.test.annotations.CDIWizardType;
+import org.jboss.reddeer.requirements.server.ServerReqState;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
+import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
+import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.cdi.bot.test.jsf.JSFTestBase;
+import org.jboss.tools.cdi.bot.test.uiutils.CDIWizardHelper;
 import org.jboss.tools.cdi.bot.test.uiutils.CollectionsUtil;
 import org.junit.After;
 import org.junit.Test;
@@ -26,7 +35,9 @@ import org.junit.Test;
  * @author Jaroslav Jankovic
  * 
  */
-
+@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.AS7_1)
+@OpenPerspective(JavaEEPerspective.class)
+@CleanWorkspace
 public class NamedRefactoringTest extends JSFTestBase {
 
 	private static final String MANAGED_BEAN_1 = "ManagedBean1";
@@ -35,17 +46,17 @@ public class NamedRefactoringTest extends JSFTestBase {
 	private static final String INDEX_XHTML_2= "index2.xhtml";
 	private static final String INDEX_XHTML_3= "index3.xhtml";
 	private static final String NEW_NAMED_PARAM = "bean2";	
+	private CDIWizardHelper wizard = new CDIWizardHelper();
 
 	@After
 	public void waitForJobs() {
 		editResourceUtil.deletePackage(getProjectName(), getPackageName());
-		editResourceUtil.deleteWebFolder(getProjectName(), WEB_FOLDER);
+		editResourceUtil.deleteWebFolder(getProjectName());
 	}
 	
 	@Test
 	public void testNamedAnnotationWithParamRefactor() {
-				
-		wizard.createCDIComponentWithContent(CDIWizardType.BEAN, MANAGED_BEAN_1, 
+		wizard.createCDIBeanComponentWithContent(MANAGED_BEAN_1, 
 				getPackageName(), null, "/resources/jsf/ManagedBeanParamNamed.java.cdi");		
 		
 		createXHTMLPageWithContent(INDEX_XHTML_1, "/resources/jsf/index1.xhtml.cdi");
@@ -57,20 +68,20 @@ public class NamedRefactoringTest extends JSFTestBase {
 				MANAGED_BEAN_1 + ".java", INDEX_XHTML_1, INDEX_XHTML_3);
 	
 		for (String affectedFile : affectedFiles) {
-			bot.editorByTitle(affectedFile).save();
+			new DefaultEditor(affectedFile).save();
 		}
 	
 		assertEquals(expectedAffectedFiles.size(), affectedFiles.size());
 		assertTrue(CollectionsUtil.compareTwoCollectionsEquality(
 				expectedAffectedFiles, affectedFiles));
 		
-		assertTrue(bot.editorByTitle(MANAGED_BEAN_1 + ".java").toTextEditor().getText().
+		assertTrue(new TextEditor(MANAGED_BEAN_1 + ".java").getText().
 			contains("@Named(\"" + NEW_NAMED_PARAM + "\""));
 		
-		assertTrue(bot.editorByTitle(INDEX_XHTML_1).toTextEditor().getText().
+		assertTrue(new TextEditor(INDEX_XHTML_1).getText().
 				contains("#{" + NEW_NAMED_PARAM));
 		
-		assertTrue(bot.editorByTitle(INDEX_XHTML_3).toTextEditor().getText().
+		assertTrue(new TextEditor(INDEX_XHTML_3).getText().
 				contains("#{" + NEW_NAMED_PARAM));
 		
 	}
@@ -78,7 +89,7 @@ public class NamedRefactoringTest extends JSFTestBase {
 	@Test
 	public void testNamedAnnotationWithoutParamRefactor() {
 		
-		wizard.createCDIComponentWithContent(CDIWizardType.BEAN, MANAGED_BEAN_2, 
+		wizard.createCDIBeanComponentWithContent(MANAGED_BEAN_2, 
 				getPackageName(), null, "/resources/jsf/ManagedBeanNoParamNamed.java.cdi");	
 		
 		createXHTMLPageWithContent(INDEX_XHTML_2, "/resources/jsf/index2.xhtml.cdi");
@@ -89,20 +100,20 @@ public class NamedRefactoringTest extends JSFTestBase {
 				MANAGED_BEAN_2 + ".java", INDEX_XHTML_2, INDEX_XHTML_3);
 	
 		for (String affectedFile : affectedFiles) {
-			bot.editorByTitle(affectedFile).save();
+			new DefaultEditor(affectedFile).save();
 		}
 	
 		assertEquals(expectedAffectedFiles.size(), affectedFiles.size());
 		assertTrue(CollectionsUtil.compareTwoCollectionsEquality(
 				expectedAffectedFiles, affectedFiles));
 		
-		assertTrue(bot.editorByTitle(MANAGED_BEAN_2 + ".java").toTextEditor().getText().
+		assertTrue(new TextEditor(MANAGED_BEAN_2 + ".java").getText().
 			contains("@Named(\"" + NEW_NAMED_PARAM + "\""));
 		
-		assertTrue(bot.editorByTitle(INDEX_XHTML_2).toTextEditor().getText().
+		assertTrue(new TextEditor(INDEX_XHTML_2).getText().
 				contains("#{" + NEW_NAMED_PARAM));
 		
-		assertTrue(bot.editorByTitle(INDEX_XHTML_3).toTextEditor().getText().
+		assertTrue(new TextEditor(INDEX_XHTML_3).getText().
 				contains("#{" + NEW_NAMED_PARAM));
 		
 	}
@@ -110,7 +121,7 @@ public class NamedRefactoringTest extends JSFTestBase {
 	@Test
 	public void testNamedAnnotationWithoutELRefactoring() {
 		
-		wizard.createCDIComponentWithContent(CDIWizardType.BEAN, MANAGED_BEAN_2, 
+		wizard.createCDIBeanComponentWithContent(MANAGED_BEAN_2, 
 				getPackageName(), null, "/resources/jsf/ManagedBeanNoParamNamed.java.cdi");	
 		
 		createXHTMLPageWithContent(INDEX_XHTML_2, "/resources/jsf/index1.xhtml.cdi");		
@@ -119,17 +130,17 @@ public class NamedRefactoringTest extends JSFTestBase {
 		Collection<String> expectedAffectedFiles = Arrays.asList(MANAGED_BEAN_2 + ".java");
 	
 		for (String affectedFile : affectedFiles) {
-			bot.editorByTitle(affectedFile).save();
+			new DefaultEditor(affectedFile).save();
 		}
 	
 		assertEquals(expectedAffectedFiles.size(), affectedFiles.size());
 		assertTrue(CollectionsUtil.compareTwoCollectionsEquality(
 				expectedAffectedFiles, affectedFiles));
 		
-		assertTrue(bot.editorByTitle(MANAGED_BEAN_2 + ".java").toTextEditor().getText().
+		assertTrue(new TextEditor(MANAGED_BEAN_2 + ".java").getText().
 			contains("@Named(\"" + NEW_NAMED_PARAM + "\""));
 		
-		assertTrue(!bot.editorByTitle(INDEX_XHTML_2).toTextEditor().getText().
+		assertTrue(!new TextEditor(INDEX_XHTML_2).getText().
 				contains("#{" + NEW_NAMED_PARAM));
 				
 	}

@@ -12,9 +12,9 @@ package org.jboss.tools.archives.ui.bot.test;
 
 import static org.junit.Assert.fail;
 
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
+import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
@@ -27,7 +27,6 @@ import org.jboss.tools.archives.reddeer.archives.ui.ProjectArchivesExplorer;
 import org.jboss.tools.archives.reddeer.component.Archive;
 import org.jboss.tools.archives.ui.bot.test.condition.UserLibraryFilesetIsInArchive;
 import org.jboss.tools.common.reddeer.label.IDELabel;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -62,13 +61,6 @@ public class UserLibrariesFilesetTest extends ArchivesTestBase {
 	@Before
 	public void prepareWorkspace() {
 		importArchiveProjectWithoutRuntime(PROJECT_NAME);
-	}
-	
-	@After
-	public void cleanUp() {
-		for (Project project : projectExplorer.getProjects()) {
-			project.delete(true);
-		}
 	}
 	
 	@Test
@@ -161,7 +153,9 @@ public class UserLibrariesFilesetTest extends ArchivesTestBase {
 		new DefaultShell("New User Library");
 		new DefaultText(0).setText(userLibrary);
 		new PushButton(IDELabel.Button.OK).click();
+		new DefaultShell("Preferences");
 		new PushButton(IDELabel.Button.OK).click();
+		new WaitWhile(new ShellWithTextIsActive("Preferences"));
 		new WaitWhile(new JobIsRunning());
 	}
 	

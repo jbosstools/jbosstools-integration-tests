@@ -12,19 +12,24 @@
 package org.jboss.tools.cdi.bot.test.wizard;
 
 
-import org.jboss.tools.cdi.bot.test.CDIAllBotTests;
-import org.jboss.tools.cdi.bot.test.CDISmokeBotTests;
+import static org.junit.Assert.*;
+import org.jboss.reddeer.requirements.server.ServerReqState;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
+import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
 import org.junit.Test;
-import org.junit.runners.Suite.SuiteClasses;
 
 /**
 * Test checks if CDI configuration preset sets CDI support correctly
 * 
 * @author Jaroslav Jankovic
 */
-
-@SuiteClasses({ CDIAllBotTests.class , CDISmokeBotTests.class })
+@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.AS7_1)
+@OpenPerspective(JavaEEPerspective.class)
+@CleanWorkspace
 public class ConfigurationPresetTest extends CDITestBase {
 
 	@Override	
@@ -42,9 +47,7 @@ public class ConfigurationPresetTest extends CDITestBase {
 	@Test
 	public void testCDIPreset() {
 		if (projectHelper.projectExists(getProjectName())) {
-			LOGGER.info("Dynamic Web Project with CDI Configuration Preset created");
 			assertTrue(projectHelper.checkCDISupport(getProjectName()));
-			LOGGER.info("Project has correctly set CDI support");
 		} else {
 			fail("CDI project was not succesfully created with Dynamic Web Project wizard with CDI preset");
 		}

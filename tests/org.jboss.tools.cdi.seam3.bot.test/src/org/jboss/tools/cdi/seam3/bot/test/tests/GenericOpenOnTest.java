@@ -11,13 +11,29 @@
 
 package org.jboss.tools.cdi.seam3.bot.test.tests;
 
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
-import org.jboss.tools.cdi.bot.test.CDIConstants;
+import static org.junit.Assert.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.eclipse.jface.text.contentassist.ContentAssistant;
+import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.requirements.server.ServerReqState;
+import org.jboss.reddeer.swt.api.Shell;
+import org.jboss.reddeer.swt.api.TableItem;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.table.DefaultTable;
+import org.jboss.reddeer.swt.wait.AbstractWait;
+import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.jboss.tools.cdi.reddeer.CDIConstants;
 import org.jboss.tools.cdi.seam3.bot.test.base.Seam3TestBase;
 import org.jboss.tools.cdi.seam3.bot.test.util.SeamLibrary;
-import org.jboss.tools.ui.bot.ext.condition.ActiveShellContainsWidget;
-import org.jboss.tools.ui.bot.ext.helper.OpenOnHelper;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -27,7 +43,9 @@ import org.junit.Test;
  * @author jjankovi
  * 
  */
-
+@CleanWorkspace
+@OpenPerspective(JavaEEPerspective.class)
+@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.AS7_1)
 public class GenericOpenOnTest extends Seam3TestBase {
 
 	private static final String GENERIC_POINT_1 = "MyExtendedConfiguration ";
@@ -46,9 +64,10 @@ public class GenericOpenOnTest extends Seam3TestBase {
 	 */
 	@Test
 	public void testGenericOpenOn() {
-
-		packageExplorer.openFile(projectName, CDIConstants.SRC, "cdi.seam",
-				"MyBeanInjections.java");
+		
+		PackageExplorer pe = new PackageExplorer();
+		pe.open();
+		pe.getProject(projectName).getProjectItem(CDIConstants.SRC, "cdi.seam","MyBeanInjections.java").open();
 
 		checkFirstOpenOnAndGeneric();
 		checkSecondOpenOnAndGeneric();
@@ -130,11 +149,23 @@ public class GenericOpenOnTest extends Seam3TestBase {
 	private void checkOpenOnAndGeneric(String openOnString, String titleName,
 			String chosenOption, String afterOpenOnTitleName,
 			String injectSelectionAtribute) {
-		OpenOnHelper.checkOpenOnFileIsOpened(bot, titleName, openOnString,
-				chosenOption, afterOpenOnTitleName);
 		
-		String selectedString = bot.activeEditor().toTextEditor()
-				.getSelection();
+		TextEditor te = new TextEditor(titleName);
+		te.selectText(openOnString);
+		ContentAssistant ca = te.openOpenOnAssistant();
+		for(String p: ca.getProposals()){
+			if(p.contains(chosenOption)){
+				ca.chooseProposal(p);
+				break;
+			}
+		}
+		TextEditor t = new TextEditor(afterOpenOnTitleName);
+		
+		
+		//OpenOnHelper.checkOpenOnFileIsOpened(bot, titleName, openOnString,
+		//		chosenOption, afterOpenOnTitleName);
+		
+		String selectedString = t.getSelectedText();
 		
 		assertTrue(injectSelectionAtribute + " should be selected. " +
 				"Actual selected text: " + selectedString,selectedString.
@@ -143,29 +174,40 @@ public class GenericOpenOnTest extends Seam3TestBase {
 
 	private void checkAllGenericPointsForAtribute(String atribute,
 			String classTitle) {
-		OpenOnHelper.selectOpenOnOption(bot, classTitle, atribute, 
-				"Show All Generic Configuration Points...");
-		bot.waitUntil(new ActiveShellContainsWidget(bot, Table.class));
-		SWTBotTable genericPointTable = bot.table(0);
-		assertTrue(checkAllGenericConfPoints(genericPointTable));
+		TextEditor te = new TextEditor(classTitle);
+		te.selectText(atribute);
+		ContentAssistant ca = te.openOpenOnAssistant();
+		ca.chooseProposal("Show All Generic Configuration Points...");
+		AbstractWait.sleep(TimePeriod.SHORT);
+		Shell s = new DefaultShell();
+		List<String> proposals = new ArrayList<String>();
+		for(TableItem i: new DefaultTable().getItems()){
+			proposals.add(i.getText());
+		}
+		s.close();
+		
+		
+	//	OpenOnHelper.selectOpenOnOption(bot, classTitle, atribute, 
+		//		"Show All Generic Configuration Points...");
+		//bot.waitUntil(new ActiveShellContainsWidget(bot, Table.class));
+		//SWTBotTable genericPointTable = bot.table(0);
+		assertTrue(checkAllGenericConfPoints(proposals));
 	}
 
-	private boolean checkAllGenericConfPoints(SWTBotTable genericPointTable) {
+	private boolean checkAllGenericConfPoints(List<String> proposals) {
 		boolean isGenericPoint1Present = false;
 		boolean isGenericPoint2Present = false;
 		boolean isGenericPoint3Present = false;
-		for (int rowIterator = 0; rowIterator < genericPointTable.rowCount(); rowIterator++) {
-			String itemInTable = genericPointTable.getTableItem(rowIterator)
-					.getText();
-			if (itemInTable.contains(GENERIC_POINT_1)) {
+		for (String item: proposals) {
+			if (item.contains(GENERIC_POINT_1)) {
 				isGenericPoint1Present = true;
 				continue;
 			}
-			if (itemInTable.contains(GENERIC_POINT_2)) {
+			if (item.contains(GENERIC_POINT_2)) {
 				isGenericPoint2Present = true;
 				continue;
 			}
-			if (itemInTable.contains(GENERIC_POINT_3)) {
+			if (item.contains(GENERIC_POINT_3)) {
 				isGenericPoint3Present = true;
 				continue;
 			}

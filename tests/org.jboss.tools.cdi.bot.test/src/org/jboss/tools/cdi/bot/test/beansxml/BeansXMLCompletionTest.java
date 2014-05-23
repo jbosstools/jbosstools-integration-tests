@@ -11,15 +11,25 @@
 
 package org.jboss.tools.cdi.bot.test.beansxml;
 
+import static org.junit.Assert.*;
+
 import java.util.Arrays;
 import java.util.List;
 
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
-import org.jboss.tools.cdi.bot.test.CDIConstants;
+import org.jboss.reddeer.requirements.server.ServerReqState;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
+import org.jboss.reddeer.eclipse.jface.text.contentassist.ContentAssistant;
+import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
+import org.jboss.reddeer.workbench.api.Editor;
+import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
 import org.jboss.tools.cdi.bot.test.annotations.CDIWizardType;
-import org.jboss.tools.ui.bot.ext.helper.ContentAssistHelper;
-import org.jboss.tools.ui.bot.ext.types.IDELabel;
+import org.jboss.tools.cdi.reddeer.CDIConstants;
+import org.jboss.tools.common.reddeer.label.IDELabel;
 import org.junit.Test;
 
 /**
@@ -28,7 +38,9 @@ import org.junit.Test;
  * @author Jaroslav Jankovic
  * 
  */
-
+@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.AS7_1)
+@OpenPerspective(JavaEEPerspective.class)
+@CleanWorkspace
 public class BeansXMLCompletionTest extends CDITestBase {
 	
 	private static final List<String> INTERCEPTOR_NAMES = Arrays.asList(
@@ -62,7 +74,7 @@ public class BeansXMLCompletionTest extends CDITestBase {
 		LOGGER.info("Beans.xml with interceptors tag was created");
 				
 		List<String> proposalList = editResourceUtil.getProposalList(
-				IDELabel.WebProjectsTree.BEANS_XML, CDIConstants.CLASS_END_TAG, 0, 0);
+				IDELabel.WebProjectsTree.BEANS_XML, CDIConstants.CLASS_END_TAG);
 		for (String interceptor : INTERCEPTOR_NAMES) {
 			assertTrue(proposalList.contains(interceptor + " - " + getPackageName()));
 		}
@@ -78,7 +90,7 @@ public class BeansXMLCompletionTest extends CDITestBase {
 		LOGGER.info("Beans.xml with decorators tag was created");
 			
 		List<String> proposalList = editResourceUtil.getProposalList(IDELabel.WebProjectsTree.BEANS_XML, 
-				CDIConstants.CLASS_END_TAG, 0, 0);
+				CDIConstants.CLASS_END_TAG);
 		for (String decorator : DECORATORS_NAMES) {
 			assertTrue(proposalList.contains(decorator + " - " + getPackageName()));
 		}
@@ -95,7 +107,7 @@ public class BeansXMLCompletionTest extends CDITestBase {
 		LOGGER.info("Beans.xml with stereotype tag was created");
 			
 		List<String> proposalList = editResourceUtil.getProposalList(IDELabel.WebProjectsTree.BEANS_XML, 
-				CDIConstants.STEREOTYPE_END_TAG, 0, 0);
+				CDIConstants.STEREOTYPE_END_TAG);
 		for (String stereotype : STEREOTYPES_NAMES) {
 			assertTrue(proposalList.contains(stereotype + " - " + getPackageName()));
 		}
@@ -112,7 +124,7 @@ public class BeansXMLCompletionTest extends CDITestBase {
 		LOGGER.info("Beans.xml with alternative tag was created");
 		
 		List<String> proposalList = editResourceUtil.getProposalList(IDELabel.WebProjectsTree.BEANS_XML, 
-				CDIConstants.CLASS_END_TAG, 0, 0);
+				CDIConstants.CLASS_END_TAG);
 		for (String alternative : ALTERNATIVES_NAMES) {
 			assertTrue(proposalList.contains(alternative + " - " + getPackageName()));
 		}
@@ -139,7 +151,7 @@ public class BeansXMLCompletionTest extends CDITestBase {
 		LOGGER.info("Clear beans.xml with empty tag was created");
 		
 		List<String> proposalList = editResourceUtil.getProposalList(
-				IDELabel.WebProjectsTree.BEANS_XML, "<>", 1, 0);
+				IDELabel.WebProjectsTree.BEANS_XML, "<>");
 		List<String> nonSupportedComponents = Arrays.asList(components);
 		
 		for (String nonSupportedComponent : nonSupportedComponents) {
@@ -164,12 +176,16 @@ public class BeansXMLCompletionTest extends CDITestBase {
 	 */
 	private void checkAutoCompletion(int row, int column, String text, String editorTitle,
 			List<String> expectedProposalList) {
-		SWTBotEclipseEditor activeEditor = bot.activeEditor().toTextEditor();
-		activeEditor.navigateTo(row, column);
-		activeEditor.typeText(text);
-		ContentAssistHelper.checkContentAssistContent(bot, 
-				editorTitle, text, 1, 0, expectedProposalList, false);		
-		editResourceUtil.replaceInEditor(text, "");
+		Editor te = new DefaultEditor(editorTitle);
+		DefaultStyledText t = new DefaultStyledText();
+		t.insertText(row, column, text);
+		t.selectText(text);
+		
+		ContentAssistant cs = te.openContentAssistant();
+		List<String> props = cs.getProposals();
+		cs.close();
+		assertTrue(props.containsAll(expectedProposalList));
+		editResourceUtil.replaceInEditor(editorTitle, text, "");
 	}
 	
 }

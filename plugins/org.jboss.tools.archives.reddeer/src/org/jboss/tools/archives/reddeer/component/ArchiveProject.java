@@ -11,6 +11,9 @@
 package org.jboss.tools.archives.reddeer.component;
 
 import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.swt.condition.TreeItemHasMinChildren;
+import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.tools.archives.reddeer.archives.ui.NewJarDialog;
 
 /**
@@ -45,6 +48,7 @@ public class ArchiveProject {
 	}
 	
 	public Archive getArchive(String archiveName) {
+		new WaitUntil(new TreeItemHasMinChildren(archiveProject, 1), TimePeriod.NORMAL, false);
 		return new Archive(archiveProject.getItem(archiveName));
 	}
 	

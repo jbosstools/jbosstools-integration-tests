@@ -11,6 +11,8 @@
 
 package org.jboss.tools.deltaspike.ui.bot.test;
 
+import static org.junit.Assert.*;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -20,15 +22,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
+import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
+import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
 import org.jboss.reddeer.swt.api.Shell;
 import org.jboss.reddeer.swt.api.Table;
+import org.jboss.reddeer.swt.api.TableItem;
 import org.jboss.reddeer.swt.condition.ButtonWithTextIsActive;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
@@ -37,26 +43,19 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.swt.matcher.RegexMatchers;
+import org.jboss.reddeer.swt.matcher.WithRegexMatchers;
 import org.jboss.reddeer.swt.regex.Regex;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.jboss.tools.common.reddeer.preferences.SourceLookupPreferencePage;
+import org.jboss.tools.common.reddeer.preferences.SourceLookupPreferencePage.SourceAttachmentEnum;
 import org.jboss.tools.deltaspike.ui.bot.test.condition.SpecificProblemExists;
-import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
-import org.jboss.tools.ui.bot.ext.SWTTestExt;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
-import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
-import org.jboss.tools.ui.bot.ext.helper.ImportHelper;
 import org.junit.AfterClass;
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite.SuiteClasses;
+import org.junit.BeforeClass;
 
-@Require(clearProjects = true, server = @Server(state = ServerState.NotRunning, version = "6.0", operator = ">="))
-@RunWith(RequirementAwareSuite.class)
-@SuiteClasses({ DeltaspikeAllBotTests.class })
-public class DeltaspikeTestBase extends SWTTestExt {
+public class DeltaspikeTestBase {
 
 	private static final File DELTASPIKE_LIBRARY_DIR = new File(
 			System.getProperty("deltaspike.libs.dir"));
@@ -68,15 +67,46 @@ public class DeltaspikeTestBase extends SWTTestExt {
 	public static void cleanUp() {
 		deleteAllProjects();
 	}
+	
+	@BeforeClass
+	public static void disableSourceLookup(){
+		SourceLookupPreferencePage sp = new SourceLookupPreferencePage();
+		sp.open();
+		sp.setSourceAttachment(SourceAttachmentEnum.NEVER);
+		sp.ok();
+	}
 
-	protected static void importDeltaspikeProject(String projectName) {
-		/**
-		 * TODO import project via reddeer (need to copy it to not modify test
-		 * project)
-		 **/
-		ImportHelper.importProject("/resources/prj/" + projectName,
-				projectName, Activator.PLUGIN_ID);
-		addRuntimeIntoProject(configuredState.getServer().name, projectName);
+	protected static void importDeltaspikeProject(String projectName,ServerRequirement sr) {
+		ExternalProjectImportWizardDialog iDialog = new ExternalProjectImportWizardDialog();
+		iDialog.open();
+		WizardProjectsImportPage fPage = iDialog.getFirstPage();
+		fPage.copyProjectsIntoWorkspace(true);
+		try {
+			fPage.setRootDirectory((new File("resources/prj/"+projectName)).getParentFile().getCanonicalPath());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		fPage.selectProjects(projectName);
+		iDialog.finish();
+
+		PackageExplorer pe = new PackageExplorer();
+		pe.open();
+		pe.getProject(projectName).select();
+		new ContextMenu("Properties").select();
+		new DefaultShell("Properties for "+projectName);
+		new DefaultTreeItem("Targeted Runtimes").select();
+		for(TableItem i: new DefaultTable().getItems()){
+			if(i.getText().equals(sr.getRuntimeNameLabelText(sr.getConfig()))){
+				i.setChecked(true);
+			} else {
+				i.setChecked(false);
+			}
+		}
+		new PushButton("Apply").click();
+		new PushButton("OK").click();
+		new WaitWhile(new ShellWithTextIsAvailable("Properties for "+projectName));
+		new WaitWhile(new JobIsRunning());
 		addDeltaspikeLibrariesIntoProject(projectName);
 		cleanProjects();
 	}
@@ -84,9 +114,11 @@ public class DeltaspikeTestBase extends SWTTestExt {
 	protected void insertIntoFile(String projectName, String packageName,
 			String bean, int line, int column, String insertedText) {
 		openClass(projectName, packageName, bean);
-		SWTBotEclipseEditor editor = bot.activeEditor().toTextEditor();
-		editor.insertText(line, column, insertedText);
-		editor.save();
+		TextEditor e =new TextEditor(bean);
+		e.insertText(line, column, insertedText);
+		//SWTBotEclipseEditor editor = bot.activeEditor().toTextEditor();
+		//editor.insertText(line, column, insertedText);
+		e.save();
 	}
 	
 	protected void replaceInEditor(String projectName, String packageName, String bean, 
@@ -96,13 +128,13 @@ public class DeltaspikeTestBase extends SWTTestExt {
 	}
 	
 	protected void replaceInEditor(String target, String replacement, boolean save) {
-		SWTBotEclipseEditor eclipseEditor = bot.activeEditor().toTextEditor();
-		eclipseEditor.selectRange(0, 0, eclipseEditor.getText().length());
-		eclipseEditor.setText(eclipseEditor.getText().replace(
+		TextEditor e =new TextEditor();
+		//eclipseEditor.selectRange(0, 0, eclipseEditor.getText().length());
+		e.setText(e.getText().replace(
 				target + (replacement.equals("") ? System
 								.getProperty("line.separator") : ""),
 				replacement));		
-		if (save) eclipseEditor.save();
+		if (save) e.save();
 	}
 
 	protected void annotateBean(String projectName, String packageName,
@@ -112,12 +144,11 @@ public class DeltaspikeTestBase extends SWTTestExt {
 		new WaitUntil(new SpecificProblemExists(new Regex(
 				".*cannot be resolved.*")), TimePeriod.NORMAL);
 
-		SWTBotEclipseEditor editor = bot.activeEditor().toTextEditor();
-		editor.setFocus();
-		RegexMatchers m = new RegexMatchers("Source", "Organize Imports.*");
+		TextEditor e =new TextEditor();
+		WithRegexMatchers m = new WithRegexMatchers("Source", "Organize Imports.*");
 		new ShellMenu(m.getMatchers()).select();
 
-		editor.save();
+		e.save();
 
 	}
 
@@ -132,7 +163,7 @@ public class DeltaspikeTestBase extends SWTTestExt {
 	
 	protected static void cleanProjects() {
 		
-		RegexMatchers m = new RegexMatchers("Project", "Clean.*");
+		WithRegexMatchers m = new WithRegexMatchers("Project", "Clean.*");
 		new ShellMenu(m.getMatchers()).select();
 		new WaitUntil(new ShellWithTextIsActive("Clean"));
 		new PushButton("OK").click();

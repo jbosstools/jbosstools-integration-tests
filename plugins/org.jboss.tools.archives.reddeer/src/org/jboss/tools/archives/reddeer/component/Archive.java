@@ -11,6 +11,9 @@
 package org.jboss.tools.archives.reddeer.component;
 
 import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.swt.condition.TreeItemHasMinChildren;
+import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.tools.archives.reddeer.archives.jdt.integration.LibFilesetDialog;
 import org.jboss.tools.archives.reddeer.archives.ui.ArchivePublishDialog;
 import org.jboss.tools.archives.reddeer.archives.ui.EditArchiveDialog;
@@ -96,18 +99,22 @@ public class Archive {
 	}
 	
 	public Archive getArchive(String archiveName) {
+		new WaitUntil(new TreeItemHasMinChildren(archive, 1), TimePeriod.NORMAL, false);
 		return new Archive(archive.getItem(archiveName));
 	}
 	
 	public Folder getFolder(String folderName) {
+		new WaitUntil(new TreeItemHasMinChildren(archive, 1), TimePeriod.NORMAL, false);
 		return new Folder(archive.getItem(folderName));
 	}
 	
 	public Fileset getFileset(String filesetName) {
+		new WaitUntil(new TreeItemHasMinChildren(archive, 1), TimePeriod.NORMAL, false);
 		return new Fileset(archive.getItem(filesetName));
 	}
 	
 	public UserLibraryFileset getUserLibraryFileset(String userLibraryFilesetName) {
+		new WaitUntil(new TreeItemHasMinChildren(archive, 1), TimePeriod.NORMAL, false);
 		return new UserLibraryFileset(archive.getItem(userLibraryFilesetName));
 	}
 

@@ -11,7 +11,7 @@
 
 package org.jboss.tools.cdi.seam3.bot.test;
 
-import org.jboss.tools.cdi.bot.test.AbstractTestSuite;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.cdi.seam3.bot.test.tests.DefaultBeansTest;
 import org.jboss.tools.cdi.seam3.bot.test.tests.ExactAnnotationTest;
 import org.jboss.tools.cdi.seam3.bot.test.tests.FullyQualifiedTest;
@@ -28,7 +28,6 @@ import org.jboss.tools.cdi.seam3.bot.test.tests.SeamConfigEEOpenOnTest;
 import org.jboss.tools.cdi.seam3.bot.test.tests.SeamConfigInjectOpenOnTest;
 import org.jboss.tools.cdi.seam3.bot.test.tests.SeamConfigValidationTest;
 import org.jboss.tools.cdi.seam3.bot.test.tests.VetoAnnotationTest;
-import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
@@ -37,25 +36,43 @@ import org.junit.runners.Suite.SuiteClasses;
  * 
  * @author Jaroslav Jankovic
  */
-@RunWith(RequirementAwareSuite.class)
+@RunWith(RedDeerSuite.class)
 @SuiteClasses({	
+	
 	ResourceOpenOnTest.class,
+	
 	GenericOpenOnTest.class,
-	DefaultBeansTest.class,
+	
+	DefaultBeansTest.class, //failing, maybe bug
+	
 	ExactAnnotationTest.class,
 	VetoAnnotationTest.class,
+	
 	RequiresAnnotationTest.class,
+	
 	NamedPackagesTest.class,
+	
+	
 	FullyQualifiedTest.class,
+	
+	
 	LoggerSupportTest.class,
+	
 	InterfaceAndAbstractValidationTest.class,
+	
 	MessageLoggerAnnotationTest.class,
+	
 	SeamConfigClassBaseOpenOnTest.class,
 	SeamConfigEEOpenOnTest.class,
+	
 	SeamConfigInjectOpenOnTest.class,
+	
+	
 	SeamConfigValidationTest.class,
+	
 	SeamConfigCodeCompletionTest.class,
+	
 	})
-public class CDISeam3AllBotTests extends AbstractTestSuite {
+public class CDISeam3AllBotTests {
 	
 }

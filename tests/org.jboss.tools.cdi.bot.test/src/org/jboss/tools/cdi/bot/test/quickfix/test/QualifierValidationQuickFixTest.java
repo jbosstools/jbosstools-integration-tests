@@ -12,6 +12,15 @@
 package org.jboss.tools.cdi.bot.test.quickfix.test;
 
 
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
+import org.jboss.reddeer.eclipse.jdt.ui.NewAnnotationCreationWizard;
+import org.jboss.reddeer.eclipse.jdt.ui.NewAnnotationWizardPage;
+import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.requirements.server.ServerReqState;
+import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
 import org.jboss.tools.cdi.bot.test.annotations.CDIWizardType;
 import org.jboss.tools.cdi.bot.test.annotations.ValidationType;
@@ -24,7 +33,9 @@ import org.junit.Test;
  * 
  * @author Jaroslav Jankovic
  */
-
+@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.AS7_1)
+@OpenPerspective(JavaEEPerspective.class)
+@CleanWorkspace
 public class QualifierValidationQuickFixTest extends CDITestBase {
 	
 	private static IValidationProvider validationProvider = new QualifierValidationProvider();
@@ -41,13 +52,13 @@ public class QualifierValidationQuickFixTest extends CDITestBase {
 		
 		wizard.createCDIComponent(CDIWizardType.QUALIFIER, className, getPackageName(), null);
 		
-		editResourceUtil.replaceInEditor("@Target({ TYPE, METHOD, PARAMETER, FIELD })", 
+		editResourceUtil.replaceInEditor(className+".java","@Target({ TYPE, METHOD, PARAMETER, FIELD })", 
 				"@Target({ TYPE, FIELD })");
 		
 		quickFixHelper.checkQuickFix(ValidationType.TARGET, 
 				"@Target({TYPE, METHOD, FIELD, PARAMETER})", getProjectName(), validationProvider());
 		
-		editResourceUtil.replaceInEditor("@Target({TYPE, METHOD, FIELD, PARAMETER})", "");
+		editResourceUtil.replaceInEditor(className+".java","@Target({TYPE, METHOD, FIELD, PARAMETER})", "");
 		
 		quickFixHelper.checkQuickFix(ValidationType.TARGET, getProjectName(), validationProvider());
 	}
@@ -60,11 +71,11 @@ public class QualifierValidationQuickFixTest extends CDITestBase {
 
 		wizard.createCDIComponent(CDIWizardType.QUALIFIER, className, getPackageName(), null);
 				
-		editResourceUtil.replaceInEditor("@Retention(RUNTIME)", "@Retention(CLASS)");
+		editResourceUtil.replaceInEditor(className+".java","@Retention(RUNTIME)", "@Retention(CLASS)");
 		
 		quickFixHelper.checkQuickFix(ValidationType.RETENTION, getProjectName(), validationProvider());
 		
-		editResourceUtil.replaceInEditor("@Retention(RUNTIME)", "");
+		editResourceUtil.replaceInEditor(className+".java","@Retention(RUNTIME)", "");
 		
 		quickFixHelper.checkQuickFix(ValidationType.RETENTION, getProjectName(), validationProvider());
 		
@@ -76,18 +87,25 @@ public class QualifierValidationQuickFixTest extends CDITestBase {
 	
 		String className = "Qualifier3";
 		
-		wizard.createAnnotation("AAnnotation", getPackageName());
+		NewAnnotationCreationWizard aw = new NewAnnotationCreationWizard();
+		aw.open();
+		NewAnnotationWizardPage ap = aw.getFirstPage();
+		ap.setPackage(getPackageName());
+		ap.setName("AAnnotation");
+		aw.finish();
+		new TextEditor("AAnnotation.java");
+		
 		wizard.createCDIComponentWithContent(CDIWizardType.QUALIFIER, className, 
 				getPackageName(), null, "/resources/quickfix/" +
 						"qualifier/QualifierWithAnnotation.java.cdi");
 	
-		editResourceUtil.replaceInEditor("QualifierComponent", className);
+		editResourceUtil.replaceInEditor(className+".java","QualifierComponent", className);
 	
 		quickFixHelper.checkQuickFix(ValidationType.NONBINDING, getProjectName(), validationProvider());
 				
-		editResourceUtil.replaceClassContentByResource(QualifierValidationQuickFixTest.class
+		editResourceUtil.replaceClassContentByResource(className+".java", QualifierValidationQuickFixTest.class
 				.getResourceAsStream("/resources/quickfix/qualifier/QualifierWithStringArray.java.cdi"), false);
-		editResourceUtil.replaceInEditor("QualifierComponent", className);
+		editResourceUtil.replaceInEditor(className+".java","QualifierComponent", className);
 		
 		quickFixHelper.checkQuickFix(ValidationType.NONBINDING, getProjectName(), validationProvider());
 	}

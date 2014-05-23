@@ -6,8 +6,11 @@ import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.tools.cdi.reddeer.condition.TableItemIsFound;
 
 public class NewBeanCreationWizard extends NewWizardDialog{
 	
@@ -82,11 +85,20 @@ public class NewBeanCreationWizard extends NewWizardDialog{
 		new LabeledCombo("Scope:").setSelection(scope);
 	}
 	
+	public void setSuperclass(String superclass){
+		new LabeledText("Superclass:").setText(superclass);
+	}
+	
+	public String getSuperclass(){
+		return new LabeledText("Superclass:").getText();
+	}
+	
 	
 	public void addInterfaces(String bindings){
 		new PushButton("Add...").click();
 		new DefaultShell("Implemented Interfaces Selection");
 		new DefaultText(0).setText(bindings);
+		new WaitUntil(new TableItemIsFound(new DefaultTable(), bindings));
 		new PushButton("OK").click();
 		new DefaultShell("New CDI Bean");
 	}
@@ -95,6 +107,7 @@ public class NewBeanCreationWizard extends NewWizardDialog{
 		new PushButton("Add").click();
 		new DefaultShell("Select Qualifier Annotation Type");
 		new DefaultText(0).setText(stereoptypes);
+		new WaitUntil(new TableItemIsFound(new DefaultTable(), stereoptypes));
 		new PushButton("OK").click();
 		new DefaultShell("New CDI Bean");
 	}

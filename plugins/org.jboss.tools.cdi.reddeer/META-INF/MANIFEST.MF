@@ -4,10 +4,18 @@ Bundle-Name: RedDeer API for CDI UI Tests
 Bundle-SymbolicName: org.jboss.tools.cdi.reddeer
 Bundle-Version: 4.2.0.qualifier
 Bundle-Activator: org.jboss.tools.cdi.reddeer.Activator
-Export-Package: org.jboss.tools.cdi.reddeer.cdi.text.ext.hyperlink,
+Export-Package: org.jboss.tools.cdi.reddeer,
+ org.jboss.tools.cdi.reddeer.annotation,
+ org.jboss.tools.cdi.reddeer.cdi.text.ext.hyperlink,
  org.jboss.tools.cdi.reddeer.cdi.ui,
  org.jboss.tools.cdi.reddeer.cdi.ui.wizard,
- org.jboss.tools.cdi.reddeer.common.model.ui
+ org.jboss.tools.cdi.reddeer.common.model.ui,
+ org.jboss.tools.cdi.reddeer.common.model.ui.editor,
+ org.jboss.tools.cdi.reddeer.condition,
+ org.jboss.tools.cdi.reddeer.quickfix,
+ org.jboss.tools.cdi.reddeer.uiutils,
+ org.jboss.tools.cdi.reddeer.validators,
+ org.jboss.tools.cdi.reddeer.xhtml
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.jboss.reddeer.swt,
@@ -19,7 +27,8 @@ Require-Bundle: org.eclipse.ui,
  org.junit,
  org.eclipse.text,
  org.eclipse.ui.workbench.texteditor,
- org.jboss.tools.common
+ org.jboss.tools.common,
+ org.eclipse.core.resources
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Eclipse-BundleShape: jar

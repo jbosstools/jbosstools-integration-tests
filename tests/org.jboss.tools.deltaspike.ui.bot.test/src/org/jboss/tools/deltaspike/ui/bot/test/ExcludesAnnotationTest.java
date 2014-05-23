@@ -11,10 +11,19 @@
 
 package org.jboss.tools.deltaspike.ui.bot.test;
 
-import static org.junit.Assert.assertThat;
-
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
+import static org.junit.Assert.*;
 import org.hamcrest.core.IsEqual;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
+import org.jboss.reddeer.eclipse.jface.text.contentassist.ContentAssistant;
+import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.api.Shell;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
@@ -23,9 +32,8 @@ import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.deltaspike.ui.bot.test.condition.SpecificProblemExists;
-import org.jboss.tools.ui.bot.ext.Timing;
-import org.jboss.tools.ui.bot.ext.helper.OpenOnHelper;
 import org.junit.After;
 import org.junit.Test;
 
@@ -42,30 +50,39 @@ import org.junit.Test;
  * @author jjankovi
  *
  */
+@CleanWorkspace
+@OpenPerspective(JavaEEPerspective.class)
+@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.AS7_1)
 public class ExcludesAnnotationTest extends DeltaspikeTestBase {
 
 	private Regex validationProblemRegex = new Regex(
 			"Multiple beans are eligible for injection.*");
+	
+	@InjectRequirement
+	private ServerRequirement sr;
 
 	@After
 	public void closeAllEditors() {
-		new SWTWorkbenchBot().closeAllEditors();
-		projectExplorer.deleteAllProjects();
+		PackageExplorer pe = new PackageExplorer();
+		pe.open();
+		for(Project p: pe.getProjects()){
+			p.delete(true);
+		}
 	}
 	
 	@Test
 	public void testManagedBeans() {
 
 		String projectName = "exclude-mb";
-		importDeltaspikeProject(projectName);
+		importDeltaspikeProject(projectName,sr);
 		
 		new WaitUntil(new SpecificProblemExists(
-				validationProblemRegex), TimePeriod.NORMAL);
+				validationProblemRegex), TimePeriod.LONG);
 
 		annotateBean(projectName, "test", "InterfaceImpl1.java", 1, 0, "@Exclude");
 		
 		new WaitWhile(new SpecificProblemExists(
-				validationProblemRegex), TimePeriod.NORMAL);
+				validationProblemRegex), TimePeriod.LONG);
 		
 		checkInjectedPoint(projectName, "Test.java", "CustomInterface",
 				"InterfaceImpl2.java");
@@ -76,15 +93,15 @@ public class ExcludesAnnotationTest extends DeltaspikeTestBase {
 	public void testSessionBean() {
 		
 		String projectName = "exclude-sb";
-		importDeltaspikeProject(projectName);
+		importDeltaspikeProject(projectName,sr);
 		
 		new WaitUntil(new SpecificProblemExists(validationProblemRegex), 
-				TimePeriod.NORMAL);
+				TimePeriod.LONG);
 		
 		annotateBean(projectName, "test", "InterfaceImpl1.java", 4, 0, "@Exclude");
 
 		new WaitWhile(new SpecificProblemExists(validationProblemRegex), 
-				TimePeriod.NORMAL);
+				TimePeriod.LONG);
 		
 		checkInjectedPoint(projectName, "Test.java", "CustomInterface",
 				"InterfaceImpl2.java");
@@ -95,15 +112,15 @@ public class ExcludesAnnotationTest extends DeltaspikeTestBase {
 	public void testProducerMethod() {
 		
 		String projectName = "exclude-pm";
-		importDeltaspikeProject(projectName);
+		importDeltaspikeProject(projectName,sr);
 		
 		new WaitUntil(new SpecificProblemExists(validationProblemRegex), 
-				TimePeriod.NORMAL);
+				TimePeriod.LONG);
 
 		annotateBean(projectName, "test", "ProducerBean1.java", 3, 0, "@Exclude");
 		
 		new WaitWhile(new SpecificProblemExists(validationProblemRegex), 
-				TimePeriod.NORMAL);
+				TimePeriod.LONG);
 		
 		checkInjectedPoint(projectName, "Test.java", "inter",
 				"ProducerBean2.java");
@@ -114,15 +131,15 @@ public class ExcludesAnnotationTest extends DeltaspikeTestBase {
 	public void testProducerField() {
 	
 		String projectName = "exclude-pf";
-		importDeltaspikeProject(projectName);
+		importDeltaspikeProject(projectName,sr);
 		
 		new WaitUntil(new SpecificProblemExists(validationProblemRegex), 
-				TimePeriod.NORMAL);
+				TimePeriod.LONG);
 
 		annotateBean(projectName, "test", "ProducerField1.java", 3, 0, "@Exclude");
 		
 		new WaitWhile(new SpecificProblemExists(validationProblemRegex), 
-				TimePeriod.NORMAL);
+				TimePeriod.LONG);
 		
 		checkInjectedPoint(projectName, "Test.java", "inter",
 				"ProducerField2.java");
@@ -133,14 +150,14 @@ public class ExcludesAnnotationTest extends DeltaspikeTestBase {
 	public void testEvents() {
 			
 		String projectName = "exclude-eo";
-		importDeltaspikeProject(projectName);
+		importDeltaspikeProject(projectName,sr);
 		
 		checkEventsCount(projectName, "Test.java", 2, null);
 
 		annotateBean(projectName, "test", "EventProducer1.java", 4, 0, "@Exclude");
 		
 		/** will be deprecated once validation messages are added (JBIDE-11899) **/
-		AbstractWait.sleep(Timing.time3S());
+		AbstractWait.sleep(TimePeriod.SHORT);
 		
 		checkEventsCount(projectName, "Test.java", 1, "EventProducer2.java");
 		
@@ -150,16 +167,16 @@ public class ExcludesAnnotationTest extends DeltaspikeTestBase {
 	public void testPackage() {
 	
 		String projectName = "exclude-wp";
-		importDeltaspikeProject(projectName);
+		importDeltaspikeProject(projectName,sr);
 		
 		new WaitUntil(new SpecificProblemExists(
-				validationProblemRegex), TimePeriod.NORMAL);
+				validationProblemRegex), TimePeriod.LONG);
 		
 		insertIntoFile(projectName, "impl1", "package-info.java", 0, 0, 
 				"@org.apache.deltaspike.core.api.exclude.Exclude");
 		
 		new WaitWhile(new SpecificProblemExists(
-				validationProblemRegex), TimePeriod.NORMAL);
+				validationProblemRegex), TimePeriod.LONG);
 		
 		checkInjectedPoint(projectName, "Test.java", "CustomInterface",
 				"InterfaceImpl2.java");
@@ -170,24 +187,42 @@ public class ExcludesAnnotationTest extends DeltaspikeTestBase {
 			String injectedPoint, String injectedComponent) {
 		
 		openClass(projectName, "test", testBean);
-		OpenOnHelper.checkOpenOnFileIsOpened(bot, testBean, 
-				injectedPoint, "Open @Inject", injectedComponent);
+		TextEditor e = new TextEditor(testBean);
+		e.selectText(injectedPoint);
+		ContentAssistant ca = e.openOpenOnAssistant();
+		for(String p: ca.getProposals()){
+			if(p.contains("Open @Inject")){
+				ca.chooseProposal(p);
+				break;
+			}
+		}
+		new TextEditor(injectedComponent);
 	}
 	
 	private void checkEventsCount(String projectName, String observer, 
 			int expectedCount, String eventProducer) {
 		
 		openClass(projectName, "test", observer);
+		TextEditor e = new TextEditor(observer);
 		
 		if (eventProducer == null && expectedCount > 1) {
-			OpenOnHelper.selectOpenOnOption(bot, observer, "PaymentEvent event", 
-					"Show CDI Events");
+			e.selectText("PaymentEvent event");
+			ContentAssistant ca = e.openOpenOnAssistant();
+			ca.chooseProposal("Show CDI Events...");
+			
 			Shell shell = new DefaultShell();
 			assertThat(new DefaultTable().rowCount(), IsEqual.equalTo(expectedCount));
 			shell.close();
 		} else {
-			OpenOnHelper.checkOpenOnFileIsOpened(bot, observer, "PaymentEvent event", 
-					"Open CDI Event", eventProducer);
+			e.selectText("PaymentEvent event");
+			ContentAssistant ca = e.openOpenOnAssistant();
+			for(String p: ca.getProposals()){
+				if(p.contains("Open CDI Event")){
+					ca.chooseProposal(p);
+					break;
+				}
+			}
+			new TextEditor(eventProducer);
 		}
 		
 	}

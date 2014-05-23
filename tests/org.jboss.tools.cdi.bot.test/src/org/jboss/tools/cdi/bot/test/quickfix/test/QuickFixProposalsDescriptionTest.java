@@ -11,16 +11,27 @@
 
 package org.jboss.tools.cdi.bot.test.quickfix.test;
 
+import static org.junit.Assert.*;
+
 import java.util.Arrays;
 import java.util.List;
 
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTableItem;
-import org.jboss.tools.cdi.bot.test.CDIConstants;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.eclipse.jface.text.contentassist.ContentAssistant;
+import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.requirements.server.ServerReqState;
+import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.jboss.tools.cdi.reddeer.CDIConstants;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
-import org.jboss.tools.cdi.bot.test.uiutils.wizards.OpenOnOptionsDialog;
 import org.junit.Test;
 
+@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.AS7_1)
+@OpenPerspective(JavaEEPerspective.class)
+@CleanWorkspace
 public class QuickFixProposalsDescriptionTest extends CDITestBase {
 
 	@Override
@@ -33,18 +44,20 @@ public class QuickFixProposalsDescriptionTest extends CDITestBase {
 		
 		String className = "AddCodeBean.java";
 		
-		SWTBotEditor editor = packageExplorer.openFile(getProjectName(), CDIConstants.SRC, 
-				getPackageName(), className);
+		PackageExplorer pe = new PackageExplorer();
+		pe.open();
+		pe.getProject(getProjectName()).getProjectItem(CDIConstants.SRC,
+				getPackageName(), className).open();
+		TextEditor ed = new TextEditor(className);
+		ed.selectText("AddCodeBean");
 		
-		OpenOnOptionsDialog openOnDialog = quickFixHelper.openOnDialog(
-				"AddCodeBean", className);
-		assertNotNull(openOnDialog);
-		
+		ContentAssistant ca = ed.openQuickFixContentAssistant();
+
 		String proposeText = null;
-		
-		for (SWTBotTableItem ti : openOnDialog.getAllOptions()) {
-			if (ti.getText().contains("Add java.io.Serializable")) {
-				proposeText = openOnDialog.setProposalOption(ti);
+		for (String pr: ca.getProposals()) {
+			if (pr.contains("Add java.io.Serializable")) {
+				ca.chooseProposal(pr);
+				proposeText = pr;
 				break;
 			}
 		}
@@ -55,8 +68,7 @@ public class QuickFixProposalsDescriptionTest extends CDITestBase {
 				"implements Serializable");
 		
 		for (String affectedLine : affectedLinesInProposal) {
-			assertTrue(proposeText.contains(affectedLine));
-			String text = editor.toTextEditor().getText();
+			String text = ed.getText();
 			assertTrue(text.contains(affectedLine));
 		}
 
@@ -67,18 +79,20 @@ public class QuickFixProposalsDescriptionTest extends CDITestBase {
 	
 		String className = "RemoveCodeBean.java";
 		
-		SWTBotEditor editor = packageExplorer.openFile(getProjectName(), CDIConstants.SRC, 
-				getPackageName(), className);
-		
-		OpenOnOptionsDialog openOnDialog = quickFixHelper.openOnDialog(
-				"@Disposes String param1, @Observes String param2", className);
-		assertNotNull(openOnDialog);
-		
+		PackageExplorer pe = new PackageExplorer();
+		pe.open();
+		pe.getProject(getProjectName()).getProjectItem(CDIConstants.SRC,
+				getPackageName(), className).open();
+		TextEditor ed = new TextEditor(className);
+		ed.selectText("@Disposes String param1, @Observes String param2");
+		ContentAssistant ca = ed.openQuickFixContentAssistant();
+
 		String proposeText = null;
 		
-		for (SWTBotTableItem ti : openOnDialog.getAllOptions()) {
-			if (ti.getText().contains("Delete annotation @Disposes")) {
-				proposeText = openOnDialog.setProposalOption(ti);
+		for (String pr: ca.getProposals()) {
+			if (pr.contains("Delete annotation @Disposes")) {
+				ca.chooseProposal(pr);
+				proposeText = pr;
 				break;
 			}
 		}
@@ -86,12 +100,12 @@ public class QuickFixProposalsDescriptionTest extends CDITestBase {
 		assertNotNull(proposeText);
 		
 		List<String> affectedLinesInProposal = Arrays.
-				asList("import javax.enterprise.inject.Disposes;", 
+				asList("javax.enterprise.inject.Disposes;", 
 				"@Disposes String param1");
 		
 		for (String affectedLine : affectedLinesInProposal) {
 			assertFalse(proposeText.contains(affectedLine));
-			String text = editor.toTextEditor().getText();
+			String text = ed.getText();
 			assertFalse(text.contains(affectedLine));
 		}
 		
@@ -102,18 +116,21 @@ public class QuickFixProposalsDescriptionTest extends CDITestBase {
 		
 		String className = "EditCodeStereotype.java";
 		
-		SWTBotEditor editor = packageExplorer.openFile(getProjectName(), CDIConstants.SRC, 
-				getPackageName(), className);
+		PackageExplorer pe = new PackageExplorer();
+		pe.open();
+		pe.getProject(getProjectName()).getProjectItem(CDIConstants.SRC,
+				getPackageName(), className).open();
+		TextEditor ed = new TextEditor(className);
+		ed.selectText("@Named(\"name\")");
 		
-		OpenOnOptionsDialog openOnDialog = quickFixHelper.openOnDialog(
-				"@Named(\"name\")", className);
-		assertNotNull(openOnDialog);
-		
+		ContentAssistant ca = ed.openQuickFixContentAssistant();
+
 		String proposeText = null;
 		
-		for (SWTBotTableItem ti : openOnDialog.getAllOptions()) {
-			if (ti.getText().contains("Change annotation '@Named")) {
-				proposeText = openOnDialog.setProposalOption(ti);
+		for (String pr: ca.getProposals()) {
+			if (pr.contains("Change annotation '@Named")) {
+				ca.chooseProposal(pr);
+				proposeText = pr;
 				break;
 			}
 		}
@@ -125,7 +142,7 @@ public class QuickFixProposalsDescriptionTest extends CDITestBase {
 		
 		for (String affectedLine : affectedLinesInProposal) {
 			assertTrue(proposeText.contains(affectedLine));
-			String text = editor.toTextEditor().getText();
+			String text = ed.getText();
 			assertTrue(text.contains(affectedLine));
 		}
 		
@@ -133,8 +150,7 @@ public class QuickFixProposalsDescriptionTest extends CDITestBase {
 				asList("@Named(\"name\")");
 		
 		for (String affectedLine : affectedLinesInProposal) {
-			assertFalse(proposeText.contains(affectedLine));
-			String text = editor.toTextEditor().getText();
+			String text = ed.getText();
 			assertFalse(text.contains(affectedLine));
 		}
 		

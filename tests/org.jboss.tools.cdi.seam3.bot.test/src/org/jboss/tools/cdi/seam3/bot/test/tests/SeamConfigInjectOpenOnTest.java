@@ -10,10 +10,21 @@
  ******************************************************************************/
 package org.jboss.tools.cdi.seam3.bot.test.tests;
 
-import org.jboss.tools.cdi.bot.test.CDIConstants;
+import static org.junit.Assert.*;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.eclipse.jface.text.contentassist.ContentAssistant;
+import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.requirements.server.ServerReqState;
+import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
+import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
+import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.jboss.tools.cdi.reddeer.CDIConstants;
 import org.jboss.tools.cdi.seam3.bot.test.base.Seam3TestBase;
 import org.jboss.tools.cdi.seam3.bot.test.util.SeamLibrary;
-import org.jboss.tools.ui.bot.ext.helper.OpenOnHelper;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -23,6 +34,9 @@ import org.junit.Test;
  * @author jjankovi
  * 
  */
+@CleanWorkspace
+@OpenPerspective(JavaEEPerspective.class)
+@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.AS7_1)
 public class SeamConfigInjectOpenOnTest extends Seam3TestBase {
 
 	private static String projectName = "seamConfigInjectOpenOn";
@@ -35,15 +49,26 @@ public class SeamConfigInjectOpenOnTest extends Seam3TestBase {
 
 	@Before
 	public void openSeamConfig() {
-		packageExplorer.openFile(projectName, CDIConstants.SRC, "test",
-				"Report.java");
+		PackageExplorer pe = new PackageExplorer();
+		pe.open();
+		pe.getProject(projectName).getProjectItem(CDIConstants.SRC, "test",
+				"Report.java").open();
+		new TextEditor("Report.java");
 	}
 
 	@Test
 	public void testBasicInjectOpenOn() {
-
-		OpenOnHelper.checkOpenOnFileIsOpened(bot, "Report.java", "path1",
-				"Open Resource in seam-beans.xml", SEAM_CONFIG);
+		
+		TextEditor t = new TextEditor("Report.java");
+		t.selectText("path1");
+		ContentAssistant as = t.openOpenOnAssistant();
+		for(String s: as.getProposals()){
+			if(s.contains("Open Resource in seam-beans.xml")){
+				as.chooseProposal(s);
+				break;
+			}
+		}
+		new DefaultEditor(SEAM_CONFIG);
 		assertExpectedSelection("<r:Resource path=\"value\">");
 
 	}
@@ -51,15 +76,22 @@ public class SeamConfigInjectOpenOnTest extends Seam3TestBase {
 	@Test
 	public void testQualifierInjectOpenOn() {
 
-		OpenOnHelper.checkOpenOnFileIsOpened(bot, "Report.java", "path2",
-				"Open Resource in seam-beans.xml", SEAM_CONFIG);
+		TextEditor t = new TextEditor("Report.java");
+		t.selectText("path2");
+		ContentAssistant as = t.openOpenOnAssistant();
+		for(String s: as.getProposals()){
+			if(s.contains("Open Resource in seam-beans.xml")){
+				as.chooseProposal(s);
+				break;
+			}
+		}
+		new DefaultEditor(SEAM_CONFIG);
 		assertExpectedSelection("<r:Resource>");
 
 	}
 
 	private void assertExpectedSelection(String selectedString) {
-		assertEquals(selectedString, bot.activeEditor().toTextEditor()
-				.getSelection());
+		assertEquals(selectedString, new DefaultStyledText().getSelectionText());
 	}
 
 }

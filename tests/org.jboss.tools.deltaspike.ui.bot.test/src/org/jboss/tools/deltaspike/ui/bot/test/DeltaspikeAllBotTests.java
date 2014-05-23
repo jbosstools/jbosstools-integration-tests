@@ -19,15 +19,13 @@
 
 package org.jboss.tools.deltaspike.ui.bot.test;
 
-import org.jboss.reddeer.eclipse.jface.preference.FoldingPreferencePage;
-import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
-import org.junit.BeforeClass;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
-@RunWith(RequirementAwareSuite.class)
+@RunWith(RedDeerSuite.class)
 @SuiteClasses({
-	ValidationsInPreferenceTest.class,
+	//ValidationsInPreferenceTest.class,
 	ExcludesAnnotationTest.class,
 	ConfigPropertyAnnotationTest.class,
 	MessageBundleAnnotationTest.class,
@@ -35,17 +33,8 @@ import org.junit.runners.Suite.SuiteClasses;
 	ExceptionHandlerAnnotationTest.class,
 	ExceptionHandlerMethodsTest.class,
 	SecuresAnnotationTest.class,
-	SecuredAnnotationTest.class
+	SecuredAnnotationTest.class,
+	MessageContextAnnotationTest.class
 })
 public class DeltaspikeAllBotTests {
-	
-	@BeforeClass
-	public static void disableFolding() {
-		FoldingPreferencePage foldingPreferecePage = 
-				new FoldingPreferencePage();
-		foldingPreferecePage.open();
-		foldingPreferecePage.disableFolding();
-		foldingPreferecePage.ok();
-	}
-	
 }

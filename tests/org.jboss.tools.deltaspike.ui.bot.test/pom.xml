@@ -12,8 +12,9 @@
 
 	<packaging>eclipse-test-plugin</packaging>
 	<properties>
-		<systemProperties>-Dswtbot.test.properties.file=${project.basedir}/properties/swtbot.properties -Ddeltaspike.libs.dir=${project.basedir}/target/requirements/</systemProperties>
+		<systemProperties>${integrationTestsSystemProperties} -Dreddeer.config=target/classes/servers -Djbosstools.test.jboss-as-7.1.home=${jbosstools.test.jboss-as-7.1.home} -Ddeltaspike.libs.dir=${project.basedir}/target/requirements/</systemProperties>
 		<suiteClass>org.jboss.tools.deltaspike.ui.bot.test.DeltaspikeAllBotTests</suiteClass>
+		<jbosstools.test.jboss-as-7.1.home>${requirementsDirectory}/jboss-as-7.1.1.Final</jbosstools.test.jboss-as-7.1.home>
 	</properties>
 	<build>
 		<plugins>
@@ -33,7 +34,7 @@
 								<artifactItem>
 									<groupId>org.jboss.as</groupId>
 									<artifactId>jboss-as-dist</artifactId>
-									<version>7.0.2.Final</version>
+									<version>7.1.1.Final</version>
 									<type>zip</type>
 								</artifactItem>								
 							</artifactItems>
@@ -51,25 +52,25 @@
 								<artifactItem>
 									<groupId>org.apache.deltaspike.core</groupId>
 									<artifactId>deltaspike-core-api</artifactId>
-									<version>0.3-incubating</version>
+									<version>0.7</version>
 									<type>jar</type>
 								</artifactItem>
 								<artifactItem>
 									<groupId>org.apache.deltaspike.core</groupId>
 									<artifactId>deltaspike-core-impl</artifactId>
-									<version>0.3-incubating</version>
+									<version>0.7</version>
 									<type>jar</type>
 								</artifactItem>
 								<artifactItem>
 									<groupId>org.apache.deltaspike.modules</groupId>
 									<artifactId>deltaspike-security-module-api</artifactId>
-									<version>0.3-incubating</version>
+									<version>0.7</version>
 									<type>jar</type>
 								</artifactItem>
 								<artifactItem>
 									<groupId>org.apache.deltaspike.modules</groupId>
 									<artifactId>deltaspike-security-module-impl</artifactId>
-									<version>0.3-incubating</version>
+									<version>0.7</version>
 									<type>jar</type>
 								</artifactItem>
 							</artifactItems>
@@ -146,5 +147,14 @@
 				</plugin>
 			</plugins>
 		</pluginManagement>
+		<resources>
+				<resource>
+				<directory>resources</directory>
+				<includes>
+					<include>servers/*</include>
+				</includes>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
 	</build>	
 </project>

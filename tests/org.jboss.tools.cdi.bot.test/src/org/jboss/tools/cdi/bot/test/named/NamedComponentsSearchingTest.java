@@ -11,18 +11,32 @@
 
 package org.jboss.tools.cdi.bot.test.named;
 
+import static org.junit.Assert.*;
+
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.requirements.server.ServerReqState;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
+import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.swt.condition.TableContainsItem;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.wait.AbstractWait;
+import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
+import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
 import org.jboss.tools.cdi.bot.test.annotations.CDIWizardType;
-import org.jboss.tools.cdi.bot.test.uiutils.wizards.CDIWizardBaseExt;
-import org.jboss.tools.cdi.bot.test.uiutils.wizards.SearchNamedDialogWizard;
-import org.jboss.tools.ui.bot.ext.types.IDELabel;
+import org.jboss.tools.cdi.reddeer.cdi.ui.NewBeanCreationWizard;
+import org.jboss.tools.cdi.reddeer.cdi.ui.NewStereotypeCreationWizard;
+import org.jboss.tools.cdi.reddeer.cdi.ui.wizard.OpenCDINamedBeanDialog;
+import org.jboss.tools.common.reddeer.label.IDELabel;
 import org.junit.After;
 import org.junit.Test;
 
@@ -32,13 +46,14 @@ import org.junit.Test;
  * @author Jaroslav Jankovic
  * 
  */
-
+@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.AS7_1)
+@OpenPerspective(JavaEEPerspective.class)
+@CleanWorkspace
 public class NamedComponentsSearchingTest extends CDITestBase {
-
-	private static final CDIWizardBaseExt wizardExt = new CDIWizardBaseExt();
+	
 	private static final String beanName = "Bean1";
 	private static final String stereotypeName = "Stereotype1";
-	private SearchNamedDialogWizard namedDialog = null;
+	private OpenCDINamedBeanDialog namedDialog = null;
 	private static final String BEAN_STEREOTYPE_PATH = "/resources/named/BeanWithStereotype.java.cdi";
 	private static final String BEAN_STEREOTYPE_NAMED_PATH = "/resources/named/BeanWithStereotypeAndNamed.java.cdi";
 
@@ -49,15 +64,25 @@ public class NamedComponentsSearchingTest extends CDITestBase {
 	
 	@Test
 	public void testSearchDefaultNamedBean() {
+		NewBeanCreationWizard nb = new NewBeanCreationWizard();
+		nb.open();
+		nb.setName(beanName);
+		nb.setPackage(getPackageName());
+		nb.setPublic(true);
+		nb.setAbstract(false);
+		nb.setFinal(false);
+		nb.setGenerateComments(false);
+		nb.setAlternative(false);
+		nb.setRegisterInBeans(false);
+		nb.setNamed(true);
+		nb.finish();
 		
-		wizardExt.bean(getPackageName(), beanName, true, false, false, 
-				false, false, false, "", null, null, null).finishWithWait();
-		
-		namedDialog = openSearchNamedDialog().setNamedPrefix(beanName);		
+		namedDialog = openSearchNamedDialog();
+		namedDialog.setNamedPrefix(beanName);
 		assertTrue(namedDialog.matchingItems().size() == 1);
 		namedDialog.ok();
-		assertTrue(bot.activeEditor().getTitle().equals(beanName + ".java"));
-		assertTrue(bot.activeEditor().toTextEditor().getSelection().equals(beanName));
+		assertTrue(new DefaultEditor().getTitle().equals(beanName + ".java"));
+		assertTrue(new TextEditor().getSelectedText().equals(beanName));
 		
 	}
 	
@@ -66,14 +91,26 @@ public class NamedComponentsSearchingTest extends CDITestBase {
 		
 		String namedParam = "someBean";
 		
-		wizardExt.bean(getPackageName(), beanName, true, false, false, 
-				false, false, false, namedParam, null, null, null).finishWithWait();
+		NewBeanCreationWizard nb = new NewBeanCreationWizard();
+		nb.open();
+		nb.setName(beanName);
+		nb.setPackage(getPackageName());
+		nb.setPublic(true);
+		nb.setAbstract(false);
+		nb.setFinal(false);
+		nb.setGenerateComments(false);
+		nb.setAlternative(false);
+		nb.setRegisterInBeans(false);
+		nb.setNamed(true);
+		nb.setBeanName(namedParam);
+		nb.finish();
 		
-		namedDialog = openSearchNamedDialog().setNamedPrefix(namedParam);		
+		namedDialog = openSearchNamedDialog();
+		namedDialog.setNamedPrefix(namedParam);
 		assertEquals(1,namedDialog.matchingItems().size());
 		namedDialog.ok();
-		assertTrue(bot.activeEditor().getTitle().equals(beanName + ".java"));
-		assertTrue(bot.activeEditor().toTextEditor().getSelection().equals(beanName));
+		assertTrue(new DefaultEditor().getTitle().equals(beanName + ".java"));
+		assertTrue(new TextEditor().getSelectedText().equals(beanName));
 	
 	}
 	
@@ -83,24 +120,37 @@ public class NamedComponentsSearchingTest extends CDITestBase {
 		String namedParam = "someBean";
 		String changedNamedParam = "someOtherBean";
 		
-		wizardExt.bean(getPackageName(), beanName, true, false, false, 
-				false, false, false, namedParam, null, null, null).finishWithWait();
+		NewBeanCreationWizard nb = new NewBeanCreationWizard();
+		nb.open();
+		nb.setName(beanName);
+		nb.setPackage(getPackageName());
+		nb.setPublic(true);
+		nb.setAbstract(false);
+		nb.setFinal(false);
+		nb.setGenerateComments(false);
+		nb.setAlternative(false);
+		nb.setRegisterInBeans(false);
+		nb.setNamed(true);
+		nb.setBeanName(namedParam);
+		nb.finish();
 				
-		namedDialog = openSearchNamedDialog().setNamedPrefix(namedParam);		
+		namedDialog = openSearchNamedDialog();
+		namedDialog.setNamedPrefix(namedParam);
 		assertEquals(1, namedDialog.matchingItems().size());
 		namedDialog.ok();
-		assertEquals(beanName + ".java", bot.activeEditor().getTitle());
-		assertEquals(beanName, bot.activeEditor().toTextEditor().getSelection());
+		assertEquals(beanName + ".java", new DefaultEditor().getTitle());
+		assertEquals(beanName, new TextEditor().getSelectedText());
 		
-		editResourceUtil.replaceInEditor(namedParam, changedNamedParam);
+		editResourceUtil.replaceInEditor(beanName + ".java", namedParam, changedNamedParam);
 		
-		namedDialog = openSearchNamedDialog().setNamedPrefix(namedParam);		
+		namedDialog = openSearchNamedDialog();
+		namedDialog.setNamedPrefix(namedParam);
 		assertEquals(0, namedDialog.matchingItems().size());
-		namedDialog = namedDialog.setNamedPrefix(changedNamedParam);
+		namedDialog.setNamedPrefix(changedNamedParam);
 		assertEquals(1, namedDialog.matchingItems().size());
 		namedDialog.ok();
-		assertEquals(beanName + ".java", bot.activeEditor().getTitle());
-		assertEquals(beanName, bot.activeEditor().toTextEditor().getSelection());
+		assertEquals(beanName + ".java", new DefaultEditor().getTitle());
+		assertEquals(beanName, new TextEditor().getSelectedText());
 		
 	}
 	
@@ -110,12 +160,35 @@ public class NamedComponentsSearchingTest extends CDITestBase {
 		String beanName2 = "Bean2";
 		String namedParam = "someBean";
 		
-		wizardExt.bean(getPackageName(), beanName, true, false, false, 
-				false, false, false, namedParam, null, null, null).finishWithWait();
-		wizardExt.bean(getPackageName(), beanName2, true, false, false, 
-				false, false, false, namedParam, null, null, null).finishWithWait();
+		NewBeanCreationWizard nb = new NewBeanCreationWizard();
+		nb.open();
+		nb.setName(beanName);
+		nb.setPackage(getPackageName());
+		nb.setPublic(true);
+		nb.setAbstract(false);
+		nb.setFinal(false);
+		nb.setGenerateComments(false);
+		nb.setAlternative(false);
+		nb.setRegisterInBeans(false);
+		nb.setNamed(true);
+		nb.setBeanName(namedParam);
+		nb.finish();
 		
-		namedDialog = openSearchNamedDialog().setNamedPrefix(namedParam);
+		nb.open();
+		nb.setName(beanName2);
+		nb.setPackage(getPackageName());
+		nb.setPublic(true);
+		nb.setAbstract(false);
+		nb.setFinal(false);
+		nb.setGenerateComments(false);
+		nb.setAlternative(false);
+		nb.setRegisterInBeans(false);
+		nb.setNamed(true);
+		nb.setBeanName(namedParam);
+		nb.finish();
+		
+		namedDialog = openSearchNamedDialog();
+		namedDialog.setNamedPrefix(namedParam);
 		List<String> matchingItems = namedDialog.matchingItems();
 		assertTrue(matchingItems.size() == 2);
 		for (String matchingItem : matchingItems) {
@@ -125,8 +198,8 @@ public class NamedComponentsSearchingTest extends CDITestBase {
 			}
 		}		
 		namedDialog.ok();
-		assertTrue(bot.activeEditor().getTitle().equals(beanName + ".java"));
-		assertTrue(bot.activeEditor().toTextEditor().getSelection().equals(beanName));
+		assertTrue(new DefaultEditor().getTitle().equals(beanName + ".java"));
+		assertTrue(new TextEditor().getSelectedText().equals(beanName));
 		
 	}
 	
@@ -143,13 +216,25 @@ public class NamedComponentsSearchingTest extends CDITestBase {
 		prefixesWithCount.put("Some", 5);
 		
 		for (String beanName : beansNames) {
-			wizardExt.bean(getPackageName(), beanName, true, false, false, 
-					false, false, false, "", null, null, null).finishWithWait();
+			NewBeanCreationWizard nb = new NewBeanCreationWizard();
+			nb.open();
+			nb.setName(beanName);
+			nb.setPackage(getPackageName());
+			nb.setPublic(true);
+			nb.setAbstract(false);
+			nb.setFinal(false);
+			nb.setGenerateComments(false);
+			nb.setAlternative(false);
+			nb.setRegisterInBeans(false);
+			nb.setNamed(true);
+			nb.finish();
 		}
 		
 		for (String prefix : prefixesWithCount.keySet()) {
-			namedDialog = openSearchNamedDialog().setNamedPrefix(prefix);		
-			assertTrue(namedDialog.matchingItems().size() == prefixesWithCount.get(prefix));
+			namedDialog = openSearchNamedDialog();		
+			namedDialog.setNamedPrefix(prefix);
+			assertTrue("Prefix "+prefix+" has " +namedDialog.matchingItems().size()+" matching items but expected is "+prefixesWithCount.get(prefix),
+					namedDialog.matchingItems().size() == prefixesWithCount.get(prefix));
 			namedDialog.cancel();			
 		}
 		
@@ -158,17 +243,27 @@ public class NamedComponentsSearchingTest extends CDITestBase {
 	@Test
 	public void testSearchBeanWithStereotype() {
 		
-		wizardExt.stereotype(getPackageName(), stereotypeName, null, null, false, true, 
-				false, false, false).finishWithWait();
+		NewStereotypeCreationWizard nb = new NewStereotypeCreationWizard();
+		nb.open();
+		nb.setName(stereotypeName);
+		nb.setPackage(getPackageName());
+		nb.setInherited(false);
+		nb.setNamed(true);
+		nb.setAlternative(false);
+		nb.setGenerateComments(false);
+		nb.setRegisterInBeans(false);
+		nb.finish();
+		
 		
 		wizard.createCDIComponentWithContent(CDIWizardType.BEAN, beanName, getPackageName(), 
 				null, BEAN_STEREOTYPE_PATH);
 		
-		namedDialog = openSearchNamedDialog().setNamedPrefix(beanName);		
+		namedDialog = openSearchNamedDialog();
+		namedDialog.setNamedPrefix(beanName);
 		assertTrue(namedDialog.matchingItems().size() == 1);
 		namedDialog.ok();
-		assertTrue(bot.activeEditor().getTitle().equals(beanName + ".java"));
-		assertTrue(bot.activeEditor().toTextEditor().getSelection().equals(beanName));
+		assertTrue(new DefaultEditor().getTitle().equals(beanName + ".java"));
+		assertTrue(new TextEditor().getSelectedText().equals(beanName));
 		
 	}
 	
@@ -177,19 +272,28 @@ public class NamedComponentsSearchingTest extends CDITestBase {
 		
 		String namedParam = "someBean";
 		
-		wizardExt.stereotype(getPackageName(), stereotypeName, null, null, false, true, 
-				false, false, false).finishWithWait();
+		NewStereotypeCreationWizard nb = new NewStereotypeCreationWizard();
+		nb.open();
+		nb.setName(stereotypeName);
+		nb.setPackage(getPackageName());
+		nb.setInherited(false);
+		nb.setNamed(true);
+		nb.setAlternative(false);
+		nb.setGenerateComments(false);
+		nb.setRegisterInBeans(false);
+		nb.finish();
 		
 		wizard.createCDIComponentWithContent(CDIWizardType.BEAN, beanName, getPackageName(), 
 				null, BEAN_STEREOTYPE_NAMED_PATH);
 		
-		namedDialog = openSearchNamedDialog().setNamedPrefix(beanName);		
+		namedDialog = openSearchNamedDialog();		
+		namedDialog.setNamedPrefix(beanName);
 		assertTrue(namedDialog.matchingItems().size() == 0);
-		namedDialog = namedDialog.setNamedPrefix(namedParam);
+		namedDialog.setNamedPrefix(namedParam);
 		assertTrue(namedDialog.matchingItems().size() == 1);
 		namedDialog.ok();
-		assertTrue(bot.activeEditor().getTitle().equals(beanName + ".java"));
-		assertTrue(bot.activeEditor().toTextEditor().getSelection().equals(beanName));
+		assertTrue(new DefaultEditor().getTitle().equals(beanName + ".java"));
+		assertTrue(new TextEditor().getSelectedText().equals(beanName));
 	}
 	
 	@Test
@@ -198,36 +302,47 @@ public class NamedComponentsSearchingTest extends CDITestBase {
 		String namedParam = "someBean";
 		String changedNamedParam = "someOtherBean";
 		
-		wizardExt.stereotype(getPackageName(), stereotypeName, null, null, false, true, 
-				false, false, false).finishWithWait();
+		NewStereotypeCreationWizard nb = new NewStereotypeCreationWizard();
+		nb.open();
+		nb.setName(stereotypeName);
+		nb.setPackage(getPackageName());
+		nb.setInherited(false);
+		nb.setNamed(true);
+		nb.setAlternative(false);
+		nb.setGenerateComments(false);
+		nb.setRegisterInBeans(false);
+		nb.finish();
 		
 		wizard.createCDIComponentWithContent(CDIWizardType.BEAN, beanName, getPackageName(), 
 				null, BEAN_STEREOTYPE_NAMED_PATH);
 		
-		namedDialog = openSearchNamedDialog().setNamedPrefix(beanName);		
+		namedDialog = openSearchNamedDialog();
+		namedDialog.setNamedPrefix(beanName);
 		assertTrue(namedDialog.matchingItems().size() == 0);
-		namedDialog = namedDialog.setNamedPrefix(namedParam);
+		namedDialog.setNamedPrefix(namedParam);
 		assertTrue(namedDialog.matchingItems().size() == 1);
 		namedDialog.ok();
-		assertTrue(bot.activeEditor().getTitle().equals(beanName + ".java"));
-		assertTrue(bot.activeEditor().toTextEditor().getSelection().equals(beanName));
+		assertTrue(new DefaultEditor().getTitle().equals(beanName + ".java"));
+		assertTrue(new TextEditor().getSelectedText().equals(beanName));
 		
-		editResourceUtil.replaceInEditor(namedParam, changedNamedParam);
+		editResourceUtil.replaceInEditor(beanName + ".java",namedParam, changedNamedParam);
 		
-		namedDialog = openSearchNamedDialog().setNamedPrefix(namedParam);		
+		namedDialog = openSearchNamedDialog();
+		namedDialog.setNamedPrefix(namedParam);
 		assertEquals(0, namedDialog.matchingItems().size());
-		namedDialog = namedDialog.setNamedPrefix(changedNamedParam);
+		namedDialog.setNamedPrefix(changedNamedParam);
 		assertEquals(1, namedDialog.matchingItems().size());
 		namedDialog.ok();
-		assertTrue(bot.activeEditor().getTitle().equals(beanName + ".java"));
-		assertTrue(bot.activeEditor().toTextEditor().getSelection().equals(beanName));
+		assertTrue(new DefaultEditor().getTitle().equals(beanName + ".java"));
+		assertTrue(new TextEditor().getSelectedText().equals(beanName));
 	}
 	
 	
-	private SearchNamedDialogWizard openSearchNamedDialog() {
+	private OpenCDINamedBeanDialog openSearchNamedDialog() {
+		AbstractWait.sleep(TimePeriod.SHORT);
 		new ShellMenu(IDELabel.Menu.NAVIGATE, IDELabel.Menu.OPEN_CDI_NAMED_BEAN).select();
-		new WaitUntil(new ShellWithTextIsActive(IDELabel.Menu.OPEN_CDI_NAMED_BEAN));
-		return new SearchNamedDialogWizard();
+		new DefaultShell("Open CDI Named Bean");
+		return new OpenCDINamedBeanDialog();
 	}
 
 }

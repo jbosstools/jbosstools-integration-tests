@@ -11,20 +11,26 @@
 
 package org.jboss.tools.cdi.bot.test.wizard;
 
-import org.jboss.tools.cdi.bot.test.CDIAllBotTests;
-import org.jboss.tools.cdi.bot.test.CDIConstants;
-import org.jboss.tools.cdi.bot.test.CDISmokeBotTests;
+import static org.junit.Assert.*;
+import org.jboss.reddeer.requirements.server.ServerReqState;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.tools.cdi.reddeer.CDIConstants;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
 import org.junit.Test;
-import org.junit.runners.Suite.SuiteClasses;
 
 /**
 * Test checks if beans.xml is created when selecting CDI Facet
 * 
 * @author Jaroslav Jankovic
 */
-
-@SuiteClasses({ CDIAllBotTests.class , CDISmokeBotTests.class })
+@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.AS7_1)
+@OpenPerspective(JavaEEPerspective.class)
+@CleanWorkspace
 public class FacetTest extends CDITestBase {
 	
 	@Override	
@@ -42,10 +48,10 @@ public class FacetTest extends CDITestBase {
 	@Test
 	public void testCDIFacet() {
 		if (projectHelper.projectExists(getProjectName())) {
-			LOGGER.info("Dynamic Web Project with CDI Facet created");			
+			PackageExplorer pe = new PackageExplorer();
+			pe.open();
 			assertTrue("Error: beans.xml should be created when selecting CDI Facet", 
-					packageExplorer.isFilePresent(getProjectName(), 
-							CDIConstants.WEB_INF_BEANS_XML_PATH.split("/")));			
+					pe.getProject(getProjectName()).containsItem(CDIConstants.WEB_INF_BEANS_XML_PATH.split("/")));			
 		}else {
 			fail("CDI project was not succesfully created with Dynamic Web Project wizard with CDI facet");
 		}

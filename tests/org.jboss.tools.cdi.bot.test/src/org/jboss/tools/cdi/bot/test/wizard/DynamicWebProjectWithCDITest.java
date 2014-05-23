@@ -11,10 +11,21 @@
 
 package org.jboss.tools.cdi.bot.test.wizard;
 
+import static org.junit.Assert.*;
+import org.jboss.reddeer.requirements.server.ServerReqState;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
 import org.junit.After;
 import org.junit.Test;
 
+@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.AS7_1)
+@OpenPerspective(JavaEEPerspective.class)
+@CleanWorkspace
 public class DynamicWebProjectWithCDITest extends CDITestBase {
 	
 	@Override	
@@ -26,7 +37,9 @@ public class DynamicWebProjectWithCDITest extends CDITestBase {
 	
 	@After
 	public void cleanUp() {
-		packageExplorer.deleteProject(getProjectName(), true);
+		PackageExplorer pe = new PackageExplorer();
+		pe.open();
+		pe.getProject(getProjectName()).delete(true);
 	}
 	
 	@Override

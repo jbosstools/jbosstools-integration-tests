@@ -10,12 +10,25 @@
  ******************************************************************************/
 package org.jboss.tools.cdi.seam3.bot.test.tests;
 
-import org.eclipse.core.resources.IMarker;
+import static org.junit.Assert.*;
+
+import java.util.List;
+
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
+import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.requirements.server.ServerReqState;
+import org.jboss.reddeer.swt.wait.AbstractWait;
+import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
+import org.jboss.reddeer.workbench.impl.editor.Marker;
 import org.jboss.tools.cdi.seam3.bot.test.base.Seam3TestBase;
 import org.jboss.tools.cdi.seam3.bot.test.util.SeamLibrary;
-import org.jboss.tools.ui.bot.ext.Timing;
-import org.jboss.tools.ui.bot.ext.helper.MarkerHelper;
-import org.jboss.tools.ui.bot.ext.types.IDELabel;
+import org.jboss.tools.common.reddeer.label.IDELabel;
 import org.junit.After;
 import org.junit.Test;
 
@@ -24,11 +37,18 @@ import org.junit.Test;
  * @author jjankovi
  *
  */
+@CleanWorkspace
+@OpenPerspective(JavaEEPerspective.class)
+@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.AS7_1)
 public class InterfaceAndAbstractValidationTest extends Seam3TestBase {
 
 	@After
 	public void cleanWS() {
-		projectExplorer.deleteAllProjects();
+		PackageExplorer pe = new PackageExplorer();
+		pe.open();
+		for(Project p: pe.getProjects()){
+			p.delete(true);
+		}
 	}
 	
 	@Test
@@ -37,20 +57,20 @@ public class InterfaceAndAbstractValidationTest extends Seam3TestBase {
 		/* import test project */
 		String projectName = "interface1";
 		importSeam3ProjectWithLibrary(projectName, SeamLibrary.SOLDER_3_1);
-		bot.sleep(Timing.time3S()); // necessary to CDI Validation computation
+		AbstractWait.sleep(TimePeriod.SHORT); // necessary to CDI Validation computation
 		
-		/* get markers for beans.xml */
-		IMarker[] markers = getMarkersForResource(
-				IDELabel.WebProjectsTree.BEANS_XML, 
-				projectName, 
-				IDELabel.WebProjectsTree.WEB_CONTENT, 
-				IDELabel.WebProjectsTree.WEB_INF);
+		PackageExplorer pe = new PackageExplorer();
+		pe.open();
+		pe.getProject(projectName).getProjectItem(IDELabel.WebProjectsTree.WEB_CONTENT, 
+				IDELabel.WebProjectsTree.WEB_INF, IDELabel.WebProjectsTree.BEANS_XML).open();
+		
+		List<Marker> markers = new DefaultEditor(IDELabel.WebProjectsTree.BEANS_XML).getMarkers();
 		
 		/* assert expected count */
-		assertExpectedCount(markers.length ,1);
+		assertExpectedCount(markers.size() ,1);
 		
 		/* assert message contains expected value */
-		assertMessageContainsExpectedValue(MarkerHelper.getMarkerMessage(markers[0]), 
+		assertMessageContainsExpectedValue(markers.get(0).getText(), 
 				"Abstract type", "cannot be configured as a bean");
 		
 	}
@@ -61,20 +81,21 @@ public class InterfaceAndAbstractValidationTest extends Seam3TestBase {
 		/* import test project */
 		String projectName = "abstract1";
 		importSeam3ProjectWithLibrary(projectName, SeamLibrary.SOLDER_3_1);
-		bot.sleep(Timing.time3S()); // necessary to CDI Validation computation
+		AbstractWait.sleep(TimePeriod.SHORT); // necessary to CDI Validation computation
 		
 		/* get markers for beans.xml */
-		IMarker[] markers = getMarkersForResource(
-				IDELabel.WebProjectsTree.BEANS_XML, 
-				projectName, 
-				IDELabel.WebProjectsTree.WEB_CONTENT, 
-				IDELabel.WebProjectsTree.WEB_INF);
+		PackageExplorer pe = new PackageExplorer();
+		pe.open();
+		pe.getProject(projectName).getProjectItem(IDELabel.WebProjectsTree.WEB_CONTENT, 
+				IDELabel.WebProjectsTree.WEB_INF, IDELabel.WebProjectsTree.BEANS_XML).open();
+		
+		List<Marker> markers = new DefaultEditor(IDELabel.WebProjectsTree.BEANS_XML).getMarkers();
 		
 		/* assert expected count */
-		assertExpectedCount(markers.length ,1);
+		assertExpectedCount(markers.size() ,1);
 		
 		/* assert message contains expected value */
-		assertMessageContainsExpectedValue(MarkerHelper.getMarkerMessage(markers[0]), 
+		assertMessageContainsExpectedValue(markers.get(0).getText(), 
 				"Abstract type", "cannot be configured as a bean");
 		
 	}
@@ -82,13 +103,8 @@ public class InterfaceAndAbstractValidationTest extends Seam3TestBase {
 	private void assertMessageContainsExpectedValue(String message,
 			String... expectedValues) {
 		for (String value : expectedValues) {
-			assertContains(value, message);
+			assertTrue(message.contains(value));
 		}
-	}
-	
-	private IMarker[] getMarkersForResource(String resource, String ... path) {
-		MarkerHelper markerHelper = new MarkerHelper(resource, path);
-		return markerHelper.getMarkers();
 	}
 	
 	private void assertExpectedCount(int realCount, int expectedCount) {

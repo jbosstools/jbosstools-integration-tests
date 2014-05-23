@@ -105,9 +105,8 @@ public class NewServerAdapterPage extends WizardPage {
 		List<String> runtimes = getRuntimes();
 		
 		boolean anotherServerWithSameType = runtimes.size() > 0;		
-		if(anotherServerWithSameType) {
-			throw new AssertionError("There is another server with the same type.\n"
-					+ "Present server: " + Arrays.toString(runtimes.toArray()));
-		}
+		//if(anotherServerWithSameType) {
+		//	throw new AssertionError("There is another server with the same type.\n"
+		//}
 	}
 }
