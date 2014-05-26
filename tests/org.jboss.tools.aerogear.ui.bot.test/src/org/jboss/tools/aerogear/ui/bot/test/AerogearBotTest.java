@@ -74,9 +74,7 @@ public class AerogearBotTest extends SWTTestExt {
       // Download mobile engine
       bot.button(IDELabel.Button.DOWNLOAD).click();
       bot.shell(IDELabel.Shell.DOWNLOAD_HYBRID_MOBILE_ENGINE).activate();
-      // currently first selection is version 3.4.1 and is supported only on Mac OS
-      // therefore selecting second item
-      bot.comboBoxWithLabel("Version:").setSelection(1);
+      bot.comboBoxWithLabel("Version:").setSelection(0);
       bot.table().getTableItem(0).check();
       bot.button(IDELabel.Button.OK).click();
       bot.waitWhile(new ICondition() {
