@@ -3,6 +3,9 @@ package org.jboss.tools.runtime.as.ui.bot.test.template;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.jboss.reddeer.eclipse.wst.server.ui.RuntimePreferencePage;
 import org.jboss.tools.runtime.as.ui.bot.test.dialog.preferences.RuntimeDetectionPreferencesDialog;
 import org.jboss.tools.runtime.as.ui.bot.test.dialog.preferences.SeamPreferencesDialog;
@@ -67,7 +70,10 @@ public abstract class RuntimeDetectionTestCase {
 	
 	protected void assertServerRuntimesNumber(int expected) {
 		serverRuntimesPreferences.open();
-		assertThat(serverRuntimesPreferences.getServerRuntimes().size(), is(expected));
+		List<org.jboss.reddeer.eclipse.wst.server.ui.Runtime> runtimes = 
+				serverRuntimesPreferences.getServerRuntimes();
+		assertThat("Expected are " + expected + " runtimes but there are:\n"
+				+ Arrays.toString(runtimes.toArray()), runtimes.size(), is(expected));
 		serverRuntimesPreferences.ok();
 	}
 }
