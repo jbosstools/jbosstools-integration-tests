@@ -67,9 +67,15 @@ public abstract class DetectRuntimeTemplate extends RuntimeDetectionTestCase {
 	@Test
 	public void removePath() {
 		runtimeDetectionPreferences.open();
+				
+		List<String> allPaths = runtimeDetectionPreferences.getAllPaths();
+		String requiredPath = RuntimeProperties.getInstance().getRuntimePath(getPathID());
+		assertTrue("Expected is presence of path " + requiredPath + " but there are:\n"
+				+ Arrays.toString(allPaths.toArray()), allPaths.contains(requiredPath));
+		
 		runtimeDetectionPreferences.removeAllPaths();
 		
-		List<String> allPaths = runtimeDetectionPreferences.getAllPaths();
+		allPaths = runtimeDetectionPreferences.getAllPaths();
 		
 		runtimeDetectionPreferences.ok();
 		
