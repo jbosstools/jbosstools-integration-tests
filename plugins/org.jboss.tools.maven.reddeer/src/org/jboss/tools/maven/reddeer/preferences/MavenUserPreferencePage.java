@@ -5,6 +5,8 @@ import org.jboss.reddeer.swt.api.Text;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
+import org.jboss.reddeer.swt.util.Display;
+import org.jboss.reddeer.swt.util.ResultRunnable;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
@@ -20,7 +22,15 @@ public class MavenUserPreferencePage extends WorkbenchPreferencePage{
 		Text text = null;
 		for(int i=0;i<10;i++){
 			text = new DefaultText(i);
-			if(text.getText().contains("settings") && text.getText().contains(".xml")){
+			final org.eclipse.swt.widgets.Text t = text.getSWTWidget();
+			String message = Display.syncExec(new ResultRunnable<String>() {
+
+				@Override
+				public String run() {
+					return t.getMessage();
+				}
+			});
+			if(message.contains("settings") && message.contains(".xml")){
 				break;
 			}
 		}
@@ -37,7 +47,15 @@ public class MavenUserPreferencePage extends WorkbenchPreferencePage{
 		Text text = null;
 		for(int i=0;i<10;i++){
 			text = new DefaultText(i);
-			if(text.getText().contains("settings") && text.getText().contains(".xml")){
+			final org.eclipse.swt.widgets.Text t = text.getSWTWidget();
+			String message = Display.syncExec(new ResultRunnable<String>() {
+
+				@Override
+				public String run() {
+					return t.getMessage();
+				}
+			});
+			if(message.contains("settings") && message.contains(".xml")){
 				break;
 			}
 		}

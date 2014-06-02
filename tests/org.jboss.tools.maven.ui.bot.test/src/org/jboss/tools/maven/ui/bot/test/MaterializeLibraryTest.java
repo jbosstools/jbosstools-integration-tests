@@ -64,8 +64,8 @@ public class MaterializeLibraryTest extends AbstractMavenSWTBotTest{
 		new LabeledCombo("Project name").setText(projectName);
 		new LabeledCombo("Package").setText(projectName);
 		new PushButton("Finish").click();
-		new WaitWhile(new ShellWithTextIsActive("New Project Example"), TimePeriod.LONG);
-		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		new WaitWhile(new ShellWithTextIsActive("New Project Example"), TimePeriod.VERY_LONG);
+		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 		PackageExplorer pexplorer = new PackageExplorer();
 		pexplorer.open();
 		new	DefaultTreeItem(projectName,"Maven Dependencies").select();

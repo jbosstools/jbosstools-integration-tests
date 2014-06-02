@@ -21,11 +21,11 @@ import org.junit.runners.Suite;
  */
 @RunWith(RedDeerSuite.class)
 @Suite.SuiteClasses({
-/*
+
 	ArchetypesTest.class,
 	
 	PerspectiveTest.class,
-//	/MavenProfilesTest.class,
+	MavenProfilesTest.class,
 	MaterializeLibraryTest.class,
 
 	EARProjectTest.class,
@@ -42,7 +42,6 @@ import org.junit.runners.Suite;
 	PortletConfiguratorTest.class,
 	
 	MavenRepositories.class,
-	*/
 	MavenConversionTest.class,
 	RemoteRepositoriesPreferenceTest.class,
 	

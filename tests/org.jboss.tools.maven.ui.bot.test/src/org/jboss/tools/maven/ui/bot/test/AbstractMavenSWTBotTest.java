@@ -62,6 +62,7 @@ import org.jboss.reddeer.eclipse.wst.server.ui.wizard.NewServerWizardPage;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
+import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
@@ -169,7 +170,7 @@ public abstract class AbstractMavenSWTBotTest{
 		try{
 	        // Try to select perspective label within available perspectives
 			new DefaultTable().select(perspective);
-	      } catch (IllegalArgumentException iae){
+	      } catch (SWTLayerException iae){
 	        // Try to select perspective label within available perspectives with "(default)" suffix
 	    	  new DefaultTable().select(perspective + " (default)");
 	      }
