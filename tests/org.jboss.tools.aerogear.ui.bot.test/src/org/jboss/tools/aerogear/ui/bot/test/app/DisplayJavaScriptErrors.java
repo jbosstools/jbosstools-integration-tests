@@ -11,10 +11,9 @@
 package org.jboss.tools.aerogear.ui.bot.test.app;
 
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
-import org.eclipse.ui.PlatformUI;
 import org.jboss.tools.aerogear.ui.bot.test.AerogearBotTest;
-import org.jboss.tools.ui.bot.ext.SWTEclipseExt;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
+import org.jboss.tools.vpe.ui.bot.test.tools.BrowserSimHandler;
 import org.junit.Test;
 /**
  * Checks displaying of Java Script errors and messages 
@@ -40,10 +39,8 @@ public class DisplayJavaScriptErrors extends AerogearBotTest {
 	  jsEditor.save();
 	  console.clearConsole();
 	  projectExplorer.selectProject(CORDOVA_PROJECT_NAME);
-    Object[] beforeListeners = SWTEclipseExt.getWorkbenchListeners().getListeners();
     runTreeItemWithCordovaSim(bot.tree().expandNode(CORDOVA_PROJECT_NAME));
-    SWTEclipseExt.retainFromCurrentWorkbenchListeners(beforeListeners)
-      .get(0).postShutdown(PlatformUI.getWorkbench());
+    BrowserSimHandler.closeAllRunningInstances();
     String consoleText = console.getConsoleText();
     String textToContain = "LOG: " + logMessage;
     assertTrue ("Console text has to contain:\n" + textToContain

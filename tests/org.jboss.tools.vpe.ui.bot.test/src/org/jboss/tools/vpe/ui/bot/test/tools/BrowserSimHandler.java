@@ -11,6 +11,9 @@
 package org.jboss.tools.vpe.ui.bot.test.tools;
 
 import org.apache.log4j.Logger;
+import org.eclipse.debug.core.DebugException;
+import org.eclipse.debug.core.DebugPlugin;
+import org.eclipse.debug.core.ILaunch;
 import org.eclipse.jface.bindings.keys.KeyStroke;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
@@ -295,4 +298,21 @@ public class BrowserSimHandler {
       clickContextMenu(menuLabel);
     }
   }
+	/**
+	 * Closes all running instances of BRowserSim
+	 */
+	public static void closeAllRunningInstances() {
+		for (ILaunch launch : DebugPlugin.getDefault().getLaunchManager()
+				.getLaunches()) {
+			if (launch.getLaunchConfiguration() != null
+					&& launch.getLaunchConfiguration().getName()
+							.equals("BrowserSim")) {
+				try {
+					launch.terminate();
+				} catch (DebugException de) {
+					throw new RuntimeException(de);
+				}
+			}
+		}
+	}
 }

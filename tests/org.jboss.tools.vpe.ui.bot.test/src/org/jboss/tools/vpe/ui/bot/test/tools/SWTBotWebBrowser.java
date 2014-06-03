@@ -51,10 +51,10 @@ import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
 import org.jboss.tools.ui.bot.ext.helper.ReflectionsHelper;
 import org.jboss.tools.ui.bot.ext.parts.ObjectMultiPageEditorBot;
 import org.jboss.tools.ui.bot.ext.types.ViewType;
-import org.jboss.tools.vpe.editor.VpeEditorPart;
 import org.jboss.tools.vpe.editor.mozilla.MozillaEditor;
 import org.jboss.tools.vpe.editor.mozilla.MozillaEventAdapter;
 import org.jboss.tools.jst.web.ui.palette.PaletteAdapter;
+import org.jboss.tools.vpe.preview.editor.VpvEditor;
 import org.jboss.tools.vpe.xulrunner.util.XPCOM;
 import org.mozilla.interfaces.nsIDOMAbstractView;
 import org.mozilla.interfaces.nsIDOMDocument;
@@ -71,6 +71,7 @@ import org.mozilla.interfaces.nsISelection;
 import org.mozilla.interfaces.nsISelectionController;
 import org.mozilla.interfaces.nsISelectionListener;
 import org.mozilla.interfaces.nsISupports;
+import org.mozilla.interfaces.nsIWebBrowser;
 import org.w3c.dom.Node;
 
 /**
@@ -111,6 +112,7 @@ public class SWTBotWebBrowser {
   private Display display;
   private IVisualEditor visualEditor;
   private MozillaEditor mozillaEditor;
+  private VpvEditor vpvEditor;
   private SWTBotExt bot;
   
   public SWTBotWebBrowser (String title, SWTBotExt bot){
@@ -123,7 +125,14 @@ public class SWTBotWebBrowser {
     assertNotNull(multiPageEditor);
     this.bot = bot;
     this.visualEditor = multiPageEditor.getVisualEditor();
-    this.mozillaEditor = ((VpeEditorPart)visualEditor).getVisualEditor();
+    Object visualEditorChildren = visualEditor.getVisualEditor();
+    if (visualEditorChildren instanceof MozillaEditor){
+    	this.mozillaEditor = (MozillaEditor)visualEditorChildren;	
+    }
+    else{
+    	this.vpvEditor = (VpvEditor)visualEditorChildren;
+    }
+     
     this.display = getBrowser().getDisplay();
   }
    
@@ -176,7 +185,7 @@ public class SWTBotWebBrowser {
    * @return
    */
   public nsIDOMDocument getNsIDOMDocument(){
-    return mozillaEditor.getDomDocument();
+    return getDomDocument();
   }
   /**
    * Selects node within visual editor
@@ -284,7 +293,12 @@ public class SWTBotWebBrowser {
   public void setFocus(){
     display.syncExec(new Runnable() {
       public void run() {
-        mozillaEditor.setFocus();
+    	if (mozillaEditor != null){
+    		mozillaEditor.setFocus();	
+    	}
+    	else{
+    		vpvEditor.getBrowser().setFocus();
+    	}
       }
     });
   }
@@ -293,7 +307,8 @@ public class SWTBotWebBrowser {
    * @return
    */
   public Browser getBrowser (){
-    return mozillaEditor.getXulRunnerEditor().getBrowser(); 
+    return (mozillaEditor != null) ? mozillaEditor.getXulRunnerEditor().getBrowser()
+    	: vpvEditor.getBrowser(); 
   }
   /**
    * Fill string with length count with character ch 
@@ -318,7 +333,7 @@ public class SWTBotWebBrowser {
    * @return
    */
   public MozillaEditor getMozillaEditor() {
-    return mozillaEditor;
+	return mozillaEditor;	
   }
   /**
    * Clicks on Browser Context Menu
@@ -1034,5 +1049,23 @@ public class SWTBotWebBrowser {
     }
     
     return !notFound;
+  }
+  
+	public nsIDOMDocument getDomDocument() {
+	  nsIDOMDocument result;
+		if (mozillaEditor != null) {
+			result = mozillaEditor.getDomDocument();
+		} 
+		else {
+			result =UIThreadRunnable.syncExec(new Result<nsIDOMDocument>() {
+				@Override
+				public nsIDOMDocument run() {
+					nsIWebBrowser nsiWebBrowser = ((nsIWebBrowser)vpvEditor.getBrowser().getWebBrowser());
+					return nsiWebBrowser.getContentDOMWindow().getDocument();
+				}
+			});
+
+		}
+      return result;
   }
 }

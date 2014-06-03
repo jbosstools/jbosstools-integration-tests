@@ -26,12 +26,14 @@ import org.jboss.tools.ui.bot.ext.helper.KeyboardHelper;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.vpe.ui.bot.test.VPEAutoTestCase;
 import org.jboss.tools.vpe.ui.bot.test.tools.SWTBotWebBrowser;
+import org.junit.Ignore;
 import org.mozilla.interfaces.nsIDOMRange;
 /**
  * Tests VPE Toolbar Buttons  
  * @author vlado pakan
  *
  */
+@Ignore
 public class ToolbarTextFormattingTest extends VPEAutoTestCase {
   private static final String TEXT_TEST_EXPRESSION = "Test String Expression";
   private static final String PAGE_TEXT = "<%@ taglib uri=\"http://java.sun.com/jsf/html\" prefix=\"h\" %>\n" + 

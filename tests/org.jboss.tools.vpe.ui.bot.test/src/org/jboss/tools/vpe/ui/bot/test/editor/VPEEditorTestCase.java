@@ -122,7 +122,7 @@ public abstract class VPEEditorTestCase extends VPEAutoTestCase{
         + " has to contain "
         + nodeNameToContain
         + " node but it doesn't",
-        webBrowser.containsNodeWithNameAndAttributes(webBrowser.getMozillaEditor().getDomDocument(), 
+        webBrowser.containsNodeWithNameAndAttributes(webBrowser.getDomDocument(), 
             nodeNameToContain,
             attributeNames,
             attributeValues));
@@ -163,7 +163,7 @@ public abstract class VPEEditorTestCase extends VPEAutoTestCase{
         + " has to contain node with "
         + valueToContain
         + " value but it doesn't",
-        webBrowser.containsNodeWithValue(webBrowser.getMozillaEditor().getDomDocument(),
+        webBrowser.containsNodeWithValue(webBrowser.getDomDocument(),
             valueToContain));
     
   }
@@ -182,7 +182,7 @@ public abstract class VPEEditorTestCase extends VPEAutoTestCase{
         + " cannot contain node with "
         + valueToContain
         + " value but it does",
-        webBrowser.containsNodeWithValue(webBrowser.getMozillaEditor().getDomDocument(), 
+        webBrowser.containsNodeWithValue(webBrowser.getDomDocument(), 
             valueToContain));
     
   }
@@ -203,7 +203,7 @@ public abstract class VPEEditorTestCase extends VPEAutoTestCase{
         + " cannot contain "
         + nodeNameToContain
         + " node but it does",
-        webBrowser.containsNodeWithNameAndAttributes(webBrowser.getMozillaEditor().getDomDocument(), 
+        webBrowser.containsNodeWithNameAndAttributes(webBrowser.getDomDocument(), 
             nodeNameToContain,
             attributeNames,
             attributeValues));
