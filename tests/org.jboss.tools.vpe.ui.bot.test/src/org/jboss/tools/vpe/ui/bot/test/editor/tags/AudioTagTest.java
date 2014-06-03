@@ -40,11 +40,13 @@ public class AudioTagTest extends AbstractTagTest{
     // visual representation contains AUDIO tag
     assertVisualEditorContains(getVisualEditor(), "AUDIO", null, null, getTestPageFileName());
     // test tag selection
+    /* Skip selection check because selection checking is not implemented for HTML Preview yet
     getVisualEditor().selectDomNode(getVisualEditor().getDomNodeByTagName("AUDIO",0), 0);
     final String selectedText = getSourceEditor().getSelection();
     assertTrue("Selected text in Source Pane has to be '" + AudioTagTest.AUDIO_TAG_TEXT + "'" +
         "\nbut it is '" + selectedText + "'",
       selectedText.trim().equals(AudioTagTest.AUDIO_TAG_TEXT));
+    */
   }
 
 }
