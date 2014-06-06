@@ -10,18 +10,23 @@
  ******************************************************************************/
 package org.jboss.tools.aerogear.reddeer.ui.config;
 
+import static org.junit.Assert.assertTrue;
+
+import org.eclipse.swt.SWT;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.WaitCondition;
+import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.BackButton;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.FinishButton;
 import org.jboss.reddeer.swt.impl.button.NextButton;
-import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
 import org.jboss.reddeer.swt.impl.label.DefaultLabel;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
+import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.reddeer.workbench.impl.editor.AbstractEditor;
@@ -51,14 +56,27 @@ public class ConfigEditor extends AbstractEditor {
 		openPluginDiscoveryDialog();
 		// Filter for pluginId
 		new DefaultText(0).setText(pluginId);
+		KeyboardFactory.getKeyboard().type(SWT.CR);
+		KeyboardFactory.getKeyboard().type(SWT.LF);
 		new WaitUntil(new LabelWithTextHasPosition(pluginId , 2));
 		// check plugin to add
 		new CheckBox(1).click();
 		// Wait for this text displayed
 		new DefaultText("Discover and Install Cordova Plug-ins");
 		new NextButton().click();
+		// Check proper plugin was selected
+		new DefaultLabel(pluginId);
+		assertTrue("There is no version available for plugin " + pluginId,
+			new DefaultCombo().getItems().size() > 0);
 		new BackButton().click();
 		new FinishButton().click();
+		try{
+			new DefaultShell("Overwrite Files");
+			new PushButton("Yes To All").click();
+		} catch (SWTLayerException swtle){
+			// Do nothing shell was not displayed
+		}
+		
 	}
 	/**
 	 * Opens Plugin Discovery dialog
@@ -72,7 +90,7 @@ public class ConfigEditor extends AbstractEditor {
 		new DefaultShell("Cordova Plug-in Discovery");
 		new WaitWhile(new JobIsRunning());
 		// Wait until some plugin is displayed within dialog
-		new DefaultLabel(2).getText();
+		new DefaultLabel(10);
 	}
 	/**
 	 * Fulfilled when Label with text has specified position

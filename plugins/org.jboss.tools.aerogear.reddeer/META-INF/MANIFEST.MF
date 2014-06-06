@@ -10,11 +10,13 @@ Require-Bundle: org.eclipse.ui,
  org.jboss.reddeer.jface;bundle-version="0.6.0",
  org.jboss.reddeer.swt;bundle-version="0.6.0",
  org.jboss.reddeer.junit;bundle-version="0.6.0",
- org.jboss.reddeer.workbench;bundle-version="0.6.0"
+ org.jboss.reddeer.workbench;bundle-version="0.6.0",
+ org.jboss.reddeer.eclipse;bundle-version="0.6.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Eclipse-BundleShape: jar
 Bundle-Vendor: JBoss by Red Hat
 Export-Package: org.jboss.tools.aerogear.reddeer.ui.config,
  org.jboss.tools.aerogear.reddeer.ui.preferences,
+ org.jboss.tools.aerogear.reddeer.ui.properties,
  org.jboss.tools.aerogear.reddeer.ui.wizard.export

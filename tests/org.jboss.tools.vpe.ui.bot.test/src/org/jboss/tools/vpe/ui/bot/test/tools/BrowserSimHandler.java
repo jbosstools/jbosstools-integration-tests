@@ -305,8 +305,8 @@ public class BrowserSimHandler {
 		for (ILaunch launch : DebugPlugin.getDefault().getLaunchManager()
 				.getLaunches()) {
 			if (launch.getLaunchConfiguration() != null
-					&& launch.getLaunchConfiguration().getName()
-							.equals("BrowserSim")) {
+				&& (launch.getLaunchConfiguration().getName().equals("BrowserSim"))
+					|| launch.getLaunchConfiguration().getName().equals("CordovaSim")) {
 				try {
 					launch.terminate();
 				} catch (DebugException de) {

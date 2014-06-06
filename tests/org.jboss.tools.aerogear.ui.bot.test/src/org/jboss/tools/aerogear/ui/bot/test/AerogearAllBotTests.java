@@ -20,13 +20,10 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
 @SuiteClasses({ 
-  /*
 	CreateHybridApplication.class, 
 	OpenConfigEditor.class, 
 	RunWithCordovaSim.class,
-	*/
 	DisplayJavaScriptErrors.class,
-	
 	MultiversionSupport.class})
 @RunWith(RequirementAwareSuite.class)
 public class AerogearAllBotTests {

@@ -10,12 +10,17 @@
  ******************************************************************************/
 package org.jboss.tools.aerogear.ui.bot.test.app;
 
+import java.util.List;
+
+import javax.print.attribute.standard.MediaSize.Engineering;
+
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
-import org.eclipse.ui.PlatformUI;
 import org.jboss.tools.aerogear.reddeer.ui.config.ConfigEditor;
+import org.jboss.tools.aerogear.reddeer.ui.properties.EnginePropertyPage;
 import org.jboss.tools.aerogear.ui.bot.test.AerogearBotTest;
-import org.jboss.tools.ui.bot.ext.SWTEclipseExt;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.tools.vpe.ui.bot.test.tools.BrowserSimHandler;
 import org.junit.Test;
 
 /**
@@ -26,6 +31,7 @@ import org.junit.Test;
  */
 @Require(clearWorkspace = true)
 public class MultiversionSupport extends AerogearBotTest {
+	private static final String VERSION_MESSSAGE_PREFIX = "INFO - Cordova Version Number:";
 	@Test
 	public void testMultiversionSupport() {
 		// Update index.js to display cordova version to console
@@ -33,10 +39,9 @@ public class MultiversionSupport extends AerogearBotTest {
 		SWTBotEclipseEditor jsEditor = bot.editorByTitle("index.js")
 				.toTextEditor();
 		String jsString = jsEditor.getText();
-		final String version_message_prefix = "INFO - Cordova Version Number:";
 		jsString = jsString.replaceFirst("app\\.report\\('deviceready'\\);",
 				"app.report(\'deviceready\');" + "\nconsole.log(\""
-						+ version_message_prefix + "\" + device.cordova );");
+						+ MultiversionSupport.VERSION_MESSSAGE_PREFIX + "\" + device.cordova );");
 		jsEditor.setText(jsString);
 		jsEditor.save();
 		jsEditor.close();
@@ -46,11 +51,54 @@ public class MultiversionSupport extends AerogearBotTest {
 		configEditor.addPlugin("org.apache.cordova.device");
 		console.clearConsole();
 		projectExplorer.selectProject(CORDOVA_PROJECT_NAME);
-		Object[] beforeListeners = SWTEclipseExt.getWorkbenchListeners()
-				.getListeners();
 		runTreeItemWithCordovaSim(bot.tree().expandNode(CORDOVA_PROJECT_NAME));
-		SWTEclipseExt.retainFromCurrentWorkbenchListeners(beforeListeners)
-				.get(0).postShutdown(PlatformUI.getWorkbench());
-		String consoleText = console.getConsoleText();
+		BrowserSimHandler.closeAllRunningInstances();
+		String consoleEngineVersion = parseConsoleTextForVersion(console.getConsoleText());
+		assertNotNull("Cordova Engine version was not displayed in console", consoleEngineVersion);
+		// change mobile engine version for project
+		EnginePropertyPage enginePropertyPage = new EnginePropertyPage(
+				new PackageExplorer().getProject(CORDOVA_PROJECT_NAME));
+		enginePropertyPage.open();
+		String propEngineVersion = enginePropertyPage.getVersion();
+		assertEquals("Version displayed to console is not equal to version in project properties "
+				+ consoleEngineVersion + "!=" + propEngineVersion,
+			propEngineVersion, consoleEngineVersion);
+		List<String> versions = enginePropertyPage.getAvailableVersions();
+		// if just one version is downloaded download second one 
+		if (versions.size() == 1){
+			downloadMobileEngine(2);
+		}
+		// Check other version
+		versions = enginePropertyPage.getAvailableVersions();
+		versions.remove(propEngineVersion);
+		String newVersion = versions.get(0);
+		enginePropertyPage.checkVersion(newVersion);
+		enginePropertyPage.ok();
+		// Run project with new mobile engine version
+		console.clearConsole();
+		projectExplorer.selectProject(CORDOVA_PROJECT_NAME);
+		runTreeItemWithCordovaSim(bot.tree().expandNode(CORDOVA_PROJECT_NAME));
+		BrowserSimHandler.closeAllRunningInstances();
+		consoleEngineVersion = parseConsoleTextForVersion(console.getConsoleText());
+		assertEquals("Expected mobile engine version was " + newVersion 
+				+ " but actual is " + consoleEngineVersion, 
+			newVersion,consoleEngineVersion);
+	}
+	
+	private String parseConsoleTextForVersion(String consoleText){
+		String result = null;
+		if (consoleText != null){
+			String[] consoleLines = consoleText.split("[\r\n]+");
+			int index = 0;
+			while (result == null && index < consoleLines.length){
+				if (consoleLines[index].contains(MultiversionSupport.VERSION_MESSSAGE_PREFIX)){
+					result = consoleLines[index].substring(
+						consoleLines[index].indexOf(MultiversionSupport.VERSION_MESSSAGE_PREFIX)
+						+ MultiversionSupport.VERSION_MESSSAGE_PREFIX.length());
+				}
+				index++;
+			}
+		}
+		return result.trim();
 	}
 }

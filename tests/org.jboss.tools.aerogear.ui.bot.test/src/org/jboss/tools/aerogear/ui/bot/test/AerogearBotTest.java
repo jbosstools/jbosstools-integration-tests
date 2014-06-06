@@ -71,27 +71,7 @@ public class AerogearBotTest extends SWTTestExt {
     bot.button(IDELabel.Button.NEXT).click();
     
     if (bot.table().rowCount() == 0){
-      // Download mobile engine
-      bot.button(IDELabel.Button.DOWNLOAD).click();
-      bot.shell(IDELabel.Shell.DOWNLOAD_HYBRID_MOBILE_ENGINE).activate();
-      bot.comboBoxWithLabel("Version:").setSelection(0);
-      bot.table().getTableItem(0).check();
-      bot.button(IDELabel.Button.OK).click();
-      bot.waitWhile(new ICondition() {
-        @Override
-        public boolean test() throws Exception {
-          return bot.activeShell().getText().equals(IDELabel.Shell.DOWNLOAD_HYBRID_MOBILE_ENGINE);
-        }
-        @Override
-        public void init(SWTBot bot) {
-        }
-        @Override
-        public String getFailureMessage() {
-          return "Shel wit text " 
-            + IDELabel.Shell.DOWNLOAD_HYBRID_MOBILE_ENGINE
-            + " is still active";
-        }
-      }, Timing.time60S());
+    	downloadMobileEngine(0);
     }
     // select first engine in table
     bot.table().getTableItem(0).check();
@@ -180,5 +160,30 @@ public class AerogearBotTest extends SWTTestExt {
     }
     bot.button(IDELabel.Button.RUN).click();
     bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 2, TIME_1S);
+  }
+  /**
+   * Downloads Mobile Engine
+   */
+  protected void downloadMobileEngine(int index){
+      bot.button(IDELabel.Button.DOWNLOAD).click();
+      bot.shell(IDELabel.Shell.DOWNLOAD_HYBRID_MOBILE_ENGINE).activate();
+      bot.comboBoxWithLabel("Version:").setSelection(index);
+      bot.table().getTableItem(0).check();
+      bot.button(IDELabel.Button.OK).click();
+      bot.waitWhile(new ICondition() {
+        @Override
+        public boolean test() throws Exception {
+          return bot.activeShell().getText().equals(IDELabel.Shell.DOWNLOAD_HYBRID_MOBILE_ENGINE);
+        }
+        @Override
+        public void init(SWTBot bot) {
+        }
+        @Override
+        public String getFailureMessage() {
+          return "Shell wit text " 
+            + IDELabel.Shell.DOWNLOAD_HYBRID_MOBILE_ENGINE
+            + " is still active";
+        }
+      }, Timing.time60S()); 
   }
 }
