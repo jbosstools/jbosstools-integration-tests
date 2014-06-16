@@ -2,3 +2,5 @@
 db/
 screenshots/
 target/
+.project
+.classpath
