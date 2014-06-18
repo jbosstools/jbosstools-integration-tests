@@ -1,8 +1,20 @@
 package org.jboss.tools.hibernate.factory;
 
+
+import java.util.regex.Matcher;
+
 import org.jboss.reddeer.eclipse.datatools.ui.DatabaseProfile;
+import org.jboss.reddeer.eclipse.datatools.ui.view.DataSourceExplorer;
 import org.jboss.reddeer.eclipse.datatools.ui.wizard.ConnectionProfileWizard;
 import org.jboss.reddeer.requirements.db.DatabaseConfiguration;
+import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.swt.impl.button.YesButton;
+import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.swt.matcher.WithRegexMatcher;
+import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.reddeer.swt.wait.WaitWhile;
 
 /**
  * Driver Definition Factory helps to create driver definition based on 
@@ -32,6 +44,22 @@ public class ConnectionProfileFactory {
 		ConnectionProfileWizard cpw = new ConnectionProfileWizard();
 		cpw.open();
 		cpw.createDatabaseProfile(dbProfile);
+	}
+	
+	/**
+	 * Deletes connection profile 
+	 * @param profileName profile name to delete
+	 */
+	public static void deleteConnectionProfile(String profileName) {
+		DataSourceExplorer explorer = new DataSourceExplorer();
+		explorer.open();
+		new DefaultTreeItem("Database Connections",profileName).select();
+		new ContextMenu("Delete").select();
+		String deleteConfirmation = "Delete confirmation";
+		WithRegexMatcher withRegexMatcher = new WithRegexMatcher(".*" + deleteConfirmation + ".*"); 
+		new WaitUntil(new ShellWithTextIsActive(withRegexMatcher));
+		new DefaultShell(deleteConfirmation);
+		new YesButton().click();
 	}
 	
 }
