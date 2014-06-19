@@ -11,7 +11,7 @@ import org.junit.runners.Suite.SuiteClasses;
 // Add own test classes. Those 3 classes are fundamental - do not remove them. Last is recommended.
 @RunWith(RedDeerSuite.class)
 @SuiteClasses({
-	Connection.class,	
+	Connection.class,
 	ManageSSH.class, 
 	CreateDomain.class,
 	

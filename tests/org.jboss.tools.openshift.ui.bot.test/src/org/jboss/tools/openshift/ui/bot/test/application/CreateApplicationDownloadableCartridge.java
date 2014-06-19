@@ -25,7 +25,7 @@ public class CreateApplicationDownloadableCartridge {
 	@Test
 	public void createApplicationOnDownloadableCartridge() {
 		new NewApplicationTemplates(false).createApplicationOnDownloadableCartridge(
-				URL, APP_NAME, false, false, (String[]) null);;
+				URL, APP_NAME, false, false, (String[]) null);
 	}
 	
 	@After

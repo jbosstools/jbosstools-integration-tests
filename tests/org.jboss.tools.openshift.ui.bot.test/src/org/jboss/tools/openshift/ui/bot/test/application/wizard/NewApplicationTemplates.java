@@ -53,6 +53,23 @@ public class NewApplicationTemplates {
 	}
 	
 	/**
+	 * Creates application as a quickstart.
+	 */
+	public void createQuickstart(String quickstart, String appName, boolean scalable, 
+			boolean smallGear, boolean createAdapter, boolean isEmbeddedDialogShown) {
+		NewApplicationWizard wizard = new NewApplicationWizard();
+		
+		wizard.createNewApplicationQuickstart(quickstart, appName, scalable, smallGear, 
+				createAdapter, null, null);
+		
+		wizard.postCreateSteps(appName, isEmbeddedDialogShown, createAdapter);
+		
+		if (createAdapter) {
+			wizard.verifyApplication(appName);
+		}
+	}
+	
+	/**
 	 * Create an application from a github template (provided by URL).
 	 */
 	public void createApplicationFromGithubTemplate(String baseCartridge,

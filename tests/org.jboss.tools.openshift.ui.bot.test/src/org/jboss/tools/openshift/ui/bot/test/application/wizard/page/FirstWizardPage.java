@@ -2,6 +2,7 @@ package org.jboss.tools.openshift.ui.bot.test.application.wizard.page;
 
 import java.util.List;
 
+import org.jboss.reddeer.eclipse.jface.viewer.handler.TreeViewerHandler;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.ButtonWithTextIsActive;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
@@ -100,8 +101,10 @@ public class FirstWizardPage {
 			category = new DefaultTreeItem("Quickstarts");
 		}
 		
+		category.select();
 		category.expand();
-		category.getItem(cartridge).select();
+		TreeViewerHandler treeViewerHandler = TreeViewerHandler.getInstance();
+		treeViewerHandler.getTreeItem(category, cartridge).select();
 	}
 	
 	/**

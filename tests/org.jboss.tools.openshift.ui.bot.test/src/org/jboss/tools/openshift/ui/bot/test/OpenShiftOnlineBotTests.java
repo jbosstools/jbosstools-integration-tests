@@ -16,6 +16,7 @@ import org.jboss.tools.openshift.ui.bot.test.adapter.CreateAdapterFromExplorer;
 import org.jboss.tools.openshift.ui.bot.test.adapter.SwitchProjectDeployment;
 import org.jboss.tools.openshift.ui.bot.test.application.CreateApplicationFromGithub;
 import org.jboss.tools.openshift.ui.bot.test.application.CreateApplicationThroughShellMenu;
+import org.jboss.tools.openshift.ui.bot.test.application.CreateQuickstart;
 import org.jboss.tools.openshift.ui.bot.test.application.DeployApplicationBinary;
 import org.jboss.tools.openshift.ui.bot.test.application.ImportAndDeployGitHubProject;
 import org.jboss.tools.openshift.ui.bot.test.application.ImportApplicationThroughOpenShiftExplorer;
@@ -29,6 +30,7 @@ import org.jboss.tools.openshift.ui.bot.test.cartridge.EmbedCartridge;
 import org.jboss.tools.openshift.ui.bot.test.connection.Connection;
 import org.jboss.tools.openshift.ui.bot.test.connection.ManageSSH;
 import org.jboss.tools.openshift.ui.bot.test.connection.MultipleAccounts;
+import org.jboss.tools.openshift.ui.bot.test.connection.SecurityStorage;
 import org.jboss.tools.openshift.ui.bot.test.domain.CreateMultipleDomain;
 import org.jboss.tools.openshift.ui.bot.test.domain.DeleteMultipleDomain;
 import org.jboss.tools.openshift.ui.bot.test.domain.RenameDomain;
@@ -47,6 +49,7 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses({
 	/* Connection */
 	Connection.class, 
+	SecurityStorage.class,
 	MultipleAccounts.class,
 	ManageSSH.class, 
 	
@@ -64,6 +67,7 @@ import org.junit.runners.Suite.SuiteClasses;
  	DeployApplicationBinary.class,
  	CreateAdapterFromExplorer.class,
  	CreateAdapterFromServerView.class,
+ 	CreateQuickstart.class,
 	EmbedCartridge.class,
 	CannotEmbedConflictCartridges.class,
 	SwitchProjectDeployment.class,

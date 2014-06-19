@@ -66,6 +66,20 @@ public class NewApplicationWizard {
 				gitRemoteName, embeddedCartridges);
 	}
 	
+	public void createNewApplicationQuickstart(String quickstart, String appName,
+			boolean scalable, boolean smallGear, boolean createAdapter, 
+			String gitDest, String gitRemoteName) {
+		
+		FirstWizardPage first = new FirstWizardPage();
+		first.createNewApplicationFromQuickstart(quickstart);
+		
+		next();
+		
+		processWizard(appName, scalable, smallGear, false,
+				null, null, createAdapter, null, gitDest,
+				gitRemoteName, (String[]) null);
+	}
+	
 	public void createNewApplicationDownloadableCartridge(String URL, String appName, 
 			boolean scalable, boolean smallGear, boolean createEnvironmentVariable,
 			String sourceCodeURL, String embeddedURL, boolean createAdapter,
