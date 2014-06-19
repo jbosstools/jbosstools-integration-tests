@@ -1,8 +1,6 @@
 package org.jboss.tools.hibernate.factory;
 
 
-import java.util.regex.Matcher;
-
 import org.jboss.reddeer.eclipse.datatools.ui.DatabaseProfile;
 import org.jboss.reddeer.eclipse.datatools.ui.view.DataSourceExplorer;
 import org.jboss.reddeer.eclipse.datatools.ui.wizard.ConnectionProfileWizard;
@@ -14,7 +12,6 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.matcher.WithRegexMatcher;
 import org.jboss.reddeer.swt.wait.WaitUntil;
-import org.jboss.reddeer.swt.wait.WaitWhile;
 
 /**
  * Driver Definition Factory helps to create driver definition based on 
