@@ -3,10 +3,12 @@ package org.jboss.tools.maven.reddeer.preferences;
 import org.jboss.reddeer.swt.api.Button;
 import org.jboss.reddeer.swt.api.Text;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
+import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.button.YesButton;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
-import org.jboss.reddeer.swt.util.Display;
-import org.jboss.reddeer.swt.util.ResultRunnable;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
@@ -22,15 +24,7 @@ public class MavenUserPreferencePage extends WorkbenchPreferencePage{
 		Text text = null;
 		for(int i=0;i<10;i++){
 			text = new DefaultText(i);
-			final org.eclipse.swt.widgets.Text t = text.getSWTWidget();
-			String message = Display.syncExec(new ResultRunnable<String>() {
-
-				@Override
-				public String run() {
-					return t.getMessage();
-				}
-			});
-			if(message.contains("settings") && message.contains(".xml")){
+			if(text.getMessage().contains("settings") && text.getMessage().contains(".xml")){
 				break;
 			}
 		}
@@ -47,26 +41,31 @@ public class MavenUserPreferencePage extends WorkbenchPreferencePage{
 		Text text = null;
 		for(int i=0;i<10;i++){
 			text = new DefaultText(i);
-			final org.eclipse.swt.widgets.Text t = text.getSWTWidget();
-			String message = Display.syncExec(new ResultRunnable<String>() {
-
-				@Override
-				public String run() {
-					return t.getMessage();
-				}
-			});
-			if(message.contains("settings") && message.contains(".xml")){
+			if((text.getMessage().contains("settings") && text.getMessage().contains(".xml")) ||
+					(text.getText().contains("settings") && text.getText().contains(".xml"))){
 				break;
 			}
 		}
-		return text.getText();
+		if(!text.getText().isEmpty()){
+			return text.getText();
+		}
+		return text.getMessage();
 	}
 	
 	@Override
 	public void ok(){
 		new PushButton("Apply").click();
-		new WaitWhile(new JobIsRunning(),TimePeriod.VERY_LONG);
-		super.ok();
+		try{
+			new DefaultShell("Update project required");
+			new YesButton().click();
+			new WaitWhile(new ShellWithTextIsAvailable("Update project required"));
+			
+		} catch(SWTLayerException ex){
+			
+		} finally {
+			new WaitWhile(new JobIsRunning(),TimePeriod.VERY_LONG);
+			super.ok();
+		}
 	}
 
 }
