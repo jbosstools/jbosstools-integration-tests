@@ -13,13 +13,12 @@ package org.jboss.tools.ws.ui.bot.test.uiutils;
 
 import java.util.List;
 
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.ProjectItem;
 import org.jboss.reddeer.swt.api.Menu;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.matcher.RegexMatchers;
+import org.jboss.reddeer.swt.matcher.WithRegexMatchers;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTFulAnnotations;
 
 public class RESTFullExplorer {
@@ -60,7 +59,7 @@ public class RESTFullExplorer {
 	public RunOnServerDialog runOnServer(ProjectItem service) {
 		service.select();
 		
-		Menu menu = new ContextMenu(new RegexMatchers(
+		Menu menu = new ContextMenu(new WithRegexMatchers(
 				".*Run.*", ".*Run on Server.*").getMatchers());
 		menu.select();
 
