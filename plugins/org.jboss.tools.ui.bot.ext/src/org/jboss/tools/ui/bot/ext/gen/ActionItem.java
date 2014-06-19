@@ -1718,10 +1718,10 @@ public static String getItemString(IActionItem item) {
 			}
 		public static class JBossCommunityWildFly8 {
 			/**
-			* represents item : JBoss Community->WildFly 8.0
+			* represents item : JBoss Community->WildFly 8.x
 			*/
 			public static final IServer LABEL = new IServer() {
-				public String getName() { return "WildFly 8.0";}
+				public String getName() { return "WildFly 8.x";}
 				public List<String> getGroupPath() {
 					List<String> l = new Vector<String>();
 					l.add("JBoss Community");
@@ -10927,10 +10927,10 @@ public static String getItemString(IActionItem item) {
 			}
 		public static class JBossCommunityWildFly8Runtime {
 			/**
-			 * reptresents item : WildFly 8.0 Runtime
+			 * reptresents item : WildFly 8.x Runtime
 			 */
 			public static final IServerRuntime LABEL = new IServerRuntime() {
-				public String getName() { return "WildFly 8.0 Runtime";}
+				public String getName() { return "WildFly 8.x Runtime";}
 				public List<String> getGroupPath() {
 					List<String> l = new Vector<String>();
 					l.add("JBoss Community");
