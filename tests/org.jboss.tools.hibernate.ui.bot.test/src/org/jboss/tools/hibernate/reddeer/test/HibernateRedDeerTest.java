@@ -25,7 +25,7 @@ public class HibernateRedDeerTest {
 	}
 	
 	public void importProject(String prjName) {
-		ProjectImporter.importProjectWithoutErrors(Activator.PLUGIN_ID, "mvn-hibernate35");
+		ProjectImporter.importProjectWithoutErrors(Activator.PLUGIN_ID, prjName);
 	}
 	
 

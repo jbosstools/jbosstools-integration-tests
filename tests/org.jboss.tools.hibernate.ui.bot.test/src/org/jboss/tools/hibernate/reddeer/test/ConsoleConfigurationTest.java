@@ -30,9 +30,9 @@ public class ConsoleConfigurationTest extends HibernateRedDeerTest {
 	private String CONSOLE_NAME="hibernateconsoletest";
 	
 	@Before 
-	public void prepare() {			
-		importProject(PROJECT_NAME);		
+	public void prepare() {
 		importProject(PROJECT_LIBS);
+		importProject(PROJECT_NAME);		
 		prepareConsoleConfiguration();
 	}
 	
