@@ -12,7 +12,7 @@
 
 	<packaging>eclipse-test-plugin</packaging>
 	<properties>
-		<systemProperties>${integrationTestsSystemProperties} -Dhsqldb.driver=${requirementsDirectory}/hsqldb/hsqldb-1.8.0.10.jar -Djbosstools.test.jboss.home.7.1=${requirementsDirectory}/jboss-as-7.1.1.Final -Djbosstools.test.seam.2.2.0.home=${requirementsDirectory}/jboss-seam-2.2.0.GA -Djbosstools.test.seam.2.3.0.home=${requirementsDirectory}/jboss-seam-2.3.0.Final -Djbosstools.test.seam.2.1.0.home=${requirementsDirectory}/jboss-seam-2.1.2 -Dproject.build.directory=${project.build.directory}</systemProperties>
+		<systemProperties>${integrationTestsSystemProperties} -Dhsqldb.driver=${requirementsDirectory}/hsqldb/hsqldb-1.8.0.10.jar -Djbosstools.test.jboss.home.7.1=${requirementsDirectory}/wildfly-8.1.0.Final -Djbosstools.test.seam.2.2.0.home=${requirementsDirectory}/jboss-seam-2.2.0.GA -Djbosstools.test.seam.2.3.0.home=${requirementsDirectory}/jboss-seam-2.3.0.Final -Djbosstools.test.seam.2.1.0.home=${requirementsDirectory}/jboss-seam-2.1.2 -Dproject.build.directory=${project.build.directory}</systemProperties>
 	</properties>
 
 	<profiles>
@@ -23,12 +23,6 @@
 			<id>all-bot-tests</id>
 			<properties>
 				<suiteClass>org.jboss.tools.maven.ui.bot.test.MavenAllBotTests</suiteClass>
-			</properties>
-		</profile>
-		<profile>
-			<id>jenkins</id>
-			<properties>
-				<suiteClass>org.jboss.tools.maven.ui.bot.test.JenkinsTestSuite</suiteClass>
 			</properties>
 		</profile>
 	</profiles>
@@ -54,9 +48,9 @@
 						<configuration>
 							<artifactItems>
 								<artifactItem>
-									<groupId>org.jboss.as</groupId>
-									<artifactId>jboss-as-dist</artifactId>
-									<version>7.1.1.Final</version>
+									<groupId>org.wildfly</groupId>
+									<artifactId>wildfly-dist</artifactId>
+									<version>8.1.0.Final</version>
 									<type>zip</type>
 								</artifactItem>
 							</artifactItems>
@@ -141,69 +135,6 @@
 					<skip>${swtbot.test.skip}</skip>
 					<testSuite>org.jboss.tools.maven.ui.bot.test</testSuite>
 					<testClass>${suiteClass}</testClass>
-					<dependencies combine.children="append">
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.eclipse.jst.enterprise_ui.feature.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.eclipse.m2e.feature.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.jboss.tools.ws.feature.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.eclipse.wst.web_ui.feature.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.jboss.tools.jsf.feature.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.jboss.tools.common.jdt.feature.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
-
-						<!-- configurator test -->
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.jboss.tools.ws.jaxrs.feature.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
-
-						<!-- seam test -->
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.jboss.tools.seam.feature.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.jboss.ide.eclipse.as.feature.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
-						
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.eclipse.datatools.enablement.feature.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
-						 
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.eclipse.egit.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
-					</dependencies>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -243,18 +174,5 @@
 			</plugins>
 		</pluginManagement>
 	</build>
-	<repositories>
-		<repository>
-			<id>m2e-wtp</id>
-			<url>http://download.eclipse.org/m2e-wtp/snapshots/kepler/</url>
-			<layout>p2</layout>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-		</repository>
-	</repositories>
 
 </project>

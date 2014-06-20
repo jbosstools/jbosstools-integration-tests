@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.maven.ui.bot.test;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -19,7 +20,16 @@ import java.util.List;
 
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
+import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.swt.exception.SWTLayerException;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.swt.matcher.WithRegexMatchers;
+import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.maven.reddeer.maven.ui.preferences.ConfiguratorPreferencePage;
+import org.jboss.tools.maven.reddeer.preferences.MavenUserPreferencePage;
 import org.jboss.tools.maven.reddeer.profiles.SelectProfilesDialog;
 import org.jboss.tools.maven.reddeer.wizards.ConfigureMavenRepositoriesWizard;
 import org.jboss.tools.maven.reddeer.wizards.MavenImportWizard;
@@ -55,6 +65,10 @@ public class MavenProfilesTest extends AbstractMavenSWTBotTest {
 			mr.cancel();
 		}
 		jm.ok();
+		MavenUserPreferencePage mu = new MavenUserPreferencePage();
+		mu.open();
+		mu.setUserSettings(new File("usersettings/settings.xml").getCanonicalPath());
+		mu.ok();
 		importMavenProject("projects/simple-jar/pom.xml");
 		importMavenProject("projects/simple-jar1/pom.xml");
 		importMavenProject("projects/simple-jar2/pom.xml");
@@ -82,18 +96,16 @@ public class MavenProfilesTest extends AbstractMavenSWTBotTest {
 		SelectProfilesDialog mp = new SelectProfilesDialog("simple-jar");
 		mp.open();
 		List<String> profiles = mp.getAllProfiles();
+		mp.cancel();
 		for(String p: profiles){
-			if(p.contains(AUTOACTIVATED_PROFILE_IN_POM) || p.contains(AUTOACTIVATED_PROFILE_IN_SETTINGS)){
-				if(!p.contains("(auto activated)")){
-					fail("profile "+p+" is not autoactivated");
-				}
+		    if(p.contains("(auto activated)")){
+		        assertTrue(p.contains(AUTOACTIVATED_PROFILE_IN_POM) || p.contains(AUTOACTIVATED_PROFILE_IN_SETTINGS));
 			}
 		}
-		mp.cancel();
 		buildProject("simple-jar", "..Maven build...", "clean verify",true);
 	}
 	@Test
-	public void activateAllProfiles() throws IOException{
+	public void activateAllProfiles() {
 		SelectProfilesDialog mp = new SelectProfilesDialog("simple-jar");
 		mp.open();
 		mp.activateAllProfiles();
@@ -103,29 +115,68 @@ public class MavenProfilesTest extends AbstractMavenSWTBotTest {
 		String[] profiles = profilesText.split(", ");
 		assertTrue("not all profiles are activated",profiles.length == 5);
 		for(String p:profiles){
+		    
 			if(! (p.equals(AUTOACTIVATED_PROFILE_IN_SETTINGS) || p.equals(SIMPLE_JAR_ALL_PROFILES[0]) || p.equals(SIMPLE_JAR_ALL_PROFILES[1]) ||
 					p.equals(SIMPLE_JAR_ALL_PROFILES[2]) || p.equals(PROFILE_IN_SETTINGS))){
 				fail("not all profiles are activated");
 			}
 		}
+		PackageExplorer pe = new PackageExplorer();
+        pe.open();
+        pe.getProject("simple-jar").select();
+        WithRegexMatchers m = new WithRegexMatchers("Run As","..Maven build...");
+        new ContextMenu(m.getMatchers()).select();
+        new DefaultShell("Edit Configuration");
+        String activeProfiles = new LabeledText("Profiles:").getText();
+        new PushButton("Close").click();
+        try{
+            new DefaultShell("Save Changes");
+            new PushButton("No").click();
+        } catch(SWTLayerException ex){
+            ex.printStackTrace();
+        } finally {
+            new WaitWhile(new ShellWithTextIsAvailable("Edit Configuration"));
+            profiles = activeProfiles.split(", ");
+            assertTrue("not all profiles are activated",profiles.length == 5);
+            for(String p:profiles){
+                
+                if(! (p.equals(AUTOACTIVATED_PROFILE_IN_SETTINGS) || p.equals(SIMPLE_JAR_ALL_PROFILES[0]) || p.equals(SIMPLE_JAR_ALL_PROFILES[1]) ||
+                        p.equals(SIMPLE_JAR_ALL_PROFILES[2]) || p.equals(PROFILE_IN_SETTINGS))){
+                    fail("not all profiles are activated");
+                }
+            }
+        }
 		
 	}
 	@Test
-	public void activateProfile() throws IOException{
+	public void activateProfile() {
 		SelectProfilesDialog mp = new SelectProfilesDialog("simple-jar");
 		mp.open();
 		mp.activateProfile(SIMPLE_JAR_ALL_PROFILES[0]);
 		String profilesText = mp.getActiveProfilesText();
 		mp.ok();
-		String[] profiles = profilesText.split(", ");
-		assertTrue("profile "+SIMPLE_JAR_ALL_PROFILES[0]+" is not activated",profiles.length == 1);
-		if(!profiles[0].equals(SIMPLE_JAR_ALL_PROFILES[0])){
-			fail("profile "+SIMPLE_JAR_ALL_PROFILES[0]+" is not activated");
-		}
+		assertTrue(profilesText.equals(SIMPLE_JAR_ALL_PROFILES[0]));
+		PackageExplorer pe = new PackageExplorer();
+		pe.open();
+		pe.getProject("simple-jar").select();
+		WithRegexMatchers m = new WithRegexMatchers("Run As","..Maven build...");
+        new ContextMenu(m.getMatchers()).select();
+        new DefaultShell("Edit Configuration");
+        String activeProfile = new LabeledText("Profiles:").getText();
+        new PushButton("Close").click();
+        try{
+            new DefaultShell("Save Changes");
+            new PushButton("No").click();
+        } catch(SWTLayerException ex){
+            ex.printStackTrace();
+        } finally {
+            new WaitWhile(new ShellWithTextIsAvailable("Edit Configuration"));
+            assertEquals(SIMPLE_JAR_ALL_PROFILES[0], activeProfile);
+        }
 	}
 	
 	@Test
-	public void deactivateProfile() throws IOException{
+	public void deactivateProfile() {
 		SelectProfilesDialog mp = new SelectProfilesDialog("simple-jar");
 		mp.open();
 		mp.deactivateProfile(AUTOACTIVATED_PROFILE_IN_POM+" (auto activated)");

@@ -10,9 +10,6 @@
  ******************************************************************************/ 
 package org.jboss.tools.maven.ui.bot.test;
 
-import static org.junit.Assert.assertTrue;
-
-import org.eclipse.core.runtime.CoreException;
 import org.jboss.tools.maven.reddeer.maven.ui.preferences.ConfiguratorPreferencePage;
 import org.jboss.tools.maven.reddeer.wizards.ConfigureMavenRepositoriesWizard;
 import org.jboss.tools.maven.reddeer.wizards.MavenProjectWizard;
@@ -50,22 +47,10 @@ public class ArchetypesTest extends AbstractMavenSWTBotTest{
 		jm.ok();
 	}
 	
-	//not in jbds/jbt anymore
-	//@Test
-	public void createSimpleJSFProjectArchetype() throws CoreException{
-		String projectName= "JsfQuickstart";
-		createArchetype(projectName, "Nexus Indexer", "maven-archetype-jsfwebapp");
-		assertTrue(isMavenProject(projectName));
-		buildProject(projectName, "..Maven build...","clean package",true); //version is 1.0.0
-		checkWebTarget(projectName, projectName);
-	}
-	
 	@Test
-	public void createSimpleJarProjectArchetype() throws CoreException{
+	public void createSimpleJarProjectArchetype(){
 		String projectName= "ArchetypeQuickstart";
 		createArchetype(projectName, "All Catalogs", "maven-archetype-quickstart");
-		assertNoErrors(projectName);
-		assertTrue(isMavenProject(projectName));
 		buildProject(projectName, "..Maven build...","clean package",true); //version is 1.0.0
 	}
 	

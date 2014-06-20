@@ -11,7 +11,6 @@
 package org.jboss.tools.maven.ui.bot.test;
 
 
-import org.eclipse.core.runtime.CoreException;
 import org.jboss.tools.jsf.reddeer.ui.JSFNewProjectFirstPage;
 import org.jboss.tools.jsf.reddeer.ui.JSFNewProjectSecondPage;
 import org.jboss.tools.jsf.reddeer.ui.JSFNewProjectWizard;
@@ -37,22 +36,19 @@ public class JSFProjectTest extends AbstractMavenSWTBotTest{
 	}
 	
 	@Test
-	public void createJSFProjectTest_AS7_JSFv2() throws CoreException {
+	public void createJSFProjectTest_AS7_JSFv2(){
 		createJSFProject(PROJECT_NAME7, "JSF 2.0", "JSFKickStartWithoutLibs", runtimeName);
-		//convertToMavenProject(PROJECT_NAME7, "war", false);
-		activateMavenFacet(PROJECT_NAME7);
+		convertToMavenProject(PROJECT_NAME7, "war", false);
 		addDependency(PROJECT_NAME7, GROUPID,ARTIFACTID,JSF_VERSION_2);
-		assertNoErrors(PROJECT_NAME7);
 		buildProject(PROJECT_NAME7,"..Maven build...","clean package",true);
 		checkWebTarget(PROJECT_NAME7, PROJECT_NAME7+"-0.0.1-SNAPSHOT");
 	}
 	
 	@Test
-	public void createJSFProjectTest_AS7_JSFv1() throws CoreException{
+	public void createJSFProjectTest_AS7_JSFv1() {
 		createJSFProject(PROJECT_NAME7_v1, "JSF 1.2", "JSFKickStartWithoutLibs", runtimeName);
-		activateMavenFacet(PROJECT_NAME7_v1);
+		convertToMavenProject(PROJECT_NAME7_v1, "war", false);
 		addDependency(PROJECT_NAME7_v1, GROUPID,ARTIFACTID,JSF_VERSION_1_2);
-		assertNoErrors(PROJECT_NAME7_v1);
 		buildProject(PROJECT_NAME7_v1,"..Maven build...","clean package",true);
 		checkWebTarget(PROJECT_NAME7_v1,PROJECT_NAME7_v1+"-0.0.1-SNAPSHOT");
 	}

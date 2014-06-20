@@ -3,10 +3,8 @@ package org.jboss.tools.maven.reddeer.preferences;
 import org.jboss.reddeer.swt.api.Button;
 import org.jboss.reddeer.swt.api.Text;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
-import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.button.YesButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.wait.TimePeriod;
@@ -32,8 +30,16 @@ public class MavenUserPreferencePage extends WorkbenchPreferencePage{
 			text.setText(pathToSettings);
 			Button button = new PushButton("Update Settings");
 			button.click();
-			new WaitUntil(new JobIsRunning(),TimePeriod.NORMAL,false);
-			new WaitWhile(new JobIsRunning(),TimePeriod.VERY_LONG);
+			try{
+	            new DefaultShell("Update project required");
+	            new PushButton("Yes").click();
+	            new DefaultShell("Preferences");
+	        } catch(SWTLayerException ex){
+	            ex.printStackTrace();
+	        } finally {
+	            new WaitUntil(new JobIsRunning(),TimePeriod.NORMAL,false);
+	            new WaitWhile(new JobIsRunning(),TimePeriod.VERY_LONG);
+	        }
 		}
 	}
 	
@@ -56,12 +62,11 @@ public class MavenUserPreferencePage extends WorkbenchPreferencePage{
 	public void ok(){
 		new PushButton("Apply").click();
 		try{
-			new DefaultShell("Update project required");
-			new YesButton().click();
-			new WaitWhile(new ShellWithTextIsAvailable("Update project required"));
-			
+		    new DefaultShell("Update project required");
+		    new PushButton("Yes").click();
+		    new DefaultShell("Preferences");
 		} catch(SWTLayerException ex){
-			
+			log.info("Update project required shell was not found.");
 		} finally {
 			new WaitWhile(new JobIsRunning(),TimePeriod.VERY_LONG);
 			super.ok();

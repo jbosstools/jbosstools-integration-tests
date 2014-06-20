@@ -37,16 +37,8 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IFolder;
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.core.runtime.Path;
-import org.eclipse.m2e.core.internal.IMavenConstants;
+
+//import org.jboss.reddeer.direct.platform.JobManager;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.eclipse.jst.servlet.ui.WebProjectFirstPage;
@@ -61,11 +53,15 @@ import org.jboss.reddeer.eclipse.wst.server.ui.wizard.NewServerWizardDialog;
 import org.jboss.reddeer.eclipse.wst.server.ui.wizard.NewServerWizardPage;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
+import org.jboss.reddeer.swt.impl.group.DefaultGroup;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
@@ -74,11 +70,8 @@ import org.jboss.reddeer.swt.matcher.WithRegexMatchers;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
-import org.jboss.reddeer.uiforms.impl.hyperlink.DefaultHyperlink;
-import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
 import org.jboss.tools.maven.ui.bot.test.dialog.ASRuntimePage;
 import org.jboss.tools.maven.ui.bot.test.utils.ProjectIsBuilt;
-import org.jboss.tools.maven.ui.bot.test.utils.ProjectIsNotBuilt;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.jboss.reddeer.eclipse.wst.server.ui.Runtime;
@@ -88,7 +81,6 @@ import org.xml.sax.SAXException;
 import org.jboss.tools.maven.reddeer.preferences.MavenUserPreferencePage;
 import org.jboss.tools.maven.reddeer.preferences.MavenPreferencePage;
 
-@SuppressWarnings("restriction")
 public abstract class AbstractMavenSWTBotTest{
 	
 	public static final String JBOSS_AS_7_1 = System.getProperty("jbosstools.test.jboss.home.7.1");
@@ -98,13 +90,6 @@ public abstract class AbstractMavenSWTBotTest{
 	
 	@BeforeClass 
 	public static void beforeClass(){
-		// close Welcome screen
-		try{
-			new WorkbenchView("Welcome").close();
-		}catch (UnsupportedOperationException ex){
-			// welcome screen not found, no need to close it
-		}
-		
 		MavenPreferencePage mpreferencesp = new MavenPreferencePage();
 		mpreferencesp.open();
 		mpreferencesp.updateIndexesOnStartup(false);
@@ -121,22 +106,23 @@ public abstract class AbstractMavenSWTBotTest{
 	}
 	
 	@AfterClass
-	public static void afterClass(){
+	public static void cleanup(){
 		deleteProjects(true,true);
+		//JobManager.killAllJobs();
 	}
 	
 	private static String createASRuntime(){
 		RuntimePreferencePage rp = new RuntimePreferencePage();
 		rp.open();
 		for(Runtime runtime: rp.getServerRuntimes()){
-			if(runtime.getType().equals("JBoss 7.1 Runtime")){
+			if(runtime.getType().equals("WildFly 8.x Runtime")){
 				rp.ok();
 				return runtime.getName();
 			}
 		}
 		NewRuntimeWizardDialog rd = rp.addRuntime();
 		rd.addWizardPage(new ASRuntimePage(), 1);
-		((NewRuntimeWizardPage)rd.getFirstPage()).selectType("JBoss Community","JBoss 7.1 Runtime");
+		((NewRuntimeWizardPage)rd.getFirstPage()).selectType("JBoss Community","WildFly 8.x Runtime");
 		ASRuntimePage as = (ASRuntimePage)rd.getWizardPage(1);
 		as.setHomeDirectory(JBOSS_AS_7_1);
 		String name = as.getName();
@@ -155,7 +141,7 @@ public abstract class AbstractMavenSWTBotTest{
 		}
 		NewServerWizardDialog ns = (NewServerWizardDialog)sw.newServer();
 		NewServerWizardPage sp = ns.getFirstPage();
-		sp.selectType("JBoss Community","JBoss AS 7.1");
+		sp.selectType("JBoss Community","WildFly 8.x");
 		String name = "AS7.1";
 		sp.setName("AS7.1");
 		//needed because of bug in 800Beta1
@@ -164,7 +150,7 @@ public abstract class AbstractMavenSWTBotTest{
 		return name;
 		
 	}
-
+	
 	public static void setPerspective(String perspective){
 		new ShellMenu("Window","Open Perspective","Other...").select();
 		try{
@@ -175,11 +161,6 @@ public abstract class AbstractMavenSWTBotTest{
 	    	  new DefaultTable().select(perspective + " (default)");
 	      }
 		new PushButton("OK").click();
-	}
-	
-	public boolean isMavenProject(String projectName) throws CoreException {
-		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
-		return project.hasNature(IMavenConstants.NATURE_ID);
 	}
 	
 	public boolean hasNature(String projectName, String version, String... natureID){
@@ -245,10 +226,12 @@ public abstract class AbstractMavenSWTBotTest{
 		new WaitUntil(new ShellWithTextIsActive("Edit Configuration"),TimePeriod.NORMAL);
 		new LabeledText("Goals:").setText(goals);
 		new PushButton("Run").click();
+		ProjectIsBuilt pb = new ProjectIsBuilt();
+		new WaitUntil(pb,TimePeriod.VERY_LONG);
 		if(shouldBuild){
-			new WaitUntil(new ProjectIsBuilt(),TimePeriod.LONG);
+			assertTrue(pb.isBuildSuccesfull());
 		}else {
-			new WaitUntil(new ProjectIsNotBuilt(),TimePeriod.LONG);
+			assertFalse(pb.isBuildSuccesfull());
 		}
 	}
 	
@@ -265,51 +248,16 @@ public abstract class AbstractMavenSWTBotTest{
 			new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 			p.delete(fromSystem);
 		}
-		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		assertTrue("Not all projects have been deleted", pexplorer.getProjects().isEmpty());
 	}
 	
-	public void checkWebTarget(String projectName, String finalName) throws CoreException{
-		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
-		project.getFolder("target").refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
-		IFolder projectFolder = project.getFolder("target/" + finalName);
-		assertTrue(projectFolder +" is missing ", projectFolder.exists());
-		IPath webInfPath = new Path("WEB-INF");
-		assertFalse(projectFolder.getFolder(webInfPath.append("src")).exists());
-		assertFalse(projectFolder.getFolder(webInfPath.append("dev")).exists());
-		assertTrue(projectFolder.getFolder(webInfPath.append("lib")).exists());
-		
-		IFile jarFile = project.getFolder("target").getFile(finalName+".war");
-		assertTrue("war file of "+projectName+" is missing ", jarFile.exists());
-	}
-	
-	public void checkJarTarget(String projectName, String finalName) throws CoreException{
-		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
-		project.getFolder("target").refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
-		IFolder projectFolder = project.getFolder("target/classes");
-		assertTrue(projectFolder +" is missing ", projectFolder.exists());
-		
-		projectFolder = project.getFolder("target/test-classes");
-		assertTrue(projectFolder +" is missing ", projectFolder.exists());
-		
-		IFile jarFile = project.getFolder("target").getFile(finalName+".jar");
-		assertTrue("jar file of "+projectName+" is missing ", jarFile.exists());
-	}
-	
-	public void activateMavenFacet(String projectName) throws CoreException{
-		PackageExplorer pexplorer = new PackageExplorer();
-		pexplorer.open();
-		pexplorer.getProject(projectName).select();
-		new ContextMenu("Properties").select();
-		new WaitUntil(new ShellWithTextIsActive("Properties for "+projectName),TimePeriod.NORMAL);
-		new DefaultTreeItem("Project Facets").select();
-		new DefaultTreeItem(1, "JBoss Maven Integration").setChecked(true);
-		new DefaultHyperlink("Further configuration required...").activate();
-		new WaitUntil(new ShellWithTextIsActive("Modify Faceted Project"),TimePeriod.NORMAL);
-	    new PushButton("OK").click();
-	    new PushButton("OK").click();
-	    new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
-	    assertTrue(projectName+ " doesn't have maven nature", isMavenProject(projectName));
+	public void checkWebTarget(String projectName, String finalName){
+	    PackageExplorer pe = new PackageExplorer();
+	    pe.open();
+	    pe.getProject(projectName).select();
+	    new ContextMenu("Refresh").select();
+	    new WaitWhile(new JobIsRunning());
+	    assertTrue(pe.getProject(projectName).containsItem("target",finalName+".war"));
 	}
 	
 	public void convertToMavenProject(String projectName, String defaultPackaging, boolean withDependencies){
@@ -317,23 +265,26 @@ public abstract class AbstractMavenSWTBotTest{
 		pexplorer.open();
 		pexplorer.getProject(projectName).select();
 		new ContextMenu("Configure","Convert to Maven Project").select();
-		new WaitUntil(new ShellWithTextIsActive("Create new POM"),TimePeriod.NORMAL);
-		//assertTrue("Project " +projectName+" packaging should be set to "+defaultPackaging,new DefaultCombo("Artifact","Packaging:").getText().equals(defaultPackaging));
+		new DefaultShell("Create new POM");
+		assertTrue("Project " +projectName+" packaging should be set to "+defaultPackaging,new LabeledCombo(new DefaultGroup("Artifact"),"Packaging:").getText().equals(defaultPackaging));
 		new PushButton("Finish").click();
-		if(withDependencies){
-			new WaitUntil(new ShellWithTextIsActive("Convert to Maven Dependencies"),TimePeriod.NORMAL);
-			new WaitUntil(new WidgetIsEnabled(new PushButton("Finish")), TimePeriod.LONG);
-			new PushButton("Finish").click();
-		} else {
-			new WaitWhile(new ShellWithTextIsActive("Create new POM"),TimePeriod.NORMAL);
+		try{
+		    new DefaultShell("Convert to Maven Dependencies");
+		    new WaitUntil(new WidgetIsEnabled(new PushButton("Finish")), TimePeriod.LONG);
+		    if(withDependencies){
+		        new PushButton("Finish").click();
+		    } else {
+		        new PushButton("Skip Dependency Conversion").click();
+		    }
+	        new WaitWhile(new ShellWithTextIsAvailable("Convert to Maven Dependencies"));
+		} catch (SWTLayerException ex){
+		    
+		} finally {
+		    new WaitWhile(new ShellWithTextIsAvailable("Create new POM"));
+	        new WaitWhile(new JobIsRunning(),TimePeriod.VERY_LONG);
 		}
-		new WaitWhile(new JobIsRunning(),TimePeriod.LONG);
 	}
 	
-	public void assertNoErrors(String projectName) throws CoreException{
-		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
-		//super.assertNoErrors(project);
-	}
 	//TODO editor is missing in Reddeer...and check the packaging
 	public void checkPackaging(String projectName, String packaging){
 		PackageExplorer pExplorer = new PackageExplorer();
