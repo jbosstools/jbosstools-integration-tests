@@ -12,25 +12,22 @@ package org.jboss.tools.maven.ui.bot.test;
 
 import static org.junit.Assert.assertTrue;
 
-import java.io.IOException;
-
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
-
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.CoreException;
+import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.tools.maven.reddeer.maven.ui.preferences.ConfiguratorPreferencePage;
 import org.jboss.tools.maven.reddeer.wizards.ConfigureMavenRepositoriesWizard;
-import org.junit.After;
+import org.jboss.tools.maven.ui.bot.test.utils.ProjectHasNature;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.xml.sax.SAXException;
 /**
  * @author Rastislav Wagner
  * 
  */
+@CleanWorkspace
+@OpenPerspective(JavaEEPerspective.class)
 public class JSFConfiguratorTest extends AbstractConfiguratorsTest{
 	
 	public static final String MAVEN_ACM_REPO = "http://maven.acm-sl.org/artifactory/libs-releases/";
@@ -38,7 +35,6 @@ public class JSFConfiguratorTest extends AbstractConfiguratorsTest{
 	
 	@BeforeClass
 	public static void before(){
-		setPerspective("Java EE");
 		ConfiguratorPreferencePage jm = new ConfiguratorPreferencePage();
 		jm.open();
 		ConfigureMavenRepositoriesWizard mr = jm.configureRepositories();
@@ -48,11 +44,6 @@ public class JSFConfiguratorTest extends AbstractConfiguratorsTest{
 		jm.apply();
 		jm.ok();
 		//enableSnapshosts("ACM Repo");
-	}
-	
-	@After
-	public void deleteProjects(){
-		deleteProjects(true, true);
 	}
 	
 	@AfterClass
@@ -71,68 +62,67 @@ public class JSFConfiguratorTest extends AbstractConfiguratorsTest{
 	}
 	
 	@Test
-	public void testJSFConfiguratorMojjara() throws CoreException{
+	public void testJSFConfiguratorMojjara(){
 		String projectName = PROJECT_NAME_JSF+"_noRuntime";
 		createWebProject(projectName, null,false);
 		convertToMavenProject(projectName, "war", false);
 		checkProjectWithoutRuntime(projectName);
 		addDependency(projectName, "com.sun.faces", "mojarra-jsf-api", "2.0.0-b04");
 		updateConf(projectName);
-		assertTrue("Project "+projectName+" with mojarra dependency doesn't have "+JSF_FACET+" nature",hasNature(projectName, null, JSF_FACET));
+		new WaitUntil(new ProjectHasNature(projectName, JSF_FACET, null));
 	}
 		
 	@Test
-	public void testJSFConfiguratorFaces() throws CoreException, InterruptedException{
+	public void testJSFConfiguratorFaces() {
+	    //https://issues.jboss.org/browse/JBIDE-10831
 		String projectName = PROJECT_NAME_JSF+"_noRuntime";
 		createWebProject(projectName, null,false);
 		convertToMavenProject(projectName, "war", false);
 		checkProjectWithoutRuntime(projectName);
-		addFacesConf(PROJECT_NAME_JSF+"_noRuntime");
-		assertTrue("Project "+PROJECT_NAME_JSF+"_noRuntime"+" with faces config doesn't have "+JSF_FACET+" nature",hasNature(PROJECT_NAME_JSF+"_noRuntime", null, JSF_FACET));
+		addFacesConf(projectName);
+		new WaitUntil(new ProjectHasNature(projectName, JSF_FACET, null));
 	}
 	@Test
-	public void testJSFConfiguratorServlet() throws CoreException, ParserConfigurationException, SAXException, IOException, TransformerException{	
-		//https://issues.jboss.org/browse/JBIDE-10831
+	public void testJSFConfiguratorServlet() {	
 		String projectName = PROJECT_NAME_JSF+"_noRuntime";
 		createWebProject(projectName, null, true);
 		convertToMavenProject(projectName, "war", false);
 		checkProjectWithoutRuntime(projectName);
 		addServlet(projectName,"Faces Servlet","javax.faces.webapp.FacesServlet","1");
+		new WaitUntil(new ProjectHasNature(projectName, JSF_FACET, null));
 		assertTrue("Project "+projectName+"with servlet in web.xml doesn't have "+JSF_FACET+" nature",hasNature(projectName, null, JSF_FACET));
-		IProject facade = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
-		assertTrue("Project "+projectName+" doesn't have faces-config.xml file",facade.getProject().getFile("faces-config.xml") != null);
 	}
 	
 	@Test
-	public void testJSFConfigurator() throws CoreException{
+	public void testJSFConfigurator() {
 		createWebProject(PROJECT_NAME_JSF, runtimeName, false);
 		convertToMavenProject(PROJECT_NAME_JSF, "war", true);
 		checkProjectWithRuntime(PROJECT_NAME_JSF);
-		assertTrue("Project "+PROJECT_NAME_JSF+" doesn't have "+JSF_FACET+" nature",hasNature(PROJECT_NAME_JSF,null, JSF_FACET));
+		new WaitUntil(new ProjectHasNature(PROJECT_NAME_JSF, JSF_FACET, null));
 	}
 	//https://issues.jboss.org/browse/JBIDE-13728
 	@Test
-	public void testJSFConfiguratorDeltaspikeApi() throws CoreException{
+	public void testJSFConfiguratorDeltaspikeApi() {
 		createWebProject(PROJECT_NAME_JSF, null, false);
 		convertToMavenProject(PROJECT_NAME_JSF, "war", false);
 		checkProjectWithoutRuntime(PROJECT_NAME_JSF);
 		addDependency(PROJECT_NAME_JSF, "org.apache.deltaspike.modules", "deltaspike-jsf-module-api", "0.4");
 		updateConf(PROJECT_NAME_JSF);
-		assertTrue("Project "+PROJECT_NAME_JSF+" doesn't have "+JSF_FACET+" nature",hasNature(PROJECT_NAME_JSF,null, JSF_FACET));
+		new WaitUntil(new ProjectHasNature(PROJECT_NAME_JSF, JSF_FACET, null));
 	}
 	//https://issues.jboss.org/browse/JBIDE-13728
 	@Test
-	public void testJSFConfiguratorDeltaspikeImpl() throws CoreException{
+	public void testJSFConfiguratorDeltaspikeImpl(){
 		createWebProject(PROJECT_NAME_JSF, null, false);
 		convertToMavenProject(PROJECT_NAME_JSF, "war", false);
 		checkProjectWithoutRuntime(PROJECT_NAME_JSF);
 		addDependency(PROJECT_NAME_JSF, "org.apache.deltaspike.modules", "deltaspike-jsf-module-impl", "0.4");
 		updateConf(PROJECT_NAME_JSF);
-		assertTrue("Project "+PROJECT_NAME_JSF+" doesn't have "+JSF_FACET+" nature",hasNature(PROJECT_NAME_JSF,null, JSF_FACET));
+		new WaitUntil(new ProjectHasNature(PROJECT_NAME_JSF, JSF_FACET, null));
 	}
 	
 	@Test
-	public void testJSFConfiguratorSeam() throws CoreException{
+	public void testJSFConfiguratorSeam() {
 		//https://issues.jboss.org/browse/JBIDE-8755
 		String projectName = PROJECT_NAME_JSF+"_seam";
 		createWebProject(projectName, null,false);
@@ -140,6 +130,6 @@ public class JSFConfiguratorTest extends AbstractConfiguratorsTest{
 		checkProjectWithoutRuntime(projectName);
 		addDependency(projectName, "org.jboss.seam.faces", "seam-faces", "3.0.0.Final");
 		updateConf(projectName);
-		assertTrue("Project "+projectName+" with seam-faces3 dependency doesn't have "+JSF_FACET+" nature",hasNature(projectName,null, JSF_FACET));
+		new WaitUntil(new ProjectHasNature(projectName, JSF_FACET, null));
 	}
 }

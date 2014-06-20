@@ -1,19 +1,22 @@
 package org.jboss.tools.maven.ui.bot.test;
 
-import static org.junit.Assert.assertTrue;
-
+import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.tools.maven.reddeer.maven.ui.preferences.ConfiguratorPreferencePage;
 import org.jboss.tools.maven.reddeer.wizards.ConfigureMavenRepositoriesWizard;
-import org.junit.After;
+import org.jboss.tools.maven.ui.bot.test.utils.ProjectHasNature;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+@CleanWorkspace
+@OpenPerspective(JavaEEPerspective.class)
 public class PortletConfiguratorTest extends AbstractConfiguratorsTest{
 	
 	@BeforeClass
 	public static void setup(){
-		setPerspective("Java EE");
 		ConfiguratorPreferencePage jm = new ConfiguratorPreferencePage();
 		jm.open();
 		ConfigureMavenRepositoriesWizard mr = jm.configureRepositories();
@@ -22,11 +25,7 @@ public class PortletConfiguratorTest extends AbstractConfiguratorsTest{
 		jm.apply();
 		jm.ok();
 	}
-	
-	@After
-	public void clean(){
-		deleteProjects(true, true);
-	}
+
 	
 	@AfterClass
 	public static void cleanRepo(){
@@ -49,7 +48,7 @@ public class PortletConfiguratorTest extends AbstractConfiguratorsTest{
 		convertToMavenProject(PROJECT_NAME_PORTLET, "war", false);
 		addDependency(PROJECT_NAME_PORTLET, "javax.portlet", "portlet-api", "2.0");
 		updateConf(PROJECT_NAME_PORTLET);
-		assertTrue(hasNature(PROJECT_NAME_PORTLET, "2.0", PORTLET_FACET, PORTLET_CORE_FACET));
+		new WaitUntil(new ProjectHasNature(PROJECT_NAME_PORTLET, PORTLET_FACET, PORTLET_CORE_FACET, "2.0"));
 	}
 	
 	@Test
@@ -58,7 +57,7 @@ public class PortletConfiguratorTest extends AbstractConfiguratorsTest{
 		convertToMavenProject(PROJECT_NAME_PORTLET, "war", false);
 		addDependency(PROJECT_NAME_PORTLET, "javax.portlet", "portlet-api", "1.0");
 		updateConf(PROJECT_NAME_PORTLET);
-		assertTrue(hasNature(PROJECT_NAME_PORTLET,"1.0", PORTLET_FACET, PORTLET_CORE_FACET));
+		new WaitUntil(new ProjectHasNature(PROJECT_NAME_PORTLET, PORTLET_FACET, PORTLET_CORE_FACET, "1.0"));
 	}
 	
 	@Test
@@ -69,7 +68,7 @@ public class PortletConfiguratorTest extends AbstractConfiguratorsTest{
 		addDependency(PROJECT_NAME_PORTLET, "org.jboss.portletbridge", "portletbridge-api", "2.0.0.FINAL");
 		addDependency(PROJECT_NAME_PORTLET, "javax.faces", "jsf-api", "2.1");
 		updateConf(PROJECT_NAME_PORTLET);
-		assertTrue(hasNature(PROJECT_NAME_PORTLET, null, PORTLET_FACET, PORTLET_JSF_FACET));
+		new WaitUntil(new ProjectHasNature(PROJECT_NAME_PORTLET, PORTLET_FACET, PORTLET_JSF_FACET, null));
 	}
 
 }

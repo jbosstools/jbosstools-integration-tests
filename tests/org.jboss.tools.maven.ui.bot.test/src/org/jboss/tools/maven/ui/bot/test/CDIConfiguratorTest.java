@@ -10,154 +10,148 @@
  ******************************************************************************/ 
 package org.jboss.tools.maven.ui.bot.test;
 
-
-import static org.junit.Assert.assertTrue;
-
-import org.eclipse.core.runtime.CoreException;
-import org.junit.After;
-import org.junit.BeforeClass;
+import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.tools.maven.ui.bot.test.utils.ProjectHasNature;
 import org.junit.Test;
 /**
  * @author Rastislav Wagner
  * 
  */
+@CleanWorkspace
+@OpenPerspective(JavaEEPerspective.class)
 public class CDIConfiguratorTest extends AbstractConfiguratorsTest{
 	
-	public static final String CDI_API_VERSION1_1="1.1.EDR1.2";
+	public static final String CDI_API_VERSION1_1="1.1";
 	public static final String CDI_API_VERSION1_0="1.0-SP4";
 	public static final String SEAM_FACES_VERSION="3.0.0.Alpha3";
 	public static final String SEAM_INTERNATIONAL_VERSION="3.0.0.Alpha1";
 	public static final String DELTASPIKE_CORE_API_VERSION="0.3-incubating";
 	public static final String DELTASPIME_CORE_IMPL_VERSION="0.3-incubating";
-	
-	@BeforeClass
-	public static void before(){
-		setPerspective("Java EE");
-	}
-	
-	@After
-	public void clean(){
-		deleteProjects(true, true);
-	}
 
 	@Test
-	public void testCDIConfiguratorApi1_1() throws CoreException{
+	public void testCDIConfiguratorApi1_1() {
 		createWebProject(PROJECT_NAME_CDI, null,false);
 		convertToMavenProject(PROJECT_NAME_CDI, "war", false);
 		addDependency(PROJECT_NAME_CDI, "javax.enterprise", "cdi-api",CDI_API_VERSION1_1);
 		updateConf(PROJECT_NAME_CDI);
-		assertTrue("Project "+PROJECT_NAME_CDI+" with cdi dependency doesn't have "+CDI_FACET+" nature.",hasNature(PROJECT_NAME_CDI,null, CDI_FACET));
-		
+		new WaitUntil(new ProjectHasNature(PROJECT_NAME_CDI, CDI_FACET, "1.1"));
 	}
+	
 	@Test
-	public void testCDIConfiguratorEjbApi1_1() throws CoreException{
+	public void testCDIConfiguratorEjbApi1_1() {
 		createEJBProject(PROJECT_NAME_CDI_EJB, null);
 		convertToMavenProject(PROJECT_NAME_CDI_EJB, "ejb", false);
 		addDependency(PROJECT_NAME_CDI_EJB, "javax.enterprise", "cdi-api",CDI_API_VERSION1_1);
 		updateConf(PROJECT_NAME_CDI_EJB);
-		assertTrue("Project "+PROJECT_NAME_CDI_EJB+" with cdi dependency doesn't have "+CDI_FACET+" nature.",hasNature(PROJECT_NAME_CDI_EJB,null, CDI_FACET));
+		new WaitUntil(new ProjectHasNature(PROJECT_NAME_CDI_EJB, CDI_FACET, "1.1"));
 	}
 	
 	@Test
-	public void testCDIConfiguratorApi1_0() throws CoreException{
+	public void testCDIConfiguratorApi1_0() {
 		createWebProject(PROJECT_NAME_CDI, null,false);
 		convertToMavenProject(PROJECT_NAME_CDI, "war", false);
 		addDependency(PROJECT_NAME_CDI, "javax.enterprise", "cdi-api",CDI_API_VERSION1_0);
 		updateConf(PROJECT_NAME_CDI);
-		assertTrue("Project "+PROJECT_NAME_CDI+" with cdi dependency doesn't have "+CDI_FACET+" nature.",hasNature(PROJECT_NAME_CDI,null, CDI_FACET));
-		
+		new WaitUntil(new ProjectHasNature(PROJECT_NAME_CDI, CDI_FACET, "1.0"));
 	}
+	
 	@Test
-	public void testCDIConfiguratorEjbApi1_0() throws CoreException{
+	public void testCDIConfiguratorEjbApi1_0() {
 		createEJBProject(PROJECT_NAME_CDI_EJB, null);
 		convertToMavenProject(PROJECT_NAME_CDI_EJB, "ejb", false);
 		addDependency(PROJECT_NAME_CDI_EJB, "javax.enterprise", "cdi-api",CDI_API_VERSION1_0);
 		updateConf(PROJECT_NAME_CDI_EJB);
-		assertTrue("Project "+PROJECT_NAME_CDI_EJB+" with cdi dependency doesn't have "+CDI_FACET+" nature.",hasNature(PROJECT_NAME_CDI_EJB,null, CDI_FACET));
+		new WaitUntil(new ProjectHasNature(PROJECT_NAME_CDI_EJB, CDI_FACET, "1.0"));
 	}
+	
 	@Test
-	public void testCDIConfigurator() throws CoreException{
+	public void testCDIConfigurator() {
 		createWebProject(PROJECT_NAME_CDI, runtimeName,false);
 		convertToMavenProject(PROJECT_NAME_CDI, "war", true);
-		assertTrue("Project "+PROJECT_NAME_CDI+" has "+CDI_FACET+" nature.",hasNature(PROJECT_NAME_CDI,null, CDI_FACET));
+		new WaitUntil(new ProjectHasNature(PROJECT_NAME_CDI, CDI_FACET, "1.0"));
 	}
+	
 	@Test
-	public void testCDIConfiguratorEjb() throws CoreException{
+	public void testCDIConfiguratorEjb() {
 		createEJBProject(PROJECT_NAME_CDI_EJB, runtimeName);
 		convertToMavenProject(PROJECT_NAME_CDI_EJB, "ejb", true);
-		assertTrue("Project "+PROJECT_NAME_CDI_EJB+" has "+CDI_FACET+" nature.",hasNature(PROJECT_NAME_CDI_EJB,null, CDI_FACET));
-
+		new WaitUntil(new ProjectHasNature(PROJECT_NAME_CDI_EJB, CDI_FACET, "1.0"));
 	}
+	
 	@Test
-	public void testCDIConfiguratorSeam() throws CoreException{
+	public void testCDIConfiguratorSeam() {
 		//https://issues.jboss.org/browse/JBIDE-8755
 		createWebProject(PROJECT_NAME_CDI, null,false);
 		convertToMavenProject(PROJECT_NAME_CDI, "war", false);
 		addDependency(PROJECT_NAME_CDI, "org.jboss.seam.faces", "seam-faces", SEAM_FACES_VERSION);
 		updateConf(PROJECT_NAME_CDI);
-		assertTrue("Project "+PROJECT_NAME_CDI+" with seam-faces3 dependency doesn't have "+CDI_FACET+" nature.",hasNature(PROJECT_NAME_CDI,null, CDI_FACET));
-
+		new WaitUntil(new ProjectHasNature(PROJECT_NAME_CDI, CDI_FACET, "1.0"));
 	}
+	
 	@Test
-	public void testCDIConfiguratorEjbSeam() throws CoreException{
+	public void testCDIConfiguratorEjbSeam() {
 		createEJBProject(PROJECT_NAME_CDI_EJB, null);
 		convertToMavenProject(PROJECT_NAME_CDI_EJB, "ejb", false);
 		addDependency(PROJECT_NAME_CDI_EJB, "org.jboss.seam.faces", "seam-faces", SEAM_FACES_VERSION);
 		updateConf(PROJECT_NAME_CDI_EJB);
-		assertTrue("Project "+PROJECT_NAME_CDI_EJB+" with seam-faces3 dependency doesn't have "+CDI_FACET+" nature.",hasNature(PROJECT_NAME_CDI_EJB,null, CDI_FACET));
-
+		new WaitUntil(new ProjectHasNature(PROJECT_NAME_CDI_EJB, CDI_FACET, "1.0"));
 	}
+	
 	@Test
-	public void testCDIConfiguratorSeamInternational() throws CoreException{
+	public void testCDIConfiguratorSeamInternational() {
 		createWebProject(PROJECT_NAME_CDI, null, false);
 		convertToMavenProject(PROJECT_NAME_CDI, "war", false);
 		addDependency(PROJECT_NAME_CDI, "org.jboss.seam.international", "seam-international", SEAM_INTERNATIONAL_VERSION);
 		updateConf(PROJECT_NAME_CDI);
-		assertTrue("Project "+PROJECT_NAME_CDI+" with seam3 dependency doesn't have "+CDI_FACET+" nature.",hasNature(PROJECT_NAME_CDI,null, CDI_FACET));
+		new WaitUntil(new ProjectHasNature(PROJECT_NAME_CDI, CDI_FACET, "1.0"));
 	}
+	
 	@Test
-	public void testCDIConfiguratorEjbSeamInternational() throws CoreException{
+	public void testCDIConfiguratorEjbSeamInternational() {
 		createEJBProject(PROJECT_NAME_CDI_EJB, null);
 		convertToMavenProject(PROJECT_NAME_CDI_EJB, "ejb", false);
 		addDependency(PROJECT_NAME_CDI_EJB, "org.jboss.seam.international", "seam-international", SEAM_INTERNATIONAL_VERSION);
 		updateConf(PROJECT_NAME_CDI_EJB);
-		assertTrue("Project "+PROJECT_NAME_CDI_EJB+" with seam3 dependency doesn't have "+CDI_FACET+" nature.",hasNature(PROJECT_NAME_CDI_EJB,null, CDI_FACET));
-
+		new WaitUntil(new ProjectHasNature(PROJECT_NAME_CDI_EJB, CDI_FACET, "1.0"));
 	}
+	
 	@Test
-	public void testCDIConfiguratorEjbDeltaspike() throws CoreException{
+	public void testCDIConfiguratorEjbDeltaspike() {
 		createEJBProject(PROJECT_NAME_CDI_EJB, null);
 		convertToMavenProject(PROJECT_NAME_CDI_EJB, "ejb", false);
 		addDependency(PROJECT_NAME_CDI_EJB, "org.apache.deltaspike.core", "deltaspike-core-api", DELTASPIKE_CORE_API_VERSION);
 		updateConf(PROJECT_NAME_CDI_EJB);
-		assertTrue("Project "+PROJECT_NAME_CDI_EJB+" with deltaspike-api dependency doesn't have "+CDI_FACET+" nature.",hasNature(PROJECT_NAME_CDI_EJB,null, CDI_FACET));
-
+		new WaitUntil(new ProjectHasNature(PROJECT_NAME_CDI_EJB, CDI_FACET, "1.0"));
 	}
+	
 	@Test
-	public void testCDIConfiguratorDeltaspike() throws CoreException{
+	public void testCDIConfiguratorDeltaspike() {
 		createWebProject(PROJECT_NAME_CDI, null, false);
 		convertToMavenProject(PROJECT_NAME_CDI, "war", false);
 		addDependency(PROJECT_NAME_CDI, "org.apache.deltaspike.core", "deltaspike-core-api", DELTASPIKE_CORE_API_VERSION);
 		updateConf(PROJECT_NAME_CDI);
-		assertTrue("Project "+PROJECT_NAME_CDI+" with deltaspike-api dependency doesn't have "+CDI_FACET+" nature.",hasNature(PROJECT_NAME_CDI,null, CDI_FACET));
-
+		new WaitUntil(new ProjectHasNature(PROJECT_NAME_CDI, CDI_FACET, "1.0"));
 	}
+	
 	@Test
-	public void testCDIConfiguratorEjbDeltaspimeImpl() throws CoreException{	
+	public void testCDIConfiguratorEjbDeltaspimeImpl() {	
 		createEJBProject(PROJECT_NAME_CDI_EJB, null);
 		convertToMavenProject(PROJECT_NAME_CDI_EJB, "ejb", false);
 		addDependency(PROJECT_NAME_CDI_EJB, "org.apache.deltaspike.core", "deltaspike-core-impl", DELTASPIME_CORE_IMPL_VERSION);
 		updateConf(PROJECT_NAME_CDI_EJB);
-		assertTrue("Project "+PROJECT_NAME_CDI_EJB+" with deltaspike-impl dependency doesn't have "+CDI_FACET+" nature.",hasNature(PROJECT_NAME_CDI_EJB,null, CDI_FACET));
-
+		new WaitUntil(new ProjectHasNature(PROJECT_NAME_CDI_EJB, CDI_FACET, "1.0"));
 	}
+	
 	@Test
-	public void testCDIConfiguratorDeltaspikeImpl() throws CoreException{
+	public void testCDIConfiguratorDeltaspikeImpl() {
 		createWebProject(PROJECT_NAME_CDI, null, false);
 		convertToMavenProject(PROJECT_NAME_CDI, "war", false);
 		addDependency(PROJECT_NAME_CDI, "org.apache.deltaspike.core", "deltaspike-core-impl", DELTASPIME_CORE_IMPL_VERSION);
 		updateConf(PROJECT_NAME_CDI);
-		assertTrue("Project "+PROJECT_NAME_CDI+" with deltaspike-impl dependency doesn't have "+CDI_FACET+" nature.",hasNature(PROJECT_NAME_CDI,null, CDI_FACET));
+		new WaitUntil(new ProjectHasNature(PROJECT_NAME_CDI, CDI_FACET, "1.0"));
 	}
 
 }

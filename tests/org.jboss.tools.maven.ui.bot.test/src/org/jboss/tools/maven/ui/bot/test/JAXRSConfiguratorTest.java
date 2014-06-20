@@ -9,32 +9,22 @@
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/ 
 package org.jboss.tools.maven.ui.bot.test;
-
-import static org.junit.Assert.assertTrue;
-
-import org.eclipse.core.runtime.CoreException;
-import org.junit.After;
-import org.junit.BeforeClass;
+import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.tools.maven.ui.bot.test.utils.ProjectHasNature;
 import org.junit.Test;
 /**
  * @author Rastislav Wagner
  * 
  */
+@CleanWorkspace
+@OpenPerspective(JavaEEPerspective.class)
 public class JAXRSConfiguratorTest extends AbstractConfiguratorsTest{
 
-	
-	@BeforeClass
-	public static void before(){
-		setPerspective("Java EE");
-	}
-	
-	@After
-	public void deleteProjects(){
-		deleteProjects(true, true);
-	}
-
 	@Test
-	public void testJAXRSConfiguratorJersey() throws CoreException {
+	public void testJAXRSConfiguratorJersey() {
 		String projectName = PROJECT_NAME_JAXRS+"_noRuntime";
 		
 		createWebProject(projectName,null,false);
@@ -43,10 +33,11 @@ public class JAXRSConfiguratorTest extends AbstractConfiguratorsTest{
 
 		addDependency(projectName, "com.cedarsoft.rest", "jersey", "1.0.0");
 		updateConf(projectName);
-		assertTrue("Project "+projectName+" with jersey dependency doesn't have "+JAXRS_FACET+" nature.",hasNature(projectName, null, JAXRS_FACET));
+		new WaitUntil(new ProjectHasNature(projectName, JAXRS_FACET, null));
 	}
+	
 	@Test
-	public void testJAXRSConfiguratorResteasy() throws CoreException {
+	public void testJAXRSConfiguratorResteasy() {
 		String projectName = PROJECT_NAME_JAXRS+"_noRuntime";
 		createWebProject(projectName,null,false);
 		convertToMavenProject(projectName, "war", false);
@@ -55,15 +46,15 @@ public class JAXRSConfiguratorTest extends AbstractConfiguratorsTest{
 		
 		addDependency(projectName, "org.jboss.jbossas", "jboss-as-resteasy", "6.1.0.Final");
 		updateConf(projectName);
-		assertTrue("Project "+projectName+" with resteasy dependency doesn't have "+JAXRS_FACET+" nature.",hasNature(projectName,null, JAXRS_FACET));
+		new WaitUntil(new ProjectHasNature(projectName, JAXRS_FACET, null));
 	}
 	
 	@Test
-	public void testJAXRSConfigurator() throws CoreException {
+	public void testJAXRSConfigurator() {
 		createWebProject(PROJECT_NAME_JAXRS, runtimeName,false);
 		convertToMavenProject(PROJECT_NAME_JAXRS, "war", true);
 		updateConf(PROJECT_NAME_JAXRS);
 		checkProjectWithRuntime(PROJECT_NAME_JAXRS);
-		assertTrue("Project "+PROJECT_NAME_JAXRS+" doesn't have "+JAXRS_FACET+" nature.",hasNature(PROJECT_NAME_JAXRS,null, JAXRS_FACET));
+		new WaitUntil(new ProjectHasNature(PROJECT_NAME_JAXRS, JAXRS_FACET, null));
 	}
 }

@@ -13,7 +13,9 @@ Require-Bundle: org.eclipse.ui,
  org.junit;bundle-version="4.8.1",
  org.jboss.tools.runtime.reddeer,
  org.jboss.tools.runtime.ui;bundle-version="3.0.0",
- org.jboss.tools.foundation.ui;bundle-version="1.1.0"
+ org.jboss.tools.foundation.ui;bundle-version="1.1.0",
+ org.jboss.reddeer.junit,
+ org.jboss.reddeer.common
 Export-Package: org.jboss.tools.maven.reddeer.maven.sourcelookup.ui.preferences,
  org.jboss.tools.maven.reddeer.maven.ui.preferences,
  org.jboss.tools.maven.reddeer.preferences,

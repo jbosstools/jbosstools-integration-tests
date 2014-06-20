@@ -9,10 +9,16 @@ public class ProjectIsBuilt implements WaitCondition {
 	public boolean test() {
 		ConsoleView cview = new ConsoleView();
 		cview.open();
-		return cview.getConsoleText().contains("BUILD SUCCESS");
+		return cview.getConsoleText().contains("BUILD SUCCESS") || cview.getConsoleText().contains("BUILD FAILURE");
 	}
 	@Override
 	public String description() {
-		return "Project was not build";
+		return "Project build is complete";
+	}
+	
+	public boolean isBuildSuccesfull(){
+	    ConsoleView cview = new ConsoleView();
+        cview.open();
+	    return cview.getConsoleText().contains("BUILD SUCCESS");
 	}
 }

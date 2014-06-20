@@ -10,19 +10,18 @@
  ******************************************************************************/ 
 package org.jboss.tools.maven.ui.bot.test;
 
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
-import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
@@ -55,9 +54,8 @@ public class MaterializeLibraryTest extends AbstractMavenSWTBotTest{
 	public void testMaterializeLibrary() throws Exception{
 		new ShellMenu("File","New","Example...").select();
 		new DefaultTreeItem("JBoss Tools","Project Examples").select();
-		new WaitUntil(new WidgetIsEnabled(new PushButton("Next >")), TimePeriod.NORMAL);
 		new PushButton("Next >").click();
-		new WaitUntil(new ShellWithTextIsActive("New Project Example"), TimePeriod.NORMAL);
+		new DefaultShell("New Project Example");
 		new DefaultTreeItem("JBoss Maven Archetypes","Spring MVC Project").select();
 		new PushButton("Next >").click();
 		new PushButton("Next >").click();
@@ -75,7 +73,6 @@ public class MaterializeLibraryTest extends AbstractMavenSWTBotTest{
 		new PushButton("OK").click();
 		new WaitWhile(new ShellWithTextIsActive("Materialize Classpath Library"), TimePeriod.NORMAL);
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-		assertFalse(projectName+" is still a maven project!",isMavenProject(projectName));
 		testExcludedResources(projectName);
 	}
 	

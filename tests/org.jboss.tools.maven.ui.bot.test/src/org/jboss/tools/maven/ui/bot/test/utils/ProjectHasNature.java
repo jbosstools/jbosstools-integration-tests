@@ -15,6 +15,7 @@ public class ProjectHasNature implements WaitCondition{
 	private String projectName;
 	private String natureID; 
 	private String version;
+	private String natureParent;
 	
 	public ProjectHasNature(String projectName, String natureID, String version){
 		PackageExplorer pexplorer = new PackageExplorer();
@@ -23,16 +24,33 @@ public class ProjectHasNature implements WaitCondition{
 		this.projectName=projectName;
 		this.natureID=natureID;
 		this.version=version;
-		
 	}
+	
+	public ProjectHasNature(String projectName, String natureParent, String natureID, String version){
+        PackageExplorer pexplorer = new PackageExplorer();
+        pexplorer.open();
+        pexplorer.getProject(projectName).select();
+        this.projectName=projectName;
+        this.natureID=natureID;
+        this.version=version;
+        this.natureParent = natureParent;
+    }
 	
 	public boolean test() {
 		new ContextMenu("Properties").select();
 		new WaitUntil(new ShellWithTextIsActive("Properties for "+projectName), TimePeriod.NORMAL);
 		new DefaultTreeItem("Project Facets").select();
-		boolean result = new DefaultTreeItem(1,natureID).isChecked();
-		if(version!=null){
-			result = result && new DefaultTreeItem(1,natureID).getCell(1).equals(version);
+		boolean result;
+		if(natureParent != null){
+		    result = new DefaultTreeItem(1,natureParent, natureID).isChecked();
+		    if(version!=null){
+	            result = result && new DefaultTreeItem(1,natureParent, natureID).getCell(1).equals(version);
+	        }
+		} else {
+		    result = new DefaultTreeItem(1,natureID).isChecked();
+		    if(version!=null){
+                result = result && new DefaultTreeItem(1,natureID).getCell(1).equals(version);
+            }
 		}
 		new PushButton("OK").click();
 		new WaitWhile(new ShellWithTextIsActive("Properties for "+projectName), TimePeriod.NORMAL);

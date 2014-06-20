@@ -11,22 +11,15 @@
 
 package org.jboss.tools.maven.ui.bot.test;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Properties;
-
-import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.datatools.connectivity.ConnectionProfileConstants;
-import org.eclipse.datatools.connectivity.ConnectionProfileException;
-import org.eclipse.datatools.connectivity.ProfileManager;
-import org.eclipse.datatools.connectivity.db.generic.IDBConnectionProfileConstants;
-import org.eclipse.datatools.connectivity.db.generic.IDBDriverDefinitionConstants;
-import org.eclipse.datatools.connectivity.drivers.DriverInstance;
-import org.eclipse.datatools.connectivity.drivers.DriverManager;
-import org.eclipse.datatools.connectivity.drivers.IDriverMgmtConstants;
-import org.eclipse.datatools.connectivity.drivers.IPropertySet;
-import org.eclipse.datatools.connectivity.drivers.PropertySetImpl;
-import org.eclipse.datatools.connectivity.drivers.models.TemplateDescriptor;
+import org.jboss.reddeer.eclipse.datatools.ui.DriverDefinition;
+import org.jboss.reddeer.eclipse.datatools.ui.DriverTemplate;
+import org.jboss.reddeer.eclipse.datatools.ui.preference.DriverDefinitionPreferencePage;
+import org.jboss.reddeer.eclipse.datatools.ui.wizard.ConnectionProfileWizard;
+import org.jboss.reddeer.eclipse.datatools.ui.wizard.DriverDefinitionWizard;
+import org.jboss.reddeer.swt.impl.button.NextButton;
+import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
+import org.jboss.reddeer.swt.impl.group.DefaultGroup;
+import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
@@ -63,16 +56,36 @@ public class SeamProjectTest extends AbstractMavenSWTBotTest {
 	
 	public static final String SEAM23_NAME="Seam2.3";
 	public static final String SEAM22_NAME="Seam2.2";
+	public static final String SEAM21_NAME="Seam2.1";
 
 	@BeforeClass
-	public static void setup() throws ConnectionProfileException, IOException {
+	public static void setup() {
 		setPerspective("Seam");
 		SeamPreferencePage sp = new SeamPreferencePage();
 		sp.open();
 		sp.addRuntime(SEAM23_NAME, SEAM_2_3, "2.3");
 		sp.addRuntime(SEAM22_NAME, SEAM_2_2, "2.2");
+		sp.addRuntime(SEAM21_NAME, SEAM_2_1, "2.1");
 		sp.ok();
-		createDriver(JBOSS_AS_7_1,"HSQLDB_DRIVER_LOCATION");
+		
+		DriverTemplate dt = new DriverTemplate("HSQLDB JDBC Driver", "1.8");
+		
+		DriverDefinition dd = new DriverDefinition();
+        dd.setDriverName("HSQLDB JDBC Database");
+        dd.setDriverTemplate(dt);
+        dd.setDriverLibrary(HSQLDB_DRIVER_LOCATION);
+		
+		DriverDefinitionPreferencePage dpref = new DriverDefinitionPreferencePage();
+		dpref.open();
+		DriverDefinitionWizard ddw = dpref.addDriverDefinition();
+		ddw.create(dd);
+		dpref.ok();
+		
+		ConnectionProfileWizard cw = new ConnectionProfileWizard();
+		cw.open();
+		new DefaultTable().select("HSQLDB");
+		new NextButton().click();
+		cw.finish();
 	}
 	
 	@Test
@@ -115,60 +128,8 @@ public class SeamProjectTest extends AbstractMavenSWTBotTest {
 		SeamProjectFifthPage sfp = (SeamProjectFifthPage)sd.getWizardPage(5);
 		sfp.setSeamRuntime(seamRuntime);
 		sfp.toggleEAR(EAR);
+		new LabeledCombo(new DefaultGroup("Database"),"Connection profile:").setSelection("New HSQLDB");
 		sd.finish();
-	}
-	
-	protected static void createDriver(String jbossASLocation,String driverLocation) throws ConnectionProfileException,IOException {
-		if (ProfileManager.getInstance().getProfileByName(CONNECTION_PROFILE_NAME) != null) {
-			return;
-		}
-		String driverPath = new File(jbossASLocation + driverLocation).getCanonicalPath(); //$NON-NLS-1$
-
-		DriverInstance driver = DriverManager.getInstance().getDriverInstanceByName(HSQL_DRIVER_NAME);
-		if (driver == null) {
-			TemplateDescriptor descr = TemplateDescriptor.getDriverTemplateDescriptor(HSQL_DRIVER_TEMPLATE_ID);
-			IPropertySet instance = new PropertySetImpl(HSQL_DRIVER_NAME, HSQL_DRIVER_DEFINITION_ID);
-			instance.setName(HSQL_DRIVER_NAME);
-			instance.setID(HSQL_DRIVER_DEFINITION_ID);
-			Properties props = new Properties();
-
-			IConfigurationElement[] template = descr.getProperties();
-			for (int i = 0; i < template.length; i++) {
-				IConfigurationElement prop = template[i];
-				String id = prop.getAttribute("id"); //$NON-NLS-1$
-
-				String value = prop.getAttribute("value"); //$NON-NLS-1$
-				props.setProperty(id, value == null ? "" : value); //$NON-NLS-1$
-			}
-			props.setProperty(DTP_DB_URL_PROPERTY_ID, "jdbc:hsqldb:."); //$NON-NLS-1$
-			props.setProperty(IDriverMgmtConstants.PROP_DEFN_TYPE,
-					descr.getId());
-			props.setProperty(IDriverMgmtConstants.PROP_DEFN_JARLIST,
-					driverPath);
-
-			instance.setBaseProperties(props);
-			DriverManager.getInstance().removeDriverInstance(instance.getID());
-			System.gc();
-			DriverManager.getInstance().addDriverInstance(instance);
-		}
-
-		driver = DriverManager.getInstance().getDriverInstanceByName(HSQL_DRIVER_NAME);
-		if (driver != null && ProfileManager.getInstance().getProfileByName(CONNECTION_PROFILE_NAME) == null) {
-			// create profile
-			Properties props = new Properties();
-			props.setProperty(ConnectionProfileConstants.PROP_DRIVER_DEFINITION_ID,	HSQL_DRIVER_DEFINITION_ID);
-			props.setProperty(IDBConnectionProfileConstants.CONNECTION_PROPERTIES_PROP_ID,""); 
-			props.setProperty(IDBDriverDefinitionConstants.DRIVER_CLASS_PROP_ID,driver.getProperty(IDBDriverDefinitionConstants.DRIVER_CLASS_PROP_ID));
-			props.setProperty(IDBDriverDefinitionConstants.DATABASE_VENDOR_PROP_ID,driver.getProperty(IDBDriverDefinitionConstants.DATABASE_VENDOR_PROP_ID));
-			props.setProperty(IDBDriverDefinitionConstants.DATABASE_VERSION_PROP_ID,driver.getProperty(IDBDriverDefinitionConstants.DATABASE_VERSION_PROP_ID));
-			props.setProperty(IDBDriverDefinitionConstants.DATABASE_NAME_PROP_ID,"Default");
-			props.setProperty(IDBDriverDefinitionConstants.PASSWORD_PROP_ID, "");
-			props.setProperty(IDBConnectionProfileConstants.SAVE_PASSWORD_PROP_ID,"false");
-			props.setProperty(IDBDriverDefinitionConstants.USERNAME_PROP_ID,driver.getProperty(IDBDriverDefinitionConstants.USERNAME_PROP_ID));
-			props.setProperty(IDBDriverDefinitionConstants.URL_PROP_ID, driver.getProperty(IDBDriverDefinitionConstants.URL_PROP_ID));
-			ProfileManager.getInstance().createProfile(CONNECTION_PROFILE_NAME,"The JBoss AS Hypersonic embedded database", HSQL_PROFILE_ID, props, "", false);
-		}
-
 	}
 	
 }
