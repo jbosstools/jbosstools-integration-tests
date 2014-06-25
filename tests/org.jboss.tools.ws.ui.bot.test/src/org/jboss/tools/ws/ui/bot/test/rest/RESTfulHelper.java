@@ -23,6 +23,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.reddeer.swt.api.Menu;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
 import org.jboss.tools.ui.bot.ext.SWTOpenExt;
@@ -176,7 +177,7 @@ public class RESTfulHelper {
 					RESTFulAnnotations.REST_SUPPORT_MENU_LABEL_REMOVE.getLabel());
 		}
 		menu.select();
-		new WaitUntil(new JobIsRunning());		
+		new WaitUntil(new JobIsRunning(), TimePeriod.NORMAL, false);
 	}
 	
 	private SWTBot openPreferencePage(final String name,

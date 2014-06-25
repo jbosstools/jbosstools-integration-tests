@@ -23,6 +23,7 @@ import org.hamcrest.core.Is;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.ProjectItem;
+import org.jboss.reddeer.eclipse.jface.exception.JFaceLayerException;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.condition.NonSystemJobRunsCondition;
@@ -36,6 +37,7 @@ import org.jboss.tools.ws.ui.bot.test.uiutils.RESTFullExplorer;
 import org.jboss.tools.ws.ui.bot.test.uiutils.RunOnServerDialog;
 import org.jboss.tools.ws.ui.bot.test.widgets.WsTesterView;
 import org.jboss.tools.ws.ui.bot.test.widgets.WsTesterView.Request_Type;
+import org.junit.Assert;
 
 /**
  * Test base for bot tests using RESTFul support
@@ -100,13 +102,14 @@ public class RESTfulTestBase extends WSTestBase {
 	
 	protected void assertRestFullSupport(String projectName) {
 		RESTFullExplorer explorer = null;
+		String missingRESTExplorerMessage = "JAX-RS REST Web Services explorer is missing in "
+				+ "project \"" + projectName + "\"";
 		try {
 			explorer = new RESTFullExplorer(projectName);
-		} catch (WidgetNotFoundException wnfe) {
-			
+		} catch (WidgetNotFoundException | JFaceLayerException e) {
+			Assert.fail(missingRESTExplorerMessage + "\nThrown exception: " + e.getMessage());
 		}
-		assertNotNull("JAX-RS REST Web Services explorer is missing in "
-				+ "project \"" + projectName + "\"", explorer);
+		assertNotNull(missingRESTExplorerMessage, explorer);
 	}
 
 	protected void assertCountOfRESTServices(List<ProjectItem> restServices,
@@ -118,7 +121,8 @@ public class RESTfulTestBase extends WSTestBase {
 
 	protected void assertAllRESTServicesInExplorer(List<ProjectItem> restServices) {
 		assertTrue("All RESTful services (GET, DELETE, POST, PUT) "
-				+ "should be present but they are not",
+				+ "should be present but they are not\nThere are "
+				+ Arrays.toString(restServices.toArray()),
 				allRestServicesArePresent(restServices));
 	}
 

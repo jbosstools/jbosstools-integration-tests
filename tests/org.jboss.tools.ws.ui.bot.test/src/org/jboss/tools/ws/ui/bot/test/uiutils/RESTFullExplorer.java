@@ -33,6 +33,7 @@ public class RESTFullExplorer {
 		 */
 		project.getTreeItem().expand();
 		project.getTreeItem().collapse();
+		project.getTreeItem().expand();
 		
 		/* open JAX-RS / RESTful Explorer */
 		restFulExplorer = project.getProjectItem(RESTFulAnnotations.REST_EXPLORER_LABEL.getLabel());
