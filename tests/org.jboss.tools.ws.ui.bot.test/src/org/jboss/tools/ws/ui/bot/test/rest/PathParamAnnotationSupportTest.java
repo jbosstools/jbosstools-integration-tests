@@ -16,7 +16,14 @@ import java.util.List;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 
+import org.hamcrest.Matcher;
+import org.hamcrest.core.StringContains;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.ProjectItem;
+import org.jboss.reddeer.swt.keyboard.Keyboard;
+import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
+import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.ui.bot.ext.Timing;
 import org.junit.Test;
 
@@ -38,7 +45,7 @@ public class PathParamAnnotationSupportTest extends RESTfulTestBase {
 	/**
 	 * Project contains field with {@link PathParam} bound to class's {@link Path}'s parameter
 	 */
-	private final static String projectPath3 = "path2";//uses field annotated with @PathParam
+	private final static String projectPath3 = "path3";//uses field annotated with @PathParam
 	
 	private final String pathParam1 = "author";
 	private final String pathParam2 = "country";
@@ -69,8 +76,7 @@ public class PathParamAnnotationSupportTest extends RESTfulTestBase {
 	}
 	
 	/**
-	 * Fails due to JBIDE-16981
-	 * 
+	 * Fixed JBIDE-16981
 	 * @see https://issues.jboss.org/browse/JBIDE-16981
 	 */
 	@Test
@@ -97,6 +103,80 @@ public class PathParamAnnotationSupportTest extends RESTfulTestBase {
 		assertCountOfRESTServices(restServices, 1);
 		assertExpectedPathOfService(restServices.get(0),
 				"/rest/{" + pathParam2 + ":" + pathType2 + "}");
+	}
+	
+	/**
+	 * Fails due to JBIDE-17663
+	 * (JAX-RS Explorer doesn't reflect binding parameter to field)
+	 * 
+	 * @see https://issues.jboss.org/browse/JBIDE-17663
+	 */
+	@Test
+	public void testAdvancedPathParamFieldSupport() {
+		final String newPathParam = "year";
+		final String newPathType = "Integer";
+		/* prepare project */
+		importRestWSProject(projectPath2);
+		
+		PackageExplorer pe = new PackageExplorer();
+		Project project = pe.getProject(projectPath2);
+		ProjectItem source = project.getProjectItem("src", "org.rest.test", "RestService.java");
+		source.open();
+		
+		replaceLineInEditor("	@Path(\"{author}/{" + newPathParam + "}\")", "@Path(\"{author}\"");
+		
+		/* get RESTful services from JAX-RS REST explorer for the project */
+		List<ProjectItem> restServices = restfulServicesForProject(projectPath2);
+
+		/* test JAX-RS REST explorer */
+		assertCountOfRESTServices(restServices, 1);
+		assertExpectedPathOfService(restServices.get(0),
+				"/rest/{" + pathParam1 + ":" + pathType1 + "}/{"
+						+ newPathParam + ":.*}");
+		
+		insertBeforeLineInEditor("	@PathParam(\"" + newPathParam + "\")\n	"
+				+ newPathType + " year;", "@PathParam(\"author\")");
+		
+		
+		/* get RESTful services from JAX-RS REST explorer for the project */
+		restServices = restfulServicesForProject(projectPath2);
+
+		/* test JAX-RS REST explorer */
+		assertCountOfRESTServices(restServices, 1);
+		assertExpectedPathOfService(restServices.get(0),
+				"/rest/{" + pathParam1 + ":" + pathType1 + "}/{"
+						+ newPathParam + ":" + newPathType + "}");
+	}
+	
+	private void replaceLineInEditor(String newLine, String contains) {
+		TextEditor editor = new TextEditor();
+		editor.activate();
+		int lineNumber = getLineNum(editor, StringContains.containsString(contains));
+		
+		editor.selectLine(lineNumber);
+		
+		Keyboard keyboard = KeyboardFactory.getKeyboard();
+		keyboard.type(newLine + "\n");
+		
+		editor.save();
+	}
+	
+	private int getLineNum(TextEditor editor, Matcher<String> matcher) {
+		for(int lineNum=0;lineNum<editor.getNumberOfLines();lineNum++) {
+			String lineText = editor.getTextAtLine(lineNum);
+			if(matcher.matches(lineText)) {
+				return lineNum;
+			}
+		}
+		throw new IllegalArgumentException();
+	}
+	
+	private void insertBeforeLineInEditor(String insertText, String afterTextContains) {
+		TextEditor editor = new TextEditor();
+		editor.activate();
+		int lineNumber = getLineNum(editor, StringContains.containsString(afterTextContains));
+		editor.insertLine(lineNumber, insertText);
+		editor.save();
 	}
 	
 	@Test
