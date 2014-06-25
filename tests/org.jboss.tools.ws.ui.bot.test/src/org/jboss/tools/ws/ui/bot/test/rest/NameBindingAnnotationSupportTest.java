@@ -7,9 +7,6 @@ import java.util.List;
 
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
 import org.hamcrest.core.Is;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.ProjectItem;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.tools.ui.bot.ext.Timing;
@@ -40,9 +37,8 @@ public class NameBindingAnnotationSupportTest extends RESTfulTestBase {
 	}
 	
 	/**
-	 * Fails due to JBIDE-17177
-	 * 
-	 * @see https://issues.jboss.org/browse/JBIDE-17177
+	 * Resolved: Wrong @NameBinding quick fix for a @Target annotation)
+	 * {@link https://issues.jboss.org/browse/JBIDE-17177}
 	 */
 	@Test
 	public void definingNameBindingAnnotationWithoutTargetAndRetentionTest() {
@@ -80,13 +76,13 @@ public class NameBindingAnnotationSupportTest extends RESTfulTestBase {
 		QuickFixBot qBot = quickFixBot(projectName, "Authorized");
 		
 		/* check that there are quick fixes for both required annotations */
-		qBot.checkQuickFix("Add @Retention annotation on type Authorized", true);
+		qBot.checkQuickFix("Add @Retention annotation on type 'Authorized'", true);
 		bot.activeEditor().save();
 		
 		assertCountOfApplicationAnnotationValidationErrors(projectName, 1);
 		assertCountOfApplicationAnnotationValidationErrors(projectName, "Retention", 0);
 		
-		qBot.checkQuickFix("Add @Target annotation on type Authorized", true);
+		qBot.checkQuickFix("Add @Target annotation on type 'Authorized'", true);
 		
 		bot.activeEditor().save();
 		

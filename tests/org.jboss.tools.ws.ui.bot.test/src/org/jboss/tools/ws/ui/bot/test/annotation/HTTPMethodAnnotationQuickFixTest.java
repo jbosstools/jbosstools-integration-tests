@@ -4,7 +4,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
 
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
@@ -55,6 +54,11 @@ public class HTTPMethodAnnotationQuickFixTest extends WSTestBase {
 	}
 	
 	/**
+	 * Fails due to JBIDE-17667 (Quick fix for HTTPMethod annotation
+	 * without @Target and @Retention doesn't add all imports)
+	 * 
+	 * @see https://issues.jboss.org/browse/JBIDE-17667
+	 * 
 	 * Resolved - o JAX-RS problems when importing a project that contains
 	 * HTTPMethod annotation without @Target and @Retention
 	 * {@link https://issues.jboss.org/browse/JBIDE-15428}
@@ -73,10 +77,11 @@ public class HTTPMethodAnnotationQuickFixTest extends WSTestBase {
 		QuickFixBot qBot = quickFixBot(wsProjectName, "MyAnnot");
 		
 		/* check that there are quick fixes for both required annotations */
-		qBot.checkQuickFix("Add @Target annotation on type MyAnnot", true);
+		qBot.checkQuickFix("Add @Target annotation on type 'MyAnnot'", true);
+		
 		/* there is need to wait a while until validation starts to work */
 		bot.sleep(Timing.time2S());
-		qBot.checkQuickFix("Add @Retention annotation on type MyAnnot", true);
+		qBot.checkQuickFix("Add @Retention annotation on type 'MyAnnot'", true);
 		bot.sleep(Timing.time2S());
 		
 		/* assert that there are no JAX-RS errors */

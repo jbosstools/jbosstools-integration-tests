@@ -12,12 +12,15 @@ package org.jboss.tools.ws.ui.bot.test.sample.test;
 
 import org.eclipse.core.resources.IFile;
 import org.jboss.tools.ws.ui.bot.test.sample.SampleRESTTestBase;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
  * Test operates on Sample REST Web Service Wizard
  * @author jjankovi
- *
+ * @deprecated since JBDS 8.0.0.Beta2 - replaced by two dialogs to create JAX-RS Application and JAX-RS resource
+ * @see http://tools.jboss.org/documentation/whatsnew/jbosstools/4.2.0.Beta2.html#webservices
+ * 
  */
 public class SampleRESTWebServiceTest extends SampleRESTTestBase {
 
@@ -27,6 +30,7 @@ public class SampleRESTWebServiceTest extends SampleRESTTestBase {
     }
     
     @Test
+    @Ignore
     public void testSampleRestWS() {    	
         IFile dd = getDD(getWsProjectName());
 
