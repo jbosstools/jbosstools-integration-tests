@@ -11,8 +11,8 @@ import org.junit.Test;
 public class ProjectRuntimeDownload extends ProjectRuntimeDownloadTestBase {
 	
 	@Test
-	public void downloadWildfly8Final() {
-		downloadAndCheckServer("WildFly 8 Final", 1);
+	public void downloadWildfly81Final() {
+		downloadAndCheckServer("WildFly 8.1.0 Final", 1);
 	}
 	
 	@Test
@@ -20,6 +20,11 @@ public class ProjectRuntimeDownload extends ProjectRuntimeDownloadTestBase {
 		downloadAndCheckServer("JBoss AS 7.1.1 (Brontes)", 1);
 	}
 	
+	/**
+	 * Fails due to JBIDE-17547
+	 * 
+	 * @see https://issues.jboss.org/browse/JBIDE-17547
+	 */
 	@Test
 	public void downloadSeam230() {
 		downloadAndCheckSeam("JBoss Seam 2.3.0", 1);
