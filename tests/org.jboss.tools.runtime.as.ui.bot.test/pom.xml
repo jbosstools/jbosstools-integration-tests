@@ -198,7 +198,7 @@
 								<artifactItem>
 									<groupId>org.wildfly</groupId>
 									<artifactId>wildfly-dist</artifactId>
-									<version>8.1.0.CR1</version>
+									<version>8.1.0.Final</version>
 									<type>zip</type>
 								</artifactItem>
 							</artifactItems>
