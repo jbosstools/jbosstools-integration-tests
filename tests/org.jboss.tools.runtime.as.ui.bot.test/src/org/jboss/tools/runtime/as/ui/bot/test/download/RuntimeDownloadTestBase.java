@@ -68,15 +68,14 @@ public class RuntimeDownloadTestBase extends RuntimeDetectionTestCase {
 	
 	protected void processRuntimeDownload() {
 		TaskWizardThirdPage downloadRuntimePage = new TaskWizardThirdPage(); 
-		downloadRuntimePage.setDownloadFolder(tmpPath.getAbsolutePath());
+		downloadRuntimePage.setInstallFolder(tmpPath.getAbsolutePath());
 		
 		//wizard.finish();  -- does not work (Problem with slow downloading)
 		new PushButton("Finish").click();
 		runtimeDownloadWizard = null;
 		
-		while(new JobIsRunning().test()){
-			new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
-		}
+		new WaitUntil(new JobIsRunning(), TimePeriod.NORMAL, false);
+		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 		
 		runtimeDetectionPreferences.ok();
 	}
