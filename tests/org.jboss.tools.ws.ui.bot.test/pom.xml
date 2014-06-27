@@ -62,9 +62,9 @@
 							<skip>${skipRequirements}</skip>
 							<artifactItems>
 								<artifactItem>
-									<groupId>org.jboss.as</groupId>
-									<artifactId>jboss-as-dist</artifactId>
-									<version>7.1.1.Final</version>
+									<groupId>org.wildfly</groupId>
+									<artifactId>wildfly-dist</artifactId>
+									<version>8.1.0.Final</version>
 									<type>zip</type>
 								</artifactItem>
 							</artifactItems>
