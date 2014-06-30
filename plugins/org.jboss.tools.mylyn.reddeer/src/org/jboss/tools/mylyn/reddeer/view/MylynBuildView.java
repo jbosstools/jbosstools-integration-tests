@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
 import org.jboss.reddeer.swt.api.Tree;
 import org.jboss.reddeer.swt.api.TreeItem;
@@ -32,6 +33,8 @@ import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
  */
 public class MylynBuildView extends WorkbenchView {
 	
+	protected final static Logger log = Logger.getLogger(MylynBuildView.class);
+
 	public static final String TITLE = "Builds";
 	
 	public MylynBuildView() {

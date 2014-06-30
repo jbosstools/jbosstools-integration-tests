@@ -7,7 +7,8 @@ Bundle-Activator: org.jboss.tools.common.reddeer.Activator
 Require-Bundle: org.eclipse.core.runtime,
  org.jboss.reddeer.jface,
  org.jboss.reddeer.swt,
- org.jboss.reddeer.junit
+ org.jboss.reddeer.junit,
+ org.jboss.reddeer.common;bundle-version="0.6.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Export-Package: org.jboss.tools.common.reddeer.preferences,

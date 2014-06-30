@@ -1,5 +1,6 @@
 package org.jboss.ide.eclipse.as.reddeer.server.wizard.page;
 
+import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.eclipse.wst.server.ui.wizard.NewServerWizardPage;
 import org.jboss.reddeer.swt.api.Combo;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
@@ -17,6 +18,8 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
 
 public class NewServerWizardPageWithErrorCheck extends NewServerWizardPage {
 
+	protected final static Logger log = Logger.getLogger(NewServerWizardPageWithErrorCheck.class);
+	
 	public String getServerName() {
 		return new LabeledText("Server name:").getText();
 	}
