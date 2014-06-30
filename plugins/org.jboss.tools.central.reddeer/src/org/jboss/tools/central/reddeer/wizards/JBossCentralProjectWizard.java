@@ -3,6 +3,7 @@ package org.jboss.tools.central.reddeer.wizards;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.eclipse.jface.wizard.WizardDialog;
 import org.jboss.reddeer.swt.api.Button;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
@@ -19,8 +20,11 @@ import org.jboss.tools.maven.reddeer.project.examples.wizard.ArchetypeExamplesWi
 import org.jboss.tools.maven.reddeer.project.examples.wizard.ArchetypeExamplesWizardPage;
 import org.jboss.tools.maven.reddeer.project.examples.wizard.NewProjectExamplesStacksRequirementsPage;
 
+
 public class JBossCentralProjectWizard extends WizardDialog{
 	
+	protected final static Logger log = Logger.getLogger(JBossCentralProjectWizard.class);
+
 	public JBossCentralProjectWizard(){
 		addWizardPage(new NewProjectExamplesStacksRequirementsPage(), 0);
 		addWizardPage(new ArchetypeExamplesWizardFirstPage(), 1);

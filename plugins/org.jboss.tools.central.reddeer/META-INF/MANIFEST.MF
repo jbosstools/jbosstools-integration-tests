@@ -15,7 +15,8 @@ Require-Bundle: org.eclipse.ui,
  org.jboss.reddeer.junit,
  org.jboss.tools.runtime.reddeer,
  org.jboss.tools.maven.reddeer,
- org.jboss.ide.eclipse.as.reddeer
+ org.jboss.ide.eclipse.as.reddeer,
+ org.jboss.reddeer.common;bundle-version="0.6.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: org.jboss.tools.central.reddeer.api,
