@@ -54,6 +54,7 @@
 <bundle id="org.jboss.tools.vpe.ui.bot.test"><category name="JBoss Tools Core - Integration Tests"/></bundle>
 <bundle id="org.jboss.tools.ws.ui.bot.test"><category name="JBoss Tools Core - Integration Tests"/></bundle>
 <bundle id="org.jboss.tools.usercase.ticketmonster.ui.bot.test"><category name="JBoss Tools Core - Integration Tests"/></bundle>
+<bundle id="org.jboss.tools.perf.test"><category name="JBoss Tools Core - Integration Tests"/></bundle>
 <bundle id="org.jboss.tools.mylyn.reddeer"><category name="JBoss Tools Core - Integration Tests"/></bundle>
 
 <!-- sources -->
@@ -97,6 +98,7 @@
 <bundle id="org.jboss.tools.vpe.ui.bot.test.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
 <bundle id="org.jboss.tools.ws.ui.bot.test.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
 <bundle id="org.jboss.tools.usercase.ticketmonster.ui.bot.test.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
+<bundle id="org.jboss.tools.perf.test.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
 <bundle id="org.jboss.tools.mylyn.reddeer.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
 
 </site>

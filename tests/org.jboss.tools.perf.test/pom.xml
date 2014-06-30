@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+        <groupId>org.jboss.tools.integration-tests</groupId>
+		<artifactId>tests</artifactId>
+		<version>4.2.0-SNAPSHOT</version>
+	</parent>
+	
+	<artifactId>org.jboss.tools.perf.test</artifactId>
+	<packaging>eclipse-test-plugin</packaging>
+	<properties>
+		<suiteClass>org.jboss.tools.perf.test.PerfAllBotTests</suiteClass>
+		<surefire.timeout>21600</surefire.timeout>
+		<systemProperties>-DPerfMonitor.repURL=http://localhost:8180/PerfServer/rest/rep -DPerfMonitor.project=JBDS -DPerfMonitor.build=420Beta2 -DPerfMonitor.testsuite=ValidationPerfTest -DPerfMonitor.platform=Lin_8x2.8Ghz_6GB -Djava.library.path=${basedir}/../../plugins/org.jboss.tools.perf.test.core/hyperic-sigar-1.6.5/sigar-bin/lib</systemProperties>
+	</properties>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-surefire-plugin</artifactId>
+				<configuration>
+					<testSuite>org.jboss.tools.perf.test</testSuite>
+					<testClass>${suiteClass}</testClass>
+					<useUIThread>false</useUIThread>
+					<skip>${swtbot.test.skip}</skip>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>
