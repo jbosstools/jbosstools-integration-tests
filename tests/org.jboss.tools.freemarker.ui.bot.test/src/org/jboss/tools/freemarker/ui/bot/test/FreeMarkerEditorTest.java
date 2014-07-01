@@ -19,6 +19,7 @@ import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
+import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
@@ -27,7 +28,7 @@ import org.jboss.reddeer.eclipse.ui.views.log.LogMessage;
 import org.jboss.reddeer.eclipse.ui.views.log.LogView;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
-import org.jboss.reddeer.junit.logging.Logger;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
@@ -39,12 +40,14 @@ import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 /**
  * Freemarker ui bot test
  * @author Jiri Peterka
  *
  */
+@RunWith(RedDeerSuite.class)
 public class FreeMarkerEditorTest {
 
 	private Logger log = Logger.getLogger(FreeMarkerEditorTest.class);

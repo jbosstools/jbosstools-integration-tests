@@ -4,12 +4,15 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.handler.WorkbenchHandler;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
+@RunWith(RedDeerSuite.class)
 public class FreemarkerPreferencePageTest {
 
 	@BeforeClass
