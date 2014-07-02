@@ -14,7 +14,7 @@
   
         <properties>
             <surefire.timeout>7200</surefire.timeout>
-            <memoryOptions2>-XX:MaxPermSize=512m</memoryOptions2>
+            <memoryOptions2>-XX:MaxPermSize=384m</memoryOptions2>
             <swt.bot.test.record.screencast>false</swt.bot.test.record.screencast>
             <reddeer.close.shells>true</reddeer.close.shells>
             <reddeer.close.welcome.screen>true</reddeer.close.welcome.screen>
