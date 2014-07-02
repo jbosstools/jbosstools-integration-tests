@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: %pluginName
+Bundle-Name: Hibernate UI tests
 Bundle-SymbolicName: org.jboss.tools.hibernate.ui.bot.test
 Bundle-Version: 4.2.0.qualifier
-Bundle-Activator: org.jboss.tools.hibernate.ui.bot.testcase.Activator
+Bundle-Activator: org.jboss.tools.hibernate.ui.bot.test.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.junit;bundle-version="4.8.0",
@@ -26,8 +26,8 @@ Require-Bundle: org.eclipse.ui,
  org.jboss.reddeer.requirements
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Eclipse-RegisterBuddy: org.apache.log4j
 Import-Package: org.eclipse.jdt.internal.ui
 Eclipse-BundleShape: jar
 Bundle-Localization: plugin
-Bundle-Vendor: %providerName
+Bundle-Vendor: JBoss by Red Hat
+Export-Package: org.jboss.tools.hibernate.ui.bot.test

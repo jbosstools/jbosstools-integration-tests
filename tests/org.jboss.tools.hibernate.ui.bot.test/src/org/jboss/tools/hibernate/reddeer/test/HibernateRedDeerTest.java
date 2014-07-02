@@ -6,7 +6,7 @@ import java.util.Properties;
 
 import org.jboss.tools.hibernate.factory.ResourceFactory;
 import org.jboss.tools.hibernate.reddeer.importer.ProjectImporter;
-import org.jboss.tools.hibernate.ui.bot.testcase.Activator;
+import org.jboss.tools.hibernate.ui.bot.test.Activator;
 
 public class HibernateRedDeerTest {
 	

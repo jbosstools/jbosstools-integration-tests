@@ -9,7 +9,7 @@ import org.jboss.tools.hibernate.reddeer.view.QueryParametersView;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-@RunWith(RedDeerSuite.class)
+
 /**
  * Tests Hibernate UI Parts - perspective and views
  * @author Jiri Peterka

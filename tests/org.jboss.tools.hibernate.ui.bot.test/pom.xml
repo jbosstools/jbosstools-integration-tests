@@ -12,7 +12,9 @@
 	<packaging>eclipse-test-plugin</packaging>
 
 	<properties>
-		<systemProperties>${integrationTestsSystemProperties} -Dtest.configurations.dir=${project.basedir}/properties/</systemProperties>
+		<!-- <systemProperties>${integrationTestsSystemProperties} -Dtest.configurations.dir=${project.basedir}/properties/</systemProperties> -->
+		<!--  <systemProperties> </systemProperties> -->
+		<systemProperties>${integrationTestsSystemProperties}</systemProperties>
 	</properties>
 		
 	<build>
@@ -23,9 +25,9 @@
 				<configuration>
 					<useUIThread>false</useUIThread>
 					<skip>${swtbot.test.skip}</skip>
-					<testSuite>org.jboss.tools.hibernate.ui.bot.test</testSuite>
-					<!-- <testClass>org.jboss.tools.hb.ui.bot.suite.ViewSuite</testClass> -->
-					<testClass>${test.suite.class}</testClass>
+                    <testSuite>org.jboss.tools.hibernate.ui.bot.test</testSuite>
+                    <testClass>org.jboss.tools.hibernate.ui.bot.test.HibernateAllTest</testClass>
+                    <!-- 
 					<dependencies combine.children="append">
 						<dependency>
 							<type>p2-installable-unit</type>
@@ -36,14 +38,14 @@
 							<type>p2-installable-unit</type>
 							<artifactId>org.hibernate.eclipse.feature.feature.group</artifactId>
 							<version>0.0.0</version>
-						</dependency>				
+						</dependency> -->				
 						<!-- 
 						<dependency>
 							<type>p2-installable-unit</type>
 							<artifactId>org.eclipse.jpt.jpa.feature.feature.group</artifactId>
 							<version>0.0.0</version>
 						</dependency>-->
-					</dependencies> 
+					<!-- </dependencies> --> 
 				</configuration>
 			</plugin>
 			<plugin>
@@ -67,15 +69,4 @@
 			</plugin>  			
 		</plugins>
 	</build>
-	<profiles>
-		<profile>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-			<id>jenkins</id>
-			<properties>
-				<test.suite.class>org.jboss.tools.hb.ui.bot.suite.HibernateSuite</test.suite.class>
-			</properties>
-		</profile>
-	</profiles>
 </project>
