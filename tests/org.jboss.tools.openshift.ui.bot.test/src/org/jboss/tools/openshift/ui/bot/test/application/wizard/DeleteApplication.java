@@ -5,7 +5,7 @@ import static org.junit.Assert.assertFalse;
 import java.util.List;
 
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
-import org.jboss.reddeer.junit.logging.Logger;
+import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
@@ -70,7 +70,6 @@ public class DeleteApplication {
 		
 		server.select();
 		new ContextMenu("Delete").select();	
-		new WaitUntil(new ShellWithTextIsAvailable("Delete Server"), TimePeriod.NORMAL);
 		new DefaultShell("Delete Server").setFocus();
 		new PushButton("OK").click();
 		
@@ -98,7 +97,7 @@ public class DeleteApplication {
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 		
 		// bcs. sometime it could be removed later as the job is finished
-		AbstractWait.sleep(TimePeriod.SHORT);
+		AbstractWait.sleep(TimePeriod.NORMAL);
 		
 		assertFalse("Application still present in the OpenShift Explorer!",
 				explorer.applicationExists(appName));

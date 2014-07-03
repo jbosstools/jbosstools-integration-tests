@@ -59,7 +59,7 @@ import org.junit.runners.Suite.SuiteClasses;
  	RenameDomain.class,
 
 	/* Application */
- 	ImportAndDeployGitHubProject.class,
+// 	ImportAndDeployGitHubProject.class, // will be fixed in JBT 4.2.0.Beta3a
  	ImportApplicationThroughOpenShiftExplorer.class,
  	ImportApplicationThroughServersView.class,
  	CreateApplicationThroughShellMenu.class,

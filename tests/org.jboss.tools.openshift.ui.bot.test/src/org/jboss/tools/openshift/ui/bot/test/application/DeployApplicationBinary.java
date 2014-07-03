@@ -1,18 +1,22 @@
 package org.jboss.tools.openshift.ui.bot.test.application;
 
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.swt.api.TableItem;
 import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.swt.condition.ButtonWithTextIsActive;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
-import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.swt.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
@@ -23,10 +27,10 @@ import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.openshift.ui.bot.test.application.wizard.DeleteApplication;
 import org.jboss.tools.openshift.ui.bot.test.application.wizard.NewApplicationTemplates;
+import org.jboss.tools.openshift.ui.bot.test.condition.DeployedApplicationContainsText;
 import org.jboss.tools.openshift.ui.bot.test.customizedexplorer.CustomizedNavigator;
 import org.jboss.tools.openshift.ui.bot.test.customizedexplorer.CustomizedProject;
 import org.jboss.tools.openshift.ui.bot.test.customizedexplorer.CustomizedProjectExplorer;
-import org.jboss.tools.openshift.ui.bot.util.OpenShiftExplorerView;
 import org.jboss.tools.openshift.ui.bot.util.OpenShiftLabel;
 import org.junit.After;
 import org.junit.Before;
@@ -79,9 +83,6 @@ public class DeployApplicationBinary {
 		projectExplorer.getProject(APP_NAME).select();
 		
 		new ContextMenu("OpenShift", "Configure Markers...").select();
-		
-		new WaitUntil(new ShellWithTextIsAvailable(
-				"Configure OpenShift Markers for project " + APP_NAME), TimePeriod.NORMAL);
 		
 		new DefaultShell("Configure OpenShift Markers for project " + APP_NAME).setFocus();
 		
@@ -136,9 +137,6 @@ public class DeployApplicationBinary {
 		
 		new ContextMenu("Run As", "5 Maven build...").select();
 		
-		new WaitUntil(new ShellWithTextIsAvailable("Edit Configuration"),
-				TimePeriod.NORMAL);
-		
 		new DefaultShell("Edit Configuration").setFocus();
 		
 		new LabeledText("Goals:").setText("clean package");
@@ -188,12 +186,13 @@ public class DeployApplicationBinary {
 	}
 	
 	private void verifyApp() {
-		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
-		
-		AbstractWait.sleep(TimePeriod.getCustom(20));
-		
-		assertTrue("Changes has not been successfully deployed", 
-				explorer.verifyApplicationInBrowser(APP_NAME, "OpSh"));
+		try {
+			new WaitUntil(new DeployedApplicationContainsText(APP_NAME, "OpSh"), 
+					TimePeriod.LONG);
+			// pass
+		} catch (WaitTimeoutExpiredException ex) {
+			fail("Application was not successfully shown in browser");
+		}
 	}
 	
 	private void publish() {
@@ -213,12 +212,18 @@ public class DeployApplicationBinary {
 		
 		new ContextMenu("Publish").select();
 		
-		new WaitUntil(new ShellWithTextIsAvailable("Publish " + 
-				APP_NAME + "?"), TimePeriod.LONG);
+		new DefaultShell("Commit Changes");
+		new DefaultStyledText(0).setText("commit to openshift");
+		Iterator<TreeItem> iterator = new DefaultTree(0).getItems().iterator();
+		while (iterator.hasNext()) {
+			TreeItem item = iterator.next();
+			if (!item.isChecked()) {
+				item.setChecked(true);
+			}
+		}
 		
-		new DefaultShell("Publish " + APP_NAME + "?").setFocus();
-		
-		new PushButton(OpenShiftLabel.Button.YES).click();
+		new WaitUntil(new ButtonWithTextIsActive(new PushButton("Commit and Publish")), TimePeriod.NORMAL);
+		new PushButton("Commit and Publish").click();
 		
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 	}

@@ -3,12 +3,10 @@ package org.jboss.tools.openshift.ui.bot.test.connection;
 import static org.junit.Assert.assertFalse;
 
 import org.jboss.reddeer.swt.condition.JobIsRunning;
-import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
-import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.openshift.ui.bot.util.OpenShiftExplorerView;
 import org.junit.After;
@@ -51,12 +49,8 @@ public class ConnectionEnterprise {
 				System.getProperty("user.name"), System.getProperty("user.pwd"), false);
 	}
 	
-	private void acceptCertificate() {
-			new WaitUntil(new ShellWithTextIsAvailable("Untrusted SSL Certificate"),
-				TimePeriod.NORMAL);
-			
+	private void acceptCertificate() {		
 			new DefaultShell("Untrusted SSL Certificate").setFocus();
-			
 			new PushButton("Yes").click();
 	}
 	

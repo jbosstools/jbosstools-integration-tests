@@ -54,7 +54,7 @@ public class OpenShiftLabel {
 		public static final String EXPLORER_PORTS = "Port Forwarding...";
 		public static final String BROWSER = "Web Browser";
 		public static final String EXPLORER_RESTART_APP = "Restart Application";
-		public static final String DELETE_APP = "Delete Application...";
+		public static final String DELETE_APP = "Delete Application(s)...";
 	}
 	
 	public static class Shell {

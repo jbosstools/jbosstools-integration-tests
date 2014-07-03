@@ -1,14 +1,21 @@
 package org.jboss.tools.openshift.ui.bot.test.application.wizard;
 
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
-import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
+import java.util.Iterator;
+
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
+import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.ButtonWithTextIsActive;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.swt.exception.RedDeerException;
+import org.jboss.reddeer.swt.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
+import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
@@ -16,6 +23,7 @@ import org.jboss.tools.openshift.ui.bot.test.application.wizard.page.FirstWizard
 import org.jboss.tools.openshift.ui.bot.test.application.wizard.page.FourthWizardPage;
 import org.jboss.tools.openshift.ui.bot.test.application.wizard.page.SecondWizardPage;
 import org.jboss.tools.openshift.ui.bot.test.application.wizard.page.ThirdWizardPage;
+import org.jboss.tools.openshift.ui.bot.test.condition.ConsoleHasText;
 import org.jboss.tools.openshift.ui.bot.util.OpenShiftExplorerView;
 import org.jboss.tools.openshift.ui.bot.util.OpenShiftLabel;
 
@@ -31,6 +39,9 @@ import org.jboss.tools.openshift.ui.bot.util.OpenShiftLabel;
  */
 public class NewApplicationWizard {	
 
+	// First occurrence of the Identify Yourself shell
+	private static boolean IDENTIFY_SHOWN = false;
+	
 	public NewApplicationWizard() {
 	}
 	
@@ -139,15 +150,18 @@ public class NewApplicationWizard {
 		if (isEmbeddedCart) {
 			new WaitUntil(new ShellWithTextIsAvailable("Embedded Cartridges"), TimePeriod.VERY_LONG);
 			
-			new DefaultShell("Embedded Cartridges").setFocus();
+			new DefaultShell("Embedded Cartridges");
 			new PushButton(OpenShiftLabel.Button.OK).click();
 		}
 		
 		if (enabledOpenShiftOnApp) {
-			new WaitUntil(new ShellWithTextIsAvailable("Import OpenShift Application "), TimePeriod.VERY_LONG);
+			new WaitUntil(new ShellWithTextIsAvailable("Import OpenShift Application "), 
+					TimePeriod.VERY_LONG);
 			
 			new DefaultShell("Import OpenShift Application ").setFocus();
 			
+			new WaitUntil(new ButtonWithTextIsActive(new PushButton(OpenShiftLabel.Button.OK)),
+					TimePeriod.NORMAL);
 			new PushButton(OpenShiftLabel.Button.OK).click();			
 		}
 		
@@ -158,13 +172,39 @@ public class NewApplicationWizard {
 		new PushButton(OpenShiftLabel.Button.YES).click();
 		
 		if (isCreatedAdapter) {
-			new WaitUntil(new ShellWithTextIsAvailable("Publish " + localAppName + "?"), TimePeriod.VERY_LONG);
+			try {
+				if (!IDENTIFY_SHOWN) {
+					new WaitUntil(new ShellWithTextIsAvailable("Identify Yourself"), 
+							TimePeriod.VERY_LONG);
+					
+					new DefaultShell("Identify Yourself");
+					new WaitUntil(new ButtonWithTextIsActive(new PushButton(OpenShiftLabel.Button.OK)),
+							TimePeriod.NORMAL);
+					new PushButton(OpenShiftLabel.Button.OK).click();
+					
+					IDENTIFY_SHOWN = true;
+				}
+			} catch(RedDeerException ex) {
+			}
 			
-			new DefaultShell("Publish " + localAppName + "?").setFocus();
+			new WaitUntil(new ShellWithTextIsAvailable("Commit Changes"), TimePeriod.VERY_LONG);
 			
-			new PushButton(OpenShiftLabel.Button.YES).click();
+			new DefaultShell("Commit Changes");
+			new DefaultStyledText(0).setText("git ignore merged");
+			
+			Iterator<TreeItem> iterator = new DefaultTree(0).getItems().iterator();
+			while (iterator.hasNext()) {
+				TreeItem item = iterator.next();
+				if (!item.isChecked()) {
+					item.setChecked(true);
+				}
+			}
+			
+			new WaitUntil(new ButtonWithTextIsActive(new PushButton("Commit and Publish")), TimePeriod.NORMAL);
+			
+			new PushButton("Commit and Publish").click();
 		}
-		
+
 		if (pushForced) {
 			new WaitUntil(new ShellWithTextIsAvailable("Attempt push force ?"), TimePeriod.VERY_LONG);
 			
@@ -184,9 +224,12 @@ public class NewApplicationWizard {
 				" has not been created", explorer.applicationExists(appName));
 		
 		// Verify in console
-		ConsoleView consoleView = new ConsoleView();
-		consoleView.open();
-		assertTrue(!consoleView.getConsoleText().isEmpty());
+		try {
+			new WaitUntil(new ConsoleHasText(), TimePeriod.getCustom(30));
+			// pass
+		} catch (WaitTimeoutExpiredException ex) {
+			fail();
+		}
 		
 		// Verify in servers view
 		ServersView serverView = new ServersView();

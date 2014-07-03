@@ -15,7 +15,7 @@ import org.junit.Test;
  */
 public class CreateApplicationThroughShellMenu {
 
-	public static final String APP_NAME = "diy" + System.currentTimeMillis();
+	private String APP_NAME = "diy" + System.currentTimeMillis();
 	
 	@Test
 	public void createApplicationUsingOpenShiftWizard() {
