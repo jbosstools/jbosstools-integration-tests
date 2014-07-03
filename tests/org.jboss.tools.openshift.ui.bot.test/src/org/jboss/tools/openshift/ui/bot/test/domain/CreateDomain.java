@@ -4,7 +4,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Random;
 
-import org.jboss.reddeer.junit.logging.Logger;
+import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.ButtonWithTextIsActive;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
@@ -51,7 +51,7 @@ public class CreateDomain {
 		
 		new WaitUntil(new ShellWithTextIsAvailable("Domains"), TimePeriod.LONG);
 		
-		new DefaultShell("Domains").setFocus();
+		new DefaultShell("Domains");
 		
 		if (runFromCreateDomain) {
 			assertTrue("Domain should not be set at this stage! Remove domains and run tests again", new DefaultTable().rowCount() == 0);
@@ -63,7 +63,7 @@ public class CreateDomain {
 		
 		new WaitUntil(new ShellWithTextIsAvailable("Create Domain"), TimePeriod.LONG);
 		
-		new DefaultShell("Create Domain").setFocus();
+		new DefaultShell("Create Domain");
 		new DefaultText(0).setText(domainName);
 		new PushButton("Finish").click();
 		
@@ -79,7 +79,7 @@ public class CreateDomain {
 			
 			new WaitUntil(new ShellWithTextIsAvailable("Create Domain"), TimePeriod.LONG);
 			
-			new DefaultShell("Create Domain").setFocus();
+			new DefaultShell("Create Domain");
 			new DefaultText().setText("seconddomain69");
 			
 			new WaitUntil(new ButtonWithTextIsActive(new PushButton(
@@ -90,15 +90,14 @@ public class CreateDomain {
 			new WaitWhile(new JobIsRunning(),TimePeriod.LONG);
 			logger.info("*** OpenShift RedDeer Tests: Second Domain created. ***");
 			
-			new WaitUntil(new ShellWithTextIsAvailable("Domains"), TimePeriod.NORMAL);
-			
 			new DefaultShell("Domains").setFocus();
 		}
 		
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		
 		if (multipleDomain) {
-			assertTrue("There is not multiple domains", new DefaultTable().getItems().size() == 2);
+			assertTrue("There is not multiple domains. Number of domains is " + 
+					new DefaultTable().getItems().size(), new DefaultTable().getItems().size() == 2);
 		} else {
 			assertTrue("Domain does not exist", new DefaultTable().getItems().size() == 1);
 		}

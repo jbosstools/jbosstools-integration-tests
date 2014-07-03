@@ -1,7 +1,7 @@
 package org.jboss.tools.openshift.ui.bot.test.application.wizard;
 
 import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.swt.exception.WaitTimeoutExpiredException;
+import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.wait.TimePeriod;
@@ -153,12 +153,9 @@ public class NewApplicationTemplates {
 		new PushButton(OpenShiftLabel.Button.NO).click();
 		
 		try {
-		new WaitUntil(new ShellWithTextIsAvailable("Problem Occured"), TimePeriod.NORMAL);
-		
-		new DefaultShell("Problem Occured").setFocus();
-		
-		new PushButton(OpenShiftLabel.Button.OK).click();
-		} catch (WaitTimeoutExpiredException ex) {
+			new DefaultShell("Problem Occured").setFocus();
+			new PushButton(OpenShiftLabel.Button.OK).click();
+		} catch (SWTLayerException ex) {
 			
 		}
 			

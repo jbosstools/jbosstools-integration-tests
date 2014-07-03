@@ -8,7 +8,7 @@ import org.junit.Test;
 public class CreateQuickstart {
 
 	private String quickstart = "CakePHP (Quickstart)";
-	private String appName = "cookiesphp";
+	private String appName = "cookiesphp" + System.currentTimeMillis();
 	
 	@Test
 	public void creatQuickstart() {

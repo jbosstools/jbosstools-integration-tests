@@ -5,10 +5,10 @@ import org.eclipse.swt.widgets.Shell;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
-import org.jboss.reddeer.junit.logging.Logger;
+import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
-import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -147,17 +147,17 @@ public class CustomizedProject {
 		try {
 			new ContextMenu("Delete").select();
 			
-			new DefaultShell("Delete Resources").setFocus();;
+			new DefaultShell("Delete Resources").setFocus();
 			new CheckBox().toggle(true);
 			new PushButton("OK").click();
 			
 			try {
-				new WaitWhile(new ShellWithTextIsActive("Delete Resources"),TimePeriod.NORMAL);
 				new DeleteShellWithButtonContinue().setFocus();
 				new PushButton("Continue").click();
 			} catch(Exception ex) { 
 			}
 			
+			new WaitWhile(new ShellWithTextIsAvailable("Delete Resources"), TimePeriod.LONG);
 			new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 			
 			return true;

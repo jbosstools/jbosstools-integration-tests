@@ -5,7 +5,6 @@ import java.util.List;
 import org.jboss.reddeer.eclipse.jface.viewer.handler.TreeViewerHandler;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.ButtonWithTextIsActive;
-import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
@@ -47,8 +46,7 @@ public class FirstWizardPage {
 		
 		new PushButton(OpenShiftLabel.Button.BROWSE).click();
 		
-		new WaitUntil(new ShellWithTextIsAvailable("Select Existing Application"), 
-				TimePeriod.NORMAL);
+		new DefaultShell("Select Existing Application");
 		
 		List<TreeItem> domains = new DefaultTree().getItems();
 		

@@ -55,8 +55,6 @@ public class OpenNewApplicationWizard {
 		
 		new ShellMenu("File", "New", "Other...").select();
 		
-		new WaitUntil(new ShellWithTextIsAvailable("New"), TimePeriod.NORMAL);
-		
 		new DefaultShell("New").setFocus();
 		TreeItem openShift = new DefaultTreeItem("OpenShift");
 		openShift.select();
