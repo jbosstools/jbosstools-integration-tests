@@ -2,7 +2,6 @@ package org.jboss.tools.cdi.reddeer.cdi.ui;
 
 import org.jboss.reddeer.eclipse.jface.wizard.NewWizardDialog;
 import org.jboss.reddeer.swt.api.Button;
-import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -41,7 +40,6 @@ public class NewQualifierCreationWizard extends NewWizardDialog{
 		Button button = new PushButton("Finish");
 		button.click();
 		new WaitWhile(new ShellWithTextIsActive(shellText), TimePeriod.LONG);
-		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
 
 }
