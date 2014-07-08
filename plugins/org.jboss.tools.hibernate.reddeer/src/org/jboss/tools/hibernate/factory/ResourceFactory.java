@@ -3,49 +3,109 @@ package org.jboss.tools.hibernate.factory;
 import static org.junit.Assert.fail;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
 
 /**
- * Provides usefull resource related API for hibernate tests 
+ * Provides usefull resource related API for hibernate tests
+ * 
  * @author Jiri Peterka
  *
  */
 public class ResourceFactory {
 
 	/**
-	 * Provide bundle resource absolute path
-	 * @param pluginId - plugin id
-	 * @param path - resource relative path
-	 * @return resource absolute path
+	 * Gets absolute plugin path
+	 * 
+	 * @param pluginId given plugin id
+	 * @return absolute plugin path
 	 */
-	public static String getResourceAbsolutePath(String pluginId, String... path) {
-
-		// Construct path
-		StringBuilder builder = new StringBuilder();
-		for (String fragment : path) {
-			builder.append("/" + fragment);
-		}
-
-		String filePath = "";
+	public static String getAbsolutePluginPath(String pluginId) {
+		String path = "";
+		URL entry = Platform.getBundle(pluginId).getEntry("/");
 		try {
-			filePath = FileLocator.toFileURL(
-					Platform.getBundle(pluginId).getEntry("/")).getFile()
-					+ "resources" + builder.toString();
-			File file = new File(filePath);
-			if (!file.isFile()) {
-				filePath = FileLocator.toFileURL(
-						Platform.getBundle(pluginId).getEntry("/")).getFile()
-						+ builder.toString();
-			}
-		} catch (IOException ex) {
-			String message = filePath + " resource file not found";
-			//log.error(message);
-			fail(message);
+			path = FileLocator.toFileURL(entry).getPath();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return path;
+	}
+
+	/**
+	 * Return resources location of given relPath
+	 * 
+	 * @param pluginId plugin id
+	 * @param relPath relative path
+	 * @return absolute path to given resouce under resources
+	 */
+	public static String getResourcesLocation(String pluginId, String relPath) {
+		String ret = getAbsolutePluginPath(pluginId) + File.separator
+				+ "resources" + File.separator + relPath;
+		return ret;
+	}
+
+	/**
+	 * Return bundle location of given relPath
+	 * 
+	 * @param pluginId plugin id
+	 * @param relPath relative path
+	 * @return absolute path to given resource under bundle
+	 */
+	public static String getBundleLocation(String pluginId, String relPath) {
+		String ret = getAbsolutePluginPath(pluginId) + File.separator + relPath;
+		return ret;
+	}
+
+	/**
+	 * Checks if resource exist and if not it downloads it
+	 * 
+	 * @param pluginId plugin id under resource is checked
+	 * @param source source file
+	 * @param target target file
+	 */
+	public static void assureResource(String pluginId, String source,
+			String target) {
+		URL url = null;
+		try {
+
+			url = new URL(source);
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+			fail("Cannot asure " + source + "resource." + e.toString());
 		}
 
-		return filePath;
+		String absTarget = getBundleLocation(pluginId, target);
+		File f = new File(absTarget);
+		if (!f.exists()) {
+			try {
+				downloadFile(url, absTarget);
+			} catch (IOException e) {
+				e.printStackTrace();
+				fail("Cannot download " + source + "resource." + e.toString());
+			}
+		}
+
+	}
+
+	/**
+	 * Download given file
+	 * 
+	 * @param sourceURL source url
+	 * @param target target absolute path
+	 * @throws IOException thrown by java IO operations
+	 */
+	private static void downloadFile(URL sourceURL, String target)
+			throws IOException {
+		ReadableByteChannel rbc = Channels.newChannel(sourceURL.openStream());
+		FileOutputStream fos = new FileOutputStream(target);
+		fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+		fos.close();
 	}
 }

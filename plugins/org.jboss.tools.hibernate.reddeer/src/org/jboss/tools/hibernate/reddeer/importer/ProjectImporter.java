@@ -40,7 +40,7 @@ public class ProjectImporter {
 		ExternalProjectImportWizardDialog w = new ExternalProjectImportWizardDialog();
 		w.open();
 		WizardProjectsImportPage p1 = w.getFirstPage();
-		p1.setRootDirectory(ResourceFactory.getResourceAbsolutePath(pluginId, "resources/prj"));
+		p1.setRootDirectory(ResourceFactory.getResourcesLocation(pluginId, "prj"));
 		p1.copyProjectsIntoWorkspace(true);
 		p1.deselectAllProjects();
 		p1.selectProjects(prjName);
