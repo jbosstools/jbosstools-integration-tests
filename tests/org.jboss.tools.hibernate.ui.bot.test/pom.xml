@@ -13,10 +13,10 @@
 
 	<properties>
 		<!-- <systemProperties>${integrationTestsSystemProperties} -Dtest.configurations.dir=${project.basedir}/properties/</systemProperties> -->
-		<!--  <systemProperties> </systemProperties> -->
+		<!-- <systemProperties> </systemProperties> -->
 		<systemProperties>${integrationTestsSystemProperties}</systemProperties>
 	</properties>
-		
+
 	<build>
 		<plugins>
 			<plugin>
@@ -25,27 +25,16 @@
 				<configuration>
 					<useUIThread>false</useUIThread>
 					<skip>${swtbot.test.skip}</skip>
-                    <testSuite>org.jboss.tools.hibernate.ui.bot.test</testSuite>
-                    <testClass>org.jboss.tools.hibernate.ui.bot.test.HibernateAllTest</testClass>
-                    <!-- 
-					<dependencies combine.children="append">
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.eclipse.datatools.enablement.hsqldb.feature.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.hibernate.eclipse.feature.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency> -->				
-						<!-- 
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.eclipse.jpt.jpa.feature.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>-->
-					<!-- </dependencies> --> 
+					<testSuite>org.jboss.tools.hibernate.ui.bot.test</testSuite>
+					<testClass>org.jboss.tools.hibernate.ui.bot.test.HibernateAllTest</testClass>
+					<!-- <dependencies combine.children="append"> <dependency> <type>p2-installable-unit</type> 
+						<artifactId>org.eclipse.datatools.enablement.hsqldb.feature.feature.group</artifactId> 
+						<version>0.0.0</version> </dependency> <dependency> <type>p2-installable-unit</type> 
+						<artifactId>org.hibernate.eclipse.feature.feature.group</artifactId> <version>0.0.0</version> 
+						</dependency> -->
+					<!-- <dependency> <type>p2-installable-unit</type> <artifactId>org.eclipse.jpt.jpa.feature.feature.group</artifactId> 
+						<version>0.0.0</version> </dependency> -->
+					<!-- </dependencies> -->
 				</configuration>
 			</plugin>
 			<plugin>
@@ -59,14 +48,32 @@
 							<goal>wget</goal>
 						</goals>
 						<configuration>
-							<url>http://central.maven.org/maven2/com/h2database/h2/1.4.178/h2-1.4.178.jar</url>
-							<outputDirectory>resources/prj/hibernatelib/connector</outputDirectory>
-							<outputFileName>h2-1.4.178.jar</outputFileName>
+							<url>${H2_DRIVER_SOURCE}</url>
+							<outputDirectory>${H2_DRIVER_TARGET}</outputDirectory>
 							<unpack>false</unpack>
 						</configuration>
 					</execution>
 				</executions>
-			</plugin>  			
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>properties-maven-plugin</artifactId>
+				<version>1.0-alpha-2</version>
+				<executions>
+					<execution>
+						<phase>initialize</phase>
+						<goals>
+							<goal>read-project-properties</goal>
+						</goals>
+						<configuration>
+							<files>
+								<file>resources/links.properties</file>
+							</files>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
 		</plugins>
 	</build>
 </project>
