@@ -1,12 +1,8 @@
 package org.jboss.tools.runtime.as.ui.bot.test.dialog.preferences;
 
-import java.awt.AWTException;
-import java.awt.Robot;
-import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jboss.reddeer.eclipse.jface.preference.PreferencePage;
 import org.jboss.reddeer.swt.api.Table;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.WaitCondition;
@@ -16,9 +12,10 @@ import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.reddeer.workbench.preference.WorkbenchPreferencePage;
 import org.jboss.tools.runtime.as.ui.bot.test.entity.Runtime;
 
-public class SeamPreferencesDialog extends PreferencePage {
+public class SeamPreferencesDialog extends WorkbenchPreferencePage {
 
 	public SeamPreferencesDialog() {
 		super("JBoss Tools", "Web", "Seam");
