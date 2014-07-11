@@ -31,6 +31,8 @@ import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap63.OperateEAP63
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.epp4.CheckEPP4Seam;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.epp4.DetectEPP4;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.epp4.OperateEPP4;
+import org.jboss.tools.runtime.as.ui.bot.test.detector.server.fsw60.DetectFSW60;
+import org.jboss.tools.runtime.as.ui.bot.test.detector.server.fsw60.OperateFSW60;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.jboss7.DetectJBoss7;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.jboss7.OperateJBoss7;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.jpp60.DetectJPP60;
@@ -103,7 +105,7 @@ import org.junit.runners.Suite;
 		
 		DetectEAP4.class,
 		CheckEAP4Seam.class,
-		OperateEAP4.class, 
+		OperateEAP4.class,
 		
 		DetectEPP4.class, 
 		CheckEPP4Seam.class,
@@ -131,7 +133,10 @@ import org.junit.runners.Suite;
 		CheckSeam23.class,
 		
 		DetectSeam22.class,
-		CheckSeam22.class
+		CheckSeam22.class,
+		
+		DetectFSW60.class,
+		OperateFSW60.class
 })
 public class Java7AllTestsSuite {
 

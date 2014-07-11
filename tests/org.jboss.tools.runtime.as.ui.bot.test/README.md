@@ -1,7 +1,7 @@
 # Runtimes (runtime-detection)
 ## org.jboss.tools.runtime.as.ui.bot.test
 ### Prerequisities
-Frameworks supporting building automated Eclipse tests: [SWTBot](https://wiki.eclipse.org/SWTBot#Update_Sites),
+Frameworks supporting building automated Eclipse tests: [SWTBot](https://wiki.eclipse.org/SWTBot#Update_Sites) and
 [RedDeer](https://github.com/jboss-reddeer/reddeer/wiki/Installation)
 
 ### Tested runtimes
@@ -20,6 +20,8 @@ EWP: 5.1
 SOA-P: 5.3, 5.3.-standalone, 5.2, 5.2-standalone
 
 SEAM: 2.3.x, 2.3.0.Final, 2.2.2.Final
+
+FSW: 6.0
 
 ### How to run?
 Run RT_prepare_workspace in Run configuration and set up paths to all tested runtimes

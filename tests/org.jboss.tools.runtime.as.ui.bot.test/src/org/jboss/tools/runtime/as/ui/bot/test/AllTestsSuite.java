@@ -40,6 +40,8 @@ import org.jboss.tools.runtime.as.ui.bot.test.detector.server.epp5.OperateEPP5;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.ewp5.CheckEWP5Seam;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.ewp5.DetectEWP5;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.ewp5.OperateEWP5;
+import org.jboss.tools.runtime.as.ui.bot.test.detector.server.fsw60.DetectFSW60;
+import org.jboss.tools.runtime.as.ui.bot.test.detector.server.fsw60.OperateFSW60;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.jboss7.DetectJBoss7;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.jboss7.OperateJBoss7;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.jpp60.DetectJPP60;
@@ -105,6 +107,9 @@ import org.junit.runners.Suite;
 		
 		DetectEAP60.class,
 		OperateEAP60.class,
+		
+		DetectFSW60.class,
+		OperateFSW60.class,
 		
 		// Needs Java SE 1.6
 		DetectEAP51.class, 
