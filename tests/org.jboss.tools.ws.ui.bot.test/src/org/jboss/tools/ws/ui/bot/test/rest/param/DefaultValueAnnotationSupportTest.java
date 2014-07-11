@@ -9,12 +9,13 @@
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
 
-package org.jboss.tools.ws.ui.bot.test.rest;
+package org.jboss.tools.ws.ui.bot.test.rest.param;
 
 import java.util.List;
 
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.ProjectItem;
+import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
 import org.junit.Test;
 
 public class DefaultValueAnnotationSupportTest extends RESTfulTestBase {
@@ -28,11 +29,6 @@ public class DefaultValueAnnotationSupportTest extends RESTfulTestBase {
 	
 	}
 	
-	/**
-	 * Fails due to JBIDE-17011
-	 * 
-	 * @see https://issues.jboss.org/browse/JBIDE-17011
-	 */
 	@Test
 	public void testQueryParamDefaultValue() {
 		
@@ -45,16 +41,10 @@ public class DefaultValueAnnotationSupportTest extends RESTfulTestBase {
 		/* test JAX-RS REST explorer */
 		assertCountOfRESTServices(restServices, 1);
 		assertExpectedPathOfService(restServices.get(0), 
-				"/rest?" + paramName + "={" + paramType + "=" + defaultValue + "}");
+				"/rest?" + paramName + "={" + paramType + ":\"" + defaultValue + "\"}");
 		
 	}
 	
-	/**
-	 * Fails due to JBIDE-12027, JBIDE-17011
-	 * 
-	 * @see https://issues.jboss.org/browse/JBIDE-12027
-	 * @see https://issues.jboss.org/browse/JBIDE-17011
-	 */
 	@Test
 	public void testMatrixParamDefaultValue() {
 		
@@ -67,7 +57,7 @@ public class DefaultValueAnnotationSupportTest extends RESTfulTestBase {
 		/* test JAX-RS REST explorer */
 		assertCountOfRESTServices(restServices, 1);
 		assertExpectedPathOfService(restServices.get(0), 
-				"/rest;" + paramName + "={" + paramType + "=" + defaultValue + "}");
+				"/rest;" + paramName + "={" + paramType + ":\"" + defaultValue + "\"}");
 	}
 	
 	/**
@@ -86,8 +76,8 @@ public class DefaultValueAnnotationSupportTest extends RESTfulTestBase {
 		
 		/* test JAX-RS REST explorer */
 		assertCountOfRESTServices(restServices, 1);
-		assertExpectedPathOfService(restServices.get(0), 
-				"/rest/{" + paramName +":" + paramType + "=" + defaultValue + "}");
+		assertExpectedPathOfService("JBIDE-12027: ", restServices.get(0), 
+				"/rest/{" + paramName +":" + paramType + ":" + defaultValue + "}");
 		
 	}
 	

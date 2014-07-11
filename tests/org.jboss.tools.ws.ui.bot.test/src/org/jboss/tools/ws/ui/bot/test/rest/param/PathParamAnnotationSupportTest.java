@@ -9,22 +9,19 @@
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
 
-package org.jboss.tools.ws.ui.bot.test.rest;
+package org.jboss.tools.ws.ui.bot.test.rest.param;
 
 import java.util.List;
 
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 
-import org.hamcrest.Matcher;
-import org.hamcrest.core.StringContains;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.ProjectItem;
-import org.jboss.reddeer.swt.keyboard.Keyboard;
-import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
-import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.ui.bot.ext.Timing;
+import org.jboss.tools.ws.reddeer.editor.ExtendedTextEditor;
+import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
 import org.junit.Test;
 
 /**
@@ -76,8 +73,8 @@ public class PathParamAnnotationSupportTest extends RESTfulTestBase {
 	}
 	
 	/**
-	 * Fixed JBIDE-16981
-	 * @see https://issues.jboss.org/browse/JBIDE-16981
+	 * Fails due to JBIDE-17663
+	 * @see https://issues.jboss.org/browse/JBIDE-17663
 	 */
 	@Test
 	public void testPathParamFieldSupport() {
@@ -101,7 +98,7 @@ public class PathParamAnnotationSupportTest extends RESTfulTestBase {
 
 		/* test JAX-RS REST explorer */
 		assertCountOfRESTServices(restServices, 1);
-		assertExpectedPathOfService(restServices.get(0),
+		assertExpectedPathOfService("JBIDE-17663: ", restServices.get(0),
 				"/rest/{" + pathParam2 + ":" + pathType2 + "}");
 	}
 	
@@ -123,7 +120,9 @@ public class PathParamAnnotationSupportTest extends RESTfulTestBase {
 		ProjectItem source = project.getProjectItem("src", "org.rest.test", "RestService.java");
 		source.open();
 		
-		replaceLineInEditor("	@Path(\"{author}/{" + newPathParam + "}\")", "@Path(\"{author}\"");
+		ExtendedTextEditor editor = new ExtendedTextEditor();
+		editor.activate();
+		editor.replaceLine("	@Path(\"{author}/{" + newPathParam + "}\")", "@Path(\"{author}\"");
 		
 		/* get RESTful services from JAX-RS REST explorer for the project */
 		List<ProjectItem> restServices = restfulServicesForProject(projectPath2);
@@ -134,7 +133,8 @@ public class PathParamAnnotationSupportTest extends RESTfulTestBase {
 				"/rest/{" + pathParam1 + ":" + pathType1 + "}/{"
 						+ newPathParam + ":.*}");
 		
-		insertBeforeLineInEditor("	@PathParam(\"" + newPathParam + "\")\n	"
+		editor.activate();
+		editor.insertBeforeLine("	@PathParam(\"" + newPathParam + "\")\n	"
 				+ newPathType + " year;", "@PathParam(\"author\")");
 		
 		
@@ -143,40 +143,9 @@ public class PathParamAnnotationSupportTest extends RESTfulTestBase {
 
 		/* test JAX-RS REST explorer */
 		assertCountOfRESTServices(restServices, 1);
-		assertExpectedPathOfService(restServices.get(0),
+		assertExpectedPathOfService("JBIDE-17663: ", restServices.get(0),
 				"/rest/{" + pathParam1 + ":" + pathType1 + "}/{"
 						+ newPathParam + ":" + newPathType + "}");
-	}
-	
-	private void replaceLineInEditor(String newLine, String contains) {
-		TextEditor editor = new TextEditor();
-		editor.activate();
-		int lineNumber = getLineNum(editor, StringContains.containsString(contains));
-		
-		editor.selectLine(lineNumber);
-		
-		Keyboard keyboard = KeyboardFactory.getKeyboard();
-		keyboard.type(newLine + "\n");
-		
-		editor.save();
-	}
-	
-	private int getLineNum(TextEditor editor, Matcher<String> matcher) {
-		for(int lineNum=0;lineNum<editor.getNumberOfLines();lineNum++) {
-			String lineText = editor.getTextAtLine(lineNum);
-			if(matcher.matches(lineText)) {
-				return lineNum;
-			}
-		}
-		throw new IllegalArgumentException();
-	}
-	
-	private void insertBeforeLineInEditor(String insertText, String afterTextContains) {
-		TextEditor editor = new TextEditor();
-		editor.activate();
-		int lineNumber = getLineNum(editor, StringContains.containsString(afterTextContains));
-		editor.insertLine(lineNumber, insertText);
-		editor.save();
 	}
 	
 	@Test

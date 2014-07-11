@@ -9,7 +9,7 @@
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
 
-package org.jboss.tools.ws.ui.bot.test.rest;
+package org.jboss.tools.ws.ui.bot.test.rest.param;
 
 import java.util.List;
 
@@ -17,6 +17,7 @@ import javax.ws.rs.MatrixParam;
 
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.ProjectItem;
 import org.jboss.tools.ui.bot.ext.Timing;
+import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
 import org.junit.Test;
 
 /**
