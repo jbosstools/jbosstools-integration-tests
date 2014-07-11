@@ -11,12 +11,21 @@
 
 package org.jboss.tools.ws.ui.bot.test.utils;
 
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCombo;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.jboss.reddeer.swt.condition.JobIsRunning;
+import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.swt.impl.button.CheckBox;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
 import org.jboss.tools.ui.bot.ext.SWTOpenExt;
 import org.jboss.tools.ui.bot.ext.SWTUtilExt;
@@ -27,8 +36,9 @@ import org.jboss.tools.ui.bot.ext.gen.ActionItem.NewObject.JavaEEEnterpriseAppli
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.NewObject.WebServicesWSDL;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.ext.view.ProjectExplorer;
+import org.jboss.tools.ws.reddeer.ui.wizards.DynamicWebProjectWizard;
+import org.jboss.tools.ws.reddeer.ui.wizards.NewEARProjectWizard;
 import org.jboss.tools.ws.ui.bot.test.uiutils.actions.NewFileWizardAction;
-import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.DynamicWebProjectWizard;
 import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.Wizard;
 
 public class ProjectHelper {
@@ -86,13 +96,15 @@ public class ProjectHelper {
 	public void createProject(String name) {
 		new NewFileWizardAction().run()
 				.selectTemplate("Web", "Dynamic Web Project").next();
-		new DynamicWebProjectWizard().
-			setProjectName(name).
-			next().
-			next().
-			generateDeploymentDescriptor().
-			finish();
-		util.waitForNonIgnoredJobs(Timing.time60S());
+		
+		DynamicWebProjectWizard projectWiz = new DynamicWebProjectWizard();
+		projectWiz.setProjectName(name);
+		projectWiz.next();
+		projectWiz.next();
+		projectWiz.generateDeploymentDescriptor();
+		projectWiz.finish();
+		
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		projectExplorer.selectProject(name);
 	}
 	
@@ -104,8 +116,12 @@ public class ProjectHelper {
 	public void createProjectForEAR(String name, String earProject) {
 		new NewFileWizardAction().run()
 				.selectTemplate("Web", "Dynamic Web Project").next();
-		new DynamicWebProjectWizard().setProjectName(name).
-			addProjectToEar(earProject).finish();
+		
+		DynamicWebProjectWizard project = new DynamicWebProjectWizard();
+		project.setProjectName(name);
+		project.addProjectToEar(earProject);
+		project.finish();
+		
 		util.waitForNonIgnoredJobs();
 		projectExplorer.selectProject(name);
 	}
@@ -115,17 +131,20 @@ public class ProjectHelper {
 	 * @param name
 	 */
 	public void createEARProject(String name) {
-		SWTBot wiz = open.newObject(JavaEEEnterpriseApplicationProject.LABEL);
-		wiz.textWithLabel(JavaEEEnterpriseApplicationProject.TEXT_PROJECT_NAME)
-				.setText(name);
+		NewEARProjectWizard wizard = new NewEARProjectWizard();
+		wizard.open();
+		
+		new LabeledText(JavaEEEnterpriseApplicationProject.TEXT_PROJECT_NAME)
+			.setText(name);
 		// set EAR version
-		SWTBotCombo combo = wiz.comboBox(1);
-		combo.setSelection(combo.itemCount() - 1);
-		wiz.button(IDELabel.Button.NEXT).click();
-		wiz.checkBox("Generate application.xml deployment descriptor").click();
-		open.finish(wiz);
-		util.waitForNonIgnoredJobs();
-		projectExplorer.selectProject(name);
+		DefaultCombo combo = new DefaultCombo(1);
+		combo.setSelection(combo.getItems().size()-1);
+		
+		wizard.next();
+		
+		new CheckBox("Generate application.xml deployment descriptor").click();
+		
+		wizard.finish();
 	}
 	
 	/**
