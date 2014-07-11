@@ -18,6 +18,10 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
 
 public class Wizard extends SWTBotShell {
@@ -59,22 +63,21 @@ public class Wizard extends SWTBotShell {
 		return this;
 	}
 
-	public Wizard back() {
-		clickButton("< Back");
-		return this;
+	public void back() {
+		new PushButton("< Back").click();
 	}
 
-	public Wizard next() {
-		clickButton("Next >");
-		return this;
+	public void next() {
+		new PushButton("Next >").click();
 	}
 
 	public void cancel() {
-		clickButton("Cancel");
+		new PushButton("Cancel").click();
 	}
 
 	public void finish() {
-		clickButton("Finish");
+		new PushButton("Finish").click();
+		new WaitWhile(new ShellWithTextIsActive(getText()), TimePeriod.LONG);
 	}
 
 	protected void clickButton(String text) {

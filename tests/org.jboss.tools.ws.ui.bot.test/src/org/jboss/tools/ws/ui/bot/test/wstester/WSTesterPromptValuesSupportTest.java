@@ -187,7 +187,7 @@ public class WSTesterPromptValuesSupportTest extends RESTfulTestBase {
 	
 	private void checkAllDefaultParametersValues(List<TreeItem> parameters) {
 		
-		assertThat("Default value of id is wrong", 
+		assertThat("JBIDE-12027: Default value of id is wrong", 
 				dialog.getParameterValue(parameters.get(0)), Is.is("0"));
 		assertThat("Default value of id is wrong", 
 				dialog.getParameterValue(parameters.get(1)), Is.is("m1"));

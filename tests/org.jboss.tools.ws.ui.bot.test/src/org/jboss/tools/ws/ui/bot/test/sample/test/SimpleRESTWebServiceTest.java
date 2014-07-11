@@ -27,6 +27,10 @@ public class SimpleRESTWebServiceTest extends SampleRESTTestBase {
 		return "SimpleRESTWS";
 	}
 
+	/**
+	 * Fails due to JBIDE-17833
+	 * @see https://issues.jboss.org/browse/JBIDE-17833
+	 */
 	@Test
 	public void testSimpleRestWS() {
 		IFile dd = getDD(getWsProjectName());
