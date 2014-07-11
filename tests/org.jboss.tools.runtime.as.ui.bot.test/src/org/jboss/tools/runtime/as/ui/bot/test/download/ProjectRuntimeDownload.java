@@ -20,13 +20,8 @@ public class ProjectRuntimeDownload extends ProjectRuntimeDownloadTestBase {
 		downloadAndCheckServer("JBoss AS 7.1.1 (Brontes)", 1);
 	}
 	
-	/**
-	 * Fails due to JBIDE-17547
-	 * 
-	 * @see https://issues.jboss.org/browse/JBIDE-17547
-	 */
 	@Test
-	public void downloadSeam230() {
-		downloadAndCheckSeam("JBoss Seam 2.3.0", 1);
+	public void downloadSeam231() {
+		downloadAndCheckSeam("JBoss Seam 2.3.1", 1);
 	}
 }
