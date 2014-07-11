@@ -9,7 +9,7 @@ import org.jboss.tools.runtime.as.ui.bot.test.template.DetectRuntimeTemplate;
 
 public class DetectEWP5 extends DetectRuntimeTemplate {
 
-	public static final String SERVER_ID = "jboss-ewp-5.1";
+	public static final String SERVER_ID = "jboss-ewp-5.2";
 	
 	@Override
 	protected String getPathID() {
@@ -21,13 +21,13 @@ public class DetectEWP5 extends DetectRuntimeTemplate {
 		Runtime server = new Runtime();
 		server.setName(getPathID());
 		server.setType("EWP");
-		server.setVersion("5.1");
+		server.setVersion("5.2");
 		server.setLocation(RuntimeProperties.getInstance().getRuntimePath(getPathID()));
 		
 		Runtime seam = new Runtime();
 		seam.setName("seam");
 		seam.setType("SEAM");
-		seam.setVersion("2.2.5.EAP5");
+		seam.setVersion("2.2.6.EAP5");
 		seam.setLocation(RuntimeProperties.getInstance().getRuntimePath(getPathID()) + "/seam");
 		
 		return Arrays.asList(server, seam);
