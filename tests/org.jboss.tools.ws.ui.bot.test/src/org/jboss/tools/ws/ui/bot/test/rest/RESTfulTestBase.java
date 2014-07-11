@@ -24,6 +24,7 @@ import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.ProjectItem;
 import org.jboss.reddeer.eclipse.jface.exception.JFaceLayerException;
+import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.condition.NonSystemJobRunsCondition;
@@ -94,10 +95,7 @@ public class RESTfulTestBase extends WSTestBase {
 		importRestWSProject(projectName);
 
 		assertCountOfApplicationAnnotationValidationErrors(projectName, 0);
-		List<TreeItem> errors = new org.jboss.reddeer.eclipse.ui.problems.ProblemsView()
-				.getAllErrors();
-		assertThat("There are errors " + Arrays.toString(errors.toArray()),
-				errors.size(), Is.is(0));
+		assertCountOfErrors(0);
 	}
 	
 	protected void assertRestFullSupport(String projectName) {
@@ -118,11 +116,11 @@ public class RESTfulTestBase extends WSTestBase {
 				+ " was found instead of " + expectedCount,
 				restServices.size() == expectedCount);
 	}
-
+	
 	protected void assertAllRESTServicesInExplorer(List<ProjectItem> restServices) {
 		assertTrue("All RESTful services (GET, DELETE, POST, PUT) "
 				+ "should be present but they are not\nThere are "
-				+ Arrays.toString(restServices.toArray()),
+				+ Arrays.toString(parseRestServices(restServices)),
 				allRestServicesArePresent(restServices));
 	}
 
@@ -169,10 +167,22 @@ public class RESTfulTestBase extends WSTestBase {
 				found);
 	}
 
+	protected void assertExpectedPathOfService(String message,
+			ProjectItem service, String expectedPath) {
+		String path = restfulWizard.getPathForRestFulService(service);
+		assertEquals(message + "Failure when comparing paths\n", expectedPath, path);
+	}
+	
 	protected void assertExpectedPathOfService(ProjectItem service,
 			String expectedPath) {
-		String path = restfulWizard.getPathForRestFulService(service);
-		assertEquals("Failure when comparing paths = ", expectedPath, path);
+		assertExpectedPathOfService("", service, expectedPath);
+	}
+
+	protected void assertCountOfErrors(int expectedCount) {
+		List<TreeItem> errors = new ProblemsView().getAllErrors();
+		assertThat("Expected is " + expectedCount + " erros, but there are "
+				+ errors.size() +" errors: " + Arrays.toString(errors.toArray()),
+				errors.size(), Is.is(expectedCount));
 	}
 
 	protected void assertCountOfPathAnnotationValidationErrors(String projectName, int expectedCount) {
@@ -185,6 +195,13 @@ public class RESTfulTestBase extends WSTestBase {
 			int expectedCount) {
 		assertCountOfValidationWarning(
 				restfulHelper.getRESTValidationWarnings(projectName),
+				expectedCount);
+	}
+	
+	protected void assertCountOfApplicationAnnotationValidationWarnings(String projectName,
+			String description, int expectedCount) {
+		assertCountOfValidationWarning(
+				restfulHelper.getRESTValidationWarnings(projectName, description),
 				expectedCount);
 	}
 	
@@ -206,7 +223,7 @@ public class RESTfulTestBase extends WSTestBase {
 		int foundCount = problems.length;
 		assertTrue("Expected count of validation " + problemType + "s: " + expectedCount
 				+ ".\nCount of found validation " + problemType + "s: " + foundCount
-				+ " - " + Arrays.toString(problems),
+				+ (foundCount > 0 ? " - " + Arrays.toString(problems) : ""),
 				foundCount == expectedCount);
 	}
 	
@@ -243,7 +260,7 @@ public class RESTfulTestBase extends WSTestBase {
 			String resourceFile, Object... parameters) {
 		String streamPath = "/resources/restful/" + resourceFile;
 		resourceHelper.copyResourceToClassWithSave(editor,
-				QueryParamAnnotationSupportTest.class
+				this.getClass()
 						.getResourceAsStream(streamPath), true, false,
 				parameters);
 		bot.sleep(Timing.time2S());
