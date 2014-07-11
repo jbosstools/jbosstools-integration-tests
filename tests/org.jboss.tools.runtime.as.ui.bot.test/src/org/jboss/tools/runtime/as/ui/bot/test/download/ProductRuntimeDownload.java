@@ -31,7 +31,7 @@ public class ProductRuntimeDownload extends ProductRuntimeDownloadTestBase {
 		
 		try {
 			Text errorText = new org.jboss.reddeer.swt.impl.text.DefaultText(2);
-			assertThat(errorText.getText(), StringContains.containsString("Your credentials are incorrect"));
+			assertThat(errorText.getText(), StringContains.containsString(" Your credentials are incorrect. Please review the values and try again."));
 		} catch(SWTLayerException e) {
 			fail("Error text not found\n" + e.getMessage());
 		}
