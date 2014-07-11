@@ -19,13 +19,15 @@
  - get jbosstools-base ``` $ git clone https://github.com/jbosstools/jbosstools-base ```
  - get Red Deer ``` $ git clone https://github.com/jboss-reddeer/reddeer ```
 
-2. Now run eclipse in a new workspace (e.g. ~/jbds_test_workspace_ws)
+2. ** Now run eclipse in a new workspace (e.g. ~/jbds_test_workspace_ws) **
 
 3. Import projects (File > Import... > Existing Projects into workspace)
- - import all Red Deer plugins (from directory reddeer/plugins/)
+ - import WebServices tests - jbosstools-integration-tests/tests/org.jboss.tools.ws.ui.bot.test
+
  - import plugins org.jboss.tools.ui.bot.ext.test and org.jboss.tools.ws.reddeer
-   from jbosstools-integration-tests (from directory jbosstools-integration-tests/plugins/)
- - finally import WebServices tests - jbosstools-integration-tests/tests/org.jboss.tools.ws.ui.bot.test
+   from directory jbosstools-integration-tests/plugins/
+ - import plugin jbosstools-base/tests/plugins/org.jboss.tools.tests
+ - import all Red Deer plugins from directory reddeer/plugins/
  
 
 4. Install SWTBot

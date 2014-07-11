@@ -13,7 +13,8 @@
 	<artifactId>org.jboss.tools.ws.ui.bot.test</artifactId>
 	<packaging>eclipse-test-plugin</packaging>
 	<properties>
-		<apache-cxf-2.x>${project.build.directory}/requirements/apache-cxf-2.x/apache-cxf-2.4.6/</apache-cxf-2.x>
+		<apache-cfx-2.x.dir>${project.build.directory}/requirements/apache-cxf-2.x/</apache-cfx-2.x.dir>
+		<apache-cxf-2.x>${apache-cfx-2.x.dir}/apache-cxf-2.4.6/</apache-cxf-2.x>
 		<apache-cxf-2.x.url>http://archive.apache.org/dist/cxf/2.4.6/apache-cxf-2.4.6.zip</apache-cxf-2.x.url>
 		<apache-cxf-2.x.md5>ebaab4357812b22c17eadb30b563c7b8</apache-cxf-2.x.md5>
 
@@ -87,7 +88,7 @@
 							<url>${apache-cxf-2.x.url}</url>
 							<unpack>true</unpack>
 							<md5>${apache-cxf-2.x.md5}</md5>
-							<outputDirectory>${apache-cxf-2.x}</outputDirectory>
+							<outputDirectory>${apache-cxf-2.x.dir}</outputDirectory>
 						</configuration>
 					</execution>
 				</executions>
