@@ -21,11 +21,13 @@ import org.apache.log4j.Logger;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.bindings.keys.KeyStroke;
 import org.eclipse.jface.bindings.keys.ParseException;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
+import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
 import org.eclipse.swtbot.swt.finder.results.VoidResult;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.TimeoutException;
@@ -105,6 +107,12 @@ public class OpenOnHelper {
 		openOnUsingKeyStroke(sourceEditor);
 		if (!wasWpenOnSuccessful(bot, expectedOpenedFileName)) {
 			log.info("openon using F3 keystroke failed");
+			openOnUsingF3Key(sourceEditor);
+			waitForEditorToOpen(bot, expectedOpenedFileName);
+		}
+
+		if (!wasWpenOnSuccessful(bot, expectedOpenedFileName)) {
+			log.info("openon using F3 key failed");
 			openOnUsingAction();
 			waitForEditorToOpen(bot, expectedOpenedFileName);
 		}
@@ -127,11 +135,18 @@ public class OpenOnHelper {
 
 	private static void openOnUsingKeyStroke(SWTBotEclipseEditor editor) {
 		try {
+			editor.setFocus();
 			KeyStroke f3KeyStroke = KeyStroke.getInstance("F3");
 			editor.pressShortcut(f3KeyStroke);
 		} catch (ParseException ex) {
 			throw new RuntimeException("Keystroke 'F3' could not be created", ex);
 		}
+		
+	}
+	
+	private static void openOnUsingF3Key(SWTBotEclipseEditor editor) {
+		editor.setFocus();
+		KeyboardFactory.getKeyboard().invokeKeyCombination(SWT.F3);
 	}
 
 	private static boolean wasWpenOnSuccessful(SWTBotExt bot, String expectedEditorTitle) {

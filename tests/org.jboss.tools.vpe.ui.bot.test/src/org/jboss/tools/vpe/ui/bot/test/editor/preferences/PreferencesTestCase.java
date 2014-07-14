@@ -25,8 +25,7 @@ import org.jboss.tools.vpe.ui.bot.test.editor.VPEEditorTestCase;
 
 public abstract class PreferencesTestCase extends VPEEditorTestCase{
 
-	protected static final String TOGGLE_SELECTION_BAR_TOOLTIP = "Toggle selection tag bar (" +  //$NON-NLS-1$
-	  (SWTJBTExt.isRunningOnMacOs() ? "⌘6" : "Ctrl+6") + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+	protected static final String TOGGLE_SELECTION_BAR_TOOLTIP = "Toggle selection tag bar"; //$NON-NLS-1$
 	protected static final String SHOW_NON_VISUAL_TAGS = "Show non-visual tags"; //$NON-NLS-1$
 	protected static final String SHOW_BORDER_FOR_UNKNOWN_TAGS = "Show border for unknown tags"; //$NON-NLS-1$
 	protected static final String SHOW_RESOURCE_BUNDLES = "Show resource bundles usage as EL expressions"; //$NON-NLS-1$
@@ -38,8 +37,7 @@ public abstract class PreferencesTestCase extends VPEEditorTestCase{
 	protected static final String PREF_FILTER_SHELL_TITLE = "Preferences (Filtered)"; //$NON-NLS-1$
 	protected static final String SCROLL_LOCK_TOOLTIP = "Synchronize scrolling between source and visual panes"; //$NON-NLS-1$
 	protected static final String I18N_BUTTON_TOOLTIP1 = "Externalize selected string..."; //$NON-NLS-1$
-	protected static final String I18N_BUTTON_TOOLTIP = "Externalize selected string... (" + //$NON-NLS-1$
-			(SWTJBTExt.isRunningOnMacOs() ? "⌘7" : "Ctrl+7") + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+	protected static final String I18N_BUTTON_TOOLTIP = "Externalize selected string..."; //$NON-NLS-1$
 	protected static final String SHOW_VISUAL_TOOLBAR_PREFS_CHECKBOX_NAME = "Show toolbar within the editor (otherwise in Eclipse's toolbar)"; //$NON-NLS-1$
 	protected static final String SHOW_SELECTION_TAG_BAR = "Show selection tag bar"; //$NON-NLS-1$
 	
