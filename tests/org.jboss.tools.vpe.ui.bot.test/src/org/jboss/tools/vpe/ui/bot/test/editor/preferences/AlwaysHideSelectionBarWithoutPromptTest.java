@@ -27,7 +27,7 @@ public class AlwaysHideSelectionBarWithoutPromptTest extends PreferencesTestCase
 		
 		closePage();
 		openPage();
-		checkIsHide();
+		checkIsHide("https://issues.jboss.org/browse/JBIDE-17896");
 		
 		//Test Show Selection Bar
 		
@@ -60,13 +60,17 @@ public class AlwaysHideSelectionBarWithoutPromptTest extends PreferencesTestCase
 	}
 	
 	private void checkIsHide(){
+		checkIsHide("Toolbar button " + HID_SEL_BAR + " is not hidden");
+	}
+	
+	private void checkIsHide(String message){
 		WidgetNotFoundException exception = null;
 		try {
 			bot.toolbarButtonWithTooltip(HID_SEL_BAR);
 		} catch (WidgetNotFoundException e) {
 			exception = e;
 		}
-		assertNotNull(exception);
+		assertNotNull(message,exception);
 	}
 	
 	private void checkIsShow(){

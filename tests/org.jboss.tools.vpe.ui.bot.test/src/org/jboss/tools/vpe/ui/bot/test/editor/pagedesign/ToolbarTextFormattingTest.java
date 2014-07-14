@@ -96,7 +96,7 @@ public class ToolbarTextFormattingTest extends VPEAutoTestCase {
 	  SWTBotToolbarToggleButton italicButton = editorBot.toolbarToggleButtonWithTooltip(IDELabel.VisualPageEditor.ITALIC_TOOLBAR_BUTTON_LABEL);
 	  SWTBotToolbarToggleButton underlinedButton = editorBot.toolbarToggleButtonWithTooltip(IDELabel.VisualPageEditor.UNDERLINE_TOOLBAR_BUTTON_LABEL);
 	  // Check if Text Format Buttons buttons are enabled within VPE Editor
-	  assertToolbarButtonIsEnabled(boldButton);
+	  assertToolbarButtonIsEnabled(boldButton,"https://issues.jboss.org/browse/JBIDE-16938");
 	  assertToolbarButtonIsEnabled(italicButton);
 	  assertToolbarButtonIsEnabled(underlinedButton);
 	  boldButton.click();
@@ -177,14 +177,29 @@ public class ToolbarTextFormattingTest extends VPEAutoTestCase {
 	      "Expected text is: '" + expectedLineText + "'.",
 	    lineText.endsWith(expectedLineText ));
 	}
-	 /**
-   * Asserts if Toolbar Button is enabled
-   * @param toolbarButton
-   */
-  private void assertToolbarButtonIsEnabled (SWTBotToolbarButton toolbarButton){
-    assertTrue (toolbarButton.getToolTipText() + " Toolbar Button has to be enabled but it is not.",
-      toolbarButton.isEnabled());
-  }
+
+	/**
+	 * Asserts if Toolbar Button is enabled
+	 * 
+	 * @param toolbarButton
+	 */
+	private void assertToolbarButtonIsEnabled(SWTBotToolbarButton toolbarButton) {
+		assertToolbarButtonIsEnabled(toolbarButton,toolbarButton.getToolTipText()
+				+ " Toolbar Button has to be enabled but it is not.");
+	}
+
+	/**
+	 * Asserts if Toolbar Button is enabled
+	 * 
+	 * @param toolbarButton
+	 */
+	private void assertToolbarButtonIsEnabled(
+			SWTBotToolbarButton toolbarButton, String message) {
+		assertTrue(toolbarButton.getToolTipText()
+				+ " Toolbar Button has to be enabled but it is not."
+				+ ((message == null || message.length() == 0) ? "" : message),
+				toolbarButton.isEnabled());
+	}
   /**
    * Asserts Toolbar Button selection
    * @param expectedSelection

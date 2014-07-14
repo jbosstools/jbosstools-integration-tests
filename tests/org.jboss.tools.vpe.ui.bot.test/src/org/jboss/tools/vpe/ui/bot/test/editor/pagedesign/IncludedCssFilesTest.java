@@ -30,6 +30,7 @@ import org.jboss.tools.ui.bot.ext.parts.SWTBotEditorExt;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.ext.types.JobName;
 import org.jboss.tools.vpe.ui.bot.test.VPEAutoTestCase;
+import org.junit.Ignore;
 
 /**
  * Tests functionality of Included CSS Files tab page of Page Design Options Dialog 
@@ -43,7 +44,8 @@ public class IncludedCssFilesTest extends PageDesignTestCase {
   
   private SWTBot addCssReferenceDialogBot = null;
   private SWTBot optionsDialogBot  = null;
-    
+  // Page Design option is not supported for HTML for now
+  @Ignore  
   public void testIncludedCssFiles() throws IOException{
     SWTBotTree tree = packageExplorer.show().bot().tree();
     tree.expandNode(VPEAutoTestCase.JBT_TEST_PROJECT_NAME)

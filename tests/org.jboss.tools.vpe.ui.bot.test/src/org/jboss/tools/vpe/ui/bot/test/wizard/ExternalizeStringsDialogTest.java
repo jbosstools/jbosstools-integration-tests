@@ -12,6 +12,7 @@ package org.jboss.tools.vpe.ui.bot.test.wizard;
 
 import java.awt.event.KeyEvent;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
@@ -23,6 +24,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarButton;
+import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
 import org.jboss.tools.vpe.ui.bot.test.VPEAutoTestCase;
 import org.jboss.tools.jst.web.ui.internal.editor.messages.JstUIMessages;
 import org.jboss.tools.ui.bot.ext.SWTJBTExt;
@@ -47,8 +49,8 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		+ "\t ;.df:,ee {df}df[ty]"; //$NON-NLS-1$
 	private final String COMPLEX_KEY_RESULT = "HELLO_Input_User_Name_Page_and" + //$NON-NLS-1$
 			"_some_more_text_vc_yy_ghg_l_kk_mmm_fdg_df_ee_df_df_ty"; //$NON-NLS-1$
-	private final String COMPLEX_VALUE_RESULT = "\\r\\n!! HELLO ~ Input User, Name.Page ? \\r\\n\\r\\n and some more text " + //$NON-NLS-1$
-      "\\r\\n \\r\\n @ \\# vc \\$ % yy^ &*(ghg ) _l-kk+mmm\\/fdg\\ \\t ;.df:,ee {df}df[ty]\\r\\n\\t\\t";; //$NON-NLS-1$
+	private final String COMPLEX_VALUE_RESULT = "\\r\\n!! HELLO ~ Input User, Name.Page ? \\r\\n and some more text " + //$NON-NLS-1$
+      "\\r\\n@ \\# vc \\$ % yy^ &*(ghg ) _l-kk+mmm\\/fdg\\ \\t ;.df:,ee {df}df[ty]\\r\\n\\t\\t";; //$NON-NLS-1$
 	
 	private boolean isUnusedDialogOpened = false;
 	
@@ -159,6 +161,7 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		SWTBotEditor editor2 = SWTTestExt.eclipse.openFile(
 				JBT_TEST_PROJECT_NAME, "JavaSource", "demo", //$NON-NLS-1$ //$NON-NLS-2$
 				"Messages.properties"); //$NON-NLS-1$
+		editor2.bot().cTabItem("Source").activate();
 		editor2.toTextEditor().selectLine(3);
 		String line = editor2.toTextEditor().getSelection();
 		assertEquals("'Messages.properties' was updated incorrectly", "User=User", line); //$NON-NLS-1$ //$NON-NLS-2$
@@ -217,7 +220,8 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		 * And externalize the same string again.
 		 */
 		bot.cTabItem("Source").activate(); //$NON-NLS-1$
-		editor2.toTextEditor().typeText(3,9, "1"); //$NON-NLS-1$
+ 		editor2.setFocus();
+		editor2.toTextEditor().setText(editor2.toTextEditor().getText() + "1");
 		editor2.saveAndClose();
 		editor = SWTTestExt.packageExplorer.openFile(JBT_TEST_PROJECT_NAME,
 				"WebContent", "pages", TEST_PAGE); //$NON-NLS-1$ //$NON-NLS-2$
@@ -351,6 +355,7 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		 * In the 3rd line should be results from the previous test "User=User".
 		 * If previous test failed -- it could crash this one as well.
 		 */
+		editor2.bot().cTabItem("Source").activate();
 		editor2.toTextEditor().selectLine(5);
 		String line = editor2.toTextEditor().getSelection();
 		assertEquals("'Messages.properties' was updated incorrectly", "user.compoundKey=User", line); //$NON-NLS-1$ //$NON-NLS-2$
@@ -498,12 +503,12 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		/*
 		 * Select some text
 		 */
-		editor.toTextEditor().navigateTo(21, 40);
+		editor.toTextEditor().navigateTo(21, 50);
 		/*
 		 * Send key press event to fire VPE listeners
 		 */
 		editor.setFocus();
-		KeyboardHelper.typeKeyCodeUsingAWT(KeyEvent.VK_LEFT);
+		KeyboardFactory.getKeyboard().invokeKeyCombination(SWT.ARROW_RIGHT);
 		/*
 		 * Activate the dialog
 		 */
@@ -529,7 +534,9 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		/*
 		 * Type some text outside the tag
 		 */
-		editor.toTextEditor().typeText(13, 0, COMPLEX_TEXT);
+		editor.setFocus();
+		editor.toTextEditor().selectRange(13, 0, 0);
+		editor.toTextEditor().insertText(COMPLEX_TEXT);
 		/*
 		 * Select nothing and call the dialog --
 		 * the whole text should be selected.
@@ -566,7 +573,8 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		/*
 		 * Check selection in the attribute's value
 		 */
-		editor.toTextEditor().selectRange(22, 50, 0);
+		editor.save();
+ 		editor.toTextEditor().selectRange(19, 109, 0);
 		KeyboardHelper.typeKeyCodeUsingAWT(KeyEvent.VK_RIGHT);
 		util.waitForAll();
 		/*
@@ -603,7 +611,9 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		 * Select some text
 		 */
 		editor.toTextEditor().selectLine(3);
-		editor.toTextEditor().typeText("Plain text"); //$NON-NLS-1$
+		editor.toTextEditor().insertText("Plain text"); //$NON-NLS-1$
+		editor.toTextEditor().selectRange(3, 3, 0);
+		editor.save();
 		/*
 		 * Activate the dialog
 		 */
@@ -683,9 +693,10 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		SWTBotEditor editor2 = SWTTestExt.eclipse.openFile(
 				JBT_TEST_PROJECT_NAME, "JavaSource", //$NON-NLS-1$
 				"hello.properties"); //$NON-NLS-1$
+		editor2.bot().cTabItem("Source").activate();
 		editor2.toTextEditor().selectLine(0);
 		String line = editor2.toTextEditor().getSelection();
-		assertEquals("Created file is incorrect", "Plain_text=\\r\\n\\r\\nPlain text\\r\\n\\r\\n", line); //$NON-NLS-1$ //$NON-NLS-2$
+		assertEquals("Created file is incorrect", "Plain_text=\\r\\n\\r\\nPlain\\ text\\r\\n\\r\\n", line); //$NON-NLS-1$ //$NON-NLS-2$
 		/*
 		 * Reopen the page, and check that the new file 
 		 * for existed properties file won't be created.
@@ -698,7 +709,9 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		 * Select some text
 		 */
 		editor.toTextEditor().selectLine(3);
-		editor.toTextEditor().typeText("Plain text"); //$NON-NLS-1$
+		editor.toTextEditor().insertText("Plain text"); //$NON-NLS-1$
+		editor.toTextEditor().selectRange(3, 3, 0);
+		editor.save();
 		/*
 		 * Activate the dialog
 		 */
@@ -901,7 +914,7 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		editor.setFocus();
 		editor.save();
 		editor.toTextEditor().selectLine(1);
-		assertEquals("Taglig insertion failed!", //$NON-NLS-1$
+		assertEquals("https://issues.jboss.org/browse/JBIDE-17920\nTaglig insertion failed!", //$NON-NLS-1$
 				"<%@ taglib uri=\"http://java.sun.com/jsf/core\" prefix=\"f\"%>", //$NON-NLS-1$
 				editor.toTextEditor().getSelection());
 	}
@@ -983,7 +996,7 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		 */
 		editor.setFocus();
 		editor.toTextEditor().selectLine(6);
-		assertEquals("Taglig insertion failed!", //$NON-NLS-1$
+		assertEquals("https://issues.jboss.org/browse/JBIDE-17920\nTaglig insertion failed!", //$NON-NLS-1$
 			      "      xmlns:f=\"http://java.sun.com/jsf/core\">", //$NON-NLS-1$
 				editor.toTextEditor().getSelection());
 	}
@@ -1009,7 +1022,7 @@ public class ExternalizeStringsDialogTest extends VPEAutoTestCase {
 		/*
 		 * Send key press event to fire VPE listeners
 		 */
-		KeyboardHelper.typeKeyCodeUsingAWT(KeyEvent.VK_LEFT);
+		KeyboardHelper.typeKeyCodeUsingAWT(KeyEvent.VK_RIGHT);
 		bot.sleep(Timing.time1S());
 		/*
 		 * Get toolbar button

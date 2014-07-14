@@ -14,9 +14,12 @@ package org.jboss.tools.ui.bot.ext.helper;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.util.Iterator;
+import java.util.LinkedList;
 
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotButton;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
 import org.jboss.tools.ui.bot.ext.SWTEclipseExt;
 import org.jboss.tools.ui.bot.ext.SWTUtilExt;
@@ -60,20 +63,22 @@ public class BuildPathHelper {
 		assertTrue("External Jar Location cannot be empty but is " + externalJarLocation, 
 				externalJarLocation != null && externalJarLocation.length() > 0);
 		SWTBotExt bot = new SWTEclipseExt().openPropertiesOfProject(projectName);
-    bot.shell(IDELabel.Shell.PROPERTIES_FOR + " " + projectName).activate().bot();
+		LinkedList<SWTBotShell> openedShells = new LinkedList<SWTBotShell>();
+		openedShells.addFirst(bot.shell(IDELabel.Shell.PROPERTIES_FOR + " " + projectName).activate());
 		bot.tree().expandNode(IDELabel.JavaBuildPathPropertiesEditor.JAVA_BUILD_PATH_TREE_ITEM_LABEL).select();
-    bot.sleep(Timing.time3S());		
+		bot.sleep(Timing.time3S());		
 		bot.tabItem(IDELabel.JavaBuildPathPropertiesEditor.LIBRARIES_TAB_LABEL).activate();
 		final SWTBotButton btn = bot.button(IDELabel.Button.ADD_VARIABLE);
 		btn.click();
 		bot.sleep(Timing.time2S());
 		// workaround because first click is not working when test is run via maven
 		try {
-		  bot.shell(IDELabel.Shell.NEW_VARIABLE_CLASS_PATH_ENTRY).activate();  
+		  SWTBotShell botShell = bot.shell(IDELabel.Shell.NEW_VARIABLE_CLASS_PATH_ENTRY).activate();
+		  openedShells.addFirst(botShell);
 		} catch (WidgetNotFoundException wnfe){
 		  btn.click();  
 		  bot.sleep(Timing.time2S());
-		  bot.shell(IDELabel.Shell.NEW_VARIABLE_CLASS_PATH_ENTRY).activate();
+		  openedShells.addFirst(bot.shell(IDELabel.Shell.NEW_VARIABLE_CLASS_PATH_ENTRY).activate());
 		}
 		String jarFileName = new File(externalJarLocation).getName();
 		String variableEntryName = jarFileName.toUpperCase() + "_LOCATION";	
@@ -86,26 +91,31 @@ public class BuildPathHelper {
 			}
 		}
 		bot.button(IDELabel.Button.CONFIGURE_VARIABLES).click();
-		bot.shell(IDELabel.Shell.PREFERENCES_FILTERED).activate();
+		openedShells.addFirst(bot.shell(IDELabel.Shell.PREFERENCES_FILTERED).activate());
 		if (externalJarExists && overwriteIfExists) {
 			bot.button(IDELabel.Button.EDIT).click();					
-			bot.shell(IDELabel.Shell.EDIT_VARIABLE_ENTRY).activate();	
+			openedShells.addFirst(bot.shell(IDELabel.Shell.EDIT_VARIABLE_ENTRY).activate());	
 			bot.textWithLabel(IDELabel.NewVariableEntryDialog.PATH_TEXT_LABEL)
 					.setText(externalJarLocation);
 		} else {
 			bot.button(IDELabel.Button.NEW).click();
-			bot.shell(IDELabel.Shell.NEW_VARIABLE_ENTRY).activate();		
+			openedShells.addFirst(bot.shell(IDELabel.Shell.NEW_VARIABLE_ENTRY).activate());		
 			bot.textWithLabel(IDELabel.NewVariableEntryDialog.NAME_TEXT_LABEL)
 					.setText(variableEntryName);		
 			bot.textWithLabel(IDELabel.NewVariableEntryDialog.PATH_TEXT_LABEL)
 					.setText(externalJarLocation);
 		}
+		Iterator<SWTBotShell> itOpenedShells = openedShells.iterator();
+		itOpenedShells.next().activate();
 		bot.clickButton(IDELabel.Button.OK).click();
 		String result = TableHelper.getSelectionText(bot.table());
+		itOpenedShells.next().activate();
 		bot.waitUntil(new ActiveShellTitleMatches(bot, "Preferences \\(Filtered\\)"),Timing.time3S());
 		bot.clickButton(IDELabel.Button.OK).click();
+		itOpenedShells.next().activate();
 		bot.waitUntil(new ActiveShellTitleMatches(bot, IDELabel.Shell.NEW_VARIABLE_CLASS_PATH_ENTRY),Timing.time3S());
 		bot.clickButton(IDELabel.Button.OK).click();
+		itOpenedShells.next().activate();
 		bot.waitUntil(new ActiveShellTitleMatches(bot, IDELabel.Shell.PROPERTIES_FOR + " " + projectName),Timing.time3S());
 		bot.clickButton(IDELabel.Button.OK).click();
 		new SWTUtilExt(bot).waitForNonIgnoredJobs();
@@ -121,13 +131,16 @@ public class BuildPathHelper {
 	public static void removeVariable(String projectName, String variableLabel,
 			boolean removeGlobaly) {
 		SWTBotExt bot = new SWTEclipseExt().openPropertiesOfProject(projectName);
+		LinkedList<SWTBotShell> openedShells = new LinkedList<SWTBotShell>();
+		SWTBotShell propShell = bot.shell(IDELabel.Shell.PROPERTIES_FOR + " " + projectName).activate();
 		bot.tree().expandNode(IDELabel.JavaBuildPathPropertiesEditor.JAVA_BUILD_PATH_TREE_ITEM_LABEL).select();
 		bot.tabItem(IDELabel.JavaBuildPathPropertiesEditor.LIBRARIES_TAB_LABEL).activate();
 		bot.tree(1).select(variableLabel);
 		bot.button(IDELabel.Button.REMOVE).click();
+		
 		if (removeGlobaly) {
 			bot.button(IDELabel.Button.ADD_VARIABLE).click();
-			bot.shell(IDELabel.Shell.NEW_VARIABLE_CLASS_PATH_ENTRY).activate();
+			SWTBotShell addVariableShell = bot.shell(IDELabel.Shell.NEW_VARIABLE_CLASS_PATH_ENTRY).activate();
 			bot.table().select(variableLabel);
 			bot.button(IDELabel.Button.CONFIGURE_VARIABLES).click();
 			bot.shell(IDELabel.Shell.PREFERENCES_FILTERED).activate();
@@ -136,8 +149,10 @@ public class BuildPathHelper {
 			bot.shell(IDELabel.Shell.CLASSPATH_VARIABLES_CHANGED).activate();
 			bot.button(IDELabel.Button.YES).click();
 			new SWTUtilExt(bot).waitForNonIgnoredJobs();
+			addVariableShell.activate();
 			bot.clickButton(IDELabel.Button.CANCEL).click();
 		}
+		propShell.activate();
 		bot.button(IDELabel.Button.OK).click();
 		new SWTUtilExt(bot).waitForNonIgnoredJobs();
 	}
