@@ -6,15 +6,15 @@ Bundle-Version: 4.2.0.qualifier
 Bundle-Activator: org.jboss.tools.freemarker.ui.bot.test.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- org.jboss.ide.eclipse.freemarker;bundle-version="1.2.0",
  org.jboss.reddeer.direct,
  org.jboss.reddeer.eclipse,
  org.jboss.reddeer.jface,
  org.jboss.reddeer.junit,
  org.jboss.reddeer.swt,
  org.jboss.reddeer.workbench,
- org.junit;bundle-version="4.11.0",
- org.jboss.reddeer.common;bundle-version="0.6.0"
+ org.jboss.reddeer.common;bundle-version="0.6.0",
+ org.junit,
+ org.jboss.ide.eclipse.freemarker
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: org.eclipse.core.resources,
