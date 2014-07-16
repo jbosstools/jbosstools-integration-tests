@@ -6,6 +6,7 @@ import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
+import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.hibernate.factory.ResourceFactory;
 
@@ -25,7 +26,7 @@ public class ProjectImporter {
 	 */
 	public static void importProjectWithoutErrors(String pluginId, String projectName) {
 		importProject(pluginId, projectName);
-		new WaitWhile(new JobIsRunning());
+		new WaitWhile(new JobIsRunning(),TimePeriod.LONG);
 		ProblemsView problemsView = new ProblemsView();
 		assertTrue("No problems after import are expected", problemsView.getAllErrors().size() == 0);
 	}
