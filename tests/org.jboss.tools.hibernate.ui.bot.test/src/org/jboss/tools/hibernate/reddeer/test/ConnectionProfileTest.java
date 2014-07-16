@@ -22,7 +22,7 @@ import org.junit.runner.RunWith;
 public class ConnectionProfileTest {
 
     @InjectRequirement
-    DatabaseRequirement dbRequirement;
+    private DatabaseRequirement dbRequirement;
     
 	@Test
 	public void testConnectionProfile() {
