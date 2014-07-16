@@ -22,6 +22,7 @@ import org.junit.runner.RunWith;
  *
  */
 @RunWith(RedDeerSuite.class)
+@Database(name="testdb")
 public class ConsoleConfigurationTest extends HibernateRedDeerTest {
 
 	private String PROJECT_NAME = "consoletest";
