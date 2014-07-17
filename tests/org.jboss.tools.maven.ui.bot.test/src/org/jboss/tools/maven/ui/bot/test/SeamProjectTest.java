@@ -11,14 +11,19 @@
 
 package org.jboss.tools.maven.ui.bot.test;
 
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.reddeer.eclipse.datatools.ui.DriverDefinition;
 import org.jboss.reddeer.eclipse.datatools.ui.DriverTemplate;
 import org.jboss.reddeer.eclipse.datatools.ui.preference.DriverDefinitionPreferencePage;
 import org.jboss.reddeer.eclipse.datatools.ui.wizard.ConnectionProfileWizard;
 import org.jboss.reddeer.eclipse.datatools.ui.wizard.DriverDefinitionWizard;
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.impl.button.NextButton;
-import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
-import org.jboss.reddeer.swt.impl.group.DefaultGroup;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
@@ -30,11 +35,18 @@ import org.jboss.tools.seam.reddeer.wizards.SeamProjectFifthPage;
 import org.jboss.tools.seam.reddeer.wizards.SeamProjectFirstPage;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.jboss.tools.seam.reddeer.perspective.SeamPerspective;
 /**
  * @author Rastislav Wagner
  * 
  */
+@CleanWorkspace
+@OpenPerspective(SeamPerspective.class)
+@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY8x)
 public class SeamProjectTest extends AbstractMavenSWTBotTest {
+    
+    @InjectRequirement
+    private ServerRequirement sr;
 
 	public static final String SEAM_WEB_PROJECT = "seamWeb";
 	public static final String SEAM_EAR_PROJECT = "seamEar";
@@ -60,7 +72,6 @@ public class SeamProjectTest extends AbstractMavenSWTBotTest {
 
 	@BeforeClass
 	public static void setup() {
-		setPerspective("Seam");
 		SeamPreferencePage sp = new SeamPreferencePage();
 		sp.open();
 		sp.addRuntime(SEAM23_NAME, SEAM_2_3, "2.3");
@@ -90,28 +101,28 @@ public class SeamProjectTest extends AbstractMavenSWTBotTest {
 	
 	@Test
 	public void createSeam23WebProjectTest(){
-		createSeamProject(SEAM_WEB_PROJECT+"23", SEAM23_NAME, "2.3", false);
-		new WaitUntil(new ProjectHasErrors(SEAM_WEB_PROJECT+"23", null), TimePeriod.LONG);
+		createSeamProject(SEAM_WEB_PROJECT+"23", SEAM_2_3_NAME, "2.3", false);
+		new WaitWhile(new ProjectHasErrors(SEAM_WEB_PROJECT+"23", null), TimePeriod.LONG);
 		deleteProjects(true,false);
 	}
 	
 	@Test
 	public void createSeam23EarProjectTest(){
-		createSeamProject(SEAM_EAR_PROJECT+"23", SEAM23_NAME, "2.3", true);
-		new WaitUntil(new ProjectHasErrors(SEAM_EAR_PROJECT+"23", null), TimePeriod.LONG);
+		createSeamProject(SEAM_EAR_PROJECT+"23", SEAM_2_3_NAME, "2.3", true);
+		new WaitWhile(new ProjectHasErrors(SEAM_EAR_PROJECT+"23", null), TimePeriod.LONG);
 		deleteProjects(true,false);
 	}
 	
 	@Test
 	public void createSeam22WebProjectTest(){
-		createSeamProject(SEAM_WEB_PROJECT+"22", SEAM22_NAME, "2.2",false);
+		createSeamProject(SEAM_WEB_PROJECT+"22", SEAM_2_2_NAME, "2.2",false);
 		new WaitWhile(new ProjectHasErrors(SEAM_WEB_PROJECT+"22", ACCEPTED_ERROR_TYPE), TimePeriod.LONG);
 		deleteProjects(true,true);
 	}
 
 	@Test
 	public void createSeam22EarProjectTest(){
-		createSeamProject(SEAM_EAR_PROJECT+"22", SEAM22_NAME, "2.2",true);
+		createSeamProject(SEAM_EAR_PROJECT+"22", SEAM_2_2_NAME, "2.2",true);
 		new WaitWhile(new ProjectHasErrors(SEAM_EAR_PROJECT+"22", ACCEPTED_ERROR_TYPE), TimePeriod.LONG);
 		deleteProjects(true,true);
 	}
@@ -121,14 +132,14 @@ public class SeamProjectTest extends AbstractMavenSWTBotTest {
 		sd.open();
 		SeamProjectFirstPage sf = (SeamProjectFirstPage)sd.getWizardPage(0);
 		sf.setProjectName(projectName);
-		sf.setRuntime(runtimeName);
+		sf.setRuntime(sr.getRuntimeNameLabelText(sr.getConfig()));
 		//sf.setServer(serverName);
 		sf.activateFacet("Seam", seamVersion);
 		sf.activateFacet("JBoss Maven Integration", null);
 		SeamProjectFifthPage sfp = (SeamProjectFifthPage)sd.getWizardPage(5);
 		sfp.setSeamRuntime(seamRuntime);
 		sfp.toggleEAR(EAR);
-		new LabeledCombo(new DefaultGroup("Database"),"Connection profile:").setSelection("New HSQLDB");
+		sfp.setConnectionProfile("New HSQLDB");
 		sd.finish();
 	}
 	

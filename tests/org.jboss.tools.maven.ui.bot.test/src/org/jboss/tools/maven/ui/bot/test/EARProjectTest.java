@@ -12,30 +12,33 @@ package org.jboss.tools.maven.ui.bot.test;
 
 import static org.junit.Assert.assertTrue;
 
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.ProjectItem;
 import org.jboss.reddeer.eclipse.jst.j2ee.ui.project.facet.EarProjectFirstPage;
 import org.jboss.reddeer.eclipse.jst.j2ee.ui.project.facet.EarProjectInstallPage;
 import org.jboss.reddeer.eclipse.jst.j2ee.ui.project.facet.EarProjectWizard;
 import org.jboss.reddeer.eclipse.jst.j2ee.wizard.NewJ2EEComponentSelectionPage;
+import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.junit.Before;
 import org.junit.Test;
 
 /**
  * @author Rastislav Wagner
  * 
  */
+@CleanWorkspace
+@OpenPerspective(JavaEEPerspective.class)
+@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY8x)
 public class EARProjectTest extends AbstractMavenSWTBotTest{
 	
 	public static final String WAR_PROJECT_NAME="earWeb";
 	public static final String EJB_PROJECT_NAME="earEJB";
 	public static final String EAR_PROJECT_NAME="ear";
-
-	@Before
-	public void before(){
-		setPerspective("Java EE");
-	}
 	
 	@Test
 	public void testEARProject() throws InterruptedException{

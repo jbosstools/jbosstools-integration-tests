@@ -5,7 +5,7 @@ import static org.junit.Assert.fail;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jboss.reddeer.eclipse.jface.wizard.WizardPage;
+import org.jboss.reddeer.jface.wizard.WizardPage;
 import org.jboss.reddeer.swt.api.Shell;
 import org.jboss.reddeer.swt.api.TableItem;
 import org.jboss.reddeer.swt.condition.WaitCondition;

@@ -12,9 +12,14 @@ package org.jboss.tools.maven.ui.bot.test;
 
 import static org.junit.Assert.assertTrue;
 
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.tools.maven.reddeer.maven.ui.preferences.ConfiguratorPreferencePage;
 import org.jboss.tools.maven.reddeer.wizards.ConfigureMavenRepositoriesWizard;
@@ -28,7 +33,11 @@ import org.junit.Test;
  */
 @CleanWorkspace
 @OpenPerspective(JavaEEPerspective.class)
+@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY8x)
 public class JSFConfiguratorTest extends AbstractConfiguratorsTest{
+
+    @InjectRequirement
+    private ServerRequirement sr;
 	
 	public static final String MAVEN_ACM_REPO = "http://maven.acm-sl.org/artifactory/libs-releases/";
 	public static final String JBOSS_REPO = "jboss-public-repository";
@@ -95,7 +104,7 @@ public class JSFConfiguratorTest extends AbstractConfiguratorsTest{
 	
 	@Test
 	public void testJSFConfigurator() {
-		createWebProject(PROJECT_NAME_JSF, runtimeName, false);
+		createWebProject(PROJECT_NAME_JSF, sr.getRuntimeNameLabelText(sr.getConfig()), false);
 		convertToMavenProject(PROJECT_NAME_JSF, "war", true);
 		checkProjectWithRuntime(PROJECT_NAME_JSF);
 		new WaitUntil(new ProjectHasNature(PROJECT_NAME_JSF, JSF_FACET, null));

@@ -1,6 +1,6 @@
 package org.jboss.tools.maven.reddeer.wizards;
 
-import org.jboss.reddeer.eclipse.jface.wizard.WizardPage;
+import org.jboss.reddeer.jface.wizard.WizardPage;
 import org.jboss.reddeer.swt.api.Tree;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
@@ -20,7 +20,7 @@ public class MavenImportWizardFirstPage extends WizardPage{
 		new WaitUntil(new ProjectIsLoaded(new DefaultTree()), TimePeriod.LONG);
 		new PushButton("Finish").click();
 		new WaitWhile(new ShellWithTextIsActive("Import Maven Projects"),TimePeriod.NORMAL);
-		new WaitWhile(new JobIsRunning(),TimePeriod.LONG);
+		new WaitWhile(new JobIsRunning(),TimePeriod.VERY_LONG);
 	}
 	
 	

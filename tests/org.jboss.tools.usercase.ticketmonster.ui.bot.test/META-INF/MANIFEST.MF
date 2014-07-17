@@ -22,7 +22,6 @@ Require-Bundle: org.jboss.reddeer.junit,
  org.jboss.tools.maven.reddeer,
  org.jboss.tools.vpe.browsersim,
  org.jboss.tools.vpe.browsersim.browser,
- org.jboss.tools.maven.ui.bot.test,
  org.jboss.tools.central.reddeer,
  org.jboss.tools.runtime.reddeer
 

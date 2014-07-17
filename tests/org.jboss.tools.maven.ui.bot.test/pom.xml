@@ -12,7 +12,8 @@
 
 	<packaging>eclipse-test-plugin</packaging>
 	<properties>
-		<systemProperties>${integrationTestsSystemProperties} -Dhsqldb.driver=${requirementsDirectory}/hsqldb/hsqldb-1.8.0.10.jar -Djbosstools.test.jboss.home.7.1=${requirementsDirectory}/wildfly-8.1.0.Final -Djbosstools.test.seam.2.2.0.home=${requirementsDirectory}/jboss-seam-2.2.0.GA -Djbosstools.test.seam.2.3.0.home=${requirementsDirectory}/jboss-seam-2.3.0.Final -Djbosstools.test.seam.2.1.0.home=${requirementsDirectory}/jboss-seam-2.1.2 -Dproject.build.directory=${project.build.directory}</systemProperties>
+		<systemProperties>${integrationTestsSystemProperties} -Dhsqldb.driver=${requirementsDirectory}/hsqldb/hsqldb-1.8.0.10.jar -Djbosstools.test.seam.2.2.0.home=${requirementsDirectory}/jboss-seam-2.2.0.GA -Djbosstools.test.seam.2.3.0.home=${requirementsDirectory}/jboss-seam-2.3.0.Final -Djbosstools.test.seam.2.1.0.home=${requirementsDirectory}/jboss-seam-2.1.2 -Dproject.build.directory=${project.build.directory} -Djbosstools.test.wildfly8.home=${jbosstools.test.wildfly8.home} -Dreddeer.config=target/classes/servers</systemProperties>
+		<jbosstools.test.wildfly8.home>${requirementsDirectory}/wildfly-8.1.0.Final</jbosstools.test.wildfly8.home>
 	</properties>
 
 	<profiles>
@@ -30,7 +31,11 @@
 	<build>
 		<resources>
 			<resource>
-				<directory>usersettings/</directory>
+				<directory>resources</directory>
+				<includes>
+					<include>usersettings/*</include>
+					<include>servers/*</include>
+				</includes>
 				<filtering>true</filtering>
 			</resource>
 		</resources>

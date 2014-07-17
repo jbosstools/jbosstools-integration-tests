@@ -18,15 +18,22 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
+import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.matcher.WithRegexMatchers;
+import org.jboss.reddeer.swt.matcher.RegexMatcher;
+import org.jboss.reddeer.swt.matcher.WithTextMatchers;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.maven.reddeer.maven.ui.preferences.ConfiguratorPreferencePage;
 import org.jboss.tools.maven.reddeer.preferences.MavenUserPreferencePage;
@@ -43,6 +50,9 @@ import org.junit.Test;
  * @author Rastislav Wagner
  * 
  */
+@CleanWorkspace
+@OpenPerspective(JavaPerspective.class)
+@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY8x)
 public class MavenProfilesTest extends AbstractMavenSWTBotTest {
 	
 	public static final String AUTOACTIVATED_PROFILE_IN_POM = "active-profile";
@@ -54,7 +64,6 @@ public class MavenProfilesTest extends AbstractMavenSWTBotTest {
 	
 	@BeforeClass
 	public static void setup() throws IOException {
-		setPerspective("Java");
 		ConfiguratorPreferencePage jm = new ConfiguratorPreferencePage();
 		jm.open();
 		ConfigureMavenRepositoriesWizard mr = jm.configureRepositories();
@@ -67,11 +76,11 @@ public class MavenProfilesTest extends AbstractMavenSWTBotTest {
 		jm.ok();
 		MavenUserPreferencePage mu = new MavenUserPreferencePage();
 		mu.open();
-		mu.setUserSettings(new File("usersettings/settings.xml").getCanonicalPath());
+		mu.setUserSettings(new File("resources/usersettings/settings.xml").getCanonicalPath());
 		mu.ok();
-		importMavenProject("projects/simple-jar/pom.xml");
-		importMavenProject("projects/simple-jar1/pom.xml");
-		importMavenProject("projects/simple-jar2/pom.xml");
+		importMavenProject("resources/projects/simple-jar/pom.xml");
+		importMavenProject("resources/projects/simple-jar1/pom.xml");
+		importMavenProject("resources/projects/simple-jar2/pom.xml");
 	}
 	
 	@AfterClass
@@ -124,7 +133,9 @@ public class MavenProfilesTest extends AbstractMavenSWTBotTest {
 		PackageExplorer pe = new PackageExplorer();
         pe.open();
         pe.getProject("simple-jar").select();
-        WithRegexMatchers m = new WithRegexMatchers("Run As","..Maven build...");
+        RegexMatcher rm1 = new RegexMatcher("Run As");
+        RegexMatcher rm2 = new RegexMatcher("..Maven build...");
+        WithTextMatchers m = new WithTextMatchers(rm1,rm2);
         new ContextMenu(m.getMatchers()).select();
         new DefaultShell("Edit Configuration");
         String activeProfiles = new LabeledText("Profiles:").getText();
@@ -159,7 +170,9 @@ public class MavenProfilesTest extends AbstractMavenSWTBotTest {
 		PackageExplorer pe = new PackageExplorer();
 		pe.open();
 		pe.getProject("simple-jar").select();
-		WithRegexMatchers m = new WithRegexMatchers("Run As","..Maven build...");
+		RegexMatcher rm1 = new RegexMatcher("Run As");
+        RegexMatcher rm2 = new RegexMatcher("..Maven build...");
+        WithTextMatchers m = new WithTextMatchers(rm1,rm2);
         new ContextMenu(m.getMatchers()).select();
         new DefaultShell("Edit Configuration");
         String activeProfile = new LabeledText("Profiles:").getText();

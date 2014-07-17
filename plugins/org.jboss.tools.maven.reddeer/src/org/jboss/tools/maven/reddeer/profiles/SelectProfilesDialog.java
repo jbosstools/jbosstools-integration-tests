@@ -3,7 +3,7 @@ package org.jboss.tools.maven.reddeer.profiles;
 import java.util.ArrayList;
 
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
-import org.jboss.reddeer.eclipse.jface.wizard.WizardDialog;
+import org.jboss.reddeer.jface.wizard.WizardDialog;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;

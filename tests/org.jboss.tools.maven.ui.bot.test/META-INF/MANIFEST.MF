@@ -26,8 +26,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.jboss.reddeer.requirements,
  org.jboss.tools.maven.reddeer,
  org.jboss.tools.jsf.reddeer,
- org.jboss.tools.seam.reddeer
+ org.jboss.tools.seam.reddeer,
+ org.jboss.ide.eclipse.as.reddeer
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Vendor: JBoss by Red Hat
-Export-Package: org.jboss.tools.maven.ui.bot.test.dialog
