@@ -1,8 +1,11 @@
 package org.jboss.tools.maven.ui.bot.test;
 
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.tools.maven.reddeer.maven.ui.preferences.ConfiguratorPreferencePage;
 import org.jboss.tools.maven.reddeer.wizards.ConfigureMavenRepositoriesWizard;
@@ -13,6 +16,7 @@ import org.junit.Test;
 
 @CleanWorkspace
 @OpenPerspective(JavaEEPerspective.class)
+@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY8x)
 public class PortletConfiguratorTest extends AbstractConfiguratorsTest{
 	
 	@BeforeClass

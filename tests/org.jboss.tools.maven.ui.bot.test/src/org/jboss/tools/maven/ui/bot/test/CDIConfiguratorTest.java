@@ -10,9 +10,14 @@
  ******************************************************************************/ 
 package org.jboss.tools.maven.ui.bot.test;
 
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.tools.maven.ui.bot.test.utils.ProjectHasNature;
 import org.junit.Test;
@@ -22,6 +27,7 @@ import org.junit.Test;
  */
 @CleanWorkspace
 @OpenPerspective(JavaEEPerspective.class)
+@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY8x)
 public class CDIConfiguratorTest extends AbstractConfiguratorsTest{
 	
 	public static final String CDI_API_VERSION1_1="1.1";
@@ -30,6 +36,9 @@ public class CDIConfiguratorTest extends AbstractConfiguratorsTest{
 	public static final String SEAM_INTERNATIONAL_VERSION="3.0.0.Alpha1";
 	public static final String DELTASPIKE_CORE_API_VERSION="0.3-incubating";
 	public static final String DELTASPIME_CORE_IMPL_VERSION="0.3-incubating";
+	
+	@InjectRequirement
+    private ServerRequirement sr;
 
 	@Test
 	public void testCDIConfiguratorApi1_1() {
@@ -69,16 +78,16 @@ public class CDIConfiguratorTest extends AbstractConfiguratorsTest{
 	
 	@Test
 	public void testCDIConfigurator() {
-		createWebProject(PROJECT_NAME_CDI, runtimeName,false);
+		createWebProject(PROJECT_NAME_CDI, sr.getRuntimeNameLabelText(sr.getConfig()),false);
 		convertToMavenProject(PROJECT_NAME_CDI, "war", true);
-		new WaitUntil(new ProjectHasNature(PROJECT_NAME_CDI, CDI_FACET, "1.0"));
+		new WaitUntil(new ProjectHasNature(PROJECT_NAME_CDI, CDI_FACET, "1.1"));
 	}
 	
 	@Test
 	public void testCDIConfiguratorEjb() {
-		createEJBProject(PROJECT_NAME_CDI_EJB, runtimeName);
+		createEJBProject(PROJECT_NAME_CDI_EJB, sr.getRuntimeNameLabelText(sr.getConfig()));
 		convertToMavenProject(PROJECT_NAME_CDI_EJB, "ejb", true);
-		new WaitUntil(new ProjectHasNature(PROJECT_NAME_CDI_EJB, CDI_FACET, "1.0"));
+		new WaitUntil(new ProjectHasNature(PROJECT_NAME_CDI_EJB, CDI_FACET, "1.1"));
 	}
 	
 	@Test

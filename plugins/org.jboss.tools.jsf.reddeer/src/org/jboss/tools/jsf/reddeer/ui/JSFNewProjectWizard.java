@@ -1,6 +1,6 @@
 package org.jboss.tools.jsf.reddeer.ui;
 
-import org.jboss.reddeer.eclipse.jface.wizard.NewWizardDialog;
+import org.jboss.reddeer.jface.wizard.NewWizardDialog;
 import org.jboss.reddeer.swt.api.Button;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;

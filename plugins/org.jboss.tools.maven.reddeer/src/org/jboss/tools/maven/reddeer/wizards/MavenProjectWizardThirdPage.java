@@ -1,6 +1,6 @@
 package org.jboss.tools.maven.reddeer.wizards;
 
-import org.jboss.reddeer.eclipse.jface.wizard.WizardPage;
+import org.jboss.reddeer.jface.wizard.WizardPage;
 import org.jboss.reddeer.swt.condition.ButtonWithTextIsActive;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;

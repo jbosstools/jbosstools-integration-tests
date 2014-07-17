@@ -12,7 +12,13 @@ package org.jboss.tools.maven.ui.bot.test;
 
 import static org.junit.Assert.assertTrue;
 
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
@@ -34,13 +40,15 @@ import org.junit.Test;
  * @author Rastislav Wagner
  * 
  */
+@CleanWorkspace
+@OpenPerspective(JavaPerspective.class)
+@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY8x)
 public class MaterializeLibraryTest extends AbstractMavenSWTBotTest{
 	
 	private String projectName = "example";
 	
 	@Before
 	public void setup(){
-		setPerspective("Java");
 		new ShellMenu("Window","Preferences").select();
 		new WaitUntil(new ShellWithTextIsActive("Preferences"), TimePeriod.NORMAL);
 		new DefaultTreeItem("JBoss Tools","Project Examples").select();

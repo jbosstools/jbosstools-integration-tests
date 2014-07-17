@@ -9,9 +9,14 @@
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/ 
 package org.jboss.tools.maven.ui.bot.test;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.tools.maven.ui.bot.test.utils.ProjectHasNature;
 import org.junit.Test;
@@ -21,7 +26,11 @@ import org.junit.Test;
  */
 @CleanWorkspace
 @OpenPerspective(JavaEEPerspective.class)
+@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY8x)
 public class JAXRSConfiguratorTest extends AbstractConfiguratorsTest{
+    
+    @InjectRequirement
+    private ServerRequirement sr;
 
 	@Test
 	public void testJAXRSConfiguratorJersey() {
@@ -51,7 +60,7 @@ public class JAXRSConfiguratorTest extends AbstractConfiguratorsTest{
 	
 	@Test
 	public void testJAXRSConfigurator() {
-		createWebProject(PROJECT_NAME_JAXRS, runtimeName,false);
+		createWebProject(PROJECT_NAME_JAXRS, sr.getRuntimeNameLabelText(sr.getConfig()),false);
 		convertToMavenProject(PROJECT_NAME_JAXRS, "war", true);
 		updateConf(PROJECT_NAME_JAXRS);
 		checkProjectWithRuntime(PROJECT_NAME_JAXRS);

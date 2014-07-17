@@ -17,10 +17,10 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.List;
 
-//import org.jboss.reddeer.direct.platform.JobManager;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
-//import org.jboss.reddeer.swt.condition.JobIsRunning;
+import org.jboss.reddeer.eclipse.jst.ejb.ui.EjbProjectFirstPage;
+import org.jboss.reddeer.eclipse.jst.ejb.ui.EjbProjectWizard;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
@@ -32,8 +32,6 @@ import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
-import org.jboss.tools.maven.ui.bot.test.dialog.EJBProjectDialog;
-import org.jboss.tools.maven.ui.bot.test.dialog.EJBProjectFirstPage;
 import org.jboss.tools.maven.ui.bot.test.utils.EditorResourceHelper;
 import org.junit.After;
 /**
@@ -59,9 +57,8 @@ public abstract class AbstractConfiguratorsTest extends AbstractMavenSWTBotTest{
 	public static final String PORTLET_JSF_FACET="JBoss JSF Portlet";
 	public static final String PORTLET_SEAM_FACET="JBoss Seam Portlet";
 	
-	public static final String WEB_XML_LOCATION="/WebContent/WEB-INF/web.xml";
-	public static final String JBOSS7_AS_HOME=System.getProperty("jbosstools.test.jboss.home.7.1");
-//jpa config, gwt, hibernate
+	public static final String WEB_XML_LOCATION="/WebContent/WEB-INF/web.xml"; 
+	//jpa config, gwt, hibernate
 	
 	@After
 	public void deleteProjects(){
@@ -72,8 +69,6 @@ public abstract class AbstractConfiguratorsTest extends AbstractMavenSWTBotTest{
             p.delete(true);
         }
         assertTrue("Not all projects have been deleted", pexplorer.getProjects().isEmpty());
-        //JobManager.killAllJobs();
-        //new WaitWhile(new JobIsRunning());
 	}
 	
 	public void addPersistence(String projectName) throws FileNotFoundException{
@@ -109,9 +104,9 @@ public abstract class AbstractConfiguratorsTest extends AbstractMavenSWTBotTest{
 	}
 	
 	public void createEJBProject(String name, String runtime) {
-		EJBProjectDialog ejb = new EJBProjectDialog();
+	    EjbProjectWizard ejb = new EjbProjectWizard();
 		ejb.open();
-		EJBProjectFirstPage efp = (EJBProjectFirstPage)ejb.getWizardPage(0);
+		EjbProjectFirstPage efp = (EjbProjectFirstPage)ejb.getWizardPage(0);
 		efp.setProjectName(name);
 		if(runtime == null){
 			efp.setTargetRuntime("<None>");

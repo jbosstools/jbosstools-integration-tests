@@ -12,10 +12,13 @@ package org.jboss.tools.maven.ui.bot.test;
 
 import static org.junit.Assert.assertEquals;
 
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
@@ -34,6 +37,7 @@ import org.junit.Test;
  */
 @CleanWorkspace
 @OpenPerspective(JavaEEPerspective.class)
+@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY8x)
 public class SeamConfiguratorTest extends AbstractConfiguratorsTest{
 	
 	private String projectNameNoRuntime = PROJECT_NAME_SEAM+"_noRuntime";
@@ -49,6 +53,7 @@ public class SeamConfiguratorTest extends AbstractConfiguratorsTest{
 		ConfiguratorPreferencePage jm = new ConfiguratorPreferencePage();
 		jm.open();
 		ConfigureMavenRepositoriesWizard mr = jm.configureRepositories();
+		mr.removeAllRepos();
 		mr.chooseRepositoryFromList(MavenRepositories.JBOSS_REPO,true);
 		mr.confirm();
 		jm.apply();
@@ -145,9 +150,9 @@ public class SeamConfiguratorTest extends AbstractConfiguratorsTest{
 		convertToMavenProject(PROJECT_NAME_SEAM, "war", false);
 		addDependency(PROJECT_NAME_SEAM, "org.jboss.seam", "jboss-seam", "2.3.0.Final"); //dependency type EJB
 		updateConf(PROJECT_NAME_SEAM);
-		new WaitUntil(new ProjectHasNature(projectNameNoRuntime, SEAM_FACET, "2.3"));
+		new WaitUntil(new ProjectHasNature(PROJECT_NAME_SEAM, SEAM_FACET, "2.3"));
 		String seamRuntime = getSeamRuntime(PROJECT_NAME_SEAM);
-		assertEquals("Project "+PROJECT_NAME_SEAM+" with jboss-seam dependency doesn't have proper seam runtime chosen", SeamProjectTest.SEAM23_NAME, seamRuntime);
+		assertEquals("Project "+PROJECT_NAME_SEAM+" with jboss-seam dependency doesn't have proper seam runtime chosen",  SeamProjectTest.SEAM_2_3_NAME, seamRuntime);
 		
 	}
 	
@@ -157,9 +162,9 @@ public class SeamConfiguratorTest extends AbstractConfiguratorsTest{
 		convertToMavenProject(PROJECT_NAME_SEAM, "war", false);
 		addDependency(PROJECT_NAME_SEAM, "org.jboss.seam", "jboss-seam", "2.2.2.Final"); //dependency type EJB
 		updateConf(PROJECT_NAME_SEAM);
-		new WaitUntil(new ProjectHasNature(projectNameNoRuntime, SEAM_FACET, "2.2"));
+		new WaitUntil(new ProjectHasNature(PROJECT_NAME_SEAM, SEAM_FACET, "2.2"));
 		String seamRuntime = getSeamRuntime(PROJECT_NAME_SEAM);
-		assertEquals("Project "+PROJECT_NAME_SEAM+" with jboss-seam dependency doesn't have proper seam runtime chosen", SeamProjectTest.SEAM22_NAME, seamRuntime);
+		assertEquals("Project "+PROJECT_NAME_SEAM+" with jboss-seam dependency doesn't have proper seam runtime chosen", SeamProjectTest.SEAM_2_2_NAME, seamRuntime);
 	}
 	
 	@Test
@@ -168,9 +173,9 @@ public class SeamConfiguratorTest extends AbstractConfiguratorsTest{
 		convertToMavenProject(PROJECT_NAME_SEAM, "war", false);
 		addDependency(PROJECT_NAME_SEAM, "org.jboss.seam", "jboss-seam", "2.1.2.GA"); //dependency type EJB
 		updateConf(PROJECT_NAME_SEAM);
-		new WaitUntil(new ProjectHasNature(projectNameNoRuntime, SEAM_FACET, "2.1"));
+		new WaitUntil(new ProjectHasNature(PROJECT_NAME_SEAM, SEAM_FACET, "2.1"));
 		String seamRuntime = getSeamRuntime(PROJECT_NAME_SEAM);
-		assertEquals("Project "+PROJECT_NAME_SEAM+" with jboss-seam dependency doesn't have proper seam runtime chosen", SeamProjectTest.SEAM_2_1_NAME, seamRuntime);
+		assertEquals("Project "+PROJECT_NAME_SEAM+" with jboss-seam dependency doesn't have proper seam runtime chosen",  SeamProjectTest.SEAM_2_1_NAME, seamRuntime);
 	}
 	
 	private String getSeamRuntime(String project){

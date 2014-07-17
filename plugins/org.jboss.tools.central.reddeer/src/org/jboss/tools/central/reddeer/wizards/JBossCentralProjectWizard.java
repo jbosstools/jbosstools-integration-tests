@@ -4,7 +4,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.eclipse.jface.wizard.WizardDialog;
+import org.jboss.reddeer.jface.wizard.WizardDialog;
 import org.jboss.reddeer.swt.api.Button;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;

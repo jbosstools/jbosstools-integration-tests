@@ -1,6 +1,6 @@
 package org.jboss.tools.jsf.reddeer.ui;
 
-import org.jboss.reddeer.eclipse.jface.wizard.WizardPage;
+import org.jboss.reddeer.jface.wizard.WizardPage;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 

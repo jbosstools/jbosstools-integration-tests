@@ -1,6 +1,6 @@
 package org.jboss.tools.maven.reddeer.wizards;
 
-import org.jboss.reddeer.eclipse.jface.wizard.WizardPage;
+import org.jboss.reddeer.jface.wizard.WizardPage;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.TableHasRows;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;

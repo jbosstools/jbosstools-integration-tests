@@ -32,10 +32,12 @@ import org.jboss.reddeer.eclipse.wst.server.ui.wizard.NewRuntimeWizardPage;
 import org.jboss.reddeer.eclipse.wst.server.ui.wizard.NewServerWizardDialog;
 import org.jboss.reddeer.swt.api.Table;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.swt.impl.button.NextButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
+import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
@@ -52,7 +54,6 @@ import org.jboss.tools.maven.reddeer.project.examples.wizard.ArchetypeExamplesWi
 import org.jboss.tools.maven.reddeer.project.examples.wizard.ExampleRequirement;
 import org.jboss.tools.maven.reddeer.project.examples.wizard.NewProjectExamplesStacksRequirementsPage;
 import org.jboss.tools.maven.reddeer.wizards.ConfigureMavenRepositoriesWizard;
-import org.jboss.tools.maven.ui.bot.test.dialog.ASRuntimePage;
 import org.jboss.tools.runtime.reddeer.wizard.DownloadRuntimesTaskWizard;
 import org.jboss.tools.runtime.reddeer.wizard.TaskWizardFirstPage;
 import org.jboss.tools.runtime.reddeer.wizard.TaskWizardLoginPage;
@@ -206,11 +207,10 @@ public class TicketMonsterBaseTest {
 			}
 		}
 		NewRuntimeWizardDialog rd = rp.addRuntime();
-		rd.addWizardPage(new ASRuntimePage(), 1);
 		((NewRuntimeWizardPage)rd.getFirstPage()).selectType("Red Hat JBoss Middleware","JBoss Enterprise Application Platform 6.1+ Runtime");
-		ASRuntimePage as = (ASRuntimePage)rd.getWizardPage(1);
-		as.setHomeDirectory(homeDir);
-		as.setName(EAP_61_RUNTIME);
+		new NextButton().click();
+		new LabeledText("Home Directory").setText(homeDir);
+		new LabeledText("Name").setText(EAP_61_RUNTIME);
 		rd.finish();
 		rp.ok();
 	}

@@ -3,7 +3,7 @@ package org.jboss.tools.maven.reddeer.project.examples.wizard;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jboss.reddeer.eclipse.jface.wizard.WizardPage;
+import org.jboss.reddeer.jface.wizard.WizardPage;
 import org.jboss.reddeer.swt.api.Group;
 import org.jboss.reddeer.swt.api.Table;
 import org.jboss.reddeer.swt.impl.button.CheckBox;

@@ -13,6 +13,7 @@ Require-Bundle: org.eclipse.ui,
  org.jboss.reddeer.workbench;bundle-version="0.6.0"
 Export-Package: 
  org.jboss.tools.seam.reddeer.preferences,
- org.jboss.tools.seam.reddeer.wizards
+ org.jboss.tools.seam.reddeer.wizards,
+ org.jboss.tools.seam.reddeer.perspective
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6

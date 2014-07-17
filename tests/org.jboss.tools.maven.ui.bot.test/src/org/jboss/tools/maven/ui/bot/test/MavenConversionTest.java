@@ -6,7 +6,15 @@ import static org.junit.Assert.fail;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
@@ -30,17 +38,17 @@ import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.junit.After;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
+@CleanWorkspace
+@OpenPerspective(JavaEEPerspective.class)
+@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY8x)
 public class MavenConversionTest extends AbstractMavenSWTBotTest{
 	
 	public static final String WEB_PROJECT_NAME = "Web Project";
 	
-	@BeforeClass
-	public static void setup(){
-		setPerspective("Java EE");
-	}
+	@InjectRequirement
+    private ServerRequirement sr;
 	
 	@After
 	public void clean(){
@@ -62,8 +70,11 @@ public class MavenConversionTest extends AbstractMavenSWTBotTest{
 		new DefaultTabItem("Libraries").activate();
 		List<TreeItem> it = new DefaultTree(1).getItems();
 		assertTrue("project contains more libraries than expected",it.size()==2);
-		assertTrue("No JRE in build path after conversion",it.get(0).getText().contains("JRE"));
-		assertTrue("No maven dependencies after conversion",it.get(1).getText().contains("Maven Dependencies"));
+		for(TreeItem i: it){
+            if(!(i.getText().contains("JRE") || i.getText().contains("Maven Dependencies"))){
+                fail("Some dependencies are missing after conversion");
+            }
+        }
 		new PushButton("OK").click();
 		new WaitWhile(new ShellWithTextIsActive("Properties for "+WEB_PROJECT_NAME),TimePeriod.NORMAL);
 	}
@@ -83,8 +94,11 @@ public class MavenConversionTest extends AbstractMavenSWTBotTest{
 		new DefaultTabItem("Libraries").activate();
 		List<TreeItem> it = new DefaultTree(1).getItems();
 		assertTrue("project contains more libraries than expected",it.size()==3);
-		assertTrue("No JRE in build path after conversion",it.get(1).getText().contains("JRE"));
-		assertTrue("No maven dependencies after conversion",it.get(2).getText().contains("Maven Dependencies"));
+		for(TreeItem i: it){
+		    if(!(i.getText().contains("JRE") || i.getText().contains("Maven Dependencies") || i.getText().contains("Runtime"))){
+		        fail("Some dependencies are missing after conversion");
+		    }
+		}
 		new PushButton("OK").click();
 		new WaitWhile(new ShellWithTextIsActive("Properties for "+WEB_PROJECT_NAME),TimePeriod.NORMAL);
 	}
@@ -172,7 +186,7 @@ public class MavenConversionTest extends AbstractMavenSWTBotTest{
 	}
 	
 	private void createWithRuntime(){
-		createWebProject(WEB_PROJECT_NAME, runtimeName, false);
+		createWebProject(WEB_PROJECT_NAME, sr.getRuntimeNameLabelText(sr.getConfig()), false);
 		PackageExplorer pe = new PackageExplorer();
 		pe.open();
 		pe.getProject(WEB_PROJECT_NAME).select();

@@ -11,33 +11,56 @@
 package org.jboss.tools.maven.ui.bot.test;
 
 
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
+import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.requirements.server.ServerReqState;
+import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.swt.impl.button.OkButton;
+import org.jboss.reddeer.swt.impl.menu.ShellMenu;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.table.DefaultTableItem;
+import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.jsf.reddeer.ui.JSFNewProjectFirstPage;
 import org.jboss.tools.jsf.reddeer.ui.JSFNewProjectSecondPage;
 import org.jboss.tools.jsf.reddeer.ui.JSFNewProjectWizard;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+@CleanWorkspace
+@OpenPerspective(JavaEEPerspective.class)
+@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY8x)
 public class JSFProjectTest extends AbstractMavenSWTBotTest{
-	public static final String JBOSS7_AS_HOME=System.getProperty("jbosstools.test.jboss.home.7.1");
 	public static final String POM_FILE = "pom.xml";
 	public static final String PROJECT_NAME7="JSFProject7";
 	public static final String PROJECT_NAME7_v1="JSFProject7_1.2";
-	public static final String SERVER_RUNTIME7="JBoss 7.1 Runtime";
-	public static final String SERVER7="JBoss AS 7.1";
 	public static final String GROUPID ="javax.faces";
 	public static final String ARTIFACTID ="jsf-api";
 	public static final String JSF_VERSION_1_1_02 ="1.1.02";
 	public static final String JSF_VERSION_1_2 ="2.0";
 	public static final String JSF_VERSION_2 ="2.0";
 	
-	@Before
-	public void before(){
-		setPerspective("Web Development");
-	}
+
+    @InjectRequirement
+    private ServerRequirement sr;
+    
+    @BeforeClass
+    public static void openPerspective(){
+        new ShellMenu("Window","Open Perspective","Other...").select();
+        new DefaultShell("Open Perspective");
+        new DefaultTableItem("Web Development").select();
+        new OkButton().click();
+        new WaitWhile(new ShellWithTextIsAvailable("Open Perspective"));
+    }
+
 	
 	@Test
 	public void createJSFProjectTest_AS7_JSFv2(){
-		createJSFProject(PROJECT_NAME7, "JSF 2.0", "JSFKickStartWithoutLibs", runtimeName);
+		createJSFProject(PROJECT_NAME7, "JSF 2.0", "JSFKickStartWithoutLibs", sr.getRuntimeNameLabelText(sr.getConfig()));
 		convertToMavenProject(PROJECT_NAME7, "war", false);
 		addDependency(PROJECT_NAME7, GROUPID,ARTIFACTID,JSF_VERSION_2);
 		buildProject(PROJECT_NAME7,"..Maven build...","clean package",true);
@@ -46,7 +69,7 @@ public class JSFProjectTest extends AbstractMavenSWTBotTest{
 	
 	@Test
 	public void createJSFProjectTest_AS7_JSFv1() {
-		createJSFProject(PROJECT_NAME7_v1, "JSF 1.2", "JSFKickStartWithoutLibs", runtimeName);
+		createJSFProject(PROJECT_NAME7_v1, "JSF 1.2", "JSFKickStartWithoutLibs", sr.getRuntimeNameLabelText(sr.getConfig()));
 		convertToMavenProject(PROJECT_NAME7_v1, "war", false);
 		addDependency(PROJECT_NAME7_v1, GROUPID,ARTIFACTID,JSF_VERSION_1_2);
 		buildProject(PROJECT_NAME7_v1,"..Maven build...","clean package",true);

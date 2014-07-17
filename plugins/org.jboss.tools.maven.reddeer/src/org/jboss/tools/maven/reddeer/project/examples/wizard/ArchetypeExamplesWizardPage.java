@@ -1,6 +1,6 @@
 package org.jboss.tools.maven.reddeer.project.examples.wizard;
 
-import org.jboss.reddeer.eclipse.jface.wizard.WizardPage;
+import org.jboss.reddeer.jface.wizard.WizardPage;
 import org.jboss.reddeer.swt.api.Table;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;

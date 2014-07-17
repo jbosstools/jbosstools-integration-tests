@@ -1,6 +1,6 @@
 package org.jboss.tools.central.reddeer.wizards;
 
-import org.jboss.reddeer.eclipse.jface.wizard.WizardDialog;
+import org.jboss.reddeer.jface.wizard.WizardDialog;
 import org.jboss.tools.maven.reddeer.project.examples.wizard.MavenExamplesRequirementPage;
 
 public class NewProjectExamplesWizardDialogCentral extends WizardDialog {

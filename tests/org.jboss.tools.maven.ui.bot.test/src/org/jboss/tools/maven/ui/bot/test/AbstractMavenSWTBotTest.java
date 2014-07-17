@@ -13,6 +13,7 @@ package org.jboss.tools.maven.ui.bot.test;
  * @author Rastislav Wagner
  * 
  */
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -37,20 +38,11 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
-
-//import org.jboss.reddeer.direct.platform.JobManager;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.eclipse.jst.servlet.ui.WebProjectFirstPage;
 import org.jboss.reddeer.eclipse.jst.servlet.ui.WebProjectThirdPage;
 import org.jboss.reddeer.eclipse.jst.servlet.ui.WebProjectWizard;
-import org.jboss.reddeer.eclipse.wst.server.ui.RuntimePreferencePage;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.Server;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
-import org.jboss.reddeer.eclipse.wst.server.ui.wizard.NewRuntimeWizardDialog;
-import org.jboss.reddeer.eclipse.wst.server.ui.wizard.NewRuntimeWizardPage;
-import org.jboss.reddeer.eclipse.wst.server.ui.wizard.NewServerWizardDialog;
-import org.jboss.reddeer.eclipse.wst.server.ui.wizard.NewServerWizardPage;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
@@ -63,18 +55,16 @@ import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
-import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.matcher.RegexMatcher;
+import org.jboss.reddeer.swt.matcher.WithTextMatchers;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
-import org.jboss.tools.maven.ui.bot.test.dialog.ASRuntimePage;
 import org.jboss.tools.maven.ui.bot.test.utils.ProjectIsBuilt;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.jboss.reddeer.eclipse.wst.server.ui.Runtime;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
@@ -82,10 +72,7 @@ import org.jboss.tools.maven.reddeer.preferences.MavenUserPreferencePage;
 import org.jboss.tools.maven.reddeer.preferences.MavenPreferencePage;
 
 public abstract class AbstractMavenSWTBotTest{
-	
-	public static final String JBOSS_AS_7_1 = System.getProperty("jbosstools.test.jboss.home.7.1");
-	public static String serverName;
-	public static String runtimeName;
+
 	public static final String USER_SETTINGS = "target/classes/settings.xml"; 
 	
 	@BeforeClass 
@@ -101,66 +88,11 @@ public abstract class AbstractMavenSWTBotTest{
 		mpreferences.ok();
 		
 		setGit();
-		runtimeName = createASRuntime();
-		serverName = createASServer();
 	}
 	
 	@AfterClass
 	public static void cleanup(){
 		deleteProjects(true,true);
-		//JobManager.killAllJobs();
-	}
-	
-	private static String createASRuntime(){
-		RuntimePreferencePage rp = new RuntimePreferencePage();
-		rp.open();
-		for(Runtime runtime: rp.getServerRuntimes()){
-			if(runtime.getType().equals("WildFly 8.x Runtime")){
-				rp.ok();
-				return runtime.getName();
-			}
-		}
-		NewRuntimeWizardDialog rd = rp.addRuntime();
-		rd.addWizardPage(new ASRuntimePage(), 1);
-		((NewRuntimeWizardPage)rd.getFirstPage()).selectType("JBoss Community","WildFly 8.x Runtime");
-		ASRuntimePage as = (ASRuntimePage)rd.getWizardPage(1);
-		as.setHomeDirectory(JBOSS_AS_7_1);
-		String name = as.getName();
-		rd.finish();
-		rp.ok();
-		return name;
-	}
-	
-	private static String createASServer(){
-		ServersView sw = new ServersView();
-		sw.open();
-		for(Server server: sw.getServers()){
-			if(server.getLabel().getName().equals("AS7.1")){
-				return "AS7.1";
-			}
-		}
-		NewServerWizardDialog ns = (NewServerWizardDialog)sw.newServer();
-		NewServerWizardPage sp = ns.getFirstPage();
-		sp.selectType("JBoss Community","WildFly 8.x");
-		String name = "AS7.1";
-		sp.setName("AS7.1");
-		//needed because of bug in 800Beta1
-		new PushButton("Next >").click();
-		ns.finish();
-		return name;
-		
-	}
-	
-	public static void setPerspective(String perspective){
-		new ShellMenu("Window","Open Perspective","Other...").select();
-		try{
-	        // Try to select perspective label within available perspectives
-			new DefaultTable().select(perspective);
-	      } catch (SWTLayerException iae){
-	        // Try to select perspective label within available perspectives with "(default)" suffix
-	    	  new DefaultTable().select(perspective + " (default)");
-	      }
-		new PushButton("OK").click();
 	}
 	
 	public boolean hasNature(String projectName, String version, String... natureID){
@@ -221,7 +153,10 @@ public abstract class AbstractMavenSWTBotTest{
 		PackageExplorer pexplorer = new PackageExplorer();
 		pexplorer.open();
 		pexplorer.getProject(projectName).select();
-		new ContextMenu(new RegexMatcher("Run As"),new RegexMatcher(mavenBuild)).select();
+		RegexMatcher rm1 = new RegexMatcher("Run As");
+		RegexMatcher rm2 = new RegexMatcher(mavenBuild);
+		WithTextMatchers m = new WithTextMatchers(rm1,rm2);
+		new ContextMenu(m.getMatchers()).select();
 		new WaitUntil(new ShellWithTextIsActive("Edit Configuration"),TimePeriod.NORMAL);
 		new LabeledText("Goals:").setText(goals);
 		new PushButton("Run").click();
@@ -265,7 +200,7 @@ public abstract class AbstractMavenSWTBotTest{
 		pexplorer.getProject(projectName).select();
 		new ContextMenu("Configure","Convert to Maven Project").select();
 		new DefaultShell("Create new POM");
-		assertTrue("Project " +projectName+" packaging should be set to "+defaultPackaging,new LabeledCombo(new DefaultGroup("Artifact"),"Packaging:").getText().equals(defaultPackaging));
+		assertEquals("Project " +projectName+" packaging should be set to "+defaultPackaging, defaultPackaging, new LabeledCombo(new DefaultGroup("Artifact"),"Packaging:").getText());
 		new PushButton("Finish").click();
 		try{
 		    new DefaultShell("Convert to Maven Dependencies");
@@ -279,7 +214,7 @@ public abstract class AbstractMavenSWTBotTest{
 		} catch (SWTLayerException ex){
 		    
 		} finally {
-		    new WaitWhile(new ShellWithTextIsAvailable("Create new POM"));
+ 		    new WaitWhile(new ShellWithTextIsAvailable("Create new POM"));
 	        new WaitWhile(new JobIsRunning(),TimePeriod.VERY_LONG);
 		}
 	}
