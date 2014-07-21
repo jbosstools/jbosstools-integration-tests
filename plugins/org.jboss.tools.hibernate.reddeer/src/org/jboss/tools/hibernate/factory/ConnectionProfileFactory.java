@@ -10,7 +10,9 @@ import org.jboss.reddeer.swt.impl.button.YesButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.swt.matcher.RegexMatcher;
 import org.jboss.reddeer.swt.matcher.WithRegexMatcher;
+import org.jboss.reddeer.swt.regex.Regex;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 
 /**
@@ -47,13 +49,14 @@ public class ConnectionProfileFactory {
 	 * Deletes connection profile 
 	 * @param profileName profile name to delete
 	 */
+	@SuppressWarnings("unchecked")
 	public static void deleteConnectionProfile(String profileName) {
 		DataSourceExplorer explorer = new DataSourceExplorer();
 		explorer.open();
-		new DefaultTreeItem("Database Connections",profileName).select();
+		new DefaultTreeItem(new RegexMatcher("Database Connections"), new RegexMatcher(profileName + ".*")).select();
 		new ContextMenu("Delete").select();
 		String deleteConfirmation = "Delete confirmation";
-		WithRegexMatcher withRegexMatcher = new WithRegexMatcher(".*" + deleteConfirmation + ".*"); 
+		RegexMatcher withRegexMatcher = new RegexMatcher(".*" + deleteConfirmation + ".*"); 
 		new WaitUntil(new ShellWithTextIsActive(withRegexMatcher));
 		new DefaultShell(deleteConfirmation);
 		new YesButton().click();

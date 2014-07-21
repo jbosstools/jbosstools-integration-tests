@@ -7,6 +7,7 @@ import org.jboss.reddeer.requirements.db.DatabaseRequirement;
 import org.jboss.reddeer.requirements.db.DatabaseRequirement.Database;
 import org.jboss.tools.hibernate.factory.ConnectionProfileFactory;
 import org.jboss.tools.hibernate.factory.DriverDefinitionFactory;
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -30,6 +31,10 @@ public class ConnectionProfileTest {
 		DriverDefinitionFactory.createDatabaseDefinition(cfg);
 		ConnectionProfileFactory.createConnectionProfile(cfg);		
 	}
-	
+	@After
+	public void cleanUp() {
+		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
+		ConnectionProfileFactory.deleteConnectionProfile(cfg.getProfileName());
+	}
 
 }
