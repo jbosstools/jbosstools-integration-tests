@@ -54,7 +54,7 @@
 									<type>zip</type>
 								</artifactItem>
 							</artifactItems>
-							<skip>${skipRequirements}</skip>
+							<skip>${swtbot.test.skip}</skip>
 						</configuration>
 					</execution>
 					<execution>
@@ -73,7 +73,7 @@
 									<type>jar</type>
 								</artifactItem>
 							</artifactItems>
-							<skip>${skipRequirements}</skip>
+							<skip>${swtbot.test.skip}</skip>
 						</configuration>
 					</execution>
 					<execution>
@@ -92,14 +92,14 @@
 									<type>zip</type>
 								</artifactItem>
 							</artifactItems>
-							<skip>${skipRequirements}</skip>
+							<skip>${swtbot.test.skip}</skip>
 						</configuration>
 					</execution>
 				</executions>
 			</plugin>
 			<plugin>
 				<groupId>com.googlecode.maven-download-plugin</groupId>
-				<artifactId>maven-download-plugin</artifactId>
+				<artifactId>download-maven-plugin</artifactId>
 				<executions>
 					<execution>
 						<id>install-seam22</id>
@@ -131,8 +131,6 @@
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-surefire-plugin</artifactId>
 				<configuration>
-					<useUIThread>false</useUIThread>
-					<skip>${swtbot.test.skip}</skip>
 					<testSuite>org.jboss.tools.maven.ui.bot.test</testSuite>
 					<testClass>${suiteClass}</testClass>
 				</configuration>

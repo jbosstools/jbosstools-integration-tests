@@ -60,7 +60,7 @@
 							<goal>unpack</goal>
 						</goals>
 						<configuration>
-							<skip>${skipRequirements}</skip>
+							<skip>${swtbot.test.skip}</skip>
 							<artifactItems>
 								<artifactItem>
 									<groupId>org.wildfly</groupId>
@@ -75,8 +75,7 @@
 			</plugin>
 			<plugin>
 				<groupId>com.googlecode.maven-download-plugin</groupId>
-				<artifactId>maven-download-plugin</artifactId>
-				<version>1.0.0</version>
+				<artifactId>download-maven-plugin</artifactId>
 				<executions>
 					<execution>
 						<id>install-apache-cxf-2.x</id>
@@ -99,8 +98,6 @@
 				<configuration>
 					<testSuite>org.jboss.tools.ws.ui.bot.test</testSuite>
 					<testClass>org.jboss.tools.ws.ui.bot.test.WSAllBotTests</testClass>
-					<useUIThread>false</useUIThread>
-					<skip>${swtbot.test.skip}</skip>
 					<dependencies combine.children="append">
 						<dependency>
 							<type>p2-installable-unit</type>

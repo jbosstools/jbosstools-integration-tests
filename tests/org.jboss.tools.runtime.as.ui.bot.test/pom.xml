@@ -42,7 +42,7 @@
 				<jboss-jpp-6.1.x>${requirementsDirectory}/jboss-jpp-6.1.x/jboss-portal-6.1/</jboss-jpp-6.1.x>
 
 				<jboss-seam-2.3.x>${requirementsDirectory}/jboss-seam-2.3.x/jboss-wfk-2.5.0/jboss-seam-2.3.3.Final-redhat-1/</jboss-seam-2.3.x>
-				
+
 				<product-download-properties-file>resources/products-download.properties</product-download-properties-file>
 			</properties>
 			<build>
@@ -67,8 +67,7 @@
 					</plugin>
 					<plugin>
 						<groupId>com.googlecode.maven-download-plugin</groupId>
-						<artifactId>maven-download-plugin</artifactId>
-						<version>1.0.0</version>
+						<artifactId>download-maven-plugin</artifactId>
 						<executions>
 							<execution>
 								<id>install-eap-6.3</id>
@@ -194,6 +193,7 @@
 							<goal>unpack</goal>
 						</goals>
 						<configuration>
+							<skip>${swtbot.test.skip}</skip>
 							<artifactItems>
 								<artifactItem>
 									<groupId>org.wildfly</groupId>
@@ -212,6 +212,7 @@
 							<goal>unpack</goal>
 						</goals>
 						<configuration>
+							<skip>${swtbot.test.skip}</skip>
 							<artifactItems>
 								<artifactItem>
 									<groupId>org.wildfly</groupId>
@@ -230,6 +231,7 @@
 							<goal>unpack</goal>
 						</goals>
 						<configuration>
+							<skip>${swtbot.test.skip}</skip>
 							<artifactItems>
 								<artifactItem>
 									<groupId>org.jboss.as</groupId>
@@ -245,8 +247,7 @@
 			</plugin>
 			<plugin>
 				<groupId>com.googlecode.maven-download-plugin</groupId>
-				<artifactId>maven-download-plugin</artifactId>
-				<version>1.0.0</version>
+				<artifactId>download-maven-plugin</artifactId>
 				<executions>
 					<execution>
 						<id>install-seam-2.3.0.Final</id>
@@ -281,7 +282,6 @@
 				<artifactId>tycho-surefire-plugin</artifactId>
 				<version>${tychoVersion}</version>
 				<configuration>
-					<useUIThread>false</useUIThread>
 					<testSuite>org.jboss.tools.runtime.as.ui.bot.test</testSuite>
 					<testClass>${test.class}</testClass>
 					<dependencies combine.children="append">
@@ -295,7 +295,7 @@
 							<artifactId>org.jboss.tools.runtime.core.feature.feature.group</artifactId>
 							<version>0.0.0</version>
 						</dependency>
-						<!-- JBIDE-12583 o.j.t.runtime.as.detector classes are now in o.j.i.e.as.core, 
+						<!-- JBIDE-12583 o.j.t.runtime.as.detector classes are now in o.j.i.e.as.core,
 							so use o.j.i.e.as.feature instead -->
 						<dependency>
 							<type>p2-installable-unit</type>
@@ -338,7 +338,7 @@
 		</plugins>
 		<pluginManagement>
 			<plugins>
-				<!--This plugin's configuration is used to store Eclipse m2e settings 
+				<!--This plugin's configuration is used to store Eclipse m2e settings
 					only. It has no influence on the Maven build itself. -->
 				<plugin>
 					<groupId>org.eclipse.m2e</groupId>

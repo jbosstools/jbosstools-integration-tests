@@ -23,8 +23,6 @@
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-surefire-plugin</artifactId>
 				<configuration>
-					<skip>${swtbot.test.skip}</skip>
-					<useUIThread>false</useUIThread>
 					<testSuite>org.jboss.tools.openshift.ui.bot.test</testSuite>
 					<testClass>org.jboss.tools.openshift.ui.bot.test.OpenShift${scope}BotTests</testClass>
 					<dependencies combine.children="append">

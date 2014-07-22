@@ -21,8 +21,6 @@
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-surefire-plugin</artifactId>
 				<configuration>
-					<skip>${swtbot.test.skip}</skip>
-					<useUIThread>false</useUIThread>
 					<testSuite>org.jboss.tools.aerogear.ui.bot.test</testSuite>
 					<testClass>org.jboss.tools.aerogear.ui.bot.test.AerogearAllBotTests</testClass>
 					<dependencies combine.children="append">

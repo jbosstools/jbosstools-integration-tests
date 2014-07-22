@@ -39,7 +39,7 @@
 		<plugins>
 			<plugin>
 				<groupId>com.googlecode.maven-download-plugin</groupId>
-				<artifactId>maven-download-plugin</artifactId>
+				<artifactId>download-maven-plugin</artifactId>
 				<executions>
 					<execution>
 						<id>install-gatein-3.4</id>
@@ -126,7 +126,7 @@
 					</execution>
 				</executions>
 			</plugin>
-			
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
@@ -138,6 +138,7 @@
 							<goal>copy</goal>
 						</goals>
 						<configuration>
+							<skip>${swtbot.test.skip}</skip>
 							<artifactItems>
 								<artifactItem>
 									<groupId>org.jboss.tools.portlet.tests</groupId>
@@ -171,10 +172,8 @@
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-surefire-plugin</artifactId>
 				<configuration>
-					<useUIThread>false</useUIThread>
 					<testSuite>org.jboss.tools.portlet.ui.bot.test</testSuite>
 					<testClass>${test.class}</testClass>
-					<skip>${swtbot.test.skip}</skip>
 					<explodedBundles>
 						<bundle>org.mozilla.xulrunner.cocoa.macosx</bundle>
 						<bundle>org.mozilla.xulrunner.gtk.linux.x86</bundle>
