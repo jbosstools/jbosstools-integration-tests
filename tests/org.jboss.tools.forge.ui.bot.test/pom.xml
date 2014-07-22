@@ -41,7 +41,7 @@
 										<type>zip</type>
 									</artifactItem>
 								</artifactItems>
-							<skip>${skipRequirements}</skip>
+							<skip>${swtbot.test.skip}</skip>
 						</configuration>
 					</execution>
                                         <execution>
@@ -59,7 +59,7 @@
                                                                                 <type>zip</type>
                                                                         </artifactItem>
                                                                 </artifactItems>
-                                                        <skip>${skipRequirements}</skip>
+                                                        <skip>${swtbot.test.skip}</skip>
                                                 </configuration>
                                         </execution>
                                 </executions>
@@ -70,8 +70,6 @@
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-surefire-plugin</artifactId>
 				<configuration>
-					<useUIThread>false</useUIThread>
-					<skip>${swtbot.test.skip}</skip>
 					<testSuite>org.jboss.tools.forge.ui.bot.test</testSuite>
 					<testClass>org.jboss.tools.forge.ui.bot.test.suite.ForgeAllTest</testClass>
 					<dependencies combine.children="append">

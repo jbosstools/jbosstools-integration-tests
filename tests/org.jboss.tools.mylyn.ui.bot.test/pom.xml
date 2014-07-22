@@ -24,10 +24,8 @@
                 <artifactId>tycho-surefire-plugin</artifactId>
                 <configuration>
                     <product>${tychoPluginProductParameter}</product>
-                    <useUIThread>false</useUIThread>
                     <testSuite>org.jboss.tools.mylyn.ui.bot.test</testSuite>
                     <testClass>org.jboss.tools.mylyn.ui.bot.test.MylynSuite</testClass>
-                    <skip>${swtbot.test.skip}</skip>
                     <dependencies combine.children="append">
 
 <dependency>

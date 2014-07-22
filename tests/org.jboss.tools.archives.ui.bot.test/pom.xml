@@ -7,7 +7,7 @@
 		<artifactId>tests</artifactId>
 		<version>4.2.0-SNAPSHOT</version>
 	</parent>
-	
+
 	<groupId>org.jboss.tools.archives.tests</groupId>
 	<artifactId>org.jboss.tools.archives.ui.bot.test</artifactId>
 	<packaging>eclipse-test-plugin</packaging>
@@ -32,6 +32,7 @@
 							<goal>unpack</goal>
 						</goals>
 						<configuration>
+							<skip>${swtbot.test.skip}</skip>
 							<artifactItems>
 								<artifactItem>
 									<groupId>org.jboss.as</groupId>
@@ -50,8 +51,6 @@
 				<configuration>
 					<testSuite>org.jboss.tools.archives.ui.bot.test</testSuite>
 					<testClass>${suiteClass}</testClass>
-					<useUIThread>false</useUIThread>
-					<skip>${swtbot.test.skip}</skip>
 					<dependencies combine.children="append">
 						<dependency>
 							<type>p2-installable-unit</type>
@@ -113,7 +112,7 @@
 				</plugin>
 				<plugin>
 					<groupId>com.googlecode.maven-download-plugin</groupId>
-					<artifactId>maven-download-plugin</artifactId>
+					<artifactId>download-maven-plugin</artifactId>
 					<executions>
 						<execution>
 							<id>install-as-7.1.1</id>

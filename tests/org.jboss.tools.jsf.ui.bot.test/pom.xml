@@ -57,8 +57,6 @@
         <configuration>
           <testSuite>org.jboss.tools.jsf.ui.bot.test</testSuite>
           <testClass>${test.suite.class}</testClass>
-          <useUIThread>false</useUIThread>
-          <skip>${swtbot.test.skip}</skip>
           <product>org.eclipse.platform.ide</product>
           <dependencies combine.children="append">
             <dependency>

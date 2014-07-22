@@ -23,7 +23,6 @@
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-surefire-plugin</artifactId>
 				<configuration>
-					<useUIThread>false</useUIThread>
 					<testSuite>org.jboss.tools.examples.ui.bot.test</testSuite>
 					<testClass>org.jboss.tools.examples.ui.bot.test.ImportExamplesTest</testClass>
 					<dependencies>

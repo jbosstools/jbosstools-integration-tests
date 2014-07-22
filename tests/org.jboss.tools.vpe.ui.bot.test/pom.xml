@@ -30,7 +30,7 @@
 						<goal>unpack</goal>
 					</goals>
 					<configuration>
-						<skip>${skipRequirements}</skip>
+						<skip>${swtbot.test.skip}</skip>
 						<artifactItems>
 							<artifactItem>
 								<groupId>org.jboss.as</groupId>
@@ -49,15 +49,13 @@
 				</execution>
 			</executions>
 		</plugin>
-    
+
       <plugin>
         <groupId>org.eclipse.tycho</groupId>
         <artifactId>tycho-surefire-plugin</artifactId>
         <configuration>
           <testSuite>org.jboss.tools.vpe.ui.bot.test</testSuite>
           <testClass>${test.suite.class}</testClass>
-          <useUIThread>false</useUIThread>
-          <skip>${swtbot.test.skip}</skip>
           <product>org.eclipse.platform.ide</product>
           <dependencies combine.children="append">
             <dependency>
@@ -94,7 +92,7 @@
               <type>p2-installable-unit</type>
               <artifactId>org.eclipse.jdt.feature.group</artifactId>
               <version>0.0.0</version>
-            </dependency> 
+            </dependency>
             <dependency>
               <type>p2-installable-unit</type>
               <artifactId>org.jboss.tools.vpe.browsersim.feature.feature.group</artifactId>

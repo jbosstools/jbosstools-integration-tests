@@ -84,8 +84,6 @@
 				<configuration>
 					<testSuite>org.jboss.tools.deltaspike.ui.bot.test</testSuite>
 					<testClass>${suiteClass}</testClass>
-					<useUIThread>false</useUIThread>
-					<skip>${swtbot.test.skip}</skip>
 					<dependencies combine.children="append">
 						<dependency>
 							<type>p2-installable-unit</type>

@@ -19,7 +19,7 @@
 				<plugins>
 				<plugin>
 					<groupId>com.googlecode.maven-download-plugin</groupId>
-					<artifactId>maven-download-plugin</artifactId>
+					<artifactId>download-maven-plugin</artifactId>
 					<executions>
 						<execution>
 							<id>download_h2console</id>
@@ -63,8 +63,6 @@
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-surefire-plugin</artifactId>
 				<configuration>
-					<useUIThread>false</useUIThread>
-					<skip>${swtbot.test.skip}</skip>
 					<testSuite>org.jboss.tools.usercase.ticketmonster.ui.bot.test</testSuite>
 					<testClass>org.jboss.tools.usercase.ticketmonster.ui.bot.test.TicketMonsterAllBotTest</testClass>
 				</configuration>

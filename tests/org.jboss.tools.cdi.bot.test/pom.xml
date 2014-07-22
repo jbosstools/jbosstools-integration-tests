@@ -60,8 +60,6 @@
 				<configuration>
 					<testSuite>org.jboss.tools.cdi.bot.test</testSuite>
 					<testClass>${suiteClass}</testClass>
-					<useUIThread>false</useUIThread>
-					<skip>${swtbot.test.skip}</skip>
 					<!-- Kill swt bot test take more than 3 hours minutes (10800 seconds) 
 						to finish -->
 					<dependencies combine.children="append">
