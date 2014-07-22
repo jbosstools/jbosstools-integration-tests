@@ -14,10 +14,21 @@
 	<properties>
 		<!-- <systemProperties>${integrationTestsSystemProperties} -Dtest.configurations.dir=${project.basedir}/properties/</systemProperties> -->
 		<!-- <systemProperties> </systemProperties> -->
-		<systemProperties>${integrationTestsSystemProperties}</systemProperties>
+		<reddeer.config>${basedir}/resources/reddeer-config/</reddeer.config>
+		<redDeerConfigStatement>-Dreddeer.config=${reddeer.config}/</redDeerConfigStatement>
+		<systemProperties>${integrationTestsSystemProperties} ${redDeerConfigStatement}</systemProperties>
 	</properties>
 
 	<build>
+        <resources>
+	        <resource>
+	        <directory>resources/reddeer-config</directory>
+	        <includes>
+	            <include>*</include>
+	        </includes>
+	        <filtering>true</filtering>
+	        </resource>
+        </resources>
 		<plugins>
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
@@ -73,7 +84,6 @@
 					</execution>
 				</executions>
 			</plugin>
-
-		</plugins>
+		</plugins>		
 	</build>
 </project>
