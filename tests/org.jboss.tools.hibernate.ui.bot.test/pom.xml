@@ -14,7 +14,7 @@
 	<properties>
 		<!-- <systemProperties>${integrationTestsSystemProperties} -Dtest.configurations.dir=${project.basedir}/properties/</systemProperties> -->
 		<!-- <systemProperties> </systemProperties> -->
-		<reddeer.config>${basedir}/resources/reddeer-config/</reddeer.config>
+		<reddeer.config>target/classes/reddeer-config</reddeer.config>
 		<redDeerConfigStatement>-Dreddeer.config=${reddeer.config}/</redDeerConfigStatement>
 		<systemProperties>${integrationTestsSystemProperties} ${redDeerConfigStatement}</systemProperties>
 	</properties>
@@ -22,9 +22,9 @@
 	<build>
         <resources>
 	        <resource>
-	        <directory>resources/reddeer-config</directory>
+	        <directory>resources</directory>
 	        <includes>
-	            <include>*</include>
+	            <include>reddeer-config/*</include>
 	        </includes>
 	        <filtering>true</filtering>
 	        </resource>
