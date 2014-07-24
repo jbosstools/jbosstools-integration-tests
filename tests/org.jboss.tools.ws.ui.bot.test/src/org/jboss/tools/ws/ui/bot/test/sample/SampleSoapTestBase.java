@@ -24,8 +24,8 @@ public class SampleSoapTestBase extends SampleWSBase {
         createSampleService(Type.SOAP, project, name, pkg, cls, null);
     }
 	
-	protected void createSimpleSOAPWS(String project, String name, String pkg, String cls) {
-        createSimpleService(Type.SOAP, project, name, pkg, cls, null);
+	protected void createSimpleWS(String project, String name, String pkg, String cls) {
+        createSimpleService(project, name, pkg, cls, null);
     }
    
     protected void checkSOAPService(String project, String svcName, String svcPkg, String svcClass, String msgContent) {

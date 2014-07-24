@@ -23,11 +23,13 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
+import org.jboss.reddeer.swt.condition.JobIsRunning;
+import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.tools.ws.reddeer.ui.wizards.SimpleWSWizard;
 import org.jboss.tools.ws.ui.bot.test.WSTestBase;
 import org.jboss.tools.ws.ui.bot.test.uiutils.actions.NewSampleWSWizardAction;
-import org.jboss.tools.ws.ui.bot.test.uiutils.actions.NewSimpleWSWizardAction;
 import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.SampleWSWizard;
-import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.SimpleWSWizard;
 import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.Type;
 import org.jboss.tools.ws.ui.bot.test.wsclient.WSClient;
 
@@ -62,16 +64,17 @@ public class SampleWSBase extends WSTestBase {
        return bot.editorByTitle(cls + ".java");
     }
     
-    protected SWTBotEditor createSimpleService(Type type, String project, String name, String pkg, String cls, String appCls) {
-    	SimpleWSWizard w = new NewSimpleWSWizardAction(type).run();    	
-        w.setProjectName(project).setServiceName(name);
-        w.setPackageName(pkg).setClassName(cls);
-        if (type == Type.REST) {
-        	w.addRESTEasyLibraryFromRuntime();
-            w.setApplicationClassName(appCls);            
-        }
+    protected SWTBotEditor createSimpleService(String project, String name, String pkg, String cls, String appCls) {
+    	SimpleWSWizard w = new SimpleWSWizard();
+    	w.open();
+        w.setProjectName(project);
+        w.setServiceName(name);
+        w.setPackageName(pkg);
+        w.setClassName(cls);
         w.finish();
-        util.waitForNonIgnoredJobs();
+        
+        new WaitWhile(new JobIsRunning(), TimePeriod.getCustom(20), false);
+        
         return bot.editorByTitle(cls + ".java");
     }
 

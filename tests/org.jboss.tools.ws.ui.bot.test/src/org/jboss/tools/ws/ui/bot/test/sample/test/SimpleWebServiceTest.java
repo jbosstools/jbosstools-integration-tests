@@ -16,11 +16,11 @@ import org.jboss.tools.ws.ui.bot.test.sample.SampleSoapTestBase;
 import org.junit.Test;
 
 /**
- * Test operates on Simple SOAP Web Service Wizard
+ * Test operates on Simple Web Service Wizard
  * @author jjankovi
  *
  */
-public class SimpleSoapWebServiceTest extends SampleSoapTestBase {
+public class SimpleWebServiceTest extends SampleSoapTestBase {
 	
 	@Override
     protected String getWsProjectName() {
@@ -28,14 +28,14 @@ public class SimpleSoapWebServiceTest extends SampleSoapTestBase {
     }
 
     @Test
-    public void testSimpleSoapWS() {
+    public void testSimpleWSService() {
     	IFile dd = getDD(getWsProjectName());
 
         assertTrue(dd.exists());
-        createSimpleSOAPWS(getWsProjectName(), "HelloService", "sample", "SampleService");
+        createSimpleWS(getWsProjectName(), "HelloService", "sample", "SampleService");
         checkSOAPService(getWsProjectName(), "HelloService", "sample", "SampleService", "You");
 
-        createSimpleSOAPWS(getWsProjectName(), "GreetService", "greeter", "Greeter");
+        createSimpleWS(getWsProjectName(), "GreetService", "greeter", "Greeter");
         checkSOAPService(getWsProjectName(), "GreetService", "greeter", "Greeter", "Tester");
     }
 

@@ -36,8 +36,7 @@ import org.jboss.tools.ws.ui.bot.test.rest.validation.ApplicationValidationTest;
 import org.jboss.tools.ws.ui.bot.test.rest.validation.JaxRsValidatorTest;
 import org.jboss.tools.ws.ui.bot.test.rest.validation.RESTfulValidationTest;
 import org.jboss.tools.ws.ui.bot.test.sample.test.SampleSoapWebServiceTest;
-import org.jboss.tools.ws.ui.bot.test.sample.test.SimpleRESTWebServiceTest;
-import org.jboss.tools.ws.ui.bot.test.sample.test.SimpleSoapWebServiceTest;
+import org.jboss.tools.ws.ui.bot.test.sample.test.SimpleWebServiceTest;
 import org.jboss.tools.ws.ui.bot.test.webservice.BottomUpWSTest;
 import org.jboss.tools.ws.ui.bot.test.webservice.TopDownWSTest;
 import org.jboss.tools.ws.ui.bot.test.webservice.eap.EAPFromJavaTest;
@@ -64,8 +63,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	SampleSoapWebServiceTest.class,
 	CreateJAXRSApplicationTest.class,
 	CreateJAXRSResourceTest.class,
-	SimpleSoapWebServiceTest.class,
-	SimpleRESTWebServiceTest.class,
+	SimpleWebServiceTest.class,
 	AnnotationPropertiesTest.class,
 	RESTfulSupportTest.class,
 	RESTfulExplorerTest.class,
