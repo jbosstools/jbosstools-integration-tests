@@ -20,11 +20,15 @@ import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.hamcrest.core.Is;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.ProjectItem;
 import org.jboss.reddeer.eclipse.jface.exception.JFaceLayerException;
+import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.condition.NonSystemJobRunsCondition;
@@ -47,6 +51,8 @@ import org.junit.Assert;
  * 
  */
 @Require(server = @Server(state = ServerState.NotRunning), perspective = "Java EE")
+@JBossServer(state=ServerReqState.STOPPED)
+@OpenPerspective(JavaEEPerspective.class)
 public class RESTfulTestBase extends WSTestBase {
 
 	protected final static RESTfulHelper restfulHelper = new RESTfulHelper();

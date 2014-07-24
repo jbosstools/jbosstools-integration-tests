@@ -14,7 +14,10 @@ package org.jboss.tools.ws.ui.bot.test;
 import java.text.MessageFormat;
 import java.util.logging.Logger;
 
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
@@ -38,7 +41,9 @@ import org.junit.runners.Suite.SuiteClasses;
  * 
  */
 @Require(perspective = "Java EE", 
-		 server = @Server) 
+		 server = @Server)
+@OpenPerspective(JavaEEPerspective.class)
+@JBossServer()
 //		 server = @Server(type = ServerType.JbossAS, version = "7.1", operator = ">="))
 // @Require(perspective="Java EE",
 // server=@Server(type=ServerType.EAP,

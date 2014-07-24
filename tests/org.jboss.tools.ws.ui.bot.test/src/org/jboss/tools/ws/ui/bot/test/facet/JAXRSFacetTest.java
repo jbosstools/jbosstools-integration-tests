@@ -15,22 +15,23 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import org.hamcrest.core.Is;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.swt.api.Button;
+import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitWhile;
-import org.jboss.tools.ui.bot.ext.types.IDELabel;
+import org.jboss.reddeer.uiforms.impl.hyperlink.DefaultHyperlink;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
 import org.jboss.tools.ws.ui.bot.test.uiutils.RESTFullExplorer;
 import org.junit.Test;
+
 /**
- * Test if adding jaxrs facet into project causes enabling
- * jboss tools jaxrs tooling
+ * Test if adding JAX-RS facet into project causes enabling
+ * jboss tools JAX-RS tooling
  * 
  * @author jjankovi
  *
@@ -46,41 +47,31 @@ public class JAXRSFacetTest extends RESTfulTestBase {
 		return wsProjectName;
 	}
 	
-	@Override
-	public void cleanup() {
-		
-	}
-	
 	@Test
 	public void testJAXRSFacet() {
-		
 		setJAXRSFacet();
 		checkJAXRSTooling();
-		
 	}
 
 	private void setJAXRSFacet() {
 		invokePropertiesForProject();
 		setJAXRSFacetOnProject();
 		confirmProjectProperties();
-		
 	}
 	
 	private void checkJAXRSTooling() {
 		RESTFullExplorer restExplorer = new RESTFullExplorer(wsProjectName);
 		assertThat("Different count of rest services was expected", 
 				restExplorer.getAllRestServices().size(), Is.is(1));
-			
 	}
 
 	private void invokePropertiesForProject() {
 		PackageExplorer packageExplorer = new PackageExplorer();
 		packageExplorer.open();
 		
-		packageExplorer.selectProject(getWsProjectName());
-		new ContextMenu(IDELabel.Menu.PROPERTIES).select();
+		packageExplorer.getProject(getWsProjectName()).select();
+		new ContextMenu("Properties").select();
 		
-		new WaitUntil(new ShellWithTextIsActive(PROJECT_PROPERTIES));
 		new DefaultShell(PROJECT_PROPERTIES);
 	}
 	
@@ -88,46 +79,45 @@ public class JAXRSFacetTest extends RESTfulTestBase {
 		new DefaultTreeItem("Project Facets").select();
 		
 		new DefaultTreeItem(1, "JAX-RS (REST Web Services)").setChecked(true);
-		Button okButton = new PushButton(IDELabel.Button.OK);
-		assertFalse("OK Button should be disabled.", okButton.isEnabled());
+		assertFalse("OK Button should be disabled.", getOkButton().isEnabled());
 		
 		handleAdditionalConfiguration();
-		
 	}
 	
 	private void confirmProjectProperties() {
 		new DefaultShell(PROJECT_PROPERTIES);
 		
-		Button okButton = new PushButton(IDELabel.Button.OK);
+		Button okButton = getOkButton();
 		assertTrue("OK Button should be enabled.", okButton.isEnabled());
 		okButton.click();
-		
-		util.waitForNonIgnoredJobs();
+
+		new WaitWhile(new JobIsRunning(), TimePeriod.getCustom(20), false);
 		
 		new WaitWhile(new ShellWithTextIsActive(PROJECT_PROPERTIES));
 	}
 	
 	private void handleAdditionalConfiguration() {
-		bot.hyperlink().click();
+		new DefaultHyperlink().activate();
 		
-		new WaitUntil(new ShellWithTextIsActive("Modify Faceted Project"));
-		new DefaultShell();
+		new DefaultShell("Modify Faceted Project");
 		new LabeledCombo("Type:").setSelection("Pure JEE6 Implementation");
 		
-		Button okButton = new PushButton(IDELabel.Button.OK);
+		Button okButton = getOkButton();
 		assertTrue("OK Button should be enabled.", okButton.isEnabled());
 		okButton.click();
 		
 		new WaitWhile(new ShellWithTextIsActive("Modify Faceted Project"));
 		
 		/** workaround **/
-		bot.hyperlink().click();
-		new WaitUntil(new ShellWithTextIsActive("Modify Faceted Project"));
-		new DefaultShell();
-		new PushButton(IDELabel.Button.OK).click();
+		new DefaultHyperlink().activate();
+		new DefaultShell("Modify Faceted Project");
+		getOkButton().click();
 		
 		new WaitWhile(new ShellWithTextIsActive("Modify Faceted Project"));
 		/** end of workaround **/
 	}
 	
+	private Button getOkButton() {
+		return new PushButton("OK");
+	}
 }

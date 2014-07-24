@@ -22,6 +22,7 @@ import org.hamcrest.core.IsNot;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.ProjectItem;
 import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.ws.reddeer.ui.views.AnnotationPropertiesView;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
 import org.junit.Test;
@@ -37,7 +38,7 @@ import org.junit.Test;
  */
 public class AnnotationPropertiesTest extends RESTfulTestBase {
 	
-	private PackageExplorer packageExplorerRD = new PackageExplorer();
+	private PackageExplorer packageExplorer = new PackageExplorer();
 	private AnnotationPropertiesView annotationsView = new AnnotationPropertiesView();
 	@Override
 	public String getWsProjectName() {
@@ -56,7 +57,7 @@ public class AnnotationPropertiesTest extends RESTfulTestBase {
 	 * 1 there are no incorrectly checked annotations
 	 * 2 there are no incorrectly unchecked annotations 
 	 * 
-	 * @author rrabara
+	 * @author Radoslav Rabara
 	 */
 	@Test
 	public void testAbsenceOfAnnotation() {
@@ -187,8 +188,8 @@ public class AnnotationPropertiesTest extends RESTfulTestBase {
 	
 	private void openClass(String projectName, String packageName,
 			String classFullName) {
-		packageExplorerRD.open();
-		packageExplorerRD.getProject(projectName)
+		packageExplorer.open();
+		packageExplorer.getProject(projectName)
 				.getProjectItem("src", packageName, classFullName)
 				.open();
 	}
@@ -208,9 +209,10 @@ public class AnnotationPropertiesTest extends RESTfulTestBase {
 	
 	private void activeValueIsContainedInActiveEditor(
 			String value, boolean shouldContain) {
-		SWTBotEclipseEditor editor = bot.activeEditor().toTextEditor();
-		assertThat("Editor should " + (shouldContain?"":"not ") + "contain \"" + value +"\"",
-				editor.toTextEditor().getText().contains(value), Is.is(shouldContain));
+		String text = new TextEditor().getText();
+		assertTrue("Editor should " + (shouldContain?"":"not ")
+				+ "contain \""+ value +"\" but the content is:\n" + text,
+				text.contains(value) == shouldContain);
 	}
 	
 }

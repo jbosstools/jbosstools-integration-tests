@@ -13,9 +13,10 @@ package org.jboss.tools.ws.ui.bot.test.wstester;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.hamcrest.core.IsEqual;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.ProjectItem;
+import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
@@ -26,6 +27,7 @@ import org.jboss.tools.ws.ui.bot.test.widgets.WsTesterView.Request_Type;
 import org.junit.Test;
 
 @Require(server = @Server(state = ServerState.Running))
+@JBossServer(state=ServerReqState.RUNNING)
 public class XmlJsonFormattingTest extends RESTfulTestBase {
 
 	private static String projectName = "usersRestManager";

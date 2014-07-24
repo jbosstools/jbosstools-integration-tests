@@ -6,8 +6,10 @@ import java.util.List;
 
 import org.hamcrest.core.Is;
 import org.hamcrest.core.IsNot;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.ProjectItem;
+import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
@@ -21,7 +23,13 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * Tests operates on JAX-RS Resource wizard
+ * 
+ * @author Radoslav Rabara
+ */
 @Require(server=@Server(state=ServerState.Present))
+@JBossServer(state=ServerReqState.PRESENT)
 public class CreateJAXRSResourceTest extends RESTfulTestBase {
 	
 	private final String PACKAGE_NAME = "org.rest.test";
@@ -222,7 +230,7 @@ public class CreateJAXRSResourceTest extends RESTfulTestBase {
 				continue;
 			}
 			if(serviceName.equals(RESTFulAnnotations.DELETE.getLabel())) {
-				assertEquals("Path of DELETE operation ", restfulWizard.getPathForRestFulService(restService), PATH_PREFIX);
+				assertEquals("Path of DELETE operation ", restfulWizard.getPathForRestFulService(restService), PATH_PREFIX + idPathURITemplate);
 				assertEquals("Consumes info of DELETE operation ", restfulWizard.getConsumesInfo(restService), emptyMediaType);
 				assertEquals("Produces info of DELETE operation ", restfulWizard.getProducesInfo(restService),  emptyMediaType);
 				continue;

@@ -12,23 +12,21 @@ package org.jboss.tools.ws.ui.bot.test.preferences;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 
-import org.hamcrest.Matcher;
 import org.hamcrest.core.Is;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
+import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
-import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ws.reddeer.ui.preferences.JBossWSRuntimeItem;
 import org.jboss.tools.ws.reddeer.ui.preferences.JBossWSRuntimeListFieldEditor;
 import org.jboss.tools.ws.reddeer.ui.preferences.JBossWSRuntimePreferencePage;
-import org.jboss.tools.ws.ui.bot.test.WSTestBase;
-import org.junit.After;
 import org.junit.AfterClass;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -37,38 +35,26 @@ import org.junit.Test;
  * 1. try to automatically generate all relevant information 
  *    about jbossws from configured runtime
  * 2. try to edit jbossws information and test it is reflected in page
- * 3. try to remove jbossws from list    
+ * 3. try to remove jbossws from list
  * 
  * @author jjankovi
- *
+ * @author Radoslav Rabara
  */
 @Require(server=@Server(state=ServerState.NotRunning))
-public class JBossWSPreferencesTest extends WSTestBase {
+@JBossServer(state=ServerReqState.PRESENT)
+public class JBossWSPreferencesTest extends SWTTestExt {
 
 	private static JBossWSRuntimePreferencePage jbossWSRuntimePreferencePage;
 	private JBossWSRuntimeListFieldEditor jbossWsRuntimeDialog;
 	
-	private static final String NEW_JBOSS_WS_RUNTIME_DIALOG_TITLE = 
-			"New JBossWS Runtime";
-	private static final String EDIT_JBOSS_WS_RUNTIME_DIALOG_TITLE = 
-			"Edit JBossWS Runtime";
-	
+	private static final String NEW_JBOSS_WS_RUNTIME_DIALOG_TITLE =  "New JBossWS Runtime";
+	private static final String EDIT_JBOSS_WS_RUNTIME_DIALOG_TITLE = "Edit JBossWS Runtime";
 	
 	private String runtimeName;
 	private String runtimeVersion;
 	private String runtimePath;
 	
 	private String runtimeEditedName = "modifiedRuntimeName";
-	
-	@Before
-	public void setup() {
-		
-	}
-	
-	@After
-	public void cleanup() {
-		
-	}
 	
 	@BeforeClass
 	public static void preparePrerequisites() {
@@ -90,10 +76,7 @@ public class JBossWSPreferencesTest extends WSTestBase {
 	
 	private void testJBossWSGenerating() {
 		jbossWSRuntimePreferencePage.add();
-		new WaitUntil(new ShellWithTextIsActive(
-				NEW_JBOSS_WS_RUNTIME_DIALOG_TITLE));
-		jbossWsRuntimeDialog = 
-				new JBossWSRuntimeListFieldEditor(false);
+		jbossWsRuntimeDialog = new JBossWSRuntimeListFieldEditor(false);
 		
 		setRuntimeHomeFolderAccordingToRuntime();
 		assertRuntimeProperlyConfiguredInDialog();
@@ -104,16 +87,12 @@ public class JBossWSPreferencesTest extends WSTestBase {
 		jbossWSRuntimePreferencePage.select(0);
 		jbossWSRuntimePreferencePage.edit();
 		
-		new WaitUntil(new ShellWithTextIsActive(
-				EDIT_JBOSS_WS_RUNTIME_DIALOG_TITLE));
-		jbossWsRuntimeDialog = 
-				new JBossWSRuntimeListFieldEditor(true);
+		jbossWsRuntimeDialog = new JBossWSRuntimeListFieldEditor(true);
 		
 		jbossWsRuntimeDialog.setName(runtimeEditedName);
 		jbossWsRuntimeDialog.finish();
 		
-		new WaitWhile(new ShellWithTextIsActive(
-				EDIT_JBOSS_WS_RUNTIME_DIALOG_TITLE));
+		new WaitWhile(new ShellWithTextIsActive(EDIT_JBOSS_WS_RUNTIME_DIALOG_TITLE));
 		
 		assertRuntimeName(runtimeEditedName);
 	}
@@ -123,11 +102,11 @@ public class JBossWSPreferencesTest extends WSTestBase {
 		jbossWSRuntimePreferencePage.remove();
 		
 		new WaitUntil(new ShellWithTextIsActive("Confirm Runtime Delete"));
-		new PushButton(IDELabel.Button.OK).click();
+		new PushButton("OK").click();
 		new WaitWhile(new ShellWithTextIsActive("Confirm Runtime Delete"));
 		
-		assertThat(jbossWSRuntimePreferencePage.
-				getAllJBossWSRuntimes().size(), Is.is(0));
+		assertThat(jbossWSRuntimePreferencePage.getAllJBossWSRuntimes().size(),
+				Is.is(0));
 	}
 
 	private void setRuntimeHomeFolderAccordingToRuntime() {
@@ -191,8 +170,7 @@ public class JBossWSPreferencesTest extends WSTestBase {
 	}
 	
 	private void assertRuntimeName(String expectedName) {
-		assertRuntimeName(jbossWSRuntimePreferencePage.
-				getAllJBossWSRuntimes().iterator().next(), 
+		assertRuntimeName(jbossWSRuntimePreferencePage.getAllJBossWSRuntimes().get(0), 
 				expectedName);
 	}
 	

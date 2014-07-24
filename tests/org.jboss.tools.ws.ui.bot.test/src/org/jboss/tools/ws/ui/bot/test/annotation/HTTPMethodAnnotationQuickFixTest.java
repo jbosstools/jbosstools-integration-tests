@@ -5,6 +5,10 @@ import static org.hamcrest.core.IsEqual.equalTo;
 
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
+import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
@@ -21,6 +25,8 @@ import org.junit.Test;
  *
  */
 @Require(server = @Server(state = ServerState.NotRunning), perspective = "Java EE")
+@JBossServer(state=ServerReqState.STOPPED)
+@OpenPerspective(JavaEEPerspective.class)
 public class HTTPMethodAnnotationQuickFixTest extends WSTestBase {
 
 	@Override

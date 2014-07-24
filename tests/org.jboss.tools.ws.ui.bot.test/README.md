@@ -24,7 +24,7 @@
 3. Import projects (File > Import... > Existing Projects into workspace)
  - import WebServices tests - jbosstools-integration-tests/tests/org.jboss.tools.ws.ui.bot.test
 
- - import plugins org.jboss.tools.ui.bot.ext.test and org.jboss.tools.ws.reddeer
+ - import plugins org.jboss.tools.ui.bot.ext.test, org.jboss.tools.ws.reddeer and org.jboss.ide.eclipse.as.reddeer
    from directory jbosstools-integration-tests/plugins/
  - import plugin jbosstools-base/tests/plugins/org.jboss.tools.tests
  - import all Red Deer plugins from directory reddeer/plugins/

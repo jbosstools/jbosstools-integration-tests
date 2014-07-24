@@ -40,3 +40,7 @@ Export-Package: org.jboss.tools.ws.ui.bot.test; uses:="org.eclipse.ui.
 Eclipse-BundleShape: jar
 Bundle-Localization: plugin
 Bundle-Vendor: JBoss by Red Hat
+Import-Package: org.jboss.ide.eclipse.as.reddeer.server.requirement,
+ org.jboss.reddeer.requirements.openperspective,
+ org.jboss.reddeer.requirements.server,
+ org.jboss.tools.ws.reddeer.ui.dialogs

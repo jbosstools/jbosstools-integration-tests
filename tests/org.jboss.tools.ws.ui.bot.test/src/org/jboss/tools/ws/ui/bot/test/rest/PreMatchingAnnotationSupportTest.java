@@ -1,9 +1,12 @@
 package org.jboss.tools.ws.ui.bot.test.rest;
 
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
+import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.junit.Test;
 
 /**
- * Testing support for {@link  annotation
+ * Testing support for {@link javax.ws.rs.container.PreMatching}
  * 
  * Run with J2EE7+ server
  * 
@@ -12,6 +15,7 @@ import org.junit.Test;
  * @see http://tools.jboss.org/documentation/whatsnew/jbosstools/4.2.0.Beta1.html#webservices
  * @since JBT 4.2.0.Beta1
  */
+@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY)
 public class PreMatchingAnnotationSupportTest extends RESTfulTestBase {
 	
 	@Override

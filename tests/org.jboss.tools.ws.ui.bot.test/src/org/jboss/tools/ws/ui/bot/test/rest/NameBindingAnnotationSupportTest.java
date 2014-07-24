@@ -7,7 +7,10 @@ import java.util.List;
 
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
 import org.hamcrest.core.Is;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
+import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
@@ -29,6 +32,7 @@ import org.junit.Test;
  * @since JBT 4.2.0.Beta1
  */
 @Require(server = @Server(type = ServerType.WildFly, state = ServerState.Present))
+@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY)
 public class NameBindingAnnotationSupportTest extends RESTfulTestBase {
 	
 	@Override

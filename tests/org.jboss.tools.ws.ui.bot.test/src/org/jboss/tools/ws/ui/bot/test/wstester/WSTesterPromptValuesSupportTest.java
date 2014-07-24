@@ -14,8 +14,9 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.util.List;
 
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.hamcrest.core.Is;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
+import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.tools.ui.bot.ext.condition.ShellIsActiveCondition;
@@ -28,7 +29,6 @@ import org.jboss.tools.ws.ui.bot.test.uiutils.RESTFullExplorer;
 import org.jboss.tools.ws.ui.bot.test.uiutils.RunOnServerDialog;
 import org.jboss.tools.ws.ui.bot.test.widgets.WsTesterView;
 import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -40,6 +40,7 @@ import org.junit.Test;
  * @author Radoslav Rabara
  */
 @Require(server = @Server(state = ServerState.Running))
+@JBossServer(state=ServerReqState.RUNNING)
 public class WSTesterPromptValuesSupportTest extends RESTfulTestBase {
 
 	private String wsProjectName = "wsPromptTestProject";

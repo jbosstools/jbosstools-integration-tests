@@ -10,6 +10,10 @@
  ******************************************************************************/
 package org.jboss.tools.ws.ui.bot.test.integration;
 
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
+import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
@@ -25,6 +29,8 @@ import org.junit.Test;
  *
  */
 @Require(server = @Server(state = ServerState.Running), perspective = "Java EE")
+@JBossServer(state=ServerReqState.RUNNING)
+@OpenPerspective(JavaEEPerspective.class)
 public class JAXRSToolingIntegrationTest extends RESTfulTestBase {
 
 	private static String projectName = "integration1"; 

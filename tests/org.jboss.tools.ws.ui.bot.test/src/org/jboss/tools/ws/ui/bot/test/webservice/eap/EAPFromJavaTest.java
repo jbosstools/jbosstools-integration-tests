@@ -20,6 +20,9 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
+import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ws.ui.bot.test.WSAllBotTests;
@@ -43,6 +46,8 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses({ WSAllBotTests.class, EAPCompAllTests.class })
 @Require(perspective="Java EE", 
 		server=@Server)
+@OpenPerspective(JavaEEPerspective.class)
+@JBossServer()
 //		(type=ServerType.EAP, 
 //		version = "5.1", operator = ">="))
 public class EAPFromJavaTest extends WebServiceTestBase {

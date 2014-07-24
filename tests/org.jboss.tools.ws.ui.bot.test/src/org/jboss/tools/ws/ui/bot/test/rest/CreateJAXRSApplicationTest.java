@@ -10,9 +10,11 @@ import org.hamcrest.core.IsNot;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.ProjectItem;
+import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
@@ -25,7 +27,13 @@ import org.jboss.tools.ws.reddeer.ui.wizards.JAXRSApplicationWizardPage.Deployme
 import org.jboss.tools.ws.reddeer.ui.wizards.JAXRSApplicationWizardPage.SubclassOfApplicationWizardPart;
 import org.jboss.tools.ws.ui.bot.test.WSTestBase;
 
+/**
+ * Tests operates on JAX-RS Application wizard
+ * 
+ * @author Radoslav Rabara
+ */
 @Require(server=@Server(state=ServerState.Present))
+@JBossServer(state=ServerReqState.PRESENT)
 public class CreateJAXRSApplicationTest extends WSTestBase {
 
 	protected final JAXRSApplicationWizard wizard = new JAXRSApplicationWizard();

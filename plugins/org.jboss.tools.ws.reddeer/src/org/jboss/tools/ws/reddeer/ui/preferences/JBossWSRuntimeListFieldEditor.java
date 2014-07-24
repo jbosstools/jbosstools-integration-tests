@@ -1,7 +1,6 @@
 package org.jboss.tools.ws.reddeer.ui.preferences;
 
 import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.label.DefaultLabel;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
@@ -59,20 +58,19 @@ public class JBossWSRuntimeListFieldEditor extends DefaultShell {
 		new PushButton("Finish").click();
 	}
 	
-}
-
-enum JBossWSRuntimeVersion {
-	
-	RUNTIME20("2.0"), RUNTIME30("3.0"); 
-	
-	private String version;
-	
-	private JBossWSRuntimeVersion(String version) {
-		this.version = version;
+	public enum JBossWSRuntimeVersion {
+		
+		RUNTIME20("2.0"), RUNTIME30("3.0"); 
+		
+		private String version;
+		
+		private JBossWSRuntimeVersion(String version) {
+			this.version = version;
+		}
+		
+		public String version() {
+			return version;
+		}
+		
 	}
-	
-	public String version() {
-		return version;
-	}
-	
 }
