@@ -22,6 +22,7 @@ Import-Package: org.eclipse.swtbot.swt.finder.exceptions,
  org.eclipse.swtbot.swt.finder.widgets,
  org.jboss.reddeer.workbench.impl.editor,
  org.jboss.reddeer.workbench.impl.view,
+ org.jboss.reddeer.workbench.preference,
  org.jboss.tools.ui.bot.ext.view
 Eclipse-BundleShape: jar
 Bundle-Localization: plugin

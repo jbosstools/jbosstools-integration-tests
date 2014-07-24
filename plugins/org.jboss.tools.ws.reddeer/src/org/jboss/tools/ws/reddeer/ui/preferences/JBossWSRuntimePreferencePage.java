@@ -1,25 +1,22 @@
 package org.jboss.tools.ws.reddeer.ui.preferences;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
+import java.util.List;
 
-import org.jboss.reddeer.eclipse.jface.preference.PreferencePage;
 import org.jboss.reddeer.swt.api.TableItem;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.label.DefaultLabel;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
+import org.jboss.reddeer.workbench.preference.WorkbenchPreferencePage;
 
 /**
  * Represents Preference page: 
 * 		Web Services -> JBossWS Preferences
 * 
  * @author jjankovi
- *
+ * @author Radoslav Rabara
  */
-public class JBossWSRuntimePreferencePage extends PreferencePage {
-
-	private DefaultTable runtimesTable;
+public class JBossWSRuntimePreferencePage extends WorkbenchPreferencePage {
 	
 	public JBossWSRuntimePreferencePage() {
 		super("Web Services", "JBossWS Preferences");
@@ -37,14 +34,12 @@ public class JBossWSRuntimePreferencePage extends PreferencePage {
 		new PushButton("Remove").click();
 	}
 	
-	public Collection<JBossWSRuntimeItem> getAllJBossWSRuntimes() {
-		Collection<JBossWSRuntimeItem> runtimes = 
-				new ArrayList<JBossWSRuntimeItem>();
+	public List<JBossWSRuntimeItem> getAllJBossWSRuntimes() {
+		List<JBossWSRuntimeItem> runtimes =  new ArrayList<JBossWSRuntimeItem>();
 		
-		runtimesTable = new DefaultTable();
-		int count = runtimesTable.rowCount();
+		DefaultTable runtimesTable = getRuntimesTable();
 		
-		for (int i = 0; i < count; i++) {
+		for (int i = 0; i < runtimesTable.rowCount(); i++) {
 			TableItem row = runtimesTable.getItem(i);
 			String name = row.getText(1);
 			String version = row.getText(2);
@@ -55,19 +50,8 @@ public class JBossWSRuntimePreferencePage extends PreferencePage {
 		return runtimes;
 	}
 	
-	public JBossWSRuntimeItem select(int index) {
-		runtimesTable = new DefaultTable();
-		runtimesTable.select(index);
-		
-		int i = 0;
-		Iterator<JBossWSRuntimeItem> iter = 
-				getAllJBossWSRuntimes().iterator();
-		while (iter.hasNext()) {
-			if (i == index) {
-				return iter.next();
-			}
-		}
-		return null;
+	public void select(int index) {
+		getRuntimesTable().select(index);
 	}
 	
 	public String getRuntimeImplementation() {
@@ -78,4 +62,7 @@ public class JBossWSRuntimePreferencePage extends PreferencePage {
 		return new DefaultLabel(4).getText();
 	}
 	
+	private DefaultTable getRuntimesTable() {
+		return new DefaultTable();
+	}
 }
