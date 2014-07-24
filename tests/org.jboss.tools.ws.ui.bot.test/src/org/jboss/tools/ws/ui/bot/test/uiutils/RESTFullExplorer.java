@@ -18,7 +18,8 @@ import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.ProjectItem;
 import org.jboss.reddeer.swt.api.Menu;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.matcher.WithRegexMatchers;
+import org.jboss.reddeer.swt.matcher.RegexMatcher;
+import org.jboss.reddeer.swt.matcher.WithTextMatchers;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTFulAnnotations;
 
 public class RESTFullExplorer {
@@ -59,9 +60,10 @@ public class RESTFullExplorer {
 	
 	public RunOnServerDialog runOnServer(ProjectItem service) {
 		service.select();
-		
-		Menu menu = new ContextMenu(new WithRegexMatchers(
-				".*Run.*", ".*Run on Server.*").getMatchers());
+
+		Menu menu = new ContextMenu(
+				new WithTextMatchers(new RegexMatcher(".*Run.*"),
+						new RegexMatcher(".*Run on Server.*")).getMatchers());
 		menu.select();
 
 		return new RunOnServerDialog();
