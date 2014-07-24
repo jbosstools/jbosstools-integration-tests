@@ -117,6 +117,7 @@ public class WsTesterTest extends WSTestBase {
         LOGGER.log(Level.FINE, "Services: {0}", items);        
         Assert.assertEquals(2, items.size());
         Assert.assertTrue(items.contains("EchoService"));
+        dlg.selectService("EchoService");
         items = dlg.getPorts();
         LOGGER.log(Level.FINE, "Ports: {0}", items);
         Assert.assertEquals(1, items.size());
