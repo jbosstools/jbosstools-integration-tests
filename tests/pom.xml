@@ -38,7 +38,9 @@
 		<module>org.jboss.tools.hibernate.ui.bot.test</module>
 		<module>org.jboss.tools.jsf.ui.bot.test</module>
 		<module>org.jboss.tools.maven.ui.bot.test</module>
+<!-- Disable mylyn until https://issues.jboss.org/browse/JBIDE-18000 is resolved
 		<module>org.jboss.tools.mylyn.ui.bot.test</module>
+-->
 		<module>org.jboss.tools.openshift.ui.bot.test</module>
 		<module>org.jboss.tools.portlet.ui.bot.test</module>
 		<module>org.jboss.tools.runtime.as.ui.bot.test</module>
