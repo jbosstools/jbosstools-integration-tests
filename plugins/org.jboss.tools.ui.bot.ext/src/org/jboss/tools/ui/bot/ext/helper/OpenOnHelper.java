@@ -15,8 +15,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.util.regex.Pattern;
-
 import org.apache.log4j.Logger;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.bindings.keys.KeyStroke;
@@ -178,12 +176,6 @@ public class OpenOnHelper {
 			assertNotNull("Obtaining open resource editor action", openResourceAction);
 			openResourceAction.run();
 		}
-	}
-	
-	private static String getSubstringPattern(String stringToMatch) {
-		String quoted = Pattern.quote(stringToMatch);
-		String pattern = ".*" + quoted + ".*";
-		return pattern;
 	}
 	
 	public static SWTBotEditor selectOpenOnOption(SWTBotExt bot, String editorTitle, 

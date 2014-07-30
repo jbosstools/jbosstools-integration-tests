@@ -131,7 +131,6 @@ public class BuildPathHelper {
 	public static void removeVariable(String projectName, String variableLabel,
 			boolean removeGlobaly) {
 		SWTBotExt bot = new SWTEclipseExt().openPropertiesOfProject(projectName);
-		LinkedList<SWTBotShell> openedShells = new LinkedList<SWTBotShell>();
 		SWTBotShell propShell = bot.shell(IDELabel.Shell.PROPERTIES_FOR + " " + projectName).activate();
 		bot.tree().expandNode(IDELabel.JavaBuildPathPropertiesEditor.JAVA_BUILD_PATH_TREE_ITEM_LABEL).select();
 		bot.tabItem(IDELabel.JavaBuildPathPropertiesEditor.LIBRARIES_TAB_LABEL).activate();

@@ -17,6 +17,7 @@ import org.hamcrest.SelfDescribing;
  * @author apodhrad
  * 
  */
+@SuppressWarnings("restriction")
 public class SWTBotTabbedPropertyList extends AbstractSWTBotControl<TabbedPropertyList> {
 
 	/**

@@ -7,12 +7,12 @@ import org.eclipse.swtbot.swt.finder.SWTBotWidget;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.results.BoolResult;
 import org.eclipse.swtbot.swt.finder.results.StringResult;
-import org.eclipse.swtbot.swt.finder.results.VoidResult;
 import org.eclipse.swtbot.swt.finder.widgets.AbstractSWTBotControl;
 import org.eclipse.ui.forms.widgets.FormText;
 import org.eclipse.ui.internal.forms.widgets.FormTextModel;
 import org.hamcrest.SelfDescribing;
 
+@SuppressWarnings("restriction")
 @SWTBotWidget(clasz = FormText.class, preferredName="formText", referenceBy = { ReferenceBy.MNEMONIC })
 public class SWTBotFormTextExt extends AbstractSWTBotControl<FormText>{
 

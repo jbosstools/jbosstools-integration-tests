@@ -482,7 +482,6 @@ public class ServersView extends ViewBase {
 			return contextMenu(tree, text);
 		}
 		
-		@SuppressWarnings("unchecked")
 		protected SWTBotMenu contextMenu(final Control control, final String text) {
 			Matcher<MenuItem> withMnemonic = withMnemonic(text);
 			final Matcher<MenuItem> matcher = allOf(widgetOfType(MenuItem.class), withMnemonic);

@@ -231,9 +231,7 @@ public class SWTArranger {
 				Color c = new Color(d,0x00, 0x00, 0x00);
 				GC gc = e.gc;
 				gc.setBackground(c);
-				int i = 0;
 				for (Block r : a.blocks) {
-					i += 10;
 					gc.fillRectangle(r.x, r.y, r.width, r.height);
 				}
 				c.dispose();

@@ -12,9 +12,7 @@ package org.jboss.tools.ui.bot.ext.condition;
 
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
 import org.eclipse.swtbot.swt.finder.SWTBot;
-import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.waits.ICondition;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 /**
  * Condition test for Eclipse Editor Text
  * @author vlado pakan

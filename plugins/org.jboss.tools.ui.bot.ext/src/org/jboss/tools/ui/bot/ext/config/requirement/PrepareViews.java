@@ -3,7 +3,6 @@ package org.jboss.tools.ui.bot.ext.config.requirement;
 import java.util.List;
 import java.util.Vector;
 
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.gen.IView;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;

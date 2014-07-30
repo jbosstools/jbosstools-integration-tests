@@ -13,8 +13,6 @@ import org.jboss.tools.ui.bot.ext.gen.ActionItem.NewObject.JBossToolsProjectExam
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.junit.Test;
 
-import org.jboss.tools.ui.bot.ext.config.ConfiguredState;
-
 /**
  * this class represents SWTBot-based Project Example test. Whenever we test project-examples, we should
  * extend these class and override what needed. See esb bot tests for details
@@ -124,8 +122,6 @@ public class ExampleTest extends SWTTestExt{
 	 * runs Project Examples dialog, downloads and imports example's projects to workspace
 	 */
 	protected void importExample(SWTBot wiz) {
-		String hasProjName = wiz.textWithLabel(JBossToolsProjectExamples.TEXT_PROJECT_NAME).getText();
-		
 		//assertTrue(String.format("Example project name changed, have '%s', expected '%s'",hasProjName,getProjectNames()[0]),hasProjName.equals(getProjectNames()[0]));
 		int projSize = getProjectSize(wiz.textWithLabel(JBossToolsProjectExamples.TEXT_PROJECT_SIZE).getText());
 		wiz.button(IDELabel.Button.FINISH).click();

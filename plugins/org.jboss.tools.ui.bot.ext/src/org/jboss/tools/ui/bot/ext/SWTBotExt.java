@@ -10,7 +10,6 @@
  ******************************************************************************/
 package org.jboss.tools.ui.bot.ext;
 
-import static org.eclipse.swtbot.eclipse.finder.matchers.WidgetMatcherFactory.withTitle;
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.allOf;
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.widgetOfType;
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.withStyle;

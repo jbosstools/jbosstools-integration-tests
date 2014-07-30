@@ -436,6 +436,7 @@ public class DatabaseHelper {
 	 * @throws FileNotFoundException
 	 * @throws IOException
 	 */
+	@SuppressWarnings("resource")
 	public static void addDriverIntoWorkspace() throws FileNotFoundException, IOException {
 		File in = SWTUtilExt.getResourceFile(Activator.PLUGIN_ID, "drv","hsqldb.jar");
 		File out = new File(Platform.getLocation() + File.separator + "hsqldb.jar");

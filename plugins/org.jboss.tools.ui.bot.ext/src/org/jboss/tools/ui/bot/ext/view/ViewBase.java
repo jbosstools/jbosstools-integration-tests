@@ -24,7 +24,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarSeparatorButton;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarToggleButton;
 import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.IWorkbenchPart;
-import org.eclipse.ui.internal.WorkbenchPartReference;
+import org.eclipse.ui.IWorkbenchPartReference;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
 import org.jboss.tools.ui.bot.ext.SWTOpenExt;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
@@ -76,7 +76,7 @@ public class ViewBase {
 
 			public List<SWTBotToolbarButton> run() {
 				SWTBotView view = show();
-				IWorkbenchPart obj = ((WorkbenchPartReference) view.getReference()).getPart(false);
+				IWorkbenchPart obj = ((IWorkbenchPartReference) view.getReference()).getPart(false);
 				ToolBar toolbar = null;
 				IToolBarManager t = ((IViewSite)obj.getSite()).getActionBars().getToolBarManager();
 				if (t instanceof ToolBarManager) {

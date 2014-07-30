@@ -82,22 +82,32 @@ public class PrepareDB extends RequirementBase {
 		BufferedReader reader = null;
 		try {
 			reader = new BufferedReader(new FileReader(file));
+			while(true) { 
+				String line = null;
+				try {
+					line = reader.readLine();
+					if (line == null) break;
+				} catch (IOException e) {
+					e.printStackTrace();
+					fail("Can't read script" + file.getAbsolutePath());
+				}
+				builder.append(line);
+				builder.append(System.getProperty("line.separator"));
+			}
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			Assert.fail("Unable to read script " + file.getAbsolutePath());
-		}
-		while(true) { 
-			String line = null;
-			try {
-				line = reader.readLine();
-				if (line == null) break;
-			} catch (IOException e) {
-				e.printStackTrace();
-				fail("Can't read script" + file.getAbsolutePath());
+		} finally {
+			if (reader != null){
+				try {
+					reader.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+					Assert.fail("Unable to close reader for script " + file.getAbsolutePath());
+				}
 			}
-			builder.append(line);
-			builder.append(System.getProperty("line.separator"));
-		} 		
+		}
+		 		
 		return builder;
 	}
 

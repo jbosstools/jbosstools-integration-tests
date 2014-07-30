@@ -133,7 +133,6 @@ public class SWTBotGefContextMenuExt {
 	 * @param menu
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
 	private MenuItem getNextMenuItem(String text, Menu menu) {
 
 		MenuItem nextMenuItem = null;
