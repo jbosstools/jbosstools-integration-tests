@@ -45,7 +45,9 @@
 <bundle id="org.jboss.tools.jsf.ui.bot.test"><category name="JBoss Tools Core - Integration Tests"/></bundle>
 <bundle id="org.jboss.tools.maven.ui.bot.test"><category name="JBoss Tools Core - Integration Tests"/></bundle>
 <bundle id="org.jboss.tools.maven.reddeer"><category name="JBoss Tools Core - Integration Tests"/></bundle>
+<!-- Disabled mylyn until https://issues.jboss.org/browse/JBIDE-18000 is fixed
 <bundle id="org.jboss.tools.mylyn.ui.bot.test"><category name="JBoss Tools Core - Integration Tests"/></bundle>
+-->
 <bundle id="org.jboss.tools.openshift.ui.bot.test"><category name="JBoss Tools Core - Integration Tests"/></bundle>
 <bundle id="org.jboss.tools.portlet.ui.bot.test"><category name="JBoss Tools Core - Integration Tests"/></bundle>
 <bundle id="org.jboss.tools.runtime.as.ui.bot.test"><category name="JBoss Tools Core - Integration Tests"/></bundle>
@@ -54,7 +56,9 @@
 <bundle id="org.jboss.tools.vpe.ui.bot.test"><category name="JBoss Tools Core - Integration Tests"/></bundle>
 <bundle id="org.jboss.tools.ws.ui.bot.test"><category name="JBoss Tools Core - Integration Tests"/></bundle>
 <bundle id="org.jboss.tools.usercase.ticketmonster.ui.bot.test"><category name="JBoss Tools Core - Integration Tests"/></bundle>
+<!-- Disable mylyn.reddeer - need to update for https://github.com/jboss-reddeer/reddeer/pull/527
 <bundle id="org.jboss.tools.mylyn.reddeer"><category name="JBoss Tools Core - Integration Tests"/></bundle>
+-->
 
 <!-- sources -->
 
@@ -88,7 +92,9 @@
 <bundle id="org.jboss.tools.jsf.ui.bot.test.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
 <bundle id="org.jboss.tools.maven.ui.bot.test.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
 <bundle id="org.jboss.tools.maven.reddeer.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
+<!-- Disabled mylyn until https://issues.jboss.org/browse/JBIDE-18000 is fixed
 <bundle id="org.jboss.tools.mylyn.ui.bot.test.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
+-->
 <bundle id="org.jboss.tools.openshift.ui.bot.test.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
 <bundle id="org.jboss.tools.portlet.ui.bot.test.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
 <bundle id="org.jboss.tools.runtime.as.ui.bot.test.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
@@ -97,6 +103,8 @@
 <bundle id="org.jboss.tools.vpe.ui.bot.test.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
 <bundle id="org.jboss.tools.ws.ui.bot.test.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
 <bundle id="org.jboss.tools.usercase.ticketmonster.ui.bot.test.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
+<!-- Disable mylyn.reddeer - need to update for https://github.com/jboss-reddeer/reddeer/pull/527
 <bundle id="org.jboss.tools.mylyn.reddeer.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
+-->
 
 </site>
