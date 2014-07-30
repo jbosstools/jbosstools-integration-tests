@@ -48,8 +48,8 @@ public class MylynTestBzQuery {
 
 	/* Test for RH bugzilla */
 	@Test
-	public void TestRHBugzilla() {
-		TestBugzillaQuery("Red Hat Bugzilla",
+	public void testRHBugzilla() {
+		testBugzillaQuery("Red Hat Bugzilla",
 				"MylynRHBugzillaQueryTest - test query",
 				"Bugzilla mail layout change for 'new bugs' is a usability regression (this isn't about HTML)",
 				"826087");
@@ -57,8 +57,8 @@ public class MylynTestBzQuery {
 
 	/* Test for eclipse bugzilla */
 	@Test
-	public void TestEclipseBugzilla() {
-		TestBugzillaQuery("Eclipse.org",
+	public void testEclipseBugzilla() {
+		testBugzillaQuery("Eclipse.org",
 				"MylynEclipseBugzillaQueryTest - test query",
 				"JBoss agent doesn't work remotely",
 				"188417");
@@ -68,7 +68,7 @@ public class MylynTestBzQuery {
 	 * Generalized test method
 	 * Performs anonymous bugzilla query 
 	 */
-	public void TestBugzillaQuery(String targetRepo, String queryName, String bugzillaSummary, String bugzilla) {
+	public void testBugzillaQuery(String targetRepo, String queryName, String bugzillaSummary, String bugzilla) {
 
 		TaskRepositoriesView view = new TaskRepositoriesView();
 
@@ -176,7 +176,8 @@ public class MylynTestBzQuery {
 						foundQueryResults = true;
 						log.info("Found query results: " + fullBugzillaString);
 					}
-				}				
+				}
+				break;
 			}
 		}
 		assertTrue("Found query: " + queryName, foundQuery);

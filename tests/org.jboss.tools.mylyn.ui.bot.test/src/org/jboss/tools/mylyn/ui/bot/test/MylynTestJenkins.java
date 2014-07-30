@@ -29,6 +29,7 @@ import org.jboss.tools.mylyn.reddeer.*;
 import org.jboss.tools.mylyn.reddeer.wizard.BuildServerDialog;
 import org.jboss.tools.mylyn.reddeer.view.MylynBuildView;
 import org.jboss.reddeer.swt.condition.ShellIsActive;
+import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 
 public class MylynTestJenkins {
 
@@ -42,7 +43,7 @@ public class MylynTestJenkins {
 	protected final String SERVERURL = "http://ci.jruby.org/";	
 
 	@Test
-	public void TestIt() {
+	public void testIt() {
 	
 		BuildServerDialog buildServerDialog = null;
 		MylynBuildView view = new MylynBuildView();
@@ -67,7 +68,14 @@ public class MylynTestJenkins {
 		/* Locate a Jenkins job */
 		new PushButton("Select All").click();
 		new PushButton("Finish").click();
-
+		
+		try {
+			new WaitUntil(new ShellWithTextIsActive("Refreshing Builds (http://ci.jruby.org/)"), TimePeriod.getCustom(60l)); 
+		}
+		catch (Exception E) {
+			log.info ("Problem with 'Refreshing Builds (http://ci.jruby.org/)' shell not seen");
+		}	
+		
 		view.open();
 
 		List <TreeItem> theItems = new DefaultTree().getAllItems();

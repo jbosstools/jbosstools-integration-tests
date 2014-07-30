@@ -32,7 +32,7 @@ public class MylynTestLocalRepo {
 	protected final String UPDATED_TASKNAME = TASKNAME + " - updated";
 	
 	@Test
-	public void TestIt() {
+	public void testIt() {
 
 		/* Verify Local task repository can be found */
 		TaskRepositoriesView view = new TaskRepositoriesView();	

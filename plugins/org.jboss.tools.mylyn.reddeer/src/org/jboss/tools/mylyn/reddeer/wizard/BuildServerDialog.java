@@ -68,7 +68,7 @@ public class BuildServerDialog extends DefaultShell {
 		PushButton validate = new PushButton("Validate");
 		validate.click();
 		while (!validate.isEnabled()) {
-			AbstractWait.sleep(TimePeriod.NORMAL.getSeconds());
+			AbstractWait.sleep(TimePeriod.NORMAL);
 		}
 	}
 	
