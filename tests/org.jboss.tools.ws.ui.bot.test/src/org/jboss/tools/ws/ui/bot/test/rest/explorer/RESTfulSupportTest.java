@@ -1,6 +1,10 @@
 package org.jboss.tools.ws.ui.bot.test.rest.explorer;
 
+import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
+import org.jboss.reddeer.eclipse.jface.exception.JFaceLayerException;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
+import org.jboss.tools.ws.ui.bot.test.uiutils.RESTFullExplorer;
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -39,5 +43,16 @@ public class RESTfulSupportTest extends RESTfulTestBase {
 		/* test if RESTful explorer is not missing */
 		assertRestFullSupport(getWsProjectName());
 	}
-	
+
+	protected void assertRestFullSupport(String projectName) {
+		RESTFullExplorer explorer = null;
+		String missingRESTExplorerMessage = "JAX-RS REST Web Services explorer is missing in "
+				+ "project \"" + projectName + "\"";
+		try {
+			explorer = new RESTFullExplorer(projectName);
+		} catch (WidgetNotFoundException | JFaceLayerException e) {
+			Assert.fail(missingRESTExplorerMessage + "\nThrown exception: " + e.getMessage());
+		}
+		assertNotNull(missingRESTExplorerMessage, explorer);
+	}
 }

@@ -31,11 +31,10 @@ public class PreMatchingAnnotationSupportTest extends RESTfulTestBase {
 	@Test
 	public void useOnNotSupportedTypeTest() {
 		String projectName = "prematching2";
-		
 		importRestWSProject(projectName);
 		
-		assertCountOfApplicationAnnotationValidationErrors(projectName, 1);
-		assertCountOfApplicationAnnotationValidationErrors(projectName,
+		assertCountOfValidationErrors(projectName, 1);
+		assertCountOfValidationErrors(projectName,
 				"@PreMatching annotation is only allowed on subclasses of javax.ws.rs.container.ContainerRequestFilter", 1);
 	}
 }

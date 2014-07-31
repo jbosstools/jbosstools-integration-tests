@@ -15,15 +15,25 @@ import java.text.MessageFormat;
 import java.util.logging.Logger;
 
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
-import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
+import org.jboss.reddeer.swt.condition.JobIsRunning;
+import org.jboss.reddeer.swt.condition.WaitCondition;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.button.RadioButton;
+import org.jboss.reddeer.swt.impl.menu.ShellMenu;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.wait.AbstractWait;
+import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ui.bot.ext.helper.ImportHelper;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.WsWizardBase.Slider_Level;
 import org.jboss.tools.ws.ui.bot.test.utils.DeploymentHelper;
 import org.jboss.tools.ws.ui.bot.test.utils.ProjectHelper;
@@ -31,8 +41,6 @@ import org.jboss.tools.ws.ui.bot.test.utils.ResourceHelper;
 import org.jboss.tools.ws.ui.bot.test.utils.WebServiceClientHelper;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite.SuiteClasses;
 
 /**
  * Basic test base for all web service bot tests
@@ -44,12 +52,6 @@ import org.junit.runners.Suite.SuiteClasses;
 		 server = @Server)
 @OpenPerspective(JavaEEPerspective.class)
 @JBossServer()
-//		 server = @Server(type = ServerType.JbossAS, version = "7.1", operator = ">="))
-// @Require(perspective="Java EE",
-// server=@Server(type=ServerType.EAP,
-// version = "5.1", operator = ">="))
-@RunWith(RequirementAwareSuite.class)
-@SuiteClasses({ WSAllBotTests.class })
 public class WSTestBase extends SWTTestExt {
 
 	private Slider_Level level;
@@ -92,9 +94,18 @@ public class WSTestBase extends SWTTestExt {
 	}
 
 	protected boolean projectExists(String name) {
-		PackageExplorer packageExplorer = new PackageExplorer();
-		packageExplorer.open();
-		return packageExplorer.containsProject(name);
+		return new PackageExplorer().containsProject(name);
+	}
+
+	protected void deleteAllProjects() {
+		for(Project project : new ProjectExplorer().getProjects()) {
+			project.delete(true);
+		}
+	}
+
+	protected void openJavaFile(String projectName, String pkgName, String javaFileName) {
+		new PackageExplorer().getProject(projectName)
+			.getProjectItem("src", pkgName, javaFileName).open();
 	}
 
 	protected Slider_Level getLevel() {
@@ -137,7 +148,8 @@ public class WSTestBase extends SWTTestExt {
 	protected static void importWSTestProject(String projectName) {
 		String location = "/resources/projects/" + projectName;
 		importWSTestProject(location, projectName);
-		eclipse.cleanAllProjects();
+		cleanAllProjects();
+		AbstractWait.sleep(TimePeriod.getCustom(2));
 	}
 
 	protected static void importWSTestProject(String projectLocation, String dir) {
@@ -146,4 +158,14 @@ public class WSTestBase extends SWTTestExt {
 		eclipse.addConfiguredRuntimeIntoProject(dir, configuredState.getServer().name);
 	}
 
+	/**
+	 * Cleans All Projects
+	 */
+	protected static void cleanAllProjects() {
+		new ShellMenu("Project", "Clean...").select();
+		new DefaultShell("Clean");
+		new RadioButton("Clean all projects").click();
+		new PushButton("OK").click();
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG, false);
+	}
 }

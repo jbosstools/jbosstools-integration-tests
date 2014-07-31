@@ -41,8 +41,8 @@ public class ApplicationValidationTest extends RESTfulTestBase {
 		importRestWSProject("app1");
 		
 		/* test validation error */
-		assertCountOfApplicationAnnotationValidationErrors("app1", 2);
-		assertCountOfApplicationAnnotationValidationErrors("app1", "Multiple JAX-RS Activators", 2);
+		assertCountOfValidationErrors("app1", 2);
+		assertCountOfValidationErrors("app1", "Multiple JAX-RS Activators", 2);
 	}
 	
 	@Test
@@ -52,8 +52,8 @@ public class ApplicationValidationTest extends RESTfulTestBase {
 		importRestWSProject("app2");
 		
 		/* test validation error */
-		assertCountOfApplicationAnnotationValidationErrors("app2", 2);
-		assertCountOfApplicationAnnotationValidationErrors("app2", "Multiple JAX-RS Activators", 2);
+		assertCountOfValidationErrors("app2", 2);
+		assertCountOfValidationErrors("app2", "Multiple JAX-RS Activators", 2);
 	}
 	
 	@Test
@@ -63,8 +63,8 @@ public class ApplicationValidationTest extends RESTfulTestBase {
 		importRestWSProject("app3");
 		
 		/* test validation error */
-		assertCountOfApplicationAnnotationValidationWarnings("app3", 0);
-		assertCountOfApplicationAnnotationValidationErrors("app3", 0);
+		assertCountOfValidationWarnings("app3", 0);
+		assertCountOfValidationErrors("app3", 0);
 	}
 	
 	@Test
@@ -74,14 +74,14 @@ public class ApplicationValidationTest extends RESTfulTestBase {
 		importRestWSProject("app4");
 		
 		/* test validation error */
-		assertCountOfApplicationAnnotationValidationErrors("app4", 1);
+		assertCountOfValidationErrors("app4", 1);
 		
 		/* fix class - should be no error */
 		resourceHelper.replaceInEditor(editorForClass("app4", "src", 
 				"test", "App.java").toTextEditor(), "@ApplicationPath(\"/rest\")", "", true);
 		
 		/* test validation error */
-		assertCountOfApplicationAnnotationValidationErrors("app4", 0);
+		assertCountOfValidationErrors("app4", 0);
 	}
 	
 	@Test
@@ -91,14 +91,14 @@ public class ApplicationValidationTest extends RESTfulTestBase {
 		importRestWSProject("app5");
 		
 		/* test validation error */
-		assertCountOfApplicationAnnotationValidationErrors("app5", 1);
+		assertCountOfValidationErrors("app5", 1);
 		
 		/* fix class - should be no error */
 		resourceHelper.replaceInEditor(editorForClass("app5", "src", 
 				"test", "App.java").toTextEditor(), "extends Application", "", true);
 		
 		/* test validation error */
-		assertCountOfApplicationAnnotationValidationErrors("app5", 0);
+		assertCountOfValidationErrors("app5", 0);
 	}
 
 	private String obtainClassNameFromPath(String... path) {

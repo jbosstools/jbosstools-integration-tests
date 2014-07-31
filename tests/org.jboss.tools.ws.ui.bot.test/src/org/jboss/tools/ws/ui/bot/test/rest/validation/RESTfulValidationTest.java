@@ -47,7 +47,6 @@ public class RESTfulValidationTest extends RESTfulTestBase {
 
 	@Test
 	public void testBadValueValidation() {
-		
 		/* prepare project */
 		prepareRestfulResource(editorForClass(getWsProjectName(), "src", 
 				"org.rest.test", "RestService.java"), SIMPLE_REST_WS_RESOURCE, 

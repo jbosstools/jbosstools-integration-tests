@@ -5,18 +5,21 @@ import static org.junit.Assert.assertThat;
 import java.util.Arrays;
 import java.util.List;
 
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.hamcrest.core.Is;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
+import org.jboss.reddeer.eclipse.condition.ProblemsExists;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.tools.ui.bot.ext.Timing;
+import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
+import org.jboss.tools.ws.reddeer.editor.ExtendedTextEditor;
+import org.jboss.tools.ws.reddeer.swt.condition.ProblemsCount;
 import org.junit.Test;
 
 /**
@@ -72,49 +75,45 @@ public class FiltersInterceptorsSupportTest extends RESTfulTestBase {
 	public void filterInterceptorDefinedAsInnerClassesSupportTest() {
 		String projectName = "filterinterceptor1";
 		importAndCheckErrors(projectName);
-		assertCountOfApplicationAnnotationValidationWarnings(projectName, 4);
+		assertCountOfValidationWarnings(projectName, 4, "JBIDE-17178");
 	}
-	
+
 	private void filterSupportTest(String projectName) {
 		importAndCheckErrors(projectName);
 		providerValidationWarning(projectName, "Filter");
 	}
-	
+
 	private void interceptorSupportTest(String projectName) {
 		importAndCheckErrors(projectName);
 		providerValidationWarning(projectName, "Interceptor");
 	}
 
 	private void providerValidationWarning(String projectName, String className) {
-		//wait for JAX-RS validator
-		new ProblemsView().open();
-		bot.sleep(Timing.time2S());
-		
+		/* wait for JAX-RS validator */
+		new WaitUntil(new ProblemsExists(ProblemsExists.ProblemType.WARNING),
+				TimePeriod.NORMAL, false);
+
 		// there should be "No JAX-RS Activator is defined for the project." warning
-		SWTBotTreeItem[] warningsBefore = restfulHelper.getRESTValidationWarnings(null);
-		
+		List<TreeItem> warningsBefore = new ProblemsView().getAllWarnings();
+
 		//remove @Provider annotation
-		resourceHelper.replaceInEditor(
-				editorForClass(projectName, "src", "org.rest.test",
-						className + ".java").toTextEditor(),
-						"@Provider", "", true);
+		openJavaFile(projectName, "org.rest.test", className + ".java");
+		new ExtendedTextEditor().removeLine("@Provider");
+
 		//remove unused import
-		resourceHelper.replaceInEditor(
-				editorForClass(projectName, "src", "org.rest.test",
-						className + ".java").toTextEditor(),
-						"import javax.ws.rs.ext.Provider;", "", true);
-		
-		//wait for JAX-RS validator
-		new ProblemsView().open();
-		bot.sleep(Timing.time2S());
+		new ExtendedTextEditor().removeLine("import javax.ws.rs.ext.Provider;");
+
+		/* wait for JAX-RS validator */
+		new WaitUntil(new ProblemsCount(ProblemsCount.ProblemType.WARNING,
+				warningsBefore.size()+1), TimePeriod.NORMAL, false);
 
 		//one more warning Description "The @Provider annotation is missing on this java type."
-		SWTBotTreeItem[] warningsAfter = restfulHelper.getRESTValidationWarnings(null);
+		List<TreeItem> warningsAfter = new ProblemsView().getAllWarnings();
 		assertThat("Expected one more warnings.\nBefore: "
-				+ Arrays.toString(warningsBefore) + "\nAfter: "
-				+ Arrays.toString(warningsAfter), warningsAfter.length - warningsBefore.length, Is.is(1));
+				+ Arrays.toString(warningsBefore.toArray()) + "\nAfter: "
+				+ Arrays.toString(warningsAfter.toArray()), warningsAfter.size() - warningsBefore.size(), Is.is(1));
 		
-		//there should be no error
-		assertCountOfApplicationAnnotationValidationErrors(projectName, 0);
+		/* there should be no error */
+		assertCountOfErrors(projectName, 0);
 	}
 }

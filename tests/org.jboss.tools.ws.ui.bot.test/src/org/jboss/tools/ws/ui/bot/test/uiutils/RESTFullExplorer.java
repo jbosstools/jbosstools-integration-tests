@@ -20,6 +20,8 @@ import org.jboss.reddeer.swt.api.Menu;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.matcher.RegexMatcher;
 import org.jboss.reddeer.swt.matcher.WithTextMatchers;
+import org.jboss.reddeer.swt.wait.AbstractWait;
+import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTFulAnnotations;
 
 public class RESTFullExplorer {
@@ -28,17 +30,21 @@ public class RESTFullExplorer {
 	
 	public RESTFullExplorer(String wsProjectName) {
 		Project project = new ProjectExplorer().getProject(wsProjectName);
-		
+
 		/* REDDEER-369
 		 * workaround for bug that will show project with no items
 		 */
 		project.getTreeItem().expand();
 		project.getTreeItem().collapse();
 		project.getTreeItem().expand();
-		
+
+		/* wait for validation */
+		AbstractWait.sleep(TimePeriod.getCustom(2));//improves stability
+
 		/* open JAX-RS / RESTful Explorer */
 		restFulExplorer = project.getProjectItem(RESTFulAnnotations.REST_EXPLORER_LABEL.getLabel());
 		restFulExplorer.open();
+		AbstractWait.sleep(TimePeriod.SHORT);
 	}
 	
 	/**

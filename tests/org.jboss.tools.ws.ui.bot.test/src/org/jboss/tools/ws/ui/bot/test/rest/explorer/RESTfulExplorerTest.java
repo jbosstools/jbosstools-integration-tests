@@ -161,4 +161,24 @@ public class RESTfulExplorerTest extends RESTfulTestBase {
 			}
 		}
 	}
+
+	protected void assertPathOfAllRESTWebServices(List<ProjectItem> restServices,
+			String path) {
+		for (ProjectItem restService : restServices) {
+			assertTrue("RESTful Web Service \""
+						+ restfulWizard.getRestServiceName(restService)
+						+ "\" has been set wrong path", restfulWizard
+						.getPathForRestFulService(restService).equals(path));
+		}
+	}
+
+	protected void assertAbsenceOfRESTWebService(List<ProjectItem> restServices,
+			String restWebService) {
+		for (ProjectItem restService : restServices) {
+			if (restfulWizard.getRestServiceName(restService).equals(
+					restWebService)) {
+				fail("There should not be " + restWebService + "RESTful services");
+			}
+		}
+	}
 }

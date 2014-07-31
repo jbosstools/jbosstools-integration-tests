@@ -15,122 +15,134 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-import org.eclipse.swtbot.swt.finder.SWTBot;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.hamcrest.Matcher;
+import org.hamcrest.core.Is;
+import org.hamcrest.core.StringContains;
+import org.hamcrest.core.StringStartsWith;
+import org.jboss.reddeer.eclipse.condition.ProblemsExists;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
+import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.reddeer.swt.api.Menu;
+import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
+import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
-import org.jboss.tools.ui.bot.ext.SWTBotExt;
-import org.jboss.tools.ui.bot.ext.SWTOpenExt;
-import org.jboss.tools.ui.bot.ext.SWTUtilExt;
-import org.jboss.tools.ui.bot.ext.Timing;
+import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.ui.bot.ext.config.TestConfigurator;
-import org.jboss.tools.ui.bot.ext.gen.IPreference;
 import org.jboss.tools.ui.bot.ext.helper.BuildPathHelper;
-import org.jboss.tools.ui.bot.ext.types.IDELabel;
-import org.jboss.tools.ui.bot.ext.view.ProblemsView;
-import org.jboss.tools.ui.bot.ext.view.ProjectExplorer;
+import org.jboss.tools.ws.reddeer.swt.condition.ProblemsCount;
+import org.jboss.tools.ws.reddeer.ui.preferences.JAXRSValidatorPreferencePage;
 import org.jboss.tools.ws.ui.bot.test.utils.ResourceHelper;
 
 public class RESTfulHelper {
-	
-	private static final SWTBotExt bot = new SWTBotExt();
-	private static final SWTUtilExt util = new SWTUtilExt(bot);
-	private static final ProjectExplorer projectExplorer = new ProjectExplorer();
-	private static final SWTOpenExt open = new SWTOpenExt(bot);
-	private static final ResourceHelper resourceHelper = new ResourceHelper();
-	
-	public static final String PATH_PARAM_VALID_ERROR = "@PathParam value";		
-	public static final String VALIDATOR_SETTINGS_CHANGED = "Validator Settings Changed";
+
+	public static final String PATH_PARAM_VALID_ERROR = "@PathParam value";
 	public static final String JAX_RS_PROBLEM = "JAX-RS Problem";
-	
-	private enum ConfigureOption {
-		ENABLE, DISABLE;
+
+	private final TimePeriod WAIT_FOR_PROBLEMS_FALSE_POSItIVE_TIMEOUT = TimePeriod.getCustom(2);
+	private final TimePeriod WAIT_FOR_PROBLEMS_FALSE_NEGATIVE_TIMEOUT = TimePeriod.getCustom(5);
+
+	public List<TreeItem> getRESTValidationErrors(int expectedCount) {
+		return getRESTValidationErrors(null, null, expectedCount);
 	}
-	
-	public SWTBotTreeItem[] getRESTValidationErrors(String wsProjectName) {
-		return getRESTValidationErrors(wsProjectName, null);
+
+	public List<TreeItem> getRESTValidationErrors(String wsProjectName, int expectedCount) {
+		return getRESTValidationErrors(wsProjectName, null, expectedCount);
 	}
-	
-	public SWTBotTreeItem[] getRESTValidationErrors(String wsProjectName, String description) {
-		return ProblemsView.getFilteredErrorsTreeItems(bot,
-				description, createPath(wsProjectName), null, JAX_RS_PROBLEM);
-	}
-	
-	public SWTBotTreeItem[] getRESTValidationWarnings(String wsProjectName) {
-		return getRESTValidationWarnings(wsProjectName, null);
-	}
-	
-	public SWTBotTreeItem[] getRESTValidationWarnings(String wsProjectName,
-			String description) {
-		return ProblemsView.getFilteredWarningsTreeItems(bot,
-				description, createPath(wsProjectName), null, JAX_RS_PROBLEM);
-	}
-	
-	public SWTBotTreeItem[] getPathAnnotationValidationErrors(String wsProjectName) {
-		return getRESTValidationErrors(wsProjectName, PATH_PARAM_VALID_ERROR);
-	}
-	
-	private String createPath(String projectName) {
-		if(projectName == null) {
-			return null;
+
+	public List<TreeItem> getRESTValidationErrors(String wsProjectName, String description, int expectedCount) {
+		Matcher<String> descriptionMatcher = description != null ? StringContains.containsString(description) : null;
+		Matcher<String> pathMatcher = wsProjectName != null ? StringStartsWith.startsWith("/" + wsProjectName) : null;
+
+		/* wait for jax-rs validation */
+		if(expectedCount == 0 && !new ProblemsExists().test()) {//prevent from false positive result when we do not expect errors and there is no error
+			new WaitWhile(new ProblemsCount(ProblemsCount.ProblemType.ERROR, expectedCount, descriptionMatcher, null,
+					pathMatcher, null, null), WAIT_FOR_PROBLEMS_FALSE_POSItIVE_TIMEOUT, false);
+		} else {//prevent from false negative result
+			new WaitUntil(new ProblemsCount(ProblemsCount.ProblemType.ERROR, expectedCount, descriptionMatcher, null,
+					pathMatcher, null, null), WAIT_FOR_PROBLEMS_FALSE_NEGATIVE_TIMEOUT, false);
 		}
-		return "/" + projectName;
+
+		/* return jax-rs validation errors */
+		return new ProblemsView().getErrors(descriptionMatcher, null,
+				pathMatcher, null,Is.is(JAX_RS_PROBLEM));
 	}
-	
+
+	public List<TreeItem> getRESTValidationWarnings(int expectedCount) {
+		return getRESTValidationWarnings(null, null, expectedCount);
+	}
+
+	public List<TreeItem> getRESTValidationWarnings(String wsProjectName, int expectedCount) {
+		return getRESTValidationWarnings(wsProjectName, null, expectedCount);
+	}
+
+	public List<TreeItem> getRESTValidationWarnings(String wsProjectName,
+			String description, int expectedCount) {
+		Matcher<String> descriptionMatcher = description != null ? StringContains.containsString(description) : null;
+		Matcher<String> pathMatcher = wsProjectName != null ? StringStartsWith.startsWith("/" + wsProjectName) : null;
+
+		/* wait for warnings */
+		if(expectedCount == 0) {//prevent from false-positive
+			new WaitWhile(new ProblemsCount(ProblemsCount.ProblemType.WARNING, expectedCount, descriptionMatcher, null, pathMatcher, null, Is.is(JAX_RS_PROBLEM)), WAIT_FOR_PROBLEMS_FALSE_POSItIVE_TIMEOUT, false);
+		} else {//prevent from false-negative
+			new WaitUntil(new ProblemsCount(ProblemsCount.ProblemType.WARNING, expectedCount, descriptionMatcher, null, pathMatcher, null, Is.is(JAX_RS_PROBLEM)), WAIT_FOR_PROBLEMS_FALSE_NEGATIVE_TIMEOUT, false);
+		}
+
+		/* return jax-rs validation warnings */
+		return new ProblemsView().getWarnings(descriptionMatcher, null,
+				pathMatcher, null, Is.is(JAX_RS_PROBLEM));
+	}
+
+	public List<TreeItem> getPathAnnotationValidationErrors(String wsProjectName, int expectedCount) {
+		return getRESTValidationErrors(wsProjectName, PATH_PARAM_VALID_ERROR, expectedCount);
+	}
+
 	public void enableRESTValidation() {
-		modifyRESTValidation(ConfigureOption.ENABLE);
+		modifyRESTValidation(true);
 	}
 
 	public void disableRESTValidation() {
-		modifyRESTValidation(ConfigureOption.DISABLE);
+		modifyRESTValidation(false);
 	}
 
-	public void modifyRESTValidation(ConfigureOption option) {
+	public void modifyRESTValidation(boolean enableRestSupport) {
+		JAXRSValidatorPreferencePage page = new JAXRSValidatorPreferencePage();
+		page.open();
 
-		SWTBot validationBot = openPreferencePage("JAX-RS Validator",
-				Arrays.asList("JBoss Tools", "JAX-RS"));
+		page.setEnableValidation(enableRestSupport);
 
-		if (option == ConfigureOption.ENABLE) {
-			validationBot.checkBox(0).select();
-		} else {
-			validationBot.checkBox(0).deselect();
-		}
-		validationBot.button(IDELabel.Button.OK).click();
-		if (bot.activeShell().getText().equals(VALIDATOR_SETTINGS_CHANGED)) {
-			bot.activeShell().bot().button(IDELabel.Button.YES).click();
+		page.ok();
+
+		if(new ShellWithTextIsActive("Validator Settings Changed").test()) {
+			new PushButton("Yes").click();
 		}
 
-		bot.sleep(Timing.time3S());
-		util.waitForNonIgnoredJobs();
-
+		new WaitUntil(new JobIsRunning(), TimePeriod.NORMAL, false);
+		new WaitWhile(new JobIsRunning(), TimePeriod.getCustom(20), false);
 	}
 
 	public void addRestSupport(String wsProjectName) {
-		configureRestSupport(wsProjectName, ConfigureOption.ENABLE);
+		configureRestSupport(wsProjectName, true);
 	}
 
 	public void removeRestSupport(String wsProjectName) {
-		configureRestSupport(wsProjectName, ConfigureOption.DISABLE);
+		configureRestSupport(wsProjectName, false);
 	}
 
 	public boolean isRestSupportEnabled(String wsProjectName) {
-		
-		return (projectExplorer.isFilePresent(wsProjectName,
-				RESTFulAnnotations.REST_EXPLORER_LABEL.getLabel()) || projectExplorer
-				.isFilePresent(wsProjectName,
-						RESTFulAnnotations.REST_EXPLORER_LABEL_BUILD.getLabel()));
+		Project project = new ProjectExplorer().getProject(wsProjectName);
+		return project.containsItem(RESTFulAnnotations.REST_EXPLORER_LABEL.getLabel())
+				|| project.containsItem(RESTFulAnnotations.REST_EXPLORER_LABEL_BUILD.getLabel());
 	}
 
-	
 	@SuppressWarnings("static-access")
 	public List<String> addRestEasyLibs(String wsProjectName) {
-
 		List<File> restLibsPaths = getPathForRestLibs();
 		
 		List<String> variables = new ArrayList<String>();
@@ -142,58 +154,37 @@ public class RESTfulHelper {
 		}
 		
 		return variables;
-		
 	}
-	
+
 	private List<File> getPathForRestLibs() {
-		
 		assertTrue(TestConfigurator.currentConfig.getServer().type.equals("EAP"));
-		
+
 		String runtimeHome = TestConfigurator.currentConfig.getServer().runtimeHome;
-		
+
 		// index of last occurence of "/" in EAP runtime path: jboss-eap-5.1/jboss-as
 		int indexOfAS = runtimeHome.lastIndexOf("/");
-		
+
 		// jboss-eap-5.1/jboss-as --> jboss-eap-5.1
 		String eapDirHome = runtimeHome.substring(0, indexOfAS);
-		
+
 		String restEasyDirPath = eapDirHome + "/" + "resteasy";
 		File restEasyDir = new File(restEasyDirPath);
-		
+
 		String[] restEasyLibs = {"jaxrs-api.jar"};
-		
-		return resourceHelper.searchAllFiles(restEasyDir, restEasyLibs);
+
+		return new ResourceHelper().searchAllFiles(restEasyDir, restEasyLibs);
 	}
 
 	private void configureRestSupport(String wsProjectName,
-			ConfigureOption option) {
-		projectExplorer.selectProject(wsProjectName);
-		Menu menu = null;
-		if (option == ConfigureOption.ENABLE) {
-			menu = new ContextMenu("Configure", 
-					RESTFulAnnotations.REST_SUPPORT_MENU_LABEL_ADD.getLabel());
-		} else {
-			menu = new ContextMenu("Configure", 
-					RESTFulAnnotations.REST_SUPPORT_MENU_LABEL_REMOVE.getLabel());
-		}
+			boolean enableRestSupport) {
+		new ProjectExplorer().getProject(wsProjectName).select();
+
+		Menu menu = new ContextMenu(
+				"Configure",
+				enableRestSupport ? RESTFulAnnotations.REST_SUPPORT_MENU_LABEL_ADD.getLabel()
+						: RESTFulAnnotations.REST_SUPPORT_MENU_LABEL_REMOVE.getLabel());
 		menu.select();
+
 		new WaitUntil(new JobIsRunning(), TimePeriod.NORMAL, false);
 	}
-	
-	private SWTBot openPreferencePage(final String name,
-			final List<String> groupPath) {
-		return open.preferenceOpen(new IPreference() {
-
-			@Override
-			public String getName() {
-				return name;
-			}
-
-			@Override
-			public List<String> getGroupPath() {
-				return groupPath;
-			}
-		});
-	}
-	
 }
