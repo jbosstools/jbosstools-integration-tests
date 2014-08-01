@@ -38,9 +38,9 @@ public class MylynTestJenkins {
 	protected ArrayList<String> expectedMylynElements = new ArrayList<String>();	
 	protected final String TASKNAME = "a sample task in Mylyn";
 	protected final String TASKNOTE = "a sample note for a sample task in Mylyn";
-	/* Cannot use machydra Jenkins server due to - https://issues.jboss.org/browse/JBDS-2965 */
-	//protected final String SERVERURL = "https://hudson.jboss.org/hudson/";
-	protected final String SERVERURL = "http://ci.jruby.org/";	
+	/* Could not use machydra Jenkins server due to - https://issues.jboss.org/browse/JBDS-2965 */
+	/* This server proved to be unreliable: protected final String SERVERURL = "http://ci.jruby.org/"  */	
+	protected final String SERVERURL = "http://machydra.brq.redhat.com:8080";
 
 	@Test
 	public void testIt() {
@@ -70,24 +70,14 @@ public class MylynTestJenkins {
 		new PushButton("Finish").click();
 		
 		try {
-			new WaitUntil(new ShellWithTextIsActive("Refreshing Builds (http://ci.jruby.org/)"), TimePeriod.getCustom(60l)); 
+			new WaitUntil(new ShellWithTextIsActive("Refreshing Builds (http://machydra.brq.redhat.com:8080)"), TimePeriod.getCustom(30l)); 
 		}
 		catch (Exception E) {
-			log.info ("Problem with 'Refreshing Builds (http://ci.jruby.org/)' shell not seen");
+			log.info ("Test blocking problem with 'Refreshing Builds (name)' shell not seen - test is able to run");
 		}	
 		
 		view.open();
-
-		List <TreeItem> theItems = new DefaultTree().getAllItems();
-		for (TreeItem theItem : theItems) {
-			log.info("ITEM = " + theItem.getText());
-			List <TreeItem> moreItems = theItem.getItems();
-			for (TreeItem theInnerItem : moreItems) {
-				log.info("Inner ITEM = " + theInnerItem.getText());
-			}
-		}					
-
-		log.info( "GOT IT" + view.getJenkinsJob (SERVERURL, "jruby-spec-coverage").getText());
+		log.info( "GOT IT" + view.getJenkinsJob (SERVERURL, "jbosstools.mylyn.bot.tests.poc").getText());
 		view.close();
 
 	} /* method */

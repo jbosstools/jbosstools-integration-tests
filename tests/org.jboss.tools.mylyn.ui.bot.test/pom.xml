@@ -142,18 +142,7 @@
     </profiles>
 
     <repositories>
-        <repository>
-            <id>red_deer</id>
-            <url>http://download.jboss.org/jbosstools/builds/staging/RedDeer_master/all/repo/</url>
-            <layout>p2</layout>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-        </repository>
-
+ 
         <repository>
             <id>mylyn</id>
             <url>http://download.jboss.org/jbosstools/updates/requirements/luna/201406120900-RC4/</url>
