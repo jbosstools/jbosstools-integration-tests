@@ -44,8 +44,6 @@ public class MylynTestJenkins {
 	/* This server proved to be unreliable: protected final String SERVERURL = "http://ci.jruby.org/"
 	 * so the test was changed to use the JBDS QE Jenkins - machydra (August 2014)
 	 * 
-	 * Setting default values for machydra jenkins server and job - can be over-ridden with properties:
-	 * 
 	 * mvn clean install -Dswtbot.test.skip=false -Dusage_reporting_enabled=false -Dreddeer.close.welcome.en=true 
 	 * -Djenkins.server="http://machydra.lab.eng.brq.redhat.com:8080" -Djenkins.job="jbosstools.mylyn.bot.tests.poc"
 	 * 	
@@ -55,23 +53,6 @@ public class MylynTestJenkins {
 	
 	@Test
 	public void testIt() {
-
-		/* In the event that the Jenkins server and job properties are not set */
-		if (System.getProperty("jenkinsServer").equals("${jenkins.server}")) {
-			SERVERURL = "http://machydra.lab.eng.brq.redhat.com:8080";
-		}
-		if (System.getProperty("jenkinsJob").equals("${jenkins.job}")) {
-			JENKINSJOB = "jbosstools.mylyn.bot.tests.poc";
-		}		
-		
-		System.out.println("DEBUGGING " + System.getProperty("jenkinsServer") + SERVERURL);
-		System.out.println("DEBUGGING " + System.getProperty("jenkinsServer") + SERVERURL);
-		System.out.println("DEBUGGING " + System.getProperty("jenkinsServer") + SERVERURL);
-		System.out.println("DEBUGGING " + System.getProperty("jenkinsServer") + SERVERURL);
-		System.out.println("DEBUGGING " + System.getProperty("jenkinsJob") + JENKINSJOB);
-		System.out.println("DEBUGGING " + System.getProperty("jenkinsJob") + JENKINSJOB);
-		System.out.println("DEBUGGING " + System.getProperty("jenkinsJob") + JENKINSJOB);
-		System.out.println("DEBUGGING " + System.getProperty("jenkinsJob") + JENKINSJOB);
 				
 		BuildServerDialog buildServerDialog = null;
 		MylynBuildView view = new MylynBuildView();

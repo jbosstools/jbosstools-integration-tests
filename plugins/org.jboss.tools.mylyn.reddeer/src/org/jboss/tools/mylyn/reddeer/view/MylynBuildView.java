@@ -22,6 +22,7 @@ import org.jboss.reddeer.swt.impl.link.DefaultLink;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
+import org.jboss.reddeer.swt.impl.toolbar.ViewToolItem;
 import org.jboss.tools.mylyn.reddeer.mylynBuild.MylynBuild;
 import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
 
@@ -93,11 +94,10 @@ public class MylynBuildView extends WorkbenchView {
 		throw new EclipseLayerException("There is no job with name " + jobName);
 	}
 	
-	
 	/* For use in the Build List View */
 	public void createBuildServer (String serverURL) {
 		log.info("Creating New Build Server - " + serverURL);
-		new DefaultToolItem("New Build Server Location").click();
+		new ViewToolItem("New Build Server Location").click();
 		
 		new DefaultShell ("New Repository");
 		new DefaultTreeItem ("Hudson (supports Jenkins)").select();

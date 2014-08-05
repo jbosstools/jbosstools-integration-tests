@@ -12,7 +12,9 @@
     <artifactId>org.jboss.tools.mylyn.ui.bot.test</artifactId>
     <packaging>eclipse-test-plugin</packaging>
     <properties>
-        <systemProperties>${integrationTestsSystemProperties} -DjenkinsServer=${jenkins.server} -DjenkinsJob=${jenkins.job}</systemProperties>
+	<jenkins.server>none</jenkins.server>
+	<jenkins.job>none</jenkins.job>
+        <systemProperties>${integrationTestsSystemProperties} -DjenkinsServer=${jenkins.server} -DjenkinsJob=${jenkins.job}</systemProperties> 
         <tychoPluginProductParameter>org.eclipse.platform.ide</tychoPluginProductParameter>
     </properties>
     
@@ -22,7 +24,7 @@
             <plugin>
                 <groupId>org.eclipse.tycho</groupId>
                 <artifactId>tycho-surefire-plugin</artifactId>
-                <configuration>
+                <configuration>        
                     <product>${tychoPluginProductParameter}</product>
                     <testSuite>org.jboss.tools.mylyn.ui.bot.test</testSuite>
                     <testClass>org.jboss.tools.mylyn.ui.bot.test.MylynSuite</testClass>
@@ -137,7 +139,6 @@
                 <systemProperties>-Dawt.toolkit=sun.lwawt.macosx.LWCToolkit</systemProperties>
             </properties>
         </profile>
-
     </profiles>
 
     <repositories>
