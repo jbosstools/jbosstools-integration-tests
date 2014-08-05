@@ -11,7 +11,9 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
+import java.util.Properties;
 
 import org.apache.log4j.Logger;
 import org.jboss.reddeer.swt.api.TreeItem;
@@ -38,13 +40,39 @@ public class MylynTestJenkins {
 	protected ArrayList<String> expectedMylynElements = new ArrayList<String>();	
 	protected final String TASKNAME = "a sample task in Mylyn";
 	protected final String TASKNOTE = "a sample note for a sample task in Mylyn";
-	/* Could not use machydra Jenkins server due to - https://issues.jboss.org/browse/JBDS-2965 */
-	/* This server proved to be unreliable: protected final String SERVERURL = "http://ci.jruby.org/"  */	
-	protected final String SERVERURL = "http://machydra.brq.redhat.com:8080";
-
+	/* Could not originally use machydra Jenkins server due to - https://issues.jboss.org/browse/JBDS-2965 */
+	/* This server proved to be unreliable: protected final String SERVERURL = "http://ci.jruby.org/"
+	 * so the test was changed to use the JBDS QE Jenkins - machydra (August 2014)
+	 * 
+	 * Setting default values for machydra jenkins server and job - can be over-ridden with properties:
+	 * 
+	 * mvn clean install -Dswtbot.test.skip=false -Dusage_reporting_enabled=false -Dreddeer.close.welcome.en=true 
+	 * -Djenkins.server="http://machydra.lab.eng.brq.redhat.com:8080" -Djenkins.job="jbosstools.mylyn.bot.tests.poc"
+	 * 	
+	 */
+	protected String SERVERURL = System.getProperty("jenkinsServer");
+	protected String JENKINSJOB = System.getProperty("jenkinsJob");
+	
 	@Test
 	public void testIt() {
-	
+
+		/* In the event that the Jenkins server and job properties are not set */
+		if (System.getProperty("jenkinsServer").equals("${jenkins.server}")) {
+			SERVERURL = "http://machydra.lab.eng.brq.redhat.com:8080";
+		}
+		if (System.getProperty("jenkinsJob").equals("${jenkins.job}")) {
+			JENKINSJOB = "jbosstools.mylyn.bot.tests.poc";
+		}		
+		
+		System.out.println("DEBUGGING " + System.getProperty("jenkinsServer") + SERVERURL);
+		System.out.println("DEBUGGING " + System.getProperty("jenkinsServer") + SERVERURL);
+		System.out.println("DEBUGGING " + System.getProperty("jenkinsServer") + SERVERURL);
+		System.out.println("DEBUGGING " + System.getProperty("jenkinsServer") + SERVERURL);
+		System.out.println("DEBUGGING " + System.getProperty("jenkinsJob") + JENKINSJOB);
+		System.out.println("DEBUGGING " + System.getProperty("jenkinsJob") + JENKINSJOB);
+		System.out.println("DEBUGGING " + System.getProperty("jenkinsJob") + JENKINSJOB);
+		System.out.println("DEBUGGING " + System.getProperty("jenkinsJob") + JENKINSJOB);
+				
 		BuildServerDialog buildServerDialog = null;
 		MylynBuildView view = new MylynBuildView();
 
@@ -77,7 +105,7 @@ public class MylynTestJenkins {
 		}	
 		
 		view.open();
-		log.info( "GOT IT" + view.getJenkinsJob (SERVERURL, "jbosstools.mylyn.bot.tests.poc").getText());
+		log.info( "GOT IT" + view.getJenkinsJob (SERVERURL, JENKINSJOB).getText());
 		view.close();
 
 	} /* method */

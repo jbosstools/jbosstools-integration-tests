@@ -12,7 +12,7 @@
     <artifactId>org.jboss.tools.mylyn.ui.bot.test</artifactId>
     <packaging>eclipse-test-plugin</packaging>
     <properties>
-        <systemProperties>${integrationTestsSystemProperties}</systemProperties>
+        <systemProperties>${integrationTestsSystemProperties} -DjenkinsServer=${jenkins.server} -DjenkinsJob=${jenkins.job}</systemProperties>
         <tychoPluginProductParameter>org.eclipse.platform.ide</tychoPluginProductParameter>
     </properties>
     
@@ -27,7 +27,6 @@
                     <testSuite>org.jboss.tools.mylyn.ui.bot.test</testSuite>
                     <testClass>org.jboss.tools.mylyn.ui.bot.test.MylynSuite</testClass>
                     <dependencies combine.children="append">
-
                         <dependency>
                             <type>p2-installable-unit</type>
                             <artifactId>org.eclipse.mylyn.hudson.feature.group</artifactId>
