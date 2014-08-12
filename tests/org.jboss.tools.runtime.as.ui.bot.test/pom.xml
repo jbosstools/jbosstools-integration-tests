@@ -14,7 +14,7 @@
 	<properties>
 		<requirementsDirectory>${project.build.directory}/requirements</requirementsDirectory>
 
-		<wildfly-8.1>${requirementsDirectory}/wildfly-8.1.0.CR1/</wildfly-8.1>
+		<wildfly-8.1>${requirementsDirectory}/wildfly-8.1.0.Final/</wildfly-8.1>
 		<wildfly-8.0>${requirementsDirectory}/wildfly-8.0.0.Final/</wildfly-8.0>
 
 		<jboss-as-7>${requirementsDirectory}/jboss-as-7.1.1.Final/</jboss-as-7>
