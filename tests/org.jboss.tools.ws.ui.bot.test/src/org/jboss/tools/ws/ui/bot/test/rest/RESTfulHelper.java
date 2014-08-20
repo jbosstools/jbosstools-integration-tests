@@ -36,6 +36,8 @@ import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.ui.bot.ext.config.TestConfigurator;
 import org.jboss.tools.ui.bot.ext.helper.BuildPathHelper;
+import org.jboss.tools.ws.reddeer.jaxrs.core.RestFullAnnotations;
+import org.jboss.tools.ws.reddeer.jaxrs.core.RestFullLabels;
 import org.jboss.tools.ws.reddeer.swt.condition.ProblemsCount;
 import org.jboss.tools.ws.reddeer.ui.preferences.JAXRSValidatorPreferencePage;
 import org.jboss.tools.ws.ui.bot.test.utils.ResourceHelper;
@@ -137,8 +139,8 @@ public class RESTfulHelper {
 
 	public boolean isRestSupportEnabled(String wsProjectName) {
 		Project project = new ProjectExplorer().getProject(wsProjectName);
-		return project.containsItem(RESTFulAnnotations.REST_EXPLORER_LABEL.getLabel())
-				|| project.containsItem(RESTFulAnnotations.REST_EXPLORER_LABEL_BUILD.getLabel());
+		return project.containsItem(RestFullLabels.REST_EXPLORER_LABEL.getLabel())
+				|| project.containsItem(RestFullLabels.REST_EXPLORER_LABEL_BUILD.getLabel());
 	}
 
 	@SuppressWarnings("static-access")
@@ -181,8 +183,8 @@ public class RESTfulHelper {
 
 		Menu menu = new ContextMenu(
 				"Configure",
-				enableRestSupport ? RESTFulAnnotations.REST_SUPPORT_MENU_LABEL_ADD.getLabel()
-						: RESTFulAnnotations.REST_SUPPORT_MENU_LABEL_REMOVE.getLabel());
+				enableRestSupport ? RestFullLabels.REST_SUPPORT_MENU_LABEL_ADD.getLabel()
+						: RestFullLabels.REST_SUPPORT_MENU_LABEL_REMOVE.getLabel());
 		menu.select();
 
 		new WaitUntil(new JobIsRunning(), TimePeriod.NORMAL, false);

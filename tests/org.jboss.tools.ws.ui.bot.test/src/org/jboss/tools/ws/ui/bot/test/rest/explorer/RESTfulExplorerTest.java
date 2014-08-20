@@ -14,9 +14,9 @@ package org.jboss.tools.ws.ui.bot.test.rest.explorer;
 import java.util.List;
 
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.ProjectItem;
 import org.jboss.tools.ui.bot.ext.Timing;
-import org.jboss.tools.ws.ui.bot.test.rest.RESTFulAnnotations;
+import org.jboss.tools.ws.reddeer.jaxrs.core.RestFullAnnotations;
+import org.jboss.tools.ws.reddeer.jaxrs.core.RestService;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
 import org.junit.Test;
 
@@ -29,17 +29,16 @@ public class RESTfulExplorerTest extends RESTfulTestBase {
 
 	@Override
 	public void setup() {
-	
+
 	}
-	
+
 	@Test
 	public void testAddingSimpleRESTMethods() {
-		
 		/* import project */
 		importRestWSProject("restBasic");
-		
+
 		/* get RESTful services from JAX-RS REST explorer for the project */
-		List<ProjectItem> restServices = restfulServicesForProject("restBasic");
+		List<RestService> restServices = restfulServicesForProject("restBasic");
 
 		/* test JAX-RS REST explorer */
 		assertCountOfRESTServices(restServices, 4);
@@ -49,13 +48,12 @@ public class RESTfulExplorerTest extends RESTfulTestBase {
 
 	@Test
 	public void testAddingAdvancedRESTMethods() {
-		
 		/* import project */
 		importRestWSProject("restAdvanced");
-		
+
 		/* get RESTful services from JAX-RS REST explorer for the project */
-		List<ProjectItem> restServices = restfulServicesForProject("restAdvanced");
-		
+		List<RestService> restServices = restfulServicesForProject("restAdvanced");
+
 		/* test JAX-RS REST explorer */
 		assertCountOfRESTServices(restServices, 4);
 		assertAllRESTServicesInExplorer(restServices);
@@ -64,22 +62,20 @@ public class RESTfulExplorerTest extends RESTfulTestBase {
 	
 	@Test
 	public void testEditingSimpleRESTMethods() {
-		
 		/* import project */
-
 		importRestWSProject("restBasic");
-		
+
 		/* replace @DELETE annotation to @GET annotation */
 		resourceHelper.replaceInEditor(editorForClass("restBasic", "src",
 				"org.rest.test", "RestService.java").toTextEditor(), "@DELETE", "@GET", true);
-		
+
 		/* get RESTful services from JAX-RS REST explorer for the project */
-		List<ProjectItem> restServices = restfulServicesForProject("restBasic");
-		
+		List<RestService> restServices = restfulServicesForProject("restBasic");
+
 		/* test JAX-RS REST explorer */
 		assertNotAllRESTServicesInExplorer(restServices);
 		assertAbsenceOfRESTWebService(restServices,
-				RESTFulAnnotations.DELETE.getLabel());
+				RestFullAnnotations.DELETE.getLabel());
 	}
 	
 	/**
@@ -91,10 +87,9 @@ public class RESTfulExplorerTest extends RESTfulTestBase {
 	 */
 	@Test
 	public void testEditingAdvancedRESTMethods() {
-		
 		/* import project */
 		importRestWSProject("restAdvanced");
-		
+
 		/* edit @DELETE annotation */
 		SWTBotEclipseEditor editor = editorForClass("restAdvanced", "src",
 				"org.rest.test", "RestService.java").toTextEditor();
@@ -103,9 +98,9 @@ public class RESTfulExplorerTest extends RESTfulTestBase {
 		resourceHelper.replaceInEditor(editor, "@DELETE", "@DELETE"
 				+ LINE_SEPARATOR + "@Produces(\"text/plain\")", true);
 		//bot.sleep(Timing.time2S());
-		
+
 		/* get RESTful services from JAX-RS REST explorer for the project */
-		List<ProjectItem> restServices = restfulServicesForProject("restAdvanced");
+		List<RestService> restServices = restfulServicesForProject("restAdvanced");
 
 		/* test JAX-RS REST explorer */
 		testEditedDeleteRestWebResource(restServices);
@@ -113,70 +108,67 @@ public class RESTfulExplorerTest extends RESTfulTestBase {
 	
 	@Test
 	public void testDeletingRESTMethods() {
-		
 		/* prepare project*/
 		importRestWSProject("restBasic");
 		prepareRestfulResource(editorForClass("restBasic", "src",
 				"org.rest.test", "RestService.java"), "EmptyRestfulWS.java.ws",
 				"org.rest.test", "RestService");
 		bot.sleep(Timing.time2S());
-		
+
 		/* get RESTful services from JAX-RS REST explorer for the project */
-		List<ProjectItem> restServices = restfulServicesForProject("restBasic");
-		
+		List<RestService> restServices = restfulServicesForProject("restBasic");
+
 		/* none of REST web services found */
 		assertCountOfRESTServices(restServices, 0);
 	}
 
-	private void testEditedDeleteRestWebResource(List<ProjectItem> restServices) {
-		for (ProjectItem restService : restServices) {
-			if (restfulWizard.getRestServiceName(restService).equals(RESTFulAnnotations.DELETE.getLabel())) {
-				assertEquals("Path of DELETE operation ", restfulWizard.getPathForRestFulService(restService), "/rest/delete/edited/{id:int}");
-				assertEquals("Produces info of DELETE operation ", restfulWizard.getProducesInfo(restService), "text/plain");
+	private void testEditedDeleteRestWebResource(List<RestService> restServices) {
+		for (RestService restService : restServices) {
+			if (restService.getName().equals(RestFullAnnotations.DELETE.getLabel())) {
+				assertEquals("Path of DELETE operation ", restService.getPath(), "/rest/delete/edited/{id:int}");
+				assertEquals("Produces info of DELETE operation ", restService.getProducesInfo(), "text/plain");
 			}
 		}
 	}
 
-	private void testAdvancedRESTServices(List<ProjectItem> restServices) {
-		for (ProjectItem restService : restServices) {
-			if (restfulWizard.getRestServiceName(restService).equals(RESTFulAnnotations.GET.getLabel())) {
-				assertTrue("Path of GET operation ", restfulWizard.getPathForRestFulService(restService).equals("/rest/{id:int}"));
-				assertTrue("Consumes info of GET operation ", restfulWizard.getConsumesInfo(restService).equals("*/*"));
-				assertTrue("Produces info of GET operation ", restfulWizard.getProducesInfo(restService).equals("text/plain"));
+	private void testAdvancedRESTServices(List<RestService> restServices) {
+		for (RestService restService : restServices) {
+			if (restService.getName().equals(RestFullAnnotations.GET.getLabel())) {
+				assertTrue("Path of GET operation ", restService.getPath().equals("/rest/{id:int}"));
+				assertTrue("Consumes info of GET operation ", restService.getConsumesInfo().equals("*/*"));
+				assertTrue("Produces info of GET operation ", restService.getProducesInfo().equals("text/plain"));
 			}
-			if (restfulWizard.getRestServiceName(restService).equals(RESTFulAnnotations.PUT.getLabel())) {
-				assertTrue("Path of PUT operation ", restfulWizard.getPathForRestFulService(restService).equals("/rest/put/{id:int}"));
-				assertTrue("Consumes info of PUT operation ", restfulWizard.getConsumesInfo(restService).equals("text/plain"));
-				assertTrue("Produces info of PUT operation ", restfulWizard.getProducesInfo(restService).equals("*/*"));
+			if (restService.getName().equals(RestFullAnnotations.PUT.getLabel())) {
+				assertTrue("Path of PUT operation ", restService.getPath().equals("/rest/put/{id:int}"));
+				assertTrue("Consumes info of PUT operation ", restService.getConsumesInfo().equals("text/plain"));
+				assertTrue("Produces info of PUT operation ", restService.getProducesInfo().equals("*/*"));
 			}
-			if (restfulWizard.getRestServiceName(restService).equals(RESTFulAnnotations.POST.getLabel())) {
-				assertTrue("Path of POST operation ", restfulWizard.getPathForRestFulService(restService).equals("/rest/post/{id:int}"));
-				assertTrue("Consumes info of POST operation ", restfulWizard.getConsumesInfo(restService).equals("text/plain"));
-				assertTrue("Produces info of POST operation ", restfulWizard.getProducesInfo(restService).equals("text/plain"));
+			if (restService.getName().equals(RestFullAnnotations.POST.getLabel())) {
+				assertTrue("Path of POST operation ", restService.getPath().equals("/rest/post/{id:int}"));
+				assertTrue("Consumes info of POST operation ", restService.getConsumesInfo().equals("text/plain"));
+				assertTrue("Produces info of POST operation ", restService.getProducesInfo().equals("text/plain"));
 			}
-			if (restfulWizard.getRestServiceName(restService).equals(RESTFulAnnotations.DELETE.getLabel())) {
-				assertEquals("Path of DELETE operation ", restfulWizard.getPathForRestFulService(restService), "/rest/delete/{id:int}");
-				assertEquals("Consumes info of DELETE operation ", restfulWizard.getConsumesInfo(restService), "*/*");
-				assertEquals("Produces info of DELETE operation ", restfulWizard.getProducesInfo(restService), "*/*");
+			if (restService.getName().equals(RestFullAnnotations.DELETE.getLabel())) {
+				assertEquals("Path of DELETE operation ", restService.getPath(), "/rest/delete/{id:int}");
+				assertEquals("Consumes info of DELETE operation ", restService.getConsumesInfo(), "*/*");
+				assertEquals("Produces info of DELETE operation ", restService.getProducesInfo(), "*/*");
 			}
 		}
 	}
 
-	protected void assertPathOfAllRESTWebServices(List<ProjectItem> restServices,
+	protected void assertPathOfAllRESTWebServices(List<RestService> restServices,
 			String path) {
-		for (ProjectItem restService : restServices) {
-			assertTrue("RESTful Web Service \""
-						+ restfulWizard.getRestServiceName(restService)
-						+ "\" has been set wrong path", restfulWizard
-						.getPathForRestFulService(restService).equals(path));
+		for (RestService restService : restServices) {
+			assertTrue("RESTful Web Service \"" + restService.getName()
+					+ "\" has been set wrong path",
+						restService.getPath().equals(path));
 		}
 	}
 
-	protected void assertAbsenceOfRESTWebService(List<ProjectItem> restServices,
+	protected void assertAbsenceOfRESTWebService(List<RestService> restServices,
 			String restWebService) {
-		for (ProjectItem restService : restServices) {
-			if (restfulWizard.getRestServiceName(restService).equals(
-					restWebService)) {
+		for (RestService restService : restServices) {
+			if (restService.getName().equals(restWebService)) {
 				fail("There should not be " + restWebService + "RESTful services");
 			}
 		}

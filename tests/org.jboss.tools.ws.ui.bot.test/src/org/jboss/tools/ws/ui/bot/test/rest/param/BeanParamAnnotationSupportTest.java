@@ -16,6 +16,7 @@ import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
 import org.jboss.tools.ws.reddeer.editor.ExtendedTextEditor;
+import org.jboss.tools.ws.reddeer.jaxrs.core.RestService;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
 import org.junit.Test;
 
@@ -101,18 +102,15 @@ public class BeanParamAnnotationSupportTest extends RESTfulTestBase {
 		assertCountOfValidationWarnings(PROJECT1_NAME,  pathParameterNotBoundToAnyFieldWarning, 0);
 
 		/* get RESTful services from JAX-RS REST explorer for the project */
-		List<ProjectItem> restServices = restfulServicesForProject(PROJECT1_NAME);
+		List<RestService> restServices = restfulServicesForProject(PROJECT1_NAME);
 
 		/* test JAX-RS REST explorer */
 		assertCountOfRESTServices(restServices, 1);
 		assertExpectedPathOfService(restServices.get(0),
 				"/rest/{" + pathParam1 + ":" + pathType1 + "}");
 
-		Project project = new PackageExplorer().getProject(PROJECT1_NAME);
-
 		/* open RestService class */
-		ProjectItem restService = project.getProjectItem("src", "org.rest.test", "RestService.java");
-		restService.open();
+		openJavaFile(PROJECT1_NAME, "org.rest.test", "RestService.java");
 		ExtendedTextEditor editor  = new ExtendedTextEditor();
 
 		/* remove @Path annotation from RestService and assert there are two errors (one in RestService and one in BeanClass */
@@ -126,7 +124,8 @@ public class BeanParamAnnotationSupportTest extends RESTfulTestBase {
 		assertCountOfValidationErrors(PROJECT1_NAME, 0, "JBIDE-17796");
 
 		/* open BeanClass class */
-		editor = openBeanClass(project);
+		openBeanClass(PROJECT2_NAME);
+		editor = new ExtendedTextEditor();
 
 		/* remove @PathParam from BeanClass and assert that there is an warning */
 		editor.removeLine("@PathParam");
@@ -144,23 +143,22 @@ public class BeanParamAnnotationSupportTest extends RESTfulTestBase {
 		assertCountOfValidationErrors(PROJECT2_NAME, 0);
 
 		/* get RESTful services from JAX-RS REST explorer for the project */
-		List<ProjectItem> restServices = restfulServicesForProject(PROJECT2_NAME);
+		List<RestService> restServices = restfulServicesForProject(PROJECT2_NAME);
 
 		/* test JAX-RS REST explorer */
 		assertCountOfRESTServices(restServices, 1);
 		assertExpectedPathOfService(restServices.get(0),
 				"/rest?" + queryParam1 + "={" + queryType1 + "}");
 
-		Project project = new PackageExplorer().getProject(PROJECT2_NAME);
-
 		/* open BeanClass class */
-		ExtendedTextEditor editor = openBeanClass(project);
+		openBeanClass(PROJECT2_NAME);
+		ExtendedTextEditor editor = new ExtendedTextEditor();
 		
 		/* remove @QueryParam from BeanClass and assert that endpoint URI was updated */
 		editor.removeLine("@QueryParam");
 
 		restServices = restfulServicesForProject(PROJECT2_NAME);
-		assertExpectedPathOfService("unstable", restServices.get(0), "/rest");
+		assertExpectedPathOfService("unstable ", restServices.get(0), "/rest");
 
 		/* add @QueryParam and @DefaultValue into BeanClass and assert that endpoint URI was updated */
 		editor.insertBeforeLine("@QueryParam(\"" + queryParam1 + "\")", queryType1);
@@ -183,23 +181,22 @@ public class BeanParamAnnotationSupportTest extends RESTfulTestBase {
 		assertCountOfValidationErrors(PROJECT3_NAME, 0);
 
 		/* get RESTful services from JAX-RS REST explorer for the project */
-		List<ProjectItem> restServices = restfulServicesForProject(PROJECT3_NAME);
+		List<RestService> restServices = restfulServicesForProject(PROJECT3_NAME);
 
 		/* test JAX-RS REST explorer */
 		assertCountOfRESTServices(restServices, 1);
 		assertExpectedPathOfService(restServices.get(0),
 				"/rest;" + matrixParam1 + "={" + matrixType1 + "}");
 
-		Project project = new PackageExplorer().getProject(PROJECT3_NAME);
-
 		/* open BeanClass class */
-		ExtendedTextEditor editor = openBeanClass(project);
+		openBeanClass(PROJECT3_NAME);
+		ExtendedTextEditor editor = new ExtendedTextEditor();
 
 		/* remove @MatrixParam from BeanClass and assert that endpoint URI was updated */
 		editor.removeLine("@MatrixParam");
 
 		restServices = restfulServicesForProject(PROJECT3_NAME);
-		assertExpectedPathOfService("unstable", restServices.get(0), "/rest");
+		assertExpectedPathOfService("unstable ", restServices.get(0), "/rest");
 
 		/* add @MatrixParam and @DefaultValue into BeanClass and assert that endpoint URI was updated */
 		editor.insertBeforeLine("@MatrixParam(\"" + matrixParam1 + "\")", matrixType1);
@@ -219,7 +216,7 @@ public class BeanParamAnnotationSupportTest extends RESTfulTestBase {
 		assertCountOfValidationErrors(PROJECT4_NAME, 0);
 
 		/* get RESTful services from JAX-RS REST explorer for the project */
-		List<ProjectItem> restServices = restfulServicesForProject(PROJECT4_NAME);
+		List<RestService> restServices = restfulServicesForProject(PROJECT4_NAME);
 
 		/* test JAX-RS REST explorer */
 		assertCountOfRESTServices(restServices, 1);
@@ -236,7 +233,7 @@ public class BeanParamAnnotationSupportTest extends RESTfulTestBase {
 		assertCountOfValidationErrors(PROJECT5_NAME, 0);
 
 		/* get RESTful services from JAX-RS REST explorer for the project */
-		List<ProjectItem> restServices = restfulServicesForProject(PROJECT5_NAME);
+		List<RestService> restServices = restfulServicesForProject(PROJECT5_NAME);
 
 		/* test JAX-RS REST explorer */
 		assertCountOfRESTServices(restServices, 1);
@@ -253,7 +250,7 @@ public class BeanParamAnnotationSupportTest extends RESTfulTestBase {
 		assertCountOfValidationErrors(PROJECT6_NAME, 0);
 
 		/* get RESTful services from JAX-RS REST explorer for the project */
-		List<ProjectItem> restServices = restfulServicesForProject(PROJECT6_NAME);
+		List<RestService> restServices = restfulServicesForProject(PROJECT6_NAME);
 
 		/* test JAX-RS REST explorer */
 		assertCountOfRESTServices(restServices, 1);
@@ -261,9 +258,7 @@ public class BeanParamAnnotationSupportTest extends RESTfulTestBase {
 				"/rest;" + matrixParam1 + "={" + matrixType1 + "}");
 	}
 
-	private ExtendedTextEditor openBeanClass(Project project) {
-		ProjectItem beanClass = project.getProjectItem("src", "org.rest.test", "BeanClass.java");
-		beanClass.open();
-		return new ExtendedTextEditor();
+	private void openBeanClass(String projectName) {
+		openJavaFile(projectName, "org.rest.test", "BeanClass.java");
 	}
 }

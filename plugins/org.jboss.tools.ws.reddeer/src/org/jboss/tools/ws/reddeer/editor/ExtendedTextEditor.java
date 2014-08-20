@@ -9,7 +9,7 @@ import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 public class ExtendedTextEditor extends TextEditor {
 
 	private final Keyboard keyboard = KeyboardFactory.getKeyboard();
-	
+
 	public void removeLine(String contains) {
 		int lineNumber = getLineNum(StringContains.containsString(contains));
 		
@@ -19,14 +19,19 @@ public class ExtendedTextEditor extends TextEditor {
 
 		save();
 	}
-	
-	public void replaceLine(String newLine, String contains) {
+
+	public void replaceLine(String contains, String replacement) {
 		int lineNumber = getLineNum(StringContains.containsString(contains));
 
 		selectLine(lineNumber);
 
-		keyboard.type(newLine + "\n");
+		keyboard.type(replacement + "\n");
 
+		save();
+	}
+
+	public void replace(String regex, String replacement) {
+		setText(getText().replaceAll(regex, replacement));
 		save();
 	}
 

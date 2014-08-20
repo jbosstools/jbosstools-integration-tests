@@ -10,65 +10,55 @@
  ******************************************************************************/
 package org.jboss.tools.ws.ui.bot.test.uiutils;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.swtbot.swt.finder.SWTBot;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
-import org.jboss.tools.ui.bot.ext.SWTBotFactory;
-import org.jboss.tools.ui.bot.ext.types.IDELabel;
+import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.button.RadioButton;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.tree.DefaultTree;
+import org.jboss.tools.common.reddeer.label.IDELabel;
 
 /**
  * 
  * @author jjankovi
- *
+ * @author Radoslav Rabara
  */
-public class RunOnServerDialog {
+public class RunOnServerDialog extends DefaultShell {
 
-	private SWTBotShell shell = null;
-	private SWTBot bot = null;
 	private static final String DIALOG_TITLE = "Run On Server";
-	
+
 	public RunOnServerDialog() {
-		shell = SWTBotFactory.getBot().shell(getDialogTitle());
-		bot = shell.bot();
+		super(DIALOG_TITLE);
 	}
 
-	private String getDialogTitle() {
-		return DIALOG_TITLE;
+	public void chooseExistingServer() {
+		new RadioButton().click();
 	}
-	
-	public RunOnServerDialog chooseExistingServer() {
-		bot.radio(0).click();
-		return this;
-	}
-	
-	public List<String> getServers() {
-		List<String> servers = new ArrayList<String>();
-		for (SWTBotTreeItem server : bot.tree().getTreeItem("localhost").getItems()) {
-			servers.add(server.getText());
+
+	public List<TreeItem> getServers() {
+		for(TreeItem ti : new DefaultTree().getItems()) {
+			if(ti.getCell(0).equals("localhost")) {
+				return ti.getItems();
+			}
 		}
-		return servers;
+		return null;
 	}
-	
-	public RunOnServerDialog selectServer(String server) {
-		for (String serverInDialog : getServers()) {
-			if (serverInDialog.contains(server)) {
-				bot.tree().getTreeItem("localhost")
-				.getNode(serverInDialog).select();
+
+	public void selectServer(String server) {
+		for (TreeItem ti : getServers()) {
+			if(ti.getCell(0).equals(server)) {
+				ti.select();
 				break;
 			}
 		}
-		return this;
 	}
-	
+
 	public void finish() {
-		bot.button(IDELabel.Button.FINISH).click();
+		new PushButton(IDELabel.Button.FINISH).click();
 	}
-	
+
 	public void cancel() {
-		bot.button(IDELabel.Button.CANCEL).click();
+		new PushButton(IDELabel.Button.CANCEL).click();
 	}
-	
 }

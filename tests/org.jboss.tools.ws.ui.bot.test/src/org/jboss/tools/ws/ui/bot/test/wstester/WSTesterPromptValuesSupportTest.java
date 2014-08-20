@@ -23,11 +23,11 @@ import org.jboss.tools.ui.bot.ext.condition.ShellIsActiveCondition;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
+import org.jboss.tools.ws.reddeer.jaxrs.core.RestFullExplorer;
 import org.jboss.tools.ws.reddeer.ui.dialogs.WSTesterParametersDialog;
+import org.jboss.tools.ws.reddeer.ui.tester.views.WsTesterView;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
-import org.jboss.tools.ws.ui.bot.test.uiutils.RESTFullExplorer;
 import org.jboss.tools.ws.ui.bot.test.uiutils.RunOnServerDialog;
-import org.jboss.tools.ws.ui.bot.test.widgets.WsTesterView;
 import org.junit.AfterClass;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -49,14 +49,14 @@ public class WSTesterPromptValuesSupportTest extends RESTfulTestBase {
 	
 	private WSTesterParametersDialog dialog;
 	
-	private RESTFullExplorer restExplorer;
+	private RestFullExplorer restExplorer;
 	
 	@Override
 	public void setup() {
 		if (!projectExists(wsProjectName)) {
 			importRestWSProject(wsProjectName);
 			jbt.runProjectOnServer(wsProjectName);
-			testerView.show();
+			testerView.open();
 		}
 	}
 	
@@ -124,14 +124,10 @@ public class WSTesterPromptValuesSupportTest extends RESTfulTestBase {
 	}
 	
 	private void invokeWSParametersDialog() {
-		restExplorer = new RESTFullExplorer(getWsProjectName());
+		restExplorer = new RestFullExplorer(getWsProjectName());
 		
-		RunOnServerDialog dialog = restExplorer.runOnServer(
-				restExplorer.getAllRestServices().get(0));
-		dialog.chooseExistingServer();
-		dialog.finish();
+		runRestServiceOnServer(restExplorer.getAllRestServices().get(0));
 		
-		testerView.show();
 		testerView.invoke();
 		
 		bot.waitUntil(new ShellIsActiveCondition(

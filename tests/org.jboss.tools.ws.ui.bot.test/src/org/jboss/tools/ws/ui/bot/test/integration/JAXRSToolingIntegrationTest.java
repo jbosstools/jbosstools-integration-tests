@@ -17,10 +17,10 @@ import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
+import org.jboss.tools.ws.reddeer.jaxrs.core.RestFullExplorer;
+import org.jboss.tools.ws.reddeer.ui.tester.views.WsTesterView;
+import org.jboss.tools.ws.reddeer.ui.tester.views.WsTesterView.RequestType;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
-import org.jboss.tools.ws.ui.bot.test.uiutils.RESTFullExplorer;
-import org.jboss.tools.ws.ui.bot.test.widgets.WsTesterView;
-import org.jboss.tools.ws.ui.bot.test.widgets.WsTesterView.Request_Type;
 import org.junit.Test;
 
 /**
@@ -37,7 +37,7 @@ public class JAXRSToolingIntegrationTest extends RESTfulTestBase {
 	private String localhostUrl = "http://localhost:8080/";
 	private String serviceUrl = localhostUrl + projectName + "/rest/"; 
 	private WsTesterView wsTesterView = new WsTesterView();
-	
+
 	@Override
 	public void setup() {
 		if (!projectExists(getWsProjectName())) {
@@ -47,86 +47,90 @@ public class JAXRSToolingIntegrationTest extends RESTfulTestBase {
 			servers.cleanServer(configuredState.getServer().name);
 		}
 	}
-	
+
 	@Override
-	public void cleanup() {		
+	public void cleanup() {
 		/* minimize web service tester */
-		wsTesterView.minimize(); 
+		wsTesterView.minimize();
 	}
-	
+
 	@Override
 	protected String getWsProjectName() {
 		return projectName;
 	}
-	
+
 	@Test
 	public void testGetMethod() {
 		/* get JAX-RS REST Web Services */
-		restfulWizard = new RESTFullExplorer(projectName);
-		
+		restfulWizard = new RestFullExplorer(projectName);
+
 		/* run on server - web service tester should be shown */
-		runRestServiceOnConfiguredServer(restfulWizard.restService("GET"));
+		runRestServiceOnServer("GET");
 		assertWebServiceTesterIsActive();
-		
+		wsTesterView.open();
+
 		/* test generated url and response after invoking */
 		assertEquals(serviceUrl + "get", wsTesterView.getServiceURL());
-		
-		invokeMethodInWSTester(wsTesterView, Request_Type.GET);
+
+		invokeMethodInWSTester(wsTesterView, RequestType.GET);
 		assertEquals("GET method", wsTesterView.getResponseBody());
 		assertEquals("[HTTP/1.1 200 OK]", wsTesterView.getResponseHeaders()[0]);
 	}
-	
+
 	@Test
 	public void testPostMethod() {
 		/* get JAX-RS REST Web Services */
-		restfulWizard = new RESTFullExplorer(projectName);
-		
+		restfulWizard = new RestFullExplorer(projectName);
+	
 		/* run on server - web service tester should be shown */
-		runRestServiceOnConfiguredServer(restfulWizard.restService("POST"));
+		runRestServiceOnServer("POST");
 		assertWebServiceTesterIsActive();
-		
+		wsTesterView.open();//workaround for RedDeer that won't allow to close view until it the open() method was called
+
 		/* test generated url and response after invoking */
 		assertEquals(serviceUrl + "post", wsTesterView.getServiceURL());
-		
-		invokeMethodInWSTester(wsTesterView, Request_Type.POST);
+
+		invokeMethodInWSTester(wsTesterView, RequestType.POST);
 		assertEquals("POST method", wsTesterView.getResponseBody());
 		assertEquals("[HTTP/1.1 200 OK]", wsTesterView.getResponseHeaders()[0]);
 	}
-	
+
 	@Test
 	public void testPutMethod() {
 		/* get JAX-RS REST Web Services */
-		restfulWizard = new RESTFullExplorer(projectName);
-		
+		restfulWizard = new RestFullExplorer(projectName);
+
 		/* run on server - web service tester should be shown */
-		runRestServiceOnConfiguredServer(restfulWizard.restService("PUT"));
+		runRestServiceOnServer("PUT");
 		assertWebServiceTesterIsActive();
-		
+		wsTesterView.open();
+
 		/* test generated url and response after invoking */
 		assertEquals(serviceUrl + "put", wsTesterView.getServiceURL());
-		
-		invokeMethodInWSTester(wsTesterView, Request_Type.PUT);
+
+		invokeMethodInWSTester(wsTesterView, RequestType.PUT);
 		assertEquals("PUT method", wsTesterView.getResponseBody());
 		assertEquals("[HTTP/1.1 200 OK]", wsTesterView.getResponseHeaders()[0]);
 	}
-	
+
 	@Test
 	public void testDeleteMethod() {
 		/* get JAX-RS REST Web Services */
-		restfulWizard = new RESTFullExplorer(projectName);
-		
+		restfulWizard = new RestFullExplorer(projectName);
+
 		/* run on server - web service tester should be shown */
-		runRestServiceOnConfiguredServer(restfulWizard.restService("DELETE"));
+		runRestServiceOnServer("DELETE");
 		assertWebServiceTesterIsActive();
-		
+		wsTesterView.open();
+
 		/* test generated url and response after invoking */
 		assertEquals(serviceUrl + "delete", wsTesterView.getServiceURL());
-		
-		invokeMethodInWSTester(wsTesterView, Request_Type.DELETE);
+
+		invokeMethodInWSTester(wsTesterView, RequestType.DELETE);
 		assertEquals("DELETE method", wsTesterView.getResponseBody());
 		assertEquals("[HTTP/1.1 200 OK]", wsTesterView.getResponseHeaders()[0]);
 	}
-	
+
 	/**
 	 * Fails due to JBIDE-17664
 	 * (Web Service Tester: Response to invoking not allowed method on WildFly doesn't contain header [HTTP/1.1 405 Method Not Allowed])
@@ -136,20 +140,20 @@ public class JAXRSToolingIntegrationTest extends RESTfulTestBase {
 	@Test
 	public void testUnavailableServiceMethod() {
 		/* get JAX-RS REST Web Services */
-		restfulWizard = new RESTFullExplorer(projectName);
-		
+		restfulWizard = new RestFullExplorer(projectName);
+
 		/* run on server - web service tester should be shown */
-		runRestServiceOnConfiguredServer(restfulWizard.restService("GET"));
+		runRestServiceOnServer(restfulWizard.getRestService("GET"));
 		assertWebServiceTesterIsActive();
-		
+		wsTesterView.open();
+
 		/* test generated url and response after invoking */
 		assertEquals(serviceUrl + "get", wsTesterView.getServiceURL());
-		
-		invokeMethodInWSTester(wsTesterView, Request_Type.POST);
+
+		invokeMethodInWSTester(wsTesterView, RequestType.POST);
 		assertFalse(wsTesterView.getResponseBody().equals("GET method"));
-		
+
 		assertTrue("There is no header", wsTesterView.getResponseHeaders().length > 0);
 		assertEquals("[HTTP/1.1 405 Method Not Allowed]", wsTesterView.getResponseHeaders()[0]);
 	}
-	
 }

@@ -15,8 +15,9 @@ import java.util.List;
 
 import javax.ws.rs.MatrixParam;
 
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.ProjectItem;
-import org.jboss.tools.ui.bot.ext.Timing;
+import org.jboss.reddeer.swt.wait.AbstractWait;
+import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.tools.ws.reddeer.jaxrs.core.RestService;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
 import org.junit.Test;
 
@@ -42,7 +43,7 @@ public class MatrixParamAnnotationSupportTest extends RESTfulTestBase {
 	protected String getWsProjectName() {
 		return projectName;
 	}
-	
+
 	/**
 	 * Fails due to JBIDE-12027
 	 * 
@@ -50,25 +51,23 @@ public class MatrixParamAnnotationSupportTest extends RESTfulTestBase {
 	 */
 	@Test
 	public void testMatrixParamSupport() {
-
 		/* get RESTful services from JAX-RS REST explorer for the project */
-		List<ProjectItem> restServices = restfulServicesForProject(projectName);
-		
+		List<RestService> restServices = restfulServicesForProject(projectName);
+
 		/* test JAX-RS REST explorer */
 		assertCountOfRESTServices(restServices, 1);
 		assertExpectedPathOfService(restServices.get(0),
 				"/rest;" + matrixParam1 + "={" + matrixParamType1 + "};"
 						+ matrixParam2 + "={" + matrixParamType2 + "}");
-
 	}
 	
 	@Test
 	public void testMatrixParamFieldSupport() {
 		/* prepare project */
 		importRestWSProject(project2Name);
-		
+
 		/* get RESTful services from JAX-RS REST explorer for the project */
-		List<ProjectItem> restServices = restfulServicesForProject(project2Name);
+		List<RestService> restServices = restfulServicesForProject(project2Name);
 
 		/* test JAX-RS REST explorer */
 		assertCountOfRESTServices(restServices, 1);
@@ -76,18 +75,17 @@ public class MatrixParamAnnotationSupportTest extends RESTfulTestBase {
 				"/rest;" + matrixParam1 + "={" + matrixParamType1 + "};"
 						+ matrixParam2 + "={" + matrixParamType2 + "}");
 	}
-	
+
 	@Test
 	public void testEditingMatrixParam() {
-
 		/* prepare project */
 		resourceHelper.replaceInEditor(editorForClass(projectName, "src", 
 				"org.rest.test", "RestService.java").toTextEditor(), 
 				matrixParam1, matrixParamNew, true);
-		bot.sleep(Timing.time2S());
+		AbstractWait.sleep(TimePeriod.getCustom(2));
 
 		/* get RESTful services from JAX-RS REST explorer for the project */
-		List<ProjectItem> restServices = restfulServicesForProject(projectName);
+		List<RestService> restServices = restfulServicesForProject(projectName);
 
 		/* test JAX-RS REST explorer */
 		assertCountOfRESTServices(restServices, 1);
@@ -95,19 +93,18 @@ public class MatrixParamAnnotationSupportTest extends RESTfulTestBase {
 				"/rest;" + matrixParamNew + "={" + matrixParamType1 + "};"
 						+ matrixParam2 + "={" + matrixParamType2 + "}");
 	}
-	
+
 	@Test
 	public void testEditingTypeOfMatrixParam() {
-		
 		/* prepare project */
 		resourceHelper.replaceInEditor(editorForClass(projectName, "src",
 				"org.rest.test", "RestService.java").toTextEditor(), 
 				matrixParamType1, matrixParamTypeNew, true);
-		bot.sleep(Timing.time2S());
+		AbstractWait.sleep(TimePeriod.getCustom(2));
 
 		/* get RESTful services from JAX-RS REST explorer for the project */
-		List<ProjectItem> restServices = restfulServicesForProject(projectName);
-		
+		List<RestService> restServices = restfulServicesForProject(projectName);
+
 		/* test JAX-RS REST explorer */
 		assertCountOfRESTServices(restServices, 1);
 		assertExpectedPathOfService(restServices.get(0),

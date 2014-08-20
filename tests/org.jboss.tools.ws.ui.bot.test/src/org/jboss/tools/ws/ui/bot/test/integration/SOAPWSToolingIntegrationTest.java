@@ -13,11 +13,12 @@ package org.jboss.tools.ws.ui.bot.test.integration;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
+import org.jboss.tools.ws.reddeer.swt.condition.WsTesterNotEmptyResponseText;
+import org.jboss.tools.ws.reddeer.ui.tester.views.WsTesterView;
+import org.jboss.tools.ws.reddeer.ui.tester.views.WsTesterView.RequestType;
 import org.jboss.tools.ws.ui.bot.test.WSTestBase;
-import org.jboss.tools.ws.ui.bot.test.condition.WsTesterNotNullResponseText;
-import org.jboss.tools.ws.ui.bot.test.widgets.WsTesterView;
-import org.jboss.tools.ws.ui.bot.test.widgets.WsTesterView.Request_Type;
 import org.junit.Test;
 
 /**
@@ -63,10 +64,8 @@ public class SOAPWSToolingIntegrationTest extends WSTestBase {
 	
 	@Test
 	public void testSimpleIntegration() {
-		
 		WsTesterView wsTesterView = openWSDLFileInWSTester();
 		testWSDLInWSTester(wsTesterView);
-		
 	}
 	
 	private SWTBotTreeItem getWSDLTreeItem() {
@@ -87,16 +86,16 @@ public class SOAPWSToolingIntegrationTest extends WSTestBase {
 				getContextMenu(tree, "Web Services", false));
 		menu.menu("Test in JBoss Web Service Tester").click();
 		WsTesterView tester = new WsTesterView();
-		tester.show();
+		tester.open();
 		return tester;
 	}
 	
 	private void testWSDLInWSTester(WsTesterView wsTesterView) {
-		wsTesterView.setRequestType(Request_Type.JAX_WS);
-		wsTesterView.getFromWSDL().ok();
+		wsTesterView.setRequestType(RequestType.JAX_WS);
+		wsTesterView.invokeGetFromWSDL().ok();
 		wsTesterView.setRequestBody(request);
 		wsTesterView.invoke();
-		bot.waitUntil(new WsTesterNotNullResponseText(wsTesterView));
+		new WaitUntil(new WsTesterNotEmptyResponseText());
         String rsp = wsTesterView.getResponseBody();
         assertTrue(rsp.trim().length() > 0);
         assertTrue(rsp, rsp.contains("Hello User!"));

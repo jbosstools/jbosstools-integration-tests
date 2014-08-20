@@ -25,50 +25,50 @@ import org.jboss.tools.ws.reddeer.helper.RedDeerHelper;
 
 /**
  * Dialog is invoked when there is a need to set jaxrs parameters
- * 
+ *
  * @author jjankovi
  * @author Radoslav Rabara
  */
 public class WSTesterParametersDialog {
 
 	public static final String DIALOG_TITLE = "WS Tester: URL Parameters";
-	
+
 	private Shell dialog;
 	private Tree mainTree;
-	
+
 	public WSTesterParametersDialog() {
 		dialog = new DefaultShell(getDialogTitle());
 		mainTree = new DefaultTree();
 	}
-	
+
 	public static String getDialogTitle() {
 		return DIALOG_TITLE;
 	}
-	
+
 	public boolean isOpened() {
 		return !dialog.getSWTWidget().isDisposed();
 	}
-	
+
 	public void ok() {
 		getOkButton().click();
 	}
-	
+
 	public void cancel() {
 		getCancelButton().click();
 	}
-	
+
 	public boolean isOkButtonEnabled() {
 		return getOkButton().isEnabled();
 	}
-	
+
 	public boolean isCancelButtonEnabled() {
 		return getCancelButton().isEnabled();
 	}
-	
+
 	public List<TreeItem> getAllParameters() {
 		return mainTree.getAllItems();
 	}
-	
+
 	public TreeItem getParameter(String parameterName) {
 		for (TreeItem ti : getAllParameters()) {
 			if (ti.getCell(0).equals(parameterName)) {
@@ -77,33 +77,33 @@ public class WSTesterParametersDialog {
 		}
 		return null;
 	}
-	
+
 	public TreeItem getParameter(int index) {
 		return mainTree.getAllItems().get(index);
 	}
-	
+
 	public String getParameterName(TreeItem parameter) {
 		return parameter.getCell(0);
 	}
-	
+
 	public String getParameterValue(TreeItem parameter) {
 		return parameter.getCell(1);
 	}
-	
+
 	public String getParameterType(TreeItem parameter) {
 		return parameter.getCell(2);
 	}
-	
+
 	public void setParameterValue(final TreeItem parameter, String value) {
 		RedDeerHelper.click(parameter, 1);
 		new DefaultText(0).setText(value);
 		RedDeerHelper.click(parameter, 0);
 	}
-	
+
 	private Button getOkButton() {
 		return new PushButton(IDELabel.Button.OK);
 	}
-	
+
 	private Button getCancelButton() {
 		return new PushButton(IDELabel.Button.CANCEL);
 	}

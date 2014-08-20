@@ -15,51 +15,49 @@ import java.util.List;
 
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.ProjectItem;
+import org.jboss.tools.ws.reddeer.jaxrs.core.RestService;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
 import org.junit.Test;
 
 public class DefaultValueAnnotationSupportTest extends RESTfulTestBase {
-	
+
 	private String paramName = "param";
 	private String defaultValue = "abc";
 	private String paramType = "String";
-	
+
 	@Override
 	public void setup() {
-	
+
 	}
-	
+
 	@Test
 	public void testQueryParamDefaultValue() {
-		
 		/* prepare project */
 		importRestWSProject("default1");
-		
+
 		/* get RESTful services from JAX-RS REST explorer for the project */
-		List<ProjectItem> restServices = restfulServicesForProject("default1");
-		
+		List<RestService> restServices = restfulServicesForProject("default1");
+
 		/* test JAX-RS REST explorer */
 		assertCountOfRESTServices(restServices, 1);
 		assertExpectedPathOfService(restServices.get(0), 
 				"/rest?" + paramName + "={" + paramType + ":\"" + defaultValue + "\"}");
-		
 	}
-	
+
 	@Test
 	public void testMatrixParamDefaultValue() {
-		
 		/* prepare project */
 		importRestWSProject("default2");
-		
+
 		/* get RESTful services from JAX-RS REST explorer for the project */
-		List<ProjectItem> restServices = restfulServicesForProject("default2");
-		
+		List<RestService> restServices = restfulServicesForProject("default2");
+
 		/* test JAX-RS REST explorer */
 		assertCountOfRESTServices(restServices, 1);
 		assertExpectedPathOfService(restServices.get(0), 
 				"/rest;" + paramName + "={" + paramType + ":\"" + defaultValue + "\"}");
 	}
-	
+
 	/**
 	 * Fails due to JBIDE-12027
 	 * 
@@ -67,18 +65,16 @@ public class DefaultValueAnnotationSupportTest extends RESTfulTestBase {
 	 */
 	@Test
 	public void testPathParamDefaultValue() {
-
 		/* prepare project */
 		importRestWSProject("default3");
-		
+
 		/* get RESTful services from JAX-RS REST explorer for the project */
-		List<ProjectItem> restServices = restfulServicesForProject("default3");
-		
+		List<RestService> restServices = restfulServicesForProject("default3");
+
 		/* test JAX-RS REST explorer */
 		assertCountOfRESTServices(restServices, 1);
 		assertExpectedPathOfService("JBIDE-12027: ", restServices.get(0), 
 				"/rest/{" + paramName +":" + paramType + ":" + defaultValue + "}");
-		
 	}
 	
 }

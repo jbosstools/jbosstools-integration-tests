@@ -22,28 +22,31 @@ import org.jboss.reddeer.eclipse.condition.ProblemsExists;
 import org.jboss.reddeer.eclipse.condition.ProblemsExists.ProblemType;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.ProjectItem;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
+import org.jboss.reddeer.swt.api.Menu;
 import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.swt.condition.JobIsRunning;
+import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.matcher.RegexMatcher;
+import org.jboss.reddeer.swt.matcher.WithTextMatchers;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.ui.bot.ext.Timing;
-import org.jboss.tools.ui.bot.ext.condition.NonSystemJobRunsCondition;
-import org.jboss.tools.ui.bot.ext.condition.ViewIsActive;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
-import org.jboss.tools.ui.bot.ext.types.IDELabel;
+import org.jboss.tools.ws.reddeer.jaxrs.core.RestFullAnnotations;
+import org.jboss.tools.ws.reddeer.jaxrs.core.RestFullExplorer;
+import org.jboss.tools.ws.reddeer.jaxrs.core.RestService;
 import org.jboss.tools.ws.reddeer.swt.condition.ProblemsCount;
+import org.jboss.tools.ws.reddeer.ui.tester.views.WsTesterView;
+import org.jboss.tools.ws.reddeer.ui.tester.views.WsTesterView.RequestType;
 import org.jboss.tools.ws.ui.bot.test.WSTestBase;
-import org.jboss.tools.ws.ui.bot.test.uiutils.RESTFullExplorer;
 import org.jboss.tools.ws.ui.bot.test.uiutils.RunOnServerDialog;
-import org.jboss.tools.ws.ui.bot.test.widgets.WsTesterView;
-import org.jboss.tools.ws.ui.bot.test.widgets.WsTesterView.Request_Type;
 import org.junit.Assert;
 
 /**
@@ -59,7 +62,7 @@ public class RESTfulTestBase extends WSTestBase {
 
 	protected final static RESTfulHelper restfulHelper = new RESTfulHelper();
 
-	protected RESTFullExplorer restfulWizard = null;
+	protected RestFullExplorer restfulWizard = null;
 
 	protected final String SIMPLE_REST_WS_RESOURCE = "SimpleRestWS.java.ws";
 
@@ -106,34 +109,34 @@ public class RESTfulTestBase extends WSTestBase {
 		assertCountOfErrors(0);
 	}
 
-	protected void assertCountOfRESTServices(List<ProjectItem> restServices,
+	protected void assertCountOfRESTServices(List<RestService> restServices,
 			int expectedCount) {
 		assertTrue(restServices.size() + " RESTful services"
 				+ " was found instead of " + expectedCount,
 				restServices.size() == expectedCount);
 	}
 
-	protected void assertAllRESTServicesInExplorer(List<ProjectItem> restServices) {
+	protected void assertAllRESTServicesInExplorer(List<RestService> restServices) {
 		assertTrue("All RESTful services (GET, DELETE, POST, PUT) "
 				+ "should be present but they are not\nThere are "
-				+ Arrays.toString(parseRestServices(restServices)),
+				+ Arrays.toString(restServices.toArray()),
 				allRestServicesArePresent(restServices));
 	}
 
-	protected void assertNotAllRESTServicesInExplorer(List<ProjectItem> restServices) {
+	protected void assertNotAllRESTServicesInExplorer(List<RestService> restServices) {
 		assertFalse("All RESTful services (GET, DELETE, POST, PUT) "
 				+ "shouldnt be present but they are"
-				+ Arrays.toString(parseRestServices(restServices)),
+				+ Arrays.toString(restServices.toArray()),
 				allRestServicesArePresent(restServices));
 	}
 
 	protected void assertExpectedPathOfService(String message,
-			ProjectItem service, String expectedPath) {
-		String path = restfulWizard.getPathForRestFulService(service);
-		assertEquals(message + "Failure when comparing paths\n", expectedPath, path);
+			RestService service, String expectedPath) {//TODO: is it neccesary?
+		assertEquals(message + "Failure when comparing paths\n", expectedPath,
+				service.getPath());
 	}
 	
-	protected void assertExpectedPathOfService(ProjectItem service,
+	protected void assertExpectedPathOfService(RestService service,
 			String expectedPath) {
 		assertExpectedPathOfService("", service, expectedPath);
 	}
@@ -280,19 +283,12 @@ public class RESTfulTestBase extends WSTestBase {
 		}
 	}
 
-	protected void runRestServiceOnConfiguredServer(ProjectItem webService) {
-		RunOnServerDialog dialog = restfulWizard.runOnServer(webService);
-		dialog.chooseExistingServer().selectServer(configuredState.getServer().name).finish();
-		bot.waitUntil(new ViewIsActive(IDELabel.View.WEB_SERVICE_TESTER), TIME_20S);
-		bot.waitWhile(new NonSystemJobRunsCondition(), TIME_20S);
-	}
-
-	protected List<ProjectItem> restfulServicesForProject(String projectName) {
-		restfulWizard = new RESTFullExplorer(projectName);
+	protected List<RestService> restfulServicesForProject(String projectName) {
+		restfulWizard = new RestFullExplorer(projectName);
 		return restfulWizard.getAllRestServices();
 	}
 
-	protected void invokeMethodInWSTester(WsTesterView wsTesterView, Request_Type type) {
+	protected void invokeMethodInWSTester(WsTesterView wsTesterView, RequestType type) {
 		wsTesterView.setRequestType(type);
 		wsTesterView.invoke();
 	}
@@ -311,31 +307,49 @@ public class RESTfulTestBase extends WSTestBase {
 		bot.sleep(Timing.time2S());
 	}
 
-	private boolean allRestServicesArePresent(List<ProjectItem> restServices) {
-		String[] restMethods = { RESTFulAnnotations.GET.getLabel(),
-				RESTFulAnnotations.POST.getLabel(),
-				RESTFulAnnotations.POST.getLabel(),
-				RESTFulAnnotations.DELETE.getLabel() };
-		for (String restMethod : restMethods) {
-			boolean serviceFound = false;
-			for (ProjectItem restService : restServices) {
-				if (restfulWizard.getRestServiceName(restService).equals(
-						restMethod)) {
-					serviceFound = true;
-					break;
-				}
-			}
-			if (!serviceFound)
+	private boolean allRestServicesArePresent(List<RestService> restServices) {
+		String[] allRestMethods = { RestFullAnnotations.GET.getLabel(),
+				RestFullAnnotations.POST.getLabel(),
+				RestFullAnnotations.POST.getLabel(),
+				RestFullAnnotations.DELETE.getLabel() };
+		for (String restMethod : allRestMethods) {
+			if(!restServiceIsPresent(restServices, restMethod)) {
 				return false;
+			}
 		}
 		return true;
 	}
-
-	private String[] parseRestServices(List<ProjectItem> restServices) {
-		String[] services = new String[restServices.size()];
-		for(int i=0;i<restServices.size();i++) {
-			services[i] = restfulWizard.getRestServiceName(restServices.get(i));
+	
+	private boolean restServiceIsPresent(List<RestService> restServices, String restMethod) {
+		for (RestService restService : restServices) {
+			if (restService.getName().equals(restMethod)) {
+				return true;
+			}
 		}
-		return services;
+		return false;
+	}
+
+	protected void runRestServiceOnServer(String restServiceName) {
+		runRestServiceOnServer(restfulWizard.getRestService(restServiceName));
+	}
+
+	protected void runRestServiceOnServer(RestService restService) {
+		runRestServiceOnServer(restService, configuredState.getServer().name);
+	}
+
+	protected void runRestServiceOnServer(RestService restService, String serverName) {
+		restService.getProjectItem().select();
+
+		Menu menu = new ContextMenu(
+				new WithTextMatchers(new RegexMatcher(".*Run.*"),
+						new RegexMatcher(".*Run on Server.*")).getMatchers());
+		menu.select();
+
+		RunOnServerDialog dialog = new RunOnServerDialog();
+		dialog.chooseExistingServer();
+		dialog.selectServer(serverName);
+		dialog.finish();
+		new WsTesterView();
+		new WaitWhile(new JobIsRunning(), TimePeriod.getCustom(20));
 	}
 }

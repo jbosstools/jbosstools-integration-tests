@@ -15,15 +15,15 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 import org.hamcrest.core.IsEqual;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.ProjectItem;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
+import org.jboss.tools.ws.reddeer.jaxrs.core.RestFullExplorer;
+import org.jboss.tools.ws.reddeer.jaxrs.core.RestService;
+import org.jboss.tools.ws.reddeer.ui.tester.views.WsTesterView;
+import org.jboss.tools.ws.reddeer.ui.tester.views.WsTesterView.RequestType;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
-import org.jboss.tools.ws.ui.bot.test.uiutils.RESTFullExplorer;
-import org.jboss.tools.ws.ui.bot.test.widgets.WsTesterView;
-import org.jboss.tools.ws.ui.bot.test.widgets.WsTesterView.Request_Type;
 import org.junit.Test;
 
 @Require(server = @Server(state = ServerState.Running))
@@ -84,23 +84,22 @@ public class XmlJsonFormattingTest extends RESTfulTestBase {
 	
 	private void testWSTesterFormatting(Format format) {
 		
-		restfulWizard = new RESTFullExplorer(getWsProjectName());
+		restfulWizard = new RestFullExplorer(getWsProjectName());
 		
-		runRestServiceOnConfiguredServer(getProperRestService(restfulWizard, format));
+		runRestServiceOnServer(getProperRestService(restfulWizard, format));
 		
 		assertWebServiceTesterIsActive();
 		
-		invokeMethodInWSTester(wsTesterView, Request_Type.GET);
+		invokeMethodInWSTester(wsTesterView, RequestType.GET);
 		
 		assertThat(wsTesterView.getResponseBody(), 
 				IsEqual.equalTo(format.formattedMessage));
 	}
 	
-	private ProjectItem getProperRestService(RESTFullExplorer explorer, 
+	private RestService getProperRestService(RestFullExplorer explorer, 
 			Format format) {
-		for (ProjectItem service : explorer.getAllRestServices()) {
-			if (explorer.getPathForRestFulService(service).contains(
-				format.formatType)) { 
+		for (RestService service : explorer.getAllRestServices()) {
+			if (service.getPath().contains(format.formatType)) { 
 				return service;
 			}
 		}	
