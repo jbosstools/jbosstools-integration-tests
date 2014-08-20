@@ -1,6 +1,6 @@
 package org.jboss.tools.cdi.reddeer.cdi.ui;
 
-import org.jboss.reddeer.eclipse.jface.wizard.NewWizardDialog;
+import org.jboss.reddeer.jface.wizard.NewWizardDialog;
 import org.jboss.reddeer.eclipse.jst.servlet.ui.WebProjectFirstPage;
 
 public class CDIProjectWizard extends NewWizardDialog{

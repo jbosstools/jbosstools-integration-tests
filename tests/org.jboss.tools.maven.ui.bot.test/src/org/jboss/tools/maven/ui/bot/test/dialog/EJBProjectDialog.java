@@ -1,6 +1,6 @@
 package org.jboss.tools.maven.ui.bot.test.dialog;
 
-import org.jboss.reddeer.eclipse.jface.wizard.NewWizardDialog;
+import org.jboss.reddeer.jface.wizard.NewWizardDialog;
 
 public class EJBProjectDialog extends NewWizardDialog{
 

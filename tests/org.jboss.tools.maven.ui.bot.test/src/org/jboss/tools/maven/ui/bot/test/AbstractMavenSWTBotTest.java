@@ -66,7 +66,7 @@ import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.swt.matcher.WithRegexMatchers;
+import org.jboss.reddeer.swt.matcher.RegexMatcher;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
@@ -221,8 +221,7 @@ public abstract class AbstractMavenSWTBotTest{
 		PackageExplorer pexplorer = new PackageExplorer();
 		pexplorer.open();
 		pexplorer.getProject(projectName).select();
-		WithRegexMatchers m = new WithRegexMatchers("Run As",mavenBuild);
-		new ContextMenu(m.getMatchers()).select();
+		new ContextMenu(new RegexMatcher("Run As"),new RegexMatcher(mavenBuild)).select();
 		new WaitUntil(new ShellWithTextIsActive("Edit Configuration"),TimePeriod.NORMAL);
 		new LabeledText("Goals:").setText(goals);
 		new PushButton("Run").click();
