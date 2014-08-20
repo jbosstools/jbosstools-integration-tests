@@ -1,7 +1,6 @@
 package org.jboss.tools.ws.ui.bot.test.utils;
 
 import org.apache.log4j.Logger;
-import org.apache.log4j.Priority;
 import org.eclipse.swt.SWTException;
 import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
@@ -12,7 +11,7 @@ import org.jboss.reddeer.swt.api.Shell;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.label.DefaultLabel;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
+import org.jboss.reddeer.swt.impl.toolbar.ViewToolItem;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ws.ui.bot.test.uiutils.actions.NewFileWizardAction;
 import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.WebServiceClientWizard;
@@ -104,7 +103,7 @@ public class WebServiceClientHelper extends SWTTestExt {
 	private void selectServerConsole(String serverName) {
 		Label consoleName = new DefaultLabel();
 		if (!consoleName.getText().startsWith(serverName)) {
-			new DefaultToolItem("Display Selected Console").click();
+			new ViewToolItem("Display Selected Console").click();
 			consoleName = new DefaultLabel();
 			if (!consoleName.getText().startsWith(serverName)) {
 				fail("Console of configured server was not found.");
