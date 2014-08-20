@@ -16,7 +16,6 @@ import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.keyboard.Keystrokes;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
-import org.jboss.reddeer.swt.api.Shell;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -131,9 +130,7 @@ public class TopDownWSTest extends WebServiceTestBase {
 	private void confirmWebServiceNameOverwrite() {
 		// look up shell
 		try {
-			Shell shell = new DefaultShell("Confirm Web Service Name Overwrite");
-			//TODO use ReferenceComposite in constructor of PushButton, however Shell don't implement ReferenceComposite yet
-			//new PushButton(shell, "OK").click();
+			new DefaultShell("Confirm Web Service Name Overwrite");
 			new PushButton("OK").click();
 		} catch(SWTLayerException e) {
 			LOGGER.log(Level.SEVERE, "No \"Confirm Web Service Name Overwrite\" dialog found!", e);
@@ -160,9 +157,6 @@ public class TopDownWSTest extends WebServiceTestBase {
 		//TODO use ShellWithTextIsActive with new RegexMatcher(...)
 		ShellWithTextIsActive condition = new ShellWithTextIsActive("Delete");
 		new WaitUntil(condition);
-		Shell shell = new DefaultShell();
-		//TODO not implemented yet in reddeer
-		//new PushButton(shell, "OK").click();
 		new PushButton("OK").click();
 		new WaitWhile(condition);
 	}
@@ -179,6 +173,7 @@ public class TopDownWSTest extends WebServiceTestBase {
 		case DEVELOP:
 		case ASSEMBLE:
 			deploymentHelper.runProject(getEarProjectName());
+		default:
 			break;
 		}
 		deploymentHelper.assertServiceDeployed(deploymentHelper.getWSDLUrl(getWsProjectName(), getWsName()), 10000);

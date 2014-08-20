@@ -1,6 +1,6 @@
 package org.jboss.tools.ws.reddeer.ui.wizards;
 
-import org.jboss.reddeer.eclipse.jface.wizard.WizardPage;
+import org.jboss.reddeer.jface.wizard.WizardPage;
 import org.jboss.reddeer.swt.api.Text;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -9,8 +9,7 @@ import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 
 /**
- * {@link JAXRSApplicationWizard} page
- * First and the only wizard page
+ * First and the only {@link JAXRSApplicationWizard} page.
  * 
  * Page offers 2 options have to create a new JAX-RS Application:
  * 1. "Subclass of javax.ws.rs.core.Application()" - {@link #useSubclassOfApplication()}

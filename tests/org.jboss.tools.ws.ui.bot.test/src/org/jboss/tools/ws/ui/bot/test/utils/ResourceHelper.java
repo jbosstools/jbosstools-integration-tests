@@ -34,7 +34,9 @@ public class ResourceHelper {
 	public String readStream(InputStream is) {
 		// we don't care about performance in tests too much, so this should be
 		// OK
-		return new Scanner(is).useDelimiter("\\A").next();
+		try(Scanner scanner = new Scanner(is)) {
+			return scanner.useDelimiter("\\A").next();
+		}
 	}
 
 	/**

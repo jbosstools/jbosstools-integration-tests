@@ -11,13 +11,13 @@
 
 package org.jboss.tools.ws.reddeer.ui.wizards;
 
-import org.jboss.reddeer.eclipse.jface.wizard.NewWizardDialog;
+import org.jboss.reddeer.jface.wizard.NewWizardDialog;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 
 /**
- * Simple Web Service wizard
+ * Simple Web Service wizard.
  * 
  * Web Services > Simple Web Service
  * 
@@ -25,11 +25,11 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
  * @author Radoslav Rabara
  */
 public class SimpleWSWizard extends NewWizardDialog {
-	
+
 	public SimpleWSWizard() {
 		super("Web Services", "Simple Web Service");
 	}
-	
+
 	public void setProjectName(String projectName) {
 		new DefaultCombo(0).setSelection(projectName);
 	}
@@ -41,11 +41,11 @@ public class SimpleWSWizard extends NewWizardDialog {
 	public void setPackageName(String pkgName) {
 		new LabeledText("Package").setText(pkgName);
 	}
-	
+
 	public void setClassName(String className) {
 		new LabeledText("Class").setText(className);
 	}
-	
+
 	public void setUpdateWebXml(boolean check) {
 		new CheckBox("Update web.xml").toggle(check);
 	}

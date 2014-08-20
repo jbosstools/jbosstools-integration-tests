@@ -1,6 +1,5 @@
 package org.jboss.tools.ws.ui.bot.test.utils;
 
-import org.apache.log4j.Logger;
 import org.eclipse.swt.SWTException;
 import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
@@ -22,8 +21,6 @@ import org.junit.Assert;
 
 public class WebServiceClientHelper extends SWTTestExt {
 
-	private static final Logger log = Logger.getLogger(WebServiceClientHelper.class.getName());
-	
 	/**
 	 * Method creates Web Service Client for entered wsdl file, web project,
 	 * level of creation and name of package for client
@@ -61,7 +58,7 @@ public class WebServiceClientHelper extends SWTTestExt {
 		//check if there is any error in console output
 		checkErrorInConsoleOutput(SERVER_NAME, earProject);
 	}
-	
+
 	/**
 	 * let's fail if there's some error in the wizard,
 	 * and close error dialog and the wizard so other tests
@@ -78,7 +75,7 @@ public class WebServiceClientHelper extends SWTTestExt {
 			Assert.fail(text);
 		}
 	}
-	
+
 	private void checkErrorInConsoleOutput(String serverName, String projectName) {
 		ConsoleView consoleView = new ConsoleView();
 		consoleView.open();
@@ -99,7 +96,7 @@ public class WebServiceClientHelper extends SWTTestExt {
 					+ "\n" + consoleText);
 		}
 	}
-	
+
 	private void selectServerConsole(String serverName) {
 		Label consoleName = new DefaultLabel();
 		if (!consoleName.getText().startsWith(serverName)) {
@@ -110,7 +107,7 @@ public class WebServiceClientHelper extends SWTTestExt {
 			}
 		}
 	}
-	
+
 	/**
 	 * TODO: SWTException is thrown by {@link Server#getModule(String)} because
 	 * it doesn't work properly. Remove throws clause when it will be fixed.

@@ -11,9 +11,6 @@
 
 package org.jboss.tools.ws.ui.bot.test.rest.validation;
 
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
-import org.jboss.tools.ui.bot.ext.Timing;
-import org.jboss.tools.ui.bot.ext.condition.ActiveEditorHasTitleCondition;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
 import org.junit.Before;
 import org.junit.Test;
@@ -100,10 +97,4 @@ public class ApplicationValidationTest extends RESTfulTestBase {
 		/* test validation error */
 		assertCountOfValidationErrors("app5", 0);
 	}
-
-	private String obtainClassNameFromPath(String... path) {
-		int length  = path.length;
-		return path[length - 1];
-	}
-	
 }

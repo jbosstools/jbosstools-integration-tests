@@ -10,7 +10,7 @@ package org.jboss.tools.ws.reddeer.ui.wizards;
  * Contributors:
  * Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-import org.jboss.reddeer.eclipse.jface.wizard.NewWizardDialog;
+import org.jboss.reddeer.jface.wizard.NewWizardDialog;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.condition.WaitCondition;

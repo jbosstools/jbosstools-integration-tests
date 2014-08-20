@@ -12,14 +12,9 @@ package org.jboss.tools.ws.ui.bot.test.wsclient;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.swt.SWTException;
-import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.ProjectItem;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.Server;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServerModule;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.tools.ws.ui.bot.test.WSTestBase;
 import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.WsWizardBase.Slider_Level;
 import org.jboss.tools.ws.ui.bot.test.webservice.WebServiceRuntime;
@@ -165,6 +160,8 @@ public class WSClientTestTemplate extends WSTestBase {
 			if(!clientHelper.projectIsDeployed(configuredState.getServer().name, getEarProjectName())) {
 				fail("Project was not found on the server.");
 			}
+		default:
+			break;
 		}
 	}
 }

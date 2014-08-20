@@ -27,7 +27,6 @@ import org.jboss.tools.ws.reddeer.jaxrs.core.RestFullExplorer;
 import org.jboss.tools.ws.reddeer.ui.dialogs.WSTesterParametersDialog;
 import org.jboss.tools.ws.reddeer.ui.tester.views.WsTesterView;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
-import org.jboss.tools.ws.ui.bot.test.uiutils.RunOnServerDialog;
 import org.junit.AfterClass;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -44,13 +43,13 @@ import org.junit.Test;
 public class WSTesterPromptValuesSupportTest extends RESTfulTestBase {
 
 	private String wsProjectName = "wsPromptTestProject";
-	
+
 	private WsTesterView testerView = new WsTesterView();
-	
+
 	private WSTesterParametersDialog dialog;
-	
+
 	private RestFullExplorer restExplorer;
-	
+
 	@Override
 	public void setup() {
 		if (!projectExists(wsProjectName)) {
@@ -59,24 +58,24 @@ public class WSTesterPromptValuesSupportTest extends RESTfulTestBase {
 			testerView.open();
 		}
 	}
-	
+
 	@Override
 	public void cleanup() {
 		if (dialog.isOpened()) {
 			dialog.cancel();
 		}
 	}
-	
+
 	@AfterClass
 	public static void cleanEnvironment() {
 		projectExplorer.deleteAllProjects();
 	}
-	
+
 	@Override
 	protected String getWsProjectName() {
 		return wsProjectName;
 	}
-	
+
 	/**
 	 * Tests if the parameter dialog can be invoked in WS Tester
 	 */
@@ -84,7 +83,7 @@ public class WSTesterPromptValuesSupportTest extends RESTfulTestBase {
 	public void testInvokeWsParameterDialog() {
 		invokeWSParametersDialog();
 	}
-	
+
 	/**
 	 * Fails due to JBIDE-12027 and JBIDE-13546
 	 * 
@@ -102,59 +101,59 @@ public class WSTesterPromptValuesSupportTest extends RESTfulTestBase {
 		invokeWSParametersDialog();
 		checkWSParametersDialog();
 	}
-	
+
 	@Ignore
 	@Test
 	public void testValueTypeChecking() {
 		//TODO
 	}
-	
+
 	/**
 	 * Tests the response
 	 */
 	@Test
 	public void testResponse() {
 		invokeWSParametersDialog();
-		
+
 		List<TreeItem> parameters = dialog.getAllParameters();
 		setParametersValues(parameters);
 		dialog.ok();
-		
+
 		checkWSResponse();
 	}
-	
+
 	private void invokeWSParametersDialog() {
 		restExplorer = new RestFullExplorer(getWsProjectName());
-		
+
 		runRestServiceOnServer(restExplorer.getAllRestServices().get(0));
-		
+
 		testerView.invoke();
-		
+
 		bot.waitUntil(new ShellIsActiveCondition(
 						WSTesterParametersDialog.DIALOG_TITLE));
-		
+
 		this.dialog = new WSTesterParametersDialog();
 	}
-	
+
 	private void checkWSParametersDialog() {
 		//button is always enabled until JBIDE-13111 is resolved
 		//@see https://issues.jboss.org/browse/JBIDE-13111
 //		assertThat(dialog.isOkButtonEnabled(), Is.is(false));
-		
+
 		List<TreeItem> parameters = dialog.getAllParameters();
 		assertThat(dialog.getAllParameters().size(), Is.is(3));
-		
+
 		checkAllParametersWereLoaded(parameters);
 		checkAllDefaultParametersValues(parameters);
 		checkAllParametersTypes(parameters);
 		checkThereIsMandatoryValueWarning();
-		
+
 		setParametersValues(parameters);
-		
+
 		checkThereIsNoWarning();
-		
+
 		assertThat(dialog.isOkButtonEnabled(), Is.is(true));
-		
+
 		dialog.ok();
 	}
 
@@ -162,61 +161,53 @@ public class WSTesterPromptValuesSupportTest extends RESTfulTestBase {
 		String warning = getWarningText();
 		assertTrue("There is unexpected warning: " + warning, warning.length() == 0);
 	}
-	
+
 	private void checkThereIsMandatoryValueWarning() {
 		assertThat(getWarningText(), Is.is(" id's value is mandatory but missing."));
 	}
-	
+
 	private String getWarningText() {
 		return new DefaultText(0).getText();
 	}
-	
+
 	private void checkAllParametersWereLoaded(List<TreeItem> parameters) {
-		
+
 		assertThat("First parameter name is wrong", 
 				dialog.getParameterName(parameters.get(0)), Is.is("id* "));
 		assertThat("Second parameter name is wrong", 
 				dialog.getParameterName(parameters.get(1)), Is.is("m1"));
 		assertThat("Third parameter name is wrong",
 				dialog.getParameterName(parameters.get(2)), Is.is("q1"));
-		
 	}
-	
+
 	private void checkAllDefaultParametersValues(List<TreeItem> parameters) {
-		
 		assertThat("JBIDE-12027: Default value of id is wrong", 
 				dialog.getParameterValue(parameters.get(0)), Is.is("0"));
 		assertThat("Default value of id is wrong", 
 				dialog.getParameterValue(parameters.get(1)), Is.is("m1"));
 		assertThat("Default value of id is wrong", 
 				dialog.getParameterValue(parameters.get(2)), Is.is("q1"));
-		
 	}
-	
+
 	private void checkAllParametersTypes(List<TreeItem> parameters) {
-		
 		assertThat("Type of id is wrong", 
 				dialog.getParameterType(parameters.get(0)), Is.is("Integer"));
 		assertThat("Type of m1 is wrong", 
 				dialog.getParameterType(parameters.get(1)), Is.is("String"));
 		assertThat("Type of q1 is wrong", 
 				dialog.getParameterType(parameters.get(2)), Is.is("String"));
-		
 	}
-	
+
 	private void setParametersValues(List<TreeItem> parameters) {
-		
 		dialog.setParameterValue(parameters.get(0), "1");
 		dialog.setParameterValue(parameters.get(1), "matrix");
 		dialog.setParameterValue(parameters.get(2), "query");
 		
 	}
-	
+
 	private void checkWSResponse() {
-		
 		assertThat("JAX-RS Response on GET method is wrong", 
 				testerView.getResponseBody(), Is.is("1 matrix query"));
 		
 	}
-	
 }

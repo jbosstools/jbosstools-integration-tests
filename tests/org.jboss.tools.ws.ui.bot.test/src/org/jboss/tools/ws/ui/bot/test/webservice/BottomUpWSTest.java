@@ -100,6 +100,7 @@ public class BottomUpWSTest extends WebServiceTestBase {
 		case DEVELOP:
 		case ASSEMBLE:
 			deploymentHelper.runProject(getEarProjectName());
+		default:
 			break;
 		}
 		deploymentHelper.assertServiceDeployed(deploymentHelper.getWSDLUrl(getWsProjectName(), getWsName()), 10000);

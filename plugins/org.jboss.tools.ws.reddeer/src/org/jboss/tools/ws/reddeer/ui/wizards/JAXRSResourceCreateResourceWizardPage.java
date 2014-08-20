@@ -1,6 +1,6 @@
 package org.jboss.tools.ws.reddeer.ui.wizards;
 
-import org.jboss.reddeer.eclipse.jface.wizard.WizardPage;
+import org.jboss.reddeer.jface.wizard.WizardPage;
 import org.jboss.reddeer.swt.api.Text;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -8,11 +8,12 @@ import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 
 /**
- * {@link JAXRSResourceWizard}'s first wizard page
+ * {@link JAXRSResourceWizard}'s first wizard page.
  * 
  * @author Radoslav Rabara
  */
 public class JAXRSResourceCreateResourceWizardPage extends WizardPage {
+
 	/**
 	 * Returns info text ( = info/warning/error)
 	 * 
@@ -105,47 +106,47 @@ public class JAXRSResourceCreateResourceWizardPage extends WizardPage {
 				&& getCreate().isEnabled() && getUpdate().isEnabled()
 				&& getDeleteById().isEnabled();
 	}
-	
+
 	public void setFindById(boolean findById) {
 		setCheckBoxState(getFindByIdCheckBox(), findById);
 	}
-	
+
 	public void setListAll(boolean listAll) {
 		setCheckBoxState(getListAll(), listAll);
 	}
-	
+
 	public void setCreate(boolean create) {
 		setCheckBoxState(getCreate(), create);
 	}
-	
+
 	public void setUpdate(boolean update) {
 		setCheckBoxState(getUpdate(), update);
 	}
-	
+
 	public void setDeleteById(boolean deleteById) {
 		setCheckBoxState(getDeleteById(), deleteById);
 	}
-	
+
 	private CheckBox getFindByIdCheckBox() {
 		return new CheckBox("findById()");
 	}
-	
+
 	private CheckBox getListAll() {
 		return new CheckBox("listAll()");
 	}
-	
+
 	private CheckBox getCreate() {
 		return new CheckBox("create()");
 	}
-	
+
 	private CheckBox getUpdate() {
 		return new CheckBox("update()");
 	}
-	
+
 	private CheckBox getDeleteById() {
 		return new CheckBox("deleteById()");
 	}
-	
+
 	// configure templates and default values
 	public void configureTemplatesAndDefaultValues() {
 		throw new UnsupportedOperationException();
@@ -155,7 +156,7 @@ public class JAXRSResourceCreateResourceWizardPage extends WizardPage {
 	public void setGenerateComments(boolean generateComments) {
 		setCheckBoxState(new CheckBox("Generate comments"), generateComments);
 	}
-	
+
 	protected static final void setCheckBoxState(CheckBox checkBox, boolean check) {
 		if (checkBox.isChecked() == !check) {
 			checkBox.click();

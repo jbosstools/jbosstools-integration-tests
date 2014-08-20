@@ -1,6 +1,6 @@
 package org.jboss.tools.ws.reddeer.ui.wizards;
 
-import org.jboss.reddeer.eclipse.jface.wizard.NewWizardDialog;
+import org.jboss.reddeer.jface.wizard.NewWizardDialog;
 
 /**
  * JAX-RS Resource wizard
@@ -12,7 +12,7 @@ import org.jboss.reddeer.eclipse.jface.wizard.NewWizardDialog;
  * @see http://tools.jboss.org/documentation/whatsnew/jbosstools/4.2.0.Beta2.html#webservices
  */
 public class JAXRSResourceWizard extends NewWizardDialog {
-	
+
 	public JAXRSResourceWizard() {
 		super("Web Services", "JAX-RS Resource");
 		addWizardPage(new JAXRSResourceCreateResourceWizardPage(), 0);

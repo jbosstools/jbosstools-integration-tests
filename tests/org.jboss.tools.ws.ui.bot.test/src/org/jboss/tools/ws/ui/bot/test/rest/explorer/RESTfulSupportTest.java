@@ -1,7 +1,7 @@
 package org.jboss.tools.ws.ui.bot.test.rest.explorer;
 
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
-import org.jboss.reddeer.eclipse.jface.exception.JFaceLayerException;
+import org.jboss.reddeer.jface.exception.JFaceLayerException;
 import org.jboss.tools.ws.reddeer.jaxrs.core.RestFullExplorer;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
 import org.junit.Assert;

@@ -36,7 +36,6 @@ import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.ui.bot.ext.config.TestConfigurator;
 import org.jboss.tools.ui.bot.ext.helper.BuildPathHelper;
-import org.jboss.tools.ws.reddeer.jaxrs.core.RestFullAnnotations;
 import org.jboss.tools.ws.reddeer.jaxrs.core.RestFullLabels;
 import org.jboss.tools.ws.reddeer.swt.condition.ProblemsCount;
 import org.jboss.tools.ws.reddeer.ui.preferences.JAXRSValidatorPreferencePage;

@@ -10,7 +10,6 @@
  ******************************************************************************/
 package org.jboss.tools.ws.ui.bot.test.uiutils.wizards;
 
-import org.eclipse.swt.widgets.Shell;
 
 public class WebServiceWizard extends WsWizardBase {
 

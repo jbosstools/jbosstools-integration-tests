@@ -155,8 +155,9 @@ public class DeploymentHelper extends SWTTestExt {
 				connection = (HttpURLConnection) u.openConnection();
 				rsp = connection.getResponseCode();
 				if (rsp == HttpURLConnection.HTTP_OK) {
-					page = new Scanner(connection.getInputStream())
-							.useDelimiter("\\A").next();
+					try(Scanner scanner = new Scanner(connection.getInputStream())) {
+						page = scanner.useDelimiter("\\A").next();
+					}
 					break;
 				} else {
 					try {
