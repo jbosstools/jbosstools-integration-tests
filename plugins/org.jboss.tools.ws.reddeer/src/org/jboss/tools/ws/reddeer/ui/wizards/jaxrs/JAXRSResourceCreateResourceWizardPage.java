@@ -1,4 +1,4 @@
-package org.jboss.tools.ws.reddeer.ui.wizards;
+package org.jboss.tools.ws.reddeer.ui.wizards.jaxrs;
 
 import org.jboss.reddeer.jface.wizard.WizardPage;
 import org.jboss.reddeer.swt.api.Text;
@@ -9,8 +9,9 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
 
 /**
  * {@link JAXRSResourceWizard}'s first wizard page.
- * 
- * @author Radoslav Rabara
+ *
+ * @author Radoslav Rabar
+ *
  */
 public class JAXRSResourceCreateResourceWizardPage extends WizardPage {
 

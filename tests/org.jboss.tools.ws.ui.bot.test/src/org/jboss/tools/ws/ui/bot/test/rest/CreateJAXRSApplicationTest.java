@@ -21,10 +21,10 @@ import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
-import org.jboss.tools.ws.reddeer.ui.wizards.JAXRSApplicationWizard;
-import org.jboss.tools.ws.reddeer.ui.wizards.JAXRSApplicationWizardPage;
-import org.jboss.tools.ws.reddeer.ui.wizards.JAXRSApplicationWizardPage.DeploymentDescriptorWizardPart;
-import org.jboss.tools.ws.reddeer.ui.wizards.JAXRSApplicationWizardPage.SubclassOfApplicationWizardPart;
+import org.jboss.tools.ws.reddeer.ui.wizards.jaxrs.JAXRSApplicationWizard;
+import org.jboss.tools.ws.reddeer.ui.wizards.jaxrs.JAXRSApplicationWizardPage;
+import org.jboss.tools.ws.reddeer.ui.wizards.jaxrs.JAXRSApplicationWizardPage.DeploymentDescriptorWizardPart;
+import org.jboss.tools.ws.reddeer.ui.wizards.jaxrs.JAXRSApplicationWizardPage.SubclassOfApplicationWizardPart;
 import org.jboss.tools.ws.ui.bot.test.WSTestBase;
 
 /**
@@ -67,7 +67,7 @@ public class CreateJAXRSApplicationTest extends WSTestBase {
 			
 		}
 		super.cleanup();
-		new PackageExplorer().getProject(getWsProjectName()).delete(true);
+		deleteAllProjects();
 	}
 	
 	@Test

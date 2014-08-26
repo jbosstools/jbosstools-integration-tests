@@ -277,6 +277,8 @@ public class IDELabel {
 	public class DynamicWebProjectWizard {
 		public static final String GENERATE_DEPLOYMENT_DESCRIPTOR = "Generate web.xml deployment descriptor";
 		public static final String PROJECT_NAME_LABEL = "Project name:";
+		public static final String ADD_PROJECT_TO_AN_EAR = "Add project to an EAR";
+		public static final String EAR_PROJECT_NAME = "EAR project name:";
 	}
 
 	public class View {

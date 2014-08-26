@@ -10,7 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.ws.ui.bot.test.webservice;
 
-import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.WsWizardBase.Slider_Level;
+import org.jboss.tools.ws.reddeer.ui.wizards.wst.WebServiceWizardPageBase.SliderLevel;
 import org.junit.Test;
 
 /**
@@ -55,13 +55,13 @@ public class BottomUpWSTest extends WebServiceTestBase {
 	
 	@Test
 	public void testDevelopService() {
-		setLevel(Slider_Level.DEVELOP);
+		setLevel(SliderLevel.DEVELOP);
 		bottomUpJbossWebService();
 	}
 	
 	@Test
 	public void testAssembleService() {
-		setLevel(Slider_Level.ASSEMBLE);
+		setLevel(SliderLevel.ASSEMBLE);
 		bottomUpJbossWebService();
 	}
 
@@ -72,25 +72,25 @@ public class BottomUpWSTest extends WebServiceTestBase {
 	 */
 	@Test
 	public void testDeployService() {
-		setLevel(Slider_Level.DEPLOY);
+		setLevel(SliderLevel.DEPLOY);
 		bottomUpJbossWebService();
 	}
 	
 	@Test
 	public void testInstallService() {
-		setLevel(Slider_Level.INSTALL);
+		setLevel(SliderLevel.INSTALL);
 		bottomUpJbossWebService();
 	}
 	
 	@Test
 	public void testStartService() {
-		setLevel(Slider_Level.START);
+		setLevel(SliderLevel.START);
 		bottomUpJbossWebService();
 	}
 	
 	@Test
 	public void testTestService() {
-		setLevel(Slider_Level.TEST);
+		setLevel(SliderLevel.TEST);
 		bottomUpJbossWebService();
 	}
 
