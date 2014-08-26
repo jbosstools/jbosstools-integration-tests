@@ -47,5 +47,4 @@ Import-Package: org.jboss.ide.eclipse.as.reddeer.server.requirement,
  org.jboss.reddeer.requirements.server,
  org.jboss.tools.ws.reddeer.ui.dialogs,
  org.jboss.tools.ws.reddeer.ui.preferences,
- org.jboss.tools.ws.reddeer.ui.tester.views,
- org.jboss.tools.ws.reddeer.ui.wizards
+ org.jboss.tools.ws.reddeer.ui.tester.views

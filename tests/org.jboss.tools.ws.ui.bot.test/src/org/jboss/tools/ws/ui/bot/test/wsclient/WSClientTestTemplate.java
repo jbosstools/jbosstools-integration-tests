@@ -15,8 +15,8 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.ProjectItem;
+import org.jboss.tools.ws.reddeer.ui.wizards.wst.WebServiceWizardPageBase.SliderLevel;
 import org.jboss.tools.ws.ui.bot.test.WSTestBase;
-import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.WsWizardBase.Slider_Level;
 import org.jboss.tools.ws.ui.bot.test.webservice.WebServiceRuntime;
 import org.junit.After;
 import org.junit.Assert;
@@ -62,43 +62,43 @@ public class WSClientTestTemplate extends WSTestBase {
 	 */
 	@Test
 	public void testDeployClient() {
-		setLevel(Slider_Level.DEPLOY);
+		setLevel(SliderLevel.DEPLOY);
 		clientTest(getWsPackage());
 	}
 
 	@Test
 	public void testAssembleClient() {
-		setLevel(Slider_Level.ASSEMBLE);
+		setLevel(SliderLevel.ASSEMBLE);
 		clientTest(getWsPackage());
 	}
 
 	@Test
 	public void testDevelopClient() {
-		setLevel(Slider_Level.DEVELOP);
+		setLevel(SliderLevel.DEVELOP);
 		clientTest(getWsPackage());
 	}
 
 	@Test
 	public void testInstallClient() {
-		setLevel(Slider_Level.INSTALL);
+		setLevel(SliderLevel.INSTALL);
 		clientTest(getWsPackage());
 	}
 
 	@Test
 	public void testStartClient() {
-		setLevel(Slider_Level.START);
+		setLevel(SliderLevel.START);
 		clientTest(getWsPackage());
 	}
 
 	@Test
 	public void testTestClient() {
-		setLevel(Slider_Level.TEST);
+		setLevel(SliderLevel.TEST);
 		clientTest(getWsPackage());
 	}
 
 	@Test
 	public void testDefaultPkg() {
-		setLevel(Slider_Level.ASSEMBLE);
+		setLevel(SliderLevel.ASSEMBLE);
 		clientTest(null);
 	}
 

@@ -11,42 +11,36 @@
 
 package org.jboss.tools.ws.ui.bot.test.utils;
 
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
-import org.eclipse.swtbot.swt.finder.SWTBot;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardDialog;
+import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardPage;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
+import org.jboss.reddeer.swt.api.StyledText;
+import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitWhile;
-import org.jboss.tools.ui.bot.ext.SWTBotExt;
-import org.jboss.tools.ui.bot.ext.SWTOpenExt;
-import org.jboss.tools.ui.bot.ext.SWTUtilExt;
-import org.jboss.tools.ui.bot.ext.Timing;
-import org.jboss.tools.ui.bot.ext.condition.ActiveEditorHasTitleCondition;
-import org.jboss.tools.ui.bot.ext.condition.TreeItemContainsNode;
-import org.jboss.tools.ui.bot.ext.gen.ActionItem.NewObject.JavaEEEnterpriseApplicationProject;
-import org.jboss.tools.ui.bot.ext.gen.ActionItem.NewObject.WebServicesWSDL;
-import org.jboss.tools.ui.bot.ext.types.IDELabel;
-import org.jboss.tools.ui.bot.ext.view.ProjectExplorer;
-import org.jboss.tools.ws.reddeer.ui.wizards.DynamicWebProjectWizard;
-import org.jboss.tools.ws.reddeer.ui.wizards.NewEARProjectWizard;
-import org.jboss.tools.ws.ui.bot.test.uiutils.actions.NewFileWizardAction;
-import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.Wizard;
+import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
+import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.jboss.tools.ws.reddeer.ui.wizards.CreateNewFileWizardPage;
+import org.jboss.tools.ws.reddeer.ui.wizards.jst.j2ee.EARProjectWizard;
+import org.jboss.tools.ws.reddeer.ui.wizards.jst.servlet.DynamicWebProjectWizard;
+import org.jboss.tools.ws.reddeer.ui.wizards.wst.NewWsdlFileWizard;
 
+/**
+ * @author jjankovi
+ * @author Radoslav Rabara
+ */
 public class ProjectHelper {
 
-	private final SWTBotExt bot = new SWTBotExt();
-	
 	private final ProjectExplorer projectExplorer = new ProjectExplorer();
-	
-	private final SWTOpenExt open = new SWTOpenExt(bot);
-	
-	private final SWTUtilExt util = new SWTUtilExt(bot);
-	
+
 	/**
 	 * Method creates basic java class for entered project with 
 	 * entered package and class name
@@ -55,34 +49,39 @@ public class ProjectHelper {
 	 * @param cName
 	 * @return
 	 */
-	public SWTBotEditor createClass(String projectName, String pkg, String cName) {
-		new NewFileWizardAction().run().selectTemplate("Java", "Class").next();
-		Wizard w = new Wizard();
-		w.bot().textWithLabel("Package:").setText(pkg);
-		w.bot().textWithLabel("Name:").setText(cName);
-		w.bot().textWithLabel("Source folder:")
-				.setText(projectName + "/src");
-		w.finish();
-		bot.waitUntil(new ActiveEditorHasTitleCondition(bot, cName + ".java"));
-		return bot.editorByTitle(cName + ".java");
+	public TextEditor createClass(String projectName, String pkg, String className) {
+		NewJavaClassWizardDialog wizard = new NewJavaClassWizardDialog();
+		wizard.open();
+
+		NewJavaClassWizardPage page = wizard.getFirstPage();
+		page.setPackage(pkg);
+		page.setName(className);
+		page.setSourceFolder(projectName + "/src");
+		wizard.finish();
+
+		return new TextEditor(className + ".java");
 	}
 
 	/**
 	 * Method creates wsdl file for entered project with 
 	 * entered package name
 	 * @param projectName
-	 * @param s
-	 * @return
+	 * @param wsdlFileName
 	 */
-	public SWTBotEditor createWsdl(String projectName, String s) {
-		SWTBot wiz1 = open.newObject(WebServicesWSDL.LABEL);
-		wiz1.textWithLabel(WebServicesWSDL.TEXT_FILE_NAME).setText(s + ".wsdl");
-		wiz1.textWithLabel(
-				WebServicesWSDL.TEXT_ENTER_OR_SELECT_THE_PARENT_FOLDER)
-				.setText(projectName + "/src");
-		wiz1.button(IDELabel.Button.NEXT).click();
-		open.finish(wiz1);
-		return bot.editorByTitle(s + ".wsdl");
+	public DefaultEditor createWsdl(String projectName, String wsdlFileName) {
+		NewWsdlFileWizard wizard = new NewWsdlFileWizard();
+		wizard.open();
+
+		CreateNewFileWizardPage page = new CreateNewFileWizardPage();
+		page.setFileName(wsdlFileName + ".wsdl");
+		page.setParentFolder(projectName + "/src");
+
+		wizard.next();
+		wizard.finish();
+
+		new DefaultCTabItem("Source").activate();
+		
+		return new DefaultEditor(wsdlFileName + ".wsdl");
 	}
 	
 	/**
@@ -90,18 +89,17 @@ public class ProjectHelper {
 	 * @param name
 	 */
 	public void createProject(String name) {
-		new NewFileWizardAction().run()
-				.selectTemplate("Web", "Dynamic Web Project").next();
-		
-		DynamicWebProjectWizard projectWiz = new DynamicWebProjectWizard();
-		projectWiz.setProjectName(name);
-		projectWiz.next();
-		projectWiz.next();
-		projectWiz.generateDeploymentDescriptor();
-		projectWiz.finish();
-		
+		DynamicWebProjectWizard wizard = new DynamicWebProjectWizard();
+		wizard.open();
+
+		wizard.setProjectName(name);
+		wizard.next();
+		wizard.next();
+		wizard.setGenerateDeploymentDescriptor(true);
+		wizard.finish();
+
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-		projectExplorer.selectProject(name);
+		projectExplorer.getProject(name).select();
 	}
 	
 	/**
@@ -110,16 +108,15 @@ public class ProjectHelper {
 	 * @param name
 	 */
 	public void createProjectForEAR(String name, String earProject) {
-		new NewFileWizardAction().run()
-				.selectTemplate("Web", "Dynamic Web Project").next();
-		
-		DynamicWebProjectWizard project = new DynamicWebProjectWizard();
-		project.setProjectName(name);
-		project.addProjectToEar(earProject);
-		project.finish();
-		
-		util.waitForNonIgnoredJobs();
-		projectExplorer.selectProject(name);
+		DynamicWebProjectWizard wizard = new DynamicWebProjectWizard();
+		wizard.open();
+
+		wizard.setProjectName(name);
+		wizard.addProjectToEar(earProject);
+		wizard.finish();
+
+		new WaitWhile(new JobIsRunning());
+		projectExplorer.getProject(name).select();
 	}
 
 	/**
@@ -127,48 +124,42 @@ public class ProjectHelper {
 	 * @param name
 	 */
 	public void createEARProject(String name) {
-		NewEARProjectWizard wizard = new NewEARProjectWizard();
+		EARProjectWizard wizard = new EARProjectWizard();
 		wizard.open();
-		
-		new LabeledText(JavaEEEnterpriseApplicationProject.TEXT_PROJECT_NAME)
+
+		new LabeledText("Project name:")
 			.setText(name);
 		// set EAR version
 		DefaultCombo combo = new DefaultCombo(1);
 		combo.setSelection(combo.getItems().size()-1);
-		
+
 		wizard.next();
-		
+
 		new CheckBox("Generate application.xml deployment descriptor").click();
-		
+
 		wizard.finish();
 	}
-	
+
 	/**
 	 * Method generates Deployment Descriptor for entered project 
-	 * @param project
+	 * @param projectName
 	 */
-	public void createDD(String project) {
-        SWTBotTree tree = projectExplorer.bot().tree();
-        SWTBotTreeItem ti = expandProject(tree, project);
-        String dd = "Deployment Descriptor: " + project;
-        bot.waitUntil(new TreeItemContainsNode(ti, dd), Timing.time10S());
-        ti = ti.getNode(dd);
-        ti.select();
-        
+	public void createDD(String projectName) {
+		Project project = projectExplorer.getProject(projectName);
+		expandProject(project.getTreeItem());
+		String dd = "Deployment Descriptor: " + projectName;
+		project.getProjectItem(dd).select();
+
         new ContextMenu("Generate Deployment Descriptor Stub").select();
-        
-        util.waitForNonIgnoredJobs();
+
+        new WaitWhile(new JobIsRunning());
     }
-	
-	private SWTBotTreeItem expandProject(SWTBotTree tree, String project) {
-		SWTBotTreeItem ti = null;
-				
+
+	private void expandProject(TreeItem projectItem) {
 		do {
-			tree.collapseNode(project);
-			ti = tree.expandNode(project);
-		}while (!ti.isExpanded());
-		
-		return ti;
+			projectItem.collapse();
+			projectItem.expand();
+		} while (!projectItem.isExpanded());
 	}
 	
 }

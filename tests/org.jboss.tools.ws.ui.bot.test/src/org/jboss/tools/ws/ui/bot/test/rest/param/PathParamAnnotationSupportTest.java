@@ -187,7 +187,7 @@ public class PathParamAnnotationSupportTest extends RESTfulTestBase {
 
 		/* get RESTful services from JAX-RS REST explorer for the project */
 		List<RestService> restServices = restfulServicesForProject(projectPath1);
-		
+
 		/* test JAX-RS REST explorer */
 		assertCountOfRESTServices(restServices, 1);
 		assertExpectedPathOfService(restServices.get(0),

@@ -19,20 +19,27 @@ import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
+import org.jboss.reddeer.jface.wizard.WizardDialog;
 import org.jboss.reddeer.swt.api.Shell;
+import org.jboss.reddeer.swt.api.StyledText;
+import org.jboss.reddeer.swt.condition.JobIsRunning;
+import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
+import org.jboss.reddeer.swt.wait.AbstractWait;
+import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
+import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.jboss.tools.ws.reddeer.ui.wizards.wst.WebServiceFirstWizardPage;
+import org.jboss.tools.ws.reddeer.ui.wizards.wst.WebServiceSecondWizardPage;
+import org.jboss.tools.ws.reddeer.ui.wizards.wst.WebServiceWizard;
+import org.jboss.tools.ws.reddeer.ui.wizards.wst.WebServiceFirstWizardPage.ServiceType;
+import org.jboss.tools.ws.reddeer.ui.wizards.wst.WebServiceWizardPageBase.SliderLevel;
 import org.jboss.tools.ws.ui.bot.test.WSTestBase;
-import org.jboss.tools.ws.ui.bot.test.uiutils.actions.NewFileWizardAction;
-import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.WebServiceWizard;
-import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.WebServiceWizard.Service_Type;
-import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.Wizard;
-import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.WsWizardBase.Slider_Level;
 import org.junit.Assert;
 
 /**
@@ -49,7 +56,7 @@ public class WebServiceTestBase extends WSTestBase {
 	protected void bottomUpJbossWebService(InputStream javasrc) {
 		String s = resourceHelper.readStream(javasrc);
 		String src = MessageFormat.format(s, getWsPackage(), getWsName());
-		createService(Service_Type.BOTTOM_UP, getWsPackage() + "."
+		createService(ServiceType.BOTTOM_UP, getWsPackage() + "."
 				+ getWsName(), getLevel(), null, src);
 	}
 
@@ -68,7 +75,7 @@ public class WebServiceTestBase extends WSTestBase {
 		}
 		sb.append(tns[0]);
 		String src = MessageFormat.format(s, sb.toString(), getWsName());
-		createService(Service_Type.TOP_DOWN, "/" + getWsProjectName() + "/src/"
+		createService(ServiceType.TOP_DOWN, "/" + getWsProjectName() + "/src/"
 				+ getWsName() + ".wsdl", getLevel(), pkg, src);
 	}
 
@@ -80,24 +87,31 @@ public class WebServiceTestBase extends WSTestBase {
 	 * @param pkg
 	 * @param code
 	 */
-	private void createService(Service_Type t, String source,
-			Slider_Level level, String pkg, String code) {
+	private void createService(ServiceType t, String source,
+			SliderLevel level, String pkg, String code) {
 		// create ws source - java class or wsdl
-		SWTBotEditor ed = null;
 		switch (t) {
 		case BOTTOM_UP:
-			ed = projectHelper.createClass(getWsProjectName(), getWsPackage(), getWsName());
+			TextEditor editor = projectHelper.createClass(getWsProjectName(), getWsPackage(), getWsName());
+			assertNotNull(editor);
+
+			// replace default content of java class w/ code
+			editor.setText(code);
+			editor.save();
+			editor.close();
 			break;
 		case TOP_DOWN:
-			ed = projectHelper.createWsdl(getWsProjectName(),getWsName());
+			DefaultEditor ed = projectHelper.createWsdl(getWsProjectName(),getWsName());
+			assertNotNull(ed);
+			StyledText text = new DefaultStyledText();
+			assertNotNull(text);
+			
+			text.setText(code);
+			ed.save();
+			ed.close();
 			break;
 		}
-		assertNotNull(ed);
-		// replace default content of java class w/ code
-		SWTBotEclipseEditor st = ed.toTextEditor();
-		st.selectRange(0, 0, st.getText().length());
-		st.setText(code);
-		ed.saveAndClose();
+
 		// refresh workspace - workaround for JBIDE-6731
 		try {
 			ResourcesPlugin
@@ -108,44 +122,47 @@ public class WebServiceTestBase extends WSTestBase {
 		} catch (CoreException e) {
 			LOGGER.log(Level.WARNING, e.getMessage(), e);
 		}
+
 		// create a web service
-		new NewFileWizardAction().run()
-				.selectTemplate("Web Services", "Web Service").next();
-		WebServiceWizard wsw = new WebServiceWizard();
-		wsw.setServiceType(t);
-		wsw.setSource(source);
-		wsw.setServerRuntime(configuredState.getServer().name);
-		wsw.setWebServiceRuntime("JBossWS");//TODO: cxf
-		wsw.setServiceProject(getWsProjectName());
-		wsw.setServiceEARProject(getEarProjectName());
-		wsw.setServiceSlider(level);
-		if (wsw.isClientEnabled()) {
-			wsw.setClientSlider(Slider_Level.NO_CLIENT);
+		WebServiceWizard wizard = new WebServiceWizard();
+		wizard.open();
+
+		WebServiceFirstWizardPage page = new WebServiceFirstWizardPage();
+		page.setServiceType(t);
+		page.setSource(source);
+		page.setServerRuntime(configuredState.getServer().name);
+		page.setWebServiceRuntime("JBossWS");
+		page.setServiceProject(getWsProjectName());
+		page.setServiceEARProject(getEarProjectName());
+		page.setServiceSlider(level);
+		if (page.isClientEnabled()) {
+			page.setClientSlider(SliderLevel.NO_CLIENT);
 		}
-		wsw.next();
-		
-		checkErrorDialog(wsw);
-		
+		AbstractWait.sleep(TimePeriod.SHORT);
+		wizard.next();
+
+		checkErrorDialog(wizard);
+
 		if (pkg != null && pkg.trim().length() > 0) {
-			wsw.setPackageName(pkg);
-			wsw.next();
+			WebServiceSecondWizardPage page2 = new WebServiceSecondWizardPage();
+			page2.setPackageName(pkg);
+			wizard.next();
 		}
-		wsw.finish();
-		util.waitForNonIgnoredJobs();
-		
+
+		wizard.finish();
+
 		// let's fail if there's some error in the wizard,
 		// and close error dialog and the wizard so other tests
 		// can continue
-		if (bot.activeShell().getText().contains("Error")) {
-			SWTBotShell sh = bot.activeShell();
-			String msg = sh.bot().text().getText();
-			sh.bot().button(0).click();
-			wsw.cancel();
+		if (new DefaultShell().getText().contains("Error")) {
+			String msg = new DefaultText().getText();
+			new PushButton(0).click();
+			wizard.cancel();
 			Assert.fail(msg);
 		}
 	}
 	
-	private void checkErrorDialog(Wizard openedWizard) {
+	private void checkErrorDialog(WizardDialog openedWizard) {
 		Shell shell = new DefaultShell();
 		String text = shell.getText();
 		if (text.contains("Error")) {

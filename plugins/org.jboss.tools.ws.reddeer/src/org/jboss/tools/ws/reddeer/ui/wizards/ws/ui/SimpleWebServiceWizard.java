@@ -9,7 +9,7 @@
  * Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
 
-package org.jboss.tools.ws.reddeer.ui.wizards;
+package org.jboss.tools.ws.reddeer.ui.wizards.ws.ui;
 
 import org.jboss.reddeer.jface.wizard.NewWizardDialog;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
@@ -18,15 +18,15 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
 
 /**
  * Simple Web Service wizard.
- * 
+ *
  * Web Services > Simple Web Service
- * 
+ *
  * @author jjankovi
  * @author Radoslav Rabara
  */
-public class SimpleWSWizard extends NewWizardDialog {
+public class SimpleWebServiceWizard extends NewWizardDialog {
 
-	public SimpleWSWizard() {
+	public SimpleWebServiceWizard() {
 		super("Web Services", "Simple Web Service");
 	}
 

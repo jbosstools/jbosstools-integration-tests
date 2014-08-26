@@ -1,4 +1,4 @@
-package org.jboss.tools.ws.reddeer.ui.wizards;
+package org.jboss.tools.ws.reddeer.ui.wizards.jaxrs;
 
 import org.jboss.reddeer.jface.wizard.WizardPage;
 import org.jboss.reddeer.swt.api.Text;
@@ -10,12 +10,13 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
 
 /**
  * First and the only {@link JAXRSApplicationWizard} page.
- * 
+ *
  * Page offers 2 options have to create a new JAX-RS Application:
  * 1. "Subclass of javax.ws.rs.core.Application()" - {@link #useSubclassOfApplication()}
  * 2. "Defined in the web deployment descriptor" - {@link #useDeploymentDescriptor()}
- * 
+ *
  * @author Radoslav Rabara
+ *
  */
 public class JAXRSApplicationWizardPage extends WizardPage {
 	/**

@@ -39,8 +39,8 @@ import org.jboss.tools.ui.bot.ext.SWTUtilExt;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
+import org.jboss.tools.ws.reddeer.ui.wizards.wst.WebServiceWizardPageBase.SliderLevel;
 import org.jboss.tools.ws.ui.bot.test.WSAllBotTests;
-import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.WsWizardBase.Slider_Level;
 import org.jboss.tools.ws.ui.bot.test.webservice.TopDownWSTest;
 import org.jboss.tools.ws.ui.bot.test.webservice.WebServiceRuntime;
 import org.jboss.tools.ws.ui.bot.test.webservice.WebServiceTestBase;
@@ -122,8 +122,8 @@ public class EAPFromWSDLTest extends WebServiceTestBase {
 	}
 
 	@Override
-	protected Slider_Level getLevel() {
-		return Slider_Level.DEPLOY;
+	protected SliderLevel getLevel() {
+		return SliderLevel.DEPLOY;
 	}
 	
 	@Test
@@ -175,7 +175,7 @@ public class EAPFromWSDLTest extends WebServiceTestBase {
 		Assert.assertTrue("service must exist", servicePassed);
 		clientHelper.createClient(deploymentHelper.getWSDLUrl(getWsProjectName(), getWsName()),
 				WebServiceRuntime.JBOSS_WS, getWsClientProjectName(), getEarProjectName(), 
-				Slider_Level.DEVELOP, getWsClientPackage());
+				SliderLevel.DEVELOP, getWsClientPackage());
 		IProject p = ResourcesPlugin.getWorkspace().getRoot()
 				.getProject(getWsClientProjectName());
 		String pkg = "org/jboss/wsclient";

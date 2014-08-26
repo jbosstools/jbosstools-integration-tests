@@ -83,11 +83,7 @@ public class RESTfulTestBase extends WSTestBase {
 	
 	@Override
 	public void cleanup() {
-		ProjectExplorer pe = new ProjectExplorer();
-		pe.open();
-		for(Project p : pe.getProjects()) {
-			p.delete(true);
-		}
+		deleteAllProjects();
 	}
 
 	protected static void importRestWSProject(String projectName) {

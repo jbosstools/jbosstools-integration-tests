@@ -12,6 +12,7 @@
 package org.jboss.tools.ws.ui.bot.test;
 
 import java.text.MessageFormat;
+import java.util.List;
 import java.util.logging.Logger;
 
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
@@ -21,6 +22,7 @@ import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
+import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
@@ -28,17 +30,18 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.tools.common.reddeer.label.IDELabel;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ui.bot.ext.helper.ImportHelper;
-import org.jboss.tools.ui.bot.ext.types.IDELabel;
-import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.WsWizardBase.Slider_Level;
+import org.jboss.tools.ws.reddeer.ui.wizards.wst.WebServiceWizardPageBase.SliderLevel;
 import org.jboss.tools.ws.ui.bot.test.utils.DeploymentHelper;
 import org.jboss.tools.ws.ui.bot.test.utils.ProjectHelper;
 import org.jboss.tools.ws.ui.bot.test.utils.ResourceHelper;
 import org.jboss.tools.ws.ui.bot.test.utils.WebServiceClientHelper;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
 
 /**
@@ -53,7 +56,7 @@ import org.junit.Before;
 @JBossServer()
 public class WSTestBase extends SWTTestExt {
 
-	private Slider_Level level;
+	private SliderLevel level;
 	private String wsProjectName = null;
 
 	private static final String SOAP_REQUEST_TEMPLATE = "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\" ?>"
@@ -92,13 +95,29 @@ public class WSTestBase extends SWTTestExt {
 		servers.removeAllProjectsFromServer();
 	}
 
+	@AfterClass
+	public static void afterClass() {
+		deleteAllProjects();
+	}
+
 	protected boolean projectExists(String name) {
 		return new PackageExplorer().containsProject(name);
 	}
 
-	protected void deleteAllProjects() {
-		for(Project project : new ProjectExplorer().getProjects()) {
-			project.delete(true);
+	protected static void deleteAllProjects() {
+		List<Project> projects = new ProjectExplorer().getProjects();
+		for(int i=0;i<projects.size();i++) {
+			Project project = projects.get(i);
+			try {
+				project.delete(true);
+			} catch(SWTLayerException exception) {
+				LOGGER.severe("Project was not deleted");
+				try {
+					LOGGER.severe("Project name: " + project.getName());
+				} catch(Exception t) {
+					LOGGER.severe("Can't get project name" + t.getMessage());
+				}
+			}
 		}
 	}
 
@@ -107,11 +126,11 @@ public class WSTestBase extends SWTTestExt {
 			.getProjectItem("src", pkgName, javaFileName).open();
 	}
 
-	protected Slider_Level getLevel() {
+	protected SliderLevel getLevel() {
 		return level;
 	}
 
-	protected void setLevel(Slider_Level level) {
+	protected void setLevel(SliderLevel level) {
 		this.level = level;
 	}
 
@@ -134,7 +153,7 @@ public class WSTestBase extends SWTTestExt {
 	protected String getWsName() {
 		return null;
 	}
-	
+
 	protected void assertWebServiceTesterIsActive() {
 		assertTrue("Web Service Tester view should be active", 
 				bot.viewByTitle(IDELabel.View.WEB_SERVICE_TESTER).isActive());

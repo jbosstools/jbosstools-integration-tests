@@ -8,20 +8,23 @@
  * Contributors:
  * Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.ws.ui.bot.test.uiutils.wizards;
+package org.jboss.tools.ws.reddeer.ui.wizards.wst;
 
-public class WebServiceClientWizard extends WsWizardBase {
+import org.jboss.reddeer.jface.wizard.NewWizardDialog;
 
-	@Override
-	public String getSourceComboLabel() {
-		return "Service definition:";
-	}
-
-	public void setClientProject(String name) {
-		setTargetProject("Client project:", name);//, "Specify Client Project Settings"
-	}
-	
-	public void setClientEARProject(String name) {
-		setTargetProject("Client EAR project:", name);
+/**
+ * Web Service Client wizard.<br/>
+ *
+ * {@link WebServiceClientWizardPage} is the first and the only wizard page.
+ *
+ * Web Services > Web Service Client
+ *
+ * @author Radoslav Rabara
+ *
+ */
+public class WebServiceClientWizard extends NewWizardDialog {
+	public WebServiceClientWizard() {
+		super("Web Services", "Web Service Client");
+		addWizardPage(new WebServiceClientWizardPage(), 0);
 	}
 }

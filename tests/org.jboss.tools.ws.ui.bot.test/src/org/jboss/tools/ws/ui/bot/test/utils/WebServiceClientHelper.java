@@ -1,21 +1,27 @@
 package org.jboss.tools.ws.ui.bot.test.utils;
 
+import org.apache.log4j.Logger;
 import org.eclipse.swt.SWTException;
 import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.Server;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
+import org.jboss.reddeer.jface.wizard.WizardDialog;
 import org.jboss.reddeer.swt.api.Label;
 import org.jboss.reddeer.swt.api.Shell;
+import org.jboss.reddeer.swt.condition.JobIsRunning;
+import org.jboss.reddeer.swt.condition.WaitCondition;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.label.DefaultLabel;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.toolbar.ViewToolItem;
+import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
-import org.jboss.tools.ws.ui.bot.test.uiutils.actions.NewFileWizardAction;
-import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.WebServiceClientWizard;
-import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.Wizard;
-import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.WsWizardBase.Slider_Level;
+import org.jboss.tools.ws.reddeer.ui.wizards.wst.WebServiceClientWizard;
+import org.jboss.tools.ws.reddeer.ui.wizards.wst.WebServiceClientWizardPage;
+import org.jboss.tools.ws.reddeer.ui.wizards.wst.WebServiceWizardPageBase.SliderLevel;
 import org.jboss.tools.ws.ui.bot.test.webservice.WebServiceRuntime;
 import org.junit.Assert;
 
@@ -30,31 +36,31 @@ public class WebServiceClientHelper extends SWTTestExt {
 	 * @param pkg
 	 */
 	public void createClient(String wsdl, WebServiceRuntime runtime, String targetProject,
-			String earProject, Slider_Level level, String pkg) {
-		
+			String earProject, SliderLevel level, String pkg) {
 		final String SERVER_NAME = configuredState.getServer().name;
-		
-		new NewFileWizardAction().run()
-				.selectTemplate("Web Services", "Web Service Client").next();
-		WebServiceClientWizard w = new WebServiceClientWizard();
-		w.setSource(wsdl);
-		util.waitForNonIgnoredJobs();
-		bot.sleep(1000);
-		w.setSlider(level, 0);
-		w.setServerRuntime(SERVER_NAME);
-		w.setWebServiceRuntime(runtime.getName());
-		w.setClientProject(targetProject);
-		w.setClientEARProject(earProject);
-		if (pkg != null && pkg.trim().length()>0) {
-			w.next();
-			w.setPackageName(pkg);
-		}
-		w.finish();
-		util.waitForNonIgnoredJobs();
-		bot.sleep(1000);
 
-		checkErrorDialog(w);
+		WebServiceClientWizard wizard = new WebServiceClientWizard();
+		wizard.open();
+
+		WebServiceClientWizardPage page = new WebServiceClientWizardPage();
 		
+		page.setSource(wsdl);
+		new WaitUntil(new WebServiceClientPageIsValidated(), TimePeriod.getCustom(2), true);
+
+		page.setClientSlider(level);
+		page.setServerRuntime(SERVER_NAME);
+		page.setWebServiceRuntime(runtime.getName());
+		page.setClientProject(targetProject);
+		page.setClientEARProject(earProject);
+
+		if (pkg != null && pkg.trim().length()>0) {
+			wizard.next();
+			page.setPackageName(pkg);
+		}
+		wizard.finish();
+
+		checkErrorDialog(wizard);
+
 		//check if there is any error in console output
 		checkErrorInConsoleOutput(SERVER_NAME, earProject);
 	}
@@ -66,7 +72,7 @@ public class WebServiceClientHelper extends SWTTestExt {
 	 * 
 	 * @param wsWizard if error dialog appeared the parent wizard will be closed
 	 */
-	private void checkErrorDialog(Wizard wsWizard) {
+	private void checkErrorDialog(WizardDialog wsWizard) {
 		Shell shell = new DefaultShell();
 		String text = shell.getText();
 		if (text.contains("Error")) {
@@ -125,5 +131,25 @@ public class WebServiceClientHelper extends SWTTestExt {
 		} catch(EclipseLayerException e) {
 			return false;
 		}
+	}
+
+	private class WebServiceClientPageIsValidated implements WaitCondition {
+
+		private WebServiceClientWizardPage page = new WebServiceClientWizardPage();
+
+		private static final String REQUIRED_TEXT = "Select a service definition and move the slider to set the level of client generation.";
+		private String infoText;
+		
+		@Override
+		public boolean test() {
+			infoText = page.getInfoText();
+			return infoText.equals(REQUIRED_TEXT);
+		}
+
+		@Override
+		public String description() {
+			return "Required text is '" + REQUIRED_TEXT + "' but there is '" + infoText + "'";
+		}
+		
 	}
 }

@@ -12,17 +12,18 @@ package org.jboss.tools.ws.ui.bot.test.webservice;
 
 import java.util.logging.Level;
 
-import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
-import org.eclipse.swtbot.swt.finder.keyboard.Keystrokes;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.ProjectItem;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
+import org.jboss.reddeer.swt.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.matcher.RegexMatcher;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
-import org.jboss.tools.ws.ui.bot.test.uiutils.wizards.WsWizardBase.Slider_Level;
+import org.jboss.tools.ws.reddeer.ui.wizards.wst.WebServiceWizardPageBase.SliderLevel;
 import org.junit.Test;
 
 /**
@@ -67,13 +68,17 @@ public class TopDownWSTest extends WebServiceTestBase {
 		 */
 	@Test
 	public void testDevelopService() {
-		setLevel(Slider_Level.DEVELOP);
+		setLevel(SliderLevel.DEVELOP);
 		topDownWS();
 	}
 	
 	@Test
 	public void testAssembleService() {
-		setLevel(Slider_Level.ASSEMBLE);
+		setLevel(SliderLevel.ASSEMBLE);
+
+		/* There exists WSDL file created in testAssembleService due to using the same SliderLevel */
+		removeWsdlFileFromProject(getWsName() + ".wsdl");
+
 		topDownWS();
 	}
 	
@@ -84,13 +89,13 @@ public class TopDownWSTest extends WebServiceTestBase {
 	 */
 	@Test
 	public void testDeployService() {
-		setLevel(Slider_Level.DEPLOY);
+		setLevel(SliderLevel.DEPLOY);
 		topDownWS();
 	}
 	
 	@Test
 	public void testInstallService() {
-		setLevel(Slider_Level.INSTALL);
+		setLevel(SliderLevel.INSTALL);
 		topDownWS();
 	}
 	
@@ -100,7 +105,7 @@ public class TopDownWSTest extends WebServiceTestBase {
 	 */
 	@Test
 	public void testStartService() {
-		setLevel(Slider_Level.START);
+		setLevel(SliderLevel.START);
 		topDownWS();
 	}
 	
@@ -110,16 +115,15 @@ public class TopDownWSTest extends WebServiceTestBase {
 	 */
 	@Test
 	public void testTestService() {
-		setLevel(Slider_Level.TEST);
+		setLevel(SliderLevel.TEST);
 		topDownWS();
 	}
 	
 	@Test
 	public void testDefaultPkg() {
-		setLevel(Slider_Level.ASSEMBLE);
+		setLevel(SliderLevel.ASSEMBLE);
 		
-		/* There exists WSDL file created in testAssembleService due to using the same Slider_Level */
-		removeWsdlFileFromProject(getWsName() + ".wsdl");
+		prepareAssembleService();
 		
 		topDownWS(null);
 		
@@ -139,24 +143,22 @@ public class TopDownWSTest extends WebServiceTestBase {
 	}
 
 	private void removeWsdlFileFromProject(String wsdlFileName) {
-		// select WSDL file
-		SWTBotTreeItem wsdlNode = null;
+		ProjectItem item = null;
 		try {
-			SWTBotTree projectsTree = projectExplorer.bot().tree();
-			wsdlNode = projectsTree
-					.expandNode(getWsProjectName())
-					.expandNode("Java Resources")
-					.expandNode("src")
-					.getNode(wsdlFileName);
-		} catch(WidgetNotFoundException e) {
-			LOGGER.log(Level.SEVERE, "Not found "+wsdlFileName+" in the project.", e);
+			item = new ProjectExplorer().getProject(getWsProjectName())
+						.getProjectItem("Java Resources", "src", wsdlFileName);
+		} catch(EclipseLayerException e) {
 			return;
 		}
-		// delete
-		wsdlNode.select().pressShortcut(Keystrokes.DELETE);
-		//TODO use ShellWithTextIsActive with new RegexMatcher(...)
-		ShellWithTextIsActive condition = new ShellWithTextIsActive("Delete");
-		new WaitUntil(condition);
+
+		item.delete();
+
+		ShellWithTextIsActive condition = new ShellWithTextIsActive(new RegexMatcher("Delete"));
+		try {
+			new WaitUntil(condition);
+		} catch(WaitTimeoutExpiredException e) {
+			return;
+		}
 		new PushButton("OK").click();
 		new WaitWhile(condition);
 	}
@@ -178,5 +180,10 @@ public class TopDownWSTest extends WebServiceTestBase {
 		}
 		deploymentHelper.assertServiceDeployed(deploymentHelper.getWSDLUrl(getWsProjectName(), getWsName()), 10000);
 		servers.removeAllProjectsFromServer(configuredState.getServer().name);
+	}
+
+	private void prepareAssembleService() {
+		/* There exists WSDL file created in testAssembleService due to using the same SliderLevel */
+		removeWsdlFileFromProject(getWsName() + ".wsdl");
 	}
 }

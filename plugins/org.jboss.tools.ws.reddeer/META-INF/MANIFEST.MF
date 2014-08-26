@@ -18,7 +18,13 @@ Export-Package: org.jboss.tools.ws.reddeer.editor,
  org.jboss.tools.ws.reddeer.ui.preferences,
  org.jboss.tools.ws.reddeer.ui.tester.views,
  org.jboss.tools.ws.reddeer.ui.views,
- org.jboss.tools.ws.reddeer.ui.wizards
+ org.jboss.tools.ws.reddeer.ui.wizards,
+ org.jboss.tools.ws.reddeer.ui.wizards.jaxrs,
+ org.jboss.tools.ws.reddeer.ui.wizards.jst.j2ee,
+ org.jboss.tools.ws.reddeer.ui.wizards.jst.jsp,
+ org.jboss.tools.ws.reddeer.ui.wizards.jst.servlet,
+ org.jboss.tools.ws.reddeer.ui.wizards.ws.ui,
+ org.jboss.tools.ws.reddeer.ui.wizards.wst
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Import-Package: org.eclipse.swtbot.swt.finder.exceptions,
@@ -28,6 +34,7 @@ Import-Package: org.eclipse.swtbot.swt.finder.exceptions,
  org.jboss.reddeer.eclipse.ui.problems,
  org.jboss.reddeer.uiforms.api,
  org.jboss.reddeer.uiforms.impl.expandablecomposite,
+ org.jboss.reddeer.uiforms.impl.hyperlink,
  org.jboss.reddeer.workbench.impl.editor,
  org.jboss.reddeer.workbench.impl.view,
  org.jboss.reddeer.workbench.preference,
