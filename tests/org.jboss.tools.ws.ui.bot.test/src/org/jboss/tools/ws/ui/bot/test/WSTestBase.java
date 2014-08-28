@@ -20,6 +20,8 @@ import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.jboss.reddeer.eclipse.utils.DeleteUtils;
+import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
@@ -96,7 +98,7 @@ public class WSTestBase extends SWTTestExt {
 	}
 
 	@AfterClass
-	public static void afterClass() {
+	public static void deleteAll() {
 		deleteAllProjects();
 	}
 
@@ -109,8 +111,8 @@ public class WSTestBase extends SWTTestExt {
 		for(int i=0;i<projects.size();i++) {
 			Project project = projects.get(i);
 			try {
-				project.delete(true);
-			} catch(SWTLayerException exception) {
+				DeleteUtils.forceProjectDeletion(project, true);
+			} catch(RuntimeException exception) {
 				LOGGER.severe("Project was not deleted");
 				try {
 					LOGGER.severe("Project name: " + project.getName());
@@ -119,6 +121,11 @@ public class WSTestBase extends SWTTestExt {
 				}
 			}
 		}
+	}
+
+	protected static void deleteAllProjectsFromServer() {
+		//TODO: use RedDeer
+		servers.removeAllProjectsFromServer();
 	}
 
 	protected void openJavaFile(String projectName, String pkgName, String javaFileName) {
