@@ -31,7 +31,7 @@ public class ExtendedTextEditor extends TextEditor {
 	}
 
 	public void replace(String regex, String replacement) {
-		setText(getText().replaceAll(regex, replacement));
+		setText(getText().replace(regex, replacement));
 		save();
 	}
 
