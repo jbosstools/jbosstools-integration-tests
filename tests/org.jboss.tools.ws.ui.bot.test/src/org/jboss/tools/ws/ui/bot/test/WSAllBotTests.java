@@ -18,11 +18,13 @@ import org.jboss.tools.ws.ui.bot.test.facet.JAXRSFacetTest;
 import org.jboss.tools.ws.ui.bot.test.integration.JAXRSToolingIntegrationTest;
 import org.jboss.tools.ws.ui.bot.test.integration.SOAPWSToolingIntegrationTest;
 import org.jboss.tools.ws.ui.bot.test.preferences.JBossWSPreferencesTest;
+import org.jboss.tools.ws.ui.bot.test.rest.AsYouTypeValidationTest;
 import org.jboss.tools.ws.ui.bot.test.rest.CreateJAXRSApplicationTest;
 import org.jboss.tools.ws.ui.bot.test.rest.CreateJAXRSResourceTest;
 import org.jboss.tools.ws.ui.bot.test.rest.FiltersInterceptorsSupportTest;
 import org.jboss.tools.ws.ui.bot.test.rest.NameBindingAnnotationSupportTest;
 import org.jboss.tools.ws.ui.bot.test.rest.PreMatchingAnnotationSupportTest;
+import org.jboss.tools.ws.ui.bot.test.rest.ValidatingRelatedRSElementsTest;
 import org.jboss.tools.ws.ui.bot.test.rest.completion.RESTfulCompletionTest;
 import org.jboss.tools.ws.ui.bot.test.rest.explorer.RESTfulExplorerTest;
 import org.jboss.tools.ws.ui.bot.test.rest.explorer.RESTfulSupportTest;
@@ -74,6 +76,8 @@ import org.junit.runners.Suite.SuiteClasses;
 	BeanParamAnnotationSupportTest.class,
 	RESTfulValidationTest.class,
 	RESTfulCompletionTest.class,
+	AsYouTypeValidationTest.class,
+	ValidatingRelatedRSElementsTest.class,
 	JAXRSToolingIntegrationTest.class,
 	SOAPWSToolingIntegrationTest.class,
 	XmlJsonFormattingTest.class,
