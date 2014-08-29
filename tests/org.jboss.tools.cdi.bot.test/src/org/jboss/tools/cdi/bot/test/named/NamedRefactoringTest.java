@@ -15,6 +15,7 @@ import static org.junit.Assert.*;
 
 import java.util.Arrays;
 import java.util.Collection;
+
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
@@ -24,8 +25,8 @@ import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.cdi.bot.test.jsf.JSFTestBase;
-import org.jboss.tools.cdi.bot.test.uiutils.CDIWizardHelper;
-import org.jboss.tools.cdi.bot.test.uiutils.CollectionsUtil;
+import org.jboss.tools.cdi.reddeer.uiutils.CDIWizardHelper;
+import org.jboss.tools.cdi.reddeer.uiutils.CollectionsUtil;
 import org.junit.After;
 import org.junit.Test;
 
@@ -57,7 +58,7 @@ public class NamedRefactoringTest extends JSFTestBase {
 	@Test
 	public void testNamedAnnotationWithParamRefactor() {
 		wizard.createCDIBeanComponentWithContent(MANAGED_BEAN_1, 
-				getPackageName(), null, "/resources/jsf/ManagedBeanParamNamed.java.cdi");		
+				getPackageName(), null, NamedRefactoringTest.class.getResourceAsStream("/resources/jsf/ManagedBeanParamNamed.java.cdi"));		
 		
 		createXHTMLPageWithContent(INDEX_XHTML_1, "/resources/jsf/index1.xhtml.cdi");
 		createXHTMLPageWithContent(INDEX_XHTML_3, "/resources/jsf/index3.xhtml.cdi");
@@ -90,7 +91,7 @@ public class NamedRefactoringTest extends JSFTestBase {
 	public void testNamedAnnotationWithoutParamRefactor() {
 		
 		wizard.createCDIBeanComponentWithContent(MANAGED_BEAN_2, 
-				getPackageName(), null, "/resources/jsf/ManagedBeanNoParamNamed.java.cdi");	
+				getPackageName(), null, NamedRefactoringTest.class.getResourceAsStream("/resources/jsf/ManagedBeanNoParamNamed.java.cdi"));	
 		
 		createXHTMLPageWithContent(INDEX_XHTML_2, "/resources/jsf/index2.xhtml.cdi");
 		createXHTMLPageWithContent(INDEX_XHTML_3, "/resources/jsf/index3.xhtml.cdi");
@@ -122,7 +123,7 @@ public class NamedRefactoringTest extends JSFTestBase {
 	public void testNamedAnnotationWithoutELRefactoring() {
 		
 		wizard.createCDIBeanComponentWithContent(MANAGED_BEAN_2, 
-				getPackageName(), null, "/resources/jsf/ManagedBeanNoParamNamed.java.cdi");	
+				getPackageName(), null, NamedRefactoringTest.class.getResourceAsStream("/resources/jsf/ManagedBeanNoParamNamed.java.cdi"));	
 		
 		createXHTMLPageWithContent(INDEX_XHTML_2, "/resources/jsf/index1.xhtml.cdi");		
 			

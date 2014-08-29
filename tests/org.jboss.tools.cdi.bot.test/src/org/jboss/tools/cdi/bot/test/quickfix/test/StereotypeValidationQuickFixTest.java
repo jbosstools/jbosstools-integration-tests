@@ -19,10 +19,10 @@ import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.C
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
-import org.jboss.tools.cdi.bot.test.annotations.CDIWizardType;
-import org.jboss.tools.cdi.bot.test.annotations.ValidationType;
-import org.jboss.tools.cdi.bot.test.quickfix.validators.IValidationProvider;
-import org.jboss.tools.cdi.bot.test.quickfix.validators.StereotypeValidationProvider;
+import org.jboss.tools.cdi.reddeer.annotation.CDIWizardType;
+import org.jboss.tools.cdi.reddeer.annotation.ValidationType;
+import org.jboss.tools.cdi.reddeer.validators.IValidationProvider;
+import org.jboss.tools.cdi.reddeer.validators.StereotypeValidationProvider;
 import org.junit.Test;
 
 /**
@@ -85,7 +85,7 @@ public class StereotypeValidationQuickFixTest extends CDITestBase {
 		String className = "Stereotype3";
 		
 		wizard.createCDIComponentWithContent(CDIWizardType.STEREOTYPE, className, 
-				getPackageName(), null, "/resources/quickfix/stereotype/StereotypeWithNamed.java.cdi");
+				getPackageName(), null, StereotypeValidationQuickFixTest.class.getResourceAsStream("/resources/quickfix/stereotype/StereotypeWithNamed.java.cdi"));
 	
 		editResourceUtil.replaceInEditor(className+".java","StereotypeComponent", className);
 		
@@ -100,7 +100,7 @@ public class StereotypeValidationQuickFixTest extends CDITestBase {
 		String className = "Stereotype4";
 		
 		wizard.createCDIComponentWithContent(CDIWizardType.STEREOTYPE, className, 
-				getPackageName(), null, "/resources/quickfix/stereotype/StereotypeWithTyped.java.cdi");
+				getPackageName(), null, StereotypeValidationQuickFixTest.class.getResourceAsStream("/resources/quickfix/stereotype/StereotypeWithTyped.java.cdi"));
 		
 		editResourceUtil.replaceInEditor(className+".java","StereotypeComponent", className);
 		

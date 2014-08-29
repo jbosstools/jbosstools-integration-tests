@@ -13,10 +13,13 @@ package org.jboss.tools.cdi.bot.test.wizard;
 
 
 import static org.junit.Assert.*;
+
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
@@ -31,11 +34,14 @@ import org.junit.Test;
 @OpenPerspective(JavaEEPerspective.class)
 @CleanWorkspace
 public class ConfigurationPresetTest extends CDITestBase {
+	
+	@InjectRequirement
+	private ServerRequirement sr;
 
 	@Override	
 	public void prepareWorkspace() {
 		if (!projectHelper.projectExists(getProjectName())) {
-			projectHelper.createDynamicWebProjectWithCDIPreset(getProjectName());
+			projectHelper.createDynamicWebProjectWithCDIPreset(sr.getRuntimeNameLabelText(sr.getConfig()), getProjectName());
 		}
 	}
 	

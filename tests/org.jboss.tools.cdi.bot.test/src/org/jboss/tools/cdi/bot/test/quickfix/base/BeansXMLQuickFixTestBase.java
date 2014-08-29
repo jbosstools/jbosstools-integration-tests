@@ -20,14 +20,14 @@ import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
-import org.jboss.tools.cdi.bot.test.annotations.ValidationType;
-import org.jboss.tools.cdi.bot.test.quickfix.validators.BeansXmlValidationProvider;
-import org.jboss.tools.cdi.bot.test.quickfix.validators.IValidationProvider;
+import org.jboss.tools.cdi.reddeer.annotation.ValidationType;
 import org.jboss.tools.cdi.reddeer.cdi.ui.NewBeanCreationWizard;
 import org.jboss.tools.cdi.reddeer.cdi.ui.NewDecoratorCreationWizard;
 import org.jboss.tools.cdi.reddeer.cdi.ui.NewInterceptorCreationWizard;
 import org.jboss.tools.cdi.reddeer.cdi.ui.NewStereotypeCreationWizard;
 import org.jboss.tools.cdi.reddeer.cdi.ui.wizard.QuickFixWizard;
+import org.jboss.tools.cdi.reddeer.validators.BeansXmlValidationProvider;
+import org.jboss.tools.cdi.reddeer.validators.IValidationProvider;
 
 public class BeansXMLQuickFixTestBase extends CDITestBase {
 

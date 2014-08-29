@@ -32,8 +32,9 @@ import org.jboss.reddeer.workbench.api.Editor;
 import org.jboss.reddeer.workbench.condition.EditorWithTitleIsActive;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.jboss.tools.cdi.bot.test.beansxml.BeansXMLValidationTest;
 import org.jboss.tools.cdi.reddeer.CDIConstants;
-import org.jboss.tools.cdi.bot.test.annotations.CDIWizardType;
+import org.jboss.tools.cdi.reddeer.annotation.CDIWizardType;
 import org.junit.Test;
 
 /**
@@ -67,7 +68,8 @@ public class OpenOnTest extends OpenOnBase {
 	@Test
 	public void testBeansXMLClassesOpenOn() {
 
-		beansHelper.createEmptyBeansXML(getProjectName());
+		beansHelper.createBeansXMLWithContent(getProjectName(), 
+				this.getClass().getResourceAsStream(BeansXMLValidationTest.CLEAR_BEANS_XML));
 
 		checkBeanXMLDecoratorOpenOn(getPackageName(), "D1");
 
@@ -85,7 +87,7 @@ public class OpenOnTest extends OpenOnBase {
 
 		wizard.createCDIComponentWithContent(CDIWizardType.BEAN, className,
 				getPackageName(), null,
-				"/resources/openon/BeanWithDisposerAndProducer.java.cdi");
+				OpenOnTest.class.getResourceAsStream("/resources/openon/BeanWithDisposerAndProducer.java.cdi"));
 
 		editResourceUtil.replaceInEditor(className+".java","BeanComponent", className);
 		
@@ -112,11 +114,11 @@ public class OpenOnTest extends OpenOnBase {
 	@Test
 	public void testObserverOpenOn() {
 		wizard.createCDIComponentWithContent(CDIWizardType.BEAN, "EventBean",
-				getPackageName(), null, "/resources/openon/EventBean.java.cdi");
+				getPackageName(), null, OpenOnTest.class.getResourceAsStream("/resources/openon/EventBean.java.cdi"));
 
 		wizard.createCDIComponentWithContent(CDIWizardType.BEAN,
 				"ObserverBean", getPackageName(), null,
-				"/resources/openon/ObserverBean.java.cdi");
+				OpenOnTest.class.getResourceAsStream("/resources/openon/ObserverBean.java.cdi"));
 
 		new TextEditor("EventBean.java");
 		editResourceUtil.replaceInEditor("EventBean.java"," event", " event");
@@ -159,23 +161,23 @@ public class OpenOnTest extends OpenOnBase {
 
 		wizard.createCDIComponentWithContent(CDIWizardType.BEAN, "MyBean2",
 				getPackageName(), null,
-				"/resources/openon/InjectedPoints/MyBean2.java.cdi");
+				OpenOnTest.class.getResourceAsStream("/resources/openon/InjectedPoints/MyBean2.java.cdi"));
 
 		wizard.createCDIComponentWithContent(CDIWizardType.BEAN, "MyBean3",
 				getPackageName(), null,
-				"/resources/openon/InjectedPoints/MyBean3.java.cdi");
+				OpenOnTest.class.getResourceAsStream("/resources/openon/InjectedPoints/MyBean3.java.cdi"));
 
 		wizard.createCDIComponentWithContent(CDIWizardType.BEAN, "MyBean4",
 				getPackageName(), null,
-				"/resources/openon/InjectedPoints/MyBean4.java.cdi");
+				OpenOnTest.class.getResourceAsStream("/resources/openon/InjectedPoints/MyBean4.java.cdi"));
 
 		wizard.createCDIComponentWithContent(CDIWizardType.BEAN, "MyBean5",
 				getPackageName(), null,
-				"/resources/openon/InjectedPoints/MyBean5.java.cdi");
+				OpenOnTest.class.getResourceAsStream("/resources/openon/InjectedPoints/MyBean5.java.cdi"));
 
 		wizard.createCDIComponentWithContent(CDIWizardType.BEAN, "MainBean",
 				getPackageName(), null,
-				"/resources/openon/InjectedPoints/MainBean.java.cdi");
+				OpenOnTest.class.getResourceAsStream("/resources/openon/InjectedPoints/MainBean.java.cdi"));
 
 	}
 

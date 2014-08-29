@@ -9,12 +9,17 @@
  * Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
 
+
 package org.jboss.tools.cdi.reddeer.uiutils;
+
+import static org.junit.Assert.*;
 import org.eclipse.swt.SWT;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.jst.servlet.ui.WebProjectFirstPage;
 import org.jboss.reddeer.eclipse.jst.servlet.ui.WebProjectWizard;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
+import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.swt.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.swt.impl.button.CancelButton;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.OkButton;
@@ -45,6 +50,22 @@ public class CDIProjectHelper {
 	}
 	
 	/**
+	 * Method creates new CDI 1.1 Project with CDI Web Project wizard
+	 * @param projectName
+	 * @param targetRuntime
+	 */
+	public void createCDI11ProjectWithCDIWizard(String projectName, String targetRuntime) {
+		
+		CDIProjectWizard cw = new CDIProjectWizard();
+		cw.open();
+		WebProjectFirstPage wp = (WebProjectFirstPage)cw.getWizardPage(0);
+		wp.setProjectName(projectName);
+		wp.setTargetRuntime(targetRuntime);
+		wp.setConfiguration("Dynamic Web Project with CDI 1.1 (Context and Dependency Injection)");
+		cw.finish();
+	}
+	
+	/**
 	 * Method creates new CDI Project with Dynamic Web Project, after that it 
 	 * adds CDI Support
 	 * @param projectName
@@ -58,11 +79,12 @@ public class CDIProjectHelper {
 	 * Method creates new Dynamic Web Project with CDI Preset checked
 	 * @param projectName
 	 */
-	public void createDynamicWebProjectWithCDIPreset(String projectName) {
+	public void createDynamicWebProjectWithCDIPreset(String targetRuntime, String projectName) {
 		WebProjectWizard ww = new WebProjectWizard();
 		ww.open();
 		WebProjectFirstPage fp = (WebProjectFirstPage)ww.getWizardPage(0);
 		fp.setProjectName(projectName);
+		fp.setTargetRuntime(targetRuntime);
 		fp.setConfiguration("Dynamic Web Project with CDI 1.0 (Context and Dependency Injection)");
 		ww.finish();
 	}
@@ -178,6 +200,18 @@ public class CDIProjectHelper {
 				CDIConstants.ADD_CDI_SUPPORT).select();
 		new DefaultShell("Properties for " + projectName + " (Filtered)");
 		KeyboardFactory.getKeyboard().invokeKeyCombination(SWT.CR);
+		try{
+			new WaitWhile(new ShellWithTextIsAvailable("Properties for " + projectName + " (Filtered)"));
+		} catch (WaitTimeoutExpiredException ex){
+			//try Win OS enter
+			KeyboardFactory.getKeyboard().invokeKeyCombination(SWT.LF);
+			try{
+				new WaitWhile(new ShellWithTextIsAvailable("Properties for " + projectName + " (Filtered)"));
+			} catch (WaitTimeoutExpiredException e){
+				new CancelButton().click();
+				fail("Shell doesnt react on enter key press");
+			}
+		}
 		new WaitWhile(new JobIsRunning(),TimePeriod.LONG);
 	}
 	

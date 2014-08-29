@@ -13,9 +13,13 @@ package org.jboss.tools.cdi.bot.test;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.cdi.bot.test.beansxml.BeansXMLCompletionTest;
 import org.jboss.tools.cdi.bot.test.beansxml.BeansXMLValidationTest;
+import org.jboss.tools.cdi.bot.test.cd11.VetoedAnnotation;
 import org.jboss.tools.cdi.bot.test.decorator.DecoratorFromWebBeanTest;
 import org.jboss.tools.cdi.bot.test.editor.BeansEditorTest;
 import org.jboss.tools.cdi.bot.test.editor.WeldExtensionTest;
+import org.jboss.tools.cdi.bot.test.extensions.BuiltInContexts;
+import org.jboss.tools.cdi.bot.test.extensions.ParametersAnnotation;
+import org.jboss.tools.cdi.bot.test.extensions.WeldExclude;
 import org.jboss.tools.cdi.bot.test.named.NamedComponentsSearchingTest;
 import org.jboss.tools.cdi.bot.test.named.NamedRefactoringTest;
 import org.jboss.tools.cdi.bot.test.openon.FindObserverForEventTest;
@@ -50,7 +54,6 @@ import org.junit.runners.Suite.SuiteClasses;
 @RunWith(RedDeerSuite.class)
 @SuiteClasses({	
 //	PerspectiveTest.class,  // not included in JBDS anymore
-	
 	ConfigurationPresetTest.class,
 	
 	FacetTest.class, 
@@ -90,7 +93,12 @@ import org.junit.runners.Suite.SuiteClasses;
 	IBindingValidationQuickFixTest.class,
 	
 	OpenOnTest.class,
-	FindObserverForEventTest.class
+	FindObserverForEventTest.class,
+	
+	ParametersAnnotation.class,
+	BuiltInContexts.class,
+	WeldExclude.class,
+	VetoedAnnotation.class
 	
 })
 public class CDIAllBotTests {

@@ -19,10 +19,10 @@ import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.C
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
-import org.jboss.tools.cdi.bot.test.annotations.CDIWizardType;
-import org.jboss.tools.cdi.bot.test.annotations.ValidationType;
-import org.jboss.tools.cdi.bot.test.quickfix.validators.DecoratorValidationProvider;
-import org.jboss.tools.cdi.bot.test.quickfix.validators.IValidationProvider;
+import org.jboss.tools.cdi.reddeer.annotation.CDIWizardType;
+import org.jboss.tools.cdi.reddeer.annotation.ValidationType;
+import org.jboss.tools.cdi.reddeer.validators.DecoratorValidationProvider;
+import org.jboss.tools.cdi.reddeer.validators.IValidationProvider;
 import org.junit.Test;
 
 /**
@@ -49,8 +49,8 @@ public class DecoratorValidationQuickFixTest extends CDITestBase {
 		String className = "Decorator1";
 		
 		wizard.createCDIComponentWithContent(CDIWizardType.DECORATOR, className, 
-				getPackageName(), "java.util.Set", "/resources/quickfix/decorator/" +
-						"DecoratorWithStateless.java.cdi");
+				getPackageName(), "java.util.Set", DecoratorValidationQuickFixTest.class.getResourceAsStream("/resources/quickfix/decorator/" +
+						"DecoratorWithStateless.java.cdi"));
 		
 		editResourceUtil.replaceInEditor(className+".java","DecoratorComponent", className);
 		
@@ -65,8 +65,8 @@ public class DecoratorValidationQuickFixTest extends CDITestBase {
 		String className = "Decorator2";
 		
 		wizard.createCDIComponentWithContent(CDIWizardType.DECORATOR, className, 
-				getPackageName(), "java.util.Set", "/resources/quickfix/decorator/" +
-						"DecoratorWithNamed.java.cdi");
+				getPackageName(), "java.util.Set", DecoratorValidationQuickFixTest.class.getResourceAsStream("/resources/quickfix/decorator/" +
+						"DecoratorWithNamed.java.cdi"));
 	
 		editResourceUtil.replaceInEditor(className+".java","DecoratorComponent", className);
 		
@@ -81,8 +81,8 @@ public class DecoratorValidationQuickFixTest extends CDITestBase {
 		String className = "Decorator3";
 		
 		wizard.createCDIComponentWithContent(CDIWizardType.DECORATOR, className, 
-				getPackageName(), "java.util.Set", "/resources/quickfix/decorator/" +
-						"DecoratorWithProducer.java.cdi");
+				getPackageName(), "java.util.Set", DecoratorValidationQuickFixTest.class.getResourceAsStream("/resources/quickfix/decorator/" +
+						"DecoratorWithProducer.java.cdi"));
 		
 		editResourceUtil.replaceInEditor(className+".java","DecoratorComponent", className);
 		
@@ -97,8 +97,8 @@ public class DecoratorValidationQuickFixTest extends CDITestBase {
 		String className = "Decorator4";
 		
 		wizard.createCDIComponentWithContent(CDIWizardType.DECORATOR, className, 
-				getPackageName(), "java.util.Set", "/resources/quickfix/decorator/" +
-						"DecoratorWithDisposes.java.cdi");
+				getPackageName(), "java.util.Set", DecoratorValidationQuickFixTest.class.getResourceAsStream("/resources/quickfix/decorator/" +
+						"DecoratorWithDisposes.java.cdi"));
 		
 		editResourceUtil.replaceInEditor(className+".java","DecoratorComponent", className);
 		
@@ -113,8 +113,8 @@ public class DecoratorValidationQuickFixTest extends CDITestBase {
 		String className = "Decorator5";
 		
 		wizard.createCDIComponentWithContent(CDIWizardType.DECORATOR, className, 
-				getPackageName(), "java.util.Set", "/resources/quickfix/decorator/" +
-				"DecoratorWithDisposes.java.cdi");
+				getPackageName(), "java.util.Set", DecoratorValidationQuickFixTest.class.getResourceAsStream("/resources/quickfix/decorator/" +
+				"DecoratorWithDisposes.java.cdi"));
 		
 		editResourceUtil.replaceInEditor(className+".java","import javax.enterprise.inject.Disposes;", 
 				"import javax.enterprise.event.Observes;");
@@ -132,8 +132,8 @@ public class DecoratorValidationQuickFixTest extends CDITestBase {
 		String className = "Decorator6";
 		
 		wizard.createCDIComponentWithContent(CDIWizardType.DECORATOR, className, 
-				getPackageName(), "java.util.Set", "/resources/quickfix/decorator/" +
-						"DecoratorWithSpecializes.java.cdi");
+				getPackageName(), "java.util.Set", DecoratorValidationQuickFixTest.class.getResourceAsStream("/resources/quickfix/decorator/" +
+						"DecoratorWithSpecializes.java.cdi"));
 		
 		editResourceUtil.replaceInEditor(className+".java","DecoratorComponent", className);
 		

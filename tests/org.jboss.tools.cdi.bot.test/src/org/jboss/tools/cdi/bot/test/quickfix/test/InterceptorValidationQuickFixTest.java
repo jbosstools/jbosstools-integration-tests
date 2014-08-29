@@ -19,10 +19,10 @@ import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.C
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
-import org.jboss.tools.cdi.bot.test.annotations.CDIWizardType;
-import org.jboss.tools.cdi.bot.test.annotations.ValidationType;
-import org.jboss.tools.cdi.bot.test.quickfix.validators.IValidationProvider;
-import org.jboss.tools.cdi.bot.test.quickfix.validators.InterceptorValidationProvider;
+import org.jboss.tools.cdi.reddeer.annotation.CDIWizardType;
+import org.jboss.tools.cdi.reddeer.annotation.ValidationType;
+import org.jboss.tools.cdi.reddeer.validators.IValidationProvider;
+import org.jboss.tools.cdi.reddeer.validators.InterceptorValidationProvider;
 import org.junit.Test;
 
 /**
@@ -48,8 +48,8 @@ public class InterceptorValidationQuickFixTest extends CDITestBase {
 		String className = "Interceptor1";
 		
 		wizard.createCDIComponentWithContent(CDIWizardType.INTERCEPTOR, className, 
-				getPackageName(), null, "/resources/quickfix/interceptor/" +
-						"InterceptorWithStateless.java.cdi");
+				getPackageName(), null, InterceptorValidationQuickFixTest.class.getResourceAsStream("/resources/quickfix/interceptor/" +
+						"InterceptorWithStateless.java.cdi"));
 
 		editResourceUtil.replaceInEditor(className+".java","InterceptorComponent", className);
 		
@@ -64,8 +64,8 @@ public class InterceptorValidationQuickFixTest extends CDITestBase {
 		String className = "Interceptor2";
 		
 		wizard.createCDIComponentWithContent(CDIWizardType.INTERCEPTOR, className, 
-				getPackageName(), null, "/resources/quickfix/interceptor/" +
-						"InterceptorWithNamed.java.cdi");
+				getPackageName(), null, InterceptorValidationQuickFixTest.class.getResourceAsStream("/resources/quickfix/interceptor/" +
+						"InterceptorWithNamed.java.cdi"));
 
 		editResourceUtil.replaceInEditor(className+".java","InterceptorComponent", className);
 		
@@ -80,8 +80,8 @@ public class InterceptorValidationQuickFixTest extends CDITestBase {
 		String className = "Interceptor3";
 		
 		wizard.createCDIComponentWithContent(CDIWizardType.INTERCEPTOR, className, 
-				getPackageName(), null, "/resources/quickfix/interceptor/" +
-						"InterceptorWithProducer.java.cdi");
+				getPackageName(), null, InterceptorValidationQuickFixTest.class.getResourceAsStream("/resources/quickfix/interceptor/" +
+						"InterceptorWithProducer.java.cdi"));
 
 		editResourceUtil.replaceInEditor(className+".java","InterceptorComponent", className);
 		
@@ -96,8 +96,8 @@ public class InterceptorValidationQuickFixTest extends CDITestBase {
 		String className = "Interceptor4";
 		
 		wizard.createCDIComponentWithContent(CDIWizardType.INTERCEPTOR, className, 
-				getPackageName(), null, "/resources/quickfix/interceptor/" +
-						"InterceptorWithDisposes.java.cdi");
+				getPackageName(), null, InterceptorValidationQuickFixTest.class.getResourceAsStream("/resources/quickfix/interceptor/" +
+						"InterceptorWithDisposes.java.cdi"));
 
 		editResourceUtil.replaceInEditor(className+".java","InterceptorComponent", className);
 		
@@ -112,8 +112,8 @@ public class InterceptorValidationQuickFixTest extends CDITestBase {
 		String className = "Interceptor5";
 		
 		wizard.createCDIComponentWithContent(CDIWizardType.INTERCEPTOR, className, 
-				getPackageName(), null, "/resources/quickfix/interceptor/" +
-						"InterceptorWithDisposes.java.cdi");
+				getPackageName(), null, InterceptorValidationQuickFixTest.class.getResourceAsStream("/resources/quickfix/interceptor/" +
+						"InterceptorWithDisposes.java.cdi"));
 		
 		editResourceUtil.replaceInEditor(className+".java","import javax.enterprise.inject.Disposes;", 
 				"import javax.enterprise.event.Observes;");
@@ -131,8 +131,8 @@ public class InterceptorValidationQuickFixTest extends CDITestBase {
 		String className = "Interceptor6";
 		
 		wizard.createCDIComponentWithContent(CDIWizardType.INTERCEPTOR, className, 
-				getPackageName(), null, "/resources/quickfix/interceptor/" +
-						"InterceptorWithSpecializes.java.cdi");
+				getPackageName(), null, InterceptorValidationQuickFixTest.class.getResourceAsStream("/resources/quickfix/interceptor/" +
+						"InterceptorWithSpecializes.java.cdi"));
 
 		editResourceUtil.replaceInEditor(className+".java","InterceptorComponent", className);
 		

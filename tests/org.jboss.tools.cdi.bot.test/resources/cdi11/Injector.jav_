@@ -1,0 +1,40 @@
+package test;
+
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+
+import vetoed.Bean1;
+import vetoed.Bean2;
+import vetoed.Bean3;
+import vetoedpackage.Bean4;
+import vetoedpackage.Bean5;
+import vetoedpackage.pck.Bean6;
+import vetoedpackage.pck.Bean6.Bean7;
+
+@ApplicationScoped
+public class Injector {
+	
+	@Inject
+	Bean1 b1;
+	
+	@Inject
+	Bean2 b2;
+	
+	@Inject
+	Bean3 b3;
+	
+	@Inject
+	Bean4 b4;
+	
+	@Inject
+	Bean5 b5;
+	
+	@Inject
+	Bean6 b6;
+	
+	@Inject
+	Bean7 b7;
+	
+	
+
+}

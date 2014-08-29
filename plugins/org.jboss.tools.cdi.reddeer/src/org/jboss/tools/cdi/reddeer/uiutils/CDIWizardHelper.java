@@ -11,6 +11,7 @@
 
 package org.jboss.tools.cdi.reddeer.uiutils;
 
+import java.io.InputStream;
 import java.util.List;
 
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
@@ -70,11 +71,10 @@ public class CDIWizardHelper {
 	 */
 	
 	public void createCDIComponentWithContent(CDIWizardType component, String name,
-			String packageName, String necessaryParam, String resource) {			
+			String packageName, String necessaryParam, InputStream resource) {			
 		createCDIComponent(component, name, packageName, necessaryParam);
 		new DefaultEditor(name + ".java");
-		editResourceUtil.replaceClassContentByResource(
-				CDIWizardHelper.class.getResourceAsStream(resource), false);
+		editResourceUtil.replaceClassContentByResource(name+".java", resource, false);
 	}
 	
 	/**
@@ -86,7 +86,7 @@ public class CDIWizardHelper {
 	 * @param resource
 	 */
 	public void createCDIBeanComponentWithContent(String name,
-			String packageName, String necessaryParam, String resource) {			
+			String packageName, String necessaryParam, InputStream resource) {			
 		NewBeanCreationWizard bw = new NewBeanCreationWizard();
 		bw.open();
 		bw.setName(name);
@@ -95,8 +95,7 @@ public class CDIWizardHelper {
 
 		new TextEditor(name+".java");
 
-		editResourceUtil.replaceClassContentByResource(
-				CDIWizardHelper.class.getResourceAsStream(resource), false);
+		editResourceUtil.replaceClassContentByResource(name+".java", resource, false);
 	}
 	
 	
@@ -206,12 +205,15 @@ public class CDIWizardHelper {
 		case BEAN:
 			alternative = false;
 			regInBeansXml = false;
+			String scope = null;
 			if (necessaryParam != null) {
 				if (necessaryParam.equals("alternative+beansxml")) {
 					alternative = true;
 					regInBeansXml = true;
 				} else if (necessaryParam.equals("alternative")) {
 					alternative = true;
+				} else if(necessaryParam.equals("@ApplicationScoped")){
+					scope = necessaryParam;
 				}
 			}
 			NewBeanCreationWizard nb1 = new NewBeanCreationWizard();
@@ -224,6 +226,9 @@ public class CDIWizardHelper {
 			nb1.setGenerateComments(false);
 			nb1.setAlternative(alternative);
 			nb1.setRegisterInBeans(regInBeansXml);
+			if(scope != null){
+				nb1.setScope(scope);
+			}
 			nb1.finish();
 			break;
 		case INTERCEPTOR:

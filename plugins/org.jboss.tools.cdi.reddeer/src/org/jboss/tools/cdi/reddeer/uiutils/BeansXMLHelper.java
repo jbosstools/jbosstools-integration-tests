@@ -11,6 +11,8 @@
 
 package org.jboss.tools.cdi.reddeer.uiutils;
 
+import java.io.InputStream;
+
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
@@ -28,26 +30,9 @@ import org.jboss.tools.common.reddeer.label.IDELabel;
 
 public class BeansXMLHelper {
 
-	private static final String CLEAR_BEANS_XML = "/resources/beansXML/"
-			+ "beans.xml.cdi";
-	private static final String CLEAR_BEANS_XML_WITH_TAG = "/resources/beansXML/"
-			+ "beansXmlWithEmptyTag.xml.cdi";
-	private static final String BEANS_XML_WITH_INTERCEPTOR = "/resources/beansXML/"
-			+ "beansXmlWithInterceptor.xml.cdi";
-	private static final String BEANS_XML_WITH_DECORATOR = "/resources/beansXML/"
-			+ "beansXmlWithDecorator.xml.cdi";
-	private static final String BEANS_XML_WITH_STEREOTYPE = "/resources/beansXML/"
-			+ "beansXmlWithStereotype.xml.cdi";
-	private static final String BEANS_XML_WITH_ALTERNATIVE = "/resources/beansXML/"
-			+ "beansXmlWithAlternative.xml.cdi";
-	
 	private EditorResourceHelper editResourceUtil = new EditorResourceHelper();
+	/*
 	
-	/**
-	 * Methods creates beans.xml with no tags for entered project.
-	 * 
-	 * @param projectName
-	 */
 	public void createEmptyBeansXML(String projectName) {
 
 		createBeansXML(projectName);
@@ -55,122 +40,81 @@ public class BeansXMLHelper {
 
 	}
 
-	/**
-	 * Methods creates beans.xml with empty tag <> for entered project.
-	 * 
-	 * @param projectName
-	 */
 	public void createBeansXMLWithEmptyTag(String projectName) {
 
 		createBeansXML(projectName);
 		replaceBeansXMLContent(projectName, CLEAR_BEANS_XML_WITH_TAG);
 	}
-
-	/**
-	 * Methods creates beans.xml with interceptor tags in it for entered
-	 * project. Package and interceptor component name which should be showed in
-	 * tag is determined by parameters. If className is null, then Component
-	 * text will be removed
-	 * 
-	 * @param projectName
-	 * @param packageName
-	 * @param className
-	 */
+*/
 	public void createBeansXMLWithInterceptor(String projectName,
-			String packageName, String className) {
+			String packageName, String className, InputStream path) {
 
-		createBeansXML(projectName);
-		replaceBeansXMLContent(projectName, BEANS_XML_WITH_INTERCEPTOR);
+		createBeansXMLWithContent(projectName, path);
 		if (className == null || className.length() == 0) {
-			editResourceUtil.replaceInEditor("<class>Component</class>",
+			editResourceUtil.replaceInEditor("beans.xml","<class>Component</class>",
 					"<class></class>");
 		} else {
-			editResourceUtil.replaceInEditor("Component", packageName + "."
+			editResourceUtil.replaceInEditor("beans.xml","Component", packageName + "."
 					+ className);
 		}
 
 	}
 
-	/**
-	 * Methods creates beans.xml with decorator tags in it for entered project.
-	 * Package and decorator component name which should be showed in tag is
-	 * determined by parameters. If className is null, then Component text will
-	 * be removed
-	 * 
-	 * @param projectName
-	 * @param packageName
-	 * @param className
-	 */
 	public void createBeansXMLWithDecorator(String projectName,
-			String packageName, String className) {
+			String packageName, String className, InputStream path) {
 
-		createBeansXML(projectName);
-		replaceBeansXMLContent(projectName, BEANS_XML_WITH_DECORATOR);
+		createBeansXMLWithContent(projectName, path);
 		if (className == null || className.length() == 0) {
-			editResourceUtil.replaceInEditor("<class>Component</class>",
+			editResourceUtil.replaceInEditor("beans.xml","<class>Component</class>",
 					"<class></class>");
 		} else {
-			editResourceUtil.replaceInEditor("Component", packageName + "."
+			editResourceUtil.replaceInEditor("beans.xml","Component", packageName + "."
 					+ className);
 		}
 
 	}
 
-	/**
-	 * Methods creates beans.xml with stereotype tags in it for entered project.
-	 * Package and stereotype component name which should be showed in tag is
-	 * determined by parameters. If className is null, then Component text will
-	 * be removed
-	 * 
-	 * @param projectName
-	 * @param packageName
-	 * @param className
-	 */
-	public void createBeansXMLWithStereotype(String projectName,
-			String packageName, String className) {
 
-		createBeansXML(projectName);
-		replaceBeansXMLContent(projectName, BEANS_XML_WITH_STEREOTYPE);
+	public void createBeansXMLWithStereotype(String projectName,
+			String packageName, String className, InputStream path) {
+
+		createBeansXMLWithContent(projectName, path);
 		if (className == null || className.length() == 0) {
-			editResourceUtil.replaceInEditor(
+			editResourceUtil.replaceInEditor("beans.xml",
 					"<stereotype>Component</stereotype>",
 					"<stereotype></stereotype>");
 		} else {
-			editResourceUtil.replaceInEditor("Component", packageName + "."
+			editResourceUtil.replaceInEditor("beans.xml","Component", packageName + "."
 					+ className);
 		}
 
 	}
 
 	public void createBeansXMLWithAlternative(String projectName,
-			String packageName, String className) {
-		createBeansXMLWithAlternative(projectName, packageName, className, true);
+			String packageName, String className, InputStream path) {
+		createBeansXMLWithAlternative(projectName, packageName, className, true, path);
 	}
 	
-	/**
-	 * Methods creates beans.xml with alternative tags in it for entered
-	 * project. Package and alternative bean component name which should be
-	 * showed in tag is determined by parameters. If className is null, then
-	 * Component text will be removed
-	 * 
-	 * @param projectName
-	 * @param packageName
-	 * @param className
-	 */
-	public void createBeansXMLWithAlternative(String projectName,
-			String packageName, String className, boolean save) {
 
-		createBeansXML(projectName);
-		replaceBeansXMLContent(projectName, BEANS_XML_WITH_ALTERNATIVE);
+	public void createBeansXMLWithAlternative(String projectName,
+			String packageName, String className, boolean save, InputStream path) {
+
+		createBeansXMLWithContent(projectName, path);
 		if (className == null || className.length() == 0) {
-			editResourceUtil.replaceInEditor("<class>Component</class>",
+			editResourceUtil.replaceInEditor("beans.xml","<class>Component</class>",
 					"<class></class>");
 		} else {
-			editResourceUtil.replaceInEditor("Component", packageName + "."
+			editResourceUtil.replaceInEditor("beans.xml","Component", packageName + "."
 					+ className, save);
 		}
 	}
 
+	public void createBeansXMLWithContent(String projectName, InputStream path) {
+		createBeansXML(projectName);
+		replaceBeansXMLContent(projectName, path);
+	}
+	
+	
 	/**
 	 * If there is no beans.xml file in the project, then this method creates a
 	 * new one
@@ -203,7 +147,7 @@ public class BeansXMLHelper {
 	 * @param path
 	 */
 	
-	private void replaceBeansXMLContent(String projectName, String path) {
+	private void replaceBeansXMLContent(String projectName, InputStream path) {
 		Project p = new PackageExplorer().getProject(projectName);
 		
 		if (p.containsItem(CDIConstants.WEB_INF_BEANS_XML_PATH.split("/"))) {
@@ -213,8 +157,8 @@ public class BeansXMLHelper {
 		}
 		new DefaultEditor("beans.xml");
 		new DefaultCTabItem("Source").activate();
-		editResourceUtil.replaceClassContentByResource(
-				this.getClass().getResourceAsStream(path), false);
+		editResourceUtil.replaceClassContentByResource("beans.xml",
+				path, false);
 	}
 	
 

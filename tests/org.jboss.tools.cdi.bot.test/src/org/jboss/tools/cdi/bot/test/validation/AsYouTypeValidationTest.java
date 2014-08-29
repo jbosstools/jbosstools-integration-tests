@@ -22,7 +22,8 @@ import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.reddeer.workbench.exception.WorkbenchPartNotFound;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
-import org.jboss.tools.cdi.bot.test.annotations.CDIWizardType;
+import org.jboss.tools.cdi.bot.test.beansxml.BeansXMLValidationTest;
+import org.jboss.tools.cdi.reddeer.annotation.CDIWizardType;
 import org.jboss.tools.cdi.reddeer.condition.AsYouTypeMarkerExists;
 import org.junit.After;
 import org.junit.Test;
@@ -104,8 +105,9 @@ public class AsYouTypeValidationTest extends CDITestBase {
 		// 	Invoke as-you-type validation marker appearance without saving file
 		//=======================================================================
 		
-		beansHelper.createBeansXMLWithAlternative(getProjectName(), 
-				getPackageName(), "A1", false);
+		beansHelper.createBeansXMLWithAlternative(getProjectName(), getPackageName(), "A1", false,
+				this.getClass().getResourceAsStream(BeansXMLValidationTest.BEANS_XML_WITH_ALTERNATIVE));
+		
 		
 		new WaitUntil(new AsYouTypeMarkerExists(BEAN_IS_NOT_ALTERNATIVE));
 		

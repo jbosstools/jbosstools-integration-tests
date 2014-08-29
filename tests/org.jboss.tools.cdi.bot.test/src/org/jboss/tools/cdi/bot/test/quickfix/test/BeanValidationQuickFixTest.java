@@ -19,10 +19,10 @@ import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.C
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
-import org.jboss.tools.cdi.bot.test.annotations.CDIWizardType;
-import org.jboss.tools.cdi.bot.test.annotations.ValidationType;
-import org.jboss.tools.cdi.bot.test.quickfix.validators.BeanValidationProvider;
-import org.jboss.tools.cdi.bot.test.quickfix.validators.IValidationProvider;
+import org.jboss.tools.cdi.reddeer.annotation.CDIWizardType;
+import org.jboss.tools.cdi.reddeer.annotation.ValidationType;
+import org.jboss.tools.cdi.reddeer.validators.BeanValidationProvider;
+import org.jboss.tools.cdi.reddeer.validators.IValidationProvider;
 import org.junit.Test;
 
 /**
@@ -48,7 +48,7 @@ public class BeanValidationQuickFixTest extends CDITestBase {
 		String className = "ManagedBean";
 		
 		wizard.createCDIComponentWithContent(CDIWizardType.BEAN, className, 
-				getPackageName(), null, "/resources/quickfix/bean/SerializableBean.java.cdi");
+				getPackageName(), null, BeanValidationQuickFixTest.class.getResourceAsStream("/resources/quickfix/bean/SerializableBean.java.cdi"));
 		editResourceUtil.replaceInEditor(className+".java","BeanComponent", className);		
 		
 		quickFixHelper.checkQuickFix(ValidationType.SERIALIZABLE, getProjectName(), validationProvider());
@@ -62,7 +62,7 @@ public class BeanValidationQuickFixTest extends CDITestBase {
 		String className = "Bean1";
 		
 		wizard.createCDIComponentWithContent(CDIWizardType.BEAN, className, 
-				getPackageName(), null, "/resources/quickfix/bean/ConstructorWithParam.java.cdi");		
+				getPackageName(), null, BeanValidationQuickFixTest.class.getResourceAsStream("/resources/quickfix/bean/ConstructorWithParam.java.cdi"));		
 		editResourceUtil.replaceInEditor(className+".java","BeanComponent", className);		
 		
 		quickFixHelper.checkQuickFix(ValidationType.DISPOSES, getProjectName(), validationProvider());
@@ -85,7 +85,7 @@ public class BeanValidationQuickFixTest extends CDITestBase {
 		String className = "Bean2";
 		
 		wizard.createCDIComponentWithContent(CDIWizardType.BEAN, className, 
-				getPackageName(), null, "/resources/quickfix/bean/ProducerWithParam.java.cdi");
+				getPackageName(), null, BeanValidationQuickFixTest.class.getResourceAsStream("/resources/quickfix/bean/ProducerWithParam.java.cdi"));
 		
 		editResourceUtil.replaceInEditor(className+".java","BeanComponent", className);
 		
@@ -110,7 +110,7 @@ public class BeanValidationQuickFixTest extends CDITestBase {
 		String className = "Bean3";
 		
 		wizard.createCDIComponentWithContent(CDIWizardType.BEAN, className, 
-				getPackageName(), null, "/resources/quickfix/bean/BeanInjectDisposes.java.cdi");
+				getPackageName(), null, BeanValidationQuickFixTest.class.getResourceAsStream("/resources/quickfix/bean/BeanInjectDisposes.java.cdi"));
 		
 		editResourceUtil.replaceInEditor(className+".java","BeanComponent", className);
 		
@@ -125,7 +125,7 @@ public class BeanValidationQuickFixTest extends CDITestBase {
 		String className = "Bean4";
 		
 		wizard.createCDIComponentWithContent(CDIWizardType.BEAN, className, 
-				getPackageName(), null, "/resources/quickfix/bean/BeanInjectDisposes.java.cdi");
+				getPackageName(), null, BeanValidationQuickFixTest.class.getResourceAsStream("/resources/quickfix/bean/BeanInjectDisposes.java.cdi"));
 		
 		editResourceUtil.replaceInEditor(className+".java","import javax.enterprise.inject.Disposes;", 
 				"import javax.enterprise.event.Observes;");
@@ -143,7 +143,7 @@ public class BeanValidationQuickFixTest extends CDITestBase {
 		String className = "Bean5";
 		
 		wizard.createCDIComponentWithContent(CDIWizardType.BEAN, className, 
-				getPackageName(), null, "/resources/quickfix/bean/BeanInjectProducer.java.cdi");
+				getPackageName(), null, BeanValidationQuickFixTest.class.getResourceAsStream("/resources/quickfix/bean/BeanInjectProducer.java.cdi"));
 		
 		editResourceUtil.replaceInEditor(className+".java","BeanComponent", className);
 			
@@ -158,7 +158,7 @@ public class BeanValidationQuickFixTest extends CDITestBase {
 		String className = "Bean6";
 		
 		wizard.createCDIComponentWithContent(CDIWizardType.BEAN, className, 
-				getPackageName(), null, "/resources/quickfix/bean/ObserverWithDisposer.java.cdi");
+				getPackageName(), null, BeanValidationQuickFixTest.class.getResourceAsStream("/resources/quickfix/bean/ObserverWithDisposer.java.cdi"));
 		
 		editResourceUtil.replaceInEditor(className+".java","BeanComponent", className);
 			

@@ -12,6 +12,7 @@
 package org.jboss.tools.cdi.bot.test.quickfix.injection;
 
 import static org.junit.Assert.*;
+
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
@@ -19,9 +20,9 @@ import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
-import org.jboss.tools.cdi.bot.test.annotations.CDIWizardType;
-import org.jboss.tools.cdi.bot.test.annotations.ValidationType;
 import org.jboss.tools.cdi.bot.test.quickfix.base.EligibleInjectionQuickFixTestBase;
+import org.jboss.tools.cdi.reddeer.annotation.CDIWizardType;
+import org.jboss.tools.cdi.reddeer.annotation.ValidationType;
 import org.junit.After;
 import org.junit.Test;
 
@@ -56,13 +57,13 @@ public class ProblemEligibleInjectionTest extends EligibleInjectionQuickFixTestB
 				getPackageName(), null);
 		
 		wizard.createCDIComponentWithContent(CDIWizardType.BEAN, DOG,
-				getPackageName(), null, "/resources/quickfix/" +
-						"injection/Dog.java.cdi");
+				getPackageName(), null, ProblemEligibleInjectionTest.class.getResourceAsStream("/resources/quickfix/" +
+						"injection/Dog.java.cdi"));
 
 		
 		wizard.createCDIComponentWithContent(CDIWizardType.BEAN, BROKEN_FARM,
-				getPackageName(), null,  "/resources/quickfix/" +
-						"injection/BrokenFarm.java.cdi");
+				getPackageName(), null,  ProblemEligibleInjectionTest.class.getResourceAsStream("/resources/quickfix/" +
+						"injection/BrokenFarm.java.cdi"));
 
 		resolveMultipleBeans(ValidationType.MULTIPLE_BEAN_ELIGIBLE, DOG, QUALIFIER, QualifierOperation.ADD);
 
@@ -79,13 +80,13 @@ public class ProblemEligibleInjectionTest extends EligibleInjectionQuickFixTestB
 				getPackageName(), null);
 		
 		wizard.createCDIComponentWithContent(CDIWizardType.BEAN, DOG,
-				getPackageName(), null, "/resources/quickfix/" +
-						"injection/Dog.java.cdi");
+				getPackageName(), null, ProblemEligibleInjectionTest.class.getResourceAsStream("/resources/quickfix/" +
+						"injection/Dog.java.cdi"));
 
 		
 		wizard.createCDIComponentWithContent(CDIWizardType.BEAN, BROKEN_FARM,
-				getPackageName(), null,  "/resources/quickfix/" +
-						"injection/BrokenFarm.java.cdi");
+				getPackageName(), null,  ProblemEligibleInjectionTest.class.getResourceAsStream("/resources/quickfix/" +
+						"injection/BrokenFarm.java.cdi"));
 		
 		resolveMultipleBeans(ValidationType.MULTIPLE_BEAN_ELIGIBLE, DOG, QUALIFIER, QualifierOperation.ADD);
 
@@ -102,16 +103,16 @@ public class ProblemEligibleInjectionTest extends EligibleInjectionQuickFixTestB
 				getPackageName(), null);
 		
 		wizard.createCDIComponentWithContent(CDIWizardType.BEAN, ANIMAL,
-				getPackageName(), null,  "/resources/quickfix/" +
-						"injection/AnimalWithQualifier.java.cdi");
+				getPackageName(), null,  ProblemEligibleInjectionTest.class.getResourceAsStream("/resources/quickfix/" +
+						"injection/AnimalWithQualifier.java.cdi"));
 		
 		wizard.createCDIComponentWithContent(CDIWizardType.BEAN, DOG,
-				getPackageName(), null, "/resources/quickfix/" +
-						"injection/DogWithQualifier.java.cdi");
+				getPackageName(), null, ProblemEligibleInjectionTest.class.getResourceAsStream("/resources/quickfix/" +
+						"injection/DogWithQualifier.java.cdi"));
 
 		wizard.createCDIComponentWithContent(CDIWizardType.BEAN, BROKEN_FARM,
-				getPackageName(), null,  "/resources/quickfix/" +
-						"injection/BrokenFarmWithQualifier.java.cdi");
+				getPackageName(), null,  ProblemEligibleInjectionTest.class.getResourceAsStream("/resources/quickfix/" +
+						"injection/BrokenFarmWithQualifier.java.cdi"));
 
 		resolveMultipleBeans(ValidationType.MULTIPLE_BEAN_ELIGIBLE, DOG, QUALIFIER, QualifierOperation.REMOVE);
 		
@@ -131,13 +132,13 @@ public class ProblemEligibleInjectionTest extends EligibleInjectionQuickFixTestB
 				getPackageName(), null);
 		
 		wizard.createCDIComponentWithContent(CDIWizardType.BEAN, DOG,
-				getPackageName(), null, "/resources/quickfix/" +
-						"injection/Dog.java.cdi");
+				getPackageName(), null, ProblemEligibleInjectionTest.class.getResourceAsStream("/resources/quickfix/" +
+						"injection/Dog.java.cdi"));
 
 		
 		wizard.createCDIComponentWithContent(CDIWizardType.BEAN, BROKEN_FARM,
-				getPackageName(), null,  "/resources/quickfix/" +
-						"injection/BrokenFarmWithQualifier.java.cdi");
+				getPackageName(), null,  ProblemEligibleInjectionTest.class.getResourceAsStream("/resources/quickfix/" +
+						"injection/BrokenFarmWithQualifier.java.cdi"));
 
 		resolveMultipleBeans(ValidationType.NO_BEAN_ELIGIBLE, DOG, QUALIFIER, QualifierOperation.ADD);
 
@@ -154,17 +155,17 @@ public class ProblemEligibleInjectionTest extends EligibleInjectionQuickFixTestB
 				getPackageName(), null);
 		
 		wizard.createCDIComponentWithContent(CDIWizardType.BEAN, ANIMAL,
-				getPackageName(), null, "/resources/quickfix/" +
-						"injection/AnimalWithQualifier.java.cdi");
+				getPackageName(), null, ProblemEligibleInjectionTest.class.getResourceAsStream("/resources/quickfix/" +
+						"injection/AnimalWithQualifier.java.cdi"));
 		
 		wizard.createCDIComponentWithContent(CDIWizardType.BEAN, DOG,
-				getPackageName(), null, "/resources/quickfix/" +
-						"injection/DogWithQualifier.java.cdi");
+				getPackageName(), null, ProblemEligibleInjectionTest.class.getResourceAsStream("/resources/quickfix/" +
+						"injection/DogWithQualifier.java.cdi"));
 
 		
 		wizard.createCDIComponentWithContent(CDIWizardType.BEAN, BROKEN_FARM,
-				getPackageName(), null,  "/resources/quickfix/" +
-						"injection/BrokenFarm.java.cdi");
+				getPackageName(), null,  ProblemEligibleInjectionTest.class.getResourceAsStream("/resources/quickfix/" +
+						"injection/BrokenFarm.java.cdi"));
 
 		resolveMultipleBeans(ValidationType.NO_BEAN_ELIGIBLE, DOG, QUALIFIER, QualifierOperation.REMOVE);
 

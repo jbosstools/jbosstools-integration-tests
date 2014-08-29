@@ -16,7 +16,7 @@ import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
-import org.jboss.tools.cdi.bot.test.annotations.CDIWizardType;
+import org.jboss.tools.cdi.reddeer.annotation.CDIWizardType;
 import org.jboss.tools.cdi.reddeer.common.model.ui.editor.EditorPartWrapper;
 
 /**

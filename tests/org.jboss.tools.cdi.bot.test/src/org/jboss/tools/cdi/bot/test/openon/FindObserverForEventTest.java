@@ -30,7 +30,7 @@ import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.workbench.api.Editor;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
-import org.jboss.tools.cdi.bot.test.annotations.CDIWizardType;
+import org.jboss.tools.cdi.reddeer.annotation.CDIWizardType;
 import org.junit.Test;
 
 /**
@@ -89,16 +89,16 @@ public class FindObserverForEventTest extends OpenOnBase {
 		wizard.createCDIComponent(CDIWizardType.QUALIFIER, "Q2", getPackageName(), null);
 
 		wizard.createCDIComponentWithContent(CDIWizardType.BEAN, "MyBean1", 
-				getPackageName(), null, "/resources/events/MyBean1.java.cdi");		
+				getPackageName(), null, FindObserverForEventTest.class.getResourceAsStream("/resources/events/MyBean1.java.cdi"));		
 
 		wizard.createCDIComponentWithContent(CDIWizardType.BEAN, "MyBean2", 
-				getPackageName(), null, "/resources/events/MyBean2.java.cdi");
+				getPackageName(), null, FindObserverForEventTest.class.getResourceAsStream("/resources/events/MyBean2.java.cdi"));
 
 		wizard.createCDIComponentWithContent(CDIWizardType.BEAN, "EventsProducer", 
-				getPackageName(), null, "/resources/events/EventsProducer.java.cdi");
+				getPackageName(), null, FindObserverForEventTest.class.getResourceAsStream("/resources/events/EventsProducer.java.cdi"));
 		
 		wizard.createCDIComponentWithContent(CDIWizardType.BEAN, "ObserverBean", 
-				getPackageName(), null, "/resources/events/ObserverBean.java.cdi");
+				getPackageName(), null, FindObserverForEventTest.class.getResourceAsStream("/resources/events/ObserverBean.java.cdi"));
 	}
 
 	private void checkEventsAndObserver(String name, String className,

@@ -22,10 +22,10 @@ import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
-import org.jboss.tools.cdi.bot.test.annotations.CDIWizardType;
-import org.jboss.tools.cdi.bot.test.annotations.ValidationType;
-import org.jboss.tools.cdi.bot.test.quickfix.validators.IValidationProvider;
-import org.jboss.tools.cdi.bot.test.quickfix.validators.QualifierValidationProvider;
+import org.jboss.tools.cdi.reddeer.annotation.CDIWizardType;
+import org.jboss.tools.cdi.reddeer.annotation.ValidationType;
+import org.jboss.tools.cdi.reddeer.validators.IValidationProvider;
+import org.jboss.tools.cdi.reddeer.validators.QualifierValidationProvider;
 import org.junit.Test;
 
 /**
@@ -96,8 +96,8 @@ public class QualifierValidationQuickFixTest extends CDITestBase {
 		new TextEditor("AAnnotation.java");
 		
 		wizard.createCDIComponentWithContent(CDIWizardType.QUALIFIER, className, 
-				getPackageName(), null, "/resources/quickfix/" +
-						"qualifier/QualifierWithAnnotation.java.cdi");
+				getPackageName(), null, QualifierValidationQuickFixTest.class.getResourceAsStream("/resources/quickfix/" +
+						"qualifier/QualifierWithAnnotation.java.cdi"));
 	
 		editResourceUtil.replaceInEditor(className+".java","QualifierComponent", className);
 	

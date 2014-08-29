@@ -27,8 +27,8 @@ import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.workbench.api.Editor;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
-import org.jboss.tools.cdi.bot.test.annotations.CDIWizardType;
 import org.jboss.tools.cdi.reddeer.CDIConstants;
+import org.jboss.tools.cdi.reddeer.annotation.CDIWizardType;
 import org.jboss.tools.common.reddeer.label.IDELabel;
 import org.junit.Test;
 
@@ -57,8 +57,8 @@ public class BeansXMLCompletionTest extends CDITestBase {
 
 	@Test
 	public void testPossibleCompletionInBeansXML() {
-		
-		beansHelper.createBeansXMLWithEmptyTag(getProjectName());
+		beansHelper.createBeansXMLWithContent(getProjectName(), 
+				this.getClass().getResourceAsStream(BeansXMLValidationTest.CLEAR_BEANS_XML_WITH_TAG));
 		LOGGER.info("Clear beans.xml was created");
 				
 		checkAutoCompletion(3, 0, "<>", IDELabel.WebProjectsTree.BEANS_XML, BEANS_XML_TAGS);				
@@ -69,8 +69,9 @@ public class BeansXMLCompletionTest extends CDITestBase {
 
 		wizard.createCDIComponents(CDIWizardType.INTERCEPTOR, getPackageName(), 
 				INTERCEPTOR_NAMES, null, false);
-				
-		beansHelper.createBeansXMLWithInterceptor(getProjectName(), getPackageName(), null);
+		
+		beansHelper.createBeansXMLWithInterceptor(getProjectName(), getPackageName(), null,
+				this.getClass().getResourceAsStream(BeansXMLValidationTest.BEANS_XML_WITH_INTERCEPTOR));
 		LOGGER.info("Beans.xml with interceptors tag was created");
 				
 		List<String> proposalList = editResourceUtil.getProposalList(
@@ -86,7 +87,8 @@ public class BeansXMLCompletionTest extends CDITestBase {
 		wizard.createCDIComponents(CDIWizardType.DECORATOR, getPackageName(), 
 				DECORATORS_NAMES, "java.util.Set", false);
 				
-		beansHelper.createBeansXMLWithDecorator(getProjectName(), getPackageName(), null);
+		beansHelper.createBeansXMLWithDecorator(getProjectName(), getPackageName(), null,
+				this.getClass().getResourceAsStream(BeansXMLValidationTest.BEANS_XML_WITH_DECORATOR));
 		LOGGER.info("Beans.xml with decorators tag was created");
 			
 		List<String> proposalList = editResourceUtil.getProposalList(IDELabel.WebProjectsTree.BEANS_XML, 
@@ -103,7 +105,8 @@ public class BeansXMLCompletionTest extends CDITestBase {
 		wizard.createCDIComponents(CDIWizardType.STEREOTYPE, getPackageName(), 
 				STEREOTYPES_NAMES, "alternative", false);
 				
-		beansHelper.createBeansXMLWithStereotype(getProjectName(), getPackageName(), null);
+		beansHelper.createBeansXMLWithStereotype(getProjectName(), getPackageName(), null,
+				this.getClass().getResourceAsStream(BeansXMLValidationTest.BEANS_XML_WITH_STEREOTYPE));
 		LOGGER.info("Beans.xml with stereotype tag was created");
 			
 		List<String> proposalList = editResourceUtil.getProposalList(IDELabel.WebProjectsTree.BEANS_XML, 
@@ -120,7 +123,8 @@ public class BeansXMLCompletionTest extends CDITestBase {
 		wizard.createCDIComponents(CDIWizardType.BEAN, getPackageName(), 
 				ALTERNATIVES_NAMES, "alternative", false);
 				
-		beansHelper.createBeansXMLWithAlternative(getProjectName(), getPackageName(), null);
+		beansHelper.createBeansXMLWithAlternative(getProjectName(), getPackageName(), null,
+				this.getClass().getResourceAsStream(BeansXMLValidationTest.BEANS_XML_WITH_ALTERNATIVE));
 		LOGGER.info("Beans.xml with alternative tag was created");
 		
 		List<String> proposalList = editResourceUtil.getProposalList(IDELabel.WebProjectsTree.BEANS_XML, 
@@ -147,7 +151,8 @@ public class BeansXMLCompletionTest extends CDITestBase {
 		wizard.createCDIComponent(CDIWizardType.SCOPE, components[4], 
 				getPackageName(), null);
 		
-		beansHelper.createBeansXMLWithEmptyTag(getProjectName());
+		beansHelper.createBeansXMLWithContent(getProjectName(),
+				this.getClass().getResourceAsStream(BeansXMLValidationTest.CLEAR_BEANS_XML_WITH_TAG));
 		LOGGER.info("Clear beans.xml with empty tag was created");
 		
 		List<String> proposalList = editResourceUtil.getProposalList(

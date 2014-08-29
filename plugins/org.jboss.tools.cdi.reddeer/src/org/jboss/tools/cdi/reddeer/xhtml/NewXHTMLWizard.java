@@ -1,6 +1,7 @@
 package org.jboss.tools.cdi.reddeer.xhtml;
 
-import org.jboss.reddeer.eclipse.jface.wizard.NewWizardDialog;
+import org.jboss.reddeer.jface.wizard.NewWizardDialog;
+
 
 public class NewXHTMLWizard extends NewWizardDialog{
 	

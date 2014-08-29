@@ -22,10 +22,10 @@ import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
-import org.jboss.tools.cdi.bot.test.annotations.CDIWizardType;
-import org.jboss.tools.cdi.bot.test.annotations.ValidationType;
-import org.jboss.tools.cdi.bot.test.quickfix.validators.IValidationProvider;
-import org.jboss.tools.cdi.bot.test.quickfix.validators.InterceptorBindingValidationProvider;
+import org.jboss.tools.cdi.reddeer.annotation.CDIWizardType;
+import org.jboss.tools.cdi.reddeer.annotation.ValidationType;
+import org.jboss.tools.cdi.reddeer.validators.IValidationProvider;
+import org.jboss.tools.cdi.reddeer.validators.InterceptorBindingValidationProvider;
 import org.junit.Test;
 
 /**
@@ -59,8 +59,8 @@ public class IBindingValidationQuickFixTest extends CDITestBase {
 		new TextEditor("AAnnotation.java");
 		
 		wizard.createCDIComponentWithContent(CDIWizardType.INTERCEPTOR_BINDING, 
-				className, getPackageName(), null, "/resources/quickfix/interceptorBinding/" +
-						"IBindingWithAnnotation.java.cdi");
+				className, getPackageName(), null, IBindingValidationQuickFixTest.class.getResourceAsStream("/resources/quickfix/interceptorBinding/" +
+						"IBindingWithAnnotation.java.cdi"));
 
 		editResourceUtil.replaceInEditor(className+".java","IBindingComponent", className);
 		

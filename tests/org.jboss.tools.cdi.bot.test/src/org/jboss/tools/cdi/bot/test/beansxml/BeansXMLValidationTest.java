@@ -26,8 +26,8 @@ import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.cdi.reddeer.CDIConstants;
-import org.jboss.tools.cdi.bot.test.annotations.CDIWizardType;
-import org.jboss.tools.cdi.bot.test.annotations.ValidationType;
+import org.jboss.tools.cdi.reddeer.annotation.CDIWizardType;
+import org.jboss.tools.cdi.reddeer.annotation.ValidationType;
 import org.jboss.tools.cdi.bot.test.condition.BeanValidationErrorIsEmpty;
 import org.jboss.tools.cdi.bot.test.quickfix.base.BeansXMLQuickFixTestBase;
 import org.junit.BeforeClass;
@@ -43,6 +43,20 @@ import org.junit.Test;
 @OpenPerspective(JavaEEPerspective.class)
 @CleanWorkspace
 public class BeansXMLValidationTest extends BeansXMLQuickFixTestBase {
+	
+	public static final String CLEAR_BEANS_XML = "/resources/beansXML/"
+			+ "beans.xml.cdi";
+	public static final String CLEAR_BEANS_XML_WITH_TAG = "/resources/beansXML/"
+			+ "beansXmlWithEmptyTag.xml.cdi";
+	public static final String BEANS_XML_WITH_INTERCEPTOR = "/resources/beansXML/"
+			+ "beansXmlWithInterceptor.xml.cdi";
+	public static final String BEANS_XML_WITH_DECORATOR = "/resources/beansXML/"
+			+ "beansXmlWithDecorator.xml.cdi";
+	public static final String BEANS_XML_WITH_STEREOTYPE = "/resources/beansXML/"
+			+ "beansXmlWithStereotype.xml.cdi";
+	public static final String BEANS_XML_WITH_ALTERNATIVE = "/resources/beansXML/"
+			+ "beansXmlWithAlternative.xml.cdi";
+	
 
 	private static final String someBean = "Bean1";
 	private static final String nonExistingPackage = "somePackage";
@@ -56,7 +70,8 @@ public class BeansXMLValidationTest extends BeansXMLQuickFixTestBase {
 	@Test
 	public void testEmptyBeansXMLValidation() {
 		
-		beansHelper.createEmptyBeansXML(getProjectName());	
+		beansHelper.createBeansXMLWithContent(getProjectName(), 
+				this.getClass().getResourceAsStream(CLEAR_BEANS_XML));
 		
 		new WaitUntil(new BeanValidationErrorIsEmpty(getProjectName()),TimePeriod.LONG);
 		
@@ -76,15 +91,19 @@ public class BeansXMLValidationTest extends BeansXMLQuickFixTestBase {
 		
 		wizard.createCDIComponent(CDIWizardType.INTERCEPTOR, className, getPackageName(), null);
 
-		beansHelper.createBeansXMLWithInterceptor(getProjectName(), getPackageName(), className);
+		beansHelper.createBeansXMLWithInterceptor(getProjectName(), getPackageName(), className,
+				this.getClass().getResourceAsStream(BEANS_XML_WITH_INTERCEPTOR));
+		
 		new WaitUntil(new BeanValidationErrorIsEmpty(getProjectName()),TimePeriod.LONG);
 		
-		beansHelper.createBeansXMLWithInterceptor(getProjectName(), nonExistingPackage, className);
+		beansHelper.createBeansXMLWithInterceptor(getProjectName(), nonExistingPackage, className,
+				this.getClass().getResourceAsStream(BEANS_XML_WITH_INTERCEPTOR));
 		new WaitWhile(new BeanValidationErrorIsEmpty(getProjectName()),TimePeriod.LONG);
 		assertNotNull(quickFixHelper.getProblem(ValidationType.NO_CLASS, 
 				getProjectName(), getValidationProvider()));
 		
-		beansHelper.createBeansXMLWithInterceptor(getProjectName(), getPackageName(), someBean);
+		beansHelper.createBeansXMLWithInterceptor(getProjectName(), getPackageName(), someBean,
+				this.getClass().getResourceAsStream(BEANS_XML_WITH_INTERCEPTOR));
 		new WaitWhile(new BeanValidationErrorIsEmpty(getProjectName()),TimePeriod.LONG);
 		assertNotNull(quickFixHelper.getProblem(ValidationType.NO_INTERCEPTOR, 
 				getProjectName(), getValidationProvider()));
@@ -105,15 +124,19 @@ public class BeansXMLValidationTest extends BeansXMLQuickFixTestBase {
 		
 		wizard.createCDIComponent(CDIWizardType.DECORATOR, className, getPackageName(), "java.util.Set");
 
-		beansHelper.createBeansXMLWithDecorator(getProjectName(), getPackageName(), className);
+		beansHelper.createBeansXMLWithDecorator(getProjectName(), getPackageName(), className,
+				this.getClass().getResourceAsStream(BEANS_XML_WITH_DECORATOR));
 		new WaitUntil(new BeanValidationErrorIsEmpty(getProjectName()),TimePeriod.LONG);
 		
-		beansHelper.createBeansXMLWithDecorator(getProjectName(), nonExistingPackage, className);
+		
+		beansHelper.createBeansXMLWithDecorator(getProjectName(), nonExistingPackage, className,
+				this.getClass().getResourceAsStream(BEANS_XML_WITH_DECORATOR));
 		new WaitWhile(new BeanValidationErrorIsEmpty(getProjectName()),TimePeriod.LONG);
 		assertNotNull(quickFixHelper.getProblem(ValidationType.NO_CLASS, 
 				getProjectName(), getValidationProvider()));
 		
-		beansHelper.createBeansXMLWithDecorator(getProjectName(), getPackageName(), someBean);
+		beansHelper.createBeansXMLWithDecorator(getProjectName(), getPackageName(), someBean,
+				this.getClass().getResourceAsStream(BEANS_XML_WITH_DECORATOR));
 		new WaitWhile(new BeanValidationErrorIsEmpty(getProjectName()),TimePeriod.LONG);
 		assertNotNull(quickFixHelper.getProblem(ValidationType.NO_DECORATOR, 
 				getProjectName(), getValidationProvider()));
@@ -133,15 +156,20 @@ public class BeansXMLValidationTest extends BeansXMLQuickFixTestBase {
 		
 		wizard.createCDIComponent(CDIWizardType.BEAN, className, getPackageName(), "alternative");
 
-		beansHelper.createBeansXMLWithAlternative(getProjectName(), getPackageName(), className);
+		
+		beansHelper.createBeansXMLWithAlternative(getProjectName(), getPackageName(), className,
+				this.getClass().getResourceAsStream(BEANS_XML_WITH_ALTERNATIVE));
 		new WaitUntil(new BeanValidationErrorIsEmpty(getProjectName()),TimePeriod.LONG);
 		
-		beansHelper.createBeansXMLWithAlternative(getProjectName(), nonExistingPackage, className);
+		
+		beansHelper.createBeansXMLWithAlternative(getProjectName(), nonExistingPackage, className,
+				this.getClass().getResourceAsStream(BEANS_XML_WITH_ALTERNATIVE));
 		new WaitWhile(new BeanValidationErrorIsEmpty(getProjectName()),TimePeriod.LONG);
 		assertNotNull(quickFixHelper.getProblem(ValidationType.NO_CLASS, 
 				getProjectName(), getValidationProvider()));
 		
-		beansHelper.createBeansXMLWithAlternative(getProjectName(), getPackageName(), someBean);
+		beansHelper.createBeansXMLWithAlternative(getProjectName(), getPackageName(), someBean,
+				this.getClass().getResourceAsStream(BEANS_XML_WITH_ALTERNATIVE));
 		new WaitWhile(new BeanValidationErrorIsEmpty(getProjectName()),TimePeriod.LONG);
 		assertNotNull(quickFixHelper.getProblem(ValidationType.NO_ALTERNATIVE, 
 				getProjectName(), getValidationProvider()));

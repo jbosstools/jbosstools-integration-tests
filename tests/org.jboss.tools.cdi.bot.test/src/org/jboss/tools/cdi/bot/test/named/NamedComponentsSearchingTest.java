@@ -23,16 +23,14 @@ import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBo
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
-import org.jboss.reddeer.swt.condition.TableContainsItem;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
-import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
-import org.jboss.tools.cdi.bot.test.annotations.CDIWizardType;
+import org.jboss.tools.cdi.reddeer.annotation.CDIWizardType;
 import org.jboss.tools.cdi.reddeer.cdi.ui.NewBeanCreationWizard;
 import org.jboss.tools.cdi.reddeer.cdi.ui.NewStereotypeCreationWizard;
 import org.jboss.tools.cdi.reddeer.cdi.ui.wizard.OpenCDINamedBeanDialog;
@@ -254,9 +252,8 @@ public class NamedComponentsSearchingTest extends CDITestBase {
 		nb.setRegisterInBeans(false);
 		nb.finish();
 		
-		
 		wizard.createCDIComponentWithContent(CDIWizardType.BEAN, beanName, getPackageName(), 
-				null, BEAN_STEREOTYPE_PATH);
+				null, NamedComponentsSearchingTest.class.getResourceAsStream(BEAN_STEREOTYPE_PATH));
 		
 		namedDialog = openSearchNamedDialog();
 		namedDialog.setNamedPrefix(beanName);
@@ -284,7 +281,7 @@ public class NamedComponentsSearchingTest extends CDITestBase {
 		nb.finish();
 		
 		wizard.createCDIComponentWithContent(CDIWizardType.BEAN, beanName, getPackageName(), 
-				null, BEAN_STEREOTYPE_NAMED_PATH);
+				null, NamedComponentsSearchingTest.class.getResourceAsStream(BEAN_STEREOTYPE_NAMED_PATH));
 		
 		namedDialog = openSearchNamedDialog();		
 		namedDialog.setNamedPrefix(beanName);
@@ -314,7 +311,7 @@ public class NamedComponentsSearchingTest extends CDITestBase {
 		nb.finish();
 		
 		wizard.createCDIComponentWithContent(CDIWizardType.BEAN, beanName, getPackageName(), 
-				null, BEAN_STEREOTYPE_NAMED_PATH);
+				null, NamedComponentsSearchingTest.class.getResourceAsStream(BEAN_STEREOTYPE_NAMED_PATH));
 		
 		namedDialog = openSearchNamedDialog();
 		namedDialog.setNamedPrefix(beanName);

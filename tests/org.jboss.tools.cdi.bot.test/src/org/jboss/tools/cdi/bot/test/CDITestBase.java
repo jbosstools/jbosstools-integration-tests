@@ -15,32 +15,23 @@ import java.io.File;
 import java.io.IOException;
 import java.util.logging.Logger;
 
-import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
-import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
-import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
-import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.lookup.ShellLookup;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
-import org.jboss.tools.cdi.bot.test.uiutils.BeansXMLHelper;
-import org.jboss.tools.cdi.bot.test.uiutils.CDIProjectHelper;
-import org.jboss.tools.cdi.bot.test.uiutils.CDIWizardHelper;
-import org.jboss.tools.cdi.bot.test.uiutils.EditorResourceHelper;
-import org.jboss.tools.cdi.bot.test.uiutils.QuickFixHelper;
+import org.jboss.tools.cdi.reddeer.uiutils.BeansXMLHelper;
+import org.jboss.tools.cdi.reddeer.uiutils.CDIProjectHelper;
+import org.jboss.tools.cdi.reddeer.uiutils.EditorResourceHelper;
+import org.jboss.tools.cdi.reddeer.uiutils.QuickFixHelper;
+import org.jboss.tools.cdi.reddeer.uiutils.CDIWizardHelper;
 import org.jboss.tools.common.reddeer.preferences.SourceLookupPreferencePage;
 import org.junit.After;
 import org.junit.Before;
 
-@CleanWorkspace
-@OpenPerspective(JavaEEPerspective.class)
-@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.AS7_1)
 public class CDITestBase{
 	
 	protected static final String PROJECT_NAME = "CDIProject";

@@ -15,19 +15,18 @@ import static org.junit.Assert.assertNotNull;
 
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
-import org.jboss.tools.cdi.bot.test.annotations.ValidationType;
 import org.jboss.tools.cdi.bot.test.condition.SpecifyBeanWizardHasQualifier;
 import org.jboss.tools.cdi.bot.test.quickfix.injection.QualifierOperation;
-import org.jboss.tools.cdi.bot.test.quickfix.validators.BeanValidationProvider;
-import org.jboss.tools.cdi.bot.test.quickfix.validators.IValidationProvider;
+import org.jboss.tools.cdi.reddeer.annotation.ValidationType;
 import org.jboss.tools.cdi.reddeer.cdi.ui.NewQualifierCreationWizard;
 import org.jboss.tools.cdi.reddeer.cdi.ui.wizard.QuickFixWizard;
 import org.jboss.tools.cdi.reddeer.cdi.ui.wizard.SpecifyBeanWizard;
 import org.jboss.tools.cdi.reddeer.condition.QualifierIsFound;
+import org.jboss.tools.cdi.reddeer.validators.BeanValidationProvider;
+import org.jboss.tools.cdi.reddeer.validators.IValidationProvider;
 
 public class EligibleInjectionQuickFixTestBase extends CDITestBase {
 	

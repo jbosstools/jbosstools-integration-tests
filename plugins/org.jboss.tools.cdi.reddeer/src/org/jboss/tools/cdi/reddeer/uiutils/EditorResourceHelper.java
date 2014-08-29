@@ -24,7 +24,6 @@ import java.util.Scanner;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.jface.text.contentassist.ContentAssistant;
@@ -50,8 +49,8 @@ import org.jboss.tools.common.reddeer.label.IDELabel;
 public class EditorResourceHelper {
 	
 	
-	public void replaceClassContentByResource(InputStream resource, boolean closeEdit) {
-		replaceClassContentByResource(resource, true, closeEdit);
+	public void replaceClassContentByResource(String editorName, InputStream resource, boolean closeEdit) {
+		replaceClassContentByResource(editorName, resource, true, closeEdit);
 	}
 	
 	/**
@@ -62,17 +61,17 @@ public class EditorResourceHelper {
 	 * @param resource
 	 * @param closeEdit
 	 */
-	public void replaceClassContentByResource(InputStream resource, boolean save, boolean closeEdit) {
+	public void replaceClassContentByResource(String editorName, InputStream resource, boolean save, boolean closeEdit) {
 		String code = readStream(resource);
-		DefaultEditor e = new DefaultEditor();
+		DefaultEditor e = new DefaultEditor(editorName);
 		new DefaultStyledText().setText("");
 		new DefaultStyledText().setText(code);
 		if (save) e.save();
 		if (closeEdit) e.close();
 	}
 	
-	public void replaceClassContentByResource(InputStream resource, boolean closeEdit, String... param) {
-		replaceClassContentByResource(resource, true, closeEdit, param);
+	public void replaceClassContentByResource(String editorName, InputStream resource, boolean closeEdit, String... param) {
+		replaceClassContentByResource(editorName, resource, true, closeEdit, param);
 	}
 	
 	/**
@@ -82,11 +81,11 @@ public class EditorResourceHelper {
 	 * @param closeEdit
 	 * @param param
 	 */
-	public void replaceClassContentByResource(InputStream resource, boolean save, 
+	public void replaceClassContentByResource(String editorName, InputStream resource, boolean save, 
 			boolean closeEdit, String... param) {
 		String s = readStream(resource);
 		String code = MessageFormat.format(s, (Object[])param);
-		TextEditor e = new TextEditor();
+		TextEditor e = new TextEditor(editorName);
 		e.setText(code);
 		if (save) e.save();
 		if (closeEdit) e.close();
@@ -122,7 +121,7 @@ public class EditorResourceHelper {
 			}
 		}
 	}
-
+	
 	public void replaceInEditor(String target, String replacement) {
 		replaceInEditor(target, replacement, true);
 	}
@@ -154,6 +153,38 @@ public class EditorResourceHelper {
 			if (save) textEditor.save();
 		}
 	}
+
+	public void replaceInEditor(String editorName, String target, String replacement) {
+		replaceInEditor(editorName, target, replacement, true);
+	}
+	
+	/**
+	 * Method replaces string "target" by string "replacement.
+	 * Prerequisite: editor has been set
+	 * @param target
+	 * @param replacement
+	 */
+	public void replaceInEditor(String editorName, String target, String replacement, boolean save) {
+		
+		try{
+			TextEditor editor = new TextEditor(editorName);
+			editor.setText(editor.getText().replace(
+				target + (replacement.equals("") ? System
+								.getProperty("line.separator") : ""),
+				replacement));
+			if (save) editor.save();
+		} catch (WorkbenchPartNotFound ex){
+			Editor textEditor = new DefaultEditor(editorName);
+			DefaultStyledText dt = new DefaultStyledText();
+			String text = dt.getText();
+			dt.setText("");
+			dt.setText(text.replace(
+					target + (replacement.equals("") ? System
+									.getProperty("line.separator") : ""),
+					replacement));		
+			if (save) textEditor.save();
+		}
+	}
 	
 	/**
 	 * Method inserts the string "insertText" on location ("line", "column")
@@ -174,7 +205,6 @@ public class EditorResourceHelper {
 		Editor editor = new DefaultEditor(editorTitle);
 		DefaultStyledText dt = new DefaultStyledText();
 		dt.selectPosition(dt.getPositionOfText(textToSelect));
-		AbstractWait.sleep(TimePeriod.SHORT);
 		ContentAssistant cs = editor.openContentAssistant();
 		List<String> proposals = cs.getProposals();
 		cs.close();
@@ -192,36 +222,6 @@ public class EditorResourceHelper {
 		return proposals;
 	}
 	
-	
-	public void moveFileInExplorerBase(String projectName, String[] sourceFile, String[] destFolder) {
-		
-		PackageExplorer pe = new PackageExplorer();
-		pe.open();
-		pe.getProject(projectName).getProjectItem(sourceFile).select();
-		new ShellMenu(IDELabel.Menu.FILE,IDELabel.Menu.MOVE).select();
-		new DefaultShell(IDELabel.Shell.MOVE);
-		new DefaultTreeItem(destFolder).select();
-		new OkButton().click();
-		new WaitWhile(new ShellWithTextIsAvailable(IDELabel.Shell.MOVE));
-		new WaitWhile(new JobIsRunning());
-	}
-	
-	
-	public void renameFileInExplorerBase(String project, String newFileName, String... oldFilePath) {
-		PackageExplorer ex = new PackageExplorer();
-		ex.open();
-		ex.getProject(project).getProjectItem(oldFilePath).select();
-		
-		new ShellMenu(IDELabel.Menu.FILE, IDELabel.Menu.RENAME_WITH_DOTS).select();
-		new DefaultShell(IDELabel.Shell.RENAME_RESOURCE);
-		
-		new LabeledText("New name:").setText(newFileName);	
-		
-		new PushButton(IDELabel.Button.OK).click();		
-		new WaitWhile(new ShellWithTextIsAvailable(IDELabel.Shell.RENAME_RESOURCE));
-		new WaitWhile(new JobIsRunning());
-	}
-	
 	/**
 	 * Method deletes whole package with given name for entered project
 	 * @param projectName
@@ -230,14 +230,10 @@ public class EditorResourceHelper {
 	public void deletePackage(String projectName, String packageName) {
 		PackageExplorer pe = new PackageExplorer();
 		pe.open();
-		Project p = pe.getProject(projectName);
+		pe.getProject(projectName).select();
 		new ContextMenu("Refresh").select();
 		new WaitWhile(new JobIsRunning());
-		if (p.containsItem(projectName, "Java Resources", "JavaSource")) {	
-			deleteInProjectExplorer(projectName, "Java Resources", "JavaSource",packageName);
-		}else {
-			deleteInProjectExplorer(projectName, "Java Resources", "src",packageName);
-		}		
+		deleteInProjectExplorer(projectName, "src",packageName);	
 	}
 	
 	/**
@@ -256,7 +252,7 @@ public class EditorResourceHelper {
 	 * @param path
 	 */
 	public void deleteInProjectExplorer(String projectName, String... path) {
-		ProjectExplorer pe = new ProjectExplorer();
+		PackageExplorer pe = new PackageExplorer();
 		Project p = pe.getProject(projectName);
 		p.select();
 		//refresh project due to bug in eclipse - new packages are shown outside of src
@@ -273,6 +269,34 @@ public class EditorResourceHelper {
 		// we don't care about performance in tests too much, so this should be
 		// OK
 		return new Scanner(inputStream).useDelimiter("\\A").next();
+	}
+	
+	public void renameFileInExplorerBase(String project, String newFileName, String... oldFilePath) {
+		PackageExplorer ex = new PackageExplorer();
+		ex.open();
+		ex.getProject(project).getProjectItem(oldFilePath).select();
+		
+		new ShellMenu(IDELabel.Menu.FILE, IDELabel.Menu.RENAME_WITH_DOTS).select();
+		new DefaultShell(IDELabel.Shell.RENAME_RESOURCE);
+		
+		new LabeledText("New name:").setText(newFileName);	
+		
+		new PushButton(IDELabel.Button.OK).click();		
+		new WaitWhile(new ShellWithTextIsAvailable(IDELabel.Shell.RENAME_RESOURCE));
+		new WaitWhile(new JobIsRunning());
+	}
+	
+	public void moveFileInExplorerBase(String projectName, String[] sourceFile, String[] destFolder) {
+		
+		PackageExplorer pe = new PackageExplorer();
+		pe.open();
+		pe.getProject(projectName).getProjectItem(sourceFile).select();
+		new ShellMenu(IDELabel.Menu.FILE,IDELabel.Menu.MOVE).select();
+		new DefaultShell(IDELabel.Shell.MOVE);
+		new DefaultTreeItem(destFolder).select();
+		new OkButton().click();
+		new WaitWhile(new ShellWithTextIsAvailable(IDELabel.Shell.MOVE));
+		new WaitWhile(new JobIsRunning());
 	}
 
 }
