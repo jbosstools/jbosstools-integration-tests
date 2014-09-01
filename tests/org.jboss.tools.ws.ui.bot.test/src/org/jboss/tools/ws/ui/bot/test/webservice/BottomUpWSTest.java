@@ -99,11 +99,11 @@ public class BottomUpWSTest extends WebServiceTestBase {
 		switch (getLevel()) {
 		case DEVELOP:
 		case ASSEMBLE:
-			deploymentHelper.runProject(getEarProjectName());
+			serversViewHelper.runProjectOnServer(getEarProjectName());
 		default:
 			break;
 		}
 		deploymentHelper.assertServiceDeployed(deploymentHelper.getWSDLUrl(getWsProjectName(), getWsName()), 10000);
-		servers.removeAllProjectsFromServer(configuredState.getServer().name);
+		serversViewHelper.removeAllProjectsFromServer(configuredState.getServer().name);
 	}
 }

@@ -11,27 +11,35 @@
 
 package org.jboss.tools.ws.ui.bot.test.utils;
 
+import static org.junit.Assert.assertThat;
+
+import org.hamcrest.core.Is;
 import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardDialog;
 import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardPage;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
-import org.jboss.reddeer.swt.api.StyledText;
+import org.jboss.reddeer.swt.api.Shell;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
+import org.jboss.reddeer.swt.impl.menu.ShellMenu;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.jboss.tools.common.reddeer.label.IDELabel;
 import org.jboss.tools.ws.reddeer.ui.wizards.CreateNewFileWizardPage;
 import org.jboss.tools.ws.reddeer.ui.wizards.jst.j2ee.EARProjectWizard;
 import org.jboss.tools.ws.reddeer.ui.wizards.jst.servlet.DynamicWebProjectWizard;
 import org.jboss.tools.ws.reddeer.ui.wizards.wst.NewWsdlFileWizard;
+import org.jboss.tools.ws.ui.bot.test.uiutils.PropertiesDialog;
+import org.jboss.tools.ws.ui.bot.test.uiutils.TargetedRuntimesPropertiesPage;
 
 /**
  * @author jjankovi
@@ -161,5 +169,44 @@ public class ProjectHelper {
 			projectItem.expand();
 		} while (!projectItem.isExpanded());
 	}
-	
+
+	/**
+	 * Add configured runtime into project as targeted runtime
+	 * @param project
+	 */
+	public void addConfiguredRuntimeIntoProject(String projectName, 
+			String configuredRuntime) {
+		PropertiesDialog dialog = new PropertiesDialog();
+		dialog.open(projectName);
+
+		TargetedRuntimesPropertiesPage page = new TargetedRuntimesPropertiesPage();
+		page.select();
+		page.setSelectAllRuntimes(true);
+		page.checkAllRuntimes(false);
+		page.checkRuntime(configuredRuntime, true);
+
+		dialog.finish();
+	}
+
+	/**
+	 * Opens properties dialog of project with the <var>projectName</var>
+	 * 
+	 * @param projectName
+	 */
+	public Shell openProjectProperties(String projectName) {
+		PackageExplorer packageExplorer = new PackageExplorer();
+		packageExplorer.open();
+		Project project = packageExplorer.getProject(projectName);
+		project.select();
+
+		// Open Project Properties
+		assertThat("Project name", project.getName(), Is.is(projectName));
+		assertThat("Project with name '" + projectName + "' is selected",
+				project.isSelected(), Is.is(true));
+
+		new WaitWhile(new JobIsRunning());
+		new ShellMenu(IDELabel.Menu.PROJECT, IDELabel.Menu.PROPERTIES).select();
+		return new DefaultShell(IDELabel.Shell.PROPERTIES_FOR + " "
+				+ projectName);
+	}
 }

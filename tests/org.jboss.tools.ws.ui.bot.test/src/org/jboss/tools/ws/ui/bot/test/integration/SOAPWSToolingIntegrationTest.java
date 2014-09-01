@@ -47,8 +47,8 @@ public class SOAPWSToolingIntegrationTest extends WSTestBase {
 	@Override
 	public void setup() {
 		if (!projectExists(getWsProjectName())) {
-			importWSTestProject(projectName);
-			deploymentHelper.runProject(projectName);
+			importWSTestProject(getWsProjectName());
+			serversViewHelper.runProjectOnServer(getWsProjectName());
 		}
 	}
 	

@@ -53,9 +53,9 @@ public class XmlJsonFormattingTest extends RESTfulTestBase {
 	public void setup() {
 		if (!projectExists(getWsProjectName())) {
 			importRestWSProject(getWsProjectName());
-			servers.addProjectToServer(getWsProjectName(), 
+			serversViewHelper.addProjectToServer(getWsProjectName(),
 					configuredState.getServer().name);
-			servers.cleanServer(configuredState.getServer().name);
+			serversViewHelper.serverClean(configuredState.getServer().name);
 		}
 	}
 	

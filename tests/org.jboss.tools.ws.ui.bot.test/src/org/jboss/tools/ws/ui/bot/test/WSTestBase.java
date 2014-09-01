@@ -11,6 +11,8 @@
 
 package org.jboss.tools.ws.ui.bot.test;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.logging.Logger;
@@ -20,11 +22,11 @@ import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
+import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
 import org.jboss.reddeer.eclipse.utils.DeleteUtils;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
-import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
@@ -32,15 +34,16 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.reddeer.workbench.condition.ViewWithToolTipIsActive;
 import org.jboss.tools.common.reddeer.label.IDELabel;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
-import org.jboss.tools.ui.bot.ext.helper.ImportHelper;
 import org.jboss.tools.ws.reddeer.ui.wizards.wst.WebServiceWizardPageBase.SliderLevel;
 import org.jboss.tools.ws.ui.bot.test.utils.DeploymentHelper;
 import org.jboss.tools.ws.ui.bot.test.utils.ProjectHelper;
 import org.jboss.tools.ws.ui.bot.test.utils.ResourceHelper;
+import org.jboss.tools.ws.ui.bot.test.utils.ServersViewHelper;
 import org.jboss.tools.ws.ui.bot.test.utils.WebServiceClientHelper;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -73,6 +76,7 @@ public class WSTestBase extends SWTTestExt {
 	protected final String LINE_SEPARATOR = System
 			.getProperty("line.separator");
 
+	protected static ServersViewHelper serversViewHelper = new ServersViewHelper();
 	protected static ResourceHelper resourceHelper = new ResourceHelper();
 	protected static ProjectHelper projectHelper = new ProjectHelper();
 	protected static DeploymentHelper deploymentHelper = new DeploymentHelper();
@@ -94,7 +98,7 @@ public class WSTestBase extends SWTTestExt {
 
 	@After
 	public void cleanup() {
-		servers.removeAllProjectsFromServer();
+		deleteAllProjectsFromServer();
 	}
 
 	@AfterClass
@@ -103,11 +107,15 @@ public class WSTestBase extends SWTTestExt {
 	}
 
 	protected boolean projectExists(String name) {
-		return new PackageExplorer().containsProject(name);
+		PackageExplorer packageExplorer = new PackageExplorer();
+		packageExplorer.open();
+		return packageExplorer.containsProject(name);
 	}
 
 	protected static void deleteAllProjects() {
-		List<Project> projects = new ProjectExplorer().getProjects();
+		PackageExplorer packageExplorer = new PackageExplorer();
+		packageExplorer.open();
+		List<Project> projects = packageExplorer.getProjects();
 		for(int i=0;i<projects.size();i++) {
 			Project project = projects.get(i);
 			try {
@@ -124,8 +132,7 @@ public class WSTestBase extends SWTTestExt {
 	}
 
 	protected static void deleteAllProjectsFromServer() {
-		//TODO: use RedDeer
-		servers.removeAllProjectsFromServer();
+		serversViewHelper.removeAllProjectsFromServer(configuredState.getServer().name);
 	}
 
 	protected void openJavaFile(String projectName, String pkgName, String javaFileName) {
@@ -163,7 +170,7 @@ public class WSTestBase extends SWTTestExt {
 
 	protected void assertWebServiceTesterIsActive() {
 		assertTrue("Web Service Tester view should be active", 
-				bot.viewByTitle(IDELabel.View.WEB_SERVICE_TESTER).isActive());
+				new ViewWithToolTipIsActive(IDELabel.View.WEB_SERVICE_TESTER).test());
 	}
 
 	public static String getSoapRequest(String body) {
@@ -171,26 +178,37 @@ public class WSTestBase extends SWTTestExt {
 	}
 
 	protected static void importWSTestProject(String projectName) {
-		String location = "/resources/projects/" + projectName;
-		importWSTestProject(location, projectName);
+		try {
+			importProject(new File("resources/projects/" + projectName).getCanonicalPath());
+		} catch(IOException e) {
+			e.printStackTrace();
+			fail(e.getMessage());
+		}
+		projectHelper.addConfiguredRuntimeIntoProject(projectName, configuredState.getServer().name);
 		cleanAllProjects();
 		AbstractWait.sleep(TimePeriod.getCustom(2));
 	}
 
-	protected static void importWSTestProject(String projectLocation, String dir) {
-		ImportHelper.importProject(projectLocation, dir, Activator.PLUGIN_ID);
-
-		eclipse.addConfiguredRuntimeIntoProject(dir, configuredState.getServer().name);
+	private static void importProject(String projectLocation) {
+		ExternalProjectImportWizardDialog importDialog = new ExternalProjectImportWizardDialog();
+		importDialog.open();
+		WizardProjectsImportPage importPage = importDialog.getFirstPage();
+		importPage.setRootDirectory(projectLocation);
+		assertFalse("There is no project to import", importPage.getProjects().isEmpty());
+		importPage.selectAllProjects();
+		importPage.copyProjectsIntoWorkspace(true);
+		importDialog.finish();
 	}
 
 	/**
 	 * Cleans All Projects
 	 */
 	protected static void cleanAllProjects() {
-		new ShellMenu("Project", "Clean...").select();
+		new WaitWhile(new JobIsRunning());
+		new ShellMenu(IDELabel.Menu.PROJECT, "Clean...").select();
 		new DefaultShell("Clean");
 		new RadioButton("Clean all projects").click();
-		new PushButton("OK").click();
+		new PushButton(IDELabel.Button.OK).click();
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG, false);
 	}
 }
