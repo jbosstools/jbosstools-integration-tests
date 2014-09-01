@@ -54,7 +54,7 @@ public class WSTesterPromptValuesSupportTest extends RESTfulTestBase {
 	public void setup() {
 		if (!projectExists(wsProjectName)) {
 			importRestWSProject(wsProjectName);
-			jbt.runProjectOnServer(wsProjectName);
+			serversViewHelper.runProjectOnServer(wsProjectName);
 			testerView.open();
 		}
 	}

@@ -132,7 +132,7 @@ public class EAPFromJavaTest extends WebServiceTestBase {
         Assert.assertNotNull(content);
         Assert.assertTrue(content.contains("<servlet-class>test.ws.Echo</servlet-class>"));
         Assert.assertTrue(content.contains("<url-pattern>/Echo</url-pattern>"));
-        deploymentHelper.runProject(getEarProjectName());
+        serversViewHelper.runProjectOnServer(getEarProjectName());
         deploymentHelper.assertServiceDeployed(deploymentHelper.getWSDLUrl(getWsProjectName(), getWsName()), 10000);
         servicePassed = true;
     }
@@ -158,8 +158,8 @@ public class EAPFromJavaTest extends WebServiceTestBase {
          */
         setJSPFileContent();
         AbstractWait.sleep(TimePeriod.getCustom(2));
-        deploymentHelper.runProject(getWsClientProjectName());
-        servers.cleanServer(configuredState.getServer().name);
+        serversViewHelper.runProjectOnServer(getWsClientProjectName());
+        serversViewHelper.serverClean(configuredState.getServer().name);
         String pageContent = deploymentHelper.getPage("http://localhost:8080/" + getWsClientProjectName() + "/index.jsp", 15000);
         LOGGER.info(pageContent);
         Assert.assertTrue(pageContent.contains("BartSimpson(age: 12)"));

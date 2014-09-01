@@ -21,10 +21,13 @@ import javax.xml.namespace.QName;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.jboss.reddeer.swt.wait.AbstractWait;
+import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.ws.reddeer.ui.wizards.ws.ui.SampleWebServiceWizard;
 import org.jboss.tools.ws.reddeer.ui.wizards.ws.ui.SimpleWebServiceWizard;
 import org.jboss.tools.ws.ui.bot.test.WSTestBase;
+import org.jboss.tools.ws.ui.bot.test.utils.Asserts;
 import org.jboss.tools.ws.ui.bot.test.wsclient.WSClient;
 
 /**
@@ -81,11 +84,12 @@ public class SampleSoapTestBase extends WSTestBase {
 		TextEditor editor = new TextEditor(svcClass + ".java");
 		editor.activate();
 		String code = editor.getText();
-		assertContains("package " + svcPkg + ";", code);
+		Asserts.assertContain(code, "package " + svcPkg + ";");
 		String dd = resourceHelper.readFile(getDD(project));
-		assertContains("<servlet-name>" + svcName + "</servlet-name>", dd);
-		deploymentHelper.removeProjectFromServer(project);
-		deploymentHelper.runProject(project);
+		Asserts.assertContain(dd, "<servlet-name>" + svcName + "</servlet-name>");
+		serversViewHelper.removeProjectFromServer(project, configuredState.getServer().name);
+		serversViewHelper.runProjectOnServer(project);
+		AbstractWait.sleep(TimePeriod.SHORT);
 		try {
 			WSClient c = new WSClient(new URL("http://" + SERVER_URL + "/" + project + "/" + svcName),
 							new QName("http://" + svcPkg + "/", svcClass + "Service"),

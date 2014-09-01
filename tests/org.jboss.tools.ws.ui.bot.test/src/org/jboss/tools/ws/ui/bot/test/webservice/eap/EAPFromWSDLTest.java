@@ -166,7 +166,7 @@ public class EAPFromWSDLTest extends WebServiceTestBase {
 		/* workaround problems with generated code that require JAX-WS API 2.2 */
 		jaxWsApi22RequirementWorkaround(getWsProjectName(), getWsPackage());
 		
-		deploymentHelper.runProject(getEarProjectName());
+		serversViewHelper.runProjectOnServer(getEarProjectName());
 		deploymentHelper.assertServiceDeployed(deploymentHelper.getWSDLUrl(getWsProjectName(), getWsName()), 10000);
 		servicePassed = true;
 	}

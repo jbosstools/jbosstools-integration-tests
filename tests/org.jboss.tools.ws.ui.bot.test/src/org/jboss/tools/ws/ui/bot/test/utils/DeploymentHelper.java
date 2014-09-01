@@ -11,6 +11,8 @@
 
 package org.jboss.tools.ws.ui.bot.test.utils;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -18,40 +20,33 @@ import java.net.URL;
 import java.util.Scanner;
 import java.util.logging.Logger;
 
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
-import org.jboss.tools.ui.bot.ext.SWTTestExt;
-import org.jboss.tools.ui.bot.ext.gen.ActionItem;
+import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.wst.server.ui.view.Server;
+import org.jboss.reddeer.eclipse.wst.server.ui.view.ServerModule;
+import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
+import org.jboss.reddeer.eclipse.wst.server.ui.wizard.ModifyModulesDialog;
+import org.jboss.reddeer.eclipse.wst.server.ui.wizard.ModifyModulesPage;
+import org.jboss.reddeer.swt.api.Shell;
+import org.jboss.reddeer.swt.condition.JobIsRunning;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.menu.ShellMenu;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.tools.common.reddeer.label.IDELabel;
 
-public class DeploymentHelper extends SWTTestExt {
+/**
+ * DeploymentHelper
+ * 
+ * @author jjankovi
+ * @author Radoslav Rabara
+ *
+ */
+public class DeploymentHelper {
 
 	private final Logger LOGGER = Logger
-			.getLogger(DeploymentHelper.class.getName());
+			.getLogger(this.getClass().getName());
 
-	
-	public void removeProjectFromServer(String project) {
-		SWTBotView serverView = open.viewOpen(
-				ActionItem.View.ServerServers.LABEL);
-		SWTBotTreeItem asNode = servers.findServerByName(serverView.bot().tree(), 
-				configuredState.getServer().name);
-		asNode.expand();
-		for (int i = 0; i < asNode.getItems().length; i++) {
-			SWTBotTreeItem temp = asNode.getItems()[i];
-			if (temp.getText().contains(project)) {
-				servers.removeProjectFromServers(project);
-			}
-		}
-	}
-	
-	/**
-	 * Method runs project on configured server
-	 * @param project
-	 */
-	public void runProject(String project) {
-		open.viewOpen(ActionItem.View.ServerServers.LABEL);
-		projectExplorer.runOnServer(project);
-	}
-	
 	/**
 	 * Method checks if service is deployed by checking http header code
 	 * response of entered wsdURL
@@ -134,15 +129,16 @@ public class DeploymentHelper extends SWTTestExt {
 	 */
 	public void assertServiceResponseToClient(String startServlet,
 			String response) {
-		assertContains(response, getPage(startServlet, 15000));
+		Asserts.assertContain(response, getPage(startServlet, 15000));
 	}
-	
+
 	/**
-	 * Method gets http page for entered url of page and timeout for
-	 * this operation
-	 * @param url
-	 * @param timeout
-	 * @return
+	 * Returns http page for entered <var>url</var> of page in the specified
+	 * <var>timeout</var>
+	 *
+	 * @param url page url
+	 * @param timeout timeout of this operation
+	 * @return content of the http page
 	 */
 	public String getPage(String url, long timeout) {
 		long t = System.currentTimeMillis();
@@ -178,20 +174,20 @@ public class DeploymentHelper extends SWTTestExt {
 			}
 		}
 		LOGGER.info("done after: " + (System.currentTimeMillis() - t) + "ms.");
-		assertEquals("cannot connect to '" + url + "'",
+		assertEquals("Cannot connect to '" + url + "'",
 				HttpURLConnection.HTTP_OK, rsp);
 		return page;
 	}
-	
+
 	/**
-	 * Method gets wsdl determined by deployed project and web service name 
-	 * @param projectName
-	 * @param wsName
-	 * @return
+	 * Returns wsdl URL determined by deployed project and web service name
+	 * 
+	 * @param projectName name of the deployed project
+	 * @param wsName web service name
+	 * @return wsdl URL
 	 */
 	public String getWSDLUrl(String projectName, String wsName) {
 		return "http://localhost:8080/" + projectName + "/"
 				+ wsName + "?wsdl";
 	}
-	
 }
