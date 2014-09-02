@@ -15,7 +15,7 @@ import junit.framework.TestSuite;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
 import org.jboss.tools.ui.bot.ext.SWTEclipseExt;
 import org.jboss.tools.ui.bot.ext.types.ViewType;
-import org.jboss.tools.ws.ui.bot.test.utils.SWTEclipseCDIExtUtil;
+import org.jboss.tools.ws.ui.bot.test.utils.EclipseCDIHelper;
 import org.junit.BeforeClass;
 
 public abstract class AbstractTestSuite extends TestSuite {
@@ -31,7 +31,7 @@ public abstract class AbstractTestSuite extends TestSuite {
 	@BeforeClass
 	public static void setUpSuite() {
 		eclipse.showView(ViewType.PROJECT_EXPLORER);
-		SWTEclipseCDIExtUtil.disableFolding();
+		EclipseCDIHelper.disableFolding();
 	}
 
 }
