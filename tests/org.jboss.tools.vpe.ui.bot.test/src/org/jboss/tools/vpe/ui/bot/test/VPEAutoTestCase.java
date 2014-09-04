@@ -594,6 +594,12 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase {
 			SWTBotShell currentShell = bot.activeShell();
 			open.newObject(ActionItem.NewObject.JBossToolsWebXHTMLFile.LABEL);
 			bot.shell(IDELabel.Shell.NEW_XHTML_FILE).activate();
+			if (subDirs != null && subDirs.length > 0){
+				SWTBotTreeItem tiDir = bot.tree().expandNode(subDirs[0]).select();
+				for (int i = 1 ; i < subDirs.length ; i++){
+					tiDir = tiDir.expandNode(subDirs[i]).select();
+				}
+			}
 			bot.textWithLabel(
 					ActionItem.NewObject.JBossToolsWebXHTMLFile.TEXT_FILE_NAME)
 					.setText(pageName);

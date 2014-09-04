@@ -55,6 +55,7 @@ public abstract class JSF2AbstractRefactorTest extends JSFAutoTestCase {
 			tree.expandNode("JBoss Tools Web").select("XHTML Page"); //$NON-NLS-1$ //$NON-NLS-2$
 			bot.button("Next >").click(); //$NON-NLS-1$
 			bot.textWithLabel("File name:").setText("echo"); //$NON-NLS-1$ //$NON-NLS-2$
+			bot.tree().getTreeItem(JBT_TEST_PROJECT_NAME).expandNode("WebContent").expandNode("resources").expandNode("mycomp").select(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 			bot.button("Finish").click(); //$NON-NLS-1$
 			bot.sleep(2000);
 			bot.waitWhile(new ShellIsActiveCondition(shell), Timing.time10S());
@@ -77,7 +78,7 @@ public abstract class JSF2AbstractRefactorTest extends JSFAutoTestCase {
 			tree.expandNode(JBT_TEST_PROJECT_NAME).expandNode("WebContent"). //$NON-NLS-1$ //$NON-NLS-2$
 					getNode(JSF2_Test_Page_Name + ".xhtml").doubleClick(); //$NON-NLS-1$
 		} catch (WidgetNotFoundException e) {
-			tree.getTreeItem(JBT_TEST_PROJECT_NAME).select(); //$NON-NLS-1$
+			tree.getTreeItem(JBT_TEST_PROJECT_NAME).getNode("WebContent").select(); //$NON-NLS-1$
 			bot.menu("File").menu("New").menu("Other...").click(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			SWTBotShell shell = bot.shell("New").activate(); //$NON-NLS-1$
 			tree = bot.tree();
