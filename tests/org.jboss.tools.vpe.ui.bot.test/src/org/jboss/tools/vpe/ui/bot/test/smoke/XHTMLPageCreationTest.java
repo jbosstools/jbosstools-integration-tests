@@ -67,6 +67,10 @@ public class XHTMLPageCreationTest extends VPEEditorTestCase{
     // create new JSP file
     open.newObject(ActionItem.NewObject.JBossToolsWebXHTMLFile.LABEL);
     SWTBotShell shell = bot.shell(IDELabel.Shell.NEW_XHTML_FILE).activate();
+    bot.tree()
+    	.expandNode(JBT_TEST_PROJECT_NAME)
+    	.expandNode("WebContent")
+    	.getNode("pages").select();
     bot.textWithLabel(ActionItem.NewObject.JBossToolsWebXHTMLFile.TEXT_FILE_NAME).setText(TEST_NEW_XHTML_FILE_NAME);
     bot.button(IDELabel.Button.NEXT).click();
     bot.checkBox(IDELabel.NewXHTMLFileDialog.USE_XHTML_TEMPLATE_CHECK_BOX).select();

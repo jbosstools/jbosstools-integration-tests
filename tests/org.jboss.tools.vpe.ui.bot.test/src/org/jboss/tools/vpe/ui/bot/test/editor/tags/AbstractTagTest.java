@@ -63,7 +63,7 @@ public abstract class AbstractTagTest extends VPEEditorTestCase {
 	    sourceEditor = botExt.swtBotEditorExtByTitle(AbstractTagTest.TEST_PAGE_NAME_JSP);
 	    visualEditor = new SWTBotWebBrowser(AbstractTagTest.TEST_PAGE_NAME_JSP,botExt);
 	  } else if (testPageType.equals(TestPageType.XHTML)){
-	    createXhtmlPage(AbstractTagTest.TEST_PAGE_NAME_XHTML);
+	    createXhtmlPage(AbstractTagTest.TEST_PAGE_NAME_XHTML,VPEAutoTestCase.JBT_TEST_PROJECT_NAME,  "WebContent","pages");
 	    sourceEditor = botExt.swtBotEditorExtByTitle(AbstractTagTest.TEST_PAGE_NAME_XHTML);
 	    visualEditor = new SWTBotWebBrowser(AbstractTagTest.TEST_PAGE_NAME_XHTML,botExt);
 	  } else {
