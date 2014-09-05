@@ -29,9 +29,9 @@ import org.junit.Test;
  * @author Radoslav Rabara
  */
 public class WSClientTestTemplate extends WSTestBase {
-	
+
 	protected final WebServiceRuntime serviceRuntime;
-	
+
 	public WSClientTestTemplate(WebServiceRuntime serviceRuntime) {
 		this.serviceRuntime = serviceRuntime;
 	}

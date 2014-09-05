@@ -1,6 +1,5 @@
 package org.jboss.tools.ws.ui.bot.test.utils;
 
-import org.apache.log4j.Logger;
 import org.eclipse.swt.SWTException;
 import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
@@ -9,7 +8,6 @@ import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.jface.wizard.WizardDialog;
 import org.jboss.reddeer.swt.api.Label;
 import org.jboss.reddeer.swt.api.Shell;
-import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.WaitCondition;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.label.DefaultLabel;
@@ -17,7 +15,6 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.toolbar.ViewToolItem;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
-import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ws.reddeer.ui.wizards.wst.WebServiceClientWizard;
 import org.jboss.tools.ws.reddeer.ui.wizards.wst.WebServiceClientWizardPage;

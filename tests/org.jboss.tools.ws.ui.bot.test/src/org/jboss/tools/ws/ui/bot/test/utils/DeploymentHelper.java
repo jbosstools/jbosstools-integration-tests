@@ -20,21 +20,6 @@ import java.net.URL;
 import java.util.Scanner;
 import java.util.logging.Logger;
 
-import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.Server;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServerModule;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
-import org.jboss.reddeer.eclipse.wst.server.ui.wizard.ModifyModulesDialog;
-import org.jboss.reddeer.eclipse.wst.server.ui.wizard.ModifyModulesPage;
-import org.jboss.reddeer.swt.api.Shell;
-import org.jboss.reddeer.swt.condition.JobIsRunning;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.menu.ShellMenu;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.wait.WaitWhile;
-import org.jboss.tools.common.reddeer.label.IDELabel;
-
 /**
  * DeploymentHelper
  * 

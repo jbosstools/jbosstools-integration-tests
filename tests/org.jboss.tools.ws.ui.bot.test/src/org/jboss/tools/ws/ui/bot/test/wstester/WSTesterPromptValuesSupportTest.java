@@ -18,8 +18,9 @@ import org.hamcrest.core.Is;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
-import org.jboss.tools.ui.bot.ext.condition.ShellIsActiveCondition;
+import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
@@ -68,7 +69,7 @@ public class WSTesterPromptValuesSupportTest extends RESTfulTestBase {
 
 	@AfterClass
 	public static void cleanEnvironment() {
-		projectExplorer.deleteAllProjects();
+		deleteAllProjects();
 	}
 
 	@Override
@@ -129,8 +130,7 @@ public class WSTesterPromptValuesSupportTest extends RESTfulTestBase {
 
 		testerView.invoke();
 
-		bot.waitUntil(new ShellIsActiveCondition(
-						WSTesterParametersDialog.DIALOG_TITLE));
+		new WaitUntil(new ShellWithTextIsActive(WSTesterParametersDialog.DIALOG_TITLE));
 
 		this.dialog = new WSTesterParametersDialog();
 	}

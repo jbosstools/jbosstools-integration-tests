@@ -33,8 +33,6 @@ import org.jboss.tools.ws.reddeer.ui.wizards.wst.WebServiceWizardPageBase.Slider
 import org.jboss.tools.ws.ui.bot.test.WSAllBotTests;
 import org.jboss.tools.ws.ui.bot.test.webservice.WebServiceRuntime;
 import org.jboss.tools.ws.ui.bot.test.webservice.WebServiceTestBase;
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -63,18 +61,6 @@ public class EAPFromJavaTest extends WebServiceTestBase {
         if (!projectExists(getWsClientProjectName())) {
         	projectHelper.createProject(getWsClientProjectName());
         }
-    }
-
-    @After
-    @Override
-    public void cleanup() {
-        //do nothing here
-        //we don't want to undeploy our app yet
-    }
-
-    @AfterClass
-    public static void removeAllProjects() {
-        servers.removeAllProjectsFromServer();
     }
 
     @Override
