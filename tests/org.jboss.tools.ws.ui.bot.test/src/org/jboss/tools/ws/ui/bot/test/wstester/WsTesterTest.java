@@ -25,6 +25,7 @@ import java.util.logging.Level;
 
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.exception.WaitTimeoutExpiredException;
+import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
@@ -124,7 +125,7 @@ public class WsTesterTest extends WSTestBase {
 		wstv.open();
 		SelectWSDLDialog dlg = wstv.invokeGetFromWSDL();
 		dlg.setURI(uri);
-		bot.sleep(1000);
+		AbstractWait.sleep(TimePeriod.SHORT);
 		List<String> items = dlg.getServices();
 		LOGGER.log(Level.FINE, "Services: {0}", items);
 		Assert.assertEquals(2, items.size());
@@ -145,7 +146,7 @@ public class WsTesterTest extends WSTestBase {
 
 		dlg = wstv.invokeGetFromWSDL();
 		dlg.setURI(uri);
-		bot.sleep(1000);
+		AbstractWait.sleep(TimePeriod.SHORT);
 		items = dlg.getServices();
 		LOGGER.log(Level.FINE, "Services: {0}", items);
 		Assert.assertEquals(2, items.size());
@@ -208,7 +209,7 @@ public class WsTesterTest extends WSTestBase {
 			selectWSDLDialog.openURL();
 			final String wsdlURLDialogTitle = "WSDL URL";
 			InputDialog wsdlURLDialog = new InputDialog(wsdlURLDialogTitle);
-			wsdlURLDialog.typeInputText(SERVICE_URL + "?WSDL");// 2xWSDL
+			wsdlURLDialog.typeInputText(SERVICE_URL + "?WSDL");
 			wsdlURLDialog.ok();
 			assertEquals(SERVICE_URL + "?WSDL", selectWSDLDialog.getURI());
 			selectWSDLDialog.selectPort("BibleWebserviceSoap12");

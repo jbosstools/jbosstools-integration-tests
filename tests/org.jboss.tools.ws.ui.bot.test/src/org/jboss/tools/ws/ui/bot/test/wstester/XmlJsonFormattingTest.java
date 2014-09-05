@@ -32,7 +32,7 @@ public class XmlJsonFormattingTest extends RESTfulTestBase {
 
 	private static String projectName = "usersRestManager";
 	private WsTesterView wsTesterView = new WsTesterView();
-	
+
 	private final static String XML_RESPONSE_FORMAT = 
 			"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
 			"<collection>\n    <user>\n        <id>1</id>\n        " +
@@ -41,14 +41,14 @@ public class XmlJsonFormattingTest extends RESTfulTestBase {
 			"<name>John</name>\n        <phoneNumber>8546544</phoneNumber>\n    " +
 			"</user>\n    <user>\n        <id>3</id>\n        <name>Paul</name>" +
 			"\n        <phoneNumber>1287475</phoneNumber>\n    </user>\n</collection>\n";	
-	
+
 	private final static String JSON_RESPONSE_FORMAT = 
 			"[\r\n{\r\n    \"id\":1,\r\n    \"name\":\"James\"," +
 			"\r\n    \"phoneNumber\":6545646\r\n},\r\n    {\r\n    " +
 			"\"id\":2,\r\n    \"name\":\"John\",\r\n    " +
 			"\"phoneNumber\":8546544\r\n},\r\n    {\r\n    \"id\":3,\r\n    " +
 			"\"name\":\"Paul\",\r\n    \"phoneNumber\":1287475\r\n}\r\n]";	
-	
+
 	@Override
 	public void setup() {
 		if (!projectExists(getWsProjectName())) {
@@ -58,73 +58,68 @@ public class XmlJsonFormattingTest extends RESTfulTestBase {
 			serversViewHelper.serverClean(configuredState.getServer().name);
 		}
 	}
-	
+
 	@Override
-	public void cleanup() {		
+	public void cleanup() {
 		 
 	}
-	
+
 	@Override
 	protected String getWsProjectName() {
 		return projectName;
 	}
-	
+
 	@Test
 	public void testWSTesterXMLFormatting() {
-		
 		testWSTesterFormatting(Format.XML);
-		
 	}
-	
+
 	@Test
 	public void testWSTesterJSONFormatting() {
-		
 		testWSTesterFormatting(Format.JSON);
 	}
-	
+
 	private void testWSTesterFormatting(Format format) {
-		
 		restfulWizard = new RestFullExplorer(getWsProjectName());
-		
+
 		runRestServiceOnServer(getProperRestService(restfulWizard, format));
-		
+
 		assertWebServiceTesterIsActive();
-		
+
 		invokeMethodInWSTester(wsTesterView, RequestType.GET);
-		
+
 		assertThat(wsTesterView.getResponseBody(), 
 				IsEqual.equalTo(format.formattedMessage));
 	}
-	
+
 	private RestService getProperRestService(RestFullExplorer explorer, 
 			Format format) {
 		for (RestService service : explorer.getAllRestServices()) {
 			if (service.getPath().contains(format.formatType)) { 
 				return service;
 			}
-		}	
+		}
 		return null;
 	}
-	
+
 	enum Format {
 		XML("xml", XML_RESPONSE_FORMAT), JSON("json", JSON_RESPONSE_FORMAT);
-		
+
 		private String formatType;
-		
+
 		private String formattedMessage;
-		
+
 		private Format(String formatType, String formattedMessage) {
 			this.formatType = formatType;
 			this.formattedMessage = formattedMessage;
 		}
-		
+
 		public String formatType() {
 			return formatType;
 		}
-		
+
 		public String expectedFormattedMessage() {
 			return formattedMessage;
 		}
 	}
-	
 }

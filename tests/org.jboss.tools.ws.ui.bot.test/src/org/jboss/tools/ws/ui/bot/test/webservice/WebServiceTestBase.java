@@ -22,8 +22,6 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.jboss.reddeer.jface.wizard.WizardDialog;
 import org.jboss.reddeer.swt.api.Shell;
 import org.jboss.reddeer.swt.api.StyledText;
-import org.jboss.reddeer.swt.condition.JobIsRunning;
-import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
@@ -31,7 +29,6 @@ import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
-import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.ws.reddeer.ui.wizards.wst.WebServiceFirstWizardPage;
@@ -49,10 +46,6 @@ import org.junit.Assert;
  */
 public class WebServiceTestBase extends WSTestBase {
 
-	/**
-	 * 
-	 * @param javasrc
-	 */
 	protected void bottomUpJbossWebService(InputStream javasrc) {
 		String s = resourceHelper.readStream(javasrc);
 		String src = MessageFormat.format(s, getWsPackage(), getWsName());
@@ -60,11 +53,6 @@ public class WebServiceTestBase extends WSTestBase {
 				+ getWsName(), getLevel(), null, src);
 	}
 
-	/**
-	 * 
-	 * @param input
-	 * @param pkg
-	 */
 	protected void topDownWS(InputStream input, WebServiceRuntime serviceRuntime, String pkg) {
 		String s = resourceHelper.readStream(input);
 		String[] tns = getWsPackage().split("\\.");
@@ -79,14 +67,6 @@ public class WebServiceTestBase extends WSTestBase {
 				+ getWsName() + ".wsdl", getLevel(), pkg, src);
 	}
 
-	/**
-	 * 
-	 * @param t
-	 * @param source
-	 * @param level
-	 * @param pkg
-	 * @param code
-	 */
 	private void createService(ServiceType t, String source,
 			SliderLevel level, String pkg, String code) {
 		// create ws source - java class or wsdl
@@ -161,7 +141,7 @@ public class WebServiceTestBase extends WSTestBase {
 			Assert.fail(msg);
 		}
 	}
-	
+
 	private void checkErrorDialog(WizardDialog openedWizard) {
 		Shell shell = new DefaultShell();
 		String text = shell.getText();

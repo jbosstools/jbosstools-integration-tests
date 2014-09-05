@@ -18,7 +18,6 @@ import org.jboss.tools.ws.ui.bot.test.webservice.WebServiceRuntime;
  *
  */
 public class WsClientTest extends WSClientTestTemplate {
-
 	public WsClientTest() {
 		super(WebServiceRuntime.JBOSS_WS);
 	}
