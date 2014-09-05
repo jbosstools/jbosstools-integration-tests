@@ -14,6 +14,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 import org.hamcrest.core.Is;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
+import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -46,65 +47,65 @@ public class JBossWSPreferencesTest extends SWTTestExt {
 
 	private static JBossWSRuntimePreferencePage jbossWSRuntimePreferencePage;
 	private JBossWSRuntimeListFieldEditor jbossWsRuntimeDialog;
-	
+
 	private static final String NEW_JBOSS_WS_RUNTIME_DIALOG_TITLE =  "New JBossWS Runtime";
 	private static final String EDIT_JBOSS_WS_RUNTIME_DIALOG_TITLE = "Edit JBossWS Runtime";
-	
+
 	private String runtimeName;
 	private String runtimeVersion;
 	private String runtimePath;
-	
+
 	private String runtimeEditedName = "modifiedRuntimeName";
-	
+
 	@BeforeClass
 	public static void preparePrerequisites() {
 		jbossWSRuntimePreferencePage = new JBossWSRuntimePreferencePage();
-		jbossWSRuntimePreferencePage.open();
+		new WorkbenchPreferenceDialog().select(jbossWSRuntimePreferencePage);
 	}
-	
+
 	@AfterClass
 	public static void cleanUpWorkspace() {
 		jbossWSRuntimePreferencePage.cancel();
 	}
-	
+
 	@Test
 	public void testJBossWSPreferencePage() {
 		testJBossWSGenerating();
 		testJBossWSRuntimeEdition();
 		testJBossWSRuntimeDeletion();
 	}
-	
+
 	private void testJBossWSGenerating() {
 		jbossWSRuntimePreferencePage.add();
 		jbossWsRuntimeDialog = new JBossWSRuntimeListFieldEditor(false);
-		
+
 		setRuntimeHomeFolderAccordingToRuntime();
 		assertRuntimeProperlyConfiguredInDialog();
 		assertRuntimeConfiguredAccordingToRuntime();
 	}
-	
+
 	private void testJBossWSRuntimeEdition() {
 		jbossWSRuntimePreferencePage.select(0);
 		jbossWSRuntimePreferencePage.edit();
-		
+
 		jbossWsRuntimeDialog = new JBossWSRuntimeListFieldEditor(true);
-		
+
 		jbossWsRuntimeDialog.setName(runtimeEditedName);
 		jbossWsRuntimeDialog.finish();
-		
+
 		new WaitWhile(new ShellWithTextIsActive(EDIT_JBOSS_WS_RUNTIME_DIALOG_TITLE));
-		
+
 		assertRuntimeName(runtimeEditedName);
 	}
-	
+
 	private void testJBossWSRuntimeDeletion() {
 		jbossWSRuntimePreferencePage.select(0);
 		jbossWSRuntimePreferencePage.remove();
-		
+
 		new WaitUntil(new ShellWithTextIsActive("Confirm Runtime Delete"));
 		new PushButton("OK").click();
 		new WaitWhile(new ShellWithTextIsActive("Confirm Runtime Delete"));
-		
+
 		assertThat(jbossWSRuntimePreferencePage.getAllJBossWSRuntimes().size(),
 				Is.is(0));
 	}
@@ -112,26 +113,22 @@ public class JBossWSPreferencesTest extends SWTTestExt {
 	private void setRuntimeHomeFolderAccordingToRuntime() {
 		jbossWsRuntimeDialog.setHomeFolder(
 				configuredState.getServer().runtimeLocation);
-		
+
 		runtimeName = jbossWsRuntimeDialog.getName();
 		runtimeVersion = jbossWsRuntimeDialog.getVersion();
 		runtimePath = jbossWsRuntimeDialog.getHomeFolder();
 	}
-	
-	/**
-	 * TODO create better runtime version assertion that will assert only with expected version defined by used server
-	 * (table/map) 
-	 */
+
 	private void assertRuntimeProperlyConfiguredInDialog() {
 		assertTrue("JBoss WS Runtime name was not automatically generated",
 					jbossWsRuntimeDialog.getName() != null &&
 					!jbossWsRuntimeDialog.getName().isEmpty());
-		
+
 		assertThat(jbossWsRuntimeDialog.getRuntimeImplementation(),
 				Is.is("JBoss Web Services - Stack CXF Runtime Client"));
 			
 		String runtimeVersion = jbossWsRuntimeDialog.getRuntimeVersion();
-		
+
 		String expectedVersion;
 		switch(configuredState.getServer().type) {
 		case "WILDFLY":
@@ -144,23 +141,22 @@ public class JBossWSPreferencesTest extends SWTTestExt {
 			expectedVersion = "4.0.2.GA";
 			break;
 		default:
-			log.warn("Unrecognized server.");
+			fail("Server was not recognized");
 			expectedVersion = "";
 		}
 		assertTrue("Unknown runtime version: " + runtimeVersion, 
 				Is.is(expectedVersion).matches(runtimeVersion));
-				
 	}
-	
+
 	private void assertRuntimeConfiguredAccordingToRuntime() {
 		jbossWsRuntimeDialog.finish();
-		
+
 		new WaitWhile(new ShellWithTextIsActive(
 				NEW_JBOSS_WS_RUNTIME_DIALOG_TITLE));
-		
+
 		assertThat(jbossWSRuntimePreferencePage.
 				getAllJBossWSRuntimes().size(), Is.is(1));
-		
+
 		JBossWSRuntimeItem item = jbossWSRuntimePreferencePage.
 				getAllJBossWSRuntimes().iterator().next();
 		assertRuntimeName(item, runtimeName);
@@ -168,22 +164,21 @@ public class JBossWSPreferencesTest extends SWTTestExt {
 		assertRuntimePath(item, runtimePath);
 		
 	}
-	
+
 	private void assertRuntimeName(String expectedName) {
 		assertRuntimeName(jbossWSRuntimePreferencePage.getAllJBossWSRuntimes().get(0), 
 				expectedName);
 	}
-	
+
 	private void assertRuntimeName(JBossWSRuntimeItem item, String expectedName) {
 		assertThat(item.getName(), Is.is(expectedName));
 	}
-	
+
 	private void assertRuntimeVersion(JBossWSRuntimeItem item, String expectedVersion) {
 		assertThat(item.getVersion(), Is.is(expectedVersion));
 	}
-	
+
 	private void assertRuntimePath(JBossWSRuntimeItem item, String expectedPath) {
 		assertThat(item.getPath(), Is.is(expectedPath));
 	}
-	
 }

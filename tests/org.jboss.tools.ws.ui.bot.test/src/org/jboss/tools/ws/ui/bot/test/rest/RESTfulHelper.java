@@ -23,6 +23,7 @@ import org.hamcrest.core.StringContains;
 import org.hamcrest.core.StringStartsWith;
 import org.jboss.reddeer.eclipse.condition.ProblemsExists;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.reddeer.swt.api.Menu;
@@ -113,8 +114,9 @@ public class RESTfulHelper {
 	}
 
 	public void modifyRESTValidation(boolean enableRestSupport) {
+		WorkbenchPreferenceDialog dialog = new WorkbenchPreferenceDialog();
 		JAXRSValidatorPreferencePage page = new JAXRSValidatorPreferencePage();
-		page.open();
+		dialog.select(page);
 
 		page.setEnableValidation(enableRestSupport);
 
@@ -147,7 +149,6 @@ public class RESTfulHelper {
 		List<File> restLibsPaths = getPathForRestLibs();
 		
 		List<String> variables = new ArrayList<String>();
-		
 		BuildPathHelper buildPathHelper = new BuildPathHelper();
 		
 		for (File f : restLibsPaths) {

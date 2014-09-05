@@ -1,5 +1,6 @@
 package org.jboss.tools.ws.ui.bot.test.rest.validation;
 
+import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
 import org.jboss.tools.ws.reddeer.ui.preferences.JAXRSValidatorPreferencePage;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
 import org.junit.Test;
@@ -24,8 +25,9 @@ public class JaxRsValidatorTest extends RESTfulTestBase {
 	@Test
 	public void testValidatorInPreferences() {
 		/* try to open JAX-RS Validator in Preferences */
+		WorkbenchPreferenceDialog dialog = new WorkbenchPreferenceDialog();
 		JAXRSValidatorPreferencePage page = new JAXRSValidatorPreferencePage();
-		page.open();
+		dialog.select(page);
 		page.cancel();
 	}
 
