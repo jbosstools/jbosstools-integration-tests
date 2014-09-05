@@ -79,9 +79,7 @@ public class MatrixParamAnnotationSupportTest extends RESTfulTestBase {
 	@Test
 	public void testEditingMatrixParam() {
 		/* prepare project */
-		resourceHelper.replaceInEditor(editorForClass(projectName, "src", 
-				"org.rest.test", "RestService.java").toTextEditor(), 
-				matrixParam1, matrixParamNew, true);
+		replaceInRestService(matrixParam1, matrixParamNew);
 		AbstractWait.sleep(TimePeriod.getCustom(2));
 
 		/* get RESTful services from JAX-RS REST explorer for the project */
@@ -97,9 +95,7 @@ public class MatrixParamAnnotationSupportTest extends RESTfulTestBase {
 	@Test
 	public void testEditingTypeOfMatrixParam() {
 		/* prepare project */
-		resourceHelper.replaceInEditor(editorForClass(projectName, "src",
-				"org.rest.test", "RestService.java").toTextEditor(), 
-				matrixParamType1, matrixParamTypeNew, true);
+		replaceInRestService(matrixParamType1, matrixParamTypeNew);
 		AbstractWait.sleep(TimePeriod.getCustom(2));
 
 		/* get RESTful services from JAX-RS REST explorer for the project */

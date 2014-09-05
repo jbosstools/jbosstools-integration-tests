@@ -20,73 +20,53 @@ import org.junit.Test;
  *
  */
 public class RESTfulValidationTest extends RESTfulTestBase {
-	
+
 	private static final String GET_METHOD_PATH = "/{id}";
 	private static final String CORRECT_PATH_PARAM = "id";
 	private static final String BAD_PATH_PARAM = "customerId";
-	
+
 	@Override
 	protected String getWsProjectName() {
 		return "restEmpty";
 	}
-	
+
 	@Test
 	public void testCorrectValueValidation() {
-		
 		/* prepare project */
-		prepareRestfulResource(editorForClass(getWsProjectName(), "src", 
-				"org.rest.test", "RestService.java"), SIMPLE_REST_WS_RESOURCE, 
-				"org.rest.test", "RestService",
-				GET_METHOD_PATH, CORRECT_PATH_PARAM);
-		
+		prepareSimpleRestService(GET_METHOD_PATH, CORRECT_PATH_PARAM);
+
 		/* test count of validation errors */
 		assertCountOfPathAnnotationValidationErrors(getWsProjectName(), 0);
 	}
-	
-	
 
 	@Test
 	public void testBadValueValidation() {
 		/* prepare project */
-		prepareRestfulResource(editorForClass(getWsProjectName(), "src", 
-				"org.rest.test", "RestService.java"), SIMPLE_REST_WS_RESOURCE, 
-				"org.rest.test", "RestService",
-				GET_METHOD_PATH, BAD_PATH_PARAM);
-		
+		prepareSimpleRestService(GET_METHOD_PATH, BAD_PATH_PARAM);
+
 		/* test count of validation errors */
 		assertCountOfPathAnnotationValidationErrors(getWsProjectName(), 1);
 	}
-	
+
 	@Test
 	public void testCorrectToBadValueValidation() {
-		
 		/* prepare project */
-		prepareRestfulResource(editorForClass(getWsProjectName(), "src", 
-				"org.rest.test", "RestService.java"), SIMPLE_REST_WS_RESOURCE, 
-				"org.rest.test", "RestService",
-				GET_METHOD_PATH, CORRECT_PATH_PARAM);
-		prepareRestfulResource(bot.activeEditor(), SIMPLE_REST_WS_RESOURCE, 
-				"org.rest.test", "RestService",
-				GET_METHOD_PATH, BAD_PATH_PARAM);
-		
+		prepareSimpleRestService(GET_METHOD_PATH, CORRECT_PATH_PARAM);
+		final String pathParamPrefix = "@PathParam(\"";
+		replaceInRestService(pathParamPrefix + CORRECT_PATH_PARAM,
+				pathParamPrefix + BAD_PATH_PARAM);
+
 		/* test count of validation errors */
 		assertCountOfPathAnnotationValidationErrors(getWsProjectName(), 1);
 	}
-	
+
 	@Test
 	public void testBadToCorrectValueValidation() {
-		
 		/* prepare project */
-		prepareRestfulResource(editorForClass(getWsProjectName(), "src", 
-				"org.rest.test", "RestService.java"), SIMPLE_REST_WS_RESOURCE, 
-				"org.rest.test", "RestService",
-				GET_METHOD_PATH, BAD_PATH_PARAM);
-		prepareRestfulResource(bot.activeEditor(), SIMPLE_REST_WS_RESOURCE, 
-				"org.rest.test", "RestService",
-				GET_METHOD_PATH, CORRECT_PATH_PARAM);
-		
+		prepareSimpleRestService(GET_METHOD_PATH, BAD_PATH_PARAM);
+		replaceInRestService(BAD_PATH_PARAM, CORRECT_PATH_PARAM);
+
 		/* test count of validation errors */
 		assertCountOfPathAnnotationValidationErrors(getWsProjectName(), 0);
 	}
-
 }

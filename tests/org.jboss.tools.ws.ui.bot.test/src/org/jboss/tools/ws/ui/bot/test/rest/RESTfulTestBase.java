@@ -11,17 +11,16 @@
 
 package org.jboss.tools.ws.ui.bot.test.rest;
 
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.hamcrest.Matcher;
+import org.hamcrest.core.StringContains;
 import org.hamcrest.core.StringStartsWith;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.reddeer.eclipse.condition.ProblemsExists;
 import org.jboss.reddeer.eclipse.condition.ProblemsExists.ProblemType;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
@@ -32,13 +31,15 @@ import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.matcher.RegexMatcher;
 import org.jboss.reddeer.swt.matcher.WithTextMatchers;
+import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
-import org.jboss.tools.ui.bot.ext.Timing;
+import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
+import org.jboss.tools.ws.reddeer.editor.ExtendedTextEditor;
 import org.jboss.tools.ws.reddeer.jaxrs.core.RestFullAnnotations;
 import org.jboss.tools.ws.reddeer.jaxrs.core.RestFullExplorer;
 import org.jboss.tools.ws.reddeer.jaxrs.core.RestService;
@@ -87,7 +88,6 @@ public class RESTfulTestBase extends WSTestBase {
 	}
 
 	protected static void importRestWSProject(String projectName) {
-
 		// importing project without targeted runtime set
 		importWSTestProject(projectName);
 
@@ -127,11 +127,11 @@ public class RESTfulTestBase extends WSTestBase {
 	}
 
 	protected void assertExpectedPathOfService(String message,
-			RestService service, String expectedPath) {//TODO: is it neccesary?
+			RestService service, String expectedPath) {
 		assertEquals(message + "Failure when comparing paths\n", expectedPath,
 				service.getPath());
 	}
-	
+
 	protected void assertExpectedPathOfService(RestService service,
 			String expectedPath) {
 		assertExpectedPathOfService("", service, expectedPath);
@@ -289,18 +289,12 @@ public class RESTfulTestBase extends WSTestBase {
 		wsTesterView.invoke();
 	}
 
-	protected SWTBotEditor editorForClass(String projectName, String... path) {
-		return packageExplorer.openFile(projectName, path);
-	}
-
-	protected void prepareRestfulResource(SWTBotEditor editor,
-			String resourceFile, Object... parameters) {
+	protected void copyRestfulResource(String resourceFile, Object... param) {
 		String streamPath = "/resources/restful/" + resourceFile;
-		resourceHelper.copyResourceToClassWithSave(editor,
-				this.getClass()
-						.getResourceAsStream(streamPath), true, false,
-				parameters);
-		bot.sleep(Timing.time2S());
+		InputStream stream = this.getClass().getResourceAsStream(streamPath);
+		resourceHelper.copyResourceToClassWithSave(
+				stream, true, param);
+		AbstractWait.sleep(TimePeriod.getCustom(2));
 	}
 
 	private boolean allRestServicesArePresent(List<RestService> restServices) {
@@ -347,5 +341,41 @@ public class RESTfulTestBase extends WSTestBase {
 		dialog.finish();
 		new WsTesterView();
 		new WaitWhile(new JobIsRunning(), TimePeriod.getCustom(20));
+	}
+
+	protected void prepareSimpleRestService(String pathArgument, String pathParamArgument) {
+		prepareRestService(getWsProjectName(), SIMPLE_REST_WS_RESOURCE,
+				pathArgument, pathParamArgument);
+	}
+
+	protected void prepareRestService(String projectName, String resourceFileName,
+			Object... param) {
+		openJavaFile(projectName, "org.rest.test", "RestService.java");
+		Object[] newParam = new Object[2 + (param != null ? param.length : 0)];
+		newParam[0] = "org.rest.test";
+		newParam[1] = "RestService";
+		for(int i=2;i<newParam.length;i++) {
+			newParam[i] = param[i-2];
+		}
+		copyRestfulResource(resourceFileName, newParam);
+	}
+
+	protected void replaceInRestService(String regex, String replacement) {
+		replaceInRestService(getWsProjectName(), regex, replacement);
+	}
+
+	protected void replaceInRestService(String projectName,
+			String regex, String replacement) {
+		openJavaFile(projectName, "org.rest.test", "RestService.java");
+		ExtendedTextEditor editor = new ExtendedTextEditor();
+		editor.replace(regex, replacement);
+	}
+
+
+	protected TextEditor setCursorPositionToLineInTextEditor(String text) {
+		ExtendedTextEditor editor = new ExtendedTextEditor();
+		int line = editor.getLineNum(StringContains.containsString(text));
+		editor.setCursorPosition(line, 0);
+		return editor;
 	}
 }

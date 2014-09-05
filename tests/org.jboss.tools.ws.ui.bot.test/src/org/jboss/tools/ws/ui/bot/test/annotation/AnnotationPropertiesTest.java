@@ -16,7 +16,6 @@ import static org.junit.Assert.assertThat;
 import java.util.Arrays;
 import java.util.List;
 
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
 import org.hamcrest.core.Is;
 import org.hamcrest.core.IsNot;
 import org.jboss.reddeer.swt.api.TreeItem;
@@ -24,6 +23,7 @@ import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.ws.reddeer.jaxrs.core.RestService;
 import org.jboss.tools.ws.reddeer.ui.views.AnnotationPropertiesView;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
+import org.jboss.tools.ws.ui.bot.test.utils.Asserts;
 import org.junit.Test;
 
 /**
@@ -166,8 +166,8 @@ public class AnnotationPropertiesTest extends RESTfulTestBase {
 
 		for (RestService service : restfulServicesForProject(getWsProjectName())) {
 			String path = service.getPath();
-			assertDoesNotContain("rest", path);
-			assertContains("edit", path);	
+			Asserts.assertNotContain(path, "rest");
+			assertContains("edit", path);
 		}
 
 		/** delete JAX-RS annotation **/
@@ -183,8 +183,8 @@ public class AnnotationPropertiesTest extends RESTfulTestBase {
 	}
 
 	private void navigateInActiveEditor(int line, int column) {
-		SWTBotEclipseEditor editor = bot.activeEditor().toTextEditor();
-		editor.navigateTo(line, column);
+		TextEditor editor = new TextEditor();
+		editor.setCursorPosition(line, column);
 	}
 
 	private void activeEditorDoesntContain(String value) {
