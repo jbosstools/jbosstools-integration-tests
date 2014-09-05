@@ -33,20 +33,7 @@ public class ParamConverterSupportTest extends RESTfulTestBase {
 	 * Project contains RestService with @POST method with {@link PathParam}
 	 * bound to class Car
 	 */
-	final String PROJECT1_NAME = "paramConverter1";
-	
-	/**
-	 * Project contains RestService with field annotated with {@link PathParam}
-	 * bound to class Car. Also contains class Converter that implements
-	 * ParamConverterProvider.
-	 */
-	final String PROJECT2_NAME = "paramConverter2";
-	
-	/**
-	 * Project contains RestService with @GET method returning instance
-	 * of class Car. Also contains class Converter that implements ParamConverterProvider.
-	 */
-	final String PROJECT3_NAME = "paramConverter3";
+	final String PROJECT1_NAME = "paramConverter";
 	
 	@Override
 	public void setup() {

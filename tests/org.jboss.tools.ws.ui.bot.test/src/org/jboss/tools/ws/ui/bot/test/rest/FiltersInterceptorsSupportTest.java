@@ -62,12 +62,8 @@ public class FiltersInterceptorsSupportTest extends RESTfulTestBase {
 	}
 
 	/**
-	 * Tests if filters and interceptors defined as inner class are recognized.
-	 * 
-	 * If they are recognized than there should be warning for each filter/interceptor
-	 * because they are not registered as JAX-RS Providers (missing @Provider annotation)
-	 * 
-	 * Fails due to JBIDE-17178
+	 * Resolved - JBIDE-17178
+	 * (Problem with filters and interceptors defined as inner classes)
 	 * 
 	 * @see https://issues.jboss.org/browse/JBIDE-17178
 	 */
