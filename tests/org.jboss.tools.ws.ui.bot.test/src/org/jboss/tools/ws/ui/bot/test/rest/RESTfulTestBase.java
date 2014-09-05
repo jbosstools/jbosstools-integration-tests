@@ -371,11 +371,18 @@ public class RESTfulTestBase extends WSTestBase {
 		editor.replace(regex, replacement);
 	}
 
-
 	protected TextEditor setCursorPositionToLineInTextEditor(String text) {
 		ExtendedTextEditor editor = new ExtendedTextEditor();
 		int line = editor.getLineNum(StringContains.containsString(text));
 		editor.setCursorPosition(line, 0);
+		return editor;
+	}
+
+	protected TextEditor setCursorPositionToTextInTextEditor(String text) {
+		ExtendedTextEditor editor = new ExtendedTextEditor();
+		int line = editor.getLineNum(StringContains.containsString(text));
+		editor.setCursorPosition(line, editor.getTextAtLine(line).indexOf(text)
+				+ text.length());
 		return editor;
 	}
 }
