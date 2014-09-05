@@ -72,7 +72,9 @@ public class PathParamAnnotationSupportTest extends RESTfulTestBase {
 	}
 	
 	/**
-	 * Fails due to JBIDE-17663
+	 * Resolved - JBIDE-17663
+	 * (JAX-RS Explorer doesn't reflect binding parameter to field)
+	 *
 	 * @see https://issues.jboss.org/browse/JBIDE-17663
 	 */
 	@Test
@@ -90,6 +92,7 @@ public class PathParamAnnotationSupportTest extends RESTfulTestBase {
 
 		/* prepare project */
 		importRestWSProject(projectPath3);
+		AbstractWait.sleep(TimePeriod.getCustom(2));
 
 		/* get RESTful services from JAX-RS REST explorer for the project */
 		restServices = restfulServicesForProject(projectPath3);
@@ -97,13 +100,13 @@ public class PathParamAnnotationSupportTest extends RESTfulTestBase {
 		/* test JAX-RS REST explorer */
 		assertCountOfRESTServices(restServices, 1);
 		assertExpectedPathOfService("JBIDE-17663: ", restServices.get(0),
-				"/rest/{" + pathParam2 + ":" + pathType2 + "}");
+				"/rest/{" + pathParam2 + ":" + pathType1 + "}");
 	}
 	
 	/**
-	 * Fails due to JBIDE-17663
+	 * Resolved - JBIDE-17663
 	 * (JAX-RS Explorer doesn't reflect binding parameter to field)
-	 * 
+	 *
 	 * @see https://issues.jboss.org/browse/JBIDE-17663
 	 */
 	@Test

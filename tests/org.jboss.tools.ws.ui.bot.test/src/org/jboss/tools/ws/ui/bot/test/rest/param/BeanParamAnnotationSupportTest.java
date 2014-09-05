@@ -8,6 +8,8 @@ import javax.ws.rs.PathParam;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.reddeer.requirements.server.ServerReqState;
+import org.jboss.reddeer.swt.wait.AbstractWait;
+import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
@@ -80,7 +82,7 @@ public class BeanParamAnnotationSupportTest extends RESTfulTestBase {
 	}
 
 	/**
-	 * Fails due to JBIDE-17796
+	 * Resolved - JBIDE-17796
 	 * (BeanParam: unbound @PathParam error is present after the problem had been fixed)
 	 * 
 	 * @see https://issues.jboss.org/browse/JBIDE-17796
@@ -89,7 +91,7 @@ public class BeanParamAnnotationSupportTest extends RESTfulTestBase {
 	public void testBeanClassWithPathParamField() {
 		final String pathAnnotation = "@Path(\"{" + pathParam1 + "}\")";
 		final String pathParameterNotBoundToAnyFieldWarning = "The @Path template parameter 'id' is not bound to any field, property or method parameter annotated with @PathParam(\"id\").";
-		final String pathParamNotBoundToPathParameterError = "@PathParam value 'id' does not match any @Path annotation template parameters of the java method 'post' and its enclosing java type 'org.rest.test.RestService'.";
+		final String pathParamNotBoundToPathParameterError = "@PathParam value 'id' does not match any @Path annotation template parameters in 'org.rest.test.RestService'.";
 		final String pathParameterNotBoundToPathParamError = "@PathParam value 'id' in associated Parameter Aggregator 'org.rest.test.BeanClass' does not match any @Path annotation template parameters of the java method 'post' and its enclosing java type 'org.rest.test.RestService'.";
 		/* prepare project */
 		importRestWSProject(PROJECT1_NAME);
@@ -112,6 +114,7 @@ public class BeanParamAnnotationSupportTest extends RESTfulTestBase {
 
 		/* remove @Path annotation from RestService and assert there are two errors (one in RestService and one in BeanClass */
 		editor.removeLine(pathAnnotation);
+		AbstractWait.sleep(TimePeriod.getCustom(2));
 		assertCountOfValidationErrors(PROJECT1_NAME, pathParamNotBoundToPathParameterError, 1);
 		assertCountOfValidationErrors(PROJECT1_NAME, pathParameterNotBoundToPathParamError, 1);
 		assertCountOfValidationErrors(PROJECT1_NAME, 2);
@@ -121,7 +124,7 @@ public class BeanParamAnnotationSupportTest extends RESTfulTestBase {
 		assertCountOfValidationErrors(PROJECT1_NAME, 0, "JBIDE-17796");
 
 		/* open BeanClass class */
-		openBeanClass(PROJECT2_NAME);
+		openBeanClass(PROJECT1_NAME);
 		editor = new ExtendedTextEditor();
 
 		/* remove @PathParam from BeanClass and assert that there is an warning */

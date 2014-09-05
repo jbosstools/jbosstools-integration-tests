@@ -109,7 +109,7 @@ public class CreateJAXRSResourceTest extends RESTfulTestBase {
 	}
 
 	/**
-	 * Fails due to JBIDE-17457
+	 * Resolved - JBIDE-17457
 	 * (JAX-RS Resource Wizard has inconsistent validation of target entity)
 	 * 
 	 * @see https://issues.jboss.org/browse/JBIDE-17457
@@ -144,12 +144,8 @@ public class CreateJAXRSResourceTest extends RESTfulTestBase {
 	@Test
 	public void testWithoutTargetEntityCantUseMethods() {
 		JAXRSResourceCreateResourceWizardPage firstPage = new JAXRSResourceCreateResourceWizardPage();
-		final String NON_EXISTING_TARGET_ENTITY = "NON_EXISTING_TARGET_ENTITY";
 
 		assertTrue("Dialog shouldn't allow to create methods when the target entity is not set",
-				!firstPage.areAvailableJAXRSResourceMethodEnabled());
-		firstPage.setTargetEntity(NON_EXISTING_TARGET_ENTITY);
-		assertTrue("JBIDE-17457: Dialog shouldn't allow to create methods when the target entity is not set",
 				!firstPage.areAvailableJAXRSResourceMethodEnabled());
 
 		firstPage.setTargetEntity("");

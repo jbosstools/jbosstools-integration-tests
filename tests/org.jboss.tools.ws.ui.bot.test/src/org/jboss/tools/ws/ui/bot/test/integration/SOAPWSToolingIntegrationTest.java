@@ -49,11 +49,6 @@ public class SOAPWSToolingIntegrationTest extends WSTestBase {
 	}
 
 	@Override
-	public void cleanup() {
-		
-	}
-
-	@Override
 	protected String getWsProjectName() {
 		return "integration2";
 	}
@@ -66,6 +61,7 @@ public class SOAPWSToolingIntegrationTest extends WSTestBase {
 
 	private WsTesterView openWSDLFileInWSTester() {
 		ProjectExplorer projectExplorer = new ProjectExplorer();
+		projectExplorer.open();
 		projectExplorer.getProject(getWsProjectName()).getProjectItem("wsdl",
 				"HelloWorldService.wsdl").select();
 
