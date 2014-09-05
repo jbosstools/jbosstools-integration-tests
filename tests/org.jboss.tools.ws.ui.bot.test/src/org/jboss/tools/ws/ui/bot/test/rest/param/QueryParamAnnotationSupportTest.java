@@ -94,9 +94,7 @@ public class QueryParamAnnotationSupportTest extends RESTfulTestBase {
 		importRestWSProject(project2Name);
 
 		/* replace param1 to newParam1 */
-		resourceHelper.replaceInEditor(editorForClass(project2Name, "src",
-				"org.rest.test", "RestService.java").toTextEditor(), 
-				queryParam1, queryParam1New, true);
+		replaceInRestService(project2Name, queryParam1, queryParam1New);
 		AbstractWait.sleep(TimePeriod.getCustom(2));
 
 		/* get RESTful services from JAX-RS REST explorer for the project */
@@ -115,13 +113,9 @@ public class QueryParamAnnotationSupportTest extends RESTfulTestBase {
 
 		/* prepare project and class */
 		importRestWSProject(query2ProjectName);
-		prepareRestfulResource(editorForClass(query2ProjectName, "src",
-				"org.rest.test", "RestService.java"), QUERY_TWO_PARAM_RESOURCE, 
-				"org.rest.test", "RestService",
+		prepareRestService(query2ProjectName, QUERY_TWO_PARAM_RESOURCE,
 				queryParam1, queryType1, queryParam2, queryType2);
-		resourceHelper.replaceInEditor(editorForClass(query2ProjectName, "src",
-				"org.rest.test", "RestService.java").toTextEditor(),
-				queryType1, queryTypeNew, true);
+		replaceInRestService(query2ProjectName, queryType1, queryTypeNew);
 		AbstractWait.sleep(TimePeriod.getCustom(2));
 
 		/* get RESTful services from JAX-RS REST explorer for the project */

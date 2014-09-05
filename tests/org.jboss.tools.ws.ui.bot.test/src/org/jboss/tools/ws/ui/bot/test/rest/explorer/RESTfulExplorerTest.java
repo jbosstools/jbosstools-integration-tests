@@ -13,8 +13,8 @@ package org.jboss.tools.ws.ui.bot.test.rest.explorer;
 
 import java.util.List;
 
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
-import org.jboss.tools.ui.bot.ext.Timing;
+import org.jboss.reddeer.swt.wait.AbstractWait;
+import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.tools.ws.reddeer.jaxrs.core.RestFullAnnotations;
 import org.jboss.tools.ws.reddeer.jaxrs.core.RestService;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
@@ -27,6 +27,9 @@ import org.junit.Test;
  */
 public class RESTfulExplorerTest extends RESTfulTestBase {
 
+	private static final String REST_BASIC_PROJECT_NAME = "restBasic";
+	private static final String REST_ADVANCED_PROJECET_NAME = "restAdvanced";
+
 	@Override
 	public void setup() {
 
@@ -34,11 +37,13 @@ public class RESTfulExplorerTest extends RESTfulTestBase {
 
 	@Test
 	public void testAddingSimpleRESTMethods() {
+		final String projectName = REST_BASIC_PROJECT_NAME;
+
 		/* import project */
-		importRestWSProject("restBasic");
+		importRestWSProject(projectName);
 
 		/* get RESTful services from JAX-RS REST explorer for the project */
-		List<RestService> restServices = restfulServicesForProject("restBasic");
+		List<RestService> restServices = restfulServicesForProject(projectName);
 
 		/* test JAX-RS REST explorer */
 		assertCountOfRESTServices(restServices, 4);
@@ -48,75 +53,76 @@ public class RESTfulExplorerTest extends RESTfulTestBase {
 
 	@Test
 	public void testAddingAdvancedRESTMethods() {
+		final String projectName = REST_ADVANCED_PROJECET_NAME;
+
 		/* import project */
-		importRestWSProject("restAdvanced");
+		importRestWSProject(projectName);
 
 		/* get RESTful services from JAX-RS REST explorer for the project */
-		List<RestService> restServices = restfulServicesForProject("restAdvanced");
+		List<RestService> restServices = restfulServicesForProject(projectName);
 
 		/* test JAX-RS REST explorer */
 		assertCountOfRESTServices(restServices, 4);
 		assertAllRESTServicesInExplorer(restServices);
 		testAdvancedRESTServices(restServices);
 	}
-	
+
 	@Test
 	public void testEditingSimpleRESTMethods() {
+		final String projectName = REST_BASIC_PROJECT_NAME;
+
 		/* import project */
-		importRestWSProject("restBasic");
+		importRestWSProject(projectName);
 
 		/* replace @DELETE annotation to @GET annotation */
-		resourceHelper.replaceInEditor(editorForClass("restBasic", "src",
-				"org.rest.test", "RestService.java").toTextEditor(), "@DELETE", "@GET", true);
+		replaceInRestService(projectName, "@DELETE", "@GET");
 
 		/* get RESTful services from JAX-RS REST explorer for the project */
-		List<RestService> restServices = restfulServicesForProject("restBasic");
+		List<RestService> restServices = restfulServicesForProject(projectName);
 
 		/* test JAX-RS REST explorer */
 		assertNotAllRESTServicesInExplorer(restServices);
 		assertAbsenceOfRESTWebService(restServices,
 				RestFullAnnotations.DELETE.getLabel());
 	}
-	
+
 	/**
-	 * Fails due to JBIDE-16163.
-	 * Workaround is possible: delay between typing
-	 *  - add bot.sleep(Timing.time2S()) after replacing the text in editor
+	 * Resolved - JBIDE-16163
+	 * (Missing update in JAX-RS explorer when facing to quick change in code)
 	 * 
 	 * @see https://issues.jboss.org/browse/JBIDE-16163
 	 */
 	@Test
 	public void testEditingAdvancedRESTMethods() {
+		final String projectName = REST_ADVANCED_PROJECET_NAME;
+
 		/* import project */
-		importRestWSProject("restAdvanced");
+		importRestWSProject(projectName);
 
 		/* edit @DELETE annotation */
-		SWTBotEclipseEditor editor = editorForClass("restAdvanced", "src",
-				"org.rest.test", "RestService.java").toTextEditor();
-		resourceHelper.replaceInEditor(editor, "/delete/{id}",
-				"delete/edited/{id}", true);
-		resourceHelper.replaceInEditor(editor, "@DELETE", "@DELETE"
-				+ LINE_SEPARATOR + "@Produces(\"text/plain\")", true);
-		//bot.sleep(Timing.time2S());
+		replaceInRestService(projectName, "/delete/{id}", "delete/edited//{id}");
+		replaceInRestService(projectName, "@DELETE", "@DELETE" + LINE_SEPARATOR
+				+ "@Produces(\"text/plain\")");
+		AbstractWait.sleep(TimePeriod.getCustom(2));
 
 		/* get RESTful services from JAX-RS REST explorer for the project */
-		List<RestService> restServices = restfulServicesForProject("restAdvanced");
+		List<RestService> restServices = restfulServicesForProject(projectName);
 
 		/* test JAX-RS REST explorer */
 		testEditedDeleteRestWebResource(restServices);
 	}
-	
+
 	@Test
 	public void testDeletingRESTMethods() {
+		final String projectName = REST_BASIC_PROJECT_NAME;
+
 		/* prepare project*/
-		importRestWSProject("restBasic");
-		prepareRestfulResource(editorForClass("restBasic", "src",
-				"org.rest.test", "RestService.java"), "EmptyRestfulWS.java.ws",
-				"org.rest.test", "RestService");
-		bot.sleep(Timing.time2S());
+		importRestWSProject(projectName);
+		prepareRestService(projectName, "EmptyRestfulWS.java.ws");
+		AbstractWait.sleep(TimePeriod.getCustom(2));
 
 		/* get RESTful services from JAX-RS REST explorer for the project */
-		List<RestService> restServices = restfulServicesForProject("restBasic");
+		List<RestService> restServices = restfulServicesForProject(projectName);
 
 		/* none of REST web services found */
 		assertCountOfRESTServices(restServices, 0);
@@ -125,8 +131,8 @@ public class RESTfulExplorerTest extends RESTfulTestBase {
 	private void testEditedDeleteRestWebResource(List<RestService> restServices) {
 		for (RestService restService : restServices) {
 			if (restService.getName().equals(RestFullAnnotations.DELETE.getLabel())) {
-				assertEquals("Path of DELETE operation ", restService.getPath(), "/rest/delete/edited/{id:int}");
-				assertEquals("Produces info of DELETE operation ", restService.getProducesInfo(), "text/plain");
+				assertEquals("Path of DELETE operation ", "/rest/delete/edited/{id:int}", restService.getPath());
+				assertEquals("Produces info of DELETE operation ", "text/plain", restService.getProducesInfo());
 			}
 		}
 	}

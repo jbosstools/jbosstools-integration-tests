@@ -41,13 +41,9 @@ public class RESTfulCompletionTest extends RESTfulTestBase{
 	
 	@Test
 	public void testWithEmptyPrefix() {
-		
 		/* prepare project */
-		prepareRestfulResource(editorForClass(getWsProjectName(), "src", 
-				"org.rest.test", "RestService.java"), SIMPLE_REST_WS_RESOURCE, 
-				"org.rest.test", "RestService",
-				GET_METHOD_PATH, "");
-		
+		prepareSimpleRestService(GET_METHOD_PATH, "");
+
 		/* test content assist proposal */
 		ContentAssistHelper.checkContentAssistContent(bot, 
 				getWsName() + ".java", PATH_PARAM_NAVIGATION, PATH_PARAM_NAVIGATION.length() + 1, 
@@ -57,13 +53,9 @@ public class RESTfulCompletionTest extends RESTfulTestBase{
 	
 	@Test
 	public void testWithValidPrefixAtTheEnd() {
-		
 		/* prepare project */
-		prepareRestfulResource(editorForClass(getWsProjectName(), "src", 
-				"org.rest.test", "RestService.java"), SIMPLE_REST_WS_RESOURCE, 
-				"org.rest.test", "RestService",
-				GET_METHOD_PATH, CORRECT_PATH_PARAM);
-		
+		prepareSimpleRestService(GET_METHOD_PATH, CORRECT_PATH_PARAM);
+
 		/* test content assist proposal */
 		ContentAssistHelper.checkContentAssistContent(bot, 
 				getWsName() + ".java", PATH_PARAM_NAVIGATION, PATH_PARAM_NAVIGATION.length() + 
@@ -74,13 +66,9 @@ public class RESTfulCompletionTest extends RESTfulTestBase{
 	
 	@Test
 	public void testWithValidPrefixInTheBeginning() {
-	
 		/* prepare project */
-		prepareRestfulResource(editorForClass(getWsProjectName(), "src", 
-				"org.rest.test", "RestService.java"), SIMPLE_REST_WS_RESOURCE, 
-				"org.rest.test", "RestService",
-				GET_METHOD_PATH, CORRECT_PATH_PARAM);
-		
+		prepareSimpleRestService(GET_METHOD_PATH, CORRECT_PATH_PARAM);
+
 		/* test content assist proposal */
 		ContentAssistHelper.checkContentAssistContent(bot, 
 				getWsName() + ".java", PATH_PARAM_NAVIGATION, PATH_PARAM_NAVIGATION.length() + 1, 
@@ -90,13 +78,9 @@ public class RESTfulCompletionTest extends RESTfulTestBase{
 	
 	@Test
 	public void testWithInvalidPrefixAtTheEnd() {
-		
 		/* prepare project */
-		prepareRestfulResource(editorForClass(getWsProjectName(), "src", 
-				"org.rest.test", "RestService.java"), SIMPLE_REST_WS_RESOURCE, 
-				"org.rest.test", "RestService",
-				GET_METHOD_PATH, INCORRECT_PATH_PARAM);
-		
+		prepareSimpleRestService(GET_METHOD_PATH, INCORRECT_PATH_PARAM);
+
 		/* test content assist proposal */
 		ContentAssistHelper.checkContentAssistContent(bot, 
 				getWsName() + ".java", PATH_PARAM_NAVIGATION, PATH_PARAM_NAVIGATION.length() + 
@@ -107,13 +91,9 @@ public class RESTfulCompletionTest extends RESTfulTestBase{
 
 	@Test
 	public void testWithInvalidPrefixInTheBeginning() {
-	
 		/* prepare project */
-		prepareRestfulResource(editorForClass(getWsProjectName(), "src", 
-				"org.rest.test", "RestService.java"), SIMPLE_REST_WS_RESOURCE, 
-				"org.rest.test", "RestService",
-				GET_METHOD_PATH, INCORRECT_PATH_PARAM);
-		
+		prepareSimpleRestService(GET_METHOD_PATH, INCORRECT_PATH_PARAM);
+
 		/* test content assist proposal */
 		ContentAssistHelper.checkContentAssistContent(bot, 
 				getWsName() + ".java", PATH_PARAM_NAVIGATION, PATH_PARAM_NAVIGATION.length() + 1, 
@@ -123,18 +103,13 @@ public class RESTfulCompletionTest extends RESTfulTestBase{
 	
 	@Test
 	public void testWithAllInvalidParamSelection() {
-		
 		/* prepare project */
-		prepareRestfulResource(editorForClass(getWsProjectName(), "src", 
-				"org.rest.test", "RestService.java"), SIMPLE_REST_WS_RESOURCE, 
-				"org.rest.test", "RestService",
-				GET_METHOD_PATH, INCORRECT_PATH_PARAM);
-		
+		prepareSimpleRestService(GET_METHOD_PATH, INCORRECT_PATH_PARAM);
+
 		/* test content assist proposal */
 		ContentAssistHelper.checkContentAssistContent(bot, 
 				getWsName() + ".java", PATH_PARAM_NAVIGATION, PATH_PARAM_NAVIGATION.length() + 1, 
 				INCORRECT_PATH_PARAM.length(), EXP_NON_EMPTY_COMPLETION_RESULT);
 		
 	}
-	
 }

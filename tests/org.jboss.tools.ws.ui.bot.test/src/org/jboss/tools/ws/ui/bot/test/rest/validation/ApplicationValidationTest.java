@@ -11,6 +11,7 @@
 
 package org.jboss.tools.ws.ui.bot.test.rest.validation;
 
+import org.jboss.tools.ws.reddeer.editor.ExtendedTextEditor;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,67 +34,74 @@ public class ApplicationValidationTest extends RESTfulTestBase {
 	 */
 	@Test
 	public void testMultipleApplicationClasses() {
-		
+		final String projectName = "app1";
+
 		/* prepare project */
-		importRestWSProject("app1");
+		importRestWSProject(projectName);
 		
 		/* test validation error */
-		assertCountOfValidationErrors("app1", 2);
-		assertCountOfValidationErrors("app1", "Multiple JAX-RS Activators", 2);
+		assertCountOfValidationErrors(projectName, 2);
+		assertCountOfValidationErrors(projectName, "Multiple JAX-RS Activators", 2);
 	}
 	
 	@Test
 	public void testWebXmlAndApplicationClassWithWarning() {
-		
+		final String projectName = "app2";
+
 		/* prepare project */
-		importRestWSProject("app2");
-		
+		importRestWSProject(projectName);
+
 		/* test validation error */
-		assertCountOfValidationErrors("app2", 2);
-		assertCountOfValidationErrors("app2", "Multiple JAX-RS Activators", 2);
+		assertCountOfValidationErrors(projectName, 2);
+		assertCountOfValidationErrors(projectName, "Multiple JAX-RS Activators", 2);
 	}
 	
 	@Test
 	public void testWebXmlAndApplicationClassWithoutWarning() {
-		
+		final String projectName = "app3";
+
 		/* prepare project */
-		importRestWSProject("app3");
-		
+		importRestWSProject(projectName);
+
 		/* test validation error */
-		assertCountOfValidationWarnings("app3", 0);
-		assertCountOfValidationErrors("app3", 0);
+		assertCountOfValidationWarnings(projectName, 0);
+		assertCountOfValidationErrors(projectName, 0);
 	}
 	
 	@Test
 	public void testNotExtendingApplicationClass() {
-		
+		final String projectName = "app4";
+
 		/* prepare project */
-		importRestWSProject("app4");
-		
+		importRestWSProject(projectName);
+
 		/* test validation error */
-		assertCountOfValidationErrors("app4", 1);
-		
+		assertCountOfValidationErrors(projectName, 1);
+
 		/* fix class - should be no error */
-		resourceHelper.replaceInEditor(editorForClass("app4", "src", 
-				"test", "App.java").toTextEditor(), "@ApplicationPath(\"/rest\")", "", true);
-		
+		openJavaFile(projectName, "test", "App.java");
+		ExtendedTextEditor textEditor = new ExtendedTextEditor();
+		textEditor.replace("@ApplicationPath(\"/rest\")", "");
+
 		/* test validation error */
-		assertCountOfValidationErrors("app4", 0);
+		assertCountOfValidationErrors(projectName, 0);
 	}
-	
+
 	@Test
 	public void testApplicationClassWithoutPath() {
-		
+		final String projectName = "app5";
+
 		/* prepare project */
-		importRestWSProject("app5");
-		
+		importRestWSProject(projectName);
+
 		/* test validation error */
-		assertCountOfValidationErrors("app5", 1);
-		
+		assertCountOfValidationErrors(projectName, 1);
+
 		/* fix class - should be no error */
-		resourceHelper.replaceInEditor(editorForClass("app5", "src", 
-				"test", "App.java").toTextEditor(), "extends Application", "", true);
-		
+		openJavaFile(projectName, "test", "App.java");
+		ExtendedTextEditor textEditor = new ExtendedTextEditor();
+		textEditor.replace("extends Application", "");
+
 		/* test validation error */
 		assertCountOfValidationErrors("app5", 0);
 	}

@@ -21,31 +21,32 @@ import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
-import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
-import org.eclipse.swtbot.swt.finder.results.Result;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.swt.api.Tree;
+import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.swt.condition.JobIsRunning;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
+import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
-import org.jboss.tools.ui.bot.ext.SWTBotExt;
-import org.jboss.tools.ui.bot.ext.SWTUtilExt;
+import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.jboss.tools.common.reddeer.label.IDELabel;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
-import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
 import org.jboss.tools.ws.reddeer.ui.wizards.wst.WebServiceWizardPageBase.SliderLevel;
 import org.jboss.tools.ws.ui.bot.test.WSAllBotTests;
 import org.jboss.tools.ws.ui.bot.test.webservice.TopDownWSTest;
 import org.jboss.tools.ws.ui.bot.test.webservice.WebServiceRuntime;
 import org.jboss.tools.ws.ui.bot.test.webservice.WebServiceTestBase;
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -61,8 +62,6 @@ import org.junit.runners.Suite.SuiteClasses;
 		server=@Server)
 @OpenPerspective(JavaEEPerspective.class)
 @JBossServer()
-//		(type=ServerType.EAP, 
-//		version = "5.1", operator = ">="))
 public class EAPFromWSDLTest extends WebServiceTestBase {
 
 	private static boolean servicePassed = false;
@@ -76,18 +75,6 @@ public class EAPFromWSDLTest extends WebServiceTestBase {
 		if (!projectExists(getWsClientProjectName())) {
 			projectHelper.createProject(getWsClientProjectName());
 		}
-	}
-
-	@After
-	@Override
-	public void cleanup() {
-		LOGGER.info("overridden");
-	}
-
-	@AfterClass
-	public static void x() {
-		LOGGER.info("x");
-		servers.removeAllProjectsFromServer();
 	}
 
 	@Override
@@ -125,13 +112,13 @@ public class EAPFromWSDLTest extends WebServiceTestBase {
 	protected SliderLevel getLevel() {
 		return SliderLevel.DEPLOY;
 	}
-	
+
 	@Test
 	public void testEAPFromWSDL() {
 		testService();
 		testClient();
 	}
-	
+
 	private void testService() {
 		topDownWS(TopDownWSTest.class.getResourceAsStream("/resources/jbossws/AreaService.wsdl"),
 				WebServiceRuntime.JBOSS_WS, getWsPackage());
@@ -186,32 +173,22 @@ public class EAPFromWSDLTest extends WebServiceTestBase {
 		Assert.assertTrue(f.exists());
 		replaceContent(f, "/resources/jbossws/clientsample.java.ws");
 
-		/*
-		 * workaround for https://issues.jboss.org/browse/JBIDE-9817
-		 */
-		projectExplorer.selectProject(getWsClientProjectName());
-		SWTBotTree tree = projectExplorer.bot().tree();
-		SWTBotTreeItem item = tree.getTreeItem(getWsClientProjectName());
-		item.expand();
-		removeRuntimeLibrary(tree, item, bot, util);
-
 		/* workaround problems with generated code that require JAX-WS API 2.2 */
 		jaxWsApi22RequirementWorkaround(getWsClientProjectName(), getWsClientPackage());
-		
 		eclipse.runJavaApplication(getWsClientProjectName(),
 				"org.jboss.wsclient.clientsample.ClientSample", null);
-		util.waitForNonIgnoredJobs();
+		new WaitWhile(new JobIsRunning(), TimePeriod.NORMAL);
 		
 		// wait until the client ends (prints the last line)
 		new WaitUntil(new ConsoleHasText("Call Over!"), TimePeriod.NORMAL);
 
 		ConsoleView cw = new ConsoleView();
 		String consoleOutput = cw.getConsoleText();
-		LOGGER.info(consoleOutput);
+		LOGGER.info("Console output: " + consoleOutput);
 		Assert.assertTrue(consoleOutput, consoleOutput.contains("Server said: 37.5"));
 		Assert.assertTrue(consoleOutput.contains("Server said: 3512.3699"));
 	}
-	
+
 	private void replaceContent(IFile f, String content) {
 		try {
 			f.delete(true, new NullProgressMonitor());
@@ -242,72 +219,16 @@ public class EAPFromWSDLTest extends WebServiceTestBase {
 		} catch (CoreException e) {
 			LOGGER.log(Level.WARNING, e.getMessage(), e);
 		}
-		util.waitForNonIgnoredJobs();		
+		new WaitWhile(new JobIsRunning(), TimePeriod.NORMAL);
 	}
 
-	private void removeRuntimeLibrary(final SWTBotTree tree,
-			SWTBotTreeItem item, SWTBotExt bot, SWTUtilExt util) {
-		nodeContextMenu(tree, item, "Build Path", "Configure Build Path...")
-				.click();
-		bot.activeShell().activate();
-		bot.tabItem("Libraries").activate();
-		assertTrue(!bot.button("Remove").isEnabled());
-		try {
-			findSelectEnterpriseRuntimeLibrary(bot);
-			assertTrue(bot.button("Remove").isEnabled());
-			bot.button("Remove").click();
-			bot.button("OK").click();			
-			util.waitForNonIgnoredJobs();
-		} catch (Exception e) {
-			e.printStackTrace();
-			bot.button("Cancel").click();
-		}
-
-	}
-
-	private void findSelectEnterpriseRuntimeLibrary(SWTBotExt bot)
-			throws Exception {
-		SWTBotTree libraryTree = bot.tree(1);
-		boolean libraryFound = false;
-		for (SWTBotTreeItem libraryItem : libraryTree.getAllItems()) {
-			if (libraryItem.getText().contains(
-					"JBoss Enterprise Application Platform")) {
-				libraryTree.select(libraryItem);
-				libraryFound = true;
-				break;
-			}
-		}
-		if (!libraryFound)
-			throw new RuntimeException("No runtime library has been found");
-	}
-
-	private SWTBotMenu nodeContextMenu(final SWTBotTree tree,
-			SWTBotTreeItem item, final String... menu) {
-		assert menu.length > 0;
-		ContextMenuHelper.prepareTreeItemForContextMenu(tree, item);
-		return UIThreadRunnable.syncExec(new Result<SWTBotMenu>() {
-
-			public SWTBotMenu run() {
-				SWTBotMenu m = new SWTBotMenu(ContextMenuHelper.getContextMenu(
-						tree, menu[0], false));
-				for (int i = 1; i < menu.length; i++) {
-					m = m.menu(menu[i]);
-				}
-				return m;
-			}
-		});
-	}
-	
 	/**
 	 * @see https://community.jboss.org/message/732539#732539
-	 * 
-	 * @param projectName
-	 * @param pkgName
 	 */
 	private void jaxWsApi22RequirementWorkaround(String projectName, String pkgName) {
-		SWTBotEclipseEditor editor = packageExplorer
-				.openFile(projectName, "src", pkgName, "AreaService_Service.java")
-				.toTextEditor();
+		final String fileName = "AreaService_Service.java";
+		openJavaFile(projectName, pkgName, fileName);
+		TextEditor editor = new TextEditor(fileName);
 		
 		String text = editor.getText();
 		boolean putComment = false;
@@ -326,6 +247,7 @@ public class EAPFromWSDLTest extends WebServiceTestBase {
 			output.append(System.getProperty("line.separator"));
 		}
 		editor.setText(output.toString());
-		editor.saveAndClose();
+		editor.save();
+		editor.close();
 	}
 }

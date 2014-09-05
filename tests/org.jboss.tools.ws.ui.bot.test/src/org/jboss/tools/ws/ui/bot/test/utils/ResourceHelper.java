@@ -21,9 +21,14 @@ import java.util.Scanner;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
+import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 
+/**
+ * 
+ * @author jjankovi
+ * @author Radoslav Rabara
+ * 
+ */
 public class ResourceHelper {
 
 	/**
@@ -66,56 +71,19 @@ public class ResourceHelper {
 	}
 
 	/**
-	 * Method replaces string "target" by string "replacement.
-	 * @param target
-	 * @param replacement
-	 */
-	public void replaceInEditor(SWTBotEclipseEditor ed, String target, String replacement) {
-		replaceInEditor(ed, target, replacement, true);
-	}
-	
-	/**
-	 * Method replaces string "target" by string "replacement.
-	 * @param target
-	 * @param replacement
-	 */
-	public void replaceInEditor(SWTBotEclipseEditor ed, String target, 
-			String replacement, boolean save) {
-		ed.selectRange(0, 0, ed.getText().length());
-		ed.setText(ed.getText().replace(target,replacement));		
-		if (save) ed.save();
-	}
-	
-	/**
 	 * Method copies resource to class opened in SWTBotEditor with entered parameters
-	 * @param classEdit
-	 * @param resource
-	 * @param closeEdit
-	 * @param param
 	 */
-	public void copyResourceToClass(SWTBotEditor classEdit,
-			InputStream resource, boolean closeEdit, Object... param) {
-		copyResourceToClassWithSave(classEdit, resource, true, closeEdit, param);
-	}
-	
-	/**
-	 * Method copies resource to class opened in SWTBotEditor with entered parameters
-	 * @param classEdit
-	 * @param resource
-	 * @param closeEdit
-	 * @param param
-	 */
-	public void copyResourceToClassWithSave(SWTBotEditor classEdit,
-			InputStream resource, boolean save, boolean closeEdit, Object... param) {
+	public void copyResourceToClassWithSave(InputStream resource,
+			boolean save, Object... param) {
 		String s = readStream(resource);
 		String code = MessageFormat.format(s, param);
-		SWTBotEclipseEditor st = classEdit.toTextEditor();
-		st.selectRange(0, 0, st.getText().length());
-		st.setText(code);
-		if (save) classEdit.save();
-		if (closeEdit) classEdit.close();
+		TextEditor editor = new TextEditor();
+		editor.setText(code);
+		if (save) {
+			editor.save();
+		}
 	}
-	
+
 	/**
 	 * Method recursively searches files names in dir and returns them as List of File objects 
 	 * @param dir
