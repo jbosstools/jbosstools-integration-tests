@@ -1,6 +1,5 @@
 package org.jboss.tools.ws.ui.bot.test.rest;
 
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
@@ -10,8 +9,6 @@ import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
-import org.jboss.tools.ui.bot.ext.parts.QuickFixBot;
-import org.jboss.tools.ui.bot.ext.parts.SWTBotEditorExt;
 import org.jboss.tools.ws.reddeer.editor.ExtendedTextEditor;
 import org.junit.Test;
 
@@ -35,6 +32,10 @@ public class NameBindingAnnotationSupportTest extends RESTfulTestBase {
 	}
 	
 	/**
+	 * Fails due to JBIDE-18257
+	 * 
+	 * @see https://issues.jboss.org/browse/JBIDE-18257
+	 *
 	 * Resolved: Wrong @NameBinding quick fix for a @Target annotation)
 	 * {@link https://issues.jboss.org/browse/JBIDE-17177}
 	 */
@@ -57,18 +58,21 @@ public class NameBindingAnnotationSupportTest extends RESTfulTestBase {
 		assertCountOfValidationErrors(projectName, "Target", 1);
 		assertCountOfErrors(projectName, 2);
 
-		/* get quickfix bot for HttpMethod annotation */
-		QuickFixBot qBot = quickFixBot(projectName, "Authorized");
+		/* prepare editor */
+		openAuthorizedJavaFile(projectName);
+		TextEditor editor = setCursorPositionToTextInTextEditor("Authorized");
 
 		/* check that there are quick fixes for both required annotations */
-		qBot.checkQuickFix("Add @Retention annotation on type 'Authorized'", true);
+		editor.openQuickFixContentAssistant().chooseProposal("Add @Retention annotation on type 'Authorized'");
 		new TextEditor().save();
 
 		/* one error should disappear as a result of using a quickfix */
 		assertCountOfValidationErrors(projectName, 1);
 		assertCountOfValidationErrors(projectName, "Retention", 0);
 
-		qBot.checkQuickFix("Add @Target annotation on type 'Authorized'", true);
+		/* apply the second quixk fix */
+		editor.activate();
+		editor.openQuickFixContentAssistant().chooseProposal("Add @Target annotation on type 'Authorized'");
 		new TextEditor().save();
 
 		/* both quickfixes were used which means that there should be no error */
@@ -89,22 +93,10 @@ public class NameBindingAnnotationSupportTest extends RESTfulTestBase {
 		
 		/* there should be an error */
 		assertCountOfValidationErrors(projectName, 1);
-		assertCountOfValidationErrors(projectName, "no Filter or Interceptor", 1);
+		assertCountOfValidationErrors(projectName, "no JAX-RS filter or interceptor", 1);
 	}
 
-	private QuickFixBot quickFixBot(String wsProjectName, String underlinedText) {
-		openJavaFile(wsProjectName, "org.rest.test", "Authorized.java");
-		
-		SWTBotEditorExt editor = new SWTBotEditorExt(bot.activeEditor().getReference(), bot);
-		SWTBotEclipseEditor eclipseEditor = editor.toTextEditor();
-		int lineIndex = 0;
-		for (String line : eclipseEditor.getLines()) {
-			if (line.contains(underlinedText)) {
-				 break;
-			}
-			lineIndex++;
-		}
-		eclipseEditor.navigateTo(lineIndex, 0);
-		return new QuickFixBot(editor);
+	private void openAuthorizedJavaFile(String projectName) {
+		openJavaFile(projectName, "org.rest.test", "Authorized.java");
 	}
 }
