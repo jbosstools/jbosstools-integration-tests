@@ -14,7 +14,13 @@ package org.jboss.tools.ws.ui.bot.test.rest.completion;
 import java.util.Arrays;
 import java.util.List;
 
+import org.hamcrest.core.StringContains;
+import org.jboss.reddeer.jface.text.contentassist.ContentAssistant;
+import org.jboss.reddeer.swt.wait.AbstractWait;
+import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.ui.bot.ext.helper.ContentAssistHelper;
+import org.jboss.tools.ws.reddeer.editor.ExtendedTextEditor;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
 import org.junit.Test;
 
@@ -33,83 +39,92 @@ public class RESTfulCompletionTest extends RESTfulTestBase{
 			Arrays.asList("userId - JAX-RS Mapping");
 	private static final List<String> EXP_EMPTY_COMPLETION_RESULT = 
 			Arrays.asList("No Default Proposals");
-	
+
 	@Override
 	protected String getWsProjectName() {
 		return "restEmpty";
 	}
-	
+
 	@Test
 	public void testWithEmptyPrefix() {
-		/* prepare project */
 		prepareSimpleRestService(GET_METHOD_PATH, "");
 
-		/* test content assist proposal */
-		ContentAssistHelper.checkContentAssistContent(bot, 
-				getWsName() + ".java", PATH_PARAM_NAVIGATION, PATH_PARAM_NAVIGATION.length() + 1, 
-				0, EXP_NON_EMPTY_COMPLETION_RESULT);
-		
+		testContentAssistantProposal(PATH_PARAM_NAVIGATION.length() + 1,
+				EXP_NON_EMPTY_COMPLETION_RESULT);
 	}
-	
+
 	@Test
 	public void testWithValidPrefixAtTheEnd() {
-		/* prepare project */
 		prepareSimpleRestService(GET_METHOD_PATH, CORRECT_PATH_PARAM);
 
-		/* test content assist proposal */
-		ContentAssistHelper.checkContentAssistContent(bot, 
-				getWsName() + ".java", PATH_PARAM_NAVIGATION, PATH_PARAM_NAVIGATION.length() + 
-				CORRECT_PATH_PARAM.length() + 1, 
-				0, EXP_NON_EMPTY_COMPLETION_RESULT);
+		testContentAssistantProposal(PATH_PARAM_NAVIGATION.length()
+				+ CORRECT_PATH_PARAM.length() + 1,
+				EXP_NON_EMPTY_COMPLETION_RESULT);
 		
 	}
-	
+
 	@Test
 	public void testWithValidPrefixInTheBeginning() {
-		/* prepare project */
 		prepareSimpleRestService(GET_METHOD_PATH, CORRECT_PATH_PARAM);
 
-		/* test content assist proposal */
-		ContentAssistHelper.checkContentAssistContent(bot, 
-				getWsName() + ".java", PATH_PARAM_NAVIGATION, PATH_PARAM_NAVIGATION.length() + 1, 
-				0, EXP_NON_EMPTY_COMPLETION_RESULT);
-		
+		testContentAssistantProposal(PATH_PARAM_NAVIGATION.length() + 1,
+				EXP_NON_EMPTY_COMPLETION_RESULT);
 	}
-	
+
 	@Test
 	public void testWithInvalidPrefixAtTheEnd() {
-		/* prepare project */
 		prepareSimpleRestService(GET_METHOD_PATH, INCORRECT_PATH_PARAM);
 
-		/* test content assist proposal */
-		ContentAssistHelper.checkContentAssistContent(bot, 
-				getWsName() + ".java", PATH_PARAM_NAVIGATION, PATH_PARAM_NAVIGATION.length() + 
-				INCORRECT_PATH_PARAM.length() + 1, 
-				0, EXP_EMPTY_COMPLETION_RESULT);
+		testContentAssistantProposal(PATH_PARAM_NAVIGATION.length()
+				+ INCORRECT_PATH_PARAM.length() + 1,
+				EXP_EMPTY_COMPLETION_RESULT);
 		
 	}
 
 	@Test
 	public void testWithInvalidPrefixInTheBeginning() {
-		/* prepare project */
 		prepareSimpleRestService(GET_METHOD_PATH, INCORRECT_PATH_PARAM);
 
-		/* test content assist proposal */
-		ContentAssistHelper.checkContentAssistContent(bot, 
-				getWsName() + ".java", PATH_PARAM_NAVIGATION, PATH_PARAM_NAVIGATION.length() + 1, 
-				0, EXP_NON_EMPTY_COMPLETION_RESULT);
-		
+		testContentAssistantProposal(PATH_PARAM_NAVIGATION.length() + 1,
+				EXP_NON_EMPTY_COMPLETION_RESULT);
 	}
-	
+
 	@Test
 	public void testWithAllInvalidParamSelection() {
-		/* prepare project */
 		prepareSimpleRestService(GET_METHOD_PATH, INCORRECT_PATH_PARAM);
 
-		/* test content assist proposal */
-		ContentAssistHelper.checkContentAssistContent(bot, 
-				getWsName() + ".java", PATH_PARAM_NAVIGATION, PATH_PARAM_NAVIGATION.length() + 1, 
-				INCORRECT_PATH_PARAM.length(), EXP_NON_EMPTY_COMPLETION_RESULT);
-		
+		testContentAssistantProposal(INCORRECT_PATH_PARAM, EXP_NON_EMPTY_COMPLETION_RESULT);
+	}
+
+	private void testContentAssistantProposal(String textToSelect,
+			List<String> expected) {
+		TextEditor editor = new TextEditor(getWsName() + ".java");
+		editor.selectText(INCORRECT_PATH_PARAM);
+
+		assertContentAssistantProposal(editor, expected);
+	}
+
+	private void testContentAssistantProposal(int position,
+			List<String> expected) {
+		ExtendedTextEditor editor = new ExtendedTextEditor(getWsName() + ".java");
+		int line = editor.getLineNum(StringContains.containsString(PATH_PARAM_NAVIGATION));
+		int column = editor.getTextAtLine(line).indexOf(PATH_PARAM_NAVIGATION);
+		editor.setCursorPosition(line, column + position);
+
+		assertContentAssistantProposal(editor, expected);
+	}
+
+	private void assertContentAssistantProposal(TextEditor editor, List<String> expected) {
+		AbstractWait.sleep(TimePeriod.SHORT);
+
+		ContentAssistant assistant = editor.openContentAssistant();
+		List<String> proposals = assistant.getProposals();
+		assistant.close();
+
+		assertTrue("Content assist should contain "
+						+ Arrays.toString(expected.toArray())
+						+ "\nbut there are "
+						+ Arrays.toString(proposals.toArray()),
+				proposals.containsAll(expected));
 	}
 }
