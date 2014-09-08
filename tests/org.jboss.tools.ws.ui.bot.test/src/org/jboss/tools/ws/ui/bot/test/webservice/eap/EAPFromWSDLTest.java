@@ -23,27 +23,19 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
-import org.jboss.reddeer.swt.api.Tree;
-import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
-import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
-import org.jboss.tools.common.reddeer.label.IDELabel;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ws.reddeer.ui.wizards.wst.WebServiceWizardPageBase.SliderLevel;
 import org.jboss.tools.ws.ui.bot.test.WSAllBotTests;
+import org.jboss.tools.ws.ui.bot.test.uiutils.RunConfigurationsDialog;
 import org.jboss.tools.ws.ui.bot.test.webservice.TopDownWSTest;
 import org.jboss.tools.ws.ui.bot.test.webservice.WebServiceRuntime;
 import org.jboss.tools.ws.ui.bot.test.webservice.WebServiceTestBase;
@@ -175,9 +167,8 @@ public class EAPFromWSDLTest extends WebServiceTestBase {
 
 		/* workaround problems with generated code that require JAX-WS API 2.2 */
 		jaxWsApi22RequirementWorkaround(getWsClientProjectName(), getWsClientPackage());
-		eclipse.runJavaApplication(getWsClientProjectName(),
-				"org.jboss.wsclient.clientsample.ClientSample", null);
-		new WaitWhile(new JobIsRunning(), TimePeriod.NORMAL);
+
+		runJavaApplication();
 		
 		// wait until the client ends (prints the last line)
 		new WaitUntil(new ConsoleHasText("Call Over!"), TimePeriod.NORMAL);
@@ -249,5 +240,14 @@ public class EAPFromWSDLTest extends WebServiceTestBase {
 		editor.setText(output.toString());
 		editor.save();
 		editor.close();
+	}
+
+	private void runJavaApplication() {
+		RunConfigurationsDialog dialog = new RunConfigurationsDialog();
+		dialog.open();
+		dialog.createNewConfiguration("Java Application");
+		dialog.setProjectName(getWsClientProjectName());
+		dialog.setClassName("org.jboss.wsclient.clientsample.ClientSample");
+		dialog.run();
 	}
 }
