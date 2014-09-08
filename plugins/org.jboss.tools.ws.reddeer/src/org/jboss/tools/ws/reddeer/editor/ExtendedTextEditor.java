@@ -10,6 +10,14 @@ public class ExtendedTextEditor extends TextEditor {
 
 	private final Keyboard keyboard = KeyboardFactory.getKeyboard();
 
+	public ExtendedTextEditor() {
+		super();
+	}
+
+	public ExtendedTextEditor(String editorTitle) {
+		super(editorTitle);
+	}
+
 	public void removeLine(String contains) {
 		int lineNumber = getLineNum(StringContains.containsString(contains));
 		
