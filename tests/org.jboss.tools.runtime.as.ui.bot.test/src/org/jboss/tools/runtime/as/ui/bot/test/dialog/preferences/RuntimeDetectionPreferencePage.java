@@ -5,7 +5,6 @@ import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jboss.reddeer.eclipse.jface.preference.PreferencePage;
 import org.jboss.reddeer.swt.api.Button;
 import org.jboss.reddeer.swt.api.Table;
 import org.jboss.reddeer.swt.api.TableItem;
@@ -19,20 +18,23 @@ import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.reddeer.workbench.preference.WorkbenchPreferencePage;
 
 /**
  * 
  * @author ljelinkova
  * @author psuchy
- * @author rrabara
+ * @author Radoslav Rabara
  *
  */
-public class RuntimeDetectionPreferencesDialog extends PreferencePage {
+public class RuntimeDetectionPreferencePage extends WorkbenchPreferencePage {
 
-	public RuntimeDetectionPreferencesDialog() {
-		super("JBoss Tools", "JBoss Runtime Detection");
+	public static final String[] PATH = {"JBoss Tools", "JBoss Runtime Detection"};
+
+	public RuntimeDetectionPreferencePage() {
+		super(PATH);
 	}
-	
+
 	@Override
 	public void ok(){
 		new WaitWhile(new JobIsRunning());
@@ -59,7 +61,7 @@ public class RuntimeDetectionPreferencesDialog extends PreferencePage {
 		}
 		return paths;
 	}
-	
+
 	public SearchingForRuntimesDialog search(){
 		new PushButton("Search...").click();
 		new DefaultShell("Searching for runtimes...");

@@ -60,12 +60,12 @@ public class ServerWithSeam extends RuntimeDetectionTestCase {
 	private void deselectRuntime(String name) {
 		searchingForRuntimesDialog.deselect(name);
 		searchingForRuntimesDialog.ok();
-		runtimeDetectionPreferences.ok();
+		runtimeDetectionPage.ok();
 	}
 	
 	private void addAllDetectedRuntimes() {
 		searchFirstPath();
 		searchingForRuntimesDialog.ok();
-		runtimeDetectionPreferences.ok();
+		runtimeDetectionPage.ok();
 	}
 }

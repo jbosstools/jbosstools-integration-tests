@@ -46,7 +46,7 @@ public class RuntimeDownloadTestBase extends RuntimeDetectionTestCase {
 	}
 	
 	protected void invokeDownloadRuntimesWizard() {
-		runtimeDetectionPreferences.open();
+		runtimeDetectionPage.open();
 		
 		new PushButton("Download...").click();
 		new WaitUntil(new ShellWithTextIsActive("Download Runtimes"), TimePeriod.VERY_LONG);
@@ -77,7 +77,7 @@ public class RuntimeDownloadTestBase extends RuntimeDetectionTestCase {
 		new WaitUntil(new JobIsRunning(), TimePeriod.NORMAL, false);
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 		
-		runtimeDetectionPreferences.ok();
+		runtimeDetectionPage.ok();
 	}
 	
 	protected void processLicenceAgreement() {

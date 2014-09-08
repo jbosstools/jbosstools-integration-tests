@@ -3,6 +3,7 @@ package org.jboss.tools.runtime.as.ui.bot.test.template;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
+import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
 import org.jboss.tools.runtime.as.ui.bot.test.entity.Runtime;
 import org.jboss.tools.runtime.as.ui.bot.test.matcher.RuntimeMatcher;
 import org.junit.After;
@@ -14,10 +15,11 @@ public abstract class CheckSeamRuntimeTemplate extends RuntimeDetectionTestCase 
 	
 	@Test
 	public void checkSeamRuntime(){
-		seamPreferences.open();
+		WorkbenchPreferenceDialog dialog = new WorkbenchPreferenceDialog();
+		dialog.select(seamPreferencePage);
 		
-		assertThat(seamPreferences.getRuntimes().size(), is(1));
-		assertThat(seamPreferences.getRuntimes().get(0), new RuntimeMatcher(getExpectedRuntime()));
+		assertThat(seamPreferencePage.getRuntimes().size(), is(1));
+		assertThat(seamPreferencePage.getRuntimes().get(0), new RuntimeMatcher(getExpectedRuntime()));
 	}
 	
 	@After

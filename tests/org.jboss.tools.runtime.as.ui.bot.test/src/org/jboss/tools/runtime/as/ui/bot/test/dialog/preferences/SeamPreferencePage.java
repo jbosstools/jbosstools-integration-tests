@@ -15,9 +15,9 @@ import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.reddeer.workbench.preference.WorkbenchPreferencePage;
 import org.jboss.tools.runtime.as.ui.bot.test.entity.Runtime;
 
-public class SeamPreferencesDialog extends WorkbenchPreferencePage {
+public class SeamPreferencePage extends WorkbenchPreferencePage {
 
-	public SeamPreferencesDialog() {
+	public SeamPreferencePage() {
 		super("JBoss Tools", "Web", "Seam");
 	}
 

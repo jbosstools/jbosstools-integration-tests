@@ -15,7 +15,7 @@ import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.tools.runtime.as.ui.bot.test.RuntimeProperties;
-import org.jboss.tools.runtime.as.ui.bot.test.dialog.preferences.RuntimeDetectionPreferencesDialog;
+import org.jboss.tools.runtime.as.ui.bot.test.dialog.preferences.RuntimeDetectionPreferencePage;
 import org.jboss.tools.runtime.as.ui.bot.test.dialog.preferences.SearchingForRuntimesDialog;
 import org.jboss.tools.runtime.as.ui.bot.test.entity.Runtime;
 import org.jboss.tools.runtime.as.ui.bot.test.matcher.RuntimeMatcher;
@@ -58,7 +58,7 @@ public abstract class DetectRuntimeTemplate extends RuntimeDetectionTestCase {
 		List<Runtime> runtimes = searchingForRuntimesDialog.getRuntimes();
 		
 		searchingForRuntimesDialog.ok();
-		runtimeDetectionPreferences.ok();
+		runtimeDetectionPage.ok();
 		
 		assertCountOfRuntimes(runtimes, path);
 		assertThatExpectedRuntimesArePresent(runtimes);
@@ -66,18 +66,18 @@ public abstract class DetectRuntimeTemplate extends RuntimeDetectionTestCase {
 
 	@Test
 	public void removePath() {
-		runtimeDetectionPreferences.open();
+		runtimeDetectionPage.open();
 				
-		List<String> allPaths = runtimeDetectionPreferences.getAllPaths();
+		List<String> allPaths = runtimeDetectionPage.getAllPaths();
 		String requiredPath = RuntimeProperties.getInstance().getRuntimePath(getPathID());
 		assertTrue("Expected is presence of path " + requiredPath + " but there are:\n"
 				+ Arrays.toString(allPaths.toArray()), allPaths.contains(requiredPath));
 		
-		runtimeDetectionPreferences.removeAllPaths();
+		runtimeDetectionPage.removeAllPaths();
 		
-		allPaths = runtimeDetectionPreferences.getAllPaths();
+		allPaths = runtimeDetectionPage.getAllPaths();
 		
-		runtimeDetectionPreferences.ok();
+		runtimeDetectionPage.ok();
 		
 		assertThat("Not all paths were removed. There are " + Arrays.toString(allPaths.toArray()), allPaths.size(), Is.is(0));
 	}
@@ -87,7 +87,7 @@ public abstract class DetectRuntimeTemplate extends RuntimeDetectionTestCase {
 		//close opened shells
 		String[] openedShells = new String[]{
 				SearchingForRuntimesDialog.DIALOG_TITLE,
-				RuntimeDetectionPreferencesDialog.DIALOG_TITLE};
+				RuntimeDetectionPreferencePage.DIALOG_TITLE};
 		for(String title : openedShells) {
 			if(new ShellWithTextIsAvailable(title).test()) {
 				new DefaultShell(title);

@@ -6,9 +6,10 @@ import static org.hamcrest.core.Is.is;
 import java.util.Arrays;
 import java.util.List;
 
+import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.eclipse.wst.server.ui.RuntimePreferencePage;
-import org.jboss.tools.runtime.as.ui.bot.test.dialog.preferences.RuntimeDetectionPreferencesDialog;
-import org.jboss.tools.runtime.as.ui.bot.test.dialog.preferences.SeamPreferencesDialog;
+import org.jboss.tools.runtime.as.ui.bot.test.dialog.preferences.RuntimeDetectionPreferencePage;
+import org.jboss.tools.runtime.as.ui.bot.test.dialog.preferences.SeamPreferencePage;
 import org.jboss.tools.runtime.as.ui.bot.test.dialog.preferences.SearchingForRuntimesDialog;
 import org.jboss.tools.runtime.core.model.RuntimePath;
 import org.jboss.tools.runtime.ui.RuntimeUIActivator;
@@ -21,59 +22,61 @@ import org.jboss.tools.runtime.ui.RuntimeUIActivator;
  */
 public abstract class RuntimeDetectionTestCase {
 
-	protected RuntimeDetectionPreferencesDialog runtimeDetectionPreferences = new RuntimeDetectionPreferencesDialog();
+	protected RuntimeDetectionPreferencePage runtimeDetectionPage = new RuntimeDetectionPreferencePage();
 
-	protected SeamPreferencesDialog seamPreferences = new SeamPreferencesDialog();
-	
-	protected RuntimePreferencePage serverRuntimesPreferences = new RuntimePreferencePage();
-	
+	protected SeamPreferencePage seamPreferencePage = new SeamPreferencePage();
+
+	protected RuntimePreferencePage runtimePreferencePage = new RuntimePreferencePage();
+
+	protected WorkbenchPreferenceDialog preferences = new WorkbenchPreferenceDialog();
+
 	protected SearchingForRuntimesDialog addPath(String path){
 		RuntimeUIActivator.getDefault().getModel().addRuntimePath(new RuntimePath(path));
-		runtimeDetectionPreferences = new RuntimeDetectionPreferencesDialog();
-		runtimeDetectionPreferences.open();
-		if(!runtimeDetectionPreferences.getAllPaths().contains(path)) {
-			runtimeDetectionPreferences.cancel();
-			runtimeDetectionPreferences.open();
+		runtimeDetectionPage = new RuntimeDetectionPreferencePage();
+		preferences.select(runtimeDetectionPage);
+		if(!runtimeDetectionPage.getAllPaths().contains(path)) {
+			runtimeDetectionPage.cancel();
+			preferences.select(runtimeDetectionPage);
 		}
-		return runtimeDetectionPreferences.search();
+		return runtimeDetectionPage.search();
 	}
-	
+
 	protected SearchingForRuntimesDialog searchFirstPath(){
-		runtimeDetectionPreferences = new RuntimeDetectionPreferencesDialog();
-		runtimeDetectionPreferences.open();
-		return runtimeDetectionPreferences.search();
+		runtimeDetectionPage = new RuntimeDetectionPreferencePage();
+		preferences.select(runtimeDetectionPage);
+		return runtimeDetectionPage.search();
 	}
-	
+
 	protected void removeAllPaths(){
-		runtimeDetectionPreferences.open();
-		runtimeDetectionPreferences.removeAllPaths();
-		runtimeDetectionPreferences.ok();
+		preferences.select(runtimeDetectionPage);
+		runtimeDetectionPage.removeAllPaths();
+		runtimeDetectionPage.ok();
 	}
-	
+
 	protected void removeAllSeamRuntimes(){
-		seamPreferences.open();
-		seamPreferences.removeAllRuntimes();
-		seamPreferences.ok();
+		preferences.select(seamPreferencePage);
+		seamPreferencePage.removeAllRuntimes();
+		seamPreferencePage.ok();
 	}
-	
+
 	protected void removeAllServerRuntimes(){
-		serverRuntimesPreferences.open();
-		serverRuntimesPreferences.removeAllRuntimes();
-		serverRuntimesPreferences.ok();
+		preferences.select(runtimePreferencePage);
+		runtimePreferencePage.removeAllRuntimes();
+		runtimePreferencePage.ok();
 	}
-	
+
 	protected void assertSeamRuntimesNumber(int expected) {
-		seamPreferences.open();
-		assertThat(seamPreferences.getRuntimes().size(), is(expected));
-		seamPreferences.ok();
+		preferences.select(seamPreferencePage);
+		assertThat(seamPreferencePage.getRuntimes().size(), is(expected));
+		seamPreferencePage.ok();
 	}
-	
+
 	protected void assertServerRuntimesNumber(int expected) {
-		serverRuntimesPreferences.open();
+		preferences.select(runtimePreferencePage);
 		List<org.jboss.reddeer.eclipse.wst.server.ui.Runtime> runtimes = 
-				serverRuntimesPreferences.getServerRuntimes();
+				runtimePreferencePage.getServerRuntimes();
 		assertThat("Expected are " + expected + " runtimes but there are:\n"
 				+ Arrays.toString(runtimes.toArray()), runtimes.size(), is(expected));
-		serverRuntimesPreferences.ok();
+		runtimePreferencePage.ok();
 	}
 }
