@@ -94,7 +94,8 @@ public class RESTfulTestBase extends WSTestBase {
 		// workaround for EAP 5.1
 		if (configuredState.getServer().type.equals("EAP")
 				&& configuredState.getServer().version.equals("5.1")) {
-			restfulHelper.addRestEasyLibs(projectName);
+			throw new UnsupportedOperationException("When EAP 5.1 is used,"
+					+ " then jaxrs-api.jar must be added to build path of the imported project");
 		}
 	}
 

@@ -11,10 +11,6 @@
 
 package org.jboss.tools.ws.ui.bot.test.rest;
 
-import static org.junit.Assert.assertTrue;
-
-import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.hamcrest.Matcher;
@@ -35,12 +31,9 @@ import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
-import org.jboss.tools.ui.bot.ext.config.TestConfigurator;
-import org.jboss.tools.ui.bot.ext.helper.BuildPathHelper;
 import org.jboss.tools.ws.reddeer.jaxrs.core.RestFullLabels;
 import org.jboss.tools.ws.reddeer.swt.condition.ProblemsCount;
 import org.jboss.tools.ws.reddeer.ui.preferences.JAXRSValidatorPreferencePage;
-import org.jboss.tools.ws.ui.bot.test.utils.ResourceHelper;
 
 public class RESTfulHelper {
 
@@ -142,39 +135,6 @@ public class RESTfulHelper {
 		Project project = new ProjectExplorer().getProject(wsProjectName);
 		return project.containsItem(RestFullLabels.REST_EXPLORER_LABEL.getLabel())
 				|| project.containsItem(RestFullLabels.REST_EXPLORER_LABEL_BUILD.getLabel());
-	}
-
-	@SuppressWarnings("static-access")
-	public List<String> addRestEasyLibs(String wsProjectName) {
-		List<File> restLibsPaths = getPathForRestLibs();
-		
-		List<String> variables = new ArrayList<String>();
-		BuildPathHelper buildPathHelper = new BuildPathHelper();
-		
-		for (File f : restLibsPaths) {
-			variables.add(buildPathHelper.addExternalJar(f.getPath(), wsProjectName, true));
-		}
-		
-		return variables;
-	}
-
-	private List<File> getPathForRestLibs() {
-		assertTrue(TestConfigurator.currentConfig.getServer().type.equals("EAP"));
-
-		String runtimeHome = TestConfigurator.currentConfig.getServer().runtimeHome;
-
-		// index of last occurence of "/" in EAP runtime path: jboss-eap-5.1/jboss-as
-		int indexOfAS = runtimeHome.lastIndexOf("/");
-
-		// jboss-eap-5.1/jboss-as --> jboss-eap-5.1
-		String eapDirHome = runtimeHome.substring(0, indexOfAS);
-
-		String restEasyDirPath = eapDirHome + "/" + "resteasy";
-		File restEasyDir = new File(restEasyDirPath);
-
-		String[] restEasyLibs = {"jaxrs-api.jar"};
-
-		return new ResourceHelper().searchAllFiles(restEasyDir, restEasyLibs);
 	}
 
 	private void configureRestSupport(String wsProjectName,
