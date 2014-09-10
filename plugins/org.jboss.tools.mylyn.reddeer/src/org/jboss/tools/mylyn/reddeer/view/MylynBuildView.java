@@ -10,6 +10,7 @@ import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
 import org.jboss.reddeer.swt.api.Tree;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
+import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
@@ -92,6 +93,27 @@ public class MylynBuildView extends WorkbenchView {
 			}
 		}
 		throw new EclipseLayerException("There is no job with name " + jobName);
+	}
+	
+	/* For use in the Build List View */
+	public void createAuthBuildServer (String serverURL, String userName, String passWord) {
+		log.info("Creating New Build Server - " + serverURL);
+		new ViewToolItem("New Build Server Location").click();
+		
+		new DefaultShell ("New Repository");
+		new DefaultTreeItem ("Hudson (supports Jenkins)").select();
+		new PushButton("Next >").click();
+		
+		new DefaultShell ("New Build Server");
+		new LabeledText ("Server:").setText(serverURL);
+		new LabeledText ("Label:").setText(serverURL);
+		
+		new CheckBox ("Anonymous").click();
+		new CheckBox ("Save Password").click();
+		new LabeledText ("User:").setText(userName);
+		new LabeledText ("Password:").setText(passWord);
+	
+		new PushButton("Finish").click();
 	}
 	
 	/* For use in the Build List View */

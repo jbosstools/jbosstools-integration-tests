@@ -14,7 +14,7 @@
     <properties>
 	<jenkins.server>none</jenkins.server>
 	<jenkins.job>none</jenkins.job>
-        <systemProperties>${integrationTestsSystemProperties} -DjenkinsServer=${jenkins.server} -DjenkinsJob=${jenkins.job}</systemProperties> 
+        <systemProperties>${integrationTestsSystemProperties} -DjenkinsServer=${jenkins.server} -DjenkinsJob=${jenkins.job} -DauthJenkinsServer=${auth.jenkins.server} -DauthJenkinsJob=${auth.jenkins.job} -DauthUserName=${auth.username} -DauthPassWord=${auth.password}</systemProperties> 
         <tychoPluginProductParameter>org.eclipse.platform.ide</tychoPluginProductParameter>
     </properties>
     

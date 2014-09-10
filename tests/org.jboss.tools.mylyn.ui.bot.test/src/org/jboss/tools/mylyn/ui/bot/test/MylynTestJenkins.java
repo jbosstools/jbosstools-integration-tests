@@ -44,15 +44,22 @@ public class MylynTestJenkins {
 	/* This server proved to be unreliable: protected final String SERVERURL = "http://ci.jruby.org/"
 	 * so the test was changed to use the JBDS QE Jenkins - machydra (August 2014)
 	 * 
-	 * mvn clean install -Dswtbot.test.skip=false -Dusage_reporting_enabled=false -Dreddeer.close.welcome.en=true 
-	 * -Djenkins.server="http://machydra.lab.eng.brq.redhat.com:8080" -Djenkins.job="jbosstools.mylyn.bot.tests.poc"
-	 * 	
+	 * mvn clean install -Dreddeer.close.shells=false -Dswtbot.test.skip=false -Dusage_reporting_enabled=false 
+	 * -Dreddeer.close.welcome.en=true -Djenkins.server="http://machydra.lab.eng.brq.redhat.com:8080" 
+	 * -Djenkins.job="jbosstools.mylyn.bot.tests.poc" -Dauth.jenkins.server="https://jenkins-ldimaggi.rhcloud.com" 
+	 * -Dauth.jenkins.job="jboss1-build" -Dauth.username="admin" -Dauth.password="#########"
+	 * 
 	 */
 	protected String SERVERURL = System.getProperty("jenkinsServer");
-	protected String JENKINSJOB = System.getProperty("jenkinsJob");
+	protected String JENKINSJOB = System.getProperty("jenkinsJob");	
+	
+	protected String AUTHSERVERURL = System.getProperty("authJenkinsServer");
+	protected String AUTHJENKINSJOB = System.getProperty("authJenkinsJob");
+	protected String AUTHUSERNAME = System.getProperty("authUserName");
+	protected String AUTHPASSWORD = System.getProperty("authPassWord");
 	
 	@Test
-	public void testIt() {
+	public void testServer() {
 				
 		BuildServerDialog buildServerDialog = null;
 		MylynBuildView view = new MylynBuildView();
@@ -79,7 +86,7 @@ public class MylynTestJenkins {
 		new PushButton("Finish").click();
 		
 		try {
-			new WaitUntil(new ShellWithTextIsActive("Refreshing Builds (http://machydra.brq.redhat.com:8080)"), TimePeriod.getCustom(30l)); 
+			new WaitUntil(new ShellWithTextIsActive("Refreshing Builds (" + SERVERURL + ")" ), TimePeriod.getCustom(30l)); 
 		}
 		catch (Exception E) {
 			log.info ("Test blocking problem with 'Refreshing Builds (name)' shell not seen - test is able to run");
@@ -91,4 +98,46 @@ public class MylynTestJenkins {
 
 	} /* method */
 
+	
+	@Test
+	public void testAuthServer() {
+				
+		BuildServerDialog buildServerDialog = null;
+		MylynBuildView view = new MylynBuildView();
+
+		view.open();
+		view.createAuthBuildServer(AUTHSERVERURL, AUTHUSERNAME, AUTHPASSWORD);	
+
+		log.info(new DefaultTree().getItems().size() + " = Tree contents count");
+
+		new DefaultTreeItem (AUTHSERVERURL).select();
+		new ShellMenu("File", "Properties").select();
+
+		buildServerDialog = new BuildServerDialog();
+		new DefaultShell ("Build Server Properties");		
+		assertEquals ("The server name fails to match", new LabeledText ("Server:").getText(), AUTHSERVERURL); 
+
+		/* Validate the server */
+		assertTrue ("Properties title matches", buildServerDialog.getText().equals("Build Server Properties"));
+		buildServerDialog.validateSettings();
+		assertTrue("Build Server Properties Invalid", new LabeledText("Build Server Properties").getText().contains("Repository is valid"));
+
+		/* Locate a Jenkins job */
+		new PushButton("Select All").click();
+		new PushButton("Finish").click();
+		
+		try {
+			new WaitUntil(new ShellWithTextIsActive("Refreshing Builds (" + AUTHSERVERURL + ")" ), TimePeriod.getCustom(30l)); 
+					}
+		catch (Exception E) {
+			log.info ("Test blocking problem with 'Refreshing Builds (name)' shell not seen - test is able to run");
+		}	
+		
+		view.open();
+		log.info( "GOT IT" + view.getJenkinsJob (AUTHSERVERURL, AUTHJENKINSJOB).getText());
+		view.close();
+
+	} /* method */
+	
+	
 } /* class */
