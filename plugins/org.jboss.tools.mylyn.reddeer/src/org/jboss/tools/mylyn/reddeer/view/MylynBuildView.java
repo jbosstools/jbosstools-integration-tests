@@ -112,7 +112,11 @@ public class MylynBuildView extends WorkbenchView {
 		new CheckBox ("Save Password").click();
 		new LabeledText ("User:").setText(userName);
 		new LabeledText ("Password:").setText(passWord);
-	
+		
+		/* Workaround for https://github.com/jboss-reddeer/reddeer/issues/817 */
+		new PushButton("Validate").click();
+		new PushButton("Select All").click();
+		
 		new PushButton("Finish").click();
 	}
 	
@@ -128,6 +132,11 @@ public class MylynBuildView extends WorkbenchView {
 		new DefaultShell ("New Build Server");
 		new LabeledText ("Server:").setText(serverURL);
 		new LabeledText ("Label:").setText(serverURL);
+		
+		/* Workaround for https://github.com/jboss-reddeer/reddeer/issues/817 */
+		new PushButton("Validate").click();
+		new PushButton("Select All").click();
+		
 		new PushButton("Finish").click();
 	}
 	
