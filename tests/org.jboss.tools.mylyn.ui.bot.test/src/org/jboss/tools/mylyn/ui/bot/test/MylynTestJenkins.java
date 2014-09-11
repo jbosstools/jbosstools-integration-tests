@@ -66,6 +66,8 @@ public class MylynTestJenkins {
 
 		view.open();
 		view.createBuildServer(SERVERURL);	
+		view.close();
+		view.open();
 
 		log.info(new DefaultTree().getItems().size() + " = Tree contents count");
 
@@ -107,6 +109,10 @@ public class MylynTestJenkins {
 
 		view.open();
 		view.createAuthBuildServer(AUTHSERVERURL, AUTHUSERNAME, AUTHPASSWORD);	
+		
+		/* Workaround for https://github.com/jboss-reddeer/reddeer/issues/817 */
+		view.close();
+		view.open();
 
 		log.info(new DefaultTree().getItems().size() + " = Tree contents count");
 
