@@ -31,7 +31,6 @@
 						</goals>
 						<configuration>
 							<artifactItems>
-<!-- Temporarily commented out artifacts from the experimental repo - access denied - reported at https://issues.jboss.org/browse/ORG-2244
 								<artifactItem>
 									<groupId>org.jboss.perf.test</groupId>
 									<artifactId>perf-test-client</artifactId>
@@ -48,7 +47,6 @@
 									<overWrite>true</overWrite>
 									<outputDirectory>${basedir}/resources/perftestlibs</outputDirectory>
 								</artifactItem>
--->
 								<artifactItem>
 									<groupId>com.google.code.gson</groupId>
 									<artifactId>gson</artifactId>
