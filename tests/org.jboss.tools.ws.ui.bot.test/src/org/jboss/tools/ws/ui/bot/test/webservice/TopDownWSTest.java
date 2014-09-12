@@ -47,7 +47,7 @@ public class TopDownWSTest extends WebServiceTestBase {
 	protected String getWsName() {
 		return "WsdlWs" + getLevel();
 	}
-	
+
 	@Override
 	protected String getWsProjectName() {
 		return "TopDownWS-web";
@@ -76,10 +76,13 @@ public class TopDownWSTest extends WebServiceTestBase {
 	public void testAssembleService() {
 		setLevel(SliderLevel.ASSEMBLE);
 
-		/* There exists WSDL file created in testAssembleService due to using the same SliderLevel */
-		removeWsdlFileFromProject(getWsName() + ".wsdl");
+		/* There may exist WSDL and generated files created in testDefaultPkg due to using the same SliderLevel */
+		prepareAssembleService();
 
 		topDownWS();
+
+		/* If there were WSDL file than it was also used in web.xml */
+		confirmWebServiceNameOverwrite();
 	}
 	
 	/**
@@ -179,7 +182,6 @@ public class TopDownWSTest extends WebServiceTestBase {
 			break;
 		}
 		deploymentHelper.assertServiceDeployed(deploymentHelper.getWSDLUrl(getWsProjectName(), getWsName()), 10000);
-		serversViewHelper.removeAllProjectsFromServer(configuredState.getServer().name);
 	}
 
 	private void prepareAssembleService() {

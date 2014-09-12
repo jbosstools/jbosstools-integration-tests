@@ -10,10 +10,6 @@ import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBo
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
-import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
-import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
 import org.jboss.tools.ws.reddeer.editor.ExtendedTextEditor;
 import org.jboss.tools.ws.reddeer.jaxrs.core.RestService;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
@@ -29,7 +25,6 @@ import org.junit.Test;
  * @since JBT 4.2.0 Beta3
  * @see https://issues.jboss.org/browse/JBIDE-16825
  */
-@Require(server = @Server(type = ServerType.WildFly, state = ServerState.Present))
 @JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY)
 public class BeanParamAnnotationSupportTest extends RESTfulTestBase {
 
@@ -93,6 +88,7 @@ public class BeanParamAnnotationSupportTest extends RESTfulTestBase {
 		final String pathParameterNotBoundToAnyFieldWarning = "The @Path template parameter 'id' is not bound to any field, property or method parameter annotated with @PathParam(\"id\").";
 		final String pathParamNotBoundToPathParameterError = "@PathParam value 'id' does not match any @Path annotation template parameters in 'org.rest.test.RestService'.";
 		final String pathParameterNotBoundToPathParamError = "@PathParam value 'id' in associated Parameter Aggregator 'org.rest.test.BeanClass' does not match any @Path annotation template parameters of the java method 'post' and its enclosing java type 'org.rest.test.RestService'.";
+
 		/* prepare project */
 		importRestWSProject(PROJECT1_NAME);
 

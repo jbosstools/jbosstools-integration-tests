@@ -25,6 +25,7 @@ import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
 import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.reddeer.uiforms.api.ExpandableComposite;
 import org.jboss.reddeer.uiforms.impl.expandablecomposite.DefaultExpandableComposite;
@@ -329,6 +330,9 @@ public class WsTesterView extends WorkbenchView {
 	public void invoke() {
 		new DefaultToolItem(JBossWSUIMessages.JAXRSWSTestView2_Go_Tooltip)
 				.click();
+		new WaitUntil(new ShellWithTextIsActive(
+				JBossWSUIMessages.JAXRSWSTestView_Invoking_WS_Status),
+				TimePeriod.NORMAL, false);
 		new WaitWhile(new ShellWithTextIsActive(
 				JBossWSUIMessages.JAXRSWSTestView_Invoking_WS_Status),
 				TimePeriod.LONG);

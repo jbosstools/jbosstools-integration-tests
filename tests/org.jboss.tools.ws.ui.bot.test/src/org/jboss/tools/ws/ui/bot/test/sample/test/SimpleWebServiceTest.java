@@ -11,6 +11,8 @@
 
 package org.jboss.tools.ws.ui.bot.test.sample.test;
 
+import static org.junit.Assert.assertTrue;
+
 import org.eclipse.core.resources.IFile;
 import org.jboss.tools.ws.ui.bot.test.sample.SampleSoapTestBase;
 import org.junit.Test;

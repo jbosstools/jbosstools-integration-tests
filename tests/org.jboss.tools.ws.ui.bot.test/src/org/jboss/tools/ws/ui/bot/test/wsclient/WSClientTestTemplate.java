@@ -10,11 +10,16 @@
  ******************************************************************************/
 package org.jboss.tools.ws.ui.bot.test.wsclient;
 
+import static org.junit.Assert.fail;
+
+import java.util.List;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.ProjectItem;
+import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.tools.ws.reddeer.ui.wizards.wst.WebServiceWizardPageBase.SliderLevel;
 import org.jboss.tools.ws.ui.bot.test.WSTestBase;
 import org.jboss.tools.ws.ui.bot.test.webservice.WebServiceRuntime;
@@ -104,20 +109,13 @@ public class WSClientTestTemplate extends WSTestBase {
 
 	@After
 	public void cleanup() {
-		super.cleanup();
-		//XXX remove all packages ??
-		PackageExplorer pe = new PackageExplorer();
-		pe.open();
-		Project p = pe.getProject(getWsProjectName());
-		ProjectItem src = p.getProjectItem("src");
-		for(ProjectItem pkg: src.getChildren()) {
-			System.err.println(pkg.getText());
-			pkg.delete();
-		}
+		deleteAllPackages();
+		deleteAllProjectsFromServer();
 	}
 
 	protected void clientTest(String targetPkg) {
 		clientHelper.createClient(
+				getConfiguredServerName(),
 				 "http://soaptest.parasoft.com/calculator.wsdl",
 				serviceRuntime,
 				getWsProjectName(),
@@ -157,12 +155,34 @@ public class WSClientTestTemplate extends WSTestBase {
 		case START:
 		case INSTALL:
 		case DEPLOY:
-			if(!clientHelper.projectIsDeployed(configuredState.getServer().name, getEarProjectName())) {
+			if(!clientHelper.projectIsDeployed(getConfiguredServerName(), getEarProjectName())) {
 				fail("Project was not found on the server.");
 			}
 		default:
 			break;
 		}
+	}
+
+	private void deleteAllPackages() {
+		PackageExplorer pe = new PackageExplorer();
+		pe.open();
+		Project p = pe.getProject(getWsProjectName());
+		ProjectItem src = p.getProjectItem("src");
+		try {
+			for(ProjectItem pkg: src.getChildren()) {
+				pkg.select();
+				pkg.delete();
+			}
+		} catch(SWTLayerException e) {
+			pe.open();
+			src = p.getProjectItem("src");
+			List<ProjectItem> pkgs = src.getChildren();
+			for(ProjectItem pkg: pkgs) {
+				pkg.select();
+				pkg.delete();
+			}
+		}
+		
 	}
 }
 

@@ -21,9 +21,10 @@ public class TargetedRuntimesPropertiesPage {
 		for(TreeItem ti : new DefaultTree().getItems()) {
 			if(ti.getCell(0).equals("Targeted Runtimes")) {
 				ti.doubleClick();
-				break;
+				return;
 			}
 		}
+		throw new IllegalArgumentException("page was not found");
 	}
 
 	public void setSelectAllRuntimes(boolean check) {
@@ -38,6 +39,7 @@ public class TargetedRuntimesPropertiesPage {
 				return;
 			}
 		}
+		throw new IllegalArgumentException("Runtime '" + runtimeName + "' was not found");
 	}
 
 	public void checkAllRuntimes(boolean check) {

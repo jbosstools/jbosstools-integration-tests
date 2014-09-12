@@ -11,6 +11,8 @@
 package org.jboss.tools.ws.ui.bot.test.facet;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.hamcrest.core.Is;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
@@ -46,7 +48,12 @@ public class JAXRSFacetTest extends RESTfulTestBase {
 	protected String getWsProjectName() {
 		return wsProjectName;
 	}
-	
+
+	@Override
+	public void cleanup() {
+
+	}
+
 	@Test
 	public void testJAXRSFacet() {
 		setJAXRSFacet();

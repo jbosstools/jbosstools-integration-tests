@@ -1,6 +1,8 @@
 package org.jboss.tools.ws.ui.bot.test.rest;
 
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.Arrays;
 import java.util.List;
@@ -18,9 +20,6 @@ import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
-import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
 import org.jboss.tools.ws.reddeer.ui.wizards.jaxrs.JAXRSApplicationWizard;
 import org.jboss.tools.ws.reddeer.ui.wizards.jaxrs.JAXRSApplicationWizardPage;
 import org.jboss.tools.ws.reddeer.ui.wizards.jaxrs.JAXRSApplicationWizardPage.DeploymentDescriptorWizardPart;
@@ -32,7 +31,6 @@ import org.jboss.tools.ws.ui.bot.test.WSTestBase;
  * 
  * @author Radoslav Rabara
  */
-@Require(server=@Server(state=ServerState.Present))
 @JBossServer(state=ServerReqState.PRESENT)
 public class CreateJAXRSApplicationTest extends WSTestBase {
 

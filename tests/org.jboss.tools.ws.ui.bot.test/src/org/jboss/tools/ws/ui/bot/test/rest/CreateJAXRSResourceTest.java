@@ -11,9 +11,6 @@ import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
-import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
 import org.jboss.tools.ws.reddeer.jaxrs.core.RestFullAnnotations;
 import org.jboss.tools.ws.reddeer.jaxrs.core.RestService;
 import org.jboss.tools.ws.reddeer.ui.wizards.jaxrs.JAXRSResourceCreateApplicationWizardPage;
@@ -29,7 +26,6 @@ import org.junit.Test;
  * 
  * @author Radoslav Rabara
  */
-@Require(server=@Server(state=ServerState.Present))
 @JBossServer(state=ServerReqState.PRESENT)
 public class CreateJAXRSResourceTest extends RESTfulTestBase {
 

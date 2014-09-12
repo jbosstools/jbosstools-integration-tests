@@ -104,6 +104,5 @@ public class BottomUpWSTest extends WebServiceTestBase {
 			break;
 		}
 		deploymentHelper.assertServiceDeployed(deploymentHelper.getWSDLUrl(getWsProjectName(), getWsName()), 10000);
-		serversViewHelper.removeAllProjectsFromServer(configuredState.getServer().name);
 	}
 }

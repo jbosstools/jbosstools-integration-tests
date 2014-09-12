@@ -12,6 +12,7 @@
 package org.jboss.tools.ws.ui.bot.test.annotation;
 
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 import java.util.List;
@@ -167,7 +168,7 @@ public class AnnotationPropertiesTest extends RESTfulTestBase {
 		for (RestService service : restfulServicesForProject(getWsProjectName())) {
 			String path = service.getPath();
 			Asserts.assertNotContain(path, "rest");
-			assertContains("edit", path);
+			Asserts.assertContain(path, "edit");
 		}
 
 		/** delete JAX-RS annotation **/

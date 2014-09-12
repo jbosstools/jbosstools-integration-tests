@@ -87,14 +87,15 @@ public class SampleSoapTestBase extends WSTestBase {
 		Asserts.assertContain(code, "package " + svcPkg + ";");
 		String dd = resourceHelper.readFile(getDD(project));
 		Asserts.assertContain(dd, "<servlet-name>" + svcName + "</servlet-name>");
-		serversViewHelper.removeProjectFromServer(project, configuredState.getServer().name);
+		serversViewHelper.removeProjectFromServer(project, getConfiguredServerName());
 		serversViewHelper.runProjectOnServer(project);
-		AbstractWait.sleep(TimePeriod.SHORT);
+		AbstractWait.sleep(TimePeriod.getCustom(5));
 		try {
 			WSClient c = new WSClient(new URL("http://" + SERVER_URL + "/" + project + "/" + svcName),
 							new QName("http://" + svcPkg + "/", svcClass + "Service"),
 							new QName("http://" + svcPkg + "/", svcClass + "Port"));
-			assertContains("Hello " + msgContent + "!", c.callService(MessageFormat.format(SOAP_REQUEST, svcPkg, msgContent)));
+			Asserts.assertContain(c.callService(MessageFormat.format(SOAP_REQUEST, svcPkg, msgContent)),
+					"Hello " + msgContent + "!");
 		} catch (MalformedURLException e) {
 			LOGGER.log(Level.WARNING, e.getMessage(), e);
 		}

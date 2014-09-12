@@ -11,6 +11,10 @@
 
 package org.jboss.tools.ws.ui.bot.test.rest.explorer;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.util.List;
 
 import org.jboss.reddeer.swt.wait.AbstractWait;
@@ -62,7 +66,7 @@ public class RESTfulExplorerTest extends RESTfulTestBase {
 		List<RestService> restServices = restfulServicesForProject(projectName);
 
 		/* test JAX-RS REST explorer */
-		assertCountOfRESTServices(restServices, 4);
+		assertCountOfRESTServices(restServices, 4); 
 		assertAllRESTServicesInExplorer(restServices);
 		testAdvancedRESTServices(restServices);
 	}

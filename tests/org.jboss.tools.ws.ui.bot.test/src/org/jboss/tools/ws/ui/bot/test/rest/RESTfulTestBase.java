@@ -11,6 +11,10 @@
 
 package org.jboss.tools.ws.ui.bot.test.rest;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
@@ -36,9 +40,6 @@ import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
-import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
 import org.jboss.tools.ws.reddeer.editor.ExtendedTextEditor;
 import org.jboss.tools.ws.reddeer.jaxrs.core.RestFullAnnotations;
 import org.jboss.tools.ws.reddeer.jaxrs.core.RestFullExplorer;
@@ -56,7 +57,6 @@ import org.junit.Assert;
  * @author jjankovi
  * 
  */
-@Require(server = @Server(state = ServerState.NotRunning), perspective = "Java EE")
 @JBossServer(state=ServerReqState.STOPPED)
 @OpenPerspective(JavaEEPerspective.class)
 public class RESTfulTestBase extends WSTestBase {
@@ -92,8 +92,10 @@ public class RESTfulTestBase extends WSTestBase {
 		importWSTestProject(projectName);
 
 		// workaround for EAP 5.1
-		if (configuredState.getServer().type.equals("EAP")
-				&& configuredState.getServer().version.equals("5.1")) {
+		
+
+		if (getConfiguredServerType().equals("JBoss Enterprise Application Platform")
+				&& getConfiguredServerVersion().equals("5.x")) {
 			throw new UnsupportedOperationException("When EAP 5.1 is used,"
 					+ " then jaxrs-api.jar must be added to build path of the imported project");
 		}
@@ -325,7 +327,7 @@ public class RESTfulTestBase extends WSTestBase {
 	}
 
 	protected void runRestServiceOnServer(RestService restService) {
-		runRestServiceOnServer(restService, configuredState.getServer().name);
+		runRestServiceOnServer(restService, getConfiguredServerName());
 	}
 
 	protected void runRestServiceOnServer(RestService restService, String serverName) {
