@@ -1,4 +1,4 @@
-package org.jboss.tools.openshift.application.advanced;
+package org.jboss.tools.openshift.ui.bot.test.application.advanced;
 
 import static org.junit.Assert.*;
 

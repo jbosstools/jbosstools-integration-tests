@@ -11,17 +11,17 @@
 package org.jboss.tools.openshift.ui.bot.test;
 
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.tools.openshift.application.advanced.ID901DeleteMoreApplicationsTest;
-import org.jboss.tools.openshift.application.advanced.ID902DeployGitProjectTest;
-import org.jboss.tools.openshift.application.advanced.ID903ApplicationMarkersTest;
-import org.jboss.tools.openshift.application.advanced.ID904DeployApplicationWARArchiveTest;
-import org.jboss.tools.openshift.application.advanced.ID905ManageSnapshotsTest;
-import org.jboss.tools.openshift.application.advanced.ID906RestoreApplicationFromSnapshotTest;
-import org.jboss.tools.openshift.application.advanced.ID907DownloadableCartridgeContentAssistTest;
 import org.jboss.tools.openshift.ui.bot.test.application.adapter.ID801SwitchProjectDeploymentTest;
 import org.jboss.tools.openshift.ui.bot.test.application.adapter.ID802ServerAdapterOverviewTest;
 import org.jboss.tools.openshift.ui.bot.test.application.adapter.ID803ServerAdapterHandlingTest;
 import org.jboss.tools.openshift.ui.bot.test.application.adapter.ID804CreateServerAdapterTest;
+import org.jboss.tools.openshift.ui.bot.test.application.advanced.ID901DeleteMoreApplicationsTest;
+import org.jboss.tools.openshift.ui.bot.test.application.advanced.ID902DeployGitProjectTest;
+import org.jboss.tools.openshift.ui.bot.test.application.advanced.ID903ApplicationMarkersTest;
+import org.jboss.tools.openshift.ui.bot.test.application.advanced.ID904DeployApplicationWARArchiveTest;
+import org.jboss.tools.openshift.ui.bot.test.application.advanced.ID905ManageSnapshotsTest;
+import org.jboss.tools.openshift.ui.bot.test.application.advanced.ID906RestoreApplicationFromSnapshotTest;
+import org.jboss.tools.openshift.ui.bot.test.application.advanced.ID907DownloadableCartridgeContentAssistTest;
 import org.jboss.tools.openshift.ui.bot.test.application.basic.ID301OpenNewApplicationWizardTest;
 import org.jboss.tools.openshift.ui.bot.test.application.basic.ID302OpenNewApplicationWizardWithoutConnectionTest;
 import org.jboss.tools.openshift.ui.bot.test.application.basic.ID303OpenNewApplicationWizardWithoutSSHKeyTest;
