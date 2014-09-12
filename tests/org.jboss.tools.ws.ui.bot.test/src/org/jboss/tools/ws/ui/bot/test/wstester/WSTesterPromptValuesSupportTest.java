@@ -11,6 +11,7 @@
 package org.jboss.tools.ws.ui.bot.test.wstester;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
@@ -21,9 +22,6 @@ import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.wait.WaitUntil;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
-import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
 import org.jboss.tools.ws.reddeer.jaxrs.core.RestFullExplorer;
 import org.jboss.tools.ws.reddeer.ui.dialogs.WSTesterParametersDialog;
 import org.jboss.tools.ws.reddeer.ui.tester.views.WsTesterView;
@@ -39,7 +37,6 @@ import org.junit.Test;
  * @author jjankovi
  * @author Radoslav Rabara
  */
-@Require(server = @Server(state = ServerState.Running))
 @JBossServer(state=ServerReqState.RUNNING)
 public class WSTesterPromptValuesSupportTest extends RESTfulTestBase {
 

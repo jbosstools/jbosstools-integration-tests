@@ -25,8 +25,6 @@ import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement
 import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ws.reddeer.ui.wizards.CreateNewFileWizardPage;
 import org.jboss.tools.ws.reddeer.ui.wizards.jst.jsp.NewJSPFileWizard;
 import org.jboss.tools.ws.reddeer.ui.wizards.wst.WebServiceWizardPageBase.SliderLevel;
@@ -44,8 +42,6 @@ import org.junit.runners.Suite.SuiteClasses;
  *
  */
 @SuiteClasses({ WSAllBotTests.class, EAPCompAllTests.class })
-@Require(perspective="Java EE", 
-		server=@Server)
 @OpenPerspective(JavaEEPerspective.class)
 @JBossServer()
 public class EAPFromJavaTest extends WebServiceTestBase {
@@ -125,8 +121,10 @@ public class EAPFromJavaTest extends WebServiceTestBase {
 
     private void testClient() {
         Assert.assertTrue("service must exist", servicePassed);
-        clientHelper.createClient(deploymentHelper.getWSDLUrl(getWsProjectName(), getWsName()),
-        		WebServiceRuntime.JBOSS_WS, getWsClientProjectName(), getEarProjectName(), getLevel(), "");
+        clientHelper.createClient(getConfiguredServerName(),
+        		deploymentHelper.getWSDLUrl(getWsProjectName(), getWsName()),
+        		WebServiceRuntime.JBOSS_WS, getWsClientProjectName(),
+        		getEarProjectName(), getLevel(), "");
         IProject p = ResourcesPlugin.getWorkspace().getRoot().getProject(getWsClientProjectName());
         String pkg = "test/ws";
         String cls = "src/" + pkg + "/EchoService.java";
@@ -145,7 +143,7 @@ public class EAPFromJavaTest extends WebServiceTestBase {
         setJSPFileContent();
         AbstractWait.sleep(TimePeriod.getCustom(2));
         serversViewHelper.runProjectOnServer(getWsClientProjectName());
-        serversViewHelper.serverClean(configuredState.getServer().name);
+        serversViewHelper.serverClean(getConfiguredServerName());
         String pageContent = deploymentHelper.getPage("http://localhost:8080/" + getWsClientProjectName() + "/index.jsp", 15000);
         LOGGER.info(pageContent);
         Assert.assertTrue(pageContent.contains("BartSimpson(age: 12)"));

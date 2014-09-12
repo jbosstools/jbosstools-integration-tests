@@ -10,6 +10,8 @@
  ******************************************************************************/
 package org.jboss.tools.ws.ui.bot.test.integration;
 
+import static org.junit.Assert.assertTrue;
+
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.wait.WaitUntil;

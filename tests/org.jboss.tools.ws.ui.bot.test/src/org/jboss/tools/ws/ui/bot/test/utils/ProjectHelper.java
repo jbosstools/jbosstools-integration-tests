@@ -13,21 +13,23 @@ package org.jboss.tools.ws.ui.bot.test.utils;
 
 import static org.junit.Assert.assertThat;
 
+import org.eclipse.jdt.internal.ui.text.folding.DefaultJavaFoldingPreferenceBlock;
 import org.hamcrest.core.Is;
+import org.hamcrest.core.StringContains;
 import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardDialog;
 import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardPage;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
-import org.jboss.reddeer.swt.api.Shell;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitWhile;
@@ -38,6 +40,7 @@ import org.jboss.tools.ws.reddeer.ui.wizards.CreateNewFileWizardPage;
 import org.jboss.tools.ws.reddeer.ui.wizards.jst.j2ee.EARProjectWizard;
 import org.jboss.tools.ws.reddeer.ui.wizards.jst.servlet.DynamicWebProjectWizard;
 import org.jboss.tools.ws.reddeer.ui.wizards.wst.NewWsdlFileWizard;
+import org.jboss.tools.ws.ui.bot.test.uiutils.JavaBuildPathPropertiesPage;
 import org.jboss.tools.ws.ui.bot.test.uiutils.PropertiesDialog;
 import org.jboss.tools.ws.ui.bot.test.uiutils.TargetedRuntimesPropertiesPage;
 
@@ -153,7 +156,7 @@ public class ProjectHelper {
 	 * @param projectName
 	 */
 	public void createDD(String projectName) {
-		Project project = projectExplorer.getProject(projectName);
+		Project project = getProject(projectName);
 		expandProject(project.getTreeItem());
 		String dd = "Deployment Descriptor: " + projectName;
 		project.getProjectItem(dd).select();
@@ -188,25 +191,28 @@ public class ProjectHelper {
 		dialog.finish();
 	}
 
-	/**
-	 * Opens properties dialog of project with the <var>projectName</var>
-	 * 
-	 * @param projectName
-	 */
-	public Shell openProjectProperties(String projectName) {
-		PackageExplorer packageExplorer = new PackageExplorer();
-		packageExplorer.open();
-		Project project = packageExplorer.getProject(projectName);
-		project.select();
+	public void setProjectJRE(String projectName) {
+		PropertiesDialog dialog = new PropertiesDialog();
+		dialog.open(projectName);
 
-		// Open Project Properties
+		JavaBuildPathPropertiesPage page = new JavaBuildPathPropertiesPage();
+		page.select();
+		page.activateLibrariesTab();
+		page.selectLibrary(StringContains.containsString("JRE System Library"));
+
+		new PushButton(IDELabel.Button.EDIT).click();
+		new DefaultShell("Edit Library");
+		new RadioButton("Alternate JRE:").click();
+		new PushButton(IDELabel.Button.FINISH).click();
+
+		dialog.finish();
+	}
+
+	private Project getProject(String projectName) {
+		ProjectExplorer projectExplorer = new ProjectExplorer();
+		projectExplorer.open();
+		Project project =  projectExplorer.getProject(projectName);
 		assertThat("Project name", project.getName(), Is.is(projectName));
-		assertThat("Project with name '" + projectName + "' is selected",
-				project.isSelected(), Is.is(true));
-
-		new WaitWhile(new JobIsRunning());
-		new ShellMenu(IDELabel.Menu.PROJECT, IDELabel.Menu.PROPERTIES).select();
-		return new DefaultShell(IDELabel.Shell.PROPERTIES_FOR + " "
-				+ projectName);
+		return project;
 	}
 }

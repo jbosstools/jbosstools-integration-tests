@@ -7,9 +7,6 @@ import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
-import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
 import org.junit.Test;
 
@@ -18,7 +15,6 @@ import org.junit.Test;
  * @author jjankovi
  *
  */
-@Require(server = @Server(state = ServerState.NotRunning), perspective = "Java EE")
 @JBossServer(state=ServerReqState.STOPPED)
 @OpenPerspective(JavaEEPerspective.class)
 public class HTTPMethodAnnotationQuickFixTest extends RESTfulTestBase {

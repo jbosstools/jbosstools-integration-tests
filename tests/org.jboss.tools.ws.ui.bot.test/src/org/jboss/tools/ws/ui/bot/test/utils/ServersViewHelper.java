@@ -63,18 +63,21 @@ public class ServersViewHelper {
 			return;
 		}
 		ServersView servers = new ServersView();
+		servers.open();
 		Server server = null;
 		try {
 			server = servers.getServer(serverName);
 		} catch(EclipseLayerException e) {
 			return;
 		}
+		servers.open();
 		ModifyModulesDialog dialog = server.addAndRemoveModules();
 
 		/* workaround for REDDEER-802 */
 		Shell s = new DefaultShell();
 
 		ModifyModulesPage page = dialog.getFirstPage();
+		s.setFocus();
 		if (!page.getConfiguredModules().isEmpty()) {
 			s.setFocus();//REDDEER-802
 			page.removeAll();

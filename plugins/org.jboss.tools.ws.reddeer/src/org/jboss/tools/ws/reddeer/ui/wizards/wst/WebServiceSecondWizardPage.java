@@ -1,8 +1,11 @@
 package org.jboss.tools.ws.reddeer.ui.wizards.wst;
 
+import org.hamcrest.core.AnyOf;
+import org.hamcrest.core.Is;
 import org.jboss.reddeer.jface.wizard.WizardPage;
 import org.jboss.reddeer.swt.api.Text;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.swt.impl.text.DefaultText;
+import org.jboss.reddeer.swt.matcher.WithLabelMatcher;
 
 /**
  * Second {@link WebServiceWizard} page.
@@ -30,6 +33,7 @@ public class WebServiceSecondWizardPage extends WizardPage {
 	}
 
 	private Text getPackageNameText() {
-		return new LabeledText("Package name");
+		return new DefaultText(new WithLabelMatcher(AnyOf.anyOf(Is.is("Package name"), 
+				Is.is("Package Name:"))));
 	}
 }

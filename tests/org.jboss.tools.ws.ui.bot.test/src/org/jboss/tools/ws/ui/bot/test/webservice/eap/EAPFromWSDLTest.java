@@ -31,8 +31,6 @@ import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ws.reddeer.ui.wizards.wst.WebServiceWizardPageBase.SliderLevel;
 import org.jboss.tools.ws.ui.bot.test.WSAllBotTests;
 import org.jboss.tools.ws.ui.bot.test.uiutils.RunConfigurationsDialog;
@@ -50,8 +48,6 @@ import org.junit.runners.Suite.SuiteClasses;
  *
  */
 @SuiteClasses({ WSAllBotTests.class, EAPCompAllTests.class })
-@Require(perspective="Java EE", 
-		server=@Server)
 @OpenPerspective(JavaEEPerspective.class)
 @JBossServer()
 public class EAPFromWSDLTest extends WebServiceTestBase {
@@ -152,9 +148,10 @@ public class EAPFromWSDLTest extends WebServiceTestBase {
 
 	private void testClient() {
 		Assert.assertTrue("service must exist", servicePassed);
-		clientHelper.createClient(deploymentHelper.getWSDLUrl(getWsProjectName(), getWsName()),
-				WebServiceRuntime.JBOSS_WS, getWsClientProjectName(), getEarProjectName(), 
-				SliderLevel.DEVELOP, getWsClientPackage());
+		clientHelper.createClient(getConfiguredServerName(),
+				deploymentHelper.getWSDLUrl(getWsProjectName(), getWsName()),
+				WebServiceRuntime.JBOSS_WS, getWsClientProjectName(),
+				getEarProjectName(), SliderLevel.DEVELOP, getWsClientPackage());
 		IProject p = ResourcesPlugin.getWorkspace().getRoot()
 				.getProject(getWsClientProjectName());
 		String pkg = "org/jboss/wsclient";

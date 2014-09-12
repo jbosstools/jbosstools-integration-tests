@@ -1,5 +1,7 @@
 package org.jboss.tools.ws.ui.bot.test.utils;
 
+import static org.junit.Assert.fail;
+
 import org.eclipse.swt.SWTException;
 import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
@@ -15,14 +17,13 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.toolbar.ViewToolItem;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
-import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ws.reddeer.ui.wizards.wst.WebServiceClientWizard;
 import org.jboss.tools.ws.reddeer.ui.wizards.wst.WebServiceClientWizardPage;
 import org.jboss.tools.ws.reddeer.ui.wizards.wst.WebServiceWizardPageBase.SliderLevel;
 import org.jboss.tools.ws.ui.bot.test.webservice.WebServiceRuntime;
 import org.junit.Assert;
 
-public class WebServiceClientHelper extends SWTTestExt {
+public class WebServiceClientHelper {
 
 	/**
 	 * Method creates Web Service Client for entered wsdl file, web project,
@@ -32,10 +33,9 @@ public class WebServiceClientHelper extends SWTTestExt {
 	 * @param level
 	 * @param pkg
 	 */
-	public void createClient(String wsdl, WebServiceRuntime runtime, String targetProject,
+	public void createClient(String serverName, String wsdl,
+			WebServiceRuntime runtime, String targetProject,
 			String earProject, SliderLevel level, String pkg) {
-		final String SERVER_NAME = configuredState.getServer().name;
-
 		WebServiceClientWizard wizard = new WebServiceClientWizard();
 		wizard.open();
 
@@ -45,7 +45,7 @@ public class WebServiceClientHelper extends SWTTestExt {
 		new WaitUntil(new WebServiceClientPageIsValidated(), TimePeriod.getCustom(2), true);
 
 		page.setClientSlider(level);
-		page.setServerRuntime(SERVER_NAME);
+		page.setServerRuntime(serverName);
 		page.setWebServiceRuntime(runtime.getName());
 		page.setClientProject(targetProject);
 		page.setClientEARProject(earProject);
@@ -59,7 +59,7 @@ public class WebServiceClientHelper extends SWTTestExt {
 		checkErrorDialog(wizard);
 
 		//check if there is any error in console output
-		checkErrorInConsoleOutput(SERVER_NAME, earProject);
+		checkErrorInConsoleOutput(serverName, earProject);
 	}
 
 	/**

@@ -5,10 +5,6 @@ import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBo
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
-import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
-import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
 import org.jboss.tools.ws.reddeer.editor.ExtendedTextEditor;
 import org.junit.Test;
 
@@ -22,7 +18,6 @@ import org.junit.Test;
  * @see http://tools.jboss.org/documentation/whatsnew/jbosstools/4.2.0.Beta1.html#webservices
  * @since JBT 4.2.0.Beta1
  */
-@Require(server = @Server(type = ServerType.WildFly, state = ServerState.Present))
 @JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY)
 public class NameBindingAnnotationSupportTest extends RESTfulTestBase {
 	

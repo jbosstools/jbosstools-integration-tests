@@ -1,6 +1,7 @@
 package org.jboss.tools.ws.ui.bot.test.rest.explorer;
 
-import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
+import static org.junit.Assert.assertNotNull;
+
 import org.jboss.reddeer.jface.exception.JFaceLayerException;
 import org.jboss.tools.ws.reddeer.jaxrs.core.RestFullExplorer;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
@@ -50,7 +51,7 @@ public class RESTfulSupportTest extends RESTfulTestBase {
 				+ "project \"" + projectName + "\"";
 		try {
 			explorer = new RestFullExplorer(projectName);
-		} catch (WidgetNotFoundException | JFaceLayerException e) {
+		} catch (JFaceLayerException e) {
 			Assert.fail(missingRESTExplorerMessage + "\nThrown exception: " + e.getMessage());
 		}
 		assertNotNull(missingRESTExplorerMessage, explorer);

@@ -8,10 +8,6 @@ import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardDialog;
 import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardPage;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
-import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
-import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
 import org.junit.Test;
 
@@ -25,7 +21,6 @@ import org.junit.Test;
  * @since JBT 4.2.0 Beta3
  * @see https://issues.jboss.org/browse/JBIDE-16763
  */
-@Require(server = @Server(type = ServerType.WildFly, state = ServerState.Present))
 @JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY)
 public class ParamConverterSupportTest extends RESTfulTestBase {
 	

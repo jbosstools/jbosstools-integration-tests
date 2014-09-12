@@ -11,6 +11,8 @@
 
 package org.jboss.tools.ws.ui.bot.test.webservice;
 
+import static org.junit.Assert.assertNotNull;
+
 import java.io.InputStream;
 import java.text.MessageFormat;
 import java.util.logging.Level;
@@ -54,7 +56,7 @@ public class WebServiceTestBase extends WSTestBase {
 		String s = resourceHelper.readStream(javasrc);
 		String src = MessageFormat.format(s, getWsPackage(), getWsName());
 		createService(ServiceType.BOTTOM_UP, getWsPackage() + "."
-				+ getWsName(), getLevel(), null, src);
+				+ getWsName(), getLevel(), null, src, WebServiceRuntime.JBOSS_WS);
 	}
 
 	protected void topDownWS(InputStream input, WebServiceRuntime serviceRuntime, String pkg) {
@@ -68,11 +70,11 @@ public class WebServiceTestBase extends WSTestBase {
 		sb.append(tns[0]);
 		String src = MessageFormat.format(s, sb.toString(), getWsName());
 		createService(ServiceType.TOP_DOWN, "/" + getWsProjectName() + "/src/"
-				+ getWsName() + ".wsdl", getLevel(), pkg, src);
+				+ getWsName() + ".wsdl", getLevel(), pkg, src, serviceRuntime);
 	}
 
 	private void createService(ServiceType t, String source,
-			SliderLevel level, String pkg, String code) {
+			SliderLevel level, String pkg, String code, WebServiceRuntime serviceRuntime) {
 		// create ws source - java class or wsdl
 		switch (t) {
 		case BOTTOM_UP:
@@ -114,8 +116,8 @@ public class WebServiceTestBase extends WSTestBase {
 		WebServiceFirstWizardPage page = new WebServiceFirstWizardPage();
 		page.setServiceType(t);
 		page.setSource(source);
-		page.setServerRuntime(configuredState.getServer().name);
-		page.setWebServiceRuntime("JBossWS");
+		page.setServerRuntime(getConfiguredServerName());
+		page.setWebServiceRuntime(serviceRuntime.getName());
 		page.setServiceProject(getWsProjectName());
 		page.setServiceEARProject(getEarProjectName());
 		page.setServiceSlider(level);

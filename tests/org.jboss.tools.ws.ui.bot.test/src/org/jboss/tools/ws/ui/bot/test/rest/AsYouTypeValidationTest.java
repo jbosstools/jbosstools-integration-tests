@@ -1,6 +1,7 @@
 package org.jboss.tools.ws.ui.bot.test.rest;
 
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 
 import java.util.Arrays;
 import java.util.List;
@@ -73,6 +74,17 @@ public class AsYouTypeValidationTest extends RESTfulTestBase {
 				return;
 			}
 		}
-		fail("Error marked with text '" + EXPECTED_ERROR + "' was not found.\n" + Arrays.toString(markers.toArray()));
+		fail("Error marked with text '" + EXPECTED_ERROR + "' was not found.\n" + getMarkersText(markers));
+	}
+
+	private String getMarkersText(List<Marker> markers) {
+		StringBuilder text = new StringBuilder();
+		for(int i=0;i<markers.size();i++) {
+			if (i>0) {
+				text.append(", ");
+			}
+			text.append(markers.get(i).getText());
+		}
+		return text.toString();
 	}
 }

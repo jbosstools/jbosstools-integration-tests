@@ -11,19 +11,19 @@
 package org.jboss.tools.ws.ui.bot.test.preferences;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import org.hamcrest.core.Is;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
-import org.jboss.tools.ui.bot.ext.SWTTestExt;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
-import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
 import org.jboss.tools.ws.reddeer.ui.preferences.JBossWSRuntimeItem;
 import org.jboss.tools.ws.reddeer.ui.preferences.JBossWSRuntimeListFieldEditor;
 import org.jboss.tools.ws.reddeer.ui.preferences.JBossWSRuntimePreferencePage;
@@ -41,9 +41,11 @@ import org.junit.Test;
  * @author jjankovi
  * @author Radoslav Rabara
  */
-@Require(server=@Server(state=ServerState.NotRunning))
 @JBossServer(state=ServerReqState.PRESENT)
-public class JBossWSPreferencesTest extends SWTTestExt {
+public class JBossWSPreferencesTest {
+
+	@InjectRequirement
+    private ServerRequirement serverReq;
 
 	private static JBossWSRuntimePreferencePage jbossWSRuntimePreferencePage;
 	private JBossWSRuntimeListFieldEditor jbossWsRuntimeDialog;
@@ -111,8 +113,7 @@ public class JBossWSPreferencesTest extends SWTTestExt {
 	}
 
 	private void setRuntimeHomeFolderAccordingToRuntime() {
-		jbossWsRuntimeDialog.setHomeFolder(
-				configuredState.getServer().runtimeLocation);
+		jbossWsRuntimeDialog.setHomeFolder(serverReq.getConfig().getRuntime());
 
 		runtimeName = jbossWsRuntimeDialog.getName();
 		runtimeVersion = jbossWsRuntimeDialog.getVersion();
@@ -130,14 +131,14 @@ public class JBossWSPreferencesTest extends SWTTestExt {
 		String runtimeVersion = jbossWsRuntimeDialog.getRuntimeVersion();
 
 		String expectedVersion;
-		switch(configuredState.getServer().type) {
-		case "WILDFLY":
-			expectedVersion = "4.2.3.Final";
+		switch(serverReq.getConfig().getServerFamily().getLabel()) {
+		case "WildFly":
+			expectedVersion = "4.2.4.Final";
 			break;
-		case "EAP":
+		case "JBoss Enterprise Application Platform":
 			expectedVersion = "4.2.3.Final-redhat-1";
 			break;
-		case "AS":
+		case "JBoss AS":
 			expectedVersion = "4.0.2.GA";
 			break;
 		default:

@@ -16,9 +16,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import org.hamcrest.core.IsEqual;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
-import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
 import org.jboss.tools.ws.reddeer.jaxrs.core.RestFullExplorer;
 import org.jboss.tools.ws.reddeer.jaxrs.core.RestService;
 import org.jboss.tools.ws.reddeer.ui.tester.views.WsTesterView;
@@ -26,7 +23,6 @@ import org.jboss.tools.ws.reddeer.ui.tester.views.WsTesterView.RequestType;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
 import org.junit.Test;
 
-@Require(server = @Server(state = ServerState.Running))
 @JBossServer(state=ServerReqState.RUNNING)
 public class XmlJsonFormattingTest extends RESTfulTestBase {
 
@@ -54,8 +50,8 @@ public class XmlJsonFormattingTest extends RESTfulTestBase {
 		if (!projectExists(getWsProjectName())) {
 			importRestWSProject(getWsProjectName());
 			serversViewHelper.addProjectToServer(getWsProjectName(),
-					configuredState.getServer().name);
-			serversViewHelper.serverClean(configuredState.getServer().name);
+					getConfiguredServerName());
+			serversViewHelper.serverClean(getConfiguredServerName());
 		}
 	}
 

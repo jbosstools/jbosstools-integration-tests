@@ -10,6 +10,9 @@
  ******************************************************************************/
 package org.jboss.tools.ws.ui.bot.test.wstester;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;

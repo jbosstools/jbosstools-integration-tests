@@ -11,21 +11,29 @@
 
 package org.jboss.tools.ws.ui.bot.test;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.File;
 import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
+import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
 import org.jboss.reddeer.eclipse.utils.DeleteUtils;
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
+import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
@@ -35,9 +43,6 @@ import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.reddeer.workbench.condition.ViewWithToolTipIsActive;
 import org.jboss.tools.common.reddeer.label.IDELabel;
-import org.jboss.tools.ui.bot.ext.SWTTestExt;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ws.reddeer.ui.wizards.wst.WebServiceWizardPageBase.SliderLevel;
 import org.jboss.tools.ws.ui.bot.test.utils.DeploymentHelper;
 import org.jboss.tools.ws.ui.bot.test.utils.ProjectHelper;
@@ -54,11 +59,12 @@ import org.junit.Before;
  * @author jjankovi
  * 
  */
-@Require(perspective = "Java EE", 
-		 server = @Server)
 @OpenPerspective(JavaEEPerspective.class)
 @JBossServer()
-public class WSTestBase extends SWTTestExt {
+public class WSTestBase {
+
+	@InjectRequirement
+    private static ServerRequirement serverReq;
 
 	private SliderLevel level;
 	private String wsProjectName = null;
@@ -105,6 +111,22 @@ public class WSTestBase extends SWTTestExt {
 		deleteAllProjects();
 	}
 
+	protected static String getConfiguredRuntimeName() {
+		return serverReq.getRuntimeNameLabelText(serverReq.getConfig());
+	}
+
+	protected static String getConfiguredServerName() {
+		return serverReq.getServerNameLabelText(serverReq.getConfig());
+	}
+
+	protected static String getConfiguredServerType() {
+		return serverReq.getConfig().getServerFamily().getLabel();
+	}
+
+	protected static String getConfiguredServerVersion() {
+		return serverReq.getConfig().getServerFamily().getVersion();
+	}
+
 	protected boolean projectExists(String name) {
 		PackageExplorer packageExplorer = new PackageExplorer();
 		packageExplorer.open();
@@ -115,23 +137,35 @@ public class WSTestBase extends SWTTestExt {
 		PackageExplorer packageExplorer = new PackageExplorer();
 		packageExplorer.open();
 		List<Project> projects = packageExplorer.getProjects();
-		for(int i=0;i<projects.size();i++) {
-			Project project = projects.get(i);
-			try {
-				DeleteUtils.forceProjectDeletion(project, true);
-			} catch(RuntimeException exception) {
-				LOGGER.severe("Project was not deleted");
+		try {
+			for(int i=0;i<projects.size();i++) {
+				Project project = projects.get(i);
+				project.delete(true);
+			}
+		} catch(SWTLayerException | EclipseLayerException e) {
+			packageExplorer.close();
+			packageExplorer.open();
+			projects = packageExplorer.getProjects();
+			for(int i=0;i<projects.size();i++) {
+				Project project = projects.get(i);
 				try {
-					LOGGER.severe("Project name: " + project.getName());
-				} catch(Exception t) {
-					LOGGER.severe("Can't get project name" + t.getMessage());
+					LOGGER.severe("Forcing removal of " + project);
+					DeleteUtils.forceProjectDeletion(project, true);
+				} catch(RuntimeException exception) {
+					LOGGER.severe("Project was not deleted");
+					try {
+						LOGGER.severe("Project name: " + project.getName());
+					} catch(Exception t) {
+						LOGGER.severe("Can't get project name" + t.getMessage());
+					}
+					throw exception;
 				}
 			}
 		}
 	}
 
 	protected static void deleteAllProjectsFromServer() {
-		serversViewHelper.removeAllProjectsFromServer(configuredState.getServer().name);
+		serversViewHelper.removeAllProjectsFromServer(getConfiguredServerName());
 	}
 
 	protected void openJavaFile(String projectName, String pkgName, String javaFileName) {
@@ -183,7 +217,8 @@ public class WSTestBase extends SWTTestExt {
 			e.printStackTrace();
 			fail(e.getMessage());
 		}
-		projectHelper.addConfiguredRuntimeIntoProject(projectName, configuredState.getServer().name);
+		projectHelper.addConfiguredRuntimeIntoProject(projectName, getConfiguredRuntimeName());
+		projectHelper.setProjectJRE(projectName);
 		cleanAllProjects();
 		AbstractWait.sleep(TimePeriod.getCustom(2));
 	}

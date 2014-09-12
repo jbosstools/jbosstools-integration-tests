@@ -10,7 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.ws.ui.bot.test.webservice.eap;
 
-import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
@@ -24,6 +24,6 @@ import org.junit.runners.Suite.SuiteClasses;
 	EAPFromJavaTest.class,
     EAPFromWSDLTest.class
 })
-@RunWith(RequirementAwareSuite.class)
+@RunWith(RedDeerSuite.class)
 public class EAPCompAllTests {
 }
