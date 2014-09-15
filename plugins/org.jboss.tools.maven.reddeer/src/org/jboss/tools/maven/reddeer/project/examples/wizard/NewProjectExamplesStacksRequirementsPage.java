@@ -1,17 +1,28 @@
 package org.jboss.tools.maven.reddeer.project.examples.wizard;
 
+import static org.junit.Assert.fail;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import org.jboss.reddeer.jface.wizard.WizardPage;
 import org.jboss.reddeer.swt.api.Group;
+import org.jboss.reddeer.swt.api.Link;
 import org.jboss.reddeer.swt.api.Table;
+import org.jboss.reddeer.swt.condition.JobIsRunning;
+import org.jboss.reddeer.swt.condition.WaitCondition;
+import org.jboss.reddeer.swt.exception.SWTLayerException;
+import org.jboss.reddeer.swt.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.group.DefaultGroup;
 import org.jboss.reddeer.swt.impl.link.AnchorLink;
+import org.jboss.reddeer.swt.impl.link.DefaultLink;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
+import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.tools.maven.reddeer.project.examples.wait.MavenRepositoryNotFound;
 import org.jboss.tools.maven.reddeer.wizards.AddRepositoryDialog;
 
 public class NewProjectExamplesStacksRequirementsPage extends WizardPage{
@@ -27,6 +38,13 @@ public class NewProjectExamplesStacksRequirementsPage extends WizardPage{
 	 */
 	public void setTargetRuntime(int index){
 		new DefaultCombo(0).setSelection(index);
+		new WaitWhile(new JobIsRunning());
+		try{
+			new WaitUntil(new MavenRepositoryNotFound());
+			fail("Maven repository is not present. Link with message: "+new DefaultLink().getText());
+		}catch(WaitTimeoutExpiredException ex){
+			//Do nothing
+		}
 	}
 	
 	
@@ -58,5 +76,5 @@ public class NewProjectExamplesStacksRequirementsPage extends WizardPage{
 		new DefaultShell("Edit Maven Repository");
 		return new AddRepositoryDialog();
 	}
-
+	
 }

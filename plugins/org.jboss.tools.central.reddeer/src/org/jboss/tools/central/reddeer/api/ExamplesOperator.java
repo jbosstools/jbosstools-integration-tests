@@ -1,5 +1,6 @@
 package org.jboss.tools.central.reddeer.api;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -22,21 +23,21 @@ import org.jboss.reddeer.swt.condition.WaitCondition;
 import org.jboss.reddeer.swt.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.swt.handler.WidgetHandler;
 import org.jboss.reddeer.swt.impl.browser.InternalBrowser;
-import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.label.DefaultLabel;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.link.DefaultLink;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.reddeer.uiforms.impl.formtext.DefaultFormText;
 import org.jboss.reddeer.uiforms.impl.hyperlink.DefaultHyperlink;
+import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.central.reddeer.projects.ArchetypeProject;
 import org.jboss.tools.central.reddeer.projects.CentralExampleProject;
-import org.jboss.tools.central.reddeer.projects.Project;
 import org.jboss.tools.central.reddeer.wizards.JBossCentralProjectWizard;
 import org.jboss.tools.central.reddeer.wizards.NewProjectExamplesWizardDialogCentral;
+import org.jboss.tools.maven.reddeer.project.examples.wait.MavenRepositoryNotFound;
 import org.jboss.tools.maven.reddeer.project.examples.wizard.ArchetypeExamplesWizardFirstPage;
+import org.jboss.tools.maven.reddeer.project.examples.wizard.ArchetypeExamplesWizardPage;
 import org.jboss.tools.maven.reddeer.project.examples.wizard.ExampleRequirement;
 import org.jboss.tools.maven.reddeer.project.examples.wizard.MavenExamplesRequirementPage;
 import org.jboss.tools.maven.reddeer.project.examples.wizard.NewProjectExamplesStacksRequirementsPage;
@@ -72,7 +73,7 @@ public class ExamplesOperator {
 	public void deployProject(String projectName, String serverName) {
 		JBossServerView serversView = new JBossServerView();
 		serversView.open();
-		ModifyModulesDialog modulesDialog = serversView.getServers().get(0)
+		ModifyModulesDialog modulesDialog = serversView.getServer(serverName)
 				.addAndRemoveModules();
 		modulesDialog.getFirstPage().add(projectName);
 		modulesDialog.finish();
@@ -92,16 +93,19 @@ public class ExamplesOperator {
 		NewProjectExamplesStacksRequirementsPage firstPage = (NewProjectExamplesStacksRequirementsPage) dialog
 				.getCurrentWizardPage();
 		firstPage.setTargetRuntime(1);
+		new DefaultLink();
 		if (project.isBlank()){
 			firstPage.toggleBlank(project.isBlank());
 		}
 		dialog.next();
 		ArchetypeExamplesWizardFirstPage secondPage = (ArchetypeExamplesWizardFirstPage) dialog
 				.getCurrentWizardPage();
-		if (secondPage.getProjectName().equals("")) {
-			secondPage.setPackage(project.getProjectName());
-		}
-			dialog.finish(project.getProjectName(), project.isBlank());
+		assertFalse("Project Name cannot be empty", secondPage.getProjectName().equals(""));
+		dialog.next();
+		ArchetypeExamplesWizardPage thirdPage = (ArchetypeExamplesWizardPage) dialog.getCurrentWizardPage();
+		assertFalse("Group ID cannot be empty",thirdPage.getGroupID().equals(""));
+		dialog.finish(project.getProjectName(), project.isBlank());
+		checkForErrors();
 	}
 
 	/**
@@ -118,17 +122,24 @@ public class ExamplesOperator {
 		MavenExamplesRequirementPage reqPage = (MavenExamplesRequirementPage) dialog
 				.getWizardPage(0);
 		checkRequirements(reqPage.getRequirements());
+		try{
+			new WaitUntil(new MavenRepositoryNotFound());
+			fail("Maven repository is not present. Link with message: "+new DefaultLink().getText());
+		}catch(WaitTimeoutExpiredException ex){
+			//Do nothing
+		}
 		dialog.next();
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 		try {
-			dialog.finish();
+			dialog.finish(project.getProjectName());
 		} catch (WaitTimeoutExpiredException ex) { // waiting in dialog.finish()
 													// is not enough!
 			new WaitWhile(new ShellWithTextIsActive("New Project Example"),
 					TimePeriod.VERY_LONG);
 			new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		}
-		checkForErrors(project);
+		checkForErrors();
+//		checkForErrors(project);
 	}
 
 	/**
@@ -155,6 +166,7 @@ public class ExamplesOperator {
 			}
 		});
 		assertNotEquals("", browser.getText());
+		new DefaultEditor().close();
 	}
 
 	/**
@@ -172,23 +184,9 @@ public class ExamplesOperator {
 		}
 		return warnings;
 	}
-	
-	private void checkForErrors(Project project) {
-		new DefaultShell("New Project Example");
-		if (project instanceof ArchetypeProject) {
-			if (!((ArchetypeProject) project).isBlank()) {
-				CheckBox readmeChckBox = new CheckBox(1);
-				assertTrue("Readme checkbox should be checked by default",
-						readmeChckBox.isChecked());
-			}
-		}
-		boolean showQuickFix = new CheckBox("Show the Quick Fix dialog")
-				.isChecked();
-		new PushButton("Finish").click();
-		if (showQuickFix) {
-			new DefaultShell("Quick Fix").close();
-		}
-		new WaitWhile(new JobIsRunning());
+
+
+	private void checkForErrors() {
 		List<TreeItem> errors = new ProblemsView().getAllErrors();
 		if (!errors.isEmpty()) {
 			String failureMessage = "There are errors after importing project";

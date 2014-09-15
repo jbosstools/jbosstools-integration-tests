@@ -11,6 +11,10 @@ public class ArchetypeExamplesWizardPage extends WizardPage{
 		return new LabeledCombo("Group Id:").getText();
 	}
 	
+	public void setGroupID(String groupId){
+		new LabeledCombo("Group Id:").setText(groupId);
+	}
+	
 	public String getArtifactID(){
 		return new LabeledCombo("Artifact Id:").getText();
 	}

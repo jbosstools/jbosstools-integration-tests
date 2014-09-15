@@ -25,10 +25,10 @@ import org.jboss.tools.central.test.ui.reddeer.projects.JavaEEWebProject;
 import org.jboss.tools.central.test.ui.reddeer.projects.RichfacesProject;
 import org.junit.After;
 import org.junit.AfterClass;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
-@JBossServer(type = ServerReqType.EAP, state = ServerReqState.RUNNING)
+@JBossServer(type = ServerReqType.ANY, state = ServerReqState.RUNNING)
 public class ArchetypesTest {
 
 	private static Map<org.jboss.tools.central.reddeer.projects.Project, List<String>> projectWarnings = new HashMap<org.jboss.tools.central.reddeer.projects.Project, List<String>>();
@@ -36,8 +36,8 @@ public class ArchetypesTest {
 	@InjectRequirement
 	ServerRequirement req;
 
-	@Before
-	public void setup() {
+	@BeforeClass
+	public static void setup() {
 		MavenSettingsPreferencePage prefPage = new MavenSettingsPreferencePage();
 		String mvnConfigFileName = System.getProperty("maven.config.file");
 		prefPage.open();
@@ -54,6 +54,9 @@ public class ArchetypesTest {
 			p.delete(true);
 		}
 		ShellHandler.getInstance().closeAllNonWorbenchShells();
+		new WorkbenchToolItem("JBoss Central").click();
+		// activate central editor
+		new DefaultEditor("JBoss Central");
 	}
 	
 	@AfterClass
@@ -93,7 +96,20 @@ public class ArchetypesTest {
 	public void JavaEEWebProjectBlankTest() {
 		importArchetypeProject(new JavaEEWebProject(true));
 	}
-
+//
+//	@Test
+//	public void HybridMobileTest(){
+//		try{
+//			new DefaultHyperlink("Hybrid Mobile Project").activate();
+//			new WaitUntil(new ShellWithTextIsActive("Information"));
+//			//HMT is not installed
+//			new PushButton("No").click();
+//		}catch(WaitTimeoutExpiredException ex){
+//			//TODO check whether this is OK.
+//			new DefaultShell().close();
+//		}
+//	}
+	
 	private void importArchetypeProject(ArchetypeProject project) {
 		ExamplesOperator.getInstance().importArchetypeProject(project);
 		ExamplesOperator.getInstance().deployProject(project.getProjectName(),
