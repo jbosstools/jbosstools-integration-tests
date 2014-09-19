@@ -93,7 +93,8 @@ public class ImportJSF12ProjectFromJBDS4x extends JSFAutoTestCase{
           File.separator + ImportJSF12ProjectFromJBDS4x.PROJECT_TO_IMPORT_NAME, 
           null,
           null);
-      assertTrue("There were these warnings when importing "
+      assertTrue("https://issues.jboss.org/browse/JBIDE-17422\n"
+    	  + "There were these warnings when importing "
           + ImportJSF12ProjectFromJBDS4x.PROJECT_TO_IMPORT_NAME 
           + " project " 
           + SWTEclipseExt.getFormattedTreeNodesText(warnings),

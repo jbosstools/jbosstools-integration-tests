@@ -12,6 +12,7 @@ package org.jboss.tools.jsf.ui.bot.test.jsf2;
 
 import org.eclipse.core.commands.NotEnabledException;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
+import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.jboss.tools.jsf.ui.bot.test.JSFAutoTestCase;
 import org.jboss.tools.ui.bot.ext.Assertions;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
@@ -77,11 +78,9 @@ public class CreateJSF2CompositeComponentMenuTest extends JSFAutoTestCase{
     try{
       ContextMenuHelper.clickContextMenu(SWTTestExt.bot.swtBotEditorExtByTitle(VPEAutoTestCase.TEST_PAGE),
           IDELabel.Menu.CREATE_JSF2_COMPOSITE);   
-      assertTrue("Menu Item has to be disabled but is not" , false);
-    } catch (RuntimeException re){
-      if (!(re.getCause() instanceof NotEnabledException)){
-        throw re;
-      }
+      fail("Menu should not contain menu item:'" + IDELabel.Menu.CREATE_JSF2_COMPOSITE + "'");
+    } catch (WidgetNotFoundException wnfe){
+      // correct menu is not available
     }
     // Test JSF 1.2 Project with Facelets
     openPage(VPEAutoTestCase.FACELETS_TEST_PAGE,VPEAutoTestCase.FACELETS_TEST_PROJECT_NAME);

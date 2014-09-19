@@ -108,7 +108,12 @@ public abstract class JSFAutoTestCase extends VPEAutoTestCase {
       if (scanner != null) {
         scanner.close();
       }
+    }finally{
+        if (scanner != null) {
+            scanner.close();
+          }
     }
+    
     return builder.toString();
 	}
   /**

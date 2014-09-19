@@ -116,7 +116,6 @@ public void tearDown() throws Exception {
     result.add("validator");
     result.add("XSL processing instruction - XSL processing instruction");
     result.add("comment - xml comment");
-    result.add("user : User");
     
     return result;
   }
@@ -139,7 +138,6 @@ public void tearDown() throws Exception {
     result.add("map-entries");
     result.add("XSL processing instruction - XSL processing instruction");
     result.add("comment - xml comment");
-    result.add("user : User");
     return result;
   }
   /**
@@ -160,7 +158,6 @@ public void tearDown() throws Exception {
     result.add("value");
     result.add("XSL processing instruction - XSL processing instruction");
     result.add("comment - xml comment");
-    result.add("user : User");
     return result;
   }
   /**
@@ -178,7 +175,6 @@ public void tearDown() throws Exception {
     result.add("navigation-rule-extension");
     result.add("XSL processing instruction - XSL processing instruction");
     result.add("comment - xml comment");
-    result.add("user : User");
     return result;
   }
   /**
@@ -197,7 +193,6 @@ public void tearDown() throws Exception {
     result.add("to-view-id");
     result.add("XSL processing instruction - XSL processing instruction");
     result.add("comment - xml comment");
-    result.add("user : User");
     return result;
   }
 
