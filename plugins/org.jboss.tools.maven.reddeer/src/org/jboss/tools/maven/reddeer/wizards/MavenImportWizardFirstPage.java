@@ -14,10 +14,14 @@ import org.jboss.reddeer.swt.wait.WaitWhile;
 
 public class MavenImportWizardFirstPage extends WizardPage{
 	
-	public void importProject(String path){
+	public void setRootDirectory(String path){
 		new LabeledCombo("Root Directory:").setText(path);
 		new PushButton("Refresh").click();
 		new WaitUntil(new ProjectIsLoaded(new DefaultTree()), TimePeriod.LONG);
+	}
+	
+	public void importProject(String path){
+		setRootDirectory(path);
 		new PushButton("Finish").click();
 		new WaitWhile(new ShellWithTextIsActive("Import Maven Projects"),TimePeriod.NORMAL);
 		new WaitWhile(new JobIsRunning(),TimePeriod.VERY_LONG);

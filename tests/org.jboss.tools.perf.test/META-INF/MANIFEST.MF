@@ -15,6 +15,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.jboss.reddeer.requirements,
  org.jboss.reddeer.junit.extension,
  org.jboss.tools.common.reddeer,
+ org.jboss.tools.maven.reddeer;bundle-version=4.3.0,
  org.jboss.reddeer.junit,
  org.jboss.tools.perf.test.core
 Bundle-ActivationPolicy: lazy
