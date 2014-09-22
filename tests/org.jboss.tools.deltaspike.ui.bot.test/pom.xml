@@ -12,8 +12,9 @@
 
 	<packaging>eclipse-test-plugin</packaging>
 	<properties>
-		<systemProperties>${integrationTestsSystemProperties} -Dreddeer.config=target/classes/servers -Djbosstools.test.jboss-as-7.1.home=${jbosstools.test.jboss-as-7.1.home} -Ddeltaspike.libs.dir=${project.basedir}/target/requirements/</systemProperties>
+		<systemProperties>${integrationTestsSystemProperties} -Dreddeer.config=target/classes/servers -Djbosstools.test.jboss-as-7.1.home=${jbosstools.test.jboss-as-7.1.home} -Ddeltaspike.libs.dir=${requirementsDirectory} -Djbosstools.test.wildfly.8x.home=${jbosstools.test.wildfly.8x.home}</systemProperties>
 		<suiteClass>org.jboss.tools.deltaspike.ui.bot.test.DeltaspikeAllBotTests</suiteClass>
+		<jbosstools.test.wildfly.8x.home>${requirementsDirectory}/wildfly-8.1.0.Final</jbosstools.test.wildfly.8x.home>
 		<jbosstools.test.jboss-as-7.1.home>${requirementsDirectory}/jboss-as-7.1.1.Final</jbosstools.test.jboss-as-7.1.home>
 	</properties>
 	<build>
@@ -52,26 +53,56 @@
 								<artifactItem>
 									<groupId>org.apache.deltaspike.core</groupId>
 									<artifactId>deltaspike-core-api</artifactId>
-									<version>0.7</version>
+									<version>1.0.2</version>
 									<type>jar</type>
 								</artifactItem>
 								<artifactItem>
 									<groupId>org.apache.deltaspike.core</groupId>
 									<artifactId>deltaspike-core-impl</artifactId>
-									<version>0.7</version>
+									<version>1.0.2</version>
 									<type>jar</type>
 								</artifactItem>
 								<artifactItem>
 									<groupId>org.apache.deltaspike.modules</groupId>
 									<artifactId>deltaspike-security-module-api</artifactId>
-									<version>0.7</version>
+									<version>1.0.2</version>
 									<type>jar</type>
 								</artifactItem>
 								<artifactItem>
 									<groupId>org.apache.deltaspike.modules</groupId>
 									<artifactId>deltaspike-security-module-impl</artifactId>
-									<version>0.7</version>
+									<version>1.0.2</version>
 									<type>jar</type>
+								</artifactItem>
+								<artifactItem>
+									<groupId>org.apache.deltaspike.modules</groupId>
+									<artifactId>deltaspike-partial-bean-module-impl</artifactId>
+									<version>1.0.2</version>
+									<type>jar</type>
+								</artifactItem>
+								<artifactItem>
+									<groupId>org.apache.deltaspike.modules</groupId>
+									<artifactId>deltaspike-partial-bean-module-api</artifactId>
+									<version>1.0.2</version>
+									<type>jar</type>
+								</artifactItem>
+							</artifactItems>
+						</configuration>
+					</execution>
+					<execution>
+						<id>wildfly</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>unpack</goal>
+						</goals>
+						<configuration>
+							<skip>${swtbot.test.skip}</skip>
+							<artifactItems>
+								<artifactItem>
+									<groupId>org.wildfly</groupId>
+									<artifactId>wildfly-dist</artifactId>
+									<version>8.1.0.Final</version>
+									<type>zip</type>
 								</artifactItem>
 							</artifactItems>
 						</configuration>
@@ -84,29 +115,6 @@
 				<configuration>
 					<testSuite>org.jboss.tools.deltaspike.ui.bot.test</testSuite>
 					<testClass>${suiteClass}</testClass>
-					<dependencies combine.children="append">
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.jboss.tools.cdi.feature.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.jboss.ide.eclipse.as.feature.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.jboss.tools.cdi.deltaspike.feature.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
-						<!-- This entry should enable creating of default JDK on Mac -->
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.eclipse.jdt.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
-					</dependencies>
 				</configuration>
 			</plugin>
 		</plugins>

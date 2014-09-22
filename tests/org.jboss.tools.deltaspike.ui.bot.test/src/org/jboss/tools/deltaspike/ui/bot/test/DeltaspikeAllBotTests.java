@@ -34,7 +34,8 @@ import org.junit.runners.Suite.SuiteClasses;
 	ExceptionHandlerMethodsTest.class,
 	SecuresAnnotationTest.class,
 	SecuredAnnotationTest.class,
-	MessageContextAnnotationTest.class
+	MessageContextAnnotationTest.class,
+	PartialBeanTest.class
 })
 public class DeltaspikeAllBotTests {
 }
