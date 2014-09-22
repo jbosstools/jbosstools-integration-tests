@@ -20,7 +20,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.jboss.reddeer.junit.extension,
  org.jboss.ide.eclipse.as.reddeer,
  org.jboss.tools.common.reddeer,
- org.jboss.reddeer.uiforms
+ org.jboss.reddeer.uiforms,
+ org.eclipse.jdt.core
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Eclipse-BundleShape: jar

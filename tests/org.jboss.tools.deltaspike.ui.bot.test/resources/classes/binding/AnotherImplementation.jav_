@@ -1,0 +1,16 @@
+package test;
+
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+
+import javax.enterprise.context.ApplicationScoped;
+
+@ExamplePartialBeanBinding
+
+@ApplicationScoped
+public class AnotherImplementation implements InvocationHandler {
+
+    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+        return "Hello " + args[0];
+    }
+}
