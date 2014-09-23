@@ -1,5 +1,6 @@
 package org.jboss.ide.eclipse.as.reddeer.server.view;
 
+import org.jboss.ide.eclipse.as.reddeer.server.editor.ServerModuleWebPageEditor;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServerModule;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
@@ -17,8 +18,9 @@ public class JBossServerModule extends ServerModule {
 		super(item);
 	}
 
-	public void openWebPage(){
+	public ServerModuleWebPageEditor openWebPage(){
 		treeItem.select();
 		new ContextMenu("Show In", "Web Browser").select();
+		return new ServerModuleWebPageEditor(getLabel().getName());
 	}
 }

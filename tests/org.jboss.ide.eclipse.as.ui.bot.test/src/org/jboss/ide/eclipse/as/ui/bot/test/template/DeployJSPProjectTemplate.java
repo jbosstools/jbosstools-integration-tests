@@ -1,10 +1,11 @@
 package org.jboss.ide.eclipse.as.ui.bot.test.template;
 
+import org.jboss.ide.eclipse.as.reddeer.requirement.CloseAllEditorsRequirement.CloseAllEditors;
+import org.jboss.ide.eclipse.as.reddeer.server.editor.ServerModuleWebPageEditor;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.view.JBossServer;
 import org.jboss.ide.eclipse.as.reddeer.server.view.JBossServerView;
 import org.jboss.ide.eclipse.as.ui.bot.test.Activator;
-import org.jboss.ide.eclipse.as.ui.bot.test.condition.BrowserContainsTextCondition;
 import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
@@ -18,11 +19,11 @@ import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewEnums.ServerState
 import org.jboss.reddeer.eclipse.wst.server.ui.wizard.ModifyModulesDialog;
 import org.jboss.reddeer.eclipse.wst.server.ui.wizard.ModifyModulesPage;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
-import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -42,6 +43,7 @@ import static org.junit.Assert.assertNotNull;
  * @author Lucia Jelinkova
  *
  */
+@CloseAllEditors
 public abstract class DeployJSPProjectTemplate {
 
 	public static final String PROJECT_NAME = "jsp-project";
@@ -82,8 +84,8 @@ public abstract class DeployJSPProjectTemplate {
 		assertFalse(new ConsoleHasText("Exception").test());
 		// web
 		serversView.open();
-		server.getModule(PROJECT_NAME).openWebPage();
-		new WaitUntil(new BrowserContainsTextCondition("Hello tests!"), TimePeriod.NORMAL);
+		ServerModuleWebPageEditor editor = server.getModule(PROJECT_NAME).openWebPage();
+		assertThat(editor.getText(), containsString("Hello tests!"));
 		// view
 		assertThat(getServer().getLabel().getState(), is(ServerState.STARTED));
 		assertThat(getServer().getLabel().getPublishState(), is(ServerPublishState.SYNCHRONIZED));

@@ -1,16 +1,15 @@
 package org.jboss.ide.eclipse.as.ui.bot.test.template;
 
+import org.jboss.ide.eclipse.as.reddeer.server.editor.WelcomeToServerEditor;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.view.JBossServer;
 import org.jboss.ide.eclipse.as.reddeer.server.view.JBossServerView;
-import org.jboss.ide.eclipse.as.ui.bot.test.condition.BrowserContainsTextCondition;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewEnums.ServerState;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
-import org.jboss.reddeer.swt.wait.TimePeriod;
-import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.junit.Test;
 
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import static org.hamcrest.core.Is.is;
@@ -76,8 +75,9 @@ public abstract class OperateServerTemplate {
 	}
 
 	private void assertWebPageContains(String string) {
-		getServer().openWebPage();
-		new WaitUntil(new BrowserContainsTextCondition(string), TimePeriod.NORMAL);
+		WelcomeToServerEditor editor = getServer().openWebPage();
+		assertThat(editor.getText(), containsString(string));
+//		new WaitUntil(new BrowserContainsTextCondition(string), TimePeriod.NORMAL);
 	}
 	
 	protected String getServerName() {

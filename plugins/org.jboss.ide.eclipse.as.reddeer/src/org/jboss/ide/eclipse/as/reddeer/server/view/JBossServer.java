@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jboss.ide.eclipse.as.reddeer.server.editor.JBossServerEditor;
+import org.jboss.ide.eclipse.as.reddeer.server.editor.WelcomeToServerEditor;
 import org.jboss.reddeer.eclipse.wst.server.ui.editor.ServerEditor;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.Server;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServerModule;
@@ -51,9 +52,11 @@ public class JBossServer extends Server {
 		return (JBossServerModule) module;
 	}
 
-	public void openWebPage(){
+	public WelcomeToServerEditor openWebPage(){
 		select();
+		new WaitUntil(new ContextMenuIsEnabled("Show In", "Web Browser"));
 		new ContextMenu("Show In", "Web Browser").select();
+		return new WelcomeToServerEditor();
 	}
 
 	@Override
@@ -135,6 +138,26 @@ public class JBossServer extends Server {
 		public String description() {
 			return "Expected the tree item to be decorated with separator '" + XML_LABEL_DECORATION_SEPARATOR + "'";
 		}
+	}
+	
+	private static class ContextMenuIsEnabled implements WaitCondition {
+
+		private String[] path;
+		
+		public ContextMenuIsEnabled(String... path) {
+			this.path = path;
+		}
+
+		@Override
+		public boolean test() {
+			return new ContextMenu(path).isEnabled();
+		}
+
+		@Override
+		public String description() {
+			return "context menu item is enabled";
+		}
+		
 	}
 
 	class ServerAlreadyStartedException extends RuntimeException {

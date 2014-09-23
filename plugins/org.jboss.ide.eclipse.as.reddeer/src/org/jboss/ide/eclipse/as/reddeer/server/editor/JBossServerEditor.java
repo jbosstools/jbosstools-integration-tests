@@ -19,10 +19,6 @@ public class JBossServerEditor extends ServerEditor {
 		super(title);
 	}
 
-	protected void openSection(final String title){
-		new DefaultSection(title).setExpanded(true);
-	}
-
 	public JBossServerLaunchConfiguration openLaunchConfiguration(){
 		//		SWTBotFactory.getBot().hyperlink("Open launch configuration").click();
 		//		SWTBotFactory.getBot().shell("Edit Configuration").activate();
@@ -70,5 +66,9 @@ public class JBossServerEditor extends ServerEditor {
 
 	public String getManagementPort(){
 		return new LabeledText("Management").getText();
+	}
+	
+	protected void openSection(final String title){
+		new DefaultSection(title).setExpanded(true);
 	}
 }
