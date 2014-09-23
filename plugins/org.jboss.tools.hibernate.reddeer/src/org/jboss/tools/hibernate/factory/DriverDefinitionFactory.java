@@ -5,6 +5,7 @@ import org.jboss.reddeer.eclipse.datatools.ui.DriverTemplate;
 import org.jboss.reddeer.eclipse.datatools.ui.preference.DriverDefinitionPreferencePage;
 import org.jboss.reddeer.eclipse.datatools.ui.wizard.DriverDefinitionPage;
 import org.jboss.reddeer.eclipse.datatools.ui.wizard.DriverDefinitionWizard;
+import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.requirements.db.DatabaseConfiguration;
 
 /**
@@ -26,8 +27,10 @@ public class DriverDefinitionFactory {
 
 		 
 		// Driver Definition creation
+		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
+		preferenceDialog.open();
 		DriverDefinitionPreferencePage preferencePage = new DriverDefinitionPreferencePage();
-		preferencePage.open();
+		preferenceDialog.select(preferencePage);
 		DriverDefinitionWizard ddw = preferencePage.addDriverDefinition();
 		DriverDefinitionPage page = new DriverDefinitionPage();
 		page.selectDriverTemplate(dt.getType(),dt.getVersion());

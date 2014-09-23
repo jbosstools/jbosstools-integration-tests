@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
-import org.jboss.reddeer.eclipse.jface.wizard.WizardDialog;
+import org.jboss.reddeer.jface.wizard.WizardDialog;
 import org.jboss.reddeer.swt.api.Group;
 import org.jboss.reddeer.swt.api.Text;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
@@ -87,7 +87,7 @@ public abstract class CreatePortletProjectTemplate extends SWTTaskBasedTestCase 
 		DynamicWebProjectDialog dialog = new DynamicWebProjectDialog();
 		dialog.open();
 		
-		DynamicWebProjectWizardPage page = (DynamicWebProjectWizardPage)dialog.getFirstPage();
+		DynamicWebProjectWizardPage page = (DynamicWebProjectWizardPage)dialog.getCurrentWizardPage();
 		page.setProjectName(getProjectName());
 		page.setServerName(SWTTestExt.configuredState.getServer().name);
 		page.setWebModuleVersion(getWebModuleVersion());

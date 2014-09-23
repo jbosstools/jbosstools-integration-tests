@@ -1,6 +1,6 @@
 package org.jboss.ide.eclipse.as.reddeer.server.wizard;
 
-import org.jboss.reddeer.eclipse.jface.wizard.NewWizardDialog;
+import org.jboss.reddeer.jface.wizard.NewWizardDialog;
 
 /**
  * 

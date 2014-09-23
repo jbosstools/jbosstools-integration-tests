@@ -1,6 +1,6 @@
 package org.jboss.tools.mylyn.reddeer.mylynBuild;
 
-import org.jboss.reddeer.junit.logging.Logger;
+import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.WaitCondition;

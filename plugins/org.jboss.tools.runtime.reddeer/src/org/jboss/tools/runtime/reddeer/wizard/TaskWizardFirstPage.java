@@ -3,7 +3,7 @@ package org.jboss.tools.runtime.reddeer.wizard;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.jboss.reddeer.eclipse.jface.wizard.WizardPage;
+import org.jboss.reddeer.jface.wizard.WizardPage;
 import org.jboss.reddeer.swt.api.Table;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 

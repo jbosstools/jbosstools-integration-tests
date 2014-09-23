@@ -1,6 +1,6 @@
 package org.jboss.tools.jst.reddeer.web.ui;
 
-import org.jboss.reddeer.eclipse.jface.wizard.NewWizardDialog;
+import org.jboss.reddeer.jface.wizard.NewWizardDialog;
 
 public class NewXHTMLWizard extends NewWizardDialog{
 	
@@ -9,7 +9,7 @@ public class NewXHTMLWizard extends NewWizardDialog{
 	
 	public NewXHTMLWizard(){
 		super(CATEGORY,ITEM);
-		addWizardPage(new NewXHTMLFileWizardPage(), 0);
+		addWizardPage(new NewXHTMLFileWizardPage(),0);
 	}
 	
 	

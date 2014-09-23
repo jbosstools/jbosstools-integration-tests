@@ -13,6 +13,7 @@ import org.jboss.tools.cdi.reddeer.uiutils.CDIProjectHelper;
 import org.jboss.tools.common.reddeer.preferences.SourceLookupPreferencePage;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
 
 @CleanWorkspace
 @OpenPerspective(JavaEEPerspective.class)
@@ -26,8 +27,10 @@ public abstract class CDI11TestBase {
 
 	@BeforeClass
 	public static void disableSourceLookup() {
+		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
+		preferenceDialog.open();
 		SourceLookupPreferencePage sourceLookupPreferencePage = new SourceLookupPreferencePage();
-		sourceLookupPreferencePage.open();
+		preferenceDialog.select(sourceLookupPreferencePage);
 		sourceLookupPreferencePage.setSourceAttachment(
 				SourceLookupPreferencePage.SourceAttachmentEnum.NEVER);
 		sourceLookupPreferencePage.ok();

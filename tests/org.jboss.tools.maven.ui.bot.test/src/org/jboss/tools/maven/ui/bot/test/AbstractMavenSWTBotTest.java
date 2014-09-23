@@ -38,6 +38,7 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
+import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.eclipse.jst.servlet.ui.WebProjectFirstPage;
@@ -77,13 +78,16 @@ public abstract class AbstractMavenSWTBotTest{
 	
 	@BeforeClass 
 	public static void beforeClass(){
+		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
+		preferenceDialog.open();
 		MavenPreferencePage mpreferencesp = new MavenPreferencePage();
-		mpreferencesp.open();
+		preferenceDialog.select(mpreferencesp);
 		mpreferencesp.updateIndexesOnStartup(false);
 		mpreferencesp.ok();
 		
+		preferenceDialog.open();
 		MavenUserPreferencePage mpreferences = new MavenUserPreferencePage();
-		mpreferences.open();
+		preferenceDialog.select(mpreferences);
 		mpreferences.setUserSettings(new File(USER_SETTINGS).getAbsolutePath());
 		mpreferences.ok();
 		

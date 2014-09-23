@@ -1,6 +1,6 @@
 package org.jboss.tools.runtime.reddeer.wizard;
 
-import org.jboss.reddeer.eclipse.jface.wizard.WizardPage;
+import org.jboss.reddeer.jface.wizard.WizardPage;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
 
 public class TaskWizardSecondPage extends WizardPage{

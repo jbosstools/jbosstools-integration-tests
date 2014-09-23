@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.logging.Logger;
 
+import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
@@ -94,8 +95,10 @@ public class CDITestBase{
 		// wait for some shell to get activated
 		ShellLookup.getInstance().getActiveShell();
 		String originalShellText = new DefaultShell().getText();
+		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
+		preferenceDialog.open();
 		SourceLookupPreferencePage sourceLookupPreferencePage = new SourceLookupPreferencePage();
-		sourceLookupPreferencePage.open();
+		preferenceDialog.select(sourceLookupPreferencePage);
 		sourceLookupPreferencePage.setSourceAttachment(
 				SourceLookupPreferencePage.SourceAttachmentEnum.NEVER);
 		sourceLookupPreferencePage.ok();

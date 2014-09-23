@@ -26,7 +26,6 @@ import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.impl.button.NextButton;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.wait.TimePeriod;
-import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.maven.ui.bot.test.utils.ProjectHasErrors;
 import org.jboss.tools.seam.reddeer.preferences.SeamPreferencePage;
@@ -36,6 +35,7 @@ import org.jboss.tools.seam.reddeer.wizards.SeamProjectFirstPage;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.jboss.tools.seam.reddeer.perspective.SeamPerspective;
+import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
 /**
  * @author Rastislav Wagner
  * 
@@ -72,8 +72,10 @@ public class SeamProjectTest extends AbstractMavenSWTBotTest {
 
 	@BeforeClass
 	public static void setup() {
+		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
+		preferenceDialog.open();
 		SeamPreferencePage sp = new SeamPreferencePage();
-		sp.open();
+		preferenceDialog.select(sp);
 		sp.addRuntime(SEAM23_NAME, SEAM_2_3, "2.3");
 		sp.addRuntime(SEAM22_NAME, SEAM_2_2, "2.2");
 		sp.addRuntime(SEAM21_NAME, SEAM_2_1, "2.1");
@@ -86,8 +88,10 @@ public class SeamProjectTest extends AbstractMavenSWTBotTest {
         dd.setDriverTemplate(dt);
         dd.setDriverLibrary(HSQLDB_DRIVER_LOCATION);
 		
+		preferenceDialog.open();
 		DriverDefinitionPreferencePage dpref = new DriverDefinitionPreferencePage();
-		dpref.open();
+		preferenceDialog.select(dpref);
+		
 		DriverDefinitionWizard ddw = dpref.addDriverDefinition();
 		ddw.create(dd);
 		dpref.ok();

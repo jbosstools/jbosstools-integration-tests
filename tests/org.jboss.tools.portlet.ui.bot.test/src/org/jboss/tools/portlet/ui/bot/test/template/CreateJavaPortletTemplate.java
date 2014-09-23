@@ -16,7 +16,6 @@ import org.junit.Before;
  * @author Lucia Jelinkova
  *
  */
-@SuppressWarnings("restriction")
 public abstract class CreateJavaPortletTemplate extends CreatePortletTemplate {
 
 	public static final String CLASS_NAME = "UITestingJavaPortlet";
@@ -48,7 +47,7 @@ public abstract class CreateJavaPortletTemplate extends CreatePortletTemplate {
 	protected void createPortlet() {
 		NewJavaPortletDialog dialog = new NewJavaPortletDialog();
 		dialog.open();
-		NewJavaPortletWizardPage page = (NewJavaPortletWizardPage) dialog.getFirstPage();
+		NewJavaPortletWizardPage page = (NewJavaPortletWizardPage) dialog.getCurrentWizardPage();
 		page.setClassName(CLASS_NAME);
 		page.setPackage(PACKAGE_NAME);
 		page.setProject(PROJECT_NAME);

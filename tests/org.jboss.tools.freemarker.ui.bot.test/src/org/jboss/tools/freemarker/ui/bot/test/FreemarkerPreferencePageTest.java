@@ -3,6 +3,7 @@ package org.jboss.tools.freemarker.ui.bot.test;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
@@ -34,13 +35,17 @@ public class FreemarkerPreferencePageTest {
 
 	@Test
 	public void freeMarkerPreferenceTest() {
+		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
+		preferenceDialog.open();
 		FreemarkerPreferencePage page = new FreemarkerPreferencePage();
-		page.open();
+		preferenceDialog.select(page);
+		
 		page.setHighLightRelatedDirectives(false);
 		page.apply();
 		page.ok();
 
-		page.open();
+		preferenceDialog.open();
+		preferenceDialog.select(page);
 		boolean highLightRelatedDirectives = page
 				.getHighLightRelatedDirectives();
 		page.apply();

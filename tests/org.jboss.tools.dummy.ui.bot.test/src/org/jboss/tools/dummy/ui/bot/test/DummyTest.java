@@ -1,7 +1,8 @@
 package org.jboss.tools.dummy.ui.bot.test;
 
 
-import org.jboss.reddeer.junit.logging.Logger;
+import org.jboss.reddeer.common.logging.Logger;
+import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.workbench.preference.WorkbenchPreferencePage;
 import org.junit.AfterClass;
@@ -24,10 +25,11 @@ public class DummyTest {
 	@Test
 	public void dummyTest() {
 
-		WorkbenchPreferencePage page;
-		page = new WorkbenchPreferencePage("General");	
-		page.open();
-		page.cancel();
+		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
+		preferenceDialog.open();
+		WorkbenchPreferencePage preferencePage = new WorkbenchPreferencePage("General");	
+		preferenceDialog.select(preferencePage);
+		preferenceDialog.cancel();
 
 		new WorkbenchShell();
 	}

@@ -1,6 +1,6 @@
 package org.jboss.tools.hibernate.reddeer.wizard;
 
-import org.jboss.reddeer.eclipse.jface.wizard.NewWizardDialog;
+import org.jboss.reddeer.jface.wizard.NewWizardDialog;
 
 
 /**
@@ -15,8 +15,4 @@ public class JBossDatasourceWizard extends NewWizardDialog {
 		super("JBoss Tools", "JBoss Datasource (-ds.xml)");
 	}
 
-	@Override
-	public NewJBossDatasourceWizardPage getFirstPage() {
-		return new NewJBossDatasourceWizardPage();
-	}
 }

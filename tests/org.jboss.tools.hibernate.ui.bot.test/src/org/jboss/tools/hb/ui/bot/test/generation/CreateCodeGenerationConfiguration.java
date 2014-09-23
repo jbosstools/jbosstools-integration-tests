@@ -7,7 +7,7 @@ import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.impl.toolbar.WorkbenchToolItem;
+import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.tools.hibernate.reddeer.test.HibernateRedDeerTest;
 
@@ -51,7 +51,7 @@ public class CreateCodeGenerationConfiguration extends HibernateRedDeerTest {
 	private void fillMainTab() {
 		
 		new DefaultTreeItem("Hibernate Code Generation").select();
-		new WorkbenchToolItem("New launch configuration").click();
+		new DefaultToolItem("New launch configuration").click();
 
 		new DefaultTreeItem("Hibernate Code Generation","New_configuration").select();
 		new LabeledText("Name:").setText(prjName + "-gen");

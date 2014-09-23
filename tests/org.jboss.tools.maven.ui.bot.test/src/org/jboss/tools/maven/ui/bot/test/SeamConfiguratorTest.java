@@ -14,6 +14,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
+import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
@@ -44,14 +45,17 @@ public class SeamConfiguratorTest extends AbstractConfiguratorsTest{
 	
 	@BeforeClass
 	public static void setupRuntimes(){
+		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
+		preferenceDialog.open();
 		SeamPreferencePage sp = new SeamPreferencePage();
-		sp.open();
+		preferenceDialog.select(sp);
 		sp.addRuntime(SeamProjectTest.SEAM_2_1_NAME, SeamProjectTest.SEAM_2_1, "2.1");
 		sp.addRuntime(SeamProjectTest.SEAM_2_2_NAME, SeamProjectTest.SEAM_2_2, "2.2");
 		sp.addRuntime(SeamProjectTest.SEAM_2_3_NAME, SeamProjectTest.SEAM_2_3, "2.3");
 		sp.ok();
+		preferenceDialog.open();
 		ConfiguratorPreferencePage jm = new ConfiguratorPreferencePage();
-		jm.open();
+		preferenceDialog.select(jm);
 		ConfigureMavenRepositoriesWizard mr = jm.configureRepositories();
 		mr.removeAllRepos();
 		mr.chooseRepositoryFromList(MavenRepositories.JBOSS_REPO,true);
@@ -63,8 +67,11 @@ public class SeamConfiguratorTest extends AbstractConfiguratorsTest{
 	
 	@AfterClass
 	public static void cleanRepo(){
+		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
+		preferenceDialog.open();
 		ConfiguratorPreferencePage jm = new ConfiguratorPreferencePage();
-		jm.open();
+		preferenceDialog.select(jm);
+
 		ConfigureMavenRepositoriesWizard mr = jm.configureRepositories();
 		boolean deleted = mr.removeAllRepos();
 		if(deleted){

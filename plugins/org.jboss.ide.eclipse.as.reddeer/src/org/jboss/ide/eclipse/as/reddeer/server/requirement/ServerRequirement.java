@@ -20,7 +20,7 @@ import org.jboss.reddeer.eclipse.rse.ui.wizard.NewConnectionWizardDialog;
 import org.jboss.reddeer.eclipse.rse.ui.wizard.NewConnectionWizardMainPage;
 import org.jboss.reddeer.eclipse.rse.ui.wizard.NewConnectionWizardSelectionPage;
 import org.jboss.reddeer.eclipse.rse.ui.wizard.NewConnectionWizardSelectionPage.SystemType;
-import org.jboss.reddeer.junit.logging.Logger;
+import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.junit.requirement.CustomConfiguration;
 import org.jboss.reddeer.junit.requirement.Requirement;
 import org.jboss.reddeer.requirements.server.ConfiguredServerInfo;

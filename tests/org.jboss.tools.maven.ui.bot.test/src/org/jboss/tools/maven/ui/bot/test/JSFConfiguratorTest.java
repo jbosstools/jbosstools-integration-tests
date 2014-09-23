@@ -12,6 +12,7 @@ package org.jboss.tools.maven.ui.bot.test;
 
 import static org.junit.Assert.assertTrue;
 
+import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
@@ -44,8 +45,10 @@ public class JSFConfiguratorTest extends AbstractConfiguratorsTest{
 	
 	@BeforeClass
 	public static void before(){
+		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
+		preferenceDialog.open();
 		ConfiguratorPreferencePage jm = new ConfiguratorPreferencePage();
-		jm.open();
+		preferenceDialog.select(jm);
 		ConfigureMavenRepositoriesWizard mr = jm.configureRepositories();
 		mr.addRepository("ACM Repo", MAVEN_ACM_REPO, true);
 		mr.chooseRepositoryFromList(JBOSS_REPO, true);
@@ -57,8 +60,10 @@ public class JSFConfiguratorTest extends AbstractConfiguratorsTest{
 	
 	@AfterClass
 	public static void cleanRepo(){
+		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
+		preferenceDialog.open();
 		ConfiguratorPreferencePage jm = new ConfiguratorPreferencePage();
-		jm.open();
+		preferenceDialog.select(jm);
 		ConfigureMavenRepositoriesWizard mr = jm.configureRepositories();
 		boolean deleted = mr.removeAllRepos();
 		if(deleted){

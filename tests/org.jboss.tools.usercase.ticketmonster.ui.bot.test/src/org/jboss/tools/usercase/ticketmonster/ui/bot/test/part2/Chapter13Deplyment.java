@@ -16,7 +16,7 @@ import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.swt.matcher.WithRegexMatcher;
+import org.jboss.reddeer.swt.matcher.RegexMatcher;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
@@ -52,7 +52,7 @@ public class Chapter13Deplyment extends AbstractPart2Test{
 	@Test
 	public void deployTicketMonster(){
 		deployProject(ticketMonsterProject.getName(), EAP_61_NAME_WITHOUT_RUNTIME);
-		BrowserEditor browser = new BrowserEditor(new WithRegexMatcher("http://localhost.*"));
+		BrowserEditor browser = new BrowserEditor(new RegexMatcher("http://localhost.*"));
 		new WaitUntil(new BrowserHasURL(browser, "http://localhost:8080/ticket-monster/index.jsf"), TimePeriod.LONG);
 		importH2Console();
 		deployH2Console();
@@ -75,8 +75,8 @@ public class Chapter13Deplyment extends AbstractPart2Test{
 	
 	public void deployH2Console(){
 		deployProject("h2console", EAP_61_NAME_WITHOUT_RUNTIME);
-		BrowserEditor browser = new BrowserEditor(new WithRegexMatcher("http://localhost.*"));
-		new WaitUntil(new BrowserHasURL(browser, new WithRegexMatcher("http://localhost:8080/h2console.*")), TimePeriod.LONG);
+		BrowserEditor browser = new BrowserEditor(new RegexMatcher("http://localhost.*"));
+		new WaitUntil(new BrowserHasURL(browser, new RegexMatcher("http://localhost:8080/h2console.*")), TimePeriod.LONG);
 	}
 	
 	

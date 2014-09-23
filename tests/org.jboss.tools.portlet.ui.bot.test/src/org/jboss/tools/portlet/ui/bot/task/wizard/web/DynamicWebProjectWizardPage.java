@@ -2,8 +2,7 @@ package org.jboss.tools.portlet.ui.bot.task.wizard.web;
 
 import java.util.List;
 
-import org.jboss.reddeer.eclipse.jface.wizard.WizardDialog;
-import org.jboss.reddeer.eclipse.jface.wizard.WizardPage;
+import org.jboss.reddeer.jface.wizard.WizardPage;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
@@ -21,8 +20,8 @@ import org.jboss.tools.portlet.ui.bot.entity.FacetDefinition;
  */
 public class DynamicWebProjectWizardPage extends WizardPage {
 
-	public DynamicWebProjectWizardPage(WizardDialog wizardDialog) {
-		super(wizardDialog, 0);
+	public DynamicWebProjectWizardPage() {
+		super();
 	}
 
 	public void setProjectName(String projectName) {

@@ -1,6 +1,7 @@
 package org.jboss.tools.cdi.bot.test.validation;
 
 import static org.junit.Assert.*;
+import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
@@ -49,8 +50,10 @@ public class CDIValidatorTest extends CDITestBase {
 	
 	@Test
 	public void testValidatorInPreferences() {
-		cdiValidatorPage.open();
-		cdiValidatorPage.cancel();	
+		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
+		preferenceDialog.open();
+		preferenceDialog.select(cdiValidatorPage);
+		preferenceDialog.cancel();	
 	}
 	
 	@Test
@@ -74,7 +77,9 @@ public class CDIValidatorTest extends CDITestBase {
 	}
 	
 	private static void modifyCDIValidatorState(boolean enable) {
-		cdiValidatorPage.open();
+		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
+		preferenceDialog.open();
+		preferenceDialog.select(cdiValidatorPage);
 		boolean stateChanged = cdiValidatorPage.isValidationEnabled() != enable;
 		if (enable) {
 			cdiValidatorPage.enableValidation();

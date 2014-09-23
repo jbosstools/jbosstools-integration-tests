@@ -11,8 +11,6 @@ import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.matcher.RegexMatcher;
-import org.jboss.reddeer.swt.matcher.WithRegexMatcher;
-import org.jboss.reddeer.swt.regex.Regex;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 
 /**

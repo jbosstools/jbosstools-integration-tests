@@ -18,11 +18,6 @@ public class JPAProjectWizard extends NewWizardDialog {
 	public JPAProjectWizard() {
 		super("JPA", "JPA Project");
 	}
-
-	@Override
-	public JPAProjectWizardFirstPage getFirstPage() {
-		return new JPAProjectWizardFirstPage();
-	}
 	
 	@Override
 	public void finish() {	

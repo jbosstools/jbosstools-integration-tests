@@ -11,11 +11,11 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.hamcrest.core.Is;
+import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.tools.runtime.as.ui.bot.test.RuntimeProperties;
-import org.jboss.tools.runtime.as.ui.bot.test.dialog.preferences.RuntimeDetectionPreferencePage;
 import org.jboss.tools.runtime.as.ui.bot.test.dialog.preferences.SearchingForRuntimesDialog;
 import org.jboss.tools.runtime.as.ui.bot.test.entity.Runtime;
 import org.jboss.tools.runtime.as.ui.bot.test.matcher.RuntimeMatcher;
@@ -66,8 +66,10 @@ public abstract class DetectRuntimeTemplate extends RuntimeDetectionTestCase {
 
 	@Test
 	public void removePath() {
-		runtimeDetectionPage.open();
-				
+		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
+		preferenceDialog.open();
+		preferenceDialog.select(runtimeDetectionPage);
+						
 		List<String> allPaths = runtimeDetectionPage.getAllPaths();
 		String requiredPath = RuntimeProperties.getInstance().getRuntimePath(getPathID());
 		assertTrue("Expected is presence of path " + requiredPath + " but there are:\n"
@@ -87,7 +89,7 @@ public abstract class DetectRuntimeTemplate extends RuntimeDetectionTestCase {
 		//close opened shells
 		String[] openedShells = new String[]{
 				SearchingForRuntimesDialog.DIALOG_TITLE,
-				RuntimeDetectionPreferencePage.DIALOG_TITLE};
+				WorkbenchPreferenceDialog.DIALOG_TITLE};
 		for(String title : openedShells) {
 			if(new ShellWithTextIsAvailable(title).test()) {
 				new DefaultShell(title);

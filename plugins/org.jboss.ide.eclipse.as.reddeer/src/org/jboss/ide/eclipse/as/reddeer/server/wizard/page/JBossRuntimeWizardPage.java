@@ -2,7 +2,7 @@ package org.jboss.ide.eclipse.as.reddeer.server.wizard.page;
 
 import java.io.File;
 
-import org.jboss.reddeer.junit.logging.Logger;
+import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 

@@ -1,7 +1,7 @@
 package org.jboss.tools.portlet.ui.bot.task.server;
 
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.jface.wizard.WizardDialog;
+import org.jboss.reddeer.jface.wizard.WizardDialog;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.tools.portlet.ui.bot.task.AbstractSWTTask;
 

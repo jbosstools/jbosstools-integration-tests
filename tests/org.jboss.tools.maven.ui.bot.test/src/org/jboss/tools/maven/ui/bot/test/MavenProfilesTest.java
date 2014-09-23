@@ -18,6 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
@@ -64,8 +65,10 @@ public class MavenProfilesTest extends AbstractMavenSWTBotTest {
 	
 	@BeforeClass
 	public static void setup() throws IOException {
+		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
+		preferenceDialog.open();
 		ConfiguratorPreferencePage jm = new ConfiguratorPreferencePage();
-		jm.open();
+		preferenceDialog.select(jm);
 		ConfigureMavenRepositoriesWizard mr = jm.configureRepositories();
 		boolean deleted = mr.removeAllRepos();
 		if(deleted){
@@ -74,8 +77,9 @@ public class MavenProfilesTest extends AbstractMavenSWTBotTest {
 			mr.cancel();
 		}
 		jm.ok();
+		preferenceDialog.open();
 		MavenUserPreferencePage mu = new MavenUserPreferencePage();
-		mu.open();
+		preferenceDialog.select(mu);
 		mu.setUserSettings(new File("resources/usersettings/settings.xml").getCanonicalPath());
 		mu.ok();
 		importMavenProject("resources/projects/simple-jar/pom.xml");

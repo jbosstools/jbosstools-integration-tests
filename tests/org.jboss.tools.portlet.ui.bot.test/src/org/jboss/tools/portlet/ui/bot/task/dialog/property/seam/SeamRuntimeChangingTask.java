@@ -1,6 +1,5 @@
 package org.jboss.tools.portlet.ui.bot.task.dialog.property.seam;
 
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.tools.portlet.ui.bot.task.AbstractSWTTask;
 import org.jboss.tools.portlet.ui.bot.task.dialog.property.ProjectPropertyDialogCloseTask;

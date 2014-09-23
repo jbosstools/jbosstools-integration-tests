@@ -10,6 +10,7 @@ import java.io.IOException;
 
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
+import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
@@ -46,8 +47,10 @@ public class SourceLookupTest extends AbstractMavenSWTBotTest{
 	//use new settings.xml because of already downloaded source jar
 	@Before
 	public void setupSettings(){
+		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
+		preferenceDialog.open();
 		MavenUserPreferencePage mpreferences = new MavenUserPreferencePage();
-		mpreferences.open();
+		preferenceDialog.select(mpreferences);
 		mpreferences.setUserSettings(new File("target/classes/settings"+TEST_NUMBER+".xml").getAbsolutePath());
 		mpreferences.ok();
 		TEST_NUMBER=1;
@@ -56,8 +59,10 @@ public class SourceLookupTest extends AbstractMavenSWTBotTest{
 	@Test
 	public void nonMavenProjectPropt(){
 		importProject(nonMavenProjectName, nonMavenProjectPath+"/"+nonMavenProjectName);
+		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
+		preferenceDialog.open();
 		SourceLookupPreferencePage lookupPage = new SourceLookupPreferencePage();
-		lookupPage.open();
+		preferenceDialog.select(lookupPage);
 		lookupPage.toggleAutomaticallyConfigureSourceAttachement(SourceAttachment.PROMPT, true);
 		lookupPage.ok();
 		
@@ -79,8 +84,11 @@ public class SourceLookupTest extends AbstractMavenSWTBotTest{
 	@Test
 	public void nonMavenProjectAlways(){
 		importProject(nonMavenProjectName, nonMavenProjectPath+"/"+nonMavenProjectName);
+		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
+		preferenceDialog.open();
 		SourceLookupPreferencePage lookupPage = new SourceLookupPreferencePage();
-		lookupPage.open();
+		preferenceDialog.select(lookupPage);
+
 		lookupPage.toggleAutomaticallyConfigureSourceAttachement(SourceAttachment.ALWAYS, true);
 		lookupPage.ok();
 		
@@ -100,8 +108,11 @@ public class SourceLookupTest extends AbstractMavenSWTBotTest{
 	@Test
 	public void nonMavenProjectNever(){
 		importProject(nonMavenProjectName, nonMavenProjectPath+"/"+nonMavenProjectName);
+		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
+		preferenceDialog.open();
 		SourceLookupPreferencePage lookupPage = new SourceLookupPreferencePage();
-		lookupPage.open();
+		preferenceDialog.select(lookupPage);
+
 		lookupPage.toggleAutomaticallyConfigureSourceAttachement(SourceAttachment.NEVER, true);
 		lookupPage.ok();
 		

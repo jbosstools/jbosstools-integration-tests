@@ -10,7 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.aerogear.reddeer.ui.wizard.export;
 
-import org.jboss.reddeer.eclipse.jface.wizard.ExportWizardDialog;
+import org.jboss.reddeer.jface.wizard.ExportWizardDialog;
 
 /**
  * RedDeer implementation of Export Native Platform Project Wizard

@@ -10,9 +10,9 @@
  ******************************************************************************/
 package org.jboss.tools.aerogear.reddeer.ui.preferences;
 
-import org.jboss.reddeer.junit.logging.Logger;
+import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.swt.api.Text;
-import org.jboss.reddeer.eclipse.jface.preference.PreferencePage;
+import org.jboss.reddeer.workbench.preference.WorkbenchPreferencePage;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
 
@@ -21,7 +21,7 @@ import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
  * @author Vlado Pakan
  *
  */
-public class AndroidPreferencesPage extends PreferencePage{
+public class AndroidPreferencesPage extends WorkbenchPreferencePage{
   
   public static final String PAGE_NAME = "Android";
 

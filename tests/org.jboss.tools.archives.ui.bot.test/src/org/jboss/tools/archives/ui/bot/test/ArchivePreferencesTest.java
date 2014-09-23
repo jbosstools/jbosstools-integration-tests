@@ -12,6 +12,7 @@ package org.jboss.tools.archives.ui.bot.test;
 
 import static org.junit.Assert.fail;
 
+import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
@@ -45,8 +46,10 @@ public class ArchivePreferencesTest extends ArchivesTestBase {
 	}
 
 	private void testGlobalArchivePreferences() {
+		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
 		MainPreferencePage archivesPreferencePage = new MainPreferencePage();
-		archivesPreferencePage.open();
+		preferenceDialog.open();
+		preferenceDialog.select(archivesPreferencePage);
 		checkAllSettingsInArchivePreferencePage(archivesPreferencePage);
 		archivesPreferencePage.ok();
 	

@@ -24,7 +24,7 @@ public class HotSeamPortletDeploymentGatein extends HotDeploymentGateinTemplate 
 		NewJSFSeamPortletDialog dialog = new NewJSFSeamPortletDialog();
 		dialog.open();
 		dialog.next();
-		NewJSFSeamPortletWizardPage page = (NewJSFSeamPortletWizardPage) dialog.getFirstPage();
+		NewJSFSeamPortletWizardPage page = (NewJSFSeamPortletWizardPage) dialog.getCurrentWizardPage();
 		page.setName("hotDeployment");
 		page.setDisplayName(page.getDisplayName() + " Hot Deploy");
 		page.setTitle(page.getTitle() + " Hot Deploy");

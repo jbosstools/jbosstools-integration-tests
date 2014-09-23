@@ -18,6 +18,7 @@ import javax.xml.transform.stream.StreamResult;
 import org.jboss.reddeer.eclipse.condition.ProblemsExists;
 import org.jboss.reddeer.eclipse.condition.ProblemsExists.ProblemType;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.swt.api.Table;
 import org.jboss.reddeer.swt.wait.TimePeriod;
@@ -45,13 +46,16 @@ public class Chapter8CreateJavaEE6ProjectTest extends AbstractPart2Test{
 	
 	@Before
 	public void setMavenUserSettings(){
+		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
+		preferenceDialog.open();
 		MavenUserPreferencePage mpreferences = new MavenUserPreferencePage();
-		mpreferences.open();
+		preferenceDialog.select(mpreferences);
 		String path = new File("target/classes/settings"+testNumber+".xml").getAbsolutePath();
 		mpreferences.setUserSettings(path);
 		mpreferences.ok();
+		preferenceDialog.open();
 		ConfiguratorPreferencePage pp = new ConfiguratorPreferencePage();
-		pp.open();
+		preferenceDialog.select(pp);
 		ConfigureMavenRepositoriesWizard cw = pp.configureRepositories();
 		cw.removeAllRepos();
 		String repo = cw.chooseRepositoryFromList("jboss-public-repository", true);

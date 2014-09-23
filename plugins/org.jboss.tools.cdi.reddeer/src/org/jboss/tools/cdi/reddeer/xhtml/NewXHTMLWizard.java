@@ -12,12 +12,5 @@ public class NewXHTMLWizard extends NewWizardDialog{
 		super(CATEGORY,NAME);
 		addWizardPage(new NewXHTMLTemplatesWizardPage(), 1);
 	}
-	
-	
-	
-	@Override
-	public NewXHTMLFileWizardPage getFirstPage() {
-		return new NewXHTMLFileWizardPage();
-	}
 
 }

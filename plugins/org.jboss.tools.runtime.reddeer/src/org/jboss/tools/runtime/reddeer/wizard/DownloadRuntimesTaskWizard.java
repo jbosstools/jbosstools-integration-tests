@@ -1,7 +1,7 @@
 package org.jboss.tools.runtime.reddeer.wizard;
 
 import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.eclipse.jface.wizard.WizardDialog;
+import org.jboss.reddeer.jface.wizard.WizardDialog;
 import org.jboss.reddeer.swt.api.Button;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.impl.button.PushButton;

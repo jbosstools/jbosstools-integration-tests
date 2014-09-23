@@ -12,6 +12,7 @@ package org.jboss.tools.aerogear.ui.bot.test.export;
 
 import java.io.File;
 
+import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
 import org.jboss.tools.aerogear.reddeer.ui.preferences.AndroidPreferencesPage;
 import org.jboss.tools.aerogear.ui.bot.test.AerogearBotTest;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
@@ -34,8 +35,10 @@ public class ExportMobileTest extends AerogearBotTest {
       throw new RuntimeException("Android SDK Location is not set properly: " + androidSDKLocation);
     }
     else{
+      WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
       AndroidPreferencesPage androidPreferencesPage = new AndroidPreferencesPage();
-      androidPreferencesPage.open();
+      preferenceDialog.open();
+      preferenceDialog.select(androidPreferencesPage);
       androidPreferencesPage.setAndroidSDKLocation(androidSDKLocation);
       androidPreferencesPage.ok();
     }

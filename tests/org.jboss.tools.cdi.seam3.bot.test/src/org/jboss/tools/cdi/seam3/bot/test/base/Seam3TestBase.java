@@ -18,6 +18,7 @@ import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
@@ -169,11 +170,12 @@ public class Seam3TestBase {
 	}
 	
 	protected static void disableSourceLookup(){
+		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
+		preferenceDialog.open();
 		SourceLookupPreferencePage sp = new SourceLookupPreferencePage();
-		sp.open();
+		preferenceDialog.select(sp);
 		sp.setSourceAttachment(SourceAttachmentEnum.NEVER);
 		sp.ok();
-		
 	}
 	
 }

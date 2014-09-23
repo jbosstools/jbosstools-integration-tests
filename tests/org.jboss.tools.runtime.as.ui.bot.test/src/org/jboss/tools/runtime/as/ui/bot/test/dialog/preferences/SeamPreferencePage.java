@@ -55,9 +55,7 @@ public class SeamPreferencePage extends WorkbenchPreferencePage {
 
 			if (table.rowCount() != (runtimesNumber - i - 1)) {
 				throw new RuntimeException("Error during removing Seam runtimes");
-			} else {
-				open();
-			}
+			} 
 		}
 	}
 

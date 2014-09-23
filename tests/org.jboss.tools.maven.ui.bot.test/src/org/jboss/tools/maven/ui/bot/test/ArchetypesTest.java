@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.maven.ui.bot.test;
 
+import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
@@ -36,8 +37,10 @@ public class ArchetypesTest extends AbstractMavenSWTBotTest{
 
 	@BeforeClass
 	public static void setup(){
+		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
+		preferenceDialog.open();
 		ConfiguratorPreferencePage jm = new ConfiguratorPreferencePage();
-		jm.open();
+		preferenceDialog.select(jm);
 		ConfigureMavenRepositoriesWizard mr = jm.configureRepositories();
 		mr.removeAllRepos();
 		mr.chooseRepositoryFromList(MavenRepositories.JBOSS_REPO, true);
@@ -47,8 +50,10 @@ public class ArchetypesTest extends AbstractMavenSWTBotTest{
 	
 	@AfterClass
 	public static void clean(){
+		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
+		preferenceDialog.open();
 		ConfiguratorPreferencePage jm = new ConfiguratorPreferencePage();
-		jm.open();
+		preferenceDialog.select(jm);
 		ConfigureMavenRepositoriesWizard mr = jm.configureRepositories();
 		mr.removeAllRepos();
 		mr.confirm();

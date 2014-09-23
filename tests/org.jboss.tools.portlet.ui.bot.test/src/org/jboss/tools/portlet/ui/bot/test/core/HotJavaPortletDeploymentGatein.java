@@ -22,7 +22,7 @@ public class HotJavaPortletDeploymentGatein extends HotDeploymentGateinTemplate 
 	protected void createPortlet() {
 		NewJavaPortletDialog dialog = new NewJavaPortletDialog();
 		dialog.open();
-		NewJavaPortletWizardPage page = (NewJavaPortletWizardPage) dialog.getFirstPage();
+		NewJavaPortletWizardPage page = (NewJavaPortletWizardPage) dialog.getCurrentWizardPage();
 		page.setClassName("HotDeployedJavaPortlet");
 		page.setPackage(CreateJavaPortletTemplate.PACKAGE_NAME);
 		page.setProject(CreateJavaPortletProject.PROJECT_NAME);

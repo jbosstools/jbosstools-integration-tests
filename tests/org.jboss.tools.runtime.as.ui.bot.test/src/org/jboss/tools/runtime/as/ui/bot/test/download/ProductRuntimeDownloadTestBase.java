@@ -2,7 +2,6 @@ package org.jboss.tools.runtime.as.ui.bot.test.download;
 
 import static org.junit.Assert.fail;
 
-import org.jboss.reddeer.eclipse.jface.wizard.WizardDialog;
 import org.junit.BeforeClass;
 
 /**

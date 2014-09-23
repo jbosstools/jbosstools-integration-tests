@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.jboss.reddeer.eclipse.jface.wizard.WizardDialog;
+import org.jboss.reddeer.jface.wizard.WizardDialog;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.tools.portlet.ui.bot.entity.FacetDefinition;
 import org.jboss.tools.portlet.ui.bot.task.facet.Facets;

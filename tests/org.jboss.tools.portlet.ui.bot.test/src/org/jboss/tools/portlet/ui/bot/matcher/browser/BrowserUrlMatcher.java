@@ -23,10 +23,6 @@ public class BrowserUrlMatcher extends AbstractSWTMatcher<String[]> {
 	@Override
 	public boolean matchesSafely(final String[] acceptedURL) {
 		final BrowserView browser = new BrowserView();
-		if(!browser.isOpen()){
-			throw new AssertionError("Browser is not open (may cause exception while deploying)");
-		}
-		browser.open();
 
 		new WaitUntil(new WaitCondition() {
 			

@@ -23,6 +23,7 @@ import java.util.List;
 
 import org.eclipse.core.runtime.Platform;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
+import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
@@ -43,7 +44,8 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.swt.matcher.WithRegexMatchers;
+import org.jboss.reddeer.swt.matcher.RegexMatcher;
+import org.jboss.reddeer.swt.matcher.WithTextMatcher;
 import org.jboss.reddeer.swt.regex.Regex;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
@@ -70,8 +72,11 @@ public class DeltaspikeTestBase {
 	
 	@BeforeClass
 	public static void disableSourceLookup(){
+		
+		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
+		preferenceDialog.open();
 		SourceLookupPreferencePage sp = new SourceLookupPreferencePage();
-		sp.open();
+		preferenceDialog.select(sp);
 		sp.setSourceAttachment(SourceAttachmentEnum.NEVER);
 		sp.ok();
 	}
@@ -145,8 +150,7 @@ public class DeltaspikeTestBase {
 				".*cannot be resolved.*")), TimePeriod.NORMAL);
 
 		TextEditor e =new TextEditor();
-		WithRegexMatchers m = new WithRegexMatchers("Source", "Organize Imports.*");
-		new ShellMenu(m.getMatchers()).select();
+		new ShellMenu(new WithTextMatcher("Source"), new RegexMatcher("Organize Imports.*")).select();
 
 		e.save();
 
@@ -162,9 +166,8 @@ public class DeltaspikeTestBase {
 	}
 	
 	protected static void cleanProjects() {
-		
-		WithRegexMatchers m = new WithRegexMatchers("Project", "Clean.*");
-		new ShellMenu(m.getMatchers()).select();
+
+		new ShellMenu(new WithTextMatcher("Project"), new RegexMatcher("Clean.*")).select();
 		new WaitUntil(new ShellWithTextIsActive("Clean"));
 		new PushButton("OK").click();
 		new WaitWhile(new ShellWithTextIsActive("Clean"));

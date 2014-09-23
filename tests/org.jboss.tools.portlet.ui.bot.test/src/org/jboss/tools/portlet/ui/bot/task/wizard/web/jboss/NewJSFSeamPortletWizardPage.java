@@ -1,8 +1,6 @@
 package org.jboss.tools.portlet.ui.bot.task.wizard.web.jboss;
 
-import org.jboss.reddeer.eclipse.jface.wizard.WizardDialog;
-import org.jboss.reddeer.eclipse.jface.wizard.WizardPage;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.jface.wizard.WizardPage;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 

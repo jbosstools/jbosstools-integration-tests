@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
+import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
 import org.jboss.tools.maven.reddeer.maven.ui.preferences.RemoteRepositoriesPreferencePage;
 import org.jboss.tools.maven.reddeer.wizards.Repository;
 import org.junit.After;
@@ -15,8 +16,10 @@ public class RemoteRepositoriesPreferenceTest {
 	
 	@After
 	public void cleanAddedRepo(){
+		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
+		preferenceDialog.open();
 		RemoteRepositoriesPreferencePage rem = new RemoteRepositoriesPreferencePage();
-		rem.open();
+		preferenceDialog.select(rem);
 		if(rem.getRepository(r.getName())!=null){
 			rem.deleteRepository(r);
 		}
@@ -32,8 +35,10 @@ public class RemoteRepositoriesPreferenceTest {
 	
 	@Test
 	public void addRepo(){
+		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
+		preferenceDialog.open();
 		RemoteRepositoriesPreferencePage rem = new RemoteRepositoriesPreferencePage();
-		rem.open();
+		preferenceDialog.select(rem);
 		rem.addRepository(r);
 		assertNotNull("Repository was not added",rem.getRepository(r.getName()));
 		rem.ok();
@@ -41,8 +46,10 @@ public class RemoteRepositoriesPreferenceTest {
 	
 	@Test
 	public void removeRepo(){
+		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
+		preferenceDialog.open();
 		RemoteRepositoriesPreferencePage rem = new RemoteRepositoriesPreferencePage();
-		rem.open();
+		preferenceDialog.select(rem);
 		rem.addRepository(r);
 		rem.deleteRepository(r);
 		assertNull("Repository was not deleted",rem.getRepository(r.getName()));
@@ -51,8 +58,10 @@ public class RemoteRepositoriesPreferenceTest {
 	
 	@Test
 	public void modifyRepo(){
+		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
+		preferenceDialog.open();
 		RemoteRepositoriesPreferencePage rem = new RemoteRepositoriesPreferencePage();
-		rem.open();
+		preferenceDialog.select(rem);
 		rem.addRepository(r);
 		Repository r1= new Repository("test1", "testURL1", false);
 		rem.modifyRepository(r, r1);

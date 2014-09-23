@@ -1,7 +1,6 @@
 package org.jboss.tools.portlet.ui.bot.task.wizard.web.jboss;
 
-import org.jboss.reddeer.eclipse.jface.wizard.NewWizardDialog;
-import org.jboss.reddeer.eclipse.jface.wizard.WizardPage;
+import org.jboss.reddeer.jface.wizard.NewWizardDialog;
 
 /**
  * Creates a New JavaPortlet using the wizard dialog.
@@ -13,11 +12,6 @@ public class NewJavaPortletDialog extends NewWizardDialog {
 
 	public NewJavaPortletDialog() {
 		super("JBoss Tools Web", "Portlet", "Java Portlet");
-	}
-
-	@Override
-	public WizardPage getFirstPage() {
-		return new NewJavaPortletWizardPage(this);
 	}
 
 }

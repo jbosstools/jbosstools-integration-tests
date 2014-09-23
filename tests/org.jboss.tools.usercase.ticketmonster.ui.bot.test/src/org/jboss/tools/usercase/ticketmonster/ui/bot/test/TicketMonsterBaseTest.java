@@ -24,6 +24,7 @@ import org.jboss.reddeer.eclipse.jdt.ui.NewEnumWizardPage;
 import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardDialog;
 import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardPage;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.eclipse.wst.server.ui.Runtime;
 import org.jboss.reddeer.eclipse.wst.server.ui.RuntimePreferencePage;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
@@ -99,13 +100,16 @@ public class TicketMonsterBaseTest {
 	@BeforeClass
 	public static void beforeClass(){
 		closeWelcome();
+		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
+		preferenceDialog.open();
 		MavenPreferencePage mpreferencesp = new MavenPreferencePage();
-		mpreferencesp.open();
+		preferenceDialog.select(mpreferencesp);
 		mpreferencesp.updateIndexesOnStartup(false);
 		mpreferencesp.ok();
 		
+		preferenceDialog.open();
 		MavenUserPreferencePage mpreferences = new MavenUserPreferencePage();
-		mpreferences.open();
+		preferenceDialog.select(mpreferences);
 		mpreferences.setUserSettings(new File(USER_SETTINGS).getAbsolutePath());
 		mpreferences.ok();
 	}
@@ -199,8 +203,11 @@ public class TicketMonsterBaseTest {
 	
 	
 	private static void createEAPRuntime(String homeDir){
+		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
+		preferenceDialog.open();
 		RuntimePreferencePage rp = new RuntimePreferencePage();
-		rp.open();
+		preferenceDialog.select(rp);
+		
 		for(Runtime runtime: rp.getServerRuntimes()){
 			if(runtime.getName().equals(EAP_61_RUNTIME)){
 				rp.ok();
@@ -217,7 +224,9 @@ public class TicketMonsterBaseTest {
 	
 
 	protected void removeRepos(){
-		new ConfiguratorPreferencePage().open();
+		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
+		preferenceDialog.open();
+		preferenceDialog.select(new ConfiguratorPreferencePage());		
 		ConfigureMavenRepositoriesWizard rd = new ConfigureMavenRepositoriesWizard();
 		rd.open();
 		if(rd.removeAllRepos()){
@@ -229,7 +238,9 @@ public class TicketMonsterBaseTest {
 	}
 	
 	protected void addEnterpriseRepo(){
-		new ConfiguratorPreferencePage().open();
+		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
+		preferenceDialog.open();
+		preferenceDialog.select(new ConfiguratorPreferencePage());
 		ConfigureMavenRepositoriesWizard rd = new ConfigureMavenRepositoriesWizard();
 		rd.open();
 		rd.chooseRepositoryFromList("redhat-techpreview-all-repository", true);

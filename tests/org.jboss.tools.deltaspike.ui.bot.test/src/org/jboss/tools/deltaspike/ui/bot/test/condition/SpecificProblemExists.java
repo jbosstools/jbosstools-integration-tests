@@ -14,7 +14,7 @@ package org.jboss.tools.deltaspike.ui.bot.test.condition;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.WaitCondition;
-import org.jboss.reddeer.swt.matcher.WithRegexMatcher;
+import org.jboss.reddeer.swt.matcher.RegexMatcher;
 import org.jboss.reddeer.swt.regex.Regex;
 
 /**
@@ -38,13 +38,13 @@ public class SpecificProblemExists implements WaitCondition {
 		problemsView = new ProblemsView();
 		problemsView.open();
 		for (TreeItem error : problemsView.getAllErrors()) {
-			WithRegexMatcher matcher = new WithRegexMatcher(pattern);
+			RegexMatcher matcher = new RegexMatcher(pattern);
 			if (matcher.matches(error.getText())) {
 				return true;
 			}
 		}
 		for (TreeItem warning : problemsView.getAllWarnings()) {
-			 WithRegexMatcher matcher = new  WithRegexMatcher(pattern);
+			 RegexMatcher matcher = new  RegexMatcher(pattern);
 			if (matcher.matches(warning.getText())) {
 				return true;
 			}

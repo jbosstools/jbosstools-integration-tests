@@ -11,12 +11,13 @@ import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.eclipse.m2e.core.ui.preferences.MavenSettingsPreferencePage;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.handler.ShellHandler;
-import org.jboss.reddeer.swt.impl.toolbar.WorkbenchToolItem;
+import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.central.reddeer.api.ExamplesOperator;
 import org.jboss.tools.central.reddeer.projects.ArchetypeProject;
@@ -38,12 +39,14 @@ public class ArchetypesTest {
 
 	@BeforeClass
 	public static void setup() {
-		MavenSettingsPreferencePage prefPage = new MavenSettingsPreferencePage();
 		String mvnConfigFileName = System.getProperty("maven.config.file");
-		prefPage.open();
+		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
+		preferenceDialog.open();
+		MavenSettingsPreferencePage prefPage = new MavenSettingsPreferencePage();
+		preferenceDialog.select(prefPage);
 		prefPage.setUserSettingsLocation(mvnConfigFileName);
 		prefPage.ok();
-		new WorkbenchToolItem("JBoss Central").click();
+		new DefaultToolItem("JBoss Central").click();
 		// activate central editor
 		new DefaultEditor("JBoss Central");
 	}
@@ -54,7 +57,7 @@ public class ArchetypesTest {
 			p.delete(true);
 		}
 		ShellHandler.getInstance().closeAllNonWorbenchShells();
-		new WorkbenchToolItem("JBoss Central").click();
+		new DefaultToolItem("JBoss Central").click();
 		// activate central editor
 		new DefaultEditor("JBoss Central");
 	}

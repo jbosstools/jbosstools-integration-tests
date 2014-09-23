@@ -2,7 +2,8 @@ package org.jboss.tools.runtime.as.ui.bot.test.download;
 
 import java.io.File;
 
-import org.jboss.reddeer.eclipse.jface.wizard.WizardDialog;
+import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
+import org.jboss.reddeer.jface.wizard.WizardDialog;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -46,7 +47,9 @@ public class RuntimeDownloadTestBase extends RuntimeDetectionTestCase {
 	}
 	
 	protected void invokeDownloadRuntimesWizard() {
-		runtimeDetectionPage.open();
+		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
+		preferenceDialog.open();
+		preferenceDialog.select(runtimeDetectionPage);
 		
 		new PushButton("Download...").click();
 		new WaitUntil(new ShellWithTextIsActive("Download Runtimes"), TimePeriod.VERY_LONG);

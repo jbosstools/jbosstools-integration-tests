@@ -2,6 +2,7 @@ package org.jboss.tools.maven.ui.bot.test;
 
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
+import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
@@ -21,8 +22,10 @@ public class PortletConfiguratorTest extends AbstractConfiguratorsTest{
 	
 	@BeforeClass
 	public static void setup(){
+		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
+		preferenceDialog.open();
 		ConfiguratorPreferencePage jm = new ConfiguratorPreferencePage();
-		jm.open();
+		preferenceDialog.select(jm);
 		ConfigureMavenRepositoriesWizard mr = jm.configureRepositories();
 		mr.chooseRepositoryFromList(MavenRepositories.JBOSS_REPO, true);
 		mr.confirm();
@@ -33,8 +36,10 @@ public class PortletConfiguratorTest extends AbstractConfiguratorsTest{
 	
 	@AfterClass
 	public static void cleanRepo(){
+		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
+		preferenceDialog.open();
 		ConfiguratorPreferencePage jm = new ConfiguratorPreferencePage();
-		jm.open();
+		preferenceDialog.select(jm);
 		ConfigureMavenRepositoriesWizard mr = jm.configureRepositories();
 		boolean deleted = mr.removeAllRepos();
 		if(deleted){
