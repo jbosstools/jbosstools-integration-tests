@@ -49,11 +49,11 @@ public class ConsoleConfigurationFileTest extends HibernateRedDeerTest {
 		
 		NewHibernateConfigurationWizard wizard = new NewHibernateConfigurationWizard();
 		wizard.open();
-		NewConfigurationLocationPage p1 = (NewConfigurationLocationPage)wizard.getCurrentWizardPage();
+		NewConfigurationLocationPage p1 = new NewConfigurationLocationPage();
 		p1.setLocation(PROJECT_NAME,"src");		
 		wizard.next();
 
-		NewConfigurationSettingPage p2 = (NewConfigurationSettingPage)wizard.getCurrentWizardPage();
+		NewConfigurationSettingPage p2 = new NewConfigurationSettingPage();
 		p2.setConnectionURL(cfg.getJdbcString());
 		p2.setUsername(cfg.getUsername());		
 		
