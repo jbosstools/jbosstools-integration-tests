@@ -40,11 +40,11 @@ public class ConsoleConfigurationTest extends HibernateRedDeerTest {
 	private void prepareConsoleConfiguration() {
 		NewHibernateConfigurationWizard wizard = new NewHibernateConfigurationWizard();
 		wizard.open();
-		NewConfigurationLocationPage p1 = (NewConfigurationLocationPage)wizard.getCurrentWizardPage();
+		NewConfigurationLocationPage p1 = new NewConfigurationLocationPage();
 		p1.setLocation(PROJECT_NAME,"src");		
 		wizard.next();
 
-		NewConfigurationSettingPage p2 = (NewConfigurationSettingPage)wizard.getCurrentWizardPage();
+		NewConfigurationSettingPage p2 = new NewConfigurationSettingPage();
 		p2.setDatabaseDialect(p.getProperty(RuntimeDBProperty.dialect));
 		p2.setDriverClass(p.getProperty(RuntimeDBProperty.driver));
 		p2.setConnectionURL(p.getProperty(RuntimeDBProperty.jdbc));

@@ -38,7 +38,7 @@ public class DriverDefinitionFactory {
 		page.addDriverLibrary(dd.getDriverLibrary());
 		page.setDriverClass(cfg.getDriverClass());
 		ddw.finish();
-		preferencePage.ok();
+		preferenceDialog.ok();
 	}
 
 	/**
