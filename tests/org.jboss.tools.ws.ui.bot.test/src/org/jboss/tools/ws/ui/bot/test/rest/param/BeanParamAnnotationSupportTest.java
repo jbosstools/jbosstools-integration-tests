@@ -76,12 +76,6 @@ public class BeanParamAnnotationSupportTest extends RESTfulTestBase {
 		
 	}
 
-	/**
-	 * Resolved - JBIDE-17796
-	 * (BeanParam: unbound @PathParam error is present after the problem had been fixed)
-	 * 
-	 * @see https://issues.jboss.org/browse/JBIDE-17796
-	 */
 	@Test
 	public void testBeanClassWithPathParamField() {
 		final String pathAnnotation = "@Path(\"{" + pathParam1 + "}\")";

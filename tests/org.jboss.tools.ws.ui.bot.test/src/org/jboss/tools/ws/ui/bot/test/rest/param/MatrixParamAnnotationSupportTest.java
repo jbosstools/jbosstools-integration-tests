@@ -44,11 +44,6 @@ public class MatrixParamAnnotationSupportTest extends RESTfulTestBase {
 		return projectName;
 	}
 
-	/**
-	 * Fails due to JBIDE-12027
-	 * 
-	 * @see https://issues.jboss.org/browse/JBIDE-12027
-	 */
 	@Test
 	public void testMatrixParamSupport() {
 		/* get RESTful services from JAX-RS REST explorer for the project */

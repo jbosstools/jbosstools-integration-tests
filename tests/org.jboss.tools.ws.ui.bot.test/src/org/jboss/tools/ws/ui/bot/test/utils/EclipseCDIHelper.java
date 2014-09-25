@@ -39,6 +39,7 @@ public class EclipseCDIHelper {
 
 	private static void editFolding(boolean select) {
 		WorkbenchPreferenceDialog dialog = new WorkbenchPreferenceDialog();
+		dialog.open();
 		dialog.select("Java", "Editor", "Folding");
 
 		new CheckBox("Enable folding").toggle(select);

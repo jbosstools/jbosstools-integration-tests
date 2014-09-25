@@ -212,7 +212,7 @@ public class WsTesterTest extends WSTestBase {
 			selectWSDLDialog.openURL();
 			final String wsdlURLDialogTitle = "WSDL URL";
 			InputDialog wsdlURLDialog = new InputDialog(wsdlURLDialogTitle);
-			wsdlURLDialog.typeInputText(SERVICE_URL + "?WSDL");
+			wsdlURLDialog.setInputText(SERVICE_URL + "?WSDL");
 			wsdlURLDialog.ok();
 			assertEquals(SERVICE_URL + "?WSDL", selectWSDLDialog.getURI());
 			selectWSDLDialog.selectPort("BibleWebserviceSoap12");

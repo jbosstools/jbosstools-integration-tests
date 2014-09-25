@@ -56,12 +56,6 @@ public class FiltersInterceptorsSupportTest extends RESTfulTestBase {
 		interceptorSupportTest("interceptor2");
 	}
 
-	/**
-	 * Resolved - JBIDE-17178
-	 * (Problem with filters and interceptors defined as inner classes)
-	 * 
-	 * @see https://issues.jboss.org/browse/JBIDE-17178
-	 */
 	@Test
 	public void filterInterceptorDefinedAsInnerClassesSupportTest() {
 		String projectName = "filterinterceptor1";

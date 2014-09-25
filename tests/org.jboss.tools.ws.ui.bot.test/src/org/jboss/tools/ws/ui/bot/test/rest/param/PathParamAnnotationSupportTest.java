@@ -71,12 +71,6 @@ public class PathParamAnnotationSupportTest extends RESTfulTestBase {
 						+ "/{" + pathParam2 + ":" + pathType2 + "}");
 	}
 	
-	/**
-	 * Resolved - JBIDE-17663
-	 * (JAX-RS Explorer doesn't reflect binding parameter to field)
-	 *
-	 * @see https://issues.jboss.org/browse/JBIDE-17663
-	 */
 	@Test
 	public void testPathParamFieldSupport() {
 		/* prepare project */
@@ -103,12 +97,6 @@ public class PathParamAnnotationSupportTest extends RESTfulTestBase {
 				"/rest/{" + pathParam2 + ":" + pathType1 + "}");
 	}
 	
-	/**
-	 * Resolved - JBIDE-17663
-	 * (JAX-RS Explorer doesn't reflect binding parameter to field)
-	 *
-	 * @see https://issues.jboss.org/browse/JBIDE-17663
-	 */
 	@Test
 	public void testAdvancedPathParamFieldSupport() {
 		final String newPathParam = "year";

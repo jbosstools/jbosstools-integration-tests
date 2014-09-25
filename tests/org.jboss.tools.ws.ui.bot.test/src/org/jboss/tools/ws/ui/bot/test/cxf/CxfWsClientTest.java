@@ -26,7 +26,7 @@ public class CxfWsClientTest extends WSClientTestTemplate {
 	static {
 		try {
 			Properties properties = new Properties();
-			properties.load(new FileReader(new File("resources/properties/ws.properties")));
+			properties.load(new FileReader(new File("properties/ws.properties")));
 
 			CXF_HOME_LOCATION = properties.getProperty("apache-cxf-2.x");
 		} catch (FileNotFoundException e) {
@@ -48,6 +48,7 @@ public class CxfWsClientTest extends WSClientTestTemplate {
 	@BeforeClass
 	public static void setupCxfRuntime() {
 		WsCxf2xPreferencePage cxfPreferencePage = new WsCxf2xPreferencePage();
+		new WorkbenchPreferenceDialog().open();
 		new WorkbenchPreferenceDialog().select(cxfPreferencePage);
 		cxfPreferencePage.add(CXF_HOME_LOCATION);
 		cxfPreferencePage.select(CXF_HOME_LOCATION);
@@ -57,6 +58,7 @@ public class CxfWsClientTest extends WSClientTestTemplate {
 	@AfterClass
 	public static void removeCxfRuntime() {
 		WsCxf2xPreferencePage cxfPreferencePage = new WsCxf2xPreferencePage();
+		new WorkbenchPreferenceDialog().open();
 		new WorkbenchPreferenceDialog().select(cxfPreferencePage);
 		cxfPreferencePage.remove(CXF_HOME_LOCATION);
 	}

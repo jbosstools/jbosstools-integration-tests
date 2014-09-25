@@ -26,14 +26,6 @@ public class NameBindingAnnotationSupportTest extends RESTfulTestBase {
 		// no setup required
 	}
 	
-	/**
-	 * Fails due to JBIDE-18257
-	 * 
-	 * @see https://issues.jboss.org/browse/JBIDE-18257
-	 *
-	 * Resolved: Wrong @NameBinding quick fix for a @Target annotation)
-	 * {@link https://issues.jboss.org/browse/JBIDE-17177}
-	 */
 	@Test
 	public void definingNameBindingAnnotationWithoutTargetAndRetentionTest() {
 		/* import the project */

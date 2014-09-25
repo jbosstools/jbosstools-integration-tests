@@ -52,19 +52,6 @@ public class HTTPMethodAnnotationQuickFixTest extends RESTfulTestBase {
 		assertCountOfValidationErrors(projectName, 1);
 	}
 
-	/**
-	 * Fails due to JBIDE-18256
-	 * 
-	 * @see https://issues.jboss.org/browse/JBIDE-18256
-	 * 
-	 * Resolved - No JAX-RS problems when importing a project that contains
-	 * HTTPMethod annotation without @Target and @Retention
-	 * {@link https://issues.jboss.org/browse/JBIDE-15428}
-	 * 
-	 * Resolved - Quick fix for HTTPMethod annotation without @Target and
-	 * @Retention doesn't add all imports
-	 * {@link https://issues.jboss.org/browse/JBIDE-17667}
-	 */
 	@Test
 	public void testTargetRetentionQuickFixes() {
 		/* import the project */

@@ -11,7 +11,6 @@
 package org.jboss.tools.ws.ui.bot.test.facet;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.hamcrest.core.Is;
@@ -86,7 +85,7 @@ public class JAXRSFacetTest extends RESTfulTestBase {
 		new DefaultTreeItem("Project Facets").select();
 		
 		new DefaultTreeItem(1, "JAX-RS (REST Web Services)").setChecked(true);
-		assertFalse("OK Button should be disabled.", getOkButton().isEnabled());
+		assertTrue("OK Button should be enabled.", getOkButton().isEnabled());
 		
 		handleAdditionalConfiguration();
 	}

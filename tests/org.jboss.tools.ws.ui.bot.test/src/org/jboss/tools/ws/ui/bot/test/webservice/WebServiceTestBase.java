@@ -142,11 +142,13 @@ public class WebServiceTestBase extends WSTestBase {
 		// let's fail if there's some error in the wizard,
 		// and close error dialog and the wizard so other tests
 		// can continue
-		if (new DefaultShell().getText().contains("Error")) {
-			String msg = new DefaultText().getText();
-			new PushButton(0).click();
-			wizard.cancel();
-			Assert.fail(msg);
+		if (new DefaultShell() != null) {
+			if (new DefaultShell().getText().contains("Error")) {
+				String msg = new DefaultText().getText();
+				new PushButton(0).click();
+				wizard.cancel();
+				Assert.fail(msg);	
+			}
 		}
 	}
 
