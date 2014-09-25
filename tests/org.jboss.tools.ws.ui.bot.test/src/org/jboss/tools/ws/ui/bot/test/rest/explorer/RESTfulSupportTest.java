@@ -27,12 +27,6 @@ public class RESTfulSupportTest extends RESTfulTestBase {
 
 	}
 
-	/**
-	 * Failes due to JBIDE-17653
-	 * (Node "JAX-RS Web Services" doesn't appear after JAX-RS Support is added)
-	 * 
-	 * @see https://issues.jboss.org/browse/JBIDE-17653
-	 */
 	@Test
 	public void testJaxRsExplorerSupport() {
 		/* create dynamic web project */

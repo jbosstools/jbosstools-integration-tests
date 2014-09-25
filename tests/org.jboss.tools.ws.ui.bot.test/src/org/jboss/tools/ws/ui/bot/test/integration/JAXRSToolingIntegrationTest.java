@@ -131,12 +131,6 @@ public class JAXRSToolingIntegrationTest extends RESTfulTestBase {
 		assertEquals("[HTTP/1.1 200 OK]", wsTesterView.getResponseHeaders()[0]);
 	}
 
-	/**
-	 * Fails due to JBIDE-17664
-	 * (Web Service Tester: Response to invoking not allowed method on WildFly doesn't contain header [HTTP/1.1 405 Method Not Allowed])
-	 * 
-	 * @see https://issues.jboss.org/browse/JBIDE-17664
-	 */
 	@Test
 	public void testUnavailableServiceMethod() {
 		/* get JAX-RS REST Web Services */
@@ -151,6 +145,7 @@ public class JAXRSToolingIntegrationTest extends RESTfulTestBase {
 		assertEquals(serviceUrl + "get", wsTesterView.getServiceURL());
 
 		invokeMethodInWSTester(wsTesterView, RequestType.POST);
+		wsTesterView.activate();
 		assertFalse(wsTesterView.getResponseBody().equals("GET method"));
 
 		assertTrue("There is no header", wsTesterView.getResponseHeaders().length > 0);

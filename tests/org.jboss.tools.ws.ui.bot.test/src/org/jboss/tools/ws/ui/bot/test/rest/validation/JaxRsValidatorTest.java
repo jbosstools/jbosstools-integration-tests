@@ -26,9 +26,10 @@ public class JaxRsValidatorTest extends RESTfulTestBase {
 	public void testValidatorInPreferences() {
 		/* try to open JAX-RS Validator in Preferences */
 		WorkbenchPreferenceDialog dialog = new WorkbenchPreferenceDialog();
+		dialog.open();
 		JAXRSValidatorPreferencePage page = new JAXRSValidatorPreferencePage();
 		dialog.select(page);
-		page.cancel();
+		dialog.cancel();
 	}
 
 	@Test

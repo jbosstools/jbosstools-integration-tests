@@ -6,7 +6,7 @@
  * and is available at http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributor:
- *     Red Hat, Inc. - initial API and implementation
+ * Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
 package org.jboss.tools.openshift.ui.bot.test;
 
@@ -87,14 +87,14 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
 /**
- * <b>OpenShift RedDeer TestSuite</b>
- * Test suite for OpenShift Enterprise instance. 
- * 
+ * <b>OpenShift RedDeer TestSuite</b> Test suite for OpenShift Enterprise
+ * instance.
+ *
  * @author mlabuda@redhat.com
  */
 @RunWith(RedDeerSuite.class)
 @SuiteClasses({
-	// Common
+		// Common
 		ID001RemoteRequestTimeoutTest.class,
 		
 		// Connection
@@ -115,16 +115,16 @@ import org.junit.runners.Suite.SuiteClasses;
 		ID150CreateNewSSHKeyTest.class,
 		ID151RemoveSSHKeyTest.class,
 		ID152AddExistingSSHKeyTest.class,
-
+		
 		// Domain
 		ID201NewDomainTest.class,
 		ID202EditDomainTest.class,
 		ID203DeleteDomainTest.class,
 		ID204CreateMoreDomainsTest.class,
-		ID205ManageDomainTest.class, 
+		ID205ManageDomainTest.class,
 		ID206RefreshDomainTest.class,
 		ID207DomainPropertiesTest.class,
-
+		
 		// Application - basics
 		ID301OpenNewApplicationWizardTest.class,
 		ID302OpenNewApplicationWizardWithoutConnectionTest.class,
@@ -133,7 +133,7 @@ import org.junit.runners.Suite.SuiteClasses;
 		ID305CartridgeContentAssistTest.class,
 		ID306PreselectLastUsedConnectionTest.class,
 		ID307WizardDataProcessingTest.class,
-
+		
 		// Application - creation
 		ID401CreateNewApplicationViaExplorerTest.class,
 		ID402DeleteOpenShiftApplicationTest.class,
@@ -161,7 +161,7 @@ import org.junit.runners.Suite.SuiteClasses;
 		ID601EmbedCartridgeTest.class,
 		ID603AddDownloadableEmbeddableCartridgeTest.class,
 		ID604AddJenkinsCartridgeWithoutJenkinsApplicationTest.class,
-
+		
 		// Application - handle
 		ID701ModifyAndRepublishApplicationTest.class,
 		ID702AddMavenProfileTest.class,
@@ -178,17 +178,15 @@ import org.junit.runners.Suite.SuiteClasses;
 		ID803ServerAdapterHandlingTest.class,
 		ID804CreateServerAdapterTest.class,
 		
-		// Application - advanced 
+		// Application - advanced
 		ID901DeleteMoreApplicationsTest.class,
 		ID902DeployGitProjectTest.class,
 		ID903ApplicationMarkersTest.class,
 		ID904DeployApplicationWARArchiveTest.class,
 		ID905ManageSnapshotsTest.class,
 		ID906RestoreApplicationFromSnapshotTest.class,
-		ID907DownloadableCartridgeContentAssistTest.class,
+		ID907DownloadableCartridgeContentAssistTest.class, 
 		
-		CleanUp.class,
-})
+		CleanUp.class, })
 public class OpenShiftEnterpriseBotTests {
-	
 }

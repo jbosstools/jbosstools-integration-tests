@@ -95,7 +95,7 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @RunWith(RedDeerSuite.class)
 @SuiteClasses({
-	// Common
+		// Common
 		ID001RemoteRequestTimeoutTest.class,
 		
 		// Connection

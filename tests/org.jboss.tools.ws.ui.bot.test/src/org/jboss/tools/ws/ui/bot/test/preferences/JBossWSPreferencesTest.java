@@ -62,6 +62,7 @@ public class JBossWSPreferencesTest {
 	@BeforeClass
 	public static void preparePrerequisites() {
 		jbossWSRuntimePreferencePage = new JBossWSRuntimePreferencePage();
+		new WorkbenchPreferenceDialog().open();
 		new WorkbenchPreferenceDialog().select(jbossWSRuntimePreferencePage);
 	}
 

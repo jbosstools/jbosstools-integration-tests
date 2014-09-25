@@ -28,10 +28,7 @@ public class ApplicationValidationTest extends RESTfulTestBase {
 	public void setup() {
 		
 	}
-	/**
-	 * Resolved - Doubled warnings Multiple JAX-RS Activators
-	 * {@link https://issues.jboss.org/browse/JBIDE-15402}
-	 */
+
 	@Test
 	public void testMultipleApplicationClasses() {
 		final String projectName = "app1";

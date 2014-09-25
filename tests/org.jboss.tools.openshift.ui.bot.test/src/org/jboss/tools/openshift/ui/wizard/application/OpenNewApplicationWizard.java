@@ -13,6 +13,7 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
@@ -99,7 +100,7 @@ public class OpenNewApplicationWizard {
 		
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		// to be sure, it is processed
-		new WaitWhile(new ButtonWithTextIsActive(new BackButton()), TimePeriod.LONG);
+		new WaitUntil(new ButtonWithTextIsActive(new BackButton()), TimePeriod.LONG);
 		
 		new DefaultShell(OpenShiftLabel.Shell.NEW_APP_WIZARD).setFocus();
 	}

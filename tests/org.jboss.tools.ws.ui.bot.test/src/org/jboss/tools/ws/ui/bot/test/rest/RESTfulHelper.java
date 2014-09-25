@@ -108,12 +108,13 @@ public class RESTfulHelper {
 
 	public void modifyRESTValidation(boolean enableRestSupport) {
 		WorkbenchPreferenceDialog dialog = new WorkbenchPreferenceDialog();
+		dialog.open();
 		JAXRSValidatorPreferencePage page = new JAXRSValidatorPreferencePage();
 		dialog.select(page);
 
 		page.setEnableValidation(enableRestSupport);
 
-		page.ok();
+		dialog.ok();
 
 		if(new ShellWithTextIsActive("Validator Settings Changed").test()) {
 			new PushButton("Yes").click();

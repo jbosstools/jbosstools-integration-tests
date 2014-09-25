@@ -47,9 +47,7 @@ import org.junit.runners.Suite.SuiteClasses;
  * @author jlukas
  *
  */
-@SuiteClasses({ WSAllBotTests.class, EAPCompAllTests.class })
 @OpenPerspective(JavaEEPerspective.class)
-@JBossServer()
 public class EAPFromWSDLTest extends WebServiceTestBase {
 
 	private static boolean servicePassed = false;

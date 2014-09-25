@@ -10,15 +10,19 @@
  ******************************************************************************/
 package org.jboss.tools.ws.ui.bot.test.wsclient;
 
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.util.List;
 
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.ResourcesPlugin;
+import javax.jws.WebService;
+
+import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.ProjectItem;
+import org.jboss.reddeer.eclipse.ui.views.navigator.ResourceNavigator;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.tools.ws.reddeer.ui.wizards.wst.WebServiceWizardPageBase.SliderLevel;
 import org.jboss.tools.ws.ui.bot.test.WSTestBase;
@@ -33,6 +37,7 @@ import org.junit.Test;
  * @author jlukas
  * @author Radoslav Rabara
  */
+@WebService(targetNamespace = "http://wsclient.test.bot.ui.ws.tools.jboss.org/", portName = "WSClientTestTemplatePort", serviceName = "WSClientTestTemplateService")
 public class WSClientTestTemplate extends WSTestBase {
 
 	protected final WebServiceRuntime serviceRuntime;
@@ -129,7 +134,9 @@ public class WSClientTestTemplate extends WSTestBase {
 	}
 	
 	private void assertThatExpectedFilesExists(String targetPkg) {
-		IProject p = ResourcesPlugin.getWorkspace().getRoot().getProject(getWsProjectName());
+		ResourceNavigator navigator = new ResourceNavigator();
+		navigator.open();
+		Project project = navigator.getProject(getWsProjectName());
 		String pkg = (targetPkg != null && !"".equals(targetPkg.trim())) ? getWsPackage() :
 			"com.parasoft.wsdl.calculator";
 		String src = "src/" + pkg.replace('.', '/') + "/";
@@ -145,7 +152,7 @@ public class WSClientTestTemplate extends WSTestBase {
 				src + "SubtractResponse.java",
 				src + getSampleClientFileName()};
 		for(String file : expectedFiles) {
-			Assert.assertTrue("File " + file + " was not created", p.getFile(file).exists());
+			assertTrue("File " + file + " was not created", project.containsItem(file.split("/")));
 		}
 	}
 	

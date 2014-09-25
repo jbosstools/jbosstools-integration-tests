@@ -90,12 +90,6 @@ public class RESTfulExplorerTest extends RESTfulTestBase {
 				RestFullAnnotations.DELETE.getLabel());
 	}
 
-	/**
-	 * Resolved - JBIDE-16163
-	 * (Missing update in JAX-RS explorer when facing to quick change in code)
-	 * 
-	 * @see https://issues.jboss.org/browse/JBIDE-16163
-	 */
 	@Test
 	public void testEditingAdvancedRESTMethods() {
 		final String projectName = REST_ADVANCED_PROJECET_NAME;
