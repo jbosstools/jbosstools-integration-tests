@@ -1,0 +1,112 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.jboss.tools.integration-tests</groupId>
+		<artifactId>tests</artifactId>
+		<version>4.2.0-SNAPSHOT</version>
+	</parent>
+
+	<groupId>org.jboss.tools.arquillian.tests</groupId>
+	<artifactId>org.jboss.tools.arquillian.ui.bot.test</artifactId>
+	<packaging>eclipse-test-plugin</packaging>
+	<properties>
+		<tychoPluginProductParameter>org.eclipse.platform.ide</tychoPluginProductParameter>
+		<swtbot.test.skip>false</swtbot.test.skip>
+		<maven.test.failure.ignore>true</maven.test.failure.ignore>
+		<requirementsDirectory>${project.build.directory}/requirements</requirementsDirectory>
+		<systemProperties>${integrationTestsSystemProperties} ${runtimesProperties} -Dorg.eclipse.swtbot.screenshots.dir=${project.build.directory}/screenshots</systemProperties>
+		<jbosstools.test.jboss-eap-6.2.home>${requirementsDirectory}/jboss-eap-6.2</jbosstools.test.jboss-eap-6.2.home>
+		<runtimesProperties>-Djbosstools.test.jboss-eap-6.2.home=${jbosstools.test.jboss-eap-6.2.home}  -Dreddeer.config=target/classes/product</runtimesProperties>
+	</properties>
+
+	<build>
+		<plugins>
+
+			<plugin>
+				<groupId>com.googlecode.maven-download-plugin</groupId>
+				<artifactId>maven-download-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>install-eap-6.2.0</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<configuration>
+ 							<url>http://download.devel.redhat.com/released/JBEAP-6/6.2.0/jboss-eap-6.2.0.zip</url>   
+							<outputFileName>jboss-eap-6.2.0.zip</outputFileName>
+ 							<md5>03ec01654cf4aee8c8e26313fae68c16</md5>  
+							<unpack>true</unpack>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-surefire-plugin</artifactId>
+				<configuration>
+					<useUIThread>false</useUIThread>
+					<surefire.timeout>7200</surefire.timeout>
+					<forkedProcessTimeoutInSeconds>7200</forkedProcessTimeoutInSeconds>
+					<testSuite>org.jboss.tools.arquillian.ui.bot.test</testSuite>
+					<testClass>org.jboss.tools.arquillian.ui.bot.test.ArquillianSuite</testClass>
+					<skip>${swtbot.test.skip}</skip>	
+					<dependencies combine.children="append">
+                     				<dependency>
+			                        	<type>p2-installable-unit</type>
+                        				<artifactId>org.jboss.tools.arquillian.core</artifactId>
+                        				<version>0.0.0</version>
+                        			</dependency>
+						<dependency>
+							<type>p2-installable-unit</type>
+							<artifactId>org.jboss.tools.arquillian.feature.feature.group</artifactId>
+							<version>0.0.0</version>
+						</dependency>
+						<dependency>
+							<type>p2-installable-unit</type>
+							<artifactId>org.eclipse.m2e.feature.feature.group</artifactId>
+							<version>0.0.0</version>
+						</dependency>
+						<dependency>
+							<type>p2-installable-unit</type>
+							<artifactId>org.eclipse.m2e.profiles.core</artifactId>
+							<version>0.0.0</version>
+						</dependency>
+						<dependency>
+							<type>p2-installable-unit</type>
+							<artifactId>org.jboss.tools.runtime.core</artifactId>
+							<version>0.0.0</version>
+						</dependency>
+						<dependency>
+							<type>p2-installable-unit</type>
+							<artifactId>org.jboss.ide.eclipse.as.feature.feature.group</artifactId>
+							<version>0.0.0</version>
+						</dependency>
+						<!-- This entry should enable creating of default JDK on Mac -->
+						<dependency>
+							<type>p2-installable-unit</type>
+							<artifactId>org.eclipse.jdt.feature.group</artifactId>
+							<version>0.0.0</version>
+						</dependency>
+					</dependencies>
+				</configuration>
+			</plugin>
+		</plugins>
+			<!-- Server Configuration files -->
+			<resources>
+				<resource>
+				<directory>resources/config_files_templates</directory>
+				<includes>
+					<include>project/*</include>
+					<include>product/*</include>
+				</includes>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+	</build>
+</project>
+
