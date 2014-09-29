@@ -51,7 +51,7 @@ public class JBossDatasourceTest extends HibernateRedDeerTest {
 
 		JBossDatasourceWizard wizard = new JBossDatasourceWizard();
 		wizard.open();
-		NewJBossDatasourceWizardPage page = (NewJBossDatasourceWizardPage)wizard.getWizardPage(0);
+		NewJBossDatasourceWizardPage page =  new NewJBossDatasourceWizardPage();
 		page.setConnectionProfile(cfg.getProfileName());
 		page.setParentFolder("/" + PRJ + "/src/main/resources");
 		page.finish();
