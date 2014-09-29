@@ -15,7 +15,7 @@ import org.junit.runners.Suite.SuiteClasses;
 @RunWith(RedDeerSuite.class)
 
 @SuiteClasses({
-	ArqTest2.class
+	ArqBasicTest.class
 	})
 
 public class ArquillianSuite {

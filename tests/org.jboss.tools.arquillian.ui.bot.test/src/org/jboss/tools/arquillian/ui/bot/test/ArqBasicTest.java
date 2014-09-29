@@ -35,7 +35,7 @@ import static org.junit.Assert.*;
 
 @JBossServer(state=ServerReqState.RUNNING, type=ServerReqType.EAP6_1plus)
 
-public class ArqTest2  {
+public class ArqBasicTest  {
 	
 	protected final Logger log = Logger.getLogger(this.getClass());
 

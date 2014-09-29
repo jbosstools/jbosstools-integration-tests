@@ -27,6 +27,7 @@
 		<module>org.jboss.ide.eclipse.as.ui.bot.test</module>
 		<module>org.jboss.tools.aerogear.ui.bot.test</module>
 		<module>org.jboss.tools.archives.ui.bot.test</module>
+		<module>org.jboss.tools.arquillian.ui.bot.test</module>
 		<module>org.jboss.tools.cdi.bot.test</module>
 		<module>org.jboss.tools.cdi.seam3.bot.test</module>
 		<module>org.jboss.tools.central.ui.bot.test</module>
