@@ -18,6 +18,7 @@
 		<module>org.jboss.tools.archives.reddeer</module>
 		<module>org.jboss.tools.cdi.reddeer</module>
 		<module>org.jboss.tools.common.reddeer</module>
+		<module>org.jboss.tools.forge.reddeer</module>
 		<module>org.jboss.tools.hibernate.reddeer</module>
 		<module>org.jboss.tools.jst.ui.bot</module>
 		<module>org.jboss.tools.ui.bot.ext</module>
