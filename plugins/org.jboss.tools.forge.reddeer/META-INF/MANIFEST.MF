@@ -4,9 +4,12 @@ Bundle-Name: Forge RedDeer
 Bundle-SymbolicName: org.jboss.tools.forge.reddeer
 Bundle-Version: 4.2.0.qualifier
 Bundle-Activator: org.jboss.tools.forge.reddeer.Activator
-Require-Bundle: org.eclipse.ui,
- org.eclipse.core.runtime,
- org.jboss.reddeer.workbench;bundle-version="0.7.0"
+Require-Bundle: org.eclipse.core.runtime,
+ org.jboss.reddeer.swt;bundle-version="0.7.0",
+ org.jboss.reddeer.workbench,
+ org.jboss.reddeer.common,
+ org.eclipse.ui,
+ org.junit;bundle-version="4.11.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Export-Package: org.jboss.tools.forge.reddeer,
