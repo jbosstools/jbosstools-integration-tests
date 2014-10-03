@@ -86,6 +86,28 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase {
   protected final static String DYNAMIC_WEB_TEST_PROJECT_NAME = "DynWebTestProject"; //$NON-NLS-1$
   protected final static String RICH_FACES_UI_JAR_LOCATION;
 
+  protected static final String DEFAULT_TEST_PAGE_TEXT = "<%@ taglib uri=\"http://java.sun.com/jsf/core\" prefix=\"f\" %>\n" +
+  	  "<%@ taglib uri=\"http://java.sun.com/jsf/html\" prefix=\"h\" %>\n" +
+		  "<f:loadBundle var=\"Message\" basename=\"demo.Messages\"/>\n" +
+		  "<html>\n" +
+		  "  <head>\n" +
+		  "    <title>Input User Name Page</title>\n" +
+		  "  </head>\n" +
+		  "  <body>\n" +
+		  "    <f:view>\n" +
+		  "      <h1><h:outputText value=\"#{Message.header}\"/></h1>\n" +
+		  "		 <h:messages style=\"color: red\"/>\n" +
+		  "      <h:form id=\"greetingForm\">\n" +
+		  "        <h:outputText value=\"#{Message.prompt_message}\"/>\n" +
+		  "        <h:inputText value=\"#{user.name}\" required=\"true\">\n" +
+	      "          <f:validateLength maximum=\"30\" minimum=\"3\"/>\n" +
+	      "        </h:inputText>\n" +
+	      "        <h:commandButton action=\"hello\" value=\"Say Hello!\" />\n" +
+	      "      </h:form>\n" +
+	      "   </f:view>\n" +
+	      " </body>\n" +
+	      "</html>";
+  
   private String projectName = null;
   private HashMap<String,String> addedVariableRichfacesUiLocation = new HashMap<String,String>();
 	

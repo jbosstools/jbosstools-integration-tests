@@ -27,10 +27,12 @@ public class ToggleCommentTest extends VPEEditorTestCase{
 		openPage();
 		
 		setEditor(bot.editorByTitle(TEST_PAGE).toTextEditor());
-		setEditorText(getEditor().getText());
-	
+		setEditorText(DEFAULT_TEST_PAGE_TEXT);
+		getEditor().setText(DEFAULT_TEST_PAGE_TEXT);
+		getEditor().save();
+		bot.sleep(Timing.time2S());
 		//Test toggle comment from Source menu
-		getEditor().navigateTo(22,22);
+		getEditor().navigateTo(16,20);
 		bot.sleep(Timing.time2S());
 		bot.menu("Source").menu("Toggle Comment").click(); //$NON-NLS-1$ //$NON-NLS-2$
 		getEditor().save();
@@ -43,7 +45,7 @@ public class ToggleCommentTest extends VPEEditorTestCase{
 		
 		//Test untoggle comment from Source menu
 
-		getEditor().navigateTo(22,22);
+		getEditor().navigateTo(16,20);
 		bot.sleep(Timing.time2S());
 		bot.menu("Source").menu("Toggle Comment").click(); //$NON-NLS-1$ //$NON-NLS-2$
 		getEditor().save();

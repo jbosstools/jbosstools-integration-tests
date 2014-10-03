@@ -12,6 +12,7 @@ package org.jboss.tools.vpe.ui.bot.test.editor.preferences;
 
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
+import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.vpe.ui.bot.test.tools.SWTBotWebBrowser;
 
 public class ShowResourceBundlesUsageasELexpressionsTest extends PreferencesTestCase{
@@ -23,7 +24,10 @@ public class ShowResourceBundlesUsageasELexpressionsTest extends PreferencesTest
 	  
 	  openPage();
 		editor = bot.editorByTitle(TEST_PAGE).toTextEditor();
+		editor.setText(DEFAULT_TEST_PAGE_TEXT);
+		editor.save();
 		textEditor = editor.getText();
+		bot.sleep(Timing.time2S());
     SWTBotWebBrowser webBrowser = new SWTBotWebBrowser(TEST_PAGE, new SWTBotExt());
 		//Test check VPE content with resource bundles
 		selectELExpressions();
