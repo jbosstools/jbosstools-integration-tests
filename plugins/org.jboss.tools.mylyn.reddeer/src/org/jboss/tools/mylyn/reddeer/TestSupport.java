@@ -1,12 +1,14 @@
-package org.jboss.tools.mylyn.ui.bot.test;
+package org.jboss.tools.mylyn.reddeer;
 
 /* Support routines for Mylyn tests */
 import java.util.ArrayList;
 import java.util.List;
 
 import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.util.Display;
 import org.apache.log4j.Logger;
@@ -63,5 +65,13 @@ public class TestSupport {
 		return repoList;
 		
 	} /* method */
+	
+	public static void closeSecureStorageIfOpened () {
+		try{
+			new DefaultShell("Secure Storage Password").close();
+		} catch (SWTLayerException swtle){
+			// do nothing shell was not opened
+		}	
+	}
 	
 } /* class */

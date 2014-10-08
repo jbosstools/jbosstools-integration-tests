@@ -21,6 +21,7 @@ import org.jboss.reddeer.eclipse.mylyn.tasks.ui.view.TaskListView;
 import org.jboss.reddeer.eclipse.mylyn.tasks.ui.view.TaskRepositoriesView;
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
+import org.jboss.tools.mylyn.reddeer.TestSupport;
 
 public class MylynTestLocalRepo {
 

@@ -33,6 +33,7 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.condition.TreeItemHasMinChildren;
+import org.jboss.tools.mylyn.reddeer.TestSupport;
 
 
 public class MylynTestBzQuery {
@@ -89,6 +90,7 @@ public class MylynTestBzQuery {
 
 		repoItems.get(elementIndex).select();	
 		new ShellMenu("File", "Properties").select();  
+		TestSupport.closeSecureStorageIfOpened();
 
 		try {
 			new WaitUntil(new ShellWithTextIsActive("Refreshing repository configuration"), TimePeriod.getCustom(60l)); 
@@ -115,7 +117,6 @@ public class MylynTestBzQuery {
 
 		elementIndex = repoList.indexOf(targetRepo);
 		repoItems.get(elementIndex).select();
-
 
 		new ShellMenu("File", "New", "Other...").select();
 		new DefaultShell("New");
@@ -146,7 +147,6 @@ public class MylynTestBzQuery {
 		/* Open the Task List view */
 		TaskListView listView = new TaskListView();
 		listView.open();
-
 
 		/* Seeing different behavior with JBT - need to explicitly get the query list and results */
 		DefaultTree theTree = new DefaultTree();
