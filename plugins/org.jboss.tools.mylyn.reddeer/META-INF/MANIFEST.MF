@@ -5,6 +5,8 @@ Bundle-SymbolicName: org.jboss.tools.mylyn.reddeer
 Bundle-Version: 4.2.0.qualifier
 Bundle-Activator: org.jboss.tools.mylyn.reddeer.Activator
 Require-Bundle: org.eclipse.ui,
+ org.eclipse.swtbot.go;bundle-version="2.0.5",
+ org.jboss.reddeer.swt,
  org.eclipse.core.runtime,
  org.eclipse.wst.server.ui,
  org.eclipse.ui.console,
@@ -18,9 +20,11 @@ Require-Bundle: org.eclipse.ui,
  org.jboss.reddeer.common;bundle-version="0.6.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Import-Package: org.jboss.reddeer.eclipse.exception,
+Import-Package: org.apache.log4j,
+ org.jboss.reddeer.eclipse.exception,
  org.junit
 Export-Package: org.jboss.tools.mylyn.reddeer.mylynBuild,
  org.jboss.tools.mylyn.reddeer.view,
- org.jboss.tools.mylyn.reddeer.wizard
+ org.jboss.tools.mylyn.reddeer.wizard,
+ org.jboss.tools.mylyn.reddeer
 

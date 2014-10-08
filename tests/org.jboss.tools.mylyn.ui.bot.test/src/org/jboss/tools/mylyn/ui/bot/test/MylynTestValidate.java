@@ -17,12 +17,15 @@ import org.apache.log4j.Logger;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.eclipse.mylyn.tasks.ui.view.*;
 import org.jboss.reddeer.eclipse.ui.ide.RepoConnectionDialog;
 import org.jboss.reddeer.swt.condition.ShellIsActive;
+import org.jboss.reddeer.swt.exception.SWTLayerException;
+import org.jboss.tools.mylyn.reddeer.TestSupport;
 
 public class MylynTestValidate {
 
@@ -64,6 +67,7 @@ public class MylynTestValidate {
 		
 		repoItems.get(elementIndex).select();	
 		new ShellMenu("File", "Properties").select();  
+		TestSupport.closeSecureStorageIfOpened();
 	
 		try {
 			new WaitUntil(new ShellIsActive(), TimePeriod.getCustom(60l)); 
