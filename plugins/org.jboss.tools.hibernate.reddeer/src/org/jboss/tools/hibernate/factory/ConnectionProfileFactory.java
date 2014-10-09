@@ -11,6 +11,7 @@ import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.matcher.RegexMatcher;
+import org.jboss.reddeer.swt.matcher.TreeItemRegexMatcher;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 
 /**
@@ -51,7 +52,7 @@ public class ConnectionProfileFactory {
 	public static void deleteConnectionProfile(String profileName) {
 		DataSourceExplorer explorer = new DataSourceExplorer();
 		explorer.open();
-		new DefaultTreeItem(new RegexMatcher("Database Connections"), new RegexMatcher(profileName + ".*")).select();
+		new DefaultTreeItem(new TreeItemRegexMatcher("Database Connections"), new TreeItemRegexMatcher(profileName + ".*")).select();
 		new ContextMenu("Delete").select();
 		String deleteConfirmation = "Delete confirmation";
 		RegexMatcher withRegexMatcher = new RegexMatcher(".*" + deleteConfirmation + ".*"); 
