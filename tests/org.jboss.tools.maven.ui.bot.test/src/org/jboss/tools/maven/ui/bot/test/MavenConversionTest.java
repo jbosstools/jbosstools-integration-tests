@@ -24,6 +24,7 @@ import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
+import org.jboss.reddeer.swt.impl.link.AnchorLink;
 import org.jboss.reddeer.swt.impl.link.DefaultLink;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
@@ -141,11 +142,11 @@ public class MavenConversionTest extends AbstractMavenSWTBotTest{
 		new DefaultShell("Edit dependency");
 		new LabeledText("Group Id:").setText("antlr");
 		new LabeledText("Artifact Id").setText("antlr");
-		new LabeledText("Version:").setText("2.7.7-redhat-2");
+		new LabeledText("Version:").setText("non-existing-version");
 		new LabeledCombo("Type:").setText("jar");
 		new PushButton("OK").click();
 		new DefaultShell("Convert to Maven Dependencies");
-		new DefaultLink(0).click();
+		new AnchorLink("here").click();
 		boolean shellIsOpened = true;
 		try{
 			new DefaultShell("Maven Repositories");
@@ -186,8 +187,12 @@ public class MavenConversionTest extends AbstractMavenSWTBotTest{
 	}
 	
 	private void createWithRuntime(){
-		createWebProject(WEB_PROJECT_NAME, sr.getRuntimeNameLabelText(sr.getConfig()), false);
 		PackageExplorer pe = new PackageExplorer();
+		pe.open();
+		if(pe.containsProject(WEB_PROJECT_NAME)){
+			return;
+		}
+		createWebProject(WEB_PROJECT_NAME, sr.getRuntimeNameLabelText(sr.getConfig()), false);
 		pe.open();
 		pe.getProject(WEB_PROJECT_NAME).select();
 		new ContextMenu("Configure","Convert to Maven Project").select();

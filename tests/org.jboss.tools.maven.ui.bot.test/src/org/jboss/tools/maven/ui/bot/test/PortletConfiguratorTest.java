@@ -30,7 +30,7 @@ public class PortletConfiguratorTest extends AbstractConfiguratorsTest{
 		mr.chooseRepositoryFromList(MavenRepositories.JBOSS_REPO, true);
 		mr.confirm();
 		jm.apply();
-		jm.ok();
+		preferenceDialog.ok();
 	}
 
 	
@@ -47,7 +47,7 @@ public class PortletConfiguratorTest extends AbstractConfiguratorsTest{
 		} else {
 			mr.cancel();
 		}
-		jm.ok();
+		preferenceDialog.ok();
 		
 	}
 	

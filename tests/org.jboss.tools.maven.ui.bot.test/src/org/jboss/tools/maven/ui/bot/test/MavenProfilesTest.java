@@ -76,7 +76,7 @@ public class MavenProfilesTest extends AbstractMavenSWTBotTest {
 		} else {
 			mr.cancel();
 		}
-		jm.ok();
+		preferenceDialog.ok();
 		preferenceDialog.open();
 		MavenUserPreferencePage mu = new MavenUserPreferencePage();
 		preferenceDialog.select(mu);

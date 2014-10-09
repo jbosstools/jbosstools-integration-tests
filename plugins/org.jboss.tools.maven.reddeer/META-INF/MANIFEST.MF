@@ -6,16 +6,16 @@ Bundle-Version: 4.3.0.qualifier
 Bundle-Activator: org.jboss.tools.maven.reddeer.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- org.jboss.reddeer.swt;bundle-version="0.6.0",
- org.jboss.reddeer.workbench;bundle-version="0.6.0",
- org.jboss.reddeer.jface;bundle-version="0.6.0",
- org.jboss.reddeer.eclipse;bundle-version="0.6.0",
+ org.jboss.reddeer.swt;bundle-version="0.7.0",
+ org.jboss.reddeer.workbench;bundle-version="0.7.0",
+ org.jboss.reddeer.jface;bundle-version="0.7.0",
+ org.jboss.reddeer.eclipse;bundle-version="0.7.0",
  org.junit;bundle-version="4.8.1",
  org.jboss.tools.runtime.reddeer,
  org.jboss.tools.runtime.ui;bundle-version="3.0.0",
  org.jboss.tools.foundation.ui;bundle-version="1.1.0",
- org.jboss.reddeer.junit;bundle-version="0.6.0",
- org.jboss.reddeer.common;bundle-version="0.6.0"
+ org.jboss.reddeer.junit;bundle-version="0.7.0",
+ org.jboss.reddeer.common;bundle-version="0.7.0"
 Export-Package: org.jboss.tools.maven.reddeer.maven.sourcelookup.ui.preferences,
  org.jboss.tools.maven.reddeer.maven.ui.preferences,
  org.jboss.tools.maven.reddeer.preferences,

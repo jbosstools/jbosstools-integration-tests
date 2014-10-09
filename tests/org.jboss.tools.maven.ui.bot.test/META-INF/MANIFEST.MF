@@ -24,10 +24,10 @@ Require-Bundle: org.eclipse.core.runtime,
  org.jboss.reddeer.swt,
  org.jboss.reddeer.uiforms,
  org.jboss.reddeer.requirements,
- org.jboss.tools.maven.reddeer,
- org.jboss.tools.jsf.reddeer,
- org.jboss.tools.seam.reddeer,
- org.jboss.ide.eclipse.as.reddeer,
+ org.jboss.tools.maven.reddeer;bundle-version=4.3.0,
+ org.jboss.tools.jsf.reddeer;bundle-version=4.3.0,
+ org.jboss.tools.seam.reddeer;bundle-version=4.3.0,
+ org.jboss.ide.eclipse.as.reddeer;bundle-version=4.3.0,
  org.eclipse.ui.workbench
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6

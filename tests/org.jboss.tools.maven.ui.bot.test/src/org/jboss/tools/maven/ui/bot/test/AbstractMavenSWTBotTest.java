@@ -83,7 +83,7 @@ public abstract class AbstractMavenSWTBotTest{
 		MavenPreferencePage mpreferencesp = new MavenPreferencePage();
 		preferenceDialog.select(mpreferencesp);
 		mpreferencesp.updateIndexesOnStartup(false);
-		mpreferencesp.ok();
+		preferenceDialog.ok();
 		
 		preferenceDialog.open();
 		MavenUserPreferencePage mpreferences = new MavenUserPreferencePage();

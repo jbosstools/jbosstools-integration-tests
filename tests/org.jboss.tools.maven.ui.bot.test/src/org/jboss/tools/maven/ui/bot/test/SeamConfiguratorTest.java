@@ -52,8 +52,6 @@ public class SeamConfiguratorTest extends AbstractConfiguratorsTest{
 		sp.addRuntime(SeamProjectTest.SEAM_2_1_NAME, SeamProjectTest.SEAM_2_1, "2.1");
 		sp.addRuntime(SeamProjectTest.SEAM_2_2_NAME, SeamProjectTest.SEAM_2_2, "2.2");
 		sp.addRuntime(SeamProjectTest.SEAM_2_3_NAME, SeamProjectTest.SEAM_2_3, "2.3");
-		sp.ok();
-		preferenceDialog.open();
 		ConfiguratorPreferencePage jm = new ConfiguratorPreferencePage();
 		preferenceDialog.select(jm);
 		ConfigureMavenRepositoriesWizard mr = jm.configureRepositories();
@@ -61,7 +59,7 @@ public class SeamConfiguratorTest extends AbstractConfiguratorsTest{
 		mr.chooseRepositoryFromList(MavenRepositories.JBOSS_REPO,true);
 		mr.confirm();
 		jm.apply();
-		jm.ok();
+		preferenceDialog.ok();
 		enableSnapshots(MavenRepositories.JBOSS_REPO);
 	}
 	
@@ -79,7 +77,7 @@ public class SeamConfiguratorTest extends AbstractConfiguratorsTest{
 		} else {
 			mr.cancel();
 		}
-		jm.ok();
+		preferenceDialog.ok();
 		
 	}
 	

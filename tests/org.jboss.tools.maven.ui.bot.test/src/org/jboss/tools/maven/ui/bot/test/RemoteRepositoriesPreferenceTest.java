@@ -23,7 +23,7 @@ public class RemoteRepositoriesPreferenceTest {
 		if(rem.getRepository(r.getName())!=null){
 			rem.deleteRepository(r);
 		}
-		rem.ok();
+		preferenceDialog.ok();
 	}
 	
 	
@@ -41,7 +41,7 @@ public class RemoteRepositoriesPreferenceTest {
 		preferenceDialog.select(rem);
 		rem.addRepository(r);
 		assertNotNull("Repository was not added",rem.getRepository(r.getName()));
-		rem.ok();
+		preferenceDialog.ok();
 	}
 	
 	@Test
@@ -53,7 +53,7 @@ public class RemoteRepositoriesPreferenceTest {
 		rem.addRepository(r);
 		rem.deleteRepository(r);
 		assertNull("Repository was not deleted",rem.getRepository(r.getName()));
-		rem.ok();
+		preferenceDialog.ok();
 	}
 	
 	@Test
@@ -69,7 +69,7 @@ public class RemoteRepositoriesPreferenceTest {
 		assertNotNull("Repository was not modified",rem.getRepository(r1.getName()));
 		assertEquals("Repository was not modified",rem.getRepository(r1.getName()).getUrl(), r1.getUrl());
 		assertEquals("Repository was not modified",rem.getRepository(r1.getName()).isEnabled(), r1.isEnabled());
-		rem.ok();
+		preferenceDialog.ok();
 	}
 
 }

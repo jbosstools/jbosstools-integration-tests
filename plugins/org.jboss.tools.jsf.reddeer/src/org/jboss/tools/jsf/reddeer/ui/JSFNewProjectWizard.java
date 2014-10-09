@@ -25,10 +25,11 @@ public class JSFNewProjectWizard extends NewWizardDialog{
 	public void finish() {
 
 		DefaultShell shell = new DefaultShell();
+		String shellText = shell.getText();
 		Button button = new PushButton("Finish");
 		button.click();
 
-		new WaitWhile(new ShellWithTextIsActive(shell.getText()), TimePeriod.LONG);
+		new WaitWhile(new ShellWithTextIsActive(shellText), TimePeriod.LONG);
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 	}
 	

@@ -31,7 +31,7 @@ public class MavenRepositories extends AbstractMavenSWTBotTest{
 		} else {
 			mr.cancel();
 		}
-		jm.ok();
+		preferenceDialog.ok();
 	}
 	
 	@AfterClass
@@ -47,7 +47,7 @@ public class MavenRepositories extends AbstractMavenSWTBotTest{
 		} else {
 			mr.cancel();
 		}
-		jm.ok();
+		preferenceDialog.ok();
 	}
 	
 	@Test
@@ -59,7 +59,7 @@ public class MavenRepositories extends AbstractMavenSWTBotTest{
 		ConfigureMavenRepositoriesWizard mr = jm.configureRepositories();
 		String repoId = mr.chooseRepositoryFromList(EAP_REPO, true);
 		mr.confirm();
-		jm.ok();
+		preferenceDialog.ok();
 		assertTrue("EAP Repository is missing in Maven repositories view", new RepositoryExists(EAP_REPO).test());
 		
 		preferenceDialog.open();
@@ -67,7 +67,7 @@ public class MavenRepositories extends AbstractMavenSWTBotTest{
 		mr = jm.configureRepositories();
 		mr.editRepo(repoId, false, null, null, null);
 		mr.confirm();
-		jm.ok();
+		preferenceDialog.ok();
 		assertFalse("EAP Repository is present in Maven repositories view", new RepositoryExists(EAP_REPO).test());
 
 		preferenceDialog.open();
@@ -75,7 +75,7 @@ public class MavenRepositories extends AbstractMavenSWTBotTest{
 		mr = jm.configureRepositories();
 		mr.removeRepo(repoId+" (Inactive)");
 		mr.confirm();
-		jm.ok();
+		preferenceDialog.ok();
 		assertFalse("EAP Repository is still present in Maven repositories view", new RepositoryExists(EAP_REPO).test());
 	}
 
@@ -89,7 +89,7 @@ public class MavenRepositories extends AbstractMavenSWTBotTest{
 		String repoId = mr.chooseRepositoryFromList(JBOSS_REPO,true);
 		mr.confirm();
 		jm.apply();
-		jm.ok();
+		preferenceDialog.ok();
 		assertTrue("JBoss Repository is missing in Maven repositories view", new RepositoryExists(JBOSS_REPO).test());
 		
 		preferenceDialog.open();
@@ -99,7 +99,7 @@ public class MavenRepositories extends AbstractMavenSWTBotTest{
 		mr.editRepo(repoId, false, null, null, null);
 		mr.confirm();
 		jm.apply();
-		jm.ok();
+		preferenceDialog.ok();
 		assertFalse("JBOSS Repository is present in Maven repositories view", new RepositoryExists(JBOSS_REPO).test());
 
 		jm = new ConfiguratorPreferencePage();
@@ -109,7 +109,7 @@ public class MavenRepositories extends AbstractMavenSWTBotTest{
 		mr = jm.configureRepositories();
 		mr.removeRepo(repoId+" (Inactive)");
 		mr.confirm();
-		jm.ok();
+		preferenceDialog.ok();
 		assertFalse("JBoss Repository is missing in Maven repositories view", new RepositoryExists(JBOSS_REPO).test());
 	}
 

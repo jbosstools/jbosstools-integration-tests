@@ -45,7 +45,7 @@ public class ArchetypesTest extends AbstractMavenSWTBotTest{
 		mr.removeAllRepos();
 		mr.chooseRepositoryFromList(MavenRepositories.JBOSS_REPO, true);
 		mr.confirm();
-		jm.ok();
+		preferenceDialog.ok();
 	}
 	
 	@AfterClass
@@ -57,7 +57,7 @@ public class ArchetypesTest extends AbstractMavenSWTBotTest{
 		ConfigureMavenRepositoriesWizard mr = jm.configureRepositories();
 		mr.removeAllRepos();
 		mr.confirm();
-		jm.ok();
+		preferenceDialog.ok();
 	}
 	
 	@Test

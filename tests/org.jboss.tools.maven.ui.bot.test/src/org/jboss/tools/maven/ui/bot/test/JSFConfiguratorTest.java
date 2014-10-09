@@ -54,7 +54,7 @@ public class JSFConfiguratorTest extends AbstractConfiguratorsTest{
 		mr.chooseRepositoryFromList(JBOSS_REPO, true);
 		mr.confirm();
 		jm.apply();
-		jm.ok();
+		preferenceDialog.ok();
 		//enableSnapshosts("ACM Repo");
 	}
 	
@@ -71,7 +71,7 @@ public class JSFConfiguratorTest extends AbstractConfiguratorsTest{
 		} else {
 			mr.cancel();
 		}
-		jm.ok();
+		preferenceDialog.ok();
 		
 	}
 	

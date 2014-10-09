@@ -79,7 +79,7 @@ public class SeamProjectTest extends AbstractMavenSWTBotTest {
 		sp.addRuntime(SEAM23_NAME, SEAM_2_3, "2.3");
 		sp.addRuntime(SEAM22_NAME, SEAM_2_2, "2.2");
 		sp.addRuntime(SEAM21_NAME, SEAM_2_1, "2.1");
-		sp.ok();
+		preferenceDialog.ok();
 		
 		DriverTemplate dt = new DriverTemplate("HSQLDB JDBC Driver", "1.8");
 		
@@ -94,7 +94,7 @@ public class SeamProjectTest extends AbstractMavenSWTBotTest {
 		
 		DriverDefinitionWizard ddw = dpref.addDriverDefinition();
 		ddw.create(dd);
-		dpref.ok();
+		preferenceDialog.ok();
 		
 		ConnectionProfileWizard cw = new ConnectionProfileWizard();
 		cw.open();

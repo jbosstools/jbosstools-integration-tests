@@ -64,7 +64,7 @@ public class SourceLookupTest extends AbstractMavenSWTBotTest{
 		SourceLookupPreferencePage lookupPage = new SourceLookupPreferencePage();
 		preferenceDialog.select(lookupPage);
 		lookupPage.toggleAutomaticallyConfigureSourceAttachement(SourceAttachment.PROMPT, true);
-		lookupPage.ok();
+		preferenceDialog.ok();
 		
 		PackageExplorer pe = new PackageExplorer();
 		pe.open();
@@ -90,7 +90,7 @@ public class SourceLookupTest extends AbstractMavenSWTBotTest{
 		preferenceDialog.select(lookupPage);
 
 		lookupPage.toggleAutomaticallyConfigureSourceAttachement(SourceAttachment.ALWAYS, true);
-		lookupPage.ok();
+		preferenceDialog.ok();
 		
 		PackageExplorer pe = new PackageExplorer();
 		pe.open();
@@ -114,7 +114,7 @@ public class SourceLookupTest extends AbstractMavenSWTBotTest{
 		preferenceDialog.select(lookupPage);
 
 		lookupPage.toggleAutomaticallyConfigureSourceAttachement(SourceAttachment.NEVER, true);
-		lookupPage.ok();
+		preferenceDialog.ok();
 		
 		PackageExplorer pe = new PackageExplorer();
 		pe.open();
