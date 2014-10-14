@@ -28,7 +28,8 @@ Import-Package: org.eclipse.wst.server.ui.internal.view.servers,
  org.jboss.reddeer.workbench.impl.view,
  org.jboss.tools.mylyn.reddeer.mylynBuild,
  org.jboss.tools.mylyn.reddeer.view,
- org.jboss.tools.mylyn.reddeer.wizard
+ org.jboss.tools.mylyn.reddeer.wizard,
+ org.jboss.tools.mylyn.reddeer
 Eclipse-BundleShape: jar
 Bundle-Localization: plugin
 Bundle-Vendor: JBoss by Red Hat
