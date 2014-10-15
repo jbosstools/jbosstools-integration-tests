@@ -70,12 +70,12 @@ public class SecuredAnnotationTest extends DeltaspikeTestBase {
 		importDeltaspikeProject(projectName,sr);
 		
 		new WaitUntil(new SpecificProblemExists(
-				ambiguousAuthorizerProblem), TimePeriod.NORMAL);
+				ambiguousAuthorizerProblem), TimePeriod.LONG);
 
 		replaceInEditor(projectName, "test", "SecuredBean.java", "4", "1", true);
 		
 		new WaitWhile(new SpecificProblemExists(
-				ambiguousAuthorizerProblem), TimePeriod.NORMAL);
+				ambiguousAuthorizerProblem), TimePeriod.LONG);
 		
 		TextEditor e = new TextEditor("SecuredBean.java");
 		e.selectText("doSomething");
@@ -91,12 +91,12 @@ public class SecuredAnnotationTest extends DeltaspikeTestBase {
 		importDeltaspikeProject(projectName,sr);
 		
 		new WaitUntil(new SpecificProblemExists(
-				noMatchingAuthorizerProblem), TimePeriod.NORMAL);
+				noMatchingAuthorizerProblem), TimePeriod.LONG);
 
 		replaceInEditor(projectName, "test", "SecuredBean.java", "1", "4", true);
 		
 		new WaitWhile(new SpecificProblemExists(
-				noMatchingAuthorizerProblem), TimePeriod.NORMAL);
+				noMatchingAuthorizerProblem), TimePeriod.LONG);
 		
 		TextEditor e = new TextEditor("SecuredBean.java");
 		e.selectText("doSomething");

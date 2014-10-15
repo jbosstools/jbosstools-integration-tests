@@ -68,7 +68,7 @@ public class ConfigPropertyAnnotationTest extends DeltaspikeTestBase {
 		importDeltaspikeProject(projectName,sr);
 		
 		new WaitUntil(new SpecificProblemExists(
-				validationProblemRegex), TimePeriod.NORMAL);
+				validationProblemRegex), TimePeriod.LONG);
 
 		insertIntoFile(projectName, "test", "Test.java", 7, 0, 
 				"@ConfigProperty(name = \"boolean\") \n");
@@ -76,7 +76,7 @@ public class ConfigPropertyAnnotationTest extends DeltaspikeTestBase {
 				"import org.apache.deltaspike.core.api.config.ConfigProperty; \n");
 		
 		new WaitWhile(new SpecificProblemExists(
-				validationProblemRegex), TimePeriod.NORMAL);
+				validationProblemRegex), TimePeriod.LONG);
 		
 	}
 	
@@ -87,7 +87,7 @@ public class ConfigPropertyAnnotationTest extends DeltaspikeTestBase {
 		importDeltaspikeProject(projectName,sr);
 		
 		new WaitWhile(new SpecificProblemExists(
-				validationProblemRegex), TimePeriod.NORMAL);
+				validationProblemRegex), TimePeriod.LONG);
 
 		insertIntoFile(projectName, "test", "Test.java", 8, 0, 
 				"@ConfigProperty(name = \"boolean\") \n");
@@ -95,7 +95,7 @@ public class ConfigPropertyAnnotationTest extends DeltaspikeTestBase {
 				"import org.apache.deltaspike.core.api.config.ConfigProperty; \n");
 		try{
 			new WaitUntil(new SpecificProblemExists(
-					validationProblemRegex), TimePeriod.NORMAL);
+					validationProblemRegex), TimePeriod.LONG);
 		} catch(WaitTimeoutExpiredException ex){
 			fail("this is known issue JBIDE-13554");
 		}

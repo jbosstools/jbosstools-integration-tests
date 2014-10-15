@@ -69,7 +69,7 @@ public class JmxBroadcaster extends DeltaspikeTestBase {
 		importDeltaspikeProject(projectName,sr);
 
 		new WaitWhile(new SpecificProblemExists(validationProblemRegex),
-				TimePeriod.NORMAL);
+				TimePeriod.LONG);
 		openClass(projectName, "test", "Test.java");
 		TextEditor e = new TextEditor("Test.java");
 		e.selectText("jmxBroadcaster");

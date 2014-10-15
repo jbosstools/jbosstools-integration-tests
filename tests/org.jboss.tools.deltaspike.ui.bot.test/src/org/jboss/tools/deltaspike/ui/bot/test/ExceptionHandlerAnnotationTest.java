@@ -69,12 +69,12 @@ public class ExceptionHandlerAnnotationTest extends DeltaspikeTestBase {
 		importDeltaspikeProject(projectName,sr);
 		
 		new WaitUntil(new SpecificProblemExists(validationProblemRegex),
-				TimePeriod.NORMAL);
+				TimePeriod.LONG);
 		
 		annotateBean(projectName, "test", "Test.java", 5, 0, "@ExceptionHandler");
 		
 		new WaitWhile(new SpecificProblemExists(validationProblemRegex),
-				TimePeriod.NORMAL);
+				TimePeriod.LONG);
 
 	}
 	
@@ -85,12 +85,12 @@ public class ExceptionHandlerAnnotationTest extends DeltaspikeTestBase {
 		importDeltaspikeProject(projectName,sr);
 		
 		new WaitUntil(new SpecificProblemExists(validationProblemRegex),
-				TimePeriod.NORMAL);
+				TimePeriod.LONG);
 		
 		annotateBean(projectName, "test", "Test.java", 5, 0, "@ExceptionHandler");
 		
 		new WaitWhile(new SpecificProblemExists(validationProblemRegex),
-				TimePeriod.NORMAL);
+				TimePeriod.LONG);
 	}
 	
 }

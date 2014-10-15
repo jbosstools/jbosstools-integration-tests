@@ -67,7 +67,7 @@ public class ExceptionHandlerMethodsTest extends DeltaspikeTestBase {
 		importDeltaspikeProject(projectName,sr);
 		
 		new WaitUntil(new SpecificProblemExists(validationProblemRegex),
-				TimePeriod.NORMAL);
+				TimePeriod.LONG);
 		
 	}
 	
@@ -78,7 +78,7 @@ public class ExceptionHandlerMethodsTest extends DeltaspikeTestBase {
 		importDeltaspikeProject(projectName,sr);
 
 		new WaitUntil(new SpecificProblemExists(validationProblemRegex),
-				TimePeriod.NORMAL);
+				TimePeriod.LONG);
 		
 	}
 	

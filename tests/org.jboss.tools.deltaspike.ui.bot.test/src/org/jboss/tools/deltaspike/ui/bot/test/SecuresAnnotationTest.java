@@ -67,14 +67,14 @@ public class SecuresAnnotationTest extends DeltaspikeTestBase {
 		importDeltaspikeProject(projectName,sr);
 		
 		new WaitUntil(new SpecificProblemExists(
-				returnValueAuthorizerProblem), TimePeriod.NORMAL);
+				returnValueAuthorizerProblem), TimePeriod.LONG);
 
 		insertIntoFile(projectName, "test", "CustomAuthorizer.java", 9, 0, 
 				"return true;");
 		replaceInEditor("void", "boolean", true);
 		
 		new WaitWhile(new SpecificProblemExists(
-				returnValueAuthorizerProblem), TimePeriod.NORMAL);
+				returnValueAuthorizerProblem), TimePeriod.LONG);
 		
 	}
 	
@@ -85,13 +85,13 @@ public class SecuresAnnotationTest extends DeltaspikeTestBase {
 		importDeltaspikeProject(projectName,sr);
 		
 		new WaitUntil(new SpecificProblemExists(
-				notDeclaredSecurityBindingProblem), TimePeriod.NORMAL);
+				notDeclaredSecurityBindingProblem), TimePeriod.LONG);
 
 		insertIntoFile(projectName, "test", "CustomAuthorizer.java", 7, 0, 
 				"@CustomSecurityBinding");
 		
 		new WaitWhile(new SpecificProblemExists(
-				notDeclaredSecurityBindingProblem), TimePeriod.NORMAL);
+				notDeclaredSecurityBindingProblem), TimePeriod.LONG);
 		
 	}
 	

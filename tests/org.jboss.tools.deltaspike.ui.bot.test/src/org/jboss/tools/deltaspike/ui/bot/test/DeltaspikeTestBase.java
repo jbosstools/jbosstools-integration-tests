@@ -29,14 +29,11 @@ import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
-import org.jboss.reddeer.swt.api.Shell;
-import org.jboss.reddeer.swt.api.Table;
 import org.jboss.reddeer.swt.api.TableItem;
 import org.jboss.reddeer.swt.condition.ButtonWithTextIsActive;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
@@ -78,7 +75,7 @@ public class DeltaspikeTestBase {
 		SourceLookupPreferencePage sp = new SourceLookupPreferencePage();
 		preferenceDialog.select(sp);
 		sp.setSourceAttachment(SourceAttachmentEnum.NEVER);
-		sp.ok();
+		preferenceDialog.ok();
 	}
 
 	protected static void importDeltaspikeProject(String projectName,ServerRequirement sr) {
@@ -182,32 +179,6 @@ public class DeltaspikeTestBase {
 		}
 	}
 
-	private static void addRuntimeIntoProject(String runtimeName,
-			String projectName) {
-
-		packageExplorer.open();
-		packageExplorer.getProject(projectName).select();
-
-		/* will be simpler in the future -> new TargetedRuntimesProperties() */
-		new ContextMenu("Properties").select();
-		Shell shell = new DefaultShell();
-		new DefaultTreeItem("Targeted Runtimes").select();
-		new CheckBox("Show all runtimes").toggle(true);
-		Table table = new DefaultTable();
-		for (int i = 0; i < table.rowCount(); i++) {
-			table.getItem(i).setChecked(false);
-		}
-		table.getItem(runtimeName).setChecked(true);
-		String textShell = shell.getText();
-		new PushButton("OK").click();
-		new WaitWhile(new ShellWithTextIsActive(textShell),
-				TimePeriod.LONG);
-		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-		new WaitWhile(new ShellWithTextIsActive("Progress Information"),
-				TimePeriod.LONG);
-
-	}
-
 	private static void addDeltaspikeLibrariesIntoProject(String projectName) {
 
 		File[] libraries = addLibraryIntoProjectFolder(projectName,
@@ -222,22 +193,20 @@ public class DeltaspikeTestBase {
 		packageExplorer.getProject(projectName).select();
 
 		new ContextMenu("Properties").select();
-		new DefaultShell();
+		new DefaultShell("Properties for "+projectName);
 		new DefaultTreeItem("Java Build Path").select();
 		new DefaultTabItem("Libraries").activate();
 
 		for (File library : libraries) {
 			new PushButton("Add JARs...").click();
-			new WaitUntil(new ShellWithTextIsActive("JAR Selection"),
-					TimePeriod.NORMAL);
 			new DefaultShell("JAR Selection");
 			new DefaultTreeItem(projectName, library.getName()).select();
 			new WaitUntil(new ButtonWithTextIsActive(new PushButton("OK")));
 			new PushButton("OK").click();
-			new WaitWhile(new ShellWithTextIsActive("JAR Selection"),
-					TimePeriod.NORMAL);
+			new WaitWhile(new ShellWithTextIsAvailable("JAR Selection"));
 		}
 		new PushButton("OK").click();
+		new WaitWhile(new ShellWithTextIsAvailable("Properties for "+projectName));
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 
 	}

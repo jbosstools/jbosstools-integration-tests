@@ -68,14 +68,14 @@ public class MessageBundleAnnotationTest extends DeltaspikeTestBase {
 		importDeltaspikeProject(projectName,sr);
 		
 		new WaitUntil(new SpecificProblemExists(
-				validationProblemRegex), TimePeriod.NORMAL);
+				validationProblemRegex), TimePeriod.LONG);
 
 		insertIntoFile(projectName, "test", "CustomInterface.java", 2, 0, "@MessageBundle");
 		insertIntoFile(projectName, "test", "CustomInterface.java", 1, 0, 
 				"import org.apache.deltaspike.core.api.message.MessageBundle; \n");
 		
 		new WaitWhile(new SpecificProblemExists(
-				validationProblemRegex), TimePeriod.NORMAL);
+				validationProblemRegex), TimePeriod.LONG);
 		
 	}
 }

@@ -119,7 +119,7 @@ public class PartialBeanTest extends NewDeltaspikeTestBase{
 	
 	private void assertErrorExists(String className, String errorMessage){
 		TextEditor ed = new TextEditor(className+".java");
-		new WaitUntil(new EditorHasValidationMarkers(ed),TimePeriod.NORMAL);
+		new WaitUntil(new EditorHasValidationMarkers(ed),TimePeriod.LONG);
 		assertEquals(1,ed.getMarkers().size());
 		Marker marker = ed.getMarkers().get(0);
 		assertEquals(errorMessage, marker.getText());
