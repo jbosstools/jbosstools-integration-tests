@@ -40,6 +40,7 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
@@ -94,13 +95,12 @@ public class TicketMonsterBaseTest {
 	public static final String PACKAGE_SERVICE = "service";
 	public static final String PACKAGE_UTIL = "util";
 	
-	protected static String version;
+	protected static String version = System.getProperty("bom.version");
 	protected ProjectExplorer projectExplorer = new ProjectExplorer();
 	
 	
 	@BeforeClass
 	public static void beforeClass(){
-		closeWelcome();
 		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
 		preferenceDialog.open();
 		MavenPreferencePage mpreferencesp = new MavenPreferencePage();
@@ -113,14 +113,6 @@ public class TicketMonsterBaseTest {
 		preferenceDialog.select(mpreferences);
 		mpreferences.setUserSettings(new File(USER_SETTINGS).getAbsolutePath());
 		mpreferences.ok();
-	}
-	
-	protected static void closeWelcome() {
-		try{
-			new WorkbenchView("Welcome").close();
-		}catch(UnsupportedOperationException ex){
-			//welcome is already closed
-		}
 	}
 	
 	public void createTicketMonsterEAP6(){
@@ -146,9 +138,10 @@ public class TicketMonsterBaseTest {
 		assertEquals(TICKET_MONSTER_PACKAGE,tp.getGroupID());
 		assertEquals(TICKET_MONSTER_NAME, tp.getArtifactID());
 		assertEquals(TICKET_MONSTER_PACKAGE, tp.getPackage());
-		Table table = tp.getTableSuffix();
-		version = table.getItem("jboss-bom-enterprise-version").getText(1);
-		assertEquals("true", table.getItem("enterprise").getText(1));
+		//not in newset archetype
+		//Table table = tp.getTableSuffix();
+		//version = table.getItem("jboss-bom-enterprise-version").getText(1);
+		//assertEquals("true", table.getItem("enterprise").getText(1));
 		wz.finish();
 		new WaitWhile(new ProblemsExists(ProblemType.ERROR));
 		pe.open();
@@ -162,7 +155,7 @@ public class TicketMonsterBaseTest {
 		
 		
 		reqs.get(0).install();
-		assertEquals("JBoss Runtime Detection",new DefaultShell());
+		assertEquals("Preferences",new DefaultShell().getText());
 		
 		//avoiding native dialog	
 		
@@ -192,9 +185,9 @@ public class TicketMonsterBaseTest {
 			TaskWizardLoginPage downloadTask = (TaskWizardLoginPage)downloadRuntime.getWizardPage(1);
 			downloadTask.setUsername(JBOSS_USERNAME);
 			downloadTask.setPassword(JBOSS_PASSWORD);
-			downloadTask.validateCredentials();
 		}
 		TaskWizardSecondPage downloadSecond = (TaskWizardSecondPage)downloadRuntime.getWizardPage(1+eapPages);
+		AbstractWait.sleep(TimePeriod.LONG); //wait for credentials validation;
 		downloadSecond.acceptLicense(true);
 		TaskWizardThirdPage downloadThird = (TaskWizardThirdPage)downloadRuntime.getWizardPage(2+eapPages);
 		downloadThird.setDownloadFolder(new File(JBOSS_AS_DOWNLOAD_DIR).getAbsolutePath());

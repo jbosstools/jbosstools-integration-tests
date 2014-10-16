@@ -18,10 +18,12 @@ import static org.junit.Assert.fail;
 import org.hamcrest.core.Is;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.swt.api.Table;
@@ -54,6 +56,9 @@ public class WeldExtensionTest extends CDITestBase {
 
 	private EditorPartWrapper beansEditor;
 	
+	@InjectRequirement
+	protected static ServerRequirement sr;
+	
 	@Override
 	protected String getProjectName() {
 		return "weldExtension";
@@ -62,7 +67,7 @@ public class WeldExtensionTest extends CDITestBase {
 	@Before
 	public void prepareWorkspace() {
 		if (!projectHelper.projectExists(getProjectName())) {
-			projectHelper.createCDIProjectWithCDIWizard(getProjectName());
+			projectHelper.createCDIProjectWithCDIWizard(getProjectName(),sr.getRuntimeNameLabelText(sr.getConfig()));
 		}
 		if (!beansXmlNotOpened()) {
 			openBeansXml();

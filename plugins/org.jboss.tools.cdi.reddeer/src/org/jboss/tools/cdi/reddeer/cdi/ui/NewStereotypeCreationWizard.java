@@ -1,12 +1,15 @@
 package org.jboss.tools.cdi.reddeer.cdi.ui;
 
 import org.jboss.reddeer.jface.wizard.NewWizardDialog;
+import org.jboss.reddeer.swt.condition.TableHasRows;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.swt.wait.WaitUntil;
 
 public class NewStereotypeCreationWizard extends NewWizardDialog{
 	
@@ -61,6 +64,7 @@ public class NewStereotypeCreationWizard extends NewWizardDialog{
 		new PushButton("Add").click();
 		new DefaultShell("Select Interceptor Binding Annotation Type");
 		new DefaultText(0).setText(bindings);
+		new WaitUntil(new TableHasRows(new DefaultTable()));
 		new PushButton("OK").click();
 		new DefaultShell("New Stereotype");
 	}
@@ -69,6 +73,7 @@ public class NewStereotypeCreationWizard extends NewWizardDialog{
 		new PushButton(1,"Add").click();
 		new DefaultShell("Select Stereotype Annotation Type");
 		new DefaultText(0).setText(stereoptypes);
+		new WaitUntil(new TableHasRows(new DefaultTable()));
 		new PushButton("OK").click();
 		new DefaultShell("New Stereotype");
 	}

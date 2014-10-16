@@ -2,6 +2,7 @@ package org.jboss.tools.cdi.reddeer.common.model.ui.editor;
 
 import org.jboss.reddeer.swt.api.Table;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.OkButton;
@@ -133,7 +134,8 @@ public class EditorPartWrapper extends AbstractEditor{
 	
 	private void removeIncludeExcludeWithHandler() {
 		new PushButton("Remove...").click();
-		new WaitUntil(new ShellWithTextIsActive("Confirmation"));
+		new WaitUntil(new ShellWithTextIsAvailable("Confirmation"));
+		new DefaultShell("Confirmation");
 		new PushButton("OK").click();
 	}
 	
@@ -158,21 +160,24 @@ public class EditorPartWrapper extends AbstractEditor{
 	public AddIfSystemPropertyDialog invokeAddIfSystemPropertyDialog(String property) {
 		new DefaultTreeItem("beans.xml", "Scan", property).select();
 		new ContextMenu("Add System Property").select();
-		new WaitUntil(new ShellWithTextIsActive("Add If System Property"));
+		new WaitUntil(new ShellWithTextIsAvailable("Add If System Property"));
+		new DefaultShell("Add If System Property");
 		return new AddIfSystemPropertyDialog();
 	}
 	
 	public AddIncludeExcludeDialog invokeAddIncludeExcludeDialog() {
 		new DefaultTreeItem(IDELabel.WebProjectsTree.BEANS_XML, "Scan").select();
 		new ContextMenu("Add Include/Exclude").select();
-		new WaitUntil(new ShellWithTextIsActive("Add Include/Exclude"));
+		new WaitUntil(new ShellWithTextIsAvailable("Add Include/Exclude"));
+		new DefaultShell("Add Include/Exclude");
 		return new AddIncludeExcludeDialog();
 	}
 	
 	public AddIfClassAvailableDialog invokeAddClassAvailableDialog(String property) {
 		new DefaultTreeItem("beans.xml", "Scan", property).select();
 		new ContextMenu("Add Class Available").select();
-		new WaitUntil(new ShellWithTextIsActive("Add If Class Available"));
+		new WaitUntil(new ShellWithTextIsAvailable("Add If Class Available"));
+		new DefaultShell("Add If Class Available");
 		return new AddIfClassAvailableDialog();
 	}
 

@@ -44,6 +44,7 @@ public class SpecifyBeanWizard {
 	
 	public NewQualifierCreationWizard createNewQualifier(String name, String packageName) {
 		new PushButton(CREATE_NEW_QUALIFIER).click();
+		new DefaultShell("New Qualifier");
 		return new NewQualifierCreationWizard();
 	}
 	

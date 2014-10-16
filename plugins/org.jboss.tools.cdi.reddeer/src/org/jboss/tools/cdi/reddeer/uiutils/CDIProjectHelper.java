@@ -40,12 +40,13 @@ public class CDIProjectHelper {
 	 * Method creates new CDI Project with CDI Web Project wizard
 	 * @param projectName
 	 */
-	public void createCDIProjectWithCDIWizard(String projectName) {
+	public void createCDIProjectWithCDIWizard(String projectName, String runtime) {
 		
 		CDIProjectWizard cw = new CDIProjectWizard();
 		cw.open();
 		WebProjectFirstPage wp = (WebProjectFirstPage)cw.getWizardPage(0);
 		wp.setProjectName(projectName);
+		wp.setTargetRuntime(runtime);
 		cw.finish();
 	}
 	
@@ -70,8 +71,8 @@ public class CDIProjectHelper {
 	 * adds CDI Support
 	 * @param projectName
 	 */
-	public void createCDIProjectWithDynamicWizard(String projectName) {
-		createDynamicWebProject(projectName);
+	public void createCDIProjectWithDynamicWizard(String projectName, String runtime) {
+		createDynamicWebProject(projectName, runtime);
 		addCDISupport(projectName);
 	}
 	
@@ -99,77 +100,26 @@ public class CDIProjectHelper {
 	 * Method creates new Dynamic Web Project with CDI Facets checked
 	 * @param projectName
 	 */
-	public void createDynamicWebProjectWithCDIFacets(String projectName) {
+	public void createDynamicWebProjectWithCDIFacets(String projectName, String runtime) {
 		WebProjectWizard ww = new WebProjectWizard();
 		ww.open();
 		WebProjectFirstPage fp = (WebProjectFirstPage)ww.getWizardPage(0);
 		fp.setProjectName(projectName);
+		fp.setTargetRuntime(runtime);
 		fp.activateFacet(CDIConstants.CDI_FACET, null);
 		ww.finish();
 	}
 	
 	/**
-	 * Set system default jdk in the project
-	 * @param projectName
-	 */
-	/*
-	public void addDefaultJDKIntoProject(String projectName) {
-		
-		projectExplorer.selectProject(projectName);
-		bot.menu(IDELabel.Menu.FILE).menu(
-				IDELabel.Menu.PROPERTIES).click();
-		bot.waitForShell(IDELabel.Shell.PROPERTIES_FOR + " " + projectName);
-		SWTBotShell propertiesShell = bot.shell(
-				IDELabel.Shell.PROPERTIES_FOR + " " + projectName);
-		propertiesShell.activate();
-		SWTBotTreeItem item = bot.tree().getTreeItem(
-				IDELabel.JavaBuildPathPropertiesEditor.
-				JAVA_BUILD_PATH_TREE_ITEM_LABEL);
-		item.select();
-		bot.tabItem(IDELabel.JavaBuildPathPropertiesEditor.
-				LIBRARIES_TAB_LABEL).activate();
-		SWTBotTree librariesTree = bot.treeWithLabel(
-				"JARs and class folders on the build path:");
-		
-		for (int i = 0; i < librariesTree.rowCount(); i++) {
-			SWTBotTreeItem libraryItem = librariesTree.
-					getAllItems()[i];
-			if (libraryItem.getText().contains("JRE") || 
-				libraryItem.getText().contains("jdk")) {
-				libraryItem.select();
-				break;
-			}
-		}
-		bot.button(IDELabel.Button.REMOVE).click();
-		
-		
-		bot.button(IDELabel.Button.ADD_LIBRARY).click();
-		bot.waitForShell(IDELabel.Shell.ADD_LIBRARY);
-		SWTBotShell libraryShell = bot.shell(
-				IDELabel.Shell.ADD_LIBRARY);
-		libraryShell.activate();
-		bot.list().select("JRE System Library");
-		bot.button(IDELabel.Button.NEXT).click();
-		bot.radio(2).click();
-		bot.button(IDELabel.Button.FINISH).click();
-		bot.waitWhile(new ShellIsActiveCondition(libraryShell), 
-				TaskDuration.LONG.getTimeout());
-		bot.button(IDELabel.Button.OK).click();
-		bot.waitWhile(new ShellIsActiveCondition(propertiesShell), 
-				TaskDuration.LONG.getTimeout());
-		util.waitForNonIgnoredJobs();
-		
-	}
-	*/
-	/**
 	 * Method creates new Dynamic Web Project
 	 * @param projectName
 	 */
-	public void createDynamicWebProject(String projectName) {
+	public void createDynamicWebProject(String projectName, String runtime) {
 		WebProjectWizard ww = new WebProjectWizard();
 		ww.open();
 		WebProjectFirstPage fp = (WebProjectFirstPage)ww.getWizardPage(0);
 		fp.setProjectName(projectName);
+		fp.setTargetRuntime(runtime);
 		ww.finish();
 	}
 	

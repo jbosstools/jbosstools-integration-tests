@@ -17,11 +17,5 @@ public class TaskWizardLoginPage extends WizardPage{
 	public void setPassword(String password){
 		new LabeledText("Password: ").setText(password);
 	}
-	
-	public void validateCredentials(){
-		Button b = new PushButton("Validate Credentials");
-		b.click();
-		new WaitUntil(new WidgetIsEnabled(b),TimePeriod.LONG);
-	}
 
 }
