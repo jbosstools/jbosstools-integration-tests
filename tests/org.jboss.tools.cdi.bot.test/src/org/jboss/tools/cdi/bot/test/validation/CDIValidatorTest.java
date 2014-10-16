@@ -1,6 +1,7 @@
 package org.jboss.tools.cdi.bot.test.validation;
 
 import static org.junit.Assert.*;
+
 import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
@@ -12,6 +13,7 @@ import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.C
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.wait.TimePeriod;
@@ -94,7 +96,7 @@ public class CDIValidatorTest extends CDITestBase {
 	}
 
 	private static void closeSettingsChangedShell() {
-		new WaitUntil(new ShellWithTextIsActive("Validator Settings Changed"));
+		new WaitUntil(new ShellWithTextIsAvailable("Validator Settings Changed"), TimePeriod.LONG);
 		DefaultShell shell = new DefaultShell("Validator Settings Changed");
 		String shellText = shell.getText();
 		new PushButton("Yes").click();

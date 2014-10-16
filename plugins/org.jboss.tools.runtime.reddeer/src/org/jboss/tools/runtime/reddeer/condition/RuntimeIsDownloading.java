@@ -4,20 +4,22 @@ import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.condition.WaitCondition;
 import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 
-public class RuntimeIsDownloaded implements WaitCondition{
+public class RuntimeIsDownloading implements WaitCondition{
 
 	@Override
 	public boolean test() {
 		if(new ShellWithTextIsAvailable("Question").test()){
+			new DefaultShell("Question");
 			new PushButton("Yes To All").click();
 		}
-		return !new JobIsRunning().test();
+		return new JobIsRunning().test();
 	}
 
 	@Override
 	public String description() {
-		return "Runtime is downloaded";
+		return "Runtime is downloading";
 	}
 
 }

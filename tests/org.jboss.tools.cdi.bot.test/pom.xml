@@ -12,7 +12,7 @@
     <packaging>eclipse-test-plugin</packaging>
 	<properties>
 		<systemProperties>${integrationTestsSystemProperties} -Dreddeer.config=target/classes/servers -Djbosstools.test.jboss-as-7.1.home=${jbosstools.test.jboss-as-7.1.home} -Djbosstools.test.wildfly.8x.home=${jbosstools.test.wildfly.8x.home} -Djbosstools.test.weld-se.home=${jbosstools.test.weld-se.home} -Djbosstools.test.weld-api.home=${jbosstools.test.weld-api.home}</systemProperties>
-		<surefire.timeout>10800</surefire.timeout>
+		<surefire.timeout>14400</surefire.timeout>
 		<jbosstools.test.jboss-as-7.1.home>${requirementsDirectory}/jboss-as-7.1.1.Final</jbosstools.test.jboss-as-7.1.home>
 		<jbosstools.test.wildfly.8x.home>${requirementsDirectory}/wildfly-8.1.0.Final</jbosstools.test.wildfly.8x.home>
 		<jbosstools.test.weld-se.home>${requirementsDirectory}/weld-se-2.2.4.Final.jar</jbosstools.test.weld-se.home>

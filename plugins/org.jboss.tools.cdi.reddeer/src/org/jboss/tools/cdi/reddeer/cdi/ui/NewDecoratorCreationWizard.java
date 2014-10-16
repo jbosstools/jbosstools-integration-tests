@@ -3,6 +3,7 @@ package org.jboss.tools.cdi.reddeer.cdi.ui;
 import java.util.List;
 
 import org.jboss.reddeer.jface.wizard.NewWizardDialog;
+import org.jboss.reddeer.swt.api.Table;
 import org.jboss.reddeer.swt.api.TableItem;
 import org.jboss.reddeer.swt.condition.TableHasRows;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
@@ -12,6 +13,7 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 
 public class NewDecoratorCreationWizard extends NewWizardDialog{
@@ -79,7 +81,9 @@ public class NewDecoratorCreationWizard extends NewWizardDialog{
 		new PushButton("Add...").click();
 		new DefaultShell("Implemented Interfaces Selection");
 		new DefaultText(0).setText(bindings);
-		new WaitUntil(new TableHasRows(new DefaultTable()));
+		Table t = new DefaultTable();
+		new WaitUntil(new TableHasRows(t), TimePeriod.LONG);
+		t.getItem(0).select();
 		new PushButton("OK").click();
 		new DefaultShell("New Decorator");
 	}

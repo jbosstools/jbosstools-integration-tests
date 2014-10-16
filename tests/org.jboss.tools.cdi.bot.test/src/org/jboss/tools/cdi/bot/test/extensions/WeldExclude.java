@@ -45,13 +45,13 @@ public class WeldExclude extends CDI11TestBase{
 	
 	private void createBeans(){
 		CDIWizardHelper wh = new CDIWizardHelper();
-		wh.createCDIComponent(CDIWizardType.BEAN, "Bean1", "exclude.p1", null);
-		wh.createCDIComponent(CDIWizardType.BEAN, "Bean2", "exclude.p1", null);
-		wh.createCDIComponent(CDIWizardType.BEAN, "Bean3", "exclude.p2", null);
-		wh.createCDIComponent(CDIWizardType.BEAN, "Bean4", "exclude.p2.p3", null);
-		wh.createCDIComponent(CDIWizardType.BEAN, "Bean5", "exclude.p4", null);
-		wh.createCDIComponent(CDIWizardType.BEAN, "Bean6", "exclude.p4.p5", null);
-		wh.createCDIComponent(CDIWizardType.BEAN, "Bean7", "exclude.p6", null);
+		wh.createCDIComponent(CDIWizardType.BEAN, "Bean1", "exclude.p1", "@ApplicationScoped");
+		wh.createCDIComponent(CDIWizardType.BEAN, "Bean2", "exclude.p1", "@ApplicationScoped");
+		wh.createCDIComponent(CDIWizardType.BEAN, "Bean3", "exclude.p2", "@ApplicationScoped");
+		wh.createCDIComponent(CDIWizardType.BEAN, "Bean4", "exclude.p2.p3", "@ApplicationScoped");
+		wh.createCDIComponent(CDIWizardType.BEAN, "Bean5", "exclude.p4", "@ApplicationScoped");
+		wh.createCDIComponent(CDIWizardType.BEAN, "Bean6", "exclude.p4.p5", "@ApplicationScoped");
+		wh.createCDIComponent(CDIWizardType.BEAN, "Bean7", "exclude.p6", "@ApplicationScoped");
 	}
 	
 	private void excludeInBeansXml() {
