@@ -113,3 +113,7 @@ In the master branch, these steps are needed:
 *   Update range for bot.ext in all manifests to the new version, e.g.:
 
         $ find . -iname manifest.mf|xargs perl -pi -e 's/\[4.1.0,4.2.0\)/[4.2.0,4.3.0)/' 
+
+## Known Problems 
+
+*   Ubuntu vncviewer skips 's' during input (see https://bugs.launchpad.net/ubuntu/+source/vnc4/+bug/658723 for workaround).
