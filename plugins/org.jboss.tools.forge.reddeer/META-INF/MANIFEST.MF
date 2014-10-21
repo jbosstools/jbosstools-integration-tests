@@ -5,7 +5,7 @@ Bundle-SymbolicName: org.jboss.tools.forge.reddeer
 Bundle-Version: 4.2.0.qualifier
 Bundle-Activator: org.jboss.tools.forge.reddeer.Activator
 Require-Bundle: org.eclipse.core.runtime,
- org.jboss.reddeer.swt;bundle-version="0.7.0",
+ org.jboss.reddeer.swt;bundle-version="0.6.1",
  org.jboss.reddeer.workbench,
  org.jboss.reddeer.common,
  org.eclipse.ui,

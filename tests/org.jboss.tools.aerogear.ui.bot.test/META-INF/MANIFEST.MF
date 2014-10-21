@@ -16,7 +16,7 @@ Require-Bundle: org.eclipse.ui,
  org.jboss.reddeer.jface;bundle-version="0.6.0",
  org.jboss.tools.vpe.ui.bot.test;bundle-version="4.2.0",
  org.jboss.reddeer.eclipse;bundle-version="0.6.0",
- org.jboss.reddeer.workbench;bundle-version="0.7.0"
+ org.jboss.reddeer.workbench;bundle-version="0.6.1"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Eclipse-BundleShape: jar
