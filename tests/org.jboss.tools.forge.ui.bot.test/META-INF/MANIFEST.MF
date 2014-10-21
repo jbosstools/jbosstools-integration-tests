@@ -2,11 +2,11 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Forge UI Bot Tests
 Bundle-SymbolicName: org.jboss.tools.forge.ui.bot.test;singleton:=true
-Bundle-Version: 4.2.0.qualifier
+Bundle-Version: 4.3.0.qualifier
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Require-Bundle: org.eclipse.swtbot.go,
- org.jboss.tools.ui.bot.ext;bundle-version="[4.2.0,4.3.0)",
+ org.jboss.tools.ui.bot.ext;bundle-version="[4.3.0,4.4.0)",
  org.jboss.tools.forge.ui;bundle-version="1.0.0",
  org.jboss.tools.forge.core;bundle-version="1.0.0",
  org.jboss.tools.forge.runtime;bundle-version="1.0.0",
