@@ -17,13 +17,14 @@ import org.jboss.reddeer.eclipse.m2e.core.ui.preferences.MavenSettingsPreference
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.handler.ShellHandler;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.central.reddeer.api.ExamplesOperator;
 import org.jboss.tools.central.reddeer.projects.ArchetypeProject;
+import org.jboss.tools.central.test.ui.reddeer.projects.AngularJSForge;
 import org.jboss.tools.central.test.ui.reddeer.projects.HTML5Project;
 import org.jboss.tools.central.test.ui.reddeer.projects.JavaEEWebProject;
-import org.jboss.tools.central.test.ui.reddeer.projects.RichfacesProject;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -45,8 +46,8 @@ public class ArchetypesTest {
 		MavenSettingsPreferencePage prefPage = new MavenSettingsPreferencePage();
 		preferenceDialog.select(prefPage);
 		prefPage.setUserSettingsLocation(mvnConfigFileName);
-		prefPage.ok();
-		new DefaultToolItem("JBoss Central").click();
+		preferenceDialog.ok();
+		new DefaultToolItem( new DefaultShell(),"JBoss Central").click();
 		// activate central editor
 		new DefaultEditor("JBoss Central");
 	}
@@ -57,7 +58,7 @@ public class ArchetypesTest {
 			p.delete(true);
 		}
 		ShellHandler.getInstance().closeAllNonWorbenchShells();
-		new DefaultToolItem("JBoss Central").click();
+		new DefaultToolItem(new DefaultShell(), "JBoss Central").click();
 		// activate central editor
 		new DefaultEditor("JBoss Central");
 	}
@@ -84,10 +85,11 @@ public class ArchetypesTest {
 		ArchetypeProject project = new HTML5Project();
 		importArchetypeProject(project);
 	}
-
+	
 	@Test
-	public void RichfacesProjectTest() {
-		importArchetypeProject(new RichfacesProject());
+	public void AngularJSForgeTest(){
+		ArchetypeProject project = new AngularJSForge();
+		importArchetypeProject(project);
 	}
 
 	@Test

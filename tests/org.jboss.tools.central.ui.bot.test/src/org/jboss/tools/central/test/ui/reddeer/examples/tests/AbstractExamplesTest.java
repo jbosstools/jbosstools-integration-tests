@@ -13,6 +13,7 @@ import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.eclipse.m2e.core.ui.preferences.MavenSettingsPreferencePage;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.swt.handler.ShellHandler;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.central.reddeer.api.ExamplesOperator;
@@ -38,7 +39,7 @@ public abstract class AbstractExamplesTest {
 		preferenceDialog.select(prefPage);
 		prefPage.setUserSettingsLocation(mvnConfigFileName);
 		prefPage.ok();
-		new DefaultToolItem("JBoss Central").click();
+		new DefaultToolItem(new DefaultShell(), "JBoss Central").click();
 		// activate central editor
 		new DefaultEditor("JBoss Central");
 	}
@@ -49,7 +50,7 @@ public abstract class AbstractExamplesTest {
 		for (org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project p : new  ProjectExplorer().getProjects()) {
 			p.delete(true);
 		}
-		new DefaultToolItem("JBoss Central").click();
+		new DefaultToolItem(new DefaultShell(), "JBoss Central").click();
 		// activate central editor
 		new DefaultEditor("JBoss Central");
 	}

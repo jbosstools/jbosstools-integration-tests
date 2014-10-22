@@ -12,6 +12,7 @@ public class DynamicWebProjectDialog extends NewWizardDialog {
 
 	public DynamicWebProjectDialog() {
 		super("Web", "Dynamic Web Project");
+		addWizardPage(new DynamicWebProjectWizardPage(), 0);
 	}
 
 }
