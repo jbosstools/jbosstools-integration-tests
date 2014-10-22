@@ -76,8 +76,9 @@ public abstract class OperateServerTemplate {
 
 	private void assertWebPageContains(String string) {
 		WelcomeToServerEditor editor = getServer().openWebPage();
+		// Bug with caching content - JBIDE-18685
+		editor.refresh();
 		assertThat(editor.getText(), containsString(string));
-//		new WaitUntil(new BrowserContainsTextCondition(string), TimePeriod.NORMAL);
 	}
 	
 	protected String getServerName() {

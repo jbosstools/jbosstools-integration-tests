@@ -15,11 +15,16 @@ import org.jboss.reddeer.workbench.impl.editor.AbstractEditor;
 public class WelcomeToServerEditor extends AbstractEditor {
 
 	public WelcomeToServerEditor() {
-		super(new RegexMatcher("Welcome to .*"));
+		super(new RegexMatcher("(Welcome to .*|EAP 6)"));
 	}
 	
 	public String getText(){
 		activate();
 		return new InternalBrowser().getText();
+	}
+	
+	public void refresh(){
+		activate();
+		new InternalBrowser().refresh();
 	}
 }
