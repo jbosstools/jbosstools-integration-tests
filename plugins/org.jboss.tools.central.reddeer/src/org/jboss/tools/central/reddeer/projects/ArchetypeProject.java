@@ -8,7 +8,7 @@ package org.jboss.tools.central.reddeer.projects;
  *
  */
 
-public abstract class ArchetypeProject extends Project {
+public class ArchetypeProject extends Project {
 
 	boolean blank;
 

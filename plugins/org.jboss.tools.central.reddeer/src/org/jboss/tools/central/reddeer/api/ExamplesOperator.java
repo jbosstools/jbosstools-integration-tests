@@ -34,6 +34,7 @@ import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.central.reddeer.projects.ArchetypeProject;
 import org.jboss.tools.central.reddeer.projects.CentralExampleProject;
 import org.jboss.tools.central.reddeer.wizards.JBossCentralProjectWizard;
+import org.jboss.tools.central.reddeer.wizards.NewProjectExamplesReadyPage;
 import org.jboss.tools.central.reddeer.wizards.NewProjectExamplesWizardDialogCentral;
 import org.jboss.tools.maven.reddeer.project.examples.wait.MavenRepositoryNotFound;
 import org.jboss.tools.maven.reddeer.project.examples.wizard.ArchetypeExamplesWizardFirstPage;
@@ -88,8 +89,8 @@ public class ExamplesOperator {
 	 */
 
 	public void importArchetypeProject(ArchetypeProject project) {
-		new DefaultHyperlink(project.getName()).activate();
-		JBossCentralProjectWizard dialog = new JBossCentralProjectWizard();
+		JBossCentralProjectWizard dialog = new JBossCentralProjectWizard(project);
+		dialog.open();
 		NewProjectExamplesStacksRequirementsPage firstPage = (NewProjectExamplesStacksRequirementsPage) dialog
 				.getCurrentWizardPage();
 		firstPage.setTargetRuntime(1);
@@ -104,7 +105,9 @@ public class ExamplesOperator {
 		dialog.next();
 		ArchetypeExamplesWizardPage thirdPage = (ArchetypeExamplesWizardPage) dialog.getCurrentWizardPage();
 		assertFalse("Group ID cannot be empty",thirdPage.getGroupID().equals(""));
-		dialog.finish(project.getProjectName(), project.isBlank());
+		NewProjectExamplesReadyPage projectReadyPage = dialog.finishAndWait();
+		checkProjectReadyPage(projectReadyPage, project);
+		projectReadyPage.finish();
 		checkForErrors();
 	}
 
@@ -185,6 +188,13 @@ public class ExamplesOperator {
 		return warnings;
 	}
 
+	private void checkProjectReadyPage(NewProjectExamplesReadyPage page, ArchetypeProject project){
+		assertFalse(page.isQuickFixEnabled());
+		if (!project.isBlank()){
+			assertTrue(page.isShowReadmeEnabled());
+			assertTrue(page.isShowReadmeEnabled());
+		}
+	}
 
 	private void checkForErrors() {
 		List<TreeItem> errors = new ProblemsView().getAllErrors();

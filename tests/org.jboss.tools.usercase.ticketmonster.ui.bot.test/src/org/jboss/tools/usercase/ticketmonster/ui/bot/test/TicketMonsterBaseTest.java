@@ -46,6 +46,7 @@ import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.reddeer.workbench.api.Editor;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
+import org.jboss.tools.central.reddeer.projects.ArchetypeProject;
 import org.jboss.tools.central.reddeer.wizards.JBossCentralProjectWizard;
 import org.jboss.tools.maven.reddeer.maven.ui.preferences.ConfiguratorPreferencePage;
 import org.jboss.tools.maven.reddeer.preferences.MavenPreferencePage;
@@ -130,8 +131,9 @@ public class TicketMonsterBaseTest {
 		}
 		removeRepos();
 		addEnterpriseRepo();
-		JBossCentralProjectWizard wz = new JBossCentralProjectWizard();
-		wz.open(JAVA_EE_PROJECT);
+		ArchetypeProject archetypeProject = new ArchetypeProject(JAVA_EE_PROJECT, TICKET_MONSTER_NAME, false);
+		JBossCentralProjectWizard wz = new JBossCentralProjectWizard(archetypeProject);
+		wz.open();
 		NewProjectExamplesStacksRequirementsPage fp = (NewProjectExamplesStacksRequirementsPage)wz.getWizardPage(0);
 		List<ExampleRequirement> reqs = fp.getRequirements();
 		assertFalse(reqs.get(0).isMet());
@@ -147,7 +149,7 @@ public class TicketMonsterBaseTest {
 		Table table = tp.getTableSuffix();
 		version = table.getItem("jboss-bom-enterprise-version").getText(1);
 		assertEquals("true", table.getItem("enterprise").getText(1));
-		wz.finish(TICKET_MONSTER_NAME);
+		wz.finish();
 		new WaitWhile(new ProblemsExists(ProblemType.ERROR));
 		pe.open();
 		pe.getProject(TICKET_MONSTER_NAME);

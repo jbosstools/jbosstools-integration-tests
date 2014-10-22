@@ -14,9 +14,16 @@ public class Project {
 	
 	protected String projectName;
 	
-	public Project(String name, String projectName) {
+	protected String packageName;
+	
+	public Project(String name, String projectName, String packageName) {
 		this.name = name;
 		this.projectName = projectName;
+		this.packageName = packageName;
+	}
+	
+	public Project(String name, String projectName){
+		this(name, projectName, "");
 	}
 	
 	public String getName() {
@@ -35,4 +42,16 @@ public class Project {
 		this.projectName = projectName;
 	}
 
+	public String getPackageName() {
+		return packageName;
+	}
+
+	public void setPackageName(String packageName) {
+		this.packageName = packageName;
+	}
+
+	public String getReadmeString(){
+		return "README.md";
+	}
+	
 }
