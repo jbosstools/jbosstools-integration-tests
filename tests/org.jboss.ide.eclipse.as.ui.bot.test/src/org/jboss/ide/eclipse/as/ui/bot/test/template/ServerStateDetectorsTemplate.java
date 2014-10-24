@@ -38,6 +38,7 @@ public abstract class ServerStateDetectorsTemplate {
 	@Before
 	public void setup(){
 		serversView = new ServersView();
+		serversView.open();
 	}
 	
 	protected abstract String getManagerServicePoller();
