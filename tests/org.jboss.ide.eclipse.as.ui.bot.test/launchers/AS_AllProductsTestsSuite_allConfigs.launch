@@ -14,24 +14,25 @@
 <booleanAttribute key="includeOptional" value="true"/>
 <stringAttribute key="location" value="${workspace_loc}/../junit-workspace"/>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
-<listEntry value="/org.jboss.ide.eclipse.as.ui.bot.test/src/org/jboss/ide/eclipse/as/ui/bot/test/Wildfly8CompatibilitySuite.java"/>
+<listEntry value="/org.jboss.ide.eclipse.as.ui.bot.test/src/org/jboss/ide/eclipse/as/ui/bot/test/allsuites/products/ProductsTestsSuite.java"/>
 </listAttribute>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
 <listEntry value="1"/>
 </listAttribute>
 <mapAttribute key="org.eclipse.debug.core.environmentVariables">
 <mapEntry key="DISPLAY" value=":${string_prompt:display number:0}"/>
+<mapEntry key="SWT_GTK3" value="0"/>
 </mapAttribute>
 <stringAttribute key="org.eclipse.jdt.junit.CONTAINER" value=""/>
 <booleanAttribute key="org.eclipse.jdt.junit.KEEPRUNNING_ATTR" value="false"/>
 <stringAttribute key="org.eclipse.jdt.junit.TESTNAME" value=""/>
 <stringAttribute key="org.eclipse.jdt.junit.TEST_KIND" value="org.eclipse.jdt.junit.loader.junit4"/>
-<stringAttribute key="org.eclipse.jdt.launching.JRE_CONTAINER" value="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
-<stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="org.jboss.ide.eclipse.as.ui.bot.test.Wildfly8CompatibilitySuite"/>
+<stringAttribute key="org.eclipse.jdt.launching.JRE_CONTAINER" value="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
+<stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="org.jboss.ide.eclipse.as.ui.bot.test.allsuites.products.ProductsTestsSuite"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch ${target.arch} -nl ${target.nl} -consoleLog"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="org.jboss.ide.eclipse.as.ui.bot.test"/>
 <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.pde.ui.workbenchClasspathProvider"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dswtbot.test.properties.file=/home/rax/git/jbosstools-integration-tests/tests/org.jboss.ide.eclipse.as.ui.bot.test/resources/generated_config_files/wildfly-8.properties  -Xmx1024m -XX:MaxPermSize=256m -Dusage_reporting_enabled=false -DlogDebug=false"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dreddeer.config=${project_loc:org.jboss.ide.eclipse.as.ui.bot.test}/resources/generated_config_files/product  -Xmx1024m -XX:MaxPermSize=256m -Dusage_reporting_enabled=false -DlogDebug=false"/>
 <stringAttribute key="pde.version" value="3.3"/>
 <stringAttribute key="product" value="org.eclipse.platform.ide"/>
 <booleanAttribute key="show_selected_only" value="false"/>

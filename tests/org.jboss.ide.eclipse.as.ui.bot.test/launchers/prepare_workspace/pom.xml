@@ -9,11 +9,7 @@
 	<build>
 		<resources>
 			<resource>
-				<directory>../../resources/config_files_templates/product</directory>
-				<filtering>true</filtering>
-			</resource>
-			<resource>
-				<directory>../../resources/config_files_templates/project</directory>
+				<directory>../../resources/config_files_templates</directory>
 				<filtering>true</filtering>
 			</resource>
 		</resources>
