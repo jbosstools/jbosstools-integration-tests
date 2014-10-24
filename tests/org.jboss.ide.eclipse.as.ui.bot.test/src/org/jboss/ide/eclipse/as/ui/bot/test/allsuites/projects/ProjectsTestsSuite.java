@@ -1,4 +1,4 @@
-package org.jboss.ide.eclipse.as.ui.bot.test;
+package org.jboss.ide.eclipse.as.ui.bot.test.allsuites.projects;
 
 import org.jboss.ide.eclipse.as.ui.bot.test.as3.CreateAS3Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.as3.DeleteServerAS3Server;
@@ -49,41 +49,19 @@ import org.jboss.ide.eclipse.as.ui.bot.test.as71.HotDeployJSPFileAS71Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.as71.OperateAS71Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.as71.ServerStateDetectorsAS71Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.as71.UndeployJSPProjectAS71Server;
-import org.jboss.ide.eclipse.as.ui.bot.test.eap4.CreateEAP4Server;
-import org.jboss.ide.eclipse.as.ui.bot.test.eap4.DeleteServerEAP4Server;
-import org.jboss.ide.eclipse.as.ui.bot.test.eap4.DeployJSPProjectEAP4Server;
-import org.jboss.ide.eclipse.as.ui.bot.test.eap4.HotDeployJSPFileEAP4Server;
-import org.jboss.ide.eclipse.as.ui.bot.test.eap4.OperateEAP4Server;
-import org.jboss.ide.eclipse.as.ui.bot.test.eap4.UndeployJSPProjectEAP4Server;
-import org.jboss.ide.eclipse.as.ui.bot.test.eap5.CreateEAP5Server;
-import org.jboss.ide.eclipse.as.ui.bot.test.eap5.DeleteServerEAP5Server;
-import org.jboss.ide.eclipse.as.ui.bot.test.eap5.DeployJSPProjectEAP5Server;
-import org.jboss.ide.eclipse.as.ui.bot.test.eap5.HotDeployJSPFileEAP5Server;
-import org.jboss.ide.eclipse.as.ui.bot.test.eap5.OperateEAP5Server;
-import org.jboss.ide.eclipse.as.ui.bot.test.eap5.UndeployJSPProjectEAP5Server;
-import org.jboss.ide.eclipse.as.ui.bot.test.eap60.CreateEAP60Server;
-import org.jboss.ide.eclipse.as.ui.bot.test.eap60.DeleteServerEAP60Server;
-import org.jboss.ide.eclipse.as.ui.bot.test.eap60.DeployJSPProjectEAP60Server;
-import org.jboss.ide.eclipse.as.ui.bot.test.eap60.HotDeployJSPFileEAP60Server;
-import org.jboss.ide.eclipse.as.ui.bot.test.eap60.OperateEAP60Server;
-import org.jboss.ide.eclipse.as.ui.bot.test.eap60.UndeployJSPProjectEAP60Server;
-import org.jboss.ide.eclipse.as.ui.bot.test.eap6x.CreateEAP6xServer;
-import org.jboss.ide.eclipse.as.ui.bot.test.eap6x.DeleteServerEAP6xServer;
-import org.jboss.ide.eclipse.as.ui.bot.test.eap6x.DeployJSPProjectEAP6xServer;
-import org.jboss.ide.eclipse.as.ui.bot.test.eap6x.HotDeployJSPFileEAP6xServer;
-import org.jboss.ide.eclipse.as.ui.bot.test.eap6x.OperateEAP6xServer;
-import org.jboss.ide.eclipse.as.ui.bot.test.eap6x.ServerStateDetectorsEAP6xServer;
-import org.jboss.ide.eclipse.as.ui.bot.test.eap6x.UndeployJSPProjectEAP6xServer;
+import org.jboss.ide.eclipse.as.ui.bot.test.wildfly8.CreateWildfly8Server;
+import org.jboss.ide.eclipse.as.ui.bot.test.wildfly8.DeleteServerWildfly8Server;
+import org.jboss.ide.eclipse.as.ui.bot.test.wildfly8.DeployJSPProjectWildfly8Server;
+import org.jboss.ide.eclipse.as.ui.bot.test.wildfly8.HotDeployJSPFileWildfly8Server;
+import org.jboss.ide.eclipse.as.ui.bot.test.wildfly8.OperateWildfly8Server;
+import org.jboss.ide.eclipse.as.ui.bot.test.wildfly8.ServerStateDetectorsWildfly8Server;
+import org.jboss.ide.eclipse.as.ui.bot.test.wildfly8.UndeployJSPProjectWildfly8Server;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 @RunWith(RedDeerSuite.class)
 @Suite.SuiteClasses({
-		CreateEAP6xServer.class,
-		CreateEAP60Server.class,
-		CreateEAP5Server.class,
-		CreateEAP4Server.class,
 		CreateAS71Server.class,
 		CreateAS70Server.class,
 		CreateAS6Server.class,
@@ -92,12 +70,8 @@ import org.junit.runners.Suite;
 		CreateAS42Server.class,
 		CreateAS40Server.class,
 		CreateAS3Server.class,
-//		CreateWildfly8Server.class, need java 7
+		CreateWildfly8Server.class,
 		
-		OperateEAP6xServer.class,
-		OperateEAP60Server.class,
-		OperateEAP5Server.class,
-		OperateEAP4Server.class,
 		OperateAS71Server.class,
 		OperateAS70Server.class,
 		OperateAS6Server.class,
@@ -106,16 +80,11 @@ import org.junit.runners.Suite;
 		OperateAS42Server.class,
 		OperateAS3Server.class,
 		OperateAS40Server.class,
-//		OperateWildfly8Server.class,
+		OperateWildfly8Server.class,
 
-		ServerStateDetectorsEAP6xServer.class,
 		ServerStateDetectorsAS71Server.class,
-//		ServerStateDetectorsWildfly8Server.class,
+		ServerStateDetectorsWildfly8Server.class,
 		
-		DeployJSPProjectEAP6xServer.class,
-		DeployJSPProjectEAP60Server.class,
-		DeployJSPProjectEAP5Server.class,
-		DeployJSPProjectEAP4Server.class,
 		DeployJSPProjectAS71Server.class,
 		DeployJSPProjectAS70Server.class,
 		DeployJSPProjectAS6Server.class,
@@ -124,12 +93,8 @@ import org.junit.runners.Suite;
 		DeployJSPProjectAS42Server.class,
 		DeployJSPProjectAS3Server.class,
 		DeployJSPProjectAS40Server.class,
-//		DeployJSPProjectWildfly8Server.class,
+		DeployJSPProjectWildfly8Server.class,
 		
-		HotDeployJSPFileEAP6xServer.class,
-		HotDeployJSPFileEAP60Server.class,
-		HotDeployJSPFileEAP5Server.class,
-		HotDeployJSPFileEAP4Server.class,
 		HotDeployJSPFileAS71Server.class,
 		HotDeployJSPFileAS70Server.class,
 		HotDeployJSPFileAS6Server.class,
@@ -138,12 +103,8 @@ import org.junit.runners.Suite;
 		HotDeployJSPFileAS42Server.class,
 		HotDeployJSPFileAS40Server.class,
 		HotDeployJSPFileAS3Server.class,
-//		HotDeployJSPFileWildfly8Server.class,
+		HotDeployJSPFileWildfly8Server.class,
 		
-		UndeployJSPProjectEAP6xServer.class,
-		UndeployJSPProjectEAP60Server.class,
-		UndeployJSPProjectEAP5Server.class,
-		UndeployJSPProjectEAP4Server.class,
 		UndeployJSPProjectAS71Server.class,
 		UndeployJSPProjectAS70Server.class,
 		UndeployJSPProjectAS6Server.class,
@@ -152,12 +113,8 @@ import org.junit.runners.Suite;
 		UndeployJSPProjectAS42Server.class,
 		UndeployJSPProjectAS3Server.class,
 		UndeployJSPProjectAS40Server.class,
-//		UndeployJSPProjectWildfly8Server.class,
+		UndeployJSPProjectWildfly8Server.class,
 		
-		DeleteServerEAP6xServer.class,
-		DeleteServerEAP60Server.class,
-		DeleteServerEAP5Server.class,
-		DeleteServerEAP4Server.class,
 		DeleteServerAS71Server.class,
 		DeleteServerAS70Server.class,
 		DeleteServerAS6Server.class,
@@ -166,8 +123,8 @@ import org.junit.runners.Suite;
 		DeleteServerAS42Server.class,
 		DeleteServerAS40Server.class,
 		DeleteServerAS3Server.class,
-//		DeleteServerWildfly8Server.class
+		DeleteServerWildfly8Server.class
 })
-public class AllTestsSuite {
+public class ProjectsTestsSuite {
 
 }

@@ -1,4 +1,4 @@
-package org.jboss.ide.eclipse.as.ui.bot.test;
+package org.jboss.ide.eclipse.as.ui.bot.test.allsuites.products;
 
 import org.jboss.ide.eclipse.as.ui.bot.test.eap5.CreateEAP5Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.eap5.DeleteServerEAP5Server;
@@ -12,13 +12,13 @@ import org.junit.runners.Suite;
 
 @RunWith(RedDeerSuite.class)
 @Suite.SuiteClasses({
-		CreateEAP5Server.class, 
+		CreateEAP5Server.class,
 		OperateEAP5Server.class,
 		DeployJSPProjectEAP5Server.class,
 		HotDeployJSPFileEAP5Server.class,
 		UndeployJSPProjectEAP5Server.class,
-		DeleteServerEAP5Server.class
+		DeleteServerEAP5Server.class,
 })
-public class EAP5CompatibilitySuite {
+public class EAP5TestsSuite {
 
 }

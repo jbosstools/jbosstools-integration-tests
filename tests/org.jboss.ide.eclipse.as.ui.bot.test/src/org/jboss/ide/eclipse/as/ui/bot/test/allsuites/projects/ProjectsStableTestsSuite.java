@@ -1,4 +1,4 @@
-package org.jboss.ide.eclipse.as.ui.bot.test;
+package org.jboss.ide.eclipse.as.ui.bot.test.allsuites.projects;
 
 import org.jboss.ide.eclipse.as.ui.bot.test.as70.CreateAS70Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.as70.DeleteServerAS70Server;
@@ -49,6 +49,6 @@ import org.junit.runners.Suite;
 		UndeployJSPProjectAS70Server.class,
 		DeleteServerAS70Server.class
 })
-public class StableTestsSuite {
+public class ProjectsStableTestsSuite {
 
 }
