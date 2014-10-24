@@ -90,7 +90,9 @@ public abstract class DeployJSPProjectTemplate {
 		assertThat(getServer().getLabel().getState(), is(ServerState.STARTED));
 		assertThat(getServer().getLabel().getPublishState(), is(ServerPublishState.SYNCHRONIZED));
 		// problems
-		assertThat(new ProblemsView().getAllErrors().size(), is(0));
+		ProblemsView problemsView = new ProblemsView();
+		problemsView.open();
+		assertThat(problemsView.getAllErrors().size(), is(0));
 	}
 
 	private void addModule(JBossServer server) {
