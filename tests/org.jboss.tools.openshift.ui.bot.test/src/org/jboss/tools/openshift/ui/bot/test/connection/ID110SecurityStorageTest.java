@@ -18,6 +18,7 @@ import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
+import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
@@ -90,7 +91,7 @@ public class ID110SecurityStorageTest {
 		new WorkbenchPreferenceDialog().select("General", "Security", "Secure Storage");		
 		new DefaultTabItem("Contents").activate();
 		
-		new DefaultTreeItem(1, "[Default Secure Storage]", "org.jboss.tools.openshift.express.ui",
+		new DefaultTreeItem(new DefaultTree(1), "[Default Secure Storage]", "org.jboss.tools.openshift.express.ui",
 				Datastore.SERVER, Datastore.USERNAME).select();
 		
 		// Wheee - reactivation required
