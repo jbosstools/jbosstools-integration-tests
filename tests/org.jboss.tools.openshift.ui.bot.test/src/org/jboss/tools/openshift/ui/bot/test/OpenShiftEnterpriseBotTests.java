@@ -32,6 +32,7 @@ import org.jboss.tools.openshift.ui.bot.test.application.basic.ID307WizardDataPr
 import org.jboss.tools.openshift.ui.bot.test.application.cartridge.ID601EmbedCartridgeTest;
 import org.jboss.tools.openshift.ui.bot.test.application.cartridge.ID603AddDownloadableEmbeddableCartridgeTest;
 import org.jboss.tools.openshift.ui.bot.test.application.cartridge.ID604AddJenkinsCartridgeWithoutJenkinsApplicationTest;
+import org.jboss.tools.openshift.ui.bot.test.application.cartridge.ID605ShowWarningOnMultipleCartridgeRemoveTest;
 import org.jboss.tools.openshift.ui.bot.test.application.create.ID401CreateNewApplicationViaExplorerTest;
 import org.jboss.tools.openshift.ui.bot.test.application.create.ID402DeleteOpenShiftApplicationTest;
 import org.jboss.tools.openshift.ui.bot.test.application.create.ID403CreateNewApplicationViaShellTest;
@@ -161,6 +162,7 @@ import org.junit.runners.Suite.SuiteClasses;
 		ID601EmbedCartridgeTest.class,
 		ID603AddDownloadableEmbeddableCartridgeTest.class,
 		ID604AddJenkinsCartridgeWithoutJenkinsApplicationTest.class,
+		ID605ShowWarningOnMultipleCartridgeRemoveTest.class,
 		
 		// Application - handle
 		ID701ModifyAndRepublishApplicationTest.class,
