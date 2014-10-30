@@ -61,7 +61,7 @@ import org.junit.runners.Suite.SuiteClasses;
 @RunWith(RedDeerSuite.class)
 @SuiteClasses({
 	JBossWSPreferencesTest.class,
-/*	JAXRSFacetTest.class,
+	JAXRSFacetTest.class,
 	SampleSoapWebServiceTest.class,
 	CreateJAXRSApplicationTest.class,
 	CreateJAXRSResourceTest.class,
@@ -95,7 +95,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	WsTesterTest.class, 
 	EAPFromJavaTest.class,
 	EAPFromWSDLTest.class, 
-*/  CxfWsClientTest.class
+	CxfWsClientTest.class
 	})
 public class WSAllBotTests extends AbstractTestSuite {
 	
