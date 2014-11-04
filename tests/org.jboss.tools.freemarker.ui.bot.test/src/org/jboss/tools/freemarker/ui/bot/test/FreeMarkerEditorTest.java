@@ -19,8 +19,14 @@ import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Widget;
+import org.hamcrest.Condition;
 import org.jboss.reddeer.common.logging.Logger;
+import org.jboss.reddeer.common.platform.RunningPlatform;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
 import org.jboss.reddeer.eclipse.ui.views.contentoutline.OutlineView;
@@ -29,12 +35,18 @@ import org.jboss.reddeer.eclipse.ui.views.log.LogView;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.reddeer.swt.api.Tree;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.swt.condition.WaitCondition;
+import org.jboss.reddeer.swt.handler.WidgetHandler;
 import org.jboss.reddeer.swt.handler.WorkbenchHandler;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.swt.matcher.AndMatcher;
+import org.jboss.reddeer.swt.reference.ReferencedComposite;
+import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.junit.AfterClass;
@@ -49,7 +61,8 @@ import org.junit.runner.RunWith;
  */
 @RunWith(RedDeerSuite.class)
 public class FreeMarkerEditorTest {
-
+	
+	
 	private Logger log = Logger.getLogger(FreeMarkerEditorTest.class);
 	private String prj = "org.jboss.tools.freemarker.testprj";
 	
@@ -62,6 +75,15 @@ public class FreeMarkerEditorTest {
 
 		JavaPerspective jp = new JavaPerspective();
 		jp.open();
+		
+		WorkbenchPreferenceDialog dlg = new WorkbenchPreferenceDialog();
+		dlg.open();
+		dlg.select("FreeMarker");
+		
+		FreemarkerPreferencePage page = new FreemarkerPreferencePage();
+		page.setOutlineLevelOfDetail(OutlineLevelOfDetail.FULL);
+		
+		dlg.ok();
 	}
 
 	@Test
@@ -108,17 +130,20 @@ public class FreeMarkerEditorTest {
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 
+		
 		new DefaultTreeItem(prj, "ftl", "welcome.ftl").doubleClick();
 		new TextEditor("welcome.ftl");
-
+		
 		OutlineView ov = new OutlineView();
 		ov.open();
+		
 		Collection<TreeItem> outlineElements = ov.outlineElements();
 		
 		List<String> list = new ArrayList<String>();
 		for (TreeItem i : outlineElements) {
 			list.add(i.getText());
 		}
+		
 		assertTrue(list.contains("user"));
 		assertTrue(list.contains("latestProduct.name"));
 		
