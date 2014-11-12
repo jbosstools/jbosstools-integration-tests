@@ -2,6 +2,7 @@ package org.jboss.tools.central.test.ui.reddeer.examples.tests;
 
 import static org.junit.Assert.assertFalse;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +15,7 @@ import org.jboss.reddeer.eclipse.m2e.core.ui.preferences.MavenSettingsPreference
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.swt.handler.ShellHandler;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.central.reddeer.api.ExamplesOperator;
@@ -32,14 +34,14 @@ public abstract class AbstractExamplesTest {
 	
 	@BeforeClass
 	public static void setup() {
-		String mvnConfigFileName = System.getProperty("maven.config.file");
+		String mvnConfigFileName = new File("target/classes/settings.xml").getAbsolutePath();
 		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
 		preferenceDialog.open();
 		MavenSettingsPreferencePage prefPage = new MavenSettingsPreferencePage();
 		preferenceDialog.select(prefPage);
 		prefPage.setUserSettingsLocation(mvnConfigFileName);
-		prefPage.ok();
-		new DefaultToolItem(new DefaultShell(), "JBoss Central").click();
+		preferenceDialog.ok();
+		new DefaultToolItem(new WorkbenchShell(), "JBoss Central").click();
 		// activate central editor
 		new DefaultEditor("JBoss Central");
 	}

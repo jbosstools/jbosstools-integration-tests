@@ -17,7 +17,8 @@
 		<jbosstools.test.wildfly.home>${requirementsDirectory}/wildfly-8.0.0.Final</jbosstools.test.wildfly.home>
 		<wildflySystemProperties></wildflySystemProperties>
 		<eapSystemProperties></eapSystemProperties>
-		<jbosstools.test.jboss-eap-6.x.home>${requirementsDirectory}/jboss-eap-6.2</jbosstools.test.jboss-eap-6.x.home>
+		<jbosstools.test.jboss-eap-6.2.home>${requirementsDirectory}/jboss-eap-6.2</jbosstools.test.jboss-eap-6.2.home>
+		<jbosstools.test.jboss-eap-6.3.home>${requirementsDirectory}/jboss-eap-6.3</jbosstools.test.jboss-eap-6.3.home>
 		<systemProperties>${integrationTestsSystemProperties} ${wildflySystemProperties} ${eapSystemProperties} -Dusage_reporting_enabled=false -Dreddeer.config=${project.build.directory}/classes/server_properties -Dmaven.config.file=${project.build.directory}/classes/settings.xml</systemProperties>
 		<surefire.timeout>10800</surefire.timeout>
 	</properties>
@@ -72,13 +73,24 @@
 						<artifactId>maven-download-plugin</artifactId>
 						<executions>
 							<execution>
-								<id>install-eap-6</id>
+								<id>install-eap-62</id>
 								<phase>pre-integration-test</phase>
 								<goals>
 									<goal>wget</goal>
 								</goals>
 								<configuration>
-									<url>${jbosstools.test.eap.url}</url>
+									<url>${jbosstools.test.eap62.url}</url>
+									<unpack>true</unpack>
+								</configuration>
+							</execution>
+							<execution>
+								<id>install-eap-63</id>
+								<phase>pre-integration-test</phase>
+								<goals>
+									<goal>wget</goal>
+								</goals>
+								<configuration>
+									<url>${jbosstools.test.eap63.url}</url>
 									<unpack>true</unpack>
 								</configuration>
 							</execution>

@@ -3,7 +3,27 @@
 <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
-	<localRepository>${user.home}/.m2/clean-repository</localRepository>
+
+	<mirrors>
+		<mirror>
+			<id>jawa64-jboss-developer-mirror</id>
+			<url>http://jawa46.mw.lab.eng.brq.redhat.com:8081/nexus/content/repositories/test-jboss/</url>
+			<mirrorOf>jboss-public-repository-group,jboss-public-repository-group-plugin</mirrorOf>
+		</mirror>
+		<mirror>
+			<id>jawa64-eap-mirror</id>
+			<url>http://jawa46.mw.lab.eng.brq.redhat.com:8081/nexus/content/repositories/test/</url>
+			<mirrorOf>jboss-eap,jboss-eap-maven-plugin-repository</mirrorOf>
+		</mirror>
+		<mirror>
+			<id>central-mirror</id>
+			<url>http://jawa46.mw.lab.eng.brq.redhat.com:8081/nexus/content/repositories/central/</url>
+			<mirrorOf>central</mirrorOf>
+		</mirror>
+	</mirrors>
+
+	<localRepository>${project.build.directory}/repository</localRepository>
+
 	<profiles>
 
 		<!-- Configure the JBoss EAP Maven repository -->
@@ -15,7 +35,7 @@
 				<repository>
 					<id>jboss-public-repository-group</id>
 					<name>JBoss Public Maven Repository Group</name>
-						<url>https://repository.jboss.org/nexus/content/groups/developer/</url>
+					<url>https://repository.jboss.org/nexus/content/groups/developer/</url>
 					<layout>default</layout>
 					<releases>
 						<enabled>true</enabled>
@@ -29,9 +49,9 @@
 			</repositories>
 			<pluginRepositories>
 				<pluginRepository>
-					<id>jboss-public-repository-group</id>
+					<id>jboss-public-repository-group-plugin</id>
 					<name>JBoss Public Maven Repository Group</name>
-						<url>https://repository.jboss.org/nexus/content/groups/developer/</url>
+					<url>https://repository.jboss.org/nexus/content/groups/developer/</url>
 					<layout>default</layout>
 					<releases>
 						<enabled>true</enabled>
@@ -50,7 +70,7 @@
 			<repositories>
 				<repository>
 					<id>jboss-eap</id>
-						<url>http://maven.repository.redhat.com/techpreview/all/</url>
+					<url>http://maven.repository.redhat.com/techpreview/all/</url>
 					<releases>
 						<enabled>true</enabled>
 					</releases>
