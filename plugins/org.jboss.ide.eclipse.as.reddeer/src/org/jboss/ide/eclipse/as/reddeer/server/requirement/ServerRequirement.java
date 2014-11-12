@@ -67,7 +67,7 @@ public class ServerRequirement extends ServerReqBase implements Requirement<JBos
 		if(lastServerConfiguration != null) {
 			boolean differentConfig = !config.equals(lastServerConfiguration.getConfig());
 			if (differentConfig) {
-				removeLastRequiredServer(lastServerConfiguration);
+				removeLastRequiredServerAndRuntime(lastServerConfiguration);
 				lastServerConfiguration = null;
 			}
 		}
@@ -127,6 +127,7 @@ public class ServerRequirement extends ServerReqBase implements Requirement<JBos
 			serverW.next();
 
 			NewServerAdapterPage ap = new NewServerAdapterPage();
+			ap.setRuntime(null);
 			ap.checkErrors();
 
 			serverW.next();
