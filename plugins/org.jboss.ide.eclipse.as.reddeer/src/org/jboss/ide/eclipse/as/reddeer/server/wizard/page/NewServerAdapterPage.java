@@ -65,9 +65,9 @@ public class NewServerAdapterPage extends WizardPage {
 	public void setRuntime(String runtime) {
 		Combo combo = getRuntimeCombo();
 		if(runtime == null) {
-			combo.setText(NEW_RUNTIME_LABEL);
+			combo.setSelection(NEW_RUNTIME_LABEL);
 		} else {
-			combo.setText(runtime);
+			combo.setSelection(runtime);
 		}
 	}
 	
