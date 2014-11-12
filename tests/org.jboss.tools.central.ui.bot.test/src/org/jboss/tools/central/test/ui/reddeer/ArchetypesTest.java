@@ -2,6 +2,7 @@ package org.jboss.tools.central.test.ui.reddeer;
 
 import static org.junit.Assert.assertFalse;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,7 +18,7 @@ import org.jboss.reddeer.eclipse.m2e.core.ui.preferences.MavenSettingsPreference
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.handler.ShellHandler;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.central.reddeer.api.ExamplesOperator;
@@ -40,14 +41,14 @@ public class ArchetypesTest {
 
 	@BeforeClass
 	public static void setup() {
-		String mvnConfigFileName = System.getProperty("maven.config.file");
+		String mvnConfigFileName = new File("target/classes/settings.xml").getAbsolutePath();
 		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
 		preferenceDialog.open();
 		MavenSettingsPreferencePage prefPage = new MavenSettingsPreferencePage();
 		preferenceDialog.select(prefPage);
 		prefPage.setUserSettingsLocation(mvnConfigFileName);
 		preferenceDialog.ok();
-		new DefaultToolItem( new DefaultShell(),"JBoss Central").click();
+		new DefaultToolItem(new WorkbenchShell(), "JBoss Central").click();
 		// activate central editor
 		new DefaultEditor("JBoss Central");
 	}
@@ -58,7 +59,7 @@ public class ArchetypesTest {
 			p.delete(true);
 		}
 		ShellHandler.getInstance().closeAllNonWorbenchShells();
-		new DefaultToolItem(new DefaultShell(), "JBoss Central").click();
+		new DefaultToolItem(new WorkbenchShell(), "JBoss Central").click();
 		// activate central editor
 		new DefaultEditor("JBoss Central");
 	}
@@ -78,8 +79,7 @@ public class ArchetypesTest {
 		projectWarnings.clear();
 		assertFalse(sb.toString(), fail);
 	}
-
-
+	
 	@Test
 	public void HTML5ProjectTest() {
 		ArchetypeProject project = new HTML5Project();
@@ -101,7 +101,7 @@ public class ArchetypesTest {
 	public void JavaEEWebProjectBlankTest() {
 		importArchetypeProject(new JavaEEWebProject(true));
 	}
-//
+
 //	@Test
 //	public void HybridMobileTest(){
 //		try{

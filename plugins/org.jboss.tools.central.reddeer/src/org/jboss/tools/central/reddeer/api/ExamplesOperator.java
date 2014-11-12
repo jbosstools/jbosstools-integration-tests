@@ -197,7 +197,9 @@ public class ExamplesOperator {
 	}
 
 	private void checkForErrors() {
-		List<TreeItem> errors = new ProblemsView().getAllErrors();
+		ProblemsView problemsView = new ProblemsView();
+		problemsView.open();
+		List<TreeItem> errors = problemsView.getAllErrors();
 		if (!errors.isEmpty()) {
 			String failureMessage = "There are errors after importing project";
 			for (TreeItem treeItem : errors) {
