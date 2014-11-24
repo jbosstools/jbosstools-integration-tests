@@ -28,6 +28,7 @@ public class ProjectImporter {
 		importProject(pluginId, projectName);
 		new WaitWhile(new JobIsRunning(),TimePeriod.LONG);
 		ProblemsView problemsView = new ProblemsView();
+		problemsView.open();
 		assertTrue("No problems after import are expected", problemsView.getAllErrors().size() == 0);
 	}
 	

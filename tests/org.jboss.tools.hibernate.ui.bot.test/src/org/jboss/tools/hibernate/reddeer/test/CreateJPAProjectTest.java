@@ -74,7 +74,9 @@ public class CreateJPAProjectTest extends HibernateRedDeerTest {
 
 		new WaitWhile(new JobIsRunning());
 		ProblemsView problemsView = new ProblemsView();
+		problemsView.open();
 		List<TreeItem> allErrors = problemsView.getAllErrors();
+		problemsView.open();
 		assertTrue("No problems are expected (JBIDE-17855)", allErrors.size() == 0);
 	}
 	
