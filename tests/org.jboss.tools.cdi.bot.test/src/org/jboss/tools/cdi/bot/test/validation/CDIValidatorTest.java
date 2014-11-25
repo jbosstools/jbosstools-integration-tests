@@ -12,6 +12,7 @@ import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
+import org.jboss.reddeer.swt.condition.ProgressInformationShellIsActive;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -88,10 +89,13 @@ public class CDIValidatorTest extends CDITestBase {
 		} else {
 			cdiValidatorPage.disableValidation();
 		}
-		cdiValidatorPage.ok();
+		String shellText = new DefaultShell().getText();
+		new PushButton("OK").click();
 		if (stateChanged) {
 			closeSettingsChangedShell();
 		}
+		new WaitWhile(new ProgressInformationShellIsActive());
+		new WaitWhile(new ShellWithTextIsAvailable(shellText));
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
 
