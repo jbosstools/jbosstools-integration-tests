@@ -87,11 +87,6 @@ public class MylynTestJenkins {
 		assertTrue ("Properties title matches", buildServerDialog.getText().equals("Build Server Properties"));
 		buildServerDialog.validateSettings();
 		
-		/* Running on JBDS results in Secure Storage Dialog being opened and warning message obscures the "Repository is valid" text */
-		if (!org.eclipse.core.runtime.Platform.getProduct().getName().contains("JBoss Developer Studio")) {		
-			assertTrue("Build Server Properties Invalid", new LabeledText("Build Server Properties").getText().contains("Repository is valid"));
-		}
-
 		/* Locate a Jenkins job */
 		new PushButton("Select All").click();
 		new PushButton("Finish").click();
@@ -136,11 +131,6 @@ public class MylynTestJenkins {
 		assertTrue ("Properties title matches", buildServerDialog.getText().equals("Build Server Properties"));
 		buildServerDialog.validateSettings();
 		
-		/* Running on JBDS results in Secure Storage Dialog being opened and warning message obscures the "Repository is valid" text */
-		if (!org.eclipse.core.runtime.Platform.getProduct().getName().contains("JBoss Developer Studio")) {		
-			assertTrue("Build Server Properties Invalid", new LabeledText("Build Server Properties").getText().contains("Repository is valid"));
-		}
-			
 		/* Locate a Jenkins job */
 		new PushButton("Select All").click();
 		new PushButton("Finish").click();

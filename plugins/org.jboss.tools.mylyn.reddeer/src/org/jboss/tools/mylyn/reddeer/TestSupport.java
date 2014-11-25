@@ -68,7 +68,7 @@ public class TestSupport {
 	
 	public static void closeSecureStorageIfOpened () {
 		try{
-			new DefaultShell("Secure Storage Password").close();
+			new DefaultShell("Secure Storage").close();
 		} catch (SWTLayerException swtle){
 			// do nothing shell was not opened
 		}	
