@@ -77,8 +77,8 @@ public class RuntimeDownloadTestBase extends RuntimeDetectionTestCase {
 		new PushButton("Finish").click();
 		runtimeDownloadWizard = null;
 		
-		new WaitUntil(new JobIsRunning(), TimePeriod.NORMAL, false);
-		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
+		new WaitUntil(new JobIsRunning(), TimePeriod.VERY_LONG, false);
+		new WaitWhile(new JobIsRunning(), TimePeriod.getCustom(900));
 		
 		runtimeDetectionPage.ok();
 	}
