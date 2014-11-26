@@ -98,6 +98,7 @@ public class ExamplesOperator {
 		if (project.isBlank()){
 			firstPage.toggleBlank(project.isBlank());
 		}
+		checkRequirements(firstPage.getRequirements());
 		dialog.next();
 		ArchetypeExamplesWizardFirstPage secondPage = (ArchetypeExamplesWizardFirstPage) dialog
 				.getCurrentWizardPage();
