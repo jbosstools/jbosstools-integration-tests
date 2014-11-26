@@ -7,11 +7,8 @@ import java.util.List;
 
 import org.jboss.reddeer.jface.wizard.WizardPage;
 import org.jboss.reddeer.swt.api.Group;
-import org.jboss.reddeer.swt.api.Link;
 import org.jboss.reddeer.swt.api.Table;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
-import org.jboss.reddeer.swt.condition.WaitCondition;
-import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
@@ -61,7 +58,7 @@ public class NewProjectExamplesStacksRequirementsPage extends WizardPage{
 		Group reqGroup = new DefaultGroup("Requirements");
 		Table r = new DefaultTable(reqGroup);
 		List<ExampleRequirement> reqs = new ArrayList<ExampleRequirement>();
-		for(int i=0; i< r.rowCount()-1; i++){
+		for(int i=0; i< r.rowCount(); i++){
 			reqs.add(new ExampleRequirement(r, i));
 		}
 		return reqs;
