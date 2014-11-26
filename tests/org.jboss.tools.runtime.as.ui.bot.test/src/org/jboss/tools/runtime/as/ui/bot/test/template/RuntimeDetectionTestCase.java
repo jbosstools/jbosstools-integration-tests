@@ -33,9 +33,11 @@ public abstract class RuntimeDetectionTestCase {
 	protected SearchingForRuntimesDialog addPath(String path){
 		RuntimeUIActivator.getDefault().getModel().addRuntimePath(new RuntimePath(path));
 		runtimeDetectionPage = new RuntimeDetectionPreferencePage();
+		preferences.open();
 		preferences.select(runtimeDetectionPage);
 		if(!runtimeDetectionPage.getAllPaths().contains(path)) {
-			runtimeDetectionPage.cancel();
+			preferences.cancel();
+			preferences.open();
 			preferences.select(runtimeDetectionPage);
 		}
 		return runtimeDetectionPage.search();
@@ -43,40 +45,46 @@ public abstract class RuntimeDetectionTestCase {
 
 	protected SearchingForRuntimesDialog searchFirstPath(){
 		runtimeDetectionPage = new RuntimeDetectionPreferencePage();
+		preferences.open();
 		preferences.select(runtimeDetectionPage);
 		return runtimeDetectionPage.search();
 	}
 
 	protected void removeAllPaths(){
+		preferences.open();
 		preferences.select(runtimeDetectionPage);
 		runtimeDetectionPage.removeAllPaths();
-		runtimeDetectionPage.ok();
+		preferences.ok();
 	}
 
 	protected void removeAllSeamRuntimes(){
+		preferences.open();
 		preferences.select(seamPreferencePage);
 		seamPreferencePage.removeAllRuntimes();
-		seamPreferencePage.ok();
+		preferences.ok();
 	}
 
 	protected void removeAllServerRuntimes(){
+		preferences.open();
 		preferences.select(runtimePreferencePage);
 		runtimePreferencePage.removeAllRuntimes();
-		runtimePreferencePage.ok();
+		preferences.ok();
 	}
 
 	protected void assertSeamRuntimesNumber(int expected) {
+		preferences.open();
 		preferences.select(seamPreferencePage);
 		assertThat(seamPreferencePage.getRuntimes().size(), is(expected));
-		seamPreferencePage.ok();
+		preferences.ok();
 	}
 
 	protected void assertServerRuntimesNumber(int expected) {
+		preferences.open();
 		preferences.select(runtimePreferencePage);
 		List<org.jboss.reddeer.eclipse.wst.server.ui.Runtime> runtimes = 
 				runtimePreferencePage.getServerRuntimes();
 		assertThat("Expected are " + expected + " runtimes but there are:\n"
 				+ Arrays.toString(runtimes.toArray()), runtimes.size(), is(expected));
-		runtimePreferencePage.ok();
+		preferences.ok();
 	}
 }

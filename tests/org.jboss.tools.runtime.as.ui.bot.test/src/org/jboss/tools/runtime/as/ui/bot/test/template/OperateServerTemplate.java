@@ -9,6 +9,7 @@ import static org.junit.Assert.fail;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.jboss.reddeer.eclipse.condition.ConsoleHasNoChange;
 import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.Server;
@@ -63,7 +64,7 @@ public abstract class OperateServerTemplate {
 	@Before
 	public void setUp(){
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-		
+		serversView.open();
 		for(Server server : serversView.getServers()){
 			if(!server.getLabel().getName().equals(serversView.getServer(getServerName()).getLabel().getName())){
 				server.delete();
@@ -75,6 +76,7 @@ public abstract class OperateServerTemplate {
 	@After
 	public void cleanServerAndConsoleView() {
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		serversView.open();
 		for (Server server : serversView.getServers()) {
 			server.delete(true);
 		}
@@ -85,6 +87,7 @@ public abstract class OperateServerTemplate {
 	public void startServer() {
 		serversView.getServer(getServerName()).start();
 		final String state = "Started";
+		new WaitUntil(new ConsoleHasNoChange(TimePeriod.getCustom(5)), TimePeriod.LONG);
 		new WaitUntil(new ServerHasState(state));
 		
 		assertNoException("Starting server");
@@ -94,6 +97,7 @@ public abstract class OperateServerTemplate {
 	public void restartServer() {
 		serversView.getServer(getServerName()).restart();
 		final String state = "Started";
+		new WaitUntil(new ConsoleHasNoChange(TimePeriod.getCustom(5)), TimePeriod.LONG);
 		new WaitUntil(new ServerHasState(state));
 
 		assertNoException("Restarting server");
@@ -105,6 +109,7 @@ public abstract class OperateServerTemplate {
 	public void stopServer() {
 		serversView.getServer(getServerName()).stop();
 		final String state = "Stopped";
+		new WaitUntil(new ConsoleHasNoChange(TimePeriod.getCustom(5)), TimePeriod.LONG);
 		new WaitUntil(new ServerHasState(state));
 
 		assertNoException("Stopping server");
