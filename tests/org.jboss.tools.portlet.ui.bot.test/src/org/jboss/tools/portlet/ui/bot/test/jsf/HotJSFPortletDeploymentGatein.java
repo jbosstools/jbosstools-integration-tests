@@ -29,4 +29,9 @@ public class HotJSFPortletDeploymentGatein extends HotDeploymentGateinTemplate {
 		page.setTitle(page.getTitle() + " Hot Deploy");
 		dialog.finish();
 	}
+	
+	@Override
+	protected boolean needRestart() {
+		return true;
+	}
 }

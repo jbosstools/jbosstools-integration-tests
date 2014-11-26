@@ -16,7 +16,9 @@ public class ExistingProjectMatcher extends JavaPerspectiveAbstractSWTMatcher<St
 	
 	@Override
 	protected boolean matchesSafelyInJavaPerspective(String project) {
-		return new ProjectExplorer().containsProject(project);
+		ProjectExplorer projectExplorer = new ProjectExplorer();
+		projectExplorer.open();
+		return projectExplorer.containsProject(project);
 	}
 
 	@Override
