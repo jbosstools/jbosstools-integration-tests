@@ -97,8 +97,7 @@ public class OpenOnTest extends OpenOnBase {
 		ContentAssistant ca = e.openOpenOnAssistant();
 		ca.chooseProposal("Open Bound Producer Method produceMethod");
 		
-		assertTrue(new DefaultStyledText().getSelectionText()
-				.equals("produceMethod"));
+		assertEquals("produceMethod", new DefaultStyledText().getSelectionText());
 		
 		e = new DefaultEditor(className + ".java");
 		new DefaultStyledText().selectText("produceMethod");
@@ -106,8 +105,7 @@ public class OpenOnTest extends OpenOnBase {
 		ca = e.openOpenOnAssistant();
 		ca.chooseProposal("Open Bound Disposer Method disposeMethod");
 
-		assertTrue(new DefaultStyledText().getSelectionText()
-				.equals("disposeMethod"));
+		assertEquals("disposeMethod", new DefaultStyledText().getSelectionText());
 
 	}
 
@@ -129,8 +127,7 @@ public class OpenOnTest extends OpenOnBase {
 		ContentAssistant ca = e.openOpenOnAssistant();
 		ca.chooseProposal("Open CDI Event EventBean.event");
 		
-		assertTrue(new DefaultStyledText().getSelectionText()
-				.equals("event"));
+		assertEquals("event", new DefaultStyledText().getSelectionText());
 		
 		
 		e = new DefaultEditor("EventBean.java");
@@ -144,8 +141,7 @@ public class OpenOnTest extends OpenOnBase {
 			}
 		}
 		
-		assertTrue(new DefaultStyledText().getSelectionText()
-				.equals("observerMethod"));
+		assertEquals("observerMethod", new DefaultStyledText().getSelectionText());
 		
 	}
 
@@ -199,7 +195,7 @@ public class OpenOnTest extends OpenOnBase {
 			LOGGER.info("Testing injected point: \"" + injectedPoint
 					+ "\" started");
 			new WaitUntil(new EditorWithTitleIsActive("MyBean4.java"));
-			assertTrue(new DefaultStyledText().getSelectionText().equals("MyBean4"));
+			assertEquals("MyBean4", new DefaultStyledText().getSelectionText());
 			LOGGER.info("Testing injected point: \"" + injectedPoint
 					+ "\" ended");
 		} else {
