@@ -15,6 +15,7 @@ import org.apache.log4j.Logger;
 import org.eclipse.ui.IViewReference;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.lookup.WorkbenchLookup;
+import org.eclipse.core.runtime.Platform.*;
 
 public class TestSupport {
 	
@@ -67,8 +68,21 @@ public class TestSupport {
 	} /* method */
 	
 	public static void closeSecureStorageIfOpened () {
+		
+		/* For JBoss Tools */
+		String uiString = "Secure Storage"; 
+		
+		/* For JBDS */
+		try  {
+			org.eclipse.core.runtime.Platform.getProduct().getName();
+			uiString = "Secure Storage Password";
+		}
+			/* Call to org.eclipse.core.runtime.Platform.getProduct() raises NPE with JBoss Tools */
+			catch (java.lang.NullPointerException E) {
+		}		
+		
 		try{
-			new DefaultShell("Secure Storage").close();
+			new DefaultShell(uiString).close();
 		} catch (SWTLayerException swtle){
 			// do nothing shell was not opened
 		}	
