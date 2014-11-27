@@ -97,6 +97,13 @@ In the newly created maintenance branch, these steps are needed:
 *   Update integration tests repo url in root pom.xml to point to a maintenance repo, e.g.:
     
          http://download.jboss.org/jbosstools/updates/nightly/integrationtests/4.1.kepler/
+         
+    This is a chicken-egg problem. In order to add this repo to the pom, you need the url
+    to be working. But to create the Jenkins job you need to have this branch ready.
+         
+    So either create the job using master branch first and later change it to use
+    the maintenance branch once it's ready. Or first do the rest of these steps,
+    create the job, publish the site and eventually change the url in the pom.
 
 In the master branch, these steps are needed:
 
