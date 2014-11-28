@@ -24,6 +24,7 @@ import java.util.Scanner;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.jface.text.contentassist.ContentAssistant;
@@ -47,6 +48,8 @@ import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.common.reddeer.label.IDELabel;
 
 public class EditorResourceHelper {
+	
+	private static final Logger log = Logger.getLogger(EditorResourceHelper.class);
 	
 	
 	public void replaceClassContentByResource(String editorName, InputStream resource, boolean closeEdit) {
@@ -202,22 +205,32 @@ public class EditorResourceHelper {
 	
 	
 	public List<String> getProposalList(String editorTitle, String textToSelect) {
+		log.debug("Getting content assist proposals");
 		Editor editor = new DefaultEditor(editorTitle);
 		DefaultStyledText dt = new DefaultStyledText();
 		dt.selectPosition(dt.getPositionOfText(textToSelect));
 		ContentAssistant cs = editor.openContentAssistant();
 		List<String> proposals = cs.getProposals();
+		log.debug("Content Assist proposals:");
+		for(String s: proposals){
+			log.debug(s);
+		}
 		cs.close();
 		return proposals;
 	}
 	
 	public List<String> getProposalList(String editorTitle, String textToSelect, int position) {
+		log.debug("Getting content assist proposals");
 		Editor editor = new DefaultEditor(editorTitle);
 		DefaultStyledText dt = new DefaultStyledText();
 		dt.selectPosition(dt.getPositionOfText(textToSelect)+position);
 		AbstractWait.sleep(TimePeriod.SHORT);
 		ContentAssistant cs = editor.openContentAssistant();
 		List<String> proposals = cs.getProposals();
+		log.debug("Content Assist proposals:");
+		for(String s: proposals){
+			log.debug(s);
+		}
 		cs.close();
 		return proposals;
 	}
