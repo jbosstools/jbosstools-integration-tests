@@ -18,8 +18,10 @@ import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
+import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.cdi.bot.test.CDI11TestBase;
 import org.junit.Before;
@@ -78,6 +80,7 @@ public class ParametersAnnotation extends CDI11TestBase{
 		te.insertLine(8, "@Inject @Parameters List<String> parameters;");
 		te.insertLine(9, "@Inject @Parameters String[] paramsArray;");
 		AbstractWait.sleep(TimePeriod.NORMAL);
+		new WaitWhile(new JobIsRunning());
 		assertEquals(0,te.getMarkers().size());
 		te.save();
 		assertEquals(0,te.getMarkers().size());
