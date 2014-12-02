@@ -38,6 +38,7 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
+import org.jboss.reddeer.eclipse.condition.ProjectExists;
 import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
@@ -92,11 +93,6 @@ public abstract class AbstractMavenSWTBotTest{
 		mpreferences.ok();
 		
 		setGit();
-	}
-	
-	@AfterClass
-	public static void cleanup(){
-		deleteProjects(true,true);
 	}
 	
 	public boolean hasNature(String projectName, String version, String... natureID){
@@ -173,20 +169,10 @@ public abstract class AbstractMavenSWTBotTest{
 		}
 	}
 	
-	public static void deleteProjects(boolean fromSystem, boolean update){
+	public static void deleteProjects(boolean fromSystem){
 		PackageExplorer pexplorer = new PackageExplorer();
 		pexplorer.open();
-		List<Project> projects = pexplorer.getProjects();
-		for(Project p: projects){
-			if(update){
-				updateConf(p.getName());
-			}
-			p.select();
-			new ContextMenu("Refresh").select();
-			new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-			p.delete(fromSystem);
-		}
-		assertTrue("Not all projects have been deleted", pexplorer.getProjects().isEmpty());
+		pexplorer.deleteAllProjects(fromSystem);
 	}
 	
 	public void checkWebTarget(String projectName, String finalName){
@@ -201,6 +187,7 @@ public abstract class AbstractMavenSWTBotTest{
 	public void convertToMavenProject(String projectName, String defaultPackaging, boolean withDependencies){
 		PackageExplorer pexplorer = new PackageExplorer();
 		pexplorer.open();
+		new WaitUntil(new ProjectExists(projectName));
 		pexplorer.getProject(projectName).select();
 		new ContextMenu("Configure","Convert to Maven Project").select();
 		new DefaultShell("Create new POM");

@@ -9,7 +9,7 @@
  *     JBoss by Red Hat - Initial implementation.
  ************************************************************************************/
 
-package org.jboss.tools.maven.ui.bot.test;
+package org.jboss.tools.maven.ui.bot.test.project;
 
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
@@ -27,6 +27,7 @@ import org.jboss.reddeer.swt.impl.button.NextButton;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.tools.maven.ui.bot.test.AbstractMavenSWTBotTest;
 import org.jboss.tools.maven.ui.bot.test.utils.ProjectHasErrors;
 import org.jboss.tools.seam.reddeer.preferences.SeamPreferencePage;
 import org.jboss.tools.seam.reddeer.wizards.SeamProjectDialog;
@@ -107,28 +108,28 @@ public class SeamProjectTest extends AbstractMavenSWTBotTest {
 	public void createSeam23WebProjectTest(){
 		createSeamProject(SEAM_WEB_PROJECT+"23", SEAM_2_3_NAME, "2.3", false);
 		new WaitWhile(new ProjectHasErrors(SEAM_WEB_PROJECT+"23", null), TimePeriod.LONG);
-		deleteProjects(true,false);
+		deleteProjects(true);
 	}
 	
 	@Test
 	public void createSeam23EarProjectTest(){
 		createSeamProject(SEAM_EAR_PROJECT+"23", SEAM_2_3_NAME, "2.3", true);
 		new WaitWhile(new ProjectHasErrors(SEAM_EAR_PROJECT+"23", null), TimePeriod.LONG);
-		deleteProjects(true,false);
+		deleteProjects(true);
 	}
 	
 	@Test
 	public void createSeam22WebProjectTest(){
 		createSeamProject(SEAM_WEB_PROJECT+"22", SEAM_2_2_NAME, "2.2",false);
 		new WaitWhile(new ProjectHasErrors(SEAM_WEB_PROJECT+"22", ACCEPTED_ERROR_TYPE), TimePeriod.LONG);
-		deleteProjects(true,true);
+		deleteProjects(true);
 	}
 
 	@Test
 	public void createSeam22EarProjectTest(){
 		createSeamProject(SEAM_EAR_PROJECT+"22", SEAM_2_2_NAME, "2.2",true);
 		new WaitWhile(new ProjectHasErrors(SEAM_EAR_PROJECT+"22", ACCEPTED_ERROR_TYPE), TimePeriod.LONG);
-		deleteProjects(true,true);
+		deleteProjects(true);
 	}
 
 	private void createSeamProject(String projectName, String seamRuntime, String seamVersion, boolean EAR){

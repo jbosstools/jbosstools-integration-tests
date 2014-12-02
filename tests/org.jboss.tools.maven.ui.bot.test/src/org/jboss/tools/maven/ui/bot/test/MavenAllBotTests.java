@@ -11,6 +11,21 @@
 package org.jboss.tools.maven.ui.bot.test;
 
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.tools.maven.ui.bot.test.configurator.CDIConfiguratorTest;
+import org.jboss.tools.maven.ui.bot.test.configurator.JAXRSConfiguratorTest;
+import org.jboss.tools.maven.ui.bot.test.configurator.JPAConfiguratorTest;
+import org.jboss.tools.maven.ui.bot.test.configurator.JSFConfiguratorTest;
+import org.jboss.tools.maven.ui.bot.test.configurator.PortletConfiguratorTest;
+import org.jboss.tools.maven.ui.bot.test.configurator.SeamConfiguratorTest;
+import org.jboss.tools.maven.ui.bot.test.conversion.MaterializeLibraryTest;
+import org.jboss.tools.maven.ui.bot.test.conversion.MavenConversionTest;
+import org.jboss.tools.maven.ui.bot.test.profile.MavenProfilesTest;
+import org.jboss.tools.maven.ui.bot.test.project.ArchetypesTest;
+import org.jboss.tools.maven.ui.bot.test.project.EARProjectTest;
+import org.jboss.tools.maven.ui.bot.test.project.JSFProjectTest;
+import org.jboss.tools.maven.ui.bot.test.repository.MavenRepositories;
+import org.jboss.tools.maven.ui.bot.test.repository.RemoteRepositoriesPreferenceTest;
+import org.jboss.tools.maven.ui.bot.test.ui.PerspectiveTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 

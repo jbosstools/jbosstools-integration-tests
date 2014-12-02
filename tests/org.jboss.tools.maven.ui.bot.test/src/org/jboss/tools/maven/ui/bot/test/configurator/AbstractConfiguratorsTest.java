@@ -8,7 +8,7 @@
  * Contributors:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/ 
-package org.jboss.tools.maven.ui.bot.test;
+package org.jboss.tools.maven.ui.bot.test.configurator;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -32,6 +32,7 @@ import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
+import org.jboss.tools.maven.ui.bot.test.AbstractMavenSWTBotTest;
 import org.jboss.tools.maven.ui.bot.test.utils.EditorResourceHelper;
 import org.junit.After;
 /**
@@ -64,11 +65,7 @@ public abstract class AbstractConfiguratorsTest extends AbstractMavenSWTBotTest{
 	public void deleteProjects(){
 	    PackageExplorer pexplorer = new PackageExplorer();
         pexplorer.open();
-        List<Project> projects = pexplorer.getProjects();
-        for(Project p: projects){
-            p.delete(true);
-        }
-        assertTrue("Not all projects have been deleted", pexplorer.getProjects().isEmpty());
+        pexplorer.deleteAllProjects();
 	}
 	
 	public void addPersistence(String projectName) throws FileNotFoundException{

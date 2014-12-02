@@ -1,4 +1,4 @@
-package org.jboss.tools.maven.ui.bot.test;
+package org.jboss.tools.maven.ui.bot.test.sourcelookup;
 
 import static org.junit.Assert.*;
 
@@ -25,6 +25,7 @@ import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.maven.reddeer.maven.sourcelookup.ui.preferences.SourceLookupPreferencePage;
 import org.jboss.tools.maven.reddeer.maven.sourcelookup.ui.preferences.SourceLookupPreferencePage.SourceAttachment;
 import org.jboss.tools.maven.reddeer.preferences.MavenUserPreferencePage;
+import org.jboss.tools.maven.ui.bot.test.AbstractMavenSWTBotTest;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
