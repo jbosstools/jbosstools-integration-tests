@@ -8,7 +8,7 @@
  * Contributors:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/ 
-package org.jboss.tools.maven.ui.bot.test;
+package org.jboss.tools.maven.ui.bot.test.project;
 
 
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
@@ -28,6 +28,7 @@ import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.jsf.reddeer.ui.JSFNewProjectFirstPage;
 import org.jboss.tools.jsf.reddeer.ui.JSFNewProjectSecondPage;
 import org.jboss.tools.jsf.reddeer.ui.JSFNewProjectWizard;
+import org.jboss.tools.maven.ui.bot.test.AbstractMavenSWTBotTest;
 import org.junit.BeforeClass;
 import org.junit.Test;
 

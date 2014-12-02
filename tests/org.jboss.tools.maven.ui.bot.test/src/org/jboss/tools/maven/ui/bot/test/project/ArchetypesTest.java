@@ -8,7 +8,7 @@
  * Contributors:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/ 
-package org.jboss.tools.maven.ui.bot.test;
+package org.jboss.tools.maven.ui.bot.test.project;
 
 import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
@@ -22,6 +22,8 @@ import org.jboss.tools.maven.reddeer.wizards.ConfigureMavenRepositoriesWizard;
 import org.jboss.tools.maven.reddeer.wizards.MavenProjectWizard;
 import org.jboss.tools.maven.reddeer.wizards.MavenProjectWizardSecondPage;
 import org.jboss.tools.maven.reddeer.wizards.MavenProjectWizardThirdPage;
+import org.jboss.tools.maven.ui.bot.test.AbstractMavenSWTBotTest;
+import org.jboss.tools.maven.ui.bot.test.repository.MavenRepositories;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;

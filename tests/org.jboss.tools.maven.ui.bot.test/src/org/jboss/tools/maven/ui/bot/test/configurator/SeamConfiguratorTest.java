@@ -8,7 +8,7 @@
  * Contributors:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/ 
-package org.jboss.tools.maven.ui.bot.test;
+package org.jboss.tools.maven.ui.bot.test.configurator;
 
 import static org.junit.Assert.assertEquals;
 
@@ -27,6 +27,8 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.tools.maven.reddeer.maven.ui.preferences.ConfiguratorPreferencePage;
 import org.jboss.tools.maven.reddeer.wizards.ConfigureMavenRepositoriesWizard;
+import org.jboss.tools.maven.ui.bot.test.project.SeamProjectTest;
+import org.jboss.tools.maven.ui.bot.test.repository.MavenRepositories;
 import org.jboss.tools.maven.ui.bot.test.utils.ProjectHasNature;
 import org.jboss.tools.seam.reddeer.preferences.SeamPreferencePage;
 import org.junit.AfterClass;

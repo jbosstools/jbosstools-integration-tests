@@ -8,7 +8,7 @@
  * Contributors:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/ 
-package org.jboss.tools.maven.ui.bot.test;
+package org.jboss.tools.maven.ui.bot.test.configurator;
 
 import static org.junit.Assert.assertTrue;
 

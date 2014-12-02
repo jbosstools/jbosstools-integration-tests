@@ -1,9 +1,11 @@
-package org.jboss.tools.maven.ui.bot.test;
+package org.jboss.tools.maven.ui.bot.test.conversion;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
@@ -39,6 +41,7 @@ import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
+import org.jboss.tools.maven.ui.bot.test.AbstractMavenSWTBotTest;
 import org.junit.After;
 import org.junit.Test;
 
@@ -51,12 +54,15 @@ public class MavenConversionTest extends AbstractMavenSWTBotTest{
 	
 	public static final String WEB_PROJECT_NAME = "Web Project";
 	
+	private List<String> expectedLibsKeep= new ArrayList<String>(
+			Arrays.asList("JRE","Maven Dependencies","Runtime"));
+	 
 	@InjectRequirement
     private ServerRequirement sr;
 	
 	@After
 	public void clean(){
-		deleteProjects(true, true);
+		deleteProjects(true);
 	}
 	
 	@Test
@@ -73,7 +79,7 @@ public class MavenConversionTest extends AbstractMavenSWTBotTest{
 		new DefaultTreeItem("Java Build Path").select();
 		new DefaultTabItem("Libraries").activate();
 		List<TreeItem> it = new DefaultTree(1).getItems();
-		log.debug("Found libraries after conversion:");
+		log.debug("Libraries found after conversion:");
 		for(TreeItem i: it){
 			log.debug("  "+i.getText());
 		}
@@ -101,15 +107,24 @@ public class MavenConversionTest extends AbstractMavenSWTBotTest{
 		new DefaultTreeItem("Java Build Path").select();
 		new DefaultTabItem("Libraries").activate();
 		List<TreeItem> it = new DefaultTree(1).getItems();
-		log.debug("Found libraries after conversion:");
+		List<String> libs = new ArrayList<String>();
+		log.debug("Libraries found after conversion:");
 		for(TreeItem i: it){
-			log.debug("  "+i.getText());
+			String lib = i.getText();
+			log.debug("  "+lib);
+			libs.add(lib);
 		}
-		assertTrue("project contains more libraries than expected",it.size()==3);
-		for(TreeItem i: it){
-		    if(!(i.getText().contains("JRE") || i.getText().contains("Maven Dependencies") || i.getText().contains("Runtime"))){
-		        fail("Some dependencies are missing after conversion");
-		    }
+		assertTrue("project contains more libraries than expected",libs.size()==3);
+		Collections.sort(libs);
+		Collections.sort(expectedLibsKeep);
+		
+		for(int i=0;i<3;i++){
+			assertTrue("Missing library "+expectedLibsKeep.get(i)+" but was"+libs.get(i),
+					libs.get(i).contains(expectedLibsKeep.get(i)));
+			if(libs.get(i).contains("Runtime")){
+				assertTrue("Wrong runtime added after conversion",
+						libs.get(i).contains(sr.getRuntimeNameLabelText(sr.getConfig())));
+			}
 		}
 		new PushButton("OK").click();
 		new WaitWhile(new ShellWithTextIsActive("Properties for "+WEB_PROJECT_NAME),TimePeriod.NORMAL);

@@ -8,7 +8,7 @@
  * Contributors:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/ 
-package org.jboss.tools.maven.ui.bot.test;
+package org.jboss.tools.maven.ui.bot.test.profile;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -42,6 +42,7 @@ import org.jboss.tools.maven.reddeer.profiles.SelectProfilesDialog;
 import org.jboss.tools.maven.reddeer.wizards.ConfigureMavenRepositoriesWizard;
 import org.jboss.tools.maven.reddeer.wizards.MavenImportWizard;
 import org.jboss.tools.maven.reddeer.wizards.MavenImportWizardFirstPage;
+import org.jboss.tools.maven.ui.bot.test.AbstractMavenSWTBotTest;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -89,7 +90,7 @@ public class MavenProfilesTest extends AbstractMavenSWTBotTest {
 	
 	@AfterClass
 	public static void clean(){
-		deleteProjects(false, false);
+		deleteProjects(false);
 	}
 	
 	@After

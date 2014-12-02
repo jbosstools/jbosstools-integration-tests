@@ -8,7 +8,7 @@
  * Contributors:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/ 
-package org.jboss.tools.maven.ui.bot.test;
+package org.jboss.tools.maven.ui.bot.test.conversion;
 
 import static org.junit.Assert.assertTrue;
 
@@ -34,6 +34,7 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.tools.maven.ui.bot.test.AbstractMavenSWTBotTest;
 import org.junit.Before;
 import org.junit.Test;
 /**
@@ -101,7 +102,7 @@ public class MaterializeLibraryTest extends AbstractMavenSWTBotTest{
 		}
 		new PushButton("OK").click();
 		new WaitWhile(new ShellWithTextIsActive("Properties for "+project),TimePeriod.NORMAL);
-		deleteProjects(true,false);
+		deleteProjects(true);
 	}
 	
 	
