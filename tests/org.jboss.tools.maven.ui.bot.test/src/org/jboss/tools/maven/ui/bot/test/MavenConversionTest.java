@@ -9,6 +9,7 @@ import java.util.List;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
+import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
@@ -46,6 +47,8 @@ import org.junit.Test;
 @JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY8x)
 public class MavenConversionTest extends AbstractMavenSWTBotTest{
 	
+	private static final Logger log = Logger.getLogger(MavenConversionTest.class);
+	
 	public static final String WEB_PROJECT_NAME = "Web Project";
 	
 	@InjectRequirement
@@ -70,6 +73,10 @@ public class MavenConversionTest extends AbstractMavenSWTBotTest{
 		new DefaultTreeItem("Java Build Path").select();
 		new DefaultTabItem("Libraries").activate();
 		List<TreeItem> it = new DefaultTree(1).getItems();
+		log.debug("Found libraries after conversion:");
+		for(TreeItem i: it){
+			log.debug("  "+i.getText());
+		}
 		assertTrue("project contains more libraries than expected",it.size()==2);
 		for(TreeItem i: it){
             if(!(i.getText().contains("JRE") || i.getText().contains("Maven Dependencies"))){
@@ -94,6 +101,10 @@ public class MavenConversionTest extends AbstractMavenSWTBotTest{
 		new DefaultTreeItem("Java Build Path").select();
 		new DefaultTabItem("Libraries").activate();
 		List<TreeItem> it = new DefaultTree(1).getItems();
+		log.debug("Found libraries after conversion:");
+		for(TreeItem i: it){
+			log.debug("  "+i.getText());
+		}
 		assertTrue("project contains more libraries than expected",it.size()==3);
 		for(TreeItem i: it){
 		    if(!(i.getText().contains("JRE") || i.getText().contains("Maven Dependencies") || i.getText().contains("Runtime"))){

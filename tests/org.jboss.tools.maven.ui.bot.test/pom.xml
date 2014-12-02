@@ -12,7 +12,14 @@
 
 	<packaging>eclipse-test-plugin</packaging>
 	<properties>
-		<systemProperties>${integrationTestsSystemProperties} -Dhsqldb.driver=${requirementsDirectory}/hsqldb/hsqldb-1.8.0.10.jar -Djbosstools.test.seam.2.2.0.home=${requirementsDirectory}/jboss-seam-2.2.0.GA -Djbosstools.test.seam.2.3.0.home=${requirementsDirectory}/jboss-seam-2.3.0.Final -Djbosstools.test.seam.2.1.0.home=${requirementsDirectory}/jboss-seam-2.1.2 -Dproject.build.directory=${project.build.directory} -Djbosstools.test.wildfly8.home=${jbosstools.test.wildfly8.home} -Dreddeer.config=target/classes/servers</systemProperties>
+		<systemProperties>${integrationTestsSystemProperties}  -Dproject.build.directory=${project.build.directory} -Djbosstools.test.wildfly8.home=${jbosstools.test.wildfly8.home} -Dreddeer.config=target/classes/servers</systemProperties>
+		<!-- 
+		-Dhsqldb.driver=${requirementsDirectory}/hsqldb/hsqldb-1.8.0.10.jar 
+		-Djbosstools.test.seam.2.2.0.home=${requirementsDirectory}/jboss-seam-2.2.0.GA 
+		-Djbosstools.test.seam.2.3.0.home=${requirementsDirectory}/jboss-seam-2.3.0.Final 
+		-Djbosstools.test.seam.2.1.0.home=${requirementsDirectory}/jboss-seam-2.1.2 
+		-->
+		
 		<jbosstools.test.wildfly8.home>${requirementsDirectory}/wildfly-8.1.0.Final</jbosstools.test.wildfly8.home>
 		<surefire.timeout>14400</surefire.timeout>
 	</properties>
@@ -46,7 +53,7 @@
 				<artifactId>maven-dependency-plugin</artifactId>
 				<executions>
 					<execution>
-						<id>install-as-7.1.1</id>
+						<id>download-wildfly</id>
 						<phase>pre-integration-test</phase>
 						<goals>
 							<goal>unpack</goal>
@@ -63,6 +70,7 @@
 							<skip>${swtbot.test.skip}</skip>
 						</configuration>
 					</execution>
+					<!-- 
 					<execution>
 						<id>hsqldb</id>
 						<phase>pre-integration-test</phase>
@@ -101,8 +109,10 @@
 							<skip>${swtbot.test.skip}</skip>
 						</configuration>
 					</execution>
+					 -->
 				</executions>
 			</plugin>
+			<!-- 
 			<plugin>
 				<groupId>com.googlecode.maven-download-plugin</groupId>
 				<artifactId>download-maven-plugin</artifactId>
@@ -133,6 +143,7 @@
 					</execution>
 				</executions>
 			</plugin>
+			 -->
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-surefire-plugin</artifactId>
@@ -142,41 +153,6 @@
 				</configuration>
 			</plugin>
 		</plugins>
-		<pluginManagement>
-			<plugins>
-				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
-				<plugin>
-					<groupId>org.eclipse.m2e</groupId>
-					<artifactId>lifecycle-mapping</artifactId>
-					<version>1.0.0</version>
-					<configuration>
-						<lifecycleMappingMetadata>
-							<pluginExecutions>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>
-											org.apache.maven.plugins
-										</groupId>
-										<artifactId>
-											maven-dependency-plugin
-										</artifactId>
-										<versionRange>
-											[2.4,)
-										</versionRange>
-										<goals>
-											<goal>unpack</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore></ignore>
-									</action>
-								</pluginExecution>
-							</pluginExecutions>
-						</lifecycleMappingMetadata>
-					</configuration>
-				</plugin>
-			</plugins>
-		</pluginManagement>
 	</build>
 
 </project>

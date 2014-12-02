@@ -48,7 +48,7 @@ import org.junit.runners.Suite;
 	
 	//SourceLookupTest.class,
 	
-	SeamProjectTest.class, 
+	//SeamProjectTest.class, 
 })
 public class MavenAllBotTests {
 
