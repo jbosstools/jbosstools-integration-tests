@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.jboss.tools.integration-tests</groupId>
+		<artifactId>tests</artifactId>
+		<version>4.3.0-SNAPSHOT</version>
+	</parent>
+	<groupId>org.jboss.tools.examples.ui.bot.test</groupId>
+	<artifactId>org.jboss.tools.examples.ui.bot.test</artifactId>
+	<packaging>eclipse-test-plugin</packaging>
+
+	<properties>
+		<!-- <systemProperties>${integrationTestsSystemProperties} -->
+		<!-- -DimportTestDefinition=${importTestDefinition}</systemProperties> -->
+		<systemProperties>${integrationTestsSystemProperties} -DexamplesLocation=${project.build.directory}/${examplesFolder}</systemProperties>
+		<surefire.timeout>10800</surefire.timeout>
+	</properties>
+
+	<profiles>
+		<profile>
+			<activation>
+				<property>
+					<name>
+						!skipTests
+					</name>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>com.googlecode.maven-download-plugin</groupId>
+						<artifactId>download-maven-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>download-examples</id>
+								<phase>pre-integration-test</phase>
+								<goals>
+									<goal>wget</goal>
+								</goals>
+								<configuration>
+									<url>${quickstartsURL}</url>
+									<unpack>true</unpack>
+									<outputDirectory>${project.build.directory}</outputDirectory>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
+	<build>
+		<resources>
+			<resource>
+				<directory>resources</directory>
+				<includes>
+					<include>**</include>
+				</includes>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-surefire-plugin</artifactId>
+				<configuration>
+					<testSuite>org.jboss.tools.examples.ui.bot.test</testSuite>
+					<testClass>org.jboss.tools.examples.ui.bot.test.integration.ImportQuickstartsTest</testClass>
+					<dependencies>
+						<dependency>
+							<type>p2-installable-unit</type>
+							<artifactId>org.eclipse.jdt.feature.group</artifactId>
+							<version>0.0.0</version>
+						</dependency>
+						<dependency>
+							<type>p2-installable-unit</type>
+							<artifactId>org.eclipse.m2e.feature.feature.group</artifactId>
+							<version>0.0.0</version>
+						</dependency>
+						<dependency>
+							<type>p2-installable-unit</type>
+							<artifactId>org.jboss.reddeer.junit.extension.feature.feature.group</artifactId>
+							<version>0.0.0</version>
+						</dependency>
+						<dependency>
+							<type>p2-installable-unit</type>
+							<artifactId>com.ianbrandt.tools.m2e.mdp.feature.feature.group</artifactId>
+							<version>0.0.0</version>
+						</dependency>
+					</dependencies>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<repositories>
+		<repository>
+			<id>m2e-connector-</id>
+			<url>http://ianbrandt.github.io/m2e-maven-dependency-plugin/0.0.4/</url>
+			<layout>p2</layout>
+		</repository>
+	</repositories>
+</project>

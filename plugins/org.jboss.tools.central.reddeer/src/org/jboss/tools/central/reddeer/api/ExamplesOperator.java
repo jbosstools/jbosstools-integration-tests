@@ -29,7 +29,6 @@ import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.reddeer.uiforms.impl.formtext.DefaultFormText;
-import org.jboss.reddeer.uiforms.impl.hyperlink.DefaultHyperlink;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.central.reddeer.projects.ArchetypeProject;
 import org.jboss.tools.central.reddeer.projects.CentralExampleProject;
@@ -183,10 +182,21 @@ public class ExamplesOperator {
 	public List<String> getAllWarnings(){
 		List<String> warnings = new ArrayList<String>();
 		ProblemsView problemsView = new ProblemsView();
+		problemsView.open();
 		for (TreeItem warning : problemsView.getAllWarnings()) {
 			warnings.add(warning.getText());
 		}
 		return warnings;
+	}
+	
+	public List<String> getAllErrors(){
+		List<String> errors = new ArrayList<String>();
+		ProblemsView problemsView = new ProblemsView();
+		problemsView.open();
+		for (TreeItem error : problemsView.getAllErrors()) {
+			errors.add(error.getText());
+		}
+		return errors;
 	}
 
 	private void checkProjectReadyPage(NewProjectExamplesReadyPage page, ArchetypeProject project){
