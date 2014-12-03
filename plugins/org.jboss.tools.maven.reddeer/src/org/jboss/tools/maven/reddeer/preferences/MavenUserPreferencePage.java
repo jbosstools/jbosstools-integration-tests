@@ -1,5 +1,6 @@
 package org.jboss.tools.maven.reddeer.preferences;
 
+import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.swt.api.Button;
 import org.jboss.reddeer.swt.api.Text;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
@@ -13,6 +14,8 @@ import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.reddeer.workbench.preference.WorkbenchPreferencePage;
 
 public class MavenUserPreferencePage extends WorkbenchPreferencePage{
+	
+	private static final Logger log = Logger.getLogger(MavenUserPreferencePage.class);
 	
 	public MavenUserPreferencePage(){
 		super("Maven","User Settings");
@@ -35,7 +38,7 @@ public class MavenUserPreferencePage extends WorkbenchPreferencePage{
 	            new PushButton("Yes").click();
 	            new DefaultShell("Preferences");
 	        } catch(SWTLayerException ex){
-	            ex.printStackTrace();
+	            log.debug("'Update project required' shell not found.");
 	        } finally {
 	            new WaitUntil(new JobIsRunning(),TimePeriod.NORMAL,false);
 	            new WaitWhile(new JobIsRunning(),TimePeriod.VERY_LONG);
