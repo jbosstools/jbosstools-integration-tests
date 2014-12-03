@@ -205,6 +205,7 @@ public class EditorResourceHelper {
 		Editor editor = new DefaultEditor(editorTitle);
 		DefaultStyledText dt = new DefaultStyledText();
 		dt.selectPosition(dt.getPositionOfText(textToSelect));
+		AbstractWait.sleep(TimePeriod.NORMAL);
 		ContentAssistant cs = editor.openContentAssistant();
 		List<String> proposals = cs.getProposals();
 		cs.close();
@@ -215,7 +216,7 @@ public class EditorResourceHelper {
 		Editor editor = new DefaultEditor(editorTitle);
 		DefaultStyledText dt = new DefaultStyledText();
 		dt.selectPosition(dt.getPositionOfText(textToSelect)+position);
-		AbstractWait.sleep(TimePeriod.SHORT);
+		AbstractWait.sleep(TimePeriod.NORMAL);
 		ContentAssistant cs = editor.openContentAssistant();
 		List<String> proposals = cs.getProposals();
 		cs.close();
