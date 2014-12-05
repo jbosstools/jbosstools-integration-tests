@@ -39,8 +39,8 @@ public class MultiversionSupport extends AerogearBotTest {
 		SWTBotEclipseEditor jsEditor = bot.editorByTitle("index.js")
 				.toTextEditor();
 		String jsString = jsEditor.getText();
-		jsString = jsString.replaceFirst("app\\.report\\('deviceready'\\);",
-				"app.report(\'deviceready\');" + "\nconsole.log(\""
+		jsString = jsString.replaceFirst("app\\.receivedEvent\\('deviceready'\\);",
+				"app.receivedEvent(\'deviceready\');" + "\nconsole.log(\""
 						+ MultiversionSupport.VERSION_MESSSAGE_PREFIX + "\" + device.cordova );");
 		jsEditor.setText(jsString);
 		jsEditor.save();
@@ -56,8 +56,10 @@ public class MultiversionSupport extends AerogearBotTest {
 		String consoleEngineVersion = parseConsoleTextForVersion(console.getConsoleText());
 		assertNotNull("Cordova Engine version was not displayed in console", consoleEngineVersion);
 		// change mobile engine version for project
+		PackageExplorer packageExplorer = new PackageExplorer();
+		packageExplorer.open();
 		EnginePropertyPage enginePropertyPage = new EnginePropertyPage(
-				new PackageExplorer().getProject(CORDOVA_PROJECT_NAME));
+				packageExplorer.getProject(CORDOVA_PROJECT_NAME));
 		enginePropertyPage.open();
 		String propEngineVersion = enginePropertyPage.getVersion();
 		assertEquals("Version displayed to console is not equal to version in project properties "

@@ -30,8 +30,8 @@ public class DisplayJavaScriptErrors extends AerogearBotTest {
 	  String jsString = jsEditor.getText();
 	  final String logMessage = "LOG_MESSAGE";
 	  final String errorVariable = "ERROR_VARIABLE";
-	  jsString = jsString.replaceFirst("app\\.report\\('deviceready'\\);", 
-	      "app.report(\'deviceready\');"
+	  jsString = jsString.replaceFirst("app\\.receivedEvent\\('deviceready'\\);", 
+	      "app.receivedEvent(\'deviceready\');"
 	      + "\nconsole.log(\"" + logMessage + "\");\n"
 	      + errorVariable
 	      );
