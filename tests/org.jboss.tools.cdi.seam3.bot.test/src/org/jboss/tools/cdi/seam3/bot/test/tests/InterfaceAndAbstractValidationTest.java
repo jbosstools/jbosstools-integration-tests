@@ -15,10 +15,11 @@ import static org.junit.Assert.*;
 import java.util.List;
 
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
@@ -41,14 +42,15 @@ import org.junit.Test;
 @OpenPerspective(JavaEEPerspective.class)
 @JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.AS7_1)
 public class InterfaceAndAbstractValidationTest extends Seam3TestBase {
+	
+	@InjectRequirement
+    private ServerRequirement sr;
 
 	@After
 	public void cleanWS() {
 		PackageExplorer pe = new PackageExplorer();
 		pe.open();
-		for(Project p: pe.getProjects()){
-			p.delete(true);
-		}
+		pe.deleteAllProjects();
 	}
 	
 	@Test
@@ -56,7 +58,7 @@ public class InterfaceAndAbstractValidationTest extends Seam3TestBase {
 		
 		/* import test project */
 		String projectName = "interface1";
-		importSeam3ProjectWithLibrary(projectName, SeamLibrary.SOLDER_3_1);
+		importSeam3ProjectWithLibrary(projectName, SeamLibrary.SOLDER_3_1, sr.getRuntimeNameLabelText(sr.getConfig()));
 		AbstractWait.sleep(TimePeriod.SHORT); // necessary to CDI Validation computation
 		
 		PackageExplorer pe = new PackageExplorer();
@@ -80,7 +82,7 @@ public class InterfaceAndAbstractValidationTest extends Seam3TestBase {
 		
 		/* import test project */
 		String projectName = "abstract1";
-		importSeam3ProjectWithLibrary(projectName, SeamLibrary.SOLDER_3_1);
+		importSeam3ProjectWithLibrary(projectName, SeamLibrary.SOLDER_3_1, sr.getRuntimeNameLabelText(sr.getConfig()));
 		AbstractWait.sleep(TimePeriod.SHORT); // necessary to CDI Validation computation
 		
 		/* get markers for beans.xml */

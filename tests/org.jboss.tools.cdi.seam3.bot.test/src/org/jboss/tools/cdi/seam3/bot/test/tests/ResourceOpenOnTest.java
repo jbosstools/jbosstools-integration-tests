@@ -30,7 +30,7 @@ import org.jboss.tools.cdi.reddeer.CDIConstants;
 import org.jboss.tools.cdi.seam3.bot.test.base.Seam3TestBase;
 import org.jboss.tools.cdi.seam3.bot.test.util.SeamLibrary;
 import org.jboss.tools.common.reddeer.label.IDELabel;
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -48,9 +48,9 @@ public class ResourceOpenOnTest extends Seam3TestBase {
 	@InjectRequirement
 	protected ServerRequirement requirement;
 	
-	@BeforeClass
-	public static void setup() {
-		importSeam3ProjectWithLibrary(projectName, SeamLibrary.SOLDER_3);
+	@Before
+	public void setup() {
+		importSeam3ProjectWithLibrary(projectName, SeamLibrary.SOLDER_3, requirement.getRuntimeNameLabelText(requirement.getConfig()));
 	}
 
 	/**

@@ -17,10 +17,11 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
@@ -52,19 +53,20 @@ public class NamedPackagesTest extends Seam3TestBase {
 	
 	private static final String MANAGER_JAVA = "Manager.java";
 	
+	@InjectRequirement
+    private ServerRequirement sr;
+	
 	@After
 	public void waitForJobs() {
 		PackageExplorer pe = new PackageExplorer();
 		pe.open();
-		for(Project p: pe.getProjects()){
-			p.delete(true);
-		}		
+		pe.deleteAllProjects();	
 	} 
 	
 	@Test
 	public void testNoNamedPackaged() {
 		
-		importSeam3ProjectWithLibrary(projectName, SeamLibrary.SOLDER_3_1);
+		importSeam3ProjectWithLibrary(projectName, SeamLibrary.SOLDER_3_1, sr.getRuntimeNameLabelText(sr.getConfig()));
 		
 		PackageExplorer pe = new PackageExplorer();
 		pe.open();
@@ -81,7 +83,7 @@ public class NamedPackagesTest extends Seam3TestBase {
 	@Test
 	public void testOneNamedPackage() {
 		
-		importSeam3ProjectWithLibrary(projectName, SeamLibrary.SOLDER_3_1);
+		importSeam3ProjectWithLibrary(projectName, SeamLibrary.SOLDER_3_1, sr.getRuntimeNameLabelText(sr.getConfig()));
 		
 		editResourceUtil.renameFileInExplorerBase(projectName, PACKAGE_INFO_JAVA, 
 				CDIConstants.SRC,CDI_SEAM_PACKAGE, PACKAGE_INFO_JAVA_CDI);
@@ -105,7 +107,7 @@ public class NamedPackagesTest extends Seam3TestBase {
 	@Test
 	public void testBothNamedPackages() {
 		
-		importSeam3ProjectWithLibrary(projectName, SeamLibrary.SOLDER_3_1);
+		importSeam3ProjectWithLibrary(projectName, SeamLibrary.SOLDER_3_1, sr.getRuntimeNameLabelText(sr.getConfig()));
 		
 		editResourceUtil.renameFileInExplorerBase(projectName, PACKAGE_INFO_JAVA, 
 				CDIConstants.SRC,CDI_SEAM_PACKAGE, PACKAGE_INFO_JAVA_CDI);

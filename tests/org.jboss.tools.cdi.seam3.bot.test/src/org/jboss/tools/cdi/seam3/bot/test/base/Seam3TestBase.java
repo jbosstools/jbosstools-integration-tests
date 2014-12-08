@@ -25,6 +25,7 @@ import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPag
 import org.jboss.reddeer.swt.api.TableItem;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
@@ -72,7 +73,7 @@ public class Seam3TestBase {
 	 * @param projectLocation
 	 * @param dir
 	 */
-	protected static void importSeam3TestProject(String projectName, String projectLocation) {
+	protected static void importSeam3TestProject(String projectName, String projectLocation, String runtimeName) {
 		
 		ExternalProjectImportWizardDialog iDialog = new ExternalProjectImportWizardDialog();
 		iDialog.open();
@@ -94,15 +95,12 @@ public class Seam3TestBase {
 		new DefaultShell("Properties for "+projectName);
 		new DefaultTreeItem("Targeted Runtimes").select();
 		for(TableItem i: new DefaultTable().getItems()){
-			if(!i.isChecked()){
+			i.setChecked(false);
+			if(i.getText().equals(runtimeName)){
 				i.setChecked(true);
-				break;
-			} else {
-				i.setChecked(false);
 			}
 		}
-		new PushButton("Apply").click();
-		new PushButton("OK").click();
+		new OkButton().click();
 		new WaitWhile(new ShellWithTextIsAvailable("Properties for "+projectName));
 		new WaitWhile(new JobIsRunning());
 	}
@@ -113,8 +111,8 @@ public class Seam3TestBase {
 	 * @param library
 	 */
 	protected static void importSeam3ProjectWithLibrary(String projectName, 
-			SeamLibrary library) {
-		importSeam3TestProject(projectName, "resources/projects/");
+			SeamLibrary library, String runtimeName) {
+		importSeam3TestProject(projectName, "resources/projects/",runtimeName);
 		addAndCheckLibraryInProject(projectName, library);
 		PackageExplorer pe = new PackageExplorer();
 		pe.open();

@@ -16,10 +16,11 @@ import static org.junit.Assert.*;
 import java.util.List;
 
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.jface.text.contentassist.ContentAssistant;
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
@@ -44,20 +45,21 @@ import org.junit.Test;
 public class DefaultBeansTest extends SolderAnnotationTestBase {
 
 	private static String projectName = "defaultBeans";
+	
+	@InjectRequirement
+    private ServerRequirement sr;
 
 	@After
 	public void waitForJobs() {
 		PackageExplorer pe = new PackageExplorer();
 		pe.open();
-		for(Project p: pe.getProjects()){
-			p.delete(true);
-		}
+		pe.deleteAllProjects();
 	}
 
 	@Test
 	public void testProperAssign() {
 
-		importSeam3ProjectWithLibrary(projectName, SeamLibrary.SOLDER_3_1);
+		importSeam3ProjectWithLibrary(projectName, SeamLibrary.SOLDER_3_1, sr.getRuntimeNameLabelText(sr.getConfig()));
 		
 		PackageExplorer pe = new PackageExplorer();
 		pe.open();
@@ -79,7 +81,7 @@ public class DefaultBeansTest extends SolderAnnotationTestBase {
 	@Test
 	public void testProperAssignAlternativesDeactive() {
 
-		importSeam3ProjectWithLibrary(projectName, SeamLibrary.SOLDER_3_1);
+		importSeam3ProjectWithLibrary(projectName, SeamLibrary.SOLDER_3_1, sr.getRuntimeNameLabelText(sr.getConfig()));
 		
 		NewBeanCreationWizard bw = new NewBeanCreationWizard();
 		bw.open();
@@ -132,7 +134,7 @@ public class DefaultBeansTest extends SolderAnnotationTestBase {
 	@Test
 	public void testProperUnassign() {
 
-		importSeam3ProjectWithLibrary(projectName, SeamLibrary.SOLDER_3_1);
+		importSeam3ProjectWithLibrary(projectName, SeamLibrary.SOLDER_3_1, sr.getRuntimeNameLabelText(sr.getConfig()));
 		
 		NewBeanCreationWizard bw = new NewBeanCreationWizard();
 		bw.open();
@@ -186,7 +188,7 @@ public class DefaultBeansTest extends SolderAnnotationTestBase {
 	@Test
 	public void testProperUnassignAlternativesActive() {
 
-		importSeam3ProjectWithLibrary(projectName, SeamLibrary.SOLDER_3_1);
+		importSeam3ProjectWithLibrary(projectName, SeamLibrary.SOLDER_3_1, sr.getRuntimeNameLabelText(sr.getConfig()));
 		
 		NewBeanCreationWizard bw = new NewBeanCreationWizard();
 		bw.open();

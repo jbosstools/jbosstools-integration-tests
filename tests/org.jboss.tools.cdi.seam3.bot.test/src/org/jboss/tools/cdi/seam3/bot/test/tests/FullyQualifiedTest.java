@@ -17,10 +17,11 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
@@ -43,14 +44,15 @@ import org.junit.Test;
 @OpenPerspective(JavaEEPerspective.class)
 @JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.AS7_1)
 public class FullyQualifiedTest extends SolderAnnotationTestBase {
+	
+	@InjectRequirement
+    private ServerRequirement sr;
 
 	@After
 	public void waitForJobs() {
 		PackageExplorer pe = new PackageExplorer();
 		pe.open();
-		for(Project p: pe.getProjects()){
-			p.delete(true);
-		}		
+		pe.deleteAllProjects();	
 	} 
 	
 	@Test
@@ -58,7 +60,7 @@ public class FullyQualifiedTest extends SolderAnnotationTestBase {
 
 		String projectName = "fullyQualified1";
 		
-		importSeam3ProjectWithLibrary(projectName, SeamLibrary.SOLDER_3_1);
+		importSeam3ProjectWithLibrary(projectName, SeamLibrary.SOLDER_3_1, sr.getRuntimeNameLabelText(sr.getConfig()));
 		
 		PackageExplorer pe = new PackageExplorer();
 		pe.open();
@@ -77,7 +79,7 @@ public class FullyQualifiedTest extends SolderAnnotationTestBase {
 		
 		String projectName = "fullyQualified2";
 		
-		importSeam3ProjectWithLibrary(projectName, SeamLibrary.SOLDER_3_1);
+		importSeam3ProjectWithLibrary(projectName, SeamLibrary.SOLDER_3_1, sr.getRuntimeNameLabelText(sr.getConfig()));
 		
 		PackageExplorer pe = new PackageExplorer();
 		pe.open();
@@ -105,7 +107,7 @@ public class FullyQualifiedTest extends SolderAnnotationTestBase {
 		
 		String projectName = "fullyQualified3";
 		
-		importSeam3ProjectWithLibrary(projectName, SeamLibrary.SOLDER_3_1);
+		importSeam3ProjectWithLibrary(projectName, SeamLibrary.SOLDER_3_1, sr.getRuntimeNameLabelText(sr.getConfig()));
 		
 		PackageExplorer pe = new PackageExplorer();
 		pe.open();
@@ -128,7 +130,7 @@ public class FullyQualifiedTest extends SolderAnnotationTestBase {
 		String projectName = "fullyQualified4";
 		String myBean1 = "MyBean1.java";
 		
-		importSeam3ProjectWithLibrary(projectName, SeamLibrary.SOLDER_3_1);
+		importSeam3ProjectWithLibrary(projectName, SeamLibrary.SOLDER_3_1, sr.getRuntimeNameLabelText(sr.getConfig()));
 		
 		PackageExplorer pe = new PackageExplorer();
 		pe.open();
@@ -155,7 +157,7 @@ public class FullyQualifiedTest extends SolderAnnotationTestBase {
 		
 		String projectName = "fullyQualified5";
 		
-		importSeam3ProjectWithLibrary(projectName, SeamLibrary.SOLDER_3_1);
+		importSeam3ProjectWithLibrary(projectName, SeamLibrary.SOLDER_3_1, sr.getRuntimeNameLabelText(sr.getConfig()));
 		
 		PackageExplorer pe = new PackageExplorer();
 		pe.open();
@@ -196,7 +198,7 @@ public class FullyQualifiedTest extends SolderAnnotationTestBase {
 		
 		String projectName = "fullyQualified6";
 		
-		importSeam3ProjectWithLibrary(projectName, SeamLibrary.SOLDER_3_1);
+		importSeam3ProjectWithLibrary(projectName, SeamLibrary.SOLDER_3_1, sr.getRuntimeNameLabelText(sr.getConfig()));
 		
 		PackageExplorer pe = new PackageExplorer();
 		pe.open();
@@ -258,7 +260,7 @@ public class FullyQualifiedTest extends SolderAnnotationTestBase {
 		
 		String projectName = "fullyQualified7";
 		
-		importSeam3ProjectWithLibrary(projectName, SeamLibrary.SOLDER_3_1);
+		importSeam3ProjectWithLibrary(projectName, SeamLibrary.SOLDER_3_1, sr.getRuntimeNameLabelText(sr.getConfig()));
 		
 		PackageExplorer pe = new PackageExplorer();
 		pe.open();

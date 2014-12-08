@@ -14,10 +14,11 @@ package org.jboss.tools.cdi.seam3.bot.test.tests;
 import static org.junit.Assert.*;
 
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.jface.text.contentassist.ContentAssistant;
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
@@ -42,13 +43,14 @@ import org.junit.Test;
 @JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.AS7_1)
 public class RequiresAnnotationTest extends SolderAnnotationTestBase {
 
+	@InjectRequirement
+    private ServerRequirement sr;
+	
 	@After
 	public void waitForJobs() {
 		PackageExplorer pe = new PackageExplorer();
 		pe.open();
-		for(Project p: pe.getProjects()){
-			p.delete(true);
-		}
+		pe.deleteAllProjects();
 	}
 
 	@Test
@@ -58,7 +60,7 @@ public class RequiresAnnotationTest extends SolderAnnotationTestBase {
 		String manager = "Manager";
 		String projectName = "requires1";
 
-		importSeam3ProjectWithLibrary(projectName, SeamLibrary.SOLDER_3_1);
+		importSeam3ProjectWithLibrary(projectName, SeamLibrary.SOLDER_3_1, sr.getRuntimeNameLabelText(sr.getConfig()));
 
 		PackageExplorer pe = new PackageExplorer();
 		pe.open();
@@ -86,7 +88,7 @@ public class RequiresAnnotationTest extends SolderAnnotationTestBase {
 		String manager = "Manager";
 		String projectName = "requires2";
 
-		importSeam3ProjectWithLibrary(projectName, SeamLibrary.SOLDER_3_1);
+		importSeam3ProjectWithLibrary(projectName, SeamLibrary.SOLDER_3_1, sr.getRuntimeNameLabelText(sr.getConfig()));
 
 		PackageExplorer pe = new PackageExplorer();
 		pe.open();
@@ -114,7 +116,7 @@ public class RequiresAnnotationTest extends SolderAnnotationTestBase {
 		String manager = "Manager";
 		String projectName = "requires3";
 
-		importSeam3ProjectWithLibrary(projectName, SeamLibrary.SOLDER_3_1);
+		importSeam3ProjectWithLibrary(projectName, SeamLibrary.SOLDER_3_1, sr.getRuntimeNameLabelText(sr.getConfig()));
 
 		PackageExplorer pe = new PackageExplorer();
 		pe.open();
@@ -143,7 +145,7 @@ public class RequiresAnnotationTest extends SolderAnnotationTestBase {
 		String manager = "Manager";
 		String projectName = "requires4";
 
-		importSeam3ProjectWithLibrary(projectName, SeamLibrary.SOLDER_3_1);
+		importSeam3ProjectWithLibrary(projectName, SeamLibrary.SOLDER_3_1, sr.getRuntimeNameLabelText(sr.getConfig()));
 
 		PackageExplorer pe = new PackageExplorer();
 		pe.open();
@@ -173,7 +175,7 @@ public class RequiresAnnotationTest extends SolderAnnotationTestBase {
 		String projectName = "requires5";
 		String eventAttribute = "eventAttribute";
 
-		importSeam3ProjectWithLibrary(projectName, SeamLibrary.SOLDER_3_1);
+		importSeam3ProjectWithLibrary(projectName, SeamLibrary.SOLDER_3_1, sr.getRuntimeNameLabelText(sr.getConfig()));
 
 		PackageExplorer pe = new PackageExplorer();
 		pe.open();
