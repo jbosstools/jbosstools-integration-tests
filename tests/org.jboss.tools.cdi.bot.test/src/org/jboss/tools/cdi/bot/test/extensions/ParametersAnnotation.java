@@ -2,6 +2,8 @@ package org.jboss.tools.cdi.bot.test.extensions;
 
 import static org.junit.Assert.*;
 
+import java.util.Arrays;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Path;
@@ -53,8 +55,7 @@ public class ParametersAnnotation extends CDI11TestBase{
 		try {
 			classpath = javaProject.getRawClasspath();
 		} catch (JavaModelException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			fail(Arrays.toString(e.getStackTrace()));
 		}
 		IClasspathEntry[] newClasspath = new IClasspathEntry[classpath.length+1];
 		System.arraycopy(classpath, 0, newClasspath, 0, classpath.length);
@@ -63,8 +64,7 @@ public class ParametersAnnotation extends CDI11TestBase{
 		try {
 			javaProject.setRawClasspath(newClasspath, null);
 		} catch (JavaModelException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			fail(Arrays.toString(e.getStackTrace()));
 		}
 		
 	}
