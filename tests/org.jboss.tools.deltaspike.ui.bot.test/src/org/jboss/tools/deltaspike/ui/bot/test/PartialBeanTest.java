@@ -1,6 +1,7 @@
 package org.jboss.tools.deltaspike.ui.bot.test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -17,6 +18,7 @@ import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
+import org.jboss.reddeer.swt.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.workbench.condition.EditorHasValidationMarkers;
@@ -47,7 +49,21 @@ public class PartialBeanTest extends NewDeltaspikeTestBase{
 		
 		// Each partial bean should be bound to an invocation handler.
 		createClassWithContent("ExamplePartialBeanInterface", classesPath+"ExamplePartialBeanInterface.jav_");
-		assertErrorExists("ExamplePartialBeanInterface","Partial bean test.ExamplePartialBeanInterface should have an invocation handler for binding annotation test.ExamplePartialBeanBinding");
+		
+		// remove this and use asserErrorExists when JBIDE-18852 will be resolved
+		TextEditor ed1 = new TextEditor("ExamplePartialBeanInterface.java");
+		try{
+			new WaitUntil(new EditorHasValidationMarkers(ed1),TimePeriod.LONG);
+		} catch (WaitTimeoutExpiredException ex){
+			fail("this is known issue JBIDE-18852");
+		}
+		assertEquals(1,ed1.getMarkers().size());
+		Marker marker = ed1.getMarkers().get(0);
+		assertEquals("Partial bean test.ExamplePartialBeanInterface should have an invocation handler for binding annotation test.ExamplePartialBeanBinding", marker.getText());
+		assertEquals("org.eclipse.ui.workbench.texteditor.warning", marker.getType());
+		
+		//assertErrorExists("ExamplePartialBeanInterface","Partial bean test.ExamplePartialBeanInterface should have an invocation handler for binding annotation test.ExamplePartialBeanBinding");
+		
 		// Each partial bean should be bound to an invocation handler.
 		createClassWithContent("ExamplePartialBeanAbstractClass", classesPath+"ExamplePartialBeanAbstractClass.jav_");
 		assertErrorExists("ExamplePartialBeanAbstractClass","Partial bean test.ExamplePartialBeanAbstractClass should have an invocation handler for binding annotation test.ExamplePartialBeanBinding");

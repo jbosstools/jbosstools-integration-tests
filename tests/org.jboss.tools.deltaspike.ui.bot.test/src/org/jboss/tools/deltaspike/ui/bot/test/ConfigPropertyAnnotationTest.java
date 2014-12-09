@@ -25,6 +25,7 @@ import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.swt.regex.Regex;
+import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
@@ -66,6 +67,7 @@ public class ConfigPropertyAnnotationTest extends DeltaspikeTestBase {
 		
 		String projectName = "configProperty-support";
 		importDeltaspikeProject(projectName,sr);
+		AbstractWait.sleep(TimePeriod.getCustom(TimePeriod.NORMAL.getSeconds()*2));
 		
 		new WaitUntil(new SpecificProblemExists(
 				validationProblemRegex), TimePeriod.LONG);
@@ -85,6 +87,7 @@ public class ConfigPropertyAnnotationTest extends DeltaspikeTestBase {
 		
 		String projectName = "configProperty-unsupport";
 		importDeltaspikeProject(projectName,sr);
+		AbstractWait.sleep(TimePeriod.getCustom(TimePeriod.NORMAL.getSeconds()*2));
 		
 		new WaitWhile(new SpecificProblemExists(
 				validationProblemRegex), TimePeriod.LONG);
