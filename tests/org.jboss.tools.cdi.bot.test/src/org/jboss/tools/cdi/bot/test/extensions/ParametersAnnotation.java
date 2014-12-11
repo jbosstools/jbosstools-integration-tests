@@ -21,6 +21,7 @@ import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.C
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
+import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitWhile;
@@ -29,7 +30,7 @@ import org.jboss.tools.cdi.bot.test.CDI11TestBase;
 import org.junit.Before;
 import org.junit.Test;
 
-//JBIDE-12644
+//based on JBIDE-12644
 @CleanWorkspace
 @OpenPerspective(JavaEEPerspective.class)
 @JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY8x)
@@ -39,16 +40,6 @@ public class ParametersAnnotation extends CDI11TestBase{
 	
 	@Before
 	public void addLibs(){
-		PackageExplorer pe = new PackageExplorer();
-		pe.open();
-		pe.getProject(PROJECT_NAME).select();
-		NewJavaClassWizardDialog jd = new NewJavaClassWizardDialog();
-		jd.open();
-		NewJavaClassWizardPage jp = jd.getFirstPage();
-		jp.setName("ParametersExtension");
-		jp.setPackage("cdi.parameters");
-		jd.finish();
-		
 		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(PROJECT_NAME);
 		IJavaProject javaProject = JavaCore.create(project);
 		IClasspathEntry[] classpath= null;
@@ -66,6 +57,18 @@ public class ParametersAnnotation extends CDI11TestBase{
 		} catch (JavaModelException e) {
 			fail(Arrays.toString(e.getStackTrace()));
 		}
+		
+		PackageExplorer pe = new PackageExplorer();
+		pe.open();
+		pe.getProject(PROJECT_NAME).select();
+		new ContextMenu("Refresh").select();
+		new WaitWhile(new JobIsRunning());
+		NewJavaClassWizardDialog jd = new NewJavaClassWizardDialog();
+		jd.open();
+		NewJavaClassWizardPage jp = jd.getFirstPage();
+		jp.setName("ParametersExtension");
+		jp.setPackage("cdi.parameters");
+		jd.finish();
 		
 	}
 	
