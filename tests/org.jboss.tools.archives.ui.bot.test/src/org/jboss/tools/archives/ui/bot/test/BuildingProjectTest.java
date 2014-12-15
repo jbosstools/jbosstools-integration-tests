@@ -11,7 +11,6 @@
 package org.jboss.tools.archives.ui.bot.test;
 
 import static org.junit.Assert.assertTrue;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -36,6 +35,7 @@ public class BuildingProjectTest extends ArchivesTestBase {
 		viewForProject(projectName)
 			.getProject()
 			.buildProjectFull();
+		projectExplorer.open();
 		assertTrue(projectExplorer.getProject(projectName).containsItem(ARCHIVE_NAME));
 	}
 	
@@ -43,6 +43,7 @@ public class BuildingProjectTest extends ArchivesTestBase {
 	public void testBuildingProjectWithExplorer() {
 		explorerForProject(projectName)
 			.buildProjectFull();
+		projectExplorer.open();
 		assertTrue(projectExplorer.getProject(projectName).containsItem(ARCHIVE_NAME));
 	}
 	
