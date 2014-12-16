@@ -25,13 +25,14 @@ import org.jboss.tools.vpe.ui.bot.test.tools.SWTBotWebBrowser;
  */
 public class CoreHTMLTagsTest extends VPEEditorTestCase {
   
-  private static final String PAGE_TEXT = "<html>\n" +
+  private static final String PAGE_TEXT = "<!DOCTYPE html>\n" + 
+	  "<html>\n" +
       "  <body style=\"color:red; text-align:center; background-color:green\">Body tag test</body>\n" +
       "</html>";
       
-  private static final String TEST_PAGE_NAME = "CoreHTMLTagsTest.jsp";
+  private static final String TEST_PAGE_NAME = "CoreHTMLTagsTest.html";
   
-  private SWTBotEditorExt jspEditor;
+  private SWTBotEditorExt htmlEditor;
   private SWTBotWebBrowser webBrowser;
   private SWTBotExt botExt;
   
@@ -43,8 +44,8 @@ public class CoreHTMLTagsTest extends VPEEditorTestCase {
 	public void setUp() throws Exception {
 	  super.setUp();
     eclipse.maximizeActiveShell();
-    createJspPage(CoreHTMLTagsTest.TEST_PAGE_NAME);
-    jspEditor = botExt.swtBotEditorExtByTitle(CoreHTMLTagsTest.TEST_PAGE_NAME);
+    createHtmlPage(CoreHTMLTagsTest.TEST_PAGE_NAME);
+    htmlEditor = botExt.swtBotEditorExtByTitle(CoreHTMLTagsTest.TEST_PAGE_NAME);
     webBrowser = new SWTBotWebBrowser(CoreHTMLTagsTest.TEST_PAGE_NAME,botExt);
 	}
 	/**
@@ -52,8 +53,8 @@ public class CoreHTMLTagsTest extends VPEEditorTestCase {
    */
   public void testBodyTag(){
     
-    jspEditor.setText(CoreHTMLTagsTest.PAGE_TEXT);
-    jspEditor.save();
+    htmlEditor.setText(CoreHTMLTagsTest.PAGE_TEXT);
+    htmlEditor.save();
     bot.sleep(Timing.time3S());
     assertVisualEditorContains(webBrowser,
         "BODY", 
@@ -82,7 +83,7 @@ public class CoreHTMLTagsTest extends VPEEditorTestCase {
 	}
   @Override
   public void tearDown() throws Exception {
-    jspEditor.close();
+    htmlEditor.close();
     super.tearDown();
   } 
 }
