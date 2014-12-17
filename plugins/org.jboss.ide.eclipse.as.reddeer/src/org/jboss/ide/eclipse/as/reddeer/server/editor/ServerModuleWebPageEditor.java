@@ -14,12 +14,25 @@ import org.jboss.reddeer.workbench.impl.editor.AbstractEditor;
  */
 public class ServerModuleWebPageEditor extends AbstractEditor {
 
+	private InternalBrowser browser;
+	
 	public ServerModuleWebPageEditor(String moduleName) {
 		super(new RegexMatcher(".*" + moduleName + ".*"));
 	}
 	
 	public String getText(){
 		activate();
-		return new InternalBrowser().getText();
+		return getInternalBrowser().getText();
+	}
+	
+	public void refresh(){
+		getInternalBrowser().refresh();
+	}
+
+	private InternalBrowser getInternalBrowser(){
+		if (browser == null){
+			browser = new InternalBrowser();
+		}
+		return browser;
 	}
 }
