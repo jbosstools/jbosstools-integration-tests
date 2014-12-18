@@ -1,8 +1,6 @@
 package org.jboss.ide.eclipse.as.reddeer.server.editor;
 
-import org.jboss.reddeer.swt.impl.browser.InternalBrowser;
 import org.jboss.reddeer.swt.matcher.RegexMatcher;
-import org.jboss.reddeer.workbench.impl.editor.AbstractEditor;
 
 /**
  * This editor is displayed when user clicks on a specific server and 
@@ -12,19 +10,9 @@ import org.jboss.reddeer.workbench.impl.editor.AbstractEditor;
  * @author Lucia Jelinkova
  *
  */
-public class WelcomeToServerEditor extends AbstractEditor {
+public class WelcomeToServerEditor extends AbstractEditorWithBrowser {
 
 	public WelcomeToServerEditor() {
 		super(new RegexMatcher("(Welcome to .*|EAP 6)"));
-	}
-	
-	public String getText(){
-		activate();
-		return new InternalBrowser().getText();
-	}
-	
-	public void refresh(){
-		activate();
-		new InternalBrowser().refresh();
 	}
 }

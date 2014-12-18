@@ -4,9 +4,11 @@ import org.jboss.ide.eclipse.as.reddeer.server.editor.WelcomeToServerEditor;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.view.JBossServer;
 import org.jboss.ide.eclipse.as.reddeer.server.view.JBossServerView;
+import org.jboss.ide.eclipse.as.ui.bot.test.condition.EditorWithBrowserContainsTextCondition;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewEnums.ServerState;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
+import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.containsString;
@@ -68,6 +70,7 @@ public abstract class OperateServerTemplate {
 		ConsoleView consoleView = new ConsoleView();
 		consoleView.open();
 		assertFalse(consoleView.getConsoleText().contains("Exception"));
+		consoleView.close();
 	}
 
 	protected void assertServerState(String message, ServerState state) {
@@ -78,6 +81,7 @@ public abstract class OperateServerTemplate {
 		WelcomeToServerEditor editor = getServer().openWebPage();
 		// Bug with caching content - JBIDE-18685
 		editor.refresh();
+		new WaitUntil(new EditorWithBrowserContainsTextCondition(editor, string));
 		assertThat(editor.getText(), containsString(string));
 	}
 	
