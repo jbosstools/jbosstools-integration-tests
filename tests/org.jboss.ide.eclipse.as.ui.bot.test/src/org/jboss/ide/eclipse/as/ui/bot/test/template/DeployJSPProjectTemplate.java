@@ -6,7 +6,7 @@ import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.view.JBossServer;
 import org.jboss.ide.eclipse.as.reddeer.server.view.JBossServerView;
 import org.jboss.ide.eclipse.as.ui.bot.test.Activator;
-import org.jboss.ide.eclipse.as.ui.bot.test.condition.WebPageContainsTextCondition;
+import org.jboss.ide.eclipse.as.ui.bot.test.condition.EditorWithBrowserContainsTextCondition;
 import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
@@ -86,7 +86,7 @@ public abstract class DeployJSPProjectTemplate {
 		// web
 		serversView.open();
 		ServerModuleWebPageEditor editor = server.getModule(PROJECT_NAME).openWebPage();
-		new WaitUntil(new WebPageContainsTextCondition(editor, "Hello tests"));
+		new WaitUntil(new EditorWithBrowserContainsTextCondition(editor, "Hello tests"));
 		assertThat(editor.getText(), containsString("Hello tests!"));
 		// view
 		assertThat(getServer().getLabel().getState(), is(ServerState.STARTED));

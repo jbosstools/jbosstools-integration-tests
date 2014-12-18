@@ -1,6 +1,6 @@
 package org.jboss.ide.eclipse.as.ui.bot.test.condition;
 
-import org.jboss.ide.eclipse.as.reddeer.server.editor.ServerModuleWebPageEditor;
+import org.jboss.ide.eclipse.as.reddeer.server.editor.AbstractEditorWithBrowser;
 import org.jboss.reddeer.swt.condition.WaitCondition;
 
 /**
@@ -9,13 +9,13 @@ import org.jboss.reddeer.swt.condition.WaitCondition;
  * @author Lucia Jelinkova
  *
  */
-public class WebPageContainsTextCondition implements WaitCondition {
+public class EditorWithBrowserContainsTextCondition implements WaitCondition {
 
 	private String text;
 
-	private ServerModuleWebPageEditor editor;
+	private AbstractEditorWithBrowser editor;
 
-	public WebPageContainsTextCondition(ServerModuleWebPageEditor editor, String text) {
+	public EditorWithBrowserContainsTextCondition(AbstractEditorWithBrowser editor, String text) {
 		this.editor = editor;
 		this.text = text;
 	}
@@ -29,5 +29,4 @@ public class WebPageContainsTextCondition implements WaitCondition {
 	public String description() {
 		return "Page should contain text: " + text + ", but contains: " + editor.getText();
 	}
-
 }
