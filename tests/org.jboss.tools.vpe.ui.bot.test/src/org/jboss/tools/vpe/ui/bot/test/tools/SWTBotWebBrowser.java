@@ -416,49 +416,101 @@ public class SWTBotWebBrowser {
   public boolean containsNodeWithNameAndAttributes(nsIDOMNode node, String searchName , String[] attributeNames , String[] attributeValues) {
 
     boolean result = false;
-
-    String nodeName = node.getNodeName();
-    if (nodeName != null && nodeName.equals(searchName)) {
-      // Test Attributes
-      if (attributeNames != null){
-        boolean attributesAreEqual = true;
-        nsIDOMNamedNodeMap attributesMap = node.getAttributes();
-        for (int index = 0 ; index < attributeNames.length && attributesAreEqual; index++){
-          nsIDOMNode attributeNode = attributesMap.getNamedItem(attributeNames[index]);
-          if (attributeNode != null){
-            if (!SWTBotWebBrowser.stripTextFromSpecChars(attributeNode.getNodeValue())
-                  .equalsIgnoreCase(attributeValues[index])){
-              attributesAreEqual = false;
+    // search via JavaScript
+    if (node == null){
+    	final Browser swtBrowser =  vpvEditor.getBrowser();
+    	final String commandToQueryNodes = "return document.getElementsByTagName('" + searchName + "').length";
+    	int numNodes = UIThreadRunnable.syncExec(new Result<Integer>() {
+   				@Override
+   				public Integer run() {
+   					Double tmp = Double.parseDouble(swtBrowser.evaluate(commandToQueryNodes).toString());
+   					return tmp.intValue();
+   				}
+   			});
+    	int nodeIndex = 0;
+    	// walk through all nodes with tag equal searchName
+    	while (!result && nodeIndex < numNodes){
+    		// check attributes of particular node
+    		boolean attributesMatches = true;
+    		if (attributeNames.length > 0){
+    			int attrIndex = 0;
+    			while (attrIndex < attributeNames.length && attributesMatches){
+    				final String commandToGetAttributeValue = "return document.getElementsByTagName('" 
+    						+ searchName + "')[" 
+    						+ nodeIndex + "].getAttribute('" 
+    						+ attributeNames[attrIndex] + "')";
+    				String attrValue = UIThreadRunnable.syncExec(new Result<String>() {
+    	   				@Override
+    	   				public String run() {
+    	   					return (String)swtBrowser.evaluate(commandToGetAttributeValue);
+    	   				}
+    	   			});
+    				// take special care for style aatribute
+    				if (attributeNames[attrIndex].equalsIgnoreCase("style")){
+    					attrValue = attrValue.replaceAll(" ", "");
+    					attributeValues[attrIndex] = attributeValues[attrIndex].replaceAll(" ", "");
+    					if (attrValue.endsWith(";")){
+    						attrValue = attrValue.substring(0, attrValue.length() - 1);
+    					}
+    					if (attributeValues[attrIndex].endsWith(";")){
+    						attributeValues[attrIndex] = attributeValues[attrIndex].substring(0, attributeValues[attrIndex].length() - 1);
+    					}
+    				}
+    				if (attrValue == null || !attrValue.equals(attributeValues[attrIndex])){
+    					attributesMatches = false;
+    				}
+    				attrIndex++;
+    			}
+    		}
+    		result = attributesMatches;
+    		nodeIndex++;
+    	}
+    }
+    // search via DOM model of node
+    else{
+        String nodeName = node.getNodeName();
+        if (nodeName != null && nodeName.equals(searchName)) {
+          // Test Attributes
+          if (attributeNames != null){
+            boolean attributesAreEqual = true;
+            nsIDOMNamedNodeMap attributesMap = node.getAttributes();
+            for (int index = 0 ; index < attributeNames.length && attributesAreEqual; index++){
+              nsIDOMNode attributeNode = attributesMap.getNamedItem(attributeNames[index]);
+              if (attributeNode != null){
+                if (!SWTBotWebBrowser.stripTextFromSpecChars(attributeNode.getNodeValue())
+                      .equalsIgnoreCase(attributeValues[index])){
+                  attributesAreEqual = false;
+                }
+              }
+              else{
+                attributesAreEqual = false;
+              }
+            }
+            if (attributesAreEqual){
+              result = true;
             }
           }
           else{
-            attributesAreEqual = false;
+            result = true;
+          }
+        } 
+        
+        if (!result) {
+          nsIDOMNodeList children = node.getChildNodes();
+
+          for (int i = 0; i < children.getLength() && !result; i++) {
+
+            nsIDOMNode child = children.item(i);
+
+            // leave out empty text nodes in test dom model
+            if ((child.getNodeType() == Node.TEXT_NODE)
+                && ((child.getNodeValue() == null) || (child.getNodeValue().trim()
+                    .length() == 0)))
+              continue;
+
+            result = containsNodeWithNameAndAttributes(child, searchName,attributeNames,attributeValues);
           }
         }
-        if (attributesAreEqual){
-          result = true;
-        }
-      }
-      else{
-        result = true;
-      }
-    } 
-    
-    if (!result) {
-      nsIDOMNodeList children = node.getChildNodes();
-
-      for (int i = 0; i < children.getLength() && !result; i++) {
-
-        nsIDOMNode child = children.item(i);
-
-        // leave out empty text nodes in test dom model
-        if ((child.getNodeType() == Node.TEXT_NODE)
-            && ((child.getNodeValue() == null) || (child.getNodeValue().trim()
-                .length() == 0)))
-          continue;
-
-        result = containsNodeWithNameAndAttributes(child, searchName,attributeNames,attributeValues);
-      }
     }
     
     return result;
@@ -1060,8 +1112,8 @@ public class SWTBotWebBrowser {
 			result =UIThreadRunnable.syncExec(new Result<nsIDOMDocument>() {
 				@Override
 				public nsIDOMDocument run() {
-					nsIWebBrowser nsiWebBrowser = ((nsIWebBrowser)vpvEditor.getBrowser().getWebBrowser());
-					return nsiWebBrowser.getContentDOMWindow().getDocument();
+					nsIWebBrowser nsIWebBrowser = ((nsIWebBrowser)vpvEditor.getBrowser().getWebBrowser());
+					return nsIWebBrowser != null ?  nsIWebBrowser.getContentDOMWindow().getDocument() : null;
 				}
 			});
 
