@@ -8,6 +8,7 @@ import org.jboss.ide.eclipse.as.ui.bot.test.condition.EditorWithBrowserContainsT
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewEnums.ServerState;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
+import org.jboss.reddeer.swt.impl.toolbar.ViewToolItem;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.junit.Test;
 
@@ -67,9 +68,10 @@ public abstract class OperateServerTemplate {
 	}
 
 	protected void assertNoException(String message) {
-		ConsoleView consoleView = new ConsoleView();
+		CustomConsole consoleView = new CustomConsole();
 		consoleView.open();
 		assertFalse(consoleView.getConsoleText().contains("Exception"));
+		consoleView.toggleShowConsole(false);
 		consoleView.close();
 	}
 
@@ -92,5 +94,11 @@ public abstract class OperateServerTemplate {
 	protected JBossServer getServer() {
 		JBossServerView view = new JBossServerView();
 		return view.getServer(getServerName());
+	}
+	
+	private class CustomConsole extends ConsoleView {
+		public void toggleShowConsole(boolean toggle){
+			new ViewToolItem("Show Console When Standard Out Changes").toggle(toggle);
+		}
 	}
 }
