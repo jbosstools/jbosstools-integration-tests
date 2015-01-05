@@ -48,7 +48,7 @@ public class HibernateRedDeerTest {
 		ResourceFactory.assureResource(Activator.PLUGIN_ID, sourceVal,targetVal);
 	}
 
-	public void importProject(String prjName) {
+	public static void importProject(String prjName) {
 		ProjectImporter.importProjectWithoutErrors(Activator.PLUGIN_ID, prjName);
 	}
 	
