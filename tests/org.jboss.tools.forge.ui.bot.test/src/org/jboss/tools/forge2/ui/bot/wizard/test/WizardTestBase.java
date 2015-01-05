@@ -12,10 +12,12 @@ import org.eclipse.core.commands.common.NotDefinedException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.commands.ICommandService;
 import org.eclipse.ui.services.IServiceLocator;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.matcher.RegexMatcher;
 import org.jboss.reddeer.swt.util.Display;
 import org.jboss.tools.forge.reddeer.view.ForgeConsoleView;
+import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 
@@ -27,6 +29,11 @@ public abstract class WizardTestBase {
 		ForgeConsoleView view = new ForgeConsoleView();
 		view.selectRuntime(new RegexMatcher("Forge 2.*"));
 		view.start();
+	}
+	
+	@After
+	public void cleanup(){
+		new ProjectExplorer().deleteAllProjects();
 	}
 	
 	/**
