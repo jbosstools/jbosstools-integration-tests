@@ -13,6 +13,9 @@ package org.jboss.tools.cdi.bot.test;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.cdi.bot.test.beansxml.BeansXMLCompletionTest;
 import org.jboss.tools.cdi.bot.test.beansxml.BeansXMLValidationTest;
+import org.jboss.tools.cdi.bot.test.cd11.CDI11BeansXmlTest;
+import org.jboss.tools.cdi.bot.test.cd11.CDI11DiscoveryModes;
+import org.jboss.tools.cdi.bot.test.cd11.CDI11Wizard;
 import org.jboss.tools.cdi.bot.test.cd11.VetoedAnnotation;
 import org.jboss.tools.cdi.bot.test.decorator.DecoratorFromWebBeanTest;
 import org.jboss.tools.cdi.bot.test.editor.BeansEditorTest;
@@ -53,6 +56,7 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @RunWith(RedDeerSuite.class)
 @SuiteClasses({	
+	
 //	PerspectiveTest.class,  // not included in JBDS anymore
 	ConfigurationPresetTest.class,
 	
@@ -94,7 +98,9 @@ import org.junit.runners.Suite.SuiteClasses;
 	
 	OpenOnTest.class,
 	FindObserverForEventTest.class,
-	
+	CDI11BeansXmlTest.class,
+	CDI11Wizard.class,
+	CDI11DiscoveryModes.class,
 	ParametersAnnotation.class,
 	BuiltInContexts.class,
 	WeldExclude.class,
