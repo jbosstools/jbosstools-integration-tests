@@ -28,7 +28,7 @@ import org.jboss.tools.cdi.reddeer.uiutils.EditorResourceHelper;
 import org.junit.Before;
 import org.junit.Test;
 
-//JBIDE-14765
+//based on JBIDE-14765
 @CleanWorkspace
 @OpenPerspective(JavaEEPerspective.class)
 @JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY8x)

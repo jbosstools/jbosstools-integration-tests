@@ -20,7 +20,7 @@ import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
 @JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY8x)
 public abstract class CDI11TestBase {
 	
-	protected static String PROJECT_NAME = "CDIProject";
+	protected static String PROJECT_NAME = "CDI11Project";
 	
 	@InjectRequirement
 	protected static ServerRequirement sr;

@@ -1,12 +1,14 @@
 package org.jboss.tools.cdi.reddeer.common.model.ui.editor;
 
+import java.util.List;
+
 import org.jboss.reddeer.swt.api.Table;
-import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
@@ -179,6 +181,45 @@ public class EditorPartWrapper extends AbstractEditor{
 		new WaitUntil(new ShellWithTextIsAvailable("Add If Class Available"));
 		new DefaultShell("Add If Class Available");
 		return new AddIfClassAvailableDialog();
+	}
+	
+	//"Bean-Discovery-Mode:"
+	//return new LabeledCombo(new DefaultSection("Cdi Beans"),"Bean-Discovery-Mode:")
+	
+	public void setBeanDiscoveryMode(String mode){
+		new DefaultCombo(new DefaultSection("Cdi Beans"),0).setText(mode);
+	}
+	
+	public void selectBeanDiscoveryMode(String mode){
+		new DefaultCombo(new DefaultSection("Cdi Beans"),0).setSelection(mode);;
+	}
+	
+	public String getBeanDiscoveryMode(){
+		return new DefaultCombo(new DefaultSection("Cdi Beans"),0).getText();
+	}
+	
+	public boolean isBeanDiscoveryModeEnabled(){
+		return new DefaultCombo(new DefaultSection("Cdi Beans"),0).isEnabled();
+	}
+	
+	public List<String> getBeanDiscoveryModes(){
+		return new DefaultCombo(new DefaultSection("Cdi Beans"),0).getItems();
+	}
+	
+	public String getVersion(){
+		return new DefaultText(new DefaultSection("Cdi Beans"),1).getText();
+	}
+	
+	public boolean isVersionEnabled(){
+		return new DefaultText(new DefaultSection("Cdi Beans"),1).isEnabled();
+	}
+	
+	public String getName(){
+		return new DefaultText(new DefaultSection("Cdi Beans"),0).getText();
+	}
+	
+	public boolean isNameEnabled(){
+		return new DefaultText(new DefaultSection("Cdi Beans"), 0).isEnabled();
 	}
 
 }

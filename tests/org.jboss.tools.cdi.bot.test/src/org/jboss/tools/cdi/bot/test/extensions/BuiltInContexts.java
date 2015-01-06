@@ -32,7 +32,7 @@ import org.jboss.tools.cdi.reddeer.uiutils.EditorResourceHelper;
 import org.junit.Before;
 import org.junit.Test;
 
-//JBIDE-12645
+//based on JBIDE-12645
 @CleanWorkspace
 @OpenPerspective(JavaEEPerspective.class)
 @JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY8x)

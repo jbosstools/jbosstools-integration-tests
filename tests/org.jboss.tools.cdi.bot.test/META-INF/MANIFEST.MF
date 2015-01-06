@@ -32,3 +32,4 @@ Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Eclipse-BundleShape: jar
 Bundle-Localization: plugin
 Bundle-Vendor: JBoss by Red Hat
+Import-Package: org.jboss.reddeer.common.logging
