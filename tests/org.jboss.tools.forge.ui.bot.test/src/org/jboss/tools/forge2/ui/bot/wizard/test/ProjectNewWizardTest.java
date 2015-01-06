@@ -1,5 +1,6 @@
 package org.jboss.tools.forge2.ui.bot.wizard.test;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -45,6 +46,21 @@ public class ProjectNewWizardTest extends WizardTestBase {
 		
 		ProjectExplorer pe = new ProjectExplorer();
 		assertTrue(pe.containsProject(PROJECT_NAME));
+	}
+	
+	
+	@Test
+	public void testFinishBtnDisabled(){
+		runForgeCommand("project-new");
+		RegexMatcher rm = new RegexMatcher("(Project: New).*");
+		DefaultShell shell = new DefaultShell(new WithTextMatcher(rm));
+		
+		assertTrue(new LabeledText("Project name:").getText().isEmpty());
+		assertFalse(new PushButton("Finish").isEnabled());
+		
+		new LabeledText("Project name:").setText(PROJECT_NAME);
+		assertTrue(new PushButton("Finish").isEnabled());
+		shell.close();
 	}
 	
 }
