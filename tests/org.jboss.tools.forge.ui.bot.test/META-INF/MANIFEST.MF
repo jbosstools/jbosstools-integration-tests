@@ -15,7 +15,8 @@ Require-Bundle: org.eclipse.swtbot.go,
  org.jboss.reddeer.junit;bundle-version="0.7.0",
  org.jboss.reddeer.swt;bundle-version="0.7.0",
  org.jboss.reddeer.workbench;bundle-version="0.7.0",
- org.jboss.reddeer.eclipse;bundle-version="0.7.0"
+ org.jboss.reddeer.eclipse;bundle-version="0.7.0",
+ org.jboss.reddeer.jface;bundle-version="0.7.0"
 Import-Package: org.eclipse.core.resources
 Eclipse-BundleShape: jar
 Bundle-Localization: plugin
