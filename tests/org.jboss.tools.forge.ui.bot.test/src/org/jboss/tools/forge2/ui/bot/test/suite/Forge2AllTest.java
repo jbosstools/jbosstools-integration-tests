@@ -2,6 +2,7 @@ package org.jboss.tools.forge2.ui.bot.test.suite;
 
 
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.tools.forge2.ui.bot.wizard.test.JPASetupWizardTest;
 import org.jboss.tools.forge2.ui.bot.wizard.test.ProjectNewWizardTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
@@ -14,7 +15,8 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @SuiteClasses({
 	//Wizard Tests
-	ProjectNewWizardTest.class
+	ProjectNewWizardTest.class,
+	JPASetupWizardTest.class
 })
 @RunWith(RedDeerSuite.class)
 public class Forge2AllTest {
