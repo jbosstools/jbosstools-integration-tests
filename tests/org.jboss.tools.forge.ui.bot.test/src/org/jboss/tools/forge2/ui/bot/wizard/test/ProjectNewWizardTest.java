@@ -2,7 +2,6 @@ package org.jboss.tools.forge2.ui.bot.wizard.test;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-
 import org.jboss.reddeer.jface.wizard.WizardDialog;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
@@ -12,8 +11,6 @@ import org.junit.Test;
 
 public class ProjectNewWizardTest extends WizardTestBase {
 	 
-	private static final String PROJECT_NAME = "testProject";
-	
 	@Test
 	public void testIsFocusedOnStartup(){
 		WizardDialog wd = getWizardDialog("project-new", "(Project: New).*");

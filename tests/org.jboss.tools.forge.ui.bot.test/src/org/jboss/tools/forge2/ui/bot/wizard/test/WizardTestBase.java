@@ -31,6 +31,7 @@ import org.junit.runner.RunWith;
 @RunWith(RedDeerSuite.class)
 public abstract class WizardTestBase {
 
+	protected static final String PROJECT_NAME = "testProject";
 	protected static final String WORKSPACE = ResourcesPlugin.getWorkspace().getRoot().getLocation().toString();
 	
 	@BeforeClass
@@ -95,6 +96,14 @@ public abstract class WizardTestBase {
 	    }
 	}
 	
+	/**
+	 * This method executes forge command specified by name and waits
+	 * until appropriate wizard shell (matched by regex) appears in UI.
+	 * 
+	 * @param command - forge command name to be executed
+	 * @param title_regex - regex to wait for correct wizard shell
+	 * @return WizardDialog
+	 */
 	public WizardDialog getWizardDialog(String command, String title_regex){
 		runForgeCommand(command);
 		RegexMatcher rm = new RegexMatcher(title_regex);
@@ -102,6 +111,14 @@ public abstract class WizardTestBase {
 		return new WizardDialog();
 	}
 	
+	/**
+	 * This method creates new project specified by name and path 
+	 * and verifies if project is imported in eclipse.
+	 * Forge 'project-new' command will be used for project creation.
+	 * 
+	 * @param name of the project
+	 * @param path 
+	 */
 	public void newProject(String name, String path){		
 		WizardDialog wd = getWizardDialog("project-new", "(Project: New).*");
 		new LabeledText("Project name:").setText(name);
@@ -111,6 +128,11 @@ public abstract class WizardTestBase {
 		assertTrue(pe.containsProject(name));
 	}
 	
+	/**
+	 * Creates new project in currect workspace.
+	 * For more details @see WizardTestBase#newProject(String name, String path)
+	 * @param name
+	 */
 	public void newProject(String name){
 		newProject(name, WORKSPACE);
 	}
