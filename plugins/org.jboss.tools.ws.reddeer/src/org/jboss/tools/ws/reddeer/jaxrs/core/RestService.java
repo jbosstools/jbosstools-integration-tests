@@ -2,6 +2,7 @@ package org.jboss.tools.ws.reddeer.jaxrs.core;
 
 import java.util.List;
 
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.ProjectItem;
 
 /**
@@ -48,6 +49,7 @@ public class RestService {
 	 */
 	protected List<ProjectItem> getInfo() {
 		projectItem.open();
+		new ProjectExplorer().activate();
 		return projectItem.getChildren();
 	}
 

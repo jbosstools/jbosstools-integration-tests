@@ -2,6 +2,7 @@ package org.jboss.tools.ws.ui.bot.test.rest;
 
 import static org.junit.Assert.assertThat;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -80,6 +81,10 @@ public class FiltersInterceptorsSupportTest extends RESTfulTestBase {
 
 		// there should be "No JAX-RS Activator is defined for the project." warning
 		List<TreeItem> warningsBefore = new ProblemsView().getAllWarnings();
+		List<String> warningsBeforeStrings = new ArrayList<String>();
+		for (TreeItem item: warningsBefore) {
+			warningsBeforeStrings.add(item.getText());
+		}
 
 		//remove @Provider annotation
 		openJavaFile(projectName, "org.rest.test", className + ".java");
@@ -95,7 +100,7 @@ public class FiltersInterceptorsSupportTest extends RESTfulTestBase {
 		//one more warning Description "The @Provider annotation is missing on this java type."
 		List<TreeItem> warningsAfter = new ProblemsView().getAllWarnings();
 		assertThat("Expected one more warnings.\nBefore: "
-				+ Arrays.toString(warningsBefore.toArray()) + "\nAfter: "
+				+ Arrays.toString(warningsBeforeStrings.toArray()) + "\nAfter: "
 				+ Arrays.toString(warningsAfter.toArray()), warningsAfter.size() - warningsBefore.size(), Is.is(1));
 		
 		/* there should be no error */

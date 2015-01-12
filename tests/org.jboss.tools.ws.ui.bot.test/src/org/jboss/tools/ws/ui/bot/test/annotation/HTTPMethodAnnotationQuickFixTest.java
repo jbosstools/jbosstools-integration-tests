@@ -76,7 +76,7 @@ public class HTTPMethodAnnotationQuickFixTest extends RESTfulTestBase {
 
 		/* save edited file */
 		new TextEditor().save();
-		AbstractWait.sleep(TimePeriod.getCustom(2));
+		AbstractWait.sleep(TimePeriod.getCustom(5));
 
 		/* assert that there are no JAX-RS errors */
 		assertCountOfValidationErrors(projectName, 0);

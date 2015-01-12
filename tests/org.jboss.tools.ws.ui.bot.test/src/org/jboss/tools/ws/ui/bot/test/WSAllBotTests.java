@@ -61,11 +61,11 @@ import org.junit.runners.Suite.SuiteClasses;
 @RunWith(RedDeerSuite.class)
 @SuiteClasses({
 	JBossWSPreferencesTest.class,
+	
+	// JAX-RS webservices
 	JAXRSFacetTest.class,
-	SampleSoapWebServiceTest.class,
 	CreateJAXRSApplicationTest.class,
 	CreateJAXRSResourceTest.class,
-	SimpleWebServiceTest.class,
 	AnnotationPropertiesTest.class,
 	RESTfulSupportTest.class,
 	RESTfulExplorerTest.class, 
@@ -79,7 +79,6 @@ import org.junit.runners.Suite.SuiteClasses;
 	AsYouTypeValidationTest.class,
 	ValidatingRelatedRSElementsTest.class,
 	JAXRSToolingIntegrationTest.class,
-	SOAPWSToolingIntegrationTest.class,
 	XmlJsonFormattingTest.class,
 	WSTesterPromptValuesSupportTest.class,
 	ApplicationValidationTest.class,
@@ -89,12 +88,18 @@ import org.junit.runners.Suite.SuiteClasses;
 	FiltersInterceptorsSupportTest.class,
 	NameBindingAnnotationSupportTest.class,
 	PreMatchingAnnotationSupportTest.class,
+	
+	// SOAP webservices
+	SampleSoapWebServiceTest.class,
+	SimpleWebServiceTest.class,
+	SOAPWSToolingIntegrationTest.class,
 	BottomUpWSTest.class,
 	TopDownWSTest.class, 
 	WsClientTest.class, 
 	WsTesterTest.class, 
 	EAPFromJavaTest.class,
-	EAPFromWSDLTest.class, 
+	EAPFromWSDLTest.class,
+	
 	CxfWsClientTest.class
 	})
 public class WSAllBotTests extends AbstractTestSuite {

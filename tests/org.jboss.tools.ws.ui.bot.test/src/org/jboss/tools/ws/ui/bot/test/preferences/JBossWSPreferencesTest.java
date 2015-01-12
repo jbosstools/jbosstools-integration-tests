@@ -10,7 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.ws.ui.bot.test.preferences;
 
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -27,7 +27,7 @@ import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.ws.reddeer.ui.preferences.JBossWSRuntimeItem;
 import org.jboss.tools.ws.reddeer.ui.preferences.JBossWSRuntimeListFieldEditor;
 import org.jboss.tools.ws.reddeer.ui.preferences.JBossWSRuntimePreferencePage;
-import org.junit.AfterClass;
+import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -66,9 +66,9 @@ public class JBossWSPreferencesTest {
 		new WorkbenchPreferenceDialog().select(jbossWSRuntimePreferencePage);
 	}
 
-	@AfterClass
-	public static void cleanUpWorkspace() {
-		jbossWSRuntimePreferencePage.cancel();
+	@After
+	public void cleanUpWorkspace() {
+		new WorkbenchPreferenceDialog().cancel();
 	}
 
 	@Test
