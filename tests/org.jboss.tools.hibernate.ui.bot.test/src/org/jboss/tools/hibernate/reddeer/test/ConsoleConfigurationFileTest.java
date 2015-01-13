@@ -1,6 +1,5 @@
 package org.jboss.tools.hibernate.reddeer.test;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;

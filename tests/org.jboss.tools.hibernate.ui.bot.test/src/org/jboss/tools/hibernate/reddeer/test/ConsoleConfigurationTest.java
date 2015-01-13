@@ -37,7 +37,7 @@ public class ConsoleConfigurationTest extends HibernateRedDeerTest {
 		prepareConsoleConfiguration();
 	}
 	
-	private void prepareConsoleConfiguration() {
+	public void prepareConsoleConfiguration() {
 		NewHibernateConfigurationWizard wizard = new NewHibernateConfigurationWizard();
 		wizard.open();
 		NewConfigurationLocationPage p1 = new NewConfigurationLocationPage();
