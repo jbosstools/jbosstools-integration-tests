@@ -75,7 +75,7 @@ public class WSTestBase {
 			+ " xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">"
 			+ "<soap:Body>{0}</soap:Body>" + "</soap:Envelope>";
 
-	protected static final Logger LOGGER = Logger.getLogger(WSAllBotTests.class
+	protected static final Logger LOGGER = Logger.getLogger(WSTestBase.class
 			.getName());
 
 	protected final String LINE_SEPARATOR = System

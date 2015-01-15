@@ -18,7 +18,7 @@
 		<apache-cxf-2.x.url>http://archive.apache.org/dist/cxf/2.4.6/apache-cxf-2.4.6.zip</apache-cxf-2.x.url>
 		<apache-cxf-2.x.md5>ebaab4357812b22c17eadb30b563c7b8</apache-cxf-2.x.md5>
 
-		<systemProperties>${integrationTestsSystemProperties} -Dreddeer.config=${project.basedir}/properties/WildFly.xml -Dreddeer.close.shells=false</systemProperties>
+		<systemProperties>${integrationTestsSystemProperties} -Dws.scope=${ws.scope} -Dreddeer.config=${project.basedir}/properties/WildFly.xml -Dreddeer.close.shells=false</systemProperties>
 		<surefire.timeout>10800</surefire.timeout>
 	</properties>
 	<profiles>
@@ -97,7 +97,7 @@
 				<artifactId>tycho-surefire-plugin</artifactId>
 				<configuration>
 					<testSuite>org.jboss.tools.ws.ui.bot.test</testSuite>
-					<testClass>org.jboss.tools.ws.ui.bot.test.WSAllBotTests</testClass>
+					<testClass>org.jboss.tools.ws.ui.bot.test.${ws.scope}WSBotTests</testClass>
 					<dependencies combine.children="append">
 						<dependency>
 							<type>p2-installable-unit</type>
