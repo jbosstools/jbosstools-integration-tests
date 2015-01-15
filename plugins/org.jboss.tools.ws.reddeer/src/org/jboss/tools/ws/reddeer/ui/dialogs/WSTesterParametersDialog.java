@@ -16,11 +16,12 @@ import org.jboss.reddeer.swt.api.Button;
 import org.jboss.reddeer.swt.api.Shell;
 import org.jboss.reddeer.swt.api.Tree;
 import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.swt.impl.button.CancelButton;
+import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
-import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ws.reddeer.helper.RedDeerHelper;
 
 /**
@@ -50,19 +51,19 @@ public class WSTesterParametersDialog {
 	}
 
 	public void ok() {
-		getOkButton().click();
+		new OkButton().click();
 	}
 
 	public void cancel() {
-		getCancelButton().click();
+		new CancelButton().click();
 	}
 
 	public boolean isOkButtonEnabled() {
-		return getOkButton().isEnabled();
+		return new OkButton().isEnabled();
 	}
 
 	public boolean isCancelButtonEnabled() {
-		return getCancelButton().isEnabled();
+		return new CancelButton().isEnabled();
 	}
 
 	public List<TreeItem> getAllParameters() {
@@ -98,13 +99,5 @@ public class WSTesterParametersDialog {
 		RedDeerHelper.click(parameter, 1);
 		new DefaultText(0).setText(value);
 		RedDeerHelper.click(parameter, 0);
-	}
-
-	private Button getOkButton() {
-		return new PushButton(IDELabel.Button.OK);
-	}
-
-	private Button getCancelButton() {
-		return new PushButton(IDELabel.Button.CANCEL);
 	}
 }
