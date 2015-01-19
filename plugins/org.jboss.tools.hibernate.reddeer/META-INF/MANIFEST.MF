@@ -17,8 +17,10 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: org.jboss.tools.hibernate.factory,
  org.jboss.tools.hibernate.reddeer,
  org.jboss.tools.hibernate.reddeer.console,
+ org.jboss.tools.hibernate.reddeer.dialog,
  org.jboss.tools.hibernate.reddeer.editor,
  org.jboss.tools.hibernate.reddeer.importer,
+ org.jboss.tools.hibernate.reddeer.page,
  org.jboss.tools.hibernate.reddeer.view,
  org.jboss.tools.hibernate.reddeer.wizard
 Eclipse-BundleShape: jar
