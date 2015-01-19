@@ -49,7 +49,7 @@ public abstract class AbstractExamplesTest {
 	@After
 	public void teardown() {
 		ShellHandler.getInstance().closeAllNonWorbenchShells();
-		for (org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project p : new  ProjectExplorer().getProjects()) {
+		for (org.jboss.reddeer.eclipse.core.resources.Project p : new  ProjectExplorer().getProjects()) {
 			p.delete(true);
 		}
 		new DefaultToolItem(new DefaultShell(), "JBoss Central").click();

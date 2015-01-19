@@ -1,7 +1,7 @@
 package org.jboss.tools.usercase.ticketmonster.ui.bot.test.part3;
 
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
+import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.tools.usercase.ticketmonster.ui.bot.test.TicketMonsterBaseTest;
 

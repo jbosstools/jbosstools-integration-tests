@@ -2,7 +2,7 @@ package org.jboss.tools.openshift.ui.bot.test.application.create;
 
 import static org.junit.Assert.*;
 
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
+import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.ui.views.navigator.ResourceNavigator;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.tools.openshift.ui.utils.Datastore;

@@ -3,7 +3,7 @@ package org.jboss.tools.ws.reddeer.jaxrs.core;
 import java.util.List;
 
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.ProjectItem;
+import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
 
 /**
  * Represents item in JAX-RS Explorer. Provides functions that parse

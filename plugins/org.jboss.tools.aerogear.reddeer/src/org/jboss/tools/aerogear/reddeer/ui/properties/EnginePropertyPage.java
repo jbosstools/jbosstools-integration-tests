@@ -4,7 +4,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
+import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.ui.dialogs.ProjectPropertyPage;
 import org.jboss.reddeer.swt.api.TableItem;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
