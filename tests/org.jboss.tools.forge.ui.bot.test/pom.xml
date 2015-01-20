@@ -10,68 +10,14 @@
 	<groupId>org.jboss.tools.forge.tests</groupId>
 	<artifactId>org.jboss.tools.forge.ui.bot.test</artifactId>
 	<packaging>eclipse-test-plugin</packaging>
-	<properties>
-		<jbosstools.test.jboss-as.home>${requirementsDirectory}/jboss-as-7.1.1.Final</jbosstools.test.jboss-as.home>
-		<jbosstools.forge-distribution.version>1.4.2.Final</jbosstools.forge-distribution.version>
-		<jbosstools.forge-distribution.home>${requirementsDirectory}/forge-distribution-1.4.2.Final</jbosstools.forge-distribution.home>
-		<systemProperties>${integrationTestsSystemProperties} -DJAVA_HOME=${JAVA_HOME} -Dtest.configurations.dir=resources/properties -Djbosstools.test.jboss-as.home=${jbosstools.test.jboss-as.home} -Djbosstools.forge-distribution.home=${jbosstools.forge-distribution.home} -Djbosstools.forge-distribution.version=${jbosstools.forge-distribution.version}</systemProperties>
-	</properties>
-
-	<profiles>
-	</profiles>
-
 	<build>
 		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>install-as-7.1.1</id>
-						<phase>pre-integration-test</phase>
-						<goals>
-							<goal>unpack</goal>
-						</goals>
-						<configuration>
-							<artifactItems>
-								<artifactItem>
-										<groupId>org.jboss.as</groupId>
-										<artifactId>jboss-as-dist</artifactId>
-										<version>7.1.1.Final</version>
-										<type>zip</type>
-									</artifactItem>
-								</artifactItems>
-							<skip>${swtbot.test.skip}</skip>
-						</configuration>
-					</execution>
-                                        <execution>
-                                                <id>forge-runtime-1.2.0</id>
-                                                <phase>pre-integration-test</phase>
-                                                <goals>
-                                                        <goal>unpack</goal>
-                                                </goals>
-                                                <configuration>
-                                                        <artifactItems>
-                                                                <artifactItem>
-                                                                                <groupId>org.jboss.forge</groupId>
-                                                                                <artifactId>forge-distribution</artifactId>
-                                                                                <version>${jbosstools.forge-distribution.version}</version>
-                                                                                <type>zip</type>
-                                                                        </artifactItem>
-                                                                </artifactItems>
-                                                        <skip>${swtbot.test.skip}</skip>
-                                                </configuration>
-                                        </execution>
-                                </executions>
-                        </plugin>
-
-
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-surefire-plugin</artifactId>
 				<configuration>
 					<testSuite>org.jboss.tools.forge.ui.bot.test</testSuite>
-					<testClass>org.jboss.tools.forge.ui.bot.test.suite.ForgeAllTest</testClass>
+					<testClass>org.jboss.tools.forge2.ui.bot.test.suite.Forge2AllTest</testClass>
 					<dependencies combine.children="append">
 						<dependency>
 							<type>p2-installable-unit</type>
