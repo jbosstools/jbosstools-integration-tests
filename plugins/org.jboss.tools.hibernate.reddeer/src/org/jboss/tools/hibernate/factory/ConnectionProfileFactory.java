@@ -35,8 +35,7 @@ public class ConnectionProfileFactory {
 		dbProfile.setName(cfg.getProfileName());
 		dbProfile.setPassword(cfg.getPassword());
 		dbProfile.setUsername(cfg.getUsername());
-		// Hardcoded becasue of a bug in RedDeer
-		dbProfile.setVendor("Generic JDBC");
+		dbProfile.setVendor(cfg.getDriverVendor());
 
 		// Driver Definition creation
 		ConnectionProfileWizard cpw = new ConnectionProfileWizard();
