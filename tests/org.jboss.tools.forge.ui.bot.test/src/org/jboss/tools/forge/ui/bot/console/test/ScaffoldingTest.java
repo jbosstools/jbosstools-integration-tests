@@ -1,15 +1,21 @@
 package org.jboss.tools.forge.ui.bot.console.test;
 
+import static org.junit.Assert.assertTrue;
+
+import org.jboss.tools.forge.reddeer.condition.ForgeConsoleHasText;
 import org.jboss.tools.forge.ui.bot.test.suite.ForgeConsoleTestBase;
-import org.jboss.tools.forge.ui.bot.test.util.ConsoleUtils;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.swt.condition.JobIsRunning;
+import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.junit.Test;
 /**
  * 
  * @author psrna
  *
  */
-@Require(clearWorkspace=true)
+@CleanWorkspace
 public class ScaffoldingTest extends ForgeConsoleTestBase {
 
 	private static final String specJPAText =     "***SUCCESS*** Installed [forge.spec.jpa] successfully.";
@@ -22,23 +28,23 @@ public class ScaffoldingTest extends ForgeConsoleTestBase {
 	public void scaffoldSetupTest(){
 	
 		createProject(ProjectTypes.war);
-		getStyledText().setText("scaffold setup --scaffoldType faces\n");
-		getStyledText().setText("\n"); // install scaffold provider [faces]
-		getStyledText().setText("\n"); //default version of 'jboss-javaee-6.0'
+		fView.setConsoleText("scaffold setup --scaffoldType faces\n");
+		fView.setConsoleText("\n"); // install scaffold provider [faces]
+		fView.setConsoleText("\n"); //default version of 'jboss-javaee-6.0'
 		
-		assertTrue(ConsoleUtils.waitUntilTextInConsole(specJPAText, TIME_1S, TIME_20S*3));
-		assertTrue(ConsoleUtils.waitUntilTextInConsole(specEJBText, TIME_1S, TIME_20S*3));
-		assertTrue(ConsoleUtils.waitUntilTextInConsole(specCDIText, TIME_1S, TIME_20S*3));
-		assertTrue(ConsoleUtils.waitUntilTextInConsole(specJsfApiText, TIME_1S, TIME_20S*3));
-		assertTrue(ConsoleUtils.waitUntilTextInConsole(facesText, TIME_1S, TIME_20S*3));
+		new WaitUntil(new ForgeConsoleHasText(specJPAText), TimePeriod.VERY_LONG);
+		assertTrue(fView.getConsoleText().contains(specJPAText));
+		new WaitUntil(new ForgeConsoleHasText(specEJBText), TimePeriod.VERY_LONG);
+		assertTrue(fView.getConsoleText().contains(specEJBText));
+		new WaitUntil(new ForgeConsoleHasText(specCDIText), TimePeriod.VERY_LONG);
+		assertTrue(fView.getConsoleText().contains(specCDIText));
+		new WaitUntil(new ForgeConsoleHasText(specJsfApiText), TimePeriod.VERY_LONG);
+		assertTrue(fView.getConsoleText().contains(specJsfApiText));
+		new WaitUntil(new ForgeConsoleHasText(facesText), TimePeriod.VERY_LONG);
+		assertTrue(fView.getConsoleText().contains(facesText));
 		
-		getStyledText().setText("\n"); //subdirectory of web-root
+		fView.setConsoleText("\n"); //subdirectory of web-root
 		
-		bot.sleep(TIME_5S);
-		util.waitForNonIgnoredJobs(WAIT_FOR_NON_IGNORED_JOBS_TIMEOUT);
-		
-		cdWS();
-		clear();
-		pExplorer.deleteAllProjects();	
+		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 	}
 }

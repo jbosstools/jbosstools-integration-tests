@@ -1,17 +1,21 @@
 package org.jboss.tools.forge.ui.bot.console.test;
 
-import java.io.IOException;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import java.io.IOException;
+import java.util.Collection;
+
 import org.jboss.tools.forge.ui.bot.test.suite.ForgeConsoleTestBase;
-import org.jboss.tools.forge.ui.bot.test.util.ConsoleUtils;
 import org.jboss.tools.forge.ui.bot.test.util.ResourceUtils;
-import org.jboss.tools.ui.bot.ext.SWTUtilExt;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
+import org.jboss.reddeer.eclipse.ui.views.contentoutline.OutlineView;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.junit.Test;
 
-@Require(clearWorkspace=true)
+@CleanWorkspace
 public class EntityTest extends ForgeConsoleTestBase {
 
 	private static final String ENTITY_CREATED = "Created @Entity [" + PACKAGE_NAME + "." + ENTITY_NAME + "]";
@@ -19,19 +23,17 @@ public class EntityTest extends ForgeConsoleTestBase {
 								ENTITY_NAME + ": @Column private String " + FIELD_NAME + ";";
 	
 	@Test
-	public void newEntityTest(){
-				
+	public void newEntityTest(){			
 		createProject();
 		createPersistence();
 		createEntity(ENTITY_NAME, PACKAGE_NAME);
-		
-		assertTrue(ConsoleUtils.waitUntilTextInConsole(ENTITY_CREATED , TIME_1S, TIME_20S*3));
-		assertTrue(bot.editorByTitle(ENTITY_NAME + ".java").isActive());
-		
-		cdWS();
-		clear();
-		pExplorer.deleteAllProjects();	
+		assertTrue(fView.getConsoleText().contains(ENTITY_CREATED));
+		DefaultEditor editor = new DefaultEditor();
+		assertTrue("Java editor is not active", editor.isActive());
+		assertTrue(editor.getTitle().equals(ENTITY_NAME + ".java"));
+		editor.close();
 	}
+	
 	
 	@Test
 	public void newFieldTest(){
@@ -40,13 +42,10 @@ public class EntityTest extends ForgeConsoleTestBase {
 		createPersistence();
 		createEntity();
 		createStringField(FIELD_NAME);
+		assertTrue(fView.getConsoleText().contains(FIELD_ADDED));
 		
-		assertTrue(ConsoleUtils.waitUntilTextInConsole(FIELD_ADDED , TIME_1S, TIME_20S*3));
-		assertTrue(bot.editorByTitle(ENTITY_NAME + ".java").isActive());
-		
-		String projectLocation = SWTUtilExt.getPathToProject(PROJECT_NAME);
 		String packagePath = PACKAGE_NAME.replace(".", "/");
-		String entityFilePath = projectLocation + "/src/main/java/" +	
+		String entityFilePath = WORKSPACE + "/" + PROJECT_NAME + "/src/main/java/" +	
 								packagePath + "/" + ENTITY_NAME + ".java";
 		
 		try {
@@ -57,17 +56,23 @@ public class EntityTest extends ForgeConsoleTestBase {
 			fail("Attempt to read the '" + entityFilePath + "' failed!");
 		}		
 		
-		SWTBotView outline = bot.viewByTitle("Outline");
-		outline.show();
+		OutlineView oView = new OutlineView();
+		oView.open();
+		Collection<TreeItem> items = oView.outlineElements();
 		
-		SWTBotTreeItem entityItem = outline.bot().tree().getTreeItem(ENTITY_NAME);
-		SWTBotTreeItem fieldItem = entityItem.getNode(FIELD_NAME + " : String");
+		TreeItem entityItem = null;
+		TreeItem fieldItem = null;
 		
+		for(TreeItem i : items){
+			if(i.getText().equals(ENTITY_NAME)){
+				entityItem = i;
+				fieldItem = i.getItem(FIELD_NAME + " : String");
+			}
+		}
+		
+		assertNotNull(entityItem);
+		assertNotNull(fieldItem);
 		assertTrue(fieldItem.isSelected());
-
-		cdWS();
-		clear();
-		pExplorer.deleteAllProjects();
 		
 	}
 	
