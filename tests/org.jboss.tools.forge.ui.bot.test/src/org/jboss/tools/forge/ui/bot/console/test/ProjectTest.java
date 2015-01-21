@@ -1,13 +1,14 @@
 package org.jboss.tools.forge.ui.bot.console.test;
 
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.IOException;
 
-import org.eclipse.swtbot.swt.finder.utils.SWTUtils;
 import org.jboss.tools.forge.ui.bot.test.suite.ForgeConsoleTestBase;
-import org.jboss.tools.forge.ui.bot.test.util.ConsoleUtils;
 import org.jboss.tools.forge.ui.bot.test.util.ResourceUtils;
-import org.jboss.tools.ui.bot.ext.SWTUtilExt;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
+import org.jboss.reddeer.eclipse.core.resources.Project;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.junit.Test;
 
 /**
@@ -15,60 +16,44 @@ import org.junit.Test;
  * @author psrna
  *
  */
-@Require(clearWorkspace=true)
+@CleanWorkspace
 public class ProjectTest extends ForgeConsoleTestBase {
 
 	@Test
 	public void pomProject() {
-		
 		createProject(ProjectTypes.pom);
+		String text = fView.getConsoleText();
+		assertTrue(text.contains("***SUCCESS*** Created project [" + PROJECT_NAME + "]"));
+		assertTrue(pExplorer.containsProject(PROJECT_NAME));
+		Project project = pExplorer.getProject(PROJECT_NAME);
+		assertTrue(project.containsItem("pom.xml"));
 		
-		String text = getStyledText().getText();
-		assertTrue(ConsoleUtils.waitUntilTextInConsole("***SUCCESS*** Created project [" + PROJECT_NAME + "]", TIME_1S, TIME_20S*3));
-		
-		pExplorer.show();		
-		bot.sleep(TIME_1S);
-		assertTrue(pExplorer.existsResource(PROJECT_NAME));
-		assertTrue(pExplorer.existsResource(PROJECT_NAME, "pom.xml"));
-		
-		String projectLocation = SWTUtilExt.getPathToProject(PROJECT_NAME);
 		try {
-			String pomContent = ResourceUtils.readFile(projectLocation + "/pom.xml");
+			String pomContent = ResourceUtils.readFile(WORKSPACE + "/" + PROJECT_NAME + "/pom.xml");
 			assertTrue(pomContent.contains("<packaging>pom</packaging>"));
 		} catch (IOException e) {
 			e.printStackTrace();
 			fail("Attempt to read the 'pom.xml' failed!");
 		}
-		cdWS();
-		clear();
-		cleanup();
 	}
+	
 	
 	@Test
 	public void warProject() {
-		
 		createProject(ProjectTypes.war);
+		String text = fView.getConsoleText();
+		assertTrue(text.contains("***SUCCESS*** Created project [" + PROJECT_NAME + "]"));
+		assertTrue(pExplorer.containsProject(PROJECT_NAME));
+		Project project = pExplorer.getProject(PROJECT_NAME);
+		assertTrue(project.containsItem("pom.xml"));
 		
-		String text = getStyledText().getText();
-		assertTrue(ConsoleUtils.waitUntilTextInConsole("***SUCCESS*** Created project [" + PROJECT_NAME + "]", TIME_1S, TIME_20S*3));
-		pExplorer.show();
-		bot.sleep(TIME_1S);
-		assertTrue(pExplorer.existsResource(PROJECT_NAME));
-		assertTrue(pExplorer.existsResource(PROJECT_NAME, "pom.xml"));
-		
-		String projectLocation = SWTUtilExt.getPathToProject(PROJECT_NAME);
 		try {
-			String pomContent = ResourceUtils.readFile(projectLocation + "/pom.xml");
+			String pomContent = ResourceUtils.readFile(WORKSPACE + "/" + PROJECT_NAME + "/pom.xml");
 			assertTrue(pomContent.contains("<packaging>war</packaging>"));
 		} catch (IOException e) {
 			e.printStackTrace();
 			fail("Attempt to read the 'pom.xml' failed!");
 		}
-		cdWS();
-		clear();
-		cleanup();
 	}
-	
-	
 	
 }

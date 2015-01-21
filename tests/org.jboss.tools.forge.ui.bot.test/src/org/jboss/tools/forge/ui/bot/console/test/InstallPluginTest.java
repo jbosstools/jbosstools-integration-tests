@@ -1,34 +1,35 @@
 package org.jboss.tools.forge.ui.bot.console.test;
 
+import static org.junit.Assert.assertTrue;
+
+import org.jboss.tools.forge.reddeer.condition.ForgeConsoleHasText;
 import org.jboss.tools.forge.ui.bot.test.suite.ForgeConsoleTestBase;
-import org.jboss.tools.forge.ui.bot.test.util.ConsoleUtils;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.junit.Test;
 
-@Require(clearWorkspace=true)
+@CleanWorkspace
 public class InstallPluginTest extends ForgeConsoleTestBase {
 
 	
 	@Test
 	public void installJBossAS7Test(){
-		
 		final String ASSERT_TEXT =  "***SUCCESS*** Installed from " + 
 									"[https://github.com/forge/plugin-jboss-as.git] " + 
 									"successfully.";
 		installPlugin("jboss-as-7");
-		assertTrue(ConsoleUtils.waitUntilTextInConsole(ASSERT_TEXT, TIME_1S, TIME_60S*10));
+		new WaitUntil(new ForgeConsoleHasText(ASSERT_TEXT), TimePeriod.getCustom(600)); //10m
+		assertTrue(fView.getConsoleText().contains(ASSERT_TEXT));
 	}
 	
 	@Test
 	public void installHibernateToolsTest(){
-		
 		final String ASSERT_TEXT =  "***SUCCESS*** Installed from " + 
 									"[https://github.com/forge/plugin-hibernate-tools.git] " + 
 									"successfully.";
-
 		installPlugin("hibernate-tools");
-		assertTrue(ConsoleUtils.waitUntilTextInConsole(ASSERT_TEXT, TIME_1S, TIME_60S*10));
+		new WaitUntil(new ForgeConsoleHasText(ASSERT_TEXT), TimePeriod.getCustom(600));//10m
+		assertTrue(fView.getConsoleText().contains(ASSERT_TEXT));
 	}		
-	
-	
 }

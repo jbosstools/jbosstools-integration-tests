@@ -1,20 +1,22 @@
 package org.jboss.tools.forge.ui.bot.console.test;
 
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.io.File;
 import java.io.IOException;
 
-import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.jboss.tools.forge.ui.bot.test.suite.ForgeConsoleTestBase;
-import org.jboss.tools.forge.ui.bot.test.util.ConsoleUtils;
 import org.jboss.tools.forge.ui.bot.test.util.ResourceUtils;
-import org.jboss.tools.ui.bot.ext.SWTUtilExt;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.junit.Test;
 /**
  * 
  * @author psrna
  *
  */
-@Require(clearWorkspace=true)
+@CleanWorkspace
 public class PersistenceTest extends ForgeConsoleTestBase {
 
 	@Test
@@ -23,22 +25,18 @@ public class PersistenceTest extends ForgeConsoleTestBase {
 		createProject();
 		createPersistence("HIBERNATE", "JBOSS_AS7");
 		
-		try{
-			bot.editorByTitle("persistence.xml");
-		}catch(WidgetNotFoundException ex){
-			log.error(ex.getMessage());			
-			fail("persistence.xml was probably not opened!");
-		}
+		DefaultEditor editor = new DefaultEditor();
+		assertTrue("Persistence editor is not active", editor.isActive());
+		assertTrue(editor.getTitle().equals("persistence.xml"));
+		editor.close();
 		
-		pExplorer.show();
-		bot.sleep(TIME_1S);	
-		assertTrue(pExplorer.existsResource(PROJECT_NAME));
-		assertTrue(pExplorer.existsResource(PROJECT_NAME,"src","main","resources","META-INF", "persistence.xml"));
-		
-		
-		String projectLocation = SWTUtilExt.getPathToProject(PROJECT_NAME);
+		File persistence = new File(WORKSPACE + "/" + PROJECT_NAME + "/src/main/resources/META-INF/persistence.xml");
+		assertTrue("persistence.xml file does not exist", persistence.exists());
+		assertTrue("persistence.xml not found in project explorer", 
+					pExplorer.getProject(PROJECT_NAME).containsItem("src", "main", "resources", "META-INF", "persistence.xml"));
+			
 		try {
-			String pContent = ResourceUtils.readFile(projectLocation + "/src/main/resources/META-INF/persistence.xml");
+			String pContent = ResourceUtils.readFile(WORKSPACE + "/" + PROJECT_NAME + "/src/main/resources/META-INF/persistence.xml");
 			assertTrue(pContent.contains("<provider>org.hibernate.ejb.HibernatePersistence</provider>"));
 			assertTrue(pContent.contains("<jta-data-source>java:jboss/datasources/ExampleDS</jta-data-source>"));
 			assertTrue(pContent.contains("<property name=\"hibernate.hbm2ddl.auto\" value=\"create-drop\"/>"));
@@ -49,10 +47,8 @@ public class PersistenceTest extends ForgeConsoleTestBase {
 			e.printStackTrace();
 			fail("Attempt to read the 'persistence.xml' file failed!");
 		}
-		cdWS();
-		clear();
-		pExplorer.deleteAllProjects();
 	}
+	
 	
 	@Test
 	public void openjpaJBossAS7(){
@@ -60,30 +56,25 @@ public class PersistenceTest extends ForgeConsoleTestBase {
 		createProject();
 		createPersistence("OPENJPA", "JBOSS_AS7");
 		
-		try{
-			bot.editorByTitle("persistence.xml");
-		}catch(WidgetNotFoundException ex){
-			log.error(ex.getMessage());
-			fail("persistence.xml was probably not opened!");
-		}
+		DefaultEditor editor = new DefaultEditor();
+		assertTrue("Persistence editor is not active", editor.isActive());
+		assertTrue(editor.getTitle().equals("persistence.xml"));
+		editor.close();
 		
-		pExplorer.show();	
-		bot.sleep(TIME_1S);
-		assertTrue(pExplorer.existsResource(PROJECT_NAME));
-		assertTrue(pExplorer.existsResource(PROJECT_NAME,"src","main","resources","META-INF", "persistence.xml"));
-		
-		String projectLocation = SWTUtilExt.getPathToProject(PROJECT_NAME);
+		File persistence = new File(WORKSPACE + "/" + PROJECT_NAME + "/src/main/resources/META-INF/persistence.xml");
+		assertTrue("persistence.xml file does not exist", persistence.exists());
+		assertTrue("persistence.xml not found in project explorer", 
+					pExplorer.getProject(PROJECT_NAME).containsItem("src", "main", "resources", "META-INF", "persistence.xml"));
+			
 		try {
-			String pContent = ResourceUtils.readFile(projectLocation + "/src/main/resources/META-INF/persistence.xml");
+			String pContent = ResourceUtils.readFile(WORKSPACE + "/" + PROJECT_NAME + "/src/main/resources/META-INF/persistence.xml");
 			assertTrue(pContent.contains("<provider>org.apache.openjpa.persistence.PersistenceProviderImpl</provider>"));
 			assertTrue(pContent.contains("<jta-data-source>java:jboss/datasources/ExampleDS</jta-data-source>"));
 		} catch (IOException e) {
 			e.printStackTrace();
 			fail("Attempt to read the 'persistence.xml' file failed!");
 		}
-		cdWS();
-		clear();
-		pExplorer.deleteAllProjects();
+
 	}
 	
 	@Test
@@ -92,21 +83,18 @@ public class PersistenceTest extends ForgeConsoleTestBase {
 		createProject();
 		createPersistence("ECLIPSELINK", "JBOSS_AS7");
 		
-		try{
-			bot.editorByTitle("persistence.xml");
-		}catch(WidgetNotFoundException ex){
-			log.error(ex.getMessage());
-			fail("persistence.xml was probably not opened!");
-		}
+		DefaultEditor editor = new DefaultEditor();
+		assertTrue("Persistence editor is not active", editor.isActive());
+		assertTrue(editor.getTitle().equals("persistence.xml"));
+		editor.close();
 		
-		pExplorer.show();		
-		bot.sleep(TIME_1S);
-		assertTrue(pExplorer.existsResource(PROJECT_NAME));
-		assertTrue(pExplorer.existsResource(PROJECT_NAME,"src","main","resources","META-INF", "persistence.xml"));
+		File persistence = new File(WORKSPACE + "/" + PROJECT_NAME + "/src/main/resources/META-INF/persistence.xml");
+		assertTrue("persistence.xml file does not exist", persistence.exists());
+		assertTrue("persistence.xml not found in project explorer", 
+					pExplorer.getProject(PROJECT_NAME).containsItem("src", "main", "resources", "META-INF", "persistence.xml"));
 		
-		String projectLocation = SWTUtilExt.getPathToProject(PROJECT_NAME);
 		try {
-			String pContent = ResourceUtils.readFile(projectLocation + "/src/main/resources/META-INF/persistence.xml");
+			String pContent = ResourceUtils.readFile(WORKSPACE + "/" + PROJECT_NAME + "/src/main/resources/META-INF/persistence.xml");
 			assertTrue(pContent.contains("<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>"));
 			assertTrue(pContent.contains("<jta-data-source>java:jboss/datasources/ExampleDS</jta-data-source>"));
 			assertTrue(pContent.contains("<property name=\"eclipselink.ddl-generation\" value=\"drop-and-create-tables\"/>"));
@@ -114,32 +102,26 @@ public class PersistenceTest extends ForgeConsoleTestBase {
 			e.printStackTrace();
 			fail("Attempt to read the 'persistence.xml' file failed!");
 		}
-		cdWS();
-		clear();
-		pExplorer.deleteAllProjects();
 	}
 	
 	@Test
 	public void infinispanJBossAS7(){
-		
+
 		createProject();
 		createPersistence("INFINISPAN", "JBOSS_AS7");
 		
-		try{
-			bot.editorByTitle("persistence.xml");
-		}catch(WidgetNotFoundException ex){
-			log.error(ex.getMessage());
-			fail("persistence.xml was probably not opened!");
-		}
+		DefaultEditor editor = new DefaultEditor();
+		assertTrue("Persistence editor is not active", editor.isActive());
+		assertTrue(editor.getTitle().equals("persistence.xml"));
+		editor.close();
 		
-		pExplorer.show();	
-		bot.sleep(TIME_1S);
-		assertTrue(pExplorer.existsResource(PROJECT_NAME));
-		assertTrue(pExplorer.existsResource(PROJECT_NAME,"src","main","resources","META-INF", "persistence.xml"));
+		File persistence = new File(WORKSPACE + "/" + PROJECT_NAME + "/src/main/resources/META-INF/persistence.xml");
+		assertTrue("persistence.xml file does not exist", persistence.exists());
+		assertTrue("persistence.xml not found in project explorer", 
+					pExplorer.getProject(PROJECT_NAME).containsItem("src", "main", "resources", "META-INF", "persistence.xml"));
 		
-		String projectLocation = SWTUtilExt.getPathToProject(PROJECT_NAME);
 		try {
-			String pContent = ResourceUtils.readFile(projectLocation + "/src/main/resources/META-INF/persistence.xml");
+			String pContent = ResourceUtils.readFile(WORKSPACE + "/" + PROJECT_NAME + "/src/main/resources/META-INF/persistence.xml");
 			assertTrue(pContent.contains("<provider>org.hibernate.ogm.HibernateOgmPersistence</provider>"));
 			assertTrue(pContent.contains("<jta-data-source>java:jboss/datasources/ExampleDS</jta-data-source>"));
 			assertTrue(pContent.contains("<property name=\"hibernate.dialect\" value=\"org.hibernate.ogm.dialect.NoopDialect\"/>"));
@@ -147,8 +129,5 @@ public class PersistenceTest extends ForgeConsoleTestBase {
 			e.printStackTrace();
 			fail("Attempt to read the 'persistence.xml' file failed!");
 		}
-		cdWS();
-		clear();
-		pExplorer.deleteAllProjects();
 	}
 }

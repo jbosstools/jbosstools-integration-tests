@@ -6,8 +6,6 @@ import java.io.File;
 
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.jface.wizard.WizardDialog;
-import org.jboss.reddeer.swt.handler.ShellHandler;
-import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.junit.Test;
 
