@@ -2,12 +2,16 @@ package org.jboss.tools.forge.reddeer.view;
 
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
+import org.jboss.reddeer.swt.condition.WaitCondition;
+import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.menu.ToolItemMenu;
+import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.swt.impl.toolbar.ViewToolBar;
 import org.jboss.reddeer.swt.matcher.RegexMatcher;
 import org.jboss.reddeer.swt.matcher.WithTooltipTextMatcher;
 import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
 /**
@@ -86,5 +90,46 @@ public class ForgeConsoleView extends WorkbenchView{
 		
 		new ToolItemMenu(defaultToolItem, rm).select();
 	}
+	
+	/**
+	 * Returns console test.
+	 * 
+	 * @return Console text
+	 */
+	public String getConsoleText() {
+		activate();
+		new WaitUntil(new ConsoleHasTextWidget());
+		return new DefaultStyledText().getText();
+	}
+	
+	/**
+	 * Sets console text
+	 * @author psrna
+	 *
+	 */
+	public void setConsoleText(String text){
+		activate();
+		new WaitUntil(new ConsoleHasTextWidget());
+		new DefaultStyledText().setText(text);
+	}
+	
+	private class ConsoleHasTextWidget implements WaitCondition{
+
+		@Override
+		public boolean test() {
+			try{
+				new DefaultStyledText();
+			}catch(SWTLayerException ex){
+				return false;
+			}
+			return true;
+		}
+
+		@Override
+		public String description() {
+			return "console has styled text";
+		}
+	}
+	
 	
 }

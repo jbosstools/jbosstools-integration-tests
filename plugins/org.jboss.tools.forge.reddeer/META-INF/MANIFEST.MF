@@ -13,4 +13,5 @@ Require-Bundle: org.eclipse.core.runtime,
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Export-Package: org.jboss.tools.forge.reddeer,
+ org.jboss.tools.forge.reddeer.condition,
  org.jboss.tools.forge.reddeer.view
