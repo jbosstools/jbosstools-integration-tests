@@ -11,9 +11,7 @@
 
 package org.jboss.tools.ws.ui.bot.test.rest;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.io.InputStream;
 import java.util.Arrays;
@@ -24,7 +22,6 @@ import org.hamcrest.core.StringContains;
 import org.hamcrest.core.StringStartsWith;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.reddeer.eclipse.condition.ProblemsExists;
-import org.jboss.reddeer.eclipse.condition.ProblemsExists.ProblemType;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
@@ -41,12 +38,10 @@ import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.ws.reddeer.editor.ExtendedTextEditor;
-import org.jboss.tools.ws.reddeer.jaxrs.core.RestFullAnnotations;
-import org.jboss.tools.ws.reddeer.jaxrs.core.RestFullExplorer;
-import org.jboss.tools.ws.reddeer.jaxrs.core.RestService;
+import org.jboss.tools.ws.reddeer.jaxrs.core.RESTfulWebService;
+import org.jboss.tools.ws.reddeer.jaxrs.core.RESTfulWebServicesNode;
 import org.jboss.tools.ws.reddeer.swt.condition.ProblemsCount;
 import org.jboss.tools.ws.reddeer.ui.tester.views.WsTesterView;
-import org.jboss.tools.ws.reddeer.ui.tester.views.WsTesterView.RequestType;
 import org.jboss.tools.ws.ui.bot.test.WSTestBase;
 import org.jboss.tools.ws.ui.bot.test.uiutils.RunOnServerDialog;
 import org.junit.Assert;
@@ -63,7 +58,7 @@ public class RESTfulTestBase extends WSTestBase {
 
 	protected final static RESTfulHelper restfulHelper = new RESTfulHelper();
 
-	protected RestFullExplorer restfulWizard = null;
+	protected RESTfulWebServicesNode restWebServicesNode = null;
 
 	protected final String SIMPLE_REST_WS_RESOURCE = "SimpleRestWS.java.ws";
 
@@ -108,21 +103,21 @@ public class RESTfulTestBase extends WSTestBase {
 		assertCountOfErrors(0);
 	}
 
-	protected void assertCountOfRESTServices(List<RestService> restServices,
+	protected void assertCountOfRESTServices(List<RESTfulWebService> restServices,
 			int expectedCount) {
 		assertTrue(restServices.size() + " RESTful services"
 				+ " was found instead of " + expectedCount,
 				restServices.size() == expectedCount);
 	}
 
-	protected void assertAllRESTServicesInExplorer(List<RestService> restServices) {
+	protected void assertAllRESTServicesInExplorer(List<RESTfulWebService> restServices) {
 		assertTrue("All RESTful services (GET, DELETE, POST, PUT) "
 				+ "should be present but they are not\nThere are "
 				+ Arrays.toString(restServices.toArray()),
 				allRestServicesArePresent(restServices));
 	}
 
-	protected void assertNotAllRESTServicesInExplorer(List<RestService> restServices) {
+	protected void assertNotAllRESTServicesInExplorer(List<RESTfulWebService> restServices) {
 		assertFalse("All RESTful services (GET, DELETE, POST, PUT) "
 				+ "shouldnt be present but they are"
 				+ Arrays.toString(restServices.toArray()),
@@ -130,12 +125,12 @@ public class RESTfulTestBase extends WSTestBase {
 	}
 
 	protected void assertExpectedPathOfService(String message,
-			RestService service, String expectedPath) {
+			RESTfulWebService service, String expectedPath) {
 		assertEquals(message + "Failure when comparing paths\n", expectedPath,
 				service.getPath());
 	}
 
-	protected void assertExpectedPathOfService(RestService service,
+	protected void assertExpectedPathOfService(RESTfulWebService service,
 			String expectedPath) {
 		assertExpectedPathOfService("", service, expectedPath);
 	}
@@ -145,7 +140,7 @@ public class RESTfulTestBase extends WSTestBase {
 	 */
 	private void waitForErrors(int expectedCount) {
 		if(expectedCount == 0) {//prevent from false-positive
-			new WaitWhile(new ProblemsExists(ProblemType.ERROR), TimePeriod.getCustom(2), false);
+			new WaitWhile(new ProblemsExists(ProblemsExists.ProblemType.ERROR), TimePeriod.getCustom(2), false);
 		} else {
 			new WaitUntil(new ProblemsCount(ProblemsCount.ProblemType.ERROR, expectedCount), TimePeriod.getCustom(2), false);
 		}
@@ -153,7 +148,7 @@ public class RESTfulTestBase extends WSTestBase {
 
 	private void waitForErrors(int expectedCount, Matcher<String> path) {
 		if(expectedCount == 0) {//prevent from false-positive
-			new WaitWhile(new ProblemsExists(ProblemType.ERROR), TimePeriod.getCustom(2), false);
+			new WaitWhile(new ProblemsExists(ProblemsExists.ProblemType.ERROR), TimePeriod.getCustom(2), false);
 		} else {//prevent from false-negative
 			new WaitUntil(new ProblemsCount(ProblemsCount.ProblemType.ERROR, expectedCount, null, null,
 					path, null, null), TimePeriod.getCustom(2), false);
@@ -213,7 +208,7 @@ public class RESTfulTestBase extends WSTestBase {
 	 */
 	private void waitForWarnings(int expectedCount) {
 		if(expectedCount == 0) {//prevent from false-positive
-			new WaitWhile(new ProblemsExists(ProblemType.WARNING), TimePeriod.getCustom(2), false);
+			new WaitWhile(new ProblemsExists(ProblemsExists.ProblemType.WARNING), TimePeriod.getCustom(2), false);
 		} else {//prevent from false-negative
 			new WaitUntil(new ProblemsCount(ProblemsCount.ProblemType.WARNING, expectedCount), TimePeriod.getCustom(2), false);
 		}
@@ -282,12 +277,12 @@ public class RESTfulTestBase extends WSTestBase {
 		}
 	}
 
-	protected List<RestService> restfulServicesForProject(String projectName) {
-		restfulWizard = new RestFullExplorer(projectName);
-		return restfulWizard.getAllRestServices();
+	protected List<RESTfulWebService> restfulServicesForProject(String projectName) {
+		restWebServicesNode = new RESTfulWebServicesNode(projectName);
+		return restWebServicesNode.getWebServices();
 	}
 
-	protected void invokeMethodInWSTester(WsTesterView wsTesterView, RequestType type) {
+	protected void invokeMethodInWSTester(WsTesterView wsTesterView, WsTesterView.RequestType type) {
 		wsTesterView.setRequestType(type);
 		wsTesterView.invoke();
 	}
@@ -300,11 +295,8 @@ public class RESTfulTestBase extends WSTestBase {
 		AbstractWait.sleep(TimePeriod.getCustom(2));
 	}
 
-	private boolean allRestServicesArePresent(List<RestService> restServices) {
-		String[] allRestMethods = { RestFullAnnotations.GET.getLabel(),
-				RestFullAnnotations.POST.getLabel(),
-				RestFullAnnotations.POST.getLabel(),
-				RestFullAnnotations.DELETE.getLabel() };
+	private boolean allRestServicesArePresent(List<RESTfulWebService> restServices) {
+		String[] allRestMethods = {"GET", "POST", "POST", "DELETE"};
 		for (String restMethod : allRestMethods) {
 			if(!restServiceIsPresent(restServices, restMethod)) {
 				return false;
@@ -313,25 +305,25 @@ public class RESTfulTestBase extends WSTestBase {
 		return true;
 	}
 	
-	private boolean restServiceIsPresent(List<RestService> restServices, String restMethod) {
-		for (RestService restService : restServices) {
-			if (restService.getName().equals(restMethod)) {
+	private boolean restServiceIsPresent(List<RESTfulWebService> restServices, String restMethod) {
+		for (RESTfulWebService restService : restServices) {
+			if (restService.getMethod().equals(restMethod)) {
 				return true;
 			}
 		}
 		return false;
 	}
 
-	protected void runRestServiceOnServer(String restServiceName) {
-		runRestServiceOnServer(restfulWizard.getRestService(restServiceName));
+	protected void runRestServiceOnServer(String restWebServiceMethod) {
+		runRestServiceOnServer(restWebServicesNode.getWebServiceByMethod(restWebServiceMethod).get(0));
 	}
 
-	protected void runRestServiceOnServer(RestService restService) {
-		runRestServiceOnServer(restService, getConfiguredServerName());
+	protected void runRestServiceOnServer(RESTfulWebService restWebService) {
+		runRestServiceOnServer(restWebService, getConfiguredServerName());
 	}
 
-	protected void runRestServiceOnServer(RestService restService, String serverName) {
-		restService.getProjectItem().select();
+	protected void runRestServiceOnServer(RESTfulWebService restWebService, String serverName) {
+		restWebService.select();
 
 		Menu menu = new ContextMenu(
 				new WithTextMatchers(new RegexMatcher(".*Run.*"),

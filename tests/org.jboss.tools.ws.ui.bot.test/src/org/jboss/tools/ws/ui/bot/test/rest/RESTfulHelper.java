@@ -32,7 +32,7 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
-import org.jboss.tools.ws.reddeer.jaxrs.core.RestFullLabels;
+import org.jboss.tools.ws.reddeer.jaxrs.core.RESTfulLabel;
 import org.jboss.tools.ws.reddeer.swt.condition.ProblemsCount;
 import org.jboss.tools.ws.reddeer.ui.preferences.JAXRSValidatorPreferencePage;
 
@@ -140,8 +140,8 @@ public class RESTfulHelper {
 
 	public boolean isRestSupportEnabled(String wsProjectName) {
 		Project project = new ProjectExplorer().getProject(wsProjectName);
-		return project.containsItem(RestFullLabels.REST_EXPLORER_LABEL.getLabel())
-				|| project.containsItem(RestFullLabels.REST_EXPLORER_LABEL_BUILD.getLabel());
+		return project.containsItem(RESTfulLabel.REST_WS_NODE)
+				|| project.containsItem(RESTfulLabel.REST_WS_BUILD_NODE);
 	}
 
 	private void configureRestSupport(String wsProjectName,
@@ -150,8 +150,8 @@ public class RESTfulHelper {
 
 		Menu menu = new ContextMenu(
 				"Configure",
-				enableRestSupport ? RestFullLabels.REST_SUPPORT_MENU_LABEL_ADD.getLabel()
-						: RestFullLabels.REST_SUPPORT_MENU_LABEL_REMOVE.getLabel());
+				enableRestSupport ? RESTfulLabel.ADD_REST_SUPPORT
+						: RESTfulLabel.REMOVE_REST_SUPPORT);
 		menu.select();
 
 		new WaitUntil(new JobIsRunning(), TimePeriod.NORMAL, false);

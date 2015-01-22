@@ -66,6 +66,7 @@ public class HTTPMethodAnnotationQuickFixTest extends RESTfulTestBase {
 		TextEditor editor = setCursorPositionToLineInTextEditor("MyAnnot");
 
 		/* check that there are quick fixes for both required annotations */
+		AbstractWait.sleep(TimePeriod.SHORT);
 		editor.openQuickFixContentAssistant().chooseProposal(
 				"Add @Target annotation on type 'MyAnnot'");
 		AbstractWait.sleep(TimePeriod.getCustom(1));//makes a delay between applying quickfixes

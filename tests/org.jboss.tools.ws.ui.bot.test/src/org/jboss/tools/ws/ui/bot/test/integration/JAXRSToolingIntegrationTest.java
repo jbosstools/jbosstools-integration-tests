@@ -18,7 +18,7 @@ import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBo
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.tools.ws.reddeer.jaxrs.core.RestFullExplorer;
+import org.jboss.tools.ws.reddeer.jaxrs.core.RESTfulWebServicesNode;
 import org.jboss.tools.ws.reddeer.ui.tester.views.WsTesterView;
 import org.jboss.tools.ws.reddeer.ui.tester.views.WsTesterView.RequestType;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
@@ -62,7 +62,7 @@ public class JAXRSToolingIntegrationTest extends RESTfulTestBase {
 	@Test
 	public void testGetMethod() {
 		/* get JAX-RS REST Web Services */
-		restfulWizard = new RestFullExplorer(projectName);
+		restWebServicesNode = new RESTfulWebServicesNode(projectName);
 
 		/* run on server - web service tester should be shown */
 		runRestServiceOnServer("GET");
@@ -80,7 +80,7 @@ public class JAXRSToolingIntegrationTest extends RESTfulTestBase {
 	@Test
 	public void testPostMethod() {
 		/* get JAX-RS REST Web Services */
-		restfulWizard = new RestFullExplorer(projectName);
+		restWebServicesNode = new RESTfulWebServicesNode(projectName);
 	
 		/* run on server - web service tester should be shown */
 		runRestServiceOnServer("POST");
@@ -98,7 +98,7 @@ public class JAXRSToolingIntegrationTest extends RESTfulTestBase {
 	@Test
 	public void testPutMethod() {
 		/* get JAX-RS REST Web Services */
-		restfulWizard = new RestFullExplorer(projectName);
+		restWebServicesNode = new RESTfulWebServicesNode(projectName);
 
 		/* run on server - web service tester should be shown */
 		runRestServiceOnServer("PUT");
@@ -116,7 +116,7 @@ public class JAXRSToolingIntegrationTest extends RESTfulTestBase {
 	@Test
 	public void testDeleteMethod() {
 		/* get JAX-RS REST Web Services */
-		restfulWizard = new RestFullExplorer(projectName);
+		restWebServicesNode = new RESTfulWebServicesNode(projectName);
 
 		/* run on server - web service tester should be shown */
 		runRestServiceOnServer("DELETE");
@@ -134,10 +134,10 @@ public class JAXRSToolingIntegrationTest extends RESTfulTestBase {
 	@Test
 	public void testUnavailableServiceMethod() {
 		/* get JAX-RS REST Web Services */
-		restfulWizard = new RestFullExplorer(projectName);
+		restWebServicesNode = new RESTfulWebServicesNode(projectName);
 
 		/* run on server - web service tester should be shown */
-		runRestServiceOnServer(restfulWizard.getRestService("GET"));
+		runRestServiceOnServer(restWebServicesNode.getWebServiceByMethod("GET").get(0));
 		assertWebServiceTesterIsActive();
 		wsTesterView.open();
 

@@ -16,8 +16,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import org.hamcrest.core.IsEqual;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.tools.ws.reddeer.jaxrs.core.RestFullExplorer;
-import org.jboss.tools.ws.reddeer.jaxrs.core.RestService;
+import org.jboss.tools.ws.reddeer.jaxrs.core.RESTfulWebServicesNode;
+import org.jboss.tools.ws.reddeer.jaxrs.core.RESTfulWebService;
 import org.jboss.tools.ws.reddeer.ui.tester.views.WsTesterView;
 import org.jboss.tools.ws.reddeer.ui.tester.views.WsTesterView.RequestType;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
@@ -76,9 +76,9 @@ public class XmlJsonFormattingTest extends RESTfulTestBase {
 	}
 
 	private void testWSTesterFormatting(Format format) {
-		restfulWizard = new RestFullExplorer(getWsProjectName());
+		restWebServicesNode = new RESTfulWebServicesNode(getWsProjectName());
 
-		runRestServiceOnServer(getProperRestService(restfulWizard, format));
+		runRestServiceOnServer(getProperRestService(restWebServicesNode, format));
 
 		assertWebServiceTesterIsActive();
 
@@ -88,9 +88,9 @@ public class XmlJsonFormattingTest extends RESTfulTestBase {
 				IsEqual.equalTo(format.formattedMessage));
 	}
 
-	private RestService getProperRestService(RestFullExplorer explorer, 
+	private RESTfulWebService getProperRestService(RESTfulWebServicesNode restWebServicesNode, 
 			Format format) {
-		for (RestService service : explorer.getAllRestServices()) {
+		for (RESTfulWebService service : restWebServicesNode.getWebServices()) {
 			if (service.getPath().contains(format.formatType)) { 
 				return service;
 			}

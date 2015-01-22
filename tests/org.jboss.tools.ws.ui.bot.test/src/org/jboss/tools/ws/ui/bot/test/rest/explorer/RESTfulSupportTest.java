@@ -3,7 +3,7 @@ package org.jboss.tools.ws.ui.bot.test.rest.explorer;
 import static org.junit.Assert.assertNotNull;
 
 import org.jboss.reddeer.jface.exception.JFaceLayerException;
-import org.jboss.tools.ws.reddeer.jaxrs.core.RestFullExplorer;
+import org.jboss.tools.ws.reddeer.jaxrs.core.RESTfulWebServicesNode;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
 import org.junit.Assert;
 import org.junit.Test;
@@ -40,14 +40,14 @@ public class RESTfulSupportTest extends RESTfulTestBase {
 	}
 
 	protected void assertRestFullSupport(String projectName) {
-		RestFullExplorer explorer = null;
+		RESTfulWebServicesNode webServicesNode = null;
 		String missingRESTExplorerMessage = "JAX-RS REST Web Services explorer is missing in "
 				+ "project \"" + projectName + "\"";
 		try {
-			explorer = new RestFullExplorer(projectName);
+			webServicesNode = new RESTfulWebServicesNode(projectName);
 		} catch (JFaceLayerException e) {
 			Assert.fail(missingRESTExplorerMessage + "\nThrown exception: " + e.getMessage());
 		}
-		assertNotNull(missingRESTExplorerMessage, explorer);
+		assertNotNull(missingRESTExplorerMessage, webServicesNode);
 	}
 }

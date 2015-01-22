@@ -17,7 +17,7 @@ import javax.ws.rs.QueryParam;
 
 import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
-import org.jboss.tools.ws.reddeer.jaxrs.core.RestService;
+import org.jboss.tools.ws.reddeer.jaxrs.core.RESTfulWebService;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
 import org.junit.Test;
 
@@ -53,7 +53,7 @@ public class QueryParamAnnotationSupportTest extends RESTfulTestBase {
 		importRestWSProject(project1Name);
 
 		/* get RESTful services from JAX-RS REST explorer for the project */
-		List<RestService> restServices = restfulServicesForProject(project1Name);
+		List<RESTfulWebService> restServices = restfulServicesForProject(project1Name);
 
 		/* test JAX-RS REST explorer */
 		assertCountOfRESTServices(restServices, 1);	
@@ -79,7 +79,7 @@ public class QueryParamAnnotationSupportTest extends RESTfulTestBase {
 		importRestWSProject(project3Name);
 
 		/* get RESTful services from JAX-RS REST explorer for the project */
-		List<RestService> restServices = restfulServicesForProject(project3Name);
+		List<RESTfulWebService> restServices = restfulServicesForProject(project3Name);
 
 		/* test JAX-RS REST explorer */
 		assertCountOfRESTServices(restServices, 1);
@@ -98,7 +98,7 @@ public class QueryParamAnnotationSupportTest extends RESTfulTestBase {
 		AbstractWait.sleep(TimePeriod.getCustom(2));
 
 		/* get RESTful services from JAX-RS REST explorer for the project */
-		List<RestService> restServices = restfulServicesForProject(project2Name);
+		List<RESTfulWebService> restServices = restfulServicesForProject(project2Name);
 
 		/* test JAX-RS REST explorer */
 		assertCountOfRESTServices(restServices, 1);
@@ -119,7 +119,7 @@ public class QueryParamAnnotationSupportTest extends RESTfulTestBase {
 		AbstractWait.sleep(TimePeriod.getCustom(2));
 
 		/* get RESTful services from JAX-RS REST explorer for the project */
-		List<RestService> restServices = restfulServicesForProject(query2ProjectName);
+		List<RESTfulWebService> restServices = restfulServicesForProject(query2ProjectName);
 
 		/* test JAX-RS REST explorer */
 		assertCountOfRESTServices(restServices, 1);

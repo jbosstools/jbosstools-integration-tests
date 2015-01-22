@@ -19,7 +19,7 @@ import javax.ws.rs.PathParam;
 import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.tools.ws.reddeer.editor.ExtendedTextEditor;
-import org.jboss.tools.ws.reddeer.jaxrs.core.RestService;
+import org.jboss.tools.ws.reddeer.jaxrs.core.RESTfulWebService;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
 import org.junit.Test;
 
@@ -62,7 +62,7 @@ public class PathParamAnnotationSupportTest extends RESTfulTestBase {
 		importRestWSProject(projectPath1);
 
 		/* get RESTful services from JAX-RS REST explorer for the project */
-		List<RestService> restServices = restfulServicesForProject(projectPath1);
+		List<RESTfulWebService> restServices = restfulServicesForProject(projectPath1);
 
 		/* test JAX-RS REST explorer */
 		assertCountOfRESTServices(restServices, 1);
@@ -77,7 +77,7 @@ public class PathParamAnnotationSupportTest extends RESTfulTestBase {
 		importRestWSProject(projectPath2);
 
 		/* get RESTful services from JAX-RS REST explorer for the project */
-		List<RestService> restServices = restfulServicesForProject(projectPath2);
+		List<RESTfulWebService> restServices = restfulServicesForProject(projectPath2);
 
 		/* test JAX-RS REST explorer */
 		assertCountOfRESTServices(restServices, 1);
@@ -113,7 +113,7 @@ public class PathParamAnnotationSupportTest extends RESTfulTestBase {
 		editor.replaceLine("@Path(\"{author}\"", "	@Path(\"{author}/{" + newPathParam + "}\")");
 
 		/* get RESTful services from JAX-RS REST explorer for the project */
-		List<RestService> restServices = restfulServicesForProject(projectPath2);
+		List<RESTfulWebService> restServices = restfulServicesForProject(projectPath2);
 
 		/* test JAX-RS REST explorer */
 		assertCountOfRESTServices(restServices, 1);
@@ -127,6 +127,7 @@ public class PathParamAnnotationSupportTest extends RESTfulTestBase {
 				+ newPathType + " year;", "@PathParam(\"author\")");
 
 		/* get RESTful services from JAX-RS REST explorer for the project */
+		AbstractWait.sleep(TimePeriod.SHORT);
 		restServices = restfulServicesForProject(projectPath2);
 
 		/* test JAX-RS REST explorer */
@@ -152,7 +153,7 @@ public class PathParamAnnotationSupportTest extends RESTfulTestBase {
 		AbstractWait.sleep(TimePeriod.getCustom(2));
 
 		/* get RESTful services from JAX-RS REST explorer for the project */
-		List<RestService> restServices = restfulServicesForProject(projectPath1);
+		List<RESTfulWebService> restServices = restfulServicesForProject(projectPath1);
 
 		/* test JAX-RS REST explorer */
 		assertCountOfRESTServices(restServices, 1);
@@ -177,7 +178,7 @@ public class PathParamAnnotationSupportTest extends RESTfulTestBase {
 		AbstractWait.sleep(TimePeriod.getCustom(2));
 
 		/* get RESTful services from JAX-RS REST explorer for the project */
-		List<RestService> restServices = restfulServicesForProject(projectPath1);
+		List<RESTfulWebService> restServices = restfulServicesForProject(projectPath1);
 
 		/* test JAX-RS REST explorer */
 		assertCountOfRESTServices(restServices, 1);

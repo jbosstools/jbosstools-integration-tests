@@ -17,7 +17,7 @@ import javax.ws.rs.MatrixParam;
 
 import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
-import org.jboss.tools.ws.reddeer.jaxrs.core.RestService;
+import org.jboss.tools.ws.reddeer.jaxrs.core.RESTfulWebService;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
 import org.junit.Test;
 
@@ -47,7 +47,7 @@ public class MatrixParamAnnotationSupportTest extends RESTfulTestBase {
 	@Test
 	public void testMatrixParamSupport() {
 		/* get RESTful services from JAX-RS REST explorer for the project */
-		List<RestService> restServices = restfulServicesForProject(projectName);
+		List<RESTfulWebService> restServices = restfulServicesForProject(projectName);
 
 		/* test JAX-RS REST explorer */
 		assertCountOfRESTServices(restServices, 1);
@@ -62,7 +62,7 @@ public class MatrixParamAnnotationSupportTest extends RESTfulTestBase {
 		importRestWSProject(project2Name);
 
 		/* get RESTful services from JAX-RS REST explorer for the project */
-		List<RestService> restServices = restfulServicesForProject(project2Name);
+		List<RESTfulWebService> restServices = restfulServicesForProject(project2Name);
 
 		/* test JAX-RS REST explorer */
 		assertCountOfRESTServices(restServices, 1);
@@ -78,7 +78,7 @@ public class MatrixParamAnnotationSupportTest extends RESTfulTestBase {
 		AbstractWait.sleep(TimePeriod.getCustom(2));
 
 		/* get RESTful services from JAX-RS REST explorer for the project */
-		List<RestService> restServices = restfulServicesForProject(projectName);
+		List<RESTfulWebService> restServices = restfulServicesForProject(projectName);
 
 		/* test JAX-RS REST explorer */
 		assertCountOfRESTServices(restServices, 1);
@@ -94,7 +94,7 @@ public class MatrixParamAnnotationSupportTest extends RESTfulTestBase {
 		AbstractWait.sleep(TimePeriod.getCustom(2));
 
 		/* get RESTful services from JAX-RS REST explorer for the project */
-		List<RestService> restServices = restfulServicesForProject(projectName);
+		List<RESTfulWebService> restServices = restfulServicesForProject(projectName);
 
 		/* test JAX-RS REST explorer */
 		assertCountOfRESTServices(restServices, 1);

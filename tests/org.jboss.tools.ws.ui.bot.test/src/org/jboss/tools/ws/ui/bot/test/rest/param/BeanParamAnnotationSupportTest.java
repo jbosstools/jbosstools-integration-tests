@@ -11,7 +11,7 @@ import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.tools.ws.reddeer.editor.ExtendedTextEditor;
-import org.jboss.tools.ws.reddeer.jaxrs.core.RestService;
+import org.jboss.tools.ws.reddeer.jaxrs.core.RESTfulWebService;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
 import org.junit.Test;
 
@@ -91,7 +91,7 @@ public class BeanParamAnnotationSupportTest extends RESTfulTestBase {
 		assertCountOfValidationWarnings(PROJECT1_NAME,  pathParameterNotBoundToAnyFieldWarning, 0);
 
 		/* get RESTful services from JAX-RS REST explorer for the project */
-		List<RestService> restServices = restfulServicesForProject(PROJECT1_NAME);
+		List<RESTfulWebService> restServices = restfulServicesForProject(PROJECT1_NAME);
 
 		/* test JAX-RS REST explorer */
 		assertCountOfRESTServices(restServices, 1);
@@ -133,7 +133,7 @@ public class BeanParamAnnotationSupportTest extends RESTfulTestBase {
 		assertCountOfValidationErrors(PROJECT2_NAME, 0);
 
 		/* get RESTful services from JAX-RS REST explorer for the project */
-		List<RestService> restServices = restfulServicesForProject(PROJECT2_NAME);
+		List<RESTfulWebService> restServices = restfulServicesForProject(PROJECT2_NAME);
 
 		/* test JAX-RS REST explorer */
 		assertCountOfRESTServices(restServices, 1);
@@ -146,7 +146,10 @@ public class BeanParamAnnotationSupportTest extends RESTfulTestBase {
 		
 		/* remove @QueryParam from BeanClass and assert that endpoint URI was updated */
 		editor.removeLine("@QueryParam");
-
+		
+		// It takes some time till its shown in explorer
+		AbstractWait.sleep(TimePeriod.SHORT);
+		
 		restServices = restfulServicesForProject(PROJECT2_NAME);
 		assertExpectedPathOfService("unstable ", restServices.get(0), "/rest");
 
@@ -171,7 +174,7 @@ public class BeanParamAnnotationSupportTest extends RESTfulTestBase {
 		assertCountOfValidationErrors(PROJECT3_NAME, 0);
 
 		/* get RESTful services from JAX-RS REST explorer for the project */
-		List<RestService> restServices = restfulServicesForProject(PROJECT3_NAME);
+		List<RESTfulWebService> restServices = restfulServicesForProject(PROJECT3_NAME);
 
 		/* test JAX-RS REST explorer */
 		assertCountOfRESTServices(restServices, 1);
@@ -185,7 +188,11 @@ public class BeanParamAnnotationSupportTest extends RESTfulTestBase {
 		/* remove @MatrixParam from BeanClass and assert that endpoint URI was updated */
 		editor.removeLine("@MatrixParam");
 
+		// Wait a bit till its shown in explorer
+		AbstractWait.sleep(TimePeriod.SHORT);
+		
 		restServices = restfulServicesForProject(PROJECT3_NAME);
+		
 		assertExpectedPathOfService("unstable ", restServices.get(0), "/rest");
 
 		/* add @MatrixParam and @DefaultValue into BeanClass and assert that endpoint URI was updated */
@@ -206,7 +213,7 @@ public class BeanParamAnnotationSupportTest extends RESTfulTestBase {
 		assertCountOfValidationErrors(PROJECT4_NAME, 0);
 
 		/* get RESTful services from JAX-RS REST explorer for the project */
-		List<RestService> restServices = restfulServicesForProject(PROJECT4_NAME);
+		List<RESTfulWebService> restServices = restfulServicesForProject(PROJECT4_NAME);
 
 		/* test JAX-RS REST explorer */
 		assertCountOfRESTServices(restServices, 1);
@@ -223,7 +230,7 @@ public class BeanParamAnnotationSupportTest extends RESTfulTestBase {
 		assertCountOfValidationErrors(PROJECT5_NAME, 0);
 
 		/* get RESTful services from JAX-RS REST explorer for the project */
-		List<RestService> restServices = restfulServicesForProject(PROJECT5_NAME);
+		List<RESTfulWebService> restServices = restfulServicesForProject(PROJECT5_NAME);
 
 		/* test JAX-RS REST explorer */
 		assertCountOfRESTServices(restServices, 1);
@@ -240,7 +247,7 @@ public class BeanParamAnnotationSupportTest extends RESTfulTestBase {
 		assertCountOfValidationErrors(PROJECT6_NAME, 0);
 
 		/* get RESTful services from JAX-RS REST explorer for the project */
-		List<RestService> restServices = restfulServicesForProject(PROJECT6_NAME);
+		List<RESTfulWebService> restServices = restfulServicesForProject(PROJECT6_NAME);
 
 		/* test JAX-RS REST explorer */
 		assertCountOfRESTServices(restServices, 1);

@@ -22,7 +22,7 @@ import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.wait.WaitUntil;
-import org.jboss.tools.ws.reddeer.jaxrs.core.RestFullExplorer;
+import org.jboss.tools.ws.reddeer.jaxrs.core.RESTfulWebServicesNode;
 import org.jboss.tools.ws.reddeer.ui.dialogs.WSTesterParametersDialog;
 import org.jboss.tools.ws.reddeer.ui.tester.views.WsTesterView;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
@@ -46,7 +46,7 @@ public class WSTesterPromptValuesSupportTest extends RESTfulTestBase {
 
 	private WSTesterParametersDialog dialog;
 
-	private RestFullExplorer restExplorer;
+	private RESTfulWebServicesNode restWebServicesNode;
 
 	@Override
 	public void setup() {
@@ -121,9 +121,9 @@ public class WSTesterPromptValuesSupportTest extends RESTfulTestBase {
 	}
 
 	private void invokeWSParametersDialog() {
-		restExplorer = new RestFullExplorer(getWsProjectName());
+		restWebServicesNode = new RESTfulWebServicesNode(getWsProjectName());
 
-		runRestServiceOnServer(restExplorer.getAllRestServices().get(0));
+		runRestServiceOnServer(restWebServicesNode.getWebServices().get(0));
 
 		testerView.invoke();
 

@@ -13,7 +13,7 @@ package org.jboss.tools.ws.ui.bot.test.rest.param;
 
 import java.util.List;
 
-import org.jboss.tools.ws.reddeer.jaxrs.core.RestService;
+import org.jboss.tools.ws.reddeer.jaxrs.core.RESTfulWebService;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
 import org.junit.Test;
 
@@ -34,7 +34,7 @@ public class DefaultValueAnnotationSupportTest extends RESTfulTestBase {
 		importRestWSProject("default1");
 
 		/* get RESTful services from JAX-RS REST explorer for the project */
-		List<RestService> restServices = restfulServicesForProject("default1");
+		List<RESTfulWebService> restServices = restfulServicesForProject("default1");
 
 		/* test JAX-RS REST explorer */
 		assertCountOfRESTServices(restServices, 1);
@@ -48,7 +48,7 @@ public class DefaultValueAnnotationSupportTest extends RESTfulTestBase {
 		importRestWSProject("default2");
 
 		/* get RESTful services from JAX-RS REST explorer for the project */
-		List<RestService> restServices = restfulServicesForProject("default2");
+		List<RESTfulWebService> restServices = restfulServicesForProject("default2");
 
 		/* test JAX-RS REST explorer */
 		assertCountOfRESTServices(restServices, 1);
@@ -67,7 +67,7 @@ public class DefaultValueAnnotationSupportTest extends RESTfulTestBase {
 		importRestWSProject("default3");
 
 		/* get RESTful services from JAX-RS REST explorer for the project */
-		List<RestService> restServices = restfulServicesForProject("default3");
+		List<RESTfulWebService> restServices = restfulServicesForProject("default3");
 
 		/* test JAX-RS REST explorer */
 		assertCountOfRESTServices(restServices, 1);

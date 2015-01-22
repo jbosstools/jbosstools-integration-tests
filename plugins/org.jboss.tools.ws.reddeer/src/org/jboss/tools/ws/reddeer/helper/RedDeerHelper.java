@@ -9,31 +9,18 @@ import org.jboss.reddeer.swt.handler.TreeHandler;
 import org.jboss.reddeer.swt.util.Display;
 
 /**
- * Red Deer Helper
+ * Red Deer Helper.
  * 
- * @author Radoslav Rabara
+ * @author Radoslav Rabara, mlabuda@redhat.com
  */
 public class RedDeerHelper {
 	
 	/**
-	 * Do a click on the specified column
+	 * Click on specified tree item in the specified column.
 	 * 
-	 * Workaround for REDDEER issue 557
-	 * 
-	 * @see https://github.com/jboss-reddeer/reddeer/issues/557
+	 * @param item tree item to click
+	 * @param column column to click
 	 */
-/*	public static void click(final TreeItem treeItem, final int column) {
-		org.eclipse.swt.widgets.TreeItem swtTreeItem = Display.syncExec(new ResultRunnable<org.eclipse.swt.widgets.TreeItem>(){
-			@Override
-			public org.eclipse.swt.widgets.TreeItem run() {
-				return treeItem.getSWTWidget();
-				
-			}
-		});
-		SWTBotTreeItem ti = new SWTBotTreeItem(swtTreeItem);
-		ti.click(column);
-	} */
-	
 	public static void click(final TreeItem item, final int column) {
 		Display.syncExec(new Runnable() {
 			@Override
@@ -46,7 +33,7 @@ public class RedDeerHelper {
 	}
 	
 	/**
-	 * Click on the [X,Y] coordinates of tree item
+	 * Click on the [X,Y] coordinates of tree item.
 	 *
 	 * @param x x coordinate
 	 * @param y y coordinate
