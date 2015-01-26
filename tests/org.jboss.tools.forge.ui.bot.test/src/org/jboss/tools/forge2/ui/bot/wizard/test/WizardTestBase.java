@@ -35,6 +35,7 @@ public abstract class WizardTestBase {
 
 	protected static final String PROJECT_NAME = "testProject";
 	protected static final String WORKSPACE = ResourcesPlugin.getWorkspace().getRoot().getLocation().toString();
+	protected static final String GROUPID = "org.jboss.tools.forge.test";
 	
 	@BeforeClass
 	public static void setup(){
