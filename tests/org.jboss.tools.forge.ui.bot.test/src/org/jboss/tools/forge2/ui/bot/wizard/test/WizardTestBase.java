@@ -2,6 +2,7 @@ package org.jboss.tools.forge2.ui.bot.wizard.test;
 
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
 import java.util.HashMap;
 
 import org.eclipse.core.commands.Command;
@@ -138,5 +139,20 @@ public abstract class WizardTestBase {
 	public void newProject(String name){
 		newProject(name, WORKSPACE);
 	}
+	
+	/**
+	 * Runs jpa-setup wizard with default values on specified project
+	 * @param projectName 
+	 */
+	public void persistenceSetup(String projectName){
+		newProject(projectName);
+		ProjectExplorer pe = new ProjectExplorer();
+		pe.selectProjects(projectName); //this will set context for forge
+		WizardDialog wd = getWizardDialog("jpa-setup", "(JPA: Setup).*");
+		wd.finish();
+		File persistence = new File(WORKSPACE + "/" + projectName + "/src/main/resources/META-INF/persistence.xml");
+		assertTrue("persistence.xml file does not exist", persistence.exists());
+	}
+	
 	
 }
