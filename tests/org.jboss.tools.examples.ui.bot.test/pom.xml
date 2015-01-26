@@ -16,6 +16,8 @@
 		<!-- <systemProperties>${integrationTestsSystemProperties} -->
 		<!-- -DimportTestDefinition=${importTestDefinition}</systemProperties> -->
 		<systemProperties>${integrationTestsSystemProperties} -DexamplesLocation=${project.build.directory}/${examplesFolder}</systemProperties>
+		<quickstartsURL>https://github.com/jboss-developer/jboss-wfk-quickstarts/archive/2.6.0.Final.zip</quickstartsURL>
+		<examplesFolder>jboss-wfk-quickstarts-2.6.0.Final</examplesFolder>
 		<surefire.timeout>10800</surefire.timeout>
 	</properties>
 
