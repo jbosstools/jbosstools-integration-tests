@@ -35,7 +35,7 @@ public class ForgeConsoleView extends WorkbenchView{
 	public void start(){
 		
 		log.info("Attempt to START Forge Runtime");
-		new ForgeConsoleView().open();
+		open();
 		ViewToolBar tb = new ViewToolBar();
 		
 		RegexMatcher rm = new RegexMatcher("Start.*");
@@ -51,7 +51,7 @@ public class ForgeConsoleView extends WorkbenchView{
 	public void stop(){
 		
 		log.info("Attempt to STOP Forge Runtime");
-		new ForgeConsoleView().open();
+		open();
 		ViewToolBar tb = new ViewToolBar();
 		
 		RegexMatcher rm = new RegexMatcher("Stop.*");
@@ -67,7 +67,7 @@ public class ForgeConsoleView extends WorkbenchView{
 	public void clear(){
 		
 		log.info("Attempt to CLEAR Forge Runtime");
-		new ForgeConsoleView().open();
+		open();
 		ViewToolBar tb = new ViewToolBar();
 		
 		WithTooltipTextMatcher tm = new WithTooltipTextMatcher("Clear Console");
@@ -82,7 +82,7 @@ public class ForgeConsoleView extends WorkbenchView{
 	public void selectRuntime(RegexMatcher rm){
 		
 		log.info("Attempt to SELECT Forge Runtime");
-		new ForgeConsoleView().open();
+		open();
 		ViewToolBar tb = new ViewToolBar();
 		
 		WithTooltipTextMatcher tm = new WithTooltipTextMatcher("Select Forge Runtime");
