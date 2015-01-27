@@ -26,7 +26,6 @@
 			<plugin>
 				<groupId>org.jboss.tools.tycho-plugins</groupId>
 				<artifactId>repository-utils</artifactId>
-				<version>${JBossTychoPluginsVersion}</version>
 				<executions>
 					<execution>
 						<id>generate-facade</id>
@@ -41,7 +40,7 @@
                 <associateSite>${jbosstools-nightly}</associateSite>
 								<associateSite>${jbosstools-coretests-site}</associateSite>
 								<associateSite>${reddeer-nightly-staging-site}</associateSite>
-              </associateSites>							
+              </associateSites>
 							<symbols>
 								<update.site.name>${update.site.name}</update.site.name>
 								<update.site.description>${update.site.description}</update.site.description>
