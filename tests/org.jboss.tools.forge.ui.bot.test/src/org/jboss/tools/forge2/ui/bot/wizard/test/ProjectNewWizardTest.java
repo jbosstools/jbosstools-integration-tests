@@ -13,7 +13,11 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.forge.ui.bot.test.util.ResourceUtils;
 import org.junit.Test;
 
-
+/**
+ * Tests of the Forge2 'project-new' wizard.
+ * @author Pavol Srna
+ *
+ */
 public class ProjectNewWizardTest extends WizardTestBase {
 	 
 	@Test

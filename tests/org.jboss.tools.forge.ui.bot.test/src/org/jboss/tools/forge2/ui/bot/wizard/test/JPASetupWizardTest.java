@@ -11,6 +11,11 @@ import org.jboss.tools.forge.ui.bot.test.util.ResourceUtils;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * Tests of the Forge2 'jpa-setup' wizard.
+ * @author Pavol Srna
+ *
+ */
 public class JPASetupWizardTest extends WizardTestBase {
 	
 	@Before

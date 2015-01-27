@@ -21,15 +21,21 @@ import org.jboss.reddeer.jface.wizard.WizardDialog;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.handler.ShellHandler;
+import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.matcher.RegexMatcher;
 import org.jboss.reddeer.swt.util.Display;
+import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.tools.forge.reddeer.view.ForgeConsoleView;
 import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
-
+/**
+ * Base class for Forge2 wizard tests
+ * @author Pavol Srna
+ *
+ */
 @RunWith(RedDeerSuite.class)
 public abstract class WizardTestBase {
 
@@ -127,7 +133,7 @@ public abstract class WizardTestBase {
 		WizardDialog wd = getWizardDialog("project-new", "(Project: New).*");
 		new LabeledText("Project name:").setText(name);
 		new LabeledText("Project location:").setText(path);
-		wd.finish();
+		wd.finish(TimePeriod.getCustom(600));
 		ProjectExplorer pe = new ProjectExplorer();
 		assertTrue(pe.containsProject(name));
 	}
@@ -152,6 +158,19 @@ public abstract class WizardTestBase {
 		wd.finish();
 		File persistence = new File(WORKSPACE + "/" + projectName + "/src/main/resources/META-INF/persistence.xml");
 		assertTrue("persistence.xml file does not exist", persistence.exists());
+	}
+	
+	/**
+	 * Runs servlet-setup wizard on specified project
+	 * @param projectName
+	 * @param webFacetVersion to be set
+	 */
+	public void servletSetup(String projectName, String webFacetVersion){
+		ProjectExplorer pe = new ProjectExplorer();
+		pe.selectProjects(projectName); //this will set context for forge
+		WizardDialog wd = getWizardDialog("servlet-setup", "(Servlet: Setup).*");
+		new LabeledCombo("Servlet Version:").setSelection(webFacetVersion);
+		wd.finish(TimePeriod.getCustom(600));
 	}
 
 }
