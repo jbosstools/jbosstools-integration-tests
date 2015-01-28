@@ -185,5 +185,18 @@ public abstract class WizardTestBase {
 		new LabeledCombo("CDI Version:").setSelection(cdiVersion);
 		wd.finish(TimePeriod.getCustom(600));
 	}
+	
+	/**
+	 * Runs faces-setup wizard on specified project
+	 * @param projectName
+	 * @param jsfVersion to be set
+	 */
+	public void facesSetup(String projectName, String jsfVersion){
+		ProjectExplorer pe = new ProjectExplorer();
+		pe.selectProjects(projectName); //this will set context for forge
+		WizardDialog wd = getWizardDialog("faces-setup", "(Faces: Setup).*");
+		new LabeledCombo("JavaServer Faces Version:").setSelection(jsfVersion);
+		wd.finish(TimePeriod.getCustom(600));
+	}
 
 }
