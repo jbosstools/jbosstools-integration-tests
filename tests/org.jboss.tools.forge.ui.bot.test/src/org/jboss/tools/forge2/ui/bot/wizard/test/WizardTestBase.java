@@ -146,7 +146,6 @@ public abstract class WizardTestBase {
 	 * @param projectName 
 	 */
 	public void persistenceSetup(String projectName){
-		newProject(projectName);
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.selectProjects(projectName); //this will set context for forge
 		WizardDialog wd = getWizardDialog("jpa-setup", "(JPA: Setup).*");
@@ -154,6 +153,5 @@ public abstract class WizardTestBase {
 		File persistence = new File(WORKSPACE + "/" + projectName + "/src/main/resources/META-INF/persistence.xml");
 		assertTrue("persistence.xml file does not exist", persistence.exists());
 	}
-	
-	
+
 }
