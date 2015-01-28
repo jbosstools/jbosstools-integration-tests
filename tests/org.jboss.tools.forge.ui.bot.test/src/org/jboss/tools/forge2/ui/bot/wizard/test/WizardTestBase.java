@@ -172,5 +172,18 @@ public abstract class WizardTestBase {
 		new LabeledCombo("Servlet Version:").setSelection(webFacetVersion);
 		wd.finish(TimePeriod.getCustom(600));
 	}
+	
+	/**
+	 * Runs cdi-setup wizard on specified project
+	 * @param projectName
+	 * @param cdiVersion to be set
+	 */
+	public void cdiSetup(String projectName, String cdiVersion){
+		ProjectExplorer pe = new ProjectExplorer();
+		pe.selectProjects(projectName); //this will set context for forge
+		WizardDialog wd = getWizardDialog("cdi-setup", "(CDI: Setup).*");
+		new LabeledCombo("CDI Version:").setSelection(cdiVersion);
+		wd.finish(TimePeriod.getCustom(600));
+	}
 
 }
