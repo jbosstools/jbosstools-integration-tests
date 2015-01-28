@@ -3,6 +3,7 @@ package org.jboss.tools.forge2.ui.bot.test.suite;
 
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.forge2.ui.bot.wizard.test.ConstraintSetupWizardTest;
+import org.jboss.tools.forge2.ui.bot.wizard.test.EJBSetupWizardTest;
 import org.jboss.tools.forge2.ui.bot.wizard.test.FacesSetupWizardTest;
 import org.jboss.tools.forge2.ui.bot.wizard.test.JPASetupWizardTest;
 import org.jboss.tools.forge2.ui.bot.wizard.test.ProjectNewWizardTest;
@@ -23,7 +24,8 @@ import org.junit.runners.Suite.SuiteClasses;
 	ServletSetupWizardTest.class,
 	ConstraintSetupWizardTest.class,
 	FacesSetupWizardTest.class,
-	RESTSetupWizardTest.class
+	RESTSetupWizardTest.class,
+	EJBSetupWizardTest.class
 })
 @RunWith(RedDeerSuite.class)
 public class Forge2AllTest {
