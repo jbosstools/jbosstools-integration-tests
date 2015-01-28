@@ -2,17 +2,25 @@ package org.jboss.tools.forge2.ui.bot.wizard.test;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+
 import java.io.IOException;
+
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.forge.ui.bot.test.util.ResourceUtils;
+import org.junit.Before;
 import org.junit.Test;
 
 public class JPASetupWizardTest extends WizardTestBase {
 	
+	@Before
+	public void prepare(){
+		newProject(PROJECT_NAME);
+		persistenceSetup(PROJECT_NAME);
+	}
+	
 	@Test
 	public void testPersistenceXmlCreated(){
-		persistenceSetup(PROJECT_NAME);
 		ProjectExplorer pe = new ProjectExplorer();
 		assertTrue("persistence.xml not found in project explorer", 
 					pe.getProject(PROJECT_NAME).containsItem("src", "main", "resources", "META-INF", "persistence.xml"));
@@ -21,7 +29,6 @@ public class JPASetupWizardTest extends WizardTestBase {
 	
 	@Test
 	public void testPersistenceOpenedInEditor(){
-		persistenceSetup(PROJECT_NAME);
 		DefaultEditor e = new DefaultEditor();
 		assertTrue("Persistence editor is not active", e.isActive());
 		assertTrue(e.getTitle().equals("persistence.xml"));
@@ -30,7 +37,6 @@ public class JPASetupWizardTest extends WizardTestBase {
 	
 	@Test
 	public void testPersistenceHasRightContent(){
-		persistenceSetup(PROJECT_NAME);
 		try {
 			String pContent = ResourceUtils.readFile(WORKSPACE + "/" + PROJECT_NAME + "/src/main/resources/META-INF/persistence.xml");
 			assertTrue(pContent.contains("<provider>org.hibernate.ejb.HibernatePersistence</provider>"));
