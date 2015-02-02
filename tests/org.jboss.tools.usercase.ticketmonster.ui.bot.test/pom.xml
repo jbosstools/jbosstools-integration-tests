@@ -28,9 +28,10 @@
 								<goal>wget</goal>
 							</goals>
 							<configuration>
-								<url>http://github.com/jboss-developer/jboss-eap-quickstarts/raw/6.3.x-develop/h2-console/h2console.war</url>
+								<url>http://github.com/jboss-developer/jboss-eap-quickstarts/raw/6.4.x-develop/h2-console/h2console.war</url>
 								<unpack>false</unpack>
 								<md5>add18b9f953221ff565cf7a34aac0ed9</md5>
+								<outputDirectory>${requirementsDirectory}</outputDirectory>
 							</configuration>
 						</execution>
 						<execution>
@@ -43,6 +44,7 @@
 								<url>${jbosstools.test.jboss-eap-6.url}</url>
 								<md5>${jbosstools.test.jboss-eap-6.md5}</md5>
 								<unpack>true</unpack>
+								<outputDirectory>${requirementsDirectory}</outputDirectory>
 							</configuration>
 						</execution>
 					</executions>
@@ -68,35 +70,5 @@
 				</configuration>
 			</plugin>
 		</plugins>
-		<pluginManagement>
-			<plugins>
-				<!--This plugin's configuration is used to store Eclipse m2e settings 
-					only. It has no influence on the Maven build itself. -->
-				<plugin>
-					<groupId>org.eclipse.m2e</groupId>
-					<artifactId>lifecycle-mapping</artifactId>
-					<version>1.0.0</version>
-					<configuration>
-						<lifecycleMappingMetadata>
-							<pluginExecutions>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>org.apache.maven.plugins</groupId>
-										<artifactId>maven-dependency-plugin</artifactId>
-										<versionRange>[2.4,)</versionRange>
-										<goals>
-											<goal>unpack</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore></ignore>
-									</action>
-								</pluginExecution>
-							</pluginExecutions>
-						</lifecycleMappingMetadata>
-					</configuration>
-				</plugin>
-			</plugins>
-		</pluginManagement>
 	</build>
 </project>

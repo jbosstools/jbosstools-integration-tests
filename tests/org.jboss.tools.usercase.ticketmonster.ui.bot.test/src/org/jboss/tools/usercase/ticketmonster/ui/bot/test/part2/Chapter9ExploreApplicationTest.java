@@ -146,7 +146,7 @@ public class Chapter9ExploreApplicationTest extends AbstractPart2Test{
 		XPathExpression expr = null;
 		String bom_version = null;
 		try {
-			expr = xpath.compile("/project/properties/version.jboss.bom");
+			expr = xpath.compile("/project/properties/version.jboss.bom.eap");
 			bom_version = (String) expr.evaluate(doc, XPathConstants.STRING);
 		} catch (XPathExpressionException e) {
 			// TODO Auto-generated catch block

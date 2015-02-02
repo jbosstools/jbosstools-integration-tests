@@ -49,18 +49,27 @@ public class JBossCentralProjectWizard extends WizardDialog {
 	 */
 
 	public NewProjectExamplesReadyPage finishAndWait() {
+		return finishAndWait(TimePeriod.getCustom(1800));
+	}
+
+	/**
+	 * Finishes this wizard with custom timeout and returns {@link NewProjectExamplesReadyPage} for
+	 * user to validate that shell (for example for opening of cheatsheet).
+	 * @param customTimeout
+	 */
+
+	public NewProjectExamplesReadyPage finishAndWait(TimePeriod customTimeout) {
 		log.info("Finish example wizard");
 
 		DefaultShell shell = new DefaultShell();
 		Button button = new PushButton("Finish");
 		button.click();
 
-		new WaitWhile(new ShellWithTextIsActive(shell.getText()),
-				TimePeriod.getCustom(1200));
+		new WaitWhile(new ShellWithTextIsActive(shell.getText()),customTimeout);
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 		return new NewProjectExamplesReadyPage(project);
 	}
-
+	
 	/**
 	 * Finishes this wizard without posibility to check
 	 * NewProjectExamplesReadyPage.

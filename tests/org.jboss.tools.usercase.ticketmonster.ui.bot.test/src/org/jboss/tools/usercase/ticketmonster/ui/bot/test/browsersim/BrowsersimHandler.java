@@ -33,19 +33,19 @@ public class BrowsersimHandler {
 	private static boolean isWebKitAvailable;
 	
 	static {
-	  String platform = PlatformUtil.getOs();
-    isJavaFxAvailable = false;
-    
-    
-    boolean isLinux = PlatformUtil.OS_LINUX.equals(platform);
+		String platform = PlatformUtil.getOs();
+	    isJavaFxAvailable = false;
+	    
+	    
+	    boolean isLinux = PlatformUtil.OS_LINUX.equals(platform);
 
-    // Trying to load javaFx libs except Linux GTK3 case
-    if (!(isLinux && !BrowserSimUtil.isRunningAgainstGTK2())) {
-      isJavaFxAvailable = BrowserSimUtil.loadJavaFX();
-    }
-    
-    isWebKitAvailable = BrowserSimUtil.isWebkitAvailable();
+	    // Trying to load javaFx libs except Linux GTK3 case
+	    if (!(isLinux && !BrowserSimUtil.isRunningAgainstGTK2())) {
+	      isJavaFxAvailable = BrowserSimUtil.loadJavaFX();
 	    }
+	    
+	    isWebKitAvailable = BrowserSimUtil.isWebkitAvailable();
+	}
 	 /**
      * Gets list of running java processes via calling command jps
      * @return
@@ -112,7 +112,7 @@ public class BrowsersimHandler {
     		
     		@Override
     	    public BrowserSim run() {
-    			BrowserSim newBrowserSim = new BrowserSim(url, Display.getDisplay().getActiveShell());
+    			BrowserSim newBrowserSim = new BrowserSim(url, org.eclipse.swt.widgets.Display.getCurrent().getActiveShell());
     	        newBrowserSim.open(isJavaFxAvailable,isWebKitAvailable);
     	        return newBrowserSim;
     	    }

@@ -16,7 +16,6 @@ import org.junit.runners.Suite;
 
 @RunWith(RedDeerSuite.class)
 @Suite.SuiteClasses({
-	
 	Chapter8CreateJavaEE6ProjectTest.class,
 	Chapter9ExploreApplicationTest.class,
 	Chapter10ForgeEntityTest.class,

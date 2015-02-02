@@ -37,12 +37,13 @@ public class Chapter14REST extends AbstractPart2Test{
 		NewJavaClassWizardPage newJavaPage = newJava.getFirstPage();
 		newJavaPage.setName("Event");
 		newJava.finish();
-		replaceEditorContentWithFile("Event.java", "resources/classes/EventEntity.txt", 3, 0, false, false);
+		replaceEditorContentWithFile("Event.java", "resources/classes/EventEntity.txt", 0, 0, true, false);
 		new DefaultEditor("Event.java").save();
 	}
 	
 	@Test
 	public void createEventService(){
+		new ProjectExplorer().open();
 		ticketMonsterProject.getProjectItem("Java Resources","src/main/java","org.jboss.jdf.example.ticketmonster.rest").select();
 		new ContextMenu("New","Class").select();
 		new DefaultShell("New Java Class");
@@ -55,7 +56,7 @@ public class Chapter14REST extends AbstractPart2Test{
 		boolean shellOpened = false;
 		while(!shellOpened){
 			try{
-				new ContextMenu("Source","Organize Imports").select();;
+				new ContextMenu("Source","Organize Imports").select();
 				new DefaultShell("Organize Imports");
 				shellOpened = true;
 			} catch(SWTLayerException ex){

@@ -31,7 +31,7 @@ public class Chapter13Deplyment extends AbstractPart2Test{
 	public void importProject(){
 		try{
 			System.setProperty("jsse.enableSNIExtension", "false");
-			URL website = new URL("https://github.com/jboss-developer/jboss-eap-quickstarts/raw/6.3.x-develop/h2-console/h2console.war");
+			URL website = new URL("https://github.com/jboss-developer/jboss-eap-quickstarts/raw/6.4.x-develop/h2-console/h2console.war");
 			ReadableByteChannel rbc = Channels.newChannel(website.openStream());
 			FileOutputStream fos = new FileOutputStream("h2console.war");
 			fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
@@ -67,9 +67,6 @@ public class Chapter13Deplyment extends AbstractPart2Test{
 		new LabeledCombo("WAR file:").setText(H2location);
 		new PushButton("Finish").click();
 		new WaitWhile(new ShellWithTextIsActive("Import"));
-		new WaitUntil(new ShellWithTextIsActive("Open Associated Perspective?"));
-		new PushButton("No").click();
-		new WaitWhile(new ShellWithTextIsActive("Open Associated Perspective?"));
 		new WaitWhile(new JobIsRunning(), TimePeriod.NORMAL, false);
 	}
 	
