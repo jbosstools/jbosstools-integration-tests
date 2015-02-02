@@ -114,10 +114,7 @@ public class Chapter8CreateJavaEE6ProjectTest extends AbstractPart2Test{
 		assertFalse(reqs.get(0).isMet());
 		fp.setTargetRuntime("<none>");
 		assertFalse(reqs.get(0).isMet());
-		ArchetypeExamplesWizardPage tp = (ArchetypeExamplesWizardPage)wz.getWizardPage(2);
-		String projectName = tp.getArtifactID();
-		Table table = tp.getTableSuffix();
-		assertEquals("false", table.getItem("enterprise").getText(1));
+		wz.getWizardPage(2);
 		wz.finish();
 		new WaitWhile(new ProblemsExists(ProblemType.ERROR), TimePeriod.LONG);
 	}
@@ -137,8 +134,6 @@ public class Chapter8CreateJavaEE6ProjectTest extends AbstractPart2Test{
 		assertEquals(TICKET_MONSTER_PACKAGE,tp.getGroupID());
 		assertEquals(TICKET_MONSTER_NAME, tp.getArtifactID());
 		assertEquals(TICKET_MONSTER_PACKAGE, tp.getPackage());
-		Table table = tp.getTableSuffix();
-		assertEquals("false", table.getItem("enterprise").getText(1));
 		wz.finish();
 		new WaitWhile(new ProblemsExists(ProblemType.ERROR), TimePeriod.LONG);
 		ProjectExplorer pe = new ProjectExplorer();
@@ -160,7 +155,6 @@ public class Chapter8CreateJavaEE6ProjectTest extends AbstractPart2Test{
 			assertTrue(r.isMet());
 		}
 		ArchetypeExamplesWizardPage tp = (ArchetypeExamplesWizardPage)wz.getWizardPage(2);
-		String projectName = tp.getArtifactID();
 		Table table = tp.getTableSuffix();
 		assertEquals("false", table.getItem("enterprise").getText(1));
 		wz.finish();
@@ -198,7 +192,6 @@ public class Chapter8CreateJavaEE6ProjectTest extends AbstractPart2Test{
 		assertEquals(JAVA_EE_PROJECT_A,tp.getArtifactID());
 		assertEquals(JAVA_EE_PROJECT_V,tp.getVersion());
 		assertEquals(JAVA_EE_PROJECT_G,tp.getPackage());
-		String projectName = tp.getArtifactID();
 		Table table = tp.getTableSuffix();
 		assertEquals("true", table.getItem("enterprise").getText(1));
 		assertEquals(ENTERPRISE_BOM_VERSION, table.getItem("jboss-bom-enterprise-version").getText(1));

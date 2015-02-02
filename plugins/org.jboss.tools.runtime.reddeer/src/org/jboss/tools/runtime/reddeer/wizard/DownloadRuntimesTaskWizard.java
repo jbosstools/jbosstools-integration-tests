@@ -35,7 +35,7 @@ public class DownloadRuntimesTaskWizard extends WizardDialog{
 		Button button = new PushButton("Finish");
 		button.click();
 		new WaitUntil(new JobIsRunning(), TimePeriod.LONG, false);
-		new WaitWhile(new RuntimeIsDownloading(), TimePeriod.VERY_LONG);
+		new WaitWhile(new RuntimeIsDownloading(), TimePeriod.getCustom(1200));
 		new DefaultShell("New Project Example");
 	}
 

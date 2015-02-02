@@ -31,6 +31,9 @@ public class Chapter15JQuery extends AbstractPart2Test{
 	//should start server if its not runinng & deploy ticketmonster if its not
 	@Test
 	public void createMobileHTMLFile(){
+		ProjectExplorer pe = new ProjectExplorer();
+		pe.open();
+		ticketMonsterProject.select();
 		ticketMonsterProject.getProjectItem("src","main","webapp").select();
 		new ContextMenu("New", "HTML File").select();
 		new WaitUntil(new ShellWithTextIsActive("New HTML File"));

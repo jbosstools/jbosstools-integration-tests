@@ -5,6 +5,7 @@ import org.jboss.reddeer.swt.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.group.DefaultGroup;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
@@ -28,6 +29,7 @@ public class ConfigureMavenRepositoriesWizard{
 		String b = new LabeledText("URL:").getText();
 		String nameWithUrl = a+"-"+b;
 		new PushButton("OK").click();
+		new DefaultShell("Maven Repositories");
 		return nameWithUrl;
 	}
 	
@@ -43,22 +45,25 @@ public class ConfigureMavenRepositoriesWizard{
 		String b = new LabeledText("URL:").getText();
 		String nameWithUrl = a+"-"+b;
 		new PushButton("OK").click();
+		new DefaultShell("Maven Repositories");
 		return nameWithUrl;
 	}
 	
 	public void removeRepo(String repo) {
-		new DefaultTable().select(repo);
+		new DefaultTable(new DefaultGroup("Repositories")).select(repo);
 		new PushButton(" Remove ").click();
 		new DefaultShell("Question?");
 		new PushButton("Yes").click();
+		new DefaultShell("Maven Repositories");
 		
 	}
 	
 	public boolean removeAllRepos() {
-		if(new DefaultTable().rowCount() > 0){
+		if(new DefaultTable(new DefaultGroup("Repositories")).rowCount() > 0){
 			new PushButton(" Remove All ").click();
 			new DefaultShell("Question?");
 			new PushButton("Yes").click();
+			new DefaultShell("Maven Repositories");
 			return true;
 		}
 		return false;
@@ -66,7 +71,7 @@ public class ConfigureMavenRepositoriesWizard{
 	}
 	
 	public void editRepo(String repo,boolean activeByDefault,String id, String name,String url){
-		new DefaultTable().select(repo);
+		new DefaultTable(new DefaultGroup("Repositories")).select(repo);
 		new PushButton(" Edit Repository...").click();
 		new DefaultShell("Edit Maven Repository");
 		new CheckBox("Active by default").toggle(activeByDefault);
@@ -80,6 +85,7 @@ public class ConfigureMavenRepositoriesWizard{
 			new LabeledText("URL:").setText(url);
 		}
 		new PushButton("OK").click();
+		new DefaultShell("Maven Repositories");
 	}
 	
 	public void confirm(){
