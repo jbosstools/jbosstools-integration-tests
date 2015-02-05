@@ -15,6 +15,7 @@ import org.jboss.tools.cdi.bot.test.beansxml.BeansXMLCompletionTest;
 import org.jboss.tools.cdi.bot.test.beansxml.BeansXMLValidationTest;
 import org.jboss.tools.cdi.bot.test.cd11.CDI11BeansXmlTest;
 import org.jboss.tools.cdi.bot.test.cd11.CDI11DiscoveryModes;
+import org.jboss.tools.cdi.bot.test.cd11.CDI11NullValuesInjection;
 import org.jboss.tools.cdi.bot.test.cd11.CDI11Wizard;
 import org.jboss.tools.cdi.bot.test.cd11.VetoedAnnotation;
 import org.jboss.tools.cdi.bot.test.decorator.DecoratorFromWebBeanTest;
@@ -101,6 +102,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	CDI11BeansXmlTest.class,
 	CDI11Wizard.class,
 	CDI11DiscoveryModes.class,
+	CDI11NullValuesInjection.class,
 	ParametersAnnotation.class,
 	BuiltInContexts.class,
 	WeldExclude.class,
