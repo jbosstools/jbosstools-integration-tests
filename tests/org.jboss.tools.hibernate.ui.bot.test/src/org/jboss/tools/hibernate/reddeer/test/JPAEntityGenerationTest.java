@@ -1,5 +1,7 @@
 package org.jboss.tools.hibernate.reddeer.test;
 
+import static org.junit.Assert.fail;
+
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
@@ -7,13 +9,12 @@ import org.jboss.reddeer.requirements.db.DatabaseConfiguration;
 import org.jboss.reddeer.requirements.db.DatabaseRequirement;
 import org.jboss.reddeer.requirements.db.DatabaseRequirement.Database;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.swt.impl.tree.TreeItemNotFoundException;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.hibernate.factory.ConnectionProfileFactory;
 import org.jboss.tools.hibernate.factory.DriverDefinitionFactory;
 import org.jboss.tools.hibernate.factory.EntityGenerationFactory;
 import org.jboss.tools.hibernate.factory.ProjectConfigurationFactory;
-import org.jboss.tools.hibernate.reddeer.page.GenerateEntitiesWizardPage;
-import org.jboss.tools.hibernate.reddeer.wizard.GenerateEntitiesWizard;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -56,7 +57,12 @@ public class JPAEntityGenerationTest extends HibernateRedDeerTest {
     	ProjectExplorer pe = new ProjectExplorer();    
     	pe.open();
     	pe.selectProjects(PRJ);
-    	new DefaultTreeItem(PRJ,"src/main/java","org.gen","Actor.java").doubleClick();
+    	try {
+    		new DefaultTreeItem(PRJ,"src/main/java","org.gen","Actor.java").doubleClick();
+    	}
+    	catch (TreeItemNotFoundException e) {
+    		fail("Entities not generated, possible cause https://issues.jboss.org/browse/JBIDE-19175");
+    	}
     	new DefaultEditor("Actor.java");
     }
     

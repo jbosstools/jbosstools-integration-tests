@@ -9,7 +9,9 @@ import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
+import org.jboss.reddeer.swt.impl.group.DefaultGroup;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.wait.WaitUntil;
@@ -90,9 +92,13 @@ public class ProjectConfigurationFactory {
 
 		DefaultHyperlink hyperlink = new DefaultHyperlink();
 		hyperlink.activate();	
-		
+						
 		new WaitUntil(new ShellWithTextIsActive("Modify Faceted Project"));
-		new LabeledCombo("Type:").setText("Disable Library Configuration");
+		DefaultGroup group = new DefaultGroup("Platform");
+		new DefaultCombo(group).setSelection("Hibernate (JPA 2.1)");
+		
+		
+		new LabeledCombo("Type:").setSelection("Disable Library Configuration");
 		new OkButton().click();
 		
 		new WaitWhile(new ShellWithTextIsActive("Modify Faceted Project"));
