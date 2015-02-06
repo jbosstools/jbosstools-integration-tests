@@ -91,6 +91,7 @@ public abstract class OperateServerTemplate {
 
 	protected JBossServer getServer() {
 		JBossServerView view = new JBossServerView();
+		view.open();
 		return view.getServer(getServerName());
 	}
 }

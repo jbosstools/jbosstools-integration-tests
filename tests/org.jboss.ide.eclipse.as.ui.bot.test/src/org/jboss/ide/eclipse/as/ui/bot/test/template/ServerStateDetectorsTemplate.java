@@ -120,7 +120,10 @@ public abstract class ServerStateDetectorsTemplate {
 	}
 
 	protected void setTimeouts(int timeout){
-		JBossServerEditor editor = new JBossServerView().getServer(getServerName()).open();
+		JBossServerView view = new JBossServerView();
+		view.open();
+		
+		JBossServerEditor editor = view.getServer(getServerName()).open();
 		
 		editor.setStartTimeout(20);
 		editor.setStopTimeout(20);
@@ -128,7 +131,10 @@ public abstract class ServerStateDetectorsTemplate {
 	}
 	
 	protected void setPollers(String startupPoller, String shutdownPoller){
-		JBossServerEditor editor = new JBossServerView().getServer(getServerName()).open();
+		JBossServerView view = new JBossServerView();
+		view.open();
+		
+		JBossServerEditor editor = view.getServer(getServerName()).open();
 		
 		editor.setStartupPoller(startupPoller);
 		editor.setShutdownPoller(shutdownPoller);

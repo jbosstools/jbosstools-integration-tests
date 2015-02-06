@@ -38,7 +38,10 @@ public abstract class UndeployJSPProjectTemplate {
 	
 	@Test
 	public void undeployProject(){
-		JBossServer server = new JBossServerView().getServer(getServerName());
+		JBossServerView view = new JBossServerView();
+		view.open();
+		
+		JBossServer server = view.getServer(getServerName());
 		undeploy(server);
 		
 		// console
