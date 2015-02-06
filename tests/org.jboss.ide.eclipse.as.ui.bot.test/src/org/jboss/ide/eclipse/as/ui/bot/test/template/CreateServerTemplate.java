@@ -30,13 +30,13 @@ public abstract class CreateServerTemplate {
 	@Test
 	public void createServer(){
 		JBossServerView jbossView = new JBossServerView();
+		jbossView.open();
 		JBossServer server = jbossView.getServer(getServerName());
 		editor = server.open();
 
 		assertEditorPorts();
-		// JBIDE-18737 - the Ports tree item sometimes does not appear
-		//	List<XMLConfiguration> configurations = server.getXMLConfiguration("Ports");
-		// assertViewPorts(configurations);
+		List<XMLConfiguration> configurations = server.getXMLConfiguration("Ports");
+		assertViewPorts(configurations);
 	}
 
 	protected String getServerName() {
