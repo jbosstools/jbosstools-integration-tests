@@ -1,6 +1,6 @@
 package org.jboss.tools.hibernate.reddeer.test;
 
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
@@ -15,6 +15,7 @@ import org.jboss.tools.hibernate.factory.ConnectionProfileFactory;
 import org.jboss.tools.hibernate.factory.DriverDefinitionFactory;
 import org.jboss.tools.hibernate.factory.EntityGenerationFactory;
 import org.jboss.tools.hibernate.factory.ProjectConfigurationFactory;
+import org.jboss.tools.hibernate.reddeer.view.QueryPageTabView;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
