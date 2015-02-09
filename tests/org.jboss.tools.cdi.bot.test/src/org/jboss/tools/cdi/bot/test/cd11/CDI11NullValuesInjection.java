@@ -14,6 +14,7 @@ import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
+import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.reddeer.workbench.condition.EditorHasValidationMarkers;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.cdi.bot.test.CDI11TestBase;
@@ -40,22 +41,26 @@ public class CDI11NullValuesInjection extends CDI11TestBase{
 		pe.getProject(PROJECT_NAME).getProjectItem("src","test","Bean1.java").open();
 		TextEditor te = new TextEditor("Bean1.java");
 		te.insertLine(2, "import javax.enterprise.inject.Produces;");
-		te.insertLine(4, "@Produces");
-		te.insertLine(5, "@Qa");
-		te.insertLine(6, "public Boolean getB(){return null;}");
-		assertFalse(new EditorHasValidationMarkers(te).test());
+		te.insertLine(3, "import javax.enterprise.context.ApplicationScoped;");
+		te.insertLine(4, "@ApplicationScoped");
+		te.insertLine(6, "@Produces");
+		te.insertLine(7, "@Qa");
+		te.insertLine(8, "public Boolean getB(){return null;}");
+		new WaitWhile(new EditorHasValidationMarkers(te));
 		te.save();
-		assertFalse(new EditorHasValidationMarkers(te).test());
+		new WaitWhile(new EditorHasValidationMarkers(te));
 		te = new TextEditor("Bean2.java");
 		te.insertLine(2, "import javax.inject.Inject;");
-		te.insertLine(4, "@Inject @Qa boolean primitiveB;");
-		te.insertLine(5, "@Inject @Qa Boolean objectB;");
-		assertFalse(new EditorHasValidationMarkers(te).test());
+		te.insertLine(3, "import javax.enterprise.context.ApplicationScoped;");
+		te.insertLine(4, "@ApplicationScoped");
+		te.insertLine(6, "@Inject @Qa boolean primitiveB;");
+		te.insertLine(7, "@Inject @Qa Boolean objectB;");
+		new WaitWhile(new EditorHasValidationMarkers(te));
 		te.save();
-		assertFalse(new EditorHasValidationMarkers(te).test());
-		checkOpenOn("primitiveB","Open @Inject Bean Bean1 getB()", "Bean1.java");
+		new WaitWhile(new EditorHasValidationMarkers(te));
+		checkOpenOn("primitiveB","Open @Inject Bean Bean1.getB()", "Bean1.java");
 		te.activate();
-		checkOpenOn("objectB", "Open @Inject Bean Bean1 getB()", "Bean1.java");
+		checkOpenOn("objectB", "Open @Inject Bean Bean1.getB()", "Bean1.java");
 	}
 	
 	private void checkOpenOn(String text,String openOn,String expectedEditor){
@@ -63,7 +68,7 @@ public class CDI11NullValuesInjection extends CDI11TestBase{
 		te.selectText(text);
 		ContentAssistant ca = te.openOpenOnAssistant();
 		ca.chooseProposal(openOn);
-		assertEquals(expectedEditor,new TextEditor().getText());
+		assertEquals(expectedEditor,new TextEditor().getTitle());
 	}
 	
 	private void createClass(String project, String className){

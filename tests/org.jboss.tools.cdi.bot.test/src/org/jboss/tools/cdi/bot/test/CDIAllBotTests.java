@@ -57,7 +57,6 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @RunWith(RedDeerSuite.class)
 @SuiteClasses({	
-	
 //	PerspectiveTest.class,  // not included in JBDS anymore
 	ConfigurationPresetTest.class,
 	
@@ -107,7 +106,6 @@ import org.junit.runners.Suite.SuiteClasses;
 	BuiltInContexts.class,
 	WeldExclude.class,
 	VetoedAnnotation.class
-	
 })
 public class CDIAllBotTests {
 		

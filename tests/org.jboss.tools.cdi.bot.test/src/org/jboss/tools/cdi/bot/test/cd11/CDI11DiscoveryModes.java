@@ -80,7 +80,7 @@ public class CDI11DiscoveryModes extends CDI11TestBase{
 		List<Marker> markers = ed.getMarkers();
 		assertEquals(1,markers.size());
 		assertEquals("No bean is eligible for injection to the injection point [JSR-299 §5.2.1]",markers.get(0).getText());
-		assertEquals(6,markers.get(0).getLineNumber());
+		assertEquals(7,markers.get(0).getLineNumber());
 	}
 	
 	@Test
@@ -91,11 +91,11 @@ public class CDI11DiscoveryModes extends CDI11TestBase{
 		assertEquals(0,markers.size());
 		ed.insertLine(1, "import javax.enterprise.context.ApplicationScoped;");
 		ed.insertLine(3, "@ApplicationScoped");
-		new WaitUntil(new EditorHasValidationMarkers(ed, 6));
+		new WaitUntil(new EditorHasValidationMarkers(ed, 7));
 		markers = ed.getMarkers();
 		assertEquals(1,markers.size());
 		assertEquals("No bean is eligible for injection to the injection point [JSR-299 §5.2.1]",markers.get(0).getText());
-		assertEquals(6,markers.get(0).getLineNumber());
+		assertEquals(7,markers.get(0).getLineNumber());
 		
 		ed = new TextEditor("Bean2.java");
 		ed.insertLine(1, "import javax.enterprise.context.ApplicationScoped;");
@@ -132,11 +132,11 @@ public class CDI11DiscoveryModes extends CDI11TestBase{
 		assertEquals(0,markers.size());
 		ed.insertLine(1, "import javax.enterprise.context.ApplicationScoped;");
 		ed.insertLine(3, "@ApplicationScoped");
-		new WaitUntil(new EditorHasValidationMarkers(ed));
+		new WaitUntil(new EditorHasValidationMarkers(ed,7));
 		markers = ed.getMarkers();
 		assertEquals(1,markers.size());
 		assertEquals("No bean is eligible for injection to the injection point [JSR-299 §5.2.1]",markers.get(0).getText());
-		assertEquals(6,markers.get(0).getLineNumber());
+		assertEquals(7,markers.get(0).getLineNumber());
 		
 		ed = new TextEditor("Bean2.java");
 		ed.insertLine(1, "import javax.enterprise.context.ApplicationScoped;");
