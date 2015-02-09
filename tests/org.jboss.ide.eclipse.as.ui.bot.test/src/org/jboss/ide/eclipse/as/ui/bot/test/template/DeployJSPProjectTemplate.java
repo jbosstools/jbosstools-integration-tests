@@ -14,7 +14,7 @@ import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
 import org.jboss.reddeer.eclipse.wst.common.project.facet.ui.RuntimesPropertyPage;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.Server;
+import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewEnums.ServerPublishState;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewEnums.ServerState;
 import org.jboss.reddeer.eclipse.wst.server.ui.wizard.ModifyModulesDialog;
@@ -74,9 +74,7 @@ public abstract class DeployJSPProjectTemplate {
 
 	@Test
 	public void deployProject(){
-		JBossServerView serversView = new JBossServerView();
-		serversView.open();
-		JBossServer server = serversView.getServer(getServerName());
+		JBossServer server = getServer();
 		addModule(server);
 
 		// view
@@ -85,7 +83,7 @@ public abstract class DeployJSPProjectTemplate {
 		new WaitUntil(new ConsoleHasText(getConsoleMessage()));
 		assertFalse(new ConsoleHasText("Exception").test());
 		// web
-		serversView.open();
+		new ServersView().open();
 		ServerModuleWebPageEditor editor = server.getModule(PROJECT_NAME).openWebPage();
 		new WaitUntil(new EditorWithBrowserContainsTextCondition(editor, "Hello tests"));
 		assertThat(editor.getText(), containsString("Hello tests!"));
@@ -105,8 +103,10 @@ public abstract class DeployJSPProjectTemplate {
 		modifyModulesDialog.finish();
 	}
 	
-	protected Server getServer(){
-		return new org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView().getServer(getServerName());
+	protected JBossServer getServer(){
+		JBossServerView serversView = new JBossServerView();
+		serversView.open();
+		return serversView.getServer(getServerName());
 	}
 
 	protected String getServerName() {
