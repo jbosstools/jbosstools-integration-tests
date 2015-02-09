@@ -62,7 +62,7 @@ public class ParametersAnnotation extends CDI11TestBase{
 		pe.open();
 		pe.getProject(PROJECT_NAME).select();
 		new ContextMenu("Refresh").select();
-		new WaitWhile(new JobIsRunning());
+		new WaitWhile(new JobIsRunning(),TimePeriod.LONG);
 		NewJavaClassWizardDialog jd = new NewJavaClassWizardDialog();
 		jd.open();
 		NewJavaClassWizardPage jp = jd.getFirstPage();
