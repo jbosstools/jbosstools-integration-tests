@@ -1,4 +1,4 @@
-package org.jboss.tools.hibernate.factory;
+package org.jboss.tools.hibernate.reddeer.factory;
 
 import static org.junit.Assert.fail;
 

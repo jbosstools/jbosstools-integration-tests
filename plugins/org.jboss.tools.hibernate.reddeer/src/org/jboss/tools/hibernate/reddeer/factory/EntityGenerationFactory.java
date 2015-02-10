@@ -1,4 +1,4 @@
-package org.jboss.tools.hibernate.factory;
+package org.jboss.tools.hibernate.reddeer.factory;
 
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.requirements.db.DatabaseConfiguration;

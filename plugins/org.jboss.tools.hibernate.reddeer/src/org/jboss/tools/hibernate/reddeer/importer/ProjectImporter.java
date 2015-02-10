@@ -8,7 +8,7 @@ import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPag
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitWhile;
-import org.jboss.tools.hibernate.factory.ResourceFactory;
+import org.jboss.tools.hibernate.reddeer.factory.ResourceFactory;
 
 /**
  * Project importer class provides handy methods to import project from

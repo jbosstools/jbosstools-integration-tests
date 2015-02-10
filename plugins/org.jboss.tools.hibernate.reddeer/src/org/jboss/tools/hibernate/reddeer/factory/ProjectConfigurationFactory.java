@@ -1,4 +1,4 @@
-package org.jboss.tools.hibernate.factory;
+package org.jboss.tools.hibernate.reddeer.factory;
 
 import java.util.ArrayList;
 import java.util.List;
