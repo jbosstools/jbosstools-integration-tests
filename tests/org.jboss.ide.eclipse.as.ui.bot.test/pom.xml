@@ -35,7 +35,7 @@
 		<jbosstools.test.jboss-as-6.x.home>${requirementsDirectory}/jboss-6.1.0.Final</jbosstools.test.jboss-as-6.x.home>
 		<jbosstools.test.jboss-as-7.0.home>${requirementsDirectory}/jboss-as-7.0.2.Final</jbosstools.test.jboss-as-7.0.home>
 		<jbosstools.test.jboss-as-7.1.home>${requirementsDirectory}/jboss-as-7.1.1.Final</jbosstools.test.jboss-as-7.1.home>
-		<jbosstools.test.jboss-wildfly-8.home>${requirementsDirectory}/wildfly-8.0.0.Final</jbosstools.test.jboss-wildfly-8.home>
+		<jbosstools.test.jboss-wildfly-8.home>${requirementsDirectory}/wildfly-8.2.0.Final</jbosstools.test.jboss-wildfly-8.home>
 		<jbosstools.test.jboss-eap-4.home>${requirementsDirectory}/jboss-eap-4.3/jboss-as</jbosstools.test.jboss-eap-4.home>
 		<jbosstools.test.jboss-eap-5.home>${requirementsDirectory}/jboss-eap-5.2/jboss-as</jbosstools.test.jboss-eap-5.home>
 		<jbosstools.test.jboss-eap-6.0.home>${requirementsDirectory}/jboss-eap-6.0</jbosstools.test.jboss-eap-6.0.home>
