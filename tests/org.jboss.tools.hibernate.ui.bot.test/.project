@@ -47,27 +47,27 @@
 		<link>
 			<name>lib-org.hibernate.eclipse.libs_3.7.0.Alpha1-v20130216-0715-B7</name>
 			<type>2</type>
-			<location>/home/jpeterka/ide/test/jbds7a1a/studio/plugins/org.hibernate.eclipse.libs_3.7.0.Alpha1-v20130216-0715-B7</location>
+			<location>/home/jpeterka/data/ide/test/jbds7a1a/studio/plugins/org.hibernate.eclipse.libs_3.7.0.Alpha1-v20130216-0715-B7</location>
 		</link>
 		<link>
 			<name>lib-org.jboss.tools.common.text.ext_3.3.0.v20111208-2036-H34-M5</name>
 			<type>2</type>
-			<location>/home/jpeterka/ide/test/jbds5m5h62/studio/plugins/org.jboss.tools.common.text.ext_3.3.0.v20111208-2036-H34-M5</location>
+			<location>/home/jpeterka/data/ide/test/jbds5m5h62/studio/plugins/org.jboss.tools.common.text.ext_3.3.0.v20111208-2036-H34-M5</location>
 		</link>
 		<link>
 			<name>lib-org.jboss.tools.common.text.xml_3.3.0.v20111208-2036-H34-M5</name>
 			<type>2</type>
-			<location>/home/jpeterka/ide/test/jbds5m5h62/studio/plugins/org.jboss.tools.common.text.xml_3.3.0.v20111208-2036-H34-M5</location>
+			<location>/home/jpeterka/data/ide/test/jbds5m5h62/studio/plugins/org.jboss.tools.common.text.xml_3.3.0.v20111208-2036-H34-M5</location>
 		</link>
 		<link>
 			<name>lib-org.jboss.tools.common_3.3.0.v20111208-2036-H34-M5</name>
 			<type>2</type>
-			<location>/home/jpeterka/ide/test/jbds5m5h62/studio/plugins/org.jboss.tools.common_3.3.0.v20111208-2036-H34-M5</location>
+			<location>/home/jpeterka/data/ide/test/jbds5m5h62/studio/plugins/org.jboss.tools.common_3.3.0.v20111208-2036-H34-M5</location>
 		</link>
 		<link>
 			<name>lib-org.jboss.tools.xulrunner.initializer_3.5.0.Alpha1-v20130218-1313-B9</name>
 			<type>2</type>
-			<location>/home/jpeterka/ide/test/jbds7a1a/studio/plugins/org.jboss.tools.xulrunner.initializer_3.5.0.Alpha1-v20130218-1313-B9</location>
+			<location>/home/jpeterka/data/ide/test/jbds7a1a/studio/plugins/org.jboss.tools.xulrunner.initializer_3.5.0.Alpha1-v20130218-1313-B9</location>
 		</link>
 	</linkedResources>
 </projectDescription>
