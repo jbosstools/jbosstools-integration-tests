@@ -7,6 +7,8 @@ import java.util.List;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.eclipse.m2e.core.ui.preferences.MavenSettingsPreferencePage;
+import org.jboss.reddeer.eclipse.ui.views.log.LogMessage;
+import org.jboss.reddeer.eclipse.ui.views.log.LogView;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.exception.WaitTimeoutExpiredException;
@@ -38,10 +40,14 @@ import org.junit.runner.RunWith;
 public class ImportQuickstartsTest {
 
 	private QuickstartsReporter reporter = QuickstartsReporter.getInstance();
+	private static LogView errorLogView;
 
 	@BeforeClass
 	public static void setup() {
 		setupMavenRepo();
+		errorLogView = new LogView();
+		errorLogView.open();
+		errorLogView.clearLog();
 	}
 
 	@Test
@@ -71,6 +77,7 @@ public class ImportQuickstartsTest {
 				importQuickstart(qstart);
 				checkForWarnings(qstart);
 				checkForErrors(qstart);
+				checkErrorLog(qstart);
 			} catch (Exception ex) {
 				reporter.addError(
 						qstart,
@@ -82,6 +89,13 @@ public class ImportQuickstartsTest {
 		}
 		reporter.generateReport();
 		reporter.generateErrorFilesForEachProject(new File("target/reports/"));
+	}
+
+	private void checkErrorLog(Quickstart qstart) {
+		for (LogMessage message : errorLogView.getErrorMessages()){
+			reporter.addError(qstart, message.getMessage());
+		}
+		errorLogView.clearLog();
 	}
 
 	private void checkForWarnings(Quickstart q) {
