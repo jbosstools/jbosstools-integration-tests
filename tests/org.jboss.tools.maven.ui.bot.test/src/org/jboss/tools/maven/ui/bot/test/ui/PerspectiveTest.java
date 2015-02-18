@@ -12,13 +12,10 @@ package org.jboss.tools.maven.ui.bot.test.ui;
 
 import static org.junit.Assert.fail;
 
-import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
-import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.table.DefaultTableItem;
-import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.tools.central.reddeer.perspective.JBossPerspective;
 import org.jboss.tools.maven.ui.bot.test.AbstractMavenSWTBotTest;
 import org.junit.Test;
 
@@ -36,7 +33,7 @@ public class PerspectiveTest extends AbstractMavenSWTBotTest {
 	 */
 	@Test
 	public void testJBossPerspective() {
-		setPerspective("JBoss");
+		new JBossPerspective().open();
 		try{
 			new ShellMenu("File","New","Maven Project");
 		} catch (SWTLayerException ex){
@@ -46,23 +43,11 @@ public class PerspectiveTest extends AbstractMavenSWTBotTest {
 	
 	@Test
 	public void testJ2EEPerspective(){
-		setPerspective("Java EE");
+		new JavaEEPerspective().open(); 
 		try{
 			new ShellMenu("File","New","Maven Project");
 		} catch (SWTLayerException ex){
 			fail("Maven project menu not found in Java EE perspective");
 		}
-	}
-	
-	private void setPerspective(String perspective){
-	    new ShellMenu("Window","Open Perspective","Other...").select();
-        new DefaultShell("Open Perspective");
-        try{
-            new DefaultTableItem(perspective).select();
-        } catch (SWTLayerException ex){
-            new DefaultTableItem(perspective+ " (default)").select();
-        }
-        new OkButton().click();
-        new WaitWhile(new ShellWithTextIsAvailable("Open Perspective"));
 	}
 }
