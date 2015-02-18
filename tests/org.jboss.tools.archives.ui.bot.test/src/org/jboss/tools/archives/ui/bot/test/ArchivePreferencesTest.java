@@ -12,8 +12,8 @@ package org.jboss.tools.archives.ui.bot.test;
 
 import static org.junit.Assert.fail;
 
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -72,10 +72,10 @@ public class ArchivePreferencesTest extends ArchivesTestBase {
 	}
 	
 	private void openPropertiesForProject(String projectName) {
-		PackageExplorer packageExplorer = new PackageExplorer();
-		packageExplorer.open();
+		ProjectExplorer pExplorer = new ProjectExplorer();
+		pExplorer.open();
 		
-		packageExplorer.getProject(projectName).select();
+		pExplorer.getProject(projectName).select();
 		new ContextMenu(IDELabel.Menu.PROPERTIES).select();
 	}
 	

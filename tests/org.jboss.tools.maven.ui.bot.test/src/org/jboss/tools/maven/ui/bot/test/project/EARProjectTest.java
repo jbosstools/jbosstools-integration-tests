@@ -14,8 +14,8 @@ import static org.junit.Assert.assertTrue;
 
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jst.j2ee.ui.project.facet.EarProjectFirstPage;
 import org.jboss.reddeer.eclipse.jst.j2ee.ui.project.facet.EarProjectInstallPage;
 import org.jboss.reddeer.eclipse.jst.j2ee.ui.project.facet.EarProjectWizard;
@@ -59,11 +59,11 @@ public class EARProjectTest extends AbstractMavenSWTBotTest{
 	}
 	
 	public ProjectItem getTargetFiles(String projectName){
-		PackageExplorer pex = new PackageExplorer();
-		pex.open();
-		pex.getProject(projectName).select();
+		ProjectExplorer pe = new ProjectExplorer();
+		pe.open();
+		pe.getProject(projectName).select();
 		new ContextMenu("Refresh").select();
-		return pex.getProject(projectName).getProjectItem("target",projectName+"-0.0.1-SNAPSHOT");
+		return pe.getProject(projectName).getProjectItem("target",projectName+"-0.0.1-SNAPSHOT");
 	}
 	
 	public void prepareProject(String projectName, String mavenBuild,String packaging){

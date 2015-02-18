@@ -12,8 +12,8 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.tools.cdi.reddeer.uiutils.CDIProjectHelper;
 import org.jboss.tools.common.reddeer.preferences.SourceLookupPreferencePage;
@@ -42,7 +42,7 @@ public class NewDeltaspikeTestBase {
 	
 	@Before
 	public void prepareWorkspace(){
-		PackageExplorer pe = new PackageExplorer();
+		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		if(pe.containsProject(PROJECT_NAME)){
 			return;

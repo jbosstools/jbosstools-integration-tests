@@ -11,7 +11,7 @@ public class CDIConstants {
 	public static final String JAVA_RESOURCES = "Java Resources";
 	public static final String JAVA_SOURCE = "JavaSource";
 	public static final String SRC = "src";
-	public static final String JAVA_RESOURCES_SRC_FOLDER = JAVA_SOURCE+"/"+SRC+"/";
+	public static final String JAVA_RESOURCES_SRC_FOLDER = JAVA_RESOURCES+"/"+SRC+"/";
 	public static final String META_INF = "META-INF";
 	public static final String META_INF_BEANS_XML_PATH = IDELabel.WebProjectsTree.WEB_CONTENT
 			 + "/" + META_INF + "/" + IDELabel.WebProjectsTree.BEANS_XML;

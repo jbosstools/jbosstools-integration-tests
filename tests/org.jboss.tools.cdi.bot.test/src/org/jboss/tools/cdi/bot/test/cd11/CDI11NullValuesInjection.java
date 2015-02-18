@@ -7,7 +7,7 @@ import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardDialog;
 import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardPage;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.jface.text.contentassist.ContentAssistant;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
@@ -36,9 +36,9 @@ public class CDI11NullValuesInjection extends CDI11TestBase{
 		createClass(PROJECT_NAME, "Bean2");
 		CDIWizardHelper wz = new CDIWizardHelper();
 		wz.createCDIComponent(CDIWizardType.QUALIFIER, "Qa", "test", null);
-		PackageExplorer pe = new PackageExplorer();
+		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
-		pe.getProject(PROJECT_NAME).getProjectItem("src","test","Bean1.java").open();
+		pe.getProject(PROJECT_NAME).getProjectItem("Java Resources","src","test","Bean1.java").open();
 		TextEditor te = new TextEditor("Bean1.java");
 		te.insertLine(2, "import javax.enterprise.inject.Produces;");
 		te.insertLine(3, "import javax.enterprise.context.ApplicationScoped;");
@@ -72,7 +72,7 @@ public class CDI11NullValuesInjection extends CDI11TestBase{
 	}
 	
 	private void createClass(String project, String className){
-		PackageExplorer pe = new PackageExplorer();
+		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		pe.selectProjects(project);
 		NewJavaClassWizardDialog c = new NewJavaClassWizardDialog();

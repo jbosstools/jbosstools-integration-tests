@@ -14,8 +14,8 @@ import static org.junit.Assert.assertEquals;
 
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
@@ -186,9 +186,9 @@ public class SeamConfiguratorTest extends AbstractConfiguratorsTest{
 	}
 	
 	private String getSeamRuntime(String project){
-		PackageExplorer p = new PackageExplorer();
-		p.open();
-		p.getProject(project).select();
+		ProjectExplorer pe = new ProjectExplorer();
+		pe.open();
+		pe.getProject(project).select();
 		new ContextMenu("Properties").select();
 		new DefaultTreeItem("Seam Settings").select();
 		String runtime =  new LabeledCombo("Seam Runtime:").getSelection();

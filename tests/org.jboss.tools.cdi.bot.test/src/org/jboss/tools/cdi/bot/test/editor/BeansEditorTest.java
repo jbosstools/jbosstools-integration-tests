@@ -21,10 +21,11 @@ import java.util.List;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
@@ -62,7 +63,7 @@ public class BeansEditorTest extends CDITestBase {
 		/**
 		 * project should be located in workspace after previous test
 		 */
-		PackageExplorer pe = new PackageExplorer();
+		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		assertTrue(pe.containsProject("CDIProject"));
 		pe.getProject("CDIProject").getProjectItem("WebContent","WEB-INF","beans.xml").open();
@@ -72,7 +73,7 @@ public class BeansEditorTest extends CDITestBase {
 	
 	@Override
 	public void prepareWorkspace() {
-		PackageExplorer pe = new PackageExplorer();
+		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		pe.getProject(getProjectName()).getProjectItem(descPath.split("/")).open();						
 	}

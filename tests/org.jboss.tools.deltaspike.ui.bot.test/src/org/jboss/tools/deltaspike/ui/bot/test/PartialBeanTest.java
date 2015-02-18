@@ -12,7 +12,7 @@ import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardDialog;
 import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardPage;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
@@ -39,7 +39,7 @@ public class PartialBeanTest extends NewDeltaspikeTestBase{
 	
 	@Test
 	public void testPartialBean(){
-		PackageExplorer pe = new PackageExplorer();
+		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		pe.getProject(PROJECT_NAME).select();
 		String classesPath = "resources/classes/binding/";
@@ -88,7 +88,7 @@ public class PartialBeanTest extends NewDeltaspikeTestBase{
 		assertErrorExists("AnotherImplementation","Multiple handlers are found for binding annotation test.ExamplePartialBeanBinding");
 		assertErrorExists("ExamplePartialBeanImplementation","Multiple handlers are found for binding annotation test.ExamplePartialBeanBinding");
 		pe.open();
-		pe.getProject(PROJECT_NAME).getProjectItem("src","test","AnotherImplementation.java").delete();
+		pe.getProject(PROJECT_NAME).getProjectItem("Java Resources","src","test","AnotherImplementation.java").delete();
 		assertNoErrors("ExamplePartialBeanImplementation");
 		
 		// Invocation handler class should be normal-scoped.

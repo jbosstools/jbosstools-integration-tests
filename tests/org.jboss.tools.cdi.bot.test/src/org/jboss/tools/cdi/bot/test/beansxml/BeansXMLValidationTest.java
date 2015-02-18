@@ -16,8 +16,8 @@ import static org.junit.Assert.*;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.core.resources.Project;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
@@ -81,11 +81,12 @@ public class BeansXMLValidationTest extends BeansXMLQuickFixTestBase {
 	public void testInterceptorsValidation() {
 		
 		String className = "I1";
-		PackageExplorer pe = new PackageExplorer();
+		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		Project p = pe.getProject(getProjectName());
-		if (!p.containsItem((CDIConstants.SRC +"/"+ getPackageName() + 
-				"/" + someBean + ".java").split("/"))) {
+		p.refresh();
+		if (!p.containsItem(CDIConstants.JAVA_RESOURCES, CDIConstants.SRC, getPackageName(),
+				someBean + ".java")) {
 			wizard.createCDIComponent(CDIWizardType.BEAN, someBean, getPackageName(), null);
 		}
 		
@@ -114,11 +115,12 @@ public class BeansXMLValidationTest extends BeansXMLQuickFixTestBase {
 	public void testDecoratorsValidation() {
 		
 		String className = "D1";
-		PackageExplorer pe = new PackageExplorer();
+		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		Project p = pe.getProject(getProjectName());
-		if (!p.containsItem((CDIConstants.SRC +"/"+ getPackageName() + 
-				"/" + someBean + ".java").split("/"))) {
+		p.refresh();
+		if (!p.containsItem(CDIConstants.JAVA_RESOURCES, CDIConstants.SRC, getPackageName(),
+				someBean + ".java")) {
 			wizard.createCDIComponent(CDIWizardType.BEAN, someBean, getPackageName(), null);
 		}
 		
@@ -146,11 +148,12 @@ public class BeansXMLValidationTest extends BeansXMLQuickFixTestBase {
 	public void testAlternativesValidation() {
 		
 		String className = "A1";
-		PackageExplorer pe = new PackageExplorer();
+		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		Project p =pe.getProject(getProjectName());
-		if (!p.containsItem((CDIConstants.SRC +"/"+ getPackageName() + 
-				"/" + someBean + ".java").split("/"))) {
+		p.refresh();
+		if (!p.containsItem(CDIConstants.JAVA_RESOURCES, CDIConstants.SRC, getPackageName(),
+				someBean + ".java")) {
 			wizard.createCDIComponent(CDIWizardType.BEAN, someBean, getPackageName(), null);
 		}
 		

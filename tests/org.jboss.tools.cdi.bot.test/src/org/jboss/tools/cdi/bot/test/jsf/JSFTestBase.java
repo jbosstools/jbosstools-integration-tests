@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
@@ -114,7 +114,7 @@ public class JSFTestBase extends CDITestBase {
 		try {
 			new DefaultEditor(className+".java");
 		} catch (WorkbenchPartNotFound exc) {
-			PackageExplorer pe = new PackageExplorer();
+			ProjectExplorer pe = new ProjectExplorer();
 			pe.open();
 			pe.getProject(getProjectName()).getProjectItem(CDIConstants.JAVA_RESOURCES, CDIConstants.JAVA_SOURCE, 
 					 getPackageName(), className);

@@ -13,8 +13,9 @@
 package org.jboss.tools.cdi.reddeer.uiutils;
 
 import static org.junit.Assert.*;
+
 import org.eclipse.swt.SWT;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jst.servlet.ui.WebProjectFirstPage;
 import org.jboss.reddeer.eclipse.jst.servlet.ui.WebProjectWizard;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
@@ -91,7 +92,7 @@ public class CDIProjectHelper {
 	}
 	
 	public boolean projectExists(String projectName){
-		PackageExplorer pe = new PackageExplorer();
+		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		return pe.containsProject(projectName);
 	}
@@ -128,7 +129,7 @@ public class CDIProjectHelper {
 	 * @param projectName
 	 */
 	public void addCDISupport(String projectName) {
-		PackageExplorer pe = new PackageExplorer();
+		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		pe.getProject(projectName).select();
 		new ContextMenu(IDELabel.Menu.PACKAGE_EXPLORER_CONFIGURE, 
@@ -143,7 +144,7 @@ public class CDIProjectHelper {
 	 * @param projectName
 	 */
 	public void addCDISupportWithEnterKey(String projectName) {
-		PackageExplorer pe = new PackageExplorer();
+		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		pe.getProject(projectName).select();
 		new ContextMenu(IDELabel.Menu.PACKAGE_EXPLORER_CONFIGURE, 
@@ -171,7 +172,7 @@ public class CDIProjectHelper {
 	 * @return
 	 */
 	public boolean checkCDISupport(String projectName) {
-		PackageExplorer pe = new PackageExplorer();
+		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		pe.getProject(projectName).select();
 		new ContextMenu("Properties").select();

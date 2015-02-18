@@ -18,10 +18,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
@@ -95,7 +95,7 @@ public class MavenProfilesTest extends AbstractMavenSWTBotTest {
 	
 	@After
 	public void cleanProfiles(){
-		PackageExplorer pe = new PackageExplorer();
+		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		for(Project p: pe.getProjects()){
 			SelectProfilesDialog mp = new SelectProfilesDialog(p.getName());
@@ -135,7 +135,7 @@ public class MavenProfilesTest extends AbstractMavenSWTBotTest {
 				fail("not all profiles are activated");
 			}
 		}
-		PackageExplorer pe = new PackageExplorer();
+		ProjectExplorer pe = new ProjectExplorer();
         pe.open();
         pe.getProject("simple-jar").select();
         RegexMatcher rm1 = new RegexMatcher("Run As");
@@ -172,7 +172,7 @@ public class MavenProfilesTest extends AbstractMavenSWTBotTest {
 		String profilesText = mp.getActiveProfilesText();
 		mp.ok();
 		assertTrue(profilesText.equals(SIMPLE_JAR_ALL_PROFILES[0]));
-		PackageExplorer pe = new PackageExplorer();
+		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		pe.getProject("simple-jar").select();
 		RegexMatcher rm1 = new RegexMatcher("Run As");

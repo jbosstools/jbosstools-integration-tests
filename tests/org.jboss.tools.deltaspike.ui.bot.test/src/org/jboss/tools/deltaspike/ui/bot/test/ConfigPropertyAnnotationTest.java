@@ -16,8 +16,8 @@ import static org.junit.Assert.*;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.core.resources.Project;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
@@ -52,15 +52,16 @@ public class ConfigPropertyAnnotationTest extends DeltaspikeTestBase {
 	
 	@InjectRequirement
 	private ServerRequirement sr;
-
+	
 	@After
 	public void closeAllEditors() {
-		PackageExplorer pe = new PackageExplorer();
+		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		for(Project p: pe.getProjects()){
 			p.delete(true);
 		}
 	}
+
 	
 	@Test
 	public void testInjectSupportedConfigProperty() {

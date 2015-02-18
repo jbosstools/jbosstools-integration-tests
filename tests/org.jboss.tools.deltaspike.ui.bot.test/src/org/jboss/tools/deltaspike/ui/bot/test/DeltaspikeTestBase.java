@@ -23,8 +23,8 @@ import java.util.List;
 
 import org.eclipse.core.runtime.Platform;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
@@ -59,7 +59,6 @@ public class DeltaspikeTestBase {
 	private static final File DELTASPIKE_LIBRARY_DIR = new File(
 			System.getProperty("deltaspike.libs.dir"));
 
-	protected static final PackageExplorer packageExplorer = new PackageExplorer();
 	protected static final ProblemsView problemsView = new ProblemsView();
 
 	@AfterClass
@@ -92,7 +91,7 @@ public class DeltaspikeTestBase {
 		fPage.selectProjects(projectName);
 		iDialog.finish();
 
-		PackageExplorer pe = new PackageExplorer();
+		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		pe.getProject(projectName).select();
 		new ContextMenu("Properties").select();
@@ -105,7 +104,6 @@ public class DeltaspikeTestBase {
 				i.setChecked(false);
 			}
 		}
-		new PushButton("Apply").click();
 		new PushButton("OK").click();
 		new WaitWhile(new ShellWithTextIsAvailable("Properties for "+projectName));
 		new WaitWhile(new JobIsRunning());
@@ -155,10 +153,10 @@ public class DeltaspikeTestBase {
 
 	protected void openClass(String projectName, String packageName,
 			String classFullName) {
-
-		packageExplorer.open();
-		packageExplorer.getProject(projectName)
-				.getProjectItem("src", packageName, classFullName).open();
+		ProjectExplorer pe = new ProjectExplorer();
+		pe.open();
+		pe.getProject(projectName)
+				.getProjectItem("Java Resources","src", packageName, classFullName).open();
 
 	}
 	
@@ -173,8 +171,9 @@ public class DeltaspikeTestBase {
 	}
 
 	private static void deleteAllProjects() {
-		packageExplorer.open();
-		for (Project project : packageExplorer.getProjects()) {
+		ProjectExplorer pe = new ProjectExplorer();
+		pe.open();
+		for (Project project : pe.getProjects()) {
 			project.delete(true);
 		}
 	}
@@ -189,8 +188,9 @@ public class DeltaspikeTestBase {
 		new ShellMenu("File", "Refresh").select();
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 
-		packageExplorer.open();
-		packageExplorer.getProject(projectName).select();
+		ProjectExplorer pe = new ProjectExplorer();
+		pe.open();
+		pe.getProject(projectName).select();
 
 		new ContextMenu("Properties").select();
 		new DefaultShell("Properties for "+projectName);
