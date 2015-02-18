@@ -50,7 +50,7 @@ public class CDI11Wizard {
 		WebProjectFirstPage fp = (WebProjectFirstPage)cw.getWizardPage(0);
 		fp.setProjectName(PROJECT_NAME);
 		assertEquals(sr.getRuntimeNameLabelText(sr.getConfig()),fp.getTargetRuntime());
-		assertEquals("Dynamic Web Project with CDI 1.1 (Context and Dependency Injection)",fp.getConfiguration());
+		assertEquals("Dynamic Web Project with CDI 1.2 (Context and Dependency Injection)",fp.getConfiguration());
 		cw.finish();
 		PackageExplorer pe = new PackageExplorer();
 		pe.open();
@@ -71,14 +71,14 @@ public class CDI11Wizard {
 		WebProjectFirstPage fp = (WebProjectFirstPage)cw.getWizardPage(0);
 		fp.setProjectName(PROJECT_NAME);
 		assertEquals(sr.getRuntimeNameLabelText(sr.getConfig()),fp.getTargetRuntime());
-		assertEquals("Dynamic Web Project with CDI 1.1 (Context and Dependency Injection)",fp.getConfiguration());
+		assertEquals("Dynamic Web Project with CDI 1.2 (Context and Dependency Injection)",fp.getConfiguration());
 		CDIInstallWizardPage ip = (CDIInstallWizardPage) cw.getWizardPage(3);
 		ip.toggleCreateBeansXml(false);
 		cw.finish();
 		PackageExplorer pe = new PackageExplorer();
 		pe.open();
 		assertTrue(pe.containsProject(PROJECT_NAME));
-		assertFalse(pe.getProject(PROJECT_NAME).containsItem("WebContent","WEB-INF","beans.xml"));
+		assertFalse("this a known issue JBIDE-19289",pe.getProject(PROJECT_NAME).containsItem("WebContent","WEB-INF","beans.xml"));
 		new WaitUntil(new ProblemsExists(), TimePeriod.LONG, false);
 		new WaitWhile(new ProblemsExists());
 	}

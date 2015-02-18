@@ -90,7 +90,7 @@ public class WeldExclude extends CDI11TestBase{
 		ed.save();
 		AbstractWait.sleep(TimePeriod.NORMAL);
 		String warning = "org.eclipse.ui.workbench.texteditor.warning";
-		String noInjection = "No bean is eligible for injection to the injection point [JSR-299 §5.2.1]";
+		String noInjection = "No bean is eligible for injection to the injection point [JSR-346 §5.2.2]";
 		List<Marker> markers = ed.getMarkers();
 		assertEquals(4, markers.size());
 		

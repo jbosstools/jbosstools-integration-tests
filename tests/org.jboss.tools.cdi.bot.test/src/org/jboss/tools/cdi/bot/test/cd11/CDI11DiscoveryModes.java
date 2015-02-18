@@ -18,6 +18,7 @@ import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.reddeer.workbench.condition.EditorHasValidationMarkers;
 import org.jboss.reddeer.workbench.impl.editor.Marker;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
@@ -73,14 +74,12 @@ public class CDI11DiscoveryModes extends CDI11TestBase{
 		setMode("all");
 		TextEditor ed = new TextEditor("Bean1.java");
 		try{
-			new WaitUntil(new EditorHasValidationMarkers(ed));
+			new WaitWhile(new EditorHasValidationMarkers(ed));
 		} catch (WaitTimeoutExpiredException ex){
 			fail("this is known issue JBIDE-18964");
 		}
 		List<Marker> markers = ed.getMarkers();
-		assertEquals(1,markers.size());
-		assertEquals("No bean is eligible for injection to the injection point [JSR-299 §5.2.1]",markers.get(0).getText());
-		assertEquals(7,markers.get(0).getLineNumber());
+		assertEquals(0,markers.size());
 	}
 	
 	@Test
@@ -94,7 +93,7 @@ public class CDI11DiscoveryModes extends CDI11TestBase{
 		new WaitUntil(new EditorHasValidationMarkers(ed, 7));
 		markers = ed.getMarkers();
 		assertEquals(1,markers.size());
-		assertEquals("No bean is eligible for injection to the injection point [JSR-299 §5.2.1]",markers.get(0).getText());
+		assertEquals("No bean is eligible for injection to the injection point [JSR-346 §5.2.2]",markers.get(0).getText());
 		assertEquals(7,markers.get(0).getLineNumber());
 		
 		ed = new TextEditor("Bean2.java");
@@ -103,7 +102,8 @@ public class CDI11DiscoveryModes extends CDI11TestBase{
 		ed.save();
 		
 		ed = new TextEditor("Bean1.java");
-		new WaitUntil(new EditorHasValidationMarkers(ed),TimePeriod.NORMAL, false);
+		ed.save();
+		new WaitWhile(new EditorHasValidationMarkers(ed),TimePeriod.NORMAL, false);
 		markers = ed.getMarkers();
 		try{
 			assertEquals(0,markers.size());
@@ -116,7 +116,7 @@ public class CDI11DiscoveryModes extends CDI11TestBase{
 	public void testModeNone(){
 		setMode("none");
 		TextEditor ed = new TextEditor("Bean1.java");
-		new WaitUntil(new EditorHasValidationMarkers(ed),TimePeriod.NORMAL, false);
+		new WaitWhile(new EditorHasValidationMarkers(ed),TimePeriod.NORMAL, false);
 		List<Marker> markers = ed.getMarkers();
 		assertEquals(0,markers.size());
 	}
@@ -135,7 +135,7 @@ public class CDI11DiscoveryModes extends CDI11TestBase{
 		new WaitUntil(new EditorHasValidationMarkers(ed,7));
 		markers = ed.getMarkers();
 		assertEquals(1,markers.size());
-		assertEquals("No bean is eligible for injection to the injection point [JSR-299 §5.2.1]",markers.get(0).getText());
+		assertEquals("No bean is eligible for injection to the injection point [JSR-346 §5.2.2]",markers.get(0).getText());
 		assertEquals(7,markers.get(0).getLineNumber());
 		
 		ed = new TextEditor("Bean2.java");
@@ -145,7 +145,7 @@ public class CDI11DiscoveryModes extends CDI11TestBase{
 		
 		ed = new TextEditor("Bean1.java");
 		ed.save();
-		new WaitUntil(new EditorHasValidationMarkers(ed),TimePeriod.NORMAL, false);
+		new WaitWhile(new EditorHasValidationMarkers(ed),TimePeriod.NORMAL, false);
 		markers = ed.getMarkers();
 		assertEquals(0,markers.size());
 		

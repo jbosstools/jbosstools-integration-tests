@@ -89,7 +89,7 @@ public class BuiltInContexts extends CDI11TestBase{
 		assertEquals(3,markers.size());
 		for(Marker m: te.getMarkers()){
 			assertEquals("org.eclipse.ui.workbench.texteditor.warning",m.getType());
-			assertEquals("Multiple beans are eligible for injection to the injection point [JSR-299 §5.2.1]", m.getText());
+			assertEquals("Multiple beans are eligible for injection to the injection point [JSR-346 §5.2.2]", m.getText());
 			assertTrue(m.getLineNumber() == 70 || m.getLineNumber() == 73 || m.getLineNumber() == 76);
 		}
 	}

@@ -56,7 +56,7 @@ public class VetoedAnnotation extends CDI11TestBase{
 		TextEditor te = new TextEditor("Injector.java");
 		AbstractWait.sleep(TimePeriod.NORMAL);
 		String warning = "org.eclipse.ui.workbench.texteditor.warning";
-		String noInjection = "No bean is eligible for injection to the injection point [JSR-299 §5.2.1]";
+		String noInjection = "No bean is eligible for injection to the injection point [JSR-346 §5.2.2]";
 		List<Marker> markers = te.getMarkers();
 		assertEquals(5, markers.size());
 		for(Marker m: te.getMarkers()){
