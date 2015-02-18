@@ -12,7 +12,7 @@ import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
@@ -71,7 +71,7 @@ public class MavenConversionTest extends AbstractMavenSWTBotTest{
 		new CheckBox("Delete original references from project").toggle(true);
 		new PushButton("Finish").click();
 		new WaitWhile(new JobIsRunning(),TimePeriod.LONG);
-		PackageExplorer pe = new PackageExplorer();
+		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		pe.getProject(WEB_PROJECT_NAME).select();
 		new ContextMenu("Properties").select();
@@ -99,7 +99,7 @@ public class MavenConversionTest extends AbstractMavenSWTBotTest{
 		new CheckBox("Delete original references from project").toggle(false);
 		new PushButton("Finish").click();
 		new WaitWhile(new JobIsRunning(),TimePeriod.LONG);
-		PackageExplorer pe = new PackageExplorer();
+		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		pe.getProject(WEB_PROJECT_NAME).select();
 		new ContextMenu("Properties").select();
@@ -213,7 +213,7 @@ public class MavenConversionTest extends AbstractMavenSWTBotTest{
 	}
 	
 	private void createWithRuntime(){
-		PackageExplorer pe = new PackageExplorer();
+		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		if(pe.containsProject(WEB_PROJECT_NAME)){
 			return;
@@ -230,7 +230,7 @@ public class MavenConversionTest extends AbstractMavenSWTBotTest{
 		
 	
 	private void checkDependency(String projectName, List<String> valuesToCheck){
-	    PackageExplorer pe = new PackageExplorer();
+		ProjectExplorer pe = new ProjectExplorer();
 	    pe.open();
 	    pe.getProject(projectName).getProjectItem("pom.xml").open();
 	    new DefaultEditor("pom.xml");

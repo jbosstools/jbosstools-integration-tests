@@ -24,8 +24,8 @@ import java.util.Scanner;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.core.resources.Project;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.jface.text.contentassist.ContentAssistant;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
@@ -44,6 +44,7 @@ import org.jboss.reddeer.workbench.api.Editor;
 import org.jboss.reddeer.workbench.exception.WorkbenchPartNotFound;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.jboss.tools.cdi.reddeer.CDIConstants;
 import org.jboss.tools.common.reddeer.label.IDELabel;
 
 public class EditorResourceHelper {
@@ -229,12 +230,12 @@ public class EditorResourceHelper {
 	 * @param packageName
 	 */
 	public void deletePackage(String projectName, String packageName) {
-		PackageExplorer pe = new PackageExplorer();
+		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		pe.getProject(projectName).select();
 		new ContextMenu("Refresh").select();
 		new WaitWhile(new JobIsRunning());
-		deleteInProjectExplorer(projectName, "src",packageName);	
+		deleteInProjectExplorer(projectName, CDIConstants.JAVA_RESOURCES,CDIConstants.SRC,packageName);	
 	}
 	
 	/**
@@ -253,7 +254,7 @@ public class EditorResourceHelper {
 	 * @param path
 	 */
 	public void deleteInProjectExplorer(String projectName, String... path) {
-		PackageExplorer pe = new PackageExplorer();
+		ProjectExplorer pe = new ProjectExplorer();
 		Project p = pe.getProject(projectName);
 		p.select();
 		//refresh project due to bug in eclipse - new packages are shown outside of src
@@ -273,9 +274,9 @@ public class EditorResourceHelper {
 	}
 	
 	public void renameFileInExplorerBase(String project, String newFileName, String... oldFilePath) {
-		PackageExplorer ex = new PackageExplorer();
-		ex.open();
-		ex.getProject(project).getProjectItem(oldFilePath).select();
+		ProjectExplorer pe = new ProjectExplorer();
+		pe.open();
+		pe.getProject(project).getProjectItem(oldFilePath).select();
 		
 		new ShellMenu(IDELabel.Menu.FILE, IDELabel.Menu.RENAME_WITH_DOTS).select();
 		new DefaultShell(IDELabel.Shell.RENAME_RESOURCE);
@@ -289,7 +290,7 @@ public class EditorResourceHelper {
 	
 	public void moveFileInExplorerBase(String projectName, String[] sourceFile, String[] destFolder) {
 		
-		PackageExplorer pe = new PackageExplorer();
+		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		pe.getProject(projectName).getProjectItem(sourceFile).select();
 		new ShellMenu(IDELabel.Menu.FILE,IDELabel.Menu.MOVE).select();

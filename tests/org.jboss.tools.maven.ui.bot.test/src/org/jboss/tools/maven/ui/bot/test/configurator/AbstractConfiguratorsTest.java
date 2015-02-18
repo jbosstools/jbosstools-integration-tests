@@ -17,7 +17,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.List;
 
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.eclipse.jst.ejb.ui.EjbProjectFirstPage;
 import org.jboss.reddeer.eclipse.jst.ejb.ui.EjbProjectWizard;
@@ -63,15 +63,15 @@ public abstract class AbstractConfiguratorsTest extends AbstractMavenSWTBotTest{
 	
 	@After
 	public void deleteProjects(){
-	    PackageExplorer pexplorer = new PackageExplorer();
-        pexplorer.open();
-        pexplorer.deleteAllProjects();
+		ProjectExplorer pe = new ProjectExplorer();
+        pe.open();
+        pe.deleteAllProjects();
 	}
 	
 	public void addPersistence(String projectName) throws FileNotFoundException{
-		PackageExplorer pexplorer = new PackageExplorer();
-		pexplorer.open();
-		pexplorer.getProject(projectName).select();
+		ProjectExplorer pe = new ProjectExplorer();
+		pe.open();
+		pe.getProject(projectName).select();
 		new ContextMenu("New","Other...").select();
 		new WaitUntil(new ShellWithTextIsActive("New"),TimePeriod.NORMAL);
 		new DefaultTreeItem("XML","XML File").select();
@@ -114,9 +114,9 @@ public abstract class AbstractConfiguratorsTest extends AbstractMavenSWTBotTest{
 	}
 	
 	public void addFacesConf(String projectName){
-		PackageExplorer pexplorer = new PackageExplorer();
-		pexplorer.open();
-		pexplorer.getProject(projectName).select();
+		ProjectExplorer pe = new ProjectExplorer();
+		pe.open();
+		pe.getProject(projectName).select();
 		new ContextMenu("New","Other...").select();
 		new DefaultTreeItem("JBoss Tools Web","JSF","Faces Config").select();
 		new PushButton("Next >").click();
@@ -129,7 +129,7 @@ public abstract class AbstractConfiguratorsTest extends AbstractMavenSWTBotTest{
 	
 	
 	public void addServlet(String projectName, String servletName, String servletClass, String load){
-		PackageExplorer pe = new PackageExplorer();
+		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		pe.getProject(projectName).getProjectItem("WebContent","WEB-INF","web.xml").open();
 		DefaultEditor de = new DefaultEditor("web.xml");

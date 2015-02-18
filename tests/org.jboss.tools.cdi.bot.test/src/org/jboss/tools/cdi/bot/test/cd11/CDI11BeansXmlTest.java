@@ -8,7 +8,7 @@ import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
@@ -45,14 +45,14 @@ public class CDI11BeansXmlTest extends CDI11TestBase{
 	
 	@After
 	public void cleanup(){
-		PackageExplorer pe = new PackageExplorer();
+		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		pe.deleteAllProjects();
 	}
 	
 	@Test
 	public void testBeanDiscoveryModes(){
-		PackageExplorer pe = new PackageExplorer();
+		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		pe.getProject(PROJECT_NAME).getProjectItem("WebContent","WEB-INF","beans.xml").open();
 		EditorPartWrapper beans = new EditorPartWrapper();
@@ -72,7 +72,7 @@ public class CDI11BeansXmlTest extends CDI11TestBase{
 	
 	@Test
 	public void testBeanDiscoveryTreeEditing(){
-		PackageExplorer pe = new PackageExplorer();
+		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		pe.getProject(PROJECT_NAME).getProjectItem("WebContent","WEB-INF","beans.xml").open();
 		EditorPartWrapper beans = new EditorPartWrapper();
@@ -120,7 +120,7 @@ public class CDI11BeansXmlTest extends CDI11TestBase{
 	
 	@Test
 	public void testBeanDiscoverySourceEditing(){
-		PackageExplorer pe = new PackageExplorer();
+		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		pe.getProject(PROJECT_NAME).getProjectItem("WebContent","WEB-INF","beans.xml").open();
 		EditorPartWrapper beans = new EditorPartWrapper();
@@ -130,7 +130,7 @@ public class CDI11BeansXmlTest extends CDI11TestBase{
 	
 	@Test
 	public void testBeansVersion(){
-		PackageExplorer pe = new PackageExplorer();
+		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		pe.getProject(PROJECT_NAME).getProjectItem("WebContent","WEB-INF","beans.xml").open();
 		EditorPartWrapper beans = new EditorPartWrapper();
@@ -140,7 +140,7 @@ public class CDI11BeansXmlTest extends CDI11TestBase{
 	
 	@Test
 	public void testBeansName(){
-		PackageExplorer pe = new PackageExplorer();
+		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		pe.getProject(PROJECT_NAME).getProjectItem("WebContent","WEB-INF","beans.xml").open();
 		EditorPartWrapper beans = new EditorPartWrapper();

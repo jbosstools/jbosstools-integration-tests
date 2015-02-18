@@ -9,7 +9,7 @@ import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardDialog;
 import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardPage;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
@@ -23,6 +23,7 @@ import org.jboss.reddeer.workbench.condition.EditorHasValidationMarkers;
 import org.jboss.reddeer.workbench.impl.editor.Marker;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.cdi.bot.test.CDI11TestBase;
+import org.jboss.tools.cdi.reddeer.CDIConstants;
 import org.jboss.tools.cdi.reddeer.common.model.ui.editor.EditorPartWrapper;
 import org.junit.After;
 import org.junit.Before;
@@ -40,9 +41,9 @@ public class CDI11DiscoveryModes extends CDI11TestBase{
 	public void addBeans(){
 		createClass(PROJECT_NAME, "Bean1");
 		createClass(PROJECT_NAME, "Bean2");
-		PackageExplorer pe = new PackageExplorer();
+		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
-		pe.getProject(PROJECT_NAME).getProjectItem("src","test","Bean1.java").open();
+		pe.getProject(PROJECT_NAME).getProjectItem(CDIConstants.JAVA_RESOURCES,CDIConstants.SRC,"test","Bean1.java").open();
 		TextEditor ed = new TextEditor("Bean1.java");
 		ed.insertLine(1, "import javax.inject.Inject;");
 		ed.insertLine(4, "@Inject");
@@ -52,13 +53,13 @@ public class CDI11DiscoveryModes extends CDI11TestBase{
 	
 	@After
 	public void clean(){
-		PackageExplorer pe = new PackageExplorer();
+		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		pe.deleteAllProjects();
 	}
 	
 	private void createClass(String project, String className){
-		PackageExplorer pe = new PackageExplorer();
+		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		pe.selectProjects(project);
 		NewJavaClassWizardDialog c = new NewJavaClassWizardDialog();
@@ -123,7 +124,7 @@ public class CDI11DiscoveryModes extends CDI11TestBase{
 	
 	@Test
 	public void testWithoutBeansXml(){
-		PackageExplorer pe = new PackageExplorer();
+		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		pe.getProject(PROJECT_NAME).getProjectItem("WebContent","WEB-INF","beans.xml").delete();
 		TextEditor ed = new TextEditor("Bean1.java");
@@ -153,7 +154,7 @@ public class CDI11DiscoveryModes extends CDI11TestBase{
 	}
 	
 	private void setMode(String mode){
-		PackageExplorer pe = new PackageExplorer();
+		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		pe.getProject(PROJECT_NAME).getProjectItem("WebContent","WEB-INF","beans.xml").open();
 		EditorPartWrapper beans = new EditorPartWrapper();

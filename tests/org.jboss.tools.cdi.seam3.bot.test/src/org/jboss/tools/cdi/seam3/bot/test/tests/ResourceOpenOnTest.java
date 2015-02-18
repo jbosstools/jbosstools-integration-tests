@@ -24,6 +24,8 @@ import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
+import org.jboss.reddeer.swt.wait.AbstractWait;
+import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.cdi.reddeer.CDIConstants;
@@ -66,6 +68,7 @@ public class ResourceOpenOnTest extends Seam3TestBase {
 		
 		TextEditor te = new TextEditor(className);
 		te.selectText(CDIConstants.RESOURCE_ANNOTATION);
+		AbstractWait.sleep(TimePeriod.SHORT);
 		ContentAssistant ca = te.openOpenOnAssistant();
 		assertTrue(ca == null);
 		new DefaultEditor(IDELabel.WebProjectsTree.BEANS_XML);

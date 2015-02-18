@@ -1,6 +1,6 @@
 package org.jboss.tools.maven.ui.bot.test.utils;
 
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.condition.WaitCondition;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -18,18 +18,18 @@ public class ProjectHasNature implements WaitCondition{
 	private String natureParent;
 	
 	public ProjectHasNature(String projectName, String natureID, String version){
-		PackageExplorer pexplorer = new PackageExplorer();
-		pexplorer.open();
-		pexplorer.getProject(projectName).select();
+		ProjectExplorer pe = new ProjectExplorer();
+		pe.open();
+		pe.getProject(projectName).select();
 		this.projectName=projectName;
 		this.natureID=natureID;
 		this.version=version;
 	}
 	
 	public ProjectHasNature(String projectName, String natureParent, String natureID, String version){
-        PackageExplorer pexplorer = new PackageExplorer();
-        pexplorer.open();
-        pexplorer.getProject(projectName).select();
+		ProjectExplorer pe = new ProjectExplorer();
+        pe.open();
+        pe.getProject(projectName).select();
         this.projectName=projectName;
         this.natureID=natureID;
         this.version=version;

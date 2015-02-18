@@ -18,8 +18,8 @@ import java.util.List;
 
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.jface.text.contentassist.ContentAssistant;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
@@ -44,9 +44,9 @@ public class QuickFixProposalsDescriptionTest extends CDITestBase {
 		
 		String className = "AddCodeBean.java";
 		
-		PackageExplorer pe = new PackageExplorer();
+		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
-		pe.getProject(getProjectName()).getProjectItem(CDIConstants.SRC,
+		pe.getProject(getProjectName()).getProjectItem(CDIConstants.JAVA_RESOURCES, CDIConstants.SRC,
 				getPackageName(), className).open();
 		TextEditor ed = new TextEditor(className);
 		ed.selectText("AddCodeBean");
@@ -79,9 +79,9 @@ public class QuickFixProposalsDescriptionTest extends CDITestBase {
 	
 		String className = "RemoveCodeBean.java";
 		
-		PackageExplorer pe = new PackageExplorer();
+		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
-		pe.getProject(getProjectName()).getProjectItem(CDIConstants.SRC,
+		pe.getProject(getProjectName()).getProjectItem(CDIConstants.JAVA_RESOURCES, CDIConstants.SRC,
 				getPackageName(), className).open();
 		TextEditor ed = new TextEditor(className);
 		ed.selectText("@Disposes String param1, @Observes String param2");
@@ -116,9 +116,9 @@ public class QuickFixProposalsDescriptionTest extends CDITestBase {
 		
 		String className = "EditCodeStereotype.java";
 		
-		PackageExplorer pe = new PackageExplorer();
+		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
-		pe.getProject(getProjectName()).getProjectItem(CDIConstants.SRC,
+		pe.getProject(getProjectName()).getProjectItem(CDIConstants.JAVA_RESOURCES, CDIConstants.SRC,
 				getPackageName(), className).open();
 		TextEditor ed = new TextEditor(className);
 		ed.selectText("@Named(\"name\")");

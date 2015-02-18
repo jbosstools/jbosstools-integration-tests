@@ -8,7 +8,7 @@ import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.reddeer.eclipse.condition.ProblemsExists;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jst.servlet.ui.WebProjectFirstPage;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
@@ -38,7 +38,7 @@ public class CDI11Wizard {
 	
 	@After
 	public void cleanup(){
-		PackageExplorer pe = new PackageExplorer();
+		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		pe.deleteAllProjects();
 	}
@@ -52,7 +52,7 @@ public class CDI11Wizard {
 		assertEquals(sr.getRuntimeNameLabelText(sr.getConfig()),fp.getTargetRuntime());
 		assertEquals("Dynamic Web Project with CDI 1.2 (Context and Dependency Injection)",fp.getConfiguration());
 		cw.finish();
-		PackageExplorer pe = new PackageExplorer();
+		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		assertTrue(pe.containsProject(PROJECT_NAME));
 		assertTrue(pe.getProject(PROJECT_NAME).containsItem("WebContent","WEB-INF","beans.xml"));
@@ -75,7 +75,7 @@ public class CDI11Wizard {
 		CDIInstallWizardPage ip = (CDIInstallWizardPage) cw.getWizardPage(3);
 		ip.toggleCreateBeansXml(false);
 		cw.finish();
-		PackageExplorer pe = new PackageExplorer();
+		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		assertTrue(pe.containsProject(PROJECT_NAME));
 		assertFalse("this a known issue JBIDE-19289",pe.getProject(PROJECT_NAME).containsItem("WebContent","WEB-INF","beans.xml"));

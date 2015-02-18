@@ -18,8 +18,8 @@ import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
 import org.jboss.reddeer.swt.api.TableItem;
@@ -88,7 +88,7 @@ public class Seam3TestBase {
 		fPage.selectProjects(projectName);
 		iDialog.finish();
 		
-		PackageExplorer pe = new PackageExplorer();
+		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		pe.getProject(projectName).select();
 		new ContextMenu("Properties").select();
@@ -114,7 +114,7 @@ public class Seam3TestBase {
 			SeamLibrary library, String runtimeName) {
 		importSeam3TestProject(projectName, "resources/projects/",runtimeName);
 		addAndCheckLibraryInProject(projectName, library);
-		PackageExplorer pe = new PackageExplorer();
+		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		pe.getProjects().get(0).select();
 		new ShellMenu("Project","Clean...").select();
@@ -125,7 +125,7 @@ public class Seam3TestBase {
 	}
 	
 	protected void cleanProjects(){
-		PackageExplorer pe = new PackageExplorer();
+		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		pe.getProjects().get(0).select();
 		new ShellMenu("Project","Clean...").select();

@@ -13,8 +13,8 @@ package org.jboss.tools.cdi.reddeer.uiutils;
 
 import java.io.InputStream;
 
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.core.resources.Project;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.cdi.reddeer.CDIConstants;
@@ -123,7 +123,7 @@ public class BeansXMLHelper {
 	 */
 	
 	private void createBeansXML(String projectName) {
-		Project p = new PackageExplorer().getProject(projectName);
+		Project p = new ProjectExplorer().getProject(projectName);
 		
 		if (!p.containsItem(
 				CDIConstants.META_INF_BEANS_XML_PATH.split("/"))
@@ -148,7 +148,7 @@ public class BeansXMLHelper {
 	 */
 	
 	private void replaceBeansXMLContent(String projectName, InputStream path) {
-		Project p = new PackageExplorer().getProject(projectName);
+		Project p = new ProjectExplorer().getProject(projectName);
 		
 		if (p.containsItem(CDIConstants.WEB_INF_BEANS_XML_PATH.split("/"))) {
 			p.getProjectItem(CDIConstants.WEB_INF_BEANS_XML_PATH.split("/")).open();

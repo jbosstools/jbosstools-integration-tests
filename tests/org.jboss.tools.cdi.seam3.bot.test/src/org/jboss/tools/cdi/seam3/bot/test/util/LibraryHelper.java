@@ -23,7 +23,7 @@ import static org.junit.Assert.*;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -52,7 +52,7 @@ public class LibraryHelper {
 	 */
 	public void addLibrariesToProjectsClassPath(String projectName,
 			Collection<String> libraries) {
-		PackageExplorer pe = new PackageExplorer();
+		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		pe.getProject(projectName).select();
 		new ContextMenu(IDELabel.Menu.REFRESH).select();

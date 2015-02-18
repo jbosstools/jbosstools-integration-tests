@@ -17,7 +17,7 @@ import org.eclipse.swt.SWT;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
@@ -45,9 +45,9 @@ public class AllAssignableDialogTest extends CDITestBase {
 
 	@Test
 	public void testDecorator() {
-		PackageExplorer pe = new PackageExplorer();
+		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
-		pe.getProject(getProjectName()).getProjectItem(CDIConstants.SRC,
+		pe.getProject(getProjectName()).getProjectItem(CDIConstants.JAVA_RESOURCES, CDIConstants.SRC,
 				getPackageName(), appClass).open();
 		TextEditor editor = new TextEditor(appClass);
 		editor.selectText("manager");
@@ -74,9 +74,9 @@ public class AllAssignableDialogTest extends CDITestBase {
 	@Test
 	public void testInterceptor() {
 
-		PackageExplorer pe = new PackageExplorer();
+		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
-		pe.getProject(getProjectName()).getProjectItem(CDIConstants.SRC,
+		pe.getProject(getProjectName()).getProjectItem(CDIConstants.JAVA_RESOURCES,CDIConstants.SRC,
 				getPackageName(), appClass).open();
 		TextEditor editor = new TextEditor(appClass);
 		editor.selectText("manager");
@@ -102,9 +102,9 @@ public class AllAssignableDialogTest extends CDITestBase {
 	@Test
 	public void testUnselectedAlternative() {
 
-		PackageExplorer pe = new PackageExplorer();
+		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
-		pe.getProject(getProjectName()).getProjectItem(CDIConstants.SRC,
+		pe.getProject(getProjectName()).getProjectItem(CDIConstants.JAVA_RESOURCES, CDIConstants.SRC,
 				getPackageName(), appClass).open();
 		TextEditor editor = new TextEditor(appClass);
 		editor.selectText("manager");
@@ -130,9 +130,9 @@ public class AllAssignableDialogTest extends CDITestBase {
 	@Test
 	public void testUnavailableProducer() {
 
-		PackageExplorer pe = new PackageExplorer();
+		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
-		pe.getProject(getProjectName()).getProjectItem(CDIConstants.SRC,
+		pe.getProject(getProjectName()).getProjectItem(CDIConstants.JAVA_RESOURCES, CDIConstants.SRC,
 				getPackageName(), appClass).open();
 		TextEditor editor = new TextEditor(appClass);
 		editor.selectText("manager");
@@ -158,9 +158,9 @@ public class AllAssignableDialogTest extends CDITestBase {
 	@Test
 	public void testSpecializedBeans() {
 
-		PackageExplorer pe = new PackageExplorer();
+		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
-		pe.getProject(getProjectName()).getProjectItem(CDIConstants.SRC,
+		pe.getProject(getProjectName()).getProjectItem(CDIConstants.JAVA_RESOURCES, CDIConstants.SRC,
 				getPackageName(), appClass).open();
 		TextEditor editor = new TextEditor(appClass);
 		editor.selectText("manager");
@@ -186,9 +186,9 @@ public class AllAssignableDialogTest extends CDITestBase {
 	@Test
 	public void testAmbiguousBeans() {
 		
-		PackageExplorer pe = new PackageExplorer();
+		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
-		pe.getProject(getProjectName()).getProjectItem(CDIConstants.SRC,
+		pe.getProject(getProjectName()).getProjectItem(CDIConstants.JAVA_RESOURCES, CDIConstants.SRC,
 				getPackageName(), appClass).open();
 		TextEditor editor = new TextEditor(appClass);
 		editor.selectText("managerImpl");

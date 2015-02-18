@@ -2,7 +2,7 @@ package org.jboss.tools.maven.reddeer.profiles;
 
 import java.util.ArrayList;
 
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.jface.wizard.WizardDialog;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -22,7 +22,7 @@ public class SelectProfilesDialog extends WizardDialog{
 	}
 	
 	public void open(){
-		PackageExplorer pe = new PackageExplorer();
+		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		pe.getProject(projectName).select();
 		new ContextMenu("Maven","Select Maven Profiles...").select();
