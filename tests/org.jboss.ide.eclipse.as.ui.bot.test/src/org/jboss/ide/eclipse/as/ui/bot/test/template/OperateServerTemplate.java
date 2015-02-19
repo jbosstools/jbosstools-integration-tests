@@ -5,6 +5,7 @@ import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.view.JBossServer;
 import org.jboss.ide.eclipse.as.reddeer.server.view.JBossServerView;
 import org.jboss.ide.eclipse.as.ui.bot.test.condition.EditorWithBrowserContainsTextCondition;
+import org.jboss.ide.eclipse.as.ui.bot.test.matcher.ConsoleContainsTextMatcher;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewEnums.ServerState;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
@@ -12,11 +13,10 @@ import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import static org.hamcrest.core.Is.is;
-
-import static org.junit.Assert.assertFalse;
 
 
 /**
@@ -69,7 +69,10 @@ public abstract class OperateServerTemplate {
 	protected void assertNoException(String message) {
 		ConsoleView consoleView = new ConsoleView();
 		consoleView.open();
-		assertFalse(consoleView.getConsoleText().contains("Exception"));
+		consoleView.toggleShowConsoleOnStandardOutChange(false);
+		
+		assertThat(consoleView, not(new ConsoleContainsTextMatcher("Exception")));
+
 		consoleView.close();
 	}
 
