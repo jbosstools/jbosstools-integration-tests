@@ -18,11 +18,11 @@ public class NewConfigurationSettingPage extends WizardPage {
 	private final String PASSWORD = "Password:";
 	
 	public void setDatabaseDialect(String dialect) {
-		new LabeledCombo("Database dialect:").setSelection(dialect);
+		new LabeledCombo("Database dialect:").setText(dialect);
 	}
 	
 	public void setDriverClass(String driverClass) {
-		new LabeledCombo(DRIVER_CLASS).setSelection(driverClass);
+		new LabeledCombo(DRIVER_CLASS).setText(driverClass);
 	}
 	
 	public void setConnectionURL(String url) {

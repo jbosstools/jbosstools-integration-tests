@@ -31,6 +31,8 @@ public class HibernateToolsFactory {
 		wizard.next();
 
 		NewConfigurationSettingPage p2 = new NewConfigurationSettingPage();
+		p2.setDatabaseDialect("H2");
+		p2.setDriverClass(cfg.getDriverClass());
 		p2.setConnectionURL(cfg.getJdbcString());
 		p2.setUsername(cfg.getUsername());		
 		

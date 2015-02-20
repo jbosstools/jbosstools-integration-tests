@@ -2,8 +2,7 @@ package org.jboss.tools.hibernate.reddeer.test;
 
 import static org.junit.Assert.fail;
 
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.db.DatabaseConfiguration;
@@ -12,27 +11,21 @@ import org.jboss.reddeer.requirements.db.DatabaseRequirement.Database;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
 import org.jboss.reddeer.swt.impl.table.DefaultTableItem;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
-import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.impl.tree.TreeItemNotFoundException;
+import org.jboss.reddeer.swt.wait.AbstractWait;
+import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
-import org.jboss.tools.hibernate.reddeer.factory.ConnectionProfileFactory;
-import org.jboss.tools.hibernate.reddeer.factory.DriverDefinitionFactory;
-import org.jboss.tools.hibernate.reddeer.factory.EntityGenerationFactory;
 import org.jboss.tools.hibernate.reddeer.factory.HibernateToolsFactory;
-import org.jboss.tools.hibernate.reddeer.factory.ProjectConfigurationFactory;
 import org.jboss.tools.hibernate.reddeer.perspective.HibernatePerspective;
 import org.junit.After;
 import org.junit.Before;
@@ -87,10 +80,11 @@ public class CodeGenerationConfigurationTest extends HibernateRedDeerTest {
     	new WaitWhile(new ShellWithTextIsActive("Hibernate Code Generation Configurations"));
     	new WaitUntil(new JobIsRunning());
     	    	
-    	ProjectExplorer pe = new ProjectExplorer();    
-    	pe.open();
-    	pe.selectProjects(PRJ);
+    	PackageExplorer pe = new PackageExplorer();    
+    	pe.open();    	
     	try {
+    		// need to wait here to get treeitem ready, TODO: implement proper condition
+    		AbstractWait.sleep(TimePeriod.NORMAL);
     		new DefaultTreeItem(PRJ,"src/main/java","org.gen","Actor.java").doubleClick();
     	}
     	catch (TreeItemNotFoundException e) {
@@ -101,7 +95,6 @@ public class CodeGenerationConfigurationTest extends HibernateRedDeerTest {
     
 	@After
 	public void cleanUp() {
-		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
-		ConnectionProfileFactory.deleteConnectionProfile(cfg.getProfileName());
+		// do nothing
 	}
 }
