@@ -44,7 +44,7 @@ public class JPADetailsViewTest extends HibernateRedDeerTest {
 		ConnectionProfileFactory.createConnectionProfile(cfg);
 		ProjectConfigurationFactory.convertProjectToFacetsForm(PRJ);
 		ProjectConfigurationFactory.setProjectFacetForDB(PRJ, cfg);
-		EntityGenerationFactory.generateJPAEntities(cfg, PRJ, "org.gen", "4.3");
+		EntityGenerationFactory.generateJPAEntities(cfg, PRJ, "org.gen", "4.3",false);
 
 	}
 
@@ -52,7 +52,6 @@ public class JPADetailsViewTest extends HibernateRedDeerTest {
 	public void testJPADetailView() {
 
 		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
-		EntityGenerationFactory.generateJPAEntities(cfg, PRJ, "org.gen", "4.3");
 
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();

@@ -55,7 +55,7 @@ public class HQLEditorTest extends HibernateRedDeerTest {
 		ConnectionProfileFactory.createConnectionProfile(cfg);
 		ProjectConfigurationFactory.convertProjectToFacetsForm(PRJ);
 		ProjectConfigurationFactory.setProjectFacetForDB(PRJ, cfg);
-		EntityGenerationFactory.generateJPAEntities(cfg,PRJ,"org.gen","4.3");
+		EntityGenerationFactory.generateJPAEntities(cfg,PRJ,"org.gen","4.3",false);
 	}
     
     

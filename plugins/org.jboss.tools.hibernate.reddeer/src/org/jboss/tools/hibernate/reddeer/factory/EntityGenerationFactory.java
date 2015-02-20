@@ -19,7 +19,7 @@ public class EntityGenerationFactory {
 	 * @param pkg package where entities will be located
 	 * @param hbVersion hibernate version
 	 */
-	public static void generateJPAEntities(DatabaseConfiguration cfg, String prj, String pkg, String hbVersion) {
+	public static void generateJPAEntities(DatabaseConfiguration cfg, String prj, String pkg, String hbVersion, boolean useConsole) {
 		
     	ProjectExplorer pe = new ProjectExplorer();
     	pe.open();
@@ -28,11 +28,13 @@ public class EntityGenerationFactory {
     	GenerateEntitiesWizard w = new GenerateEntitiesWizard();
     	w.open();
     		
-    	GenerateEntitiesWizardPage p = new GenerateEntitiesWizardPage();
-    	p.setUseConsole(false);
+    	GenerateEntitiesWizardPage p = new GenerateEntitiesWizardPage();    	
+    	p.setUseConsole(useConsole);
     	p.setPackage(pkg);
-    	p.setHibernateVersion(hbVersion);
-    	p.setDatabaseConnection(cfg.getProfileName());
+    	if (!useConsole) {
+    		p.setHibernateVersion(hbVersion);
+    		p.setDatabaseConnection(cfg.getProfileName());
+    	}
 
     	w.finish();		
 	}
