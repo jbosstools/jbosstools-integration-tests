@@ -42,7 +42,7 @@ public class TablesFromJPAEntitiesGeneration extends HibernateRedDeerTest {
 		DriverDefinitionFactory.createDatabaseDefinition(cfg);
 		ConnectionProfileFactory.createConnectionProfile(cfg);
 		testSetJPAFacets(cfg);
-		EntityGenerationFactory.generateJPAEntities(cfg, PRJ, "org.gen", "4.3");
+		EntityGenerationFactory.generateJPAEntities(cfg, PRJ, "org.gen", "4.3",true);
 	}
 
 	private void testSetJPAFacets(DatabaseConfiguration cfg) {

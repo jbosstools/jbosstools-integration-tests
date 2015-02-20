@@ -53,7 +53,7 @@ public class JPAEntityGenerationTest extends HibernateRedDeerTest {
     @Test
     public void testEntityGeneration() {
     	DatabaseConfiguration cfg = dbRequirement.getConfiguration();
-    	EntityGenerationFactory.generateJPAEntities(cfg,PRJ,"org.gen","4.3");
+    	EntityGenerationFactory.generateJPAEntities(cfg,PRJ,"org.gen","4.3",false);
     	
     	ProjectExplorer pe = new ProjectExplorer();    
     	pe.open();
