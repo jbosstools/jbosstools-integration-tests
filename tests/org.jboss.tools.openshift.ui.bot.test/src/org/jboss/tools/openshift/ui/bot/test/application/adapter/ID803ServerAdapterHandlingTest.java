@@ -140,7 +140,8 @@ public class ID803ServerAdapterHandlingTest {
 	@Test
 	public void testApplicationDetails() {
 		ID408ApplicationPropertiesTest.applicationDetails(servers, serverAdapter, applicationName, 
-				"jbosseap-6", "OpenShift", OpenShiftLabel.ContextMenu.APPLICATION_DETAILS);
+				"JBoss Enterprise Application Platform 6 (jbosseap-6)", "OpenShift", 
+				OpenShiftLabel.ContextMenu.APPLICATION_DETAILS);
 	}
 	
 	@Test

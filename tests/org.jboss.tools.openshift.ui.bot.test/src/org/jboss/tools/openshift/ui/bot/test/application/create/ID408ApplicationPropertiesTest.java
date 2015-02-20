@@ -47,7 +47,7 @@ public class ID408ApplicationPropertiesTest {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 		TreeItem application = explorer.getApplication(Datastore.USERNAME, Datastore.DOMAIN, applicationName);
 		
-		applicationDetails(explorer, application, applicationName, "diy-0.1",
+		applicationDetails(explorer, application, applicationName, "Do-It-Yourself 0.1 (diy-0.1)",
 				OpenShiftLabel.ContextMenu.APPLICATION_DETAILS);
 	}
 	

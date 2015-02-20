@@ -2,7 +2,7 @@ package org.jboss.tools.ws.ui.bot.test.rest;
 
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.ws.reddeer.editor.ExtendedTextEditor;
@@ -75,8 +75,8 @@ public class NameBindingAnnotationSupportTest extends RESTfulTestBase {
 		importRestWSProject(projectName);
 
 		/* remove the filter */
-		new PackageExplorer().getProject(projectName)
-			.getProjectItem("src", "org.rest.test", "Filter.java").delete();
+		new ProjectExplorer().getProject(projectName)
+			.getProjectItem("Java Resources", "src", "org.rest.test", "Filter.java").delete();
 		
 		/* there should be an error */
 		assertCountOfValidationErrors(projectName, 1);

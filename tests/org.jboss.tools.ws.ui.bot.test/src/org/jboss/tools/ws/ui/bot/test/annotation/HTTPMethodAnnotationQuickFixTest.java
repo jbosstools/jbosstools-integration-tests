@@ -46,7 +46,7 @@ public class HTTPMethodAnnotationQuickFixTest extends RESTfulTestBase {
 		editor.openQuickFixContentAssistant().chooseProposal(
 				"Add missing attributes");
 		new TextEditor().save();
-		AbstractWait.sleep(TimePeriod.getCustom(2));
+		AbstractWait.sleep(TimePeriod.getCustom(5));
 
 		/* assert that there is one JAX-RS errors - empty value */
 		assertCountOfValidationErrors(projectName, 1);

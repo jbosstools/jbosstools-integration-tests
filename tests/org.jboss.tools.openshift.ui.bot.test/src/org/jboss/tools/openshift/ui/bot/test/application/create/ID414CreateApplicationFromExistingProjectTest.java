@@ -173,7 +173,7 @@ public class ID414CreateApplicationFromExistingProjectTest {
 		
 		try {
 			new WaitUntil(new ApplicationIsDeployedSuccessfully(Datastore.USERNAME, Datastore.DOMAIN,
-					applicationName, "Welcome to JBoss!"), TimePeriod.LONG);
+					applicationName, "Welcome to WildFly"), TimePeriod.LONG);
 		} catch (WaitTimeoutExpiredException ex) {
 			fail("Application has not been deployed successfully.");
 		}

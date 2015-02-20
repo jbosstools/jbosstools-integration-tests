@@ -40,8 +40,6 @@ import org.junit.Test;
  */
 public class AnnotationPropertiesTest extends RESTfulTestBase {
 
-	private AnnotationPropertiesView annotationsView = new AnnotationPropertiesView();
-
 	@Override
 	public String getWsProjectName() {
 		return "restAdvanced";
@@ -64,8 +62,9 @@ public class AnnotationPropertiesTest extends RESTfulTestBase {
 		/** check params of annotation is synchronized **/
 		navigateInActiveEditor(13, 0);
 
+		AnnotationPropertiesView annotationsView = new AnnotationPropertiesView();
 		annotationsView.open();
-
+		
 		List<TreeItem> allAnnotations = annotationsView.getAllAnnotations();
 		List<TreeItem> deactiveAnnotations = annotationsView.getAllDeactiveAnnotation();
 
@@ -85,6 +84,7 @@ public class AnnotationPropertiesTest extends RESTfulTestBase {
 		/** check params of annotation is synchronized **/
 		navigateInActiveEditor(13, 0);
 
+		AnnotationPropertiesView annotationsView = new AnnotationPropertiesView();
 		annotationsView.open();
 
 		List<TreeItem> activeAnnotations = annotationsView.getAllActiveAnnotation();
@@ -104,10 +104,11 @@ public class AnnotationPropertiesTest extends RESTfulTestBase {
 		/** check params of annotation is synchronized **/
 		navigateInActiveEditor(13, 0);
 
-		annotationsView.open();
+		AnnotationPropertiesView annotationView = new AnnotationPropertiesView();
+		annotationView.open();
 
-		TreeItem pathAnnotation = annotationsView.getAnnotation("javax.ws.rs.Path");
-		List<TreeItem> values = annotationsView.getAnnotationValues(pathAnnotation);
+		TreeItem pathAnnotation = annotationView.getAnnotation("javax.ws.rs.Path");
+		List<TreeItem> values = annotationView.getAnnotationValues(pathAnnotation);
 
 		assertThat(values.size(), Is.is(1));
 
@@ -115,7 +116,7 @@ public class AnnotationPropertiesTest extends RESTfulTestBase {
 
 		/** edit parameter values and check if it is still synchronized **/
 		String parameter = values.get(0).getText();
-		annotationsView.changeAnnotationParamValue(pathAnnotation, parameter, "/edit");
+		annotationView.changeAnnotationParamValue(pathAnnotation, parameter, "/edit");
 		activeEditorContains("@Path(\"/edit\")");
 		activeEditorDoesntContain("@Path(\"/rest\")");
 	}
@@ -127,6 +128,7 @@ public class AnnotationPropertiesTest extends RESTfulTestBase {
 	public void testAnnotationActivating() {
 		navigateInActiveEditor(13, 0);
 
+		AnnotationPropertiesView annotationsView = new AnnotationPropertiesView();
 		annotationsView.open();
 		annotationsView.activateAnnotation(annotationsView.getAnnotation("javax.ws.rs.Encoded"));
 
@@ -140,6 +142,7 @@ public class AnnotationPropertiesTest extends RESTfulTestBase {
 	public void testAnnotationDeactivating() {
 		navigateInActiveEditor(13, 0);
 
+		AnnotationPropertiesView annotationsView = new AnnotationPropertiesView();
 		annotationsView.open();
 		annotationsView.deactivateAnnotation(annotationsView.getAnnotation("javax.ws.rs.Path"));
 
@@ -151,6 +154,7 @@ public class AnnotationPropertiesTest extends RESTfulTestBase {
 		/** edit JAX-RS annotation value **/
 		navigateInActiveEditor(13, 0);
 
+		AnnotationPropertiesView annotationsView = new AnnotationPropertiesView();
 		annotationsView.open();
 
 		TreeItem pathAnnotation = annotationsView.getAnnotation("javax.ws.rs.Path");

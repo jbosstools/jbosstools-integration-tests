@@ -3,7 +3,7 @@ package org.jboss.tools.ws.ui.bot.test.uiutils;
 import static org.junit.Assert.assertThat;
 
 import org.hamcrest.core.Is;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
@@ -29,9 +29,9 @@ public class PropertiesDialog {
 	 * @param projectName name of the project to open properties dialog
 	 */
 	public void open(String projectName) {
-		PackageExplorer packageExplorer = new PackageExplorer();
-		packageExplorer.open();
-		Project project = packageExplorer.getProject(projectName);
+		ProjectExplorer projectExplorer = new ProjectExplorer();
+		projectExplorer.open();
+		Project project = projectExplorer.getProject(projectName);
 		project.select();
 	
 		// Open Project Properties

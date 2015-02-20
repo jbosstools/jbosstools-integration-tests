@@ -100,6 +100,7 @@ public class ID407CreateApplicationFromExistingAndChangeRemoteNameTest {
 		explorer.getProject(applicationName).getProjectItem("diy", "index.html").open();
 		
 		TextEditor editor = new TextEditor("index.html");
+		editor.activate();
 		editor.setText(HTML_TEXT);
 		editor.save();
 		editor.close();

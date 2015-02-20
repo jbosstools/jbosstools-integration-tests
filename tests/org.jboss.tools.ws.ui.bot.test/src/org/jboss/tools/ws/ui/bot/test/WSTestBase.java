@@ -24,8 +24,8 @@ import java.util.logging.Logger;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.core.resources.Project;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
@@ -128,24 +128,24 @@ public class WSTestBase {
 	}
 
 	protected boolean projectExists(String name) {
-		PackageExplorer packageExplorer = new PackageExplorer();
-		packageExplorer.open();
-		return packageExplorer.containsProject(name);
+		ProjectExplorer projectExplorer = new ProjectExplorer();
+		projectExplorer.open();
+		return projectExplorer.containsProject(name);
 	}
 
 	protected static void deleteAllProjects() {
-		PackageExplorer packageExplorer = new PackageExplorer();
-		packageExplorer.open();
-		List<Project> projects = packageExplorer.getProjects();
+		ProjectExplorer projectExplorer = new ProjectExplorer();
+		projectExplorer.open();
+		List<Project> projects = projectExplorer.getProjects();
 		try {
 			for(int i=0;i<projects.size();i++) {
 				Project project = projects.get(i);
 				project.delete(true);
 			}
 		} catch(SWTLayerException | EclipseLayerException e) {
-			packageExplorer.close();
-			packageExplorer.open();
-			projects = packageExplorer.getProjects();
+			projectExplorer.close();
+			projectExplorer.open();
+			projects = projectExplorer.getProjects();
 			for(int i=0;i<projects.size();i++) {
 				Project project = projects.get(i);
 				try {
@@ -169,8 +169,8 @@ public class WSTestBase {
 	}
 
 	protected void openJavaFile(String projectName, String pkgName, String javaFileName) {
-		new PackageExplorer().getProject(projectName)
-			.getProjectItem("src", pkgName, javaFileName).open();
+		new ProjectExplorer().getProject(projectName)
+			.getProjectItem("Java Resources", "src", pkgName, javaFileName).open();
 	}
 
 	protected SliderLevel getLevel() {

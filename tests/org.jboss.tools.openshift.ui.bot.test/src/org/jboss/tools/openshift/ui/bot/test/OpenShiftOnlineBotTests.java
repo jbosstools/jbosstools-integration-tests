@@ -29,10 +29,10 @@ import org.jboss.tools.openshift.ui.bot.test.application.basic.ID304OpenNewAppli
 import org.jboss.tools.openshift.ui.bot.test.application.basic.ID305CartridgeContentAssistTest;
 import org.jboss.tools.openshift.ui.bot.test.application.basic.ID306PreselectLastUsedConnectionTest;
 import org.jboss.tools.openshift.ui.bot.test.application.basic.ID307WizardDataProcessingTest;
-import org.jboss.tools.openshift.ui.bot.test.application.cartridge.ID604AddJenkinsCartridgeWithoutJenkinsApplicationTest;
-import org.jboss.tools.openshift.ui.bot.test.application.cartridge.ID603AddDownloadableEmbeddableCartridgeTest;
-import org.jboss.tools.openshift.ui.bot.test.application.cartridge.ID602oAddConflictCartridgesTest;
 import org.jboss.tools.openshift.ui.bot.test.application.cartridge.ID601EmbedCartridgeTest;
+import org.jboss.tools.openshift.ui.bot.test.application.cartridge.ID602oAddConflictCartridgesTest;
+import org.jboss.tools.openshift.ui.bot.test.application.cartridge.ID603AddDownloadableEmbeddableCartridgeTest;
+import org.jboss.tools.openshift.ui.bot.test.application.cartridge.ID604AddJenkinsCartridgeWithoutJenkinsApplicationTest;
 import org.jboss.tools.openshift.ui.bot.test.application.cartridge.ID605ShowWarningOnMultipleCartridgeRemoveTest;
 import org.jboss.tools.openshift.ui.bot.test.application.create.ID401CreateNewApplicationViaExplorerTest;
 import org.jboss.tools.openshift.ui.bot.test.application.create.ID402DeleteOpenShiftApplicationTest;
@@ -117,7 +117,7 @@ import org.junit.runners.Suite.SuiteClasses;
 		ID150CreateNewSSHKeyTest.class,
 		ID151RemoveSSHKeyTest.class,
 		ID152AddExistingSSHKeyTest.class,
-
+	
 		// Domain
 		ID201NewDomainTest.class,
 		ID202EditDomainTest.class,

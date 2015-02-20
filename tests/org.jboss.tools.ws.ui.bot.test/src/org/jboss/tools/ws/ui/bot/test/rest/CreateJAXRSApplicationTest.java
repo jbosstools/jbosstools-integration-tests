@@ -13,7 +13,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
 import org.jboss.reddeer.requirements.server.ServerReqState;
@@ -83,7 +83,7 @@ public class CreateJAXRSApplicationTest extends WSTestBase {
 		wizard.finish();
 		
 		/* get source folder */
-		ProjectItem srcProjectItem = getProject().getProjectItem("src");
+		ProjectItem srcProjectItem = getProject().getProjectItem("Java Resources", "src");
 		
 		/* source folder contains the specified package */
 		List<ProjectItem> srcChildren = srcProjectItem.getChildren();
@@ -137,7 +137,7 @@ public class CreateJAXRSApplicationTest extends WSTestBase {
 		wizard.finish();
 		
 		/* get generated class */
-		ProjectItem generatedClass = getProject().getProjectItem("src")
+		ProjectItem generatedClass = getProject().getProjectItem("Java Resources", "src")
 				.getChildren().get(0).getChildren().get(0);
 		
 		/* the class contains @ApplicationPath and that it extends Application */
@@ -210,7 +210,7 @@ public class CreateJAXRSApplicationTest extends WSTestBase {
 	
 	@Test
 	public void setPackageTest() {
-		final String WARNING_USE_OF_DEFAULT_PACKAGE_IS_DISCOURAGED = "The use of the default package is discouraged.";
+		final String WARNING_USE_OF_DEFAULT_PACKAGE_IS_DISCOURAGED = " The use of the default package is discouraged.";
 		final String ERROR_PACKAGE_NAME_CANNOT_START_OR_END_WITH_A_DOT = " Package name is not valid. A package name cannot start or end with a dot";
 		
 		/* select "Subclass of javax.ws.rs.core.Application" option */
@@ -279,7 +279,7 @@ public class CreateJAXRSApplicationTest extends WSTestBase {
 	private String getWebXmlContent() {
 		String text;
 		
-		Project project = new PackageExplorer().getProject(getWsProjectName());
+		Project project = new ProjectExplorer().getProject(getWsProjectName());
 		assertTrue("web.xml was not generated.\n" + Arrays.toString(webXmlPath) + " is missing",
 				project.containsItem(webXmlPath));
 		ProjectItem webXml = project.getProjectItem(webXmlPath);
@@ -296,6 +296,6 @@ public class CreateJAXRSApplicationTest extends WSTestBase {
 	}
 	
 	private Project getProject() {
-		return new PackageExplorer().getProject(getWsProjectName());
+		return new ProjectExplorer().getProject(getWsProjectName());
 	}
 }

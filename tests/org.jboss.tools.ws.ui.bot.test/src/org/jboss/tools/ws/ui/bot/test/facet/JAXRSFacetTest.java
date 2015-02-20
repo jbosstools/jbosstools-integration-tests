@@ -14,7 +14,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import org.hamcrest.core.Is;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.swt.api.Button;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
@@ -73,10 +73,10 @@ public class JAXRSFacetTest extends RESTfulTestBase {
 	}
 
 	private void invokePropertiesForProject() {
-		PackageExplorer packageExplorer = new PackageExplorer();
-		packageExplorer.open();
+		ProjectExplorer projectExplorer = new ProjectExplorer();
+		projectExplorer.open();
 		
-		packageExplorer.getProject(getWsProjectName()).select();
+		projectExplorer.getProject(getWsProjectName()).select();
 		new ContextMenu("Properties").select();
 		
 		new DefaultShell(PROJECT_PROPERTIES);

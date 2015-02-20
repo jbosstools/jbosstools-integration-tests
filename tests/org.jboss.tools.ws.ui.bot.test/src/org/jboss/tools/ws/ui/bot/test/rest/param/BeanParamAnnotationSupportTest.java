@@ -157,6 +157,7 @@ public class BeanParamAnnotationSupportTest extends RESTfulTestBase {
 		editor.insertBeforeLine("@QueryParam(\"" + queryParam1 + "\")", queryType1);
 		editor.insertBeforeLine("import javax.ws.rs.DefaultValue;", "import javax.ws.rs.QueryParam;");
 		editor.insertBeforeLine("@DefaultValue(\"" + defaultValue + "\")", queryType1);
+		AbstractWait.sleep(TimePeriod.SHORT);
 		restServices = restfulServicesForProject(PROJECT2_NAME);
 		assertCountOfRESTServices(restServices, 1);
 		assertExpectedPathOfService(restServices.get(0),
