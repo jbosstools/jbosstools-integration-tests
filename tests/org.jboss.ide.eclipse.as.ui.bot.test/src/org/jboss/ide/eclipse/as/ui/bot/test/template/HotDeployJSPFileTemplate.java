@@ -41,6 +41,6 @@ public abstract class HotDeployJSPFileTemplate {
 		editor.save();
 		editor.close();
 		
-		new WaitUntil(new BrowserContainsTextCondition("http://localhost:8080/" + DeployJSPProjectTemplate.PROJECT_NAME + "/hot.jsp", "Hot deployment", true), TimePeriod.NORMAL);
+		new WaitUntil(new BrowserContainsTextCondition("http://localhost:8080/" + DeployJSPProjectTemplate.PROJECT_NAME + "/hot.jsp", "Hot deployment", true), TimePeriod.LONG);
 	}
 }
