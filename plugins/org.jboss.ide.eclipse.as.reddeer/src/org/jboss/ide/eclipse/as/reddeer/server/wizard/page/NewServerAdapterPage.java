@@ -3,6 +3,8 @@ package org.jboss.ide.eclipse.as.reddeer.server.wizard.page;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.hamcrest.Description;
+import org.hamcrest.TypeSafeMatcher;
 import org.jboss.reddeer.jface.wizard.WizardPage;
 import org.jboss.reddeer.swt.api.Combo;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
@@ -20,9 +22,9 @@ import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
  * @since JBoss Tools 4.2.0.Beta1
  */
 public class NewServerAdapterPage extends WizardPage {
-	
+
 	public void setProfile(Profile profile) {
-		
+
 		switch (profile) {
 		case REMOTE:
 			new RadioButton("Remote").click();;
@@ -31,31 +33,31 @@ public class NewServerAdapterPage extends WizardPage {
 			new RadioButton("Local").click();
 			break;
 		}
-		
+
 	}
-	
+
 	public Profile getProfile() {
 		if(new RadioButton("Local").isSelected())
 			return Profile.LOCAL;
 		else
 			return Profile.REMOTE;
 	}
-	
+
 	public void setAssignRuntime(boolean assign) {
 		CheckBox check = new CheckBox();
 		if(check.isChecked() != assign) {
 			check.click();
 		}
 	}
-	
+
 	private static final String NEW_RUNTIME_LABEL = "Create new runtime (next page)";
-	
+
 	public List<String> getRuntimes() {
 		List<String> items = new LinkedList<String>(getRuntimeCombo().getItems());
 		items.remove(NEW_RUNTIME_LABEL);
 		return items;
 	}	
-	
+
 	/**
 	 * Sets the specified <var>runtime</var> as runtime required
 	 * by the selected profile.
@@ -70,7 +72,7 @@ public class NewServerAdapterPage extends WizardPage {
 			combo.setSelection(runtime);
 		}
 	}
-	
+
 	public String getRuntime() {
 		String runtime = getRuntimeCombo().getSelection();
 		if(runtime.equals(NEW_RUNTIME_LABEL)) {
@@ -78,20 +80,20 @@ public class NewServerAdapterPage extends WizardPage {
 		}
 		return runtime;
 	}
-	
+
 	private Combo getRuntimeCombo() {
-		return new DefaultCombo(0);
+		return new DefaultCombo(new RuntimeComboMatcher());
 	}
-	
+
 	public enum Profile {
 		LOCAL("Local"), REMOTE("Remote");
-		
+
 		private String label;
-		
+
 		Profile(String label) {
 			this.label = label;
 		}
-		
+
 		public String getLabel() {
 			return label;
 		}
@@ -100,12 +102,35 @@ public class NewServerAdapterPage extends WizardPage {
 	public void checkErrors() {
 		//TODO revisit: What if runtime exist but the server is remote instead of local
 		// will it result in error? (yes- but should not)
-		
+
 		List<String> runtimes = getRuntimes();
-		
+
 		boolean anotherServerWithSameType = runtimes.size() > 0;		
 		//if(anotherServerWithSameType) {
 		//	throw new AssertionError("There is another server with the same type.\n"
 		//}
+	}
+	
+	/**
+	 * Finds the runtime combo by inspecting its items
+	 * @author Lucia Jelinkova
+	 *
+	 */
+	class RuntimeComboMatcher extends TypeSafeMatcher<org.eclipse.swt.widgets.Combo> {
+
+		@Override
+		protected boolean matchesSafely(org.eclipse.swt.widgets.Combo combo) {
+			for (String item : combo.getItems()){
+				if (item.trim().equals(NEW_RUNTIME_LABEL)){
+					return true;
+				}
+			}
+			return false;
+		}
+
+		@Override
+		public void describeTo(Description arg0) {
+
+		}
 	}
 }
