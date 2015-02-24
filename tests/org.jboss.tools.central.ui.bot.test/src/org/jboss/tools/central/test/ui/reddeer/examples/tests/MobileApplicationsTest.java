@@ -8,7 +8,7 @@ import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.tools.central.reddeer.projects.CentralExampleProject;
 import org.junit.Test;
 
-@JBossServer(type = ServerReqType.EAP, state = ServerReqState.RUNNING)
+@JBossServer(type = ServerReqType.ANY, state = ServerReqState.RUNNING)
 public class MobileApplicationsTest extends AbstractExamplesTest{
 	
 	@Test
@@ -28,7 +28,7 @@ public class MobileApplicationsTest extends AbstractExamplesTest{
 	@Test
 	public void contactsMobileBasicTest(){
 		try{
-			importAndDeployExample(new CentralExampleProject("contacts-mobile-basic", "jboss-contacts-mobile-basic", "Mobile Applications"));
+			importAndDeployExample(new CentralExampleProject("contacts-mobile-basic", "contacts-mobile-basic-services", "Mobile Applications"));
 		}catch(AssertionError err){
 			if (!err.getMessage().contains("requires JBoss Hybrid Mobile Application")){
 				fail(err.getMessage());
