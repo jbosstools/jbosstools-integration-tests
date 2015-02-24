@@ -55,7 +55,7 @@ public class NewProjectExamplesStacksRequirementsPage extends WizardPage{
 	}
 	
 	public List<ExampleRequirement> getRequirements(){
-		Group reqGroup = new DefaultGroup("Requirements");
+		Group reqGroup = new DefaultGroup("Requirements and Recommendations");
 		Table r = new DefaultTable(reqGroup);
 		List<ExampleRequirement> reqs = new ArrayList<ExampleRequirement>();
 		for(int i=0; i< r.rowCount(); i++){

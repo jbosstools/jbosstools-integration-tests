@@ -12,6 +12,7 @@ import org.eclipse.swt.SWT;
 import org.jboss.ide.eclipse.as.reddeer.server.view.JBossServerModule;
 import org.jboss.ide.eclipse.as.reddeer.server.view.JBossServerView;
 import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
+import org.jboss.reddeer.eclipse.ui.browser.BrowserEditor;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewEnums.ServerPublishState;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewEnums.ServerState;
@@ -22,13 +23,12 @@ import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.condition.WaitCondition;
 import org.jboss.reddeer.swt.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.swt.handler.WidgetHandler;
-import org.jboss.reddeer.swt.impl.browser.InternalBrowser;
 import org.jboss.reddeer.swt.impl.label.DefaultLabel;
 import org.jboss.reddeer.swt.impl.link.DefaultLink;
+import org.jboss.reddeer.swt.matcher.RegexMatcher;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
-import org.jboss.reddeer.uiforms.impl.formtext.DefaultFormText;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.central.reddeer.projects.ArchetypeProject;
 import org.jboss.tools.central.reddeer.projects.CentralExampleProject;
@@ -118,10 +118,8 @@ public class ExamplesOperator {
 	 */
 	
 	public void importExampleProjectFromCentral(CentralExampleProject project) {
-		ExampleLabel label = new ExampleLabel(project.getCategory());
-		label.hover();
-		new DefaultFormText(project.getName()).click();
 		NewProjectExamplesWizardDialogCentral dialog = new NewProjectExamplesWizardDialogCentral();
+		dialog.open(project);
 		MavenExamplesRequirementPage reqPage = (MavenExamplesRequirementPage) dialog
 				.getWizardPage(0);
 		checkRequirements(reqPage.getRequirements());
@@ -154,10 +152,11 @@ public class ExamplesOperator {
 	
 	public void checkDeployedProject(String projectName, String serverNameLabel) {
 		JBossServerView serversView = new JBossServerView();
+		serversView.open();
 		JBossServerModule module = serversView.getServer(serverNameLabel)
 				.getModule(projectName);
 		module.openWebPage();
-		final InternalBrowser browser = new InternalBrowser();
+		final BrowserEditor browser = new BrowserEditor(new RegexMatcher(".*"));
 		new WaitUntil(new WaitCondition() {
 
 			public boolean test() {
@@ -243,7 +242,8 @@ public class ExamplesOperator {
 					.compareTo(ServerPublishState.SYNCHRONIZED) == 0;
 			boolean started = getModule().getLabel().getState()
 					.compareTo(ServerState.STARTED) == 0;
-			return synch && started;
+			// return synch && started;  https://issues.jboss.org/browse/JBIDE-19288
+			return synch;
 		}
 
 		public String description() {
@@ -256,6 +256,7 @@ public class ExamplesOperator {
 			int counter = 0;
 			while(module == null && counter<5){
 				JBossServerView serversView = new JBossServerView();
+				serversView.open();
 				try{
 					module =  serversView.getServer(serverName).getModule(
 						projectName);
@@ -265,17 +266,6 @@ public class ExamplesOperator {
 				}
 			}
 			return module;
-		}
-	}
-
-	private class ExampleLabel extends DefaultLabel {
-
-		public ExampleLabel(String label) {
-			super(label);
-		}
-
-		public void hover() {
-			WidgetHandler.getInstance().notify(SWT.MouseEnter, getSWTWidget());
 		}
 	}
 
