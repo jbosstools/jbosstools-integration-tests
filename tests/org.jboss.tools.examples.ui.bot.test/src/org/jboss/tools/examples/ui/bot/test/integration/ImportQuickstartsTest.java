@@ -2,7 +2,6 @@ package org.jboss.tools.examples.ui.bot.test.integration;
 
 import java.io.File;
 import java.io.FileFilter;
-import java.util.List;
 
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
@@ -47,7 +46,7 @@ public class ImportQuickstartsTest {
 		setupMavenRepo();
 		errorLogView = new LogView();
 		errorLogView.open();
-		errorLogView.clearLog();
+		errorLogView.deleteLog();
 	}
 
 	@Test
@@ -81,8 +80,8 @@ public class ImportQuickstartsTest {
 			} catch (Exception ex) {
 				reporter.addError(
 						qstart,
-						"Something completely wrong happened!:\n"
-								+ ex.getStackTrace());
+						"Something completely wrong happened!: "
+								+ ex.getMessage() + "\n");
 			}
 			deleteAllProjects();
 			cleanupShells();
@@ -95,7 +94,7 @@ public class ImportQuickstartsTest {
 		for (LogMessage message : errorLogView.getErrorMessages()){
 			reporter.addError(qstart, message.getMessage());
 		}
-		errorLogView.clearLog();
+		errorLogView.deleteLog();
 	}
 
 	private void checkForWarnings(Quickstart q) {
@@ -164,8 +163,7 @@ public class ImportQuickstartsTest {
 	}
 
 	private static void setupMavenRepo() {
-		String mvnConfigFileName = new File("target/classes/settings.xml")
-				.getAbsolutePath();
+		String mvnConfigFileName = new File("target/classes/settings.xml").getAbsolutePath();
 		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
 		preferenceDialog.open();
 		MavenSettingsPreferencePage prefPage = new MavenSettingsPreferencePage();
