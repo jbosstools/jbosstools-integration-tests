@@ -92,11 +92,39 @@
 				</pluginRepository>
 			</pluginRepositories>
 		</profile>
+		<profile>
+			<id>jboss-eap-maven-online-repository-earlyaccess</id>
+			<repositories>
+				<repository>
+					<id>jboss-eap</id>
+					<url>http://maven.repository.redhat.com/earlyaccess/all/</url>
+					<releases>
+						<enabled>true</enabled>
+					</releases>
+					<snapshots>
+						<enabled>false</enabled>
+					</snapshots>
+				</repository>
+			</repositories>
+			<pluginRepositories>
+				<pluginRepository>
+					<id>jboss-eap-maven-plugin-repository-earlyaccess</id>
+					<url>http://maven.repository.redhat.com/earlyaccess/all/</url>
+					<releases>
+						<enabled>true</enabled>
+					</releases>
+					<snapshots>
+						<enabled>false</enabled>
+					</snapshots>
+				</pluginRepository>
+			</pluginRepositories>
+		</profile>
 	</profiles>
 
 	<activeProfiles>
 		<activeProfile>jboss-public-repository</activeProfile>
 		<activeProfile>jboss-eap-maven-online-repository</activeProfile>
+		<activeProfile>jboss-eap-maven-online-repository-earlyaccess</activeProfile>
 	</activeProfiles>
 
 </settings>
