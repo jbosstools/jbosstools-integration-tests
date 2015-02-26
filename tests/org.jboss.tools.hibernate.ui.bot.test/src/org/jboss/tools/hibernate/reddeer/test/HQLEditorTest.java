@@ -55,7 +55,7 @@ public class HQLEditorTest extends HibernateRedDeerTest {
 		ConnectionProfileFactory.createConnectionProfile(cfg);
 		ProjectConfigurationFactory.convertProjectToFacetsForm(PRJ);
 		ProjectConfigurationFactory.setProjectFacetForDB(PRJ, cfg);
-		EntityGenerationFactory.generateJPAEntities(cfg,PRJ,"org.gen","4.3",false);
+		EntityGenerationFactory.generateJPAEntities(cfg,PRJ,"org.gen","4.3",true);
 	}
     
     
@@ -77,9 +77,9 @@ public class HQLEditorTest extends HibernateRedDeerTest {
 		new OkButton().click();		
 		
 		v.open();
-		v.selectConsole("hibernate");
+		v.selectConsole(PRJ);
 		new ContextMenu("HQL Editor").select();
-		TextEditor hqlEditor = new TextEditor("hibernate");
+		TextEditor hqlEditor = new TextEditor(PRJ);
 		hqlEditor.setText("from Actor");
 		
 		new DefaultToolItem("Run HQL").click();

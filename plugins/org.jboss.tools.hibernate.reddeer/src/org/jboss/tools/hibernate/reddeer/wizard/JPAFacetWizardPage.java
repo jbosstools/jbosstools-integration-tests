@@ -6,6 +6,7 @@ import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.group.DefaultGroup;
 import org.jboss.reddeer.swt.wait.AbstractWait;
@@ -33,6 +34,17 @@ public class JPAFacetWizardPage extends WizardPage {
 		new WaitWhile(new JobIsRunning());
 		// Abstract wait workaround, various shells are messing with RedDeer
 		AbstractWait.sleep(TimePeriod.NORMAL);
+	}
+
+	/**
+	 * Set JPA autodiscovery
+	 * @param autoDiscovery if set to true autodiscovery is set
+	 */
+	public void setAutoDiscovery(boolean autoDiscovery) {
+		if (autoDiscovery) {
+			new RadioButton("Discover annotated classes automatically").click();
+		}
+		
 	}
 
 }

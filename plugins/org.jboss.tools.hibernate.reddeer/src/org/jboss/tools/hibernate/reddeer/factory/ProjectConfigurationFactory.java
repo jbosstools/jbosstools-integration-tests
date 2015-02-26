@@ -75,6 +75,7 @@ public class ProjectConfigurationFactory {
 		JPAFacetWizardPage jpaPage = new JPAFacetWizardPage();
 		
 		jpaPage.setConnectionProfile(cfg.getProfileName());
+		jpaPage.setAutoDiscovery(true);
 		prjDlg.ok();	
 	}	
 	
