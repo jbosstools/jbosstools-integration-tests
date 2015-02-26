@@ -2,6 +2,7 @@ package org.jboss.tools.openshift.ui.bot.test.application.create;
 
 import static org.junit.Assert.assertTrue;
 
+import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
@@ -50,16 +51,22 @@ public class ID410CreateScalableApplicationTest {
 		new DefaultShell(OpenShiftLabel.Shell.APPLICATION_DETAILS);
 
 		for (TreeItem item: new DefaultTree().getAllItems()) {
-			if (item.getCell(0).equals("Cartridges")) {
-				assertTrue("There is not haproxy cartridge. Application is not scalable",
-					item.getItems().size() == 1);
+			if (item.getCell(0).equals("Scalable")) {
+				assertTrue("Application is not scalable, at least it is not shown "
+						+ "in application properties.", item.getCell(1).equals("true"));
 			}
 		}
 		
 		new OkButton().click();
-		
 		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.APPLICATION_DETAILS),
 				TimePeriod.LONG);
+		
+		explorer.selectApplication(Datastore.USERNAME, Datastore.DOMAIN, applicationName);
+		PropertiesView propertiesView = new PropertiesView();
+		propertiesView.open();
+		assertTrue("Application is not scalable, at least it is not shown in properties"
+				+ " view.", propertiesView.getProperty("Scalable").getPropertyValue().equals("true"));
+		
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
 	
