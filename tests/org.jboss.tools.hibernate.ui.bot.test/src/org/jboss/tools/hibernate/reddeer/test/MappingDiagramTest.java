@@ -48,7 +48,7 @@ public class MappingDiagramTest extends HibernateRedDeerTest {
 		ConnectionProfileFactory.createConnectionProfile(cfg);
 		ProjectConfigurationFactory.convertProjectToFacetsForm(PRJ);
 		ProjectConfigurationFactory.setProjectFacetForDB(PRJ, cfg);
-		EntityGenerationFactory.generateJPAEntities(cfg,PRJ,"org.gen","4.3",false);
+		EntityGenerationFactory.generateJPAEntities(cfg,PRJ,"org.gen","4.3",true);
 	}
     
     

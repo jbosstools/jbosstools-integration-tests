@@ -17,7 +17,7 @@ public class GenerateDdlWizard {
 	}
 	
 	public void open() {
-		new ContextMenu("JPA Tools","Generate Tables from Tables...").select();
+		new ContextMenu("JPA Tools","Generate Tables from Entities...").select();
 	}
 	
 	public void finish() {	
