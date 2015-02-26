@@ -115,7 +115,7 @@ public abstract class ServerStateDetectorsTemplate {
 		consoleView.toggleShowConsoleOnStandardOutChange(false);
 		
 		new WaitUntil(new ConsoleHasNoChange(), TimePeriod.LONG);
-		assertThat(consoleView, not(new ConsoleContainsTextMatcher("Exception")));
+		assertThat(message, consoleView, not(new ConsoleContainsTextMatcher("Exception")));
 
 		consoleView.close();
 	}

@@ -852,8 +852,8 @@
 									<goal>wget</goal>
 								</goals>
 								<configuration>
-									<url>${jbosstools.test.jboss-eap-6.3.url}</url>
-									<md5>${jbosstools.test.jboss-eap-6.3.md5}</md5>
+									<url>${jbosstools.test.jboss-eap-6.3.x.url}</url>
+									<md5>${jbosstools.test.jboss-eap-6.3.x.md5}</md5>
 									<unpack>true</unpack>
 								</configuration>
 							</execution>

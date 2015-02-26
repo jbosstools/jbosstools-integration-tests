@@ -7,9 +7,11 @@ import org.jboss.ide.eclipse.as.reddeer.server.view.JBossServer;
 import org.jboss.ide.eclipse.as.reddeer.server.view.JBossServerView;
 import org.jboss.ide.eclipse.as.ui.bot.test.Activator;
 import org.jboss.ide.eclipse.as.ui.bot.test.condition.EditorWithBrowserContainsTextCondition;
+import org.jboss.ide.eclipse.as.ui.bot.test.matcher.ConsoleContainsTextMatcher;
 import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
 import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
@@ -26,9 +28,9 @@ import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 
 
@@ -81,7 +83,7 @@ public abstract class DeployJSPProjectTemplate {
 		assertNotNull("Server contains project", server.getModule(PROJECT_NAME));
 		// console
 		new WaitUntil(new ConsoleHasText(getConsoleMessage()));
-		assertFalse(new ConsoleHasText("Exception").test());
+		assertNoException();
 		// web
 		new ServersView().open();
 		ServerModuleWebPageEditor editor = server.getModule(PROJECT_NAME).openWebPage();
@@ -109,6 +111,16 @@ public abstract class DeployJSPProjectTemplate {
 		return serversView.getServer(getServerName());
 	}
 
+	protected void assertNoException() {
+		ConsoleView consoleView = new ConsoleView();
+		consoleView.open();
+		consoleView.toggleShowConsoleOnStandardOutChange(false);
+		
+		assertThat(consoleView, not(new ConsoleContainsTextMatcher("Exception")));
+
+		consoleView.close();
+	}
+	
 	protected String getServerName() {
 		return requirement.getServerNameLabelText(requirement.getConfig());
 	} 

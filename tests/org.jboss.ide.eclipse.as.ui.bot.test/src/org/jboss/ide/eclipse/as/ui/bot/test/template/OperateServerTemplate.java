@@ -71,7 +71,7 @@ public abstract class OperateServerTemplate {
 		consoleView.open();
 		consoleView.toggleShowConsoleOnStandardOutChange(false);
 		
-		assertThat(consoleView, not(new ConsoleContainsTextMatcher("Exception")));
+		assertThat(message, consoleView, not(new ConsoleContainsTextMatcher("Exception")));
 
 		consoleView.close();
 	}
