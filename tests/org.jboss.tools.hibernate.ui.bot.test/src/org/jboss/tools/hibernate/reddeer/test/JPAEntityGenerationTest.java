@@ -51,9 +51,18 @@ public class JPAEntityGenerationTest extends HibernateRedDeerTest {
     }
     
     @Test
-    public void testEntityGeneration() {
+    public void testEntityGenerationWithConsole() {
+    	testEntityGeneration(true);
+    }
+    
+    @Test
+    public void testEntityGenerationWithoutConsole() {
+    	testEntityGeneration(false);
+    }
+    
+    private void testEntityGeneration(boolean useHibernateConsole) {
     	DatabaseConfiguration cfg = dbRequirement.getConfiguration();
-    	EntityGenerationFactory.generateJPAEntities(cfg,PRJ,"org.gen","4.3",false);
+    	EntityGenerationFactory.generateJPAEntities(cfg,PRJ,"org.gen","4.3",useHibernateConsole);
     	
     	ProjectExplorer pe = new ProjectExplorer();    
     	pe.open();
@@ -71,5 +80,8 @@ public class JPAEntityGenerationTest extends HibernateRedDeerTest {
 	public void cleanUp() {
 		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
 		ConnectionProfileFactory.deleteConnectionProfile(cfg.getProfileName());
+		
+		ProjectExplorer pe = new ProjectExplorer();
+		pe.getProject(PRJ).delete(true);
 	}
 }
