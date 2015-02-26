@@ -64,9 +64,8 @@ public class EditorResourceHelper {
 	 */
 	public void replaceClassContentByResource(String editorName, InputStream resource, boolean save, boolean closeEdit) {
 		String code = readStream(resource);
-		DefaultEditor e = new DefaultEditor(editorName);
-		new DefaultStyledText().setText("");
-		new DefaultStyledText().setText(code);
+		TextEditor e = new TextEditor(editorName);
+		e.setText(code);
 		if (save) e.save();
 		if (closeEdit) e.close();
 	}
@@ -206,7 +205,7 @@ public class EditorResourceHelper {
 		Editor editor = new DefaultEditor(editorTitle);
 		DefaultStyledText dt = new DefaultStyledText();
 		dt.selectPosition(dt.getPositionOfText(textToSelect));
-		AbstractWait.sleep(TimePeriod.NORMAL);
+		new WaitWhile(new JobIsRunning());
 		ContentAssistant cs = editor.openContentAssistant();
 		List<String> proposals = cs.getProposals();
 		cs.close();
@@ -217,7 +216,7 @@ public class EditorResourceHelper {
 		Editor editor = new DefaultEditor(editorTitle);
 		DefaultStyledText dt = new DefaultStyledText();
 		dt.selectPosition(dt.getPositionOfText(textToSelect)+position);
-		AbstractWait.sleep(TimePeriod.NORMAL);
+		new WaitWhile(new JobIsRunning());
 		ContentAssistant cs = editor.openContentAssistant();
 		List<String> proposals = cs.getProposals();
 		cs.close();
@@ -232,9 +231,7 @@ public class EditorResourceHelper {
 	public void deletePackage(String projectName, String packageName) {
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
-		pe.getProject(projectName).select();
-		new ContextMenu("Refresh").select();
-		new WaitWhile(new JobIsRunning());
+		pe.getProject(projectName).refresh();
 		deleteInProjectExplorer(projectName, CDIConstants.JAVA_RESOURCES,CDIConstants.SRC,packageName);	
 	}
 	

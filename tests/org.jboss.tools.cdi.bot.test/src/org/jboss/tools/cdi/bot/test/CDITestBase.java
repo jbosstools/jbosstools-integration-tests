@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.logging.Logger;
 
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
@@ -104,5 +105,11 @@ public class CDITestBase{
 				SourceLookupPreferencePage.SourceAttachmentEnum.NEVER);
 		sourceLookupPreferencePage.ok();
 		new WaitUntil(new ShellWithTextIsActive(originalShellText));
+	}
+	
+	public void refreshProject(){
+		ProjectExplorer pe = new ProjectExplorer();
+		pe.open();
+		pe.getProject(getProjectName()).refresh();
 	}
 }
