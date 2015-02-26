@@ -13,18 +13,14 @@ package org.jboss.tools.cdi.bot.test.quickfix.dialog;
 
 import static org.junit.Assert.*;
 
-import org.eclipse.swt.SWT;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.jboss.reddeer.jface.text.contentassist.ContentAssistant;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.reddeer.swt.impl.menu.ShellMenu;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.table.DefaultTableItem;
-import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.cdi.reddeer.CDIConstants;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
@@ -51,10 +47,8 @@ public class AssignableDialogFilterTest extends CDITestBase {
 				getPackageName(), appClass).open();
 		TextEditor ed = new TextEditor(appClass);
 		ed.selectText("animal");
-		new ShellMenu("Navigate","Open Hyperlink").select();
-		new DefaultShell();
-		new DefaultTableItem(CDIConstants.SHOW_ALL_ASSIGNABLE).select();
-		KeyboardFactory.getKeyboard().invokeKeyCombination(SWT.CR);
+		ContentAssistant ca = ed.openOpenOnAssistant();
+		ca.chooseProposal(CDIConstants.SHOW_ALL_ASSIGNABLE);
 
 		AssignableBeansDialog assignDialog = new AssignableBeansDialog();
 
@@ -110,10 +104,8 @@ public class AssignableDialogFilterTest extends CDITestBase {
 				getPackageName(), appClass).open();
 		TextEditor ed = new TextEditor(appClass);
 		ed.selectText("animal");
-		new ShellMenu("Navigate","Open Hyperlink").select();
-		new DefaultShell();
-		new DefaultTableItem(CDIConstants.SHOW_ALL_ASSIGNABLE).select();
-		KeyboardFactory.getKeyboard().invokeKeyCombination(SWT.CR);
+		ContentAssistant ca = ed.openOpenOnAssistant();
+		ca.chooseProposal(CDIConstants.SHOW_ALL_ASSIGNABLE);
 
 		AssignableBeansDialog assignDialog = new AssignableBeansDialog();
 

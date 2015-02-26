@@ -10,10 +10,9 @@
  ******************************************************************************/
 package org.jboss.tools.archives.ui.bot.test;
 
+import static org.junit.Assert.assertTrue;
+
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
-import org.jboss.reddeer.swt.wait.WaitUntil;
-import org.jboss.reddeer.workbench.condition.ViewWithToolTipIsActive;
-import org.jboss.tools.common.reddeer.label.IDELabel;
 import org.junit.Test;
 
 /**
@@ -29,8 +28,7 @@ public class ViewIsPresentTest extends ArchivesTestBase {
 	@Test
 	public void testArchivesViewIsPresent() {
 		openProjectArchivesView();
-		new WaitUntil(new ViewWithToolTipIsActive(
-			IDELabel.View.PROJECT_ARCHIVES));
+		assertTrue(view.isActive());
 	}
 	
 }

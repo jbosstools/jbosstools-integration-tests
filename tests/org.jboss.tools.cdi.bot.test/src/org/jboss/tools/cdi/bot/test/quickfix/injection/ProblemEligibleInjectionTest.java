@@ -64,7 +64,7 @@ public class ProblemEligibleInjectionTest extends EligibleInjectionQuickFixTestB
 		wizard.createCDIComponentWithContent(CDIWizardType.BEAN, BROKEN_FARM,
 				getPackageName(), null,  ProblemEligibleInjectionTest.class.getResourceAsStream("/resources/quickfix/" +
 						"injection/BrokenFarm.java.cdi"));
-
+		refreshProject();
 		resolveMultipleBeans(ValidationType.MULTIPLE_BEAN_ELIGIBLE, DOG, QUALIFIER, QualifierOperation.ADD);
 
 		TextEditor textEditor = new TextEditor(BROKEN_FARM + ".java");
@@ -87,7 +87,7 @@ public class ProblemEligibleInjectionTest extends EligibleInjectionQuickFixTestB
 		wizard.createCDIComponentWithContent(CDIWizardType.BEAN, BROKEN_FARM,
 				getPackageName(), null,  ProblemEligibleInjectionTest.class.getResourceAsStream("/resources/quickfix/" +
 						"injection/BrokenFarm.java.cdi"));
-		
+		refreshProject();
 		resolveMultipleBeans(ValidationType.MULTIPLE_BEAN_ELIGIBLE, DOG, QUALIFIER, QualifierOperation.ADD);
 
 		TextEditor textEditor = new TextEditor(BROKEN_FARM + ".java");
@@ -113,7 +113,7 @@ public class ProblemEligibleInjectionTest extends EligibleInjectionQuickFixTestB
 		wizard.createCDIComponentWithContent(CDIWizardType.BEAN, BROKEN_FARM,
 				getPackageName(), null,  ProblemEligibleInjectionTest.class.getResourceAsStream("/resources/quickfix/" +
 						"injection/BrokenFarmWithQualifier.java.cdi"));
-
+		refreshProject();
 		resolveMultipleBeans(ValidationType.MULTIPLE_BEAN_ELIGIBLE, DOG, QUALIFIER, QualifierOperation.REMOVE);
 		
 		TextEditor textEditor = new TextEditor(BROKEN_FARM + ".java");
@@ -139,7 +139,7 @@ public class ProblemEligibleInjectionTest extends EligibleInjectionQuickFixTestB
 		wizard.createCDIComponentWithContent(CDIWizardType.BEAN, BROKEN_FARM,
 				getPackageName(), null,  ProblemEligibleInjectionTest.class.getResourceAsStream("/resources/quickfix/" +
 						"injection/BrokenFarmWithQualifier.java.cdi"));
-
+		refreshProject();
 		resolveMultipleBeans(ValidationType.NO_BEAN_ELIGIBLE, DOG, QUALIFIER, QualifierOperation.ADD);
 
 		TextEditor textEditor = new TextEditor(BROKEN_FARM + ".java");
@@ -166,7 +166,7 @@ public class ProblemEligibleInjectionTest extends EligibleInjectionQuickFixTestB
 		wizard.createCDIComponentWithContent(CDIWizardType.BEAN, BROKEN_FARM,
 				getPackageName(), null,  ProblemEligibleInjectionTest.class.getResourceAsStream("/resources/quickfix/" +
 						"injection/BrokenFarm.java.cdi"));
-
+		refreshProject();
 		resolveMultipleBeans(ValidationType.NO_BEAN_ELIGIBLE, DOG, QUALIFIER, QualifierOperation.REMOVE);
 
 		TextEditor textEditor = new TextEditor(BROKEN_FARM + ".java");
