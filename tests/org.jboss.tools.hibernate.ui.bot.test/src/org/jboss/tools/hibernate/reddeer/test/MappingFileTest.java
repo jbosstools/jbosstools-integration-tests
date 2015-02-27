@@ -6,9 +6,11 @@ import static org.junit.Assert.fail;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.impl.tree.TreeItemNotFoundException;
+import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.hibernate.reddeer.wizard.NewHibernateMappingElementsSelectionPage2;
 import org.jboss.tools.hibernate.reddeer.wizard.NewHibernateMappingFilePage;
@@ -38,7 +40,7 @@ public class MappingFileTest extends HibernateRedDeerTest {
 	@Test()
 	public void createMappingFileFromPackage() {
 		PackageExplorer pe = new PackageExplorer();
-		DefaultTree tree = new DefaultTree();
+		pe.open();
 		DefaultTreeItem item = new DefaultTreeItem(PRJ,"src","org.mapping.model.pkg");
 		item.select();
 		
@@ -74,7 +76,8 @@ public class MappingFileTest extends HibernateRedDeerTest {
 	@Test
 	public void createMappingFileFromFile() {
 		PackageExplorer pe = new PackageExplorer();
-		DefaultTreeItem item = new DefaultTreeItem(PRJ,"src","org.mapping.model.file","Item.java");
+		pe.open();
+		DefaultTreeItem item = new DefaultTreeItem(PRJ,"src","org.mapping.model.file","Owner.java");
 		item.select();
 		
 		NewHibernateMappingFileWizard wizard = new NewHibernateMappingFileWizard();
