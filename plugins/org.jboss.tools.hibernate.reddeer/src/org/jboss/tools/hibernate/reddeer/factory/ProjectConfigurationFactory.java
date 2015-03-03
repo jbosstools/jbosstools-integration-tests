@@ -50,13 +50,23 @@ public class ProjectConfigurationFactory {
 	}
 	
 	/**
-	 * Sets JPA project facets for given database configuration
+	 * Sets JPA project facets for given database configuration with JPA 2.1
 	 * @param prj given project
 	 * @param cfg given database configuration
 	 */
+	public static void setProjectFacetForDB(String prj,	DatabaseConfiguration cfg) {
+		setProjectFacetForDB(prj,cfg,"2.1");
+	}
+	
+	/**
+	 * Sets JPA project facets for given database configuration
+	 * @param prj given project
+	 * @param cfg given database configuration
+	 * @param jpaVersion JPA version (2.0 or 2.1 is supported)
+	 */
 	public static void setProjectFacetForDB(String prj,
 			
-		DatabaseConfiguration cfg) {
+		DatabaseConfiguration cfg, String jpaVersion) {
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		pe.selectProjects(prj);
@@ -65,7 +75,10 @@ public class ProjectConfigurationFactory {
 		prjDlg.select("Project Facets");
 		
 		List<FacetDefinition> fd = new ArrayList<FacetDefinition>();
-		fd.add(Facets.JPA);		
+		if (jpaVersion.equals("2.0"))
+			fd.add(Facets.JPA20);
+		else 
+			fd.add(Facets.JPA21);
 		setProjectFacets(fd);
 		prjDlg.ok();
 		
@@ -96,7 +109,8 @@ public class ProjectConfigurationFactory {
 						
 		new WaitUntil(new ShellWithTextIsActive("Modify Faceted Project"));
 		DefaultGroup group = new DefaultGroup("Platform");
-		new DefaultCombo(group).setSelection("Hibernate (JPA 2.1)");
+				
+		new DefaultCombo(group).setSelection("Hibernate (JPA " + facets.get(0).getVersion() + ")");
 		
 		
 		new LabeledCombo("Type:").setSelection("Disable Library Configuration");

@@ -1,5 +1,6 @@
 package org.jboss.tools.hibernate.reddeer.test;
 
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.db.DatabaseConfiguration;
@@ -22,60 +23,88 @@ import org.jboss.tools.hibernate.reddeer.factory.DriverDefinitionFactory;
 import org.jboss.tools.hibernate.reddeer.factory.EntityGenerationFactory;
 import org.jboss.tools.hibernate.reddeer.factory.ProjectConfigurationFactory;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 
 /**
- * Test Mapping Diagram 
+ * Test Mapping Diagram for multiple Hibernate versions
  * @author Jiri Peterka
  */
 @RunWith(RedDeerSuite.class)
 @Database(name="testdb")
 public class MappingDiagramTest extends HibernateRedDeerTest {
 
-	private final String PRJ = "mvn-hibernate43"; 
+	private String prj = "mvn-hibernate43"; 
+	private String hbVersion = "4.3";
+	private String jpaVersion = "2.0";
+	
     @InjectRequirement    
     private DatabaseRequirement dbRequirement;
     
-    @Before
-	public void testConnectionProfile() {
-
-    	importProject(PRJ);
+	public void prepare() {
+    	importProject(prj);
 		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
 		DriverDefinitionFactory.createDatabaseDefinition(cfg);		
 		ConnectionProfileFactory.createConnectionProfile(cfg);
-		ProjectConfigurationFactory.convertProjectToFacetsForm(PRJ);
-		ProjectConfigurationFactory.setProjectFacetForDB(PRJ, cfg);
-		EntityGenerationFactory.generateJPAEntities(cfg,PRJ,"org.gen","4.3",true);
+		ProjectConfigurationFactory.convertProjectToFacetsForm(prj);
+		ProjectConfigurationFactory.setProjectFacetForDB(prj, cfg, jpaVersion);
+		EntityGenerationFactory.generateJPAEntities(cfg,prj,"org.gen",hbVersion,true);
 	}
     
+    @Test
+    public void testMappingDiagram35() {
+    	setParams("mvn-hibernate35","3.5","2.0");
+    	testMappingDiagram();
+    }
     
+    @Test
+    public void testMappingDiagram36() {
+    	setParams("mvn-hibernate36","3.6","2.0");
+    	testMappingDiagram();
+    }
+    
+    @Test
+    public void testMappingDiagram40() {
+    	setParams("mvn-hibernate40","4.0","2.0");
+    	testMappingDiagram();
+    }
+    
+    @Test
+    public void testMappingDiagram43() {
+    	setParams("mvn-hibernate43","4.3","2.1");
+    	testMappingDiagram();
+    }
+    
+    private void setParams(String prj, String hbVersion, String jpaVersion) {
+    	this.prj = prj;
+    	this.hbVersion = hbVersion;
+    	this.jpaVersion = jpaVersion;
+    }
 
-	@Test
-	public void testMappingDiagram() {
+    public void testMappingDiagram() {
+    	prepare();    	
 		KnownConfigurationsView v = new KnownConfigurationsView();
 		v.open();
 		new ContextMenu("Add Configuration...").select();
 		new WaitUntil(new ShellWithTextIsActive("Edit Configuration"));
 		DefaultGroup prjGroup = new DefaultGroup("Project:");
-		new DefaultText(prjGroup).setText(PRJ);
+		new DefaultText(prjGroup).setText(prj);
 		new RadioButton("JPA (jdk 1.5+)").click();
 		DefaultGroup dbConnection = new DefaultGroup("Database connection:");
 		new DefaultCombo(dbConnection,0).setText("[JPA Project Configured Connection]");
-		new LabeledCombo("Hibernate Version:").setSelection("4.3");
+		new LabeledCombo("Hibernate Version:").setSelection(hbVersion);
 		new PushButton("Apply").click();
 		
 		new OkButton().click();		
 		
 		v.open();
-		v.selectConsole("hibernate");
+		v.selectConsole(prj);
 
 		ContextMenu mappingMenu = new ContextMenu("Mapping Diagram");
 		mappingMenu.select();
 		
-		new DefaultEditor("hibernate: Actor and 15 others");
+		new DefaultEditor(prj+": Actor and 15 others");
 	}
 
    
@@ -83,5 +112,8 @@ public class MappingDiagramTest extends HibernateRedDeerTest {
 	public void cleanUp() {
 		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
 		ConnectionProfileFactory.deleteConnectionProfile(cfg.getProfileName());
+		ProjectExplorer pe = new ProjectExplorer();
+		pe.getProject(prj).delete(true);
+	
 	}
 }
