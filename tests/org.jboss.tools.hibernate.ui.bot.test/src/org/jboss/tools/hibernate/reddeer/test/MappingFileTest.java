@@ -83,10 +83,10 @@ public class MappingFileTest extends HibernateRedDeerTest {
 		NewHibernateMappingFileWizard wizard = new NewHibernateMappingFileWizard();
 		wizard.open();
 		NewHibernateMappingElementsSelectionPage2 selPage = new NewHibernateMappingElementsSelectionPage2();
-		selPage.selectItem("Item");
+		selPage.selectItem("Owner");
 		wizard.next();
 		NewHibernateMappingFilePage files = new NewHibernateMappingFilePage();
-		files.selectClasses("Item");
+		files.selectClasses("Owner");
 		wizard.next();
 		NewHibernateMappingPreviewPage preview = new NewHibernateMappingPreviewPage();
 		assertTrue("Preview text cannot be empty", !preview.getPreviewText().equals(""));
@@ -94,7 +94,7 @@ public class MappingFileTest extends HibernateRedDeerTest {
 		
 		pe.open();
 		try {
-			item = new DefaultTreeItem(PRJ,"src","org.mapping.model.file","Item.hbm.xml");
+			item = new DefaultTreeItem(PRJ,"src","org.mapping.model.file","Owner.hbm.xml");
 		} catch (TreeItemNotFoundException e) {
 			fail("https://issues.jboss.org/browse/JBIDE-18769");
 		}
