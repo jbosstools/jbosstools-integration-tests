@@ -1,4 +1,4 @@
-package org.jboss.tools.hb.ui.bot.common;
+package org.jboss.tools.hibernate.reddeer.common;
 
 import static org.junit.Assert.fail;
 import org.eclipse.swt.graphics.Point;

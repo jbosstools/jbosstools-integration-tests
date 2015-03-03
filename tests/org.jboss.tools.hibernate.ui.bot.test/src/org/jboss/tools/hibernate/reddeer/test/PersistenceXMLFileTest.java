@@ -8,7 +8,7 @@ import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
-import org.jboss.tools.hb.ui.bot.common.StringHelper;
+import org.jboss.tools.hibernate.reddeer.common.StringHelper;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
