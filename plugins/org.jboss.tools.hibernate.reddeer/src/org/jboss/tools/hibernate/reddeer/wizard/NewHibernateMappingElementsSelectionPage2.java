@@ -1,7 +1,6 @@
 package org.jboss.tools.hibernate.reddeer.wizard;
 
 import org.jboss.reddeer.jface.wizard.WizardPage;
-import org.jboss.reddeer.swt.impl.list.DefaultList;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 
 

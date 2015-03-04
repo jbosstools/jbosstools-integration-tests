@@ -51,8 +51,6 @@ public class JPADetailsViewTest extends HibernateRedDeerTest {
 	@Test
 	public void testJPADetailView() {
 
-		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
-
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		pe.selectProjects(PRJ);
