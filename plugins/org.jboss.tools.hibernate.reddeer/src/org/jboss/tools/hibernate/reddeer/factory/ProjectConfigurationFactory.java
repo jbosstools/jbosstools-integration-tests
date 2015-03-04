@@ -93,7 +93,7 @@ public class ProjectConfigurationFactory {
 	}	
 	
 	private static void setProjectFacets(List<FacetDefinition> facets) {
-		List<TreeItem> items = new DefaultTree(1).getAllItems();
+		List<TreeItem> items = new DefaultTree(1).getItems();
 		for (FacetDefinition facet : facets) {
 			for (TreeItem item : items) {
 				if (item.getText().equals(facet.getName())) {
