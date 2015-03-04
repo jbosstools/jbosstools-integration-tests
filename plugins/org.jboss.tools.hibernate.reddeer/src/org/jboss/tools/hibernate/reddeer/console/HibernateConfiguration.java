@@ -1,7 +1,7 @@
 package org.jboss.tools.hibernate.reddeer.console;
 
 /**
- * Hibernate Configuration
+ * Hibernate Configuration (part of Hibernate console configurations view)
  * @author jpeterka
  *
  */
@@ -12,48 +12,91 @@ public class HibernateConfiguration {
 	private String databaseConnection;
 	private String configurationFile;
 	private String persistenceUnit;
-	
+
+	/**
+	 * Database connection options
+	 */
 	public class DatabaseConnection {
 		public static final String hibernateConfiguredConection = "[Hibernate configured connection]";
 		public static final String jpaProjectConfiguredConnetion = "[JPA Project Configured Connection]";
 	}
 
+	/**
+	 * Gets configuration name
+	 * @return configuration name
+	 */
 	public String getName() {
 		return name;
 	}
 
+	/**
+	 * Sets configuration name
+	 * @param name given configuration name
+	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
+	/**
+	 * Gets database connection name
+	 * @return db connection name
+	 */
 	public String getDatabaseConnection() {
 		return databaseConnection;
 	}
 
+	/**
+	 * Sets database connection name
+	 * @param databaseConnection
+	 */
 	public void setDatabaseConnection(String databaseConnection) {
 		this.databaseConnection = databaseConnection;
 	}
 
+	/**
+	 * Get hibernate configuration file name
+	 * @return hibernate configuration file name 
+	 */
 	public String getConfigurationFile() {
 		return configurationFile;
 	}
 
+	/**
+	 * Sets hibernate configuration file name
+	 * @param configurationFile given hibernate configuration file name
+	 */
 	public void setConfigurationFile(String configurationFile) {
 		this.configurationFile = configurationFile;
 	}
 
+	/**
+	 * Get persistence unit for hibernate configuration
+	 * @return persistence unit for hibernate configuration
+	 */
 	public String getPersistenceUnit() {
 		return persistenceUnit;
 	}
 
+	/**
+	 * Sets persistence unit for hibernate configuration
+	 * @param persistenceUnit given persistence unit
+	 */
 	public void setPersistenceUnit(String persistenceUnit) {
 		this.persistenceUnit = persistenceUnit;
 	}
 
+	/**
+	 * Gets project for hibernate configuration
+	 * @return given project for hibernate configuration
+	 */
 	public String getProject() {
 		return project;
 	}
 
+	/**
+	 * Sets project for hibernate configuration
+	 * @param project given project for hibernate configuration
+	 */
 	public void setProject(String project) {
 		this.project = project;
 	}

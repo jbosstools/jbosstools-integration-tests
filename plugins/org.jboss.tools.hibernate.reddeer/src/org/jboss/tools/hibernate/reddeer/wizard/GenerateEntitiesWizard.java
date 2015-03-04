@@ -12,14 +12,22 @@ import org.jboss.reddeer.swt.wait.WaitWhile;
  */
 public class GenerateEntitiesWizard {
 
-	
+	/**
+	 * Initializes Generate Entities Wizard 
+	 */
 	public GenerateEntitiesWizard() {
 	}
 	
+	/**
+	 * Opens Wizard for JPA entities generation
+	 */
 	public void open() {
 		new ContextMenu("JPA Tools","Generate Entities from Tables...").select();
 	}
 	
+	/**
+	 * Clicks finish button
+	 */
 	public void finish() {	
 		new FinishButton().click();
 		new WaitWhile(new JobIsRunning());

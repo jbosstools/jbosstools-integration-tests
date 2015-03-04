@@ -17,10 +17,17 @@ public class ProjectFacetsPage extends WizardPage {
 
 	private String projectName;
 	
+	/**
+	 * Project facets page
+	 * @param projectName given project name
+	 */
 	public ProjectFacetsPage(String projectName) {
 		this.projectName = projectName;
 	}
-	
+		
+	/**
+	 * Converts project into faceted form
+	 */
 	public void convertToFacetedForm() {
     	new DefaultTreeItem("Project Facets").select();
     	new DefaultLink("Convert to faceted form...").click();

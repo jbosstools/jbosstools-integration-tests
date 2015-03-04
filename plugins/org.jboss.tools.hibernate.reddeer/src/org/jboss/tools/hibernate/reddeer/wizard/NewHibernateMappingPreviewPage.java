@@ -12,6 +12,10 @@ import org.jboss.reddeer.swt.impl.text.DefaultText;
  */
 public class NewHibernateMappingPreviewPage extends WizardPage {
 	
+	/**
+	 * Gets preview page text for hbm xml file wizard
+	 * @return preview text
+	 */
 	public String getPreviewText() {
 		String ret = new DefaultText().getText();
 		return ret;

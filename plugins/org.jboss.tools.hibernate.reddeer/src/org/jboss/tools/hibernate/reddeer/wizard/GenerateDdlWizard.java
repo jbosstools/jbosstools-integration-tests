@@ -12,14 +12,22 @@ import org.jboss.reddeer.swt.wait.WaitWhile;
  */
 public class GenerateDdlWizard {
 
-	
+	/**
+	 * Initialzie DDL generation wizard
+	 */
 	public GenerateDdlWizard() {
 	}
 	
+	/**
+	 * Opens ddl generation wizard
+	 */
 	public void open() {
 		new ContextMenu("JPA Tools","Generate Tables from Entities...").select();
 	}
 	
+	/**
+	 * Clicks finish button
+	 */
 	public void finish() {	
 		new FinishButton().click();
 		new WaitWhile(new JobIsRunning());

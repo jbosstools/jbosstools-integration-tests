@@ -8,17 +8,22 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 
 /**
- * New JPA Project Wizard
+ * New Hibernate xml mapping file wizard
  * @author Jiri Peterka
  *
  */
 public class NewHibernateMappingFileWizard extends NewWizardDialog {
 
-	
+	/**
+	 * Initializes wizard
+	 */
 	public NewHibernateMappingFileWizard() {
 		super("Hibernate", "Hibernate XML Mapping file (hbm.xml)");
 	}
 	
+	/**
+	 * Finishes hbm xml file wizard 
+	 */
 	@Override
 	public void finish() {	
 		super.finish();

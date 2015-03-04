@@ -1,5 +1,10 @@
 package org.jboss.tools.hibernate.reddeer.wizard;
 
+/**
+ * JPA paltform enum type
+ * @author jpeterka
+ *
+ */
 public enum JpaPlatform  {
 	
 	GENERIC ("Generic 2.1"),

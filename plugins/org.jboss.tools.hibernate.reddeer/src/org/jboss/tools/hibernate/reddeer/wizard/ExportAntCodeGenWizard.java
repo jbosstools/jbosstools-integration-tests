@@ -14,6 +14,9 @@ public class ExportAntCodeGenWizard extends ExportWizardDialog {
 	
 	public static final String NAME = "Ant Code Generation";
 	
+	/**
+	 * Initialize Export Ang Code Generation wizard
+	 */
 	public ExportAntCodeGenWizard() {
 		super(CATEGORY, NAME);
 	}

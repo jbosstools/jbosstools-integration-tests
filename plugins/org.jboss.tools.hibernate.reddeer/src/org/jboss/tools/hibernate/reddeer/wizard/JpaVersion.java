@@ -1,5 +1,10 @@
 package org.jboss.tools.hibernate.reddeer.wizard;
 
+/**
+ * JPA version enumeration
+ * @author jpeterka
+ *
+ */
 public enum JpaVersion {
 	JPA10 ("1.0"),
 	JPA20 ("2.0"),

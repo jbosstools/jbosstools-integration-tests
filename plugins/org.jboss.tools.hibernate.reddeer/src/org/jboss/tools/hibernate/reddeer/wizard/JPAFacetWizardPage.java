@@ -12,16 +12,33 @@ import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 
+/**
+ * JPA Facets wizard page reddeer implementation
+ * @author jpeterka
+ *
+ */
 public class JPAFacetWizardPage extends WizardPage {
 	
+	/**
+	 * Sets JPA platform
+	 * @param platform given platform
+	 */
 	public void setPlatform(JpaPlatform platform) {
 		new DefaultCombo(0).setSelection(platform.toString());
 	}	
 
+	/**
+	 * sets JPA implementation 
+	 * @param impl given implementation
+	 */
 	public void setJpaImplementation(JpaImplementation impl) {
 		new DefaultCombo(1).setSelection(impl.toString());
 	}
 
+	/**
+	 * Sets connection profile for JPA 
+	 * @param profileName given connection profile
+	 */
 	public void setConnectionProfile(String profileName) {
 		DefaultGroup group = new DefaultGroup("Connection");
 		new WaitUntil(new WidgetIsEnabled(new DefaultCombo(group)));

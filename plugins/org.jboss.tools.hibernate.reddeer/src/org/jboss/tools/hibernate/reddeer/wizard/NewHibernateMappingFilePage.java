@@ -12,6 +12,10 @@ import org.jboss.reddeer.swt.impl.table.DefaultTable;
  */
 public class NewHibernateMappingFilePage extends WizardPage {
 	
+	/**
+	 * Select class for further hbm.xml generation
+	 * @param clazz class name
+	 */
 	public void selectClasses(String clazz) {
 		int headerIndex = new DefaultTable().getHeaderIndex("Class name");
 		TableItem item = new DefaultTable().getItem(clazz,headerIndex);

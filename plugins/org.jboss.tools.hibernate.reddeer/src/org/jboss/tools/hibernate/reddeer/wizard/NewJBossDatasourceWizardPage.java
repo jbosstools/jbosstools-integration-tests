@@ -12,14 +12,25 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
  */
 public class NewJBossDatasourceWizardPage extends WizardPage {
 
+	/**
+	 * Sets connection profile for jboss ds wizard
+	 * @param profileName given db profile
+	 */
 	public void setConnectionProfile(String profileName) {
 		new LabeledCombo("Connection profile:").setSelection(profileName);
 	}
 	
+	/**
+	 * Sets parent folder for jboss ds wizard
+	 * @param folder given folder name
+	 */
 	public void setParentFolder(String folder) {
 		new LabeledText("Parent folder:").setText(folder);
 	}
 	
+	/**
+	 * Click finish
+	 */
 	public void finish() {
 		new FinishButton().click(); 
 	}

@@ -11,6 +11,9 @@ import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
  */
 public class QueryParametersView extends WorkbenchView {
 
+	/**
+	 * Initalize Query parameters view for HQL and Criteria editor
+	 */
 	public QueryParametersView() {
 		super("Query Parameters");
 	}

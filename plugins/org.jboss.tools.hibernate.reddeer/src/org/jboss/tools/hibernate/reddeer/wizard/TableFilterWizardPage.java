@@ -17,10 +17,17 @@ import org.jboss.reddeer.swt.wait.WaitUntil;
  */
 public class TableFilterWizardPage extends WizardPage {
 
+	/**
+	 * Sets console configuration for reveng 
+	 * @param cfgName console name
+	 */
 	public void setConsoleConfiguration(String cfgName) {
 		new LabeledCombo("Console configuration:").setSelection(cfgName);
 	}
 	
+	/**
+	 * Refreshes database schema
+	 */
 	public void refreshDatabaseSchema() {
 		new PushButton("Refresh").click();
 		DefaultGroup group = new DefaultGroup("Database schema:");
@@ -28,14 +35,24 @@ public class TableFilterWizardPage extends WizardPage {
 		new WaitUntil(new TreeHasChildren(tree));
 	}
 	
+	/**
+	 * Sets parent folder for reveng
+	 * @param folder given folder name
+	 */
 	public void setParentFolder(String folder) {
 		new LabeledText("Parent folder:").setText(folder);
 	}
 	
+	/**
+	 * Clicks finish button
+	 */
 	public void finish() {
 		new FinishButton().click(); 
 	}
 
+	/**
+	 * Press include button
+	 */
 	public void pressInclude() {
 		new PushButton("Include...").click();	
 	}
