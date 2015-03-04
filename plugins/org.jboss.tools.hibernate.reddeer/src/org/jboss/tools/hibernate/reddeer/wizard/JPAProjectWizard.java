@@ -14,11 +14,16 @@ import org.jboss.reddeer.swt.wait.WaitUntil;
  */
 public class JPAProjectWizard extends NewWizardDialog {
 
-	
+	/**
+	 * Initialize New JPA project wizard
+	 */
 	public JPAProjectWizard() {
 		super("JPA", "JPA Project");
 	}
 	
+	/**
+	 * Finishes creating JPA Project
+	 */
 	@Override
 	public void finish() {	
 		super.finish();

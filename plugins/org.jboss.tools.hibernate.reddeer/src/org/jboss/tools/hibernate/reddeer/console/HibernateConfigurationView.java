@@ -19,15 +19,23 @@ import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
 
+/**
+ * Hibernate configuration view reddeer implementation
+ * @author jpeterka
+ *
+ */
 public class HibernateConfigurationView extends WorkbenchView {
 
+	/**
+	 * View constructor
+	 */
 	public HibernateConfigurationView() {
 		super("Hibernate Configurations");
 	}
 
 	/**
 	 * Return list of available HibernateConfigurations
-	 * @return
+	 * @return available configurations
 	 */
 	public List<HibernateConfiguration> getConfigurations() {
 		Tree tree = new DefaultTree();
@@ -45,7 +53,7 @@ public class HibernateConfigurationView extends WorkbenchView {
 	/**
 	 * Returns true when Hibernate Configuration View contains given configuration
 	 * @param configuration
-	 * @return
+	 * @return true if view contains given configuration
 	 */
 	public boolean contains(String configuration) {	
 		Tree tree = new DefaultTree();

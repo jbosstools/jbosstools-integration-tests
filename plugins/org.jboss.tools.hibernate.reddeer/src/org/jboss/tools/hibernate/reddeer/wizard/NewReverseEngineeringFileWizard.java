@@ -11,6 +11,9 @@ import org.jboss.reddeer.jface.wizard.NewWizardDialog;
 public class NewReverseEngineeringFileWizard extends NewWizardDialog {
 
 	
+	/**
+	 * Initialize Reveng file wizard
+	 */
 	public NewReverseEngineeringFileWizard() {
 		super("Hibernate", "Hibernate Reverse Engineering File (reveng.xml)");
 	}

@@ -4,9 +4,7 @@ import static org.junit.Assert.fail;
 import org.eclipse.swt.graphics.Point;
 
 /**
- * Class provides api for search position in text editor, designed for usage
- * with swtbot
- *
+ * Class provides api for search position in text editor
  * @author jpeterka
  *
  */

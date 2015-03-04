@@ -1,5 +1,10 @@
 package org.jboss.tools.hibernate.reddeer.wizard;
 
+/**
+ * JPA implementation enum type
+ * @author jpeterka
+ *
+ */
 public enum JpaImplementation {
 	
 	USER_LIBRARY ("User Library"),

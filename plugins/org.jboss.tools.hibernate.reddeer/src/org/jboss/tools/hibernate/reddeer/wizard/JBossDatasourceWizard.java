@@ -10,7 +10,9 @@ import org.jboss.reddeer.jface.wizard.NewWizardDialog;
  */
 public class JBossDatasourceWizard extends NewWizardDialog {
 
-	
+	/**
+	 * Initialize JBoss Datasource wizard
+	 */
 	public JBossDatasourceWizard() {
 		super("JBoss Tools", "JBoss Datasource (-ds.xml)");
 	}
