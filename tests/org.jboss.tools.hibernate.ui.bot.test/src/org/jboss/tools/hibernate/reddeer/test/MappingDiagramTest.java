@@ -113,6 +113,7 @@ public class MappingDiagramTest extends HibernateRedDeerTest {
 		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
 		ConnectionProfileFactory.deleteConnectionProfile(cfg.getProfileName());
 		ProjectExplorer pe = new ProjectExplorer();
+		pe.open();
 		pe.getProject(prj).delete(true);
 	
 	}
