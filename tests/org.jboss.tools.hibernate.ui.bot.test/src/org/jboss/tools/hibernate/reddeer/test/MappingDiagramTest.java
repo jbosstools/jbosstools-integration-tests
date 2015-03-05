@@ -20,7 +20,6 @@ import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.hibernate.reddeer.console.KnownConfigurationsView;
 import org.jboss.tools.hibernate.reddeer.factory.ConnectionProfileFactory;
 import org.jboss.tools.hibernate.reddeer.factory.DriverDefinitionFactory;
-import org.jboss.tools.hibernate.reddeer.factory.EntityGenerationFactory;
 import org.jboss.tools.hibernate.reddeer.factory.ProjectConfigurationFactory;
 import org.junit.After;
 import org.junit.Test;
@@ -35,7 +34,7 @@ import org.junit.runner.RunWith;
 @Database(name="testdb")
 public class MappingDiagramTest extends HibernateRedDeerTest {
 
-	private String prj = "mvn-hibernate43"; 
+	private String prj = "mvn-hibernate43-ent"; 
 	private String hbVersion = "4.3";
 	private String jpaVersion = "2.0";
 	
@@ -49,30 +48,29 @@ public class MappingDiagramTest extends HibernateRedDeerTest {
 		ConnectionProfileFactory.createConnectionProfile(cfg);
 		ProjectConfigurationFactory.convertProjectToFacetsForm(prj);
 		ProjectConfigurationFactory.setProjectFacetForDB(prj, cfg, jpaVersion);
-		EntityGenerationFactory.generateJPAEntities(cfg,prj,"org.gen",hbVersion,true);
 	}
     
     @Test
     public void testMappingDiagram35() {
-    	setParams("mvn-hibernate35","3.5","2.0");
+    	setParams("mvn-hibernate35-ent","3.5","2.0");
     	testMappingDiagram();
     }
     
     @Test
     public void testMappingDiagram36() {
-    	setParams("mvn-hibernate36","3.6","2.0");
+    	setParams("mvn-hibernate36-ent","3.6","2.0");
     	testMappingDiagram();
     }
     
     @Test
     public void testMappingDiagram40() {
-    	setParams("mvn-hibernate40","4.0","2.0");
+    	setParams("mvn-hibernate40-ent","4.0","2.0");
     	testMappingDiagram();
     }
     
     @Test
     public void testMappingDiagram43() {
-    	setParams("mvn-hibernate43","4.3","2.1");
+    	setParams("mvn-hibernate43-ent","4.3","2.1");
     	testMappingDiagram();
     }
     
