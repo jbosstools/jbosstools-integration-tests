@@ -2,6 +2,7 @@ package org.jboss.ide.eclipse.as.reddeer.server.view;
 
 import org.jboss.ide.eclipse.as.reddeer.server.editor.ServerModuleWebPageEditor;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServerModule;
+import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 
@@ -14,12 +15,20 @@ import org.jboss.reddeer.swt.impl.menu.ContextMenu;
  */
 public class JBossServerModule extends ServerModule {
 
+	/**
+	 * @deprecated Use {@link #JBossServerModule(TreeItem, JBossServerView)}
+	 * @param item
+	 */
 	public JBossServerModule(TreeItem item) {
 		super(item);
 	}
+	
+	protected JBossServerModule(TreeItem item, ServersView view) {
+		super(item, view);
+	}
 
 	public ServerModuleWebPageEditor openWebPage(){
-		treeItem.select();
+		activate();
 		new ContextMenu("Show In", "Web Browser").select();
 		return new ServerModuleWebPageEditor(getLabel().getName());
 	}

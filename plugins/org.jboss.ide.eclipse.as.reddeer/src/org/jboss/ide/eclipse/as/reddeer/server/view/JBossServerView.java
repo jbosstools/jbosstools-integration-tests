@@ -23,6 +23,6 @@ public class JBossServerView extends ServersView {
 	
 	@Override
 	protected Server createServer(TreeItem item) {
-		return new JBossServer(item);
+		return new JBossServer(item, this);
 	}
 }

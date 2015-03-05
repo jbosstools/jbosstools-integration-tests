@@ -8,6 +8,7 @@ import org.jboss.ide.eclipse.as.reddeer.server.editor.WelcomeToServerEditor;
 import org.jboss.reddeer.eclipse.wst.server.ui.editor.ServerEditor;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.Server;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServerModule;
+import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.swt.api.Shell;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.WaitCondition;
@@ -28,8 +29,16 @@ public class JBossServer extends Server {
 
 	public static final String XML_LABEL_DECORATION_SEPARATOR = "   ";
 
+	/**
+	 * @deprecated Use {@link #JBossServer(TreeItem, JBossServerView)}
+	 * @param treeItem
+	 */
 	public JBossServer(TreeItem treeItem) {
 		super(treeItem);
+	}
+	
+	protected JBossServer(TreeItem treeItem, ServersView view) {
+		super(treeItem, view);
 	}
 
 	@Override
@@ -53,7 +62,7 @@ public class JBossServer extends Server {
 	}
 
 	public WelcomeToServerEditor openWebPage(){
-		select();
+		activate();
 		new WaitUntil(new ContextMenuIsEnabled("Show In", "Web Browser"));
 		new ContextMenu("Show In", "Web Browser").select();
 		return new WelcomeToServerEditor();
@@ -77,6 +86,7 @@ public class JBossServer extends Server {
 	 * @return
 	 */
 	public List<XMLConfiguration> getXMLConfiguration(String categoryName){
+		activate();
 		TreeItem categoryItem = treeItem.getItem("XML Configuration").getItem(categoryName);
 
 		new WaitUntil(new TreeItemLabelDecorated(categoryItem.getItems().get(0)));
@@ -101,7 +111,7 @@ public class JBossServer extends Server {
 
 	@Override
 	protected ServerModule createServerModule(TreeItem item) {
-		return new JBossServerModule(item);
+		return new JBossServerModule(item, view);
 	}
 
 	private void checkServerAlreadyRunningDialog() {
