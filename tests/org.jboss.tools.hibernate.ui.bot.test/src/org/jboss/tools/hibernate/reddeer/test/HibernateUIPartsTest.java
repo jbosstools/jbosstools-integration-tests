@@ -1,7 +1,10 @@
 package org.jboss.tools.hibernate.reddeer.test;
 
+import static org.junit.Assert.*;
+
 import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
 import org.jboss.tools.hibernate.reddeer.console.HibernateConfigurationView;
+import org.jboss.tools.hibernate.reddeer.perspective.HibernatePerspective;
 import org.jboss.tools.hibernate.reddeer.view.DynamicSQLPreviewView;
 import org.jboss.tools.hibernate.reddeer.view.QueryPageTabView;
 import org.jboss.tools.hibernate.reddeer.view.QueryParametersView;
@@ -16,6 +19,7 @@ public class HibernateUIPartsTest {
 
 	@Test
 	/**
+	 * Tests Hibernate perspective
 	 * Tests Hibernate views
 	 * - Hibernate Configurations
 	 * - Hibernate Dynamic SQL Preview
@@ -27,6 +31,18 @@ public class HibernateUIPartsTest {
 		checkView(new DynamicSQLPreviewView());		
 		checkView(new QueryPageTabView());
 		checkView(new QueryParametersView());
+	}
+	
+	/**
+	 * Tests hibernate perspective
+	 */
+	@Test
+	public void testHibernatePerspective() {
+		HibernatePerspective p = new HibernatePerspective();
+		p.open();
+		p.reset();
+		
+		assertTrue(p.getPerspectiveLabel().equals("Hibernate"));
 	}
 	
 	/**
