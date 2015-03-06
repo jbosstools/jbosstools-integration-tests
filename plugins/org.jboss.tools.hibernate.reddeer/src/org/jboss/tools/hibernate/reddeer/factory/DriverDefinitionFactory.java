@@ -24,7 +24,6 @@ public class DriverDefinitionFactory {
 
 		DriverTemplate dt = getDriverTemplate(cfg);
 		DriverDefinition dd = getDriverDefinition(cfg);
-
 		 
 		// Driver Definition creation
 		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
