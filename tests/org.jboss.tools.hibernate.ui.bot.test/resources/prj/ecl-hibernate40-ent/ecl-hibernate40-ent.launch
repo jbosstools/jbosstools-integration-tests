@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.hibernate.eclipse.launch.ConsoleConfigurationLaunchConfigurationType">
+<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
+<listEntry value="ecl-hibernate40-ent"/>
+</listAttribute>
+<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
+<listEntry value="4"/>
+</listAttribute>
+<booleanAttribute key="org.eclipse.jdt.launching.DEFAULT_CLASSPATH" value="true"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="ecl-hibernate40-ent"/>
+<stringAttribute key="org.hibernate.eclipse.launch.CFG_XML_FILE" value="/ecl-hibernate40-ent/src/hibernate.cfg.xml"/>
+<stringAttribute key="org.hibernate.eclipse.launch.CONFIGURATION_FACTORY" value="CORE"/>
+<listAttribute key="org.hibernate.eclipse.launch.FILE_MAPPINGS">
+<listEntry value="/ecl-hibernate40-ent/src/org/gen/Actor.hbm.xml"/>
+<listEntry value="/ecl-hibernate40-ent/src/org/gen/Address.hbm.xml"/>
+<listEntry value="/ecl-hibernate40-ent/src/org/gen/Category.hbm.xml"/>
+<listEntry value="/ecl-hibernate40-ent/src/org/gen/City.hbm.xml"/>
+<listEntry value="/ecl-hibernate40-ent/src/org/gen/Country.hbm.xml"/>
+<listEntry value="/ecl-hibernate40-ent/src/org/gen/Customer.hbm.xml"/>
+<listEntry value="/ecl-hibernate40-ent/src/org/gen/Film.hbm.xml"/>
+<listEntry value="/ecl-hibernate40-ent/src/org/gen/FilmActor.hbm.xml"/>
+<listEntry value="/ecl-hibernate40-ent/src/org/gen/FilmCategory.hbm.xml"/>
+<listEntry value="/ecl-hibernate40-ent/src/org/gen/FilmText.hbm.xml"/>
+<listEntry value="/ecl-hibernate40-ent/src/org/gen/Inventory.hbm.xml"/>
+<listEntry value="/ecl-hibernate40-ent/src/org/gen/Language.hbm.xml"/>
+<listEntry value="/ecl-hibernate40-ent/src/org/gen/Payment.hbm.xml"/>
+<listEntry value="/ecl-hibernate40-ent/src/org/gen/Rental.hbm.xml"/>
+<listEntry value="/ecl-hibernate40-ent/src/org/gen/Staff.hbm.xml"/>
+<listEntry value="/ecl-hibernate40-ent/src/org/gen/Store.hbm.xml"/>
+</listAttribute>
+<stringAttribute key="org.hibernate.eclipse.launch.HIBERNATE_VERSION" value="4.0"/>
+</launchConfiguration>

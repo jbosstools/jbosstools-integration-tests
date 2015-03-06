@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 6, 2015 3:28:38 PM by Hibernate Tools 3.6.0 -->
+<hibernate-mapping>
+    <class name="org.gen.Inventory" table="INVENTORY" schema="PUBLIC" catalog="SAKILA">
+        <id name="inventoryId" type="int">
+            <column name="INVENTORY_ID" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="film" class="org.gen.Film" fetch="select">
+            <column name="FILM_ID" not-null="true" />
+        </many-to-one>
+        <many-to-one name="store" class="org.gen.Store" fetch="select">
+            <column name="STORE_ID" not-null="true" />
+        </many-to-one>
+        <property name="lastUpdate" type="timestamp">
+            <column name="LAST_UPDATE" length="23" not-null="true" />
+        </property>
+        <set name="rentals" table="RENTAL" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="INVENTORY_ID" not-null="true" />
+            </key>
+            <one-to-many class="org.gen.Rental" />
+        </set>
+        <set name="rentals_1" table="RENTAL" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="INVENTORY_ID" not-null="true" />
+            </key>
+            <one-to-many class="org.gen.Rental" />
+        </set>
+    </class>
+</hibernate-mapping>

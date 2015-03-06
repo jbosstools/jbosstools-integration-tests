@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 6, 2015 3:29:43 PM by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.gen.Film" table="FILM" schema="PUBLIC" catalog="SAKILA">
+        <id name="filmId" type="short">
+            <column name="FILM_ID" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="languageByOriginalLanguageId" class="org.gen.Language" fetch="select">
+            <column name="ORIGINAL_LANGUAGE_ID" />
+        </many-to-one>
+        <many-to-one name="languageByLanguageId" class="org.gen.Language" fetch="select">
+            <column name="LANGUAGE_ID" not-null="true" />
+        </many-to-one>
+        <property name="title" type="string">
+            <column name="TITLE" not-null="true" />
+        </property>
+        <property name="description" type="string">
+            <column name="DESCRIPTION" />
+        </property>
+        <property name="releaseYear" type="date">
+            <column name="RELEASE_YEAR" length="8" />
+        </property>
+        <property name="rentalDuration" type="byte">
+            <column name="RENTAL_DURATION" not-null="true" />
+        </property>
+        <property name="rentalRate" type="big_decimal">
+            <column name="RENTAL_RATE" precision="4" not-null="true" />
+        </property>
+        <property name="length" type="java.lang.Short">
+            <column name="LENGTH" />
+        </property>
+        <property name="replacementCost" type="big_decimal">
+            <column name="REPLACEMENT_COST" precision="5" not-null="true" />
+        </property>
+        <property name="rating" type="string">
+            <column name="RATING" length="5" />
+        </property>
+        <property name="specialFeatures" type="string">
+            <column name="SPECIAL_FEATURES" length="54" />
+        </property>
+        <property name="lastUpdate" type="timestamp">
+            <column name="LAST_UPDATE" length="23" not-null="true" />
+        </property>
+        <set name="filmActors" table="FILM_ACTOR" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="FILM_ID" not-null="true" />
+            </key>
+            <one-to-many class="org.gen.FilmActor" />
+        </set>
+        <set name="inventories" table="INVENTORY" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="FILM_ID" not-null="true" />
+            </key>
+            <one-to-many class="org.gen.Inventory" />
+        </set>
+        <set name="inventories_1" table="INVENTORY" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="FILM_ID" not-null="true" />
+            </key>
+            <one-to-many class="org.gen.Inventory" />
+        </set>
+        <set name="filmCategories" table="FILM_CATEGORY" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="FILM_ID" not-null="true" />
+            </key>
+            <one-to-many class="org.gen.FilmCategory" />
+        </set>
+        <set name="filmCategories_1" table="FILM_CATEGORY" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="FILM_ID" not-null="true" />
+            </key>
+            <one-to-many class="org.gen.FilmCategory" />
+        </set>
+        <set name="filmActors_1" table="FILM_ACTOR" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="FILM_ID" not-null="true" />
+            </key>
+            <one-to-many class="org.gen.FilmActor" />
+        </set>
+    </class>
+</hibernate-mapping>
