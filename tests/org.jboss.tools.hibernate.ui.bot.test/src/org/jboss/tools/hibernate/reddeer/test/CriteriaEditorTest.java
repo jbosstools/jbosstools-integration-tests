@@ -86,7 +86,7 @@ public class CriteriaEditorTest extends HibernateRedDeerTest {
 		new YesButton().click();
 		
     	QueryPageTabView result = new QueryPageTabView();
-    	result.open();
+    	result.open();	
     	assertTrue("Query result items expected", result.getResultItems().size() > 10);
 	}
 
