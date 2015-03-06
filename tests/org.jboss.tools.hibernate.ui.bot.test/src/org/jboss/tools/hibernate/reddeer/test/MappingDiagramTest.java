@@ -9,6 +9,7 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.db.DatabaseConfiguration;
 import org.jboss.reddeer.requirements.db.DatabaseRequirement;
 import org.jboss.reddeer.requirements.db.DatabaseRequirement.Database;
+import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -19,6 +20,7 @@ import org.jboss.reddeer.swt.impl.group.DefaultGroup;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.hibernate.reddeer.common.FileHelper;
 import org.jboss.tools.hibernate.reddeer.console.KnownConfigurationsView;
@@ -69,7 +71,6 @@ public class MappingDiagramTest extends HibernateRedDeerTest {
 		
 		new OkButton().click();	
 	}
-
 	@Test
     public void testMappingDiagram35() {
     	setParams("mvn-hibernate35-ent","3.5","2.0");
@@ -93,26 +94,24 @@ public class MappingDiagramTest extends HibernateRedDeerTest {
     	setParams("mvn-hibernate43-ent","4.3","2.1");
     	testMappingDiagramMaven();
     }
-
     @Test
     public void testMappingDiagramEcl35() {
-    	setParams("ecl-hibernate35","3.5","2.0");
+    	setParams("ecl-hibernate35-ent","3.5","2.0");
     	testMappingDiagramEclipse();
     }
-    
+ 
     @Test
     public void testMappingDiagramEcl36() {
-    	setParams("ecl-hibernate35","3.5","2.0");
+    	setParams("ecl-hibernate36-ent","3.5","2.0");
     	testMappingDiagramEclipse();
     }
     
     @Test
     public void testMappingDiagramEcl40() {
-    	setParams("ecl-hibernate35","3.5","2.0");
+    	setParams("ecl-hibernate40-ent","3.5","2.0");
     	testMappingDiagramEclipse();
     }
         
-    
     private void setParams(String prj, String hbVersion, String jpaVersion) {
     	this.prj = prj;
     	this.hbVersion = hbVersion;
@@ -139,12 +138,12 @@ public class MappingDiagramTest extends HibernateRedDeerTest {
 		try {
 			FileHelper.copyFilesBinary(cfg.getDriverPath(), destDir);
 		} catch (IOException e) {
-			Assert.fail("Cannot copy h2 driver");
+			// Assert.fail("Cannot copy h2 driver");
 		}
     	importProject("hibernatelib");
     	importProject(prj);
     	
-    	HibernateToolsFactory.testCreateConfigurationFile(cfg, prj, "hibernate.cfg.xml", true);
+    	HibernateToolsFactory.testCreateConfigurationFile(cfg, prj, "hibernate.cfg.xml", false);
 	}
 
 	private void testMappingDiagram() {
@@ -170,9 +169,6 @@ public class MappingDiagramTest extends HibernateRedDeerTest {
 	
 	private void cleanUpEcl() {
 		ProjectExplorer pe = new ProjectExplorer();
-		pe.open();
-		pe.getProject(prj).delete(true);	
-		pe.open();
-		pe.getProject("hibernatelib").delete(true);			
+		pe.deleteAllProjects();
 	}
 }
