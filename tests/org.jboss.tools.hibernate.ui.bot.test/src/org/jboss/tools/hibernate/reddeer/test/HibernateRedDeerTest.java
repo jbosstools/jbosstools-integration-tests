@@ -31,7 +31,7 @@ public class HibernateRedDeerTest {
 			new RuntimeException("Cannot read property file " + e.toString());
 		}
 		
-		assureResources("H2_DRIVER");
+		//assureResources("H2_DRIVER");
 		
 		
 	}
