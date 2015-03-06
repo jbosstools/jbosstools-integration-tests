@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 6, 2015 3:28:38 PM by Hibernate Tools 3.6.0 -->
+<hibernate-mapping>
+    <class name="org.gen.Actor" table="ACTOR" schema="PUBLIC" catalog="SAKILA">
+        <id name="actorId" type="short">
+            <column name="ACTOR_ID" />
+            <generator class="assigned" />
+        </id>
+        <property name="firstName" type="string">
+            <column name="FIRST_NAME" length="45" not-null="true" />
+        </property>
+        <property name="lastName" type="string">
+            <column name="LAST_NAME" length="45" not-null="true" />
+        </property>
+        <property name="lastUpdate" type="timestamp">
+            <column name="LAST_UPDATE" length="23" not-null="true" />
+        </property>
+        <set name="filmActors" table="FILM_ACTOR" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="ACTOR_ID" not-null="true" />
+            </key>
+            <one-to-many class="org.gen.FilmActor" />
+        </set>
+        <set name="filmActors_1" table="FILM_ACTOR" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="ACTOR_ID" not-null="true" />
+            </key>
+            <one-to-many class="org.gen.FilmActor" />
+        </set>
+    </class>
+</hibernate-mapping>
