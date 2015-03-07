@@ -121,6 +121,7 @@ public class ConsoleConfigurationFileTest extends HibernateRedDeerTest {
 	@After 
 	public void clean() {			
 		ProjectExplorer pe = new ProjectExplorer();
+		pe.open();
 		pe.getProject(PROJECT_NAME).delete(true);
 	}
 
