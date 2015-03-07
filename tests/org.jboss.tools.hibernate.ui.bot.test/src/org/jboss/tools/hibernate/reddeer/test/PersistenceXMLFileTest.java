@@ -22,19 +22,38 @@ import org.junit.runner.RunWith;
 @RunWith(RedDeerSuite.class)
 public class PersistenceXMLFileTest extends HibernateRedDeerTest {
 
-	private final String PRJ = "jpa21-hibernate-project"; 
+	private String prj = "ecl-jpa21"; 
     
-    @Before
-	public void testConnectionProfile() {
-    	importProject(PRJ);
+    
+	private void prepare() {
+    	importProject(prj);
+	}
+	
+	@Test 
+	public void editPersistenceXMLFileJPA10() {
+		prj = "ecl-jpa10";
+		editPersistenceXMLFile();
+	}
+	
+	@Test 
+	public void editPersistenceXMLFileJPA20() {
+		prj = "ecl-jpa20";
+		editPersistenceXMLFile();
+	}
+
+	@Test 
+	public void editPersistenceXMLFileJPA21() {
+		prj = "ecl-jpa21";
+		editPersistenceXMLFile();
 	}
     
-    @Test
-    public void editPersistenceXMLFile()
+    private void editPersistenceXMLFile()
     {    	    
+    	prepare();
+    	
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
-		DefaultTreeItem i = new DefaultTreeItem(PRJ,"JPA Content","persistence.xml");
+		DefaultTreeItem i = new DefaultTreeItem(prj,"JPA Content","persistence.xml");
 		i.doubleClick();
 		DefaultEditor editor = new DefaultEditor("persistence.xml");
 		new DefaultCTabItem("Hibernate").activate();
@@ -56,5 +75,8 @@ public class PersistenceXMLFileTest extends HibernateRedDeerTest {
     
 	@After
 	public void cleanUp() {
+		ProjectExplorer pe = new ProjectExplorer();
+		pe.open();
+		pe.deleteAllProjects();
 	}
 }
