@@ -37,10 +37,11 @@ import org.jboss.tools.ui.bot.ext.condition.ShellIsActiveCondition;
 import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
 import org.jboss.tools.ui.bot.ext.helper.ReflectionsHelper;
 import org.jboss.tools.ui.bot.ext.parts.SWTBotBrowserExt;
-import org.jboss.tools.vpe.browsersim.BrowserSimRunner;
-import org.jboss.tools.vpe.browsersim.browser.PlatformUtil;
-import org.jboss.tools.vpe.browsersim.ui.BrowserSim;
-import org.jboss.tools.vpe.browsersim.util.BrowserSimUtil;
+import org.jboss.tools.browsersim.ui.launch.BrowserSimRunner;
+import org.jboss.tools.browsersim.browser.PlatformUtil;
+import org.jboss.tools.browsersim.ui.BrowserSim;
+import org.jboss.tools.browsersim.ui.util.BrowserSimUtil;
+import org.jboss.tools.browsersim.ui.util.JavaFXUtil;
 
 /**
  * Handles testing functionality for BrowserSim
@@ -68,7 +69,7 @@ public class BrowserSimHandler {
 
     // Trying to load javaFx libs except Linux GTK3 case
     if (!(isLinux && !BrowserSimUtil.isRunningAgainstGTK2())) {
-      isJavaFxAvailable = BrowserSimUtil.loadJavaFX();
+      isJavaFxAvailable = JavaFXUtil.loadJavaFX();
     }
     
     isWebKitAvailable = BrowserSimUtil.isWebkitAvailable();
