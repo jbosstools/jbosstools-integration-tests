@@ -16,10 +16,11 @@ import org.jboss.reddeer.swt.util.Display;
 import org.jboss.reddeer.swt.util.ResultRunnable;
 import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
-import org.jboss.tools.vpe.browsersim.browser.PlatformUtil;
-import org.jboss.tools.vpe.browsersim.ui.BrowserSim;
-import org.jboss.tools.vpe.browsersim.util.BrowserSimUtil;
-import org.jboss.tools.vpe.browsersim.BrowserSimRunner;
+import org.jboss.tools.browsersim.browser.PlatformUtil;
+import org.jboss.tools.browsersim.ui.BrowserSim;
+import org.jboss.tools.browsersim.ui.util.BrowserSimUtil;
+import org.jboss.tools.browsersim.ui.util.JavaFXUtil;
+import org.jboss.tools.browsersim.ui.launch.BrowserSimRunner;
 
 public class BrowsersimHandler {
 	
@@ -41,7 +42,7 @@ public class BrowsersimHandler {
 
 	    // Trying to load javaFx libs except Linux GTK3 case
 	    if (!(isLinux && !BrowserSimUtil.isRunningAgainstGTK2())) {
-	      isJavaFxAvailable = BrowserSimUtil.loadJavaFX();
+	      isJavaFxAvailable = JavaFXUtil.loadJavaFX();
 	    }
 	    
 	    isWebKitAvailable = BrowserSimUtil.isWebkitAvailable();
