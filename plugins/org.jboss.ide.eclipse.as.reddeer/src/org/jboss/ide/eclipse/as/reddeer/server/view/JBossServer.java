@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.jboss.ide.eclipse.as.reddeer.server.editor.JBossServerEditor;
 import org.jboss.ide.eclipse.as.reddeer.server.editor.WelcomeToServerEditor;
+import org.jboss.reddeer.common.logging.Logger;
+import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.eclipse.wst.server.ui.editor.ServerEditor;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.Server;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServerModule;
@@ -28,6 +30,8 @@ import org.jboss.reddeer.swt.wait.WaitUntil;
 public class JBossServer extends Server {
 
 	public static final String XML_LABEL_DECORATION_SEPARATOR = "   ";
+	
+	private static final Logger log = Logger.getLogger(JBossServer.class);
 
 	/**
 	 * @deprecated Use {@link #JBossServer(TreeItem, JBossServerView)}
@@ -74,7 +78,12 @@ public class JBossServer extends Server {
 		try {
 			super.start();
 		} catch (WaitTimeoutExpiredException e){
+			log.error("JBoss server failed to start");
 			checkServerAlreadyRunningDialog();
+			log.error("JBoss server's console dump:");
+			ConsoleView view = new ConsoleView();
+			view.open();
+			log.error("\t" + view.getConsoleText());
 			throw e;
 		}
 	}
