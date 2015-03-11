@@ -59,25 +59,25 @@ public class CriteriaEditorTest extends HibernateRedDeerTest {
     
 
     @Test
-    public void testHQLEditor35() {
+    public void testCriteriaEditor35() {
     	setParams("mvn-hibernate35","3.5","2.0");
     	testCriteriaEditor();
     }
     
     @Test
-    public void testHQLEditor36() {
+    public void testCriteriaEditor36() {
     	setParams("mvn-hibernate36","3.6","2.0");
     	testCriteriaEditor();
     }
     
     @Test
-    public void testHQLEditor40() {
+    public void testCriteriaEditor40() {
     	setParams("mvn-hibernate40","4.0","2.0");
     	testCriteriaEditor();
     }
     
     @Test
-    public void testHQLEditor43() {
+    public void testCriteriaEditor43() {
     	setParams("mvn-hibernate43","4.3","2.1");
     	testCriteriaEditor();
     }
