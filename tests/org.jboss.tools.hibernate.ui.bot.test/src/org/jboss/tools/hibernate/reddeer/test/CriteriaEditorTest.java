@@ -108,8 +108,9 @@ public class CriteriaEditorTest extends HibernateRedDeerTest {
 		v.open();
 		v.selectConsole(prj);
 		new ContextMenu("Hibernate Criteria Editor").select();
-		TextEditor hqlEditor = new TextEditor("Criteria:" + prj);
-		hqlEditor.setText("session.createCriteria(Actor.class).list();");
+		TextEditor criteriaEditor = new TextEditor("Criteria:" + prj);
+		criteriaEditor.setText("session.createCriteria(Actor.class).list();");
+		criteriaEditor.save();
 	
 		new DefaultToolItem("Run criteria").click();
 		
