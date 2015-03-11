@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.Properties;
 
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.swt.handler.WorkbenchHandler;
 import org.jboss.tools.hibernate.reddeer.factory.ResourceFactory;
 import org.jboss.tools.hibernate.reddeer.importer.ProjectImporter;
 import org.jboss.tools.hibernate.ui.bot.test.Activator;
@@ -33,6 +34,8 @@ public class HibernateRedDeerTest {
 		}
 		
 		//assureResources("H2_DRIVER");
+		
+		WorkbenchHandler.getInstance().closeAllEditors();
 		
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
