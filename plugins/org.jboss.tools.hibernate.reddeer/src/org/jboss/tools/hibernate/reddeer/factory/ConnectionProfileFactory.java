@@ -1,10 +1,13 @@
 package org.jboss.tools.hibernate.reddeer.factory;
 
 
+import java.util.List;
+
 import org.jboss.reddeer.eclipse.datatools.ui.DatabaseProfile;
 import org.jboss.reddeer.eclipse.datatools.ui.view.DataSourceExplorer;
 import org.jboss.reddeer.eclipse.datatools.ui.wizard.ConnectionProfileWizard;
 import org.jboss.reddeer.requirements.db.DatabaseConfiguration;
+import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.impl.button.YesButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
@@ -13,6 +16,7 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.matcher.RegexMatcher;
 import org.jboss.reddeer.swt.matcher.TreeItemRegexMatcher;
 import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.reddeer.swt.wait.WaitWhile;
 
 /**
  * Driver Definition Factory helps to create driver definition based on 
@@ -27,6 +31,19 @@ public class ConnectionProfileFactory {
 	 * @param conf given database requirement configuration
 	 */
 	public static void createConnectionProfile(DatabaseConfiguration cfg) {
+		
+		DataSourceExplorer dse = new DataSourceExplorer();
+		dse.open();
+		List<TreeItem> items = new DefaultTreeItem("Database Connections").getItems();
+		for (TreeItem i : items) {
+			if (i.getText().equals(cfg.getProfileName())) {
+				i.select();
+				new ContextMenu("Delete");
+				new WaitUntil(new ShellWithTextIsActive("Delete Confirmation"));
+				new YesButton().click();
+				new WaitWhile(new ShellWithTextIsActive("Delete Confirmation"));				
+			}
+		}
 
 		DatabaseProfile dbProfile = new DatabaseProfile();
 		dbProfile.setDatabase(cfg.getProfileName());

@@ -113,6 +113,7 @@ public class HQLEditorTest extends HibernateRedDeerTest {
 		new ContextMenu("HQL Editor").select();
 		TextEditor hqlEditor = new TextEditor(prj);
 		hqlEditor.setText("from Actor");
+		hqlEditor.save();
 		
 		new DefaultToolItem("Run HQL").click();
 		
