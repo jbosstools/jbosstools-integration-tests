@@ -18,6 +18,7 @@ import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 
 /**
@@ -97,11 +98,16 @@ public class JBossServer extends Server {
 	public List<XMLConfiguration> getXMLConfiguration(String categoryName){
 		activate();
 		TreeItem categoryItem = treeItem.getItem("XML Configuration").getItem(categoryName);
-
-		new WaitUntil(new TreeItemLabelDecorated(categoryItem.getItems().get(0)));
+		List<TreeItem> configurationItems = categoryItem.getItems();
+		
+		// does not work on AS 4.0
+		new WaitUntil(new TreeItemLabelDecorated(configurationItems.get(0)), TimePeriod.NORMAL, false);
+		
+		// does not work on AS 3.2
+		new WaitUntil(new TreeItemLabelDecorated(configurationItems.get(configurationItems.size() - 1)), TimePeriod.NONE, false);
 
 		List<XMLConfiguration> configurations = new ArrayList<XMLConfiguration>();
-		for (final TreeItem item : categoryItem.getItems()){
+		for (final TreeItem item : configurationItems){
 			String[] columns = item.getText().split(XML_LABEL_DECORATION_SEPARATOR);
 			if (columns.length < 2){
 				// it is nested node, we should process it recursively in the future
