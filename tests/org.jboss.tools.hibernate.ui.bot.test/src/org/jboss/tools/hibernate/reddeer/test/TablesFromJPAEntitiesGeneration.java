@@ -96,7 +96,7 @@ public class TablesFromJPAEntitiesGeneration extends HibernateRedDeerTest {
 
 		pe.open();
 		new DefaultTreeItem(prj,"src/main/java", DDL_FILE).doubleClick();
-		assertTrue("DDL file cannot be empty", new TextEditor(DDL_FILE)
+		assertTrue("DDL file cannot be empty, known issue(s) - https://issues.jboss.org/browse/JBIDE-19431", new TextEditor(DDL_FILE)
 				.getText().length() > 0);
 	}
 
