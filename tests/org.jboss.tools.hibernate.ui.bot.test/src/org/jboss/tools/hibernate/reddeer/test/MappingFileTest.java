@@ -5,7 +5,6 @@ import static org.junit.Assert.fail;
 
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.impl.tree.TreeItemNotFoundException;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
@@ -13,8 +12,7 @@ import org.jboss.tools.hibernate.reddeer.wizard.NewHibernateMappingElementsSelec
 import org.jboss.tools.hibernate.reddeer.wizard.NewHibernateMappingFilePage;
 import org.jboss.tools.hibernate.reddeer.wizard.NewHibernateMappingFileWizard;
 import org.jboss.tools.hibernate.reddeer.wizard.NewHibernateMappingPreviewPage;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -24,13 +22,12 @@ import org.junit.runner.RunWith;
  *
  */
 @RunWith(RedDeerSuite.class)
-@CleanWorkspace
 public class MappingFileTest extends HibernateRedDeerTest {
 	
 	public static final String PRJ = "java-hb-mapping-prj";
     
-	@BeforeClass
-	public static void prepare() {
+	@Before
+	public void prepare() {
 		importProject(PRJ);
 	}
 	
@@ -97,11 +94,6 @@ public class MappingFileTest extends HibernateRedDeerTest {
 		}
 
 		item.doubleClick();
-		new DefaultEditor("Dog.hbm.xml");
-	}
-
-		
-	@AfterClass
-	public static void cleanUp() {
+		new DefaultEditor("Owner.hbm.xml");
 	}
 }

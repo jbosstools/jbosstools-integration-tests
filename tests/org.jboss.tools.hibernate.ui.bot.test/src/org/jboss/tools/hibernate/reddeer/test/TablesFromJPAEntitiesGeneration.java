@@ -9,6 +9,7 @@ import org.jboss.reddeer.requirements.db.DatabaseConfiguration;
 import org.jboss.reddeer.requirements.db.DatabaseRequirement;
 import org.jboss.reddeer.requirements.db.DatabaseRequirement.Database;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.swt.impl.tree.TreeItemNotFoundException;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.hibernate.reddeer.factory.ConnectionProfileFactory;
 import org.jboss.tools.hibernate.reddeer.factory.DriverDefinitionFactory;
@@ -17,6 +18,7 @@ import org.jboss.tools.hibernate.reddeer.factory.ProjectConfigurationFactory;
 import org.jboss.tools.hibernate.reddeer.wizard.GenerateDdlWizard;
 import org.jboss.tools.hibernate.reddeer.wizard.GenerateDdlWizardPage;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -95,9 +97,12 @@ public class TablesFromJPAEntitiesGeneration extends HibernateRedDeerTest {
 		w.finish();
 
 		pe.open();
-		new DefaultTreeItem(prj,"src/main/java", DDL_FILE).doubleClick();
-		assertTrue("DDL file cannot be empty, known issue(s) - https://issues.jboss.org/browse/JBIDE-19431", new TextEditor(DDL_FILE)
-				.getText().length() > 0);
+		try {
+			new DefaultTreeItem(prj,"src/main/java", DDL_FILE).doubleClick();
+		} catch (TreeItemNotFoundException e) {
+			Assert.fail("DDL is not generated - known issues(s): JBIDE-19431");	
+		}
+		assertTrue("DDL file cannot be empty", new TextEditor(DDL_FILE).getText().length() > 0);
 	}
 
 	@After
