@@ -2,10 +2,7 @@ package org.jboss.ide.eclipse.as.ui.bot.test.allsuites.projects;
 
 import org.jboss.ide.eclipse.as.ui.bot.test.as3.CreateAS3Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.as3.DeleteServerAS3Server;
-import org.jboss.ide.eclipse.as.ui.bot.test.as3.DeployJSPProjectAS3Server;
-import org.jboss.ide.eclipse.as.ui.bot.test.as3.HotDeployJSPFileAS3Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.as3.OperateAS3Server;
-import org.jboss.ide.eclipse.as.ui.bot.test.as3.UndeployJSPProjectAS3Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.as40.CreateAS40Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.as40.DeleteServerAS40Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.as40.DeployJSPProjectAS40Server;
@@ -47,7 +44,6 @@ import org.jboss.ide.eclipse.as.ui.bot.test.as71.DeleteServerAS71Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.as71.DeployJSPProjectAS71Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.as71.HotDeployJSPFileAS71Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.as71.OperateAS71Server;
-import org.jboss.ide.eclipse.as.ui.bot.test.as71.ServerStateDetectorsAS71Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.as71.UndeployJSPProjectAS71Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.wildfly8.CreateWildfly8Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.wildfly8.DeleteServerWildfly8Server;
@@ -62,6 +58,7 @@ import org.junit.runners.Suite;
 
 @RunWith(RedDeerSuite.class)
 @Suite.SuiteClasses({
+		CreateWildfly8Server.class,
 		CreateAS71Server.class,
 		CreateAS70Server.class,
 		CreateAS6Server.class,
@@ -70,31 +67,31 @@ import org.junit.runners.Suite;
 		CreateAS42Server.class,
 		CreateAS40Server.class,
 		CreateAS3Server.class,
-		CreateWildfly8Server.class,
 		
+		OperateWildfly8Server.class,
 		OperateAS71Server.class,
 		OperateAS70Server.class,
 		OperateAS6Server.class,
 		OperateAS51Server.class,
 		OperateAS50Server.class,
 		OperateAS42Server.class,
-		OperateAS3Server.class,
 		OperateAS40Server.class,
-		OperateWildfly8Server.class,
-
-		ServerStateDetectorsAS71Server.class,
+		OperateAS3Server.class,
+		
 		ServerStateDetectorsWildfly8Server.class,
 		
+		DeployJSPProjectWildfly8Server.class,
 		DeployJSPProjectAS71Server.class,
 		DeployJSPProjectAS70Server.class,
 		DeployJSPProjectAS6Server.class,
 		DeployJSPProjectAS51Server.class,
 		DeployJSPProjectAS50Server.class,
 		DeployJSPProjectAS42Server.class,
-		DeployJSPProjectAS3Server.class,
 		DeployJSPProjectAS40Server.class,
-		DeployJSPProjectWildfly8Server.class,
+		// do not test deploy for AS 3 - failed compile
+		// DeployJSPProjectAS3Server.class,
 		
+		HotDeployJSPFileWildfly8Server.class,		
 		HotDeployJSPFileAS71Server.class,
 		HotDeployJSPFileAS70Server.class,
 		HotDeployJSPFileAS6Server.class,
@@ -102,19 +99,21 @@ import org.junit.runners.Suite;
 		HotDeployJSPFileAS50Server.class,
 		HotDeployJSPFileAS42Server.class,
 		HotDeployJSPFileAS40Server.class,
-		HotDeployJSPFileAS3Server.class,
-		HotDeployJSPFileWildfly8Server.class,
-		
+		// do not test deploy for AS 3 - failed compile
+		// HotDeployJSPFileAS3Server.class,
+
+		UndeployJSPProjectWildfly8Server.class,
 		UndeployJSPProjectAS71Server.class,
 		UndeployJSPProjectAS70Server.class,
 		UndeployJSPProjectAS6Server.class,
 		UndeployJSPProjectAS51Server.class,
 		UndeployJSPProjectAS50Server.class,
 		UndeployJSPProjectAS42Server.class,
-		UndeployJSPProjectAS3Server.class,
 		UndeployJSPProjectAS40Server.class,
-		UndeployJSPProjectWildfly8Server.class,
+		// do not test deploy for AS 3 - failed compile
+		// UndeployJSPProjectAS3Server.class,
 		
+		DeleteServerWildfly8Server.class,
 		DeleteServerAS71Server.class,
 		DeleteServerAS70Server.class,
 		DeleteServerAS6Server.class,
@@ -122,8 +121,7 @@ import org.junit.runners.Suite;
 		DeleteServerAS50Server.class,
 		DeleteServerAS42Server.class,
 		DeleteServerAS40Server.class,
-		DeleteServerAS3Server.class,
-		DeleteServerWildfly8Server.class
+		DeleteServerAS3Server.class
 })
 public class ProjectsTestsSuite {
 
