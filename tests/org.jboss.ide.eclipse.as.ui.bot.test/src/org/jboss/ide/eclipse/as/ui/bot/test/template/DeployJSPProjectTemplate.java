@@ -74,6 +74,13 @@ public abstract class DeployJSPProjectTemplate {
 		targetedRuntimes.ok();
 	}
 
+	@Before
+	public void clearConsole(){
+		ConsoleView consoleView = new ConsoleView();
+		consoleView.open();
+		consoleView.clearConsole();		
+	}
+	
 	@Test
 	public void deployProject(){
 		JBossServer server = getServer();

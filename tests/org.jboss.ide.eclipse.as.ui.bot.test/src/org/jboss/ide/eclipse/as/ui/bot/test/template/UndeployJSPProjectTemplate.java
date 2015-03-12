@@ -12,6 +12,7 @@ import org.jboss.reddeer.eclipse.wst.server.ui.wizard.ModifyModulesDialog;
 import org.jboss.reddeer.eclipse.wst.server.ui.wizard.ModifyModulesPage;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -37,6 +38,13 @@ public abstract class UndeployJSPProjectTemplate {
 	protected ServerRequirement requirement;
 	
 	protected abstract String getConsoleMessage();
+	
+	@Before
+	public void clearConsole(){
+		ConsoleView consoleView = new ConsoleView();
+		consoleView.open();
+		consoleView.clearConsole();		
+	}
 	
 	@Test
 	public void undeployProject(){
