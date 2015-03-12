@@ -2,6 +2,7 @@ package org.jboss.tools.hibernate.reddeer.test;
 
 import static org.junit.Assert.assertTrue;
 
+import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
@@ -9,6 +10,7 @@ import org.jboss.reddeer.requirements.db.DatabaseConfiguration;
 import org.jboss.reddeer.requirements.db.DatabaseRequirement;
 import org.jboss.reddeer.requirements.db.DatabaseRequirement.Database;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.swt.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
@@ -19,6 +21,7 @@ import org.jboss.reddeer.swt.impl.group.DefaultGroup;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
+import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.hibernate.reddeer.console.KnownConfigurationsView;
@@ -42,7 +45,9 @@ public class HQLEditorTest extends HibernateRedDeerTest {
 
 	private String prj = "mvn-hibernate43";
 	private String hbVersion = "4.3";
-	private String jpaVersion = "2.1"; 
+	private String jpaVersion = "2.1";
+	
+	Logger log = Logger.getLogger(HQLEditorTest.class);
 	
     @InjectRequirement    
     private DatabaseRequirement dbRequirement;
@@ -117,8 +122,13 @@ public class HQLEditorTest extends HibernateRedDeerTest {
 		
 		new DefaultToolItem("Run HQL").click();
 		
-		new WaitUntil(new ShellWithTextIsActive("Open Session factory"));
-		new YesButton().click();	
+		try {
+			new WaitUntil(new ShellWithTextIsActive("Open Session factory"), TimePeriod.SHORT);
+			new YesButton().click();
+		}
+		catch (WaitTimeoutExpiredException e) {
+			log.warn("Open Session factory question dialog was expected");
+		}
 		
 		QueryPageTabView result = new QueryPageTabView();
     	result.open();
