@@ -21,7 +21,6 @@ import org.jboss.tools.hibernate.reddeer.test.MavenizedProjectTest;
 import org.jboss.tools.hibernate.reddeer.test.PersistenceXMLFileTest;
 import org.jboss.tools.hibernate.reddeer.test.RevengFileTest;
 import org.jboss.tools.hibernate.reddeer.test.TablesFromJPAEntitiesGeneration;
-import org.jboss.tools.hibernate.reddeer.view.JPADetailsView;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
