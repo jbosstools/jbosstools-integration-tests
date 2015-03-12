@@ -14,7 +14,8 @@ Require-Bundle: org.eclipse.ui,
  org.junit;bundle-version="4.11.0",
  org.jboss.reddeer.uiforms,
  org.jboss.reddeer.requirements,
- org.eclipse.core.resources
+ org.eclipse.core.resources,
+ org.jboss.reddeer.common;bundle-version="0.7.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: org.jboss.tools.hibernate.reddeer,
