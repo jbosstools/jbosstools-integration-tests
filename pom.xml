@@ -31,8 +31,8 @@
 		<reddeer-site>${reddeer-master-site}</reddeer-site>
 
 		<jbosstools-integrationtests-site>http://download.jboss.org/jbosstools/updates/nightly/integrationtests/master/</jbosstools-integrationtests-site>
-		<jbosstools-site>http://download.jboss.org/jbosstools/updates/nightly/core/${jbosstools-site-stream}/</jbosstools-site>
-		<jbosstools-tests-site>http://download.jboss.org/jbosstools/updates/nightly/coretests/${jbosstools-site-stream}/</jbosstools-tests-site>
+		<jbosstools-site>http://download.jboss.org/jbosstools/mars/snapshots/updates/core/${jbosstools_stream}/</jbosstools-site>
+		<jbosstools-tests-site>http://download.jboss.org/jbosstools/mars/snapshots/updates/coretests/${jbosstools_stream}/</jbosstools-tests-site>
 	</properties>
 
 	<modules>
