@@ -19,7 +19,8 @@ Require-Bundle: org.eclipse.ui,
  org.jboss.reddeer.junit,
  org.jboss.reddeer.eclipse,
  org.jboss.reddeer.swt.test,
- org.jboss.reddeer.requirements
+ org.jboss.reddeer.requirements,
+ org.jboss.reddeer.common
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Eclipse-BundleShape: jar
