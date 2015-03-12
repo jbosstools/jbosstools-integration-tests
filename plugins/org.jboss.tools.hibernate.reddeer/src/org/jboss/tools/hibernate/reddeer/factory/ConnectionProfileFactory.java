@@ -15,6 +15,7 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.matcher.RegexMatcher;
 import org.jboss.reddeer.swt.matcher.TreeItemRegexMatcher;
+import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 
@@ -34,15 +35,15 @@ public class ConnectionProfileFactory {
 		
 		DataSourceExplorer dse = new DataSourceExplorer();
 		dse.open();
-		List<TreeItem> items = new DefaultTreeItem("Database Connections").getItems();
+		DefaultTreeItem item = new DefaultTreeItem("Database Connections");
+		item.expand(TimePeriod.NORMAL);
+		List<TreeItem> items = item.getItems();
 		for (TreeItem i : items) {
-			if (i.getText().equals(cfg.getProfileName())) {
-				i.select();
-				new ContextMenu("Delete");
-				new WaitUntil(new ShellWithTextIsActive("Delete Confirmation"));
-				new YesButton().click();
-				new WaitWhile(new ShellWithTextIsActive("Delete Confirmation"));				
-			}
+			i.select();
+			new ContextMenu("Delete").select();
+			new WaitUntil(new ShellWithTextIsActive("Delete confirmation"));
+			new YesButton().click();
+			new WaitWhile(new ShellWithTextIsActive("Delete confirmation"));				
 		}
 
 		DatabaseProfile dbProfile = new DatabaseProfile();
