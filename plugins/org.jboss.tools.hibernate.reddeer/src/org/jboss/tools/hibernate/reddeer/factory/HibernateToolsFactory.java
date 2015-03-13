@@ -2,8 +2,19 @@ package org.jboss.tools.hibernate.reddeer.factory;
 
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.requirements.db.DatabaseConfiguration;
+import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.swt.impl.button.OkButton;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.button.RadioButton;
+import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
+import org.jboss.reddeer.swt.impl.group.DefaultGroup;
+import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
+import org.jboss.tools.hibernate.reddeer.console.KnownConfigurationsView;
 import org.jboss.tools.hibernate.reddeer.console.NewConfigurationLocationPage;
 import org.jboss.tools.hibernate.reddeer.console.NewConfigurationSettingPage;
 import org.jboss.tools.hibernate.reddeer.console.NewHibernateConfigurationWizard;
@@ -48,5 +59,18 @@ public class HibernateToolsFactory {
 		ti.doubleClick();
 		new DefaultEditor(cfgFile);
 		
+	}
+
+	/**
+	 * Sets hibernate version to given console
+	 * @param consoleName console name
+	 * @param hibernateVersion hibernate version 
+	 */
+	public static void setHibernateVersion(String consoleName, String hbVersion) {
+		KnownConfigurationsView v = new KnownConfigurationsView();
+		v.open();
+		v.openConsoleConfiguration(consoleName);
+		new LabeledCombo("Hibernate Version:").setSelection(hbVersion);
+		new OkButton().click();	
 	}
 }
