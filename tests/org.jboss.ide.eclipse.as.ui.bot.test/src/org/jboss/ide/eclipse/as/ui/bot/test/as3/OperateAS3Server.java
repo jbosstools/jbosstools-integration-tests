@@ -17,4 +17,9 @@ public class OperateAS3Server extends OperateServerTemplate {
 	public String getWelcomePageText() {
 		return "JBoss Management";
 	}
+	
+	@Override
+	protected boolean ignoreExceptionInConsole(){
+		return true;
+	}
 }

@@ -17,4 +17,9 @@ public class OperateAS6Server extends OperateServerTemplate {
 	public String getWelcomePageText() {
 		return "Manage this JBoss AS Instance";
 	}
+	
+	@Override
+	protected boolean ignoreExceptionInConsole(){
+		return true;
+	}
 }

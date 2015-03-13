@@ -21,7 +21,7 @@ import org.junit.Test;
  * @author Lucia Jelinkova
  *
  */
-public abstract class HotDeployJSPFileTemplate {
+public abstract class HotDeployJSPFileTemplate extends AbstractJBossServerTemplate {
 
 	public static final String JSP_CONTENT = 
 				"<%@ page language=\"java\" contentType=\"text/html; charset=UTF-8\" pageEncoding=\"UTF-8\"%> \n" + 

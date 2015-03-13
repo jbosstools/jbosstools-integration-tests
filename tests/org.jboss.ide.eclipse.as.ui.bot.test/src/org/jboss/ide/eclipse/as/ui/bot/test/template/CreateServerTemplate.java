@@ -3,11 +3,8 @@ package org.jboss.ide.eclipse.as.ui.bot.test.template;
 import java.util.List;
 
 import org.jboss.ide.eclipse.as.reddeer.server.editor.JBossServerEditor;
-import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.view.JBossServer;
-import org.jboss.ide.eclipse.as.reddeer.server.view.JBossServerView;
 import org.jboss.ide.eclipse.as.reddeer.server.view.XMLConfiguration;
-import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.junit.Test;
 
 /**
@@ -16,11 +13,8 @@ import org.junit.Test;
  * @author Lucia Jelinkova
  *
  */
-public abstract class CreateServerTemplate {
+public abstract class CreateServerTemplate extends AbstractJBossServerTemplate {
 
-	@InjectRequirement
-	protected ServerRequirement requirement;
-	
 	protected JBossServerEditor editor;
 	
 	protected abstract void assertEditorPorts();
@@ -29,17 +23,11 @@ public abstract class CreateServerTemplate {
 	
 	@Test
 	public void createServer(){
-		JBossServerView jbossView = new JBossServerView();
-		jbossView.open();
-		JBossServer server = jbossView.getServer(getServerName());
+		JBossServer server = getServer();
 		editor = server.open();
 
 		assertEditorPorts();
 		List<XMLConfiguration> configurations = server.getXMLConfiguration("Ports");
 		assertViewPorts(configurations);
-	}
-
-	protected String getServerName() {
-		return requirement.getServerNameLabelText(requirement.getConfig());
 	}
 }

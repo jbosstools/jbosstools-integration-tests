@@ -1,22 +1,16 @@
 package org.jboss.ide.eclipse.as.ui.bot.test.template;
 
-import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.view.JBossServer;
-import org.jboss.ide.eclipse.as.reddeer.server.view.JBossServerView;
-import org.jboss.ide.eclipse.as.ui.bot.test.matcher.ConsoleContainsTextMatcher;
 import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
-import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewEnums.ServerPublishState;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewEnums.ServerState;
 import org.jboss.reddeer.eclipse.wst.server.ui.wizard.ModifyModulesDialog;
 import org.jboss.reddeer.eclipse.wst.server.ui.wizard.ModifyModulesPage;
-import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import static org.junit.Assert.assertTrue;
@@ -32,31 +26,23 @@ import static org.junit.Assert.assertTrue;
  * @author Lucia Jelinkova
  *
  */
-public abstract class UndeployJSPProjectTemplate {
+public abstract class UndeployJSPProjectTemplate extends AbstractJBossServerTemplate {
 
-	@InjectRequirement
-	protected ServerRequirement requirement;
-	
 	protected abstract String getConsoleMessage();
 	
 	@Before
-	public void clearConsole(){
-		ConsoleView consoleView = new ConsoleView();
-		consoleView.open();
-		consoleView.clearConsole();		
+	public void clearServerConsole(){
+		super.clearConsole();		
 	}
 	
 	@Test
 	public void undeployProject(){
-		JBossServerView view = new JBossServerView();
-		view.open();
-		
-		JBossServer server = view.getServer(getServerName());
+		JBossServer server = getServer();
 		undeploy(server);
 		
 		// console
 		new WaitUntil(new ConsoleHasText(getConsoleMessage()));
-		assertNoException();
+		assertNoException("Error in console after undeploy");
 		// view
 		assertTrue("Server contains no project", server.getModules().isEmpty());	
 		assertThat(server.getLabel().getState(), is(ServerState.STARTED));
@@ -68,19 +54,5 @@ public abstract class UndeployJSPProjectTemplate {
 		ModifyModulesPage modifyModulesPage = modifyModulesDialog.getFirstPage();
 		modifyModulesPage.remove(DeployJSPProjectTemplate.PROJECT_NAME);;
 		modifyModulesDialog.finish();
-	}
-	
-	protected String getServerName() {
-		return requirement.getServerNameLabelText(requirement.getConfig());
-	} 
-	
-	protected void assertNoException() {
-		ConsoleView consoleView = new ConsoleView();
-		consoleView.open();
-		consoleView.toggleShowConsoleOnStandardOutChange(false);
-		
-		assertThat(consoleView, not(new ConsoleContainsTextMatcher("Exception")));
-
-		consoleView.close();
 	}
 }
