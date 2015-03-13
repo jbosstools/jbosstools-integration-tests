@@ -9,6 +9,7 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.db.DatabaseConfiguration;
 import org.jboss.reddeer.requirements.db.DatabaseRequirement;
 import org.jboss.reddeer.requirements.db.DatabaseRequirement.Database;
+import org.jboss.reddeer.swt.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.impl.tree.TreeItemNotFoundException;
 import org.jboss.reddeer.swt.wait.AbstractWait;
@@ -161,7 +162,11 @@ public class CodeGenerationConfigurationTest extends HibernateRedDeerTest {
 		re.activateTableFiltersTab();
 		re.activateTypeMappingsTab();
 		re.activateTableAndColumnsTab();
-		re.selectAllTables();
+		try {
+			re.selectAllTables();
+		} catch (WaitTimeoutExpiredException e) {
+			fail("Cannot add tables - known issue(s) - JBIDE-19443");
+		}
 		re.activateSourceTab();
 	}
 
