@@ -61,6 +61,8 @@ public class CriteriaEditorTest extends HibernateRedDeerTest {
 		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
 		DriverDefinitionFactory.createDatabaseDefinition(cfg);		
 		ConnectionProfileFactory.createConnectionProfile(cfg);
+		
+		log.info("Converting project into faceted form");
 		ProjectConfigurationFactory.convertProjectToFacetsForm(prj);
 		ProjectConfigurationFactory.setProjectFacetForDB(prj, cfg, jpaVersion);
 		EntityGenerationFactory.generateJPAEntities(cfg,prj,"org.gen",hbVersion,true);

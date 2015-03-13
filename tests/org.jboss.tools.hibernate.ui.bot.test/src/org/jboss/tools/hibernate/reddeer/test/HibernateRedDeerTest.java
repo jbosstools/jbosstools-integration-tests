@@ -42,6 +42,7 @@ public class HibernateRedDeerTest {
 		pe.deleteAllProjects();
 	}
 	
+	@SuppressWarnings("unused")
 	private void assureResources(String string) {
 		String sourceVar = string + "_SOURCE";
 		String targetVar = string + "_TARGET";
