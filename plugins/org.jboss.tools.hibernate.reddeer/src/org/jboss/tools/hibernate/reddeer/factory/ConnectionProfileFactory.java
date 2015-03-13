@@ -77,4 +77,19 @@ public class ConnectionProfileFactory {
 		new YesButton().click();
 	}
 	
+	/***
+	 * Method deletes all connection profiles via Data Source Explorer
+	 */
+	public static void deleteAllConnectionProfiles() {
+		DataSourceExplorer dse = new DataSourceExplorer();
+		dse.open();
+		List<TreeItem> items = new DefaultTreeItem("Database Connections").getItems();
+		for (TreeItem i : items) {
+			i.select();
+			new ContextMenu("Delete").select();;
+			new WaitUntil(new ShellWithTextIsActive("Delete confirmation"));
+			new YesButton().click();
+			new WaitWhile(new ShellWithTextIsActive("Delete confirmation"));				
+		}
+	}	
 }

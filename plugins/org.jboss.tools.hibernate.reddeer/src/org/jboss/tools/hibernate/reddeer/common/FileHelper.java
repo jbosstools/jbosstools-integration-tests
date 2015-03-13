@@ -67,6 +67,7 @@ public class FileHelper {
 	
 	/**
 	 * Copies binary file originalFile to location toLocation
+	 * If destination file exists it does nothing
 	 * 
 	 * @param originalFile source file location
 	 * @param toLocation destination dir 
@@ -74,9 +75,13 @@ public class FileHelper {
 	 */
 	public static void copyFilesBinary(String srcFile, String destDir)
 			throws IOException {
-		
+							
 		File originalFile = new File(srcFile);
 		File toLocation = new File(destDir);
+		
+		File destFile = new File(toLocation.getAbsolutePath() + File.separator + originalFile.getName());
+		if (destFile.exists()) return;
+		
 		FileInputStream fis = null;
 		FileOutputStream fos = null;
 		try {
