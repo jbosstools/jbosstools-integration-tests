@@ -18,4 +18,9 @@ public class OperateEAP60Server extends OperateServerTemplate {
 	public String getWelcomePageText() {
 		return "Welcome to EAP 6";
 	}
+	
+	@Override
+	protected boolean ignoreExceptionInConsole(){
+		return true;
+	}
 }

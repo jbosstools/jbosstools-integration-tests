@@ -1,22 +1,11 @@
 package org.jboss.ide.eclipse.as.ui.bot.test.template;
 
 import org.jboss.ide.eclipse.as.reddeer.server.editor.JBossServerEditor;
-import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
-import org.jboss.ide.eclipse.as.reddeer.server.view.JBossServerView;
-import org.jboss.ide.eclipse.as.ui.bot.test.matcher.ConsoleContainsTextMatcher;
-import org.jboss.reddeer.eclipse.condition.ConsoleHasNoChange;
-import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewEnums.ServerState;
-import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.swt.exception.RedDeerException;
-import org.jboss.reddeer.swt.wait.TimePeriod;
-import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
-import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import static org.hamcrest.core.Is.is;
@@ -27,24 +16,13 @@ import static org.hamcrest.core.Is.is;
  * @author Lucia Jelinkova
  *
  */
-public abstract class ServerStateDetectorsTemplate {
+public abstract class ServerStateDetectorsTemplate extends AbstractJBossServerTemplate {
 	
 	public static final String TIMEOUT_POLLER = "Timeout";
 	
 	public static final String WEB_PORT_POLLER = "Web Port";
 	
 	public static final String PROCESS_TERMINATED_POLLER = "Process Terminated";
-	
-	@InjectRequirement
-	protected ServerRequirement requirement;
-	
-	private ServersView serversView;
-	
-	@Before
-	public void setup(){
-		serversView = new ServersView();
-		serversView.open();
-	}
 	
 	@After
 	public void cleanup(){
@@ -89,46 +67,32 @@ public abstract class ServerStateDetectorsTemplate {
 	}
 	
 	protected void startServer(){
-		serversView.getServer(getServerName()).start();
+		getServer().start();
 		
 		assertNoException("Starting server");
 		assertServerState("Starting server", ServerState.STARTED);
 	}
 
 	protected void restartServer(){
-		serversView.getServer(getServerName()).restart();;
+		getServer().restart();;
 		
 		assertNoException("Restarting server");
 		assertServerState("Restarting server", ServerState.STARTED);
 	}
 
 	protected void stopServer(){
-		serversView.getServer(getServerName()).stop();;
+		getServer().stop();;
 		
 		assertNoException("Stopping server");
 		assertServerState("Stopping server", ServerState.STOPPED);
 	}
 
-	protected void assertNoException(String message) {
-		ConsoleView consoleView = new ConsoleView();
-		consoleView.open();
-		consoleView.toggleShowConsoleOnStandardOutChange(false);
-		
-		new WaitUntil(new ConsoleHasNoChange(), TimePeriod.LONG);
-		assertThat(message, consoleView, not(new ConsoleContainsTextMatcher("Exception")));
-
-		consoleView.close();
-	}
-
 	protected void assertServerState(String message, ServerState state) {
-		assertThat(message, serversView.getServer(getServerName()).getLabel().getState(), is(state));
+		assertThat(message, getServer().getLabel().getState(), is(state));
 	}
 
 	protected void setTimeouts(int timeout){
-		JBossServerView view = new JBossServerView();
-		view.open();
-		
-		JBossServerEditor editor = view.getServer(getServerName()).open();
+		JBossServerEditor editor = getServer().open();
 		
 		editor.setStartTimeout(20);
 		editor.setStopTimeout(20);
@@ -136,17 +100,10 @@ public abstract class ServerStateDetectorsTemplate {
 	}
 	
 	protected void setPollers(String startupPoller, String shutdownPoller){
-		JBossServerView view = new JBossServerView();
-		view.open();
-		
-		JBossServerEditor editor = view.getServer(getServerName()).open();
+		JBossServerEditor editor = getServer().open();
 		
 		editor.setStartupPoller(startupPoller);
 		editor.setShutdownPoller(shutdownPoller);
 		editor.save();
-	}
-	
-	protected String getServerName() {
-		return requirement.getServerNameLabelText(requirement.getConfig());
 	}
 }

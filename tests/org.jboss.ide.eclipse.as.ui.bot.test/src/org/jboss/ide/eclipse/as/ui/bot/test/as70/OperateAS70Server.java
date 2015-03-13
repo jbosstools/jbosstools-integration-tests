@@ -18,4 +18,9 @@ public class OperateAS70Server extends OperateServerTemplate {
 	public String getWelcomePageText() {
 		return "Welcome to AS 7";
 	}
+	
+	@Override
+	protected boolean ignoreExceptionInConsole(){
+		return true;
+	}
 }

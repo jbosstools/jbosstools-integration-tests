@@ -1,15 +1,8 @@
 package org.jboss.ide.eclipse.as.ui.bot.test.template;
 
-import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
-import org.jboss.ide.eclipse.as.reddeer.server.view.JBossServer;
-import org.jboss.ide.eclipse.as.reddeer.server.view.JBossServerView;
-import org.jboss.ide.eclipse.as.ui.bot.test.matcher.ConsoleContainsTextMatcher;
-import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewEnums.ServerState;
-import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.junit.Test;
 
-import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import static org.hamcrest.core.Is.is;
@@ -25,11 +18,8 @@ import static org.hamcrest.core.Is.is;
  * @author Lucia Jelinkova
  *
  */
-public abstract class OperateServerTemplate {
+public abstract class OperateServerTemplate extends AbstractJBossServerTemplate {
 
-	@InjectRequirement
-	protected ServerRequirement requirement;
-	
 	public abstract String getWelcomePageText();
 
 	@Test
@@ -62,16 +52,6 @@ public abstract class OperateServerTemplate {
 		assertServerState("Stopping server", ServerState.STOPPED);
 	}
 
-	protected void assertNoException(String message) {
-		ConsoleView consoleView = new ConsoleView();
-		consoleView.open();
-		consoleView.toggleShowConsoleOnStandardOutChange(false);
-		
-		assertThat(message, consoleView, not(new ConsoleContainsTextMatcher("Exception")));
-
-		consoleView.close();
-	}
-
 	protected void assertServerState(String message, ServerState state) {
 		assertThat(message, getServer().getLabel().getState(), is(state));
 	}
@@ -82,15 +62,5 @@ public abstract class OperateServerTemplate {
 //		editor.refresh();
 //		new WaitUntil(new EditorWithBrowserContainsTextCondition(editor, string));
 //		assertThat(editor.getText(), containsString(string));
-	}
-	
-	protected String getServerName() {
-		return requirement.getServerNameLabelText(requirement.getConfig());
-	} 
-
-	protected JBossServer getServer() {
-		JBossServerView view = new JBossServerView();
-		view.open();
-		return view.getServer(getServerName());
 	}
 }
