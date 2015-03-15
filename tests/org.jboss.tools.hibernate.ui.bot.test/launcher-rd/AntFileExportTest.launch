@@ -32,16 +32,17 @@
 <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch ${target.arch} -nl ${target.nl} -consoleLog"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="org.jboss.tools.hibernate.ui.bot.test"/>
 <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.pde.ui.workbenchClasspathProvider"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dusage_reporting_enabled=false -Dreddeer.config=/opt/rdconf"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dusage_reporting_enabled=false"/>
 <stringAttribute key="pde.version" value="3.3"/>
 <stringAttribute key="product" value="com.jboss.devstudio.core.product"/>
 <stringAttribute key="rd.launch.property.captureScreenshot" value="true"/>
 <stringAttribute key="rd.launch.property.logDebug" value="true"/>
-<stringAttribute key="rd.launch.property.logMessageFilter" value="ALL"/>
+<stringAttribute key="rd.launch.property.logMessageFilter" value="step|error"/>
 <stringAttribute key="rd.launch.property.pauseFailedTest" value="false"/>
 <stringAttribute key="rd.launch.property.recordScreenCast" value="false"/>
 <stringAttribute key="rd.launch.property.reddeer.close.shells" value="true"/>
 <stringAttribute key="rd.launch.property.reddeer.close.welcome.screen" value="true"/>
+<stringAttribute key="rd.launch.property.reddeer.config" value="/opt/rdconf"/>
 <stringAttribute key="rd.launch.property.reddeer.disable.maven.download.repo.index.on.startup" value="true"/>
 <booleanAttribute key="show_selected_only" value="false"/>
 <stringAttribute key="templateConfig" value="${target_home}/configuration/config.ini"/>

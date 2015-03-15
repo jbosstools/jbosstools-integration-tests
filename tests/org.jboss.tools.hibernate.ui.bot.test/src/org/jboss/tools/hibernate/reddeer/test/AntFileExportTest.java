@@ -2,6 +2,7 @@ package org.jboss.tools.hibernate.reddeer.test;
 
 import static org.junit.Assert.assertTrue;
 
+import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
@@ -38,6 +39,7 @@ public class AntFileExportTest extends HibernateRedDeerTest {
 	private final String PRJ = "antconfiguration";
 	private final String GEN_NAME = "genconfiguration";
 	private final String ANTFILE_NAME = "build.xml";
+	private final Logger log = Logger.getLogger(this.getClass());
 	
 
     @InjectRequirement    
@@ -45,13 +47,17 @@ public class AntFileExportTest extends HibernateRedDeerTest {
     
     @Before
 	public void testConnectionProfile() {
-    	importProject(PRJ);
-		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
+    	DatabaseConfiguration cfg = dbRequirement.getConfiguration();
+    	
+    	log.step("Import project with hibernate configuration and hibernate code generation configuration");
+    	importProject(PRJ);		
+		
+    	log.step("Create configuration file for the project");
 		HibernateToolsFactory.testCreateConfigurationFile(cfg, PRJ, "hibernate.cfg.xml", true);
 	}
     
     @Test
-    public void testHibernateGenerateConfiguration() {
+    public void testAntFilenameExport() {
     	
     	HibernatePerspective p = new HibernatePerspective();
     	p.open();
@@ -71,16 +77,21 @@ public class AntFileExportTest extends HibernateRedDeerTest {
     	pe.open();
     	pe.selectProjects(PRJ);
     	
+    	log.step("Open export wizard (Export ->  Hibernate -> Ant Code Generation)");
     	ExportAntCodeGenWizard w = new ExportAntCodeGenWizard();
     	w.open();
     	ExportAntCodeGenWizardPage page = new ExportAntCodeGenWizardPage();
     	page.setHibernateGenConfiguration(GEN_NAME);
     	page.setAntFileName(ANTFILE_NAME);
+    	
+    	log.step("Click finish to export ant file");
     	w.finish();
     	new WaitWhile(new JobIsRunning());  	
     	
+    	log.step("Open the exported ant file");
     	pe.open();
     	new DefaultTreeItem(PRJ,ANTFILE_NAME).doubleClick();
+    	
     	assertTrue("Ant file cannot be ampty", new TextEditor(ANTFILE_NAME).getText().length() > 0);
     }
     
