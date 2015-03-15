@@ -28,7 +28,6 @@ import org.jboss.tools.hibernate.reddeer.common.FileHelper;
 import org.jboss.tools.hibernate.reddeer.console.KnownConfigurationsView;
 import org.jboss.tools.hibernate.reddeer.factory.ConnectionProfileFactory;
 import org.jboss.tools.hibernate.reddeer.factory.DriverDefinitionFactory;
-import org.jboss.tools.hibernate.reddeer.factory.EntityGenerationFactory;
 import org.jboss.tools.hibernate.reddeer.factory.HibernateToolsFactory;
 import org.jboss.tools.hibernate.reddeer.factory.ProjectConfigurationFactory;
 import org.jboss.tools.hibernate.reddeer.view.QueryPageTabView;
@@ -54,65 +53,32 @@ public class CriteriaEditorTest extends HibernateRedDeerTest {
 	private Logger log = Logger.getLogger(CriteriaEditorTest.class);
 	
     @InjectRequirement    
-    private DatabaseRequirement dbRequirement;
-    
-	private void prepareMaven() {
-    	importProject(prj);
-		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
-		DriverDefinitionFactory.createDatabaseDefinition(cfg);		
-		ConnectionProfileFactory.createConnectionProfile(cfg);
-		
-		log.info("Converting project into faceted form");
-		ProjectConfigurationFactory.convertProjectToFacetsForm(prj);
-		ProjectConfigurationFactory.setProjectFacetForDB(prj, cfg, jpaVersion);
-		EntityGenerationFactory.generateJPAEntities(cfg,prj,"org.gen",hbVersion,true);
-		
-		KnownConfigurationsView v = new KnownConfigurationsView();
-		v.open();
-		new ContextMenu("Add Configuration...").select();
-		new WaitUntil(new ShellWithTextIsActive("Edit Configuration"));
-		DefaultGroup prjGroup = new DefaultGroup("Project:");
-		new DefaultText(prjGroup).setText(prj);
-		new RadioButton("JPA (jdk 1.5+)").click();
-		DefaultGroup dbConnection = new DefaultGroup("Database connection:");
-		new DefaultCombo(dbConnection,0).setText("[JPA Project Configured Connection]");
-		new LabeledCombo("Hibernate Version:").setSelection(hbVersion);
-		new PushButton("Apply").click();
-		
-		new OkButton().click();
-	}
-    
+    private DatabaseRequirement dbRequirement;     
 
     @Test
     public void testCriteriaEditorMvn35() {
-    	setParams("mvn-hibernate35","3.5","2.0");
+    	setParams("mvn-hibernate35-ent","3.5","2.0");
     	testCriteriaEditorMvn();
     }
     
     @Test
     public void testCriteriaEditorMvn36() {
-    	setParams("mvn-hibernate36","3.6","2.0");
+    	setParams("mvn-hibernate36-ent","3.6","2.0");
     	testCriteriaEditorMvn();
     }
     
     @Test
     public void testCriteriaEditorMvn40() {
-    	setParams("mvn-hibernate40","4.0","2.0");
+    	setParams("mvn-hibernate40-ent","4.0","2.0");
     	testCriteriaEditorMvn();
     }
     
     @Test
     public void testCriteriaEditorMvn43() {
-    	setParams("mvn-hibernate43","4.3","2.1");
+    	setParams("mvn-hibernate43-ent","4.3","2.1");
     	testCriteriaEditorMvn();
     }
-    
-    private void setParams(String prj, String hbVersion, String jpaVersion) {
-    	this.prj = prj;
-    	this.hbVersion = hbVersion;
-    	this.jpaVersion = jpaVersion;
-    }
-    
+        
     @Test
     public void testCriteriaEditorEcl35() {
     	setParams("ecl-hibernate35-ent","3.5","2.0");
@@ -130,7 +96,38 @@ public class CriteriaEditorTest extends HibernateRedDeerTest {
     	setParams("ecl-hibernate40-ent","3.5","2.0");
     	testCriteriaEditorEcl();
     }
-       
+    
+    private void setParams(String prj, String hbVersion, String jpaVersion) {
+    	this.prj = prj;
+    	this.hbVersion = hbVersion;
+    	this.jpaVersion = jpaVersion;
+    }
+    
+	private void prepareMaven() {
+    	importProject(prj);
+		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
+		DriverDefinitionFactory.createDatabaseDefinition(cfg);		
+		ConnectionProfileFactory.createConnectionProfile(cfg);
+		
+		log.info("Converting project into faceted form");
+		ProjectConfigurationFactory.convertProjectToFacetsForm(prj);
+		ProjectConfigurationFactory.setProjectFacetForDB(prj, cfg, jpaVersion);
+		
+		KnownConfigurationsView v = new KnownConfigurationsView();
+		v.open();
+		new ContextMenu("Add Configuration...").select();
+		new WaitUntil(new ShellWithTextIsActive("Edit Configuration"));
+		DefaultGroup prjGroup = new DefaultGroup("Project:");
+		new DefaultText(prjGroup).setText(prj);
+		new RadioButton("JPA (jdk 1.5+)").click();
+		DefaultGroup dbConnection = new DefaultGroup("Database connection:");
+		new DefaultCombo(dbConnection,0).setText("[JPA Project Configured Connection]");
+		new LabeledCombo("Hibernate Version:").setSelection(hbVersion);
+		new PushButton("Apply").click();
+		
+		new OkButton().click();
+	}
+    
     private void testCriteriaEditorEcl() {
     	prepareEclipseProject();
     	testCriteriaEditor();    	
@@ -173,7 +170,6 @@ public class CriteriaEditorTest extends HibernateRedDeerTest {
     	result.open();	
     	assertTrue("Query result items expected", result.getResultItems().size() > 10);
 	}
-
    
 	@After
 	public void cleanUp() {
