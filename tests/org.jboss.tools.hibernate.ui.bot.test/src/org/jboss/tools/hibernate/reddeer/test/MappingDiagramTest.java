@@ -9,16 +9,7 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.db.DatabaseConfiguration;
 import org.jboss.reddeer.requirements.db.DatabaseRequirement;
 import org.jboss.reddeer.requirements.db.DatabaseRequirement.Database;
-import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
-import org.jboss.reddeer.swt.impl.button.OkButton;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.button.RadioButton;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
-import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
-import org.jboss.reddeer.swt.impl.group.DefaultGroup;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.text.DefaultText;
-import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.hibernate.reddeer.common.FileHelper;
 import org.jboss.tools.hibernate.reddeer.console.KnownConfigurationsView;
@@ -26,6 +17,10 @@ import org.jboss.tools.hibernate.reddeer.factory.ConnectionProfileFactory;
 import org.jboss.tools.hibernate.reddeer.factory.DriverDefinitionFactory;
 import org.jboss.tools.hibernate.reddeer.factory.HibernateToolsFactory;
 import org.jboss.tools.hibernate.reddeer.factory.ProjectConfigurationFactory;
+import org.jboss.tools.hibernate.reddeer.wizard.ConsoleConfigurationCreationWizard;
+import org.jboss.tools.hibernate.reddeer.wizard.ConsoleConfigurationCreationWizardPage;
+import org.jboss.tools.hibernate.reddeer.wizard.HibernateConsoleConnectionType;
+import org.jboss.tools.hibernate.reddeer.wizard.HibernateConsoleType;
 import org.jboss.tools.hibernate.ui.bot.test.Activator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -54,20 +49,17 @@ public class MappingDiagramTest extends HibernateRedDeerTest {
 		ProjectConfigurationFactory.convertProjectToFacetsForm(prj);
 		ProjectConfigurationFactory.setProjectFacetForDB(prj, cfg, jpaVersion);
 		
-		KnownConfigurationsView v = new KnownConfigurationsView();
-		v.open();
-		new ContextMenu("Add Configuration...").select();
-		new WaitUntil(new ShellWithTextIsActive("Edit Configuration"));
-		DefaultGroup prjGroup = new DefaultGroup("Project:");
-		new DefaultText(prjGroup).setText(prj);
-		new RadioButton("JPA (jdk 1.5+)").click();
-		DefaultGroup dbConnection = new DefaultGroup("Database connection:");
-		new DefaultCombo(dbConnection,0).setText("[JPA Project Configured Connection]");
-		new LabeledCombo("Hibernate Version:").setSelection(hbVersion);
-		new PushButton("Apply").click();
 		
-		new OkButton().click();	
+		ConsoleConfigurationCreationWizard w = new ConsoleConfigurationCreationWizard();
+		w.open();
+		ConsoleConfigurationCreationWizardPage p = new ConsoleConfigurationCreationWizardPage();
+		p.setProject(prj);
+		p.setHibernateConsoleType(HibernateConsoleType.JPA);
+		p.setHibernateConsoleConnectionType(HibernateConsoleConnectionType.JPA);
+		p.setHibernateVersion(hbVersion);		
+		w.finish();
 	}
+	
 	@Test
     public void testMappingDiagram35() {
     	setParams("mvn-hibernate35-ent","3.5","2.0");
