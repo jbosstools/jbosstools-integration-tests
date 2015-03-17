@@ -27,12 +27,12 @@
 
 		<!-- predefined RedDeer sites, if you need to change default please redefine reddeer-site property in your test -->
 		<reddeer-master-site>http://download.jboss.org/jbosstools/builds/staging/RedDeer_master/all/repo/</reddeer-master-site>
-		<reddeer-stable-site>http://download.jboss.org/jbosstools/updates/stable/luna/core/reddeer/0.5.0/</reddeer-stable-site>
+		<reddeer-stable-site>http://download.jboss.org/jbosstools/updates/stable/luna/core/reddeer/0.7.0/</reddeer-stable-site>
 		<reddeer-site>${reddeer-master-site}</reddeer-site>
 
 		<jbosstools-integrationtests-site>http://download.jboss.org/jbosstools/updates/nightly/integrationtests/master/</jbosstools-integrationtests-site>
-		<jbosstools-site>http://download.jboss.org/jbosstools/mars/snapshots/updates/core/${jbosstools_stream}/</jbosstools-site>
-		<jbosstools-tests-site>http://download.jboss.org/jbosstools/mars/snapshots/updates/coretests/${jbosstools_stream}/</jbosstools-tests-site>
+		<jbosstools-site>http://download.jboss.org/jbosstools/mars/snapshots/updates/core/${jbosstools_site_stream}/</jbosstools-site>
+		<jbosstools-tests-site>http://download.jboss.org/jbosstools/mars/snapshots/updates/coretests/${jbosstools_site_stream}/</jbosstools-tests-site>
 	</properties>
 
 	<modules>
