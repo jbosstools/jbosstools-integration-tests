@@ -14,7 +14,6 @@ package org.jboss.tools.vpe.ui.bot.test.palette;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotBrowser;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCheckBox;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotCombo;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotStyledText;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
@@ -78,22 +77,18 @@ public class MobilePaletteTest extends VPEAutoTestCase {
     // check init values
     SWTBotText txLabel = bot.textWithLabel("Label:");
     assertText("I agree",txLabel);
-    SWTBotStyledText stCode = bot.styledText("<label><input type=\"checkbox\" name=\"checkbox-1\" id=\"checkbox-1\"/>I \nagree</label>\n");
-    SWTBotCheckBox chbMini = bot.checkBoxWithLabel("Mini:");
-    assertFalse("Checkbox Mini is checked", chbMini.isChecked());
-    SWTBotCombo cmbTheme = bot.comboBoxWithLabel("Theme:");
-    assertText("",cmbTheme);
+    SWTBotStyledText stCode = bot.styledText("<ion-checkbox>I agree</ion-checkbox>\n");
+    SWTBotCheckBox chbChecked = bot.checkBoxWithLabel("Checked:");
+    assertFalse("Checkbox Checked is checked", chbChecked.isChecked());
     SWTBotBrowser brPreview = bot.browser();
-    assertTextContains("<input type=\"checkbox\" id=\"checkbox-1\" name=\"checkbox-1\" />", brPreview);
+    assertTextContains("<ion-checkbox>I agree</ion-checkbox>", brPreview);
     // make changes to attributes
     final String labelValue="##NEW_LABEL##";
     txLabel.setText(labelValue);
-    chbMini.click();
-    cmbTheme.setText("a");
+    chbChecked.click();
     bot.sleep(Timing.time3S());
-    assertTextContains("<input type=\"checkbox\" data-theme=\"a\" data-mini=\"true\" class=\"custom\" id=\"checkbox-1\" name=\"checkbox-1\" />", brPreview);
-    assertEquals("<inputtype=\"checkbox\"name=\"checkbox-1\"id=\"checkbox-1\"class=\"custom\"data-mini=\"true\"data-theme=\"a\"/><labelfor=\"checkbox-1\">"
-        + labelValue + "</label>",
+    assertTextContains("<ion-checkbox ng-checked=\"true\">" + labelValue + "</ion-checkbox>", brPreview);
+    assertEquals("<ion-checkboxng-checked=\"true\">" + labelValue + "</ion-checkbox>",
         stCode.getText().replaceAll("\n", "").replaceAll(" ", ""));
     bot.button("Hide Preview").click();
     bot.sleep(Timing.time3S());
@@ -102,8 +97,7 @@ public class MobilePaletteTest extends VPEAutoTestCase {
     bot.button(IDELabel.Button.FINISH).click();
     bot.sleep(Timing.time3S());
     String htmlSourceText = bot.editorByTitle(htmlPageName).toTextEditor().getText().replaceAll("\n","").replaceAll("\t","").replaceAll("\r","");
-    assertContains("<body><input type=\"checkbox\" name=\"checkbox-1\" id=\"checkbox-1\" class=\"custom\" data-mini=\"true\" data-theme=\"a\"/>", htmlSourceText);
-    assertContains("<label for=\"checkbox-1\">" + labelValue + "</label>", htmlSourceText);
+    assertContains("<ion-checkbox ng-checked=\"true\">" + labelValue + "</ion-checkbox>", htmlSourceText);
   }
 	@Override
 	protected void closeUnuseDialogs() {
