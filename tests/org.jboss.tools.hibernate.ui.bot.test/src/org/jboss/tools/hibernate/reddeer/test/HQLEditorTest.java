@@ -29,6 +29,9 @@ import org.jboss.tools.hibernate.reddeer.factory.ConnectionProfileFactory;
 import org.jboss.tools.hibernate.reddeer.factory.DriverDefinitionFactory;
 import org.jboss.tools.hibernate.reddeer.factory.ProjectConfigurationFactory;
 import org.jboss.tools.hibernate.reddeer.view.QueryPageTabView;
+import org.jboss.tools.hibernate.reddeer.wizard.ConsoleConfigurationCreationWizardPage;
+import org.jboss.tools.hibernate.reddeer.wizard.HibernateConsoleConnectionType;
+import org.jboss.tools.hibernate.reddeer.wizard.HibernateConsoleType;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -97,17 +100,14 @@ public class HQLEditorTest extends HibernateRedDeerTest {
 		
 		KnownConfigurationsView v = new KnownConfigurationsView();
 		v.open();
-		new ContextMenu("Add Configuration...").select();
-		new WaitUntil(new ShellWithTextIsActive("Edit Configuration"));
-		DefaultGroup prjGroup = new DefaultGroup("Project:");
-		new DefaultText(prjGroup).setText(prj);
-		new RadioButton("JPA (jdk 1.5+)").click();
-		DefaultGroup dbConnection = new DefaultGroup("Database connection:");
-		new DefaultCombo(dbConnection,0).setText("[JPA Project Configured Connection]");
-		new LabeledCombo("Hibernate Version:").setSelection(hbVersion);
-		new PushButton("Apply").click();
-		
-		new OkButton().click();		
+		v.openConsoleConfiguration(prj);
+				
+		ConsoleConfigurationCreationWizardPage p = new ConsoleConfigurationCreationWizardPage();
+		p.setProject(prj);
+		p.setHibernateConsoleType(HibernateConsoleType.JPA);
+		p.setHibernateConsoleConnectionType(HibernateConsoleConnectionType.JPA);
+		p.setHibernateVersion(hbVersion);		
+		p.ok();
 		
 		v.open();
 		v.selectConsole(prj);
