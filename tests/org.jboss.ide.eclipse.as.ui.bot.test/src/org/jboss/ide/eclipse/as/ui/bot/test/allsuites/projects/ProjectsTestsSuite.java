@@ -17,10 +17,7 @@ import org.jboss.ide.eclipse.as.ui.bot.test.as42.OperateAS42Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.as42.UndeployJSPProjectAS42Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.as50.CreateAS50Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.as50.DeleteServerAS50Server;
-import org.jboss.ide.eclipse.as.ui.bot.test.as50.DeployJSPProjectAS50Server;
-import org.jboss.ide.eclipse.as.ui.bot.test.as50.HotDeployJSPFileAS50Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.as50.OperateAS50Server;
-import org.jboss.ide.eclipse.as.ui.bot.test.as50.UndeployJSPProjectAS50Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.as51.CreateAS51Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.as51.DeleteServerAS51Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.as51.DeployJSPProjectAS51Server;
@@ -85,7 +82,8 @@ import org.junit.runners.Suite;
 		DeployJSPProjectAS70Server.class,
 		DeployJSPProjectAS6Server.class,
 		DeployJSPProjectAS51Server.class,
-		DeployJSPProjectAS50Server.class,
+		// do not test deploy for AS 5.0
+		// DeployJSPProjectAS50Server.class,
 		DeployJSPProjectAS42Server.class,
 		DeployJSPProjectAS40Server.class,
 		// do not test deploy for AS 3 - failed compile
@@ -96,7 +94,8 @@ import org.junit.runners.Suite;
 		HotDeployJSPFileAS70Server.class,
 		HotDeployJSPFileAS6Server.class,
 		HotDeployJSPFileAS51Server.class,
-		HotDeployJSPFileAS50Server.class,
+		// do not test deploy for AS 5.0
+		// HotDeployJSPFileAS50Server.class,
 		HotDeployJSPFileAS42Server.class,
 		HotDeployJSPFileAS40Server.class,
 		// do not test deploy for AS 3 - failed compile
@@ -107,7 +106,8 @@ import org.junit.runners.Suite;
 		UndeployJSPProjectAS70Server.class,
 		UndeployJSPProjectAS6Server.class,
 		UndeployJSPProjectAS51Server.class,
-		UndeployJSPProjectAS50Server.class,
+		// do not test deploy for AS 5.0
+		// UndeployJSPProjectAS50Server.class,
 		UndeployJSPProjectAS42Server.class,
 		UndeployJSPProjectAS40Server.class,
 		// do not test deploy for AS 3 - failed compile
