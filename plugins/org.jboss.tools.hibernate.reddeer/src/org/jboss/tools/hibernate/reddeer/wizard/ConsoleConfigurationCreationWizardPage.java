@@ -55,4 +55,11 @@ public class ConsoleConfigurationCreationWizardPage extends WizardPage  {
 	public void setHibernateVersion(String hbVersion) {
 		new LabeledCombo("Hibernate Version:").setSelection(hbVersion);
 	}
+	
+	/**
+	 * Click ok button
+	 */
+	public void ok() {
+		new OkButton().click();
+	}
 }

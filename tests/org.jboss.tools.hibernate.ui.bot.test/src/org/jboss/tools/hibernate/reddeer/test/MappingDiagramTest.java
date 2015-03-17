@@ -17,7 +17,6 @@ import org.jboss.tools.hibernate.reddeer.factory.ConnectionProfileFactory;
 import org.jboss.tools.hibernate.reddeer.factory.DriverDefinitionFactory;
 import org.jboss.tools.hibernate.reddeer.factory.HibernateToolsFactory;
 import org.jboss.tools.hibernate.reddeer.factory.ProjectConfigurationFactory;
-import org.jboss.tools.hibernate.reddeer.wizard.ConsoleConfigurationCreationWizard;
 import org.jboss.tools.hibernate.reddeer.wizard.ConsoleConfigurationCreationWizardPage;
 import org.jboss.tools.hibernate.reddeer.wizard.HibernateConsoleConnectionType;
 import org.jboss.tools.hibernate.reddeer.wizard.HibernateConsoleType;
@@ -39,27 +38,8 @@ public class MappingDiagramTest extends HibernateRedDeerTest {
 	private String jpaVersion = "2.0";
 	
     @InjectRequirement    
-    private DatabaseRequirement dbRequirement;
-    
-	public void prepareMavenProject() {
-    	importProject(prj);
-		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
-		DriverDefinitionFactory.createDatabaseDefinition(cfg);		
-		ConnectionProfileFactory.createConnectionProfile(cfg);
-		ProjectConfigurationFactory.convertProjectToFacetsForm(prj);
-		ProjectConfigurationFactory.setProjectFacetForDB(prj, cfg, jpaVersion);
-		
-		
-		ConsoleConfigurationCreationWizard w = new ConsoleConfigurationCreationWizard();
-		w.open();
-		ConsoleConfigurationCreationWizardPage p = new ConsoleConfigurationCreationWizardPage();
-		p.setProject(prj);
-		p.setHibernateConsoleType(HibernateConsoleType.JPA);
-		p.setHibernateConsoleConnectionType(HibernateConsoleConnectionType.JPA);
-		p.setHibernateVersion(hbVersion);		
-		w.finish();
-	}
-	
+    private DatabaseRequirement dbRequirement;    
+
 	@Test
     public void testMappingDiagram35() {
     	setParams("mvn-hibernate35-ent","3.5","2.0");
@@ -77,12 +57,13 @@ public class MappingDiagramTest extends HibernateRedDeerTest {
     	setParams("mvn-hibernate40-ent","4.0","2.0");
     	testMappingDiagramMaven();
     }
-    
+
     @Test
     public void testMappingDiagram43() {
     	setParams("mvn-hibernate43-ent","4.3","2.1");
     	testMappingDiagramMaven();
     }
+
     @Test
     public void testMappingDiagramEcl35() {
     	setParams("ecl-hibernate35-ent","3.5","2.0");
@@ -100,15 +81,14 @@ public class MappingDiagramTest extends HibernateRedDeerTest {
     	setParams("ecl-hibernate40-ent","3.5","2.0");
     	testMappingDiagramEclipse();
     }
-        
+
     private void setParams(String prj, String hbVersion, String jpaVersion) {
     	this.prj = prj;
     	this.hbVersion = hbVersion;
     	this.jpaVersion = jpaVersion;
     }
 
-    private void testMappingDiagramMaven() {
-    	
+    private void testMappingDiagramMaven() {    	
     	prepareMavenProject();
     	testMappingDiagram();
     	cleanUpMvn();
@@ -117,9 +97,29 @@ public class MappingDiagramTest extends HibernateRedDeerTest {
     private void testMappingDiagramEclipse() {
     	prepareEclipseProject();
     	testMappingDiagram();
-    	cleanUpEcl();
-    	
+    	cleanUpEcl();    
     }
+    
+	public void prepareMavenProject() {
+    	importProject(prj);
+		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
+		DriverDefinitionFactory.createDatabaseDefinition(cfg);		
+		ConnectionProfileFactory.createConnectionProfile(cfg);
+		ProjectConfigurationFactory.convertProjectToFacetsForm(prj);
+		ProjectConfigurationFactory.setProjectFacetForDB(prj, cfg, jpaVersion);
+		
+		KnownConfigurationsView v = new KnownConfigurationsView();
+		v.open();
+		v.openConsoleConfiguration(prj);
+				
+		ConsoleConfigurationCreationWizardPage p = new ConsoleConfigurationCreationWizardPage();
+		p.setProject(prj);
+		p.setHibernateConsoleType(HibernateConsoleType.JPA);
+		p.setHibernateConsoleConnectionType(HibernateConsoleConnectionType.JPA);
+		p.setHibernateVersion(hbVersion);		
+		p.ok();
+	}
+
     
     private void prepareEclipseProject() {
 		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
