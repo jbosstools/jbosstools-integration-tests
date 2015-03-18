@@ -46,7 +46,7 @@ public class HibernateRedDeerTest {
 		pe.deleteAllProjects();
 		
 		if (!sim.isRegistered(LOG_INTERCEPTOR))
-			SyncInterceptorManager.getInstance().register("log", new ErrorLogInterceptor());
+			SyncInterceptorManager.getInstance().register(LOG_INTERCEPTOR, new ErrorLogInterceptor());
 	}
 	
 	@SuppressWarnings("unused")

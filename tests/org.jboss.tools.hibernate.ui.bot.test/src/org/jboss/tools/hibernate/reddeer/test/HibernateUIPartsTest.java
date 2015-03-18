@@ -2,6 +2,7 @@ package org.jboss.tools.hibernate.reddeer.test;
 
 import static org.junit.Assert.*;
 
+import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
 import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
 import org.jboss.tools.hibernate.reddeer.console.HibernateConfigurationView;
@@ -19,6 +20,9 @@ import org.junit.Test;
  */
 public class HibernateUIPartsTest {
 
+	
+	private Logger log = Logger.getLogger(this.getClass());
+	
 	@Test
 	/**
 	 * Tests Hibernate perspective
@@ -29,9 +33,13 @@ public class HibernateUIPartsTest {
 	 * - Query Parameters 
 	 */
 	public void testHibernateViews() {
+		log.step("Check Hibernate Console Configurations view");
 		checkView(new HibernateConfigurationView());
-		checkView(new DynamicSQLPreviewView());		
+		log.step("Check Dynamic SQL Preview View");
+		checkView(new DynamicSQLPreviewView());
+		log.step("Check Query Page Tab View");
 		checkView(new QueryPageTabView());
+		log.step("Check Query Parameters View");
 		checkView(new QueryParametersView());
 	}
 	
@@ -40,6 +48,7 @@ public class HibernateUIPartsTest {
 	 */
 	@Test
 	public void testHibernatePerspective() {
+		log.step("Check Hibernate perspective");
 		HibernatePerspective p = new HibernatePerspective();
 		p.open();
 		p.reset();
@@ -52,11 +61,17 @@ public class HibernateUIPartsTest {
 	 * @param given view
 	 */
 	private void checkView(WorkbenchView view) {
+		log.step("Open view");
 		view.open();
+		log.step("Maximize view");
 		view.maximize();
+		log.step("Restore view");
 		view.restore();
+		log.step("Minimize view");
 		view.minimize();
+		log.step("Restore view");
 		view.restore();
+		log.step("Close view");
 		view.close();		
 	}
 	

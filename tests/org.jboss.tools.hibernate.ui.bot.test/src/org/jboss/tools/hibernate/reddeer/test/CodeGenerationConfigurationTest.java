@@ -4,6 +4,7 @@ import static org.junit.Assert.fail;
 
 import java.io.IOException;
 
+import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
@@ -46,7 +47,9 @@ public class CodeGenerationConfigurationTest extends HibernateRedDeerTest {
     private DatabaseRequirement dbRequirement;
     
 	private String prj = "mvn-hibernate43-ent"; 
-	private String hbVersion = "4.3";	
+	private String hbVersion = "4.3";
+	
+	private Logger log = Logger.getLogger(this.getClass());
 
 	// Mavenized projects
     @Test
@@ -136,9 +139,12 @@ public class CodeGenerationConfigurationTest extends HibernateRedDeerTest {
     
 	private void prepareMvn() {
 		
+		log.step("Import maven project");
     	importProject(prj);
 		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
+		log.step("Create Hibernate configuration file with Hibernate Console");
 		HibernateToolsFactory.testCreateConfigurationFile(cfg, prj, "hibernate.cfg.xml", true);
+		log.step("Set hibernate version in Hibernate Console");
 		HibernateToolsFactory.setHibernateVersion(prj, hbVersion);
 	}
 
@@ -151,11 +157,15 @@ public class CodeGenerationConfigurationTest extends HibernateRedDeerTest {
 		} catch (IOException e) {
 			// Assert.fail("Cannot copy h2 driver");
 		}
-    	importProject("hibernatelib");
+		log.step("Import hibernatelib and java project");
+    	importProject("hibernatelib");    	
     	importProject(prj);
     	
+    	log.step("Create Hibernate configuration file with Hibernate Console");
 		HibernateToolsFactory.testCreateConfigurationFile(cfg, prj, "hibernate.cfg.xml", true);
+		log.step("Set Hibernate Version in Hibernate Console");
 		HibernateToolsFactory.setHibernateVersion(prj, hbVersion);
+		log.step("Hibernate console in Hibernate Settings in Project Properties");
 		setHibernateSettings();
 
 	}
@@ -178,9 +188,11 @@ public class CodeGenerationConfigurationTest extends HibernateRedDeerTest {
     	
     private void createHibernateGenerationConfiguration(boolean reveng, String src) {    	
     	if (reveng) {
+    		log.step("Create hibernate reverse engineer file");
     		createRevengFile();
     	}
     	
+    	log.step("Create Hibernate Code generation configuration");
     	LaunchConfigurationsDialog dlg = new LaunchConfigurationsDialog();
     	dlg.open();
     	dlg.createNewConfiguration();
@@ -192,6 +204,7 @@ public class CodeGenerationConfigurationTest extends HibernateRedDeerTest {
     	dlg.selectExporter(0);
     	dlg.selectExporter(1);
     	dlg.apply();
+    	log.step("Click run to generate code");
     	dlg.run();
     	
     	checkGeneratedEntities(src);
