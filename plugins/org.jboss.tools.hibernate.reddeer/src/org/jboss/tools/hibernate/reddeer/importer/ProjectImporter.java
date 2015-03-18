@@ -3,6 +3,7 @@ package org.jboss.tools.hibernate.reddeer.importer;
 import static org.junit.Assert.assertTrue;
 
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
+import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
@@ -29,7 +30,7 @@ public class ProjectImporter {
 		new WaitWhile(new JobIsRunning(),TimePeriod.LONG);
 		ProblemsView problemsView = new ProblemsView();
 		problemsView.open();
-		assertTrue("No problems after import are expected", problemsView.getAllErrors().size() == 0);
+		assertTrue("No problems after import are expected", problemsView.getProblems(ProblemType.ERROR).size() == 0);
 	}
 	
 	/**

@@ -1,17 +1,12 @@
 package org.jboss.tools.hibernate.reddeer.wizard;
 
-import org.jboss.reddeer.jface.wizard.NewWizardDialog;
 import org.jboss.reddeer.jface.wizard.WizardPage;
-import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.impl.button.OkButton;
-import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.group.DefaultGroup;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
-import org.jboss.reddeer.swt.wait.WaitUntil;
 
 /**
  * aka Hibernate Console Wizard

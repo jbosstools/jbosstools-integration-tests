@@ -4,10 +4,11 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
+import org.jboss.reddeer.eclipse.ui.problems.Problem;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
+import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement;
-import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.hibernate.reddeer.wizard.JPAFacetWizardPage;
@@ -75,7 +76,7 @@ public class CreateJPAProjectTest extends HibernateRedDeerTest {
 		new WaitWhile(new JobIsRunning());
 		ProblemsView problemsView = new ProblemsView();
 		problemsView.open();
-		List<TreeItem> allErrors = problemsView.getAllErrors();
+		List<Problem> allErrors = problemsView.getProblems(ProblemType.ERROR);
 		problemsView.open();
 		assertTrue("No problems are expected (JBIDE-17855)", allErrors.size() == 0);
 	}
