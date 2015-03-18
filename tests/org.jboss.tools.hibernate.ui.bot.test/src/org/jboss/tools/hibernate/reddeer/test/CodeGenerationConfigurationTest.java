@@ -2,6 +2,8 @@ package org.jboss.tools.hibernate.reddeer.test;
 
 import static org.junit.Assert.fail;
 
+import java.io.IOException;
+
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
@@ -10,19 +12,24 @@ import org.jboss.reddeer.requirements.db.DatabaseConfiguration;
 import org.jboss.reddeer.requirements.db.DatabaseRequirement;
 import org.jboss.reddeer.requirements.db.DatabaseRequirement.Database;
 import org.jboss.reddeer.swt.exception.WaitTimeoutExpiredException;
+import org.jboss.reddeer.swt.impl.button.CheckBox;
+import org.jboss.reddeer.swt.impl.button.OkButton;
+import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.impl.tree.TreeItemNotFoundException;
 import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.workbench.handler.EditorHandler;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
+import org.jboss.tools.hibernate.reddeer.common.FileHelper;
 import org.jboss.tools.hibernate.reddeer.dialog.LaunchConfigurationsDialog;
+import org.jboss.tools.hibernate.reddeer.dialog.ProjectPropertyDialog;
 import org.jboss.tools.hibernate.reddeer.editor.RevengEditor;
 import org.jboss.tools.hibernate.reddeer.factory.HibernateToolsFactory;
 import org.jboss.tools.hibernate.reddeer.wizard.NewReverseEngineeringFileWizard;
 import org.jboss.tools.hibernate.reddeer.wizard.TableFilterWizardPage;
+import org.jboss.tools.hibernate.ui.bot.test.Activator;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -39,72 +46,137 @@ public class CodeGenerationConfigurationTest extends HibernateRedDeerTest {
     private DatabaseRequirement dbRequirement;
     
 	private String prj = "mvn-hibernate43-ent"; 
-	private String hbVersion = "4.3";
+	private String hbVersion = "4.3";	
 
-	private void prepare() {
-    	importProject(prj);
-		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
-		HibernateToolsFactory.testCreateConfigurationFile(cfg, prj, "hibernate.cfg.xml", true);
-		HibernateToolsFactory.setHibernateVersion(prj, hbVersion);
-	}
-    
-    private void setParams(String prj, String hbVersion, String jpaVersion) {
-    	this.prj = prj;
-    	this.hbVersion = hbVersion;
-    }
-    
+	// Mavenized projects
     @Test
     public void testHibernateGenerateConfiguration35() {
     	setParams("mvn-hibernate35","3.5","2.0");
-    	createHibernateGenerationConfiguration(true);
+    	createHibernateGenerationConfigurationMvn(false);
     }
     
     @Test
     public void testHibernateGenerateConfiguration36() {
     	setParams("mvn-hibernate36","3.6","2.0");
-    	createHibernateGenerationConfiguration(false);
+    	createHibernateGenerationConfigurationMvn(false);
     }
     
     @Test
     public void testHibernateGenerateConfiguration40() {
     	setParams("mvn-hibernate40","4.0","2.0");
-    	createHibernateGenerationConfiguration(false);
+    	createHibernateGenerationConfigurationMvn(false);
     }
     
     @Test
     public void testHibernateGenerateConfiguration43() {
     	setParams("mvn-hibernate43","4.3","2.1");
-    	createHibernateGenerationConfiguration(false);
+    	createHibernateGenerationConfigurationMvn(false);
     }
     
     @Test
     public void testHibernateGenerateConfigurationWithReveng35() {
     	setParams("mvn-hibernate35","3.5","2.0");
-    	createHibernateGenerationConfiguration(true);
+    	createHibernateGenerationConfigurationMvn(true);
     }
         
     @Test
     public void testHibernateGenerateConfigurationWithReveng36() {
     	setParams("mvn-hibernate36","3.6","2.0");
-    	createHibernateGenerationConfiguration(true);
+     	createHibernateGenerationConfigurationMvn(true);
     }
     
     @Test
     public void testHibernateGenerateConfigurationWithReveng40() {
     	setParams("mvn-hibernate40","4.0","2.0");
-    	createHibernateGenerationConfiguration(true);
+    	createHibernateGenerationConfigurationMvn(true);
     }
     
     @Test
     public void testHibernateGenerateConfigurationWithReveng43() {
     	setParams("mvn-hibernate43","4.3","2.1");
-    	createHibernateGenerationConfiguration(true);
+    	createHibernateGenerationConfigurationMvn(true);
     }
     
-    private void createHibernateGenerationConfiguration(boolean reveng) {
+    // Non-mavenized projects
+    @Test
+    public void testHibernateGenerateConfigurationEcl35() {
+    	setParams("ecl-hibernate35","3.5","2.0");
+    	createHibernateGenerationConfigurationEcl(false);
+    }
+ 
+    @Test
+    public void testHibernateGenerateConfigurationEcl36() {
+    	setParams("ecl-hibernate36","3.6","2.0");
+    	createHibernateGenerationConfigurationEcl(false);
+    }
+    
+    @Test
+    public void testHibernateGenerateConfigurationEcl40() {
+    	setParams("ecl-hibernate40","4.0","2.0");
+    	createHibernateGenerationConfigurationEcl(false);
+    }
+    @Test
+    public void testHibernateGenerateConfigurationRelEcl35() {
+    	setParams("ecl-hibernate35","3.5","2.0");
+    	createHibernateGenerationConfigurationEcl(true);
+    }
+ 
+    @Test
+    public void testHibernateGenerateConfigurationRelEcl36() {
+    	setParams("ecl-hibernate36","3.6","2.0");
+    	createHibernateGenerationConfigurationEcl(true);
+    }
+    
+    @Test
+    public void testHibernateGenerateConfigurationRelEcl40() {
+    	setParams("ecl-hibernate40","4.0","2.0");
+    	createHibernateGenerationConfigurationEcl(true);
+    }
 
-    	prepare();
+    
+	private void prepareMvn() {
+		
+    	importProject(prj);
+		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
+		HibernateToolsFactory.testCreateConfigurationFile(cfg, prj, "hibernate.cfg.xml", true);
+		HibernateToolsFactory.setHibernateVersion(prj, hbVersion);
+	}
+
+	private void prepareEcl() {
+		
+		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
+		String destDir = FileHelper.getResourceAbsolutePath(Activator.PLUGIN_ID,"resources","prj","hibernatelib","connector" );
+		try {
+			FileHelper.copyFilesBinary(cfg.getDriverPath(), destDir);
+		} catch (IOException e) {
+			// Assert.fail("Cannot copy h2 driver");
+		}
+    	importProject("hibernatelib");
+    	importProject(prj);
     	
+		HibernateToolsFactory.testCreateConfigurationFile(cfg, prj, "hibernate.cfg.xml", true);
+		HibernateToolsFactory.setHibernateVersion(prj, hbVersion);
+		setHibernateSettings();
+
+	}
+
+	
+    private void setParams(String prj, String hbVersion, String jpaVersion) {
+    	this.prj = prj;
+    	this.hbVersion = hbVersion;
+    }
+    
+    private void createHibernateGenerationConfigurationMvn(boolean reveng) {
+    	prepareMvn();
+    	createHibernateGenerationConfiguration(reveng,"src/main/java");
+    }
+    
+    private void createHibernateGenerationConfigurationEcl(boolean reveng) {
+    	prepareEcl();
+     	createHibernateGenerationConfiguration(reveng, "src");
+    }
+    	
+    private void createHibernateGenerationConfiguration(boolean reveng, String src) {    	
     	if (reveng) {
     		createRevengFile();
     	}
@@ -113,7 +185,7 @@ public class CodeGenerationConfigurationTest extends HibernateRedDeerTest {
     	dlg.open();
     	dlg.createNewConfiguration();
     	dlg.selectConfiguration(prj);
-    	dlg.setOutputDir("/" + prj + "/src/main/java");
+    	dlg.setOutputDir("/" + prj + "/" + src);
     	dlg.setPackage("org.gen");
     	dlg.setReverseFromJDBC(true);
     	if (reveng) dlg.setRevengFile(prj,"hibernate.reveng.xml");
@@ -121,15 +193,17 @@ public class CodeGenerationConfigurationTest extends HibernateRedDeerTest {
     	dlg.selectExporter(1);
     	dlg.apply();
     	dlg.run();
+    	
+    	checkGeneratedEntities(src);
     }
     	    	
-    private void checkGeneratedEntities() {
+    private void checkGeneratedEntities(String src) {
     	PackageExplorer pe = new PackageExplorer();    
     	pe.open();    	
     	try {
     		// need to wait here to get treeitem ready, TODO: implement proper condition
     		AbstractWait.sleep(TimePeriod.NORMAL);
-    		new DefaultTreeItem(prj,"src/main/java","org.gen","Actor.java").doubleClick();
+    		new DefaultTreeItem(prj,src,"org.gen","Actor.java").doubleClick();
     	}
     	catch (TreeItemNotFoundException e) {
     		fail("Entities not generated, possible cause https://issues.jboss.org/browse/JBIDE-19217");
@@ -168,12 +242,30 @@ public class CodeGenerationConfigurationTest extends HibernateRedDeerTest {
 			fail("Cannot add tables - known issue(s) - JBIDE-19443");
 		}
 		re.activateSourceTab();
+		re.save();
+	}
+	
+	private void setHibernateSettings() {
+		
+		ProjectExplorer pe = new ProjectExplorer();
+		pe.open();
+		pe.selectProjects(prj);
+		
+		ProjectPropertyDialog prjDlg = new ProjectPropertyDialog(prj);
+		prjDlg.open();
+		prjDlg.select("Hibernate Settings");
+		
+		CheckBox cb = new CheckBox();		
+		if (!cb.isChecked()) cb.click();
+		
+		new DefaultCombo().setSelection(prj);
+		new OkButton().click();
 	}
 
 	@After
 	public void cleanUp() {
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
-		pe.getProject(prj).delete(true);
+		pe.deleteAllProjects();
 	}
 }
