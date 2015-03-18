@@ -5,31 +5,19 @@ import org.jboss.ide.eclipse.as.ui.bot.test.as3.DeleteServerAS3Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.as3.OperateAS3Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.as40.CreateAS40Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.as40.DeleteServerAS40Server;
-import org.jboss.ide.eclipse.as.ui.bot.test.as40.DeployJSPProjectAS40Server;
-import org.jboss.ide.eclipse.as.ui.bot.test.as40.HotDeployJSPFileAS40Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.as40.OperateAS40Server;
-import org.jboss.ide.eclipse.as.ui.bot.test.as40.UndeployJSPProjectAS40Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.as42.CreateAS42Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.as42.DeleteServerAS42Server;
-import org.jboss.ide.eclipse.as.ui.bot.test.as42.DeployJSPProjectAS42Server;
-import org.jboss.ide.eclipse.as.ui.bot.test.as42.HotDeployJSPFileAS42Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.as42.OperateAS42Server;
-import org.jboss.ide.eclipse.as.ui.bot.test.as42.UndeployJSPProjectAS42Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.as50.CreateAS50Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.as50.DeleteServerAS50Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.as50.OperateAS50Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.as51.CreateAS51Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.as51.DeleteServerAS51Server;
-import org.jboss.ide.eclipse.as.ui.bot.test.as51.DeployJSPProjectAS51Server;
-import org.jboss.ide.eclipse.as.ui.bot.test.as51.HotDeployJSPFileAS51Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.as51.OperateAS51Server;
-import org.jboss.ide.eclipse.as.ui.bot.test.as51.UndeployJSPProjectAS51Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.as6.CreateAS6Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.as6.DeleteServerAS6Server;
-import org.jboss.ide.eclipse.as.ui.bot.test.as6.DeployJSPProjectAS6Server;
-import org.jboss.ide.eclipse.as.ui.bot.test.as6.HotDeployJSPFileAS6Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.as6.OperateAS6Server;
-import org.jboss.ide.eclipse.as.ui.bot.test.as6.UndeployJSPProjectAS6Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.as70.CreateAS70Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.as70.DeleteServerAS70Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.as70.DeployJSPProjectAS70Server;
@@ -80,38 +68,14 @@ import org.junit.runners.Suite;
 		DeployJSPProjectWildfly8Server.class,
 		DeployJSPProjectAS71Server.class,
 		DeployJSPProjectAS70Server.class,
-		DeployJSPProjectAS6Server.class,
-		DeployJSPProjectAS51Server.class,
-		// do not test deploy for AS 5.0
-		// DeployJSPProjectAS50Server.class,
-		DeployJSPProjectAS42Server.class,
-		DeployJSPProjectAS40Server.class,
-		// do not test deploy for AS 3 - failed compile
-		// DeployJSPProjectAS3Server.class,
 		
 		HotDeployJSPFileWildfly8Server.class,		
 		HotDeployJSPFileAS71Server.class,
 		HotDeployJSPFileAS70Server.class,
-		HotDeployJSPFileAS6Server.class,
-		HotDeployJSPFileAS51Server.class,
-		// do not test deploy for AS 5.0
-		// HotDeployJSPFileAS50Server.class,
-		HotDeployJSPFileAS42Server.class,
-		HotDeployJSPFileAS40Server.class,
-		// do not test deploy for AS 3 - failed compile
-		// HotDeployJSPFileAS3Server.class,
 
 		UndeployJSPProjectWildfly8Server.class,
 		UndeployJSPProjectAS71Server.class,
 		UndeployJSPProjectAS70Server.class,
-		UndeployJSPProjectAS6Server.class,
-		UndeployJSPProjectAS51Server.class,
-		// do not test deploy for AS 5.0
-		// UndeployJSPProjectAS50Server.class,
-		UndeployJSPProjectAS42Server.class,
-		UndeployJSPProjectAS40Server.class,
-		// do not test deploy for AS 3 - failed compile
-		// UndeployJSPProjectAS3Server.class,
 		
 		DeleteServerWildfly8Server.class,
 		DeleteServerAS71Server.class,
@@ -123,6 +87,16 @@ import org.junit.runners.Suite;
 		DeleteServerAS40Server.class,
 		DeleteServerAS3Server.class
 })
+/**
+ * Test suite for JBoss AS and Wildfly server contains tests for
+ * creation, start, stop, restart and deletion of the server. 
+ * 
+ * AS 7.0 and higher includes also tests for deploy, hot-deploy and undeploy of the 
+ * application. 
+ * 
+ * @author Lucia Jelinkova
+ *
+ */
 public class ProjectsTestsSuite {
 
 }
