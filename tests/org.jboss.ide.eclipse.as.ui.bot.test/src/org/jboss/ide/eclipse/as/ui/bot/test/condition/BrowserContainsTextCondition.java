@@ -2,6 +2,8 @@ package org.jboss.ide.eclipse.as.ui.bot.test.condition;
 
 import org.jboss.reddeer.eclipse.ui.browser.BrowserView;
 import org.jboss.reddeer.swt.condition.WaitCondition;
+import org.jboss.reddeer.swt.wait.AbstractWait;
+import org.jboss.reddeer.swt.wait.TimePeriod;
 
 /**
  * Waits until the active browser contains the specified text. 
@@ -31,6 +33,7 @@ public class BrowserContainsTextCondition implements WaitCondition {
 
 		browserView = new BrowserView();
 		browserView.open();
+		AbstractWait.sleep(TimePeriod.LONG);
 		if (url != null){
 			browserView.openPageURL(url);
 		} 
