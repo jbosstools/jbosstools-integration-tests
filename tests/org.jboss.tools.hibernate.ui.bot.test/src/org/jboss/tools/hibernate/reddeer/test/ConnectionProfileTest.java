@@ -1,5 +1,6 @@
 package org.jboss.tools.hibernate.reddeer.test;
 
+import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.db.DatabaseConfiguration;
@@ -24,11 +25,15 @@ public class ConnectionProfileTest {
 
     @InjectRequirement
     private DatabaseRequirement dbRequirement;
+    private Logger log = Logger.getLogger(this.getClass());
     
 	@Test
 	public void testConnectionProfile() {
 		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
-		DriverDefinitionFactory.createDatabaseDefinition(cfg);
+		
+		log.step("Create database driver definition");
+		DriverDefinitionFactory.createDatabaseDriverDefinition(cfg);
+		log.step("Create connection profile");
 		ConnectionProfileFactory.createConnectionProfile(cfg);		
 	}
 	@After

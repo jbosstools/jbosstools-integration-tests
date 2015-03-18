@@ -103,7 +103,7 @@ public class MappingDiagramTest extends HibernateRedDeerTest {
 	public void prepareMavenProject() {
     	importProject(prj);
 		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
-		DriverDefinitionFactory.createDatabaseDefinition(cfg);		
+		DriverDefinitionFactory.createDatabaseDriverDefinition(cfg);		
 		ConnectionProfileFactory.createConnectionProfile(cfg);
 		ProjectConfigurationFactory.convertProjectToFacetsForm(prj);
 		ProjectConfigurationFactory.setProjectFacetForDB(prj, cfg, jpaVersion);

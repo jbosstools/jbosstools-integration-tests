@@ -39,7 +39,7 @@ public class JBossDatasourceTest extends HibernateRedDeerTest {
 	@Before
 	public void prepare() {
 		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
-		DriverDefinitionFactory.createDatabaseDefinition(cfg);
+		DriverDefinitionFactory.createDatabaseDriverDefinition(cfg);
 		ConnectionProfileFactory.createConnectionProfile(cfg);
 		
 		importProject(PRJ);

@@ -2,6 +2,7 @@ package org.jboss.tools.hibernate.reddeer.test;
 
 import static org.junit.Assert.assertTrue;
 
+import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
@@ -36,6 +37,7 @@ public class ConsoleConfigurationFileTest extends HibernateRedDeerTest {
 
 	private String PROJECT_NAME = "configurationtest";
 	private String HIBERNATE_CFG_FILE="hibernate.cfg.xml";
+	private Logger log = Logger.getLogger(this.getClass());
 	
     @InjectRequirement
     private DatabaseRequirement dbRequirement;
@@ -60,9 +62,12 @@ public class ConsoleConfigurationFileTest extends HibernateRedDeerTest {
 	public void testCreateConfigurationFileFromDatasource() {
 		// Create datasource
 		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
-		DriverDefinitionFactory.createDatabaseDefinition(cfg);
+		log.step("Create database driver definition");
+		DriverDefinitionFactory.createDatabaseDriverDefinition(cfg);
+		log.step("Create database connection profile");
 		ConnectionProfileFactory.createConnectionProfile(cfg);
 
+		log.step("Create Hibernate configuration file");
 		NewHibernateConfigurationWizard wizard = new NewHibernateConfigurationWizard();
 		wizard.open();
 		
@@ -71,6 +76,7 @@ public class ConsoleConfigurationFileTest extends HibernateRedDeerTest {
 		wizard.next();
 
 		// Get values from connection
+		log.step("Use created database connection profile for database details");
 		Link link = new DefaultLink("Get values from Connection");
 		link.click();
 		new WaitUntil(new ShellWithTextIsActive("Select Connection Profile"));
@@ -84,11 +90,13 @@ public class ConsoleConfigurationFileTest extends HibernateRedDeerTest {
 		assertTrue("driver must match", p2.getDriveClass().equals(cfg.getDriverClass()));
 		assertTrue("username must match", p2.getUsername().equals(cfg.getUsername()));
 		
-		new CancelButton().click();
-
+		log.step("Finish the wizard");
+		wizard.finish();
 	}
 		
-	public void testCreateConfigurationFile(boolean generateConsole) {		
+	public void testCreateConfigurationFile(boolean generateConsole) {
+		
+		log.step("Create Hibernate configuration file");
 		NewHibernateConfigurationWizard wizard = new NewHibernateConfigurationWizard();
 		wizard.open();
 		NewConfigurationLocationPage p1 = new NewConfigurationLocationPage();
@@ -103,7 +111,7 @@ public class ConsoleConfigurationFileTest extends HibernateRedDeerTest {
 		if (generateConsole) {
 			p2.setCreateConsoleConfiguration(generateConsole);
 		}
-		
+		log.step("Finish the wizard");
 		wizard.finish();
 		
 		PackageExplorer pe = new PackageExplorer();

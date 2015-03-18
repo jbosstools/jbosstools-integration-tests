@@ -30,7 +30,7 @@ public class DriverDefinitionFactory {
 	 * Creates Driver definition based on DatabaseRequirement configuration
 	 * @param conf given database requirement configuration
 	 */
-	public static void createDatabaseDefinition(DatabaseConfiguration cfg) {
+	public static void createDatabaseDriverDefinition(DatabaseConfiguration cfg) {
 
 		DriverTemplate dt = getDriverTemplate(cfg);
 		DriverDefinition dd = getDriverDefinition(cfg);
