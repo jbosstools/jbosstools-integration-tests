@@ -11,10 +11,6 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
 		CreateAS50Server.class,
 		OperateAS50Server.class,
-		// do not test deploy for AS 5.0
-		// DeployJSPProjectAS50Server.class,
-		// HotDeployJSPFileAS50Server.class,
-		// UndeployJSPProjectAS50Server.class,
 		DeleteServerAS50Server.class,
 })
 public class AS50TestsSuite {

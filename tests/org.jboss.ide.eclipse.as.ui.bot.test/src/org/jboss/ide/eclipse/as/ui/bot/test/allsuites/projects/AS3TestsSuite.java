@@ -11,10 +11,6 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
 		CreateAS3Server.class,
 		OperateAS3Server.class,
-		// do not test deploy for AS 3 - failed compile
-		// DeployJSPProjectAS3Server.class,
-		// HotDeployJSPFileAS3Server.class,
-		// UndeployJSPProjectAS3Server.class,
 		DeleteServerAS3Server.class,
 })
 public class AS3TestsSuite {
