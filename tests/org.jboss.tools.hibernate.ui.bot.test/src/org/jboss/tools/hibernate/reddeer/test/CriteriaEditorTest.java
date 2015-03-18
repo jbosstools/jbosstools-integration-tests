@@ -106,7 +106,7 @@ public class CriteriaEditorTest extends HibernateRedDeerTest {
 	private void prepareMaven() {
     	importProject(prj);
 		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
-		DriverDefinitionFactory.createDatabaseDefinition(cfg);		
+		DriverDefinitionFactory.createDatabaseDriverDefinition(cfg);		
 		ConnectionProfileFactory.createConnectionProfile(cfg);
 		
 		log.info("Converting project into faceted form");

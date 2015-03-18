@@ -30,7 +30,7 @@ public class JPAFacetTest extends HibernateRedDeerTest {
 	public void testConnectionProfile() {
     	importProject(PRJ);
 		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
-		DriverDefinitionFactory.createDatabaseDefinition(cfg);
+		DriverDefinitionFactory.createDatabaseDriverDefinition(cfg);
 		ConnectionProfileFactory.createConnectionProfile(cfg);		
 	}
     

@@ -40,7 +40,7 @@ public class JPADetailsViewTest extends HibernateRedDeerTest {
 	public void testConnectionProfile() {
 		importProject(PRJ);
 		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
-		DriverDefinitionFactory.createDatabaseDefinition(cfg);
+		DriverDefinitionFactory.createDatabaseDriverDefinition(cfg);
 		ConnectionProfileFactory.createConnectionProfile(cfg);
 		ProjectConfigurationFactory.convertProjectToFacetsForm(PRJ);
 		ProjectConfigurationFactory.setProjectFacetForDB(PRJ, cfg);
