@@ -1,10 +1,9 @@
 package org.jboss.tools.freemarker.ui.bot.test;
 
-import org.jboss.reddeer.workbench.preference.WorkbenchPreferencePage;
-import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.group.DefaultGroup;
+import org.jboss.reddeer.workbench.preference.WorkbenchPreferencePage;
 
 
 public class FreemarkerPreferencePage extends WorkbenchPreferencePage {

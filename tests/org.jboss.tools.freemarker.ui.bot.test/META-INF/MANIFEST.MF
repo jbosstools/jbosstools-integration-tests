@@ -20,5 +20,4 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: org.eclipse.core.resources,
  org.jboss.reddeer.swt.test
 Eclipse-BundleShape: jar
-Bundle-Localization: plugin
 Bundle-Vendor: JBoss by Red Hat

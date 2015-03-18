@@ -42,14 +42,14 @@ public class FreemarkerPreferencePageTest {
 		
 		page.setHighLightRelatedDirectives(false);
 		page.apply();
-		page.ok();
+		preferenceDialog.ok();
 
 		preferenceDialog.open();
 		preferenceDialog.select(page);
 		boolean highLightRelatedDirectives = page
 				.getHighLightRelatedDirectives();
 		page.apply();
-		page.ok();		
+		preferenceDialog.ok();		
 		
 		assertFalse(highLightRelatedDirectives);
 	}
