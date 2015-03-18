@@ -67,7 +67,7 @@ public class JPADetailsViewTest extends HibernateRedDeerTest {
 
 		try {
 			new DefaultLabel(
-					"JPA Details are not available for the current selection.");
+					"JPA details are not available for the current selection.");
 			fail("JPA details should be available - known issue - https://issues.jboss.org/browse/JBIDE-17940");
 		} catch (SWTLayerException e) {
 			// do nothing
