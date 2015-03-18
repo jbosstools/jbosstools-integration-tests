@@ -39,7 +39,6 @@ public class ProjectImporter {
 	 * @param projectName project name to import 
 	 */
 	public static void importProject(String pluginId, String prjName) {
-		System.out.println("Import projects");
 		ExternalProjectImportWizardDialog w = new ExternalProjectImportWizardDialog();
 		w.open();
 		WizardProjectsImportPage p1 = w.getFirstPage();
