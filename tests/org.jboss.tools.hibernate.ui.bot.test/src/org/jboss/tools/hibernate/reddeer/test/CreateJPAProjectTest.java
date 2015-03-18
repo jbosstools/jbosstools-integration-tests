@@ -4,6 +4,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
+import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.eclipse.ui.problems.Problem;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
@@ -33,6 +34,8 @@ public class CreateJPAProjectTest extends HibernateRedDeerTest {
 
 	final String PROJECT_NAME = "jpa35test";
 	
+	private Logger log = Logger.getLogger(this.getClass());
+	
 	@Before 
 	public void before() {
 		CleanWorkspaceRequirement req = new CleanWorkspaceRequirement();
@@ -56,6 +59,7 @@ public class CreateJPAProjectTest extends HibernateRedDeerTest {
 
 	private void createProject(JpaVersion version, JpaPlatform platform) {
 
+		log.step("Open JPA Project Wizard");
 		JPAProjectWizard wizard = new JPAProjectWizard();
 		wizard.open();
 
@@ -66,11 +70,13 @@ public class CreateJPAProjectTest extends HibernateRedDeerTest {
 		wizard.next();
 		wizard.next();
 
+		log.step("Disable hibernate configuration");
 		JPAFacetWizardPage facetPage = new JPAFacetWizardPage();
 		facetPage.setPlatform(platform);
 		facetPage
 				.setJpaImplementation(JpaImplementation.DISABLE_LIBRARY_CONFIGURATION);
 
+		log.step("Click finish");
 		wizard.finish();
 
 		new WaitWhile(new JobIsRunning());

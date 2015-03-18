@@ -104,17 +104,23 @@ public class CriteriaEditorTest extends HibernateRedDeerTest {
     }
     
 	private void prepareMaven() {
+		log.step("Import mavenized project " + prj);
     	importProject(prj);
 		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
-		DriverDefinitionFactory.createDatabaseDriverDefinition(cfg);		
+		log.step("Create database driver definition");
+		DriverDefinitionFactory.createDatabaseDriverDefinition(cfg);
+		log.step("Create connection profile");
 		ConnectionProfileFactory.createConnectionProfile(cfg);
 		
-		log.info("Converting project into faceted form");
+		log.step("Convert project into faceted form");
 		ProjectConfigurationFactory.convertProjectToFacetsForm(prj);
+		log.step("Set JPA Facets");
 		ProjectConfigurationFactory.setProjectFacetForDB(prj, cfg, jpaVersion);
 		
+		log.step("Open Hibernate Configurations View");
 		KnownConfigurationsView v = new KnownConfigurationsView();
 		v.open();
+		log.step("Add New Hibernate Configuration and set parameters");
 		new ContextMenu("Add Configuration...").select();
 		new WaitUntil(new ShellWithTextIsActive("Edit Configuration"));
 		DefaultGroup prjGroup = new DefaultGroup("Project:");
@@ -122,9 +128,9 @@ public class CriteriaEditorTest extends HibernateRedDeerTest {
 		new RadioButton("JPA (jdk 1.5+)").click();
 		DefaultGroup dbConnection = new DefaultGroup("Database connection:");
 		new DefaultCombo(dbConnection,0).setText("[JPA Project Configured Connection]");
-		new LabeledCombo("Hibernate Version:").setSelection(hbVersion);
+		new LabeledCombo("Hibernate Version:").setSelection(hbVersion);				
 		new PushButton("Apply").click();
-		
+		log.step("Click OK to finish the dialog");
 		new OkButton().click();
 	}
     
@@ -141,9 +147,11 @@ public class CriteriaEditorTest extends HibernateRedDeerTest {
 		} catch (IOException e) {
 			Assert.fail("Cannot copy db driver: " + e.getMessage());
 		}
+		log.step("Import java project for hibernate test");
     	importProject("hibernatelib");
     	importProject(prj);
     	
+    	log.step("Create hibernate configuration file");
     	HibernateToolsFactory.testCreateConfigurationFile(cfg, prj, "hibernate.cfg.xml", false);
 	}
 	
@@ -153,14 +161,17 @@ public class CriteriaEditorTest extends HibernateRedDeerTest {
 	}
 		
 	private void testCriteriaEditor() {
+		log.step("By Hibernate Console Configuration open Criteria Editor");
 		KnownConfigurationsView v = new KnownConfigurationsView();
 		v.open();
 		v.selectConsole(prj);
 		new ContextMenu("Hibernate Criteria Editor").select();
 		TextEditor criteriaEditor = new TextEditor("Criteria:" + prj);
+		log.step("Input query and save the editor");
 		criteriaEditor.setText("session.createCriteria(Actor.class).list();");
 		criteriaEditor.save();
 	
+		log.step("Run criteria query");
 		new DefaultToolItem("Run criteria").click();
 		
 		new WaitUntil(new ShellWithTextIsActive("Open Session factory"));
