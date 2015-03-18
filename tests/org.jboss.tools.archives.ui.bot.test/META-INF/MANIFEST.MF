@@ -13,12 +13,13 @@ Require-Bundle: org.eclipse.core.runtime,
  org.jboss.reddeer.eclipse,
  org.jboss.reddeer.workbench,
  org.jboss.reddeer.requirements,
- org.jboss.reddeer.junit.extension, 
+ org.jboss.reddeer.junit.extension,
  org.jboss.tools.common.reddeer,
  org.jboss.tools.archives.reddeer,
  org.eclipse.core.resources;bundle-version="3.6.0",
  org.jboss.ide.eclipse.as.reddeer,
- org.jboss.reddeer.junit
+ org.jboss.reddeer.junit,
+ org.jboss.reddeer.common;bundle-version="0.8.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Vendor: JBoss by Red Hat
