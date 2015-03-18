@@ -45,7 +45,7 @@ public class MappingDiagramTest extends HibernateRedDeerTest {
     	setParams("mvn-hibernate35-ent","3.5","2.0");
     	testMappingDiagramMaven();
     }
-    
+
     @Test
     public void testMappingDiagram36() {
     	setParams("mvn-hibernate36-ent","3.6","2.0");
