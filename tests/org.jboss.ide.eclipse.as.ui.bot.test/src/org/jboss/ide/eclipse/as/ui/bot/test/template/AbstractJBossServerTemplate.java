@@ -4,6 +4,7 @@ import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.view.JBossServer;
 import org.jboss.ide.eclipse.as.reddeer.server.view.JBossServerView;
 import org.jboss.ide.eclipse.as.ui.bot.test.matcher.ConsoleContainsTextMatcher;
+import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.eclipse.condition.ConsoleHasNoChange;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
@@ -22,6 +23,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
  *
  */
 public abstract class AbstractJBossServerTemplate {
+	
+	private static final Logger log = Logger.getLogger(AbstractJBossServerTemplate.class);
 
 	@InjectRequirement
 	protected ServerRequirement requirement;
@@ -54,8 +57,11 @@ public abstract class AbstractJBossServerTemplate {
 	
 	protected void assertNoException(String message) {
 		if (ignoreExceptionInConsole()){
+			log.step("Ignore any exception in console");
 			return;
 		}
+		
+		log.step("Check exception in console");
 		ConsoleView consoleView = new ConsoleView();
 		consoleView.open();
 		consoleView.toggleShowConsoleOnStandardOutChange(false);

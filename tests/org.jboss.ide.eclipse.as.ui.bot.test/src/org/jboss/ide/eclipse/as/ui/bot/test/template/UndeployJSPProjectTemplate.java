@@ -1,6 +1,7 @@
 package org.jboss.ide.eclipse.as.ui.bot.test.template;
 
 import org.jboss.ide.eclipse.as.reddeer.server.view.JBossServer;
+import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewEnums.ServerPublishState;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewEnums.ServerState;
@@ -28,6 +29,8 @@ import static org.junit.Assert.assertTrue;
  */
 public abstract class UndeployJSPProjectTemplate extends AbstractJBossServerTemplate {
 
+	private static final Logger log = Logger.getLogger(UndeployJSPProjectTemplate.class);
+	
 	protected abstract String getConsoleMessage();
 	
 	@Before
@@ -37,14 +40,19 @@ public abstract class UndeployJSPProjectTemplate extends AbstractJBossServerTemp
 	
 	@Test
 	public void undeployProject(){
+		log.step("Undeploy " + DeployJSPProjectTemplate.PROJECT_NAME);
 		JBossServer server = getServer();
 		undeploy(server);
 		
 		// console
+		log.step("Assert console has undeployment notification");
 		new WaitUntil(new ConsoleHasText(getConsoleMessage()));
 		assertNoException("Error in console after undeploy");
 		// view
+		log.step("Assert module is not visible on Servers view");
 		assertTrue("Server contains no project", server.getModules().isEmpty());	
+		
+		log.step("Assert server's states");
 		assertThat(server.getLabel().getState(), is(ServerState.STARTED));
 		assertThat(server.getLabel().getPublishState(), is(ServerPublishState.SYNCHRONIZED));
 	}

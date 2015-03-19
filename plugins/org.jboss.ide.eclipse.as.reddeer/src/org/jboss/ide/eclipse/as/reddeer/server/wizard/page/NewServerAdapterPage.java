@@ -103,9 +103,9 @@ public class NewServerAdapterPage extends WizardPage {
 		//TODO revisit: What if runtime exist but the server is remote instead of local
 		// will it result in error? (yes- but should not)
 
-		List<String> runtimes = getRuntimes();
+		// List<String> runtimes = getRuntimes();
 
-		boolean anotherServerWithSameType = runtimes.size() > 0;		
+		/// boolean anotherServerWithSameType = runtimes.size() > 0;		
 		//if(anotherServerWithSameType) {
 		//	throw new AssertionError("There is another server with the same type.\n"
 		//}

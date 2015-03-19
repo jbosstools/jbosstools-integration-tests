@@ -1,5 +1,6 @@
 package org.jboss.ide.eclipse.as.ui.bot.test.template;
 
+import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewEnums.ServerState;
 import org.junit.Test;
 
@@ -20,6 +21,8 @@ import static org.hamcrest.core.Is.is;
  */
 public abstract class OperateServerTemplate extends AbstractJBossServerTemplate {
 
+	private static final Logger log = Logger.getLogger(OperateServerTemplate.class);
+	
 	public abstract String getWelcomePageText();
 
 	@Test
@@ -30,6 +33,7 @@ public abstract class OperateServerTemplate extends AbstractJBossServerTemplate 
 	}
 
 	public void startServer(){
+		log.step("Start server " + getServerName());
 		getServer().start();
 
 		assertNoException("Starting server");
@@ -38,6 +42,7 @@ public abstract class OperateServerTemplate extends AbstractJBossServerTemplate 
 	}
 
 	public void restartServer(){
+		log.step("Restart server " + getServerName());
 		getServer().restart();
 
 		assertNoException("Restarting server");
@@ -46,6 +51,7 @@ public abstract class OperateServerTemplate extends AbstractJBossServerTemplate 
 	}
 
 	public void stopServer(){
+		log.step("Stop server " + getServerName());
 		getServer().stop();
 
 		assertNoException("Stopping server");
@@ -53,6 +59,7 @@ public abstract class OperateServerTemplate extends AbstractJBossServerTemplate 
 	}
 
 	protected void assertServerState(String message, ServerState state) {
+		log.step("Assert server state is " + state);
 		assertThat(message, getServer().getLabel().getState(), is(state));
 	}
 

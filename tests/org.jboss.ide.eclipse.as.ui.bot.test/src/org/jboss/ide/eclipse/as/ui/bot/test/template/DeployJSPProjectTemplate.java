@@ -5,10 +5,12 @@ import org.jboss.ide.eclipse.as.reddeer.server.editor.ServerModuleWebPageEditor;
 import org.jboss.ide.eclipse.as.reddeer.server.view.JBossServer;
 import org.jboss.ide.eclipse.as.ui.bot.test.Activator;
 import org.jboss.ide.eclipse.as.ui.bot.test.condition.EditorWithBrowserContainsTextCondition;
+import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
 import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
+import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
 import org.jboss.reddeer.eclipse.wst.common.project.facet.ui.RuntimesPropertyPage;
@@ -44,10 +46,13 @@ public abstract class DeployJSPProjectTemplate extends AbstractJBossServerTempla
 
 	public static final String PROJECT_NAME = "jsp-project";
 	
+	private static final Logger log = Logger.getLogger(DeployJSPProjectTemplate.class);
+	
 	protected abstract String getConsoleMessage();
 
 	@Before
 	public void importProject(){
+		log.step("Import " + PROJECT_NAME);
 		ExternalProjectImportWizardDialog dialog = new ExternalProjectImportWizardDialog();
 		dialog.open();
 		
@@ -58,6 +63,8 @@ public abstract class DeployJSPProjectTemplate extends AbstractJBossServerTempla
 		dialog.finish();
 		
 		Project project = new ProjectExplorer().getProject(PROJECT_NAME);
+		
+		log.step("Set targeted runtime for " + PROJECT_NAME);
 		RuntimesPropertyPage targetedRuntimes = new RuntimesPropertyPage(project);
 		targetedRuntimes.open();
 		targetedRuntimes.selectRuntime(requirement.getRuntimeNameLabelText(requirement.getConfig()));
@@ -71,25 +78,33 @@ public abstract class DeployJSPProjectTemplate extends AbstractJBossServerTempla
 	
 	@Test
 	public void deployProject(){
+		log.step("Add " + PROJECT_NAME + " to the server (Add module dialog)");
 		JBossServer server = getServer();
 		addModule(server);
 
 		// view
+		log.step("Assert module is visible on Servers view");
 		assertNotNull("Server contains project", server.getModule(PROJECT_NAME));
 		// console
+		log.step("Assert console has deployment notification");
 		new WaitUntil(new ConsoleHasText(getConsoleMessage()));
 		assertNoException("Error in console after deploy");
 		// web
+		log.step("Open module's web page");
 		ServerModuleWebPageEditor editor = server.getModule(PROJECT_NAME).openWebPage();
 		new WaitUntil(new EditorWithBrowserContainsTextCondition(editor, "Hello tests"));
+		
+		log.step("Assert web page text");
 		assertThat(editor.getText(), containsString("Hello tests!"));
 		// view
+		log.step("Assert server's states");
 		assertThat(getServer().getLabel().getState(), is(ServerState.STARTED));
 		assertThat(getServer().getLabel().getPublishState(), is(ServerPublishState.SYNCHRONIZED));
 		// problems
+		log.step("Assert no error on Problems view");
 		ProblemsView problemsView = new ProblemsView();
 		problemsView.open();
-		assertThat(problemsView.getAllErrors().size(), is(0));
+		assertThat(problemsView.getProblems(ProblemType.ERROR).size(), is(0));
 	}
 
 	private void addModule(JBossServer server) {
