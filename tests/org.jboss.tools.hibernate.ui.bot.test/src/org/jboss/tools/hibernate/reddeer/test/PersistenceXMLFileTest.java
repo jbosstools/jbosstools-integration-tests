@@ -2,13 +2,9 @@ package org.jboss.tools.hibernate.reddeer.test;
 
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
-import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
-import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.hibernate.reddeer.common.StringHelper;
+import org.jboss.tools.hibernate.reddeer.editor.JpaXmlEditor;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -54,16 +50,14 @@ public class PersistenceXMLFileTest extends HibernateRedDeerTest {
 		pe.open();
 		DefaultTreeItem i = new DefaultTreeItem(prj,"JPA Content","persistence.xml");
 		i.doubleClick();
-		DefaultEditor editor = new DefaultEditor("persistence.xml");
-		new DefaultCTabItem("Hibernate").activate();
-		new LabeledText("Username:").setText("sa");
-		new LabeledCombo("Database dialect:").setSelection("H2");
-		editor.save();
+		
+		JpaXmlEditor pexml = new JpaXmlEditor();
+		pexml.setHibernateUsername("sa");
+		pexml.setHibernateDialect("H2");
+		pexml.save();
 		
 		// Check Persistence XML source
-		new DefaultCTabItem("Source").activate();
-		DefaultStyledText dst = new DefaultStyledText();		
-		String text = dst.getText();
+		String text = pexml.getSourceText();
 		StringHelper helper = new StringHelper(text);		
 		String str  =  "<property name=\"hibernate.dialect\" value=\"org.hibernate.dialect.H2Dialect\"/>";
 		helper.getPositionBefore(str);
