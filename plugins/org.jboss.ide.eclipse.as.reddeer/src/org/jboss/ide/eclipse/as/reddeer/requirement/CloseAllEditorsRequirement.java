@@ -5,8 +5,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.eclipse.ui.IEditorReference;
-import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.jboss.ide.eclipse.as.reddeer.requirement.CloseAllEditorsRequirement.CloseAllEditors;
 import org.jboss.reddeer.junit.requirement.Requirement;

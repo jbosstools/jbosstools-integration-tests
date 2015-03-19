@@ -1,7 +1,7 @@
 package org.jboss.ide.eclipse.as.ui.bot.test.template;
 
+import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.Server;
 import org.junit.Test;
 
 /**
@@ -15,9 +15,13 @@ import org.junit.Test;
  */
 public abstract class DeleteServerTemplate extends AbstractJBossServerTemplate {
 
+	private static final Logger log = Logger.getLogger(DeleteServerTemplate.class);
+	
 	@Test(expected=EclipseLayerException.class)
 	public void deleteServer(){
+		log.step("Delete server");
 		getServer().delete(true);
+		log.step("Assert the server is not on the Servers view");
 		getServer();
 	}
 }

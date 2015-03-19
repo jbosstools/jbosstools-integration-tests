@@ -1,8 +1,9 @@
 package org.jboss.ide.eclipse.as.ui.bot.test.template;
 
 import org.jboss.ide.eclipse.as.reddeer.server.editor.JBossServerEditor;
+import org.jboss.reddeer.common.exception.RedDeerException;
+import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewEnums.ServerState;
-import org.jboss.reddeer.swt.exception.RedDeerException;
 import org.junit.After;
 import org.junit.Test;
 
@@ -24,6 +25,8 @@ public abstract class ServerStateDetectorsTemplate extends AbstractJBossServerTe
 	
 	public static final String PROCESS_TERMINATED_POLLER = "Process Terminated";
 	
+	private static final Logger log = Logger.getLogger(ServerStateDetectorsTemplate.class);
+	
 	@After
 	public void cleanup(){
 		try {
@@ -37,25 +40,30 @@ public abstract class ServerStateDetectorsTemplate extends AbstractJBossServerTe
 	
 	@Test
 	public void timeoutPollers(){
+		log.step("Set timeout");
 		setTimeouts(20);
+		log.step("Set timeout pollers");
 		setPollers(TIMEOUT_POLLER, TIMEOUT_POLLER);
 		operateServer();
 	}
 	
 	@Test
 	public void webPortPollers(){
+		log.step("Set web pollers");
 		setPollers(WEB_PORT_POLLER, WEB_PORT_POLLER);
 		operateServer();
 	}
 	
 	@Test
 	public void managementServicePollers(){
+		log.step("Set manager service pollers");
 		setPollers(getManagerServicePoller(), getManagerServicePoller());
 		operateServer();
 	}
 	
 	@Test
 	public void managementService_ProcessTerminatedPollers(){
+		log.step("Set process terminated poller");
 		setPollers(getManagerServicePoller(), PROCESS_TERMINATED_POLLER);
 		operateServer();
 	}
@@ -67,6 +75,7 @@ public abstract class ServerStateDetectorsTemplate extends AbstractJBossServerTe
 	}
 	
 	protected void startServer(){
+		log.step("Start server");
 		getServer().start();
 		
 		assertNoException("Starting server");
@@ -74,6 +83,7 @@ public abstract class ServerStateDetectorsTemplate extends AbstractJBossServerTe
 	}
 
 	protected void restartServer(){
+		log.step("Restart server");
 		getServer().restart();;
 		
 		assertNoException("Restarting server");
@@ -81,6 +91,7 @@ public abstract class ServerStateDetectorsTemplate extends AbstractJBossServerTe
 	}
 
 	protected void stopServer(){
+		log.step("Stop server");
 		getServer().stop();;
 		
 		assertNoException("Stopping server");
@@ -88,6 +99,7 @@ public abstract class ServerStateDetectorsTemplate extends AbstractJBossServerTe
 	}
 
 	protected void assertServerState(String message, ServerState state) {
+		log.step("Assert server state");
 		assertThat(message, getServer().getLabel().getState(), is(state));
 	}
 

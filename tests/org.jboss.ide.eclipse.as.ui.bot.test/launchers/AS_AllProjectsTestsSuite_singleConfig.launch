@@ -37,7 +37,7 @@
 <stringAttribute key="product" value="org.eclipse.platform.ide"/>
 <stringAttribute key="rd.launch.property.captureScreenshot" value="true"/>
 <stringAttribute key="rd.launch.property.logDebug" value="false"/>
-<stringAttribute key="rd.launch.property.logMessageFilter" value="ALL"/>
+<stringAttribute key="rd.launch.property.logMessageFilter" value="STEP"/>
 <stringAttribute key="rd.launch.property.pauseFailedTest" value="false"/>
 <stringAttribute key="rd.launch.property.recordScreenCast" value="false"/>
 <stringAttribute key="rd.launch.property.reddeer.close.shells" value="true"/>
