@@ -9,15 +9,9 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.db.DatabaseConfiguration;
 import org.jboss.reddeer.requirements.db.DatabaseRequirement;
 import org.jboss.reddeer.requirements.db.DatabaseRequirement.Database;
-import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
-import org.jboss.reddeer.swt.exception.WaitTimeoutExpiredException;
-import org.jboss.reddeer.swt.impl.button.YesButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
-import org.jboss.reddeer.swt.wait.TimePeriod;
-import org.jboss.reddeer.swt.wait.WaitUntil;
-import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.hibernate.reddeer.console.KnownConfigurationsView;
+import org.jboss.tools.hibernate.reddeer.editor.HQLEditor;
 import org.jboss.tools.hibernate.reddeer.factory.ConnectionProfileFactory;
 import org.jboss.tools.hibernate.reddeer.factory.DriverDefinitionFactory;
 import org.jboss.tools.hibernate.reddeer.factory.ProjectConfigurationFactory;
@@ -105,19 +99,12 @@ public class HQLEditorTest extends HibernateRedDeerTest {
 		v.open();
 		v.selectConsole(prj);
 		new ContextMenu("HQL Editor").select();
-		TextEditor hqlEditor = new TextEditor(prj);
+		
+		
+		HQLEditor hqlEditor = new HQLEditor(prj);
 		hqlEditor.setText("from Actor");
 		hqlEditor.save();
-		
-		new DefaultToolItem("Run HQL").click();
-		
-		try {
-			new WaitUntil(new ShellWithTextIsActive("Open Session factory"), TimePeriod.SHORT);
-			new YesButton().click();
-		}
-		catch (WaitTimeoutExpiredException e) {
-			log.warn("Open Session factory question dialog was expected");
-		}
+		hqlEditor.runHQLQuery();
 		
 		QueryPageTabView result = new QueryPageTabView();
     	result.open();
