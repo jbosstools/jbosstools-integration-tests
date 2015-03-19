@@ -3,6 +3,7 @@ package org.jboss.tools.cdi.reddeer.common.model.ui.editor;
 import java.util.List;
 
 import org.jboss.reddeer.swt.api.Table;
+import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
@@ -15,6 +16,7 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.table.DefaultTableItem;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
+import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.uiforms.impl.section.DefaultSection;
@@ -39,7 +41,7 @@ public class EditorPartWrapper extends AbstractEditor{
 	}
 	
 	public void addInterceptors(String interceptorName){
-		new DefaultTreeItem(new DefaultSection("beans"),"beans.xml","Interceptors").select();
+		selectBeanXmlType("Interceptors");
 		new PushButton(new DefaultSection("Interceptors"),"Add...").click();
 		new DefaultShell("Add Class...");
 		new DefaultText(0).setText(interceptorName);
@@ -47,7 +49,7 @@ public class EditorPartWrapper extends AbstractEditor{
 	}
 	
 	public void removeInterceptors(String interceptorName){
-		new DefaultTreeItem(new DefaultSection("beans"),"beans.xml","Interceptors").select();
+		selectBeanXmlType("Interceptors");
 		new DefaultTableItem(interceptorName).select();
 		new PushButton(new DefaultSection("Interceptors"),"Remove...").click();
 		new DefaultShell("Confirmation");
@@ -55,7 +57,7 @@ public class EditorPartWrapper extends AbstractEditor{
 	}
 	
 	public void addDecorators(String decoratorName){
-		new DefaultTreeItem(new DefaultSection("beans"),"beans.xml","Decorators").select();
+		selectBeanXmlType("Decorators");
 		new PushButton(new DefaultSection("Decorators"),"Add...").click();
 		new DefaultShell("Add Class...");
 		new DefaultText(0).setText(decoratorName);
@@ -63,7 +65,7 @@ public class EditorPartWrapper extends AbstractEditor{
 	}
 	
 	public void removeDecorators(String decoratorName){
-		new DefaultTreeItem(new DefaultSection("beans"),"beans.xml","Decorators").select();
+		selectBeanXmlType("Decorators");
 		new DefaultTableItem(decoratorName).select();
 		new PushButton(new DefaultSection("Decorators"),"Remove...").click();
 		new DefaultShell("Confirmation");
@@ -71,7 +73,7 @@ public class EditorPartWrapper extends AbstractEditor{
 	}
 	
 	public void addClasses(String className){
-		new DefaultTreeItem(new DefaultSection("beans"),"beans.xml","Alternatives").select();
+		selectBeanXmlType("Alternatives");
 		new PushButton(new DefaultSection("Classes"),"Add...").click();
 		new DefaultShell("Add Class...");
 		new DefaultText(0).setText(className);
@@ -79,7 +81,7 @@ public class EditorPartWrapper extends AbstractEditor{
 	}
 	
 	public void removeClasses(String className){
-		new DefaultTreeItem(new DefaultSection("beans"),"beans.xml","Alternatives").select();
+		selectBeanXmlType("Alternatives");
 		new DefaultTableItem(className).select();
 		new PushButton(new DefaultSection("Classes"),"Remove...").click();
 		new DefaultShell("Confirmation");
@@ -87,7 +89,7 @@ public class EditorPartWrapper extends AbstractEditor{
 	}
 	
 	public void addStereotypes(String stereotypeName){
-		new DefaultTreeItem(new DefaultSection("beans"),"beans.xml","Alternatives").select();
+		selectBeanXmlType("Alternatives");
 		new PushButton(new DefaultSection("Stereotypes"),"Add...").click();
 		new DefaultShell("Add Stereotype...");
 		new DefaultText(0).setText(stereotypeName);
@@ -95,21 +97,31 @@ public class EditorPartWrapper extends AbstractEditor{
 	}
 	
 	public void removeStereotypes(String stereotypeName){
-		new DefaultTreeItem(new DefaultSection("beans"),"beans.xml","Alternatives").select();
-		new DefaultTableItem(1,stereotypeName).select();
+		selectBeanXmlType("Alternatives");
+		new DefaultTable(1).select(stereotypeName);
 		new PushButton(new DefaultSection("Stereotypes"),"Remove...").click();
 		new DefaultShell("Confirmation");
 		new OkButton().click();
 	}
 	
 	public void newWeldScan() {
-		new DefaultTreeItem(new DefaultSection("beans"), IDELabel.WebProjectsTree.BEANS_XML).select();
+		selectBeanXmlType("Scan");
 		new ContextMenu("New", "Weld", "Scan...").select();
 	}
 	
 	public Table getIncludeExcludeTable() {
-		new DefaultTreeItem(new DefaultSection("beans"), IDELabel.WebProjectsTree.BEANS_XML, "Scan").select();
+		selectBeanXmlType("Scan");
 		return new DefaultTable();
+	}
+	
+	private void selectBeanXmlType(String type){
+		List<TreeItem> items = new DefaultTree(new DefaultSection("bean")).getAllItems();
+		for(TreeItem i: items){
+			if(i.getText().equals(type)){
+				i.select();
+				break;
+			}
+		}
 	}
 	
 	public void removeIncludeExclude(String name) {

@@ -27,6 +27,7 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.jface.text.contentassist.ContentAssistant;
+import org.jboss.reddeer.swt.api.StyledText;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.button.OkButton;
@@ -64,8 +65,10 @@ public class EditorResourceHelper {
 	 */
 	public void replaceClassContentByResource(String editorName, InputStream resource, boolean save, boolean closeEdit) {
 		String code = readStream(resource);
-		TextEditor e = new TextEditor(editorName);
-		e.setText(code);
+		Editor e = new DefaultEditor(editorName);
+		StyledText t = new DefaultStyledText();
+		t.setText("");
+		t.setText(code);
 		if (save) e.save();
 		if (closeEdit) e.close();
 	}
