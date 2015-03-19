@@ -1,5 +1,6 @@
 package org.jboss.tools.hibernate.reddeer.test;
 
+import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.db.DatabaseRequirement.Database;
@@ -30,38 +31,45 @@ public class ConsoleConfigurationTest extends HibernateRedDeerTest {
 	private String HIBERNATE_CFG_FILE="/" + PROJECT_NAME + "/src/hibernate.cfg.xml";
 	private String CONSOLE_NAME="hibernateconsoletest";
 	
+	private Logger log = Logger.getLogger(this.getClass());
+	
 	@Before 
 	public void prepare() {
+		log.step("Import test project");
 		importProject(PROJECT_LIBS);
 		importProject(PROJECT_NAME);		
 		prepareConsoleConfiguration();
 	}
 	
 	public void prepareConsoleConfiguration() {
+		log.step("Open Hibernate Configuration File wizard");
 		NewHibernateConfigurationWizard wizard = new NewHibernateConfigurationWizard();
 		wizard.open();
+		log.step("Set hibernate configuration values");
 		NewConfigurationLocationPage p1 = new NewConfigurationLocationPage();
-		p1.setLocation(PROJECT_NAME,"src");		
+		p1.setLocation(PROJECT_NAME,"src");
 		wizard.next();
 
 		NewConfigurationSettingPage p2 = new NewConfigurationSettingPage();
 		p2.setDatabaseDialect(p.getProperty(RuntimeDBProperty.dialect));
 		p2.setDriverClass(p.getProperty(RuntimeDBProperty.driver));
 		p2.setConnectionURL(p.getProperty(RuntimeDBProperty.jdbc));
-		p2.setUsername(p.getProperty(RuntimeDBProperty.username));			
+		p2.setUsername(p.getProperty(RuntimeDBProperty.username));
+		log.step("Finish");
 		wizard.finish();
 	}
 
 	@Test
 	public void testCreateConsoleConfiguration() {
+		log.step("Open Hibernate Console Configuration view");
 		KnownConfigurationsView v = new KnownConfigurationsView();
 		v.open();
+		log.step("Add new configuration");
 		v.triggerAddConfigurationDialog();
 		
 		EditConfigurationShell s = new EditConfigurationShell();
 		s.setName(CONSOLE_NAME);
-		
-		
+				
 		EditConfigurationMainPage p = s.getMainPage();		
 				
 		p.setProject(PROJECT_NAME);
@@ -69,6 +77,7 @@ public class ConsoleConfigurationTest extends HibernateRedDeerTest {
 		p.setDatabaseConnection(PredefinedConnection.HIBERNATE_CONFIGURED_CONNECTION);		
 		p.setConfigurationFile(HIBERNATE_CFG_FILE);
 		
+		log.step("Press OK");
 		s.ok();
 		
 		v.open();

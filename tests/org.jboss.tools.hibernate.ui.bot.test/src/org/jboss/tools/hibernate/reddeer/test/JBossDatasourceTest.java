@@ -2,6 +2,7 @@ package org.jboss.tools.hibernate.reddeer.test;
 
 import static org.junit.Assert.assertFalse;
 
+import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
@@ -32,6 +33,7 @@ import org.junit.runner.RunWith;
 public class JBossDatasourceTest extends HibernateRedDeerTest {
 	
 	public static final String PRJ = "mvn-hibernate35";
+	private Logger log = Logger.getLogger(HQLEditorTest.class);
 
     @InjectRequirement
     DatabaseRequirement dbRequirement;
@@ -39,6 +41,8 @@ public class JBossDatasourceTest extends HibernateRedDeerTest {
 	@Before
 	public void prepare() {
 		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
+		
+		log.info("Create database driver definition");
 		DriverDefinitionFactory.createDatabaseDriverDefinition(cfg);
 		ConnectionProfileFactory.createConnectionProfile(cfg);
 		
@@ -65,8 +69,6 @@ public class JBossDatasourceTest extends HibernateRedDeerTest {
 		assertFalse(new DefaultEditor(dsFileName).isDirty());
 	}
 		
-	
-	
 	@After
 	public void cleanUp() {
 		DatabaseConfiguration cfg = dbRequirement.getConfiguration();

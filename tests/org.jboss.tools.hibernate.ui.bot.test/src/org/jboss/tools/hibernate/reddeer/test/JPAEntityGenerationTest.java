@@ -2,6 +2,7 @@ package org.jboss.tools.hibernate.reddeer.test;
 
 import static org.junit.Assert.fail;
 
+import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
@@ -30,17 +31,25 @@ public class JPAEntityGenerationTest extends HibernateRedDeerTest {
 
 	private String prj = "mvn-hibernate43"; 
 	private String jpaVersion = "2.0";
+	
+	private Logger log = Logger.getLogger(this.getClass());
 	 
     @InjectRequirement    
     private DatabaseRequirement dbRequirement;
     
     
 	private void prepare() {
+		log.step("Import testing project");
     	importProject(prj);
+    	
 		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
-		DriverDefinitionFactory.createDatabaseDriverDefinition(cfg);		
+		log.step("Create driver definition");
+		DriverDefinitionFactory.createDatabaseDriverDefinition(cfg);
+		log.step("Create connection profile");
 		ConnectionProfileFactory.createConnectionProfile(cfg);
+		log.step("Convert project to faceted form");
 		ProjectConfigurationFactory.convertProjectToFacetsForm(prj);
+		log.step("Set Hibernate JPA facet");
 		ProjectConfigurationFactory.setProjectFacetForDB(prj, cfg, jpaVersion);		
 	}
     
@@ -101,8 +110,10 @@ public class JPAEntityGenerationTest extends HibernateRedDeerTest {
     	prepare();
     	
     	DatabaseConfiguration cfg = dbRequirement.getConfiguration();
+    	log.step("Generate JPA Entities via JPA -> Generate Entities from Tables");
     	EntityGenerationFactory.generateJPAEntities(cfg,prj,"org.gen","4.3",useHibernateConsole);
     	
+    	log.step("Check generated entities");
     	ProjectExplorer pe = new ProjectExplorer();    
     	pe.open();
     	pe.selectProjects(prj);
