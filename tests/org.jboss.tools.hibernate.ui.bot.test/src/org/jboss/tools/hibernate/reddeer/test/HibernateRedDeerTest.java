@@ -17,7 +17,7 @@ public class HibernateRedDeerTest {
 	
 	protected Properties p,links;
 	private SyncInterceptorManager sim = SyncInterceptorManager.getInstance();
-	private final String LOG_INTERCEPTOR = "ErrorLog";
+	private final String LOG_INTERCEPTOR = "error-log-interceptor";
 	
 	public HibernateRedDeerTest() {
 		super();
@@ -45,8 +45,10 @@ public class HibernateRedDeerTest {
 		pe.open();
 		pe.deleteAllProjects();
 		
-		if (!sim.isRegistered(LOG_INTERCEPTOR))
-			SyncInterceptorManager.getInstance().register(LOG_INTERCEPTOR, new ErrorLogInterceptor());
+		sim.unregisterAll();
+		String enabled = System.getProperty("hibernate.reddeer.errorLogInterceptor");
+		if (enabled != null) 
+		  sim.register(LOG_INTERCEPTOR, new ErrorLogInterceptor());		
 	}
 	
 	@SuppressWarnings("unused")
@@ -65,11 +67,6 @@ public class HibernateRedDeerTest {
 	public static void importProject(String prjName) {
 		ProjectImporter.importProjectWithoutErrors(Activator.PLUGIN_ID, prjName);
 	}
-	
+}	
 
-	@Override
-	protected void finalize() throws Throwable {
-		sim.unregister(LOG_INTERCEPTOR);
-		super.finalize();
-	}
-}
+

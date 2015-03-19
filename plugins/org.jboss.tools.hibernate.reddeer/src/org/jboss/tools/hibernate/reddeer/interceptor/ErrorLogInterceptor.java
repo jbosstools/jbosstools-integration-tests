@@ -10,8 +10,8 @@ import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.swt.interceptor.ISyncInterceptor;
 
 /**
- * ErrorLogInterceptors servers for watching Error Log changes betwen 
- * syncExec operations. It checks .log file. 
+ * ErrorLogInterceptors servers for watching Error Log changes between 
+ * processing syncExec operations. It checks .log file. 
  * Note: Beware it quite aggresive as it recreate log file whenever it has some content
  * @author Jiri Peterka
  *
@@ -30,7 +30,7 @@ public class ErrorLogInterceptor implements ISyncInterceptor {
 	 */
 	@Override
 	public void beforeSyncOp() {
-		logAndCut("beforeSync");	
+		clearLogFile();	
 	}
 
 	/**
@@ -60,12 +60,16 @@ public class ErrorLogInterceptor implements ISyncInterceptor {
 		}
 		
 		if (content) {
-			file.delete();
-			try {
-				file.createNewFile();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			clearLogFile();
 		}
+	}
+	
+	private void clearLogFile() {
+		file.delete();
+		try {
+			file.createNewFile();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}		
 	}
 }
