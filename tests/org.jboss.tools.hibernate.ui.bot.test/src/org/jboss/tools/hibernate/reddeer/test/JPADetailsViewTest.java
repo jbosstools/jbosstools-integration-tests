@@ -32,7 +32,7 @@ import org.junit.runner.RunWith;
 @Database(name = "testdb")
 public class JPADetailsViewTest extends HibernateRedDeerTest {
 
-	private final String PRJ = "mvn-hibernate43";
+	private final String PRJ = "mvn-hibernate43-ent";
 	@InjectRequirement
 	private DatabaseRequirement dbRequirement;
 
@@ -44,8 +44,6 @@ public class JPADetailsViewTest extends HibernateRedDeerTest {
 		ConnectionProfileFactory.createConnectionProfile(cfg);
 		ProjectConfigurationFactory.convertProjectToFacetsForm(PRJ);
 		ProjectConfigurationFactory.setProjectFacetForDB(PRJ, cfg);
-		EntityGenerationFactory.generateJPAEntities(cfg, PRJ, "org.gen", "4.3",false);
-
 	}
 
 	@Test
