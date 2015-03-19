@@ -26,6 +26,8 @@ import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.hibernate.reddeer.common.FileHelper;
 import org.jboss.tools.hibernate.reddeer.console.KnownConfigurationsView;
+import org.jboss.tools.hibernate.reddeer.editor.CriteriaEditor;
+import org.jboss.tools.hibernate.reddeer.editor.HQLEditor;
 import org.jboss.tools.hibernate.reddeer.factory.ConnectionProfileFactory;
 import org.jboss.tools.hibernate.reddeer.factory.DriverDefinitionFactory;
 import org.jboss.tools.hibernate.reddeer.factory.HibernateToolsFactory;
@@ -166,16 +168,11 @@ public class CriteriaEditorTest extends HibernateRedDeerTest {
 		v.open();
 		v.selectConsole(prj);
 		new ContextMenu("Hibernate Criteria Editor").select();
-		TextEditor criteriaEditor = new TextEditor("Criteria:" + prj);
-		log.step("Input query and save the editor");
+		
+		CriteriaEditor criteriaEditor = new CriteriaEditor(prj);
 		criteriaEditor.setText("session.createCriteria(Actor.class).list();");
 		criteriaEditor.save();
-	
-		log.step("Run criteria query");
-		new DefaultToolItem("Run criteria").click();
-		
-		new WaitUntil(new ShellWithTextIsActive("Open Session factory"));
-		new YesButton().click();
+		criteriaEditor.runCriteria();
 		
     	QueryPageTabView result = new QueryPageTabView();
     	result.open();	
