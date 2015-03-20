@@ -20,10 +20,10 @@ public class CriteriaEditor extends TextEditor {
 	
 	/**
 	 * Sets focus to Criteria Editor with given title 
-	 * @param title
+	 * @param hibernateConsoleName hibernateConsoleName
 	 */
-	public CriteriaEditor(String title) {
-		super(title);
+	public CriteriaEditor(String hibernateConsoleName) {
+		super("Criteria:" + hibernateConsoleName);
 	}
 
 	/**
