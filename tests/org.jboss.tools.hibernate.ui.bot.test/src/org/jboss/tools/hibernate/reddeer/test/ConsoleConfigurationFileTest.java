@@ -91,6 +91,8 @@ public class ConsoleConfigurationFileTest extends HibernateRedDeerTest {
 		
 		log.step("Finish the wizard");
 		wizard.finish();
+		
+		checkFile(false);
 	}
 		
 	public void testCreateConfigurationFile(boolean generateConsole) {
@@ -113,6 +115,10 @@ public class ConsoleConfigurationFileTest extends HibernateRedDeerTest {
 		log.step("Finish the wizard");
 		wizard.finish();
 		
+		checkFile(generateConsole);
+	}
+	
+	private void checkFile(boolean generateConsole) {
 		PackageExplorer pe = new PackageExplorer();
 		pe.open();
 		DefaultTreeItem ti = new DefaultTreeItem(PROJECT_NAME,"src",HIBERNATE_CFG_FILE);
@@ -121,7 +127,7 @@ public class ConsoleConfigurationFileTest extends HibernateRedDeerTest {
 		
 		if (generateConsole) {
 			KnownConfigurationsView v = new KnownConfigurationsView();
-			v.open();		
+			v.selectConsole(PROJECT_NAME);		
 		}
 	}
 			
