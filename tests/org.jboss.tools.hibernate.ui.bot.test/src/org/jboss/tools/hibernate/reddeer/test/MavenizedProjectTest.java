@@ -1,5 +1,6 @@
 package org.jboss.tools.hibernate.reddeer.test;
 
+import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.junit.Test;
@@ -15,6 +16,8 @@ import org.junit.runner.RunWith;
 @CleanWorkspace
 public class MavenizedProjectTest extends HibernateRedDeerTest {
 
+	private Logger log = Logger.getLogger(this.getClass());
+	
 	@Test
 	public void testHibernateMavenProject35() {
 		importHibernateMavenProject("mvn-hibernate35");
@@ -36,6 +39,7 @@ public class MavenizedProjectTest extends HibernateRedDeerTest {
 	}
 	
 	private void importHibernateMavenProject(String projectName) {
+		log.step("Import mavenized test project" + projectName);
 		importProject(projectName);
 	}
 }

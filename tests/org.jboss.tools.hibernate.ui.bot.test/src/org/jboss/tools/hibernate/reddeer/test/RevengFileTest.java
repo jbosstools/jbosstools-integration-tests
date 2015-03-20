@@ -1,5 +1,6 @@
 package org.jboss.tools.hibernate.reddeer.test;
 
+import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
@@ -34,15 +35,18 @@ public class RevengFileTest extends HibernateRedDeerTest {
 	private String PROJECT_NAME = "revengfiletest";
 	@InjectRequirement
     private DatabaseRequirement dbRequirement;
-
+	
+	private Logger log = Logger.getLogger(this.getClass());
 	
 	@Before 
 	public void prepare() {
+		log.step("Import test project");
 		importProject(PROJECT_NAME);
 		prepareConsoleConfiguration();
 	}
 	
 	public void prepareConsoleConfiguration() {
+		log.step("Create hibernate configuration file with console configuration");
 		NewHibernateConfigurationWizard wizard = new NewHibernateConfigurationWizard();
 		wizard.open();
 		NewConfigurationLocationPage p1 = new NewConfigurationLocationPage();
@@ -66,6 +70,7 @@ public class RevengFileTest extends HibernateRedDeerTest {
 		pe.open();
 		pe.selectProjects(PROJECT_NAME);		
 		
+		log.step("Create hibernate reverese engineering via reveng wizard");
 		NewReverseEngineeringFileWizard wizard = new NewReverseEngineeringFileWizard();
 		wizard.open();
 		wizard.next();
@@ -73,6 +78,7 @@ public class RevengFileTest extends HibernateRedDeerTest {
 		page.setConsoleConfiguration(PROJECT_NAME);
 		page.refreshDatabaseSchema();
 		page.pressInclude();
+		log.step("Finish wizard to create a file");
 		wizard.finish();
 
 		EditorHandler.getInstance().closeAll(false);

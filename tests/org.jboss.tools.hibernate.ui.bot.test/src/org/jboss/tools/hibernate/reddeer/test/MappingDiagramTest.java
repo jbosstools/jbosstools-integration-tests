@@ -104,21 +104,21 @@ public class MappingDiagramTest extends HibernateRedDeerTest {
     }
     
 	public void prepareMavenProject() {
-		
-		log.info("Import test project");
+		log.step("Import test project");
     	importProject(prj);
 		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
 		
-		log.info("Create database driver definition");
+		log.step("Create database driver definition");
 		DriverDefinitionFactory.createDatabaseDriverDefinition(cfg);
-		log.info("Create database connection profile ");
+		log.step("Create database connection profile ");
 		ConnectionProfileFactory.createConnectionProfile(cfg);
-		log.info("Convert project to faceted form");
+		log.step("Convert project to faceted form");
 		ProjectConfigurationFactory.convertProjectToFacetsForm(prj);
-		log.info("Set JPA facets to Hibernate Platform");
+		log.step("Set JPA facets to Hibernate Platform");
 		ProjectConfigurationFactory.setProjectFacetForDB(prj, cfg, jpaVersion);
 		
-		log.info("Open and set hibernate console configuration");
+		log.step("Open and set hibernate console configuration");
+
 		KnownConfigurationsView v = new KnownConfigurationsView();
 		v.open();
 		v.openConsoleConfiguration(prj);
@@ -140,23 +140,23 @@ public class MappingDiagramTest extends HibernateRedDeerTest {
 		} catch (IOException e) {
 			// Assert.fail("Cannot copy h2 driver");
 		}
-		log.info("Import test projects");
+		log.step("Import test projects");
     	importProject("hibernatelib");
     	importProject(prj);
     	
-    	log.info("Create hibernate console configuartion file");
+    	log.step("Create hibernate console configuartion file");
     	HibernateToolsFactory.testCreateConfigurationFile(cfg, prj, "hibernate.cfg.xml", false);
 	}
 
 	private void testMappingDiagram() {
     	
-		log.info("Open Hibernate Console Configuration view");
+		log.step("Open Hibernate Console Configuration view");
 		KnownConfigurationsView v = new KnownConfigurationsView();
 		
 		v.open();
 		v.selectConsole(prj);
 
-		log.info("Open Mapping diagram");
+		log.step("Open Mapping diagram");
 		ContextMenu mappingMenu = new ContextMenu("Mapping Diagram");
 		mappingMenu.select();
 		

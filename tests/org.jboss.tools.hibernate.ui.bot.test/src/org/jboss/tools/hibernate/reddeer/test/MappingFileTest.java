@@ -3,6 +3,7 @@ package org.jboss.tools.hibernate.reddeer.test;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
@@ -25,19 +26,25 @@ import org.junit.runner.RunWith;
 public class MappingFileTest extends HibernateRedDeerTest {
 	
 	public static final String PRJ = "java-hb-mapping-prj";
+	
+	private Logger log = Logger.getLogger(this.getClass());
     
 	@Before
 	public void prepare() {
+		log.step("Import test project");
 		importProject(PRJ);
 	}
 	
 	@Test()
 	public void createMappingFileFromPackage() {
+		
+		log.step("Select package with POJO model classes");
 		PackageExplorer pe = new PackageExplorer();
 		pe.open();
 		DefaultTreeItem item = new DefaultTreeItem(PRJ,"src","org.mapping.model.pkg");
 		item.select();
 		
+		log.step("Open Hibernate mapping file wizard and go thorugh it");
 		NewHibernateMappingFileWizard wizard = new NewHibernateMappingFileWizard();
 		wizard.open();
 		NewHibernateMappingElementsSelectionPage2 selPage = new NewHibernateMappingElementsSelectionPage2();
@@ -48,8 +55,10 @@ public class MappingFileTest extends HibernateRedDeerTest {
 		wizard.next();
 		NewHibernateMappingPreviewPage preview = new NewHibernateMappingPreviewPage();
 		assertTrue("Preview text cannot be empty", !preview.getPreviewText().equals(""));
+		log.step("Finish wizard to create mapping files");
 		wizard.finish();
 		
+		log.step("Check the files");
 		pe.open();
 		
 		try {
@@ -69,11 +78,14 @@ public class MappingFileTest extends HibernateRedDeerTest {
 	
 	@Test
 	public void createMappingFileFromFile() {
+		
+		log.step("Select POJO model class");
 		PackageExplorer pe = new PackageExplorer();
 		pe.open();
 		DefaultTreeItem item = new DefaultTreeItem(PRJ,"src","org.mapping.model.file","Owner.java");
 		item.select();
 		
+		log.step("Open Hibernate mapping file wizard and go thorugh it");
 		NewHibernateMappingFileWizard wizard = new NewHibernateMappingFileWizard();
 		wizard.open();
 		NewHibernateMappingElementsSelectionPage2 selPage = new NewHibernateMappingElementsSelectionPage2();
@@ -84,8 +96,10 @@ public class MappingFileTest extends HibernateRedDeerTest {
 		wizard.next();
 		NewHibernateMappingPreviewPage preview = new NewHibernateMappingPreviewPage();
 		assertTrue("Preview text cannot be empty", !preview.getPreviewText().equals(""));
+		log.step("Finish wizard to create mapping file");
 		wizard.finish();
 		
+		log.step("Check the file");
 		pe.open();
 		try {
 			item = new DefaultTreeItem(PRJ,"src","org.mapping.model.file","Owner.hbm.xml");

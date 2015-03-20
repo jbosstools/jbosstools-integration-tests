@@ -41,11 +41,11 @@ public class JBossDatasourceTest extends HibernateRedDeerTest {
 	@Before
 	public void prepare() {
 		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
-		
-		log.info("Create database driver definition");
+		log.step("Create database driver definition");
 		DriverDefinitionFactory.createDatabaseDriverDefinition(cfg);
-		ConnectionProfileFactory.createConnectionProfile(cfg);
-		
+		log.step("Create database connection profile definition");
+		ConnectionProfileFactory.createConnectionProfile(cfg);		
+		log.step("Import testing project");
 		importProject(PRJ);
 	}
 	
@@ -53,11 +53,14 @@ public class JBossDatasourceTest extends HibernateRedDeerTest {
 	public void jbossDatasourceTest() {
 		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
 
+		log.step("Open JBoss Datasource Wizard");
 		JBossDatasourceWizard wizard = new JBossDatasourceWizard();
 		wizard.open();
+		log.step("Fillin basic details");
 		NewJBossDatasourceWizardPage page =  new NewJBossDatasourceWizardPage();
 		page.setConnectionProfile(cfg.getProfileName());
 		page.setParentFolder("/" + PRJ + "/src/main/resources");
+		log.step("Finish");
 		page.finish();
 
 		ProjectExplorer pe = new ProjectExplorer();
