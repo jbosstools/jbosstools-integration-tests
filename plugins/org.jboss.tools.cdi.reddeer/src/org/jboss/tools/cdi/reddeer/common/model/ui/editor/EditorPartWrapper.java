@@ -115,7 +115,7 @@ public class EditorPartWrapper extends AbstractEditor{
 	}
 	
 	private void selectBeanXmlType(String type){
-		List<TreeItem> items = new DefaultTree(new DefaultSection("bean")).getAllItems();
+		List<TreeItem> items = new DefaultTree(new DefaultSection("beans")).getAllItems();
 		for(TreeItem i: items){
 			if(i.getText().equals(type)){
 				i.select();
