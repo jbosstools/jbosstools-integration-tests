@@ -2,6 +2,7 @@ package org.jboss.tools.hibernate.reddeer.test;
 
 import static org.junit.Assert.assertTrue;
 
+import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.eclipse.ui.perspectives.JPAPerspective;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
 import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
@@ -16,7 +17,9 @@ import org.junit.Test;
  *
  */
 public class JPAUIPartsTest {
-
+	
+	private Logger log = Logger.getLogger(this.getClass());
+	
 	@Test
 	/**
 	 * Tests JPA perspective
@@ -25,7 +28,9 @@ public class JPAUIPartsTest {
 	 * - JPA Structure
 	 */
 	public void testHibernateViews() {
+		log.step("Check JPA details view");
 		checkView(new JPADetailsView());
+		log.step("Check JPA structure view");
 		checkView(new JPAStructureView());		
 	}
 	
@@ -34,8 +39,10 @@ public class JPAUIPartsTest {
 	 */
 	@Test
 	public void testHibernatePerspective() {
-		JPAPerspective p = new JPAPerspective();
+		log.step("Open JPA perspective");
+		JPAPerspective p = new JPAPerspective();		
 		p.open();
+		log.step("Reset perspective");
 		p.reset();
 		
 		assertTrue(p.getPerspectiveLabel().equals("JPA"));
@@ -46,11 +53,17 @@ public class JPAUIPartsTest {
 	 * @param given view
 	 */
 	private void checkView(WorkbenchView view) {
+		log.step("Open view");
 		view.open();
+		log.step("Maximize view");
 		view.maximize();
+		log.step("Restore view");
 		view.restore();
+		log.step("Minimze view");
 		view.minimize();
+		log.step("Restore view");
 		view.restore();
+		log.step("Close view");
 		view.close();		
 	}
 	

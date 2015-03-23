@@ -36,18 +36,23 @@ public class HQLEditorTest extends HibernateRedDeerTest {
 	private String hbVersion = "4.3";
 	private String jpaVersion = "2.1";
 	
-	Logger log = Logger.getLogger(HQLEditorTest.class);
+	private Logger log = Logger.getLogger(HQLEditorTest.class);
 	
     @InjectRequirement    
     private DatabaseRequirement dbRequirement;
     
 	private void prepare() {
 
+		log.step("Import testing project");
     	importProject(prj);
 		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
-		DriverDefinitionFactory.createDatabaseDriverDefinition(cfg);		
+		log.step("Create database driver definition");
+		DriverDefinitionFactory.createDatabaseDriverDefinition(cfg);
+		log.step("Create database connection profile");
 		ConnectionProfileFactory.createConnectionProfile(cfg);
+		log.step("Convert Project to Faceted form");
 		ProjectConfigurationFactory.convertProjectToFacetsForm(prj);
+		log.step("Set JPA Project facets");
 		ProjectConfigurationFactory.setProjectFacetForDB(prj, cfg, jpaVersion);
 	}
 
@@ -85,8 +90,10 @@ public class HQLEditorTest extends HibernateRedDeerTest {
 	public void testHQLEditor() {
 		prepare();
 		
+		log.step("Open Hibernate Console configurations view");
 		KnownConfigurationsView v = new KnownConfigurationsView();
 		v.open();
+		log.step("Open and configure hibernate configuration " + prj);
 		v.openConsoleConfiguration(prj);
 				
 		ConsoleConfigurationCreationWizardPage p = new ConsoleConfigurationCreationWizardPage();
@@ -94,16 +101,19 @@ public class HQLEditorTest extends HibernateRedDeerTest {
 		p.setHibernateConsoleType(HibernateConsoleType.JPA);
 		p.setHibernateConsoleConnectionType(HibernateConsoleConnectionType.JPA);
 		p.setHibernateVersion(hbVersion);		
+		log.step("Click ok to save and close the page");
 		p.ok();
-		
-		v.open();
+				
+		v.open();		
 		v.selectConsole(prj);
+		log.step("Open HQL Editor");
 		new ContextMenu("HQL Editor").select();
-		
-		
+				
 		HQLEditor hqlEditor = new HQLEditor(prj);
+		log.step("Set query");
 		hqlEditor.setText("from Actor");
 		hqlEditor.save();
+		log.step("Execute query");
 		hqlEditor.runHQLQuery();
 		
 		QueryPageTabView result = new QueryPageTabView();

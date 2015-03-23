@@ -1,5 +1,6 @@
 package org.jboss.tools.hibernate.reddeer.test;
 
+import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.utils.DeleteUtils;
@@ -30,23 +31,27 @@ public class JpaAnnotationGenerationTest extends HibernateRedDeerTest {
 	private final String PRJ = "configurationtest";
 	private final String PCKG = "org.test.generation.annotation";
 	
+	private Logger log = Logger.getLogger(this.getClass());
 	
 	@Before 
 	public void prepare() {
+		log.step("Import testing project");
 		importProject(PRJ);
 	}
 	
 	@Test
-	public void testGenerateJPAHibernateAnnotationsContextMenu() {
+	public void testGenerateJPAHibernateAnnotationsContextMenu() {		
 		selectItem();
+		log.step("Generate Hibernate/JPA annotations from context menu");
 		Menu menu = new ContextMenu("Source","Generate Hibernate/JPA annotations...");
 		menu.select();
 		postCheck();
 	}
 
 	@Test
-	public void testGenerateJPAHibernateAnnotationsMenuBar() {
+	public void testGenerateJPAHibernateAnnotationsMenuBar() {		
 		selectItem();		
+		log.step("Generate Hibernate/JPA annotations from main menu");
 		Menu menu = new ShellMenu("Source","Generate Hibernate/JPA annotations...");
 		menu.select();		
 		postCheck();
@@ -72,6 +77,7 @@ public class JpaAnnotationGenerationTest extends HibernateRedDeerTest {
 	}
 	
 	private void selectItem() {
+		log.step("Select package with POJO clases");
 		PackageExplorer pe = new PackageExplorer();
 		pe.open();
 		pe.selectProjects(PRJ);		

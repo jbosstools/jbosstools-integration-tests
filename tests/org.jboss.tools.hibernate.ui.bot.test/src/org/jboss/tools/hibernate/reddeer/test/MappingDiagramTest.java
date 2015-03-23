@@ -3,6 +3,7 @@ package org.jboss.tools.hibernate.reddeer.test;
 
 import java.io.IOException;
 
+import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
@@ -36,6 +37,8 @@ public class MappingDiagramTest extends HibernateRedDeerTest {
 	private String prj = "mvn-hibernate43-ent"; 
 	private String hbVersion = "4.3";
 	private String jpaVersion = "2.0";
+	
+	private Logger log = Logger.getLogger(this.getClass());
 	
     @InjectRequirement    
     private DatabaseRequirement dbRequirement;    
@@ -101,13 +104,21 @@ public class MappingDiagramTest extends HibernateRedDeerTest {
     }
     
 	public void prepareMavenProject() {
+		
+		log.info("Import test project");
     	importProject(prj);
 		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
-		DriverDefinitionFactory.createDatabaseDriverDefinition(cfg);		
+		
+		log.info("Create database driver definition");
+		DriverDefinitionFactory.createDatabaseDriverDefinition(cfg);
+		log.info("Create database connection profile ");
 		ConnectionProfileFactory.createConnectionProfile(cfg);
+		log.info("Convert project to faceted form");
 		ProjectConfigurationFactory.convertProjectToFacetsForm(prj);
+		log.info("Set JPA facets to Hibernate Platform");
 		ProjectConfigurationFactory.setProjectFacetForDB(prj, cfg, jpaVersion);
 		
+		log.info("Open and set hibernate console configuration");
 		KnownConfigurationsView v = new KnownConfigurationsView();
 		v.open();
 		v.openConsoleConfiguration(prj);
@@ -121,7 +132,7 @@ public class MappingDiagramTest extends HibernateRedDeerTest {
 	}
 
     
-    private void prepareEclipseProject() {
+    private void prepareEclipseProject() {    	
 		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
 		String destDir = FileHelper.getResourceAbsolutePath(Activator.PLUGIN_ID,"resources","prj","hibernatelib","connector" );
 		try {
@@ -129,19 +140,23 @@ public class MappingDiagramTest extends HibernateRedDeerTest {
 		} catch (IOException e) {
 			// Assert.fail("Cannot copy h2 driver");
 		}
+		log.info("Import test projects");
     	importProject("hibernatelib");
     	importProject(prj);
     	
+    	log.info("Create hibernate console configuartion file");
     	HibernateToolsFactory.testCreateConfigurationFile(cfg, prj, "hibernate.cfg.xml", false);
 	}
 
 	private void testMappingDiagram() {
     	
+		log.info("Open Hibernate Console Configuration view");
 		KnownConfigurationsView v = new KnownConfigurationsView();
 		
 		v.open();
 		v.selectConsole(prj);
 
+		log.info("Open Mapping diagram");
 		ContextMenu mappingMenu = new ContextMenu("Mapping Diagram");
 		mappingMenu.select();
 		
