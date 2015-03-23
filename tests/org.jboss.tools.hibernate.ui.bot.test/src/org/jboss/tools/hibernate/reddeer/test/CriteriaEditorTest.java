@@ -85,13 +85,13 @@ public class CriteriaEditorTest extends HibernateRedDeerTest {
  
     @Test
     public void testCriteriaEditorEcl36() {
-    	setParams("ecl-hibernate36-ent","3.5","2.0");
+    	setParams("ecl-hibernate36-ent","3.6","2.0");
     	testCriteriaEditorEcl();
     }
     
     @Test
     public void testCriteriaEditorEcl40() {
-    	setParams("ecl-hibernate40-ent","3.5","2.0");
+    	setParams("ecl-hibernate40-ent","4.0","2.0");
     	testCriteriaEditorEcl();
     }
     
