@@ -38,8 +38,6 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.swt.wait.AbstractWait;
-import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.reddeer.workbench.api.Editor;
 import org.jboss.reddeer.workbench.exception.WorkbenchPartNotFound;
@@ -294,10 +292,10 @@ public class EditorResourceHelper {
 		pe.open();
 		pe.getProject(projectName).getProjectItem(sourceFile).select();
 		new ShellMenu(IDELabel.Menu.FILE,IDELabel.Menu.MOVE).select();
-		new DefaultShell(IDELabel.Shell.MOVE);
+		new DefaultShell(IDELabel.Shell.MOVE_RESOURCES);
 		new DefaultTreeItem(destFolder).select();
 		new OkButton().click();
-		new WaitWhile(new ShellWithTextIsAvailable(IDELabel.Shell.MOVE));
+		new WaitWhile(new ShellWithTextIsAvailable(IDELabel.Shell.MOVE_RESOURCES));
 		new WaitWhile(new JobIsRunning());
 	}
 
