@@ -1,10 +1,12 @@
 package org.jboss.tools.hibernate.reddeer.test;
 
+import static org.junit.Assert.assertTrue;
+
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.tools.hibernate.reddeer.common.StringHelper;
+import org.jboss.tools.hibernate.reddeer.common.XPathHelper;
 import org.jboss.tools.hibernate.reddeer.editor.JpaXmlEditor;
 import org.junit.After;
 import org.junit.Test;
@@ -60,17 +62,21 @@ public class PersistenceXMLFileTest extends HibernateRedDeerTest {
 		pexml.setHibernateDialect("H2");
 		log.step("Save the file");
 		pexml.save();
-		
-		log.step("Switch to source tab and check the edited values");
+
+		String usernameProp = "hibernate.connection.username";
+		String dialectProp = "hibernate.dialect";		
+
+		String usernameExpected = "sa";
+		String dialectExpected = "org.hibernate.dialect.H2Dialect";		
+
+		XPathHelper xh = XPathHelper.getInstance();
 		String text = pexml.getSourceText();
-		StringHelper helper = new StringHelper(text);		
-		String str  =  "<property name=\"hibernate.dialect\" value=\"org.hibernate.dialect.H2Dialect\"/>";
-		helper.getPositionBefore(str);
-		str  =  "<property name=\"hibernate.connection.username\" value=\"sa\"/>";
-		helper.getPositionBefore(str);	
+		String usrnameVal = xh.getPersistencePropertyValue(usernameProp,text);
+		assertTrue("sa value is expected",usrnameVal.equals(usernameExpected));
+		String dialectVal = xh.getPersistencePropertyValue(dialectProp, text);
+		assertTrue("H2 value is expected",dialectVal.equals(dialectExpected));
 	}
-	
-    
+	    
 	@After
 	public void cleanUp() {
 		ProjectExplorer pe = new ProjectExplorer();
