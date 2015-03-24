@@ -57,6 +57,7 @@ import org.jboss.tools.vpe.editor.VpeController;
 import org.jboss.tools.vpe.editor.VpeEditorPart;
 import org.jboss.tools.vpe.editor.mapping.VpeNodeMapping;
 import org.jboss.tools.vpe.editor.xpl.CustomSashForm;
+import org.jboss.tools.vpe.reddeer.utils.WebEngineSwitchingManager;
 import org.junit.After;
 import org.junit.Before;
 import org.mozilla.interfaces.nsIDOMDocument;
@@ -151,6 +152,7 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase {
 	@Before
 	public void setUp() throws Exception {
 		super.setUp();
+		WebEngineSwitchingManager.checkDoNotShowBrowserEngineDialogProperty();
 		clearWorkbench();
 		/*
 		 * Test JSF project
@@ -159,7 +161,7 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase {
 		/*
 		 * Test Facelets project
 		 */
-  	createFaceletsProject(FACELETS_TEST_PROJECT_NAME);
+		createFaceletsProject(FACELETS_TEST_PROJECT_NAME);
 	}
 
 	/**

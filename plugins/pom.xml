@@ -31,5 +31,6 @@
 		<module>org.jboss.tools.mylyn.reddeer</module>
 		<module>org.jboss.tools.central.reddeer</module>
 		<module>org.jboss.tools.runtime.reddeer</module>
+		<module>org.jboss.tools.vpe.reddeer</module>
 	</modules>
 </project>
