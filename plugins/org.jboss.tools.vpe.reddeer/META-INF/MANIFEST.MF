@@ -1,0 +1,18 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: VPE Reddeer
+Bundle-SymbolicName: org.jboss.tools.vpe.reddeer
+Bundle-Version: 4.3.0.qualifier
+Bundle-Activator: org.jboss.tools.vpe.reddeer.Activator
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.jboss.reddeer.swt,
+ org.jboss.reddeer.common,
+ org.jboss.reddeer.workbench,
+ org.jboss.reddeer.jface,
+ org.jboss.reddeer.eclipse,
+ org.jboss.tools.vpe
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Export-Package: org.jboss.tools.vpe.reddeer.preferences,
+ org.jboss.tools.vpe.reddeer.utils
