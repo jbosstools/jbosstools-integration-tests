@@ -8,4 +8,8 @@ public class HTML5Project extends ArchetypeProject {
 		super("HTML5 Project", "jboss-as-kitchensink-html5-mobile", false);
 	}
 
+	@Override
+	public String getReadmeString() {
+		return ".cheatsheet.xml";
+	}
 }

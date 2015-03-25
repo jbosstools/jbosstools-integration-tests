@@ -25,14 +25,10 @@
 
 	<profiles>
 		<profile>
-			<id>wildfly</id>
+			<id>project</id>
 			<activation>
 				<activeByDefault>true</activeByDefault>
 			</activation>
-			<properties>
-				<wildflySystemProperties>
-					-Djbosstools.test.wildfly.home=${jbosstools.test.wildfly.home}</wildflySystemProperties>
-			</properties>
 			<build>
 				<plugins>
 					<plugin>
@@ -56,18 +52,30 @@
 			</build>
 		</profile>
 		<profile>
-			<id>eap</id>
-			<activation>
-				<property>
-					<name>jbosstools.test.eap.url</name>
-				</property>
-			</activation>
+			<id>product</id>
 			<properties>
-				<eapSystemProperties>
-					-Djbosstools.test.eap.home=${jbosstools.test.eap.home}</eapSystemProperties>
+				<product-download-properties-file>resources/product-download.properties</product-download-properties-file>
 			</properties>
 			<build>
 				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>properties-maven-plugin</artifactId>
+						<version>1.0-alpha-2</version>
+						<executions>
+							<execution>
+								<phase>initialize</phase>
+								<goals>
+									<goal>read-project-properties</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<files>
+								<file>${product-download-properties-file}</file>
+							</files>
+						</configuration>
+					</plugin>
 					<plugin>
 						<groupId>com.googlecode.maven-download-plugin</groupId>
 						<artifactId>maven-download-plugin</artifactId>
@@ -147,6 +155,12 @@
 						<dependency>
 							<type>p2-installable-unit</type>
 							<artifactId>org.jboss.ide.eclipse.as.feature.feature.group</artifactId>
+							<version>0.0.0</version>
+						</dependency>
+<!-- 						Because of AngularJS Forge quickstart -->
+						<dependency>
+							<type>p2-installable-unit</type>
+							<artifactId>org.jboss.tools.forge.feature.feature.group</artifactId>
 							<version>0.0.0</version>
 						</dependency>
 					</dependencies>

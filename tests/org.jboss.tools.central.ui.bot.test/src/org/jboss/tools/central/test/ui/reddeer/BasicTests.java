@@ -176,8 +176,9 @@ public class BasicTests {
 			try{
 				widget = WidgetLookup.getInstance().activeWidget(new WorkbenchShell(), TextSearchControl.class, 0);
 			}catch(SWTLayerException e){
-				new DefaultEditor().maximize();
+				DefaultEditor defaultEditor = new DefaultEditor();
 				widget = WidgetLookup.getInstance().activeWidget(new WorkbenchShell(), TextSearchControl.class, 0);
+				defaultEditor.maximize();
 			}
 		}
 		

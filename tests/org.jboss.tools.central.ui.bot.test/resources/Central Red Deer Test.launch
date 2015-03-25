@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<launchConfiguration type="org.eclipse.swtbot.eclipse.ui.launcher.JunitLaunchConfig">
+<launchConfiguration type="org.jboss.reddeer.eclipse.ui.launcher.JunitLaunchConfig">
+<setAttribute key="additional_plugins"/>
 <booleanAttribute key="append.args" value="true"/>
 <booleanAttribute key="askclear" value="false"/>
 <booleanAttribute key="automaticAdd" value="true"/>
@@ -11,29 +12,40 @@
 <booleanAttribute key="clearwslog" value="false"/>
 <stringAttribute key="configLocation" value="${workspace_loc}/.metadata/.plugins/org.eclipse.pde.core/pde-junit"/>
 <booleanAttribute key="default" value="true"/>
+<stringAttribute key="featureDefaultLocation" value="workspace"/>
+<stringAttribute key="featurePluginResolution" value="workspace"/>
 <booleanAttribute key="includeOptional" value="true"/>
 <stringAttribute key="location" value="${workspace_loc}/../junit-workspace"/>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
-<listEntry value="/org.jboss.tools.central.ui.bot.test/src/org/jboss/tools/central/test/ui/bot/CentralAllBotTests.java"/>
+<listEntry value="/org.jboss.tools.central.ui.bot.test/src/org/jboss/tools/central/test/ui/reddeer/AllTestsSuite.java"/>
 </listAttribute>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
 <listEntry value="1"/>
 </listAttribute>
 <mapAttribute key="org.eclipse.debug.core.environmentVariables">
-<mapEntry key="DISPLAY" value=":${string_prompt:Display:1}"/>
+<mapEntry key="DISPLAY" value=":1"/>
 </mapAttribute>
 <stringAttribute key="org.eclipse.jdt.junit.CONTAINER" value=""/>
 <booleanAttribute key="org.eclipse.jdt.junit.KEEPRUNNING_ATTR" value="false"/>
 <stringAttribute key="org.eclipse.jdt.junit.TESTNAME" value=""/>
 <stringAttribute key="org.eclipse.jdt.junit.TEST_KIND" value="org.eclipse.jdt.junit.loader.junit4"/>
-<stringAttribute key="org.eclipse.jdt.launching.JRE_CONTAINER" value="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
-<stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="org.jboss.tools.central.test.ui.bot.CentralAllBotTests"/>
+<stringAttribute key="org.eclipse.jdt.launching.JRE_CONTAINER" value="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
+<stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="org.jboss.tools.central.test.ui.reddeer.AllTestsSuite"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch ${target.arch} -nl ${target.nl} -consoleLog"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="org.jboss.tools.central.ui.bot.test"/>
 <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.pde.ui.workbenchClasspathProvider"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dosgi.requiredJavaVersion=1.5 -XX:MaxPermSize=256m -Xms40m -Xmx512m"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dreddeer.config=${project_loc:/org.jboss.tools.central.ui.bot.test}/resources/generated_server_properties -Dusage_reporting_enabled=false -Xmx1024m -XX:MaxPermSize=256m"/>
 <stringAttribute key="pde.version" value="3.3"/>
 <stringAttribute key="product" value="org.eclipse.platform.ide"/>
+<stringAttribute key="rd.launch.property.captureScreenshot" value="true"/>
+<stringAttribute key="rd.launch.property.logDebug" value="true"/>
+<stringAttribute key="rd.launch.property.logMessageFilter" value="ALL"/>
+<stringAttribute key="rd.launch.property.pauseFailedTest" value="false"/>
+<stringAttribute key="rd.launch.property.recordScreenCast" value="false"/>
+<stringAttribute key="rd.launch.property.reddeer.close.shells" value="true"/>
+<stringAttribute key="rd.launch.property.reddeer.close.welcome.screen" value="true"/>
+<stringAttribute key="rd.launch.property.reddeer.disable.maven.download.repo.index.on.startup" value="true"/>
+<setAttribute key="selected_features"/>
 <booleanAttribute key="show_selected_only" value="false"/>
 <booleanAttribute key="tracing" value="false"/>
 <booleanAttribute key="useCustomFeatures" value="false"/>
