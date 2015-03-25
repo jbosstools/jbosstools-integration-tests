@@ -1,1 +1,5 @@
 target/
+/.classpath
+/.project
+.settings/
+/hyperic-sigar-1.6.5/

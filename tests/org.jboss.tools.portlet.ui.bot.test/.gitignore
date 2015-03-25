@@ -2,3 +2,6 @@
 resources/generated_config_files
 /db
 resources/compatibility
+/.classpath
+/.project
+.settings/

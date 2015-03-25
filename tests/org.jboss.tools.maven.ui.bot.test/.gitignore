@@ -6,3 +6,6 @@ projects/simple-jar1/.settings/*
 projects/simple-jar2/.project
 projects/simple-jar2/.classpath
 projects/simple-jar2/.settings/*
+/.classpath
+/.project
+.settings/
