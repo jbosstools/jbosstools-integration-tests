@@ -109,9 +109,48 @@ public class TablesFromJPAEntitiesGeneration extends HibernateRedDeerTest {
 		} catch (TreeItemNotFoundException e) {
 			Assert.fail("DDL is not generated - known issues(s): JBIDE-19431");	
 		}
-		assertTrue("DDL file cannot be empty", new TextEditor(DDL_FILE).getText().length() > 0);
+		String ddlText = new TextEditor(DDL_FILE).getText();
+		assertTrue("DDL file cannot be empty", ddlText.length() > 0);
+		checkDDLContent(ddlText);
 	}
 
+	
+	private void checkDDLContent(String text) {
+		
+		String[] expected = { 
+		"create table SAKILA.PUBLIC.ADDRESS",
+		"create table SAKILA.PUBLIC.CATEGORY",
+		"create table SAKILA.PUBLIC.CITY",
+		"create table SAKILA.PUBLIC.COUNTRY",
+		"create table SAKILA.PUBLIC.CUSTOMER",
+		"create table SAKILA.PUBLIC.FILM",
+		"create table SAKILA.PUBLIC.FILM_ACTOR",
+		"create table SAKILA.PUBLIC.FILM_CATEGORY",
+		"create table SAKILA.PUBLIC.FILM_TEXT",
+		"create table SAKILA.PUBLIC.INVENTORY",
+		"create table SAKILA.PUBLIC.LANGUAGE",
+		"create table SAKILA.PUBLIC.PAYMENT",
+		"create table SAKILA.PUBLIC.RENTAL",
+		"create table SAKILA.PUBLIC.STAFF",
+		"create table SAKILA.PUBLIC.STORE",
+		"alter table SAKILA.PUBLIC.ADDRESS",
+		"alter table SAKILA.PUBLIC.CITY",
+		"alter table SAKILA.PUBLIC.CUSTOMER",
+		"alter table SAKILA.PUBLIC.FILM",
+		"alter table SAKILA.PUBLIC.FILM_ACTOR",
+		"alter table SAKILA.PUBLIC.FILM_CATEGORY",
+		"alter table SAKILA.PUBLIC.INVENTORY",
+		"alter table SAKILA.PUBLIC.INVENTORY",
+		"alter table SAKILA.PUBLIC.PAYMENT",
+		"alter table SAKILA.PUBLIC.RENTAL",
+		"alter table SAKILA.PUBLIC.STAFF",
+		"alter table SAKILA.PUBLIC.STORE"};
+		
+		for (String s : expected) {
+			assertTrue(s + " is expected in ddl", text.contains(s));
+		}
+	}
+	
 	@After
 	public void cleanUp() {
 		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
