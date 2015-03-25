@@ -16,7 +16,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	MobileApplicationsTest.class,
 	BackEndApplicationsTest.class,
 	PortalApplicationsTest.class,
-	BasicTests.class
+//	BasicTests.class
 	})
 public class AllTestsSuite {
 

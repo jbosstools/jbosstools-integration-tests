@@ -55,10 +55,10 @@ public class ArchetypesTest {
 
 	@After
 	public void teardown() {
+		ShellHandler.getInstance().closeAllNonWorbenchShells();
 		for (Project p : new ProjectExplorer().getProjects()) {
 			p.delete(true);
 		}
-		ShellHandler.getInstance().closeAllNonWorbenchShells();
 		new DefaultToolItem(new WorkbenchShell(), "JBoss Central").click();
 		// activate central editor
 		new DefaultEditor("JBoss Central");

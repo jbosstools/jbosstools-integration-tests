@@ -7,13 +7,13 @@
 	<mirrors>
 		<mirror>
 			<id>jawa64-jboss-developer-mirror</id>
-			<url>http://jawa46.mw.lab.eng.brq.redhat.com:8081/nexus/content/repositories/test-jboss/</url>
-			<mirrorOf>jboss-public-repository-group,jboss-public-repository-group-plugin</mirrorOf>
+			<url>http://jawa46.mw.lab.eng.brq.redhat.com:8081/nexus/content/repositories/jboss-nexus-developer/</url>
+			<mirrorOf>jboss-public-repository-group</mirrorOf>
 		</mirror>
 		<mirror>
 			<id>jawa64-eap-mirror</id>
-			<url>http://jawa46.mw.lab.eng.brq.redhat.com:8081/nexus/content/repositories/test/</url>
-			<mirrorOf>jboss-eap,jboss-eap-maven-plugin-repository</mirrorOf>
+			<url>http://jawa46.mw.lab.eng.brq.redhat.com:8081/nexus/content/repositories/rh-enterprise/</url>
+			<mirrorOf>jboss-eap</mirrorOf>
 		</mirror>
 		<mirror>
 			<id>central-mirror</id>

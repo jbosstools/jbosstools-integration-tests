@@ -8,24 +8,24 @@ import static org.junit.Assert.fail;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.swt.SWT;
 import org.jboss.ide.eclipse.as.reddeer.server.view.JBossServerModule;
 import org.jboss.ide.eclipse.as.reddeer.server.view.JBossServerView;
+import org.jboss.reddeer.common.logging.Logger;
+import org.jboss.reddeer.common.matcher.RegexMatcher;
+import org.jboss.reddeer.eclipse.condition.ConsoleHasNoChange;
 import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
 import org.jboss.reddeer.eclipse.ui.browser.BrowserEditor;
+import org.jboss.reddeer.eclipse.ui.problems.Problem;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
+import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewEnums.ServerPublishState;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewEnums.ServerState;
 import org.jboss.reddeer.eclipse.wst.server.ui.wizard.ModifyModulesDialog;
-import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.condition.WaitCondition;
 import org.jboss.reddeer.swt.exception.WaitTimeoutExpiredException;
-import org.jboss.reddeer.swt.handler.WidgetHandler;
-import org.jboss.reddeer.swt.impl.label.DefaultLabel;
 import org.jboss.reddeer.swt.impl.link.DefaultLink;
-import org.jboss.reddeer.swt.matcher.RegexMatcher;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
@@ -52,6 +52,8 @@ import org.jboss.tools.maven.reddeer.project.examples.wizard.NewProjectExamplesS
  */
 
 public class ExamplesOperator {
+	
+	private static final Logger log = Logger.getLogger(ExamplesOperator.class);
 
 	private static ExamplesOperator instance;
 
@@ -88,11 +90,13 @@ public class ExamplesOperator {
 	 */
 
 	public void importArchetypeProject(ArchetypeProject project) {
+		log.step("Import project start");
 		JBossCentralProjectWizard dialog = new JBossCentralProjectWizard(project);
 		dialog.open();
 		NewProjectExamplesStacksRequirementsPage firstPage = (NewProjectExamplesStacksRequirementsPage) dialog
 				.getCurrentWizardPage();
 		firstPage.setTargetRuntime(1);
+		log.step("Import project first page");
 		new DefaultLink();
 		if (project.isBlank()){
 			firstPage.toggleBlank(project.isBlank());
@@ -139,8 +143,7 @@ public class ExamplesOperator {
 					TimePeriod.VERY_LONG);
 			new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		}
-		checkForErrors();
-//		checkForErrors(project);
+		checkForErrors();	
 	}
 
 	/**
@@ -151,22 +154,20 @@ public class ExamplesOperator {
 	 */
 	
 	public void checkDeployedProject(String projectName, String serverNameLabel) {
+		new WaitUntil(new ConsoleHasNoChange(), TimePeriod.LONG);
 		JBossServerView serversView = new JBossServerView();
 		serversView.open();
 		JBossServerModule module = serversView.getServer(serverNameLabel)
 				.getModule(projectName);
 		module.openWebPage();
 		final BrowserEditor browser = new BrowserEditor(new RegexMatcher(".*"));
-		new WaitUntil(new WaitCondition() {
-
-			public boolean test() {
-				return !browser.getText().equals("");
-			}
-
-			public String description() {
-				return null;
-			}
-		});
+		try {
+			new WaitUntil(new BrowserIsnotEmpty(browser));
+		} catch (WaitTimeoutExpiredException e) {
+			// try to refresh browser and wait one more time.
+			browser.refreshPage();
+			new WaitUntil(new BrowserIsnotEmpty(browser));
+		}
 		assertNotEquals("", browser.getText());
 		new DefaultEditor().close();
 	}
@@ -182,8 +183,8 @@ public class ExamplesOperator {
 		List<String> warnings = new ArrayList<String>();
 		ProblemsView problemsView = new ProblemsView();
 		problemsView.open();
-		for (TreeItem warning : problemsView.getAllWarnings()) {
-			warnings.add(warning.getText());
+		for (Problem warning : problemsView.getProblems(ProblemType.WARNING)) {
+			warnings.add(warning.getDescription());
 		}
 		return warnings;
 	}
@@ -192,8 +193,8 @@ public class ExamplesOperator {
 		List<String> errors = new ArrayList<String>();
 		ProblemsView problemsView = new ProblemsView();
 		problemsView.open();
-		for (TreeItem error : problemsView.getAllErrors()) {
-			errors.add(error.getText());
+		for (Problem error : problemsView.getProblems(ProblemType.ERROR)) {
+			errors.add(error.getDescription());
 		}
 		return errors;
 	}
@@ -202,18 +203,17 @@ public class ExamplesOperator {
 		assertFalse(page.isQuickFixEnabled());
 		if (!project.isBlank()){
 			assertTrue(page.isShowReadmeEnabled());
-			assertTrue(page.isShowReadmeEnabled());
 		}
 	}
 
 	private void checkForErrors() {
 		ProblemsView problemsView = new ProblemsView();
 		problemsView.open();
-		List<TreeItem> errors = problemsView.getAllErrors();
+		List<Problem> errors = problemsView.getProblems(ProblemType.ERROR);
 		if (!errors.isEmpty()) {
 			String failureMessage = "There are errors after importing project";
-			for (TreeItem treeItem : errors) {
-				failureMessage += treeItem.getText();
+			for (Problem problem: errors) {
+				failureMessage += problem.getDescription();
 				failureMessage += System.getProperty("line.separator");
 			}
 			fail(failureMessage);
@@ -266,6 +266,23 @@ public class ExamplesOperator {
 				}
 			}
 			return module;
+		}
+	}
+	
+	private class BrowserIsnotEmpty implements WaitCondition {
+		
+		BrowserEditor browser;
+		
+		public BrowserIsnotEmpty(BrowserEditor browser) {
+			this.browser = browser;
+		}
+		
+		public boolean test() {
+			return !browser.getText().equals("");
+		}
+
+		public String description() {
+			return "Browser is empty!";
 		}
 	}
 

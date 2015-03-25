@@ -1,14 +1,10 @@
 package org.jboss.tools.central.reddeer.wizards;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.jface.wizard.WizardDialog;
 import org.jboss.reddeer.swt.api.Button;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
-import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
-import org.jboss.reddeer.swt.impl.button.CheckBox;
+import org.jboss.reddeer.swt.condition.ShellIsActive;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
@@ -64,8 +60,7 @@ public class JBossCentralProjectWizard extends WizardDialog {
 		DefaultShell shell = new DefaultShell();
 		Button button = new PushButton("Finish");
 		button.click();
-
-		new WaitWhile(new ShellWithTextIsActive(shell.getText()),customTimeout);
+		new WaitWhile(new ShellIsActive(shell), customTimeout);
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 		return new NewProjectExamplesReadyPage(project);
 	}
