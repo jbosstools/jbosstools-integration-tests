@@ -9,6 +9,8 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.impl.tree.TreeItemNotFoundException;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
+import org.jboss.tools.hibernate.reddeer.common.XPathHelper;
+import org.jboss.tools.hibernate.reddeer.editor.Hibernate3CompoundEditor;
 import org.jboss.tools.hibernate.reddeer.wizard.NewHibernateMappingElementsSelectionPage2;
 import org.jboss.tools.hibernate.reddeer.wizard.NewHibernateMappingFilePage;
 import org.jboss.tools.hibernate.reddeer.wizard.NewHibernateMappingFileWizard;
@@ -61,19 +63,34 @@ public class MappingFileTest extends HibernateRedDeerTest {
 		log.step("Check the files");
 		pe.open();
 		
+		String clazz = "org.mapping.model.pkg";
+		
 		try {
-			item = new DefaultTreeItem(PRJ,"src","org.mapping.model.pkg","Dog.hbm.xml");
+			item = new DefaultTreeItem(PRJ,"src",clazz,"Dog.hbm.xml");
 		} catch (TreeItemNotFoundException e) {
 			fail("https://issues.jboss.org/browse/JBIDE-18769");
-		}
-		
+		}		
 		
 		item.doubleClick();
-		new DefaultEditor("Dog.hbm.xml");
-		pe.open();
-		item = new DefaultTreeItem(PRJ,"src","org.mapping.model.pkg","Owner.hbm.xml");
+		Hibernate3CompoundEditor hme = new Hibernate3CompoundEditor("Dog.hbm.xml");
+		hme.activateSourceTab();
+		String sourceText = hme.getSourceText();
+
+		
+		XPathHelper xph = XPathHelper.getInstance();
+		String table = xph.getMappingFileTable(clazz + ".Dog", sourceText);
+		assertTrue(table.equals("DOG"));
+		
+		pe.open();	
+		item = new DefaultTreeItem(PRJ,"src",clazz,"Owner.hbm.xml");
 		item.doubleClick();		
-		new DefaultEditor("Owner.hbm.xml");
+
+		hme = new Hibernate3CompoundEditor("Owner.hbm.xml");
+		hme.activateSourceTab();
+		sourceText = hme.getSourceText();
+
+		table = xph.getMappingFileTable(clazz + ".Owner", sourceText);
+		assertTrue(table.equals("OWNER"));
 	}
 	
 	@Test
@@ -101,13 +118,22 @@ public class MappingFileTest extends HibernateRedDeerTest {
 		
 		log.step("Check the file");
 		pe.open();
+		String clazz = "org.mapping.model.file";
 		try {
-			item = new DefaultTreeItem(PRJ,"src","org.mapping.model.file","Owner.hbm.xml");
+			item = new DefaultTreeItem(PRJ,"src",clazz,"Owner.hbm.xml");
 		} catch (TreeItemNotFoundException e) {
 			fail("https://issues.jboss.org/browse/JBIDE-18769");
 		}
 
 		item.doubleClick();
-		new DefaultEditor("Owner.hbm.xml");
+		
+		String fileName = "Owner.hbm.xml";
+		Hibernate3CompoundEditor hme = new Hibernate3CompoundEditor(fileName);
+		hme.activateSourceTab();
+		String sourceText = hme.getSourceText();
+		
+		XPathHelper xph = XPathHelper.getInstance();
+		String table = xph.getMappingFileTable(clazz + ".Owner", sourceText);
+		assertTrue(table.equals("OWNER"));
 	}
 }
