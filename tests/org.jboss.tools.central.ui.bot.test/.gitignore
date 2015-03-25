@@ -2,3 +2,6 @@
 /target
 /lib-org.jboss.tools.ui.bot.ext_3.2.0.v20111115-2301-Beta1
 /screenshots
+/.classpath
+/.project
+.settings/

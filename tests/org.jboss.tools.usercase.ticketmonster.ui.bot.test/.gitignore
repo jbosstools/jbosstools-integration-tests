@@ -2,3 +2,6 @@ screenshots/
 target/
 bin/
 build/
+/.classpath
+/.project
+.settings/
