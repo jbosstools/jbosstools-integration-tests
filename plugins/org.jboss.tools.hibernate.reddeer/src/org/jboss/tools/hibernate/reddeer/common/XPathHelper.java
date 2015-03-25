@@ -16,8 +16,12 @@ import org.xml.sax.InputSource;
 public class XPathHelper {
 
 	private static XPathHelper instance;
+	private XPath xpath;
 	
-	private XPathHelper() { }
+	private XPathHelper() { 
+		XPathFactory xpathFactory = XPathFactory.newInstance();
+		xpath = xpathFactory.newXPath();
+	}
 	
 	/**
 	 * Return XpathHelperInstance
@@ -43,10 +47,14 @@ public class XPathHelper {
 	}
 	
 	
+	public String getMappingFileTable(String clazz, String text) {
+		String ret = null;
+		String form = "/hibernate-mapping/class[@name='" + clazz + "']/@table";
+		ret = evaluateXPath(form, text);
+		return ret;
+	}	
+	
 	private String evaluateXPath(String eval, String text) {
-
-		XPathFactory xpathFactory = XPathFactory.newInstance();
-		XPath xpath = xpathFactory.newXPath();
 
 		InputSource source = new InputSource(new StringReader(text));
 		String status = null;
