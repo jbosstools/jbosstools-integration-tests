@@ -52,7 +52,7 @@ import org.junit.runner.RunWith;
 public class FreeMarkerEditorTest {
 	
 	
-	private static Logger log = Logger.getLogger(FreeMarkerEditorTest.class);
+	private static final Logger log = Logger.getLogger(FreeMarkerEditorTest.class);
 	private String prj = "org.jboss.tools.freemarker.testprj";
 	
 	@BeforeClass
