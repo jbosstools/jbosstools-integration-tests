@@ -21,7 +21,7 @@ import org.junit.Test;
 public class HibernateUIPartsTest {
 
 	
-	private Logger log = Logger.getLogger(this.getClass());
+	private static final Logger log = Logger.getLogger(HibernateUIPartsTest.class);
 	
 	@Test
 	/**

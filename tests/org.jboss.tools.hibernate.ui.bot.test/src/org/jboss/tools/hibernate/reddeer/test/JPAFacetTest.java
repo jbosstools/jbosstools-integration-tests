@@ -27,7 +27,7 @@ public class JPAFacetTest extends HibernateRedDeerTest {
     @InjectRequirement    
     private DatabaseRequirement dbRequirement;
     
-    private Logger log = Logger.getLogger(this.getClass());
+    private static final Logger log = Logger.getLogger(JPAFacetTest.class);
     
     @Before
 	public void testConnectionProfile() {

@@ -33,7 +33,7 @@ import org.junit.runner.RunWith;
 public class EntityValidationTest extends HibernateRedDeerTest {
 
 	private String PROJECT_NAME = "mvn-jpa21-hibernate43";
-	private Logger log = Logger.getLogger(this.getClass());
+	private static final Logger log = Logger.getLogger(EntityValidationTest.class);
 		
 	@Before 
 	public void prepare() {

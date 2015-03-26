@@ -36,7 +36,7 @@ public class RevengFileTest extends HibernateRedDeerTest {
 	@InjectRequirement
     private DatabaseRequirement dbRequirement;
 	
-	private Logger log = Logger.getLogger(this.getClass());
+	private static final Logger log = Logger.getLogger(RevengFileTest.class);
 	
 	@Before 
 	public void prepare() {

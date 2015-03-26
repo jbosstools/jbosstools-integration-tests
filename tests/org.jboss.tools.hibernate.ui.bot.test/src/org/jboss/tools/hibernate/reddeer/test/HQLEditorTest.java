@@ -36,7 +36,7 @@ public class HQLEditorTest extends HibernateRedDeerTest {
 	private String hbVersion = "4.3";
 	private String jpaVersion = "2.1";
 	
-	private Logger log = Logger.getLogger(this.getClass());
+	private static final Logger log = Logger.getLogger(HQLEditorTest.class);
 	
     @InjectRequirement    
     private DatabaseRequirement dbRequirement;

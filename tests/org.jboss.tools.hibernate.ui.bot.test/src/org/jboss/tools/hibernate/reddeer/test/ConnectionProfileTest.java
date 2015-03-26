@@ -25,7 +25,7 @@ public class ConnectionProfileTest {
 
     @InjectRequirement
     private DatabaseRequirement dbRequirement;
-    private Logger log = Logger.getLogger(this.getClass());
+    private static final Logger log = Logger.getLogger(ConnectionProfileTest.class);
     
 	@Test
 	public void testConnectionProfile() {

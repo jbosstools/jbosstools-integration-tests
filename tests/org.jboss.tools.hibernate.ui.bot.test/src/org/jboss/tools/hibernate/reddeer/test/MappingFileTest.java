@@ -8,7 +8,6 @@ import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.impl.tree.TreeItemNotFoundException;
-import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.hibernate.reddeer.common.XPathHelper;
 import org.jboss.tools.hibernate.reddeer.editor.Hibernate3CompoundEditor;
 import org.jboss.tools.hibernate.reddeer.wizard.NewHibernateMappingElementsSelectionPage2;
@@ -29,7 +28,7 @@ public class MappingFileTest extends HibernateRedDeerTest {
 	
 	public static final String PRJ = "java-hb-mapping-prj";
 	
-	private Logger log = Logger.getLogger(this.getClass());
+	private static final Logger log = Logger.getLogger(MappingFileTest.class);
     
 	@Before
 	public void prepare() {

@@ -49,7 +49,7 @@ public class CodeGenerationConfigurationTest extends HibernateRedDeerTest {
 	private String prj = "mvn-hibernate43-ent"; 
 	private String hbVersion = "4.3";
 	
-	private Logger log = Logger.getLogger(this.getClass());
+	private static final Logger log = Logger.getLogger(CodeGenerationConfigurationTest.class);
 
 	// Mavenized projects
     @Test
