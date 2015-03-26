@@ -52,7 +52,7 @@ import org.junit.runner.RunWith;
 public class FreeMarkerEditorTest {
 	
 	
-	private Logger log = Logger.getLogger(FreeMarkerEditorTest.class);
+	private static Logger log = Logger.getLogger(FreeMarkerEditorTest.class);
 	private String prj = "org.jboss.tools.freemarker.testprj";
 	
 	@BeforeClass
@@ -69,6 +69,7 @@ public class FreeMarkerEditorTest {
 		dlg.open();
 		dlg.select("FreeMarker");
 		
+		log.step("Set Freemarker outline level to full level on freemarker preference page");
 		FreemarkerPreferencePage page = new FreemarkerPreferencePage();
 		page.setOutlineLevelOfDetail(OutlineLevelOfDetail.FULL);
 		
@@ -83,7 +84,9 @@ public class FreeMarkerEditorTest {
 	@Test
 	public void freeMarkerTest() {
 		emptyErrorLog();
+		log.step("Import test project for freemarker test");
 		importTestProject();
+		log.step("Open ftl file in freemarker editor");
 		openFTLFileInEditor();
 		// disabled until target platform in running instance is resolved
 		// checkFreemMarkerOutput();
@@ -123,6 +126,7 @@ public class FreeMarkerEditorTest {
 		new DefaultTreeItem(prj, "ftl", "welcome.ftl").doubleClick();
 		new TextEditor("welcome.ftl");
 		
+		log.step("Open outline view and check freemarker elements there");
 		OutlineView ov = new OutlineView();
 		ov.open();
 		
