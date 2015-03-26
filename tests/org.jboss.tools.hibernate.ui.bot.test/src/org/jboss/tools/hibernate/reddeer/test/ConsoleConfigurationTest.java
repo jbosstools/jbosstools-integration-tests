@@ -34,7 +34,7 @@ public class ConsoleConfigurationTest extends HibernateRedDeerTest {
 	private String HIBERNATE_CFG_FILE="/" + PROJECT_NAME + "/src/hibernate.cfg.xml";
 	private String CONSOLE_NAME="hibernateconsoletest";
 	
-	private Logger log = Logger.getLogger(this.getClass());
+	private static final Logger log = Logger.getLogger(ConsoleConfigurationTest.class);
 	
     @InjectRequirement    
     private DatabaseRequirement dbRequirement;

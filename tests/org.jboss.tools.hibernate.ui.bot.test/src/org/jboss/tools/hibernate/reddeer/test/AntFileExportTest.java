@@ -39,7 +39,7 @@ public class AntFileExportTest extends HibernateRedDeerTest {
 	private final String PRJ = "antconfiguration";
 	private final String GEN_NAME = "genconfiguration";
 	private final String ANTFILE_NAME = "build.xml";
-	private final Logger log = Logger.getLogger(this.getClass());
+	private static final Logger log = Logger.getLogger(AntFileExportTest.class);
 	
 
     @InjectRequirement    

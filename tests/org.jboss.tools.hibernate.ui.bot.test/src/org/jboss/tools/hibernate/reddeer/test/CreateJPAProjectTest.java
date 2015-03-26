@@ -34,7 +34,7 @@ public class CreateJPAProjectTest extends HibernateRedDeerTest {
 
 	final String PROJECT_NAME = "jpa35test";
 	
-	private Logger log = Logger.getLogger(this.getClass());
+	private static final Logger log = Logger.getLogger(CreateJPAProjectTest.class);
 	
 	@Before 
 	public void before() {

@@ -33,7 +33,7 @@ import org.junit.runner.RunWith;
 public class JBossDatasourceTest extends HibernateRedDeerTest {
 	
 	public static final String PRJ = "mvn-hibernate35";
-	private Logger log = Logger.getLogger(HQLEditorTest.class);
+	private static final Logger log = Logger.getLogger(JBossDatasourceTest.class);
 
     @InjectRequirement
     DatabaseRequirement dbRequirement;

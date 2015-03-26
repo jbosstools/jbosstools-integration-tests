@@ -21,7 +21,7 @@ import org.junit.runner.RunWith;
 public class PersistenceXMLFileTest extends HibernateRedDeerTest {
 
 	private String prj = "ecl-jpa21"; 
-	private Logger log = Logger.getLogger(this.getClass());
+	private static final Logger log = Logger.getLogger(PersistenceXMLFileTest.class);
     
 	private void prepare() {
 		log.step("Import JPA Project");

@@ -18,7 +18,7 @@ import org.junit.Test;
  */
 public class JPAUIPartsTest {
 	
-	private Logger log = Logger.getLogger(this.getClass());
+	private static final Logger log = Logger.getLogger(JPAUIPartsTest.class);
 	
 	@Test
 	/**

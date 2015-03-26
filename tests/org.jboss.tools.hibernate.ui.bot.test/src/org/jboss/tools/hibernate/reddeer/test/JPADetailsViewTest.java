@@ -2,6 +2,7 @@ package org.jboss.tools.hibernate.reddeer.test;
 
 import static org.junit.Assert.fail;
 
+import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
@@ -34,20 +35,28 @@ public class JPADetailsViewTest extends HibernateRedDeerTest {
 	private final String PRJ = "mvn-hibernate43-ent";
 	@InjectRequirement
 	private DatabaseRequirement dbRequirement;
+	
+	private static final Logger log = Logger.getLogger(JPADetailsViewTest.class);
 
 	@Before
 	public void testConnectionProfile() {
+		log.step("Import test project");
 		importProject(PRJ);
 		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
+		log.step("Create database driver definition");
 		DriverDefinitionFactory.createDatabaseDriverDefinition(cfg);
+		log.step("Create database connection profile");
 		ConnectionProfileFactory.createConnectionProfile(cfg);
+		log.step("Convert project to faceted form");
 		ProjectConfigurationFactory.convertProjectToFacetsForm(PRJ);
+		log.step("Set project facet for JPA");
 		ProjectConfigurationFactory.setProjectFacetForDB(PRJ, cfg);
 	}
 
 	@Test
 	public void testJPADetailView() {
 
+		log.step("Open entity");
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		pe.selectProjects(PRJ);
@@ -59,6 +68,7 @@ public class JPADetailsViewTest extends HibernateRedDeerTest {
 		}
 		new DefaultEditor("Actor.java");
 
+		log.step("Open JPA view and check content");
 		JPADetailsView jpaDetailsView = new JPADetailsView();
 		jpaDetailsView.open();
 

@@ -16,7 +16,7 @@ import org.junit.runner.RunWith;
 @CleanWorkspace
 public class MavenizedProjectTest extends HibernateRedDeerTest {
 
-	private Logger log = Logger.getLogger(this.getClass());
+	private static final Logger log = Logger.getLogger(MavenizedProjectTest.class);
 	
 	@Test
 	public void testHibernateMavenProject35() {

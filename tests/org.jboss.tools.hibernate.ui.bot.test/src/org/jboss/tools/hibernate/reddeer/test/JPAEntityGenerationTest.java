@@ -32,7 +32,7 @@ public class JPAEntityGenerationTest extends HibernateRedDeerTest {
 	private String prj = "mvn-hibernate43"; 
 	private String jpaVersion = "2.0";
 	
-	private Logger log = Logger.getLogger(this.getClass());
+	private static final Logger log = Logger.getLogger(JPAEntityGenerationTest.class);
 	 
     @InjectRequirement    
     private DatabaseRequirement dbRequirement;

@@ -31,7 +31,7 @@ public class JpaAnnotationGenerationTest extends HibernateRedDeerTest {
 	private final String PRJ = "configurationtest";
 	private final String PCKG = "org.test.generation.annotation";
 	
-	private Logger log = Logger.getLogger(this.getClass());
+	private static final Logger log = Logger.getLogger(JpaAnnotationGenerationTest.class);
 	
 	@Before 
 	public void prepare() {
