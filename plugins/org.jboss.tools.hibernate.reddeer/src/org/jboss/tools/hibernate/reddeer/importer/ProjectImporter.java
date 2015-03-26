@@ -7,7 +7,12 @@ import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
+import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.swt.impl.button.OkButton;
+import org.jboss.reddeer.swt.impl.button.RadioButton;
+import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.hibernate.reddeer.factory.ResourceFactory;
 
@@ -30,6 +35,16 @@ public class ProjectImporter {
 		new WaitWhile(new JobIsRunning(),TimePeriod.LONG);
 		ProblemsView problemsView = new ProblemsView();
 		problemsView.open();
+		new WaitWhile(new JobIsRunning());
+		
+		new ShellMenu("Project","Clean...").select();;
+		new WaitUntil(new ShellWithTextIsActive("Clean"));
+		new RadioButton("Clean all projects").click();
+		new OkButton().click();
+		new WaitWhile(new ShellWithTextIsActive("Clean"));
+				
+		new WaitWhile(new JobIsRunning());
+		
 		assertTrue("No problems after import are expected", problemsView.getProblems(ProblemType.ERROR).size() == 0);
 	}
 	

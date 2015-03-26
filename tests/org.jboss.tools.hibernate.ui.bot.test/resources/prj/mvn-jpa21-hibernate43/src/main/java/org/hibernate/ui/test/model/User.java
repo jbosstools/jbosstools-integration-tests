@@ -12,5 +12,5 @@ public class User {
 
    private Address address;
    @Embedded public Address getAddress() { return address; }
-   public void setAddress() { this.address = address; }
+   public void setAddress(Address address) { this.address = address; }
 }

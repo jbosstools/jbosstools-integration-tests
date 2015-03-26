@@ -47,6 +47,7 @@ public class EntityValidationTest extends HibernateRedDeerTest {
 		log.step("Check problems view for no errors");
 		ProblemsView pv = new ProblemsView();
 		pv.open();
+
 		List<Problem> problems = pv.getProblems(ProblemType.ERROR);
 		assertTrue(problems.isEmpty());
 		
@@ -66,7 +67,33 @@ public class EntityValidationTest extends HibernateRedDeerTest {
 		problems = pv.getProblems(ProblemType.ERROR, new ProblemsDescriptionMatcher(expectedProblem));
 		assertTrue(expectedProblem + " error is expected", problems.size() == 2);
 	}
-					
+			
+	@Test
+	public void userIdentifierGeneratorValidationTest() {		
+		
+		log.step("Check problems view for no errors");
+		ProblemsView pv = new ProblemsView();
+		pv.open();
+		List<Problem> problems = pv.getProblems(ProblemType.ERROR);
+		assertTrue(problems.isEmpty());
+		
+		log.step("Delete generator UserIdGenerator.java");
+		PackageExplorer pe = new PackageExplorer();
+		pe.open();
+		DefaultTreeItem item = new DefaultTreeItem(PROJECT_NAME,"src/main/java","org.hibernate.ui.test.model","UserIdGenerator.java");
+		item.select();
+		new ContextMenu("Delete").select();
+		new WaitUntil(new ShellWithTextIsActive("Delete"));
+		new OkButton().click();
+		new WaitWhile(new ShellWithTextIsActive("Delete"));
+		new WaitWhile(new JobIsRunning());
+
+		pv.activate();
+		String expectedProblem = "Strategy class \"org.hibernate.ui.test.model.UserIdGenerator\" could not be found.";
+		problems = pv.getProblems(ProblemType.ERROR, new ProblemsDescriptionMatcher(expectedProblem));
+		assertTrue(expectedProblem + " error is expected, known issue(s):", problems.size() == 2);
+	}
+	
 	@After 
 	public void clean() {			
 		ProjectExplorer pe = new ProjectExplorer();

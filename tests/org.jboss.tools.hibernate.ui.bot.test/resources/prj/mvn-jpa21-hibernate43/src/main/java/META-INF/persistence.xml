@@ -4,5 +4,6 @@
 		<class>org.hibernate.ui.test.model.Address</class>
 		<class>org.hibernate.ui.test.model.Order</class>
 		<class>org.hibernate.ui.test.model.User</class>
+		<class>org.hibernate.ui.test.model.StrategyClient</class>
 	</persistence-unit>
 </persistence>
