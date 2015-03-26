@@ -17,7 +17,7 @@ import org.junit.runner.RunWith;
 @RunWith(RedDeerSuite.class)
 public class FreemarkerPreferencePageTest {
 	
-	private Logger log = Logger.getLogger(this.getClass());
+	private static final Logger log = Logger.getLogger(FreemarkerPreferencePageTest.class);
 
 	@BeforeClass
 	public static void beforeClass() {
