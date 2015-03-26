@@ -58,28 +58,54 @@ public class TablesFromJPAEntitiesGeneration extends HibernateRedDeerTest {
 		EntityGenerationFactory.generateJPAEntities(cfg, prj, "org.gen", hbVersion, true);
 	}
 	
+    // don't use console
     @Test
-    public void testDDLGeneration35() {
+    public void testDDLGenerationWithConsole35() {
     	setParams("mvn-hibernate35","3.5","2.0");
-    	testDDLGeneration();
+    	testDDLGeneration(false);
     }
     
     @Test
-    public void testDDLGeneration36() {
+    public void testDDLGenerationWithConsole36() {
     	setParams("mvn-hibernate36","3.6","2.0");
-    	testDDLGeneration();
+    	testDDLGeneration(false);
     }
     
     @Test
-    public void testDDLGeneration40() {
+    public void testDDLGenerationWithConsole40() {
     	setParams("mvn-hibernate40","4.0","2.0");
-    	testDDLGeneration();
+    	testDDLGeneration(false);
     }
     
     @Test
-    public void testDDLGeneration43() {
+    public void testDDLGenerationWithConsole43() {
     	setParams("mvn-hibernate43","4.3","2.1");
-    	testDDLGeneration();
+    	testDDLGeneration(false);
+    }
+    
+    // use console
+    @Test
+    public void testDDLGenerationWithoutConsole35() {
+    	setParams("mvn-hibernate35","3.5","2.0");
+    	testDDLGeneration(true);
+    }
+    
+    @Test
+    public void testDDLGenerationWithoutConsole36() {
+    	setParams("mvn-hibernate36","3.6","2.0");
+    	testDDLGeneration(true);
+    }
+    
+    @Test
+    public void testDDLGenerationWithoutConsole40() {
+    	setParams("mvn-hibernate40","4.0","2.0");
+    	testDDLGeneration(true);
+    }
+    
+    @Test
+    public void testDDLGenerationWithoutConsole43() {
+    	setParams("mvn-hibernate43","4.3","2.1");
+    	testDDLGeneration(true);
     }
     
 
@@ -89,7 +115,7 @@ public class TablesFromJPAEntitiesGeneration extends HibernateRedDeerTest {
     	this.jpaVersion = jpaVersion;
     }
     
-	private void testDDLGeneration() {
+	private void testDDLGeneration(boolean useConsole) {
 		prepare();
 		
 		ProjectExplorer pe = new ProjectExplorer();
@@ -100,6 +126,7 @@ public class TablesFromJPAEntitiesGeneration extends HibernateRedDeerTest {
 		log.step("Open Generate Tables from Entitities wizard");
 		GenerateDdlWizardPage p = new GenerateDdlWizardPage();
 		p.setFileName(DDL_FILE);
+		p.setUseConsoleConfiguration(useConsole);
 		log.step("Click finish to generate ddl");
 		w.finish();
 
