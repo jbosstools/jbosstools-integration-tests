@@ -2,7 +2,10 @@ package org.jboss.tools.hibernate.reddeer.test;
 
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.reddeer.requirements.db.DatabaseConfiguration;
+import org.jboss.reddeer.requirements.db.DatabaseRequirement;
 import org.jboss.reddeer.requirements.db.DatabaseRequirement.Database;
 import org.jboss.tools.hibernate.reddeer.console.EditConfigurationMainPage;
 import org.jboss.tools.hibernate.reddeer.console.EditConfigurationMainPage.PredefinedConnection;
@@ -33,6 +36,10 @@ public class ConsoleConfigurationTest extends HibernateRedDeerTest {
 	
 	private Logger log = Logger.getLogger(this.getClass());
 	
+    @InjectRequirement    
+    private DatabaseRequirement dbRequirement;
+
+	
 	@Before 
 	public void prepare() {
 		log.step("Import test project");
@@ -41,7 +48,9 @@ public class ConsoleConfigurationTest extends HibernateRedDeerTest {
 		prepareConsoleConfiguration();
 	}
 	
-	public void prepareConsoleConfiguration() {
+	public void prepareConsoleConfiguration() {		
+		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
+		
 		log.step("Open Hibernate Configuration File wizard");
 		NewHibernateConfigurationWizard wizard = new NewHibernateConfigurationWizard();
 		wizard.open();
@@ -51,10 +60,10 @@ public class ConsoleConfigurationTest extends HibernateRedDeerTest {
 		wizard.next();
 
 		NewConfigurationSettingPage p2 = new NewConfigurationSettingPage();
-		p2.setDatabaseDialect(p.getProperty(RuntimeDBProperty.dialect));
-		p2.setDriverClass(p.getProperty(RuntimeDBProperty.driver));
-		p2.setConnectionURL(p.getProperty(RuntimeDBProperty.jdbc));
-		p2.setUsername(p.getProperty(RuntimeDBProperty.username));
+		p2.setDatabaseDialect("H2");
+		p2.setDriverClass(cfg.getDriverClass());
+		p2.setConnectionURL(cfg.getJdbcString());
+		p2.setUsername(cfg.getUsername());
 		log.step("Finish");
 		wizard.finish();
 	}
