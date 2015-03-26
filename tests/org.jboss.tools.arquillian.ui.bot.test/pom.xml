@@ -13,32 +13,49 @@
 	<artifactId>org.jboss.tools.arquillian.ui.bot.test</artifactId>
 	<packaging>eclipse-test-plugin</packaging>
 	<properties>
-		<tychoPluginProductParameter>org.eclipse.platform.ide</tychoPluginProductParameter>
 		<swtbot.test.skip>false</swtbot.test.skip>
+		<usage_reporting_enabled>false</usage_reporting_enabled>
 		<maven.test.failure.ignore>true</maven.test.failure.ignore>
+		
+		<download-properties-file>${project.basedir}/properties/projects-download.properties</download-properties-file>
 		<requirementsDirectory>${project.build.directory}/requirements</requirementsDirectory>
-		<systemProperties>${integrationTestsSystemProperties} ${runtimesProperties} -Dorg.eclipse.swtbot.screenshots.dir=${project.build.directory}/screenshots</systemProperties>
-		<jbosstools.test.jboss-eap-6.2.home>${requirementsDirectory}/jboss-eap-6.2</jbosstools.test.jboss-eap-6.2.home>
-		<runtimesProperties>-Djbosstools.test.jboss-eap-6.2.home=${jbosstools.test.jboss-eap-6.2.home}  -Dreddeer.config=target/classes/product</runtimesProperties>
+		<jbosstools.test.jboss-wildfly-8.home>${requirementsDirectory}/wildfly-8.2.0.Final</jbosstools.test.jboss-wildfly-8.home>
+		<systemProperties>${integrationTestsSystemProperties} ${runtimesProperties}</systemProperties>
+		<runtimesProperties>-Dreddeer.config=${project.build.outputDirectory}/project/wildfly-8.xml -Djbosstools.test.jboss-wildfly-8.home=${jbosstools.test.jboss-wildfly-8.home}</runtimesProperties>
 	</properties>
 
 	<build>
 		<plugins>
-
 			<plugin>
-				<groupId>com.googlecode.maven-download-plugin</groupId>
-				<artifactId>maven-download-plugin</artifactId>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>properties-maven-plugin</artifactId>
+				<version>1.0-alpha-2</version>
 				<executions>
 					<execution>
-						<id>install-eap-6.2.0</id>
+						<phase>initialize</phase>
+						<goals>
+							<goal>read-project-properties</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<files>
+						<file>${download-properties-file}</file>
+					</files>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>com.googlecode.maven-download-plugin</groupId>
+				<artifactId>download-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>install-wildfly8-server</id>
 						<phase>pre-integration-test</phase>
 						<goals>
 							<goal>wget</goal>
 						</goals>
 						<configuration>
- 							<url>http://download.devel.redhat.com/released/JBEAP-6/6.2.0/jboss-eap-6.2.0.zip</url>   
-							<outputFileName>jboss-eap-6.2.0.zip</outputFileName>
- 							<md5>03ec01654cf4aee8c8e26313fae68c16</md5>  
+							<url>${jbosstools.test.wildfly-8.url}</url>
 							<unpack>true</unpack>
 						</configuration>
 					</execution>
@@ -54,13 +71,7 @@
 					<forkedProcessTimeoutInSeconds>7200</forkedProcessTimeoutInSeconds>
 					<testSuite>org.jboss.tools.arquillian.ui.bot.test</testSuite>
 					<testClass>org.jboss.tools.arquillian.ui.bot.test.ArquillianSuite</testClass>
-					<skip>${swtbot.test.skip}</skip>	
 					<dependencies combine.children="append">
-                     				<dependency>
-			                        	<type>p2-installable-unit</type>
-                        				<artifactId>org.jboss.tools.arquillian.core</artifactId>
-                        				<version>0.0.0</version>
-                        			</dependency>
 						<dependency>
 							<type>p2-installable-unit</type>
 							<artifactId>org.jboss.tools.arquillian.feature.feature.group</artifactId>
@@ -102,7 +113,6 @@
 				<directory>resources/config_files_templates</directory>
 				<includes>
 					<include>project/*</include>
-					<include>product/*</include>
 				</includes>
 				<filtering>true</filtering>
 			</resource>

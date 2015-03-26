@@ -6,11 +6,11 @@ package org.jboss.tools.arquillian.ui.bot.test;
  * 
  */
 
-import org.apache.log4j.Logger;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.reddeer.eclipse.jdt.ui.ide.NewJavaProjectWizardDialog;
+import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.jdt.ui.ide.NewJavaProjectWizardDialog;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewEnums.ServerState;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewException;
@@ -31,35 +31,17 @@ import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
 import org.junit.Test;
-import static org.junit.Assert.*;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 @JBossServer(state=ServerReqState.RUNNING, type=ServerReqType.EAP6_1plus)
-
 public class ArqBasicTest  {
 	
 	protected final Logger log = Logger.getLogger(this.getClass());
 
 	@Test
 	public void testIt() {
-		
-		ServersView view = new ServersView();
-		view.open();
-
-		/* Workaround to Red Deer issue of intermittent server startup problem
-		 * 
-		 *   https://github.com/jboss-reddeer/reddeer/issues/829
-		 */
-		if ( (!view.getServers().get(0).getLabel().getState().equals(ServerState.STARTED))  ||
-			(!view.getServers().get(0).getLabel().getState().equals(ServerState.STARTING)) )
-		{			
-			try {
-				view.getServers().get(0).start();
-			}
-			catch (ServersViewException E) { 
-				log.error ("Unexpected server state = " + view.getServers().get(0).getLabel().getState().getText());
-			}
-		}
-
 		ProjectExplorer pex = new ProjectExplorer();
 		pex.open();
 		
@@ -88,13 +70,6 @@ public class ArqBasicTest  {
 		pex.getProject("Test100").select();
 		new ContextMenu("Configure","Add Arquillian Support...").select();
 		new PushButton("OK").click();
-		
-		try {
-			new WaitUntil(new ShellWithTextIsActive("Resource - Test100/pom.xml - "), TimePeriod.getCustom(60l)); 
-		}
-		catch (Exception E) {
-			log.info ("Problem with 'Java - Test100/pom.xml - Eclipse' shell not seen");
-		}		
 		
 		/* Save All - to save the changes to the pom.xml */	
 		new ShellMenu("File","Save All").select();
