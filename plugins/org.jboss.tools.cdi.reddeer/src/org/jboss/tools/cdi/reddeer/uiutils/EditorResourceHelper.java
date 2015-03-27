@@ -17,19 +17,22 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.channels.FileChannel;
-import java.text.MessageFormat;
 import java.util.List;
 import java.util.Scanner;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.jboss.reddeer.common.wait.AbstractWait;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.jface.text.contentassist.ContentAssistant;
 import org.jboss.reddeer.swt.api.StyledText;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
@@ -38,9 +41,7 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.workbench.api.Editor;
-import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.cdi.reddeer.CDIConstants;
@@ -48,31 +49,8 @@ import org.jboss.tools.common.reddeer.label.IDELabel;
 
 public class EditorResourceHelper {
 	
-	
-	public void replaceClassContentByResource(String editorName, InputStream resource, boolean closeEdit) {
-		replaceClassContentByResource(editorName, resource, true, closeEdit);
-	}
-	
-	/**
-	 * method replaces whole content of class "classEdit" by inputstream resource
-	 * If closeEdit param is true, editor is not only saved but closed as well 
-	 * Prerequisite: editor has been set 
-	 * @param classEdit
-	 * @param resource
-	 * @param closeEdit
-	 */
-	public void replaceClassContentByResource(String editorName, InputStream resource, boolean save, boolean closeEdit) {
-		String code = readStream(resource);
-		Editor e = new DefaultEditor(editorName);
-		StyledText t = new DefaultStyledText();
-		t.setText("");
-		t.setText(code);
-		if (save) e.save();
-		if (closeEdit) e.close();
-	}
-	
-	public void replaceClassContentByResource(String editorName, InputStream resource, boolean closeEdit, String... param) {
-		replaceClassContentByResource(editorName, resource, true, closeEdit, param);
+	public void replaceClassContentByResource(String editorName, String code, boolean closeEdit) {
+		replaceClassContentByResource(editorName, code, true, closeEdit);
 	}
 	
 	/**
@@ -82,12 +60,12 @@ public class EditorResourceHelper {
 	 * @param closeEdit
 	 * @param param
 	 */
-	public void replaceClassContentByResource(String editorName, InputStream resource, boolean save, 
-			boolean closeEdit, String... param) {
-		String s = readStream(resource);
-		String code = MessageFormat.format(s, (Object[])param);
-		TextEditor e = new TextEditor(editorName);
-		e.setText(code);
+	public void replaceClassContentByResource(String editorName, String code, boolean save, 
+			boolean closeEdit) {
+		Editor e = new DefaultEditor(editorName);
+		StyledText t = new DefaultStyledText();
+		t.setText("");
+		t.setText(code);
 		if (save) e.save();
 		if (closeEdit) e.close();
 	}
@@ -134,25 +112,12 @@ public class EditorResourceHelper {
 	 * @param replacement
 	 */
 	public void replaceInEditor(String target, String replacement, boolean save) {
-		
-		try{
-			TextEditor editor = new TextEditor();
-			editor.setText(editor.getText().replace(
-				target + (replacement.equals("") ? System
-								.getProperty("line.separator") : ""),
-				replacement));
-			if (save) editor.save();
-		} catch (CoreLayerException ex){
-			Editor textEditor = new DefaultEditor();
-			DefaultStyledText dt = new DefaultStyledText();
-			String text = dt.getText();
-			dt.setText("");
-			dt.setText(text.replace(
-					target + (replacement.equals("") ? System
-									.getProperty("line.separator") : ""),
-					replacement));		
-			if (save) textEditor.save();
-		}
+		Editor editor = new DefaultEditor();
+		DefaultStyledText dt = new DefaultStyledText();
+		String text = dt.getText();
+		dt.setText("");
+		dt.setText(text.replace(target, replacement));		
+		if (save) editor.save();
 	}
 
 	public void replaceInEditor(String editorName, String target, String replacement) {
@@ -207,7 +172,9 @@ public class EditorResourceHelper {
 		DefaultStyledText dt = new DefaultStyledText();
 		dt.selectPosition(dt.getPositionOfText(textToSelect));
 		new WaitWhile(new JobIsRunning());
+		AbstractWait.sleep(TimePeriod.getCustom(2));
 		ContentAssistant cs = editor.openContentAssistant();
+		AbstractWait.sleep(TimePeriod.getCustom(2));
 		List<String> proposals = cs.getProposals();
 		cs.close();
 		return proposals;
@@ -218,7 +185,9 @@ public class EditorResourceHelper {
 		DefaultStyledText dt = new DefaultStyledText();
 		dt.selectPosition(dt.getPositionOfText(textToSelect)+position);
 		new WaitWhile(new JobIsRunning());
+		AbstractWait.sleep(TimePeriod.getCustom(2));
 		ContentAssistant cs = editor.openContentAssistant();
+		AbstractWait.sleep(TimePeriod.getCustom(2));
 		List<String> proposals = cs.getProposals();
 		cs.close();
 		return proposals;
@@ -241,8 +210,8 @@ public class EditorResourceHelper {
 	 * @param projectName
 	 * @param PACKAGE_NAME
 	 */
-	public void deleteWebFolder(String projectName) {
-		deleteInProjectExplorer(projectName, "WebContent");
+	public void deleteWebPagesFolder(String projectName) {
+		deleteInProjectExplorer(projectName, "WebContent","pages");
 		
 	}
 	

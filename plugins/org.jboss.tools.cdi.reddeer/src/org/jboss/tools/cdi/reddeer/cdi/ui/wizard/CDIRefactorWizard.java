@@ -3,13 +3,13 @@ package org.jboss.tools.cdi.reddeer.cdi.ui.wizard;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.common.wait.WaitWhile;
 
 public class CDIRefactorWizard {
 	

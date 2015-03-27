@@ -3,9 +3,9 @@ package org.jboss.tools.deltaspike.ui.bot.test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.Scanner;
 
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
@@ -125,12 +125,7 @@ public class PartialBeanTest extends NewDeltaspikeTestBase{
 	
 	private void replaceClassContent(String className, String contentPath){
 		EditorResourceHelper eh = new EditorResourceHelper();
-		try {
-			eh.replaceClassContentByResource(className+".java", new FileInputStream(new File(contentPath)), false);
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		eh.replaceClassContentByResource(className+".java", readFile(contentPath), false);
 	}
 	
 	private void assertErrorExists(String className, String errorMessage){
@@ -146,6 +141,21 @@ public class PartialBeanTest extends NewDeltaspikeTestBase{
 		TextEditor ed = new TextEditor(className+".java");
 		new WaitUntil(new EditorHasValidationMarkers(ed),TimePeriod.NORMAL,false);
 		assertEquals(0,ed.getMarkers().size());
+	}
+	
+	protected static String readFile(String path) {
+		Scanner s = null;
+		try {
+			s = new Scanner(new FileInputStream(path));
+		} catch (FileNotFoundException e) {
+			fail("unable to find file "+path);
+		}
+		Scanner s1 = s.useDelimiter("\\A");
+		String file =  s.next();
+		s.close();
+		s1.close();
+		return file;
+		
 	}
 	
 	

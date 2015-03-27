@@ -18,18 +18,22 @@ import static org.junit.Assert.*;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.reddeer.jface.text.contentassist.ContentAssistant;
+import org.jboss.reddeer.eclipse.condition.ProblemExists;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
+import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.cdi.reddeer.CDIConstants;
-import org.jboss.tools.cdi.reddeer.annotation.ProblemsType;
-import org.jboss.tools.cdi.reddeer.uiutils.QuickFixHelper;
+import org.jboss.tools.cdi.reddeer.uiutils.OpenOnHelper;
+import org.jboss.tools.cdi.reddeer.uiutils.ValidationHelper;
+import org.jboss.tools.cdi.reddeer.validators.ValidationProblem;
 
 /**
  * 
@@ -43,7 +47,8 @@ public class SolderAnnotationTestBase extends Seam3TestBase {
 	
 	protected String APPLICATION_CLASS = "Application.java";
 	
-	protected static final QuickFixHelper quickFixHelper = new QuickFixHelper();
+	protected static final ValidationHelper validationHelper = new ValidationHelper();
+	protected static final OpenOnHelper openOnHelper = new OpenOnHelper();
 	
 	/**
 	 * 
@@ -131,8 +136,8 @@ public class SolderAnnotationTestBase extends Seam3TestBase {
 			String openedClass, 
 			boolean producer, String producerMethod) {
 		
-		List<TreeItem> validationProblems = quickFixHelper.getProblems(ProblemsType.WARNINGS, projectName);
-		assertTrue(validationProblems.size() == 0);
+		new WaitUntil(new ProblemExists(ProblemType.WARNING), TimePeriod.LONG, false);
+		assertFalse(new ProblemExists(ProblemType.WARNING).test());
 		
 		TextEditor te = new TextEditor(APPLICATION_CLASS);
 		te.selectText(openOnString);

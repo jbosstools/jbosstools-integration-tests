@@ -33,11 +33,7 @@ public class NewAnnotationLiteralCreationWizard extends NewWizardDialog{
 	public void setPublic(boolean isPublic){
 		new RadioButton("public").toggle(isPublic);
 	}
-	
-	public void setDefault(boolean isDefault){
-		new RadioButton("default").toggle(isDefault);
-	}
-	
+
 	public void setPrivate(boolean isPrivate){
 		new RadioButton("private").toggle(isPrivate);
 	}

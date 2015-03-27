@@ -1,0 +1,6 @@
+ <decorators>
+  <class>cdi.D1</class>
+  <class>cdi.D2</class>
+  <class>cdi.D3</class>
+ </decorators>
+</beans>

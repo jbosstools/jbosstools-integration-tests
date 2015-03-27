@@ -1,5 +1,6 @@
 package org.jboss.tools.cdi.reddeer.cdi.ui;
 
+import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.jface.wizard.NewWizardDialog;
 import org.jboss.reddeer.swt.condition.TableHasRows;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
@@ -9,7 +10,6 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.common.wait.WaitUntil;
 
 public class NewStereotypeCreationWizard extends NewWizardDialog{
 	
@@ -26,6 +26,14 @@ public class NewStereotypeCreationWizard extends NewWizardDialog{
 	
 	public void setName(String name){
 		new LabeledText("Name:").setText(name);
+	}
+	
+	public String getName(){
+		return new LabeledText("Name:").getText();
+	}
+	
+	public String getPackage(){
+		return new LabeledText("Package:").getText();
 	}
 	
 	public void setInherited(boolean inherited){

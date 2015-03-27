@@ -1,5 +1,6 @@
 package org.jboss.tools.cdi.reddeer.cdi.ui;
 
+import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.jface.wizard.NewWizardDialog;
 import org.jboss.reddeer.swt.api.Table;
 import org.jboss.reddeer.swt.api.TableItem;
@@ -9,7 +10,6 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.tools.cdi.reddeer.condition.TableItemIsFound;
 
 public class NewInterceptorCreationWizard extends NewWizardDialog{
@@ -27,6 +27,14 @@ public class NewInterceptorCreationWizard extends NewWizardDialog{
 	
 	public void setName(String name){
 		new LabeledText("Name:").setText(name);
+	}
+	
+	public String getName(){
+		return new LabeledText("Name:").getText();
+	}
+	
+	public String getPackage(){
+		return new LabeledText("Package:").getText();
 	}
 	
 	public void setSuperclass(String name){

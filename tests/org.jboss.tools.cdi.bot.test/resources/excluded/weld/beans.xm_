@@ -1,0 +1,15 @@
+ <weld:scan>
+  <weld:exclude name="exclude.p1.Bean1"/>
+  <weld:exclude name="exclude.p2.*">
+  	<weld:if-system-property name="verbosity" value="low"/>
+  </weld:exclude>
+  <weld:exclude name="exclude.p4.**">
+  	<weld:if-class-available name="exclude.p4.Bean5"/>
+  	<weld:if-class-available name="!exclude.p6.DoesNotExist"/>
+  </weld:exclude>
+  <weld:exclude name="exclude.p6.**">
+  	<weld:if-class-available name="exclude.p6.DoesNotExist"/>
+  </weld:exclude>
+ </weld:scan>
+ 
+ </beans>

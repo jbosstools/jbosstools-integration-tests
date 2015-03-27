@@ -1,10 +1,10 @@
 package org.jboss.tools.cdi.reddeer.common.model.ui;
 
+import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
-import org.jboss.reddeer.common.wait.WaitWhile;
 
 /**
  * Represents dialog invoked when manipulating in JBT beans.xml editor

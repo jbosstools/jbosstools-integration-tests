@@ -17,46 +17,8 @@ import org.jboss.tools.cdi.reddeer.annotation.ValidationType;
 
 public interface IValidationProvider {
 		
-	/**
-	 * Method gets all validation problems type for component
-	 *  
-	 * @param annotationType
-	 * @return
-	 */
-	List<ValidationType> getAllValidationProblemsType();
+	List<ValidationProblem> getAllProblems();
 	
-	/**
-	 * Method gets all validation errors showed in Problems View as warnings 
-	 * according to entered annotation 
-	 *  
-	 * @param annotationType
-	 * @return
-	 */
-	List<String> getAllWarningForAnnotationType(ValidationType annotationType);
-		
-	/**
-	 * Method gets all validation errors showed in Problems View as errors 
-	 * according to entered annotation 
-	 * 
-	 * @param annotationType
-	 * @return
-	 */
-	List<String> getAllErrorsForAnnotationType(ValidationType annotationType);
-
-	/**
-	 * Method gets all annotations for which exist validation errors showed in Problems View
-	 * marked as warning
-	 *  	
-	 * @return
-	 */
-	List<ValidationType> getAllWarningsAnnotation();
-	
-	/**
-	 * Method gets all annotations for which exist validation errors showed in Problems View
-	 * marked as errors
-	 * 
-	 * @return
-	 */
-	List<ValidationType> getAllErrorsAnnotation();
+	ValidationProblem getValidationProblem(ValidationType type);
 
 }

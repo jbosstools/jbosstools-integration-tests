@@ -1,8 +1,8 @@
 package org.jboss.tools.cdi.reddeer.condition;
 
+import org.jboss.reddeer.common.condition.WaitCondition;
 import org.jboss.reddeer.swt.api.Table;
 import org.jboss.reddeer.swt.api.TableItem;
-import org.jboss.reddeer.common.condition.WaitCondition;
 
 public class TableItemIsFound implements WaitCondition{
 	

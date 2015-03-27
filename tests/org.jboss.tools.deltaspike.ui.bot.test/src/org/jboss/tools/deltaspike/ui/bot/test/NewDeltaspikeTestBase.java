@@ -12,10 +12,15 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
+import org.jboss.reddeer.eclipse.jst.servlet.ui.WebProjectFirstPage;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
-import org.jboss.tools.cdi.reddeer.uiutils.CDIProjectHelper;
+import org.jboss.tools.cdi.reddeer.cdi.ui.CDIProjectWizard;
 import org.jboss.tools.common.reddeer.preferences.SourceLookupPreferencePage;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -47,8 +52,14 @@ public class NewDeltaspikeTestBase {
 		if(pe.containsProject(PROJECT_NAME)){
 			return;
 		}
-		CDIProjectHelper helper = new CDIProjectHelper();
-		helper.createCDI11ProjectWithCDIWizard(PROJECT_NAME, sr.getRuntimeNameLabelText(sr.getConfig()));
+		CDIProjectWizard cw = new CDIProjectWizard();
+		cw.open();
+		WebProjectFirstPage fp  = new WebProjectFirstPage();
+		fp.setProjectName(PROJECT_NAME);
+		fp.setTargetRuntime(sr.getRuntimeNameLabelText(sr.getConfig()));
+		cw.finish();
+		new WaitUntil(new JobIsRunning(),TimePeriod.NORMAL, false);
+		new WaitWhile(new JobIsRunning(),TimePeriod.LONG);
 		addDeltaspikeLibs();
 	}
 	

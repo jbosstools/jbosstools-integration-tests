@@ -36,7 +36,8 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.tools.cdi.reddeer.uiutils.EditorResourceHelper;
-import org.jboss.tools.cdi.reddeer.uiutils.QuickFixHelper;
+import org.jboss.tools.cdi.reddeer.uiutils.OpenOnHelper;
+import org.jboss.tools.cdi.reddeer.uiutils.ValidationHelper;
 import org.jboss.tools.cdi.seam3.bot.test.util.LibraryHelper;
 import org.jboss.tools.cdi.seam3.bot.test.util.SeamLibrary;
 import org.jboss.tools.common.reddeer.preferences.SourceLookupPreferencePage;
@@ -57,7 +58,8 @@ public class Seam3TestBase {
 	
 	protected final static LibraryHelper libraryHelper = new LibraryHelper();
 	protected final static EditorResourceHelper editResourceUtil = new EditorResourceHelper();
-	protected static final QuickFixHelper quickFixHelper = new QuickFixHelper();
+	protected static final ValidationHelper validationHelper = new ValidationHelper();
+	protected static final OpenOnHelper openOnHelper = new OpenOnHelper();
 	
 	public String getPackageName() {
 		return packageName;

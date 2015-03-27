@@ -19,8 +19,13 @@ import java.util.List;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
+import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.eclipse.condition.ProblemExists;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.jboss.reddeer.eclipse.ui.problems.Problem;
+import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
+import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
@@ -28,7 +33,6 @@ import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.cdi.reddeer.CDIConstants;
-import org.jboss.tools.cdi.reddeer.annotation.ProblemsType;
 import org.jboss.tools.cdi.reddeer.uiutils.CollectionsUtil;
 import org.jboss.tools.cdi.seam3.bot.test.base.SolderAnnotationTestBase;
 import org.jboss.tools.cdi.seam3.bot.test.util.SeamLibrary;
@@ -137,18 +141,20 @@ public class FullyQualifiedTest extends SolderAnnotationTestBase {
 		pe.getProject(projectName).getProjectItem(CDIConstants.SRC, getPackageName(), myBean1).open();
 		new DefaultEditor(myBean1);
 		
-		List<TreeItem> validationProblems = quickFixHelper.getProblems(
-				ProblemsType.ERRORS, projectName);
-		assertTrue(validationProblems.size() > 0);
-		assertTrue(validationProblems.size() == 1);
-		assertTrue(validationProblems.get(0).getText().contains("cannot be resolved to a type"));
+		new WaitUntil(new ProblemExists(ProblemType.ERROR));
+		ProblemsView pw = new ProblemsView();
+		pw.open();
+		List<Problem> ps = pw.getProblems(ProblemType.ERROR);
+		assertTrue(ps.size() == 1);
+		assertTrue(ps.get(0).getDescription().contains("cannot be resolved to a type"));
 		
 		editResourceUtil.replaceInEditor("cdi.test.MyBean1", "cdi.seam.MyBean2");
-		validationProblems = quickFixHelper.getProblems(
-				ProblemsType.ERRORS, projectName);
-		assertTrue(validationProblems.size() > 0);
-		assertTrue(validationProblems.size() == 1);
-		assertTrue(validationProblems.get(0).getText().contains("cannot be resolved to a type"));
+		new WaitUntil(new ProblemExists(ProblemType.ERROR));
+		pw = new ProblemsView();
+		pw.open();
+		ps = pw.getProblems(ProblemType.ERROR);
+		assertTrue(ps.size() == 1);
+		assertTrue(ps.get(0).getDescription().contains("cannot be resolved to a type"));
 		
 	}
 
