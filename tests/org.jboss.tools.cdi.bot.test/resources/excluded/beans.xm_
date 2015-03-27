@@ -1,14 +1,13 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/beans_1_1.xsd"
-	version="1.1" bean-discovery-mode="all">
-	
  <scan>
-  <exclude name="exclude.p1.Bean1"/>
-  <exclude name="exclude.p2.*"/>
+  <exclude name="exclude.p1.Bean1">
+  	<if-class-not-available name="exclude.p6.Bean7"/>
+  </exclude>
+  <exclude name="exclude.p2.*">
+  	<if-system-property name="verbosity" value="low"/>
+  </exclude>
   <exclude name="exclude.p4.**">
   	<if-class-available name="exclude.p4.Bean5"/>
-  	<if-class-available name="!exclude.p6.DoesNotExist"/>
+  	<if-class-not-available name="exclude.p6.DoesNotExist"/>
   </exclude>
   <exclude name="exclude.p6.**">
   	<if-class-available name="exclude.p6.DoesNotExist"/>

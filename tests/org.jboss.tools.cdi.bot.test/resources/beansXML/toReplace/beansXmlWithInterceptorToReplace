@@ -1,0 +1,6 @@
+ <interceptors>
+  <class>cdi.I1</class>
+  <class>cdi.I2</class>
+  <class>cdi.I3</class>
+ </interceptors>
+</beans>

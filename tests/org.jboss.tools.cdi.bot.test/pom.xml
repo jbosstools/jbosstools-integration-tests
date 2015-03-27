@@ -15,8 +15,8 @@
 		<surefire.timeout>14400</surefire.timeout>
 		<jbosstools.test.jboss-as-7.1.home>${requirementsDirectory}/jboss-as-7.1.1.Final</jbosstools.test.jboss-as-7.1.home>
 		<jbosstools.test.wildfly.8x.home>${requirementsDirectory}/wildfly-8.1.0.Final</jbosstools.test.wildfly.8x.home>
-		<jbosstools.test.weld-se.home>${requirementsDirectory}/weld-se-2.2.4.Final.jar</jbosstools.test.weld-se.home>
-		<jbosstools.test.weld-api.home>${requirementsDirectory}/weld-api-2.2.SP3.jar</jbosstools.test.weld-api.home>
+		<jbosstools.test.weld-se.home>${requirementsDirectory}/weld/se/</jbosstools.test.weld-se.home>
+		<jbosstools.test.weld-api.home>${requirementsDirectory}/weld/api/</jbosstools.test.weld-api.home>
 	</properties>
 
 	<profiles>
@@ -86,11 +86,14 @@
 									 <groupId>org.jboss.weld.se</groupId>
    									 <artifactId>weld-se</artifactId>
     								 <version>2.2.4.Final</version>
+    								 <outputDirectory>${requirementsDirectory}/weld/se/</outputDirectory>
 								</artifactItem>
+								
 								<artifactItem>
 									 <groupId>org.jboss.weld</groupId>
     								 <artifactId>weld-api</artifactId>
     								 <version>2.2.SP3</version>
+    								 <outputDirectory>${requirementsDirectory}/weld/api/</outputDirectory>
 								</artifactItem>
 							</artifactItems>
 						</configuration>

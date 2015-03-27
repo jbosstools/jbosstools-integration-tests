@@ -12,10 +12,13 @@ package org.jboss.tools.cdi.seam3.bot.test.tests;
 
 import static org.junit.Assert.*;
 
+import java.util.List;
+
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.jboss.reddeer.eclipse.ui.problems.Problem;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
@@ -58,9 +61,9 @@ public class MessageLoggerAnnotationTest extends Seam3TestBase {
 	}
 	
 	private void assertMessageLoggerIsInjectable() {
+		List<Problem> ps = validationHelper.findProblems(validationProvider.getValidationProblem(ValidationType.NO_BEAN_ELIGIBLE));
 		assertNull("There is not bean eligible for injection to injection point Logger", 
-				quickFixHelper.getProblem(
-						ValidationType.NO_BEAN_ELIGIBLE, projectName, validationProvider));
+				ps.size() == 0);
 	}
 	
 }

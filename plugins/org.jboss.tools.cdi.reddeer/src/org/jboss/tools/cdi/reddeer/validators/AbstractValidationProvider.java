@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-import org.jboss.tools.cdi.reddeer.annotation.ProblemsType;
 import org.jboss.tools.cdi.reddeer.annotation.ValidationType;
 
 public abstract class AbstractValidationProvider implements IValidationProvider {
@@ -29,56 +28,17 @@ public abstract class AbstractValidationProvider implements IValidationProvider 
 	
 	abstract void init();
 
-	public List<String> getAllErrorsForAnnotationType(
-			ValidationType annotationType) {
-		List<String> messages = new ArrayList<String>();
-		for (ValidationProblem problem: problems) {
-			if (problem.getProblemType() == ProblemsType.ERRORS && 
-				problem.getValidationType() == annotationType) {
-				messages.add(problem.getMessage());
-			}
-		}
-		return messages;
+	public List<ValidationProblem> getAllProblems(){
+		return problems;
 	}
 	
-	public List<String> getAllWarningForAnnotationType(
-			ValidationType annotationType) {
-		List<String> messages = new ArrayList<String>();
-		for (ValidationProblem problem: problems) {
-			if (problem.getProblemType() == ProblemsType.WARNINGS && 
-				problem.getValidationType() == annotationType) {
-				messages.add(problem.getMessage());
+	public ValidationProblem getValidationProblem(ValidationType type){
+		for(ValidationProblem p: problems){
+			if(p.getValidationType().equals(type)){
+				return p;
 			}
 		}
-		return messages;
-	}
-	
-	public List<ValidationType> getAllWarningsAnnotation() {
-		List<ValidationType> annotations = new ArrayList<ValidationType>();
-		for (ValidationProblem problem: problems) {
-			if (problem.getProblemType() == ProblemsType.WARNINGS) {
-				annotations.add(problem.getValidationType());
-			}
-		}
-		return annotations;
-	}
-	
-	public List<ValidationType> getAllErrorsAnnotation() {
-		List<ValidationType> annotations = new ArrayList<ValidationType>();
-		for (ValidationProblem problem: problems) {
-			if (problem.getProblemType() == ProblemsType.ERRORS) {
-				annotations.add(problem.getValidationType());
-			}
-		}
-		return annotations;
-	}
-	
-	public List<ValidationType> getAllValidationProblemsType() {
-		List<ValidationType> annotations = new ArrayList<ValidationType>();
-		for (ValidationProblem problem: problems) {
-			annotations.add(problem.getValidationType());
-		}
-		return annotations;
+		return null;
 	}
 	
 }

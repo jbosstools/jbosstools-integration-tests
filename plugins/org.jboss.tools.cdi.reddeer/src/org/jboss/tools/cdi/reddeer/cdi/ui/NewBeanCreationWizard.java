@@ -1,5 +1,6 @@
 package org.jboss.tools.cdi.reddeer.cdi.ui;
 
+import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.jface.wizard.NewWizardDialog;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -9,7 +10,6 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.tools.cdi.reddeer.condition.TableItemIsFound;
 
 public class NewBeanCreationWizard extends NewWizardDialog{
@@ -29,12 +29,16 @@ public class NewBeanCreationWizard extends NewWizardDialog{
 		new LabeledText("Name:").setText(name);
 	}
 	
-	public void setPublic(boolean isPublic){
-		new RadioButton("public").toggle(isPublic);
+	public String getName(){
+		return new LabeledText("Name:").getText();
 	}
 	
-	public void setDefault(boolean isDefault){
-		new RadioButton("default").toggle(isDefault);
+	public String getPackage(){
+		return new LabeledText("Package:").getText();
+	}
+	
+	public void setPublic(boolean isPublic){
+		new RadioButton("public").toggle(isPublic);
 	}
 	
 	public void setPrivate(boolean isPrivate){

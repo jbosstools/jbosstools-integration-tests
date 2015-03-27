@@ -40,6 +40,7 @@ public class QuickFixWizard {
 		return resources;
 	}
 
+	/*
 	public String getDefaultCDIQuickFix() {
 		for (String fix : getAvailableFixes()) {
 			if (fix.contains("Configure") 
@@ -49,7 +50,7 @@ public class QuickFixWizard {
 		throw new IllegalStateException("No default CDI quick fix is provided " +
 				"for validation problem");
 	}
-	
+	*/
 	public String getCDIQuickFix(String text) {
 		for (String fix : getAvailableFixes()) {
 			if (fix.contains(text)) return fix;

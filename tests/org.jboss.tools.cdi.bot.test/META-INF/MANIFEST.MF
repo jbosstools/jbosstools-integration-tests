@@ -13,10 +13,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.jdt.ui,
  org.eclipse.wst.sse.ui,
  org.jboss.tools.common.model.ui,
- org.jboss.tools.cdi.reddeer,
+ org.jboss.tools.cdi.reddeer;bundle-version="4.3.1",
  org.jboss.reddeer.swt,
- org.jboss.reddeer.common,
- org.jboss.reddeer.core,
  org.jboss.reddeer.jface,
  org.jboss.reddeer.eclipse,
  org.jboss.reddeer.workbench,
@@ -28,10 +26,11 @@ Require-Bundle: org.eclipse.core.runtime,
  org.jboss.ide.eclipse.as.reddeer,
  org.jboss.tools.jst.reddeer,
  org.jboss.tools.jsf.reddeer,
- org.eclipse.jdt.core
+ org.eclipse.jdt.core,
+ org.jboss.reddeer.core,
+ org.jboss.reddeer.common
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Eclipse-BundleShape: jar
 Bundle-Localization: plugin
 Bundle-Vendor: JBoss by Red Hat
-Import-Package: org.jboss.reddeer.common.logging

@@ -7,6 +7,7 @@
 		<artifactId>plugins</artifactId>
 		<version>4.3.0-SNAPSHOT</version>
 	</parent>
+	<version>4.3.1-SNAPSHOT</version>
 	<groupId>org.jboss.tools.cdi</groupId>
 	<artifactId>org.jboss.tools.cdi.reddeer</artifactId>
 

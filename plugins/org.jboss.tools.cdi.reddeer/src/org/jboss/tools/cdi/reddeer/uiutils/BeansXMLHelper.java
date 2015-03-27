@@ -16,9 +16,11 @@ import java.io.InputStream;
 import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
+import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.cdi.reddeer.CDIConstants;
 import org.jboss.tools.cdi.reddeer.cdi.ui.NewBeansXMLCreationWizard;
+import org.jboss.tools.cdi.reddeer.common.model.ui.editor.EditorPartWrapper;
 import org.jboss.tools.common.reddeer.label.IDELabel;
 
 /**
@@ -29,23 +31,29 @@ import org.jboss.tools.common.reddeer.label.IDELabel;
  */
 
 public class BeansXMLHelper {
-
-	private EditorResourceHelper editResourceUtil = new EditorResourceHelper();
-	/*
 	
-	public void createEmptyBeansXML(String projectName) {
-
-		createBeansXML(projectName);
-		replaceBeansXMLContent(projectName, CLEAR_BEANS_XML);
-
+	public EditorPartWrapper openBeansXml(String project){
+		ProjectExplorer pe = new ProjectExplorer();
+		pe.open();
+		pe.getProject(project).getProjectItem("WebContent","WEB-INF","beans.xml").open();
+		return new EditorPartWrapper();
 	}
-
-	public void createBeansXMLWithEmptyTag(String projectName) {
-
-		createBeansXML(projectName);
-		replaceBeansXMLContent(projectName, CLEAR_BEANS_XML_WITH_TAG);
+	
+	public void removeFromBeans(String tag){
+		EditorPartWrapper ep = new EditorPartWrapper();
+		ep.activateSourcePage();
+		DefaultStyledText dt = new DefaultStyledText();
+		int start = dt.getPositionOfText("<"+tag+">");
+		int end = dt.getPositionOfText("</"+tag+">");
+		dt.setSelection(start, end+tag.length()+3);
+		dt.insertText("");
+		ep.save();
 	}
-*/
+	
+	
+/*
+	private EditorResourceHelper editResourceUtil = new EditorResourceHelper();
+
 	public void createBeansXMLWithInterceptor(String projectName,
 			String packageName, String className, InputStream path) {
 
@@ -114,13 +122,7 @@ public class BeansXMLHelper {
 		replaceBeansXMLContent(projectName, path);
 	}
 	
-	
-	/**
-	 * If there is no beans.xml file in the project, then this method creates a
-	 * new one
-	 * 
-	 * @param projectName
-	 */
+
 	
 	private void createBeansXML(String projectName) {
 		Project p = new ProjectExplorer().getProject(projectName);
@@ -138,15 +140,6 @@ public class BeansXMLHelper {
 		}
 	}
 
-	/**
-	 * Methods create beans.xml for entered project with content of file
-	 * determined by parameter path. If there is beans.xml in project, its
-	 * content is simply replaced
-	 * 
-	 * @param projectName
-	 * @param path
-	 */
-	
 	private void replaceBeansXMLContent(String projectName, InputStream path) {
 		Project p = new ProjectExplorer().getProject(projectName);
 		
@@ -160,6 +153,6 @@ public class BeansXMLHelper {
 		editResourceUtil.replaceClassContentByResource("beans.xml",
 				path, false);
 	}
-	
+	*/
 
 }

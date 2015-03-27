@@ -11,7 +11,6 @@
 
 package org.jboss.tools.cdi.reddeer.validators;
 
-import org.jboss.tools.cdi.reddeer.annotation.ProblemsType;
 import org.jboss.tools.cdi.reddeer.annotation.ValidationType;
 
 public class BeanValidationProvider extends AbstractValidationProvider {
@@ -23,6 +22,7 @@ public class BeanValidationProvider extends AbstractValidationProvider {
 	@Override
 	void init() {
 		
+		/*
 		problems.add(new ValidationProblem(ProblemsType.WARNINGS, ValidationType.SERIALIZABLE, 
 				"which declares a passivating scope SessionScoped "));
 		
@@ -55,6 +55,7 @@ public class BeanValidationProvider extends AbstractValidationProvider {
 		
 		problems.add(new ValidationProblem(ProblemsType.ERRORS, ValidationType.PRODUCES, 
 				"Producer method or field cannot be annotated @Inject"));		
+	*/
 	}
 
 }

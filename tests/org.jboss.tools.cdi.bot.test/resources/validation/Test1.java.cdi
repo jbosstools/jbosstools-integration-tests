@@ -1,25 +1,25 @@
-package {0};
+package cdi;
 
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-public class {1} '{'
+public class Test {
 
 	@Inject Test2 create;
 
 	@Produces
 	@Named
-	public Test2 create() '{'
+	public Test2 create() {
 		return new Test2();
-	'}'
+	}
 
 	@Produces
-	public Test2 create2() '{'
+	public Test2 create2() {
 		return new Test2();
-	'}'
+	}
 
-	public static class Test2 '{'
+	public static class Test2 {
 	
-	'}'
-'}'
+	}
+}

@@ -12,10 +12,13 @@ package org.jboss.tools.cdi.seam3.bot.test.tests;
 
 import static org.junit.Assert.*;
 
+import java.util.List;
+
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.jboss.reddeer.eclipse.ui.problems.Problem;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
@@ -23,6 +26,7 @@ import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.tools.cdi.reddeer.annotation.ValidationType;
 import org.jboss.tools.cdi.reddeer.validators.BeanValidationProvider;
 import org.jboss.tools.cdi.reddeer.validators.IValidationProvider;
+import org.jboss.tools.cdi.reddeer.validators.ValidationProblem;
 import org.jboss.tools.cdi.seam3.bot.test.base.Seam3TestBase;
 import org.jboss.tools.cdi.seam3.bot.test.util.SeamLibrary;
 import org.junit.BeforeClass;
@@ -58,9 +62,8 @@ public class LoggerSupportTest extends Seam3TestBase {
 	}
 	
 	private void assertLoggerIsInjectable() {
-		assertNull("There is not bean eligible for injection to injection point Logger", 
-				quickFixHelper.getProblem(
-						ValidationType.NO_BEAN_ELIGIBLE, projectName, validationProvider));
+		List<Problem> ps = validationHelper.findProblems(validationProvider.getValidationProblem(ValidationType.NO_BEAN_ELIGIBLE));
+		assertTrue("There is not bean eligible for injection to injection point Logger", ps.size() == 0);
 	}
 	
 }

@@ -2,10 +2,12 @@ package org.jboss.tools.cdi.reddeer.common.model.ui.editor;
 
 import java.util.List;
 
+import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.core.exception.CoreLayerException;
+import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
 import org.jboss.reddeer.swt.api.Table;
 import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -18,7 +20,6 @@ import org.jboss.reddeer.swt.impl.table.DefaultTableItem;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.uiforms.impl.section.DefaultSection;
 import org.jboss.reddeer.workbench.impl.editor.AbstractEditor;
 import org.jboss.tools.cdi.reddeer.common.model.ui.AddIfClassAvailableDialog;
@@ -105,8 +106,8 @@ public class EditorPartWrapper extends AbstractEditor{
 	}
 	
 	public void newWeldScan() {
-		selectBeanXmlType("Scan");
-		new ContextMenu("New", "Weld", "Scan...").select();
+		selectBeanXmlType("beans.xml");
+		new ContextMenu("New", "Weld", "Weld Scan...").select();
 	}
 	
 	public Table getIncludeExcludeTable() {
@@ -114,37 +115,81 @@ public class EditorPartWrapper extends AbstractEditor{
 		return new DefaultTable();
 	}
 	
+	public Table getWeldIncludeExcludeTable() {
+		selectBeanXmlType("Weld Scan");
+		return new DefaultTable();
+	}
+	
 	private void selectBeanXmlType(String type){
 		List<TreeItem> items = new DefaultTree(new DefaultSection("beans")).getAllItems();
+		boolean found = false;
 		for(TreeItem i: items){
 			if(i.getText().equals(type)){
 				i.select();
+				found = true;
 				break;
 			}
+		}
+		if(!found){
+			throw new EclipseLayerException("Unable to select "+type+" in beans.xml editor");
 		}
 	}
 	
+	public void removeWeldIncludeExclude(String name){
+		Table table = getWeldIncludeExcludeTable();
+		removeDefaultIncludeExclude(name, table);
+		removeIncludeExcludeWithHandler();
+		
+	}
+	
+	
 	public void removeIncludeExclude(String name) {
 		Table table = getIncludeExcludeTable();
+		removeDefaultIncludeExclude(name, table);
+		removeIncludeExcludeWithHandler();
+	}
+	
+	private void removeDefaultIncludeExclude(String name, Table table){
+		boolean found =false;
 		for (int i = 0; i < table.rowCount(); i++) {
 			if (table.getItem(i).getText(1).equals(name)) {
 				table.select(i);
+				found = true;
 				break;
 			}
 		}
-		removeIncludeExcludeWithHandler();
+		if(!found){
+			throw new EclipseLayerException("Unable to find "+name);
+		}
 	}
 	
 	public void editIncludeExclude(String oldName, String newName, boolean isRegular) {
 		Table table = getIncludeExcludeTable();
+		editDefaultIncludeExclude(oldName, newName, isRegular, table);
+		editIncludeExcludeValues(newName, isRegular);
+	}
+	
+	public void editWeldIncludeExclude(String oldName, String newName, boolean isRegular) {
+		Table table = getWeldIncludeExcludeTable();
+		editDefaultIncludeExclude(oldName, newName, isRegular, table);
+		editIncludeExcludeValues(newName, isRegular);
+	}
+	
+	private void editDefaultIncludeExclude(String oldName, String newName, boolean isRegular,Table table) {
+		boolean found =false;
 		for (int i = 0; i < table.rowCount(); i++) {
 			if (table.getItem(i).getText(1).equals(oldName)) {
 				table.select(i);
+				found = true;
 				break;
 			}
 		};
-		editIncludeExcludeValues(newName, isRegular);
+		if(!found){
+			throw new EclipseLayerException("Unable to find "+oldName);
+		}
 	}
+	
+	
 	
 	private void removeIncludeExcludeWithHandler() {
 		new PushButton("Remove...").click();
@@ -166,13 +211,22 @@ public class EditorPartWrapper extends AbstractEditor{
 		try {
 			new DefaultTreeItem(path);
 			return true;
-		} catch (SWTLayerException exc) {
+		} catch (CoreLayerException exc) {
 			return false;
 		}
 	}
 	
 	public AddIfSystemPropertyDialog invokeAddIfSystemPropertyDialog(String property) {
 		new DefaultTreeItem("beans.xml", "Scan", property).select();
+		return invokeDefaultAddIfSystemPropertyDialog(property);
+	}
+	
+	public AddIfSystemPropertyDialog invokeWeldAddIfSystemPropertyDialog(String property) {
+		new DefaultTreeItem("beans.xml", "Weld Scan", property).select();
+		return invokeDefaultAddIfSystemPropertyDialog(property);
+	}
+	
+	private AddIfSystemPropertyDialog invokeDefaultAddIfSystemPropertyDialog(String property){
 		new ContextMenu("Add System Property").select();
 		new WaitUntil(new ShellWithTextIsAvailable("Add If System Property"));
 		new DefaultShell("Add If System Property");
@@ -181,6 +235,15 @@ public class EditorPartWrapper extends AbstractEditor{
 	
 	public AddIncludeExcludeDialog invokeAddIncludeExcludeDialog() {
 		new DefaultTreeItem(IDELabel.WebProjectsTree.BEANS_XML, "Scan").select();
+		return invokeDefaultAddIncludeExcludeDialog();
+	}
+	
+	public AddIncludeExcludeDialog invokeWeldAddIncludeExcludeDialog() {
+		new DefaultTreeItem(IDELabel.WebProjectsTree.BEANS_XML, "Weld Scan").select();
+		return invokeDefaultAddIncludeExcludeDialog();
+	}
+	
+	private AddIncludeExcludeDialog invokeDefaultAddIncludeExcludeDialog(){
 		new ContextMenu("Add Include/Exclude").select();
 		new WaitUntil(new ShellWithTextIsAvailable("Add Include/Exclude"));
 		new DefaultShell("Add Include/Exclude");
@@ -189,6 +252,16 @@ public class EditorPartWrapper extends AbstractEditor{
 	
 	public AddIfClassAvailableDialog invokeAddClassAvailableDialog(String property) {
 		new DefaultTreeItem("beans.xml", "Scan", property).select();
+		return invokeDefaultWeldAddClassAvailableDialog(property);
+	}
+	
+	public AddIfClassAvailableDialog invokeWeldAddClassAvailableDialog(String property) {
+		new DefaultTreeItem("beans.xml", "Weld Scan", property).select();
+		return invokeDefaultWeldAddClassAvailableDialog(property);
+		
+	}
+	
+	private AddIfClassAvailableDialog invokeDefaultWeldAddClassAvailableDialog(String property){
 		new ContextMenu("Add Class Available").select();
 		new WaitUntil(new ShellWithTextIsAvailable("Add If Class Available"));
 		new DefaultShell("Add If Class Available");
@@ -199,38 +272,47 @@ public class EditorPartWrapper extends AbstractEditor{
 	//return new LabeledCombo(new DefaultSection("Cdi Beans"),"Bean-Discovery-Mode:")
 	
 	public void setBeanDiscoveryMode(String mode){
+		selectBeanXmlType("beans.xml");
 		new DefaultCombo(new DefaultSection("Cdi Beans"),0).setText(mode);
 	}
 	
 	public void selectBeanDiscoveryMode(String mode){
+		selectBeanXmlType("beans.xml");
 		new DefaultCombo(new DefaultSection("Cdi Beans"),0).setSelection(mode);;
 	}
 	
 	public String getBeanDiscoveryMode(){
+		selectBeanXmlType("beans.xml");
 		return new DefaultCombo(new DefaultSection("Cdi Beans"),0).getText();
 	}
 	
 	public boolean isBeanDiscoveryModeEnabled(){
+		selectBeanXmlType("beans.xml");
 		return new DefaultCombo(new DefaultSection("Cdi Beans"),0).isEnabled();
 	}
 	
 	public List<String> getBeanDiscoveryModes(){
+		selectBeanXmlType("beans.xml");
 		return new DefaultCombo(new DefaultSection("Cdi Beans"),0).getItems();
 	}
 	
 	public String getVersion(){
+		selectBeanXmlType("beans.xml");
 		return new DefaultText(new DefaultSection("Cdi Beans"),1).getText();
 	}
 	
 	public boolean isVersionEnabled(){
+		selectBeanXmlType("beans.xml");
 		return new DefaultText(new DefaultSection("Cdi Beans"),1).isEnabled();
 	}
 	
 	public String getName(){
+		selectBeanXmlType("beans.xml");
 		return new DefaultText(new DefaultSection("Cdi Beans"),0).getText();
 	}
 	
 	public boolean isNameEnabled(){
+		selectBeanXmlType("beans.xml");
 		return new DefaultText(new DefaultSection("Cdi Beans"), 0).isEnabled();
 	}
 

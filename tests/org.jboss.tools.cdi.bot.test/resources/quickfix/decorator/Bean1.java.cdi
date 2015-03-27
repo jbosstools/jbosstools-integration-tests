@@ -1,0 +1,15 @@
+package cdi;
+
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.enterprise.inject.Produces;
+
+public class Bean1 {
+	
+	@Produces
+	public Set<String> getSet(){
+		return new HashSet<String>();
+	}
+
+}
