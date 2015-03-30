@@ -47,90 +47,90 @@ public class TablesFromJPAEntitiesGeneration extends HibernateRedDeerTest {
 	@InjectRequirement
 	private DatabaseRequirement dbRequirement;
 	
-    // don't use console
+    // use console
     @Test
     public void testDDLGenerationWithConsole35() {
     	setParams("mvn-hibernate35-ent","3.5","2.0");
-    	testDDLGenerationMvn(false);
+    	testDDLGenerationMvn(true);
     }
     
     @Test
     public void testDDLGenerationWithConsole36() {
     	setParams("mvn-hibernate36-ent","3.6","2.0");
-    	testDDLGenerationMvn(false);
+    	testDDLGenerationMvn(true);
     }
     
     @Test
     public void testDDLGenerationWithConsole40() {
     	setParams("mvn-hibernate40-ent","4.0","2.0");
-    	testDDLGenerationMvn(false);
+    	testDDLGenerationMvn(true);
     }
     
     @Test
     public void testDDLGenerationWithConsole43() {
     	setParams("mvn-hibernate43-ent","4.3","2.1");
-    	testDDLGenerationMvn(false);
+    	testDDLGenerationMvn(true);
     }
     
     @Test
     public void testDDLGenerationWithConsoleEcl35() {
     	setParams("ecl-hibernate35-ent","3.5","2.0");
-    	testDDLGenerationEcl(false);
+    	testDDLGenerationEcl(true);
     }
     
     @Test
     public void testDDLGenerationWithConsoleEcl36() {
     	setParams("ecl-hibernate36-ent","3.6","2.0");
-    	testDDLGenerationEcl(false);
+    	testDDLGenerationEcl(true);
     }
     
     @Test
     public void testDDLGenerationWithConsoleEcl40() {
     	setParams("ecl-hibernate40-ent","4.0","2.0");
-    	testDDLGenerationEcl(false);
+    	testDDLGenerationEcl(true);
     }
     
-    // use console
+    // don't use console
     @Test
     public void testDDLGenerationWithoutConsole35() {
     	setParams("mvn-hibernate35-ent","3.5","2.0");
-    	testDDLGenerationMvn(true);
+    	testDDLGenerationMvn(false);
     }
     
     @Test
     public void testDDLGenerationWithoutConsole36() {
     	setParams("mvn-hibernate36-ent","3.6","2.0");
-    	testDDLGenerationMvn(true);
+    	testDDLGenerationMvn(false);
     }
     
     @Test
     public void testDDLGenerationWithoutConsole40() {
     	setParams("mvn-hibernate40-ent","4.0","2.0");
-    	testDDLGenerationMvn(true);
+    	testDDLGenerationMvn(false);
     }
     
     @Test
     public void testDDLGenerationWithoutConsole43() {
     	setParams("mvn-hibernate43-ent","4.3","2.1");
-    	testDDLGenerationMvn(true);
+    	testDDLGenerationMvn(false);
     }
         
     @Test
     public void testDDLGenerationWithoutConsoleEcl35() {
     	setParams("ecl-hibernate35-ent","3.5","2.0");
-    	testDDLGenerationEcl(true);
+    	testDDLGenerationEcl(false);
     }
     
     @Test
     public void testDDLGenerationWithoutConsoleEcl36() {
     	setParams("ecl-hibernate36-ent","3.6","2.0");
-    	testDDLGenerationEcl(true);
+    	testDDLGenerationEcl(false);
     }
 
     @Test
     public void testDDLGenerationWithoutConsoleEcl40() {
     	setParams("ecl-hibernate40-ent","4.0","2.0");
-    	testDDLGenerationEcl(true);
+    	testDDLGenerationEcl(false);
     }
     
 
