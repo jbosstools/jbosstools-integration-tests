@@ -37,13 +37,15 @@ public class ProjectImporter {
 		problemsView.open();
 		new WaitWhile(new JobIsRunning());
 		
-		new ShellMenu("Project","Clean...").select();;
-		new WaitUntil(new ShellWithTextIsActive("Clean"));
-		new RadioButton("Clean all projects").click();
-		new OkButton().click();
-		new WaitWhile(new ShellWithTextIsActive("Clean"));
-				
-		new WaitWhile(new JobIsRunning());
+		if (!projectName.equals("hibernatelib")) {
+			new ShellMenu("Project","Clean...").select();;
+			new WaitUntil(new ShellWithTextIsActive("Clean"));
+			new RadioButton("Clean all projects").click();
+			new OkButton().click();
+			new WaitWhile(new ShellWithTextIsActive("Clean"));
+					
+			new WaitWhile(new JobIsRunning());
+	}
 		
 		assertTrue("No problems after import are expected", problemsView.getProblems(ProblemType.ERROR).size() == 0);
 	}

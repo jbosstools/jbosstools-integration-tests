@@ -50,86 +50,86 @@ public class TablesFromJPAEntitiesGeneration extends HibernateRedDeerTest {
     // don't use console
     @Test
     public void testDDLGenerationWithConsole35() {
-    	setParams("mvn-hibernate35","3.5","2.0");
+    	setParams("mvn-hibernate35-ent","3.5","2.0");
     	testDDLGenerationMvn(false);
     }
     
     @Test
     public void testDDLGenerationWithConsole36() {
-    	setParams("mvn-hibernate36","3.6","2.0");
+    	setParams("mvn-hibernate36-ent","3.6","2.0");
     	testDDLGenerationMvn(false);
     }
     
     @Test
     public void testDDLGenerationWithConsole40() {
-    	setParams("mvn-hibernate40","4.0","2.0");
+    	setParams("mvn-hibernate40-ent","4.0","2.0");
     	testDDLGenerationMvn(false);
     }
     
     @Test
     public void testDDLGenerationWithConsole43() {
-    	setParams("mvn-hibernate43","4.3","2.1");
+    	setParams("mvn-hibernate43-ent","4.3","2.1");
     	testDDLGenerationMvn(false);
     }
     
     @Test
     public void testDDLGenerationWithConsoleEcl35() {
-    	setParams("ecl-hibernate35","3.5","2.0");
+    	setParams("ecl-hibernate35-ent","3.5","2.0");
     	testDDLGenerationEcl(false);
     }
     
     @Test
     public void testDDLGenerationWithConsoleEcl36() {
-    	setParams("ecl-hibernate36","3.6","2.0");
+    	setParams("ecl-hibernate36-ent","3.6","2.0");
     	testDDLGenerationEcl(false);
     }
     
     @Test
     public void testDDLGenerationWithConsoleEcl40() {
-    	setParams("ecl-hibernate40","4.0","2.0");
+    	setParams("ecl-hibernate40-ent","4.0","2.0");
     	testDDLGenerationEcl(false);
     }
     
     // use console
     @Test
     public void testDDLGenerationWithoutConsole35() {
-    	setParams("mvn-hibernate35","3.5","2.0");
+    	setParams("mvn-hibernate35-ent","3.5","2.0");
     	testDDLGenerationMvn(true);
     }
     
     @Test
     public void testDDLGenerationWithoutConsole36() {
-    	setParams("mvn-hibernate36","3.6","2.0");
+    	setParams("mvn-hibernate36-ent","3.6","2.0");
     	testDDLGenerationMvn(true);
     }
     
     @Test
     public void testDDLGenerationWithoutConsole40() {
-    	setParams("mvn-hibernate40","4.0","2.0");
+    	setParams("mvn-hibernate40-ent","4.0","2.0");
     	testDDLGenerationMvn(true);
     }
     
     @Test
     public void testDDLGenerationWithoutConsole43() {
-    	setParams("mvn-hibernate43","4.3","2.1");
+    	setParams("mvn-hibernate43-ent","4.3","2.1");
     	testDDLGenerationMvn(true);
     }
         
     @Test
     public void testDDLGenerationWithoutConsoleEcl35() {
-    	setParams("ecl-hibernate35","3.5","2.0");
+    	setParams("ecl-hibernate35-ent","3.5","2.0");
     	testDDLGenerationEcl(true);
     }
     
     @Test
     public void testDDLGenerationWithoutConsoleEcl36() {
-    	setParams("ecl-hibernate36","3.6","2.0");
+    	setParams("ecl-hibernate36-ent","3.6","2.0");
     	testDDLGenerationEcl(true);
     }
 
     @Test
     public void testDDLGenerationWithoutConsoleEcl40() {
-    	setParams("ecl-hibernate40","4.0","2.0");
+    	setParams("ecl-hibernate40-ent","4.0","2.0");
     	testDDLGenerationEcl(true);
     }
     
@@ -187,8 +187,6 @@ public class TablesFromJPAEntitiesGeneration extends HibernateRedDeerTest {
 		ProjectConfigurationFactory.convertProjectToFacetsForm(prj);
 		log.step("Set JPA facets to Hibernate Platform");
 		ProjectConfigurationFactory.setProjectFacetForDB(prj, cfg, jpaVersion);
-		log.step("Generate JPA Entities");
-		EntityGenerationFactory.generateJPAEntities(cfg, prj, "org.gen", hbVersion, true);
 	}
     
     private void prepareEclipseProject() {    	
@@ -202,6 +200,11 @@ public class TablesFromJPAEntitiesGeneration extends HibernateRedDeerTest {
 		log.step("Import test projects");
     	importProject("hibernatelib");
     	importProject(prj);
+    	
+		log.step("Convert project to faceted from");
+		ProjectConfigurationFactory.convertProjectToFacetsForm(prj);
+		log.step("Set JPA facets to Hibernate Platform");
+		ProjectConfigurationFactory.setProjectFacetForDB(prj, cfg, jpaVersion);
     	
     	log.step("Create hibernate console configuartion file");
     	HibernateToolsFactory.testCreateConfigurationFile(cfg, prj, "hibernate.cfg.xml", false);
