@@ -6,10 +6,12 @@
 <booleanAttribute key="M2_OFFLINE" value="false"/>
 <stringAttribute key="M2_PROFILES" value=""/>
 <listAttribute key="M2_PROPERTIES">
+<listEntry value="wildfly-8.2=${folder_prompt:WildFly 8.2 installation folder}"/>
 <listEntry value="wildfly-8.1=${folder_prompt:WildFly 8.1 installation folder}"/>
 <listEntry value="wildfly-8.0=${folder_prompt:WildFly 8.0 installation folder}"/>
 <listEntry value="jboss-as-7=${folder_prompt:JBoss AS 7 installation folder}"/>
-<listEntry value="jboss-eap-6.3=${folder_prompt:EAP 6.3installation folder}"/>
+<listEntry value="jboss-eap-6.3.x=${folder_prompt:EAP 6.3.x installation folder}"/>
+<listEntry value="jboss-eap-6.3=${folder_prompt:EAP 6.3 installation folder}"/>
 <listEntry value="jboss-eap-6.2.x=${folder_prompt:EAP 6.2.x installation folder}"/>
 <listEntry value="jboss-eap-6.2=${folder_prompt:EAP 6.2 installation folder}"/>
 <listEntry value="jboss-eap-6.1.x=${folder_prompt:EAP 6.1.x installation folder}"/>
@@ -29,14 +31,15 @@
 <listEntry value="jboss-soa-p-standalone-5.2=${folder_prompt:SOA-P-STANDALONE 5.2 installation folder}"/>
 <listEntry value="jboss-soa-p-5.3=${folder_prompt:SOA-P 5.3 installation folder}"/>
 <listEntry value="jboss-soa-p-standalone-5.3=${folder_prompt:SOA-P-STANDALONE 5.3 installation folder}"/>
-<listEntry value="jboss-seam-2.3.x.Final=${folder_prompt:Seam 2.3.x installation folder}"/>
-<listEntry value="jboss-seam-2.3.0.Final=${folder_prompt:Seam 2.3.0 installation folder}"/>
-<listEntry value="jboss-seam-2.2.2.Final=${folder_prompt:Seam 2.2.2 installation folder}"/>
+<listEntry value="jboss-seam-2.3.x=${folder_prompt:Seam 2.3.x installation folder}"/>
+<listEntry value="jboss-seam-2.2.2=${folder_prompt:Seam 2.2.2 installation folder}"/>
 <listEntry value="jboss-fsw-6.0=${folder_prompt:FSW 6.0.0.GA installation folder}"/>
 </listAttribute>
 <stringAttribute key="M2_RUNTIME" value="EMBEDDED"/>
 <booleanAttribute key="M2_SKIP_TESTS" value="false"/>
+<intAttribute key="M2_THREADS" value="1"/>
 <booleanAttribute key="M2_UPDATE_SNAPSHOTS" value="false"/>
+<stringAttribute key="M2_USER_SETTINGS" value=""/>
 <booleanAttribute key="M2_WORKSPACE_RESOLUTION" value="false"/>
-<stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="${workspace_loc}/org.jboss.tools.runtime.as.ui.bot.test/launchers/prepare_workspace"/>
+<stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="${project_loc:org.jboss.tools.runtime.as.ui.bot.test}/launchers/prepare_workspace"/>
 </launchConfiguration>

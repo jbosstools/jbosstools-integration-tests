@@ -10,6 +10,7 @@ import org.jboss.tools.runtime.as.ui.bot.test.template.DetectRuntimeTemplate;
 public class DetectEAP52 extends DetectRuntimeTemplate {
 
 	public static final String SERVER_ID = "jboss-eap-5.2";
+	public static final String SERVER_NAME = "JBoss EAP 5.2";
 	
 	@Override
 	protected String getPathID() {
@@ -19,7 +20,7 @@ public class DetectEAP52 extends DetectRuntimeTemplate {
 	@Override
 	protected List<Runtime> getExpectedRuntimes() {
 		Runtime server = new Runtime();
-		server.setName(getPathID());
+		server.setName(SERVER_NAME);
 		server.setType("EAP");
 		server.setVersion("5.2");
 		server.setLocation(RuntimeProperties.getInstance().getRuntimePath(getPathID()));

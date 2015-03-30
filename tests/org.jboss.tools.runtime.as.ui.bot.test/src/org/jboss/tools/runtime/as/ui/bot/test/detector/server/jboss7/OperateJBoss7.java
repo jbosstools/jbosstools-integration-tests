@@ -6,6 +6,6 @@ public class OperateJBoss7 extends OperateServerTemplate {
 
 	@Override
 	protected String getServerName() {
-		return DetectJBoss7.SERVER_ID;
+		return DetectJBoss7.SERVER_NAME;
 	}
 }

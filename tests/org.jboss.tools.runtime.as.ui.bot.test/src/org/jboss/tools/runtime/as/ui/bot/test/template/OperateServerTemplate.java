@@ -52,6 +52,7 @@ public abstract class OperateServerTemplate {
 	
 	private void serverIsPresentInServersView() {
 		ServersView sw = new ServersView();
+		sw.open();
 		try {
 			sw.getServer(getServerName());
 		} catch(EclipseLayerException e) {

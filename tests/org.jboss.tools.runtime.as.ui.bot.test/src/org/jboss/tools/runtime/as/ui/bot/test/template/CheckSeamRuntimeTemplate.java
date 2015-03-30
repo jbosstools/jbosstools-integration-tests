@@ -16,6 +16,7 @@ public abstract class CheckSeamRuntimeTemplate extends RuntimeDetectionTestCase 
 	@Test
 	public void checkSeamRuntime(){
 		WorkbenchPreferenceDialog dialog = new WorkbenchPreferenceDialog();
+		dialog.open();
 		dialog.select(seamPreferencePage);
 		
 		assertThat(seamPreferencePage.getRuntimes().size(), is(1));

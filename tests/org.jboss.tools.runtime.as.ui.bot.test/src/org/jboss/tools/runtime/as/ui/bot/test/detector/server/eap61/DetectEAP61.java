@@ -11,6 +11,8 @@ public class DetectEAP61 extends DetectRuntimeTemplate {
 
 	public static final String SERVER_ID = "jboss-eap-6.1";
 	
+	public static final String SERVER_NAME = "JBoss EAP 6.1";
+	
 	@Override
 	protected String getPathID() {
 		return SERVER_ID;
@@ -19,7 +21,7 @@ public class DetectEAP61 extends DetectRuntimeTemplate {
 	@Override
 	protected List<Runtime> getExpectedRuntimes() {
 		Runtime server = new Runtime();
-		server.setName(getPathID());
+		server.setName(SERVER_NAME);
 		server.setType("EAP");
 		server.setVersion("6.1");
 		server.setLocation(RuntimeProperties.getInstance().getRuntimePath(getPathID()));
