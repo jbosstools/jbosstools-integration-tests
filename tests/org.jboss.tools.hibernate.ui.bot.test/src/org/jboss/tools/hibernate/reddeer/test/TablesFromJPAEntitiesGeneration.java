@@ -200,6 +200,11 @@ public class TablesFromJPAEntitiesGeneration extends HibernateRedDeerTest {
 		log.step("Import test projects");
     	importProject("hibernatelib");
     	importProject(prj);
+
+		log.step("Create database driver definition");
+		DriverDefinitionFactory.createDatabaseDriverDefinition(cfg);
+		log.step("Create connection profile definition");
+		ConnectionProfileFactory.createConnectionProfile(cfg);
     	
 		log.step("Convert project to faceted from");
 		ProjectConfigurationFactory.convertProjectToFacetsForm(prj);
