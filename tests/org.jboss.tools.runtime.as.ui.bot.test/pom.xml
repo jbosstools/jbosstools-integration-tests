@@ -24,7 +24,7 @@
 
 		<test.class>org.jboss.tools.runtime.as.ui.bot.test.ProjectTestsSuite</test.class>
 		<surefire.timeout>7200</surefire.timeout>
-		<systemProperties>${integrationTestsSystemProperties}</systemProperties>
+		<systemProperties>${integrationTestsSystemProperties} ${productsSystemProperties}</systemProperties>
 	</properties>
 
 	<profiles>
@@ -44,6 +44,7 @@
 				<jboss-seam-2.3.x>${requirementsDirectory}/jboss-seam-2.3.x/jboss-wfk-2.5.0/jboss-seam-2.3.3.Final-redhat-1/</jboss-seam-2.3.x>
 
 				<product-download-properties-file>resources/products-download.properties</product-download-properties-file>
+				<productsSystemProperties>-Djboss.org.username=${jboss.org.username} -Djboss.org.password=${jboss.org.password}</productsSystemProperties>
 			</properties>
 			<build>
 				<plugins>

@@ -11,6 +11,8 @@ public class DetectEPP4 extends DetectRuntimeTemplate {
 
 	public static final String SERVER_ID = "jboss-epp-4.3";
 	
+	public static final String SERVER_NAME = "JBoss Portal 4.3";
+	
 	@Override
 	protected String getPathID() {
 		return SERVER_ID;
@@ -19,7 +21,7 @@ public class DetectEPP4 extends DetectRuntimeTemplate {
 	@Override
 	protected List<Runtime> getExpectedRuntimes() {
 		Runtime server = new Runtime();
-		server.setName(getPathID());
+		server.setName(SERVER_NAME);
 		server.setType("EPP");
 		server.setVersion("4.3");
 		server.setLocation(RuntimeProperties.getInstance().getRuntimePath(getPathID()));

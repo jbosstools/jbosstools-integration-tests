@@ -19,10 +19,10 @@ Require-Bundle: org.eclipse.ui,
  org.jboss.tools.common,
  org.jboss.reddeer.jface,
  org.jboss.reddeer.swt,
- org.jboss.reddeer.core,
  org.jboss.reddeer.eclipse,
  org.jboss.reddeer.workbench,
  org.jboss.reddeer.junit,
- org.jboss.reddeer.common;bundle-version="0.8.0"
+ org.jboss.reddeer.common;bundle-version="0.8.0",
+ org.jboss.reddeer.core;bundle-version="0.8.0"
 Import-Package: org.jboss.tools.runtime.reddeer.wizard
 

@@ -6,6 +6,6 @@ public class OperateJPP61 extends OperateServerTemplate {
 
 	@Override
 	protected String getServerName() {
-		return DetectJPP61.SERVER_ID;
+		return DetectJPP61.SERVER_NAME;
 	}
 }

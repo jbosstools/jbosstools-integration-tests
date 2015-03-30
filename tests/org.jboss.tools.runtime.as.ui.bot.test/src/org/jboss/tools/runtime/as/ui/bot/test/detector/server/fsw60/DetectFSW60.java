@@ -15,7 +15,7 @@ import org.jboss.tools.runtime.as.ui.bot.test.template.DetectRuntimeTemplate;
 public class DetectFSW60 extends DetectRuntimeTemplate {
 
 	public static final String SERVER_ID = "jboss-fsw-6.0";
-	public static final String SERVER_NAME = "jboss-fsw-6.0.0.GA-redhat-2";
+	public static final String SERVER_NAME = "JBoss Fuse Service Works 6.0";
 	
 	@Override
 	protected String getPathID() {

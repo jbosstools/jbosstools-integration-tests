@@ -6,6 +6,6 @@ public class OperateEAP4 extends OperateServerTemplate {
 
 	@Override
 	protected String getServerName() {
-		return DetectEAP4.SERVER_ID;
+		return DetectEAP4.SERVER_NAME;
 	}
 }

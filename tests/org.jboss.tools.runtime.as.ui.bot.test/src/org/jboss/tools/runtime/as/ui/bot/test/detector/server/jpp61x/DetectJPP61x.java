@@ -11,7 +11,7 @@ public class DetectJPP61x extends DetectRuntimeTemplate {
 
 	public static final String SERVER_ID = "jboss-jpp-6.1.x";
 	
-	public static final String SERVER_NAME = "jboss-portal-6.1";
+	public static final String SERVER_NAME = "JBoss Portal 6.1";
 	
 	@Override
 	protected String getPathID() {

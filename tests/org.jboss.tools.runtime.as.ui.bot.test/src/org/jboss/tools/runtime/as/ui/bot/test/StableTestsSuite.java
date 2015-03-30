@@ -2,8 +2,6 @@ package org.jboss.tools.runtime.as.ui.bot.test;
 
 import org.jboss.tools.runtime.as.ui.bot.test.detector.seam.seam22.CheckSeam22;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.seam.seam22.DetectSeam22;
-import org.jboss.tools.runtime.as.ui.bot.test.detector.seam.seam23.CheckSeam23;
-import org.jboss.tools.runtime.as.ui.bot.test.detector.seam.seam23.DetectSeam23;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.seam.seam23x.CheckSeam23x;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.seam.seam23x.DetectSeam23x;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap60x.DetectEAP60x;
@@ -70,9 +68,6 @@ import org.junit.runners.Suite.SuiteClasses;
 		
 		DetectSeam23x.class,
 		CheckSeam23x.class,
-		
-		DetectSeam23.class,
-		CheckSeam23.class,
 		
 		DetectSeam22.class,
 		CheckSeam22.class

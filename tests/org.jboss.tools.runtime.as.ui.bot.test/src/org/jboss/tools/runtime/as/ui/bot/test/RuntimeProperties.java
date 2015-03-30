@@ -44,7 +44,7 @@ public class RuntimeProperties {
 	private void loadProperties() {
 		try {
 			properties = new Properties();
-			properties.load(new FileReader(SWTUtilExt.getResourceFile(Activator.PLUGIN_ID, "/runtimes.properties")));
+			properties.load(new FileReader(SWTUtilExt.getResourceFile(Activator.PLUGIN_ID, "/generated_resources/runtimes.properties")));
 		} catch (FileNotFoundException e) {
 			throw new RuntimeException(e);
 		} catch (IOException e) {

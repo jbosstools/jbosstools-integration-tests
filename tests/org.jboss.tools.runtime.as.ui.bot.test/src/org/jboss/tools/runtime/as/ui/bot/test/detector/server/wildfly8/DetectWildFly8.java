@@ -11,7 +11,7 @@ public class DetectWildFly8 extends DetectRuntimeTemplate {
 
 	public static final String SERVER_ID = "wildfly-8.0";
 	
-	public static final String SERVER_NAME = "wildfly-8.0.0.Final";
+	public static final String SERVER_NAME = "Wildfly 8.0";
 	
 	@Override
 	protected String getPathID() {

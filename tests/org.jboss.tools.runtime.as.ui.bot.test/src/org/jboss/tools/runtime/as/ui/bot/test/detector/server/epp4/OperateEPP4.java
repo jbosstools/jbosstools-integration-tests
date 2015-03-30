@@ -6,7 +6,7 @@ public class OperateEPP4 extends OperateServerTemplate {
 
 	@Override
 	protected String getServerName() {
-		return DetectEPP4.SERVER_ID;
+		return DetectEPP4.SERVER_NAME;
 	}
 	
 	@Override
