@@ -8,6 +8,7 @@ import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.jboss.reddeer.eclipse.condition.ConsoleHasNoChange;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.tools.portlet.ui.bot.task.server.RunninngProjectOnServerTask;
 import org.jboss.tools.portlet.ui.bot.test.testcase.SWTTaskBasedTestCase;
@@ -30,6 +31,7 @@ public abstract class RunPortletOnServerTemplate extends SWTTaskBasedTestCase {
 	
 	@Test
 	public void testRunOnServer(){
+		new WaitUntil(new ConsoleHasNoChange(), TimePeriod.LONG);
 		ConsoleView consoleView = new ConsoleView();
 		consoleView.open();
 		consoleView.clearConsole();

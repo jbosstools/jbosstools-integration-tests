@@ -927,7 +927,8 @@ public class SWTEclipseExt {
 			}
 			
 			if (jreToUse != null) {
-				bot.comboBox(0).setSelection(jreToUse);
+				bot.radio("Alternate JRE: ").click();
+				bot.comboBox(1).setSelection(jreToUse);
 			}
 			
 			/* To work around bug https://issues.jboss.org/browse/JBIDE-11567 - ldimaggi - April 2012 */

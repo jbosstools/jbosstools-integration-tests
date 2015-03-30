@@ -21,7 +21,8 @@ Require-Bundle: org.eclipse.ui,
  org.jboss.reddeer.eclipse,
  org.jboss.reddeer.workbench,
  org.jboss.reddeer.junit,
- org.jboss.reddeer.common;bundle-version="0.8.0"
+ org.jboss.reddeer.common;bundle-version="0.8.0",
+ org.jboss.reddeer.core
 Import-Package: org.eclipse.core.runtime.adaptor,
  org.eclipse.jst.j2ee.internal.plugin
 Eclipse-BundleShape: jar

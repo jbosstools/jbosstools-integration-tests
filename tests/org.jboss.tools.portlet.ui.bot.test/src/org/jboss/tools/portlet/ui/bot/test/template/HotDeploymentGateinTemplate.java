@@ -2,6 +2,9 @@ package org.jboss.tools.portlet.ui.bot.test.template;
 
 import static org.jboss.tools.portlet.ui.bot.matcher.WorkspaceAssert.assertThatInWorkspace;
 
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.eclipse.condition.ConsoleHasNoChange;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.tools.portlet.ui.bot.matcher.console.ConsoleOutputMatcher;
 import org.jboss.tools.portlet.ui.bot.task.editor.CloseAllEditors;
@@ -33,6 +36,7 @@ public abstract class HotDeploymentGateinTemplate extends SWTTaskBasedTestCase {
 		if(needRestart()){
 			servers.restartServer(configuredState.getServer().name);
 		}
+		new WaitUntil(new ConsoleHasNoChange(), TimePeriod.LONG);
 		
 		ConsoleView console = new ConsoleView();
 		console.clearConsole();
