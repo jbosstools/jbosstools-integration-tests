@@ -23,8 +23,8 @@ import java.util.logging.Logger;
 
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
 import org.jboss.reddeer.eclipse.core.resources.Project;
+import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
@@ -32,12 +32,18 @@ import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPag
 import org.jboss.reddeer.eclipse.utils.DeleteUtils;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.swt.api.Menu;
+import org.jboss.reddeer.swt.api.Table;
+import org.jboss.reddeer.swt.api.TableItem;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
+import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
+import org.jboss.reddeer.swt.impl.menu.ToolbarMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitWhile;
@@ -64,7 +70,7 @@ import org.junit.Before;
 public class WSTestBase {
 
 	@InjectRequirement
-    private static ServerRequirement serverReq;
+	private static ServerRequirement serverReq;
 
 	private SliderLevel level;
 	private String wsProjectName = null;
@@ -86,9 +92,13 @@ public class WSTestBase {
 	protected static ProjectHelper projectHelper = new ProjectHelper();
 	protected static DeploymentHelper deploymentHelper = new DeploymentHelper();
 	protected static WebServiceClientHelper clientHelper = new WebServiceClientHelper();
+	protected static boolean isJSRDisabled = false;
 
 	@Before
 	public void setup() {
+		if (!isJSRDisabled)
+			disableJSRServices();
+
 		if (getEarProjectName() != null && !projectExists(getEarProjectName())) {
 			projectHelper.createEARProject(getEarProjectName());
 			if (!projectExists(getWsProjectName())) {
@@ -138,24 +148,24 @@ public class WSTestBase {
 		projectExplorer.open();
 		List<Project> projects = projectExplorer.getProjects();
 		try {
-			for(int i=0;i<projects.size();i++) {
+			for (int i = 0; i < projects.size(); i++) {
 				Project project = projects.get(i);
 				project.delete(true);
 			}
-		} catch(SWTLayerException | EclipseLayerException e) {
+		} catch (SWTLayerException | EclipseLayerException e) {
 			projectExplorer.close();
 			projectExplorer.open();
 			projects = projectExplorer.getProjects();
-			for(int i=0;i<projects.size();i++) {
+			for (int i = 0; i < projects.size(); i++) {
 				Project project = projects.get(i);
 				try {
 					LOGGER.severe("Forcing removal of " + project);
 					DeleteUtils.forceProjectDeletion(project, true);
-				} catch(RuntimeException exception) {
+				} catch (RuntimeException exception) {
 					LOGGER.severe("Project was not deleted");
 					try {
 						LOGGER.severe("Project name: " + project.getName());
-					} catch(Exception t) {
+					} catch (Exception t) {
 						LOGGER.severe("Can't get project name" + t.getMessage());
 					}
 					throw exception;
@@ -165,12 +175,15 @@ public class WSTestBase {
 	}
 
 	protected static void deleteAllProjectsFromServer() {
-		serversViewHelper.removeAllProjectsFromServer(getConfiguredServerName());
+		serversViewHelper
+				.removeAllProjectsFromServer(getConfiguredServerName());
 	}
 
-	protected void openJavaFile(String projectName, String pkgName, String javaFileName) {
+	protected void openJavaFile(String projectName, String pkgName,
+			String javaFileName) {
 		new ProjectExplorer().getProject(projectName)
-			.getProjectItem("Java Resources", "src", pkgName, javaFileName).open();
+				.getProjectItem("Java Resources", "src", pkgName, javaFileName)
+				.open();
 	}
 
 	protected SliderLevel getLevel() {
@@ -202,8 +215,9 @@ public class WSTestBase {
 	}
 
 	protected void assertWebServiceTesterIsActive() {
-		assertTrue("Web Service Tester view should be active", 
-				new ViewWithToolTipIsActive(IDELabel.View.WEB_SERVICE_TESTER).test());
+		assertTrue("Web Service Tester view should be active",
+				new ViewWithToolTipIsActive(IDELabel.View.WEB_SERVICE_TESTER)
+						.test());
 	}
 
 	public static String getSoapRequest(String body) {
@@ -212,12 +226,14 @@ public class WSTestBase {
 
 	protected static void importWSTestProject(String projectName) {
 		try {
-			importProject(new File("resources/projects/" + projectName).getCanonicalPath());
-		} catch(IOException e) {
+			importProject(new File("resources/projects/" + projectName)
+					.getCanonicalPath());
+		} catch (IOException e) {
 			e.printStackTrace();
 			fail(e.getMessage());
 		}
-		projectHelper.addConfiguredRuntimeIntoProject(projectName, getConfiguredRuntimeName());
+		projectHelper.addConfiguredRuntimeIntoProject(projectName,
+				getConfiguredRuntimeName());
 		projectHelper.setProjectJRE(projectName);
 		cleanAllProjects();
 		AbstractWait.sleep(TimePeriod.getCustom(2));
@@ -228,10 +244,31 @@ public class WSTestBase {
 		importDialog.open();
 		WizardProjectsImportPage importPage = importDialog.getFirstPage();
 		importPage.setRootDirectory(projectLocation);
-		assertFalse("There is no project to import", importPage.getProjects().isEmpty());
+		assertFalse("There is no project to import", importPage.getProjects()
+				.isEmpty());
 		importPage.selectAllProjects();
 		importPage.copyProjectsIntoWorkspace(true);
 		importDialog.finish();
+	}
+
+	/**
+	 * Disables showing of JSR-109 Web Services in project explorer
+	 * Avoids non-existent project errors when searching the projects
+	 */
+	protected static void disableJSRServices() {
+		new ProjectExplorer().activate();
+		Menu toolbarMenu = new ToolbarMenu("View Menu", "Customize View...");
+		toolbarMenu.select();
+
+		new DefaultCTabItem("Content").activate();
+
+		Table table = new DefaultTable();
+		TableItem item = table.getItem("JSR-109 Web Services Index");
+		if (item.isChecked())
+			item.setChecked(false);
+
+		new PushButton("OK").click();
+		isJSRDisabled = true;
 	}
 
 	/**
