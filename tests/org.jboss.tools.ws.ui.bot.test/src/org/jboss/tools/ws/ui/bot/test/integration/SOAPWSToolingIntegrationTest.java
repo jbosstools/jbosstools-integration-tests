@@ -44,6 +44,9 @@ public class SOAPWSToolingIntegrationTest extends WSTestBase {
 
 	@Override
 	public void setup() {
+		if (!isJSRDisabled)
+			disableJSRServices();
+		
 		if (!projectExists(getWsProjectName())) {
 			importWSTestProject(getWsProjectName());
 			serversViewHelper.runProjectOnServer(getWsProjectName());

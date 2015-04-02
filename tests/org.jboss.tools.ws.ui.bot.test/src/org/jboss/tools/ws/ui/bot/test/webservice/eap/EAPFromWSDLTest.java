@@ -52,6 +52,9 @@ public class EAPFromWSDLTest extends WebServiceTestBase {
 	@Before
 	@Override
 	public void setup() {
+		if (!isJSRDisabled)
+			disableJSRServices();
+		
 		if (!projectExists(getWsProjectName())) {
 			projectHelper.createProject(getWsProjectName());
 		}
