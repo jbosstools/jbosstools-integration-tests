@@ -87,8 +87,8 @@ public class RunConfigurationsDialog {
 		Button button = new PushButton("Run");
 		button.click();
 
-		new WaitWhile(new ShellWithTextIsActive(shellText), TimePeriod.LONG);
-		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		new WaitWhile(new ShellWithTextIsActive(shellText), TimePeriod.VERY_LONG);
+		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);			
 	}
 
 	/**

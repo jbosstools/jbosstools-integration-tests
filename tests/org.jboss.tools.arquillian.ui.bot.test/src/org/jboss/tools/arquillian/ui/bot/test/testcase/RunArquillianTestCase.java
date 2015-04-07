@@ -50,8 +50,8 @@ public class RunArquillianTestCase extends AbstractArquillianTestCase {
 		mainTab.setProject(PROJECT_NAME);
 		mainTab.setTestClass(PACKAGE + "." + TEST_CASE);
 		
-		ArquillianTab arquillianTab = new ArquillianTab();
-		arquillianTab.selectMavenProfile(AddArquillianProfile.PROFILE_NAME);
+//		ArquillianTab arquillianTab = new ArquillianTab();
+//		arquillianTab.selectMavenProfile(AddArquillianProfile.PROFILE_NAME);
 		
 		runDialog.run();
 	}
