@@ -70,7 +70,7 @@
 				<plugins>
 					<plugin>
 						<groupId>com.googlecode.maven-download-plugin</groupId>
-						<artifactId>maven-download-plugin</artifactId>
+						<artifactId>download-maven-plugin</artifactId>
 						<executions>
 							<execution>
 								<id>install-eap-62</id>
