@@ -39,7 +39,7 @@ public class CreateArquillianProject extends AbstractArquillianTestCase{
 		
 		wizard.finish();
 	}
-	
+
 	@Test
 	public void testProjectCreation(){
 		addArquillianSupport();
