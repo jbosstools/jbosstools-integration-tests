@@ -26,6 +26,7 @@ import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBo
 import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
 import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
@@ -104,6 +105,7 @@ public class WSTestBase {
 	@After
 	public void cleanup() {
 		deleteAllProjectsFromServer();
+		new ConsoleView().clearConsole();
 	}
 
 	@AfterClass
@@ -132,7 +134,7 @@ public class WSTestBase {
 		projectExplorer.open();
 		return projectExplorer.containsProject(name);
 	}
-
+	
 	protected static void deleteAllProjects() {
 		ProjectExplorer projectExplorer = new ProjectExplorer();
 		projectExplorer.open();

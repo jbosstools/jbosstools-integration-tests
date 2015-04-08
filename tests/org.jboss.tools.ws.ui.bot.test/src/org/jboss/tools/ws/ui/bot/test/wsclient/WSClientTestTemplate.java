@@ -110,9 +110,10 @@ public class WSClientTestTemplate extends WSTestBase {
 	}
 
 	@After
+	@Override
 	public void cleanup() {
 		deleteAllPackages();
-		deleteAllProjectsFromServer();
+		super.cleanup();
 	}
 
 	protected void clientTest(String targetPkg) {
