@@ -1,7 +1,13 @@
 package org.jboss.tools.ws.ui.bot.test.utils;
 
+import java.util.List;
 import java.util.logging.Logger;
 
+import org.jboss.reddeer.common.wait.AbstractWait;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.Server;
@@ -9,14 +15,9 @@ import org.jboss.reddeer.eclipse.wst.server.ui.view.ServerModule;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.eclipse.wst.server.ui.wizard.ModifyModulesDialog;
 import org.jboss.reddeer.eclipse.wst.server.ui.wizard.ModifyModulesPage;
-import org.jboss.reddeer.swt.api.Shell;
-import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.tools.common.reddeer.label.IDELabel;
 
 /**
@@ -31,6 +32,7 @@ public class ServersViewHelper {
 
 	/**
 	 * Removes the specified <var>project</var> from the configured server.
+	 * 
 	 * @param project project to be removed from the server
 	 */
 	public void removeProjectFromServer(String project, String serverName) {
@@ -40,49 +42,32 @@ public class ServersViewHelper {
 		ServerModule serverModule = null;
 		try {
 			serverModule = server.getModule(project);
-		} catch(EclipseLayerException e) {
+		} catch (EclipseLayerException e) {
 			LOGGER.info("Project " + project + " was not found on the server");
 			return;
 		}
-		if(serverModule != null) {
-			//TODO: use serverModule.remove(); (not implemented yet)
-			ModifyModulesDialog dialog = server.addAndRemoveModules();
-			ModifyModulesPage page = dialog.getFirstPage();
-			page = dialog.getFirstPage();
-			page.remove(serverModule.getLabel().getName());
-			dialog.finish();
+		if (serverModule != null) {
+			serverModule.remove();
 		}
 	}
 
 	/**
-	 * Removes all projects ({@link ModifyModulesPage#getConfiguredModules()}
-	 * from the specified server.
+	 * Removes all projects from the specified server.
 	 */
 	public void removeAllProjectsFromServer(String serverName) {
-		if (serverName==null) {
+		ServersView serversView = new ServersView();
+		Server server = serversView.getServer(serverName);
+		List<ServerModule> modules = server.getModules();
+		
+		if (modules == null || modules.isEmpty())
 			return;
+		
+		for (ServerModule module : modules) {
+			if (module != null) {
+				AbstractWait.sleep(TimePeriod.SHORT);
+				module.remove();
+			}
 		}
-		ServersView servers = new ServersView();
-		servers.open();
-		Server server = null;
-		try {
-			server = servers.getServer(serverName);
-		} catch(EclipseLayerException e) {
-			return;
-		}
-		servers.open();
-		ModifyModulesDialog dialog = server.addAndRemoveModules();
-
-		/* workaround for REDDEER-802 */
-		Shell s = new DefaultShell();
-
-		ModifyModulesPage page = dialog.getFirstPage();
-		s.setFocus();
-		if (!page.getConfiguredModules().isEmpty()) {
-			s.setFocus();//REDDEER-802
-			page.removeAll();
-		}
-		dialog.finish();
 	}
 
 	/**
