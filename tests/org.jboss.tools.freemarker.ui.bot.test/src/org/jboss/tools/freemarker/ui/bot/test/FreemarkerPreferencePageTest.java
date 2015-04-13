@@ -7,9 +7,8 @@ import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.swt.condition.JobIsRunning;
-import org.jboss.reddeer.swt.handler.WorkbenchHandler;
-import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.jboss.reddeer.common.wait.WaitWhile;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,7 +23,8 @@ public class FreemarkerPreferencePageTest {
 		JavaPerspective p = new JavaPerspective();
 		p.open();
 
-		WorkbenchHandler.getInstance().closeAllEditors();
+		// TODO fix
+		// WorkbenchHandler.getInstance().closeAllEditors();
 		new WaitWhile(new JobIsRunning());
 
 		JavaPerspective jp = new JavaPerspective();
