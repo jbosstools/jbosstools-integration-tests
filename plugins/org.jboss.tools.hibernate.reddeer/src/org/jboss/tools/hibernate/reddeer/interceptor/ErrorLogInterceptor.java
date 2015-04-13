@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 import org.eclipse.core.runtime.Platform;
 import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.swt.interceptor.ISyncInterceptor;
+import org.jboss.reddeer.core.interceptor.ISyncInterceptor;
 
 /**
  * ErrorLogInterceptors servers for watching Error Log changes between 
