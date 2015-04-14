@@ -10,13 +10,13 @@ import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.jface.wizard.WizardDialog;
 import org.jboss.reddeer.swt.api.Label;
 import org.jboss.reddeer.swt.api.Shell;
-import org.jboss.reddeer.swt.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.WaitCondition;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.label.DefaultLabel;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.toolbar.ViewToolItem;
-import org.jboss.reddeer.swt.wait.TimePeriod;
-import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.tools.ws.reddeer.ui.wizards.wst.WebServiceClientWizard;
 import org.jboss.tools.ws.reddeer.ui.wizards.wst.WebServiceClientWizardPage;
 import org.jboss.tools.ws.reddeer.ui.wizards.wst.WebServiceWizardPageBase.SliderLevel;
@@ -103,7 +103,7 @@ public class WebServiceClientHelper {
 	private void selectServerConsole(String serverName) {
 		Label consoleName = new DefaultLabel();
 		if (!consoleName.getText().startsWith(serverName)) {
-			new ViewToolItem("Display Selected Console").click();
+			new DefaultToolItem("Display Selected Console").click();
 			consoleName = new DefaultLabel();
 			if (!consoleName.getText().startsWith(serverName)) {
 				fail("Console of configured server was not found.");

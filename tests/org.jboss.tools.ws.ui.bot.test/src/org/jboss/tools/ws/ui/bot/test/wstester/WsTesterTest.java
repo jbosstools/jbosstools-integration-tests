@@ -26,12 +26,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 
-import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
-import org.jboss.reddeer.swt.exception.WaitTimeoutExpiredException;
-import org.jboss.reddeer.swt.wait.AbstractWait;
-import org.jboss.reddeer.swt.wait.TimePeriod;
-import org.jboss.reddeer.swt.wait.WaitUntil;
-import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
+import org.jboss.reddeer.common.wait.AbstractWait;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.tools.ws.reddeer.swt.condition.WsTesterNotEmptyResponseText;
 import org.jboss.tools.ws.reddeer.ui.dialogs.InputDialog;
 import org.jboss.tools.ws.reddeer.ui.tester.views.SelectWSDLDialog;

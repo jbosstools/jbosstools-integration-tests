@@ -2,7 +2,7 @@ package org.jboss.tools.openshift.ui.bot.test.connection;
 
 import static org.junit.Assert.assertTrue;
 
-import org.jboss.reddeer.swt.condition.JobIsRunning;
+import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.tools.openshift.ui.utils.Datastore;
 import org.jboss.tools.openshift.ui.utils.OpenShiftLabel;

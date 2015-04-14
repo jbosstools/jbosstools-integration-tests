@@ -7,17 +7,18 @@ import static org.junit.Assert.assertTrue;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.reddeer.eclipse.condition.ProblemsExists;
+import org.jboss.reddeer.eclipse.condition.ProblemExists;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jst.servlet.ui.WebProjectFirstPage;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.reddeer.swt.wait.TimePeriod;
-import org.jboss.reddeer.swt.wait.WaitUntil;
-import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.tools.cdi.reddeer.cdi.ui.CDIProjectWizard;
 import org.jboss.tools.cdi.reddeer.cdi.ui.wizard.facet.CDIInstallWizardPage;
 import org.jboss.tools.cdi.reddeer.common.model.ui.editor.EditorPartWrapper;
@@ -60,8 +61,8 @@ public class CDI11Wizard {
 		EditorPartWrapper beans = new EditorPartWrapper();
 		beans.activateSourcePage();
 		assertEquals(0,beans.getMarkers().size());
-		new WaitUntil(new ProblemsExists(), TimePeriod.LONG, false);
-		new WaitWhile(new ProblemsExists());
+		new WaitUntil(new ProblemExists(ProblemType.ANY), TimePeriod.LONG, false);
+		new WaitWhile(new ProblemExists(ProblemType.ANY));
 	}
 	
 	@Test
@@ -79,8 +80,8 @@ public class CDI11Wizard {
 		pe.open();
 		assertTrue(pe.containsProject(PROJECT_NAME));
 		assertFalse("this a known issue JBIDE-19289",pe.getProject(PROJECT_NAME).containsItem("WebContent","WEB-INF","beans.xml"));
-		new WaitUntil(new ProblemsExists(), TimePeriod.LONG, false);
-		new WaitWhile(new ProblemsExists());
+		new WaitUntil(new ProblemExists(ProblemType.ANY), TimePeriod.LONG, false);
+		new WaitWhile(new ProblemExists(ProblemType.ANY));
 	}
 
 }

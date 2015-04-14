@@ -5,8 +5,8 @@ import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.eclipse.ui.ide.NewFileCreationWizardDialog;
 import org.jboss.reddeer.eclipse.ui.ide.NewFileCreationWizardPage;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.Server;
-import org.jboss.reddeer.swt.wait.TimePeriod;
-import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.junit.Test;
 

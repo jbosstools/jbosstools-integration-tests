@@ -5,7 +5,7 @@ import static org.junit.Assert.assertTrue;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.jface.wizard.WizardDialog;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
-import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.TimePeriod;
 import org.junit.Before;
 import org.junit.Test;
 

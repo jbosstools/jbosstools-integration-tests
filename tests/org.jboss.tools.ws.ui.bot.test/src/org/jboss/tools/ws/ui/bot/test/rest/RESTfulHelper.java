@@ -17,21 +17,22 @@ import org.hamcrest.Matcher;
 import org.hamcrest.core.Is;
 import org.hamcrest.core.StringContains;
 import org.hamcrest.core.StringStartsWith;
-import org.jboss.reddeer.eclipse.condition.ProblemsExists;
+import org.jboss.reddeer.eclipse.condition.ProblemExists;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
+import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
 import org.jboss.reddeer.swt.api.Menu;
 import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.condition.JobIsRunning;
-import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.wait.TimePeriod;
-import org.jboss.reddeer.swt.wait.WaitUntil;
-import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.tools.ws.reddeer.jaxrs.core.RESTfulLabel;
 import org.jboss.tools.ws.reddeer.swt.condition.ProblemsCount;
 import org.jboss.tools.ws.reddeer.ui.preferences.JAXRSValidatorPreferencePage;
@@ -57,7 +58,7 @@ public class RESTfulHelper {
 		Matcher<String> pathMatcher = wsProjectName != null ? StringStartsWith.startsWith("/" + wsProjectName) : null;
 
 		/* wait for jax-rs validation */
-		if(expectedCount == 0 && !new ProblemsExists().test()) {//prevent from false positive result when we do not expect errors and there is no error
+		if(expectedCount == 0 && !new ProblemExists(ProblemType.ANY).test()) {//prevent from false positive result when we do not expect errors and there is no error
 			new WaitWhile(new ProblemsCount(ProblemsCount.ProblemType.ERROR, expectedCount, descriptionMatcher, null,
 					pathMatcher, null, null), WAIT_FOR_PROBLEMS_FALSE_POSItIVE_TIMEOUT, false);
 		} else {//prevent from false negative result

@@ -5,7 +5,7 @@ import org.hamcrest.core.Is;
 import org.jboss.reddeer.jface.wizard.WizardPage;
 import org.jboss.reddeer.swt.api.Text;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
-import org.jboss.reddeer.swt.matcher.WithLabelMatcher;
+import org.jboss.reddeer.core.matcher.WithLabelMatcher;
 
 /**
  * Second {@link WebServiceWizard} page.

@@ -25,8 +25,8 @@ import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.impl.button.NextButton;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.reddeer.swt.wait.TimePeriod;
-import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.tools.maven.ui.bot.test.AbstractMavenSWTBotTest;
 import org.jboss.tools.maven.ui.bot.test.utils.ProjectHasErrors;
 import org.jboss.tools.seam.reddeer.preferences.SeamPreferencePage;

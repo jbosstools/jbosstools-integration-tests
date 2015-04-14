@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 import org.eclipse.ui.PlatformUI;
 import org.jboss.ide.eclipse.as.reddeer.requirement.CloseAllEditorsRequirement.CloseAllEditors;
 import org.jboss.reddeer.junit.requirement.Requirement;
-import org.jboss.reddeer.swt.util.Display;
+import org.jboss.reddeer.core.util.Display;
 
 public class CloseAllEditorsRequirement implements Requirement<CloseAllEditors> {
 

@@ -10,7 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.archives.ui.bot.test.condition;
 
-import org.jboss.reddeer.swt.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.WaitCondition;
 import org.jboss.tools.archives.reddeer.archives.ui.ProjectArchivesExplorer;
 
 /**

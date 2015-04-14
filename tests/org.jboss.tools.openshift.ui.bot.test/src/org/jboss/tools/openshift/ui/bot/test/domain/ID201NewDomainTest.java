@@ -2,18 +2,18 @@ package org.jboss.tools.openshift.ui.bot.test.domain;
 
 import static org.junit.Assert.fail;
 
+import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.jface.exception.JFaceLayerException;
 import org.jboss.reddeer.swt.condition.ButtonWithTextIsActive;
-import org.jboss.reddeer.swt.condition.JobIsRunning;
-import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.swt.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.swt.impl.button.FinishButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.wait.TimePeriod;
-import org.jboss.reddeer.swt.wait.WaitUntil;
-import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.openshift.ui.utils.Datastore;
 import org.jboss.tools.openshift.ui.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.ui.view.openshift.OpenShiftExplorerView;

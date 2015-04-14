@@ -1,6 +1,6 @@
 package org.jboss.tools.cdi.reddeer.condition;
 
-import org.jboss.reddeer.swt.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.WaitCondition;
 import org.jboss.tools.cdi.reddeer.cdi.ui.wizard.SpecifyBeanWizard;
 
 public class QualifierIsFound implements WaitCondition{

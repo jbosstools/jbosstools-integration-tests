@@ -19,8 +19,9 @@ import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.wait.TimePeriod;
-import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.core.condition.ActiveShellExists;
 import org.jboss.reddeer.eclipse.mylyn.tasks.ui.view.*;
 import org.jboss.reddeer.eclipse.ui.ide.RepoConnectionDialog;
 import org.jboss.reddeer.swt.condition.ShellIsActive;
@@ -70,7 +71,7 @@ public class MylynTestValidate {
 		TestSupport.closeSecureStorageIfOpened();
 	
 		try {
-			new WaitUntil(new ShellIsActive(), TimePeriod.getCustom(60l)); 
+			new WaitUntil(new ActiveShellExists(), TimePeriod.getCustom(60l)); 
 		}
 		catch (Exception E) {
 			log.info ("Problem with 'Refreshing repository configuration' shell not seen");

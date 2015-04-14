@@ -18,8 +18,8 @@ import java.util.List;
 
 import org.hamcrest.core.StringContains;
 import org.jboss.reddeer.jface.text.contentassist.ContentAssistant;
-import org.jboss.reddeer.swt.wait.AbstractWait;
-import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.AbstractWait;
+import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.ws.reddeer.editor.ExtendedTextEditor;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;

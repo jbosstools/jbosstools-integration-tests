@@ -10,10 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
+import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.jface.wizard.WizardDialog;
 import org.jboss.reddeer.swt.api.Group;
 import org.jboss.reddeer.swt.api.Text;
-import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.group.DefaultGroup;
@@ -24,11 +24,11 @@ import org.jboss.tools.portlet.ui.bot.task.wizard.web.DynamicWebProjectDialog;
 import org.jboss.tools.portlet.ui.bot.task.wizard.web.DynamicWebProjectWizardPage;
 import org.jboss.tools.portlet.ui.bot.test.testcase.SWTTaskBasedTestCase;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
-import org.jboss.tools.ui.bot.ext.config.ConfiguredState.Seam;
-import org.jboss.tools.ui.bot.ext.config.TestConfigurator;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
+import org.jboss.tools.ui.bot.ext.config.ConfiguredState.Seam;
+import org.jboss.tools.ui.bot.ext.config.TestConfigurator;
 import org.junit.Test;
 
 /**

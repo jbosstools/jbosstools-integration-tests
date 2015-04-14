@@ -28,8 +28,8 @@ import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.C
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.swt.api.Table;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
+import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.workbench.exception.WorkbenchPartNotFound;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
 import org.jboss.tools.cdi.reddeer.common.model.ui.AddIfClassAvailableDialog;
@@ -212,7 +212,7 @@ public class WeldExtensionTest extends CDITestBase {
 	private boolean beansXmlNotOpened() {
 		try{
 			beansEditor = new EditorPartWrapper();
-		} catch (WorkbenchPartNotFound ex){
+		} catch (CoreLayerException ex){
 			return false;
 		}
 		return true;

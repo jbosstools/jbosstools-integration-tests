@@ -1,10 +1,10 @@
 package org.jboss.tools.hibernate.reddeer.page;
 
-import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.reddeer.common.wait.WaitUntil;
 
 /**
  * Generate JPA Entities Wizard page implementation

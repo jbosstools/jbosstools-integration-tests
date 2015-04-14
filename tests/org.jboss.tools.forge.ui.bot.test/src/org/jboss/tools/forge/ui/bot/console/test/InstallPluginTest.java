@@ -5,8 +5,8 @@ import static org.junit.Assert.assertTrue;
 import org.jboss.tools.forge.reddeer.condition.ForgeConsoleHasText;
 import org.jboss.tools.forge.ui.bot.test.suite.ForgeConsoleTestBase;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
-import org.jboss.reddeer.swt.wait.TimePeriod;
-import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
 import org.junit.Test;
 
 @CleanWorkspace

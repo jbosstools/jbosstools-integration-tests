@@ -21,21 +21,22 @@ import org.hamcrest.Matcher;
 import org.hamcrest.core.StringContains;
 import org.hamcrest.core.StringStartsWith;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.reddeer.eclipse.condition.ProblemsExists;
+import org.jboss.reddeer.eclipse.condition.ProblemExists;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
+import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.api.Menu;
 import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.condition.JobIsRunning;
+import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.matcher.RegexMatcher;
-import org.jboss.reddeer.swt.matcher.WithTextMatchers;
-import org.jboss.reddeer.swt.wait.AbstractWait;
-import org.jboss.reddeer.swt.wait.TimePeriod;
-import org.jboss.reddeer.swt.wait.WaitUntil;
-import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.reddeer.common.matcher.RegexMatcher;
+import org.jboss.reddeer.core.matcher.WithTextMatchers;
+import org.jboss.reddeer.common.wait.AbstractWait;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.ws.reddeer.editor.ExtendedTextEditor;
 import org.jboss.tools.ws.reddeer.jaxrs.core.RESTfulWebService;
@@ -140,7 +141,7 @@ public class RESTfulTestBase extends WSTestBase {
 	 */
 	private void waitForErrors(int expectedCount) {
 		if(expectedCount == 0) {//prevent from false-positive
-			new WaitWhile(new ProblemsExists(ProblemsExists.ProblemType.ERROR), TimePeriod.getCustom(2), false);
+			new WaitWhile(new ProblemExists(ProblemType.ERROR), TimePeriod.getCustom(2), false);
 		} else {
 			new WaitUntil(new ProblemsCount(ProblemsCount.ProblemType.ERROR, expectedCount), TimePeriod.getCustom(2), false);
 		}
@@ -148,7 +149,7 @@ public class RESTfulTestBase extends WSTestBase {
 
 	private void waitForErrors(int expectedCount, Matcher<String> path) {
 		if(expectedCount == 0) {//prevent from false-positive
-			new WaitWhile(new ProblemsExists(ProblemsExists.ProblemType.ERROR), TimePeriod.getCustom(2), false);
+			new WaitWhile(new ProblemExists(ProblemType.ERROR), TimePeriod.getCustom(2), false);
 		} else {//prevent from false-negative
 			new WaitUntil(new ProblemsCount(ProblemsCount.ProblemType.ERROR, expectedCount, null, null,
 					path, null, null), TimePeriod.getCustom(2), false);
@@ -208,7 +209,7 @@ public class RESTfulTestBase extends WSTestBase {
 	 */
 	private void waitForWarnings(int expectedCount) {
 		if(expectedCount == 0) {//prevent from false-positive
-			new WaitWhile(new ProblemsExists(ProblemsExists.ProblemType.WARNING), TimePeriod.getCustom(2), false);
+			new WaitWhile(new ProblemExists(ProblemType.WARNING), TimePeriod.getCustom(2), false);
 		} else {//prevent from false-negative
 			new WaitUntil(new ProblemsCount(ProblemsCount.ProblemType.WARNING, expectedCount), TimePeriod.getCustom(2), false);
 		}

@@ -1,6 +1,6 @@
 package org.jboss.tools.openshift.ui.condition;
 
-import org.jboss.reddeer.swt.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.WaitCondition;
 import org.jboss.reddeer.swt.impl.browser.InternalBrowser;
 
 public class BrowserContainsText implements WaitCondition {

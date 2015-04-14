@@ -11,8 +11,8 @@
 package org.jboss.tools.archives.ui.bot.test;
 
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
-import org.jboss.reddeer.swt.wait.WaitUntil;
-import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.tools.archives.ui.bot.test.condition.ExplorerInProjectExplorer;
 import org.junit.BeforeClass;
 import org.junit.Test;

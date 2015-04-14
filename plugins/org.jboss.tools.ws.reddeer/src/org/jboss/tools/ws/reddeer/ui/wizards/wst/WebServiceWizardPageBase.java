@@ -25,8 +25,8 @@ import org.jboss.reddeer.swt.impl.group.DefaultGroup;
 import org.jboss.reddeer.swt.impl.scale.DefaultScale;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.swt.matcher.WithLabelMatcher;
-import org.jboss.reddeer.swt.matcher.WithMnemonicTextMatcher;
+import org.jboss.reddeer.core.matcher.WithLabelMatcher;
+import org.jboss.reddeer.core.matcher.WithMnemonicTextMatcher;
 import org.jboss.reddeer.uiforms.impl.hyperlink.DefaultHyperlink;
 
 /**

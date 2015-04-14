@@ -13,8 +13,8 @@ package org.jboss.tools.archives.ui.bot.test;
 import static org.junit.Assert.*;
 
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
-import org.jboss.reddeer.swt.condition.JobIsRunning;
-import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.jboss.reddeer.common.wait.WaitWhile;
 import org.junit.BeforeClass;
 import org.junit.Test;
 

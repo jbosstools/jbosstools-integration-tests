@@ -5,7 +5,7 @@ import java.util.List;
 import org.hamcrest.Matcher;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.WaitCondition;
 
 /**
  * Returns true if the {@link ProblemsView} contains the specified number of

@@ -9,18 +9,18 @@ import java.util.List;
 
 import org.eclipse.swt.browser.ProgressEvent;
 import org.eclipse.swt.browser.ProgressListener;
+import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
+import org.jboss.reddeer.common.wait.AbstractWait;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.core.util.Display;
+import org.jboss.reddeer.core.util.ResultRunnable;
 import org.jboss.reddeer.swt.api.Shell;
-import org.jboss.reddeer.swt.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.util.Display;
-import org.jboss.reddeer.swt.util.ResultRunnable;
-import org.jboss.reddeer.swt.wait.AbstractWait;
-import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.tools.browsersim.ui.launch.BrowserSimRunner;
 import org.jboss.tools.browsersim.browser.PlatformUtil;
 import org.jboss.tools.browsersim.ui.BrowserSim;
 import org.jboss.tools.browsersim.ui.util.BrowserSimUtil;
 import org.jboss.tools.browsersim.ui.util.JavaFXUtil;
-import org.jboss.tools.browsersim.ui.launch.BrowserSimRunner;
 
 public class BrowsersimHandler {
 	

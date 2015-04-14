@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.jboss.reddeer.swt.api.Table;
 import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.OkButton;
@@ -18,7 +18,7 @@ import org.jboss.reddeer.swt.impl.table.DefaultTableItem;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.uiforms.impl.section.DefaultSection;
 import org.jboss.reddeer.workbench.impl.editor.AbstractEditor;
 import org.jboss.tools.cdi.reddeer.common.model.ui.AddIfClassAvailableDialog;

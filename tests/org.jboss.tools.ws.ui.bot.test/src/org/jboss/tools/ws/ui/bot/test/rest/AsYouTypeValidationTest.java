@@ -11,9 +11,9 @@ import org.hamcrest.core.IsNot;
 import org.hamcrest.core.StringContains;
 import org.jboss.reddeer.swt.keyboard.Keyboard;
 import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
-import org.jboss.reddeer.swt.wait.AbstractWait;
-import org.jboss.reddeer.swt.wait.TimePeriod;
-import org.jboss.reddeer.workbench.exception.WorkbenchPartNotFound;
+import org.jboss.reddeer.common.wait.AbstractWait;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.workbench.impl.editor.Marker;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.ws.reddeer.editor.ExtendedTextEditor;
@@ -35,7 +35,7 @@ public class AsYouTypeValidationTest extends RESTfulTestBase {
 		//save the modified file
 		try {
 			new TextEditor().save();
-		} catch(WorkbenchPartNotFound e) {
+		} catch(CoreLayerException e) {
 			
 		}
 		//delete the project

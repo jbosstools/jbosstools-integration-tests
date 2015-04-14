@@ -6,20 +6,21 @@ import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.reddeer.eclipse.condition.ProblemsExists;
+import org.jboss.reddeer.eclipse.condition.ProblemExists;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
+import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
-import org.jboss.reddeer.swt.condition.JobIsRunning;
-import org.jboss.reddeer.swt.condition.ProgressInformationShellIsActive;
-import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
-import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.jboss.reddeer.core.condition.ProgressInformationShellIsActive;
+import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.wait.TimePeriod;
-import org.jboss.reddeer.swt.wait.WaitUntil;
-import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
 import org.jboss.tools.cdi.reddeer.cdi.ui.CDIValidatorPreferencePage;
 import org.junit.AfterClass;
@@ -64,7 +65,7 @@ public class CDIValidatorTest extends CDITestBase {
 		modifyCDIValidatorState(true);
 		ProblemsView problemsView = new ProblemsView();
 		problemsView.open();
-		new WaitUntil(new ProblemsExists(), TimePeriod.NORMAL);
+		new WaitUntil(new ProblemExists(ProblemType.ANY), TimePeriod.NORMAL);
 		assertEquals("Warnings node should contain one warning", 
 				problemsView.getAllWarnings().size(), 1);
 		assertEquals("Warning text", 
@@ -75,7 +76,7 @@ public class CDIValidatorTest extends CDITestBase {
 	@Test
 	public void testDisabledValidator() {
 		modifyCDIValidatorState(false);
-		new WaitWhile(new ProblemsExists(), TimePeriod.NORMAL);
+		new WaitWhile(new ProblemExists(ProblemType.ANY), TimePeriod.NORMAL);
 		modifyCDIValidatorState(true);
 	}
 	

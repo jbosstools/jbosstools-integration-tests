@@ -10,12 +10,12 @@
  ******************************************************************************/
 package org.jboss.tools.archives.reddeer.component;
 
-import org.jboss.reddeer.swt.condition.JobIsRunning;
+import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.tools.archives.reddeer.archives.jdt.integration.LibFilesetDialog;
 import org.jboss.tools.archives.reddeer.archives.ui.ArchivePublishDialog;
 import org.jboss.tools.archives.reddeer.archives.ui.EditArchiveDialog;

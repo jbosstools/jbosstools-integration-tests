@@ -15,8 +15,8 @@ import static org.junit.Assert.assertNotNull;
 
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.wait.TimePeriod;
-import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
 import org.jboss.tools.cdi.bot.test.condition.SpecifyBeanWizardHasQualifier;
 import org.jboss.tools.cdi.bot.test.quickfix.injection.QualifierOperation;

@@ -13,9 +13,9 @@ package org.jboss.tools.deltaspike.ui.bot.test.condition;
 
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.WaitCondition;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
-import org.jboss.reddeer.swt.matcher.RegexMatcher;
+import org.jboss.reddeer.common.matcher.RegexMatcher;
 import org.jboss.reddeer.swt.regex.Regex;
 
 /**

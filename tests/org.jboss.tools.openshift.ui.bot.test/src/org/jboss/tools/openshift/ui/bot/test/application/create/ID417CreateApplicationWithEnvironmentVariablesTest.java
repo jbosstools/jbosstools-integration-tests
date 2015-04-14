@@ -2,11 +2,11 @@ package org.jboss.tools.openshift.ui.bot.test.application.create;
 
 import static org.junit.Assert.fail;
 
+import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
-import org.jboss.reddeer.swt.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.wait.TimePeriod;
-import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.tools.openshift.ui.utils.Datastore;
 import org.jboss.tools.openshift.ui.utils.DeleteApplication;
 import org.jboss.tools.openshift.ui.utils.OpenShiftLabel;

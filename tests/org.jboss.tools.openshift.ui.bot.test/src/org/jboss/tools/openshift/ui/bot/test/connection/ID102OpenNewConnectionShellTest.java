@@ -7,7 +7,7 @@ import org.jboss.reddeer.swt.impl.button.CancelButton;
 import org.jboss.reddeer.swt.impl.link.DefaultLink;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.impl.toolbar.ViewToolItem;
+import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.tools.openshift.ui.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.ui.view.openshift.OpenShiftExplorerView;
 import org.junit.Test;
@@ -41,7 +41,7 @@ public class ID102OpenNewConnectionShellTest {
 		explorer.open();
 		
 		try {
-			new ViewToolItem(OpenShiftLabel.Others.CONNECT_TOOL_ITEM).click();
+			new DefaultToolItem(OpenShiftLabel.Others.CONNECT_TOOL_ITEM).click();
 			// PASS
 		} catch (SWTLayerException ex) {
 			fail("New Connection shell cannot be opened via view tool item.");

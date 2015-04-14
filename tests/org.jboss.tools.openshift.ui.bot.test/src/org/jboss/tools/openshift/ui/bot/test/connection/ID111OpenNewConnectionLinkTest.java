@@ -2,13 +2,13 @@ package org.jboss.tools.openshift.ui.bot.test.connection;
 
 import static org.junit.Assert.fail;
 
-import org.jboss.reddeer.swt.exception.WaitTimeoutExpiredException;
+import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.core.util.Display;
 import org.jboss.reddeer.swt.impl.browser.InternalBrowser;
 import org.jboss.reddeer.swt.impl.link.DefaultLink;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.util.Display;
-import org.jboss.reddeer.swt.wait.TimePeriod;
-import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.tools.openshift.ui.condition.BrowserContainsText;
 import org.jboss.tools.openshift.ui.view.openshift.OpenShiftExplorerView;
 import org.junit.After;

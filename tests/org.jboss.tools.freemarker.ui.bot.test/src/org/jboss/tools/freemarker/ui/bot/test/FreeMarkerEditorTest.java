@@ -31,12 +31,12 @@ import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWi
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.condition.JobIsRunning;
-import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
-import org.jboss.reddeer.swt.handler.WorkbenchHandler;
+import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.core.handler.WorkbenchPartHandler;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -59,7 +59,7 @@ public class FreeMarkerEditorTest {
 	public static void beforeClass() {
 		JavaPerspective p = new JavaPerspective();
 		p.open();
-		WorkbenchHandler.getInstance().closeAllEditors();
+		WorkbenchPartHandler.getInstance().closeAllEditors();
 		new WaitWhile(new JobIsRunning());		
 
 		JavaPerspective jp = new JavaPerspective();

@@ -11,7 +11,7 @@
 package org.jboss.tools.archives.ui.bot.test;
 
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
-import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.tools.archives.reddeer.archives.ui.EditArchiveDialog;
 import org.jboss.tools.archives.reddeer.archives.ui.ProjectArchivesExplorer;
 import org.jboss.tools.archives.ui.bot.test.condition.ArchiveIsInExplorer;

@@ -8,6 +8,8 @@ Require-Bundle: org.eclipse.ui,
  org.junit,
  org.eclipse.core.runtime,
  org.jboss.reddeer.swt,
+ org.jboss.reddeer.core,
+ org.jboss.reddeer.common,
  org.jboss.reddeer.jface,
  org.jboss.reddeer.eclipse
 Export-Package: org.jboss.tools.jsf.reddeer.ui

@@ -2,8 +2,8 @@ package org.jboss.tools.openshift.ui.bot.test.connection;
 
 import static org.junit.Assert.fail;
 
+import org.jboss.reddeer.common.exception.RedDeerException;
 import org.jboss.reddeer.jface.exception.JFaceLayerException;
-import org.jboss.reddeer.swt.exception.RedDeerException;
 import org.jboss.tools.openshift.ui.utils.Datastore;
 import org.jboss.tools.openshift.ui.view.openshift.OpenShiftExplorerView;
 import org.junit.BeforeClass;

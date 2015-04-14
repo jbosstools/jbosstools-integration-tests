@@ -1,6 +1,6 @@
 package org.jboss.tools.ws.reddeer.swt.condition;
 
-import org.jboss.reddeer.swt.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.WaitCondition;
 import org.jboss.tools.ws.reddeer.ui.tester.views.WsTesterView;
 
 /**

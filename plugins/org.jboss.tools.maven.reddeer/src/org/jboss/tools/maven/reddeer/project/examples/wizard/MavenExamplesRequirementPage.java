@@ -8,7 +8,7 @@ import java.util.List;
 import org.jboss.reddeer.jface.wizard.WizardPage;
 import org.jboss.reddeer.swt.api.Shell;
 import org.jboss.reddeer.swt.api.TableItem;
-import org.jboss.reddeer.swt.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.WaitCondition;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.link.DefaultLink;
@@ -16,8 +16,8 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.swt.matcher.WithLabelMatcher;
-import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.reddeer.core.matcher.WithLabelMatcher;
+import org.jboss.reddeer.common.wait.WaitWhile;
 
 public class MavenExamplesRequirementPage extends WizardPage {
 

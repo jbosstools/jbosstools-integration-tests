@@ -18,7 +18,7 @@ import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewEnums.ServerPubli
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewEnums.ServerState;
 import org.jboss.reddeer.eclipse.wst.server.ui.wizard.ModifyModulesDialog;
 import org.jboss.reddeer.eclipse.wst.server.ui.wizard.ModifyModulesPage;
-import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.reddeer.common.wait.WaitUntil;
 import org.junit.Before;
 import org.junit.Test;
 

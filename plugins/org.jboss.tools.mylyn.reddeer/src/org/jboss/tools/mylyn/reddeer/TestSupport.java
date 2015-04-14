@@ -4,18 +4,14 @@ package org.jboss.tools.mylyn.reddeer;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
-import org.jboss.reddeer.swt.util.Display;
-import org.apache.log4j.Logger;
-import org.eclipse.ui.IViewReference;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.swt.lookup.WorkbenchLookup;
-import org.eclipse.core.runtime.Platform.*;
 
 public class TestSupport {
 	

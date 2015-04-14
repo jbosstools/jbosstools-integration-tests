@@ -13,9 +13,9 @@ package org.jboss.tools.archives.ui.bot.test;
 import static org.junit.Assert.fail;
 
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
-import org.jboss.reddeer.swt.exception.WaitTimeoutExpiredException;
-import org.jboss.reddeer.swt.wait.WaitUntil;
-import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
+import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.tools.archives.reddeer.archives.ui.ProjectArchivesExplorer;
 import org.jboss.tools.archives.reddeer.component.Archive;
 import org.jboss.tools.archives.ui.bot.test.condition.FolderIsInArchive;

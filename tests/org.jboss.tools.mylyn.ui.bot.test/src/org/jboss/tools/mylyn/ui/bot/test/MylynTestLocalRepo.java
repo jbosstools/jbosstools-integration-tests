@@ -17,6 +17,7 @@ import org.apache.log4j.Logger;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.eclipse.mylyn.tasks.ui.view.TaskListView;
 import org.jboss.reddeer.eclipse.mylyn.tasks.ui.view.TaskRepositoriesView;
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
@@ -133,7 +134,7 @@ public class MylynTestLocalRepo {
 		try {
 			DefaultTreeItem theTask = new DefaultTreeItem ("Uncategorized", UPDATED_TASKNAME);
 		}
-		catch (org.jboss.reddeer.swt.exception.WaitTimeoutExpiredException E) {
+		catch (WaitTimeoutExpiredException E) {
 			log.info ("Expected Exception as deleted task cannot be found" + E.getMessage() + " correctly trapped");
 		}	
 		

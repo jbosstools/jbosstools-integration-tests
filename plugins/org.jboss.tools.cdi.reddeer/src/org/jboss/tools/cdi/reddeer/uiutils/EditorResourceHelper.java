@@ -28,8 +28,8 @@ import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.jface.text.contentassist.ContentAssistant;
 import org.jboss.reddeer.swt.api.StyledText;
-import org.jboss.reddeer.swt.condition.JobIsRunning;
-import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
@@ -38,9 +38,9 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.workbench.api.Editor;
-import org.jboss.reddeer.workbench.exception.WorkbenchPartNotFound;
+import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.cdi.reddeer.CDIConstants;
@@ -142,7 +142,7 @@ public class EditorResourceHelper {
 								.getProperty("line.separator") : ""),
 				replacement));
 			if (save) editor.save();
-		} catch (WorkbenchPartNotFound ex){
+		} catch (CoreLayerException ex){
 			Editor textEditor = new DefaultEditor();
 			DefaultStyledText dt = new DefaultStyledText();
 			String text = dt.getText();
@@ -174,7 +174,7 @@ public class EditorResourceHelper {
 								.getProperty("line.separator") : ""),
 				replacement));
 			if (save) editor.save();
-		} catch (WorkbenchPartNotFound ex){
+		} catch (CoreLayerException ex){
 			Editor textEditor = new DefaultEditor(editorName);
 			DefaultStyledText dt = new DefaultStyledText();
 			String text = dt.getText();

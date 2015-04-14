@@ -7,8 +7,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import org.jboss.reddeer.swt.condition.JobIsRunning;
-import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.tools.common.util.FileUtil;
 import org.jboss.tools.runtime.as.ui.bot.test.RuntimeProperties;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap52.DetectEAP52;

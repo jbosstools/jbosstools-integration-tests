@@ -9,12 +9,14 @@ import java.util.List;
 import org.hamcrest.core.Is;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.reddeer.eclipse.condition.ProblemsExists;
+import org.jboss.reddeer.eclipse.condition.ProblemExists;
+import org.jboss.reddeer.eclipse.ui.problems.Problem;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
+import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.wait.TimePeriod;
-import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.tools.ws.reddeer.editor.ExtendedTextEditor;
 import org.jboss.tools.ws.reddeer.swt.condition.ProblemsCount;
 import org.junit.Test;
@@ -76,14 +78,14 @@ public class FiltersInterceptorsSupportTest extends RESTfulTestBase {
 
 	private void providerValidationWarning(String projectName, String className) {
 		/* wait for JAX-RS validator */
-		new WaitUntil(new ProblemsExists(ProblemsExists.ProblemType.WARNING),
+		new WaitUntil(new ProblemExists(ProblemType.ANY),
 				TimePeriod.NORMAL, false);
 
 		// there should be "No JAX-RS Activator is defined for the project." warning
-		List<TreeItem> warningsBefore = new ProblemsView().getAllWarnings();
+		List<Problem> warningsBefore = new ProblemsView().getProblems(ProblemType.WARNING);
 		List<String> warningsBeforeStrings = new ArrayList<String>();
-		for (TreeItem item: warningsBefore) {
-			warningsBeforeStrings.add(item.getText());
+		for (Problem warning: warningsBefore) {
+			warningsBeforeStrings.add(warning.toString());
 		}
 
 		//remove @Provider annotation

@@ -17,9 +17,9 @@ import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.reddeer.swt.wait.WaitUntil;
-import org.jboss.reddeer.swt.wait.WaitWhile;
-import org.jboss.reddeer.workbench.exception.WorkbenchPartNotFound;
+import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
 import org.jboss.tools.cdi.bot.test.beansxml.BeansXMLValidationTest;
@@ -50,7 +50,7 @@ public class AsYouTypeValidationTest extends CDITestBase {
 	public void cleanUp() {
 		try{
 			new DefaultEditor().save();
-		} catch (WorkbenchPartNotFound ex){
+		} catch (CoreLayerException ex){
 			
 		}
 	}

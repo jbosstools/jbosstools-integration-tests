@@ -1,7 +1,7 @@
 package org.jboss.tools.openshift.ui.condition;
 
+import org.jboss.reddeer.common.condition.WaitCondition;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
-import org.jboss.reddeer.swt.condition.WaitCondition;
 
 /**
  * Condition notifies about not empty console.

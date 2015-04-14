@@ -1,7 +1,7 @@
 package org.jboss.tools.usercase.ticketmonster.ui.bot.test.part2;
 
-import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.eclipse.core.resources.Project;
+import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.eclipse.wst.server.ui.RuntimePreferencePage;
 import org.jboss.tools.usercase.ticketmonster.ui.bot.test.TicketMonsterBaseTest;
 

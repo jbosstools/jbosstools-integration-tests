@@ -4,10 +4,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.hamcrest.Description;
+import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.eclipse.ui.browser.BrowserView;
-import org.jboss.reddeer.swt.condition.WaitCondition;
-import org.jboss.reddeer.swt.wait.TimePeriod;
-import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.tools.portlet.ui.bot.matcher.AbstractSWTMatcher;
 
 /**

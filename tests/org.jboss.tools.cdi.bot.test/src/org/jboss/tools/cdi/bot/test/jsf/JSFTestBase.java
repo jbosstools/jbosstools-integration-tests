@@ -22,7 +22,7 @@ import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.workbench.exception.WorkbenchPartNotFound;
+import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.cdi.reddeer.CDIConstants;
@@ -113,7 +113,7 @@ public class JSFTestBase extends CDITestBase {
 	private String getNamedAnnotationForClass(String className) {
 		try {
 			new DefaultEditor(className+".java");
-		} catch (WorkbenchPartNotFound exc) {
+		} catch (CoreLayerException exc) {
 			ProjectExplorer pe = new ProjectExplorer();
 			pe.open();
 			pe.getProject(getProjectName()).getProjectItem(CDIConstants.JAVA_RESOURCES, CDIConstants.JAVA_SOURCE, 

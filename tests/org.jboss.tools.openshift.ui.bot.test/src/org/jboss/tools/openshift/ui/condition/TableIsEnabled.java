@@ -1,7 +1,7 @@
 package org.jboss.tools.openshift.ui.condition;
 
+import org.jboss.reddeer.common.condition.WaitCondition;
 import org.jboss.reddeer.swt.api.Table;
-import org.jboss.reddeer.swt.condition.WaitCondition;
 
 /**
  * Wait condition waiting till specified table is active.

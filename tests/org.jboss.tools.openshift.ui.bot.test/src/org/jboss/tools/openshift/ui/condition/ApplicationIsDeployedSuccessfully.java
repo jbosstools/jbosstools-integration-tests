@@ -1,10 +1,10 @@
 package org.jboss.tools.openshift.ui.condition;
 
-import org.jboss.reddeer.swt.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.wait.AbstractWait;
+import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.swt.impl.browser.InternalBrowser;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.wait.AbstractWait;
-import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.tools.openshift.ui.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.ui.view.openshift.OpenShiftExplorerView;
 

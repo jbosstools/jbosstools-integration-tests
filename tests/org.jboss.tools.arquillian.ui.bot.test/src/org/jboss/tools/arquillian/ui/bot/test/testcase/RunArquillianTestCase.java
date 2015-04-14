@@ -1,24 +1,22 @@
 package org.jboss.tools.arquillian.ui.bot.test.testcase;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.eclipse.jdt.ui.junit.JUnitView;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.reddeer.swt.wait.TimePeriod;
-import org.jboss.reddeer.swt.wait.WaitWhile;
-import org.jboss.tools.arquillian.ui.bot.reddeer.configurations.ArquillianTab;
 import org.jboss.tools.arquillian.ui.bot.reddeer.configurations.JUnitConfigurationPage;
 import org.jboss.tools.arquillian.ui.bot.reddeer.configurations.JUnitTestTab;
 import org.jboss.tools.arquillian.ui.bot.reddeer.configurations.RunConfigurationsDialog;
 import org.jboss.tools.arquillian.ui.bot.reddeer.junit.view.JUnitTestIsRunningCondition;
 import org.jboss.tools.arquillian.ui.bot.test.AbstractArquillianTestCase;
-import org.jboss.tools.arquillian.ui.bot.test.project.AddArquillianProfile;
 import org.junit.Test;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * Runs Arquillian test case on remote Wildfly server and checks that

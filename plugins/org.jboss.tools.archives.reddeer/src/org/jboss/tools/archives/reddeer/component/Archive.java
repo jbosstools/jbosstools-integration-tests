@@ -12,8 +12,8 @@ package org.jboss.tools.archives.reddeer.component;
 
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.TreeItemHasMinChildren;
-import org.jboss.reddeer.swt.wait.TimePeriod;
-import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.tools.archives.reddeer.archives.jdt.integration.LibFilesetDialog;
 import org.jboss.tools.archives.reddeer.archives.ui.ArchivePublishDialog;
 import org.jboss.tools.archives.reddeer.archives.ui.EditArchiveDialog;

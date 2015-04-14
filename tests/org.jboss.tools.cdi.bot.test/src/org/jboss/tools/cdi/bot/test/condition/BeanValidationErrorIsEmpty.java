@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.WaitCondition;
 
 public class BeanValidationErrorIsEmpty implements WaitCondition{
 	

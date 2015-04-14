@@ -12,14 +12,14 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.db.DatabaseConfiguration;
 import org.jboss.reddeer.requirements.db.DatabaseRequirement;
 import org.jboss.reddeer.requirements.db.DatabaseRequirement.Database;
-import org.jboss.reddeer.swt.exception.WaitTimeoutExpiredException;
+import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.swt.impl.tree.TreeItemNotFoundException;
-import org.jboss.reddeer.swt.wait.AbstractWait;
-import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.exception.SWTLayerException;
+import org.jboss.reddeer.common.wait.AbstractWait;
+import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.workbench.handler.EditorHandler;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.hibernate.reddeer.common.FileHelper;
@@ -218,7 +218,7 @@ public class CodeGenerationConfigurationTest extends HibernateRedDeerTest {
     		AbstractWait.sleep(TimePeriod.NORMAL);
     		new DefaultTreeItem(prj,src,"org.gen","Actor.java").doubleClick();
     	}
-    	catch (TreeItemNotFoundException e) {
+    	catch (SWTLayerException e) {
     		fail("Entities not generated, possible cause https://issues.jboss.org/browse/JBIDE-19217");
     	}
     	new DefaultEditor("Actor.java");

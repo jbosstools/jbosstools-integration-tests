@@ -32,6 +32,8 @@ Require-Bundle: org.eclipse.ui,
  org.jboss.tools.vpe.preview.editor;bundle-version="3.5.100",
  org.eclipse.debug.core;bundle-version="3.9.0",
  org.jboss.reddeer.swt;bundle-version="0.6.0",
+ org.jboss.reddeer.core,
+  org.jboss.reddeer.common,
  org.jboss.tools.browsersim.browser;bundle-version="3.7.0",
  org.jboss.tools.browsersim.ui;bundle-version="3.7.0",
  org.jboss.tools.vpe.reddeer;bundle-version="4.3.0"

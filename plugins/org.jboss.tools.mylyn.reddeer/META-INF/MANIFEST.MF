@@ -17,7 +17,8 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.ui.workbench,
  org.jboss.reddeer.junit;bundle-version="0.4.0",
  org.eclipse.wst.server.core,
- org.jboss.reddeer.common;bundle-version="0.6.0"
+ org.jboss.reddeer.common;bundle-version="0.6.0",
+ org.jboss.reddeer.core
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Import-Package: org.apache.log4j,

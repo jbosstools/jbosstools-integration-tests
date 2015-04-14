@@ -5,7 +5,7 @@ import org.jboss.reddeer.eclipse.wst.server.ui.editor.ServerEditor;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.spinner.DefaultSpinner;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.matcher.WithLabelMatcher;
+import org.jboss.reddeer.core.matcher.WithLabelMatcher;
 import org.jboss.reddeer.uiforms.impl.section.DefaultSection;
 
 /**

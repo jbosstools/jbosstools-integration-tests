@@ -1,7 +1,7 @@
 package org.jboss.tools.arquillian.ui.bot.reddeer.junit.view;
 
 import org.jboss.reddeer.eclipse.jdt.ui.junit.JUnitView;
-import org.jboss.reddeer.swt.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.WaitCondition;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 
 /**

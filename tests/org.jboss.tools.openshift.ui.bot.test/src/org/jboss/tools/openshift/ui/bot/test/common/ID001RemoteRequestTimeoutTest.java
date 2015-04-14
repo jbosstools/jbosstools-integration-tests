@@ -2,13 +2,13 @@ package org.jboss.tools.openshift.ui.bot.test.common;
 
 import static org.junit.Assert.assertFalse;
 
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.swt.condition.ButtonWithTextIsActive;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.wait.TimePeriod;
-import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.tools.openshift.ui.utils.JBossPerspective;
 import org.jboss.tools.openshift.ui.utils.OpenShiftLabel;
 import org.junit.Before;

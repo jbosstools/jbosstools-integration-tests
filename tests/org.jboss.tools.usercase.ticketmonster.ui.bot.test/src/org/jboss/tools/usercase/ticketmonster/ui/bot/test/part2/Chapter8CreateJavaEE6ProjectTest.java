@@ -15,14 +15,14 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import org.jboss.reddeer.eclipse.condition.ProblemsExists;
-import org.jboss.reddeer.eclipse.condition.ProblemsExists.ProblemType;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.eclipse.condition.ProblemExists;
+import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
-import org.jboss.reddeer.eclipse.core.resources.Project;
+import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
 import org.jboss.reddeer.swt.api.Table;
-import org.jboss.reddeer.swt.wait.TimePeriod;
-import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.central.reddeer.projects.ArchetypeProject;
 import org.jboss.tools.central.reddeer.wizards.JBossCentralProjectWizard;
 import org.jboss.tools.maven.reddeer.maven.ui.preferences.ConfiguratorPreferencePage;
@@ -116,7 +116,7 @@ public class Chapter8CreateJavaEE6ProjectTest extends AbstractPart2Test{
 		assertFalse(reqs.get(0).isMet());
 		wz.getWizardPage(2);
 		wz.finish();
-		new WaitWhile(new ProblemsExists(ProblemType.ERROR), TimePeriod.LONG);
+		new WaitWhile(new ProblemExists(ProblemType.ERROR), TimePeriod.LONG);
 	}
 	
 	@Test
@@ -135,7 +135,7 @@ public class Chapter8CreateJavaEE6ProjectTest extends AbstractPart2Test{
 		assertEquals(TICKET_MONSTER_NAME, tp.getArtifactID());
 		assertEquals(TICKET_MONSTER_PACKAGE, tp.getPackage());
 		wz.finish();
-		new WaitWhile(new ProblemsExists(ProblemType.ERROR), TimePeriod.LONG);
+		new WaitWhile(new ProblemExists(ProblemType.ERROR), TimePeriod.LONG);
 		ProjectExplorer pe = new ProjectExplorer();
 		assertTrue("Project is missing in project explorer",pe.containsProject(TICKET_MONSTER_NAME));
 	}
@@ -158,7 +158,7 @@ public class Chapter8CreateJavaEE6ProjectTest extends AbstractPart2Test{
 		Table table = tp.getTableSuffix();
 		assertEquals("false", table.getItem("enterprise").getText(1));
 		wz.finish();
-		new WaitWhile(new ProblemsExists(ProblemType.ERROR), TimePeriod.LONG);;
+		new WaitWhile(new ProblemExists(ProblemType.ERROR), TimePeriod.LONG);;
 	}
 	
 	@Test
@@ -197,7 +197,7 @@ public class Chapter8CreateJavaEE6ProjectTest extends AbstractPart2Test{
 		assertEquals(ENTERPRISE_BOM_VERSION, table.getItem("jboss-bom-enterprise-version").getText(1));
 		assertEquals("Java EE 6 webapp project", table.getItem("name").getText(1));
 		wz.finish();
-		new WaitWhile(new ProblemsExists(ProblemType.ERROR), TimePeriod.LONG);
+		new WaitWhile(new ProblemExists(ProblemType.ERROR), TimePeriod.LONG);
 	}
 
 }

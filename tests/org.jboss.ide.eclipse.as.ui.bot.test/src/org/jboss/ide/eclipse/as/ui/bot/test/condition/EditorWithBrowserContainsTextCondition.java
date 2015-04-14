@@ -1,7 +1,7 @@
 package org.jboss.ide.eclipse.as.ui.bot.test.condition;
 
 import org.jboss.ide.eclipse.as.reddeer.server.editor.AbstractEditorWithBrowser;
-import org.jboss.reddeer.swt.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.WaitCondition;
 
 /**
  * Waits until the editor with browser contains the specified text. 

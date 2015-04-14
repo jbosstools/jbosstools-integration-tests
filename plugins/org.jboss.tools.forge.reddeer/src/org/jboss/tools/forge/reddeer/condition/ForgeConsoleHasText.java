@@ -1,6 +1,6 @@
 package org.jboss.tools.forge.reddeer.condition;
 
-import org.jboss.reddeer.swt.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.WaitCondition;
 import org.jboss.tools.forge.reddeer.view.ForgeConsoleView;
 
 /**

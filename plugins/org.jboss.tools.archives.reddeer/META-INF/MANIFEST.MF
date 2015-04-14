@@ -10,6 +10,7 @@ Require-Bundle: org.eclipse.ui,
  org.jboss.reddeer.workbench;bundle-version="0.6.0",
  org.jboss.reddeer.jface;bundle-version="0.6.0",
  org.jboss.reddeer.eclipse;bundle-version="0.6.0",
+ org.jboss.reddeer.core;bundle-version="0.6.0",
  org.jboss.reddeer.common;bundle-version="0.8.0",
  org.junit;bundle-version="4.8.1"
 Export-Package: org.jboss.tools.archives.reddeer.component,org.jboss.t
