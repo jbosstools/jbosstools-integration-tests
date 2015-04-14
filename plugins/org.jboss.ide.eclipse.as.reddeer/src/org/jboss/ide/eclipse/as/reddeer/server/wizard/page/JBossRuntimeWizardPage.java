@@ -3,7 +3,7 @@ package org.jboss.ide.eclipse.as.reddeer.server.wizard.page;
 import java.io.File;
 
 import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.swt.exception.SWTLayerException;
+import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 
 /**
@@ -48,7 +48,7 @@ public class JBossRuntimeWizardPage {
 		try {
 			text = new LabeledText("JBoss Runtime").getText();
 			LOGGER.info("Found error text: " + text);
-		} catch(SWTLayerException e) {
+		} catch(CoreLayerException e) {
 			LOGGER.info("No error text found.");
 			return;
 		}
