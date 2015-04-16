@@ -72,6 +72,14 @@
 					<testSuite>org.jboss.tools.arquillian.ui.bot.test</testSuite>
 					<testClass>org.jboss.tools.arquillian.ui.bot.test.ArquillianSuite</testClass>
 					<dependencies combine.children="append">
+
+<dependency>
+	<groupId>log4j</groupId>
+		<artifactId>log4j</artifactId>
+			<version>1.2.15</version>
+			</dependency>
+
+
 						<dependency>
 							<type>p2-installable-unit</type>
 							<artifactId>org.jboss.tools.arquillian.feature.feature.group</artifactId>

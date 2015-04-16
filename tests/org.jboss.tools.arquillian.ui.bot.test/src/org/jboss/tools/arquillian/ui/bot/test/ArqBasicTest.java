@@ -6,17 +6,22 @@ package org.jboss.tools.arquillian.ui.bot.test;
  * 
  */
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
+import org.apache.log4j.Logger;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.eclipse.jdt.ui.ide.NewJavaProjectWizardDialog;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
+import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewEnums.ServerState;
+import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewException;
 import org.jboss.reddeer.requirements.server.ServerReqState;
+//import org.jboss.reddeer.swt.condition.ButtonWithTextIsActive;
+//import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
@@ -26,17 +31,42 @@ import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+//import org.jboss.reddeer.swt.wait.AbstractWait;
+//import org.jboss.reddeer.swt.wait.TimePeriod;
+//import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
 import org.junit.Test;
 
+import static org.junit.Assert.*;
+
 @JBossServer(state=ServerReqState.RUNNING, type=ServerReqType.EAP6_1plus)
+
 public class ArqBasicTest  {
 	
 	protected final Logger log = Logger.getLogger(this.getClass());
 
 	@Test
 	public void testIt() {
+		
+		ServersView view = new ServersView();
+		view.open();
+
+		/* Workaround to Red Deer issue of intermittent server startup problem
+		 * 
+		 *   https://github.com/jboss-reddeer/reddeer/issues/829
+		 */
+		if ( (!view.getServers().get(0).getLabel().getState().equals(ServerState.STARTED))  ||
+			(!view.getServers().get(0).getLabel().getState().equals(ServerState.STARTING)) )
+		{			
+			try {
+				view.getServers().get(0).start();
+			}
+			catch (ServersViewException E) { 
+				log.error ("Unexpected server state = " + view.getServers().get(0).getLabel().getState().getText());
+			}
+		}
+
 		ProjectExplorer pex = new ProjectExplorer();
 		pex.open();
 		
@@ -64,7 +94,17 @@ public class ArqBasicTest  {
 		/* Add Arquillian support */
 		pex.getProject("Test100").select();
 		new ContextMenu("Configure","Add Arquillian Support...").select();
+		// Wait for button to be active		
+		new org.jboss.reddeer.common.wait.WaitUntil(new ShellWithTextIsAvailable("Add Arquillian support"), TimePeriod.getCustom(30l)); 
+		//new WaitUntil (new ButtonWithTextIsActive(new PushButton("OK")));
 		new PushButton("OK").click();
+		
+		try {
+			new WaitUntil(new ShellWithTextIsActive("Resource - Test100/pom.xml - "), TimePeriod.getCustom(60l)); 
+		}
+		catch (Exception E) {
+			log.info ("Problem with 'Java - Test100/pom.xml - Eclipse' shell not seen");
+		}		
 		
 		/* Save All - to save the changes to the pom.xml */	
 		new ShellMenu("File","Save All").select();
