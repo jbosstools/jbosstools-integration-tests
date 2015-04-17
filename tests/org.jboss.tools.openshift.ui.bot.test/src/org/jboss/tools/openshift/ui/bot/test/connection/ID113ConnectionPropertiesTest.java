@@ -38,9 +38,9 @@ public class ID113ConnectionPropertiesTest {
 				hostValue.contains(Datastore.SERVER));
 		
 		String parsedPersistedKey = "https://" + Datastore.USERNAME.replace("@", "%40");
-		parsedPersistedKey += "@" + Datastore.SERVER;
+		parsedPersistedKey += "@" + Datastore.SERVER.substring(8);
 		assertTrue("Invalid persisted key for connection. Was \'" + persistedKeyValue + "\', "
-				+ "but was expected" + parsedPersistedKey,
+				+ "but was expected \'" + parsedPersistedKey + "\'",
 				persistedKeyValue.equals(parsedPersistedKey));
 		
 		assertTrue("Invalid host for connection. Was \'" + usernameValue + "\', but was expected"

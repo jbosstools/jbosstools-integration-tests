@@ -6,19 +6,21 @@ import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.jface.exception.JFaceLayerException;
 import org.jboss.reddeer.jface.viewer.handler.TreeViewerHandler;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.ButtonWithTextIsActive;
-import org.jboss.reddeer.swt.exception.SWTLayerException;
+import org.jboss.reddeer.swt.impl.button.CancelButton;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.FinishButton;
 import org.jboss.reddeer.swt.impl.button.OkButton;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.link.DefaultLink;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.text.DefaultText;
+import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
@@ -57,7 +59,7 @@ public class OpenShiftExplorerView extends WorkbenchView {
 		// there is either a link or context menu
 		try {
 			new ContextMenu(OpenShiftLabel.ContextMenu.NEW_CONNECTION).select();
-		} catch (SWTLayerException ex) {
+		} catch (CoreLayerException ex) {
 			new DefaultLink(OpenShiftLabel.TextLabels.NEW_CONNECTION).click();
 		}
 	}
@@ -70,22 +72,40 @@ public class OpenShiftExplorerView extends WorkbenchView {
 	 * @param password
 	 * @param storePassword whether password should be stored or not in security storage
 	 */
-	public void connectToOpenShift(String server, String username, String password, boolean storePassword, boolean useDefaultServer) {
+	public void connectToOpenShiftV2(String server, String username, String password, boolean storePassword, boolean useDefaultServer) {
+		connectToOpenShift(server, username, password, storePassword, useDefaultServer, ServerType.OPENSHIFT_2);
+		
+	}
+	
+	private void connectToOpenShift(String server, String username, String password, boolean storePassword, boolean useDefaultServer, 
+			ServerType serverType) {
+		
 		new DefaultShell("");
+		
+		new LabeledCombo(OpenShiftLabel.TextLabels.SERVER_TYPE).setSelection(serverType.toString());
+				
 		if (new CheckBox(0).isChecked() != useDefaultServer) {
 			new CheckBox(0).click();
 		}
 		
 		if (!useDefaultServer) {
-			new DefaultCombo(1).setText(server);
-		}
-		new DefaultText(0).setText(username);
-		new DefaultText(1).setText(password);
-		
-		if (new CheckBox(1).isChecked() != storePassword) {
-			new CheckBox(1).click();
+			new LabeledCombo(OpenShiftLabel.TextLabels.SERVER).setText(server);
 		}
 		
+		if (serverType.equals(ServerType.AUTOMATIC)) {
+			new PushButton(OpenShiftLabel.TextLabels.CHECK_SERVER_TYPE).click();
+			new WaitUntil(new ButtonWithTextIsActive(new CancelButton()), TimePeriod.NORMAL);
+		}
+		
+		new LabeledText(OpenShiftLabel.TextLabels.USERNAME).setText(username);
+		new LabeledText(OpenShiftLabel.TextLabels.PASSWORD).setText(password);
+		
+		if (serverType.equals(ServerType.OPENSHIFT_2)) {
+			if (new CheckBox(OpenShiftLabel.TextLabels.STORE_PASSWORD).isChecked() != storePassword) {
+				new CheckBox(OpenShiftLabel.TextLabels.STORE_PASSWORD).click();
+			}
+		}
+			
 		new WaitUntil(new ButtonWithTextIsActive(new FinishButton()), TimePeriod.NORMAL);
 		
 		new FinishButton().click();
@@ -221,6 +241,24 @@ public class OpenShiftExplorerView extends WorkbenchView {
 			item.collapse();
 			item.expand();
 			new WaitWhile(new JobIsRunning(), period);
+		}
+	}
+	
+	public enum ServerType {
+		
+		OPENSHIFT_2("OpenShift 2"), 
+		OPENSHIFT_3("OpenShift 3"),
+		AUTOMATIC("<Automatic>");
+		
+		private final String text;
+		
+		private ServerType(String text) {
+			this.text = text;
+		}
+		
+		@Override
+		public String toString() {
+			return text;
 		}
 	}
 }

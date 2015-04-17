@@ -8,11 +8,11 @@ import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.jface.viewer.handler.TreeViewerHandler;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.ButtonWithTextIsActive;
-import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.FinishButton;
 import org.jboss.reddeer.swt.impl.button.NextButton;
 import org.jboss.reddeer.swt.impl.button.OkButton;
@@ -56,7 +56,7 @@ public class ID804CreateServerAdapterTest {
 		try {
 			new DefaultTree();
 			new ContextMenu("New", "Server").select();
-		} catch (SWTLayerException ex) {
+		} catch (CoreLayerException ex) {
 			// There is no server, so create server via link
 			new DefaultLink("No servers are available. Click this link to create a new server...").click();
 		}

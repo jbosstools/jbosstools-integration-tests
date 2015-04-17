@@ -10,6 +10,7 @@ import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.swt.condition.ButtonWithTextIsActive;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
@@ -128,7 +129,7 @@ public class ID205ManageDomainTest {
 		try {
 			new DefaultTable().getItem(Datastore.X_DOMAIN);
 			fail("Domain should not exists in table.");
-		} catch (SWTLayerException ex) {
+		} catch (CoreLayerException ex) {
 			// PASS
 		}
 	}

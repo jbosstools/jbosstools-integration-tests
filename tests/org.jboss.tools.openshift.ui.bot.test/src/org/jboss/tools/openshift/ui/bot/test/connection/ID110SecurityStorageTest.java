@@ -2,6 +2,7 @@ package org.jboss.tools.openshift.ui.bot.test.connection;
 
 import static org.junit.Assert.assertTrue;
 
+import org.jboss.reddeer.common.exception.RedDeerException;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
@@ -9,7 +10,6 @@ import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.ButtonWithTextIsActive;
-import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.FinishButton;
 import org.jboss.reddeer.swt.impl.button.NoButton;
@@ -58,7 +58,7 @@ public class ID110SecurityStorageTest {
 		
 		new DefaultShell("").setFocus();
 		
-		new CheckBox(0).click();
+		new CheckBox(1).click();
 		new FinishButton().click();
 		
 		new DefaultShell(OpenShiftLabel.Shell.SECURE_STORAGE_PASSWORD).setFocus();
@@ -67,7 +67,7 @@ public class ID110SecurityStorageTest {
 		boolean firstStorage = true;
 		try {
 			new DefaultText(1).setText(pass);
-		} catch (SWTLayerException ex) {
+		} catch (RedDeerException ex) {
 			firstStorage = false;
 		}
 		
@@ -92,7 +92,7 @@ public class ID110SecurityStorageTest {
 		new DefaultTabItem("Contents").activate();
 		
 		new DefaultTreeItem(new DefaultTree(1), "[Default Secure Storage]", "org.jboss.tools.openshift.express.ui",
-				Datastore.SERVER, Datastore.USERNAME).select();
+				Datastore.SERVER.substring(8), Datastore.USERNAME).select();
 		
 		// Wheee - reactivation required
 		new DefaultTabItem("Contents").activate();
@@ -112,7 +112,7 @@ public class ID110SecurityStorageTest {
 		
 		new DefaultShell("").setFocus();
 		
-		new CheckBox(0).click();
+		new CheckBox(1).click();
 		new FinishButton().click();
 		
 		new WaitWhile(new JobIsRunning(), TimePeriod.getCustom(20));
