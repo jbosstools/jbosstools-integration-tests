@@ -21,7 +21,7 @@ public class ID107oHandleMoreAccountsTest {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 		
 		explorer.openConnectionShell();
-		explorer.connectToOpenShift(Datastore.X_SERVER,
+		explorer.connectToOpenShiftV2(Datastore.X_SERVER,
 				Datastore.X_USERNAME, Datastore.X_PASSWORD, false, false);
 		
 		try {

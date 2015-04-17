@@ -37,15 +37,9 @@ public class ID415DisableMavenBuildTest {
 		
 		ResourceNavigator navigator = new ResourceNavigator();
 		navigator.open();
-		Project eapProject = null;
-		for (Project project: navigator.getProjects()) {
-			if (project.getText().contains(applicationName)) {
-				eapProject = project;
-				break;
-			}
-		}
-		
+		Project eapProject = navigator.getProject(applicationName);
 		eapProject.select();
+		
 		assertTrue("Disable maven build marker has not been added into the project and application.",
 				containsMavenMarker(eapProject));
 	}

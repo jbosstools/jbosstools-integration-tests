@@ -9,6 +9,7 @@ import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.swt.api.TableItem;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.ButtonWithTextIsActive;
@@ -126,7 +127,7 @@ public class ID601EmbedCartridgeTest extends IDXXXCreateTestingApplication {
 			application.getItem("Cron 1.4 cron-1.4");
 			fail("There is tree item for embedded cartridge under application in OpenShift explorer view. "
 					+ "There is item with name \"" + application.getItems().get(0).getText() + "\"");
-		} catch (SWTLayerException ex) {
+		} catch (CoreLayerException ex) {
 			// pass
 		}
 	}

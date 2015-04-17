@@ -90,7 +90,7 @@ public class ID302OpenNewApplicationWizardWithoutConnectionTest {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 		if (!explorer.connectionExists(Datastore.USERNAME)) {
 			explorer.openConnectionShell();
-			explorer.connectToOpenShift(Datastore.SERVER, Datastore.USERNAME,
+			explorer.connectToOpenShiftV2(Datastore.SERVER, Datastore.USERNAME,
 					System.getProperty("user.pwd"), false, false);
 		}
 	}

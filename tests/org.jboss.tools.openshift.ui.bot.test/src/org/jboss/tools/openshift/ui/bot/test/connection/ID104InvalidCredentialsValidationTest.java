@@ -14,6 +14,7 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.openshift.ui.utils.Datastore;
 import org.jboss.tools.openshift.ui.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.ui.view.openshift.OpenShiftExplorerView;
+import org.jboss.tools.openshift.ui.view.openshift.OpenShiftExplorerView.ServerType;
 import org.junit.Test;
 
 /**
@@ -32,6 +33,8 @@ public class ID104InvalidCredentialsValidationTest {
 		new DefaultShell("");
 		
 		new CheckBox(0).click();
+		
+		new LabeledCombo(OpenShiftLabel.TextLabels.SERVER_TYPE).setSelection(ServerType.OPENSHIFT_2.toString());
 		
 		incorrectServer();
 		verify("server");
