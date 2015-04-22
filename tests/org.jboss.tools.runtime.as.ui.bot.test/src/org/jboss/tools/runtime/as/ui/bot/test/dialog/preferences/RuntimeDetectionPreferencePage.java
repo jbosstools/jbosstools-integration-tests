@@ -10,6 +10,7 @@ import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.swt.api.Button;
 import org.jboss.reddeer.swt.api.Table;
 import org.jboss.reddeer.swt.api.TableItem;
@@ -35,10 +36,9 @@ public class RuntimeDetectionPreferencePage extends WorkbenchPreferencePage {
 		super(PATH);
 	}
 
-	@Override
 	public void ok(){
 		new WaitWhile(new JobIsRunning());
-		super.ok();
+		new WorkbenchPreferenceDialog().ok();
 	}
 
 	public void removeAllPaths(){

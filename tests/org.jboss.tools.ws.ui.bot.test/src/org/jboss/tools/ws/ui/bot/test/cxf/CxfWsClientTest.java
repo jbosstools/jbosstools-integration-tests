@@ -52,7 +52,7 @@ public class CxfWsClientTest extends WSClientTestTemplate {
 		new WorkbenchPreferenceDialog().select(cxfPreferencePage);
 		cxfPreferencePage.add(CXF_HOME_LOCATION);
 		cxfPreferencePage.select(CXF_HOME_LOCATION);
-		cxfPreferencePage.ok();
+		new WorkbenchPreferenceDialog().ok();
 	}
 
 	@AfterClass

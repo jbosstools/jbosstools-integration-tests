@@ -173,7 +173,7 @@ public class Seam3TestBase {
 		SourceLookupPreferencePage sp = new SourceLookupPreferencePage();
 		preferenceDialog.select(sp);
 		sp.setSourceAttachment(SourceAttachmentEnum.NEVER);
-		sp.ok();
+		preferenceDialog.ok();
 	}
 	
 }

@@ -33,7 +33,7 @@ public abstract class CDI11TestBase {
 		preferenceDialog.select(sourceLookupPreferencePage);
 		sourceLookupPreferencePage.setSourceAttachment(
 				SourceLookupPreferencePage.SourceAttachmentEnum.NEVER);
-		sourceLookupPreferencePage.ok();
+		preferenceDialog.ok();
 	}
 	
 	@Before

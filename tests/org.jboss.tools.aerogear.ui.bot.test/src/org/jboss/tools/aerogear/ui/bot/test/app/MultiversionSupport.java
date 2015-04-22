@@ -19,6 +19,7 @@ import org.jboss.tools.aerogear.reddeer.ui.config.ConfigEditor;
 import org.jboss.tools.aerogear.reddeer.ui.properties.EnginePropertyPage;
 import org.jboss.tools.aerogear.ui.bot.test.AerogearBotTest;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
+import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.tools.vpe.ui.bot.test.tools.BrowserSimHandler;
 import org.junit.Test;
@@ -75,7 +76,7 @@ public class MultiversionSupport extends AerogearBotTest {
 		versions.remove(propEngineVersion);
 		String newVersion = versions.get(0);
 		enginePropertyPage.checkVersion(newVersion);
-		enginePropertyPage.ok();
+		new WorkbenchPreferenceDialog().ok();
 		// Run project with new mobile engine version
 		console.clearConsole();
 		projectExplorer.selectProject(CORDOVA_PROJECT_NAME);

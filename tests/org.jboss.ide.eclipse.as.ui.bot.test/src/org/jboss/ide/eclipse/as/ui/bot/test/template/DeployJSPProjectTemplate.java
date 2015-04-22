@@ -9,6 +9,7 @@ import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
 import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
@@ -68,7 +69,7 @@ public abstract class DeployJSPProjectTemplate extends AbstractJBossServerTempla
 		RuntimesPropertyPage targetedRuntimes = new RuntimesPropertyPage(project);
 		targetedRuntimes.open();
 		targetedRuntimes.selectRuntime(requirement.getRuntimeNameLabelText(requirement.getConfig()));
-		targetedRuntimes.ok();
+		new WorkbenchPreferenceDialog().ok();
 	}
 
 	@Before

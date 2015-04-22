@@ -104,7 +104,7 @@ public class TicketMonsterBaseTest {
 		MavenPreferencePage mpreferencesp = new MavenPreferencePage();
 		preferenceDialog.select(mpreferencesp);
 		mpreferencesp.updateIndexesOnStartup(false);
-		mpreferencesp.ok();
+		preferenceDialog.ok();
 		
 		preferenceDialog.open();
 		MavenUserPreferencePage mpreferences = new MavenUserPreferencePage();
@@ -203,7 +203,7 @@ public class TicketMonsterBaseTest {
 		
 		for(Runtime runtime: rp.getServerRuntimes()){
 			if(runtime.getName().equals(EAP_61_RUNTIME)){
-				rp.ok();
+				preferenceDialog.ok();
 			}
 		}
 		NewRuntimeWizardDialog rd = rp.addRuntime();
@@ -212,7 +212,7 @@ public class TicketMonsterBaseTest {
 		new LabeledText("Home Directory").setText(homeDir);
 		new LabeledText("Name").setText(EAP_61_RUNTIME);
 		rd.finish();
-		rp.ok();
+		preferenceDialog.ok();
 	}
 	
 
@@ -227,7 +227,7 @@ public class TicketMonsterBaseTest {
 		} else {
 			rd.cancel();
 		}
-		new ConfiguratorPreferencePage().ok();
+		preferenceDialog.ok();
 	}
 	
 	protected void addEnterpriseRepo(){
@@ -238,7 +238,7 @@ public class TicketMonsterBaseTest {
 		rd.open();
 		rd.chooseRepositoryFromList("redhat-techpreview-all-repository", true);
 		rd.confirm();
-		new ConfiguratorPreferencePage().ok();
+		preferenceDialog.ok();
 	}
 	
 	protected void createJavaClass(String name, String classPackage){

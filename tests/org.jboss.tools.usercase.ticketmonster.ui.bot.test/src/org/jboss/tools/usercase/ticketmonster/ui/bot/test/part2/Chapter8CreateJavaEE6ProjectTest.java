@@ -64,7 +64,7 @@ public class Chapter8CreateJavaEE6ProjectTest extends AbstractPart2Test{
 		cw = pp.configureRepositories();
 		cw.removeRepo(repo);
 		cw.confirm();
-		pp.ok();
+		preferenceDialog.ok();
 		changeLocalRepo(path);
 		testNumber++;
 		removeAllRuntimes();

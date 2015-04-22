@@ -4,6 +4,7 @@ import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.swt.api.Button;
 import org.jboss.reddeer.swt.api.Text;
 import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
@@ -61,7 +62,6 @@ public class MavenUserPreferencePage extends WorkbenchPreferencePage{
 		return text.getMessage();
 	}
 	
-	@Override
 	public void ok(){
 		new PushButton("Apply").click();
 		try{
@@ -72,8 +72,7 @@ public class MavenUserPreferencePage extends WorkbenchPreferencePage{
 			log.info("Update project required shell was not found.");
 		} finally {
 			new WaitWhile(new JobIsRunning(),TimePeriod.VERY_LONG);
-			super.ok();
+			new WorkbenchPreferenceDialog().ok();
 		}
 	}
-
 }

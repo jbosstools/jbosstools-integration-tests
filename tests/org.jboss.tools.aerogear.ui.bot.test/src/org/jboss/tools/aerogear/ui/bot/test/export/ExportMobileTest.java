@@ -40,7 +40,7 @@ public class ExportMobileTest extends AerogearBotTest {
       preferenceDialog.open();
       preferenceDialog.select(androidPreferencesPage);
       androidPreferencesPage.setAndroidSDKLocation(androidSDKLocation);
-      androidPreferencesPage.ok();
+      preferenceDialog.ok();
     }
 
     super.setUp();

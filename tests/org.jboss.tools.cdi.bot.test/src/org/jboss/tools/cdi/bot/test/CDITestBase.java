@@ -103,7 +103,7 @@ public class CDITestBase{
 		preferenceDialog.select(sourceLookupPreferencePage);
 		sourceLookupPreferencePage.setSourceAttachment(
 				SourceLookupPreferencePage.SourceAttachmentEnum.NEVER);
-		sourceLookupPreferencePage.ok();
+		preferenceDialog.ok();
 		new WaitUntil(new ShellWithTextIsActive(originalShellText));
 	}
 	

@@ -51,7 +51,7 @@ public class ArchivePreferencesTest extends ArchivesTestBase {
 		preferenceDialog.open();
 		preferenceDialog.select(archivesPreferencePage);
 		checkAllSettingsInArchivePreferencePage(archivesPreferencePage);
-		archivesPreferencePage.ok();
+		preferenceDialog.ok();
 	
 	}
 

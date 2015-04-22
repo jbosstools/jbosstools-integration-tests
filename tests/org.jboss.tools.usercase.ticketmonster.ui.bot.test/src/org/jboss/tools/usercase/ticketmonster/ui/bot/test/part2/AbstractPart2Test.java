@@ -15,7 +15,7 @@ public abstract class AbstractPart2Test extends TicketMonsterBaseTest{
 		RuntimePreferencePage rp = new RuntimePreferencePage();
 		preferenceDialog.select(rp);		
 		rp.removeAllRuntimes();
-		rp.ok();
+		preferenceDialog.ok();
 	}
 
 }
