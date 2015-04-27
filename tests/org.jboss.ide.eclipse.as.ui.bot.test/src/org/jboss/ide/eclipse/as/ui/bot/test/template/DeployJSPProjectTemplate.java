@@ -6,10 +6,12 @@ import org.jboss.ide.eclipse.as.reddeer.server.view.JBossServer;
 import org.jboss.ide.eclipse.as.ui.bot.test.Activator;
 import org.jboss.ide.eclipse.as.ui.bot.test.condition.EditorWithBrowserContainsTextCondition;
 import org.jboss.reddeer.common.logging.Logger;
+import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
 import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
@@ -19,7 +21,7 @@ import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewEnums.ServerPubli
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewEnums.ServerState;
 import org.jboss.reddeer.eclipse.wst.server.ui.wizard.ModifyModulesDialog;
 import org.jboss.reddeer.eclipse.wst.server.ui.wizard.ModifyModulesPage;
-import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -69,7 +71,10 @@ public abstract class DeployJSPProjectTemplate extends AbstractJBossServerTempla
 		RuntimesPropertyPage targetedRuntimes = new RuntimesPropertyPage(project);
 		targetedRuntimes.open();
 		targetedRuntimes.selectRuntime(requirement.getRuntimeNameLabelText(requirement.getConfig()));
-		new WorkbenchPreferenceDialog().ok();
+		
+		OkButton ok = new OkButton();
+		ok.click();
+		new WaitWhile(new ShellWithTextIsAvailable(targetedRuntimes.getPageTitle())); 
 	}
 
 	@Before
