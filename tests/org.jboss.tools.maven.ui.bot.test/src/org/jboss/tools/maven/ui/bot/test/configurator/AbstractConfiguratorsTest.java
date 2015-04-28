@@ -16,10 +16,13 @@ import static org.junit.Assert.assertTrue;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
+import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jst.ejb.ui.EjbProjectFirstPage;
 import org.jboss.reddeer.eclipse.jst.ejb.ui.EjbProjectWizard;
+import org.jboss.reddeer.eclipse.utils.DeleteUtils;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
@@ -63,7 +66,13 @@ public abstract class AbstractConfiguratorsTest extends AbstractMavenSWTBotTest{
 	public void deleteProjects(){
 		ProjectExplorer pe = new ProjectExplorer();
         pe.open();
-        pe.deleteAllProjects();
+        try{
+        	pe.deleteAllProjects();
+        } catch (SWTLayerException ex){
+        	for(Project p: pe.getProjects()){
+        		DeleteUtils.forceProjectDeletion(p, true);
+        	}
+        }
 	}
 	
 	public void addPersistence(String projectName) throws FileNotFoundException{

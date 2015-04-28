@@ -49,12 +49,12 @@ import org.junit.runners.Suite;
 	JPAConfiguratorTest.class,
 	JSFConfiguratorTest.class,
 	
-	SeamConfiguratorTest.class,
+	//SeamConfiguratorTest.class,
 
 	CDIConfiguratorTest.class, 
 	
 	JAXRSConfiguratorTest.class,
-	PortletConfiguratorTest.class,
+	//PortletConfiguratorTest.class,
 	
 	MavenRepositories.class,
 	
