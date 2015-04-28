@@ -39,4 +39,9 @@ public class CloseAllEditorsRequirement implements Requirement<CloseAllEditors> 
 	public void setDeclaration(CloseAllEditors declaration) {
 		
 	}
+	
+	@Override
+	public void cleanUp() {
+		// nothing to do
+	}
 }

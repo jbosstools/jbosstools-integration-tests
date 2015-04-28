@@ -1,7 +1,5 @@
 package org.jboss.ide.eclipse.as.reddeer.server.requirement;
 
-import static org.junit.Assert.assertTrue;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -12,21 +10,23 @@ import org.jboss.ide.eclipse.as.reddeer.server.wizard.NewServerWizardDialog;
 import org.jboss.ide.eclipse.as.reddeer.server.wizard.page.JBossRuntimeWizardPage;
 import org.jboss.ide.eclipse.as.reddeer.server.wizard.page.NewServerAdapterPage;
 import org.jboss.ide.eclipse.as.reddeer.server.wizard.page.NewServerAdapterPage.Profile;
-import org.jboss.ide.eclipse.as.reddeer.server.wizard.page.NewServerWizardPageWithErrorCheck;
 import org.jboss.ide.eclipse.as.reddeer.server.wizard.page.NewServerRSIWizardPage;
+import org.jboss.ide.eclipse.as.reddeer.server.wizard.page.NewServerWizardPageWithErrorCheck;
+import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.eclipse.rse.ui.view.System;
 import org.jboss.reddeer.eclipse.rse.ui.view.SystemView;
 import org.jboss.reddeer.eclipse.rse.ui.wizard.NewConnectionWizardDialog;
 import org.jboss.reddeer.eclipse.rse.ui.wizard.NewConnectionWizardMainPage;
 import org.jboss.reddeer.eclipse.rse.ui.wizard.NewConnectionWizardSelectionPage;
 import org.jboss.reddeer.eclipse.rse.ui.wizard.NewConnectionWizardSelectionPage.SystemType;
-import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.junit.requirement.CustomConfiguration;
 import org.jboss.reddeer.junit.requirement.Requirement;
 import org.jboss.reddeer.requirements.server.ConfiguredServerInfo;
 import org.jboss.reddeer.requirements.server.IServerReqConfig;
 import org.jboss.reddeer.requirements.server.ServerReqBase;
 import org.jboss.reddeer.requirements.server.ServerReqState;
+
+import static org.junit.Assert.assertTrue;
 
 
 /**
@@ -50,6 +50,7 @@ public class ServerRequirement extends ServerReqBase implements Requirement<JBos
 		ServerReqState state() default ServerReqState.RUNNING;
 		ServerReqType type() default ServerReqType.ANY;
 		ServerReqVersion version() default ServerReqVersion.EQUAL;
+		boolean cleanup() default false;
 	}
 	
 	
@@ -97,6 +98,14 @@ public class ServerRequirement extends ServerReqBase implements Requirement<JBos
 	@Override
 	public void setConfiguration(ServerRequirementConfig config) {
 		this.config = config;
+	}
+	
+	@Override
+	public void cleanUp() {
+		if(server.cleanup() && config != null){
+			removeLastRequiredServerAndRuntime(lastServerConfiguration);
+			lastServerConfiguration = null;
+		}
 	}
 
 	public ServerRequirementConfig getConfig() {
