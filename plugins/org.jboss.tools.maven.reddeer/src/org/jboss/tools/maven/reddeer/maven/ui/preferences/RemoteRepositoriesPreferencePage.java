@@ -1,5 +1,6 @@
 package org.jboss.tools.maven.reddeer.maven.ui.preferences;
 
+import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -44,7 +45,7 @@ public class RemoteRepositoriesPreferencePage extends WorkbenchPreferencePage{
 	public Repository getRepository(String name){
 		try{
 			new DefaultTable().select(name);
-		}	catch(SWTLayerException ex){
+		}	catch(CoreLayerException ex){
 			return null;
 		}
 		new PushButton("Edit...").click();

@@ -49,6 +49,7 @@ public class JSFProjectTest extends AbstractMavenSWTBotTest{
     @InjectRequirement
     private ServerRequirement sr;
     
+    /*
     @BeforeClass
     public static void openPerspective(){
         new ShellMenu("Window","Open Perspective","Other...").select();
@@ -58,7 +59,7 @@ public class JSFProjectTest extends AbstractMavenSWTBotTest{
         new WaitWhile(new ShellWithTextIsAvailable("Open Perspective"));
     }
 
-	
+	*/
 	@Test
 	public void createJSFProjectTest_AS7_JSFv2(){
 		createJSFProject(PROJECT_NAME7, "JSF 2.0", "JSFKickStartWithoutLibs", sr.getRuntimeNameLabelText(sr.getConfig()));
