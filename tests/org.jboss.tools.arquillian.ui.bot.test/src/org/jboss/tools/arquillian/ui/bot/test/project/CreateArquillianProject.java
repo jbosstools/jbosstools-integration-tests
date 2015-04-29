@@ -38,6 +38,8 @@ public class CreateArquillianProject extends AbstractArquillianTestCase{
 		thirdPage.setGAV(PROJECT_NAME, PROJECT_NAME, null);
 		
 		wizard.finish();
+		
+		forceMavenRepositoryUpdate();
 	}
 
 	@Test

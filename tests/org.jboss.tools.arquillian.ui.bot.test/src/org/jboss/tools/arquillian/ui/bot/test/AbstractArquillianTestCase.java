@@ -9,6 +9,7 @@ import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.ui.problems.Problem;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
+import org.jboss.tools.arquillian.ui.bot.reddeer.maven.UpdateMavenProjectDialog;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -46,5 +47,13 @@ public abstract class AbstractArquillianTestCase {
 		
 		List<Problem> problems = view.getProblems(ProblemType.ERROR);
 		assertThat("There are errors", problems, is((List) new ArrayList<Problem>()));
+	}
+	
+	protected void forceMavenRepositoryUpdate() {
+		log.step("Force Maven update snapshots/releases");
+		UpdateMavenProjectDialog dialog = new UpdateMavenProjectDialog();
+		dialog.open(getProject());
+		dialog.forceUpdate(true);
+		dialog.ok();
 	}
 }
