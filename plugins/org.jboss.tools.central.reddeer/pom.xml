@@ -10,6 +10,4 @@
 	<groupId>org.jboss.tools.central</groupId>
 	<artifactId>org.jboss.tools.central.reddeer</artifactId>
 	<packaging>eclipse-plugin</packaging>
-
-	<version>4.3.0.SNAPSHOT</version>
 </project>
