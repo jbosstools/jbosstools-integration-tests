@@ -11,7 +11,7 @@
 package org.jboss.tools.vpe.ui.bot.test.browsersim;
 
 import org.jboss.tools.ui.bot.test.JBTSWTBotTestCase;
-import org.jboss.tools.vpe.ui.bot.test.tools.BrowserSimHandler;
+import org.jboss.tools.browsersim.reddeer.BrowserSimHandler;
 import org.junit.After;
 /**
  * Parent test for BrowserSim tests

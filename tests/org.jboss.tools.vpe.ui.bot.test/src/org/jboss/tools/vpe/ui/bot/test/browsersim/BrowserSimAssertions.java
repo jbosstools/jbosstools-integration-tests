@@ -13,7 +13,7 @@ package org.jboss.tools.vpe.ui.bot.test.browsersim;
 import static org.junit.Assert.assertTrue;
 
 import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
-import org.jboss.tools.vpe.ui.bot.test.tools.BrowserSimHandler;
+import org.jboss.tools.browsersim.reddeer.BrowserSimHandler;
 
 /**
  * Assertions for BrowserSim tests

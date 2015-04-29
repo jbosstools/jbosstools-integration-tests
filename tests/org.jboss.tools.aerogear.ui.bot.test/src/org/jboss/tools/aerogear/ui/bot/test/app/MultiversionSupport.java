@@ -21,7 +21,7 @@ import org.jboss.tools.aerogear.ui.bot.test.AerogearBotTest;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
-import org.jboss.tools.vpe.ui.bot.test.tools.BrowserSimHandler;
+import org.jboss.tools.browsersim.reddeer.BrowserSimHandler;
 import org.junit.Test;
 
 /**

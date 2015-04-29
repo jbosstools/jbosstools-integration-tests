@@ -13,7 +13,7 @@ package org.jboss.tools.aerogear.ui.bot.test.app;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
 import org.jboss.tools.aerogear.ui.bot.test.AerogearBotTest;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
-import org.jboss.tools.vpe.ui.bot.test.tools.BrowserSimHandler;
+import org.jboss.tools.browsersim.reddeer.BrowserSimHandler;
 import org.junit.Test;
 /**
  * Checks displaying of Java Script errors and messages 

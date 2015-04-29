@@ -13,7 +13,7 @@ package org.jboss.tools.aerogear.ui.bot.test.app;
 import org.jboss.tools.aerogear.ui.bot.test.AerogearBotTest;
 import org.jboss.tools.ui.bot.ext.SWTUtilExt;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
-import org.jboss.tools.vpe.ui.bot.test.tools.BrowserSimHandler;
+import org.jboss.tools.browsersim.reddeer.BrowserSimHandler;
 import org.junit.Test;
 
 @Require(clearWorkspace = true, perspective = "JBoss")

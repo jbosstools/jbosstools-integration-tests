@@ -12,7 +12,8 @@ package org.jboss.tools.vpe.ui.bot.test.browsersim;
 
 import org.apache.log4j.Logger;
 import org.jboss.tools.ui.bot.ext.Timing;
-import org.jboss.tools.vpe.ui.bot.test.tools.BrowserSimHandler;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.tools.browsersim.reddeer.BrowserSimHandler;
 /**
  * Tests loading URL in BrowserSim
  * @author Vladimir Pakan
@@ -28,18 +29,18 @@ public class BrowserSimLoadUrlTest extends BrowserSimTest{
 	  // loads URL when BrowserSim is starting
 	  String urlToLoad = "www.github.com";
 	  log.info("BrowserSim is loading url: " + urlToLoad);
-		browserSimHandler = new BrowserSimHandler(urlToLoad , bot , Timing.time10S());
+		browserSimHandler = new BrowserSimHandler(urlToLoad, TimePeriod.NORMAL);
 		BrowserSimAssertions.assertBrowserTextContains(browserSimHandler, "<title>GitHub");
 		// loads URL via Browser widget
 		urlToLoad = "http://www.eurosport.com/";
 		log.info("BrowserSim is loading url: " + urlToLoad);
-		browserSimHandler.loadUrlToBrowser(urlToLoad , Timing.time10S());
+		browserSimHandler.loadUrlToBrowser(urlToLoad , TimePeriod.NORMAL);
 		BrowserSimAssertions.assertBrowserTextContains(browserSimHandler, "<title>Eurosport.com");
 		BrowserSimAssertions.assertAddressBarContains(browserSimHandler,"www.eurosport");
 		BrowserSimAssertions.assertTitleBarContains(browserSimHandler,"Eurosport");
 		// loads URL via address bar
 		urlToLoad = "www.jboss.org/tools";
-		browserSimHandler.loadUrlFromAddressBar(urlToLoad , Timing.time20S());
+		browserSimHandler.loadUrlFromAddressBar(urlToLoad , TimePeriod.getCustom(TIME_20S));
     BrowserSimAssertions.assertBrowserTextContains(browserSimHandler, "<title>JBoss Tools");
     BrowserSimAssertions.assertAddressBarContains(browserSimHandler,urlToLoad);
     BrowserSimAssertions.assertTitleBarContains(browserSimHandler,"JBoss Tools");

@@ -12,7 +12,7 @@ package org.jboss.tools.vpe.ui.bot.test.browsersim;
 
 import org.eclipse.swt.widgets.Menu;
 import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
-import org.jboss.tools.vpe.ui.bot.test.tools.BrowserSimHandler;
+import org.jboss.tools.browsersim.reddeer.BrowserSimHandler;
 /**
  * Tests BrowserSim Context Menu
  * @author Vladimir Pakan
@@ -24,7 +24,7 @@ public class BrowserSimContextMenuTest extends BrowserSimTest{
    * Checks BrowserSim root context menu
    */
 	public void testBrowserSimContextMenu(){
-		browserSimHandler = new BrowserSimHandler(bot);
+		browserSimHandler = new BrowserSimHandler();
 		Menu browserSimContextMenu = browserSimHandler.openBrowserSimContextMenu();
 		BrowserSimAssertions.assertMenuContent(ContextMenuHelper.getMenuItemLabels(browserSimContextMenu),
 		    new String[]{"Use Skins",

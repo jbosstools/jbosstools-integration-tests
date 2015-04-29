@@ -19,7 +19,8 @@ import org.jboss.tools.ui.bot.ext.parts.SWTBotEditorExt;
 import org.jboss.tools.vpe.ui.bot.test.VPEAutoTestCase;
 import org.jboss.tools.vpe.ui.bot.test.browsersim.BrowserSimAssertions;
 import org.jboss.tools.vpe.ui.bot.test.editor.VPEEditorTestCase;
-import org.jboss.tools.vpe.ui.bot.test.tools.BrowserSimHandler;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.tools.browsersim.reddeer.BrowserSimHandler;
 import org.junit.After;
 /**
  * Tests LiveReload functionality in BrowserSim
@@ -58,7 +59,7 @@ public class BrowserSimLiveReloadTest extends VPEEditorTestCase{
 	      + "/WebContent/pages/" 
 	      + BrowserSimLiveReloadTest.TEST_PAGE_NAME;
 	  log.info("BrowserSim is loading url: " + urlToLoad);
-		browserSimHandler = new BrowserSimHandler(urlToLoad , bot , Timing.time5S());
+		browserSimHandler = new BrowserSimHandler(urlToLoad, TimePeriod.NORMAL);
 		BrowserSimAssertions.assertBrowserTextContains(browserSimHandler, headingV0);
 		final String headingV1 = "<h2>LiveReload Test heading version 1</h2>";
 		final String pageTextV1 = "<!DOCTYPE html>\n" + 
@@ -98,7 +99,7 @@ public class BrowserSimLiveReloadTest extends VPEEditorTestCase{
 		edLiveReloadServer.save();
 		edLiveReloadServer.close();
 		servers.restartServer(LiveReloadServerTest.SERVER_NAME);
-		browserSimHandler.loadUrlFromAddressBar(urlToLoad, Timing.time5S());
+		browserSimHandler.loadUrlFromAddressBar(urlToLoad, TimePeriod.NORMAL);
 		BrowserSimAssertions.assertBrowserTextContains(browserSimHandler, headingV1);
 		// change page and test LiveReload propagating change
     editor.setText(pageTextV0);
