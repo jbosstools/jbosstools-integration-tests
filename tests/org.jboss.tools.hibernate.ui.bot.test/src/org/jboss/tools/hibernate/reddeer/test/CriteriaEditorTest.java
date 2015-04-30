@@ -172,7 +172,7 @@ public class CriteriaEditorTest extends HibernateRedDeerTest {
 		
     	QueryPageTabView result = new QueryPageTabView();
     	result.open();	
-    	assertTrue("Query result items expected", result.getResultItems().size() > 10);
+    	assertTrue("Query result items expected - known issue https://issues.jboss.org/browse/JBIDE-19743", result.getResultItems().size() > 10);
 	}
    
 	@After
