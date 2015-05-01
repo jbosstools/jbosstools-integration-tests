@@ -37,7 +37,7 @@ public class MylynTestValidate {
 	protected final String TASKNOTE = "a sample note for a sample task in Mylyn";
 
 	@Test
-	public void testIt() {
+	public void testValidate() {
 		
 		TaskRepositoriesView view = new TaskRepositoriesView();
 		
