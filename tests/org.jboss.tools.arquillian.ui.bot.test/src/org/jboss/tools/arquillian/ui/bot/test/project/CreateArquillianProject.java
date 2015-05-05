@@ -2,6 +2,8 @@ package org.jboss.tools.arquillian.ui.bot.test.project;
 
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.eclipse.core.resources.Project;
+import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.tools.arquillian.ui.bot.reddeer.support.AddArquillianSupportDialog;
 import org.jboss.tools.arquillian.ui.bot.test.AbstractArquillianTestCase;
@@ -20,6 +22,7 @@ import org.junit.Test;
  * @author Lucia Jelinkova
  *
  */
+@OpenPerspective(JavaPerspective.class)
 public class CreateArquillianProject extends AbstractArquillianTestCase{
 
 	private static final Logger log = Logger.getLogger(CreateArquillianProject.class);

@@ -18,6 +18,7 @@
 <bundle id="org.jboss.ide.eclipse.as.reddeer"><category name="JBoss Tools Core - Integration Tests"/></bundle>
 <bundle id="org.jboss.tools.aerogear.reddeer"><category name="JBoss Tools Core - Integration Tests"/></bundle>
 <bundle id="org.jboss.tools.archives.reddeer"><category name="JBoss Tools Core - Integration Tests"/></bundle>
+<bundle id="org.jboss.tools.arquillian.reddeer"><category name="JBoss Tools Core - Integration Tests"/></bundle>
 <bundle id="org.jboss.tools.arquillian.ui.bot.test"><category name="JBoss Tools Core - Integration Tests"/></bundle>
 <bundle id="org.jboss.tools.cdi.reddeer"><category name="JBoss Tools Core - Integration Tests"/></bundle>
 <bundle id="org.jboss.tools.common.reddeer"><category name="JBoss Tools Core - Integration Tests"/></bundle>
@@ -65,6 +66,7 @@
 <bundle id="org.jboss.ide.eclipse.as.reddeer.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
 <bundle id="org.jboss.tools.aerogear.reddeer.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
 <bundle id="org.jboss.tools.archives.reddeer.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
+<bundle id="org.jboss.tools.arquillian.reddeer.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
 <bundle id="org.jboss.tools.arquillian.ui.bot.test.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
 <bundle id="org.jboss.tools.cdi.reddeer.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
 <bundle id="org.jboss.tools.common.reddeer.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
