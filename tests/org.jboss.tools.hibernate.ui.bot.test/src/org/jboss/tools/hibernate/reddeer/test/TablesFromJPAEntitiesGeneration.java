@@ -141,15 +141,15 @@ public class TablesFromJPAEntitiesGeneration extends HibernateRedDeerTest {
     
     private void testDDLGenerationEcl(boolean useConsole) {
     	prepareEclipseProject();
-    	testDDLGeneration(useConsole,"src");
+    	testDDLGeneration(useConsole,"src",hbVersion);
     }    
     
     private void testDDLGenerationMvn(boolean useConsole) {
     	prepareMavenProject();
-    	testDDLGeneration(useConsole,"src/main/java");
+    	testDDLGeneration(useConsole,"src/main/java",hbVersion);
     }
     
-	private void testDDLGeneration(boolean useConsole, String pkg) {
+	private void testDDLGeneration(boolean useConsole, String pkg, String hbVersion) {
 		
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
@@ -160,6 +160,9 @@ public class TablesFromJPAEntitiesGeneration extends HibernateRedDeerTest {
 		GenerateDdlWizardPage p = new GenerateDdlWizardPage();
 		p.setFileName(DDL_FILE);
 		p.setUseConsoleConfiguration(useConsole);
+		if (!useConsole) {
+			p.setHibernateVersion(hbVersion);
+		}
 		log.step("Click finish to generate ddl");
 		w.finish();
 
