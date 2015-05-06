@@ -2,6 +2,7 @@ package org.jboss.tools.hibernate.reddeer.wizard;
 
 import org.jboss.reddeer.jface.wizard.WizardPage;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
+import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 
 /**
@@ -36,4 +37,12 @@ public class GenerateDdlWizardPage extends WizardPage {
 		}
 	}
 	
+	/**
+	 * Set Hibernate Version for table/ddl generation
+	 * @param hbVersion hibernate version 
+	 */
+	public void setHibernateVersion(String hbVersion) {
+		LabeledCombo lc = new LabeledCombo("Hibernate Version:");
+		lc.setSelection(hbVersion);
+	}
 }
