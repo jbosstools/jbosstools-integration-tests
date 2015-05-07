@@ -9,7 +9,9 @@ import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.wst.common.project.facet.ui.FacetsPropertyPage;
 import org.jboss.reddeer.requirements.db.DatabaseConfiguration;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.button.OkButton;
@@ -24,8 +26,6 @@ import org.jboss.reddeer.uiforms.impl.hyperlink.DefaultHyperlink;
 import org.jboss.tools.hibernate.reddeer.dialog.ProjectFacetsPage;
 import org.jboss.tools.hibernate.reddeer.dialog.ProjectPropertyDialog;
 import org.jboss.tools.hibernate.reddeer.editor.JpaXmlEditor;
-import org.jboss.tools.hibernate.reddeer.entity.FacetDefinition;
-import org.jboss.tools.hibernate.reddeer.entity.Facets;
 import org.jboss.tools.hibernate.reddeer.wizard.JPAFacetWizardPage;
 
 
@@ -77,16 +77,17 @@ public class ProjectConfigurationFactory {
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		pe.selectProjects(prj);
+		Project project = pe.getProject(prj);
+		
 		ProjectPropertyDialog prjDlg = new ProjectPropertyDialog(prj);
 		prjDlg.open();
 		prjDlg.select("Project Facets");
 		
-		List<FacetDefinition> fd = new ArrayList<FacetDefinition>();
-		if (jpaVersion.equals("2.0"))
-			fd.add(Facets.JPA20);
-		else 
-			fd.add(Facets.JPA21);
-		setProjectFacets(fd);
+		FacetsPropertyPage pp = new FacetsPropertyPage(project);
+		pp.selectFacet("JPA");
+		pp.selectVersion("JPA",jpaVersion);
+		addFurtherJPAConfiguration(jpaVersion);
+				
 		prjDlg.ok();
 		
 		prjDlg.open();		
@@ -122,17 +123,7 @@ public class ProjectConfigurationFactory {
 		assertTrue("persistence.xml cannot be empty", sourceText.length() > 0);
 	}
 	
-	private static void setProjectFacets(List<FacetDefinition> facets) {
-		List<TreeItem> items = new DefaultTree(1).getItems();
-		for (FacetDefinition facet : facets) {
-			for (TreeItem item : items) {
-				if (item.getText().equals(facet.getName())) {
-					item.setChecked(true);
-					changeVersion(facet, item);
-					break;
-				}
-			}		
-		}
+	private static void addFurtherJPAConfiguration(String jpaVersion) {	
 
 		DefaultHyperlink hyperlink = new DefaultHyperlink();
 		hyperlink.activate();	
@@ -140,7 +131,7 @@ public class ProjectConfigurationFactory {
 		new WaitUntil(new ShellWithTextIsActive("Modify Faceted Project"));
 		DefaultGroup group = new DefaultGroup("Platform");
 				
-		new DefaultCombo(group).setSelection("Hibernate (JPA " + facets.get(0).getVersion() + ")");
+		new DefaultCombo(group).setSelection("Hibernate (JPA " + jpaVersion + ")");
 		
 		
 		new LabeledCombo("Type:").setSelection("Disable Library Configuration");
@@ -150,13 +141,6 @@ public class ProjectConfigurationFactory {
 	}
 	
 	
-	private static void changeVersion(FacetDefinition facet, TreeItem facetTreeItem) {
-		if (facet.getVersion() != null){
-			facetTreeItem.select();
-			new ContextMenu("Change Version...").select();
-			new LabeledCombo("Version:").setSelection(facet.getVersion());
-			new PushButton("OK").click();
-		}
-	}
+
 
 }
