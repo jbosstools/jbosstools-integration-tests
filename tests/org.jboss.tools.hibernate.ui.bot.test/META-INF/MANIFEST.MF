@@ -27,4 +27,5 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Eclipse-BundleShape: jar
 Bundle-Localization: plugin
 Bundle-Vendor: JBoss by Red Hat
-Export-Package: org.jboss.tools.hibernate.ui.bot.test
+Export-Package: org.jboss.tools.hibernate.reddeer.test,
+ org.jboss.tools.hibernate.ui.bot.test

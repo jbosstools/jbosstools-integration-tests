@@ -6,7 +6,10 @@ Bundle-Version: 4.3.0.qualifier
 Bundle-Activator: org.jboss.tools.smoke.ui.test.PluginActivator
 Require-Bundle: org.eclipse.core.runtime,
  org.junit;bundle-version="4.8.1",
- org.eclipse.ui
+ org.eclipse.ui,
+ org.jboss.tools.hibernate.reddeer;bundle-version="4.3.0",
+ org.jboss.tools.hibernate.ui.bot.test;bundle-version="4.3.0",
+ org.jboss.reddeer.junit
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Eclipse-BundleShape: jar
