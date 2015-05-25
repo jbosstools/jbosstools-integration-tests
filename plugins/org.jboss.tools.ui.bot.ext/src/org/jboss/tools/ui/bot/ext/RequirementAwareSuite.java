@@ -54,15 +54,15 @@ public class RequirementAwareSuite extends Suite {
 	final Filter categoryFilter;
 
 	public static class CategoryFilter extends Filter {
-		public static CategoryFilter include(Class<?> categoryType) {
+		public static CategoryFilter include(Class<?>[] categoryType) {
 			return new CategoryFilter(categoryType, null);
 		}
 
-		private final Class<?> fIncluded;
-		private final Class<?> fExcluded;
+		private final Class<?>[] fIncluded;
+		private final Class<?>[] fExcluded;
 
-		public CategoryFilter(Class<?> includedCategory,
-				Class<?> excludedCategory) {
+		public CategoryFilter(Class<?>[] includedCategory,
+				Class<?>[] excludedCategory) {
 			fIncluded = includedCategory;
 			fExcluded = excludedCategory;
 		}
@@ -86,13 +86,29 @@ public class RequirementAwareSuite extends Suite {
 			List<Class<?>> categories = categories(description);
 			if (categories.isEmpty())
 				return fIncluded == null;
-			for (Class<?> each : categories)
-				if (fExcluded != null && fExcluded.isAssignableFrom(each))
+			for (Class<?> category : categories)
+				if (fExcluded != null && containsClassAssignableFrom(fExcluded,category))
 					return false;
-			for (Class<?> each : categories)
-				if (fIncluded == null || fIncluded.isAssignableFrom(each))
+			for (Class<?> category : categories)
+				if (fIncluded == null || containsClassAssignableFrom(fIncluded,category))
 					return true;
 			return false;
+		}
+		
+		private boolean containsClassAssignableFrom(Class<?>[] assignableFromClasses , Class<?> klass){
+			boolean isAssignable = false;
+			int index = 0;
+			if (assignableFromClasses != null){
+				while (index < assignableFromClasses.length && !isAssignable){
+					if (assignableFromClasses[index].isAssignableFrom(klass)){
+						isAssignable = true;
+					}
+					else{
+						index++;
+					}
+				}
+			}
+			return isAssignable;
 		}
 
 		private List<Class<?>> categories(Description description) {
@@ -471,14 +487,41 @@ public class RequirementAwareSuite extends Suite {
 		}
 	}
 
-	private Class<?> getIncludedCategory(Class<?> klass) {
-		IncludeCategory annotation = klass.getAnnotation(IncludeCategory.class);
-		return annotation == null ? null : annotation.value();
+	private Class<?>[] getIncludedCategory(Class<?> klass) {
+		Class<?>[] result = null;
+		IncludeCategory includeCategory = klass.getAnnotation(IncludeCategory.class);
+		if (includeCategory != null){
+			result =  getAnnotationClasses(includeCategory.value());
+		}
+		return result;
 	}
-
-	private Class<?> getExcludedCategory(Class<?> klass) {
-		ExcludeCategory annotation = klass.getAnnotation(ExcludeCategory.class);
-		return annotation == null ? null : annotation.value();
+	private Class<?>[] getExcludedCategory(Class<?> klass) {
+		Class<?>[] result = null;
+		ExcludeCategory excludeCategory = klass.getAnnotation(ExcludeCategory.class);
+		if (excludeCategory != null){
+			result =  getAnnotationClasses(excludeCategory.value());
+		}
+		return result;
+	}
+	/**
+	 * Support for JUnit version 4.12.0 and above
+	 * @param klass
+	 * @return
+	 */
+	private Class<?>[] getAnnotationClasses(Class<?>[] klasses){
+		return klasses;
+	}
+	/**
+	 * Support for JUnit bellow 4.12.0
+	 * @param klass
+	 * @return
+	 */
+	private Class<?>[] getAnnotationClasses(Class<?> klass){
+		Class<?>[] result = null; 
+		if (klass != null){
+			result = new Class<?>[]{klass};
+		}
+		return result;
 	}
 	/**
 	 * Starts Screen Recorder
