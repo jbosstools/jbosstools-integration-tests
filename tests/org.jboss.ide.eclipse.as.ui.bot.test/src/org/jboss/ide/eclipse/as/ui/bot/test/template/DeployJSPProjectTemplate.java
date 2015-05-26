@@ -1,5 +1,11 @@
 package org.jboss.ide.eclipse.as.ui.bot.test.template;
 
+import java.io.File;
+
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.jboss.ide.eclipse.as.reddeer.requirement.CloseAllEditorsRequirement.CloseAllEditors;
 import org.jboss.ide.eclipse.as.reddeer.server.editor.ServerModuleWebPageEditor;
 import org.jboss.ide.eclipse.as.reddeer.server.view.JBossServer;
@@ -30,6 +36,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 
 /**
@@ -84,6 +91,8 @@ public abstract class DeployJSPProjectTemplate extends AbstractJBossServerTempla
 	
 	@Test
 	public void deployProject(){
+		log.step("Assert project is build");
+		assertProjectIsBuilt();
 		log.step("Add " + PROJECT_NAME + " to the server (Add module dialog)");
 		JBossServer server = getServer();
 		addModule(server);
@@ -111,6 +120,39 @@ public abstract class DeployJSPProjectTemplate extends AbstractJBossServerTempla
 		ProblemsView problemsView = new ProblemsView();
 		problemsView.open();
 		assertThat(problemsView.getProblems(ProblemType.ERROR).size(), is(0));
+	}
+
+	private void assertProjectIsBuilt() {
+		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+		log.debug("Workspace root is: " + root.getLocation().toFile());
+
+		IProject project = root.getProject(PROJECT_NAME);
+		log.debug("Project location is: " + project.getLocation().toFile());
+		
+		IFile buildFolder = project.getFile("build");
+		log.debug("Build folder location is: " + buildFolder.getLocation().toFile());
+		log.debug("Build folder exists: " + buildFolder.exists());
+		
+		IFile classesFolder = project.getFile("build/classes");
+		log.debug("Classes folder location is: " + classesFolder.getLocation().toFile());
+		log.debug("Classes folder exists: " + classesFolder.exists());
+		
+		File buildFolderFilesystem = project.getFile("build").getLocation().toFile();
+		log.debug("Build folder on filesystem exists: " + buildFolderFilesystem.exists());
+
+		if (buildFolderFilesystem.exists()){
+			log.debug("Children of build folder");
+			for (String fileName : buildFolderFilesystem.list()){
+				log.debug(fileName);
+				if ("classes".equals(fileName)){
+					log.debug("Children of classes folder");
+					for (String fileName2 : new File(buildFolderFilesystem, fileName).list()){
+						log.debug(fileName2);
+					}
+				}
+			}
+		}
+		assertTrue(new File(buildFolderFilesystem, "classes/org").exists());
 	}
 
 	private void addModule(JBossServer server) {
