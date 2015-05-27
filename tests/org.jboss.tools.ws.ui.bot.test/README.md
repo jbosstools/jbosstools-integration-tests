@@ -10,7 +10,8 @@
 
 
 0. Get prerequisites:
- - JBoss server: WildFly 8, JBoss AS 7 or JBoss EAP 6 - setup RedDeer xml config file (see https://github.com/jboss-reddeer/reddeer/wiki/Write-complex-requirement-with-own-schema) e.g. WildFly config file```
+   - JBoss server: WildFly 8, JBoss AS 7 or JBoss EAP 6 - setup RedDeer xml config file (see https://github.com/jboss-reddeer/reddeer/wiki/Write-complex-requirement-with-own-schema) e.g. WildFly config file
+```
 <?xml version="1.0" encoding="UTF-8"?>
 <testrun 
 	xmlns="http://www.jboss.org/NS/Req" 
@@ -28,6 +29,7 @@
 		</server:jboss-server-requirement>
 	</requirements>
 </testrun>
+```
 ```
  - projects used to test some features: download from maven repo
    JBoss Tools Experiments/org/jboss/tools/ws/tests/org.jboss.tools.ws.ui.bot.test.resources.projects
