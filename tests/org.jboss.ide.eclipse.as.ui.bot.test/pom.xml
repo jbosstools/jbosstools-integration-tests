@@ -38,16 +38,17 @@
 		<jbosstools.test.jboss-as-7.0.home>${requirementsDirectory}/jboss-as-7.0.2.Final</jbosstools.test.jboss-as-7.0.home>
 		<jbosstools.test.jboss-as-7.1.home>${requirementsDirectory}/jboss-as-7.1.1.Final</jbosstools.test.jboss-as-7.1.home>
 		<jbosstools.test.jboss-wildfly-8.home>${requirementsDirectory}/wildfly-8.2.0.Final</jbosstools.test.jboss-wildfly-8.home>
+		<jbosstools.test.jboss-wildfly-9.home>${requirementsDirectory}/wildfly-9.0.0.CR1</jbosstools.test.jboss-wildfly-9.home>
 		<jbosstools.test.jboss-eap-4.home>${requirementsDirectory}/jboss-eap-4.3/jboss-as</jbosstools.test.jboss-eap-4.home>
 		<jbosstools.test.jboss-eap-5.home>${requirementsDirectory}/jboss-eap-5.2/jboss-as</jbosstools.test.jboss-eap-5.home>
 		<jbosstools.test.jboss-eap-6.0.home>${requirementsDirectory}/jboss-eap-6.0</jbosstools.test.jboss-eap-6.0.home>
-		<jbosstools.test.jboss-eap-6.x.home>${requirementsDirectory}/jboss-eap-6.3</jbosstools.test.jboss-eap-6.x.home>
+		<jbosstools.test.jboss-eap-6.x.home>${requirementsDirectory}/jboss-eap-6.4</jbosstools.test.jboss-eap-6.x.home>
 		<!-- Server download URL property files configuration -->
 		<project-download-properties-file>${project.basedir}/properties/projects-download.properties</project-download-properties-file>
 		<product-download-properties-file>${project.basedir}/properties/products-download.properties</product-download-properties-file>
 		<download-properties-file>${project-download-properties-file}</download-properties-file>
 		<!-- Command line arguments for tycho surefire tests -->
-		<runtimesProperties>-Dreddeer.config=${reddeer.config} -DlogDebug=${logDebug} -Djbosstools.test.jboss-as-3.2.home=${jbosstools.test.jboss-as-3.2.home} -Djbosstools.test.jboss-as-4.0.home=${jbosstools.test.jboss-as-4.0.home} -Djbosstools.test.jboss-as-4.2.home=${jbosstools.test.jboss-as-4.2.home} -Djbosstools.test.jboss-as-5.0.home=${jbosstools.test.jboss-as-5.0.home} -Djbosstools.test.jboss-as-5.1.home=${jbosstools.test.jboss-as-5.1.home} -Djbosstools.test.jboss-as-6.x.home=${jbosstools.test.jboss-as-6.x.home} -Djbosstools.test.jboss-as-7.0.home=${jbosstools.test.jboss-as-7.0.home} -Djbosstools.test.jboss-as-7.1.home=${jbosstools.test.jboss-as-7.1.home} -Djbosstools.test.jboss-wildfly-8.home=${jbosstools.test.jboss-wildfly-8.home} -Djbosstools.test.jboss-eap-4.home=${jbosstools.test.jboss-eap-4.home} -Djbosstools.test.jboss-eap-5.home=${jbosstools.test.jboss-eap-5.home} -Djbosstools.test.jboss-eap-6.0.home=${jbosstools.test.jboss-eap-6.0.home} -Djbosstools.test.jboss-eap-6.x.home=${jbosstools.test.jboss-eap-6.x.home}</runtimesProperties>
+		<runtimesProperties>-Dreddeer.config=${reddeer.config} -DlogDebug=${logDebug} -Djbosstools.test.jboss-as-3.2.home=${jbosstools.test.jboss-as-3.2.home} -Djbosstools.test.jboss-as-4.0.home=${jbosstools.test.jboss-as-4.0.home} -Djbosstools.test.jboss-as-4.2.home=${jbosstools.test.jboss-as-4.2.home} -Djbosstools.test.jboss-as-5.0.home=${jbosstools.test.jboss-as-5.0.home} -Djbosstools.test.jboss-as-5.1.home=${jbosstools.test.jboss-as-5.1.home} -Djbosstools.test.jboss-as-6.x.home=${jbosstools.test.jboss-as-6.x.home} -Djbosstools.test.jboss-as-7.0.home=${jbosstools.test.jboss-as-7.0.home} -Djbosstools.test.jboss-as-7.1.home=${jbosstools.test.jboss-as-7.1.home} -Djbosstools.test.jboss-wildfly-8.home=${jbosstools.test.jboss-wildfly-8.home} -Djbosstools.test.jboss-wildfly-9.home=${jbosstools.test.jboss-wildfly-9.home} -Djbosstools.test.jboss-eap-4.home=${jbosstools.test.jboss-eap-4.home} -Djbosstools.test.jboss-eap-5.home=${jbosstools.test.jboss-eap-5.home} -Djbosstools.test.jboss-eap-6.0.home=${jbosstools.test.jboss-eap-6.0.home} -Djbosstools.test.jboss-eap-6.x.home=${jbosstools.test.jboss-eap-6.x.home}</runtimesProperties>
 		<systemProperties>${integrationTestsSystemProperties} ${runtimesProperties}</systemProperties>
 	</properties>
 
@@ -258,6 +259,17 @@
 									<unpack>true</unpack>
 								</configuration>
 							</execution>
+							<execution>
+								<id>install-wildfly-9</id>
+								<phase>pre-integration-test</phase>
+								<goals>
+									<goal>wget</goal>
+								</goals>
+								<configuration>
+									<url>${jbosstools.test.wildfly-9.url}</url>
+									<unpack>true</unpack>
+								</configuration>
+							</execution>
 						</executions>
 					</plugin>
 				</plugins>
@@ -325,6 +337,17 @@
 								</goals>
 								<configuration>
 									<url>${jbosstools.test.wildfly-8.url}</url>
+									<unpack>true</unpack>
+								</configuration>
+							</execution>
+							<execution>
+								<id>install-wildfly-9</id>
+								<phase>pre-integration-test</phase>
+								<goals>
+									<goal>wget</goal>
+								</goals>
+								<configuration>
+									<url>${jbosstools.test.wildfly-9.url}</url>
 									<unpack>true</unpack>
 								</configuration>
 							</execution>
@@ -622,7 +645,7 @@
 				</property>
 			</activation>
 			<properties>
-				<test.class>org.jboss.ide.eclipse.as.ui.bot.test.allsuites.projects.WildflyTestsSuite</test.class>
+				<test.class>org.jboss.ide.eclipse.as.ui.bot.test.allsuites.projects.Wildfly8TestsSuite</test.class>
 				<reddeer.config>${reddeer.project.config}/wildfly-8.xml</reddeer.config>
 			</properties>
 			<build>
@@ -639,6 +662,40 @@
 								</goals>
 								<configuration>
 									<url>${jbosstools.test.wildfly-8.url}</url>
+									<unpack>true</unpack>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>wildfly9</id>
+			<activation>
+				<property>
+					<name>test.profile</name>
+					<value>wildfly9</value>
+				</property>
+			</activation>
+			<properties>
+				<test.class>org.jboss.ide.eclipse.as.ui.bot.test.allsuites.projects.Wildfly9TestsSuite</test.class>
+				<reddeer.config>${reddeer.project.config}/wildfly-9.xml</reddeer.config>
+			</properties>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>com.googlecode.maven-download-plugin</groupId>
+						<artifactId>download-maven-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>install-wildfly9-server</id>
+								<phase>pre-integration-test</phase>
+								<goals>
+									<goal>wget</goal>
+								</goals>
+								<configuration>
+									<url>${jbosstools.test.wildfly-9.url}</url>
 									<unpack>true</unpack>
 								</configuration>
 							</execution>
@@ -710,8 +767,8 @@
 									<goal>wget</goal>
 								</goals>
 								<configuration>
-									<url>${jbosstools.test.jboss-eap-6.3.x.url}</url>
-									<md5>${jbosstools.test.jboss-eap-6.3.x.md5}</md5>
+									<url>${jbosstools.test.jboss-eap-6.4.x.url}</url>
+									<md5>${jbosstools.test.jboss-eap-6.4.x.md5}</md5>
 									<unpack>true</unpack>
 								</configuration>
 							</execution>
@@ -854,8 +911,8 @@
 									<goal>wget</goal>
 								</goals>
 								<configuration>
-									<url>${jbosstools.test.jboss-eap-6.3.x.url}</url>
-									<md5>${jbosstools.test.jboss-eap-6.3.x.md5}</md5>
+									<url>${jbosstools.test.jboss-eap-6.4.url}</url>
+									<md5>${jbosstools.test.jboss-eap-6.4.md5}</md5>
 									<unpack>true</unpack>
 								</configuration>
 							</execution>

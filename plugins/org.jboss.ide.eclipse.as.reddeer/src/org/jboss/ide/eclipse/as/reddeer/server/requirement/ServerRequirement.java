@@ -5,6 +5,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import org.jboss.ide.eclipse.as.reddeer.server.family.FamilyWildFly;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.ide.eclipse.as.reddeer.server.wizard.NewServerWizardDialog;
 import org.jboss.ide.eclipse.as.reddeer.server.wizard.page.JBossRuntimeWizardPage;
@@ -111,7 +112,20 @@ public class ServerRequirement extends ServerReqBase implements Requirement<JBos
 	public ServerRequirementConfig getConfig() {
 		return this.config;
 	}
-
+	
+	@Override
+	public String getServerTypeLabelText(IServerReqConfig config) {
+		if (isWildfly9(config)){
+			return super.getServerTypeLabelText(config) + " (Experimental)";
+		}
+		return super.getServerTypeLabelText(config);
+	}
+	
+	private boolean isWildfly9(IServerReqConfig config){
+		return FamilyWildFly.class.equals(config.getServerFamily().getClass())
+				&& config.getServerFamily().getVersion().startsWith("9");
+	}
+	
 	@Override
 	public String getServerNameLabelText(IServerReqConfig config) {
 		if(this.config.getRemote() == null)

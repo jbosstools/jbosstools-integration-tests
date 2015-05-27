@@ -20,7 +20,7 @@ Require-Bundle: org.eclipse.ui,
  org.jboss.reddeer.workbench;bundle-version="[0.8.0,0.9.0)",
  org.jboss.reddeer.eclipse;bundle-version="[0.8.0,0.9.0)"
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Import-Package: org.eclipse.core.resources
 Eclipse-BundleShape: jar
 Bundle-Vendor: JBoss by Red Hat

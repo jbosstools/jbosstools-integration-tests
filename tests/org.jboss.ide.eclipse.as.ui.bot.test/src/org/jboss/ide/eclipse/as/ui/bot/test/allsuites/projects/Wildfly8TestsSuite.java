@@ -19,6 +19,6 @@ import org.junit.runners.Suite;
 		UndeployJSPProjectWildfly8Server.class,
 		DeleteServerWildfly8Server.class
 })
-public class WildflyTestsSuite {
+public class Wildfly8TestsSuite {
 
 }

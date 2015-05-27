@@ -1,4 +1,4 @@
-package org.jboss.ide.eclipse.as.ui.bot.test.wildfly8;
+package org.jboss.ide.eclipse.as.ui.bot.test.wildfly9;
 
 import java.util.List;
 
@@ -16,8 +16,8 @@ import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsCollectionContaining.hasItem;
 
 @CleanWorkspace
-@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY8x, version=ServerReqVersion.EQUAL)
-public class CreateWildfly8Server extends CreateServerTemplate {
+@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY9x, version=ServerReqVersion.GREATER_OR_EQUAL)
+public class CreateWildfly9Server extends CreateServerTemplate {
 
 	@Override
 	protected void assertEditorPorts() {
