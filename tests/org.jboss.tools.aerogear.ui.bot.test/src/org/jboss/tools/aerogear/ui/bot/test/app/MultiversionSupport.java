@@ -10,17 +10,23 @@
  ******************************************************************************/
 package org.jboss.tools.aerogear.ui.bot.test.app;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import java.util.List;
 
-import javax.print.attribute.standard.MediaSize.Engineering;
 
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
 import org.jboss.tools.aerogear.reddeer.ui.config.ConfigEditor;
 import org.jboss.tools.aerogear.reddeer.ui.properties.EnginePropertyPage;
+import org.jboss.tools.aerogear.reddeer.ui.properties.EnginePropertyPage.Platform;
 import org.jboss.tools.aerogear.ui.bot.test.AerogearBotTest;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
-import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
+import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.browsersim.reddeer.BrowserSimHandler;
 import org.junit.Test;
 
@@ -28,32 +34,35 @@ import org.junit.Test;
  * Checks Multi versions Engine support
  * 
  * @author Vlado Pakan
+ * @author Pavol Srna
  * 
  */
-@Require(clearWorkspace = true)
+@CleanWorkspace
 public class MultiversionSupport extends AerogearBotTest {
 	private static final String VERSION_MESSSAGE_PREFIX = "INFO - Cordova Version Number:";
 	@Test
 	public void testMultiversionSupport() {
 		// Update index.js to display cordova version to console
-		projectExplorer.openFile(CORDOVA_PROJECT_NAME, "www", "js", "index.js");
-		SWTBotEclipseEditor jsEditor = bot.editorByTitle("index.js")
-				.toTextEditor();
-		String jsString = jsEditor.getText();
+		new ProjectExplorer().getProject(CORDOVA_PROJECT_NAME)
+			.getProjectItem("www", "js", "index.js").open();
+		DefaultEditor jsEditor = new DefaultEditor("index.js");
+		String jsString = new DefaultStyledText().getText();
 		jsString = jsString.replaceFirst("app\\.receivedEvent\\('deviceready'\\);",
 				"app.receivedEvent(\'deviceready\');" + "\nconsole.log(\""
 						+ MultiversionSupport.VERSION_MESSSAGE_PREFIX + "\" + device.cordova );");
-		jsEditor.setText(jsString);
+		new DefaultStyledText().setText(jsString);
 		jsEditor.save();
 		jsEditor.close();
-		projectExplorer.openFile(CORDOVA_PROJECT_NAME, "www", "config.xml");
+		new ProjectExplorer().getProject(CORDOVA_PROJECT_NAME)
+			.getProjectItem("www", "config.xml").open();
 		// Add device plugin to project
 		ConfigEditor configEditor = new ConfigEditor(CORDOVA_APP_NAME);
 		configEditor.addPlugin("org.apache.cordova.device");
-		console.clearConsole();
-		projectExplorer.selectProject(CORDOVA_PROJECT_NAME);
-		runTreeItemWithCordovaSim(bot.tree().expandNode(CORDOVA_PROJECT_NAME));
+		new ProjectExplorer().selectProjects(CORDOVA_PROJECT_NAME);
+		runTreeItemWithCordovaSim(CORDOVA_PROJECT_NAME);
 		BrowserSimHandler.closeAllRunningInstances();
+		ConsoleView console = new ConsoleView();
+		console.open();
 		String consoleEngineVersion = parseConsoleTextForVersion(console.getConsoleText());
 		assertNotNull("Cordova Engine version was not displayed in console", consoleEngineVersion);
 		// change mobile engine version for project
@@ -62,27 +71,29 @@ public class MultiversionSupport extends AerogearBotTest {
 		EnginePropertyPage enginePropertyPage = new EnginePropertyPage(
 				packageExplorer.getProject(CORDOVA_PROJECT_NAME));
 		enginePropertyPage.open();
-		String propEngineVersion = enginePropertyPage.getVersion();
+		String propEngineVersion = enginePropertyPage.getVersion(Platform.android);
 		assertEquals("Version displayed to console is not equal to version in project properties "
 				+ consoleEngineVersion + "!=" + propEngineVersion,
 			propEngineVersion, consoleEngineVersion);
-		List<String> versions = enginePropertyPage.getAvailableVersions();
+		List<String> versions = enginePropertyPage.getAvailableVersions(Platform.android);
 		// if just one version is downloaded download second one 
 		if (versions.size() == 1){
-			downloadMobileEngine(2);
+			downloadMobileEngine("3.7.0");
 		}
 		// Check other version
-		versions = enginePropertyPage.getAvailableVersions();
+		versions = enginePropertyPage.getAvailableVersions(Platform.android);
 		versions.remove(propEngineVersion);
 		String newVersion = versions.get(0);
-		enginePropertyPage.checkVersion(newVersion);
-		new WorkbenchPreferenceDialog().ok();
+		enginePropertyPage.checkVersion(newVersion, Platform.android);
+		new PushButton("OK").click();
 		// Run project with new mobile engine version
+		console = new ConsoleView();
+		console.open();
 		console.clearConsole();
-		projectExplorer.selectProject(CORDOVA_PROJECT_NAME);
-		runTreeItemWithCordovaSim(bot.tree().expandNode(CORDOVA_PROJECT_NAME));
+		new ProjectExplorer().selectProjects(CORDOVA_PROJECT_NAME);
+		runTreeItemWithCordovaSim(CORDOVA_PROJECT_NAME);
 		BrowserSimHandler.closeAllRunningInstances();
-		consoleEngineVersion = parseConsoleTextForVersion(console.getConsoleText());
+		consoleEngineVersion = parseConsoleTextForVersion(new ConsoleView().getConsoleText());
 		assertEquals("Expected mobile engine version was " + newVersion 
 				+ " but actual is " + consoleEngineVersion, 
 			newVersion,consoleEngineVersion);

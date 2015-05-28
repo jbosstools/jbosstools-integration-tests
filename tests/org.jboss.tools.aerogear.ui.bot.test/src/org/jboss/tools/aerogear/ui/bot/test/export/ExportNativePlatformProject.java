@@ -10,6 +10,9 @@
  ******************************************************************************/
 package org.jboss.tools.aerogear.ui.bot.test.export;
 
+import static org.junit.Assert.assertTrue;
+
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.tools.aerogear.reddeer.ui.wizard.export.ExportNativePlatformProjectPage;
 import org.jboss.tools.aerogear.reddeer.ui.wizard.export.ExportNativePlatformProjectWizard;
 import org.junit.Test;
@@ -21,7 +24,7 @@ import org.junit.Test;
 public class ExportNativePlatformProject extends ExportMobileTest {
 	  @Test
 	  public void testExportNativePlatformProject() {
-	    projectExplorer.selectProject(CORDOVA_PROJECT_NAME);
+	    new ProjectExplorer().selectProjects(CORDOVA_PROJECT_NAME);
 	    ExportNativePlatformProjectWizard exportNativePlatformProjectWizard = new ExportNativePlatformProjectWizard();
 	    exportNativePlatformProjectWizard.open();
 	    ExportNativePlatformProjectPage exportNativePlatformProjectPage = 

@@ -20,4 +20,5 @@ Bundle-Vendor: JBoss by Red Hat
 Export-Package: org.jboss.tools.aerogear.reddeer.ui.config,
  org.jboss.tools.aerogear.reddeer.ui.preferences,
  org.jboss.tools.aerogear.reddeer.ui.properties,
+ org.jboss.tools.aerogear.reddeer.ui.wizard,
  org.jboss.tools.aerogear.reddeer.ui.wizard.export

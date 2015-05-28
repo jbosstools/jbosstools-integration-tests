@@ -10,24 +10,27 @@
  ******************************************************************************/
 package org.jboss.tools.aerogear.ui.bot.test.app;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
+
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.aerogear.ui.bot.test.AerogearBotTest;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.junit.Test;
 
-@Require(clearWorkspace = true)
+@CleanWorkspace
 public class OpenConfigEditor extends AerogearBotTest {
 	@Test
 	public void canOpenConfigXmlEditor() {
-		projectExplorer.selectProject(CORDOVA_PROJECT_NAME);
 		openInConfigEditor(CORDOVA_PROJECT_NAME);
-
-		assertTrue(bot.activeEditor().getTitle()
-				.equalsIgnoreCase(CORDOVA_APP_NAME));
+		assertNotNull(new DefaultEditor(CORDOVA_APP_NAME));
+		
 	}
 	@Override
 	public void tearDown() {
 		// close config editor before deleting project
-		bot.activeEditor().close();
+		new DefaultEditor().close();
 		super.tearDown();
 	}
 

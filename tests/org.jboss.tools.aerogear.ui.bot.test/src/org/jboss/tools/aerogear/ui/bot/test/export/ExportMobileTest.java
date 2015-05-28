@@ -10,18 +10,21 @@
  ******************************************************************************/
 package org.jboss.tools.aerogear.ui.bot.test.export;
 
+import static org.junit.Assert.assertTrue;
+
 import java.io.File;
 
 import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.tools.aerogear.reddeer.ui.preferences.AndroidPreferencesPage;
 import org.jboss.tools.aerogear.ui.bot.test.AerogearBotTest;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
+
 /**
  * Common ancestor for Aerogear export test 
  * @author Vlado Pakan
  *
  */
-@Require(clearWorkspace = true)
+@CleanWorkspace
 public class ExportMobileTest extends AerogearBotTest {
   
   @Override

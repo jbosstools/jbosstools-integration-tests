@@ -27,6 +27,7 @@ import org.jboss.reddeer.swt.impl.label.DefaultLabel;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
+import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.workbench.impl.editor.AbstractEditor;
@@ -88,7 +89,7 @@ public class ConfigEditor extends AbstractEditor {
 		new DefaultCTabItem(ConfigEditor.PLATFORM_PROPERTIES_TAB_ITEM).activate();
 		new PushButton("Add...").click();
 		new DefaultShell("Cordova Plug-in Discovery");
-		new WaitWhile(new JobIsRunning());
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		// Wait until some plugin is displayed within dialog
 		new DefaultLabel(10);
 	}
