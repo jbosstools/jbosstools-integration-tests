@@ -10,34 +10,43 @@
  ******************************************************************************/
 package org.jboss.tools.aerogear.ui.bot.test.app;
 
-import java.io.File;
+import static org.junit.Assert.*;
 
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import java.util.List;
+import java.util.Arrays;
+
+import org.jboss.reddeer.common.matcher.RegexMatcher;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.ui.problems.Problem;
+import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
+import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
+import org.jboss.reddeer.eclipse.ui.problems.matcher.ProblemsPathMatcher;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.tools.aerogear.ui.bot.test.AerogearBotTest;
-import org.jboss.tools.ui.bot.ext.SWTBotExt;
-import org.jboss.tools.ui.bot.ext.SWTEclipseExt;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
-import org.jboss.tools.ui.bot.ext.view.ProblemsView;
 import org.junit.Test;
 
-@Require(clearWorkspace = true)
+@CleanWorkspace
 public class CreateHybridApplication extends AerogearBotTest {
 	@Test
 	public void canCreateHTMLHybridApplication() {
-	  SWTBotExt botExt = new SWTBotExt();
-	  // Project is created within setup method
-		assertTrue(projectExplorer.existsResource(CORDOVA_PROJECT_NAME));
+		// Project is created within setup method
+		assertTrue(new ProjectExplorer().containsProject(CORDOVA_PROJECT_NAME));
 		// Check there is no error/warning on Hybrid Mobile Project
-		projectExplorer.selectProject(CORDOVA_PROJECT_NAME);
-    SWTBotTreeItem[] errors = ProblemsView.getFilteredErrorsTreeItems(botExt,
-        null, File.separator + CORDOVA_PROJECT_NAME, null, null);
-    assertTrue("There were these errors for " + CORDOVA_PROJECT_NAME
-        + " project " + SWTEclipseExt.getFormattedTreeNodesText(errors),
-        errors == null || errors.length == 0);
-    SWTBotTreeItem[] warnings = ProblemsView.getFilteredWarningsTreeItems(
-        botExt, null, File.separator + CORDOVA_PROJECT_NAME, null, null);
-    assertTrue("There were these warnings for " + CORDOVA_PROJECT_NAME
-        + " project " + SWTEclipseExt.getFormattedTreeNodesText(warnings),
-        warnings == null || warnings.length == 0);
+		new ProjectExplorer().selectProjects(CORDOVA_PROJECT_NAME);
+		
+		ProblemsView pview = new ProblemsView();
+		pview.open();
+		
+		List<Problem> errors = pview.getProblems(ProblemType.ERROR, new ProblemsPathMatcher(new RegexMatcher("(/" + CORDOVA_PROJECT_NAME + "/)(.*)")));
+		List<Problem> warnings = pview.getProblems(ProblemType.WARNING, new ProblemsPathMatcher(new RegexMatcher("(/" + CORDOVA_PROJECT_NAME + "/)(.*)")));
+		
+		assertTrue("There were these errors for " + CORDOVA_PROJECT_NAME
+        + " project " + Arrays.toString(errors.toArray()),
+        errors == null || errors.size() == 0);
+		
+		assertTrue("There were these warnings for " + CORDOVA_PROJECT_NAME
+        + " project " + Arrays.toString(warnings.toArray()),
+        warnings == null || warnings.size() == 0);
+		
 	}
 }

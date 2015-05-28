@@ -10,6 +10,9 @@
  ******************************************************************************/
 package org.jboss.tools.aerogear.ui.bot.test.export;
 
+import static org.junit.Assert.assertTrue;
+
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.tools.aerogear.reddeer.ui.wizard.export.ExportMobileApplicationPage;
 import org.jboss.tools.aerogear.reddeer.ui.wizard.export.ExportMobileApplicationWizard;
 import org.junit.Test;
@@ -21,7 +24,7 @@ import org.junit.Test;
 public class ExportMobileApplication extends ExportMobileTest {
 	@Test
 	public void testExportMobileApplication() {
-	  projectExplorer.selectProject(CORDOVA_PROJECT_NAME);
+	  new ProjectExplorer().selectProjects(CORDOVA_PROJECT_NAME);
 	  ExportMobileApplicationWizard exportMobileApplicationWizard = new ExportMobileApplicationWizard();
 	  exportMobileApplicationWizard.open();
 	  ExportMobileApplicationPage exportMobileApplicationPage = 

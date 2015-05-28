@@ -6,13 +6,14 @@ import java.util.List;
 
 import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.ui.dialogs.ProjectPropertyPage;
-import org.jboss.reddeer.swt.api.TableItem;
+import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
-import org.jboss.reddeer.swt.impl.table.DefaultTable;
+import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 
 /**
  * Represents hybrid mobile project property page
- * @author vlado pakan
+ * @author Vlado Pakan
+ * @author Pavol Srna
  *
  */
 public class EnginePropertyPage extends ProjectPropertyPage{
@@ -20,17 +21,18 @@ public class EnginePropertyPage extends ProjectPropertyPage{
 		super(project, "Hybrid Mobile Engine");
 	}
 	/**
-	 * Returns current checked version
+	 * Returns current checked version on platform defined via parameter
+	 * @param platform
 	 * @return
 	 */
-	public String getVersion (){
+	public String getVersion (Platform platform){
 		String result = null;
-		List<TableItem> tiVersions = new DefaultTable().getItems();
-		Iterator<TableItem> itVersion = tiVersions.iterator();
+		List<TreeItem> tiVersions = new DefaultTree(1).getAllItems();
+		Iterator<TreeItem> itVersion = tiVersions.iterator();
 		while (result == null && itVersion.hasNext()){
-			TableItem tiVersion = itVersion.next();
-			if (tiVersion.isChecked()){
-				result = getVersionFromEgineName(tiVersion.getText(0));
+			TreeItem tiVersion = itVersion.next();
+			if (tiVersion.isChecked() && tiVersion.getText().contains(platform.toString())){
+				result = getVersionFromEgineName(tiVersion.getText());
 			}
 		}
 		return result;
@@ -40,11 +42,13 @@ public class EnginePropertyPage extends ProjectPropertyPage{
 	 * Returns all available engine versions
 	 * @return
 	 */
-	public List<String> getAvailableVersions () {
+	public List<String> getAvailableVersions (Platform platform) {
 		LinkedList<String> result = new LinkedList<String>();
-		List<TableItem> tiVersions = new DefaultTable().getItems();
-		for (TableItem tiVersion : tiVersions){
-			result.add(getVersionFromEgineName(tiVersion.getText(0)));
+		List<TreeItem> tiVersions = new DefaultTree(1).getAllItems();
+		for (TreeItem tiVersion : tiVersions){
+			if(tiVersion.getText().contains(platform.toString())){
+				result.add(getVersionFromEgineName(tiVersion.getText()));
+			}
 		}
 		return result;
 	}
@@ -52,13 +56,13 @@ public class EnginePropertyPage extends ProjectPropertyPage{
 	 * Checks version
 	 * @param version
 	 */
-	public void checkVersion (String version){
-		List<TableItem> tiVersions = new DefaultTable().getItems();
-		Iterator<TableItem> itVersion = tiVersions.iterator();
+	public void checkVersion (String version, Platform platform){
+		List<TreeItem> tiVersions = new DefaultTree(1).getAllItems();
+		Iterator<TreeItem> itVersion = tiVersions.iterator();
 		boolean notChecked = true;
 		while (notChecked && itVersion.hasNext()){
-			TableItem tiVersion = itVersion.next();
-			if (getVersionFromEgineName(tiVersion.getText(0)).equals(version)){
+			TreeItem tiVersion = itVersion.next();
+			if (tiVersion.getText().equals(platform.toString() + "@" + version)){
 				tiVersion.setChecked(true);
 				notChecked = false;
 			}
@@ -71,7 +75,12 @@ public class EnginePropertyPage extends ProjectPropertyPage{
 	}
 	
 	private String getVersionFromEgineName (String engineName){
-		return engineName.substring(engineName.indexOf('[') + 1,
-			engineName.length() - 1).trim();
+		return engineName.substring(engineName.indexOf('@') + 1,
+			engineName.length()).trim();
+	}
+	
+	public enum Platform {
+		android {public String toString(){return "cordova-android";}},
+		ios {public String toString(){return "cordova-ios";}}
 	}
 }

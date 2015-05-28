@@ -10,32 +10,50 @@
  ******************************************************************************/
 package org.jboss.tools.aerogear.ui.bot.test;
 
-import java.util.List;
-import java.util.Vector;
+import static org.junit.Assert.assertTrue;
 
-import org.eclipse.swtbot.swt.finder.SWTBot;
-import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
-import org.eclipse.swtbot.swt.finder.waits.ICondition;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.LinkedList;
+import java.util.List;
+
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.impl.menu.ShellMenu;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.text.DefaultText;
+import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.tools.ui.bot.ext.SWTTestExt;
-import org.jboss.tools.ui.bot.ext.Timing;
-import org.jboss.tools.ui.bot.ext.condition.NonSystemJobRunsCondition;
-import org.jboss.tools.ui.bot.ext.gen.INewObject;
-import org.jboss.tools.ui.bot.ext.types.IDELabel;
-import org.jboss.tools.ui.bot.ext.types.PerspectiveType;
+import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.core.exception.CoreLayerException;
+import org.jboss.reddeer.core.handler.ShellHandler;
+import org.jboss.reddeer.core.handler.WidgetHandler;
+import org.jboss.reddeer.eclipse.condition.ConsoleHasNoChange;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.common.wait.WaitWhile;
+
+import org.jboss.tools.aerogear.reddeer.ui.wizard.NewTHYMProjectWizard;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.runner.RunWith;
 
 /**
  * Base class for SWTBot tests of Aerogear JBoss Tools plugin.
  * 
  * @author sbunciak
+ * @author Pavol Srna
  * 
  */
-public class AerogearBotTest extends SWTTestExt {
+@RunWith(RedDeerSuite.class)
+public class AerogearBotTest {
   protected static final String CORDOVA_PROJECT_NAME = "CordovaTestProject";
   protected static final String CORDOVA_APP_NAME = "CordovaTestApp";
 
@@ -49,88 +67,71 @@ public class AerogearBotTest extends SWTTestExt {
   public void createHTMLHybridMobileApplication(String projectName,
       String appName, String appId) {
 
-    open.newObject(new INewObject() {
-
-      @Override
-      public String getName() {
-        return "Hybrid Mobile (Cordova) Application Project";
-      }
-
-      @Override
-      public List<String> getGroupPath() {
-        List<String> l = new Vector<String>();
-        l.add("Mobile");
-        return l;
-      }
-
-    });
-
-    bot.text(0).typeText(projectName);
-    bot.text(2).setText(appName);
+	NewTHYMProjectWizard w = new NewTHYMProjectWizard();
+	w.open();
+	new WaitWhile(new JobIsRunning(), TimePeriod.LONG);	
+	new LabeledText("Project name:").setText(projectName);
+	new LabeledText("Name:").setText(appName);
+	new LabeledText("ID:").setText(appId);
+	w.next();
     
-    bot.button(IDELabel.Button.NEXT).click();
-    
-    if (bot.table().rowCount() == 0){
-    	downloadMobileEngine(0);
-    }
-    // select first engine in table
-    bot.table().getTableItem(0).check();
-    
-    bot.button(IDELabel.Button.FINISH).click();
-
-    bot.waitWhile(new NonSystemJobRunsCondition(), TIME_20S, TIME_1S);
+	DefaultTreeItem tiAndroid =  new DefaultTreeItem("Android");
+	tiAndroid.expand();
+	if(tiAndroid.getItems().isEmpty()){
+		downloadMobileEngine("3.7.1");
+		tiAndroid = new DefaultTreeItem("Android");
+		tiAndroid.expand();
+	}
+	tiAndroid.getItems().get(0).setChecked(true);	
+	w.finish();
+	new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
   }
 
-  public void runTreeItemInAndroidEmulator(SWTBotTreeItem treeItem) {
-    treeItem.select();
-    treeItem.click();
-
+  public void runTreeItemInAndroidEmulator(String projectName) {
+    
     // TODO: Order/content of context many may change
     // TODO: Need to check presence of Android SDK installation
-    bot.menu("Run").menu("Run As").menu("2 Run on Android Emulator").click();
-
-    bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 2, TIME_1S);
+    new DefaultTreeItem(projectName).select();
+    new ContextMenu("Run As","2 Run on Android Emulator").select();
+    new WaitWhile(new JobIsRunning());
   }
 
-  public void runTreeItemOnAndroidDevice(SWTBotTreeItem treeItem) {
-    treeItem.select();
-    treeItem.click();
-
+  public void runTreeItemOnAndroidDevice(String projectName) {
+    
     // TODO: Order/content of context many may change
     // TODO: Need to check presence of Android SDK installation
-    bot.menu("Run").menu("Run As").menu("2 Run on Android Emulator").click();
-
-    bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 2, TIME_1S);
+    new DefaultTreeItem(projectName).select();
+    new ContextMenu("Run As","1 Run on Android Device").select();
+    new WaitWhile(new JobIsRunning());
   }
 
-  public void runTreeItemWithCordovaSim(SWTBotTreeItem treeItem) {
-    treeItem.select();
-    treeItem.click();
+  public void runTreeItemWithCordovaSim(String projectName) {
 
-    bot.menu("Run").menu("Run As").menu("3 Run with CordovaSim").click();
-
-    bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 2, TIME_1S);
-    bot.sleep(TIME_5S);
+    new DefaultTreeItem(projectName).select();
+    new ContextMenu("Run As","3 Run w/CordovaSim").select();
+    new WaitUntil(new ConsoleHasNoChange(TimePeriod.NORMAL));
+    new WaitWhile(new JobIsRunning());
   }
 
   public void openInConfigEditor(String projectName) {
+	new ProjectExplorer().selectProjects(projectName);
     new DefaultTreeItem(projectName,"www","config.xml").select();
     new ContextMenu("Open With","Cordova Configuration Editor").select();
-    bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 2, TIME_1S);
+    new WaitWhile(new JobIsRunning());
   }
 
   @Before
   public void setUp() {
-    eclipse.openPerspective(PerspectiveType.JBOSS);
     createHTMLHybridMobileApplication(AerogearBotTest.CORDOVA_PROJECT_NAME,
         AerogearBotTest.CORDOVA_APP_NAME, "org.jboss.example.cordova");
 
-    assertTrue(projectExplorer.existsResource(AerogearBotTest.CORDOVA_PROJECT_NAME));
+    assertTrue(new ProjectExplorer().containsProject(AerogearBotTest.CORDOVA_PROJECT_NAME));
   }
 
   @After
   public void tearDown() {
-    projectExplorer.deleteProject(AerogearBotTest.CORDOVA_PROJECT_NAME, true);
+	new ProjectExplorer().deleteAllProjects();
+	ShellHandler.getInstance().closeAllNonWorbenchShells();
   }
   /**
    * Sets LogCat Filter properties for projoectName via Run Configurations
@@ -139,51 +140,104 @@ public class AerogearBotTest extends SWTTestExt {
    * @param projectName
    */
   public void setLogCatFilterPropsAndRun(String projectName){
-    bot.menu("Run").menu("Run Configurations...").click();
-    bot.shell("Run Configurations").activate();
-    SWTBotTreeItem tiAndroidEmulator = bot.tree().getTreeItem("Android Emulator");
+    new ShellMenu("Run", "run Configurations...").select();
+    new DefaultShell("Run Configurations");
+    
+    DefaultTreeItem tiAndroidEmulator = new DefaultTreeItem("Android Emulator");
+    
     tiAndroidEmulator.select();
     tiAndroidEmulator.expand();
     try{
-      tiAndroidEmulator.getNode(projectName).select();
-    } catch (WidgetNotFoundException wnfe){
-      bot.toolbarButtonWithTooltip("New launch configuration").click();
-      bot.textWithLabel("Name:").setText(projectName);
-      bot.textWithLabel("Project:").setText(projectName);
+    	tiAndroidEmulator.getItem(projectName).select();
+    }catch(CoreLayerException e){
+    	new DefaultToolItem("New launch configuration").click();
+    	new DefaultText("Name:").setText(projectName);
+        new DefaultText("Project:").setText(projectName);
     }
-    bot.cTabItem(0).activate();
-    SWTBotText txFilter = bot.textWithLabel("Log Filter:");
+
+    new DefaultCTabItem("Emulator").activate();
+    
+    DefaultText txFilter = new DefaultText("Log Filter:");
     String filter = txFilter.getText();
     if (!filter.contains("chromium:V")){
       txFilter.setText("chromium:V " + filter);
-      bot.button(IDELabel.Button.APPLY).click();
+      new PushButton("Apply").click();
     }
-    bot.button(IDELabel.Button.RUN).click();
-    bot.waitWhile(new NonSystemJobRunsCondition(), TIME_60S * 2, TIME_1S);
+    new PushButton("Run").click();
+    new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
   }
   /**
    * Downloads Mobile Engine
    */
-  protected void downloadMobileEngine(int index){
-      bot.button(IDELabel.Button.DOWNLOAD).click();
-      bot.shell(IDELabel.Shell.DOWNLOAD_HYBRID_MOBILE_ENGINE).activate();
-      bot.comboBoxWithLabel("Version:").setSelection(index);
-      bot.table().getTableItem(0).check();
-      bot.button(IDELabel.Button.OK).click();
-      bot.waitWhile(new ICondition() {
-        @Override
-        public boolean test() throws Exception {
-          return bot.activeShell().getText().equals(IDELabel.Shell.DOWNLOAD_HYBRID_MOBILE_ENGINE);
-        }
-        @Override
-        public void init(SWTBot bot) {
-        }
-        @Override
-        public String getFailureMessage() {
-          return "Shell wit text " 
-            + IDELabel.Shell.DOWNLOAD_HYBRID_MOBILE_ENGINE
-            + " is still active";
-        }
-      }, Timing.time60S()); 
+  protected void downloadMobileEngine(String version){
+      new PushButton("Download...").click();
+      new DefaultShell("Download Hybrid Mobile Engine");
+     
+      DefaultTreeItem tiAndroid = new DefaultTreeItem("Android");
+      tiAndroid.expand();
+      tiAndroid.getItem(version).setChecked(true);
+      new PushButton("OK").click();
+      new WaitWhile(new ShellWithTextIsActive("Download Hybrid Mobile Engine"), TimePeriod.LONG);
+      
   }
+  
+  /**
+   * Gets list of running java processes via calling command jps
+   * @return
+   */
+  public List<String> getRunningJavaProcesesNames(){
+    List<String> result = new LinkedList<String>();
+    String javaHome = System.getProperty("java.home", "");
+    // search for sdk location instead of jre location
+    if (javaHome.endsWith(File.separator + "jre")){
+      javaHome = javaHome.substring(0,javaHome.length() -4);
+    }
+    String jpsCommand = "jps";
+    if (javaHome.length() > 0) {
+      File javaLocation = new File(javaHome);
+      if (javaLocation.exists() && javaLocation.isDirectory()) {
+        File javaBinLocation = new File(javaLocation, "bin" + File.separator
+            + "jps");
+        if (javaBinLocation.exists()) {
+          jpsCommand = javaBinLocation.getAbsolutePath();
+        }
+      }
+    }
+    String line;
+    Process p;
+    try {
+      p = Runtime.getRuntime().exec(jpsCommand);
+      BufferedReader input = new BufferedReader(new InputStreamReader(
+          p.getInputStream()));
+      while ((line = input.readLine()) != null) {
+        if(line.length() > 0){
+          String[] lineSplit = line.split(" ");
+          if (lineSplit.length > 1){
+            result.add(lineSplit[1]);  
+          }
+          else {
+            result.add("[PID]:" + lineSplit[0]);
+          }
+        }
+      }
+      input.close();
+
+    } catch (IOException ioe) {
+      throw new RuntimeException(ioe);
+    }
+    return result;
+  }
+  /**
+   * Counts running java processes with name processName
+   * @param processName
+   * @return
+   */
+  public int countJavaProcess(String processName){
+    List<String> runningJavaProcesses = getRunningJavaProcesesNames();
+    List<String> processNameList = new LinkedList<String>();
+    processNameList.add(processName);
+    runningJavaProcesses.retainAll(processNameList);
+    return runningJavaProcesses.size();  
+  }
+  
 }

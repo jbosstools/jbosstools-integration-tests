@@ -10,24 +10,31 @@
  ******************************************************************************/
 package org.jboss.tools.aerogear.ui.bot.test.app;
 
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
+import static org.junit.Assert.assertTrue;
+
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
+import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.aerogear.ui.bot.test.AerogearBotTest;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.browsersim.reddeer.BrowserSimHandler;
 import org.junit.Test;
 /**
  * Checks displaying of Java Script errors and messages 
  * from CordovaSim to Console
  * @author Vlado Pakan
+ * @author Pavol Srna
  *
  */
-@Require(clearWorkspace = true)
+@CleanWorkspace
 public class DisplayJavaScriptErrors extends AerogearBotTest {
 	@Test
 	public void testDisplayingJSErrorsAndMessages() {
-	  projectExplorer.openFile(CORDOVA_PROJECT_NAME, "www" , "js", "index.js");
-	  SWTBotEclipseEditor jsEditor = bot.editorByTitle("index.js").toTextEditor();
-	  String jsString = jsEditor.getText();
+	  new ProjectExplorer().getProject(CORDOVA_PROJECT_NAME).getProjectItem("www","js","index.js").open();
+	  
+	  DefaultEditor jsEditor = new DefaultEditor("index.js");
+	  String jsString = new DefaultStyledText().getText();
 	  final String logMessage = "LOG_MESSAGE";
 	  final String errorVariable = "ERROR_VARIABLE";
 	  jsString = jsString.replaceFirst("app\\.receivedEvent\\('deviceready'\\);", 
@@ -35,13 +42,12 @@ public class DisplayJavaScriptErrors extends AerogearBotTest {
 	      + "\nconsole.log(\"" + logMessage + "\");\n"
 	      + errorVariable
 	      );
-	  jsEditor.setText(jsString);
+	  new DefaultStyledText().setText(jsString);
 	  jsEditor.save();
-	  console.clearConsole();
-	  projectExplorer.selectProject(CORDOVA_PROJECT_NAME);
-    runTreeItemWithCordovaSim(bot.tree().expandNode(CORDOVA_PROJECT_NAME));
+	  new ProjectExplorer().selectProjects(CORDOVA_PROJECT_NAME);
+    runTreeItemWithCordovaSim(CORDOVA_PROJECT_NAME);
     BrowserSimHandler.closeAllRunningInstances();
-    String consoleText = console.getConsoleText();
+    String consoleText = new ConsoleView().getConsoleText();
     String textToContain = "LOG: " + logMessage;
     assertTrue ("Console text has to contain:\n" + textToContain
         + "\nbut is:\n" + consoleText,
