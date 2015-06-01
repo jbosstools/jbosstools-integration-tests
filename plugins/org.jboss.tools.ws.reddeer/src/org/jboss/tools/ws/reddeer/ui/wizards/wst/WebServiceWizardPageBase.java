@@ -17,7 +17,6 @@ import org.jboss.reddeer.jface.wizard.WizardPage;
 import org.jboss.reddeer.swt.api.Combo;
 import org.jboss.reddeer.swt.api.Group;
 import org.jboss.reddeer.swt.api.Text;
-import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
@@ -25,6 +24,7 @@ import org.jboss.reddeer.swt.impl.group.DefaultGroup;
 import org.jboss.reddeer.swt.impl.scale.DefaultScale;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.core.matcher.WithLabelMatcher;
 import org.jboss.reddeer.core.matcher.WithMnemonicTextMatcher;
 import org.jboss.reddeer.uiforms.impl.hyperlink.DefaultHyperlink;
@@ -83,7 +83,7 @@ public abstract class WebServiceWizardPageBase extends WizardPage {
 
 		try {
 			c.setSelection(name);
-		} catch(SWTLayerException e) {
+		} catch(CoreLayerException e) {
 			c.setText(name);
 		}
 		new PushButton("OK").click();
@@ -113,7 +113,7 @@ public abstract class WebServiceWizardPageBase extends WizardPage {
 					Is.is("Package Name:")
 					)));
 			pkgText.setText(pkgName);
-		} catch(SWTLayerException e) {
+		} catch(CoreLayerException e) {
 			DefaultCombo combo = new DefaultCombo(0);
 			combo.setSelection("/"+pkgName.replaceAll(".", "/"));
 		}
