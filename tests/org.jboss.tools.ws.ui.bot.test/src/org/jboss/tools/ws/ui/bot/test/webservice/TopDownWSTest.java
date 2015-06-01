@@ -177,7 +177,12 @@ public class TopDownWSTest extends WebServiceTestBase {
 		switch (getLevel()) {
 		case DEVELOP:
 		case ASSEMBLE:
+			
+		/*workaround for https://bugs.eclipse.org/bugs/show_bug.cgi?id=377624
+		 choosing 'Deploy' should normally deploy the project automatically*/
+		case DEPLOY:
 			serversViewHelper.runProjectOnServer(getEarProjectName());
+			
 		default:
 			break;
 		}

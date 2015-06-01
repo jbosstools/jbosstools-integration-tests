@@ -17,7 +17,11 @@ import java.util.List;
 
 import javax.jws.WebService;
 
+import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
 import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
 import org.jboss.reddeer.eclipse.ui.views.navigator.ResourceNavigator;
@@ -62,11 +66,6 @@ public class WSClientTestTemplate extends WSTestBase {
 		return "clientsample/ClientSample.java";
 	}
 	
-	/**
-	 * Fails because the created client is not deployed to the server
-	 * 
-	 * @see https://bugs.eclipse.org/bugs/show_bug.cgi?id=428982
-	 */
 	@Test
 	public void testDeployClient() {
 		setLevel(SliderLevel.DEPLOY);
@@ -135,6 +134,10 @@ public class WSClientTestTemplate extends WSTestBase {
 		ResourceNavigator navigator = new ResourceNavigator();
 		navigator.open();
 		Project project = navigator.getProject(getWsProjectName());
+		
+		//workaround for https://bugs.eclipse.org/bugs/show_bug.cgi?id=468427
+		project.collapse();
+		
 		String pkg = (targetPkg != null && !"".equals(targetPkg.trim())) ? getWsPackage() :
 			"com.parasoft.wsdl.calculator";
 		String src = "src/" + pkg.replace('.', '/') + "/";
@@ -156,10 +159,15 @@ public class WSClientTestTemplate extends WSTestBase {
 	
 	private void assertThatEARProjectIsDeployed() {
 		switch (getLevel()) {
+		
+		/*workaround for https://bugs.eclipse.org/bugs/show_bug.cgi?id=428982
+		 choosing 'Deploy' should normally deploy the project automatically*/
+		case DEPLOY:
+			serversViewHelper.runProjectOnServer(getEarProjectName());
+			
 		case TEST:
 		case START:
 		case INSTALL:
-		case DEPLOY:
 			if(!clientHelper.projectIsDeployed(getConfiguredServerName(), getEarProjectName())) {
 				fail("Project was not found on the server.");
 			}
