@@ -52,4 +52,81 @@
 			</plugin>
 		</plugins>
 	</build>
+
+	<profiles>
+		<profile>
+			<id>deploy-to-jboss.org</id>
+			<properties>
+				<!-- Skip publishing to Nexus, since we don't use it and it takes a lot of time -->
+				<maven.deploy.skip>true</maven.deploy.skip>
+				<snapshotLocation>integration-tests</snapshotLocation>
+			</properties>
+				<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-dependency-plugin</artifactId>
+						<executions>
+							<execution>
+								<goals>
+									<goal>unpack</goal>
+								</goals>
+								<phase>deploy</phase>
+								<configuration>
+									<artifactItems>
+										<artifactItem>
+											<groupId>org.jboss.tools.releng</groupId>
+											<artifactId>jbosstools-releng-publish</artifactId>
+											<version>${project.version}</version>
+											<type>tar.gz</type>
+											<outputDirectory>${project.build.directory}/releng-scripts</outputDirectory>
+										</artifactItem>
+									</artifactItems>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>exec-maven-plugin</artifactId>
+						<configuration>
+							<executable>${project.build.directory}/releng-scripts/publish/rsync.sh</executable>
+						</configuration>
+						<executions>
+							<execution>
+								<id>deploy-snapshot-build</id>
+								<goals>
+									<goal>exec</goal>
+								</goals>
+								<phase>deploy</phase>
+								<configuration>
+									<arguments>
+										<arg>-s</arg>
+										<arg>${project.build.directory}/fullSite</arg>
+										<arg>-t</arg>
+										<arg>mars/snapshots/builds/jbosstools-build-sites.aggregate.${snapshotLocation}-site_${jbosstools_site_stream}/${BUILD_ID}-B${BUILD_NUMBER}</arg>
+									</arguments>
+								</configuration>
+							</execution>
+							<execution>
+								<id>deploy-snapshot-updatesite</id>
+								<goals>
+									<goal>exec</goal>
+								</goals>
+								<phase>deploy</phase>
+								<configuration>
+									<arguments>
+										<arg>-s</arg>
+										<arg>${project.build.directory}/repository</arg>
+										<arg>-t</arg>
+										<arg>mars/snapshots/updates/${snapshotLocation}/${jbosstools_site_stream}</arg>
+									</arguments>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
 </project>
