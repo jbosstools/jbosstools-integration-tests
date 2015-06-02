@@ -76,7 +76,7 @@
 										<artifactItem>
 											<groupId>org.jboss.tools.releng</groupId>
 											<artifactId>jbosstools-releng-publish</artifactId>
-											<version>${project.version}</version>
+											<version>4.3.0.Beta1-SNAPSHOT</version>
 											<type>tar.gz</type>
 											<outputDirectory>${project.build.directory}/releng-scripts</outputDirectory>
 										</artifactItem>
