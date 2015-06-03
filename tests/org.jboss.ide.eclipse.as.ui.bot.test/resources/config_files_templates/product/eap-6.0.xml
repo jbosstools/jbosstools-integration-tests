@@ -3,8 +3,10 @@
 	xmlns="http://www.jboss.org/NS/Req" 
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:server="http://www.jboss.org/NS/ServerReq"
+	xmlns:jre="http://www.jboss.org/NS/jre-schema"
 	xsi:schemaLocation="http://www.jboss.org/NS/Req http://www.jboss.org/schema/reddeer/RedDeerSchema.xsd 
-						http://www.jboss.org/NS/ServerReq http://www.jboss.org/schema/reddeer/JBossServerRequirements.xsd">
+						http://www.jboss.org/NS/ServerReq http://www.jboss.org/schema/reddeer/JBossServerRequirements.xsd
+						http://www.jboss.org/NS/jre-schema http://www.jboss.org/schema/reddeer/JRERequirement.xsd">
 
 	<requirements>
 		<server:jboss-server-requirement name="EAP-6.0">
@@ -13,5 +15,11 @@
 			</server:type>
 			<server:runtime>${jbosstools.test.jboss-eap-6.0.home}</server:runtime>
 		</server:jboss-server-requirement>
+		
+		 <jre:jre-requirement name="test">
+        	<jre:name>jre</jre:name>
+        	<jre:version>${req.java.version}</jre:version>
+        	<jre:path>${req.java.home}</jre:path>
+        </jre:jre-requirement>
 	</requirements>
 </testrun>

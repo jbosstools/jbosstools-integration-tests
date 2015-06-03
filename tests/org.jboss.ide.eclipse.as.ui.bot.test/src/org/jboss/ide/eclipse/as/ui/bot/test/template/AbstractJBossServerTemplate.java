@@ -5,11 +5,11 @@ import org.jboss.ide.eclipse.as.reddeer.server.view.JBossServer;
 import org.jboss.ide.eclipse.as.reddeer.server.view.JBossServerView;
 import org.jboss.ide.eclipse.as.ui.bot.test.matcher.ConsoleContainsTextMatcher;
 import org.jboss.reddeer.common.logging.Logger;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.eclipse.condition.ConsoleHasNoChange;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
 import org.junit.Before;
 
 import static org.hamcrest.CoreMatchers.not;
@@ -27,7 +27,7 @@ public abstract class AbstractJBossServerTemplate {
 	private static final Logger log = Logger.getLogger(AbstractJBossServerTemplate.class);
 
 	@InjectRequirement
-	protected ServerRequirement requirement;
+	protected ServerRequirement serverRequirement;
 
 	protected JBossServerView view;
 	
@@ -38,7 +38,7 @@ public abstract class AbstractJBossServerTemplate {
 	}
 	
 	protected String getServerName() {
-		return requirement.getServerNameLabelText(requirement.getConfig());
+		return serverRequirement.getServerNameLabelText(serverRequirement.getConfig());
 	} 
 	
 	protected JBossServer getServer() {

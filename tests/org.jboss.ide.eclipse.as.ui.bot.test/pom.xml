@@ -22,8 +22,6 @@
 		<usage_reporting_enabled>false</usage_reporting_enabled>
 		<!-- Maven configuration -->
 		<maven.test.failure.ignore>true</maven.test.failure.ignore>
-		<!-- Red deer configuration -->
-		<logDebug>false</logDebug>
 		<!-- Requirements and server configuration -->
 		<requirementsDirectory>${project.build.directory}/requirements</requirementsDirectory>
 		<reddeer.project.config>${project.build.outputDirectory}/project</reddeer.project.config>
@@ -43,12 +41,15 @@
 		<jbosstools.test.jboss-eap-5.home>${requirementsDirectory}/jboss-eap-5.2/jboss-as</jbosstools.test.jboss-eap-5.home>
 		<jbosstools.test.jboss-eap-6.0.home>${requirementsDirectory}/jboss-eap-6.0</jbosstools.test.jboss-eap-6.0.home>
 		<jbosstools.test.jboss-eap-6.x.home>${requirementsDirectory}/jboss-eap-6.4</jbosstools.test.jboss-eap-6.x.home>
+		<!-- Requirements JRE properties -->
+		<req.java.version>1.8</req.java.version>
+		<req.java.home>$JAVA_HOME</req.java.home>
 		<!-- Server download URL property files configuration -->
 		<project-download-properties-file>${project.basedir}/properties/projects-download.properties</project-download-properties-file>
 		<product-download-properties-file>${project.basedir}/properties/products-download.properties</product-download-properties-file>
 		<download-properties-file>${project-download-properties-file}</download-properties-file>
 		<!-- Command line arguments for tycho surefire tests -->
-		<runtimesProperties>-Dreddeer.config=${reddeer.config} -DlogDebug=${logDebug} -Djbosstools.test.jboss-as-3.2.home=${jbosstools.test.jboss-as-3.2.home} -Djbosstools.test.jboss-as-4.0.home=${jbosstools.test.jboss-as-4.0.home} -Djbosstools.test.jboss-as-4.2.home=${jbosstools.test.jboss-as-4.2.home} -Djbosstools.test.jboss-as-5.0.home=${jbosstools.test.jboss-as-5.0.home} -Djbosstools.test.jboss-as-5.1.home=${jbosstools.test.jboss-as-5.1.home} -Djbosstools.test.jboss-as-6.x.home=${jbosstools.test.jboss-as-6.x.home} -Djbosstools.test.jboss-as-7.0.home=${jbosstools.test.jboss-as-7.0.home} -Djbosstools.test.jboss-as-7.1.home=${jbosstools.test.jboss-as-7.1.home} -Djbosstools.test.jboss-wildfly-8.home=${jbosstools.test.jboss-wildfly-8.home} -Djbosstools.test.jboss-wildfly-9.home=${jbosstools.test.jboss-wildfly-9.home} -Djbosstools.test.jboss-eap-4.home=${jbosstools.test.jboss-eap-4.home} -Djbosstools.test.jboss-eap-5.home=${jbosstools.test.jboss-eap-5.home} -Djbosstools.test.jboss-eap-6.0.home=${jbosstools.test.jboss-eap-6.0.home} -Djbosstools.test.jboss-eap-6.x.home=${jbosstools.test.jboss-eap-6.x.home}</runtimesProperties>
+		<runtimesProperties>-Dreddeer.config=${reddeer.config} -Dreq.java.version=${req.java.version} -Dreq.java.home=${req.java.home} -Djbosstools.test.jboss-as-3.2.home=${jbosstools.test.jboss-as-3.2.home} -Djbosstools.test.jboss-as-4.0.home=${jbosstools.test.jboss-as-4.0.home} -Djbosstools.test.jboss-as-4.2.home=${jbosstools.test.jboss-as-4.2.home} -Djbosstools.test.jboss-as-5.0.home=${jbosstools.test.jboss-as-5.0.home} -Djbosstools.test.jboss-as-5.1.home=${jbosstools.test.jboss-as-5.1.home} -Djbosstools.test.jboss-as-6.x.home=${jbosstools.test.jboss-as-6.x.home} -Djbosstools.test.jboss-as-7.0.home=${jbosstools.test.jboss-as-7.0.home} -Djbosstools.test.jboss-as-7.1.home=${jbosstools.test.jboss-as-7.1.home} -Djbosstools.test.jboss-wildfly-8.home=${jbosstools.test.jboss-wildfly-8.home} -Djbosstools.test.jboss-wildfly-9.home=${jbosstools.test.jboss-wildfly-9.home} -Djbosstools.test.jboss-eap-4.home=${jbosstools.test.jboss-eap-4.home} -Djbosstools.test.jboss-eap-5.home=${jbosstools.test.jboss-eap-5.home} -Djbosstools.test.jboss-eap-6.0.home=${jbosstools.test.jboss-eap-6.0.home} -Djbosstools.test.jboss-eap-6.x.home=${jbosstools.test.jboss-eap-6.x.home}</runtimesProperties>
 		<systemProperties>${integrationTestsSystemProperties} ${runtimesProperties}</systemProperties>
 	</properties>
 

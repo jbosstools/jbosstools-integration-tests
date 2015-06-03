@@ -22,7 +22,9 @@ Bundle-ClassPath: .
 Export-Package: org.jboss.ide.eclipse.as.reddeer.requirement,
  org.jboss.ide.eclipse.as.reddeer.server.editor,
  org.jboss.ide.eclipse.as.reddeer.server.requirement,
- org.jboss.ide.eclipse.as.reddeer.server.view
+ org.jboss.ide.eclipse.as.reddeer.server.view,
+ org.jboss.ide.eclipse.as.reddeer.server.wizard,
+ org.jboss.ide.eclipse.as.reddeer.server.wizard.page
 Import-Package: javax.xml.bind.annotation
 Eclipse-BundleShape: jar
 Bundle-Vendor: JBoss by Red Hat

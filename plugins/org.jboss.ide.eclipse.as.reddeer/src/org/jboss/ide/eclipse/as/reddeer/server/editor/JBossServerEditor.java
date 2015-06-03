@@ -1,11 +1,13 @@
 package org.jboss.ide.eclipse.as.reddeer.server.editor;
 
 import org.jboss.ide.eclipse.as.reddeer.server.view.JBossServer;
+import org.jboss.ide.eclipse.as.reddeer.server.wizard.page.JBossRuntimeWizardPage;
+import org.jboss.reddeer.core.matcher.WithLabelMatcher;
 import org.jboss.reddeer.eclipse.wst.server.ui.editor.ServerEditor;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.spinner.DefaultSpinner;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.core.matcher.WithLabelMatcher;
+import org.jboss.reddeer.uiforms.impl.hyperlink.DefaultHyperlink;
 import org.jboss.reddeer.uiforms.impl.section.DefaultSection;
 
 /**
@@ -24,6 +26,11 @@ public class JBossServerEditor extends ServerEditor {
 		//		SWTBotFactory.getBot().shell("Edit Configuration").activate();
 		//		return new JBossServerLaunchConfiguration();
 		throw new UnsupportedOperationException();
+	}
+	
+	public JBossRuntimeWizardPage editRuntimeEnvironment(){
+		new DefaultHyperlink("Runtime Environment:").activate();
+		return new JBossRuntimeWizardPage();
 	}
 
 	public void setStartTimeout(int timeout){
