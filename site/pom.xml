@@ -93,21 +93,6 @@
 						</configuration>
 						<executions>
 							<execution>
-								<id>deploy-snapshot-build</id>
-								<goals>
-									<goal>exec</goal>
-								</goals>
-								<phase>deploy</phase>
-								<configuration>
-									<arguments>
-										<arg>-s</arg>
-										<arg>${project.build.directory}/fullSite</arg>
-										<arg>-t</arg>
-										<arg>mars/snapshots/builds/jbosstools-build-sites.aggregate.${snapshotLocation}-site_${jbosstools_site_stream}/${BUILD_ID}-B${BUILD_NUMBER}</arg>
-									</arguments>
-								</configuration>
-							</execution>
-							<execution>
 								<id>deploy-snapshot-updatesite</id>
 								<goals>
 									<goal>exec</goal>
