@@ -1,7 +1,13 @@
 package org.jboss.ide.eclipse.as.ui.bot.test.template;
 
+import org.jboss.ide.eclipse.as.reddeer.server.wizard.page.JBossRuntimeWizardPage;
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewEnums.ServerState;
+import org.jboss.reddeer.jface.wizard.WizardDialog;
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
+import org.jboss.reddeer.requirements.jre.JRERequirement;
+import org.jboss.reddeer.requirements.jre.JRERequirement.JRE;
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -19,12 +25,28 @@ import static org.hamcrest.core.Is.is;
  * @author Lucia Jelinkova
  *
  */
+@JRE
 public abstract class OperateServerTemplate extends AbstractJBossServerTemplate {
 
 	private static final Logger log = Logger.getLogger(OperateServerTemplate.class);
+
+	@InjectRequirement
+	protected JRERequirement jreRequirement;
 	
 	public abstract String getWelcomePageText();
 
+	@Before
+	public void setupServerJRE(){
+		if (jreRequirement == null){
+			return;
+		}
+		JBossRuntimeWizardPage runtimeWizard = getServer().open().editRuntimeEnvironment();
+		runtimeWizard.setAlternateJRE(jreRequirement.getJREName());
+		new WizardDialog().finish();
+		
+		getServer().open().save();
+	}
+	
 	@Test
 	public void operateServer(){
 		startServer();
