@@ -10,6 +10,7 @@ import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.C
 import org.jboss.reddeer.requirements.server.ServerReqState;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsCollectionContaining.hasItem;
 

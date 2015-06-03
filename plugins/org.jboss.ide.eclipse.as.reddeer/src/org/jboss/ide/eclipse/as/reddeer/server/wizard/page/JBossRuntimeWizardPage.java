@@ -4,6 +4,8 @@ import java.io.File;
 
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.core.exception.CoreLayerException;
+import org.jboss.reddeer.swt.impl.button.RadioButton;
+import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 
 /**
@@ -41,6 +43,18 @@ public class JBossRuntimeWizardPage {
 
 	public String getRuntimeDir() {
 		return new LabeledText(HOME_DIRECTORY_LABEL).getText();
+	}
+	
+	public void setExecutionEnvironment(String env){
+		System.out.println(new RadioButton().getText());
+		System.out.println(new RadioButton(1).getText());
+		new RadioButton("Execution Environment: ").toggle(true);
+		new DefaultCombo(0).setSelection(env);
+	}
+	
+	public void setAlternateJRE(String jre){
+		new RadioButton("Alternate JRE: ").toggle(true);
+		new DefaultCombo(1).setSelection(jre);
 	}
 
 	public void checkErrors() {

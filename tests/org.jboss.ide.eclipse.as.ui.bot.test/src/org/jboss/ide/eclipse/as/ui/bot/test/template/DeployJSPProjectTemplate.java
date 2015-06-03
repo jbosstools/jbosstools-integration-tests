@@ -77,7 +77,7 @@ public abstract class DeployJSPProjectTemplate extends AbstractJBossServerTempla
 		log.step("Set targeted runtime for " + PROJECT_NAME);
 		RuntimesPropertyPage targetedRuntimes = new RuntimesPropertyPage(project);
 		targetedRuntimes.open();
-		targetedRuntimes.selectRuntime(requirement.getRuntimeNameLabelText(requirement.getConfig()));
+		targetedRuntimes.selectRuntime(serverRequirement.getRuntimeNameLabelText(serverRequirement.getConfig()));
 		
 		OkButton ok = new OkButton();
 		ok.click();
