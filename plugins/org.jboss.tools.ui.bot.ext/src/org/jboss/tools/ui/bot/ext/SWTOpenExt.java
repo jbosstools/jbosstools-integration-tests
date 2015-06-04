@@ -6,6 +6,7 @@ import java.util.Iterator;
 
 import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swtbot.eclipse.finder.matchers.WidgetMatcherFactory;
 import org.eclipse.swtbot.eclipse.finder.waits.Conditions;
@@ -17,6 +18,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.eclipse.swtbot.swt.finder.widgets.TimeoutException;
 import org.hamcrest.Matcher;
+import org.jboss.reddeer.core.handler.WidgetHandler;
 import org.jboss.tools.ui.bot.ext.condition.ActiveShellTitleMatches;
 import org.jboss.tools.ui.bot.ext.condition.ShellIsActiveCondition;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem;
@@ -288,7 +290,9 @@ public class SWTOpenExt {
 
 		SWTBotShell activeShell = bot.activeShell();
 		String activeShellStr = bot.activeShell().getText();
+		Shell parentShell = (Shell)WidgetHandler.getInstance().getParent(activeShell.widget);
 		bot.button(finishButtonText).click();
+		new SWTBotShell(parentShell).activate();
 		SWTEclipseExt.hideWarningIfDisplayed(bot);
 		long time = System.currentTimeMillis();
 		boolean isOpened = true;

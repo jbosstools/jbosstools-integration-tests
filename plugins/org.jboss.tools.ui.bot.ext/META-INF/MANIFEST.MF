@@ -42,8 +42,9 @@ Require-Bundle: org.eclipse.ui,
  org.jboss.tools.tests;bundle-version="3.4.0",
  org.eclipse.ui.views.properties.tabbed;bundle-version="3.5.300",
  org.jboss.tools.common.model.ui,
- org.jboss.reddeer.swt;bundle-version="0.6.0"
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+ org.jboss.reddeer.swt;bundle-version="0.6.0",
+ org.jboss.reddeer.core;bundle-version="0.8.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Import-Package: org.apache.log4j;version="1.2.13",
  org.eclipse.gef,

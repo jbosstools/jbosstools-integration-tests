@@ -17,6 +17,7 @@ import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditPart;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefViewer;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.jsf.ui.bot.test.JSFAutoTestCase;
@@ -151,7 +152,7 @@ public abstract class AbstractFacesConfigEditingTest extends JSFAutoTestCase{
     editorBot.button(IDELabel.Button.ADD).click();
     bot.shell(AbstractFacesConfigEditingTest.getAddManagedBeanDialogTitle(getTestProjectType())).activate();
     bot.button(IDELabel.Button.BROWSE).click();
-    bot.shell(IDELabel.Shell.SELECT_CLASS).activate();
+    SWTBotShell shellSelectClass = bot.shell(IDELabel.Shell.SELECT_CLASS).activate();
     bot.text().setText(managedBeanClass);
     bot.sleep(Timing.time2S());
     final String selectedClassLabel = TableHelper.getSelectionText(bot.table());
@@ -159,6 +160,7 @@ public abstract class AbstractFacesConfigEditingTest extends JSFAutoTestCase{
         "\n but is:\n" + selectedClassLabel,
       selectedClassLabel.startsWith(managedBeanClass));
     bot.button(IDELabel.Button.OK).click();
+    shellSelectClass.activate();
     bot.textWithLabel(IDELabel.FacesConfigEditor.NEW_MANAGED_BEAN_NAME_LABEL)
       .setText(managedBeanName);
     bot.button(IDELabel.Button.FINISH).click();

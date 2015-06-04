@@ -43,6 +43,7 @@ public class JBIDE3579Test extends JSFAutoTestCase{
 		bot.shell("Enter New CSS Class Name").activate(); //$NON-NLS-1$
 		bot.textWithLabel("Enter New CSS Class Name").setText(CSS_CLASS_NAME); //$NON-NLS-1$
 		bot.button("OK").click(); //$NON-NLS-1$
+		bot.shell("CSS Class").activate();
 		bot.button("Apply").click(); //$NON-NLS-1$
 		bot.button("OK").click(); //$NON-NLS-1$
 		bot.editorByTitle(CSS_FILE_NAME+".css").close(); //$NON-NLS-1$

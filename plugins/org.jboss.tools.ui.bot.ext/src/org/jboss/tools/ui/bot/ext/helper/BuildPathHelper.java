@@ -108,8 +108,8 @@ public class BuildPathHelper {
 		Iterator<SWTBotShell> itOpenedShells = openedShells.iterator();
 		itOpenedShells.next().activate();
 		bot.clickButton(IDELabel.Button.OK).click();
-		String result = TableHelper.getSelectionText(bot.table());
 		itOpenedShells.next().activate();
+		String result = TableHelper.getSelectionText(bot.table());
 		bot.waitUntil(new ActiveShellTitleMatches(bot, "Preferences \\(Filtered\\)"),Timing.time3S());
 		bot.clickButton(IDELabel.Button.OK).click();
 		itOpenedShells.next().activate();

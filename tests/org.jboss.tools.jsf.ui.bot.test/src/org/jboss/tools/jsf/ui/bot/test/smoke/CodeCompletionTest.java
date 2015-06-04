@@ -407,6 +407,7 @@ public class CodeCompletionTest extends JSFAutoTestCase{
     result.add("lang");
     result.add("maxlength");
     result.add("name");
+    /*
     result.add("ng-app - ng");
     result.add("ng-bind - ng");
     result.add("ng-bind-html - ng");
@@ -458,6 +459,7 @@ public class CodeCompletionTest extends JSFAutoTestCase{
     result.add("ng-transclude - ng");
     result.add("ng-value - ng");
     result.add("ng-view - ngRoute");
+    */
     result.add("onblur");
     result.add("onchange");
     result.add("onclick");
@@ -485,6 +487,7 @@ public class CodeCompletionTest extends JSFAutoTestCase{
     result.add("image");
     result.add("immediate");
     result.add("label");
+    result.add("list");
     result.add("rendered");
     result.add("styleClass");
         
@@ -605,6 +608,7 @@ public class CodeCompletionTest extends JSFAutoTestCase{
     result.add("lang");
     result.add("maxlength");
     result.add("name");
+    /*
     result.add("ng-app - ng");
     result.add("ng-bind - ng");
     result.add("ng-bind-html - ng");
@@ -656,7 +660,7 @@ public class CodeCompletionTest extends JSFAutoTestCase{
     result.add("ng-transclude - ng");
     result.add("ng-value - ng");
     result.add("ng-view - ngRoute");
-
+*/
     result.add("onblur");
     result.add("onchange");
     result.add("onclick");
@@ -687,6 +691,7 @@ public class CodeCompletionTest extends JSFAutoTestCase{
     result.add("converterMessage");
     result.add("immediate");
     result.add("label");
+    result.add("list");
     result.add("rendered");
     result.add("required");
     result.add("requiredMessage");
@@ -702,7 +707,7 @@ public class CodeCompletionTest extends JSFAutoTestCase{
    */
   private static List<String> getCompositeComponentsAttributesProposalList(){
     LinkedList<String> result = new LinkedList<String>();
-    
+  /*  
     result.add("ng-app - ng");
     result.add("ng-bind - ng");
     result.add("ng-bind-html - ng");
@@ -742,6 +747,7 @@ public class CodeCompletionTest extends JSFAutoTestCase{
     result.add("ng-switch-when - ng");
     result.add("ng-transclude - ng");
     result.add("ng-view - ngRoute");
+    */
     result.add("id");
     result.add("label");
     result.add("rendered");

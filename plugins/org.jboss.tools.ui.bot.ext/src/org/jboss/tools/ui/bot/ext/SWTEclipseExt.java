@@ -940,6 +940,7 @@ public class SWTEclipseExt {
 		  log.info("Server Runtime: " + runtime.getName() +
 		      " already exists.\nNo Server Runtime were added.");
 		}
+		wiz.shell("Preferences").activate();
 		open.finish(wiz, IDELabel.Button.OK);
 	}
 	public void removeServerRuntime(String runtimeName) {
