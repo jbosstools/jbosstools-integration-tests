@@ -64,8 +64,7 @@ public class ID302OpenNewApplicationWizardWithoutConnectionTest {
 	public void testOpenWizardViaCentral() {
 		new DefaultToolItem(new WorkbenchShell(), OpenShiftLabel.Others.JBOSS_CENTRAL).click();
 		
-		DefaultSection startSection = new DefaultSection("Start from scratch");
-		new DefaultHyperlink(startSection, OpenShiftLabel.Others.OPENSHIFT_APP).activate();
+		new DefaultHyperlink(OpenShiftLabel.Others.OPENSHIFT_APP).activate();
 		
 		try {
 			new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.NEW_APP_WIZARD),

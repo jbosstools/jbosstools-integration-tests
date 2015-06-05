@@ -7,10 +7,9 @@ import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.core.exception.CoreLayerException;
-import org.jboss.reddeer.jface.exception.JFaceLayerException;
 import org.jboss.reddeer.jface.viewer.handler.TreeViewerHandler;
 import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.condition.ButtonWithTextIsActive;
+import org.jboss.reddeer.swt.condition.ButtonWithTextIsEnabled;
 import org.jboss.reddeer.swt.impl.button.CancelButton;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.FinishButton;
@@ -94,7 +93,7 @@ public class OpenShiftExplorerView extends WorkbenchView {
 		
 		if (serverType.equals(ServerType.AUTOMATIC)) {
 			new PushButton(OpenShiftLabel.TextLabels.CHECK_SERVER_TYPE).click();
-			new WaitUntil(new ButtonWithTextIsActive(new CancelButton()), TimePeriod.NORMAL);
+			new WaitUntil(new ButtonWithTextIsEnabled(new CancelButton()), TimePeriod.NORMAL);
 		}
 		
 		new LabeledText(OpenShiftLabel.TextLabels.USERNAME).setText(username);
@@ -106,7 +105,7 @@ public class OpenShiftExplorerView extends WorkbenchView {
 			}
 		}
 			
-		new WaitUntil(new ButtonWithTextIsActive(new FinishButton()), TimePeriod.NORMAL);
+		new WaitUntil(new ButtonWithTextIsEnabled(new FinishButton()), TimePeriod.NORMAL);
 		
 		new FinishButton().click();
 		
@@ -165,6 +164,7 @@ public class OpenShiftExplorerView extends WorkbenchView {
 	 * @return tree item representing domain
 	 */
 	public TreeItem getDomain(String username, String domain) {
+		activate();
 		TreeItem connectionItem = getConnection(username);
 		connectionItem.select();
 		expand(connectionItem, TimePeriod.NORMAL);
@@ -217,7 +217,7 @@ public class OpenShiftExplorerView extends WorkbenchView {
 		try {
 			getApplication(user, domain, name);
 			return true;
-		} catch (JFaceLayerException ex) {
+		} catch (RedDeerException ex) {
 			return false;
 		}
 	}

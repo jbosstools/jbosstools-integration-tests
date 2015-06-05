@@ -190,5 +190,5 @@ import org.junit.runners.Suite.SuiteClasses;
 		ID907DownloadableCartridgeContentAssistTest.class, 
 		
 		CleanUp.class, })
-public class OpenShiftEnterpriseBotTests {
+public class OpenShiftEnterpriseV2BotTests {
 }

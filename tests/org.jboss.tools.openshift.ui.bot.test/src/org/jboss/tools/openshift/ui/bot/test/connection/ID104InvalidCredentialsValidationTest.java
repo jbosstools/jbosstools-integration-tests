@@ -49,7 +49,7 @@ public class ID104InvalidCredentialsValidationTest {
 	}
 	
 	private void incorrectServer() {
-		new LabeledCombo(OpenShiftLabel.TextLabels.SERVER).setText("incorrect.server.url");
+		new LabeledCombo(OpenShiftLabel.TextLabels.SERVER).setText("https://incorrect.server.url");
 		new LabeledText(OpenShiftLabel.TextLabels.USERNAME).setText(Datastore.USERNAME);
 		new LabeledText(OpenShiftLabel.TextLabels.PASSWORD).setText(
 				System.getProperty("user.pwd"));		

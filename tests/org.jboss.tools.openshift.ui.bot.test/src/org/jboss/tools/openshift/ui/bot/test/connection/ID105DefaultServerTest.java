@@ -52,7 +52,7 @@ public class ID105DefaultServerTest {
 		
 		assertTrue("Default server URL has not been restored successfully. Server is "
 				+ defaultServerCombo.getText() + " but openshift.redhat.com is expected.", 
-				defaultServerCombo.getText().contains("openshift.redhat.com"));
+				defaultServerCombo.getText().contains("https://openshift.redhat.com"));
 		
 		new CancelButton().click();
 	}

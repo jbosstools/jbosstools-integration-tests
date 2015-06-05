@@ -24,6 +24,7 @@ import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
+import org.jboss.reddeer.workbench.condition.EditorWithTitleIsActive;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
 import org.jboss.tools.openshift.ui.condition.ApplicationIsDeployedSuccessfully;
@@ -101,6 +102,8 @@ public class ID407CreateApplicationFromExistingAndChangeRemoteNameTest {
 		
 		TextEditor editor = new TextEditor("index.html");
 		editor.activate();
+		
+		new WaitUntil(new EditorWithTitleIsActive("index.html"));
 		editor.setText(HTML_TEXT);
 		editor.save();
 		editor.close();

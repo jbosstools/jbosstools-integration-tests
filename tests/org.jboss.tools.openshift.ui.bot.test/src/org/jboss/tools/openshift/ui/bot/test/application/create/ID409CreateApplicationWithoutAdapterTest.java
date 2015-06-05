@@ -35,6 +35,7 @@ public class ID409CreateApplicationWithoutAdapterTest {
 		new Templates(Datastore.USERNAME, Datastore.DOMAIN, false).createSimpleApplicationOnBasicCartridges(
 				OpenShiftLabel.Cartridge.DIY, applicationName, false, true, false);
 		
+		explorer.activate();
 		assertTrue("Application " + applicationName + " has not been created", 
 				explorer.applicationExists(Datastore.USERNAME, Datastore.DOMAIN, applicationName));
 		

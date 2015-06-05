@@ -8,7 +8,7 @@ import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.swt.condition.ButtonWithTextIsActive;
+import org.jboss.reddeer.swt.condition.ButtonWithTextIsEnabled;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
@@ -47,6 +47,7 @@ public class ID151RemoveSSHKeyTest {
 			
 		}
 		
+		explorer.getConnection(Datastore.USERNAME).select();
 		new ContextMenu(OpenShiftLabel.ContextMenu.MANAGE_SSH_KEYS).select();
 		
 		new DefaultShell(OpenShiftLabel.Shell.MANAGE_SSH_KEYS);
@@ -61,7 +62,7 @@ public class ID151RemoveSSHKeyTest {
 		
 		new DefaultTable().getItem(0).select();
 			
-		new WaitUntil(new ButtonWithTextIsActive(new PushButton(OpenShiftLabel.Button.REMOVE)), 
+		new WaitUntil(new ButtonWithTextIsEnabled(new PushButton(OpenShiftLabel.Button.REMOVE)), 
 				TimePeriod.SHORT);
 			
 		new PushButton(OpenShiftLabel.Button.REMOVE).click();

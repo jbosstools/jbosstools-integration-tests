@@ -46,12 +46,13 @@ public class JAXRSToolingIntegrationTest extends RESTfulTestBase {
 					getConfiguredServerName());
 			serversViewHelper.serverClean(getConfiguredServerName());
 		}
+		wsTesterView.open();
 	}
 
 	@Override
 	public void cleanup() {
 		/* minimize web service tester */
-		wsTesterView.minimize();
+		wsTesterView.close();
 	}
 
 	@Override
