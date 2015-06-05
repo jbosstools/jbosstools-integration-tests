@@ -19,7 +19,7 @@ public class ID405CreateQuickstartTest {
 	
 	@Test
 	public void testCreateQuickstart() {
-		Templates templates = new Templates(Datastore.USERNAME, Datastore.DOMAIN, true);
+		Templates templates = new Templates(Datastore.USERNAME, Datastore.DOMAIN, false);
 		templates.createQuickstart(OpenShiftLabel.Cartridge.DJANGO, applicationName,
 				false, true, true);
 	}

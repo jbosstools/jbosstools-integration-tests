@@ -10,11 +10,11 @@ import org.jboss.reddeer.swt.impl.button.CancelButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.uiforms.impl.hyperlink.DefaultHyperlink;
-import org.jboss.reddeer.uiforms.impl.section.DefaultSection;
+import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.openshift.ui.utils.Datastore;
+import org.jboss.tools.openshift.ui.utils.JBossPerspective;
 import org.jboss.tools.openshift.ui.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.ui.view.openshift.OpenShiftExplorerView;
 import org.junit.Test;
@@ -29,6 +29,7 @@ public class ID301OpenNewApplicationWizardTest {
 	
 	@Test
 	public void testOpenWizardViaExplorer() {
+		new JBossPerspective().open();
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 		explorer.getDomain(Datastore.USERNAME, Datastore.DOMAIN).select();
 		
@@ -62,8 +63,7 @@ public class ID301OpenNewApplicationWizardTest {
 	public void testOpenWizardViaCentral() {
 		new DefaultToolItem(new WorkbenchShell(), OpenShiftLabel.Others.JBOSS_CENTRAL).click();
 	
-		DefaultSection startSection = new DefaultSection("Start from scratch");
-		new DefaultHyperlink(startSection, OpenShiftLabel.Others.OPENSHIFT_APP).activate();
+		new DefaultHyperlink(OpenShiftLabel.Others.OPENSHIFT_APP).activate();
 		
 		try {
 			new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.NEW_APP_WIZARD),

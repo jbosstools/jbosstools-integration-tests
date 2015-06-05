@@ -7,6 +7,7 @@ import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.ButtonWithTextIsActive;
+import org.jboss.reddeer.swt.condition.ButtonWithTextIsEnabled;
 import org.jboss.reddeer.swt.impl.button.BackButton;
 import org.jboss.reddeer.swt.impl.button.NextButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
@@ -34,10 +35,15 @@ public class OpenNewApplicationWizard {
 	 */
 	public static void openWizardFromExplorer(String username, String domain) {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
+		if (explorer.isOpened()) {
+			explorer.close();
+		}
 		explorer.open();
 
-		TreeItem domainItem = explorer.getDomain(username, domain);
-		domainItem.select();
+		explorer.getConnection(username).select();
+		// temporarily turn off creation on domains
+		//TreeItem domainItem = explorer.getDomain(username, domain);
+		//domainItem.select();
 		
 		new ContextMenu(OpenShiftLabel.ContextMenu.NEW_APPLICATION).select();
 		
@@ -73,7 +79,7 @@ public class OpenNewApplicationWizard {
 		
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		// to be sure, it is processed
-		new WaitUntil(new ButtonWithTextIsActive(new BackButton()), TimePeriod.LONG);
+		new WaitUntil(new ButtonWithTextIsEnabled(new BackButton()), TimePeriod.LONG);
 		
 		new DefaultShell(OpenShiftLabel.Shell.NEW_APP_WIZARD).setFocus();
 	}
@@ -81,8 +87,7 @@ public class OpenNewApplicationWizard {
 	public static void openWizardFromCentral(String username) {
 		new DefaultToolItem(new WorkbenchShell(), OpenShiftLabel.Others.JBOSS_CENTRAL).click();
 		
-		DefaultSection startSection = new DefaultSection("Start from scratch");
-		new DefaultHyperlink(startSection, OpenShiftLabel.Others.OPENSHIFT_APP).activate();
+		new DefaultHyperlink(OpenShiftLabel.Others.OPENSHIFT_APP).activate();
 	
 		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.NEW_APP_WIZARD),
 				TimePeriod.LONG);
@@ -99,7 +104,7 @@ public class OpenNewApplicationWizard {
 		
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		// to be sure, it is processed
-		new WaitUntil(new ButtonWithTextIsActive(new BackButton()), TimePeriod.LONG);
+		new WaitUntil(new ButtonWithTextIsEnabled(new BackButton()), TimePeriod.LONG);
 		
 		new DefaultShell(OpenShiftLabel.Shell.NEW_APP_WIZARD).setFocus();
 	}

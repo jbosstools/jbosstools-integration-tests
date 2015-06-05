@@ -20,7 +20,7 @@ public class ID406CreateApplicationOnDownloadableCartridgeTest {
 	
 	@Test
 	public void testCreateApplicatinOnDownloadableCartridge() {
-		new Templates(Datastore.USERNAME, Datastore.DOMAIN, true).createApplicationOnDownloadableCartridge(
+		new Templates(Datastore.USERNAME, Datastore.DOMAIN, false).createApplicationOnDownloadableCartridge(
 				downloadableURL, applicationName, false, false, true, null, (String[]) null);
 	}
 	

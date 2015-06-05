@@ -9,7 +9,7 @@ import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.jface.viewer.handler.TreeViewerHandler;
-import org.jboss.reddeer.swt.condition.ButtonWithTextIsActive;
+import org.jboss.reddeer.swt.condition.ButtonWithTextIsEnabled;
 import org.jboss.reddeer.swt.impl.button.FinishButton;
 import org.jboss.reddeer.swt.impl.button.NextButton;
 import org.jboss.reddeer.swt.impl.button.OkButton;
@@ -17,9 +17,9 @@ import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.openshift.ui.utils.Datastore;
 import org.jboss.tools.openshift.ui.utils.DeleteApplication;
 import org.jboss.tools.openshift.ui.utils.OpenShiftLabel;
@@ -54,6 +54,7 @@ public class ID502ImportApplicationViaMenuTest {
 
 		new NextButton().click();
 		
+		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.IMPORT_APPLICATION));
 		new DefaultShell(OpenShiftLabel.Shell.IMPORT_APPLICATION);
 		
 		for (String comboItem: new DefaultCombo(0).getItems()) {
@@ -76,7 +77,7 @@ public class ID502ImportApplicationViaMenuTest {
 		
 		treeViewerHandler.getTreeItem(new DefaultTree(), Datastore.DOMAIN, applicationName).select();
 		
-		new WaitUntil(new ButtonWithTextIsActive(new OkButton()), TimePeriod.LONG);
+		new WaitUntil(new ButtonWithTextIsEnabled(new OkButton()), TimePeriod.LONG);
 		
 		new OkButton().click();
 		

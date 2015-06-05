@@ -105,7 +105,10 @@ public class WSTestBase {
 	@After
 	public void cleanup() {
 		deleteAllProjectsFromServer();
-		new ConsoleView().clearConsole();
+		ConsoleView consoleView = new ConsoleView();
+		if (consoleView.isOpened()) {
+			consoleView.clearConsole();
+		}
 	}
 
 	@AfterClass

@@ -193,6 +193,6 @@ import org.junit.runners.Suite.SuiteClasses;
 		
 		CleanUp.class,
 })
-public class OpenShiftOnlineBotTests {
+public class OpenShiftOnlineV2BotTests {
 	
 }

@@ -11,6 +11,7 @@ import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.jface.viewer.handler.TreeViewerHandler;
 import org.jboss.reddeer.swt.condition.ButtonWithTextIsActive;
+import org.jboss.reddeer.swt.condition.ButtonWithTextIsEnabled;
 import org.jboss.reddeer.swt.impl.button.BackButton;
 import org.jboss.reddeer.swt.impl.button.CancelButton;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
@@ -22,6 +23,7 @@ import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.tools.openshift.ui.utils.Datastore;
+import org.jboss.tools.openshift.ui.utils.JBossPerspective;
 import org.jboss.tools.openshift.ui.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.ui.wizard.application.NewApplicationWizard;
 import org.jboss.tools.openshift.ui.wizard.application.OpenNewApplicationWizard;
@@ -43,6 +45,7 @@ public class ID307WizardDataProcessingTest {
 	
 	@Before
 	public void testWizardDataProcessing() {
+		new JBossPerspective().reset();
 		OpenNewApplicationWizard.openWizardFromExplorer(Datastore.USERNAME, 
 				Datastore.DOMAIN);
 		
@@ -58,7 +61,7 @@ public class ID307WizardDataProcessingTest {
 		
 		wizard.next();
 		
-		new WaitUntil(new ButtonWithTextIsActive(new BackButton()), TimePeriod.LONG);
+		new WaitUntil(new ButtonWithTextIsEnabled(new BackButton()), TimePeriod.LONG);
 		
 		assertTrue("Cartridge type is not shown correctly on second wizard page."
 				+ new DefaultLabel(4).getText() + " is shown but should be " 
@@ -90,7 +93,7 @@ public class ID307WizardDataProcessingTest {
 		
 		wizard.next();
 		
-		new WaitUntil(new ButtonWithTextIsActive(new BackButton()), TimePeriod.LONG);
+		new WaitUntil(new ButtonWithTextIsEnabled(new BackButton()), TimePeriod.LONG);
 		
 		assertTrue("Cartridge type is not shown correctly on second wizard page."
 				+ new DefaultLabel(4).getText() + " is shown but should be " 
@@ -135,7 +138,7 @@ public class ID307WizardDataProcessingTest {
 			fail("Next button has not been enabled after setting a valid URL");
 		}
 		
-		new WaitUntil(new ButtonWithTextIsActive(new BackButton()), TimePeriod.LONG);
+		new WaitUntil(new ButtonWithTextIsEnabled(new BackButton()), TimePeriod.LONG);
 		
 		new PushButton(OpenShiftLabel.Button.ADVANCED).click();
 		

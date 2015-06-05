@@ -9,15 +9,12 @@ import java.util.List;
 
 import org.hamcrest.core.Is;
 import org.hamcrest.core.IsNot;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.common.exception.RedDeerException;
 import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.ws.reddeer.ui.wizards.jaxrs.JAXRSApplicationWizard;
@@ -25,6 +22,9 @@ import org.jboss.tools.ws.reddeer.ui.wizards.jaxrs.JAXRSApplicationWizardPage;
 import org.jboss.tools.ws.reddeer.ui.wizards.jaxrs.JAXRSApplicationWizardPage.DeploymentDescriptorWizardPart;
 import org.jboss.tools.ws.reddeer.ui.wizards.jaxrs.JAXRSApplicationWizardPage.SubclassOfApplicationWizardPart;
 import org.jboss.tools.ws.ui.bot.test.WSTestBase;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Tests operates on JAX-RS Application wizard
@@ -61,7 +61,7 @@ public class CreateJAXRSApplicationTest extends WSTestBase {
 	public void cleanup() {
 		try {//close the wizard if it's present
 			wizard.cancel();
-		} catch(SWTLayerException e) {
+		} catch(RedDeerException e) {
 			
 		}
 		super.cleanup();

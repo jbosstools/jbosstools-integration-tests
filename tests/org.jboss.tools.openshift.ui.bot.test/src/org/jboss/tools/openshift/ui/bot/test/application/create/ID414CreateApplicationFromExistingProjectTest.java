@@ -13,7 +13,7 @@ import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.jface.viewer.handler.TreeViewerHandler;
-import org.jboss.reddeer.swt.condition.ButtonWithTextIsActive;
+import org.jboss.reddeer.swt.condition.ButtonWithTextIsEnabled;
 import org.jboss.reddeer.swt.impl.button.BackButton;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.FinishButton;
@@ -25,10 +25,10 @@ import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.openshift.ui.condition.ApplicationIsDeployedSuccessfully;
 import org.jboss.tools.openshift.ui.utils.Datastore;
 import org.jboss.tools.openshift.ui.utils.DeleteApplication;
@@ -96,7 +96,7 @@ public class ID414CreateApplicationFromExistingProjectTest {
 		projectExplorer.getProject(applicationName).select();
 
 		new ContextMenu(OpenShiftLabel.ContextMenu.DEPLOY_PROJECT).select();
-
+		
 		new WaitUntil(new ShellWithTextIsAvailable(
 				OpenShiftLabel.Shell.NEW_APP_WIZARD), TimePeriod.LONG);
 
@@ -113,7 +113,7 @@ public class ID414CreateApplicationFromExistingProjectTest {
 
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		// to be sure, it is processed
-		new WaitUntil(new ButtonWithTextIsActive(new BackButton()),
+		new WaitUntil(new ButtonWithTextIsEnabled(new BackButton()),
 				TimePeriod.LONG);
 
 		new DefaultShell(OpenShiftLabel.Shell.NEW_APP_WIZARD).setFocus();

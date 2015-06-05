@@ -86,9 +86,8 @@ public class ID304OpenNewApplicationWizardWithoutDomainTest {
 	@Test
 	public void testOpenNewApplicationWizardViaCentral() {
 		new DefaultToolItem(new WorkbenchShell(), OpenShiftLabel.Others.JBOSS_CENTRAL).click();
-		
-		DefaultSection startSection = new DefaultSection("Start from scratch");
-		new DefaultHyperlink(startSection, OpenShiftLabel.Others.OPENSHIFT_APP).activate();
+	
+		new DefaultHyperlink(OpenShiftLabel.Others.OPENSHIFT_APP).activate();
 		
 		try {
 			new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.NEW_APP_WIZARD),

@@ -200,6 +200,7 @@ public class BeanParamAnnotationSupportTest extends RESTfulTestBase {
 		editor.insertBeforeLine("@MatrixParam(\"" + matrixParam1 + "\")", matrixType1);
 		editor.insertBeforeLine("import javax.ws.rs.DefaultValue;", "import javax.ws.rs.MatrixParam;");
 		editor.insertBeforeLine("@DefaultValue(\"" + defaultValue + "\")", matrixType1);
+		AbstractWait.sleep(TimePeriod.SHORT);
 		restServices = restfulServicesForProject(PROJECT3_NAME);
 		assertExpectedPathOfService(restServices.get(0),
 				"/rest;" + matrixParam1 + "={" + matrixType1 + ":\"" + defaultValue + "\"}");//unstable
