@@ -16,6 +16,7 @@ import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.common.wait.AbstractWait;
@@ -199,8 +200,9 @@ public class CodeGenerationConfigurationTest extends HibernateRedDeerTest {
     	dlg.selectConfiguration(prj);
     	dlg.setOutputDir("/" + prj + "/" + src);
     	dlg.setPackage("org.gen");
-    	dlg.setReverseFromJDBC(true);
+    	dlg.setReverseFromJDBC(true);    	
     	if (reveng) dlg.setRevengFile(prj,"hibernate.reveng.xml");
+    	new DefaultShell(LaunchConfigurationsDialog.DIALOG_TITLE).setFocus();
     	dlg.selectExporter(0);
     	dlg.selectExporter(1);
     	dlg.apply();
