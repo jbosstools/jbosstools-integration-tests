@@ -4,6 +4,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
+import org.jboss.reddeer.eclipse.ui.views.log.LogView;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
 import org.jboss.reddeer.core.condition.JobIsRunning;
@@ -31,6 +32,11 @@ public class ProjectImporter {
 	 * @param projectName project name to import 
 	 */
 	public static void importProjectWithoutErrors(String pluginId, String projectName) {
+		
+		LogView logView = new LogView();
+		logView.open();
+		logView.deleteLog();
+		
 		importProject(pluginId, projectName);
 		new WaitWhile(new JobIsRunning(),TimePeriod.LONG);
 		ProblemsView problemsView = new ProblemsView();
