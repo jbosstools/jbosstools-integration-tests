@@ -30,7 +30,7 @@
 		<reddeer-stable-site>http://download.jboss.org/jbosstools/updates/stable/luna/core/reddeer/0.7.0/</reddeer-stable-site>
 		<reddeer-site>${reddeer-master-site}</reddeer-site>
 
-		<jbosstools-integrationtests-site>http://download.jboss.org/jbosstools/updates/nightly/integrationtests/master/</jbosstools-integrationtests-site>
+		<jbosstools-integrationtests-site>http://download.jboss.org/jbosstools/updates/nightly/integrationtests/${jbosstools_site_stream}/</jbosstools-integrationtests-site>
 		<jbosstools-site>http://download.jboss.org/jbosstools/mars/snapshots/updates/core/${jbosstools_site_stream}/</jbosstools-site>
 		<jbosstools-tests-site>http://download.jboss.org/jbosstools/mars/snapshots/updates/coretests/${jbosstools_site_stream}/</jbosstools-tests-site>
 	</properties>
