@@ -150,9 +150,9 @@ public abstract class AbstractFacesConfigEditingTest extends JSFAutoTestCase{
     bot.checkBox(IDELabel.FacesConfigEditor.DELETE_JAVA_SOURCE_CHECK_BOX).deselect();
     bot.button(IDELabel.Button.OK).click();
     editorBot.button(IDELabel.Button.ADD).click();
-    bot.shell(AbstractFacesConfigEditingTest.getAddManagedBeanDialogTitle(getTestProjectType())).activate();
+    SWTBotShell addManagedBeanShell = bot.shell(AbstractFacesConfigEditingTest.getAddManagedBeanDialogTitle(getTestProjectType())).activate();
     bot.button(IDELabel.Button.BROWSE).click();
-    SWTBotShell shellSelectClass = bot.shell(IDELabel.Shell.SELECT_CLASS).activate();
+    bot.shell(IDELabel.Shell.SELECT_CLASS).activate();
     bot.text().setText(managedBeanClass);
     bot.sleep(Timing.time2S());
     final String selectedClassLabel = TableHelper.getSelectionText(bot.table());
@@ -160,7 +160,7 @@ public abstract class AbstractFacesConfigEditingTest extends JSFAutoTestCase{
         "\n but is:\n" + selectedClassLabel,
       selectedClassLabel.startsWith(managedBeanClass));
     bot.button(IDELabel.Button.OK).click();
-    shellSelectClass.activate();
+    addManagedBeanShell.activate();
     bot.textWithLabel(IDELabel.FacesConfigEditor.NEW_MANAGED_BEAN_NAME_LABEL)
       .setText(managedBeanName);
     bot.button(IDELabel.Button.FINISH).click();
