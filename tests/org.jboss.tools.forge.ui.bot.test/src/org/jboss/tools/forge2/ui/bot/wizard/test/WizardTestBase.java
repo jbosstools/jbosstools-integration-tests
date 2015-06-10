@@ -46,7 +46,6 @@ public abstract class WizardTestBase {
 	@BeforeClass
 	public static void setup(){
 		ForgeConsoleView view = new ForgeConsoleView();
-		view.selectRuntime(new RegexMatcher("Forge 2.*"));
 		view.start();
 	}
 	
