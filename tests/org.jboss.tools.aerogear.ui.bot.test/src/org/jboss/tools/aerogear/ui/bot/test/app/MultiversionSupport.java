@@ -57,7 +57,7 @@ public class MultiversionSupport extends AerogearBotTest {
 			.getProjectItem("www", "config.xml").open();
 		// Add device plugin to project
 		ConfigEditor configEditor = new ConfigEditor(CORDOVA_APP_NAME);
-		configEditor.addPlugin("org.apache.cordova.device");
+		configEditor.addPlugin("cordova-plugin-device");
 		new ProjectExplorer().selectProjects(CORDOVA_PROJECT_NAME);
 		runTreeItemWithCordovaSim(CORDOVA_PROJECT_NAME);
 		BrowserSimHandler.closeAllRunningInstances();

@@ -28,11 +28,11 @@ import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.core.handler.ShellHandler;
-import org.jboss.reddeer.core.handler.WidgetHandler;
 import org.jboss.reddeer.eclipse.condition.ConsoleHasNoChange;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
@@ -109,8 +109,8 @@ public class AerogearBotTest {
 
     new DefaultTreeItem(projectName).select();
     new ContextMenu("Run As","3 Run w/CordovaSim").select();
-    new WaitUntil(new ConsoleHasNoChange(TimePeriod.NORMAL));
     new WaitWhile(new JobIsRunning());
+    new WaitUntil(new ConsoleHasNoChange(TimePeriod.NORMAL));
   }
 
   public void openInConfigEditor(String projectName) {
@@ -130,6 +130,7 @@ public class AerogearBotTest {
 
   @After
   public void tearDown() {
+	new WorkbenchShell().setFocus();
 	new ProjectExplorer().deleteAllProjects();
 	ShellHandler.getInstance().closeAllNonWorbenchShells();
   }
