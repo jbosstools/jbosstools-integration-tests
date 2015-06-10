@@ -86,6 +86,7 @@ public class ProjectPropertyDialog {
 	 */
 	public void ok() {
 		new WaitUntil(new ShellWithTextIsAvailable(DIALOG_TITLE + projectName));
+		new DefaultShell(DIALOG_TITLE + projectName);
 		PushButton ok = new PushButton("OK");
 		new WaitUntil(new ButtonWithTextIsActive(ok));
 		ok.click();
@@ -111,5 +112,12 @@ public class ProjectPropertyDialog {
 	public boolean isOpen() {
 		Shell shell = ShellLookup.getInstance().getShell(DIALOG_TITLE,TimePeriod.SHORT);
 		return (shell != null);		
+	}
+
+	/**
+	 * Sets focus to a dialog
+	 */
+	public void setFocus() {
+		new DefaultShell(DIALOG_TITLE + projectName);		
 	}
 }

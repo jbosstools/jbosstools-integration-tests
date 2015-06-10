@@ -86,7 +86,12 @@ public class ProjectConfigurationFactory {
 		FacetsPropertyPage pp = new FacetsPropertyPage(project);
 		pp.selectFacet("JPA");
 		pp.selectVersion("JPA",jpaVersion);
+				
+		prjDlg.setFocus();
+		
 		addFurtherJPAConfiguration(jpaVersion);
+		
+		prjDlg.setFocus();
 				
 		prjDlg.ok();
 		
@@ -96,7 +101,9 @@ public class ProjectConfigurationFactory {
 		JPAFacetWizardPage jpaPage = new JPAFacetWizardPage();
 		
 		jpaPage.setConnectionProfile(cfg.getProfileName());
+		prjDlg.setFocus();
 		jpaPage.setAutoDiscovery(true);
+		prjDlg.setFocus();
 		prjDlg.ok();
 		
 		checkPersistenceXML(prj);
