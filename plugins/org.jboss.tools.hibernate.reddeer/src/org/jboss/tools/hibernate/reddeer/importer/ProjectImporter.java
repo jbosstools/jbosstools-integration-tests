@@ -50,7 +50,7 @@ public class ProjectImporter {
 			new OkButton().click();
 			new WaitWhile(new ShellWithTextIsActive("Clean"));
 					
-			new WaitWhile(new JobIsRunning());
+			new WaitWhile(new JobIsRunning(),TimePeriod.LONG);
 	}
 		
 		assertTrue("No problems after import are expected", problemsView.getProblems(ProblemType.ERROR).size() == 0);
