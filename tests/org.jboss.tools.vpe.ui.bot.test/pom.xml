@@ -99,7 +99,7 @@
             </dependency>
             <dependency>
               <type>p2-installable-unit</type>
-              <artifactId>org.jboss.tools.vpe.browsersim.feature.feature.group</artifactId>
+              <artifactId>org.jboss.tools.browsersim.feature.feature.group</artifactId>
               <version>0.0.0</version>
             </dependency>
           </dependencies>
