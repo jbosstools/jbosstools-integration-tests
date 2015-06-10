@@ -49,7 +49,7 @@ public class ProjectNewWizardTest extends WizardTestBase {
 		new LabeledText("Project name:").setText(PROJECT_NAME);
 		new LabeledText("Project location:").setText(WORKSPACE);
 		new LabeledText("Top level package:").setText(GROUPID);
-		new LabeledCombo("Project type:").setSelection("Java Resources");
+		new LabeledCombo("Project type:").setSelection("Java Resources (JAR)");
 		wd.finish();
 		//asserts
 		ProjectExplorer pe = new ProjectExplorer();
@@ -70,7 +70,7 @@ public class ProjectNewWizardTest extends WizardTestBase {
 		new LabeledText("Project name:").setText(PROJECT_NAME);
 		new LabeledText("Project location:").setText(WORKSPACE);
 		new LabeledText("Top level package:").setText(GROUPID);
-		new LabeledCombo("Project type:").setSelection("Java Web Application");
+		new LabeledCombo("Project type:").setSelection("Java Web Application (WAR)");
 		wd.finish();
 		//asserts
 		ProjectExplorer pe = new ProjectExplorer();
