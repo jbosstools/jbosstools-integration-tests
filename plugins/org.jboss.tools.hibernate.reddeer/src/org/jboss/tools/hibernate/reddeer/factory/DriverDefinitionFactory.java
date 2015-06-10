@@ -7,12 +7,14 @@ import org.jboss.reddeer.eclipse.datatools.ui.DriverTemplate;
 import org.jboss.reddeer.eclipse.datatools.ui.preference.DriverDefinitionPreferencePage;
 import org.jboss.reddeer.eclipse.datatools.ui.wizard.DriverDefinitionPage;
 import org.jboss.reddeer.eclipse.datatools.ui.wizard.DriverDefinitionWizard;
-import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
+import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.requirements.db.DatabaseConfiguration;
 import org.jboss.reddeer.swt.api.TableItem;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.YesButton;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.table.DefaultTableItem;
 import org.jboss.reddeer.common.wait.WaitUntil;
@@ -48,8 +50,10 @@ public class DriverDefinitionFactory {
 			new WaitUntil(new ShellWithTextIsActive("Confirm Driver Removal"));
 			new YesButton().click();
 			new WaitWhile(new ShellWithTextIsActive("Confirm Driver Removal"));
-			new WaitUntil(new ShellWithTextIsActive("Preferences"));
+			new WaitUntil(new ShellWithTextIsAvailable("Preferences"));
+			new DefaultShell("Preferences");
 		}
+		
 		
 		DriverDefinitionWizard ddw = preferencePage.addDriverDefinition();
 		DriverDefinitionPage page = new DriverDefinitionPage();
@@ -57,7 +61,9 @@ public class DriverDefinitionFactory {
 		page.setName(cfg.getDriverName());
 		page.addDriverLibrary(dd.getDriverLibrary());
 		page.setDriverClass(cfg.getDriverClass());
+
 		ddw.finish();
+		new DefaultShell(ddw.getTitle());
 		preferenceDialog.ok();
 	}
 
