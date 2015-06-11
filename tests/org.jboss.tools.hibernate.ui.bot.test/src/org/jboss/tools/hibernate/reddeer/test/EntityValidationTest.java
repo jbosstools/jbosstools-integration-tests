@@ -91,7 +91,7 @@ public class EntityValidationTest extends HibernateRedDeerTest {
 		pv.activate();
 		String expectedProblem = "Strategy class \"org.hibernate.ui.test.model.UserIdGenerator\" could not be found.";
 		problems = pv.getProblems(ProblemType.ERROR, new ProblemsDescriptionMatcher(expectedProblem));
-		assertTrue(expectedProblem + " error is expected, known issue(s):", problems.size() == 2);
+		assertTrue(expectedProblem + " Error is expected, known issue(s):JBIDE-19526", problems.size() == 2);
 	}
 	
 	@After 
