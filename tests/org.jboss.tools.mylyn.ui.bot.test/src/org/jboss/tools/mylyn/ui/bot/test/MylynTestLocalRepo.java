@@ -36,12 +36,14 @@ public class MylynTestLocalRepo {
 	@Test
 	public void testLocalRepo() {
 
+		TestSupport.disableSecureStorage();
+		
 		/* Verify Local task repository can be found */
 		TaskRepositoriesView view = new TaskRepositoriesView();	
 		view.open();
 			
-		List<TreeItem> repoItems = TestSupport.mylynTestSetup1(log);
-		ArrayList<String> repoList = TestSupport.mylynTestSetup2(repoItems, log);
+		List<TreeItem> repoItems = TestSupport.mylynTestSetup1();
+		ArrayList<String> repoList = TestSupport.mylynTestSetup2(repoItems);
 				
 		/* Create a new task in the local task repository */	
 		log.info("Create a new task in the local task repository");
