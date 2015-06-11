@@ -67,7 +67,7 @@ public class MappingFileTest extends HibernateRedDeerTest {
 		try {
 			item = new DefaultTreeItem(PRJ,"src",clazz,"Dog.hbm.xml");
 		} catch (TreeItemNotFoundException e) {
-			fail("https://issues.jboss.org/browse/JBIDE-18769");
+			fail("Hbm.xml not generated: Known issue(s): JBIDE-18769, JBIDE-20042");
 		}		
 		
 		item.doubleClick();
@@ -121,7 +121,7 @@ public class MappingFileTest extends HibernateRedDeerTest {
 		try {
 			item = new DefaultTreeItem(PRJ,"src",clazz,"Owner.hbm.xml");
 		} catch (TreeItemNotFoundException e) {
-			fail("https://issues.jboss.org/browse/JBIDE-18769");
+			fail("Hbm.xml not generated: Known issue(s): JBIDE-18769, JBIDE-20042");
 		}
 
 		item.doubleClick();
