@@ -5,6 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.eclipse.core.runtime.IProduct;
+import org.eclipse.core.runtime.Platform;
+import org.jboss.reddeer.eclipse.equinox.security.ui.StoragePreferencePage;
+import org.jboss.reddeer.swt.api.TableItem;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -12,17 +16,20 @@ import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 
 public class TestSupport {
 	
+	private static final Logger log = Logger.getLogger(TestSupport.class);
+	
 	/* Test Setup part 1 */
-	public static List<TreeItem> mylynTestSetup1 (Logger log) {		
+	public static List<TreeItem> mylynTestSetup1 () {		
 		
-		log.info("*** Step - Open the Mylyn View");
+		log.debug("Open the Mylyn View");
 		new ShellMenu("Window", "Show View", "Other...").select();
 
 		/* Verify that the expected repos are defined */
-		log.info("***Step - Verify that the Mylyn Features are Present");
+		log.debug("Verify that the Mylyn Features are Present");
 		DefaultTreeItem taskRepositories = new DefaultTreeItem ("Mylyn", "Task Repositories");
 		taskRepositories.select();		
 		
@@ -52,11 +59,11 @@ public class TestSupport {
 	 * and an ArrayList of the same items
 	 * 
 	 * */
-	public static ArrayList<String> mylynTestSetup2 (List<TreeItem> repoItems, Logger log) {
+	public static ArrayList<String> mylynTestSetup2 (List<TreeItem> repoItems) {
 		ArrayList<String> repoList = new ArrayList<String>();
 		int i = 0;
 		for (TreeItem item : repoItems) {
-			log.info(item.getText());
+			log.debug("repo found: " + item.getText());
 			repoList.add(i++, item.getText());
 		}
 		return repoList;
@@ -65,23 +72,46 @@ public class TestSupport {
 	
 	public static void closeSecureStorageIfOpened () {
 		
+		log.debug("Attempting to close the Secure Storage Dialog");
+		
 		/* For JBoss Tools */
 		String uiString = "Secure Storage"; 
-		
-		/* For JBDS */
-		try  {
-			org.eclipse.core.runtime.Platform.getProduct().getName();
+
+		/* Determine if JBDS is running */
+		IProduct prod = Platform.getProduct();
+		if ((prod != null) && (prod.getId().startsWith("com.jboss.jbds."))) {
 			uiString = "Secure Storage Password";
-		}
-			/* Call to org.eclipse.core.runtime.Platform.getProduct() raises NPE with JBoss Tools */
-			catch (java.lang.NullPointerException E) {
-		}		
+		}	
 		
-		try{
+		try {
 			new DefaultShell(uiString).close();
-		} catch (SWTLayerException swtle){
-			// do nothing shell was not opened
+			log.debug("Closed the Secure Storage Dialog");
+		} 
+		catch (SWTLayerException swtle){
+			log.error("Unable to close the Secure Storage Dialog - " + swtle.getMessage());
+			log.error (swtle);				
 		}	
 	}
+	
+
+	public static void disableSecureStorage () {
+
+		log.debug("Disabling the Secure Storage Dialog");
+
+		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
+		StoragePreferencePage storagePage = new StoragePreferencePage();
+		preferenceDialog.open();
+
+		preferenceDialog.select(storagePage);
+		for (TableItem item : storagePage.getMasterPasswordProviders()) {
+			item.setChecked(true);
+		}
+
+		storagePage.apply();
+		preferenceDialog.ok();
+		log.debug("Disabled the Secure Storage Dialog");
+		
+	}
+	
 	
 } /* class */

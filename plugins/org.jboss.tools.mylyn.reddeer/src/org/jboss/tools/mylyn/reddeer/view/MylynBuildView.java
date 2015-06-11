@@ -3,7 +3,8 @@ package org.jboss.tools.mylyn.reddeer.view;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jboss.reddeer.common.logging.Logger;
+//import org.jboss.reddeer.common.logging.Logger;
+import org.apache.log4j.Logger;
 import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
 import org.jboss.reddeer.swt.api.Tree;
 import org.jboss.reddeer.swt.api.TreeItem;
