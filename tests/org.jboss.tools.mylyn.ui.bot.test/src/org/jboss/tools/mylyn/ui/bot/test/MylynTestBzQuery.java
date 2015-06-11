@@ -71,14 +71,16 @@ public class MylynTestBzQuery {
 	 */
 	public void testBugzillaQuery(String targetRepo, String queryName, String bugzillaSummary, String bugzilla) {
 
+		TestSupport.disableSecureStorage();
+		
 		TaskRepositoriesView view = new TaskRepositoriesView();
 
 		view.open();
 
 		String fullBugzillaString = bugzilla + ": " + bugzillaSummary;
 
-		List<TreeItem> repoItems = TestSupport.mylynTestSetup1(log);
-		ArrayList<String> repoList = TestSupport.mylynTestSetup2(repoItems, log);
+		List<TreeItem> repoItems = TestSupport.mylynTestSetup1();
+		ArrayList<String> repoList = TestSupport.mylynTestSetup2(repoItems);
 
 		// JBDS50_0135 User can connect Bugzilla via Mylyn connectors plugin
 		// JBDS50_0140 Red Hat Bugzilla task repository is available and can be
