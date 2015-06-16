@@ -77,9 +77,9 @@ public class TestSupport {
 		/* For JBoss Tools */
 		String uiString = "Secure Storage"; 
 
-		/* Determine if JBDS is running */
+		/* Determine if JBDS is running - com.jboss.devstudio.core.product */
 		IProduct prod = Platform.getProduct();
-		if ((prod != null) && (prod.getId().startsWith("com.jboss.jbds."))) {
+		if ((prod != null) && (prod.getId().startsWith("com.jboss.devstudio."))) {
 			uiString = "Secure Storage Password";
 		}	
 		
