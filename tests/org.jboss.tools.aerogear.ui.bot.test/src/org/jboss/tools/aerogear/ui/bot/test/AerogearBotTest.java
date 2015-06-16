@@ -33,9 +33,11 @@ import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.core.handler.ShellHandler;
+import org.jboss.reddeer.core.matcher.WithTextMatcher;
 import org.jboss.reddeer.eclipse.condition.ConsoleHasNoChange;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.reddeer.common.matcher.RegexMatcher;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
@@ -92,7 +94,7 @@ public class AerogearBotTest {
     // TODO: Order/content of context many may change
     // TODO: Need to check presence of Android SDK installation
     new DefaultTreeItem(projectName).select();
-    new ContextMenu("Run As","2 Run on Android Emulator").select();
+    new ContextMenu(new WithTextMatcher("Run As"), new RegexMatcher("(\\d+)( Run on Android Emulator)")).select();
     new WaitWhile(new JobIsRunning());
   }
 
@@ -101,14 +103,14 @@ public class AerogearBotTest {
     // TODO: Order/content of context many may change
     // TODO: Need to check presence of Android SDK installation
     new DefaultTreeItem(projectName).select();
-    new ContextMenu("Run As","1 Run on Android Device").select();
+    new ContextMenu(new WithTextMatcher("Run As"), new RegexMatcher("(\\d+)( Run on Android Device)")).select();
     new WaitWhile(new JobIsRunning());
   }
 
   public void runTreeItemWithCordovaSim(String projectName) {
 
     new DefaultTreeItem(projectName).select();
-    new ContextMenu("Run As","3 Run w/CordovaSim").select();
+    new ContextMenu(new WithTextMatcher("Run As"), new RegexMatcher("(\\d+)( Run w/CordovaSim)")).select();
     new WaitWhile(new JobIsRunning());
     new WaitUntil(new ConsoleHasNoChange(TimePeriod.NORMAL));
   }
