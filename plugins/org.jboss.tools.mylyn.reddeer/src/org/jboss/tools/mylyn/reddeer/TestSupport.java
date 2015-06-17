@@ -79,7 +79,7 @@ public class TestSupport {
 
 		/* Determine if JBDS is running */
 		IProduct prod = Platform.getProduct();
-		if ((prod != null) && (prod.getId().startsWith("com.jboss.jbds."))) {
+		if ((prod != null) && (prod.getId().startsWith("com.jboss.devstudio."))) {
 			uiString = "Secure Storage Password";
 		}	
 		
