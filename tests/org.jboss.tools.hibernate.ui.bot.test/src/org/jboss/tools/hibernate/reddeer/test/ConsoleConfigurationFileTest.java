@@ -15,6 +15,7 @@ import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.link.DefaultLink;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
@@ -83,6 +84,8 @@ public class ConsoleConfigurationFileTest extends HibernateRedDeerTest {
 		new OkButton().click();
 		new WaitWhile(new ShellWithTextIsActive("Select Connection Profile"));
 
+		new DefaultShell("");
+		
 		// Check values
 		NewConfigurationSettingPage p2 = new NewConfigurationSettingPage();
 		assertTrue("jdbc must match", p2.getConnectionURL().equals(cfg.getJdbcString()));
