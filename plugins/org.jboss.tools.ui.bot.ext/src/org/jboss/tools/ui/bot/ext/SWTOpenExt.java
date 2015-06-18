@@ -2,6 +2,7 @@ package org.jboss.tools.ui.bot.ext;
 
 import static org.eclipse.swtbot.swt.finder.waits.Conditions.shellCloses;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.apache.log4j.Logger;
@@ -18,7 +19,9 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.eclipse.swtbot.swt.finder.widgets.TimeoutException;
 import org.hamcrest.Matcher;
+import org.jboss.reddeer.common.exception.RedDeerException;
 import org.jboss.reddeer.core.handler.WidgetHandler;
+import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.tools.ui.bot.ext.condition.ActiveShellTitleMatches;
 import org.jboss.tools.ui.bot.ext.condition.ShellIsActiveCondition;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem;
@@ -101,44 +104,15 @@ public class SWTOpenExt {
 	 * @param item
 	 */
 	public void selectTreeNode(SWTBot bot, IActionItem item) {
-		SWTBotTreeItem ti = null;
-		try {
-			Iterator<String> iter = item.getGroupPath().iterator();
-
-			if (iter.hasNext()) {
-				String next = iter.next();
-				ti = bot.tree().expandNode(next);
-				try {
-					while (iter.hasNext()) {
-						next = iter.next();
-						// expanding node is failing, so try to collapse and
-						// expand it again
-						ti.expand();
-						ti = ti.expandNode(next);
-					}
-					next = item.getName();
-					ti.expandNode(next).select();
-				} catch (WidgetNotFoundException ex) {
-					log
-							.warn("Tree item '"
-									+ next
-									+ "' was not found, trying to collapse and reexpand parent node");
-					ti.collapse();
-					ti.expand();
-					ti.select();
-					ti = ti.expandNode(next);
-					ti.select();
-				}
-			} else {
-				bot.tree().select(item.getName());
-			}
-		} catch (WidgetNotFoundException ex) {
-			String exStr = "Item '" + ActionItem.getItemString(item)
-					+ "' does not exist in tree";
-			if (ti != null) {
-				exStr += ", last selected item was '" + ti.getText() + "'";
-			}
-			throw new WidgetNotFoundException(exStr, ex);
+		int groupPathLength = item.getGroupPath().size();
+		String[] treeNodePath = new String[ groupPathLength + 1];
+		System.arraycopy((String[])item.getGroupPath().toArray(new String[groupPathLength]), 0,
+			treeNodePath, 0, groupPathLength);
+		treeNodePath[groupPathLength] = item.getName();
+		try{
+			new DefaultTreeItem(treeNodePath).select();
+		} catch (RedDeerException rde){
+			throw new WidgetNotFoundException ("Unable to select Tree Node",rde);
 		}
 	}
 
