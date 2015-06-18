@@ -19,6 +19,7 @@ import org.jboss.tools.ui.bot.ext.SWTBotExt;
 import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.helper.KeyboardHelper;
 import org.jboss.tools.vpe.ui.bot.test.VPEAutoTestCase;
+import org.junit.Ignore;
 
 public class VpeToolbarTest extends PreferencesTestCase {
 	
@@ -29,7 +30,7 @@ public class VpeToolbarTest extends PreferencesTestCase {
 		super();
 		botExt = new SWTBotExt();
 	}
-
+	@Ignore
 	public void testVpeToolbarVisibility_JBIDE11302() {
 		openPage();
 		/*
