@@ -43,7 +43,7 @@
 		<jbosstools.test.jboss-eap-6.x.home>${requirementsDirectory}/jboss-eap-6.4</jbosstools.test.jboss-eap-6.x.home>
 		<!-- Requirements JRE properties -->
 		<req.java.version>1.8</req.java.version>
-		<req.java.home>$JAVA_HOME</req.java.home>
+		<req.java.home>${env.JAVA_HOME}</req.java.home>
 		<!-- Server download URL property files configuration -->
 		<project-download-properties-file>${project.basedir}/properties/projects-download.properties</project-download-properties-file>
 		<product-download-properties-file>${project.basedir}/properties/products-download.properties</product-download-properties-file>
