@@ -1,17 +1,18 @@
 package org.jboss.tools.freemarker.ui.bot.test;
 
+import org.jboss.reddeer.jface.preference.PreferencePage;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.group.DefaultGroup;
-import org.jboss.reddeer.workbench.preference.WorkbenchPreferencePage;
 
 
-public class FreemarkerPreferencePage extends WorkbenchPreferencePage {
+public class FreemarkerPreferencePage extends PreferencePage {
+	
 
 	public FreemarkerPreferencePage() {
-		super("FreeMarker");		
+		super(new String[] {"Freemarker"});
 	}
-	
+
 	public void setHighLightRelatedDirectives(boolean value) {
 		CheckBox cb = new CheckBox();
 		cb.toggle(value);

@@ -1,8 +1,7 @@
 package org.jboss.tools.hibernate.reddeer.dialog;
 
 import org.jboss.reddeer.jface.wizard.WizardPage;
-import org.jboss.reddeer.swt.condition.ButtonWithTextIsActive;
-import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.swt.condition.ButtonWithTextIsEnabled;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.link.DefaultLink;
@@ -36,7 +35,7 @@ public class ProjectFacetsPage extends WizardPage {
     	new WaitUntil(new ShellWithTextIsAvailable("Properties for " + projectName));
     	new DefaultShell("Properties for " + projectName);
     	PushButton apply = new PushButton("Apply");
-    	new WaitUntil(new ButtonWithTextIsActive(apply));
+    	new WaitUntil(new ButtonWithTextIsEnabled(apply));
     	apply.click();    	
 	}
 }
