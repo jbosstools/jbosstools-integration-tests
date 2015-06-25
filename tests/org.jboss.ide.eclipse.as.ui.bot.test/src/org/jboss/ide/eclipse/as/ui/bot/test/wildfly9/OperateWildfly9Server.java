@@ -14,4 +14,8 @@ public class OperateWildfly9Server extends OperateServerTemplate {
 		return "Welcome to WildFly 9";
 	}
 
+	@Override
+	public boolean setHeadlessModeOnMac() {
+		return false;
+	}
 }
