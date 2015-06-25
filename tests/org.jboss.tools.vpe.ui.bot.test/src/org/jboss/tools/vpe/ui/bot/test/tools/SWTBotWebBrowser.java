@@ -35,6 +35,7 @@ import org.eclipse.swtbot.eclipse.gef.finder.matchers.ToolEntryLabelMatcher;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.results.Result;
+import org.eclipse.swtbot.swt.finder.results.VoidResult;
 import org.eclipse.swtbot.swt.finder.results.WidgetResult;
 import org.eclipse.ui.IEditorReference;
 import org.eclipse.ui.IViewReference;
@@ -398,13 +399,17 @@ public class SWTBotWebBrowser {
    * Activate JBoss Tools Palette Tool with specified Label static version
    * @param toolLabel
    */
-  public static void activatePaletteTool (SWTBotExt bot , String toolLabel){
-    
-    PaletteViewer paletteViewer = SWTBotWebBrowser.getPaletteViewer(bot);
-    PaletteEntry paletteEntry = SWTBotWebBrowser.getPaletteEntry(paletteViewer , toolLabel);
-    paletteViewer.setActiveTool((ToolEntry) paletteEntry);
+	public static void activatePaletteTool(final SWTBotExt bot, final String toolLabel) {
+		final PaletteViewer paletteViewer = SWTBotWebBrowser.getPaletteViewer(bot);
 
-  }
+		UIThreadRunnable.asyncExec(new VoidResult() {
+			@Override
+			public void run() {
+				PaletteEntry paletteEntry = SWTBotWebBrowser.getPaletteEntry(paletteViewer, toolLabel);
+				paletteViewer.setActiveTool((ToolEntry) paletteEntry);
+			}
+		});
+	}
   /**
    * Returns true if node or it's child has node with specified name and attributes with specified values
    * @param node
@@ -432,7 +437,7 @@ public class SWTBotWebBrowser {
     	while (!result && nodeIndex < numNodes){
     		// check attributes of particular node
     		boolean attributesMatches = true;
-    		if (attributeNames.length > 0){
+    		if (attributeNames != null && attributeNames.length > 0){
     			int attrIndex = 0;
     			while (attrIndex < attributeNames.length && attributesMatches){
     				final String commandToGetAttributeValue = "return document.getElementsByTagName('" 
@@ -536,23 +541,40 @@ public class SWTBotWebBrowser {
    */
   public boolean containsNodeWithValue(nsIDOMNode node, String searchText) {
 	  boolean result = false;
-	  String nodeValue = node.getNodeValue();
+	  
+	  if (node != null){
+		  String nodeValue = node.getNodeValue();
 
-	  if (nodeValue != null && SWTBotWebBrowser.stripTextFromSpecChars(nodeValue).equals(searchText)) {
-		  result = true;
-	  } else {
-		  nsIDOMNodeList children = node.getChildNodes();
-		  for (int i = 0; i < children.getLength() && !result; i++) {
-			  nsIDOMNode child = children.item(i);
-			  // leave out empty text nodes in test dom model
-			  if ((child.getNodeType() == Node.TEXT_NODE)
-					  && ((child.getNodeValue() == null) || 
-							  (child.getNodeValue().trim().length() == 0))) {
-				  continue;
+		  
+		  if (nodeValue != null && SWTBotWebBrowser.stripTextFromSpecChars(nodeValue).equals(searchText)) {
+			  result = true;
+		  } else {
+			  nsIDOMNodeList children = node.getChildNodes();
+			  for (int i = 0; i < children.getLength() && !result; i++) {
+				  nsIDOMNode child = children.item(i);
+				  // leave out empty text nodes in test dom model
+				  if ((child.getNodeType() == Node.TEXT_NODE)
+						  && ((child.getNodeValue() == null) || 
+								  (child.getNodeValue().trim().length() == 0))) {
+					  continue;
+				  }
+				  result = containsNodeWithValue(child, searchText);
 			  }
-			  result = containsNodeWithValue(child, searchText);
 		  }
+  
 	  }
+	  else{
+		  // Use JavaScript
+		  final Browser swtBrowser =  vpvEditor.getBrowser();
+		  String domTextContent = UIThreadRunnable.syncExec(new Result<String>() {
+ 				@Override
+ 				public String run() {
+ 					return swtBrowser.evaluate("return document.documentElement.textContent").toString();
+ 				}
+		  });
+		  result = 	domTextContent.contains(searchText);	  
+	  }
+	  
 	  return result;
   }
   /**
