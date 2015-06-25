@@ -58,6 +58,7 @@ public class LiveReloadServerTest extends JBTSWTBotTestCase{
         + LiveReloadServerTest.SERVER_PORT,
       isLiveReloadServerListening());
 	  servers.stopServer(LiveReloadServerTest.SERVER_NAME);
+	  bot.sleep(3000);
 	  serverStatus = servers.getServerStatus(LiveReloadServerTest.SERVER_NAME);
   	// LiveReload server status is Stopped
     assertTrue("LiveReload Server with label " + LiveReloadServerTest.SERVER_NAME
@@ -83,6 +84,8 @@ public class LiveReloadServerTest extends JBTSWTBotTestCase{
 	 */
   @After
 	public void tearDown(){
+	  // server needs time to display proper status
+	  bot.sleep(3000);
     // Stops LiveReload server if is running
 	  if ((servers != null) 
 	    && (isLiveReloadServerDefined())
