@@ -61,6 +61,7 @@ public class BrowserSimLiveReloadTest extends VPEEditorTestCase{
 	  log.info("BrowserSim is loading url: " + urlToLoad);
 		browserSimHandler = new BrowserSimHandler(urlToLoad, TimePeriod.NORMAL);
 		BrowserSimAssertions.assertBrowserTextContains(browserSimHandler, headingV0);
+		browserSimHandler.checkContextMenu(false,"Enable LiveReload");
 		final String headingV1 = "<h2>LiveReload Test heading version 1</h2>";
 		final String pageTextV1 = "<!DOCTYPE html>\n" + 
         "<html>\n" + 
