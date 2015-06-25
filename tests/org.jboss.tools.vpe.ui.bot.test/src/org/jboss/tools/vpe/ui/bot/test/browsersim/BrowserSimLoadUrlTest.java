@@ -39,7 +39,7 @@ public class BrowserSimLoadUrlTest extends BrowserSimTest{
 		BrowserSimAssertions.assertAddressBarContains(browserSimHandler,"www.eurosport");
 		BrowserSimAssertions.assertTitleBarContains(browserSimHandler,"Eurosport");
 		// loads URL via address bar
-		urlToLoad = "www.jboss.org/tools";
+		urlToLoad = "http://tools.jboss.org/";
 		browserSimHandler.loadUrlFromAddressBar(urlToLoad , TimePeriod.getCustom(TIME_20S));
     BrowserSimAssertions.assertBrowserTextContains(browserSimHandler, "<title>JBoss Tools");
     BrowserSimAssertions.assertAddressBarContains(browserSimHandler,urlToLoad);
