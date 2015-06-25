@@ -68,7 +68,7 @@ public class InsertActionsTest extends VPEEditorTestCase {
     jspTextEditor.save();
     botExt.sleep(Timing.time3S());
     // Check if tag <h:commandButton> was properly added.
-    Assertions.assertSourceEditorContains(jspTextEditor.getText(), "<h:inputText/><h:commandButton>", InsertActionsTest.TEST_PAGE);
+    Assertions.assertSourceEditorContains(VPEEditorTestCase.stripHTMLSourceText(jspTextEditor.getText()), "<h:inputText/><h:commandButton>", InsertActionsTest.TEST_PAGE);
     assertVisualEditorContains(webBrowser, "INPUT", new String[]{"type","title"},new String[] {"submit","h:commandButton"},
         InsertActionsTest.TEST_PAGE);
     assertProbelmsViewNoErrorsForPage(botExt, InsertActionsTest.TEST_PAGE);    
