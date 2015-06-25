@@ -271,6 +271,7 @@ public class SWTOpenExt {
 		long time = System.currentTimeMillis();
 		boolean isOpened = true;
 		while (isOpened) {
+			new SWTEclipseExt().closeOpenAssociatedPerspectiveShellIfOpened(false);
 			log.info("Waiting until shell '" + activeShellStr + "' closes");
 			try {
 				bot.waitUntil(shellCloses(activeShell));
