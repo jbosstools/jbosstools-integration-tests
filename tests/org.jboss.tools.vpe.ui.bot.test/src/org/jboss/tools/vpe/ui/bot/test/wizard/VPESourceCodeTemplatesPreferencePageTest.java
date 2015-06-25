@@ -11,6 +11,7 @@
 package org.jboss.tools.vpe.ui.bot.test.wizard;
 
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
@@ -41,12 +42,14 @@ public class VPESourceCodeTemplatesPreferencePageTest extends VPEAutoTestCase {
     bot.tabItem(
         IDELabel.PreferencesDialog.JBOSS_TOOLS_WEB_EDITORS_VPE_VISUAL_TEMPLATES)
         .activate(); //$NON-NLS-1$
+    SWTBotShell preferencesShell = bot.activeShell();
     try {
       this.bot.button(IDELabel.Button.ADD).click(); //$NON-NLS-1$
       this.bot.button(IDELabel.Button.CANCEL).click(); //$NON-NLS-1$
     } catch (WidgetNotFoundException ex) {
       fail("Preference Page has not been created" + ex);//$NON-NLS-1$
     } finally {
+      preferencesShell.activate();
       this.bot.button(WidgetVariables.OK_BUTTON).click();
     }
   }
