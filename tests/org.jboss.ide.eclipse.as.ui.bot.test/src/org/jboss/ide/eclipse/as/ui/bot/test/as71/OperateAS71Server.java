@@ -17,4 +17,9 @@ public class OperateAS71Server extends OperateServerTemplate {
 	public String getWelcomePageText() {
 		return "Welcome to AS 7";
 	}
+	
+	@Override
+	public boolean setHeadlessModeOnMac() {
+		return false;
+	}
 }

@@ -22,4 +22,9 @@ public class OperateAS6Server extends OperateServerTemplate {
 	protected boolean ignoreExceptionInConsole(){
 		return true;
 	}
+	
+	@Override
+	public boolean setHeadlessModeOnMac() {
+		return true;
+	}
 }

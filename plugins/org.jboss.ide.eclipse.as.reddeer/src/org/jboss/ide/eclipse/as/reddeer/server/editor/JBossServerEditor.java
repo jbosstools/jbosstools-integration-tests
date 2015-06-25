@@ -22,10 +22,8 @@ public class JBossServerEditor extends ServerEditor {
 	}
 
 	public JBossServerLaunchConfiguration openLaunchConfiguration(){
-		//		SWTBotFactory.getBot().hyperlink("Open launch configuration").click();
-		//		SWTBotFactory.getBot().shell("Edit Configuration").activate();
-		//		return new JBossServerLaunchConfiguration();
-		throw new UnsupportedOperationException();
+		new DefaultHyperlink("Open launch configuration").activate();
+		return new JBossServerLaunchConfiguration();
 	}
 	
 	public JBossRuntimeWizardPage editRuntimeEnvironment(){
