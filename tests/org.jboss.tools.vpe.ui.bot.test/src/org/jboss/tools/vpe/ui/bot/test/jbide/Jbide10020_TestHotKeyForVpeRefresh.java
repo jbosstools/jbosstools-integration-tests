@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007-2011 Exadel, Inc. and Red Hat, Inc.
+ * Copyright (c) 2007-2015 Exadel, Inc. and Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -15,6 +15,7 @@ import org.jboss.tools.ui.bot.ext.SWTJBTExt;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.vpe.ui.bot.test.VPEAutoTestCase;
+import org.junit.Ignore;
 
 public class Jbide10020_TestHotKeyForVpeRefresh extends VPEAutoTestCase {
 
@@ -36,7 +37,7 @@ public class Jbide10020_TestHotKeyForVpeRefresh extends VPEAutoTestCase {
 	protected boolean isUnuseDialogOpened() {
 		return false;
 	}
-
+	@Ignore
 	public void testHotKeyForVpeRefresh() {
 		SWTBotEditor editor = SWTTestExt.packageExplorer.openFile(
 				JBT_TEST_PROJECT_NAME, "WebContent", "pages", TEST_PAGE); //$NON-NLS-1$ //$NON-NLS-2$
