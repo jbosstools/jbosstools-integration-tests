@@ -17,7 +17,7 @@ import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
 import org.jboss.reddeer.eclipse.core.resources.Project;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
@@ -72,7 +72,7 @@ public abstract class DeployJSPProjectTemplate extends AbstractJBossServerTempla
 		
 		dialog.finish();
 		
-		Project project = new ProjectExplorer().getProject(PROJECT_NAME);
+		Project project = getProject();
 		
 		log.step("Set targeted runtime for " + PROJECT_NAME);
 		RuntimesPropertyPage targetedRuntimes = new RuntimesPropertyPage(project);
@@ -91,8 +91,17 @@ public abstract class DeployJSPProjectTemplate extends AbstractJBossServerTempla
 	
 	@Test
 	public void deployProject(){
-		log.step("Assert project is build");
-		assertProjectIsBuilt();
+		log.step("Assert project is built");
+		try {
+			assertProjectIsBuilt();
+		} catch (Exception e){
+			log.step("Refresh project");
+			getProject().refresh();
+			log.step("Re-assert project is built");
+			assertProjectIsBuilt();
+			log.step("Re-throw exception");
+			throw e;
+		}
 		log.step("Add " + PROJECT_NAME + " to the server (Add module dialog)");
 		JBossServer server = getServer();
 		addModule(server);
@@ -160,5 +169,11 @@ public abstract class DeployJSPProjectTemplate extends AbstractJBossServerTempla
 		ModifyModulesPage modifyModulesPage = modifyModulesDialog.getFirstPage();
 		modifyModulesPage.add(PROJECT_NAME);
 		modifyModulesDialog.finish();
+	}
+	
+	private Project getProject(){
+		PackageExplorer explorer = new PackageExplorer();
+		explorer.open();
+		return explorer.getProject(PROJECT_NAME);
 	}
 }
