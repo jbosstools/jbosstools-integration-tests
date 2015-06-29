@@ -39,7 +39,6 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
 import org.jboss.reddeer.eclipse.condition.ProjectExists;
-import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.jst.servlet.ui.WebProjectFirstPage;
@@ -59,6 +58,7 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.common.matcher.RegexMatcher;
 import org.jboss.reddeer.core.matcher.WithTextMatchers;
 import org.jboss.reddeer.common.wait.TimePeriod;
@@ -235,15 +235,14 @@ public abstract class AbstractMavenSWTBotTest{
 	}
 	
 	public static void setGit(){
-		new ShellMenu("Window","Preferences").select();
-		new WaitUntil(new ShellWithTextIsActive("Preferences"),TimePeriod.NORMAL);
-		new DefaultTreeItem("Team","Git","Label Decorations").select();
+		WorkbenchPreferenceDialog wd = new WorkbenchPreferenceDialog();
+		wd.open();
+		wd.select("Team","Git","Label Decorations");
 		new DefaultTabItem("Text Decorations").activate();
 		if(!new LabeledText("Projects:").getText().equals("{name}")){
 			new LabeledText("Projects:").setText("{name}");
 		}
-		new PushButton("OK").click();
-		new WaitWhile(new ShellWithTextIsActive("Preferences"),TimePeriod.NORMAL);
+		wd.ok();
 		new WaitWhile(new JobIsRunning(),TimePeriod.VERY_LONG);
 		
 	}

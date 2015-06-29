@@ -31,6 +31,7 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
@@ -50,13 +51,13 @@ public class MaterializeLibraryTest extends AbstractMavenSWTBotTest{
 	
 	@Before
 	public void setup(){
-		new ShellMenu("Window","Preferences").select();
-		new WaitUntil(new ShellWithTextIsActive("Preferences"), TimePeriod.NORMAL);
-		new DefaultTreeItem("JBoss Tools","Project Examples").select();
+		WorkbenchPreferenceDialog wp = new WorkbenchPreferenceDialog();
+		wp.open();
+		wp.select("JBoss Tools","Project Examples");
 		new CheckBox("Show Project Ready wizard").toggle(false);
 		new CheckBox("Show readme/cheatsheet file").toggle(false);
 		new CheckBox("Show Quick Fix dialog").toggle(false);
-		new PushButton("OK").click();
+		wp.ok();
 	}
 	
 	@Test
