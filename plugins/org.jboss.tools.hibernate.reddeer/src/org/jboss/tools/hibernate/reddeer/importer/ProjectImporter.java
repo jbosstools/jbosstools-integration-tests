@@ -64,7 +64,7 @@ public class ProjectImporter {
 	public static void importProject(String pluginId, String prjName) {
 		ExternalProjectImportWizardDialog w = new ExternalProjectImportWizardDialog();
 		w.open();
-		WizardProjectsImportPage p1 = w.getFirstPage();
+		WizardProjectsImportPage p1 = new WizardProjectsImportPage();
 		p1.setRootDirectory(ResourceFactory.getResourcesLocation(pluginId, "prj"));
 		p1.copyProjectsIntoWorkspace(true);
 		p1.deselectAllProjects();

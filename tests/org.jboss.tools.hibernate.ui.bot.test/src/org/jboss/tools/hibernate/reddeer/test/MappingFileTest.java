@@ -6,8 +6,8 @@ import static org.junit.Assert.fail;
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.swt.impl.tree.TreeItemNotFoundException;
 import org.jboss.tools.hibernate.reddeer.common.XPathHelper;
 import org.jboss.tools.hibernate.reddeer.editor.Hibernate3CompoundEditor;
 import org.jboss.tools.hibernate.reddeer.wizard.NewHibernateMappingElementsSelectionPage2;
@@ -66,7 +66,7 @@ public class MappingFileTest extends HibernateRedDeerTest {
 		
 		try {
 			item = new DefaultTreeItem(PRJ,"src",clazz,"Dog.hbm.xml");
-		} catch (TreeItemNotFoundException e) {
+		} catch (SWTLayerException e) {
 			fail("Hbm.xml not generated: Known issue(s): JBIDE-18769, JBIDE-20042");
 		}		
 		
@@ -120,7 +120,7 @@ public class MappingFileTest extends HibernateRedDeerTest {
 		String clazz = "org.mapping.model.file";
 		try {
 			item = new DefaultTreeItem(PRJ,"src",clazz,"Owner.hbm.xml");
-		} catch (TreeItemNotFoundException e) {
+		} catch (SWTLayerException e) {
 			fail("Hbm.xml not generated: Known issue(s): JBIDE-18769, JBIDE-20042");
 		}
 

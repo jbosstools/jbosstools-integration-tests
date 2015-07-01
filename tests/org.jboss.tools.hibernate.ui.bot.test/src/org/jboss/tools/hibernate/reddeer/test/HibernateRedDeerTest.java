@@ -1,8 +1,8 @@
 package org.jboss.tools.hibernate.reddeer.test;
 
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.core.handler.WorkbenchPartHandler;
 import org.jboss.reddeer.core.interceptor.SyncInterceptorManager;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.workbench.handler.EditorHandler;
 import org.jboss.tools.hibernate.reddeer.importer.ProjectImporter;
 import org.jboss.tools.hibernate.reddeer.interceptor.ErrorLogInterceptor;
 import org.jboss.tools.hibernate.ui.bot.test.Activator;
@@ -15,7 +15,7 @@ public class HibernateRedDeerTest {
 	public HibernateRedDeerTest() {
 		super();
 	
-		WorkbenchPartHandler.getInstance().closeAllEditors();
+		EditorHandler.getInstance().closeAll(false);
 		
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();

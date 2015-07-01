@@ -15,10 +15,10 @@ import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.core.lookup.ShellLookup;
+import org.jboss.reddeer.jface.preference.PreferencePage;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.workbench.preference.WorkbenchPreferencePage;
 
 /**
  * Project properties dialog
@@ -47,7 +47,7 @@ public class ProjectPropertyDialog {
 	 * Selects the specified workbench preference page <var>page</var>.
 	 * @param page preference page to be opened
 	 */
-	public void select(WorkbenchPreferencePage page) {
+	public void select(PreferencePage page) {
 		if (page == null) {
 			throw new IllegalArgumentException("page can't be null");
 		}

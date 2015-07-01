@@ -12,7 +12,6 @@ import org.jboss.reddeer.requirements.db.DatabaseRequirement.Database;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.label.DefaultLabel;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.swt.impl.tree.TreeItemNotFoundException;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.hibernate.reddeer.factory.ConnectionProfileFactory;
 import org.jboss.tools.hibernate.reddeer.factory.DriverDefinitionFactory;
@@ -63,7 +62,7 @@ public class JPADetailsViewTest extends HibernateRedDeerTest {
 		try {
 			new DefaultTreeItem(PRJ, "src/main/java", "org.gen", "Actor.java")
 					.doubleClick();
-		} catch (TreeItemNotFoundException e) {
+		} catch (SWTLayerException e) {
 			fail("Entities not generated, possible cause https://issues.jboss.org/browse/JBIDE-19175");
 		}
 		new DefaultEditor("Actor.java");
