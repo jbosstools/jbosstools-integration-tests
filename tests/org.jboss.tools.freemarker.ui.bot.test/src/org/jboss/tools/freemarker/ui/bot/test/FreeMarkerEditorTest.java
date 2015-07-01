@@ -33,10 +33,10 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
-import org.jboss.reddeer.core.handler.WorkbenchPartHandler;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.workbench.handler.EditorHandler;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -59,7 +59,7 @@ public class FreeMarkerEditorTest {
 	public static void beforeClass() {
 		JavaPerspective p = new JavaPerspective();
 		p.open();
-		WorkbenchPartHandler.getInstance().closeAllEditors();
+		EditorHandler.getInstance().closeAll(false);
 		new WaitWhile(new JobIsRunning());		
 
 		JavaPerspective jp = new JavaPerspective();
@@ -109,7 +109,7 @@ public class FreeMarkerEditorTest {
 			fail("Unable to copy freemarker test project");
 		}
 		
-		WizardProjectsImportPage firstPage = wizard.getFirstPage();
+		WizardProjectsImportPage firstPage = new WizardProjectsImportPage();
 		
 		firstPage.setRootDirectory(wpath);
 		firstPage.selectAllProjects();
