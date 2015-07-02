@@ -9,6 +9,7 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.jboss.ide.eclipse.as.reddeer.requirement.CloseAllEditorsRequirement.CloseAllEditors;
 import org.jboss.ide.eclipse.as.reddeer.server.editor.ServerModuleWebPageEditor;
 import org.jboss.ide.eclipse.as.reddeer.server.view.JBossServer;
+import org.jboss.ide.eclipse.as.reddeer.server.view.JBossServerModule;
 import org.jboss.ide.eclipse.as.ui.bot.test.Activator;
 import org.jboss.ide.eclipse.as.ui.bot.test.condition.EditorWithBrowserContainsTextCondition;
 import org.jboss.reddeer.common.logging.Logger;
@@ -115,7 +116,10 @@ public abstract class DeployJSPProjectTemplate extends AbstractJBossServerTempla
 		assertNoException("Error in console after deploy");
 		// web
 		log.step("Open module's web page");
-		ServerModuleWebPageEditor editor = server.getModule(PROJECT_NAME).openWebPage();
+		JBossServerModule module = server.getModule(PROJECT_NAME);
+		module.openWebPage();
+		ServerModuleWebPageEditor editor = new ServerModuleWebPageEditor(module.getLabel().getName()); 
+				
 		new WaitUntil(new EditorWithBrowserContainsTextCondition(editor, "Hello tests"));
 		
 		log.step("Assert web page text");
