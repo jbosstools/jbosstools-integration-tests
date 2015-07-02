@@ -27,9 +27,13 @@ public class JBossServerModule extends ServerModule {
 		super(item, view);
 	}
 
-	public ServerModuleWebPageEditor openWebPage(){
+	/**
+	 * Open web page of the module. The webpage is represented by {@link ServerModuleWebPageEditor}
+	 * but needs to be looked up by the client of this method since web page title can vary. 
+	 * @return
+	 */
+	public void openWebPage(){
 		activate();
 		new ContextMenu("Show In", "Web Browser").select();
-		return new ServerModuleWebPageEditor(getLabel().getName());
 	}
 }
