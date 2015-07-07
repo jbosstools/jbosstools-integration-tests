@@ -47,6 +47,7 @@ import org.junit.runners.Suite;
 	JSFProjectTest.class, 
 	
 	JPAConfiguratorTest.class,
+	
 	JSFConfiguratorTest.class,
 	
 	//SeamConfiguratorTest.class,
@@ -64,6 +65,7 @@ import org.junit.runners.Suite;
 	//SourceLookupTest.class,
 	
 	//SeamProjectTest.class, 
+	
 })
 public class MavenAllBotTests {
 

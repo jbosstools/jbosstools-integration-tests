@@ -236,7 +236,7 @@ public class TicketMonsterBaseTest {
 		preferenceDialog.select(new ConfiguratorPreferencePage());
 		ConfigureMavenRepositoriesWizard rd = new ConfigureMavenRepositoriesWizard();
 		rd.open();
-		rd.chooseRepositoryFromList("redhat-techpreview-all-repository", true);
+		rd.chooseRepositoryFromList("redhat-techpreview-all-repository", true,false);
 		rd.confirm();
 		preferenceDialog.ok();
 	}

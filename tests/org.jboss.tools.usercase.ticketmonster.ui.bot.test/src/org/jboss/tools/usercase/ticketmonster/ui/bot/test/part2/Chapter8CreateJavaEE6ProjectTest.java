@@ -59,7 +59,7 @@ public class Chapter8CreateJavaEE6ProjectTest extends AbstractPart2Test{
 		preferenceDialog.select(pp);
 		ConfigureMavenRepositoriesWizard cw = pp.configureRepositories();
 		cw.removeAllRepos();
-		String repo = cw.chooseRepositoryFromList("jboss-public-repository", true);
+		String repo = cw.chooseRepositoryFromList("jboss-public-repository", true,false);
 		cw.confirm();
 		cw = pp.configureRepositories();
 		cw.removeRepo(repo);

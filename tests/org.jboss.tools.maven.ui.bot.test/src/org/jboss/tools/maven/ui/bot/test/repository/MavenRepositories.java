@@ -16,8 +16,8 @@ import org.junit.Test;
 public class MavenRepositories extends AbstractMavenSWTBotTest{
 	
 	
-	public static final String EAP_REPO = "redhat-techpreview-all-repository";
-	public static final String JBOSS_REPO = "jboss-public-repository";
+	private static final String EAP_REPO = "redhat-techpreview-all-repository";
+	private static final String JBOSS_REPO = "jboss-public-repository";
 	
 	@BeforeClass
 	public static void setup(){
@@ -58,7 +58,7 @@ public class MavenRepositories extends AbstractMavenSWTBotTest{
 		ConfiguratorPreferencePage jm = new ConfiguratorPreferencePage();
 		preferenceDialog.select(jm);
 		ConfigureMavenRepositoriesWizard mr = jm.configureRepositories();
-		String repoId = mr.chooseRepositoryFromList(EAP_REPO, true);
+		String repoId = mr.chooseRepositoryFromList(EAP_REPO, true,false);
 		mr.confirm();
 		preferenceDialog.ok();
 		assertTrue("EAP Repository is missing in Maven repositories view", new RepositoryExists(EAP_REPO).test());
@@ -87,7 +87,7 @@ public class MavenRepositories extends AbstractMavenSWTBotTest{
 		ConfiguratorPreferencePage jm = new ConfiguratorPreferencePage();
 		preferenceDialog.select(jm);
 		ConfigureMavenRepositoriesWizard mr = jm.configureRepositories();
-		String repoId = mr.chooseRepositoryFromList(JBOSS_REPO,true);
+		String repoId = mr.chooseRepositoryFromList(JBOSS_REPO,true,false);
 		mr.confirm();
 		jm.apply();
 		preferenceDialog.ok();

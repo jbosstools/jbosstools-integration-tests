@@ -2,55 +2,22 @@ package org.jboss.tools.maven.ui.bot.test.configurator;
 
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.tools.maven.reddeer.maven.ui.preferences.ConfiguratorPreferencePage;
-import org.jboss.tools.maven.reddeer.wizards.ConfigureMavenRepositoriesWizard;
-import org.jboss.tools.maven.ui.bot.test.repository.MavenRepositories;
+import org.jboss.tools.maven.reddeer.requirement.NewRepositoryRequirement.DefineMavenRepository;
+import org.jboss.tools.maven.reddeer.requirement.NewRepositoryRequirement.MavenRepository;
+import org.jboss.tools.maven.reddeer.requirement.NewRepositoryRequirement.PredefinedMavenRepository;
 import org.jboss.tools.maven.ui.bot.test.utils.ProjectHasNature;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 @CleanWorkspace
 @OpenPerspective(JavaEEPerspective.class)
 @JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY8x)
+@DefineMavenRepository(predefinedRepositories = { @PredefinedMavenRepository(ID="jboss-public-repository",snapshots=true) })
 public class PortletConfiguratorTest extends AbstractConfiguratorsTest{
-	
-	@BeforeClass
-	public static void setup(){
-		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
-		preferenceDialog.open();
-		ConfiguratorPreferencePage jm = new ConfiguratorPreferencePage();
-		preferenceDialog.select(jm);
-		ConfigureMavenRepositoriesWizard mr = jm.configureRepositories();
-		mr.chooseRepositoryFromList(MavenRepositories.JBOSS_REPO, true);
-		mr.confirm();
-		jm.apply();
-		preferenceDialog.ok();
-	}
-
-	
-	@AfterClass
-	public static void cleanRepo(){
-		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
-		preferenceDialog.open();
-		ConfiguratorPreferencePage jm = new ConfiguratorPreferencePage();
-		preferenceDialog.select(jm);
-		ConfigureMavenRepositoriesWizard mr = jm.configureRepositories();
-		boolean deleted = mr.removeAllRepos();
-		if(deleted){
-			mr.confirm();
-		} else {
-			mr.cancel();
-		}
-		preferenceDialog.ok();
-		
-	}
 	
 	@Test
 	public void portletCoreConfigurator2_0(){

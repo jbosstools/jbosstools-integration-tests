@@ -9,6 +9,7 @@ import org.jboss.reddeer.swt.impl.group.DefaultGroup;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.uiforms.impl.expandablecomposite.DefaultExpandableComposite;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 
@@ -20,7 +21,7 @@ public class ConfigureMavenRepositoriesWizard{
 		new DefaultShell("Maven Repositories");
 	}
 	
-	public String chooseRepositoryFromList(String repo, boolean activeByDefault){
+	public String chooseRepositoryFromList(String repo, boolean activeByDefault, boolean snapshots){
 		new PushButton(" Add Repository...").click();
 		new DefaultShell("Add Maven Repository");
 		new DefaultCombo(0).setSelection(repo);
@@ -28,12 +29,16 @@ public class ConfigureMavenRepositoriesWizard{
 		String a =new LabeledText("Name:").getText();
 		String b = new LabeledText("URL:").getText();
 		String nameWithUrl = a+"-"+b;
+		if(snapshots){
+			new DefaultExpandableComposite("Advanced").setExpanded(true);
+			new CheckBox("Enable snapshots").toggle(true);
+		}
 		new PushButton("OK").click();
 		new DefaultShell("Maven Repositories");
 		return nameWithUrl;
 	}
 	
-	public String addRepository(String repoID, String repoURL, boolean activeByDefault){
+	public String addRepository(String repoID, String repoURL, boolean activeByDefault, boolean snapshots){
 		new PushButton(" Add Repository...").click();
 		new DefaultShell("Add Maven Repository");
 		new DefaultCombo(0).setText(repoID);
@@ -44,6 +49,10 @@ public class ConfigureMavenRepositoriesWizard{
 		new LabeledText("URL:").setText(repoURL);
 		String b = new LabeledText("URL:").getText();
 		String nameWithUrl = a+"-"+b;
+		if(snapshots){
+			new DefaultExpandableComposite("Advanced").setExpanded(true);
+			new CheckBox("Enable snapshots").toggle(true);
+		}
 		new PushButton("OK").click();
 		new DefaultShell("Maven Repositories");
 		return nameWithUrl;

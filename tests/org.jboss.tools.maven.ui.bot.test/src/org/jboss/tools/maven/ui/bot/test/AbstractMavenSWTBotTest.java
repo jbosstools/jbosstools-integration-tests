@@ -17,30 +17,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.Result;
-import javax.xml.transform.Source;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.TransformerFactoryConfigurationError;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpressionException;
-import javax.xml.xpath.XPathFactory;
-
 import org.jboss.reddeer.eclipse.condition.ProjectExists;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
-import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.jst.servlet.ui.WebProjectFirstPage;
 import org.jboss.reddeer.eclipse.jst.servlet.ui.WebProjectThirdPage;
 import org.jboss.reddeer.eclipse.jst.servlet.ui.WebProjectWizard;
@@ -53,7 +31,6 @@ import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.group.DefaultGroup;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
@@ -65,17 +42,10 @@ import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.tools.maven.ui.bot.test.utils.ProjectIsBuilt;
-import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.w3c.dom.Document;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
-import org.jboss.tools.maven.reddeer.preferences.MavenUserPreferencePage;
 import org.jboss.tools.maven.reddeer.preferences.MavenPreferencePage;
 
 public abstract class AbstractMavenSWTBotTest{
-
-	public static final String USER_SETTINGS = "target/classes/settings.xml"; 
 	
 	@BeforeClass 
 	public static void beforeClass(){
@@ -85,12 +55,6 @@ public abstract class AbstractMavenSWTBotTest{
 		preferenceDialog.select(mpreferencesp);
 		mpreferencesp.updateIndexesOnStartup(false);
 		preferenceDialog.ok();
-		
-		preferenceDialog.open();
-		MavenUserPreferencePage mpreferences = new MavenUserPreferencePage();
-		preferenceDialog.select(mpreferences);
-		mpreferences.setUserSettings(new File(USER_SETTINGS).getAbsolutePath());
-		mpreferences.ok();
 		
 		setGit();
 	}
@@ -247,56 +211,4 @@ public abstract class AbstractMavenSWTBotTest{
 		
 	}
 	
-	public static void enableSnapshots(String repositoryID){
-		DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-		DocumentBuilder docBuilder = null;
-		try {
-			docBuilder = docFactory.newDocumentBuilder();
-		} catch (ParserConfigurationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		Document doc = null;
-		try {
-			doc = docBuilder.parse(USER_SETTINGS);
-		} catch (SAXException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		XPath xPath = XPathFactory.newInstance().newXPath();
-		NodeList nodes = null;
-		try {
-			//nodes = (NodeList)xPath.evaluate("/settings/profiles/profile/id", doc.getDocumentElement(), XPathConstants.NODESET);
-			nodes = (NodeList)xPath.evaluate("/settings/profiles/profile[id='"+repositoryID+"']/repositories/repository/snapshots/enabled", doc.getDocumentElement(), XPathConstants.NODESET);
-		} catch (XPathExpressionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		nodes.item(0).setTextContent("true");
-		
-		Transformer transformer = null;
-		try {
-			transformer = TransformerFactory.newInstance().newTransformer();
-		} catch (TransformerConfigurationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (TransformerFactoryConfigurationError e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		Result output = new StreamResult(new File(USER_SETTINGS));
-		Source input = new DOMSource(doc);
-
-		try {
-			transformer.transform(input, output);
-		} catch (TransformerException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	
-	}
 }

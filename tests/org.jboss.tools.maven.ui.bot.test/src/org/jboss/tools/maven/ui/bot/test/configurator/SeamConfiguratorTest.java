@@ -26,9 +26,10 @@ import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.tools.maven.reddeer.maven.ui.preferences.ConfiguratorPreferencePage;
+import org.jboss.tools.maven.reddeer.requirement.NewRepositoryRequirement.DefineMavenRepository;
+import org.jboss.tools.maven.reddeer.requirement.NewRepositoryRequirement.PredefinedMavenRepository;
 import org.jboss.tools.maven.reddeer.wizards.ConfigureMavenRepositoriesWizard;
 import org.jboss.tools.maven.ui.bot.test.project.SeamProjectTest;
-import org.jboss.tools.maven.ui.bot.test.repository.MavenRepositories;
 import org.jboss.tools.maven.ui.bot.test.utils.ProjectHasNature;
 import org.jboss.tools.seam.reddeer.preferences.SeamPreferencePage;
 import org.junit.AfterClass;
@@ -41,6 +42,7 @@ import org.junit.Test;
 @CleanWorkspace
 @OpenPerspective(JavaEEPerspective.class)
 @JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY8x)
+@DefineMavenRepository(predefinedRepositories = { @PredefinedMavenRepository(ID="jboss-public-repository",snapshots=true) })
 public class SeamConfiguratorTest extends AbstractConfiguratorsTest{
 	
 	private String projectNameNoRuntime = PROJECT_NAME_SEAM+"_noRuntime";
@@ -54,15 +56,7 @@ public class SeamConfiguratorTest extends AbstractConfiguratorsTest{
 		sp.addRuntime(SeamProjectTest.SEAM_2_1_NAME, SeamProjectTest.SEAM_2_1, "2.1");
 		sp.addRuntime(SeamProjectTest.SEAM_2_2_NAME, SeamProjectTest.SEAM_2_2, "2.2");
 		sp.addRuntime(SeamProjectTest.SEAM_2_3_NAME, SeamProjectTest.SEAM_2_3, "2.3");
-		ConfiguratorPreferencePage jm = new ConfiguratorPreferencePage();
-		preferenceDialog.select(jm);
-		ConfigureMavenRepositoriesWizard mr = jm.configureRepositories();
-		mr.removeAllRepos();
-		mr.chooseRepositoryFromList(MavenRepositories.JBOSS_REPO,true);
-		mr.confirm();
-		jm.apply();
 		preferenceDialog.ok();
-		enableSnapshots(MavenRepositories.JBOSS_REPO);
 	}
 	
 	@AfterClass

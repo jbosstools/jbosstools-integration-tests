@@ -10,22 +10,18 @@
  ******************************************************************************/ 
 package org.jboss.tools.maven.ui.bot.test.project;
 
-import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.tools.maven.reddeer.maven.ui.preferences.ConfiguratorPreferencePage;
-import org.jboss.tools.maven.reddeer.wizards.ConfigureMavenRepositoriesWizard;
+import org.jboss.tools.maven.reddeer.requirement.NewRepositoryRequirement.DefineMavenRepository;
+import org.jboss.tools.maven.reddeer.requirement.NewRepositoryRequirement.PredefinedMavenRepository;
 import org.jboss.tools.maven.reddeer.wizards.MavenProjectWizard;
 import org.jboss.tools.maven.reddeer.wizards.MavenProjectWizardSecondPage;
 import org.jboss.tools.maven.reddeer.wizards.MavenProjectWizardThirdPage;
 import org.jboss.tools.maven.ui.bot.test.AbstractMavenSWTBotTest;
-import org.jboss.tools.maven.ui.bot.test.repository.MavenRepositories;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Test;
 /**
  * @author Rastislav Wagner
@@ -34,33 +30,8 @@ import org.junit.Test;
 @CleanWorkspace
 @OpenPerspective(JavaPerspective.class)
 @JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY8x)
+@DefineMavenRepository(predefinedRepositories = { @PredefinedMavenRepository(ID="jboss-public-repository",snapshots=true) })
 public class ArchetypesTest extends AbstractMavenSWTBotTest{
-
-
-	@BeforeClass
-	public static void setup(){
-		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
-		preferenceDialog.open();
-		ConfiguratorPreferencePage jm = new ConfiguratorPreferencePage();
-		preferenceDialog.select(jm);
-		ConfigureMavenRepositoriesWizard mr = jm.configureRepositories();
-		mr.removeAllRepos();
-		mr.chooseRepositoryFromList(MavenRepositories.JBOSS_REPO, true);
-		mr.confirm();
-		preferenceDialog.ok();
-	}
-	
-	@AfterClass
-	public static void clean(){
-		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
-		preferenceDialog.open();
-		ConfiguratorPreferencePage jm = new ConfiguratorPreferencePage();
-		preferenceDialog.select(jm);
-		ConfigureMavenRepositoriesWizard mr = jm.configureRepositories();
-		mr.removeAllRepos();
-		mr.confirm();
-		preferenceDialog.ok();
-	}
 	
 	@Test
 	public void createSimpleJarProjectArchetype(){

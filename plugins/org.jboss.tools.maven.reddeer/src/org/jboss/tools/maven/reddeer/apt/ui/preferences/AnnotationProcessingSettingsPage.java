@@ -1,0 +1,50 @@
+package org.jboss.tools.maven.reddeer.apt.ui.preferences;
+
+import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
+import org.jboss.reddeer.swt.impl.button.CheckBox;
+import org.jboss.reddeer.swt.impl.button.RadioButton;
+import org.jboss.reddeer.swt.impl.group.DefaultGroup;
+import org.jboss.reddeer.workbench.preference.WorkbenchPreferencePage;
+
+public class AnnotationProcessingSettingsPage extends WorkbenchPreferencePage{
+	
+	public AnnotationProcessingSettingsPage(){
+		super("Maven","Annotation Processing");
+	}
+	
+	public enum ProcessingMode{
+		NONE("Do not automatically configure/execute Annotation Processing from pom.xml"),
+		JDT("Automatically configure JDT APT (builds faster, but outcome may differ from Maven builds)"),
+		MAVEN("Experimental : Delegate Annotation Processing to maven plugins (for maven-processor-plugin only)");
+		
+		private final String checkboxText;
+		
+		private ProcessingMode(String checkboxText){
+			this.checkboxText = checkboxText;
+		}
+		
+		public String getText(){
+			return checkboxText;
+		}
+	}
+	
+	public void setAnnotationProcessingMode(ProcessingMode mode){
+		new RadioButton(new DefaultGroup("Select Annotation Processing Mode"),
+				mode.getText()).toggle(true);
+	}
+	
+	public ProcessingMode getCurrentAnnotationProcessingMode(){
+		if(new CheckBox(new DefaultGroup("Select Annotation Processing Mode"),
+				ProcessingMode.NONE.getText()).isChecked()){
+			return ProcessingMode.NONE;
+		} else if (new CheckBox(new DefaultGroup("Select Annotation Processing Mode"),
+				ProcessingMode.JDT.getText()).isChecked()){
+			return ProcessingMode.JDT;
+		} else if (new CheckBox(new DefaultGroup("Select Annotation Processing Mode"),
+				ProcessingMode.MAVEN.getText()).isChecked()){
+			return ProcessingMode.MAVEN;
+		}
+		throw new EclipseLayerException("No annotation mode is currently used");
+	}
+
+}

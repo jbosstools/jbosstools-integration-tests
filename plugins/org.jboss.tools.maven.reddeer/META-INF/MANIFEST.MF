@@ -16,14 +16,17 @@ Require-Bundle: org.eclipse.ui,
  org.jboss.tools.runtime.ui;bundle-version="3.0.0",
  org.jboss.tools.foundation.ui;bundle-version="1.1.0",
  org.jboss.reddeer.junit;bundle-version="0.7.0",
- org.jboss.reddeer.common;bundle-version="0.7.0"
+ org.jboss.reddeer.common;bundle-version="0.7.0",
+ org.jboss.reddeer.uiforms
 Export-Package: 
+ org.jboss.tools.maven.reddeer.apt.ui.preferences,
  org.jboss.tools.maven.reddeer.maven.sourcelookup.ui.preferences,
  org.jboss.tools.maven.reddeer.maven.ui.preferences,
  org.jboss.tools.maven.reddeer.preferences,
  org.jboss.tools.maven.reddeer.profiles,
  org.jboss.tools.maven.reddeer.project.examples.wait,
  org.jboss.tools.maven.reddeer.project.examples.wizard,
+ org.jboss.tools.maven.reddeer.requirement,
  org.jboss.tools.maven.reddeer.wizards
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6

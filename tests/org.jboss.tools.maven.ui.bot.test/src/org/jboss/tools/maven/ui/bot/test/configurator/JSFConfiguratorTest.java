@@ -12,7 +12,6 @@ package org.jboss.tools.maven.ui.bot.test.configurator;
 
 import static org.junit.Assert.assertTrue;
 
-import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
@@ -22,11 +21,10 @@ import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.C
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.tools.maven.reddeer.maven.ui.preferences.ConfiguratorPreferencePage;
-import org.jboss.tools.maven.reddeer.wizards.ConfigureMavenRepositoriesWizard;
+import org.jboss.tools.maven.reddeer.requirement.NewRepositoryRequirement.DefineMavenRepository;
+import org.jboss.tools.maven.reddeer.requirement.NewRepositoryRequirement.MavenRepository;
+import org.jboss.tools.maven.reddeer.requirement.NewRepositoryRequirement.PredefinedMavenRepository;
 import org.jboss.tools.maven.ui.bot.test.utils.ProjectHasNature;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Test;
 /**
  * @author Rastislav Wagner
@@ -35,6 +33,8 @@ import org.junit.Test;
 @CleanWorkspace
 @OpenPerspective(JavaEEPerspective.class)
 @JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY8x)
+@DefineMavenRepository(newRepositories = {@MavenRepository(url="http://maven.acm-sl.org/artifactory/libs-releases/",ID="acm",snapshots=true)}, 
+predefinedRepositories = { @PredefinedMavenRepository(ID="jboss-public-repository",snapshots=true) })
 public class JSFConfiguratorTest extends AbstractConfiguratorsTest{
 
     @InjectRequirement
@@ -42,38 +42,6 @@ public class JSFConfiguratorTest extends AbstractConfiguratorsTest{
 	
 	public static final String MAVEN_ACM_REPO = "http://maven.acm-sl.org/artifactory/libs-releases/";
 	public static final String JBOSS_REPO = "jboss-public-repository";
-	
-	@BeforeClass
-	public static void before(){
-		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
-		preferenceDialog.open();
-		ConfiguratorPreferencePage jm = new ConfiguratorPreferencePage();
-		preferenceDialog.select(jm);
-		ConfigureMavenRepositoriesWizard mr = jm.configureRepositories();
-		mr.addRepository("ACM Repo", MAVEN_ACM_REPO, true);
-		mr.chooseRepositoryFromList(JBOSS_REPO, true);
-		mr.confirm();
-		jm.apply();
-		preferenceDialog.ok();
-		//enableSnapshosts("ACM Repo");
-	}
-	
-	@AfterClass
-	public static void cleanRepo(){
-		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
-		preferenceDialog.open();
-		ConfiguratorPreferencePage jm = new ConfiguratorPreferencePage();
-		preferenceDialog.select(jm);
-		ConfigureMavenRepositoriesWizard mr = jm.configureRepositories();
-		boolean deleted = mr.removeAllRepos();
-		if(deleted){
-			mr.confirm();
-		} else {
-			mr.cancel();
-		}
-		preferenceDialog.ok();
-		
-	}
 	
 	@Test
 	public void testJSFConfiguratorMojjara(){
