@@ -11,6 +11,7 @@
 package org.jboss.tools.maven.ui.bot.test;
 
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.tools.maven.ui.bot.test.apt.APTPropertiesPageTest;
 import org.jboss.tools.maven.ui.bot.test.configurator.CDIConfiguratorTest;
 import org.jboss.tools.maven.ui.bot.test.configurator.JAXRSConfiguratorTest;
 import org.jboss.tools.maven.ui.bot.test.configurator.JPAConfiguratorTest;
@@ -66,6 +67,7 @@ import org.junit.runners.Suite;
 	
 	//SeamProjectTest.class, 
 	
+	APTPropertiesPageTest.class
 })
 public class MavenAllBotTests {
 

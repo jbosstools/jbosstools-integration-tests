@@ -1,12 +1,12 @@
 package org.jboss.tools.maven.reddeer.apt.ui.preferences;
 
 import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
+import org.jboss.reddeer.jface.preference.PreferencePage;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.group.DefaultGroup;
-import org.jboss.reddeer.workbench.preference.WorkbenchPreferencePage;
 
-public class AnnotationProcessingSettingsPage extends WorkbenchPreferencePage{
+public class AnnotationProcessingSettingsPage extends PreferencePage{
 	
 	public AnnotationProcessingSettingsPage(){
 		super("Maven","Annotation Processing");

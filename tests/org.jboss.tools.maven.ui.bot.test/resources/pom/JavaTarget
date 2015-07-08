@@ -1,0 +1,14 @@
+  <build>
+  	<plugins>
+  		<plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.2</version>
+        <configuration>
+          <source>source_to_replace</source>
+          <target>target_to_replace</target>
+        </configuration>
+      </plugin>
+  	</plugins>
+  </build>
+  

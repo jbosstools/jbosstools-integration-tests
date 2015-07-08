@@ -17,24 +17,37 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
 import org.jboss.reddeer.eclipse.condition.ProjectExists;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.jst.servlet.ui.WebProjectFirstPage;
 import org.jboss.reddeer.eclipse.jst.servlet.ui.WebProjectThirdPage;
 import org.jboss.reddeer.eclipse.jst.servlet.ui.WebProjectWizard;
+import org.jboss.reddeer.eclipse.m2e.core.ui.wizard.MavenProjectWizard;
+import org.jboss.reddeer.eclipse.m2e.core.ui.wizard.MavenProjectWizardArtifactPage;
+import org.jboss.reddeer.eclipse.m2e.core.ui.wizard.MavenProjectWizardPage;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.swt.api.StyledText;
 import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
+import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
 import org.jboss.reddeer.swt.impl.group.DefaultGroup;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.workbench.api.Editor;
+import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.common.matcher.RegexMatcher;
 import org.jboss.reddeer.core.matcher.WithTextMatchers;
@@ -209,6 +222,46 @@ public abstract class AbstractMavenSWTBotTest{
 		wd.ok();
 		new WaitWhile(new JobIsRunning(),TimePeriod.VERY_LONG);
 		
+	}
+	
+	public void createBasicMavenProject(String artifactId, String groupId, String projectPackage, String javaTarget){
+		MavenProjectWizard mw = new MavenProjectWizard();
+		mw.open();
+		MavenProjectWizardPage mp = new MavenProjectWizardPage();
+		mp.createSimpleProject(true);
+		mw.next();
+		MavenProjectWizardArtifactPage ap = new MavenProjectWizardArtifactPage();
+		ap.setArtifactId(artifactId);
+		ap.setGroupId(groupId);
+		ap.setPackage(projectPackage);
+		mw.finish();
+		
+		Editor e= openPom(artifactId);
+		StyledText stext = new DefaultStyledText();
+		int pos = stext.getPositionOfText("</project>");
+		String javaTargetPlugin = null;
+		try {
+			javaTargetPlugin = new Scanner(new FileInputStream("resources/pom/JavaTarget")).useDelimiter("\\A").next();
+		} catch (FileNotFoundException ex) {
+			// TODO Auto-generated catch block
+			ex.printStackTrace();
+		}
+		stext.selectPosition(pos);
+		stext.insertText(javaTargetPlugin);
+		stext.selectText("source_to_replace");
+		stext.insertText(javaTarget);
+		stext.selectText("target_to_replace");
+		stext.insertText(javaTarget);
+		e.save();
+	}
+	
+	public Editor openPom(String project){
+		ProjectExplorer pe = new ProjectExplorer();
+		pe.open();
+		pe.getProject(project).getProjectItem("pom.xml").open();
+		Editor e = new DefaultEditor(project+"/pom.xml");
+		new DefaultCTabItem("pom.xml").activate();
+		return e;
 	}
 	
 }

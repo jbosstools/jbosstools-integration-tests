@@ -1,9 +1,9 @@
 package org.jboss.tools.maven.reddeer.preferences;
 
+import org.jboss.reddeer.jface.preference.PreferencePage;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.workbench.preference.WorkbenchPreferencePage;
 
-public class MavenPreferencePage extends WorkbenchPreferencePage{
+public class MavenPreferencePage extends PreferencePage{
 	
 	public MavenPreferencePage(){
 		super("Maven");

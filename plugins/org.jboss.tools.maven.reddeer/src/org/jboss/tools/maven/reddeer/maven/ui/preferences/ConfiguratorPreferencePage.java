@@ -1,9 +1,9 @@
 package org.jboss.tools.maven.reddeer.maven.ui.preferences;
 
-import org.jboss.reddeer.workbench.preference.WorkbenchPreferencePage;
+import org.jboss.reddeer.jface.preference.PreferencePage;
 import org.jboss.tools.maven.reddeer.wizards.ConfigureMavenRepositoriesWizard;
 
-public class ConfiguratorPreferencePage extends WorkbenchPreferencePage{
+public class ConfiguratorPreferencePage extends PreferencePage{
 	
 	public ConfiguratorPreferencePage(){
 		super("JBoss Tools","JBoss Maven Integration");
