@@ -10,7 +10,7 @@ import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
-import org.jboss.reddeer.swt.condition.ButtonWithTextIsActive;
+import org.jboss.reddeer.swt.condition.ButtonWithTextIsEnabled;
 import org.jboss.reddeer.swt.impl.button.FinishButton;
 import org.jboss.reddeer.swt.impl.button.NextButton;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
@@ -19,9 +19,9 @@ import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.tools.openshift.ui.utils.Datastore;
-import org.jboss.tools.openshift.ui.utils.DeleteApplication;
-import org.jboss.tools.openshift.ui.utils.OpenShiftLabel;
+import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
+import org.jboss.tools.openshift.reddeer.utils.v2.Datastore;
+import org.jboss.tools.openshift.reddeer.utils.v2.DeleteApplication;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -58,7 +58,7 @@ public class ID503ImportApplicationViaAdapterTest {
 		
 		new DefaultTreeItem("OpenShift", "OpenShift Server Adapter").select();
 		
-		new WaitUntil(new ButtonWithTextIsActive(new NextButton()), TimePeriod.LONG);
+		new WaitUntil(new ButtonWithTextIsEnabled(new NextButton()), TimePeriod.LONG);
 		
 		new NextButton().click();
 		

@@ -4,13 +4,13 @@ import static org.junit.Assert.assertFalse;
 
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
-import org.jboss.reddeer.swt.condition.ButtonWithTextIsActive;
+import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
+import org.jboss.reddeer.swt.condition.ButtonWithTextIsEnabled;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.tools.openshift.ui.utils.JBossPerspective;
-import org.jboss.tools.openshift.ui.utils.OpenShiftLabel;
+import org.jboss.tools.openshift.reddeer.utils.JBossPerspective;
+import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -54,7 +54,7 @@ public class ID001RemoteRequestTimeoutTest {
 			timeoutField.typeText("360");
 		}
 		
-		new WaitUntil(new ButtonWithTextIsActive(new PushButton(OpenShiftLabel.Button.APPLY)),
+		new WaitUntil(new ButtonWithTextIsEnabled(new PushButton(OpenShiftLabel.Button.APPLY)),
 				TimePeriod.NORMAL);
 		
 		new PushButton(OpenShiftLabel.Button.APPLY).click();

@@ -7,9 +7,9 @@ import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.tools.openshift.ui.utils.Datastore;
-import org.jboss.tools.openshift.ui.utils.OpenShiftLabel;
-import org.jboss.tools.openshift.ui.view.openshift.OpenShiftExplorerView;
+import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
+import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
+import org.jboss.tools.openshift.reddeer.utils.v2.Datastore;
 import org.junit.Test;
 
 /**

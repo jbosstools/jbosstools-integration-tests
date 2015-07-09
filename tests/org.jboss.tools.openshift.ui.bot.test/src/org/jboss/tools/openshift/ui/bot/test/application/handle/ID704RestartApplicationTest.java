@@ -11,11 +11,11 @@ import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.button.YesButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.jboss.tools.openshift.ui.bot.test.application.create.IDXXXCreateTestingApplication;
-import org.jboss.tools.openshift.ui.condition.ApplicationIsDeployedSuccessfully;
-import org.jboss.tools.openshift.ui.utils.Datastore;
-import org.jboss.tools.openshift.ui.utils.OpenShiftLabel;
-import org.jboss.tools.openshift.ui.view.openshift.OpenShiftExplorerView;
+import org.jboss.tools.openshift.reddeer.condition.v2.ApplicationIsDeployedSuccessfully;
+import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
+import org.jboss.tools.openshift.reddeer.utils.v2.Datastore;
 import org.junit.Test;
 
 /**

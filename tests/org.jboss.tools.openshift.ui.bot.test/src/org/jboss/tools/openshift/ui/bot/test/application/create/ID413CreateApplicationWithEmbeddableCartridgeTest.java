@@ -7,12 +7,12 @@ import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
-import org.jboss.tools.openshift.ui.utils.Datastore;
-import org.jboss.tools.openshift.ui.utils.DeleteApplication;
-import org.jboss.tools.openshift.ui.utils.OpenShiftLabel;
-import org.jboss.tools.openshift.ui.view.openshift.OpenShiftExplorerView;
-import org.jboss.tools.openshift.ui.wizard.application.NewApplicationWizard;
-import org.jboss.tools.openshift.ui.wizard.application.OpenNewApplicationWizard;
+import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
+import org.jboss.tools.openshift.reddeer.wizard.v2.NewApplicationWizard;
+import org.jboss.tools.openshift.reddeer.wizard.v2.OpenNewApplicationWizard;
+import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
+import org.jboss.tools.openshift.reddeer.utils.v2.Datastore;
+import org.jboss.tools.openshift.reddeer.utils.v2.DeleteApplication;
 import org.junit.After;
 import org.junit.Test;
 

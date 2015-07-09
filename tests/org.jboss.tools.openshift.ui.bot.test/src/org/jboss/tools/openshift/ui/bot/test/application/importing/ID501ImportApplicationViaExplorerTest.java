@@ -1,7 +1,6 @@
 package org.jboss.tools.openshift.ui.bot.test.application.importing;
 
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
@@ -12,11 +11,11 @@ import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.swt.impl.button.FinishButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.tools.openshift.ui.utils.Datastore;
-import org.jboss.tools.openshift.ui.utils.DeleteApplication;
-import org.jboss.tools.openshift.ui.utils.OpenShiftLabel;
-import org.jboss.tools.openshift.ui.view.openshift.OpenShiftExplorerView;
-import org.jboss.tools.openshift.ui.wizard.application.Templates;
+import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
+import org.jboss.tools.openshift.reddeer.wizard.v2.Templates;
+import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
+import org.jboss.tools.openshift.reddeer.utils.v2.Datastore;
+import org.jboss.tools.openshift.reddeer.utils.v2.DeleteApplication;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -43,16 +42,6 @@ public class ID501ImportApplicationViaExplorerTest {
 		DeleteApplication deleteApplication = new DeleteApplication(Datastore.USERNAME,
 				Datastore.DOMAIN, applicationName);
 		deleteApplication.deleteServerAdapter();
-		
-		// Workaround for luna issue with deletion of the projects in project explorer
-		// workaround some times dont have to work 
-		if (!deleteApplication.deleteProject()) {
-			new ProjectExplorer().close();
-			new ProjectExplorer().open();
-			if (!deleteApplication.deleteProject()) {
-				fail("Could not delete application, rerun this test.");
-			}
-		}
 	}
 
 	@Test

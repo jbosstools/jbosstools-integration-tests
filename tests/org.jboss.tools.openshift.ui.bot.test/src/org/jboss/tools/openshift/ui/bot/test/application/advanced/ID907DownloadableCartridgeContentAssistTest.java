@@ -18,9 +18,9 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
 import org.jboss.tools.openshift.ui.bot.test.application.create.ID406CreateApplicationOnDownloadableCartridgeTest;
-import org.jboss.tools.openshift.ui.utils.Datastore;
-import org.jboss.tools.openshift.ui.utils.OpenShiftLabel;
-import org.jboss.tools.openshift.ui.wizard.application.OpenNewApplicationWizard;
+import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
+import org.jboss.tools.openshift.reddeer.utils.v2.Datastore;
+import org.jboss.tools.openshift.reddeer.wizard.v2.OpenNewApplicationWizard;
 import org.junit.Test;
 
 /**

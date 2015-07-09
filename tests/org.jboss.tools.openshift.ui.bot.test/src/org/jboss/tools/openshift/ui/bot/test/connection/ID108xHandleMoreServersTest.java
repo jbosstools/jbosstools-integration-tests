@@ -3,8 +3,8 @@ package org.jboss.tools.openshift.ui.bot.test.connection;
 import static org.junit.Assert.fail;
 
 import org.jboss.reddeer.jface.exception.JFaceLayerException;
-import org.jboss.tools.openshift.ui.utils.Datastore;
-import org.jboss.tools.openshift.ui.view.openshift.OpenShiftExplorerView;
+import org.jboss.tools.openshift.reddeer.utils.v2.Datastore;
+import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.junit.Test;
 
 /**

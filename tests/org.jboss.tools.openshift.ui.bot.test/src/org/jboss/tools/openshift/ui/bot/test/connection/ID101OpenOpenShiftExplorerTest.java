@@ -3,7 +3,7 @@ package org.jboss.tools.openshift.ui.bot.test.connection;
 import static org.junit.Assert.fail;
 
 import org.jboss.reddeer.core.exception.CoreLayerException;
-import org.jboss.tools.openshift.ui.view.openshift.OpenShiftExplorerView;
+import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.junit.Test;
 
 /**

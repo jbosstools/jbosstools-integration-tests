@@ -1,13 +1,13 @@
 package org.jboss.tools.openshift.ui.bot.test;
 
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.tools.openshift.reddeer.utils.v2.CleanUp;
 import org.jboss.tools.openshift.ui.bot.test.common.ID001RemoteRequestTimeoutTest;
 import org.jboss.tools.openshift.ui.bot.test.connection.ID103oCreateNewConnectionTest;
 import org.jboss.tools.openshift.ui.bot.test.connection.ID108xHandleMoreServersTest;
 import org.jboss.tools.openshift.ui.bot.test.domain.ID201NewDomainTest;
 import org.jboss.tools.openshift.ui.bot.test.domain.ID204CreateMoreDomainsTest;
 import org.jboss.tools.openshift.ui.bot.test.ssh.ID150CreateNewSSHKeyTest;
-import org.jboss.tools.openshift.ui.utils.CleanUp;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 

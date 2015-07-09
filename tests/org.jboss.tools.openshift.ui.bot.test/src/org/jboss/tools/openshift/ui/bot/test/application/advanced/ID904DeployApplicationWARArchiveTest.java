@@ -18,7 +18,7 @@ import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.jface.viewer.handler.TreeViewerHandler;
 import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.condition.ButtonWithTextIsActive;
+import org.jboss.reddeer.swt.condition.ButtonWithTextIsEnabled;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -31,12 +31,12 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.openshift.ui.bot.test.application.create.ID414CreateApplicationFromExistingProjectTest;
-import org.jboss.tools.openshift.ui.condition.ApplicationIsDeployedSuccessfully;
-import org.jboss.tools.openshift.ui.utils.Datastore;
-import org.jboss.tools.openshift.ui.utils.DeleteApplication;
-import org.jboss.tools.openshift.ui.utils.OpenShiftLabel;
-import org.jboss.tools.openshift.ui.wizard.application.NewApplicationWizard;
-import org.jboss.tools.openshift.ui.wizard.application.OpenNewApplicationWizard;
+import org.jboss.tools.openshift.reddeer.condition.v2.ApplicationIsDeployedSuccessfully;
+import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
+import org.jboss.tools.openshift.reddeer.utils.v2.Datastore;
+import org.jboss.tools.openshift.reddeer.utils.v2.DeleteApplication;
+import org.jboss.tools.openshift.reddeer.wizard.v2.NewApplicationWizard;
+import org.jboss.tools.openshift.reddeer.wizard.v2.OpenNewApplicationWizard;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -136,12 +136,12 @@ public class ID904DeployApplicationWARArchiveTest {
 		
 		assertTrue("If there is no commit message, button should be Push Only without "
 				+ "pushing uncommited changes.",
-				new ButtonWithTextIsActive(new PushButton("Publish Only")).test());
+				new ButtonWithTextIsEnabled(new PushButton("Publish Only")).test());
 		
 		new DefaultStyledText(0).setText("Commit message");
 		
 		try {
-			new WaitUntil(new ButtonWithTextIsActive(new PushButton(
+			new WaitUntil(new ButtonWithTextIsEnabled(new PushButton(
 					OpenShiftLabel.Button.COMMIT_PUBLISH)), TimePeriod.LONG);
 		} catch (WaitTimeoutExpiredException ex) {
 			fail("Button to push commited changes has not been enabled.");

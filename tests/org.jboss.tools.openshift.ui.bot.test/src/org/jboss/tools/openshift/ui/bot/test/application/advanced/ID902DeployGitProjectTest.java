@@ -5,7 +5,7 @@ import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.swt.condition.ButtonWithTextIsActive;
+import org.jboss.reddeer.swt.condition.ButtonWithTextIsEnabled;
 import org.jboss.reddeer.swt.impl.button.FinishButton;
 import org.jboss.reddeer.swt.impl.button.NextButton;
 import org.jboss.reddeer.swt.impl.button.OkButton;
@@ -16,12 +16,12 @@ import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.tools.openshift.ui.utils.Datastore;
-import org.jboss.tools.openshift.ui.utils.DeleteApplication;
-import org.jboss.tools.openshift.ui.utils.OpenShiftLabel;
-import org.jboss.tools.openshift.ui.utils.TestUtils;
-import org.jboss.tools.openshift.ui.wizard.application.NewApplicationWizard;
-import org.jboss.tools.openshift.ui.wizard.application.OpenNewApplicationWizard;
+import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
+import org.jboss.tools.openshift.reddeer.utils.TestUtils;
+import org.jboss.tools.openshift.reddeer.utils.v2.Datastore;
+import org.jboss.tools.openshift.reddeer.utils.v2.DeleteApplication;
+import org.jboss.tools.openshift.reddeer.wizard.v2.NewApplicationWizard;
+import org.jboss.tools.openshift.reddeer.wizard.v2.OpenNewApplicationWizard;
 import org.junit.After;
 import org.junit.Test;
 
@@ -80,33 +80,33 @@ public class ID902DeployGitProjectTest {
 		new DefaultShell("Import").setFocus();
 		new DefaultTreeItem("Git", "Projects from Git").select();
 		
-		new WaitUntil(new ButtonWithTextIsActive(new NextButton()), TimePeriod.NORMAL);
+		new WaitUntil(new ButtonWithTextIsEnabled(new NextButton()), TimePeriod.NORMAL);
 		new NextButton().click();
 		
 		new DefaultTree().selectItems(new DefaultTreeItem("Clone URI")); 
 		
-		new WaitUntil(new ButtonWithTextIsActive(new NextButton()), TimePeriod.NORMAL);
+		new WaitUntil(new ButtonWithTextIsEnabled(new NextButton()), TimePeriod.NORMAL);
 		new NextButton().click();
 		
 		new LabeledText("URI:").setText(gitProjectURI);
 		
-		new WaitUntil(new ButtonWithTextIsActive(new NextButton()), TimePeriod.NORMAL);
+		new WaitUntil(new ButtonWithTextIsEnabled(new NextButton()), TimePeriod.NORMAL);
 		new NextButton().click();
 		
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 
-		new WaitUntil(new ButtonWithTextIsActive(new NextButton()), TimePeriod.NORMAL);
+		new WaitUntil(new ButtonWithTextIsEnabled(new NextButton()), TimePeriod.NORMAL);
 		new NextButton().click();
 		
-		new WaitUntil(new ButtonWithTextIsActive(new NextButton()), TimePeriod.NORMAL);
+		new WaitUntil(new ButtonWithTextIsEnabled(new NextButton()), TimePeriod.NORMAL);
 		new NextButton().click();
 		
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		
-		new WaitUntil(new ButtonWithTextIsActive(new NextButton()), TimePeriod.NORMAL);
+		new WaitUntil(new ButtonWithTextIsEnabled(new NextButton()), TimePeriod.NORMAL);
 		new NextButton().click();
 		
-		new WaitUntil(new ButtonWithTextIsActive(new FinishButton()), TimePeriod.LONG);
+		new WaitUntil(new ButtonWithTextIsEnabled(new FinishButton()), TimePeriod.LONG);
 		new FinishButton().click();
 		
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);

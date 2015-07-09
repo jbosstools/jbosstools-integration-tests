@@ -7,9 +7,9 @@ import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
+import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.condition.ButtonWithTextIsActive;
+import org.jboss.reddeer.swt.condition.ButtonWithTextIsEnabled;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.FinishButton;
 import org.jboss.reddeer.swt.impl.button.NoButton;
@@ -23,9 +23,9 @@ import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.tools.openshift.ui.utils.Datastore;
-import org.jboss.tools.openshift.ui.utils.OpenShiftLabel;
-import org.jboss.tools.openshift.ui.view.openshift.OpenShiftExplorerView;
+import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
+import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
+import org.jboss.tools.openshift.reddeer.utils.v2.Datastore;
 import org.junit.Test;
 
 /**
@@ -71,7 +71,7 @@ public class ID110SecurityStorageTest {
 			firstStorage = false;
 		}
 		
-		new WaitUntil(new ButtonWithTextIsActive(new OkButton()),TimePeriod.NORMAL);
+		new WaitUntil(new ButtonWithTextIsEnabled(new OkButton()),TimePeriod.NORMAL);
 		
 		new OkButton().click();
 		

@@ -1,7 +1,7 @@
 package org.jboss.tools.openshift.ui.bot.test.connection;
 
-import org.jboss.tools.openshift.ui.utils.Datastore;
-import org.jboss.tools.openshift.ui.view.openshift.OpenShiftExplorerView;
+import org.jboss.tools.openshift.reddeer.utils.v2.Datastore;
+import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.junit.BeforeClass;
 import org.junit.Test;
 

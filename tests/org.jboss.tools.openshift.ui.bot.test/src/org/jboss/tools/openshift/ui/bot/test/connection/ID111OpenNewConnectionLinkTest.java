@@ -9,8 +9,8 @@ import org.jboss.reddeer.core.util.Display;
 import org.jboss.reddeer.swt.impl.browser.InternalBrowser;
 import org.jboss.reddeer.swt.impl.link.DefaultLink;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.tools.openshift.ui.condition.BrowserContainsText;
-import org.jboss.tools.openshift.ui.view.openshift.OpenShiftExplorerView;
+import org.jboss.tools.openshift.reddeer.condition.BrowserContainsText;
+import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.junit.After;
 import org.junit.Test;
 

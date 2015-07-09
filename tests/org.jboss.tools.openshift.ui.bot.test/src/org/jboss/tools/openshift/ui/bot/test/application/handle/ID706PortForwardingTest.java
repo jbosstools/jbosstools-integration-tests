@@ -10,7 +10,7 @@ import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.swt.api.TableItem;
 import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.condition.ButtonWithTextIsActive;
+import org.jboss.reddeer.swt.condition.ButtonWithTextIsEnabled;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -18,11 +18,11 @@ import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.workbench.api.View;
-import org.jboss.tools.openshift.ui.utils.Datastore;
-import org.jboss.tools.openshift.ui.utils.DeleteApplication;
-import org.jboss.tools.openshift.ui.utils.OpenShiftLabel;
-import org.jboss.tools.openshift.ui.view.openshift.OpenShiftExplorerView;
-import org.jboss.tools.openshift.ui.wizard.application.Templates;
+import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
+import org.jboss.tools.openshift.reddeer.wizard.v2.Templates;
+import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
+import org.jboss.tools.openshift.reddeer.utils.v2.Datastore;
+import org.jboss.tools.openshift.reddeer.utils.v2.DeleteApplication;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -79,7 +79,7 @@ public class ID706PortForwardingTest {
 		
 		new PushButton(OpenShiftLabel.Button.START_ALL).click();
 		
-		new WaitUntil(new ButtonWithTextIsActive(new OkButton()), TimePeriod.LONG);
+		new WaitUntil(new ButtonWithTextIsEnabled(new OkButton()), TimePeriod.LONG);
 		
 		new OkButton().click();
 		
@@ -102,7 +102,7 @@ public class ID706PortForwardingTest {
 		new DefaultShell(OpenShiftLabel.Shell.PORTS_FORWARDING);
 		new PushButton(OpenShiftLabel.Button.STOP_ALL).click();
 		
-		new WaitUntil(new ButtonWithTextIsActive(new OkButton()), TimePeriod.LONG);
+		new WaitUntil(new ButtonWithTextIsEnabled(new OkButton()), TimePeriod.LONG);
 		
 		new OkButton().click();
 		

@@ -1,0 +1,264 @@
+package org.jboss.tools.openshift.reddeer.view;
+
+import org.jboss.reddeer.common.exception.RedDeerException;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.core.exception.CoreLayerException;
+import org.jboss.reddeer.jface.viewer.handler.TreeViewerHandler;
+import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.swt.condition.ButtonWithTextIsEnabled;
+import org.jboss.reddeer.swt.impl.button.CancelButton;
+import org.jboss.reddeer.swt.impl.button.CheckBox;
+import org.jboss.reddeer.swt.impl.button.FinishButton;
+import org.jboss.reddeer.swt.impl.button.OkButton;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
+import org.jboss.reddeer.swt.impl.link.DefaultLink;
+import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
+import org.jboss.reddeer.swt.impl.tree.DefaultTree;
+import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
+import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
+
+/**
+ * 
+ * OpenShift explorer view implemented with RedDeer.
+ * 
+ * @author mlabuda@redhat.com
+ *
+ */
+public class OpenShiftExplorerView extends WorkbenchView {
+
+	private TreeViewerHandler treeViewerHandler = TreeViewerHandler.getInstance();
+	
+	public OpenShiftExplorerView() {
+		super("JBoss Tools", "OpenShift Explorer");
+	}
+	
+	/**
+	 * Opens a new connection shell through tool item located in the top right corner of
+	 * OpenShift Explorer.
+	 */
+	public void openConnectionShellViaToolItem() {
+		open();
+		DefaultToolItem connectionButton = new DefaultToolItem(OpenShiftLabel.Others.CONNECT_TOOL_ITEM);
+		connectionButton.click();
+	}
+	
+	/**
+	 * Opens a new connection shell through context menu in OpenShift explorer.
+	 */
+	public void openConnectionShell() {
+		open();
+		// there is either a link or context menu
+		try {
+			new ContextMenu(OpenShiftLabel.ContextMenu.NEW_CONNECTION).select();
+		} catch (CoreLayerException ex) {
+			new DefaultLink(OpenShiftLabel.TextLabels.NEW_CONNECTION).click();
+		}
+	}
+	
+	/**
+	 * Connects to OpenShift server. OpenShift connection shell has to be opened at the 
+	 * moment of method invocation.
+	 * @param server URL of a server
+	 * @param username
+	 * @param password
+	 * @param storePassword whether password should be stored or not in security storage
+	 */
+	public void connectToOpenShiftV2(String server, String username, String password, boolean storePassword, boolean useDefaultServer) {
+		connectToOpenShift(server, username, password, storePassword, useDefaultServer, ServerType.OPENSHIFT_2);
+		
+	}
+	
+	private void connectToOpenShift(String server, String username, String password, boolean storePassword, boolean useDefaultServer, 
+			ServerType serverType) {
+		
+		new DefaultShell("");
+		
+		new LabeledCombo(OpenShiftLabel.TextLabels.SERVER_TYPE).setSelection(serverType.toString());
+				
+		if (new CheckBox(0).isChecked() != useDefaultServer) {
+			new CheckBox(0).click();
+		}
+		
+		if (!useDefaultServer) {
+			new LabeledCombo(OpenShiftLabel.TextLabels.SERVER).setText(server);
+		}
+		
+		if (serverType.equals(ServerType.AUTOMATIC)) {
+			new PushButton(OpenShiftLabel.TextLabels.CHECK_SERVER_TYPE).click();
+			new WaitUntil(new ButtonWithTextIsEnabled(new CancelButton()), TimePeriod.NORMAL);
+		}
+		
+		new LabeledText(OpenShiftLabel.TextLabels.USERNAME).setText(username);
+		new LabeledText(OpenShiftLabel.TextLabels.PASSWORD).setText(password);
+		
+		if (serverType.equals(ServerType.OPENSHIFT_2)) {
+			if (new CheckBox(OpenShiftLabel.TextLabels.STORE_PASSWORD).isChecked() != storePassword) {
+				new CheckBox(OpenShiftLabel.TextLabels.STORE_PASSWORD).click();
+			}
+		}
+			
+		new WaitUntil(new ButtonWithTextIsEnabled(new FinishButton()), TimePeriod.NORMAL);
+		
+		new FinishButton().click();
+		
+		new WaitWhile(new ShellWithTextIsAvailable(""), TimePeriod.LONG);
+		
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+	}	
+	
+	/**
+	 * Removes connection from OpenShift explorer view.
+	 *
+	 * @param username user name
+	 */
+	public void removeConnection(String username) {
+		getConnection(username).select();
+		
+		new ContextMenu(OpenShiftLabel.ContextMenu.REMOVE_CONNECTION).select();
+		
+		new DefaultShell(OpenShiftLabel.Shell.REMOVE_CONNECTION);
+		new OkButton().click();
+		
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+	}
+	
+	/**
+	 * Finds out whether connection with specified username exists or not.
+	 * 
+	 * @param username user name
+	 * @return true if connection exists, false otherwise
+	 */
+	public boolean connectionExists(String username) {
+		try {
+			getConnection(username);
+			return true;
+		} catch (RedDeerException ex) {
+			return false;
+		}
+	}
+	
+	/**
+	 * Gets connection with specified user name.
+	 * 
+	 * @param username user name 
+	 * @return tree item representing connection
+	 */
+	public TreeItem getConnection(String username) {
+		open();
+		return treeViewerHandler.getTreeItem(new DefaultTree(), username);
+	}
+	
+	/** 
+	 * Gets domain with specified user name and domain name.
+	 * 
+	 * @param username user name
+	 * @param domain domain name
+	 * @return tree item representing domain
+	 */
+	public TreeItem getDomain(String username, String domain) {
+		activate();
+		TreeItem connectionItem = getConnection(username);
+		connectionItem.select();
+		expand(connectionItem, TimePeriod.NORMAL);
+		
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		
+		return treeViewerHandler.getTreeItem(connectionItem, domain);
+	}
+
+	/**
+	 * Get application as a TreeItem. This method is useful for a further processing 
+	 * of applications (e.g. opening a context menu). Applications are shown in 
+	 * OpenShift explorer with their types. This method require only application name
+	 * WITHOUT type. <br><br> Example: application "diyapp <i>Do-It-Yourself 0.1 (diy-0.1)"</i>
+	 * is chosen by calling this method with an argument <i>"diyapp"</i>.
+	 * 
+	 * @param username user name on the connection
+	 * @param domain domain name
+	 * @param name name of application without application type 
+	 * @return tree item of an application represented by the given name
+	 */
+	public TreeItem getApplication(String username, String domain, String name) {
+		TreeItem domainItem = getDomain(username, domain);
+		domainItem.select();
+		expand(domainItem, TimePeriod.LONG);
+		
+		return treeViewerHandler.getTreeItem(domainItem, name);
+	}
+	
+	/**
+	 * Finds an application with specified name in OpenShift explorer and selects it.
+	 * 
+	 * @param user user name
+	 * @param domain domain of the application
+	 * @param name name of the application with specified name
+	 */
+	public void selectApplication(String user, String domain, String name) {
+		getApplication(user, domain, name).select();
+	}
+	
+	/**
+	 * Finds out whether an application with specified name exists or not.
+	 * 
+	 * @param user user name
+	 * @param domain domain of the application
+	 * @param name name of the application with specified name
+	 * @return true if application exists, false otherwise
+	 */
+	public boolean applicationExists(String user, String domain, String name) {
+		try {
+			getApplication(user, domain, name);
+			return true;
+		} catch (RedDeerException ex) {
+			return false;
+		}
+	}
+	
+	/**
+	 * Reopens OpenShift view explorer. Workaround for issue with missing submenus.
+	 */
+	public void reopen() {
+		close();
+		open();
+	}
+	
+	 // Workaround for not expanded tree items, if it is 
+	 // failing, uncomment this method and use it
+	private void expand(TreeItem item, TimePeriod period) {
+		item.select();
+		if (!item.isExpanded()) {
+			// workaround for tree items 
+			item.expand();
+			new WaitWhile(new JobIsRunning(), period);
+			item.collapse();
+			item.expand();
+			new WaitWhile(new JobIsRunning(), period);
+		}
+	}
+	
+	public enum ServerType {
+		
+		OPENSHIFT_2("OpenShift 2"), 
+		OPENSHIFT_3("OpenShift 3"),
+		AUTOMATIC("<Automatic>");
+		
+		private final String text;
+		
+		private ServerType(String text) {
+			this.text = text;
+		}
+		
+		@Override
+		public String toString() {
+			return text;
+		}
+	}
+}
