@@ -27,6 +27,7 @@ import org.jboss.tools.maven.ui.bot.test.project.JSFProjectTest;
 import org.jboss.tools.maven.ui.bot.test.repository.MavenRepositories;
 import org.jboss.tools.maven.ui.bot.test.repository.RemoteRepositoriesPreferenceTest;
 import org.jboss.tools.maven.ui.bot.test.ui.PerspectiveTest;
+import org.jboss.tools.maven.ui.bot.test.ui.SeamPluginsTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
@@ -66,7 +67,7 @@ import org.junit.runners.Suite;
 	//SourceLookupTest.class,
 	
 	//SeamProjectTest.class, 
-	
+	SeamPluginsTest.class,
 	APTPropertiesPageTest.class
 })
 public class MavenAllBotTests {
