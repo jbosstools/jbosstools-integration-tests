@@ -1,4 +1,4 @@
-package org.jboss.tools.openshift.reddeer.utils.v2;
+package org.jboss.tools.openshift.ui.bot.test.util;
 
 import java.util.Random;
 

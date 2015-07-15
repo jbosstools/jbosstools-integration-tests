@@ -29,8 +29,8 @@ import org.jboss.tools.openshift.ui.bot.test.application.create.ID408Application
 import org.jboss.tools.openshift.ui.bot.test.application.handle.ID705TailFilesTest;
 import org.jboss.tools.openshift.ui.bot.test.application.handle.ID706PortForwardingTest;
 import org.jboss.tools.openshift.ui.bot.test.application.handle.ID707HandleEnvironmentVariablesTest;
+import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
-import org.jboss.tools.openshift.reddeer.utils.v2.Datastore;
 import org.jboss.tools.openshift.reddeer.utils.v2.DeleteApplication;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
