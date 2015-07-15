@@ -6,10 +6,10 @@ import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.ui.views.navigator.ResourceNavigator;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
-import org.jboss.tools.openshift.reddeer.utils.v2.Datastore;
 import org.jboss.tools.openshift.reddeer.utils.v2.DeleteApplication;
 import org.jboss.tools.openshift.reddeer.wizard.v2.NewApplicationWizard;
 import org.jboss.tools.openshift.reddeer.wizard.v2.OpenNewApplicationWizard;
+import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
 import org.junit.After;
 import org.junit.Test;
 

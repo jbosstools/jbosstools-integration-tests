@@ -13,7 +13,7 @@
 	<packaging>eclipse-test-plugin</packaging>
 
 	<properties>
-		<systemProperties>${integrationTestsSystemProperties} -Dtest.configurations.dir=${configurations.dir} -Dlibra.server=${libra.server} -Duser.name=${user.name} -Duser.pwd=${user.pwd}</systemProperties>
+		<systemProperties>${integrationTestsSystemProperties} -Dtest.configurations.dir=${configurations.dir} -Dlibra.server=${libra.server} -Duser.name=${user.name} -Duser.pwd=${user.pwd} -Dopenshift.server=${openshift.server} -Dopenshift.user=${openshift.user} -Dopenshift.password=${openshift.password} -Dopenshift.server2=${openshift.server2} -Dopenshift.user2=${openshift.user2} -Dopenshift.token2=${openshift.token2}</systemProperties>
 		<surefire.timeout>10800</surefire.timeout>
 	</properties>
 

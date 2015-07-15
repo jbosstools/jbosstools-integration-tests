@@ -10,11 +10,9 @@ import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.jface.viewer.handler.TreeViewerHandler;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.ButtonWithTextIsEnabled;
-import org.jboss.reddeer.swt.impl.button.CancelButton;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.FinishButton;
 import org.jboss.reddeer.swt.impl.button.OkButton;
-import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.link.DefaultLink;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
@@ -70,14 +68,39 @@ public class OpenShiftExplorerView extends WorkbenchView {
 	 * @param username
 	 * @param password
 	 * @param storePassword whether password should be stored or not in security storage
+	 * @param useDefaultServer
 	 */
 	public void connectToOpenShiftV2(String server, String username, String password, boolean storePassword, boolean useDefaultServer) {
-		connectToOpenShift(server, username, password, storePassword, useDefaultServer, ServerType.OPENSHIFT_2);
-		
+		connectToOpenShift(server, username, password, storePassword, useDefaultServer, ServerType.OPENSHIFT_2, AuthenticationMethod.DEFAULT);
+	}
+	
+	/**
+	 * Connects to OpenShift server. OpenShift connection shell has to be opened at the 
+	 * moment of method invocation.
+	 * @param server URL of a server
+	 * @param username
+	 * @param password
+	 * @param storePassword whether password should be stored or not in security storage
+	 * @param useDefaultServer
+	 */
+	public void connectToOpenShiftV3Basic(String server, String username, String password, boolean storePassword, boolean useDefaultServer) {
+		connectToOpenShift(server, username, password, storePassword, useDefaultServer, ServerType.OPENSHIFT_3, AuthenticationMethod.BASIC);
+	}
+	
+	/**
+	 * Connects to OpenShift server. OpenShift connection shell has to be opened at the 
+	 * moment of method invocation.
+	 * @param server URL of a server
+	 * @param token
+	 * @param storeToken whether password should be stored or not in security storage
+	 * @param useDefaultServer
+	 */
+	public void connectToOpenShiftV3OAuth(String server, String token, boolean storeToken, boolean useDefaultServer) {
+		connectToOpenShift(server, null, token, storeToken, useDefaultServer, ServerType.OPENSHIFT_3, AuthenticationMethod.OAUTH);
 	}
 	
 	private void connectToOpenShift(String server, String username, String password, boolean storePassword, boolean useDefaultServer, 
-			ServerType serverType) {
+			ServerType serverType, AuthenticationMethod authMethod) {
 		
 		new DefaultShell("");
 		
@@ -91,20 +114,25 @@ public class OpenShiftExplorerView extends WorkbenchView {
 			new LabeledCombo(OpenShiftLabel.TextLabels.SERVER).setText(server);
 		}
 		
-		if (serverType.equals(ServerType.AUTOMATIC)) {
-			new PushButton(OpenShiftLabel.TextLabels.CHECK_SERVER_TYPE).click();
-			new WaitUntil(new ButtonWithTextIsEnabled(new CancelButton()), TimePeriod.NORMAL);
+		if (ServerType.OPENSHIFT_3.equals(serverType)) {
+			new LabeledCombo(OpenShiftLabel.TextLabels.SERVER_TYPE).setSelection(serverType.toString());
+			new LabeledCombo(OpenShiftLabel.TextLabels.PROTOCOL).setSelection(authMethod.toString());
 		}
 		
-		new LabeledText(OpenShiftLabel.TextLabels.USERNAME).setText(username);
-		new LabeledText(OpenShiftLabel.TextLabels.PASSWORD).setText(password);
-		
-		if (serverType.equals(ServerType.OPENSHIFT_2)) {
-			if (new CheckBox(OpenShiftLabel.TextLabels.STORE_PASSWORD).isChecked() != storePassword) {
-				new CheckBox(OpenShiftLabel.TextLabels.STORE_PASSWORD).click();
+		if (ServerType.OPENSHIFT_2.equals(serverType) || (ServerType.OPENSHIFT_3.equals(serverType)
+				&& AuthenticationMethod.BASIC.equals(authMethod))) {
+			new LabeledText(OpenShiftLabel.TextLabels.USERNAME).setText(username);
+			new LabeledText(OpenShiftLabel.TextLabels.PASSWORD).setText(password);			
+		} else {
+			if (ServerType.OPENSHIFT_3.equals(serverType) && AuthenticationMethod.OAUTH.equals(authMethod)) {
+				new LabeledText(OpenShiftLabel.TextLabels.TOKEN).setText(password);
 			}
 		}
-			
+		
+		if (new CheckBox(OpenShiftLabel.TextLabels.STORE_PASSWORD).isChecked() != storePassword) {
+			new CheckBox(OpenShiftLabel.TextLabels.STORE_PASSWORD).click();
+		}
+				
 		new WaitUntil(new ButtonWithTextIsEnabled(new FinishButton()), TimePeriod.NORMAL);
 		
 		new FinishButton().click();
@@ -247,8 +275,7 @@ public class OpenShiftExplorerView extends WorkbenchView {
 	public enum ServerType {
 		
 		OPENSHIFT_2("OpenShift 2"), 
-		OPENSHIFT_3("OpenShift 3"),
-		AUTOMATIC("<Automatic>");
+		OPENSHIFT_3("OpenShift 3");
 		
 		private final String text;
 		
@@ -261,4 +288,23 @@ public class OpenShiftExplorerView extends WorkbenchView {
 			return text;
 		}
 	}
+	
+	public enum AuthenticationMethod {
+		
+		DEFAULT(""), 
+		BASIC("Basic"),
+		OAUTH("OAuth");
+		
+		private final String text;
+		
+		private AuthenticationMethod(String text) {
+			this.text = text;
+		}
+		
+		@Override
+		public String toString() {
+			return text;
+		}
+	}
+	
 }

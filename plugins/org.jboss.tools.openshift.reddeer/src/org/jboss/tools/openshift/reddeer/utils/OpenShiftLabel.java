@@ -179,6 +179,9 @@ public class OpenShiftLabel {
 		public static final String SERVER_TYPE = "Server type:";
 		public static final String STORE_PASSWORD = "Save Password (could trigger secure storage login)";
 		public static final String CHECK_SERVER_TYPE = "Check Server Type";
+		public static final String PROTOCOL = "Protocol:";
+		public static final String TOKEN = "Token";
+		public static final String RETRIEVAL_LINK = "retrieve";
 		
 		// Domain related
 		public static final String DOMAIN_NAME = "Domain Name:";

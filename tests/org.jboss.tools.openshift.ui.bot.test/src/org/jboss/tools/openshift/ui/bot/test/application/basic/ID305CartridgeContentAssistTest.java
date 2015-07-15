@@ -12,8 +12,8 @@ import org.jboss.reddeer.swt.impl.button.CancelButton;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
-import org.jboss.tools.openshift.reddeer.utils.v2.Datastore;
 import org.jboss.tools.openshift.reddeer.wizard.v2.OpenNewApplicationWizard;
+import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
 import org.junit.Test;
 
 /**

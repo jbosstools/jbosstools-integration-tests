@@ -1,8 +1,8 @@
 package org.jboss.tools.openshift.ui.bot.test.application.create;
 
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
-import org.jboss.tools.openshift.reddeer.utils.v2.Datastore;
 import org.jboss.tools.openshift.reddeer.wizard.v2.Templates;
+import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
 import org.junit.Test;
 
 /**
