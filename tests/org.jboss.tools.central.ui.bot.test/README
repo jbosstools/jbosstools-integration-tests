@@ -1,20 +1,16 @@
-Prerequisities - JBossAS 7, EAP 6
-Optional - local EAP 6 and WFK 2 maven repository
+### What's tested?
+## Archetypes
+All archetypes, appearing on main page of JBoss Central are imported, checked for warnings&errors and deployed on server.
+## Examples
+Tests searches for tad "EAP-6.4.GA" in JBoss Central and imports all those examples, checks them for errors and deploys them to server.
 
-mkdir ~/jbds_test
-cd ~/jbds_test_git
-git clone https://github.com/jbosstools/jbosstools-integration-tests.git
-git clone https://github.com/jbosstools/jbosstools-base
-Run eclipse in new workspace (~/jbds_test_workspace)
-Import project jbosstools-base/tree/master/tests/plugins/org.jboss.tools.tests
-Import project jbosstools-integration-tests/tests/jbosstools-integration-tests/tests/org.jboss.tools.ui.bot.ext.test
+### Running tests via maven
 
-Change paths to servers in ${project_loc}/resoures/server_properties to your JBossAS and EAP installations.
-Optional - open ${project_loc}/resources/settings.xml and change paths in "jboss-eap-maven-repository" and "jboss-wfk-repository" profiles to your local maven repositories, uncomment these profiles in section "<activeProfiles>" and comment out online repositories.
-Run "RunTest" launcher (should be added automatically during import. Make sure that central tests project is active (selected), because variable ${project_loc} is used in launcher.
+`mvn clean install` should be enough to run the tests against WildFly 8. Maven downloads runtime automatically, sets correct maven repository in eclipse and run the tests.
 
-Attention - Test execution takes a long time (can be more than 2 hours). Random freeze can occur.
+### Running tests from eclipse
 
-Good practices 
-	Execute tests separatelly for JBossAS and EAP (ServerType annotation in CreateProjectsWithServerTest.java)
-	Because of random freezes or such things, re-executing tests with already passed tests commented out can be a good practice ;-)
+* Download required servers (currently Wildfly8, EAP 6)
+* Edit server configuration files (resources/generated/server_properties/*)
+* Import launcher (resources/Central RedDeer Test.launch)
+* Run

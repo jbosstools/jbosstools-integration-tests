@@ -1,18 +1,16 @@
 package org.jboss.tools.central.reddeer.wizards;
 
 import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.jface.wizard.WizardDialog;
-import org.jboss.reddeer.swt.api.Button;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.swt.condition.ShellIsActive;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
-import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.uiforms.impl.hyperlink.DefaultHyperlink;
-import org.jboss.reddeer.uiforms.impl.section.DefaultSection;
+import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.jboss.reddeer.jface.wizard.WizardDialog;
+import org.jboss.reddeer.swt.api.Button;
+import org.jboss.reddeer.swt.condition.ShellIsActive;
+import org.jboss.reddeer.swt.impl.browser.InternalBrowser;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.tools.central.reddeer.api.JavaScriptHelper;
 import org.jboss.tools.central.reddeer.projects.ArchetypeProject;
 import org.jboss.tools.maven.reddeer.project.examples.wizard.ArchetypeExamplesWizardFirstPage;
 import org.jboss.tools.maven.reddeer.project.examples.wizard.ArchetypeExamplesWizardPage;
@@ -32,9 +30,8 @@ public class JBossCentralProjectWizard extends WizardDialog {
 	}
 
 	public void open() {
-		new DefaultToolItem(new WorkbenchShell(), "JBoss Central").click();
-		DefaultSection startSection = new DefaultSection("Start from scratch");
-		new DefaultHyperlink(startSection, project.getName()).activate();
+		JavaScriptHelper.getInstance().setBrowser(new InternalBrowser());
+		JavaScriptHelper.getInstance().clickWizard(project.getName());
 		new DefaultShell("New Project Example");
 	}
 

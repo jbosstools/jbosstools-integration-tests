@@ -8,10 +8,22 @@ import static org.junit.Assert.fail;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.swt.widgets.TreeItem;
+import org.hamcrest.Description;
+import org.hamcrest.Matcher;
+import org.hamcrest.TypeSafeMatcher;
 import org.jboss.ide.eclipse.as.reddeer.server.view.JBossServerModule;
 import org.jboss.ide.eclipse.as.reddeer.server.view.JBossServerView;
+import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.common.matcher.RegexMatcher;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.core.handler.WidgetHandler;
 import org.jboss.reddeer.eclipse.condition.ConsoleHasNoChange;
 import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
 import org.jboss.reddeer.eclipse.ui.browser.BrowserEditor;
@@ -21,14 +33,8 @@ import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewEnums.ServerPublishState;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewEnums.ServerState;
 import org.jboss.reddeer.eclipse.wst.server.ui.wizard.ModifyModulesDialog;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
-import org.jboss.reddeer.common.condition.WaitCondition;
-import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.swt.impl.link.DefaultLink;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.central.reddeer.projects.ArchetypeProject;
 import org.jboss.tools.central.reddeer.projects.CentralExampleProject;
@@ -77,9 +83,10 @@ public class ExamplesOperator {
 		serversView.open();
 		ModifyModulesDialog modulesDialog = serversView.getServer(serverName)
 				.addAndRemoveModules();
-		modulesDialog.getFirstPage().add(projectName);
+		String moduleName = new DefaultTreeItem(new TreeItemTextMatcher(new RegexMatcher(".*"+projectName+".*"))).getText();
+		modulesDialog.getFirstPage().add(moduleName);
 		modulesDialog.finish();
-		new WaitUntil(new WaitForProjectToStartAndSynchronize(projectName, serverName),
+		new WaitUntil(new WaitForProjectToStartAndSynchronize(moduleName, serverName),
 				TimePeriod.LONG);
 	}
 	
@@ -154,11 +161,13 @@ public class ExamplesOperator {
 	 */
 	
 	public void checkDeployedProject(String projectName, String serverNameLabel) {
-		new WaitUntil(new ConsoleHasNoChange(), TimePeriod.LONG);
+		if (!projectName.equals("jboss-ejb-timer")){
+			new WaitUntil(new ConsoleHasNoChange(), TimePeriod.LONG);
+		}
 		JBossServerView serversView = new JBossServerView();
 		serversView.open();
-		JBossServerModule module = serversView.getServer(serverNameLabel)
-				.getModule(projectName);
+		JBossServerModule module = (JBossServerModule) serversView.getServer(serverNameLabel)
+				.getModule(new RegexMatcher(".*"+projectName+".*"));
 		module.openWebPage();
 		final BrowserEditor browser = new BrowserEditor(new RegexMatcher(".*"));
 		try {
@@ -189,6 +198,10 @@ public class ExamplesOperator {
 		return warnings;
 	}
 	
+	
+	/**
+	 * Returns all errors from Problems View as a List of Strings
+	 */
 	public List<String> getAllErrors(){
 		List<String> errors = new ArrayList<String>();
 		ProblemsView problemsView = new ProblemsView();
@@ -199,14 +212,11 @@ public class ExamplesOperator {
 		return errors;
 	}
 
-	private void checkProjectReadyPage(NewProjectExamplesReadyPage page, ArchetypeProject project){
-		assertFalse(page.isQuickFixEnabled());
-		if (!project.isBlank()){
-			assertTrue(page.isShowReadmeEnabled());
-		}
-	}
-
-	private void checkForErrors() {
+	
+	/**
+	 * Checks for errors in Problems View. Fails if there is some.
+	 */
+	public void checkForErrors() {
 		ProblemsView problemsView = new ProblemsView();
 		problemsView.open();
 		List<Problem> errors = problemsView.getProblems(ProblemType.ERROR);
@@ -217,6 +227,13 @@ public class ExamplesOperator {
 				failureMessage += System.getProperty("line.separator");
 			}
 			fail(failureMessage);
+		}
+	}
+	
+	private void checkProjectReadyPage(NewProjectExamplesReadyPage page, ArchetypeProject project){
+		assertFalse(page.isQuickFixEnabled());
+		if (!project.isBlank()){
+			assertTrue(page.isShowReadmeEnabled());
 		}
 	}
 
@@ -285,5 +302,28 @@ public class ExamplesOperator {
 			return "Browser is empty!";
 		}
 	}
+	
+	private class TreeItemTextMatcher extends TypeSafeMatcher<TreeItem>{
+		
+		Matcher<String> matcher;
+		
+		public TreeItemTextMatcher(Matcher<String> matcher) {
+			this.matcher = matcher;
+		}
+		
+		@Override
+		public void describeTo(Description description) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		protected boolean matchesSafely(TreeItem item) {
+			return matcher.matches(WidgetHandler.getInstance().getText(item));
+		}
+
+		
+	}
+
 
 }
