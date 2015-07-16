@@ -21,6 +21,9 @@ import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.jboss.reddeer.common.wait.AbstractWait;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.jface.wizard.WizardDialog;
 import org.jboss.reddeer.swt.api.Button;
 import org.jboss.reddeer.swt.api.Shell;
@@ -31,36 +34,40 @@ import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.common.reddeer.label.IDELabel;
 import org.jboss.tools.ws.reddeer.ui.wizards.wst.WebServiceFirstWizardPage;
+import org.jboss.tools.ws.reddeer.ui.wizards.wst.WebServiceFirstWizardPage.ServiceType;
 import org.jboss.tools.ws.reddeer.ui.wizards.wst.WebServiceSecondWizardPage;
 import org.jboss.tools.ws.reddeer.ui.wizards.wst.WebServiceWizard;
-import org.jboss.tools.ws.reddeer.ui.wizards.wst.WebServiceFirstWizardPage.ServiceType;
 import org.jboss.tools.ws.reddeer.ui.wizards.wst.WebServiceWizardPageBase.SliderLevel;
-import org.jboss.tools.ws.ui.bot.test.WSTestBase;
+import org.jboss.tools.ws.ui.bot.test.soap.SOAPTestBase;
+import org.jboss.tools.ws.ui.bot.test.utils.ProjectHelper;
+import org.jboss.tools.ws.ui.bot.test.utils.ResourceHelper;
 import org.junit.Assert;
 
 /**
+ * Base class for Web Service wizard tests
  * 
  * @author jjankovi
  *
  */
-public class WebServiceTestBase extends WSTestBase {
+public abstract class WebServiceTestBase extends SOAPTestBase {
 
-	protected void bottomUpJbossWebService(InputStream javasrc) {
-		String s = resourceHelper.readStream(javasrc);
-		String src = MessageFormat.format(s, getWsPackage(), getWsName());
+	protected abstract String getWsPackage();
+
+	protected abstract String getWsName();
+	
+	protected void bottomUpWS(InputStream input, WebServiceRuntime serviceRuntime) {
+		String source = ResourceHelper.readStream(input);
+		String src = MessageFormat.format(source, getWsPackage(), getWsName());
 		createService(ServiceType.BOTTOM_UP, getWsPackage() + "."
-				+ getWsName(), getLevel(), null, src, WebServiceRuntime.JBOSS_WS);
+				+ getWsName(), getLevel(), null, src, serviceRuntime);
 	}
 
 	protected void topDownWS(InputStream input, WebServiceRuntime serviceRuntime, String pkg) {
-		String s = resourceHelper.readStream(input);
+		String s = ResourceHelper.readStream(input);
 		String[] tns = getWsPackage().split("\\.");
 		StringBuilder sb = new StringBuilder();
 		for (int i = tns.length - 1; i > 0; i--) {
@@ -73,29 +80,29 @@ public class WebServiceTestBase extends WSTestBase {
 				+ getWsName() + ".wsdl", getLevel(), pkg, src, serviceRuntime);
 	}
 
-	private void createService(ServiceType t, String source,
+	private void createService(ServiceType type, String source,
 			SliderLevel level, String pkg, String code, WebServiceRuntime serviceRuntime) {
 		// create ws source - java class or wsdl
-		switch (t) {
-		case BOTTOM_UP:
-			TextEditor editor = projectHelper.createClass(getWsProjectName(), getWsPackage(), getWsName());
-			assertNotNull(editor);
+		switch (type) {
+			case BOTTOM_UP:
+				TextEditor editor = ProjectHelper.createClass(getWsProjectName(), getWsPackage(), getWsName());
+				assertNotNull(editor);
 
-			// replace default content of java class w/ code
-			editor.setText(code);
-			editor.save();
-			editor.close();
-			break;
-		case TOP_DOWN:
-			DefaultEditor ed = projectHelper.createWsdl(getWsProjectName(),getWsName());
-			assertNotNull(ed);
-			StyledText text = new DefaultStyledText();
-			assertNotNull(text);
+				// replace default content of java class w/ code
+				editor.setText(code);
+				editor.save();
+				editor.close();
+				break;
+			case TOP_DOWN:
+				DefaultEditor ed = ProjectHelper.createWsdl(getWsProjectName(),getWsName());
+				assertNotNull(ed);
+				StyledText text = new DefaultStyledText();
+				assertNotNull(text);
 			
-			text.setText(code);
-			ed.save();
-			ed.close();
-			break;
+				text.setText(code);
+				ed.save();
+				ed.close();
+				break;
 		}
 
 		// refresh workspace - workaround for JBIDE-6731
@@ -114,7 +121,7 @@ public class WebServiceTestBase extends WSTestBase {
 		wizard.open();
 
 		WebServiceFirstWizardPage page = new WebServiceFirstWizardPage();
-		page.setServiceType(t);
+		page.setServiceType(type);
 		page.setSource(source);
 		page.setServerRuntime(getConfiguredServerName());
 		page.setWebServiceRuntime(serviceRuntime.getName());

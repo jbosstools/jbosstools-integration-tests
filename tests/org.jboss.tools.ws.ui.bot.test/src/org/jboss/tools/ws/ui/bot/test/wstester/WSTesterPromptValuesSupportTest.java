@@ -26,6 +26,7 @@ import org.jboss.tools.ws.reddeer.jaxrs.core.RESTfulWebServicesNode;
 import org.jboss.tools.ws.reddeer.ui.dialogs.WSTesterParametersDialog;
 import org.jboss.tools.ws.reddeer.ui.tester.views.WsTesterView;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
+import org.jboss.tools.ws.ui.bot.test.utils.ServersViewHelper;
 import org.junit.AfterClass;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -52,7 +53,7 @@ public class WSTesterPromptValuesSupportTest extends RESTfulTestBase {
 	public void setup() {
 		if (!projectExists(wsProjectName)) {
 			importRestWSProject(wsProjectName);
-			serversViewHelper.runProjectOnServer(wsProjectName);
+			ServersViewHelper.runProjectOnServer(wsProjectName);
 			testerView.open();
 		}
 	}

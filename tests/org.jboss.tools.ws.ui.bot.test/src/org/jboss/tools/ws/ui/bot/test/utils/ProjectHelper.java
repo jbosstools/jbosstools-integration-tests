@@ -11,26 +11,32 @@
 
 package org.jboss.tools.ws.ui.bot.test.utils;
 
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.fail;
 
-import org.hamcrest.core.Is;
+import java.io.File;
+import java.io.IOException;
+
 import org.hamcrest.core.StringContains;
+import org.jboss.reddeer.common.wait.AbstractWait;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardDialog;
 import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardPage;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.core.resources.Project;
-import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
+import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.workbench.condition.EditorWithTitleIsActive;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.common.reddeer.label.IDELabel;
@@ -48,21 +54,25 @@ import org.jboss.tools.ws.ui.bot.test.uiutils.TargetedRuntimesPropertiesPage;
  */
 public class ProjectHelper {
 
-	private final ProjectExplorer projectExplorer = new ProjectExplorer();
+	private static ProjectExplorer projectExplorer = new ProjectExplorer();
 
+	private ProjectHelper() {
+	};
+	
 	/**
-	 * Method creates basic java class for entered project with 
-	 * entered package and class name
+	 * Method creates basic java class for entered project with entered package
+	 * and class name
+	 * 
 	 * @param projectName
 	 * @param pkg
 	 * @param cName
 	 * @return
 	 */
-	public TextEditor createClass(String projectName, String pkg, String className) {
+	public static TextEditor createClass(String projectName, String pkg, String className) {
 		NewJavaClassWizardDialog wizard = new NewJavaClassWizardDialog();
 		wizard.open();
 
-		NewJavaClassWizardPage page = wizard.getFirstPage();
+		NewJavaClassWizardPage page = new NewJavaClassWizardPage();
 		page.setPackage(pkg);
 		page.setName(className);
 		page.setSourceFolder(projectName + "/src");
@@ -72,12 +82,12 @@ public class ProjectHelper {
 	}
 
 	/**
-	 * Method creates wsdl file for entered project with 
-	 * entered package name
+	 * Method creates wsdl file for entered project with entered package name
+	 * 
 	 * @param projectName
 	 * @param wsdlFileName
 	 */
-	public DefaultEditor createWsdl(String projectName, String wsdlFileName) {
+	public static DefaultEditor createWsdl(String projectName, String wsdlFileName) {
 		NewWsdlFileWizard wizard = new NewWsdlFileWizard();
 		wizard.open();
 
@@ -88,16 +98,18 @@ public class ProjectHelper {
 		wizard.next();
 		wizard.finish();
 
+		new WaitUntil(new EditorWithTitleIsActive(wsdlFileName + ".wsdl"));
 		new DefaultCTabItem("Source").activate();
-		
+
 		return new DefaultEditor(wsdlFileName + ".wsdl");
 	}
-	
+
 	/**
 	 * Method creates new Dynamic Web Project with entered name
+	 * 
 	 * @param name
 	 */
-	public void createProject(String name) {
+	public static void createProject(String name) {
 		DynamicWebProjectWizard wizard = new DynamicWebProjectWizard();
 		wizard.open();
 
@@ -110,13 +122,13 @@ public class ProjectHelper {
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		projectExplorer.getProject(name).select();
 	}
-	
+
 	/**
-	 * Method creates new Dynamic Web Project with entered name for
-	 * ear project
+	 * Method creates new Dynamic Web Project with entered name for ear project
+	 * 
 	 * @param name
 	 */
-	public void createProjectForEAR(String name, String earProject) {
+	public static void createProjectForEAR(String name, String earProject) {
 		DynamicWebProjectWizard wizard = new DynamicWebProjectWizard();
 		wizard.open();
 
@@ -130,17 +142,17 @@ public class ProjectHelper {
 
 	/**
 	 * Method creates new EAR Project with entered name
+	 * 
 	 * @param name
 	 */
-	public void createEARProject(String name) {
+	public static void createEARProject(String name) {
 		EARProjectWizard wizard = new EARProjectWizard();
 		wizard.open();
 
-		new LabeledText("Project name:")
-			.setText(name);
+		new LabeledText("Project name:").setText(name);
 		// set EAR version
 		DefaultCombo combo = new DefaultCombo(1);
-		combo.setSelection(combo.getItems().size()-1);
+		combo.setSelection(combo.getItems().size() - 1);
 
 		wizard.next();
 
@@ -149,47 +161,7 @@ public class ProjectHelper {
 		wizard.finish();
 	}
 
-	/**
-	 * Method generates Deployment Descriptor for entered project 
-	 * @param projectName
-	 */
-	public void createDD(String projectName) {
-		Project project = getProject(projectName);
-		expandProject(project.getTreeItem());
-		String dd = "Deployment Descriptor: " + projectName;
-		project.getProjectItem(dd).select();
-
-        new ContextMenu("Generate Deployment Descriptor Stub").select();
-
-        new WaitWhile(new JobIsRunning());
-    }
-
-	private void expandProject(TreeItem projectItem) {
-		do {
-			projectItem.collapse();
-			projectItem.expand();
-		} while (!projectItem.isExpanded());
-	}
-
-	/**
-	 * Add configured runtime into project as targeted runtime
-	 * @param project
-	 */
-	public void addConfiguredRuntimeIntoProject(String projectName, 
-			String configuredRuntime) {
-		PropertiesDialog dialog = new PropertiesDialog();
-		dialog.open(projectName);
-
-		TargetedRuntimesPropertiesPage page = new TargetedRuntimesPropertiesPage();
-		page.select();
-		page.setSelectAllRuntimes(true);
-		page.checkAllRuntimes(false);
-		page.checkRuntime(configuredRuntime, true);
-
-		dialog.finish();
-	}
-
-	public void setProjectJRE(String projectName) {
+	public static void setProjectJRE(String projectName) {
 		PropertiesDialog dialog = new PropertiesDialog();
 		dialog.open(projectName);
 
@@ -206,11 +178,68 @@ public class ProjectHelper {
 		dialog.finish();
 	}
 
-	private Project getProject(String projectName) {
+	public static boolean projectExists(String name) {
+		projectExplorer.open();
+		return projectExplorer.containsProject(name);
+	}
+
+	public static void deleteAllProjects() {
 		ProjectExplorer projectExplorer = new ProjectExplorer();
 		projectExplorer.open();
-		Project project =  projectExplorer.getProject(projectName);
-		assertThat("Project name", project.getName(), Is.is(projectName));
-		return project;
+		projectExplorer.deleteAllProjects();
+	}
+
+	/**
+	 * Cleans All Projects
+	 */
+	public static void cleanAllProjects() {
+		new WaitWhile(new JobIsRunning());
+		new ShellMenu(IDELabel.Menu.PROJECT, "Clean...").select();
+		new DefaultShell("Clean");
+		new RadioButton("Clean all projects").click();
+		new PushButton(IDELabel.Button.OK).click();
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG, false);
+	}
+
+	public static void importWSTestProject(String projectName, String serverName) {
+		try {
+			importProject(new File("resources/projects/" + projectName).getCanonicalPath());
+		} catch (IOException e) {
+			e.printStackTrace();
+			fail(e.getMessage());
+		}
+		addConfiguredRuntimeIntoProject(projectName, serverName);
+		setProjectJRE(projectName);
+		cleanAllProjects();
+		AbstractWait.sleep(TimePeriod.getCustom(2));
+	}
+	
+	/**
+	 * Add configured runtime into project as targeted runtime
+	 * 
+	 * @param project
+	 */
+	public static void addConfiguredRuntimeIntoProject(String projectName, String configuredRuntime) {
+		PropertiesDialog dialog = new PropertiesDialog();
+		dialog.open(projectName);
+
+		TargetedRuntimesPropertiesPage page = new TargetedRuntimesPropertiesPage();
+		page.select();
+		page.setSelectAllRuntimes(true);
+		page.checkAllRuntimes(false);
+		page.checkRuntime(configuredRuntime, true);
+
+		dialog.finish();
+	}
+
+	private static void importProject(String projectLocation) {
+		ExternalProjectImportWizardDialog importDialog = new ExternalProjectImportWizardDialog();
+		importDialog.open();
+		WizardProjectsImportPage importPage = new WizardProjectsImportPage();
+		importPage.setRootDirectory(projectLocation);
+		assertFalse("There is no project to import", importPage.getProjects().isEmpty());
+		importPage.selectAllProjects();
+		importPage.copyProjectsIntoWorkspace(true);
+		importDialog.finish();
 	}
 }

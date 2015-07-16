@@ -45,6 +45,7 @@ import org.jboss.tools.ws.reddeer.swt.condition.ProblemsCount;
 import org.jboss.tools.ws.reddeer.ui.tester.views.WsTesterView;
 import org.jboss.tools.ws.ui.bot.test.WSTestBase;
 import org.jboss.tools.ws.ui.bot.test.uiutils.RunOnServerDialog;
+import org.jboss.tools.ws.ui.bot.test.utils.ResourceHelper;
 import org.junit.Assert;
 
 /**
@@ -291,7 +292,7 @@ public class RESTfulTestBase extends WSTestBase {
 	protected void copyRestfulResource(String resourceFile, Object... param) {
 		String streamPath = "/resources/restful/" + resourceFile;
 		InputStream stream = this.getClass().getResourceAsStream(streamPath);
-		resourceHelper.copyResourceToClassWithSave(
+		ResourceHelper.copyResourceToClassWithSave(
 				stream, true, param);
 		AbstractWait.sleep(TimePeriod.getCustom(2));
 	}

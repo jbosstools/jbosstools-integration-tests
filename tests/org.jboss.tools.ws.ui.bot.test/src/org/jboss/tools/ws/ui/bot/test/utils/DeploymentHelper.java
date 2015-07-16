@@ -29,17 +29,10 @@ import java.util.logging.Logger;
  */
 public class DeploymentHelper {
 
-	private final Logger LOGGER = Logger
-			.getLogger(this.getClass().getName());
+	private static final Logger LOGGER = Logger
+			.getLogger(DeploymentHelper.class.getName());
 
-	/**
-	 * Method checks if service is deployed by checking http header code
-	 * response of entered wsdURL
-	 * @param wsdlURL
-	 */
-	public void assertServiceDeployed(String wsdlURL) {
-		assertServiceDeployed(wsdlURL, 5000);		
-	}
+	private DeploymentHelper() {};
 
 	/**
 	 * Method checks if service is deployed by checking http header code
@@ -47,7 +40,7 @@ public class DeploymentHelper {
 	 * @param wsdlURL
 	 * @param timeout
 	 */
-	public void assertServiceDeployed(String wsdlURL, long timeout) {
+	public static void assertServiceDeployed(String wsdlURL, long timeout) {
 		long t = System.currentTimeMillis();
 		int rsp = -1;
 		while (t + timeout > System.currentTimeMillis()) {
@@ -80,43 +73,7 @@ public class DeploymentHelper {
 		assertEquals("Service was not sucessfully deployed, WSDL '" + wsdlURL
 				+ "' was not found", HttpURLConnection.HTTP_OK, rsp);
 	}
-
-	/**
-	 * Method checks if service is not deployed by checking http header code
-	 * response of entered wsdURL
-	 * @param wsdlURL
-	 */
-	public void assertServiceNotDeployed(String wsdlURL) {
-		HttpURLConnection connection = null;
-		try {
-			URL u = new URL(wsdlURL);
-			connection = (HttpURLConnection) u.openConnection();
-			assertEquals("Project was not sucessfully undeployed, WSDL '"
-					+ wsdlURL + "' is still available",
-					HttpURLConnection.HTTP_NOT_FOUND,
-					connection.getResponseCode());
-		} catch (MalformedURLException e1) {
-			throw new RuntimeException(e1);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		} finally {
-			if (connection != null) {
-				connection.disconnect();
-			}
-		}
-	}
-
-	/**
-	 * Method checks if service is not deployed by checking http header code
-	 * response of entered wsdURL and timeout for this operation
-	 * @param startServlet
-	 * @param response
-	 */
-	public void assertServiceResponseToClient(String startServlet,
-			String response) {
-		Asserts.assertContain(response, getPage(startServlet, 15000));
-	}
-
+	
 	/**
 	 * Returns http page for entered <var>url</var> of page in the specified
 	 * <var>timeout</var>
@@ -125,7 +82,7 @@ public class DeploymentHelper {
 	 * @param timeout timeout of this operation
 	 * @return content of the http page
 	 */
-	public String getPage(String url, long timeout) {
+	public static String getPage(String url, long timeout) {
 		long t = System.currentTimeMillis();
 		int rsp = -1;
 		String page = null;
@@ -171,7 +128,7 @@ public class DeploymentHelper {
 	 * @param wsName web service name
 	 * @return wsdl URL
 	 */
-	public String getWSDLUrl(String projectName, String wsName) {
+	public static String getWSDLUrl(String projectName, String wsName) {
 		return "http://localhost:8080/" + projectName + "/"
 				+ wsName + "?wsdl";
 	}

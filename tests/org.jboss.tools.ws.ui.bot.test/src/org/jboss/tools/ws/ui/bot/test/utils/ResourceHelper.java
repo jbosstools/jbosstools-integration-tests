@@ -15,12 +15,11 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 
 /**
@@ -31,12 +30,14 @@ import org.jboss.reddeer.workbench.impl.editor.TextEditor;
  */
 public class ResourceHelper {
 
+	private ResourceHelper() {};
+	
 	/**
 	 * Method converts input stream to text format
 	 * @param is
 	 * @return
 	 */
-	public String readStream(InputStream is) {
+	public static String readStream(InputStream is) {
 		// we don't care about performance in tests too much, so this should be
 		// OK
 		try(Scanner scanner = new Scanner(is)) {
@@ -49,7 +50,7 @@ public class ResourceHelper {
 	 * @param f
 	 * @return
 	 */
-	public String readFile(IFile f) {
+	public static String readFile(IFile f) {
 		String content = null;
 		InputStream is = null;
 		try {
@@ -73,7 +74,7 @@ public class ResourceHelper {
 	/**
 	 * Method copies resource to class opened in SWTBotEditor with entered parameters
 	 */
-	public void copyResourceToClassWithSave(InputStream resource,
+	public static void copyResourceToClassWithSave(InputStream resource,
 			boolean save, Object... param) {
 		String s = readStream(resource);
 		String code = MessageFormat.format(s, param);
@@ -83,21 +84,16 @@ public class ResourceHelper {
 			editor.save();
 		}
 	}
-
+	
 	/**
-	 * Method recursively searches files names in dir and returns them as List of File objects 
-	 * @param dir
-	 * @param searchingFileNames
-	 * @return
+	 * Open a java file of specified name in a package inside a project
+	 * @param projectName
+	 * @param pkgName
+	 * @param javaFileName
 	 */
-	public List<File> searchAllFiles(File dir, String[] searchingFileNames) {
-		
-		List<File> restEasyLibs = new ArrayList<File>();
-		
-		for (String restEasyLibReq : searchingFileNames) {
-			restEasyLibs.add(searchInTextFiles(dir, restEasyLibReq));
-		}
-		return restEasyLibs;
+	public static void openJavaFile(String projectName, String pkgName, String javaFileName) {
+		new ProjectExplorer().getProject(projectName)
+			.getProjectItem("Java Resources", "src", pkgName, javaFileName).open();
 	}
 
 	/**
@@ -106,7 +102,7 @@ public class ResourceHelper {
 	 * @param searchingFileName
 	 * @return
 	 */
-	public File searchInTextFiles(File dir, String searchingFileName) {
+	public static File searchInTextFiles(File dir, String searchingFileName) {
 		File[] files = dir.listFiles();
 		for (File file : files) {
 			if (file.isDirectory()) {

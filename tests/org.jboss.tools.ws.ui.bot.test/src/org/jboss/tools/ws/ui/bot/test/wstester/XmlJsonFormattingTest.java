@@ -21,6 +21,7 @@ import org.jboss.tools.ws.reddeer.jaxrs.core.RESTfulWebService;
 import org.jboss.tools.ws.reddeer.ui.tester.views.WsTesterView;
 import org.jboss.tools.ws.reddeer.ui.tester.views.WsTesterView.RequestType;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
+import org.jboss.tools.ws.ui.bot.test.utils.ServersViewHelper;
 import org.junit.Test;
 
 @JBossServer(state=ServerReqState.RUNNING)
@@ -49,9 +50,9 @@ public class XmlJsonFormattingTest extends RESTfulTestBase {
 	public void setup() {
 		if (!projectExists(getWsProjectName())) {
 			importRestWSProject(getWsProjectName());
-			serversViewHelper.addProjectToServer(getWsProjectName(),
+			ServersViewHelper.addProjectToServer(getWsProjectName(),
 					getConfiguredServerName());
-			serversViewHelper.serverClean(getConfiguredServerName());
+			ServersViewHelper.serverClean(getConfiguredServerName());
 		}
 	}
 

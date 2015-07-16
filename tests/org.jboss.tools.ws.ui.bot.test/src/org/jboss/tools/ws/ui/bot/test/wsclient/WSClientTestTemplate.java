@@ -17,17 +17,15 @@ import java.util.List;
 
 import javax.jws.WebService;
 
-import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
-import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
 import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.ui.views.navigator.ResourceNavigator;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.tools.ws.reddeer.ui.wizards.wst.WebServiceWizardPageBase.SliderLevel;
-import org.jboss.tools.ws.ui.bot.test.WSTestBase;
+import org.jboss.tools.ws.ui.bot.test.soap.SOAPTestBase;
+import org.jboss.tools.ws.ui.bot.test.utils.ServersViewHelper;
+import org.jboss.tools.ws.ui.bot.test.utils.WebServiceClientHelper;
 import org.jboss.tools.ws.ui.bot.test.webservice.WebServiceRuntime;
 import org.junit.After;
 import org.junit.Test;
@@ -39,7 +37,7 @@ import org.junit.Test;
  * @author Radoslav Rabara
  */
 @WebService(targetNamespace = "http://wsclient.test.bot.ui.ws.tools.jboss.org/", portName = "WSClientTestTemplatePort", serviceName = "WSClientTestTemplateService")
-public class WSClientTestTemplate extends WSTestBase {
+public class WSClientTestTemplate extends SOAPTestBase {
 
 	protected final WebServiceRuntime serviceRuntime;
 
@@ -52,7 +50,6 @@ public class WSClientTestTemplate extends WSTestBase {
 		return "client";
 	}
 
-	@Override
 	protected String getWsPackage() {
 		return "client." + getLevel().toString().toLowerCase();
 	}
@@ -116,7 +113,7 @@ public class WSClientTestTemplate extends WSTestBase {
 	}
 
 	protected void clientTest(String targetPkg) {
-		clientHelper.createClient(
+		WebServiceClientHelper.createClient(
 				getConfiguredServerName(),
 				 "http://soaptest.parasoft.com/calculator.wsdl",
 				serviceRuntime,
@@ -163,12 +160,12 @@ public class WSClientTestTemplate extends WSTestBase {
 		/*workaround for https://bugs.eclipse.org/bugs/show_bug.cgi?id=428982
 		 choosing 'Deploy' should normally deploy the project automatically*/
 		case DEPLOY:
-			serversViewHelper.runProjectOnServer(getEarProjectName());
+			ServersViewHelper.runProjectOnServer(getEarProjectName());
 			
 		case TEST:
 		case START:
 		case INSTALL:
-			if(!clientHelper.projectIsDeployed(getConfiguredServerName(), getEarProjectName())) {
+			if(!WebServiceClientHelper.projectIsDeployed(getConfiguredServerName(), getEarProjectName())) {
 				fail("Project was not found on the server.");
 			}
 		default:

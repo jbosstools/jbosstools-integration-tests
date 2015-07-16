@@ -12,21 +12,24 @@ package org.jboss.tools.ws.ui.bot.test.integration;
 
 import static org.junit.Assert.assertTrue;
 
+import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.tools.ws.reddeer.swt.condition.WsTesterNotEmptyResponseText;
 import org.jboss.tools.ws.reddeer.ui.tester.views.WsTesterView;
 import org.jboss.tools.ws.reddeer.ui.tester.views.WsTesterView.RequestType;
-import org.jboss.tools.ws.ui.bot.test.WSTestBase;
+import org.jboss.tools.ws.ui.bot.test.soap.SOAPTestBase;
+import org.jboss.tools.ws.ui.bot.test.utils.ProjectHelper;
+import org.jboss.tools.ws.ui.bot.test.utils.ServersViewHelper;
 import org.junit.Test;
 
 /**
+ * Class for testing SOAP integration in Web Service Tester
  * 
  * @author jjankovi
  *
  */
-public class SOAPWSToolingIntegrationTest extends WSTestBase {
+public class SOAPWSToolingIntegrationTest extends SOAPTestBase {
 
 	private final String request = 
 			"<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\" ?> " + LINE_SEPARATOR + 
@@ -44,9 +47,9 @@ public class SOAPWSToolingIntegrationTest extends WSTestBase {
 
 	@Override
 	public void setup() {
-		if (!projectExists(getWsProjectName())) {
-			importWSTestProject(getWsProjectName());
-			serversViewHelper.runProjectOnServer(getWsProjectName());
+		if (!ProjectHelper.projectExists(getWsProjectName())) {
+			ProjectHelper.importWSTestProject(getWsProjectName(), getConfiguredRuntimeName());
+			ServersViewHelper.runProjectOnServer(getWsProjectName());
 		}
 	}
 
@@ -84,6 +87,11 @@ public class SOAPWSToolingIntegrationTest extends WSTestBase {
         String rsp = wsTesterView.getResponseBody();
         assertTrue(rsp.trim().length() > 0);
         assertTrue(rsp, rsp.contains("Hello User!"));
+	}
+
+	@Override
+	protected String getEarProjectName() {
+		return null;
 	}
 	
 }

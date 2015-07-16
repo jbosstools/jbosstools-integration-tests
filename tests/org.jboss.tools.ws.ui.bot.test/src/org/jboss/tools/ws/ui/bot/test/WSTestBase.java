@@ -23,8 +23,13 @@ import java.util.logging.Logger;
 
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
+import org.jboss.reddeer.common.wait.AbstractWait;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.jboss.reddeer.core.condition.ViewWithToolTipIsActive;
 import org.jboss.reddeer.eclipse.core.resources.Project;
+import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
@@ -33,23 +38,15 @@ import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPag
 import org.jboss.reddeer.eclipse.utils.DeleteUtils;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
-import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.ViewWithToolTipIsActive;
 import org.jboss.tools.common.reddeer.label.IDELabel;
 import org.jboss.tools.ws.reddeer.ui.wizards.wst.WebServiceWizardPageBase.SliderLevel;
-import org.jboss.tools.ws.ui.bot.test.utils.DeploymentHelper;
 import org.jboss.tools.ws.ui.bot.test.utils.ProjectHelper;
-import org.jboss.tools.ws.ui.bot.test.utils.ResourceHelper;
 import org.jboss.tools.ws.ui.bot.test.utils.ServersViewHelper;
-import org.jboss.tools.ws.ui.bot.test.utils.WebServiceClientHelper;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -82,23 +79,17 @@ public class WSTestBase {
 	protected final String LINE_SEPARATOR = System
 			.getProperty("line.separator");
 
-	protected static ServersViewHelper serversViewHelper = new ServersViewHelper();
-	protected static ResourceHelper resourceHelper = new ResourceHelper();
-	protected static ProjectHelper projectHelper = new ProjectHelper();
-	protected static DeploymentHelper deploymentHelper = new DeploymentHelper();
-	protected static WebServiceClientHelper clientHelper = new WebServiceClientHelper();
-
 	@Before
 	public void setup() {
-		if (getEarProjectName() != null && !projectExists(getEarProjectName())) {
-			projectHelper.createEARProject(getEarProjectName());
-			if (!projectExists(getWsProjectName())) {
-				projectHelper.createProjectForEAR(getWsProjectName(),
+		if (getEarProjectName() != null && !ProjectHelper.projectExists(getEarProjectName())) {
+			ProjectHelper.createEARProject(getEarProjectName());
+			if (!ProjectHelper.projectExists(getWsProjectName())) {
+				ProjectHelper.createProjectForEAR(getWsProjectName(),
 						getEarProjectName());
 			}
 		}
-		if (!projectExists(getWsProjectName())) {
-			projectHelper.createProject(getWsProjectName());
+		if (!ProjectHelper.projectExists(getWsProjectName())) {
+			ProjectHelper.createProject(getWsProjectName());
 		}
 	}
 
@@ -170,7 +161,7 @@ public class WSTestBase {
 	}
 
 	protected static void deleteAllProjectsFromServer() {
-		serversViewHelper.removeAllProjectsFromServer(getConfiguredServerName());
+		ServersViewHelper.removeAllProjectsFromServer(getConfiguredServerName());
 	}
 
 	protected void openJavaFile(String projectName, String pkgName, String javaFileName) {
@@ -222,8 +213,8 @@ public class WSTestBase {
 			e.printStackTrace();
 			fail(e.getMessage());
 		}
-		projectHelper.addConfiguredRuntimeIntoProject(projectName, getConfiguredRuntimeName());
-		projectHelper.setProjectJRE(projectName);
+		ProjectHelper.addConfiguredRuntimeIntoProject(projectName, getConfiguredRuntimeName());
+		ProjectHelper.setProjectJRE(projectName);
 		cleanAllProjects();
 		AbstractWait.sleep(TimePeriod.getCustom(2));
 	}

@@ -3,20 +3,21 @@ package org.jboss.tools.ws.ui.bot.test.utils;
 import static org.junit.Assert.fail;
 
 import org.eclipse.swt.SWTException;
+import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.Server;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.jface.wizard.WizardDialog;
 import org.jboss.reddeer.swt.api.Label;
 import org.jboss.reddeer.swt.api.Shell;
-import org.jboss.reddeer.common.condition.WaitCondition;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.label.DefaultLabel;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.tools.ws.reddeer.ui.wizards.wst.WebServiceClientWizard;
 import org.jboss.tools.ws.reddeer.ui.wizards.wst.WebServiceClientWizardPage;
 import org.jboss.tools.ws.reddeer.ui.wizards.wst.WebServiceWizardPageBase.SliderLevel;
@@ -25,6 +26,8 @@ import org.junit.Assert;
 
 public class WebServiceClientHelper {
 
+	private WebServiceClientHelper() {};
+	
 	/**
 	 * Method creates Web Service Client for entered wsdl file, web project,
 	 * level of creation and name of package for client
@@ -33,7 +36,7 @@ public class WebServiceClientHelper {
 	 * @param level
 	 * @param pkg
 	 */
-	public void createClient(String serverName, String wsdl,
+	public static void createClient(String serverName, String wsdl,
 			WebServiceRuntime runtime, String targetProject,
 			String earProject, SliderLevel level, String pkg) {
 		WebServiceClientWizard wizard = new WebServiceClientWizard();
@@ -52,6 +55,7 @@ public class WebServiceClientHelper {
 
 		if (pkg != null && pkg.trim().length()>0) {
 			wizard.next();
+			new WaitWhile(new ShellWithTextIsActive("Progress Information"));
 			page.setPackageName(pkg);
 		}
 		wizard.finish();
@@ -69,7 +73,7 @@ public class WebServiceClientHelper {
 	 * 
 	 * @param wsWizard if error dialog appeared the parent wizard will be closed
 	 */
-	private void checkErrorDialog(WizardDialog wsWizard) {
+	private static void checkErrorDialog(WizardDialog wsWizard) {
 		Shell shell = new DefaultShell();
 		String text = shell.getText();
 		if (text.contains("Error")) {
@@ -79,7 +83,7 @@ public class WebServiceClientHelper {
 		}
 	}
 
-	private void checkErrorInConsoleOutput(String serverName, String projectName) {
+	private static void checkErrorInConsoleOutput(String serverName, String projectName) {
 		ConsoleView consoleView = new ConsoleView();
 		consoleView.open();
 		selectServerConsole(serverName);
@@ -100,7 +104,7 @@ public class WebServiceClientHelper {
 		}
 	}
 
-	private void selectServerConsole(String serverName) {
+	private static void selectServerConsole(String serverName) {
 		Label consoleName = new DefaultLabel();
 		if (!consoleName.getText().startsWith(serverName)) {
 			new DefaultToolItem("Display Selected Console").click();
@@ -112,15 +116,13 @@ public class WebServiceClientHelper {
 	}
 
 	/**
-	 * TODO: SWTException is thrown by {@link Server#getModule(String)} because
-	 * it doesn't work properly. Remove throws clause when it will be fixed.
-	 * 
+	 *  
 	 * @param serverName
 	 * @param projectName
 	 * @return
 	 * @throws SWTException
 	 */
-	public boolean projectIsDeployed(String serverName, String projectName) throws SWTException {
+	public static boolean projectIsDeployed(String serverName, String projectName) {
 		try {
 			ServersView sw = new ServersView();
 			sw.getServer(serverName).getModule(projectName);
@@ -130,7 +132,7 @@ public class WebServiceClientHelper {
 		}
 	}
 
-	private class WebServiceClientPageIsValidated implements WaitCondition {
+	private static class WebServiceClientPageIsValidated implements WaitCondition {
 
 		private WebServiceClientWizardPage page = new WebServiceClientWizardPage();
 

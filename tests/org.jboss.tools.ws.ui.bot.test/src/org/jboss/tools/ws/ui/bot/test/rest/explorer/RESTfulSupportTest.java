@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNotNull;
 import org.jboss.reddeer.jface.exception.JFaceLayerException;
 import org.jboss.tools.ws.reddeer.jaxrs.core.RESTfulWebServicesNode;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
+import org.jboss.tools.ws.ui.bot.test.utils.ProjectHelper;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -30,7 +31,7 @@ public class RESTfulSupportTest extends RESTfulTestBase {
 	@Test
 	public void testJaxRsExplorerSupport() {
 		/* create dynamic web project */
-		projectHelper.createProject(getWsProjectName());
+		ProjectHelper.createProject(getWsProjectName());
 
 		/* add RESTful support into project */
 		restfulHelper.addRestSupport(getWsProjectName());

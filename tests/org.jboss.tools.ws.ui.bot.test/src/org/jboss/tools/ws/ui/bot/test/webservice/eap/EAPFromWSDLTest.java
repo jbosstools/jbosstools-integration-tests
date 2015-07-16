@@ -21,17 +21,22 @@ import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.ws.reddeer.ui.wizards.wst.WebServiceWizardPageBase.SliderLevel;
 import org.jboss.tools.ws.ui.bot.test.uiutils.RunConfigurationsDialog;
+import org.jboss.tools.ws.ui.bot.test.utils.DeploymentHelper;
+import org.jboss.tools.ws.ui.bot.test.utils.ProjectHelper;
+import org.jboss.tools.ws.ui.bot.test.utils.ResourceHelper;
+import org.jboss.tools.ws.ui.bot.test.utils.ServersViewHelper;
+import org.jboss.tools.ws.ui.bot.test.utils.WebServiceClientHelper;
 import org.jboss.tools.ws.ui.bot.test.webservice.TopDownWSTest;
 import org.jboss.tools.ws.ui.bot.test.webservice.WebServiceRuntime;
 import org.jboss.tools.ws.ui.bot.test.webservice.WebServiceTestBase;
@@ -41,6 +46,7 @@ import org.junit.Test;
 
 /**
  * Test operates on creating non-trivial EAP project from wsdl file
+ * 
  * @author jlukas
  *
  */
@@ -52,11 +58,11 @@ public class EAPFromWSDLTest extends WebServiceTestBase {
 	@Before
 	@Override
 	public void setup() {
-		if (!projectExists(getWsProjectName())) {
-			projectHelper.createProject(getWsProjectName());
+		if (!ProjectHelper.projectExists(getWsProjectName())) {
+			ProjectHelper.createProject(getWsProjectName());
 		}
-		if (!projectExists(getWsClientProjectName())) {
-			projectHelper.createProject(getWsClientProjectName());
+		if (!ProjectHelper.projectExists(getWsClientProjectName())) {
+			ProjectHelper.createProject(getWsClientProjectName());
 		}
 	}
 
@@ -77,6 +83,7 @@ public class EAPFromWSDLTest extends WebServiceTestBase {
 	protected String getWsClientPackage() {
 		return "org.jboss.wsclient";
 	}
+
 	protected String getClientEarProjectName() {
 		return getWsClientProjectName() + "EAR";
 	}
@@ -106,49 +113,44 @@ public class EAPFromWSDLTest extends WebServiceTestBase {
 		topDownWS(TopDownWSTest.class.getResourceAsStream("/resources/jbossws/AreaService.wsdl"),
 				WebServiceRuntime.JBOSS_WS, getWsPackage());
 
-		IProject project = ResourcesPlugin.getWorkspace().getRoot()
-				.getProject(getWsProjectName());
-		IFile f = project.getFile("src/" + getWsPackage().replace(".", "/")
-				+ "/impl" + "/AreaServiceImpl.java");
+		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(getWsProjectName());
+		IFile f = project.getFile("src/" + getWsPackage().replace(".", "/") + "/impl" + "/AreaServiceImpl.java");
+		
 		/*
 		 * workaround when package is not typed
 		 */
 		if (f == null) {
-			f = project.getFile("src/" + "org.tempuri.areaservice"
-					+ "/AreaServiceImpl.java");
+			f = project.getFile("src/" + "org.tempuri.areaservice" + "/AreaServiceImpl.java");
 		}
-		String content = resourceHelper.readFile(f);
+		String content = ResourceHelper.readFile(f);
+		
 		Assert.assertNotNull(content);
-		Assert.assertTrue(content
-				.contains("public class AreaServiceImpl implements AreaService {"));
-		Assert.assertTrue(content
-				.contains("public float calculateRectArea(Dimensions parameters)"));
+		Assert.assertTrue(content.contains("public class AreaServiceImpl implements AreaService {"));
+		Assert.assertTrue(content.contains("public float calculateRectArea(Dimensions parameters)"));
 		replaceContent(f, "/resources/jbossws/AreaWS.java.ws");
 
 		f = project.getFile("WebContent/WEB-INF/web.xml");
-		content = resourceHelper.readFile(f);
+		content = ResourceHelper.readFile(f);
 		Assert.assertNotNull(content);
-		Assert.assertTrue(content
-				.contains("<servlet-class>org.jboss.ws.impl.AreaServiceImpl</servlet-class>"));
-		Assert.assertTrue(content
-				.contains("<url-pattern>/AreaService</url-pattern>"));
-		
-		/* workaround problems with generated code that require JAX-WS API 2.2 */
+		Assert.assertTrue(content.contains("<servlet-class>org.jboss.ws.impl.AreaServiceImpl</servlet-class>"));
+		Assert.assertTrue(content.contains("<url-pattern>/AreaService</url-pattern>"));
+
+		/*
+		 * workaround problems with generated code that require JAX-WS API 2.2
+		 */
 		jaxWsApi22RequirementWorkaround(getWsProjectName(), getWsPackage());
-		
-		serversViewHelper.runProjectOnServer(getEarProjectName());
-		deploymentHelper.assertServiceDeployed(deploymentHelper.getWSDLUrl(getWsProjectName(), getWsName()), 10000);
+
+		ServersViewHelper.runProjectOnServer(getEarProjectName());
+		DeploymentHelper.assertServiceDeployed(DeploymentHelper.getWSDLUrl(getWsProjectName(), getWsName()), 10000);
 		servicePassed = true;
 	}
 
 	private void testClient() {
 		Assert.assertTrue("service must exist", servicePassed);
-		clientHelper.createClient(getConfiguredServerName(),
-				deploymentHelper.getWSDLUrl(getWsProjectName(), getWsName()),
-				WebServiceRuntime.JBOSS_WS, getWsClientProjectName(),
-				getEarProjectName(), SliderLevel.DEVELOP, getWsClientPackage());
-		IProject p = ResourcesPlugin.getWorkspace().getRoot()
-				.getProject(getWsClientProjectName());
+		WebServiceClientHelper.createClient(getConfiguredServerName(),
+				DeploymentHelper.getWSDLUrl(getWsProjectName(), getWsName()), WebServiceRuntime.JBOSS_WS,
+				getWsClientProjectName(), getEarProjectName(), SliderLevel.DEVELOP, getWsClientPackage());
+		IProject p = ResourcesPlugin.getWorkspace().getRoot().getProject(getWsClientProjectName());
 		String pkg = "org/jboss/wsclient";
 		String cls = "src/" + pkg + "/AreaService.java";
 		Assert.assertTrue(p.getFile(cls).exists());
@@ -157,11 +159,13 @@ public class EAPFromWSDLTest extends WebServiceTestBase {
 		Assert.assertTrue(f.exists());
 		replaceContent(f, "/resources/jbossws/clientsample.java.ws");
 
-		/* workaround problems with generated code that require JAX-WS API 2.2 */
+		/*
+		 * workaround problems with generated code that require JAX-WS API 2.2
+		 */
 		jaxWsApi22RequirementWorkaround(getWsClientProjectName(), getWsClientPackage());
 
 		runJavaApplication();
-		
+
 		// wait until the client ends (prints the last line)
 		new WaitUntil(new ConsoleHasText("Call Over!"), TimePeriod.NORMAL);
 
@@ -194,11 +198,8 @@ public class EAPFromWSDLTest extends WebServiceTestBase {
 			}
 		}
 		try {
-			ResourcesPlugin
-					.getWorkspace()
-					.getRoot()
-					.refreshLocal(IWorkspaceRoot.DEPTH_INFINITE,
-							new NullProgressMonitor());
+			ResourcesPlugin.getWorkspace().getRoot().refreshLocal(IWorkspaceRoot.DEPTH_INFINITE,
+					new NullProgressMonitor());
 		} catch (CoreException e) {
 			LOGGER.log(Level.WARNING, e.getMessage(), e);
 		}
@@ -210,19 +211,19 @@ public class EAPFromWSDLTest extends WebServiceTestBase {
 	 */
 	private void jaxWsApi22RequirementWorkaround(String projectName, String pkgName) {
 		final String fileName = "AreaService_Service.java";
-		openJavaFile(projectName, pkgName, fileName);
+		ResourceHelper.openJavaFile(projectName, pkgName, fileName);
 		TextEditor editor = new TextEditor(fileName);
-		
+
 		String text = editor.getText();
 		boolean putComment = false;
 		StringBuilder output = new StringBuilder();
-		for(String line : text.split(System.getProperty("line.separator")) ) {
-			if(line.contains("This constructor requires JAX-WS API 2.2. You will need to endorse the 2.2")) {
+		for (String line : text.split(System.getProperty("line.separator"))) {
+			if (line.contains("This constructor requires JAX-WS API 2.2. You will need to endorse the 2.2")) {
 				putComment = true;
 			}
-			if(putComment) {
+			if (putComment) {
 				output.append("//");
-				if( line.contains("}") ) {
+				if (line.contains("}")) {
 					putComment = false;
 				}
 			}

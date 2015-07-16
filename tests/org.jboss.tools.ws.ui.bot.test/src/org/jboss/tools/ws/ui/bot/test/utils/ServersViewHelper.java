@@ -27,15 +27,17 @@ import org.jboss.tools.common.reddeer.label.IDELabel;
  */
 public class ServersViewHelper {
 
-	private final Logger LOGGER = Logger
-			.getLogger(this.getClass().getName());
+	private static final Logger LOGGER = Logger
+			.getLogger(ServersViewHelper.class.getName());
+	
+	private ServersViewHelper() {};
 
 	/**
 	 * Removes the specified <var>project</var> from the configured server.
 	 * 
 	 * @param project project to be removed from the server
 	 */
-	public void removeProjectFromServer(String project, String serverName) {
+	public static void removeProjectFromServer(String project, String serverName) {
 		ServersView serversView = new ServersView();
 		Server server = serversView.getServer(serverName);
 
@@ -54,9 +56,19 @@ public class ServersViewHelper {
 	/**
 	 * Removes all projects from the specified server.
 	 */
-	public void removeAllProjectsFromServer(String serverName) {
+	public static void removeAllProjectsFromServer(String serverName) {
 		ServersView serversView = new ServersView();
-		Server server = serversView.getServer(serverName);
+		if(!serversView.isOpened())
+			serversView.open();
+		
+		Server server = null;
+		try {
+			server = serversView.getServer(serverName);
+		} catch (EclipseLayerException e) {
+			LOGGER.warning("Server " + serverName + "not found, retrying");
+			server = serversView.getServer(serverName);
+			
+		}
 		List<ServerModule> modules = server.getModules();
 		
 		if (modules == null || modules.isEmpty())
@@ -73,7 +85,7 @@ public class ServersViewHelper {
 	/**
 	 * Method runs project on the configured server
 	 */
-	public void runProjectOnServer(String projectName) {
+	public static void runProjectOnServer(String projectName) {
 		new ProjectExplorer().getProject(projectName).select();
 		new ShellMenu(org.hamcrest.core.Is.is(IDELabel.Menu.RUN), org.hamcrest.core.Is.is(IDELabel.Menu.RUN_AS),
 				org.hamcrest.core.StringContains.containsString("Run on Server")).select();
@@ -86,20 +98,27 @@ public class ServersViewHelper {
 	/**
 	 * Adds the specified project to the specified server
 	 */
-	public void addProjectToServer(String projectName, String serverName) {
+	public static void addProjectToServer(String projectName, String serverName) {
 		ServersView serversView = new ServersView();
 		serversView.open();
 		Server server = serversView.getServer(serverName);
 		ModifyModulesDialog dialog = server.addAndRemoveModules();
-		ModifyModulesPage page = dialog.getFirstPage();
+		ModifyModulesPage page = new ModifyModulesPage();
 		page.add(projectName);
 		dialog.finish();
 	}
 
-	public void serverClean(String serverName) {
+	public static void serverClean(String serverName) {
 		ServersView serversView = new ServersView();
 		serversView.open();
-		Server server = serversView.getServer(serverName);
+		Server server = null;
+		try {
+			server = serversView.getServer(serverName);
+		} catch (EclipseLayerException e) {
+			LOGGER.warning("Server " + serverName + "not found, retrying");
+			server = serversView.getServer(serverName);
+			
+		}
 		server.clean();
 	}
 }
