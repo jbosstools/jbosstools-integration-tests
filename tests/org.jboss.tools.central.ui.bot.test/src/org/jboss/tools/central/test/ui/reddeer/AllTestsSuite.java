@@ -12,11 +12,12 @@ import org.junit.runners.Suite.SuiteClasses;
 @RunWith(RedDeerSuite.class)
 @SuiteClasses({
 	ArchetypesTest.class,
+//	HTML5Test.class
 	WebApplicationExamplesTest.class,
 	MobileApplicationsTest.class,
 	BackEndApplicationsTest.class,
 	PortalApplicationsTest.class,
-//	BasicTests.class
+	BasicTests.class
 	})
 public class AllTestsSuite {
 

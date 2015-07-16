@@ -11,6 +11,7 @@ import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.core.handler.WidgetHandler;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
+import org.jboss.reddeer.swt.impl.button.FinishButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.label.DefaultLabel;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
@@ -26,13 +27,14 @@ public class NewProjectExamplesWizardDialogCentral extends WizardDialog {
 	public NewProjectExamplesWizardDialogCentral() {
 		addWizardPage(new MavenExamplesRequirementPage(), 0);
 		addWizardPage(new NewProjectExamplesLocationPage(), 1);
+		new DefaultShell("New Project Example"); //wait for shell to appear
 	}
 	
 	public void finish(String projectName) {
 		log.info("Finish wizard");
 
 		String shellText = new DefaultShell().getText();
-		Button button = new PushButton("Finish");
+		Button button = new FinishButton();
 		button.click();
 
 		new WaitWhile(new ShellWithTextIsActive(shellText), TimePeriod.LONG);
