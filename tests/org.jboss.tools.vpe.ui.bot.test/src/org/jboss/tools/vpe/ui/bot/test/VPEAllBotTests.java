@@ -126,11 +126,14 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(RequirementAwareSuite.class)
 @SuiteClasses({
-	  VisualEditorContextMenuTest.class,
+	  // VisualEditorContextMenuTest.class,
+	/*
     EditingActionsTest.class,
 		NewXHTMLPageWizardTest.class,
 		CodeCompletionTest.class,
+*/		
 		ExternalizeStringsDialogTest.class,
+		/*
 		CancelTagLibDefenitionTest.class,
 		ImportTagsFromTLDFileTest.class,
 		ToggleCommentTest.class,
@@ -156,7 +159,7 @@ import org.junit.runners.Suite.SuiteClasses;
 		ManagePaletteGroupsTest.class,
 		PaletteEditorTest.class, 
 		ToolbarTextFormattingTest.class,
-		InsertActionsTest.class, 
+		InsertActionsTest.class,
 		TextEditingActionsTest.class,
 		PromptForTagAttributesDuringTagInsertTest.class,
 		IncludedTagLibsTest.class, 
@@ -199,7 +202,7 @@ import org.junit.runners.Suite.SuiteClasses;
 		DataOrderedListTagTest.class, 
 		ExtendedDataTableTagTest.class,
 		ToolbarAndToolbarGroupTagTest.class,
-		TogglePanelAndToogleControlTagTest.class, 
+		TogglePanelAndToogleControlTagTest.class,
 		CommandButtonTagTest.class,
 		CommandLinkTagTest.class, 
 		HtmlCommandLinkTagTest.class,
@@ -210,9 +213,9 @@ import org.junit.runners.Suite.SuiteClasses;
 		MarkersTest.class,
 		JBIDE9445Test_DuplicateSourceMenu.class, 
 		TestNPEinHugeFile.class,
-		Jbide10020_TestHotKeyForVpeRefresh.class, 
+		Jbide10020_TestHotKeyForVpeRefresh.class,
 		ArticleTagTest.class,
-		AsideTagTest.class, 
+		AsideTagTest.class,
 		AudioTagTest.class, 
 		CanvasTagTest.class,
 		CommandTagTest.class,
@@ -229,11 +232,12 @@ import org.junit.runners.Suite.SuiteClasses;
 		ElForBundleValueTest_Jbide10531.class,
 		MobilePaletteTest.class,
     BrowserSimLoadUrlTest.class,
-    BrowserSimContextMenuTest.class,    
+    BrowserSimContextMenuTest.class,
     LiveReloadServerTest.class,
     BrowserSimLiveReloadTest.class,
     OpenBrowserSimTest.class,
-    HTMLTagPropertiesTest.class})
+    HTMLTagPropertiesTest.class
+    */})
 public class VPEAllBotTests extends SWTBotTestCase{
 
 }

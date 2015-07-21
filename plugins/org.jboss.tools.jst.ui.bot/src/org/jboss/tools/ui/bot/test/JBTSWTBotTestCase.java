@@ -163,8 +163,7 @@ public abstract class JBTSWTBotTestCase extends SWTTestExt implements
     } catch (WidgetNotFoundException e) {
     }
 		openErrorLog();
-		openPackageExplorer();
-		// openProgressStatus();
+		packageExplorer.open();
 		deleteLog();
 		setException(null);
 		Platform.addLogListener(this);
@@ -222,56 +221,6 @@ public abstract class JBTSWTBotTestCase extends SWTTestExt implements
 		}
 	}
 
-	/**
-	 * Open and activate Package Explorer view if it hadn't been opened before
-	 */
-
-	protected void openPackageExplorer() {
-		try {
-			bot.viewByTitle(WidgetVariables.PACKAGE_EXPLORER).setFocus();
-		} catch (WidgetNotFoundException e) {
-			bot.menu("Window").menu("Show View").menu("Other...").click(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			SWTBotTree viewTree = bot.tree();
-			delay();
-			viewTree.expandNode("Java").expandNode( //$NON-NLS-1$
-					WidgetVariables.PACKAGE_EXPLORER).select();
-			bot.button("OK").click(); //$NON-NLS-1$
-		}
-	}
-	
-	/**
-   * Open and activate Web Projects view if it hadn't been opened before
-   */
-
-  protected void openWebProjects() {
-    try {
-      bot.viewByTitle(WidgetVariables.WEB_PROJECTS).setFocus();
-    } catch (WidgetNotFoundException e) {
-      bot.menu("Window").menu("Show View").menu("Other...").click(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-      SWTBotTree viewTree = bot.tree();
-      delay();
-      viewTree.expandNode("Java").expandNode( //$NON-NLS-1$
-          WidgetVariables.WEB_PROJECTS).select();
-      bot.button("OK").click(); //$NON-NLS-1$
-    }
-  }
-
-  /**
-   * Open and activate Server View if it hadn't been opened before
-   */
-
-  protected void openServerView() {
-    try {
-      bot.viewByTitle(WidgetVariables.SERVERS).setFocus();
-    } catch (WidgetNotFoundException e) {
-      bot.menu("Window").menu("Show View").menu("Other...").click(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-      SWTBotTree viewTree = bot.tree();
-      delay();
-      viewTree.expandNode("Server").expandNode( //$NON-NLS-1$
-          WidgetVariables.SERVERS).select();
-      bot.button("OK").click(); //$NON-NLS-1$
-    }
-  }
   /**
    * Open and activate Properties View if it hadn't been opened before
    */

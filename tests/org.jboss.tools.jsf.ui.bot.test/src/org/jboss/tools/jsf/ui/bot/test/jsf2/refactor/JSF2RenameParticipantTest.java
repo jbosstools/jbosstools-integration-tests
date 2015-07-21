@@ -1,16 +1,30 @@
 package org.jboss.tools.jsf.ui.bot.test.jsf2.refactor;
 
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
-import org.eclipse.swtbot.swt.finder.SWTBot;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
-import org.jboss.tools.ui.bot.ext.Timing;
-import org.jboss.tools.ui.bot.ext.condition.ShellIsActiveCondition;
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.swt.api.Shell;
+import org.jboss.reddeer.swt.condition.ShellIsActive;
+import org.jboss.reddeer.swt.impl.button.OkButton;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
-import org.jboss.tools.ui.bot.test.WidgetVariables;
+import org.junit.Test;
 
+/*******************************************************************************
+ * Copyright (c) 2007-2015 Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributor:
+ *     Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/
 public class JSF2RenameParticipantTest extends JSF2AbstractRefactorTest {
-
+	@Test
 	public void testJSF2RenameParticipant() throws Exception {
 		createCompositeComponent();
 		createTestPage();
@@ -19,48 +33,39 @@ public class JSF2RenameParticipantTest extends JSF2AbstractRefactorTest {
 	}
 
 	private void renameCompositeComponent() throws Exception {
-		SWTBot innerBot = bot.viewByTitle(WidgetVariables.PACKAGE_EXPLORER)
-				.bot();
-		SWTBotTree tree = innerBot.tree();
-		tree
-				.expandNode(JBT_TEST_PROJECT_NAME).expandNode("WebContent").expandNode("resources").expandNode("mycomp").expandNode("echo.xhtml").select(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-		bot.menu("Refactor").menu("Rename...").click(); //$NON-NLS-1$ //$NON-NLS-2$
-		SWTBotShell shell = bot.shell(IDELabel.Shell.RENAME_RESOURCE).activate();
-		bot.textWithLabel("New name:").setText("echo1.xhtml"); //$NON-NLS-1$ //$NON-NLS-2$
-		bot.button("Preview >").click(); //$NON-NLS-1$
+		packageExplorer.open();
+		packageExplorer.getProject(JBT_TEST_PROJECT_NAME).getProjectItem("WebContent","resources","mycomp","echo.xhtml").select();
+		new ContextMenu("Refactor","Rename...").select();
+		Shell renameShell = new DefaultShell(IDELabel.Shell.RENAME_RESOURCE);
+		new LabeledText("New name:").setText("echo1.xhtml");
+		new PushButton("Preview >").click();
 		checkPreview();
-		bot.button("OK").click(); //$NON-NLS-1$
-		delay();
-		bot.waitWhile(new ShellIsActiveCondition(shell),Timing.time10S());
+		new OkButton().click();
+		new WaitWhile(new ShellIsActive(renameShell));
 	}
 
 	private void checkContent() throws Exception {
-		SWTBot innerBot = bot.viewByTitle(WidgetVariables.PACKAGE_EXPLORER)
-				.bot();
-		SWTBotTree tree = innerBot.tree();
-		tree
-				.expandNode(JBT_TEST_PROJECT_NAME).expandNode("WebContent").expandNode(JSF2_Test_Page_Name + ".xhtml").doubleClick(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		delay();
-		SWTBotEclipseEditor editor = bot.editorByTitle(
-				JSF2_Test_Page_Name + ".xhtml").toTextEditor(); //$NON-NLS-1$
+		packageExplorer.open();
+		packageExplorer.getProject(JBT_TEST_PROJECT_NAME).getProjectItem("WebContent",JSF2_Test_Page_Name + ".xhtml").open();
+		TextEditor editor = new TextEditor(JSF2_Test_Page_Name + ".xhtml");
 		assertEquals(
-				loadFileContent("refactor/jsf2RenameTestPageRefactor.html"), editor.getText()); //$NON-NLS-1$
-		delay();
+				loadFileContent("refactor/jsf2RenameTestPageRefactor.html"), editor.getText());
 		editor.close();
 	}
 
 	@Override
 	public void tearDown() throws Exception {
-		eclipse.deleteFile(JBT_TEST_PROJECT_NAME, "WebContent",JSF2_Test_Page_Name + ".xhtml");
-		eclipse.deleteFile(JBT_TEST_PROJECT_NAME,"WebContent","resources","mycomp","echo1.xhtml");
+		packageExplorer.open();
+		packageExplorer.getProject(JBT_TEST_PROJECT_NAME).getProjectItem("WebContent",JSF2_Test_Page_Name + ".xhtml").delete();
+		packageExplorer.getProject(JBT_TEST_PROJECT_NAME).getProjectItem("WebContent","resources","mycomp","echo1.xhtml").delete();
 		super.tearDown();
 	}
 
 	private void checkPreview() {
-		delay();
-		SWTBotTree tree = bot.tree();
-		tree
-				.expandNode("Rename composite component changes").expandNode("jsf2TestPage.xhtml - " + JBT_TEST_PROJECT_NAME + "/WebContent").expandNode("Rename composite component"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		new PushButton("< Back");
+		new DefaultTreeItem("Rename composite component changes"
+			,"jsf2TestPage.xhtml - " + JBT_TEST_PROJECT_NAME + "/WebContent"
+			,"Rename composite component");
 	}
 
 }

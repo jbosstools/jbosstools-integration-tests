@@ -12,11 +12,10 @@ package org.jboss.tools.vpe.ui.bot.test.editor.selectionbar;
 
 import java.awt.event.KeyEvent;
 
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
+import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
 import org.jboss.tools.ui.bot.ext.SWTJBTExt;
-import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.helper.KeyboardHelper;
 import org.jboss.tools.vpe.ui.bot.test.VPEAutoTestCase;
@@ -28,10 +27,10 @@ public class SelectionBarTest extends VPEAutoTestCase {
 
 	private static final String SELECTED_TEXT = "<h:inputText value=\"#{user.name}\" required=\"true\">    <f:validateLength maximum=\"30\" minimum=\"3\"/>    </h:inputText>"; //$NON-NLS-1$
 	private static final String SELECTED_TEXT2 = "<f:validateLength maximum=\"30\" minimum=\"3\"/>"; //$NON-NLS-1$
-	
-  private SWTBotExt botExt = null;
-  private String sashStatus = "restored";
-  
+
+	private SWTBotExt botExt = null;
+	private String sashStatus = "restored";
+
 	public SelectionBarTest() {
 		super();
 		botExt = new SWTBotExt();
@@ -50,17 +49,10 @@ public class SelectionBarTest extends VPEAutoTestCase {
 	}
 
 	public void testSelectionBarContent() {
-		SWTBotEditor editor = SWTTestExt.packageExplorer.openFile(
-				JBT_TEST_PROJECT_NAME,
-				"WebContent", "pages", VPEAutoTestCase.TEST_PAGE); //$NON-NLS-1$ //$NON-NLS-2$
-		editor.setFocus();
+		packageExplorer.getProject(JBT_TEST_PROJECT_NAME)
+				.getProjectItem("WebContent", "pages", VPEAutoTestCase.TEST_PAGE).open();
 		// Navigate to '<h:inputText value="#{user.name}" required="true">'
-		SWTJBTExt.selectTextInSourcePane(botExt,
-			VPEAutoTestCase.TEST_PAGE,
-			"<h:inputText",
-			0,
-			3,
-			0);
+		SWTJBTExt.selectTextInSourcePane(botExt, VPEAutoTestCase.TEST_PAGE, "<h:inputText", 0, 3, 0);
 		bot.sleep(Timing.time3S());
 		String errorMessage = checkSelectionBarContent();
 		assertNull(errorMessage, errorMessage);
@@ -76,69 +68,64 @@ public class SelectionBarTest extends VPEAutoTestCase {
 		sashStatus = "restored";
 
 	}
-	
-  public void testSelectionBarButtonSelection() {
-    SWTBotEditor editor = SWTTestExt.packageExplorer.openFile(
-        JBT_TEST_PROJECT_NAME, "WebContent", "pages", TEST_PAGE); //$NON-NLS-1$ //$NON-NLS-2$
-    editor.setFocus();
-    // Navigate to '<h:inputText value="#{user.name}" required="true">'
-    SWTJBTExt.selectTextInSourcePane(botExt,
-        VPEAutoTestCase.TEST_PAGE,
-        "<h:inputText",
-        0,
-        3,
-        0);
-    /*
-     * Send key press event to fire VPE listeners
-     */
-    KeyboardHelper.typeKeyCodeUsingAWT(KeyEvent.VK_LEFT);
-    bot.sleep(Timing.time3S());
-    /*
-     * Click on the tag in the selection bar
-     */
-    bot.toolbarDropDownButton("h:inputText").click(); //$NON-NLS-1$
 
-    String line = editor.toTextEditor().getSelection();
-    line = line.replaceAll("\n", ""); //$NON-NLS-1$ //$NON-NLS-2$
-    line = line.replaceAll("\r", ""); //$NON-NLS-1$ //$NON-NLS-2$
-    line = line.replaceAll("\t", ""); //$NON-NLS-1$ //$NON-NLS-2$
-    assertEquals("<h:inputText> should be selected", SELECTED_TEXT, line); //$NON-NLS-1$
+	public void testSelectionBarButtonSelection() {
+		packageExplorer.getProject(JBT_TEST_PROJECT_NAME).getProjectItem("WebContent", "pages", TEST_PAGE).open();
+		// Navigate to '<h:inputText value="#{user.name}" required="true">'
+		SWTJBTExt.selectTextInSourcePane(botExt, VPEAutoTestCase.TEST_PAGE, "<h:inputText", 0, 3, 0);
+		/*
+		 * Send key press event to fire VPE listeners
+		 */
+		KeyboardHelper.typeKeyCodeUsingAWT(KeyEvent.VK_LEFT);
+		bot.sleep(Timing.time3S());
+		/*
+		 * Click on the tag in the selection bar
+		 */
+		bot.toolbarDropDownButton("h:inputText").click(); //$NON-NLS-1$
 
-    bot.toolbarDropDownButton("h:inputText").menuItem("f:validateLength").click(); //$NON-NLS-1$ //$NON-NLS-2$
-    line = editor.toTextEditor().getSelection();
-    assertEquals("<f:validateLength> should be selected", SELECTED_TEXT2, line); //$NON-NLS-1$
-  }
-    /**
-     * Checks if Selection Bar has proper buttons
-     * @return error message when Selection Bar has wrong content 
-     */
-	  private String checkSelectionBarContent () {
-	    String errorMessage = null;
-	    String buttonLabel = "html";
-	    try {
-	      bot.toolbarDropDownButton(buttonLabel);
-	      buttonLabel = "body";
-	      bot.toolbarDropDownButton(buttonLabel);
-	      buttonLabel = "f:view";
-	      bot.toolbarDropDownButton(buttonLabel);
-	      buttonLabel = "h:inputText";
-	      bot.toolbarDropDownButton(buttonLabel);
-	    } catch (WidgetNotFoundException wnfe){
-	      errorMessage = "Selection Bar has to contain Drop Down Button with label " 
-	        + buttonLabel
-	        + " but it doesn't.";
-	    }
-	    
-	    return errorMessage;
-	  }
-	  
-	  @Override
-	  public void tearDown() throws Exception {
-	    if (sashStatus.equals("VisualPageMaximized")){
-	      restoreSourcePane(botExt, VPEAutoTestCase.TEST_PAGE);
-	    } else if (sashStatus.equals("SourcePageMaximized")){
-	      restoreVisualPane(botExt, VPEAutoTestCase.TEST_PAGE);
-	    }
-	    super.tearDown();
-	  }
+		TextEditor editor = new TextEditor(TEST_PAGE);
+		String line = editor.getSelectedText();
+		line = line.replaceAll("\n", ""); //$NON-NLS-1$ //$NON-NLS-2$
+		line = line.replaceAll("\r", ""); //$NON-NLS-1$ //$NON-NLS-2$
+		line = line.replaceAll("\t", ""); //$NON-NLS-1$ //$NON-NLS-2$
+		assertEquals("<h:inputText> should be selected", SELECTED_TEXT, line); //$NON-NLS-1$
+
+		bot.toolbarDropDownButton("h:inputText").menuItem("f:validateLength").click(); //$NON-NLS-1$ //$NON-NLS-2$
+		line = editor.getSelectedText();
+		assertEquals("<f:validateLength> should be selected", SELECTED_TEXT2, line); //$NON-NLS-1$
+	}
+
+	/**
+	 * Checks if Selection Bar has proper buttons
+	 * 
+	 * @return error message when Selection Bar has wrong content
+	 */
+	private String checkSelectionBarContent() {
+		String errorMessage = null;
+		String buttonLabel = "html";
+		try {
+			bot.toolbarDropDownButton(buttonLabel);
+			buttonLabel = "body";
+			bot.toolbarDropDownButton(buttonLabel);
+			buttonLabel = "f:view";
+			bot.toolbarDropDownButton(buttonLabel);
+			buttonLabel = "h:inputText";
+			bot.toolbarDropDownButton(buttonLabel);
+		} catch (WidgetNotFoundException wnfe) {
+			errorMessage = "Selection Bar has to contain Drop Down Button with label " + buttonLabel
+					+ " but it doesn't.";
+		}
+
+		return errorMessage;
+	}
+
+	@Override
+	public void tearDown() throws Exception {
+		if (sashStatus.equals("VisualPageMaximized")) {
+			restoreSourcePane(botExt, VPEAutoTestCase.TEST_PAGE);
+		} else if (sashStatus.equals("SourcePageMaximized")) {
+			restoreVisualPane(botExt, VPEAutoTestCase.TEST_PAGE);
+		}
+		super.tearDown();
+	}
 }

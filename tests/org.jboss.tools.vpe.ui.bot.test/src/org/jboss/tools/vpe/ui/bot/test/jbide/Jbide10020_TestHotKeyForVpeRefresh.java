@@ -10,9 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.vpe.ui.bot.test.jbide;
 
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.jboss.tools.ui.bot.ext.SWTJBTExt;
-import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.vpe.ui.bot.test.VPEAutoTestCase;
 import org.junit.Ignore;
@@ -39,14 +37,14 @@ public class Jbide10020_TestHotKeyForVpeRefresh extends VPEAutoTestCase {
 	}
 	@Ignore
 	public void testHotKeyForVpeRefresh() {
-		SWTBotEditor editor = SWTTestExt.packageExplorer.openFile(
-				JBT_TEST_PROJECT_NAME, "WebContent", "pages", TEST_PAGE); //$NON-NLS-1$ //$NON-NLS-2$
+		packageExplorer.getProject(JBT_TEST_PROJECT_NAME)
+			.getProjectItem("WebContent", "pages", TEST_PAGE)
+			.open();
 		/*
 		 * Case 1:
 		 * When focus is on in the VPE --
 		 * Find "Refresh (Ctrl+5)" toolbar button
 		 */
-		editor.setFocus();
 		try {
 			bot.toolbarButtonWithTooltip(TOOL_TIP);
 		} catch (Exception e) {
@@ -57,7 +55,7 @@ public class Jbide10020_TestHotKeyForVpeRefresh extends VPEAutoTestCase {
 		 * When focus is on in Package Explorer --
 		 * Find "Refresh" toolbar button without HotKey defined.
 		 */
-		packageExplorer.show();
+		packageExplorer.activate();
 		assertNotEnabled(bot.toolbarButtonWithTooltip(TOOL_TIP));
 	}
 }

@@ -1,5 +1,6 @@
 package org.jboss.tools.jsf.ui.bot.test;
 
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.jsf.ui.bot.test.compatibility.ImportJSF12ProjectFromJBDS4x;
 import org.jboss.tools.jsf.ui.bot.test.cssdialog.jbide.CSSSelectorJBIDE3288;
 import org.jboss.tools.jsf.ui.bot.test.cssdialog.jbide.JBIDE3148and4441Test;
@@ -24,7 +25,6 @@ import org.jboss.tools.jsf.ui.bot.test.smoke.WebXmlEditorTest;
 import org.jboss.tools.jsf.ui.bot.test.templates.CreateNewTemplateFromJSFProject;
 import org.jboss.tools.jsf.ui.bot.test.templates.SetTemplateForUnknownTagTest;
 import org.jboss.tools.jsf.ui.bot.test.templates.UnknownTemplateTest;
-import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
@@ -33,7 +33,7 @@ import org.junit.runners.Suite.SuiteClasses;
  * These are all JSF SWTBot tests for JBDS.
  * 
  */
-@RunWith(RequirementAwareSuite.class)
+@RunWith(RedDeerSuite.class)
 @SuiteClasses ({
   CreateNewJSFProjectTest.class,    
   AddRemoveJSFCapabilitiesTest.class,

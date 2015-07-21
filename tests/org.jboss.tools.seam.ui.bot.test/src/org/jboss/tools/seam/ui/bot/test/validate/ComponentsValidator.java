@@ -7,6 +7,7 @@ import org.jboss.tools.seam.ui.bot.test.EARTests;
 import org.jboss.tools.seam.ui.bot.test.TestControl;
 import org.jboss.tools.seam.ui.bot.test.WARTests;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
+import org.jboss.tools.ui.bot.ext.view.PackageExplorer;
 import org.jboss.tools.ui.bot.ext.view.ProblemsView;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -14,6 +15,7 @@ import org.junit.experimental.categories.Category;
 public class ComponentsValidator extends AbstractSeamTestBase {
 
 	public static String NL = System.getProperty("line.separator");
+	private PackageExplorer pckExplorer = new PackageExplorer();
 	
 	public ComponentsValidator() {
 	}
@@ -33,7 +35,7 @@ public class ComponentsValidator extends AbstractSeamTestBase {
 	
 	private void testAddComponentProperty(String type) {
 		// open components.xml
-		SWTBotEclipseEditor cEditor = packageExplorer.openFile(testProjectName + type,
+		SWTBotEclipseEditor cEditor = pckExplorer.openFile(testProjectName + type,
 				"WebContent", "WEB-INF", "components.xml").toTextEditor();
 		
 		
@@ -61,10 +63,10 @@ public class ComponentsValidator extends AbstractSeamTestBase {
 		
 		SWTBotEclipseEditor aEditor;
 		if (type == TestControl.TYPE_EAR)		
-			aEditor = packageExplorer.openFile(testProjectName + type + "-ejb", 
+			aEditor = pckExplorer.openFile(testProjectName + type + "-ejb", 
 					"ejbModule", "org.domain.seamprjear.session", "Authenticator.java").toTextEditor();
 		else
-			aEditor = packageExplorer.openFile(testProjectName + type, 
+			aEditor = pckExplorer.openFile(testProjectName + type, 
 					"src/hot", "org.domain.seamprjwar.session", "Authenticator.java").toTextEditor();
 			
 		idx = 0;

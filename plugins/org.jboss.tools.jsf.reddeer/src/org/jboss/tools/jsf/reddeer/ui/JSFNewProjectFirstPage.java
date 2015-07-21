@@ -10,12 +10,12 @@ public class JSFNewProjectFirstPage extends WizardPage{
 		new DefaultText(0).setText(name);
 	}
 	
-	public void setJSFVersion(String version){
-		new DefaultCombo(0).setSelection(version);
+	public void setJSFEnvironment(String environment){
+		new DefaultCombo(0).setSelection(environment);
 	}
 	
-	public void setJSFType(String type){
-		new DefaultCombo(1).setSelection(type);
+	public void setProjectTemplate(String projectTemplate){
+		new DefaultCombo(1).setSelection(projectTemplate);
 	}
 
 }

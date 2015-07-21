@@ -14,6 +14,7 @@ import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.jboss.tools.jst.reddeer.web.ui.navigator.WebProjectsNavigator;
 import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.condition.ShellIsActiveCondition;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem;
@@ -44,7 +45,7 @@ public class XHTMLPageCreationTest extends VPEEditorTestCase{
 	 */
 	private void checkXHTMLPageCreation(){
 	  bot.closeAllEditors();
-	  openWebProjects();
+	  new WebProjectsNavigator().open();
 	  
 	  delay();
 	  

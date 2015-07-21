@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007-2011 Red Hat, Inc.
+ * Copyright (c) 2007-2015 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -10,384 +10,273 @@
  ******************************************************************************/
 package org.jboss.tools.jsf.ui.bot.test.smoke;
 
-import java.awt.event.KeyEvent;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
+import org.eclipse.swt.SWT;
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.jboss.reddeer.jface.text.contentassist.ContentAssistant;
+import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
+import org.jboss.reddeer.workbench.handler.EditorHandler;
+import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.jsf.ui.bot.test.JSFAutoTestCase;
-import org.jboss.tools.ui.bot.ext.Assertions;
-import org.jboss.tools.ui.bot.ext.SWTJBTExt;
-import org.jboss.tools.ui.bot.ext.SWTTestExt;
-import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.helper.ContentAssistHelper;
-import org.jboss.tools.ui.bot.ext.helper.KeyboardHelper;
 import org.jboss.tools.ui.bot.ext.helper.OpenOnHelper;
-import org.jboss.tools.ui.bot.ext.parts.ContentAssistBot;
-import org.jboss.tools.ui.bot.ext.parts.SWTBotEditorExt;
+import org.junit.Test;
 /** * Test Code Completion functionality of JSF components within xhtml page
  * @author Vladimir Pakan
  *
  */
 public class CodeCompletionTest extends JSFAutoTestCase{
-  private SWTBotEditorExt editor;
-  private SWTBotEditorExt compositeComponentDefEditor;
-  private SWTBotEditorExt compositeComponentContainerEditor;
-  private String originalEditorText;
   private String compositeComponentDefEditorText;
   private String origCompositeComponentContainerEditorText;
+  private TextEditor compositeComponentContainerEditor;
+  private TextEditor compositeComponentDefEditor;
   /**
    * Test Code Completion functionality for managed bean
    */
-  public void testCodeCompletionOfManagedBean(){
-    initFaceletsPageTest();
-    String textForSelection = "value=\"#{person.name}\"";
-    List<String> expectedProposals = new LinkedList<String>();
-    expectedProposals.add("msg");
-    expectedProposals.add("person : Person");
-    // Check content assist for #{ prefix
-    ContentAssistHelper.checkContentAssistContent(SWTTestExt.bot, 
-        FACELETS_TEST_PAGE,
-        textForSelection, 
-        9, 
-        0, 
-        expectedProposals);
-    // Check content assist for #{msg. prefix
-    expectedProposals.clear();
-    expectedProposals.add("name : String - Person");
-    ContentAssistHelper.checkContentAssistContent(SWTTestExt.bot, 
-        FACELETS_TEST_PAGE,
-        textForSelection, 
-        16, 
-        0, 
-        expectedProposals);
-  }
-  /**
-   * Test Code Completion functionality for resource
-   */
-  public void testCodeCompletionOfResource(){
-    initFaceletsPageTest();
-    ContentAssistBot contentAssist = editor.contentAssist();
-    String textForSelection = "${msg.prompt}";
-    // Check content assist for ${ prefix
-    SWTJBTExt.selectTextInSourcePane(SWTTestExt.bot, 
-        FACELETS_TEST_PAGE,
-        textForSelection, 
-        2, 
-        0, 
-        0);
-    contentAssist.checkContentAssist("msg", false);
-    contentAssist.checkContentAssist("person : Person", false);
-    // Check content assist for #{msg. prefix
-    SWTJBTExt.selectTextInSourcePane(SWTTestExt.bot, 
-        FACELETS_TEST_PAGE,
-        textForSelection, 
-        6, 
-        0, 
-        0);
-    contentAssist.checkContentAssist("greeting", false);
-    contentAssist.checkContentAssist("prompt", false);
-  }
-  /**
-   * Test Code Completion functionality of <input> tag attributes within xhtml page
-   */
-	public void testCodeCompletionOfInputTagAttributes(){
-	  initFaceletsPageTest();
-	  ContentAssistBot contentAssist = editor.contentAssist();
-    String textForSelection = "action=\"greeting\" value=\"Say Hello\" ";
-    // Check content assist menu content
-    ContentAssistHelper.checkContentAssistContent(SWTTestExt.bot, 
-        FACELETS_TEST_PAGE,
-        textForSelection, 
-        36, 
-        0, 
-        getInputTagProposalList());
-    // Check content assist insertion    
-    String contentAssistToUse = "maxlength"; 
-    contentAssist.checkContentAssist(contentAssistToUse, true);
-    editor.save();
-    String expectedInsertedText = textForSelection + contentAssistToUse + "=\"\"";
-    assertTrue("Editor has to contain text '" + expectedInsertedText + "' but it doesn't\n" +
-        "Editor Text is\n" + editor.getText(),
-      editor.getText().contains(expectedInsertedText));
-		
+	@Test
+	public void testCodeCompletionOfManagedBean() {
+		initFaceletsPageTest();
+		List<String> expectedProposals = new LinkedList<String>();
+		expectedProposals.add("msg");
+		expectedProposals.add("person : Person");
+		// Check content assist for #{ prefix
+		ContentAssistHelper.checkContentAssistContent(getEditor(), 19, 79, expectedProposals, true);
+		// Check content assist for #{msg. prefix
+		expectedProposals.clear();
+		expectedProposals.add("name : String - Person");
+		ContentAssistHelper.checkContentAssistContent(getEditor(), 19, 86, expectedProposals, true);
+	}
+	/**
+	 * Test Code Completion functionality for resource
+	 */
+	@Test
+	public void testCodeCompletionOfResource() {
+		initFaceletsPageTest();
+		// Check content assist for ${. prefix
+		getEditor().setCursorPosition(18, 7);
+		ContentAssistant contentAssistant = getEditor().openContentAssistant();
+		ContentAssistHelper.assertContentAssistantContains(contentAssistant, "msg", false);
+		ContentAssistHelper.assertContentAssistantContains(contentAssistant, "person : Person", false);
+		contentAssistant.close();
+		// Check content assist for ${msg. prefix
+		getEditor().setCursorPosition(18, 11);
+		contentAssistant = getEditor().openContentAssistant();
+		ContentAssistHelper.assertContentAssistantContains(contentAssistant, "greeting", false);
+		ContentAssistHelper.assertContentAssistantContains(contentAssistant, "prompt", false);
+		contentAssistant.close();
+	}
+	/**
+	 * Test Code Completion functionality of <input> tag attributes within xhtml
+	 * page
+	 */
+	@Test
+	public void testCodeCompletionOfInputTagAttributes() {
+		initFaceletsPageTest();
+		// Check content assist for Input tag attributes
+		ContentAssistHelper.checkContentAssistContent(getEditor(), 21, 6, getInputTagProposalList(), true);
+		// Check content assist insertion
+		String contentAssistToUse = "maxlength";
+		ContentAssistHelper.assertContentAssistantContains(getEditor().openContentAssistant(), contentAssistToUse,
+				true);
+		getEditor().save();
+		String expectedInsertedText = " " + contentAssistToUse + "=\"\"";
+		assertTrue("Editor has to contain text '" + expectedInsertedText + "' but it doesn't\n" + "Editor Text is\n"
+				+ getEditor().getText(), getEditor().getText().contains(expectedInsertedText));
 	}
   /**
    * Test Code Completion functionality of <input> tag for jsfc attribute within xhtml page
    */
-  public void testCodeCompletionOfInputTagForJsfcAttribute(){
-    initFaceletsPageTest();
-    // check jsfc attribute insertion via Content Assist 
-    SWTJBTExt.selectTextInSourcePane(SWTTestExt.bot, 
-        FACELETS_TEST_PAGE,
-        "<input ", 
-        0, 
-        0, 
-        0);
-    String textToInsert = "<input  />";
-    editor.insertText(textToInsert);
-    SWTJBTExt.selectTextInSourcePane(SWTTestExt.bot, 
-        FACELETS_TEST_PAGE,
-        textToInsert, 
-        7, 
-        0, 
-        0);
-    String contentAssistToUse = "jsfc";
-    ContentAssistBot contentAssist = editor.contentAssist();
-    SWTBotShell[] shellsBeforeCA = bot.shells();
-    contentAssist.checkContentAssist(contentAssistToUse, true);
-    editor.save();
-    SWTBotShell caShell = contentAssist.getContentAssistShell(shellsBeforeCA, bot.shells());
-    if (caShell != null){
-      caShell.close();  
-    }    
-    String expectedInsertedText = "<input " + contentAssistToUse + "=\"\"";
-    assertTrue("Editor has to contain text '" + expectedInsertedText + "' but it doesn't\n" +
-        "Editor Text is\n" + editor.getText(),
-      editor.getText().contains(expectedInsertedText));
-    // hide Code Assist Window automatically opened when typing text
-    // check jsfc attribute value Content Assist menu Content
-    ContentAssistHelper.checkContentAssistContent(SWTTestExt.bot, 
-        FACELETS_TEST_PAGE,
-        expectedInsertedText, 
-        13, 
-        0, 
-        getJsfcAttributeValueProposalList());
-    // check jsfc attribute value insertion via Content Assist
-    contentAssistToUse = "h:inputText";
-    contentAssist.checkContentAssist(contentAssistToUse, true);
-    expectedInsertedText = "<input jsfc=\"" + contentAssistToUse + "\"";
-    assertTrue("Editor has to contain text '" + expectedInsertedText + "' but it doesn't\n" +
-        "Editor Text is\n" + editor.getText(),
-      editor.getText().contains(expectedInsertedText));
-    editor.save();
-    // check Content Assist content of jsfc attribute attribute
-    ContentAssistHelper.checkContentAssistContent(SWTTestExt.bot, 
-        FACELETS_TEST_PAGE,
-        expectedInsertedText, 
-        26, 
-        0, 
-        getJsfcAttributeValueAttributesProposalList());
-    // check jsfc attribute value attribute insertion via Content Assist
-    String contentAssistAttributeToUse = "accept";
-    contentAssist.checkContentAssist(contentAssistAttributeToUse, true);
-    expectedInsertedText = "<input jsfc=\"" + contentAssistToUse + "\" " + contentAssistAttributeToUse + "=\"\"";
-    assertTrue("Editor has to contain text '" + expectedInsertedText + "' but it doesn't\n" +
-        "Editor Text is\n" + editor.getText(),
-      editor.getText().contains(expectedInsertedText));
-    editor.save();
-  }
-  /**
+	@Test
+	public void testCodeCompletionOfInputTagForJsfcAttribute() {
+		initFaceletsPageTest();
+		// check jsfc attribute insertion via Content Assist
+		String textToInsert = "<input  />";
+		getEditor().insertText(19, 0, textToInsert);
+		getEditor().setCursorPosition(19, 7);
+		String contentAssistToUse = "jsfc";
+		ContentAssistHelper.assertContentAssistantContains(getEditor().openContentAssistant(), contentAssistToUse,
+				true);
+		KeyboardFactory.getKeyboard().invokeKeyCombination(SWT.ESC);
+		String expectedInsertedText = "<input " + contentAssistToUse + "=\"\"";
+		assertTrue("Editor has to contain text '" + expectedInsertedText + "' but it doesn't\n" + "Editor Text is\n"
+				+ getEditor().getText(), getEditor().getText().contains(expectedInsertedText));
+		// check jsfc attribute value Content Assist menu Content
+		ContentAssistHelper.checkContentAssistContent(getEditor(), 19, 13, getJsfcAttributeValueProposalList(), true);
+		// check jsfc attribute value insertion via Content Assist
+		contentAssistToUse = "h:inputText";
+		ContentAssistHelper.assertContentAssistantContains(getEditor().openContentAssistant(), contentAssistToUse,
+				true);
+		expectedInsertedText = "<input jsfc=\"" + contentAssistToUse + "\"";
+		assertTrue("Editor has to contain text '" + expectedInsertedText + "' but it doesn't\n" + "Editor Text is\n"
+				+ getEditor().getText(), getEditor().getText().contains(expectedInsertedText));
+		getEditor().save();
+		// check Content Assist content of jsfc attribute attribute
+		ContentAssistHelper.checkContentAssistContent(getEditor(), 19, 26,
+				getJsfcAttributeValueAttributesProposalList(), true);
+		// check jsfc attribute value attribute insertion via Content Assist
+		String contentAssistAttributeToUse = "accept";
+		ContentAssistHelper.assertContentAssistantContains(getEditor().openContentAssistant(), contentAssistAttributeToUse,
+				true);
+		expectedInsertedText = "<input jsfc=\"" + contentAssistToUse + "\" " + contentAssistAttributeToUse + "=\"\"";
+		assertTrue("Editor has to contain text '" + expectedInsertedText + "' but it doesn't\n" + "Editor Text is\n"
+				+ getEditor().getText(), getEditor().getText().contains(expectedInsertedText));
+		getEditor().save();
+	}
+	  /**
    * Test Code Completion functionality for Composite Component
    */
-  public void testCodeCompletionOfCompositeComponent(){
-    initJSF2PageTest();
-    ContentAssistBot contentAssist = compositeComponentContainerEditor.contentAssist();
-    SWTJBTExt.selectTextInSourcePane(SWTTestExt.bot, 
-        JSF2_TEST_PAGE,
-        "<ez:input ", 
-        0, 
-        0, 
-        0);
-    String textToInsert = "<ez:";
-    compositeComponentContainerEditor.insertText(textToInsert);
-    SWTJBTExt.selectTextInSourcePane(SWTTestExt.bot, 
-        JSF2_TEST_PAGE,
-        textToInsert, 
-        textToInsert.length(), 
-        0, 
-        0);
-    // Check content assist menu content for "<ez:"
-    contentAssist.checkContentAssist("ez:input", true);
-    bot.sleep(Timing.time2S());
-    compositeComponentContainerEditor.save();
-    String currentLineText = compositeComponentContainerEditor.getTextOnCurrentLine();
-    String expectedInsertedText = "<ez:input value=\"\" action=\"\"></ez:input>";
-    if (!currentLineText.toLowerCase().contains(expectedInsertedText.toLowerCase())){
-      expectedInsertedText = "<ez:input action=\"\" value=\"\"></ez:input>";
-      assertTrue("Inserted text should be " + expectedInsertedText + " but is not.\n" 
-          + "Current line text is " + currentLineText,
-        currentLineText.toLowerCase().contains(expectedInsertedText.toLowerCase()));
-    }
-    // Check content assist menu content for Composite Components attributes    
-    ContentAssistHelper.checkContentAssistContent(SWTTestExt.bot, 
-        JSF2_TEST_PAGE,
-        expectedInsertedText, 
-        10, 
-        0, 
-        getCompositeComponentsAttributesProposalList());
-    // Open Composite Component definition file
-    String compositeComponentFileName = "input.xhtml";
-    OpenOnHelper.checkOpenOnFileIsOpened(
-        SWTTestExt.bot, JSF2_TEST_PAGE, "<ez:input ", 5,
-        0, 0, compositeComponentFileName);
-    compositeComponentDefEditor = SWTTestExt.bot.swtBotEditorExtByTitle(compositeComponentFileName);
-    compositeComponentDefEditorText = compositeComponentDefEditor.getText();
-    textToInsert = "<h:commandButton action=\"";
-    SWTJBTExt.selectTextInSourcePane(SWTTestExt.bot, 
-        compositeComponentFileName,
-        textToInsert, 
-        0, 
-        0, 
-        0);
-    compositeComponentDefEditor.insertText(textToInsert + "\"/> ");  // add closing "/>
-    SWTJBTExt.selectTextInSourcePane(SWTTestExt.bot, 
-        compositeComponentFileName,
-        textToInsert, 
-        textToInsert.length(), 
-        0, 
-        0);
-    // Check content assist menu content for ""<h:commandButton action="" />"
-    contentAssist = compositeComponentDefEditor.contentAssist();
-    contentAssist.checkContentAssist("cc.attrs", true);
-    bot.sleep(Timing.time2S());
-    compositeComponentDefEditor.save();
-    currentLineText = compositeComponentDefEditor.getTextOnCurrentLine();
-    expectedInsertedText = "#{cc.attrs}";
-    assertTrue("Inserted text should be " + expectedInsertedText + " but is not.\n" 
-        + "Current line text is " + currentLineText,
-      currentLineText.toLowerCase().contains(expectedInsertedText.toLowerCase()));
-    compositeComponentDefEditor.insertText(".");
-    KeyboardHelper.typeKeyCodeUsingAWT(KeyEvent.VK_RIGHT);
-    // Check content assist menu content for Composite Components attributes    
-    ContentAssistHelper.checkContentAssistContent(SWTTestExt.bot, 
-        compositeComponentFileName,
-        "#{cc.attrs.}", 
-        11, 
-        0, 
-        getCompositeComponentsAttributeDefProposalList());
-    // check inserting of "submitlabel" content assist
-    String contentAssistToUse = "submitlabel";
-    contentAssist.checkContentAssist(contentAssistToUse, true);
-    expectedInsertedText = "<h:commandButton action=\"#{cc.attrs." + contentAssistToUse + "}\"";
-    assertTrue("Editor has to contain text '" + expectedInsertedText + "' but it doesn't\n" +
-        "Editor Text is\n" + compositeComponentDefEditor.getText(),
-        compositeComponentDefEditor.getText().toLowerCase().contains(expectedInsertedText.toLowerCase()));
-    compositeComponentDefEditor.save();
-  }
+	@Test
+	public void testCodeCompletionOfCompositeComponent() {
+		initJSF2PageTest();
+		String textToInsert = "<ez:";
+		compositeComponentContainerEditor.insertText(15, 0, textToInsert);
+		compositeComponentContainerEditor.setCursorPosition(15, textToInsert.length());
+		compositeComponentContainerEditor.save();
+		new WaitWhile(new JobIsRunning());
+		// Check content assist menu content for "<ez:""ez:input"
+		ContentAssistHelper.assertContentAssistantContains(compositeComponentContainerEditor.openContentAssistant(), "ez:input", true);
+		String currentLineText = compositeComponentContainerEditor.getTextAtLine(15);
+		String expectedInsertedText = "<ez:input value=\"\" action=\"\"></ez:input>";
+		if (!currentLineText.toLowerCase().contains(expectedInsertedText.toLowerCase())) {
+			expectedInsertedText = "<ez:input action=\"\" value=\"\"></ez:input>";
+			assertTrue(
+					"Inserted text should be " + expectedInsertedText + " but is not.\n" + "Current line text is "
+							+ currentLineText,
+					currentLineText.toLowerCase().contains(expectedInsertedText.toLowerCase()));
+		}
+		// Check content assist menu content for Composite Components attributes
+		ContentAssistHelper.checkContentAssistContent(compositeComponentContainerEditor, 15, 10,
+				getCompositeComponentsAttributesProposalList(), true);
+		// Open Composite Component definition file
+		String compositeComponentFileName = "input.xhtml";
+		OpenOnHelper.checkOpenOnFileIsOpened(compositeComponentContainerEditor, 15, 5, compositeComponentFileName);
+		compositeComponentDefEditor = new TextEditor(compositeComponentFileName);
+		compositeComponentDefEditorText = compositeComponentDefEditor.getText();
+		textToInsert = "<h:commandButton action=\"";
+		compositeComponentDefEditor.insertText(18, 0, textToInsert + "\"/> "); // add closing "/>
+		compositeComponentDefEditor.setCursorPosition(18, textToInsert.length());
+		// Check content assist menu content for ""<h:commandButton action=""/>"
+		ContentAssistHelper.assertContentAssistantContains(compositeComponentDefEditor.openContentAssistant(),
+				"cc.attrs", true);
+		compositeComponentDefEditor.save();
+		currentLineText = compositeComponentDefEditor.getTextAtLine(18);
+		expectedInsertedText = "#{cc.attrs}";
+		assertTrue("Inserted text should be " + expectedInsertedText + " but is not.\n" + "Current line text is "
+				+ currentLineText, currentLineText.toLowerCase().contains(expectedInsertedText.toLowerCase()));
+		KeyboardFactory.getKeyboard().type(".");
+		KeyboardFactory.getKeyboard().invokeKeyCombination(SWT.ARROW_LEFT);
+		KeyboardFactory.getKeyboard().invokeKeyCombination(SWT.ESC);
+		// Check content assist menu content for Composite Components attributes
+		ContentAssistHelper.checkContentAssistContent(compositeComponentDefEditor, 18, 36,
+				getCompositeComponentsAttributeDefProposalList(), true);
+		// check inserting of "submitlabel" content assist
+		String contentAssistToUse = "submitlabel";
+		ContentAssistHelper.assertContentAssistantContains(compositeComponentDefEditor.openContentAssistant(),
+				contentAssistToUse, true);
+		expectedInsertedText = "<h:commandButton action=\"#{cc.attrs." + contentAssistToUse + "}\"";
+		assertTrue(
+				"Editor has to contain text '" + expectedInsertedText + "' but it doesn't\n" + "Editor Text is\n"
+						+ compositeComponentDefEditor.getText(),
+				compositeComponentDefEditor.getText().toLowerCase().contains(expectedInsertedText.toLowerCase()));
+		compositeComponentDefEditor.save();
+	}
   /**
    * Test Code Completion functionality for Managed Bean 
    * referenced via @ManagedBean annotation  
    */
+  @Test
   public void testCodeCompletionOfReferencedManagedBean(){
     initJSF2PageTest();
-    String textForSelection = "value=\"#{user.name}\"";
     List<String> expectedProposals = new LinkedList<String>();
     expectedProposals.add("msgs");
     expectedProposals.add("user : User");
     // Check content assist for #{ prefix
-    ContentAssistHelper.checkContentAssistContent(SWTTestExt.bot, 
-        JSF2_TEST_PAGE,
-        textForSelection, 
-        9, 
-        0, 
-        expectedProposals,
-        false);
+    ContentAssistHelper.checkContentAssistContent(compositeComponentContainerEditor,15, 60,expectedProposals,false);
     // Check content assist for #{user. prefix
     expectedProposals.clear();
     expectedProposals.add("name : String - User");
     expectedProposals.add("sayHello() : String - User");
-    ContentAssistHelper.checkContentAssistContent(SWTTestExt.bot, 
-        FACELETS_TEST_PAGE,
-        textForSelection, 
-        14, 
-        0, 
-        expectedProposals,
-        false);
+    ContentAssistHelper.checkContentAssistContent(compositeComponentContainerEditor, 15,65,expectedProposals,false);
   }
+  
   /**
    * Test Code Completion functionality for msgs[
    */
+  @Test
   public void testCodeCompletionOfMsgsWithBrackets(){
     initFaceletsPageTest();
-    SWTJBTExt.selectTextInSourcePane(SWTTestExt.bot, 
-        FACELETS_TEST_PAGE,
-        "<h:message ", 
-        0, 
-        0, 
-        0);
-    editor.insertText("\n");
-    String textToInsert = "<h:outputText value=\"#{msg";
-    final SWTBotShell[] shellsBefore = bot.shells();
-    editor.typeText(textToInsert + "[");
-    bot.sleep(Timing.time2S());
+    getEditor().insertText(16,0,"\n");
+    final String textToInsert = "<h:outputText value=\"#{msg";
+    getEditor().insertText(16,0,textToInsert);
+    getEditor().save();
+    getEditor().setCursorPosition(16, textToInsert.length());
     // Check Content Assist invoked by typing
-    ContentAssistBot contentAssist = editor.contentAssist();
-    final List<String> caProposals = contentAssist.getProposalList(shellsBefore, bot.shells(), true);
+    ContentAssistant contentAssistant = getEditor().getAutoContentAssistant(new Runnable() {
+		@Override
+		public void run() {
+			KeyboardFactory.getKeyboard().type("[");
+		}
+	});
+    assertNotNull(contentAssistant);
     String useCodeAssist = "['greeting']";
-    assertTrue("Content assist has to contain item " + useCodeAssist +
-        " but it does not.",
-      caProposals.contains(useCodeAssist));
+    ContentAssistHelper.assertContentAssistantContains(contentAssistant,useCodeAssist, false);
     useCodeAssist = "['prompt']";
-    assertTrue("Content assist has to contain item " + useCodeAssist +
-        " but it does not.",
-      caProposals.contains(useCodeAssist));
+    ContentAssistHelper.assertContentAssistantContains(contentAssistant,useCodeAssist, false);
+    contentAssistant.close();
     // Check Content Assist invoked by Ctrl-Space
     useCodeAssist = "['greeting']";
-    contentAssist.checkContentAssist(useCodeAssist, false);
+    contentAssistant = getEditor().openContentAssistant();
+    ContentAssistHelper.assertContentAssistantContains(contentAssistant,useCodeAssist, false);
     useCodeAssist = "['prompt']";
-    contentAssist.checkContentAssist(useCodeAssist, true);
+    ContentAssistHelper.assertContentAssistantContains(contentAssistant,useCodeAssist, true);
+    getEditor().setCursorPosition(16, getEditor().getTextAtLine(16).length());
     final String textToInsertAtEnd = "/>";
-    editor.insertText(editor.cursorPosition().line, 
-      editor.cursorPosition().column + 2,
-      textToInsertAtEnd);
-    editor.save();
-    bot.sleep(Timing.time1S());
-    Assertions.assertSourceEditorContains(editor.getText(), 
-      textToInsert + useCodeAssist + "}\"" + textToInsertAtEnd,
-      FACELETS_TEST_PAGE);
+    KeyboardFactory.getKeyboard().type(textToInsertAtEnd);
+    getEditor().save();
+    assertTrue(getEditor().getText().contains(textToInsert + useCodeAssist + "}\"" + textToInsertAtEnd));
   }
+  
   /**
    * Test Code Completion functionality of src attribute for tags <link>, <h:link> and <a:loadStyle>
    */
+  @Test
   public void testCodeCompletionOfSrcAttribute(){
     initJSF2PageTest();
     addRichFacesToProjectClassPath(JSF2_TEST_PROJECT_NAME);
-    SWTJBTExt.selectTextInSourcePane(SWTTestExt.bot, 
-        JSF2_TEST_PAGE,
-        "xmlns:f=\"http://java.sun.com/jsf/core\"", 
-        0, 
-        0, 
-        0);
-    compositeComponentContainerEditor.insertText("xmlns:a4j=\"http://richfaces.org/a4j\" \n");
-    SWTJBTExt.selectTextInSourcePane(SWTTestExt.bot, 
-        JSF2_TEST_PAGE,
-        "<h:message ", 
-        0, 
-        0, 
-        0);
-    compositeComponentContainerEditor.insertText("\n");
+    compositeComponentContainerEditor.insertLine(2, "xmlns:a4j=\"http://richfaces.org/a4j\"");
     final String linkTag = "<link href=\"";
-    compositeComponentContainerEditor.insertText(linkTag + "\"/>\n");
+    compositeComponentContainerEditor.insertLine(14,linkTag + "\"/>\n");
     final String hLinkTag = "<h:link value=\"";
-    compositeComponentContainerEditor.insertText(hLinkTag + "\"/>\n");
+    compositeComponentContainerEditor.insertLine(14,hLinkTag + "\"/>\n");
     compositeComponentContainerEditor.save();
-    bot.sleep(Timing.time2S());
     checkCodeCompletionOfSourceAttribute(linkTag);
-    checkCodeCompletionOfSourceAttribute(hLinkTag);    
+    checkCodeCompletionOfSourceAttribute(hLinkTag);
   }
-
-  /**
-   * Initialize test which are using facelets test page
-   */
+	/**
+	 * Initialize test which are using facelets test page
+	 */
 	private void initFaceletsPageTest() {
-	  eclipse.closeAllEditors();
-	  openPage(FACELETS_TEST_PAGE,FACELETS_TEST_PROJECT_NAME);
-    editor = SWTTestExt.bot.swtBotEditorExtByTitle(FACELETS_TEST_PAGE);
-    originalEditorText = editor.getText();
-    setProjectName(FACELETS_TEST_PROJECT_NAME);
+		EditorHandler.getInstance().closeAll(true);
+		openPage(FACELETS_TEST_PAGE, FACELETS_TEST_PROJECT_NAME);
+		TextEditor editor = new TextEditor(FACELETS_TEST_PAGE);
+		setEditor(editor);
+		setEditorText(editor.getText());
+		setProjectName(FACELETS_TEST_PROJECT_NAME);
 	}
 	
   /**
    * Initialize test which are using JSF2 test page
    */
   private void initJSF2PageTest() {
-    eclipse.closeAllEditors();
-    createJSF2Project(JSF2_TEST_PROJECT_NAME);
-    openPage(JSF2_TEST_PAGE, JSF2_TEST_PROJECT_NAME);
-    compositeComponentContainerEditor = SWTTestExt.bot.swtBotEditorExtByTitle(FACELETS_TEST_PAGE);
-    origCompositeComponentContainerEditorText = compositeComponentContainerEditor.getText();
-    setProjectName(JSF2_TEST_PROJECT_NAME);
+	  EditorHandler.getInstance().closeAll(true);
+	  createJSF2Project(JSF2_TEST_PROJECT_NAME);
+	  openPage(JSF2_TEST_PAGE, JSF2_TEST_PROJECT_NAME);
+	  compositeComponentContainerEditor = new TextEditor(JSF2_TEST_PAGE);
+	  origCompositeComponentContainerEditorText = compositeComponentContainerEditor.getText();
+	  setProjectName(JSF2_TEST_PROJECT_NAME);
   } 
 	/**
 	 * Returns list of expected Content Assist proposals for Input tag
@@ -563,33 +452,27 @@ public class CodeCompletionTest extends JSFAutoTestCase{
     result.add("person : Person");
     return result;
   }
-  
-  @Override
-  public void tearDown() throws Exception {
-    if (editor != null){
-      editor.setText(originalEditorText);
-      editor.save();
-      util.waitForNonIgnoredJobs();
-      editor.close();
-    }
-    if (compositeComponentDefEditor != null){
-      compositeComponentDefEditor.setText(compositeComponentDefEditorText);
-      compositeComponentDefEditor.save();
-      util.waitForNonIgnoredJobs();
-      compositeComponentDefEditor.close();
-    }
-    if (compositeComponentContainerEditor != null){
-      compositeComponentContainerEditor.setText(origCompositeComponentContainerEditorText);
-      compositeComponentContainerEditor.save();
-      util.waitForNonIgnoredJobs();
-      compositeComponentContainerEditor.close();
-    }
-    util.waitForNonIgnoredJobs();
-    removeRichFacesFromProjectClassPath(JSF2_TEST_PROJECT_NAME);
+  	@Override
+	public void tearDown() throws Exception {
+		if (compositeComponentDefEditor != null) {
+			compositeComponentDefEditor.setText(compositeComponentDefEditorText);
+			compositeComponentDefEditor.save();
+			util.waitForNonIgnoredJobs();
+			compositeComponentDefEditor.close();
+		}
+		if (compositeComponentContainerEditor != null) {
+			compositeComponentContainerEditor.setText(origCompositeComponentContainerEditorText);
+			compositeComponentContainerEditor.save();
+			compositeComponentContainerEditor.close();
+		}
+		new WaitWhile(new JobIsRunning());
 
-    super.tearDown();
-  }
-  /**
+		removeRichFacesFromProjectClassPath(JSF2_TEST_PROJECT_NAME);
+
+		super.tearDown();
+	}
+
+	  /**
    * Returns list of expected Content Assist proposals for Jsfc attribute value attributes
    * @return
    */
@@ -780,21 +663,19 @@ public class CodeCompletionTest extends JSFAutoTestCase{
         
     return result;
   }
-  /**
-   * Check Code Completion of src attribute of tagToCheck tag
-   * @param tagToCheck 
-   */
-  private void checkCodeCompletionOfSourceAttribute(String tagToCheck){
-    SWTJBTExt.selectTextInSourcePane(SWTTestExt.bot, 
-        JSF2_TEST_PAGE,
-        tagToCheck, 
-        tagToCheck.length(), 
-        0, 
-        0);
-    ContentAssistBot contentAssist = compositeComponentContainerEditor.contentAssist();
-    contentAssist.checkContentAssist("/pages", false);
-    contentAssist.checkContentAssist("/resources", false);
-    contentAssist.checkContentAssist("/templates", false);
-  }
 
+	/**
+	 * Check Code Completion of src attribute of tagToCheck tag
+	 * 
+	 * @param tagToCheck
+	 */
+	private void checkCodeCompletionOfSourceAttribute(String tagToCheck) {
+		compositeComponentContainerEditor.setCursorPosition(
+			compositeComponentContainerEditor.getPositionOfText(tagToCheck) + tagToCheck.length());
+		ContentAssistant contentAssistant = compositeComponentContainerEditor.openContentAssistant();
+ 		ContentAssistHelper.assertContentAssistantContains(contentAssistant, "/pages", false);
+		ContentAssistHelper.assertContentAssistantContains(contentAssistant, "/resources", false);
+		ContentAssistHelper.assertContentAssistantContains(contentAssistant, "/templates", false);
+		KeyboardFactory.getKeyboard().invokeKeyCombination(SWT.ESC);
+	}
 }

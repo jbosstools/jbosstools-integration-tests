@@ -26,6 +26,9 @@ import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
+import org.jboss.reddeer.workbench.api.Editor;
+import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
+import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.eclipse.swtbot.swt.finder.results.VoidResult;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.TimeoutException;
@@ -118,6 +121,58 @@ public class OpenOnHelper {
 		return checkActiveEditorTitle(bot, expectedOpenedFileName);
 	}
 
+	/**
+	 * Applies Open On (F3) on specified position within editor with editorTitle
+	 * and checks if opened editor has correct title
+	 * 
+	 * <p>
+	 * This test fails if is executed in Xephyr and ibus-daemon is on. Ibus-daemon causes rejection
+	 * of all keyboard events.
+	 * </p><p>
+	 * Related reading (bugreports): <br />
+	 * <a href="https://bugs.launchpad.net/ubuntu/+source/ibus/+bug/481656"> iBus blocks input in Java application </a> <br />
+	 * <a href="https://bugzilla.redhat.com/show_bug.cgi?id=800736"> Freemind (java) loses keyboard input when used with ibus </a>
+	 * </p>
+	 * 
+	 * @param editorTitle
+	 * @param line
+	 * @param column
+	 * @param expectedOpenedFileName
+	 */
+	public static Editor checkOpenOnFileIsOpened(String editorTitle, 
+			int line,
+			int column, 
+			String expectedOpenedFileName) {
+		return checkOpenOnFileIsOpened(new TextEditor(editorTitle), line, column, expectedOpenedFileName);
+	}
+	/**
+	 * Applies Open On (F3) on specified position within sourceEditor
+	 * and checks if opened editor has correct title
+	 * 
+	 * <p>
+	 * This test fails if is executed in Xephyr and ibus-daemon is on. Ibus-daemon causes rejection
+	 * of all keyboard events.
+	 * </p><p>
+	 * Related reading (bugreports): <br />
+	 * <a href="https://bugs.launchpad.net/ubuntu/+source/ibus/+bug/481656"> iBus blocks input in Java application </a> <br />
+	 * <a href="https://bugzilla.redhat.com/show_bug.cgi?id=800736"> Freemind (java) loses keyboard input when used with ibus </a>
+	 * </p>
+	 * 
+	 * @param sourceEditor
+	 * @param line
+	 * @param column
+	 * @param expectedOpenedFileName
+	 */	
+	public static Editor checkOpenOnFileIsOpened(TextEditor sourceEditor,
+			int line,
+			int column, 
+			String expectedOpenedFileName) {
+		sourceEditor.activate();
+		sourceEditor.setCursorPosition(line, column);
+		KeyboardFactory.getKeyboard().invokeKeyCombination(SWT.F3);
+		return checkActiveEditorTitle(expectedOpenedFileName);
+	}
+	
 	private static void waitForEditorToOpen(SWTBotExt bot, String editorTitle) {
 		// process UI Events
 		UIThreadRunnable.syncExec(new VoidResult() {
@@ -309,6 +364,16 @@ public class OpenOnHelper {
 		
 		return activeEditor;
 		
+	}
+	
+	private static Editor checkActiveEditorTitle(String expectedOpenedFileName) {
+		DefaultEditor editor = new DefaultEditor();
+		String activeEditorTitle = editor.getTitle();
+		if (!activeEditorTitle.equals(expectedOpenedFileName)){
+			fail("Opened file has to have title " + expectedOpenedFileName
+					+ " but has " + activeEditorTitle);
+		}
+		return editor; 
 	}
 
 }

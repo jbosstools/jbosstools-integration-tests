@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007-2009 Red Hat, Inc.
+ * Copyright (c) 2007-2015 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -11,26 +11,39 @@
 
 package org.jboss.tools.jsf.ui.bot.test.smoke;
 
+import static org.junit.Assert.assertTrue;
+
 import java.io.File;
 
 import org.apache.log4j.Logger;
-import org.eclipse.swtbot.swt.finder.SWTBot;
-import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
-import org.eclipse.swtbot.swt.finder.widgets.TimeoutException;
+import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.core.handler.TreeItemHandler;
+import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
+import org.jboss.reddeer.eclipse.condition.ProjectExists;
+import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
+import org.jboss.reddeer.eclipse.wst.server.ui.view.Server;
+import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
+import org.jboss.reddeer.swt.impl.browser.InternalBrowser;
+import org.jboss.reddeer.swt.impl.button.CancelButton;
+import org.jboss.reddeer.swt.impl.button.OkButton;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.jsf.ui.bot.test.JSFAutoTestCase;
+import org.jboss.tools.jsf.reddeer.ui.wizard.project.ImportProjectWizard;
+import org.jboss.tools.jst.reddeer.web.ui.navigator.WebProjectsNavigator;
+import org.jboss.tools.jst.reddeer.web.ui.wizards.project.ImportWebProjectWizardPage;
 import org.jboss.tools.ui.bot.ext.SWTJBTExt;
 import org.jboss.tools.ui.bot.ext.SWTUtilExt;
-import org.jboss.tools.ui.bot.ext.Timing;
-import org.jboss.tools.ui.bot.ext.condition.ShellIsActiveCondition;
-import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
-import org.jboss.tools.ui.bot.ext.helper.WidgetFinderHelper;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
-import org.jboss.tools.ui.bot.test.JBTSWTBotTestCase;
-import org.jboss.tools.ui.bot.test.WidgetVariables;
-
+import org.junit.Test;
 /**
  * Test adding and removing JSF Capabilities from/to JSF Project
  * 
@@ -38,282 +51,173 @@ import org.jboss.tools.ui.bot.test.WidgetVariables;
  */
 
 public class AddRemoveJSFCapabilitiesTest extends JSFAutoTestCase {
-  
-  private SWTJBTExt swtJbtExt = null;
-  private SWTUtilExt swtUtilExt = null;
-  private Logger log = Logger.getLogger(AddRemoveJSFCapabilitiesTest.class);
-  
-  public AddRemoveJSFCapabilitiesTest(){
-    swtJbtExt = new SWTJBTExt(bot);
-    swtUtilExt = new SWTUtilExt(bot);
-  }
-  public void testAddRemoveJSFCapabilities() {
-    boolean jbdsIsRunning = SWTJBTExt.isJBDSRun();
-    removeJSFCapabilities(jbdsIsRunning);
-    addJSFCapabilities();
-    // Test add/remove JSF capabilities after project is closed and reopened
-    closeOpenJsfProject();
-    removeJSFCapabilities(jbdsIsRunning);
-    addJSFCapabilities();
-    // Test import of deleted JSF project
-    deleteJsfProject();
-    importJsfProject();
-  }
-  /**
-   * Import existing JSF Project to Workspace
-   */
-  private void importJsfProject() {
 
-    String[] parts = System.getProperty("eclipse.commands").split("\n");
+	private Logger log = Logger.getLogger(AddRemoveJSFCapabilitiesTest.class);
+	@Test
+	public void testAddRemoveJSFCapabilities() {
+		boolean jbdsIsRunning = SWTJBTExt.isJBDSRun();
+		removeJSFCapabilities(jbdsIsRunning);
+		addJSFCapabilities();
+		// Test add/remove JSF capabilities after project is closed and reopened
+		closeOpenJsfProject();
+		removeJSFCapabilities(jbdsIsRunning);
+		addJSFCapabilities();
+		// Test import of deleted JSF project
+		deleteJsfProject();
+		importJsfProject();
+	}
 
-    int index = 0;
-    
-    for (index = 0;parts.length > index + 1 && !parts[index].equals("-data");index++){
-      // do nothing just go through
-    }
+	/**
+	 * Import existing JSF Project to Workspace
+	 */
+	private void importJsfProject() {
 
-    if (parts.length > index + 1){
-      String webXmlFileLocation = SWTUtilExt.getTestPluginLocation(JBT_TEST_PROJECT_NAME) + File.separator
-        + "WebContent" + File.separator
-        + "WEB-INF" + File.separator
-        + "web.xml";
-      
-      bot.menu(IDELabel.Menu.FILE).menu(IDELabel.Menu.IMPORT).click();
-      bot.shell(IDELabel.Shell.IMPORT).activate();
-      SWTBotTree tree = bot.tree();
-      delay();
-      tree.expandNode("Other").select("JSF Project");
-      bot.button("Next >").click();
-      bot.shell(IDELabel.Shell.IMPORT_JSF_PROJECT).activate();
-      
-      bot.textWithLabel("web.xml Location:*").setText(webXmlFileLocation);
-      bot.button(WidgetVariables.NEXT_BUTTON).click();
-      // SWTJBTExt.addServerToServerViewOnWizardPage(bot, JBOSS_SERVER_GROUP, JBOSS_SERVER_TYPE);
-      bot.sleep(1000L);
-      bot.button(IDELabel.Button.FINISH).click();
-      eclipse.closeWarningWindowIfOpened(true);
-      eclipse.closeOpenAssociatedPerspectiveShellIfOpened(false);
-      // Start Application Server
-      swtJbtExt.startApplicationServer(0);
-      swtJbtExt.runProjectOnServer(JBT_TEST_PROJECT_NAME);
-      // Check Browser Content
-      String browserText = WidgetFinderHelper.browserInEditorText(bot, "Input User Name Page",true);
-      // Stop Application Server and remove Application Server from Server View
-      SWTJBTExt.stopApplicationServer(bot, 0);
-      SWTJBTExt.deleteApplicationServer(bot, 0);
-      assertTrue("Displayed HTML page has wrong content", 
-          (browserText!= null) && (browserText.toLowerCase().indexOf("<title>input user name page</title>") > - 1));
-      setException(null);      
-    }
-    else{
-      throw new RuntimeException("eclipse.commands property doesn't contain -data option");
-    }
+		String[] parts = System.getProperty("eclipse.commands").split("\n");
 
-    
-  }
-  /**
-   * Delete JSF Project from workspace
-   */
-  private void deleteJsfProject() {
+		int index = 0;
 
-    removeJSFTestProjectFromServers();
-    
-    openPackageExplorer();
-    delay();
-    SWTBot packageExplorer = bot.viewByTitle(WidgetVariables.PACKAGE_EXPLORER)
-        .bot();
-    SWTBotTree tree = packageExplorer.tree();
-    delay();
-    
-    ContextMenuHelper.prepareTreeItemForContextMenu(tree,
-      tree.getTreeItem(JBT_TEST_PROJECT_NAME));
-    new SWTBotMenu(ContextMenuHelper.getContextMenu(tree,
-      IDELabel.Menu.DELETE, false)).click();
-    bot.shell("Delete Resources").activate();
-    bot.button(WidgetVariables.OK_BUTTON).click();
-    
-    new SWTUtilExt(bot).waitForNonIgnoredJobs();
-    
-  }
+		for (index = 0; parts.length > index + 1 && !parts[index].equals("-data"); index++) {
+			// do nothing just go through
+		}
 
-  /**
-   * Remove JSF Capabilities from JSF Project
-   * @param jbdsIsRunning
-   */
-  private void removeJSFCapabilities(boolean jbdsIsRunning) {
+		if (parts.length > index + 1) {
+			String webXmlFileLocation = SWTUtilExt.getTestPluginLocation(JBT_TEST_PROJECT_NAME) + File.separator
+					+ "WebContent" + File.separator + "WEB-INF" + File.separator + "web.xml";
 
-    openWebProjects();
-    delay();
-    
-    removeJSFTestProjectFromServers();
-    
-    SWTBot webProjects = bot.viewByTitle(WidgetVariables.WEB_PROJECTS).bot();
-    SWTBotTree tree = webProjects.tree();
-    
-    ContextMenuHelper.prepareTreeItemForContextMenu(tree,
-      tree.getTreeItem(JBT_TEST_PROJECT_NAME));
+			ImportProjectWizard importProjectWizard = new ImportProjectWizard();
+			importProjectWizard.open();
 
-    new SWTBotMenu(ContextMenuHelper.getContextMenu(tree,
-        IDELabel.Menu.WEB_PROJECT_JBT_JSF, false)).menu(
-          IDELabel.Menu.JBT_REMOVE_JSF_CAPABILITIES).click();
+			new ImportWebProjectWizardPage().setWebXmlLocation(webXmlFileLocation);
+			importProjectWizard.next();
+			importProjectWizard.finish();
+			new DefaultShell("Warning");
+			new PushButton("Continue").click();
+			// Start Application Server
+			ServersView serversView = new ServersView();
+			serversView.open();
+			Server server = serversView.getServer(serverRequirement.getServerNameLabelText(serverRequirement.getConfig()));
+			server.start();
+			packageExplorer.open();
+			packageExplorer.getProject(JBT_TEST_PROJECT_NAME).select();
+			new ContextMenu("Run As","1 Run on Server").select();
+			new DefaultShell("Run On Server");
+			new DefaultTreeItem("localhost",serverRequirement.getRuntimeNameLabelText(serverRequirement.getConfig())).select();
+			new PushButton("Next >").click();
+			new PushButton("Finish").click();
+			new WaitWhile(new ShellWithTextIsActive("Run On Server"));
+			new WaitUntil(new ConsoleHasText("Deployed \""+JBT_TEST_PROJECT_NAME+".war\""),TimePeriod.LONG);
+			// Check Browser Content
+			new DefaultEditor("Input User Name Page");
+			String browserText = new InternalBrowser().getText();
+			server.delete(true);
+			assertTrue("Displayed HTML page has wrong content", (browserText != null)
+					&& (browserText.toLowerCase().indexOf("<title>input user name page</title>") > -1));
+		} else {
+			throw new RuntimeException("eclipse.commands property doesn't contain -data option");
+		}
 
-    bot.shell("Confirmation").activate();
-    bot.button(WidgetVariables.OK_BUTTON).click();
+	}
 
-    delay();
-    
-    assertTrue(
-        "Project "
-            + JBT_TEST_PROJECT_NAME
-            + " was not removed from Web Projects view after JSF Capabilities were removed.",
-        !isTreeItemWithinWebProjectsView(JBT_TEST_PROJECT_NAME));
-  }
+	/**
+	 * Delete JSF Project from workspace
+	 */
+	private void deleteJsfProject() {
+		removeJSFTestProjectFromServers();
+		packageExplorer.open();
+		packageExplorer.getProject(JBT_TEST_PROJECT_NAME).delete(false);
+	}
 
-  @Override
-  protected void closeUnuseDialogs() {
-    // not used
-  }
+	/**
+	 * Remove JSF Capabilities from JSF Project
+	 * 
+	 * @param jbdsIsRunning
+	 */
+	private void removeJSFCapabilities(boolean jbdsIsRunning) {
+		removeJSFTestProjectFromServers();
+		WebProjectsNavigator webProjectsNavigator = new WebProjectsNavigator();
+		webProjectsNavigator.open();
+		webProjectsNavigator.getProject(JBT_TEST_PROJECT_NAME).select();
 
-  @Override
-  protected boolean isUnuseDialogOpened() {
-    return false;
-  }
+		TreeItemHandler.getInstance()
+			.click(webProjectsNavigator.getProject(JBT_TEST_PROJECT_NAME).getTreeItem().getSWTWidget());
+		
+		new ContextMenu(IDELabel.Menu.WEB_PROJECT_JBT_JSF, IDELabel.Menu.JBT_REMOVE_JSF_CAPABILITIES).select();
 
-  /**
-   * Add JSF Capabilities to JSF Project
-   */
-  private void addJSFCapabilities() {
+		new DefaultShell("Confirmation");
+		new OkButton().click();
 
-    openPackageExplorer();
-    delay();
-    SWTBot packageExplorer = bot.viewByTitle(WidgetVariables.PACKAGE_EXPLORER)
-        .bot();
-    SWTBotTree tree = packageExplorer.tree();
+		new WaitWhile(new ProjectExists(JBT_TEST_PROJECT_NAME,webProjectsNavigator),TimePeriod.NORMAL,false);
 
-    ContextMenuHelper.prepareTreeItemForContextMenu(tree,
-      tree.getTreeItem(JBT_TEST_PROJECT_NAME));
-    
-    delay();
-    log.info("Adding JSF Capabilities to project " + JBT_TEST_PROJECT_NAME);
-    try{
-      new SWTBotMenu(ContextMenuHelper.getContextMenu(tree,
-        IDELabel.Menu.PACKAGE_EXPLORER_JBT, false)).menu(
-        IDELabel.Menu.ADD_JSF_CAPABILITIES).click();
-    } catch (WidgetNotFoundException wnfe){
-      // From 3.1.0.RC1 version this menu is moved to Configure submenu
-      try{
-        new SWTBotMenu(ContextMenuHelper.getContextMenu(tree,
-            IDELabel.Menu.PACKAGE_EXPLORER_CONFIGURE, false)).menu(
-            IDELabel.Menu.ADD_JSF_CAPABILITIES).click();
-      }catch (WidgetNotFoundException wnfex){
-        // sometimes context menu is not created properly after first click
-        new SWTBotMenu(ContextMenuHelper.getContextMenu(tree,
-            IDELabel.Menu.PACKAGE_EXPLORER_CONFIGURE, false)).menu(
-            IDELabel.Menu.ADD_JSF_CAPABILITIES).click();
-      }
-    }
- 
-    delay();
+		assertTrue(
+				"Project " + JBT_TEST_PROJECT_NAME
+						+ " was not removed from Web Projects view after JSF Capabilities were removed.",
+				!webProjectsNavigator.containsProject(JBT_TEST_PROJECT_NAME));
+	}
 
-    try{
-      bot.waitUntil(new ShellIsActiveCondition(IDELabel.Shell.PROPERTIES_FOR + " " + JBT_TEST_PROJECT_NAME + " (Filtered)"),
-        Timing.time10S());
-      log.info("Properties dialog was opened. Trying to close it");
-      bot.shell(IDELabel.Shell.PROPERTIES_FOR + " " + JBT_TEST_PROJECT_NAME + " (Filtered)")
-        .bot()
-        .button(IDELabel.Button.CANCEL)
-        .click();
-    } catch (TimeoutException te){
-      log.info("Properties dialog was not opened");
-    }
-    
-    assertTrue("JSF Capabilities were not added to project "
-        + JBT_TEST_PROJECT_NAME,
-        isTreeItemWithinWebProjectsView(JBT_TEST_PROJECT_NAME));
+	@Override
+	protected void closeUnuseDialogs() {
+		// not used
+	}
 
-  }
+	@Override
+	protected boolean isUnuseDialogOpened() {
+		return false;
+	}
 
-  /**
-   * Return true when Web Projects Tree contains item with label treeItemLabel
-   * 
-   * @param treeItemLabel
-   * @return
-   */
-  private boolean isTreeItemWithinWebProjectsView(String treeItemLabel) {
+	/**
+	 * Add JSF Capabilities to JSF Project
+	 */
+	private void addJSFCapabilities() {
 
-    openWebProjects();
-    SWTBot webProjects = bot.viewByTitle(WidgetVariables.WEB_PROJECTS).bot();
-    SWTBotTree tree = webProjects.tree();
+		packageExplorer.open();
+		packageExplorer.getProject(JBT_TEST_PROJECT_NAME).activateWrappingView();
+		packageExplorer.getProject(JBT_TEST_PROJECT_NAME).select();
+		
+		log.info("Adding JSF Capabilities to project " + JBT_TEST_PROJECT_NAME);
+		new ContextMenu(IDELabel.Menu.PACKAGE_EXPLORER_CONFIGURE, IDELabel.Menu.ADD_JSF_CAPABILITIES).select();
 
-    boolean isTreeItemWithinWebProjectsView = false;
+		try {
+			new WaitUntil(
+				new ShellWithTextIsActive(IDELabel.Shell.PROPERTIES_FOR + " " + JBT_TEST_PROJECT_NAME + " (Filtered)"),
+				TimePeriod.NORMAL);
+			log.info("Properties dialog was opened. Trying to close it");
+			new DefaultShell(IDELabel.Shell.PROPERTIES_FOR + " " + JBT_TEST_PROJECT_NAME + " (Filtered)");
+			new CancelButton().click();
+		} catch (WaitTimeoutExpiredException wtee) {
+			log.info("Properties dialog was not opened");
+		}
+		
+		WebProjectsNavigator webProjectsNavigator = new WebProjectsNavigator();
+		webProjectsNavigator.open();
+		
+		assertTrue("JSF Capabilities were not added to project " + JBT_TEST_PROJECT_NAME,
+			webProjectsNavigator.containsProject(JBT_TEST_PROJECT_NAME));
 
-    try {
-      tree.getTreeItem(JBT_TEST_PROJECT_NAME);
-      isTreeItemWithinWebProjectsView = true;
-    } catch (WidgetNotFoundException e) {
-      isTreeItemWithinWebProjectsView = false;
-    }
+	}
+	/**
+	 * Close and reopen JSF test project
+	 */
+	private void closeOpenJsfProject() {
+		packageExplorer.open();
+		packageExplorer.getProject(JBT_TEST_PROJECT_NAME).select();
+		new ContextMenu(IDELabel.Menu.CLOSE_PROJECT).select();
+		new WaitUntil (new JobIsRunning());
+		new ContextMenu(IDELabel.Menu.OPEN_PROJECT).select();
+		new WaitUntil (new JobIsRunning());
+	}
 
-    return isTreeItemWithinWebProjectsView;
+	/**
+	 * Remove JSF Test Project from server
+	 */
+	private void removeJSFTestProjectFromServers() {
+		ServersView serversView = new ServersView();
+		serversView.open();
+		Server server = serversView.getServer(serverRequirement.getServerNameLabelText(serverRequirement.getConfig()));
+		try{
+			server.getModule(JBT_TEST_PROJECT_NAME).remove();
+		} catch (EclipseLayerException ele){
+			// do nothing JBT project was not deployed to server
+		}
+	}
 
-  }
-
-  /**
-   * Close and reopen JSF test project
-   */
-  private void closeOpenJsfProject() {
-
-    openPackageExplorer();
-    delay();
-    SWTBot packageExplorer = bot.viewByTitle(WidgetVariables.PACKAGE_EXPLORER)
-        .bot();
-    SWTBotTree tree = packageExplorer.tree();
-
-    ContextMenuHelper.prepareTreeItemForContextMenu(tree, 
-      tree.getTreeItem(JBT_TEST_PROJECT_NAME));
-    
-    new SWTBotMenu(ContextMenuHelper.getContextMenu(tree,
-      IDELabel.Menu.CLOSE_PROJECT, false)).click();
-    
-    swtUtilExt.waitForNonIgnoredJobs(5*1000L);
-    
-    new SWTBotMenu(ContextMenuHelper.getContextMenu(tree,
-      IDELabel.Menu.OPEN_PROJECT, false)).click();
-    
-    swtUtilExt.waitForNonIgnoredJobs(5*1000L);
-    
-  }
-  /**
-   * Remove JSF Test Project from all Servers
-   */
-  private void removeJSFTestProjectFromServers(){
-    
-    openServerView();
-    delay();
-    
-    SWTBot servers = bot.viewByTitle(WidgetVariables.SERVERS)
-      .bot();
-    SWTBotTree serverTree = servers.tree();
-    
-    // Expand All
-    for (SWTBotTreeItem serverTreeItem : serverTree.getAllItems()){
-      serverTreeItem.expand();
-      // if JSF Test Project is deployed to server remove it
-      int itemIndex = 0;
-      SWTBotTreeItem[] serverTreeItemChildren = serverTreeItem.getItems(); 
-      while (itemIndex < serverTreeItemChildren.length 
-        && !serverTreeItemChildren[itemIndex].getText().startsWith(JBT_TEST_PROJECT_NAME)){
-        itemIndex++;
-      }  
-      // Server Tree Item has Child with Text equal to JSF TEst Project
-      if (itemIndex < serverTreeItemChildren.length){
-        ContextMenuHelper.prepareTreeItemForContextMenu(serverTree,serverTreeItemChildren[itemIndex]);
-        new SWTBotMenu(ContextMenuHelper.getContextMenu(serverTree, IDELabel.Menu.REMOVE, false)).click();
-        bot.shell("Server").activate();
-        bot.button(WidgetVariables.OK_BUTTON).click();
-      }  
-    }
-    delay();
-  }
-  
 }

@@ -1,22 +1,27 @@
 package org.jboss.tools.jsf.ui.bot.test;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
-import org.eclipse.swtbot.swt.finder.SWTBot;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.jboss.reddeer.swt.api.Browser;
+import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.ui.bot.test.WidgetVariables;
+import org.jboss.tools.vpe.reddeer.utils.BrowserUtils;
 import org.jboss.tools.vpe.ui.bot.test.VPEAutoTestCase;
 import org.jboss.tools.vpe.ui.bot.test.tools.SWTBotWebBrowser;
 
 public abstract class JSFAutoTestCase extends VPEAutoTestCase {
 
 	private String editorText;
-	private SWTBotEclipseEditor editor;
+	private TextEditor editor;
 
 	String getEditorText() {
 		return editorText;
@@ -26,11 +31,11 @@ public abstract class JSFAutoTestCase extends VPEAutoTestCase {
 		this.editorText = textEditor;
 	}
 
-	protected SWTBotEclipseEditor getEditor() {
+	protected TextEditor getEditor() {
 		return editor;
 	}
 
-	protected void setEditor(SWTBotEclipseEditor editor) {
+	protected void setEditor(TextEditor editor) {
 		this.editor = editor;
 	}
 
@@ -51,12 +56,8 @@ public abstract class JSFAutoTestCase extends VPEAutoTestCase {
 	}
 
 	protected void openTestPage() {
-		SWTBot innerBot = bot.viewByTitle(WidgetVariables.PACKAGE_EXPLORER)
-				.bot();
-		SWTBotTree tree = innerBot.tree();
-		tree
-				.expandNode(JBT_TEST_PROJECT_NAME)
-				.expandNode("WebContent").expandNode("pages").getNode(TEST_PAGE).doubleClick(); //$NON-NLS-1$ //$NON-NLS-2$
+		packageExplorer.open();
+		packageExplorer.getProject(JBT_TEST_PROJECT_NAME).getProjectItem("WebContent","pages",TEST_PAGE).open();
 	}
 
 	protected void checkVPE(String testPage) throws Throwable {
@@ -76,15 +77,12 @@ public abstract class JSFAutoTestCase extends VPEAutoTestCase {
 
 	@Override
 	public void tearDown() throws Exception {
-
 		// Restore page state before tests
 		if (editor != null) {
-			editor.setFocus();
-			bot.menu("Edit").menu("Select All").click(); //$NON-NLS-1$ //$NON-NLS-2$
-			bot.menu("Edit").menu("Delete").click(); //$NON-NLS-1$ //$NON-NLS-2$
+			editor.activate();
 			editor.setText(editorText);
 			editor.save();
-			delay();
+			new WaitWhile (new JobIsRunning());
 		}
 		super.tearDown();
 	}
@@ -141,7 +139,38 @@ public abstract class JSFAutoTestCase extends VPEAutoTestCase {
             valueToContain));
     
   }
-  
+  /**
+   * Asserts if Visual Editor contains node with value valueToContain
+   * @param browser
+   * @param valueToContain
+   * @param fileName
+   */
+  protected static void assertVisualEditorContainsNodeWithValue (Browser browser,
+      String valueToContain,
+      String fileName){
+    assertTrue("Visual Representation of file " + fileName
+        + " has to contain node with "
+        + valueToContain
+        + " value but it doesn't",
+        BrowserUtils.containsNodeWithValue(browser,
+            valueToContain));    
+  }
+  /**
+   * Asserts if Visual Editor does not contain node with value valueToContain
+   * @param browser
+   * @param valueToContain
+   * @param fileName
+   */
+  protected static void assertVisualEditorNotContainNodeWithValue (Browser browser,
+      String valueToContain,
+      String fileName){
+    assertFalse("Visual Representation of file " + fileName
+        + " cannot contain node with "
+        + valueToContain
+        + " value but it does",
+        BrowserUtils.containsNodeWithValue(browser,
+            valueToContain));    
+  }
   /**
    * Asserts if Visual Editor doesn't contain node with particular attributes
    * @param webBrowser
@@ -159,5 +188,37 @@ public abstract class JSFAutoTestCase extends VPEAutoTestCase {
         webBrowser.containsNodeWithValue(webBrowser, 
             valueToContain));
     
+  }
+  /**
+   * Asserts if Visual Editor contains textToContain
+   * @param browser
+   * @param textToContain
+   * @param fileName
+   */
+  protected static void assertVisualEditorContainsString (Browser browser,
+      String textToContain,
+      String fileName){
+    
+    assertFalse("Visual Representation of file " + fileName
+        + " has to contain string '"
+        + textToContain
+        + "' but it does not",
+        BrowserUtils.containsStringValue(browser, textToContain));    
+  }
+  /**
+   * Asserts if Visual Editor does not contain textToContain
+   * @param browser
+   * @param textToContain
+   * @param fileName
+   */
+  protected static void assertVisualEditorNotContainString (Browser browser,
+      String textToContain,
+      String fileName){
+    
+    assertFalse("Visual Representation of file " + fileName
+        + " cannot to contain string '"
+        + textToContain
+        + "' but it does",
+        BrowserUtils.containsStringValue(browser, textToContain));    
   }
 }

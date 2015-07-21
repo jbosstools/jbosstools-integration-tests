@@ -20,7 +20,6 @@ import java.util.List;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.SWTBot;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.hamcrest.Matcher;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
 import org.jboss.tools.ui.bot.ext.SWTUtilExt;
@@ -47,11 +46,10 @@ public class IncludedCssFilesTest extends PageDesignTestCase {
   // Page Design option is not supported for HTML for now
   @Ignore  
   public void testIncludedCssFiles() throws IOException{
-    SWTBotTree tree = packageExplorer.show().bot().tree();
-    tree.expandNode(VPEAutoTestCase.JBT_TEST_PROJECT_NAME)
-      .expandNode("WebContent")
-      .getNode("pages")
-      .select();
+	  packageExplorer.open();
+	  packageExplorer.getProject(VPEAutoTestCase.JBT_TEST_PROJECT_NAME)
+	  	  .getProjectItem("WebContent","pages")
+	  	  .select();
     // add CSS File
     open.newObject(ActionItem.NewObject.WebCSS.LABEL);
     bot.shell(IDELabel.Shell.NEW_CSS_FILE).activate(); //$NON-NLS-1$

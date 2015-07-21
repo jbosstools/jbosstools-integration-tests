@@ -7,6 +7,7 @@ import org.jboss.tools.seam.ui.bot.test.EARTests;
 import org.jboss.tools.seam.ui.bot.test.TestControl;
 import org.jboss.tools.seam.ui.bot.test.WARTests;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
+import org.jboss.tools.ui.bot.ext.view.PackageExplorer;
 import org.jboss.tools.ui.bot.ext.view.ProblemsView;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -14,7 +15,7 @@ import org.junit.experimental.categories.Category;
 public class ELExprValidator extends AbstractSeamTestBase {
 
 	public static String NL = System.getProperty("line.separator");
-	
+	private PackageExplorer pckExplorer = new PackageExplorer();
 	@Test
 	@Category(WARTests.class)	
 	public void testELExprWar() {
@@ -29,7 +30,7 @@ public class ELExprValidator extends AbstractSeamTestBase {
 	
 	private void testELExpr(String type) {
 		
-		SWTBotEclipseEditor editor = packageExplorer.openFile(testProjectName + type,
+		SWTBotEclipseEditor editor = pckExplorer.openFile(testProjectName + type,
 				"WebContent", "home.xhtml").toTextEditor();
 		
 		// add correct expression		

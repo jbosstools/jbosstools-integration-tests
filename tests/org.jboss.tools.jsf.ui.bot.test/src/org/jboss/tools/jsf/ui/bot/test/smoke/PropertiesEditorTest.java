@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007-2011 Red Hat, Inc.
+ * Copyright (c) 2007-2015 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -10,17 +10,22 @@
  ******************************************************************************/
 package org.jboss.tools.jsf.ui.bot.test.smoke;
 
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.jboss.reddeer.swt.api.Text;
+import org.jboss.reddeer.swt.impl.button.FinishButton;
+import org.jboss.reddeer.swt.impl.button.OkButton;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.text.DefaultText;
+import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
+import org.jboss.reddeer.workbench.handler.EditorHandler;
+import org.jboss.tools.common.reddeer.propertieseditor.PropertiesEditor;
+import org.jboss.tools.common.reddeer.propertieseditor.PropertiesSourceEditor;
 import org.jboss.tools.jsf.ui.bot.test.JSFAutoTestCase;
 import org.jboss.tools.ui.bot.ext.Assertions;
-import org.jboss.tools.ui.bot.ext.Timing;
-import org.jboss.tools.ui.bot.ext.helper.KeyboardHelper;
-import org.jboss.tools.ui.bot.ext.parts.SWTBotEditorExt;
-import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.vpe.ui.bot.test.VPEAutoTestCase;
+import org.junit.Test;
 /** Test for properties editor
  * @author Vladimir Pakan
  *
@@ -28,174 +33,162 @@ import org.jboss.tools.vpe.ui.bot.test.VPEAutoTestCase;
 public class PropertiesEditorTest extends JSFAutoTestCase{
   
   protected static final String PROPERTIES_FILE_NAME = "Messages.properties";
-  private SWTBotEditor propertiesEditor;
+  private PropertiesEditor propertiesEditor;
   private String originalContent;
-  private SWTBotEditorExt propertiesEditorExt;
+  private PropertiesSourceEditor propertiesSourceEditor;
     
   @Override
   public void setUp() throws Exception {
     super.setUp();
-    eclipse.closeAllEditors();
-    propertiesEditor = eclipse.openFile(VPEAutoTestCase.JBT_TEST_PROJECT_NAME, 
-        "JavaSource",
-        "demo",
-        PropertiesEditorTest.PROPERTIES_FILE_NAME);
-    originalContent = propertiesEditor.toTextEditor().getText();
-    propertiesEditorExt = new SWTBotEditorExt(propertiesEditor.toTextEditor().getReference(),bot);
+    EditorHandler.getInstance().closeAll(true);
+    packageExplorer.open();
+    packageExplorer.getProject(VPEAutoTestCase.JBT_TEST_PROJECT_NAME)
+    	.getProjectItem("JavaSource","demo",PropertiesEditorTest.PROPERTIES_FILE_NAME).open();
+    propertiesEditor = new PropertiesEditor(PropertiesEditorTest.PROPERTIES_FILE_NAME);
+    propertiesSourceEditor = propertiesEditor.getPropertiesSourceEditor();
+    originalContent = propertiesSourceEditor.getText();
   }
   
   @Override
   public void tearDown() throws Exception {
     if (propertiesEditor != null) {
-      propertiesEditor.toTextEditor().setText(originalContent);
-      propertiesEditor.saveAndClose();
-      bot.sleep(Timing.time1S());
+      propertiesSourceEditor.setText(originalContent);
+      propertiesSourceEditor.save();
+      propertiesSourceEditor.close();
     }
     super.tearDown();
   }
   /**
    * Tests Properties Editor
    */
+  @Test
   public void testPropertiesEditor(){
-    propertiesEditorExt.selectPage(IDELabel.PropertiesEditor.SOURCE_TAB_LABEL);
-    String[] originalLines = PropertiesEditorTest.splitEditorContentToLines(propertiesEditor.toTextEditor());
-    propertiesEditorExt.selectPage(IDELabel.PropertiesEditor.PROPERTIES_TAB_LABEL);
-    propertiesEditor.setFocus();
+    propertiesEditor.activateSourceTab();
+    String[] originalLines = PropertiesEditorTest.splitEditorContentToLines(propertiesSourceEditor);
+    propertiesEditor.activatePropertiesTab();
     // Add Property
-    SWTBotTable propTable = bot.table();
-    propTable.select(propTable.rowCount() - 1);
-    bot.button(IDELabel.Button.ADD_WITHOUT_DOTS).click();
-    bot.shell(IDELabel.Shell.ADD_PROPERTY).activate();
+    propertiesEditor.selectProperty(propertiesEditor.getPropertiesCount() - 1);
     final String newPropertyName = "newPropName";
     final String newPropertyValue = "newPropValue";
-    bot.textWithLabel(IDELabel.PropertiesEditor.ADD_PROPERTIES_DIALOG_NAME_LABEL)
-      .setText(newPropertyName);
-    bot.textWithLabel(IDELabel.PropertiesEditor.ADD_PROPERTIES_DIALOG_VALUE_LABEL)
-      .setText(newPropertyValue);
-    bot.button(IDELabel.Button.FINISH).click();
+    propertiesEditor.addProperty(newPropertyName, newPropertyValue);
     propertiesEditor.save();
-    bot.sleep(Timing.time2S());
+    new WaitWhile(new JobIsRunning());
     int newPropertyIndex = originalLines.length;
     Assertions.assertSourceEditorContains(PropertiesEditorTest.stripXMLSourceText(
-        propertiesEditor.toTextEditor().getText()), 
+        propertiesSourceEditor.getText()), 
       getExpectedPropertiesEditorText(originalLines,
         newPropertyName,
         newPropertyValue,
         newPropertyIndex),
       PropertiesEditorTest.PROPERTIES_FILE_NAME);
-    assertNotEnabled(bot.button(IDELabel.Button.DOWN));
+    assertFalse("Button 'Down' has to be disabled" , propertiesEditor.getDownButton().isEnabled());
     // Move Property
-    propTable.select(newPropertyName);
-    bot.button(IDELabel.Button.UP).click();
+    propertiesEditor.selectProperty(newPropertyName);
+    propertiesEditor.getUpButton().click();
     propertiesEditor.save();
-    bot.sleep(Timing.time2S());
     Assertions.assertSourceEditorContains(PropertiesEditorTest.stripXMLSourceText(
-        propertiesEditor.toTextEditor().getText()), 
+        propertiesSourceEditor.getText()), 
       getExpectedPropertiesEditorText(originalLines,
         newPropertyName,
         newPropertyValue,
         --newPropertyIndex),
       PropertiesEditorTest.PROPERTIES_FILE_NAME);
-    assertEnabled(bot.button(IDELabel.Button.DOWN));
-    assertEnabled(bot.button(IDELabel.Button.UP));
-    bot.button(IDELabel.Button.DOWN).click();
+    assertTrue("Button 'Down' has to be enabled",propertiesEditor.getDownButton().isEnabled());
+    assertTrue("Button 'Up' has to be enabled",propertiesEditor.getUpButton().isEnabled());
+    propertiesEditor.getDownButton().click();
     propertiesEditor.save();
-    bot.sleep(Timing.time2S());
     Assertions.assertSourceEditorContains(PropertiesEditorTest.stripXMLSourceText(
-        propertiesEditor.toTextEditor().getText()), 
+        propertiesSourceEditor.getText()), 
       getExpectedPropertiesEditorText(originalLines,
         newPropertyName,
         newPropertyValue,
         ++newPropertyIndex),
       PropertiesEditorTest.PROPERTIES_FILE_NAME);
-    assertNotEnabled(bot.button(IDELabel.Button.DOWN));
-    assertEnabled(bot.button(IDELabel.Button.UP));
+    assertFalse("Button 'Down' has to be disabled" , propertiesEditor.getDownButton().isEnabled());
+    assertTrue("Button 'Up' has to be enabled",propertiesEditor.getUpButton().isEnabled());
     // Move to Top
+    PushButton upButton = propertiesEditor.getUpButton();
     while (newPropertyIndex > 0){
-      bot.button(IDELabel.Button.UP).click();
+      upButton.click();
       newPropertyIndex--;
     }
     propertiesEditor.save();
-    bot.sleep(Timing.time2S());
     Assertions.assertSourceEditorContains(PropertiesEditorTest.stripXMLSourceText(
-        propertiesEditor.toTextEditor().getText()), 
+        propertiesSourceEditor.getText()), 
       getExpectedPropertiesEditorText(originalLines,
         newPropertyName,
         newPropertyValue,
         newPropertyIndex),
       PropertiesEditorTest.PROPERTIES_FILE_NAME);
-    assertEnabled(bot.button(IDELabel.Button.DOWN));
-    assertNotEnabled(bot.button(IDELabel.Button.UP));
+    assertTrue("Button 'Down' has to be enaled" , propertiesEditor.getDownButton().isEnabled());
+    assertFalse("Button 'Up' has to be disabled",propertiesEditor.getUpButton().isEnabled());
     // Update Property Directly
-    propTable.select(newPropertyIndex);
+    propertiesEditor.selectProperty(newPropertyIndex);
     final String updatedPropertyName = "upn";
     final String updatedPropertyValue = "upv";
-    propTable.select(newPropertyIndex);
-    bot.sleep(Timing.time2S());
-    propTable.click(newPropertyIndex, 0);
-    bot.sleep(Timing.time2S());
-    KeyboardHelper.typeBasicStringUsingAWT(updatedPropertyName);
-    propTable.click(newPropertyIndex, 1);
-    bot.sleep(Timing.time2S());
-    KeyboardHelper.typeBasicStringUsingAWT(updatedPropertyValue);
-    propTable.select(newPropertyIndex);
+    propertiesEditor.selectProperty(newPropertyIndex);
+    propertiesEditor.clickOnPropertyName(newPropertyIndex);
+    KeyboardFactory.getKeyboard().type(updatedPropertyName);
+    propertiesEditor.clickOnPropertyValue(newPropertyIndex);
+    KeyboardFactory.getKeyboard().type(updatedPropertyValue);
+    propertiesEditor.selectProperty(newPropertyIndex);
     propertiesEditor.save();
-    bot.sleep(Timing.time2S());
     Assertions.assertSourceEditorContains(PropertiesEditorTest.stripXMLSourceText(
-        propertiesEditor.toTextEditor().getText()), 
+        propertiesSourceEditor.getText()), 
       getExpectedPropertiesEditorText(originalLines,
         updatedPropertyName,
         updatedPropertyValue,
         newPropertyIndex),
       PropertiesEditorTest.PROPERTIES_FILE_NAME);
     // Update Property via Dialog
-    propTable.select(newPropertyIndex);
-    bot.button(IDELabel.Button.EDIT_WITHOUT_DOTS).click();
-    bot.shell(IDELabel.Shell.EDIT).activate();
-    SWTBotText txName = bot.textWithLabel(IDELabel.PropertiesEditor.ADD_PROPERTIES_DIALOG_NAME_LABEL);
+    propertiesEditor.selectProperty(newPropertyIndex);
+    propertiesEditor.getEditButton().click();
+    new DefaultShell("Edit");
+    Text txName = new DefaultText(0);
     assertEquals("Text with label Name: has to have value " + updatedPropertyName + 
         " but has " + txName.getText(),
       txName.getText(), updatedPropertyName);
-    SWTBotText txValue = bot.textWithLabel(IDELabel.PropertiesEditor.ADD_PROPERTIES_DIALOG_VALUE_LABEL);
+    Text txValue = new DefaultText(1);
     assertEquals("Text with label Value: has to have value " + updatedPropertyValue + 
         " but has " + txValue.getText(),
       txValue.getText(), updatedPropertyValue);
     txName.setText(newPropertyName);
     txValue.setText(newPropertyValue);
-    bot.button(IDELabel.Button.FINISH).click();
+    new FinishButton().click();
     propertiesEditor.save();
-    bot.sleep(Timing.time2S());
+    new WaitWhile(new JobIsRunning());
     Assertions.assertSourceEditorContains(PropertiesEditorTest.stripXMLSourceText(
-        propertiesEditor.toTextEditor().getText()), 
+        propertiesSourceEditor.getText()), 
       getExpectedPropertiesEditorText(originalLines,
         newPropertyName,
         newPropertyValue,
         newPropertyIndex),
       PropertiesEditorTest.PROPERTIES_FILE_NAME);
     // Delete Property
-    propTable.select(newPropertyIndex);
-    bot.button(IDELabel.Button.DELETE).click();
-    bot.shell(IDELabel.Shell.CONFIRMATION).activate();
-    bot.button(IDELabel.Button.OK).click();
-    bot.sleep(Timing.time1S());
+    propertiesEditor.selectProperty(newPropertyIndex);
+    propertiesEditor.getDeleteButton().click();
+    new DefaultShell("Confirmation");
+    new OkButton().click();
+    new WaitWhile(new JobIsRunning());
     propertiesEditor.save();
-    bot.sleep(Timing.time3S());
+    new WaitWhile(new JobIsRunning());
+    String sourceEditorText = propertiesSourceEditor.getText();
     assertEquals("Properties file " + PropertiesEditorTest.PROPERTIES_FILE_NAME + 
         " should have content:\n" + originalContent +
-        "\nbut has:\n" + propertiesEditor.toTextEditor().getText(),
-      originalContent, propertiesEditor.toTextEditor().getText());
+        "\nbut has:\n" + sourceEditorText,
+      originalContent, sourceEditorText);
   }
   /**
    * Split editor content to particular lines
-   * @param editor
+   * @param propertiesSourceEditor
    * @return
    */
-  private static String[] splitEditorContentToLines(SWTBotEclipseEditor editor){
+  private static String[] splitEditorContentToLines(PropertiesSourceEditor propertiesSourceEditor){
     
-    String[] result = new String[editor.getLineCount()];
+    String[] result = new String[propertiesSourceEditor.getNumberOfLines()];
     
     for (int index = 0 ; index < result.length ; index ++){
-      result[index] = editor.getTextOnLine(index);
+      result[index] = propertiesSourceEditor.getTextAtLine(index);
     }
     
     return result;

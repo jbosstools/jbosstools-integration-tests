@@ -76,8 +76,8 @@ public class JSFProjectTest extends AbstractMavenSWTBotTest{
 		jsfd.open();
 		JSFNewProjectFirstPage fp = new JSFNewProjectFirstPage();
 		fp.setProjectName(name);
-		fp.setJSFVersion(version);
-		fp.setJSFType(jsfType);
+		fp.setJSFEnvironment(version);
+		fp.setProjectTemplate(jsfType);
 		jsfd.next();
 		JSFNewProjectSecondPage sp = new JSFNewProjectSecondPage();
 		sp.setRuntime(runtime);

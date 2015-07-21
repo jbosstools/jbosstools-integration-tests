@@ -56,11 +56,10 @@ public class GlobalELVariablesTest extends VPEEditorTestCase{
     bot.button(IDELabel.Button.OK).click();
 	  openPage(VPEAutoTestCase.TEST_PAGE);
 	  // Create XHTML File in Facelet Project
-	  SWTBotTree tree = packageExplorer.show().bot().tree();
-    tree.expandNode(VPEAutoTestCase.FACELETS_TEST_PROJECT_NAME)
-      .expandNode("WebContent")
-      .getNode("pages")
-      .select();
+	  packageExplorer.open();
+	  packageExplorer.getProject(VPEAutoTestCase.FACELETS_TEST_PROJECT_NAME)
+	  	  .getProjectItem("WebContent","pages")
+	  	  .select();
     // add JSP
     open.newObject(ActionItem.NewObject.JBossToolsWebXHTMLFile.LABEL);
     bot.shell(IDELabel.Shell.NEW_XHTML_FILE).activate(); //$NON-NLS-1$

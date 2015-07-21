@@ -16,6 +16,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.ui.bot.ext.helper.FileRenameHelper;
+import org.jboss.tools.jst.reddeer.web.ui.navigator.WebProjectsNavigator;
 import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.test.WidgetVariables;
@@ -42,7 +43,7 @@ public class RenameFacesConfigFileTest extends VPEEditorTestCase{
 	 */
 	private void checkRenameFacesConfigFile(){
 	  
-    openWebProjects();
+		new WebProjectsNavigator().open();
     
     delay();
     
