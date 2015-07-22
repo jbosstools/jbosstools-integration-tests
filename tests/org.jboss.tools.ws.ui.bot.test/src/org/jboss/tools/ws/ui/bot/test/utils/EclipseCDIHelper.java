@@ -10,7 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.ws.ui.bot.test.utils;
 
-import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
+import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 
 public class EclipseCDIHelper {

@@ -1,11 +1,11 @@
 package org.jboss.tools.ws.reddeer.ui.preferences;
 
+import org.jboss.reddeer.jface.preference.PreferencePage;
 import org.jboss.reddeer.swt.api.Table;
 import org.jboss.reddeer.swt.api.TableItem;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
-import org.jboss.reddeer.workbench.preference.WorkbenchPreferencePage;
 
 /**
  * Represents Web Services > CXF 2.x Preferences page in Preferences dialog.
@@ -13,13 +13,13 @@ import org.jboss.reddeer.workbench.preference.WorkbenchPreferencePage;
  * @author Radoslav Rabara
  *
  */
-public class WsCxf2xPreferencePage extends WorkbenchPreferencePage {
+public class WsCxf2xPreferencePage extends PreferencePage {
 
 	/**
 	 * Constructs CXF 2.x Preference page
 	 */
 	public WsCxf2xPreferencePage() {
-		super("Web Services", "CXF 2.x Preferences");
+		super(new String[] {"Web Services", "CXF 2.x Preferences"});
 	}
 
 	/**
@@ -72,5 +72,12 @@ public class WsCxf2xPreferencePage extends WorkbenchPreferencePage {
 			}
 		}
 		throw new IllegalArgumentException("Row with given CXF Home was not found in CXF 2.x Preference Page");
+	}
+	
+	/**
+	 * Confirm the dialog
+	 */
+	public void ok() {
+		new PushButton("OK").click();
 	}
 }

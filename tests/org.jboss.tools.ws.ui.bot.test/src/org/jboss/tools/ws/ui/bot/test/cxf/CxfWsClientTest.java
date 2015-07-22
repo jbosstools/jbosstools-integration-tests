@@ -6,7 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Properties;
 
-import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
+import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.ws.reddeer.ui.preferences.WsCxf2xPreferencePage;
 import org.jboss.tools.ws.ui.bot.test.webservice.WebServiceRuntime;
 import org.jboss.tools.ws.ui.bot.test.wsclient.WSClientTestTemplate;
@@ -14,7 +14,8 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 
 /**
- * Test Web Service Client with Web Service Runtime
+ * Test Web Service Client with CXF Service Runtime, tests inherited
+ * from {@link WSClientTestTemplate}
  * 
  * @author Radoslav Rabara
  * 
