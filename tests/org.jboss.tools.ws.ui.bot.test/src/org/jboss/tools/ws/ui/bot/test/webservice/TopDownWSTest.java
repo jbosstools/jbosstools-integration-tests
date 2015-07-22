@@ -87,11 +87,6 @@ public class TopDownWSTest extends WebServiceTestBase {
 		confirmWebServiceNameOverwrite();
 	}
 	
-	/**
-	 * Fails due to reported bug
-	 * 
-	 * @see https://bugs.eclipse.org/bugs/show_bug.cgi?id=377624
-	 */
 	@Test
 	public void testDeployService() {
 		setLevel(SliderLevel.DEPLOY);

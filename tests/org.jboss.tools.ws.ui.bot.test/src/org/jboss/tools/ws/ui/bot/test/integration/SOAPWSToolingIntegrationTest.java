@@ -13,6 +13,8 @@ package org.jboss.tools.ws.ui.bot.test.integration;
 import static org.junit.Assert.assertTrue;
 
 import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.tools.ws.reddeer.swt.condition.WsTesterNotEmptyResponseText;
@@ -31,19 +33,14 @@ import org.junit.Test;
  */
 public class SOAPWSToolingIntegrationTest extends SOAPTestBase {
 
-	private final String request = 
-			"<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\" ?> " + LINE_SEPARATOR + 
-			"<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\" " +
-			"xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" " +
-			"xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"> " + LINE_SEPARATOR + 
-			"<soap:Header> " + LINE_SEPARATOR + 
-			"</soap:Header>" + LINE_SEPARATOR + 
-			"<soap:Body> " + LINE_SEPARATOR + 
-			"<webs:sayHello xmlns:webs=\"http://webservices.samples.jboss.org/\">" + LINE_SEPARATOR + 
-			"<arg0>User</arg0>" + LINE_SEPARATOR + 
-			"</webs:sayHello>" + LINE_SEPARATOR + 
-			"</soap:Body>" + LINE_SEPARATOR + 
-			"</soap:Envelope>";  
+	private final String request = "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\" ?> " + LINE_SEPARATOR
+			+ "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\" "
+			+ "xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" "
+			+ "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"> " + LINE_SEPARATOR + "<soap:Header> "
+			+ LINE_SEPARATOR + "</soap:Header>" + LINE_SEPARATOR + "<soap:Body> " + LINE_SEPARATOR
+			+ "<webs:sayHello xmlns:webs=\"http://webservices.samples.jboss.org/\">" + LINE_SEPARATOR
+			+ "<arg0>User</arg0>" + LINE_SEPARATOR + "</webs:sayHello>" + LINE_SEPARATOR + "</soap:Body>"
+			+ LINE_SEPARATOR + "</soap:Envelope>";
 
 	@Override
 	public void setup() {
@@ -67,11 +64,9 @@ public class SOAPWSToolingIntegrationTest extends SOAPTestBase {
 	private WsTesterView openWSDLFileInWSTester() {
 		ProjectExplorer projectExplorer = new ProjectExplorer();
 		projectExplorer.open();
-		projectExplorer.getProject(getWsProjectName()).getProjectItem("wsdl",
-				"HelloWorldService.wsdl").select();
+		projectExplorer.getProject(getWsProjectName()).getProjectItem("wsdl", "HelloWorldService.wsdl").select();
 
-		new ContextMenu("Web Services", "Test in JBoss Web Service Tester")
-				.select();
+		new ContextMenu("Web Services", "Test in JBoss Web Service Tester").select();
 
 		WsTesterView tester = new WsTesterView();
 		tester.open();
@@ -81,17 +76,20 @@ public class SOAPWSToolingIntegrationTest extends SOAPTestBase {
 	private void testWSDLInWSTester(WsTesterView wsTesterView) {
 		wsTesterView.setRequestType(RequestType.JAX_WS);
 		wsTesterView.invokeGetFromWSDL().ok();
+		new WaitWhile(new JobIsRunning());
+		wsTesterView.open();
 		wsTesterView.setRequestBody(request);
 		wsTesterView.invoke();
+		wsTesterView.open();
 		new WaitUntil(new WsTesterNotEmptyResponseText());
-        String rsp = wsTesterView.getResponseBody();
-        assertTrue(rsp.trim().length() > 0);
-        assertTrue(rsp, rsp.contains("Hello User!"));
+		String rsp = wsTesterView.getResponseBody();
+		assertTrue(rsp.trim().length() > 0);
+		assertTrue(rsp, rsp.contains("Hello User!"));
 	}
 
 	@Override
 	protected String getEarProjectName() {
 		return null;
 	}
-	
+
 }

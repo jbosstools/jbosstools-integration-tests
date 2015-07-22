@@ -39,7 +39,7 @@ public class PropertiesDialog {
 		assertThat("Project with name '" + projectName + "' is selected",
 				project.isSelected(), Is.is(true));
 	
-		new WaitWhile(new JobIsRunning());
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		new ShellMenu(IDELabel.Menu.PROJECT, IDELabel.Menu.PROPERTIES).select();
 
 		new DefaultShell(IDELabel.Shell.PROPERTIES_FOR + " "

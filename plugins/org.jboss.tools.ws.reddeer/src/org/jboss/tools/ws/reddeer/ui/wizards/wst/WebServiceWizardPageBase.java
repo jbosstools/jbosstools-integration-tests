@@ -13,6 +13,9 @@ package org.jboss.tools.ws.reddeer.ui.wizards.wst;
 import org.hamcrest.core.AnyOf;
 import org.hamcrest.core.Is;
 import org.hamcrest.core.StringStartsWith;
+import org.jboss.reddeer.core.exception.CoreLayerException;
+import org.jboss.reddeer.core.matcher.WithLabelMatcher;
+import org.jboss.reddeer.core.matcher.WithMnemonicTextMatcher;
 import org.jboss.reddeer.jface.wizard.WizardPage;
 import org.jboss.reddeer.swt.api.Combo;
 import org.jboss.reddeer.swt.api.Group;
@@ -23,10 +26,8 @@ import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.group.DefaultGroup;
 import org.jboss.reddeer.swt.impl.scale.DefaultScale;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
+import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.core.exception.CoreLayerException;
-import org.jboss.reddeer.core.matcher.WithLabelMatcher;
-import org.jboss.reddeer.core.matcher.WithMnemonicTextMatcher;
 import org.jboss.reddeer.uiforms.impl.hyperlink.DefaultHyperlink;
 
 /**
@@ -62,7 +63,7 @@ public abstract class WebServiceWizardPageBase extends WizardPage {
 		new DefaultHyperlink(
 				new WithMnemonicTextMatcher(StringStartsWith.startsWith("Server runtime:"))
 				).activate();
-		new DefaultTreeItem(new DefaultGroup("Server runtime:"), "Existing Servers", name).select();
+		new DefaultTreeItem(new DefaultTree(new DefaultGroup("Server runtime:")), "Existing Servers", name).select();
 		new PushButton("OK").click();
 	}
 
@@ -71,7 +72,7 @@ public abstract class WebServiceWizardPageBase extends WizardPage {
 				new WithMnemonicTextMatcher(StringStartsWith.startsWith("Web service runtime:"))
 				).activate();
 		Group runtimeGroup = new DefaultGroup("Web service runtime:");
-		new DefaultTreeItem(runtimeGroup, name).select();
+		new DefaultTreeItem(new DefaultTree(runtimeGroup), name).select();
 		new PushButton("OK").click();
 	}
 
