@@ -9,14 +9,14 @@ import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.tools.cdi.reddeer.CDIConstants;
 
 public class NewQualifierCreationWizard extends NewWizardDialog{
 	
-	public static final String CATEGORY="CDI (Context and Dependency Injection)";
 	public static final String NAME="Qualifier Annotation";
 	
 	public NewQualifierCreationWizard(){
-		super(CATEGORY,NAME);
+		super(CDIConstants.CDI_GROUP,NAME);
 	}
 	
 	public void setPackage(String packageName){

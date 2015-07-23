@@ -15,14 +15,14 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.tools.cdi.reddeer.CDIConstants;
 
 public class NewDecoratorCreationWizard extends NewWizardDialog{
 	
-	public static final String CATEGORY="CDI (Context and Dependency Injection)";
 	public static final String NAME="Decorator";
 	
 	public NewDecoratorCreationWizard(){
-		super(CATEGORY,NAME);
+		super(CDIConstants.CDI_GROUP,NAME);
 	}
 	
 	public void setPackage(String packageName){
