@@ -3,14 +3,14 @@ package org.jboss.tools.cdi.reddeer.cdi.ui;
 import org.jboss.reddeer.jface.wizard.NewWizardDialog;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.tools.cdi.reddeer.CDIConstants;
 
 public class NewScopeCreationWizard extends NewWizardDialog{
 	
-	public static final String CATEGORY="CDI (Context and Dependency Injection)";
 	public static final String NAME="Scope Annotation";
 	
 	public NewScopeCreationWizard(){
-		super(CATEGORY,NAME);
+		super(CDIConstants.CDI_GROUP,NAME);
 	}
 	
 	public void setPackage(String packageName){
