@@ -2,6 +2,7 @@ package org.jboss.tools.cdi.reddeer.cdi.ui;
 
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.workbench.preference.WorkbenchPreferencePage;
+import org.jboss.tools.cdi.reddeer.CDIConstants;
 
 /**
  * Represents Preference page: 
@@ -13,7 +14,7 @@ import org.jboss.reddeer.workbench.preference.WorkbenchPreferencePage;
 public class CDIValidatorPreferencePage extends WorkbenchPreferencePage{
 
 	public CDIValidatorPreferencePage() {
-		super("JBoss Tools", "CDI (Context and Dependency Injection)", "CDI Validator");
+		super("JBoss Tools", CDIConstants.CDI_GROUP, "CDI Validator");
 	}
 	
 	public void enableValidation() {

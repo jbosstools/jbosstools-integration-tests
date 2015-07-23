@@ -26,9 +26,9 @@ public class CDIConstants {
 	public static final String MULTIPLE_BEANS = "Multiple beans are eligible for injection";
 	public static final String NO_BEAN_IS_ELIGIBLE = "No bean is eligible for injection to " +
 			"the injection point";
-	public static final String CDI_GROUP = "CDI (Context and Dependency Injection)";
-	public static final String ADD_CDI_SUPPORT = "Add CDI (Context and Dependency Injection) support...";
-	public static final String CDI_PROPERTIES_SETTINGS = "CDI (Context and Dependency Injection) Settings";
+	public static final String CDI_GROUP = "CDI (Contexts and Dependency Injection)";
+	public static final String ADD_CDI_SUPPORT = "Add CDI (Contexts and Dependency Injection) support...";
+	public static final String CDI_PROPERTIES_SETTINGS = "CDI (Contexts and Dependency Injection) Settings";
 	public static final String ADD_JARS = "Add JARs...";
 	public static final String CDI_PRESET = "Dynamic Web Project " +
 			"with CDI (Context and Dependency Injection)";
