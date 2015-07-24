@@ -14,3 +14,13 @@ Tests searches for tad "EAP-6.4.GA" in JBoss Central and imports all those examp
 * Edit server configuration files (resources/generated/server_properties/*)
 * Import launcher (resources/Central RedDeer Test.launch)
 * Run
+
+### Known issues
+
+EAP 6.4 quickstarts:
+
+* **wsba-coordinator-completion-simple** There is nothing to deploy, thus the test fails with AssertionError: Unable to deploy example: ....
+* **tasks** This cannot be deployed, because it's not intended to be deployed. Only Arquillian tests are qorking in this project.
+* **jts** XML Validation error. Related jira: https://issues.jboss.org/browse/JBIDE-20346
+* **servlet-security** This quickstart needs some manual tweaking of server. Thus it is unable to be deployed by tests.
+* **websocket-hello** The same as servlet-security

@@ -159,7 +159,7 @@ public class JavaScriptHelper {
 		public boolean test() {
 			evaluateFunction("searchFor", query);
 			String[] listOfExamples = evaluateFunction("getExamples").split(";");
-			return listOfExamples.length>0;
+			return listOfExamples.length>0 && !listOfExamples[0].equals("");
 		}
 
 		@Override
