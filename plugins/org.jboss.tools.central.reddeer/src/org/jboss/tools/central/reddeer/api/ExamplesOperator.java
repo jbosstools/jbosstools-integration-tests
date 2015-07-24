@@ -27,6 +27,7 @@ import org.jboss.reddeer.core.handler.WidgetHandler;
 import org.jboss.reddeer.eclipse.condition.ConsoleHasNoChange;
 import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
 import org.jboss.reddeer.eclipse.ui.browser.BrowserEditor;
+import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.eclipse.ui.problems.Problem;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
@@ -58,7 +59,7 @@ import org.jboss.tools.maven.reddeer.project.examples.wizard.NewProjectExamplesS
  */
 
 public class ExamplesOperator {
-	
+
 	private static final Logger log = Logger.getLogger(ExamplesOperator.class);
 
 	private static ExamplesOperator instance;
@@ -70,28 +71,27 @@ public class ExamplesOperator {
 		return instance;
 	}
 
-	
 	/**
 	 * Deploys existing project to given server.
 	 * 
 	 * @param projectName
 	 * @param serverName
 	 */
-	
+
 	public void deployProject(String projectName, String serverName) {
 		JBossServerView serversView = new JBossServerView();
 		serversView.open();
-		ModifyModulesDialog modulesDialog = serversView.getServer(serverName)
-				.addAndRemoveModules();
-		String moduleName = new DefaultTreeItem(new TreeItemTextMatcher(new RegexMatcher(".*"+projectName+".*"))).getText();
+		ModifyModulesDialog modulesDialog = serversView.getServer(serverName).addAndRemoveModules();
+		String moduleName = new DefaultTreeItem(new TreeItemTextMatcher(new RegexMatcher(".*" + projectName + ".*")))
+				.getText();
 		modulesDialog.getFirstPage().add(moduleName);
 		modulesDialog.finish();
-		new WaitUntil(new WaitForProjectToStartAndSynchronize(moduleName, serverName),
-				TimePeriod.LONG);
+		new WaitUntil(new WaitForProjectToStartAndSynchronize(moduleName, serverName), TimePeriod.LONG);
 	}
-	
+
 	/**
-	 * Imports archetype project from JBoss Central from section "Start from scratch"
+	 * Imports archetype project from JBoss Central from section
+	 * "Start from scratch"
 	 * 
 	 * @param project
 	 */
@@ -105,17 +105,16 @@ public class ExamplesOperator {
 		firstPage.setTargetRuntime(1);
 		log.step("Import project first page");
 		new DefaultLink();
-		if (project.isBlank()){
+		if (project.isBlank()) {
 			firstPage.toggleBlank(project.isBlank());
 		}
 		checkRequirements(firstPage.getRequirements());
 		dialog.next();
-		ArchetypeExamplesWizardFirstPage secondPage = (ArchetypeExamplesWizardFirstPage) dialog
-				.getCurrentWizardPage();
+		ArchetypeExamplesWizardFirstPage secondPage = (ArchetypeExamplesWizardFirstPage) dialog.getCurrentWizardPage();
 		assertFalse("Project Name cannot be empty", secondPage.getProjectName().equals(""));
 		dialog.next();
 		ArchetypeExamplesWizardPage thirdPage = (ArchetypeExamplesWizardPage) dialog.getCurrentWizardPage();
-		assertFalse("Group ID cannot be empty",thirdPage.getGroupID().equals(""));
+		assertFalse("Group ID cannot be empty", thirdPage.getGroupID().equals(""));
 		NewProjectExamplesReadyPage projectReadyPage = dialog.finishAndWait();
 		checkProjectReadyPage(projectReadyPage, project);
 		projectReadyPage.finish();
@@ -123,22 +122,22 @@ public class ExamplesOperator {
 	}
 
 	/**
-	 * Imports example project from JBoss Central from "Start from a sample" section
+	 * Imports example project from JBoss Central from "Start from a sample"
+	 * section
 	 * 
 	 * @param project
 	 */
-	
+
 	public void importExampleProjectFromCentral(CentralExampleProject project) {
 		NewProjectExamplesWizardDialogCentral dialog = new NewProjectExamplesWizardDialogCentral();
 		dialog.open(project);
-		MavenExamplesRequirementPage reqPage = (MavenExamplesRequirementPage) dialog
-				.getWizardPage(0);
+		MavenExamplesRequirementPage reqPage = (MavenExamplesRequirementPage) dialog.getWizardPage(0);
 		checkRequirements(reqPage.getRequirements());
-		try{
+		try {
 			new WaitUntil(new MavenRepositoryNotFound());
-			fail("Maven repository is not present. Link with message: "+new DefaultLink().getText());
-		}catch(WaitTimeoutExpiredException ex){
-			//Do nothing
+			fail("Maven repository is not present. Link with message: " + new DefaultLink().getText());
+		} catch (WaitTimeoutExpiredException ex) {
+			// Do nothing
 		}
 		dialog.next();
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
@@ -146,11 +145,10 @@ public class ExamplesOperator {
 			dialog.finish(project.getProjectName());
 		} catch (WaitTimeoutExpiredException ex) { // waiting in dialog.finish()
 													// is not enough!
-			new WaitWhile(new ShellWithTextIsActive("New Project Example"),
-					TimePeriod.VERY_LONG);
+			new WaitWhile(new ShellWithTextIsActive("New Project Example"), TimePeriod.VERY_LONG);
 			new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		}
-		checkForErrors();	
+		checkForErrors();
 	}
 
 	/**
@@ -159,15 +157,15 @@ public class ExamplesOperator {
 	 * @param projectName
 	 * @param serverNameLabel
 	 */
-	
+
 	public void checkDeployedProject(String projectName, String serverNameLabel) {
-		if (!projectName.equals("jboss-ejb-timer")){
+		if (!projectName.equals("jboss-ejb-timer")) {
 			new WaitUntil(new ConsoleHasNoChange(), TimePeriod.LONG);
 		}
 		JBossServerView serversView = new JBossServerView();
 		serversView.open();
 		JBossServerModule module = (JBossServerModule) serversView.getServer(serverNameLabel)
-				.getModule(new RegexMatcher(".*"+projectName+".*"));
+				.getModule(new RegexMatcher(".*" + projectName + ".*"));
 		module.openWebPage();
 		final BrowserEditor browser = new BrowserEditor(new RegexMatcher(".*"));
 		try {
@@ -177,8 +175,26 @@ public class ExamplesOperator {
 			browser.refreshPage();
 			new WaitUntil(new BrowserIsnotEmpty(browser));
 		}
+
+		// Now the browser should not be empty. Let's check for error messages
+		// (strings like "404")
+		checkBrowserForErrorPage(browser);
+		checkConsoleForException();
+
 		assertNotEquals("", browser.getText());
 		new DefaultEditor().close();
+	}
+
+	private void checkConsoleForException() {
+		ConsoleView consoleView = new ConsoleView();
+		consoleView.open();
+		assertFalse("Console contains text 'Operation (\"deploy\") failed':\n"+consoleView.getConsoleText(), consoleView.getConsoleText().contains("Operation (\"deploy\") failed"));
+	}
+
+	private void checkBrowserForErrorPage(BrowserEditor browser) {
+		ConsoleView consoleView = new ConsoleView();
+		consoleView.open();
+		assertFalse("Browser contains text 'Status 404'\n Console output:\n"+consoleView.getConsoleText(), browser.getText().contains("Status 404"));
 	}
 
 	/**
@@ -187,8 +203,8 @@ public class ExamplesOperator {
 	 * @param project
 	 * @return
 	 */
-	
-	public List<String> getAllWarnings(){
+
+	public List<String> getAllWarnings() {
 		List<String> warnings = new ArrayList<String>();
 		ProblemsView problemsView = new ProblemsView();
 		problemsView.open();
@@ -197,12 +213,11 @@ public class ExamplesOperator {
 		}
 		return warnings;
 	}
-	
-	
+
 	/**
 	 * Returns all errors from Problems View as a List of Strings
 	 */
-	public List<String> getAllErrors(){
+	public List<String> getAllErrors() {
 		List<String> errors = new ArrayList<String>();
 		ProblemsView problemsView = new ProblemsView();
 		problemsView.open();
@@ -212,7 +227,6 @@ public class ExamplesOperator {
 		return errors;
 	}
 
-	
 	/**
 	 * Checks for errors in Problems View. Fails if there is some.
 	 */
@@ -222,24 +236,24 @@ public class ExamplesOperator {
 		List<Problem> errors = problemsView.getProblems(ProblemType.ERROR);
 		if (!errors.isEmpty()) {
 			String failureMessage = "There are errors after importing project";
-			for (Problem problem: errors) {
+			for (Problem problem : errors) {
 				failureMessage += problem.getDescription();
 				failureMessage += System.getProperty("line.separator");
 			}
 			fail(failureMessage);
 		}
 	}
-	
-	private void checkProjectReadyPage(NewProjectExamplesReadyPage page, ArchetypeProject project){
+
+	private void checkProjectReadyPage(NewProjectExamplesReadyPage page, ArchetypeProject project) {
 		assertFalse(page.isQuickFixEnabled());
-		if (!project.isBlank()){
+		if (!project.isBlank()) {
 			assertTrue(page.isShowReadmeEnabled());
 		}
 	}
 
 	private void checkRequirements(List<ExampleRequirement> requirements) {
 		for (ExampleRequirement requirement : requirements) {
-			assertTrue("Requirement \""+requirement.getName()+"\" is not met.", requirement.isMet());
+			assertTrue("Requirement \"" + requirement.getName() + "\" is not met.", requirement.isMet());
 		}
 	}
 
@@ -255,45 +269,42 @@ public class ExamplesOperator {
 		}
 
 		public boolean test() {
-			boolean synch = getModule().getLabel().getPublishState()
-					.compareTo(ServerPublishState.SYNCHRONIZED) == 0;
-			boolean started = getModule().getLabel().getState()
-					.compareTo(ServerState.STARTED) == 0;
-			// return synch && started;  https://issues.jboss.org/browse/JBIDE-19288
+			boolean synch = getModule().getLabel().getPublishState().compareTo(ServerPublishState.SYNCHRONIZED) == 0;
+			boolean started = getModule().getLabel().getState().compareTo(ServerState.STARTED) == 0;
+			// return synch && started;
+			// https://issues.jboss.org/browse/JBIDE-19288
 			return synch;
 		}
 
 		public String description() {
-			return "Waiting for module to be started-synchronized, but was "
-					+ getModule().getLabel().getState() + "-"
+			return "Waiting for module to be started-synchronized, but was " + getModule().getLabel().getState() + "-"
 					+ getModule().getLabel().getPublishState();
 		}
-		
-		private JBossServerModule getModule(){
+
+		private JBossServerModule getModule() {
 			int counter = 0;
-			while(module == null && counter<5){
+			while (module == null && counter < 5) {
 				JBossServerView serversView = new JBossServerView();
 				serversView.open();
-				try{
-					module =  serversView.getServer(serverName).getModule(
-						projectName);
-				}catch(EclipseLayerException ex){
-					//module not found
+				try {
+					module = serversView.getServer(serverName).getModule(projectName);
+				} catch (EclipseLayerException ex) {
+					// module not found
 					counter++;
 				}
 			}
 			return module;
 		}
 	}
-	
+
 	private class BrowserIsnotEmpty implements WaitCondition {
-		
+
 		BrowserEditor browser;
-		
+
 		public BrowserIsnotEmpty(BrowserEditor browser) {
 			this.browser = browser;
 		}
-		
+
 		public boolean test() {
 			return !browser.getText().equals("");
 		}
@@ -302,19 +313,19 @@ public class ExamplesOperator {
 			return "Browser is empty!";
 		}
 	}
-	
-	private class TreeItemTextMatcher extends TypeSafeMatcher<TreeItem>{
-		
+
+	private class TreeItemTextMatcher extends TypeSafeMatcher<TreeItem> {
+
 		Matcher<String> matcher;
-		
+
 		public TreeItemTextMatcher(Matcher<String> matcher) {
 			this.matcher = matcher;
 		}
-		
+
 		@Override
 		public void describeTo(Description description) {
 			// TODO Auto-generated method stub
-			
+
 		}
 
 		@Override
@@ -322,8 +333,6 @@ public class ExamplesOperator {
 			return matcher.matches(WidgetHandler.getInstance().getText(item));
 		}
 
-		
 	}
-
 
 }
