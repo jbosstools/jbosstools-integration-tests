@@ -29,6 +29,7 @@ import org.jboss.reddeer.core.util.Display;
 import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.m2e.core.ui.preferences.MavenSettingsPreferencePage;
+import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.eclipse.ui.problems.Problem;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
@@ -136,6 +137,9 @@ public class HTML5Parameterized {
 	public void teardown() {
 		ShellHandler.getInstance().closeAllNonWorbenchShells();
 		new ProjectExplorer().deleteAllProjects(true);
+		ConsoleView consoleView = new ConsoleView();
+		consoleView.open();
+		consoleView.clearConsole();
 		new DefaultToolItem(new WorkbenchShell(), "JBoss Central").click();
 		// activate central editor
 		new DefaultEditor("JBoss Central");
@@ -156,10 +160,6 @@ public class HTML5Parameterized {
 		log.error("\twith description: "+project.getDescription());
 		processExample(project.getName(), project.getDescription());
 	}
-
-	
-	
-	
 	
 	/**
 	 * Imports current example, checks for warnings/errors, tries to deploy it
@@ -180,8 +180,6 @@ public class HTML5Parameterized {
 		} catch (Exception e) {
 			skip = true;
 			fail("Error importing example: " + stacktraceToString(e));
-//			reporter.addError(new org.jboss.tools.central.reddeer.projects.Project(exampleName, null),
-//					"Error importing example: " + stacktraceToString(e));
 		}
 
 		org.jboss.tools.central.reddeer.projects.Project currentProject;

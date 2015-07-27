@@ -13,7 +13,9 @@ package org.jboss.tools.ws.ui.bot.test.wsclient;
 import org.jboss.tools.ws.ui.bot.test.webservice.WebServiceRuntime;
 
 /**
- * Test operates on Web Service Client Wizard
+ * Test operates on Web Service Client Wizard, tests inherited
+ * from {@link WSClientTestTemplate}
+ * 
  * @author jlukas
  *
  */

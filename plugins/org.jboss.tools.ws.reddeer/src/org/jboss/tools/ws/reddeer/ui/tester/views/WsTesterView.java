@@ -17,6 +17,7 @@ import org.eclipse.jface.dialogs.IDialogConstants;
 import org.jboss.reddeer.swt.api.Combo;
 import org.jboss.reddeer.swt.api.Text;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.core.matcher.WithTextMatcher;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.list.DefaultList;
@@ -186,7 +187,7 @@ public class WsTesterView extends WorkbenchView {
 	private void addRequestArg(WsTesterView.RequestArgType type, String name,
 			String value) {
 		new DefaultText(type.ordinal()).typeText(name + "=" + value);
-		new PushButton(type.ordinal(), "Add").click();
+		new PushButton(type.ordinal(), new WithTextMatcher("Add")).click();
 		new DefaultText(type.ordinal()).setText("");
 	}
 
@@ -252,7 +253,7 @@ public class WsTesterView extends WorkbenchView {
 	private void editRequestArg(WsTesterView.RequestArgType type,
 			String oldName, String oldValue, String newName, String newValue) {
 		new DefaultList(type.ordinal()).select(oldName + "=" + oldValue);
-		new PushButton(type.ordinal(), "Edit").click();
+		new PushButton(type.ordinal(), new WithTextMatcher("Edit")).click();
 		new DefaultShell("Edit Value");
 		new DefaultText().typeText(newName + "=" + newValue);
 		new PushButton(IDialogConstants.OK_LABEL).click();
@@ -281,7 +282,7 @@ public class WsTesterView extends WorkbenchView {
 	private void removeRequestArg(WsTesterView.RequestArgType type,
 			String name, String value) {
 		new DefaultList(type.ordinal()).select(name + "=" + value);
-		new PushButton(type.ordinal(), "Remove").click();
+		new PushButton(type.ordinal(), new WithTextMatcher("Remove")).click();
 	}
 
 	/**
@@ -299,7 +300,7 @@ public class WsTesterView extends WorkbenchView {
 	}
 
 	private void clearRequestArgs(WsTesterView.RequestArgType type) {
-		new PushButton(type.ordinal(), "Clear All").click();
+		new PushButton(type.ordinal(), new WithTextMatcher("Clear All")).click();
 	}
 
 	/**

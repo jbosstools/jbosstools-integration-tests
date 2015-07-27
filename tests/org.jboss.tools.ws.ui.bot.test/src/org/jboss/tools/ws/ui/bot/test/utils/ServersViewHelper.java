@@ -92,7 +92,7 @@ public class ServersViewHelper {
 		new DefaultShell("Run On Server");
 		new PushButton(IDELabel.Button.FINISH).click();
 		new WaitUntil(new JobIsRunning(), TimePeriod.getCustom(5), false);
-		new WaitWhile(new JobIsRunning());
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
 
 	/**
@@ -119,6 +119,7 @@ public class ServersViewHelper {
 			server = serversView.getServer(serverName);
 			
 		}
+		AbstractWait.sleep(TimePeriod.SHORT);
 		server.clean();
 	}
 }

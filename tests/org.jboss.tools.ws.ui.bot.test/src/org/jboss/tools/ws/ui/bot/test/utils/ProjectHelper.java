@@ -179,6 +179,7 @@ public class ProjectHelper {
 	}
 
 	public static boolean projectExists(String name) {
+		projectExplorer = new ProjectExplorer();
 		projectExplorer.open();
 		return projectExplorer.containsProject(name);
 	}
