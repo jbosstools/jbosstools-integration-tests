@@ -3,6 +3,7 @@ package org.jboss.ide.eclipse.as.ui.bot.test.template;
 import java.io.File;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -96,7 +97,7 @@ public abstract class DeployJSPProjectTemplate extends AbstractJBossServerTempla
 		try {
 			assertProjectIsBuilt();
 		} catch (Exception e){
-			log.step("Refresh project");
+			log.step("*** Refresh project");
 			getProject().refresh();
 			log.step("Re-assert project is built");
 			assertProjectIsBuilt();
@@ -142,11 +143,11 @@ public abstract class DeployJSPProjectTemplate extends AbstractJBossServerTempla
 		IProject project = root.getProject(PROJECT_NAME);
 		log.debug("Project location is: " + project.getLocation().toFile());
 		
-		IFile buildFolder = project.getFile("build");
+		IFolder buildFolder = project.getFolder("build");
 		log.debug("Build folder location is: " + buildFolder.getLocation().toFile());
 		log.debug("Build folder exists: " + buildFolder.exists());
 		
-		IFile classesFolder = project.getFile("build/classes");
+		IFolder classesFolder = project.getFolder("build/classes/org");
 		log.debug("Classes folder location is: " + classesFolder.getLocation().toFile());
 		log.debug("Classes folder exists: " + classesFolder.exists());
 		
@@ -165,7 +166,7 @@ public abstract class DeployJSPProjectTemplate extends AbstractJBossServerTempla
 				}
 			}
 		}
-		assertTrue(new File(buildFolderFilesystem, "classes/org").exists());
+		assertTrue(classesFolder.exists());
 	}
 
 	private void addModule(JBossServer server) {
