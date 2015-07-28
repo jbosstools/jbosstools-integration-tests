@@ -13,6 +13,7 @@
 	    <test.suite.class>org.jboss.tools.seam.ui.bot.test.SeamAllBotTests</test.suite.class>
 	    <jbosstools.test.jboss-as.home>${requirementsDirectory}/jboss-as-7.1.1.Final</jbosstools.test.jboss-as.home>
 	    <jbosstools.test.jboss-seam.home>${requirementsDirectory}/jboss-seam-2.3.0.Final</jbosstools.test.jboss-seam.home>
+            <swtbot.test.skip>${skipTestsOrITests}</swtbot.test.skip>
         <systemProperties>${integrationTestsSystemProperties} -Dtest.configurations.dir=resources/properties/ -Djbosstools.test.jboss-as.home=${jbosstools.test.jboss-as.home} -Djbosstools.test.jboss-seam.home=${jbosstools.test.jboss-seam.home}</systemProperties>
     </properties>
     
