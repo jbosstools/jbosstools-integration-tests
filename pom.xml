@@ -13,12 +13,12 @@
 	<name>integration-tests.all</name>
 	<packaging>pom</packaging>
 	<!-- 
-	  Build and run all tests:
-	    mvn clean install -B -U -fae -P pack200 -Djbosstools-nightly=http://download.jboss.org/jbosstools/updates/nightly/core/4.1.kepler/ -Djbosstools-nightly-staging-composite=http://download.jboss.org/jbosstools/builds/staging/_composite_/core/4.1.kepler/ -Dmaven.test.failure.ignore=true -Dmaven.test.error.ignore=true
-	  Build and run no tests:
-	    mvn clean install -B -U -fae -P pack200 -Djbosstools-nightly=http://download.jboss.org/jbosstools/updates/nightly/core/4.1.kepler/ -Djbosstools-nightly-staging-composite=http://download.jboss.org/jbosstools/builds/staging/_composite_/core/4.1.kepler/ -Dmaven.test.failure.ignore=true -Dmaven.test.error.ignore=true -DskipTests
-	  Run tests:
-      mvn verify -B -U -fae -P pack200 -Djbosstools-nightly=http://download.jboss.org/jbosstools/updates/nightly/core/4.1.kepler/ -Djbosstools-nightly-staging-composite=http://download.jboss.org/jbosstools/builds/staging/_composite_/core/4.1.kepler/ -Dmaven.test.failure.ignore=true -Dmaven.test.error.ignore=true -f tests/pom.xml 
+		Build and run all tests:
+			mvn clean install -B -U -fae -P pack200 -Djbosstools-nightly=http://download.jboss.org/jbosstools/updates/nightly/core/4.1.kepler/ -Djbosstools-nightly-staging-composite=http://download.jboss.org/jbosstools/builds/staging/_composite_/core/4.1.kepler/ -Dmaven.test.failure.ignore=true -Dmaven.test.error.ignore=true
+		Build and run no tests:
+			mvn clean install -B -U -fae -P pack200 -Djbosstools-nightly=http://download.jboss.org/jbosstools/updates/nightly/core/4.1.kepler/ -Djbosstools-nightly-staging-composite=http://download.jboss.org/jbosstools/builds/staging/_composite_/core/4.1.kepler/ -Dmaven.test.failure.ignore=true -Dmaven.test.error.ignore=true -DskipTests
+		Run tests:
+			mvn verify -B -U -fae -P pack200 -Djbosstools-nightly=http://download.jboss.org/jbosstools/updates/nightly/core/4.1.kepler/ -Djbosstools-nightly-staging-composite=http://download.jboss.org/jbosstools/builds/staging/_composite_/core/4.1.kepler/ -Dmaven.test.failure.ignore=true -Dmaven.test.error.ignore=true -f tests/pom.xml 
 	-->
 
 	<properties>
@@ -30,7 +30,7 @@
 		<reddeer-stable-site>http://download.jboss.org/jbosstools/updates/stable/luna/core/reddeer/0.7.0/</reddeer-stable-site>
 		<reddeer-site>${reddeer-master-site}</reddeer-site>
 
-		<jbosstools-integrationtests-site>http://download.jboss.org/jbosstools/updates/nightly/integrationtests/${jbosstools_site_stream}/</jbosstools-integrationtests-site>
+		<jbosstools-integrationtests-site>http://download.jboss.org/jbosstools/mars/snapshots/updates/integration-tests/${jbosstools_site_stream}/</jbosstools-integrationtests-site>
 		<jbosstools-site>http://download.jboss.org/jbosstools/mars/snapshots/updates/core/${jbosstools_site_stream}/</jbosstools-site>
 		<jbosstools-tests-site>http://download.jboss.org/jbosstools/mars/snapshots/updates/coretests/${jbosstools_site_stream}/</jbosstools-tests-site>
 	</properties>
@@ -41,12 +41,25 @@
 		<module>site</module>
 	</modules>
 
+	<profiles>
+		<profile>
+			<id>bootstrap</id>
+			<activation>
+				<property>
+					<name>!no-bootstrap</name>
+				</property>
+			</activation>
+			<repositories>
+				<repository>
+					<id>jbosstools-integrationtests-site</id>
+					<url>${jbosstools-integrationtests-site}</url>
+					<layout>p2</layout>
+				</repository>
+			</repositories>
+		</profile>
+	</profiles>
+
 	<repositories>
-		<repository>
-			<id>jbosstools-integrationtests-site</id>
-			<url>${jbosstools-integrationtests-site}</url>
-			<layout>p2</layout>
-		</repository> 
 		<repository>
 			<id>reddeer-site</id>
 			<url>${reddeer-site}</url>
