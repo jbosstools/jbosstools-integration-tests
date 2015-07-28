@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.jboss.tools.integration-tests</groupId>
+		<artifactId>tests</artifactId>
+		<version>4.3.0-SNAPSHOT</version>
+	</parent>
+
+	<groupId>org.jboss.tools.batch.tests</groupId>
+	<artifactId>org.jboss.tools.batch.ui.bot.test</artifactId>
+	<packaging>eclipse-test-plugin</packaging>
+	<properties>
+		<swtbot.test.skip>false</swtbot.test.skip>
+		<usage_reporting_enabled>false</usage_reporting_enabled>
+		<maven.test.failure.ignore>true</maven.test.failure.ignore>
+	</properties>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-surefire-plugin</artifactId>
+				<configuration>
+					<useUIThread>false</useUIThread>
+					<surefire.timeout>7200</surefire.timeout>
+					<forkedProcessTimeoutInSeconds>7200</forkedProcessTimeoutInSeconds>
+					<testSuite>org.jboss.tools.batch.ui.bot.test</testSuite>
+					<testClass>org.jboss.tools.batch.ui.bot.test.AllTestsSuite</testClass>
+					<dependencies combine.children="append">
+
+						<dependency>
+							<type>p2-installable-unit</type>
+							<artifactId>org.jboss.tools.batch.feature.feature.group</artifactId>
+							<version>0.0.0</version>
+						</dependency>
+						<!-- This entry should enable creating of default JDK on Mac -->
+						<dependency>
+							<type>p2-installable-unit</type>
+							<artifactId>org.eclipse.jdt.feature.group</artifactId>
+							<version>0.0.0</version>
+						</dependency>
+					</dependencies>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>
+
