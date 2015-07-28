@@ -18,7 +18,7 @@
 		test.class - which test suite 
 	 -->
 	<properties>
-		<swtbot.test.skip>false</swtbot.test.skip>
+		<swtbot.test.skip>${skipTestsOrITests}</swtbot.test.skip>
 		<usage_reporting_enabled>false</usage_reporting_enabled>
 		<!-- Maven configuration -->
 		<maven.test.failure.ignore>true</maven.test.failure.ignore>
@@ -159,6 +159,7 @@
 									<outputFileName>jboss-3.2.8.SP1.zip</outputFileName>
 									<md5>${jbosstools.test.jboss-as-3.2.md5}</md5>
 									<unpack>true</unpack>
+									<skip>${swtbot.test.skip}</skip>
 								</configuration>
 							</execution>
 							<execution>
@@ -172,7 +173,7 @@
 									<outputFileName>jboss-4.0.5.GA.zip</outputFileName>
 									<md5>${jbosstools.test.jboss-as-4.0.md5}</md5>
 									<unpack>true</unpack>
-								</configuration>
+									<skip>${swtbot.test.skip}</skip>								</configuration>
 							</execution>
 							<execution>
 								<id>install-as-4.2.3</id>
@@ -185,7 +186,7 @@
 									<outputFileName>jboss-4.2.3.GA-jdk6.zip</outputFileName>
 									<md5>${jbosstools.test.jboss-as-4.2.md5}</md5>
 									<unpack>true</unpack>
-								</configuration>
+									<skip>${swtbot.test.skip}</skip>								</configuration>
 							</execution>
 							<execution>
 								<id>install-as-5.0.1</id>
@@ -198,7 +199,7 @@
 									<outputFileName>jboss-5.0.1.GA-jdk6.zip</outputFileName>
 									<md5>${jbosstools.test.jboss-as-5.0.md5}</md5>
 									<unpack>true</unpack>
-								</configuration>
+									<skip>${swtbot.test.skip}</skip>								</configuration>
 							</execution>
 							<execution>
 								<id>install-as-5.1.0</id>
@@ -211,7 +212,7 @@
 									<outputFileName>jboss-5.1.0.GA-jdk6.zip</outputFileName>
 									<md5>${jbosstools.test.jboss-as-5.1.md5}</md5>
 									<unpack>true</unpack>
-								</configuration>
+									<skip>${swtbot.test.skip}</skip>								</configuration>
 							</execution>
 							<execution>
 								<id>install-as-6.1.0</id>
@@ -223,7 +224,7 @@
 									<url>${jbosstools.test.jboss-as-6.1.url}</url>
 									<md5>${jbosstools.test.jboss-as-6.1.md5}</md5>
 									<unpack>true</unpack>
-								</configuration>
+									<skip>${swtbot.test.skip}</skip>								</configuration>
 							</execution>
 							<execution>
 								<id>install-as-7.0.2</id>
@@ -235,7 +236,7 @@
 									<url>${jbosstools.test.jboss-as-7.0.url}</url>
 									<md5>${jbosstools.test.jboss-as-7.0.md5}</md5>
 									<unpack>true</unpack>
-								</configuration>
+									<skip>${swtbot.test.skip}</skip>								</configuration>
 							</execution>
 							<execution>
 								<id>install-as-7.1.1</id>
@@ -247,7 +248,7 @@
 									<url>${jbosstools.test.jboss-as-7.1.url}</url>
 									<md5>${jbosstools.test.jboss-as-7.1.md5}</md5>
 									<unpack>true</unpack>
-								</configuration>
+									<skip>${swtbot.test.skip}</skip>								</configuration>
 							</execution>
 							<execution>
 								<id>install-wildfly-8</id>
@@ -258,7 +259,7 @@
 								<configuration>
 									<url>${jbosstools.test.wildfly-8.url}</url>
 									<unpack>true</unpack>
-								</configuration>
+									<skip>${swtbot.test.skip}</skip>								</configuration>
 							</execution>
 							<execution>
 								<id>install-wildfly-9</id>
@@ -269,7 +270,7 @@
 								<configuration>
 									<url>${jbosstools.test.wildfly-9.url}</url>
 									<unpack>true</unpack>
-								</configuration>
+									<skip>${swtbot.test.skip}</skip>								</configuration>
 							</execution>
 						</executions>
 					</plugin>
@@ -304,7 +305,7 @@
 									<url>${jbosstools.test.jboss-as-6.1.url}</url>
 									<md5>${jbosstools.test.jboss-as-6.1.md5}</md5>
 									<unpack>true</unpack>
-								</configuration>
+									<skip>${swtbot.test.skip}</skip>								</configuration>
 							</execution>
 							<execution>
 								<id>install-as-7.0.2</id>
@@ -316,7 +317,7 @@
 									<url>${jbosstools.test.jboss-as-7.0.url}</url>
 									<md5>${jbosstools.test.jboss-as-7.0.md5}</md5>
 									<unpack>true</unpack>
-								</configuration>
+									<skip>${swtbot.test.skip}</skip>								</configuration>
 							</execution>
 							<execution>
 								<id>install-as-7.1.1</id>
@@ -328,7 +329,7 @@
 									<url>${jbosstools.test.jboss-as-7.1.url}</url>
 									<md5>${jbosstools.test.jboss-as-7.1.md5}</md5>
 									<unpack>true</unpack>
-								</configuration>
+									<skip>${swtbot.test.skip}</skip>								</configuration>
 							</execution>
 							<execution>
 								<id>install-wildfly-8</id>
@@ -339,7 +340,7 @@
 								<configuration>
 									<url>${jbosstools.test.wildfly-8.url}</url>
 									<unpack>true</unpack>
-								</configuration>
+									<skip>${swtbot.test.skip}</skip>								</configuration>
 							</execution>
 							<execution>
 								<id>install-wildfly-9</id>
@@ -350,7 +351,7 @@
 								<configuration>
 									<url>${jbosstools.test.wildfly-9.url}</url>
 									<unpack>true</unpack>
-								</configuration>
+									<skip>${swtbot.test.skip}</skip>								</configuration>
 							</execution>
 						</executions>
 					</plugin>
@@ -385,7 +386,7 @@
 									<url>${jbosstools.test.jboss-as-3.2.url}</url>
 									<md5>${jbosstools.test.jboss-as-3.2.md5}</md5>
 									<unpack>true</unpack>
-								</configuration>
+									<skip>${swtbot.test.skip}</skip>								</configuration>
 							</execution>
 						</executions>
 					</plugin>
@@ -420,7 +421,7 @@
 									<url>${jbosstools.test.jboss-as-4.0.url}</url>
 									<md5>${jbosstools.test.jboss-as-4.0.md5}</md5>
 									<unpack>true</unpack>
-								</configuration>
+									<skip>${swtbot.test.skip}</skip>								</configuration>
 							</execution>
 						</executions>
 					</plugin>
@@ -455,7 +456,7 @@
 									<url>${jbosstools.test.jboss-as-4.2.url}</url>
 									<md5>${jbosstools.test.jboss-as-4.2.md5}</md5>
 									<unpack>true</unpack>
-								</configuration>
+									<skip>${swtbot.test.skip}</skip>								</configuration>
 							</execution>
 						</executions>
 					</plugin>
@@ -490,7 +491,7 @@
 									<url>${jbosstools.test.jboss-as-5.0.url}</url>
 									<md5>${jbosstools.test.jboss-as-5.0.md5}</md5>
 									<unpack>true</unpack>
-								</configuration>
+									<skip>${swtbot.test.skip}</skip>								</configuration>
 							</execution>
 						</executions>
 					</plugin>
@@ -525,7 +526,7 @@
 									<url>${jbosstools.test.jboss-as-5.1.url}</url>
 									<md5>${jbosstools.test.jboss-as-5.1.md5}</md5>
 									<unpack>true</unpack>
-								</configuration>
+									<skip>${swtbot.test.skip}</skip>								</configuration>
 							</execution>
 						</executions>
 					</plugin>
@@ -560,7 +561,7 @@
 									<url>${jbosstools.test.jboss-as-6.1.url}</url>
 									<md5>${jbosstools.test.jboss-as-6.1.md5}</md5>
 									<unpack>true</unpack>
-								</configuration>
+									<skip>${swtbot.test.skip}</skip>								</configuration>
 							</execution>
 						</executions>
 					</plugin>
@@ -595,7 +596,7 @@
 									<url>${jbosstools.test.jboss-as-7.0.url}</url>
 									<md5>${jbosstools.test.jboss-as-7.0.md5}</md5>
 									<unpack>true</unpack>
-								</configuration>
+									<skip>${swtbot.test.skip}</skip>								</configuration>
 							</execution>
 						</executions>
 					</plugin>
@@ -630,7 +631,7 @@
 									<url>${jbosstools.test.jboss-as-7.1.url}</url>
 									<md5>${jbosstools.test.jboss-as-7.1.md5}</md5>
 									<unpack>true</unpack>
-								</configuration>
+									<skip>${swtbot.test.skip}</skip>								</configuration>
 							</execution>
 						</executions>
 					</plugin>
@@ -664,7 +665,7 @@
 								<configuration>
 									<url>${jbosstools.test.wildfly-8.url}</url>
 									<unpack>true</unpack>
-								</configuration>
+									<skip>${swtbot.test.skip}</skip>								</configuration>
 							</execution>
 						</executions>
 					</plugin>
@@ -698,7 +699,7 @@
 								<configuration>
 									<url>${jbosstools.test.wildfly-9.url}</url>
 									<unpack>true</unpack>
-								</configuration>
+									<skip>${swtbot.test.skip}</skip>								</configuration>
 							</execution>
 						</executions>
 					</plugin>
@@ -735,6 +736,7 @@
 									<url>${jbosstools.test.jboss-eap-4.3.url}</url>
 									<md5>${jbosstools.test.jboss-eap-4.3.md5}</md5>
 									<unpack>true</unpack>
+									<skip>${skipPrivateRequirements}</skip>
 								</configuration>
 							</execution>
 							<execution>
@@ -747,6 +749,7 @@
 									<url>${jbosstools.test.jboss-eap-5.2.url}</url>
 									<md5>${jbosstools.test.jboss-eap-5.2.md5}</md5>
 									<unpack>true</unpack>
+									<skip>${skipPrivateRequirements}</skip>
 								</configuration>
 							</execution>
 							<execution>
@@ -759,6 +762,7 @@
 									<url>${jbosstools.test.jboss-eap-6.0.url}</url>
 									<md5>${jbosstools.test.jboss-eap-6.0.md5}</md5>
 									<unpack>true</unpack>
+									<skip>${skipPrivateRequirements}</skip>
 								</configuration>
 							</execution>
 							<execution>
@@ -771,6 +775,7 @@
 									<url>${jbosstools.test.jboss-eap-6.4.x.url}</url>
 									<md5>${jbosstools.test.jboss-eap-6.4.x.md5}</md5>
 									<unpack>true</unpack>
+									<skip>${skipPrivateRequirements}</skip>
 								</configuration>
 							</execution>
 						</executions>
@@ -807,6 +812,7 @@
 									<url>${jbosstools.test.jboss-eap-4.3.url}</url>
 									<md5>${jbosstools.test.jboss-eap-4.3.md5}</md5>
 									<unpack>true</unpack>
+									<skip>${skipPrivateRequirements}</skip>
 								</configuration>
 							</execution>
 						</executions>
@@ -843,6 +849,7 @@
 									<url>${jbosstools.test.jboss-eap-5.2.url}</url>
 									<md5>${jbosstools.test.jboss-eap-5.2.md5}</md5>
 									<unpack>true</unpack>
+									<skip>${skipPrivateRequirements}</skip>
 								</configuration>
 							</execution>
 						</executions>
@@ -879,6 +886,7 @@
 									<url>${jbosstools.test.jboss-eap-6.0.url}</url>
 									<md5>${jbosstools.test.jboss-eap-6.0.md5}</md5>
 									<unpack>true</unpack>
+									<skip>${skipPrivateRequirements}</skip>
 								</configuration>
 							</execution>
 						</executions>
@@ -915,6 +923,7 @@
 									<url>${jbosstools.test.jboss-eap-6.4.url}</url>
 									<md5>${jbosstools.test.jboss-eap-6.4.md5}</md5>
 									<unpack>true</unpack>
+									<skip>${skipPrivateRequirements}</skip>
 								</configuration>
 							</execution>
 						</executions>
@@ -951,6 +960,7 @@
 									<url>${jbosstools.test.jboss-eap-6.x.url}</url>
 									<md5>${jbosstools.test.jboss-eap-6.x.md5}</md5>
 									<unpack>true</unpack>
+									<skip>${skipPrivateRequirements}</skip>
 								</configuration>
 							</execution>
 						</executions>
