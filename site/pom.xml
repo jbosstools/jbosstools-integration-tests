@@ -64,33 +64,8 @@
 				<build>
 				<plugins>
 					<plugin>
-						<artifactId>maven-dependency-plugin</artifactId>
-						<executions>
-							<execution>
-								<goals>
-									<goal>unpack</goal>
-								</goals>
-								<phase>deploy</phase>
-								<configuration>
-									<artifactItems>
-										<artifactItem>
-											<groupId>org.jboss.tools.releng</groupId>
-											<artifactId>jbosstools-releng-publish</artifactId>
-											<version>4.3.0.Beta1-SNAPSHOT</version>
-											<type>tar.gz</type>
-											<outputDirectory>${project.build.directory}/releng-scripts</outputDirectory>
-										</artifactItem>
-									</artifactItems>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>
-					<plugin>
 						<groupId>org.codehaus.mojo</groupId>
 						<artifactId>exec-maven-plugin</artifactId>
-						<configuration>
-							<executable>${project.build.directory}/releng-scripts/publish/rsync.sh</executable>
-						</configuration>
 						<executions>
 							<execution>
 								<id>deploy-snapshot-updatesite</id>
@@ -100,6 +75,7 @@
 								<phase>deploy</phase>
 								<configuration>
 									<arguments>
+										<arg>--del</arg>
 										<arg>-s</arg>
 										<arg>${project.build.directory}/repository</arg>
 										<arg>-t</arg>
