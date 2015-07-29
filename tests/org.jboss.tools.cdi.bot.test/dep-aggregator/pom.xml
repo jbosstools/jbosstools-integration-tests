@@ -14,10 +14,6 @@
 
 	<packaging>pom</packaging>
 
-	<properties>
-		<swtbot.test.skip>true</swtbot.test.skip>
-		<skipTests>true</skipTests>
-	</properties>
 	
 	<modules>
 		<module>..</module>

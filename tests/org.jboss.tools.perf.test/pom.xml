@@ -24,7 +24,6 @@
 					<testSuite>org.jboss.tools.perf.test</testSuite>
 					<testClass>${suiteClass}</testClass>
 					<useUIThread>false</useUIThread>
-					<skip>${swtbot.test.skip}</skip>
 				</configuration>
 			</plugin>
 		</plugins>

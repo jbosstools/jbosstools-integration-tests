@@ -21,6 +21,7 @@
             <reddeer.disable.maven.download.repo.index.on.startup>true</reddeer.disable.maven.download.repo.index.on.startup>
             <junitExtensionsProperties>-Dreddeer.close.shells=${reddeer.close.shells} -Dreddeer.close.welcome.screen=${reddeer.close.welcome.screen} -Dreddeer.disable.maven.download.repo.index.on.startup=${reddeer.disable.maven.download.repo.index.on.startup}</junitExtensionsProperties>
             <integrationTestsSystemProperties>-Dswt.bot.test.record.screencast=${swt.bot.test.record.screencast} -Dorg.eclipse.swtbot.screenshots.dir=${project.build.directory}/screenshots -Dusage_reporting_enabled=false -Dcom.atlassian.connector.eclipse.monitor.usage.first.time=false -Dcom.atlassian.connector.eclipse.monitor.usage.enabled=false ${junitExtensionsProperties}</integrationTestsSystemProperties>
+						<skipTests>true</skipTests>
         </properties>
 
 	<modules>
@@ -72,7 +73,6 @@
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-surefire-plugin</artifactId>
 				<configuration>
-					<skip>${swtbot.test.skip}</skip>
 					<useUIThread>false</useUIThread>
 					<appArgLine>-pluginCustomization ${basedir}/../pluginCustomization.ini</appArgLine>
 					<explodedBundles>
@@ -105,7 +105,7 @@
 				<groupId>com.googlecode.maven-download-plugin</groupId>
 				<artifactId>download-maven-plugin</artifactId>
 				<configuration>
-					<skip>${swtbot.test.skip}</skip>
+					<skip>${skipTests}</skip>
 				</configuration>
 			</plugin>
 		</plugins>
