@@ -138,7 +138,7 @@
 							<goal>copy</goal>
 						</goals>
 						<configuration>
-							<skip>${swtbot.test.skip}</skip>
+							<skip>${skipTests}</skip>
 							<artifactItems>
 								<artifactItem>
 									<groupId>org.jboss.tools.portlet.tests</groupId>

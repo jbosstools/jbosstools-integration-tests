@@ -18,7 +18,7 @@
 		test.class - which test suite 
 	 -->
 	<properties>
-		<swtbot.test.skip>false</swtbot.test.skip>
+		<skipTests>false</skipTests>
 		<usage_reporting_enabled>false</usage_reporting_enabled>
 		<!-- Maven configuration -->
 		<maven.test.failure.ignore>true</maven.test.failure.ignore>

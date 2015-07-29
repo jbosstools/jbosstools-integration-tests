@@ -30,7 +30,7 @@
 							<goal>unpack</goal>
 						</goals>
 						<configuration>
-							<skip>${swtbot.test.skip}</skip>
+							<skip>${skipTests}</skip>
 							<artifactItems>
 								<artifactItem>
 									<groupId>org.jboss.as</groupId>
@@ -48,7 +48,7 @@
 							<goal>copy</goal>
 						</goals>
 						<configuration>
-							<skip>${swtbot.test.skip}</skip>
+							<skip>${skipTests}</skip>
 							<artifactItems>
 								<artifactItem>
 									<groupId>org.apache.deltaspike.core</groupId>
@@ -96,7 +96,7 @@
 							<goal>unpack</goal>
 						</goals>
 						<configuration>
-							<skip>${swtbot.test.skip}</skip>
+							<skip>${skipTests}</skip>
 							<artifactItems>
 								<artifactItem>
 									<groupId>org.wildfly</groupId>

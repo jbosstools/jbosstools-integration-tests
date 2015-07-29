@@ -44,7 +44,7 @@
 							<goal>unpack</goal>
 						</goals>
 						<configuration>
-							<skip>${swtbot.test.skip}</skip>
+							<skip>${skipTests}</skip>
 							<artifactItems>
 								<artifactItem>
 									<groupId>org.jboss.as</groupId>
@@ -62,7 +62,7 @@
 							<goal>unpack</goal>
 						</goals>
 						<configuration>
-							<skip>${swtbot.test.skip}</skip>
+							<skip>${skipTests}</skip>
 							<artifactItems>
 								<artifactItem>
 									<groupId>org.wildfly</groupId>
@@ -80,7 +80,7 @@
 							<goal>copy</goal>
 						</goals>
 						<configuration>
-							<skip>${swtbot.test.skip}</skip>
+							<skip>${skipTests}</skip>
 							<artifactItems>
 								<artifactItem>
 									 <groupId>org.jboss.weld.se</groupId>

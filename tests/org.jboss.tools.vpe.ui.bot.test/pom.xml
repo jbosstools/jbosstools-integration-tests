@@ -14,7 +14,6 @@
     <jbosstools.test.jboss-as.home>${requirementsDirectory}/jboss-as-7.0.2.Final</jbosstools.test.jboss-as.home>
     <org.jboss.tools.vpe.ui.bot.test.richfaces.ui.jar.location>${requirementsDirectory}/richfaces-4.2.1.Final/artifacts/ui/richfaces-components-ui-4.2.1.Final.jar</org.jboss.tools.vpe.ui.bot.test.richfaces.ui.jar.location>
     <systemProperties>${integrationTestsSystemProperties}
-      -Dswtbot.test.skip=false
       -Dtest.configurations.dir=resources/properties/
       -Djbosstools.test.jboss-as.home=${jbosstools.test.jboss-as.home}
       -Dorg.jboss.tools.vpe.ui.bot.test.richfaces.ui.jar.location=${org.jboss.tools.vpe.ui.bot.test.richfaces.ui.jar.location}</systemProperties>
@@ -34,7 +33,7 @@
               <goal>unpack</goal>
             </goals>
             <configuration>
-              <skip>${swtbot.test.skip}</skip>
+              <skip>${skipTests}</skip>
               <artifactItems>
                 <artifactItem>
                   <groupId>org.jboss.as</groupId>

@@ -60,7 +60,7 @@
 									<type>zip</type>
 								</artifactItem>
 							</artifactItems>
-							<skip>${swtbot.test.skip}</skip>
+							<skip>${skipTests}</skip>
 						</configuration>
 					</execution>
 					<!-- 
@@ -80,7 +80,7 @@
 									<type>jar</type>
 								</artifactItem>
 							</artifactItems>
-							<skip>${swtbot.test.skip}</skip>
+							<skip>${skipTests}</skip>
 						</configuration>
 					</execution>
 					-->
@@ -100,7 +100,7 @@
 									<type>zip</type>
 								</artifactItem>
 							</artifactItems>
-							<skip>${swtbot.test.skip}</skip>
+							<skip>${skipTests}</skip>
 						</configuration>
 					</execution>
 				</executions>
