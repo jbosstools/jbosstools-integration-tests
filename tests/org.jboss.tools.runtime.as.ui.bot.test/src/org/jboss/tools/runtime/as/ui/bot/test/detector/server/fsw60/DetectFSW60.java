@@ -28,7 +28,7 @@ public class DetectFSW60 extends DetectRuntimeTemplate {
 		server.setName(SERVER_NAME);
 		server.setType("FSW");
 		server.setVersion("6.0");
-		server.setLocation(RuntimeProperties.getInstance().getRuntimePath(getPathID()) + "/jboss-eap-6.1");
+		server.setLocation(RuntimeProperties.getInstance().getRuntimePath(getPathID()));
 		return Arrays.asList(server);
 	}
 }

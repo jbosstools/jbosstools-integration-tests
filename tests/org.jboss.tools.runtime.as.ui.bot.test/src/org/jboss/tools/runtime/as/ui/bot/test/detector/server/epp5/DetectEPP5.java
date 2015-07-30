@@ -11,6 +11,8 @@ public class DetectEPP5 extends DetectRuntimeTemplate {
 
 	public static final String SERVER_ID = "jboss-epp-5.2";
 	
+	public static final String SERVER_NAME = "JBoss Portal 5.2";
+	
 	@Override
 	protected String getPathID() {
 		return SERVER_ID;
@@ -19,7 +21,7 @@ public class DetectEPP5 extends DetectRuntimeTemplate {
 	@Override
 	protected List<Runtime> getExpectedRuntimes() {
 		Runtime server = new Runtime();
-		server.setName(getPathID());
+		server.setName(SERVER_NAME);
 		server.setType("EPP");
 		server.setVersion("5.2");
 		server.setLocation(RuntimeProperties.getInstance().getRuntimePath(getPathID()));

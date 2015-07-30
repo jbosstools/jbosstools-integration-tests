@@ -10,7 +10,7 @@ import org.jboss.tools.runtime.as.ui.bot.test.template.DetectRuntimeTemplate;
 public class DetectSOAP52 extends DetectRuntimeTemplate {
 
 	public static final String SERVER_ID = "jboss-soa-p-5.2";
-	public static final String SERVER_NAME = "jboss-soa-p-5";
+	public static final String SERVER_NAME = "JBoss SOA-P 5.2";
 	
 	@Override
 	protected String getPathID() {
