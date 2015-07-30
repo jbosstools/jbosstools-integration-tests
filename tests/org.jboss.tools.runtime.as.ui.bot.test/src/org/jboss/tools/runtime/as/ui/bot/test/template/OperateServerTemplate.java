@@ -9,6 +9,10 @@ import static org.junit.Assert.fail;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.jboss.ide.eclipse.as.reddeer.server.editor.JBossServerEditor;
+import org.jboss.ide.eclipse.as.reddeer.server.view.JBossServer;
+import org.jboss.ide.eclipse.as.reddeer.server.view.JBossServerView;
+import org.jboss.ide.eclipse.as.reddeer.server.wizard.page.JBossRuntimeWizardPage;
 import org.jboss.reddeer.common.condition.WaitCondition;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
@@ -19,6 +23,9 @@ import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.Server;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
+import org.jboss.reddeer.jface.wizard.WizardDialog;
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
+import org.jboss.reddeer.requirements.jre.JRERequirement;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -38,6 +45,9 @@ public abstract class OperateServerTemplate {
 	private ConsoleView consoleView = new ConsoleView();
 
 	protected abstract String getServerName();
+	
+	@InjectRequirement
+	JRERequirement jre;
 
 	@Test
 	public void operateServer() {
@@ -72,6 +82,18 @@ public abstract class OperateServerTemplate {
 			}
 		}
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
+		//Select JavaSE-1.7 as execution runtime
+		JBossServerView jBossServerView = new JBossServerView();
+		JBossServer server = jBossServerView.getServer(getServerName());
+		JBossServerEditor editor = server.open();
+		JBossRuntimeWizardPage editRuntimeEnvironment = editor.editRuntimeEnvironment();
+		editRuntimeEnvironment.setAlternateJRE(getJavaName());
+		new WizardDialog().finish();
+		editor.save();
+	}
+
+	private String getJavaName() {
+		return jre.getJREName();
 	}
 
 	@After

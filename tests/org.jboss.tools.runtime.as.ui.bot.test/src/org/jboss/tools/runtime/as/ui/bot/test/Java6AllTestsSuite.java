@@ -1,5 +1,6 @@
 package org.jboss.tools.runtime.as.ui.bot.test;
 
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap51.CheckEAP51Seam;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap51.DetectEAP51;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap51.OperateEAP51;
@@ -23,7 +24,7 @@ import org.junit.runners.Suite;
  * @author Petr Suchy
  *
  */
-@RunWith(JBTSuite.class)
+@RunWith(RedDeerSuite.class)
 @Suite.SuiteClasses({
 	
 		DetectEAP51.class, 

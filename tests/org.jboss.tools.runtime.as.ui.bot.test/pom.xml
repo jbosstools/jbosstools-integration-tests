@@ -322,13 +322,14 @@
 							<goal>copy-resources</goal>
 						</goals>
 						<configuration>
-							<outputDirectory>resources</outputDirectory>
+							<outputDirectory>resources/generated_resources</outputDirectory>
 							<resources>
 								<resource>
 									<directory>resources/template</directory>
 									<filtering>true</filtering>
 									<includes>
 										<include>runtimes.properties</include>
+										<include>java*.xml</include>
 									</includes>
 								</resource>
 							</resources>

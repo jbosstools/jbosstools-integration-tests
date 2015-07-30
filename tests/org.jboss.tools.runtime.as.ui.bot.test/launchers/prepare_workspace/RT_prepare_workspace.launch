@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <launchConfiguration type="org.eclipse.m2e.Maven2LaunchConfigurationType">
-<booleanAttribute key="M2_DEBUG_OUTPUT" value="false"/>
+<booleanAttribute key="M2_DEBUG_OUTPUT" value="true"/>
 <stringAttribute key="M2_GOALS" value="validate"/>
 <booleanAttribute key="M2_NON_RECURSIVE" value="false"/>
 <booleanAttribute key="M2_OFFLINE" value="false"/>
@@ -35,6 +35,9 @@
 <listEntry value="jboss-seam-2.3.x=${folder_prompt:Seam 2.3.x installation folder}"/>
 <listEntry value="jboss-seam-2.2.2=${folder_prompt:Seam 2.2.2 installation folder}"/>
 <listEntry value="jboss-fsw-6.0=${folder_prompt:FSW 6.0.0.GA installation folder}"/>
+<listEntry value="req.java6.home=${folder_prompt:Java6 folder}"/>
+<listEntry value="req.java7.home=${folder_prompt:Java7 folder}"/>
+<listEntry value="req.java8.home=${folder_prompt:Java8 folder}"/>
 </listAttribute>
 <stringAttribute key="M2_RUNTIME" value="EMBEDDED"/>
 <booleanAttribute key="M2_SKIP_TESTS" value="false"/>
