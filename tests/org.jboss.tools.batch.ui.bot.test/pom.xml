@@ -36,6 +36,26 @@
 							<artifactId>org.jboss.tools.batch.feature.feature.group</artifactId>
 							<version>0.0.0</version>
 						</dependency>
+						<dependency>
+							<type>p2-installable-unit</type>
+							<artifactId>org.jboss.tools.cdi.feature.feature.group</artifactId>
+							<version>0.0.0</version>
+						</dependency>
+							<dependency>
+							<type>p2-installable-unit</type>
+							<artifactId>org.eclipse.m2e.feature.feature.group</artifactId>
+							<version>0.0.0</version>
+						</dependency>
+						<dependency>
+							<type>p2-installable-unit</type>
+							<artifactId>org.eclipse.m2e.profiles.core</artifactId>
+							<version>0.0.0</version>
+						</dependency>
+						<dependency>
+							<type>p2-installable-unit</type>
+							<artifactId>org.jboss.tools.maven.feature.feature.group</artifactId>
+							<version>0.0.0</version>
+						</dependency>
 						<!-- This entry should enable creating of default JDK on Mac -->
 						<dependency>
 							<type>p2-installable-unit</type>
