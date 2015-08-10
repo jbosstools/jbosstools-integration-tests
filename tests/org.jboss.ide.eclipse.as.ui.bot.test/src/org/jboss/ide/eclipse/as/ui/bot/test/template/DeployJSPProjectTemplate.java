@@ -2,7 +2,6 @@ package org.jboss.ide.eclipse.as.ui.bot.test.template;
 
 import java.io.File;
 
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspaceRoot;
@@ -13,6 +12,7 @@ import org.jboss.ide.eclipse.as.reddeer.server.view.JBossServer;
 import org.jboss.ide.eclipse.as.reddeer.server.view.JBossServerModule;
 import org.jboss.ide.eclipse.as.ui.bot.test.Activator;
 import org.jboss.ide.eclipse.as.ui.bot.test.condition.EditorWithBrowserContainsTextCondition;
+import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
@@ -93,17 +93,6 @@ public abstract class DeployJSPProjectTemplate extends AbstractJBossServerTempla
 	
 	@Test
 	public void deployProject(){
-		log.step("Assert project is built");
-		try {
-			assertProjectIsBuilt();
-		} catch (Exception e){
-			log.step("*** Refresh project");
-			getProject().refresh();
-			log.step("Re-assert project is built");
-			assertProjectIsBuilt();
-			log.step("Re-throw exception");
-			throw e;
-		}
 		log.step("Add " + PROJECT_NAME + " to the server (Add module dialog)");
 		JBossServer server = getServer();
 		addModule(server);
@@ -120,9 +109,24 @@ public abstract class DeployJSPProjectTemplate extends AbstractJBossServerTempla
 		JBossServerModule module = server.getModule(PROJECT_NAME);
 		module.openWebPage();
 		ServerModuleWebPageEditor editor = new ServerModuleWebPageEditor(module.getLabel().getName()); 
-				
-		new WaitUntil(new EditorWithBrowserContainsTextCondition(editor, "Hello tests"));
-		
+
+		assertProjectIsBuilt();
+		try {
+			new WaitUntil(new EditorWithBrowserContainsTextCondition(editor, "Hello tests"));
+		} catch (WaitTimeoutExpiredException e) {
+			log.step("Deploy failed, assert project is built");
+			try {
+				assertProjectIsBuilt();
+			} catch (Exception ee){
+				log.step("*** Refresh project");
+				getProject().refresh();
+				log.step("Re-assert project is built");
+				assertProjectIsBuilt();
+				log.step("Re-throw exception");
+				throw ee;
+			}
+			throw e;
+		}
 		log.step("Assert web page text");
 		assertThat(editor.getText(), containsString("Hello tests!"));
 		// view
