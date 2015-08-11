@@ -3,6 +3,7 @@ package org.jboss.tools.aerogear.ui.bot.test;
 import static org.junit.Assert.assertTrue;
 
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.jboss.reddeer.common.exception.RedDeerException;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
@@ -19,8 +20,10 @@ import org.jboss.tools.aerogear.reddeer.ui.preferences.FeedHenryPreferencesPage;
 import org.jboss.tools.aerogear.reddeer.ui.wizard.ImportCordovaApplicationWizard;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
+
 /**
  * Base class for FeedHenry integration tests
+ * 
  * @author Pavol Srna
  *
  */
@@ -33,9 +36,9 @@ public class FeedHenryBotTest {
 	protected static String FH_PROJECT = "jbds-integration-tests";
 	protected static String FH_APP_NAME = "CordovaApp";
 	protected static String WS_PATH = ResourcesPlugin.getWorkspace().getRoot().getLocation().toOSString();
-	
+
 	@BeforeClass
-	public static void setup(){
+	public static void setup() {
 		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
 		FeedHenryPreferencesPage fhp = new FeedHenryPreferencesPage();
 		preferenceDialog.open();
@@ -44,24 +47,24 @@ public class FeedHenryBotTest {
 		fhp.setApiKey(API_KEY);
 		preferenceDialog.ok();
 	}
-	
-	public void importApp(String project, String appName){
+
+	public static void importApp(String project, String appName) {
 		ImportCordovaApplicationWizard w = new ImportCordovaApplicationWizard();
 		w.open();
-		new WaitUntil(new TreeHasChildren(new DefaultTree()), TimePeriod.VERY_LONG);	
+		new WaitUntil(new TreeHasChildren(new DefaultTree()), TimePeriod.VERY_LONG);
 		new DefaultTreeItem(project, appName).setChecked(true);
 		new LabeledCombo("Directory:").setText(WS_PATH);
 		assertTrue(w.isFinishEnabled());
 		w.finish();
-		//wait for shell and enter ssh secret
-		try{
+		// wait for shell and enter ssh secret
+		try {
 			new WaitUntil(new ShellWithTextIsActive("Information"), TimePeriod.LONG);
 			new DefaultText().setText(SSH_SECRET);
 			new PushButton("OK").click();
-		}catch(Exception e){
-			//do nothing
+		} catch (RedDeerException e) {
+			// do nothing
 		}
 		new WaitWhile(new ShellWithTextIsActive("Import"));
 	}
-	
+
 }

@@ -19,6 +19,9 @@
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
 <listEntry value="1"/>
 </listAttribute>
+<mapAttribute key="org.eclipse.debug.core.environmentVariables">
+<mapEntry key="DISPLAY" value=":1"/>
+</mapAttribute>
 <stringAttribute key="org.eclipse.jdt.junit.CONTAINER" value=""/>
 <booleanAttribute key="org.eclipse.jdt.junit.KEEPRUNNING_ATTR" value="false"/>
 <stringAttribute key="org.eclipse.jdt.junit.TESTNAME" value=""/>
@@ -29,7 +32,7 @@
 <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch ${target.arch} -nl ${target.nl} -consoleLog"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="org.jboss.tools.aerogear.ui.bot.test"/>
 <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.pde.ui.workbenchClasspathProvider"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-DTARGET_URL=${string_prompt:Target URL} -DAPI_KEY=${string_prompt:API Key} -DSSH_SECRET=${password_prompt:SSH Secret} -Dusage_reporting_enabled=false"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-DTARGET_URL=${string_prompt:Target URL:https://aerogear-t.sandbox.feedhenry.com} -DAPI_KEY=${string_prompt:API Key} -DSSH_SECRET=${password_prompt:SSH Secret} -Dusage_reporting_enabled=false"/>
 <stringAttribute key="pde.version" value="3.3"/>
 <stringAttribute key="product" value="com.jboss.devstudio.core.product"/>
 <stringAttribute key="rd.launch.property.reddeer.captureScreenshot" value="true"/>
