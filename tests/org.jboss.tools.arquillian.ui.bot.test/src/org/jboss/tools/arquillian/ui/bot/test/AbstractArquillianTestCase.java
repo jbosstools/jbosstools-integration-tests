@@ -40,6 +40,7 @@ public abstract class AbstractArquillianTestCase {
 		return project;
 	}
 	
+	@SuppressWarnings("rawtypes")
 	protected void checkProblems() {
 		log.step("Check errors in Problems view");
 		ProblemsView view = new ProblemsView();

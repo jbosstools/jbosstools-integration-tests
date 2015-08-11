@@ -21,7 +21,7 @@ Require-Bundle: org.eclipse.ui,
  org.jboss.tools.maven.reddeer;bundle-version="[4.3.0,4.4.0)",
  org.jboss.tools.arquillian.reddeer;bundle-version="[4.3.0,4.4.0)"
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Import-Package: org.eclipse.core.resources
 Eclipse-BundleShape: jar
 Bundle-Vendor: JBoss by Red Hat

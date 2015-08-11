@@ -2,12 +2,12 @@ package org.jboss.ide.eclipse.as.ui.bot.test.template;
 
 import org.jboss.ide.eclipse.as.reddeer.server.view.JBossServer;
 import org.jboss.reddeer.common.logging.Logger;
+import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewEnums.ServerPublishState;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewEnums.ServerState;
 import org.jboss.reddeer.eclipse.wst.server.ui.wizard.ModifyModulesDialog;
 import org.jboss.reddeer.eclipse.wst.server.ui.wizard.ModifyModulesPage;
-import org.jboss.reddeer.common.wait.WaitUntil;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -59,7 +59,7 @@ public abstract class UndeployJSPProjectTemplate extends AbstractJBossServerTemp
 
 	private void undeploy(JBossServer server) {
 		ModifyModulesDialog modifyModulesDialog = server.addAndRemoveModules();
-		ModifyModulesPage modifyModulesPage = modifyModulesDialog.getFirstPage();
+		ModifyModulesPage modifyModulesPage = new ModifyModulesPage();
 		modifyModulesPage.remove(DeployJSPProjectTemplate.PROJECT_NAME);;
 		modifyModulesDialog.finish();
 	}

@@ -35,6 +35,7 @@ public class AbstractBatchTest {
 	}
 
 	protected void assertNoProblems() {
+		log.step("Assert there are no problems");
 		ProblemsView problemsView = new ProblemsView();
 		problemsView.open();
 		

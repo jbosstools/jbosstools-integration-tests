@@ -15,11 +15,10 @@ import org.jboss.ide.eclipse.as.ui.bot.test.condition.EditorWithBrowserContainsT
 import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
 import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.eclipse.ui.dialogs.ExplorerItemPropertyDialog;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
@@ -29,7 +28,6 @@ import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewEnums.ServerPubli
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewEnums.ServerState;
 import org.jboss.reddeer.eclipse.wst.server.ui.wizard.ModifyModulesDialog;
 import org.jboss.reddeer.eclipse.wst.server.ui.wizard.ModifyModulesPage;
-import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -68,7 +66,7 @@ public abstract class DeployJSPProjectTemplate extends AbstractJBossServerTempla
 		ExternalProjectImportWizardDialog dialog = new ExternalProjectImportWizardDialog();
 		dialog.open();
 		
-		WizardProjectsImportPage page = dialog.getFirstPage();
+		WizardProjectsImportPage page = new WizardProjectsImportPage();
 		page.setArchiveFile(Activator.getPathToFileWithinPlugin("projects/jsp-project.zip"));
 		page.selectProjects(PROJECT_NAME);
 		
@@ -77,13 +75,14 @@ public abstract class DeployJSPProjectTemplate extends AbstractJBossServerTempla
 		Project project = getProject();
 		
 		log.step("Set targeted runtime for " + PROJECT_NAME);
-		RuntimesPropertyPage targetedRuntimes = new RuntimesPropertyPage(project);
-		targetedRuntimes.open();
-		targetedRuntimes.selectRuntime(serverRequirement.getRuntimeNameLabelText(serverRequirement.getConfig()));
+		ExplorerItemPropertyDialog propertyDialog = new ExplorerItemPropertyDialog(project);
+		propertyDialog.open();
 		
-		OkButton ok = new OkButton();
-		ok.click();
-		new WaitWhile(new ShellWithTextIsAvailable(targetedRuntimes.getPageTitle())); 
+		RuntimesPropertyPage targetedRuntimes = new RuntimesPropertyPage();
+		propertyDialog.select(targetedRuntimes);
+		targetedRuntimes.selectRuntime(serverRequirement.getRuntimeNameLabelText(serverRequirement.getConfig()));
+
+		propertyDialog.ok();
 	}
 
 	@Before
@@ -175,7 +174,7 @@ public abstract class DeployJSPProjectTemplate extends AbstractJBossServerTempla
 
 	private void addModule(JBossServer server) {
 		ModifyModulesDialog modifyModulesDialog = server.addAndRemoveModules();
-		ModifyModulesPage modifyModulesPage = modifyModulesDialog.getFirstPage();
+		ModifyModulesPage modifyModulesPage = new ModifyModulesPage();
 		modifyModulesPage.add(PROJECT_NAME);
 		modifyModulesDialog.finish();
 	}

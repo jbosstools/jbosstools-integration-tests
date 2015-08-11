@@ -1,7 +1,5 @@
 package org.jboss.tools.arquillian.ui.bot.reddeer.configurations;
 
-import org.jboss.reddeer.common.logging.Logger;
-
 /**
  * Abstract run configuration. 
  * 
@@ -9,8 +7,6 @@ import org.jboss.reddeer.common.logging.Logger;
  *
  */
 public abstract class RunConfiguration {
-
-	private static final Logger log = Logger.getLogger(RunConfiguration.class);
 
 	private String category;
 	
