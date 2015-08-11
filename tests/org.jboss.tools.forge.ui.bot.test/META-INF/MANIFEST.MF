@@ -19,7 +19,8 @@ Require-Bundle: org.jboss.tools.forge.ui;bundle-version="1.0.0",
  org.eclipse.ui;bundle-version="3.106.0",
  org.junit;bundle-version="4.11.0",
  org.eclipse.core.runtime;bundle-version="3.10.0",
- org.jboss.reddeer.requirements;bundle-version="0.7.0"
+ org.jboss.reddeer.requirements;bundle-version="0.7.0",
+ org.jboss.reddeer.junit.extension;bundle-version="0.8.0"
 Import-Package: org.eclipse.core.resources
 Eclipse-BundleShape: jar
 Bundle-Localization: plugin
