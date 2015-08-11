@@ -3,12 +3,27 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-        <groupId>org.jboss.tools.integration-tests</groupId>
+		<groupId>org.jboss.tools.integration-tests</groupId>
 		<artifactId>tests</artifactId>
 		<version>4.3.0-SNAPSHOT</version>
 	</parent>
 	<groupId>org.jboss.tools.smoke.ui.test</groupId>
 	<artifactId>org.jboss.tools.smoke.ui.test</artifactId>
-    <packaging>eclipse-test-plugin</packaging>
+	<packaging>eclipse-test-plugin</packaging>
 
+	<build>
+		<plugins>
+
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-surefire-plugin</artifactId>
+				<configuration>
+					<useUIThread>false</useUIThread>
+					<surefire.timeout>7200</surefire.timeout>
+					<forkedProcessTimeoutInSeconds>7200</forkedProcessTimeoutInSeconds>					
+					<testClass>org.jboss.tools.smoke.ui.test.SmokeSuite</testClass>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>
