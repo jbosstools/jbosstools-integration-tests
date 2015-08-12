@@ -2,6 +2,7 @@ package org.jboss.tools.portlet.ui.bot.matcher.problems;
 
 import org.hamcrest.Description;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
+import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
 import org.jboss.tools.portlet.ui.bot.matcher.JavaPerspectiveAbstractSWTMatcher;
 
 /**
@@ -17,7 +18,7 @@ public class NumberOfErrorsMatcher extends JavaPerspectiveAbstractSWTMatcher<Int
 
 	@Override
 	protected boolean matchesSafelyInJavaPerspective(Integer expectedNumber) {
-		numberOfErrors = new ProblemsView().getAllErrors().size();
+		numberOfErrors = new ProblemsView().getProblems(ProblemType.ERROR).size();
 		return numberOfErrors == expectedNumber;
 	}
 

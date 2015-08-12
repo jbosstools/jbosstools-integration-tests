@@ -34,14 +34,6 @@ public class JBossServer extends Server {
 	
 	private static final Logger log = Logger.getLogger(JBossServer.class);
 
-	/**
-	 * @deprecated Use {@link #JBossServer(TreeItem, JBossServerView)}
-	 * @param treeItem
-	 */
-	public JBossServer(TreeItem treeItem) {
-		super(treeItem);
-	}
-	
 	protected JBossServer(TreeItem treeItem, ServersView view) {
 		super(treeItem, view);
 	}

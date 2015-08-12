@@ -106,7 +106,7 @@ public class VariousProjectsArchiving extends ArchivesTestBase {
 	private void createDynamicWebProject(String project, String targetRuntime) {
 		WebProjectWizard ww = new WebProjectWizard();
 		ww.open();
-		WebProjectFirstPage fp = (WebProjectFirstPage)ww.getWizardPage(0);
+		WebProjectFirstPage fp = new WebProjectFirstPage();
 		fp.setProjectName(project);
 		fp.setTargetRuntime(targetRuntime);
 		ww.finish();

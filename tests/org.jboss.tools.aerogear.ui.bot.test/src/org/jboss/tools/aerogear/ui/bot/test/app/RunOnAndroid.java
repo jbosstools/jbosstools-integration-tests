@@ -16,12 +16,11 @@ import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
-import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
-import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
-import org.jboss.reddeer.workbench.preference.WorkbenchPreferencePage;
+import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
+import org.jboss.tools.aerogear.reddeer.ui.preferences.AndroidPreferencesPage;
 import org.jboss.tools.aerogear.ui.bot.test.AerogearBotTest;
 import org.jboss.tools.aerogear.ui.bot.test.utils.AndroidDevelopmentTools;
 
@@ -34,18 +33,14 @@ import org.junit.Test;
 public class RunOnAndroid extends AerogearBotTest {
   @BeforeClass 
   public static void setAndroidSDKPreference(){
-    // sets mandatory preferences
-//    open.preferenceOpen(ActionItem.Preference.Android.LABEL);
-//    bot.textWithLabel("SDK Location:")
-//      .setText(AndroidDevelopmentTools.getAndoridSDKLocation());
-//    bot.button(IDELabel.Button.OK).click();
     
-    WorkbenchPreferencePage preferences = new WorkbenchPreferencePage("Hybrid Mobile","Android");
-    new DefaultText("Android SDK Directory:")
-    	.setText(AndroidDevelopmentTools.getAndoridSDKLocation());
+	WorkbenchPreferenceDialog preferencesDialog = new WorkbenchPreferenceDialog();
+	preferencesDialog.open();
+	AndroidPreferencesPage androidPreferences = new AndroidPreferencesPage();
+	preferencesDialog.select(androidPreferences);
+    androidPreferences.setAndroidSDKLocation(AndroidDevelopmentTools.getAndoridSDKLocation());
+    preferencesDialog.ok();
     
-    new PushButton("OK").click();
-
   }
 	@Test
 	public void canRunOnAndroidEmulator() {

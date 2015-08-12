@@ -110,7 +110,7 @@ public abstract class AbstractConfiguratorsTest extends AbstractMavenSWTBotTest{
 	public void createEJBProject(String name, String runtime) {
 	    EjbProjectWizard ejb = new EjbProjectWizard();
 		ejb.open();
-		EjbProjectFirstPage efp = (EjbProjectFirstPage)ejb.getWizardPage(0);
+		EjbProjectFirstPage efp = new EjbProjectFirstPage();
 		efp.setProjectName(name);
 		if(runtime == null){
 			efp.setTargetRuntime("<None>");

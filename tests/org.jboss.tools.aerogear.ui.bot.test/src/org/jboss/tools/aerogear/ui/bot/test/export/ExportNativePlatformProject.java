@@ -27,8 +27,7 @@ public class ExportNativePlatformProject extends ExportMobileTest {
 	    new ProjectExplorer().selectProjects(CORDOVA_PROJECT_NAME);
 	    ExportNativePlatformProjectWizard exportNativePlatformProjectWizard = new ExportNativePlatformProjectWizard();
 	    exportNativePlatformProjectWizard.open();
-	    ExportNativePlatformProjectPage exportNativePlatformProjectPage = 
-	      (ExportNativePlatformProjectPage)exportNativePlatformProjectWizard.getCurrentWizardPage();
+	    ExportNativePlatformProjectPage exportNativePlatformProjectPage = new ExportNativePlatformProjectPage();
 	    assertTrue("Project " + CORDOVA_PROJECT_NAME + " has to be selected",
 	        exportNativePlatformProjectPage.isProject(CORDOVA_PROJECT_NAME));
 	    exportNativePlatformProjectPage.setPlatform("Android",true);

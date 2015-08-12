@@ -116,7 +116,7 @@ public class PartialBeanTest extends NewDeltaspikeTestBase{
 	private void createClassWithContent(String className, String contentPath){
 		NewJavaClassWizardDialog jd = new NewJavaClassWizardDialog();
 		jd.open();
-		NewJavaClassWizardPage jp = jd.getFirstPage();
+		NewJavaClassWizardPage jp = new NewJavaClassWizardPage();
 		jp.setName(className);
 		jp.setPackage("test");
 		jd.finish();

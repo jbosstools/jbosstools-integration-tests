@@ -1,7 +1,7 @@
 package org.jboss.tools.ws.reddeer.ui.preferences;
 
+import org.jboss.reddeer.jface.preference.PreferencePage;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.workbench.preference.WorkbenchPreferencePage;
 
 /**
  * JBoss Tools > JAX-RS > JAX-RS Validator page in Preferences dialog.
@@ -9,7 +9,7 @@ import org.jboss.reddeer.workbench.preference.WorkbenchPreferencePage;
  * @author Radoslav Rabara
  *
  */
-public class JAXRSValidatorPreferencePage extends WorkbenchPreferencePage {
+public class JAXRSValidatorPreferencePage extends PreferencePage {
 
 	public JAXRSValidatorPreferencePage() {
 		super("JBoss Tools", "JAX-RS", "JAX-RS Validator");

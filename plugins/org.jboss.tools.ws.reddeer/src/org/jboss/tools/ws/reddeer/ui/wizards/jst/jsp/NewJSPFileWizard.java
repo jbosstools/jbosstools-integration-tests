@@ -1,7 +1,6 @@
 package org.jboss.tools.ws.reddeer.ui.wizards.jst.jsp;
 
 import org.jboss.reddeer.jface.wizard.NewWizardDialog;
-import org.jboss.tools.ws.reddeer.ui.wizards.CreateNewFileWizardPage;
 
 /**
  * JSP File wizard.
@@ -14,6 +13,5 @@ import org.jboss.tools.ws.reddeer.ui.wizards.CreateNewFileWizardPage;
 public class NewJSPFileWizard extends NewWizardDialog {
 	public NewJSPFileWizard() {
 		super("Web", "JSP File");
-		addWizardPage(new CreateNewFileWizardPage(), 0);
 	}
 }

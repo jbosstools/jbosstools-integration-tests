@@ -23,7 +23,6 @@ public class ExportNativePlatformProjectWizard extends ExportWizardDialog{
   
   public ExportNativePlatformProjectWizard (){
     super(ExportNativePlatformProjectWizard.PATH);
-    addWizardPage(new ExportNativePlatformProjectPage(), 0);
   }
 
 }

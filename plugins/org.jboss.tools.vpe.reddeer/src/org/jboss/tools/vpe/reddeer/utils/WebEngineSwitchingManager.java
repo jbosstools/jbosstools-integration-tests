@@ -11,7 +11,7 @@
 package org.jboss.tools.vpe.reddeer.utils;
 
 import org.eclipse.core.runtime.Platform;
-import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
+import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.common.platform.OS;
 import org.jboss.reddeer.common.platform.RunningPlatform;

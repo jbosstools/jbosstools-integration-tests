@@ -23,7 +23,6 @@ public class ExportMobileApplicationWizard extends ExportWizardDialog{
   
   public ExportMobileApplicationWizard (){
     super(ExportMobileApplicationWizard.PATH);
-    addWizardPage(new ExportMobileApplicationPage(), 0);
   }
 
 }

@@ -36,7 +36,7 @@ import org.jboss.tools.seam.reddeer.wizards.SeamProjectFirstPage;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.jboss.tools.seam.reddeer.perspective.SeamPerspective;
-import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
+import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 /**
  * @author Rastislav Wagner
  * 
@@ -135,13 +135,13 @@ public class SeamProjectTest extends AbstractMavenSWTBotTest {
 	private void createSeamProject(String projectName, String seamRuntime, String seamVersion, boolean EAR){
 		SeamProjectDialog sd = new SeamProjectDialog();
 		sd.open();
-		SeamProjectFirstPage sf = (SeamProjectFirstPage)sd.getWizardPage(0);
+		SeamProjectFirstPage sf = new SeamProjectFirstPage();
 		sf.setProjectName(projectName);
 		sf.setRuntime(sr.getRuntimeNameLabelText(sr.getConfig()));
 		//sf.setServer(serverName);
 		sf.activateFacet("Seam", seamVersion);
 		sf.activateFacet("JBoss Maven Integration", null);
-		SeamProjectFifthPage sfp = (SeamProjectFifthPage)sd.getWizardPage(5);
+		SeamProjectFifthPage sfp = new SeamProjectFifthPage();
 		sfp.setSeamRuntime(seamRuntime);
 		sfp.toggleEAR(EAR);
 		sfp.setConnectionProfile("New HSQLDB");

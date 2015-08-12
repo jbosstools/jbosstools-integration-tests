@@ -19,7 +19,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
+import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
 import org.jboss.reddeer.swt.api.TableItem;
@@ -79,7 +79,7 @@ public class Seam3TestBase {
 		
 		ExternalProjectImportWizardDialog iDialog = new ExternalProjectImportWizardDialog();
 		iDialog.open();
-		WizardProjectsImportPage fPage = iDialog.getFirstPage();
+		WizardProjectsImportPage fPage = new WizardProjectsImportPage();
 		fPage.copyProjectsIntoWorkspace(true);
 		try {
 			fPage.setRootDirectory((new File(projectLocation)).getParentFile().getCanonicalPath());

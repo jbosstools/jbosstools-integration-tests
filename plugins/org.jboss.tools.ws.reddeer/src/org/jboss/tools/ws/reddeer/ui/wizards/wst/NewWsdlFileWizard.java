@@ -17,6 +17,5 @@ import org.jboss.tools.ws.reddeer.ui.wizards.CreateNewFileWizardPage;
 public class NewWsdlFileWizard extends NewWizardDialog {
 	public NewWsdlFileWizard() {
 		super("Web Services", "WSDL File");
-		addWizardPage(new CreateNewFileWizardPage(), 0);
 	}
 }

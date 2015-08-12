@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 import static org.hamcrest.core.Is.is;
 
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.ui.dialogs.ExplorerItemPropertyDialog;
 import org.jboss.reddeer.eclipse.wst.common.project.facet.ui.FacetsPropertyPage;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
@@ -36,12 +37,15 @@ public class ServletSetupWizardTest extends WizardTestBase {
 	
 	@Test
 	public void testFacetEnabled(){	
-		ProjectExplorer pe = new ProjectExplorer();
-		FacetsPropertyPage facetsPage = new FacetsPropertyPage(pe.getProject(PROJECT_NAME));
-		facetsPage.open();
+		ExplorerItemPropertyDialog projectPropertiesDialog = 
+				new ExplorerItemPropertyDialog(new ProjectExplorer().getProject(PROJECT_NAME));
+		projectPropertiesDialog.open();
+		FacetsPropertyPage facetsPage = new FacetsPropertyPage();
+		projectPropertiesDialog.select(facetsPage);
 		TreeItem facet = new DefaultTreeItem(new DefaultTree(1), "Dynamic Web Module");
 		assertTrue(FACET + " facet is not checked!", facet.isChecked());
 		assertThat(facet.getCell(1), is(FACET_VERSION));
+		projectPropertiesDialog.cancel();
 	}
 	
 	@Test

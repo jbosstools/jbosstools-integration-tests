@@ -24,8 +24,6 @@ public class MavenImportWizard extends WizardDialog {
 
 	public MavenImportWizard() {
 		super();
-		addWizardPage(new MavenImportWizardFirstPage(), 0);
-
 	}
 
 	public void open() {

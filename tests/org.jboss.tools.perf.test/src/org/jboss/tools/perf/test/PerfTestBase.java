@@ -8,7 +8,7 @@ import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
-import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
+import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
 import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
@@ -91,7 +91,7 @@ public abstract class PerfTestBase {
     public void importProject(){
         ExternalProjectImportWizardDialog ew = new ExternalProjectImportWizardDialog();
         ew.open();
-        WizardProjectsImportPage ip = ew.getFirstPage();
+        WizardProjectsImportPage ip = new WizardProjectsImportPage();
         ip.setRootDirectory("/home/jbossqa/validation/jee/"+projectFolder);
         ip.copyProjectsIntoWorkspace(true);
         new CheckBox(new DefaultGroup("Options"),"Search for nested projects").toggle(true);
@@ -104,7 +104,7 @@ public abstract class PerfTestBase {
     public void importProjectWithMaven(){
     	MavenImportWizard mw = new MavenImportWizard();
     	mw.open();
-    	MavenImportWizardFirstPage mp = (MavenImportWizardFirstPage)mw.getWizardPage(0);
+    	MavenImportWizardFirstPage mp = new MavenImportWizardFirstPage();
     	mp.setRootDirectory("/home/jbossqa/validation/maven/"+projectFolder);
     	new FinishButton().click();
         new WaitUntil(new JobIsRunning(), TimePeriod.ETERNAL);

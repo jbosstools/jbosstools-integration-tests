@@ -28,7 +28,7 @@ import org.jboss.reddeer.eclipse.jdt.ui.NewEnumWizardPage;
 import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardDialog;
 import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardPage;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
+import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
 import org.jboss.reddeer.eclipse.wst.server.ui.Runtime;
 import org.jboss.reddeer.eclipse.wst.server.ui.RuntimePreferencePage;
@@ -36,6 +36,7 @@ import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.eclipse.wst.server.ui.wizard.NewRuntimeWizardDialog;
 import org.jboss.reddeer.eclipse.wst.server.ui.wizard.NewRuntimeWizardPage;
 import org.jboss.reddeer.eclipse.wst.server.ui.wizard.NewServerWizardDialog;
+import org.jboss.reddeer.eclipse.wst.server.ui.wizard.NewServerWizardPage;
 import org.jboss.reddeer.swt.impl.button.NextButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
@@ -124,15 +125,17 @@ public class TicketMonsterBaseTest {
 		ArchetypeProject archetypeProject = new ArchetypeProject(JAVA_EE_PROJECT, TICKET_MONSTER_NAME, false);
 		JBossCentralProjectWizard wz = new JBossCentralProjectWizard(archetypeProject);
 		wz.open();
-		NewProjectExamplesStacksRequirementsPage fp = (NewProjectExamplesStacksRequirementsPage)wz.getWizardPage(0);
+		NewProjectExamplesStacksRequirementsPage fp = new NewProjectExamplesStacksRequirementsPage();
 		List<ExampleRequirement> reqs = fp.getRequirements();
 		assertFalse(reqs.get(0).isMet());
 		installRuntime(EAP_61_NAME, wz, true);
 		fp.setTargetRuntime(EAP_61_RUNTIME);
-		ArchetypeExamplesWizardFirstPage sp = (ArchetypeExamplesWizardFirstPage)wz.getWizardPage(1);
+		wz.next();
+		ArchetypeExamplesWizardFirstPage sp = new ArchetypeExamplesWizardFirstPage();
 		sp.setProjectName(TICKET_MONSTER_NAME);
 		sp.setPackage(TICKET_MONSTER_PACKAGE);
-		ArchetypeExamplesWizardPage tp = (ArchetypeExamplesWizardPage)wz.getWizardPage(2);
+		wz.next();
+		ArchetypeExamplesWizardPage tp = new ArchetypeExamplesWizardPage();
 		assertEquals(TICKET_MONSTER_PACKAGE,tp.getGroupID());
 		assertEquals(TICKET_MONSTER_NAME, tp.getArtifactID());
 		assertEquals(TICKET_MONSTER_PACKAGE, tp.getPackage());
@@ -148,7 +151,7 @@ public class TicketMonsterBaseTest {
 	}
 
 	protected void installRuntime(String runtimeName,JBossCentralProjectWizard wz, boolean eap){
-		NewProjectExamplesStacksRequirementsPage fp = (NewProjectExamplesStacksRequirementsPage)wz.getWizardPage(0);
+		NewProjectExamplesStacksRequirementsPage fp = new NewProjectExamplesStacksRequirementsPage();
 		List<ExampleRequirement> reqs = fp.getRequirements();
 		
 		
@@ -161,7 +164,7 @@ public class TicketMonsterBaseTest {
 	}
 	
 	protected void downloadAndInstallRuntime(String runtimeName,JBossCentralProjectWizard wz, boolean eap){
-		NewProjectExamplesStacksRequirementsPage fp = (NewProjectExamplesStacksRequirementsPage)wz.getWizardPage(0);
+		NewProjectExamplesStacksRequirementsPage fp = new NewProjectExamplesStacksRequirementsPage();
 		DownloadRuntimesTaskWizard downloadRuntime = null;
 		for(ExampleRequirement er: fp.getRequirements()){
 			if(er.getType().equals("server/runtime")){
@@ -175,19 +178,20 @@ public class TicketMonsterBaseTest {
 		} else {
 			downloadRuntime.asDialog();
 		}
-		TaskWizardFirstPage downloadFirst = (TaskWizardFirstPage)downloadRuntime.getWizardPage(0);
+		TaskWizardFirstPage downloadFirst = new TaskWizardFirstPage();
 		downloadFirst.selectRuntime(runtimeName);
-		int eapPages = 0;
 		if(eap){
-			eapPages = 1;
-			TaskWizardLoginPage downloadTask = (TaskWizardLoginPage)downloadRuntime.getWizardPage(1);
+			downloadRuntime.next();
+			TaskWizardLoginPage downloadTask = new TaskWizardLoginPage();
 			downloadTask.setUsername(JBOSS_USERNAME);
 			downloadTask.setPassword(JBOSS_PASSWORD);
 		}
-		TaskWizardSecondPage downloadSecond = (TaskWizardSecondPage)downloadRuntime.getWizardPage(1+eapPages);
+		downloadRuntime.next();
+		TaskWizardSecondPage downloadSecond = new TaskWizardSecondPage();
 		AbstractWait.sleep(TimePeriod.LONG); //wait for credentials validation;
 		downloadSecond.acceptLicense(true);
-		TaskWizardThirdPage downloadThird = (TaskWizardThirdPage)downloadRuntime.getWizardPage(2+eapPages);
+		downloadRuntime.next();
+		TaskWizardThirdPage downloadThird = new TaskWizardThirdPage();
 		downloadThird.setDownloadFolder(new File(JBOSS_AS_DOWNLOAD_DIR).getAbsolutePath());
 		downloadThird.setInstallFolder(new File(JBOSS_AS_DOWNLOAD_DIR).getAbsolutePath());
 		downloadRuntime.finish();
@@ -207,7 +211,7 @@ public class TicketMonsterBaseTest {
 			}
 		}
 		NewRuntimeWizardDialog rd = rp.addRuntime();
-		((NewRuntimeWizardPage)rd.getFirstPage()).selectType("Red Hat JBoss Middleware","JBoss Enterprise Application Platform 6.1+ Runtime");
+		new NewRuntimeWizardPage().selectType("Red Hat JBoss Middleware","JBoss Enterprise Application Platform 6.1+ Runtime");
 		new NextButton().click();
 		new LabeledText("Home Directory").setText(homeDir);
 		new LabeledText("Name").setText(EAP_61_RUNTIME);
@@ -244,7 +248,7 @@ public class TicketMonsterBaseTest {
 	protected void createJavaClass(String name, String classPackage){
 		NewJavaClassWizardDialog newJava  = new NewJavaClassWizardDialog();
 		newJava.open();
-		NewJavaClassWizardPage newJavaPage = newJava.getFirstPage();
+		NewJavaClassWizardPage newJavaPage = new NewJavaClassWizardPage();
 		newJavaPage.setName(name);
 		newJavaPage.setPackage(classPackage);
 		newJavaPage.setSourceFolder(TICKET_MONSTER_NAME+"/src/main/java");
@@ -372,8 +376,9 @@ public class TicketMonsterBaseTest {
 			sview.getServer(EAP_61_NAME_WITHOUT_RUNTIME);
 		} catch(EclipseLayerException ex){
 			NewServerWizardDialog sdialog = sview.newServer();
-			sdialog.getFirstPage().selectType("Red Hat JBoss Middleware","JBoss Enterprise Application Platform 6.1+");
-			sdialog.getFirstPage().setName(EAP_61_NAME_WITHOUT_RUNTIME);
+			NewServerWizardPage newServerWizardPage = new NewServerWizardPage();
+			newServerWizardPage.selectType("Red Hat JBoss Middleware","JBoss Enterprise Application Platform 6.1+");
+			newServerWizardPage.setName(EAP_61_NAME_WITHOUT_RUNTIME);
 			sdialog.next();
 			sdialog.finish();
 			new WaitUntil(new ServerExists(EAP_61_NAME_WITHOUT_RUNTIME));

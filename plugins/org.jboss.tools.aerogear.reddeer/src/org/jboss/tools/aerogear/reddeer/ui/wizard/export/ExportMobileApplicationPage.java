@@ -15,6 +15,7 @@ import org.jboss.reddeer.jface.wizard.WizardPage;
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.swt.api.Combo;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
+import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.table.DefaultTableItem;
 import org.jboss.tools.aerogear.reddeer.ui.preferences.AndroidPreferencesPage;
 
@@ -81,7 +82,7 @@ public class ExportMobileApplicationPage extends WizardPage{
    * @return
    */
   private TableItem findPlatform (String platformName){
-    return new DefaultTableItem(1,platformName);    
+    return new DefaultTableItem(new DefaultTable(1),platformName);    
   }
   /**
    * Finds project tableItem with projectName
@@ -89,7 +90,7 @@ public class ExportMobileApplicationPage extends WizardPage{
    * @return
    */
   private TableItem findProject (String projectName){
-    return new DefaultTableItem(0,projectName);    
+    return new DefaultTableItem(new DefaultTable(0),projectName);    
   }
   /**
    * Finds Output Directory Combo

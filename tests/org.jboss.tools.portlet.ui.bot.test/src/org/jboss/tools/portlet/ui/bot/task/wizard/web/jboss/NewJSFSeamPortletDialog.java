@@ -12,7 +12,6 @@ public class NewJSFSeamPortletDialog extends NewWizardDialog {
 
 	public NewJSFSeamPortletDialog() {
 		super("JBoss Tools Web", "Portlet", "JBoss JSF/Seam Portlet");
-		addWizardPage(new NewJSFSeamPortletWizardPage(), 1);
 	}
 
 }

@@ -14,7 +14,6 @@ import org.jboss.reddeer.eclipse.ui.problems.Problem;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
 import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.tools.ws.reddeer.editor.ExtendedTextEditor;
@@ -97,11 +96,11 @@ public class FiltersInterceptorsSupportTest extends RESTfulTestBase {
 		new ExtendedTextEditor().save();
 
 		/* wait for JAX-RS validator */
-		new WaitUntil(new ProblemsCount(ProblemsCount.ProblemType.WARNING,
+		new WaitUntil(new ProblemsCount(ProblemType.WARNING,
 				warningsBefore.size()+1), TimePeriod.NORMAL, false);
 
 		//one more warning Description "The @Provider annotation is missing on this java type."
-		List<TreeItem> warningsAfter = new ProblemsView().getAllWarnings();
+		List<Problem> warningsAfter = new ProblemsView().getProblems(ProblemType.WARNING);
 		assertThat("Expected one more warnings.\nBefore: "
 				+ Arrays.toString(warningsBeforeStrings.toArray()) + "\nAfter: "
 				+ Arrays.toString(warningsAfter.toArray()), warningsAfter.size() - warningsBefore.size(), Is.is(1));

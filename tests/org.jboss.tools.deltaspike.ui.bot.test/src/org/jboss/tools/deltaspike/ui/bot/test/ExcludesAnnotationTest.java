@@ -28,7 +28,7 @@ import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.api.Shell;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.reddeer.swt.regex.Regex;
+import org.jboss.reddeer.common.matcher.RegexMatcher;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
@@ -56,7 +56,7 @@ import org.junit.Test;
 @JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.AS7_1)
 public class ExcludesAnnotationTest extends DeltaspikeTestBase {
 
-	private Regex validationProblemRegex = new Regex(
+	private RegexMatcher validationProblemRegexMatcher = new RegexMatcher(
 			"Multiple beans are eligible for injection.*");
 	
 	@InjectRequirement
@@ -78,12 +78,12 @@ public class ExcludesAnnotationTest extends DeltaspikeTestBase {
 		importDeltaspikeProject(projectName,sr);
 		
 		new WaitUntil(new SpecificProblemExists(
-				validationProblemRegex), TimePeriod.LONG);
+				validationProblemRegexMatcher), TimePeriod.LONG);
 
 		annotateBean(projectName, "test", "InterfaceImpl1.java", 1, 0, "@Exclude");
 		
 		new WaitWhile(new SpecificProblemExists(
-				validationProblemRegex), TimePeriod.LONG);
+				validationProblemRegexMatcher), TimePeriod.LONG);
 		
 		checkInjectedPoint(projectName, "Test.java", "CustomInterface",
 				"InterfaceImpl2.java");
@@ -96,12 +96,12 @@ public class ExcludesAnnotationTest extends DeltaspikeTestBase {
 		String projectName = "exclude-sb";
 		importDeltaspikeProject(projectName,sr);
 		
-		new WaitUntil(new SpecificProblemExists(validationProblemRegex), 
+		new WaitUntil(new SpecificProblemExists(validationProblemRegexMatcher), 
 				TimePeriod.LONG);
 		
 		annotateBean(projectName, "test", "InterfaceImpl1.java", 4, 0, "@Exclude");
 
-		new WaitWhile(new SpecificProblemExists(validationProblemRegex), 
+		new WaitWhile(new SpecificProblemExists(validationProblemRegexMatcher), 
 				TimePeriod.LONG);
 		
 		checkInjectedPoint(projectName, "Test.java", "CustomInterface",
@@ -115,12 +115,12 @@ public class ExcludesAnnotationTest extends DeltaspikeTestBase {
 		String projectName = "exclude-pm";
 		importDeltaspikeProject(projectName,sr);
 		
-		new WaitUntil(new SpecificProblemExists(validationProblemRegex), 
+		new WaitUntil(new SpecificProblemExists(validationProblemRegexMatcher), 
 				TimePeriod.LONG);
 
 		annotateBean(projectName, "test", "ProducerBean1.java", 3, 0, "@Exclude");
 		
-		new WaitWhile(new SpecificProblemExists(validationProblemRegex), 
+		new WaitWhile(new SpecificProblemExists(validationProblemRegexMatcher), 
 				TimePeriod.LONG);
 		
 		checkInjectedPoint(projectName, "Test.java", "inter",
@@ -134,12 +134,12 @@ public class ExcludesAnnotationTest extends DeltaspikeTestBase {
 		String projectName = "exclude-pf";
 		importDeltaspikeProject(projectName,sr);
 		
-		new WaitUntil(new SpecificProblemExists(validationProblemRegex), 
+		new WaitUntil(new SpecificProblemExists(validationProblemRegexMatcher), 
 				TimePeriod.LONG);
 
 		annotateBean(projectName, "test", "ProducerField1.java", 3, 0, "@Exclude");
 		
-		new WaitWhile(new SpecificProblemExists(validationProblemRegex), 
+		new WaitWhile(new SpecificProblemExists(validationProblemRegexMatcher), 
 				TimePeriod.LONG);
 		
 		checkInjectedPoint(projectName, "Test.java", "inter",
@@ -171,13 +171,13 @@ public class ExcludesAnnotationTest extends DeltaspikeTestBase {
 		importDeltaspikeProject(projectName,sr);
 		
 		new WaitUntil(new SpecificProblemExists(
-				validationProblemRegex), TimePeriod.LONG);
+				validationProblemRegexMatcher), TimePeriod.LONG);
 		
 		insertIntoFile(projectName, "impl1", "package-info.java", 0, 0, 
 				"@org.apache.deltaspike.core.api.exclude.Exclude");
 		
 		new WaitWhile(new SpecificProblemExists(
-				validationProblemRegex), TimePeriod.LONG);
+				validationProblemRegexMatcher), TimePeriod.LONG);
 		
 		checkInjectedPoint(projectName, "Test.java", "CustomInterface",
 				"InterfaceImpl2.java");

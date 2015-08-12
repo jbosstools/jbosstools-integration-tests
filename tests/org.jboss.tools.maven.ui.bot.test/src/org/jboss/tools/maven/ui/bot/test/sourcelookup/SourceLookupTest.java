@@ -10,7 +10,7 @@ import java.io.IOException;
 
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
+import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
@@ -136,7 +136,7 @@ public class SourceLookupTest extends AbstractMavenSWTBotTest{
 	private void importProject(String name, String path){
 		ExternalProjectImportWizardDialog importDialog = new ExternalProjectImportWizardDialog();
 		importDialog.open();
-		WizardProjectsImportPage importPage = importDialog.getFirstPage();
+		WizardProjectsImportPage importPage = new WizardProjectsImportPage();
 		importPage.copyProjectsIntoWorkspace(true);
 		try {
 			importPage.setRootDirectory((new File(path)).getParentFile().getCanonicalPath());

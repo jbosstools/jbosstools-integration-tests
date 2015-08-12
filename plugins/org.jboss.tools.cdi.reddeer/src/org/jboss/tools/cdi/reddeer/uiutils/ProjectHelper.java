@@ -15,7 +15,7 @@ import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.swt.condition.ButtonWithTextIsActive;
+import org.jboss.reddeer.swt.condition.ButtonWithTextIsEnabled;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
@@ -46,7 +46,7 @@ public class ProjectHelper {
 			new PushButton("Add JARs...").click();
 			new DefaultShell("JAR Selection");
 			new DefaultTreeItem(projectName, library.getName()).select();
-			new WaitUntil(new ButtonWithTextIsActive(new PushButton("OK")));
+			new WaitUntil(new ButtonWithTextIsEnabled(new PushButton("OK")));
 			new PushButton("OK").click();
 			new WaitWhile(new ShellWithTextIsAvailable("JAR Selection"));
 		}

@@ -3,11 +3,11 @@ package org.jboss.tools.ws.reddeer.ui.preferences;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jboss.reddeer.jface.preference.PreferencePage;
 import org.jboss.reddeer.swt.api.TableItem;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.label.DefaultLabel;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.reddeer.workbench.preference.WorkbenchPreferencePage;
 
 /**
  * Represents Preference page: 
@@ -16,7 +16,7 @@ import org.jboss.reddeer.workbench.preference.WorkbenchPreferencePage;
  * @author jjankovi
  * @author Radoslav Rabara
  */
-public class JBossWSRuntimePreferencePage extends WorkbenchPreferencePage {
+public class JBossWSRuntimePreferencePage extends PreferencePage {
 	
 	public JBossWSRuntimePreferencePage() {
 		super("Web Services", "JBossWS Preferences");

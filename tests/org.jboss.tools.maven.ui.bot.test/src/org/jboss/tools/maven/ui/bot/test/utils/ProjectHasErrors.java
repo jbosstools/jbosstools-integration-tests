@@ -1,7 +1,8 @@
 package org.jboss.tools.maven.ui.bot.test.utils;
 
+import org.jboss.reddeer.eclipse.ui.problems.Problem;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
-import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
 import org.jboss.reddeer.common.condition.WaitCondition;
 
 public class ProjectHasErrors implements WaitCondition {
@@ -19,17 +20,17 @@ public class ProjectHasErrors implements WaitCondition {
 		ProblemsView pv = new ProblemsView();
 		pv.open();
 		if (acceptType != null) {
-			for (TreeItem item : pv.getAllErrors()) {
-				if (item.getCell(2).contains(projectName)
-						&& item.getCell(4).contains(acceptType)) {
+			for (Problem problem : pv.getProblems(ProblemType.ERROR)) {
+				if (problem.getPath().contains(projectName)
+						&& problem.getType().contains(acceptType)) {
 					continue;
-				} else if (item.getCell(2).contains(projectName)) {
+				} else if (problem.getPath().contains(projectName)) {
 					return true;
 				}
 			}
 		} else {
-			for (TreeItem item : pv.getAllErrors()) {
-				if (item.getCell(2).contains(projectName)) {
+			for (Problem problem : pv.getProblems(ProblemType.ERROR)) {
+				if (problem.getPath().contains(projectName)) {
 					return true;
 				}
 			}

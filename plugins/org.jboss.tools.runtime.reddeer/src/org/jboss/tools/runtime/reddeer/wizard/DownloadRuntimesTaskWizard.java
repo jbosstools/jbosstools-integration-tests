@@ -16,16 +16,9 @@ public class DownloadRuntimesTaskWizard extends WizardDialog{
 	protected final static Logger log = Logger.getLogger(DownloadRuntimesTaskWizard.class);
 	
 	public void eapDialog(){
-		addWizardPage(new TaskWizardFirstPage(), 0);
-		addWizardPage(new TaskWizardLoginPage(), 1);
-		addWizardPage(new TaskWizardSecondPage(), 2);
-		addWizardPage(new TaskWizardThirdPage(), 3);
 	}
 	
 	public void asDialog(){
-		addWizardPage(new TaskWizardFirstPage(), 0);
-		addWizardPage(new TaskWizardSecondPage(), 1);
-		addWizardPage(new TaskWizardThirdPage(), 2);
 	}
 	
 	@Override

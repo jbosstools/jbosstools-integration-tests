@@ -23,8 +23,8 @@ import org.jboss.tools.aerogear.ui.bot.test.AerogearBotTest;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
+import org.jboss.reddeer.eclipse.ui.dialogs.ExplorerItemPropertyDialog;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
-import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.browsersim.reddeer.BrowserSimHandler;
@@ -68,9 +68,11 @@ public class MultiversionSupport extends AerogearBotTest {
 		// change mobile engine version for project
 		PackageExplorer packageExplorer = new PackageExplorer();
 		packageExplorer.open();
-		EnginePropertyPage enginePropertyPage = new EnginePropertyPage(
-				packageExplorer.getProject(CORDOVA_PROJECT_NAME));
-		enginePropertyPage.open();
+		ExplorerItemPropertyDialog projectPropertiesDialog = 
+			new ExplorerItemPropertyDialog(new ProjectExplorer().getProject(CORDOVA_PROJECT_NAME));
+		projectPropertiesDialog.open();
+		EnginePropertyPage enginePropertyPage = new EnginePropertyPage();
+		projectPropertiesDialog.select(enginePropertyPage);
 		String propEngineVersion = enginePropertyPage.getVersion(Platform.android);
 		assertEquals("Version displayed to console is not equal to version in project properties "
 				+ consoleEngineVersion + "!=" + propEngineVersion,
@@ -85,7 +87,7 @@ public class MultiversionSupport extends AerogearBotTest {
 		versions.remove(propEngineVersion);
 		String newVersion = versions.get(0);
 		enginePropertyPage.checkVersion(newVersion, Platform.android);
-		new PushButton("OK").click();
+		projectPropertiesDialog.ok();
 		// Run project with new mobile engine version
 		console = new ConsoleView();
 		console.open();

@@ -24,7 +24,7 @@ import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.C
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
-import org.jboss.reddeer.swt.regex.Regex;
+import org.jboss.reddeer.common.matcher.RegexMatcher;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
@@ -47,8 +47,7 @@ import org.junit.Test;
 @JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.AS7_1)
 public class ConfigPropertyAnnotationTest extends DeltaspikeTestBase {
 
-	private Regex validationProblemRegex = new Regex(
-			"No bean is eligible.*");
+	private RegexMatcher validationProblemRegexMatcher = new RegexMatcher("No bean is eligible.*");
 	
 	@InjectRequirement
 	private ServerRequirement sr;
@@ -71,7 +70,7 @@ public class ConfigPropertyAnnotationTest extends DeltaspikeTestBase {
 		AbstractWait.sleep(TimePeriod.getCustom(TimePeriod.NORMAL.getSeconds()*2));
 		
 		new WaitUntil(new SpecificProblemExists(
-				validationProblemRegex), TimePeriod.LONG);
+				validationProblemRegexMatcher), TimePeriod.LONG);
 
 		insertIntoFile(projectName, "test", "Test.java", 7, 0, 
 				"@ConfigProperty(name = \"boolean\") \n");
@@ -79,7 +78,7 @@ public class ConfigPropertyAnnotationTest extends DeltaspikeTestBase {
 				"import org.apache.deltaspike.core.api.config.ConfigProperty; \n");
 		
 		new WaitWhile(new SpecificProblemExists(
-				validationProblemRegex), TimePeriod.LONG);
+				validationProblemRegexMatcher), TimePeriod.LONG);
 		
 	}
 	
@@ -91,7 +90,7 @@ public class ConfigPropertyAnnotationTest extends DeltaspikeTestBase {
 		AbstractWait.sleep(TimePeriod.getCustom(TimePeriod.NORMAL.getSeconds()*2));
 		
 		new WaitWhile(new SpecificProblemExists(
-				validationProblemRegex), TimePeriod.LONG);
+				validationProblemRegexMatcher), TimePeriod.LONG);
 
 		insertIntoFile(projectName, "test", "Test.java", 8, 0, 
 				"@ConfigProperty(name = \"boolean\") \n");
@@ -99,7 +98,7 @@ public class ConfigPropertyAnnotationTest extends DeltaspikeTestBase {
 				"import org.apache.deltaspike.core.api.config.ConfigProperty; \n");
 		try{
 			new WaitUntil(new SpecificProblemExists(
-					validationProblemRegex), TimePeriod.LONG);
+					validationProblemRegexMatcher), TimePeriod.LONG);
 		} catch(WaitTimeoutExpiredException ex){
 			fail("this is known issue JBIDE-13554");
 		}

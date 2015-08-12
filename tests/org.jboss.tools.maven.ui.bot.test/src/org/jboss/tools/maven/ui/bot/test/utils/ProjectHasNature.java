@@ -5,6 +5,7 @@ import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.common.condition.WaitCondition;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
@@ -42,14 +43,14 @@ public class ProjectHasNature implements WaitCondition{
 		new DefaultTreeItem("Project Facets").select();
 		boolean result;
 		if(natureParent != null){
-		    result = new DefaultTreeItem(1,natureParent, natureID).isChecked();
+		    result = new DefaultTreeItem(new DefaultTree(1),natureParent, natureID).isChecked();
 		    if(version!=null){
-	            result = result && new DefaultTreeItem(1,natureParent, natureID).getCell(1).equals(version);
+	            result = result && new DefaultTreeItem(new DefaultTree(1),natureParent, natureID).getCell(1).equals(version);
 	        }
 		} else {
-		    result = new DefaultTreeItem(1,natureID).isChecked();
+		    result = new DefaultTreeItem(new DefaultTree(1),natureID).isChecked();
 		    if(version!=null){
-                result = result && new DefaultTreeItem(1,natureID).getCell(1).equals(version);
+                result = result && new DefaultTreeItem(new DefaultTree(1),natureID).getCell(1).equals(version);
             }
 		}
 		new PushButton("OK").click();

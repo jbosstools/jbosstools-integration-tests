@@ -136,7 +136,7 @@ public class DeployingArchiveTest extends ArchivesTestBase {
 		ServersView serversView = new ServersView();
 		serversView.open();
 		ModifyModulesDialog md = serversView.getServer(requirement.getServerNameLabelText(requirement.getConfig())).addAndRemoveModules();
-		ModifyModulesPage mp = md.getFirstPage();
+		ModifyModulesPage mp = new ModifyModulesPage();
 		mp.remove(archive);
 		md.finish();
 	

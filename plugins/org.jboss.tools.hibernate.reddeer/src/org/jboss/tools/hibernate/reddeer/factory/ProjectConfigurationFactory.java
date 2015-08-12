@@ -6,7 +6,6 @@ import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
-import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.wst.common.project.facet.ui.FacetsPropertyPage;
 import org.jboss.reddeer.requirements.db.DatabaseConfiguration;
@@ -70,13 +69,12 @@ public class ProjectConfigurationFactory {
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		pe.selectProjects(prj);
-		Project project = pe.getProject(prj);
 		
 		ProjectPropertyDialog prjDlg = new ProjectPropertyDialog(prj);
 		prjDlg.open();
 		prjDlg.select("Project Facets");
 		
-		FacetsPropertyPage pp = new FacetsPropertyPage(project);
+		FacetsPropertyPage pp = new FacetsPropertyPage();
 		pp.selectFacet("JPA");
 		pp.selectVersion("JPA",jpaVersion);
 				

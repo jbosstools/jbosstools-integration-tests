@@ -54,7 +54,7 @@ public class ParamConverterSupportTest extends RESTfulTestBase {
 	private void createParamConverter() {
 		NewJavaClassWizardDialog newJavaClassDialog = new NewJavaClassWizardDialog();
 		newJavaClassDialog.open();
-		NewJavaClassWizardPage newJavaClassPage = newJavaClassDialog.getFirstPage();
+		NewJavaClassWizardPage newJavaClassPage = new NewJavaClassWizardPage();
 		newJavaClassPage.setPackage("org.rest.test");
 		newJavaClassPage.setName("Converter");
 		newJavaClassDialog.finish();

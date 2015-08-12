@@ -123,7 +123,7 @@ public class ArchivesTestBase{
 		NewJavaProjectWizardDialog javaProject = new NewJavaProjectWizardDialog();
 		javaProject.open();
 		
-		NewJavaProjectWizardPage javaWizardPage = javaProject.getFirstPage();
+		NewJavaProjectWizardPage javaWizardPage = new NewJavaProjectWizardPage();
 		javaWizardPage.setProjectName(projectName);
 		
 		javaProject.finish(false);
@@ -135,7 +135,7 @@ public class ArchivesTestBase{
 		
 		ExternalProjectImportWizardDialog importDialog = new ExternalProjectImportWizardDialog();
 		importDialog.open();
-		WizardProjectsImportPage importPage = (WizardProjectsImportPage)importDialog.getFirstPage();
+		WizardProjectsImportPage importPage = new WizardProjectsImportPage();
 		try {
 			importPage.setRootDirectory((new File(location)).getCanonicalPath());
 		} catch (IOException e) {

@@ -1,6 +1,7 @@
 package org.jboss.tools.cdi.reddeer.cdi.ui;
 
 import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.core.matcher.WithTextMatcher;
 import org.jboss.reddeer.jface.wizard.NewWizardDialog;
 import org.jboss.reddeer.swt.condition.TableHasRows;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
@@ -78,7 +79,7 @@ public class NewStereotypeCreationWizard extends NewWizardDialog{
 	}
 	
 	public void addStereoptypes(String stereoptypes){
-		new PushButton(1,"Add").click();
+		new PushButton(1,new WithTextMatcher("Add")).click();
 		new DefaultShell("Select Stereotype Annotation Type");
 		new DefaultText(0).setText(stereoptypes);
 		new WaitUntil(new TableHasRows(new DefaultTable()));

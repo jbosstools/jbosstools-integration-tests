@@ -3,8 +3,14 @@ package org.jboss.tools.ws.reddeer.swt.condition;
 import java.util.List;
 
 import org.hamcrest.Matcher;
+import org.jboss.reddeer.eclipse.ui.problems.Problem;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
-import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
+import org.jboss.reddeer.eclipse.ui.problems.matcher.ProblemsDescriptionMatcher;
+import org.jboss.reddeer.eclipse.ui.problems.matcher.ProblemsLocationMatcher;
+import org.jboss.reddeer.eclipse.ui.problems.matcher.ProblemsPathMatcher;
+import org.jboss.reddeer.eclipse.ui.problems.matcher.ProblemsResourceMatcher;
+import org.jboss.reddeer.eclipse.ui.problems.matcher.ProblemsTypeMatcher;
 import org.jboss.reddeer.common.condition.WaitCondition;
 
 /**
@@ -14,11 +20,7 @@ import org.jboss.reddeer.common.condition.WaitCondition;
  * @author Radoslav Rabara
  */
 public class ProblemsCount implements WaitCondition {
-	public enum ProblemType {
-		ERROR, WARNING;
-	}
-
-	private ProblemType problemType;
+	
 	private int problemsCount;
 
 	private boolean filterProblems = false;
@@ -27,8 +29,8 @@ public class ProblemsCount implements WaitCondition {
 	private Matcher<String> path;
 	private Matcher<String> location;
 	private Matcher<String> type;
-
-	private List<TreeItem> problems;
+	private ProblemType problemType;
+	private List<Problem> problems;
 
 	/**
 	 * Constructs the condition for the specified problem <var>type</var> and
@@ -41,7 +43,7 @@ public class ProblemsCount implements WaitCondition {
 		if(type == null) {
 			throw new NullPointerException("type");
 		}
-		if(problemType != ProblemType.WARNING && problemType != ProblemType.ERROR) {
+		if(type != ProblemType.WARNING && type != ProblemType.ERROR) {
 			new IllegalArgumentException("Unknown ProblemType" + type);
 		}
 		if(count < 0) {
@@ -87,17 +89,26 @@ public class ProblemsCount implements WaitCondition {
 		case ERROR:
 			if(filterProblems) {
 				problems = new ProblemsView()
-					.getErrors(description, resource, path, location, type);
+					.getProblems(ProblemType.ERROR, 
+							new ProblemsDescriptionMatcher(description),
+							new ProblemsResourceMatcher(resource),
+							new ProblemsPathMatcher(path),
+							new ProblemsLocationMatcher(location), 
+							new ProblemsTypeMatcher(type));
 			} else {
-				problems = problemsView.getAllErrors();
+				problems = problemsView.getProblems(ProblemType.ERROR);
 			}
 			break;
 		case WARNING:
 			if(filterProblems) {
 				problems = new ProblemsView()
-					.getWarnings(description, resource, path, location, type);
+					.getProblems(ProblemType.WARNING,new ProblemsDescriptionMatcher(description),
+							new ProblemsResourceMatcher(resource),
+							new ProblemsPathMatcher(path),
+							new ProblemsLocationMatcher(location), 
+							new ProblemsTypeMatcher(type));
 			} else {
-				problems = problemsView.getAllWarnings();
+				problems = problemsView.getProblems(ProblemType.WARNING);
 			}
 			break;
 			default:

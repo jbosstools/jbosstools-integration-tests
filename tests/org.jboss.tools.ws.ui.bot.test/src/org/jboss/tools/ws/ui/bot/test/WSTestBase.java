@@ -27,7 +27,7 @@ import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ViewWithToolTipIsActive;
+import org.jboss.reddeer.core.condition.ViewWithTitleIsActive;
 import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
@@ -199,7 +199,7 @@ public class WSTestBase {
 
 	protected void assertWebServiceTesterIsActive() {
 		assertTrue("Web Service Tester view should be active", 
-				new ViewWithToolTipIsActive(IDELabel.View.WEB_SERVICE_TESTER).test());
+				new ViewWithTitleIsActive(IDELabel.View.WEB_SERVICE_TESTER).test());
 	}
 
 	public static String getSoapRequest(String body) {
@@ -222,7 +222,7 @@ public class WSTestBase {
 	private static void importProject(String projectLocation) {
 		ExternalProjectImportWizardDialog importDialog = new ExternalProjectImportWizardDialog();
 		importDialog.open();
-		WizardProjectsImportPage importPage = importDialog.getFirstPage();
+		WizardProjectsImportPage importPage = new WizardProjectsImportPage();
 		importPage.setRootDirectory(projectLocation);
 		assertFalse("There is no project to import", importPage.getProjects().isEmpty());
 		importPage.selectAllProjects();

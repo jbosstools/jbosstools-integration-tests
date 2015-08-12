@@ -27,7 +27,7 @@ public class Chapter18FirstEntity extends AbstractPart3Test{
 		
 		NewJavaClassWizardDialog newjava = new NewJavaClassWizardDialog();
 		newjava.open();
-		NewJavaClassWizardPage javaPage = newjava.getFirstPage();
+		NewJavaClassWizardPage javaPage = new NewJavaClassWizardPage();
 		javaPage.setName("TicketCategory");
 		javaPage.setPackage(TICKET_MONSTER_PACKAGE+"."+PACKAGE_MODEL);
 		newjava.finish();

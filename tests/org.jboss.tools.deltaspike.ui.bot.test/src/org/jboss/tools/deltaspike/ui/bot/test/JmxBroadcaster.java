@@ -27,7 +27,7 @@ import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.regex.Regex;
+import org.jboss.reddeer.common.matcher.RegexMatcher;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
@@ -48,7 +48,7 @@ import org.junit.Test;
 @JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.AS7_1)
 public class JmxBroadcaster extends DeltaspikeTestBase {
 
-	private Regex validationProblemRegex = new Regex("No bean is eligible.*");
+	private RegexMatcher validationProblemRegexMatcher = new RegexMatcher("No bean is eligible.*");
 	
 	@InjectRequirement
 	private ServerRequirement sr;
@@ -68,7 +68,7 @@ public class JmxBroadcaster extends DeltaspikeTestBase {
 		String projectName = "jmxBroadcaster";
 		importDeltaspikeProject(projectName,sr);
 
-		new WaitWhile(new SpecificProblemExists(validationProblemRegex),
+		new WaitWhile(new SpecificProblemExists(validationProblemRegexMatcher),
 				TimePeriod.LONG);
 		openClass(projectName, "test", "Test.java");
 		TextEditor e = new TextEditor("Test.java");

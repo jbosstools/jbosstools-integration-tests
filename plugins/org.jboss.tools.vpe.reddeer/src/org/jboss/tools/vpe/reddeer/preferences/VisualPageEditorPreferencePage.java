@@ -11,14 +11,14 @@
 package org.jboss.tools.vpe.reddeer.preferences;
 
 import org.jboss.reddeer.common.logging.Logger;
+import org.jboss.reddeer.jface.preference.PreferencePage;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.workbench.preference.WorkbenchPreferencePage;
 /**
  * RedDeer model of JBoss Tools > Web > Editors > Visual Page Editor preference page
  * 
  * @author vlado pakan
  */
-public class VisualPageEditorPreferencePage extends WorkbenchPreferencePage  {
+public class VisualPageEditorPreferencePage extends PreferencePage  {
 	
 	protected final static Logger log = Logger.getLogger(VisualPageEditorPreferencePage.class);
 	

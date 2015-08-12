@@ -45,6 +45,7 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.workbench.api.Editor;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
@@ -79,9 +80,9 @@ public abstract class AbstractMavenSWTBotTest{
 		new ContextMenu("Properties").select();
 		new WaitUntil(new ShellWithTextIsActive("Properties for "+projectName), TimePeriod.NORMAL);
 		new DefaultTreeItem("Project Facets").select();
-		boolean result = new DefaultTreeItem(1,natureID).isChecked();
+		boolean result = new DefaultTreeItem(new DefaultTree(1),natureID).isChecked();
 		if(version!=null){
-			result = result && new DefaultTreeItem(1,natureID).getCell(1).equals(version);
+			result = result && new DefaultTreeItem(new DefaultTree(1),natureID).getCell(1).equals(version);
 		}
 		new PushButton("OK").click();
 		new WaitWhile(new ShellWithTextIsActive("Properties for "+projectName), TimePeriod.NORMAL);
@@ -199,14 +200,14 @@ public abstract class AbstractMavenSWTBotTest{
 	public void createWebProject(String name,String runtime, boolean webxml){
 		WebProjectWizard dw = new WebProjectWizard();
 		dw.open();
-		WebProjectFirstPage dfp = (WebProjectFirstPage)dw.getWizardPage(0);
+		WebProjectFirstPage dfp = new WebProjectFirstPage();
 		dfp.setProjectName(name);
 		if(runtime == null){
 			dfp.setTargetRuntime("<None>");
 		} else {
 			dfp.setTargetRuntime(runtime);
 		}
-		WebProjectThirdPage dtp = (WebProjectThirdPage)dw.getWizardPage(2);
+		WebProjectThirdPage dtp = new WebProjectThirdPage();
 		dtp.setGenerateWebXmlDeploymentDescriptor(webxml);
 		dw.finish();
 	}

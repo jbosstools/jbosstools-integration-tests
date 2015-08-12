@@ -19,17 +19,10 @@ import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.swt.impl.button.OkButton;
-import org.jboss.reddeer.swt.impl.menu.ShellMenu;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.table.DefaultTableItem;
-import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.tools.jsf.reddeer.ui.JSFNewProjectFirstPage;
 import org.jboss.tools.jsf.reddeer.ui.JSFNewProjectSecondPage;
 import org.jboss.tools.jsf.reddeer.ui.JSFNewProjectWizard;
 import org.jboss.tools.maven.ui.bot.test.AbstractMavenSWTBotTest;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 @CleanWorkspace
@@ -81,11 +74,12 @@ public class JSFProjectTest extends AbstractMavenSWTBotTest{
 	private void createJSFProject(String name, String version, String jsfType, String runtime){
 		JSFNewProjectWizard jsfd = new JSFNewProjectWizard();
 		jsfd.open();
-		JSFNewProjectFirstPage fp = (JSFNewProjectFirstPage)jsfd.getWizardPage(0);
+		JSFNewProjectFirstPage fp = new JSFNewProjectFirstPage();
 		fp.setProjectName(name);
 		fp.setJSFVersion(version);
 		fp.setJSFType(jsfType);
-		JSFNewProjectSecondPage sp = (JSFNewProjectSecondPage)jsfd.getWizardPage(1);
+		jsfd.next();
+		JSFNewProjectSecondPage sp = new JSFNewProjectSecondPage();
 		sp.setRuntime(runtime);
 		jsfd.finish();
 		

@@ -16,8 +16,6 @@ public class MavenProjectWizard extends NewWizardDialog{
 	
 	public MavenProjectWizard(){
 		super(CATEGORY,NAME);
-		addWizardPage(new MavenProjectWizardSecondPage(), 1);
-		addWizardPage(new MavenProjectWizardThirdPage(), 2);
 	}
 	
 	@Override

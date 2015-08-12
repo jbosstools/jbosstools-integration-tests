@@ -6,7 +6,7 @@ import static org.hamcrest.core.Is.is;
 import java.util.Arrays;
 import java.util.List;
 
-import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
+import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.eclipse.wst.server.ui.RuntimePreferencePage;
 import org.jboss.tools.runtime.as.ui.bot.test.dialog.preferences.RuntimeDetectionPreferencePage;
 import org.jboss.tools.runtime.as.ui.bot.test.dialog.preferences.SeamPreferencePage;

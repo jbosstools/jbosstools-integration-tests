@@ -16,8 +16,6 @@ public class SeamProjectDialog extends NewWizardDialog{
 	
 	public SeamProjectDialog(){
 		super(CATEGORY,NAME);
-		addWizardPage(new SeamProjectFirstPage(), 0);
-		addWizardPage(new SeamProjectFifthPage(), 5);
 	}
 	
 	@Override

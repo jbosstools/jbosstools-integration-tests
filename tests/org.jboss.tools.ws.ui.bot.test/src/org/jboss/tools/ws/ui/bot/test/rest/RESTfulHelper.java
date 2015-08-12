@@ -19,12 +19,15 @@ import org.hamcrest.core.StringContains;
 import org.hamcrest.core.StringStartsWith;
 import org.jboss.reddeer.eclipse.condition.ProblemExists;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
+import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.eclipse.core.resources.Project;
+import org.jboss.reddeer.eclipse.ui.problems.Problem;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
+import org.jboss.reddeer.eclipse.ui.problems.matcher.ProblemsDescriptionMatcher;
+import org.jboss.reddeer.eclipse.ui.problems.matcher.ProblemsPathMatcher;
+import org.jboss.reddeer.eclipse.ui.problems.matcher.ProblemsTypeMatcher;
 import org.jboss.reddeer.swt.api.Menu;
-import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -45,58 +48,62 @@ public class RESTfulHelper {
 	private final TimePeriod WAIT_FOR_PROBLEMS_FALSE_POSItIVE_TIMEOUT = TimePeriod.getCustom(2);
 	private final TimePeriod WAIT_FOR_PROBLEMS_FALSE_NEGATIVE_TIMEOUT = TimePeriod.getCustom(5);
 
-	public List<TreeItem> getRESTValidationErrors(int expectedCount) {
+	public List<Problem> getRESTValidationErrors(int expectedCount) {
 		return getRESTValidationErrors(null, null, expectedCount);
 	}
 
-	public List<TreeItem> getRESTValidationErrors(String wsProjectName, int expectedCount) {
+	public List<Problem> getRESTValidationErrors(String wsProjectName, int expectedCount) {
 		return getRESTValidationErrors(wsProjectName, null, expectedCount);
 	}
 
-	public List<TreeItem> getRESTValidationErrors(String wsProjectName, String description, int expectedCount) {
+	public List<Problem> getRESTValidationErrors(String wsProjectName, String description, int expectedCount) {
 		Matcher<String> descriptionMatcher = description != null ? StringContains.containsString(description) : null;
 		Matcher<String> pathMatcher = wsProjectName != null ? StringStartsWith.startsWith("/" + wsProjectName) : null;
 
 		/* wait for jax-rs validation */
 		if(expectedCount == 0 && !new ProblemExists(ProblemType.ANY).test()) {//prevent from false positive result when we do not expect errors and there is no error
-			new WaitWhile(new ProblemsCount(ProblemsCount.ProblemType.ERROR, expectedCount, descriptionMatcher, null,
+			new WaitWhile(new ProblemsCount(ProblemType.ERROR, expectedCount, descriptionMatcher, null,
 					pathMatcher, null, null), WAIT_FOR_PROBLEMS_FALSE_POSItIVE_TIMEOUT, false);
 		} else {//prevent from false negative result
-			new WaitUntil(new ProblemsCount(ProblemsCount.ProblemType.ERROR, expectedCount, descriptionMatcher, null,
+			new WaitUntil(new ProblemsCount(ProblemType.ERROR, expectedCount, descriptionMatcher, null,
 					pathMatcher, null, null), WAIT_FOR_PROBLEMS_FALSE_NEGATIVE_TIMEOUT, false);
 		}
 
 		/* return jax-rs validation errors */
-		return new ProblemsView().getErrors(descriptionMatcher, null,
-				pathMatcher, null,Is.is(JAX_RS_PROBLEM));
+		return new ProblemsView().getProblems(ProblemType.ERROR,
+			new ProblemsDescriptionMatcher(descriptionMatcher),
+			new ProblemsPathMatcher(pathMatcher),
+			new ProblemsTypeMatcher(Is.is(JAX_RS_PROBLEM)));
 	}
 
-	public List<TreeItem> getRESTValidationWarnings(int expectedCount) {
+	public List<Problem> getRESTValidationWarnings(int expectedCount) {
 		return getRESTValidationWarnings(null, null, expectedCount);
 	}
 
-	public List<TreeItem> getRESTValidationWarnings(String wsProjectName, int expectedCount) {
+	public List<Problem> getRESTValidationWarnings(String wsProjectName, int expectedCount) {
 		return getRESTValidationWarnings(wsProjectName, null, expectedCount);
 	}
 
-	public List<TreeItem> getRESTValidationWarnings(String wsProjectName,
+	public List<Problem> getRESTValidationWarnings(String wsProjectName,
 			String description, int expectedCount) {
 		Matcher<String> descriptionMatcher = description != null ? StringContains.containsString(description) : null;
 		Matcher<String> pathMatcher = wsProjectName != null ? StringStartsWith.startsWith("/" + wsProjectName) : null;
 
 		/* wait for warnings */
 		if(expectedCount == 0) {//prevent from false-positive
-			new WaitWhile(new ProblemsCount(ProblemsCount.ProblemType.WARNING, expectedCount, descriptionMatcher, null, pathMatcher, null, Is.is(JAX_RS_PROBLEM)), WAIT_FOR_PROBLEMS_FALSE_POSItIVE_TIMEOUT, false);
+			new WaitWhile(new ProblemsCount(ProblemType.WARNING, expectedCount, descriptionMatcher, null, pathMatcher, null, Is.is(JAX_RS_PROBLEM)), WAIT_FOR_PROBLEMS_FALSE_POSItIVE_TIMEOUT, false);
 		} else {//prevent from false-negative
-			new WaitUntil(new ProblemsCount(ProblemsCount.ProblemType.WARNING, expectedCount, descriptionMatcher, null, pathMatcher, null, Is.is(JAX_RS_PROBLEM)), WAIT_FOR_PROBLEMS_FALSE_NEGATIVE_TIMEOUT, false);
+			new WaitUntil(new ProblemsCount(ProblemType.WARNING, expectedCount, descriptionMatcher, null, pathMatcher, null, Is.is(JAX_RS_PROBLEM)), WAIT_FOR_PROBLEMS_FALSE_NEGATIVE_TIMEOUT, false);
 		}
 
 		/* return jax-rs validation warnings */
-		return new ProblemsView().getWarnings(descriptionMatcher, null,
-				pathMatcher, null, Is.is(JAX_RS_PROBLEM));
+		return new ProblemsView().getProblems(ProblemType.WARNING,
+				new ProblemsDescriptionMatcher(descriptionMatcher),
+				new ProblemsPathMatcher(pathMatcher),
+				new ProblemsTypeMatcher(Is.is(JAX_RS_PROBLEM)));
 	}
 
-	public List<TreeItem> getPathAnnotationValidationErrors(String wsProjectName, int expectedCount) {
+	public List<Problem> getPathAnnotationValidationErrors(String wsProjectName, int expectedCount) {
 		return getRESTValidationErrors(wsProjectName, PATH_PARAM_VALID_ERROR, expectedCount);
 	}
 

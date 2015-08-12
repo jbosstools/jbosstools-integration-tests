@@ -12,9 +12,6 @@ import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.tools.central.reddeer.api.JavaScriptHelper;
 import org.jboss.tools.central.reddeer.projects.ArchetypeProject;
-import org.jboss.tools.maven.reddeer.project.examples.wizard.ArchetypeExamplesWizardFirstPage;
-import org.jboss.tools.maven.reddeer.project.examples.wizard.ArchetypeExamplesWizardPage;
-import org.jboss.tools.maven.reddeer.project.examples.wizard.NewProjectExamplesStacksRequirementsPage;
 
 public class JBossCentralProjectWizard extends WizardDialog {
 
@@ -24,9 +21,6 @@ public class JBossCentralProjectWizard extends WizardDialog {
 
 	public JBossCentralProjectWizard(ArchetypeProject project) {
 		this.project = project;
-		addWizardPage(new NewProjectExamplesStacksRequirementsPage(), 0);
-		addWizardPage(new ArchetypeExamplesWizardFirstPage(), 1);
-		addWizardPage(new ArchetypeExamplesWizardPage(), 2);
 	}
 
 	public void open() {

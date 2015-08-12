@@ -31,7 +31,7 @@ public class ExistingProjectWizardTask extends AbstractSWTTask {
 	public void perform() {
 		ExternalProjectImportWizardDialog dialog = new ExternalProjectImportWizardDialog();
 		dialog.open();
-		page = dialog.getFirstPage();
+		page = new WizardProjectsImportPage();
 		loadProjects();
 		selectProjects();
 		dialog.finish();

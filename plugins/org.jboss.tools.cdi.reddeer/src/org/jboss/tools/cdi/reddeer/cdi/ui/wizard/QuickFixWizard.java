@@ -30,7 +30,7 @@ public class QuickFixWizard {
 	}
 
 	public void setResource(String resource) {
-		new DefaultTableItem(1, resource).setChecked(true);
+		new DefaultTableItem(new DefaultTable(1), resource).setChecked(true);
 	}
 	
 	public List<String> getResources() {

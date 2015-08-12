@@ -75,12 +75,11 @@ public class EARProjectTest extends AbstractMavenSWTBotTest{
 	public void createEARProject(){
 		EarProjectWizard earw = new EarProjectWizard();
 		earw.open();
-		earw.selectPage(0);
-		EarProjectFirstPage ef = (EarProjectFirstPage)earw.getWizardPage(0);
+		EarProjectFirstPage ef = new EarProjectFirstPage();
 		ef.setProjectName(EAR_PROJECT_NAME);
 		ef.setTargetRuntime("<None>");
-		earw.selectPage(1);
-		EarProjectInstallPage es = (EarProjectInstallPage)earw.getWizardPage(1);
+		earw.next();
+		EarProjectInstallPage es = new EarProjectInstallPage();
 		NewJ2EEComponentSelectionPage p = es.newModule();
 		p.finish();
 		earw.finish();

@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.FileFilter;
 
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
+import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.eclipse.m2e.core.ui.preferences.MavenSettingsPreferencePage;
 import org.jboss.reddeer.eclipse.ui.views.log.LogMessage;
 import org.jboss.reddeer.eclipse.ui.views.log.LogView;
@@ -119,8 +119,7 @@ public class ImportQuickstartsTest {
 	}
 
 	private void runUpdate() {
-		// TODO Auto-generated method stub
-		new ProjectExplorer().getProjects().get(0).getTreeItem().select();
+		new ProjectExplorer().getProjects().get(0).select();
 		new ContextMenu("Maven", "Update Project...").select();
 		new DefaultShell("Update Maven Project");
 		new PushButton("Select All").click();
@@ -143,8 +142,7 @@ public class ImportQuickstartsTest {
 	private void importQuickstart(Quickstart quickstart) {
 		ExtendedMavenImportWizard mavenImportWizard = new ExtendedMavenImportWizard();
 		mavenImportWizard.open();
-		MavenImportWizardFirstPage wizPage = (MavenImportWizardFirstPage) mavenImportWizard
-				.getCurrentWizardPage();
+		MavenImportWizardFirstPage wizPage = new MavenImportWizardFirstPage();
 		try {
 			wizPage.setRootDirectory(quickstart.getPath().getAbsolutePath());
 		} catch (WaitTimeoutExpiredException e) {

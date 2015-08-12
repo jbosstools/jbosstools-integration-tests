@@ -31,7 +31,7 @@ public class Chapter12AddNewEntity extends AbstractPart2Test{
 		new ContextMenu("New","Class").select();
 		new DefaultShell("New Java Class");
 		NewJavaClassWizardDialog newJava  = new NewJavaClassWizardDialog();
-		NewJavaClassWizardPage newJavaPage = newJava.getFirstPage();
+		NewJavaClassWizardPage newJavaPage = new NewJavaClassWizardPage();
 		newJavaPage.setName("Venue");
 		newJava.finish();
 		replaceEditorContentWithFile("Venue.java", "resources/classes/VenueEntity.txt", 3, 0, false, false);

@@ -22,7 +22,7 @@ import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.reddeer.swt.regex.Regex;
+import org.jboss.reddeer.common.matcher.RegexMatcher;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
@@ -47,7 +47,7 @@ import org.junit.Test;
 @JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.AS7_1)
 public class ExceptionHandlerAnnotationTest extends DeltaspikeTestBase {
 
-	private Regex validationProblemRegex = new Regex("Exception handler methods must be registered on " +
+	private RegexMatcher validationProblemRegexMatcher = new RegexMatcher("Exception handler methods must be registered on " +
 			"beans annotated with @ExceptionHandler.*");
 	
 	@InjectRequirement
@@ -68,12 +68,12 @@ public class ExceptionHandlerAnnotationTest extends DeltaspikeTestBase {
 		String projectName = "exception-handler1";
 		importDeltaspikeProject(projectName,sr);
 		
-		new WaitUntil(new SpecificProblemExists(validationProblemRegex),
+		new WaitUntil(new SpecificProblemExists(validationProblemRegexMatcher),
 				TimePeriod.LONG);
 		
 		annotateBean(projectName, "test", "Test.java", 5, 0, "@ExceptionHandler");
 		
-		new WaitWhile(new SpecificProblemExists(validationProblemRegex),
+		new WaitWhile(new SpecificProblemExists(validationProblemRegexMatcher),
 				TimePeriod.LONG);
 
 	}
@@ -84,12 +84,12 @@ public class ExceptionHandlerAnnotationTest extends DeltaspikeTestBase {
 		String projectName = "exception-handler1";
 		importDeltaspikeProject(projectName,sr);
 		
-		new WaitUntil(new SpecificProblemExists(validationProblemRegex),
+		new WaitUntil(new SpecificProblemExists(validationProblemRegexMatcher),
 				TimePeriod.LONG);
 		
 		annotateBean(projectName, "test", "Test.java", 5, 0, "@ExceptionHandler");
 		
-		new WaitWhile(new SpecificProblemExists(validationProblemRegex),
+		new WaitWhile(new SpecificProblemExists(validationProblemRegexMatcher),
 				TimePeriod.LONG);
 	}
 	

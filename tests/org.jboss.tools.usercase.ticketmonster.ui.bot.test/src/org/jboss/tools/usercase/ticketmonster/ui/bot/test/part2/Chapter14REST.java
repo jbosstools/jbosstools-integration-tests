@@ -34,7 +34,7 @@ public class Chapter14REST extends AbstractPart2Test{
 		new ContextMenu("New","Class").select();
 		new DefaultShell("New Java Class");
 		NewJavaClassWizardDialog newJava  = new NewJavaClassWizardDialog();
-		NewJavaClassWizardPage newJavaPage = newJava.getFirstPage();
+		NewJavaClassWizardPage newJavaPage = new NewJavaClassWizardPage();
 		newJavaPage.setName("Event");
 		newJava.finish();
 		replaceEditorContentWithFile("Event.java", "resources/classes/EventEntity.txt", 0, 0, true, false);
@@ -48,7 +48,7 @@ public class Chapter14REST extends AbstractPart2Test{
 		new ContextMenu("New","Class").select();
 		new DefaultShell("New Java Class");
 		NewJavaClassWizardDialog newJava  = new NewJavaClassWizardDialog();
-		NewJavaClassWizardPage newJavaPage = newJava.getFirstPage();
+		NewJavaClassWizardPage newJavaPage = new NewJavaClassWizardPage();
 		newJavaPage.setName("EventService");
 		newJava.finish();
 		Editor editor = new DefaultEditor("EventService.java");

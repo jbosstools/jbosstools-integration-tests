@@ -87,7 +87,7 @@ public abstract class CreatePortletProjectTemplate extends SWTTaskBasedTestCase 
 		DynamicWebProjectDialog dialog = new DynamicWebProjectDialog();
 		dialog.open();
 		
-		DynamicWebProjectWizardPage page = (DynamicWebProjectWizardPage)dialog.getCurrentWizardPage();
+		DynamicWebProjectWizardPage page = new DynamicWebProjectWizardPage();
 		page.setProjectName(getProjectName());
 		page.setServerName(SWTTestExt.configuredState.getServer().name);
 		page.setWebModuleVersion(getWebModuleVersion());

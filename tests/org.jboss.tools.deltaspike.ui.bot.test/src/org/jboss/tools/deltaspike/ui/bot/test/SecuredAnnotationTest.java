@@ -22,7 +22,7 @@ import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.reddeer.swt.regex.Regex;
+import org.jboss.reddeer.common.matcher.RegexMatcher;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
@@ -45,10 +45,10 @@ import org.junit.Test;
 @JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.AS7_1)
 public class SecuredAnnotationTest extends DeltaspikeTestBase {
 
-	private Regex ambiguousAuthorizerProblem = new Regex(
+	private RegexMatcher ambiguousAuthorizerProblemMatcher = new RegexMatcher(
 			"Ambiguous authorizers found.*");
 	
-	private Regex noMatchingAuthorizerProblem = new Regex(
+	private RegexMatcher noMatchingAuthorizerProblemMatcher = new RegexMatcher(
 			"No matching authorizer found.*");
 	
 	@InjectRequirement
@@ -70,12 +70,12 @@ public class SecuredAnnotationTest extends DeltaspikeTestBase {
 		importDeltaspikeProject(projectName,sr);
 		
 		new WaitUntil(new SpecificProblemExists(
-				ambiguousAuthorizerProblem), TimePeriod.LONG);
+				ambiguousAuthorizerProblemMatcher), TimePeriod.LONG);
 
 		replaceInEditor(projectName, "test", "SecuredBean.java", "4", "1", true);
 		
 		new WaitWhile(new SpecificProblemExists(
-				ambiguousAuthorizerProblem), TimePeriod.LONG);
+				ambiguousAuthorizerProblemMatcher), TimePeriod.LONG);
 		
 		TextEditor e = new TextEditor("SecuredBean.java");
 		e.selectText("doSomething");
@@ -91,12 +91,12 @@ public class SecuredAnnotationTest extends DeltaspikeTestBase {
 		importDeltaspikeProject(projectName,sr);
 		
 		new WaitUntil(new SpecificProblemExists(
-				noMatchingAuthorizerProblem), TimePeriod.LONG);
+				noMatchingAuthorizerProblemMatcher), TimePeriod.LONG);
 
 		replaceInEditor(projectName, "test", "SecuredBean.java", "1", "4", true);
 		
 		new WaitWhile(new SpecificProblemExists(
-				noMatchingAuthorizerProblem), TimePeriod.LONG);
+				noMatchingAuthorizerProblemMatcher), TimePeriod.LONG);
 		
 		TextEditor e = new TextEditor("SecuredBean.java");
 		e.selectText("doSomething");

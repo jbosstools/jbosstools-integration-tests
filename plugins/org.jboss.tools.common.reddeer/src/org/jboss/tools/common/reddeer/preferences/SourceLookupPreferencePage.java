@@ -1,7 +1,7 @@
 package org.jboss.tools.common.reddeer.preferences;
 
 import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.workbench.preference.WorkbenchPreferencePage;
+import org.jboss.reddeer.jface.preference.PreferencePage;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
 
 /**
@@ -9,7 +9,7 @@ import org.jboss.reddeer.swt.impl.button.RadioButton;
  * 
  * @author jniederm
  */
-public class SourceLookupPreferencePage extends WorkbenchPreferencePage  {
+public class SourceLookupPreferencePage extends PreferencePage  {
 	
 	protected final static Logger log = Logger.getLogger(SourceLookupPreferencePage.class);
 	

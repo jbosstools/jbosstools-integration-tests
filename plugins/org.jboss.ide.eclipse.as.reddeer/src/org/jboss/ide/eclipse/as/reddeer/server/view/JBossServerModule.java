@@ -14,14 +14,6 @@ import org.jboss.reddeer.swt.impl.menu.ContextMenu;
  *
  */
 public class JBossServerModule extends ServerModule {
-
-	/**
-	 * @deprecated Use {@link #JBossServerModule(TreeItem, JBossServerView)}
-	 * @param item
-	 */
-	public JBossServerModule(TreeItem item) {
-		super(item);
-	}
 	
 	protected JBossServerModule(TreeItem item, ServersView view) {
 		super(item, view);

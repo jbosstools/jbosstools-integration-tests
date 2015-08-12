@@ -4,8 +4,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.jboss.reddeer.eclipse.core.resources.Project;
-import org.jboss.reddeer.eclipse.ui.dialogs.ProjectPropertyPage;
+import org.jboss.reddeer.eclipse.ui.dialogs.PropertyPage;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
@@ -16,9 +15,9 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTree;
  * @author Pavol Srna
  *
  */
-public class EnginePropertyPage extends ProjectPropertyPage{
-	public EnginePropertyPage(Project project) {
-		super(project, "Hybrid Mobile Engine");
+public class EnginePropertyPage extends PropertyPage{
+	public EnginePropertyPage() {
+		super("Hybrid Mobile Engine");
 	}
 	/**
 	 * Returns current checked version on platform defined via parameter

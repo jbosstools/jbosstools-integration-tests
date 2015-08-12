@@ -11,7 +11,7 @@
 package org.jboss.tools.archives.reddeer.archives.ui;
 
 import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.workbench.preference.WorkbenchPreferencePage;
+import org.jboss.reddeer.jface.preference.PreferencePage;
 
 /**
 * Represents Preference page: 
@@ -20,7 +20,7 @@ import org.jboss.reddeer.workbench.preference.WorkbenchPreferencePage;
 * @author jjankovi
 *
 */
-public class MainPreferencePage extends WorkbenchPreferencePage {
+public class MainPreferencePage extends PreferencePage {
 
 	public MainPreferencePage() {
 		super("Project Archives");

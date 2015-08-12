@@ -27,8 +27,7 @@ public class ExportMobileApplication extends ExportMobileTest {
 	  new ProjectExplorer().selectProjects(CORDOVA_PROJECT_NAME);
 	  ExportMobileApplicationWizard exportMobileApplicationWizard = new ExportMobileApplicationWizard();
 	  exportMobileApplicationWizard.open();
-	  ExportMobileApplicationPage exportMobileApplicationPage = 
-	    (ExportMobileApplicationPage)exportMobileApplicationWizard.getCurrentWizardPage();
+	  ExportMobileApplicationPage exportMobileApplicationPage = new ExportMobileApplicationPage();
 	  assertTrue("Project " + CORDOVA_PROJECT_NAME + " has to be selected",
 	    exportMobileApplicationPage.isProject(CORDOVA_PROJECT_NAME));
 	  exportMobileApplicationPage.setPlatform("Android",true);

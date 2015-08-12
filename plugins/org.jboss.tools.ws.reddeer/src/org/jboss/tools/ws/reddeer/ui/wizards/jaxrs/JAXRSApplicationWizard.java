@@ -17,6 +17,5 @@ public class JAXRSApplicationWizard extends NewWizardDialog {
 	
 	public JAXRSApplicationWizard() {
 		super("Web Services", "JAX-RS Application");
-		addWizardPage(new JAXRSApplicationWizardPage(), 0);
 	}
 }

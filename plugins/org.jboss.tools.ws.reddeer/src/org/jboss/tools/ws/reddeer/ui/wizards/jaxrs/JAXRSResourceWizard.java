@@ -15,6 +15,5 @@ public class JAXRSResourceWizard extends NewWizardDialog {
 
 	public JAXRSResourceWizard() {
 		super("Web Services", "JAX-RS Resource");
-		addWizardPage(new JAXRSResourceCreateResourceWizardPage(), 0);
 	}
 }

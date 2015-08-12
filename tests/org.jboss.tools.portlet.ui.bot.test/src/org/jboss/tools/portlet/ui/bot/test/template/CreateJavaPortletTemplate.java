@@ -47,7 +47,7 @@ public abstract class CreateJavaPortletTemplate extends CreatePortletTemplate {
 	protected void createPortlet() {
 		NewJavaPortletDialog dialog = new NewJavaPortletDialog();
 		dialog.open();
-		NewJavaPortletWizardPage page = (NewJavaPortletWizardPage) dialog.getCurrentWizardPage();
+		NewJavaPortletWizardPage page = new NewJavaPortletWizardPage();
 		page.setClassName(CLASS_NAME);
 		page.setPackage(PACKAGE_NAME);
 		page.setProject(PROJECT_NAME);

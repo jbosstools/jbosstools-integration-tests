@@ -24,13 +24,13 @@ import java.util.List;
 import org.eclipse.core.runtime.Platform;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
+import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
 import org.jboss.reddeer.swt.api.TableItem;
-import org.jboss.reddeer.swt.condition.ButtonWithTextIsActive;
+import org.jboss.reddeer.swt.condition.ButtonWithTextIsEnabled;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
@@ -43,7 +43,6 @@ import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.common.matcher.RegexMatcher;
 import org.jboss.reddeer.core.matcher.WithTextMatcher;
-import org.jboss.reddeer.swt.regex.Regex;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
@@ -80,7 +79,7 @@ public class DeltaspikeTestBase {
 	protected static void importDeltaspikeProject(String projectName,ServerRequirement sr) {
 		ExternalProjectImportWizardDialog iDialog = new ExternalProjectImportWizardDialog();
 		iDialog.open();
-		WizardProjectsImportPage fPage = iDialog.getFirstPage();
+		WizardProjectsImportPage fPage = new WizardProjectsImportPage();
 		fPage.copyProjectsIntoWorkspace(true);
 		try {
 			fPage.setRootDirectory((new File("resources/prj/"+projectName)).getParentFile().getCanonicalPath());
@@ -141,7 +140,7 @@ public class DeltaspikeTestBase {
 			String bean, int line, int column, String annotation) {
 
 		insertIntoFile(projectName, packageName, bean, line, column, annotation);
-		new WaitUntil(new SpecificProblemExists(new Regex(
+		new WaitUntil(new SpecificProblemExists(new RegexMatcher(
 				".*cannot be resolved.*")), TimePeriod.NORMAL);
 
 		TextEditor e =new TextEditor();
@@ -201,7 +200,7 @@ public class DeltaspikeTestBase {
 			new PushButton("Add JARs...").click();
 			new DefaultShell("JAR Selection");
 			new DefaultTreeItem(projectName, library.getName()).select();
-			new WaitUntil(new ButtonWithTextIsActive(new PushButton("OK")));
+			new WaitUntil(new ButtonWithTextIsEnabled(new PushButton("OK")));
 			new PushButton("OK").click();
 			new WaitWhile(new ShellWithTextIsAvailable("JAR Selection"));
 		}

@@ -17,8 +17,6 @@ public class JSFNewProjectWizard extends NewWizardDialog{
 	
 	public JSFNewProjectWizard(){
 		super(CATEGORY1,CATEGORY2,NAME);
-		addWizardPage(new JSFNewProjectFirstPage(), 0);
-		addWizardPage(new JSFNewProjectSecondPage(), 1);
 	}	
 	
 	@Override

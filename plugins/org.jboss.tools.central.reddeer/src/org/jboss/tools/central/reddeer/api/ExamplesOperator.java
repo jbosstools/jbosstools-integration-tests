@@ -34,6 +34,7 @@ import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewEnums.ServerPublishState;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewEnums.ServerState;
 import org.jboss.reddeer.eclipse.wst.server.ui.wizard.ModifyModulesDialog;
+import org.jboss.reddeer.eclipse.wst.server.ui.wizard.ModifyModulesPage;
 import org.jboss.reddeer.swt.impl.link.DefaultLink;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
@@ -84,7 +85,7 @@ public class ExamplesOperator {
 		ModifyModulesDialog modulesDialog = serversView.getServer(serverName).addAndRemoveModules();
 		String moduleName = new DefaultTreeItem(new TreeItemTextMatcher(new RegexMatcher(".*" + projectName + ".*")))
 				.getText();
-		modulesDialog.getFirstPage().add(moduleName);
+		new ModifyModulesPage().add(moduleName);
 		modulesDialog.finish();
 		new WaitUntil(new WaitForProjectToStartAndSynchronize(moduleName, serverName), TimePeriod.LONG);
 	}
@@ -100,8 +101,7 @@ public class ExamplesOperator {
 		log.step("Import project start");
 		JBossCentralProjectWizard dialog = new JBossCentralProjectWizard(project);
 		dialog.open();
-		NewProjectExamplesStacksRequirementsPage firstPage = (NewProjectExamplesStacksRequirementsPage) dialog
-				.getCurrentWizardPage();
+		NewProjectExamplesStacksRequirementsPage firstPage = new NewProjectExamplesStacksRequirementsPage();
 		firstPage.setTargetRuntime(1);
 		log.step("Import project first page");
 		new DefaultLink();
@@ -110,10 +110,10 @@ public class ExamplesOperator {
 		}
 		checkRequirements(firstPage.getRequirements());
 		dialog.next();
-		ArchetypeExamplesWizardFirstPage secondPage = (ArchetypeExamplesWizardFirstPage) dialog.getCurrentWizardPage();
+		ArchetypeExamplesWizardFirstPage secondPage = new ArchetypeExamplesWizardFirstPage();
 		assertFalse("Project Name cannot be empty", secondPage.getProjectName().equals(""));
 		dialog.next();
-		ArchetypeExamplesWizardPage thirdPage = (ArchetypeExamplesWizardPage) dialog.getCurrentWizardPage();
+		ArchetypeExamplesWizardPage thirdPage = new ArchetypeExamplesWizardPage();
 		assertFalse("Group ID cannot be empty", thirdPage.getGroupID().equals(""));
 		NewProjectExamplesReadyPage projectReadyPage = dialog.finishAndWait();
 		checkProjectReadyPage(projectReadyPage, project);
@@ -131,7 +131,7 @@ public class ExamplesOperator {
 	public void importExampleProjectFromCentral(CentralExampleProject project) {
 		NewProjectExamplesWizardDialogCentral dialog = new NewProjectExamplesWizardDialogCentral();
 		dialog.open(project);
-		MavenExamplesRequirementPage reqPage = (MavenExamplesRequirementPage) dialog.getWizardPage(0);
+		MavenExamplesRequirementPage reqPage = new MavenExamplesRequirementPage();
 		checkRequirements(reqPage.getRequirements());
 		try {
 			new WaitUntil(new MavenRepositoryNotFound());

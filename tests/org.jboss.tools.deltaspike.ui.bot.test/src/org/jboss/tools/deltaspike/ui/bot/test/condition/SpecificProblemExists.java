@@ -11,12 +11,12 @@
 
 package org.jboss.tools.deltaspike.ui.bot.test.condition;
 
+import org.jboss.reddeer.eclipse.ui.problems.Problem;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
-import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
 import org.jboss.reddeer.common.condition.WaitCondition;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.common.matcher.RegexMatcher;
-import org.jboss.reddeer.swt.regex.Regex;
 
 /**
  * Returns true, if specific problem exists in problems view
@@ -28,37 +28,35 @@ public class SpecificProblemExists implements WaitCondition {
 
 	private ProblemsView problemsView;
 	
-	private String pattern;
-	
-	public SpecificProblemExists(Regex regex) {
-		pattern = regex.getPattern().pattern();
+	private RegexMatcher regexMatcher;
+		
+	public SpecificProblemExists(RegexMatcher regexMatcher) {
+		this.regexMatcher = regexMatcher;
 	}
 	
 	@Override
 	public boolean test() {
 		problemsView = new ProblemsView();
 		problemsView.open();
-		for (TreeItem error : problemsView.getAllErrors()) {
-			RegexMatcher matcher = new RegexMatcher(pattern);
+		for (Problem error : problemsView.getProblems(ProblemType.ERROR)) {
 			String text = null;
 			try{
-				text = error.getText();
+				text = error.getDescription();
 			} catch (SWTLayerException ex){
 				continue;
 			}
-			if (matcher.matches(text)) {
+			if (regexMatcher.matches(text)) {
 				return true;
 			}
 		}
-		for (TreeItem warning : problemsView.getAllWarnings()) {
-			 RegexMatcher matcher = new  RegexMatcher(pattern);
+		for (Problem warning : problemsView.getProblems(ProblemType.WARNING)) {
 			 String text = null;
 			 try{
-				 text = warning.getText();
+				 text = warning.getDescription();
 			 } catch (SWTLayerException ex){
 				 continue;
 			 }
-			if (matcher.matches(text)) {
+			if (regexMatcher.matches(text)) {
 				return true;
 			}
 		}
@@ -68,7 +66,7 @@ public class SpecificProblemExists implements WaitCondition {
 	@Override
 	public String description() {
 		StringBuilder msg = new StringBuilder("There is no problem" +
-				" marker: '" + pattern + "' in Problems view \n");
+				" matching: '" + regexMatcher + "' in Problems view \n");
 		return msg.toString();
 	}
 	

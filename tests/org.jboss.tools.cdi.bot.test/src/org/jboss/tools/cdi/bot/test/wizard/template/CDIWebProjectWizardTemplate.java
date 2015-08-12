@@ -29,6 +29,7 @@ import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.tools.cdi.reddeer.cdi.ui.CDIProjectWizard;
 import org.jboss.tools.cdi.reddeer.cdi.ui.wizard.facet.CDIInstallWizardPage;
@@ -119,8 +120,8 @@ public class CDIWebProjectWizardTemplate{
 	private boolean isCDIFacetEnabled(String projectName, String cdiVersion){
 		openProjectProperties(projectName);
 		new DefaultTreeItem("Project Facets").select();
-		boolean result = new DefaultTreeItem(1,"CDI (Contexts and Dependency Injection)").isChecked();
-		result = result && new DefaultTreeItem(1,"CDI (Contexts and Dependency Injection)").getCell(1).equals(cdiVersion);
+		boolean result = new DefaultTreeItem(new DefaultTree(1),"CDI (Contexts and Dependency Injection)").isChecked();
+		result = result && new DefaultTreeItem(new DefaultTree(1),"CDI (Contexts and Dependency Injection)").getCell(1).equals(cdiVersion);
 		new PushButton("OK").click();
 		new WaitWhile(new ShellWithTextIsActive("Properties for "+projectName), TimePeriod.NORMAL);
 		return result;

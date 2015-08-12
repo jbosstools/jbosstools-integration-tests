@@ -23,12 +23,13 @@ import org.hamcrest.core.StringStartsWith;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.reddeer.eclipse.condition.ProblemExists;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.jboss.reddeer.eclipse.ui.problems.Problem;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
+import org.jboss.reddeer.eclipse.ui.problems.matcher.ProblemsPathMatcher;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.api.Menu;
-import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.common.matcher.RegexMatcher;
@@ -144,7 +145,7 @@ public class RESTfulTestBase extends WSTestBase {
 		if(expectedCount == 0) {//prevent from false-positive
 			new WaitWhile(new ProblemExists(ProblemType.ERROR), TimePeriod.getCustom(2), false);
 		} else {
-			new WaitUntil(new ProblemsCount(ProblemsCount.ProblemType.ERROR, expectedCount), TimePeriod.getCustom(2), false);
+			new WaitUntil(new ProblemsCount(ProblemType.ERROR, expectedCount), TimePeriod.getCustom(2), false);
 		}
 	}
 
@@ -152,14 +153,14 @@ public class RESTfulTestBase extends WSTestBase {
 		if(expectedCount == 0) {//prevent from false-positive
 			new WaitWhile(new ProblemExists(ProblemType.ERROR), TimePeriod.getCustom(2), false);
 		} else {//prevent from false-negative
-			new WaitUntil(new ProblemsCount(ProblemsCount.ProblemType.ERROR, expectedCount, null, null,
+			new WaitUntil(new ProblemsCount(ProblemType.ERROR, expectedCount, null, null,
 					path, null, null), TimePeriod.getCustom(2), false);
 		}
 	}
 
 	protected void assertCountOfErrors(int expectedCount) {
 		waitForErrors(expectedCount);
-		assertCountOfErrors(new ProblemsView().getAllErrors(), expectedCount, null);
+		assertCountOfErrors(new ProblemsView().getProblems(ProblemType.ERROR), expectedCount, null);
 	}
 
 	protected void assertCountOfErrors(String projectName, int expectedCount) {
@@ -169,8 +170,8 @@ public class RESTfulTestBase extends WSTestBase {
 	protected void assertCountOfErrors(String projectName, int expectedCount, String message) {
 		Matcher<String> pathMatcher = StringStartsWith.startsWith("/" + projectName);
 		waitForErrors(expectedCount, pathMatcher);
-		assertCountOfErrors(new ProblemsView().getErrors(null, null,
-				pathMatcher, null, null), expectedCount, message);
+		assertCountOfErrors(new ProblemsView().getProblems(ProblemType.ERROR,new ProblemsPathMatcher(pathMatcher)),
+			expectedCount, message);
 	}
 
 	protected void assertCountOfValidationErrors(String projectName,
@@ -212,7 +213,7 @@ public class RESTfulTestBase extends WSTestBase {
 		if(expectedCount == 0) {//prevent from false-positive
 			new WaitWhile(new ProblemExists(ProblemType.WARNING), TimePeriod.getCustom(2), false);
 		} else {//prevent from false-negative
-			new WaitUntil(new ProblemsCount(ProblemsCount.ProblemType.WARNING, expectedCount), TimePeriod.getCustom(2), false);
+			new WaitUntil(new ProblemsCount(ProblemType.WARNING, expectedCount), TimePeriod.getCustom(2), false);
 		}
 	}
 
@@ -222,7 +223,7 @@ public class RESTfulTestBase extends WSTestBase {
 
 	protected void assertCountOfWarnings(String projectName, int expectedCount, String message) {
 		waitForWarnings(expectedCount);
-		assertCountOfErrors(new ProblemsView().getAllWarnings(), expectedCount, message);
+		assertCountOfErrors(new ProblemsView().getProblems(ProblemType.WARNING), expectedCount, message);
 	}
 
 	protected void assertCountOfValidationWarnings(String projectName,
@@ -247,28 +248,31 @@ public class RESTfulTestBase extends WSTestBase {
 				expectedCount, message);
 	}
 
-	private void assertCountOfErrors(List<TreeItem> errors, int expectedCount, String message) {
+	private void assertCountOfErrors(List<Problem> errors, int expectedCount, String message) {
 		assertCountOfProblems("error", errors, expectedCount, message);
 	}
 
-	private void assertCountOfWarning(List<TreeItem> warnings, int expectedCount, String message) {
+	private void assertCountOfWarning(List<Problem> warnings, int expectedCount, String message) {
 		assertCountOfProblems("warning", warnings, expectedCount, message);
 	}
 
-	private void assertCountOfProblems(String problemType, List<TreeItem> problems, int expectedCount, String message) {
+	private void assertCountOfProblems(String problemType, List<Problem> problems, int expectedCount, String message) {
 		int foundCount = problems.size();
 		if(foundCount != expectedCount) {
 			StringBuilder problemsInfo = new StringBuilder();
 			if(problems.size() > 0) {
 				problemsInfo.append("\nFound problems:\n");
 			}
-			for(TreeItem item : problems) {
-				for(int i=0;i<4;i++) {
-					if(i>0) {
-						problemsInfo.append("\t");
-					}
-					problemsInfo.append(item.getCell(i));
-				}
+			for(Problem problem : problems) {
+				problemsInfo.append(problem.getDescription());
+				problemsInfo.append("\t");
+				problemsInfo.append(problem.getResource());
+				problemsInfo.append("\t");
+				problemsInfo.append(problem.getPath());
+				problemsInfo.append("\t");
+				problemsInfo.append(problem.getLocation());
+				problemsInfo.append("\t");
+				problemsInfo.append(problem.getPath());
 				problemsInfo.append("\n");
 			}
 			Assert.fail((message != null ? message + " " : "")

@@ -12,7 +12,6 @@ public class NewJavaPortletDialog extends NewWizardDialog {
 
 	public NewJavaPortletDialog() {
 		super("JBoss Tools Web", "Portlet", "Java Portlet");
-		addWizardPage(new NewJavaPortletWizardPage(), 0);
 	}
 
 }

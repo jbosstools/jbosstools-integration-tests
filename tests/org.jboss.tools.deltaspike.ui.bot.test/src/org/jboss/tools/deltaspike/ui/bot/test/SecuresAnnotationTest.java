@@ -20,7 +20,7 @@ import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.reddeer.swt.regex.Regex;
+import org.jboss.reddeer.common.matcher.RegexMatcher;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
@@ -42,10 +42,10 @@ import org.junit.Test;
 @JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.AS7_1)
 public class SecuresAnnotationTest extends DeltaspikeTestBase {
 
-	private Regex returnValueAuthorizerProblem = new Regex(
+	private RegexMatcher returnValueAuthorizerProblemMatcher = new RegexMatcher(
 			"Authorizer method .* does not return a boolean");
 	
-	private Regex notDeclaredSecurityBindingProblem = new Regex(
+	private RegexMatcher notDeclaredSecurityBindingProblemMatcher = new RegexMatcher(
 			"Authorizer method .* does not declare a security binding type");
 	
 	@InjectRequirement
@@ -67,14 +67,14 @@ public class SecuresAnnotationTest extends DeltaspikeTestBase {
 		importDeltaspikeProject(projectName,sr);
 		
 		new WaitUntil(new SpecificProblemExists(
-				returnValueAuthorizerProblem), TimePeriod.LONG);
+				returnValueAuthorizerProblemMatcher), TimePeriod.LONG);
 
 		insertIntoFile(projectName, "test", "CustomAuthorizer.java", 9, 0, 
 				"return true;");
 		replaceInEditor("void", "boolean", true);
 		
 		new WaitWhile(new SpecificProblemExists(
-				returnValueAuthorizerProblem), TimePeriod.LONG);
+				returnValueAuthorizerProblemMatcher), TimePeriod.LONG);
 		
 	}
 	
@@ -85,13 +85,13 @@ public class SecuresAnnotationTest extends DeltaspikeTestBase {
 		importDeltaspikeProject(projectName,sr);
 		
 		new WaitUntil(new SpecificProblemExists(
-				notDeclaredSecurityBindingProblem), TimePeriod.LONG);
+				notDeclaredSecurityBindingProblemMatcher), TimePeriod.LONG);
 
 		insertIntoFile(projectName, "test", "CustomAuthorizer.java", 7, 0, 
 				"@CustomSecurityBinding");
 		
 		new WaitWhile(new SpecificProblemExists(
-				notDeclaredSecurityBindingProblem), TimePeriod.LONG);
+				notDeclaredSecurityBindingProblemMatcher), TimePeriod.LONG);
 		
 	}
 	

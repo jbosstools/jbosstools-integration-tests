@@ -15,7 +15,7 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.impl.toolbar.ViewToolItem;
+import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.tools.mylyn.reddeer.TestSupport;
 import org.jboss.tools.mylyn.reddeer.mylynBuild.MylynBuild;
 import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
@@ -91,7 +91,7 @@ public class MylynBuildView extends WorkbenchView {
 	/* For use in the Build List View */
 	public void createAuthBuildServer (String serverURL, String userName, String passWord) {
 		log.info("Creating New Build Server - " + serverURL);
-		new ViewToolItem("New Build Server Location").click();
+		new DefaultToolItem("New Build Server Location").click();
 		
 		new DefaultShell ("New Repository");
 		new DefaultTreeItem ("Hudson (supports Jenkins)").select();
@@ -118,7 +118,7 @@ public class MylynBuildView extends WorkbenchView {
 	/* For use in the Build List View */
 	public void createBuildServer (String serverURL) {
 		log.info("Creating New Build Server - " + serverURL);
-		new ViewToolItem("New Build Server Location").click();
+		new DefaultToolItem("New Build Server Location").click();
 		
 		new DefaultShell ("New Repository");
 		new DefaultTreeItem ("Hudson (supports Jenkins)").select();

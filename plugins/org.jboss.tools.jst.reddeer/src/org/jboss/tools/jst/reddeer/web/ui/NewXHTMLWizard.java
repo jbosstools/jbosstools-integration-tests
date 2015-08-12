@@ -9,9 +9,6 @@ public class NewXHTMLWizard extends NewWizardDialog{
 	
 	public NewXHTMLWizard(){
 		super(CATEGORY,ITEM);
-		addWizardPage(new NewXHTMLFileWizardPage(),0);
 	}
-	
-	
 
 }

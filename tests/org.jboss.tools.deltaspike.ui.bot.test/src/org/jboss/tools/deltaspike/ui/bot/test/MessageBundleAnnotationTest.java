@@ -22,7 +22,7 @@ import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.reddeer.swt.regex.Regex;
+import org.jboss.reddeer.common.matcher.RegexMatcher;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
@@ -46,7 +46,7 @@ import org.junit.Test;
 @JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.AS7_1)
 public class MessageBundleAnnotationTest extends DeltaspikeTestBase {
 
-	private Regex validationProblemRegex = new Regex(
+	private RegexMatcher validationProblemRegexMatcher = new RegexMatcher(
 			"No bean is eligible.*");
 	
 	@InjectRequirement
@@ -68,14 +68,14 @@ public class MessageBundleAnnotationTest extends DeltaspikeTestBase {
 		importDeltaspikeProject(projectName,sr);
 		
 		new WaitUntil(new SpecificProblemExists(
-				validationProblemRegex), TimePeriod.LONG);
+				validationProblemRegexMatcher), TimePeriod.LONG);
 
 		insertIntoFile(projectName, "test", "CustomInterface.java", 2, 0, "@MessageBundle");
 		insertIntoFile(projectName, "test", "CustomInterface.java", 1, 0, 
 				"import org.apache.deltaspike.core.api.message.MessageBundle; \n");
 		
 		new WaitWhile(new SpecificProblemExists(
-				validationProblemRegex), TimePeriod.LONG);
+				validationProblemRegexMatcher), TimePeriod.LONG);
 		
 	}
 }

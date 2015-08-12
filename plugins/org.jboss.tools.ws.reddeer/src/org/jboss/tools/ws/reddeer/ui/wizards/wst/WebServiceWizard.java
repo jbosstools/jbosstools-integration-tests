@@ -28,7 +28,6 @@ import org.jboss.reddeer.common.wait.WaitWhile;
 public class WebServiceWizard extends NewWizardDialog {
 	public WebServiceWizard() {
 		super("Web Services", "Web Service");
-		addWizardPage(new WebServiceFirstWizardPage(), 0);
 	}
 
 	@Override

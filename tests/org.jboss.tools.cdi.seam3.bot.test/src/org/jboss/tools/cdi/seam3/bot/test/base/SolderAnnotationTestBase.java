@@ -20,12 +20,12 @@ import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBo
 import org.jboss.reddeer.jface.text.contentassist.ContentAssistant;
 import org.jboss.reddeer.eclipse.condition.ProblemExists;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.jboss.reddeer.eclipse.ui.problems.Problem;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
@@ -33,7 +33,6 @@ import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.cdi.reddeer.CDIConstants;
 import org.jboss.tools.cdi.reddeer.uiutils.OpenOnHelper;
 import org.jboss.tools.cdi.reddeer.uiutils.ValidationHelper;
-import org.jboss.tools.cdi.reddeer.validators.ValidationProblem;
 
 /**
  * 
@@ -79,14 +78,14 @@ public class SolderAnnotationTestBase extends Seam3TestBase {
 		ProblemsView pw = new ProblemsView();
 		pw.open();
 		AbstractWait.sleep(TimePeriod.NORMAL);
-		List<TreeItem> validationProblems = pw.getAllWarnings();
+		List<Problem> validationProblems = pw.getProblems(ProblemType.WARNING);
 		
 		
 		//List<TreeItem> validationProblems = quickFixHelper.getProblems(ProblemsType.WARNINGS, projectName);
 		assertTrue(validationProblems.size() > 0);
 		String validationMessage = noBeanEligible ? CDIConstants.NO_BEAN_IS_ELIGIBLE: CDIConstants.MULTIPLE_BEANS;
-		for (TreeItem ti : validationProblems) {
-			if (ti.getText().contains(validationMessage)) {
+		for (Problem problem : validationProblems) {
+			if (problem.getDescription().contains(validationMessage)) {
 				return;
 			}
 		}

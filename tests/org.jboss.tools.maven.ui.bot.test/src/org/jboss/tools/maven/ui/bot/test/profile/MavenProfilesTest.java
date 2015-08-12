@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
+import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.reddeer.eclipse.core.resources.Project;
@@ -211,6 +211,6 @@ public class MavenProfilesTest extends AbstractMavenSWTBotTest {
 	private static void importMavenProject(String pomPath) throws IOException{
 		MavenImportWizard importWizard = new MavenImportWizard();
 		importWizard.open();
-		((MavenImportWizardFirstPage)importWizard.getWizardPage(0)).importProject((new File(pomPath)).getParentFile().getCanonicalPath());
+		new MavenImportWizardFirstPage().importProject((new File(pomPath)).getParentFile().getCanonicalPath());
 	}
 }

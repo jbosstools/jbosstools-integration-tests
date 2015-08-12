@@ -20,13 +20,10 @@ import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.uiforms.impl.formtext.DefaultFormText;
 import org.jboss.tools.central.reddeer.exception.CentralException;
 import org.jboss.tools.central.reddeer.projects.CentralExampleProject;
-import org.jboss.tools.maven.reddeer.project.examples.wizard.MavenExamplesRequirementPage;
 
 public class NewProjectExamplesWizardDialogCentral extends WizardDialog {
 
 	public NewProjectExamplesWizardDialogCentral() {
-		addWizardPage(new MavenExamplesRequirementPage(), 0);
-		addWizardPage(new NewProjectExamplesLocationPage(), 1);
 		new DefaultShell("New Project Example"); //wait for shell to appear
 	}
 	

@@ -25,6 +25,5 @@ import org.jboss.reddeer.jface.wizard.NewWizardDialog;
 public class WebServiceClientWizard extends NewWizardDialog {
 	public WebServiceClientWizard() {
 		super("Web Services", "Web Service Client");
-		addWizardPage(new WebServiceClientWizardPage(), 0);
 	}
 }

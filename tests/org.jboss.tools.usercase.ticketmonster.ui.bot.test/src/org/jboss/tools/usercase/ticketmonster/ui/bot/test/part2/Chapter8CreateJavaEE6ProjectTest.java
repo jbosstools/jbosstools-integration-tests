@@ -20,7 +20,7 @@ import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.eclipse.condition.ProblemExists;
 import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
+import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
 import org.jboss.reddeer.swt.api.Table;
 import org.jboss.tools.central.reddeer.projects.ArchetypeProject;
@@ -109,12 +109,13 @@ public class Chapter8CreateJavaEE6ProjectTest extends AbstractPart2Test{
 		ArchetypeProject archetypeProject = new ArchetypeProject(JAVA_EE_PROJECT, JAVA_EE_PROJECT_A, false);
 		JBossCentralProjectWizard wz = new JBossCentralProjectWizard(archetypeProject);
 		wz.open();
-		NewProjectExamplesStacksRequirementsPage fp = (NewProjectExamplesStacksRequirementsPage)wz.getWizardPage(0);
+		NewProjectExamplesStacksRequirementsPage fp = new NewProjectExamplesStacksRequirementsPage();
 		List<ExampleRequirement> reqs = fp.getRequirements();
 		assertFalse(reqs.get(0).isMet());
 		fp.setTargetRuntime("<none>");
 		assertFalse(reqs.get(0).isMet());
-		wz.getWizardPage(2);
+		wz.next();
+		wz.next();
 		wz.finish();
 		new WaitWhile(new ProblemExists(ProblemType.ERROR), TimePeriod.LONG);
 	}
@@ -124,13 +125,15 @@ public class Chapter8CreateJavaEE6ProjectTest extends AbstractPart2Test{
 		ArchetypeProject archetypeProject = new ArchetypeProject(JAVA_EE_PROJECT, TICKET_MONSTER_NAME, false);
 		JBossCentralProjectWizard wz = new JBossCentralProjectWizard(archetypeProject);
 		wz.open();
-		NewProjectExamplesStacksRequirementsPage fp = (NewProjectExamplesStacksRequirementsPage)wz.getWizardPage(0);
+		NewProjectExamplesStacksRequirementsPage fp = new NewProjectExamplesStacksRequirementsPage();
 		List<ExampleRequirement> reqs = fp.getRequirements();
 		assertFalse(reqs.get(0).isMet());
-		ArchetypeExamplesWizardFirstPage sp = (ArchetypeExamplesWizardFirstPage)wz.getWizardPage(1);
+		wz.next();
+		ArchetypeExamplesWizardFirstPage sp = new ArchetypeExamplesWizardFirstPage();
 		sp.setProjectName(TICKET_MONSTER_NAME);
 		sp.setPackage(TICKET_MONSTER_PACKAGE);
-		ArchetypeExamplesWizardPage tp = (ArchetypeExamplesWizardPage)wz.getWizardPage(2);
+		wz.next();
+		ArchetypeExamplesWizardPage tp = new ArchetypeExamplesWizardPage();
 		assertEquals(TICKET_MONSTER_PACKAGE,tp.getGroupID());
 		assertEquals(TICKET_MONSTER_NAME, tp.getArtifactID());
 		assertEquals(TICKET_MONSTER_PACKAGE, tp.getPackage());
@@ -145,7 +148,7 @@ public class Chapter8CreateJavaEE6ProjectTest extends AbstractPart2Test{
 		ArchetypeProject archetypeProject = new ArchetypeProject(JAVA_EE_PROJECT, JAVA_EE_PROJECT_A, false);
 		JBossCentralProjectWizard wz = new JBossCentralProjectWizard(archetypeProject);
 		wz.open();
-		NewProjectExamplesStacksRequirementsPage fp = (NewProjectExamplesStacksRequirementsPage)wz.getWizardPage(0);
+		NewProjectExamplesStacksRequirementsPage fp = new NewProjectExamplesStacksRequirementsPage();
 		List<ExampleRequirement> reqs = fp.getRequirements();
 		assertFalse(reqs.get(0).isMet());
 		downloadAndInstallRuntime(JBOSS_AS_71_NAME, wz, false);
@@ -154,7 +157,9 @@ public class Chapter8CreateJavaEE6ProjectTest extends AbstractPart2Test{
 		for(ExampleRequirement r: reqs){
 			assertTrue(r.isMet());
 		}
-		ArchetypeExamplesWizardPage tp = (ArchetypeExamplesWizardPage)wz.getWizardPage(2);
+		wz.next();
+		wz.next();
+		ArchetypeExamplesWizardPage tp = new ArchetypeExamplesWizardPage();
 		Table table = tp.getTableSuffix();
 		assertEquals("false", table.getItem("enterprise").getText(1));
 		wz.finish();
@@ -168,7 +173,7 @@ public class Chapter8CreateJavaEE6ProjectTest extends AbstractPart2Test{
 		
 		JBossCentralProjectWizard wz = new JBossCentralProjectWizard(archetypeProject);
 		wz.open();
-		NewProjectExamplesStacksRequirementsPage fp = (NewProjectExamplesStacksRequirementsPage)wz.getWizardPage(0);
+		NewProjectExamplesStacksRequirementsPage fp = new NewProjectExamplesStacksRequirementsPage();
 		List<ExampleRequirement> reqs = fp.getRequirements();
 		assertFalse(reqs.get(0).isMet());
 		downloadAndInstallRuntime(EAP_61_NAME, wz, true);
@@ -184,10 +189,12 @@ public class Chapter8CreateJavaEE6ProjectTest extends AbstractPart2Test{
 		repoPage.ok();
 		ConfigureMavenRepositoriesWizard repoDialog = new ConfigureMavenRepositoriesWizard();
 		repoDialog.confirm();
-		ArchetypeExamplesWizardFirstPage sp = (ArchetypeExamplesWizardFirstPage)wz.getWizardPage(1);
+		wz.next();
+		ArchetypeExamplesWizardFirstPage sp = new ArchetypeExamplesWizardFirstPage();
 		assertEquals(JAVA_EE_PROJECT_A,sp.getProjectName());
 		assertEquals(JAVA_EE_PROJECT_P,sp.getPackage());
-		ArchetypeExamplesWizardPage tp = (ArchetypeExamplesWizardPage)wz.getWizardPage(2);
+		wz.next();
+		ArchetypeExamplesWizardPage tp = new ArchetypeExamplesWizardPage();
 		assertEquals(JAVA_EE_PROJECT_G,tp.getGroupID());
 		assertEquals(JAVA_EE_PROJECT_A,tp.getArtifactID());
 		assertEquals(JAVA_EE_PROJECT_V,tp.getVersion());
