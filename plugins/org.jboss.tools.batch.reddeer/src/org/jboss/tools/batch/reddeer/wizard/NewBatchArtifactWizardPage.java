@@ -1,6 +1,7 @@
 package org.jboss.tools.batch.reddeer.wizard;
 
 import org.jboss.reddeer.jface.wizard.WizardPage;
+import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 
@@ -42,5 +43,17 @@ public class NewBatchArtifactWizardPage extends WizardPage {
 	
 	public void setArtifact(BatchArtifacts artifact){
 		new LabeledCombo("Artifact:").setSelection(artifact.getName());
+	}
+	
+	public void selectImplementInterface(){
+		new RadioButton("Implement interface").click();
+	}
+	
+	public void selectExtendAbstractClass(){
+		new RadioButton("Extend abstract class").click();
+	}
+	
+	public void setArtifactName(String name){
+		new LabeledText("Artifact name:").setText(name);
 	}
 }

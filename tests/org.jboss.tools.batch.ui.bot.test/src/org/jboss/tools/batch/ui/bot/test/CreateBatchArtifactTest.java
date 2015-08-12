@@ -2,9 +2,11 @@ package org.jboss.tools.batch.ui.bot.test;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 import org.jboss.reddeer.junit.internal.runner.ParameterizedRequirementsRunnerFactory;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
+import org.jboss.tools.batch.reddeer.editor.JavaClassEditor;
 import org.jboss.tools.batch.reddeer.wizard.BatchArtifacts;
 import org.jboss.tools.batch.reddeer.wizard.NewBatchArtifactWizardDialog;
 import org.jboss.tools.batch.reddeer.wizard.NewBatchArtifactWizardPage;
@@ -14,6 +16,11 @@ import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
 import org.junit.runners.Parameterized.UseParametersRunnerFactory;
 
+import static org.hamcrest.CoreMatchers.hasItem;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 @UseParametersRunnerFactory(ParameterizedRequirementsRunnerFactory.class)
@@ -42,6 +49,10 @@ public class CreateBatchArtifactTest extends AbstractBatchTest {
 		
 		assertEditorIsActivated();
 		assertNoProblems();
+		assertClassName();
+		assertAnnotation();
+		assertSuperClass();
+		assertInterfaces();
 	}
 
 	private void createArtifact() {
@@ -52,11 +63,34 @@ public class CreateBatchArtifactTest extends AbstractBatchTest {
 		page.setPackage(PACKAGE);
 		page.setName(CLASS_PREFIX + artifact);
 		page.setArtifact(artifact);
-		
+		page.selectImplementInterface();
 		dialog.finish();
 	}
 	
 	private void assertEditorIsActivated() {
-		assertTrue(new DefaultEditor(CLASS_PREFIX + artifact+ ".java").isActive());
+		assertTrue(getEditor().isActive());
+	}
+	
+	private void assertClassName() {
+		assertThat(getEditor().getClassName(), is(CLASS_PREFIX + artifact));
+	}
+	
+	private void assertAnnotation() {
+		List<String> annotations = getEditor().getClassAnnotations();
+		
+		assertThat(annotations.size(), is(1));
+		assertThat(annotations, hasItem("Named"));		
+	}
+	
+	private void assertSuperClass() {
+		assertNull(getEditor().getSuperClass());
+	}
+	
+	private void assertInterfaces() {
+		assertThat(getEditor().getInterfaces().size(), is(1));
+	}
+	
+	private JavaClassEditor getEditor(){
+		return new JavaClassEditor(CLASS_PREFIX + artifact + ".java");
 	}
 }
