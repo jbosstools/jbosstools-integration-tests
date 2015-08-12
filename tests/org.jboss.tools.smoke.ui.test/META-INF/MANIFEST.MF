@@ -9,7 +9,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui,
  org.jboss.tools.hibernate.reddeer;bundle-version="4.3.0",
  org.jboss.tools.hibernate.ui.bot.test;bundle-version="4.3.0",
- org.jboss.reddeer.junit
+ org.jboss.reddeer.go;bundle-version="1.0.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Eclipse-BundleShape: jar

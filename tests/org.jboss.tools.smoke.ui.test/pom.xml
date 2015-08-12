@@ -11,8 +11,44 @@
 	<artifactId>org.jboss.tools.smoke.ui.test</artifactId>
 	<packaging>eclipse-test-plugin</packaging>
 
+	<properties>
+		<reddeer.config>${project.build.outputDirectory}</reddeer.config>
+
+		<!-- Tycho surefire arguments -->
+		<runtimesProperties>-Dreddeer.config=${reddeer.config}</runtimesProperties>
+		<!-- don't wrap this -->
+		<systemProperties>${integrationTestsSystemProperties} ${runtimesProperties}</systemProperties>
+	</properties>
+
 	<build>
+		<resources>
+			<resource>
+				<directory>resources/conf/hibernate</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+
 		<plugins>
+
+			<plugin>
+				<groupId>com.googlecode.maven-download-plugin</groupId>
+				<artifactId>download-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>install-h2-driver</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<configuration>
+							<url>http://central.maven.org/maven2/com/h2database/h2/1.3.161/h2-1.3.161.jar</url>
+							<outputDirectory>${project.build.outputDirectory}</outputDirectory>
+							<unpack>false</unpack>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
 
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
@@ -20,7 +56,7 @@
 				<configuration>
 					<useUIThread>false</useUIThread>
 					<surefire.timeout>7200</surefire.timeout>
-					<forkedProcessTimeoutInSeconds>7200</forkedProcessTimeoutInSeconds>					
+					<forkedProcessTimeoutInSeconds>7200</forkedProcessTimeoutInSeconds>
 					<testClass>org.jboss.tools.smoke.ui.test.SmokeSuite</testClass>
 				</configuration>
 			</plugin>
