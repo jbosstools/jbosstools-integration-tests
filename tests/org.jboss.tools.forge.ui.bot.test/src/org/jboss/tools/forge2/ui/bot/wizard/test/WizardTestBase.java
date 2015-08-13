@@ -16,19 +16,23 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.commands.ICommandService;
 import org.eclipse.ui.services.IServiceLocator;
+import org.jboss.reddeer.common.matcher.RegexMatcher;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.core.handler.ShellHandler;
+import org.jboss.reddeer.core.util.Display;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.jface.wizard.WizardDialog;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.closeeditors.CloseAllEditorsRequirement.CloseAllEditors;
-import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
-import org.jboss.reddeer.core.handler.ShellHandler;
+import org.jboss.reddeer.swt.condition.ButtonWithTextIsEnabled;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.common.matcher.RegexMatcher;
-import org.jboss.reddeer.core.util.Display;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.tools.forge.reddeer.view.ForgeConsoleView;
+import org.jboss.tools.forge.ui.bot.test.util.ScaffoldType;
 import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
@@ -214,5 +218,19 @@ public abstract class WizardTestBase {
 		new LabeledText("Type Name:").setText(entityName);
 		new LabeledText("Table Name:").setText(tableName);
 		dialog.finish(TimePeriod.LONG);	
+	}
+	
+	/**
+	 * Runs scaffold setup wizard on a specified project
+	 * @param projectName
+	 * @param type Type of the scaffold to be used
+	 */
+	public void scaffoldSetup(String projectName, ScaffoldType type) {
+		new ProjectExplorer().selectProjects(projectName);
+		WizardDialog dialog = getWizardDialog("Scaffold: Setup", "(Scaffold: Setup).*");
+		new DefaultCombo().setSelection(type.getName());
+		new WaitUntil(new ButtonWithTextIsEnabled(new PushButton("Next >")));
+		dialog.next();
+		dialog.finish(TimePeriod.LONG);
 	}
 }
