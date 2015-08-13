@@ -10,7 +10,7 @@ public class FreemarkerPreferencePage extends PreferencePage {
 	
 
 	public FreemarkerPreferencePage() {
-		super(new String[] {"Freemarker"});
+		super(new String[] {"FreeMarker"});
 	}
 
 	public void setHighLightRelatedDirectives(boolean value) {
