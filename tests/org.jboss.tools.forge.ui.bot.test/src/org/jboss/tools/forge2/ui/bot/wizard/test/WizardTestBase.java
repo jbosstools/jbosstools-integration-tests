@@ -198,4 +198,19 @@ public abstract class WizardTestBase {
 		wd.finish(TimePeriod.getCustom(600));
 	}
 
+	/**
+	 * Creates a new JPA entity in a given project with a set name, table name and package
+	 * @param projectName
+	 * @param entityName
+	 * @param tableName
+	 * @param pkg package to be set
+	 */
+	public void newJPAEntity(String projectName, String entityName, String tableName, String pkg) {
+		new ProjectExplorer().selectProjects(projectName);
+		WizardDialog dialog = getWizardDialog("JPA: New Entity", "(JPA: New Entity).*");
+		new LabeledText("Package Name:").setText(pkg);
+		new LabeledText("Type Name:").setText(entityName);
+		new LabeledText("Table Name:").setText(tableName);
+		dialog.finish(TimePeriod.LONG);	
+	}
 }
