@@ -17,7 +17,8 @@ import org.junit.runners.Suite;
 
 	// Hibernate Smoke Tests
 	EmptyTest.class,
-	ConsoleConfigurationFileTest.class,
+	// temporarily disabled due to never ending build issue on Windows
+	// ConsoleConfigurationFileTest.class,
 	CreateJPAProjectTest.class,
 	HibernateUIPartsTest.class,
 	JPAUIPartsTest.class,
