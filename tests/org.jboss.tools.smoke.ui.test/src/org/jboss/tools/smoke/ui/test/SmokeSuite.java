@@ -1,6 +1,7 @@
 package org.jboss.tools.smoke.ui.test;
 
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.tools.freemarker.ui.bot.test.FreemarkerPreferencePageTest;
 import org.jboss.tools.hibernate.reddeer.test.ConsoleConfigurationFileTest;
 import org.jboss.tools.hibernate.reddeer.test.CreateJPAProjectTest;
 import org.jboss.tools.hibernate.reddeer.test.EmptyTest;
@@ -15,7 +16,7 @@ import org.junit.runners.Suite;
 @RunWith(RedDeerSuite.class)
 @Suite.SuiteClasses({
 
-	// Hibernate Smoke Tests
+	// Hibernate smoke tests
 	EmptyTest.class,
 	ConsoleConfigurationFileTest.class,
 	CreateJPAProjectTest.class,
@@ -23,9 +24,14 @@ import org.junit.runners.Suite;
 	JPAUIPartsTest.class,
 	MappingFileTest.class,
 	MavenizedProjectTest.class,
-	PersistenceXMLFileTest.class
+	PersistenceXMLFileTest.class,
 	
-	// Server Smoke Tests
+	// FreeMarker smoke tests added
+	FreemarkerPreferencePageTest.class,
+	FreemarkerPreferencePageTest.class
+	
+	
+	// Server smoke tests
 	
 	// ...
 	

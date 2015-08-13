@@ -18,6 +18,7 @@ Require-Bundle: org.eclipse.ui,
  org.jboss.ide.eclipse.freemarker
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Import-Package: org.eclipse.core.resources
 Eclipse-BundleShape: jar
 Bundle-Vendor: JBoss by Red Hat
+Export-Package: org.jboss.tools.freemarker.ui.bot.test;x-friends:="org.jboss.tools.smoke.ui.test"
+Import-Package: org.eclipse.core.resources
