@@ -1,4 +1,4 @@
-package org.jboss.tools.batch.ui.bot.test;
+package org.jboss.tools.batch.ui.bot.test.wizard;
 
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
@@ -9,6 +9,8 @@ import org.jboss.tools.batch.reddeer.editor.JobXMLEditor;
 import org.jboss.tools.batch.reddeer.editor.JobXMLEditorDesignTab;
 import org.jboss.tools.batch.reddeer.wizard.NewJobXMLFileWizardDialog;
 import org.jboss.tools.batch.reddeer.wizard.NewJobXMLFileWizardPage;
+import org.jboss.tools.batch.ui.bot.test.AbstractBatchTest;
+import org.jboss.tools.batch.ui.bot.test.Activator;
 import org.junit.Before;
 import org.junit.Test;
 
