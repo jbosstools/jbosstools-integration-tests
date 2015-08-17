@@ -1,11 +1,12 @@
 package org.jboss.tools.ws.ui.bot.test.annotation;
 
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
-import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
-import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
 import org.junit.Test;
@@ -36,7 +37,7 @@ public class HTTPMethodAnnotationQuickFixTest extends RESTfulTestBase {
 		importWSTestProject(projectName);
 
 		/* assert that there is one Java problem */
-		assertCountOfErrors(1);
+		assertCountOfProblemsExists(ProblemType.ERROR, projectName, null, null, 1);
 
 		/* open MyAnnot.java */
 		openMyAnnotJavaFile(projectName);
@@ -46,10 +47,10 @@ public class HTTPMethodAnnotationQuickFixTest extends RESTfulTestBase {
 		editor.openQuickFixContentAssistant().chooseProposal(
 				"Add missing attributes");
 		new TextEditor().save();
-		AbstractWait.sleep(TimePeriod.getCustom(5));
-
-		/* assert that there is one JAX-RS errors - empty value */
-		assertCountOfValidationErrors(projectName, 1);
+		
+		
+		/* assert that there is one JAX-RS errors - empty value */		
+		assertCountOfProblemsExists(ProblemType.ERROR, projectName, null, JAX_RS_PROBLEM, 1);
 	}
 
 	@Test
@@ -59,14 +60,14 @@ public class HTTPMethodAnnotationQuickFixTest extends RESTfulTestBase {
 		importWSTestProject(projectName);
 
 		/* assert that there are two JAX-RS errors */
-		assertCountOfValidationErrors(projectName, 2);
+		assertCountOfProblemsExists(ProblemType.ERROR, projectName, null, JAX_RS_PROBLEM, 2);
 
 		/* open MyAnnot.java */
 		openMyAnnotJavaFile(projectName);
 		TextEditor editor = setCursorPositionToLineInTextEditor("MyAnnot");
 
 		/* check that there are quick fixes for both required annotations */
-		AbstractWait.sleep(TimePeriod.SHORT);
+		AbstractWait.sleep(TimePeriod.NORMAL);
 		editor.openQuickFixContentAssistant().chooseProposal(
 				"Add @Target annotation on type 'MyAnnot'");
 		AbstractWait.sleep(TimePeriod.getCustom(1));//makes a delay between applying quickfixes
@@ -80,7 +81,7 @@ public class HTTPMethodAnnotationQuickFixTest extends RESTfulTestBase {
 		AbstractWait.sleep(TimePeriod.getCustom(5));
 
 		/* assert that there are no JAX-RS errors */
-		assertCountOfValidationErrors(projectName, 0);
+		assertCountOfValidationProblemsExists(ProblemType.ERROR, projectName, null, JAX_RS_PROBLEM, 0);
 	}
 
 	private void openMyAnnotJavaFile(String projectName) {

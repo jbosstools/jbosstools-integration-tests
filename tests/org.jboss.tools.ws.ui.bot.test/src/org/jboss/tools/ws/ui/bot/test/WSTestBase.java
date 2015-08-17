@@ -17,19 +17,18 @@ import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.MessageFormat;
 import java.util.List;
 import java.util.logging.Logger;
 
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
+import org.jboss.reddeer.common.exception.RedDeerException;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ViewWithTitleIsActive;
+import org.jboss.reddeer.core.matcher.WithTextMatcher;
 import org.jboss.reddeer.eclipse.core.resources.Project;
-import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
@@ -38,13 +37,13 @@ import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPag
 import org.jboss.reddeer.eclipse.utils.DeleteUtils;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
-import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
+import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.common.reddeer.label.IDELabel;
-import org.jboss.tools.ws.reddeer.ui.wizards.wst.WebServiceWizardPageBase.SliderLevel;
 import org.jboss.tools.ws.ui.bot.test.utils.ProjectHelper;
 import org.jboss.tools.ws.ui.bot.test.utils.ServersViewHelper;
 import org.junit.After;
@@ -64,14 +63,7 @@ public class WSTestBase {
 	@InjectRequirement
     private static ServerRequirement serverReq;
 
-	private SliderLevel level;
 	private String wsProjectName = null;
-
-	private static final String SOAP_REQUEST_TEMPLATE = "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\" ?>"
-			+ "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\""
-			+ " xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\""
-			+ " xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">"
-			+ "<soap:Body>{0}</soap:Body>" + "</soap:Envelope>";
 
 	protected static final Logger LOGGER = Logger.getLogger(WSTestBase.class
 			.getName());
@@ -132,29 +124,22 @@ public class WSTestBase {
 	protected static void deleteAllProjects() {
 		ProjectExplorer projectExplorer = new ProjectExplorer();
 		projectExplorer.open();
+		
 		List<Project> projects = projectExplorer.getProjects();
 		try {
-			for(int i=0;i<projects.size();i++) {
-				Project project = projects.get(i);
+			for (Project project: projects) {
 				project.delete(true);
 			}
-		} catch(SWTLayerException | EclipseLayerException e) {
+		} catch(RedDeerException e) {
 			projectExplorer.close();
 			projectExplorer.open();
 			projects = projectExplorer.getProjects();
-			for(int i=0;i<projects.size();i++) {
-				Project project = projects.get(i);
+			for (Project project: projects) {
 				try {
-					LOGGER.severe("Forcing removal of " + project);
+					LOGGER.info("Forcing removal of " + project);
 					DeleteUtils.forceProjectDeletion(project, true);
 				} catch(RuntimeException exception) {
-					LOGGER.severe("Project was not deleted");
-					try {
-						LOGGER.severe("Project name: " + project.getName());
-					} catch(Exception t) {
-						LOGGER.severe("Can't get project name" + t.getMessage());
-					}
-					throw exception;
+					LOGGER.info("Project " + project.getName() + " was not deleted");
 				}
 			}
 		}
@@ -167,14 +152,6 @@ public class WSTestBase {
 	protected void openJavaFile(String projectName, String pkgName, String javaFileName) {
 		new ProjectExplorer().getProject(projectName)
 			.getProjectItem("Java Resources", "src", pkgName, javaFileName).open();
-	}
-
-	protected SliderLevel getLevel() {
-		return level;
-	}
-
-	protected void setLevel(SliderLevel level) {
-		this.level = level;
 	}
 
 	protected String getWsProjectName() {
@@ -199,11 +176,8 @@ public class WSTestBase {
 
 	protected void assertWebServiceTesterIsActive() {
 		assertTrue("Web Service Tester view should be active", 
-				new ViewWithTitleIsActive(IDELabel.View.WEB_SERVICE_TESTER).test());
-	}
-
-	public static String getSoapRequest(String body) {
-		return MessageFormat.format(SOAP_REQUEST_TEMPLATE, body);
+				new DefaultCTabItem(new WorkbenchShell(),
+						new WithTextMatcher(IDELabel.View.WEB_SERVICE_TESTER)).isEnabled());
 	}
 
 	protected static void importWSTestProject(String projectName) {

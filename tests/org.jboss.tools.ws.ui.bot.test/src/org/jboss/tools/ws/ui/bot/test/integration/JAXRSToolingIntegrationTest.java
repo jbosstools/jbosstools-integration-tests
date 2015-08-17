@@ -37,16 +37,17 @@ public class JAXRSToolingIntegrationTest extends RESTfulTestBase {
 	private static String projectName = "integration1"; 
 	private String localhostUrl = "http://localhost:8080/";
 	private String serviceUrl = localhostUrl + projectName + "/rest/"; 
-	private WsTesterView wsTesterView = new WsTesterView();
+	private WsTesterView wsTesterView;
 
 	@Override
 	public void setup() {
 		if (!projectExists(getWsProjectName())) {
-			importRestWSProject(projectName);
+			importWSTestProject(projectName);
 			ServersViewHelper.addProjectToServer(getWsProjectName(),
 					getConfiguredServerName());
 			ServersViewHelper.serverClean(getConfiguredServerName());
 		}
+		wsTesterView = new WsTesterView();
 		wsTesterView.open();
 	}
 

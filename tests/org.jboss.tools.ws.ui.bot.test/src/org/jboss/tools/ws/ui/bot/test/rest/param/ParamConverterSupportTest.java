@@ -6,6 +6,7 @@ import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardDialog;
 import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardPage;
+import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
@@ -38,17 +39,19 @@ public class ParamConverterSupportTest extends RESTfulTestBase {
 	@Test
 	public void testParamConverterSupport() {
 		/* prepare project */
-		importRestWSProject(PROJECT1_NAME);
+		importWSTestProject(PROJECT1_NAME);
 		
 		/* assert that type Car is not valid for the parameter */
-		assertCountOfValidationErrors(PROJECT1_NAME, 1);
-		assertCountOfValidationErrors(PROJECT1_NAME, "The type 'org.rest.test.Car' is not valid for this parameter. See JAX-RS 2.0 Specification (section 3.2) for more information. ", 1);
+		assertCountOfValidationProblemsExists(ProblemType.ERROR, PROJECT1_NAME, null, null, 1);
+		assertCountOfValidationProblemsExists(ProblemType.ERROR, PROJECT1_NAME, 
+				"The type 'org.rest.test.Car' is not valid for this parameter. "
+				+ "See JAX-RS 2.0 Specification (section 3.2) for more information. ", null, 1);
 		
 		/* create class implementing ParamConverterProvider */
 		createParamConverter();
 		
 		/* there is no error anymore */
-		assertCountOfValidationErrors(PROJECT1_NAME, 0);
+		assertCountOfValidationProblemsExists(ProblemType.ERROR, PROJECT1_NAME, null, null, 0);
 	}
 	
 	private void createParamConverter() {

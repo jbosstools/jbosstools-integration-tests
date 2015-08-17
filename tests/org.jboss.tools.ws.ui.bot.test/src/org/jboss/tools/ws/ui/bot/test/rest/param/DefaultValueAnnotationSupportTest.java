@@ -31,7 +31,7 @@ public class DefaultValueAnnotationSupportTest extends RESTfulTestBase {
 	@Test
 	public void testQueryParamDefaultValue() {
 		/* prepare project */
-		importRestWSProject("default1");
+		importWSTestProject("default1");
 
 		/* get RESTful services from JAX-RS REST explorer for the project */
 		List<RESTfulWebService> restServices = restfulServicesForProject("default1");
@@ -45,7 +45,7 @@ public class DefaultValueAnnotationSupportTest extends RESTfulTestBase {
 	@Test
 	public void testMatrixParamDefaultValue() {
 		/* prepare project */
-		importRestWSProject("default2");
+		importWSTestProject("default2");
 
 		/* get RESTful services from JAX-RS REST explorer for the project */
 		List<RESTfulWebService> restServices = restfulServicesForProject("default2");
@@ -64,7 +64,7 @@ public class DefaultValueAnnotationSupportTest extends RESTfulTestBase {
 	@Test
 	public void testPathParamDefaultValue() {
 		/* prepare project */
-		importRestWSProject("default3");
+		importWSTestProject("default3");
 
 		/* get RESTful services from JAX-RS REST explorer for the project */
 		List<RESTfulWebService> restServices = restfulServicesForProject("default3");

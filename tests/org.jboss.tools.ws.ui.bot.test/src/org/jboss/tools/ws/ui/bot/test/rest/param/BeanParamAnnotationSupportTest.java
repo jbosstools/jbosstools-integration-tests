@@ -2,14 +2,14 @@ package org.jboss.tools.ws.ui.bot.test.rest.param;
 
 import java.util.List;
 
-import javax.ws.rs.MatrixParam;
-import javax.ws.rs.PathParam;
-
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
+import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.tools.ws.reddeer.editor.ExtendedTextEditor;
 import org.jboss.tools.ws.reddeer.jaxrs.core.RESTfulWebService;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
@@ -28,40 +28,14 @@ import org.junit.Test;
 @JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY)
 public class BeanParamAnnotationSupportTest extends RESTfulTestBase {
 
-	/**
-	 * Project contains RestService with method with {@link BeanParam}
-	 * bound to class Car, which contains field annotated with {@link @PathParam}
-	 */
+	
+	// Projects containing RestService with method with {@link BeanParam}
+	// bound to class Car, which contains field annotated with {@link @PathParam}
 	private final String PROJECT1_NAME = "bean1";
-
-	/**
-	 * Project contains RestService with method with {@link BeanParam}
-	 * bound to class Car, which contains field annotated with {@link @QueryParam}
-	 */
 	private final String PROJECT2_NAME = "bean2";
-
-	/**
-	 * Project contains RestService with method with {@link BeanParam}
-	 * bound to class Car, which contains field annotated with {@link MatrixParam}
-	 */
 	private final String PROJECT3_NAME = "bean3";
-
-	/**
-	 * Project contains RestService with method with {@link BeanParam}
-	 * bound to class Car, which contains method annotated with {@link PathParam}
-	 */
 	private final String PROJECT4_NAME = "bean4";
-
-	/**
-	 * Project contains RestService with method with {@link BeanParam}
-	 * bound to class Car, which contains method annotated with {@link PathParam}
-	 */
 	private final String PROJECT5_NAME = "bean5";
-
-	/**
-	 * Project contains RestService with method with {@link BeanParam}
-	 * bound to class Car, which contains method annotated with {@link PathParam}
-	 */
 	private final String PROJECT6_NAME = "bean6";
 
 	private final String pathParam1 = "id";
@@ -84,11 +58,11 @@ public class BeanParamAnnotationSupportTest extends RESTfulTestBase {
 		final String pathParameterNotBoundToPathParamError = "@PathParam value 'id' in associated Parameter Aggregator 'org.rest.test.BeanClass' does not match any @Path annotation template parameters of the java method 'post' and its enclosing java type 'org.rest.test.RestService'.";
 
 		/* prepare project */
-		importRestWSProject(PROJECT1_NAME);
+		importWSTestProject(PROJECT1_NAME);
 
 		/* there is no error */
-		assertCountOfValidationErrors(PROJECT1_NAME, 0);
-		assertCountOfValidationWarnings(PROJECT1_NAME,  pathParameterNotBoundToAnyFieldWarning, 0);
+		assertCountOfProblemsExists(ProblemType.ERROR, PROJECT1_NAME, null, null, 0);
+		assertCountOfValidationProblemsExists(ProblemType.WARNING, PROJECT1_NAME, pathParameterNotBoundToAnyFieldWarning, null, 0);
 
 		/* get RESTful services from JAX-RS REST explorer for the project */
 		List<RESTfulWebService> restServices = restfulServicesForProject(PROJECT1_NAME);
@@ -104,14 +78,13 @@ public class BeanParamAnnotationSupportTest extends RESTfulTestBase {
 
 		/* remove @Path annotation from RestService and assert there are two errors (one in RestService and one in BeanClass */
 		editor.removeLine(pathAnnotation);
-		AbstractWait.sleep(TimePeriod.getCustom(2));
-		assertCountOfValidationErrors(PROJECT1_NAME, pathParamNotBoundToPathParameterError, 1);
-		assertCountOfValidationErrors(PROJECT1_NAME, pathParameterNotBoundToPathParamError, 1);
-		assertCountOfValidationErrors(PROJECT1_NAME, 2);
+		assertCountOfProblemsExists(ProblemType.ERROR, PROJECT1_NAME, pathParamNotBoundToPathParameterError, null, 1);
+		assertCountOfProblemsExists(ProblemType.ERROR, PROJECT1_NAME, pathParameterNotBoundToPathParamError, null, 1);
+		assertCountOfProblemsExists(ProblemType.ERROR, PROJECT1_NAME, null, null, 2);
 
 		/* add @Path annotation into RestService and assert that errors disappear */
 		editor.insertBeforeLine(pathAnnotation, "public void post(");
-		assertCountOfValidationErrors(PROJECT1_NAME, 0, "JBIDE-17796");
+		assertCountOfValidationProblemsExists(ProblemType.ERROR, PROJECT1_NAME, null, null, 0);
 
 		/* open BeanClass class */
 		openBeanClass(PROJECT1_NAME);
@@ -119,7 +92,7 @@ public class BeanParamAnnotationSupportTest extends RESTfulTestBase {
 
 		/* remove @PathParam from BeanClass and assert that there is an warning */
 		editor.removeLine("@PathParam");
-		assertCountOfValidationWarnings(PROJECT1_NAME, pathParameterNotBoundToAnyFieldWarning, 1);
+		assertCountOfValidationProblemsExists(ProblemType.WARNING, PROJECT1_NAME, pathParameterNotBoundToAnyFieldWarning, null, 1);
 	}
 
 	@Test
@@ -127,10 +100,11 @@ public class BeanParamAnnotationSupportTest extends RESTfulTestBase {
 		final String defaultValue = "defVal";
 
 		/* prepare project */
-		importRestWSProject(PROJECT2_NAME);
+		importWSTestProject(PROJECT2_NAME);
 
 		/* there is no error */
-		assertCountOfValidationErrors(PROJECT2_NAME, 0);
+		assertCountOfValidationProblemsExists(ProblemType.ERROR, PROJECT2_NAME, null, null, 0);
+
 
 		/* get RESTful services from JAX-RS REST explorer for the project */
 		List<RESTfulWebService> restServices = restfulServicesForProject(PROJECT2_NAME);
@@ -169,10 +143,10 @@ public class BeanParamAnnotationSupportTest extends RESTfulTestBase {
 		final String defaultValue = "1";
 
 		/* prepare project */
-		importRestWSProject(PROJECT3_NAME);
+		importWSTestProject(PROJECT3_NAME);
 
 		/* there is no error */
-		assertCountOfValidationErrors(PROJECT3_NAME, 0);
+		assertCountOfValidationProblemsExists(ProblemType.ERROR, PROJECT3_NAME, null, null, 0);
 
 		/* get RESTful services from JAX-RS REST explorer for the project */
 		List<RESTfulWebService> restServices = restfulServicesForProject(PROJECT3_NAME);
@@ -182,6 +156,8 @@ public class BeanParamAnnotationSupportTest extends RESTfulTestBase {
 		assertExpectedPathOfService(restServices.get(0),
 				"/rest;" + matrixParam1 + "={" + matrixType1 + "}");
 
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		
 		/* open BeanClass class */
 		openBeanClass(PROJECT3_NAME);
 		ExtendedTextEditor editor = new ExtendedTextEditor();
@@ -209,10 +185,10 @@ public class BeanParamAnnotationSupportTest extends RESTfulTestBase {
 	@Test
 	public void testBeanClassWithPathParamMethod() {
 		/* prepare project */
-		importRestWSProject(PROJECT4_NAME);
+		importWSTestProject(PROJECT4_NAME);
 
 		/* there is no error */
-		assertCountOfValidationErrors(PROJECT4_NAME, 0);
+		assertCountOfValidationProblemsExists(ProblemType.ERROR, PROJECT4_NAME, null, null, 0);
 
 		/* get RESTful services from JAX-RS REST explorer for the project */
 		List<RESTfulWebService> restServices = restfulServicesForProject(PROJECT4_NAME);
@@ -226,10 +202,10 @@ public class BeanParamAnnotationSupportTest extends RESTfulTestBase {
 	@Test
 	public void testBeanClassWithQueryParamMethod() {
 		/* prepare project */
-		importRestWSProject(PROJECT5_NAME);
+		importWSTestProject(PROJECT5_NAME);
 
 		/* there is no error */
-		assertCountOfValidationErrors(PROJECT5_NAME, 0);
+		assertCountOfValidationProblemsExists(ProblemType.ERROR, PROJECT5_NAME, null, null, 0);
 
 		/* get RESTful services from JAX-RS REST explorer for the project */
 		List<RESTfulWebService> restServices = restfulServicesForProject(PROJECT5_NAME);
@@ -243,10 +219,10 @@ public class BeanParamAnnotationSupportTest extends RESTfulTestBase {
 	@Test
 	public void testBeanClassWithMatrixParamMethod() {
 		/* prepare project */
-		importRestWSProject(PROJECT6_NAME);
+		importWSTestProject(PROJECT6_NAME);
 
 		/* there is no error */
-		assertCountOfValidationErrors(PROJECT6_NAME, 0);
+		assertCountOfValidationProblemsExists(ProblemType.ERROR, PROJECT6_NAME, null, null, 0);
 
 		/* get RESTful services from JAX-RS REST explorer for the project */
 		List<RESTfulWebService> restServices = restfulServicesForProject(PROJECT6_NAME);

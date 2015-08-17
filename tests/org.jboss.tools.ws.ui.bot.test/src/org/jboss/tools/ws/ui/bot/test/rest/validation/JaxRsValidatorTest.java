@@ -1,5 +1,6 @@
 package org.jboss.tools.ws.ui.bot.test.rest.validation;
 
+import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
 import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.ws.reddeer.ui.preferences.JAXRSValidatorPreferencePage;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
@@ -38,7 +39,7 @@ public class JaxRsValidatorTest extends RESTfulTestBase {
 		restfulHelper.enableRESTValidation();
 
 		/* test count of validation errors */
-		assertCountOfPathAnnotationValidationErrors(getWsProjectName(), 1);
+		assertCountOfProblemsExists(ProblemType.ERROR, getWsProjectName(), PATH_PARAM_VALID_ERROR, null, 1);
 	}
 
 	@Test
@@ -47,7 +48,7 @@ public class JaxRsValidatorTest extends RESTfulTestBase {
 		restfulHelper.disableRESTValidation();
 
 		/* test count of validation errors */
-		assertCountOfPathAnnotationValidationErrors(getWsProjectName(), 0);
+		assertCountOfProblemsExists(ProblemType.ERROR, getWsProjectName(), PATH_PARAM_VALID_ERROR, null, 0);
 
 		/* enable restful validation - to have proper test environment*/
 		restfulHelper.enableRESTValidation();

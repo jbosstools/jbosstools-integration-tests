@@ -32,6 +32,12 @@ public class ServersViewHelper {
 	
 	private ServersViewHelper() {};
 
+	private void wtf() {
+		ServersView view = new ServersView();
+		view.open();
+		view.getServer(")").getModule("").remove();
+	}
+	
 	/**
 	 * Removes the specified <var>project</var> from the configured server.
 	 * 

@@ -1,13 +1,19 @@
 package org.jboss.tools.ws.ui.bot.test.rest;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.util.List;
-import static org.junit.Assert.*;
+
 import org.hamcrest.core.Is;
 import org.hamcrest.core.IsNot;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
+import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
 import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.tools.ws.reddeer.jaxrs.core.RESTfulWebService;
 import org.jboss.tools.ws.reddeer.ui.wizards.jaxrs.JAXRSApplicationWizardPage;
@@ -46,8 +52,7 @@ public class CreateJAXRSResourceTest extends RESTfulTestBase {
 		//close the wizard if it's present
 		try {
 			wizard.cancel();
-		} catch(SWTLayerException e) {
-			
+		} catch(CoreLayerException e) {
 		}
 
 		super.cleanup();
@@ -83,7 +88,7 @@ public class CreateJAXRSResourceTest extends RESTfulTestBase {
 		wizard.finish();
 
 		/* there should be no error */
-		assertCountOfErrors(0);
+		assertCountOfProblemsExists(ProblemType.ERROR, 0);
 
 		/* JAX-RS Resource was created */
 		assertTrue("JAX-RS Application was not created", new ProjectExplorer().getProject(getWsProjectName())
@@ -98,7 +103,7 @@ public class CreateJAXRSResourceTest extends RESTfulTestBase {
 
 		/* JAX-RS Application class was also created*/
 		assertTrue("JAX-RS Application was not created", new ProjectExplorer().getProject(getWsProjectName())
-				.containsItem("src", PACKAGE_NAME, APPLICATION_FILE_NAME + ".java") == true);
+				.containsItem("Java Resources", "src", PACKAGE_NAME, APPLICATION_FILE_NAME + ".java"));
 	}
 
 	/**
@@ -129,7 +134,7 @@ public class CreateJAXRSResourceTest extends RESTfulTestBase {
 	}
 
 	/**
-	 * Fails due to JBIDE-17457
+	 * Resolved - JBIDE-17457
 	 * (JAX-RS Resource Wizard has inconsistent validation of target entity)
 	 * 
 	 * @see https://issues.jboss.org/browse/JBIDE-17457
@@ -172,7 +177,7 @@ public class CreateJAXRSResourceTest extends RESTfulTestBase {
 		wizard.finish();
 
 		/* there should be no error */
-		assertCountOfErrors(0);
+		assertCountOfProblemsExists(ProblemType.ERROR, 0);
 
 		/* JAX-RS Resource was created */
 		assertTrue("JAX-RS Application was not created", new ProjectExplorer().getProject(getWsProjectName())
@@ -192,37 +197,36 @@ public class CreateJAXRSResourceTest extends RESTfulTestBase {
 	private void assertThatAllRestServicesArePresent(List<RESTfulWebService> restServices) {
 		final String idPathURITemplate = "/{id:[0-9][0-9]*}";
 		final String mediaTypes = "application/xml,application/json";
-		final String emptyMediaType = "*/*";
 		final String PATH_PREFIX = APPLICATION_PATH + RESOURCE_PATH;
 		for (RESTfulWebService restService : restServices) {
 			final String serviceName = restService.getMethod();
 			if(serviceName.equals("POST")) {
 				assertEquals("Path of POST operation ", restService.getPath(), PATH_PREFIX);
 				assertEquals("Consumes info of POST operation ", restService.getConsumingContentType(), mediaTypes);
-				assertEquals("Produces info of POST operation ", restService.getProducingContentType(),  emptyMediaType);
+				assertEquals("Produces info of POST operation ", restService.getProducingContentType(),  mediaTypes);
 				continue;
 			}
 			if(serviceName.equals("GET")) {
 				if(restService.getPath().equals(PATH_PREFIX + idPathURITemplate)) {
-					assertEquals("Consumes info of GET operation ", restService.getConsumingContentType(), emptyMediaType);
+					assertEquals("Consumes info of GET operation ", restService.getConsumingContentType(), mediaTypes);
 					assertEquals("Produces info of GET operation ", restService.getProducingContentType(),  mediaTypes);
 					continue;
 				}
 				assertEquals("Path of GET operation ", restService.getPath(), PATH_PREFIX + "?start={Integer}&max={Integer}");
-				assertEquals("Consumes info of GET operation ", restService.getConsumingContentType(), emptyMediaType);
+				assertEquals("Consumes info of GET operation ", restService.getConsumingContentType(), mediaTypes);
 				assertEquals("Produces info of GET operation ", restService.getProducingContentType(),  mediaTypes);
 				continue;
 			}
 			if(serviceName.equals("PUT")) {
 				assertEquals("Path of PUT operation ", restService.getPath(), PATH_PREFIX + idPathURITemplate);
 				assertEquals("Consumes info of PUT operation ", restService.getConsumingContentType(), mediaTypes);
-				assertEquals("Produces info of PUT operation ", restService.getProducingContentType(),  emptyMediaType);
+				assertEquals("Produces info of PUT operation ", restService.getProducingContentType(),  mediaTypes);
 				continue;
 			}
 			if(serviceName.equals("DELETE")) {
 				assertEquals("Path of DELETE operation ", restService.getPath(), PATH_PREFIX + idPathURITemplate);
-				assertEquals("Consumes info of DELETE operation ", restService.getConsumingContentType(), emptyMediaType);
-				assertEquals("Produces info of DELETE operation ", restService.getProducingContentType(),  emptyMediaType);
+				assertEquals("Consumes info of DELETE operation ", restService.getConsumingContentType(), mediaTypes);
+				assertEquals("Produces info of DELETE operation ", restService.getProducingContentType(),  mediaTypes);
 				continue;
 			}
 			fail("Not expected rest service: " + serviceName);

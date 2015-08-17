@@ -47,7 +47,7 @@ public class AnnotationPropertiesTest extends RESTfulTestBase {
 
 	@Override
 	public void setup() {
-		importRestWSProject(getWsProjectName());
+		importWSTestProject(getWsProjectName());
 		openJavaFile(getWsProjectName(), getWsPackage(), getWsName() + ".java");
 	}
 

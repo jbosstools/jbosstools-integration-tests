@@ -59,7 +59,7 @@ public class MatrixParamAnnotationSupportTest extends RESTfulTestBase {
 	@Test
 	public void testMatrixParamFieldSupport() {
 		/* prepare project */
-		importRestWSProject(project2Name);
+		importWSTestProject(project2Name);
 
 		/* get RESTful services from JAX-RS REST explorer for the project */
 		List<RESTfulWebService> restServices = restfulServicesForProject(project2Name);
