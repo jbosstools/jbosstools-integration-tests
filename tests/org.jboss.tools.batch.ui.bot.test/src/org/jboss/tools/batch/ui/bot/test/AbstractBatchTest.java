@@ -16,15 +16,21 @@ public class AbstractBatchTest {
 
 	protected static final String PROJECT_NAME = "batch-test-project";
 
-	protected static final String RESOURCES_SOURCE_FOLDER = "src/main/resources";
+	protected static final String JAVA_FOLDER = "src/main/java";
+	
+	protected static final String RESOURCES_FOLDER = "src/main/resources";
 
 	protected static final String META_INF_FOLDER = "META-INF";
 
-	protected static final String BATCH_FILES_FOLDER = "batch-jobs";
+	protected static final String BATCH_XML_FILE = "batch.xml";
 
-	protected static final String BATCH_XML_FILE = "batch-test-job.xml";
+	protected static final String[] BATCH_XML_FILE_FULL_PATH = new String[]{RESOURCES_FOLDER, META_INF_FOLDER, BATCH_XML_FILE};
 
-	protected static final String[] BATCH_XML_FILE_FULL_PATH = new String[]{RESOURCES_SOURCE_FOLDER, META_INF_FOLDER, BATCH_FILES_FOLDER, BATCH_XML_FILE};
+	protected static final String JOB_FILES_FOLDER = "batch-jobs";
+	
+	protected static final String JOB_XML_FILE = "batch-test-job.xml";
+
+	protected static final String[] JOB_XML_FILE_FULL_PATH = new String[]{RESOURCES_FOLDER, META_INF_FOLDER, JOB_FILES_FOLDER, JOB_XML_FILE};
 
 	private static final Logger log = Logger.getLogger(AbstractBatchTest.class);
 	

@@ -54,19 +54,19 @@ public class CreateJobXMLFileTest extends AbstractBatchTest {
 		dialog.open();
 		
 		NewJobXMLFileWizardPage page = new NewJobXMLFileWizardPage();
-		page.setFileName(BATCH_XML_FILE);
+		page.setFileName(JOB_XML_FILE);
 		page.setJobID(JOB_ID);
 		
 		dialog.finish();
 	}
 	
 	private void assertFileExists() {
-		assertTrue(getProject().containsItem(BATCH_XML_FILE_FULL_PATH));
+		assertTrue(getProject().containsItem(JOB_XML_FILE_FULL_PATH));
 	}
 
 	private void assertJobID() {
-		getProject().getProjectItem(BATCH_XML_FILE_FULL_PATH).open();
-		JobXMLEditor editor = new JobXMLEditor(BATCH_XML_FILE);
+		getProject().getProjectItem(JOB_XML_FILE_FULL_PATH).open();
+		JobXMLEditor editor = new JobXMLEditor(JOB_XML_FILE);
 		editor.activate();
 		
 		JobXMLEditorDesignTab tab = editor.openDesignTab();

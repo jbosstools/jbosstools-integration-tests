@@ -1,8 +1,17 @@
 package org.jboss.tools.batch.reddeer.wizard;
 
+import java.util.Arrays;
+import java.util.List;
+
+import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.jface.wizard.WizardPage;
+import org.jboss.reddeer.swt.impl.button.OkButton;
+import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
+import org.jboss.reddeer.swt.impl.list.DefaultList;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 
 /**
@@ -53,7 +62,36 @@ public class NewBatchArtifactWizardPage extends WizardPage {
 		new RadioButton("Extend abstract class").click();
 	}
 	
+	public void setNamed(){
+		new RadioButton("@Named").click();
+	}
+	
+	public void setBatchXML(){
+		new RadioButton("batch.xml").click();
+	}
+	
+	public void setClassloader(){
+		new RadioButton("Class loader").click();
+	}
+	
 	public void setArtifactName(String name){
 		new LabeledText("Artifact name:").setText(name);
+	}
+	
+	public void addProperty(String name){
+		new PushButton("Add").click();
+		new WaitUntil(new ShellWithTextIsActive("Add Property"));
+		new LabeledText("Field name:").setText(name);
+		new OkButton().click();
+		new WaitWhile(new ShellWithTextIsActive("Add Property"));
+	}
+	
+	public void removeProperty(String name){
+		new DefaultList().select(name);
+		new PushButton("Remove").click();
+	}
+	
+	public List<String> getProperties(){
+		return Arrays.asList(new DefaultList().getListItems());
 	}
 }

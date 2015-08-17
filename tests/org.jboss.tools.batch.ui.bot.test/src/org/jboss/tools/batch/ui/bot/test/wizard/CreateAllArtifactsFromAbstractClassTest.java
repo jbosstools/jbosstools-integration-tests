@@ -12,7 +12,6 @@ import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
 import org.junit.runners.Parameterized.UseParametersRunnerFactory;
 
-import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -21,10 +20,6 @@ import static org.junit.Assert.assertNotNull;
 @UseParametersRunnerFactory(ParameterizedRequirementsRunnerFactory.class)
 public class CreateAllArtifactsFromAbstractClassTest extends AbstractCreateArtifactTest {
 
-	private static final String PACKAGE = "batch.test.wizard.artifact.classes";
-	
-	private static final String CLASS_PREFIX = "My";
-	
 	@Parameter
 	public BatchArtifacts artifact;
 	
@@ -42,12 +37,12 @@ public class CreateAllArtifactsFromAbstractClassTest extends AbstractCreateArtif
 
 	@Override
 	protected String getPackage() {
-		return PACKAGE;
+		return super.getPackage() + ".classes";
 	}
 	
 	@Override
 	protected String getClassName() {
-		return CLASS_PREFIX + artifact + "fromAbstractClass";
+		return artifact + "fromAbstractClass";
 	}
 	
 	@Override
@@ -67,16 +62,8 @@ public class CreateAllArtifactsFromAbstractClassTest extends AbstractCreateArtif
 		assertEditorIsActivated();
 		assertNoProblems();
 		assertClassName();
-		assertAnnotation();
 		assertSuperClass();
 		assertInterfaces();
-	}
-	
-	private void assertAnnotation() {
-		List<String> annotations = getEditor().getClassAnnotations();
-		
-		assertThat(annotations.size(), is(1));
-		assertThat(annotations, hasItem("Named"));		
 	}
 	
 	private void assertSuperClass() {
