@@ -3,7 +3,7 @@ package org.jboss.tools.smoke.ui.test;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.freemarker.ui.bot.test.FreemarkerPreferencePageTest;
 import org.jboss.tools.hibernate.reddeer.test.ConsoleConfigurationFileTest;
-import org.jboss.tools.hibernate.reddeer.test.CreateJPAProjectTest;
+import org.jboss.tools.hibernate.reddeer.test.CreateSingleJPAProjectTest;
 import org.jboss.tools.hibernate.reddeer.test.EmptyTest;
 import org.jboss.tools.hibernate.reddeer.test.HibernateUIPartsTest;
 import org.jboss.tools.hibernate.reddeer.test.JPAUIPartsTest;
@@ -20,7 +20,7 @@ import org.junit.runners.Suite;
 	EmptyTest.class,
 	// temporarily disabled due to never ending build issue on Windows
 	// ConsoleConfigurationFileTest.class,
-	CreateJPAProjectTest.class,
+	CreateSingleJPAProjectTest.class,
 	HibernateUIPartsTest.class,
 	JPAUIPartsTest.class,
 	MappingFileTest.class,
