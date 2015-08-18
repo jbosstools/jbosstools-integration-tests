@@ -19,6 +19,7 @@ import org.eclipse.ui.services.IServiceLocator;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.jface.wizard.WizardDialog;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.reddeer.requirements.closeeditors.CloseAllEditorsRequirement.CloseAllEditors;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.core.handler.ShellHandler;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
@@ -37,6 +38,7 @@ import org.junit.runner.RunWith;
  *
  */
 @RunWith(RedDeerSuite.class)
+@CloseAllEditors
 public abstract class WizardTestBase {
 
 	protected static final String PROJECT_NAME = "testProject";
