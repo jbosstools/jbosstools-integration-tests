@@ -4,14 +4,21 @@ import static org.junit.Assert.assertTrue;
 
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.jboss.reddeer.common.exception.RedDeerException;
+import org.jboss.reddeer.common.matcher.RegexMatcher;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.core.matcher.WithTextMatcher;
+import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.condition.TreeHasChildren;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
+import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
@@ -67,4 +74,14 @@ public class FeedHenryBotTest {
 		new WaitWhile(new ShellWithTextIsActive("Import"));
 	}
 
+	public DefaultShell runWithRemoteFeedHenryServer(String projectName) {
+		new ProjectExplorer().selectProjects(projectName);
+	    new ContextMenu(new WithTextMatcher("Run As"), new RegexMatcher("(\\d+)( Run w/remote FeedHenry server)")).select();
+	    new WaitUntil(new ShellWithTextIsActive("BrowserSim"), TimePeriod.LONG);
+	    DefaultShell browserSimShell = new DefaultShell("BrowserSim");
+	    new WaitWhile(new JobIsRunning());
+	    new WaitUntil(new ConsoleHasText("!JavaScript INFO: fh cloud is ready"), TimePeriod.LONG);
+	    return browserSimShell;
+	  }
+	
 }

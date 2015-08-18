@@ -188,7 +188,7 @@ public class AerogearBotTest {
    * Gets list of running java processes via calling command jps
    * @return
    */
-  public List<String> getRunningJavaProcesesNames(){
+  public static List<String> getRunningJavaProcesesNames(){
     List<String> result = new LinkedList<String>();
     String javaHome = System.getProperty("java.home", "");
     // search for sdk location instead of jre location
@@ -235,7 +235,7 @@ public class AerogearBotTest {
    * @param processName
    * @return
    */
-  public int countJavaProcess(String processName){
+  public static int countJavaProcess(String processName){
     List<String> runningJavaProcesses = getRunningJavaProcesesNames();
     List<String> processNameList = new LinkedList<String>();
     processNameList.add(processName);
