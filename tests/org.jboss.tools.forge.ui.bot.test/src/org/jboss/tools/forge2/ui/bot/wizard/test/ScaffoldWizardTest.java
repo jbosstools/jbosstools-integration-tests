@@ -62,6 +62,7 @@ public class ScaffoldWizardTest extends WizardTestBase {
 	}
 
 	private void checkGeneratedFiles(ScaffoldType type) {
+		project.refresh();
 		ProjectItem model = project.getProjectItem("Java Resources", "src/main/java", GROUPID + ".model");
 
 		for (String name : ENTITY_NAMES) {
@@ -75,7 +76,7 @@ public class ScaffoldWizardTest extends WizardTestBase {
 	}
 
 	private void checkWebResources(String entityName, ScaffoldType type) {
-		ProjectItem webapp = project.getProjectItem("Deployed Resources", "webapp");
+		ProjectItem webapp = project.getProjectItem("src", "main", "webapp");
 		if (type == ScaffoldType.FACES) {
 			ProjectItem entityFolder = webapp
 					.getChild(Character.toLowerCase(entityName.charAt(0)) + entityName.substring(1));
