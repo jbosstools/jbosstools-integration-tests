@@ -10,6 +10,9 @@
 	<groupId>org.jboss.tools.forge.tests</groupId>
 	<artifactId>org.jboss.tools.forge.ui.bot.test</artifactId>
 	<packaging>eclipse-test-plugin</packaging>
+	<properties>
+		<systemProperties>-Ddatabase.path=${test.database}</systemProperties>
+	</properties>
 	<build>
 		<plugins>
 			<plugin>
@@ -44,5 +47,26 @@
 			</plugin>
 		</plugins>
 	</build>
+	<profiles>
+		<profile>
+			<id>database</id>
+			<activation>
+				<property>
+					<name>test.database</name>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.eclipse.tycho</groupId>
+						<artifactId>tycho-surefire-plugin</artifactId>
+					</plugin>
+				</plugins>
+			</build>
+			<properties>
+				<test.database>${test.database}</test.database>
+			</properties>
+		</profile>
+	</profiles>
 
 </project>

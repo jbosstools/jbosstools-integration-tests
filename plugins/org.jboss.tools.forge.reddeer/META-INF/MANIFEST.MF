@@ -9,10 +9,12 @@ Require-Bundle: org.eclipse.core.runtime,
  org.jboss.reddeer.workbench,
  org.jboss.reddeer.common,
  org.jboss.reddeer.core,
+ org.jboss.reddeer.jface,
  org.eclipse.ui,
  org.junit;bundle-version="4.11.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Export-Package: org.jboss.tools.forge.reddeer,
  org.jboss.tools.forge.reddeer.condition,
- org.jboss.tools.forge.reddeer.view
+ org.jboss.tools.forge.reddeer.view,
+ org.jboss.tools.forge.reddeer.ui.wizard
