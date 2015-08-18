@@ -10,42 +10,24 @@
 	<groupId>org.jboss.tools.hibernatetools.tests</groupId>
 	<artifactId>org.jboss.tools.hibernate.ui.bot.test</artifactId>
 	<packaging>eclipse-test-plugin</packaging>
-
 	<properties>
-		<!-- <systemProperties>${integrationTestsSystemProperties} -Dtest.configurations.dir=${project.basedir}/properties/</systemProperties> -->
-		<!-- <systemProperties> </systemProperties> -->
-		<reddeer.config>target/classes/reddeer-config</reddeer.config>
-		<redDeerConfigStatement>-Dreddeer.config=${reddeer.config}/</redDeerConfigStatement>
-		<systemProperties>${integrationTestsSystemProperties} ${redDeerConfigStatement}</systemProperties>
+		<reddeer.config>${project.build.outputDirectory}</reddeer.config>
+
+		<!-- Tycho surefire arguments -->
+		<runtimesProperties>-Dreddeer.config=${reddeer.config}</runtimesProperties>
+		<!-- don't wrap this -->
+		<systemProperties>${integrationTestsSystemProperties} ${runtimesProperties}</systemProperties>
+		<test.installPath.OSX></test.installPath.OSX>
 	</properties>
 
 	<build>
-        <resources>
-	        <resource>
-	        <directory>resources</directory>
-	        <includes>
-	            <include>reddeer-config/*</include>
-	        </includes>
-	        <filtering>true</filtering>
-	        </resource>
-        </resources>
+		<resources>
+			<resource>
+				<directory>resources/conf/hibernate</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
 		<plugins>
-			<plugin>
-				<groupId>org.eclipse.tycho</groupId>
-				<artifactId>tycho-surefire-plugin</artifactId>
-				<configuration>
-					<testSuite>org.jboss.tools.hibernate.ui.bot.test</testSuite>
-					<testClass>org.jboss.tools.hibernate.ui.bot.test.HibernateAllTest</testClass>
-					<!-- <dependencies combine.children="append"> <dependency> <type>p2-installable-unit</type> 
-						<artifactId>org.eclipse.datatools.enablement.hsqldb.feature.feature.group</artifactId> 
-						<version>0.0.0</version> </dependency> <dependency> <type>p2-installable-unit</type> 
-						<artifactId>org.hibernate.eclipse.feature.feature.group</artifactId> <version>0.0.0</version> 
-						</dependency> -->
-					<!-- <dependency> <type>p2-installable-unit</type> <artifactId>org.eclipse.jpt.jpa.feature.feature.group</artifactId> 
-						<version>0.0.0</version> </dependency> -->
-					<!-- </dependencies> -->
-				</configuration>
-			</plugin>
 			<plugin>
 				<groupId>com.googlecode.maven-download-plugin</groupId>
 				<artifactId>download-maven-plugin</artifactId>
@@ -57,68 +39,13 @@
 							<goal>wget</goal>
 						</goals>
 						<configuration>
-							<url>${H2_DRIVER_SOURCE}</url>
-							<outputDirectory>${H2_DRIVER_TARGET}</outputDirectory>
+							<url>http://central.maven.org/maven2/com/h2database/h2/1.3.161/h2-1.3.161.jar</url>
+							<outputDirectory>${project.build.outputDirectory}</outputDirectory>
 							<unpack>false</unpack>
 						</configuration>
 					</execution>
 				</executions>
 			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>properties-maven-plugin</artifactId>
-				<version>1.0-alpha-2</version>
-				<executions>
-					<execution>
-						<phase>initialize</phase>
-						<goals>
-							<goal>read-project-properties</goal>
-						</goals>
-						<configuration>
-							<files>
-								<file>resources/links.properties</file>
-							</files>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
 		</plugins>
-		<pluginManagement>
-			<plugins>
-				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
-				<plugin>
-					<groupId>org.eclipse.m2e</groupId>
-					<artifactId>lifecycle-mapping</artifactId>
-					<version>1.0.0</version>
-					<configuration>
-						<lifecycleMappingMetadata>
-							<pluginExecutions>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>
-											org.codehaus.mojo
-										</groupId>
-										<artifactId>
-											properties-maven-plugin
-										</artifactId>
-										<versionRange>
-											[1.0-alpha-2,)
-										</versionRange>
-										<goals>
-											<goal>
-												read-project-properties
-											</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore></ignore>
-									</action>
-								</pluginExecution>
-							</pluginExecutions>
-						</lifecycleMappingMetadata>
-					</configuration>
-				</plugin>
-			</plugins>
-		</pluginManagement>
 	</build>
 </project>
