@@ -53,7 +53,6 @@
 		<module>org.jboss.tools.ws.ui.bot.test</module>
 		<module>org.jboss.tools.usercase.ticketmonster.ui.bot.test</module>
 		<module>org.jboss.tools.perf.test</module>
-		<module>org.jboss.tools.smoke.ui.test</module>
 	</modules>
 	<profiles>
 		<profile>
