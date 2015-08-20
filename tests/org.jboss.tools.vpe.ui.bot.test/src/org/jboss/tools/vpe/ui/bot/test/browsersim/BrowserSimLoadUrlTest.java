@@ -11,7 +11,6 @@
 package org.jboss.tools.vpe.ui.bot.test.browsersim;
 
 import org.apache.log4j.Logger;
-import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.tools.browsersim.reddeer.BrowserSimHandler;
 /**
