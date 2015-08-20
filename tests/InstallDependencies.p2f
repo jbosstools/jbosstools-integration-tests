@@ -1,0 +1,463 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+
+<!-- This file shoud install all JBT/JBDS tests, SWTBot, RedDeer and its dependencies -->
+
+
+<?p2f version='1.0.0'?>
+<p2f version='1.0.0'>
+  <ius size='90'>
+    <iu id='org.jboss.tools.aerogear.ui.bot.test' name='Aerogear UI Bot Tests' version='4.3.0'>
+      <repositories size='1'>
+        <repository location='http://download.jboss.org/jbosstools/mars/snapshots/updates/integration-tests/master/'/>
+      </repositories>
+    </iu>
+    <iu id='org.jboss.tools.archives.ui.bot.test' name='Archives UI Bot Tests' version='4.3.0'>
+      <repositories size='1'>
+        <repository location='http://download.jboss.org/jbosstools/mars/snapshots/updates/integration-tests/master/'/>
+      </repositories>
+    </iu>
+    <iu id='org.jboss.tools.arquillian.ui.bot.test' name='Arquillian UI Tests' version='4.3.0'>
+      <repositories size='1'>
+        <repository location='http://download.jboss.org/jbosstools/mars/snapshots/updates/integration-tests/master/'/>
+      </repositories>
+    </iu>
+    <iu id='org.jboss.tools.runtime.as.ui.bot.test' name='AS Runtime UI Bot Tests' version='4.3.0'>
+      <repositories size='1'>
+        <repository location='http://download.jboss.org/jbosstools/mars/snapshots/updates/integration-tests/master/'/>
+      </repositories>
+    </iu>
+    <iu id='org.jboss.ide.eclipse.as.ui.bot.test' name='AS UI Bot Tests' version='4.3.0'>
+      <repositories size='1'>
+        <repository location='http://download.jboss.org/jbosstools/mars/snapshots/updates/integration-tests/master/'/>
+      </repositories>
+    </iu>
+    <iu id='org.jboss.tools.batch.ui.bot.test' name='Batch UI Tests' version='4.3.0'>
+      <repositories size='1'>
+        <repository location='http://download.jboss.org/jbosstools/mars/snapshots/updates/integration-tests/master/'/>
+      </repositories>
+    </iu>
+    <iu id='org.jboss.tools.cdi.seam3.bot.test' name='CDI Seam3 UI Bot Tests' version='4.3.0'>
+      <repositories size='1'>
+        <repository location='http://download.jboss.org/jbosstools/mars/snapshots/updates/integration-tests/master/'/>
+      </repositories>
+    </iu>
+    <iu id='org.jboss.tools.cdi.bot.test' name='CDI UI Bot Tests' version='4.3.0'>
+      <repositories size='1'>
+        <repository location='http://download.jboss.org/jbosstools/mars/snapshots/updates/integration-tests/master/'/>
+      </repositories>
+    </iu>
+    <iu id='org.jboss.tools.central.reddeer' name='Central Reddeer' version='4.3.0'>
+      <repositories size='1'>
+        <repository location='http://download.jboss.org/jbosstools/mars/snapshots/updates/integration-tests/master/'/>
+      </repositories>
+    </iu>
+    <iu id='org.jboss.tools.central.ui.bot.test' name='Central UI Bot Tests' version='4.3.0'>
+      <repositories size='1'>
+        <repository location='http://download.jboss.org/jbosstools/mars/snapshots/updates/integration-tests/master/'/>
+      </repositories>
+    </iu>
+    <iu id='org.jboss.tools.deltaspike.ui.bot.test' name='Deltaspike UI Bot Tests' version='4.3.0'>
+      <repositories size='1'>
+        <repository location='http://download.jboss.org/jbosstools/mars/snapshots/updates/integration-tests/master/'/>
+      </repositories>
+    </iu>
+    <iu id='org.jboss.tools.dummy.ui.bot.test' name='Dummy UI Bot Tests' version='4.3.0'>
+      <repositories size='1'>
+        <repository location='http://download.jboss.org/jbosstools/mars/snapshots/updates/integration-tests/master/'/>
+      </repositories>
+    </iu>
+    <iu id='org.jboss.tools.easymport.ui.bot.test' name='Easymport UI Tests' version='4.3.0'>
+      <repositories size='1'>
+        <repository location='http://download.jboss.org/jbosstools/mars/snapshots/updates/integration-tests/master/'/>
+      </repositories>
+    </iu>
+    <iu id='org.jboss.tools.forge.reddeer' name='Forge RedDeer' version='4.3.0'>
+      <repositories size='1'>
+        <repository location='http://download.jboss.org/jbosstools/mars/snapshots/updates/integration-tests/master/'/>
+      </repositories>
+    </iu>
+    <iu id='org.jboss.tools.forge.ui.bot.test' name='Forge UI Bot Tests' version='4.3.0'>
+      <repositories size='1'>
+        <repository location='http://download.jboss.org/jbosstools/mars/snapshots/updates/integration-tests/master/'/>
+      </repositories>
+    </iu>
+    <iu id='org.jboss.tools.freemarker.ui.bot.test' name='Freemarker UI Bot Tests' version='4.3.0'>
+      <repositories size='1'>
+        <repository location='http://download.jboss.org/jbosstools/mars/snapshots/updates/integration-tests/master/'/>
+      </repositories>
+    </iu>
+    <iu id='org.codehaus.groovy.m2eclipse.feature.feature.group' name='Groovy-Eclipse M2E integration' version='2.9.2.xx-201508121448-e45'>
+      <repositories size='1'>
+        <repository location='http://dist.springsource.org/snapshot/GRECLIPSE/e4.5'/>
+      </repositories>
+    </iu>
+    <iu id='org.hamcrest.core.source' name='Hamcrest Core Library of Matchers Source' version='1.3.0'>
+      <repositories size='2'>
+        <repository location='http://download.eclipse.org/tools/orbit/downloads/drops/S20150519210750/repository'/>
+        <repository location='http://download.eclipse.org/technology/swtbot/snapshots'/>
+      </repositories>
+    </iu>
+    <iu id='org.hamcrest.library' name='Hamcrest Library of Additional Matchers' version='1.3.0'>
+      <repositories size='1'>
+        <repository location='http://download.eclipse.org/tools/orbit/downloads/drops/S20150519210750/repository'/>
+      </repositories>
+    </iu>
+    <iu id='org.hamcrest.library.source' name='Hamcrest Library of Additional Matchers Source' version='1.3.0'>
+      <repositories size='1'>
+        <repository location='http://download.eclipse.org/tools/orbit/downloads/drops/S20150519210750/repository'/>
+      </repositories>
+    </iu>
+    <iu id='org.jboss.tools.hibernate.ui.bot.test' name='Hibernate UI tests' version='4.3.0'>
+      <repositories size='1'>
+        <repository location='http://download.jboss.org/jbosstools/mars/snapshots/updates/integration-tests/master/'/>
+      </repositories>
+    </iu>
+    <iu id='org.jboss.tools.usercase.ticketmonster.ui.bot.test' name='JBoss TicketMonster Integration Tests' version='4.3.0'>
+      <repositories size='1'>
+        <repository location='http://download.jboss.org/jbosstools/mars/snapshots/updates/integration-tests/master/'/>
+      </repositories>
+    </iu>
+    <iu id='org.jboss.tools.jsf.reddeer' name='JSF Reddeer' version='4.3.0'>
+      <repositories size='1'>
+        <repository location='http://download.jboss.org/jbosstools/mars/snapshots/updates/integration-tests/master/'/>
+      </repositories>
+    </iu>
+    <iu id='org.jboss.tools.jsf.ui.bot.test' name='JSF UI Bot Tests' version='4.3.0'>
+      <repositories size='1'>
+        <repository location='http://download.jboss.org/jbosstools/mars/snapshots/updates/integration-tests/master/'/>
+      </repositories>
+    </iu>
+    <iu id='org.jboss.tools.jst.reddeer' name='JST Reddeer' version='4.3.0'>
+      <repositories size='1'>
+        <repository location='http://download.jboss.org/jbosstools/mars/snapshots/updates/integration-tests/master/'/>
+      </repositories>
+    </iu>
+    <iu id='org.jboss.tools.jst.ui.bot' name='JST UI Bot Tests' version='4.3.0'>
+      <repositories size='1'>
+        <repository location='http://download.jboss.org/jbosstools/mars/snapshots/updates/integration-tests/master/'/>
+      </repositories>
+    </iu>
+    <iu id='org.jboss.tools.maven.reddeer' name='Maven Reddeer' version='4.3.0'>
+      <repositories size='1'>
+        <repository location='http://download.jboss.org/jbosstools/mars/snapshots/updates/integration-tests/master/'/>
+      </repositories>
+    </iu>
+    <iu id='org.jboss.tools.maven.ui.bot.test' name='Maven UI Bot Tests' version='4.3.0'>
+      <repositories size='1'>
+        <repository location='http://download.jboss.org/jbosstools/mars/snapshots/updates/integration-tests/master/'/>
+      </repositories>
+    </iu>
+    <iu id='org.jboss.tools.mylyn.reddeer' name='Mylyn Reddeer' version='4.3.0'>
+      <repositories size='1'>
+        <repository location='http://download.jboss.org/jbosstools/mars/snapshots/updates/integration-tests/master/'/>
+      </repositories>
+    </iu>
+    <iu id='org.jboss.tools.mylyn.ui.bot.test' name='Mylyn UI Bot Tests' version='4.3.0'>
+      <repositories size='1'>
+        <repository location='http://download.jboss.org/jbosstools/mars/snapshots/updates/integration-tests/master/'/>
+      </repositories>
+    </iu>
+    <iu id='org.jboss.tools.openshift.ui.bot.test' name='OpenShift UI Bot Tests' version='4.3.0'>
+      <repositories size='1'>
+        <repository location='http://download.jboss.org/jbosstools/mars/snapshots/updates/integration-tests/master/'/>
+      </repositories>
+    </iu>
+    <iu id='org.jboss.tools.perf.test.core' name='Performance Tests Core' version='4.3.0'>
+      <repositories size='1'>
+        <repository location='http://download.jboss.org/jbosstools/mars/snapshots/updates/integration-tests/master/'/>
+      </repositories>
+    </iu>
+    <iu id='org.jboss.tools.portlet.ui.bot.test' name='Portal UI Bot Tests' version='4.3.0'>
+      <repositories size='1'>
+        <repository location='http://download.jboss.org/jbosstools/mars/snapshots/updates/integration-tests/master/'/>
+      </repositories>
+    </iu>
+    <iu id='org.jboss.tools.aerogear.reddeer' name='RedDeer API for Aerogear UI Tests' version='4.3.0'>
+      <repositories size='1'>
+        <repository location='http://download.jboss.org/jbosstools/mars/snapshots/updates/integration-tests/master/'/>
+      </repositories>
+    </iu>
+    <iu id='org.jboss.tools.archives.reddeer' name='RedDeer API for Archives UI Tests' version='4.3.0'>
+      <repositories size='1'>
+        <repository location='http://download.jboss.org/jbosstools/mars/snapshots/updates/integration-tests/master/'/>
+      </repositories>
+    </iu>
+    <iu id='org.jboss.tools.arquillian.reddeer' name='RedDeer API for Arquillian UI Tests' version='4.3.0'>
+      <repositories size='1'>
+        <repository location='http://download.jboss.org/jbosstools/mars/snapshots/updates/integration-tests/master/'/>
+      </repositories>
+    </iu>
+    <iu id='org.jboss.ide.eclipse.as.reddeer' name='RedDeer API for AS UI Tests' version='4.3.0'>
+      <repositories size='1'>
+        <repository location='http://download.jboss.org/jbosstools/mars/snapshots/updates/integration-tests/master/'/>
+      </repositories>
+    </iu>
+    <iu id='org.jboss.tools.batch.reddeer' name='RedDeer API for Batch UI Tests' version='4.3.0'>
+      <repositories size='1'>
+        <repository location='http://download.jboss.org/jbosstools/mars/snapshots/updates/integration-tests/master/'/>
+      </repositories>
+    </iu>
+    <iu id='org.jboss.tools.browsersim.reddeer' name='Reddeer API for Browsersim UI Tests' version='4.3.0'>
+      <repositories size='1'>
+        <repository location='http://download.jboss.org/jbosstools/mars/snapshots/updates/integration-tests/master/'/>
+      </repositories>
+    </iu>
+    <iu id='org.jboss.tools.cdi.reddeer' name='RedDeer API for CDI UI Tests' version='4.3.0'>
+      <repositories size='1'>
+        <repository location='http://download.jboss.org/jbosstools/mars/snapshots/updates/integration-tests/master/'/>
+      </repositories>
+    </iu>
+    <iu id='org.jboss.tools.common.reddeer' name='RedDeer API for Common UI Tests' version='4.3.0'>
+      <repositories size='1'>
+        <repository location='http://download.jboss.org/jbosstools/mars/snapshots/updates/integration-tests/master/'/>
+      </repositories>
+    </iu>
+    <iu id='org.jboss.tools.easymport.reddeer' name='RedDeer API for Easymport UI Tests' version='4.3.0'>
+      <repositories size='1'>
+        <repository location='http://download.jboss.org/jbosstools/mars/snapshots/updates/integration-tests/master/'/>
+      </repositories>
+    </iu>
+    <iu id='org.jboss.tools.hibernate.reddeer' name='RedDeer API for Hibernate UI Tests' version='4.3.0'>
+      <repositories size='1'>
+        <repository location='http://download.jboss.org/jbosstools/mars/snapshots/updates/integration-tests/master/'/>
+      </repositories>
+    </iu>
+    <iu id='org.jboss.tools.openshift.reddeer' name='RedDeer API for OpenShift UI Tests' version='4.3.0'>
+      <repositories size='1'>
+        <repository location='http://download.jboss.org/jbosstools/mars/snapshots/updates/integration-tests/master/'/>
+      </repositories>
+    </iu>
+    <iu id='org.jboss.tools.ws.reddeer' name='RedDeer API for Webservices UI Tests' version='4.3.0'>
+      <repositories size='1'>
+        <repository location='http://download.jboss.org/jbosstools/mars/snapshots/updates/integration-tests/master/'/>
+      </repositories>
+    </iu>
+    <iu id='org.jboss.reddeer.eclipse.feature.feature.group' name='RedDeer Eclipse Feature' version='1.0.0'>
+      <repositories size='1'>
+        <repository location='http://download.jboss.org/jbosstools/mars/snapshots/builds/reddeer_master/'/>
+      </repositories>
+    </iu>
+    <iu id='org.jboss.reddeer.eclipse.feature.source.feature.group' name='RedDeer Eclipse Testing Source Feature' version='1.0.0'>
+      <repositories size='1'>
+        <repository location='http://download.jboss.org/jbosstools/mars/snapshots/builds/reddeer_master/'/>
+      </repositories>
+    </iu>
+    <iu id='org.jboss.reddeer.examples.feature.feature.group' name='RedDeer Examples Feature' version='1.0.0'>
+      <repositories size='1'>
+        <repository location='http://download.jboss.org/jbosstools/mars/snapshots/builds/reddeer_master/'/>
+      </repositories>
+    </iu>
+    <iu id='org.jboss.reddeer.examples.feature.source.feature.group' name='RedDeer Examples Source Feature' version='1.0.0'>
+      <repositories size='1'>
+        <repository location='http://download.jboss.org/jbosstools/mars/snapshots/builds/reddeer_master/'/>
+      </repositories>
+    </iu>
+    <iu id='org.jboss.reddeer.gef.spy.feature.feature.group' name='RedDeer GEF Spy' version='1.0.0'>
+      <repositories size='1'>
+        <repository location='http://download.jboss.org/jbosstools/mars/snapshots/builds/reddeer_master/'/>
+      </repositories>
+    </iu>
+    <iu id='org.jboss.reddeer.help.feature.feature.group' name='RedDeer Help Feature' version='1.0.0'>
+      <repositories size='1'>
+        <repository location='http://download.jboss.org/jbosstools/mars/snapshots/builds/reddeer_master/'/>
+      </repositories>
+    </iu>
+    <iu id='org.jboss.reddeer.junit.extension.feature.feature.group' name='RedDeer JUnit Extension Feature' version='1.0.0'>
+      <repositories size='1'>
+        <repository location='http://download.jboss.org/jbosstools/mars/snapshots/builds/reddeer_master/'/>
+      </repositories>
+    </iu>
+    <iu id='org.jboss.reddeer.junit.extension.feature.source.feature.group' name='RedDeer JUnit Extensions for Testing Source Feature' version='1.0.0'>
+      <repositories size='1'>
+        <repository location='http://download.jboss.org/jbosstools/mars/snapshots/builds/reddeer_master/'/>
+      </repositories>
+    </iu>
+    <iu id='org.jboss.reddeer.logparser.feature.feature.group' name='RedDeer Log Parser Feature' version='1.0.0'>
+      <repositories size='1'>
+        <repository location='http://download.jboss.org/jbosstools/mars/snapshots/builds/reddeer_master/'/>
+      </repositories>
+    </iu>
+    <iu id='org.jboss.reddeer.logparser.feature.source.feature.group' name='RedDeer Log Parser Source Feature' version='1.0.0'>
+      <repositories size='1'>
+        <repository location='http://download.jboss.org/jbosstools/mars/snapshots/builds/reddeer_master/'/>
+      </repositories>
+    </iu>
+    <iu id='org.jboss.reddeer.rcp.feature.feature.group' name='RedDeer RCP Feature' version='1.0.0'>
+      <repositories size='1'>
+        <repository location='http://download.jboss.org/jbosstools/mars/snapshots/builds/reddeer_master/'/>
+      </repositories>
+    </iu>
+    <iu id='org.jboss.reddeer.rcp.feature.source.feature.group' name='RedDeer RCP Testing (JFace and Workbench) Source Feature' version='1.0.0'>
+      <repositories size='1'>
+        <repository location='http://download.jboss.org/jbosstools/mars/snapshots/builds/reddeer_master/'/>
+      </repositories>
+    </iu>
+    <iu id='org.jboss.reddeer.recorder.feature.feature.group' name='RedDeer Recorder Feature' version='1.0.0'>
+      <repositories size='1'>
+        <repository location='http://download.jboss.org/jbosstools/mars/snapshots/builds/reddeer_master/'/>
+      </repositories>
+    </iu>
+    <iu id='org.jboss.reddeer.recorder.feature.source.feature.group' name='RedDeer Recorder Source Feature' version='1.0.0'>
+      <repositories size='1'>
+        <repository location='http://download.jboss.org/jbosstools/mars/snapshots/builds/reddeer_master/'/>
+      </repositories>
+    </iu>
+    <iu id='org.jboss.reddeer.spy.feature.feature.group' name='RedDeer Spy Feature' version='1.0.0'>
+      <repositories size='1'>
+        <repository location='http://download.jboss.org/jbosstools/mars/snapshots/builds/reddeer_master/'/>
+      </repositories>
+    </iu>
+    <iu id='org.jboss.reddeer.swt.feature.feature.group' name='RedDeer SWT Feature' version='1.0.0'>
+      <repositories size='1'>
+        <repository location='http://download.jboss.org/jbosstools/mars/snapshots/builds/reddeer_master/'/>
+      </repositories>
+    </iu>
+    <iu id='org.jboss.reddeer.swt.feature.source.feature.group' name='RedDeer SWT Testing Source Feature' version='1.0.0'>
+      <repositories size='1'>
+        <repository location='http://download.jboss.org/jbosstools/mars/snapshots/builds/reddeer_master/'/>
+      </repositories>
+    </iu>
+    <iu id='org.jboss.reddeer.tests.feature.feature.group' name='RedDeer Tests Feature' version='1.0.0'>
+      <repositories size='1'>
+        <repository location='http://download.jboss.org/jbosstools/mars/snapshots/builds/reddeer_master/'/>
+      </repositories>
+    </iu>
+    <iu id='org.jboss.reddeer.tests.feature.source.feature.group' name='RedDeer Tests Source Feature' version='1.0.0'>
+      <repositories size='1'>
+        <repository location='http://download.jboss.org/jbosstools/mars/snapshots/builds/reddeer_master/'/>
+      </repositories>
+    </iu>
+    <iu id='org.jboss.reddeer.ui.feature.feature.group' name='RedDeer UI Feature' version='1.0.0'>
+      <repositories size='1'>
+        <repository location='http://download.jboss.org/jbosstools/mars/snapshots/builds/reddeer_master/'/>
+      </repositories>
+    </iu>
+    <iu id='org.jboss.reddeer.ui.feature.source.feature.group' name='RedDeer UI Source Feature' version='1.0.0'>
+      <repositories size='1'>
+        <repository location='http://download.jboss.org/jbosstools/mars/snapshots/builds/reddeer_master/'/>
+      </repositories>
+    </iu>
+    <iu id='org.jboss.tools.runtime.reddeer' name='Runtime Reddeer' version='4.3.0'>
+      <repositories size='1'>
+        <repository location='http://download.jboss.org/jbosstools/mars/snapshots/updates/integration-tests/master/'/>
+      </repositories>
+    </iu>
+    <iu id='org.jboss.tools.seam.reddeer' name='Seam Reddeer' version='4.3.0'>
+      <repositories size='1'>
+        <repository location='http://download.jboss.org/jbosstools/mars/snapshots/updates/integration-tests/master/'/>
+      </repositories>
+    </iu>
+    <iu id='org.jboss.tools.seam.ui.bot.test' name='Seam UI Bot Tests' version='4.3.0'>
+      <repositories size='1'>
+        <repository location='http://download.jboss.org/jbosstools/mars/snapshots/updates/integration-tests/master/'/>
+      </repositories>
+    </iu>
+    <iu id='org.jboss.tools.smoke.ui.test' name='Smoke UI Tests' version='4.3.0'>
+      <repositories size='1'>
+        <repository location='http://download.jboss.org/jbosstools/mars/snapshots/updates/integration-tests/master/'/>
+      </repositories>
+    </iu>
+    <iu id='org.jboss.tools.ui.bot.ext' name='SWTBot Extensions' version='4.3.0'>
+      <repositories size='1'>
+        <repository location='http://download.jboss.org/jbosstools/mars/snapshots/updates/integration-tests/master/'/>
+	<repository location='http://download.jboss.org/jbosstools/mars/snapshots/updates/coretests/master/'/>
+      </repositories>
+    </iu>
+    <iu id='org.jboss.tools.ui.bot.ext.test' name='SWTBot Extensions Tests' version='4.3.0'>
+      <repositories size='1'>
+        <repository location='http://download.jboss.org/jbosstools/mars/snapshots/updates/integration-tests/master/'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.swtbot.forms.feature.group' name='SWTBot for Eclipse Forms Testing' version='2.3.1'>
+      <repositories size='1'>
+        <repository location='http://download.eclipse.org/technology/swtbot/snapshots'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.swtbot.forms.source.feature.group' name='SWTBot for Eclipse Forms Testing Developer Resources' version='2.3.1'>
+      <repositories size='1'>
+        <repository location='http://download.eclipse.org/technology/swtbot/snapshots'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.swtbot.eclipse.feature.group' name='SWTBot for Eclipse Testing' version='2.3.1'>
+      <repositories size='1'>
+        <repository location='http://download.eclipse.org/technology/swtbot/snapshots'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.swtbot.eclipse.source.feature.group' name='SWTBot for Eclipse Testing Developer Resources' version='2.3.1'>
+      <repositories size='1'>
+        <repository location='http://download.eclipse.org/technology/swtbot/snapshots'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.swtbot.eclipse.gef.feature.group' name='SWTBot for GEF Testing' version='2.3.1'>
+      <repositories size='1'>
+        <repository location='http://download.eclipse.org/technology/swtbot/snapshots'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.swtbot.eclipse.gef.source.feature.group' name='SWTBot for GEF Testing Developer Resources' version='2.3.1'>
+      <repositories size='1'>
+        <repository location='http://download.eclipse.org/technology/swtbot/snapshots'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.swtbot.feature.group' name='SWTBot for SWT Testing' version='2.3.1'>
+      <repositories size='1'>
+        <repository location='http://download.eclipse.org/technology/swtbot/snapshots'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.swtbot.source.feature.group' name='SWTBot for SWT Testing Developer Resources' version='2.3.1'>
+      <repositories size='1'>
+        <repository location='http://download.eclipse.org/technology/swtbot/snapshots'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.swtbot.ide.feature.group' name='SWTBot IDE Features' version='2.3.1'>
+      <repositories size='1'>
+        <repository location='http://download.eclipse.org/technology/swtbot/snapshots'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.swtbot.ide.source.feature.group' name='SWTBot IDE Features Developer Resources' version='2.3.1'>
+      <repositories size='1'>
+        <repository location='http://download.eclipse.org/technology/swtbot/snapshots'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.swtbot.eclipse.test.junit.feature.group' name='SWTBot JUnit Headless launchers for Eclipse' version='2.3.1'>
+      <repositories size='1'>
+        <repository location='http://download.eclipse.org/technology/swtbot/snapshots'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.swtbot.generator.feature.feature.group' name='SWTBot Recorder and Test Generator (Provisional)' version='2.3.1'>
+      <repositories size='1'>
+        <repository location='http://download.eclipse.org/technology/swtbot/snapshots'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.swtbot.generator.feature.source.feature.group' name='SWTBot Recorder and Test Generator (Provisional) Developer Resources' version='2.3.1'>
+      <repositories size='1'>
+        <repository location='http://download.eclipse.org/technology/swtbot/snapshots'/>
+      </repositories>
+    </iu>
+    <iu id='org.sonatype.tycho.m2e.feature.feature.group' name='Tycho Project Configurators' version='0.8.0.201409231215'>
+      <repositories size='1'>
+        <repository location='http://repo1.maven.org/maven2/.m2e/connectors/m2eclipse-tycho/0.8.0/N/0.8.0.201409231215/'/>
+      </repositories>
+    </iu>
+    <iu id='org.jboss.tools.perf.test' name='Validation Performance Tests' version='4.3.0'>
+      <repositories size='1'>
+        <repository location='http://download.jboss.org/jbosstools/mars/snapshots/updates/integration-tests/master/'/>
+      </repositories>
+    </iu>
+    <iu id='org.jboss.tools.vpe.reddeer' name='VPE Reddeer' version='4.3.0'>
+      <repositories size='1'>
+        <repository location='http://download.jboss.org/jbosstools/mars/snapshots/updates/integration-tests/master/'/>
+      </repositories>
+    </iu>
+    <iu id='org.jboss.tools.vpe.ui.bot.test' name='VPE UI Bot Tests' version='4.3.0'>
+      <repositories size='1'>
+        <repository location='http://download.jboss.org/jbosstools/mars/snapshots/updates/integration-tests/master/'/>
+      </repositories>
+    </iu>
+    <iu id='org.jboss.tools.ws.ui.bot.test' name='Webservices UI Bot Tests' version='4.3.0'>
+      <repositories size='1'>
+        <repository location='http://download.jboss.org/jbosstools/mars/snapshots/updates/integration-tests/master/'/>
+      </repositories>
+    </iu>
+  </ius>
+</p2f>
