@@ -86,7 +86,9 @@ function clickExample(name){
  	getResultDivForExample(resultsDivs, name).find("a").click();
 }
 
-
+function clearSearch(){
+	$("a").filter(":contains('clear search')").click();
+}
 
 //Internal functions from now on. Do not call them from Java tests.
 

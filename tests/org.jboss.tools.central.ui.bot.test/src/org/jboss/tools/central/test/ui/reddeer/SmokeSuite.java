@@ -5,12 +5,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(RedDeerSuite.class)
-@SuiteClasses({
-	ArchetypesTest.class,
-	HTML5Parameterized.class
-	
-})
-
-public class HTML5CentralSuite {
+@SuiteClasses({BasicTests.class})
+public class SmokeSuite {
 
 }

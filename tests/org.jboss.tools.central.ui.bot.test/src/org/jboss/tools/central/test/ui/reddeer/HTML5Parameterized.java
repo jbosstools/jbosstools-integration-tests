@@ -6,13 +6,9 @@ import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.browser.Browser;
-import org.eclipse.swt.layout.GridData;
 import org.eclipse.ui.IViewReference;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
@@ -59,7 +55,7 @@ import org.junit.runners.Parameterized.Parameters;
 import org.junit.runners.Parameterized.UseParametersRunnerFactory;
 
 @UseParametersRunnerFactory(ParameterizedRequirementsRunnerFactory.class)
-@JBossServer(type = ServerReqType.WILDFLY, state = ServerReqState.RUNNING)
+@JBossServer(type = ServerReqType.ANY, state = ServerReqState.RUNNING)
 public class HTML5Parameterized {
 
 	private static DefaultEditor centralEditor;
