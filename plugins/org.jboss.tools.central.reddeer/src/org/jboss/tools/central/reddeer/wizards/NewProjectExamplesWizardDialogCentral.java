@@ -4,12 +4,17 @@ package org.jboss.tools.central.reddeer.wizards;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.util.List;
+
 import org.eclipse.swt.SWT;
 import org.jboss.reddeer.jface.wizard.WizardDialog;
 import org.jboss.reddeer.swt.api.Button;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.core.handler.WidgetHandler;
+import org.jboss.reddeer.eclipse.ui.problems.Problem;
+import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
+import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.FinishButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -39,7 +44,16 @@ public class NewProjectExamplesWizardDialogCentral extends WizardDialog {
 		new DefaultShell("New Project Example");
 		CheckBox quickFix = new CheckBox("Show the Quick Fix dialog");
 		if (quickFix.isEnabled()){
-			throw new CentralException("Quick Fix should not be enabled.");
+			//finish dialog and record errors.
+			new FinishButton().click();
+			ProblemsView problemsView = new ProblemsView();
+			problemsView.open();
+			List<Problem> problems = problemsView.getProblems(ProblemType.ERROR);
+			String errors = "";
+			for (Problem problem : problems) {
+				errors += "\t"+problem.getDescription()+"\n";
+			}
+			throw new CentralException("Quick Fix should not be enabled.\n"+errors);
 		}
 		if (new CheckBox(1).isEnabled()) {
 			assertTrue(new CheckBox(1).isChecked());

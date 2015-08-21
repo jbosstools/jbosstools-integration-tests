@@ -89,6 +89,14 @@ public class JavaScriptHelper {
 		return evaluateFunction("getDescriptionForExample", exampleName);
 	}
 	
+	public String[] getWizards(){
+		return evaluateFunction("getWizards").split(";");
+	}
+	
+	public void clearSearch(){
+		executeFunction("clearSearch");
+	}
+	
 	private void loadFunctions(String file){
 		try {
 			functionsFile = readFile(file);
@@ -96,6 +104,10 @@ public class JavaScriptHelper {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public String[] getLabelsForExample(String exampleName){
+		return evaluateFunction("getLabelsForExample", exampleName).split(";");
 	}
 	
 	private Boolean evaluateBoolFunction(String functionName, String... parameters){
