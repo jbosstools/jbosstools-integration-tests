@@ -1,6 +1,7 @@
 package org.jboss.tools.batch.ui.bot.test.wizard;
 
 import org.jboss.reddeer.common.logging.Logger;
+import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
@@ -36,7 +37,7 @@ public class CreateJobXMLFileTest extends AbstractBatchTest {
 		page.setArchiveFile(Activator.getPathToFileWithinPlugin("projects/batch-test-project.zip"));
 		page.selectProjects(PROJECT_NAME);
 		
-		dialog.finish();
+		dialog.finish(TimePeriod.VERY_LONG);
 		getProject().select();
 	}
 	
