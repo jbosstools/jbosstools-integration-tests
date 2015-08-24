@@ -116,7 +116,7 @@ public class ServerRequirement extends ServerReqBase implements Requirement<JBos
 	@Override
 	public String getServerTypeLabelText(IServerReqConfig config) {
 		if (isWildfly9(config)){
-			return super.getServerTypeLabelText(config) + " (Experimental)";
+			return super.getServerTypeLabelText(config) + " ";
 		}
 		return super.getServerTypeLabelText(config);
 	}

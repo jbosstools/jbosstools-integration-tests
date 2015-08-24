@@ -29,7 +29,7 @@
 <stringAttribute key="org.eclipse.jdt.junit.TEST_KIND" value="org.eclipse.jdt.junit.loader.junit4"/>
 <stringAttribute key="org.eclipse.jdt.launching.JRE_CONTAINER" value="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="org.jboss.ide.eclipse.as.ui.bot.test.allsuites.products.ProductsTestsSuite"/>
-<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch ${target.arch} -nl ${target.nl} -consoleLog"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch ${target.arch} -nl ${target.nl} -consoleLog  -pluginCustomization ${project_loc:org.jboss.ide.eclipse.as.ui.bot.test}/../pluginCustomization.ini"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="org.jboss.ide.eclipse.as.ui.bot.test"/>
 <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.pde.ui.workbenchClasspathProvider"/>
 <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xmx1024m -XX:MaxPermSize=256m -Dusage_reporting_enabled=false"/>
@@ -40,10 +40,16 @@
 <stringAttribute key="rd.launch.property.logMessageFilter" value="ALL"/>
 <stringAttribute key="rd.launch.property.pauseFailedTest" value="false"/>
 <stringAttribute key="rd.launch.property.recordScreenCast" value="false"/>
+<stringAttribute key="rd.launch.property.reddeer.captureScreenshot" value="true"/>
 <stringAttribute key="rd.launch.property.reddeer.close.shells" value="true"/>
 <stringAttribute key="rd.launch.property.reddeer.close.welcome.screen" value="true"/>
 <stringAttribute key="rd.launch.property.reddeer.config" value="${project_loc:org.jboss.ide.eclipse.as.ui.bot.test}/resources/generated_config_files/product"/>
 <stringAttribute key="rd.launch.property.reddeer.disable.maven.download.repo.index.on.startup" value="true"/>
+<stringAttribute key="rd.launch.property.reddeer.logLevel" value="ALL"/>
+<stringAttribute key="rd.launch.property.reddeer.logMessageFilter" value="ALL"/>
+<stringAttribute key="rd.launch.property.reddeer.pauseFailedTest" value="false"/>
+<stringAttribute key="rd.launch.property.reddeer.recordScreenCast" value="false"/>
+<stringAttribute key="rd.launch.property.reddeer.set.open.associated.perspective" value="never"/>
 <booleanAttribute key="show_selected_only" value="false"/>
 <booleanAttribute key="tracing" value="false"/>
 <booleanAttribute key="useCustomFeatures" value="false"/>
