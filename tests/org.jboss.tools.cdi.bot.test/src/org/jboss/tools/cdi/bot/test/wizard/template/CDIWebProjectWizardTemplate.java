@@ -60,7 +60,7 @@ public class CDIWebProjectWizardTemplate{
 		WebProjectFirstPage fp = new WebProjectFirstPage();
 		fp.setProjectName(PROJECT_NAME);
 		assertEquals(sr.getRuntimeNameLabelText(sr.getConfig()),fp.getTargetRuntime());
-		assertEquals("Dynamic Web Project with CDI "+CDIVersion+" (Context and Dependency Injection)",fp.getConfiguration());
+		assertEquals("Dynamic Web Project with CDI "+CDIVersion+" (Contexts and Dependency Injection)",fp.getConfiguration());
 		cw.finish();
 		isCDISupportEnabled(PROJECT_NAME);
 		isCDIFacetEnabled(PROJECT_NAME, CDIVersion);
@@ -85,7 +85,7 @@ public class CDIWebProjectWizardTemplate{
 		WebProjectFirstPage fp = new WebProjectFirstPage();
 		fp.setProjectName(PROJECT_NAME);
 		assertEquals(sr.getRuntimeNameLabelText(sr.getConfig()),fp.getTargetRuntime());
-		assertEquals("Dynamic Web Project with CDI "+CDIVersion+" (Context and Dependency Injection)",fp.getConfiguration());
+		assertEquals("Dynamic Web Project with CDI "+CDIVersion+" (Contexts and Dependency Injection)",fp.getConfiguration());
 		cw.next();
 		cw.next();
 		cw.next();
@@ -110,7 +110,7 @@ public class CDIWebProjectWizardTemplate{
 	
 	private boolean isCDISupportEnabled(String projectName){
 		openProjectProperties(projectName);
-		new DefaultTreeItem("CDI (Context and Dependency Injection) Settings").select();
+		new DefaultTreeItem("CDI (Contexts and Dependency Injection) Settings").select();
 		boolean toReturn = new LabeledCheckBox("CDI support:").isChecked();
 		new OkButton().click();
 		new WaitWhile(new ShellWithTextIsAvailable("Properties for "+projectName));
