@@ -24,6 +24,7 @@ import org.jboss.tools.maven.ui.bot.test.profile.MavenProfilesTest;
 import org.jboss.tools.maven.ui.bot.test.project.ArchetypesTest;
 import org.jboss.tools.maven.ui.bot.test.project.EARProjectTest;
 import org.jboss.tools.maven.ui.bot.test.project.JSFProjectTest;
+import org.jboss.tools.maven.ui.bot.test.project.SCMCheckoutProject;
 import org.jboss.tools.maven.ui.bot.test.repository.MavenRepositories;
 import org.jboss.tools.maven.ui.bot.test.repository.RemoteRepositoriesPreferenceTest;
 import org.jboss.tools.maven.ui.bot.test.ui.PerspectiveTest;
@@ -68,7 +69,10 @@ import org.junit.runners.Suite;
 	
 	//SeamProjectTest.class, 
 	SeamPluginsTest.class,
-	APTPropertiesPageTest.class
+	APTPropertiesPageTest.class,
+	
+	SCMCheckoutProject.class
+	
 })
 public class MavenAllBotTests {
 

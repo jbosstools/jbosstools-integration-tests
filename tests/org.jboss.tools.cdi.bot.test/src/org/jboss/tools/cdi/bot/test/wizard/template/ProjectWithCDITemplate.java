@@ -144,7 +144,7 @@ public class ProjectWithCDITemplate{
 	
 	private void openCDIPage(){
 		openProjectProperties(PROJECT_NAME);
-		new DefaultTreeItem("CDI (Context and Dependency Injection) Settings").select();
+		new DefaultTreeItem("CDI (Contexts and Dependency Injection) Settings").select();
 	}
 	
 	private void openProjectProperties(String projectName){
