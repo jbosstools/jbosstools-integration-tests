@@ -65,7 +65,6 @@
 <bundle id="org.jboss.tools.perf.test"><category name="JBoss Tools Core - Integration Tests"/></bundle>
 <bundle id="org.jboss.tools.mylyn.reddeer"><category name="JBoss Tools Core - Integration Tests"/></bundle>
 <bundle id="org.jboss.tools.vpe.reddeer"><category name="JBoss Tools Core - Integration Tests"/></bundle>
-<bundle id="org.jboss.tools.smoke.ui.test"><category name="JBoss Tools Core - Integration Tests"/></bundle>
 
 <!-- sources -->
 
