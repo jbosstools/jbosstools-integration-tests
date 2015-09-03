@@ -11,7 +11,8 @@ Require-Bundle: org.eclipse.ui,
  org.jboss.reddeer.core,
  org.jboss.reddeer.jface,
  org.jboss.reddeer.eclipse
-Export-Package: org.jboss.tools.jst.reddeer.web.ui
+Export-Package: org.jboss.tools.jst.reddeer.bower.ui,
+ org.jboss.tools.jst.reddeer.web.ui
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 
