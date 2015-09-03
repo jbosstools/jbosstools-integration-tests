@@ -105,6 +105,18 @@
 				</plugins>
 			</build>
 		</profile>
+		<profile>
+			<!-- Workaround for https://bugs.eclipse.org/bugs/show_bug.cgi?id=388084 -->
+			<id>osx</id>
+			<activation>
+				<os>
+					<family>mac</family>
+				</os>
+			</activation>
+			<properties>
+				<platformSystemProperties> -XstartOnFirstThread </platformSystemProperties>
+			</properties>
+		</profile>
 	</profiles>
     <build>
 		<plugins>
