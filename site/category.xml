@@ -121,5 +121,4 @@
 <bundle id="org.jboss.tools.perf.test.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
 <bundle id="org.jboss.tools.mylyn.reddeer.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
 <bundle id="org.jboss.tools.vpe.reddeer.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
-<bundle id="org.jboss.tools.smoke.ui.test.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
 </site>
