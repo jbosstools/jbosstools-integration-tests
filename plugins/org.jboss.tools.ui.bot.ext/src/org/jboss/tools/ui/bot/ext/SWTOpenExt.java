@@ -22,6 +22,7 @@ import org.hamcrest.Matcher;
 import org.jboss.reddeer.common.exception.RedDeerException;
 import org.jboss.reddeer.core.handler.WidgetHandler;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.ui.bot.ext.condition.ActiveShellTitleMatches;
 import org.jboss.tools.ui.bot.ext.condition.ShellIsActiveCondition;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem;
@@ -123,12 +124,7 @@ public class SWTOpenExt {
 	 * @return
 	 */
 	public SWTBot preferenceOpen(IPreference pref) {
-		if (SWTJBTExt.isRunningOnMacOs()){
-		  bot.shells()[0].pressShortcut(SWT.COMMAND, ',');  
-		}
-		else{
-		  bot.menu("Window").menu("Preferences").click();				
-		}
+		new WorkbenchPreferenceDialog().open();
 	    bot.waitUntil(new ShellIsActiveCondition("Preferences"),Timing.time5S());
 	    SWTBotShell shell = bot.shell("Preferences");
 		try{
