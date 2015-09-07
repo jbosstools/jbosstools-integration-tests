@@ -19,6 +19,24 @@
 				<configuration>
 					<testSuite>org.jboss.tools.jst.ui.bot.test</testSuite>
 					<testClass>org.jboss.tools.jst.ui.bot.test.AllJSTTests</testClass>
+					<dependencies combine.children="append">
+						<dependency>
+							<type>p2-installable-unit</type>
+							<artifactId>org.eclipse.wst.jsdt.feature.feature.group</artifactId>
+						</dependency>
+						<dependency>
+							<type>p2-installable-unit</type>
+							<artifactId>org.jboss.tools.jst.feature.feature.group</artifactId>
+						</dependency>
+						<dependency>
+							<type>p2-installable-unit</type>
+							<artifactId>org.jboss.tools.jst.js.feature.feature.group</artifactId>
+						</dependency>
+						<dependency>
+							<type>p2-installable-unit</type>
+							<artifactId>org.jboss.tools.jst.jsdt.feature.feature.group</artifactId>
+						</dependency>
+					</dependencies>
 				</configuration>
 			</plugin>
 		</plugins>
