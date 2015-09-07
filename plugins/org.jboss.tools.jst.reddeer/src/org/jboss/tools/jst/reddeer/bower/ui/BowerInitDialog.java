@@ -21,6 +21,6 @@ import org.jboss.reddeer.jface.wizard.NewWizardDialog;
 public class BowerInitDialog extends NewWizardDialog {
 
 	public BowerInitDialog() {
-		super("Bower", "Bower Init");
+		super("JavaScript", "Bower Init");
 	}
 }
