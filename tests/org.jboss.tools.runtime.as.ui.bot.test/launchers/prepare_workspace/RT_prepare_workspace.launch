@@ -6,10 +6,15 @@
 <booleanAttribute key="M2_OFFLINE" value="false"/>
 <stringAttribute key="M2_PROFILES" value=""/>
 <listAttribute key="M2_PROPERTIES">
+<listEntry value="wildfly-10.0=${folder_prompt:WildFly 10.0 installation folder}"/>
+<listEntry value="wildfly-web-10.0=${folder_prompt:WildFly 10.0-Web installation folder}"/>
+<listEntry value="wildfly-9.0=${folder_prompt:WildFly 9.0 installation folder}"/>
+<listEntry value="wildfly-web-9.0=${folder_prompt:WildFly 9.0-Web installation folder}"/>
 <listEntry value="wildfly-8.2=${folder_prompt:WildFly 8.2 installation folder}"/>
 <listEntry value="wildfly-8.1=${folder_prompt:WildFly 8.1 installation folder}"/>
 <listEntry value="wildfly-8.0=${folder_prompt:WildFly 8.0 installation folder}"/>
 <listEntry value="jboss-as-7=${folder_prompt:JBoss AS 7 installation folder}"/>
+<listEntry value="jboss-eap-7.0=${folder_prompt:EAP 7.0 installation folder}"/>
 <listEntry value="jboss-eap-6.4=${folder_prompt:EAP 6.4 installation folder}"/>
 <listEntry value="jboss-eap-6.3.x=${folder_prompt:EAP 6.3.x installation folder}"/>
 <listEntry value="jboss-eap-6.3=${folder_prompt:EAP 6.3 installation folder}"/>
