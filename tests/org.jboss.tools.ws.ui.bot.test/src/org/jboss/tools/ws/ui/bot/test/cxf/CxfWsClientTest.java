@@ -1,11 +1,5 @@
 package org.jboss.tools.ws.ui.bot.test.cxf;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.Properties;
-
 import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.ws.reddeer.ui.preferences.WsCxf2xPreferencePage;
 import org.jboss.tools.ws.ui.bot.test.webservice.WebServiceRuntime;
@@ -14,8 +8,8 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 
 /**
- * Test Web Service Client with CXF Service Runtime, tests inherited
- * from {@link WSClientTestTemplate}
+ * Test Web Service Client with CXF Service Runtime, tests inherited from
+ * {@link WSClientTestTemplate}
  * 
  * @author Radoslav Rabara
  * 
@@ -25,16 +19,7 @@ public class CxfWsClientTest extends WSClientTestTemplate {
 	private static final String CXF_HOME_LOCATION;
 
 	static {
-		try {
-			Properties properties = new Properties();
-			properties.load(new FileReader(new File("properties/ws.properties")));
-
-			CXF_HOME_LOCATION = properties.getProperty("apache-cxf-2.x");
-		} catch (FileNotFoundException e) {
-			throw new RuntimeException(e);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
+		CXF_HOME_LOCATION = System.getProperty("apache-cxf-2.x");
 	}
 
 	public CxfWsClientTest() {

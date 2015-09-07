@@ -13,12 +13,16 @@
 	<artifactId>org.jboss.tools.ws.ui.bot.test</artifactId>
 	<packaging>eclipse-test-plugin</packaging>
 	<properties>
-		<apache-cfx-2.x.dir>${project.build.directory}/requirements/apache-cxf-2.x/</apache-cfx-2.x.dir>
-		<apache-cxf-2.x>${apache-cfx-2.x.dir}/apache-cxf-2.4.6/</apache-cxf-2.x>
-		<apache-cxf-2.x.url>http://archive.apache.org/dist/cxf/2.4.6/apache-cxf-2.4.6.zip</apache-cxf-2.x.url>
-		<apache-cxf-2.x.md5>ebaab4357812b22c17eadb30b563c7b8</apache-cxf-2.x.md5>
+		<reddeer.config>${project.build.outputDirectory}/config</reddeer.config>
+		<requirementsDirectory>${project.build.directory}/requirements</requirementsDirectory>
+		<jbosstools.test.jboss-wildfly-8.home>${requirementsDirectory}/wildfly-8.2.0.Final</jbosstools.test.jboss-wildfly-8.home>
+		
+		<apache-cxf-2.x.dir>${requirementsDirectory}/apache-cxf-2.x</apache-cxf-2.x.dir>
+		<apache-cxf-2.x>${apache-cxf-2.x.dir}/apache-cxf-3.1.1/</apache-cxf-2.x>
+		<apache-cxf-2.x.url>http://archive.apache.org/dist/cxf/3.1.1/apache-cxf-3.1.1.zip</apache-cxf-2.x.url>
+		<apache-cxf-2.x.md5>142d0261de8012e6eafd780587313681</apache-cxf-2.x.md5>
 
-		<systemProperties>${integrationTestsSystemProperties} -Dws.scope=${ws.scope} -Dreddeer.config=${project.basedir}/properties/WildFly.xml -Dreddeer.close.shells=false</systemProperties>
+		<systemProperties>${integrationTestsSystemProperties} -Dws.scope=${ws.scope} -Dapache-cxf-2.x=${apache-cxf-2.x} -Dreddeer.config=${reddeer.config} -Djbosstools.test.jboss-wildfly-8.home=${jbosstools.test.jboss-wildfly-8.home} -Dreddeer.close.shells=false</systemProperties>
 		<surefire.timeout>10800</surefire.timeout>
 	</properties>
 	<profiles>
@@ -30,6 +34,15 @@
 		</repository>
 	</repositories>
 	<build>
+	<resources>
+			<resource>
+				<directory>resources</directory>
+				<includes>
+					<include>config/*</include>
+				</includes>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -42,6 +55,7 @@
 							<goal>unpack</goal>
 						</goals>
 						<configuration>
+							<skip>${skipTests}</skip>
 							<artifactItems>
 								<artifactItem>
 									<groupId>org.jboss.tools.ws.tests</groupId>
@@ -65,7 +79,7 @@
 								<artifactItem>
 									<groupId>org.wildfly</groupId>
 									<artifactId>wildfly-dist</artifactId>
-									<version>8.1.0.Final</version>
+									<version>8.2.0.Final</version>
 									<type>zip</type>
 								</artifactItem>
 							</artifactItems>
@@ -122,31 +136,6 @@
 						</dependency>
 					</dependencies>
 				</configuration>
-			</plugin>
-			<plugin>
-				<artifactId>maven-resources-plugin</artifactId>
-				<version>2.5</version>
-				<executions>
-					<execution>
-						<id>copy-resources</id>
-						<phase>pre-integration-test</phase>
-						<goals>
-							<goal>copy-resources</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>resources</outputDirectory>
-							<resources>
-								<resource>
-									<directory>resources/properties/template</directory>
-									<filtering>true</filtering>
-									<includes>
-										<include>ws.properties</include>
-									</includes>
-								</resource>
-							</resources>
-						</configuration>
-					</execution>
-				</executions>
 			</plugin>
 		</plugins>
 	</build>
