@@ -23,8 +23,8 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @RunWith(RequirementAwareSuite.class)
 @SuiteClasses({
-	OpenBrowserSimTest.class,
-	CoreHTMLTagsTest.class
+	OpenBrowserSimTest.class
+	// ,CoreHTMLTagsTest.class
 	})
 
 public class SmokeSuite extends SWTBotTestCase{
