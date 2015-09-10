@@ -207,6 +207,8 @@ public abstract class AbstractMavenSWTBotTest{
 		} else {
 			dfp.setTargetRuntime(runtime);
 		}
+		dw.next();
+		dw.next();
 		WebProjectThirdPage dtp = new WebProjectThirdPage();
 		dtp.setGenerateWebXmlDeploymentDescriptor(webxml);
 		dw.finish();
