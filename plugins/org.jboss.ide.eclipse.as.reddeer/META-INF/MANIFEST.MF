@@ -19,7 +19,8 @@ Require-Bundle: org.eclipse.ui;bundle-version="3.105.0",
  org.jboss.reddeer.common;bundle-version="[1.0.0,1.1.0)",
  org.jboss.reddeer.core
 Bundle-ClassPath: .
-Export-Package: org.jboss.ide.eclipse.as.reddeer.requirement,
+Export-Package: org.jboss.ide.eclipse.as.reddeer.matcher,
+ org.jboss.ide.eclipse.as.reddeer.requirement,
  org.jboss.ide.eclipse.as.reddeer.server.editor,
  org.jboss.ide.eclipse.as.reddeer.server.requirement,
  org.jboss.ide.eclipse.as.reddeer.server.view,

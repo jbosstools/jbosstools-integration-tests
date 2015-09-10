@@ -11,8 +11,8 @@ import org.junit.Test;
 public class ProjectRuntimeDownload extends ProjectRuntimeDownloadTestBase {
 	
 	@Test
-	public void downloadWildfly81Final() {
-		downloadAndCheckServer("WildFly 8.1.0 Final", 1);
+	public void downloadWildfly90Final() {
+		downloadAndCheckServer("WildFly 9.0.1 Final", 1);
 	}
 	
 	@Test
