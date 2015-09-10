@@ -4,31 +4,12 @@ Bundle-Name: CDI UI Bot Tests
 Bundle-SymbolicName: org.jboss.tools.cdi.bot.test
 Bundle-Version: 4.3.0.qualifier
 Bundle-Activator: org.jboss.tools.cdi.bot.test.PluginActivator
-Require-Bundle: org.eclipse.core.runtime,
- org.junit;bundle-version="4.8.1",
- org.apache.log4j;bundle-version="1.2.15",
- org.eclipse.ui,
- org.eclipse.ui.ide,
- org.eclipse.jface.text,
- org.eclipse.jdt.ui,
- org.eclipse.wst.sse.ui,
- org.jboss.tools.common.model.ui,
- org.jboss.tools.cdi.reddeer;bundle-version="4.3.0",
- org.jboss.reddeer.swt,
- org.jboss.reddeer.jface,
- org.jboss.reddeer.eclipse,
- org.jboss.reddeer.workbench,
- org.jboss.reddeer.requirements,
- org.jboss.reddeer.junit,
- org.jboss.reddeer.junit.extension,
- org.eclipse.core.resources,
+Require-Bundle: org.jboss.reddeer.go;bundle-version="1.0.0",
+ org.jboss.tools.cdi.reddeer,
  org.jboss.tools.common.reddeer,
  org.jboss.ide.eclipse.as.reddeer,
  org.jboss.tools.jst.reddeer,
- org.jboss.tools.jsf.reddeer,
- org.eclipse.jdt.core,
- org.jboss.reddeer.core,
- org.jboss.reddeer.common
+ org.jboss.tools.jsf.reddeer
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Eclipse-BundleShape: jar

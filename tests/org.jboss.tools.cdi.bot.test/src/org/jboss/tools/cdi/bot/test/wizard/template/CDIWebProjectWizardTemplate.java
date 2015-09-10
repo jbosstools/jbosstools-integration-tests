@@ -100,7 +100,7 @@ public class CDIWebProjectWizardTemplate{
 		assertFalse(pe.getProject(PROJECT_NAME).containsItem("WebContent","WEB-INF","beans.xml"));
 		new WaitUntil(new ProblemExists(ProblemType.ANY), TimePeriod.LONG, false);
 		if(CDIVersion.equals("1.0")){
-			assertFalse(new ProblemExists(ProblemType.ANY).test());
+			assertTrue(new ProblemExists(ProblemType.ANY).test());
 		} else {
 			new WaitWhile(new ProblemExists(ProblemType.ANY));
 		}
