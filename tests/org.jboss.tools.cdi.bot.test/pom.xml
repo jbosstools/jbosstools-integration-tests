@@ -21,9 +21,6 @@
 
 	<profiles>
 		<profile>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
 			<id>all-bot-tests</id>
 			<properties>
 				<suiteClass>org.jboss.tools.cdi.bot.test.CDIAllBotTests</suiteClass>
