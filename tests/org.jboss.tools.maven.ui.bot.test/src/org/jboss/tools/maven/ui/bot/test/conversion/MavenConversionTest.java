@@ -147,6 +147,7 @@ public class MavenConversionTest extends AbstractMavenSWTBotTest{
 		new DefaultShell("Convert to Maven Dependencies");
 		new WaitUntil(new WidgetIsEnabled(new PushButton("Finish")));
 		new PushButton("Finish").click();
+		new WaitUntil(new JobIsRunning(), TimePeriod.NORMAL,false);
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		List<String> toCheck = new ArrayList<String>();
 		toCheck.add("<groupId>maven.conversion.test.groupID</groupId>");

@@ -12,22 +12,10 @@
 
 	<packaging>eclipse-test-plugin</packaging>
 	<properties>
-		<systemProperties>${integrationTestsSystemProperties} -Djbosstools.test.seam.2.1.0.home=${requirementsDirectory}/jboss-seam-2.1.2 -Djbosstools.test.seam.2.3.0.home=${requirementsDirectory}/jboss-seam-2.3.0.Final -Djbosstools.test.seam.2.2.0.home=${requirementsDirectory}/jboss-seam-2.2.0.GA  -Dproject.build.directory=${project.build.directory} -Djbosstools.test.wildfly8.home=${jbosstools.test.wildfly8.home} -Dreddeer.config=target/classes/servers</systemProperties>
+		<systemProperties>${integrationTestsSystemProperties} -Djbosstools.test.seam.2.1.0.home=${requirementsDirectory}/jboss-seam-2.1.2 -Djbosstools.test.seam.2.3.0.home=${requirementsDirectory}/jboss-seam-2.3.0.Final -Djbosstools.test.seam.2.2.0.home=${requirementsDirectory}/jboss-seam-2.2.0.GA -Dproject.build.directory=${project.build.directory} -Djbosstools.test.wildfly8.home=${jbosstools.test.wildfly8.home} -Dreddeer.config=target/classes/servers</systemProperties>
 		<jbosstools.test.wildfly8.home>${requirementsDirectory}/wildfly-8.1.0.Final</jbosstools.test.wildfly8.home>
 		<surefire.timeout>14400</surefire.timeout>
 	</properties>
-
-	<profiles>
-		<profile>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-			<id>all-bot-tests</id>
-			<properties>
-				<suiteClass>org.jboss.tools.maven.ui.bot.test.MavenAllBotTests</suiteClass>
-			</properties>
-		</profile>
-	</profiles>
 
 	<build>
 		<resources>
@@ -63,27 +51,31 @@
 							<skip>${skipTests}</skip>
 						</configuration>
 					</execution>
-					<!-- 
-					<execution>
-						<id>hsqldb</id>
-						<phase>pre-integration-test</phase>
-						<goals>
-							<goal>copy</goal>
-						</goals>
-						<configuration>
-							<artifactItems>
-								<artifactItem>
-									<groupId>hsqldb</groupId>
-									<artifactId>hsqldb</artifactId>
-									<version>1.8.0.10</version>
-									<outputDirectory>${requirementsDirectory}/hsqldb</outputDirectory>
-									<type>jar</type>
-								</artifactItem>
-							</artifactItems>
-							<skip>${skipTests}</skip>
-						</configuration>
-					</execution>
-					-->
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-surefire-plugin</artifactId>
+				<configuration>
+					<testSuite>org.jboss.tools.maven.ui.bot.test</testSuite>
+					<testClass>${suiteClass}</testClass>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+	
+	<profiles>
+		<profile>
+			<id>all-bot-tests</id>
+			<properties>
+				<suiteClass>org.jboss.tools.maven.ui.bot.test.MavenAllBotTests</suiteClass>
+			</properties>
+			<build>
+			<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
 					<execution>
 						<id>seam23</id>
 						<phase>pre-integration-test</phase>
@@ -135,15 +127,9 @@
 					</execution>
 				</executions>
 			</plugin>
-			<plugin>
-				<groupId>org.eclipse.tycho</groupId>
-				<artifactId>tycho-surefire-plugin</artifactId>
-				<configuration>
-					<testSuite>org.jboss.tools.maven.ui.bot.test</testSuite>
-					<testClass>${suiteClass}</testClass>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
+			</plugins>
+			</build>
+		</profile>
+	</profiles>
 
 </project>
