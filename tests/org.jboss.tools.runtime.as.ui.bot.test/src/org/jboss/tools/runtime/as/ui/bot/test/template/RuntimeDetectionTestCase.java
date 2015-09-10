@@ -2,11 +2,14 @@ package org.jboss.tools.runtime.as.ui.bot.test.template;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.fail;
 
+import java.awt.image.CropImageFilter;
 import java.util.Arrays;
 import java.util.List;
 
 import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
+import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.eclipse.wst.server.ui.RuntimePreferencePage;
 import org.jboss.tools.runtime.as.ui.bot.test.dialog.preferences.RuntimeDetectionPreferencePage;
 import org.jboss.tools.runtime.as.ui.bot.test.dialog.preferences.SeamPreferencePage;
@@ -59,7 +62,13 @@ public abstract class RuntimeDetectionTestCase {
 
 	protected void removeAllSeamRuntimes(){
 		preferences.open();
-		preferences.select(seamPreferencePage);
+		try{
+			preferences.select(seamPreferencePage);
+		}catch (CoreLayerException ex){
+			//seam is not installed
+			preferences.ok();
+			return;
+		}
 		seamPreferencePage.removeAllRuntimes();
 		preferences.ok();
 	}
@@ -73,7 +82,16 @@ public abstract class RuntimeDetectionTestCase {
 
 	protected void assertSeamRuntimesNumber(int expected) {
 		preferences.open();
-		preferences.select(seamPreferencePage);
+		try{
+			preferences.select(seamPreferencePage);
+		}catch (CoreLayerException ex){
+			if (expected>0){
+				fail("Seam runtimes expected, but seam tooling is not installed.");
+			}else{
+				preferences.ok();
+				return;
+			}
+		}
 		assertThat(seamPreferencePage.getRuntimes().size(), is(expected));
 		preferences.ok();
 	}

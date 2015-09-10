@@ -9,6 +9,7 @@ import static org.junit.Assert.fail;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.jboss.ide.eclipse.as.reddeer.matcher.ServerConsoleContainsNoExceptionMatcher;
 import org.jboss.ide.eclipse.as.reddeer.server.editor.JBossServerEditor;
 import org.jboss.ide.eclipse.as.reddeer.server.view.JBossServer;
 import org.jboss.ide.eclipse.as.reddeer.server.view.JBossServerView;
@@ -147,12 +148,7 @@ public abstract class OperateServerTemplate {
 		ConsoleView console = new ConsoleView();
 
 		console.open();
-		String consoleText = console.getConsoleText();
-		if (consoleText != null) {
-			assertThat(message, consoleText, not(containsString("Exception:")));
-		} else {
-			fail("Text from console could not be obtained.");
-		}
+		assertThat(message, console, new ServerConsoleContainsNoExceptionMatcher());
 	}
 
 	protected void assertNoError(String message) {
