@@ -115,15 +115,18 @@ public class ServerRequirement extends ServerReqBase implements Requirement<JBos
 	
 	@Override
 	public String getServerTypeLabelText(IServerReqConfig config) {
-		if (isWildfly9(config)){
+		//workaround for JBIDE-20548
+		if (isWildfly9or8(config)){
 			return super.getServerTypeLabelText(config) + " ";
 		}
 		return super.getServerTypeLabelText(config);
 	}
 	
-	private boolean isWildfly9(IServerReqConfig config){
-		return FamilyWildFly.class.equals(config.getServerFamily().getClass())
-				&& config.getServerFamily().getVersion().startsWith("9");
+	private boolean isWildfly9or8(IServerReqConfig config){
+		boolean toReturn = FamilyWildFly.class.equals(config.getServerFamily().getClass())
+		&& (config.getServerFamily().getVersion().startsWith("8") || 
+				config.getServerFamily().getVersion().startsWith("9"));
+		return toReturn;
 	}
 	
 	@Override
