@@ -114,19 +114,6 @@ public class ServerRequirement extends ServerReqBase implements Requirement<JBos
 	}
 	
 	@Override
-	public String getServerTypeLabelText(IServerReqConfig config) {
-		if (isWildfly9(config)){
-			return super.getServerTypeLabelText(config) + " ";
-		}
-		return super.getServerTypeLabelText(config);
-	}
-	
-	private boolean isWildfly9(IServerReqConfig config){
-		return FamilyWildFly.class.equals(config.getServerFamily().getClass())
-				&& config.getServerFamily().getVersion().startsWith("9");
-	}
-	
-	@Override
 	public String getServerNameLabelText(IServerReqConfig config) {
 		if(this.config.getRemote() == null)
 			return super.getServerNameLabelText(config);
@@ -140,9 +127,21 @@ public class ServerRequirement extends ServerReqBase implements Requirement<JBos
 			serverW.open();
 
 			NewServerWizardPageWithErrorCheck sp = new NewServerWizardPageWithErrorCheck();
-
-			sp.selectType(config.getServerFamily().getCategory(),
-					getServerTypeLabelText(config));
+			
+			String serverTypeLabelText = getServerTypeLabelText(config);
+			
+			//workaround for JBIDE-20548
+			if(FamilyWildFly.class.equals(config.getServerFamily().getClass())){
+				String label = config.getServerFamily().getLabel();
+				String version = config.getServerFamily().getVersion();
+				if(version.equals("8.x")){
+					serverTypeLabelText = label+"  "+version;
+				}
+				if(version.equals("9.x")){
+					serverTypeLabelText = label+"  "+version+" ";
+				}
+			}
+			sp.selectType(config.getServerFamily().getCategory(), serverTypeLabelText);
 			sp.setName(getServerNameLabelText(config));
 
 			sp.checkErrors();
