@@ -16,7 +16,7 @@ import org.junit.Test;
 public class MavenRepositories extends AbstractMavenSWTBotTest{
 	
 	
-	private static final String EAP_REPO = "redhat-techpreview-all-repository";
+	private static final String EAP_REPO = "redhat-ga-repository";
 	private static final String JBOSS_REPO = "jboss-public-repository";
 	
 	@BeforeClass
