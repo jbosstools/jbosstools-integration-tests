@@ -33,6 +33,9 @@ public class FamilyWildFly implements IServerFamily {
 
 	@Override
 	public String getVersion() {
+		if(version.equals("8.x") || version.equals("9.x")){
+			return " "+version;
+		}
 		return version;
 	}
 }
