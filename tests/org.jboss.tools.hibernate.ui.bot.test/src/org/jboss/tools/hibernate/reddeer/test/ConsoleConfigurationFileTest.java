@@ -49,17 +49,67 @@ public class ConsoleConfigurationFileTest extends HibernateRedDeerTest {
 	}
 	
 	@Test
-	public void testCreateConfigurationFileWithoutConsole() {		
-		testCreateConfigurationFile(false);
+	public void testCreateConfigurationFileWithoutConsole35() {		
+		testCreateConfigurationFile("3.5",false);
 	}
 
 	@Test
-	public void testCreateConfigurationFileWithConsole() {
-		testCreateConfigurationFile(true);
+	public void testCreateConfigurationFileWithConsole35() {
+		testCreateConfigurationFile("3.5",true);
+	}
+			
+	@Test
+	public void testCreateConfigurationFileFromDatasource35() {
+		createConfigurationFileFromDatasource("3.5");
 	}
 	
 	@Test
-	public void testCreateConfigurationFileFromDatasource() {
+	public void testCreateConfigurationFileWithoutConsole36() {		
+		testCreateConfigurationFile("3.6",false);
+	}
+
+	@Test
+	public void testCreateConfigurationFileWithConsole36() {
+		testCreateConfigurationFile("3.6",true);
+	}
+			
+	@Test
+	public void testCreateConfigurationFileFromDatasource36() {
+		createConfigurationFileFromDatasource("3.6");
+	}
+	
+	@Test
+	public void testCreateConfigurationFileWithoutConsole40() {		
+		testCreateConfigurationFile("4.0",false);
+	}
+
+	@Test
+	public void testCreateConfigurationFileWithConsole40() {
+		testCreateConfigurationFile("4.0",true);
+	}
+			
+	@Test
+	public void testCreateConfigurationFileFromDatasource40() {
+		createConfigurationFileFromDatasource("4.0");
+	}
+	
+	@Test
+	public void testCreateConfigurationFileWithoutConsole43() {		
+		testCreateConfigurationFile("4.3",false);
+	}
+
+	@Test
+	public void testCreateConfigurationFileWithConsole43() {
+		testCreateConfigurationFile("4.3",true);
+	}
+			
+	@Test
+	public void testCreateConfigurationFileFromDatasource43() {
+		createConfigurationFileFromDatasource("4.3");
+	}
+	
+	
+	private void createConfigurationFileFromDatasource(String hbVersion) {
 		// Create datasource
 		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
 		log.step("Create database driver definition");
@@ -71,7 +121,7 @@ public class ConsoleConfigurationFileTest extends HibernateRedDeerTest {
 		NewHibernateConfigurationWizard wizard = new NewHibernateConfigurationWizard();
 		wizard.open();
 		
-		NewConfigurationLocationPage p1 = new NewConfigurationLocationPage();
+		NewConfigurationLocationPage p1 = new NewConfigurationLocationPage();		
 		p1.setLocation(PROJECT_NAME,"src");		
 		wizard.next();
 
@@ -88,6 +138,7 @@ public class ConsoleConfigurationFileTest extends HibernateRedDeerTest {
 		
 		// Check values
 		NewConfigurationSettingPage p2 = new NewConfigurationSettingPage();
+		p2.setHibernateVersion(hbVersion);
 		assertTrue("jdbc must match", p2.getConnectionURL().equals(cfg.getJdbcString()));
 		assertTrue("driver must match", p2.getDriveClass().equals(cfg.getDriverClass()));
 		assertTrue("username must match", p2.getUsername().equals(cfg.getUsername()));
@@ -98,7 +149,7 @@ public class ConsoleConfigurationFileTest extends HibernateRedDeerTest {
 		checkFile(false);
 	}
 		
-	public void testCreateConfigurationFile(boolean generateConsole) {
+	public void testCreateConfigurationFile(String hbVersion, boolean generateConsole) {
 		
 		log.step("Create Hibernate configuration file");
 		NewHibernateConfigurationWizard wizard = new NewHibernateConfigurationWizard();
@@ -109,6 +160,7 @@ public class ConsoleConfigurationFileTest extends HibernateRedDeerTest {
 
 		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
 		NewConfigurationSettingPage p2 = new NewConfigurationSettingPage();
+		p2.setHibernateVersion(hbVersion);
 		p2.setConnectionURL(cfg.getJdbcString());
 		p2.setUsername(cfg.getUsername());		
 		
