@@ -16,6 +16,26 @@ public class NewConfigurationSettingPage extends WizardPage {
 	private final String DRIVER_CLASS = "Driver class:";
 	private final String USERNAME = "Username:";
 	private final String PASSWORD = "Password:";
+	private final String HIBERNATE_VERSION = "Hibernate version:";
+	
+	
+	/**
+	 * Sets hibernate version for Hibernate Configuration file
+	 * @param hibernateVersion hibernate version for Hibernate configuration
+	 */
+	public void setHibernateVersion(String hibernateVersion) {
+		new LabeledCombo(HIBERNATE_VERSION).setSelection(hibernateVersion);
+	}
+	
+	/**
+	 * Sets hibernate version for Hibernate Configuration file
+	 * @return hibernate version string
+	 */
+	public String getHibernateVersion() {
+		String version = new LabeledCombo(HIBERNATE_VERSION).getSelection();
+		return version;
+	}
+	
 	
 	/**
 	 * Sets datbase dialect
