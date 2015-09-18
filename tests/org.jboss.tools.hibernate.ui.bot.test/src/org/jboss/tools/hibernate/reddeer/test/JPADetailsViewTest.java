@@ -10,9 +10,9 @@ import org.jboss.reddeer.requirements.db.DatabaseConfiguration;
 import org.jboss.reddeer.requirements.db.DatabaseRequirement;
 import org.jboss.reddeer.requirements.db.DatabaseRequirement.Database;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
-import org.jboss.reddeer.swt.impl.label.DefaultLabel;
+import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
+import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.hibernate.reddeer.factory.ConnectionProfileFactory;
 import org.jboss.tools.hibernate.reddeer.factory.DriverDefinitionFactory;
 import org.jboss.tools.hibernate.reddeer.factory.ProjectConfigurationFactory;
@@ -65,18 +65,17 @@ public class JPADetailsViewTest extends HibernateRedDeerTest {
 		} catch (SWTLayerException e) {
 			fail("Entities not generated, possible cause https://issues.jboss.org/browse/JBIDE-19175");
 		}
-		new DefaultEditor("Actor.java");
+		TextEditor textEditor = new TextEditor("Actor.java");
+		textEditor.setCursorPosition(20, 1);		
 
 		log.step("Open JPA view and check content");
 		JPADetailsView jpaDetailsView = new JPADetailsView();
 		jpaDetailsView.open();
-
+					
 		try {
-			new DefaultLabel(
-					"JPA details are not available for the current selection.");
-			fail("JPA details should be available - known issue - https://issues.jboss.org/browse/JBIDE-17940");
+			new DefaultStyledText("Type 'Actor' is mapped as entity.");
 		} catch (SWTLayerException e) {
-			// do nothing
+			fail("JPA details should be available - known issue - https://issues.jboss.org/browse/JBIDE-17940");
 		}
 	}
 
