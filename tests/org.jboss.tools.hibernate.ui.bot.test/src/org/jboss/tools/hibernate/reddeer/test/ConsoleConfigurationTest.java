@@ -44,11 +44,35 @@ public class ConsoleConfigurationTest extends HibernateRedDeerTest {
 	public void prepare() {
 		log.step("Import test project");
 		importProject(PROJECT_LIBS);
-		importProject(PROJECT_NAME);		
-		prepareConsoleConfiguration();
+		importProject(PROJECT_NAME);			
 	}
 	
-	public void prepareConsoleConfiguration() {		
+	@Test 
+	public void testConsoleConfiguration35() {
+		createConsoleConfiguration("3.5");
+	}
+
+	@Test 
+	public void testConsoleConfiguration36() {
+		createConsoleConfiguration("3.6");
+	}
+
+	@Test 
+	public void testConsoleConfiguration40() {
+		createConsoleConfiguration("4.0");
+	}
+
+	@Test 
+	public void testConsoleConfiguration43() {
+		createConsoleConfiguration("4.3");
+	}
+	
+	private void createConsoleConfiguration(String hibernateVersion) {
+		prepareConsoleConfigurationFile(hibernateVersion);
+		prepareConsoleConfiguration(hibernateVersion);
+	}
+	
+	public void prepareConsoleConfigurationFile(String hibernateVersion) {		
 		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
 		
 		log.step("Open Hibernate Configuration File wizard");
@@ -64,12 +88,12 @@ public class ConsoleConfigurationTest extends HibernateRedDeerTest {
 		p2.setDriverClass(cfg.getDriverClass());
 		p2.setConnectionURL(cfg.getJdbcString());
 		p2.setUsername(cfg.getUsername());
+		p2.setHibernateVersion(hibernateVersion);
 		log.step("Finish");
 		wizard.finish();
 	}
 
-	@Test
-	public void testCreateConsoleConfiguration() {
+		public void prepareConsoleConfiguration(String hibernateVersion) {
 		log.step("Open Hibernate Console Configuration view");
 		KnownConfigurationsView v = new KnownConfigurationsView();
 		v.open();
@@ -77,7 +101,7 @@ public class ConsoleConfigurationTest extends HibernateRedDeerTest {
 		v.triggerAddConfigurationDialog();
 		
 		EditConfigurationShell s = new EditConfigurationShell();
-		s.setName(CONSOLE_NAME);
+		s.setName(CONSOLE_NAME);		
 				
 		EditConfigurationMainPage p = s.getMainPage();		
 				
@@ -85,6 +109,7 @@ public class ConsoleConfigurationTest extends HibernateRedDeerTest {
 		p.setDatabaseConnection(PredefinedConnection.JPA_PROJECT_CONFIGURED_CONNECTION);
 		p.setDatabaseConnection(PredefinedConnection.HIBERNATE_CONFIGURED_CONNECTION);		
 		p.setConfigurationFile(HIBERNATE_CFG_FILE);
+		p.setHibernateVersion(hibernateVersion);
 		
 		log.step("Press OK");
 		s.ok();
@@ -96,11 +121,13 @@ public class ConsoleConfigurationTest extends HibernateRedDeerTest {
 		v.open();
 		v.selectNode(CONSOLE_NAME,"Database","SAKILA.PUBLIC","ACTOR");
 	}
-	
-	
 
 	@After 
-	public void clean() {			
+	public void clean() {
+		KnownConfigurationsView v = new KnownConfigurationsView();
+		v.open();
+		v.deleteConsoleConfiguration(CONSOLE_NAME);
+		
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.getProject(PROJECT_NAME).delete(true);
 	}

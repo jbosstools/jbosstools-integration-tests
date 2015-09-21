@@ -1,6 +1,7 @@
 package org.jboss.tools.hibernate.reddeer.console;
 
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.group.DefaultGroup;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 
@@ -30,7 +31,7 @@ public class EditConfigurationMainPage {
 	 * @param version given version, acceptable values are "3.5","3.6" and "4.0"
 	 */
 	public void setHibernateVersion(String version) {
-		new DefaultCombo("Hibernate Version:").setSelection(version);
+		new LabeledCombo("Hibernate Version:").setSelection(version);
 	}
 	
 	/**
