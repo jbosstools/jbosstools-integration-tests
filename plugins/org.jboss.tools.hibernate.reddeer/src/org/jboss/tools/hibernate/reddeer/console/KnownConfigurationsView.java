@@ -1,9 +1,13 @@
 package org.jboss.tools.hibernate.reddeer.console;
 
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
 
 /** 
@@ -61,5 +65,20 @@ public class KnownConfigurationsView extends WorkbenchView
 		
 		// TODO commented because unability RedDeer to expand this tree
 		// new DefaultTreeItem(path).select();
+	}
+	
+	
+	/**
+	 * Deletes hibernate console configuration
+	 * @param console hibernate console configuration name
+	 */
+	public void deleteConsoleConfiguration(String console) {
+		new DefaultTreeItem(console).select();
+		new ContextMenu("Delete Configuration").select();
+		String title = "Delete console configuration";
+		new WaitUntil(new ShellWithTextIsAvailable(title));
+		new DefaultShell(title);
+		new OkButton().click();
+		new WaitWhile(new ShellWithTextIsAvailable(title));
 	}
 }
