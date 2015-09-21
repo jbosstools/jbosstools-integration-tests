@@ -52,7 +52,7 @@ public class ConnectionProfileWizardTest extends WizardTestBase {
 		page.setConnectionName(CONNECTION_NAME);
 		page.setJdbcUrl(SAKILA_URL);
 		page.setUserName(SAKILA_USERNAME);
-		page.setDriverLocation(path + "/" + SAKILA_H2_DRIVER);
+		page.setDriverLocation(path + File.separator + SAKILA_H2_DRIVER);
 		page.setHibernateDialect("H2 Database : org.hibernate.dialect.H2Dialect");
 		page.toggleVerifyConnection(true);
 		dialog.finish(TimePeriod.LONG);
