@@ -4,6 +4,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,7 +51,7 @@ public class JPAEntitiesFromTablesTest extends WizardTestBase {
 		page.setConnectionName(PROFILE_NAME);
 		page.setJdbcUrl(SAKILA_URL);
 		page.setUserName(SAKILA_USERNAME);
-		page.setDriverLocation(dbFolder + "/" + SAKILA_H2_DRIVER);
+		page.setDriverLocation(dbFolder + File.separator + SAKILA_H2_DRIVER);
 		page.setHibernateDialect(H2_DIALECT);
 		dialog.finish(TimePeriod.LONG);
 	}
