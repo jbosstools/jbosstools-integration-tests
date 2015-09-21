@@ -28,8 +28,12 @@ public class DatabaseUtils {
 	public static void runSakilaDB(String dbFolder) {
 		try {
 			String path = new File(dbFolder).getCanonicalPath();
-			ProcessBuilder pb = new ProcessBuilder("bash", "-c", "cd " + path + ";./runh2.sh");
+			
+			ProcessBuilder pb = new ProcessBuilder("java", "-cp", "h2-1.3.161.jar", "org.h2.tools.Server", "-ifExists",
+					"-tcp", "-web");
+			pb.directory(new File(path));
 			sakila = pb.start();
+			LOG.info("Starting h2 server - jdbc url: jdbc:h2:tcp://localhost/sakila");
 
 			// check if the process really started
 			long startTime = System.currentTimeMillis();
@@ -78,7 +82,7 @@ public class DatabaseUtils {
 					if (process.contains("org.h2.tools.Server")) {
 						int pid = Integer.parseInt(process.split(" ")[0]);
 						Process proc = null;
-						if (System.getProperty("os.name").toLowerCase().contains("win")) {
+						if (isWindows()) {
 							proc = Runtime.getRuntime().exec("taskkill /f /pid " + pid);
 						} else {
 							proc = Runtime.getRuntime().exec("kill -9 " + pid);
@@ -103,5 +107,9 @@ public class DatabaseUtils {
 	    } catch (IllegalThreadStateException e) {
 	        return true;
 	    }
+	}
+	
+	private static boolean isWindows() {
+		return System.getProperty("os.name").toLowerCase().contains("win");
 	}
 }
