@@ -66,7 +66,7 @@ public class PromptForTagAttributesDuringTagInsertTest extends PreferencesTestCa
     } catch (WidgetNotFoundException wnfe){
       // do nothing
     }
-    assertNotNull("Dialog asking for Tag Attributes during Insert was not opened but it has to.",dialogBot);
+    assertNotNull("Dialog asking for Tag Attributes during Insert was not opened but it has to\nhttps://issues.jboss.org/browse/JBIDE-20752",dialogBot);
   	// Uncheck Ask for Tag Attributes during Insert
 		bot.toolbarButtonWithTooltip(PREF_TOOLTIP).click();
     bot.shell(PREF_FILTER_SHELL_TITLE).activate();
