@@ -17,7 +17,7 @@ import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.jboss.tools.openshift.reddeer.wizard.v2.Templates;
 import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
-import org.jboss.tools.openshift.reddeer.utils.v2.DeleteApplication;
+import org.jboss.tools.openshift.reddeer.utils.v2.DeleteUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,14 +34,16 @@ public class ID410CreateScalableApplicationTest {
 	
 	@Before
 	public void createApplication() {
-		new Templates(Datastore.USERNAME, Datastore.DOMAIN, false).createSimpleApplicationOnBasicCartridges(
+		new Templates(Datastore.USERNAME, Datastore.SERVER, Datastore.DOMAIN, false).
+			createSimpleApplicationOnBasicCartridges(
 				OpenShiftLabel.Cartridge.JBOSS_EAP, applicationName, true, true, true);
 	}
 	
 	@Test
 	public void testCreateScalableApplication() {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
-		explorer.getApplication(Datastore.USERNAME, Datastore.DOMAIN, applicationName).select();
+		explorer.getOpenShift2Connection(Datastore.USERNAME, Datastore.SERVER).getDomain(Datastore.DOMAIN).
+			getApplication(applicationName).select();
 		
 		new ContextMenu(OpenShiftLabel.ContextMenu.APPLICATION_DETAILS).select();
 		
@@ -61,7 +63,8 @@ public class ID410CreateScalableApplicationTest {
 		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.APPLICATION_DETAILS),
 				TimePeriod.LONG);
 		
-		explorer.selectApplication(Datastore.USERNAME, Datastore.DOMAIN, applicationName);
+		explorer.getOpenShift2Connection(Datastore.USERNAME, Datastore.SERVER).getDomain(Datastore.DOMAIN).
+			getApplication(applicationName).select();
 		PropertiesView propertiesView = new PropertiesView();
 		propertiesView.open();
 		assertTrue("Application is not scalable, at least it is not shown in properties"
@@ -72,6 +75,7 @@ public class ID410CreateScalableApplicationTest {
 	
 	@After
 	public void deleteApplication() {
-		new DeleteApplication(Datastore.USERNAME, Datastore.DOMAIN, applicationName).perform();;
+		new DeleteUtils(Datastore.USERNAME, Datastore.SERVER, Datastore.DOMAIN, applicationName,
+				applicationName).perform();;
 	}
 }

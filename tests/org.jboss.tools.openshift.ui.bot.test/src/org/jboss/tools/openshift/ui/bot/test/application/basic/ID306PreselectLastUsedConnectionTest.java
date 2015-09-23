@@ -6,23 +6,22 @@ import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.condition.ButtonWithTextIsEnabled;
+import org.jboss.reddeer.swt.impl.browser.InternalBrowser;
 import org.jboss.reddeer.swt.impl.button.BackButton;
 import org.jboss.reddeer.swt.impl.button.CancelButton;
 import org.jboss.reddeer.swt.impl.button.NextButton;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
-import org.jboss.reddeer.uiforms.impl.hyperlink.DefaultHyperlink;
-import org.jboss.reddeer.uiforms.impl.section.DefaultSection;
+import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.wizard.page.v2.FirstWizardPage;
-import org.jboss.tools.openshift.reddeer.wizard.v2.OpenNewApplicationWizard;
+import org.jboss.tools.openshift.reddeer.wizard.v2.OpenShift2ApplicationWizard;
 import org.jboss.tools.openshift.ui.bot.test.domain.ID201NewDomainTest;
 import org.jboss.tools.openshift.ui.bot.test.ssh.ID152AddExistingSSHKeyTest;
 import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
-import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -38,11 +37,11 @@ public class ID306PreselectLastUsedConnectionTest {
 	
 	@BeforeClass
 	public static void setUpSecondAccount() {
-		ID201NewDomainTest.createDomain(Datastore.X_USERNAME, Datastore.X_DOMAIN);		
-		ID152AddExistingSSHKeyTest.addExistingSSHKey(Datastore.X_USERNAME);
+		ID201NewDomainTest.createDomain(Datastore.X_USERNAME, Datastore.X_SERVER, Datastore.X_DOMAIN);		
+		ID152AddExistingSSHKeyTest.addExistingSSHKey(Datastore.X_USERNAME, Datastore.X_SERVER);
 	}
 	
-	@Ignore // failing due to JBIDE-18082
+	@Ignore("Ignored due to JBIDE-18082")
 	@Test
 	public void testPreselectLastUsedConnectionFromExplorer() {
 		preselectConnectionViaExplorer(Datastore.USERNAME, Datastore.DOMAIN);
@@ -59,6 +58,7 @@ public class ID306PreselectLastUsedConnectionTest {
 	}
 	
 	@Test
+	@Ignore("Preselection work flow has changed. Test need big changes at stability fixes.")
 	public void testPreselectLastUsedConnectionFromMenu() {
 		preselectConnectionViaMenu(Datastore.SERVER, Datastore.USERNAME, Datastore.DOMAIN);
 		verifyPreselectedConnectionViaCentral(Datastore.USERNAME);
@@ -82,7 +82,7 @@ public class ID306PreselectLastUsedConnectionTest {
 		new DefaultShell(OpenShiftLabel.Shell.NEW_APP_WIZARD);
 		
 		new LabeledCombo(OpenShiftLabel.TextLabels.CONNECTION).setSelection(
-				username + " - " + "https://" + server);
+				username + " - " + server);
 		
 		new WaitUntil(new ButtonWithTextIsEnabled(new NextButton()), TimePeriod.LONG);
 		
@@ -94,7 +94,8 @@ public class ID306PreselectLastUsedConnectionTest {
 	}
 	
 	private void preselectConnectionViaExplorer(String username, String domain) {
-		OpenNewApplicationWizard.openWizardFromExplorer(username, domain);
+		new OpenShift2ApplicationWizard(Datastore.USERNAME, Datastore.SERVER, Datastore.DOMAIN).
+				openWizardFromExplorer();
 		
 		new FirstWizardPage().createNewApplicationOnBasicCartridge(
 				OpenShiftLabel.Cartridge.DIY);
@@ -131,8 +132,7 @@ public class ID306PreselectLastUsedConnectionTest {
 	private void verifyPreselectedConnectionViaCentral(String username) {
 		new DefaultToolItem(new WorkbenchShell(), OpenShiftLabel.Others.JBOSS_CENTRAL).click();
 		
-		DefaultSection startSection = new DefaultSection("Start from scratch");
-		new DefaultHyperlink(startSection, OpenShiftLabel.Others.OPENSHIFT_APP).activate();
+		new InternalBrowser().execute(OpenShiftLabel.Others.OPENSHIFT_CENTRAL_SCRIPT);
 		
 		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.NEW_APP_WIZARD),
 				TimePeriod.LONG);

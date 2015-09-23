@@ -15,7 +15,7 @@ import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.jboss.tools.openshift.reddeer.wizard.v2.Templates;
 import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
-import org.jboss.tools.openshift.reddeer.utils.v2.DeleteApplication;
+import org.jboss.tools.openshift.reddeer.utils.v2.DeleteUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,22 +32,25 @@ public class ID501ImportApplicationViaExplorerTest {
 	
 	@Before
 	public void createApplicationAndDeleteProject() {
-		deleteProjectAndAdapter(applicationName);
+		createApplicationWithoutServerAdapterAndProject(applicationName);
 	}
 	
-	public static void deleteProjectAndAdapter(String applicationName) {
-		new Templates(Datastore.USERNAME, Datastore.DOMAIN, false).createSimpleApplicationOnBasicCartridges(
+	public static void createApplicationWithoutServerAdapterAndProject(String applicationName) {
+		new Templates(Datastore.USERNAME, Datastore.SERVER, Datastore.DOMAIN, false).
+			createSimpleApplicationOnBasicCartridges(
 				OpenShiftLabel.Cartridge.DIY, applicationName, false, true, true);
 		
-		DeleteApplication deleteApplication = new DeleteApplication(Datastore.USERNAME,
-				Datastore.DOMAIN, applicationName);
+		DeleteUtils deleteApplication = new DeleteUtils(Datastore.USERNAME, Datastore.SERVER,
+				Datastore.DOMAIN, applicationName, applicationName);
 		deleteApplication.deleteServerAdapter();
+		deleteApplication.deleteProject();
 	}
 
 	@Test
 	public void testImportApplication() {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
-		explorer.getApplication(Datastore.USERNAME, Datastore.DOMAIN, applicationName).select();
+		explorer.getOpenShift2Connection(Datastore.USERNAME, Datastore.SERVER).getDomain(Datastore.DOMAIN).
+			getApplication(applicationName).select();
 		
 		new ContextMenu(OpenShiftLabel.ContextMenu.IMPORT_APPLICATION).select();
 		
@@ -66,6 +69,7 @@ public class ID501ImportApplicationViaExplorerTest {
 	
 	@After
 	public void deleteApplication() {
-		new DeleteApplication(Datastore.USERNAME, Datastore.DOMAIN, applicationName).perform();
+		new DeleteUtils(Datastore.USERNAME, Datastore.SERVER, Datastore.DOMAIN, applicationName,
+				applicationName).perform();
 	}
 }

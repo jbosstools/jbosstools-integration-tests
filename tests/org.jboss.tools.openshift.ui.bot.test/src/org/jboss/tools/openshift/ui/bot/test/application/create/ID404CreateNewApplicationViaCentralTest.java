@@ -1,9 +1,8 @@
 package org.jboss.tools.openshift.ui.bot.test.application.create;
 
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
-import org.jboss.tools.openshift.reddeer.utils.v2.DeleteApplication;
-import org.jboss.tools.openshift.reddeer.wizard.v2.NewApplicationWizard;
-import org.jboss.tools.openshift.reddeer.wizard.v2.OpenNewApplicationWizard;
+import org.jboss.tools.openshift.reddeer.utils.v2.DeleteUtils;
+import org.jboss.tools.openshift.reddeer.wizard.v2.OpenShift2ApplicationWizard;
 import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
 import org.junit.After;
 import org.junit.Test;
@@ -21,21 +20,22 @@ public class ID404CreateNewApplicationViaCentralTest {
 	@Test
 	public void testCreateNewApplicationViaCentral() {
 		applicationName = "diy" + System.currentTimeMillis();
-		OpenNewApplicationWizard.openWizardFromCentral(Datastore.USERNAME);
 		
-		NewApplicationWizard wizard = new NewApplicationWizard();
+		OpenShift2ApplicationWizard wizard = new OpenShift2ApplicationWizard(Datastore.USERNAME,
+				Datastore.SERVER, Datastore.DOMAIN);
+		wizard.openWizardFromCentral();
 		wizard.createNewApplicationOnBasicCartridge(OpenShiftLabel.Cartridge.DIY, 
-				Datastore.DOMAIN, applicationName, false, true,
-				false, false, null, null, true, null, null, null, (String[]) null);
+				applicationName, false, true, false, false, null, null, true, null, null, null, (String[]) null);
 
 		wizard.postCreateSteps(true);
 		
-		wizard.verifyApplication(Datastore.USERNAME, Datastore.DOMAIN,
-				applicationName, applicationName);
+		wizard.verifyApplication(applicationName, applicationName);
+		wizard.verifyServerAdapter(applicationName, applicationName);
 	}
 	
 	@After
 	public void deleteApplication() {
-		new DeleteApplication(Datastore.USERNAME, Datastore.DOMAIN, applicationName).perform();
+		new DeleteUtils(Datastore.USERNAME, Datastore.SERVER, Datastore.DOMAIN, applicationName, 
+				applicationName).perform();
 	}
 }

@@ -12,7 +12,7 @@ import org.jboss.reddeer.swt.impl.button.CancelButton;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
-import org.jboss.tools.openshift.reddeer.wizard.v2.OpenNewApplicationWizard;
+import org.jboss.tools.openshift.reddeer.wizard.v2.OpenShift2ApplicationWizard;
 import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
 import org.junit.Test;
 
@@ -24,10 +24,12 @@ import org.junit.Test;
  */
 public class ID305CartridgeContentAssistTest {
 
+	TreeViewerHandler treeViewerHandler = TreeViewerHandler.getInstance();
+	
 	@Test
 	public void testCartridgeContentAssist() {
-		TreeViewerHandler treeViewerHandler = TreeViewerHandler.getInstance();
-		OpenNewApplicationWizard.openWizardFromExplorer(Datastore.USERNAME, Datastore.DOMAIN);
+		new OpenShift2ApplicationWizard(Datastore.USERNAME, Datastore.SERVER, 
+				Datastore.DOMAIN).openWizardFromExplorer();
 		
 		new DefaultText(1).setText("diy");
 		

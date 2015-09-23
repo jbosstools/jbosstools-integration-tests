@@ -21,7 +21,7 @@ public class ID112RefreshConnectionTest {
 	public void testRefreshConnection() {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 		
-		explorer.getConnection(Datastore.USERNAME);
+		explorer.getOpenShift2Connection(Datastore.USERNAME, Datastore.SERVER).select();
 		new ContextMenu(OpenShiftLabel.ContextMenu.REFRESH).select();
 		
 		assertTrue("Connection is not refreshed - or there is no job for it", new JobIsRunning().test());

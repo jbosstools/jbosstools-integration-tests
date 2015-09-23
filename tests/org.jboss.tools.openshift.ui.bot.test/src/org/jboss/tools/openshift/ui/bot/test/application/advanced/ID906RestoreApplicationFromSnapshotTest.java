@@ -16,12 +16,12 @@ import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.tools.openshift.reddeer.condition.v2.ApplicationIsDeployedSuccessfully;
+import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.jboss.tools.openshift.ui.bot.test.application.create.IDXXXCreateTestingApplication;
 import org.jboss.tools.openshift.ui.bot.test.application.handle.ID701ModifyAndRepublishApplicationTest;
 import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
-import org.jboss.tools.openshift.reddeer.condition.v2.ApplicationIsDeployedSuccessfully;
-import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.junit.Test;
 
 /**
@@ -44,7 +44,8 @@ public class ID906RestoreApplicationFromSnapshotTest extends IDXXXCreateTestingA
 	
 	private void createSnapshot() {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
-		explorer.getApplication(Datastore.USERNAME, Datastore.DOMAIN, applicationName).select();
+		explorer.getOpenShift2Connection(Datastore.USERNAME, Datastore.SERVER).getDomain(Datastore.DOMAIN).
+			getApplication(applicationName).select();
 		
 		new ContextMenu(OpenShiftLabel.ContextMenu.SAVE_SNAPSHOT).select();
 		
@@ -69,7 +70,8 @@ public class ID906RestoreApplicationFromSnapshotTest extends IDXXXCreateTestingA
 	
 	private void restoreApplication() { 
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
-		explorer.selectApplication(Datastore.USERNAME, Datastore.DOMAIN, applicationName);
+		explorer.getOpenShift2Connection(Datastore.USERNAME, Datastore.SERVER).getDomain(Datastore.DOMAIN).
+			getApplication(applicationName).select();
 		
 		new ContextMenu(OpenShiftLabel.ContextMenu.RESTORE_SNAPSHOT).select();
 		
@@ -90,7 +92,7 @@ public class ID906RestoreApplicationFromSnapshotTest extends IDXXXCreateTestingA
 		AbstractWait.sleep(TimePeriod.getCustom(5));
 		
 		try {
-			new WaitUntil(new ApplicationIsDeployedSuccessfully(Datastore.USERNAME, 
+			new WaitUntil(new ApplicationIsDeployedSuccessfully(Datastore.USERNAME, Datastore.SERVER,
 				Datastore.DOMAIN, applicationName, "OpenShift"), TimePeriod.VERY_LONG);
 			// PASS
 		} catch (WaitTimeoutExpiredException ex) {

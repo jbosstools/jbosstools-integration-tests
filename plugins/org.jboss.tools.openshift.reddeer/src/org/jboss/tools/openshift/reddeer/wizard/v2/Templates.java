@@ -12,8 +12,7 @@ import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
  */
 public class Templates {
 	
-	private String username;
-	private String domain;
+	private OpenShift2ApplicationWizard wizard;
 	
 	/**
 	 * Initiates new application creation by opening new application wizard from the 
@@ -22,14 +21,13 @@ public class Templates {
 	 * @param openFromShellMenu true if wizard should be opened from shell menu File, New
 	 * false otherwise (opened from OpenShift explorer)
 	 */
-	public Templates(String username, String domain, boolean openFromShellMenu) {
-		this.username = username;
-		this.domain = domain;
+	public Templates(String username, String server, String domain, boolean openFromShellMenu) {
+		wizard = new OpenShift2ApplicationWizard(username, server, domain);
 		
 		if (openFromShellMenu) {
-			OpenNewApplicationWizard.openWizardFromShellMenu(username);
+			wizard.openWizardFromShellMenu();
 		} else {
-			OpenNewApplicationWizard.openWizardFromExplorer(username, domain);
+			wizard.openWizardFromExplorer();
 		}
 	}
 	
@@ -39,9 +37,7 @@ public class Templates {
 	public void createSimpleApplicationOnBasicCartridges(String basicCartridge,  
 			String appName, boolean scalable, boolean smallGear, boolean createAdapter) {
 		
-		NewApplicationWizard wizard = new NewApplicationWizard();
-		
-		wizard.createNewApplicationOnBasicCartridge(basicCartridge, domain, appName, scalable, smallGear,
+		wizard.createNewApplicationOnBasicCartridge(basicCartridge, appName, scalable, smallGear,
 				false, false, null, null, createAdapter, null, null, null, (String[]) null);
 		
 		boolean isEmbeddedCartridgeDialogShown = basicCartridge.equals(OpenShiftLabel.Cartridge.DIY) ||
@@ -49,8 +45,9 @@ public class Templates {
 		
 		wizard.postCreateSteps(isEmbeddedCartridgeDialogShown);
 		
+		wizard.verifyApplication(appName, appName);
 		if (createAdapter) {
-			wizard.verifyApplication(username, domain, appName, appName);
+			wizard.verifyServerAdapter(appName, appName);
 		}
 	}
 	
@@ -59,14 +56,13 @@ public class Templates {
 	 */
 	public void createQuickstart(String quickstart, String appName, boolean scalable, 
 			boolean smallGear, boolean createAdapter) {
-		
-		NewApplicationWizard wizard = new NewApplicationWizard();
-		
-		wizard.createQuickstart(quickstart, domain, appName, scalable, smallGear, createAdapter, null);
+				
+		wizard.createQuickstart(quickstart, appName, scalable, smallGear, createAdapter, null);
 		wizard.postCreateSteps(scalable);
 		
+		wizard.verifyApplication(appName, appName);
 		if (createAdapter) {
-			wizard.verifyApplication(username, domain, appName, appName);
+			wizard.verifyServerAdapter(appName, appName);
 		}
 	}
 	
@@ -77,14 +73,15 @@ public class Templates {
 			String appName, boolean scalable, boolean isEmbeddedDialogShown, boolean createAdapter,
 			String deployProject, String... embeddedCartridges) {
 		
-		NewApplicationWizard wizard = new NewApplicationWizard();
-		
-		wizard.createNewApplicationOnDownloadableCartridge(cartridgeURL, domain, appName, scalable, true,
+		wizard.createNewApplicationOnDownloadableCartridge(cartridgeURL, appName, scalable, true,
 				false, false, null, null, createAdapter, deployProject, null, null, (String[]) embeddedCartridges);
 		wizard.postCreateSteps(isEmbeddedDialogShown);
 	
 		String project = (deployProject == null) ? appName : deployProject;
-		wizard.verifyApplication(username, domain, appName, project);
+		wizard.verifyApplication(appName, project);
+		if (createAdapter) {
+			wizard.verifyServerAdapter(appName, project);
+		}
 	}
 	
 	/**
@@ -94,9 +91,7 @@ public class Templates {
 	public void deployExistingProject(String cartridge, String appName, String project,
 			String gitRemote) {
 		
-		NewApplicationWizard wizard = new NewApplicationWizard();
-		
-		wizard.createNewApplicationOnBasicCartridge(cartridge, domain, appName, false, true, false,
+		wizard.createNewApplicationOnBasicCartridge(cartridge, appName, false, true, false,
 				false, null, null, true, project, null, gitRemote, (String[]) null);
 		
 		boolean isEmbeddedCartridgeDialogShown = cartridge.equals(OpenShiftLabel.Cartridge.DIY) ||
@@ -104,6 +99,7 @@ public class Templates {
 		
 		wizard.postCreateSteps(isEmbeddedCartridgeDialogShown);
 		
-		wizard.verifyApplication(username, domain, appName, project);
+		wizard.verifyApplication(appName, project);
+		wizard.verifyServerAdapter(appName, project);
 	}	
 }

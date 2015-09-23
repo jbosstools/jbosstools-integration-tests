@@ -17,7 +17,7 @@ public class ID401CreateNewApplicationViaExplorerTest {
 	
 	@Test
 	public void testCreateNewApplicationViaExplorer() {
-		Templates newApplicationTemplate = new Templates(Datastore.USERNAME, 
+		Templates newApplicationTemplate = new Templates(Datastore.USERNAME, Datastore.SERVER,
 				Datastore.DOMAIN, false);
 		
 		// Assertions are done inside of create method

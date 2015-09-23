@@ -21,6 +21,7 @@ import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.workbench.api.View;
+import org.jboss.tools.openshift.reddeer.view.OpenShift2Application;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.jboss.tools.openshift.ui.bot.test.application.create.IDXXXCreateTestingApplication;
 import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
@@ -38,9 +39,10 @@ public class ID601EmbedCartridgeTest extends IDXXXCreateTestingApplication {
 	@Test
 	public void testAddRemoveEmbeddableCartridge() {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
-		TreeItem application = explorer.getApplication(Datastore.USERNAME, Datastore.DOMAIN, applicationName);
+		OpenShift2Application application = explorer.getOpenShift2Connection(Datastore.USERNAME, Datastore.SERVER).
+				getDomain(Datastore.DOMAIN).getApplication(applicationName);
 	
-		embedCartridge(explorer, application, applicationName, OpenShiftLabel.ContextMenu.EMBED_CARTRIDGE);
+		embedCartridge(explorer, application.getTreeItem(), applicationName, OpenShiftLabel.ContextMenu.EMBED_CARTRIDGE);
 	}
 	
 	public static void embedCartridge(View viewOfItem, TreeItem itemToHandle, String applicationName,
@@ -78,19 +80,19 @@ public class ID601EmbedCartridgeTest extends IDXXXCreateTestingApplication {
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
-		TreeItem application = explorer.getApplication(Datastore.USERNAME, Datastore.DOMAIN,
-				applicationName);
+		OpenShift2Application application = explorer.getOpenShift2Connection(Datastore.USERNAME, Datastore.SERVER).getDomain(
+				Datastore.DOMAIN).getApplication(applicationName);
 		application.select();
 		application.expand();
 		
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		
 		try {
-			application.getItem("Cron 1.4 cron-1.4");
+			application.getTreeItem().getItem("Cron 1.4 cron-1.4");
 			// PASS
 		} catch (SWTLayerException ex) {
 			fail("There is no tree item for embedded cartridge under application in OpenShift explorer view. "
-					+ "There is item with name \"" + application.getItems().get(0).getText() + "\"");
+					+ "There is item with name \"" + application.getTreeItem().getItems().get(0).getText() + "\"");
 		}
 		
 		viewOfItem.open();
@@ -124,9 +126,9 @@ public class ID601EmbedCartridgeTest extends IDXXXCreateTestingApplication {
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		
 		try {
-			application.getItem("Cron 1.4 cron-1.4");
+			application.getTreeItem().getItem("Cron 1.4 cron-1.4");
 			fail("There is tree item for embedded cartridge under application in OpenShift explorer view. "
-					+ "There is item with name \"" + application.getItems().get(0).getText() + "\"");
+					+ "There is item with name \"" + application.getTreeItem().getItems().get(0).getText() + "\"");
 		} catch (CoreLayerException ex) {
 			// pass
 		}

@@ -32,7 +32,7 @@ public class ID001RemoteRequestTimeoutTest {
 	public void testSetRemoteRequestTimeout() {
 		WorkbenchPreferenceDialog preferences = new WorkbenchPreferenceDialog();
 		preferences.open();
-		preferences.select("JBoss Tools", "OpenShift");
+		preferences.select("JBoss Tools", "OpenShift 2");
 		
 		LabeledText timeoutField = new LabeledText("Remote requests timeout (in seconds):");
 		

@@ -1,5 +1,7 @@
 package org.jboss.tools.openshift.reddeer.view;
 
+import static org.junit.Assert.fail;
+
 import org.jboss.reddeer.common.exception.RedDeerException;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
@@ -12,7 +14,7 @@ import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.ButtonWithTextIsEnabled;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.FinishButton;
-import org.jboss.reddeer.swt.impl.button.OkButton;
+import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.link.DefaultLink;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
@@ -22,6 +24,7 @@ import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
+import org.jboss.tools.openshift.reddeer.utils.OpenShiftToolsException;
 
 /**
  * 
@@ -49,6 +52,16 @@ public class OpenShiftExplorerView extends WorkbenchView {
 	}
 	
 	/**
+	 * Override open method, because of https://issues.jboss.org/browse/JBIDE-20014.
+	 */
+	public void reopen() {
+		if (isOpened()) {
+			close();
+		}
+		super.open();
+	}
+	
+	/**
 	 * Opens a new connection shell through context menu in OpenShift explorer.
 	 */
 	public void openConnectionShell() {
@@ -70,8 +83,8 @@ public class OpenShiftExplorerView extends WorkbenchView {
 	 * @param storePassword whether password should be stored or not in security storage
 	 * @param useDefaultServer
 	 */
-	public void connectToOpenShiftV2(String server, String username, String password, boolean storePassword, boolean useDefaultServer) {
-		connectToOpenShift(server, username, password, storePassword, useDefaultServer, ServerType.OPENSHIFT_2, AuthenticationMethod.DEFAULT);
+	public void connectToOpenShift2(String server, String username, String password, boolean storePassword, boolean useDefaultServer, boolean certificateShown) {
+		connectToOpenShift(server, username, password, storePassword, useDefaultServer, ServerType.OPENSHIFT_2, AuthenticationMethod.DEFAULT, certificateShown);
 	}
 	
 	/**
@@ -83,8 +96,8 @@ public class OpenShiftExplorerView extends WorkbenchView {
 	 * @param storePassword whether password should be stored or not in security storage
 	 * @param useDefaultServer
 	 */
-	public void connectToOpenShiftV3Basic(String server, String username, String password, boolean storePassword, boolean useDefaultServer) {
-		connectToOpenShift(server, username, password, storePassword, useDefaultServer, ServerType.OPENSHIFT_3, AuthenticationMethod.BASIC);
+	public void connectToOpenShift3Basic(String server, String username, String password, boolean storePassword, boolean useDefaultServer) {
+		connectToOpenShift(server, username, password, storePassword, useDefaultServer, ServerType.OPENSHIFT_3, AuthenticationMethod.BASIC, true);
 	}
 	
 	/**
@@ -95,13 +108,12 @@ public class OpenShiftExplorerView extends WorkbenchView {
 	 * @param storeToken whether password should be stored or not in security storage
 	 * @param useDefaultServer
 	 */
-	public void connectToOpenShiftV3OAuth(String server, String token, boolean storeToken, boolean useDefaultServer) {
-		connectToOpenShift(server, null, token, storeToken, useDefaultServer, ServerType.OPENSHIFT_3, AuthenticationMethod.OAUTH);
+	public void connectToOpenShift3OAuth(String server, String token, boolean storeToken, boolean useDefaultServer) {
+		connectToOpenShift(server, null, token, storeToken, useDefaultServer, ServerType.OPENSHIFT_3, AuthenticationMethod.OAUTH, true);
 	}
 	
 	private void connectToOpenShift(String server, String username, String password, boolean storePassword, boolean useDefaultServer, 
-			ServerType serverType, AuthenticationMethod authMethod) {
-		
+			ServerType serverType, AuthenticationMethod authMethod, boolean certificateShown) {
 		new DefaultShell("");
 		
 		new LabeledCombo(OpenShiftLabel.TextLabels.SERVER_TYPE).setSelection(serverType.toString());
@@ -137,26 +149,18 @@ public class OpenShiftExplorerView extends WorkbenchView {
 		
 		new FinishButton().click();
 		
+		if (certificateShown) {
+			try {
+				new DefaultShell("Untrusted SSL Certificate");
+				new PushButton("Yes").click();
+			} catch (RedDeerException ex) {
+				fail("Aceptance of SSL certificate failed.");
+			}
+		}
+			
 		new WaitWhile(new ShellWithTextIsAvailable(""), TimePeriod.LONG);
-		
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}	
-	
-	/**
-	 * Removes connection from OpenShift explorer view.
-	 *
-	 * @param username user name
-	 */
-	public void removeConnection(String username) {
-		getConnection(username).select();
-		
-		new ContextMenu(OpenShiftLabel.ContextMenu.REMOVE_CONNECTION).select();
-		
-		new DefaultShell(OpenShiftLabel.Shell.REMOVE_CONNECTION);
-		new OkButton().click();
-		
-		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-	}
 	
 	/**
 	 * Finds out whether connection with specified username exists or not.
@@ -165,8 +169,18 @@ public class OpenShiftExplorerView extends WorkbenchView {
 	 * @return true if connection exists, false otherwise
 	 */
 	public boolean connectionExists(String username) {
+		return connectionExists(username, null);
+	}
+	
+	/**
+	 * Finds out whether connection with specified username and server exists or not.
+	 * @param username user name
+	 * @param server server
+	 * @return true if connection exists, false otherwise
+	 */
+	public boolean connectionExists(String username, String server) {
 		try {
-			getConnection(username);
+			getConnectionItem(username, server);
 			return true;
 		} catch (RedDeerException ex) {
 			return false;
@@ -174,104 +188,61 @@ public class OpenShiftExplorerView extends WorkbenchView {
 	}
 	
 	/**
-	 * Gets connection with specified user name.
-	 * 
-	 * @param username user name 
-	 * @return tree item representing connection
-	 */
-	public TreeItem getConnection(String username) {
-		open();
-		return treeViewerHandler.getTreeItem(new DefaultTree(), username);
-	}
-	
-	/** 
-	 * Gets domain with specified user name and domain name.
+	 * Gets OpenShift 2 connection for a specified user.
 	 * 
 	 * @param username user name
-	 * @param domain domain name
-	 * @return tree item representing domain
+	 * @return OpenShift 2 connection
 	 */
-	public TreeItem getDomain(String username, String domain) {
-		activate();
-		TreeItem connectionItem = getConnection(username);
-		connectionItem.select();
-		expand(connectionItem, TimePeriod.NORMAL);
-		
-		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-		
-		return treeViewerHandler.getTreeItem(connectionItem, domain);
+	public OpenShift2Connection getOpenShift2Connection(String username) {
+		return new OpenShift2Connection(getConnectionItem(username, null));
+	}
+	
+	/**
+	 * Gets OpenShift 2 connection for a specified server and user.
+	 * @param username user name
+	 * @param server server
+	 * @return OpenShift 2 connection
+	 */
+	public OpenShift2Connection getOpenShift2Connection(String username, String server) {
+		return new OpenShift2Connection(getConnectionItem(username, server));
+	}
+	
+	/**
+	 * Gets OpenShift 3 connection for a specified user.
+	 * 
+	 * @param username user name
+	 * @return OpenShift 3 connection
+	 */
+	public OpenShift3Connection getOpenShift3Connection(String username) {
+		return new OpenShift3Connection(getConnectionItem(username, null));
+	}
+	
+	/**
+	 * Gets OpenShift 3 connection for a specified server and user.
+	 * 
+	 * @param username user name
+	 * @param server server
+	 * @return OpenShift 3 connection
+	 */
+	public OpenShift3Connection getOpenShift3Connection(String username, String server) {
+		return new OpenShift3Connection(getConnectionItem(username, server));
+	}
+	
+	private TreeItem getConnectionItem(String username, String server) {
+		open();
+		TreeItem connectionItem = treeViewerHandler.getTreeItem(new DefaultTree(), username);
+		if (server != null) {
+			if (treeViewerHandler.getStyledTexts(connectionItem)[0].equals(server)) {
+				return connectionItem;
+			} else {
+				throw new OpenShiftToolsException("There is no connection with specified username " + username +
+						" and server " + server);
+			}
+		} else {
+			return connectionItem;
+		}
 	}
 
-	/**
-	 * Get application as a TreeItem. This method is useful for a further processing 
-	 * of applications (e.g. opening a context menu). Applications are shown in 
-	 * OpenShift explorer with their types. This method require only application name
-	 * WITHOUT type. <br><br> Example: application "diyapp <i>Do-It-Yourself 0.1 (diy-0.1)"</i>
-	 * is chosen by calling this method with an argument <i>"diyapp"</i>.
-	 * 
-	 * @param username user name on the connection
-	 * @param domain domain name
-	 * @param name name of application without application type 
-	 * @return tree item of an application represented by the given name
-	 */
-	public TreeItem getApplication(String username, String domain, String name) {
-		TreeItem domainItem = getDomain(username, domain);
-		domainItem.select();
-		expand(domainItem, TimePeriod.LONG);
-		
-		return treeViewerHandler.getTreeItem(domainItem, name);
-	}
-	
-	/**
-	 * Finds an application with specified name in OpenShift explorer and selects it.
-	 * 
-	 * @param user user name
-	 * @param domain domain of the application
-	 * @param name name of the application with specified name
-	 */
-	public void selectApplication(String user, String domain, String name) {
-		getApplication(user, domain, name).select();
-	}
-	
-	/**
-	 * Finds out whether an application with specified name exists or not.
-	 * 
-	 * @param user user name
-	 * @param domain domain of the application
-	 * @param name name of the application with specified name
-	 * @return true if application exists, false otherwise
-	 */
-	public boolean applicationExists(String user, String domain, String name) {
-		try {
-			getApplication(user, domain, name);
-			return true;
-		} catch (RedDeerException ex) {
-			return false;
-		}
-	}
-	
-	/**
-	 * Reopens OpenShift view explorer. Workaround for issue with missing submenus.
-	 */
-	public void reopen() {
-		close();
-		open();
-	}
-	
-	 // Workaround for not expanded tree items, if it is 
-	 // failing, uncomment this method and use it
-	private void expand(TreeItem item, TimePeriod period) {
-		item.select();
-		if (!item.isExpanded()) {
-			// workaround for tree items 
-			item.expand();
-			new WaitWhile(new JobIsRunning(), period);
-			item.collapse();
-			item.expand();
-			new WaitWhile(new JobIsRunning(), period);
-		}
-	}
-	
 	public enum ServerType {
 		
 		OPENSHIFT_2("OpenShift 2"), 
@@ -306,5 +277,4 @@ public class OpenShiftExplorerView extends WorkbenchView {
 			return text;
 		}
 	}
-	
 }
