@@ -17,11 +17,12 @@ import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.workbench.api.View;
+import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
+import org.jboss.tools.openshift.reddeer.utils.v2.DeleteUtils;
+import org.jboss.tools.openshift.reddeer.view.OpenShift2Application;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.jboss.tools.openshift.reddeer.wizard.v2.Templates;
 import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
-import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
-import org.jboss.tools.openshift.reddeer.utils.v2.DeleteApplication;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -38,16 +39,18 @@ public class ID408ApplicationPropertiesTest {
 	
 	@Before
 	public void createApplication() {
-		new Templates(Datastore.USERNAME, Datastore.DOMAIN, false).createSimpleApplicationOnBasicCartridges(
+		new Templates(Datastore.USERNAME, Datastore.SERVER, Datastore.DOMAIN, false).
+			createSimpleApplicationOnBasicCartridges(
 				OpenShiftLabel.Cartridge.DIY, applicationName, false, true, true);
 	}
 	
 	@Test
 	public void testApplicationDetails() {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
-		TreeItem application = explorer.getApplication(Datastore.USERNAME, Datastore.DOMAIN, applicationName);
+		OpenShift2Application application = explorer.getOpenShift2Connection(Datastore.USERNAME, Datastore.SERVER).
+				getDomain(Datastore.DOMAIN).getApplication(applicationName);
 		
-		applicationDetails(explorer, application, applicationName, "Do-It-Yourself 0.1 (diy-0.1)",
+		applicationDetails(explorer, application.getTreeItem(), applicationName, "Do-It-Yourself 0.1 (diy-0.1)",
 				OpenShiftLabel.ContextMenu.APPLICATION_DETAILS);
 	}
 	
@@ -98,6 +101,7 @@ public class ID408ApplicationPropertiesTest {
 	
 	@After
 	public void deleteApplication() {
-		new DeleteApplication(Datastore.USERNAME, Datastore.DOMAIN, applicationName).perform();;
+		new DeleteUtils(Datastore.USERNAME, Datastore.SERVER, Datastore.DOMAIN, 
+				applicationName, applicationName).perform();;
 	}
 }

@@ -8,7 +8,7 @@ import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.jface.exception.JFaceLayerException;
 import org.jboss.reddeer.jface.viewer.handler.TreeViewerHandler;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
-import org.jboss.tools.openshift.reddeer.utils.v2.DeleteApplication;
+import org.jboss.tools.openshift.reddeer.utils.v2.DeleteUtils;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
 import org.junit.Test;
@@ -27,14 +27,14 @@ public class ID402DeleteOpenShiftApplicationTest {
 		ServersView serversView = new ServersView();
 		TreeViewerHandler treeViewerHandler = TreeViewerHandler.getInstance();
 		String applicationName = ID401CreateNewApplicationViaExplorerTest.applicationName;
-		DeleteApplication deleteApplication =  new DeleteApplication(Datastore.USERNAME,
-				Datastore.DOMAIN, applicationName);
+		DeleteUtils deleteApplication =  new DeleteUtils(Datastore.USERNAME, Datastore.SERVER,
+				Datastore.DOMAIN, applicationName, applicationName);
 		
 		deleteApplication.deleteOpenShiftApplication();
 		try {
 			explorer.open();
-			explorer.getApplication(Datastore.USERNAME, Datastore.DOMAIN, 
-				ID401CreateNewApplicationViaExplorerTest.applicationName);
+			explorer.getOpenShift2Connection(Datastore.USERNAME, Datastore.SERVER).getDomain(Datastore.DOMAIN). 
+				getApplication(ID401CreateNewApplicationViaExplorerTest.applicationName);
 			fail("OpenShift application has not been deleted.");
 		} catch (JFaceLayerException ex) {
 			// PASS

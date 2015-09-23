@@ -7,18 +7,18 @@ import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.swt.impl.browser.InternalBrowser;
 import org.jboss.reddeer.swt.impl.button.CancelButton;
 import org.jboss.reddeer.swt.impl.button.NextButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
-import org.jboss.reddeer.uiforms.impl.hyperlink.DefaultHyperlink;
+import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.jboss.tools.openshift.ui.bot.test.domain.ID203DeleteDomainTest;
 import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
-import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -31,18 +31,19 @@ import org.junit.Test;
  */
 public class ID304OpenNewApplicationWizardWithoutDomainTest {
 
-	private static boolean domainsDeleted;
+	private static boolean firstDomainDeleted;
+	private static boolean secondDomainDeleted;
 	
 	@BeforeClass
 	public static void deleteDomain() {
-		domainsDeleted = ID203DeleteDomainTest.deleteDomain(Datastore.USERNAME, Datastore.DOMAIN) &&
-				ID203DeleteDomainTest.deleteDomain(Datastore.USERNAME, Datastore.SECOND_DOMAIN);
+		firstDomainDeleted = ID203DeleteDomainTest.deleteDomain(Datastore.USERNAME, Datastore.SERVER, Datastore.DOMAIN);
+		secondDomainDeleted = ID203DeleteDomainTest.deleteDomain(Datastore.USERNAME, Datastore.SERVER, Datastore.SECOND_DOMAIN);
 	}
 	
 	@Test
 	public void testOpenNewApplicationWizardViaExplorer() {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
-		explorer.getConnection(Datastore.USERNAME).select();
+		explorer.getOpenShift2Connection(Datastore.USERNAME, Datastore.SERVER).select();
 		
 		new ContextMenu(OpenShiftLabel.ContextMenu.NEW_APPLICATION).select();
 		
@@ -86,7 +87,7 @@ public class ID304OpenNewApplicationWizardWithoutDomainTest {
 	public void testOpenNewApplicationWizardViaCentral() {
 		new DefaultToolItem(new WorkbenchShell(), OpenShiftLabel.Others.JBOSS_CENTRAL).click();
 	
-		new DefaultHyperlink(OpenShiftLabel.Others.OPENSHIFT_APP).activate();
+		new InternalBrowser().execute(OpenShiftLabel.Others.OPENSHIFT_CENTRAL_SCRIPT);
 		
 		try {
 			new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.NEW_APP_WIZARD),
@@ -109,9 +110,11 @@ public class ID304OpenNewApplicationWizardWithoutDomainTest {
 	
 	@AfterClass
 	public static void addDomain() {
-		if (domainsDeleted) {
-			ID203DeleteDomainTest.createDomain(Datastore.USERNAME, Datastore.DOMAIN);
-			ID203DeleteDomainTest.createDomain(Datastore.USERNAME, Datastore.SECOND_DOMAIN);
+		if (firstDomainDeleted) {
+			ID203DeleteDomainTest.createDomain(Datastore.USERNAME, Datastore.SERVER, Datastore.DOMAIN);
+		}
+		if (secondDomainDeleted) {
+			ID203DeleteDomainTest.createDomain(Datastore.USERNAME, Datastore.SERVER, Datastore.SECOND_DOMAIN);
 		}
 	}
 }

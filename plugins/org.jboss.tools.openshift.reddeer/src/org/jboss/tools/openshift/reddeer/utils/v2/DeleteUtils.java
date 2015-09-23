@@ -1,7 +1,6 @@
 package org.jboss.tools.openshift.reddeer.utils.v2;
 
 import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
@@ -16,24 +15,24 @@ import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
+import org.jboss.tools.openshift.reddeer.condition.OpenShiftApplicationExists;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
+import org.jboss.tools.openshift.reddeer.view.OpenShift2Application;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 
 /**
- * Delete an application. It is possible to remove whole application by invoking method
- * perform or just remove specified part of an application - server adapter, application
- * or deployed application on OpenShift.
+ * Delete an OpenShift 2 application, server adapter and/or project. 
  * 
  * @author mlabuda@redhat.com
- *
  */
-public class DeleteApplication {
+public class DeleteUtils {
 
-	private Logger logger = new Logger(DeleteApplication.class);
+	private Logger logger = new Logger(DeleteUtils.class);
 	
 	private TreeViewerHandler treeViewerHandler = TreeViewerHandler.getInstance();
 	
 	private String username;
+	private String server;
 	private String domain;
 	private String appName;
 	private String project;
@@ -43,26 +42,14 @@ public class DeleteApplication {
 	 * as the application name. If names are different use constructor with project name.
 	 * 
 	 * @param username user name
-	 * @param domain domain name
-	 * @param appName application Name
-	 */
-	public DeleteApplication(String username, String domain, String appName) {
-		this.username = username;
-		this.domain = domain;
-		this.appName = appName;
-		project = appName;
-	}
-	
-	/**
-	 * Prepares application to be deleted.
-	 * 
-	 * @param username user name
+	 * @param server server
 	 * @param domain domain name
 	 * @param appName application Name
 	 * @param project project name
 	 */
-	public DeleteApplication(String username, String domain, String appName, String project) {
+	public DeleteUtils(String username, String server, String domain, String appName, String project) {
 		this.username = username;
+		this.server = server;
 		this.domain = domain;
 		this.appName = appName;
 		this.project = project;
@@ -89,7 +76,6 @@ public class DeleteApplication {
 		new PushButton("OK").click();
 		
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
-		
 		logger.info("OpenShift Server Adapter for application " + appName + " has been removed.");
 	}
 	
@@ -97,7 +83,9 @@ public class DeleteApplication {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 		explorer.open();
 		
-		explorer.selectApplication(username, domain, appName);
+		OpenShift2Application openShiftApplication =
+				explorer.getOpenShift2Connection(username).getDomain(domain).getApplication(appName);
+		openShiftApplication.select();
 		new ContextMenu(OpenShiftLabel.ContextMenu.DELETE_APPLICATION).select();
 		
 		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.DELETE_APP), TimePeriod.LONG);
@@ -107,9 +95,9 @@ public class DeleteApplication {
 		
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 		
-		// bcs. sometime it could be removed later as the job is finished and 7 is magical
-		AbstractWait.sleep(TimePeriod.getCustom(7));
+		explorer.getOpenShift2Connection(username).getDomain(domain).refresh();
 		
+		new WaitWhile(new OpenShiftApplicationExists(username, server, domain, appName), TimePeriod.LONG);
 		logger.info("OpenShift Application " + appName + " has been removed.");
 	}
 	
@@ -118,8 +106,8 @@ public class DeleteApplication {
 		projectExplorer.open();
 		
 		projectExplorer.getProject(project).delete(true);
-		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		logger.info("Project " + project + " has been removed.");
 	}
 }

@@ -1,26 +1,25 @@
 package org.jboss.tools.openshift.ui.bot.test.application.advanced;
 
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.fail;
 
 import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
-import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
+import org.jboss.tools.openshift.reddeer.condition.OpenShiftApplicationExists;
+import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
+import org.jboss.tools.openshift.reddeer.utils.v2.DeleteUtils;
+import org.jboss.tools.openshift.reddeer.view.OpenShift2Application;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.jboss.tools.openshift.reddeer.wizard.v2.Templates;
 import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
-import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
-import org.jboss.tools.openshift.reddeer.utils.v2.DeleteApplication;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,25 +35,32 @@ public class ID901DeleteMoreApplicationsTest {
 	private String firstApplicationName = "fdiy" + System.currentTimeMillis();
 	private String secondApplicationName = "sdiy" + System.currentTimeMillis();
 	
+	private boolean firstApplicationExists = false;
+	private boolean secondApplicationExists = false;
+	
 	@Before
 	public void createApplications() {
-		new Templates(Datastore.USERNAME, Datastore.DOMAIN, false).createSimpleApplicationOnBasicCartridges(
+		new Templates(Datastore.USERNAME, Datastore.SERVER, Datastore.DOMAIN, false).
+			createSimpleApplicationOnBasicCartridges(
 				OpenShiftLabel.Cartridge.DIY, firstApplicationName, false, true, true);
-		new Templates(Datastore.USERNAME, Datastore.DOMAIN, false).createSimpleApplicationOnBasicCartridges(
+		new Templates(Datastore.USERNAME, Datastore.SERVER, Datastore.DOMAIN, false).
+			createSimpleApplicationOnBasicCartridges(
 				OpenShiftLabel.Cartridge.DIY, secondApplicationName, false, true, true);
 	}
 	
 	@Test
-	public void testDeleteApplications() {
+	public void testDeleteMoreApplicationsAtOnce() {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 		explorer.open();
 		
-		TreeItem firstApplication = explorer.getApplication(Datastore.USERNAME, Datastore.DOMAIN,
-				firstApplicationName);
-		TreeItem secondApplication = explorer.getApplication(Datastore.USERNAME, Datastore.DOMAIN,
-				secondApplicationName);
+		OpenShift2Application firstApplication = explorer.getOpenShift2Connection(Datastore.USERNAME, Datastore.SERVER).
+				getDomain(Datastore.DOMAIN).getApplication(firstApplicationName);
+		firstApplicationExists = true;
+		OpenShift2Application secondApplication = explorer.getOpenShift2Connection(Datastore.USERNAME, Datastore.SERVER).
+				getDomain(Datastore.DOMAIN).getApplication(secondApplicationName);
+		secondApplicationExists = true;
 		
-		new DefaultTree().selectItems(firstApplication, secondApplication);
+		new DefaultTree().selectItems(firstApplication.getTreeItem(), secondApplication.getTreeItem());
 		
 		try {
 			new ContextMenu(OpenShiftLabel.ContextMenu.DELETE_APPLICATION).select();
@@ -72,24 +78,33 @@ public class ID901DeleteMoreApplicationsTest {
 		new OkButton().click();
 		
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
-		AbstractWait.sleep(TimePeriod.getCustom(7));
 		
-		assertFalse("First application is still presented in OpenShift explorer.",
-				explorer.applicationExists(Datastore.USERNAME, Datastore.DOMAIN, firstApplicationName));
-		
-		assertFalse("Second application is still presented in OpenShift explorer.",
-				explorer.applicationExists(Datastore.USERNAME, Datastore.DOMAIN, secondApplicationName));
+		assertApplicationDoesNotExists(firstApplicationName);
+		assertApplicationDoesNotExists(secondApplicationName);
+	}
+	
+	private void assertApplicationDoesNotExists(String applicationName) {
+		if (new OpenShiftApplicationExists(Datastore.USERNAME, Datastore.SERVER, 
+					Datastore.DOMAIN, applicationName).test()) {
+			fail("Application " + applicationName + " is still presented in OpenShift explorer.");
+		}
 	}
 	
 	@After
 	public void deleteAdaptersAndProjects() {
-		DeleteApplication deleteFirst = new DeleteApplication(Datastore.USERNAME, Datastore.DOMAIN, firstApplicationName);
-		DeleteApplication deleteSecond = new DeleteApplication(Datastore.USERNAME, Datastore.DOMAIN, secondApplicationName);
+		DeleteUtils deleteFirst = new DeleteUtils(Datastore.USERNAME, Datastore.SERVER, Datastore.DOMAIN, 
+				firstApplicationName, firstApplicationName);
+		DeleteUtils deleteSecond = new DeleteUtils(Datastore.USERNAME, Datastore.SERVER, Datastore.DOMAIN, 
+				secondApplicationName, secondApplicationName);
 		
-		deleteFirst.deleteProject();
-		deleteFirst.deleteServerAdapter();
+		if (firstApplicationExists) {
+			deleteFirst.deleteProject();
+			deleteFirst.deleteServerAdapter();
+		}
 		
-		deleteSecond.deleteProject();
-		deleteSecond.deleteServerAdapter();
+		if (secondApplicationExists) {
+			deleteSecond.deleteProject();
+			deleteSecond.deleteServerAdapter();
+		}
 	}
 }

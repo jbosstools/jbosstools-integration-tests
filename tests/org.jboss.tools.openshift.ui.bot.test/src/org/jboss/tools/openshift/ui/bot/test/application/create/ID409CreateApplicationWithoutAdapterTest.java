@@ -1,19 +1,21 @@
 package org.jboss.tools.openshift.ui.bot.test.application.create;
 
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import org.jboss.reddeer.common.exception.RedDeerException;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.jface.viewer.handler.TreeViewerHandler;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
+import org.jboss.tools.openshift.reddeer.condition.OpenShiftApplicationExists;
+import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
+import org.jboss.tools.openshift.reddeer.utils.v2.DeleteUtils;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.jboss.tools.openshift.reddeer.wizard.v2.Templates;
 import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
-import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
-import org.jboss.tools.openshift.reddeer.utils.v2.DeleteApplication;
 import org.junit.After;
 import org.junit.Test;
 
@@ -32,12 +34,14 @@ public class ID409CreateApplicationWithoutAdapterTest {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 		TreeViewerHandler treeViewerHandler = TreeViewerHandler.getInstance();
 		
-		new Templates(Datastore.USERNAME, Datastore.DOMAIN, false).createSimpleApplicationOnBasicCartridges(
+		new Templates(Datastore.USERNAME, Datastore.SERVER, Datastore.DOMAIN, false).
+			createSimpleApplicationOnBasicCartridges(
 				OpenShiftLabel.Cartridge.DIY, applicationName, false, true, false);
 		
 		explorer.activate();
-		assertTrue("Application " + applicationName + " has not been created", 
-				explorer.applicationExists(Datastore.USERNAME, Datastore.DOMAIN, applicationName));
+		
+		new WaitUntil(new OpenShiftApplicationExists(Datastore.USERNAME, Datastore.SERVER, 
+				Datastore.DOMAIN, applicationName), TimePeriod.LONG);
 		
 		ServersView serversView = new ServersView();
 		serversView.open();
@@ -61,8 +65,8 @@ public class ID409CreateApplicationWithoutAdapterTest {
 	
 	@After
 	public void deleteApplication() {
-		DeleteApplication deleteApplication = 
-				new DeleteApplication(Datastore.USERNAME, Datastore.DOMAIN, applicationName);
+		DeleteUtils deleteApplication =	new DeleteUtils(Datastore.USERNAME, Datastore.SERVER, 
+				Datastore.DOMAIN, applicationName, applicationName);
 		
 		deleteApplication.deleteOpenShiftApplication();
 		deleteApplication.deleteProject();

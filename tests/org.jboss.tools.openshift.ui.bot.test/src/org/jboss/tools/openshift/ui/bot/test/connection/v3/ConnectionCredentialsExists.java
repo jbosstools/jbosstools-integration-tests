@@ -14,10 +14,10 @@ public class ConnectionCredentialsExists implements TestMethodShouldRun {
 	@Override
 	public boolean shouldRun(FrameworkMethod method) {
 		if (method.getName().contains("OAuth")) {
-			return DatastoreV3.OPENSHIFT_SERVER2 != null && DatastoreV3.OPENSHIFT_USER2 != null &&
+			return DatastoreV3.OPENSHIFT_SERVER2 != null && DatastoreV3.OPENSHIFT_USERNAME2 != null &&
 					DatastoreV3.OPENSHIFT_TOKEN2 != null;
 		} else {
-			return DatastoreV3.OPENSHIFT_SERVER != null && DatastoreV3.OPENSHIFT_USER != null &&
+			return DatastoreV3.OPENSHIFT_SERVER != null && DatastoreV3.OPENSHIFT_USERNAME != null &&
 					DatastoreV3.OPENSHIFT_PASSWORD != null; 
 		}
 	}	

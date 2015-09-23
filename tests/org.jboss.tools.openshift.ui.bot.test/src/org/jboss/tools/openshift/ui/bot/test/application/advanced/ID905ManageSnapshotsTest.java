@@ -18,6 +18,7 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.workbench.api.View;
+import org.jboss.tools.openshift.reddeer.view.OpenShift2Application;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.jboss.tools.openshift.ui.bot.test.application.create.IDXXXCreateTestingApplication;
 import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
@@ -36,10 +37,10 @@ public class ID905ManageSnapshotsTest extends IDXXXCreateTestingApplication {
 	@Test
 	public void testManagingSnapshots() {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
-		TreeItem application = explorer.getApplication(Datastore.USERNAME,
-				Datastore.DOMAIN, applicationName);
+		OpenShift2Application application = explorer.getOpenShift2Connection(Datastore.USERNAME, Datastore.SERVER).
+				getDomain(Datastore.DOMAIN).getApplication(applicationName);
 		
-		manageSnapshotsTest(explorer, application, applicationName,
+		manageSnapshotsTest(new OpenShiftExplorerView(), application.getTreeItem(), applicationName,
 				OpenShiftLabel.ContextMenu.SAVE_SNAPSHOT);
 	}
 	

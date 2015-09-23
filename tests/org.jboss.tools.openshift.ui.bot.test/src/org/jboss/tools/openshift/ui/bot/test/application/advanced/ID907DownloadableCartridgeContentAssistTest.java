@@ -17,10 +17,12 @@ import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
-import org.jboss.tools.openshift.ui.bot.test.application.create.ID406CreateApplicationOnDownloadableCartridgeTest;
-import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
-import org.jboss.tools.openshift.reddeer.wizard.v2.OpenNewApplicationWizard;
+import org.jboss.tools.openshift.reddeer.utils.v2.DeleteUtils;
+import org.jboss.tools.openshift.reddeer.wizard.v2.OpenShift2ApplicationWizard;
+import org.jboss.tools.openshift.reddeer.wizard.v2.Templates;
+import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -31,10 +33,25 @@ import org.junit.Test;
  */
 public class ID907DownloadableCartridgeContentAssistTest {
 	
+	TreeViewerHandler treeViewerHandler = TreeViewerHandler.getInstance();
+	
+	public static String downloadableURL = 
+			"https://cartreflect-claytondev.rhcloud.com/github/smarterclayton/openshift-go-cart";
+	private String applicationName = "gocart" + System.currentTimeMillis();
+	
+	@Before
+	public void prepareContentAssist() {
+		new Templates(Datastore.USERNAME, Datastore.SERVER, Datastore.DOMAIN, false).
+		createApplicationOnDownloadableCartridge(downloadableURL, applicationName, 
+				false, false, false, null, (String[]) null);
+		new DeleteUtils(Datastore.USERNAME, Datastore.SERVER, Datastore.DOMAIN, applicationName,
+				applicationName).deleteOpenShiftApplication();
+	}
+	
 	@Test
 	public void testContentAssistDownloadableCartridgeURL() {
-		TreeViewerHandler treeViewerHandler = TreeViewerHandler.getInstance();
-		OpenNewApplicationWizard.openWizardFromExplorer(Datastore.USERNAME, Datastore.DOMAIN);
+		new OpenShift2ApplicationWizard(Datastore.USERNAME, Datastore.SERVER, Datastore.DOMAIN).
+			openWizardFromExplorer();
 		
 		new DefaultShell(OpenShiftLabel.Shell.NEW_APP_WIZARD);
 		
@@ -55,8 +72,7 @@ public class ID907DownloadableCartridgeContentAssistTest {
 			fail("Content assist for downloadable cartridge has not been opened.");
 		}
 		
-		assertTrue("Code anything code assist do not remembers last used URL.",
-				url.equals(ID406CreateApplicationOnDownloadableCartridgeTest.downloadableURL));
+		assertTrue("Code anything code assist do not remembers last used URL.", url.equals(downloadableURL));
 		
 		new DefaultShell(OpenShiftLabel.Shell.NEW_APP_WIZARD);
 		new CancelButton().click();

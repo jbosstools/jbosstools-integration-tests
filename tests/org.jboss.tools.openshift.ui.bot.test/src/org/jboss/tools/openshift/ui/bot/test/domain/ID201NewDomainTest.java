@@ -14,6 +14,7 @@ import org.jboss.reddeer.swt.impl.button.FinishButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.tools.openshift.reddeer.view.OpenShift2Connection;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
@@ -29,12 +30,13 @@ public class ID201NewDomainTest {
 
 	@Test
 	public void testNewDomain() {
-		createDomain(Datastore.USERNAME, Datastore.DOMAIN);
+		createDomain(Datastore.USERNAME, Datastore.SERVER, Datastore.DOMAIN);
 	}
 	
-	public static void createDomain(String username, String domainName) {
+	public static void createDomain(String username, String server, String domainName) {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
-		explorer.getConnection(username).select();
+		OpenShift2Connection connection = explorer.getOpenShift2Connection(username, server);
+		connection.select();
 		
 		// Sometimes there is shown progress information shell
 		try {
@@ -42,7 +44,7 @@ public class ID201NewDomainTest {
 			new WaitWhile(new ShellWithTextIsAvailable("Progress Information"), TimePeriod.LONG);
 		} catch (WaitTimeoutExpiredException ex) {
 		}
-		explorer.getConnection(username).select();
+		connection.select();
 		
 		new ContextMenu(OpenShiftLabel.ContextMenu.NEW_DOMAIN).select();
 
@@ -57,13 +59,13 @@ public class ID201NewDomainTest {
 		
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		
-		explorer.getConnection(username).select();
+		connection.select();
 		new ContextMenu(OpenShiftLabel.ContextMenu.REFRESH).select();
 
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		
 		try {
-			explorer.getDomain(username, domainName);
+			connection.getDomain(domainName);
 		} catch (JFaceLayerException ex) {
 			fail("Domain has not been created");
 		}

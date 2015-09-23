@@ -15,6 +15,7 @@ import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
+import org.jboss.tools.openshift.reddeer.view.OpenShift2Connection;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.junit.After;
 import org.junit.Test;
@@ -44,9 +45,9 @@ public class CleanUp {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 		explorer.open();
 		
-		TreeItem connection = null;
+		OpenShift2Connection connection = null;
 		try {
-			 connection = explorer.getConnection(username);
+			 connection = explorer.getOpenShift2Connection(username);
 		} catch (JFaceLayerException ex) {
 			// There is no connection with such username, nothing happens
 		}
@@ -57,7 +58,7 @@ public class CleanUp {
 			
 			new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 			
-			for (TreeItem domains: connection.getItems()) {
+			for (TreeItem domains: connection.getTreeItem().getItems()) {
 				domains.select();
 			
 				new ContextMenu(OpenShiftLabel.ContextMenu.DELETE_DOMAIN).select();
@@ -92,15 +93,19 @@ public class CleanUp {
 			new DefaultTable().getItem(0).select();
 			
 			new WaitUntil(new ButtonWithTextIsEnabled(new PushButton(OpenShiftLabel.Button.REMOVE)), 
-					TimePeriod.SHORT);
+					TimePeriod.NORMAL);
 			
 			new PushButton(OpenShiftLabel.Button.REMOVE).click();
+			
+			new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.REMOVE_SSH_KEY), TimePeriod.NORMAL);
 			
 			new DefaultShell(OpenShiftLabel.Shell.REMOVE_SSH_KEY);
 			
 			new OkButton().click();
 			
 			new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+			
+			new DefaultShell(OpenShiftLabel.Shell.MANAGE_SSH_KEYS);
 			
 			new PushButton(OpenShiftLabel.Button.REFRESH).click();
 			

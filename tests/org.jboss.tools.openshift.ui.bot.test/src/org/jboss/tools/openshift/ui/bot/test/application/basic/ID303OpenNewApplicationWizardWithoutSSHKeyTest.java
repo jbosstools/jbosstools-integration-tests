@@ -6,20 +6,19 @@ import org.jboss.reddeer.common.exception.RedDeerException;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.swt.impl.browser.InternalBrowser;
 import org.jboss.reddeer.swt.impl.button.CancelButton;
 import org.jboss.reddeer.swt.impl.button.NextButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
-import org.jboss.reddeer.uiforms.impl.hyperlink.DefaultHyperlink;
-import org.jboss.reddeer.uiforms.impl.section.DefaultSection;
+import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.jboss.tools.openshift.ui.bot.test.ssh.ID151RemoveSSHKeyTest;
 import org.jboss.tools.openshift.ui.bot.test.ssh.ID152AddExistingSSHKeyTest;
 import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
-import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -41,8 +40,8 @@ public class ID303OpenNewApplicationWizardWithoutSSHKeyTest {
 	@Test
 	public void testOpenNewApplicationWizardViaExplorer() {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
-		explorer.getDomain(Datastore.USERNAME, Datastore.DOMAIN).select();
-		
+		explorer.getOpenShift2Connection(Datastore.USERNAME, Datastore.SERVER).
+			getDomain(Datastore.DOMAIN).select();
 		new ContextMenu(OpenShiftLabel.ContextMenu.NEW_APPLICATION).select();
 		
 		try {
@@ -79,9 +78,8 @@ public class ID303OpenNewApplicationWizardWithoutSSHKeyTest {
 	public void testOpenNewApplicationWizardViaCentral() {
 		new DefaultToolItem(new WorkbenchShell(), OpenShiftLabel.Others.JBOSS_CENTRAL).click();
 		
-		DefaultSection startSection = new DefaultSection("Start from scratch");
-		new DefaultHyperlink(startSection, OpenShiftLabel.Others.OPENSHIFT_APP).activate();
-		
+		new InternalBrowser().execute(OpenShiftLabel.Others.OPENSHIFT_CENTRAL_SCRIPT);
+
 		try {
 			new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.NEW_APP_WIZARD),
 					TimePeriod.LONG);
@@ -100,7 +98,7 @@ public class ID303OpenNewApplicationWizardWithoutSSHKeyTest {
 	
 	@AfterClass
 	public static void addSSHKey() {
-		ID152AddExistingSSHKeyTest.addExistingSSHKey(Datastore.USERNAME);
+		ID152AddExistingSSHKeyTest.addExistingSSHKey(Datastore.USERNAME, Datastore.SERVER);
 	}
 	
 }

@@ -29,7 +29,8 @@ public class ID704RestartApplicationTest extends IDXXXCreateTestingApplication {
 	@Test
 	public void testRestartApplication() {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
-		explorer.getApplication(Datastore.USERNAME, Datastore.DOMAIN, applicationName).select();
+		explorer.getOpenShift2Connection(Datastore.USERNAME, Datastore.SERVER).getDomain(Datastore.DOMAIN).
+			getApplication(applicationName).select();
 		
 		new ContextMenu(OpenShiftLabel.ContextMenu.RESTART_APPLICATION).select();
 		
@@ -44,8 +45,8 @@ public class ID704RestartApplicationTest extends IDXXXCreateTestingApplication {
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 		
 		try {
-			new WaitUntil(new ApplicationIsDeployedSuccessfully(Datastore.USERNAME, Datastore.DOMAIN, 
-				applicationName, "OpenShift"), TimePeriod.VERY_LONG);
+			new WaitUntil(new ApplicationIsDeployedSuccessfully(Datastore.USERNAME, Datastore.SERVER, 
+					Datastore.DOMAIN, applicationName, "OpenShift"), TimePeriod.VERY_LONG);
 		} catch (WaitTimeoutExpiredException ex) {
 			fail("Application has not been restarted successfully.");
 		}

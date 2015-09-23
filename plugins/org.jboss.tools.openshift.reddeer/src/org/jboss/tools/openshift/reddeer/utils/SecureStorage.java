@@ -28,8 +28,8 @@ public class SecureStorage {
 	 * 
 	 * @param username
 	 */
-	public static void storePassword(String username) {
-		triggerSecureStorageOfPasswordInConnectionDialog(username, true);
+	public static void storeOpenShiftPassword(String username, String server, ServerType serverType) {
+		triggerSecureStorageOfPasswordInConnectionDialog(username, server, true, serverType);
 	}
 	
 	/**
@@ -37,19 +37,26 @@ public class SecureStorage {
 	 * 
 	 * @param username
 	 */
-	public static void removePassword(String username) {
-		triggerSecureStorageOfPasswordInConnectionDialog(username, false);
+	public static void removeOpenShiftPassword(String username, String server, ServerType serverType) {
+		triggerSecureStorageOfPasswordInConnectionDialog(username, server, false, serverType);
 	}
 	
 	/**
 	 * Triggers secure storage of password.
 	 * 
 	 * @param username user name
+	 * @param server server
 	 * @param storePassword store password if value is set to true, remove password if value is set to false
+	 * @param serverType type of a server
 	 */
-	private static void triggerSecureStorageOfPasswordInConnectionDialog(String username, boolean storePassword) {
+	private static void triggerSecureStorageOfPasswordInConnectionDialog(String username, String server,
+			boolean storePassword, ServerType serverType) {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
-		explorer.getConnection(username).select();
+		if (serverType.equals(ServerType.OPENSHIFT_2)) {
+			explorer.getOpenShift2Connection(username, server).select();
+		} else {
+			explorer.getOpenShift3Connection(username, server).select();
+		}
 		new ContextMenu(OpenShiftLabel.ContextMenu.EDIT_CONNECTION).select();
 		
 		new DefaultShell("").setFocus();

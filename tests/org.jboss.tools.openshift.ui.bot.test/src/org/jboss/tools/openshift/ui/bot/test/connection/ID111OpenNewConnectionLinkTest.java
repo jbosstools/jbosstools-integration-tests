@@ -7,7 +7,7 @@ import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.core.util.Display;
 import org.jboss.reddeer.swt.impl.browser.InternalBrowser;
-import org.jboss.reddeer.swt.impl.link.DefaultLink;
+import org.jboss.reddeer.swt.impl.link.AnchorLink;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.tools.openshift.reddeer.condition.BrowserContainsText;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
@@ -30,8 +30,8 @@ public class ID111OpenNewConnectionLinkTest {
 		explorer.openConnectionShell();
 		
 		new DefaultShell("");
-		
-		new DefaultLink().click();
+
+		new AnchorLink("sign up here").click();
 		
 		try {
 			new WaitUntil(new BrowserContainsText("Create an account"), TimePeriod.LONG);

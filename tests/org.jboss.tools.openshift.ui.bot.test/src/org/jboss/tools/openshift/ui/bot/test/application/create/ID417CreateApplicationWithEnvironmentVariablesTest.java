@@ -7,12 +7,11 @@ import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
-import org.jboss.tools.openshift.reddeer.wizard.v2.NewApplicationWizard;
-import org.jboss.tools.openshift.reddeer.wizard.v2.OpenNewApplicationWizard;
-import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
-import org.jboss.tools.openshift.reddeer.utils.v2.DeleteApplication;
+import org.jboss.tools.openshift.reddeer.utils.v2.DeleteUtils;
+import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
+import org.jboss.tools.openshift.reddeer.wizard.v2.OpenShift2ApplicationWizard;
+import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
 import org.junit.After;
 import org.junit.Test;
 
@@ -28,17 +27,18 @@ public class ID417CreateApplicationWithEnvironmentVariablesTest {
 	
 	@Test
 	public void testCreateApplicationWithEnvironmentVariables() {
-		OpenNewApplicationWizard.openWizardFromExplorer(Datastore.USERNAME, Datastore.DOMAIN);
-		
-		NewApplicationWizard wizard = new NewApplicationWizard();
+		OpenShift2ApplicationWizard wizard = new OpenShift2ApplicationWizard(Datastore.USERNAME,
+				Datastore.SERVER, Datastore.DOMAIN);
+		wizard.openWizardFromExplorer();
 		wizard.createNewApplicationOnBasicCartridge(
-				OpenShiftLabel.Cartridge.DIY, Datastore.DOMAIN, applicationName, false,
+				OpenShiftLabel.Cartridge.DIY, applicationName, false,
 				true, true, false, null, null, true, null, null, null, (String[]) null);
 		
 		wizard.postCreateSteps(true);
 		
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
-		explorer.selectApplication(Datastore.USERNAME, Datastore.DOMAIN, applicationName);
+		explorer.getOpenShift2Connection(Datastore.USERNAME, Datastore.SERVER).getDomain(Datastore.DOMAIN).
+			getApplication(applicationName).select();
 		
 		new ContextMenu(OpenShiftLabel.ContextMenu.SHOW_ENV_VARS).select();
 		
@@ -52,6 +52,7 @@ public class ID417CreateApplicationWithEnvironmentVariablesTest {
 	
 	@After
 	public void deleteApplication() {
-		new DeleteApplication(Datastore.USERNAME, Datastore.DOMAIN, applicationName).perform();
+		new DeleteUtils(Datastore.USERNAME, Datastore.SERVER, Datastore.DOMAIN, applicationName,
+				applicationName).perform();
 	}
 }

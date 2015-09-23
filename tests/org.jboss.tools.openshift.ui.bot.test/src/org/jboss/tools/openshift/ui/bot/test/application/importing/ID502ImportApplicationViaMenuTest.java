@@ -10,6 +10,7 @@ import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.jface.viewer.handler.TreeViewerHandler;
 import org.jboss.reddeer.swt.condition.ButtonWithTextIsEnabled;
+import org.jboss.reddeer.swt.impl.button.BackButton;
 import org.jboss.reddeer.swt.impl.button.FinishButton;
 import org.jboss.reddeer.swt.impl.button.NextButton;
 import org.jboss.reddeer.swt.impl.button.OkButton;
@@ -21,7 +22,7 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
-import org.jboss.tools.openshift.reddeer.utils.v2.DeleteApplication;
+import org.jboss.tools.openshift.reddeer.utils.v2.DeleteUtils;
 import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
 import org.junit.After;
 import org.junit.Before;
@@ -39,7 +40,7 @@ public class ID502ImportApplicationViaMenuTest {
 	
 	@Before
 	public void createApplicationDeleteProject() {
-		ID501ImportApplicationViaExplorerTest.deleteProjectAndAdapter(applicationName);
+		ID501ImportApplicationViaExplorerTest.createApplicationWithoutServerAdapterAndProject(applicationName);
 	}
 	
 	@Test
@@ -67,7 +68,8 @@ public class ID502ImportApplicationViaMenuTest {
 		new NextButton().click();
 		
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.IMPORT_APPLICATION), TimePeriod.LONG);
+		
+		new WaitUntil(new ButtonWithTextIsEnabled(new BackButton()), TimePeriod.LONG);
 		
 		new DefaultShell(OpenShiftLabel.Shell.IMPORT_APPLICATION);
 		
@@ -94,6 +96,7 @@ public class ID502ImportApplicationViaMenuTest {
 	
 	@After
 	public void deleteApplication() {
-		new DeleteApplication(Datastore.USERNAME, Datastore.DOMAIN, applicationName).perform();
+		new DeleteUtils(Datastore.USERNAME, Datastore.SERVER, Datastore.DOMAIN, applicationName, 
+				applicationName).perform();
 	}
 }

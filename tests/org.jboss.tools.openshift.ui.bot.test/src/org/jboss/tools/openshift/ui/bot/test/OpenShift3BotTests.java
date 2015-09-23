@@ -13,6 +13,6 @@ import org.junit.runners.Suite.SuiteClasses;
 	OpenShiftV3ConnectionDialogHandlingTest.class,
 	StoreOpenShiftV3ConnectionTest.class
 })
-public class OpenShiftV3BotTests {
+public class OpenShift3BotTests {
 	
 }

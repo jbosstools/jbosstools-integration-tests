@@ -9,7 +9,6 @@ import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.jface.exception.JFaceLayerException;
 import org.jboss.reddeer.jface.viewer.handler.TreeViewerHandler;
-import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.ButtonWithTextIsEnabled;
 import org.jboss.reddeer.swt.impl.button.FinishButton;
 import org.jboss.reddeer.swt.impl.button.OkButton;
@@ -18,11 +17,13 @@ import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
+import org.jboss.tools.openshift.reddeer.condition.OpenShiftApplicationExists;
+import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
+import org.jboss.tools.openshift.reddeer.utils.v2.DeleteUtils;
+import org.jboss.tools.openshift.reddeer.view.OpenShift2Application;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.jboss.tools.openshift.ui.bot.test.application.create.IDXXXCreateTestingApplication;
 import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
-import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
-import org.jboss.tools.openshift.reddeer.utils.v2.DeleteApplication;
 import org.junit.Test;
 
 public class ID604AddJenkinsCartridgeWithoutJenkinsApplicationTest extends IDXXXCreateTestingApplication {
@@ -33,7 +34,8 @@ public class ID604AddJenkinsCartridgeWithoutJenkinsApplicationTest extends IDXXX
 	public void testAddJenkinsCartridgeWithoutJenkinsApplication() {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 		TreeViewerHandler treeViewerHandler = TreeViewerHandler.getInstance();
-		TreeItem application = explorer.getApplication(Datastore.USERNAME, Datastore.DOMAIN, applicationName);
+		OpenShift2Application application = explorer.getOpenShift2Connection(Datastore.USERNAME, Datastore.SERVER).
+				getDomain(Datastore.DOMAIN).getApplication(applicationName);
 		application.select();
 		
 		new ContextMenu(OpenShiftLabel.ContextMenu.EMBED_CARTRIDGE).select();
@@ -55,7 +57,7 @@ public class ID604AddJenkinsCartridgeWithoutJenkinsApplicationTest extends IDXXX
 		
 		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.EMBEDDED_CARTRIDGE), TimePeriod.VERY_LONG);
 		
-		new DefaultShell(OpenShiftLabel.Shell.EMBEDDED_CARTRIDGE).setFocus();
+		new DefaultShell(OpenShiftLabel.Shell.EMBEDDED_CARTRIDGE);
 		new OkButton().click();
 		
 		new DefaultShell(OpenShiftLabel.Shell.EDIT_CARTRIDGES);
@@ -69,20 +71,19 @@ public class ID604AddJenkinsCartridgeWithoutJenkinsApplicationTest extends IDXXX
 		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.EDIT_CARTRIDGES), TimePeriod.LONG);
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	
-		try {
-			treeViewerHandler.getTreeItem(explorer.getDomain(Datastore.USERNAME, Datastore.DOMAIN), jenkinsApplication);
-		} catch (JFaceLayerException ex) {
-			fail("Jenkins application has not been created although it should be.");
-		}
+		new WaitUntil(new OpenShiftApplicationExists(Datastore.USERNAME, Datastore.SERVER, Datastore.DOMAIN, 
+				jenkinsApplication), TimePeriod.LONG);
 		
 		try {
 			application.select();
-			treeViewerHandler.getTreeItem(application, "Jenkins Client");
+			treeViewerHandler.getTreeItem(application.getTreeItem(), "Jenkins Client");
 		} catch (JFaceLayerException ex) {
-			fail("Jenkins cartridge has not been added into the application. " + application.getItems().get(0).getText());
+			fail("Jenkins cartridge has not been added into the application. " + application.
+					getTreeItem().getItems().get(0).getText());
 		}
 		
 		explorer.open();
-		new DeleteApplication(Datastore.USERNAME, Datastore.DOMAIN, jenkinsApplication).deleteOpenShiftApplication();
+		new DeleteUtils(Datastore.USERNAME, Datastore.SERVER, Datastore.DOMAIN, 
+				jenkinsApplication, jenkinsApplication).deleteOpenShiftApplication();
 	}
 }

@@ -1,8 +1,8 @@
 package org.jboss.tools.openshift.reddeer.wizard.v2;
 
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
@@ -12,20 +12,28 @@ import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.jface.exception.JFaceLayerException;
 import org.jboss.reddeer.jface.viewer.handler.TreeViewerHandler;
 import org.jboss.reddeer.swt.condition.ButtonWithTextIsEnabled;
+import org.jboss.reddeer.swt.impl.browser.InternalBrowser;
 import org.jboss.reddeer.swt.impl.button.BackButton;
 import org.jboss.reddeer.swt.impl.button.CancelButton;
 import org.jboss.reddeer.swt.impl.button.FinishButton;
 import org.jboss.reddeer.swt.impl.button.NextButton;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.YesButton;
+import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
+import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.jboss.tools.openshift.reddeer.condition.OpenShiftApplicationExists;
+import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.jboss.tools.openshift.reddeer.wizard.page.v2.FirstWizardPage;
 import org.jboss.tools.openshift.reddeer.wizard.page.v2.FourthWizardPage;
 import org.jboss.tools.openshift.reddeer.wizard.page.v2.SecondWizardPage;
 import org.jboss.tools.openshift.reddeer.wizard.page.v2.ThirdWizardPage;
-import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 
 /**
  * Creating application consist of 3 required steps:
@@ -36,14 +44,95 @@ import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
  * @author mlabuda@redhat.com
  *
  */
-public class NewApplicationWizard {	
+public class OpenShift2ApplicationWizard {	
 	
 	private TreeViewerHandler treeViewerHandler = TreeViewerHandler.getInstance();
 	
-	public NewApplicationWizard() {
+	private String username;
+	private String server;
+	private String domain;
+	
+	public OpenShift2ApplicationWizard(String username, String server, String domain) {
+		this.username = username;
+		this.server = server;
+		this.domain = domain;
 	}
 	
-	public void importExistingApplication(String domain, String existingAppName,
+	/**
+	 * Opens new application wizard from OpenShift explorer.
+	 */
+	public void openWizardFromExplorer() {
+		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
+		// workaround
+		explorer.reopen();
+
+		explorer.getOpenShift2Connection(username, server).getDomain(domain).select();
+		
+		new ContextMenu(OpenShiftLabel.ContextMenu.NEW_APPLICATION).select();
+		
+		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.NEW_APP_WIZARD),
+				TimePeriod.LONG);
+
+		new DefaultShell(OpenShiftLabel.Shell.NEW_APP_WIZARD).setFocus();
+	}
+	
+	/**
+	 * Opens new application wizard via shell menu. There has to be 
+	 * existing connection in OpenShift explorer, otherwise method fails.
+	 */
+	public void openWizardFromShellMenu() {
+		new WorkbenchShell().setFocus();
+		
+		new ShellMenu("File", "New", "Other...").select();
+		
+		new DefaultShell("New").setFocus();
+		
+		new DefaultTreeItem("OpenShift", "OpenShift Application").select();
+		
+		new NextButton().click();
+		
+		new DefaultShell(OpenShiftLabel.Shell.NEW_APP_WIZARD);
+		
+		for (String comboItem: new DefaultCombo(0).getItems()) {
+			if (comboItem.contains(username) && comboItem.contains(server)) {
+				new DefaultCombo(0).setSelection(comboItem);
+				break;
+			}
+		}
+		
+		new NextButton().click();
+		
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		new WaitUntil(new ButtonWithTextIsEnabled(new BackButton()), TimePeriod.LONG);
+		
+		new DefaultShell(OpenShiftLabel.Shell.NEW_APP_WIZARD).setFocus();
+	}
+	
+	public void openWizardFromCentral() {
+		new DefaultToolItem(new WorkbenchShell(), OpenShiftLabel.Others.JBOSS_CENTRAL).click();
+		
+		new InternalBrowser().execute(OpenShiftLabel.Others.OPENSHIFT_CENTRAL_SCRIPT);
+	
+		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.NEW_APP_WIZARD),
+				TimePeriod.LONG);
+		new DefaultShell(OpenShiftLabel.Shell.NEW_APP_WIZARD);
+		
+		for (String comboItem: new DefaultCombo(0).getItems()) {
+			if (comboItem.contains(username)) {
+				new DefaultCombo(0).setSelection(comboItem);
+				break;
+			}
+		}
+		
+		new NextButton().click();
+		
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		new WaitUntil(new ButtonWithTextIsEnabled(new BackButton()), TimePeriod.LONG);
+		
+		new DefaultShell(OpenShiftLabel.Shell.NEW_APP_WIZARD).setFocus();
+	}
+	
+	public void importExistingApplication(String existingAppName,
 			boolean createAdapter, String gitDestination) {
 		FirstWizardPage firstPage = new FirstWizardPage();
 		firstPage.importExistingApplication(domain, existingAppName);
@@ -61,7 +150,7 @@ public class NewApplicationWizard {
 		finish();
 	}
 	
-	public void createNewApplicationOnBasicCartridge(String cartridge, String domain, String appName, 
+	public void createNewApplicationOnBasicCartridge(String cartridge, String appName, 
 			boolean scalable, boolean smallGear, boolean createEnvironmentVariable, boolean disableMvnBuild,
 			String sourceCodeURL, String embeddedCartridgeURL, boolean createAdapter,
 			String deployProject, String gitDestination, String gitRemoteName, 
@@ -72,12 +161,12 @@ public class NewApplicationWizard {
 		
 		next();
 		
-		proceedThroughWizard(domain, appName, scalable, smallGear, createEnvironmentVariable, 
+		proceedThroughWizard(appName, scalable, smallGear, createEnvironmentVariable, 
 				sourceCodeURL, embeddedCartridgeURL, createAdapter, deployProject, disableMvnBuild, 
 				gitDestination, gitRemoteName, embeddedCartridges);
 	}
 	
-	public void createQuickstart(String quickstart, String domain, String appName,
+	public void createQuickstart(String quickstart, String appName,
 			boolean scalable, boolean smallGear, boolean createAdapter, 
 			String gitDestination) {
 		
@@ -86,12 +175,12 @@ public class NewApplicationWizard {
 		
 		next();
 		
-		proceedThroughWizard(domain, appName, scalable, smallGear, false, 
+		proceedThroughWizard(appName, scalable, smallGear, false, 
 				null, null, createAdapter, null, false, 
 				gitDestination, null, (String[]) null);
 	}
 	
-	public void createNewApplicationOnDownloadableCartridge(String URL, String domain, String appName, 
+	public void createNewApplicationOnDownloadableCartridge(String URL, String appName, 
 			boolean scalable, boolean smallGear, boolean createEnvironmentVariable, boolean disableMvnBuild,
 			String sourceCodeURL, String embeddedCartridgeURL, boolean createAdapter,
 			String deployProject, String gitDestination, String gitRemoteName, 
@@ -102,13 +191,13 @@ public class NewApplicationWizard {
 	
 		next();
 
-		proceedThroughWizard(domain, appName, scalable, smallGear, createEnvironmentVariable, 
+		proceedThroughWizard(appName, scalable, smallGear, createEnvironmentVariable, 
 				sourceCodeURL, embeddedCartridgeURL, createAdapter, deployProject, disableMvnBuild, 
 				gitDestination, gitRemoteName, embeddedCartridges);
 	}
 	
 	
-	private void proceedThroughWizard(String domain, String appName, boolean scalable, boolean smallGear, 
+	private void proceedThroughWizard(String appName, boolean scalable, boolean smallGear, 
 			boolean createEnvironmentVariable, String sourceCodeURL, String embeddedCartridgeURL, 
 			boolean createAdapter, String deployProject, boolean disableMvnBuild, String gitDestination, 
 			String gitRemoteName, String... embeddedCartridges) {
@@ -161,28 +250,28 @@ public class NewApplicationWizard {
 	 * Verify that application exists on OpenShift and that there is a server 
 	 * adapter for application.
 	 * 
-	 * @param username user name
-	 * @param domain domain name
 	 * @param appName application name
 	 * @param project project deployed on OpenShift shown in ServersView
 	 */
-	public void verifyApplication(String username, String domain, String appName, String project) {
-		// Verify in OpenShift explorer
-		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
-		assertTrue("Application " + appName + 
-				" has not been created", explorer.applicationExists(username, domain, appName));
-		
-		// Verify in servers view
+	public void verifyApplication(String appName, String project) {
+		try {
+			new WaitUntil(new OpenShiftApplicationExists(username, server, domain, appName), TimePeriod.NORMAL);
+		} catch (WaitTimeoutExpiredException ex) {
+			fail("OpenShift 2 application has not been created successfully, or it is not at least shown"
+					+ " in OpenShift explorer view under specific domain.");
+		}		
+	}	
+	
+	public void verifyServerAdapter(String appName, String project) {
 		ServersView serversView = new ServersView();
 		serversView.open();
-		
 		try {
 			treeViewerHandler.getTreeItem(new DefaultTree(), appName + " at OpenShift");
 			// pass
 		} catch (JFaceLayerException ex) {
 			fail("There is no server adapter for application " + appName + " and project " + project);
 		}
-	}	
+	}
 	
 	//////////////////////////////////////
 	////////// WIZARD NAVIGATE ///////////

@@ -26,7 +26,7 @@ import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.jboss.tools.openshift.reddeer.wizard.v2.Templates;
 import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
-import org.jboss.tools.openshift.reddeer.utils.v2.DeleteApplication;
+import org.jboss.tools.openshift.reddeer.utils.v2.DeleteUtils;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -41,15 +41,17 @@ public class ID804CreateServerAdapterTest {
 
 	private static String applicationName = "diy" + System.currentTimeMillis();
 	
+	private TreeViewerHandler treeViewerHandler = TreeViewerHandler.getInstance();
+	
 	@BeforeClass
 	public static void createApplication() {
-		new Templates(Datastore.USERNAME, Datastore.DOMAIN, false).createSimpleApplicationOnBasicCartridges(
+		new Templates(Datastore.USERNAME, Datastore.SERVER, Datastore.DOMAIN, false).
+			createSimpleApplicationOnBasicCartridges(
 				OpenShiftLabel.Cartridge.DIY, applicationName, false, true, false);
 	}
 	
 	@Test
 	public void createAdapterViaServersView() {
-		TreeViewerHandler treeViewerHandler = TreeViewerHandler.getInstance();
 		ServersView servers = new ServersView();
 		servers.open();
 		
@@ -98,7 +100,8 @@ public class ID804CreateServerAdapterTest {
 	public void createAdapterViaExplorer() {
 		TreeViewerHandler treeViewerHandler = TreeViewerHandler.getInstance();
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
-		explorer.getApplication(Datastore.USERNAME, Datastore.DOMAIN, applicationName).select();
+		explorer.getOpenShift2Connection(Datastore.USERNAME, Datastore.SERVER).getDomain(Datastore.DOMAIN).
+			getApplication(applicationName).select();
 		
 		new ContextMenu(OpenShiftLabel.ContextMenu.NEW_SERVER_ADAPTER).select();
 		
@@ -143,8 +146,9 @@ public class ID804CreateServerAdapterTest {
 	
 	@AfterClass
 	public static void deleteApplication() {
-		DeleteApplication deleteApplication = 
-				new DeleteApplication(Datastore.USERNAME, Datastore.DOMAIN, applicationName);
+		DeleteUtils deleteApplication = 
+				new DeleteUtils(Datastore.USERNAME, Datastore.SERVER, Datastore.DOMAIN, 
+						applicationName, applicationName);
 		deleteApplication.deleteProject();
 		deleteApplication.deleteOpenShiftApplication();
 	}
