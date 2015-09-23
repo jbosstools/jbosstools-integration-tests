@@ -25,7 +25,7 @@ public class ID113ConnectionPropertiesTest {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 		explorer.open();
 		
-		explorer.getConnection(Datastore.USERNAME).select();
+		explorer.getOpenShift2Connection(Datastore.USERNAME, Datastore.SERVER).select();
 		new ContextMenu(OpenShiftLabel.ContextMenu.PROPERTIES).select();
 		
 		PropertiesView properties = new PropertiesView();

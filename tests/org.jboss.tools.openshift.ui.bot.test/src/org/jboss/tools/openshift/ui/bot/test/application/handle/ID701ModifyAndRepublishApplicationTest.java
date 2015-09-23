@@ -76,7 +76,7 @@ public class ID701ModifyAndRepublishApplicationTest extends IDXXXCreateTestingAp
 		AbstractWait.sleep(TimePeriod.NORMAL);
 		
 		try {
-			new WaitUntil(new ApplicationIsDeployedSuccessfully(Datastore.USERNAME, 
+			new WaitUntil(new ApplicationIsDeployedSuccessfully(Datastore.USERNAME, Datastore.SERVER,
 				Datastore.DOMAIN, applicationName, "OpSh"), TimePeriod.VERY_LONG);
 			// PASS
 		} catch (WaitTimeoutExpiredException ex) {

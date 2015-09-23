@@ -13,6 +13,6 @@ public class ID204CreateMoreDomainsTest {
 	
 	@Test
 	public void testCreateMoreDomains() {
-		ID201NewDomainTest.createDomain(Datastore.USERNAME, Datastore.SECOND_DOMAIN);
+		ID201NewDomainTest.createDomain(Datastore.USERNAME, Datastore.SERVER, Datastore.SECOND_DOMAIN);
 	}
 }

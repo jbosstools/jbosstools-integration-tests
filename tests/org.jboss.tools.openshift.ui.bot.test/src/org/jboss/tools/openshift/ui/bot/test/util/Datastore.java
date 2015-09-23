@@ -11,8 +11,8 @@ import java.util.Random;
  */
 public class Datastore {
 
-	public static String SERVER = System.getProperty("libra.server");
-	public static String USERNAME = System.getProperty("user.name");
+	public static String SERVER = System.getProperty("openshift.server");
+	public static String USERNAME = System.getProperty("openshift.username");
 	public static String DOMAIN = "jbdstestdomain" + new Random().nextInt(100);
 	public static String SECOND_DOMAIN = "secondjbdsqe" + new Random().nextInt(100);
 
@@ -24,6 +24,16 @@ public class Datastore {
 	public static String SSH_HOME;
 	public static String SSH_KEY_NAME = "MyKey";
 	public static String SSH_KEY_FILENAME = "OpShKey" + System.currentTimeMillis(); 
+	
+	static {
+		String server = System.getProperty("openshift.server");
+		String xServer = System.getProperty("openshift.xserver");
+		if (server != null) {
+			SERVER = server;
+		} else if (xServer != null) {
+			SERVER = xServer;
+		}
+	}
 	
 	private Datastore() {}
 }

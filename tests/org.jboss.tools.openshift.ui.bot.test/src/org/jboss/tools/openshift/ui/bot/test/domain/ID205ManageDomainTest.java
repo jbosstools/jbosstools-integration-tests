@@ -38,7 +38,7 @@ public class ID205ManageDomainTest {
 	@Test
 	public void testManageDomains() {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
-		explorer.getConnection(Datastore.USERNAME).select();
+		explorer.getOpenShift2Connection(Datastore.USERNAME, Datastore.SERVER).select();
 		
 		new ContextMenu(OpenShiftLabel.ContextMenu.MANAGE_DOMAINS).select();;	
 		

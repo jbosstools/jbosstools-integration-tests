@@ -15,12 +15,12 @@ public class ID110SecurityStorageTest {
 	
 	@Test
 	public void testPasswordsSecuredStorage() {
-		SecureStorage.storePassword(Datastore.USERNAME);
+		SecureStorage.storeOpenShiftPassword(Datastore.USERNAME, Datastore.SERVER, ServerType.OPENSHIFT_2);
 		
 		SecureStorage.verifySecureStorageOfPassword(Datastore.USERNAME, 
 				Datastore.SERVER.substring(8), true, ServerType.OPENSHIFT_2);
 		
-		SecureStorage.removePassword(Datastore.USERNAME);
+		SecureStorage.removeOpenShiftPassword(Datastore.USERNAME, Datastore.SERVER, ServerType.OPENSHIFT_2);
 		
 		SecureStorage.verifySecureStorageOfPassword(Datastore.USERNAME, 
 				Datastore.SERVER.substring(8), false, ServerType.OPENSHIFT_2);

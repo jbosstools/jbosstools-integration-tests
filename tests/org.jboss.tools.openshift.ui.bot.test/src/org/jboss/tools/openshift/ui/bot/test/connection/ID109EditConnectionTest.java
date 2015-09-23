@@ -27,7 +27,7 @@ public class ID109EditConnectionTest {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 		explorer.open();
 		
-		explorer.getConnection(Datastore.USERNAME).select();
+		explorer.getOpenShift2Connection(Datastore.USERNAME, Datastore.SERVER).select();
 		try {
 			new ContextMenu(OpenShiftLabel.ContextMenu.EDIT_CONNECTION).select();
 		} catch (SWTLayerException ex) {

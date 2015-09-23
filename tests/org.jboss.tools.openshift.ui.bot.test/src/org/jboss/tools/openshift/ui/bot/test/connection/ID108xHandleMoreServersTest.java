@@ -3,6 +3,7 @@ package org.jboss.tools.openshift.ui.bot.test.connection;
 import static org.junit.Assert.fail;
 
 import org.jboss.reddeer.jface.exception.JFaceLayerException;
+import org.jboss.reddeer.junit.execution.annotation.RunIf;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
 import org.junit.Test;
@@ -16,15 +17,16 @@ import org.junit.Test;
 public class ID108xHandleMoreServersTest {
 
 	@Test
+	@RunIf(conditionClass = OSE2CredentialsExist.class)
 	public void testHandleMoreServers() {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 
 		explorer.openConnectionShell();
-		explorer.connectToOpenShiftV2(Datastore.X_SERVER,
-				Datastore.X_USERNAME, Datastore.X_PASSWORD, false, false);
+		explorer.connectToOpenShift2(Datastore.X_SERVER,
+				Datastore.X_USERNAME, Datastore.X_PASSWORD, false, false, false);
 
 		try {
-			explorer.getConnection(Datastore.X_USERNAME);
+			explorer.getOpenShift2Connection(Datastore.X_USERNAME, Datastore.X_SERVER);
 			// PASS
 		} catch (JFaceLayerException ex) {
 			fail("Connection has not been created. It is not listed in OpenShift explorer");

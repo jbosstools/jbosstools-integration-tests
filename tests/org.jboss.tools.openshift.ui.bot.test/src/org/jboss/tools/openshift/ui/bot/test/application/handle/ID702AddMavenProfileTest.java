@@ -15,12 +15,11 @@ import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
+import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
+import org.jboss.tools.openshift.reddeer.utils.v2.DeleteUtils;
+import org.jboss.tools.openshift.reddeer.wizard.v2.OpenShift2ApplicationWizard;
 import org.jboss.tools.openshift.ui.bot.test.application.create.ID414CreateApplicationFromExistingProjectTest;
 import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
-import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
-import org.jboss.tools.openshift.reddeer.utils.v2.DeleteApplication;
-import org.jboss.tools.openshift.reddeer.wizard.v2.NewApplicationWizard;
-import org.jboss.tools.openshift.reddeer.wizard.v2.OpenNewApplicationWizard;
 import org.junit.After;
 import org.junit.Test;
 
@@ -41,12 +40,12 @@ public class ID702AddMavenProfileTest {
 		ID414CreateApplicationFromExistingProjectTest
 				.createJavaEEProject(projectName);
 
-		OpenNewApplicationWizard.openWizardFromExplorer(Datastore.USERNAME,
-				Datastore.DOMAIN);
-		new NewApplicationWizard().createNewApplicationOnBasicCartridge(
-				OpenShiftLabel.Cartridge.JBOSS_EAP, Datastore.DOMAIN,
-				applicationName, false, true, false, false, null, null, true,
-				projectName, null, null, (String[]) null);
+		OpenShift2ApplicationWizard wizard = new OpenShift2ApplicationWizard(Datastore.USERNAME, 
+				Datastore.SERVER, Datastore.DOMAIN);
+		wizard.openWizardFromExplorer();
+		wizard.createNewApplicationOnBasicCartridge(
+				OpenShiftLabel.Cartridge.JBOSS_EAP, applicationName, false, true, false, false, null,
+				null, true,	projectName, null, null, (String[]) null);
 
 		new WaitUntil(new ShellWithTextIsAvailable(
 				OpenShiftLabel.Shell.IMPORT_APPLICATION_WIZARD),
@@ -81,6 +80,7 @@ public class ID702AddMavenProfileTest {
 	
 	@After
 	public void deleteApplication() {
-		new DeleteApplication(Datastore.USERNAME, Datastore.DOMAIN, applicationName, projectName).perform();	
+		new DeleteUtils(Datastore.USERNAME, Datastore.SERVER, Datastore.DOMAIN, applicationName, 
+				projectName).perform();	
 	}
 }

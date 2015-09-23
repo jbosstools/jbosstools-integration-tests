@@ -40,7 +40,7 @@ public class OpenShiftLabel {
 		public static final String MONGO_DB = "MongoDB 2.4 (mongodb-2.4)";
 		public static final String PHP_MYADMIN = "phpMyAdmin 4.0 (phpmyadmin-4)";
 		public static final String POSTGRE_SQL = "PostgreSQL 9.2 (postgresql-9.2)";
-		public static final String GEN_MONGO = "10gen Mongo Monitoring Service Agent (10gen-mms-agent-0.1)";
+		public static final String ROCK_MONGO = "RockMongo 1.1 (rockmongo-1.1)";
 		
 		public static final String DOWNLOADABLE_CARTRIDGE = "Code Anything (Downloadable Cartridge)";
 	}
@@ -212,6 +212,8 @@ public class OpenShiftLabel {
 		public static final String JBOSS_CENTRAL = "JBoss Central";
 		public static final String[] NEW_APP_MENU = {"File", "New", "OpenShift Application"};
 		public static final String OPENSHIFT_APP = "OpenShift Application";
+		public static final String OPENSHIFT_CENTRAL_SCRIPT = "$(\"#wizards\" ).find('a').filter(\""
+				+ ":contains('OpenShift Application')\").click()";
 		
 	}
 }

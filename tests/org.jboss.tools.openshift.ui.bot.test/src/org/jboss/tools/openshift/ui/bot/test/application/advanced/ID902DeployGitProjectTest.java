@@ -18,9 +18,8 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.utils.TestUtils;
-import org.jboss.tools.openshift.reddeer.utils.v2.DeleteApplication;
-import org.jboss.tools.openshift.reddeer.wizard.v2.NewApplicationWizard;
-import org.jboss.tools.openshift.reddeer.wizard.v2.OpenNewApplicationWizard;
+import org.jboss.tools.openshift.reddeer.utils.v2.DeleteUtils;
+import org.jboss.tools.openshift.reddeer.wizard.v2.OpenShift2ApplicationWizard;
 import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
 import org.junit.After;
 import org.junit.Test;
@@ -44,15 +43,14 @@ public class ID902DeployGitProjectTest {
 		
 		importGitProject();
 		
-		OpenNewApplicationWizard.openWizardFromExplorer(Datastore.USERNAME, Datastore.DOMAIN);
+		OpenShift2ApplicationWizard wizard = new OpenShift2ApplicationWizard(Datastore.USERNAME, 
+				Datastore.SERVER, Datastore.DOMAIN);
+		wizard.openWizardFromExplorer();
 		
-		NewApplicationWizard wizard = new NewApplicationWizard();
-		wizard.createNewApplicationOnBasicCartridge(OpenShiftLabel.Cartridge.JBOSS_EAP, 
-				Datastore.DOMAIN, applicationName, false, true, false,
-				false, null, null, true, projectName, null, "openshift22", (String[]) null);
+		wizard.createNewApplicationOnBasicCartridge(OpenShiftLabel.Cartridge.JBOSS_EAP, applicationName, 
+				false, true, false, false, null, null, true, projectName, null, "openshift22", (String[]) null);
 		
-		new WaitUntil(new ShellWithTextIsAvailable(
-				OpenShiftLabel.Shell.IMPORT_APPLICATION_WIZARD),
+		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.IMPORT_APPLICATION_WIZARD),
 				TimePeriod.VERY_LONG);
 
 		new DefaultShell(OpenShiftLabel.Shell.IMPORT_APPLICATION_WIZARD);
@@ -68,8 +66,8 @@ public class ID902DeployGitProjectTest {
 				TimePeriod.VERY_LONG);
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 		
-		wizard.verifyApplication(Datastore.USERNAME, Datastore.DOMAIN, applicationName,
-				projectName);
+		wizard.verifyApplication(applicationName, projectName);
+		wizard.verifyServerAdapter(applicationName, projectName);
 	}
 	
 	private void importGitProject() {
@@ -114,6 +112,6 @@ public class ID902DeployGitProjectTest {
 	
 	@After
 	public void deleteApplication() {
-		new DeleteApplication(Datastore.USERNAME, Datastore.DOMAIN, applicationName, projectName).perform();
+		new DeleteUtils(Datastore.USERNAME, Datastore.SERVER, Datastore.DOMAIN, applicationName, projectName).perform();
 	}
 }

@@ -6,17 +6,17 @@ import org.jboss.reddeer.common.exception.RedDeerException;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.swt.impl.browser.InternalBrowser;
 import org.jboss.reddeer.swt.impl.button.CancelButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
-import org.jboss.reddeer.uiforms.impl.hyperlink.DefaultHyperlink;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
-import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
-import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
 import org.jboss.tools.openshift.reddeer.utils.JBossPerspective;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
+import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
+import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
 import org.junit.Test;
 
 /**
@@ -31,7 +31,8 @@ public class ID301OpenNewApplicationWizardTest {
 	public void testOpenWizardViaExplorer() {
 		new JBossPerspective().open();
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
-		explorer.getDomain(Datastore.USERNAME, Datastore.DOMAIN).select();
+		explorer.getOpenShift2Connection(Datastore.USERNAME, Datastore.SERVER).
+			getDomain(Datastore.DOMAIN).select();
 		
 		new ContextMenu(OpenShiftLabel.ContextMenu.NEW_APPLICATION).select();
 		
@@ -62,8 +63,8 @@ public class ID301OpenNewApplicationWizardTest {
 	@Test
 	public void testOpenWizardViaCentral() {
 		new DefaultToolItem(new WorkbenchShell(), OpenShiftLabel.Others.JBOSS_CENTRAL).click();
-	
-		new DefaultHyperlink(OpenShiftLabel.Others.OPENSHIFT_APP).activate();
+		
+		new InternalBrowser().execute(OpenShiftLabel.Others.OPENSHIFT_CENTRAL_SCRIPT);
 		
 		try {
 			new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.NEW_APP_WIZARD),
@@ -71,7 +72,7 @@ public class ID301OpenNewApplicationWizardTest {
 			new DefaultShell(OpenShiftLabel.Shell.NEW_APP_WIZARD);
 			new CancelButton().click();
 		} catch (RedDeerException ex) {
-			fail("New Application Wizard has not been opened.");
+			fail("New Application Wizard has not been opened.\n" + ex.getCause());
 		}
 	}
 	

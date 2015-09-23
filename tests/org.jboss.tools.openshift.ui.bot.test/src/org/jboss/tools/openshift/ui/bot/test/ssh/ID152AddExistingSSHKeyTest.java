@@ -30,13 +30,13 @@ public class ID152AddExistingSSHKeyTest {
 
 	@Test
 	public void testAddExistingSSHKey() {
-		addExistingSSHKey(Datastore.USERNAME);
+		addExistingSSHKey(Datastore.USERNAME, Datastore.SERVER);
 	}
 	
-	public static void addExistingSSHKey(String username) {
+	public static void addExistingSSHKey(String username, String server) {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 		explorer.open();
-		explorer.getConnection(username).select();
+		explorer.getOpenShift2Connection(username, server).select();
 		
 		new ContextMenu(OpenShiftLabel.ContextMenu.MANAGE_SSH_KEYS).select();
 		
@@ -66,6 +66,7 @@ public class ID152AddExistingSSHKeyTest {
 		
 		new FinishButton().click();
 		
+		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.ADD_SSH_KEY), TimePeriod.LONG);
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		
 		new DefaultShell(OpenShiftLabel.Shell.MANAGE_SSH_KEYS);

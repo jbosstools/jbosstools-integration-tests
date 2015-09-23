@@ -8,18 +8,18 @@ import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.button.CancelButton;
 import org.jboss.reddeer.swt.impl.button.NoButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
+import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
+import org.jboss.tools.openshift.reddeer.utils.v2.DeleteUtils;
+import org.jboss.tools.openshift.reddeer.view.OpenShift2Application;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.jboss.tools.openshift.reddeer.wizard.v2.Templates;
 import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
-import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
-import org.jboss.tools.openshift.reddeer.utils.v2.DeleteApplication;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,14 +30,16 @@ public class ID602oAddConflictCartridgesTest {
 	
 	@Before
 	public void createApplication() {
-		new Templates(Datastore.USERNAME, Datastore.DOMAIN, false).createSimpleApplicationOnBasicCartridges(
+		new Templates(Datastore.USERNAME, Datastore.SERVER, Datastore.DOMAIN, false).
+			createSimpleApplicationOnBasicCartridges(
 				OpenShiftLabel.Cartridge.JBOSS_EAP, applicationName, true, true, true);
 	}
 	
 	@Test
 	public void testAddConflictCartridge() {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
-		TreeItem application = explorer.getApplication(Datastore.USERNAME, Datastore.DOMAIN, applicationName);
+		OpenShift2Application application = explorer.getOpenShift2Connection(Datastore.USERNAME, Datastore.SERVER).
+				getDomain(Datastore.DOMAIN).getApplication(applicationName);
 		application.select();
 		
 		new ContextMenu(OpenShiftLabel.ContextMenu.EMBED_CARTRIDGE).select();
@@ -65,8 +67,8 @@ public class ID602oAddConflictCartridgesTest {
 		new DefaultShell(OpenShiftLabel.Shell.EDIT_CARTRIDGES);
 		
 		// Another cartridge required
-		new DefaultTable().getItem(OpenShiftLabel.EmbeddableCartridge.GEN_MONGO).select();
-		new DefaultTable().getItem(OpenShiftLabel.EmbeddableCartridge.GEN_MONGO).setChecked(true);
+		new DefaultTable().getItem(OpenShiftLabel.EmbeddableCartridge.ROCK_MONGO).select();
+		new DefaultTable().getItem(OpenShiftLabel.EmbeddableCartridge.ROCK_MONGO).setChecked(true);
 		
 		try {
 			new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.ADD_CARTRIDGE_DIALOG), 
@@ -89,6 +91,7 @@ public class ID602oAddConflictCartridgesTest {
 	
 	@After
 	public void deleteApplication() {
-		new DeleteApplication(Datastore.USERNAME, Datastore.DOMAIN, applicationName).perform();
+		new DeleteUtils(Datastore.USERNAME, Datastore.SERVER, Datastore.DOMAIN, 
+				applicationName, applicationName).perform();
 	}
 }
