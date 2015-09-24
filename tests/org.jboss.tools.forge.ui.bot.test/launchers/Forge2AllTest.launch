@@ -32,9 +32,18 @@
 <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch ${target.arch} -nl ${target.nl} -consoleLog"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="org.jboss.tools.forge.ui.bot.test"/>
 <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.pde.ui.workbenchClasspathProvider"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dusage_reporting_enabled=false"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dusage_reporting_enabled=false -Ddatabase.path=${string_prompt:-Ddatabase.path:/home/psrna/data/sakila-h2}"/>
 <stringAttribute key="pde.version" value="3.3"/>
 <stringAttribute key="product" value="com.jboss.devstudio.core.product"/>
+<stringAttribute key="rd.launch.property.reddeer.captureScreenshot" value="true"/>
+<stringAttribute key="rd.launch.property.reddeer.close.shells" value="true"/>
+<stringAttribute key="rd.launch.property.reddeer.close.welcome.screen" value="true"/>
+<stringAttribute key="rd.launch.property.reddeer.disable.maven.download.repo.index.on.startup" value="true"/>
+<stringAttribute key="rd.launch.property.reddeer.logLevel" value="ALL"/>
+<stringAttribute key="rd.launch.property.reddeer.logMessageFilter" value="ALL"/>
+<stringAttribute key="rd.launch.property.reddeer.pauseFailedTest" value="false"/>
+<stringAttribute key="rd.launch.property.reddeer.recordScreenCast" value="false"/>
+<stringAttribute key="rd.launch.property.reddeer.set.open.associated.perspective" value="never"/>
 <booleanAttribute key="show_selected_only" value="false"/>
 <stringAttribute key="templateConfig" value="${target_home}/configuration/config.ini"/>
 <booleanAttribute key="tracing" value="false"/>
