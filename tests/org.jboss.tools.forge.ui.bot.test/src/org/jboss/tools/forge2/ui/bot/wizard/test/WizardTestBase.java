@@ -136,7 +136,7 @@ public abstract class WizardTestBase {
 	 */
 	public void newProject(String name, String path){		
 		WizardDialog wd = getWizardDialog("project-new", "(Project: New).*");
-		new LabeledText("Project name:").setText(name);
+		new LabeledText("Project name:").typeText(name);
 		new LabeledText("Project location:").setText(path);
 		wd.finish(TimePeriod.getCustom(600));
 		ProjectExplorer pe = new ProjectExplorer();
