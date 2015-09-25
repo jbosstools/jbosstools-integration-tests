@@ -30,9 +30,9 @@
 		<reddeer-stable-site>http://download.jboss.org/jbosstools/updates/stable/mars/core/reddeer/0.8.0/</reddeer-stable-site>
 		<reddeer-site>${reddeer-master-site}</reddeer-site>
 
-		<jbosstools-integrationtests-site>http://download.jboss.org/jbosstools/mars/snapshots/updates/integration-tests/${jbosstools_site_stream}/</jbosstools-integrationtests-site>
-		<jbosstools-site>http://download.jboss.org/jbosstools/mars/snapshots/updates/core/${jbosstools_site_stream}/</jbosstools-site>
-		<jbosstools-tests-site>http://download.jboss.org/jbosstools/mars/snapshots/updates/coretests/${jbosstools_site_stream}/</jbosstools-tests-site>
+		<jbosstools-integrationtests-site>http://download.jboss.org/jbosstools/neon/snapshots/updates/integration-tests/${jbosstools_site_stream}/</jbosstools-integrationtests-site>
+		<jbosstools-site>http://download.jboss.org/jbosstools/neon/snapshots/updates/core/${jbosstools_site_stream}/</jbosstools-site>
+		<jbosstools-tests-site>http://download.jboss.org/jbosstools/neon/snapshots/updates/coretests/${jbosstools_site_stream}/</jbosstools-tests-site>
 	</properties>
 
 	<modules>
