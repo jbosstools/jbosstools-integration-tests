@@ -15,9 +15,9 @@
 	</repositories>
 
 	<properties>
-		<update.site.name>JBoss Tools 4.3 - Integration Tests</update.site.name>
+		<update.site.name>JBoss Tools 4.4 - Integration Tests</update.site.name>
 		<update.site.description>Nightly Build</update.site.description>
-		<target.eclipse.version>4.5 (Mars)</target.eclipse.version>
+		<target.eclipse.version>4.6 (Neon)</target.eclipse.version>
 		<siteTemplateFolder>siteTemplateFolder</siteTemplateFolder>
 	</properties>
 
@@ -79,7 +79,7 @@
 										<arg>-s</arg>
 										<arg>${project.build.directory}/repository</arg>
 										<arg>-t</arg>
-										<arg>mars/snapshots/updates/${snapshotLocation}/${jbosstools_site_stream}</arg>
+										<arg>${eclipseName}/snapshots/updates/${snapshotLocation}/${jbosstools_site_stream}</arg>
 									</arguments>
 								</configuration>
 							</execution>
