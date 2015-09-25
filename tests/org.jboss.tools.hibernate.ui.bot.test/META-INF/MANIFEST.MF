@@ -7,7 +7,6 @@ Bundle-Activator: org.jboss.tools.hibernate.ui.bot.test.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.junit,
- org.apache.log4j,
  org.jboss.tools.common.model.ui,
  org.eclipse.ui.ide,
  org.jboss.tools.common.ui,
