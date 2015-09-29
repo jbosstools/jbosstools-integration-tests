@@ -16,7 +16,7 @@ import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsCollectionContaining.hasItem;
 
 @CleanWorkspace
-@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY9x, version=ServerReqVersion.GREATER_OR_EQUAL)
+@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY9x, version=ServerReqVersion.EQUAL)
 public class CreateWildfly9Server extends CreateServerTemplate {
 
 	@Override

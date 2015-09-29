@@ -7,7 +7,7 @@ import org.jboss.ide.eclipse.as.ui.bot.test.template.ServerStateDetectorsTemplat
 import org.jboss.reddeer.requirements.server.ServerReqState;
 
 
-@JBossServer(state=ServerReqState.STOPPED, type=ServerReqType.WILDFLY9x, version=ServerReqVersion.GREATER_OR_EQUAL)
+@JBossServer(state=ServerReqState.STOPPED, type=ServerReqType.WILDFLY9x, version=ServerReqVersion.EQUAL)
 public class ServerStateDetectorsWildfly9Server extends ServerStateDetectorsTemplate {
 
 	@Override

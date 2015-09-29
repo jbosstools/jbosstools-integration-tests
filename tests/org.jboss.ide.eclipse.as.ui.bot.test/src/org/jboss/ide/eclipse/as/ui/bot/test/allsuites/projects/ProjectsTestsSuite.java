@@ -30,6 +30,13 @@ import org.jboss.ide.eclipse.as.ui.bot.test.as71.DeployJSPProjectAS71Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.as71.HotDeployJSPFileAS71Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.as71.OperateAS71Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.as71.UndeployJSPProjectAS71Server;
+import org.jboss.ide.eclipse.as.ui.bot.test.wildfly10.CreateWildfly10Server;
+import org.jboss.ide.eclipse.as.ui.bot.test.wildfly10.DeleteServerWildfly10Server;
+import org.jboss.ide.eclipse.as.ui.bot.test.wildfly10.DeployJSPProjectWildfly10Server;
+import org.jboss.ide.eclipse.as.ui.bot.test.wildfly10.HotDeployJSPFileWildfly10Server;
+import org.jboss.ide.eclipse.as.ui.bot.test.wildfly10.OperateWildfly10Server;
+import org.jboss.ide.eclipse.as.ui.bot.test.wildfly10.ServerStateDetectorsWildfly10Server;
+import org.jboss.ide.eclipse.as.ui.bot.test.wildfly10.UndeployJSPProjectWildfly10Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.wildfly8.CreateWildfly8Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.wildfly8.DeleteServerWildfly8Server;
 import org.jboss.ide.eclipse.as.ui.bot.test.wildfly8.DeployJSPProjectWildfly8Server;
@@ -50,6 +57,7 @@ import org.junit.runners.Suite;
 
 @RunWith(RedDeerSuite.class)
 @Suite.SuiteClasses({
+		CreateWildfly10Server.class,
 		CreateWildfly9Server.class,
 		CreateWildfly8Server.class,
 		CreateAS71Server.class,
@@ -61,6 +69,7 @@ import org.junit.runners.Suite;
 		CreateAS40Server.class,
 		CreateAS3Server.class,
 		
+		OperateWildfly10Server.class,
 		OperateWildfly9Server.class,
 		OperateWildfly8Server.class,
 		OperateAS71Server.class,
@@ -72,24 +81,29 @@ import org.junit.runners.Suite;
 		OperateAS40Server.class,
 		OperateAS3Server.class,
 		
+		ServerStateDetectorsWildfly10Server.class,
 		ServerStateDetectorsWildfly9Server.class,
 		ServerStateDetectorsWildfly8Server.class,
 		
+		DeployJSPProjectWildfly10Server.class,
 		DeployJSPProjectWildfly9Server.class,
 		DeployJSPProjectWildfly8Server.class,
 		DeployJSPProjectAS71Server.class,
 		DeployJSPProjectAS70Server.class,
 		
+		HotDeployJSPFileWildfly10Server.class,
 		HotDeployJSPFileWildfly9Server.class,
 		HotDeployJSPFileWildfly8Server.class,		
 		HotDeployJSPFileAS71Server.class,
 		HotDeployJSPFileAS70Server.class,
 
+		UndeployJSPProjectWildfly10Server.class,
 		UndeployJSPProjectWildfly9Server.class,
 		UndeployJSPProjectWildfly8Server.class,
 		UndeployJSPProjectAS71Server.class,
 		UndeployJSPProjectAS70Server.class,
 		
+		DeleteServerWildfly10Server.class,
 		DeleteServerWildfly9Server.class,
 		DeleteServerWildfly8Server.class,
 		DeleteServerAS71Server.class,

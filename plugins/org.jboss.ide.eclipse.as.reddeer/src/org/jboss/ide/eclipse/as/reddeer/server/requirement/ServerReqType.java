@@ -83,6 +83,10 @@ public enum ServerReqType {
 	 * JBoss Enterprise Application Platform 6.1+
 	 */
 	EAP6_1plus(ServerReqFamily.EAP, "6.1+"),
+	/**
+	 * JBoss Enterprise Application Platform 6.1+
+	 */
+	EAP7x(ServerReqFamily.EAP, "7.x"),
 	
 	/**
 	 * WildFly
@@ -97,7 +101,12 @@ public enum ServerReqType {
 	/**
 	 * WildFly 9.x
 	 */
-	WILDFLY9x(ServerReqFamily.WILDFLY, "9.x");
+	WILDFLY9x(ServerReqFamily.WILDFLY, "9.x"),
+	
+	/**
+	 * WildFly 10.x
+	 */
+	WILDFLY10x(ServerReqFamily.WILDFLY, "10.x");
 
 
 	private String version;

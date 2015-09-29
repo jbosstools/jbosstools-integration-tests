@@ -1,4 +1,4 @@
-package org.jboss.ide.eclipse.as.ui.bot.test.eap6x;
+package org.jboss.ide.eclipse.as.ui.bot.test.wildfly10;
 
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqVersion;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
@@ -6,7 +6,7 @@ import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBo
 import org.jboss.ide.eclipse.as.ui.bot.test.template.HotDeployJSPFileTemplate;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 
-@JBossServer(state=ServerReqState.RUNNING, type=ServerReqType.EAP6_1plus, version=ServerReqVersion.EQUAL)
-public class HotDeployJSPFileEAP6xServer extends HotDeployJSPFileTemplate {
+@JBossServer(state=ServerReqState.RUNNING, type=ServerReqType.WILDFLY10x, version=ServerReqVersion.EQUAL)
+public class HotDeployJSPFileWildfly10Server extends HotDeployJSPFileTemplate {
 
 }
