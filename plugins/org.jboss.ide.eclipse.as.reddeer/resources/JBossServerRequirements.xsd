@@ -25,6 +25,7 @@
 			<xs:enumeration value="5.x" />
 			<xs:enumeration value="6.0" />
 			<xs:enumeration value="6.1+" />
+			<xs:enumeration value="7.x" />
 		</xs:restriction>
 	</xs:simpleType>
 
@@ -32,6 +33,7 @@
 		<xs:restriction base="server:abstractVersion">
 			<xs:enumeration value="8.x" />
 			<xs:enumeration value="9.x" />
+			<xs:enumeration value="10.x" />
 		</xs:restriction>
 	</xs:simpleType>
 

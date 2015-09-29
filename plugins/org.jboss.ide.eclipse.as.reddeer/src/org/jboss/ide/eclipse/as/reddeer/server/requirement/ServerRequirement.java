@@ -5,6 +5,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import org.jboss.ide.eclipse.as.reddeer.server.family.FamilyEAP;
 import org.jboss.ide.eclipse.as.reddeer.server.family.FamilyWildFly;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.ide.eclipse.as.reddeer.server.wizard.NewServerWizardDialog;
@@ -26,6 +27,8 @@ import org.jboss.reddeer.requirements.server.ConfiguredServerInfo;
 import org.jboss.reddeer.requirements.server.IServerReqConfig;
 import org.jboss.reddeer.requirements.server.ServerReqBase;
 import org.jboss.reddeer.requirements.server.ServerReqState;
+import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 
 import static org.junit.Assert.assertTrue;
 
@@ -139,6 +142,23 @@ public class ServerRequirement extends ServerReqBase implements Requirement<JBos
 				}
 				if(version.equals("9.x")){
 					serverTypeLabelText = label+"  "+version+" ";
+				}
+				for (org.jboss.reddeer.swt.api.TreeItem item : new DefaultTreeItem("JBoss Community").getItems()){
+					java.lang.System.out.println("'" + item.getText() + "'");	
+				}
+				
+				if(version.equals("10.x")){
+					serverTypeLabelText = label+" "+ "10.0" +" (Experimental)";
+				}
+			}
+			for (TreeItem item : new DefaultTreeItem("Red Hat JBoss Middleware").getItems()){
+				java.lang.System.out.println(item.getText());
+			}
+			if(FamilyEAP.class.equals(config.getServerFamily().getClass())){
+				String label = config.getServerFamily().getLabel();
+				String version = config.getServerFamily().getVersion();
+				if(version.equals("7.x")){
+					serverTypeLabelText = label+" 7.0 (Experimental)";
 				}
 			}
 			sp.selectType(config.getServerFamily().getCategory(), serverTypeLabelText);

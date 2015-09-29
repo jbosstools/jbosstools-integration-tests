@@ -25,39 +25,53 @@ import org.jboss.ide.eclipse.as.ui.bot.test.eap6x.HotDeployJSPFileEAP6xServer;
 import org.jboss.ide.eclipse.as.ui.bot.test.eap6x.OperateEAP6xServer;
 import org.jboss.ide.eclipse.as.ui.bot.test.eap6x.ServerStateDetectorsEAP6xServer;
 import org.jboss.ide.eclipse.as.ui.bot.test.eap6x.UndeployJSPProjectEAP6xServer;
+import org.jboss.ide.eclipse.as.ui.bot.test.eap7.CreateEAP7Server;
+import org.jboss.ide.eclipse.as.ui.bot.test.eap7.DeleteServerEAP7Server;
+import org.jboss.ide.eclipse.as.ui.bot.test.eap7.DeployJSPProjectEAP7Server;
+import org.jboss.ide.eclipse.as.ui.bot.test.eap7.HotDeployJSPFileEAP7Server;
+import org.jboss.ide.eclipse.as.ui.bot.test.eap7.OperateEAP7Server;
+import org.jboss.ide.eclipse.as.ui.bot.test.eap7.ServerStateDetectorsEAP7Server;
+import org.jboss.ide.eclipse.as.ui.bot.test.eap7.UndeployJSPProjectEAP7Server;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 @RunWith(RedDeerSuite.class)
 @Suite.SuiteClasses({
+		CreateEAP7Server.class,
 		CreateEAP6xServer.class,
 		CreateEAP60Server.class,
 		CreateEAP5Server.class,
 		CreateEAP4Server.class,
 		
+		OperateEAP7Server.class,
 		OperateEAP6xServer.class,
 		OperateEAP60Server.class,
 		OperateEAP5Server.class,
 		OperateEAP4Server.class,
 
+		ServerStateDetectorsEAP7Server.class,
 		ServerStateDetectorsEAP6xServer.class,
 		
+		DeployJSPProjectEAP7Server.class,
 		DeployJSPProjectEAP6xServer.class,
 		DeployJSPProjectEAP60Server.class,
 		DeployJSPProjectEAP5Server.class,
 		DeployJSPProjectEAP4Server.class,
 		
+		HotDeployJSPFileEAP7Server.class,
 		HotDeployJSPFileEAP6xServer.class,
 		HotDeployJSPFileEAP60Server.class,
 		HotDeployJSPFileEAP5Server.class,
 		HotDeployJSPFileEAP4Server.class,
 		
+		UndeployJSPProjectEAP7Server.class,
 		UndeployJSPProjectEAP6xServer.class,
 		UndeployJSPProjectEAP60Server.class,
 		UndeployJSPProjectEAP5Server.class,
 		UndeployJSPProjectEAP4Server.class,
 		
+		DeleteServerEAP7Server.class,
 		DeleteServerEAP6xServer.class,
 		DeleteServerEAP60Server.class,
 		DeleteServerEAP5Server.class,

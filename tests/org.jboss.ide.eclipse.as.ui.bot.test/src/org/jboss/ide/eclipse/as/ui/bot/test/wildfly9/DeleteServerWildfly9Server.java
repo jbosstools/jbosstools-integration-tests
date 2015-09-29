@@ -6,7 +6,7 @@ import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBo
 import org.jboss.ide.eclipse.as.ui.bot.test.template.DeleteServerTemplate;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 
-@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY9x, version=ServerReqVersion.GREATER_OR_EQUAL)
+@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY9x, version=ServerReqVersion.EQUAL)
 public class DeleteServerWildfly9Server extends DeleteServerTemplate {
 
 }

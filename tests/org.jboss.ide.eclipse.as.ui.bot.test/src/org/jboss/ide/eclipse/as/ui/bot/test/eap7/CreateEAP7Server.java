@@ -1,4 +1,4 @@
-package org.jboss.ide.eclipse.as.ui.bot.test.eap6x;
+package org.jboss.ide.eclipse.as.ui.bot.test.eap7;
 
 import java.util.List;
 
@@ -11,24 +11,25 @@ import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.C
 import org.jboss.reddeer.requirements.server.ServerReqState;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsCollectionContaining.hasItem;
 
 @CleanWorkspace
-@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.EAP6_1plus, version=ServerReqVersion.EQUAL)
-public class CreateEAP6xServer extends CreateServerTemplate {
+@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.EAP7x, version=ServerReqVersion.EQUAL)
+public class CreateEAP7Server extends CreateServerTemplate {
 
 	@Override
 	protected void assertEditorPorts() {
 		assertThat(editor.getWebPort(), is("8080"));
-		assertThat(editor.getManagementPort(), is("9999"));		
+		assertThat(editor.getManagementPort(), is("9990"));		
 	}
 
 	@Override
 	protected void assertViewPorts(List<XMLConfiguration> configurations) {
 		assertThat(configurations, hasItem(new XMLConfiguration(
-				"JBoss Management", "${jboss.management.native.port:9999}")));
+				"JBoss Management", "${jboss.management.http.port:9990}")));
 		assertThat(configurations, hasItem(new XMLConfiguration("JBoss Web",
-				"8080")));
+				"${jboss.http.port:8080}")));
 	}
 }
