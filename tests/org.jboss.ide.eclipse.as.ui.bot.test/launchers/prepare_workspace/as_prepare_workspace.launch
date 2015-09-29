@@ -8,6 +8,7 @@
 <listAttribute key="M2_PROPERTIES">
 <listEntry value="req.java.version=${string_prompt:Java version}"/>
 <listEntry value="req.java.home=${folder_prompt:Java home}"/>
+<listEntry value="jbosstools.test.jboss-eap-7.x.home=${folder_prompt:EAP 7.x installation directory}"/>
 <listEntry value="jbosstools.test.jboss-eap-6.x.home=${folder_prompt:EAP 6.x installation directory}"/>
 <listEntry value="jbosstools.test.jboss-eap-6.0.home=${folder_prompt:EAP 6.0 installation directory}"/>
 <listEntry value="jbosstools.test.jboss-eap-5.home=${folder_prompt:EAP 5 installation directory}"/>
@@ -22,6 +23,7 @@
 <listEntry value="jbosstools.test.jboss-as-3.2.home=${folder_prompt:JBoss AS 3.2 installation directory}"/>
 <listEntry value="jbosstools.test.jboss-wildfly-8.home=${folder_prompt:WildFly 8 installation directory}"/>
 <listEntry value="jbosstools.test.jboss-wildfly-9.home=${folder_prompt:WildFly 9 installation directory}"/>
+<listEntry value="jbosstools.test.jboss-wildfly-10.home=${folder_prompt:WildFly 10 installation directory}"/>
 </listAttribute>
 <stringAttribute key="M2_RUNTIME" value="EMBEDDED"/>
 <booleanAttribute key="M2_SKIP_TESTS" value="false"/>
