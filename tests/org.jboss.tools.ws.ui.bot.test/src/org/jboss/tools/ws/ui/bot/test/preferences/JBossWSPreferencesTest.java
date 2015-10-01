@@ -134,7 +134,7 @@ public class JBossWSPreferencesTest {
 		String expectedVersion;
 		switch(serverReq.getConfig().getServerFamily().getLabel()) {
 		case "WildFly":
-			expectedVersion = "4.2.4.Final";
+			expectedVersion = "5.0.0.Final";
 			break;
 		case "JBoss Enterprise Application Platform":
 			expectedVersion = "4.2.3.Final-redhat-1";

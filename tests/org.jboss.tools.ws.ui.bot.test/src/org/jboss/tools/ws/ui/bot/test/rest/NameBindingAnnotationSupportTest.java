@@ -3,6 +3,7 @@ package org.jboss.tools.ws.ui.bot.test.rest;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.ws.reddeer.editor.ExtendedTextEditor;
@@ -40,10 +41,10 @@ public class NameBindingAnnotationSupportTest extends RESTfulTestBase {
 		textEditor.removeLine("@Retention(RetentionPolicy.RUNTIME)");
 
 		/* there should be 2 errors complaining about missing deleted annotations */
-		assertCountOfValidationErrors(projectName, 2);
-		assertCountOfValidationErrors(projectName, "Retention", 1);
-		assertCountOfValidationErrors(projectName, "Target", 1);
-		assertCountOfErrors(projectName, 2);
+		assertCountOfValidationProblemsExists(ProblemType.ERROR, projectName, null, null, 2);
+		assertCountOfValidationProblemsExists(ProblemType.ERROR, projectName, "Retention", null, 1);
+		assertCountOfValidationProblemsExists(ProblemType.ERROR, projectName, "Target", null, 1);
+		assertCountOfProblemsExists(ProblemType.ERROR, projectName, null, null, 2);
 
 		/* prepare editor */
 		openAuthorizedJavaFile(projectName);
@@ -54,8 +55,8 @@ public class NameBindingAnnotationSupportTest extends RESTfulTestBase {
 		new TextEditor().save();
 
 		/* one error should disappear as a result of using a quickfix */
-		assertCountOfValidationErrors(projectName, 1);
-		assertCountOfValidationErrors(projectName, "Retention", 0);
+		assertCountOfValidationProblemsExists(ProblemType.ERROR, projectName, null, null, 1);
+		assertCountOfValidationProblemsExists(ProblemType.ERROR, projectName, "Retention", null, 0);
 
 		/* apply the second quixk fix */
 		editor.activate();
@@ -63,8 +64,8 @@ public class NameBindingAnnotationSupportTest extends RESTfulTestBase {
 		new TextEditor().save();
 
 		/* both quickfixes were used which means that there should be no error */
-		assertCountOfValidationErrors(projectName, 0);
-		assertCountOfValidationErrors(projectName, "Retention", 0);
+		assertCountOfValidationProblemsExists(ProblemType.ERROR, projectName, null, null, 0);
+		assertCountOfValidationProblemsExists(ProblemType.ERROR, projectName, "Retention", null, 0);
 
 	}
 
@@ -72,15 +73,15 @@ public class NameBindingAnnotationSupportTest extends RESTfulTestBase {
 	public void usingNameBindingAnnotationWithoutFilterOrInterceptor() {
 		/* import the project */
 		String projectName = "namebinding2";
-		importRestWSProject(projectName);
+		importWSTestProject(projectName);
 
 		/* remove the filter */
 		new ProjectExplorer().getProject(projectName)
 			.getProjectItem("Java Resources", "src", "org.rest.test", "Filter.java").delete();
 		
 		/* there should be an error */
-		assertCountOfValidationErrors(projectName, 1);
-		assertCountOfValidationErrors(projectName, "no JAX-RS filter or interceptor", 1);
+		assertCountOfValidationProblemsExists(ProblemType.ERROR, projectName, null, null, 1);
+		assertCountOfValidationProblemsExists(ProblemType.ERROR, projectName, "no JAX-RS filter or interceptor", null, 1);
 	}
 
 	private void openAuthorizedJavaFile(String projectName) {

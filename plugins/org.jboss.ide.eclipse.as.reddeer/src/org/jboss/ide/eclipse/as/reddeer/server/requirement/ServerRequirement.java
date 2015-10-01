@@ -1,5 +1,7 @@
 package org.jboss.ide.eclipse.as.reddeer.server.requirement;
 
+import static org.junit.Assert.assertTrue;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -26,8 +28,6 @@ import org.jboss.reddeer.requirements.server.ConfiguredServerInfo;
 import org.jboss.reddeer.requirements.server.IServerReqConfig;
 import org.jboss.reddeer.requirements.server.ServerReqBase;
 import org.jboss.reddeer.requirements.server.ServerReqState;
-
-import static org.junit.Assert.assertTrue;
 
 
 /**

@@ -1,5 +1,6 @@
 package org.jboss.tools.ws.ui.bot.test.rest;
 
+import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
 import org.jboss.tools.ws.reddeer.editor.ExtendedTextEditor;
 import org.junit.Test;
 
@@ -21,8 +22,9 @@ public class ValidatingRelatedRSElementsTest extends RESTfulTestBase {
 	@Test
 	public void validParameterTest() {
 		/* assert there is invalid parameter error */
-		assertCountOfErrors(getWsProjectName(), 1);
-		assertCountOfValidationErrors(getWsProjectName(), "The type 'org.rest.test.CarFromString' is not valid for this parameter.", 1);
+		assertCountOfValidationProblemsExists(ProblemType.ERROR, getWsProjectName(), null, null, 1);
+		assertCountOfValidationProblemsExists(ProblemType.ERROR, getWsProjectName(), 
+				"The type 'org.rest.test.CarFromString' is not valid for this parameter.", null, 1);
 
 		/* fix the error */
 		openJavaFile(getWsProjectName(), "org.rest.test", "CarFromString.java");
@@ -30,6 +32,6 @@ public class ValidatingRelatedRSElementsTest extends RESTfulTestBase {
 		textEditor.replace("Car fromString(", "CarFromString fromString(");
 
 		/* error disappeared */
-		assertCountOfErrors(getWsProjectName(), 0);
+		assertCountOfProblemsExists(ProblemType.ERROR, getWsProjectName(), null, null, 0);
 	}
 }
