@@ -1001,7 +1001,7 @@
 				</property>
 			</activation>
 			<properties>
-				<test.class>org.jboss.ide.eclipse.as.ui.bot.test.allsuites.products.EAP7xTestsSuite</test.class>
+				<test.class>org.jboss.ide.eclipse.as.ui.bot.test.allsuites.products.EAP7TestsSuite</test.class>
 				<reddeer.config>${reddeer.product.config}/eap-7.x.xml</reddeer.config>
 				<download-properties-file>${product-download-properties-file}</download-properties-file>
 			</properties>
