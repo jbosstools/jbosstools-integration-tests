@@ -1,9 +1,11 @@
 package org.jboss.ide.eclipse.as.ui.bot.test.template;
 
+import org.hamcrest.Matcher;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.view.JBossServer;
 import org.jboss.ide.eclipse.as.reddeer.server.view.JBossServerView;
 import org.jboss.ide.eclipse.as.ui.bot.test.matcher.ConsoleContainsTextMatcher;
+import org.jboss.ide.eclipse.as.ui.bot.test.matcher.ServerConsoleContainsNoExceptionMatcher;
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
@@ -56,6 +58,14 @@ public abstract class AbstractJBossServerTemplate {
 	}
 	
 	protected void assertNoException(String message) {
+		assertException(message, not(new ConsoleContainsTextMatcher("Exception")));
+	}
+	
+	protected void assertNoServerException(String message) {
+		assertException(message, new ServerConsoleContainsNoExceptionMatcher());
+	}
+	
+	private void assertException(String message, Matcher<ConsoleView> consoleViewMatcher){
 		if (ignoreExceptionInConsole()){
 			log.step("Ignore any exception in console");
 			return;
@@ -67,7 +77,7 @@ public abstract class AbstractJBossServerTemplate {
 		consoleView.toggleShowConsoleOnStandardOutChange(false);
 		
 		new WaitUntil(new ConsoleHasNoChange(), TimePeriod.LONG);
-		assertThat(message, consoleView, not(new ConsoleContainsTextMatcher("Exception")));
+		assertThat(message, consoleView, consoleViewMatcher);
 
 		consoleView.close();
 	}
