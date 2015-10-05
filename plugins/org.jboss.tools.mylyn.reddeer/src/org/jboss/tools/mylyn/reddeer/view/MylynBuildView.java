@@ -5,9 +5,13 @@ import java.util.List;
 
 //import org.jboss.reddeer.common.logging.Logger;
 import org.apache.log4j.Logger;
+import org.jboss.reddeer.common.wait.AbstractWait;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
 import org.jboss.reddeer.swt.api.Tree;
 import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -129,13 +133,18 @@ public class MylynBuildView extends WorkbenchView {
 		new DefaultShell ("New Build Server");
 		new LabeledText ("Server:").setText(serverURL);
 		new LabeledText ("Label:").setText(serverURL);
-		
-		/* Workaround for https://github.com/jboss-reddeer/reddeer/issues/817 */
-		new PushButton("Validate").click();
+		validateSettings();
 		new PushButton("Select All").click();
-		
 		new PushButton("Finish").click();
 	}
-	
-}
 
+	/* Check for the Validate button before and after it is clicked
+	 * as validation can be slow 
+	 */
+	public void validateSettings() {
+		new WaitUntil(new WidgetIsEnabled(new PushButton("Validate")));
+		new PushButton("Validate").click();
+		new WaitUntil(new WidgetIsEnabled(new PushButton("Validate")));
+	}
+
+}
