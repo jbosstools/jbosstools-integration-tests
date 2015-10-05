@@ -78,7 +78,7 @@ public abstract class ServerStateDetectorsTemplate extends AbstractJBossServerTe
 		log.step("Start server");
 		getServer().start();
 		
-		assertNoException("Starting server");
+		assertNoServerException("Starting server");
 		assertServerState("Starting server", ServerState.STARTED);
 	}
 
@@ -86,7 +86,7 @@ public abstract class ServerStateDetectorsTemplate extends AbstractJBossServerTe
 		log.step("Restart server");
 		getServer().restart();;
 		
-		assertNoException("Restarting server");
+		assertNoServerException("Restarting server");
 		assertServerState("Restarting server", ServerState.STARTED);
 	}
 
@@ -94,7 +94,7 @@ public abstract class ServerStateDetectorsTemplate extends AbstractJBossServerTe
 		log.step("Stop server");
 		getServer().stop();;
 		
-		assertNoException("Stopping server");
+		assertNoServerException("Stopping server");
 		assertServerState("Stopping server", ServerState.STOPPED);
 	}
 

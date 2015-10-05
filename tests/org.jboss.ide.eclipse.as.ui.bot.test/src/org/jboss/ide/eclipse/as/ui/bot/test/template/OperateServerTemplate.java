@@ -75,7 +75,7 @@ public abstract class OperateServerTemplate extends AbstractJBossServerTemplate 
 		log.step("Start server " + getServerName());
 		getServer().start();
 
-		assertNoException("Starting server");
+		assertNoServerException("Starting server");
 		assertServerState("Starting server", ServerState.STARTED);
 		assertWebPageContains(getWelcomePageText());
 	}
@@ -84,7 +84,7 @@ public abstract class OperateServerTemplate extends AbstractJBossServerTemplate 
 		log.step("Restart server " + getServerName());
 		getServer().restart();
 
-		assertNoException("Restarting server");
+		assertNoServerException("Restarting server");
 		assertServerState("Restarting server", ServerState.STARTED);
 		assertWebPageContains(getWelcomePageText());
 	}
@@ -93,7 +93,7 @@ public abstract class OperateServerTemplate extends AbstractJBossServerTemplate 
 		log.step("Stop server " + getServerName());
 		getServer().stop();
 
-		assertNoException("Stopping server");
+		assertNoServerException("Stopping server");
 		assertServerState("Stopping server", ServerState.STOPPED);
 	}
 
