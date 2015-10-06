@@ -142,9 +142,9 @@ public class MylynBuildView extends WorkbenchView {
 	 * as validation can be slow 
 	 */
 	public void validateSettings() {
-		new WaitUntil(new WidgetIsEnabled(new PushButton("Validate")));
+		new WaitUntil(new WidgetIsEnabled(new PushButton("Validate")), TimePeriod.VERY_LONG);
 		new PushButton("Validate").click();
-		new WaitUntil(new WidgetIsEnabled(new PushButton("Validate")));
+		new WaitUntil(new WidgetIsEnabled(new PushButton("Validate")), TimePeriod.VERY_LONG);
 	}
 
 }
