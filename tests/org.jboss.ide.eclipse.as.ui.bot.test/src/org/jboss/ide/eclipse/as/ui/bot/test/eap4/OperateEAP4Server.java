@@ -22,9 +22,4 @@ public class OperateEAP4Server extends OperateServerTemplate {
 	protected boolean ignoreExceptionInConsole(){
 		return true;
 	}
-	
-	@Override
-	public boolean setHeadlessModeOnMac() {
-		return true;
-	}
 }

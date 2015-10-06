@@ -13,9 +13,4 @@ public class OperateWildfly8Server extends OperateServerTemplate {
 	public String getWelcomePageText() {
 		return "Welcome to WildFly 8";
 	}
-
-	@Override
-	public boolean setHeadlessModeOnMac() {
-		return false;
-	}
 }
