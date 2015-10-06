@@ -13,9 +13,4 @@ public class OperateEAP6xServer extends OperateServerTemplate {
 	public String getWelcomePageText() {
 		return "Welcome to JBoss EAP 6";
 	}
-
-	@Override
-	public boolean setHeadlessModeOnMac() {
-		return false;
-	}
 }

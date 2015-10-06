@@ -1,15 +1,12 @@
 package org.jboss.ide.eclipse.as.ui.bot.test.template;
 
-import org.jboss.ide.eclipse.as.reddeer.server.editor.JBossServerLaunchConfiguration;
 import org.jboss.ide.eclipse.as.reddeer.server.wizard.page.JBossRuntimeWizardPage;
 import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.common.platform.RunningPlatform;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewEnums.ServerState;
 import org.jboss.reddeer.jface.wizard.WizardDialog;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.requirements.jre.JRERequirement;
 import org.jboss.reddeer.requirements.jre.JRERequirement.JRE;
-import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -38,8 +35,6 @@ public abstract class OperateServerTemplate extends AbstractJBossServerTemplate 
 
 	public abstract String getWelcomePageText();
 
-	public abstract boolean setHeadlessModeOnMac();
-
 	@Before
 	public void setupServerJRE(){
 		if (jreRequirement == null){
@@ -51,17 +46,6 @@ public abstract class OperateServerTemplate extends AbstractJBossServerTemplate 
 		new WizardDialog().finish();
 
 		getServer().open().save();
-	}
-
-	@Before
-	public void setupHeadlessMode(){
-		if (setHeadlessModeOnMac() && RunningPlatform.isOSX()){
-			log.step("Set -Djava.awt.headless=true to launch configuration");
-			JBossServerLaunchConfiguration launchConfig = getServer().open().openLaunchConfiguration();
-			String currentArguments = launchConfig.getVMArguments();
-			launchConfig.setVMArguments(currentArguments + " -Djava.awt.headless=true");
-			new OkButton().click();
-		}
 	}
 
 	@Test
