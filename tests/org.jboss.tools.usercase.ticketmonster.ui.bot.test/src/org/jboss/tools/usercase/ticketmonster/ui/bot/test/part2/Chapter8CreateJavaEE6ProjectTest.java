@@ -53,8 +53,7 @@ public class Chapter8CreateJavaEE6ProjectTest extends AbstractPart2Test{
 		preferenceDialog.select(mpreferences);
 		String path = new File("target/classes/settings"+testNumber+".xml").getAbsolutePath();
 		mpreferences.setUserSettings(path);
-		mpreferences.ok();
-		preferenceDialog.open();
+		mpreferences.apply();
 		ConfiguratorPreferencePage pp = new ConfiguratorPreferencePage();
 		preferenceDialog.select(pp);
 		ConfigureMavenRepositoriesWizard cw = pp.configureRepositories();

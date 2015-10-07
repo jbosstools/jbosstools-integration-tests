@@ -62,17 +62,15 @@ public class MavenUserPreferencePage extends PreferencePage{
 		return text.getMessage();
 	}
 	
-	public void ok(){
+	public void apply(){
 		new PushButton("Apply").click();
 		try{
 		    new DefaultShell("Update project required");
 		    new PushButton("Yes").click();
 		    new DefaultShell("Preferences");
+		    new WaitWhile(new JobIsRunning(),TimePeriod.VERY_LONG);
 		} catch(SWTLayerException ex){
 			log.info("Update project required shell was not found.");
-		} finally {
-			new WaitWhile(new JobIsRunning(),TimePeriod.VERY_LONG);
-			new WorkbenchPreferenceDialog().ok();
 		}
 	}
 }

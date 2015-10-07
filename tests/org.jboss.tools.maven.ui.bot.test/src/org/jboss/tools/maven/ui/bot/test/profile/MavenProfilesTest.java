@@ -82,7 +82,8 @@ public class MavenProfilesTest extends AbstractMavenSWTBotTest {
 		MavenUserPreferencePage mu = new MavenUserPreferencePage();
 		preferenceDialog.select(mu);
 		mu.setUserSettings(new File("resources/usersettings/settings.xml").getCanonicalPath());
-		mu.ok();
+		mu.apply();
+		preferenceDialog.ok();
 		importMavenProject("resources/projects/simple-jar/pom.xml");
 		importMavenProject("resources/projects/simple-jar1/pom.xml");
 		importMavenProject("resources/projects/simple-jar2/pom.xml");
