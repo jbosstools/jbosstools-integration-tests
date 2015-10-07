@@ -53,7 +53,8 @@ public class SourceLookupTest extends AbstractMavenSWTBotTest{
 		MavenUserPreferencePage mpreferences = new MavenUserPreferencePage();
 		preferenceDialog.select(mpreferences);
 		mpreferences.setUserSettings(new File("target/classes/settings"+TEST_NUMBER+".xml").getAbsolutePath());
-		mpreferences.ok();
+		mpreferences.apply();
+		preferenceDialog.ok();
 		TEST_NUMBER=1;
 	}
 

@@ -111,7 +111,8 @@ public class TicketMonsterBaseTest {
 		MavenUserPreferencePage mpreferences = new MavenUserPreferencePage();
 		preferenceDialog.select(mpreferences);
 		mpreferences.setUserSettings(new File(USER_SETTINGS).getAbsolutePath());
-		mpreferences.ok();
+		mpreferences.apply();
+		preferenceDialog.ok();
 	}
 	
 	public void createTicketMonsterEAP6(){

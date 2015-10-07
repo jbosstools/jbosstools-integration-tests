@@ -2,6 +2,6 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension point="org.jboss.reddeer.junit.before.test">
-      <client class="org.jboss.tools.maven.ui.bot.test.utils.SetMavenUserSettings"/>
+      <client class="org.jboss.tools.maven.reddeer.junit.extensions.before.test.impl.SetMavenUserSettings"/>
    </extension>
 </plugin>
