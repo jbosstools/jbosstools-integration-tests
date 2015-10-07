@@ -20,7 +20,7 @@ public class ID207DomainPropertiesTest {
 	@Test
 	public void testDomainProperties() {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
-		explorer.getDomain(Datastore.USERNAME, Datastore.DOMAIN).select();
+		explorer.getOpenShift2Connection(Datastore.USERNAME, Datastore.SERVER).getDomain(Datastore.DOMAIN).select();
 		
 		new ContextMenu(OpenShiftLabel.ContextMenu.PROPERTIES).select();
 		

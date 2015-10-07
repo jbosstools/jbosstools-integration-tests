@@ -21,12 +21,11 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
-import org.jboss.tools.openshift.reddeer.wizard.page.v2.FirstWizardPage;
-import org.jboss.tools.openshift.reddeer.wizard.v2.NewApplicationWizard;
-import org.jboss.tools.openshift.reddeer.wizard.v2.OpenNewApplicationWizard;
-import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
 import org.jboss.tools.openshift.reddeer.utils.JBossPerspective;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
+import org.jboss.tools.openshift.reddeer.wizard.page.v2.FirstWizardPage;
+import org.jboss.tools.openshift.reddeer.wizard.v2.OpenShift2ApplicationWizard;
+import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -39,14 +38,15 @@ import org.junit.Test;
  */
 public class ID307WizardDataProcessingTest {
 
-	private NewApplicationWizard wizard = new NewApplicationWizard();
 	private final String validURL = "http://some.url";
+	
+	private OpenShift2ApplicationWizard wizard;
 	
 	@Before
 	public void testWizardDataProcessing() {
 		new JBossPerspective().reset();
-		OpenNewApplicationWizard.openWizardFromExplorer(Datastore.USERNAME, 
-				Datastore.DOMAIN);
+		wizard = new OpenShift2ApplicationWizard(Datastore.USERNAME, Datastore.SERVER, Datastore.DOMAIN);
+		wizard.openWizardFromExplorer();
 		
 		new DefaultShell(OpenShiftLabel.Shell.NEW_APP_WIZARD);
 		

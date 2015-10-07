@@ -15,6 +15,7 @@ public class BrowserContainsText implements WaitCondition {
 	
 	@Override
 	public boolean test() {
+		browser.refresh();
 		return browser.getText().contains(text);
 	}
 

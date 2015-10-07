@@ -7,17 +7,17 @@ import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.swt.impl.browser.InternalBrowser;
 import org.jboss.reddeer.swt.impl.button.CancelButton;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
-import org.jboss.reddeer.uiforms.impl.hyperlink.DefaultHyperlink;
+import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
-import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -33,7 +33,7 @@ public class ID302OpenNewApplicationWizardWithoutConnectionTest {
 	@BeforeClass
 	public static void removeConnection() {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
-		explorer.removeConnection(Datastore.USERNAME);
+		explorer.getOpenShift2Connection(Datastore.USERNAME, Datastore.SERVER).remove();
 	}
 	
 	@Test
@@ -63,8 +63,8 @@ public class ID302OpenNewApplicationWizardWithoutConnectionTest {
 	public void testOpenWizardViaCentral() {
 		new DefaultToolItem(new WorkbenchShell(), OpenShiftLabel.Others.JBOSS_CENTRAL).click();
 		
-		new DefaultHyperlink(OpenShiftLabel.Others.OPENSHIFT_APP).activate();
-		
+		new InternalBrowser().execute(OpenShiftLabel.Others.OPENSHIFT_CENTRAL_SCRIPT);
+
 		try {
 			new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.NEW_APP_WIZARD),
 					TimePeriod.LONG);
@@ -85,11 +85,12 @@ public class ID302OpenNewApplicationWizardWithoutConnectionTest {
 	
 	@AfterClass
 	public static void recreateConnection() {
+		boolean certificateShown = System.getProperty("openshift.xserver") != null;
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 		if (!explorer.connectionExists(Datastore.USERNAME)) {
 			explorer.openConnectionShell();
-			explorer.connectToOpenShiftV2(Datastore.SERVER, Datastore.USERNAME,
-					System.getProperty("user.pwd"), false, false);
+			explorer.connectToOpenShift2(Datastore.SERVER, Datastore.USERNAME,
+					System.getProperty("user.pwd"), false, false, certificateShown);
 		}
 	}
 }

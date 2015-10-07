@@ -1,13 +1,12 @@
 package org.jboss.tools.openshift.ui.bot.test.application.create;
 
-import static org.junit.Assert.assertTrue;
-
-import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
-import org.jboss.tools.openshift.reddeer.wizard.v2.NewApplicationWizard;
-import org.jboss.tools.openshift.reddeer.wizard.v2.OpenNewApplicationWizard;
-import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.tools.openshift.reddeer.condition.OpenShiftApplicationExists;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
-import org.jboss.tools.openshift.reddeer.utils.v2.DeleteApplication;
+import org.jboss.tools.openshift.reddeer.utils.v2.DeleteUtils;
+import org.jboss.tools.openshift.reddeer.wizard.v2.OpenShift2ApplicationWizard;
+import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
 import org.junit.After;
 import org.junit.Test;
 
@@ -24,21 +23,22 @@ public class ID412UseAnotherDomainTest {
 	
 	@Test
 	public void testSwitchDomain() {
-		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
-		OpenNewApplicationWizard.openWizardFromExplorer(Datastore.USERNAME, Datastore.DOMAIN);
-		new NewApplicationWizard().createNewApplicationOnBasicCartridge(OpenShiftLabel.Cartridge.DIY,
-				Datastore.SECOND_DOMAIN, applicationName, false, true, false, false, 
-				null, null, true, null, null, null, (String[]) null);
+		OpenShift2ApplicationWizard wizard = new OpenShift2ApplicationWizard(Datastore.USERNAME, Datastore.SERVER,
+				Datastore.SECOND_DOMAIN);
+		wizard.openWizardFromExplorer();
+		wizard.createNewApplicationOnBasicCartridge(OpenShiftLabel.Cartridge.DIY,
+				applicationName, false, true, false, false, null, null, true, null, null, null, (String[]) null);
 		
-		new NewApplicationWizard().postCreateSteps(true);
+		wizard.postCreateSteps(true);
 		
-		assertTrue("Application has not been created on selected domain.",
-				explorer.applicationExists(Datastore.USERNAME, Datastore.SECOND_DOMAIN, applicationName));
+		new WaitUntil(new OpenShiftApplicationExists(Datastore.USERNAME, Datastore.SERVER, Datastore.SECOND_DOMAIN,
+				applicationName), TimePeriod.LONG);
 	}
 	
 	@After
 	public void deleteApplication() {
-		new DeleteApplication(Datastore.USERNAME, Datastore.SECOND_DOMAIN, applicationName).perform();
+		new DeleteUtils(Datastore.USERNAME, Datastore.SERVER, Datastore.SECOND_DOMAIN, applicationName, 
+				applicationName).perform();
 	}
 	
 }

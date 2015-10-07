@@ -1,7 +1,7 @@
 package org.jboss.tools.openshift.ui.bot.test.application.create;
 
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
-import org.jboss.tools.openshift.reddeer.utils.v2.DeleteApplication;
+import org.jboss.tools.openshift.reddeer.utils.v2.DeleteUtils;
 import org.jboss.tools.openshift.reddeer.wizard.v2.Templates;
 import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
 import org.junit.After;
@@ -20,7 +20,7 @@ public class ID403CreateNewApplicationViaShellTest {
 	@Test
 	public void testCreateNewApplicationViaShell() {
 		applicationName = "diy" + System.currentTimeMillis();
-		Templates newApplicationTemplate = new Templates(Datastore.USERNAME, 
+		Templates newApplicationTemplate = new Templates(Datastore.USERNAME, Datastore.SERVER,
 				Datastore.DOMAIN, true);
 		
 		// Assertions are done inside of create method
@@ -30,6 +30,7 @@ public class ID403CreateNewApplicationViaShellTest {
 	
 	@After
 	public void deleteApplication() {
-		new DeleteApplication(Datastore.USERNAME, Datastore.DOMAIN, applicationName).perform();
+		new DeleteUtils(Datastore.USERNAME, Datastore.SERVER, Datastore.DOMAIN, applicationName,
+				applicationName).perform();
 	}
 }

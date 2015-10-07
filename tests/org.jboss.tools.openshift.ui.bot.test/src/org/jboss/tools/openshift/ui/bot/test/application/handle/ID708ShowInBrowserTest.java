@@ -26,7 +26,8 @@ public class ID708ShowInBrowserTest extends IDXXXCreateTestingApplication {
 	@Test
 	public void testShowInBrowser() {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
-		explorer.getApplication(Datastore.USERNAME, Datastore.DOMAIN, applicationName).select();
+		explorer.getOpenShift2Connection(Datastore.USERNAME, Datastore.SERVER).
+				getDomain(Datastore.DOMAIN).getApplication(applicationName).select();
 		
 		showInBrowser(applicationName);
 	}
@@ -43,8 +44,8 @@ public class ID708ShowInBrowserTest extends IDXXXCreateTestingApplication {
 		AbstractWait.sleep(TimePeriod.getCustom(8));
 		
 		try {
-			new WaitUntil(new ApplicationIsDeployedSuccessfully(Datastore.USERNAME, Datastore.DOMAIN,
-					applicationName, "OpenShift"), TimePeriod.LONG);
+			new WaitUntil(new ApplicationIsDeployedSuccessfully(Datastore.USERNAME, Datastore.SERVER,
+					Datastore.DOMAIN, applicationName, "OpenShift"), TimePeriod.LONG);
 		} catch (SWTLayerException ex) {
 			fail("Browser was not opened successfully.");
 		} catch (WaitTimeoutExpiredException ex) {

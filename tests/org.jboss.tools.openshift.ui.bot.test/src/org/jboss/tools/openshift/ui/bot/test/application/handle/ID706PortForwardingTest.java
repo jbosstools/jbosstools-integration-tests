@@ -18,11 +18,13 @@ import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.workbench.api.View;
+import org.jboss.tools.openshift.reddeer.condition.v2.ApplicationIsDeployedSuccessfully;
+import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
+import org.jboss.tools.openshift.reddeer.utils.v2.DeleteUtils;
+import org.jboss.tools.openshift.reddeer.view.OpenShift2Application;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.jboss.tools.openshift.reddeer.wizard.v2.Templates;
 import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
-import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
-import org.jboss.tools.openshift.reddeer.utils.v2.DeleteApplication;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -39,16 +41,21 @@ public class ID706PortForwardingTest {
 	
 	@Before
 	public void createEAPApplication() {
-		new Templates(Datastore.USERNAME, Datastore.DOMAIN, false).createSimpleApplicationOnBasicCartridges(
+		new Templates(Datastore.USERNAME, Datastore.SERVER, Datastore.DOMAIN, false).
+			createSimpleApplicationOnBasicCartridges(
 				OpenShiftLabel.Cartridge.JBOSS_EAP, applicationName, false, true, true);
 	}
 	
 	@Test
 	public void testPortForwarding() {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
-		TreeItem application = explorer.getApplication(Datastore.USERNAME, Datastore.DOMAIN, applicationName);
+		OpenShift2Application application = explorer.getOpenShift2Connection(Datastore.USERNAME, Datastore.SERVER).
+				getDomain(Datastore.DOMAIN).getApplication(applicationName);
 	
-		portForwardingTest(explorer, application, OpenShiftLabel.ContextMenu.PORT_FORWARD);
+		new WaitUntil(new ApplicationIsDeployedSuccessfully(Datastore.USERNAME, Datastore.SERVER, 
+				Datastore.DOMAIN, applicationName, "OpenShift"), TimePeriod.LONG);
+		
+		portForwardingTest(explorer, application.getTreeItem(), OpenShiftLabel.ContextMenu.PORT_FORWARD);
 	}
 	
 	public static void portForwardingTest(View viewOfItem, TreeItem itemToHandle, String... contextMenuPath) {
@@ -118,6 +125,7 @@ public class ID706PortForwardingTest {
 	
 	@After
 	public void deleteApplication() {
-		new DeleteApplication(Datastore.USERNAME, Datastore.DOMAIN, applicationName).perform();
+		new DeleteUtils(Datastore.USERNAME, Datastore.SERVER, Datastore.DOMAIN, 
+				applicationName, applicationName).perform();
 	}
 }

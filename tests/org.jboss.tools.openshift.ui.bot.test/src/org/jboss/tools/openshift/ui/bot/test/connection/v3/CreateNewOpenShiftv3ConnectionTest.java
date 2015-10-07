@@ -19,14 +19,14 @@ public class CreateNewOpenShiftv3ConnectionTest {
 		
 		explorer.openConnectionShell();
 		try {
-			explorer.connectToOpenShiftV3Basic(DatastoreV3.OPENSHIFT_SERVER, DatastoreV3.OPENSHIFT_USER, 
+			explorer.connectToOpenShift3Basic(DatastoreV3.OPENSHIFT_SERVER, DatastoreV3.OPENSHIFT_USERNAME, 
 					DatastoreV3.OPENSHIFT_PASSWORD, false, false);
 		} catch (RedDeerException ex) {
 			fail("Creating an OpenShift v3 basic connection failed.");
 		}
 		
 		assertTrue("Connection does not exist in OpenShift Explorer view", 
-				explorer.connectionExists(DatastoreV3.OPENSHIFT_USER));
+				explorer.connectionExists(DatastoreV3.OPENSHIFT_USERNAME));
 	}
 	
 	@Test
@@ -37,12 +37,12 @@ public class CreateNewOpenShiftv3ConnectionTest {
 		
 		explorer.openConnectionShell();
 		try {
-			explorer.connectToOpenShiftV3OAuth(DatastoreV3.OPENSHIFT_SERVER2, DatastoreV3.OPENSHIFT_TOKEN2, false, false);
+			explorer.connectToOpenShift3OAuth(DatastoreV3.OPENSHIFT_SERVER2, DatastoreV3.OPENSHIFT_TOKEN2, false, false);
 		} catch (RedDeerException ex) {
 			fail("Creating an OpenShift v3 basic connection failed.");
 		}
 		
 		assertTrue("Connection does not exist in OpenShift Explorer view", 
-				explorer.connectionExists(DatastoreV3.OPENSHIFT_USER2));
+				explorer.connectionExists(DatastoreV3.OPENSHIFT_USERNAME));
 	}
 }

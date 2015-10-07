@@ -52,14 +52,14 @@ public class ID104InvalidCredentialsValidationTest {
 		new LabeledCombo(OpenShiftLabel.TextLabels.SERVER).setText("https://incorrect.server.url");
 		new LabeledText(OpenShiftLabel.TextLabels.USERNAME).setText(Datastore.USERNAME);
 		new LabeledText(OpenShiftLabel.TextLabels.PASSWORD).setText(
-				System.getProperty("user.pwd"));		
+				System.getProperty("openshift.password"));		
 	}
 
 	private void incorrectUsername() {
 		new LabeledCombo(OpenShiftLabel.TextLabels.SERVER).setText(Datastore.SERVER);
 		new LabeledText(OpenShiftLabel.TextLabels.USERNAME).setText("nonexisting");
 		new LabeledText(OpenShiftLabel.TextLabels.PASSWORD).setText(
-				System.getProperty("user.pwd"));	
+				System.getProperty("openshift.password"));	
 	}
 	
 	private void incorrectPassword() {

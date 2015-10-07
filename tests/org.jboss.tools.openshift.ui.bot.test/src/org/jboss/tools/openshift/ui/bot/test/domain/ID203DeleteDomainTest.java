@@ -15,9 +15,10 @@ import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
+import org.jboss.tools.openshift.reddeer.view.OpenShift2Connection;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
-import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.junit.After;
 import org.junit.Test;
 
@@ -33,16 +34,17 @@ public class ID203DeleteDomainTest {
 	
 	@Test
 	public void testDeleteDomain() {
-		domainDeleted = deleteDomain(Datastore.USERNAME, Datastore.DOMAIN);
+		domainDeleted = deleteDomain(Datastore.USERNAME, Datastore.SERVER, Datastore.DOMAIN);
 		if (!domainDeleted) {
 			fail("Domain has not been removed from OpenShift explorer view after deletion.");
 		}
 		// PASS
 	}
 	
-	public static boolean deleteDomain(String username, String domain) {
+	public static boolean deleteDomain(String username, String server, String domain) {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
-		explorer.getDomain(username, domain).select();
+		OpenShift2Connection connection = explorer.getOpenShift2Connection(username, server);
+		connection.getDomain(domain).select();
 		
 		new ContextMenu(OpenShiftLabel.ContextMenu.DELETE_DOMAIN).select();
 		
@@ -57,7 +59,7 @@ public class ID203DeleteDomainTest {
 		new WaitWhile(new JobIsRunning());
 		
 		try {
-			explorer.getDomain(Datastore.USERNAME, Datastore.DOMAIN);
+			connection.getDomain(Datastore.DOMAIN);
 			return false;
 		} catch (JFaceLayerException ex) {
 			return true;
@@ -67,13 +69,15 @@ public class ID203DeleteDomainTest {
 	@After
 	public void recreateDomain() {
 		if (domainDeleted) {
-			createDomain(Datastore.USERNAME, Datastore.DOMAIN);
+			createDomain(Datastore.USERNAME, Datastore.SERVER, Datastore.DOMAIN);
 		}
 	}
 	
-	public static void createDomain(String username, String domain) {
+	public static void createDomain(String username, String server, String domain) {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
-		explorer.getConnection(username).select();;
+		OpenShift2Connection connection = explorer.getOpenShift2Connection(username, server);
+		connection.select();
+		
 		new ContextMenu(OpenShiftLabel.ContextMenu.NEW_DOMAIN).select();
 
 		new DefaultShell(OpenShiftLabel.Shell.CREATE_DOMAIN);
@@ -88,7 +92,7 @@ public class ID203DeleteDomainTest {
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		
 		try {
-			explorer.getDomain(username, domain);
+			connection.getDomain(domain);
 		} catch (JFaceLayerException ex) {
 			fail("Domain has not been recreated");
 		}

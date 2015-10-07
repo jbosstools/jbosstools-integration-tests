@@ -20,7 +20,7 @@ public class ID206RefreshDomainTest {
 	@Test
 	public void testRefreshDomain() {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
-		explorer.getDomain(Datastore.USERNAME, Datastore.DOMAIN);
+		explorer.getOpenShift2Connection(Datastore.USERNAME, Datastore.SERVER).getDomain(Datastore.DOMAIN).select();
 		
 		new ContextMenu(OpenShiftLabel.ContextMenu.REFRESH).select();
 		

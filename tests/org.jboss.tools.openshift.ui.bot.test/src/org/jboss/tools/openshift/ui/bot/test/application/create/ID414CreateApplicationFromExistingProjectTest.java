@@ -4,7 +4,6 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
-import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
@@ -29,13 +28,13 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
-import org.jboss.tools.openshift.reddeer.wizard.page.v2.FirstWizardPage;
-import org.jboss.tools.openshift.reddeer.wizard.page.v2.SecondWizardPage;
-import org.jboss.tools.openshift.reddeer.wizard.v2.NewApplicationWizard;
-import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
 import org.jboss.tools.openshift.reddeer.condition.v2.ApplicationIsDeployedSuccessfully;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
-import org.jboss.tools.openshift.reddeer.utils.v2.DeleteApplication;
+import org.jboss.tools.openshift.reddeer.utils.v2.DeleteUtils;
+import org.jboss.tools.openshift.reddeer.wizard.page.v2.FirstWizardPage;
+import org.jboss.tools.openshift.reddeer.wizard.page.v2.SecondWizardPage;
+import org.jboss.tools.openshift.reddeer.wizard.v2.OpenShift2ApplicationWizard;
+import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -118,8 +117,9 @@ public class ID414CreateApplicationFromExistingProjectTest {
 
 		new DefaultShell(OpenShiftLabel.Shell.NEW_APP_WIZARD).setFocus();
 
-		NewApplicationWizard wizard = new NewApplicationWizard();
-
+		OpenShift2ApplicationWizard wizard = new OpenShift2ApplicationWizard(Datastore.USERNAME, Datastore.SERVER,
+				Datastore.DOMAIN);
+		
 		FirstWizardPage first = new FirstWizardPage();
 		first.createNewApplicationOnBasicCartridge(OpenShiftLabel.Cartridge.JBOSS_EAP);
 
@@ -167,13 +167,10 @@ public class ID414CreateApplicationFromExistingProjectTest {
 		new YesButton().click();
 
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
-
-		// Browser need time
-		AbstractWait.sleep(TimePeriod.NORMAL);
 		
 		try {
-			new WaitUntil(new ApplicationIsDeployedSuccessfully(Datastore.USERNAME, Datastore.DOMAIN,
-					applicationName, "Welcome to WildFly"), TimePeriod.LONG);
+			new WaitUntil(new ApplicationIsDeployedSuccessfully(Datastore.USERNAME, Datastore.SERVER,
+					Datastore.DOMAIN, applicationName, "Welcome to WildFly"), TimePeriod.LONG);
 		} catch (WaitTimeoutExpiredException ex) {
 			fail("Application has not been deployed successfully.");
 		}
@@ -181,7 +178,7 @@ public class ID414CreateApplicationFromExistingProjectTest {
 
 	@After
 	public void deleteApplication() {
-		new DeleteApplication(Datastore.USERNAME, Datastore.DOMAIN,
-				applicationName).perform();
+		new DeleteUtils(Datastore.USERNAME, Datastore.SERVER, Datastore.DOMAIN,
+				applicationName, applicationName).perform();
 	}
 }

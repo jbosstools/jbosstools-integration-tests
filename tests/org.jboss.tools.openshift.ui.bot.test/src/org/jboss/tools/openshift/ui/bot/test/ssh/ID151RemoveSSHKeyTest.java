@@ -35,8 +35,8 @@ public class ID151RemoveSSHKeyTest {
 		
 	public static void removeSSHKey() {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
-		explorer.reopen();
-		explorer.getConnection(Datastore.USERNAME).select();
+		explorer.open();
+		explorer.getOpenShift2Connection(Datastore.USERNAME, Datastore.SERVER).select();
 		
 		// Sometimes there occurs progress information shell
 		try {
@@ -47,7 +47,7 @@ public class ID151RemoveSSHKeyTest {
 			
 		}
 		
-		explorer.getConnection(Datastore.USERNAME).select();
+		explorer.getOpenShift2Connection(Datastore.USERNAME, Datastore.SERVER).select();
 		new ContextMenu(OpenShiftLabel.ContextMenu.MANAGE_SSH_KEYS).select();
 		
 		new DefaultShell(OpenShiftLabel.Shell.MANAGE_SSH_KEYS);

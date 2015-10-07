@@ -32,7 +32,8 @@ public class ID605ShowWarningOnMultipleCartridgeRemoveTest extends IDXXXCreateTe
 	public void deselectEmbeddedCartridge() {
 		embedCartridge(OpenShiftLabel.EmbeddableCartridge.CRON);		
 		
-		explorer.selectApplication(Datastore.USERNAME, Datastore.DOMAIN, applicationName);
+		explorer.getOpenShift2Connection(Datastore.USERNAME, Datastore.SERVER).
+			getDomain(Datastore.DOMAIN).getApplication(applicationName).select();
 		new ContextMenu(OpenShiftLabel.ContextMenu.EMBED_CARTRIDGE).select();
 		
 		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.EDIT_CARTRIDGES));
@@ -69,7 +70,8 @@ public class ID605ShowWarningOnMultipleCartridgeRemoveTest extends IDXXXCreateTe
 		embedCartridge(OpenShiftLabel.EmbeddableCartridge.CRON);
 		embedCartridge(OpenShiftLabel.EmbeddableCartridge.POSTGRE_SQL);
 		
-		explorer.selectApplication(Datastore.USERNAME, Datastore.DOMAIN, applicationName);
+		explorer.getOpenShift2Connection(Datastore.USERNAME, Datastore.SERVER).
+			getDomain(Datastore.DOMAIN).getApplication(applicationName).select();
 		new ContextMenu(OpenShiftLabel.ContextMenu.EMBED_CARTRIDGE).select();
 		
 		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.EDIT_CARTRIDGES));
@@ -102,8 +104,8 @@ public class ID605ShowWarningOnMultipleCartridgeRemoveTest extends IDXXXCreateTe
 	
 	@Test
 	public void deselectMultipleCurrentlyAddedCartridges() {
-		explorer.open();
-		explorer.selectApplication(Datastore.USERNAME, Datastore.DOMAIN, applicationName);
+		explorer.getOpenShift2Connection(Datastore.USERNAME, Datastore.SERVER).
+			getDomain(Datastore.DOMAIN).getApplication(applicationName).select();
 		new ContextMenu(OpenShiftLabel.ContextMenu.EMBED_CARTRIDGE).select();
 		
 		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.EDIT_CARTRIDGES));
@@ -133,8 +135,8 @@ public class ID605ShowWarningOnMultipleCartridgeRemoveTest extends IDXXXCreateTe
 	}
 	
 	private void embedCartridge(String cartridge) {
-		explorer.open();
-		explorer.selectApplication(Datastore.USERNAME, Datastore.DOMAIN, applicationName);
+		explorer.getOpenShift2Connection(Datastore.USERNAME, Datastore.SERVER).
+			getDomain(Datastore.DOMAIN).getApplication(applicationName).select();
 		new ContextMenu(OpenShiftLabel.ContextMenu.EMBED_CARTRIDGE).select();
 		
 		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.EDIT_CARTRIDGES));

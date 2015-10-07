@@ -64,11 +64,12 @@ import org.jboss.tools.openshift.ui.bot.test.application.importing.ID503ImportAp
 import org.jboss.tools.openshift.ui.bot.test.common.ID001RemoteRequestTimeoutTest;
 import org.jboss.tools.openshift.ui.bot.test.connection.ID101OpenOpenShiftExplorerTest;
 import org.jboss.tools.openshift.ui.bot.test.connection.ID102OpenNewConnectionShellTest;
-import org.jboss.tools.openshift.ui.bot.test.connection.ID103oCreateNewConnectionTest;
+import org.jboss.tools.openshift.ui.bot.test.connection.ID103CreateNewConnectionTest;
 import org.jboss.tools.openshift.ui.bot.test.connection.ID104InvalidCredentialsValidationTest;
 import org.jboss.tools.openshift.ui.bot.test.connection.ID105DefaultServerTest;
 import org.jboss.tools.openshift.ui.bot.test.connection.ID106RemoveConnectionTest;
 import org.jboss.tools.openshift.ui.bot.test.connection.ID107oHandleMoreAccountsTest;
+import org.jboss.tools.openshift.ui.bot.test.connection.ID108xHandleMoreServersTest;
 import org.jboss.tools.openshift.ui.bot.test.connection.ID109EditConnectionTest;
 import org.jboss.tools.openshift.ui.bot.test.connection.ID110SecurityStorageTest;
 import org.jboss.tools.openshift.ui.bot.test.connection.ID111OpenNewConnectionLinkTest;
@@ -90,7 +91,7 @@ import org.junit.runners.Suite.SuiteClasses;
 
 /**
  * <b>OpenShift RedDeer TestSuite</b>
- * Test suite for OpenShift Online instance.
+ * Test suite for OpenShift 2 instances.
  * 
  * @author mlabuda@redhat.com
  */
@@ -102,11 +103,12 @@ import org.junit.runners.Suite.SuiteClasses;
 		// Connection
 		ID101OpenOpenShiftExplorerTest.class,
 		ID102OpenNewConnectionShellTest.class,
-		ID103oCreateNewConnectionTest.class,
+		ID103CreateNewConnectionTest.class,
 		ID104InvalidCredentialsValidationTest.class,
 		ID105DefaultServerTest.class,
 		ID106RemoveConnectionTest.class,
 		ID107oHandleMoreAccountsTest.class,
+		ID108xHandleMoreServersTest.class,
 		ID109EditConnectionTest.class,
 		ID110SecurityStorageTest.class,
 		ID111OpenNewConnectionLinkTest.class,
@@ -193,6 +195,6 @@ import org.junit.runners.Suite.SuiteClasses;
 		
 		CleanUp.class,
 })
-public class OpenShiftOnlineV2BotTests {
+public class OpenShift2BotTests {
 	
 }

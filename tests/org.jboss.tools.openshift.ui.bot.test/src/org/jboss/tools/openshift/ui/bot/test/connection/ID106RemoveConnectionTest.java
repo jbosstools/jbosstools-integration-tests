@@ -33,7 +33,7 @@ public class ID106RemoveConnectionTest {
 	
 	@Test
 	public void testRemoveConnection() {
-		explorer.getConnection(Datastore.USERNAME).select();
+		explorer.getOpenShift2Connection(Datastore.USERNAME, Datastore.SERVER).select();
 		
 		new ContextMenu(OpenShiftLabel.ContextMenu.REMOVE_CONNECTION).select();
 		
@@ -53,8 +53,8 @@ public class ID106RemoveConnectionTest {
 	public void recreateConnection() {
 		if (!explorer.connectionExists(Datastore.USERNAME)) {
 			explorer.openConnectionShell();
-			explorer.connectToOpenShiftV2(Datastore.SERVER, Datastore.USERNAME,
-					System.getProperty("user.pwd"), false, false);
+			explorer.connectToOpenShift2(Datastore.SERVER, Datastore.USERNAME,
+					System.getProperty("openshift.password"), false, false, false);
 		}
 	}
 	

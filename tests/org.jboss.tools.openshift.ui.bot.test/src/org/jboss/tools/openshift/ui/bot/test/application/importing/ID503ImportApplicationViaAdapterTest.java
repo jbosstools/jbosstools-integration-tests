@@ -20,7 +20,7 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
-import org.jboss.tools.openshift.reddeer.utils.v2.DeleteApplication;
+import org.jboss.tools.openshift.reddeer.utils.v2.DeleteUtils;
 import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
 import org.junit.After;
 import org.junit.Before;
@@ -38,7 +38,7 @@ public class ID503ImportApplicationViaAdapterTest {
 	
 	@Before
 	public void createApplicationDeleteProject() {
-		ID501ImportApplicationViaExplorerTest.deleteProjectAndAdapter(applicationName);
+		ID501ImportApplicationViaExplorerTest.createApplicationWithoutServerAdapterAndProject(applicationName);
 	}
 	
 	@Test
@@ -86,6 +86,7 @@ public class ID503ImportApplicationViaAdapterTest {
 	
 	@After
 	public void deleteApplication() {
-		new DeleteApplication(Datastore.USERNAME, Datastore.DOMAIN, applicationName).perform();
+		new DeleteUtils(Datastore.USERNAME, Datastore.SERVER, Datastore.DOMAIN, applicationName,
+				applicationName).perform();
 	}
 }
