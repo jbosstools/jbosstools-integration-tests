@@ -19,6 +19,7 @@ import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.aerogear.ui.bot.test.AerogearBotTest;
 import org.jboss.tools.browsersim.reddeer.BrowserSimHandler;
+import org.junit.Before;
 import org.junit.Test;
 /**
  * Checks displaying of Java Script errors and messages 
@@ -29,6 +30,15 @@ import org.junit.Test;
  */
 @CleanWorkspace
 public class DisplayJavaScriptErrors extends AerogearBotTest {
+	
+	@Before
+	public void setUp() {
+		createHTMLHybridMobileApplication(AerogearBotTest.CORDOVA_PROJECT_NAME, AerogearBotTest.CORDOVA_APP_NAME,
+				"org.jboss.example.cordova", "cordova-android@4.1.0");
+
+		assertTrue(new ProjectExplorer().containsProject(AerogearBotTest.CORDOVA_PROJECT_NAME));
+	}
+	
 	@Test
 	public void testDisplayingJSErrorsAndMessages() {
 	  new ProjectExplorer().getProject(CORDOVA_PROJECT_NAME).getProjectItem("www","js","index.js").open();
