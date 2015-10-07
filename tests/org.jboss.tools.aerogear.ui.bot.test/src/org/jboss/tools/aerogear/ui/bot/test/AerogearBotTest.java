@@ -10,8 +10,6 @@
  ******************************************************************************/
 package org.jboss.tools.aerogear.ui.bot.test;
 
-import static org.junit.Assert.assertTrue;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -36,7 +34,7 @@ import org.jboss.reddeer.core.handler.ShellHandler;
 import org.jboss.reddeer.core.matcher.WithTextMatcher;
 import org.jboss.reddeer.eclipse.condition.ConsoleHasNoChange;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.jboss.reddeer.common.matcher.RegexMatcher;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
@@ -44,8 +42,7 @@ import org.jboss.reddeer.common.wait.WaitWhile;
 
 import org.jboss.tools.aerogear.reddeer.ui.wizard.NewTHYMProjectWizard;
 import org.junit.After;
-import org.junit.Before;
-import org.junit.runner.RunWith;
+
 
 /**
  * Base class for SWTBot tests of Aerogear JBoss Tools plugin.
@@ -54,20 +51,22 @@ import org.junit.runner.RunWith;
  * @author Pavol Srna
  * 
  */
-@RunWith(RedDeerSuite.class)
 public class AerogearBotTest {
   protected static final String CORDOVA_PROJECT_NAME = "CordovaTestProject";
   protected static final String CORDOVA_APP_NAME = "CordovaTestApp";
-
+  protected static String WS_PATH = ResourcesPlugin.getWorkspace().getRoot().getLocation().toOSString();
+  
+  
   /**
    * Creates a new hybrid mobile project in workspace.
    * 
    * @param projectName
    * @param appName
    * @param appId
+   * @param engine - cordova-platform@version e.g. ("cordova-android@4.1.1", "cordova-ios@3.9.0" ..)
    */
   public void createHTMLHybridMobileApplication(String projectName,
-      String appName, String appId) {
+      String appName, String appId, String engine) {
 
 	NewTHYMProjectWizard w = new NewTHYMProjectWizard();
 	w.open();
@@ -77,14 +76,35 @@ public class AerogearBotTest {
 	new LabeledText("ID:").setText(appId);
 	w.next();
     
-	DefaultTreeItem tiAndroid =  new DefaultTreeItem("Android");
-	tiAndroid.expand();
-	if(tiAndroid.getItems().isEmpty()){
-		downloadMobileEngine("3.7.1");
-		tiAndroid = new DefaultTreeItem("Android");
+	String platform = engine.split("@")[0];
+	
+	if(platform.contains("android")){
+		DefaultTreeItem tiAndroid =  new DefaultTreeItem("Android");
 		tiAndroid.expand();
+		try{
+			tiAndroid.getItem(engine).setChecked(true);
+		}catch(CoreLayerException e){
+			//no item, need to download
+			downloadMobileEngine(engine); //download required version
+			tiAndroid = new DefaultTreeItem("Android");
+			tiAndroid.expand();
+			//select downloaded
+			tiAndroid.getItem(engine).setChecked(true);
+		}
+	}else if(engine.contains("ios")){
+		DefaultTreeItem tiIOS =  new DefaultTreeItem("iOS (XCode)");
+		tiIOS.expand();
+		try{
+			tiIOS.getItem(engine).setChecked(true);
+		}catch(CoreLayerException e){
+			//no item, need to download
+			downloadMobileEngine(engine); //download required version
+			tiIOS = new DefaultTreeItem("iOS (XCode)");
+			tiIOS.expand();
+			//select downloaded
+			tiIOS.getItem(engine).setChecked(true);
+		}
 	}
-	tiAndroid.getItems().get(0).setChecked(true);	
 	w.finish();
 	new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
   }
@@ -112,24 +132,29 @@ public class AerogearBotTest {
     new DefaultTreeItem(projectName).select();
     new ContextMenu(new WithTextMatcher("Run As"), new RegexMatcher("(\\d+)( Run w/CordovaSim)")).select();
     new WaitWhile(new JobIsRunning());
-    new WaitUntil(new ConsoleHasNoChange(TimePeriod.NORMAL));
+    new WaitUntil(new ConsoleHasNoChange(TimePeriod.LONG));
   }
 
-  public void openInConfigEditor(String projectName) {
-	new ProjectExplorer().selectProjects(projectName);
-    new DefaultTreeItem(projectName,"www","config.xml").select();
+  /**
+   * Opens config.xml in Cordova Configuration Editor
+   * @param workspace related path to config.xml file
+   */
+  public void openInConfigEditor(String... path) {
+	new ProjectExplorer().selectProjects(path[0]);
+    new DefaultTreeItem(path).select();
     new ContextMenu("Open With","Cordova Configuration Editor").select();
     new WaitWhile(new JobIsRunning());
   }
 
+  /**
   @Before
   public void setUp() {
     createHTMLHybridMobileApplication(AerogearBotTest.CORDOVA_PROJECT_NAME,
-        AerogearBotTest.CORDOVA_APP_NAME, "org.jboss.example.cordova");
+        AerogearBotTest.CORDOVA_APP_NAME, "org.jboss.example.cordova", "cordova-android@4.1.0");
 
     assertTrue(new ProjectExplorer().containsProject(AerogearBotTest.CORDOVA_PROJECT_NAME));
   }
-
+  */
   @After
   public void tearDown() {
 	new WorkbenchShell().setFocus();
@@ -172,13 +197,22 @@ public class AerogearBotTest {
   /**
    * Downloads Mobile Engine
    */
-  protected void downloadMobileEngine(String version){
+  protected void downloadMobileEngine(String engine){
       new PushButton("Download...").click();
       new DefaultShell("Download Hybrid Mobile Engine");
      
-      DefaultTreeItem tiAndroid = new DefaultTreeItem("Android");
-      tiAndroid.expand();
-      tiAndroid.getItem(version).setChecked(true);
+      String platform = engine.split("@")[0];
+      String version = engine.split("@")[1];
+      
+      if(platform.contains("android")){
+    	  DefaultTreeItem tiAndroid = new DefaultTreeItem("Android");
+          tiAndroid.expand();
+          tiAndroid.getItem(version).setChecked(true);
+      }else if(platform.contains("ios")){
+    	  DefaultTreeItem tiIOS = new DefaultTreeItem("iOS (XCode)");
+          tiIOS.expand();
+          tiIOS.getItem(version).setChecked(true);
+      }
       new PushButton("OK").click();
       new WaitWhile(new ShellWithTextIsActive("Download Hybrid Mobile Engine"), TimePeriod.LONG);
       

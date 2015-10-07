@@ -12,9 +12,9 @@ package org.jboss.tools.aerogear.ui.bot.test.app;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
-
 
 import org.jboss.tools.aerogear.reddeer.ui.config.ConfigEditor;
 import org.jboss.tools.aerogear.reddeer.ui.properties.EnginePropertyPage;
@@ -28,7 +28,9 @@ import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.C
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.browsersim.reddeer.BrowserSimHandler;
+import org.junit.Before;
 import org.junit.Test;
+
 
 /**
  * Checks Multi versions Engine support
@@ -40,21 +42,33 @@ import org.junit.Test;
 @CleanWorkspace
 public class MultiversionSupport extends AerogearBotTest {
 	private static final String VERSION_MESSSAGE_PREFIX = "INFO - Cordova Version Number:";
+
+	@Before
+	public void setUp() {
+		createHTMLHybridMobileApplication(AerogearBotTest.CORDOVA_PROJECT_NAME, AerogearBotTest.CORDOVA_APP_NAME,
+				"org.jboss.example.cordova", "cordova-android@4.1.0");
+
+		assertTrue(new ProjectExplorer().containsProject(AerogearBotTest.CORDOVA_PROJECT_NAME));
+	}
+
+	/**
+	 * Uses cordova device plugin to get real-time cordova.js version.
+	 * 	- runs app, checks selected version
+	 *  - changes engine, runs app, checks changed version
+	 */
 	@Test
 	public void testMultiversionSupport() {
 		// Update index.js to display cordova version to console
-		new ProjectExplorer().getProject(CORDOVA_PROJECT_NAME)
-			.getProjectItem("www", "js", "index.js").open();
+		new ProjectExplorer().getProject(CORDOVA_PROJECT_NAME).getProjectItem("www", "js", "index.js").open();
 		DefaultEditor jsEditor = new DefaultEditor("index.js");
 		String jsString = new DefaultStyledText().getText();
 		jsString = jsString.replaceFirst("app\\.receivedEvent\\('deviceready'\\);",
-				"app.receivedEvent(\'deviceready\');" + "\nconsole.log(\""
-						+ MultiversionSupport.VERSION_MESSSAGE_PREFIX + "\" + device.cordova );");
+				"app.receivedEvent(\'deviceready\');" + "\nconsole.log(\"" + MultiversionSupport.VERSION_MESSSAGE_PREFIX
+						+ "\" + device.cordova );");
 		new DefaultStyledText().setText(jsString);
 		jsEditor.save();
 		jsEditor.close();
-		new ProjectExplorer().getProject(CORDOVA_PROJECT_NAME)
-			.getProjectItem("www", "config.xml").open();
+		new ProjectExplorer().getProject(CORDOVA_PROJECT_NAME).getProjectItem("config.xml").open();
 		// Add device plugin to project
 		ConfigEditor configEditor = new ConfigEditor(CORDOVA_APP_NAME);
 		configEditor.addPlugin("cordova-plugin-device");
@@ -68,19 +82,18 @@ public class MultiversionSupport extends AerogearBotTest {
 		// change mobile engine version for project
 		PackageExplorer packageExplorer = new PackageExplorer();
 		packageExplorer.open();
-		ExplorerItemPropertyDialog projectPropertiesDialog = 
-			new ExplorerItemPropertyDialog(new ProjectExplorer().getProject(CORDOVA_PROJECT_NAME));
+		ExplorerItemPropertyDialog projectPropertiesDialog = new ExplorerItemPropertyDialog(
+				new ProjectExplorer().getProject(CORDOVA_PROJECT_NAME));
 		projectPropertiesDialog.open();
 		EnginePropertyPage enginePropertyPage = new EnginePropertyPage();
 		projectPropertiesDialog.select(enginePropertyPage);
 		String propEngineVersion = enginePropertyPage.getVersion(Platform.android);
 		assertEquals("Version displayed to console is not equal to version in project properties "
-				+ consoleEngineVersion + "!=" + propEngineVersion,
-			propEngineVersion, consoleEngineVersion);
+				+ consoleEngineVersion + "!=" + propEngineVersion, propEngineVersion, consoleEngineVersion);
 		List<String> versions = enginePropertyPage.getAvailableVersions(Platform.android);
-		// if just one version is downloaded download second one 
-		if (versions.size() == 1){
-			downloadMobileEngine("3.7.0");
+		// if just one version is downloaded download second one
+		if (versions.size() == 1) {
+			downloadMobileEngine("cordova-android@3.7.0");
 		}
 		// Check other version
 		versions = enginePropertyPage.getAvailableVersions(Platform.android);
@@ -96,21 +109,20 @@ public class MultiversionSupport extends AerogearBotTest {
 		runTreeItemWithCordovaSim(CORDOVA_PROJECT_NAME);
 		BrowserSimHandler.closeAllRunningInstances();
 		consoleEngineVersion = parseConsoleTextForVersion(new ConsoleView().getConsoleText());
-		assertEquals("Expected mobile engine version was " + newVersion 
-				+ " but actual is " + consoleEngineVersion, 
-			newVersion,consoleEngineVersion);
+		assertEquals("Expected mobile engine version was " + newVersion + " but actual is " + consoleEngineVersion,
+				newVersion, consoleEngineVersion);
 	}
-	
-	private String parseConsoleTextForVersion(String consoleText){
+
+	private String parseConsoleTextForVersion(String consoleText) {
 		String result = null;
-		if (consoleText != null){
+		if (consoleText != null) {
 			String[] consoleLines = consoleText.split("[\r\n]+");
 			int index = 0;
-			while (result == null && index < consoleLines.length){
-				if (consoleLines[index].contains(MultiversionSupport.VERSION_MESSSAGE_PREFIX)){
-					result = consoleLines[index].substring(
-						consoleLines[index].indexOf(MultiversionSupport.VERSION_MESSSAGE_PREFIX)
-						+ MultiversionSupport.VERSION_MESSSAGE_PREFIX.length());
+			while (result == null && index < consoleLines.length) {
+				if (consoleLines[index].contains(MultiversionSupport.VERSION_MESSSAGE_PREFIX)) {
+					result = consoleLines[index]
+							.substring(consoleLines[index].indexOf(MultiversionSupport.VERSION_MESSSAGE_PREFIX)
+									+ MultiversionSupport.VERSION_MESSSAGE_PREFIX.length());
 				}
 				index++;
 			}
