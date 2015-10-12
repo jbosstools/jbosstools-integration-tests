@@ -19,7 +19,10 @@ import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.swt.custom.StyledText;
 import org.jboss.reddeer.common.logging.Logger;
+import org.jboss.reddeer.common.matcher.RegexMatcher;
+import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
@@ -33,8 +36,17 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.core.condition.WidgetIsFound;
+import org.jboss.reddeer.core.matcher.ClassMatcher;
+import org.jboss.reddeer.core.matcher.WithClassNameMatcher;
+import org.jboss.reddeer.core.matcher.WithTextMatcher;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
+import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.common.wait.AbstractWait;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.workbench.handler.EditorHandler;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
@@ -89,7 +101,7 @@ public class FreeMarkerEditorTest {
 		log.step("Open ftl file in freemarker editor");
 		openFTLFileInEditor();
 		// disabled until target platform in running instance is resolved
-		// checkFreemMarkerOutput();
+		checkFreemMarkerOutput();
 		checkErrorLog();
 	}
 
@@ -161,8 +173,7 @@ public class FreeMarkerEditorTest {
 		}
 	}
 
-	// Unused now due to the Eclipse bug 
-	@SuppressWarnings("unused")
+	@SuppressWarnings({ "unused", "unchecked" })
 	private void checkFreemMarkerOutput() {
 		
 		String outputExpected = "";
@@ -178,19 +189,17 @@ public class FreeMarkerEditorTest {
 			new RuntimeException("Unable to read from resource");
 		}
 
-		ConsoleView cv = new ConsoleView();
-		cv.clearConsole();
-		
-		
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 
-		new DefaultTreeItem(prj,"src","org.jboss.tools.freemarker.testprj","FMTest.java");
-		new ContextMenu("Run As","Java Application").select();
+		new DefaultTreeItem(prj,"src","org.jboss.tools.freemarker.testprj","FMTest.java").select();
+		new ContextMenu(new WithTextMatcher("Run As"), new WithTextMatcher(new RegexMatcher(".*Java Application.*"))).select();
 
 		new WaitWhile(new ShellWithTextIsActive("Progress Information"));
+		new WaitWhile(new JobIsRunning());
 		
-		cv.open();
+		ConsoleView cv = new ConsoleView();
+		cv.open();		
 		String consoleText = cv.getConsoleText();
 		
 		assertTrue("Output equal check",consoleText.equals(outputExpected));
