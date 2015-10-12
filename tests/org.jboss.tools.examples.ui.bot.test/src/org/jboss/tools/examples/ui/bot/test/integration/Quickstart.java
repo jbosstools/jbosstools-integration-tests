@@ -39,4 +39,8 @@ public class Quickstart {
 		this.path = path;
 	}
 	
+	
+	public String toString(){
+		return name;
+	}
 }

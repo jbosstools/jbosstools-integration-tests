@@ -7,16 +7,18 @@ import java.lang.annotation.Target;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jboss.reddeer.junit.requirement.PropertyConfiguration;
 import org.jboss.reddeer.junit.requirement.Requirement;
 import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.maven.reddeer.maven.ui.preferences.ConfiguratorPreferencePage;
 import org.jboss.tools.maven.reddeer.requirement.NewRepositoryRequirement.DefineMavenRepository;
 import org.jboss.tools.maven.reddeer.wizards.ConfigureMavenRepositoriesWizard;
 
-public class NewRepositoryRequirement implements Requirement<DefineMavenRepository>{
+public class NewRepositoryRequirement implements Requirement<DefineMavenRepository>, PropertyConfiguration{
 	
 	private DefineMavenRepository repo;
 	private List<String> repositoriesToDelete;
+	private String url;
 	
 	public @interface MavenRepository {
 		  String url();
@@ -29,12 +31,18 @@ public class NewRepositoryRequirement implements Requirement<DefineMavenReposito
 		  boolean snapshots();
 	}
 	
+	public @interface PropertyDefinedMavenRepository {
+		String ID();
+		boolean snapshots();
+	}
+	
+	
 	@Retention(RetentionPolicy.RUNTIME)
 	@Target(ElementType.TYPE)
 	public @interface DefineMavenRepository{
 		MavenRepository[] newRepositories() default {};
 		PredefinedMavenRepository[] predefinedRepositories() default {};
-		
+		PropertyDefinedMavenRepository[] propDefMavenRepo() default {};
 	}
 
 	@Override
@@ -52,6 +60,9 @@ public class NewRepositoryRequirement implements Requirement<DefineMavenReposito
 		for(PredefinedMavenRepository pr: repo.predefinedRepositories()){
 			repositoriesToDelete.add(mr.chooseRepositoryFromList(pr.ID(), true, pr.snapshots()));
 		}
+		if (repo.propDefMavenRepo().length>0){
+			repositoriesToDelete.add(mr.addRepository(repo.propDefMavenRepo()[0].ID(), url, true, repo.propDefMavenRepo()[0].snapshots()));
+		}
 		closeRepositoriesWizard();
 	}
 
@@ -67,6 +78,10 @@ public class NewRepositoryRequirement implements Requirement<DefineMavenReposito
 			mr.removeRepo(r);
 		}
 		closeRepositoriesWizard();
+	}
+	
+	public void setUrl(String url) {
+		this.url = url;
 	}
 	
 	private ConfigureMavenRepositoriesWizard openRepositoriesWizard(){
