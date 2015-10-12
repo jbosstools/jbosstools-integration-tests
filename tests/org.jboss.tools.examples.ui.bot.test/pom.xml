@@ -15,8 +15,10 @@
 	<properties>
 		<!-- <systemProperties>${integrationTestsSystemProperties} -->
 		<!-- -DimportTestDefinition=${importTestDefinition}</systemProperties> -->
-		<systemProperties>${integrationTestsSystemProperties} -DexamplesLocation=${project.build.directory}/${examplesFolder}</systemProperties>
+		<systemProperties>${integrationTestsSystemProperties} -DexamplesLocation=${project.build.directory}/${examplesFolder} -Dreddeer.config=${reddeer.config} -Dmaven.settings.path=${maven.settings.path}</systemProperties>
 		<quickstartsURL>https://github.com/jboss-developer/jboss-wfk-quickstarts/archive/2.6.0.Final.zip</quickstartsURL>
+		<maven.settings.path>${project.build.directory}/classes/settings.xml</maven.settings.path>
+		<reddeer.config>${project.build.directory}/classes/EAP7repo.xml</reddeer.config>
 		<examplesFolder>jboss-wfk-quickstarts-2.6.0.Final</examplesFolder>
 		<surefire.timeout>10800</surefire.timeout>
 	</properties>
@@ -25,12 +27,17 @@
 		<profile>
 			<activation>
 				<property>
-					<name>
-						!skipTests
-					</name>
+					<name>skipTests</name>
+					<value>false</value>
 				</property>
 			</activation>
 			<build>
+			<resources>
+				<resource>
+					<directory>resources/</directory>
+					<filtering>true</filtering>
+				</resource>
+			</resources>
 				<plugins>
 					<plugin>
 						<groupId>com.googlecode.maven-download-plugin</groupId>
@@ -72,28 +79,7 @@
 				<configuration>
 					<testSuite>org.jboss.tools.examples.ui.bot.test</testSuite>
 					<testClass>org.jboss.tools.examples.ui.bot.test.integration.ImportQuickstartsTest</testClass>
-					<dependencies>
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.eclipse.jdt.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.eclipse.m2e.feature.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.jboss.reddeer.junit.extension.feature.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>com.ianbrandt.tools.m2e.mdp.feature.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
-					</dependencies>
+					<appArgLine>-testpluginname ${project.artifactId}</appArgLine>
 				</configuration>
 			</plugin>
 		</plugins>
