@@ -18,7 +18,9 @@ import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
  */
 public class ServerConsoleContainsNoExceptionMatcher extends TypeSafeMatcher<ConsoleView> {
 
-	private static final String[] EXPECTED_EXCEPTIONS_PATTERNS = new String[]{".*Remote connection failed: java.io.IOException: Connection reset by peer.*"};
+	private static final String[] EXPECTED_EXCEPTIONS_PATTERNS = new String[]
+			{".*Remote connection failed: java.io.IOException: Connection reset by peer.*",
+			".*Remote connection failed: java.io.IOException: An established connection was aborted by the software in your host machine.*"};
 
 	private static final Logger log = Logger.getLogger(ServerConsoleContainsNoExceptionMatcher.class);
 
