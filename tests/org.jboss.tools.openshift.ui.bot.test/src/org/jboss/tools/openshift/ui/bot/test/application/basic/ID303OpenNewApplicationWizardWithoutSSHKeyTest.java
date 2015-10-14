@@ -18,7 +18,7 @@ import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.jboss.tools.openshift.ui.bot.test.ssh.ID151RemoveSSHKeyTest;
 import org.jboss.tools.openshift.ui.bot.test.ssh.ID152AddExistingSSHKeyTest;
-import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
+import org.jboss.tools.openshift.ui.bot.test.util.DatastoreOS2;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -40,8 +40,8 @@ public class ID303OpenNewApplicationWizardWithoutSSHKeyTest {
 	@Test
 	public void testOpenNewApplicationWizardViaExplorer() {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
-		explorer.getOpenShift2Connection(Datastore.USERNAME, Datastore.SERVER).
-			getDomain(Datastore.DOMAIN).select();
+		explorer.getOpenShift2Connection(DatastoreOS2.USERNAME, DatastoreOS2.SERVER).
+			getDomain(DatastoreOS2.DOMAIN).select();
 		new ContextMenu(OpenShiftLabel.ContextMenu.NEW_APPLICATION).select();
 		
 		try {
@@ -98,7 +98,7 @@ public class ID303OpenNewApplicationWizardWithoutSSHKeyTest {
 	
 	@AfterClass
 	public static void addSSHKey() {
-		ID152AddExistingSSHKeyTest.addExistingSSHKey(Datastore.USERNAME, Datastore.SERVER);
+		ID152AddExistingSSHKeyTest.addExistingSSHKey(DatastoreOS2.USERNAME, DatastoreOS2.SERVER);
 	}
 	
 }

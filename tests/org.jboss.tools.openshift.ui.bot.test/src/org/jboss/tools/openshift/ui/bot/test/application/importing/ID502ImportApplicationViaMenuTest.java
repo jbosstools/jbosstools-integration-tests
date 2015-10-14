@@ -23,7 +23,7 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.utils.v2.DeleteUtils;
-import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
+import org.jboss.tools.openshift.ui.bot.test.util.DatastoreOS2;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -59,7 +59,7 @@ public class ID502ImportApplicationViaMenuTest {
 		new DefaultShell(OpenShiftLabel.Shell.IMPORT_APPLICATION);
 		
 		for (String comboItem: new DefaultCombo(0).getItems()) {
-			if (comboItem.contains(Datastore.USERNAME)) {
+			if (comboItem.contains(DatastoreOS2.USERNAME)) {
 				new DefaultCombo(0).setSelection(comboItem);
 				break;
 			}
@@ -77,7 +77,7 @@ public class ID502ImportApplicationViaMenuTest {
 		
 		new DefaultShell(OpenShiftLabel.Shell.SELECT_EXISTING_APPLICATION);
 		
-		treeViewerHandler.getTreeItem(new DefaultTree(), Datastore.DOMAIN, applicationName).select();
+		treeViewerHandler.getTreeItem(new DefaultTree(), DatastoreOS2.DOMAIN, applicationName).select();
 		
 		new WaitUntil(new ButtonWithTextIsEnabled(new OkButton()), TimePeriod.LONG);
 		
@@ -96,7 +96,7 @@ public class ID502ImportApplicationViaMenuTest {
 	
 	@After
 	public void deleteApplication() {
-		new DeleteUtils(Datastore.USERNAME, Datastore.SERVER, Datastore.DOMAIN, applicationName, 
+		new DeleteUtils(DatastoreOS2.USERNAME, DatastoreOS2.SERVER, DatastoreOS2.DOMAIN, applicationName, 
 				applicationName).perform();
 	}
 }

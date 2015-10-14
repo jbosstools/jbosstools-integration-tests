@@ -16,7 +16,7 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.tools.openshift.reddeer.condition.TableIsEnabled;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
-import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
+import org.jboss.tools.openshift.ui.bot.test.util.DatastoreOS2;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.junit.Test;
 
@@ -36,7 +36,7 @@ public class ID151RemoveSSHKeyTest {
 	public static void removeSSHKey() {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 		explorer.open();
-		explorer.getOpenShift2Connection(Datastore.USERNAME, Datastore.SERVER).select();
+		explorer.getOpenShift2Connection(DatastoreOS2.USERNAME, DatastoreOS2.SERVER).select();
 		
 		// Sometimes there occurs progress information shell
 		try {
@@ -47,7 +47,7 @@ public class ID151RemoveSSHKeyTest {
 			
 		}
 		
-		explorer.getOpenShift2Connection(Datastore.USERNAME, Datastore.SERVER).select();
+		explorer.getOpenShift2Connection(DatastoreOS2.USERNAME, DatastoreOS2.SERVER).select();
 		new ContextMenu(OpenShiftLabel.ContextMenu.MANAGE_SSH_KEYS).select();
 		
 		new DefaultShell(OpenShiftLabel.Shell.MANAGE_SSH_KEYS);

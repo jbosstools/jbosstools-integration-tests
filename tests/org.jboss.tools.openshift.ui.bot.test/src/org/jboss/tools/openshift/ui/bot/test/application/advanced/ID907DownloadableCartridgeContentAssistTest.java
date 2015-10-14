@@ -21,7 +21,7 @@ import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.utils.v2.DeleteUtils;
 import org.jboss.tools.openshift.reddeer.wizard.v2.OpenShift2ApplicationWizard;
 import org.jboss.tools.openshift.reddeer.wizard.v2.Templates;
-import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
+import org.jboss.tools.openshift.ui.bot.test.util.DatastoreOS2;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -41,16 +41,16 @@ public class ID907DownloadableCartridgeContentAssistTest {
 	
 	@Before
 	public void prepareContentAssist() {
-		new Templates(Datastore.USERNAME, Datastore.SERVER, Datastore.DOMAIN, false).
+		new Templates(DatastoreOS2.USERNAME, DatastoreOS2.SERVER, DatastoreOS2.DOMAIN, false).
 		createApplicationOnDownloadableCartridge(downloadableURL, applicationName, 
 				false, false, false, null, (String[]) null);
-		new DeleteUtils(Datastore.USERNAME, Datastore.SERVER, Datastore.DOMAIN, applicationName,
+		new DeleteUtils(DatastoreOS2.USERNAME, DatastoreOS2.SERVER, DatastoreOS2.DOMAIN, applicationName,
 				applicationName).deleteOpenShiftApplication();
 	}
 	
 	@Test
 	public void testContentAssistDownloadableCartridgeURL() {
-		new OpenShift2ApplicationWizard(Datastore.USERNAME, Datastore.SERVER, Datastore.DOMAIN).
+		new OpenShift2ApplicationWizard(DatastoreOS2.USERNAME, DatastoreOS2.SERVER, DatastoreOS2.DOMAIN).
 			openWizardFromExplorer();
 		
 		new DefaultShell(OpenShiftLabel.Shell.NEW_APP_WIZARD);

@@ -21,7 +21,7 @@ import org.jboss.tools.openshift.reddeer.wizard.page.v2.FirstWizardPage;
 import org.jboss.tools.openshift.reddeer.wizard.v2.OpenShift2ApplicationWizard;
 import org.jboss.tools.openshift.ui.bot.test.domain.ID201NewDomainTest;
 import org.jboss.tools.openshift.ui.bot.test.ssh.ID152AddExistingSSHKeyTest;
-import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
+import org.jboss.tools.openshift.ui.bot.test.util.DatastoreOS2;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -37,40 +37,40 @@ public class ID306PreselectLastUsedConnectionTest {
 	
 	@BeforeClass
 	public static void setUpSecondAccount() {
-		ID201NewDomainTest.createDomain(Datastore.X_USERNAME, Datastore.X_SERVER, Datastore.X_DOMAIN);		
-		ID152AddExistingSSHKeyTest.addExistingSSHKey(Datastore.X_USERNAME, Datastore.X_SERVER);
+		ID201NewDomainTest.createDomain(DatastoreOS2.X_USERNAME, DatastoreOS2.X_SERVER, DatastoreOS2.X_DOMAIN);		
+		ID152AddExistingSSHKeyTest.addExistingSSHKey(DatastoreOS2.X_USERNAME, DatastoreOS2.X_SERVER);
 	}
 	
 	@Ignore("Ignored due to JBIDE-18082")
 	@Test
 	public void testPreselectLastUsedConnectionFromExplorer() {
-		preselectConnectionViaExplorer(Datastore.USERNAME, Datastore.DOMAIN);
-		verifyPreselectedConnectionViaCentral(Datastore.USERNAME);
-		verifyPreselectedConnectionViaMenu(Datastore.USERNAME);
+		preselectConnectionViaExplorer(DatastoreOS2.USERNAME, DatastoreOS2.DOMAIN);
+		verifyPreselectedConnectionViaCentral(DatastoreOS2.USERNAME);
+		verifyPreselectedConnectionViaMenu(DatastoreOS2.USERNAME);
 		
-		preselectConnectionViaExplorer(Datastore.X_USERNAME, Datastore.X_DOMAIN);
-		verifyPreselectedConnectionViaCentral(Datastore.X_USERNAME);
-		verifyPreselectedConnectionViaMenu(Datastore.X_USERNAME);
+		preselectConnectionViaExplorer(DatastoreOS2.X_USERNAME, DatastoreOS2.X_DOMAIN);
+		verifyPreselectedConnectionViaCentral(DatastoreOS2.X_USERNAME);
+		verifyPreselectedConnectionViaMenu(DatastoreOS2.X_USERNAME);
 		
-		preselectConnectionViaExplorer(Datastore.USERNAME, Datastore.DOMAIN);
-		verifyPreselectedConnectionViaCentral(Datastore.USERNAME);
-		verifyPreselectedConnectionViaMenu(Datastore.USERNAME);
+		preselectConnectionViaExplorer(DatastoreOS2.USERNAME, DatastoreOS2.DOMAIN);
+		verifyPreselectedConnectionViaCentral(DatastoreOS2.USERNAME);
+		verifyPreselectedConnectionViaMenu(DatastoreOS2.USERNAME);
 	}
 	
 	@Test
 	@Ignore("Preselection work flow has changed. Test need big changes at stability fixes.")
 	public void testPreselectLastUsedConnectionFromMenu() {
-		preselectConnectionViaMenu(Datastore.SERVER, Datastore.USERNAME, Datastore.DOMAIN);
-		verifyPreselectedConnectionViaCentral(Datastore.USERNAME);
-		verifyPreselectedConnectionViaMenu(Datastore.USERNAME);
+		preselectConnectionViaMenu(DatastoreOS2.SERVER, DatastoreOS2.USERNAME, DatastoreOS2.DOMAIN);
+		verifyPreselectedConnectionViaCentral(DatastoreOS2.USERNAME);
+		verifyPreselectedConnectionViaMenu(DatastoreOS2.USERNAME);
 		
-		preselectConnectionViaMenu(Datastore.X_SERVER, Datastore.X_USERNAME, Datastore.X_DOMAIN);
-		verifyPreselectedConnectionViaCentral(Datastore.X_USERNAME);
-		verifyPreselectedConnectionViaMenu(Datastore.X_USERNAME);
+		preselectConnectionViaMenu(DatastoreOS2.X_SERVER, DatastoreOS2.X_USERNAME, DatastoreOS2.X_DOMAIN);
+		verifyPreselectedConnectionViaCentral(DatastoreOS2.X_USERNAME);
+		verifyPreselectedConnectionViaMenu(DatastoreOS2.X_USERNAME);
 		
-		preselectConnectionViaMenu(Datastore.SERVER, Datastore.USERNAME, Datastore.DOMAIN);
-		verifyPreselectedConnectionViaCentral(Datastore.USERNAME);
-		verifyPreselectedConnectionViaMenu(Datastore.USERNAME);
+		preselectConnectionViaMenu(DatastoreOS2.SERVER, DatastoreOS2.USERNAME, DatastoreOS2.DOMAIN);
+		verifyPreselectedConnectionViaCentral(DatastoreOS2.USERNAME);
+		verifyPreselectedConnectionViaMenu(DatastoreOS2.USERNAME);
 	}
 	
 	private void preselectConnectionViaMenu(String server, String username, String domain) {
@@ -94,7 +94,7 @@ public class ID306PreselectLastUsedConnectionTest {
 	}
 	
 	private void preselectConnectionViaExplorer(String username, String domain) {
-		new OpenShift2ApplicationWizard(Datastore.USERNAME, Datastore.SERVER, Datastore.DOMAIN).
+		new OpenShift2ApplicationWizard(DatastoreOS2.USERNAME, DatastoreOS2.SERVER, DatastoreOS2.DOMAIN).
 				openWizardFromExplorer();
 		
 		new FirstWizardPage().createNewApplicationOnBasicCartridge(

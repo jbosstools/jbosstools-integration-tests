@@ -21,7 +21,7 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.openshift.ui.bot.test.application.create.ID407CreateApplicationFromExistingAndChangeRemoteNameTest;
 import org.jboss.tools.openshift.ui.bot.test.application.create.IDXXXCreateTestingApplication;
-import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
+import org.jboss.tools.openshift.ui.bot.test.util.DatastoreOS2;
 import org.jboss.tools.openshift.reddeer.condition.v2.ApplicationIsDeployedSuccessfully;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.junit.Test;
@@ -76,8 +76,8 @@ public class ID701ModifyAndRepublishApplicationTest extends IDXXXCreateTestingAp
 		AbstractWait.sleep(TimePeriod.NORMAL);
 		
 		try {
-			new WaitUntil(new ApplicationIsDeployedSuccessfully(Datastore.USERNAME, Datastore.SERVER,
-				Datastore.DOMAIN, applicationName, "OpSh"), TimePeriod.VERY_LONG);
+			new WaitUntil(new ApplicationIsDeployedSuccessfully(DatastoreOS2.USERNAME, DatastoreOS2.SERVER,
+				DatastoreOS2.DOMAIN, applicationName, "OpSh"), TimePeriod.VERY_LONG);
 			// PASS
 		} catch (WaitTimeoutExpiredException ex) {
 			fail("Application has not been deployed successfully. Browser does not "

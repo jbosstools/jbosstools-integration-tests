@@ -14,7 +14,7 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.tools.openshift.ui.bot.test.application.create.IDXXXCreateTestingApplication;
-import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
+import org.jboss.tools.openshift.ui.bot.test.util.DatastoreOS2;
 import org.junit.Test;
 
 /**
@@ -42,12 +42,12 @@ public class ID802ServerAdapterOverviewTest extends IDXXXCreateTestingApplicatio
 				new LabeledCombo("Deploy Project: ").getSelection().equals(applicationName));
 		
 		assertTrue("Connection contains incorrect information. There should be user and server.",
-				new LabeledText("Connection: ").getText().contains(Datastore.USERNAME) &&
-				new LabeledText("Connection: ").getText().contains(Datastore.SERVER));
+				new LabeledText("Connection: ").getText().contains(DatastoreOS2.USERNAME) &&
+				new LabeledText("Connection: ").getText().contains(DatastoreOS2.SERVER));
 		
 		assertTrue("Domain name is not shown properly. " + new LabeledText("Domain Name: ").getText() +
-				" is shown instead of " + Datastore.DOMAIN,
-				new LabeledText("Domain Name: ").getText().equals(Datastore.DOMAIN));
+				" is shown instead of " + DatastoreOS2.DOMAIN,
+				new LabeledText("Domain Name: ").getText().equals(DatastoreOS2.DOMAIN));
 		
 		assertTrue("Application name is incorrect. Was " + new LabeledText("Application Name: ").getText() +
 				" but should be " + applicationName,

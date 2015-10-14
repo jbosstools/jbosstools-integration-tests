@@ -19,7 +19,7 @@ import org.jboss.tools.openshift.reddeer.utils.v2.DeleteUtils;
 import org.jboss.tools.openshift.reddeer.view.OpenShift2Application;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.jboss.tools.openshift.reddeer.wizard.v2.Templates;
-import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
+import org.jboss.tools.openshift.ui.bot.test.util.DatastoreOS2;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,10 +40,10 @@ public class ID901DeleteMoreApplicationsTest {
 	
 	@Before
 	public void createApplications() {
-		new Templates(Datastore.USERNAME, Datastore.SERVER, Datastore.DOMAIN, false).
+		new Templates(DatastoreOS2.USERNAME, DatastoreOS2.SERVER, DatastoreOS2.DOMAIN, false).
 			createSimpleApplicationOnBasicCartridges(
 				OpenShiftLabel.Cartridge.DIY, firstApplicationName, false, true, true);
-		new Templates(Datastore.USERNAME, Datastore.SERVER, Datastore.DOMAIN, false).
+		new Templates(DatastoreOS2.USERNAME, DatastoreOS2.SERVER, DatastoreOS2.DOMAIN, false).
 			createSimpleApplicationOnBasicCartridges(
 				OpenShiftLabel.Cartridge.DIY, secondApplicationName, false, true, true);
 	}
@@ -53,11 +53,11 @@ public class ID901DeleteMoreApplicationsTest {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 		explorer.open();
 		
-		OpenShift2Application firstApplication = explorer.getOpenShift2Connection(Datastore.USERNAME, Datastore.SERVER).
-				getDomain(Datastore.DOMAIN).getApplication(firstApplicationName);
+		OpenShift2Application firstApplication = explorer.getOpenShift2Connection(DatastoreOS2.USERNAME, DatastoreOS2.SERVER).
+				getDomain(DatastoreOS2.DOMAIN).getApplication(firstApplicationName);
 		firstApplicationExists = true;
-		OpenShift2Application secondApplication = explorer.getOpenShift2Connection(Datastore.USERNAME, Datastore.SERVER).
-				getDomain(Datastore.DOMAIN).getApplication(secondApplicationName);
+		OpenShift2Application secondApplication = explorer.getOpenShift2Connection(DatastoreOS2.USERNAME, DatastoreOS2.SERVER).
+				getDomain(DatastoreOS2.DOMAIN).getApplication(secondApplicationName);
 		secondApplicationExists = true;
 		
 		new DefaultTree().selectItems(firstApplication.getTreeItem(), secondApplication.getTreeItem());
@@ -84,17 +84,17 @@ public class ID901DeleteMoreApplicationsTest {
 	}
 	
 	private void assertApplicationDoesNotExists(String applicationName) {
-		if (new OpenShiftApplicationExists(Datastore.USERNAME, Datastore.SERVER, 
-					Datastore.DOMAIN, applicationName).test()) {
+		if (new OpenShiftApplicationExists(DatastoreOS2.USERNAME, DatastoreOS2.SERVER, 
+					DatastoreOS2.DOMAIN, applicationName).test()) {
 			fail("Application " + applicationName + " is still presented in OpenShift explorer.");
 		}
 	}
 	
 	@After
 	public void deleteAdaptersAndProjects() {
-		DeleteUtils deleteFirst = new DeleteUtils(Datastore.USERNAME, Datastore.SERVER, Datastore.DOMAIN, 
+		DeleteUtils deleteFirst = new DeleteUtils(DatastoreOS2.USERNAME, DatastoreOS2.SERVER, DatastoreOS2.DOMAIN, 
 				firstApplicationName, firstApplicationName);
-		DeleteUtils deleteSecond = new DeleteUtils(Datastore.USERNAME, Datastore.SERVER, Datastore.DOMAIN, 
+		DeleteUtils deleteSecond = new DeleteUtils(DatastoreOS2.USERNAME, DatastoreOS2.SERVER, DatastoreOS2.DOMAIN, 
 				secondApplicationName, secondApplicationName);
 		
 		if (firstApplicationExists) {

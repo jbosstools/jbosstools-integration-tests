@@ -23,7 +23,7 @@ import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.openshift.reddeer.condition.TableIsEnabled;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
-import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
+import org.jboss.tools.openshift.ui.bot.test.util.DatastoreOS2;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.junit.Test;
 
@@ -38,7 +38,7 @@ public class ID205ManageDomainTest {
 	@Test
 	public void testManageDomains() {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
-		explorer.getOpenShift2Connection(Datastore.USERNAME, Datastore.SERVER).select();
+		explorer.getOpenShift2Connection(DatastoreOS2.USERNAME, DatastoreOS2.SERVER).select();
 		
 		new ContextMenu(OpenShiftLabel.ContextMenu.MANAGE_DOMAINS).select();;	
 		
@@ -64,7 +64,7 @@ public class ID205ManageDomainTest {
 		
 		new DefaultShell(OpenShiftLabel.Shell.CREATE_DOMAIN);
 		
-		new LabeledText(OpenShiftLabel.TextLabels.DOMAIN_NAME).setText(Datastore.X_DOMAIN);
+		new LabeledText(OpenShiftLabel.TextLabels.DOMAIN_NAME).setText(DatastoreOS2.X_DOMAIN);
 	
 		new WaitUntil(new ButtonWithTextIsEnabled(new FinishButton()), TimePeriod.NORMAL);
 		
@@ -79,15 +79,15 @@ public class ID205ManageDomainTest {
 	private void testEditDomain() {
 		new DefaultShell(OpenShiftLabel.Shell.MANAGE_DOMAINS);	
 		
-		new DefaultTable().getItem(Datastore.X_DOMAIN).select();
+		new DefaultTable().getItem(DatastoreOS2.X_DOMAIN).select();
 		
 		new PushButton(OpenShiftLabel.Button.EDIT_DOMAIN).click();
 		
 		new DefaultShell(OpenShiftLabel.Shell.EDIT_DOMAIN);
 		
-		Datastore.X_DOMAIN = "xqetestjbds" + new Random().nextInt(100);
+		DatastoreOS2.X_DOMAIN = "xqetestjbds" + new Random().nextInt(100);
 		
-		new LabeledText(OpenShiftLabel.TextLabels.DOMAIN_NAME).setText(Datastore.X_DOMAIN);
+		new LabeledText(OpenShiftLabel.TextLabels.DOMAIN_NAME).setText(DatastoreOS2.X_DOMAIN);
 		
 		new WaitUntil(new ButtonWithTextIsEnabled(new FinishButton()), TimePeriod.NORMAL);
 		
@@ -98,7 +98,7 @@ public class ID205ManageDomainTest {
 		
 		try {
 			new DefaultShell(OpenShiftLabel.Shell.MANAGE_DOMAINS);	
-			new DefaultTable().getItem(Datastore.X_DOMAIN);
+			new DefaultTable().getItem(DatastoreOS2.X_DOMAIN);
 			// pass
 		} catch (SWTLayerException ex) {
 			fail("Domain does not exists in table.");
@@ -108,7 +108,7 @@ public class ID205ManageDomainTest {
 	private void testDeleteDomain() {
 		new DefaultShell(OpenShiftLabel.Shell.MANAGE_DOMAINS);	
 		
-		new DefaultTable().getItem(Datastore.X_DOMAIN).select();
+		new DefaultTable().getItem(DatastoreOS2.X_DOMAIN).select();
 		
 		new WaitUntil(new ButtonWithTextIsEnabled(new PushButton(OpenShiftLabel.Button.REMOVE)), TimePeriod.NORMAL);
 		
@@ -127,7 +127,7 @@ public class ID205ManageDomainTest {
 		new WaitWhile(new JobIsRunning());
 		
 		try {
-			new DefaultTable().getItem(Datastore.X_DOMAIN);
+			new DefaultTable().getItem(DatastoreOS2.X_DOMAIN);
 			fail("Domain should not exists in table.");
 		} catch (CoreLayerException ex) {
 			// PASS

@@ -10,7 +10,7 @@ import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
-import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
+import org.jboss.tools.openshift.ui.bot.test.util.DatastoreOS2;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.junit.After;
 import org.junit.Before;
@@ -33,7 +33,7 @@ public class ID106RemoveConnectionTest {
 	
 	@Test
 	public void testRemoveConnection() {
-		explorer.getOpenShift2Connection(Datastore.USERNAME, Datastore.SERVER).select();
+		explorer.getOpenShift2Connection(DatastoreOS2.USERNAME, DatastoreOS2.SERVER).select();
 		
 		new ContextMenu(OpenShiftLabel.ContextMenu.REMOVE_CONNECTION).select();
 		
@@ -46,14 +46,14 @@ public class ID106RemoveConnectionTest {
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		
 		assertFalse("Connection is still presented in OpenShift explorer",
-				explorer.connectionExists(Datastore.USERNAME));
+				explorer.connectionExists(DatastoreOS2.USERNAME));
 	}
 	
 	@After
 	public void recreateConnection() {
-		if (!explorer.connectionExists(Datastore.USERNAME)) {
+		if (!explorer.connectionExists(DatastoreOS2.USERNAME)) {
 			explorer.openConnectionShell();
-			explorer.connectToOpenShift2(Datastore.SERVER, Datastore.USERNAME,
+			explorer.connectToOpenShift2(DatastoreOS2.SERVER, DatastoreOS2.USERNAME,
 					System.getProperty("openshift.password"), false, false, false);
 		}
 	}

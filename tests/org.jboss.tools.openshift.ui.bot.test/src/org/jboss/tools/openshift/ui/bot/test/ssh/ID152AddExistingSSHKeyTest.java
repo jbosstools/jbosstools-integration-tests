@@ -16,7 +16,7 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
-import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
+import org.jboss.tools.openshift.ui.bot.test.util.DatastoreOS2;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.junit.Test;
 
@@ -30,7 +30,7 @@ public class ID152AddExistingSSHKeyTest {
 
 	@Test
 	public void testAddExistingSSHKey() {
-		addExistingSSHKey(Datastore.USERNAME, Datastore.SERVER);
+		addExistingSSHKey(DatastoreOS2.USERNAME, DatastoreOS2.SERVER);
 	}
 	
 	public static void addExistingSSHKey(String username, String server) {
@@ -53,9 +53,9 @@ public class ID152AddExistingSSHKeyTest {
 
 			@Override
 			public Boolean run() {
-				new LabeledText(OpenShiftLabel.TextLabels.NAME).setText(Datastore.SSH_KEY_NAME);
+				new LabeledText(OpenShiftLabel.TextLabels.NAME).setText(DatastoreOS2.SSH_KEY_NAME);
 				new LabeledText(OpenShiftLabel.TextLabels.PUB_KEY).getSWTWidget().setText(
-						Datastore.SSH_HOME + System.getProperty("file.separator") + Datastore.SSH_KEY_FILENAME +
+						DatastoreOS2.SSH_HOME + System.getProperty("file.separator") + DatastoreOS2.SSH_KEY_FILENAME +
 						".pub");
 				return true;
 			}
