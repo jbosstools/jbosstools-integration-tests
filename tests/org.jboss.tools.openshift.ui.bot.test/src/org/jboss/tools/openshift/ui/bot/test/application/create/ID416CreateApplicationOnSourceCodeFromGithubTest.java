@@ -9,7 +9,7 @@ import org.jboss.tools.openshift.reddeer.condition.v2.ApplicationIsDeployedSucce
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.utils.v2.DeleteUtils;
 import org.jboss.tools.openshift.reddeer.wizard.v2.OpenShift2ApplicationWizard;
-import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
+import org.jboss.tools.openshift.ui.bot.test.util.DatastoreOS2;
 import org.junit.After;
 import org.junit.Test;
 
@@ -22,8 +22,8 @@ public class ID416CreateApplicationOnSourceCodeFromGithubTest {
 	
 	@Test
 	public void testCreateApplicationOnSourceCodeFromGithub() {
-		OpenShift2ApplicationWizard wizard = new OpenShift2ApplicationWizard(Datastore.USERNAME, 
-				Datastore.SERVER, Datastore.DOMAIN);
+		OpenShift2ApplicationWizard wizard = new OpenShift2ApplicationWizard(DatastoreOS2.USERNAME, 
+				DatastoreOS2.SERVER, DatastoreOS2.DOMAIN);
 		wizard.openWizardFromExplorer();
 		wizard.createNewApplicationOnBasicCartridge(OpenShiftLabel.Cartridge.PYTHON, 
 				applicationName, false, true, false, false, sourceCodeURL, null, 
@@ -34,8 +34,8 @@ public class ID416CreateApplicationOnSourceCodeFromGithubTest {
 		applicationCreated = true;
 	
 		try {
-			new WaitUntil(new ApplicationIsDeployedSuccessfully(Datastore.USERNAME, Datastore.SERVER, 
-					Datastore.DOMAIN, applicationName, "Yeah Django!"), TimePeriod.LONG);
+			new WaitUntil(new ApplicationIsDeployedSuccessfully(DatastoreOS2.USERNAME, DatastoreOS2.SERVER, 
+					DatastoreOS2.DOMAIN, applicationName, "Yeah Django!"), TimePeriod.LONG);
 		} catch (WaitTimeoutExpiredException ex) {
 			fail("Application from github source code has not been created successfully.");
 		}
@@ -44,7 +44,7 @@ public class ID416CreateApplicationOnSourceCodeFromGithubTest {
 	@After
 	public void deleteApplication() {
 		if (applicationCreated) {
-			new DeleteUtils(Datastore.USERNAME, Datastore.SERVER, Datastore.DOMAIN, 
+			new DeleteUtils(DatastoreOS2.USERNAME, DatastoreOS2.SERVER, DatastoreOS2.DOMAIN, 
 					applicationName, applicationName).perform();
 		}
 	}

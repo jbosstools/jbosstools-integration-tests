@@ -34,7 +34,7 @@ import org.jboss.tools.openshift.reddeer.utils.v2.DeleteUtils;
 import org.jboss.tools.openshift.reddeer.wizard.page.v2.FirstWizardPage;
 import org.jboss.tools.openshift.reddeer.wizard.page.v2.SecondWizardPage;
 import org.jboss.tools.openshift.reddeer.wizard.v2.OpenShift2ApplicationWizard;
-import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
+import org.jboss.tools.openshift.ui.bot.test.util.DatastoreOS2;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -102,7 +102,7 @@ public class ID414CreateApplicationFromExistingProjectTest {
 		new DefaultShell(OpenShiftLabel.Shell.NEW_APP_WIZARD);
 
 		for (String comboItem : new DefaultCombo(0).getItems()) {
-			if (comboItem.contains(Datastore.USERNAME)) {
+			if (comboItem.contains(DatastoreOS2.USERNAME)) {
 				new DefaultCombo(0).setSelection(comboItem);
 				break;
 			}
@@ -117,8 +117,8 @@ public class ID414CreateApplicationFromExistingProjectTest {
 
 		new DefaultShell(OpenShiftLabel.Shell.NEW_APP_WIZARD).setFocus();
 
-		OpenShift2ApplicationWizard wizard = new OpenShift2ApplicationWizard(Datastore.USERNAME, Datastore.SERVER,
-				Datastore.DOMAIN);
+		OpenShift2ApplicationWizard wizard = new OpenShift2ApplicationWizard(DatastoreOS2.USERNAME, DatastoreOS2.SERVER,
+				DatastoreOS2.DOMAIN);
 		
 		FirstWizardPage first = new FirstWizardPage();
 		first.createNewApplicationOnBasicCartridge(OpenShiftLabel.Cartridge.JBOSS_EAP);
@@ -126,7 +126,7 @@ public class ID414CreateApplicationFromExistingProjectTest {
 		wizard.next();
 
 		SecondWizardPage secondPage = new SecondWizardPage();
-		secondPage.fillApplicationDetails(Datastore.DOMAIN, applicationName,
+		secondPage.fillApplicationDetails(DatastoreOS2.DOMAIN, applicationName,
 				false, true, false, null);
 
 		wizard.next();
@@ -169,8 +169,8 @@ public class ID414CreateApplicationFromExistingProjectTest {
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 		
 		try {
-			new WaitUntil(new ApplicationIsDeployedSuccessfully(Datastore.USERNAME, Datastore.SERVER,
-					Datastore.DOMAIN, applicationName, "Welcome to WildFly"), TimePeriod.LONG);
+			new WaitUntil(new ApplicationIsDeployedSuccessfully(DatastoreOS2.USERNAME, DatastoreOS2.SERVER,
+					DatastoreOS2.DOMAIN, applicationName, "Welcome to WildFly"), TimePeriod.LONG);
 		} catch (WaitTimeoutExpiredException ex) {
 			fail("Application has not been deployed successfully.");
 		}
@@ -178,7 +178,7 @@ public class ID414CreateApplicationFromExistingProjectTest {
 
 	@After
 	public void deleteApplication() {
-		new DeleteUtils(Datastore.USERNAME, Datastore.SERVER, Datastore.DOMAIN,
+		new DeleteUtils(DatastoreOS2.USERNAME, DatastoreOS2.SERVER, DatastoreOS2.DOMAIN,
 				applicationName, applicationName).perform();
 	}
 }

@@ -10,7 +10,7 @@ import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
-import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
+import org.jboss.tools.openshift.ui.bot.test.util.DatastoreOS2;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.junit.Test;
 
@@ -27,7 +27,7 @@ public class ID109EditConnectionTest {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 		explorer.open();
 		
-		explorer.getOpenShift2Connection(Datastore.USERNAME, Datastore.SERVER).select();
+		explorer.getOpenShift2Connection(DatastoreOS2.USERNAME, DatastoreOS2.SERVER).select();
 		try {
 			new ContextMenu(OpenShiftLabel.ContextMenu.EDIT_CONNECTION).select();
 		} catch (SWTLayerException ex) {

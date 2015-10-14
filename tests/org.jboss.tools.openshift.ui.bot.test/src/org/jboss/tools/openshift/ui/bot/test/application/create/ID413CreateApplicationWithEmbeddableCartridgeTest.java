@@ -11,7 +11,7 @@ import org.jboss.tools.openshift.reddeer.utils.v2.DeleteUtils;
 import org.jboss.tools.openshift.reddeer.view.OpenShift2Application;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.jboss.tools.openshift.reddeer.wizard.v2.OpenShift2ApplicationWizard;
-import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
+import org.jboss.tools.openshift.ui.bot.test.util.DatastoreOS2;
 import org.junit.After;
 import org.junit.Test;
 
@@ -29,16 +29,16 @@ public class ID413CreateApplicationWithEmbeddableCartridgeTest {
 	public void testCreateApplicationWithEmbeddableCartridge() {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 		
-		OpenShift2ApplicationWizard wizard = new OpenShift2ApplicationWizard(Datastore.USERNAME, 
-				Datastore.SERVER, Datastore.DOMAIN);
+		OpenShift2ApplicationWizard wizard = new OpenShift2ApplicationWizard(DatastoreOS2.USERNAME, 
+				DatastoreOS2.SERVER, DatastoreOS2.DOMAIN);
 		wizard.openWizardFromExplorer();
 		wizard.createNewApplicationOnBasicCartridge(OpenShiftLabel.Cartridge.DIY,
 				applicationName, false, true, false, false, null, null, true,
 				null, null, null, OpenShiftLabel.EmbeddableCartridge.CRON);
 		wizard.postCreateSteps(true);
 		
-		OpenShift2Application application = explorer.getOpenShift2Connection(Datastore.USERNAME, Datastore.SERVER).getDomain(
-				Datastore.DOMAIN).getApplication(applicationName);
+		OpenShift2Application application = explorer.getOpenShift2Connection(DatastoreOS2.USERNAME, DatastoreOS2.SERVER).getDomain(
+				DatastoreOS2.DOMAIN).getApplication(applicationName);
 		application.select();
 		application.expand();
 		
@@ -55,7 +55,7 @@ public class ID413CreateApplicationWithEmbeddableCartridgeTest {
 	
 	@After
 	public void deleteApplication() {
-		new DeleteUtils(Datastore.USERNAME, Datastore.SERVER, Datastore.DOMAIN, applicationName,
+		new DeleteUtils(DatastoreOS2.USERNAME, DatastoreOS2.SERVER, DatastoreOS2.DOMAIN, applicationName,
 				applicationName).perform();
 	}
 }

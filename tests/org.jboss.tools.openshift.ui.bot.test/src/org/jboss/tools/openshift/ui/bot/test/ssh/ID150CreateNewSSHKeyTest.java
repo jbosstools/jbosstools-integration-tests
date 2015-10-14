@@ -20,7 +20,7 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
-import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
+import org.jboss.tools.openshift.ui.bot.test.util.DatastoreOS2;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.junit.Test;
 
@@ -37,7 +37,7 @@ public class ID150CreateNewSSHKeyTest {
 	public void testCreateAndAddNewSSHKey() {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 		explorer.open();
-		explorer.getOpenShift2Connection(Datastore.USERNAME, Datastore.SERVER).select();
+		explorer.getOpenShift2Connection(DatastoreOS2.USERNAME, DatastoreOS2.SERVER).select();
 		
 		new ContextMenu(OpenShiftLabel.ContextMenu.MANAGE_SSH_KEYS).select();
 		
@@ -50,14 +50,14 @@ public class ID150CreateNewSSHKeyTest {
 		assertFalse("Finish button should be disabled if SSH key details has not been filled.",
 				new FinishButton().isEnabled());
 		
-		new LabeledText(OpenShiftLabel.TextLabels.NAME).setText(Datastore.SSH_KEY_NAME);
-		new LabeledText(OpenShiftLabel.TextLabels.PRIVATE_NAME).setText(Datastore.SSH_KEY_FILENAME);
+		new LabeledText(OpenShiftLabel.TextLabels.NAME).setText(DatastoreOS2.SSH_KEY_NAME);
+		new LabeledText(OpenShiftLabel.TextLabels.PRIVATE_NAME).setText(DatastoreOS2.SSH_KEY_FILENAME);
 		
 		assertTrue("Public key name has not been successfully autocompleted. Was "
 				+ new LabeledText(OpenShiftLabel.TextLabels.PUBLIC_NAME).getText()
-				+ " but should be " + Datastore.SSH_KEY_FILENAME + ".pub",
+				+ " but should be " + DatastoreOS2.SSH_KEY_FILENAME + ".pub",
 				new LabeledText(OpenShiftLabel.TextLabels.PUBLIC_NAME).getText().equals(
-						Datastore.SSH_KEY_FILENAME + ".pub"));
+						DatastoreOS2.SSH_KEY_FILENAME + ".pub"));
 		
 		new WaitUntil(new ButtonWithTextIsEnabled(new FinishButton()), TimePeriod.NORMAL);
 		
@@ -68,7 +68,7 @@ public class ID150CreateNewSSHKeyTest {
 		new DefaultShell(OpenShiftLabel.Shell.MANAGE_SSH_KEYS);
 		
 		assertTrue("SSH Key has not been successfully created or at least it is not in required table.",
-				new DefaultTable().getItem(0).getText(0).equals(Datastore.SSH_KEY_NAME));
+				new DefaultTable().getItem(0).getText(0).equals(DatastoreOS2.SSH_KEY_NAME));
 		
 		new DefaultLink().click();
 		
@@ -78,9 +78,9 @@ public class ID150CreateNewSSHKeyTest {
 			fail("Preferences shell was not opened.");
 		}
 		
-		Datastore.SSH_HOME = new LabeledText("SSH2 home:").getText();
+		DatastoreOS2.SSH_HOME = new LabeledText("SSH2 home:").getText();
 		assertTrue("SSH Key had not been added into SSH2 eclipse preferences.", 
-				new LabeledText("Private keys:").getText().contains(Datastore.SSH_KEY_FILENAME));
+				new LabeledText("Private keys:").getText().contains(DatastoreOS2.SSH_KEY_FILENAME));
 		
 		new CancelButton().click();
 		

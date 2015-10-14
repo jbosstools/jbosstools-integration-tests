@@ -13,7 +13,7 @@ import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.wizard.v2.OpenShift2ApplicationWizard;
-import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
+import org.jboss.tools.openshift.ui.bot.test.util.DatastoreOS2;
 import org.junit.Test;
 
 /**
@@ -28,8 +28,8 @@ public class ID305CartridgeContentAssistTest {
 	
 	@Test
 	public void testCartridgeContentAssist() {
-		new OpenShift2ApplicationWizard(Datastore.USERNAME, Datastore.SERVER, 
-				Datastore.DOMAIN).openWizardFromExplorer();
+		new OpenShift2ApplicationWizard(DatastoreOS2.USERNAME, DatastoreOS2.SERVER, 
+				DatastoreOS2.DOMAIN).openWizardFromExplorer();
 		
 		new DefaultText(1).setText("diy");
 		

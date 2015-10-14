@@ -17,7 +17,7 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.openshift.reddeer.view.OpenShift2Connection;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
-import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
+import org.jboss.tools.openshift.ui.bot.test.util.DatastoreOS2;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.junit.Test;
 
@@ -32,16 +32,16 @@ public class ID202EditDomainTest {
 	@Test
 	public void testEditDomainName() {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
-		OpenShift2Connection connection = explorer.getOpenShift2Connection(Datastore.USERNAME, Datastore.SERVER);
+		OpenShift2Connection connection = explorer.getOpenShift2Connection(DatastoreOS2.USERNAME, DatastoreOS2.SERVER);
 				
-		connection.getDomain(Datastore.DOMAIN).select();
+		connection.getDomain(DatastoreOS2.DOMAIN).select();
 		
 		new ContextMenu(OpenShiftLabel.ContextMenu.EDIT_DOMAIN).select();
 		
 		new DefaultShell(OpenShiftLabel.Shell.EDIT_DOMAIN);
 		
-		Datastore.DOMAIN = "jbdsqedomain" + new Random().nextInt(100);
-		new LabeledText(OpenShiftLabel.TextLabels.DOMAIN_NAME).setText(Datastore.DOMAIN);
+		DatastoreOS2.DOMAIN = "jbdsqedomain" + new Random().nextInt(100);
+		new LabeledText(OpenShiftLabel.TextLabels.DOMAIN_NAME).setText(DatastoreOS2.DOMAIN);
 		
 		new WaitUntil(new ButtonWithTextIsEnabled(new FinishButton()), TimePeriod.NORMAL);
 		
@@ -56,11 +56,11 @@ public class ID202EditDomainTest {
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		
 		try {
-			connection.getDomain(Datastore.DOMAIN);
+			connection.getDomain(DatastoreOS2.DOMAIN);
 			// PASS
 		} catch (JFaceLayerException ex) {
 			fail("Domain name has not been successfully refreshed in OpenShift explorer after renaming."
-					+ " Domain name should be " + Datastore.DOMAIN);
+					+ " Domain name should be " + DatastoreOS2.DOMAIN);
 		}
 	}
 }

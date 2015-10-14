@@ -16,7 +16,7 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.openshift.reddeer.view.OpenShift2Connection;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
-import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
+import org.jboss.tools.openshift.ui.bot.test.util.DatastoreOS2;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.junit.Test;
 
@@ -30,7 +30,7 @@ public class ID201NewDomainTest {
 
 	@Test
 	public void testNewDomain() {
-		createDomain(Datastore.USERNAME, Datastore.SERVER, Datastore.DOMAIN);
+		createDomain(DatastoreOS2.USERNAME, DatastoreOS2.SERVER, DatastoreOS2.DOMAIN);
 	}
 	
 	public static void createDomain(String username, String server, String domainName) {

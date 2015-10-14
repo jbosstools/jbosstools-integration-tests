@@ -9,7 +9,7 @@ import java.util.Random;
  * @author mlabuda@redhat.com
  *
  */
-public class Datastore {
+public class DatastoreOS2 {
 
 	public static String SERVER = System.getProperty("openshift.server");
 	public static String USERNAME = System.getProperty("openshift.username");
@@ -35,5 +35,5 @@ public class Datastore {
 		}
 	}
 	
-	private Datastore() {}
+	private DatastoreOS2() {}
 }

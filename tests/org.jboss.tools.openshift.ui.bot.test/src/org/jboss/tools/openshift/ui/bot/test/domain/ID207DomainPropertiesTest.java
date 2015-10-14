@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
 import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
-import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
+import org.jboss.tools.openshift.ui.bot.test.util.DatastoreOS2;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.junit.Test;
 
@@ -20,7 +20,7 @@ public class ID207DomainPropertiesTest {
 	@Test
 	public void testDomainProperties() {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
-		explorer.getOpenShift2Connection(Datastore.USERNAME, Datastore.SERVER).getDomain(Datastore.DOMAIN).select();
+		explorer.getOpenShift2Connection(DatastoreOS2.USERNAME, DatastoreOS2.SERVER).getDomain(DatastoreOS2.DOMAIN).select();
 		
 		new ContextMenu(OpenShiftLabel.ContextMenu.PROPERTIES).select();
 		
@@ -30,10 +30,10 @@ public class ID207DomainPropertiesTest {
 		String fullName = properties.getProperty("Full Name").getPropertyValue();
 		
 		assertTrue("Domain name is not equaled with property domain name.",
-				Datastore.DOMAIN.equals(id));
+				DatastoreOS2.DOMAIN.equals(id));
 		
 		assertTrue("Full name property is not correct. Was" + fullName
-				+ " but was expected " + Datastore.DOMAIN + "." + suffix,
-				(Datastore.DOMAIN + "." + suffix).equals(fullName));
+				+ " but was expected " + DatastoreOS2.DOMAIN + "." + suffix,
+				(DatastoreOS2.DOMAIN + "." + suffix).equals(fullName));
 	}
 }

@@ -15,7 +15,7 @@ import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.utils.v2.DeleteUtils;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.jboss.tools.openshift.reddeer.wizard.v2.Templates;
-import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
+import org.jboss.tools.openshift.ui.bot.test.util.DatastoreOS2;
 import org.junit.After;
 import org.junit.Test;
 
@@ -34,14 +34,14 @@ public class ID409CreateApplicationWithoutAdapterTest {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 		TreeViewerHandler treeViewerHandler = TreeViewerHandler.getInstance();
 		
-		new Templates(Datastore.USERNAME, Datastore.SERVER, Datastore.DOMAIN, false).
+		new Templates(DatastoreOS2.USERNAME, DatastoreOS2.SERVER, DatastoreOS2.DOMAIN, false).
 			createSimpleApplicationOnBasicCartridges(
 				OpenShiftLabel.Cartridge.DIY, applicationName, false, true, false);
 		
 		explorer.activate();
 		
-		new WaitUntil(new OpenShiftApplicationExists(Datastore.USERNAME, Datastore.SERVER, 
-				Datastore.DOMAIN, applicationName), TimePeriod.LONG);
+		new WaitUntil(new OpenShiftApplicationExists(DatastoreOS2.USERNAME, DatastoreOS2.SERVER, 
+				DatastoreOS2.DOMAIN, applicationName), TimePeriod.LONG);
 		
 		ServersView serversView = new ServersView();
 		serversView.open();
@@ -65,8 +65,8 @@ public class ID409CreateApplicationWithoutAdapterTest {
 	
 	@After
 	public void deleteApplication() {
-		DeleteUtils deleteApplication =	new DeleteUtils(Datastore.USERNAME, Datastore.SERVER, 
-				Datastore.DOMAIN, applicationName, applicationName);
+		DeleteUtils deleteApplication =	new DeleteUtils(DatastoreOS2.USERNAME, DatastoreOS2.SERVER, 
+				DatastoreOS2.DOMAIN, applicationName, applicationName);
 		
 		deleteApplication.deleteOpenShiftApplication();
 		deleteApplication.deleteProject();

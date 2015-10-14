@@ -20,7 +20,7 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.jboss.tools.openshift.ui.bot.test.application.create.IDXXXCreateTestingApplication;
-import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
+import org.jboss.tools.openshift.ui.bot.test.util.DatastoreOS2;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.junit.Test;
 
@@ -32,8 +32,8 @@ public class ID605ShowWarningOnMultipleCartridgeRemoveTest extends IDXXXCreateTe
 	public void deselectEmbeddedCartridge() {
 		embedCartridge(OpenShiftLabel.EmbeddableCartridge.CRON);		
 		
-		explorer.getOpenShift2Connection(Datastore.USERNAME, Datastore.SERVER).
-			getDomain(Datastore.DOMAIN).getApplication(applicationName).select();
+		explorer.getOpenShift2Connection(DatastoreOS2.USERNAME, DatastoreOS2.SERVER).
+			getDomain(DatastoreOS2.DOMAIN).getApplication(applicationName).select();
 		new ContextMenu(OpenShiftLabel.ContextMenu.EMBED_CARTRIDGE).select();
 		
 		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.EDIT_CARTRIDGES));
@@ -70,8 +70,8 @@ public class ID605ShowWarningOnMultipleCartridgeRemoveTest extends IDXXXCreateTe
 		embedCartridge(OpenShiftLabel.EmbeddableCartridge.CRON);
 		embedCartridge(OpenShiftLabel.EmbeddableCartridge.POSTGRE_SQL);
 		
-		explorer.getOpenShift2Connection(Datastore.USERNAME, Datastore.SERVER).
-			getDomain(Datastore.DOMAIN).getApplication(applicationName).select();
+		explorer.getOpenShift2Connection(DatastoreOS2.USERNAME, DatastoreOS2.SERVER).
+			getDomain(DatastoreOS2.DOMAIN).getApplication(applicationName).select();
 		new ContextMenu(OpenShiftLabel.ContextMenu.EMBED_CARTRIDGE).select();
 		
 		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.EDIT_CARTRIDGES));
@@ -104,8 +104,8 @@ public class ID605ShowWarningOnMultipleCartridgeRemoveTest extends IDXXXCreateTe
 	
 	@Test
 	public void deselectMultipleCurrentlyAddedCartridges() {
-		explorer.getOpenShift2Connection(Datastore.USERNAME, Datastore.SERVER).
-			getDomain(Datastore.DOMAIN).getApplication(applicationName).select();
+		explorer.getOpenShift2Connection(DatastoreOS2.USERNAME, DatastoreOS2.SERVER).
+			getDomain(DatastoreOS2.DOMAIN).getApplication(applicationName).select();
 		new ContextMenu(OpenShiftLabel.ContextMenu.EMBED_CARTRIDGE).select();
 		
 		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.EDIT_CARTRIDGES));
@@ -135,8 +135,8 @@ public class ID605ShowWarningOnMultipleCartridgeRemoveTest extends IDXXXCreateTe
 	}
 	
 	private void embedCartridge(String cartridge) {
-		explorer.getOpenShift2Connection(Datastore.USERNAME, Datastore.SERVER).
-			getDomain(Datastore.DOMAIN).getApplication(applicationName).select();
+		explorer.getOpenShift2Connection(DatastoreOS2.USERNAME, DatastoreOS2.SERVER).
+			getDomain(DatastoreOS2.DOMAIN).getApplication(applicationName).select();
 		new ContextMenu(OpenShiftLabel.ContextMenu.EMBED_CARTRIDGE).select();
 		
 		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.EDIT_CARTRIDGES));

@@ -28,7 +28,7 @@ import org.junit.Test;
  * @author mlabuda@redhat.com
  *
  */
-public class CleanUp {
+public class CleanUpOS2 {
 
 	@Test
 	public void test() {
@@ -37,8 +37,8 @@ public class CleanUp {
 	
 	@After
 	public void cleanUp() {
-		performCleanUp(Datastore.USERNAME);
-		performCleanUp(Datastore.X_USERNAME);
+		performCleanUp(DatastoreOS2.USERNAME);
+		performCleanUp(DatastoreOS2.X_USERNAME);
 	}
 	
 	public void performCleanUp(String username) {

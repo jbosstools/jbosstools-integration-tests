@@ -112,7 +112,7 @@ public class OpenShiftExplorerView extends WorkbenchView {
 		connectToOpenShift(server, null, token, storeToken, useDefaultServer, ServerType.OPENSHIFT_3, AuthenticationMethod.OAUTH, true);
 	}
 	
-	private void connectToOpenShift(String server, String username, String password, boolean storePassword, boolean useDefaultServer, 
+	public void connectToOpenShift(String server, String username, String password, boolean storePassword, boolean useDefaultServer, 
 			ServerType serverType, AuthenticationMethod authMethod, boolean certificateShown) {
 		new DefaultShell("");
 		
@@ -140,9 +140,16 @@ public class OpenShiftExplorerView extends WorkbenchView {
 				new LabeledText(OpenShiftLabel.TextLabels.TOKEN).setText(password);
 			}
 		}
-		
-		if (new CheckBox(OpenShiftLabel.TextLabels.STORE_PASSWORD).isChecked() != storePassword) {
-			new CheckBox(OpenShiftLabel.TextLabels.STORE_PASSWORD).click();
+	
+		if (ServerType.OPENSHIFT_2.equals(serverType) || 
+				(ServerType.OPENSHIFT_3.equals(serverType) && AuthenticationMethod.BASIC.equals(authMethod))) { 
+			if (new CheckBox(OpenShiftLabel.TextLabels.STORE_PASSWORD).isChecked() != storePassword) {
+				new CheckBox(OpenShiftLabel.TextLabels.STORE_PASSWORD).click();
+			}
+		} else {
+			if (new CheckBox(OpenShiftLabel.TextLabels.STORE_TOKEN).isChecked() != storePassword) {
+				new CheckBox(OpenShiftLabel.TextLabels.STORE_TOKEN).click();
+			}
 		}
 				
 		new WaitUntil(new ButtonWithTextIsEnabled(new FinishButton()), TimePeriod.NORMAL);

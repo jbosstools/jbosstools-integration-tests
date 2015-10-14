@@ -23,7 +23,7 @@ import org.jboss.tools.openshift.reddeer.utils.v2.DeleteUtils;
 import org.jboss.tools.openshift.reddeer.view.OpenShift2Application;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.jboss.tools.openshift.ui.bot.test.application.create.IDXXXCreateTestingApplication;
-import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
+import org.jboss.tools.openshift.ui.bot.test.util.DatastoreOS2;
 import org.junit.Test;
 
 public class ID604AddJenkinsCartridgeWithoutJenkinsApplicationTest extends IDXXXCreateTestingApplication {
@@ -34,8 +34,8 @@ public class ID604AddJenkinsCartridgeWithoutJenkinsApplicationTest extends IDXXX
 	public void testAddJenkinsCartridgeWithoutJenkinsApplication() {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 		TreeViewerHandler treeViewerHandler = TreeViewerHandler.getInstance();
-		OpenShift2Application application = explorer.getOpenShift2Connection(Datastore.USERNAME, Datastore.SERVER).
-				getDomain(Datastore.DOMAIN).getApplication(applicationName);
+		OpenShift2Application application = explorer.getOpenShift2Connection(DatastoreOS2.USERNAME, DatastoreOS2.SERVER).
+				getDomain(DatastoreOS2.DOMAIN).getApplication(applicationName);
 		application.select();
 		
 		new ContextMenu(OpenShiftLabel.ContextMenu.EMBED_CARTRIDGE).select();
@@ -71,7 +71,7 @@ public class ID604AddJenkinsCartridgeWithoutJenkinsApplicationTest extends IDXXX
 		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.EDIT_CARTRIDGES), TimePeriod.LONG);
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	
-		new WaitUntil(new OpenShiftApplicationExists(Datastore.USERNAME, Datastore.SERVER, Datastore.DOMAIN, 
+		new WaitUntil(new OpenShiftApplicationExists(DatastoreOS2.USERNAME, DatastoreOS2.SERVER, DatastoreOS2.DOMAIN, 
 				jenkinsApplication), TimePeriod.LONG);
 		
 		try {
@@ -83,7 +83,7 @@ public class ID604AddJenkinsCartridgeWithoutJenkinsApplicationTest extends IDXXX
 		}
 		
 		explorer.open();
-		new DeleteUtils(Datastore.USERNAME, Datastore.SERVER, Datastore.DOMAIN, 
+		new DeleteUtils(DatastoreOS2.USERNAME, DatastoreOS2.SERVER, DatastoreOS2.DOMAIN, 
 				jenkinsApplication, jenkinsApplication).deleteOpenShiftApplication();
 	}
 }

@@ -24,7 +24,7 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.jboss.tools.openshift.reddeer.wizard.v2.Templates;
-import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
+import org.jboss.tools.openshift.ui.bot.test.util.DatastoreOS2;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.utils.v2.DeleteUtils;
 import org.junit.AfterClass;
@@ -45,7 +45,7 @@ public class ID804CreateServerAdapterTest {
 	
 	@BeforeClass
 	public static void createApplication() {
-		new Templates(Datastore.USERNAME, Datastore.SERVER, Datastore.DOMAIN, false).
+		new Templates(DatastoreOS2.USERNAME, DatastoreOS2.SERVER, DatastoreOS2.DOMAIN, false).
 			createSimpleApplicationOnBasicCartridges(
 				OpenShiftLabel.Cartridge.DIY, applicationName, false, true, false);
 	}
@@ -72,7 +72,7 @@ public class ID804CreateServerAdapterTest {
 		new NextButton().click();
 		
 		for (String connection: new LabeledCombo("Connection:").getItems()) {
-			if (connection.contains(Datastore.USERNAME)) {
+			if (connection.contains(DatastoreOS2.USERNAME)) {
 				new LabeledCombo("Connection:").setSelection(connection);
 				break;
 			}
@@ -100,7 +100,7 @@ public class ID804CreateServerAdapterTest {
 	public void createAdapterViaExplorer() {
 		TreeViewerHandler treeViewerHandler = TreeViewerHandler.getInstance();
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
-		explorer.getOpenShift2Connection(Datastore.USERNAME, Datastore.SERVER).getDomain(Datastore.DOMAIN).
+		explorer.getOpenShift2Connection(DatastoreOS2.USERNAME, DatastoreOS2.SERVER).getDomain(DatastoreOS2.DOMAIN).
 			getApplication(applicationName).select();
 		
 		new ContextMenu(OpenShiftLabel.ContextMenu.NEW_SERVER_ADAPTER).select();
@@ -147,7 +147,7 @@ public class ID804CreateServerAdapterTest {
 	@AfterClass
 	public static void deleteApplication() {
 		DeleteUtils deleteApplication = 
-				new DeleteUtils(Datastore.USERNAME, Datastore.SERVER, Datastore.DOMAIN, 
+				new DeleteUtils(DatastoreOS2.USERNAME, DatastoreOS2.SERVER, DatastoreOS2.DOMAIN, 
 						applicationName, applicationName);
 		deleteApplication.deleteProject();
 		deleteApplication.deleteOpenShiftApplication();

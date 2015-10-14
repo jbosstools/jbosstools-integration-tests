@@ -2,7 +2,7 @@ package org.jboss.tools.openshift.ui.bot.test.connection;
 
 import org.jboss.reddeer.junit.execution.annotation.RunIf;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
-import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
+import org.jboss.tools.openshift.ui.bot.test.util.DatastoreOS2;
 import org.junit.Test;
 
 /**
@@ -18,10 +18,10 @@ public class ID103CreateNewConnectionTest {
 	public void testConnectToOpenShift() {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 		explorer.openConnectionShell();
-		explorer.connectToOpenShift2(Datastore.SERVER, Datastore.USERNAME,
+		explorer.connectToOpenShift2(DatastoreOS2.SERVER, DatastoreOS2.USERNAME,
 				System.getProperty("openshift.password"), false, false, false);
 		
-		explorer.getOpenShift2Connection(Datastore.USERNAME, Datastore.SERVER);	
+		explorer.getOpenShift2Connection(DatastoreOS2.USERNAME, DatastoreOS2.SERVER);	
 	}
 	
 	@Test
@@ -30,9 +30,9 @@ public class ID103CreateNewConnectionTest {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 		explorer.openConnectionShell();
 		
-		explorer.connectToOpenShift2(Datastore.SERVER, Datastore.USERNAME, 
+		explorer.connectToOpenShift2(DatastoreOS2.SERVER, DatastoreOS2.USERNAME, 
 				System.getProperty("openshift.password"), false, false, true);
 		
-		explorer.getOpenShift2Connection(Datastore.USERNAME, Datastore.SERVER);
+		explorer.getOpenShift2Connection(DatastoreOS2.USERNAME, DatastoreOS2.SERVER);
 	}	
 }
