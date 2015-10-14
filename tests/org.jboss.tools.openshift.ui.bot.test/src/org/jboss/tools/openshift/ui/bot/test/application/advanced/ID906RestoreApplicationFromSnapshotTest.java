@@ -21,7 +21,7 @@ import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.jboss.tools.openshift.ui.bot.test.application.create.IDXXXCreateTestingApplication;
 import org.jboss.tools.openshift.ui.bot.test.application.handle.ID701ModifyAndRepublishApplicationTest;
-import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
+import org.jboss.tools.openshift.ui.bot.test.util.DatastoreOS2;
 import org.junit.Test;
 
 /**
@@ -44,7 +44,7 @@ public class ID906RestoreApplicationFromSnapshotTest extends IDXXXCreateTestingA
 	
 	private void createSnapshot() {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
-		explorer.getOpenShift2Connection(Datastore.USERNAME, Datastore.SERVER).getDomain(Datastore.DOMAIN).
+		explorer.getOpenShift2Connection(DatastoreOS2.USERNAME, DatastoreOS2.SERVER).getDomain(DatastoreOS2.DOMAIN).
 			getApplication(applicationName).select();
 		
 		new ContextMenu(OpenShiftLabel.ContextMenu.SAVE_SNAPSHOT).select();
@@ -70,7 +70,7 @@ public class ID906RestoreApplicationFromSnapshotTest extends IDXXXCreateTestingA
 	
 	private void restoreApplication() { 
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
-		explorer.getOpenShift2Connection(Datastore.USERNAME, Datastore.SERVER).getDomain(Datastore.DOMAIN).
+		explorer.getOpenShift2Connection(DatastoreOS2.USERNAME, DatastoreOS2.SERVER).getDomain(DatastoreOS2.DOMAIN).
 			getApplication(applicationName).select();
 		
 		new ContextMenu(OpenShiftLabel.ContextMenu.RESTORE_SNAPSHOT).select();
@@ -92,8 +92,8 @@ public class ID906RestoreApplicationFromSnapshotTest extends IDXXXCreateTestingA
 		AbstractWait.sleep(TimePeriod.getCustom(5));
 		
 		try {
-			new WaitUntil(new ApplicationIsDeployedSuccessfully(Datastore.USERNAME, Datastore.SERVER,
-				Datastore.DOMAIN, applicationName, "OpenShift"), TimePeriod.VERY_LONG);
+			new WaitUntil(new ApplicationIsDeployedSuccessfully(DatastoreOS2.USERNAME, DatastoreOS2.SERVER,
+				DatastoreOS2.DOMAIN, applicationName, "OpenShift"), TimePeriod.VERY_LONG);
 			// PASS
 		} catch (WaitTimeoutExpiredException ex) {
 			fail("Application has not been restored successfully. Browser does not "

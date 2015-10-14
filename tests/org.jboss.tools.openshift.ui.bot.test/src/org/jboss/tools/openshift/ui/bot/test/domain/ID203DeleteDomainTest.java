@@ -18,7 +18,7 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.view.OpenShift2Connection;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
-import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
+import org.jboss.tools.openshift.ui.bot.test.util.DatastoreOS2;
 import org.junit.After;
 import org.junit.Test;
 
@@ -34,7 +34,7 @@ public class ID203DeleteDomainTest {
 	
 	@Test
 	public void testDeleteDomain() {
-		domainDeleted = deleteDomain(Datastore.USERNAME, Datastore.SERVER, Datastore.DOMAIN);
+		domainDeleted = deleteDomain(DatastoreOS2.USERNAME, DatastoreOS2.SERVER, DatastoreOS2.DOMAIN);
 		if (!domainDeleted) {
 			fail("Domain has not been removed from OpenShift explorer view after deletion.");
 		}
@@ -59,7 +59,7 @@ public class ID203DeleteDomainTest {
 		new WaitWhile(new JobIsRunning());
 		
 		try {
-			connection.getDomain(Datastore.DOMAIN);
+			connection.getDomain(DatastoreOS2.DOMAIN);
 			return false;
 		} catch (JFaceLayerException ex) {
 			return true;
@@ -69,7 +69,7 @@ public class ID203DeleteDomainTest {
 	@After
 	public void recreateDomain() {
 		if (domainDeleted) {
-			createDomain(Datastore.USERNAME, Datastore.SERVER, Datastore.DOMAIN);
+			createDomain(DatastoreOS2.USERNAME, DatastoreOS2.SERVER, DatastoreOS2.DOMAIN);
 		}
 	}
 	

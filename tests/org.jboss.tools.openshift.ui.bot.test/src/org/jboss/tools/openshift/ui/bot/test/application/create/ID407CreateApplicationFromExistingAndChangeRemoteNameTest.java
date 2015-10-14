@@ -33,7 +33,7 @@ import org.jboss.tools.openshift.reddeer.utils.v2.DeleteUtils;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.jboss.tools.openshift.reddeer.wizard.v2.OpenShift2ApplicationWizard;
 import org.jboss.tools.openshift.reddeer.wizard.v2.Templates;
-import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
+import org.jboss.tools.openshift.ui.bot.test.util.DatastoreOS2;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -55,13 +55,13 @@ public class ID407CreateApplicationFromExistingAndChangeRemoteNameTest {
 	
 	@Before
 	public void createProject() {
-		Templates newApplicationTemplate = new Templates(Datastore.USERNAME, Datastore.SERVER,
-				Datastore.DOMAIN, false);
+		Templates newApplicationTemplate = new Templates(DatastoreOS2.USERNAME, DatastoreOS2.SERVER,
+				DatastoreOS2.DOMAIN, false);
 		newApplicationTemplate.createSimpleApplicationOnBasicCartridges(
 				OpenShiftLabel.Cartridge.DIY, applicationName, false, true, true);
 		
 		DeleteUtils deleteApplicaiton = 
-				new DeleteUtils(Datastore.USERNAME, Datastore.SERVER, Datastore.DOMAIN, applicationName,
+				new DeleteUtils(DatastoreOS2.USERNAME, DatastoreOS2.SERVER, DatastoreOS2.DOMAIN, applicationName,
 						applicationName);
 		deleteApplicaiton.deleteOpenShiftApplication();
 		deleteApplicaiton.deleteServerAdapter();
@@ -70,12 +70,12 @@ public class ID407CreateApplicationFromExistingAndChangeRemoteNameTest {
 	@Test
 	public void testCreateApplicationFromExistingProjectAndTestRemoteName() {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
-		explorer.getOpenShift2Connection(Datastore.USERNAME, Datastore.SERVER).getDomain(Datastore.DOMAIN).select();
+		explorer.getOpenShift2Connection(DatastoreOS2.USERNAME, DatastoreOS2.SERVER).getDomain(DatastoreOS2.DOMAIN).select();
 		
 		modifyAndCommitProject();
 		
-		OpenShift2ApplicationWizard wizard = new OpenShift2ApplicationWizard(Datastore.USERNAME, 
-				Datastore.SERVER, Datastore.DOMAIN);
+		OpenShift2ApplicationWizard wizard = new OpenShift2ApplicationWizard(DatastoreOS2.USERNAME, 
+				DatastoreOS2.SERVER, DatastoreOS2.DOMAIN);
 		wizard.openWizardFromExplorer();
 		wizard.createNewApplicationOnBasicCartridge(OpenShiftLabel.Cartridge.DIY,
 				secondApplicationName, false, true, false, false, null, null, true, applicationName, 
@@ -84,8 +84,8 @@ public class ID407CreateApplicationFromExistingAndChangeRemoteNameTest {
 		postCreateSteps(secondApplicationName);
 		
 		try {
-			new WaitUntil(new ApplicationIsDeployedSuccessfully(Datastore.USERNAME, Datastore.SERVER,
-				Datastore.DOMAIN, secondApplicationName, "OpSh"), TimePeriod.VERY_LONG);
+			new WaitUntil(new ApplicationIsDeployedSuccessfully(DatastoreOS2.USERNAME, DatastoreOS2.SERVER,
+				DatastoreOS2.DOMAIN, secondApplicationName, "OpSh"), TimePeriod.VERY_LONG);
 			// PASS
 		} catch (WaitTimeoutExpiredException ex) {
 			fail("Application has not been deployed successfully. Browser does not "
@@ -210,7 +210,7 @@ public class ID407CreateApplicationFromExistingAndChangeRemoteNameTest {
 	
 	@After
 	public void deleteApplication() {
-		new DeleteUtils(Datastore.USERNAME, Datastore.SERVER, Datastore.DOMAIN, secondApplicationName,
+		new DeleteUtils(DatastoreOS2.USERNAME, DatastoreOS2.SERVER, DatastoreOS2.DOMAIN, secondApplicationName,
 				applicationName).perform();
 	}
 }

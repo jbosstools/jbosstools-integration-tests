@@ -8,7 +8,7 @@ import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.utils.v2.DeleteUtils;
 import org.jboss.tools.openshift.reddeer.wizard.v2.OpenShift2ApplicationWizard;
-import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
+import org.jboss.tools.openshift.ui.bot.test.util.DatastoreOS2;
 import org.junit.After;
 import org.junit.Test;
 
@@ -26,8 +26,8 @@ public class ID415DisableMavenBuildTest {
 	
 	@Test
 	public void testCreateApplicationWithMarker() {
-		OpenShift2ApplicationWizard	wizard = new OpenShift2ApplicationWizard(Datastore.USERNAME,
-				Datastore.SERVER, Datastore.DOMAIN);
+		OpenShift2ApplicationWizard	wizard = new OpenShift2ApplicationWizard(DatastoreOS2.USERNAME,
+				DatastoreOS2.SERVER, DatastoreOS2.DOMAIN);
 		wizard.openWizardFromExplorer();
 		wizard.createNewApplicationOnBasicCartridge(OpenShiftLabel.Cartridge.JBOSS_EAP,
 				applicationName, false, true, false, true, null, null, true, null, null, null, (String[]) null);
@@ -61,7 +61,7 @@ public class ID415DisableMavenBuildTest {
 	
 	@After
 	public void deleteApplication() {
-		new DeleteUtils(Datastore.USERNAME, Datastore.SERVER, Datastore.DOMAIN, 
+		new DeleteUtils(DatastoreOS2.USERNAME, DatastoreOS2.SERVER, DatastoreOS2.DOMAIN, 
 				applicationName, applicationName).perform();
 	}
 }

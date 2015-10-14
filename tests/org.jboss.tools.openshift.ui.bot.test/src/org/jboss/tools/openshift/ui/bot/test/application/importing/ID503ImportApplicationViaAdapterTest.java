@@ -21,7 +21,7 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.utils.v2.DeleteUtils;
-import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
+import org.jboss.tools.openshift.ui.bot.test.util.DatastoreOS2;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -63,7 +63,7 @@ public class ID503ImportApplicationViaAdapterTest {
 		new NextButton().click();
 		
 		for (String connection: new LabeledCombo("Connection:").getItems()) {
-			if (connection.contains(Datastore.USERNAME)) {
+			if (connection.contains(DatastoreOS2.USERNAME)) {
 				new LabeledCombo("Connection:").setSelection(connection);
 				break;
 			}
@@ -86,7 +86,7 @@ public class ID503ImportApplicationViaAdapterTest {
 	
 	@After
 	public void deleteApplication() {
-		new DeleteUtils(Datastore.USERNAME, Datastore.SERVER, Datastore.DOMAIN, applicationName,
+		new DeleteUtils(DatastoreOS2.USERNAME, DatastoreOS2.SERVER, DatastoreOS2.DOMAIN, applicationName,
 				applicationName).perform();
 	}
 }

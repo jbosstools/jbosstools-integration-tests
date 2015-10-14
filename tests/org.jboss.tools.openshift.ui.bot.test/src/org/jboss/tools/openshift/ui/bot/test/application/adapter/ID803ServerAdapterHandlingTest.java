@@ -31,7 +31,7 @@ import org.jboss.tools.openshift.ui.bot.test.application.create.ID408Application
 import org.jboss.tools.openshift.ui.bot.test.application.handle.ID705TailFilesTest;
 import org.jboss.tools.openshift.ui.bot.test.application.handle.ID706PortForwardingTest;
 import org.jboss.tools.openshift.ui.bot.test.application.handle.ID707HandleEnvironmentVariablesTest;
-import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
+import org.jboss.tools.openshift.ui.bot.test.util.DatastoreOS2;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
@@ -52,7 +52,7 @@ public class ID803ServerAdapterHandlingTest {
 	
 	@BeforeClass
 	public static void createApplication() {
-		new Templates(Datastore.USERNAME, Datastore.SERVER, Datastore.DOMAIN, false).
+		new Templates(DatastoreOS2.USERNAME, DatastoreOS2.SERVER, DatastoreOS2.DOMAIN, false).
 				createSimpleApplicationOnBasicCartridges(OpenShiftLabel.Cartridge.JBOSS_EAP, applicationName,
 						false, true, true);
 	}
@@ -116,8 +116,8 @@ public class ID803ServerAdapterHandlingTest {
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 		
 		try {
-			new WaitUntil(new ApplicationIsDeployedSuccessfully(Datastore.USERNAME, Datastore.SERVER,
-					Datastore.DOMAIN, applicationName, "OpenShift"), TimePeriod.VERY_LONG);
+			new WaitUntil(new ApplicationIsDeployedSuccessfully(DatastoreOS2.USERNAME, DatastoreOS2.SERVER,
+					DatastoreOS2.DOMAIN, applicationName, "OpenShift"), TimePeriod.VERY_LONG);
 		} catch (WaitTimeoutExpiredException ex) {
 			fail("Application has not been restarted successfully.");
 		}
@@ -153,7 +153,7 @@ public class ID803ServerAdapterHandlingTest {
 	@AfterClass
 	public static void deleteProject() {
 		deleteApplicationViaServerAdapter();
-		new DeleteUtils(Datastore.USERNAME, Datastore.SERVER, Datastore.DOMAIN, applicationName, applicationName).
+		new DeleteUtils(DatastoreOS2.USERNAME, DatastoreOS2.SERVER, DatastoreOS2.DOMAIN, applicationName, applicationName).
 			deleteProject();
 	}
 	
@@ -172,7 +172,7 @@ public class ID803ServerAdapterHandlingTest {
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		
 		try {
-			new WaitWhile(new OpenShiftApplicationExists(Datastore.USERNAME, Datastore.SERVER, Datastore.DOMAIN,
+			new WaitWhile(new OpenShiftApplicationExists(DatastoreOS2.USERNAME, DatastoreOS2.SERVER, DatastoreOS2.DOMAIN,
 				applicationName), TimePeriod.NORMAL);
 			fail("Application should be removed and no longer visible in OpenShift explorer.");
 		} catch (WaitTimeoutExpiredException ex) {

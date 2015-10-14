@@ -5,7 +5,7 @@ import static org.junit.Assert.assertTrue;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
-import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
+import org.jboss.tools.openshift.ui.bot.test.util.DatastoreOS2;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.junit.Test;
 
@@ -21,7 +21,7 @@ public class ID112RefreshConnectionTest {
 	public void testRefreshConnection() {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 		
-		explorer.getOpenShift2Connection(Datastore.USERNAME, Datastore.SERVER).select();
+		explorer.getOpenShift2Connection(DatastoreOS2.USERNAME, DatastoreOS2.SERVER).select();
 		new ContextMenu(OpenShiftLabel.ContextMenu.REFRESH).select();
 		
 		assertTrue("Connection is not refreshed - or there is no job for it", new JobIsRunning().test());

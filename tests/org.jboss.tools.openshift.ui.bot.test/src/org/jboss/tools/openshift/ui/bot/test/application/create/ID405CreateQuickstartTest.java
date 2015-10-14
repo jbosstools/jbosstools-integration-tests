@@ -3,7 +3,7 @@ package org.jboss.tools.openshift.ui.bot.test.application.create;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.utils.v2.DeleteUtils;
 import org.jboss.tools.openshift.reddeer.wizard.v2.Templates;
-import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
+import org.jboss.tools.openshift.ui.bot.test.util.DatastoreOS2;
 import org.junit.After;
 import org.junit.Test;
 
@@ -19,14 +19,14 @@ public class ID405CreateQuickstartTest {
 	
 	@Test
 	public void testCreateQuickstart() {
-		Templates templates = new Templates(Datastore.USERNAME, Datastore.SERVER, Datastore.DOMAIN, false);
+		Templates templates = new Templates(DatastoreOS2.USERNAME, DatastoreOS2.SERVER, DatastoreOS2.DOMAIN, false);
 		templates.createQuickstart(OpenShiftLabel.Cartridge.DJANGO, applicationName,
 				false, true, true);
 	}
 	
 	@After
 	public void deleteApplication() {
-		new DeleteUtils(Datastore.USERNAME, Datastore.SERVER, Datastore.DOMAIN, applicationName,
+		new DeleteUtils(DatastoreOS2.USERNAME, DatastoreOS2.SERVER, DatastoreOS2.DOMAIN, applicationName,
 				applicationName).perform();
 	}
 	

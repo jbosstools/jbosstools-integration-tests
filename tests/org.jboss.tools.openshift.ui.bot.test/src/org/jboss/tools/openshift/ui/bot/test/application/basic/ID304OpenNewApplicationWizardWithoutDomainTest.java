@@ -18,7 +18,7 @@ import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.jboss.tools.openshift.ui.bot.test.domain.ID203DeleteDomainTest;
-import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
+import org.jboss.tools.openshift.ui.bot.test.util.DatastoreOS2;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -36,14 +36,14 @@ public class ID304OpenNewApplicationWizardWithoutDomainTest {
 	
 	@BeforeClass
 	public static void deleteDomain() {
-		firstDomainDeleted = ID203DeleteDomainTest.deleteDomain(Datastore.USERNAME, Datastore.SERVER, Datastore.DOMAIN);
-		secondDomainDeleted = ID203DeleteDomainTest.deleteDomain(Datastore.USERNAME, Datastore.SERVER, Datastore.SECOND_DOMAIN);
+		firstDomainDeleted = ID203DeleteDomainTest.deleteDomain(DatastoreOS2.USERNAME, DatastoreOS2.SERVER, DatastoreOS2.DOMAIN);
+		secondDomainDeleted = ID203DeleteDomainTest.deleteDomain(DatastoreOS2.USERNAME, DatastoreOS2.SERVER, DatastoreOS2.SECOND_DOMAIN);
 	}
 	
 	@Test
 	public void testOpenNewApplicationWizardViaExplorer() {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
-		explorer.getOpenShift2Connection(Datastore.USERNAME, Datastore.SERVER).select();
+		explorer.getOpenShift2Connection(DatastoreOS2.USERNAME, DatastoreOS2.SERVER).select();
 		
 		new ContextMenu(OpenShiftLabel.ContextMenu.NEW_APPLICATION).select();
 		
@@ -111,10 +111,10 @@ public class ID304OpenNewApplicationWizardWithoutDomainTest {
 	@AfterClass
 	public static void addDomain() {
 		if (firstDomainDeleted) {
-			ID203DeleteDomainTest.createDomain(Datastore.USERNAME, Datastore.SERVER, Datastore.DOMAIN);
+			ID203DeleteDomainTest.createDomain(DatastoreOS2.USERNAME, DatastoreOS2.SERVER, DatastoreOS2.DOMAIN);
 		}
 		if (secondDomainDeleted) {
-			ID203DeleteDomainTest.createDomain(Datastore.USERNAME, Datastore.SERVER, Datastore.SECOND_DOMAIN);
+			ID203DeleteDomainTest.createDomain(DatastoreOS2.USERNAME, DatastoreOS2.SERVER, DatastoreOS2.SECOND_DOMAIN);
 		}
 	}
 }

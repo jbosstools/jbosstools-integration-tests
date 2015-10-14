@@ -1,6 +1,6 @@
 package org.jboss.tools.openshift.ui.bot.test.domain;
 
-import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
+import org.jboss.tools.openshift.ui.bot.test.util.DatastoreOS2;
 import org.junit.Test;
 
 /**
@@ -13,6 +13,6 @@ public class ID204CreateMoreDomainsTest {
 	
 	@Test
 	public void testCreateMoreDomains() {
-		ID201NewDomainTest.createDomain(Datastore.USERNAME, Datastore.SERVER, Datastore.SECOND_DOMAIN);
+		ID201NewDomainTest.createDomain(DatastoreOS2.USERNAME, DatastoreOS2.SERVER, DatastoreOS2.SECOND_DOMAIN);
 	}
 }

@@ -19,7 +19,7 @@ import org.jboss.tools.openshift.reddeer.utils.v2.DeleteUtils;
 import org.jboss.tools.openshift.reddeer.view.OpenShift2Application;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.jboss.tools.openshift.reddeer.wizard.v2.Templates;
-import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
+import org.jboss.tools.openshift.ui.bot.test.util.DatastoreOS2;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,7 +30,7 @@ public class ID602oAddConflictCartridgesTest {
 	
 	@Before
 	public void createApplication() {
-		new Templates(Datastore.USERNAME, Datastore.SERVER, Datastore.DOMAIN, false).
+		new Templates(DatastoreOS2.USERNAME, DatastoreOS2.SERVER, DatastoreOS2.DOMAIN, false).
 			createSimpleApplicationOnBasicCartridges(
 				OpenShiftLabel.Cartridge.JBOSS_EAP, applicationName, true, true, true);
 	}
@@ -38,8 +38,8 @@ public class ID602oAddConflictCartridgesTest {
 	@Test
 	public void testAddConflictCartridge() {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
-		OpenShift2Application application = explorer.getOpenShift2Connection(Datastore.USERNAME, Datastore.SERVER).
-				getDomain(Datastore.DOMAIN).getApplication(applicationName);
+		OpenShift2Application application = explorer.getOpenShift2Connection(DatastoreOS2.USERNAME, DatastoreOS2.SERVER).
+				getDomain(DatastoreOS2.DOMAIN).getApplication(applicationName);
 		application.select();
 		
 		new ContextMenu(OpenShiftLabel.ContextMenu.EMBED_CARTRIDGE).select();
@@ -91,7 +91,7 @@ public class ID602oAddConflictCartridgesTest {
 	
 	@After
 	public void deleteApplication() {
-		new DeleteUtils(Datastore.USERNAME, Datastore.SERVER, Datastore.DOMAIN, 
+		new DeleteUtils(DatastoreOS2.USERNAME, DatastoreOS2.SERVER, DatastoreOS2.DOMAIN, 
 				applicationName, applicationName).perform();
 	}
 }

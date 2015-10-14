@@ -49,11 +49,11 @@ public class OpenShiftLabel {
 	 * OpenShift explorer context menu labels.
 	 */
 	public static class ContextMenu {
-		// Connection, domain and application related
-		public static final String REFRESH = "Refresh";
-		
-		// Connection and domain related
+		// General
 		public static final String PROPERTIES = "Properties";
+		public static final String REFRESH = "Refresh";
+		public static final String[] SHOW_IN_WEB_CONSOLE = {"Show In", "Web Console"};
+		public static final String[] SHOW_IN_WEB_BROWSER = {"Show In", "Web Browser"};
 		
 		// Connection related
 		public static final String EDIT_CONNECTION = "Edit Connection...";
@@ -61,11 +61,16 @@ public class OpenShiftLabel {
 		public static final String MANAGE_DOMAINS = "Manage Domains...";
 		public static final String[] NEW_DOMAIN = {"New", "Domain..."};
 		public static final String[] NEW_CONNECTION = {"New", "Connection..."};
+		public static final String[] NEW_OS_PROJECT = {"New", "Project"};
 		public static final String REMOVE_CONNECTION = "Remove Connection(s)...";
 		
 		// Domain related
 		public static final String DELETE_DOMAIN = "Delete Domain...";
 		public static final String EDIT_DOMAIN = "Edit Domain...";
+		
+		// Project related
+		public static final String MANAGE_OS_PROJECTS = "Manage Projects...";
+		public static final String DELETE_OS_PROJECT = "Delete Project";
 		
 		// Application related
 		public static final String APPLICATION_DETAILS = "Details...";
@@ -87,7 +92,7 @@ public class OpenShiftLabel {
 		// Server adapter related
 		public static final String PUBLISH = "Publish";
 		
-		// Project related
+		// Workspace project related
 		public static final String[] CONFIGURE_MARKERS = {"OpenShift", "Configure Markers..."};
 	}
 		
@@ -103,6 +108,7 @@ public class OpenShiftLabel {
 		public static final String APPLICATION_SERVER_REMOVE = "Application and Server removal";
 		public static final String COMMIT = "Commit Changes";
 		public static final String DELETE_APP = "Application removal";
+		public static final String DELETE_OS_PROJECT = "OpenShift project deletion";
 		public static final String EDIT_CARTRIDGES = "Edit Embedded Cartridges";
 		public static final String EDIT_ENV_VAR = "Edit Environment variable";
 		public static final String EMBEDDED_CARTRIDGE = "Embedded Cartridges";
@@ -139,6 +145,11 @@ public class OpenShiftLabel {
 		public static final String NO_SSH_KEY = "No SSH Keys";
 		public static final String REMOVE_SSH_KEY = "Remove SSH Key";
 		
+		
+		// Project related
+		public static final String MANAGE_OS_PROJECTS = "OpenShift Projects";
+		public static final String CREATE_OS_PROJECT = "Create OpenShift Project";
+		
 		// Server adapter related
 		public static final String PUBLISH_CHANGES = "Publish Changes";
 	}
@@ -159,6 +170,7 @@ public class OpenShiftLabel {
 		public static final String EDIT = "Edit...";
 		public static final String EDIT_DOMAIN = "Edit...";
 		public static final String ENV_VAR = "Environment Variables... ";
+		public static final String NEW = "New...";
 		public static final String REFRESH = "Refresh...";
 		public static final String REMOVE = "Remove...";
 		public static final String RESET = "Reset";
@@ -178,6 +190,7 @@ public class OpenShiftLabel {
 		public static final String USERNAME = "Username:";
 		public static final String SERVER_TYPE = "Server type:";
 		public static final String STORE_PASSWORD = "Save Password (could trigger secure storage login)";
+		public static final String STORE_TOKEN= "Save Token (could trigger secure storage login)";
 		public static final String CHECK_SERVER_TYPE = "Check Server Type";
 		public static final String PROTOCOL = "Protocol:";
 		public static final String TOKEN = "Token";
@@ -185,6 +198,12 @@ public class OpenShiftLabel {
 		
 		// Domain related
 		public static final String DOMAIN_NAME = "Domain Name:";
+	
+		// Project related
+		public static final String PROJECT_NAME = "Project Name:";
+		public static final String PROJECT_DISPLAYED_NAME = "Display Name:";
+		public static final String PROJECT_DESCRIPTION = "Description:";
+		
 		
 		// SSH Key related
 		public static final String NAME = "Name:";

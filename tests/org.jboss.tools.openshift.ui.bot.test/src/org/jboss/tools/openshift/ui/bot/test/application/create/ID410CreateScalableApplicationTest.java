@@ -15,7 +15,7 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.jboss.tools.openshift.reddeer.wizard.v2.Templates;
-import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
+import org.jboss.tools.openshift.ui.bot.test.util.DatastoreOS2;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.utils.v2.DeleteUtils;
 import org.junit.After;
@@ -34,7 +34,7 @@ public class ID410CreateScalableApplicationTest {
 	
 	@Before
 	public void createApplication() {
-		new Templates(Datastore.USERNAME, Datastore.SERVER, Datastore.DOMAIN, false).
+		new Templates(DatastoreOS2.USERNAME, DatastoreOS2.SERVER, DatastoreOS2.DOMAIN, false).
 			createSimpleApplicationOnBasicCartridges(
 				OpenShiftLabel.Cartridge.JBOSS_EAP, applicationName, true, true, true);
 	}
@@ -42,7 +42,7 @@ public class ID410CreateScalableApplicationTest {
 	@Test
 	public void testCreateScalableApplication() {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
-		explorer.getOpenShift2Connection(Datastore.USERNAME, Datastore.SERVER).getDomain(Datastore.DOMAIN).
+		explorer.getOpenShift2Connection(DatastoreOS2.USERNAME, DatastoreOS2.SERVER).getDomain(DatastoreOS2.DOMAIN).
 			getApplication(applicationName).select();
 		
 		new ContextMenu(OpenShiftLabel.ContextMenu.APPLICATION_DETAILS).select();
@@ -63,7 +63,7 @@ public class ID410CreateScalableApplicationTest {
 		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.APPLICATION_DETAILS),
 				TimePeriod.LONG);
 		
-		explorer.getOpenShift2Connection(Datastore.USERNAME, Datastore.SERVER).getDomain(Datastore.DOMAIN).
+		explorer.getOpenShift2Connection(DatastoreOS2.USERNAME, DatastoreOS2.SERVER).getDomain(DatastoreOS2.DOMAIN).
 			getApplication(applicationName).select();
 		PropertiesView propertiesView = new PropertiesView();
 		propertiesView.open();
@@ -75,7 +75,7 @@ public class ID410CreateScalableApplicationTest {
 	
 	@After
 	public void deleteApplication() {
-		new DeleteUtils(Datastore.USERNAME, Datastore.SERVER, Datastore.DOMAIN, applicationName,
+		new DeleteUtils(DatastoreOS2.USERNAME, DatastoreOS2.SERVER, DatastoreOS2.DOMAIN, applicationName,
 				applicationName).perform();;
 	}
 }

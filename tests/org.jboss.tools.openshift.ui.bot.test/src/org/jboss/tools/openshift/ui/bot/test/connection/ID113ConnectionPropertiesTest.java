@@ -8,7 +8,7 @@ import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
-import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
+import org.jboss.tools.openshift.ui.bot.test.util.DatastoreOS2;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.junit.Test;
 
@@ -25,7 +25,7 @@ public class ID113ConnectionPropertiesTest {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 		explorer.open();
 		
-		explorer.getOpenShift2Connection(Datastore.USERNAME, Datastore.SERVER).select();
+		explorer.getOpenShift2Connection(DatastoreOS2.USERNAME, DatastoreOS2.SERVER).select();
 		new ContextMenu(OpenShiftLabel.ContextMenu.PROPERTIES).select();
 		
 		PropertiesView properties = new PropertiesView();
@@ -34,18 +34,18 @@ public class ID113ConnectionPropertiesTest {
 		String usernameValue = properties.getProperty("Username").getPropertyValue();
 		
 		assertTrue("Invalid host for connection. Was \'" + hostValue + "\', but was expected "
-				+ Datastore.SERVER,
-				hostValue.contains(Datastore.SERVER));
+				+ DatastoreOS2.SERVER,
+				hostValue.contains(DatastoreOS2.SERVER));
 		
-		String parsedPersistedKey = "https://" + Datastore.USERNAME.replace("@", "%40");
-		parsedPersistedKey += "@" + Datastore.SERVER.substring(8);
+		String parsedPersistedKey = "https://" + DatastoreOS2.USERNAME.replace("@", "%40");
+		parsedPersistedKey += "@" + DatastoreOS2.SERVER.substring(8);
 		assertTrue("Invalid persisted key for connection. Was \'" + persistedKeyValue + "\', "
 				+ "but was expected \'" + parsedPersistedKey + "\'",
 				persistedKeyValue.equals(parsedPersistedKey));
 		
 		assertTrue("Invalid host for connection. Was \'" + usernameValue + "\', but was expected"
-				+ Datastore.USERNAME,
-				usernameValue.equals(Datastore.USERNAME));	
+				+ DatastoreOS2.USERNAME,
+				usernameValue.equals(DatastoreOS2.USERNAME));	
 		
 		explorer.open();
 		new WaitWhile(new ShellWithTextIsAvailable("Progress Information"), TimePeriod.LONG);

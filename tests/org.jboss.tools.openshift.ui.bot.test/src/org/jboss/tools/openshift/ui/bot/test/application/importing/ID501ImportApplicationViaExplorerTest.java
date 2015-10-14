@@ -13,7 +13,7 @@ import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.jboss.tools.openshift.reddeer.wizard.v2.Templates;
-import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
+import org.jboss.tools.openshift.ui.bot.test.util.DatastoreOS2;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.utils.v2.DeleteUtils;
 import org.junit.After;
@@ -36,12 +36,12 @@ public class ID501ImportApplicationViaExplorerTest {
 	}
 	
 	public static void createApplicationWithoutServerAdapterAndProject(String applicationName) {
-		new Templates(Datastore.USERNAME, Datastore.SERVER, Datastore.DOMAIN, false).
+		new Templates(DatastoreOS2.USERNAME, DatastoreOS2.SERVER, DatastoreOS2.DOMAIN, false).
 			createSimpleApplicationOnBasicCartridges(
 				OpenShiftLabel.Cartridge.DIY, applicationName, false, true, true);
 		
-		DeleteUtils deleteApplication = new DeleteUtils(Datastore.USERNAME, Datastore.SERVER,
-				Datastore.DOMAIN, applicationName, applicationName);
+		DeleteUtils deleteApplication = new DeleteUtils(DatastoreOS2.USERNAME, DatastoreOS2.SERVER,
+				DatastoreOS2.DOMAIN, applicationName, applicationName);
 		deleteApplication.deleteServerAdapter();
 		deleteApplication.deleteProject();
 	}
@@ -49,7 +49,7 @@ public class ID501ImportApplicationViaExplorerTest {
 	@Test
 	public void testImportApplication() {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
-		explorer.getOpenShift2Connection(Datastore.USERNAME, Datastore.SERVER).getDomain(Datastore.DOMAIN).
+		explorer.getOpenShift2Connection(DatastoreOS2.USERNAME, DatastoreOS2.SERVER).getDomain(DatastoreOS2.DOMAIN).
 			getApplication(applicationName).select();
 		
 		new ContextMenu(OpenShiftLabel.ContextMenu.IMPORT_APPLICATION).select();
@@ -69,7 +69,7 @@ public class ID501ImportApplicationViaExplorerTest {
 	
 	@After
 	public void deleteApplication() {
-		new DeleteUtils(Datastore.USERNAME, Datastore.SERVER, Datastore.DOMAIN, applicationName,
+		new DeleteUtils(DatastoreOS2.USERNAME, DatastoreOS2.SERVER, DatastoreOS2.DOMAIN, applicationName,
 				applicationName).perform();
 	}
 }

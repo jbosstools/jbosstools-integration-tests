@@ -17,7 +17,7 @@ import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
-import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
+import org.jboss.tools.openshift.ui.bot.test.util.DatastoreOS2;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -33,7 +33,7 @@ public class ID302OpenNewApplicationWizardWithoutConnectionTest {
 	@BeforeClass
 	public static void removeConnection() {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
-		explorer.getOpenShift2Connection(Datastore.USERNAME, Datastore.SERVER).remove();
+		explorer.getOpenShift2Connection(DatastoreOS2.USERNAME, DatastoreOS2.SERVER).remove();
 	}
 	
 	@Test
@@ -87,9 +87,9 @@ public class ID302OpenNewApplicationWizardWithoutConnectionTest {
 	public static void recreateConnection() {
 		boolean certificateShown = System.getProperty("openshift.xserver") != null;
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
-		if (!explorer.connectionExists(Datastore.USERNAME)) {
+		if (!explorer.connectionExists(DatastoreOS2.USERNAME)) {
 			explorer.openConnectionShell();
-			explorer.connectToOpenShift2(Datastore.SERVER, Datastore.USERNAME,
+			explorer.connectToOpenShift2(DatastoreOS2.SERVER, DatastoreOS2.USERNAME,
 					System.getProperty("user.pwd"), false, false, certificateShown);
 		}
 	}

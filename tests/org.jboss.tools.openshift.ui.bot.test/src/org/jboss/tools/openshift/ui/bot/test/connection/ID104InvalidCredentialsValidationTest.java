@@ -13,7 +13,7 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView.ServerType;
-import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
+import org.jboss.tools.openshift.ui.bot.test.util.DatastoreOS2;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.junit.Test;
 
@@ -50,21 +50,21 @@ public class ID104InvalidCredentialsValidationTest {
 	
 	private void incorrectServer() {
 		new LabeledCombo(OpenShiftLabel.TextLabels.SERVER).setText("https://incorrect.server.url");
-		new LabeledText(OpenShiftLabel.TextLabels.USERNAME).setText(Datastore.USERNAME);
+		new LabeledText(OpenShiftLabel.TextLabels.USERNAME).setText(DatastoreOS2.USERNAME);
 		new LabeledText(OpenShiftLabel.TextLabels.PASSWORD).setText(
 				System.getProperty("openshift.password"));		
 	}
 
 	private void incorrectUsername() {
-		new LabeledCombo(OpenShiftLabel.TextLabels.SERVER).setText(Datastore.SERVER);
+		new LabeledCombo(OpenShiftLabel.TextLabels.SERVER).setText(DatastoreOS2.SERVER);
 		new LabeledText(OpenShiftLabel.TextLabels.USERNAME).setText("nonexisting");
 		new LabeledText(OpenShiftLabel.TextLabels.PASSWORD).setText(
 				System.getProperty("openshift.password"));	
 	}
 	
 	private void incorrectPassword() {
-		new LabeledCombo(OpenShiftLabel.TextLabels.SERVER).setText(Datastore.SERVER);
-		new LabeledText(OpenShiftLabel.TextLabels.USERNAME).setText(Datastore.USERNAME);
+		new LabeledCombo(OpenShiftLabel.TextLabels.SERVER).setText(DatastoreOS2.SERVER);
+		new LabeledText(OpenShiftLabel.TextLabels.USERNAME).setText(DatastoreOS2.USERNAME);
 		new LabeledText(OpenShiftLabel.TextLabels.PASSWORD).setText("incorrectpwd");
 	}
 	

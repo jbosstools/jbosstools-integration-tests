@@ -22,7 +22,7 @@ import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.view.OpenShift2Application;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.jboss.tools.openshift.ui.bot.test.application.create.IDXXXCreateTestingApplication;
-import org.jboss.tools.openshift.ui.bot.test.util.Datastore;
+import org.jboss.tools.openshift.ui.bot.test.util.DatastoreOS2;
 import org.junit.Test;
 
 public class ID603AddDownloadableEmbeddableCartridgeTest extends IDXXXCreateTestingApplication {
@@ -34,8 +34,8 @@ public class ID603AddDownloadableEmbeddableCartridgeTest extends IDXXXCreateTest
 	public void testAddDownloadableEmbeddableCartridge() {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 		TreeViewerHandler treeViewerHandler = TreeViewerHandler.getInstance();
-		OpenShift2Application application = explorer.getOpenShift2Connection(Datastore.USERNAME, Datastore.SERVER).
-				getDomain(Datastore.DOMAIN).getApplication(applicationName);
+		OpenShift2Application application = explorer.getOpenShift2Connection(DatastoreOS2.USERNAME, DatastoreOS2.SERVER).
+				getDomain(DatastoreOS2.DOMAIN).getApplication(applicationName);
 		application.select();
 		
 		new ContextMenu(OpenShiftLabel.ContextMenu.EMBED_CARTRIDGE).select();
