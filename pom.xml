@@ -26,7 +26,7 @@
 		<!-- URLs needed to resolve dependencies at build time (see <repositories> below) and at install time (see site/pom.xml#associateSites) -->
 
 		<!-- predefined RedDeer sites, if you need to change default please redefine reddeer-site property in your test -->
-		<reddeer-master-site>http://download.jboss.org/jbosstools/mars/development/updates/reddeer/1.0.0.M1/</reddeer-master-site>
+		<reddeer-master-site>http://download.jboss.org/jbosstools/mars/snapshots/builds/reddeer_master/</reddeer-master-site>
 		<reddeer-stable-site>http://download.jboss.org/jbosstools/updates/stable/mars/core/reddeer/0.8.0/</reddeer-stable-site>
 		<reddeer-site>${reddeer-master-site}</reddeer-site>
 
