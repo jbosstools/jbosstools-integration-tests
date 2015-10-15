@@ -23,7 +23,7 @@ public class RemoveConnectionTest {
 	private OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 	
 	@Test
-	public void removeConnection() {
+	public void testRemoveConnection() {
 		explorer.open();
 		
 		explorer.getOpenShift3Connection(DatastoreOS3.USERNAME, DatastoreOS3.SERVER).select();
@@ -43,7 +43,7 @@ public class RemoveConnectionTest {
 	}
 	
 	@After
-	public void recreateConnection() {
+	public void testRecreateConnection() {
 		explorer.open();
 		if (connectionRemoved) {
 			explorer.openConnectionShellViaToolItem();

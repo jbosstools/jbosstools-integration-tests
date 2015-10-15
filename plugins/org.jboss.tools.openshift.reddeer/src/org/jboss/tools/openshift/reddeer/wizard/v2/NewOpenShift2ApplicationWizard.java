@@ -10,26 +10,20 @@ import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.jface.exception.JFaceLayerException;
-import org.jboss.reddeer.jface.viewer.handler.TreeViewerHandler;
 import org.jboss.reddeer.swt.condition.ButtonWithTextIsEnabled;
-import org.jboss.reddeer.swt.impl.browser.InternalBrowser;
 import org.jboss.reddeer.swt.impl.button.BackButton;
 import org.jboss.reddeer.swt.impl.button.CancelButton;
 import org.jboss.reddeer.swt.impl.button.FinishButton;
 import org.jboss.reddeer.swt.impl.button.NextButton;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.YesButton;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.openshift.reddeer.condition.OpenShiftApplicationExists;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
+import org.jboss.tools.openshift.reddeer.wizard.NewOpenShiftApplicationWizard;
 import org.jboss.tools.openshift.reddeer.wizard.page.v2.FirstWizardPage;
 import org.jboss.tools.openshift.reddeer.wizard.page.v2.FourthWizardPage;
 import org.jboss.tools.openshift.reddeer.wizard.page.v2.SecondWizardPage;
@@ -37,24 +31,19 @@ import org.jboss.tools.openshift.reddeer.wizard.page.v2.ThirdWizardPage;
 
 /**
  * Creating application consist of 3 required steps:
- * - opening new application wizard. See {@link OpenNewApplicationWizard}
+ * - opening new application wizard.
  * - proceed through wizard and set up details
  * - post create steps (accept ssh host key, embedded cartridges dialog...)
  * 
  * @author mlabuda@redhat.com
  *
  */
-public class OpenShift2ApplicationWizard {	
+public class NewOpenShift2ApplicationWizard extends NewOpenShiftApplicationWizard {	
 	
-	private TreeViewerHandler treeViewerHandler = TreeViewerHandler.getInstance();
-	
-	private String username;
-	private String server;
 	private String domain;
 	
-	public OpenShift2ApplicationWizard(String username, String server, String domain) {
-		this.username = username;
-		this.server = server;
+	public NewOpenShift2ApplicationWizard(String username, String server, String domain) {
+		super(server, username);
 		this.domain = domain;
 	}
 	
@@ -68,67 +57,11 @@ public class OpenShift2ApplicationWizard {
 
 		explorer.getOpenShift2Connection(username, server).getDomain(domain).select();
 		
-		new ContextMenu(OpenShiftLabel.ContextMenu.NEW_APPLICATION).select();
+		new ContextMenu(OpenShiftLabel.ContextMenu.NEW_OS2_APPLICATION).select();
 		
 		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.NEW_APP_WIZARD),
 				TimePeriod.LONG);
 
-		new DefaultShell(OpenShiftLabel.Shell.NEW_APP_WIZARD).setFocus();
-	}
-	
-	/**
-	 * Opens new application wizard via shell menu. There has to be 
-	 * existing connection in OpenShift explorer, otherwise method fails.
-	 */
-	public void openWizardFromShellMenu() {
-		new WorkbenchShell().setFocus();
-		
-		new ShellMenu("File", "New", "Other...").select();
-		
-		new DefaultShell("New").setFocus();
-		
-		new DefaultTreeItem("OpenShift", "OpenShift Application").select();
-		
-		new NextButton().click();
-		
-		new DefaultShell(OpenShiftLabel.Shell.NEW_APP_WIZARD);
-		
-		for (String comboItem: new DefaultCombo(0).getItems()) {
-			if (comboItem.contains(username) && comboItem.contains(server)) {
-				new DefaultCombo(0).setSelection(comboItem);
-				break;
-			}
-		}
-		
-		new NextButton().click();
-		
-		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-		new WaitUntil(new ButtonWithTextIsEnabled(new BackButton()), TimePeriod.LONG);
-		
-		new DefaultShell(OpenShiftLabel.Shell.NEW_APP_WIZARD).setFocus();
-	}
-	
-	public void openWizardFromCentral() {
-		new DefaultToolItem(new WorkbenchShell(), OpenShiftLabel.Others.JBOSS_CENTRAL).click();
-		
-		new InternalBrowser().execute(OpenShiftLabel.Others.OPENSHIFT_CENTRAL_SCRIPT);
-	
-		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.NEW_APP_WIZARD),
-				TimePeriod.LONG);
-		new DefaultShell(OpenShiftLabel.Shell.NEW_APP_WIZARD);
-		
-		for (String comboItem: new DefaultCombo(0).getItems()) {
-			if (comboItem.contains(username)) {
-				new DefaultCombo(0).setSelection(comboItem);
-				break;
-			}
-		}
-		
-		new NextButton().click();
-		
-		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-		new WaitUntil(new ButtonWithTextIsEnabled(new BackButton()), TimePeriod.LONG);
-		
 		new DefaultShell(OpenShiftLabel.Shell.NEW_APP_WIZARD).setFocus();
 	}
 	

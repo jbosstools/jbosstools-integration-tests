@@ -7,7 +7,7 @@ import org.jboss.reddeer.eclipse.ui.views.navigator.ResourceNavigator;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.utils.v2.DeleteUtils;
-import org.jboss.tools.openshift.reddeer.wizard.v2.OpenShift2ApplicationWizard;
+import org.jboss.tools.openshift.reddeer.wizard.v2.NewOpenShift2ApplicationWizard;
 import org.jboss.tools.openshift.ui.bot.test.util.DatastoreOS2;
 import org.junit.After;
 import org.junit.Test;
@@ -26,7 +26,7 @@ public class ID415DisableMavenBuildTest {
 	
 	@Test
 	public void testCreateApplicationWithMarker() {
-		OpenShift2ApplicationWizard	wizard = new OpenShift2ApplicationWizard(DatastoreOS2.USERNAME,
+		NewOpenShift2ApplicationWizard	wizard = new NewOpenShift2ApplicationWizard(DatastoreOS2.USERNAME,
 				DatastoreOS2.SERVER, DatastoreOS2.DOMAIN);
 		wizard.openWizardFromExplorer();
 		wizard.createNewApplicationOnBasicCartridge(OpenShiftLabel.Cartridge.JBOSS_EAP,

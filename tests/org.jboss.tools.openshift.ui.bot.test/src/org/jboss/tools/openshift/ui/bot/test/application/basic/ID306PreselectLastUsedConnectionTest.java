@@ -18,7 +18,7 @@ import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.wizard.page.v2.FirstWizardPage;
-import org.jboss.tools.openshift.reddeer.wizard.v2.OpenShift2ApplicationWizard;
+import org.jboss.tools.openshift.reddeer.wizard.v2.NewOpenShift2ApplicationWizard;
 import org.jboss.tools.openshift.ui.bot.test.domain.ID201NewDomainTest;
 import org.jboss.tools.openshift.ui.bot.test.ssh.ID152AddExistingSSHKeyTest;
 import org.jboss.tools.openshift.ui.bot.test.util.DatastoreOS2;
@@ -94,7 +94,7 @@ public class ID306PreselectLastUsedConnectionTest {
 	}
 	
 	private void preselectConnectionViaExplorer(String username, String domain) {
-		new OpenShift2ApplicationWizard(DatastoreOS2.USERNAME, DatastoreOS2.SERVER, DatastoreOS2.DOMAIN).
+		new NewOpenShift2ApplicationWizard(DatastoreOS2.USERNAME, DatastoreOS2.SERVER, DatastoreOS2.DOMAIN).
 				openWizardFromExplorer();
 		
 		new FirstWizardPage().createNewApplicationOnBasicCartridge(

@@ -24,7 +24,7 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.tools.openshift.reddeer.utils.JBossPerspective;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.wizard.page.v2.FirstWizardPage;
-import org.jboss.tools.openshift.reddeer.wizard.v2.OpenShift2ApplicationWizard;
+import org.jboss.tools.openshift.reddeer.wizard.v2.NewOpenShift2ApplicationWizard;
 import org.jboss.tools.openshift.ui.bot.test.util.DatastoreOS2;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,12 +40,12 @@ public class ID307WizardDataProcessingTest {
 
 	private final String validURL = "http://some.url";
 	
-	private OpenShift2ApplicationWizard wizard;
+	private NewOpenShift2ApplicationWizard wizard;
 	
 	@Before
 	public void testWizardDataProcessing() {
 		new JBossPerspective().reset();
-		wizard = new OpenShift2ApplicationWizard(DatastoreOS2.USERNAME, DatastoreOS2.SERVER, DatastoreOS2.DOMAIN);
+		wizard = new NewOpenShift2ApplicationWizard(DatastoreOS2.USERNAME, DatastoreOS2.SERVER, DatastoreOS2.DOMAIN);
 		wizard.openWizardFromExplorer();
 		
 		new DefaultShell(OpenShiftLabel.Shell.NEW_APP_WIZARD);
