@@ -45,7 +45,7 @@ public class ID304OpenNewApplicationWizardWithoutDomainTest {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 		explorer.getOpenShift2Connection(DatastoreOS2.USERNAME, DatastoreOS2.SERVER).select();
 		
-		new ContextMenu(OpenShiftLabel.ContextMenu.NEW_APPLICATION).select();
+		new ContextMenu(OpenShiftLabel.ContextMenu.NEW_OS2_APPLICATION).select();
 		
 		try {
 			new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.CREATE_DOMAIN),

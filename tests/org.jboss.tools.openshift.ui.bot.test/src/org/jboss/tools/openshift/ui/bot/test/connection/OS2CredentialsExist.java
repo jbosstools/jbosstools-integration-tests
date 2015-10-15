@@ -7,6 +7,7 @@ public class OS2CredentialsExist implements TestMethodShouldRun {
 
 	@Override
 	public boolean shouldRun(FrameworkMethod method) {
-		return System.getProperty("openshift.server") != null;
+		return System.getProperty("openshift.server") != null &&
+				!System.getProperty("openshift.server").isEmpty();
 	}
 }

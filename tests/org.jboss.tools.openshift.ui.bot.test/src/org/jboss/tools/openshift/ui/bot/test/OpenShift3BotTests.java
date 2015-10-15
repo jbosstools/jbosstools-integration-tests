@@ -1,9 +1,11 @@
 package org.jboss.tools.openshift.ui.bot.test;
 
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.tools.openshift.ui.bot.test.application.v3.basic.OpenNewApplicationWizardTest;
+import org.jboss.tools.openshift.ui.bot.test.application.v3.basic.OpenNewApplicationWizardWithNoProjectTest;
+import org.jboss.tools.openshift.ui.bot.test.connection.v3.ConnectionDialogHandlingTest;
 import org.jboss.tools.openshift.ui.bot.test.connection.v3.ConnectionPropertiesTest;
 import org.jboss.tools.openshift.ui.bot.test.connection.v3.CreateNewConnectionTest;
-import org.jboss.tools.openshift.ui.bot.test.connection.v3.ConnectionDialogHandlingTest;
 import org.jboss.tools.openshift.ui.bot.test.connection.v3.RemoveConnectionTest;
 import org.jboss.tools.openshift.ui.bot.test.connection.v3.ShowConnectionInWebConsoleTest;
 import org.jboss.tools.openshift.ui.bot.test.connection.v3.StoreConnectionTest;
@@ -32,6 +34,10 @@ import org.junit.runners.Suite.SuiteClasses;
 	DeleteProjectTest.class,
 	ProjectPropertiesTest.class,
 	ShowProjectInWebConsoleTest.class,
+	
+	// Application wizard
+	OpenNewApplicationWizardTest.class,
+	OpenNewApplicationWizardWithNoProjectTest.class,
 	
 	// Clean up
 	CleanUpOS3.class
