@@ -7,7 +7,13 @@ import org.jboss.reddeer.common.exception.RedDeerException;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.swt.impl.button.FinishButton;
+import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 
 public class OpenShift3Connection extends AbstractOpenShiftConnection {
 	
@@ -46,6 +52,42 @@ public class OpenShift3Connection extends AbstractOpenShiftConnection {
 			projects.add(new OpenShiftProject(treeItem));
 		}
 		return projects;
+	}
+	
+	/**
+	 * Creates a new OpenShift project for a connection.
+	 * 
+	 * @param projectName project name
+	 * @param displayedName displayed name
+	 * @return OpenShift Project
+	 */
+	public OpenShiftProject createNewProject(String projectName, String displayedName) {
+		select();
+		new ContextMenu(OpenShiftLabel.ContextMenu.NEW_OS_PROJECT).select();
+		
+		new DefaultShell(OpenShiftLabel.Shell.CREATE_OS_PROJECT);
+		new LabeledText(OpenShiftLabel.TextLabels.PROJECT_NAME).setText(projectName);
+		if (displayedName != null) {
+			new LabeledText(OpenShiftLabel.TextLabels.PROJECT_DISPLAYED_NAME).setText(displayedName);
+		}
+		new FinishButton().click();
+		
+		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.CREATE_OS_PROJECT), TimePeriod.LONG);
+		
+		if (displayedName == null) {
+			return getProject(projectName);
+		} else {
+			return getProject(displayedName);
+		}
+	}
+	
+	/**
+	 * Creates a new OpenShift Project for a connection.
+	 * @param projectName project name
+	 * @return OpenShift Project
+	 */
+	public OpenShiftProject createNewProject(String projectName) {
+		return createNewProject(projectName, null);
 	}
 	
 	/**

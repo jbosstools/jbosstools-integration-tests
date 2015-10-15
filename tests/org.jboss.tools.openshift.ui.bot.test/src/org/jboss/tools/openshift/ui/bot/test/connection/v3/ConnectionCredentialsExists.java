@@ -14,9 +14,10 @@ public class ConnectionCredentialsExists implements TestMethodShouldRun {
 	@Override
 	public boolean shouldRun(FrameworkMethod method) {
 		if (method.getName().contains("OAuth")) {
-			return DatastoreOS3.TOKEN != null;
+			return DatastoreOS3.TOKEN != null && !DatastoreOS3.TOKEN.isEmpty();
 		} else {
-			return DatastoreOS3.USERNAME != null && DatastoreOS3.PASSWORD != null; 
+			return (DatastoreOS3.USERNAME != null && !DatastoreOS3.USERNAME.isEmpty()) 
+					&& (DatastoreOS3.PASSWORD != null && !DatastoreOS3.PASSWORD.isEmpty()); 
 		}
 	}	
 }	

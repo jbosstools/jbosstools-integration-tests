@@ -56,7 +56,8 @@ public class CreateNewProjectTest {
 		try {
 			connection.getProject(DatastoreOS3.PROJECT1_DISPLAYED_NAME);
 		} catch (RedDeerException ex) {
-			fail("OpenShift project created for a connection has not been shown in OpenShift explorer.");
+			fail("OpenShift project created for a connection has not been shown in OpenShift explorer.\n" +
+					ex.getCause());
 		}
 	}
 	
@@ -66,19 +67,11 @@ public class CreateNewProjectTest {
 		explorer.reopen();
 		
 		OpenShift3Connection connection = explorer.getOpenShift3Connection(DatastoreOS3.USERNAME);
-		connection.select();
-		new ContextMenu(OpenShiftLabel.ContextMenu.NEW_OS_PROJECT).select();
-		
-		new DefaultShell(OpenShiftLabel.Shell.CREATE_OS_PROJECT);
-		new LabeledText(OpenShiftLabel.TextLabels.PROJECT_NAME).setText(DatastoreOS3.PROJECT2);
-		new FinishButton().click();
-		
-		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.CREATE_OS_PROJECT), TimePeriod.LONG);
-	
 		try {
-			connection.getProject(DatastoreOS3.PROJECT2);
+			connection.createNewProject(DatastoreOS3.PROJECT2);
 		} catch (RedDeerException ex) {
-			fail("OpenShift project created for a connection has not been shown in OpenShift explorer.");
+			fail("OpenShift project created for a connection has not been shown in OpenShift explorer.\n" + 
+					ex.getCause());
 		}
 	}
 }
