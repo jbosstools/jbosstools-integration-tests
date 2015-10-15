@@ -78,7 +78,8 @@ public class OpenShiftLabel {
 		public static final String EDIT_ENV_VARS = "Edit User Environment Variables...";
 		public static final String EMBED_CARTRIDGE = "Edit Embedded Cartridges...";
 		public static final String IMPORT_APPLICATION = "Import Application...";
-		public static final String[] NEW_APPLICATION = {"New", "Application..."};
+		public static final String[] NEW_OS2_APPLICATION = {"New", "Application..."};
+		public static final String[] NEW_OS3_APPLICATION = {"New", "Application"};
 		public static final String[] NEW_SERVER_ADAPTER = {"New", "Server Adapter..."};		
 		public static final String PORT_FORWARD = "Port Forwarding...";		
 		public static final String RESTART_APPLICATION = "Restart Application";	
@@ -203,6 +204,7 @@ public class OpenShiftLabel {
 		public static final String PROJECT_NAME = "Project Name:";
 		public static final String PROJECT_DISPLAYED_NAME = "Display Name:";
 		public static final String PROJECT_DESCRIPTION = "Description:";
+		public static final String PROJECT = "Project: ";
 		
 		
 		// SSH Key related

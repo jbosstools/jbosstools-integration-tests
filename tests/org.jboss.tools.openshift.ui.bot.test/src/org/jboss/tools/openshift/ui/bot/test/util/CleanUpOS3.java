@@ -48,6 +48,7 @@ public class CleanUpOS3 {
 			if (!projects.isEmpty()) {
 				for (OpenShiftProject project: projects) {
 					project.delete(); 
+					connection.refresh();
 				}
 			}
 		}
