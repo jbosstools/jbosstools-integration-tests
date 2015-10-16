@@ -28,9 +28,9 @@ public class DatastoreOS2 {
 	static {
 		String server = System.getProperty("openshift.server");
 		String xServer = System.getProperty("openshift.xserver");
-		if (server != null) {
+		if (server != null && !server.isEmpty()) {
 			SERVER = server;
-		} else if (xServer != null) {
+		} else if (xServer != null && !xServer.isEmpty()) {
 			SERVER = xServer;
 		}
 	}
