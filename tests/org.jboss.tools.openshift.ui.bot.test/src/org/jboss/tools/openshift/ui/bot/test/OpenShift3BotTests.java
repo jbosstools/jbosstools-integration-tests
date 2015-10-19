@@ -4,6 +4,7 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.basic.NewApplicationWizardHandlingTest;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.basic.OpenNewApplicationWizardTest;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.basic.OpenNewApplicationWizardWithNoProjectTest;
+import org.jboss.tools.openshift.ui.bot.test.application.v3.basic.TemplateParametersTest;
 import org.jboss.tools.openshift.ui.bot.test.connection.v3.ConnectionDialogHandlingTest;
 import org.jboss.tools.openshift.ui.bot.test.connection.v3.ConnectionPropertiesTest;
 import org.jboss.tools.openshift.ui.bot.test.connection.v3.CreateNewConnectionTest;
@@ -42,6 +43,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	OpenNewApplicationWizardTest.class,
 	OpenNewApplicationWizardWithNoProjectTest.class,
 	NewApplicationWizardHandlingTest.class,
+	TemplateParametersTest.class,
 	
 	// Clean up
 	CleanUpOS3.class
