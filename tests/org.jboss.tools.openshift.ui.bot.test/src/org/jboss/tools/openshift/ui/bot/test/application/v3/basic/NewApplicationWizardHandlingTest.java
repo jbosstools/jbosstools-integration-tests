@@ -2,9 +2,11 @@ package org.jboss.tools.openshift.ui.bot.test.application.v3.basic;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.List;
 
+import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
@@ -158,8 +160,12 @@ public class NewApplicationWizardHandlingTest {
 	}
 	
 	private void verifyDefinedResourcesForTemplate() {
-		new WaitUntil(new WidgetIsEnabled(new PushButton(OpenShiftLabel.Button.DEFINED_RESOURCES)),
-				TimePeriod.NORMAL);
+		try {
+			new WaitUntil(new WidgetIsEnabled(new PushButton(OpenShiftLabel.Button.DEFINED_RESOURCES)),
+					TimePeriod.NORMAL);
+		} catch (WaitTimeoutExpiredException ex) {
+			fail("Defined Resources button is not enabled");
+		}
 		new PushButton(OpenShiftLabel.Button.DEFINED_RESOURCES).click();
 		
 		new DefaultShell(OpenShiftLabel.Shell.TEMPLATE_DETAILS);

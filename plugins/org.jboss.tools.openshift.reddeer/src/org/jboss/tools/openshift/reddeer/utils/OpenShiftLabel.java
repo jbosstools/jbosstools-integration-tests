@@ -154,6 +154,7 @@ public class OpenShiftLabel {
 		public static final String PUBLISH_CHANGES = "Publish Changes";
 		
 		// Application related
+		public static final String EDIT_TEMPLATE_PARAMETER = "Edit Template Parameter";
 		public static final String TEMPLATE_DETAILS = "Template Details";
 	}
 	
