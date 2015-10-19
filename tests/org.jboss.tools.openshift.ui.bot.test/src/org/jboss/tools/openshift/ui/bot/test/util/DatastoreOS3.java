@@ -1,5 +1,7 @@
 package org.jboss.tools.openshift.ui.bot.test.util;
 
+import java.io.File;
+
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView.AuthenticationMethod;
 
 /**
@@ -21,4 +23,7 @@ public class DatastoreOS3 {
 	public static String PROJECT2 = "project02";
 	
 	public static AuthenticationMethod AUTH_METHOD;
+	
+	public static String TEMPLATE_PATH = new File("").getAbsolutePath() + File.separator + 
+			"resources" + File.separator + "eap6-basic-s2i.json";
 }

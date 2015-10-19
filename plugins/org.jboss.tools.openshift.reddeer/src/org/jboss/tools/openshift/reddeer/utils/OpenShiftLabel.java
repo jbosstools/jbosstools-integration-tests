@@ -146,13 +146,15 @@ public class OpenShiftLabel {
 		public static final String NO_SSH_KEY = "No SSH Keys";
 		public static final String REMOVE_SSH_KEY = "Remove SSH Key";
 		
-		
 		// Project related
 		public static final String MANAGE_OS_PROJECTS = "OpenShift Projects";
 		public static final String CREATE_OS_PROJECT = "Create OpenShift Project";
 		
 		// Server adapter related
 		public static final String PUBLISH_CHANGES = "Publish Changes";
+		
+		// Application related
+		public static final String TEMPLATE_DETAILS = "Template Details";
 	}
 	
 	/**
@@ -167,6 +169,7 @@ public class OpenShiftLabel {
 		public static final String COMMIT_PUBLISH = "Commit and Publish";
 		public static final String CREATE_DOMAIN = "New...";
 		public static final String CREATE_SSH_KEY = "New...";
+		public static final String DEFINED_RESOURCES = "Defined Resources...";
 		public static final String DESELECT_ALL = "Deselect all";
 		public static final String EDIT = "Edit...";
 		public static final String EDIT_DOMAIN = "Edit...";
@@ -221,8 +224,10 @@ public class OpenShiftLabel {
 		public static final String EMBEDDED_CARTRIDGE_URL = "Cartridge URL:";
 		
 		// Application related
-		public static final String TAIL_OPTIONS = "Tail options:";
+		public static final String LOCAL_TEMPLATE = "Use a template from my local file system:";
 		public static final String DESTINATION = "Destination:";
+		public static final String SERVER_TEMPLATE = "Use a template from the server:";
+		public static final String TAIL_OPTIONS = "Tail options:";	
 	}
 	
 	/**
@@ -230,6 +235,8 @@ public class OpenShiftLabel {
 	 */
 	public static class Others {
 		public static final String CONNECT_TOOL_ITEM = "Connection...";
+		public static final String EAP_TEMPLATE = "eap6-basic-sti";
+		public static final String TOMCAT_TEMPLATE = "jws-tomcat7-basic-sti";
 		public static final String JBOSS_CENTRAL = "JBoss Central";
 		public static final String[] NEW_APP_MENU = {"File", "New", "OpenShift Application"};
 		public static final String OPENSHIFT_APP = "OpenShift Application";
