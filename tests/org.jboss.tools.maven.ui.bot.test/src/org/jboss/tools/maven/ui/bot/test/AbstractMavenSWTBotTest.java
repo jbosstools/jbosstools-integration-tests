@@ -36,6 +36,8 @@ import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.api.StyledText;
 import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
+import org.jboss.reddeer.swt.impl.button.CheckBox;
+import org.jboss.reddeer.swt.impl.button.LabeledCheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
@@ -117,11 +119,16 @@ public abstract class AbstractMavenSWTBotTest{
 	}
 	
 	protected static void updateConf(String projectName){
+		updateConf(projectName,false);
+	}
+	
+	protected static void updateConf(String projectName,boolean forceDependencies){
 		PackageExplorer pexplorer = new PackageExplorer();
 		pexplorer.open();
 		pexplorer.getProject(projectName).select();
 		new ContextMenu("Maven","Update Project...").select();
 		new WaitUntil(new ShellWithTextIsActive("Update Maven Project"),TimePeriod.LONG);
+		new CheckBox("Force Update of Snapshots/Releases").toggle(forceDependencies);
 		new PushButton("OK").click();
 		new WaitWhile(new ShellWithTextIsActive("Update Maven Project"),TimePeriod.NORMAL);
 		new WaitWhile(new JobIsRunning(),TimePeriod.VERY_LONG);

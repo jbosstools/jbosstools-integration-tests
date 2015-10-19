@@ -11,9 +11,13 @@ import java.util.List;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
+import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.logging.Logger;
+import org.jboss.reddeer.eclipse.condition.ProblemExists;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
+import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
@@ -71,6 +75,7 @@ public class MavenConversionTest extends AbstractMavenSWTBotTest{
 		new CheckBox("Delete original references from project").toggle(true);
 		new PushButton("Finish").click();
 		new WaitWhile(new JobIsRunning(),TimePeriod.LONG);
+		checkProblemsAndResolve();
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		pe.getProject(WEB_PROJECT_NAME).select();
@@ -99,6 +104,7 @@ public class MavenConversionTest extends AbstractMavenSWTBotTest{
 		new CheckBox("Delete original references from project").toggle(false);
 		new PushButton("Finish").click();
 		new WaitWhile(new JobIsRunning(),TimePeriod.LONG);
+		checkProblemsAndResolve();
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		pe.getProject(WEB_PROJECT_NAME).select();
@@ -240,6 +246,21 @@ public class MavenConversionTest extends AbstractMavenSWTBotTest{
 	    for(String value: valuesToCheck){
 	        assertTrue(text.contains(value));
 	    }
+	}
+	
+	private void checkProblemsAndResolve(){
+		new WaitUntil(new ProblemExists(ProblemType.ANY,null),TimePeriod.NORMAL,false);
+		ProblemsView pw = new ProblemsView();
+		pw.open();
+		if(pw.getProblems(ProblemType.ANY, null).size() > 0){
+			updateConf(WEB_PROJECT_NAME,true);
+			try{
+				new WaitWhile(new ProblemExists(ProblemType.ANY,null));
+			} catch (WaitTimeoutExpiredException ex){
+				ex.addMessageDetail("Some problems still exist. Dependecies probably were not downloaded successfully");
+				throw ex;
+			}
+		}
 	}
 
 }
