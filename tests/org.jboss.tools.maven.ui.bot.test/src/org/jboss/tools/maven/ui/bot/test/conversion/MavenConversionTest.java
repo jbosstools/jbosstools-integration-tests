@@ -249,13 +249,13 @@ public class MavenConversionTest extends AbstractMavenSWTBotTest{
 	}
 	
 	private void checkProblemsAndResolve(){
-		new WaitUntil(new ProblemExists(ProblemType.ANY,null),TimePeriod.NORMAL,false);
+		new WaitUntil(new ProblemExists(ProblemType.ANY),TimePeriod.NORMAL,false);
 		ProblemsView pw = new ProblemsView();
 		pw.open();
-		if(pw.getProblems(ProblemType.ANY, null).size() > 0){
+		if(pw.getProblems(ProblemType.ANY).size() > 0){
 			updateConf(WEB_PROJECT_NAME,true);
 			try{
-				new WaitWhile(new ProblemExists(ProblemType.ANY,null));
+				new WaitWhile(new ProblemExists(ProblemType.ANY));
 			} catch (WaitTimeoutExpiredException ex){
 				ex.addMessageDetail("Some problems still exist. Dependecies probably were not downloaded successfully");
 				throw ex;
