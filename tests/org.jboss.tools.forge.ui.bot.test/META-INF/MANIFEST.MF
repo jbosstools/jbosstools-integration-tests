@@ -2,13 +2,13 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Forge UI Bot Tests
 Bundle-SymbolicName: org.jboss.tools.forge.ui.bot.test;singleton:=true
-Bundle-Version: 4.3.0.qualifier
+Bundle-Version: 4.3.1.qualifier
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Require-Bundle: org.jboss.tools.forge.ui;bundle-version="1.0.0",
  org.jboss.tools.forge.core;bundle-version="1.0.0",
  org.jboss.tools.forge.runtime;bundle-version="1.0.0",
- org.jboss.tools.forge.reddeer;bundle-version="4.3.0",
+ org.jboss.tools.forge.reddeer;bundle-version="[4.3.1,4.4.0)",
  org.jboss.reddeer.junit;bundle-version="0.7.0",
  org.jboss.reddeer.swt;bundle-version="0.7.0",
  org.jboss.reddeer.workbench;bundle-version="0.7.0",
