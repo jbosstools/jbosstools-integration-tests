@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Central UI Bot Tests
 Bundle-SymbolicName: org.jboss.tools.central.ui.bot.test;singleton:=true
-Bundle-Version: 4.3.0.qualifier
+Bundle-Version: 4.3.1.qualifier
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: org.eclipse.ui.forms;bundle-version="3.5.101",

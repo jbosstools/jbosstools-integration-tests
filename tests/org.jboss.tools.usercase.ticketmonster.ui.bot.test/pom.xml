@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.jboss.tools.integration-tests</groupId>
 		<artifactId>tests</artifactId>
-		<version>4.3.0-SNAPSHOT</version>
+		<version>4.3.1-SNAPSHOT</version>
 	</parent>
 	<groupId>org.jboss.tools.usercase.tests</groupId>
 	<artifactId>org.jboss.tools.usercase.ticketmonster.ui.bot.test</artifactId>
