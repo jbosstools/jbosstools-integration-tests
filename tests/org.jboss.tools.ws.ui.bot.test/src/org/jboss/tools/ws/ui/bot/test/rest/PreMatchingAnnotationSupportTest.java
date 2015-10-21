@@ -2,6 +2,7 @@ package org.jboss.tools.ws.ui.bot.test.rest;
 
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
+import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.junit.Test;
 
@@ -31,10 +32,10 @@ public class PreMatchingAnnotationSupportTest extends RESTfulTestBase {
 	@Test
 	public void useOnNotSupportedTypeTest() {
 		String projectName = "prematching2";
-		importRestWSProject(projectName);
+		importWSTestProject(projectName);
 		
-		assertCountOfValidationErrors(projectName, 1);
-		assertCountOfValidationErrors(projectName,
-				"@PreMatching annotation is only allowed on subclasses of javax.ws.rs.container.ContainerRequestFilter", 1);
+		assertCountOfValidationProblemsExists(ProblemType.ERROR, projectName, null, null, 1);
+		assertCountOfValidationProblemsExists(ProblemType.ERROR, projectName,
+				"@PreMatching annotation is only allowed on subclasses of javax.ws.rs.container.ContainerRequestFilter", null, 1);
 	}
 }

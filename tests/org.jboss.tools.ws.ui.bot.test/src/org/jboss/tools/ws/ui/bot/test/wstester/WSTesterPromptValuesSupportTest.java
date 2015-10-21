@@ -17,18 +17,17 @@ import java.util.List;
 
 import org.hamcrest.core.Is;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
+import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
-import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.tools.ws.reddeer.jaxrs.core.RESTfulWebServicesNode;
 import org.jboss.tools.ws.reddeer.ui.dialogs.WSTesterParametersDialog;
 import org.jboss.tools.ws.reddeer.ui.tester.views.WsTesterView;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
 import org.jboss.tools.ws.ui.bot.test.utils.ServersViewHelper;
 import org.junit.AfterClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -43,7 +42,7 @@ public class WSTesterPromptValuesSupportTest extends RESTfulTestBase {
 
 	private String wsProjectName = "wsPromptTestProject";
 
-	private WsTesterView testerView = new WsTesterView();
+	private WsTesterView testerView;
 
 	private WSTesterParametersDialog dialog;
 
@@ -52,16 +51,21 @@ public class WSTesterPromptValuesSupportTest extends RESTfulTestBase {
 	@Override
 	public void setup() {
 		if (!projectExists(wsProjectName)) {
-			importRestWSProject(wsProjectName);
+			importWSTestProject(wsProjectName);
 			ServersViewHelper.runProjectOnServer(wsProjectName);
-			testerView.open();
+			ServersViewHelper.waitForDeployment(wsProjectName, getConfiguredServerName());
 		}
+		testerView = new WsTesterView();
+		testerView.open();
 	}
 
 	@Override
 	public void cleanup() {
-		if (dialog.isOpened()) {
+		if (dialog != null && dialog.isOpened()) {
 			dialog.cancel();
+		}
+		if (testerView != null && testerView.isOpened()) {
+			testerView.close();
 		}
 	}
 
@@ -84,27 +88,17 @@ public class WSTesterPromptValuesSupportTest extends RESTfulTestBase {
 	}
 
 	/**
-	 * Fails due to JBIDE-12027 and JBIDE-13546
-	 * 
-	 * (JBIDE-13111 OK button is always enabled - see comment)
-	 * 
+	 * Fails due to JBIDE-12027
+	 *  
 	 * Tests if the parameters were loaded with the specified type
 	 * and default values
 	 * 
 	 * @see https://issues.jboss.org/browse/JBIDE-12027
-	 * @see https://issues.jboss.org/browse/JBIDE-13546
-	 * @see https://issues.jboss.org/browse/JBIDE-13111
 	 */
 	@Test
 	public void testParameters() {
 		invokeWSParametersDialog();
 		checkWSParametersDialog();
-	}
-
-	@Ignore
-	@Test
-	public void testValueTypeChecking() {
-		//TODO
 	}
 
 	/**
@@ -126,11 +120,12 @@ public class WSTesterPromptValuesSupportTest extends RESTfulTestBase {
 
 		runRestServiceOnServer(restWebServicesNode.getWebServices().get(0));
 
+		testerView.open();
 		testerView.invoke();
 
-		new WaitUntil(new ShellWithTextIsActive(WSTesterParametersDialog.DIALOG_TITLE));
+		new WaitUntil(new ShellWithTextIsAvailable(WSTesterParametersDialog.DIALOG_TITLE));
 
-		this.dialog = new WSTesterParametersDialog();
+		dialog = new WSTesterParametersDialog();
 	}
 
 	private void checkWSParametersDialog() {

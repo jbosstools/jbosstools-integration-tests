@@ -50,7 +50,7 @@ public class QueryParamAnnotationSupportTest extends RESTfulTestBase {
 	@Test
 	public void testQueryParamSupport() {
 		/* prepare project */
-		importRestWSProject(project1Name);
+		importWSTestProject(project1Name);
 
 		/* get RESTful services from JAX-RS REST explorer for the project */
 		List<RESTfulWebService> restServices = restfulServicesForProject(project1Name);
@@ -61,7 +61,7 @@ public class QueryParamAnnotationSupportTest extends RESTfulTestBase {
 				"/rest?" + queryParam1 + "={" + queryType1 + "}");
 
 		/* prepare project*/
-		importRestWSProject(project2Name);
+		importWSTestProject(project2Name);
 
 		/* get RESTful services from JAX-RS REST explorer for the project */
 		restServices = restfulServicesForProject(project2Name);
@@ -76,7 +76,7 @@ public class QueryParamAnnotationSupportTest extends RESTfulTestBase {
 	@Test
 	public void testMatrixParamFieldSupport() {
 		/* prepare project */
-		importRestWSProject(project3Name);
+		importWSTestProject(project3Name);
 
 		/* get RESTful services from JAX-RS REST explorer for the project */
 		List<RESTfulWebService> restServices = restfulServicesForProject(project3Name);
@@ -91,7 +91,7 @@ public class QueryParamAnnotationSupportTest extends RESTfulTestBase {
 	@Test
 	public void testEditingQueryParam() {
 		/* prepare project */
-		importRestWSProject(project2Name);
+		importWSTestProject(project2Name);
 
 		/* replace param1 to newParam1 */
 		replaceInRestService(project2Name, queryParam1, queryParam1New);
@@ -112,7 +112,7 @@ public class QueryParamAnnotationSupportTest extends RESTfulTestBase {
 		final String query2ProjectName = "query2";
 
 		/* prepare project and class */
-		importRestWSProject(query2ProjectName);
+		importWSTestProject(query2ProjectName);
 		prepareRestService(query2ProjectName, QUERY_TWO_PARAM_RESOURCE,
 				queryParam1, queryType1, queryParam2, queryType2);
 		replaceInRestService(query2ProjectName, queryType1, queryTypeNew);

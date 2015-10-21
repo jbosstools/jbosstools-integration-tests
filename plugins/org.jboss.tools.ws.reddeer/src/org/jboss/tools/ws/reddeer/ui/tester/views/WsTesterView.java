@@ -54,7 +54,7 @@ public class WsTesterView extends WorkbenchView {
 	public WsTesterView() {
 		super(IDELabel.View.WEB_SERVICE_TESTER);
 	}
-
+	
 	/**
 	 * Sets type of the request.
 	 * 
@@ -70,6 +70,7 @@ public class WsTesterView extends WorkbenchView {
 	 * @return selected request type
 	 */
 	public RequestType getRequestType() {
+		activate();
 		return RequestType.parse(getRequestTypeCombo().getText());
 	}
 
@@ -134,6 +135,7 @@ public class WsTesterView extends WorkbenchView {
 	 * @param expanded the new expanded state
 	 */
 	public void setResponseHeadersSectionExpansion(boolean expanded) {
+		activate();
 		setSectionExpansion(JBossWSUIMessages.JAXRSWSTestView2_ResponseHeaders_Section, expanded);
 	}
 
@@ -156,6 +158,7 @@ public class WsTesterView extends WorkbenchView {
 	}
 
 	private void setSectionExpansion(String name, boolean expanded) {
+		activate();
 		ExpandableComposite composite = new DefaultExpandableComposite(name);
 		if(composite.isExpanded() != expanded) {
 			composite.setExpanded(expanded);
@@ -186,6 +189,7 @@ public class WsTesterView extends WorkbenchView {
 
 	private void addRequestArg(WsTesterView.RequestArgType type, String name,
 			String value) {
+		activate();
 		new DefaultText(type.ordinal()).typeText(name + "=" + value);
 		new PushButton(type.ordinal(), new WithTextMatcher("Add")).click();
 		new DefaultText(type.ordinal()).setText("");
@@ -210,6 +214,7 @@ public class WsTesterView extends WorkbenchView {
 	}
 
 	private Map<String, String> getRequestArgs(WsTesterView.RequestArgType type) {
+		activate();
 		setSectionExpansion(type.toString(), true);
 		String[] args = new DefaultList(new DefaultExpandableComposite(type.toString())).getListItems();
 		Map<String, String> result = new HashMap<String, String>();
@@ -252,6 +257,7 @@ public class WsTesterView extends WorkbenchView {
 
 	private void editRequestArg(WsTesterView.RequestArgType type,
 			String oldName, String oldValue, String newName, String newValue) {
+		activate();
 		new DefaultList(type.ordinal()).select(oldName + "=" + oldValue);
 		new PushButton(type.ordinal(), new WithTextMatcher("Edit")).click();
 		new DefaultShell("Edit Value");
@@ -281,6 +287,7 @@ public class WsTesterView extends WorkbenchView {
 
 	private void removeRequestArg(WsTesterView.RequestArgType type,
 			String name, String value) {
+		activate();
 		new DefaultList(type.ordinal()).select(name + "=" + value);
 		new PushButton(type.ordinal(), new WithTextMatcher("Remove")).click();
 	}
@@ -300,6 +307,7 @@ public class WsTesterView extends WorkbenchView {
 	}
 
 	private void clearRequestArgs(WsTesterView.RequestArgType type) {
+		activate();
 		new PushButton(type.ordinal(), new WithTextMatcher("Clear All")).click();
 	}
 
@@ -309,6 +317,7 @@ public class WsTesterView extends WorkbenchView {
 	 * @return response body
 	 */
 	public String getResponseBody() {
+		activate();
 		return new DefaultText(new DefaultExpandableComposite(
 				JBossWSUIMessages.JAXRSWSTestView2_ResponseBody_Section))
 				.getText();
@@ -329,6 +338,7 @@ public class WsTesterView extends WorkbenchView {
 	 * Perform Invoke action.
 	 */
 	public void invoke() {
+		activate();
 		new DefaultToolItem(JBossWSUIMessages.JAXRSWSTestView2_Go_Tooltip)
 				.click();
 		new WaitUntil(new ShellWithTextIsActive(
@@ -358,6 +368,7 @@ public class WsTesterView extends WorkbenchView {
 	 * HTTP Method:
 	 */
 	private Combo getRequestTypeCombo() {
+		activate();
 		return new DefaultCombo(1);
 	}
 
@@ -365,10 +376,12 @@ public class WsTesterView extends WorkbenchView {
 	 * Service URL:
 	 */
 	private Combo getServiceURLCombo() {
+		activate();
 		return new DefaultCombo(0);
 	}
 
 	private Text getRequestBodyTextField() {
+		activate();
 		return new DefaultText(new DefaultExpandableComposite(
 				JBossWSUIMessages.JAXRSWSTestView2_BodyText_Section));
 	}

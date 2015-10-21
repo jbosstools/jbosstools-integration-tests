@@ -3,16 +3,17 @@ package org.jboss.tools.ws.ui.bot.test.utils;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.jboss.reddeer.common.condition.WaitCondition;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.Server;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServerModule;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
+import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewEnums.ServerPublishState;
+import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewEnums.ServerState;
 import org.jboss.reddeer.eclipse.wst.server.ui.wizard.ModifyModulesDialog;
 import org.jboss.reddeer.eclipse.wst.server.ui.wizard.ModifyModulesPage;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -31,7 +32,7 @@ public class ServersViewHelper {
 			.getLogger(ServersViewHelper.class.getName());
 	
 	private ServersViewHelper() {};
-
+	
 	/**
 	 * Removes the specified <var>project</var> from the configured server.
 	 * 
@@ -91,8 +92,6 @@ public class ServersViewHelper {
 				org.hamcrest.core.StringContains.containsString("Run on Server")).select();
 		new DefaultShell("Run On Server");
 		new PushButton(IDELabel.Button.FINISH).click();
-		new WaitUntil(new JobIsRunning(), TimePeriod.getCustom(5), false);
-		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
 
 	/**
@@ -121,5 +120,31 @@ public class ServersViewHelper {
 		}
 		AbstractWait.sleep(TimePeriod.SHORT);
 		server.clean();
+	}
+	
+	public static void waitForDeployment(String projectName, String serverName) {
+		new WaitUntil(new ProjectIsDeployed(projectName, serverName), TimePeriod.LONG);
+	}
+	
+	private static class ProjectIsDeployed implements WaitCondition {
+
+		private ServerModule module;
+		
+		public ProjectIsDeployed(String projectName, String serverName) {
+			Server server = new ServersView().getServer(serverName);
+			module = server.getModule(projectName);
+		}
+		
+		@Override
+		public boolean test() {
+			return module.getLabel().getState().equals(ServerState.STARTED) 
+					&& module.getLabel().getPublishState().equals(ServerPublishState.SYNCHRONIZED);
+		}
+
+		@Override
+		public String description() {
+			return "Module state is " + module.getLabel().getState() + ", " + module.getLabel().getPublishState();
+		}
+		
 	}
 }

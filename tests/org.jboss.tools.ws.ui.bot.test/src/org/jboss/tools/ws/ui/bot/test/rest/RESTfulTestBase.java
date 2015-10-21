@@ -11,38 +11,44 @@
 
 package org.jboss.tools.ws.ui.bot.test.rest;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.hamcrest.Matcher;
+import org.hamcrest.core.Is;
 import org.hamcrest.core.StringContains;
 import org.hamcrest.core.StringStartsWith;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.reddeer.eclipse.condition.ProblemExists;
-import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
-import org.jboss.reddeer.eclipse.ui.problems.Problem;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
-import org.jboss.reddeer.eclipse.ui.problems.matcher.ProblemsPathMatcher;
-import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
-import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.reddeer.swt.api.Menu;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.matcher.RegexMatcher;
-import org.jboss.reddeer.core.matcher.WithTextMatchers;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.core.matcher.WithTextMatchers;
+import org.jboss.reddeer.eclipse.condition.ExactNumberOfProblemsExists;
+import org.jboss.reddeer.eclipse.condition.ProblemExists;
+import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
+import org.jboss.reddeer.eclipse.ui.problems.matcher.AbstractProblemMatcher;
+import org.jboss.reddeer.eclipse.ui.problems.matcher.ProblemsDescriptionMatcher;
+import org.jboss.reddeer.eclipse.ui.problems.matcher.ProblemsPathMatcher;
+import org.jboss.reddeer.eclipse.ui.problems.matcher.ProblemsTypeMatcher;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.requirements.server.ServerReqState;
+import org.jboss.reddeer.swt.api.Menu;
+import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.ws.reddeer.editor.ExtendedTextEditor;
 import org.jboss.tools.ws.reddeer.jaxrs.core.RESTfulWebService;
 import org.jboss.tools.ws.reddeer.jaxrs.core.RESTfulWebServicesNode;
-import org.jboss.tools.ws.reddeer.swt.condition.ProblemsCount;
 import org.jboss.tools.ws.reddeer.ui.tester.views.WsTesterView;
 import org.jboss.tools.ws.ui.bot.test.WSTestBase;
 import org.jboss.tools.ws.ui.bot.test.uiutils.RunOnServerDialog;
@@ -59,12 +65,18 @@ import org.junit.Assert;
 @OpenPerspective(JavaEEPerspective.class)
 public class RESTfulTestBase extends WSTestBase {
 
+	public static final String PATH_PARAM_VALID_ERROR = "@PathParam value";
+	public static final String JAX_RS_PROBLEM = "JAX-RS Problem";
+	
 	protected final static RESTfulHelper restfulHelper = new RESTfulHelper();
 
 	protected RESTfulWebServicesNode restWebServicesNode = null;
 
 	protected final String SIMPLE_REST_WS_RESOURCE = "SimpleRestWS.java.ws";
 
+	private final TimePeriod WAIT_FOR_PROBLEMS_FALSE_POSItIVE_TIMEOUT = TimePeriod.getCustom(2);
+	private final TimePeriod WAIT_FOR_PROBLEMS_FALSE_NEGATIVE_TIMEOUT = TimePeriod.getCustom(5);
+	
 	protected String getWsPackage() {
 		return "org.rest.test";
 	}
@@ -76,7 +88,7 @@ public class RESTfulTestBase extends WSTestBase {
 	@Override
 	public void setup() {
 		if (!projectExists(getWsProjectName())) {
-			importRestWSProject(getWsProjectName());
+			importWSTestProject(getWsProjectName());
 		}
 	}
 	
@@ -85,27 +97,61 @@ public class RESTfulTestBase extends WSTestBase {
 		deleteAllProjects();
 	}
 
-	protected static void importRestWSProject(String projectName) {
-		// importing project without targeted runtime set
+	protected void importAndCheckErrors(String projectName) {
 		importWSTestProject(projectName);
 
-		// workaround for EAP 5.1
-		
-
-		if (getConfiguredServerType().equals("JBoss Enterprise Application Platform")
-				&& getConfiguredServerVersion().equals("5.x")) {
-			throw new UnsupportedOperationException("When EAP 5.1 is used,"
-					+ " then jaxrs-api.jar must be added to build path of the imported project");
+		assertCountOfValidationProblemsExists(ProblemType.ERROR, projectName, null, null, 0);
+		assertCountOfProblemsExists(ProblemType.ERROR, null, null, null, 0);
+	}
+	
+	private AbstractProblemMatcher[] getProblemMatchers(String description, String project, String type) {
+		List<AbstractProblemMatcher> matcherList = new ArrayList<AbstractProblemMatcher>();
+		if (description != null) {
+			matcherList.add(new ProblemsDescriptionMatcher(StringContains.containsString(description)));
 		}
+		if (project != null) {
+			matcherList. add(new ProblemsPathMatcher(StringStartsWith.startsWith("/" + project)));
+		}	
+		if (type != null) {
+			matcherList.add(new ProblemsTypeMatcher(Is.is(type)));
+		}
+		AbstractProblemMatcher[] matchers = new AbstractProblemMatcher[matcherList.size()];
+		return matchers = matcherList.toArray(matchers);
 	}
-
-	protected void importAndCheckErrors(String projectName) {
-		importRestWSProject(projectName);
-
-		assertCountOfValidationErrors(projectName, 0);
-		assertCountOfErrors(0);
+	
+	public void assertCountOfProblemsExists(ProblemType problemType, String projectName, 
+			String description, String type, int count) {
+		AbstractProblemMatcher[] matchers = getProblemMatchers(description, projectName, type);
+		try {
+			new WaitUntil(new ExactNumberOfProblemsExists(problemType, count, matchers));
+		} catch (WaitTimeoutExpiredException ex) {
+			Assert.fail("There is not " + count + " number of problems matching specified matchers existing.");
+		}		
 	}
-
+	
+	public void assertCountOfProblemsExists(ProblemType problemType, int count) {
+		assertCountOfProblemsExists(problemType, null, null, null, count);
+	}
+	
+	public void assertCountOfValidationProblemsExists(ProblemType problemType, String projectName, 
+			String description, String type, int count) {
+		AbstractProblemMatcher[] matchers = getProblemMatchers(description, projectName, type);
+		
+		if(count == 0 && !new ProblemExists(ProblemType.ANY).test()) {//prevent from false positive result when we do not expect errors and there is no error
+			new WaitWhile(new ExactNumberOfProblemsExists(ProblemType.ERROR, count, matchers), 
+					WAIT_FOR_PROBLEMS_FALSE_POSItIVE_TIMEOUT, false);
+		} else {//prevent from false negative result
+			new WaitUntil(new ExactNumberOfProblemsExists(ProblemType.ERROR, count, matchers),
+					WAIT_FOR_PROBLEMS_FALSE_NEGATIVE_TIMEOUT, false);
+		}
+		
+		try {
+			new WaitUntil(new ExactNumberOfProblemsExists(problemType, count, matchers));
+		} catch (WaitTimeoutExpiredException ex) {
+			Assert.fail("There is not " + count + " number of problems matching specified matchers existing.");
+		}		
+	}
+	
 	protected void assertCountOfRESTServices(List<RESTfulWebService> restServices,
 			int expectedCount) {
 		assertTrue(restServices.size() + " RESTful services"
@@ -136,151 +182,6 @@ public class RESTfulTestBase extends WSTestBase {
 	protected void assertExpectedPathOfService(RESTfulWebService service,
 			String expectedPath) {
 		assertExpectedPathOfService("", service, expectedPath);
-	}
-
-	/*
-	 * Assert errors (project, validation, validation of path annotation)
-	 */
-	private void waitForErrors(int expectedCount) {
-		if(expectedCount == 0) {//prevent from false-positive
-			new WaitWhile(new ProblemExists(ProblemType.ERROR), TimePeriod.getCustom(2), false);
-		} else {
-			new WaitUntil(new ProblemsCount(ProblemType.ERROR, expectedCount), TimePeriod.getCustom(2), false);
-		}
-	}
-
-	private void waitForErrors(int expectedCount, Matcher<String> path) {
-		if(expectedCount == 0) {//prevent from false-positive
-			new WaitWhile(new ProblemExists(ProblemType.ERROR), TimePeriod.getCustom(2), false);
-		} else {//prevent from false-negative
-			new WaitUntil(new ProblemsCount(ProblemType.ERROR, expectedCount, null, null,
-					path, null, null), TimePeriod.getCustom(2), false);
-		}
-	}
-
-	protected void assertCountOfErrors(int expectedCount) {
-		waitForErrors(expectedCount);
-		assertCountOfErrors(new ProblemsView().getProblems(ProblemType.ERROR), expectedCount, null);
-	}
-
-	protected void assertCountOfErrors(String projectName, int expectedCount) {
-		assertCountOfErrors(projectName, expectedCount, null);
-	}
-
-	protected void assertCountOfErrors(String projectName, int expectedCount, String message) {
-		Matcher<String> pathMatcher = StringStartsWith.startsWith("/" + projectName);
-		waitForErrors(expectedCount, pathMatcher);
-		assertCountOfErrors(new ProblemsView().getProblems(ProblemType.ERROR,new ProblemsPathMatcher(pathMatcher)),
-			expectedCount, message);
-	}
-
-	protected void assertCountOfValidationErrors(String projectName,
-			int expectedCount) {
-		assertCountOfValidationErrors(projectName, expectedCount, null);
-	}
-
-	protected void assertCountOfValidationErrors(String projectName,
-			int expectedCount, String message) {
-		assertCountOfValidationErrors(projectName, null, expectedCount, message);
-	}
-
-	protected void assertCountOfValidationErrors(String projectName,
-			String description, int expectedCount) {
-		assertCountOfValidationErrors(projectName, description, expectedCount, null);
-	}
-
-	protected void assertCountOfValidationErrors(String projectName,
-			String description, int expectedCount, String message) {
-		assertCountOfErrors(
-				restfulHelper.getRESTValidationErrors(projectName, description,
-						expectedCount), expectedCount, message);
-	}
-
-	protected void assertCountOfPathAnnotationValidationErrors(String projectName, int expectedCount) {
-		assertCountOfPathAnnotationValidationErrors(projectName, expectedCount, null);
-	}
-
-	protected void assertCountOfPathAnnotationValidationErrors(String projectName, int expectedCount, String message) {
-		assertCountOfErrors(
-				restfulHelper.getPathAnnotationValidationErrors(projectName, expectedCount),
-				expectedCount, message);
-	}
-
-	/*
-	 * Assert warnings (project, validation)
-	 */
-	private void waitForWarnings(int expectedCount) {
-		if(expectedCount == 0) {//prevent from false-positive
-			new WaitWhile(new ProblemExists(ProblemType.WARNING), TimePeriod.getCustom(2), false);
-		} else {//prevent from false-negative
-			new WaitUntil(new ProblemsCount(ProblemType.WARNING, expectedCount), TimePeriod.getCustom(2), false);
-		}
-	}
-
-	protected void assertCountOfWarnings(String projectName, int expectedCount) {
-		assertCountOfWarnings(projectName, expectedCount, null);
-	}
-
-	protected void assertCountOfWarnings(String projectName, int expectedCount, String message) {
-		waitForWarnings(expectedCount);
-		assertCountOfErrors(new ProblemsView().getProblems(ProblemType.WARNING), expectedCount, message);
-	}
-
-	protected void assertCountOfValidationWarnings(String projectName,
-			int expectedCount) {
-		assertCountOfValidationWarnings(projectName, null, expectedCount);
-	}
-
-	protected void assertCountOfValidationWarnings(String projectName,
-			int expectedCount, String message) {
-		assertCountOfValidationWarnings(projectName, null, expectedCount, message);
-	}
-
-	protected void assertCountOfValidationWarnings(String projectName,
-			String description, int expectedCount) {
-		assertCountOfValidationWarnings(projectName, description, expectedCount, null);
-	}
-
-	protected void assertCountOfValidationWarnings(String projectName,
-			String description, int expectedCount, String message) {
-		assertCountOfWarning(
-				restfulHelper.getRESTValidationWarnings(projectName, description, expectedCount),
-				expectedCount, message);
-	}
-
-	private void assertCountOfErrors(List<Problem> errors, int expectedCount, String message) {
-		assertCountOfProblems("error", errors, expectedCount, message);
-	}
-
-	private void assertCountOfWarning(List<Problem> warnings, int expectedCount, String message) {
-		assertCountOfProblems("warning", warnings, expectedCount, message);
-	}
-
-	private void assertCountOfProblems(String problemType, List<Problem> problems, int expectedCount, String message) {
-		int foundCount = problems.size();
-		if(foundCount != expectedCount) {
-			StringBuilder problemsInfo = new StringBuilder();
-			if(problems.size() > 0) {
-				problemsInfo.append("\nFound problems:\n");
-			}
-			for(Problem problem : problems) {
-				problemsInfo.append(problem.getDescription());
-				problemsInfo.append("\t");
-				problemsInfo.append(problem.getResource());
-				problemsInfo.append("\t");
-				problemsInfo.append(problem.getPath());
-				problemsInfo.append("\t");
-				problemsInfo.append(problem.getLocation());
-				problemsInfo.append("\t");
-				problemsInfo.append(problem.getPath());
-				problemsInfo.append("\n");
-			}
-			Assert.fail((message != null ? message + " " : "")
-					+ "Expected count of validation " + problemType + "s: "
-					+ expectedCount + ".\nCount of found validation "
-					+ problemType + "s: " + foundCount
-					+ problemsInfo.toString());
-		}
 	}
 
 	protected List<RESTfulWebService> restfulServicesForProject(String projectName) {
@@ -337,10 +238,12 @@ public class RESTfulTestBase extends WSTestBase {
 		menu.select();
 
 		RunOnServerDialog dialog = new RunOnServerDialog();
+		String dialogTitle = dialog.getText();
 		dialog.chooseExistingServer();
 		dialog.selectServer(serverName);
 		dialog.finish();
-		new WsTesterView();
+		
+		new WaitWhile(new ShellWithTextIsAvailable(dialogTitle), TimePeriod.getCustom(20));
 		new WaitWhile(new JobIsRunning(), TimePeriod.getCustom(20));
 	}
 

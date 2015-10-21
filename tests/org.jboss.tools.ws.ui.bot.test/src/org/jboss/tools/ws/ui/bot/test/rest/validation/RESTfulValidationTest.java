@@ -11,6 +11,7 @@
 
 package org.jboss.tools.ws.ui.bot.test.rest.validation;
 
+import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
 import org.junit.Test;
 
@@ -36,7 +37,7 @@ public class RESTfulValidationTest extends RESTfulTestBase {
 		prepareSimpleRestService(GET_METHOD_PATH, CORRECT_PATH_PARAM);
 
 		/* test count of validation errors */
-		assertCountOfPathAnnotationValidationErrors(getWsProjectName(), 0);
+		assertCountOfProblemsExists(ProblemType.ERROR, getWsProjectName(), PATH_PARAM_VALID_ERROR, null, 0);		
 	}
 
 	@Test
@@ -45,7 +46,7 @@ public class RESTfulValidationTest extends RESTfulTestBase {
 		prepareSimpleRestService(GET_METHOD_PATH, BAD_PATH_PARAM);
 
 		/* test count of validation errors */
-		assertCountOfPathAnnotationValidationErrors(getWsProjectName(), 1);
+		assertCountOfProblemsExists(ProblemType.ERROR, getWsProjectName(), PATH_PARAM_VALID_ERROR, null, 1);
 	}
 
 	@Test
@@ -57,7 +58,7 @@ public class RESTfulValidationTest extends RESTfulTestBase {
 				pathParamPrefix + BAD_PATH_PARAM);
 
 		/* test count of validation errors */
-		assertCountOfPathAnnotationValidationErrors(getWsProjectName(), 1);
+		assertCountOfProblemsExists(ProblemType.ERROR, getWsProjectName(), PATH_PARAM_VALID_ERROR,null, 1);
 	}
 
 	@Test
@@ -67,6 +68,6 @@ public class RESTfulValidationTest extends RESTfulTestBase {
 		replaceInRestService(BAD_PATH_PARAM, CORRECT_PATH_PARAM);
 
 		/* test count of validation errors */
-		assertCountOfPathAnnotationValidationErrors(getWsProjectName(), 0);
+		assertCountOfProblemsExists(ProblemType.ERROR, getWsProjectName(), PATH_PARAM_VALID_ERROR, null, 0);
 	}
 }
