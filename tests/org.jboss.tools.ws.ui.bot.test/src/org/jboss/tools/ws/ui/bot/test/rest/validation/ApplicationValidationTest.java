@@ -11,6 +11,7 @@
 
 package org.jboss.tools.ws.ui.bot.test.rest.validation;
 
+import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
 import org.jboss.tools.ws.reddeer.editor.ExtendedTextEditor;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
 import org.junit.Before;
@@ -34,11 +35,10 @@ public class ApplicationValidationTest extends RESTfulTestBase {
 		final String projectName = "app1";
 
 		/* prepare project */
-		importRestWSProject(projectName);
+		importWSTestProject(projectName);
 		
 		/* test validation error */
-		assertCountOfValidationErrors(projectName, 2);
-		assertCountOfValidationErrors(projectName, "Multiple JAX-RS Activators", 2);
+		assertCountOfValidationProblemsExists(ProblemType.ERROR, projectName, "Multiple JAX-RS Activators", null, 2);		
 	}
 	
 	@Test
@@ -46,11 +46,11 @@ public class ApplicationValidationTest extends RESTfulTestBase {
 		final String projectName = "app2";
 
 		/* prepare project */
-		importRestWSProject(projectName);
+		importWSTestProject(projectName);
 
 		/* test validation error */
-		assertCountOfValidationErrors(projectName, 2);
-		assertCountOfValidationErrors(projectName, "Multiple JAX-RS Activators", 2);
+		assertCountOfValidationProblemsExists(ProblemType.ERROR, projectName, null, null, 2);
+		assertCountOfValidationProblemsExists(ProblemType.ERROR, projectName, "Multiple JAX-RS Activators", null, 2);
 	}
 	
 	@Test
@@ -58,11 +58,11 @@ public class ApplicationValidationTest extends RESTfulTestBase {
 		final String projectName = "app3";
 
 		/* prepare project */
-		importRestWSProject(projectName);
+		importWSTestProject(projectName);
 
 		/* test validation error */
-		assertCountOfValidationWarnings(projectName, 0);
-		assertCountOfValidationErrors(projectName, 0);
+		assertCountOfValidationProblemsExists(ProblemType.WARNING, projectName, null, null, 0);
+		assertCountOfValidationProblemsExists(ProblemType.ERROR, projectName, null, null, 0);
 	}
 	
 	@Test
@@ -70,10 +70,10 @@ public class ApplicationValidationTest extends RESTfulTestBase {
 		final String projectName = "app4";
 
 		/* prepare project */
-		importRestWSProject(projectName);
+		importWSTestProject(projectName);
 
 		/* test validation error */
-		assertCountOfValidationErrors(projectName, 1);
+		assertCountOfValidationProblemsExists(ProblemType.ERROR, projectName, null, null, 1);
 
 		/* fix class - should be no error */
 		openJavaFile(projectName, "test", "App.java");
@@ -81,7 +81,7 @@ public class ApplicationValidationTest extends RESTfulTestBase {
 		textEditor.replace("@ApplicationPath(\"/rest\")", "");
 
 		/* test validation error */
-		assertCountOfValidationErrors(projectName, 0);
+		assertCountOfValidationProblemsExists(ProblemType.ERROR, projectName, null, null, 0);
 	}
 
 	@Test
@@ -89,10 +89,10 @@ public class ApplicationValidationTest extends RESTfulTestBase {
 		final String projectName = "app5";
 
 		/* prepare project */
-		importRestWSProject(projectName);
+		importWSTestProject(projectName);
 
 		/* test validation error */
-		assertCountOfValidationErrors(projectName, 1);
+		assertCountOfValidationProblemsExists(ProblemType.ERROR, projectName, null, null, 1);
 
 		/* fix class - should be no error */
 		openJavaFile(projectName, "test", "App.java");
@@ -100,6 +100,6 @@ public class ApplicationValidationTest extends RESTfulTestBase {
 		textEditor.replace("extends Application", "");
 
 		/* test validation error */
-		assertCountOfValidationErrors("app5", 0);
+		assertCountOfValidationProblemsExists(ProblemType.ERROR, projectName, null, null, 0);
 	}
 }

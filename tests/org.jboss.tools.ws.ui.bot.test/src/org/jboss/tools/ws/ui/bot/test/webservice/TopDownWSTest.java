@@ -179,6 +179,7 @@ public class TopDownWSTest extends WebServiceTestBase {
 		 choosing 'Deploy' should normally deploy the project automatically*/
 		case DEPLOY:
 			ServersViewHelper.runProjectOnServer(getEarProjectName());
+			ServersViewHelper.waitForDeployment(getEarProjectName(), getConfiguredServerName());
 			
 		default:
 			break;

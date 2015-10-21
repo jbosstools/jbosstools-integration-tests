@@ -9,6 +9,7 @@ import java.util.List;
 import org.hamcrest.core.Is;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
+import org.jboss.reddeer.eclipse.condition.ExactNumberOfProblemsExists;
 import org.jboss.reddeer.eclipse.condition.ProblemExists;
 import org.jboss.reddeer.eclipse.ui.problems.Problem;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
@@ -17,7 +18,6 @@ import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.tools.ws.reddeer.editor.ExtendedTextEditor;
-import org.jboss.tools.ws.reddeer.swt.condition.ProblemsCount;
 import org.junit.Test;
 
 /**
@@ -62,7 +62,7 @@ public class FiltersInterceptorsSupportTest extends RESTfulTestBase {
 	public void filterInterceptorDefinedAsInnerClassesSupportTest() {
 		String projectName = "filterinterceptor1";
 		importAndCheckErrors(projectName);
-		assertCountOfValidationWarnings(projectName, 4, "JBIDE-17178");
+		assertCountOfValidationProblemsExists(ProblemType.WARNING, projectName, null, null, 4);
 	}
 
 	private void filterSupportTest(String projectName) {
@@ -96,7 +96,7 @@ public class FiltersInterceptorsSupportTest extends RESTfulTestBase {
 		new ExtendedTextEditor().save();
 
 		/* wait for JAX-RS validator */
-		new WaitUntil(new ProblemsCount(ProblemType.WARNING,
+		new WaitUntil(new ExactNumberOfProblemsExists(ProblemType.WARNING,
 				warningsBefore.size()+1), TimePeriod.NORMAL, false);
 
 		//one more warning Description "The @Provider annotation is missing on this java type."
@@ -106,6 +106,6 @@ public class FiltersInterceptorsSupportTest extends RESTfulTestBase {
 				+ Arrays.toString(warningsAfter.toArray()), warningsAfter.size() - warningsBefore.size(), Is.is(1));
 		
 		/* there should be no error */
-		assertCountOfErrors(projectName, 0);
+		assertCountOfProblemsExists(ProblemType.ERROR, projectName, null, null, 0);
 	}
 }

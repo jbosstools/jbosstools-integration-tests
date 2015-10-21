@@ -43,7 +43,7 @@ public class RESTfulExplorerTest extends RESTfulTestBase {
 		final String projectName = REST_BASIC_PROJECT_NAME;
 
 		/* import project */
-		importRestWSProject(projectName);
+		importWSTestProject(projectName);
 
 		/* get RESTful services from JAX-RS REST explorer for the project */
 		List<RESTfulWebService> restServices = restfulServicesForProject(projectName);
@@ -59,7 +59,7 @@ public class RESTfulExplorerTest extends RESTfulTestBase {
 		final String projectName = REST_ADVANCED_PROJECET_NAME;
 
 		/* import project */
-		importRestWSProject(projectName);
+		importWSTestProject(projectName);
 
 		/* get RESTful services from JAX-RS REST explorer for the project */
 		List<RESTfulWebService> restServices = restfulServicesForProject(projectName);
@@ -75,7 +75,7 @@ public class RESTfulExplorerTest extends RESTfulTestBase {
 		final String projectName = REST_BASIC_PROJECT_NAME;
 
 		/* import project */
-		importRestWSProject(projectName);
+		importWSTestProject(projectName);
 
 		/* replace @DELETE annotation to @GET annotation */
 		replaceInRestService(projectName, "@DELETE", "@GET");
@@ -93,7 +93,7 @@ public class RESTfulExplorerTest extends RESTfulTestBase {
 		final String projectName = REST_ADVANCED_PROJECET_NAME;
 
 		/* import project */
-		importRestWSProject(projectName);
+		importWSTestProject(projectName);
 
 		/* edit @DELETE annotation */
 		replaceInRestService(projectName, "/delete/{id}", "delete/edited//{id}");
@@ -113,7 +113,7 @@ public class RESTfulExplorerTest extends RESTfulTestBase {
 		final String projectName = REST_BASIC_PROJECT_NAME;
 
 		/* prepare project*/
-		importRestWSProject(projectName);
+		importWSTestProject(projectName);
 		prepareRestService(projectName, "EmptyRestfulWS.java.ws");
 		AbstractWait.sleep(TimePeriod.getCustom(2));
 

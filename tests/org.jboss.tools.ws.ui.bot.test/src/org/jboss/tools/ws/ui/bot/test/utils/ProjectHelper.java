@@ -120,6 +120,7 @@ public class ProjectHelper {
 		wizard.finish();
 
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		projectExplorer = new ProjectExplorer();
 		projectExplorer.getProject(name).select();
 	}
 

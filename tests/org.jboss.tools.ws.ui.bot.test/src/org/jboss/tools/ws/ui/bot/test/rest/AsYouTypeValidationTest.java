@@ -3,17 +3,17 @@ package org.jboss.tools.ws.ui.bot.test.rest;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.hamcrest.core.Is;
 import org.hamcrest.core.IsNot;
 import org.hamcrest.core.StringContains;
-import org.jboss.reddeer.swt.keyboard.Keyboard;
-import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.core.exception.CoreLayerException;
+import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
+import org.jboss.reddeer.swt.keyboard.Keyboard;
+import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
 import org.jboss.reddeer.workbench.impl.editor.Marker;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.ws.reddeer.editor.ExtendedTextEditor;
@@ -50,7 +50,7 @@ public class AsYouTypeValidationTest extends RESTfulTestBase {
 	@Test
 	public void invalidPathParamTest() {
 		/* assert there is no error */
-		assertCountOfErrors(getWsProjectName(), 0);
+		assertCountOfProblemsExists(ProblemType.ERROR, getWsProjectName(), null, null, 0);
 
 		/* change pathparam's value to be invalid */
 		openJavaFile(getWsProjectName(), "org.rest.test", "RestService.java");

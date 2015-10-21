@@ -24,6 +24,7 @@ import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.uiforms.impl.hyperlink.DefaultHyperlink;
@@ -68,6 +69,7 @@ public class JAXRSFacetTest extends RESTfulTestBase {
 	
 	private void checkJAXRSTooling() {
 		RESTfulWebServicesNode restWebServicesNode = new RESTfulWebServicesNode(wsProjectName);
+		AbstractWait.sleep(TimePeriod.getCustom(3));
 		assertThat("Different count of rest services was expected", 
 				restWebServicesNode.getWebServices().size(), Is.is(1));
 	}

@@ -102,6 +102,7 @@ public class BottomUpWSTest extends WebServiceTestBase {
 			 */
 		case DEPLOY:
 			ServersViewHelper.runProjectOnServer(getEarProjectName());
+			ServersViewHelper.waitForDeployment(getEarProjectName(), getConfiguredServerName());
 
 		default:
 			break;

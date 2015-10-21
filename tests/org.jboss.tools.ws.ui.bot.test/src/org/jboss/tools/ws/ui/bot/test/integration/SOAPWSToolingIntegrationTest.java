@@ -47,6 +47,7 @@ public class SOAPWSToolingIntegrationTest extends SOAPTestBase {
 		if (!ProjectHelper.projectExists(getWsProjectName())) {
 			ProjectHelper.importWSTestProject(getWsProjectName(), getConfiguredRuntimeName());
 			ServersViewHelper.runProjectOnServer(getWsProjectName());
+			ServersViewHelper.waitForDeployment(getWsProjectName(), getConfiguredServerName());
 		}
 	}
 

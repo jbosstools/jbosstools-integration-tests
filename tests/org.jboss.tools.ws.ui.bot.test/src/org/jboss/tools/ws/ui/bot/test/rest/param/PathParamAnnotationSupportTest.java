@@ -59,7 +59,7 @@ public class PathParamAnnotationSupportTest extends RESTfulTestBase {
 	@Test
 	public void testPathParamSupport() {
 		/* prepare project */
-		importRestWSProject(projectPath1);
+		importWSTestProject(projectPath1);
 
 		/* get RESTful services from JAX-RS REST explorer for the project */
 		List<RESTfulWebService> restServices = restfulServicesForProject(projectPath1);
@@ -74,7 +74,7 @@ public class PathParamAnnotationSupportTest extends RESTfulTestBase {
 	@Test
 	public void testPathParamFieldSupport() {
 		/* prepare project */
-		importRestWSProject(projectPath2);
+		importWSTestProject(projectPath2);
 
 		/* get RESTful services from JAX-RS REST explorer for the project */
 		List<RESTfulWebService> restServices = restfulServicesForProject(projectPath2);
@@ -85,7 +85,7 @@ public class PathParamAnnotationSupportTest extends RESTfulTestBase {
 				"/rest/{" + pathParam1 + ":" + pathType1 + "}");
 
 		/* prepare project */
-		importRestWSProject(projectPath3);
+		importWSTestProject(projectPath3);
 		AbstractWait.sleep(TimePeriod.getCustom(2));
 
 		/* get RESTful services from JAX-RS REST explorer for the project */
@@ -102,7 +102,7 @@ public class PathParamAnnotationSupportTest extends RESTfulTestBase {
 		final String newPathParam = "year";
 		final String newPathType = "Integer";
 		/* prepare project */
-		importRestWSProject(projectPath2);
+		importWSTestProject(projectPath2);
 
 		/* open RestService.java */
 		openRestService(projectPath2);
@@ -140,7 +140,7 @@ public class PathParamAnnotationSupportTest extends RESTfulTestBase {
 	@Test
 	public void testEditingPathParam() {
 		/* prepare project */
-		importRestWSProject(projectPath1);
+		importWSTestProject(projectPath1);
 
 		/* open RestService.java */
 		openRestService(projectPath1);
@@ -165,7 +165,7 @@ public class PathParamAnnotationSupportTest extends RESTfulTestBase {
 	@Test
 	public void testEditingTypeOfPathParam() {
 		/* prepare project */
-		importRestWSProject(projectPath1);
+		importWSTestProject(projectPath1);
 
 		/* open RestService.java */
 		openRestService(projectPath1);

@@ -161,6 +161,7 @@ public class WSClientTestTemplate extends SOAPTestBase {
 		 choosing 'Deploy' should normally deploy the project automatically*/
 		case DEPLOY:
 			ServersViewHelper.runProjectOnServer(getEarProjectName());
+			ServersViewHelper.waitForDeployment(getEarProjectName(), getConfiguredServerName());
 			
 		case TEST:
 		case START:

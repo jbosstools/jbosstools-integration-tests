@@ -28,7 +28,7 @@ import org.junit.Test;
 public class XmlJsonFormattingTest extends RESTfulTestBase {
 
 	private static String projectName = "usersRestManager";
-	private WsTesterView wsTesterView = new WsTesterView();
+	private WsTesterView wsTesterView;
 
 	private final static String XML_RESPONSE_FORMAT = 
 			"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
@@ -49,16 +49,21 @@ public class XmlJsonFormattingTest extends RESTfulTestBase {
 	@Override
 	public void setup() {
 		if (!projectExists(getWsProjectName())) {
-			importRestWSProject(getWsProjectName());
+			importWSTestProject(getWsProjectName());
 			ServersViewHelper.addProjectToServer(getWsProjectName(),
 					getConfiguredServerName());
+			ServersViewHelper.waitForDeployment(getWsProjectName(), getConfiguredServerName());
 			ServersViewHelper.serverClean(getConfiguredServerName());
 		}
+		wsTesterView = new WsTesterView();
+		wsTesterView.open();
 	}
 
 	@Override
 	public void cleanup() {
-		 
+		if (wsTesterView.isOpened()) {
+			wsTesterView.close();
+		}
 	}
 
 	@Override
