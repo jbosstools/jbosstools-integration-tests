@@ -1,6 +1,7 @@
 package org.jboss.tools.openshift.ui.bot.test;
 
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.tools.openshift.ui.bot.test.application.v3.basic.LabelsTest;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.basic.NewApplicationWizardHandlingTest;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.basic.OpenNewApplicationWizardTest;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.basic.OpenNewApplicationWizardWithNoProjectTest;
@@ -44,6 +45,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	OpenNewApplicationWizardWithNoProjectTest.class,
 	NewApplicationWizardHandlingTest.class,
 	TemplateParametersTest.class,
+	LabelsTest.class,
 	
 	// Clean up
 	CleanUpOS3.class
