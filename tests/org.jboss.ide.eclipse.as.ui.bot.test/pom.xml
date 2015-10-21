@@ -1040,6 +1040,7 @@
 			<properties>
 				<test.class>org.jboss.ide.eclipse.as.ui.bot.test.allsuites.products.compatibility.EAP6xCompatibilitySuite</test.class>
 				<reddeer.config>${reddeer.product.config}/eap-6.x.xml</reddeer.config>
+				<download-properties-file>${product-download-properties-file}</download-properties-file>
 			</properties>
 			<build>
 				<plugins>
@@ -1056,6 +1057,42 @@
 								<configuration>
 									<url>${jbosstools.test.jboss-eap-6.x.url}</url>
 									<md5>${jbosstools.test.jboss-eap-6.x.md5}</md5>
+									<unpack>true</unpack>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+			<profile>
+			<id>eap7x-compatibility</id>
+			<activation>
+				<property>
+					<name>test.profile</name>
+					<value>eap7x-compatibility</value>
+				</property>
+			</activation>
+			<properties>
+				<test.class>org.jboss.ide.eclipse.as.ui.bot.test.allsuites.products.compatibility.EAP7xCompatibilitySuite</test.class>
+				<reddeer.config>${reddeer.product.config}/eap-7.x.xml</reddeer.config>
+				<download-properties-file>${product-download-properties-file}</download-properties-file>
+			</properties>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>com.googlecode.maven-download-plugin</groupId>
+						<artifactId>download-maven-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>install-eap-7.x</id>
+								<phase>pre-integration-test</phase>
+								<goals>
+									<goal>wget</goal>
+								</goals>
+								<configuration>
+									<url>${jbosstools.test.jboss-eap-7.x.url}</url>
+									<md5>${jbosstools.test.jboss-eap-7.x.md5}</md5>
 									<unpack>true</unpack>
 								</configuration>
 							</execution>
