@@ -155,6 +155,8 @@ public class OpenShiftLabel {
 		
 		// Application related
 		public static final String EDIT_TEMPLATE_PARAMETER = "Edit Template Parameter";
+		public static final String REMOVE_LABEL = "Remove Label";
+		public static final String RESOURCE_LABEL = "Resource Label";
 		public static final String TEMPLATE_DETAILS = "Template Details";
 	}
 	
@@ -178,6 +180,7 @@ public class OpenShiftLabel {
 		public static final String NEW = "New...";
 		public static final String REFRESH = "Refresh...";
 		public static final String REMOVE = "Remove...";
+		public static final String REMOVE_BASIC = "Remove";
 		public static final String RESET = "Reset";
 		public static final String SELECT_ALL = "Select all";
 		public static final String START_ALL = "Start All";
