@@ -1,5 +1,6 @@
 package org.jboss.tools.openshift.reddeer.wizard.v3;
 
+import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
@@ -35,7 +36,7 @@ public class NewOpenShift3ApplicationWizard extends NewOpenShiftApplicationWizar
 	
 		new ContextMenu(OpenShiftLabel.ContextMenu.NEW_OS3_APPLICATION).select();
 		
-		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.NEW_APP_WIZARD));
+		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.NEW_APP_WIZARD), TimePeriod.LONG);
 		
 		new DefaultShell(OpenShiftLabel.Shell.NEW_APP_WIZARD);
 	}

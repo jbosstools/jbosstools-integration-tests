@@ -20,7 +20,7 @@ import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.utils.v2.DeleteUtils;
 import org.jboss.tools.openshift.reddeer.wizard.v2.NewOpenShift2ApplicationWizard;
-import org.jboss.tools.openshift.reddeer.wizard.v2.Templates;
+import org.jboss.tools.openshift.reddeer.wizard.v2.ApplicationCreator;
 import org.jboss.tools.openshift.ui.bot.test.util.DatastoreOS2;
 import org.junit.Before;
 import org.junit.Test;
@@ -41,7 +41,7 @@ public class ID907DownloadableCartridgeContentAssistTest {
 	
 	@Before
 	public void prepareContentAssist() {
-		new Templates(DatastoreOS2.USERNAME, DatastoreOS2.SERVER, DatastoreOS2.DOMAIN, false).
+		new ApplicationCreator(DatastoreOS2.USERNAME, DatastoreOS2.SERVER, DatastoreOS2.DOMAIN, false).
 		createApplicationOnDownloadableCartridge(downloadableURL, applicationName, 
 				false, false, false, null, (String[]) null);
 		new DeleteUtils(DatastoreOS2.USERNAME, DatastoreOS2.SERVER, DatastoreOS2.DOMAIN, applicationName,

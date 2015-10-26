@@ -23,7 +23,7 @@ import org.jboss.tools.openshift.reddeer.condition.OpenShiftApplicationExists;
 import org.jboss.tools.openshift.reddeer.condition.v2.ApplicationIsDeployedSuccessfully;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.utils.v2.DeleteUtils;
-import org.jboss.tools.openshift.reddeer.wizard.v2.Templates;
+import org.jboss.tools.openshift.reddeer.wizard.v2.ApplicationCreator;
 import org.jboss.tools.openshift.ui.bot.test.application.advanced.ID903ApplicationMarkersTest;
 import org.jboss.tools.openshift.ui.bot.test.application.advanced.ID905ManageSnapshotsTest;
 import org.jboss.tools.openshift.ui.bot.test.application.cartridge.ID601EmbedCartridgeTest;
@@ -52,7 +52,7 @@ public class ID803ServerAdapterHandlingTest {
 	
 	@BeforeClass
 	public static void createApplication() {
-		new Templates(DatastoreOS2.USERNAME, DatastoreOS2.SERVER, DatastoreOS2.DOMAIN, false).
+		new ApplicationCreator(DatastoreOS2.USERNAME, DatastoreOS2.SERVER, DatastoreOS2.DOMAIN, false).
 				createSimpleApplicationOnBasicCartridges(OpenShiftLabel.Cartridge.JBOSS_EAP, applicationName,
 						false, true, true);
 	}
