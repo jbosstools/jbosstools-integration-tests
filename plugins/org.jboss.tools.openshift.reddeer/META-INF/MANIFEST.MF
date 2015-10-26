@@ -21,6 +21,7 @@ Bundle-Localization: plugin
 Bundle-Vendor: JBoss by Red Hat
 Export-Package: org.jboss.tools.openshift.reddeer.condition,
  org.jboss.tools.openshift.reddeer.condition.v2,
+ org.jboss.tools.openshift.reddeer.enums,
  org.jboss.tools.openshift.reddeer.utils,
  org.jboss.tools.openshift.reddeer.utils.v2,
  org.jboss.tools.openshift.reddeer.view,

@@ -2,8 +2,10 @@ package org.jboss.tools.openshift.ui.bot.test.project;
 
 import static org.junit.Assert.fail;
 
+
 import org.jboss.reddeer.common.exception.RedDeerException;
 import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.tools.openshift.reddeer.enums.Resource;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftProject;
 import org.jboss.tools.openshift.ui.bot.test.util.DatastoreOS3;
@@ -20,21 +22,21 @@ public class ResourcesTest {
 		project.expand();
 		TreeItem projectItem = project.getTreeItem();
 		
-		verifyResourceExistence(projectItem, "Build Configs");
-		verifyResourceExistence(projectItem, "Builds");
-		verifyResourceExistence(projectItem, "Deployment Configs");
-		verifyResourceExistence(projectItem, "Image Streams");
-		verifyResourceExistence(projectItem, "Pods");
-		verifyResourceExistence(projectItem, "Replication Controllers");
-		verifyResourceExistence(projectItem, "Routes");
-		verifyResourceExistence(projectItem, "Services");
+		verifyResourceExistence(projectItem, Resource.BUILD_CONFIG);
+		verifyResourceExistence(projectItem, Resource.BUILD);
+		verifyResourceExistence(projectItem, Resource.DEPLOYMENT_CONFIG);
+		verifyResourceExistence(projectItem, Resource.IMAGE_STREAM);
+		verifyResourceExistence(projectItem, Resource.POD);
+		verifyResourceExistence(projectItem, Resource.REPLICATION_CONTROLLER);
+		verifyResourceExistence(projectItem, Resource.ROUTE);
+		verifyResourceExistence(projectItem, Resource.SERVICE); 
 	}
 	
-	private void verifyResourceExistence(TreeItem projectItem, String resourceLabel) {
+	private void verifyResourceExistence(TreeItem projectItem, Resource resource) {
 		try {
-			projectItem.getItem(resourceLabel);
+			projectItem.getItem(resource.toString());
 		} catch (RedDeerException ex) {
-			fail("Resource " + resourceLabel + " does not exist under a specified project item.");
+			fail("Resource " + resource.toString() + " does not exist under a specified project item.");
 		}	
 	}	
 }

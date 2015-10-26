@@ -72,6 +72,9 @@ public class OpenShiftLabel {
 		public static final String MANAGE_OS_PROJECTS = "Manage Projects...";
 		public static final String DELETE_OS_PROJECT = "Delete Project";
 		
+		// Resource related
+		public static final String DELETE_RESOURCE = "Delete Resource...";
+		
 		// Application related
 		public static final String APPLICATION_DETAILS = "Details...";
 		public static final String DELETE_APPLICATION = "Delete Application(s)...";
@@ -154,10 +157,18 @@ public class OpenShiftLabel {
 		public static final String PUBLISH_CHANGES = "Publish Changes";
 		
 		// Application related
+		public static final String APPLICATION_SUMMARY = "Create Application Summary";
 		public static final String EDIT_TEMPLATE_PARAMETER = "Edit Template Parameter";
 		public static final String REMOVE_LABEL = "Remove Label";
 		public static final String RESOURCE_LABEL = "Resource Label";
 		public static final String TEMPLATE_DETAILS = "Template Details";
+		public static final String WEBHOOK_TRIGGERS = "Webhooks triggers";
+		
+		// Resources related
+		public static final String DELETE_RESOURCE = "Delete Resource";
+		
+		// Others
+		public static final String CHEATSHEET = "Found cheatsheet";
 	}
 	
 	/**
@@ -232,6 +243,10 @@ public class OpenShiftLabel {
 		public static final String DESTINATION = "Destination:";
 		public static final String SERVER_TEMPLATE = "Use a template from the server:";
 		public static final String TAIL_OPTIONS = "Tail options:";	
+		
+		// Webhook
+		public static final String GENERIC_WEBHOOK = "Generic webhook:";
+		public static final String GITHUB_WEBHOOK = "GitHub webhook:";
 	}
 	
 	/**

@@ -19,11 +19,11 @@ import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 
 /**
- * General wizard for a new OpenShift application.
+ * Abstract wizard for a new OpenShift application.
  * 
  * @author mlabuda@redhat.com
  */
-public class NewOpenShiftApplicationWizard {
+public abstract class NewOpenShiftApplicationWizard {
 	
 	protected TreeViewerHandler treeViewerHandler = TreeViewerHandler.getInstance();
 	

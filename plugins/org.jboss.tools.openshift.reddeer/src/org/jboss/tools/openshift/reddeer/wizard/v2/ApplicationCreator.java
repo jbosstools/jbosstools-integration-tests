@@ -10,7 +10,7 @@ import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
  * @author mlabuda@redhat.com
  *
  */
-public class Templates {
+public class ApplicationCreator {
 	
 	private NewOpenShift2ApplicationWizard wizard;
 	
@@ -21,7 +21,7 @@ public class Templates {
 	 * @param openFromShellMenu true if wizard should be opened from shell menu File, New
 	 * false otherwise (opened from OpenShift explorer)
 	 */
-	public Templates(String username, String server, String domain, boolean openFromShellMenu) {
+	public ApplicationCreator(String username, String server, String domain, boolean openFromShellMenu) {
 		wizard = new NewOpenShift2ApplicationWizard(username, server, domain);
 		
 		if (openFromShellMenu) {

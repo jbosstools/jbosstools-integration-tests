@@ -6,6 +6,8 @@ import org.jboss.tools.openshift.ui.bot.test.application.v3.basic.NewApplication
 import org.jboss.tools.openshift.ui.bot.test.application.v3.basic.OpenNewApplicationWizardTest;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.basic.OpenNewApplicationWizardWithNoProjectTest;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.basic.TemplateParametersTest;
+import org.jboss.tools.openshift.ui.bot.test.application.v3.create.CreateApplicationFromTemplateTest;
+import org.jboss.tools.openshift.ui.bot.test.application.v3.create.DeploymentTest;
 import org.jboss.tools.openshift.ui.bot.test.connection.v3.ConnectionDialogHandlingTest;
 import org.jboss.tools.openshift.ui.bot.test.connection.v3.ConnectionPropertiesTest;
 import org.jboss.tools.openshift.ui.bot.test.connection.v3.CreateNewConnectionTest;
@@ -40,12 +42,16 @@ import org.junit.runners.Suite.SuiteClasses;
 	ProjectPropertiesTest.class,
 	ShowProjectInWebConsoleTest.class,
 	
-	// Application wizard
+	// Application wizard handling
 	OpenNewApplicationWizardTest.class,
 	OpenNewApplicationWizardWithNoProjectTest.class,
 	NewApplicationWizardHandlingTest.class,
 	TemplateParametersTest.class,
 	LabelsTest.class,
+	
+	// Creation of a new application
+	CreateApplicationFromTemplateTest.class,
+	DeploymentTest.class,	
 	
 	// Clean up
 	CleanUpOS3.class
