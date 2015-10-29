@@ -8,7 +8,8 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
 
 	FreemarkerPreferencePageTest.class,
-	FreeMarkerEditorTest.class
+	FreeMarkerEditorTest.class,
+	FreemarkerDirectiveTest.class
 })
 public class SmokeSuite {
 
