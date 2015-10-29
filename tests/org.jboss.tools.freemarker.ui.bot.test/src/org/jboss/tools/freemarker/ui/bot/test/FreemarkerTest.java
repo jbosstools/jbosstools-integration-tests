@@ -5,13 +5,18 @@ import static org.junit.Assert.fail;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileFilter;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
 import org.jboss.reddeer.common.logging.Logger;
@@ -41,12 +46,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 /**
- * Freemarker ui bot test
+ * Freemarker Directive tests
  * @author Jiri Peterka
  *
  */
 @RunWith(RedDeerSuite.class)
-public class FreeMarkerEditorTest extends FreemarkerTest {
+public class FreemarkerTest {
 	
 	
 	private static final Logger log = Logger.getLogger(FreeMarkerEditorTest.class);
@@ -120,8 +125,8 @@ public class FreeMarkerEditorTest extends FreemarkerTest {
 		pe.open();
 
 		
-		new DefaultTreeItem(prj, "ftl", "welcome.ftl").doubleClick();
-		new TextEditor("welcome.ftl");
+		new DefaultTreeItem(prj, "ftl", "assign-directive.ftl").doubleClick();
+		new TextEditor("assign-directive.ftl");
 		
 		log.step("Open outline view and check freemarker elements there");
 		OutlineView ov = new OutlineView();
@@ -134,8 +139,7 @@ public class FreeMarkerEditorTest extends FreemarkerTest {
 			list.add(i.getText());
 		}
 		
-		assertTrue(list.contains("user"));
-		assertTrue(list.contains("latestProduct.name"));
+		assertTrue(list.contains("assign variable1=value1 variable2=value2"));
 		
 	    // https://issues.jboss.org/browse/JBIDE-11287
 		// remove comment when this jira is fixed
@@ -158,7 +162,7 @@ public class FreeMarkerEditorTest extends FreemarkerTest {
 		}
 	}
 
-	@SuppressWarnings({ "unused", "unchecked" })
+	@SuppressWarnings({ "unchecked" })
 	private void checkFreemMarkerOutput() {
 		
 		String outputExpected = "";
@@ -253,5 +257,80 @@ public class FreeMarkerEditorTest extends FreemarkerTest {
 		}
 
 		return filePath;
+	}
+	
+	/**
+	 * Gets workspace absolute path 
+	 * @return current workspace absolute path
+	 */
+	public String getWorkspaceAbsolutePath() {
+		IWorkspace workspace = ResourcesPlugin.getWorkspace();
+		String path = workspace.getRoot().getLocation().toFile().getAbsolutePath();  
+		return path;		
+	}	
+	
+	/**
+	 * Recursively copies files and subdirectories from fromLocation to
+	 * toLocation using FileFilter fileFliter
+	 * 
+	 * @param fromLocation
+	 * @param toLocation
+	 * @param fileFilter
+	 * @throws IOException
+	 */
+	public void copyFilesBinaryRecursively(File fromLocation,
+			File toLocation, FileFilter fileFilter) throws IOException {
+		if (fromLocation.exists()) {
+			for (File fileToCopy : fromLocation.listFiles(fileFilter)) {
+				if (fileToCopy.isDirectory()) {
+					File newToDir = new File(toLocation, fileToCopy.getName());
+					newToDir.mkdir();
+					copyFilesBinaryRecursively(fileToCopy, newToDir, fileFilter);
+				} else {
+					copyFilesBinary(fileToCopy, toLocation);
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Copies binary file originalFile to location toLocation
+	 * 
+	 * @param originalFile
+	 * @param toLocation
+	 * @throws IOException
+	 */
+	public void copyFilesBinary(File originalFile, File toLocation)
+			throws IOException {
+		FileInputStream fis = null;
+		FileOutputStream fos = null;
+		try {
+			fis = new FileInputStream(originalFile);
+			fos = new FileOutputStream(new File(toLocation,
+					originalFile.getName()));
+			byte[] buffer = new byte[4096];
+			int bytesRead;
+
+			while ((bytesRead = fis.read(buffer)) != -1) {
+				fos.write(buffer, 0, bytesRead); // write
+			}
+
+		} finally {
+			if (fis != null) {
+				try {
+					fis.close();
+				} catch (IOException e) {
+					// do nothing
+				}
+			}
+			if (fos != null) {
+				try {
+					fos.flush();
+					fos.close();
+				} catch (IOException e) {
+					// do nothing
+				}
+			}
+		}
 	}
 }

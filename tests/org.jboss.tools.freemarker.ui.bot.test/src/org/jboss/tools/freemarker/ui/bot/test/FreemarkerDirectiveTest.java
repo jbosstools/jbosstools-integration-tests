@@ -12,8 +12,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.eclipse.core.runtime.FileLocator;
-import org.eclipse.core.runtime.Platform;
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.common.matcher.RegexMatcher;
 import org.jboss.reddeer.common.wait.WaitWhile;
@@ -41,12 +39,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 /**
- * Freemarker ui bot test
+ * Freemarker Directive tests
  * @author Jiri Peterka
  *
  */
 @RunWith(RedDeerSuite.class)
-public class FreeMarkerEditorTest extends FreemarkerTest {
+public class FreemarkerDirectiveTest extends FreemarkerTest {
 	
 	
 	private static final Logger log = Logger.getLogger(FreeMarkerEditorTest.class);
@@ -120,8 +118,8 @@ public class FreeMarkerEditorTest extends FreemarkerTest {
 		pe.open();
 
 		
-		new DefaultTreeItem(prj, "ftl", "welcome.ftl").doubleClick();
-		new TextEditor("welcome.ftl");
+		new DefaultTreeItem(prj, "ftl", "assign-directive.ftl").doubleClick();
+		new TextEditor("assign-directive.ftl");
 		
 		log.step("Open outline view and check freemarker elements there");
 		OutlineView ov = new OutlineView();
@@ -134,8 +132,7 @@ public class FreeMarkerEditorTest extends FreemarkerTest {
 			list.add(i.getText());
 		}
 		
-		assertTrue(list.contains("user"));
-		assertTrue(list.contains("latestProduct.name"));
+		assertTrue(list.contains("assign variable1=value1 variable2=value2"));
 		
 	    // https://issues.jboss.org/browse/JBIDE-11287
 		// remove comment when this jira is fixed
@@ -158,7 +155,7 @@ public class FreeMarkerEditorTest extends FreemarkerTest {
 		}
 	}
 
-	@SuppressWarnings({ "unused", "unchecked" })
+	@SuppressWarnings({ "unchecked" })
 	private void checkFreemMarkerOutput() {
 		
 		String outputExpected = "";
@@ -219,39 +216,5 @@ public class FreeMarkerEditorTest extends FreemarkerTest {
 	public static void aterClass() {
 		// wait for all jobs
 		new WaitWhile(new JobIsRunning());
-	}
-			
-	/**
-	 * Provide bundle resource absolute path
-	 * @param pluginId - plugin id
-	 * @param path - resource relative path
-	 * @return resource absolute path
-	 */
-	public static String getResourceAbsolutePath(String pluginId, String... path) {
-
-		// Construct path
-		StringBuilder builder = new StringBuilder();
-		for (String fragment : path) {
-			builder.append("/" + fragment);
-		}
-
-		String filePath = "";
-		try {
-			filePath = FileLocator.toFileURL(
-					Platform.getBundle(pluginId).getEntry("/")).getFile()
-					+ "resources" + builder.toString();
-			File file = new File(filePath);
-			if (!file.isFile()) {
-				filePath = FileLocator.toFileURL(
-						Platform.getBundle(pluginId).getEntry("/")).getFile()
-						+ builder.toString();
-			}
-		} catch (IOException ex) {
-			String message = filePath + " resource file not found";
-			//log.error(message);
-			fail(message);
-		}
-
-		return filePath;
 	}
 }
