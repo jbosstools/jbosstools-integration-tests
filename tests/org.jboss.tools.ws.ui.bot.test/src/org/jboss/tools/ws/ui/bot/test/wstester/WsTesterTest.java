@@ -25,6 +25,7 @@ import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.wait.AbstractWait;
@@ -32,12 +33,14 @@ import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.core.condition.WidgetIsFound;
+import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.tools.ws.reddeer.swt.condition.WsTesterNotEmptyResponseText;
 import org.jboss.tools.ws.reddeer.ui.dialogs.InputDialog;
 import org.jboss.tools.ws.reddeer.ui.tester.views.SelectWSDLDialog;
 import org.jboss.tools.ws.reddeer.ui.tester.views.WsTesterView;
 import org.jboss.tools.ws.reddeer.ui.tester.views.WsTesterView.RequestType;
-import org.jboss.tools.ws.ui.bot.test.soap.SOAPTestBase;
+import org.jboss.tools.ws.ui.bot.test.utils.ProjectHelper;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Test;
@@ -47,25 +50,17 @@ import org.junit.Test;
  *
  * @author jlukas
  */
-public class WsTesterTest extends SOAPTestBase {
+public class WsTesterTest {
 
 	private static final String SERVICE_URL = "http://www.webservicex.net/BibleWebservice.asmx";
+	private static final Logger LOGGER = Logger.getLogger(WsTesterTest.class.getName());
 
-	@Override
-	public void setup() {
-		// do nothing
-	}
+ 	@AfterClass
+ 	public static void deleteProjects() {
+ 		ProjectHelper.deleteAllProjects();
+ 	}
 
-	@Override
-	public void cleanup() {
-		// do nothing
-	}
-
-	@AfterClass
-	public static void cleanAll() {
-		// do nothing
-	}
-
+	
 	/**
 	 * Test behavior of UI
 	 */
@@ -299,8 +294,10 @@ public class WsTesterTest extends SOAPTestBase {
 		WsTesterView wstv = new WsTesterView();
 		wstv.open();
 		wstv.setRequestType(RequestType.GET);
-		wstv.setServiceURL("http://www.zvents.com/rest/event_update");
+		wstv.setServiceURL("https://watchful.li/api/v1/sites");
 		wstv.invoke();
+		new WaitUntil(new ShellWithTextIsActive(""));
+		new OkButton().click();
 		Assert.assertEquals(0, wstv.getParameterRequestArgs().size());
 		String rsp = wstv.getResponseBody();
 		String[] rspHeaders = wstv.getResponseHeaders();
@@ -340,8 +337,7 @@ public class WsTesterTest extends SOAPTestBase {
 			if (rsp.contains("503")) { // 503 Service Unavailable
 				throw new AssertionError("Service Unavailable: " + SERVICE_URL);
 			} else {
-				throw new AssertionError("Response doesn't contains \""
-						+ expContent + "\"" + "\nResponse was:" + rsp);
+				throw new AssertionError("Response doesn't contain \"" + expContent + "\"" + "\nResponse was:" + rsp);
 			}
 		}
 	}
@@ -443,10 +439,5 @@ public class WsTesterTest extends SOAPTestBase {
 			// WISE call was pretty quick - no progress information dialog
 			// appears
 		}
-	}
-
-	@Override
-	protected String getEarProjectName() {
-		return null;
 	}
 }

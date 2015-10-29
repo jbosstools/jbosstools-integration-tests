@@ -5,11 +5,16 @@ import java.util.logging.Logger;
 
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
+import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.jboss.reddeer.core.handler.ShellHandler;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.jboss.reddeer.eclipse.wst.server.ui.view.Server;
+import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
+import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewEnums.ServerState;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.tools.ws.reddeer.ui.wizards.wst.WebServiceWizardPageBase.SliderLevel;
@@ -80,7 +85,6 @@ public abstract class SOAPTestBase {
 	public void cleanup() {
 		ServersViewHelper.removeAllProjectsFromServer(getConfiguredServerName());
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-		ServersViewHelper.serverClean(getConfiguredServerName());
 		
 		ConsoleView console = new ConsoleView();
 		if (!console.isOpened()) {
@@ -91,7 +95,18 @@ public abstract class SOAPTestBase {
 
 	@AfterClass
 	public static void deleteAll() {
+		ShellHandler.getInstance().closeAllNonWorbenchShells();
 		ProjectHelper.deleteAllProjects();
+		
+		ServersView view = new ServersView();
+		view.activate();
+		Server server = view.getServer(getConfiguredServerName());
+		
+		if (!server.getLabel().getState().equals(ServerState.STOPPED)) {
+			server.stop();
+			AbstractWait.sleep(TimePeriod.SHORT);
+			server.start();
+		}
 	}
 
 	protected static String getConfiguredRuntimeName() {

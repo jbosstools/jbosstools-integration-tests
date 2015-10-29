@@ -17,11 +17,11 @@ import java.util.List;
 
 import javax.jws.WebService;
 
+import org.jboss.reddeer.common.exception.RedDeerException;
 import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.ui.views.navigator.ResourceNavigator;
-import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.tools.ws.reddeer.ui.wizards.wst.WebServiceWizardPageBase.SliderLevel;
 import org.jboss.tools.ws.ui.bot.test.soap.SOAPTestBase;
 import org.jboss.tools.ws.ui.bot.test.utils.ServersViewHelper;
@@ -108,8 +108,8 @@ public class WSClientTestTemplate extends SOAPTestBase {
 	@After
 	@Override
 	public void cleanup() {
-		deleteAllPackages();
 		super.cleanup();
+		deleteAllPackages();
 	}
 
 	protected void clientTest(String targetPkg) {
@@ -117,8 +117,8 @@ public class WSClientTestTemplate extends SOAPTestBase {
 				getConfiguredServerName(),
 				 "http://soaptest.parasoft.com/calculator.wsdl",
 				serviceRuntime,
-				getWsProjectName(),
-				getEarProjectName(),
+				null,
+				null,
 				getLevel(),
 				targetPkg);
 		
@@ -131,9 +131,7 @@ public class WSClientTestTemplate extends SOAPTestBase {
 		ResourceNavigator navigator = new ResourceNavigator();
 		navigator.open();
 		Project project = navigator.getProject(getWsProjectName());
-		
-		//workaround for https://bugs.eclipse.org/bugs/show_bug.cgi?id=468427
-		project.collapse();
+		project.refresh();
 		
 		String pkg = (targetPkg != null && !"".equals(targetPkg.trim())) ? getWsPackage() :
 			"com.parasoft.wsdl.calculator";
@@ -161,11 +159,11 @@ public class WSClientTestTemplate extends SOAPTestBase {
 		 choosing 'Deploy' should normally deploy the project automatically*/
 		case DEPLOY:
 			ServersViewHelper.runProjectOnServer(getEarProjectName());
-			ServersViewHelper.waitForDeployment(getEarProjectName(), getConfiguredServerName());
 			
 		case TEST:
 		case START:
 		case INSTALL:
+			ServersViewHelper.waitForDeployment(getEarProjectName(), getConfiguredServerName());
 			if(!WebServiceClientHelper.projectIsDeployed(getConfiguredServerName(), getEarProjectName())) {
 				fail("Project was not found on the server.");
 			}
@@ -184,7 +182,7 @@ public class WSClientTestTemplate extends SOAPTestBase {
 				pkg.select();
 				pkg.delete();
 			}
-		} catch(SWTLayerException e) {
+		} catch(RedDeerException e) {
 			pe.open();
 			src = p.getProjectItem("src");
 			List<ProjectItem> pkgs = src.getChildren();
