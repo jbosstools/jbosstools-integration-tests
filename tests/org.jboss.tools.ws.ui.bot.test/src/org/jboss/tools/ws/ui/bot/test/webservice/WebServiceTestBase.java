@@ -15,15 +15,11 @@ import static org.junit.Assert.assertNotNull;
 
 import java.io.InputStream;
 import java.text.MessageFormat;
-import java.util.logging.Level;
 
-import org.eclipse.core.resources.IWorkspaceRoot;
-import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.NullProgressMonitor;
-import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.jface.wizard.WizardDialog;
 import org.jboss.reddeer.swt.api.Button;
 import org.jboss.reddeer.swt.api.Shell;
@@ -59,14 +55,14 @@ public abstract class WebServiceTestBase extends SOAPTestBase {
 
 	protected abstract String getWsName();
 	
-	protected void bottomUpWS(InputStream input, WebServiceRuntime serviceRuntime) {
+	protected void bottomUpWS(InputStream input, WebServiceRuntime serviceRuntime, boolean useDefaultProjects) {
 		String source = ResourceHelper.readStream(input);
 		String src = MessageFormat.format(source, getWsPackage(), getWsName());
 		createService(ServiceType.BOTTOM_UP, getWsPackage() + "."
-				+ getWsName(), getLevel(), null, src, serviceRuntime);
+				+ getWsName(), getLevel(), null, src, serviceRuntime, useDefaultProjects);
 	}
 
-	protected void topDownWS(InputStream input, WebServiceRuntime serviceRuntime, String pkg) {
+	protected void topDownWS(InputStream input, WebServiceRuntime serviceRuntime, String pkg, boolean useDefaultProjects) {
 		String s = ResourceHelper.readStream(input);
 		String[] tns = getWsPackage().split("\\.");
 		StringBuilder sb = new StringBuilder();
@@ -77,11 +73,11 @@ public abstract class WebServiceTestBase extends SOAPTestBase {
 		sb.append(tns[0]);
 		String src = MessageFormat.format(s, sb.toString(), getWsName());
 		createService(ServiceType.TOP_DOWN, "/" + getWsProjectName() + "/src/"
-				+ getWsName() + ".wsdl", getLevel(), pkg, src, serviceRuntime);
+				+ getWsName() + ".wsdl", getLevel(), pkg, src, serviceRuntime, useDefaultProjects);
 	}
 
 	private void createService(ServiceType type, String source,
-			SliderLevel level, String pkg, String code, WebServiceRuntime serviceRuntime) {
+			SliderLevel level, String pkg, String code, WebServiceRuntime serviceRuntime, boolean useDefaultProjects) {
 		// create ws source - java class or wsdl
 		switch (type) {
 			case BOTTOM_UP:
@@ -104,34 +100,30 @@ public abstract class WebServiceTestBase extends SOAPTestBase {
 				ed.close();
 				break;
 		}
-
-		// refresh workspace - workaround for JBIDE-6731
-		try {
-			ResourcesPlugin
-					.getWorkspace()
-					.getRoot()
-					.refreshLocal(IWorkspaceRoot.DEPTH_INFINITE,
-							new NullProgressMonitor());
-		} catch (CoreException e) {
-			LOGGER.log(Level.WARNING, e.getMessage(), e);
-		}
+		
+		ProjectHelper.cleanAllProjects();
 
 		// create a web service
 		WebServiceWizard wizard = new WebServiceWizard();
 		wizard.open();
 
 		WebServiceFirstWizardPage page = new WebServiceFirstWizardPage();
+		new WaitWhile(new JobIsRunning(), TimePeriod.NORMAL, false);
 		page.setServiceType(type);
 		page.setSource(source);
 		page.setServerRuntime(getConfiguredServerName());
+		new WaitWhile(new JobIsRunning(), TimePeriod.getCustom(5), false);
 		page.setWebServiceRuntime(serviceRuntime.getName());
-		page.setServiceProject(getWsProjectName());
-		page.setServiceEARProject(getEarProjectName());
+		if (!useDefaultProjects) {
+			page.setServiceProject(getWsProjectName());
+			page.setServiceEARProject(getEarProjectName());
+		}
+		new WaitWhile(new JobIsRunning(), TimePeriod.getCustom(5), false);
 		page.setServiceSlider(level);
 		if (page.isClientEnabled()) {
 			page.setClientSlider(SliderLevel.NO_CLIENT);
 		}
-		AbstractWait.sleep(TimePeriod.SHORT);
+		new WaitUntil(new WidgetIsEnabled(new PushButton("Next >")), TimePeriod.getCustom(5), false);
 		wizard.next();
 
 		checkErrorDialog(wizard);
@@ -144,6 +136,7 @@ public abstract class WebServiceTestBase extends SOAPTestBase {
 			new WaitUntil(new WidgetIsEnabled(finishButton));
 		}
 
+		new WaitWhile(new JobIsRunning(), TimePeriod.getCustom(5), false);
 		wizard.finish();
 
 		// let's fail if there's some error in the wizard,

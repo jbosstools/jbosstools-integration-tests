@@ -27,6 +27,21 @@ public class CxfWsClientTest extends WSClientTestTemplate {
 	}
 
 	@Override
+	protected String getWsProjectName() {
+		return "cxfclient";
+	}
+
+	@Override
+	protected String getWsPackage() {
+		return "cxfclient." + getLevel().toString().toLowerCase();
+	}
+
+	@Override
+	protected String getEarProjectName() {
+		return "cxfclientEAR";
+	}
+
+	@Override
 	protected String getSampleClientFileName() {
 		return "ICalculator_ICalculator_Client.java";
 	}
