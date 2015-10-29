@@ -16,18 +16,23 @@ import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
+import java.util.logging.Logger;
 
 import org.hamcrest.core.StringContains;
+import org.jboss.reddeer.common.exception.RedDeerException;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardDialog;
 import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardPage;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
+import org.jboss.reddeer.eclipse.utils.DeleteUtils;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
@@ -54,7 +59,7 @@ import org.jboss.tools.ws.ui.bot.test.uiutils.TargetedRuntimesPropertiesPage;
  */
 public class ProjectHelper {
 
-	private static ProjectExplorer projectExplorer = new ProjectExplorer();
+	private static final Logger LOGGER = Logger.getLogger(ProjectHelper.class.getName());
 
 	private ProjectHelper() {
 	};
@@ -120,7 +125,8 @@ public class ProjectHelper {
 		wizard.finish();
 
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-		projectExplorer = new ProjectExplorer();
+		ProjectExplorer projectExplorer = new ProjectExplorer();
+		projectExplorer.activate();
 		projectExplorer.getProject(name).select();
 	}
 
@@ -138,6 +144,8 @@ public class ProjectHelper {
 		wizard.finish();
 
 		new WaitWhile(new JobIsRunning());
+		ProjectExplorer projectExplorer = new ProjectExplorer();
+		projectExplorer.activate();
 		projectExplorer.getProject(name).select();
 	}
 
@@ -180,7 +188,7 @@ public class ProjectHelper {
 	}
 
 	public static boolean projectExists(String name) {
-		projectExplorer = new ProjectExplorer();
+		ProjectExplorer projectExplorer = new ProjectExplorer();
 		projectExplorer.open();
 		return projectExplorer.containsProject(name);
 	}
@@ -188,7 +196,25 @@ public class ProjectHelper {
 	public static void deleteAllProjects() {
 		ProjectExplorer projectExplorer = new ProjectExplorer();
 		projectExplorer.open();
-		projectExplorer.deleteAllProjects();
+		
+		List<Project> projects = projectExplorer.getProjects();
+		try {
+			for (Project project: projects) {
+				project.delete(true);
+			}
+		} catch(RedDeerException e) {
+			projectExplorer.close();
+			projectExplorer.open();
+			projects = projectExplorer.getProjects();
+			for (Project project: projects) {
+				try {
+					LOGGER.info("Forcing removal of " + project);
+					DeleteUtils.forceProjectDeletion(project, true);
+				} catch(RuntimeException exception) {
+					LOGGER.info("Project " + project.getName() + " was not deleted");
+				}
+			}
+		}
 	}
 
 	/**

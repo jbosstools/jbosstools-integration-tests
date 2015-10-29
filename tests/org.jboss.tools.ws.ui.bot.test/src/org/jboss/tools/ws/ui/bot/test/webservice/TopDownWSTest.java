@@ -126,9 +126,6 @@ public class TopDownWSTest extends WebServiceTestBase {
 		prepareAssembleService();
 		
 		topDownWS(null);
-		
-		/* If there were WSDL file than it was also used in web.xml */
-		confirmWebServiceNameOverwrite();
 	}
 
 	private void confirmWebServiceNameOverwrite() {
@@ -170,7 +167,12 @@ public class TopDownWSTest extends WebServiceTestBase {
 	protected void topDownWS(String pkg) {
 		topDownWS(
 				TopDownWSTest.class.getResourceAsStream("/resources/jbossws/ClassB.wsdl"),
-				WebServiceRuntime.JBOSS_WS, pkg);
+				WebServiceRuntime.JBOSS_WS, pkg, true);
+
+		
+		/* If there were WSDL file than it was also used in web.xml */
+		confirmWebServiceNameOverwrite();
+		
 		switch (getLevel()) {
 		case DEVELOP:
 		case ASSEMBLE:

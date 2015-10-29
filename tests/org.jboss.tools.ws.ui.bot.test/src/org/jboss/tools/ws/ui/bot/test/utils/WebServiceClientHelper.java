@@ -7,6 +7,7 @@ import org.jboss.reddeer.common.condition.WaitCondition;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
@@ -14,6 +15,7 @@ import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.jface.wizard.WizardDialog;
 import org.jboss.reddeer.swt.api.Label;
 import org.jboss.reddeer.swt.api.Shell;
+import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.label.DefaultLabel;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
@@ -43,21 +45,28 @@ public class WebServiceClientHelper {
 		wizard.open();
 
 		WebServiceClientWizardPage page = new WebServiceClientWizardPage();
+		new WaitWhile(new JobIsRunning(), TimePeriod.NORMAL, false);
 		
 		page.setSource(wsdl);
 		new WaitUntil(new WebServiceClientPageIsValidated(), TimePeriod.getCustom(2), true);
 
 		page.setClientSlider(level);
 		page.setServerRuntime(serverName);
+		new WaitWhile(new JobIsRunning(), TimePeriod.getCustom(5), false);
 		page.setWebServiceRuntime(runtime.getName());
-		page.setClientProject(targetProject);
-		page.setClientEARProject(earProject);
+		
+		if (targetProject != null)
+			page.setClientProject(targetProject);
+		if (earProject != null)
+			page.setClientEARProject(earProject);
 
 		if (pkg != null && pkg.trim().length()>0) {
+			new WaitUntil(new WidgetIsEnabled(new PushButton("Next >")), TimePeriod.getCustom(5), false);
 			wizard.next();
 			new WaitWhile(new ShellWithTextIsActive("Progress Information"));
 			page.setPackageName(pkg);
 		}
+		new WaitWhile(new JobIsRunning(), TimePeriod.getCustom(5), false);
 		wizard.finish();
 
 		checkErrorDialog(wizard);
@@ -105,11 +114,16 @@ public class WebServiceClientHelper {
 	}
 
 	private static void selectServerConsole(String serverName) {
+		ConsoleView view = new ConsoleView();
+		if (!view.isOpened()) {
+			view.open();
+		}
+		view.activate();
 		Label consoleName = new DefaultLabel();
-		if (!consoleName.getText().startsWith(serverName)) {
+		if (!consoleName.getText().contains(serverName)) {
 			new DefaultToolItem("Display Selected Console").click();
 			consoleName = new DefaultLabel();
-			if (!consoleName.getText().startsWith(serverName)) {
+			if (!consoleName.getText().contains(serverName)) {
 				fail("Console of configured server was not found.");
 			}
 		}
