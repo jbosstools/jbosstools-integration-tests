@@ -12,9 +12,12 @@ package org.jboss.tools.ws.ui.bot.test.integration;
 
 import static org.junit.Assert.assertTrue;
 
+import org.jboss.reddeer.common.wait.AbstractWait;
+import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.tools.ws.reddeer.swt.condition.WsTesterNotEmptyResponseText;
@@ -46,6 +49,7 @@ public class SOAPWSToolingIntegrationTest extends SOAPTestBase {
 	public void setup() {
 		if (!ProjectHelper.projectExists(getWsProjectName())) {
 			ProjectHelper.importWSTestProject(getWsProjectName(), getConfiguredRuntimeName());
+			ProjectHelper.cleanAllProjects();
 			ServersViewHelper.runProjectOnServer(getWsProjectName());
 			ServersViewHelper.waitForDeployment(getWsProjectName(), getConfiguredServerName());
 		}
@@ -64,9 +68,12 @@ public class SOAPWSToolingIntegrationTest extends SOAPTestBase {
 
 	private WsTesterView openWSDLFileInWSTester() {
 		ProjectExplorer projectExplorer = new ProjectExplorer();
-		projectExplorer.open();
-		projectExplorer.getProject(getWsProjectName()).getProjectItem("wsdl", "HelloWorldService.wsdl").select();
-
+		projectExplorer.activate();
+		Project project = projectExplorer.getProject(getWsProjectName());
+		project.refresh();
+		AbstractWait.sleep(TimePeriod.SHORT);
+		project.getProjectItem("wsdl").select();
+		project.getProjectItem("wsdl", "HelloWorldService.wsdl").select();
 		new ContextMenu("Web Services", "Test in JBoss Web Service Tester").select();
 
 		WsTesterView tester = new WsTesterView();

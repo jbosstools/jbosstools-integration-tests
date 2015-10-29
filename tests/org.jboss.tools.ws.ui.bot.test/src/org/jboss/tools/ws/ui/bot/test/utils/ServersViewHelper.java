@@ -3,12 +3,18 @@ package org.jboss.tools.ws.ui.bot.test.utils;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.hamcrest.core.StringContains;
 import org.jboss.reddeer.common.condition.WaitCondition;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.jboss.reddeer.core.matcher.WithMnemonicTextMatcher;
+import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
 import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.Server;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServerModule;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
@@ -40,6 +46,7 @@ public class ServersViewHelper {
 	 */
 	public static void removeProjectFromServer(String project, String serverName) {
 		ServersView serversView = new ServersView();
+		serversView.activate();
 		Server server = serversView.getServer(serverName);
 
 		ServerModule serverModule = null;
@@ -50,7 +57,14 @@ public class ServersViewHelper {
 			return;
 		}
 		if (serverModule != null) {
+			String moduleName = serverModule.getLabel().getName();
+			ServerState moduleState = serverModule.getLabel().getState();
+			clearServerConsole(serverName);
 			serverModule.remove();
+
+			if (moduleState.equals(ServerState.STARTED)) {
+				new WaitUntil(new ConsoleHasText("Undeployed \"" + moduleName), TimePeriod.LONG, false);
+			}
 		}
 	}
 
@@ -64,11 +78,12 @@ public class ServersViewHelper {
 		
 		Server server = null;
 		try {
+			serversView.activate();
 			server = serversView.getServer(serverName);
 		} catch (EclipseLayerException e) {
 			LOGGER.warning("Server " + serverName + "not found, retrying");
-			server = serversView.getServer(serverName);
-			
+			serversView.activate();
+			server = serversView.getServer(serverName);			
 		}
 		List<ServerModule> modules = server.getModules();
 		
@@ -77,8 +92,18 @@ public class ServersViewHelper {
 		
 		for (ServerModule module : modules) {
 			if (module != null) {
-				AbstractWait.sleep(TimePeriod.SHORT);
+				new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+				serversView.activate();
+				String moduleName = module.getLabel().getName();
+				ServerState moduleState = module.getLabel().getState();
+				clearServerConsole(serverName);
+				new WaitWhile(new JobIsRunning(), TimePeriod.NORMAL, false);
+				serversView.activate();
 				module.remove();
+				
+				if (moduleState.equals(ServerState.STARTED)) {
+					new WaitUntil(new ConsoleHasText("Undeployed \"" + moduleName), TimePeriod.LONG, false);
+				}
 			}
 		}
 	}
@@ -123,20 +148,35 @@ public class ServersViewHelper {
 	}
 	
 	public static void waitForDeployment(String projectName, String serverName) {
-		new WaitUntil(new ProjectIsDeployed(projectName, serverName), TimePeriod.LONG);
+		new WaitUntil(new ProjectIsDeployed(projectName, serverName), TimePeriod.getCustom(20), false);
+	}
+	
+	private static void clearServerConsole(String serverName) {
+		ConsoleView consoleView = new ConsoleView();
+		if (!consoleView.isOpened()) {
+			consoleView.open();
+		}
+		consoleView.activate();
+		consoleView.switchConsole(new WithMnemonicTextMatcher(new StringContains(serverName)));
+		consoleView.clearConsole();
 	}
 	
 	private static class ProjectIsDeployed implements WaitCondition {
 
 		private ServerModule module;
+		private ServersView view = new ServersView();
 		
 		public ProjectIsDeployed(String projectName, String serverName) {
+			view.activate();
 			Server server = new ServersView().getServer(serverName);
+			AbstractWait.sleep(TimePeriod.SHORT);
+			view.activate();
 			module = server.getModule(projectName);
 		}
 		
 		@Override
 		public boolean test() {
+			view.activate();
 			return module.getLabel().getState().equals(ServerState.STARTED) 
 					&& module.getLabel().getPublishState().equals(ServerPublishState.SYNCHRONIZED);
 		}

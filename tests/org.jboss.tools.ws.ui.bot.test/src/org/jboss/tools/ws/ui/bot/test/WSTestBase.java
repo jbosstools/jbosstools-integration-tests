@@ -17,24 +17,20 @@ import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 import java.util.logging.Logger;
 
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.reddeer.common.exception.RedDeerException;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.matcher.WithTextMatcher;
-import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
-import org.jboss.reddeer.eclipse.utils.DeleteUtils;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.Server;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewEnums.ServerState;
@@ -130,27 +126,7 @@ public class WSTestBase {
 	}
 	
 	protected static void deleteAllProjects() {
-		ProjectExplorer projectExplorer = new ProjectExplorer();
-		projectExplorer.open();
-		
-		List<Project> projects = projectExplorer.getProjects();
-		try {
-			for (Project project: projects) {
-				project.delete(true);
-			}
-		} catch(RedDeerException e) {
-			projectExplorer.close();
-			projectExplorer.open();
-			projects = projectExplorer.getProjects();
-			for (Project project: projects) {
-				try {
-					LOGGER.info("Forcing removal of " + project);
-					DeleteUtils.forceProjectDeletion(project, true);
-				} catch(RuntimeException exception) {
-					LOGGER.info("Project " + project.getName() + " was not deleted");
-				}
-			}
-		}
+		ProjectHelper.deleteAllProjects();
 	}
 
 	protected static void deleteAllProjectsFromServer() {

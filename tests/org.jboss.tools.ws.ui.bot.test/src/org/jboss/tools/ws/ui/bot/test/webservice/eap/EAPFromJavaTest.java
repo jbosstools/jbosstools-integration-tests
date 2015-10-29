@@ -111,7 +111,7 @@ public class EAPFromJavaTest extends WebServiceTestBase {
 			LOGGER.log(Level.WARNING, e.getMessage(), e);
 		}
 		bottomUpWS(EAPFromJavaTest.class.getResourceAsStream("/resources/jbossws/Echo.java.ws"),
-				WebServiceRuntime.JBOSS_WS);
+				WebServiceRuntime.JBOSS_WS, false);
 		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(getWsProjectName());
 		IFile f = project.getFile("WebContent/WEB-INF/web.xml");
 		String content = ResourceHelper.readFile(f);
@@ -145,8 +145,8 @@ public class EAPFromJavaTest extends WebServiceTestBase {
 		 */
 		setJSPFileContent();
 		AbstractWait.sleep(TimePeriod.getCustom(2));
-		ServersViewHelper.runProjectOnServer(getWsClientProjectName());
-		ServersViewHelper.waitForDeployment(getWsClientProjectName(), getConfiguredServerName());
+		ServersViewHelper.runProjectOnServer(getEarProjectName());
+		ServersViewHelper.waitForDeployment(getEarProjectName(), getConfiguredServerName());
 		ServersViewHelper.serverClean(getConfiguredServerName());
 		String pageContent = DeploymentHelper
 				.getPage("http://localhost:8080/" + getWsClientProjectName() + "/index.jsp", 15000);
