@@ -6,8 +6,8 @@ import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
-import org.jboss.tools.batch.reddeer.editor.JobXMLEditor;
-import org.jboss.tools.batch.reddeer.editor.JobXMLEditorDesignTab;
+import org.jboss.tools.batch.reddeer.editor.jobxml.JobXMLEditor;
+import org.jboss.tools.batch.reddeer.editor.jobxml.JobXMLEditorDesignPage;
 import org.jboss.tools.batch.reddeer.wizard.NewJobXMLFileWizardDialog;
 import org.jboss.tools.batch.reddeer.wizard.NewJobXMLFileWizardPage;
 import org.jboss.tools.batch.ui.bot.test.AbstractBatchTest;
@@ -70,7 +70,7 @@ public class CreateJobXMLFileTest extends AbstractBatchTest {
 		JobXMLEditor editor = new JobXMLEditor(JOB_XML_FILE);
 		editor.activate();
 		
-		JobXMLEditorDesignTab tab = editor.openDesignTab();
+		JobXMLEditorDesignPage tab = editor.getDesignPage();
 		tab.selectJob();
 		
 		assertThat(tab.getJobID(), is(JOB_ID));
