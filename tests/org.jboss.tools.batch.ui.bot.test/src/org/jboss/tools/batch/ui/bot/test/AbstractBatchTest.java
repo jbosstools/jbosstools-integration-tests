@@ -3,6 +3,8 @@ package org.jboss.tools.batch.ui.bot.test;
 import java.util.List;
 
 import org.jboss.reddeer.common.logging.Logger;
+import org.jboss.reddeer.common.wait.AbstractWait;
+import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.ui.problems.Problem;
@@ -49,6 +51,30 @@ public class AbstractBatchTest {
 		try {
 			problems = problemsView.getProblems(ProblemType.ANY);
 			assertThat(problems.size(), is(0));
+		} catch (AssertionError e){
+			String message = "Found unexpected problems\n";
+			for (Problem problem : problems){
+				message += "\t" + problem.getProblemType() + ": " + problem.getDescription() + "(" + problem.getResource() + ")\n";
+			}
+			throw new AssertionError(message, e);
+		}
+	}
+	
+	protected void assertNumberOfProblems(int error, int warning) {
+		log.step("Assert there are no problems");
+		ProblemsView problemsView = new ProblemsView();
+		problemsView.open();
+		
+		// TODO Fix the hard-coded wait
+		AbstractWait.sleep(TimePeriod.NORMAL);
+		
+		List<Problem> problems = null;
+		try {
+			problems = problemsView.getProblems(ProblemType.ERROR);
+			assertThat(problems.size(), is(error));
+			
+			problems = problemsView.getProblems(ProblemType.WARNING);
+			assertThat(problems.size(), is(warning));
 		} catch (AssertionError e){
 			String message = "Found unexpected problems\n";
 			for (Problem problem : problems){
