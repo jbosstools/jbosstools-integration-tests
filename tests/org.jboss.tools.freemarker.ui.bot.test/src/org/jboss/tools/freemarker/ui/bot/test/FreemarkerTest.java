@@ -20,13 +20,9 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
 import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.common.matcher.RegexMatcher;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
-import org.jboss.reddeer.core.matcher.WithTextMatcher;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
 import org.jboss.reddeer.eclipse.ui.views.contentoutline.OutlineView;
 import org.jboss.reddeer.eclipse.ui.views.log.LogMessage;
@@ -35,18 +31,16 @@ import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWi
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.workbench.handler.EditorHandler;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 
 /**
- * Freemarker Directive tests
+ * Freemarker test parent
  * @author Jiri Peterka
  *
  */
@@ -78,24 +72,8 @@ public class FreemarkerTest {
 		dlg.ok();
 	}
 
-	@Test
-	public void emptyTest() {
-		assertTrue(true);
-	}
-
-	@Test
-	public void freeMarkerTest() {
-		emptyErrorLog();
-		log.step("Import test project for freemarker test");
-		importTestProject();
-		log.step("Open ftl file in freemarker editor");
-		openFTLFileInEditor();
-		// disabled until target platform in running instance is resolved
-		checkFreemMarkerOutput();
-		checkErrorLog();
-	}	
-
-	private void importTestProject() {
+	
+	public void importTestProject() {
 		
 		ExternalProjectImportWizardDialog wizard = new ExternalProjectImportWizardDialog();		
 		wizard.open();
@@ -145,16 +123,11 @@ public class FreemarkerTest {
 		// remove comment when this jira is fixed
 		//assertTrue(list.contains("latestProduct.url"));		
 	}
-
-	private void emptyErrorLog() {
-		
-		LogView elv = new LogView();
-		elv.open();
-		//new ContextMenu("Delete Log").select();
-		new WaitWhile(new JobIsRunning());
-	}
-
-	private void checkErrorLog() {
+	
+	/**
+	 * Check error log for errors
+	 */
+	public void checkErrorLog() {
 		LogView el = new LogView();
 		List<LogMessage> errorMessages = el.getErrorMessages();
 		for (LogMessage lm : errorMessages) { 
@@ -162,39 +135,13 @@ public class FreemarkerTest {
 		}
 	}
 
-	@SuppressWarnings({ "unchecked" })
-	private void checkFreemMarkerOutput() {
-		
-		String outputExpected = "";
-		String rpath = getResourceAbsolutePath(
-				Activator.PLUGIN_ID, "resources/fm-output.txt");
-		try {
-			outputExpected = readTextFileToString(rpath);
-			log.info("------------------------------------------");
-			log.info(outputExpected);
-			log.info("------------------------------------------");
-		} catch (IOException e) {
-			log.error(e.getMessage());
-			new RuntimeException("Unable to read from resource");
-		}
-
-		ProjectExplorer pe = new ProjectExplorer();
-		pe.open();
-
-		new DefaultTreeItem(prj,"src","org.jboss.tools.freemarker.testprj","FMTest.java").select();
-		new ContextMenu(new WithTextMatcher("Run As"), new WithTextMatcher(new RegexMatcher(".*Java Application.*"))).select();
-
-		new WaitWhile(new ShellWithTextIsActive("Progress Information"));
-		new WaitWhile(new JobIsRunning());
-		
-		ConsoleView cv = new ConsoleView();
-		cv.open();		
-		String consoleText = cv.getConsoleText();
-		
-		assertTrue("Output equal check",consoleText.equals(outputExpected));
-	}
-
-	private String readTextFileToString(String filePath) throws IOException {
+	/**
+	 * Read test file to string
+	 * @param filePath file path
+	 * @return content of the file
+	 * @throws IOException
+	 */
+	public String readTextFileToString(String filePath) throws IOException {
 		BufferedReader br = null;
 		try {
 			br = new BufferedReader(new FileReader(filePath));
@@ -333,4 +280,7 @@ public class FreemarkerTest {
 			}
 		}
 	}
+	
+	
+	
 }
