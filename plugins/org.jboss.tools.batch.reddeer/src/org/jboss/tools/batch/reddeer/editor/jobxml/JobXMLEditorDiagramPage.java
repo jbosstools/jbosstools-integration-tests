@@ -1,4 +1,4 @@
-package org.jboss.tools.batch.reddeer.editor;
+package org.jboss.tools.batch.reddeer.editor.jobxml;
 
 /**
  * Represents the graphical diagram tab of job xml editor. 
@@ -6,6 +6,6 @@ package org.jboss.tools.batch.reddeer.editor;
  * @author Lucia Jelinkova
  *
  */
-public class JobXMLEditorDiagramTab {
+public class JobXMLEditorDiagramPage {
 
 }

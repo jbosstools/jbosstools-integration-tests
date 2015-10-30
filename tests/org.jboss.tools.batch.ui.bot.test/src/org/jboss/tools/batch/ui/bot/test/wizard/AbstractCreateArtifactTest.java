@@ -1,10 +1,10 @@
 package org.jboss.tools.batch.ui.bot.test.wizard;
 
 import org.jboss.reddeer.core.exception.CoreLayerException;
+import org.jboss.reddeer.eclipse.wst.xml.ui.tabletree.XMLMultiPageEditor;
+import org.jboss.reddeer.eclipse.wst.xml.ui.tabletree.XMLSourcePage;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.batch.reddeer.editor.JavaClassEditor;
-import org.jboss.tools.batch.reddeer.editor.MultiPageEditor;
-import org.jboss.tools.batch.reddeer.editor.XMLEditor;
 import org.jboss.tools.batch.reddeer.wizard.BatchArtifacts;
 import org.jboss.tools.batch.reddeer.wizard.NewBatchArtifactWizardDialog;
 import org.jboss.tools.batch.reddeer.wizard.NewBatchArtifactWizardPage;
@@ -70,12 +70,13 @@ public abstract class AbstractCreateArtifactTest extends AbstractBatchTest {
 		}
 		getProject().getProjectItem(BATCH_XML_FILE_FULL_PATH).open();
 		
-		MultiPageEditor editor = new MultiPageEditor(BATCH_XML_FILE);
+		XMLMultiPageEditor editor = new XMLMultiPageEditor(BATCH_XML_FILE);
 		editor.activate();
-		editor.selectPage("Source");
-
+		
+		XMLSourcePage sourceTab = editor.getSourcePage();
+		
 		String xPath = "/:batch-artifacts/:ref[@id=\"" + id + "\"]/@class";
-		return new XMLEditor().evaluateXPath(xPath);
+		return sourceTab.evaluateXPath(xPath);
 	}
 	
 	protected String getClass(String clazz) {
@@ -85,11 +86,8 @@ public abstract class AbstractCreateArtifactTest extends AbstractBatchTest {
 		}
 		getProject().getProjectItem(BATCH_XML_FILE_FULL_PATH).open();
 		
-		MultiPageEditor editor = new MultiPageEditor(BATCH_XML_FILE);
-		editor.activate();
-		editor.selectPage("Source");
-
+		XMLMultiPageEditor editor = new XMLMultiPageEditor(BATCH_XML_FILE);
 		String xPath = "/:batch-artifacts/:ref[@class=\"" + clazz + "\"]";
-		return new XMLEditor().evaluateXPath(xPath);
+		return editor.getSourcePage().evaluateXPath(xPath);
 	}
 }
