@@ -28,5 +28,6 @@ Import-Package: org.eclipse.core.resources
 Eclipse-BundleShape: jar
 Bundle-Vendor: JBoss by Red Hat
 Export-Package: org.jboss.tools.batch.reddeer.editor,
+ org.jboss.tools.batch.reddeer.editor.jobxml,
  org.jboss.tools.batch.reddeer.wizard
 
