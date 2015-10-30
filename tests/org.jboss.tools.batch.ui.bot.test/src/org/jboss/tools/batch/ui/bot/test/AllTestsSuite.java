@@ -1,6 +1,11 @@
 package org.jboss.tools.batch.ui.bot.test;
 
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.tools.batch.ui.bot.test.editor.design.DesignBatchletStepElementTest;
+import org.jboss.tools.batch.ui.bot.test.editor.design.DesignChunkStepElementTest;
+import org.jboss.tools.batch.ui.bot.test.editor.design.DesignDecisionElementTest;
+import org.jboss.tools.batch.ui.bot.test.editor.design.DesignFlowElementTest;
+import org.jboss.tools.batch.ui.bot.test.editor.design.DesignSplitElementTest;
 import org.jboss.tools.batch.ui.bot.test.wizard.CreateAllArtifactsFromAbstractClassTest;
 import org.jboss.tools.batch.ui.bot.test.wizard.CreateAllArtifactsFromInterfaceTest;
 import org.jboss.tools.batch.ui.bot.test.wizard.CreateArtifactWithPropertiesTest;
@@ -19,7 +24,12 @@ import org.junit.runners.Suite.SuiteClasses;
 	CreateBatchXMLArtifactTest.class,
 	CreateNamedArtifactTest.class,
 	CreateClassloaderArtifactTest.class, 
-	CreateArtifactWithPropertiesTest.class
+	CreateArtifactWithPropertiesTest.class,
+	DesignBatchletStepElementTest.class,
+	DesignChunkStepElementTest.class,
+	DesignDecisionElementTest.class,
+	DesignFlowElementTest.class,
+	DesignSplitElementTest.class
 	})
 public class AllTestsSuite {
 

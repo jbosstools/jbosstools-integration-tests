@@ -1,9 +1,10 @@
 package org.jboss.tools.batch.reddeer.editor.jobxml;
 
-import org.eclipse.ui.texteditor.ITextEditor;
+import org.eclipse.wst.sse.ui.StructuredTextEditor;
 import org.hamcrest.Matcher;
 import org.jboss.reddeer.core.matcher.WithTextMatcher;
-import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
+import org.jboss.reddeer.core.util.Display;
+import org.jboss.reddeer.core.util.ResultRunnable;
 import org.jboss.reddeer.eclipse.ui.part.MultiPageEditor;
 
 /**
@@ -68,11 +69,13 @@ public class JobXMLEditor extends MultiPageEditor {
 	 */
 	public JobXMLEditorSourcePage getSourcePage(){
 		selectSourcePage();
-		Object o = getSelectedPage();
-		if (o instanceof ITextEditor){
-			return new JobXMLEditorSourcePage((ITextEditor) o);
-		} 
-		throw new EclipseLayerException("Expected " + ITextEditor.class + 
-				" but was " + o.getClass());
+		StructuredTextEditor textEditor = Display.syncExec(new ResultRunnable<StructuredTextEditor>() {
+
+			@Override
+			public StructuredTextEditor run() {
+				return ((org.jboss.tools.batch.ui.editor.internal.model.JobXMLEditor) getEditorPart()).getSourceEditor();
+			}
+		});
+		return new JobXMLEditorSourcePage(textEditor);
 	}
 }
