@@ -6,7 +6,7 @@ import org.jboss.tools.cdi.reddeer.CDIConstants;
 
 public class NewBeansXMLCreationWizard extends NewWizardDialog{
 	
-	public static final String NAME="File beans.xml";
+	public static final String NAME="beans.xml File";
 	
 	public NewBeansXMLCreationWizard(){
 		super(CDIConstants.CDI_GROUP,NAME);
