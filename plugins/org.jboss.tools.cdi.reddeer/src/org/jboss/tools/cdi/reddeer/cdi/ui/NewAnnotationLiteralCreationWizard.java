@@ -3,8 +3,10 @@ package org.jboss.tools.cdi.reddeer.cdi.ui;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.jface.wizard.NewWizardDialog;
 import org.jboss.reddeer.swt.api.TableItem;
+import org.jboss.reddeer.swt.condition.TableContainsItem;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
@@ -65,7 +67,7 @@ public class NewAnnotationLiteralCreationWizard extends NewWizardDialog{
 	public void addQualifier(String qualifier){
 		new PushButton("Browse").click();
 		new DefaultShell("Select Qualifier Annotation Type");
-		new DefaultTableItem(qualifier).select();
+		new WaitUntil(new TableContainsItem(new DefaultTable(), qualifier, 0));
 		new PushButton("OK").click();
 		new DefaultShell("New Annotation Literal");
 	}

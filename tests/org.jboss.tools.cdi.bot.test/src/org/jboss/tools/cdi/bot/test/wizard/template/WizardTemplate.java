@@ -18,15 +18,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
-import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
-import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
-import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.swt.impl.button.CancelButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
@@ -40,7 +34,10 @@ import org.jboss.tools.cdi.reddeer.cdi.ui.NewInterceptorCreationWizard;
 import org.jboss.tools.cdi.reddeer.cdi.ui.NewQualifierCreationWizard;
 import org.jboss.tools.cdi.reddeer.cdi.ui.NewScopeCreationWizard;
 import org.jboss.tools.cdi.reddeer.cdi.ui.NewStereotypeCreationWizard;
+import org.jboss.tools.cdi.reddeer.common.model.ui.editor.EditorPartWrapper;
+import org.junit.Before;
 import org.junit.Test;
+import org.jboss.reddeer.eclipse.core.resources.Project;
 
 /**
  * Test checks all CDI components wizardExts
@@ -50,7 +47,14 @@ import org.junit.Test;
  */
 //TODO
 public class WizardTemplate extends CDITestBase {
-
+	
+	@Before
+	public void setMode(){
+		EditorPartWrapper beans = beansXMLHelper.openBeansXml(PROJECT_NAME);
+		beans.setBeanDiscoveryMode("all");
+		beans.close(true);
+	}
+	
 	@Override
 	public void waitForJobs() {
 		
@@ -71,9 +75,9 @@ public class WizardTemplate extends CDITestBase {
 		testStereotype();
 		testDecorator();
 		testInterceptor();
-		testBeansXml();
 		testBean();
 		testAnnLiteral();
+		testBeansXml();
 	}
 	
 	private void testQualifier() {
@@ -412,6 +416,12 @@ public class WizardTemplate extends CDITestBase {
 	}
 	
 	private void testBeansXml() {
+		ProjectExplorer pe = new ProjectExplorer();
+		pe.open();
+		Project p = pe.getProject(getProjectName());
+		p.getProjectItem("WebContent","WEB-INF","beans.xml").delete();
+
+		
 		NewBeansXMLCreationWizard xmlw = new NewBeansXMLCreationWizard();
 		xmlw.open();
 		xmlw.setSourceFolder(getProjectName(),"WebContent","WEB-INF");
