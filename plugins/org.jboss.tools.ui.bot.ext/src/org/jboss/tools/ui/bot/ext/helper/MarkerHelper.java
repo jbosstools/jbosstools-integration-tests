@@ -264,7 +264,7 @@ public class MarkerHelper {
       index++;
     }
     assertFalse("Resource: " + resourceName +
-        "doesn't have marker on line " + lineNumber +
+        " doesn't have marker on line " + lineNumber +
         " with descritpion matching regular expression '" + descriptionRegex + "'",
       notFound);
   }

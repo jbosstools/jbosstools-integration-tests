@@ -17,6 +17,8 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
+import org.jboss.reddeer.jface.text.contentassist.ContentAssistant;
+import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.ui.bot.ext.FormatUtils;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
 import org.jboss.tools.ui.bot.ext.SWTJBTExt;
@@ -50,6 +52,23 @@ public class ContentAssistHelper {
     		selectionLength, textToSelectIndex, expectedProposalList, true);
 
   }
+  /**
+   * Checks Content Assist content on specified position within editor with editorTitle
+   * and checks if expectedProposalList is equal to current Proposal List 
+   * @param editor
+   * @param line
+   * @param column
+   * @param expectedProposalList
+   * @param mustEquals
+   */
+	public static void checkContentAssistContent(TextEditor editor, int line, int column,
+			List<String> expectedCodeProposals, boolean mustEquals) {
+		editor.setCursorPosition(line, column);
+		ContentAssistant contentAssistant = editor.openContentAssistant();
+		List<String> currentCodeProposals = contentAssistant.getProposals();
+		contentAssistant.close();
+		assertContentAssistantContent(expectedCodeProposals, currentCodeProposals, mustEquals);
+	}
   
   /**
    * Checks Content Assist content on specified position within editor with editorTitle
@@ -194,4 +213,40 @@ public class ContentAssistHelper {
     return editor;
 
   }
+	/**
+	 * Asserts if codeAssistant contains item and apply this item in case
+	 * applyCodeAssist is true
+	 * 
+	 * @param item
+	 * @param applyCodeAssist
+	 */
+	public static void assertContentAssistantContains(ContentAssistant contentAssistant, String item,
+			boolean applyCodeAssist) {
+		List<String> caProposals = contentAssistant.getProposals();
+		boolean contains = caProposals.contains(item);
+		if (!contains){
+			contentAssistant.close();
+		}
+		assertTrue("Editor Content Assist doesn't containt item with label: " + item, contains);
+		if (applyCodeAssist){
+			contentAssistant.chooseProposal(item);
+		}
+	}
+	
+	/**
+	 * Asserts if codeAssistant content is as expected
+	 * applyCodeAssist is true
+	 * 
+	 * @param expectedCodeProposals
+	 * @param currentCodeProposals
+	 * @param mustEquals
+	 */
+	public static void assertContentAssistantContent(List<String> expectedCodeProposals, List<String> currentCodeProposals,
+			boolean mustEquals) {
+		assertTrue("Code Assist menu has incorrect menu items.\n"
+			+ "Expected Proposal Menu Labels vs. Current Proposal Menu Labels :\n"
+			+ FormatUtils.getListsDiffFormatted(expectedCodeProposals, currentCodeProposals),
+				mustEquals ? expectedCodeProposals.equals(currentCodeProposals)
+						: currentCodeProposals.containsAll(expectedCodeProposals));
+	}
 } 

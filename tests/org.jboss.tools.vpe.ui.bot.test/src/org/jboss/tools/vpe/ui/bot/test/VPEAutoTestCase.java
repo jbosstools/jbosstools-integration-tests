@@ -10,8 +10,6 @@
  ******************************************************************************/
 package org.jboss.tools.vpe.ui.bot.test;
 
-import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.widgetOfType;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,43 +18,27 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 
-import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.swt.SWTException;
-import org.eclipse.swtbot.swt.finder.SWTBot;
-import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
-import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
-import org.eclipse.swtbot.swt.finder.results.VoidResult;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotCheckBox;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.tools.jst.web.ui.internal.editor.jspeditor.JSPMultiPageEditor;
 import org.jboss.tools.test.TestProperties;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
 import org.jboss.tools.ui.bot.ext.SWTJBTExt;
-import org.jboss.tools.ui.bot.ext.SWTTestExt;
-import org.jboss.tools.ui.bot.ext.Timing;
-import org.jboss.tools.ui.bot.ext.condition.ShellIsActiveCondition;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
-import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
-import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
-import org.jboss.tools.ui.bot.ext.gen.ActionItem;
-import org.jboss.tools.ui.bot.ext.gen.ActionItem.NewObject.JBossToolsWebJSFJSFProject;
-import org.jboss.tools.ui.bot.ext.gen.ActionItem.NewObject.WebDynamicWebProject;
 import org.jboss.tools.ui.bot.ext.helper.BuildPathHelper;
-import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.ext.view.PaletteView;
 import org.jboss.tools.ui.bot.test.JBTSWTBotTestCase;
 import org.jboss.tools.ui.bot.test.SWTBotJSPMultiPageEditor;
-import org.jboss.tools.ui.bot.test.WidgetVariables;
 import org.jboss.tools.vpe.editor.VpeController;
 import org.jboss.tools.vpe.editor.VpeEditorPart;
 import org.jboss.tools.vpe.editor.mapping.VpeNodeMapping;
-import org.jboss.tools.vpe.editor.xpl.CustomSashForm;
 import org.jboss.tools.vpe.reddeer.utils.WebEngineSwitchingManager;
 import org.junit.After;
 import org.junit.Before;
@@ -66,15 +48,32 @@ import org.mozilla.interfaces.nsIDOMNode;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+import org.jboss.tools.jst.reddeer.ui.perspectives.WebDevelopmentPerspective;
+import org.jboss.reddeer.eclipse.jst.servlet.ui.WebProjectFirstPage;
+import org.jboss.reddeer.eclipse.jst.servlet.ui.WebProjectWizard;
+import org.jboss.reddeer.core.lookup.WidgetLookup;
+import org.jboss.reddeer.core.util.Display;
+import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
+import org.jboss.tools.jst.reddeer.jsp.ui.wizard.NewJSPFileWizardDialog;
+import org.jboss.tools.jst.reddeer.jsp.ui.wizard.NewJSPFileWizardJSPPage;
+import org.jboss.tools.jst.reddeer.jsp.ui.wizard.NewJSPFileWizardJSPTemplatePage;
+import org.jboss.tools.jst.reddeer.web.ui.NewXHTMLWizard;
+import org.jboss.tools.jst.reddeer.web.ui.NewXHTMLFileWizardPage;
+import org.jboss.tools.jst.reddeer.web.ui.NewXHTMLFileWizardXHTMLTemplatePage;
+import org.jboss.tools.jst.reddeer.wst.html.ui.wizard.NewHTMLFileWizardDialog;
+import org.jboss.tools.jst.reddeer.wst.html.ui.wizard.NewHTMLFileWizardHTMLPage;
 
-@Require(server = @Server(state = ServerState.Present),
-		clearProjects=false,
-		clearWorkspace=false,
-		runOnce=true,
-		perspective="Web Development"
-		)
+import org.jboss.tools.jsf.reddeer.ui.JSFNewProjectWizard;
+import org.jboss.tools.jsf.reddeer.ui.JSFNewProjectFirstPage;
+import org.jboss.tools.jsf.reddeer.ui.JSFNewProjectSecondPage;
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
+import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
+import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
+
+@CleanWorkspace
+@OpenPerspective(WebDevelopmentPerspective.class)
+@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.AS7_1)
 public abstract class VPEAutoTestCase extends JBTSWTBotTestCase {
-  private static final Logger log = Logger.getLogger(VPEAutoTestCase.class);
   protected static Properties projectProperties;
   protected static String PROJECT_PROPERTIES = "projectProperties.properties";
   protected static final String TEST_PAGE = "inputUserName.jsp"; //$NON-NLS-1$
@@ -111,7 +110,9 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase {
   
   private String projectName = null;
   private HashMap<String,String> addedVariableRichfacesUiLocation = new HashMap<String,String>();
-	
+  @InjectRequirement
+  protected ServerRequirement serverRequirement;
+  
   static {
     try {
       InputStream inputStream = VPEAutoTestCase.class
@@ -153,7 +154,6 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase {
 	public void setUp() throws Exception {
 		super.setUp();
 		WebEngineSwitchingManager.checkDoNotShowBrowserEngineDialogProperty();
-		clearWorkbench();
 		/*
 		 * Test JSF project
 		 */
@@ -173,7 +173,6 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase {
 
 	@After
 	public void tearDown() throws Exception {
-		clearWorkbench();
 		new SWTJBTExt(bot)
 		  .removeProjectFromServers((projectName != null && projectName.length() > 0) ? projectName : JBT_TEST_PROJECT_NAME);
 		setProjectName(null);
@@ -187,20 +186,20 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase {
 	 *            - name of created project
 	 */
 	protected void createJSFProject(String jsfProjectName) {
-	  SWTBot innerBot = bot.viewByTitle(WidgetVariables.PACKAGE_EXPLORER).bot();
-    SWTBotTree innerTree = innerBot.tree();
-    try {
-      innerTree.getTreeItem(jsfProjectName);
-    } catch (WidgetNotFoundException wnfe) {
-      SWTBot wiz = open.newObject(JBossToolsWebJSFJSFProject.LABEL);
-      wiz.textWithLabel("Project Name*").setText(jsfProjectName); //$NON-NLS-1$
-      wiz.comboBoxWithLabel("Project Template*").setSelection("JSFKickStartWithoutLibs"); //$NON-NLS-1$ //$NON-NLS-2$
-      wiz.button("Next >").click(); //$NON-NLS-1$
-      wiz.comboBoxWithLabel("Runtime:*").setSelection(SWTTestExt.configuredState.getServer().name); //$NON-NLS-1$ //$NON-NLS-2$
-      open.finish(wiz);
-      waitForBlockingJobsAcomplished(60 * 1000L, BUILDING_WS);
-      setException(null);
-    }
+		packageExplorer.open();
+		try {
+			packageExplorer.getProject(jsfProjectName);
+		} catch (EclipseLayerException ele) {
+			JSFNewProjectWizard jsfNewProjectWizard = new JSFNewProjectWizard();
+			jsfNewProjectWizard.open();
+			JSFNewProjectFirstPage jsfNewProjectFirstPage = new JSFNewProjectFirstPage();
+			jsfNewProjectFirstPage.setProjectName(jsfProjectName);
+			jsfNewProjectFirstPage.setProjectTemplate("JSFKickStartWithoutLibs");
+			jsfNewProjectWizard.next();
+			new JSFNewProjectSecondPage()
+					.setRuntime(serverRequirement.getRuntimeNameLabelText(serverRequirement.getConfig()));
+			jsfNewProjectWizard.finish();
+		}
 	}
 
 	/**
@@ -210,35 +209,19 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase {
 	 *            - name of created project
 	 */
 	protected void createFaceletsProject(String faceletsProjectName) {
-	  SWTBot innerBot = bot.viewByTitle(WidgetVariables.PACKAGE_EXPLORER).bot();
-    SWTBotTree innerTree = innerBot.tree();
-    try {
-      innerTree.getTreeItem(faceletsProjectName);
-    } catch (WidgetNotFoundException wnfe) {
-      bot.menu("File").menu("New").menu("Other...").click(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-      bot.shell("New").activate(); //$NON-NLS-1$
-      SWTBotTree tree = bot.tree();
-      delay();
-      tree.expandNode("JBoss Tools Web").expandNode("JSF").select("JSF Project"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-      bot.button("Next >").click(); //$NON-NLS-1$
-      bot.textWithLabel("Project Name*").setText(faceletsProjectName); //$NON-NLS-1$
-      bot.comboBoxWithLabel("JSF Environment*").setSelection("JSF 1.2 with Facelets"); //$NON-NLS-1$ //$NON-NLS-2$
-      bot.comboBoxWithLabel("Project Template*").setSelection("FaceletsKickStartWithoutLibs"); //$NON-NLS-1$ //$NON-NLS-2$
-      bot.button("Next >").click(); //$NON-NLS-1$
-
-      bot.comboBoxWithLabel("Runtime:*").setSelection(SWTTestExt.configuredState.getServer().name); //$NON-NLS-1$ //$NON-NLS-2$
-      delay();
-      bot.button("Finish").click(); //$NON-NLS-1$
-      try {
-        bot.button("Yes").click(); //$NON-NLS-1$
-        openErrorLog();
-        openPackageExplorer();
-      } catch (WidgetNotFoundException e) {
-      }
-
-      waitForBlockingJobsAcomplished(60 * 1000L, BUILDING_WS);
-      setException(null);
-    }
+		packageExplorer.open();
+		if (!packageExplorer.containsProject(faceletsProjectName)){
+			JSFNewProjectWizard jsfNewProjectWizard = new JSFNewProjectWizard();
+			jsfNewProjectWizard.open();
+			JSFNewProjectFirstPage jsfNewProjectFirstPage = new JSFNewProjectFirstPage();
+			jsfNewProjectFirstPage.setProjectName(faceletsProjectName);
+			jsfNewProjectFirstPage.setJSFEnvironment("JSF 1.2 with Facelets");
+			jsfNewProjectFirstPage.setProjectTemplate("FaceletsKickStartWithoutLibs");
+			jsfNewProjectWizard.next();
+			new JSFNewProjectSecondPage()
+					.setRuntime(serverRequirement.getRuntimeNameLabelText(serverRequirement.getConfig()));
+			jsfNewProjectWizard.finish();
+		}
 	}
 
 	/**
@@ -359,21 +342,6 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase {
 	}
 
 	/**
-	 * Close all dialogs and editors, which may be not closed after test
-	 * executing.
-	 * 
-	 * @see #isUnuseDialogOpened()
-	 * @see #closeUnuseDialogs()
-	 */
-
-	protected void clearWorkbench() {
-		while (isUnuseDialogOpened()) {
-			closeUnuseDialogs();
-		}
-		bot.closeAllEditors();
-	}
-
-	/**
 	 * Test content for elements from all VPE DOM that are nested with
 	 * <i>BODY</i> descriptor
 	 * 
@@ -444,11 +412,8 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase {
 	 * @param projectName
 	 */
 	protected void openPage(String pageName, String projectName) {
-	  SWTBot innerBot = packageExplorer.show().bot();
-		SWTBotTree tree = innerBot.tree();
-		tree.expandNode(projectName).expandNode("WebContent") //$NON-NLS-1$
-				.expandNode("pages").getNode(pageName).doubleClick(); //$NON-NLS-1$
-		bot.sleep(Timing.time3S());
+		packageExplorer.open();
+		packageExplorer.getProject(projectName).getProjectItem("WebContent", "pages", pageName).open();
 	}
 
 	/**
@@ -467,49 +432,27 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase {
 	 *            - complete path to page location within workspace
 	 */
 	protected void createJspPage(String pageName, String... subDirs) {
-		SWTBotTreeItem tiPageParent = null;
-		if (subDirs == null || subDirs.length == 0) {
-			tiPageParent = packageExplorer.selectTreeItem("pages",
-					new String[] { VPEAutoTestCase.JBT_TEST_PROJECT_NAME,
-							"WebContent" });
-		} else {
-			String[] subPath = Arrays.copyOfRange(subDirs, 0,
-					subDirs.length - 1);
-			tiPageParent = packageExplorer.selectTreeItem(
-					subDirs[subDirs.length - 1], subPath);
-		}
-		tiPageParent.expand();
+		packageExplorer.open();
 		try {
-			tiPageParent.getNode(pageName).doubleClick();
-		} catch (WidgetNotFoundException e) {
-			SWTBotShell currentShell = bot.activeShell();
-			open.newObject(ActionItem.NewObject.WebJSP.LABEL);
-			bot.shell(IDELabel.Shell.NEW_JSP_FILE).activate();
-			bot.textWithLabel(ActionItem.NewObject.WebJSP.TEXT_FILE_NAME)
-					.setText(pageName);
-			bot.button(IDELabel.Button.NEXT).click();
-			bot.table().select(IDELabel.NewJSPFileDialog.JSP_TEMPLATE);
-			bot.button(IDELabel.Button.FINISH).click();
-			bot.waitUntil(new ShellIsActiveCondition(currentShell), Timing.time10S());
+			if (subDirs == null || subDirs.length == 0) {
+				packageExplorer.getProject(projectName).getProjectItem("WebContent", "pages", pageName).open();
+			} else {
+				packageExplorer.getProject(subDirs[0])
+						.getProjectItem(Arrays.copyOfRange(subDirs, 1, subDirs.length - 1)).getProjectItem(pageName)
+						.open();
+			}
+		} catch (EclipseLayerException ele) {
+			NewJSPFileWizardDialog newJSPDialog = new NewJSPFileWizardDialog ();
+			newJSPDialog.open();
+			NewJSPFileWizardJSPPage newJSPFileWizardJSPPage = new NewJSPFileWizardJSPPage();
+			newJSPFileWizardJSPPage.setFileName(pageName);
+			if (subDirs != null && subDirs.length > 0){
+				newJSPFileWizardJSPPage.selectParentFolder(subDirs);
+			}
+			newJSPDialog.next();
+			new NewJSPFileWizardJSPTemplatePage().setTemplate("New JSP File (html)");
+			newJSPDialog.finish();
 		}
-		bot.sleep(Timing.time2S());
-
-	}
-
-	/**
-	 * Deletes page pageName
-	 * 
-	 * @param pageName
-	 */
-	protected void deletePage(String pageName) {
-		SWTBot innerBot = bot.viewByTitle(WidgetVariables.PACKAGE_EXPLORER)
-				.bot();
-		innerBot.tree().expandNode(JBT_TEST_PROJECT_NAME)
-				.expandNode("WebContent") //$NON-NLS-1$
-				.expandNode("pages").getNode("testPage.jsp").select(); //$NON-NLS-1$//$NON-NLS-2$
-		bot.menu("Edit").menu("Delete").click(); //$NON-NLS-1$ //$NON-NLS-2$
-		bot.shell("Confirm Delete").activate(); //$NON-NLS-1$
-		bot.button("OK").click(); //$NON-NLS-1$
 	}
 
 	/**
@@ -519,12 +462,14 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase {
 	 * @param pageName
 	 */
 	public void maximizeSourcePane(SWTBotExt botExt, String pageName) {
-		botExt.swtBotEditorExtByTitle(pageName).selectPage(
-				IDELabel.VisualPageEditor.VISUAL_SOURCE_TAB_LABEL);
+		DefaultEditor editor = new DefaultEditor(pageName);
+		editor.activate();
+		new DefaultTabItem( "Visual/Source").activate();
 
-		final org.jboss.tools.vpe.editor.xpl.CustomSashForm csf = bot.widgets(
-				widgetOfType(CustomSashForm.class)).get(0);
-		UIThreadRunnable.syncExec(new VoidResult() {
+		final org.jboss.tools.vpe.editor.xpl.CustomSashForm csf =
+			WidgetLookup.getInstance().activeWidget(null, org.jboss.tools.vpe.editor.xpl.CustomSashForm.class,0);
+		
+		Display.syncExec(new Runnable() {
 			@Override
 			public void run() {
 				csf.maxDown();
@@ -539,12 +484,14 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase {
 	 * @param pageName
 	 */
 	public void maximizeVisualPane(SWTBotExt botExt, String pageName) {
-		botExt.swtBotEditorExtByTitle(pageName).selectPage(
-				IDELabel.VisualPageEditor.VISUAL_SOURCE_TAB_LABEL);
+		DefaultEditor editor = new DefaultEditor(pageName);
+		editor.activate();
+		new DefaultTabItem( "Visual/Source").activate();
 
-		final org.jboss.tools.vpe.editor.xpl.CustomSashForm csf = bot.widgets(
-				widgetOfType(CustomSashForm.class)).get(0);
-		UIThreadRunnable.syncExec(new VoidResult() {
+		final org.jboss.tools.vpe.editor.xpl.CustomSashForm csf =
+			WidgetLookup.getInstance().activeWidget(null, org.jboss.tools.vpe.editor.xpl.CustomSashForm.class,0);
+		
+		Display.syncExec(new Runnable() {
 			@Override
 			public void run() {
 				csf.maxUp();
@@ -559,12 +506,14 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase {
 	 * @param pageName
 	 */
 	public void restoreSourcePane(SWTBotExt botExt, String pageName) {
-		botExt.swtBotEditorExtByTitle(pageName).selectPage(
-				IDELabel.VisualPageEditor.VISUAL_SOURCE_TAB_LABEL);
+		DefaultEditor editor = new DefaultEditor(pageName);
+		editor.activate();
+		new DefaultTabItem( "Visual/Source").activate();
 
-		final org.jboss.tools.vpe.editor.xpl.CustomSashForm csf = bot.widgets(
-				widgetOfType(CustomSashForm.class)).get(0);
-		UIThreadRunnable.syncExec(new VoidResult() {
+		final org.jboss.tools.vpe.editor.xpl.CustomSashForm csf =
+			WidgetLookup.getInstance().activeWidget(null, org.jboss.tools.vpe.editor.xpl.CustomSashForm.class,0);
+		
+		Display.syncExec(new Runnable() {
 			@Override
 			public void run() {
 				csf.downClicked();
@@ -579,12 +528,14 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase {
 	 * @param pageName
 	 */
 	public void restoreVisualPane(SWTBotExt botExt, String pageName) {
-		botExt.swtBotEditorExtByTitle(pageName).selectPage(
-				IDELabel.VisualPageEditor.VISUAL_SOURCE_TAB_LABEL);
+		DefaultEditor editor = new DefaultEditor(pageName);
+		editor.activate();
+		new DefaultTabItem( "Visual/Source").activate();
 
-		final org.jboss.tools.vpe.editor.xpl.CustomSashForm csf = bot.widgets(
-				widgetOfType(CustomSashForm.class)).get(0);
-		UIThreadRunnable.syncExec(new VoidResult() {
+		final org.jboss.tools.vpe.editor.xpl.CustomSashForm csf =
+			WidgetLookup.getInstance().activeWidget(null, org.jboss.tools.vpe.editor.xpl.CustomSashForm.class,0);
+		
+		Display.syncExec(new Runnable() {
 			@Override
 			public void run() {
 				csf.upClicked();
@@ -600,44 +551,27 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase {
 	 *            - complete path to page location within workspace
 	 */
 	protected void createXhtmlPage(String pageName, String... subDirs) {
-		SWTBotTreeItem tiPageParent = null;
-		if (subDirs == null || subDirs.length == 0) {
-			tiPageParent = packageExplorer.selectTreeItem("pages",
-					new String[] { VPEAutoTestCase.JBT_TEST_PROJECT_NAME,
-							"WebContent" });
-		} else {
-			String[] subPath = Arrays.copyOfRange(subDirs, 0,
-					subDirs.length - 1);
-			tiPageParent = packageExplorer.selectTreeItem(
-					subDirs[subDirs.length - 1], subPath);
-		}
-		tiPageParent.expand();
+		packageExplorer.open();
 		try {
-			tiPageParent.getNode(pageName).doubleClick();
-		} catch (WidgetNotFoundException e) {
-			SWTBotShell currentShell = bot.activeShell();
-			open.newObject(ActionItem.NewObject.JBossToolsWebXHTMLFile.LABEL);
-			bot.shell(IDELabel.Shell.NEW_XHTML_FILE).activate();
+			if (subDirs == null || subDirs.length == 0) {
+				packageExplorer.getProject(projectName).getProjectItem("WebContent", "pages", pageName).open();
+			} else {
+				packageExplorer.getProject(subDirs[0])
+						.getProjectItem(Arrays.copyOfRange(subDirs, 1, subDirs.length - 1)).getProjectItem(pageName)
+						.open();
+			}
+		} catch (EclipseLayerException ele) {
+			NewXHTMLWizard newXHTMLDialog = new NewXHTMLWizard ();
+			newXHTMLDialog.open();
+			NewXHTMLFileWizardPage newXHTMLFileWizardPage = new NewXHTMLFileWizardPage();
+			newXHTMLFileWizardPage.setFileName(pageName);
 			if (subDirs != null && subDirs.length > 0){
-				SWTBotTreeItem tiDir = bot.tree().expandNode(subDirs[0]).select();
-				for (int i = 1 ; i < subDirs.length ; i++){
-					tiDir = tiDir.expandNode(subDirs[i]).select();
-				}
+				newXHTMLFileWizardPage.selectParentFolder(subDirs);
 			}
-			bot.textWithLabel(
-					ActionItem.NewObject.JBossToolsWebXHTMLFile.TEXT_FILE_NAME)
-					.setText(pageName);
-			bot.button(IDELabel.Button.NEXT).click();
-			SWTBotCheckBox cbUseTemplate = bot
-					.checkBox(IDELabel.NewXHTMLFileDialog.USE_XHTML_TEMPLATE_CHECK_BOX);
-			if (cbUseTemplate.isChecked()) {
-				cbUseTemplate.deselect();
-			}
-			bot.button(IDELabel.Button.FINISH).click();
-			bot.waitUntil(new ShellIsActiveCondition(currentShell), Timing.time10S());
+			newXHTMLDialog.next();
+			new NewXHTMLFileWizardXHTMLTemplatePage().setUseXHTMLTemplate(false);
+			newXHTMLDialog.finish();
 		}
-		bot.sleep(Timing.time2S());
-
 	}
 
 	/**
@@ -646,43 +580,21 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase {
 	 * @param jsf2ProjectName
 	 *            - name of created project
 	 */
-  protected void createJSF2Project(String jsf2ProjectName) {
-    SWTBot innerBot = bot.viewByTitle(WidgetVariables.PACKAGE_EXPLORER).bot();
-    SWTBotTree tree = innerBot.tree();
-    try {
-      tree.getTreeItem(jsf2ProjectName);
-    } catch (WidgetNotFoundException wnfe) {
-      log.info("Create new JSF2 project");
-      SWTBot wiz = open
-          .newObject(ActionItem.NewObject.JBossToolsWebJSFJSFProject.LABEL);
-      wiz.textWithLabel(IDELabel.NewJsfProjectDialog.PROJECT_NAME_LABEL)
-          .setText(jsf2ProjectName);
-      wiz.comboBoxWithLabel(IDELabel.NewJsfProjectDialog.JSF_ENVIRONMENT_LABEL)
-          .setSelection("JSF 2.0");//$NON-NLS-1$
-      wiz.comboBoxWithLabel(IDELabel.NewJsfProjectDialog.TEMPLATE_LABEL)
-          .setSelection("JSFKickStartWithoutLibs");//$NON-NLS-1$
-      wiz.button(IDELabel.Button.NEXT).click();
-      wiz.comboBoxWithLabel("Runtime:*").setSelection(SWTTestExt.configuredState.getServer().name); //$NON-NLS-1$
-      // Check if there is problem to create JSF 2 project using configured Server Runtime
-      if (!wiz.button(IDELabel.Button.FINISH).isEnabled()){
-        String errorText = wiz.text(1).getText();
-        wiz.button(IDELabel.Button.CANCEL).click();
-        assertTrue("Unable to create JSF 2 Project with Server Runtime: "
-            + SWTTestExt.configuredState.getServer().name
-            + "\nError: "
-            + errorText,
-          false);
-      }
-      else{
-        open.finish(wiz);
-        log.info("Wizard for New JSF project finished");
-        waitForBlockingJobsAcomplished(60 * 1000L, BUILDING_WS);
-        log.info("Waiting for Blocking jobs finished");
-        setException(null);
-        log.info("Exception set to null");
-      }  
-    }
-  }
+	protected void createJSF2Project(String jsf2ProjectName) {
+		packageExplorer.open();
+		if (!packageExplorer.containsProject(jsf2ProjectName)){
+			JSFNewProjectWizard jsfNewProjectWizard = new JSFNewProjectWizard();
+			jsfNewProjectWizard.open();
+			JSFNewProjectFirstPage jsfNewProjectFirstPage = new JSFNewProjectFirstPage();
+			jsfNewProjectFirstPage.setProjectName(jsf2ProjectName);
+			jsfNewProjectFirstPage.setJSFEnvironment("JSF 2.0");
+			jsfNewProjectFirstPage.setProjectTemplate("JSFKickStartWithoutLibs");
+			jsfNewProjectWizard.next();
+			new JSFNewProjectSecondPage()
+					.setRuntime(serverRequirement.getRuntimeNameLabelText(serverRequirement.getConfig()));
+			jsfNewProjectWizard.finish();
+		}
+	}
   /**
    * Creates new empty HTML page within test project
    * 
@@ -690,48 +602,32 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase {
    * @param subDirs
    *            - complete path to page location within workspace
    */
-  protected void createHtmlPage(String pageName, String... subDirs) {
-    SWTBotTreeItem tiPageParent = null;
-    if (subDirs == null || subDirs.length == 0) {
-      tiPageParent = packageExplorer.selectTreeItem("pages",
-          new String[] { VPEAutoTestCase.JBT_TEST_PROJECT_NAME,
-              "WebContent" });
-    } else {
-      String[] subPath = Arrays.copyOfRange(subDirs, 0,
-          subDirs.length - 1);
-      tiPageParent = packageExplorer.selectTreeItem(
-          subDirs[subDirs.length - 1], subPath);
-    }
-    tiPageParent.expand();
-    try {
-      tiPageParent.getNode(pageName).doubleClick();
-    } catch (WidgetNotFoundException e) {
-      SWTBotShell currentShell = bot.activeShell();
-      open.newObject(ActionItem.NewObject.WebHTMLPage.LABEL);
-      bot.shell(IDELabel.Shell.NEW_HTML_FILE).activate();
-      bot.textWithLabel(ActionItem.NewObject.WebHTMLPage.TEXT_FILE_NAME)
-          .setText(pageName);
-      bot.button(IDELabel.Button.NEXT).click();
-      bot.button(IDELabel.Button.FINISH).click();
-      bot.waitUntil(new ShellIsActiveCondition(currentShell), Timing.time10S());
-    }
-    bot.sleep(Timing.time2S());
-
-  }
+	protected void createHtmlPage(String pageName, String... subDirs) {
+		packageExplorer.open();
+		try {
+			if (subDirs == null || subDirs.length == 0) {
+				packageExplorer.getProject(projectName).getProjectItem("WebContent", "pages", pageName).open();
+			} else {
+				packageExplorer.getProject(subDirs[0])
+						.getProjectItem(Arrays.copyOfRange(subDirs, 1, subDirs.length - 1)).getProjectItem(pageName)
+						.open();
+			}
+		} catch (EclipseLayerException ele) {
+			NewHTMLFileWizardDialog newHTMLDialog = new NewHTMLFileWizardDialog();
+			newHTMLDialog.open();
+			new NewHTMLFileWizardHTMLPage().setFileName(pageName);
+			newHTMLDialog.next();
+			newHTMLDialog.finish();
+		}
+	}
   
   /**
    * Add RichFaces library to project classpath
    * @param projectName
    */
   protected void addRichFacesToProjectClassPath(String projectName){
-    Throwable exceptionBeforeCall = getException();
     addedVariableRichfacesUiLocation.put(projectName,
     	BuildPathHelper.addExternalJar(VPEAutoTestCase.RICH_FACES_UI_JAR_LOCATION,projectName));
-    if (exceptionBeforeCall == null 
-        && getException() != null
-        && getException() instanceof SWTException){
-      setException(null);
-    }
   }
   /**
    * Remove previously added RichFaces library from project classpath
@@ -744,24 +640,21 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase {
       eclipse.cleanAllProjects();
     }
   }
-  /**
-   * Create Dynamic Web Project with <b>jsfProjectName</b>
-   * 
-   * @param dynamicWebfProjectName
-   *            - name of created project
-   */
-  protected void createDynamicWebProject(String dynamicWebfProjectName) {
-    SWTBot innerBot = bot.viewByTitle(WidgetVariables.PACKAGE_EXPLORER).bot();
-    SWTBotTree innerTree = innerBot.tree();
-    try {
-      innerTree.getTreeItem(dynamicWebfProjectName);
-    } catch (WidgetNotFoundException wnfe) {
-      SWTBot wiz = open.newObject(WebDynamicWebProject.LABEL);
-      wiz.textWithLabel(IDELabel.DynamicWebProjectWizard.PROJECT_NAME_LABEL).setText(dynamicWebfProjectName);
-      wiz.button(IDELabel.Button.NEXT).click();
-      open.finish(wiz,IDELabel.Button.FINISH, IDELabel.Button.NO, true);
-      waitForBlockingJobsAcomplished(Timing.time5S(), BUILDING_WS);
-      setException(null);
-    }
-  }
+
+	/**
+	 * Create Dynamic Web Project with <b>jsfProjectName</b>
+	 * 
+	 * @param dynamicWebfProjectName
+	 *            - name of created project
+	 */
+	protected void createDynamicWebProject(String dynamicWebfProjectName) {
+		packageExplorer.open();
+		if (!packageExplorer.containsProject(dynamicWebfProjectName)) {
+			WebProjectWizard webProjectWizard = new WebProjectWizard();
+			webProjectWizard.open();
+			WebProjectFirstPage webProjectFirstPage = new WebProjectFirstPage();
+			webProjectFirstPage.setProjectName(dynamicWebfProjectName);
+			webProjectWizard.finish();
+		}
+	}
 }

@@ -115,10 +115,9 @@ public class AddSubstitutedELExpressionFolderScopeTest extends SubstitutedELTest
 		assertVisualEditorContainsNodeWithValue(new SWTBotWebBrowser("hello.jsp",botExt),
         EL_VALUE,
         "hello.jsp");
-		packageExplorer.openFile(JBT_TEST_PROJECT_NAME,
-		    "WebContent",
-		    TEST_FOLDER,
-		    TEST_PAGE_FOR_FOLDER+".jsp");
+		packageExplorer.getProject(JBT_TEST_PROJECT_NAME)
+			.getProjectItem("WebContent",TEST_FOLDER,TEST_PAGE_FOR_FOLDER+".jsp")
+			.open();
 		assertVisualEditorContains(new SWTBotWebBrowser(TEST_PAGE_FOR_FOLDER+".jsp",botExt),
         "INPUT",
         new String[]{"value"},

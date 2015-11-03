@@ -16,7 +16,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
+import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.helper.FileHelper;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
@@ -74,10 +74,11 @@ public class TestNPEinHugeFile extends VPEAutoTestCase {
 		 * File employee.xhtml should already be copied to WebContent, 
 		 * open it.
 		 */
-		packageExplorer.openFile(JBT_TEST_PROJECT_NAME,
-				IDELabel.JsfProjectTree.WEB_CONTENT, TEST_PAGE_NAME);
-		final SWTBotEclipseEditor xhtmlTextEditor = bot.editorByTitle(TEST_PAGE_NAME).toTextEditor();
-		xhtmlTextEditor.typeText(line, col, TEXT);
+		packageExplorer.getProject(JBT_TEST_PROJECT_NAME)
+			.getProjectItem(IDELabel.JsfProjectTree.WEB_CONTENT, TEST_PAGE_NAME)
+			.open();
+		TextEditor xhtmlTextEditor = new TextEditor(TEST_PAGE_NAME);
+		xhtmlTextEditor.insertText(line, col, TEXT);
 		/*
 		 * Sleep for 20sec, wait for refresh.
 		 * 10sec could be enough also.

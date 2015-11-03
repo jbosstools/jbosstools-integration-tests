@@ -10,9 +10,9 @@
  ******************************************************************************/
 package org.jboss.tools.vpe.ui.bot.test.wizard;
 
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
+import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.jst.web.ui.internal.editor.messages.JstUIMessages;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.vpe.ui.bot.test.VPEAutoTestCase;
@@ -44,41 +44,9 @@ public class ExternalizeAllStringsDialogTest extends VPEAutoTestCase {
 		 * Open the file
 		 */
 		isUnusedDialogOpened = false;
-		SWTBotEditor editor = SWTTestExt.packageExplorer.openFile(JBT_TEST_PROJECT_NAME,
-				"WebContent", "pages", TEST_PAGE); //$NON-NLS-1$ //$NON-NLS-2$
-		editor.setFocus();
-		/*
-		 * Open the dialog for the active editor
-		 */
-
-		/*
-		 * Select example bundle 
-		 */
-		
-		/*
-		 * Check displayed properties
-		 */
-		
-		/*
-		 * Check next page:
-		 * the table with non-externalized properties
-		 */
-		
-		/*
-		 * Check duplicate keys
-		 */
-		
-		/*
-		 * Check bundle name on the next page:
-		 */
-		
-		/*
-		 * Press OK
-		 */
-		
-		/*
-		 * Check the editor content, string should be replaced
-		 */
+		SWTTestExt.packageExplorer.getProject(JBT_TEST_PROJECT_NAME)
+				.getProjectItem("WebContent", "pages", TEST_PAGE).open();
+		new DefaultEditor(TEST_PAGE).activate();
 		
 	}
 

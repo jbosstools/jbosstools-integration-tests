@@ -12,6 +12,7 @@ package org.jboss.tools.vpe.ui.bot.test.smoke;
 
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
+import org.jboss.tools.jst.reddeer.web.ui.navigator.WebProjectsNavigator;
 import org.jboss.tools.ui.bot.ext.helper.FileRenameHelper;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.test.WidgetVariables;
@@ -36,7 +37,7 @@ public class RenameJSPFileTest extends VPEEditorTestCase{
 	
 	private void checkRenameJSPFile(){
 	  
-	  openWebProjects();
+		new WebProjectsNavigator().open();
 
     delay();
 

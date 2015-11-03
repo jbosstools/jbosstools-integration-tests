@@ -18,7 +18,6 @@ import java.util.List;
 
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.hamcrest.Matcher;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
 import org.jboss.tools.ui.bot.ext.SWTUtilExt;
@@ -39,11 +38,10 @@ public class StylesOnThePageTest extends VPEEditorTestCase {
   private static final String JSP_FILE_NAME = "stylesOnThePageTest.jsp";
   
   public void testStylesOnThePage() throws IOException{
-    SWTBotTree tree = packageExplorer.show().bot().tree();
-    tree.expandNode(VPEAutoTestCase.JBT_TEST_PROJECT_NAME)
-      .expandNode("WebContent")
-      .getNode("pages")
-      .select();
+	  packageExplorer.open();
+	  packageExplorer.getProject(VPEAutoTestCase.JBT_TEST_PROJECT_NAME)
+	  	  .getProjectItem("WebContent","pages")
+	  	  .select();
     open.newObject(ActionItem.NewObject.WebJSPFile.LABEL);
     bot.shell(IDELabel.Shell.NEW_JSP_FILE).activate(); //$NON-NLS-1$
     bot.textWithLabel(ActionItem.NewObject.WebJSPFile.TEXT_FILE_NAME).setText(StylesOnThePageTest.JSP_FILE_NAME); //$NON-NLS-1$

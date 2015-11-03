@@ -15,7 +15,7 @@ package org.jboss.tools.vpe.ui.bot.test.editor;
 import java.io.File;
 import java.io.IOException;
 
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
+import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
 import org.jboss.tools.ui.bot.ext.SWTJBTExt;
 import org.jboss.tools.ui.bot.ext.Timing;
@@ -53,15 +53,14 @@ public class XhtmlFilePerformanceTest extends VPEAutoTestCase {
 	  bot.sleep(Timing.time1S());
 	  eclipse.maximizeActiveShell();
 	  // open main page
-	  packageExplorer.openFile(JBT_TEST_PROJECT_NAME,IDELabel.JsfProjectTree.WEB_CONTENT,XhtmlFilePerformanceTest.TEST_PAGE_NAME);
-	  final SWTBotEclipseEditor xhtmlTextEditor = bot.editorByTitle(XhtmlFilePerformanceTest.TEST_PAGE_NAME).toTextEditor();
+	  packageExplorer.getProject(JBT_TEST_PROJECT_NAME)
+	  	  .getProjectItem(IDELabel.JsfProjectTree.WEB_CONTENT,XhtmlFilePerformanceTest.TEST_PAGE_NAME)
+	  	  .open();
+	  final TextEditor xhtmlTextEditor = new TextEditor(XhtmlFilePerformanceTest.TEST_PAGE_NAME);
 	  String insertText = "!!!123 Test Title Inserted 321!!!";
 	  String origText = xhtmlTextEditor.getText();
-	  SWTJBTExt.selectTextInSourcePane(new SWTBotExt(), 
-	      XhtmlFilePerformanceTest.TEST_PAGE_NAME, 
-	      "<h1>", 
-	      0, 0);
-	  xhtmlTextEditor.insertText("<h1>" + insertText + "</h1>");
+	  xhtmlTextEditor.selectText("<h1>");
+	  xhtmlTextEditor.insertText(xhtmlTextEditor.getPositionOfText("<h1>") ,"<h1>" + insertText + "</h1>");
 	  xhtmlTextEditor.save();
 	  bot.sleep(Timing.time5S());
     bot.toolbarButtonWithTooltip(SWTJBTExt.isRunningOnMacOs() ? 

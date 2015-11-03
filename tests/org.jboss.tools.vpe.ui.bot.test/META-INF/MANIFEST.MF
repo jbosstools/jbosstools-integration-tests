@@ -38,7 +38,16 @@ Require-Bundle: org.eclipse.ui,
  org.jboss.tools.browsersim.ui;bundle-version="3.7.0",
  org.jboss.tools.vpe.reddeer;bundle-version="[4.3.1,4.4.0)",
  org.jboss.tools.common.resref.core;bundle-version="3.7.0",
- org.jboss.tools.browsersim.reddeer;bundle-version="[4.3.1,4.4.0)"
+ org.jboss.tools.browsersim.reddeer;bundle-version="[4.3.1,4.4.0)",
+ org.jboss.reddeer.swt,
+ org.jboss.reddeer.requirements,
+ org.jboss.ide.eclipse.as.reddeer,
+ org.jboss.reddeer.eclipse,
+ org.jboss.reddeer.workbench,
+ org.jboss.reddeer.jface,
+ org.jboss.reddeer.junit,
+ org.jboss.tools.jst.reddeer;bundle-version="4.3.0",
+ org.jboss.tools.jsf.reddeer;bundle-version="4.3.0"
 Eclipse-RegisterBuddy: org.apache.log4j
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6

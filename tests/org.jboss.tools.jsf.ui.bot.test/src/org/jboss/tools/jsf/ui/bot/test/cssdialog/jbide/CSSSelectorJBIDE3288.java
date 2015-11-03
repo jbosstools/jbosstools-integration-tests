@@ -1,16 +1,32 @@
+ /*******************************************************************************
+  * Copyright (c) 2007-2015 Red Hat, Inc.
+  * Distributed under license by Red Hat, Inc. All rights reserved.
+  * This program is made available under the terms of the
+  * Eclipse Public License v1.0 which accompanies this distribution,
+  * and is available at http://www.eclipse.org/legal/epl-v10.html
+  *
+  * Contributor:
+  *     Red Hat, Inc. - initial API and implementation
+  ******************************************************************************/
 package org.jboss.tools.jsf.ui.bot.test.cssdialog.jbide;
 
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
-import org.eclipse.swtbot.swt.finder.SWTBot;
-import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.jboss.reddeer.core.handler.TreeItemHandler;
+import org.jboss.reddeer.core.matcher.WithTooltipTextMatcher;
+import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
+import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
+import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.swt.impl.browser.InternalBrowser;
+import org.jboss.reddeer.swt.impl.button.OkButton;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
+import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.jsf.ui.bot.test.JSFAutoTestCase;
-import org.jboss.tools.ui.bot.ext.SWTUtilExt;
-import org.jboss.tools.ui.bot.ext.Timing;
-import org.jboss.tools.ui.bot.ext.gen.ActionItem;
+import org.jboss.tools.jst.reddeer.wst.css.ui.wizard.NewCSSFileWizardPage;
+import org.jboss.tools.jst.reddeer.wst.css.ui.wizard.NewCSSWizardDialog;
 import org.jboss.tools.ui.bot.test.WidgetVariables;
+import org.junit.Test;
 
 public class CSSSelectorJBIDE3288 extends JSFAutoTestCase{
 
@@ -19,11 +35,10 @@ public class CSSSelectorJBIDE3288 extends JSFAutoTestCase{
 	private final static String CSS_CLASS2_NAME = ".cssclass2"; //$NON-NLS-1$
 	private final static String css1Attrs = "\r\ncolor:red\r\n"; //$NON-NLS-1$
 	private final static String css2Attrs = "\r\nbackground-color:green\r\n"; //$NON-NLS-1$
-	
+	@Test
 	public void testCSSSelector(){
 		createCSSPage();
 		createCSSClass();
-		bot.viewByTitle(WidgetVariables.PACKAGE_EXPLORER).setFocus();
 		openTestPage();
 		linkCSSFile();
 		selectTestElement();
@@ -31,90 +46,65 @@ public class CSSSelectorJBIDE3288 extends JSFAutoTestCase{
 		checkSelector();
 		chooseStyleClass();
 	}
-	
-	
-	@Override
-	protected void closeUnuseDialogs() {
-	  SWTUtilExt.closeShellWhenActive(WidgetVariables.CSS_SELECTOR_DIALOG_TITLE,bot);
-	  SWTUtilExt.closeShellWhenActive(WidgetVariables.EDIT_STYLE_CLASS,bot);
-	}
 
-	@Override
-	protected boolean isUnuseDialogOpened() {
-		boolean isOpened = false;
-		isOpened = SWTUtilExt.isShellActive(WidgetVariables.CSS_SELECTOR_DIALOG_TITLE, bot);
-		
-		if (!isOpened){
-		  isOpened = SWTUtilExt.isShellActive(WidgetVariables.EDIT_STYLE_CLASS, bot);
-		}
-		
-		return isOpened;
-	}
-
-	private void createCSSPage(){
-		SWTBot innerBot = bot.viewByTitle(WidgetVariables.PACKAGE_EXPLORER).bot();
-		SWTBotTree tree = innerBot.tree();
+	private void createCSSPage() {
+		packageExplorer.open();
 		try {
-			tree.expandNode(JBT_TEST_PROJECT_NAME). //$NON-NLS-1$
-			expandNode("WebContent").expandNode("pages").getNode(CSS_FILE_NAME+".css").doubleClick(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			bot.editorByTitle(CSS_FILE_NAME+".css").setFocus(); //$NON-NLS-1$
-			bot.menu("Edit").menu("Select All").click();  //$NON-NLS-1$//$NON-NLS-2$
-			bot.menu("Edit").menu("Delete").click(); //$NON-NLS-1$ //$NON-NLS-2$
-		} catch (WidgetNotFoundException e) {
-			tree.expandNode(JBT_TEST_PROJECT_NAME).expandNode("WebContent").getNode("pages").select(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			open.newObject(ActionItem.NewObject.WebCSS.LABEL);
-			bot.shell("New CSS File").activate(); //$NON-NLS-1$
-			bot.textWithLabel("File name:").setText(CSS_FILE_NAME); //$NON-NLS-1$
-			bot.button("Finish").click(); //$NON-NLS-1$
+			packageExplorer.getProject(JBT_TEST_PROJECT_NAME).getProjectItem("WebContent", CSS_FILE_NAME + ".css")
+					.open();
+			new TextEditor(CSS_FILE_NAME + ".css").setText("@CHARSET \"UTF-8\";");
+		} catch (EclipseLayerException ele) {
+			packageExplorer.getProject(JBT_TEST_PROJECT_NAME).getProjectItem("WebContent").select();
+			NewCSSWizardDialog newCSSWizardDialog = new NewCSSWizardDialog();
+			newCSSWizardDialog.open();
+			new NewCSSFileWizardPage().setFileName(CSS_FILE_NAME);
+			newCSSWizardDialog.finish();
 		}
+		TextEditor editor = new TextEditor(CSS_FILE_NAME + ".css");
+		editor.save();
 	}
 	
 	private void createCSSClass(){
-		SWTBotEclipseEditor eclipseEditor =	bot.editorByTitle(CSS_FILE_NAME+".css").toTextEditor(); //$NON-NLS-1$
-		eclipseEditor.setFocus();
-		eclipseEditor.insertText(CSS_CLASS1_NAME+"{"+css1Attrs+"}"+"\n"+CSS_CLASS2_NAME+"{"+css2Attrs+"}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-		eclipseEditor.save();
+		TextEditor editor = new TextEditor(CSS_FILE_NAME + ".css");
+		editor.activate();
+		editor.insertText(0,0,CSS_CLASS1_NAME+"{"+css1Attrs+"}"+"\n"+CSS_CLASS2_NAME+"{"+css2Attrs+"}");
+		editor.save();
 	}
 	
 	private void linkCSSFile(){
-		setEditor(bot.editorByTitle(TEST_PAGE).toTextEditor());
+		setEditor(new TextEditor(TEST_PAGE));
 		setEditorText(getEditor().getText());
-		getEditor().navigateTo(6, 10);
-		getEditor().insertText("<link href=\"" + CSS_FILE_NAME + ".css\" type=\"text/css\"/>"); //$NON-NLS-1$ //$NON-NLS-2$
+		getEditor().insertText(6,10,"<link href=\"/" + CSS_FILE_NAME + ".css\" type=\"text/css\"/>");
 		getEditor().save();
 	}
 	
 	private void selectTestElement(){
-		getEditor().navigateTo(12, 21);
-		getEditor().insertText(""); //$NON-NLS-1$
+		getEditor().selectText("h:out");
 		getEditor().save();
 	}
 	
 	private void openCSSSelectorDialog(){
-		openPropertiesView();
-		getEditor().setFocus();
-		delay();
-		SWTBot innerBot = bot.viewByTitle(WidgetVariables.PROPERTIES).bot();
-		SWTBotTree tree = innerBot.tree();
-		SWTBotTreeItem tiStyleClass = tree.getAllItems()[0].expand().getNode("styleClass");
-		tiStyleClass.select(); //$NON-NLS-1$
-		tiStyleClass.click(); //$NON-NLS-1$
-		util.waitForButtonIsFound("...", Timing.time3S());
-		bot.button("...").click(); //$NON-NLS-1$
+		PropertiesView propertiesView = new PropertiesView();
+		propertiesView.open();
+		TreeItem tiStyleClass = propertiesView.getProperty("General","styleClass").getTreeItem();
+		tiStyleClass.select();
+		TreeItemHandler.getInstance().click(tiStyleClass.getSWTWidget()); 
+		new PushButton("...").click();
 	}
 	
 	private void checkSelector(){
-		SWTBotShell cssSelectorShell = bot.shell(WidgetVariables.CSS_SELECTOR_DIALOG_TITLE).activate();
-		SWTBotTree cssSelectorTree = cssSelectorShell.bot().tree();
-		cssSelectorTree.expandNode(CSS_FILE_NAME+".css").getNode("cssclass1").select(); //$NON-NLS-1$ //$NON-NLS-2$
-		assertEquals(".cssclass1 {\n\tcolor: red\n}", bot.styledText().getText()); //$NON-NLS-1$
-		cssSelectorShell.bot().buttonWithTooltip("Add CSS class").click(); //$NON-NLS-1$
-		cssSelectorShell.bot().button(WidgetVariables.OK_BUTTON).click();
+		new DefaultShell(WidgetVariables.CSS_SELECTOR_DIALOG_TITLE);
+		new DefaultTreeItem("/" + CSS_FILE_NAME+".css","cssclass1").select();
+		assertEquals(".cssclass1 {\n\tcolor: red\n}", new DefaultStyledText().getText());
+		new PushButton(new WithTooltipTextMatcher("Add CSS class")).click();
+		new OkButton().click();
 	}
 	
 	private void chooseStyleClass(){
-		getEditor().setFocus();
-		assertEquals("\t\t<h1><h:outputText value=\"#{Message.header}\" styleClass=\"cssclass1\"/></h1>", getEditor().getTextOnCurrentLine()); //$NON-NLS-1$
+		getEditor().activate();
+		assertVisualEditorContainsString(new InternalBrowser(), 
+			"\t\t<h1><h:outputText value=\"#{Message.header}\" styleClass=\"cssclass1\"/></h1>", 
+			TEST_PAGE);
 	}
 	
 }

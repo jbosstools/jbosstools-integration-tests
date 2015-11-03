@@ -16,7 +16,6 @@ import java.io.IOException;
 
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.SWTBot;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
 import org.jboss.tools.ui.bot.ext.SWTUtilExt;
 import org.jboss.tools.ui.bot.ext.Timing;
@@ -40,11 +39,10 @@ public class IncludedCssFilesJSPTest extends PageDesignTestCase {
   private SWTBot optionsDialogBot  = null;
     
   public void testIncludedCssFilesJSP() throws IOException{
-    SWTBotTree tree = packageExplorer.show().bot().tree();
-    tree.expandNode(VPEAutoTestCase.JBT_TEST_PROJECT_NAME)
-      .expandNode("WebContent")
-      .getNode("pages")
-      .select();
+	  packageExplorer.open();
+      packageExplorer.getProject(VPEAutoTestCase.JBT_TEST_PROJECT_NAME)
+      	  .getProjectItem("WebContent","pages")
+      	  .select();
     // add CSS File
     open.newObject(ActionItem.NewObject.WebCSS.LABEL);
     bot.shell(IDELabel.Shell.NEW_CSS_FILE).activate(); //$NON-NLS-1$

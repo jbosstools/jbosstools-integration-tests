@@ -15,16 +15,17 @@ import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
+import org.jboss.tools.ui.bot.ext.view.PackageExplorer;
 
 public class SeamExample extends ExampleTest {
-
+	private PackageExplorer pckExplorer = new PackageExplorer();
 	@Override
 	public String getExampleCategory() {
 		return "Seam";
 	}
 	protected void runExample() {
 		util.waitForNonIgnoredJobs(Timing.time100S());// for project build
-		packageExplorer.runOnServer(getProjectNames()[0]);
+		pckExplorer.runOnServer(getProjectNames()[0]);
 		util.waitForNonIgnoredJobs();//wait for publishing
 		bot.sleep(Timing.time20S());//wait for deployment
 	}
@@ -64,9 +65,9 @@ public class SeamExample extends ExampleTest {
 	}
 	
 	private void runTestNG(String project, String launchFile, final String launchName) {
-		SWTBot viewBot = packageExplorer.bot();
-		packageExplorer.selectProject(project);		
-		SWTBotTreeItem item = packageExplorer.selectTreeItem(launchFile, new String[] {project});
+		SWTBot viewBot = pckExplorer.bot();
+		pckExplorer.selectProject(project);		
+		SWTBotTreeItem item = pckExplorer.selectTreeItem(launchFile, new String[] {project});
 		ContextMenuHelper.prepareTreeItemForContextMenu(viewBot.tree(), item);
 		   final SWTBotMenu menuRunAs = viewBot.menu(IDELabel.Menu.RUN).menu(IDELabel.Menu.RUN_AS);
 		    final MenuItem menuItem = UIThreadRunnable

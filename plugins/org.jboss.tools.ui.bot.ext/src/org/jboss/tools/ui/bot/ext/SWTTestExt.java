@@ -15,7 +15,7 @@ import org.apache.log4j.Logger;
 import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
 import org.jboss.tools.ui.bot.ext.config.ConfiguredState;
 import org.jboss.tools.ui.bot.ext.view.ConsoleView;
-import org.jboss.tools.ui.bot.ext.view.PackageExplorer;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.tools.ui.bot.ext.view.ProblemsView;
 import org.jboss.tools.ui.bot.ext.view.ProjectExplorer;
 import org.jboss.tools.ui.bot.ext.view.PropertiesView;
@@ -60,6 +60,7 @@ public class SWTTestExt extends SWTBotTestCase{
 	}	
 	static {
 		System.setProperty("org.eclipse.swtbot.playback.delay","10");
+		packageExplorer.containsProject("");
 	}
 	// Wait Constants
 	public static int TIME_500MS = Timing.time500MS();

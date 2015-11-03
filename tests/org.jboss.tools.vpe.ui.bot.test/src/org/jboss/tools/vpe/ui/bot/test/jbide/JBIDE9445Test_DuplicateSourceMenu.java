@@ -10,8 +10,6 @@
  ******************************************************************************/
 package org.jboss.tools.vpe.ui.bot.test.jbide;
 
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
-import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.vpe.ui.bot.test.VPEAutoTestCase;
 
 public class JBIDE9445Test_DuplicateSourceMenu extends VPEAutoTestCase {
@@ -24,9 +22,7 @@ public class JBIDE9445Test_DuplicateSourceMenu extends VPEAutoTestCase {
 		/*
 		 * Open the default jsp page
 		 */
-		SWTBotEditor editor = SWTTestExt.packageExplorer.openFile(JBT_TEST_PROJECT_NAME,
-				"WebContent", "pages", TEST_PAGE); //$NON-NLS-1$ //$NON-NLS-2$
-		editor.setFocus();
+		packageExplorer.getProject(JBT_TEST_PROJECT_NAME).getProjectItem("WebContent", "pages", TEST_PAGE).open(); //$NON-NLS-1$ //$NON-NLS-2$
 		/*
 		 * When focus is on the editor --
 		 * only one 'Source' menu should be available
@@ -39,7 +35,7 @@ public class JBIDE9445Test_DuplicateSourceMenu extends VPEAutoTestCase {
 		/*
 		 * Set focus to the PackageExplorer
 		 */
-		openPackageExplorer();
+		packageExplorer.open();
 		/*
 		 * After focus moved to Package Explorer --
 		 * still only one menu should be visible
