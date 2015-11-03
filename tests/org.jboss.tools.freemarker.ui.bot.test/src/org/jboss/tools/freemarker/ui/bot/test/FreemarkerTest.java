@@ -1,6 +1,5 @@
 package org.jboss.tools.freemarker.ui.bot.test;
 
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.BufferedReader;
@@ -11,32 +10,17 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
 import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
-import org.jboss.reddeer.eclipse.ui.views.contentoutline.OutlineView;
 import org.jboss.reddeer.eclipse.ui.views.log.LogMessage;
 import org.jboss.reddeer.eclipse.ui.views.log.LogView;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.workbench.handler.EditorHandler;
-import org.jboss.reddeer.workbench.impl.editor.TextEditor;
-import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 
 /**
@@ -46,32 +30,8 @@ import org.junit.runner.RunWith;
  */
 @RunWith(RedDeerSuite.class)
 public class FreemarkerTest {
-	
-	
+		
 	private static final Logger log = Logger.getLogger(FreeMarkerEditorTest.class);
-	private String prj = "org.jboss.tools.freemarker.testprj";
-	
-	@BeforeClass
-	public static void beforeClass() {
-		JavaPerspective p = new JavaPerspective();
-		p.open();
-		EditorHandler.getInstance().closeAll(false);
-		new WaitWhile(new JobIsRunning());		
-
-		JavaPerspective jp = new JavaPerspective();
-		jp.open();
-		
-		WorkbenchPreferenceDialog dlg = new WorkbenchPreferenceDialog();
-		dlg.open();
-		dlg.select("FreeMarker");
-		
-		log.step("Set Freemarker outline level to full level on freemarker preference page");
-		FreemarkerPreferencePage page = new FreemarkerPreferencePage();
-		page.setOutlineLevelOfDetail(OutlineLevelOfDetail.FULL);
-		
-		dlg.ok();
-	}
-
 	
 	public void importTestProject() {
 		
@@ -97,33 +57,6 @@ public class FreemarkerTest {
 		wizard.finish();		
 	}
 
-	private void openFTLFileInEditor() {
-		
-		ProjectExplorer pe = new ProjectExplorer();
-		pe.open();
-
-		
-		new DefaultTreeItem(prj, "ftl", "assign-directive.ftl").doubleClick();
-		new TextEditor("assign-directive.ftl");
-		
-		log.step("Open outline view and check freemarker elements there");
-		OutlineView ov = new OutlineView();
-		ov.open();
-		
-		Collection<TreeItem> outlineElements = ov.outlineElements();
-		
-		List<String> list = new ArrayList<String>();
-		for (TreeItem i : outlineElements) {
-			list.add(i.getText());
-		}
-		
-		assertTrue(list.contains("assign variable1=value1 variable2=value2"));
-		
-	    // https://issues.jboss.org/browse/JBIDE-11287
-		// remove comment when this jira is fixed
-		//assertTrue(list.contains("latestProduct.url"));		
-	}
-	
 	/**
 	 * Check error log for errors
 	 */
@@ -165,13 +98,7 @@ public class FreemarkerTest {
 			br.close();
 		}
 	}
-
-	@AfterClass
-	public static void aterClass() {
-		// wait for all jobs
-		new WaitWhile(new JobIsRunning());
-	}
-			
+	
 	/**
 	 * Provide bundle resource absolute path
 	 * @param pluginId - plugin id
@@ -280,7 +207,4 @@ public class FreemarkerTest {
 			}
 		}
 	}
-	
-	
-	
 }

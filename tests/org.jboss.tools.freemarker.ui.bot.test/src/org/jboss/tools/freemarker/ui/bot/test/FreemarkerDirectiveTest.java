@@ -19,8 +19,10 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.workbench.handler.EditorHandler;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -58,11 +60,6 @@ public class FreemarkerDirectiveTest extends FreemarkerTest {
 	}
 
 	@Test
-	public void emptyTest() {
-		assertTrue(true);
-	}
-
-	@Test
 	public void assignDirectiveOutlineTest() {
 		emptyErrorLog();
 		log.step("Import test project for freemarker test");
@@ -72,6 +69,7 @@ public class FreemarkerDirectiveTest extends FreemarkerTest {
 		checkErrorLog();
 	}	
 
+	@Ignore  
 	@Test
 	public void attemptDirectiveOutlineTest() {
 		emptyErrorLog();
@@ -89,7 +87,7 @@ public class FreemarkerDirectiveTest extends FreemarkerTest {
 		pe.open();
 
 		
-		new DefaultTreeItem(prj, "ftl", "assign-directive.ftl").doubleClick();
+		new DefaultTreeItem(prj, "ftl", file).doubleClick();
 		new TextEditor("assign-directive.ftl");
 		
 		log.step("Open outline view and check freemarker elements there");
@@ -103,11 +101,7 @@ public class FreemarkerDirectiveTest extends FreemarkerTest {
 			list.add(i.getText());
 		}
 		
-		assertTrue(list.contains("assign variable1=value1 variable2=value2"));
-		
-	    // https://issues.jboss.org/browse/JBIDE-11287
-		// remove comment when this jira is fixed
-		//assertTrue(list.contains("latestProduct.url"));		
+		assertTrue(list.contains(outline));
 	}
 
 	private void emptyErrorLog() {
@@ -118,6 +112,13 @@ public class FreemarkerDirectiveTest extends FreemarkerTest {
 		new WaitWhile(new JobIsRunning());
 	}
 
+	@After
+	public void cleanup() {
+		ProjectExplorer pe = new ProjectExplorer();
+		pe.open();
+		pe.getProject(prj).delete(true);
+	}
+	
 	@AfterClass
 	public static void aterClass() {
 		// wait for all jobs
