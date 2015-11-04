@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
 
+import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
@@ -171,6 +172,7 @@ public class ScaffoldWizardTest extends WizardTestBase {
 		new DefaultCombo().setSelection(type.getName());
 		dialog.next();
 		new PushButton("Select All").click();
+		AbstractWait.sleep(TimePeriod.SHORT); //workaround for JBIDE-21053
 		dialog.finish(TimePeriod.LONG);
 	}
 }
