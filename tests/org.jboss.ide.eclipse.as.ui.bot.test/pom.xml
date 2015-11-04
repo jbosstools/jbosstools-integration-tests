@@ -1040,7 +1040,6 @@
 			<properties>
 				<test.class>org.jboss.ide.eclipse.as.ui.bot.test.allsuites.products.compatibility.EAP6xCompatibilitySuite</test.class>
 				<reddeer.config>${reddeer.product.config}/eap-6.x.xml</reddeer.config>
-				<download-properties-file>${product-download-properties-file}</download-properties-file>
 			</properties>
 			<build>
 				<plugins>
@@ -1076,7 +1075,6 @@
 			<properties>
 				<test.class>org.jboss.ide.eclipse.as.ui.bot.test.allsuites.products.compatibility.EAP7xCompatibilitySuite</test.class>
 				<reddeer.config>${reddeer.product.config}/eap-7.x.xml</reddeer.config>
-				<download-properties-file>${product-download-properties-file}</download-properties-file>
 			</properties>
 			<build>
 				<plugins>
