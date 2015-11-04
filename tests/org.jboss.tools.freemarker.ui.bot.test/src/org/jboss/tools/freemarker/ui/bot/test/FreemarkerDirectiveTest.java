@@ -21,6 +21,7 @@ import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -40,42 +41,32 @@ public class FreemarkerDirectiveTest extends FreemarkerTest {
 	
 	@BeforeClass
 	public static void beforeClass() {
-		JavaPerspective p = new JavaPerspective();
-		p.open();
-		EditorHandler.getInstance().closeAll(false);
-		new WaitWhile(new JobIsRunning());		
-
-		JavaPerspective jp = new JavaPerspective();
-		jp.open();
-		
-		WorkbenchPreferenceDialog dlg = new WorkbenchPreferenceDialog();
-		dlg.open();
-		dlg.select("FreeMarker");
-		
-		log.step("Set Freemarker outline level to full level on freemarker preference page");
-		FreemarkerPreferencePage page = new FreemarkerPreferencePage();
-		page.setOutlineLevelOfDetail(OutlineLevelOfDetail.FULL);
-		
-		dlg.ok();
+		setFullOutlineView();
+	}
+	
+	@Before
+	public void before() {
+		emptyErrorLog();
+		log.step("Import test project for freemarker test");
+		importTestProject();
+		log.step("Open ftl file in freemarker editor");		
 	}
 
 	@Test
 	public void assignDirectiveOutlineTest() {
-		emptyErrorLog();
-		log.step("Import test project for freemarker test");
-		importTestProject();
-		log.step("Open ftl file in freemarker editor");
 		openFTLFileInEditor("assign-directive.ftl","assign variable1=value1 variable2=value2");		
+		checkErrorLog();
+	}	
+	
+	@Test
+	public void globalDirectiveOutlineTest() {
+		openFTLFileInEditor("global-directive.ftl","global var1=value1 var2=value2");		
 		checkErrorLog();
 	}	
 
 	@Ignore  
 	@Test
 	public void attemptDirectiveOutlineTest() {
-		emptyErrorLog();
-		log.step("Import test project for freemarker test");
-		importTestProject();
-		log.step("Open ftl file in freemarker editor");
 		openFTLFileInEditor("attempt-directive.ftl","attempt");		
 		checkErrorLog();
 	}	
@@ -114,9 +105,7 @@ public class FreemarkerDirectiveTest extends FreemarkerTest {
 
 	@After
 	public void cleanup() {
-		ProjectExplorer pe = new ProjectExplorer();
-		pe.open();
-		pe.getProject(prj).delete(true);
+		removeTestProject(prj);
 	}
 	
 	@AfterClass
