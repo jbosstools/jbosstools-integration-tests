@@ -16,11 +16,17 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
 import org.jboss.reddeer.common.logging.Logger;
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
 import org.jboss.reddeer.eclipse.ui.views.log.LogMessage;
 import org.jboss.reddeer.eclipse.ui.views.log.LogView;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.reddeer.workbench.handler.EditorHandler;
+import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.junit.runner.RunWith;
 
 /**
@@ -33,6 +39,33 @@ public class FreemarkerTest {
 		
 	private static final Logger log = Logger.getLogger(FreeMarkerEditorTest.class);
 	
+	/**
+	 * Sets Freemarker to full outline view mode
+	 */
+	public static void setFullOutlineView() {
+		
+		JavaPerspective p = new JavaPerspective();
+		p.open();
+		EditorHandler.getInstance().closeAll(false);
+		new WaitWhile(new JobIsRunning());		
+	
+		JavaPerspective jp = new JavaPerspective();
+		jp.open();
+		
+		WorkbenchPreferenceDialog dlg = new WorkbenchPreferenceDialog();
+		dlg.open();
+		dlg.select("FreeMarker");
+		
+		log.step("Set Freemarker outline level to full level on freemarker preference page");
+		FreemarkerPreferencePage page = new FreemarkerPreferencePage();
+		page.setOutlineLevelOfDetail(OutlineLevelOfDetail.FULL);
+		
+		dlg.ok();
+	}
+	
+	/**
+	 * Imports freemarker test project
+	 */
 	public void importTestProject() {
 		
 		ExternalProjectImportWizardDialog wizard = new ExternalProjectImportWizardDialog();		
@@ -62,6 +95,7 @@ public class FreemarkerTest {
 	 */
 	public void checkErrorLog() {
 		LogView el = new LogView();
+		el.open();
 		List<LogMessage> errorMessages = el.getErrorMessages();
 		for (LogMessage lm : errorMessages) { 
 			log.info(lm.getMessage());
@@ -166,6 +200,19 @@ public class FreemarkerTest {
 			}
 		}
 	}
+	
+	/**
+	 * Remove freemarker test project
+	 */
+	public void removeTestProject(String prj) {
+		ProjectExplorer pe = new ProjectExplorer();
+		pe.open();
+		if (pe.containsProject(prj)) {
+			pe.getProject(prj).delete(true);
+		}
+
+	}
+	
 	
 	/**
 	 * Copies binary file originalFile to location toLocation
