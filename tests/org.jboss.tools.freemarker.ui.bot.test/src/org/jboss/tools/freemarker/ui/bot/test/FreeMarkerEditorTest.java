@@ -21,6 +21,8 @@ import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.junit.After;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -35,6 +37,11 @@ public class FreeMarkerEditorTest extends FreemarkerTest {
 	
 	private static final Logger log = Logger.getLogger(FreeMarkerEditorTest.class);
 	private String prj = "org.jboss.tools.freemarker.testprj";
+	
+	@BeforeClass
+	public static void beforeClass() {
+		setFullOutlineView();
+	}
 	
 	@Test
 	public void emptyTest() {
@@ -114,4 +121,8 @@ public class FreeMarkerEditorTest extends FreemarkerTest {
 		assertTrue("Output equal check",consoleText.equals(outputExpected));
 	}
 
+	@After
+	public void after() {
+		removeTestProject(prj);
+	}
 }
