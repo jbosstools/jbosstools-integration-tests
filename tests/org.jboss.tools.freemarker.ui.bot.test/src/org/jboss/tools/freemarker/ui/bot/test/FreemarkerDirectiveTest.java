@@ -10,15 +10,12 @@ import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
 import org.jboss.reddeer.eclipse.ui.views.contentoutline.OutlineView;
 import org.jboss.reddeer.eclipse.ui.views.log.LogView;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.workbench.handler.EditorHandler;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
-import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -70,7 +67,12 @@ public class FreemarkerDirectiveTest extends FreemarkerTest {
 		openFTLFileInEditor("attempt-directive.ftl","attempt");		
 		checkErrorLog();
 	}	
-	
+
+	@Test
+	public void localDirectiveOutlineTest() {
+		openFTLFileInEditor("local-directive.ftl","local name1=value1 name2=value2");		
+		checkErrorLog();
+	}	
 
 	private void openFTLFileInEditor(String file, String outline) {
 		
@@ -79,7 +81,7 @@ public class FreemarkerDirectiveTest extends FreemarkerTest {
 
 		
 		new DefaultTreeItem(prj, "ftl", file).doubleClick();
-		new TextEditor("assign-directive.ftl");
+		new TextEditor(file);
 		
 		log.step("Open outline view and check freemarker elements there");
 		OutlineView ov = new OutlineView();

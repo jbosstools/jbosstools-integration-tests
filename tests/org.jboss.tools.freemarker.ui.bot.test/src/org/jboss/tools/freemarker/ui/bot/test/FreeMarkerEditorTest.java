@@ -89,7 +89,7 @@ public class FreeMarkerEditorTest extends FreemarkerTest {
 	}
 
 
-	@SuppressWarnings({ "unused", "unchecked" })
+	@SuppressWarnings({ "unchecked" })
 	private void checkFreemMarkerOutput() {
 		
 		String outputExpected = "";
