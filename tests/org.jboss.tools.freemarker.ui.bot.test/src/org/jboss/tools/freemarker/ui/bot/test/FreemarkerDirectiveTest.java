@@ -6,16 +6,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.jboss.reddeer.common.exception.RedDeerException;
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.views.contentoutline.OutlineView;
-import org.jboss.reddeer.eclipse.ui.views.log.LogView;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.junit.After;
@@ -88,6 +85,11 @@ public class FreemarkerDirectiveTest extends FreemarkerTest {
 		checkErrorLog();
 	}	
 
+	@Test
+	public void importCallDirectiveOutlineTest() {
+		openFTLFileInEditor("import-call-directive.ftl","import \"/libs/mylib.ftl\" as my");		
+		checkErrorLog();
+	}	
 	
 	private void openFTLFileInEditor(String file, String outline) {
 		
@@ -111,19 +113,6 @@ public class FreemarkerDirectiveTest extends FreemarkerTest {
 		
 		assertTrue(list.contains(outline));
 	}
-
-	private void emptyErrorLog() {
-		
-		LogView elv = new LogView();
-		elv.open();
-		try {
-			new ContextMenu("Delete Log").select();
-		} catch (RedDeerException e) {
-			// do nothing
-		}
-		new WaitWhile(new JobIsRunning());
-	}
-
 	@After
 	public void cleanup() {
 		removeTestProject(prj);

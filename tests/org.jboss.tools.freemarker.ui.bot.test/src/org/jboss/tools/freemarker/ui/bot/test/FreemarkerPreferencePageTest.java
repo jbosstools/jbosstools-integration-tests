@@ -14,6 +14,11 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+/**
+ * Freemarker Preference page tests
+ * @author Jiri Peterka
+ *
+ */
 @RunWith(RedDeerSuite.class)
 public class FreemarkerPreferencePageTest {
 	

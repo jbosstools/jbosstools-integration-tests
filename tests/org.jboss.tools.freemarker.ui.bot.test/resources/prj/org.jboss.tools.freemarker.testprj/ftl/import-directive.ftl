@@ -1,0 +1,1 @@
+<#import "/libs/mylib.ftl" as my>
