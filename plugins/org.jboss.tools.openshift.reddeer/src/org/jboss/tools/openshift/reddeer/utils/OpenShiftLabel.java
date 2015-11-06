@@ -191,7 +191,7 @@ public class OpenShiftLabel {
 		public static final String NEW = "New...";
 		public static final String REFRESH = "Refresh...";
 		public static final String REMOVE = "Remove...";
-		public static final String REMOVE_BASIC = "Remove";
+		public static final String REMOVE_BASIC = "Remove...";
 		public static final String RESET = "Reset";
 		public static final String SELECT_ALL = "Select all";
 		public static final String START_ALL = "Start All";
@@ -239,9 +239,9 @@ public class OpenShiftLabel {
 		public static final String EMBEDDED_CARTRIDGE_URL = "Cartridge URL:";
 		
 		// Application related
-		public static final String LOCAL_TEMPLATE = "Use a template from my local file system:";
+		public static final String LOCAL_TEMPLATE = "Local template";
 		public static final String DESTINATION = "Destination:";
-		public static final String SERVER_TEMPLATE = "Use a template from the server:";
+		public static final String SERVER_TEMPLATE = "Server templates";
 		public static final String TAIL_OPTIONS = "Tail options:";	
 		
 		// Webhook

@@ -2,6 +2,7 @@ package org.jboss.tools.openshift.ui.bot.test.util;
 
 import java.util.List;
 
+import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
@@ -21,6 +22,8 @@ import org.junit.Test;
  */
 public class CleanUpOS3 {
 
+	private Logger log = new Logger(CleanUpOS3.class);
+	
 	@Test
 	public void test() {
 		// NOTHING TO DO
@@ -47,6 +50,7 @@ public class CleanUpOS3 {
 			List<OpenShiftProject> projects = connection.getAllProjects();
 			if (!projects.isEmpty()) {
 				for (OpenShiftProject project: projects) {
+					log.info("Removing OpenShift project with text " + project.getTreeItem().getText());
 					project.delete(); 
 					connection.refresh();
 				}
