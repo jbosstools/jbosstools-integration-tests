@@ -1,0 +1,2 @@
+<#-- call the macro: -->
+<@test/>

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.jboss.reddeer.common.exception.RedDeerException;
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
@@ -14,6 +15,7 @@ import org.jboss.reddeer.eclipse.ui.views.contentoutline.OutlineView;
 import org.jboss.reddeer.eclipse.ui.views.log.LogView;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.junit.After;
@@ -25,7 +27,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 /**
- * Freemarker Directive tests
+ * Freemarker Directives tests
  * @author Jiri Peterka
  *
  */
@@ -74,6 +76,19 @@ public class FreemarkerDirectiveTest extends FreemarkerTest {
 		checkErrorLog();
 	}	
 
+	@Test
+	public void macroDefDirectiveOutlineTest() {
+		openFTLFileInEditor("macro-def-directive.ftl","test");		
+		checkErrorLog();
+	}	
+
+	@Test
+	public void macroCallDirectiveOutlineTest() {
+		openFTLFileInEditor("macro-call-directive.ftl","test");		
+		checkErrorLog();
+	}	
+
+	
 	private void openFTLFileInEditor(String file, String outline) {
 		
 		ProjectExplorer pe = new ProjectExplorer();
@@ -101,7 +116,11 @@ public class FreemarkerDirectiveTest extends FreemarkerTest {
 		
 		LogView elv = new LogView();
 		elv.open();
-		//new ContextMenu("Delete Log").select();
+		try {
+			new ContextMenu("Delete Log").select();
+		} catch (RedDeerException e) {
+			// do nothing
+		}
 		new WaitWhile(new JobIsRunning());
 	}
 
@@ -112,7 +131,6 @@ public class FreemarkerDirectiveTest extends FreemarkerTest {
 	
 	@AfterClass
 	public static void aterClass() {
-		// wait for all jobs
 		new WaitWhile(new JobIsRunning());
 	}
 }
