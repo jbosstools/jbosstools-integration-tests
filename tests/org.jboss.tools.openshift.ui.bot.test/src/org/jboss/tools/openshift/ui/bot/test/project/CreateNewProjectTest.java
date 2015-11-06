@@ -71,7 +71,7 @@ public class CreateNewProjectTest {
 			connection.createNewProject(DatastoreOS3.PROJECT2);
 		} catch (RedDeerException ex) {
 			fail("OpenShift project created for a connection has not been shown in OpenShift explorer.\n" + 
-					ex.getCause());
+					ex.getMessage());
 		}
 	}
 }

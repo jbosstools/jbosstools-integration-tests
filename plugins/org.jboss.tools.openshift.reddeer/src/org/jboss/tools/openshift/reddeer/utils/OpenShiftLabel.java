@@ -73,7 +73,9 @@ public class OpenShiftLabel {
 		public static final String DELETE_OS_PROJECT = "Delete Project";
 		
 		// Resource related
+		public static final String CLONE_BUILD = "Clone Build...";
 		public static final String DELETE_RESOURCE = "Delete Resource...";
+		public static final String START_BUILD = "Start Build...";
 		
 		// Application related
 		public static final String APPLICATION_DETAILS = "Details...";

@@ -24,7 +24,7 @@ public class OpenShiftProject extends AbstractOpenShiftExplorerItem {
 	 * Gets all resources of specific type for project.
 	 * 
 	 * @param resourceType resource type
-	 * @return list of resources of specified type
+	 * @return list of resources of specified type or empty list if there are no resources
 	 */
 	public List<OpenShiftResource> getOpenShiftResources(Resource resourceType) {
 		List<OpenShiftResource> resources = new ArrayList<OpenShiftResource>();
@@ -36,6 +36,13 @@ public class OpenShiftProject extends AbstractOpenShiftExplorerItem {
 		
 		resourceTypeTreeItem.select();
 		List<TreeItem> resourcesItems = resourceTypeTreeItem.getItems();
+		while (resourcesItems != null && resourcesItems.size() == 1 && 
+				resourcesItems.get(0).getText().contains("Loading...")) { 
+			resourcesItems = resourceTypeTreeItem.getItems();
+		}
+		
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		
 		if (resourcesItems != null && !resourcesItems.isEmpty()) {
 			for (TreeItem resourceItem: resourcesItems) {
 				resources.add(new OpenShiftResource(resourceItem));
