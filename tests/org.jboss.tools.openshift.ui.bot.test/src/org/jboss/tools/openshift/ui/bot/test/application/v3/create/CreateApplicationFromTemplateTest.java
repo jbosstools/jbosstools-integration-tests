@@ -158,11 +158,6 @@ public class CreateApplicationFromTemplateTest {
 		List<OpenShiftResource> services = project.getOpenShiftResources(Resource.SERVICE);
 		assertTrue("There should be precisely 2 services for created application, but there is following amount"
 				+ " of services: " + services.size(), services.size() == 2);
-		
-		List<OpenShiftResource> replicationController = project.getOpenShiftResources(Resource.REPLICATION_CONTROLLER);
-		assertTrue("There should be precisely 1 replication controller for created application, but there is "
-				+ "following amount of replication controllers: " + replicationController.size(),
-				replicationController.size() == 1);
 	}
 	
 	@After

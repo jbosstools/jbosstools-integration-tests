@@ -1,6 +1,7 @@
 package org.jboss.tools.openshift.ui.bot.test;
 
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.tools.openshift.ui.bot.test.application.v3.advanced.TriggerBuildTest;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.basic.LabelsTest;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.basic.NewApplicationWizardHandlingTest;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.basic.OpenNewApplicationWizardTest;
@@ -52,6 +53,9 @@ import org.junit.runners.Suite.SuiteClasses;
 	// Creation of a new application
 	CreateApplicationFromTemplateTest.class,
 	DeploymentTest.class,	
+	
+	// Application handling
+	TriggerBuildTest.class,
 	
 	// Clean up
 	CleanUpOS3.class
