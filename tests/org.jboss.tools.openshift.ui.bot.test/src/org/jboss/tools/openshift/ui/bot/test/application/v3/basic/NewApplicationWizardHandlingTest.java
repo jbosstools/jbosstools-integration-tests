@@ -6,6 +6,7 @@ import static org.junit.Assert.fail;
 
 import java.util.List;
 
+import org.jboss.reddeer.common.exception.RedDeerException;
 import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
@@ -18,9 +19,9 @@ import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.swt.impl.button.CancelButton;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
@@ -42,21 +43,30 @@ public class NewApplicationWizardHandlingTest {
 	@Test
 	public void testTemplatesRelatedWidgetAccess() {
 		assertTrue("Server template selection should be chosen by default.",
-				new RadioButton(OpenShiftLabel.TextLabels.SERVER_TEMPLATE).isSelected());
+				new DefaultTabItem(OpenShiftLabel.TextLabels.SERVER_TEMPLATE).isEnabled());
 		
-		new RadioButton(OpenShiftLabel.TextLabels.LOCAL_TEMPLATE).click();
+		new DefaultTabItem(OpenShiftLabel.TextLabels.LOCAL_TEMPLATE).activate();
 		
-		assertFalse("Tree with server templates should be disabled if local template "
-				+ "radio button is selected.", new DefaultTree().isEnabled());
-		assertTrue("Browse button should be enabled while local template "
-				+ "radio button is selected.", new PushButton(OpenShiftLabel.Button.BROWSE).isEnabled());
+		try {
+			new DefaultTree();
+			fail("Tree with server templates should not be visible if local template "
+					+ "tab item is selected.");
+		} catch (RedDeerException ex) {
+			// pass
+		}
+		assertTrue("Browse button should be visible and enabled while local template "
+				+ "tab item is selected.", new PushButton(OpenShiftLabel.Button.BROWSE).isEnabled());
 		
-		new RadioButton(OpenShiftLabel.TextLabels.SERVER_TEMPLATE).click();
+		new DefaultTabItem(OpenShiftLabel.TextLabels.SERVER_TEMPLATE).activate();
 		
-		assertTrue("Tree with server templates should be enabled if server template "
-				+ "radio button is selected.", new DefaultTree().isEnabled());
-		assertFalse("Browse button should be disabled while server template "
-				+ "radio button is selected.", new PushButton(OpenShiftLabel.Button.BROWSE).isEnabled());
+		assertTrue("Tree with server templates should be visible and enabled if server template "
+				+ "tab item is selected.", new DefaultTree().isEnabled());
+		try {
+			new PushButton(OpenShiftLabel.Button.BROWSE);
+			fail("Browse button should not be visible while server template tab item is selected.");
+		} catch (RedDeerException ex) {
+			// pass
+		}
 	}
 	
 	@Test
@@ -75,31 +85,31 @@ public class NewApplicationWizardHandlingTest {
 	
 	@Test
 	public void testAccessibilityOfDefinedResourcesButton() {
-		new RadioButton(OpenShiftLabel.TextLabels.SERVER_TEMPLATE).click();
+		new DefaultTabItem(OpenShiftLabel.TextLabels.SERVER_TEMPLATE).activate();
 		
 		assertFalse("Defines Resources button should be disabled if no server template is selected.", 
 				new PushButton(OpenShiftLabel.Button.DEFINED_RESOURCES).isEnabled());
 		
-		new RadioButton(OpenShiftLabel.TextLabels.LOCAL_TEMPLATE).click();
+		new DefaultTabItem(OpenShiftLabel.TextLabels.LOCAL_TEMPLATE).activate();
 		
 		assertFalse("Defines Resources button should be disabled if no local template is selected.", 
 				new PushButton(OpenShiftLabel.Button.DEFINED_RESOURCES).isEnabled());
 		
-		new RadioButton(OpenShiftLabel.TextLabels.SERVER_TEMPLATE).click();
+		new DefaultTabItem(OpenShiftLabel.TextLabels.SERVER_TEMPLATE).activate();
 		new DefaultTree().selectItems(new DefaultTreeItem(OpenShiftLabel.Others.EAP_TEMPLATE));
 		
 		assertTrue("Defines Resources button should be enabled if a server template is selected.", 
 				new PushButton(OpenShiftLabel.Button.DEFINED_RESOURCES).isEnabled());
 		
-		new RadioButton(OpenShiftLabel.TextLabels.LOCAL_TEMPLATE).click();
+		new DefaultTabItem(OpenShiftLabel.TextLabels.LOCAL_TEMPLATE).activate();
 		
 		assertFalse("Defines Resources button should be disabled if no local template is selected,"
 				+ " but a server template is selected.", 
 				new PushButton(OpenShiftLabel.Button.DEFINED_RESOURCES).isEnabled());
 		
-		new RadioButton(OpenShiftLabel.TextLabels.SERVER_TEMPLATE).click();
+		new DefaultTabItem(OpenShiftLabel.TextLabels.SERVER_TEMPLATE).activate();
 		new DefaultTree().unselectAllItems();
-		new RadioButton(OpenShiftLabel.TextLabels.LOCAL_TEMPLATE).click();
+		new DefaultTabItem(OpenShiftLabel.TextLabels.LOCAL_TEMPLATE).activate();
 		Display.syncExec(new Runnable() {
 			@Override
 			public void run() {
@@ -110,7 +120,7 @@ public class NewApplicationWizardHandlingTest {
 		assertTrue("Defines Resources button should be enabled if a local template is selected.", 
 				new PushButton(OpenShiftLabel.Button.DEFINED_RESOURCES).isEnabled());
 		
-		new RadioButton(OpenShiftLabel.TextLabels.SERVER_TEMPLATE).click();
+		new DefaultTabItem(OpenShiftLabel.TextLabels.SERVER_TEMPLATE).activate();
 		
 		assertFalse("Defines Resources button should be disabled if no server template is selected,"
 				+ " but a local template is selected.", 
@@ -119,7 +129,7 @@ public class NewApplicationWizardHandlingTest {
 	
 	@Test
 	public void testFilteringServerTemplates() {
-		DefaultText searchBar = new DefaultText(1);
+		DefaultText searchBar = new DefaultText("");
 		
 		searchBar.setText(OpenShiftLabel.Others.EAP_TEMPLATE);
 		assertTrue("There should be precisely one tree item in a tree.",
@@ -140,7 +150,7 @@ public class NewApplicationWizardHandlingTest {
 	
 	@Test
 	public void testShowDefinedResourcesForLocalTemplate() {
-		new RadioButton(OpenShiftLabel.TextLabels.LOCAL_TEMPLATE).click();
+		new DefaultTabItem(OpenShiftLabel.TextLabels.LOCAL_TEMPLATE).activate();
 		Display.syncExec(new Runnable() {
 			@Override
 			public void run() {
@@ -153,7 +163,7 @@ public class NewApplicationWizardHandlingTest {
 	
 	@Test
 	public void testShowDefinedResourcesForServerTemplate() {
-		new RadioButton(OpenShiftLabel.TextLabels.SERVER_TEMPLATE).click();
+		new DefaultTabItem(OpenShiftLabel.TextLabels.SERVER_TEMPLATE).activate();
 		new DefaultTree().selectItems(new DefaultTreeItem(OpenShiftLabel.Others.EAP_TEMPLATE));
 		
 		verifyDefinedResourcesForTemplate();

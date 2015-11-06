@@ -39,7 +39,8 @@ public class ProjectNameValidationTest {
 		new LabeledText(OpenShiftLabel.TextLabels.PROJECT_NAME).setText("--");
 		
 		try {
-			new DefaultText(" A valid project name is alphanumeric (a-z, and 0-9), with the characters -, . allowed anywhere except first or last.");
+			new DefaultText(" Project name may only contain lower-case letters, numbers, and dashes. "
+					+ "It may not start or end with a dash.");
 		} catch (RedDeerException ex) {
 			fail("There is no validation message warning about inappropriate project name.");
 		}
@@ -53,7 +54,8 @@ public class ProjectNameValidationTest {
 		new LabeledText(OpenShiftLabel.TextLabels.PROJECT_NAME).setText("AAA");
 		
 		try {
-			new DefaultText(" A valid project name is alphanumeric (a-z, and 0-9), with the characters -, . allowed anywhere except first or last.");
+			new DefaultText(" Project name may only contain lower-case letters, numbers, and dashes. "
+					+ "It may not start or end with a dash.");
 		} catch (RedDeerException ex) {
 			fail("There is no validation message warning about inappropriate project name.");
 		}

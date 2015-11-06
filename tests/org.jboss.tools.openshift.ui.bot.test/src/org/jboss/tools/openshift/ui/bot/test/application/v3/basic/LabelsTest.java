@@ -13,7 +13,6 @@ import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.api.Button;
 import org.jboss.reddeer.swt.api.TableItem;
-import org.jboss.reddeer.swt.condition.ButtonWithTextIsEnabled;
 import org.jboss.reddeer.swt.condition.TableContainsItem;
 import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.swt.impl.button.BackButton;
@@ -256,7 +255,7 @@ public class LabelsTest {
 	
 	private boolean buttonIsEnabled(Button button) {
 		try {
-			new WaitUntil(new ButtonWithTextIsEnabled(button), TimePeriod.getCustom(2));
+			new WaitUntil(new WidgetIsEnabled(button), TimePeriod.getCustom(2));
 			return true;
 		} catch (WaitTimeoutExpiredException ex) {
 			return false;
