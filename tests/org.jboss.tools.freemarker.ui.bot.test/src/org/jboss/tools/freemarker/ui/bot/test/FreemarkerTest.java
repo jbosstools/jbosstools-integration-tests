@@ -16,6 +16,7 @@ import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
+import org.jboss.reddeer.common.exception.RedDeerException;
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
@@ -25,6 +26,7 @@ import org.jboss.reddeer.eclipse.ui.views.log.LogMessage;
 import org.jboss.reddeer.eclipse.ui.views.log.LogView;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
+import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.workbench.handler.EditorHandler;
 import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 
@@ -251,5 +253,21 @@ public class FreemarkerTest {
 				}
 			}
 		}
+	}
+	
+	
+	/**
+	 * Emtpy Error Log View
+	 */
+	public void emptyErrorLog() {
+		
+		LogView elv = new LogView();
+		elv.open();
+		try {
+			new ContextMenu("Delete Log").select();
+		} catch (RedDeerException e) {
+			// do nothing
+		}
+		new WaitWhile(new JobIsRunning());
 	}
 }

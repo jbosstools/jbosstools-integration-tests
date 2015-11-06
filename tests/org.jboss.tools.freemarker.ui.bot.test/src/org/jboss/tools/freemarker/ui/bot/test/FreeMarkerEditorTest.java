@@ -81,11 +81,8 @@ public class FreeMarkerEditorTest extends FreemarkerTest {
 		}
 		
 		assertTrue(list.contains("user"));
-		assertTrue(list.contains("latestProduct.name"));
-		
-	    // https://issues.jboss.org/browse/JBIDE-11287
-		// remove comment when this jira is fixed
-		//assertTrue(list.contains("latestProduct.url"));		
+		assertTrue(list.contains("latestProduct.name"));		
+		assertTrue("Should contain latestProduct.url + see JBIDE-11287", list.contains("latestProduct.url"));		
 	}
 
 
