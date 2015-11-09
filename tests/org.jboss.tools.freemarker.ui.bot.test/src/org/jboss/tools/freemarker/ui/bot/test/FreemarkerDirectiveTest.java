@@ -96,6 +96,18 @@ public class FreemarkerDirectiveTest extends FreemarkerTest {
 		openFTLFileInEditor("if-directive.ftl","if x == 1","else");		
 		checkErrorLog();		
 	}
+
+	@Test
+	public void listDirectiveOutlineTest() {
+		openFTLFileInEditor("list-directive.ftl","list users as user","else");		
+		checkErrorLog();		
+	}
+
+	@Test
+	public void ftlDirectiveOutlineTest() {
+		openFTLFileInEditor("ftl-directive.ftl","ftl param1=value1 param2=value2");		
+		checkErrorLog();		
+	}
 	
 	private void openFTLFileInEditor(String file, String... outline) {
 		
