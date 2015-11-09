@@ -86,12 +86,18 @@ public class FreemarkerDirectiveTest extends FreemarkerTest {
 	}	
 
 	@Test
-	public void importCallDirectiveOutlineTest() {
-		openFTLFileInEditor("import-call-directive.ftl","import \"/libs/mylib.ftl\" as my");		
+	public void importDirectiveOutlineTest() {
+		openFTLFileInEditor("import-directive.ftl","import \"/libs/mylib.ftl\" as my");		
 		checkErrorLog();
 	}	
 	
-	private void openFTLFileInEditor(String file, String outline) {
+	@Test
+	public void ifDirectiveOutlineTest() {
+		openFTLFileInEditor("if-directive.ftl","if x == 1","else");		
+		checkErrorLog();		
+	}
+	
+	private void openFTLFileInEditor(String file, String... outline) {
 		
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
@@ -107,12 +113,23 @@ public class FreemarkerDirectiveTest extends FreemarkerTest {
 		Collection<TreeItem> outlineElements = ov.outlineElements();
 		
 		List<String> list = new ArrayList<String>();
-		for (TreeItem i : outlineElements) {
-			list.add(i.getText());
+		boolean found = false;
+		for (String o : outline ) {			
+			for (TreeItem i : outlineElements) {			
+				
+				if (i.getText().equals(o)) {
+					i.expand();
+					outlineElements = i.getItems();
+					found = true;
+					break;
+				}				
+			}
+			if (!found) assertTrue("Outline is expected to contain \"" + o + "\"", list.contains(o));
+			found = false; 
 		}
-		
-		assertTrue(list.contains(outline));
 	}
+	
+	
 	@After
 	public void cleanup() {
 		removeTestProject(prj);
