@@ -3,7 +3,9 @@ package org.jboss.tools.cdi.reddeer.cdi.ui;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jboss.reddeer.common.matcher.RegexMatcher;
 import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.core.matcher.WithTextMatcher;
 import org.jboss.reddeer.jface.wizard.NewWizardDialog;
 import org.jboss.reddeer.swt.api.TableItem;
 import org.jboss.reddeer.swt.condition.TableContainsItem;
@@ -68,6 +70,7 @@ public class NewAnnotationLiteralCreationWizard extends NewWizardDialog{
 		new PushButton("Browse").click();
 		new DefaultShell("Select Qualifier Annotation Type");
 		new WaitUntil(new TableContainsItem(new DefaultTable(), qualifier, 0));
+		new DefaultTableItem(new WithTextMatcher(new RegexMatcher(".*"+qualifier+".*"))).select();
 		new PushButton("OK").click();
 		new DefaultShell("New Annotation Literal");
 	}
