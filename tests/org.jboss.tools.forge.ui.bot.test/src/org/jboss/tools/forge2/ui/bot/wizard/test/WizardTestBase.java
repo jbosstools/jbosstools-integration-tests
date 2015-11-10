@@ -57,9 +57,20 @@ public abstract class WizardTestBase {
 	
 	@After
 	public void cleanup(){
+		handleCleanup();
+		assertTrue("Some of the resources have not been deleted!", new ProjectExplorer().getExplorerItems().isEmpty());
+	}
+	
+	public void handleCleanup(){
 		ShellHandler.getInstance().closeAllNonWorbenchShells();
 		new ProjectExplorer().deleteAllProjects();
-		assertTrue("Some of the resources have not been deleted!", new ProjectExplorer().getExplorerItems().isEmpty());
+		if(!new ProjectExplorer().getExplorerItems().isEmpty()){
+			//workaround for windows issue - JDK_8029516
+			new ForgeConsoleView().stop();
+			System.gc();
+			new ProjectExplorer().deleteAllProjects();
+			new ForgeConsoleView().start();
+		}
 	}
 	
 	/**
