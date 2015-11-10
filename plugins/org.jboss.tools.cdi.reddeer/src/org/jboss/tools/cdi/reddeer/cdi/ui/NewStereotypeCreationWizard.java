@@ -1,5 +1,6 @@
 package org.jboss.tools.cdi.reddeer.cdi.ui;
 
+import org.jboss.reddeer.common.matcher.RegexMatcher;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.core.matcher.WithTextMatcher;
 import org.jboss.reddeer.jface.wizard.NewWizardDialog;
@@ -9,6 +10,7 @@ import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
+import org.jboss.reddeer.swt.impl.table.DefaultTableItem;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.cdi.reddeer.CDIConstants;
@@ -74,6 +76,7 @@ public class NewStereotypeCreationWizard extends NewWizardDialog{
 		new DefaultShell("Select Interceptor Binding Annotation Type");
 		new DefaultText(0).setText(bindings);
 		new WaitUntil(new TableHasRows(new DefaultTable()));
+		new DefaultTableItem(new WithTextMatcher(new RegexMatcher(".*"+bindings+".*"))).select();
 		new PushButton("OK").click();
 		new DefaultShell("New Stereotype");
 	}
@@ -83,6 +86,7 @@ public class NewStereotypeCreationWizard extends NewWizardDialog{
 		new DefaultShell("Select Stereotype Annotation Type");
 		new DefaultText(0).setText(stereoptypes);
 		new WaitUntil(new TableHasRows(new DefaultTable()));
+		new DefaultTableItem(new WithTextMatcher(new RegexMatcher(".*"+stereoptypes+".*"))).select();
 		new PushButton("OK").click();
 		new DefaultShell("New Stereotype");
 	}
