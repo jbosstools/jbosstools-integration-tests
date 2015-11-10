@@ -416,11 +416,6 @@ public class WizardTemplate extends CDITestBase {
 	}
 	
 	private void testBeansXml() {
-		ProjectExplorer pe = new ProjectExplorer();
-		pe.open();
-		Project p = pe.getProject(getProjectName());
-		p.getProjectItem("WebContent","WEB-INF","beans.xml").delete();
-
 		
 		NewBeansXMLCreationWizard xmlw = new NewBeansXMLCreationWizard();
 		xmlw.open();
