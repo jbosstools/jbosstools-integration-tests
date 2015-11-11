@@ -5,7 +5,11 @@ import java.util.List;
 
 import org.jboss.ide.eclipse.as.reddeer.server.editor.JBossServerEditor;
 import org.jboss.ide.eclipse.as.reddeer.server.editor.WelcomeToServerEditor;
+import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.logging.Logger;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.eclipse.wst.server.ui.editor.ServerEditor;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.Server;
@@ -13,13 +17,9 @@ import org.jboss.reddeer.eclipse.wst.server.ui.view.ServerModule;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.swt.api.Shell;
 import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.common.condition.WaitCondition;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
-import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
 
 /**
  * Represents a JBoss server and contains state and operations specific to this kind of server. 
@@ -72,6 +72,21 @@ public class JBossServer extends Server {
 			super.start();
 		} catch (WaitTimeoutExpiredException e){
 			log.error("JBoss server failed to start");
+			checkServerAlreadyRunningDialog();
+			log.error("JBoss server's console dump:");
+			ConsoleView view = new ConsoleView();
+			view.open();
+			log.error("\t" + view.getConsoleText());
+			throw e;
+		}
+	}
+	
+	@Override
+	public void restart() {
+		try {
+			super.restart();
+		} catch (WaitTimeoutExpiredException e){
+			log.error("JBoss server failed to restart");
 			checkServerAlreadyRunningDialog();
 			log.error("JBoss server's console dump:");
 			ConsoleView view = new ConsoleView();
