@@ -8,6 +8,7 @@ import java.lang.annotation.Target;
 import org.jboss.ide.eclipse.as.reddeer.server.family.FamilyEAP;
 import org.jboss.ide.eclipse.as.reddeer.server.family.FamilyWildFly;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
+import org.jboss.ide.eclipse.as.reddeer.server.view.JBossServerView;
 import org.jboss.ide.eclipse.as.reddeer.server.wizard.NewServerWizardDialog;
 import org.jboss.ide.eclipse.as.reddeer.server.wizard.page.JBossRuntimeWizardPage;
 import org.jboss.ide.eclipse.as.reddeer.server.wizard.page.NewServerAdapterPage;
@@ -21,6 +22,7 @@ import org.jboss.reddeer.eclipse.rse.ui.wizard.NewConnectionWizardDialog;
 import org.jboss.reddeer.eclipse.rse.ui.wizard.NewConnectionWizardMainPage;
 import org.jboss.reddeer.eclipse.rse.ui.wizard.NewConnectionWizardSelectionPage;
 import org.jboss.reddeer.eclipse.rse.ui.wizard.NewConnectionWizardSelectionPage.SystemType;
+import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.junit.requirement.CustomConfiguration;
 import org.jboss.reddeer.junit.requirement.Requirement;
 import org.jboss.reddeer.requirements.server.ConfiguredServerInfo;
@@ -87,7 +89,10 @@ public class ServerRequirement extends ServerReqBase implements Requirement<JBos
 		setupServerState(server.state(), lastServerConfiguration);
 	}
 	
-
+	@Override
+	protected ServersView createServersView() {
+		return new JBossServerView();
+	}
 	
 	@Override
 	public void setDeclaration(JBossServer server) {
