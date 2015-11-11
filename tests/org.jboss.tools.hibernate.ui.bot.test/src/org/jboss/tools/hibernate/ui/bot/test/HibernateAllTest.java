@@ -6,8 +6,10 @@ import org.jboss.tools.hibernate.reddeer.test.ConnectionProfileTest;
 import org.jboss.tools.hibernate.reddeer.test.ConsoleConfigurationFileTest;
 import org.jboss.tools.hibernate.reddeer.test.ConsoleConfigurationTest;
 import org.jboss.tools.hibernate.reddeer.test.CreateJPAProjectTest;
+import org.jboss.tools.hibernate.reddeer.test.CriteriaEditorCodeAssistTest;
 import org.jboss.tools.hibernate.reddeer.test.CriteriaEditorTest;
 import org.jboss.tools.hibernate.reddeer.test.EmptyTest;
+import org.jboss.tools.hibernate.reddeer.test.HQLEditorCodeAssistTest;
 import org.jboss.tools.hibernate.reddeer.test.HQLEditorTest;
 import org.jboss.tools.hibernate.reddeer.test.HibernateUIPartsTest;
 import org.jboss.tools.hibernate.reddeer.test.JBossDatasourceTest;
@@ -34,8 +36,10 @@ import org.junit.runners.Suite;
 	ConsoleConfigurationTest.class,
 	CreateJPAProjectTest.class,
 	CriteriaEditorTest.class,
+	CriteriaEditorCodeAssistTest.class,
 	HibernateUIPartsTest.class,
 	HQLEditorTest.class,
+	HQLEditorCodeAssistTest.class,
 	JBossDatasourceTest.class,
 	JpaAnnotationGenerationTest.class,
 	JPADetailsViewTest.class,
