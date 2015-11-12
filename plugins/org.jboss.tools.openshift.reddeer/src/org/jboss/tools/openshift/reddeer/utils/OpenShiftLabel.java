@@ -100,6 +100,8 @@ public class OpenShiftLabel {
 		
 		// Workspace project related
 		public static final String[] CONFIGURE_MARKERS = {"OpenShift", "Configure Markers..."};
+		public static final String[] GIT_ADD = {"Team", "Add to Index"};
+		public static final String[] GIT_COMMIT = {"Team", "Commit..."};
 	}
 		
 	/**
@@ -184,6 +186,7 @@ public class OpenShiftLabel {
 		public static final String ADVANCED = " Advanced >> ";
 		public static final String BROWSE = "Browse...";
 		public static final String COMMIT_PUBLISH = "Commit and Publish";
+		public static final String COMMIT_PUSH = "Commit and Push";
 		public static final String CREATE_DOMAIN = "New...";
 		public static final String CREATE_SSH_KEY = "New...";
 		public static final String DEFINED_RESOURCES = "Defined Resources...";
@@ -250,6 +253,10 @@ public class OpenShiftLabel {
 		// Webhook
 		public static final String GENERIC_WEBHOOK = "Generic webhook:";
 		public static final String GITHUB_WEBHOOK = "GitHub webhook:";
+		
+		// Labels
+		public static final String LABEL = "Label:";
+		public static final String VALUE = "Value:";
 	}
 	
 	/**
