@@ -1,7 +1,7 @@
 package org.jboss.tools.openshift.reddeer.condition;
 
 import org.jboss.reddeer.common.condition.WaitCondition;
-import org.jboss.reddeer.swt.exception.SWTLayerException;
+import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 
 public class ButtonWithTextIsAvailable implements WaitCondition {
@@ -17,7 +17,7 @@ public class ButtonWithTextIsAvailable implements WaitCondition {
 		try {
 			new PushButton(buttonText);
 			return true;
-		} catch (SWTLayerException ex) {
+		} catch (CoreLayerException ex) {
 			return false;
 		}
 	}
