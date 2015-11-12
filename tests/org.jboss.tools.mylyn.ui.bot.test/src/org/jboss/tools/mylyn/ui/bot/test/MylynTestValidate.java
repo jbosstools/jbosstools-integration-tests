@@ -76,7 +76,7 @@ public class MylynTestValidate {
 		TestSupport.closeSecureStorageIfOpened();
 	
 		try {
-			new WaitUntil(new ActiveShellExists(), TimePeriod.getCustom(60l)); 
+			new WaitUntil(new ActiveShellExists(), TimePeriod.VERY_LONG); 
 		}
 		catch (Exception E) {
 			log.info ("Problem with 'Refreshing repository configuration' shell not seen");
