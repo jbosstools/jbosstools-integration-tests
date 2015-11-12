@@ -119,6 +119,7 @@ public class OpenShiftLabel {
 		public static final String EDIT_ENV_VAR = "Edit Environment variable";
 		public static final String EMBEDDED_CARTRIDGE = "Embedded Cartridges";
 		public static final String ENV_VARS = "Create Environment Variable(s)";
+		public static final String IMPORT = "Import";
 		public static final String IMPORT_APPLICATION_WIZARD = "Import OpenShift Application ";
 		public static final String IMPORT_APPLICATION = "Import OpenShift Application";
 		public static final String MANAGE_ENV_VARS = "Manage Application Environment Variable(s) for application ";
