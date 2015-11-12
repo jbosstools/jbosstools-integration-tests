@@ -1,16 +1,22 @@
 package org.jboss.tools.openshift.reddeer.view;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.core.util.Display;
+import org.jboss.reddeer.core.util.ResultRunnable;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.tree.AbstractTreeItem;
 import org.jboss.tools.openshift.reddeer.enums.Resource;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 
@@ -33,18 +39,30 @@ public class OpenShiftProject extends AbstractOpenShiftExplorerItem {
 		new ContextMenu(OpenShiftLabel.ContextMenu.REFRESH).select();	
 		
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+				
+		resourceTypeTreeItem.expand();
 		
-		resourceTypeTreeItem.select();
-		List<TreeItem> resourcesItems = resourceTypeTreeItem.getItems();
-		while (resourcesItems != null && resourcesItems.size() == 1 && 
-				resourcesItems.get(0).getText().contains("Loading...")) { 
-			resourcesItems = resourceTypeTreeItem.getItems();
-		}
-		
+		new WaitUntil(new JobIsRunning(), TimePeriod.NORMAL, false, TimePeriod.NONE);
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		
-		if (resourcesItems != null && !resourcesItems.isEmpty()) {
-			for (TreeItem resourceItem: resourcesItems) {
+		LinkedList<TreeItem> items = new LinkedList<TreeItem>();
+		final org.eclipse.swt.widgets.TreeItem swtItem = resourceTypeTreeItem.getSWTWidget();
+		List<org.eclipse.swt.widgets.TreeItem> eclipseItems = Display.syncExec(
+				new ResultRunnable<List<org.eclipse.swt.widgets.TreeItem>>() {
+					
+					@Override
+					public List<org.eclipse.swt.widgets.TreeItem> run() {
+						org.eclipse.swt.widgets.TreeItem[] items = swtItem.getItems();
+						return Arrays.asList(items);
+					}
+		});
+		
+		for (org.eclipse.swt.widgets.TreeItem swtTreeItem : eclipseItems) {
+			items.addLast(new OpenShiftResourceTreeItem(swtTreeItem));
+		}
+		
+		if (items != null && !items.isEmpty()) {
+			for (TreeItem resourceItem: items) {
 				resources.add(new OpenShiftResource(resourceItem));
 			}
 		}
@@ -62,5 +80,13 @@ public class OpenShiftProject extends AbstractOpenShiftExplorerItem {
 		
 		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.DELETE_OS_PROJECT), TimePeriod.LONG);
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+	}
+	
+	class OpenShiftResourceTreeItem extends AbstractTreeItem {
+
+		protected OpenShiftResourceTreeItem(org.eclipse.swt.widgets.TreeItem swtWidget) {
+			super(swtWidget);
+		}
+		
 	}
 }

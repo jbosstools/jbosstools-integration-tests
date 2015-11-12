@@ -18,7 +18,11 @@ public class DatastoreOS3 {
 	public static String PASSWORD = System.getProperty("openshift.password");
 	public static String TOKEN = System.getProperty("openshift.token");
 	
-	public static String PROJECT1 = "project01";
+	// github credentials
+	public static String GIT_USERNAME = "openshift-tools-testing-account";
+	public static String GIT_PASSWORD = System.getProperty("github.password");
+	
+	public static final String PROJECT1 = "project01";
 	public static String PROJECT1_DISPLAYED_NAME = "project01name";
 	public static String PROJECT2 = "project02";
 	

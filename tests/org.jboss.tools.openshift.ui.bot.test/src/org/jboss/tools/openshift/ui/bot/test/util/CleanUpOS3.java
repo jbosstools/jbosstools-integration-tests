@@ -50,7 +50,7 @@ public class CleanUpOS3 {
 			List<OpenShiftProject> projects = connection.getAllProjects();
 			if (!projects.isEmpty()) {
 				for (OpenShiftProject project: projects) {
-					log.info("Removing OpenShift project with text " + project.getTreeItem().getText());
+					log.info("Removing OpenShift project");
 					project.delete(); 
 					connection.refresh();
 				}
