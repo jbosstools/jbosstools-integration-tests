@@ -12,8 +12,8 @@ import org.junit.BeforeClass;
 
 public class AbstractCreateApplicationTest {
 
-	protected static String gitFolder = "jboss-eap-quickstarts";
-	protected static String projectName = "jboss-kitchensink";
+	public static String gitFolder = "jboss-eap-quickstarts";
+	public static String projectName = "jboss-kitchensink";
 	
 	@BeforeClass
 	public static void setUp() {

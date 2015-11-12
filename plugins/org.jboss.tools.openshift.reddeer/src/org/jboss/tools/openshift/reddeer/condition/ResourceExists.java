@@ -108,6 +108,7 @@ public class ResourceExists extends AbstractWaitCondition {
 		if (resources.isEmpty()) {
 			return false;
 		}
+		
 		for (OpenShiftResource rsrc: resources) {
 			if (resourceNameMatcher == null) {
 				return true;
