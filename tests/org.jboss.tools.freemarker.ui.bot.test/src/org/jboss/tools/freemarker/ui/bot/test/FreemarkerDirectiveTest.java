@@ -86,11 +86,17 @@ public class FreemarkerDirectiveTest extends FreemarkerTest {
 	}	
 
 	@Test
-	public void importDirectiveOutlineTest() {
-		openFTLFileInEditor("import-directive.ftl","import \"/libs/mylib.ftl\" as my");		
+	public void importDefDirectiveOutlineTest() {
+		openFTLFileInEditor("import-def-directive.ftl","import \"/libs/mylib.ftl\" as my");		
 		checkErrorLog();
 	}	
 	
+	@Test
+	public void importCallDirectiveOutlineTest() {
+		openFTLFileInEditor("import-call-directive.ftl","my.copyright date=\"1999-2002\"");		
+		checkErrorLog();
+	}	
+		
 	@Test
 	public void ifDirectiveOutlineTest() {
 		openFTLFileInEditor("if-directive.ftl","if x == 1","else");		
