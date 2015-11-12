@@ -32,6 +32,7 @@ import org.jboss.tools.mylyn.reddeer.wizard.BuildServerDialog;
 import org.jboss.tools.mylyn.reddeer.view.MylynBuildView;
 import org.jboss.reddeer.swt.condition.ShellIsActive;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.eclipse.core.runtime.Platform.*;
 import org.jboss.tools.mylyn.reddeer.TestSupport;
@@ -94,7 +95,7 @@ public class MylynTestJenkins {
 		new PushButton("Finish").click();
 		
 		try {
-			new WaitUntil(new ShellWithTextIsActive("Refreshing Builds (" + SERVERURL + ")" ), TimePeriod.getCustom(30l)); 
+			new WaitUntil(new ShellWithTextIsActive("Refreshing Builds (" + SERVERURL + ")" ), TimePeriod.LONG); 
 		}
 		catch (Exception E) {
 			log.info ("Test blocking problem with 'Refreshing Builds (name)' shell not seen - test is able to run");
@@ -102,6 +103,23 @@ public class MylynTestJenkins {
 		
 		view.open();
 		log.info( "GOT IT" + view.getJenkinsJob (SERVERURL, JENKINSJOB).getText());
+		
+	    /* Notification shell, and a shell with a null name, are intermittently left open
+         * when Red Deer attempts to close all shells:
+         * https://github.com/jboss-reddeer/reddeer/blob/master/plugins/org.jboss.reddeer.junit.extension/src/org/jboss/reddeer/junit/extension/after/test/impl/CloseAllShellsExt.java
+         * See Red Deer issue: 
+         * 
+         */
+        if (new ShellWithTextIsAvailable("Refreshing Builds (" + SERVERURL + ")").test()) {
+            log.info("Closing shell: " + "Refreshing Builds (" + SERVERURL + ")");
+            new DefaultShell("Refreshing Builds (" + SERVERURL + ")").close();
+        }
+        if (new ShellWithTextIsAvailable("").test()) {
+            log.info("Closing shell - null title");
+            new DefaultShell("").close();
+        }
+		
+		
 		view.close();
 
 	} /* method */
@@ -140,7 +158,7 @@ public class MylynTestJenkins {
 		new PushButton("Finish").click();
 		
 		try {
-			new WaitUntil(new ShellWithTextIsActive("Refreshing Builds (" + AUTHSERVERURL + ")" ), TimePeriod.getCustom(30l)); 
+			new WaitUntil(new ShellWithTextIsActive("Refreshing Builds (" + AUTHSERVERURL + ")" ), TimePeriod.LONG); 
 					}
 		catch (Exception E) {
 			log.info ("Test blocking problem with 'Refreshing Builds (name)' shell not seen - test is able to run");
@@ -148,6 +166,22 @@ public class MylynTestJenkins {
 		
 		view.open();
 		log.info( "GOT IT" + view.getJenkinsJob (AUTHSERVERURL, AUTHJENKINSJOB).getText());
+		
+	    /* Notification shell, and a shell with a null name, are intermittently left open
+         * when Red Deer attempts to close all shells:
+         * https://github.com/jboss-reddeer/reddeer/blob/master/plugins/org.jboss.reddeer.junit.extension/src/org/jboss/reddeer/junit/extension/after/test/impl/CloseAllShellsExt.java
+         * See Red Deer issue: https://github.com/jboss-reddeer/reddeer/issues/1300
+         * 
+         */
+        if (new ShellWithTextIsAvailable("Refreshing Builds (" + AUTHSERVERURL + ")").test()) {
+            log.info("Closing shell: " + "Refreshing Builds (" + AUTHSERVERURL + ")");
+            new DefaultShell("Refreshing Builds (" + AUTHSERVERURL + ")").close();
+        }
+        if (new ShellWithTextIsAvailable("").test()) {
+            log.info("Closing shell - null title");
+            new DefaultShell("").close();
+        }
+		
 		view.close();
 
 	} /* method */
