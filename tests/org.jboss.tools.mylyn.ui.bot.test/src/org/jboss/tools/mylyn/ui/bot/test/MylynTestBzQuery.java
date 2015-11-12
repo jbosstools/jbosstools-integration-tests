@@ -18,8 +18,10 @@ import org.junit.Test;
 import org.jboss.reddeer.eclipse.mylyn.tasks.ui.view.TaskListView;
 import org.jboss.reddeer.eclipse.mylyn.tasks.ui.view.TaskRepositoriesView;
 import org.jboss.reddeer.eclipse.ui.ide.RepoConnectionDialog;
+import org.jboss.reddeer.swt.api.Shell;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
@@ -95,7 +97,7 @@ public class MylynTestBzQuery {
 		TestSupport.closeSecureStorageIfOpened();
 
 		try {
-			new WaitUntil(new ShellWithTextIsActive("Refreshing repository configuration"), TimePeriod.getCustom(60l)); 
+			new WaitUntil(new ShellWithTextIsActive("Refreshing repository configuration"), TimePeriod.LONG); 
 		}
 		catch (Exception E) {
 			log.info ("Problem with 'Refreshing repository configuration' shell not seen");
@@ -135,7 +137,7 @@ public class MylynTestBzQuery {
 		new DefaultShell("Edit Query");
 		new RadioButton("Create query using form").click();
 		new PushButton("Next >").click();
-		new WaitUntil(new ShellWithTextIsActive("Edit Query"), TimePeriod.getCustom(60l)); 
+		new WaitUntil(new ShellWithTextIsActive("Edit Query"), TimePeriod.VERY_LONG); 
 
 		new DefaultShell("Edit Query");
 		new LabeledText("Title:").setText(queryName);
@@ -169,7 +171,7 @@ public class MylynTestBzQuery {
 
 				i.select();
 				i.doubleClick();
-				new WaitUntil(new TreeItemHasMinChildren(i, 1), TimePeriod.getCustom(60l)); 
+				new WaitUntil(new TreeItemHasMinChildren(i, 1), TimePeriod.VERY_LONG); 
 
 				List <TreeItem> theQueryResults = i.getItems();
 				for (TreeItem q : theQueryResults) {
@@ -184,7 +186,22 @@ public class MylynTestBzQuery {
 		}
 		assertTrue("Found query: " + queryName, foundQuery);
 		assertTrue("Found query results: " + fullBugzillaString, foundQueryResults);
-
+		
+	    /* Notification shell, and a shell with a null name, are intermittently left open
+	     * when Red Deer attempts to close all shells:
+	     * https://github.com/jboss-reddeer/reddeer/blob/master/plugins/org.jboss.reddeer.junit.extension/src/org/jboss/reddeer/junit/extension/after/test/impl/CloseAllShellsExt.java
+	     * See Red Deer issue: https://github.com/jboss-reddeer/reddeer/issues/1300
+	     * 
+	     */
+		if (new ShellWithTextIsAvailable("Notification").test()) {
+            log.info("Closing shell - Notification");
+		    new DefaultShell("Notification").close();
+		}
+        if (new ShellWithTextIsAvailable("").test()) {
+            log.info("Closing shell - null title");
+            new DefaultShell("").close();
+        }
+		
 		view.close();
 		listView.close();
 
