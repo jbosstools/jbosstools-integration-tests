@@ -34,9 +34,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class LabelsTest {
-
-	public static final String LABEL = "Label:";
-	public static final String VALUE = "Value:";
 	
 	@Before
 	public void getToLabelsWizardPage() {
@@ -76,15 +73,15 @@ public class LabelsTest {
 		
 		new DefaultShell(OpenShiftLabel.Shell.RESOURCE_LABEL);
 		assertTrue("Label name has not been shown in previous state in resource label dialog",
-				new LabeledText(LABEL).getText().equals(name));
+				new LabeledText(OpenShiftLabel.TextLabels.LABEL).getText().equals(name));
 		assertTrue("Label value has not been shown in previous state in resource label dialog",
-				new LabeledText(VALUE).getText().equals(value));
+				new LabeledText(OpenShiftLabel.TextLabels.VALUE).getText().equals(value));
 		
 		// Edit an existing label
 		name += "m";
 		value += "m";
-		new LabeledText(LABEL).setText(name);
-		new LabeledText(VALUE).setText(value);
+		new LabeledText(OpenShiftLabel.TextLabels.LABEL).setText(name);
+		new LabeledText(OpenShiftLabel.TextLabels.VALUE).setText(value);
 		new OkButton().click();
 		
 		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.RESOURCE_LABEL));
@@ -115,8 +112,10 @@ public class LabelsTest {
 		new PushButton(OpenShiftLabel.Button.ADD).click();
 		
 		new DefaultShell(OpenShiftLabel.Shell.RESOURCE_LABEL);
-		new LabeledText(LABEL).setText(name);
-		new LabeledText(VALUE).setText(value);
+		new LabeledText(OpenShiftLabel.TextLabels.LABEL).setText(name);
+		new LabeledText(OpenShiftLabel.TextLabels.VALUE).setText(value);
+		
+		new WaitUntil(new WidgetIsEnabled(new OkButton()));
 		new OkButton().click();
 		
 		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.RESOURCE_LABEL));
@@ -154,8 +153,8 @@ public class LabelsTest {
 	@Test 
 	public void testBasicLabelValidation() {
 		openResourceLabelShell();
-		LabeledText name = new LabeledText(LABEL);
-		LabeledText value = new LabeledText(VALUE);
+		LabeledText name = new LabeledText(OpenShiftLabel.TextLabels.LABEL);
+		LabeledText value = new LabeledText(OpenShiftLabel.TextLabels.VALUE);
 		
 		assertFalse("OK button should be disable if there is no name nor value for a new label.",
 				buttonIsEnabled(new OkButton()));
@@ -235,20 +234,20 @@ public class LabelsTest {
 	}
 	
 	private void setInvalidName(String name) {
-		new LabeledText(LABEL).setText(name);
+		new LabeledText(OpenShiftLabel.TextLabels.LABEL).setText(name);
 		assertFalse("OK button should be disable for invalid name, but it is not.",
 				buttonIsEnabled(new OkButton()));
 	}
 	
 	private void setInvalidValue(String value) {
-		new LabeledText(VALUE).setText(value);
+		new LabeledText(OpenShiftLabel.TextLabels.VALUE).setText(value);
 		assertFalse("OK button should be disable for invalid value, but it is not.",
 				buttonIsEnabled(new OkButton()));
 	}
 	
 	private void setValidLabel() {
-		new LabeledText(LABEL).setText("valid");
-		new LabeledText(VALUE).setText("valid");
+		new LabeledText(OpenShiftLabel.TextLabels.LABEL).setText("valid");
+		new LabeledText(OpenShiftLabel.TextLabels.VALUE).setText("valid");
 		assertTrue("OK button should be enabled for valid name and value, but it is not.",
 				buttonIsEnabled(new OkButton()));
 	}
