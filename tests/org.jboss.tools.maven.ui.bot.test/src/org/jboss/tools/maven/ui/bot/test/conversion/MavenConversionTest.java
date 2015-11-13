@@ -45,6 +45,8 @@ import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
+import org.jboss.tools.maven.reddeer.requirement.NewRepositoryRequirement.DefineMavenRepository;
+import org.jboss.tools.maven.reddeer.requirement.NewRepositoryRequirement.PredefinedMavenRepository;
 import org.jboss.tools.maven.ui.bot.test.AbstractMavenSWTBotTest;
 import org.junit.After;
 import org.junit.Test;
@@ -52,11 +54,12 @@ import org.junit.Test;
 @CleanWorkspace
 @OpenPerspective(JavaEEPerspective.class)
 @JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY8x)
+@DefineMavenRepository(predefinedRepositories = { @PredefinedMavenRepository(ID="jboss-public-repository",snapshots=true) })
 public class MavenConversionTest extends AbstractMavenSWTBotTest{
 	
 	private static final Logger log = Logger.getLogger(MavenConversionTest.class);
 	
-	public static final String WEB_PROJECT_NAME = "Web Project";
+	public static final String WEB_PROJECT_NAME = "WebProject";
 	
 	private List<String> expectedLibsKeep= new ArrayList<String>(
 			Arrays.asList("JRE","Maven Dependencies","Runtime"));
@@ -249,13 +252,13 @@ public class MavenConversionTest extends AbstractMavenSWTBotTest{
 	}
 	
 	private void checkProblemsAndResolve(){
-		new WaitUntil(new ProblemExists(ProblemType.ANY),TimePeriod.NORMAL,false);
+		new WaitUntil(new ProblemExists(ProblemType.ERROR),TimePeriod.NORMAL,false);
 		ProblemsView pw = new ProblemsView();
 		pw.open();
-		if(pw.getProblems(ProblemType.ANY).size() > 0){
+		if(pw.getProblems(ProblemType.ERROR).size() > 0){
 			updateConf(WEB_PROJECT_NAME,true);
 			try{
-				new WaitWhile(new ProblemExists(ProblemType.ANY));
+				new WaitWhile(new ProblemExists(ProblemType.ERROR));
 			} catch (WaitTimeoutExpiredException ex){
 				ex.addMessageDetail("Some problems still exist. Dependecies probably were not downloaded successfully");
 				throw ex;

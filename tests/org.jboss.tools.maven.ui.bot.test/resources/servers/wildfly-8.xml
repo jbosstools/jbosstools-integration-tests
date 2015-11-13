@@ -13,5 +13,8 @@
 			</server:type>
 			<server:runtime>${jbosstools.test.wildfly8.home}</server:runtime>
 		</server:jboss-server-requirement>
+		<requirement class="org.jboss.tools.maven.reddeer.requirement.NewRepositoryRequirement"
+            name="newRepositoryRequirement">
+        </requirement>
 	</requirements>
 </testrun>
