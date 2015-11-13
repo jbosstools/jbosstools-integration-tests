@@ -76,8 +76,7 @@ public class MavenConversionTest extends AbstractMavenSWTBotTest{
 	public void deleteDependenciesAfterConversion(){
 		createWithRuntime();
 		new CheckBox("Delete original references from project").toggle(true);
-		new PushButton("Finish").click();
-		new WaitWhile(new JobIsRunning(),TimePeriod.LONG);
+		finishConversionDialog();
 		checkProblemsAndResolve();
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
@@ -105,8 +104,7 @@ public class MavenConversionTest extends AbstractMavenSWTBotTest{
 	public void keepDependenciesAfterConversion(){
 		createWithRuntime();
 		new CheckBox("Delete original references from project").toggle(false);
-		new PushButton("Finish").click();
-		new WaitWhile(new JobIsRunning(),TimePeriod.LONG);
+		finishConversionDialog();
 		checkProblemsAndResolve();
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
@@ -154,10 +152,7 @@ public class MavenConversionTest extends AbstractMavenSWTBotTest{
 		new CheckBox("Optional").toggle(true);
 		new PushButton("OK").click();
 		new DefaultShell("Convert to Maven Dependencies");
-		new WaitUntil(new WidgetIsEnabled(new PushButton("Finish")));
-		new PushButton("Finish").click();
-		new WaitUntil(new JobIsRunning(), TimePeriod.NORMAL,false);
-		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		finishConversionDialog();
 		List<String> toCheck = new ArrayList<String>();
 		toCheck.add("<groupId>maven.conversion.test.groupID</groupId>");
 		toCheck.add("<artifactId>maven.conversion.test.artifactID</artifactId>");
@@ -225,9 +220,6 @@ public class MavenConversionTest extends AbstractMavenSWTBotTest{
 	private void createWithRuntime(){
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
-		if(pe.containsProject(WEB_PROJECT_NAME)){
-			return;
-		}
 		createWebProject(WEB_PROJECT_NAME, sr.getRuntimeNameLabelText(sr.getConfig()), false);
 		pe.open();
 		pe.getProject(WEB_PROJECT_NAME).select();
@@ -263,6 +255,20 @@ public class MavenConversionTest extends AbstractMavenSWTBotTest{
 				ex.addMessageDetail("Some problems still exist. Dependecies probably were not downloaded successfully");
 				throw ex;
 			}
+		}
+	}
+	
+	private void finishConversionDialog(){
+		new WaitUntil(new WidgetIsEnabled(new PushButton("Finish")));
+		new PushButton("Finish").click();
+		int i =1;
+		while(i>0){
+			try{
+				new WaitUntil(new JobIsRunning());
+			} catch (WaitTimeoutExpiredException ex){
+				break;
+			}
+			new WaitWhile(new JobIsRunning(),TimePeriod.VERY_LONG);
 		}
 	}
 

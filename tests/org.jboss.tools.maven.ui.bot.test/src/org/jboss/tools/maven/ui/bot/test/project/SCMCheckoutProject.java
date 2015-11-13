@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 
 import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
@@ -15,6 +16,8 @@ import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.C
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.swt.api.Tree;
 import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.swt.impl.button.CancelButton;
+import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
@@ -43,6 +46,9 @@ public class SCMCheckoutProject extends AbstractMavenSWTBotTest {
 		assertTrue(ml.isCheckoutAllProjects());
 		assertTrue(ml.isCheckoutHeadRevision());
 		mc.finish(TimePeriod.getCustom(TimePeriod.LONG.getSeconds() * 2));
+		new WaitUntil(new ShellWithTextIsAvailable("Import Maven Projects"),TimePeriod.LONG);
+		new CancelButton().click();
+		new WaitWhile(new JobIsRunning(),TimePeriod.LONG);
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		assertTrue(pe.containsProject("eclipsetutorial"));
@@ -77,6 +83,9 @@ public class SCMCheckoutProject extends AbstractMavenSWTBotTest {
 		}
 		new PushButton("Finish").click();
 		new WaitWhile(new ShellWithTextIsAvailable("Import Maven Projects"),TimePeriod.LONG);
+		new WaitWhile(new JobIsRunning(),TimePeriod.LONG);
+		new WaitUntil(new ShellWithTextIsAvailable("Import Maven Projects"),TimePeriod.LONG); //different shell, same name
+		new CancelButton().click();
 		new WaitWhile(new JobIsRunning(),TimePeriod.LONG);
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();

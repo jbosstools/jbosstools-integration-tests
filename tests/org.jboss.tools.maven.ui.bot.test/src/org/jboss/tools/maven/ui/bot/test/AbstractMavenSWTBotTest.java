@@ -19,9 +19,11 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.List;
 import java.util.Scanner;
 
 import org.jboss.reddeer.eclipse.condition.ProjectExists;
+import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.jst.servlet.ui.WebProjectFirstPage;
@@ -52,6 +54,8 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.workbench.api.Editor;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
+import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
+import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.common.matcher.RegexMatcher;
 import org.jboss.reddeer.core.matcher.WithTextMatchers;
 import org.jboss.reddeer.common.wait.TimePeriod;
@@ -62,6 +66,8 @@ import org.junit.BeforeClass;
 import org.jboss.tools.maven.reddeer.preferences.MavenPreferencePage;
 
 public abstract class AbstractMavenSWTBotTest{
+	
+	private static final Logger log = Logger.getLogger(AbstractMavenSWTBotTest.class);
 	
 	@BeforeClass 
 	public static void beforeClass(){
@@ -87,7 +93,7 @@ public abstract class AbstractMavenSWTBotTest{
 			result = result && new DefaultTreeItem(new DefaultTree(1),natureID).getCell(1).equals(version);
 		}
 		new PushButton("OK").click();
-		new WaitWhile(new ShellWithTextIsActive("Properties for "+projectName), TimePeriod.NORMAL);
+		new WaitWhile(new ShellWithTextIsAvailable("Properties for "+projectName), TimePeriod.NORMAL);
 		return result;
 	}
 	
@@ -130,7 +136,7 @@ public abstract class AbstractMavenSWTBotTest{
 		new WaitUntil(new ShellWithTextIsActive("Update Maven Project"),TimePeriod.LONG);
 		new CheckBox("Force Update of Snapshots/Releases").toggle(forceDependencies);
 		new PushButton("OK").click();
-		new WaitWhile(new ShellWithTextIsActive("Update Maven Project"),TimePeriod.NORMAL);
+		new WaitWhile(new ShellWithTextIsAvailable("Update Maven Project"),TimePeriod.NORMAL);
 		new WaitWhile(new JobIsRunning(),TimePeriod.VERY_LONG);
 	}
 	
@@ -158,6 +164,13 @@ public abstract class AbstractMavenSWTBotTest{
 		PackageExplorer pexplorer = new PackageExplorer();
 		pexplorer.open();
 		pexplorer.deleteAllProjects(fromSystem);
+		List<Project> projects = pexplorer.getProjects();
+		if(projects.size()!=0){
+			log.warn("Not all projects have been deleted");
+			for(Project p: projects){
+				org.jboss.reddeer.direct.project.Project.delete(p.getName(), true, true);
+			}
+		}
 	}
 	
 	public void checkWebTarget(String projectName, String finalName){
@@ -219,6 +232,7 @@ public abstract class AbstractMavenSWTBotTest{
 		WebProjectThirdPage dtp = new WebProjectThirdPage();
 		dtp.setGenerateWebXmlDeploymentDescriptor(webxml);
 		dw.finish();
+		waitForAllScheduledJobs();
 	}
 	
 	public static void setGit(){
@@ -272,6 +286,18 @@ public abstract class AbstractMavenSWTBotTest{
 		Editor e = new DefaultEditor(project+"/pom.xml");
 		new DefaultCTabItem("pom.xml").activate();
 		return e;
+	}
+	
+	private void waitForAllScheduledJobs(){
+		int i =1;
+		while(i>0){
+			try{
+				new WaitUntil(new JobIsRunning());
+			} catch (WaitTimeoutExpiredException ex){
+				break;
+			}
+			new WaitWhile(new JobIsRunning(),TimePeriod.LONG);
+		}
 	}
 	
 }
