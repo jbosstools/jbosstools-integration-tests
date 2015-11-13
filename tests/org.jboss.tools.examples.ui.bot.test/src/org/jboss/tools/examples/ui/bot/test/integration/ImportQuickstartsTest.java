@@ -35,6 +35,7 @@ import org.jboss.tools.maven.reddeer.wizards.MavenImportWizardFirstPage;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
@@ -98,6 +99,7 @@ public class ImportQuickstartsTest {
 	/*
 	 * Main tests. Imports quickstart as maven project and performs checks.
 	 */
+	@Test
 	public void quickstartTest() {
 		importQuickstart(qstart);
 		checkForWarnings(qstart);
