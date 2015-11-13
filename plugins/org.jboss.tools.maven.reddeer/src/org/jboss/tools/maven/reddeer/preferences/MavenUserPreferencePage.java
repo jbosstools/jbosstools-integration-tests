@@ -7,6 +7,7 @@ import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.jface.preference.PreferencePage;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.link.AnchorLink;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
@@ -72,5 +73,9 @@ public class MavenUserPreferencePage extends PreferencePage{
 		} catch(SWTLayerException ex){
 			log.info("Update project required shell was not found.");
 		}
+	}
+	
+	public void openUserSettings(){
+		new AnchorLink("open file").click();
 	}
 }

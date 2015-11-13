@@ -12,7 +12,7 @@
 
 	<packaging>eclipse-test-plugin</packaging>
 	<properties>
-		<systemProperties>${integrationTestsSystemProperties} -Djbosstools.test.seam.2.1.0.home=${requirementsDirectory}/jboss-seam-2.1.2 -Djbosstools.test.seam.2.3.0.home=${requirementsDirectory}/jboss-seam-2.3.0.Final -Djbosstools.test.seam.2.2.0.home=${requirementsDirectory}/jboss-seam-2.2.0.GA -Dproject.build.directory=${project.build.directory} -Djbosstools.test.wildfly8.home=${jbosstools.test.wildfly8.home} -Dreddeer.config=target/classes/servers -Dmaven.settings.path=target/classes/settings.xml</systemProperties>
+		<systemProperties>${integrationTestsSystemProperties} -Djbosstools.test.seam.2.1.0.home=${requirementsDirectory}/jboss-seam-2.1.2 -Djbosstools.test.seam.2.3.0.home=${requirementsDirectory}/jboss-seam-2.3.0.Final -Djbosstools.test.seam.2.2.0.home=${requirementsDirectory}/jboss-seam-2.2.0.GA -Dproject.build.directory=${project.build.directory} -Djbosstools.test.wildfly8.home=${jbosstools.test.wildfly8.home} -Drd.config=target/classes/servers -Dmaven.settings.path=target/classes/settings.xml</systemProperties>
 		<jbosstools.test.wildfly8.home>${requirementsDirectory}/wildfly-8.1.0.Final</jbosstools.test.wildfly8.home>
 		<surefire.timeout>14400</surefire.timeout>
 	</properties>
@@ -58,6 +58,7 @@
 				<configuration>
 					<testSuite>org.jboss.tools.maven.ui.bot.test</testSuite>
 					<testClass>${suiteClass}</testClass>
+					<appArgLine>-testpluginname ${project.artifactId}</appArgLine>
 				</configuration>
 			</plugin>
 		</plugins>
