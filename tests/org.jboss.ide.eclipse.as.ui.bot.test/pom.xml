@@ -1064,7 +1064,7 @@
 				</plugins>
 			</build>
 		</profile>
-			<profile>
+		<profile>
 			<id>eap7x-compatibility</id>
 			<activation>
 				<property>
@@ -1091,6 +1091,40 @@
 								<configuration>
 									<url>${jbosstools.test.jboss-eap-7.x.url}</url>
 									<md5>${jbosstools.test.jboss-eap-7.x.md5}</md5>
+									<unpack>true</unpack>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>smoke</id>
+			<activation>
+				<property>
+					<name>test.profile</name>
+					<value>smoke</value>
+				</property>
+			</activation>
+			<properties>
+				<test.class>org.jboss.ide.eclipse.as.ui.bot.test.allsuites.smoke.SmokeSuite</test.class>
+				<reddeer.config>${reddeer.project.config}/wildfly-9.xml</reddeer.config>
+			</properties>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>com.googlecode.maven-download-plugin</groupId>
+						<artifactId>download-maven-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>install-wildfly9-server</id>
+								<phase>pre-integration-test</phase>
+								<goals>
+									<goal>wget</goal>
+								</goals>
+								<configuration>
+									<url>${jbosstools.test.wildfly-9.url}</url>
 									<unpack>true</unpack>
 								</configuration>
 							</execution>

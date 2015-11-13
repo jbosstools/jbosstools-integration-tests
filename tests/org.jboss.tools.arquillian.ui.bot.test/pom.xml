@@ -119,4 +119,21 @@
 			</resource>
 		</resources>
 	</build>
+	<profiles>
+		<profile>
+			<id>smoke-to-be-fixed</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.eclipse.tycho</groupId>
+						<artifactId>tycho-surefire-plugin</artifactId>
+						<configuration>
+							<testSuite>org.jboss.tools.arquillian.ui.bot.test</testSuite>
+							<testClass>org.jboss.tools.arquillian.ui.bot.test.SmokeSuite</testClass>
+						</configuration>
+					</plugin>
+				</plugins>
+				</build>
+		</profile>
+	</profiles>
 </project>
