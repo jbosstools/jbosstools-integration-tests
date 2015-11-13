@@ -53,65 +53,62 @@ public class MavenRepositories extends AbstractMavenSWTBotTest{
 	
 	@Test
 	public void modifyEAPRepo(){
-		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
-		preferenceDialog.open();
-		ConfiguratorPreferencePage jm = new ConfiguratorPreferencePage();
-		preferenceDialog.select(jm);
-		ConfigureMavenRepositoriesWizard mr = jm.configureRepositories();
-		String repoId = mr.chooseRepositoryFromList(EAP_REPO, true,false);
-		mr.confirm();
-		preferenceDialog.ok();
+		String repoId = addRepo(EAP_REPO);
 		assertTrue("EAP Repository is missing in Maven repositories view", new RepositoryExists(EAP_REPO).test());
 		
-		preferenceDialog.open();
-		preferenceDialog.select(jm);
-		mr = jm.configureRepositories();
-		mr.editRepo(repoId, false, null, null, null);
-		mr.confirm();
-		preferenceDialog.ok();
-		assertFalse("EAP Repository is present in Maven repositories view", new RepositoryExists(EAP_REPO).test());
-
-		preferenceDialog.open();
-		preferenceDialog.select(jm);
-		mr = jm.configureRepositories();
-		mr.removeRepo(repoId+" (Inactive)");
-		mr.confirm();
-		preferenceDialog.ok();
+		editRepo(repoId);
+		assertTrue("EAP Repository is present in Maven repositories view", new RepositoryExists(EAP_REPO).test());
+		
+		removeRepo(repoId+" (Inactive)");
 		assertFalse("EAP Repository is still present in Maven repositories view", new RepositoryExists(EAP_REPO).test());
 	}
 
 	@Test
 	public void modifyJBossRepo(){
+		String repoId = addRepo(JBOSS_REPO);
+		assertTrue("JBoss Repository is missing in Maven repositories view", new RepositoryExists(JBOSS_REPO).test());
+		
+		editRepo(repoId);
+		assertTrue("JBOSS Repository is present in Maven repositories view", new RepositoryExists(JBOSS_REPO).test());
+		
+		removeRepo(repoId+" (Inactive)");
+		assertFalse("JBoss Repository is missing in Maven repositories view", new RepositoryExists(JBOSS_REPO).test());
+	}
+	
+	public String addRepo(String repo){
 		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
 		preferenceDialog.open();
 		ConfiguratorPreferencePage jm = new ConfiguratorPreferencePage();
 		preferenceDialog.select(jm);
 		ConfigureMavenRepositoriesWizard mr = jm.configureRepositories();
-		String repoId = mr.chooseRepositoryFromList(JBOSS_REPO,true,false);
+		String repoId = mr.chooseRepositoryFromList(repo,true,false);
 		mr.confirm();
 		jm.apply();
 		preferenceDialog.ok();
-		assertTrue("JBoss Repository is missing in Maven repositories view", new RepositoryExists(JBOSS_REPO).test());
-		
+		return repoId;
+	}
+	
+	public void editRepo(String repoId){
+		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
 		preferenceDialog.open();
+		ConfiguratorPreferencePage jm = new ConfiguratorPreferencePage();
 		preferenceDialog.select(jm);
-
-		mr = jm.configureRepositories();
+		ConfigureMavenRepositoriesWizard mr = jm.configureRepositories();
 		mr.editRepo(repoId, false, null, null, null);
 		mr.confirm();
 		jm.apply();
 		preferenceDialog.ok();
-		assertFalse("JBOSS Repository is present in Maven repositories view", new RepositoryExists(JBOSS_REPO).test());
-
-		jm = new ConfiguratorPreferencePage();
+	}
+	
+	public void removeRepo(String repoId){
+		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
 		preferenceDialog.open();
+		ConfiguratorPreferencePage jm = new ConfiguratorPreferencePage();
 		preferenceDialog.select(jm);
-
-		mr = jm.configureRepositories();
-		mr.removeRepo(repoId+" (Inactive)");
+		ConfigureMavenRepositoriesWizard mr = jm.configureRepositories();
+		mr.removeRepo(repoId);
 		mr.confirm();
 		preferenceDialog.ok();
-		assertFalse("JBoss Repository is missing in Maven repositories view", new RepositoryExists(JBOSS_REPO).test());
 	}
 
 }

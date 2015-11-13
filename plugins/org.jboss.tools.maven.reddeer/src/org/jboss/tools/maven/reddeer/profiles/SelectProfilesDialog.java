@@ -64,7 +64,7 @@ public class SelectProfilesDialog extends WizardDialog{
 	
 	public void ok(){
 		new PushButton("OK").click();
-		new WaitWhile(new JobIsRunning(),TimePeriod.NORMAL);
+		new WaitWhile(new JobIsRunning(),TimePeriod.LONG);
 	}
 	
 	public String getActiveProfilesText(){

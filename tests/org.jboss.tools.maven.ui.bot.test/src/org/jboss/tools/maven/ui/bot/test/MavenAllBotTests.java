@@ -69,6 +69,7 @@ import org.junit.runners.Suite;
 	
 	//SeamProjectTest.class, 
 	SeamPluginsTest.class,
+	
 	APTPropertiesPageTest.class,
 	
 	SCMCheckoutProject.class
