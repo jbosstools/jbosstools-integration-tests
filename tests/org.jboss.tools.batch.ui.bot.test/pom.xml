@@ -13,7 +13,7 @@
 	<artifactId>org.jboss.tools.batch.ui.bot.test</artifactId>
 	<packaging>eclipse-test-plugin</packaging>
 	<properties>
-		<swtbot.test.skip>false</swtbot.test.skip>
+		<skipTests>false</skipTests>
 		<usage_reporting_enabled>false</usage_reporting_enabled>
 		<maven.test.failure.ignore>true</maven.test.failure.ignore>
 	</properties>
@@ -67,5 +67,22 @@
 			</plugin>
 		</plugins>
 	</build>
+	<profiles>
+		<profile>
+			<id>smoke</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.eclipse.tycho</groupId>
+						<artifactId>tycho-surefire-plugin</artifactId>
+						<configuration>
+							<testSuite>org.jboss.tools.batch.ui.bot.test</testSuite>
+							<testClass>org.jboss.tools.batch.ui.bot.test.SmokeSuite</testClass>
+						</configuration>
+					</plugin>
+				</plugins>
+				</build>
+		</profile>
+	</profiles>
 </project>
 
