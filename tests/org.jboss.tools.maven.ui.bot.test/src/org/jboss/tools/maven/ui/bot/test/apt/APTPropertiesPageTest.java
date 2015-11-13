@@ -3,6 +3,7 @@ package org.jboss.tools.maven.ui.bot.test.apt;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import java.util.Scanner;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
+import org.jboss.reddeer.common.platform.RunningPlatform;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
@@ -216,14 +218,18 @@ public class APTPropertiesPageTest extends AbstractMavenSWTBotTest{
 		pd.select(ap);
 		ap.setAnnotationProcessingMode(mode);
 		new OkButton().click();
+		boolean runUpdate = false;
 		try{
 			new DefaultShell("Maven Annotation Processing Settings");
 			new YesButton().click();
 		} catch (SWTLayerException ex){
-			
+			runUpdate = true;
 		}
 		new WaitWhile(new ShellWithTextIsAvailable("Preferences"));
-		new WaitWhile(new JobIsRunning(),TimePeriod.ETERNAL);
+		new WaitWhile(new JobIsRunning(),TimePeriod.VERY_LONG);
+		if(runUpdate){
+			updateConf(PROJECT_NAME);
+		}
 		
 	}
 	
@@ -330,7 +336,7 @@ public class APTPropertiesPageTest extends AbstractMavenSWTBotTest{
 		}
 		assertTrue(itemsPaths.containsAll(paths));
 		if(additionalPath != null){
-			assertTrue(itemsPaths.contains(additionalPath));
+			assertTrue("Build path items "+itemsPaths+" expected "+additionalPath,itemsPaths.contains(additionalPath));
 		}
 		new OkButton().click();
 		new WaitWhile(new ShellWithTextIsAvailable("Properties for "+PROJECT_NAME));
@@ -344,6 +350,9 @@ public class APTPropertiesPageTest extends AbstractMavenSWTBotTest{
 			assertTrue(!c.isEnabled() || !c.isChecked());
 		} else {
 			assertTrue(c.isEnabled() && c.isChecked());
+			if(RunningPlatform.isWindows()){
+				sourceDir = sourceDir.replace("/", "\\");
+			}
 			assertEquals(sourceDir, new DefaultText(1).getText());
 		}
 		if(args != null){

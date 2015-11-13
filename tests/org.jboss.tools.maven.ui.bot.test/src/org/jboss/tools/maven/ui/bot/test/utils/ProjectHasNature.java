@@ -2,6 +2,7 @@ package org.jboss.tools.maven.ui.bot.test.utils;
 
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
@@ -54,7 +55,7 @@ public class ProjectHasNature extends AbstractWaitCondition{
             }
 		}
 		new PushButton("OK").click();
-		new WaitWhile(new ShellWithTextIsActive("Properties for "+projectName), TimePeriod.NORMAL);
+		new WaitWhile(new ShellWithTextIsAvailable("Properties for "+projectName), TimePeriod.NORMAL);
 		return result;
 	}
 	
