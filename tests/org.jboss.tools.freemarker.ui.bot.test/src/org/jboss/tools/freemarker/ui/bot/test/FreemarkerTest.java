@@ -66,7 +66,7 @@ public class FreemarkerTest {
 	/**
 	 * Imports freemarker test project
 	 */
-	public void importTestProject() {
+	public static void importTestProject() {
 		
 		ExternalProjectImportWizardDialog wizard = new ExternalProjectImportWizardDialog();		
 		wizard.open();
@@ -171,7 +171,7 @@ public class FreemarkerTest {
 	 * Gets workspace absolute path 
 	 * @return current workspace absolute path
 	 */
-	public String getWorkspaceAbsolutePath() {
+	public static String getWorkspaceAbsolutePath() {
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
 		String path = workspace.getRoot().getLocation().toFile().getAbsolutePath();  
 		return path;		
@@ -186,7 +186,7 @@ public class FreemarkerTest {
 	 * @param fileFilter
 	 * @throws IOException
 	 */
-	public void copyFilesBinaryRecursively(File fromLocation,
+	public static void copyFilesBinaryRecursively(File fromLocation,
 			File toLocation, FileFilter fileFilter) throws IOException {
 		if (fromLocation.exists()) {
 			for (File fileToCopy : fromLocation.listFiles(fileFilter)) {
@@ -204,7 +204,7 @@ public class FreemarkerTest {
 	/**
 	 * Remove freemarker test project
 	 */
-	public void removeTestProject(String prj) {
+	public static void removeTestProject(String prj) {
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		if (pe.containsProject(prj)) {
@@ -221,7 +221,7 @@ public class FreemarkerTest {
 	 * @param toLocation
 	 * @throws IOException
 	 */
-	public void copyFilesBinary(File originalFile, File toLocation)
+	public static void copyFilesBinary(File originalFile, File toLocation)
 			throws IOException {
 		FileInputStream fis = null;
 		FileOutputStream fos = null;

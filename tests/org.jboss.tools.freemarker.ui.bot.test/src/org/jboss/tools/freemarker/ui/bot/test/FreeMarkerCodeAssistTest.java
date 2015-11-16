@@ -11,7 +11,7 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.junit.After;
-import org.junit.Before;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,21 +26,32 @@ public class FreeMarkerCodeAssistTest extends FreemarkerTest  {
 	
 	
 	private static final Logger log = Logger.getLogger(FreeMarkerCodeAssistTest.class);
-	private String prj = "org.jboss.tools.freemarker.testprj";
+	private static String prj = "org.jboss.tools.freemarker.testprj";
 	
 	@BeforeClass
 	public static void beforeClass() {
-	}
-	
-	@Before
-	public void before() {
 		log.step("Import test project for freemarker test");
 		importTestProject();
 		log.step("Open ftl file in freemarker editor");		
 	}
 	
 	@Test
-	public void freeCodeAssistDirectiveAssign() {		
+	public void codeAssistDirectiveAssign() {
+		String expr = "<#";
+		checkCodeAssist(expr, "assign");
+	}
+	
+	@Test
+	public void codeAssistAssignTest() {
+		String expr = "<#assign var1=1><#assign var2=2><#assign va";
+		checkCodeAssist(expr, "var1", "var2");
+	}
+
+	@After
+	public void after() {
+	}
+
+	private void checkCodeAssist(String expr, String... expected) {
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		new DefaultTreeItem(prj, "ftl", "empty.ftl").doubleClick();				
@@ -50,21 +61,23 @@ public class FreeMarkerCodeAssistTest extends FreemarkerTest  {
 
 		String file = "empty.ftl";
 		TextEditor textEditor = new TextEditor(file);
-		String start = "<#";		
+		String start = expr;		
 		textEditor.setText(start);
 		textEditor.save();				
 		
 		textEditor.setCursorPosition(start.length());
 				
-		String proposal = "assign";
 		ContentAssistant ca = textEditor.openContentAssistant();
 		List<String> proposals = ca.getProposals();
 		ca.close();
-		assertTrue(proposal + " is expected", proposals.contains(proposal));
-
-	}	
-
-	@After
-	public void after() {
+		for (String e : expected) {			
+			assertTrue(e + " is expected", proposals.contains(e));
+		}
 	}
+	
+	@AfterClass
+	public static void cleanup() {
+		removeTestProject(prj);
+	}
+
 }
