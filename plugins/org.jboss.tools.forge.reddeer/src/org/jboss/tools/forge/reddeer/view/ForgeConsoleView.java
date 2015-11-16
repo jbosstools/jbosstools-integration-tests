@@ -2,7 +2,7 @@ package org.jboss.tools.forge.reddeer.view;
 
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.menu.ToolItemMenu;
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
@@ -113,7 +113,7 @@ public class ForgeConsoleView extends WorkbenchView{
 		new DefaultStyledText().setText(text);
 	}
 	
-	private class ConsoleHasTextWidget implements WaitCondition{
+	private class ConsoleHasTextWidget extends AbstractWaitCondition{
 
 		@Override
 		public boolean test() {

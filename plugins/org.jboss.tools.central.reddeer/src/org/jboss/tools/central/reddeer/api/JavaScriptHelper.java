@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
-import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.swt.api.Browser;
 
@@ -159,7 +159,7 @@ public class JavaScriptHelper {
 		return fileContent;
 	}
 	
-	private class SomeExamplesAreFound implements WaitCondition{
+	private class SomeExamplesAreFound extends AbstractWaitCondition{
 
 		private String query;
 		

@@ -1,6 +1,6 @@
 package org.jboss.tools.openshift.reddeer.condition.v2;
 
-import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.reddeer.swt.impl.browser.InternalBrowser;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
@@ -13,7 +13,7 @@ import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
  * @author mlabuda@redhat.com
  *
  */
-public class ApplicationIsDeployedSuccessfully implements WaitCondition {
+public class ApplicationIsDeployedSuccessfully extends AbstractWaitCondition {
 
 	private String expectedText;
 	

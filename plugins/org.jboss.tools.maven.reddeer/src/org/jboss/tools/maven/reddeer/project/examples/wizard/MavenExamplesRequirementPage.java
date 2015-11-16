@@ -8,7 +8,7 @@ import java.util.List;
 import org.jboss.reddeer.jface.wizard.WizardPage;
 import org.jboss.reddeer.swt.api.Shell;
 import org.jboss.reddeer.swt.api.TableItem;
-import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.link.DefaultLink;
@@ -64,7 +64,7 @@ public class MavenExamplesRequirementPage extends WizardPage {
 		return link.getText();
 	}
 
-	class MavenIsUpdatingLinkCheck implements WaitCondition {
+	class MavenIsUpdatingLinkCheck extends AbstractWaitCondition {
 
 		private DefaultLink link;
 

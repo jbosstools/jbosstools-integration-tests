@@ -2,12 +2,12 @@ package org.jboss.tools.cdi.reddeer.condition;
 
 import java.util.List;
 
-import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.reddeer.workbench.api.Editor;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.reddeer.workbench.impl.editor.Marker;
 
-public class AsYouTypeMarkerExists implements WaitCondition{
+public class AsYouTypeMarkerExists extends AbstractWaitCondition{
 	
 	private String message;
 	private String editor;

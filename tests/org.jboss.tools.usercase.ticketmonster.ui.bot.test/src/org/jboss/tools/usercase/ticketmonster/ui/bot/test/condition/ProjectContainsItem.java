@@ -1,9 +1,9 @@
 package org.jboss.tools.usercase.ticketmonster.ui.bot.test.condition;
 
-import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.reddeer.eclipse.core.resources.Project;
 
-public class ProjectContainsItem implements WaitCondition {
+public class ProjectContainsItem extends AbstractWaitCondition {
 	
 	private String[] path;
 	private Project project;

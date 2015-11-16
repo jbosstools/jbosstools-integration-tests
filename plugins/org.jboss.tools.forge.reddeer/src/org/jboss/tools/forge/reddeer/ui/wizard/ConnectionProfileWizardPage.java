@@ -1,6 +1,6 @@
 package org.jboss.tools.forge.reddeer.ui.wizard;
 
-import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.jface.wizard.WizardPage;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
@@ -76,7 +76,7 @@ public class ConnectionProfileWizardPage extends WizardPage {
 		}
 	}
 
-	private class ConnectionIsVerified implements WaitCondition {
+	private class ConnectionIsVerified extends AbstractWaitCondition {
 
 		private final String successString = "Connection successful.";
 

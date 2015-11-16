@@ -3,9 +3,9 @@ package org.jboss.tools.maven.ui.bot.test.utils;
 import org.jboss.reddeer.eclipse.ui.problems.Problem;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
-import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 
-public class ProjectHasErrors implements WaitCondition {
+public class ProjectHasErrors extends AbstractWaitCondition {
 
 	String projectName;
 	String acceptType;

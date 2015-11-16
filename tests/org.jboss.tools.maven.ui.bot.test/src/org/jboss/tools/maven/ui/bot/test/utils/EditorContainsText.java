@@ -1,9 +1,9 @@
 package org.jboss.tools.maven.ui.bot.test.utils;
 
-import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 
-public class EditorContainsText implements WaitCondition{
+public class EditorContainsText extends AbstractWaitCondition{
 	
 	private TextEditor editor;
 	

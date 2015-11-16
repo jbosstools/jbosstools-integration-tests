@@ -1,7 +1,7 @@
 package org.jboss.tools.maven.reddeer.project.examples.wait;
 
 import org.jboss.reddeer.swt.api.Link;
-import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.link.DefaultLink;
 
@@ -11,7 +11,7 @@ import org.jboss.reddeer.swt.impl.link.DefaultLink;
  * @author rhopp
  *
  */
-public class MavenRepositoryNotFound implements WaitCondition{
+public class MavenRepositoryNotFound extends AbstractWaitCondition{
 	
 	@Override
 	public String description() {

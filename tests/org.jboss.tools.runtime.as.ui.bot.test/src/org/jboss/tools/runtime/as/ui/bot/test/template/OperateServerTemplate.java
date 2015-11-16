@@ -14,7 +14,7 @@ import org.jboss.ide.eclipse.as.reddeer.server.editor.JBossServerEditor;
 import org.jboss.ide.eclipse.as.reddeer.server.view.JBossServer;
 import org.jboss.ide.eclipse.as.reddeer.server.view.JBossServerView;
 import org.jboss.ide.eclipse.as.reddeer.server.wizard.page.JBossRuntimeWizardPage;
-import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
@@ -180,7 +180,7 @@ public abstract class OperateServerTemplate {
 		assertThat(message, textState, is(state));
 	}
 	
-	private class ServerHasState implements WaitCondition {
+	private class ServerHasState extends AbstractWaitCondition {
 
 		private String expectedState;
 		private String state;

@@ -1,6 +1,6 @@
 package org.jboss.tools.central.reddeer.wait;
 
-import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.swt.impl.browser.InternalBrowser;
 
@@ -11,7 +11,7 @@ import org.jboss.reddeer.swt.impl.browser.InternalBrowser;
  *
  */
 
-public class CentralIsLoaded implements WaitCondition {
+public class CentralIsLoaded extends AbstractWaitCondition {
 	
 	@Override
 	public boolean test() {

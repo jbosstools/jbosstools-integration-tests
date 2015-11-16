@@ -5,7 +5,7 @@ import static org.junit.Assert.fail;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.core.exception.CoreLayerException;
@@ -18,7 +18,7 @@ import org.jboss.tools.cdi.reddeer.validators.ValidationProblem;
 
 public class ValidationHelper {
 	
-	private class SpecificProblemExists implements WaitCondition {
+	private class SpecificProblemExists extends AbstractWaitCondition {
 		
 		private ValidationProblem validationProblem;
 		

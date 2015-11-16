@@ -1,10 +1,10 @@
 package org.jboss.tools.openshift.reddeer.condition;
 
-import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 
-public class ButtonWithTextIsAvailable implements WaitCondition {
+public class ButtonWithTextIsAvailable extends AbstractWaitCondition {
 
 	private String buttonText;
 
