@@ -1,9 +1,9 @@
 package org.jboss.tools.maven.ui.bot.test.utils;
 
 import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 
-public class TreeCanBeExpanded implements WaitCondition{
+public class TreeCanBeExpanded extends AbstractWaitCondition{
 
 	private TreeItem treeItem;
 	

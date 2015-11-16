@@ -1,10 +1,10 @@
 package org.jboss.tools.cdi.reddeer.condition;
 
-import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.reddeer.swt.api.Table;
 import org.jboss.reddeer.swt.api.TableItem;
 
-public class TableItemIsFound implements WaitCondition{
+public class TableItemIsFound extends AbstractWaitCondition{
 	
 	private Table table;
 	private String item;

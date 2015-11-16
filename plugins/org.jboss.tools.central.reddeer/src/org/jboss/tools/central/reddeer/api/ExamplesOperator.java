@@ -14,7 +14,7 @@ import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 import org.jboss.ide.eclipse.as.reddeer.server.view.JBossServerModule;
 import org.jboss.ide.eclipse.as.reddeer.server.view.JBossServerView;
-import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.common.matcher.RegexMatcher;
@@ -257,7 +257,7 @@ public class ExamplesOperator {
 		}
 	}
 
-	private class WaitForProjectToStartAndSynchronize implements WaitCondition {
+	private class WaitForProjectToStartAndSynchronize extends AbstractWaitCondition {
 
 		String projectName;
 		String serverName;
@@ -297,7 +297,7 @@ public class ExamplesOperator {
 		}
 	}
 
-	private class BrowserIsnotEmpty implements WaitCondition {
+	private class BrowserIsnotEmpty extends AbstractWaitCondition {
 
 		BrowserEditor browser;
 

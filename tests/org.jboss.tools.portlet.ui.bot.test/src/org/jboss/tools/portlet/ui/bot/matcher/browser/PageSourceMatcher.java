@@ -4,7 +4,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.hamcrest.Description;
-import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.eclipse.ui.browser.BrowserView;
@@ -49,7 +49,7 @@ public class PageSourceMatcher extends AbstractSWTMatcher<String> {
 		description.appendValue(pageText);
 	}
 	
-	private class PageContainsTextCondition implements WaitCondition {
+	private class PageContainsTextCondition extends AbstractWaitCondition {
 
 		private BrowserView browser;
 		

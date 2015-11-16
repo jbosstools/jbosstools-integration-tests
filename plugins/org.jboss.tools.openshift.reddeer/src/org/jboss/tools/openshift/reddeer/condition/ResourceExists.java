@@ -3,7 +3,7 @@ package org.jboss.tools.openshift.reddeer.condition;
 import java.util.List;
 
 import org.hamcrest.Matcher;
-import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.reddeer.core.matcher.WithTextMatcher;
 import org.jboss.reddeer.jface.viewer.handler.TreeViewerHandler;
 import org.jboss.tools.openshift.reddeer.enums.Resource;
@@ -18,7 +18,7 @@ import org.jboss.tools.openshift.reddeer.view.OpenShiftResource;
  * @author mlabuda@redhat.com
  *
  */
-public class ResourceExists implements WaitCondition {
+public class ResourceExists extends AbstractWaitCondition {
 
 	private OpenShiftProject project;
 	private Matcher resourceNameMatcher;

@@ -1,6 +1,6 @@
 package org.jboss.tools.ws.reddeer.swt.condition;
 
-import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.tools.ws.reddeer.ui.tester.views.WsTesterView;
 
 /**
@@ -9,7 +9,7 @@ import org.jboss.tools.ws.reddeer.ui.tester.views.WsTesterView;
  * @author jjankovi
  * @author Radoslav Rabara
  */
-public class WsTesterNotEmptyResponseText implements WaitCondition {
+public class WsTesterNotEmptyResponseText extends AbstractWaitCondition {
 
 	private WsTesterView wsTesterView = new WsTesterView();
 

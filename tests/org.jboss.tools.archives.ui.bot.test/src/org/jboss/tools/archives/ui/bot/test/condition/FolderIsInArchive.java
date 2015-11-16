@@ -10,7 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.archives.ui.bot.test.condition;
 
-import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.tools.archives.reddeer.component.Archive;
 
 /**
@@ -20,7 +20,7 @@ import org.jboss.tools.archives.reddeer.component.Archive;
  * @author jjankovi
  *
  */
-public class FolderIsInArchive implements WaitCondition {
+public class FolderIsInArchive extends AbstractWaitCondition {
 
 	private Archive archive;
 	private String folder;

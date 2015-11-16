@@ -1,9 +1,9 @@
 package org.jboss.tools.openshift.reddeer.condition;
 
-import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.reddeer.swt.impl.browser.InternalBrowser;
 
-public class BrowserContainsText implements WaitCondition {
+public class BrowserContainsText extends AbstractWaitCondition {
 
 	private InternalBrowser browser;
 	private String text;

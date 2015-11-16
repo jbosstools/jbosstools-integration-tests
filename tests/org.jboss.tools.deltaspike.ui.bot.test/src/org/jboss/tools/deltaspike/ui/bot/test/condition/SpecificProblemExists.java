@@ -14,7 +14,7 @@ package org.jboss.tools.deltaspike.ui.bot.test.condition;
 import org.jboss.reddeer.eclipse.ui.problems.Problem;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
-import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.common.matcher.RegexMatcher;
 
@@ -24,7 +24,7 @@ import org.jboss.reddeer.common.matcher.RegexMatcher;
  * @author Jaroslav Jankovic
  *
  */
-public class SpecificProblemExists implements WaitCondition {
+public class SpecificProblemExists extends AbstractWaitCondition {
 
 	private ProblemsView problemsView;
 	

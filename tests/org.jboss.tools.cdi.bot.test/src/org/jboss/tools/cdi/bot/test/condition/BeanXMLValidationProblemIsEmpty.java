@@ -2,13 +2,13 @@ package org.jboss.tools.cdi.bot.test.condition;
 
 import java.util.List;
 
-import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.reddeer.eclipse.ui.problems.Problem;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 
-public class BeanXMLValidationProblemIsEmpty implements WaitCondition{
+public class BeanXMLValidationProblemIsEmpty extends AbstractWaitCondition{
 	
 	private String projectName;
 	

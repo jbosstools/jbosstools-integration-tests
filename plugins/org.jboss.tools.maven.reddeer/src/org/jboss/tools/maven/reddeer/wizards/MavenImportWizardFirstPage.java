@@ -7,7 +7,7 @@ import org.jboss.reddeer.swt.api.Tree;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
-import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
@@ -43,7 +43,7 @@ public class MavenImportWizardFirstPage extends WizardPage{
 	}
 	
 	
-	private class ProjectIsLoaded implements WaitCondition {
+	private class ProjectIsLoaded extends AbstractWaitCondition {
 
 		private Tree tree;
 		

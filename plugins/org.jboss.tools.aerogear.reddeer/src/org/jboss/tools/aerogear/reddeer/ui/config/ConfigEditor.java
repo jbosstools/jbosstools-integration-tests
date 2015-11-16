@@ -14,7 +14,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.eclipse.swt.SWT;
 import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.BackButton;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
@@ -98,7 +98,7 @@ public class ConfigEditor extends AbstractEditor {
 	 * @author Vlado Pakan
 	 *
 	 */
-	private class LabelWithTextHasPosition implements WaitCondition{
+	private class LabelWithTextHasPosition extends AbstractWaitCondition{
 		private String text;
 		private int position;
 		

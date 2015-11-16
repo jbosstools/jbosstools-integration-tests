@@ -1,6 +1,6 @@
 package org.jboss.tools.openshift.reddeer.condition;
 
-import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 
 /**
@@ -9,7 +9,7 @@ import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
  * @author mlabuda@redhat.com
  *
  */
-public class ConsoleHasText implements WaitCondition{
+public class ConsoleHasText extends AbstractWaitCondition{
 
 	private ConsoleView consoleView;
 	

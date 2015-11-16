@@ -1,7 +1,7 @@
 package org.jboss.ide.eclipse.as.ui.bot.test.condition;
 
 import org.jboss.reddeer.eclipse.ui.browser.BrowserView;
-import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 
@@ -11,7 +11,7 @@ import org.jboss.reddeer.common.wait.TimePeriod;
  * @author Lucia Jelinkova
  *
  */
-public class BrowserContainsTextCondition implements WaitCondition {
+public class BrowserContainsTextCondition extends AbstractWaitCondition {
 
 	private String text;
 

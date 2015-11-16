@@ -1,6 +1,6 @@
 package org.jboss.tools.forge.reddeer.condition;
 
-import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.tools.forge.reddeer.view.ForgeConsoleView;
 
 /**
@@ -9,7 +9,7 @@ import org.jboss.tools.forge.reddeer.view.ForgeConsoleView;
  * @author psrna
  * 
  */
-public class ForgeConsoleHasText implements WaitCondition {
+public class ForgeConsoleHasText extends AbstractWaitCondition {
 	
 	private String text;
 

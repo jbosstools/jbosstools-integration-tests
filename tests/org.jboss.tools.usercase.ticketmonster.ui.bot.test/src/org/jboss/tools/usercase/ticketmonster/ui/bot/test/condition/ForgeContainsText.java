@@ -1,9 +1,9 @@
 package org.jboss.tools.usercase.ticketmonster.ui.bot.test.condition;
 
-import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.tools.usercase.ticketmonster.ui.bot.test.forge.ForgeConsole;
 
-public class ForgeContainsText implements WaitCondition {
+public class ForgeContainsText extends AbstractWaitCondition {
 	
 	private ForgeConsole console;
 	private String text;

@@ -3,7 +3,7 @@ package org.jboss.tools.runtime.as.ui.bot.test.dialog.preferences;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
@@ -59,7 +59,7 @@ public class SeamPreferencePage extends PreferencePage {
 		}
 	}
 
-	private static class RemoveButtonEnabled implements WaitCondition {
+	private static class RemoveButtonEnabled extends AbstractWaitCondition {
 
 		@Override
 		public boolean test() {

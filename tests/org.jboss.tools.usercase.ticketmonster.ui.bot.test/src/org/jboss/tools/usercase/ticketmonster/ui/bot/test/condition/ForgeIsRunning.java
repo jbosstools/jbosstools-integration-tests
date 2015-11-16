@@ -1,10 +1,10 @@
 package org.jboss.tools.usercase.ticketmonster.ui.bot.test.condition;
 
-import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.label.DefaultLabel;
 
-public class ForgeIsRunning implements WaitCondition{
+public class ForgeIsRunning extends AbstractWaitCondition{
 
 	@Override
 	public boolean test() {

@@ -3,7 +3,7 @@ package org.jboss.tools.ws.ui.bot.test.utils;
 import static org.junit.Assert.fail;
 
 import org.eclipse.swt.SWTException;
-import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
@@ -146,7 +146,7 @@ public class WebServiceClientHelper {
 		}
 	}
 
-	private static class WebServiceClientPageIsValidated implements WaitCondition {
+	private static class WebServiceClientPageIsValidated extends AbstractWaitCondition {
 
 		private WebServiceClientWizardPage page = new WebServiceClientWizardPage();
 

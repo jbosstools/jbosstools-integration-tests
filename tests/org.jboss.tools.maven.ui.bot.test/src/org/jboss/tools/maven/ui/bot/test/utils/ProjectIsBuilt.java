@@ -1,9 +1,9 @@
 package org.jboss.tools.maven.ui.bot.test.utils;
 
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
-import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 
-public class ProjectIsBuilt implements WaitCondition {
+public class ProjectIsBuilt extends AbstractWaitCondition {
 	
 	@Override
 	public boolean test() {

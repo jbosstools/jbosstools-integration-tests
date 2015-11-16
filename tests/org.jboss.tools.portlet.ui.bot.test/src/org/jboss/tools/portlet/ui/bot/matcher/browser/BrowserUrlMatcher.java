@@ -3,7 +3,7 @@ package org.jboss.tools.portlet.ui.bot.matcher.browser;
 import java.util.Arrays;
 
 import org.hamcrest.Description;
-import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.eclipse.ui.browser.BrowserView;
@@ -24,7 +24,7 @@ public class BrowserUrlMatcher extends AbstractSWTMatcher<String[]> {
 	public boolean matchesSafely(final String[] acceptedURL) {
 		final BrowserView browser = new BrowserView();
 
-		new WaitUntil(new WaitCondition() {
+		new WaitUntil(new AbstractWaitCondition() {
 			
 			@Override
 			public boolean test() {

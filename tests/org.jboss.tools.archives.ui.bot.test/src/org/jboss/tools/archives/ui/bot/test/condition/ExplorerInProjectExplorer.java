@@ -10,7 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.archives.ui.bot.test.condition;
 
-import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.tools.archives.reddeer.archives.ui.ProjectArchivesExplorer;
 
 /**
@@ -20,7 +20,7 @@ import org.jboss.tools.archives.reddeer.archives.ui.ProjectArchivesExplorer;
  * @author jjankovi
  *
  */
-public class ExplorerInProjectExplorer implements WaitCondition {
+public class ExplorerInProjectExplorer extends AbstractWaitCondition {
 
 	private String project;
 	

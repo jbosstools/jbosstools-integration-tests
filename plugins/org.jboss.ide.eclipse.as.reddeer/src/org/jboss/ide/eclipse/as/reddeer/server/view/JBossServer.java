@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.jboss.ide.eclipse.as.reddeer.server.editor.JBossServerEditor;
 import org.jboss.ide.eclipse.as.reddeer.server.editor.WelcomeToServerEditor;
-import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.common.wait.TimePeriod;
@@ -152,7 +152,7 @@ public class JBossServer extends Server {
 	 * @author Lucia Jelinkova
 	 *
 	 */
-	private static class TreeItemLabelDecorated implements WaitCondition {
+	private static class TreeItemLabelDecorated extends AbstractWaitCondition {
 
 		private TreeItem item;
 
@@ -172,7 +172,7 @@ public class JBossServer extends Server {
 		}
 	}
 	
-	private static class ContextMenuIsEnabled implements WaitCondition {
+	private static class ContextMenuIsEnabled extends AbstractWaitCondition {
 
 		private String[] path;
 		

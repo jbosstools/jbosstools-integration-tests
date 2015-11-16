@@ -13,7 +13,7 @@ import org.eclipse.ui.IViewReference;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
@@ -253,7 +253,7 @@ public class HTML5Parameterized {
 	}
 	
 	
-	static class CentralBrowserIsLoading implements WaitCondition{
+	static class CentralBrowserIsLoading extends AbstractWaitCondition{
 
 		@Override
 		public boolean test() {

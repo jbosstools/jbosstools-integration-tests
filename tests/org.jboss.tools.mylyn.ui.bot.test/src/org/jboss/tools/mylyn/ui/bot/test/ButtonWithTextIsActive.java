@@ -1,13 +1,13 @@
 package org.jboss.tools.mylyn.ui.bot.test;
 
 import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 /**
  * Condition is fulfilled when button with text is active
  * @author Vlado Pakan / Len DiMaggio
  *
  */
-public class ButtonWithTextIsActive implements WaitCondition {
+public class ButtonWithTextIsActive extends AbstractWaitCondition {
 	
     private String text;
     

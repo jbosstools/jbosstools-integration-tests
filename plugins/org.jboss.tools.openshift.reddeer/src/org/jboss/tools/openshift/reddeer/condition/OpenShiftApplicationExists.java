@@ -1,10 +1,10 @@
 package org.jboss.tools.openshift.reddeer.condition;
 
-import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.reddeer.common.exception.RedDeerException;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 	
-public class OpenShiftApplicationExists implements WaitCondition {
+public class OpenShiftApplicationExists extends AbstractWaitCondition {
 
 	private String username;
 	private String server;

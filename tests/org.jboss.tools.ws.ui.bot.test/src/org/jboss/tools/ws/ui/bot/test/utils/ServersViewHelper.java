@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.hamcrest.core.StringContains;
-import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
@@ -163,7 +163,7 @@ public class ServersViewHelper {
 		consoleView.clearConsole();
 	}
 	
-	private static class ProjectIsDeployed implements WaitCondition {
+	private static class ProjectIsDeployed extends AbstractWaitCondition {
 
 		private ServerModule module;
 		private ServersView view = new ServersView();

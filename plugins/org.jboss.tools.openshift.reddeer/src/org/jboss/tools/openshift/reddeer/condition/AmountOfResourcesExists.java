@@ -1,11 +1,11 @@
 package org.jboss.tools.openshift.reddeer.condition;
 
-import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.tools.openshift.reddeer.enums.Resource;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftProject;
 
-public class AmountOfResourcesExists implements WaitCondition {
+public class AmountOfResourcesExists extends AbstractWaitCondition {
 
 	private OpenShiftProject project;
 	private Resource resource;

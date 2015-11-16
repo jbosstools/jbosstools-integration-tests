@@ -1,6 +1,6 @@
 package org.jboss.tools.openshift.reddeer.condition;
 
-import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.reddeer.swt.api.Table;
 
 /**
@@ -9,7 +9,7 @@ import org.jboss.reddeer.swt.api.Table;
  * @author mlabuda@redhat.com
  *
  */
-public class TableIsEnabled implements WaitCondition {
+public class TableIsEnabled extends AbstractWaitCondition {
 
 	private Table table;
 	
