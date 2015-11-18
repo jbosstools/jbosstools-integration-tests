@@ -46,7 +46,32 @@ public class FreeMarkerCodeAssistTest extends FreemarkerTest  {
 		String expr = "<#assign var1=1><#assign var2=2><#assign va";
 		checkCodeAssist(expr, "var1", "var2");
 	}
+	
+	@Test 
+	public void codeAssistAttemptTest() {
+		checkCodeAssist("<#", "attempt");
+	}
+	
+	@Test 
+	public void codeAssistBreakTest() {
+		checkCodeAssist("<#", "break");
+	}
+	
+	@Test 
+	public void codeAssistCaseTest() {
+		checkCodeAssist("<#", "case");
+	}
 
+	@Test 
+	public void codeAssistCompressTest() {
+		checkCodeAssist("<#", "compress");
+	}
+
+	@Test 
+	public void codeAssistDefaultTest() {
+		checkCodeAssist("<#", "default");
+	}
+	
 	@After
 	public void after() {
 	}
@@ -56,6 +81,7 @@ public class FreeMarkerCodeAssistTest extends FreemarkerTest  {
 		pe.open();
 		new DefaultTreeItem(prj, "ftl", "empty.ftl").doubleClick();				
 		
+		// editor focus bug workaround 
 		pe.open();
 		new DefaultTreeItem(prj, "ftl", "empty.ftl").doubleClick();				
 
@@ -70,6 +96,7 @@ public class FreeMarkerCodeAssistTest extends FreemarkerTest  {
 		ContentAssistant ca = textEditor.openContentAssistant();
 		List<String> proposals = ca.getProposals();
 		ca.close();
+		
 		for (String e : expected) {			
 			assertTrue(e + " is expected", proposals.contains(e));
 		}
