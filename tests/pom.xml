@@ -37,6 +37,7 @@
 		<module>org.jboss.tools.deltaspike.ui.bot.test</module>
 		<module>org.jboss.tools.dummy.ui.bot.test</module>
 		<module>org.jboss.tools.easymport.ui.bot.test</module>
+		<module>org.jboss.tools.eclipsecs.ui.test</module>
 		<module>org.jboss.tools.examples.ui.bot.test</module>
 		<module>org.jboss.tools.forge.ui.bot.test</module>
 		<module>org.jboss.tools.freemarker.ui.bot.test</module>
