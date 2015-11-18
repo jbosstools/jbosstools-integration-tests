@@ -22,6 +22,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: org.jboss.tools.hibernate.reddeer,
  org.jboss.tools.hibernate.reddeer.common,
  org.jboss.tools.hibernate.reddeer.console,
+ org.jboss.tools.hibernate.reddeer.database,
  org.jboss.tools.hibernate.reddeer.dialog,
  org.jboss.tools.hibernate.reddeer.editor,
  org.jboss.tools.hibernate.reddeer.factory,

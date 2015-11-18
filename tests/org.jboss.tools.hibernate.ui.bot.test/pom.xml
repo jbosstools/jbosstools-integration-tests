@@ -10,13 +10,13 @@
 	<groupId>org.jboss.tools.hibernatetools.tests</groupId>
 	<artifactId>org.jboss.tools.hibernate.ui.bot.test</artifactId>
 	<packaging>eclipse-test-plugin</packaging>
+
 	<properties>
 		<reddeer.config>${project.build.outputDirectory}</reddeer.config>
-
 		<!-- Tycho surefire arguments -->
 		<runtimesProperties>-Dreddeer.config=${reddeer.config}</runtimesProperties>
 		<!-- don't wrap this -->
-		<systemProperties>${integrationTestsSystemProperties} ${runtimesProperties}</systemProperties>
+		<systemProperties>${integrationTestsSystemProperties} ${runtimesProperties} -Ddatabase.path=${test.database}</systemProperties>
 		<test.installPath.OSX></test.installPath.OSX>
 	</properties>
 
