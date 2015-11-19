@@ -19,10 +19,10 @@ import org.junit.runners.Suite;
 
 @RunWith(RedDeerSuite.class)
 @Suite.SuiteClasses({
-	// Bower Tests
+	// Bower Smoke Tests
 	BowerInitTest.class,
 	BowerUpdateTest.class
 })
-public class BowerSmokeSuite {
+public class SmokeSuite {
 
 }
