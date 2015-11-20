@@ -15,10 +15,13 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.jboss.reddeer.common.matcher.RegexMatcher;
+import org.jboss.reddeer.core.matcher.WithTextMatcher;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.wst.jsdt.ui.wizards.JavaProjectWizardDialog;
 import org.jboss.reddeer.eclipse.wst.jsdt.ui.wizards.JavaProjectWizardFirstPage;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.jst.reddeer.bower.ui.BowerInitDialog;
 import org.junit.runner.RunWith;
@@ -63,6 +66,11 @@ public class BowerTestBase {
 	protected void assertBowerJsonExists(){
 		File bowerJson = new File(BOWER_BASE_DIRECTORY + "/bower.json");
 		assertTrue("bower.json file does not exist", bowerJson.exists());
+	}
+	
+	protected void bowerUpdate(String projectName){
+		new ProjectExplorer().getProject(projectName).select();
+		new ContextMenu(new WithTextMatcher("Run As"), new RegexMatcher("(\\d+)( Bower Update)")).select();
 	}
 
 }

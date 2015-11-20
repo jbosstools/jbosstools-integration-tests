@@ -12,9 +12,15 @@ package org.jboss.tools.jst.ui.bot.test.bower;
 
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
 import org.jboss.reddeer.common.matcher.RegexMatcher;
+import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.core.handler.ShellHandler;
 import org.jboss.reddeer.core.matcher.WithTextMatcher;
+import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
@@ -44,6 +50,23 @@ public class BowerUpdateTest extends BowerTestBase {
 		pe.getProject(PROJECT_NAME).select();
 		assertTrue("Bower Update is not available", //$NON-NLS-1$
 				new ContextMenu(new WithTextMatcher("Run As"), new RegexMatcher("(\\d+)( Bower Update)")).isEnabled()); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+
+	@Test
+	public void testDependeciesDownload() throws IOException {
+		/* create bower.json */
+		String content = "{\"name\": \"testProject\",\"dependencies\":{\"angularjs\": \"1.4.4\"}}";
+		File bowerJson = new File(BOWER_BASE_DIRECTORY + "/bower.json");
+		FileWriter fw = new FileWriter(bowerJson, false);
+		fw.write(content);
+		fw.flush();
+		fw.close();
+		assertTrue(bowerJson.exists());
+		new ProjectExplorer().getProject(PROJECT_NAME).refresh();
+		bowerUpdate(PROJECT_NAME);
+		new WaitUntil(new ConsoleHasText("angularjs#1.4.4 bower_components/angularjs"));
+		assertTrue("BowerUpdate failed, dependencies not found in tree", new ProjectExplorer().getProject(PROJECT_NAME)
+				.containsItem("bower_components", "angularjs", "angular.js"));
 	}
 
 }
