@@ -256,7 +256,9 @@ public class OpenShiftLabel {
 		
 		// Labels
 		public static final String LABEL = "Label:";
+		public static final String OC_LOCATION = "'oc' executable location";
 		public static final String VALUE = "Value:";
+		public static final String REMOTE_REQUEST_TIMEOUT = "Remote requests timeout (in seconds):";
 	}
 	
 	/**
