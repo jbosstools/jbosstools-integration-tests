@@ -10,4 +10,13 @@
 	<groupId>org.jboss.tools.openshift</groupId>
 	<artifactId>org.jboss.tools.openshift.reddeer</artifactId>
 	<packaging>eclipse-plugin</packaging>
+	
+	<dependencies>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-compress</artifactId>
+			<version>1.10</version>
+		</dependency>
+	</dependencies>
+	
 </project>

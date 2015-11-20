@@ -2,13 +2,10 @@ package org.jboss.tools.openshift.ui.bot.test.common;
 
 import static org.junit.Assert.assertFalse;
 
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
-import org.jboss.reddeer.swt.condition.ButtonWithTextIsEnabled;
-import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
+import org.jboss.tools.openshift.reddeer.preference.page.OpenShift2PreferencePage;
 import org.jboss.tools.openshift.reddeer.utils.JBossPerspective;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.junit.Before;
@@ -30,35 +27,32 @@ public class ID001RemoteRequestTimeoutTest {
 	
 	@Test
 	public void testSetRemoteRequestTimeout() {
-		WorkbenchPreferenceDialog preferences = new WorkbenchPreferenceDialog();
-		preferences.open();
-		preferences.select("JBoss Tools", "OpenShift 2");
+		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
+		OpenShift2PreferencePage page = new OpenShift2PreferencePage();
+		preferenceDialog.open();
+		preferenceDialog.select(page);
 		
-		LabeledText timeoutField = new LabeledText("Remote requests timeout (in seconds):");
+		
 		
 		assertFalse("Remote request timeout field is not editable.", 
-				timeoutField.isReadOnly());
+				new LabeledText(OpenShiftLabel.TextLabels.REMOTE_REQUEST_TIMEOUT).isReadOnly());
 		
-		timeoutField.setText("abcd");
+		page.setRemoteRequestTimeout("abcd");
 		assertFalse("Apply button should be disable if value is not numeric.",
 				new PushButton("Apply").isEnabled());
 		
-		timeoutField.setText("");
+		page.clearRemoteRequestTimeout();
 		assertFalse("Apply button should be disable if value is not set.",
 				new PushButton("Apply").isEnabled());
 		
 		// Must be typeText, bcs. after insertion the Apply button is not enabled
 		// and workaround for fedora bcs. of keyboard events
-		while (!timeoutField.getText().equals("360")) {
-			timeoutField.setText("");
-			timeoutField.typeText("360");
+		while (!page.getRemoteRequestTimeout().equals("360")) {
+			page.setRemoteRequestTimeout("");
+			page.typeRemoteRequestTimeout("360");
 		}
 		
-		new WaitUntil(new ButtonWithTextIsEnabled(new PushButton(OpenShiftLabel.Button.APPLY)),
-				TimePeriod.NORMAL);
-		
-		new PushButton(OpenShiftLabel.Button.APPLY).click();
-		
-		new OkButton().click();
+		page.apply();
+		preferenceDialog.ok();
 	}
 }

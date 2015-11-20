@@ -11,6 +11,7 @@ import org.jboss.tools.openshift.ui.bot.test.application.v3.basic.OpenNewApplica
 import org.jboss.tools.openshift.ui.bot.test.application.v3.basic.TemplateParametersTest;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.create.CreateApplicationFromTemplateTest;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.create.DeploymentTest;
+import org.jboss.tools.openshift.ui.bot.test.common.OCBinaryLocationTest;
 import org.jboss.tools.openshift.ui.bot.test.connection.v3.ConnectionDialogHandlingTest;
 import org.jboss.tools.openshift.ui.bot.test.connection.v3.ConnectionPropertiesTest;
 import org.jboss.tools.openshift.ui.bot.test.connection.v3.CreateNewConnectionTest;
@@ -29,6 +30,9 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(RedDeerSuite.class)
 @SuiteClasses({
+	// General
+	OCBinaryLocationTest.class,
+	
 	// Connection
 	CreateNewConnectionTest.class,
 	RemoveConnectionTest.class,
