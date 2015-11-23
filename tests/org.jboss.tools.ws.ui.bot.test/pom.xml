@@ -13,7 +13,7 @@
 	<artifactId>org.jboss.tools.ws.ui.bot.test</artifactId>
 	<packaging>eclipse-test-plugin</packaging>
 	<properties>
-		<reddeer.config>${project.build.outputDirectory}/config</reddeer.config>
+		<rd.config>${project.build.outputDirectory}/config</rd.config>
 		<requirementsDirectory>${project.build.directory}/requirements</requirementsDirectory>
 		<jbosstools.test.jboss-wildfly-9.home>${requirementsDirectory}/wildfly-9.0.1.Final</jbosstools.test.jboss-wildfly-9.home>
 		
@@ -22,7 +22,7 @@
 		<apache-cxf-2.x.url>http://archive.apache.org/dist/cxf/3.1.1/apache-cxf-3.1.1.zip</apache-cxf-2.x.url>
 		<apache-cxf-2.x.md5>142d0261de8012e6eafd780587313681</apache-cxf-2.x.md5>
 
-		<systemProperties>${integrationTestsSystemProperties} -Dws.scope=${ws.scope} -Dapache-cxf-2.x=${apache-cxf-2.x} -Dreddeer.config=${reddeer.config} -Djbosstools.test.jboss-wildfly-9.home=${jbosstools.test.jboss-wildfly-8.home} -Dreddeer.close.shells=false</systemProperties>
+		<systemProperties>${integrationTestsSystemProperties} -Dws.scope=${ws.scope} -Dapache-cxf-2.x=${apache-cxf-2.x} -Drd.config=${rd.config} -Djbosstools.test.jboss-wildfly-9.home=${jbosstools.test.jboss-wildfly-9.home} -Dreddeer.close.shells=false</systemProperties>
 		<surefire.timeout>10800</surefire.timeout>
 	</properties>
 	<profiles>
