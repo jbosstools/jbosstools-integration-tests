@@ -40,17 +40,22 @@
 <stringAttribute key="rd.launch.property.logLevel" value="ALL"/>
 <stringAttribute key="rd.launch.property.logMessageFilter" value="STEP"/>
 <stringAttribute key="rd.launch.property.pauseFailedTest" value="false"/>
+<stringAttribute key="rd.launch.property.rd.captureScreenshot" value="true"/>
+<stringAttribute key="rd.launch.property.rd.close.shells" value="true"/>
+<stringAttribute key="rd.launch.property.rd.close.welcome.screen" value="true"/>
+<stringAttribute key="rd.launch.property.rd.closeShells" value="true"/>
+<stringAttribute key="rd.launch.property.rd.closeWelcomeScreen" value="true"/>
+<stringAttribute key="rd.launch.property.rd.config" value="${file_prompt:&quot;Please choose a RedDeer configuration file&quot;:${project_loc:org.jboss.ide.eclipse.as.ui.bot.test}/resources/generated_config_files}"/>
+<stringAttribute key="rd.launch.property.rd.disable.maven.download.repo.index.on.startup" value="true"/>
+<stringAttribute key="rd.launch.property.rd.disableMavenIndex" value="true"/>
+<stringAttribute key="rd.launch.property.rd.logLevel" value="ALL"/>
+<stringAttribute key="rd.launch.property.rd.logMessageFilter" value="ALL"/>
+<stringAttribute key="rd.launch.property.rd.openAssociatedPerspective" value="never"/>
+<stringAttribute key="rd.launch.property.rd.pauseFailedTest" value="false"/>
+<stringAttribute key="rd.launch.property.rd.recordScreenCast" value="false"/>
+<stringAttribute key="rd.launch.property.rd.set.open.associated.perspective" value="never"/>
+<stringAttribute key="rd.launch.property.rd.timePeriodFactor" value="1.0"/>
 <stringAttribute key="rd.launch.property.recordScreenCast" value="false"/>
-<stringAttribute key="rd.launch.property.reddeer.captureScreenshot" value="true"/>
-<stringAttribute key="rd.launch.property.reddeer.close.shells" value="true"/>
-<stringAttribute key="rd.launch.property.reddeer.close.welcome.screen" value="true"/>
-<stringAttribute key="rd.launch.property.reddeer.config" value="${file_prompt:&quot;Please choose a RedDeer configuration file&quot;:${project_loc:org.jboss.ide.eclipse.as.ui.bot.test}/resources/generated_config_files}"/>
-<stringAttribute key="rd.launch.property.reddeer.disable.maven.download.repo.index.on.startup" value="true"/>
-<stringAttribute key="rd.launch.property.reddeer.logLevel" value="ALL"/>
-<stringAttribute key="rd.launch.property.reddeer.logMessageFilter" value="ALL"/>
-<stringAttribute key="rd.launch.property.reddeer.pauseFailedTest" value="false"/>
-<stringAttribute key="rd.launch.property.reddeer.recordScreenCast" value="false"/>
-<stringAttribute key="rd.launch.property.reddeer.set.open.associated.perspective" value="never"/>
 <booleanAttribute key="show_selected_only" value="false"/>
 <booleanAttribute key="tracing" value="false"/>
 <booleanAttribute key="useCustomFeatures" value="false"/>
