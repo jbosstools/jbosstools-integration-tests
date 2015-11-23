@@ -15,8 +15,8 @@ import org.jboss.reddeer.eclipse.ui.problems.Problem;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
 import org.jboss.reddeer.common.condition.AbstractWaitCondition;
-import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.common.matcher.RegexMatcher;
+import org.jboss.reddeer.core.exception.CoreLayerException;
 
 /**
  * Returns true, if specific problem exists in problems view
@@ -42,7 +42,7 @@ public class SpecificProblemExists extends AbstractWaitCondition {
 			String text = null;
 			try{
 				text = error.getDescription();
-			} catch (SWTLayerException ex){
+			} catch (CoreLayerException ex){
 				continue;
 			}
 			if (regexMatcher.matches(text)) {
@@ -53,7 +53,7 @@ public class SpecificProblemExists extends AbstractWaitCondition {
 			 String text = null;
 			 try{
 				 text = warning.getDescription();
-			 } catch (SWTLayerException ex){
+			 } catch (CoreLayerException ex){
 				 continue;
 			 }
 			if (regexMatcher.matches(text)) {
