@@ -1,6 +1,7 @@
 package org.jboss.tools.openshift.ui.bot.test.application.v3.create;
 
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.jface.viewer.handler.TreeViewerHandler;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.utils.TestUtils;
 import org.jboss.tools.openshift.reddeer.view.OpenShift3Connection;
@@ -14,6 +15,8 @@ public class AbstractCreateApplicationTest {
 
 	public static String gitFolder = "jboss-eap-quickstarts";
 	public static String projectName = "jboss-kitchensink";
+	
+	protected TreeViewerHandler treeViewerHandler = TreeViewerHandler.getInstance();
 	
 	@BeforeClass
 	public static void setUp() {

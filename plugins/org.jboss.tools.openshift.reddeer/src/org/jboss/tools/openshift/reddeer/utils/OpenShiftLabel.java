@@ -73,9 +73,9 @@ public class OpenShiftLabel {
 		public static final String DELETE_OS_PROJECT = "Delete Project";
 		
 		// Resource related
-		public static final String CLONE_BUILD = "Clone Build...";
+		public static final String CLONE_BUILD = "Clone Build";
 		public static final String DELETE_RESOURCE = "Delete Resource...";
-		public static final String START_BUILD = "Start Build...";
+		public static final String START_BUILD = "Start Build";
 		
 		// Application related
 		public static final String APPLICATION_DETAILS = "Details...";
@@ -113,6 +113,7 @@ public class OpenShiftLabel {
 		public static final String ADD_CARTRIDGES = "Add Embedded Cartridges";
 		public static final String ADD_CARTRIDGE_DIALOG = "Add Cartridges";
 		public static final String APPLICATION_DETAILS = "Application Details";
+		public static final String APPLICATION_PORT_FORWARDING = "Application Port Forwarding";
 		public static final String APPLICATION_SERVER_REMOVE = "Application and Server removal";
 		public static final String COMMIT = "Commit Changes";
 		public static final String DELETE_APP = "Application removal";
@@ -259,6 +260,7 @@ public class OpenShiftLabel {
 		public static final String OC_LOCATION = "'oc' executable location";
 		public static final String VALUE = "Value:";
 		public static final String REMOTE_REQUEST_TIMEOUT = "Remote requests timeout (in seconds):";
+		public static final String FIND_FREE_PORTS = "Find free local ports for remote ports";
 	}
 	
 	/**
