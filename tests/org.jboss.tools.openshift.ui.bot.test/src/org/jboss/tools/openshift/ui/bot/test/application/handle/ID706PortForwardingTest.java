@@ -10,7 +10,7 @@ import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.swt.api.TableItem;
 import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.condition.ButtonWithTextIsEnabled;
+import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -86,7 +86,7 @@ public class ID706PortForwardingTest {
 		
 		new PushButton(OpenShiftLabel.Button.START_ALL).click();
 		
-		new WaitUntil(new ButtonWithTextIsEnabled(new OkButton()), TimePeriod.LONG);
+		new WaitUntil(new WidgetIsEnabled(new OkButton()), TimePeriod.LONG);
 		
 		new OkButton().click();
 		
@@ -109,7 +109,7 @@ public class ID706PortForwardingTest {
 		new DefaultShell(OpenShiftLabel.Shell.PORTS_FORWARDING);
 		new PushButton(OpenShiftLabel.Button.STOP_ALL).click();
 		
-		new WaitUntil(new ButtonWithTextIsEnabled(new OkButton()), TimePeriod.LONG);
+		new WaitUntil(new WidgetIsEnabled(new OkButton()), TimePeriod.LONG);
 		
 		new OkButton().click();
 		

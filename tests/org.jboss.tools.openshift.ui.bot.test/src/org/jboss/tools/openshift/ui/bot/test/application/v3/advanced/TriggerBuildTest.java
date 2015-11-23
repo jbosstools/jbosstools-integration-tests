@@ -28,6 +28,10 @@ public class TriggerBuildTest extends AbstractCreateApplicationTest {
 				DatastoreOS3.PROJECT1_DISPLAYED_NAME, Resource.BUILD_CONFIG), 
 				TimePeriod.getCustom(120), true, TimePeriod.getCustom(7));
 		
+		new WaitUntil(new ResourceExists(DatastoreOS3.SERVER, DatastoreOS3.USERNAME, 
+				DatastoreOS3.PROJECT1_DISPLAYED_NAME, Resource.BUILD, "eap-app-1"), 
+				TimePeriod.LONG, true, TimePeriod.getCustom(7));
+		
 		explorer.getOpenShift3Connection(DatastoreOS3.USERNAME, DatastoreOS3.SERVER).getProject(
 				DatastoreOS3.PROJECT1_DISPLAYED_NAME).getOpenShiftResources(Resource.BUILD_CONFIG).get(0).select();
 		new ContextMenu(OpenShiftLabel.ContextMenu.START_BUILD).select();
