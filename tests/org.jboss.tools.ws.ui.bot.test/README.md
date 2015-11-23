@@ -10,7 +10,7 @@
 
 
 0. Get prerequisites:
-   - JBoss server: WildFly 8, JBoss AS 7 or JBoss EAP 6 - setup RedDeer xml config file (see https://github.com/jboss-reddeer/reddeer/wiki/Write-complex-requirement-with-own-schema) e.g. WildFly config file
+   - JBoss server: WildFly, JBoss AS 7 or JBoss EAP 6 - setup RedDeer xml config file (see https://github.com/jboss-reddeer/reddeer/wiki/Write-complex-requirement-with-own-schema) e.g. WildFly config file
 ```
 <?xml version="1.0" encoding="UTF-8"?>
 <testrun 
@@ -30,7 +30,7 @@
 	</requirements>
 </testrun>
 ```
-```
+
  - projects used to test some features: download from maven repo
    JBoss Tools Experiments/org/jboss/tools/ws/tests/org.jboss.tools.ws.ui.bot.test.resources.projects
    https://repository.jboss.org/nexus/index.html#view-repositories;jbosstools-experiments~browseindex
@@ -55,8 +55,7 @@
    (see https://github.com/jboss-reddeer/reddeer/wiki/Installation)
 
 5. Run with VM arguments:
- - to prevent from closing shells after every test execution (this is ** necessary **) ```-Dreddeer.close.shells=false```
- - to set server configuration```-Dreddeer.config=/path/to/wildfly.xml```
+ - to set server configuration```-Drd.config=/path/to/wildfly.xml```
  - to close Usage reporting dialog ```-Dusage_reporting_enabled=false```
 
 6. Enjoy testing :)
