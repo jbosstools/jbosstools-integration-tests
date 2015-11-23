@@ -21,7 +21,7 @@
 		<requirementsDirectory>${project.build.directory}/requirements</requirementsDirectory>
 		<jbosstools.test.jboss-wildfly-8.home>${requirementsDirectory}/wildfly-8.2.0.Final</jbosstools.test.jboss-wildfly-8.home>
 		<systemProperties>${integrationTestsSystemProperties} ${runtimesProperties}</systemProperties>
-		<runtimesProperties>-Dreddeer.config=${project.build.outputDirectory}/project/wildfly-8.xml -Djbosstools.test.jboss-wildfly-8.home=${jbosstools.test.jboss-wildfly-8.home}</runtimesProperties>
+		<runtimesProperties>-Drd.config=${project.build.outputDirectory}/project/wildfly-8.xml -Djbosstools.test.jboss-wildfly-8.home=${jbosstools.test.jboss-wildfly-8.home}</runtimesProperties>
 	</properties>
 
 	<build>
