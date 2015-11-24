@@ -146,7 +146,7 @@ public class ServerRequirement extends ServerReqBase implements Requirement<JBos
 					serverTypeLabelText = label+"  "+version;
 				}
 				if(version.equals("9.x")){
-					serverTypeLabelText = label+"  "+version+" ";
+					serverTypeLabelText = label+"  "+version;
 				}
 				for (org.jboss.reddeer.swt.api.TreeItem item : new DefaultTreeItem("JBoss Community").getItems()){
 					java.lang.System.out.println("'" + item.getText() + "'");	
