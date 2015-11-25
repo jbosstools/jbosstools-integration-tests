@@ -18,15 +18,18 @@ import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 /**
  * Eclipse Checkstyle test
  * @author Jiri Peterka
  *
  */
+@RunWith(RedDeerSuite.class)
 public class CheckstyleTest {
 		
 	private static final Logger log = Logger.getLogger(CheckstyleTest.class);
@@ -44,7 +47,7 @@ public class CheckstyleTest {
 		
 		new DefaultTreeItem("cstest","src","org.jbds.cs","CSTestClass.java").select();
 		
-		new ContextMenu("Checkstyle","Check Code with Checkstyle");
+		new ContextMenu("Checkstyle","Check Code with Checkstyle").select();
 		
 		new WaitWhile(new JobIsRunning());
 	 }
@@ -59,7 +62,7 @@ public class CheckstyleTest {
 		wizard.open();
 
 		String rpath = getResourceAbsolutePath(
-				Activator.PLUGIN_ID, "resources/prj");
+				Activator.PLUGIN_ID, "resources/checkstyle/prj");
 		String wpath = getWorkspaceAbsolutePath();
 		File rfile = new File(rpath);
 		File wfile = new File(wpath);
