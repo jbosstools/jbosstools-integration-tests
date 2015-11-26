@@ -1,4 +1,4 @@
-package org.jboss.tools.openshift.ui.bot.test.util;
+package org.jboss.tools.openshift.reddeer.utils;
 
 import java.io.File;
 
@@ -22,9 +22,9 @@ public class DatastoreOS3 {
 	public static String GIT_USERNAME = "openshift-tools-testing-account";
 	public static String GIT_PASSWORD = System.getProperty("github.password");
 	
-	public static final String PROJECT1 = "project01";
-	public static String PROJECT1_DISPLAYED_NAME = "project01name";
-	public static String PROJECT2 = "project02";
+	public static final String PROJECT1 = "project-name01";
+	public static String PROJECT1_DISPLAYED_NAME = "displayedName-01";
+	public static String PROJECT2 = "project-name02";
 	
 	public static AuthenticationMethod AUTH_METHOD;
 	

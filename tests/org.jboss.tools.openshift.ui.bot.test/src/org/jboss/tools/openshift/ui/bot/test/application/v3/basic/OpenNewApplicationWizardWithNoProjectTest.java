@@ -24,10 +24,10 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.jboss.tools.openshift.reddeer.utils.DatastoreOS3;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.view.OpenShift3Connection;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
-import org.jboss.tools.openshift.ui.bot.test.util.DatastoreOS3;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -42,9 +42,8 @@ public class OpenNewApplicationWizardWithNoProjectTest {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 		explorer.open();
 		
-		OpenShift3Connection connection = explorer.getOpenShift3Connection(
-				DatastoreOS3.USERNAME, DatastoreOS3.SERVER);
-		connection.getProject(DatastoreOS3.PROJECT1_DISPLAYED_NAME).delete();
+		OpenShift3Connection connection = explorer.getOpenShift3Connection();
+		connection.getProject().delete();
 		connection.getProject(DatastoreOS3.PROJECT2).delete();
 		connection.refresh();
 	}
@@ -131,7 +130,7 @@ public class OpenNewApplicationWizardWithNoProjectTest {
 		explorer.reopen();
 		
 		OpenShift3Connection connection = 
-				explorer.getOpenShift3Connection(DatastoreOS3.USERNAME, DatastoreOS3.SERVER);
+				explorer.getOpenShift3Connection();
 		connection.select();
 		new ContextMenu(OpenShiftLabel.ContextMenu.NEW_OS3_APPLICATION).select();;
 		
@@ -162,8 +161,7 @@ public class OpenNewApplicationWizardWithNoProjectTest {
 	
 	@After
 	public void deleteTmpProject() {
-		OpenShift3Connection connection = new OpenShiftExplorerView().getOpenShift3Connection(
-				DatastoreOS3.USERNAME, DatastoreOS3.SERVER);
+		OpenShift3Connection connection = new OpenShiftExplorerView().getOpenShift3Connection();
 		connection.refresh();
 		connection.getProject(projectName).delete();
 	}
@@ -173,9 +171,8 @@ public class OpenNewApplicationWizardWithNoProjectTest {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 		explorer.open();
 		
-		OpenShift3Connection connection = explorer.getOpenShift3Connection(
-				DatastoreOS3.USERNAME, DatastoreOS3.SERVER);
-		connection.createNewProject(DatastoreOS3.PROJECT1, DatastoreOS3.PROJECT1_DISPLAYED_NAME);
+		OpenShift3Connection connection = explorer.getOpenShift3Connection();
+		connection.createNewProject();
 		connection.createNewProject(DatastoreOS3.PROJECT2);
 	}
 }

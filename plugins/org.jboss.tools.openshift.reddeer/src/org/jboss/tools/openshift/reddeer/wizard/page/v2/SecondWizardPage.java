@@ -6,7 +6,7 @@ import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.swt.condition.ButtonWithTextIsEnabled;
+import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.swt.impl.button.BackButton;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.OkButton;
@@ -32,7 +32,7 @@ public class SecondWizardPage {
 		new DefaultShell(OpenShiftLabel.Shell.NEW_APP_WIZARD);
 		
 		// Wait until data are processed - there is no other way currently
-		new WaitUntil(new ButtonWithTextIsEnabled(new BackButton()), TimePeriod.LONG);
+		new WaitUntil(new WidgetIsEnabled(new BackButton()), TimePeriod.LONG);
 	}
 	
 	/**
@@ -93,7 +93,7 @@ public class SecondWizardPage {
 				new DefaultText(0).setText("varname");
 				new DefaultText(1).setText("varvalue");
 				
-				new WaitUntil(new ButtonWithTextIsEnabled(new OkButton()), TimePeriod.NORMAL);
+				new WaitUntil(new WidgetIsEnabled(new OkButton()), TimePeriod.NORMAL);
 				
 				new OkButton().click();
 				
@@ -129,7 +129,7 @@ public class SecondWizardPage {
 				new DefaultTable().getItem(cartridge).setChecked(true);
 			}
 			
-			new WaitUntil(new ButtonWithTextIsEnabled(new OkButton()), TimePeriod.NORMAL);
+			new WaitUntil(new WidgetIsEnabled(new OkButton()), TimePeriod.NORMAL);
 			
 			new OkButton().click();
 			
@@ -154,7 +154,7 @@ public class SecondWizardPage {
 			new DefaultTable().getItem(OpenShiftLabel.EmbeddableCartridge.DOWNLOADABLE_CARTRIDGE).setChecked(true);
 			new DefaultText(0).setText(URL);
 			
-			new WaitUntil(new ButtonWithTextIsEnabled(new OkButton()), TimePeriod.NORMAL);
+			new WaitUntil(new WidgetIsEnabled(new OkButton()), TimePeriod.NORMAL);
 			
 			new OkButton().click();
 			

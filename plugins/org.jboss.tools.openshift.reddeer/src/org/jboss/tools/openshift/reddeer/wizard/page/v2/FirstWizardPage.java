@@ -4,7 +4,7 @@ import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.jface.viewer.handler.TreeViewerHandler;
 import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.condition.ButtonWithTextIsEnabled;
+import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
@@ -46,7 +46,7 @@ public class FirstWizardPage {
 		
 		treeViewerHandler.getTreeItem(new DefaultTree(), domain, applicationName).select();
 	
-		new WaitUntil(new ButtonWithTextIsEnabled(new OkButton()), TimePeriod.NORMAL);
+		new WaitUntil(new WidgetIsEnabled(new OkButton()), TimePeriod.NORMAL);
 				
 		new OkButton().click();
 	}

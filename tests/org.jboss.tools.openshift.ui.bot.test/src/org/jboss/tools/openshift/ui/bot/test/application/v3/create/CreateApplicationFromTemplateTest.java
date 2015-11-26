@@ -32,7 +32,7 @@ import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftProject;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftResource;
 import org.jboss.tools.openshift.reddeer.wizard.v3.NewOpenShift3ApplicationWizard;
-import org.jboss.tools.openshift.ui.bot.test.util.DatastoreOS3;
+import org.jboss.tools.openshift.ui.bot.test.application.v3.basic.TemplateParametersTest;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -52,8 +52,7 @@ public class CreateApplicationFromTemplateTest {
 		String genericWebhookURL;
 		String githubWebhookURL;
 		
-		new NewOpenShift3ApplicationWizard(DatastoreOS3.SERVER, DatastoreOS3.USERNAME,
-				DatastoreOS3.PROJECT1_DISPLAYED_NAME).openWizardFromExplorer();
+		new NewOpenShift3ApplicationWizard().openWizardFromExplorer();
 		new DefaultTree().selectItems(new DefaultTreeItem(OpenShiftLabel.Others.EAP_TEMPLATE));
 		
 		new WaitUntil(new WidgetIsEnabled(new NextButton()), TimePeriod.NORMAL);
@@ -62,11 +61,10 @@ public class CreateApplicationFromTemplateTest {
 		
 		new WaitUntil(new WidgetIsEnabled(new BackButton()), TimePeriod.LONG);
 		
-		String gitRef = new DefaultTable().getItem("GIT_REF").getText(1);
-		String gitURI = new DefaultTable().getItem("GIT_URI").getText(1);
-		String gitContext = new DefaultTable().getItem("GIT_CONTEXT_DIR").getText(1);
-		String eapRelease = new DefaultTable().getItem("EAP_RELEASE").getText(1);
-		String applicationName = new DefaultTable().getItem("APPLICATION_NAME").getText(1);
+		String srcRepoRef = new DefaultTable().getItem(TemplateParametersTest.SOURCE_REPOSITORY_REF).getText(1);
+		String srcRepoURI = new DefaultTable().getItem(TemplateParametersTest.SOURCE_REPOSITORY_URL).getText(1);
+		String contextDir = new DefaultTable().getItem(TemplateParametersTest.CONTEXT_DIR).getText(1);
+		String applicationName = new DefaultTable().getItem(TemplateParametersTest.APPLICATION_NAME).getText(1);
 		new NextButton().click();
 		
 		new WaitWhile(new WidgetIsEnabled(new NextButton()), TimePeriod.LONG);
@@ -77,20 +75,22 @@ public class CreateApplicationFromTemplateTest {
 		
 		new DefaultShell(OpenShiftLabel.Shell.APPLICATION_SUMMARY);
 		
-		assertTrue("GIT_REF is not same as the one shown in New OpenShift Application wizard.", 
-				new DefaultTable().getItem("GIT_REF").getText(1).equals(gitRef));
-		assertTrue("GIT_URI is not same as the one shown in New OpenShift Application wizard.", 
-				new DefaultTable().getItem("GIT_URI").getText(1).equals(gitURI));
-		assertTrue("GIT_CONTEXT_DIR is not same as the one shown in New OpenShift Application wizard.", 
-				new DefaultTable().getItem("GIT_CONTEXT_DIR").getText(1).equals(gitContext));
-		assertTrue("EAP_RELEASE is not same as the one shown in New OpenShift Application wizard.", 
-				new DefaultTable().getItem("EAP_RELEASE").getText(1).equals(eapRelease));
-		assertTrue("APPLICATION_NAME is not same as the one shown in New OpenShift Application wizard.", 
-				new DefaultTable().getItem("APPLICATION_NAME").getText(1).equals(applicationName));
-		assertFalse("GENERIC_TRIGGER_SECRET is empty, altough it should be generated and non-empty.",
-				new DefaultTable().getItem("GENERIC_TRIGGER_SECRET").getText(1).isEmpty());
-		assertFalse("GITHUB_TRIGGER_SECRET is empty, altough it should be generated and non-empty.", 
-				new DefaultTable().getItem("GITHUB_TRIGGER_SECRET").getText(1).isEmpty());
+		assertTrue(TemplateParametersTest.SOURCE_REPOSITORY_REF + " is not same as the one shown in "
+				+ "New OpenShift Application wizard.", new DefaultTable().getItem(
+						TemplateParametersTest.SOURCE_REPOSITORY_REF).getText(1).equals(srcRepoRef));
+		assertTrue(TemplateParametersTest.SOURCE_REPOSITORY_URL.split(" ")[0] + " is not same as the one shown in "
+				+ "New OpenShift Application wizard.", new DefaultTable().getItem(
+						TemplateParametersTest.SOURCE_REPOSITORY_URL.split(" ")[0]).getText(1).equals(srcRepoURI));
+		assertTrue(TemplateParametersTest.CONTEXT_DIR + " is not same as the one shown in New OpenShift"
+				+ " Application wizard.", new DefaultTable().getItem(TemplateParametersTest.CONTEXT_DIR).
+					getText(1).equals(contextDir));
+		assertTrue(TemplateParametersTest.APPLICATION_NAME.split(" ")[0] + " is not same as the one shown in "
+				+ "New OpenShift Application wizard.", new DefaultTable().getItem(
+						TemplateParametersTest.APPLICATION_NAME.split(" ")[0]).getText(1).equals(applicationName));
+		assertFalse(TemplateParametersTest.GENERIC_SECRET.split(" ")[0] + " should be generated and non-empty.",
+				new DefaultTable().getItem(TemplateParametersTest.GENERIC_SECRET.split(" ")[0]).getText(1).isEmpty());
+		assertFalse(TemplateParametersTest.GITHUB_SECRET.split(" ")[0] + " should be generated and non-empty.", 
+				new DefaultTable().getItem(TemplateParametersTest.GITHUB_SECRET.split(" ")[0]).getText(1).isEmpty());
 		
 		new DefaultLink("Click here to display the webhooks available to automatically trigger builds.").click();
 		
@@ -133,17 +133,17 @@ public class CreateApplicationFromTemplateTest {
 		
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 		explorer.open();
-		OpenShiftProject project = explorer.getOpenShift3Connection(DatastoreOS3.USERNAME, DatastoreOS3.SERVER).
-				getProject(DatastoreOS3.PROJECT1_DISPLAYED_NAME);
+		OpenShiftProject project = explorer.getOpenShift3Connection().
+				getProject();
 		
 		List<OpenShiftResource> buildConfig = project.getOpenShiftResources(Resource.BUILD_CONFIG);
 		assertTrue("There should be precisely 1 build config for created application, but there is following amount"
 				+ " of build configs: " + buildConfig.size(), buildConfig.size() == 1);
 		assertTrue("There should be application name and git URI in build config tree item, but they are not."
-				+ "Application name is '" + applicationName + "' and git URI is '" + gitURI + "', but build "
+				+ "Application name is '" + applicationName + "' and git URI is '" + srcRepoURI + "', but build "
 						+ "config consists of text '" + buildConfig.get(0).getText() + "'",
 				buildConfig.get(0).getText().contains(applicationName) && 
-				buildConfig.get(0).getText().contains(gitURI));
+				buildConfig.get(0).getText().contains(srcRepoURI));
 		
 		List<OpenShiftResource> imageStream = project.getOpenShiftResources(Resource.IMAGE_STREAM);
 		assertTrue("There should be precisely 1 image stream for created application, but there is following amount"
@@ -156,8 +156,8 @@ public class CreateApplicationFromTemplateTest {
 				routes.get(0).getText().contains(applicationName));
 		
 		List<OpenShiftResource> services = project.getOpenShiftResources(Resource.SERVICE);
-		assertTrue("There should be precisely 2 services for created application, but there is following amount"
-				+ " of services: " + services.size(), services.size() == 2);
+		assertTrue("There should be precisely 1 service for created application, but there is following amount"
+				+ " of services: " + services.size(), services.size() == 1);
 	}
 	
 	@After
@@ -165,9 +165,9 @@ public class CreateApplicationFromTemplateTest {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 		explorer.reopen();
 		
-		OpenShift3Connection connection  = explorer.getOpenShift3Connection(DatastoreOS3.USERNAME);
-		connection.getProject(DatastoreOS3.PROJECT1_DISPLAYED_NAME).delete();
-		connection.createNewProject(DatastoreOS3.PROJECT1, DatastoreOS3.PROJECT1_DISPLAYED_NAME);
+		OpenShift3Connection connection  = explorer.getOpenShift3Connection();
+		connection.getProject().delete();
+		connection.createNewProject();
 		
 		ProjectExplorer projectExplorer = new ProjectExplorer();
 		if (projectExplorer.containsProject(projectName)) {

@@ -10,7 +10,7 @@ import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.jface.exception.JFaceLayerException;
-import org.jboss.reddeer.swt.condition.ButtonWithTextIsEnabled;
+import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.swt.impl.button.BackButton;
 import org.jboss.reddeer.swt.impl.button.CancelButton;
 import org.jboss.reddeer.swt.impl.button.FinishButton;
@@ -20,7 +20,7 @@ import org.jboss.reddeer.swt.impl.button.YesButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
-import org.jboss.tools.openshift.reddeer.condition.OpenShiftApplicationExists;
+import org.jboss.tools.openshift.reddeer.condition.v2.OpenShiftApplicationExists;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.jboss.tools.openshift.reddeer.wizard.NewOpenShiftApplicationWizard;
@@ -214,7 +214,7 @@ public class NewOpenShift2ApplicationWizard extends NewOpenShiftApplicationWizar
 	 * Waits and clicks Back button.
 	 */
 	public void back() {
-		new WaitUntil(new ButtonWithTextIsEnabled(new BackButton()), TimePeriod.LONG);
+		new WaitUntil(new WidgetIsEnabled(new BackButton()), TimePeriod.LONG);
 		
 		new BackButton().click();
 	}
@@ -223,7 +223,7 @@ public class NewOpenShift2ApplicationWizard extends NewOpenShiftApplicationWizar
 	 * Waits and clicks Next button.
 	 */
 	public void next() {
-		new WaitUntil(new ButtonWithTextIsEnabled(new NextButton()), TimePeriod.LONG);
+		new WaitUntil(new WidgetIsEnabled(new NextButton()), TimePeriod.LONG);
 		
 		new NextButton().click();
 	}
@@ -233,7 +233,7 @@ public class NewOpenShift2ApplicationWizard extends NewOpenShiftApplicationWizar
 	 * Waits and clicks Cancel button .
 	 */
 	public void cancel() {
-		new WaitUntil(new ButtonWithTextIsEnabled(new CancelButton()), TimePeriod.LONG);
+		new WaitUntil(new WidgetIsEnabled(new CancelButton()), TimePeriod.LONG);
 		
 		new CancelButton().click();
 	}
@@ -242,7 +242,7 @@ public class NewOpenShift2ApplicationWizard extends NewOpenShiftApplicationWizar
 	 * Waits and clicks Finish button.
 	 */
 	public void finish() {
-		new WaitUntil(new ButtonWithTextIsEnabled(new FinishButton()), TimePeriod.LONG);
+		new WaitUntil(new WidgetIsEnabled(new FinishButton()), TimePeriod.LONG);
 		
 		new FinishButton().click();
 	}

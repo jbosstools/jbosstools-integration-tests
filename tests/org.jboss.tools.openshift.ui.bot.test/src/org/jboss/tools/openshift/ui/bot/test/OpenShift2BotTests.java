@@ -11,6 +11,7 @@
 package org.jboss.tools.openshift.ui.bot.test;
 
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.tools.openshift.reddeer.utils.CleanUpOS2;
 import org.jboss.tools.openshift.ui.bot.test.application.adapter.ID801SwitchProjectDeploymentTest;
 import org.jboss.tools.openshift.ui.bot.test.application.adapter.ID802ServerAdapterOverviewTest;
 import org.jboss.tools.openshift.ui.bot.test.application.adapter.ID803ServerAdapterHandlingTest;
@@ -85,7 +86,6 @@ import org.jboss.tools.openshift.ui.bot.test.domain.ID207DomainPropertiesTest;
 import org.jboss.tools.openshift.ui.bot.test.ssh.ID150CreateNewSSHKeyTest;
 import org.jboss.tools.openshift.ui.bot.test.ssh.ID151RemoveSSHKeyTest;
 import org.jboss.tools.openshift.ui.bot.test.ssh.ID152AddExistingSSHKeyTest;
-import org.jboss.tools.openshift.ui.bot.test.util.CleanUpOS2;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 

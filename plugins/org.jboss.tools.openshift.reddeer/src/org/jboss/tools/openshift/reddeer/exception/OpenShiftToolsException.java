@@ -1,4 +1,4 @@
-package org.jboss.tools.openshift.reddeer.utils;
+package org.jboss.tools.openshift.reddeer.exception;
 
 /**
  * 

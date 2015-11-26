@@ -25,31 +25,32 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.wizard.v3.NewOpenShift3ApplicationWizard;
-import org.jboss.tools.openshift.ui.bot.test.util.DatastoreOS3;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 public class TemplateParametersTest {
 
-	public static final String APPLICATION_HOSTNAME = "APPLICATION_HOSTNAME";
-	public static final String APPLICATION_NAME = "APPLICATION_NAME";
-	public static final String GENERIC_SECRET = "GENERIC_TRIGGER_SECRET";
-	public static final String GITHUB_SECRET = "GITHUB_TRIGGER_SECRET";
-	public static final String GIT_URI = "GIT_URI";
+	public static final String APPLICATION_DOMAIN = "APPLICATION_DOMAIN";
+	public static final String APPLICATION_NAME = "APPLICATION_NAME *";
+	public static final String CONTEXT_DIR = "CONTEXT_DIR";
+	public static final String GENERIC_SECRET = "GENERIC_WEBHOOK_SECRET *";
+	public static final String GITHUB_SECRET = "GITHUB_WEBHOOK_SECRET *";
+	public static final String SOURCE_REPOSITORY_REF = "SOURCE_REPOSITORY_REF";
+	public static final String SOURCE_REPOSITORY_URL = "SOURCE_REPOSITORY_URL *";
 	
-	public static final String APPLICATION_HOSTNAME_VALUE = "Custom hostname for service routes.  "
+	
+	public static final String APPLICATION_DOMAIN_VALUE = "Custom hostname for service routes.  "
 			+ "Leave blank for default hostname, e.g.: <application-name>.<project>."
 			+ "<default-domain-suffix>";
 	public static final String APPLICATION_NAME_VALUE = "The name for the application.";
-	public static final String GIT_URI_VALUE = "https://github.com/jboss-developer/jboss-eap-quickstarts";
+	public static final String SOURCE_REPOSITORY_URL_VALUE = "https://github.com/jboss-developer/jboss-eap-quickstarts";
 	public static final String PERSONAL_GIT_REPO_URI = "https://github.com/mlabuda/jboss-eap-quickstarts";
 	public static final String SECRET_VALUE = "(generated)";
 	
 	@Before
 	public void openTemplateParametersWizardPage() {
-		new NewOpenShift3ApplicationWizard(DatastoreOS3.SERVER, DatastoreOS3.USERNAME,
-				DatastoreOS3.PROJECT1_DISPLAYED_NAME).openWizardFromExplorer();
+		new NewOpenShift3ApplicationWizard().openWizardFromExplorer();
 		new DefaultTree().selectItems(new DefaultTreeItem(OpenShiftLabel.Others.EAP_TEMPLATE));
 		
 		new WaitUntil(new WidgetIsEnabled(new NextButton()), TimePeriod.NORMAL);
@@ -61,26 +62,27 @@ public class TemplateParametersTest {
 	
 	@Test
 	public void testTemplateParameterDetails() {
-		verifyParameter(APPLICATION_HOSTNAME, APPLICATION_HOSTNAME_VALUE);
+		verifyParameter(APPLICATION_DOMAIN, APPLICATION_DOMAIN_VALUE);
 		verifyParameter(APPLICATION_NAME, APPLICATION_NAME_VALUE);
-		verifyParameter(APPLICATION_HOSTNAME, APPLICATION_HOSTNAME_VALUE);
+		verifyParameter(APPLICATION_DOMAIN, APPLICATION_DOMAIN_VALUE);
 	}
 	
 	@Test
 	public void testTemplateParametersDefaultValues() {
-		assertTrue("Value for " + APPLICATION_HOSTNAME + " parameter should be empty.",
-				new DefaultTable().getItem(APPLICATION_HOSTNAME).getText(1).equals(""));
+		assertTrue("Value for " + APPLICATION_DOMAIN + " parameter should be empty.",
+				new DefaultTable().getItem(APPLICATION_DOMAIN).getText(1).equals(""));
 		assertTrue("Value for " + GENERIC_SECRET + " parameter should be " + SECRET_VALUE,
 				new DefaultTable().getItem(GENERIC_SECRET).getText(1).equals(SECRET_VALUE));
 		assertTrue("Value for " + GITHUB_SECRET + " parameter should be " + SECRET_VALUE,
 				new DefaultTable().getItem(GITHUB_SECRET).getText(1).equals(SECRET_VALUE));
-		assertTrue("Value for " + GIT_URI + " parameters should be " + GIT_URI_VALUE,
-				new DefaultTable().getItem(GIT_URI).getText(1).equals(GIT_URI_VALUE));
+		assertTrue("Value for " + SOURCE_REPOSITORY_URL + " parameters should be " + 
+				SOURCE_REPOSITORY_URL_VALUE, new DefaultTable().getItem(SOURCE_REPOSITORY_URL).
+					getText(1).equals(SOURCE_REPOSITORY_URL_VALUE));
 	}
 	
 	@Test
 	public void testModifyTemplateParameter() {
-		new DefaultTable().getItem(GIT_URI).select();
+		new DefaultTable().getItem(SOURCE_REPOSITORY_URL).select();
 		new PushButton(OpenShiftLabel.Button.EDIT).click();
 		
 		new DefaultShell(OpenShiftLabel.Shell.EDIT_TEMPLATE_PARAMETER);
@@ -91,12 +93,13 @@ public class TemplateParametersTest {
 		
 		new DefaultShell(OpenShiftLabel.Shell.NEW_APP_WIZARD);
 		assertTrue("New value of git repo URI has not been modified successfully.",
-				new DefaultTable().getItem(GIT_URI).getText(1).equals(PERSONAL_GIT_REPO_URI));
+				new DefaultTable().getItem(SOURCE_REPOSITORY_URL).getText(1).equals(PERSONAL_GIT_REPO_URI));
 		
 		new PushButton(OpenShiftLabel.Button.RESET).click();
 
 		try {
-			new WaitUntil(new TableContainsItem(new DefaultTable(), GIT_URI_VALUE, 1), TimePeriod.NORMAL);
+			new WaitUntil(new TableContainsItem(new DefaultTable(), SOURCE_REPOSITORY_URL_VALUE, 1),
+					TimePeriod.NORMAL);
 		} catch (WaitTimeoutExpiredException ex) {
 			fail("Value for git repo URI has not been reset.");
 		}

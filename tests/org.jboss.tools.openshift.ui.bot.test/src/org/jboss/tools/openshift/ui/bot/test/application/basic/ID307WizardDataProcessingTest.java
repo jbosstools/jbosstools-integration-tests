@@ -10,7 +10,7 @@ import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.jface.viewer.handler.TreeViewerHandler;
-import org.jboss.reddeer.swt.condition.ButtonWithTextIsEnabled;
+import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.swt.impl.button.BackButton;
 import org.jboss.reddeer.swt.impl.button.CancelButton;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
@@ -21,11 +21,11 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
-import org.jboss.tools.openshift.reddeer.utils.JBossPerspective;
+import org.jboss.tools.openshift.reddeer.perspective.JBossPerspective;
+import org.jboss.tools.openshift.reddeer.utils.DatastoreOS2;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.wizard.page.v2.FirstWizardPage;
 import org.jboss.tools.openshift.reddeer.wizard.v2.NewOpenShift2ApplicationWizard;
-import org.jboss.tools.openshift.ui.bot.test.util.DatastoreOS2;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -60,7 +60,7 @@ public class ID307WizardDataProcessingTest {
 		
 		wizard.next();
 		
-		new WaitUntil(new ButtonWithTextIsEnabled(new BackButton()), TimePeriod.LONG);
+		new WaitUntil(new WidgetIsEnabled(new BackButton()), TimePeriod.LONG);
 		
 		assertTrue("Cartridge type is not shown correctly on second wizard page."
 				+ new DefaultLabel(4).getText() + " is shown but should be " 
@@ -92,7 +92,7 @@ public class ID307WizardDataProcessingTest {
 		
 		wizard.next();
 		
-		new WaitUntil(new ButtonWithTextIsEnabled(new BackButton()), TimePeriod.LONG);
+		new WaitUntil(new WidgetIsEnabled(new BackButton()), TimePeriod.LONG);
 		
 		assertTrue("Cartridge type is not shown correctly on second wizard page."
 				+ new DefaultLabel(4).getText() + " is shown but should be " 
@@ -137,7 +137,7 @@ public class ID307WizardDataProcessingTest {
 			fail("Next button has not been enabled after setting a valid URL");
 		}
 		
-		new WaitUntil(new ButtonWithTextIsEnabled(new BackButton()), TimePeriod.LONG);
+		new WaitUntil(new WidgetIsEnabled(new BackButton()), TimePeriod.LONG);
 		
 		new PushButton(OpenShiftLabel.Button.ADVANCED).click();
 		

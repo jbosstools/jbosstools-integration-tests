@@ -48,8 +48,8 @@ public class TemplatesCreator {
 	 * @param project project
 	 * @param openFromShellMenu open wizard from shell menu, if false, opens it from OpenShift explorer
 	 */
-	public TemplatesCreator(String server, String username, String project, boolean openFromShellMenu) {
-		wizard = new NewOpenShift3ApplicationWizard(server, username, project);
+	public TemplatesCreator(boolean openFromShellMenu) {
+		wizard = new NewOpenShift3ApplicationWizard();
 		
 		if (openFromShellMenu) {
 			wizard.openWizardFromShellMenu();
@@ -66,8 +66,8 @@ public class TemplatesCreator {
 	 * @param username user name
 	 * @param project project
 	 */
-	public TemplatesCreator(String server, String username, String project) {
-		this(server, username, project, false);
+	public TemplatesCreator() {
+		this(false);
 	}
 	
 	/**

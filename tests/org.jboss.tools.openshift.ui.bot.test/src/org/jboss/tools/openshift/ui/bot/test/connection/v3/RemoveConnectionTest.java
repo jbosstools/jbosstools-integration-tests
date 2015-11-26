@@ -9,11 +9,11 @@ import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.tools.openshift.reddeer.utils.DatastoreOS3;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView.AuthenticationMethod;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView.ServerType;
-import org.jboss.tools.openshift.ui.bot.test.util.DatastoreOS3;
 import org.junit.After;
 import org.junit.Test;
 
@@ -26,7 +26,7 @@ public class RemoveConnectionTest {
 	public void testRemoveConnection() {
 		explorer.open();
 		
-		explorer.getOpenShift3Connection(DatastoreOS3.USERNAME, DatastoreOS3.SERVER).select();
+		explorer.getOpenShift3Connection().select();
 		new ContextMenu(OpenShiftLabel.ContextMenu.REMOVE_CONNECTION).select();
 		
 		new DefaultShell(OpenShiftLabel.Shell.REMOVE_CONNECTION);

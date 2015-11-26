@@ -28,7 +28,6 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.wizard.v3.NewOpenShift3ApplicationWizard;
-import org.jboss.tools.openshift.ui.bot.test.util.DatastoreOS3;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,8 +36,7 @@ public class LabelsTest {
 	
 	@Before
 	public void getToLabelsWizardPage() {
-		new NewOpenShift3ApplicationWizard(DatastoreOS3.SERVER, DatastoreOS3.USERNAME,
-				DatastoreOS3.PROJECT1_DISPLAYED_NAME).openWizardFromExplorer();
+		new NewOpenShift3ApplicationWizard().openWizardFromExplorer();
 		new DefaultTree().selectItems(new DefaultTreeItem(OpenShiftLabel.Others.EAP_TEMPLATE));
 		
 		new WaitUntil(new WidgetIsEnabled(new NextButton()), TimePeriod.NORMAL);

@@ -1,8 +1,8 @@
 package org.jboss.tools.openshift.ui.bot.test.connection;
 
+import org.jboss.tools.openshift.reddeer.utils.DatastoreOS2;
 import org.jboss.tools.openshift.reddeer.utils.SecureStorage;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView.ServerType;
-import org.jboss.tools.openshift.ui.bot.test.util.DatastoreOS2;
 import org.junit.Test;
 
 /**

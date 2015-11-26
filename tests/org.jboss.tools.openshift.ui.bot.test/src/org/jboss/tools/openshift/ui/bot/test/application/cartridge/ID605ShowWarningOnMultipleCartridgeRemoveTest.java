@@ -9,7 +9,7 @@ import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.swt.condition.ButtonWithTextIsEnabled;
+import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.swt.impl.button.CancelButton;
 import org.jboss.reddeer.swt.impl.button.FinishButton;
 import org.jboss.reddeer.swt.impl.button.OkButton;
@@ -18,10 +18,10 @@ import org.jboss.reddeer.swt.impl.button.YesButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
+import org.jboss.tools.openshift.reddeer.utils.DatastoreOS2;
+import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.jboss.tools.openshift.ui.bot.test.application.create.IDXXXCreateTestingApplication;
-import org.jboss.tools.openshift.ui.bot.test.util.DatastoreOS2;
-import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.junit.Test;
 
 public class ID605ShowWarningOnMultipleCartridgeRemoveTest extends IDXXXCreateTestingApplication {
@@ -146,7 +146,7 @@ public class ID605ShowWarningOnMultipleCartridgeRemoveTest extends IDXXXCreateTe
 		new DefaultTable().getItem(cartridge).select();
 		new DefaultTable().getItem(cartridge).setChecked(true);
 		
-		new WaitUntil(new ButtonWithTextIsEnabled(new FinishButton()), TimePeriod.LONG);
+		new WaitUntil(new WidgetIsEnabled(new FinishButton()), TimePeriod.LONG);
 		
 		new FinishButton().click();
 		

@@ -5,7 +5,7 @@ import static org.junit.Assert.assertTrue;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.swt.condition.ButtonWithTextIsEnabled;
+import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.swt.impl.browser.InternalBrowser;
 import org.jboss.reddeer.swt.impl.button.BackButton;
 import org.jboss.reddeer.swt.impl.button.CancelButton;
@@ -16,12 +16,12 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.jboss.tools.openshift.reddeer.utils.DatastoreOS2;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.wizard.page.v2.FirstWizardPage;
 import org.jboss.tools.openshift.reddeer.wizard.v2.NewOpenShift2ApplicationWizard;
 import org.jboss.tools.openshift.ui.bot.test.domain.ID201NewDomainTest;
 import org.jboss.tools.openshift.ui.bot.test.ssh.ID152AddExistingSSHKeyTest;
-import org.jboss.tools.openshift.ui.bot.test.util.DatastoreOS2;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -84,11 +84,11 @@ public class ID306PreselectLastUsedConnectionTest {
 		new LabeledCombo(OpenShiftLabel.TextLabels.CONNECTION).setSelection(
 				username + " - " + server);
 		
-		new WaitUntil(new ButtonWithTextIsEnabled(new NextButton()), TimePeriod.LONG);
+		new WaitUntil(new WidgetIsEnabled(new NextButton()), TimePeriod.LONG);
 		
 		new NextButton().click();
 		
-		new WaitUntil(new ButtonWithTextIsEnabled(new CancelButton()), TimePeriod.LONG);
+		new WaitUntil(new WidgetIsEnabled(new CancelButton()), TimePeriod.LONG);
 		
 		new CancelButton().click();
 	}
@@ -102,15 +102,15 @@ public class ID306PreselectLastUsedConnectionTest {
 		
 		new NextButton().click();
 		
-		new WaitUntil(new ButtonWithTextIsEnabled(new BackButton()), TimePeriod.LONG);
+		new WaitUntil(new WidgetIsEnabled(new BackButton()), TimePeriod.LONG);
 		
 		new LabeledText("Name:").setText("appName");
 		
-		new WaitUntil(new ButtonWithTextIsEnabled(new NextButton()), TimePeriod.LONG);
+		new WaitUntil(new WidgetIsEnabled(new NextButton()), TimePeriod.LONG);
 		
 		new NextButton().click();
 
-		new WaitUntil(new ButtonWithTextIsEnabled(new CancelButton()), TimePeriod.LONG);
+		new WaitUntil(new WidgetIsEnabled(new CancelButton()), TimePeriod.LONG);
 		
 		new CancelButton().click();
 	}

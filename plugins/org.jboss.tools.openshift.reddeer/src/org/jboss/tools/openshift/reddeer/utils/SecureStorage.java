@@ -7,7 +7,7 @@ import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.eclipse.equinox.security.ui.StoragePreferencePage;
-import org.jboss.reddeer.swt.condition.ButtonWithTextIsEnabled;
+import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.FinishButton;
 import org.jboss.reddeer.swt.impl.button.NoButton;
@@ -55,7 +55,7 @@ public class SecureStorage {
 		if (serverType.equals(ServerType.OPENSHIFT_2)) {
 			explorer.getOpenShift2Connection(username, server).select();
 		} else {
-			explorer.getOpenShift3Connection(username, server).select();
+			explorer.getOpenShift3Connection().select();
 		}
 		new ContextMenu(OpenShiftLabel.ContextMenu.EDIT_CONNECTION).select();
 		
@@ -76,7 +76,7 @@ public class SecureStorage {
 				firstStorage = false;
 			}
 			
-			new WaitUntil(new ButtonWithTextIsEnabled(new OkButton()));
+			new WaitUntil(new WidgetIsEnabled(new OkButton()));
 			
 			new OkButton().click();
 			
