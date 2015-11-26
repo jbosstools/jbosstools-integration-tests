@@ -15,7 +15,7 @@
 	<properties>
 		<!-- <systemProperties>${integrationTestsSystemProperties} -->
 		<!-- -DimportTestDefinition=${importTestDefinition}</systemProperties> -->
-		<systemProperties>${integrationTestsSystemProperties} -DexamplesLocation=${project.build.directory}/${examplesFolder} -Dreddeer.config=${reddeer.config} -Dmaven.settings.path=${maven.settings.path}</systemProperties>
+		<systemProperties>${integrationTestsSystemProperties} -DexamplesLocation=${project.build.directory}/${examplesFolder} -Drd.config=${reddeer.config} -Dmaven.settings.path=${maven.settings.path}</systemProperties>
 		<quickstartsURL>https://github.com/jboss-developer/jboss-wfk-quickstarts/archive/2.6.0.Final.zip</quickstartsURL>
 		<maven.settings.path>${project.build.directory}/classes/settings.xml</maven.settings.path>
 		<reddeer.config>${project.build.directory}/classes/EAP7repo.xml</reddeer.config>
