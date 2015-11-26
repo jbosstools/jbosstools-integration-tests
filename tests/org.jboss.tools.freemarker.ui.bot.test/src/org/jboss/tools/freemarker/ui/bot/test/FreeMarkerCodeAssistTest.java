@@ -71,12 +71,44 @@ public class FreeMarkerCodeAssistTest extends FreemarkerTest  {
 	public void codeAssistDefaultTest() {
 		checkCodeAssist("<#", "default");
 	}
+
+	@Test 
+	public void codeAssistElseTest() {
+		checkCodeAssist("<#", "else");
+	}
+	
+	@Test 
+	public void codeAssistElseIfTest() {
+		checkCodeAssist("<#", "elseif");
+	}
+
+	@Test 
+	public void codeAssistEscapeTest() {
+		checkCodeAssist("<#", "escape");
+	}
+
+	@Test 
+	public void codeAssistFallbackTest() {
+		checkCodeAssist("<#", "fallback");
+	}
+
+	@Test 
+	public void codeAssistFlushTest() {
+		checkCodeAssist("<#", "flush");
+	}
+
+	@Test 
+	public void codeAssistForeachTest() {
+		checkCodeAssist("<#", "foreach");
+	}
 	
 	@After
 	public void after() {
 	}
 
 	private void checkCodeAssist(String expr, String... expected) {
+		log.step("Check if code assist contains expected expressions");		
+		
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		new DefaultTreeItem(prj, "ftl", "empty.ftl").doubleClick();				
