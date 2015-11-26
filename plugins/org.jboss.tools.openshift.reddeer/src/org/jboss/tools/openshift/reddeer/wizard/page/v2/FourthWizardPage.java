@@ -2,7 +2,7 @@ package org.jboss.tools.openshift.reddeer.wizard.page.v2;
 
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.swt.condition.ButtonWithTextIsEnabled;
+import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.FinishButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
@@ -24,7 +24,7 @@ public class FourthWizardPage {
 		new DefaultShell(OpenShiftLabel.Shell.NEW_APP_WIZARD);
 		
 		// Wait until data are processed - there is no other way currently
-		new WaitUntil(new ButtonWithTextIsEnabled(new FinishButton()), TimePeriod.LONG);
+		new WaitUntil(new WidgetIsEnabled(new FinishButton()), TimePeriod.LONG);
 	}
 	
 	public void setGitDestination(String destination) {

@@ -34,8 +34,8 @@ public class ResourceExists extends AbstractWaitCondition {
 	 * @param projectName project name
 	 * @param resource resource type
 	 */
-	public ResourceExists(String server, String username, String projectName, Resource resource) {
-		this(server, username, projectName, resource, (Matcher) null, ResourceState.UNSPECIFIED);
+	public ResourceExists(Resource resource) {
+		this(resource, (Matcher) null, ResourceState.UNSPECIFIED);
 	}
 	
 	/**
@@ -48,8 +48,8 @@ public class ResourceExists extends AbstractWaitCondition {
 	 * @param resource resource type
 	 * @param resourceName resource name
 	 */
-	public ResourceExists(String server, String username, String projectName, Resource resource, String resourceName) {
-		this(server, username, projectName, resource, new WithTextMatcher(resourceName), ResourceState.UNSPECIFIED);
+	public ResourceExists(Resource resource, String resourceName) {
+		this(resource, new WithTextMatcher(resourceName), ResourceState.UNSPECIFIED);
 	}
 	
 	/**
@@ -63,9 +63,8 @@ public class ResourceExists extends AbstractWaitCondition {
 	 * @param resourceName resource name
 	 * @param resourceState state of a resource
 	 */
-	public ResourceExists(String server, String username, String projectName, Resource resource, String resourceName,
-			ResourceState resourceState) {
-		this(server, username, projectName, resource, new WithTextMatcher(resourceName), resourceState);
+	public ResourceExists(Resource resource, String resourceName, ResourceState resourceState) {
+		this(resource, new WithTextMatcher(resourceName), resourceState);
 	}
 	
 	/**
@@ -78,8 +77,8 @@ public class ResourceExists extends AbstractWaitCondition {
 	 * @param resource resource type
 	 * @param nameMatcher resource name matcher
 	 */
-	public ResourceExists(String server, String username, String projectName, Resource resource, Matcher nameMatcher) {
-		this(server, username, projectName, resource, nameMatcher, ResourceState.UNSPECIFIED);
+	public ResourceExists(Resource resource, Matcher nameMatcher) {
+		this(resource, nameMatcher, ResourceState.UNSPECIFIED);
 	}
 		
 	/**
@@ -93,10 +92,9 @@ public class ResourceExists extends AbstractWaitCondition {
 	 * @param nameMatcher resource name matcher
 	 * @param resourceState state of a resource
 	 */
-	public ResourceExists(String server, String username, String projectName, Resource resource,
-			Matcher nameMatcher, ResourceState buildState) {
+	public ResourceExists(Resource resource, Matcher nameMatcher, ResourceState buildState) {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
-		project = explorer.getOpenShift3Connection(username, server).getProject(projectName);
+		project = explorer.getOpenShift3Connection().getProject();
 		resourceNameMatcher = nameMatcher;
 		this.buildState = buildState;
 		this.resource = resource;

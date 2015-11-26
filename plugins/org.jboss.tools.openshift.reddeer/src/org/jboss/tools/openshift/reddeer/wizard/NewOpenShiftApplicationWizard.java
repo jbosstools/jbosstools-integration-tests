@@ -6,7 +6,7 @@ import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.jface.viewer.handler.TreeViewerHandler;
-import org.jboss.reddeer.swt.condition.ButtonWithTextIsEnabled;
+import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.swt.impl.browser.InternalBrowser;
 import org.jboss.reddeer.swt.impl.button.BackButton;
 import org.jboss.reddeer.swt.impl.button.NextButton;
@@ -62,7 +62,7 @@ public abstract class NewOpenShiftApplicationWizard {
 		new NextButton().click();
 		
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-		new WaitUntil(new ButtonWithTextIsEnabled(new BackButton()), TimePeriod.LONG);
+		new WaitUntil(new WidgetIsEnabled(new BackButton()), TimePeriod.LONG);
 		
 		new DefaultShell(OpenShiftLabel.Shell.NEW_APP_WIZARD).setFocus();
 	}
@@ -89,7 +89,7 @@ public abstract class NewOpenShiftApplicationWizard {
 		new NextButton().click();
 		
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-		new WaitUntil(new ButtonWithTextIsEnabled(new BackButton()), TimePeriod.LONG);
+		new WaitUntil(new WidgetIsEnabled(new BackButton()), TimePeriod.LONG);
 		
 		new DefaultShell(OpenShiftLabel.Shell.NEW_APP_WIZARD).setFocus();
 	}

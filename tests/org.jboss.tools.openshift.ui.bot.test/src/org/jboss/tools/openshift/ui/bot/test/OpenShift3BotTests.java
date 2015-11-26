@@ -1,8 +1,10 @@
 package org.jboss.tools.openshift.ui.bot.test;
 
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.tools.openshift.reddeer.utils.CleanUpOS3;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.advanced.GithubWebhoookTest;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.advanced.ImportApplicationTest;
+import org.jboss.tools.openshift.ui.bot.test.application.v3.advanced.LogsTest;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.advanced.PortForwardingTest;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.advanced.TriggerBuildTest;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.basic.LabelsTest;
@@ -25,7 +27,6 @@ import org.jboss.tools.openshift.ui.bot.test.project.ProjectNameValidationTest;
 import org.jboss.tools.openshift.ui.bot.test.project.ProjectPropertiesTest;
 import org.jboss.tools.openshift.ui.bot.test.project.ResourcesTest;
 import org.jboss.tools.openshift.ui.bot.test.project.ShowProjectInWebConsoleTest;
-import org.jboss.tools.openshift.ui.bot.test.util.CleanUpOS3;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
@@ -66,6 +67,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	ImportApplicationTest.class,
 	GithubWebhoookTest.class,
 	PortForwardingTest.class,
+	LogsTest.class,
 	
 	// Clean up
 	CleanUpOS3.class

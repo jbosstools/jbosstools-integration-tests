@@ -9,15 +9,15 @@ import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.jface.exception.JFaceLayerException;
-import org.jboss.reddeer.swt.condition.ButtonWithTextIsEnabled;
+import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.swt.impl.button.FinishButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.tools.openshift.reddeer.utils.DatastoreOS2;
+import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.view.OpenShift2Connection;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
-import org.jboss.tools.openshift.ui.bot.test.util.DatastoreOS2;
-import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.junit.Test;
 
 /** 
@@ -51,7 +51,7 @@ public class ID201NewDomainTest {
 		new DefaultShell(OpenShiftLabel.Shell.CREATE_DOMAIN);
 		new LabeledText(OpenShiftLabel.TextLabels.DOMAIN_NAME).setText(domainName);
 		
-		new WaitUntil(new ButtonWithTextIsEnabled(new FinishButton()), TimePeriod.NORMAL);
+		new WaitUntil(new WidgetIsEnabled(new FinishButton()), TimePeriod.NORMAL);
 		
 		new FinishButton().click();
 		

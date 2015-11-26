@@ -18,7 +18,7 @@ import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.jface.viewer.handler.TreeViewerHandler;
 import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.condition.ButtonWithTextIsEnabled;
+import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -30,12 +30,12 @@ import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
-import org.jboss.tools.openshift.ui.bot.test.application.create.ID414CreateApplicationFromExistingProjectTest;
-import org.jboss.tools.openshift.ui.bot.test.util.DatastoreOS2;
 import org.jboss.tools.openshift.reddeer.condition.v2.ApplicationIsDeployedSuccessfully;
+import org.jboss.tools.openshift.reddeer.utils.DatastoreOS2;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.utils.v2.DeleteUtils;
 import org.jboss.tools.openshift.reddeer.wizard.v2.NewOpenShift2ApplicationWizard;
+import org.jboss.tools.openshift.ui.bot.test.application.create.ID414CreateApplicationFromExistingProjectTest;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -135,12 +135,12 @@ public class ID904DeployApplicationWARArchiveTest {
 		
 		assertTrue("If there is no commit message, button should be Push Only without "
 				+ "pushing uncommited changes.",
-				new ButtonWithTextIsEnabled(new PushButton("Publish Only")).test());
+				new WidgetIsEnabled(new PushButton("Publish Only")).test());
 		
 		new DefaultStyledText(0).setText("Commit message");
 		
 		try {
-			new WaitUntil(new ButtonWithTextIsEnabled(new PushButton(
+			new WaitUntil(new WidgetIsEnabled(new PushButton(
 					OpenShiftLabel.Button.COMMIT_PUBLISH)), TimePeriod.LONG);
 		} catch (WaitTimeoutExpiredException ex) {
 			fail("Button to push commited changes has not been enabled.");

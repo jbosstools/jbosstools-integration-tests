@@ -5,9 +5,9 @@ import static org.junit.Assert.fail;
 
 import org.jboss.reddeer.common.exception.RedDeerException;
 import org.jboss.reddeer.junit.execution.annotation.RunIf;
+import org.jboss.tools.openshift.reddeer.utils.DatastoreOS3;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView.AuthenticationMethod;
-import org.jboss.tools.openshift.ui.bot.test.util.DatastoreOS3;
 import org.junit.Test;
 
 public class CreateNewConnectionTest {

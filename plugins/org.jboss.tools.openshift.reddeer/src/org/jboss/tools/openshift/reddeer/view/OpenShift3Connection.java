@@ -13,6 +13,7 @@ import org.jboss.reddeer.swt.impl.button.FinishButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.tools.openshift.reddeer.utils.DatastoreOS3;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 
 public class OpenShift3Connection extends AbstractOpenShiftConnection {
@@ -22,10 +23,10 @@ public class OpenShift3Connection extends AbstractOpenShiftConnection {
 	}
 
 	/**
-	 * Gets project of a OpenShift 3 connection with specified user.
-	 *
-	 * @param projectName projectName attribute of a OpenShift 3 connection or displayed 
-	 * 			name of a project if it was provided during the creation time
+	 * Gets an OpenShift 3 project with specified project name.
+	 *  
+	 * @param projectName name of a project, if displayed name is provided,
+	 *  	its displayed name, otherwise its project name
 	 * @return OpenShift project
 	 */
 	public OpenShiftProject getProject(String projectName) {
@@ -36,6 +37,15 @@ public class OpenShift3Connection extends AbstractOpenShiftConnection {
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		
 		return new OpenShiftProject(treeViewerHandler.getTreeItem(item, projectName));
+	}
+
+	/**
+	 * Gets first project of a OpenShift 3 connection.
+	 *
+	 * @return OpenShift project
+	 */
+	public OpenShiftProject getProject() {
+		return getProject(DatastoreOS3.PROJECT1_DISPLAYED_NAME);
 	}
 	
 	/**
@@ -52,6 +62,16 @@ public class OpenShift3Connection extends AbstractOpenShiftConnection {
 			projects.add(new OpenShiftProject(treeItem));
 		}
 		return projects;
+	}
+	
+	/**
+	 * Creates a new OpenShift project for a connection based on first project name and project
+	 * displayed name stored in {@link DatastoreOS3}.
+	 * 
+	 * @return OpenShift Project
+	 */
+	public OpenShiftProject createNewProject() {
+		return createNewProject(DatastoreOS3.PROJECT1, DatastoreOS3.PROJECT1_DISPLAYED_NAME);
 	}
 	
 	/**

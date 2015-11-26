@@ -7,9 +7,33 @@ import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
+import org.jboss.tools.openshift.reddeer.preference.page.OpenShift3PreferencePage;
+import org.jboss.tools.openshift.reddeer.requirement.OpenShiftCommandLineToolsRequirement;
 
 public class TestUtils {
 
+	public static void setUpOcBinary() {
+		setOCBinaryPath(true);
+	}
+	
+	public static void cleanUpOCBinary() {
+		setOCBinaryPath(false);
+	}
+	
+	private static void setOCBinaryPath(boolean setUp) {
+		WorkbenchPreferenceDialog dialog = new WorkbenchPreferenceDialog();
+		OpenShift3PreferencePage page = new OpenShift3PreferencePage();
+		dialog.open();
+		dialog.select(page);
+		if (setUp) {
+			page.setOCLocation(OpenShiftCommandLineToolsRequirement.getOCLocation());
+		} else {
+			page.clearOCLocation();
+		}
+		page.apply();
+		dialog.ok();
+	}
+	
 	public static void setVisualEditorToUseHTML5() {
 		WorkbenchPreferenceDialog dialog = new WorkbenchPreferenceDialog();
 		dialog.open();

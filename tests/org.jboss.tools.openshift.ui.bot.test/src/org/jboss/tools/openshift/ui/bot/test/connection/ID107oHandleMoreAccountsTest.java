@@ -4,8 +4,8 @@ import static org.junit.Assert.fail;
 
 import org.jboss.reddeer.jface.exception.JFaceLayerException;
 import org.jboss.reddeer.junit.execution.annotation.RunIf;
+import org.jboss.tools.openshift.reddeer.utils.DatastoreOS2;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
-import org.jboss.tools.openshift.ui.bot.test.util.DatastoreOS2;
 import org.junit.Test;
 
 /**

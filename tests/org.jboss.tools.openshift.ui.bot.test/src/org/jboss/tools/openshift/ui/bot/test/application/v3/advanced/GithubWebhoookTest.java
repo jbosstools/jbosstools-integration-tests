@@ -21,13 +21,14 @@ import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.openshift.reddeer.condition.EditorWithTitleIsAvailable;
 import org.jboss.tools.openshift.reddeer.condition.ResourceExists;
 import org.jboss.tools.openshift.reddeer.enums.Resource;
+import org.jboss.tools.openshift.reddeer.utils.DatastoreOS3;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.utils.TestUtils;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.jboss.tools.openshift.reddeer.wizard.v3.TemplateParameter;
 import org.jboss.tools.openshift.reddeer.wizard.v3.TemplatesCreator;
+import org.jboss.tools.openshift.ui.bot.test.application.v3.basic.TemplateParametersTest;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.create.AbstractCreateApplicationTest;
-import org.jboss.tools.openshift.ui.bot.test.util.DatastoreOS3;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -35,7 +36,7 @@ import org.junit.Test;
 public class GithubWebhoookTest {
 	
 	private static final String GIT_SECRET = "nosecret";
-	private static final String gitURI = "https://github.com/openshift-tools-testing-account/jboss-eap-quickstarts";
+	private static final String srcRepoURI = "https://github.com/openshift-tools-testing-account/jboss-eap-quickstarts";
 	
 	private String randomString = "random" + System.currentTimeMillis();
 	private String webPageContent = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + "\n"
@@ -61,10 +62,9 @@ public class GithubWebhoookTest {
 		TestUtils.cleanupGitFolder(AbstractCreateApplicationTest.gitFolder);
 		TestUtils.setVisualEditorToUseHTML5();
 		
-		new TemplatesCreator(DatastoreOS3.SERVER, DatastoreOS3.USERNAME, DatastoreOS3.PROJECT1_DISPLAYED_NAME).
-			createOpenShiftApplicationBasedOnServerTemplate(OpenShiftLabel.Others.EAP_TEMPLATE, 
-					new TemplateParameter("GITHUB_TRIGGER_SECRET", GIT_SECRET),
-					new TemplateParameter("GIT_URI", gitURI));
+		new TemplatesCreator().createOpenShiftApplicationBasedOnServerTemplate(OpenShiftLabel.Others.EAP_TEMPLATE, 
+					new TemplateParameter(TemplateParametersTest.GITHUB_SECRET, GIT_SECRET),
+					new TemplateParameter(TemplateParametersTest.SOURCE_REPOSITORY_URL, srcRepoURI));
 	}
 	
 	@Test
@@ -72,11 +72,9 @@ public class GithubWebhoookTest {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 		explorer.open();
 		
-		new WaitUntil(new ResourceExists(DatastoreOS3.SERVER, DatastoreOS3.USERNAME, DatastoreOS3.PROJECT1_DISPLAYED_NAME,
-				Resource.BUILD), TimePeriod.VERY_LONG);
+		new WaitUntil(new ResourceExists(Resource.BUILD), TimePeriod.VERY_LONG);
 		
-		explorer.getOpenShift3Connection(DatastoreOS3.USERNAME, DatastoreOS3.SERVER).getProject(
-				DatastoreOS3.PROJECT1_DISPLAYED_NAME).getOpenShiftResources(Resource.BUILD).get(0).select();
+		explorer.getOpenShift3Connection().getProject().getOpenShiftResources(Resource.BUILD).get(0).select();
 		new ContextMenu(OpenShiftLabel.ContextMenu.DELETE_RESOURCE).select();
 		
 		new DefaultShell(OpenShiftLabel.Shell.DELETE_RESOURCE);
@@ -84,8 +82,7 @@ public class GithubWebhoookTest {
 		
 		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.DELETE_RESOURCE));
 		
-		new WaitWhile(new ResourceExists(DatastoreOS3.SERVER, DatastoreOS3.USERNAME, DatastoreOS3.PROJECT1_DISPLAYED_NAME,
-				Resource.BUILD), TimePeriod.VERY_LONG);
+		new WaitWhile(new ResourceExists(Resource.BUILD), TimePeriod.VERY_LONG);
 		
 		ProjectExplorer projectExplorer = new ProjectExplorer();
 		projectExplorer.open();
@@ -95,8 +92,7 @@ public class GithubWebhoookTest {
 		setWebPageContent();
 		commitAndPush();
 		
-		new WaitUntil(new ResourceExists(DatastoreOS3.SERVER, DatastoreOS3.USERNAME, DatastoreOS3.PROJECT1_DISPLAYED_NAME,
-				Resource.BUILD, "eap-app-2"), TimePeriod.VERY_LONG);
+		new WaitUntil(new ResourceExists(Resource.BUILD, "eap-app-2"), TimePeriod.VERY_LONG);
 	}
 	
 	private void setWebPageContent() {

@@ -11,9 +11,9 @@ public class AmountOfResourcesExists extends AbstractWaitCondition {
 	private Resource resource;
 	private int amount;
 	
-	public AmountOfResourcesExists(String server, String username, String projectName, Resource resource, int amount) {
+	public AmountOfResourcesExists(Resource resource, int amount) {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
-		project = explorer.getOpenShift3Connection(username, server).getProject(projectName);
+		project = explorer.getOpenShift3Connection().getProject();
 		this.resource = resource;
 		this.amount = amount;
 	}

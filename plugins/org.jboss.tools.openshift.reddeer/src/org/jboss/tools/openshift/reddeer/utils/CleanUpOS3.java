@@ -1,4 +1,4 @@
-package org.jboss.tools.openshift.ui.bot.test.util;
+package org.jboss.tools.openshift.reddeer.utils;
 
 import java.util.List;
 
@@ -36,7 +36,7 @@ public class CleanUpOS3 {
 		
 		OpenShift3Connection connection = null;
 		try {
-			 connection = explorer.getOpenShift3Connection(DatastoreOS3.USERNAME, DatastoreOS3.SERVER);
+			 connection = explorer.getOpenShift3Connection();
 		} catch (JFaceLayerException ex) {
 			// There is no connection with such username, nothing happens
 		}
