@@ -27,7 +27,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 /**
- * Freemarker ui bot test
+ * Freemarker UI Editor test
  * @author Jiri Peterka
  *
  */
