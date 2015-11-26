@@ -5,6 +5,7 @@ import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.tools.openshift.reddeer.utils.DatastoreOS3;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.jboss.tools.openshift.reddeer.wizard.NewOpenShiftApplicationWizard;
@@ -19,11 +20,8 @@ import org.jboss.tools.openshift.reddeer.wizard.NewOpenShiftApplicationWizard;
  */
 public class NewOpenShift3ApplicationWizard extends NewOpenShiftApplicationWizard {
 
-	private String project;
-	
-	public NewOpenShift3ApplicationWizard(String server, String username, String project) {
-		super(server, username);
-		this.project = project;
+	public NewOpenShift3ApplicationWizard() {
+		super(DatastoreOS3.SERVER, DatastoreOS3.USERNAME);
 	}
 	
 	/**
@@ -32,7 +30,7 @@ public class NewOpenShift3ApplicationWizard extends NewOpenShiftApplicationWizar
 	public void openWizardFromExplorer() {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 		explorer.reopen();
-		explorer.getOpenShift3Connection(username, server).getProject(project).select();
+		explorer.getOpenShift3Connection().getProject().select();
 	
 		new ContextMenu(OpenShiftLabel.ContextMenu.NEW_OS3_APPLICATION).select();
 		

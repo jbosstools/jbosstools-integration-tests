@@ -11,7 +11,7 @@ import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.core.exception.CoreLayerException;
-import org.jboss.reddeer.swt.condition.ButtonWithTextIsEnabled;
+import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.FinishButton;
@@ -22,9 +22,9 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.openshift.reddeer.condition.TableIsEnabled;
-import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
-import org.jboss.tools.openshift.ui.bot.test.util.DatastoreOS2;
+import org.jboss.tools.openshift.reddeer.utils.DatastoreOS2;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
+import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.junit.Test;
 
 /**
@@ -66,7 +66,7 @@ public class ID205ManageDomainTest {
 		
 		new LabeledText(OpenShiftLabel.TextLabels.DOMAIN_NAME).setText(DatastoreOS2.X_DOMAIN);
 	
-		new WaitUntil(new ButtonWithTextIsEnabled(new FinishButton()), TimePeriod.NORMAL);
+		new WaitUntil(new WidgetIsEnabled(new FinishButton()), TimePeriod.NORMAL);
 		
 		new FinishButton().click();
 		
@@ -89,7 +89,7 @@ public class ID205ManageDomainTest {
 		
 		new LabeledText(OpenShiftLabel.TextLabels.DOMAIN_NAME).setText(DatastoreOS2.X_DOMAIN);
 		
-		new WaitUntil(new ButtonWithTextIsEnabled(new FinishButton()), TimePeriod.NORMAL);
+		new WaitUntil(new WidgetIsEnabled(new FinishButton()), TimePeriod.NORMAL);
 		
 		new FinishButton().click();
 		
@@ -110,7 +110,7 @@ public class ID205ManageDomainTest {
 		
 		new DefaultTable().getItem(DatastoreOS2.X_DOMAIN).select();
 		
-		new WaitUntil(new ButtonWithTextIsEnabled(new PushButton(OpenShiftLabel.Button.REMOVE)), TimePeriod.NORMAL);
+		new WaitUntil(new WidgetIsEnabled(new PushButton(OpenShiftLabel.Button.REMOVE)), TimePeriod.NORMAL);
 		
 		new PushButton(OpenShiftLabel.Button.REMOVE).click();
 		

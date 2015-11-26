@@ -1,6 +1,6 @@
 package org.jboss.tools.openshift.ui.bot.test.domain;
 
-import org.jboss.tools.openshift.ui.bot.test.util.DatastoreOS2;
+import org.jboss.tools.openshift.reddeer.utils.DatastoreOS2;
 import org.junit.Test;
 
 /**

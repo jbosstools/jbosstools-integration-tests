@@ -73,8 +73,10 @@ public class OpenShiftLabel {
 		public static final String DELETE_OS_PROJECT = "Delete Project";
 		
 		// Resource related
+		public static final String BUILD_LOG = "Build Log...";
 		public static final String CLONE_BUILD = "Clone Build";
 		public static final String DELETE_RESOURCE = "Delete Resource...";
+		public static final String POD_LOG = "Pod Log...";
 		public static final String START_BUILD = "Start Build";
 		
 		// Application related
@@ -174,6 +176,7 @@ public class OpenShiftLabel {
 		public static final String DELETE_RESOURCE = "Delete Resource";
 		
 		// Others
+		public static final String BINARY_LOCATION_UNKNOWN = "Unknown binary location";
 		public static final String CHEATSHEET = "Found cheatsheet";
 	}
 	
@@ -268,8 +271,8 @@ public class OpenShiftLabel {
 	 */
 	public static class Others {
 		public static final String CONNECT_TOOL_ITEM = "Connection...";
-		public static final String EAP_TEMPLATE = "eap6-basic-sti";
-		public static final String TOMCAT_TEMPLATE = "jws-tomcat7-basic-sti";
+		public static final String EAP_TEMPLATE = "eap64-basic-s2i (eap, javaee, java, jboss, xpaas)";
+		public static final String TOMCAT_TEMPLATE = "jws30-tomcat7-basic-s2i (tomcat, tomcat7, java, jboss, xpaas)";
 		public static final String JBOSS_CENTRAL = "JBoss Central";
 		public static final String[] NEW_APP_MENU = {"File", "New", "OpenShift Application"};
 		public static final String OPENSHIFT_APP = "OpenShift Application";

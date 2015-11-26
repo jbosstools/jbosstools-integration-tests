@@ -8,7 +8,6 @@ import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.tools.openshift.reddeer.enums.Resource;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftProject;
-import org.jboss.tools.openshift.ui.bot.test.util.DatastoreOS3;
 import org.junit.Test;
 
 public class ResourcesTest {
@@ -17,8 +16,7 @@ public class ResourcesTest {
 	public void testResourcesExistence() {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 		explorer.open();
-		OpenShiftProject project = explorer.getOpenShift3Connection(DatastoreOS3.USERNAME, 
-				DatastoreOS3.SERVER).getProject(DatastoreOS3.PROJECT1_DISPLAYED_NAME);
+		OpenShiftProject project = explorer.getOpenShift3Connection().getProject();
 		project.expand();
 		TreeItem projectItem = project.getTreeItem();
 		

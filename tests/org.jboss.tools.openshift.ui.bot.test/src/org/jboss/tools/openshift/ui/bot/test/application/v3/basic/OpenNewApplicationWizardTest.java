@@ -7,29 +7,25 @@ import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.button.CancelButton;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.wizard.v3.NewOpenShift3ApplicationWizard;
-import org.jboss.tools.openshift.ui.bot.test.util.DatastoreOS3;
 import org.junit.Test;
 
 public class OpenNewApplicationWizardTest {
 	
 	@Test
 	public void testOpenNewApplicationWizardViaCentral() {
-		new NewOpenShift3ApplicationWizard(DatastoreOS3.SERVER, DatastoreOS3.USERNAME,
-				DatastoreOS3.PROJECT1_DISPLAYED_NAME).openWizardFromCentral();
+		new NewOpenShift3ApplicationWizard().openWizardFromCentral();
 		closeWizard();
 	}
 	
 	@Test
 	public void testOpenNewApplicationWizardViaShellMenu() {
-		new NewOpenShift3ApplicationWizard(DatastoreOS3.SERVER, DatastoreOS3.USERNAME,
-				DatastoreOS3.PROJECT1_DISPLAYED_NAME).openWizardFromShellMenu();
+		new NewOpenShift3ApplicationWizard().openWizardFromShellMenu();
 		closeWizard();
 	}
 	
 	@Test
 	public void testOpenNewApplicationWizardViaOpenShiftExplorer() {
-		new NewOpenShift3ApplicationWizard(DatastoreOS3.SERVER, DatastoreOS3.USERNAME,
-				DatastoreOS3.PROJECT1_DISPLAYED_NAME).openWizardFromExplorer();
+		new NewOpenShift3ApplicationWizard().openWizardFromExplorer();
 		closeWizard();
 	}
 	

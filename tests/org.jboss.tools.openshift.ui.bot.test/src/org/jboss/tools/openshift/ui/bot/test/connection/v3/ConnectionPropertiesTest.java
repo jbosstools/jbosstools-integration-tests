@@ -4,10 +4,10 @@ import static org.junit.Assert.*;
 
 import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.tools.openshift.reddeer.utils.DatastoreOS3;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.view.OpenShift3Connection;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
-import org.jboss.tools.openshift.ui.bot.test.util.DatastoreOS3;
 import org.junit.Test;
 
 public class ConnectionPropertiesTest {
@@ -17,7 +17,7 @@ public class ConnectionPropertiesTest {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 		explorer.open();
 		
-		OpenShift3Connection connection = explorer.getOpenShift3Connection(DatastoreOS3.USERNAME, DatastoreOS3.SERVER);
+		OpenShift3Connection connection = explorer.getOpenShift3Connection();
 		connection.select();
 		
 		new ContextMenu(OpenShiftLabel.ContextMenu.PROPERTIES).select();

@@ -4,11 +4,11 @@ import static org.junit.Assert.*;
 
 import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.tools.openshift.reddeer.utils.DatastoreOS3;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.view.OpenShift3Connection;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftProject;
-import org.jboss.tools.openshift.ui.bot.test.util.DatastoreOS3;
 import org.junit.Test;
 
 public class ProjectPropertiesTest {
@@ -18,8 +18,8 @@ public class ProjectPropertiesTest {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 		explorer.open();
 		
-		OpenShift3Connection connection = explorer.getOpenShift3Connection(DatastoreOS3.USERNAME, DatastoreOS3.SERVER);
-		OpenShiftProject project = connection.getProject(DatastoreOS3.PROJECT1_DISPLAYED_NAME);
+		OpenShift3Connection connection = explorer.getOpenShift3Connection();
+		OpenShiftProject project = connection.getProject();
 		project.select();
 		new ContextMenu(OpenShiftLabel.ContextMenu.PROPERTIES).select();
 		

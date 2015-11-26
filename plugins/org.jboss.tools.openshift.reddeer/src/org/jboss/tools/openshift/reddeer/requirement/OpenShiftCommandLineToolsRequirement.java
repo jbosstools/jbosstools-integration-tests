@@ -15,9 +15,9 @@ import java.nio.channels.ReadableByteChannel;
 import org.eclipse.core.runtime.Platform;
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.junit.requirement.Requirement;
+import org.jboss.tools.openshift.reddeer.exception.OpenShiftToolsException;
 import org.jboss.tools.openshift.reddeer.requirement.OpenShiftCommandLineToolsRequirement.OCBinary;
 import org.jboss.tools.openshift.reddeer.utils.FileHelper;
-import org.jboss.tools.openshift.reddeer.utils.OpenShiftToolsException;
 
 /**
  * Requirement to download and extract OpenShift command line tools binary which is necessary 

@@ -11,7 +11,7 @@ import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.jface.viewer.handler.TreeViewerHandler;
 import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.condition.ButtonWithTextIsEnabled;
+import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.FinishButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -23,8 +23,9 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
+import org.jboss.tools.openshift.reddeer.exception.OpenShiftToolsException;
+import org.jboss.tools.openshift.reddeer.utils.DatastoreOS3;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
-import org.jboss.tools.openshift.reddeer.utils.OpenShiftToolsException;
 
 /**
  * 
@@ -152,7 +153,7 @@ public class OpenShiftExplorerView extends WorkbenchView {
 			}
 		}
 				
-		new WaitUntil(new ButtonWithTextIsEnabled(new FinishButton()), TimePeriod.NORMAL);
+		new WaitUntil(new WidgetIsEnabled(new FinishButton()), TimePeriod.NORMAL);
 		
 		new FinishButton().click();
 		
@@ -176,7 +177,7 @@ public class OpenShiftExplorerView extends WorkbenchView {
 	 * @return true if connection exists, false otherwise
 	 */
 	public boolean connectionExists(String username) {
-		return connectionExists(username, null);
+		return connectionExists(null, username);
 	}
 	
 	/**
@@ -185,9 +186,9 @@ public class OpenShiftExplorerView extends WorkbenchView {
 	 * @param server server
 	 * @return true if connection exists, false otherwise
 	 */
-	public boolean connectionExists(String username, String server) {
+	public boolean connectionExists(String server, String username) {
 		try {
-			getConnectionItem(username, server);
+			getConnectionItem(server, username);
 			return true;
 		} catch (RedDeerException ex) {
 			return false;
@@ -201,7 +202,7 @@ public class OpenShiftExplorerView extends WorkbenchView {
 	 * @return OpenShift 2 connection
 	 */
 	public OpenShift2Connection getOpenShift2Connection(String username) {
-		return new OpenShift2Connection(getConnectionItem(username, null));
+		return new OpenShift2Connection(getConnectionItem(null, username));
 	}
 	
 	/**
@@ -211,39 +212,28 @@ public class OpenShiftExplorerView extends WorkbenchView {
 	 * @return OpenShift 2 connection
 	 */
 	public OpenShift2Connection getOpenShift2Connection(String username, String server) {
-		return new OpenShift2Connection(getConnectionItem(username, server));
+		return new OpenShift2Connection(getConnectionItem(server, username));
 	}
 	
 	/**
-	 * Gets OpenShift 3 connection for a specified user.
+	 * Gets default OpenShift 3 connection, which has specified server and user name in {@link DatastoreOS3}
+	 * through system properties openshift.server and openshift.username.
 	 * 
-	 * @param username user name
 	 * @return OpenShift 3 connection
 	 */
-	public OpenShift3Connection getOpenShift3Connection(String username) {
-		return new OpenShift3Connection(getConnectionItem(username, null));
+	public OpenShift3Connection getOpenShift3Connection() {
+		return new OpenShift3Connection(getConnectionItem(DatastoreOS3.SERVER, DatastoreOS3.USERNAME));
 	}
 	
-	/**
-	 * Gets OpenShift 3 connection for a specified server and user.
-	 * 
-	 * @param username user name
-	 * @param server server
-	 * @return OpenShift 3 connection
-	 */
-	public OpenShift3Connection getOpenShift3Connection(String username, String server) {
-		return new OpenShift3Connection(getConnectionItem(username, server));
-	}
-	
-	private TreeItem getConnectionItem(String username, String server) {
+	private TreeItem getConnectionItem(String server, String username) {
 		open();
 		TreeItem connectionItem = treeViewerHandler.getTreeItem(new DefaultTree(), username);
 		if (server != null) {
 			if (treeViewerHandler.getStyledTexts(connectionItem)[0].equals(server)) {
 				return connectionItem;
 			} else {
-				throw new OpenShiftToolsException("There is no connection with specified username " + username +
-						" and server " + server);
+				throw new OpenShiftToolsException("There is no connection with specified server " + server +
+						" and username " + username);
 			}
 		} else {
 			return connectionItem;
