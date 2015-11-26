@@ -1,6 +1,6 @@
 package org.jboss.tools.openshift.ui.bot.test.application.v3.create;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
 
 import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.wait.TimePeriod;
@@ -14,7 +14,6 @@ import org.jboss.tools.openshift.reddeer.enums.Resource;
 import org.jboss.tools.openshift.reddeer.enums.ResourceState;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
-import org.jboss.tools.openshift.ui.bot.test.util.DatastoreOS3;
 import org.junit.Test;
 
 public class DeploymentTest extends AbstractCreateApplicationTest {
@@ -24,50 +23,36 @@ public class DeploymentTest extends AbstractCreateApplicationTest {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 		
 		try {
-			new WaitUntil(new ResourceExists(DatastoreOS3.SERVER, DatastoreOS3.USERNAME, 
-					DatastoreOS3.PROJECT1_DISPLAYED_NAME, Resource.BUILD, "eap-app-1"), 
+			new WaitUntil(new ResourceExists(Resource.BUILD, "eap-app-1"), 
 					TimePeriod.getCustom(120), true, TimePeriod.getCustom(7));
 		} catch (WaitTimeoutExpiredException ex) {
 			fail("There should be build of an application, but there is not.");
 		}
 		
 		try {
-			new WaitUntil(new ResourceExists(DatastoreOS3.SERVER, DatastoreOS3.USERNAME,
-					DatastoreOS3.PROJECT1_DISPLAYED_NAME, Resource.POD, "eap-app-1-build",
-					ResourceState.RUNNING), TimePeriod.VERY_LONG ,
-					true, TimePeriod.getCustom(7));
-		} catch (WaitTimeoutExpiredException ex) {
-			fail("There should be a pod running an application build, but there is not.");
-		}
-		
-		try {
-			new WaitUntil(new ResourceExists(DatastoreOS3.SERVER, DatastoreOS3.USERNAME,
-					DatastoreOS3.PROJECT1_DISPLAYED_NAME, Resource.POD, "eap-app-1-build",
-					ResourceState.SUCCEEDED), TimePeriod.getCustom(600),
+			new WaitUntil(new ResourceExists(Resource.POD, "eap-app-1-build",
+					ResourceState.SUCCEEDED), TimePeriod.getCustom(800),
 					true, TimePeriod.getCustom(7));
 		} catch (WaitTimeoutExpiredException ex) {
 			fail("There should be a succeeded pod of an application build, but there is not.");
 		}
 		
 		try {
-			new WaitUntil(new AmountOfResourcesExists(DatastoreOS3.SERVER, DatastoreOS3.USERNAME, 
-					DatastoreOS3.PROJECT1_DISPLAYED_NAME, Resource.POD, 2), TimePeriod.getCustom(150),
+			new WaitUntil(new AmountOfResourcesExists(Resource.POD, 2), TimePeriod.getCustom(150),
 					true, TimePeriod.getCustom(7));
 		} catch (WaitTimeoutExpiredException ex) {
 			fail("There should be 2 pods. One of a build another one of an application, but there are not.");
 		}
 		
 		try {
-			new WaitUntil(new ResourceExists(DatastoreOS3.SERVER, DatastoreOS3.USERNAME, 
-					DatastoreOS3.PROJECT1_DISPLAYED_NAME, Resource.BUILD, "eap-app-1", ResourceState.COMPLETE),
+			new WaitUntil(new ResourceExists(Resource.BUILD, "eap-app-1", ResourceState.COMPLETE),
 					TimePeriod.VERY_LONG, true, TimePeriod.getCustom(7));
 		} catch (WaitTimeoutExpiredException ex) {
 			fail("There should be completed build of an application, but there is not.");
 		}
 		
 		
-		explorer.getOpenShift3Connection(DatastoreOS3.USERNAME, DatastoreOS3.PASSWORD).getProject(
-				DatastoreOS3.PROJECT1_DISPLAYED_NAME).getOpenShiftResources(Resource.ROUTE).get(0).select();
+		explorer.getOpenShift3Connection().getProject().getOpenShiftResources(Resource.ROUTE).get(0).select();
 		new ContextMenu(OpenShiftLabel.ContextMenu.SHOW_IN_WEB_BROWSER).select();
 		
 		try {

@@ -14,7 +14,6 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.view.OpenShift3Connection;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
-import org.jboss.tools.openshift.ui.bot.test.util.DatastoreOS3;
 import org.junit.Test;
 
 public class ProjectNameValidationTest {
@@ -82,7 +81,7 @@ public class ProjectNameValidationTest {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 		explorer.reopen();
 		
-		OpenShift3Connection connection = explorer.getOpenShift3Connection(DatastoreOS3.USERNAME);
+		OpenShift3Connection connection = explorer.getOpenShift3Connection();
 		connection.select();
 		new ContextMenu(OpenShiftLabel.ContextMenu.NEW_OS_PROJECT).select();
 		

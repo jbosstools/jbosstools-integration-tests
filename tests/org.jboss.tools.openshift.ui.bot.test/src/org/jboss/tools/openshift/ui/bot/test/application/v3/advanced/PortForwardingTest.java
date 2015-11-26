@@ -16,20 +16,17 @@ import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.openshift.reddeer.condition.AmountOfResourcesExists;
 import org.jboss.tools.openshift.reddeer.condition.ResourceExists;
 import org.jboss.tools.openshift.reddeer.enums.Resource;
 import org.jboss.tools.openshift.reddeer.enums.ResourceState;
-import org.jboss.tools.openshift.reddeer.preference.page.OpenShift3PreferencePage;
-import org.jboss.tools.openshift.reddeer.requirement.OpenShiftCommandLineToolsRequirement;
 import org.jboss.tools.openshift.reddeer.requirement.OpenShiftCommandLineToolsRequirement.OCBinary;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
+import org.jboss.tools.openshift.reddeer.utils.TestUtils;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftProject;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftResource;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.create.AbstractCreateApplicationTest;
-import org.jboss.tools.openshift.ui.bot.test.util.DatastoreOS3;
 import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -39,15 +36,13 @@ public class PortForwardingTest extends AbstractCreateApplicationTest {
 
 	@BeforeClass
 	public static void setUpOCBinaryAndWaitForApplication() {
-		setUpOcBinary();
+		TestUtils.setUpOcBinary();
 		
-		new WaitUntil(new ResourceExists(DatastoreOS3.SERVER, DatastoreOS3.USERNAME,
-				DatastoreOS3.PROJECT1_DISPLAYED_NAME, Resource.POD, "eap-app-1-build",
+		new WaitUntil(new ResourceExists(Resource.POD, "eap-app-1-build",
 				ResourceState.SUCCEEDED), TimePeriod.getCustom(600),
 				true, TimePeriod.getCustom(7));
 		
-		new WaitUntil(new AmountOfResourcesExists(DatastoreOS3.SERVER, DatastoreOS3.USERNAME, 
-				DatastoreOS3.PROJECT1_DISPLAYED_NAME, Resource.POD, 2), TimePeriod.VERY_LONG,
+		new WaitUntil(new AmountOfResourcesExists(Resource.POD, 2), TimePeriod.VERY_LONG,
 				true, TimePeriod.getCustom(7));
 	}
 	
@@ -116,45 +111,39 @@ public class PortForwardingTest extends AbstractCreateApplicationTest {
 	}
 	
 	private void openPortForwardingDialog() {
-		OpenShiftExplorerView explorer  = new OpenShiftExplorerView();
-		explorer.activate();
-		
-		OpenShiftProject project = explorer.getOpenShift3Connection(DatastoreOS3.USERNAME, DatastoreOS3.SERVER).
-				getProject(DatastoreOS3.PROJECT1_DISPLAYED_NAME);
-		List<OpenShiftResource> pods = project.getOpenShiftResources(Resource.POD);
-		OpenShiftResource pod = null;
-		for (OpenShiftResource resource: pods) {
-			if (!resource.getName().equals("eap-app-1-build") && resource.getName().contains("eap-app-1")) {
-				pod = resource;
-				break;
-			}
-		}
-
-		// Workaround bcs. of crazy created tree items
-		selectPod(project, pod);
+		getPodOfEAPApplication().select();
 		
 		new ContextMenu(OpenShiftLabel.ContextMenu.PORT_FORWARD).select();
 		
 		new DefaultShell(OpenShiftLabel.Shell.APPLICATION_PORT_FORWARDING);
 	}
 	
-	private void selectPod(OpenShiftProject project, OpenShiftResource pod) {
+	public static OpenShiftResource getPodOfEAPApplication() {
+		OpenShiftExplorerView explorer  = new OpenShiftExplorerView();
+		explorer.activate();
+		
+		OpenShiftProject project = explorer.getOpenShift3Connection().
+				getProject();
+		OpenShiftResource pod = null;
+			
+		while (pod == null) {
+			List<OpenShiftResource> pods = project.getOpenShiftResources(Resource.POD);
+			
+			for (OpenShiftResource resource: pods) {
+				if (!resource.getName().equals("eap-app-1-build") && !resource.getName().equals("eap-app-1-deploy")) {
+					pod = resource;
+					break;
+				}
+			}
+		}
+		
 		String podName= pod.getName();
 		
-		new WaitUntil(new ResourceExists(DatastoreOS3.SERVER, DatastoreOS3.USERNAME, DatastoreOS3.PROJECT1_DISPLAYED_NAME, 
-				Resource.POD, pod.getName(), ResourceState.RUNNING), TimePeriod.LONG, true, TimePeriod.getCustom(5));
+		new WaitUntil(new ResourceExists(Resource.POD, pod.getName(), ResourceState.RUNNING), 
+				TimePeriod.LONG, true, TimePeriod.getCustom(5));
 		
 		TreeItem podResourceTreeItem = project.getTreeItem().getItem(Resource.POD.toString());
-		treeViewerHandler.getTreeItem(podResourceTreeItem, podName).select();
-	}
-	
-	private static void setUpOcBinary() {
-		WorkbenchPreferenceDialog dialog = new WorkbenchPreferenceDialog();
-		OpenShift3PreferencePage page = new OpenShift3PreferencePage();
-		dialog.open();
-		dialog.select(page);
-		page.setOCLocation(OpenShiftCommandLineToolsRequirement.getOCLocation());
-		page.apply();
-		dialog.ok();
+		
+		return new OpenShiftResource(treeViewerHandler.getTreeItem(podResourceTreeItem, podName));
 	}
 }

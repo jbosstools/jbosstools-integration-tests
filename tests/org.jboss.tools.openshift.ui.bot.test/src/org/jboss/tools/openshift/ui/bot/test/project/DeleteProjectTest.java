@@ -11,10 +11,10 @@ import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
+import org.jboss.tools.openshift.reddeer.utils.DatastoreOS3;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.view.OpenShift3Connection;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
-import org.jboss.tools.openshift.ui.bot.test.util.DatastoreOS3;
 import org.junit.After;
 import org.junit.Test;
 
@@ -28,8 +28,8 @@ public class DeleteProjectTest {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 		explorer.open();
 		
-		OpenShift3Connection connection = explorer.getOpenShift3Connection(DatastoreOS3.USERNAME, DatastoreOS3.SERVER);
-		connection.getProject(DatastoreOS3.PROJECT1_DISPLAYED_NAME).delete();
+		OpenShift3Connection connection = explorer.getOpenShift3Connection();
+		connection.getProject().delete();
 		
 		projectExists = false;
 		
@@ -43,7 +43,7 @@ public class DeleteProjectTest {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 		explorer.open();
 		
-		OpenShift3Connection connection = explorer.getOpenShift3Connection(DatastoreOS3.USERNAME, DatastoreOS3.SERVER);
+		OpenShift3Connection connection = explorer.getOpenShift3Connection();
 		connection.select();
 		new ContextMenu(OpenShiftLabel.ContextMenu.MANAGE_OS_PROJECTS).select();
 		
@@ -75,8 +75,7 @@ public class DeleteProjectTest {
 			OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 			explorer.reopen();
 			
-			explorer.getOpenShift3Connection(DatastoreOS3.USERNAME).createNewProject(
-					DatastoreOS3.PROJECT1, DatastoreOS3.PROJECT1_DISPLAYED_NAME);
+			explorer.getOpenShift3Connection().createNewProject();
 		}
 	}
 }

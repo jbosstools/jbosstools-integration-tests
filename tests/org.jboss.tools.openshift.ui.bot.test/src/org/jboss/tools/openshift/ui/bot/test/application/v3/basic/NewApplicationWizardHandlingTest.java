@@ -25,9 +25,9 @@ import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.tools.openshift.reddeer.utils.DatastoreOS3;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.wizard.v3.NewOpenShift3ApplicationWizard;
-import org.jboss.tools.openshift.ui.bot.test.util.DatastoreOS3;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,8 +36,7 @@ public class NewApplicationWizardHandlingTest {
 
 	@Before
 	public void openNewApplicationWizard() {
-		new NewOpenShift3ApplicationWizard(DatastoreOS3.SERVER, DatastoreOS3.USERNAME,
-				DatastoreOS3.PROJECT1_DISPLAYED_NAME).openWizardFromExplorer();
+		new NewOpenShift3ApplicationWizard().openWizardFromExplorer();
 	}
 	
 	@Test
@@ -131,13 +130,13 @@ public class NewApplicationWizardHandlingTest {
 	public void testFilteringServerTemplates() {
 		DefaultText searchBar = new DefaultText("");
 		
-		searchBar.setText(OpenShiftLabel.Others.EAP_TEMPLATE);
+		searchBar.setText("eap64-basic-s2i");
 		assertTrue("There should be precisely one tree item in a tree.",
 				new DefaultTree().getItems().size() == 1);
 		assertTrue("There should be item representing basic EAP template in a tree but it is not there.",
 				new DefaultTree().getItems().get(0).getText().equals(OpenShiftLabel.Others.EAP_TEMPLATE));
 		
-		searchBar.setText(OpenShiftLabel.Others.TOMCAT_TEMPLATE);
+		searchBar.setText("jws30-tomcat7-basic-s2i");
 		assertTrue("There should be precisely one tree item in a tree.",
 				new DefaultTree().getItems().size() == 1);
 		assertTrue("There should be item representing basic Tomcate template in a tree but it is not there.",
