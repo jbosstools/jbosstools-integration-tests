@@ -102,6 +102,115 @@ public class FreeMarkerCodeAssistTest extends FreemarkerTest  {
 		checkCodeAssist("<#", "foreach");
 	}
 	
+	@Test 
+	public void codeAssistFtlTest() {
+		checkCodeAssist("<#", "ft");
+	}
+	
+	@Test 
+	public void codeAssistFuctionTest() {
+		checkCodeAssist("<#", "function");
+	}
+	@Test 
+	public void codeAssistGlobaTest() {
+		checkCodeAssist("<#", "global");
+	}
+
+	@Test 
+	public void codeAssistIfTest() {
+		checkCodeAssist("<#", "if");
+	}
+	
+	@Test 
+	public void codeAssistImportTest() {
+		checkCodeAssist("<#", "import");
+	}
+	
+	@Test 
+	public void codeAssistIncludeTest() {
+		checkCodeAssist("<#", "include");
+	}
+	
+	@Test 
+	public void codeAssisttListTest() {
+		checkCodeAssist("<#", "list");
+	}
+
+	@Test 
+	public void codeAssistLocalTest() {
+		checkCodeAssist("<#", "local");
+	}
+	
+	@Test 
+	public void codeAssistLtTest() {
+		checkCodeAssist("<#", "lt");
+	}
+	
+	@Test 
+	public void codeAssistMacroTest() {
+		checkCodeAssist("<#", "macro");
+	}
+	
+	@Test 
+	public void codeAssistNestedTest() {
+		checkCodeAssist("<#", "nested");
+	}
+	
+	@Test 
+	public void codeAssistNoescapeTest() {
+		checkCodeAssist("<#", "noescape");
+	}
+	
+	@Test 
+	public void codeAssistNoparseTest() {
+		checkCodeAssist("<#", "noparse");
+	}
+	
+	@Test 
+	public void codeAssistNtTest() {
+		checkCodeAssist("<#", "nt");
+	}
+	
+	@Test 
+	public void codeAssistRecoverTest() {
+		checkCodeAssist("<#", "recover");
+	}
+	
+	@Test 
+	public void codeAssistReturnTest() {
+		checkCodeAssist("<#", "return");
+	}
+	
+	@Test 
+	public void codeAssistRtTest() {
+		checkCodeAssist("<#", "rt");
+	}
+	
+	@Test 
+	public void codeAssistSettingsTest() {
+		checkCodeAssist("<#", "settings");
+	}
+
+	@Test 
+	public void codeAssistStopTest() {
+		checkCodeAssist("<#", "stop");
+	}
+	
+	@Test 
+	public void codeAssistSwitchTest() {
+		checkCodeAssist("<#", "switch");
+	}
+
+	@Test 
+	public void codeAssistTTest() {
+		checkCodeAssist("<#", "t");
+	}
+
+	@Test 
+	public void codeAssistVisitTest() {
+		checkCodeAssist("<#", "visit");
+	}
+
 	@After
 	public void after() {
 	}
