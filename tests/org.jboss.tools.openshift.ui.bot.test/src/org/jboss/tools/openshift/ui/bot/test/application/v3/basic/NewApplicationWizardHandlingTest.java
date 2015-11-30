@@ -13,6 +13,7 @@ import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.core.matcher.WithTextMatcher;
 import org.jboss.reddeer.core.util.Display;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
@@ -61,7 +62,7 @@ public class NewApplicationWizardHandlingTest {
 		assertTrue("Tree with server templates should be visible and enabled if server template "
 				+ "tab item is selected.", new DefaultTree().isEnabled());
 		try {
-			new PushButton(OpenShiftLabel.Button.BROWSE);
+			new PushButton(1, new WithTextMatcher(OpenShiftLabel.Button.BROWSE));
 			fail("Browse button should not be visible while server template tab item is selected.");
 		} catch (RedDeerException ex) {
 			// pass
@@ -112,7 +113,7 @@ public class NewApplicationWizardHandlingTest {
 		Display.syncExec(new Runnable() {
 			@Override
 			public void run() {
-				new DefaultText().getSWTWidget().setText(DatastoreOS3.TEMPLATE_PATH);
+				new DefaultText(1).getSWTWidget().setText(DatastoreOS3.TEMPLATE_PATH);
 			}
 		});
 		
@@ -128,7 +129,7 @@ public class NewApplicationWizardHandlingTest {
 	
 	@Test
 	public void testFilteringServerTemplates() {
-		DefaultText searchBar = new DefaultText("");
+		DefaultText searchBar = new DefaultText(1);
 		
 		searchBar.setText("eap64-basic-s2i");
 		assertTrue("There should be precisely one tree item in a tree.",
@@ -153,7 +154,7 @@ public class NewApplicationWizardHandlingTest {
 		Display.syncExec(new Runnable() {
 			@Override
 			public void run() {
-				new DefaultText().getSWTWidget().setText(DatastoreOS3.TEMPLATE_PATH);
+				new DefaultText(1).getSWTWidget().setText(DatastoreOS3.TEMPLATE_PATH);
 			}
 		});
 		

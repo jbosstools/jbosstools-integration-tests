@@ -218,8 +218,8 @@ public class OpenShiftLabel {
 		public static final String SERVER = "Server:";
 		public static final String USERNAME = "Username:";
 		public static final String SERVER_TYPE = "Server type:";
-		public static final String STORE_PASSWORD = "Save Password (could trigger secure storage login)";
-		public static final String STORE_TOKEN= "Save Token (could trigger secure storage login)";
+		public static final String STORE_PASSWORD = "Save password (could trigger secure storage login)";
+		public static final String STORE_TOKEN= "Save token (could trigger secure storage login)";
 		public static final String CHECK_SERVER_TYPE = "Check Server Type";
 		public static final String PROTOCOL = "Protocol:";
 		public static final String TOKEN = "Token";
@@ -232,7 +232,7 @@ public class OpenShiftLabel {
 		public static final String PROJECT_NAME = "Project Name:";
 		public static final String PROJECT_DISPLAYED_NAME = "Display Name:";
 		public static final String PROJECT_DESCRIPTION = "Description:";
-		public static final String PROJECT = "Project: ";
+		public static final String PROJECT = "OpenShift project: ";
 		
 		
 		// SSH Key related
