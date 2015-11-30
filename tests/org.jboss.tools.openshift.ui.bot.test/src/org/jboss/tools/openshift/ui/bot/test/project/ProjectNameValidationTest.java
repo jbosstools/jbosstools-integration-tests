@@ -69,7 +69,7 @@ public class ProjectNameValidationTest {
 				"12345678901234567890123456789012345678901234567890123456789012345678901234567890" +
 				"123456789012345678901234");
 		try {
-			new DefaultText(" Maximum length allowed is 63 characters");
+			new DefaultText(" Maximum length allowed is 63 characters for project name");
 		} catch (RedDeerException ex) {
 			fail("There is no validation message warning about small length of a project name.");
 		}
