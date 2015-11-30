@@ -14,6 +14,7 @@ Require-Bundle: org.eclipse.ui,
  org.jboss.reddeer.eclipse
 Export-Package: org.jboss.tools.jst.reddeer.bower.ui,
  org.jboss.tools.jst.reddeer.jsp.ui.wizard,
+ org.jboss.tools.jst.reddeer.npm.ui,
  org.jboss.tools.jst.reddeer.ui.perspectives,
  org.jboss.tools.jst.reddeer.ui.preferences,
  org.jboss.tools.jst.reddeer.web.ui,
