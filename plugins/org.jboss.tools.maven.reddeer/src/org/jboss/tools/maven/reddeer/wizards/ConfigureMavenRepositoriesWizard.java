@@ -1,6 +1,9 @@
 package org.jboss.tools.maven.reddeer.wizards;
 
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
+
+import java.util.List;
+
 import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -36,6 +39,12 @@ public class ConfigureMavenRepositoriesWizard{
 		new PushButton("OK").click();
 		new DefaultShell("Maven Repositories");
 		return nameWithUrl;
+	}
+	
+	public List<String> getRepositoriesList(){
+		new PushButton(" Add Repository...").click();
+		new DefaultShell("Add Maven Repository");
+		return new DefaultCombo(0).getItems();
 	}
 	
 	public String addRepository(String repoID, String repoURL, boolean activeByDefault, boolean snapshots){
