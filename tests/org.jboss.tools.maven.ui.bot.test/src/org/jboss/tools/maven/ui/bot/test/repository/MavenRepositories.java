@@ -1,8 +1,11 @@
 package org.jboss.tools.maven.ui.bot.test.repository;
 
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.hasItem;
+
+import java.util.Arrays;
+import java.util.List;
 
 import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.maven.reddeer.maven.ui.preferences.ConfiguratorPreferencePage;
@@ -18,6 +21,12 @@ public class MavenRepositories extends AbstractMavenSWTBotTest{
 	
 	private static final String EAP_REPO = "redhat-ga-repository";
 	private static final String JBOSS_REPO = "jboss-public-repository";
+	private static final String BINTRAY = "bintray";
+	private static final String SPRINGSOURCE_EXTERNAL = "com-springsource-repository-bundles-external";
+	private static final String SPRINGSOURCE = "com-springsource-repository-bundles-release";
+	private static final String JAVANET = "java-net-public";
+	private static final String APACHE = "repository-apache-org";
+	private static final String EMPTY = "";
 	
 	@BeforeClass
 	public static void setup(){
@@ -49,6 +58,24 @@ public class MavenRepositories extends AbstractMavenSWTBotTest{
 			mr.cancel();
 		}
 		preferenceDialog.ok();
+	}
+	
+	@Test
+	public void checkPredefinedRepositories(){
+		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
+		preferenceDialog.open();
+		ConfiguratorPreferencePage jm = new ConfiguratorPreferencePage();
+		preferenceDialog.select(jm);
+		ConfigureMavenRepositoriesWizard mr = jm.configureRepositories();
+		List<String> repositories = mr.getRepositoriesList();
+		List<String> expected = Arrays.asList(EAP_REPO,JBOSS_REPO,BINTRAY,SPRINGSOURCE,SPRINGSOURCE_EXTERNAL,JAVANET,APACHE, EMPTY);
+		mr.cancel();
+		preferenceDialog.cancel();
+		for(String ex: expected){
+			assertThat(ex+" repository is missing in wizard choices",repositories, hasItem(ex));
+		}
+		assertEquals(expected.size(),repositories.size());
+		
 	}
 	
 	@Test
