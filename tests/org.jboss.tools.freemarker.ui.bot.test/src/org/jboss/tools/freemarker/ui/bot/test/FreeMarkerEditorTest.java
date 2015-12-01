@@ -9,10 +9,13 @@ import java.util.List;
 
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.common.matcher.RegexMatcher;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.core.matcher.WithTextMatcher;
+import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.eclipse.ui.views.contentoutline.OutlineView;
@@ -112,7 +115,8 @@ public class FreeMarkerEditorTest extends FreemarkerTest {
 		new WaitWhile(new JobIsRunning());
 		
 		ConsoleView cv = new ConsoleView();
-		cv.open();		
+		cv.open();
+		new WaitUntil(new ConsoleHasText(outputExpected), TimePeriod.NORMAL, false);
 		String consoleText = cv.getConsoleText();
 		
 		assertTrue("Output equal check",consoleText.equals(outputExpected));
