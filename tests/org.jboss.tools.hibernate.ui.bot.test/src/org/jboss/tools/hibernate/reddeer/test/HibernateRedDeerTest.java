@@ -14,7 +14,7 @@ public class HibernateRedDeerTest {
 	
 	private SyncInterceptorManager sim = SyncInterceptorManager.getInstance();
 	private final String LOG_INTERCEPTOR = "error-log-interceptor";
-	private static String dbFolder = System.getProperty("database.path");
+	private static String dbFolder = System.getProperty("test.database");
 	
 	@BeforeClass
 	public static void beforeClass() {
