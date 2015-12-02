@@ -12,11 +12,11 @@
 	<packaging>eclipse-test-plugin</packaging>
 
 	<properties>
-		<reddeer.config>${project.build.outputDirectory}</reddeer.config>
+		<rd.config>${basedir}/target/classes</rd.config>		
 		<!-- Tycho surefire arguments -->
-		<runtimesProperties>-Dreddeer.config=${reddeer.config}</runtimesProperties>
-		<!-- don't wrap this -->
-		<systemProperties>${integrationTestsSystemProperties} ${runtimesProperties} -Ddatabase.path=${test.database}</systemProperties>
+		<runtimesProperties>-Drd.config=${rd.config} -Dtest.database=${test.database}</runtimesProperties>
+		<!-- don't wrap this -->		
+		<systemProperties>${integrationTestsSystemProperties} ${runtimesProperties}</systemProperties>
 		<test.installPath.OSX></test.installPath.OSX>
 	</properties>
 
@@ -27,6 +27,7 @@
 				<filtering>true</filtering>
 			</resource>
 		</resources>
+		<!-- 
 		<plugins>
 			<plugin>
 				<groupId>com.googlecode.maven-download-plugin</groupId>
@@ -47,5 +48,6 @@
 				</executions>
 			</plugin>
 		</plugins>
+		-->
 	</build>
 </project>

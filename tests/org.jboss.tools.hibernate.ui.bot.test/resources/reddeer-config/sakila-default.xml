@@ -7,12 +7,10 @@
 			<db:driverName>My H2 Driver</db:driverName>
 			<db:driverType>Generic JDBC Driver</db:driverType>
 			<db:driverTypeVersion>1.0</db:driverTypeVersion>
-			<db:driverPath>${basedir}/${H2_DRIVER_TARGET}/${H2_FILE}
-			</db:driverPath>
+			<db:driverPath>${test.database}/h2-1.3.161.jar</db:driverPath>
 			<db:driverClass>org.h2.Driver</db:driverClass>
 			<db:profileName>dbProfile</db:profileName>
-			<db:jdbcString>jdbc:h2:tcp://ocelot64.mw.lab.eng.brq.redhat.com/sakila
-			</db:jdbcString>
+			<db:jdbcString>jdbc:h2:tcp://localhost/sakila</db:jdbcString>
 			<db:username>sa</db:username>
 			<db:password></db:password>
 		</db:database-requirement>
