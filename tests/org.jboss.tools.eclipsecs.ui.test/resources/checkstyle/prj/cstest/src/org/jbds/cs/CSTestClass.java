@@ -1,4 +1,4 @@
-package checkstyle.prj.cstest.src.org.jbds.cs;
+package org.jbds.cs;
 
 public class CSTestClass {
 	public static void main(String[] args) {
