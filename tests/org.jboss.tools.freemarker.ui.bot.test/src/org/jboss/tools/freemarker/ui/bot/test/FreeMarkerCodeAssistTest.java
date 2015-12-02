@@ -104,7 +104,7 @@ public class FreeMarkerCodeAssistTest extends FreemarkerTest  {
 	
 	@Test 
 	public void codeAssistFtlTest() {
-		checkCodeAssist("<#", "ft");
+		checkCodeAssist("<#", "ftl");
 	}
 	
 	@Test 
@@ -187,8 +187,8 @@ public class FreeMarkerCodeAssistTest extends FreemarkerTest  {
 	}
 	
 	@Test 
-	public void codeAssistSettingsTest() {
-		checkCodeAssist("<#", "settings");
+	public void codeAssistSettingTest() {
+		checkCodeAssist("<#", "setting");
 	}
 
 	@Test 
