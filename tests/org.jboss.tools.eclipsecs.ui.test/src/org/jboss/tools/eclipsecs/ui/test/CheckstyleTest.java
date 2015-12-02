@@ -1,21 +1,28 @@
 package org.jboss.tools.eclipsecs.ui.test;
 
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
 import org.jboss.reddeer.common.logging.Logger;
+import org.jboss.reddeer.common.wait.AbstractWait;
+import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.ui.problems.Problem;
+import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
+import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
+import org.jboss.reddeer.eclipse.ui.problems.matcher.ProblemsTypeMatcher;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
@@ -50,6 +57,15 @@ public class CheckstyleTest {
 		new ContextMenu("Checkstyle","Check Code with Checkstyle").select();
 		
 		new WaitWhile(new JobIsRunning());
+		
+		ProblemsView pv = new ProblemsView();
+		pv.open();
+		
+		List<Problem> problems = pv.getProblems(ProblemType.WARNING, new ProblemsTypeMatcher("Checkstyle Problem"));
+		assertTrue("There must be Checkstyle Problems reported", problems.size() > 0);
+		
+		
+		AbstractWait.sleep(TimePeriod.LONG);
 	 }
 	
 	
