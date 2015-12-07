@@ -63,9 +63,6 @@ public class CheckstyleTest {
 		
 		List<Problem> problems = pv.getProblems(ProblemType.WARNING, new ProblemsTypeMatcher("Checkstyle Problem"));
 		assertTrue("There must be Checkstyle Problems reported", problems.size() > 0);
-		
-		
-		AbstractWait.sleep(TimePeriod.LONG);
 	 }
 	
 	
