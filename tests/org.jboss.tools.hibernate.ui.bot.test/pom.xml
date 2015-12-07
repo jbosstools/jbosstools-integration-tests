@@ -11,8 +11,7 @@
 	<artifactId>org.jboss.tools.hibernate.ui.bot.test</artifactId>
 	<packaging>eclipse-test-plugin</packaging>
 
-	<properties>
-		<rd.config>${basedir}/target/classes</rd.config>		
+	<properties>	
 		<!-- Tycho surefire arguments -->
 		<runtimesProperties>-Drd.config=${rd.config} -Dtest.database=${test.database}</runtimesProperties>
 		<!-- don't wrap this -->		
@@ -50,4 +49,18 @@
 		</plugins>
 		-->
 	</build>
+	<profiles>
+		<profile>
+			<id>rd.defaultConfig</id>
+			<activation>
+				<property>
+					<name>rd.defaultConfig</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<properties>
+				<rd.config>${basedir}/target/classes</rd.config>
+			</properties>
+		</profile>
+	</profiles>	
 </project>
