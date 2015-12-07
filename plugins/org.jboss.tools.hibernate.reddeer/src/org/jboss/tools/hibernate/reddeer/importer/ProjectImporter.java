@@ -2,6 +2,9 @@ package org.jboss.tools.hibernate.reddeer.importer;
 
 import static org.junit.Assert.assertTrue;
 
+import java.util.List;
+
+import org.jboss.reddeer.eclipse.ui.problems.Problem;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
 import org.jboss.reddeer.eclipse.ui.views.log.LogView;
@@ -12,6 +15,7 @@ import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
+import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
@@ -26,6 +30,8 @@ import org.jboss.tools.hibernate.reddeer.factory.ResourceFactory;
  */
 public class ProjectImporter {
 
+	private static final Logger log = Logger.getLogger(ProjectImporter.class);
+	
 	/**
 	 * Import porject and requires no errors in problems log
 	 * @param pluginId plug-in id of project where project resources are located
@@ -53,7 +59,13 @@ public class ProjectImporter {
 			new WaitWhile(new JobIsRunning(),TimePeriod.LONG);
 	}
 		
-		assertTrue("No problems after import are expected", problemsView.getProblems(ProblemType.ERROR).size() == 0);
+		List<Problem> problems = problemsView.getProblems(ProblemType.ERROR);
+		for (Problem p : problems) {
+			log.error("Unexpected "+ problems.size() + " problem(s):");
+			log.dump("Problem: "+ p.toString());
+		}
+		
+		assertTrue("No problems after import are expected", problems.size() == 0);
 	}
 	
 	/**
