@@ -40,6 +40,16 @@
 <stringAttribute key="rd.launch.property.logDebug" value="true"/>
 <stringAttribute key="rd.launch.property.logMessageFilter" value="ALL"/>
 <stringAttribute key="rd.launch.property.pauseFailedTest" value="false"/>
+<stringAttribute key="rd.launch.property.rd.captureScreenshot" value="true"/>
+<stringAttribute key="rd.launch.property.rd.closeShells" value="true"/>
+<stringAttribute key="rd.launch.property.rd.closeWelcomeScreen" value="true"/>
+<stringAttribute key="rd.launch.property.rd.disableMavenIndex" value="true"/>
+<stringAttribute key="rd.launch.property.rd.logLevel" value="ALL"/>
+<stringAttribute key="rd.launch.property.rd.logMessageFilter" value="ALL"/>
+<stringAttribute key="rd.launch.property.rd.openAssociatedPerspective" value="never"/>
+<stringAttribute key="rd.launch.property.rd.pauseFailedTest" value="false"/>
+<stringAttribute key="rd.launch.property.rd.recordScreenCast" value="false"/>
+<stringAttribute key="rd.launch.property.rd.timePeriodFactor" value="1.0"/>
 <stringAttribute key="rd.launch.property.recordScreenCast" value="false"/>
 <stringAttribute key="rd.launch.property.reddeer.close.shells" value="true"/>
 <stringAttribute key="rd.launch.property.reddeer.close.welcome.screen" value="true"/>
