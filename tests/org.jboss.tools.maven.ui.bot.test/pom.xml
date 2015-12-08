@@ -58,7 +58,6 @@
 				<configuration>
 					<testSuite>org.jboss.tools.maven.ui.bot.test</testSuite>
 					<testClass>${suiteClass}</testClass>
-					<appArgLine>-testpluginname ${project.artifactId}</appArgLine>
 				</configuration>
 			</plugin>
 		</plugins>
