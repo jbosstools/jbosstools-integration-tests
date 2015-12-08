@@ -8,12 +8,12 @@ import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.core.condition.ViewWithTitleIsActive;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.tools.openshift.reddeer.condition.AmountOfResourcesExists;
+import org.jboss.tools.openshift.reddeer.condition.ConsoleHasText;
 import org.jboss.tools.openshift.reddeer.condition.ResourceExists;
 import org.jboss.tools.openshift.reddeer.enums.Resource;
 import org.jboss.tools.openshift.reddeer.enums.ResourceState;
@@ -51,7 +51,7 @@ public class LogsTest extends AbstractCreateApplicationTest {
 		
 		ConsoleView consoleView = new ConsoleView();
 		
-		new WaitUntil(new ViewWithTitleIsActive("Console"), TimePeriod.NORMAL, false);
+		new WaitUntil(new ConsoleHasText(), TimePeriod.NORMAL, false);
 	
 		assertTrue("Console label is incorrect, it should contains project name and pod name.\n"
 						+ "but label is: " + consoleView.getConsoleLabel(), consoleView.getConsoleLabel().contains(
@@ -73,7 +73,7 @@ public class LogsTest extends AbstractCreateApplicationTest {
 				getProject().getOpenShiftResources(Resource.BUILD).get(0).select();
 		new ContextMenu(OpenShiftLabel.ContextMenu.BUILD_LOG).select();
 		
-		new WaitUntil(new ViewWithTitleIsActive("Console"), TimePeriod.NORMAL, false);
+		new WaitUntil(new ConsoleHasText(), TimePeriod.NORMAL, false);
 		
 		ConsoleView consoleView = new ConsoleView();
 		assertTrue("Console label is incorrect, it should contains project name and name of build pod.\n"

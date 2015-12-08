@@ -2,6 +2,7 @@ package org.jboss.tools.openshift.ui.bot.test;
 
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.openshift.reddeer.utils.CleanUpOS3;
+import org.jboss.tools.openshift.ui.bot.test.application.v3.advanced.DeleteResourceTest;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.advanced.GithubWebhoookTest;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.advanced.ImportApplicationTest;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.advanced.LogsTest;
@@ -60,9 +61,10 @@ import org.junit.runners.Suite.SuiteClasses;
 	
 	// Creation of a new application
 	CreateApplicationFromTemplateTest.class,
-	DeploymentTest.class,	
+	DeploymentTest.class,
 	
 	// Application handling
+	DeleteResourceTest.class,
 	TriggerBuildTest.class,
 	ImportApplicationTest.class,
 	GithubWebhoookTest.class,

@@ -5,7 +5,7 @@ import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.impl.button.OkButton;
+import org.jboss.reddeer.swt.impl.button.YesButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
@@ -55,7 +55,7 @@ public class OpenShiftResource extends AbstractOpenShiftExplorerItem {
 		new ContextMenu(OpenShiftLabel.ContextMenu.DELETE_RESOURCE).select();
 		
 		new DefaultShell(OpenShiftLabel.Shell.DELETE_RESOURCE);
-		new OkButton().click();
+		new YesButton().click();
 		
 		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.DELETE_RESOURCE), TimePeriod.LONG);
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
