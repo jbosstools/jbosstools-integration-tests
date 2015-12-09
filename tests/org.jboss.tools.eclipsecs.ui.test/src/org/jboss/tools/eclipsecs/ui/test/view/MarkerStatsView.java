@@ -1,5 +1,6 @@
 package org.jboss.tools.eclipsecs.ui.test.view;
 
+import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
 
 /**
@@ -14,6 +15,16 @@ public class MarkerStatsView extends WorkbenchView {
 	 */
 	public MarkerStatsView() {
 		super("Checkstyle violations");
+	}
+	
+	
+	/**
+	 * Checkstyle violations item count
+	 * Return Checkstyle violations item count
+	 */
+	public int getItemCount() {
+		DefaultTable t = new DefaultTable();
+		return t.getItems().size();		
 	}
 
 }
