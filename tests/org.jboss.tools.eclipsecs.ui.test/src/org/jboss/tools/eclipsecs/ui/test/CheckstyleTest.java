@@ -1,6 +1,7 @@
 package org.jboss.tools.eclipsecs.ui.test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -14,8 +15,6 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
 import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
@@ -28,6 +27,8 @@ import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPag
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.tools.eclipsecs.ui.test.view.MarkerStatsView;
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -41,6 +42,7 @@ public class CheckstyleTest {
 		
 	private static final Logger log = Logger.getLogger(CheckstyleTest.class);
 		
+	private final String PROJECT_NAME = "cstest";
 	
 	@Test 
 	 public void checkStyleTest()
@@ -50,9 +52,9 @@ public class CheckstyleTest {
 		
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
-		pe.selectProjects("cstest");
+		pe.selectProjects(PROJECT_NAME);
 		
-		new DefaultTreeItem("cstest","src","org.jbds.cs","CSTestClass.java").select();
+		new DefaultTreeItem(PROJECT_NAME,"src","org.jbds.cs","CSTestClass.java").select();
 		
 		new ContextMenu("Checkstyle","Check Code with Checkstyle").select();
 		
@@ -63,6 +65,28 @@ public class CheckstyleTest {
 		
 		List<Problem> problems = pv.getProblems(ProblemType.WARNING, new ProblemsTypeMatcher("Checkstyle Problem"));
 		assertTrue("There must be Checkstyle Problems reported", problems.size() > 0);
+	 }
+	
+	@Test 
+	 public void checkStyleViolationsTest()
+	 {
+		log.step("Import tests project");
+		importTestProject();
+		
+		ProjectExplorer pe = new ProjectExplorer();
+		pe.open();
+		pe.selectProjects(PROJECT_NAME);
+		
+		new DefaultTreeItem(PROJECT_NAME,"src","org.jbds.cs","CSTestClass.java").select();
+		
+		new ContextMenu("Checkstyle","Check Code with Checkstyle").select();
+		
+		new WaitWhile(new JobIsRunning());
+		
+		MarkerStatsView v = new MarkerStatsView();
+		v.open();
+		
+		assertTrue("There must be Checkstyle Violations reported", v.getItemCount() > 0);
 	 }
 	
 	
@@ -215,5 +239,13 @@ public class CheckstyleTest {
 			}
 		}
 	}
+	
+	@After 
+	public void clean() {			
+		ProjectExplorer pe = new ProjectExplorer();
+		pe.open();
+		pe.getProject(PROJECT_NAME).delete(true);
+	}
+
 	
 	}
