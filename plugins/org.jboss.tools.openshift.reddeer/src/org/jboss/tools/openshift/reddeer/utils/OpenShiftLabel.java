@@ -189,6 +189,7 @@ public class OpenShiftLabel {
 		public static final String ADD_SSH_KEY = "Add Existing...";
 		public static final String ADVANCED = " Advanced >> ";
 		public static final String BROWSE = "Browse...";
+		public static final String COMMIT= "Commit";
 		public static final String COMMIT_PUBLISH = "Commit and Publish";
 		public static final String COMMIT_PUSH = "Commit and Push";
 		public static final String CREATE_DOMAIN = "New...";
