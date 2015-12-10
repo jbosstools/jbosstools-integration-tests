@@ -59,49 +59,6 @@
         <configuration>
           <testSuite>org.jboss.tools.vpe.ui.bot.test</testSuite>
           <testClass>${test.suite.class}</testClass>
-          <product>org.eclipse.platform.ide</product>
-          <dependencies combine.children="append">
-            <dependency>
-              <type>p2-installable-unit</type>
-              <artifactId>org.jboss.ide.eclipse.as.feature.feature.group</artifactId>
-              <version>0.0.0</version>
-            </dependency>
-            <dependency>
-              <type>p2-installable-unit</type>
-              <artifactId>org.jboss.tools.vpe.feature.feature.group</artifactId>
-              <version>0.0.0</version>
-            </dependency>
-            <dependency>
-              <type>p2-installable-unit</type>
-              <artifactId>org.jboss.tools.jsf.feature.feature.group</artifactId>
-              <version>0.0.0</version>
-            </dependency>
-            <dependency>
-              <type>p2-installable-unit</type>
-              <artifactId>org.eclipse.jst.enterprise_ui.feature.feature.group</artifactId>
-              <version>0.0.0</version>
-            </dependency>
-            <dependency>
-              <type>p2-installable-unit</type>
-              <artifactId>org.eclipse.jst.web_core.feature.feature.group</artifactId>
-              <version>0.0.0</version>
-            </dependency>
-            <dependency>
-              <type>p2-installable-unit</type>
-              <artifactId>org.eclipse.wst.web_ui.feature.feature.group</artifactId>
-              <version>0.0.0</version>
-            </dependency>
-            <dependency>
-              <type>p2-installable-unit</type>
-              <artifactId>org.eclipse.jdt.feature.group</artifactId>
-              <version>0.0.0</version>
-            </dependency>
-            <dependency>
-              <type>p2-installable-unit</type>
-              <artifactId>org.jboss.tools.browsersim.feature.feature.group</artifactId>
-              <version>0.0.0</version>
-            </dependency>
-          </dependencies>
         </configuration>
       </plugin>
     </plugins>
