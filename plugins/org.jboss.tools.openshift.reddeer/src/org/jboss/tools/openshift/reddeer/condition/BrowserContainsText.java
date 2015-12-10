@@ -7,15 +7,26 @@ public class BrowserContainsText extends AbstractWaitCondition {
 
 	private InternalBrowser browser;
 	private String text;
+	private String url;
+	
+	public BrowserContainsText(String url, String text) {
+		browser = new InternalBrowser();
+		this.url = url;
+		this.text = text;
+	}
 	
 	public BrowserContainsText(String text) {
-		browser = new InternalBrowser();
-		this.text = text;
+		this(null, text);
 	}
 	
 	@Override
 	public boolean test() {
-		browser.refresh();
+		if (url != null) {
+			browser.setURL(url);
+			browser.forward();
+		} else {
+			browser.refresh();
+		}
 		return browser.getText().contains(text);
 	}
 

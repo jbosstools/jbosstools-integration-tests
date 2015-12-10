@@ -41,12 +41,12 @@ public class OpenShiftResource extends AbstractOpenShiftExplorerItem {
 	}
 	
 	/**
-	 * Gets state of a resource. Could be Pending, Running, Complete, Failed and others.
+	 * Gets additional information such as state of a resource or routing address.
 	 * 
-	 * @return state of a resource
+	 * @return additional information about resource shown as non-styled text
 	 */
-	public String getState() {
-		return treeViewerHandler.getNonStyledText(item).trim();
+	public String getAdditionalInfo() {
+		return treeViewerHandler.getStyledTexts(item)[0].trim();
 	}
 	
 	public void delete() {
