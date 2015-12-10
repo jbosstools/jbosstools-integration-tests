@@ -19,6 +19,7 @@ import org.junit.Test;
 public class WeldBuiltInContextsTemplate extends CDITestBase{
 	
 	public static final String WELD_API_JAR=System.getProperty("jbosstools.test.weld-api.home");
+	protected String CDIVersion;
 	
 	@Before
 	public void addLibs(){
@@ -46,7 +47,11 @@ public class WeldBuiltInContextsTemplate extends CDITestBase{
 		assertEquals(3,markers.size());
 		for(Marker m: te.getMarkers()){
 			assertEquals("org.eclipse.ui.workbench.texteditor.warning",m.getType());
-			assertEquals("Multiple beans are eligible for injection to the injection point [JSR-346 §5.2.2]", m.getText());
+			String JSRspec = "[JSR-346 §5.2.2]";
+			if("1.0".equals(CDIVersion)){
+				JSRspec = "[JSR-299 §5.2.1]";
+			}
+			assertEquals("Multiple beans are eligible for injection to the injection point "+JSRspec, m.getText());
 			assertTrue(m.getLineNumber() == 70 || m.getLineNumber() == 73 || m.getLineNumber() == 76);
 		}
 	}
