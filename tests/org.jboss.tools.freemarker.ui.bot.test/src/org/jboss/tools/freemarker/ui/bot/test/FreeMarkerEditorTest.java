@@ -119,7 +119,13 @@ public class FreeMarkerEditorTest extends FreemarkerTest {
 		new WaitUntil(new ConsoleHasText(outputExpected), TimePeriod.NORMAL, false);
 		String consoleText = cv.getConsoleText();
 		
-		assertTrue("Output equal check",consoleText.equals(outputExpected));
+		if (!consoleText.equals(outputExpected)) {
+			log.error("Console text doesn't correspond with expected text");
+			log.dump("Console text:" + consoleText);
+			log.dump("Expected text:" + outputExpected);
+		}
+		
+		assertTrue("Output equal check",consoleText.equals(outputExpected));		
 	}
 
 	@After
