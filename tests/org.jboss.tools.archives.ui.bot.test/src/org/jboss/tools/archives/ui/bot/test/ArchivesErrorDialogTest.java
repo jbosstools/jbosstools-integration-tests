@@ -16,6 +16,7 @@ import static org.junit.Assert.assertThat;
 import java.util.List;
 
 import org.hamcrest.core.Is;
+import org.jboss.reddeer.common.platform.RunningPlatform;
 import org.jboss.reddeer.eclipse.ui.views.log.LogMessage;
 import org.jboss.reddeer.eclipse.ui.views.log.LogView;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
@@ -40,7 +41,7 @@ import org.junit.Test;
 public class ArchivesErrorDialogTest extends ArchivesTestBase {
 
 	private static String project = "prj";
-	private static final String LOCATION = "/usr/";
+	private static final String LOCATION = RunningPlatform.isWindows() ? "C:\\Windows\\System32":"/usr/";
 	private static final String ARCHIVE = project + ".jar [" + LOCATION + "]";
 	
 	@BeforeClass
@@ -57,21 +58,16 @@ public class ArchivesErrorDialogTest extends ArchivesTestBase {
 		ArchiveProject projectInView = view.getProject();
 		NewJarDialog dialog = projectInView.newJarArchive();
 		
-		/* location is set to /usr/ which should be not able to accessed to */
+		/* location is set to LOCATION which should be not able to accessed to */
 		dialog.setFileSystemRelative();
-		/**
-		 * will be replaced by dialog.setDestination(LOCATION) once
-		 * issue https://github.com/jboss-reddeer/reddeer/issues/169 
-		 * is resolved
-		 */
+
 		Text t = new DefaultText(1);
-		t.setText("");
-		KeyboardFactory.getKeyboard().type(LOCATION);
+		t.setText(LOCATION);
 		dialog.finish();
 		
 		/*
 		 * building archive error should be invoked, because of 
-		 * accessing to /usr/ folder
+		 * accessing to LOCATION folder
 		 */ 
 		
 		view.open();
