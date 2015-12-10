@@ -12,5 +12,9 @@ import org.jboss.tools.cdi.bot.test.weld.template.WeldBuiltInContextsTemplate;
 @OpenPerspective(JavaEEPerspective.class)
 @CleanWorkspace
 public class WeldBuiltInContextsTestCDI10 extends WeldBuiltInContextsTemplate{
+	
+	public WeldBuiltInContextsTestCDI10() {
+		CDIVersion = "1.0";
+	}
 
 }
