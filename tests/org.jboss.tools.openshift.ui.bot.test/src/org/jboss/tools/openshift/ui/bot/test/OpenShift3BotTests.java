@@ -3,6 +3,7 @@ package org.jboss.tools.openshift.ui.bot.test;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.openshift.reddeer.utils.CleanUpOS3;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.advanced.DeleteResourceTest;
+import org.jboss.tools.openshift.ui.bot.test.application.v3.advanced.DeployEclipseProjectTest;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.advanced.GithubWebhoookTest;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.advanced.ImportApplicationTest;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.advanced.LogsTest;
@@ -71,8 +72,11 @@ import org.junit.runners.Suite.SuiteClasses;
 	PortForwardingTest.class,
 	LogsTest.class,
 	
+	// Advanced application testing
+	DeployEclipseProjectTest.class,
+	
 	// Clean up
-	CleanUpOS3.class
+	CleanUpOS3.class 
 })
 public class OpenShift3BotTests {
 	
