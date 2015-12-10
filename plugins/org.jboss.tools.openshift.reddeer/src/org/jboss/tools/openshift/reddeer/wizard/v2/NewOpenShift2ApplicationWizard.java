@@ -205,45 +205,4 @@ public class NewOpenShift2ApplicationWizard extends NewOpenShiftApplicationWizar
 			fail("There is no server adapter for application " + appName + " and project " + project);
 		}
 	}
-	
-	//////////////////////////////////////
-	////////// WIZARD NAVIGATE ///////////
-    //////////////////////////////////////
-	
-	/**
-	 * Waits and clicks Back button.
-	 */
-	public void back() {
-		new WaitUntil(new WidgetIsEnabled(new BackButton()), TimePeriod.LONG);
-		
-		new BackButton().click();
-	}
-	
-	/**
-	 * Waits and clicks Next button.
-	 */
-	public void next() {
-		new WaitUntil(new WidgetIsEnabled(new NextButton()), TimePeriod.LONG);
-		
-		new NextButton().click();
-	}
-	
-
-	/**
-	 * Waits and clicks Cancel button .
-	 */
-	public void cancel() {
-		new WaitUntil(new WidgetIsEnabled(new CancelButton()), TimePeriod.LONG);
-		
-		new CancelButton().click();
-	}
-	
-	/**
-	 * Waits and clicks Finish button.
-	 */
-	public void finish() {
-		new WaitUntil(new WidgetIsEnabled(new FinishButton()), TimePeriod.LONG);
-		
-		new FinishButton().click();
-	}
 }

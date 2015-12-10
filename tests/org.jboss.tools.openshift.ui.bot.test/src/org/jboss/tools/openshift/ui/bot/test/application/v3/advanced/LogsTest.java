@@ -8,6 +8,7 @@ import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.eclipse.condition.ConsoleHasNoChange;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
@@ -52,7 +53,8 @@ public class LogsTest extends AbstractCreateApplicationTest {
 		ConsoleView consoleView = new ConsoleView();
 		
 		new WaitUntil(new ConsoleHasText(), TimePeriod.NORMAL, false);
-	
+		new WaitUntil(new ConsoleHasNoChange(TimePeriod.getCustom(5)), TimePeriod.VERY_LONG);
+		
 		assertTrue("Console label is incorrect, it should contains project name and pod name.\n"
 						+ "but label is: " + consoleView.getConsoleLabel(), consoleView.getConsoleLabel().contains(
 						DatastoreOS3.PROJECT1 + "\\" + podName));
@@ -74,6 +76,7 @@ public class LogsTest extends AbstractCreateApplicationTest {
 		new ContextMenu(OpenShiftLabel.ContextMenu.BUILD_LOG).select();
 		
 		new WaitUntil(new ConsoleHasText(), TimePeriod.NORMAL, false);
+		new WaitUntil(new ConsoleHasNoChange(TimePeriod.getCustom(5)), TimePeriod.VERY_LONG);
 		
 		ConsoleView consoleView = new ConsoleView();
 		assertTrue("Console label is incorrect, it should contains project name and name of build pod.\n"

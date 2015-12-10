@@ -9,6 +9,8 @@ import org.jboss.reddeer.jface.viewer.handler.TreeViewerHandler;
 import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.swt.impl.browser.InternalBrowser;
 import org.jboss.reddeer.swt.impl.button.BackButton;
+import org.jboss.reddeer.swt.impl.button.CancelButton;
+import org.jboss.reddeer.swt.impl.button.FinishButton;
 import org.jboss.reddeer.swt.impl.button.NextButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
@@ -94,4 +96,39 @@ public abstract class NewOpenShiftApplicationWizard {
 		new DefaultShell(OpenShiftLabel.Shell.NEW_APP_WIZARD).setFocus();
 	}
 	
+	/**
+	 * Waits and clicks Back button.
+	 */
+	public void back() {
+		new WaitUntil(new WidgetIsEnabled(new BackButton()), TimePeriod.LONG);
+		
+		new BackButton().click();
+	}
+	
+	/**
+	 * Waits and clicks Next button.
+	 */
+	public void next() {
+		new WaitUntil(new WidgetIsEnabled(new NextButton()), TimePeriod.LONG);
+		
+		new NextButton().click();
+	}
+
+	/**
+	 * Waits and clicks Cancel button .
+	 */
+	public void cancel() {
+		new WaitUntil(new WidgetIsEnabled(new CancelButton()), TimePeriod.LONG);
+		
+		new CancelButton().click();
+	}
+	
+	/**
+	 * Waits and clicks Finish button.
+	 */
+	public void finish() {
+		new WaitUntil(new WidgetIsEnabled(new FinishButton()), TimePeriod.LONG);
+		
+		new FinishButton().click();
+	}
 }
