@@ -27,8 +27,8 @@
 
 		<!-- predefined RedDeer sites, if you need to change default please redefine reddeer-site property in your test -->
 		<reddeer-master-site>http://download.jboss.org/jbosstools/mars/snapshots/builds/reddeer_master/</reddeer-master-site>
-		<reddeer-stable-site>http://download.jboss.org/jbosstools/updates/stable/mars/core/reddeer/0.8.0/</reddeer-stable-site>
-		<reddeer-site>${reddeer-master-site}</reddeer-site>
+		<reddeer-stable-site>http://download.jboss.org/jbosstools/updates/stable/mars/core/reddeer/1.0.0/</reddeer-stable-site>
+		<reddeer-site>${reddeer-stable-site}</reddeer-site>
 
 		<jbosstools-integrationtests-site>http://download.jboss.org/jbosstools/mars/snapshots/updates/integration-tests/${jbosstools_site_stream}/</jbosstools-integrationtests-site>
 		<jbosstools-site>http://download.jboss.org/jbosstools/mars/snapshots/updates/core/${jbosstools_site_stream}/</jbosstools-site>
