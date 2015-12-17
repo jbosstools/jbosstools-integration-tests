@@ -1,5 +1,7 @@
 package org.jboss.tools.runtime.as.ui.bot.test.download;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.File;
 
 import org.jboss.reddeer.common.wait.TimePeriod;
@@ -64,9 +66,15 @@ public class RuntimeDownloadTestBase extends RuntimeDetectionTestCase {
 	
 	protected void processInsertingCredentials(String username, String password) {
 		TaskWizardLoginPage credentialsPage = new TaskWizardLoginPage();
+		assertEquals("Domain is set to jboss.org", "jboss.org", credentialsPage.getDomain());
+		
+		//username is not enabled -> we have to add credential
+		if (!credentialsPage.containsUsername(username)){
+			credentialsPage.addCredentials(username, password);
+		}
 		credentialsPage.setUsername(username);
-		credentialsPage.setPassword(password);
 		runtimeDownloadWizard.next();
+		new WaitWhile(new JobIsRunning());
 	}
 	
 	protected void processRuntimeDownload() {

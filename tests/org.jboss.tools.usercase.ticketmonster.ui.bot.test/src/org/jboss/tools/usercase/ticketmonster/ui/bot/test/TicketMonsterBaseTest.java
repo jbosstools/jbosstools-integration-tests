@@ -184,8 +184,10 @@ public class TicketMonsterBaseTest {
 		if(eap){
 			downloadRuntime.next();
 			TaskWizardLoginPage downloadTask = new TaskWizardLoginPage();
+			if (!downloadTask.containsUsername(JBOSS_USERNAME)){
+				downloadTask.addCredentials(JBOSS_USERNAME, JBOSS_PASSWORD);
+			}
 			downloadTask.setUsername(JBOSS_USERNAME);
-			downloadTask.setPassword(JBOSS_PASSWORD);
 		}
 		downloadRuntime.next();
 		TaskWizardSecondPage downloadSecond = new TaskWizardSecondPage();

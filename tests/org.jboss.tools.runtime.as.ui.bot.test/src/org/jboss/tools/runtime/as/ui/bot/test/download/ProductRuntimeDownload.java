@@ -30,7 +30,7 @@ public class ProductRuntimeDownload extends ProductRuntimeDownloadTestBase {
 		processInsertingCredentials("Invalid username", "Invalid password");
 		
 		try {
-			Text errorText = new org.jboss.reddeer.swt.impl.text.DefaultText(2);
+			Text errorText = new org.jboss.reddeer.swt.impl.text.DefaultText(0);
 			assertThat(errorText.getText(), StringContains.containsString("Please use your jboss.org single sign-on credentials to begin your download."));
 		} catch(SWTLayerException e) {
 			fail("Error text not found\n" + e.getMessage());
