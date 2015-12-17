@@ -1,6 +1,5 @@
 /*******************************************************************************
-
- * Copyright (c) 2007-2011 Exadel, Inc. and Red Hat, Inc.
+ * Copyright (c) 2007-2016 Exadel, Inc. and Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -11,7 +10,8 @@
  ******************************************************************************/
 package org.jboss.tools.vpe.ui.bot.test.editor.tags;
 
-import org.jboss.tools.ui.bot.ext.Timing;
+import org.jboss.reddeer.common.wait.AbstractWait;
+import org.jboss.reddeer.common.wait.TimePeriod;
 
 /**
  * Tests Rich Faces virtualEarth Tag behavior 
@@ -51,8 +51,8 @@ public class VirtualEarthTagTest extends AbstractTagTest{
       getTestPageFileName());
     // check tag selection
     getVisualEditor().selectDomNode(getVisualEditor().getDomNodeByTagName("IMG",0), 0);
-    bot.sleep(Timing.time3S());
-    String selectedText = getSourceEditor().getSelection();
+    AbstractWait.sleep(TimePeriod.getCustom(3));
+    String selectedText = getSourceEditor().getSelectedText();
     String hasToBe = "<rich:virtualEarth/>";
     assertTrue("Selected text in Source Pane has to be '" + hasToBe + "'" +
         "\nbut it is '" + selectedText + "'",

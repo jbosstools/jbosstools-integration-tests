@@ -1,5 +1,5 @@
 /******************************************************************************* 
- * Copyright (c) 2012 Red Hat, Inc.
+ * Copyright (c) 2012 - 2016 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -11,162 +11,81 @@
 package org.jboss.tools.vpe.ui.bot.test.editor;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Event;
-import org.jboss.tools.ui.bot.ext.SWTBotExt;
-import org.jboss.tools.ui.bot.ext.SWTJBTExt;
-import org.jboss.tools.ui.bot.ext.Timing;
-import org.jboss.tools.vpe.ui.bot.test.tools.SWTBotWebBrowser;
+import org.jboss.reddeer.common.platform.RunningPlatform;
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.jboss.reddeer.swt.api.Browser;
+import org.jboss.reddeer.swt.impl.browser.InternalBrowser;
+import org.jboss.reddeer.swt.impl.menu.ShellMenu;
+import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
+import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.junit.Test;
 
-public class BlockCommentTest extends VPEEditorTestCase{
+public class BlockCommentTest extends VPEEditorTestCase {
+	private TextEditor textEditor;
+	private String originalEditorText;
 
-	public void testBlockComment() throws Throwable{
-
+	@Test
+	public void testBlockComment() throws Throwable {
 		// Test open page
-
 		openPage();
-
-		setEditor(bot.editorByTitle(TEST_PAGE).toTextEditor());
-		setEditorText(getEditor().getText());
+		textEditor = new TextEditor(TEST_PAGE);
+		originalEditorText = textEditor.getText();
 		// Test add block comment from Source menu
-		SWTBotExt botExt = new SWTBotExt();
 		final String commentValue = "<h:commandButton action=\"hello\" value=\"Say Hello!\" />";
-		SWTJBTExt.selectTextInSourcePane(botExt,
-				TEST_PAGE,
-				commentValue,
-				0,
-				commentValue.length(),
-		        0);
-		bot.sleep(Timing.time2S());
-		bot.menu("Source").menu("Add Block Comment").click(); //$NON-NLS-1$//$NON-NLS-2$
-		getEditor().save();
-		waitForBlockingJobsAcomplished(VISUAL_UPDATE);
-		SWTBotWebBrowser webBrowser = new SWTBotWebBrowser(TEST_PAGE,
-				new SWTBotExt());
-		assertVisualEditorContainsManyComments(webBrowser, 1, TEST_PAGE);
-
-		assertTrue(
-				"Visual Representation of page doesn't contain comment with value "
-						+ commentValue,
-				webBrowser.containsCommentWithValue(commentValue));
-
+		textEditor.selectText(commentValue);
+		new ShellMenu("Source", "Add Block Comment").select();
+		textEditor.save();
+		new WaitWhile(new JobIsRunning());
+		Browser browser = new InternalBrowser();
+		assertVisualEditorContainsManyComments(browser, 2, TEST_PAGE);
+		assertVisualEditorContainsCommentWithValue(browser, commentValue);
 		// Test remove block comment from Source menu
-		SWTJBTExt.selectTextInSourcePane(botExt,
-				TEST_PAGE,
-				commentValue,
-				0,
-				commentValue.length(),
-		        0);
-		getEditor().selectCurrentLine();
-		bot.sleep(Timing.time2S());
-		bot.menu("Source").menu("Remove Block Comment").click(); //$NON-NLS-1$//$NON-NLS-2$
-		getEditor().save();
-		waitForBlockingJobsAcomplished(VISUAL_UPDATE);
-		assertVisualEditorContainsManyComments(webBrowser, 0, TEST_PAGE);
-
+		textEditor.selectText(commentValue);
+		textEditor.selectLine(textEditor.getCursorPosition().x);
+		new ShellMenu("Source", "Remove Block Comment").select();
+		textEditor.save();
+		new WaitWhile(new JobIsRunning());
+		assertVisualEditorContainsManyComments(browser, 1, TEST_PAGE);
 		// Test add block comment with CTRL+SHIFT+/ hot keys
-		SWTJBTExt.selectTextInSourcePane(botExt,
-				TEST_PAGE,
-				commentValue,
-				0,
-				commentValue.length(),
-		        0);
+		textEditor.selectText(commentValue);
 		pressBlockCommentHotKeys();
-		getEditor().save();
-		waitForBlockingJobsAcomplished(VISUAL_UPDATE);
-		assertVisualEditorContainsManyComments(webBrowser, 1, TEST_PAGE);
-		assertTrue(
-				"Visual Representation of page doesn't contain comment with value "
-						+ commentValue,
-				webBrowser.containsCommentWithValue(commentValue));
-
+		textEditor.save();
+		new WaitWhile(new JobIsRunning());
+		assertVisualEditorContainsManyComments(browser, 2, TEST_PAGE);
+		assertVisualEditorContainsCommentWithValue(browser, commentValue);
 		// Test remove block comment with CTRL+SHIFT+\ hot keys
-		SWTJBTExt.selectTextInSourcePane(botExt,
-				TEST_PAGE,
-				commentValue,
-				0,
-				commentValue.length(),
-		        0);
-		bot.sleep(Timing.time2S());
-		getEditor().selectCurrentLine();
+		textEditor.selectText(commentValue);
+		textEditor.selectLine(textEditor.getCursorPosition().x);
 		pressUnBlockCommentHotKeys();
-		getEditor().save();
-		waitForBlockingJobsAcomplished(VISUAL_UPDATE);
-		assertVisualEditorContainsManyComments(webBrowser, 0, TEST_PAGE);
-
-	}
-	
-	private void pressBlockCommentHotKeys(){
-    if (SWTJBTExt.isRunningOnMacOs()) {
-      bot.shells()[0].pressShortcut(SWT.COMMAND, '/');
-    } else {
-      bot.getDisplay().syncExec(new Runnable() {
-        public void run() {
-          Display display = bot.getDisplay();
-          Event event = new Event();
-          event.type = SWT.KeyDown;
-          event.keyCode = SWT.CTRL;
-          display.post(event);
-          event = new Event();
-          event.type = SWT.KeyDown;
-          event.keyCode = SWT.SHIFT;
-          display.post(event);
-          event = new Event();
-          event.type = SWT.KeyDown;
-          event.character = '/';
-          display.post(event);
-          event = new Event();
-          event.type = SWT.KeyUp;
-          event.character = '/';
-          display.post(event);
-          event = new Event();
-          event.type = SWT.KeyUp;
-          event.keyCode = SWT.SHIFT;
-          display.post(event);
-          event = new Event();
-          event.type = SWT.KeyUp;
-          event.keyCode = SWT.CTRL;
-          display.post(event);
-        }
-      });
-    }
+		textEditor.save();
+		new WaitWhile(new JobIsRunning());
+		assertVisualEditorContainsManyComments(browser, 1, TEST_PAGE);
 	}
 
-	private void pressUnBlockCommentHotKeys(){
-	  if (SWTJBTExt.isRunningOnMacOs()){
-      bot.shells()[0].pressShortcut(SWT.COMMAND,'\\');
-    }
-    else{
-      bot.getDisplay().syncExec(new Runnable() {
-        public void run() {
-          Display display = bot.getDisplay();
-          Event event = new Event();
-          event.type = SWT.KeyDown;
-          event.keyCode = SWT.CTRL;
-          display.post(event);
-          event = new Event();
-          event.type = SWT.KeyDown;
-          event.keyCode = SWT.SHIFT;
-          display.post(event);
-          event = new Event();
-          event.type = SWT.KeyDown;
-          event.character = '\\';
-          display.post(event);
-          event = new Event();
-          event.type = SWT.KeyUp;
-          event.character = '\\';
-          display.post(event);
-          event = new Event();
-          event.type = SWT.KeyUp;
-          event.keyCode = SWT.SHIFT;
-          display.post(event);
-          event = new Event();
-          event.type = SWT.KeyUp;
-          event.keyCode = SWT.CTRL;
-          display.post(event);
-        }
-      });  
-    }
-  }
-	
+	private void pressBlockCommentHotKeys() {
+		if (RunningPlatform.isOSX()) {
+			KeyboardFactory.getKeyboard().invokeKeyCombination(SWT.COMMAND, '/');
+		} else {
+			KeyboardFactory.getKeyboard().invokeKeyCombination(SWT.CTRL, SWT.SHIFT, '/');
+		}
+	}
+
+	private void pressUnBlockCommentHotKeys() {
+		if (RunningPlatform.isOSX()) {
+			KeyboardFactory.getKeyboard().invokeKeyCombination(SWT.COMMAND, '\\');
+		} else {
+			KeyboardFactory.getKeyboard().invokeKeyCombination(SWT.CTRL, SWT.SHIFT, '\\');
+		}
+	}
+
+	@Override
+	public void tearDown() throws Exception {
+		if (textEditor != null) {
+			textEditor.setText(originalEditorText);
+			textEditor.save();
+			textEditor.close();
+		}
+		super.tearDown();
+	}
 }

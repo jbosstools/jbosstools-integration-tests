@@ -1,6 +1,6 @@
 /*******************************************************************************
 
- * Copyright (c) 2007-2012 Exadel, Inc. and Red Hat, Inc.
+ * Copyright (c) 2007-2016 Exadel, Inc. and Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -36,7 +36,7 @@ public class DetailsTagTest extends AbstractTagTest{
   @Override
   protected void verifyTag() {
     // check Problems View for Errors
-    assertProbelmsViewNoErrorsForPage(botExt);
+    assertProbelmsViewNoErrorsForPage();
     // visual representation contains DETAILS tag
     assertVisualEditorContains(getVisualEditor(), "DETAILS", null, null, getTestPageFileName());
     // visual representation contains DETAILS_TEXT text

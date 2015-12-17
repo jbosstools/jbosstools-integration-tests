@@ -1,6 +1,6 @@
 /*******************************************************************************
 
- * Copyright (c) 2007-2010 Exadel, Inc. and Red Hat, Inc.
+ * Copyright (c) 2007-2016 Exadel, Inc. and Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -11,145 +11,109 @@
  ******************************************************************************/
 package org.jboss.tools.vpe.ui.bot.test.editor.pagedesign;
 
-import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.widgetOfType;
-
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
-import org.eclipse.swt.browser.Browser;
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
-import org.eclipse.swtbot.swt.finder.SWTBot;
-import org.hamcrest.Matcher;
-import org.jboss.tools.ui.bot.ext.SWTBotExt;
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.jboss.reddeer.swt.api.Browser;
+import org.jboss.reddeer.swt.impl.browser.InternalBrowser;
+import org.jboss.reddeer.swt.impl.button.FinishButton;
+import org.jboss.reddeer.swt.impl.button.OkButton;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
+import org.jboss.reddeer.swt.impl.table.DefaultTableItem;
+import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
+import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.jboss.tools.jst.reddeer.wst.css.ui.wizard.NewCSSFileWizardPage;
+import org.jboss.tools.jst.reddeer.wst.css.ui.wizard.NewCSSWizardDialog;
 import org.jboss.tools.ui.bot.ext.SWTUtilExt;
-import org.jboss.tools.ui.bot.ext.Timing;
-import org.jboss.tools.ui.bot.ext.gen.ActionItem;
-import org.jboss.tools.ui.bot.ext.parts.SWTBotEditorExt;
-import org.jboss.tools.ui.bot.ext.types.IDELabel;
-import org.jboss.tools.ui.bot.ext.types.JobName;
 import org.jboss.tools.vpe.ui.bot.test.VPEAutoTestCase;
 import org.junit.Ignore;
+import org.junit.Test;
 
 /**
- * Tests functionality of Included CSS Files tab page of Page Design Options Dialog 
+ * Tests functionality of Included CSS Files tab page of Page Design Options
+ * Dialog
+ * 
  * @author vlado pakan
  *
  */
 public class IncludedCssFilesTest extends PageDesignTestCase {
-  
-  private static final String CSS_FILE_NAME = "includedCssFileTest.css";
-  private static final String HTML_FILE_NAME = "includedCssFileTest.html";
-  
-  private SWTBot addCssReferenceDialogBot = null;
-  private SWTBot optionsDialogBot  = null;
-  // Page Design option is not supported for HTML for now
-  @Ignore  
-  public void testIncludedCssFiles() throws IOException{
-	  packageExplorer.open();
-	  packageExplorer.getProject(VPEAutoTestCase.JBT_TEST_PROJECT_NAME)
-	  	  .getProjectItem("WebContent","pages")
-	  	  .select();
-    // add CSS File
-    open.newObject(ActionItem.NewObject.WebCSS.LABEL);
-    bot.shell(IDELabel.Shell.NEW_CSS_FILE).activate(); //$NON-NLS-1$
-    bot.textWithLabel(IDELabel.NewCSSWizard.FILE_NAME).setText(IncludedCssFilesTest.CSS_FILE_NAME); //$NON-NLS-1$
-    bot.button(IDELabel.Button.FINISH).click(); //$NON-NLS-1$
-    if (getException() != null && getException() instanceof NullPointerException){
-      setException(null);
-    }
-    bot.sleep(Timing.time3S());
-    util.waitForJobs(JobName.BUILDING_WS);
-    SWTBotEditor cssEditor = bot.editorByTitle(IncludedCssFilesTest.CSS_FILE_NAME);
-    cssEditor.toTextEditor().setText("h1 {\n" + 
-      "color: Red\n" +
-      "}");
-    cssEditor.saveAndClose();
-    // add HTML File
-    open.newObject(ActionItem.NewObject.WebHTMLPage.LABEL);
-    bot.shell(IDELabel.Shell.NEW_HTML_FILE).activate(); //$NON-NLS-1$
-    bot.textWithLabel(IDELabel.NewHTMLWizard.FILE_NAME).setText(IncludedCssFilesTest.HTML_FILE_NAME); //$NON-NLS-1$
-    bot.button(IDELabel.Button.FINISH).click(); //$NON-NLS-1$
-    bot.sleep(Timing.time3S());
-    util.waitForJobs(JobName.BUILDING_WS);
-    SWTBotEditor htmlEditor = bot.editorByTitle(IncludedCssFilesTest.HTML_FILE_NAME);
-    htmlEditor.toTextEditor().setText("<html>\n" +
-      "  <body>\n" +
-      "    <h1>Title</h1>\n" +
-      "  </body>\n" +
-      "</html>");
-    htmlEditor.save();
-    bot.sleep(Timing.time3S());
-    util.waitForJobs(JobName.BUILDING_WS);
-    // add CSS File Reference
-    util.waitForToolbarButtonWithTooltipIsFound(PAGE_DESIGN, Timing.time10S());
-    bot.toolbarButtonWithTooltip(PAGE_DESIGN).click();
-    optionsDialogBot = bot.shell(IDELabel.Shell.PAGE_DESIGN_OPTIONS).activate().bot();
-    optionsDialogBot.tabItem(IDELabel.PageDesignOptionsDialog.INCLUDED_CSS_FILES_TAB).activate();
-    optionsDialogBot.button(IDELabel.Button.ADD_WITHOUT_DOTS).click();
-    addCssReferenceDialogBot = optionsDialogBot.shell(IDELabel.Shell.ADD_CSS_REFERENCE).activate().bot();
-    addCssReferenceDialogBot.textWithLabel(IDELabel.PageDesignOptionsDialog.INCLUDED_CSS_FILES_CSS_FILE_PATH)
-      .setText(SWTUtilExt.getPathToProject(VPEAutoTestCase.JBT_TEST_PROJECT_NAME) + File.separator +
-          "WebContent" + File.separator +
-          "pages" + File.separator +
-          IncludedCssFilesTest.CSS_FILE_NAME);
-    addCssReferenceDialogBot.button(IDELabel.Button.FINISH).click();
-    addCssReferenceDialogBot = null;
-    optionsDialogBot.button(IDELabel.Button.OK).click();
-    optionsDialogBot = null;
-    SWTBotEditorExt botEditorExt = new SWTBotExt().swtBotEditorExtByTitle(IncludedCssFilesTest.HTML_FILE_NAME);
-    botEditorExt.selectPage(IDELabel.VisualPageEditor.PREVIEW_TAB_LABEL);
-    Matcher<Browser> matcher = widgetOfType(Browser.class);
-    @SuppressWarnings("unchecked")
-    List<Browser> browsers = ((List<Browser>)botEditorExt.bot().widgets(matcher));
-    Browser browser0 = browsers.get(0);
-    Browser browser1 = browsers.get(1);
-    String browser0Text = SWTUtilExt.invokeMethod(browser0, "getText");
-    final String textToContain = "h1 {color: Red}";
-    // browser0 is editable browser displayed on page Visual/Source
-    boolean firstBrowserIsEditable = browser0Text.contains("dragIcon");
-    if (firstBrowserIsEditable) {
-      assertTrue("Preview Browser displayed Web Page Incorretly. There is no H1 tag with Red Color",
-          SWTUtilExt.invokeMethod(browser1, "getText").contains(textToContain));
-    } else {
-      assertTrue("Preview Browser displayed Web Page Incorretly. There is no H1 tag with Red Color",
-          browser0Text.contains(textToContain));    
-    }
-    // Test Visual Interpretation of CSS in Visual/Source Pane
-    botEditorExt.selectPage(IDELabel.VisualPageEditor.VISUAL_SOURCE_TAB_LABEL);
-    if (firstBrowserIsEditable) {
-      assertTrue("Preview Browser displayed Web Page Incorretly. There is no H1 tag with Red Color",
-          SWTUtilExt.invokeMethod(browser1, "getText").contains(textToContain));
-    } else {
-      assertTrue("Preview Browser displayed Web Page Incorretly. There is no H1 tag with Red Color",
-          SWTUtilExt.invokeMethod(browser0, "getText").contains(textToContain));    
-    }
-    bot.toolbarButtonWithTooltip(PAGE_DESIGN).click();
-    optionsDialogBot = bot.shell(IDELabel.Shell.PAGE_DESIGN_OPTIONS).activate().bot();
-    optionsDialogBot.tabItem(IDELabel.PageDesignOptionsDialog.INCLUDED_CSS_FILES_TAB).activate();
-    optionsDialogBot.table().select(0);
-    optionsDialogBot.button(IDELabel.Button.REMOVE).click();
-    optionsDialogBot.button(IDELabel.Button.OK).click();
-    optionsDialogBot = null;
-    htmlEditor.close();
-	}
-	
-	@Override
-	protected void closeUnuseDialogs() {
-    if (addCssReferenceDialogBot != null){
-      addCssReferenceDialogBot.button(IDELabel.Button.CANCEL).click();
-      addCssReferenceDialogBot = null;
-    }
-    if (optionsDialogBot != null){
-      optionsDialogBot.button(IDELabel.Button.OK).click();
-      optionsDialogBot = null;
-    }
-	}
 
-	@Override
-	protected boolean isUnuseDialogOpened() {
-		return optionsDialogBot != null
-		    || addCssReferenceDialogBot != null;
+	private static final String CSS_FILE_NAME = "includedCssFileTest.css";
+	private static final String HTML_FILE_NAME = "includedCssFileTest.html";
+
+	// Page Design option is not supported for HTML for now
+	@Ignore
+	@Test
+	public void testIncludedCssFiles() throws IOException {
+		packageExplorer.open();
+		packageExplorer.getProject(VPEAutoTestCase.JBT_TEST_PROJECT_NAME).getProjectItem("WebContent", "pages")
+				.select();
+		// add CSS File
+		NewCSSWizardDialog newCSSWizardDialog = new NewCSSWizardDialog();
+		newCSSWizardDialog.open();
+		NewCSSFileWizardPage newCSSFileWizardPage = new NewCSSFileWizardPage();
+		newCSSFileWizardPage.setFileName(IncludedCssFilesTest.CSS_FILE_NAME);
+		newCSSWizardDialog.finish();
+		new WaitWhile(new JobIsRunning());
+		TextEditor cssEditor = new TextEditor(IncludedCssFilesTest.CSS_FILE_NAME);
+		cssEditor.setText("h1 {\n" + "color: Red\n" + "}");
+		cssEditor.save();
+		cssEditor.close();
+		// add HTML File
+		createHtmlPage(IncludedCssFilesTest.HTML_FILE_NAME);
+		new WaitWhile(new JobIsRunning());
+		TextEditor htmlEditor = new TextEditor(IncludedCssFilesTest.HTML_FILE_NAME);
+		htmlEditor.setText("<html>\n" + "  <body>\n" + "    <h1>Title</h1>\n" + "  </body>\n" + "</html>");
+		htmlEditor.save();
+		new WaitWhile(new JobIsRunning());
+		// add CSS File Reference
+		new DefaultToolItem(PAGE_DESIGN).click();
+		new DefaultShell("Page Design Options");
+		new DefaultTabItem("Included css files").activate();
+		new PushButton("Add").click();
+		new DefaultShell("Add CSS Reference");
+		new LabeledText("CSS File Path*").setText(
+				SWTUtilExt.getPathToProject(VPEAutoTestCase.JBT_TEST_PROJECT_NAME) + File.separator + "WebContent"
+						+ File.separator + "pages" + File.separator + IncludedCssFilesTest.CSS_FILE_NAME);
+		new FinishButton().click();
+		new DefaultShell("Page Design Options");
+		new OkButton().click();
+		htmlEditor.activate();
+		new DefaultCTabItem("Preview").activate();
+		Browser browser0 = new InternalBrowser(0);
+		Browser browser1 = new InternalBrowser(1);
+		final String textToContain = "h1 {color: Red}";
+		// browser0 is editable browser displayed on page Visual/Source
+		boolean firstBrowserIsEditable = browser0.getText().contains("dragIcon");
+		if (firstBrowserIsEditable) {
+			assertTrue("Preview Browser displayed Web Page Incorretly. There is no H1 tag with Red Color",
+					browser1.getText().contains(textToContain));
+		} else {
+			assertTrue("Preview Browser displayed Web Page Incorretly. There is no H1 tag with Red Color",
+					browser0.getText().contains(textToContain));
+		}
+		// Test Visual Interpretation of CSS in Visual/Source Pane
+		htmlEditor.activate();
+		new DefaultCTabItem("Visual/Source").activate();
+		if (firstBrowserIsEditable) {
+			assertTrue("Preview Browser displayed Web Page Incorretly. There is no H1 tag with Red Color",
+					browser1.getText().contains(textToContain));
+		} else {
+			assertTrue("Preview Browser displayed Web Page Incorretly. There is no H1 tag with Red Color",
+					browser0.getText().contains(textToContain));
+		}
+		new DefaultToolItem(PAGE_DESIGN).click();
+		new DefaultShell("Page Design Options");
+		new DefaultTabItem("Included css files").activate();
+		new DefaultTableItem().select();
+		new PushButton("Remove").click();
+		new OkButton().click();
+		htmlEditor.close();
 	}
-  
 }

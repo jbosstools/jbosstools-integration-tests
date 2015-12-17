@@ -1,5 +1,5 @@
 /******************************************************************************* 
- * Copyright (c) 2012 Red Hat, Inc.
+ * Copyright (c) 2012 - 2016 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -46,7 +46,6 @@ import org.jboss.tools.vpe.ui.bot.test.editor.tags.CalendarTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.CoreHTMLTagsTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.JSFTagsTest;
 import org.jboss.tools.vpe.ui.bot.test.el.ElForBundleValueTest_Jbide10531;
-import org.jboss.tools.vpe.ui.bot.test.jbide.JBIDE4556Test;
 import org.jboss.tools.vpe.ui.bot.test.jbide.JBIDE9445Test_DuplicateSourceMenu;
 import org.jboss.tools.vpe.ui.bot.test.livereload.BrowserSimLiveReloadTest;
 import org.jboss.tools.vpe.ui.bot.test.livereload.LiveReloadServerTest;
@@ -91,7 +90,6 @@ import org.junit.runners.Suite.SuiteClasses;
     ToggleCommentTest.class,
     BlockCommentTest.class,
     ChangeEditorTabForTheFirstOpenPageTest.class,
-    JBIDE4556Test.class,
     VerificationOfNameSpacesTest.class,
     BorderForUnknownTagsTest.class,
     ShowResourceBundlesUsageasELexpressionsTest.class,

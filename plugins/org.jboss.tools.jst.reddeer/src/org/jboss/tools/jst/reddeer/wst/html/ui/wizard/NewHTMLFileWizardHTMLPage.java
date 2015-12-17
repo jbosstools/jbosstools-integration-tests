@@ -2,7 +2,6 @@ package org.jboss.tools.jst.reddeer.wst.html.ui.wizard;
 
 import org.jboss.reddeer.jface.wizard.WizardPage;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 
 /**
@@ -16,7 +15,7 @@ public class NewHTMLFileWizardHTMLPage extends WizardPage {
 	 * @param name Name
 	 */
 	public void setFileName(String fileName){
-		new LabeledText("File Name:").setText(fileName);
+		new DefaultText(1).setText(fileName);
 	}
 	
 	/**
@@ -24,7 +23,7 @@ public class NewHTMLFileWizardHTMLPage extends WizardPage {
 	 * 
 	 */
 	public String getFileName(){
-		return new LabeledText("File Name:").getText();
+		return new DefaultText(1).getText();
 	}
 	/**
 	 * Selects parent folder

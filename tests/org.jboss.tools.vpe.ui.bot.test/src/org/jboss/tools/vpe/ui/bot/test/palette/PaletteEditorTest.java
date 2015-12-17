@@ -1,6 +1,6 @@
 /*******************************************************************************
 
- * Copyright (c) 2007-2010 Exadel, Inc. and Red Hat, Inc.
+ * Copyright (c) 2007-2016 Exadel, Inc. and Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -12,123 +12,101 @@
 package org.jboss.tools.vpe.ui.bot.test.palette;
 
 import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
-import org.eclipse.swtbot.swt.finder.SWTBot;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
-import org.jboss.tools.ui.bot.ext.SWTBotExt;
+import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.swt.impl.button.FinishButton;
+import org.jboss.reddeer.swt.impl.button.OkButton;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
-import org.jboss.tools.ui.bot.ext.types.IDELabel;
-import org.jboss.tools.ui.bot.ext.view.PaletteView;
+import org.jboss.tools.vpe.reddeer.view.JBTPaletteView;
 import org.jboss.tools.vpe.ui.bot.test.VPEAutoTestCase;
 import org.jboss.tools.vpe.ui.bot.test.tools.SWTBotWebBrowser;
+import org.junit.Test;
+
 /**
- * Tests Palette Editor  
+ * Tests Palette Editor
+ * 
  * @author vlado pakan
  *
  */
 public class PaletteEditorTest extends VPEAutoTestCase {
-  private SWTBotExt botExt = null;
-  
-  public PaletteEditorTest() {
-    super();
-    botExt = new SWTBotExt();
-  }
-  
-	public void testPaletteEditor(){
-	  openPage();
-    openPalette();	
-    // add First Palette Group
-    PaletteView paletteView = new PaletteView();
-    paletteView.getToolbarButtonWitTooltip(IDELabel.JBossToolsPalette.PALETTE_EDITOR_TOOL_ITEM)
-      .click();
-    SWTBot palettEditorBot = bot.shell(IDELabel.Shell.PALETTE_EDITOR).activate().bot();
-    SWTBotTree tree = palettEditorBot.tree();
-    SWTBotTreeItem tiPalette = tree.expandNode(IDELabel.PaletteEditor.XSTUDIO_NODE)
-      .getNode(IDELabel.PaletteEditor.PALETTE_NODE)
-      .select();
-    ContextMenuHelper.treeRightClick(tree.widget, tiPalette.widget);
-    Menu menu = ContextMenuHelper.getTreeMenuViaReflections(tree.widget,IDELabel.PaletteEditor.NEW_MENU_ITEM);
-    ContextMenuHelper.clickContextMenu(menu,
-      IDELabel.PaletteEditor.NEW_MENU_ITEM,
-      IDELabel.PaletteEditor.CREATE_GROUP_MENU_ITEM);
-    SWTBot createGroupDialogBot = bot.shell(IDELabel.Shell.CREATE_GROUP).activate().bot();
-    final String firstGroup = "First";
-    createGroupDialogBot.textWithLabel(IDELabel.CreateGroupDialog.NAME).setText(firstGroup);
-    createGroupDialogBot.button(IDELabel.Button.FINISH).click();
-    // add Second Inner Palette Group
-    SWTBotTreeItem tiFirstGroup = tree.expandNode(IDELabel.PaletteEditor.XSTUDIO_NODE)
-      .expandNode(IDELabel.PaletteEditor.PALETTE_NODE)
-      .expandNode(firstGroup)
-      .select();
-    ContextMenuHelper.treeRightClick(tree.widget, tiFirstGroup.widget);
-    menu = ContextMenuHelper.getTreeMenuViaReflections(tree.widget,IDELabel.PaletteEditor.CREATE_GROUP_MENU_ITEM);
-    ContextMenuHelper.clickContextMenu(menu,
-        IDELabel.PaletteEditor.CREATE_GROUP_MENU_ITEM);
-    SWTBot addPaletteGroupBot = bot.shell(IDELabel.Shell.ADD_PALETTE_GROUP).activate().bot();
-    final String secondGroup = "Second";
-    addPaletteGroupBot.textWithLabel(IDELabel.AddPaletteGroupDialog.NAME).setText(secondGroup);
-    addPaletteGroupBot.button(IDELabel.Button.FINISH).click();
-    // add Macro
-    SWTBotTreeItem tiSecondGroup = tree.expandNode(IDELabel.PaletteEditor.XSTUDIO_NODE)
-      .expandNode(IDELabel.PaletteEditor.PALETTE_NODE)
-      .expandNode(firstGroup)
-      .expandNode(secondGroup)
-      .select();
-    ContextMenuHelper.treeRightClick(tree.widget, tiSecondGroup.widget);
-    menu = ContextMenuHelper.getTreeMenuViaReflections(tree.widget,IDELabel.PaletteEditor.NEW_MENU_ITEM);
-    ContextMenuHelper.clickContextMenu(menu,
-      IDELabel.PaletteEditor.NEW_MENU_ITEM,        
-      IDELabel.PaletteEditor.CREATE_MACRO_MENU_ITEM);
-    SWTBot addPaletteMacroBot = bot.shell(IDELabel.Shell.ADD_PALETTE_MACRO).activate().bot();
-    final String macroName = "Test Macro";
-    addPaletteMacroBot.textWithLabel(IDELabel.AddPaletteMacroDialog.NAME).setText(macroName);
-    final String startText = "<HTML>";
-    addPaletteMacroBot.textWithLabel(IDELabel.AddPaletteMacroDialog.START_TEXT).setText(startText);
-    final String endText = "</HTML>";
-    addPaletteMacroBot.textWithLabel(IDELabel.AddPaletteMacroDialog.END_TEXT).setText(endText);
-    addPaletteMacroBot.button(IDELabel.Button.FINISH).click();
-    palettEditorBot.button(IDELabel.Button.OK).click();
-    //add Test Macro to Page Source
-    final SWTBotEclipseEditor jspTextEditor = botExt.editorByTitle(TEST_PAGE)
-      .toTextEditor();
-    final String originalText = jspTextEditor.getText();
-    jspTextEditor.setFocus();
-    jspTextEditor.insertText(0, 0, "\n");
-    jspTextEditor.insertText(0, 0, "");
-    SWTBotWebBrowser.activatePaletteTool(botExt,macroName);
-    // Check if Macro was added to Source Editor
-    String insertedText = jspTextEditor.getTextOnCurrentLine().trim(); 
-    assertTrue("Inserted text has to be '" + startText + endText +
-      "' and was '" + insertedText + "'",
-      insertedText.equals(startText + endText));
-    jspTextEditor.setText(originalText);
-    jspTextEditor.save();
-    // Delete New Group From Palette
-    paletteView.getToolbarButtonWitTooltip(IDELabel.JBossToolsPalette.PALETTE_EDITOR_TOOL_ITEM)
-      .click();
-    palettEditorBot = bot.shell(IDELabel.Shell.PALETTE_EDITOR).activate().bot();
-    tree = palettEditorBot.tree();
-    tiFirstGroup = tree.expandNode(IDELabel.PaletteEditor.XSTUDIO_NODE)
-      .expandNode(IDELabel.PaletteEditor.PALETTE_NODE)
-      .expandNode(firstGroup)
-      .select();
-    ContextMenuHelper.treeRightClick(tree.widget, tiFirstGroup.widget);
-    menu = ContextMenuHelper.getTreeMenuViaReflections(tree.widget,IDELabel.PaletteEditor.CREATE_GROUP_MENU_ITEM);
-    ContextMenuHelper.clickContextMenu(menu,
-      IDELabel.PaletteEditor.DELETE_MENU_ITEM);
-    SWTBot deleteDialogBot = bot.shell(IDELabel.Shell.CONFIRMATION).activate().bot();
-    deleteDialogBot.button(IDELabel.Button.OK).click();
-    palettEditorBot.button(IDELabel.Button.OK).click();
-    jspTextEditor.close();
-	}
-	@Override
-	protected void closeUnuseDialogs() {
 
+	public PaletteEditorTest() {
+		super();
 	}
-
-	@Override
-	protected boolean isUnuseDialogOpened() {
-		return false;
+	@Test
+	public void testPaletteEditor() {
+		openPage();
+		openPalette();
+		// add First Palette Group
+		JBTPaletteView paletteView = new JBTPaletteView();
+		paletteView.clickPaletteEditorToolItem();
+		new DefaultShell("Palette Editor");
+		TreeItem tiPalette = new DefaultTreeItem("XStudio", "Palette");
+		tiPalette.select();
+		ContextMenuHelper.treeRightClick(tiPalette.getParent().getSWTWidget(), tiPalette.getSWTWidget());
+		Menu menu = ContextMenuHelper.getTreeMenuViaReflections(tiPalette.getParent().getSWTWidget(), "New");
+		ContextMenuHelper.clickContextMenu(menu, "New", "Create Group...");
+		new DefaultShell("Create Group");
+		final String firstGroup = "First";
+		new LabeledText("Name:*").setText(firstGroup);
+		new FinishButton().click();
+		// add Second Inner Palette Group
+		new DefaultShell("Palette Editor");
+		TreeItem tiFirstGroup = new DefaultTreeItem("XStudio", "Palette", firstGroup);
+		tiFirstGroup.select();
+		ContextMenuHelper.treeRightClick(tiFirstGroup.getParent().getSWTWidget(), tiFirstGroup.getSWTWidget());
+		menu = ContextMenuHelper.getTreeMenuViaReflections(tiFirstGroup.getParent().getSWTWidget(), "Create Group...");
+		ContextMenuHelper.clickContextMenu(menu, "Create Group...");
+		new DefaultShell("Add Palette Group");
+		final String secondGroup = "Second";
+		new LabeledText("Name:*").setText(secondGroup);
+		new FinishButton().click();
+		// add Macro
+		new DefaultShell("Palette Editor");
+		TreeItem tiSecondGroup = new DefaultTreeItem("XStudio", "Palette", firstGroup, secondGroup);
+		tiSecondGroup.select();
+		ContextMenuHelper.treeRightClick(tiSecondGroup.getParent().getSWTWidget(), tiSecondGroup.getSWTWidget());
+		menu = ContextMenuHelper.getTreeMenuViaReflections(tiSecondGroup.getParent().getSWTWidget(), "New");
+		ContextMenuHelper.clickContextMenu(menu, "New", "Create Macro...");
+		new DefaultShell("Add Palette Macro");
+		final String macroName = "Test Macro";
+		new LabeledText("Name:*").setText(macroName);
+		final String startText = "<HTML>";
+		new LabeledText("Start Text:").setText(startText);
+		final String endText = "</HTML>";
+		new LabeledText("End Text:").setText(endText);
+		new FinishButton().click();
+		new DefaultShell("Palette Editor");
+		new OkButton().click();
+		// add Test Macro to Page Source
+		final TextEditor jspTextEditor = new TextEditor(TEST_PAGE);
+		final String originalText = jspTextEditor.getText();
+		jspTextEditor.setCursorPosition(0);
+		jspTextEditor.insertText(0, 0, "\n");
+		jspTextEditor.insertText(0, 0, "");
+		paletteView.activate();
+		SWTBotWebBrowser.activatePaletteTool(macroName);
+		// Check if Macro was added to Source Editor
+		String insertedText = jspTextEditor.getTextAtLine(0).trim();
+		assertTrue("Inserted text has to be '" + startText + endText + "' and was '" + insertedText + "'",
+				insertedText.equals(startText + endText));
+		jspTextEditor.setText(originalText);
+		jspTextEditor.save();
+		// Delete New Group From Palette
+		paletteView.clickPaletteEditorToolItem();
+		new DefaultShell("Palette Editor");
+		tiFirstGroup = new DefaultTreeItem("XStudio", "Palette", firstGroup);
+		tiFirstGroup.select();
+		ContextMenuHelper.treeRightClick(tiFirstGroup.getParent().getSWTWidget(), tiFirstGroup.getSWTWidget());
+		menu = ContextMenuHelper.getTreeMenuViaReflections(tiFirstGroup.getParent().getSWTWidget(), "Create Group...");
+		ContextMenuHelper.clickContextMenu(menu, "Delete");
+		new DefaultShell("Confirmation");
+		new OkButton().click();
+		new DefaultShell("Palette Editor");
+		new OkButton().click();
+		jspTextEditor.close();
 	}
 }

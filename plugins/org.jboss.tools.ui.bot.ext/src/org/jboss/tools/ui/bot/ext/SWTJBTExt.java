@@ -31,6 +31,9 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.eclipse.ui.IViewReference;
+import org.jboss.reddeer.core.lookup.WorkbenchPartLookup;
+import org.jboss.reddeer.core.util.Display;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
@@ -559,12 +562,19 @@ public class SWTJBTExt {
     }
     
     // Get rid of welcome screen. Simple close did not work when run in maven
-    try {
-    	SWTBotShell shell = bot.activeShell();
-    	bot.menu("Window").menu("Close Perspective").click();
-    	shell.setFocus();
-    	SWTBotFactory.getOpen().perspective(ActionItem.Perspective.RESOURCE.LABEL);
-    } catch (WidgetNotFoundException e){
+	log.debug("Trying to close Welcome Screen");
+	for (IViewReference viewReference : WorkbenchPartLookup.getInstance().findAllViewReferences()) {
+		if (viewReference.getPartName().equals("Welcome")) {
+			final IViewReference iViewReference = viewReference;
+			Display.syncExec(new Runnable() {
+				@Override
+				public void run() {
+					iViewReference.getPage().hideView(iViewReference);
+				}
+			});
+			log.debug("Welcome Screen closed");
+    		break;
+		}
     	// ok, Welcome screen not present
     	log.info("Welcome window not present");
     }

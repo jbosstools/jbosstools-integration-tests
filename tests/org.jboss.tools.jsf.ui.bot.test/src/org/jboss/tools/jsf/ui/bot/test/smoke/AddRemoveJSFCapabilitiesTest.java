@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007-2015 Red Hat, Inc.
+ * Copyright (c) 2007-2016 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -10,8 +10,6 @@
  ******************************************************************************/
 
 package org.jboss.tools.jsf.ui.bot.test.smoke;
-
-import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 
@@ -153,17 +151,7 @@ public class AddRemoveJSFCapabilitiesTest extends JSFAutoTestCase {
 						+ " was not removed from Web Projects view after JSF Capabilities were removed.",
 				!webProjectsNavigator.containsProject(JBT_TEST_PROJECT_NAME));
 	}
-
-	@Override
-	protected void closeUnuseDialogs() {
-		// not used
-	}
-
-	@Override
-	protected boolean isUnuseDialogOpened() {
-		return false;
-	}
-
+	
 	/**
 	 * Add JSF Capabilities to JSF Project
 	 */

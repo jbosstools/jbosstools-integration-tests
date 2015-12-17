@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007-2009 Red Hat, Inc.
+ * Copyright (c) 2007-2016 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -10,67 +10,49 @@
  ******************************************************************************/
 package org.jboss.tools.vpe.ui.bot.test.smoke;
 
-import java.util.Iterator;
-
 import org.eclipse.swt.SWT;
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
-import org.jboss.tools.ui.bot.ext.Timing;
-import org.jboss.tools.ui.bot.ext.helper.KeyboardHelper;
-import org.jboss.tools.ui.bot.test.WidgetVariables;
+import org.jboss.reddeer.eclipse.ui.views.contentoutline.OutlineView;
+import org.jboss.reddeer.swt.impl.tree.DefaultTree;
+import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
+import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
 import org.jboss.tools.vpe.ui.bot.test.editor.VPEEditorTestCase;
+import org.junit.Test;
+
 /**
  * Test VPE Editor synchronization with Properties and Outline View
+ * 
  * @author Vladimir Pakan
  *
  */
-public class EditorSynchronizationTest extends VPEEditorTestCase{
-  
-	public void testEditorSynchronization() throws Throwable{
-		
-	  openPage();
+public class EditorSynchronizationTest extends VPEEditorTestCase {
+	@Test
+	public void testEditorSynchronization() throws Throwable {
+		openPage();
 		openOutlineView();
 		openPropertiesView();
 		checkVPEEditorSynchronization();
-	  
-	  setException(null);
-		
 	}
+
 	/**
 	 * Check VPE Editor synchronization with Properties and Outline View
 	 */
-	private void checkVPEEditorSynchronization(){
-	  
-    final SWTBotEclipseEditor jspTextEditor = bot.editorByTitle(TEST_PAGE).toTextEditor();
+	private void checkVPEEditorSynchronization() {
 
-    int lineIndex = 0;
-    int messageLineIndex = -1;
-    Iterator<String> lineIterator = jspTextEditor.getLines().iterator();
-    while (lineIterator.hasNext() && messageLineIndex == -1) {
-      if (lineIterator.next().trim().startsWith("<h:messages ")) {
-        messageLineIndex = lineIndex;
-      } else {
-        lineIndex++;
-      }
-    }
+		final TextEditor jspTextEditor = new TextEditor(TEST_PAGE);
+		jspTextEditor.setCursorPosition(jspTextEditor.getPositionOfText("<h:messages ") + 3);
+		KeyboardFactory.getKeyboard().invokeKeyCombination(SWT.ARROW_LEFT);
+		new OutlineView().activate();
+		assertTrue("h:messages node is not selected within Outline View",
+				new DefaultTree().getSelectedItems().get(0).getText().startsWith("h:messages "));
 
-    jspTextEditor.navigateTo(messageLineIndex, 3);
-	  
-	  KeyboardHelper.pressKeyCode(bot.getDisplay(), SWT.ARROW_LEFT);
-	  
-	  bot.sleep(Timing.time2S());
-	  
-	  assertTrue("h:messages node is not selected within Outline View",
-	    bot.viewByTitle(WidgetVariables.OUTLINE).bot().tree().selection().get(0).get(0).startsWith("h:messages "));
-	  
-	  SWTBotTree outlineTree = bot.viewByTitle(WidgetVariables.PROPERTIES).bot().tree();
-	  outlineTree.getTreeItem("General").expand().getNode("style").select();
-	  
-	  assertTrue("style attribute of h:message node has wrong value within Properties view" +
-	  		". Should be 'color: red'",
-      outlineTree.selection().get(0).get(1).startsWith("color: red"));
-	  
-	  jspTextEditor.close();
-	  
+		PropertiesView propertiesView = new PropertiesView();
+		propertiesView.activate();
+		assertTrue(
+				"style attribute of h:message node has wrong value within Properties view" + ". Should be 'color: red'",
+				propertiesView.getProperty("General", "style").getPropertyValue().equals("color: red"));
+
+		jspTextEditor.close();
+
 	}
 }

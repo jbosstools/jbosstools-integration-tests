@@ -1,5 +1,5 @@
 /******************************************************************************* 
- * Copyright (c) 2012 Red Hat, Inc.
+ * Copyright (c) 2012 - 2016 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -10,13 +10,11 @@
  ******************************************************************************/
 package org.jboss.tools.vpe.ui.bot.test;
 
-import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
-import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.vpe.ui.bot.test.browsersim.BrowserSimContextMenuTest;
 import org.jboss.tools.vpe.ui.bot.test.browsersim.BrowserSimLoadUrlTest;
 import org.jboss.tools.vpe.ui.bot.test.browsersim.OpenBrowserSimTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.BlockCommentTest;
-import org.jboss.tools.vpe.ui.bot.test.editor.EditingActionsTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.ExternalEditingTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.InsertActionsTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.MinMaxPanesTest;
@@ -30,7 +28,6 @@ import org.jboss.tools.vpe.ui.bot.test.editor.ToggleCommentTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.UnicodeCharacterDisplayingTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.VerificationOfNameSpacesTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.JspFileEditingTest;
-import org.jboss.tools.vpe.ui.bot.test.editor.VisualEditorContextMenuTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.XhtmlFilePerformanceTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.pagedesign.AddSubstitutedELExpressionFolderScopeTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.pagedesign.EditingELValueTest;
@@ -96,7 +93,6 @@ import org.jboss.tools.vpe.ui.bot.test.editor.tags.ToolbarAndToolbarGroupTagTest
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.TreeTagTest;
 import org.jboss.tools.vpe.ui.bot.test.editor.tags.VirtualEarthTagTest;
 import org.jboss.tools.vpe.ui.bot.test.el.ElForBundleValueTest_Jbide10531;
-import org.jboss.tools.vpe.ui.bot.test.jbide.JBIDE4556Test;
 import org.jboss.tools.vpe.ui.bot.test.jbide.JBIDE9445Test_DuplicateSourceMenu;
 import org.jboss.tools.vpe.ui.bot.test.jbide.Jbide10020_TestHotKeyForVpeRefresh;
 import org.jboss.tools.vpe.ui.bot.test.jbide.TestNPEinHugeFile;
@@ -124,120 +120,38 @@ import org.jboss.tools.vpe.ui.bot.test.wizard.VPESourceCodeTemplatesPreferencePa
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
-@RunWith(RequirementAwareSuite.class)
-@SuiteClasses({
-	  // VisualEditorContextMenuTest.class,
-	/*
-    EditingActionsTest.class,
-		NewXHTMLPageWizardTest.class,
-		CodeCompletionTest.class,
-*/		
-		ExternalizeStringsDialogTest.class,
-		/*
-		CancelTagLibDefenitionTest.class,
-		ImportTagsFromTLDFileTest.class,
-		ToggleCommentTest.class,
-		BlockCommentTest.class, 
-		ChangeEditorTabForTheFirstOpenPageTest.class,
-		JBIDE4556Test.class, 
-		VerificationOfNameSpacesTest.class,
-		BorderForUnknownTagsTest.class,
-		ShowResourceBundlesUsageasELexpressionsTest.class,
-		ShowSelectionTagBarTest.class,
-		AlwaysHideSelectionBarWithoutPromptTest.class,
-		ShowNonVisualTagsTest.class,
-		AddSubstitutedELExpressionFolderScopeTest.class,
-		EditorSynchronizationTest.class, 
-		JSPPageCreationTest.class,
-		XHTMLPageCreationTest.class, 
-		RenameFacesConfigFileTest.class,
-		RenameJSPFileTest.class, 
-		RenameXHTMLFileTest.class,
-		ImportUnknownTagsWizardTest.class,
-		VPESourceCodeTemplatesPreferencePageTest.class,
-		JspFileEditingTest.class, 
-		ManagePaletteGroupsTest.class,
-		PaletteEditorTest.class, 
-		ToolbarTextFormattingTest.class,
-		InsertActionsTest.class,
-		TextEditingActionsTest.class,
-		PromptForTagAttributesDuringTagInsertTest.class,
-		IncludedTagLibsTest.class, 
-		SubstitutedELExressionsTest.class,
-		MinMaxPanesTest.class, 
-		EditingELValueTest.class,
-		ManipulatingELValueTest.class, 
-		SelectionBarTest.class,
-		IncludedCssFilesTest.class, 
-		GlobalELVariablesTest.class,
-		IncludedCssFilesJSPTest.class, 
-		StylesOnThePageTest.class,
-		TextSelectionTest.class, 
-		CoreHTMLTagsTest.class, 
-		JSFTagsTest.class,
-		ColumnsTagTest.class, 
-		ComboBoxTagTest.class, 
-		FileUploadTagTest.class,
-		InplaceInputTagTest.class, 
-		InplaceSelectInputTagTest.class,
-		PickListTagTest.class, 
-		ProgressTagTest.class, 
-		PanelMenuTagTest.class,
-		ListShuttleTagTest.class, 
-		DataDefinitionTagTest.class,
-		EditorTagTest.class, 
-		TreeTagTest.class, 
-		CalendarTagTest.class,
-		PanelTagTest.class, 
-		DataTableTagTest.class,
-		SpacerTagTest.class,
-		DataScrollerTagTest.class,
-		ColumnTagTest.class,
-		AjaxValidatorTagTest.class, 
-		BeanValidatorTagTest.class,
-		ColumnGroupTagTest.class, 
-		DataGridTagTest.class,
-		VirtualEarthTagTest.class, 
-		DataListTagTest.class,
-		DataOrderedListTagTest.class, 
-		ExtendedDataTableTagTest.class,
-		ToolbarAndToolbarGroupTagTest.class,
-		TogglePanelAndToogleControlTagTest.class,
-		CommandButtonTagTest.class,
-		CommandLinkTagTest.class, 
-		HtmlCommandLinkTagTest.class,
-		IncludeTagTest.class, 
-		AjaxInvisibleTagsTest.class, LogTagTest.class,
-		OpenOnTest.class, 
-		XhtmlFilePerformanceTest.class,
-		MarkersTest.class,
-		JBIDE9445Test_DuplicateSourceMenu.class, 
-		TestNPEinHugeFile.class,
-		Jbide10020_TestHotKeyForVpeRefresh.class,
-		ArticleTagTest.class,
-		AsideTagTest.class,
-		AudioTagTest.class, 
-		CanvasTagTest.class,
-		CommandTagTest.class,
-		DetailsTagTest.class,
-		SummaryTagTest.class,
-		SelectTagTest.class, 
-		RichFacesComponentTest.class,
-		UnicodeCharacterDisplayingTest.class, 
-		ExternalEditingTest.class,
-		VpeToolbarTest.class, 
-		MultiSelectionTest.class,
-		SelectionSynchronizationTest.class,
-    ScrollingSynchronizationTest.class,
-		ElForBundleValueTest_Jbide10531.class,
-		MobilePaletteTest.class,
-    BrowserSimLoadUrlTest.class,
-    BrowserSimContextMenuTest.class,
-    LiveReloadServerTest.class,
-    BrowserSimLiveReloadTest.class,
-    OpenBrowserSimTest.class,
-    HTMLTagPropertiesTest.class
-    */})
-public class VPEAllBotTests extends SWTBotTestCase{
+@RunWith(RedDeerSuite.class)
+@SuiteClasses({ NewXHTMLPageWizardTest.class, CodeCompletionTest.class, ExternalizeStringsDialogTest.class,
+		CancelTagLibDefenitionTest.class, ImportTagsFromTLDFileTest.class, ToggleCommentTest.class,
+		BlockCommentTest.class, ChangeEditorTabForTheFirstOpenPageTest.class, VerificationOfNameSpacesTest.class,
+		BorderForUnknownTagsTest.class, ShowResourceBundlesUsageasELexpressionsTest.class,
+		ShowSelectionTagBarTest.class, AlwaysHideSelectionBarWithoutPromptTest.class, ShowNonVisualTagsTest.class,
+		AddSubstitutedELExpressionFolderScopeTest.class, EditorSynchronizationTest.class, JSPPageCreationTest.class,
+		XHTMLPageCreationTest.class, RenameFacesConfigFileTest.class, RenameJSPFileTest.class,
+		RenameXHTMLFileTest.class, ImportUnknownTagsWizardTest.class, VPESourceCodeTemplatesPreferencePageTest.class,
+		JspFileEditingTest.class, ManagePaletteGroupsTest.class, PaletteEditorTest.class,
+		ToolbarTextFormattingTest.class, InsertActionsTest.class, TextEditingActionsTest.class,
+		PromptForTagAttributesDuringTagInsertTest.class, IncludedTagLibsTest.class, SubstitutedELExressionsTest.class,
+		MinMaxPanesTest.class, EditingELValueTest.class, ManipulatingELValueTest.class, SelectionBarTest.class,
+		IncludedCssFilesTest.class, GlobalELVariablesTest.class, IncludedCssFilesJSPTest.class,
+		StylesOnThePageTest.class, TextSelectionTest.class, CoreHTMLTagsTest.class, JSFTagsTest.class,
+		ColumnsTagTest.class, ComboBoxTagTest.class, FileUploadTagTest.class, InplaceInputTagTest.class,
+		InplaceSelectInputTagTest.class, PickListTagTest.class, ProgressTagTest.class, PanelMenuTagTest.class,
+		ListShuttleTagTest.class, DataDefinitionTagTest.class, EditorTagTest.class, TreeTagTest.class,
+		CalendarTagTest.class, PanelTagTest.class, DataTableTagTest.class, SpacerTagTest.class,
+		DataScrollerTagTest.class, ColumnTagTest.class, AjaxValidatorTagTest.class, BeanValidatorTagTest.class,
+		ColumnGroupTagTest.class, DataGridTagTest.class, VirtualEarthTagTest.class, DataListTagTest.class,
+		DataOrderedListTagTest.class, ExtendedDataTableTagTest.class, ToolbarAndToolbarGroupTagTest.class,
+		TogglePanelAndToogleControlTagTest.class, CommandButtonTagTest.class, CommandLinkTagTest.class,
+		HtmlCommandLinkTagTest.class, IncludeTagTest.class, AjaxInvisibleTagsTest.class, LogTagTest.class,
+		OpenOnTest.class, XhtmlFilePerformanceTest.class, MarkersTest.class, JBIDE9445Test_DuplicateSourceMenu.class,
+		TestNPEinHugeFile.class, Jbide10020_TestHotKeyForVpeRefresh.class, ArticleTagTest.class, AsideTagTest.class,
+		AudioTagTest.class, CanvasTagTest.class, CommandTagTest.class, DetailsTagTest.class, SummaryTagTest.class,
+		SelectTagTest.class, RichFacesComponentTest.class, UnicodeCharacterDisplayingTest.class,
+		ExternalEditingTest.class, VpeToolbarTest.class, MultiSelectionTest.class, SelectionSynchronizationTest.class,
+		ScrollingSynchronizationTest.class, ElForBundleValueTest_Jbide10531.class, MobilePaletteTest.class,
+		BrowserSimLoadUrlTest.class, BrowserSimContextMenuTest.class, LiveReloadServerTest.class,
+		BrowserSimLiveReloadTest.class, OpenBrowserSimTest.class, HTMLTagPropertiesTest.class })
+public class VPEAllBotTests {
 
 }

@@ -12,8 +12,10 @@ Require-Bundle: org.eclipse.ui,
  org.jboss.reddeer.jface,
  org.jboss.reddeer.core,
  org.jboss.reddeer.eclipse,
- org.jboss.tools.vpe
+ org.jboss.tools.vpe,
+ org.jboss.reddeer.gef
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: org.jboss.tools.vpe.reddeer.preferences,
- org.jboss.tools.vpe.reddeer.utils
+ org.jboss.tools.vpe.reddeer.utils,
+ org.jboss.tools.vpe.reddeer.view

@@ -11,7 +11,9 @@
 package org.jboss.tools.openshift.reddeer.perspective;
 
 import org.jboss.reddeer.eclipse.ui.perspectives.AbstractPerspective;
-
+/**
+ * @deprecated Use org.jboss.tools.common.reddeer.perspectives.JBossPerspective instead
+ */
 public class JBossPerspective extends AbstractPerspective {
 
 	public JBossPerspective() {

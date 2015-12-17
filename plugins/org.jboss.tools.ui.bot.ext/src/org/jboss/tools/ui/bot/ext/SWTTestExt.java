@@ -60,6 +60,7 @@ public class SWTTestExt extends SWTBotTestCase{
 	}	
 	static {
 		System.setProperty("org.eclipse.swtbot.playback.delay","10");
+		packageExplorer.open();
 		packageExplorer.containsProject("");
 	}
 	// Wait Constants

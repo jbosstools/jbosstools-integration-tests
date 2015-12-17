@@ -11,6 +11,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.jboss.reddeer.common;bundle-version="0.6.0",
  org.jboss.reddeer.workbench;bundle-version="0.7.0",
  org.jboss.reddeer.core,
+ org.jboss.reddeer.eclipse,
  org.eclipse.ui,
  org.eclipse.ui.editors,
  org.jboss.tools.common.model.ui,
@@ -18,6 +19,7 @@ Require-Bundle: org.eclipse.core.runtime,
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Export-Package: org.jboss.tools.common.reddeer.label,
+ org.jboss.tools.common.reddeer.perspectives,
  org.jboss.tools.common.reddeer.preferences,
  org.jboss.tools.common.reddeer.propertieseditor,
  org.jboss.tools.common.reddeer.utils

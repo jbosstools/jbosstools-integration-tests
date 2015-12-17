@@ -10,17 +10,23 @@
  ******************************************************************************/
 package org.jboss.tools.vpe.ui.bot.test.browsersim;
 
+import static org.junit.Assert.assertTrue;
+
 import org.apache.log4j.Logger;
 import org.jboss.tools.ui.bot.ext.SWTUtilExt;
-import org.jboss.tools.ui.bot.ext.types.IDELabel;
-import org.jboss.tools.ui.bot.test.JBTSWTBotTestCase;
+import org.junit.Test;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
+import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.browsersim.reddeer.BrowserSimHandler;
+import org.jboss.tools.common.reddeer.perspectives.JBossPerspective;
 /**
  * Test opening of Browsersim within JBoss Perspective
  * @author Vladimir Pakan
  *
  */
-public class OpenBrowserSimTest extends JBTSWTBotTestCase {
+@OpenPerspective(JBossPerspective.class)
+public class OpenBrowserSimTest{
 	public static Logger log = Logger.getLogger(OpenBrowserSimTest.class);
 
 	/**
@@ -29,28 +35,17 @@ public class OpenBrowserSimTest extends JBTSWTBotTestCase {
 	 * @throws IllegalAccessException
 	 * @throws IllegalArgumentException
 	 */
+	@Test
 	public void testOpenBrowserSim() throws IllegalArgumentException,
 			IllegalAccessException {
-		if (!bot.activePerspective().getLabel()
-				.equals(IDELabel.SelectPerspectiveDialog.JBOSS)) {
-			bot.perspectiveByLabel(IDELabel.SelectPerspectiveDialog.JBOSS)
-					.activate();
-		}
 		final String browserSimmProcessName = "BrowserSimRunner";
 		int countBrowserSimmProcesses = SWTUtilExt
 				.countJavaProcess(browserSimmProcessName);
 		// this also asserts that BrowserSim runs without error within JBT
-		bot.toolbarButtonWithTooltip(IDELabel.ToolbarButton.RUN_BROWSER_SIM)
-				.click();
+		new DefaultToolItem(new WorkbenchShell(),"Run BrowserSim").click();
 		assertTrue("No new BrowserSim process was started",
 				countBrowserSimmProcesses + 1 == SWTUtilExt
 						.countJavaProcess(browserSimmProcessName));
 		BrowserSimHandler.closeAllRunningInstances();
 	}
-
-	@Override
-	protected void activePerspective() {
-		// do nothing here it's not working
-	}
-
 }

@@ -1,5 +1,5 @@
 /******************************************************************************* 
- * Copyright (c) 2012 Red Hat, Inc.
+ * Copyright (c) 2012 - 2016 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -10,33 +10,20 @@
  ******************************************************************************/
 package org.jboss.tools.vpe.ui.bot.test.editor.pagedesign;
 
-import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
+import org.jboss.reddeer.common.exception.RedDeerException;
+import org.jboss.reddeer.swt.api.Shell;
+import org.jboss.reddeer.swt.api.Table;
+import org.jboss.reddeer.swt.impl.button.OkButton;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
+import org.jboss.reddeer.swt.impl.table.DefaultTable;
+import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 
 public abstract class SubstitutedELTestCase extends PageDesignTestCase{
 	
 	static final String ADD_EL = "Add EL Reference"; //$NON-NLS-1$
 	static final String SUBSTITUTED_EL = "Substituted EL expressions"; //$NON-NLS-1$
-
-	@Override
-	protected void closeUnuseDialogs() {
-		try {
-			bot.shell(ADD_EL).close();
-		} catch (WidgetNotFoundException e) {
-		}
-		super.closeUnuseDialogs();
-	}
-	
-	@Override
-	protected boolean isUnuseDialogOpened() {
-		boolean isOpened = super.isUnuseDialogOpened();
-		try {
-			bot.shell(ADD_EL).activate();
-			isOpened = true;
-		} catch (WidgetNotFoundException e) {
-		}
-		return isOpened;
-	}
 	
 	@Override
 	public void setUp() throws Exception {
@@ -45,27 +32,23 @@ public abstract class SubstitutedELTestCase extends PageDesignTestCase{
 	
 	@Override
 	public void tearDown() throws Exception {
-		bot.toolbarButtonWithTooltip(PAGE_DESIGN).click();
-		bot.shell(PAGE_DESIGN).activate();
-		bot.tabItem(SUBSTITUTED_EL).activate();
-		clearELTable(bot.table());
+		new DefaultToolItem(PAGE_DESIGN).click();;
+		Shell dialogShell = new DefaultShell(PAGE_DESIGN);
+		// Test choose Substituted EL tab
+		new DefaultTabItem(SUBSTITUTED_EL).activate();
+		clearELTable(new DefaultTable());
 		try {
-			bot.button("OK").click(); //$NON-NLS-1$
-		} catch (WidgetNotFoundException e) {
-			bot.shell(PAGE_DESIGN).close();
+			new OkButton().click(); //$NON-NLS-1$
+		} catch (RedDeerException rde) {
+			dialogShell.close();
 		}
 		super.tearDown();
 	}
 	
-	void clearELTable(SWTBotTable table){
-		try {
-			while (true) {
-				table.select(0);
-				bot.button("Remove").click(); //$NON-NLS-1$
-			}
-		} catch (IllegalArgumentException e) {
-		}
-		catch (WidgetNotFoundException e) {
+	void clearELTable(Table table) {
+		while (table.rowCount() > 0) {
+			table.select(0);
+			new PushButton("Remove").click();
 		}
 	}
 		

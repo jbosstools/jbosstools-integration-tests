@@ -6,6 +6,7 @@ public class JBossPerspective extends AbstractPerspective {
 
 	/**
 	 * Constructs the perspective with "JBoss".
+	 * @deprecated Use org.jboss.tools.common.reddeer.perspectives.JBossPerspective instead
 	 */
 	public JBossPerspective() {
 		super("JBoss");

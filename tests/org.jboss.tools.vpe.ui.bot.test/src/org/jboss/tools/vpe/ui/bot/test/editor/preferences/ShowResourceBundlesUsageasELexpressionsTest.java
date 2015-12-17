@@ -1,5 +1,5 @@
 /******************************************************************************* 
- * Copyright (c) 2012 Red Hat, Inc.
+ * Copyright (c) 2012 - 2016 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -10,74 +10,54 @@
  ******************************************************************************/
 package org.jboss.tools.vpe.ui.bot.test.editor.preferences;
 
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
-import org.jboss.tools.ui.bot.ext.SWTBotExt;
-import org.jboss.tools.ui.bot.ext.Timing;
+import org.jboss.reddeer.swt.impl.button.OkButton;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
+import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.jboss.tools.vpe.reddeer.preferences.VisualPageEditorPreferencePage;
 import org.jboss.tools.vpe.ui.bot.test.tools.SWTBotWebBrowser;
+import org.junit.Test;
 
-public class ShowResourceBundlesUsageasELexpressionsTest extends PreferencesTestCase{
+public class ShowResourceBundlesUsageasELexpressionsTest extends PreferencesTestCase {
 
-	private static String textEditor;
-	private static SWTBotEclipseEditor editor;
+	private static TextEditor editor;
 
-	public void testShowResourceBundlesUsageasELexpressions() throws Throwable{
-	  
-	  openPage();
-		editor = bot.editorByTitle(TEST_PAGE).toTextEditor();
+	@Test
+	public void testShowResourceBundlesUsageasELexpressions() throws Throwable {
+		openPage();
+		editor = new TextEditor(TEST_PAGE);
 		editor.setText(DEFAULT_TEST_PAGE_TEXT);
 		editor.save();
-		textEditor = editor.getText();
-		bot.sleep(Timing.time2S());
-    SWTBotWebBrowser webBrowser = new SWTBotWebBrowser(TEST_PAGE, new SWTBotExt());
-		//Test check VPE content with resource bundles
-		selectELExpressions();
-		assertVisualEditorContainsNodeWithValue(webBrowser, 
-		    "#{Message.prompt_message}",
-		    TEST_PAGE);
-		assertVisualEditorContainsNodeWithValue(webBrowser, 
-        "#{Message.header}",
-        TEST_PAGE);
-		assertVisualEditorNotContainNodeWithValue(webBrowser, 
-        "Hello Demo Application",
-        TEST_PAGE);
-    assertVisualEditorNotContainNodeWithValue(webBrowser, 
-        "Name:",
-        TEST_PAGE);
-		//Test check VPE content without resource bundles
-		
-		selectELExpressions();
-		assertVisualEditorNotContainNodeWithValue(webBrowser, 
-        "#{Message.prompt_message}",
-        TEST_PAGE);
-    assertVisualEditorNotContainNodeWithValue(webBrowser, 
-        "#{Message.header}",
-        TEST_PAGE);
-    assertVisualEditorContainsNodeWithValue(webBrowser, 
-        "Hello Demo Application",
-        TEST_PAGE);
-    assertVisualEditorContainsNodeWithValue(webBrowser, 
-        "Name:",
-        TEST_PAGE);
+		SWTBotWebBrowser webBrowser = new SWTBotWebBrowser(TEST_PAGE);
+		// Test check VPE content with resource bundles
+		setShowResourceBundlesUsage(true);
+		assertVisualEditorContainsNodeWithValue(webBrowser, "#{Message.prompt_message}", TEST_PAGE);
+		assertVisualEditorContainsNodeWithValue(webBrowser, "#{Message.header}", TEST_PAGE);
+		assertVisualEditorNotContainNodeWithValue(webBrowser, "Hello Demo Application", TEST_PAGE);
+		assertVisualEditorNotContainNodeWithValue(webBrowser, "Name:", TEST_PAGE);
+		// Test check VPE content without resource bundles
+		setShowResourceBundlesUsage(false);
+		assertVisualEditorNotContainNodeWithValue(webBrowser, "#{Message.prompt_message}", TEST_PAGE);
+		assertVisualEditorNotContainNodeWithValue(webBrowser, "#{Message.header}", TEST_PAGE);
+		assertVisualEditorContainsNodeWithValue(webBrowser, "Hello Demo Application", TEST_PAGE);
+		assertVisualEditorContainsNodeWithValue(webBrowser, "Name:", TEST_PAGE);
 	}
-	
+
 	@Override
 	public void tearDown() throws Exception {
-
-		//Restore page state before tests
-		
-		editor.setFocus();
-		bot.menu("Edit").menu("Select All").click(); //$NON-NLS-1$ //$NON-NLS-2$
-		bot.menu("Edit").menu("Delete").click(); //$NON-NLS-1$ //$NON-NLS-2$
-		editor.setText(textEditor);
+		// Restore page state before tests
+		editor.activate();
+		editor.setText(DEFAULT_TEST_PAGE_TEXT);
 		editor.save();
 		super.tearDown();
 	}
-	
-	private void selectELExpressions(){
-		bot.toolbarButtonWithTooltip(PREF_TOOLTIP).click();
-		bot.shell(PREF_FILTER_SHELL_TITLE).activate();
-		bot.checkBox(SHOW_RESOURCE_BUNDLES).click();
-		bot.button("OK").click(); //$NON-NLS-1$
+
+	private void setShowResourceBundlesUsage(boolean show) {
+		new DefaultToolItem("Preferences").click();
+		new DefaultShell("Preferences (Filtered)");
+		VisualPageEditorPreferencePage vpePreferencePage = new VisualPageEditorPreferencePage();
+		vpePreferencePage.toggleShowResourceBundlesAsELExp(show);
+		new OkButton().click();
 	}
-	
+
 }

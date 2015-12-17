@@ -47,10 +47,11 @@ public class FormatUtils {
         if (iterator1.hasNext()){
           item1 = iterator1.next();
         }
-        sb.append("  ");
+        sb.append("  '");
         sb.append(item0);
-        sb.append(item0.equals(item1) ? " == " : " != ");
+        sb.append(item0.equals(item1) ? "' == '" : "' != '");
         sb.append(item1);
+        sb.append("'");
         continueIteration = iterator0.hasNext() || iterator1.hasNext();
         if (continueIteration){
           sb.append("\n");

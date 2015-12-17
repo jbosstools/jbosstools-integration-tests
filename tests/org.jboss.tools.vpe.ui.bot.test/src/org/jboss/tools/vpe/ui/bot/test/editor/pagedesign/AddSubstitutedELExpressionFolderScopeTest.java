@@ -1,5 +1,5 @@
 /******************************************************************************* 
- * Copyright (c) 2012 Red Hat, Inc.
+ * Copyright (c) 2012 - 2016 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -10,155 +10,121 @@
  ******************************************************************************/
 package org.jboss.tools.vpe.ui.bot.test.editor.pagedesign;
 
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
-import org.eclipse.swtbot.swt.finder.SWTBot;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
-import org.jboss.tools.ui.bot.ext.SWTBotExt;
-import org.jboss.tools.ui.bot.ext.gen.ActionItem;
-import org.jboss.tools.ui.bot.ext.types.IDELabel;
-import org.jboss.tools.ui.bot.test.WidgetVariables;
+import org.jboss.reddeer.swt.api.Table;
+import org.jboss.reddeer.swt.impl.button.FinishButton;
+import org.jboss.reddeer.swt.impl.button.OkButton;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.button.RadioButton;
+import org.jboss.reddeer.swt.impl.menu.ShellMenu;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
+import org.jboss.reddeer.swt.impl.table.DefaultTable;
+import org.jboss.reddeer.swt.impl.table.DefaultTableItem;
+import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
+import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.jboss.tools.jst.reddeer.jsp.ui.wizard.NewJSPFileWizardDialog;
+import org.jboss.tools.jst.reddeer.jsp.ui.wizard.NewJSPFileWizardJSPPage;
 import org.jboss.tools.vpe.ui.bot.test.tools.SWTBotWebBrowser;
+import org.junit.Test;
 
-public class AddSubstitutedELExpressionFolderScopeTest extends SubstitutedELTestCase{
-	
+public class AddSubstitutedELExpressionFolderScopeTest extends SubstitutedELTestCase {
+
 	private static final String TEST_PAGE_FOR_FOLDER = "testPage"; //$NON-NLS-1$
 	private static final String TEST_FOLDER = "testFolder"; //$NON-NLS-1$
+	private static String originalEditorText;
+	private static TextEditor editor;
 
-	//Do not edit this variable as test will fail
+	// Do not edit this variable as test will fail
 	private static final String EL_VALUE = "Any Name"; //$NON-NLS-1$
-	
-	public void testAddSubstitutedELExpressionFolderScope() throws Throwable{
-		
-		//Test open page
+
+	@Test
+	public void testAddSubstitutedELExpressionFolderScope() throws Throwable {
+		// Test open page
 		openPage();
-		setEditor(bot.editorByTitle(TEST_PAGE).toTextEditor());
-		setEditorText(getEditor().getText());
-		
-		//Test create new folder
-		
-		SWTBot innerBot = bot.viewByTitle(WidgetVariables.PACKAGE_EXPLORER).bot();
-		innerBot.tree().expandNode(JBT_TEST_PROJECT_NAME).expandNode("WebContent") //$NON-NLS-1$
-		.select();
-		
-		bot.menu("File").menu("New").menu("Folder").click(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		
-		bot.shell("New Folder").activate(); //$NON-NLS-1$
-		bot.textWithLabel("Folder name:").setText(TEST_FOLDER); //$NON-NLS-1$
-		bot.button("Finish").click(); //$NON-NLS-1$
-		
-		//Test create page in new folder
-		
-		innerBot = bot.viewByTitle(WidgetVariables.PACKAGE_EXPLORER).bot();
-		innerBot.tree().expandNode(JBT_TEST_PROJECT_NAME).expandNode("WebContent") //$NON-NLS-1$
-		.getNode(TEST_FOLDER).select();
-		
-    open.newObject(ActionItem.NewObject.WebJSP.LABEL);
-		
-		bot.shell(IDELabel.Shell.NEW_JSP_FILE).activate(); //$NON-NLS-1$
-		bot.textWithLabel(ActionItem.NewObject.WebJSP.TEXT_FILE_NAME).setText(TEST_PAGE_FOR_FOLDER); //$NON-NLS-1$
-		bot.button(IDELabel.Button.FINISH).click(); //$NON-NLS-1$
-		delay();
-		SWTBotEclipseEditor editorForTestPage = bot.editorByTitle(TEST_PAGE_FOR_FOLDER+".jsp").toTextEditor(); //$NON-NLS-1$
-		editorForTestPage.setText(getEditorText());
+		editor = new TextEditor(TEST_PAGE);
+		originalEditorText = editor.getText();
+		// Test create new folder
+		packageExplorer.getProject(JBT_TEST_PROJECT_NAME).getProjectItem("WebContent").select();
+		new ShellMenu("File", "New", "Folder").select();
+		new DefaultShell("New Folder");
+		new LabeledText("Folder name:").setText(TEST_FOLDER);
+		new FinishButton().click();
+		// Test create page in new folder
+		packageExplorer.getProject(JBT_TEST_PROJECT_NAME).getProjectItem("WebContent", TEST_FOLDER).select();
+		NewJSPFileWizardDialog newJSPFileWizardDialog = new NewJSPFileWizardDialog();
+		newJSPFileWizardDialog.open();
+		NewJSPFileWizardJSPPage newJSPFileWizardJSPPage = new NewJSPFileWizardJSPPage();
+		newJSPFileWizardJSPPage.setFileName(TEST_PAGE_FOR_FOLDER);
+		newJSPFileWizardDialog.finish();
+		TextEditor editorForTestPage = new TextEditor(TEST_PAGE_FOR_FOLDER + ".jsp");
+		editorForTestPage.setText(originalEditorText);
 		editorForTestPage.save();
 		editorForTestPage.close();
-		bot.viewByTitle(WidgetVariables.PACKAGE_EXPLORER).setFocus();
-		bot.editorByTitle(TEST_PAGE).setFocus();
-		
-		//Test open Page Design Options
-		
-		bot.toolbarButtonWithTooltip(PAGE_DESIGN).click();
-		bot.shell(PAGE_DESIGN).activate();
-		
-		//Test choose Substituted EL tab
-		
-		bot.tabItem(SUBSTITUTED_EL).activate();
-		
-		//Clear EL table
-		clearELTable(bot.table());
-		
-		//Test add EL with folder scope to list
-
-		bot.button("Add").click(); //$NON-NLS-1$
-		delay();
-		bot.shell(ADD_EL).activate();
-		bot.textWithLabel("El Name*").setText("user.name"); //$NON-NLS-1$ //$NON-NLS-2$
-		bot.textWithLabel("Value").setText(EL_VALUE); //$NON-NLS-1$
-		bot.radio("Folder: Any Page at the Same Folder").click(); //$NON-NLS-1$
-		bot.button("Finish").click(); //$NON-NLS-1$
-		
-		//Test check table with ELs
-		
-		bot.shell(PAGE_DESIGN).activate();
-		SWTBotTable table = bot.table();
-		String elName = table.cell(0, "El Expression"); //$NON-NLS-1$
-		String scope = table.cell(0, "Scope"); //$NON-NLS-1$
-		String elValue = table.cell(0, "Value"); //$NON-NLS-1$
-		assertEquals("user.name",elName); //$NON-NLS-1$
-		assertEquals("Folder",scope); //$NON-NLS-1$
+		editor.activate();
+		// Test open Page Design Options
+		new DefaultToolItem(PAGE_DESIGN).click();
+		new DefaultShell(PAGE_DESIGN);
+		// Test choose Substituted EL tab
+		new DefaultTabItem(SUBSTITUTED_EL).activate();
+		// Clear EL table
+		clearELTable(new DefaultTable());
+		// Test add EL with folder scope to list
+		new PushButton("Add").click();
+		new DefaultShell(ADD_EL);
+		new LabeledText("El Name*").setText("user.name");
+		new LabeledText("Value").setText(EL_VALUE);
+		new RadioButton("Folder: Any Page at the Same Folder").click();
+		new FinishButton().click();
+		// Test check table with ELs
+		new DefaultShell(PAGE_DESIGN);
+		Table table = new DefaultTable();
+		String elName = table.getItem(0).getText(1);
+		String scope = table.getItem(0).getText(0);
+		String elValue = table.getItem(0).getText(2);
+		assertEquals("user.name", elName); //$NON-NLS-1$
+		assertEquals("Folder", scope); //$NON-NLS-1$
 		assertEquals(EL_VALUE, elValue);
-		
-		//Test close Design Options
-		
-		bot.button("OK").click(); //$NON-NLS-1$
-	//	waitForBlockingJobsAcomplished(VISUAL_REFRESH);
-		
-		//Check page content
-		openPage();
-		SWTBotExt botExt = new SWTBotExt();
-		assertVisualEditorContains(new SWTBotWebBrowser(TEST_PAGE,botExt),
-        "INPUT",
-        new String[]{"value"},
-        new String[]{EL_VALUE},
-        TEST_PAGE);
+		// Test close Design Options
+		new OkButton().click();
+		// Check page content
+		editor.activate();
+		assertVisualEditorContains(new SWTBotWebBrowser(TEST_PAGE), "INPUT", new String[] { "value" },
+				new String[] { EL_VALUE }, TEST_PAGE);
 		openPage("hello.jsp");
-		assertVisualEditorContainsNodeWithValue(new SWTBotWebBrowser("hello.jsp",botExt),
-        EL_VALUE,
-        "hello.jsp");
+		assertVisualEditorContainsNodeWithValue(new SWTBotWebBrowser("hello.jsp"), EL_VALUE, "hello.jsp");
 		packageExplorer.getProject(JBT_TEST_PROJECT_NAME)
-			.getProjectItem("WebContent",TEST_FOLDER,TEST_PAGE_FOR_FOLDER+".jsp")
-			.open();
-		assertVisualEditorContains(new SWTBotWebBrowser(TEST_PAGE_FOR_FOLDER+".jsp",botExt),
-        "INPUT",
-        new String[]{"value"},
-        new String[]{"#{user.name}"},
-        TEST_PAGE_FOR_FOLDER+".jsp");
-		openPage();
-		bot.toolbarButtonWithTooltip(PAGE_DESIGN).click();
-		bot.shell(PAGE_DESIGN).activate();
-		
-		//Test choose Substituted EL tab
-		
-		bot.tabItem(SUBSTITUTED_EL).activate();
-		
-		//Delete item
-		
-		bot.table().select(0);
-		bot.button("Remove").click(); //$NON-NLS-1$
-		bot.button("OK").click(); //$NON-NLS-1$
-		
-		//Check VPE content
-		assertVisualEditorContains(new SWTBotWebBrowser(TEST_PAGE,botExt),
-        "INPUT",
-        new String[]{"value"},
-        new String[]{"#{user.name}"},
-        TEST_PAGE);
-		
-		assertVisualEditorContainsNodeWithValue(new SWTBotWebBrowser("hello.jsp",botExt),
-		    "#{user.name}",
-        "hello.jsp");
-		
-		assertVisualEditorContains(new SWTBotWebBrowser(TEST_PAGE_FOR_FOLDER+".jsp",botExt),
-        "INPUT",
-        new String[]{"value"},
-        new String[]{"#{user.name}"},
-        TEST_PAGE_FOR_FOLDER+".jsp");
+				.getProjectItem("WebContent", TEST_FOLDER, TEST_PAGE_FOR_FOLDER + ".jsp").open();
+		assertVisualEditorContains(new SWTBotWebBrowser(TEST_PAGE_FOR_FOLDER + ".jsp"), "INPUT",
+				new String[] { "value" }, new String[] { "#{user.name}" }, TEST_PAGE_FOR_FOLDER + ".jsp");
+		editor.activate();
+		// Test open Page Design Options
+		new DefaultToolItem(PAGE_DESIGN).click();
+		new DefaultShell(PAGE_DESIGN);
+		// Test choose Substituted EL tab
+		new DefaultTabItem(SUBSTITUTED_EL).activate();
+		// Delete item
+		new DefaultTableItem(0).select();
+		new PushButton("Remove").click();
+		new OkButton().click();
+		// Check VPE content
+		assertVisualEditorContains(new SWTBotWebBrowser(TEST_PAGE), "INPUT", new String[] { "value" },
+				new String[] { "#{user.name}" }, TEST_PAGE);
+
+		assertVisualEditorContainsNodeWithValue(new SWTBotWebBrowser("hello.jsp"), "#{user.name}", "hello.jsp");
+
+		assertVisualEditorContains(new SWTBotWebBrowser(TEST_PAGE_FOR_FOLDER + ".jsp"), "INPUT",
+				new String[] { "value" }, new String[] { "#{user.name}" }, TEST_PAGE_FOR_FOLDER + ".jsp");
 	}
-	
+
 	@Override
 	public void tearDown() throws Exception {
-	  eclipse.deleteFile(JBT_TEST_PROJECT_NAME, "WebContent",TEST_FOLDER);
+		// Restore page state before tests
+		packageExplorer.getProject(JBT_TEST_PROJECT_NAME).getProjectItem("WebContent", TEST_FOLDER).delete();
+		editor.activate();
+		editor.setText(originalEditorText);
+		editor.save();
 		super.tearDown();
 	}
-		
+
 }

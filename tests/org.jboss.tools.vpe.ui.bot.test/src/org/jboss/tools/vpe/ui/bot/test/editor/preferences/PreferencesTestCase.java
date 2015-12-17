@@ -1,5 +1,5 @@
 /******************************************************************************* 
- * Copyright (c) 2012 Red Hat, Inc.
+ * Copyright (c) 2012 - 2016 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -12,27 +12,22 @@ package org.jboss.tools.vpe.ui.bot.test.editor.preferences;
 
 import java.io.File;
 import java.io.IOException;
+
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotCheckBox;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotCombo;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
-import org.jboss.tools.ui.bot.ext.SWTJBTExt;
-import org.jboss.tools.ui.bot.ext.types.IDELabel;
+import org.jboss.reddeer.core.exception.CoreLayerException;
+import org.jboss.reddeer.swt.impl.button.OkButton;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
+import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
+import org.jboss.tools.vpe.reddeer.preferences.VisualPageEditorPreferencePage;
 import org.jboss.tools.vpe.ui.bot.test.Activator;
 import org.jboss.tools.vpe.ui.bot.test.editor.VPEEditorTestCase;
 
-public abstract class PreferencesTestCase extends VPEEditorTestCase{
+public abstract class PreferencesTestCase extends VPEEditorTestCase {
 
 	protected static final String TOGGLE_SELECTION_BAR_TOOLTIP = "Toggle selection tag bar"; //$NON-NLS-1$
-	protected static final String SHOW_NON_VISUAL_TAGS = "Show non-visual tags"; //$NON-NLS-1$
-	protected static final String SHOW_BORDER_FOR_UNKNOWN_TAGS = "Show border for unknown tags"; //$NON-NLS-1$
-	protected static final String SHOW_RESOURCE_BUNDLES = "Show resource bundles usage as EL expressions"; //$NON-NLS-1$
-	protected static final String ASK_FOR_ATTRIBUTES = "Ask for tag attributes during tag insert"; //$NON-NLS-1$
-	protected static final String SELECT_DEFAULT_TAB = "Select the default active editor's tab"; //$NON-NLS-1$
-	protected static final String EDITOR_SPLITTING = "Visual/Source editors splitting"; //$NON-NLS-1$
-	protected static final String SHOW_TEXY_FORMAT = "Show text formatting bar"; //$NON-NLS-1$
 	protected static final String PREF_TOOLTIP = "Preferences"; //$NON-NLS-1$
 	protected static final String PREF_FILTER_SHELL_TITLE = "Preferences (Filtered)"; //$NON-NLS-1$
 	protected static final String SCROLL_LOCK_TOOLTIP = "Synchronize scrolling between source and visual panes"; //$NON-NLS-1$
@@ -40,105 +35,74 @@ public abstract class PreferencesTestCase extends VPEEditorTestCase{
 	protected static final String I18N_BUTTON_TOOLTIP = "Externalize selected string..."; //$NON-NLS-1$
 	protected static final String SHOW_VISUAL_TOOLBAR_PREFS_CHECKBOX_NAME = "Show toolbar within the editor (otherwise in Eclipse's toolbar)"; //$NON-NLS-1$
 	protected static final String SHOW_SELECTION_TAG_BAR = "Show selection tag bar"; //$NON-NLS-1$
-	
-	@Override
-	protected void closeUnuseDialogs() {
-		try {
-			bot.shell("Preferences (Filtered)").close(); //$NON-NLS-1$
-		} catch (WidgetNotFoundException e) {
-		}
+
+	void closePage() {
+		new TextEditor(TEST_PAGE).close();
 	}
 
 	@Override
-	protected boolean isUnuseDialogOpened() {
-		boolean isOpened = false;
-		try {
-			bot.shell("Preferences (Filtered)").activate(); //$NON-NLS-1$
-			isOpened = true;
-		} catch (WidgetNotFoundException e) {
-		}
-		return isOpened;
-	}
-	
-	void closePage(){
-		bot.editorByTitle(TEST_PAGE).close();
-	}
-	
-	@Override
 	protected String getPathToResources(String testPage) throws IOException {
-		String filePath = FileLocator.toFileURL(Platform.getBundle(Activator.PLUGIN_ID).getEntry("/")).getFile()+"resources/preferences/"+testPage; //$NON-NLS-1$ //$NON-NLS-2$
+		String filePath = FileLocator.toFileURL(Platform.getBundle(Activator.PLUGIN_ID).getEntry("/")).getFile() //$NON-NLS-1$
+				+ "resources/preferences/" + testPage; //$NON-NLS-1$
 		File file = new File(filePath);
 		if (!file.isFile()) {
-			filePath = FileLocator.toFileURL(Platform.getBundle(Activator.PLUGIN_ID).getEntry("/")).getFile()+"preferences/"+testPage;  //$NON-NLS-1$//$NON-NLS-2$
+			filePath = FileLocator.toFileURL(Platform.getBundle(Activator.PLUGIN_ID).getEntry("/")).getFile() //$NON-NLS-1$
+					+ "preferences/" + testPage; //$NON-NLS-1$
 		}
 		return filePath;
 	}
-	
+
 	@Override
 	public void setUp() throws Exception {
 		super.setUp();
 		openPage();
 		setPreferencesToDefault(true);
 	}
-	
+
 	@Override
 	public void tearDown() throws Exception {
 		openPage();
 		setPreferencesToDefault(true);
 		super.tearDown();
 	}
-	
-	void setPreferencesToDefault(boolean fromEditor) throws WidgetNotFoundException{
-	  if (fromEditor){
-	    bot.toolbarButtonWithTooltip(PREF_TOOLTIP).click(); //$NON-NLS-1$
-	    bot.shell(PREF_FILTER_SHELL_TITLE).activate(); //$NON-NLS-1$
-	  }
-	  else{
-	    bot.menu(IDELabel.Menu.WINDOW).menu(IDELabel.Menu.PREFERENCES).click(); //$NON-NLS-1$ //$NON-NLS-2$
-	    SWTBotTree preferenceTree = bot.tree();
-	    preferenceTree
-	      .expandNode(IDELabel.PreferencesDialog.JBOSS_TOOLS) //$NON-NLS-1$
-  	    .expandNode(IDELabel.PreferencesDialog.JBOSS_TOOLS_WEB) //$NON-NLS-1$
-	      .expandNode(IDELabel.PreferencesDialog.JBOSS_TOOLS_WEB_EDITORS) //$NON-NLS-1$
-	      .expandNode(IDELabel.PreferencesDialog.JBOSS_TOOLS_WEB_EDITORS_VPE).select();
-	  }
-		SWTBotCheckBox checkBox = bot.checkBox(SHOW_SELECTION_TAG_BAR);
-		if (!checkBox.isChecked()) {
-			checkBox.click();
+
+	void setPreferencesToDefault(boolean fromEditor) throws CoreLayerException {
+		VisualPageEditorPreferencePage vpePreferencePage = new VisualPageEditorPreferencePage();
+		WorkbenchPreferenceDialog preferenceDialog = null;
+		if (fromEditor) {
+			new DefaultToolItem("Preferences").click();
+			new DefaultShell("Preferences (Filtered)");
+		} else {
+			preferenceDialog = new WorkbenchPreferenceDialog();
+			preferenceDialog.open();
+			preferenceDialog.select(vpePreferencePage);
 		}
-		checkBox = bot.checkBox(SHOW_BORDER_FOR_UNKNOWN_TAGS);
-    if (!checkBox.isChecked()) {
-      checkBox.click();
-    }
-		checkBox = bot.checkBox(SHOW_NON_VISUAL_TAGS);
-		if (checkBox.isChecked()) {
-			checkBox.click();
+		if (!vpePreferencePage.isShowSelectionTagBar()) {
+			vpePreferencePage.toggleShowSelectionTagBar(true);
 		}
-		
-		checkBox = bot.checkBox(SHOW_RESOURCE_BUNDLES);
-		if (checkBox.isChecked()) {
-			checkBox.click();
+		if (!vpePreferencePage.isShowBorderForUnknownTags()) {
+			vpePreferencePage.toggleShowBorderForUnknownTags(true);
 		}
-		checkBox = bot.checkBox(ASK_FOR_ATTRIBUTES);
-		if (!checkBox.isChecked()) {
-			checkBox.click();
+		if (vpePreferencePage.isShowNonVisualTag()) {
+			vpePreferencePage.toggleShowNonVisualTag(false);
 		}
-		checkBox = bot.checkBox(SHOW_TEXY_FORMAT);
-		if (!checkBox.isChecked()) {
-			checkBox.click();
+		if (vpePreferencePage.isShowResourceBundlesAsELExp()) {
+			vpePreferencePage.toggleShowResourceBundlesAsELExp(false);
 		}
-		SWTBotCombo combo = bot.comboBoxWithLabel(SELECT_DEFAULT_TAB);
-		combo.setSelection("Visual/Source"); //$NON-NLS-1$
-		combo = bot.comboBoxWithLabel(EDITOR_SPLITTING);
-		combo.setSelection("Vertical splitting with Source Editor on the top"); //$NON-NLS-1$
-		Throwable exception = getException();
-		bot.button("OK").click(); //$NON-NLS-1$
-		if (exception == null){
-      exception = getException();
-      if (exception != null && exception instanceof NullPointerException){
-        setException(null);
-      }
-    }
+		if (!vpePreferencePage.isAskForAttrsDuringTagInsert()) {
+			vpePreferencePage.toggleAskForAttrsDuringTagInsert(true);
+		}
+		if (!vpePreferencePage.isShowTextFormattingBar()) {
+			vpePreferencePage.toggleShowTextFormattingBar(false);
+		}
+		vpePreferencePage.setDefaultActiveEditorTab("Visual/Source");
+		vpePreferencePage.seVisualSourceEditorsSplitting("Vertical splitting with Source Editor on the top");
+		if (preferenceDialog != null) {
+			preferenceDialog.ok();
+		}
+		else{
+			new OkButton().click();
+		}
 	}
-	
+
 }

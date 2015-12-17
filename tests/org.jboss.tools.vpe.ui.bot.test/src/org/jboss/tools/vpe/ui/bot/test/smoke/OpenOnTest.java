@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007-2011 Red Hat, Inc.
+ * Copyright (c) 2007-2016 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -10,57 +10,54 @@
  ******************************************************************************/
 package org.jboss.tools.vpe.ui.bot.test.smoke;
 
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
-import org.jboss.tools.ui.bot.ext.SWTTestExt;
+import org.jboss.reddeer.swt.impl.tree.DefaultTree;
+import org.jboss.reddeer.workbench.api.Editor;
+import org.jboss.reddeer.workbench.handler.EditorHandler;
+import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.ui.bot.ext.helper.OpenOnHelper;
 import org.jboss.tools.vpe.ui.bot.test.editor.VPEEditorTestCase;
+import org.junit.Test;
+
 /**
  * Test open on functionality
+ * 
  * @author Vladimir Pakan
  *
  */
-public class OpenOnTest extends VPEEditorTestCase{
+public class OpenOnTest extends VPEEditorTestCase {
 	/**
 	 * Test Open On functionality for jsp page
 	 */
-  public void testOpenOn() {
-    eclipse.closeAllEditors();
-    openPage();
-    // Check open on for uri="http://java.sun.com/jsf/html"
-    String expectedOpenedFileName = "html_basic.tld";
-    SWTBotEditor openedEditor = OpenOnHelper.checkOpenOnFileIsOpened(
-        SWTTestExt.bot, TEST_PAGE, "uri=\"http://java.sun.com/jsf/html\"", 5,
-        0, 0, expectedOpenedFileName);
-    String selectedTreeItemLabel = openedEditor.bot().tree().selection()
-        .get(0, 0);
-    assertTrue("Selected tree item has to have label " + expectedOpenedFileName
-        + " but it has " + selectedTreeItemLabel,
-        selectedTreeItemLabel.equalsIgnoreCase(expectedOpenedFileName));
-    openedEditor.close();
-    // Check open on for uri="http://java.sun.com/jsf/core"
-    expectedOpenedFileName = "jsf_core.tld";
-    openedEditor = OpenOnHelper.checkOpenOnFileIsOpened(SWTTestExt.bot,
-        TEST_PAGE, "uri=\"http://java.sun.com/jsf/core\"", 5, 0, 0,
-        expectedOpenedFileName);
-    selectedTreeItemLabel = openedEditor.bot().tree().selection().get(0, 0);
-    assertTrue("Selected tree item has to have label " + expectedOpenedFileName
-        + " but it has " + selectedTreeItemLabel,
-        selectedTreeItemLabel.equalsIgnoreCase(expectedOpenedFileName));
-    openedEditor.close();
-    // Check open on for h:outputText
-    String tagToCheck = "outputText";
-    expectedOpenedFileName = "html_basic.tld";
-    openedEditor = OpenOnHelper.checkOpenOnFileIsOpened(SWTTestExt.bot,
-        TEST_PAGE, "h:" + tagToCheck, 5, 0, 0,
-        expectedOpenedFileName);
-    openedEditor.close();
-    // Check open on for f:view
-    tagToCheck = "view";
-    expectedOpenedFileName = "jsf_core.tld";
-    openedEditor = OpenOnHelper.checkOpenOnFileIsOpened(SWTTestExt.bot,
-        TEST_PAGE, "f:" + tagToCheck, 5, 0, 0,
-        expectedOpenedFileName);
-    openedEditor.close();
-  }
+	@Test
+	public void testOpenOn() {
+		EditorHandler.getInstance().closeAll(true);
+		openPage();
+		// Check open on for uri="http://java.sun.com/jsf/html"
+		String expectedOpenedFileName = "html_basic.tld";
+		TextEditor jspPageEditor = new TextEditor(TEST_PAGE); 
+		Editor openedEditor = OpenOnHelper.checkOpenOnFileIsOpened(TEST_PAGE, 1, 24, expectedOpenedFileName);
+		String selectedTreeItemLabel = new DefaultTree().getSelectedItems().get(0).getText();
+		assertTrue("Selected tree item has to have label " + expectedOpenedFileName + " but it has "
+				+ selectedTreeItemLabel, selectedTreeItemLabel.equalsIgnoreCase(expectedOpenedFileName));
+		openedEditor.close();
+		jspPageEditor.activate();
+		// Check open on for uri="http://java.sun.com/jsf/core"
+		expectedOpenedFileName = "jsf_core.tld";
+		openedEditor = OpenOnHelper.checkOpenOnFileIsOpened(TEST_PAGE,0, 24, expectedOpenedFileName);
+		selectedTreeItemLabel = new DefaultTree().getSelectedItems().get(0).getText();
+		assertTrue("Selected tree item has to have label " + expectedOpenedFileName + " but it has "
+				+ selectedTreeItemLabel, selectedTreeItemLabel.equalsIgnoreCase(expectedOpenedFileName));
+		openedEditor.close();
+		jspPageEditor.activate();
+		// Check open on for h:outputText
+		expectedOpenedFileName = "html_basic.tld";
+		openedEditor = OpenOnHelper.checkOpenOnFileIsOpened(TEST_PAGE, 12, 16, expectedOpenedFileName);
+		openedEditor.close();
+		jspPageEditor.activate();
+		// Check open on for f:view
+		expectedOpenedFileName = "jsf_core.tld";
+		openedEditor = OpenOnHelper.checkOpenOnFileIsOpened(TEST_PAGE, 11, 4,expectedOpenedFileName);
+		openedEditor.close();
+	}
 
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007-2009 Red Hat, Inc.
+ * Copyright (c) 2007-2016 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -27,11 +27,12 @@ import java.util.zip.ZipFile;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.swtbot.swt.finder.SWTBot;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
-import org.jboss.tools.ui.bot.ext.types.IDELabel;
-import org.jboss.tools.ui.bot.ext.view.PackageExplorer;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.swt.impl.button.OkButton;
+import org.jboss.reddeer.swt.impl.menu.ShellMenu;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 
 /**
  * Contains some file manipulation utils
@@ -107,20 +108,15 @@ public class FileHelper {
 		}
 	}
 
-	public static String getProjectLocation(String projectName, SWTBot bot) {
+	public static String getProjectLocation(String projectName) {
 		PackageExplorer packageExplorer = new PackageExplorer();
-		SWTBot packageExplorerBot = packageExplorer.show().bot();
-		SWTBotTree packageExplorerTree = packageExplorerBot.tree();
-		packageExplorerTree.expandNode(projectName).select();
-		bot.menu(IDELabel.Menu.FILE).menu(IDELabel.Menu.PROPERTIES).click();
-		SWTBot propertiesBot = bot
-				.shell(IDELabel.Shell.PROPERTIES_FOR + " " + projectName)
-				.activate().bot();
-		propertiesBot.tree().select(IDELabel.PropertiesWindow.RESOURCE);
-		SWTBotText pathText = propertiesBot
-				.textWithLabel(IDELabel.PropertiesWindow.ResourceProperties.LOCATION);
-		String projectLocation = pathText.getText();
-		propertiesBot.button(IDELabel.Button.OK).click();
+		packageExplorer.open();
+		packageExplorer.getProject(projectName).select();
+		new ShellMenu("File","Properties").select();
+		new DefaultShell("Properties for " + projectName);
+		new DefaultTreeItem("Resource").select();
+		String projectLocation = new LabeledText("Location:").getText();
+		new OkButton().click();
 		return projectLocation;
 	}
   /**

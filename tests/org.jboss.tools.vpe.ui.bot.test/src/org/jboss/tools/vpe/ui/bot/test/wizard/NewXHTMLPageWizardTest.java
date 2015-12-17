@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007-2010 Red Hat, Inc.
+ * Copyright (c) 2007-2016 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -10,9 +10,11 @@
  ******************************************************************************/
 package org.jboss.tools.vpe.ui.bot.test.wizard;
 
-import org.jboss.tools.ui.bot.ext.Timing;
-import org.jboss.tools.ui.bot.ext.gen.ActionItem;
-import org.jboss.tools.ui.bot.ext.types.IDELabel;
+import org.jboss.reddeer.core.lookup.EditorPartLookup;
+import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.jboss.tools.jst.reddeer.web.ui.NewXHTMLFileWizardPage;
+import org.jboss.tools.jst.reddeer.web.ui.NewXHTMLFileWizardXHTMLTemplatePage;
+import org.jboss.tools.jst.reddeer.web.ui.NewXHTMLWizard;
 import org.jboss.tools.vpe.ui.bot.test.VPEAutoTestCase;
 import org.junit.Test;
 
@@ -21,18 +23,6 @@ import org.junit.Test;
  *
  */
 public class NewXHTMLPageWizardTest extends VPEAutoTestCase{
-
-	@Override
-	protected void closeUnuseDialogs() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	protected boolean isUnuseDialogOpened() {
-		// TODO Auto-generated method stub
-		return false;
-	}
 	/**
 	 * Test new xhtml page wizard basic functionality.
 	 */
@@ -45,30 +35,22 @@ public class NewXHTMLPageWizardTest extends VPEAutoTestCase{
 	 * Checks new xhtml page wizard basic functionality.
 	 */
 	public void checkNewXHTMLPageWizard() {
-		/*
-		 * Open wizard page
-		 */
-		open.newObject(ActionItem.NewObject.JBossToolsWebXHTMLFile.LABEL);
-		bot.shell(IDELabel.Shell.NEW_XHTML_FILE).activate();
-		bot.textWithLabel(ActionItem.NewObject.JBossToolsWebXHTMLFile.TEXT_FILE_NAME).setText("test"); //$NON-NLS-1$
-		bot.textWithLabel(
-				ActionItem.NewObject.JBossToolsWebXHTMLFile.TEXT_ENTER_OR_SELECT_THE_PARENT_FOLDER)
-				.setText(JBT_TEST_PROJECT_NAME + "/WebContent/pages"); //$NON-NLS-1$
-		bot.button(IDELabel.Button.NEXT).click();
+    	NewXHTMLWizard newXHTMLWizard = new NewXHTMLWizard();
+    	newXHTMLWizard.open();
+    	NewXHTMLFileWizardPage newXHTMLFileWizardPage = new NewXHTMLFileWizardPage(); 
+    	newXHTMLFileWizardPage.setFileName("test");
+    	newXHTMLFileWizardPage.setParentFolder(JBT_TEST_PROJECT_NAME + "/WebContent/pages");
+		newXHTMLWizard.next();
 		/*
 		 * Check that the checkbox is disabled by default
 		 */
-		assertFalse(
-				"'" + IDELabel.NewXHTMLFileDialog.USE_XHTML_TEMPLATE_CHECK_BOX //$NON-NLS-1$
-				+ "' checkbox should be disabled by default", //$NON-NLS-1$
-				bot.checkBox(
-						IDELabel.NewXHTMLFileDialog.USE_XHTML_TEMPLATE_CHECK_BOX)
-						.isChecked());
-		bot.checkBox(IDELabel.NewXHTMLFileDialog.USE_XHTML_TEMPLATE_CHECK_BOX).select();
-		bot.table().select(IDELabel.NewXHTMLFileDialog.TEMPLATE_FACELET_FORM_XHTML_NAME);
-		bot.button(IDELabel.Button.FINISH).click();
-		bot.sleep(Timing.time2S());
-		assertEquals("Active Editor Title should be" ,"test.xhtml", this.bot.activeEditor().getTitle()); //$NON-NLS-1$ //$NON-NLS-2$
+		NewXHTMLFileWizardXHTMLTemplatePage templatePage = new NewXHTMLFileWizardXHTMLTemplatePage(); 
+		assertFalse("'Use XHTML Template' checkbox should be disabled by default",
+				templatePage.getUseXHTMLTemplate());
+		templatePage.setUseXHTMLTemplate(true);
+		templatePage.setTemplate("Form Facelet Page");
+		newXHTMLWizard.finish();
+		assertEquals("Active Editor Title should be" ,"test.xhtml", EditorPartLookup.getInstance().getActiveEditor().getTitle());
 	}
 
 	/**
@@ -76,32 +58,28 @@ public class NewXHTMLPageWizardTest extends VPEAutoTestCase{
 	 * Tests https://jira.jboss.org/browse/JBIDE-6921
 	 */
 	public void checkBlankResultWithoutAnyTemplateText_JBIDE6921() {
-		open.newObject(ActionItem.NewObject.JBossToolsWebXHTMLFile.LABEL);
-		bot.shell(IDELabel.Shell.NEW_XHTML_FILE).activate();
-		bot.textWithLabel(ActionItem.NewObject.JBossToolsWebXHTMLFile.TEXT_FILE_NAME).setText("test2"); //$NON-NLS-1$
-		bot.textWithLabel(
-				ActionItem.NewObject.JBossToolsWebXHTMLFile.TEXT_ENTER_OR_SELECT_THE_PARENT_FOLDER)
-				.setText(JBT_TEST_PROJECT_NAME + "/WebContent/pages"); //$NON-NLS-1$
-		bot.button(IDELabel.Button.NEXT).click();
+		NewXHTMLWizard newXHTMLWizard = new NewXHTMLWizard();
+    	newXHTMLWizard.open();
+    	NewXHTMLFileWizardPage newXHTMLFileWizardPage = new NewXHTMLFileWizardPage(); 
+    	newXHTMLFileWizardPage.setFileName("test2");
+    	newXHTMLFileWizardPage.setParentFolder(JBT_TEST_PROJECT_NAME + "/WebContent/pages");
+		newXHTMLWizard.next();
+		NewXHTMLFileWizardXHTMLTemplatePage templatePage = new NewXHTMLFileWizardXHTMLTemplatePage();
 		/*
 		 * Check that the checkbox is stored between the dialog's launches
 		 */
-		assertTrue(
-				"'" + IDELabel.NewXHTMLFileDialog.USE_XHTML_TEMPLATE_CHECK_BOX //$NON-NLS-1$
-				+ "' checkbox should be enabled (after previous dialog call)", //$NON-NLS-1$
-				bot.checkBox(
-						IDELabel.NewXHTMLFileDialog.USE_XHTML_TEMPLATE_CHECK_BOX)
-						.isChecked());
+		assertTrue("'Use XHTML Template' checkbox should be enabled (after previous dialog call)",
+				templatePage.getUseXHTMLTemplate());
 		/*
 		 * Make some click on the checkbox and leave it disabled
 		 */
-		bot.checkBox(IDELabel.NewXHTMLFileDialog.USE_XHTML_TEMPLATE_CHECK_BOX).select();
-		bot.checkBox(IDELabel.NewXHTMLFileDialog.USE_XHTML_TEMPLATE_CHECK_BOX).deselect();
-		bot.checkBox(IDELabel.NewXHTMLFileDialog.USE_XHTML_TEMPLATE_CHECK_BOX).select();
-		bot.checkBox(IDELabel.NewXHTMLFileDialog.USE_XHTML_TEMPLATE_CHECK_BOX).deselect();
-		bot.button(IDELabel.Button.FINISH).click();
-		assertEquals("Active Editor Title should be" ,"test2.xhtml", this.bot.activeEditor().getTitle());  //$NON-NLS-1$ //$NON-NLS-2$
-		assertEquals("Created XHTML file should be blank" ,"", this.bot.activeEditor().toTextEditor().getText());  //$NON-NLS-1$ //$NON-NLS-2$
+		templatePage.setUseXHTMLTemplate(true);
+		templatePage.setUseXHTMLTemplate(false);
+		templatePage.setUseXHTMLTemplate(true);
+		templatePage.setUseXHTMLTemplate(false);
+		newXHTMLWizard.finish();
+		assertEquals("Active Editor Title should be" ,"test2.xhtml", EditorPartLookup.getInstance().getActiveEditor().getTitle());
+		assertEquals("Created XHTML file should be blank" ,"", new TextEditor("test2.xhtml").getText());
 
 	}
 

@@ -11,103 +11,71 @@
 package org.jboss.tools.vpe.ui.bot.test.editor;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Event;
-import org.jboss.tools.ui.bot.ext.SWTBotExt;
-import org.jboss.tools.ui.bot.ext.SWTJBTExt;
-import org.jboss.tools.ui.bot.ext.Timing;
-import org.jboss.tools.vpe.ui.bot.test.tools.SWTBotWebBrowser;
+import org.jboss.reddeer.swt.api.Browser;
+import org.jboss.reddeer.common.platform.RunningPlatform;
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.jboss.reddeer.swt.impl.browser.InternalBrowser;
+import org.jboss.reddeer.swt.impl.menu.ShellMenu;
+import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
+import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.junit.Test;
 
-public class ToggleCommentTest extends VPEEditorTestCase{
-	
-	public void testToggleComment() throws Throwable{
-		
-		//Test open page
-		
+public class ToggleCommentTest extends VPEEditorTestCase {
+	private TextEditor textEditor;
+	private String originalEditorText;
+	@Test
+	public void testToggleComment() throws Throwable {
+		// Test open page
 		openPage();
-		
-		setEditor(bot.editorByTitle(TEST_PAGE).toTextEditor());
-		setEditorText(DEFAULT_TEST_PAGE_TEXT);
-		getEditor().setText(DEFAULT_TEST_PAGE_TEXT);
-		getEditor().save();
-		bot.sleep(Timing.time2S());
-		//Test toggle comment from Source menu
-		getEditor().navigateTo(16,20);
-		bot.sleep(Timing.time2S());
-		bot.menu("Source").menu("Toggle Comment").click(); //$NON-NLS-1$ //$NON-NLS-2$
-		getEditor().save();
-		waitForBlockingJobsAcomplished(VISUAL_UPDATE);
-		SWTBotWebBrowser webBrowser = new SWTBotWebBrowser(TEST_PAGE, new SWTBotExt());
-		assertVisualEditorContainsManyComments(webBrowser, 1, TEST_PAGE);
+		textEditor = new TextEditor(TEST_PAGE);
+		originalEditorText = DEFAULT_TEST_PAGE_TEXT;
+		textEditor.setText(DEFAULT_TEST_PAGE_TEXT);
+		textEditor.save();
+		// Test toggle comment from Source menu
+		textEditor.setCursorPosition(16, 20);
+		new ShellMenu("Source", "Toggle Comment").select();
+		textEditor.save();
+		new WaitWhile(new JobIsRunning());
+		Browser browser = new InternalBrowser();
+		assertVisualEditorContainsManyComments(browser, 2,TEST_PAGE);
 		final String commentValue = "<h:commandButton action=\"hello\" value=\"Say Hello!\" />";
-		assertTrue("Visual Representation of page doesn't contain comment with value " + commentValue,
-		    webBrowser.containsCommentWithValue(commentValue));
-		
-		//Test untoggle comment from Source menu
-
-		getEditor().navigateTo(16,20);
-		bot.sleep(Timing.time2S());
-		bot.menu("Source").menu("Toggle Comment").click(); //$NON-NLS-1$ //$NON-NLS-2$
-		getEditor().save();
-    waitForBlockingJobsAcomplished(VISUAL_UPDATE);
-    assertVisualEditorContainsManyComments(webBrowser, 0, TEST_PAGE);
-
-		//Test toggle comment with CTRL+SHIFT+C hot keys
-		
-		getEditor().navigateTo(22,22);
-		bot.sleep(Timing.time2S());
+		assertVisualEditorContainsCommentWithValue(browser,commentValue);
+		// Test untoggle comment from Source menu
+		new ShellMenu("Source", "Toggle Comment").select();
+		textEditor.save();
+		new WaitWhile(new JobIsRunning());
+		assertVisualEditorContainsManyComments(browser, 1 , TEST_PAGE);
+		// Test toggle comment with CTRL+SHIFT+C hot keys
+		textEditor.activate();
+		textEditor.setCursorPosition(16, 20);
 		pressToggleCommentHotKeys();
-		getEditor().save();
-    waitForBlockingJobsAcomplished(VISUAL_UPDATE);
-    assertVisualEditorContainsManyComments(webBrowser, 1, TEST_PAGE);
-    assertTrue("Visual Representation of page doesn't contain comment with value " + commentValue,
-        webBrowser.containsCommentWithValue(commentValue));
-		
-		//Test untoggle comment with CTRL+SHIFT hot keys
-
-		getEditor().navigateTo(22,22);
-		bot.sleep(Timing.time2S());
+		textEditor.save();
+		new WaitWhile(new JobIsRunning());
+		assertVisualEditorContainsManyComments(browser, 2, TEST_PAGE);
+		assertVisualEditorContainsCommentWithValue(browser,commentValue);
+		// Test untoggle comment with CTRL+SHIFT hot keys
+		textEditor.setCursorPosition(16, 20);
 		pressToggleCommentHotKeys();
-		getEditor().save();
-    waitForBlockingJobsAcomplished(VISUAL_UPDATE);
-    assertVisualEditorContainsManyComments(webBrowser, 0, TEST_PAGE);
-		
+		textEditor.save();
+		new WaitWhile(new JobIsRunning());
+		assertVisualEditorContainsManyComments(browser, 1, TEST_PAGE);
 	}
-	
-	private void pressToggleCommentHotKeys(){
-	  if (SWTJBTExt.isRunningOnMacOs()){
-	    bot.shells()[0].pressShortcut(SWT.SHIFT | SWT.COMMAND,'c');
-	  }
-	  else{
-	    bot.getDisplay().syncExec(new Runnable() {
-	      public void run() {
-	        Display display = bot.getDisplay();
-	        Event event = new Event();
-	        event.type = SWT.KeyDown;
-	        event.keyCode = SWT.CTRL;
-	        display.post(event);
-	        event = new Event();
-	        event.type = SWT.KeyDown;
-	        event.keyCode = SWT.SHIFT;
-	        display.post(event);
-	        event = new Event();
-	        event.type = SWT.KeyDown;
-	        event.character = 'c';
-	        display.post(event);
-	        event = new Event();
-	        event.type = SWT.KeyUp;
-	        event.character = 'c';
-	        display.post(event);
-	        event = new Event();
-	        event.type = SWT.KeyUp;
-	        event.keyCode = SWT.SHIFT;
-	        display.post(event);
-	        event = new Event();
-	        event.type = SWT.KeyUp;
-	        event.keyCode = SWT.CTRL;
-	        display.post(event);
-	      }
-	    });
-	  }
-  }	
+
+	private void pressToggleCommentHotKeys() {
+		if (RunningPlatform.isOSX()) {
+			KeyboardFactory.getKeyboard().invokeKeyCombination(SWT.SHIFT, SWT.COMMAND, 'c');
+		} else {
+			KeyboardFactory.getKeyboard().invokeKeyCombination(SWT.SHIFT, SWT.CTRL, 'c');
+		}
+	}
+	@Override
+	public void tearDown() throws Exception {
+		if (textEditor != null) {
+			textEditor.setText(originalEditorText);
+			textEditor.save();
+			textEditor.close();
+		}
+		super.tearDown();
+	}
 }

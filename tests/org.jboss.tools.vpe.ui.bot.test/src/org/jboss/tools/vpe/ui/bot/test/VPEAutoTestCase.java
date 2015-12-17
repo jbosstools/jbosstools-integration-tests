@@ -1,5 +1,5 @@
 /******************************************************************************* 
- * Copyright (c) 2012 Red Hat, Inc.
+ * Copyright (c) 2012 - 2016 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -30,12 +30,11 @@ import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.tools.jst.web.ui.internal.editor.jspeditor.JSPMultiPageEditor;
 import org.jboss.tools.test.TestProperties;
-import org.jboss.tools.ui.bot.ext.SWTBotExt;
 import org.jboss.tools.ui.bot.ext.SWTJBTExt;
 import org.jboss.tools.ui.bot.ext.helper.BuildPathHelper;
-import org.jboss.tools.ui.bot.ext.view.PaletteView;
+import org.jboss.reddeer.gef.view.PaletteView;
 import org.jboss.tools.ui.bot.test.JBTSWTBotTestCase;
-import org.jboss.tools.ui.bot.test.SWTBotJSPMultiPageEditor;
+import org.jboss.tools.ui.bot.test.JSPMultiPageEditorExt;
 import org.jboss.tools.vpe.editor.VpeController;
 import org.jboss.tools.vpe.editor.VpeEditorPart;
 import org.jboss.tools.vpe.editor.mapping.VpeNodeMapping;
@@ -67,7 +66,7 @@ import org.jboss.tools.jsf.reddeer.ui.JSFNewProjectWizard;
 import org.jboss.tools.jsf.reddeer.ui.JSFNewProjectFirstPage;
 import org.jboss.tools.jsf.reddeer.ui.JSFNewProjectSecondPage;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
-import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
+import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 
 @CleanWorkspace
@@ -142,10 +141,10 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase {
     }
     RICH_FACES_UI_JAR_LOCATION = richFacesUiLocation;
   }	  
-
   protected void setProjectName(String projectName) {
     this.projectName = projectName;
   }
+
 	/**
 	 * @see #clearWorkbench()
 	 * @see #createJSFProject(String)
@@ -175,7 +174,7 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase {
 	public void tearDown() throws Exception {
 		new SWTJBTExt(bot)
 		  .removeProjectFromServers((projectName != null && projectName.length() > 0) ? projectName : JBT_TEST_PROJECT_NAME);
-		setProjectName(null);
+//		setProjectName(null);
 		super.tearDown();
 	}
 
@@ -238,12 +237,12 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase {
 	 *            - {@link JSPMultiPageEditor} that contains source code with
 	 *            tested elements and current id.
 	 * @throws Throwable
-	 * @see SWTBotJSPMultiPageEditor
+	 * @see JSPMultiPageEditorExt
 	 * @see Throwable
 	 */
 	@Deprecated
 	protected void performContentTestByIDs(String expectedVPEContentFile,
-			SWTBotJSPMultiPageEditor editor) throws Throwable {
+			JSPMultiPageEditorExt editor) throws Throwable {
 
 		JSPMultiPageEditor multiPageEditor = editor.getJspMultiPageEditor();
 		assertNotNull(multiPageEditor);
@@ -338,7 +337,7 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase {
 	}
 
 	protected void openPalette() {
-	  new PaletteView().show();
+	  new PaletteView().open();
 	}
 
 	/**
@@ -356,7 +355,7 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase {
 	 */
 
 	protected void performContentTestByDocument(String expectedVPEContentFile,
-			SWTBotJSPMultiPageEditor editor) throws Throwable {
+			JSPMultiPageEditorExt editor) throws Throwable {
 		JSPMultiPageEditor multiPageEditor = editor.getJspMultiPageEditor();
 		assertNotNull(multiPageEditor);
 
@@ -384,23 +383,6 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase {
 		TestDomUtil.compareNodes(visualBodyNode, testBodyNode);
 	}
 
-	/**
-	 * Try to close all unnecessary dialogs, that could prevent next tests fails
-	 */
-
-	protected abstract void closeUnuseDialogs();
-
-	/**
-	 * Verify if any dialog that should be closed is opened
-	 */
-
-	protected abstract boolean isUnuseDialogOpened();
-
-	/**
-	 * Opens page pageName
-	 * 
-	 * @param pageName
-	 */
 	protected void openPage(String pageName) {
 		openPage(pageName, VPEAutoTestCase.JBT_TEST_PROJECT_NAME);
 	}
@@ -435,11 +417,14 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase {
 		packageExplorer.open();
 		try {
 			if (subDirs == null || subDirs.length == 0) {
-				packageExplorer.getProject(projectName).getProjectItem("WebContent", "pages", pageName).open();
+				if(projectName == null){
+					setProjectName(VPEAutoTestCase.JBT_TEST_PROJECT_NAME);
+				}
+				packageExplorer.getProject(projectName).getProjectItem("WebContent", "pages", pageName).select();
 			} else {
 				packageExplorer.getProject(subDirs[0])
-						.getProjectItem(Arrays.copyOfRange(subDirs, 1, subDirs.length - 1)).getProjectItem(pageName)
-						.open();
+						.getProjectItem(Arrays.copyOfRange(subDirs, 1, subDirs.length)).getProjectItem(pageName)
+						.select();
 			}
 		} catch (EclipseLayerException ele) {
 			NewJSPFileWizardDialog newJSPDialog = new NewJSPFileWizardDialog ();
@@ -448,6 +433,9 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase {
 			newJSPFileWizardJSPPage.setFileName(pageName);
 			if (subDirs != null && subDirs.length > 0){
 				newJSPFileWizardJSPPage.selectParentFolder(subDirs);
+			}
+			else{
+				newJSPFileWizardJSPPage.selectParentFolder(projectName,"WebContent", "pages");
 			}
 			newJSPDialog.next();
 			new NewJSPFileWizardJSPTemplatePage().setTemplate("New JSP File (html)");
@@ -458,13 +446,12 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase {
 	/**
 	 * Maximize Source Pane
 	 * 
-	 * @param botExt
 	 * @param pageName
 	 */
-	public void maximizeSourcePane(SWTBotExt botExt, String pageName) {
+	public void maximizeSourcePane(String pageName) {
 		DefaultEditor editor = new DefaultEditor(pageName);
 		editor.activate();
-		new DefaultTabItem( "Visual/Source").activate();
+		new DefaultCTabItem( "Visual/Source").activate();
 
 		final org.jboss.tools.vpe.editor.xpl.CustomSashForm csf =
 			WidgetLookup.getInstance().activeWidget(null, org.jboss.tools.vpe.editor.xpl.CustomSashForm.class,0);
@@ -480,13 +467,12 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase {
 	/**
 	 * Maximize Visual Pane
 	 * 
-	 * @param botExt
 	 * @param pageName
 	 */
-	public void maximizeVisualPane(SWTBotExt botExt, String pageName) {
+	public void maximizeVisualPane(String pageName) {
 		DefaultEditor editor = new DefaultEditor(pageName);
 		editor.activate();
-		new DefaultTabItem( "Visual/Source").activate();
+		new DefaultCTabItem( "Visual/Source").activate();
 
 		final org.jboss.tools.vpe.editor.xpl.CustomSashForm csf =
 			WidgetLookup.getInstance().activeWidget(null, org.jboss.tools.vpe.editor.xpl.CustomSashForm.class,0);
@@ -502,13 +488,12 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase {
 	/**
 	 * Restore Source Pane
 	 * 
-	 * @param botExt
 	 * @param pageName
 	 */
-	public void restoreSourcePane(SWTBotExt botExt, String pageName) {
+	public void restoreSourcePane(String pageName) {
 		DefaultEditor editor = new DefaultEditor(pageName);
 		editor.activate();
-		new DefaultTabItem( "Visual/Source").activate();
+		new DefaultCTabItem( "Visual/Source").activate();
 
 		final org.jboss.tools.vpe.editor.xpl.CustomSashForm csf =
 			WidgetLookup.getInstance().activeWidget(null, org.jboss.tools.vpe.editor.xpl.CustomSashForm.class,0);
@@ -524,13 +509,12 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase {
 	/**
 	 * Restore Visual Pane
 	 * 
-	 * @param botExt
 	 * @param pageName
 	 */
-	public void restoreVisualPane(SWTBotExt botExt, String pageName) {
+	public void restoreVisualPane(String pageName) {
 		DefaultEditor editor = new DefaultEditor(pageName);
 		editor.activate();
-		new DefaultTabItem( "Visual/Source").activate();
+		new DefaultCTabItem( "Visual/Source").activate();
 
 		final org.jboss.tools.vpe.editor.xpl.CustomSashForm csf =
 			WidgetLookup.getInstance().activeWidget(null, org.jboss.tools.vpe.editor.xpl.CustomSashForm.class,0);
@@ -554,11 +538,14 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase {
 		packageExplorer.open();
 		try {
 			if (subDirs == null || subDirs.length == 0) {
-				packageExplorer.getProject(projectName).getProjectItem("WebContent", "pages", pageName).open();
+				if(projectName == null){
+					setProjectName(VPEAutoTestCase.JBT_TEST_PROJECT_NAME);
+				}
+				packageExplorer.getProject(projectName).getProjectItem("WebContent", "pages", pageName).select();
 			} else {
 				packageExplorer.getProject(subDirs[0])
-						.getProjectItem(Arrays.copyOfRange(subDirs, 1, subDirs.length - 1)).getProjectItem(pageName)
-						.open();
+						.getProjectItem(Arrays.copyOfRange(subDirs, 1, subDirs.length)).getProjectItem(pageName)
+						.select();
 			}
 		} catch (EclipseLayerException ele) {
 			NewXHTMLWizard newXHTMLDialog = new NewXHTMLWizard ();
@@ -606,16 +593,26 @@ public abstract class VPEAutoTestCase extends JBTSWTBotTestCase {
 		packageExplorer.open();
 		try {
 			if (subDirs == null || subDirs.length == 0) {
-				packageExplorer.getProject(projectName).getProjectItem("WebContent", "pages", pageName).open();
+				if(projectName == null){
+					setProjectName(VPEAutoTestCase.JBT_TEST_PROJECT_NAME);
+				}
+				packageExplorer.getProject(projectName).getProjectItem("WebContent", "pages", pageName).select();
 			} else {
 				packageExplorer.getProject(subDirs[0])
-						.getProjectItem(Arrays.copyOfRange(subDirs, 1, subDirs.length - 1)).getProjectItem(pageName)
-						.open();
+						.getProjectItem(Arrays.copyOfRange(subDirs, 1, subDirs.length)).getProjectItem(pageName)
+						.select();
 			}
 		} catch (EclipseLayerException ele) {
 			NewHTMLFileWizardDialog newHTMLDialog = new NewHTMLFileWizardDialog();
 			newHTMLDialog.open();
+			NewHTMLFileWizardHTMLPage newHTMLFileWizardHTMLPage = new NewHTMLFileWizardHTMLPage();
 			new NewHTMLFileWizardHTMLPage().setFileName(pageName);
+			if (subDirs != null && subDirs.length > 0){
+				newHTMLFileWizardHTMLPage.selectParentFolder(subDirs);
+			}
+			else{
+				newHTMLFileWizardHTMLPage.selectParentFolder(projectName,"WebContent", "pages");
+			}
 			newHTMLDialog.next();
 			newHTMLDialog.finish();
 		}

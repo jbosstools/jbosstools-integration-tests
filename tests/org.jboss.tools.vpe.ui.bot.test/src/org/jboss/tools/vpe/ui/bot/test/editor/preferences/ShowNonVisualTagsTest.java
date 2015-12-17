@@ -1,5 +1,5 @@
 /******************************************************************************* 
- * Copyright (c) 2012 Red Hat, Inc.
+ * Copyright (c) 2012 - 2016 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -10,42 +10,38 @@
  ******************************************************************************/
 package org.jboss.tools.vpe.ui.bot.test.editor.preferences;
 
-import org.jboss.tools.ui.bot.ext.SWTBotExt;
+import org.jboss.reddeer.swt.impl.button.OkButton;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
+import org.jboss.tools.vpe.reddeer.preferences.VisualPageEditorPreferencePage;
 import org.jboss.tools.vpe.ui.bot.test.tools.SWTBotWebBrowser;
+import org.junit.Test;
 
-public class ShowNonVisualTagsTest extends PreferencesTestCase{
-	
-	public void testShowNonVisualTags() throws Throwable{
-	  openPage();
-	  //Test Show Non-Visual Tags
-		selectShowNonVisual();
+public class ShowNonVisualTagsTest extends PreferencesTestCase {
+	@Test
+	public void testShowNonVisualTags() throws Throwable {
+		openPage();
+		// Test Show Non-Visual Tags
+		setShowNonVisual(true);
 		closePage();
 		openPage();
-		SWTBotWebBrowser webBrowser = new SWTBotWebBrowser(TEST_PAGE, new SWTBotExt());
-		assertVisualEditorContainsNodeWithValue(webBrowser, 
-        "jsp:directive.taglib",
-        TEST_PAGE);
-    assertVisualEditorContainsNodeWithValue(webBrowser, 
-        "f:loadBundle",
-        TEST_PAGE);		
-		//Test Hide Non-Visual Tags
-		selectShowNonVisual();
+		SWTBotWebBrowser webBrowser = new SWTBotWebBrowser(TEST_PAGE);
+		assertVisualEditorContainsNodeWithValue(webBrowser, "jsp:directive.taglib", TEST_PAGE);
+		assertVisualEditorContainsNodeWithValue(webBrowser, "f:loadBundle", TEST_PAGE);
+		// Test Hide Non-Visual Tags
+		setShowNonVisual(false);
 		closePage();
 		openPage();
-		webBrowser = new SWTBotWebBrowser(TEST_PAGE, new SWTBotExt());
-		assertVisualEditorNotContainNodeWithValue(webBrowser, 
-        "jsp:directive.taglib",
-        TEST_PAGE);
-    assertVisualEditorNotContainNodeWithValue(webBrowser, 
-        "f:loadBundle",
-        TEST_PAGE);
+		webBrowser = new SWTBotWebBrowser(TEST_PAGE);
+		assertVisualEditorNotContainNodeWithValue(webBrowser, "jsp:directive.taglib", TEST_PAGE);
+		assertVisualEditorNotContainNodeWithValue(webBrowser, "f:loadBundle", TEST_PAGE);
 	}
-	
-	private void selectShowNonVisual(){
-		bot.toolbarButtonWithTooltip(PREF_TOOLTIP).click();
-		bot.shell(PREF_FILTER_SHELL_TITLE).activate();
-		bot.checkBox(SHOW_NON_VISUAL_TAGS).click();
-		bot.button("OK").click(); //$NON-NLS-1$
+
+	private void setShowNonVisual(boolean show) {
+		new DefaultToolItem("Preferences").click();
+		new DefaultShell("Preferences (Filtered)");
+		new VisualPageEditorPreferencePage().toggleShowNonVisualTag(show);
+		new OkButton().click();
 	}
 
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007-2012 Exadel, Inc. and Red Hat, Inc.
+ * Copyright (c) 2007-2016 Exadel, Inc. and Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -16,33 +16,23 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 
+import org.jboss.reddeer.common.wait.AbstractWait;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
-import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.helper.FileHelper;
-import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.vpe.ui.bot.test.VPEAutoTestCase;
+import org.junit.Test;
 
 public class TestNPEinHugeFile extends VPEAutoTestCase {
 
 	private static final String TEST_PAGE_NAME = "employee.xhtml"; //$NON-NLS-1$
 	private static final String TEXT = "veryLongNewTagNameIsTypingOrAttributeValueIsTypingUntilWeWillGetNPEExceptionOrEclipseCrashWhileRefreshingDOMTree"; //$NON-NLS-1$
-	
-	public TestNPEinHugeFile() {
-		super();
-	}
-
-	@Override
-	protected void closeUnuseDialogs() { }
-
-	@Override
-	protected boolean isUnuseDialogOpened() {
-		return false;
-	}
-	
+	@Test
 	public void testNPEinHugeFile_Jbide9827() {
 		openFileAndType(18, 9);
 	}
-	
+	@Test
 	public void testCrashInAttribute_Jbide9997() {
 		openFileAndType(18, 27);
 	}
@@ -58,15 +48,16 @@ public class TestNPEinHugeFile extends VPEAutoTestCase {
 			FileHelper.copyFilesBinaryRecursively(
 					new File(resourceWebContentLocation),
 					new File(FileHelper.getProjectLocation(
-							JBT_TEST_PROJECT_NAME, bot),
-							IDELabel.JsfProjectTree.WEB_CONTENT), null);
+							JBT_TEST_PROJECT_NAME),
+							"WebContent"), null);
 		} catch (IOException ioe) {
 			throw new RuntimeException(
 					"Unable to copy necessary files from plugin's resources directory", //$NON-NLS-1$
 					ioe);
 		}
-		bot.menu(IDELabel.Menu.FILE).menu(IDELabel.Menu.REFRESH).click();
-		bot.sleep(Timing.time1S());
+		packageExplorer.open();
+		packageExplorer.getProject(JBT_TEST_PROJECT_NAME).refresh();
+
 	}
 
 	private void openFileAndType(int line, int col) {
@@ -75,15 +66,16 @@ public class TestNPEinHugeFile extends VPEAutoTestCase {
 		 * open it.
 		 */
 		packageExplorer.getProject(JBT_TEST_PROJECT_NAME)
-			.getProjectItem(IDELabel.JsfProjectTree.WEB_CONTENT, TEST_PAGE_NAME)
+			.getProjectItem("WebContent", TEST_PAGE_NAME)
 			.open();
 		TextEditor xhtmlTextEditor = new TextEditor(TEST_PAGE_NAME);
-		xhtmlTextEditor.insertText(line, col, TEXT);
+		xhtmlTextEditor.setCursorPosition(line, col);
+		KeyboardFactory.getKeyboard().type(TEXT);
 		/*
 		 * Sleep for 20sec, wait for refresh.
 		 * 10sec could be enough also.
 		 */
-		bot.sleep(Timing.time20S());
+		AbstractWait.sleep(TimePeriod.getCustom(20));
 		Throwable e = getException();
 		if (e != null) {
 			/*
@@ -98,6 +90,6 @@ public class TestNPEinHugeFile extends VPEAutoTestCase {
 		 * Close the editor
 		 */
 		xhtmlTextEditor.close();
-		bot.sleep(Timing.time1S());
+		AbstractWait.sleep(TimePeriod.SHORT);
 	}
 }

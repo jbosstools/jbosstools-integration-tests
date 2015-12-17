@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007-2011 Exadel, Inc. and Red Hat, Inc.
+ * Copyright (c) 2007-2016 Exadel, Inc. and Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -10,48 +10,50 @@
  ******************************************************************************/
 package org.jboss.tools.vpe.ui.bot.test.jbide;
 
+import org.eclipse.swt.widgets.MenuItem;
+import org.jboss.reddeer.core.handler.MenuHandler;
+import org.jboss.reddeer.core.lookup.MenuLookup;
+import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.tools.vpe.ui.bot.test.VPEAutoTestCase;
+import org.junit.Test;
 
 public class JBIDE9445Test_DuplicateSourceMenu extends VPEAutoTestCase {
-
-	public JBIDE9445Test_DuplicateSourceMenu() {
-		super();
-	}
-	 
+	@Test
 	public void testDuplicateMenus() {
 		/*
 		 * Open the default jsp page
 		 */
-		packageExplorer.getProject(JBT_TEST_PROJECT_NAME).getProjectItem("WebContent", "pages", TEST_PAGE).open(); //$NON-NLS-1$ //$NON-NLS-2$
+		packageExplorer.getProject(JBT_TEST_PROJECT_NAME).getProjectItem("WebContent", "pages", TEST_PAGE).open();
 		/*
-		 * When focus is on the editor --
-		 * only one 'Source' menu should be available
+		 * When focus is on the editor -- only one 'Source' menu should be
+		 * available
 		 */
-		assertTrue(bot.menu("Source", 0).isVisible()); //$NON-NLS-1$
-		try {
-			assertFalse("Second 'Source' menu is enabled, but shouldn't be",  //$NON-NLS-1$
-					bot.menu("Source", 1).isEnabled()); //$NON-NLS-1$
-		} catch (Exception e) { }
+		assertTrue(new ShellMenu("Source").isEnabled());
+		assertFalse("Second 'Source' menu is enabled, but shouldn't be", hasSecondSourceMenu());
 		/*
 		 * Set focus to the PackageExplorer
 		 */
 		packageExplorer.open();
 		/*
-		 * After focus moved to Package Explorer --
-		 * still only one menu should be visible
+		 * After focus moved to Package Explorer -- still only one menu should
+		 * be visible
 		 */
-		assertTrue(bot.menu("Source", 0).isEnabled()); //$NON-NLS-1$
-		try {
-			assertFalse("Second 'Source' menu is enabled, but shouldn't be",  //$NON-NLS-1$
-					bot.menu("Source", 1).isEnabled()); //$NON-NLS-1$
-		} catch (Exception e) { }
+		assertTrue(new ShellMenu("Source").isEnabled());
+		assertFalse("Second 'Source' menu is enabled, but shouldn't be", hasSecondSourceMenu());
+
 	}
 
-	@Override
-	protected void closeUnuseDialogs() { }
+	private boolean hasSecondSourceMenu() {
+		MenuItem[] topMenuItems = MenuLookup.getInstance().getActiveShellTopMenuItems();
+		int sourceMenuOccurences = 0;
+		int index = 0;
+		while (index < topMenuItems.length && sourceMenuOccurences < 2) {
+			if (MenuHandler.getInstance().getMenuItemText(topMenuItems[index]).equalsIgnoreCase("&Source")) {
+				sourceMenuOccurences++;
+			}
+			index++;
+		}
 
-	@Override
-	protected boolean isUnuseDialogOpened() {
-		return false;
+		return sourceMenuOccurences == 2;
 	}
 }

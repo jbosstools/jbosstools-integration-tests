@@ -1,5 +1,5 @@
 /******************************************************************************* 
- * Copyright (c) 2012 Red Hat, Inc.
+ * Copyright (c) 2012 - 2016 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -10,63 +10,57 @@
  ******************************************************************************/
 package org.jboss.tools.vpe.ui.bot.test.editor.preferences;
 
-import org.eclipse.swtbot.swt.finder.SWTBot;
-import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
-import org.eclipse.swtbot.swt.finder.widgets.TimeoutException;
-import org.jboss.tools.ui.bot.ext.SWTBotExt;
-import org.jboss.tools.ui.bot.ext.Timing;
-import org.jboss.tools.ui.bot.ext.gen.ActionItem;
-import org.jboss.tools.ui.bot.ext.types.IDELabel;
-import org.jboss.tools.ui.bot.test.WidgetVariables;
-import org.jboss.tools.vpe.ui.bot.test.VPEAutoTestCase;
+import org.jboss.reddeer.core.exception.CoreLayerException;
+import org.jboss.reddeer.swt.impl.button.OkButton;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
+import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.jboss.tools.jst.reddeer.jsp.ui.wizard.NewJSPFileWizardDialog;
+import org.jboss.tools.jst.reddeer.jsp.ui.wizard.NewJSPFileWizardJSPPage;
+import org.jboss.tools.vpe.reddeer.preferences.VisualPageEditorPreferencePage;
+import org.junit.Test;
 
-public class ChangeEditorTabForTheFirstOpenPageTest extends PreferencesTestCase{
-	
-	public void testChangeEditorTabForTheFirstOpenPage(){
-		
-		//Test set default source tab
-	  openPage();
-		bot.toolbarButtonWithTooltip(PREF_TOOLTIP).click();
-		bot.shell(PREF_FILTER_SHELL_TITLE).activate();
-		bot.comboBoxWithLabel(SELECT_DEFAULT_TAB)
-		  .setSelection(IDELabel.VisualPageEditor.SOURCE_TAB_LABEL);
-		bot.button("OK").click(); //$NON-NLS-1$
-		
-		//Create and open new page
-		
-		SWTBot innerBot = bot.viewByTitle(WidgetVariables.PACKAGE_EXPLORER).bot();
-	
-		innerBot.tree().expandNode(JBT_TEST_PROJECT_NAME).expandNode("WebContent") //$NON-NLS-1$
-		.getNode("pages").select(); //$NON-NLS-1$
-		
-		open.newObject(ActionItem.NewObject.WebJSP.LABEL);
-		bot.shell(IDELabel.Shell.NEW_JSP_FILE).activate(); //$NON-NLS-1$
-		bot.textWithLabel(ActionItem.NewObject.WebJSP.TEXT_FILE_NAME).setText("testPage"); //$NON-NLS-1$ //$NON-NLS-2$
-		bot.button(IDELabel.Button.FINISH).click(); //$NON-NLS-1$
-		bot.viewByTitle(WidgetVariables.PACKAGE_EXPLORER).setFocus();
-		
-		//Check if the tab changed
+public class ChangeEditorTabForTheFirstOpenPageTest extends PreferencesTestCase {
+	@Test
+	public void testChangeEditorTabForTheFirstOpenPage() {
+		// Test set default source tab
+		openPage();
+		new TextEditor(TEST_PAGE);
+		new DefaultToolItem("Preferences").click();
+		new DefaultShell("Preferences (Filtered)");
+		new VisualPageEditorPreferencePage().setDefaultActiveEditorTab("Source");
+		new OkButton().click();
+		// Create and open new page
+		packageExplorer.open();
+		packageExplorer.getProject(JBT_TEST_PROJECT_NAME).getProjectItem("WebContent", "pages").select();
+		NewJSPFileWizardDialog newJSPFileWizardDialog = new NewJSPFileWizardDialog();
+		newJSPFileWizardDialog.open();
+		new NewJSPFileWizardJSPPage().setFileName("testPage");
+		newJSPFileWizardDialog.finish();
+		packageExplorer.activate();
+		// Check if the tab changed trying to find Refresh toolbar button of
+		// visual editor
 		Exception exception = null;
 		try {
-			bot.toolbarButtonWithTooltip("Refresh").click(); //$NON-NLS-1$
-		} catch (WidgetNotFoundException wnfe) {
-			exception = wnfe;
-		} catch (TimeoutException te){
-		  exception = te;
+			new DefaultToolItem("Refresh").click();
+		} catch (CoreLayerException cle) {
+			exception = cle;
 		}
-		assertNotNull(exception);
+		assertNotNull("CoreLayerException was expected", exception);
 	}
-	
+
 	@Override
 	public void tearDown() throws Exception {
-  	//Delete test page if it has been created
-    eclipse.deleteFile(VPEAutoTestCase.JBT_TEST_PROJECT_NAME,  "WebContent","pages","testPage.jsp");
-		util.waitForNonIgnoredJobs(Timing.time3S());
-		bot.toolbarButtonWithTooltip(PREF_TOOLTIP).click();
-    bot.shell(PREF_FILTER_SHELL_TITLE).activate();
-    bot.comboBoxWithLabel(SELECT_DEFAULT_TAB).setSelection(IDELabel.VisualPageEditor.VISUAL_SOURCE_TAB_LABEL); //$NON-NLS-1$
-    bot.button(IDELabel.Button.OK).click();
-    super.tearDown();
+		// Delete test page if it has been created
+		packageExplorer.open();
+		packageExplorer.getProject(JBT_TEST_PROJECT_NAME).getProjectItem("WebContent", "pages", "testPage.jsp")
+				.delete();
+		new TextEditor(TEST_PAGE);
+		new DefaultToolItem("Preferences").click();
+		new DefaultShell("Preferences (Filtered)");
+		new VisualPageEditorPreferencePage().setDefaultActiveEditorTab("Visual/Source");
+		new OkButton().click();
+		super.tearDown();
 	}
-	
+
 }

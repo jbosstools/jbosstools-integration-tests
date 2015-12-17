@@ -1,5 +1,5 @@
 /******************************************************************************* 
- * Copyright (c) 2012 Red Hat, Inc.
+ * Copyright (c) 2012 - 2016 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -10,6 +10,12 @@
  ******************************************************************************/
 package org.jboss.tools.vpe.ui.bot.test.editor;
 
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.jboss.reddeer.swt.impl.menu.ShellMenu;
+import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.junit.Test;
+
 public class VerificationOfNameSpacesTest extends VPEEditorTestCase{
 
 	private static String testText = "<jsp:root\n" + //$NON-NLS-1$
@@ -19,29 +25,31 @@ public class VerificationOfNameSpacesTest extends VPEEditorTestCase{
 			"...\n" + //$NON-NLS-1$
 			"</jsp:root>"; //$NON-NLS-1$
 	
+	private TextEditor textEditor;
+	private String originalEditorText;
+	@Test
 	public void testVerificationOfNameSpaces() throws Throwable{
-		
 		//Test open page
-		
 		openPage();
-		
-		setEditor(bot.editorByTitle(TEST_PAGE).toTextEditor());
-		setEditorText(getEditor().getText());
-		
+		textEditor = new TextEditor(TEST_PAGE);
+		originalEditorText = textEditor.getText();
 		//Test clear source
-		
-		getEditor().setFocus();
-		bot.menu("Edit").menu("Select All").click(); //$NON-NLS-1$ //$NON-NLS-2$
-		delay();
-		bot.menu("Edit").menu("Delete").click(); //$NON-NLS-1$ //$NON-NLS-2$
-		
+		new ShellMenu("Edit","Select All").select();
+		new ShellMenu("Edit","Delete").select();
 		//Test insert test text
-		
-		getEditor().setText(testText);
-		getEditor().save();
-		waitForBlockingJobsAcomplished(VISUAL_UPDATE);
-		performContentTestByDocument("VerificationOfNameSpaces.xml", bot.multiPageEditorByTitle(TEST_PAGE)); //$NON-NLS-1$
+		textEditor.setText(testText);
+		textEditor.save();
+		new WaitWhile(new JobIsRunning());
+		performContentTestByDocument("VerificationOfNameSpaces.xml", bot.multiPageEditorByTitle(TEST_PAGE));
 	
 	}
-	
+	@Override
+	public void tearDown() throws Exception {
+		if (textEditor != null) {
+			textEditor.setText(originalEditorText);
+			textEditor.save();
+			textEditor.close();
+		}
+		super.tearDown();
+	}	
 }

@@ -1,7 +1,14 @@
+/******************************************************************************* 
+ * Copyright (c) 2012 - 2016 Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/
 package org.jboss.tools.jsf.ui.bot.test;
-
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,7 +20,6 @@ import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.swt.api.Browser;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
-import org.jboss.tools.ui.bot.test.WidgetVariables;
 import org.jboss.tools.vpe.reddeer.utils.BrowserUtils;
 import org.jboss.tools.vpe.ui.bot.test.VPEAutoTestCase;
 import org.jboss.tools.vpe.ui.bot.test.tools.SWTBotWebBrowser;
@@ -64,15 +70,6 @@ public abstract class JSFAutoTestCase extends VPEAutoTestCase {
 		waitForBlockingJobsAcomplished(VISUAL_UPDATE);
 		performContentTestByDocument(testPage, bot
 				.multiPageEditorByTitle(TEST_PAGE));
-	}
-
-	@Override
-	protected void closeUnuseDialogs() {
-	}
-
-	@Override
-	protected boolean isUnuseDialogOpened() {
-		return false;
 	}
 
 	@Override

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007-2015 Red Hat, Inc.
+ * Copyright (c) 2007-2016 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -82,7 +82,7 @@ public class CodeCompletionTest extends JSFAutoTestCase{
 		ContentAssistHelper.assertContentAssistantContains(getEditor().openContentAssistant(), contentAssistToUse,
 				true);
 		getEditor().save();
-		String expectedInsertedText = " " + contentAssistToUse + "=\"\"";
+		String expectedInsertedText = contentAssistToUse + "=\"\"";
 		assertTrue("Editor has to contain text '" + expectedInsertedText + "' but it doesn't\n" + "Editor Text is\n"
 				+ getEditor().getText(), getEditor().getText().contains(expectedInsertedText));
 	}
@@ -287,12 +287,12 @@ public class CodeCompletionTest extends JSFAutoTestCase{
     
     result.add("accept");
     result.add("accesskey");
-    result.add("align=\"top\"");
+    result.add("align=\"top\" ");
     result.add("alt");
-    result.add("checked=\"checked\"");
+    result.add("checked=\"checked\" ");
     result.add("class");
-    result.add("dir=\"ltr\"");
-    result.add("disabled=\"disabled\"");
+    result.add("dir=\"ltr\" ");
+    result.add("disabled=\"disabled\" ");
     result.add("lang");
     result.add("maxlength");
     result.add("name");
@@ -363,7 +363,7 @@ public class CodeCompletionTest extends JSFAutoTestCase{
     result.add("onmouseover");
     result.add("onmouseup");
     result.add("onselect");
-    result.add("readonly=\"readonly\"");
+    result.add("readonly=\"readonly\" ");
     result.add("size");
     result.add("src");
     result.add("style");

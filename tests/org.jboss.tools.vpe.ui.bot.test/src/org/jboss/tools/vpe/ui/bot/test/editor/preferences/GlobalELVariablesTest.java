@@ -1,5 +1,5 @@
 /******************************************************************************* 
- * Copyright (c) 2012 Red Hat, Inc.
+ * Copyright (c) 2012 - 2016 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -10,107 +10,87 @@
  ******************************************************************************/
 package org.jboss.tools.vpe.ui.bot.test.editor.preferences;
 
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTableItem;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
-import org.jboss.tools.ui.bot.ext.SWTBotExt;
-import org.jboss.tools.ui.bot.ext.Timing;
-import org.jboss.tools.ui.bot.ext.gen.ActionItem;
-import org.jboss.tools.ui.bot.ext.parts.SWTBotTableExt;
-import org.jboss.tools.ui.bot.ext.types.IDELabel;
-import org.jboss.tools.ui.bot.ext.types.JobName;
+import java.util.List;
+
+import org.jboss.reddeer.swt.api.TableItem;
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.jboss.reddeer.swt.impl.button.FinishButton;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.table.DefaultTable;
+import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.swt.matcher.ColumnTableItemMatcher;
+import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.vpe.ui.bot.test.VPEAutoTestCase;
 import org.jboss.tools.vpe.ui.bot.test.editor.VPEEditorTestCase;
 import org.jboss.tools.vpe.ui.bot.test.tools.SWTBotWebBrowser;
+import org.junit.Test;
+
 /**
  * Tests Global EL Variables Definition
- * @author vpakan
+ * 
+ * @author vlado pakan
  *
  */
-public class GlobalELVariablesTest extends VPEEditorTestCase{
-	
-  private static final String elName = "user.name";
-  private static final String elValue = "!!TestELValue!!";
-  private static String FACELET_PROJECT_XHTML_FILE_NAME = "globalELVariablesTest.xhtml";
-  private SWTBotExt botExt = null;
-  
-  public GlobalELVariablesTest() {
-    super();
-    botExt = new SWTBotExt();
-  }
-  
-	public void testGlobalELVariables() throws Throwable{
-	  open.preferenceOpen(ActionItem.Preference.JBossTools.LABEL);
-	  SWTBotTree preferenceTree = this.bot.tree();
-    preferenceTree
-      .expandNode(IDELabel.PreferencesDialog.JBOSS_TOOLS)
-      .expandNode(IDELabel.PreferencesDialog.JBOSS_TOOLS_WEB)
-      .expandNode(IDELabel.PreferencesDialog.JBOSS_TOOLS_EXPRESSION_LANGUAGE)
-      .select(IDELabel.PreferencesDialog.JBOSS_TOOLS_VARIABLES);
-    bot.button(IDELabel.Button.ADD_WITHOUT_DOTS).click();
-    bot.shell(IDELabel.Shell.ADD_EL_REFERENCE).activate();
-    bot.textWithLabel(IDELabel.AddELReferenceDialog.EL_NAME).setText(GlobalELVariablesTest.elName);
-    bot.textWithLabel(IDELabel.AddELReferenceDialog.VALUE).setText(GlobalELVariablesTest.elValue);
-    bot.button(IDELabel.Button.FINISH).click();
-    bot.shell(IDELabel.Shell.PREFERENCES).activate();
-    bot.button(IDELabel.Button.OK).click();
-	  openPage(VPEAutoTestCase.TEST_PAGE);
-	  // Create XHTML File in Facelet Project
-	  packageExplorer.open();
-	  packageExplorer.getProject(VPEAutoTestCase.FACELETS_TEST_PROJECT_NAME)
-	  	  .getProjectItem("WebContent","pages")
-	  	  .select();
-    // add JSP
-    open.newObject(ActionItem.NewObject.JBossToolsWebXHTMLFile.LABEL);
-    bot.shell(IDELabel.Shell.NEW_XHTML_FILE).activate(); //$NON-NLS-1$
-    bot.textWithLabel(ActionItem.NewObject.JBossToolsWebXHTMLFile.TEXT_FILE_NAME)
-      .setText(GlobalELVariablesTest.FACELET_PROJECT_XHTML_FILE_NAME); //$NON-NLS-1$
-    bot.button(IDELabel.Button.FINISH).click(); //$NON-NLS-1$
-    bot.sleep(Timing.time3S());
-    util.waitForJobs(JobName.BUILDING_WS);
-    SWTBotEditor xhtmlEditor = bot.editorByTitle(GlobalELVariablesTest.FACELET_PROJECT_XHTML_FILE_NAME);
-    xhtmlEditor.toTextEditor().setText("<html xmlns=\"http://www.w3.org/1999/xhtml\"\n" +
-      "           xmlns:h=\"http://java.sun.com/jsf/html\">\n" + 
-      "  <body>\n" +
-      "    <h:outputText value=\"#{user.name}\"/>\n" + 
-      "  </body>\n" +
-      "</html>");
-    xhtmlEditor.save();
-    bot.sleep(Timing.time5S());
-    assertVisualEditorContainsNodeWithValue(new SWTBotWebBrowser(GlobalELVariablesTest.FACELET_PROJECT_XHTML_FILE_NAME, botExt),
-        GlobalELVariablesTest.elValue,
-        GlobalELVariablesTest.FACELET_PROJECT_XHTML_FILE_NAME);
-    xhtmlEditor.close();
-    SWTBotEditor jspEditor = bot.editorByTitle(VPEAutoTestCase.TEST_PAGE);
-    jspEditor.show();
-    bot.sleep(Timing.time5S());
-    assertVisualEditorContains(new SWTBotWebBrowser(VPEAutoTestCase.TEST_PAGE, botExt),
-        "INPUT",
-        new String[] {"value"},
-        new String[] {GlobalELVariablesTest.elValue},
-        VPEAutoTestCase.TEST_PAGE);
-    jspEditor.close();
-    
+public class GlobalELVariablesTest extends VPEEditorTestCase {
+
+	private static final String elName = "user.name";
+	private static final String elValue = "!!TestELValue!!";
+	private static String FACELET_PROJECT_XHTML_FILE_NAME = "globalELVariablesTest.xhtml";
+	@Test
+	public void testGlobalELVariables() throws Throwable {
+		WorkbenchPreferenceDialog preferencesDialog = new WorkbenchPreferenceDialog();
+		preferencesDialog.open();
+		new DefaultTreeItem("JBoss Tools", "Web", "Expression Language","Variables").select();
+		new PushButton("Add").click();
+		new DefaultShell("Add EL Reference");
+		new LabeledText("El Name*").setText(GlobalELVariablesTest.elName);
+		new LabeledText("Value").setText(GlobalELVariablesTest.elValue);
+		new FinishButton().click();
+		preferencesDialog.ok();
+		openPage(VPEAutoTestCase.TEST_PAGE);
+		// Create XHTML File in Facelet Project
+		packageExplorer.open();
+		packageExplorer.getProject(VPEAutoTestCase.FACELETS_TEST_PROJECT_NAME).getProjectItem("WebContent", "pages")
+				.select();
+		// add XHTML
+		createXhtmlPage(GlobalELVariablesTest.FACELET_PROJECT_XHTML_FILE_NAME);
+		new WaitWhile(new JobIsRunning());
+		TextEditor xhtmlEditor = new TextEditor(GlobalELVariablesTest.FACELET_PROJECT_XHTML_FILE_NAME);
+		xhtmlEditor.setText("<html xmlns=\"http://www.w3.org/1999/xhtml\"\n"
+				+ "           xmlns:h=\"http://java.sun.com/jsf/html\">\n" + "  <body>\n"
+				+ "    <h:outputText value=\"#{user.name}\"/>\n" + "  </body>\n" + "</html>");
+		xhtmlEditor.save();
+		new WaitWhile(new JobIsRunning());
+		assertVisualEditorContainsNodeWithValue(
+				new SWTBotWebBrowser(GlobalELVariablesTest.FACELET_PROJECT_XHTML_FILE_NAME),
+				GlobalELVariablesTest.elValue, GlobalELVariablesTest.FACELET_PROJECT_XHTML_FILE_NAME);
+		xhtmlEditor.close();
+		TextEditor jspEditor = new TextEditor(VPEAutoTestCase.TEST_PAGE);
+		assertVisualEditorContains(new SWTBotWebBrowser(VPEAutoTestCase.TEST_PAGE), "INPUT", new String[] { "value" },
+				new String[] { GlobalELVariablesTest.elValue }, VPEAutoTestCase.TEST_PAGE);
+		jspEditor.close();
+
 	}
 
-  @Override
-public void tearDown() throws Exception {
-    open.preferenceOpen(ActionItem.Preference.JBossTools.LABEL);
-    SWTBotTree preferenceTree = this.bot.tree();
-    preferenceTree.expandNode(IDELabel.PreferencesDialog.JBOSS_TOOLS)
-      .expandNode(IDELabel.PreferencesDialog.JBOSS_TOOLS_WEB)
-      .expandNode(IDELabel.PreferencesDialog.JBOSS_TOOLS_EXPRESSION_LANGUAGE)
-      .select(IDELabel.PreferencesDialog.JBOSS_TOOLS_VARIABLES);;
-    
-    SWTBotTableItem tiEL = new SWTBotTableExt(bot.table()).getTableItem(new String[] {"Global",
-        GlobalELVariablesTest.elName,  
-      GlobalELVariablesTest.elValue});
-    if (tiEL != null){
-      tiEL.select();
-      bot.sleep(Timing.time2S());
-      bot.button(IDELabel.Button.REMOVE).click();      
-    }
-    bot.button(IDELabel.Button.OK).click();
-    super.tearDown();
-  }
+	@SuppressWarnings("unchecked")
+	@Override
+	public void tearDown() throws Exception {
+		WorkbenchPreferenceDialog preferencesDialog = new WorkbenchPreferenceDialog();
+		preferencesDialog.open();
+		new DefaultTreeItem("JBoss Tools", "Web", "Expression Language","Variables").select();
+
+		List<TableItem> tableItems = new DefaultTable().getItems(new ColumnTableItemMatcher(0, "Global"),
+				new ColumnTableItemMatcher(1, GlobalELVariablesTest.elName),
+				new ColumnTableItemMatcher(2, GlobalELVariablesTest.elValue));
+		if (tableItems != null && tableItems.size() > 0) {
+			tableItems.get(0).select();
+			new PushButton("Remove").click();
+		}
+		preferencesDialog.ok();
+		super.tearDown();
+	}
 }

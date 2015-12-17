@@ -1,5 +1,5 @@
 /******************************************************************************* 
- * Copyright (c) 2012 Red Hat, Inc.
+ * Copyright (c) 2012 - 2016 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -15,123 +15,114 @@ import java.io.IOException;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.swtbot.swt.finder.SWTBot;
-import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
-import org.jboss.tools.ui.bot.ext.Timing;
-import org.jboss.tools.ui.bot.ext.parts.SWTBotTableExt;
-import org.jboss.tools.ui.bot.ext.types.IDELabel;
+import org.jboss.reddeer.swt.api.Table;
+import org.jboss.reddeer.swt.impl.button.FinishButton;
+import org.jboss.reddeer.swt.impl.button.OkButton;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.button.RadioButton;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
+import org.jboss.reddeer.swt.impl.table.DefaultTable;
+import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
+import org.jboss.reddeer.swt.matcher.ColumnTableItemMatcher;
+import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.vpe.ui.bot.test.Activator;
 import org.jboss.tools.vpe.ui.bot.test.editor.VPEEditorTestCase;
 
-public abstract class PageDesignTestCase extends VPEEditorTestCase{
-	
+public abstract class PageDesignTestCase extends VPEEditorTestCase {
+
 	final static String PAGE_DESIGN = "Page Design Options"; //$NON-NLS-1$
 
-	@Override
-	protected void closeUnuseDialogs() {
-		try {
-			bot.shell(PAGE_DESIGN).close();
-		} catch (WidgetNotFoundException e) {
-		}
+	void closePage() {
+		new TextEditor(TEST_PAGE).close();
 	}
 
 	@Override
-	protected boolean isUnuseDialogOpened() {
-		boolean isOpened = false;
-		try {
-			bot.shell(PAGE_DESIGN).activate();
-			isOpened = true;
-		} catch (WidgetNotFoundException e) {
-		}
-		return isOpened;
-	}
-	
-	void closePage(){
-		bot.editorByTitle(TEST_PAGE).close();
-	}
-	
-	@Override
 	protected String getPathToResources(String testPage) throws IOException {
-		String filePath = FileLocator.toFileURL(Platform.getBundle(Activator.PLUGIN_ID).getEntry("/")).getFile()+"resources/pagedesign/"+testPage;  //$NON-NLS-1$//$NON-NLS-2$
+		String filePath = FileLocator.toFileURL(Platform.getBundle(Activator.PLUGIN_ID).getEntry("/")).getFile() //$NON-NLS-1$
+				+ "resources/pagedesign/" + testPage; //$NON-NLS-1$
 		File file = new File(filePath);
 		if (!file.isFile()) {
-			filePath = FileLocator.toFileURL(Platform.getBundle(Activator.PLUGIN_ID).getEntry("/")).getFile()+"pagedesign/"+testPage; //$NON-NLS-1$ //$NON-NLS-2$
+			filePath = FileLocator.toFileURL(Platform.getBundle(Activator.PLUGIN_ID).getEntry("/")).getFile() //$NON-NLS-1$
+					+ "pagedesign/" + testPage; //$NON-NLS-1$
 		}
 		return filePath;
 	}
+
 	/**
-	 * Deletes all defined EL Substitutions. VPE has to be opened when called this method
+	 * Deletes all defined EL Substitutions. VPE has to be opened when called
+	 * this method
 	 */
-	public void deleteAllELSubstitutions(){
-	  util.waitForToolbarButtonWithTooltipIsFound(PAGE_DESIGN, Timing.time10S());
-	  bot.toolbarButtonWithTooltip(PAGE_DESIGN).click();
-	  SWTBot optionsDialogBot = bot.shell(IDELabel.Shell.PAGE_DESIGN_OPTIONS).activate().bot();
-    optionsDialogBot.tabItem(IDELabel.PageDesignOptionsDialog.SUBSTITUTED_EL_EXPRESSIONS_TAB).activate();
-    SWTBotTable elVariablesTable = optionsDialogBot.table();
-    while (elVariablesTable.rowCount() > 0){
-      elVariablesTable.select(0);
-      optionsDialogBot.button(IDELabel.Button.REMOVE).click();
-    }
-    optionsDialogBot.button(IDELabel.Button.OK).click();
-    bot.sleep(Timing.time2S());
+	public void deleteAllELSubstitutions() {
+		new DefaultToolItem(PAGE_DESIGN).click();
+		new DefaultShell("Page Design Options");
+		new DefaultTabItem("Substituted EL expressions").activate();
+		Table elVariablesTable = new DefaultTable();
+		while (elVariablesTable.rowCount() > 0) {
+			elVariablesTable.select(0);
+			new PushButton("Remove").click();
+		}
+		new OkButton().click();
 	}
+
 	/**
 	 * Adds EL Definition
+	 * 
 	 * @param elName
 	 * @param value
 	 * @param scope
 	 */
-	public void addELSubstitution (String elName , String value , String scope){
-	  util.waitForToolbarButtonWithTooltipIsFound(PAGE_DESIGN, Timing.time10S());
-    bot.toolbarButtonWithTooltip(PAGE_DESIGN).click();
-    SWTBot optionsDialogBot = bot.shell(IDELabel.Shell.PAGE_DESIGN_OPTIONS).activate().bot();
-    optionsDialogBot.tabItem(IDELabel.PageDesignOptionsDialog.SUBSTITUTED_EL_EXPRESSIONS_TAB).activate();
-    optionsDialogBot.button(IDELabel.Button.ADD_WITHOUT_DOTS).click();
-    SWTBot addELReferenceDialogBot = optionsDialogBot.shell(IDELabel.Shell.ADD_EL_REFERENCE).activate().bot();
-    addELReferenceDialogBot.textWithLabel(IDELabel.PageDesignOptionsDialog.SUBSTITUTED_EL_EXPRESSIONS_EL_NAME)
-      .setText(elName);
-    addELReferenceDialogBot.textWithLabel(IDELabel.PageDesignOptionsDialog.SUBSTITUTED_EL_EXPRESSIONS_VALUE)
-      .setText(value);
-    addELReferenceDialogBot.radio(scope).click();
-    addELReferenceDialogBot.button(IDELabel.Button.FINISH).click();
-    optionsDialogBot.button(IDELabel.Button.OK).click();
+	public void addELSubstitution(String elName, String value, String scope) {
+		new DefaultToolItem(PAGE_DESIGN).click();
+		new DefaultShell("Page Design Options");
+		new DefaultTabItem("Substituted EL expressions").activate();
+		new PushButton("Add").click();
+		new DefaultShell("Add EL Reference");
+		new LabeledText("El Name*").setText(elName);
+		new LabeledText("Value").setText(value);
+		new RadioButton(scope).click();
+		new FinishButton().click();
+		new DefaultShell("Page Design Options");
+		new OkButton().click();
 	}
-	 /**
-   * Edits EL Variable elName Definition
-   * @param elName
-   * @param oldScope
-   * @param newValue
-   * @param scopeRadioLabel
-   */
-  public void editELSubstitution (String elName , String oldScope, String newValue , String scopeRadioLabel){
-    bot.toolbarButtonWithTooltip(PAGE_DESIGN).click();
-    SWTBot optionsDialogBot = bot.shell(IDELabel.Shell.PAGE_DESIGN_OPTIONS).activate().bot();
-    optionsDialogBot.tabItem(IDELabel.PageDesignOptionsDialog.SUBSTITUTED_EL_EXPRESSIONS_TAB).activate();
-    new SWTBotTableExt(optionsDialogBot.table())
-      .getTableItem(oldScope,elName)
-      .select();
-    optionsDialogBot.button(IDELabel.Button.EDIT_WITHOUT_DOTS).click();
-    SWTBot addELReferenceDialogBot = optionsDialogBot.shell(IDELabel.Shell.ADD_EL_REFERENCE).activate().bot();
-    addELReferenceDialogBot.textWithLabel(IDELabel.PageDesignOptionsDialog.SUBSTITUTED_EL_EXPRESSIONS_VALUE)
-      .setText(newValue);
-    addELReferenceDialogBot.radio(scopeRadioLabel).click();
-    addELReferenceDialogBot.button(IDELabel.Button.FINISH).click();
-    optionsDialogBot.button(IDELabel.Button.OK).click();
-  }
-  /**
-   * Deletes EL Variable elName Definition
-   * @param elName
-   * @param scope
-   */
-  public void deleteELSubstitution (String elName , String scope){
-    bot.toolbarButtonWithTooltip(PAGE_DESIGN).click();
-    SWTBot optionsDialogBot = bot.shell(IDELabel.Shell.PAGE_DESIGN_OPTIONS).activate().bot();
-    optionsDialogBot.tabItem(IDELabel.PageDesignOptionsDialog.SUBSTITUTED_EL_EXPRESSIONS_TAB).activate();
-    new SWTBotTableExt(optionsDialogBot.table())
-      .getTableItem(scope,elName)
-      .select();
-    optionsDialogBot.button(IDELabel.Button.REMOVE).click();
-    optionsDialogBot.button(IDELabel.Button.OK).click();
-  }
+
+	/**
+	 * Edits EL Variable elName Definition
+	 * 
+	 * @param elName
+	 * @param oldScope
+	 * @param newValue
+	 * @param scopeRadioLabel
+	 */
+	public void editELSubstitution(String elName, String oldScope, String newValue, String scopeRadioLabel) {
+		new DefaultToolItem(PAGE_DESIGN).click();
+		new DefaultShell("Page Design Options");
+		new DefaultTabItem("Substituted EL expressions").activate();
+		new DefaultTable().getItems(new ColumnTableItemMatcher(1, elName), new ColumnTableItemMatcher(0, oldScope))
+				.get(0).select();
+		new PushButton("Edit").click();
+		new DefaultShell("Add EL Reference");
+		new LabeledText("Value").setText(newValue);
+		new RadioButton(scopeRadioLabel).click();
+		new FinishButton().click();
+		new DefaultShell("Page Design Options");
+		new OkButton().click();
+	}
+
+	/**
+	 * Deletes EL Variable elName Definition
+	 * 
+	 * @param elName
+	 * @param scope
+	 */
+	public void deleteELSubstitution(String elName, String scope) {
+		new DefaultToolItem(PAGE_DESIGN).click();
+		new DefaultShell("Page Design Options");
+		new DefaultTabItem("Substituted EL expressions").activate();
+		new DefaultTable().getItems(new ColumnTableItemMatcher(1, elName), new ColumnTableItemMatcher(0, scope)).get(0)
+				.select();
+		new PushButton("Remove").click();
+		new OkButton().click();
+	}
 }

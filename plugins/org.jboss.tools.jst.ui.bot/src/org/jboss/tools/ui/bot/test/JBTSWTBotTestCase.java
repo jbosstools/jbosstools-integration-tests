@@ -1,9 +1,20 @@
+/*******************************************************************************
+ * Copyright (c) 2007-2016 Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributor:
+ *     Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/
 package org.jboss.tools.ui.bot.test;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -16,11 +27,14 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
-import org.jboss.tools.ui.bot.ext.SWTBotExt;
+import org.jboss.reddeer.eclipse.ui.problems.Problem;
+import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
+import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
+import org.jboss.reddeer.eclipse.ui.problems.matcher.ProblemsResourceMatcher;
+import org.jboss.reddeer.eclipse.ui.views.contentoutline.OutlineView;
+import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
-import org.jboss.tools.ui.bot.ext.view.ProblemsView;
 
 public abstract class JBTSWTBotTestCase extends SWTTestExt implements
 		ILogListener {
@@ -226,32 +240,14 @@ public abstract class JBTSWTBotTestCase extends SWTTestExt implements
    */
 
   protected void openPropertiesView() {
-    try {
-      bot.viewByTitle(WidgetVariables.PROPERTIES).setFocus();
-    } catch (WidgetNotFoundException e) {
-      bot.menu("Window").menu("Show View").menu("Other...").click(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-      SWTBotTree viewTree = bot.tree();
-      delay();
-      viewTree.expandNode("General").expandNode( //$NON-NLS-1$
-          WidgetVariables.PROPERTIES).select();
-      bot.button("OK").click(); //$NON-NLS-1$
-    }
+	  new PropertiesView().open();
   }
   /**
    * Open and activate Outline View if it hadn't been opened before
    */
 
   protected void openOutlineView() {
-    try {
-      bot.viewByTitle(WidgetVariables.OUTLINE).setFocus();
-    } catch (WidgetNotFoundException e) {
-      bot.menu("Window").menu("Show View").menu("Other...").click(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-      SWTBotTree viewTree = bot.tree();
-      delay();
-      viewTree.expandNode("General").expandNode( //$NON-NLS-1$
-          WidgetVariables.OUTLINE).select();
-      bot.button("OK").click(); //$NON-NLS-1$
-    }
+	  new OutlineView().open();
   }
 	// protected void openProgressStatus() {
 	// try {
@@ -352,34 +348,35 @@ public abstract class JBTSWTBotTestCase extends SWTTestExt implements
 		}
 		return process;
 	}
+
 	/**
 	 * Asserts if Problems View has no errors
-	 * @param botExt
 	 */
-	protected static void assertProbelmsViewNoErrors (SWTBotExt botExt){
-	  
-    SWTBotTreeItem[] errors = ProblemsView.getFilteredErrorsTreeItems(botExt, null, null, null, null);
-    boolean areThereNoErrors = ((errors == null) || (errors.length == 0));
-    assertTrue("There are errors in Problems view: " + 
-        (areThereNoErrors ? "" : errors[0].getText()),
-      areThereNoErrors);
+	protected static void assertProbelmsViewNoErrors() {
+
+		ProblemsView problemsView = new ProblemsView();
+		problemsView.open();
+		List<Problem> errors = problemsView.getProblems(ProblemType.ERROR);
+		boolean areThereNoErrors = ((errors == null) || (errors.size() == 0));
+		assertTrue("There are errors in Problems view: " + (areThereNoErrors ? "" : errors.get(0).getDescription()),
+				areThereNoErrors);
 	}
 
 	/**
 	 * Asserts if Problems View has no errors for page pageName
 	 * 
-	 * @param botExt
+	 * @param pageName
 	 */
-	protected static void assertProbelmsViewNoErrorsForPage(SWTBotExt botExt,
-			String pageName) {
+	protected static void assertProbelmsViewNoErrorsForPage(String pageName) {
 
-		SWTBotTreeItem[] errors = ProblemsView.getFilteredErrorsTreeItems(
-				botExt, null, null, pageName, null);
+		ProblemsView problemsView = new ProblemsView();
+		problemsView.open();
+		List<Problem> errors = problemsView.getProblems(ProblemType.ERROR, new ProblemsResourceMatcher(pageName));
 
-		boolean areThereNoErrors = ((errors == null) || (errors.length == 0));
-		assertTrue("There are errors in Problems view for test page: "
-				+ (areThereNoErrors ? "" : errors[0].getText()),
+		boolean areThereNoErrors = ((errors == null) || (errors.size() == 0));
+		assertTrue("There are errors in Problems view: " + (areThereNoErrors ? "" : errors.get(0).getDescription()),
 				areThereNoErrors);
+		
 	}
 
 	/**

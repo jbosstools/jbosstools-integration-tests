@@ -1,5 +1,5 @@
 /******************************************************************************* 
- * Copyright (c) 2012 Red Hat, Inc.
+ * Copyright (c) 2012 - 2016 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -10,88 +10,65 @@
  ******************************************************************************/
 package org.jboss.tools.vpe.ui.bot.test.editor.preferences;
 
-import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
+import org.jboss.reddeer.core.exception.CoreLayerException;
+import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
+import org.junit.Test;
 
-public class AlwaysHideSelectionBarWithoutPromptTest extends PreferencesTestCase{
-	
+public class AlwaysHideSelectionBarWithoutPromptTest extends PreferencesTestCase {
+
 	private static final String HID_SEL_BAR = "Hide selection bar"; //$NON-NLS-1$
-	
-	public void testAlwaysHideSelectionBarWithoutPrompt(){
-		
-		//Test Hide Selection Bar
-	  openPage();
-		selectSelection();
+	@Test
+	public void testAlwaysHideSelectionBarWithoutPrompt() {
+		// Test Hide Selection Bar
+		openPage();
+		setToggleSelectionBar(false);
 		checkIsHide();
-		
-		//Test Hide selection after reopen
-		
+		// Test Hide selection after reopen
 		closePage();
 		openPage();
-		checkIsHide("https://issues.jboss.org/browse/JBIDE-17896");
-		
-		//Test Show Selection Bar
-		
-		selectSelection();
+		checkIsHide();
+		// Test Show Selection Bar
+		setToggleSelectionBar(true);
 		checkIsShow();
-		
-		//Test Show Selection Bar after reopen
-		
+		// Test Show Selection Bar after reopen
 		closePage();
 		openPage();
 		checkIsShow();
-		
-		//Test Hide Selection Bar button without confirm
-		Throwable exception = getException();
-		bot.toolbarButtonWithTooltip(HID_SEL_BAR).click();
-    if (exception == null){
-      exception = getException();
-      if (exception != null && exception instanceof NullPointerException){
-        setException(null);
-      }
-    }
+		// Test Hide Selection Bar button without confirm
+		new DefaultToolItem(HID_SEL_BAR).click();
 		checkIsHide();
-	
-		//Test Show selection after reopen
-		
+		// Test Show selection after reopen
 		closePage();
 		openPage();
 		checkIsHide();
-				
 	}
-	
-	private void checkIsHide(){
+
+	private void checkIsHide() {
 		checkIsHide("Toolbar button " + HID_SEL_BAR + " is not hidden");
 	}
-	
-	private void checkIsHide(String message){
-		WidgetNotFoundException exception = null;
+
+	private void setToggleSelectionBar(boolean show) {
+		new DefaultToolItem(TOGGLE_SELECTION_BAR_TOOLTIP).toggle(show);
+	}
+
+	private void checkIsHide(String message) {
+		CoreLayerException exception = null;
 		try {
-			bot.toolbarButtonWithTooltip(HID_SEL_BAR);
-		} catch (WidgetNotFoundException e) {
+			new DefaultToolItem(HID_SEL_BAR);
+		} catch (CoreLayerException e) {
 			exception = e;
 		}
-		assertNotNull(message,exception);
+		assertNotNull(message, exception);
 	}
-	
-	private void checkIsShow(){
-		WidgetNotFoundException exception = null;
+
+	private void checkIsShow() {
+		CoreLayerException exception = null;
 		try {
-			bot.toolbarButtonWithTooltip(HID_SEL_BAR);
-		} catch (WidgetNotFoundException e) {
+			new DefaultToolItem(HID_SEL_BAR);
+		} catch (CoreLayerException e) {
 			exception = e;
 		}
 		assertNull(exception);
 	}
 
-	private void selectSelection(){
-	  Throwable exception = getException();
-	  bot.toolbarToggleButtonWithTooltip(TOGGLE_SELECTION_BAR_TOOLTIP).click();
-	  if (exception == null){
-      exception = getException();
-      if (exception != null && exception instanceof NullPointerException){
-        setException(null);
-      }
-    }
-	}
-	
 }

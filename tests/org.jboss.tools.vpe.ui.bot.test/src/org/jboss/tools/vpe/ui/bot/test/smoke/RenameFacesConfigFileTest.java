@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007-2009 Red Hat, Inc.
+ * Copyright (c) 2007-2016 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -10,74 +10,60 @@
  ******************************************************************************/
 package org.jboss.tools.vpe.ui.bot.test.smoke;
 
-import org.eclipse.swtbot.swt.finder.SWTBot;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.ui.bot.ext.helper.FileRenameHelper;
+import org.jboss.reddeer.core.handler.TreeItemHandler;
+import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.table.DefaultTableItem;
 import org.jboss.tools.jst.reddeer.web.ui.navigator.WebProjectsNavigator;
-import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
-import org.jboss.tools.ui.bot.ext.types.IDELabel;
-import org.jboss.tools.ui.bot.test.WidgetVariables;
 import org.jboss.tools.vpe.ui.bot.test.editor.VPEEditorTestCase;
+import org.junit.Test;
+
 /**
  * Test renaming of faces-config.xml file
+ * 
  * @author Vladimir Pakan
  *
  */
-public class RenameFacesConfigFileTest extends VPEEditorTestCase{
-  
-  private static final String NEW_FACES_CONFIG_FILE_NAME = "faces-config-renamed.xml";
-  private static final String OLD_FACES_CONFIG_FILE_NAME = "faces-config.xml";
+public class RenameFacesConfigFileTest extends VPEEditorTestCase {
 
-	public void testRenameFacesConfigFile() throws Throwable{
-		
-	  checkRenameFacesConfigFile();
-	  
-	  setException(null);
-		
+	private static final String NEW_FACES_CONFIG_FILE_NAME = "faces-config-renamed.xml";
+	private static final String OLD_FACES_CONFIG_FILE_NAME = "faces-config.xml";
+
+	@Test
+	public void testRenameFacesConfigFile() throws Throwable {
+		checkRenameFacesConfigFile();
 	}
+
 	/**
 	 * Check renaming of faces-config.xml file
 	 */
-	private void checkRenameFacesConfigFile(){
-	  
-		new WebProjectsNavigator().open();
-    
-    delay();
-    
-    SWTBot webProjects = bot.viewByTitle(WidgetVariables.WEB_PROJECTS).bot();
-    SWTBotTree tree = webProjects.tree();
+	private void checkRenameFacesConfigFile() {
 
-    tree.setFocus();
-    String checkResult = FileRenameHelper.checkFileRenamingWithinWebProjects(bot, OLD_FACES_CONFIG_FILE_NAME, NEW_FACES_CONFIG_FILE_NAME,
-      new String[]{JBT_TEST_PROJECT_NAME,IDELabel.WebProjectsTree.CONFIGURATION});
-    assertNull(checkResult,checkResult);
-    delay();
-    // web.xml file was properly modified
-    SWTBotTreeItem configFilesTreeItem = tree
-      .getTreeItem(JBT_TEST_PROJECT_NAME)
-      .expand()
-      .getNode(IDELabel.WebProjectsTree.WEB_XML)
-      .expand()
-      .getNode(IDELabel.WebProjectsTree.CONTEXT_PARAMS)
-      .expand()
-      .getNode(IDELabel.WebProjectsTree.JAVAX_FACES_CONFIG_FILES);
-    
-    ContextMenuHelper.prepareTreeItemForContextMenu(tree,configFilesTreeItem);
-    new SWTBotMenu(ContextMenuHelper.getContextMenu(tree, IDELabel.Menu.PROPERTIES, true)).click();
-    bot.shell(IDELabel.Shell.PROPERTIES).activate();
-    SWTBotTable propertiesTable = bot.table(); 
-    String fullConfigFileName = propertiesTable.cell(propertiesTable.indexOf(IDELabel.PropertiesDialog.PARAM_VALUE, 0), 1);
-    bot.button(IDELabel.Button.CLOSE).click();
-    assertTrue(NEW_FACES_CONFIG_FILE_NAME + " Name of " 
-        + OLD_FACES_CONFIG_FILE_NAME 
-        + " file was not changed in web.xml file.",
-      fullConfigFileName.endsWith(NEW_FACES_CONFIG_FILE_NAME));
-    // put changes back
-    checkResult = FileRenameHelper.checkFileRenamingWithinWebProjects(bot, NEW_FACES_CONFIG_FILE_NAME, OLD_FACES_CONFIG_FILE_NAME,
-        new String[]{JBT_TEST_PROJECT_NAME,IDELabel.WebProjectsTree.CONFIGURATION});
-      assertNull(checkResult,checkResult);
+		WebProjectsNavigator webProjectsNavigator = new WebProjectsNavigator();
+		webProjectsNavigator.open();
+		String checkResult = FileRenameHelper.checkFileRenamingWithinWebProjects(OLD_FACES_CONFIG_FILE_NAME,
+				NEW_FACES_CONFIG_FILE_NAME, new String[] { JBT_TEST_PROJECT_NAME, "Configuration" });
+		assertNull(checkResult, checkResult);
+		// web.xml file was properly modified
+		TreeItem configFilesTreeItem = webProjectsNavigator.getProject(JBT_TEST_PROJECT_NAME)
+				.getProjectItem("web.xml", "Context Params", "javax.faces.CONFIG_FILES").getTreeItem();
+		configFilesTreeItem.select();
+		TreeItemHandler.getInstance().click(configFilesTreeItem.getSWTWidget());
+		new ContextMenu("Properties").select();
+		new DefaultShell("Properties");
+		String fullConfigFileName = new DefaultTableItem("Param-Value").getText(1);
+		new PushButton("Close").click();
+		assertTrue(
+				NEW_FACES_CONFIG_FILE_NAME + " Name of " + OLD_FACES_CONFIG_FILE_NAME
+						+ " file was not changed in web.xml file.",
+				fullConfigFileName.endsWith(NEW_FACES_CONFIG_FILE_NAME));
+		// put changes back
+		checkResult = FileRenameHelper.checkFileRenamingWithinWebProjects(NEW_FACES_CONFIG_FILE_NAME,
+				OLD_FACES_CONFIG_FILE_NAME,
+				new String[] { JBT_TEST_PROJECT_NAME, "Configuration"});
+		assertNull(checkResult, checkResult);
 	}
 }

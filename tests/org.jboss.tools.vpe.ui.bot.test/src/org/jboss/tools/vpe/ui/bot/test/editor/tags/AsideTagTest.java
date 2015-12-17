@@ -1,6 +1,6 @@
 /*******************************************************************************
 
- * Copyright (c) 2007-2012 Exadel, Inc. and Red Hat, Inc.
+ * Copyright (c) 2007-2016 Exadel, Inc. and Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -38,7 +38,7 @@ public class AsideTagTest extends AbstractTagTest{
   @Override
   protected void verifyTag() {
     // check Problems View for Errors
-    assertProbelmsViewNoErrorsForPage(botExt);
+    assertProbelmsViewNoErrorsForPage();
     // visual representation contains ASIDE tag
     assertVisualEditorContains(getVisualEditor(), "ASIDE", null, null, getTestPageFileName());
     // visual representation contains ASIDE_TEXT text

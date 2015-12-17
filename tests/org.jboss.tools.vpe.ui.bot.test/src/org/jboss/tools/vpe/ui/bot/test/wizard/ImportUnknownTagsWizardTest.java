@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007-2010 Exadel, Inc. and Red Hat, Inc.
+ * Copyright (c) 2007-2016 Exadel, Inc. and Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * Eclipse Public License v1.0 which accompanies this distribution,
  * and is available at http://www.eclipse.org/legal/epl-v10.html
@@ -11,84 +11,73 @@ package org.jboss.tools.vpe.ui.bot.test.wizard;
 
 import java.io.File;
 
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
-import org.jboss.tools.ui.bot.ext.gen.ActionItem;
-import org.jboss.tools.ui.bot.ext.types.IDELabel;
-import org.jboss.tools.ui.bot.test.WidgetVariables;
+import org.jboss.reddeer.swt.impl.button.FinishButton;
+import org.jboss.reddeer.swt.impl.button.OkButton;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.menu.ShellMenu;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.table.DefaultTableItem;
+import org.jboss.reddeer.swt.impl.text.DefaultText;
+import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
+import org.jboss.tools.vpe.reddeer.preferences.VisualPageEditorPreferencePage;
 import org.jboss.tools.vpe.ui.bot.test.VPEAutoTestCase;
+import org.junit.Test;
 
 public class ImportUnknownTagsWizardTest extends VPEAutoTestCase {
 
 	private final String STORED_TAGS_PATH = "storedTags.xml"; //$NON-NLS-1$
-	
+
 	public ImportUnknownTagsWizardTest() {
 		super();
 	}
 
-	@Override
-	protected void closeUnuseDialogs() {
+	@Test
+	public void testImportWizard() throws Throwable {
+		/*
+		 * Open wizard page
+		 */
+		new ShellMenu("File","Import...").select();
+		new DefaultShell("Import");
+		new DefaultTreeItem("Other","User specified tag templates").select();
+		new PushButton("Next >").click();
+		/*
+		 * Load stored tags
+		 */
+		File file = new File(getPathToResources(STORED_TAGS_PATH));
+		assertTrue("File '" + file.getAbsolutePath() + "' does not exist.", file.exists()); //$NON-NLS-1$ //$NON-NLS-2$
+		new DefaultText().setText(file.getAbsolutePath());
+		/*
+		 * Check table values
+		 */
+		String libTagline = new DefaultTableItem("lib:tag").getText();
+		String tagLibNameLine = new DefaultTableItem("taglibName:tagName").getText();
+
+		assertEquals("Wrong table value.", "lib:tag", libTagline); //$NON-NLS-1$ //$NON-NLS-2$
+		assertEquals("Wrong table value.", "taglibName:tagName", tagLibNameLine); //$NON-NLS-1$ //$NON-NLS-2$
+		/*
+		 * Check that finish button is enabled and press it.
+		 */
+		new FinishButton().click();
+		/*
+		 * Check that templates have been added to the preference page
+		 */
+		VisualPageEditorPreferencePage vpePreferencePage = new VisualPageEditorPreferencePage();
+		WorkbenchPreferenceDialog preferenceDialog = null;
+		preferenceDialog = new WorkbenchPreferenceDialog();
+		preferenceDialog.open();
+		preferenceDialog.select(vpePreferencePage);
+		vpePreferencePage.activateVisualTemplatesTab();
+		/*
+		 * Check table values on the preferences page
+		 */
+		libTagline = new DefaultTableItem("lib:tag").getText();
+		tagLibNameLine = new DefaultTableItem("taglibName:tagName").getText();
+
+		new OkButton().click();
+		assertEquals("Wrong table value.", "taglibName:tagName", tagLibNameLine); //$NON-NLS-1$ //$NON-NLS-2$
+		assertEquals("Wrong table value.", "lib:tag", libTagline); //$NON-NLS-1$ //$NON-NLS-2$
 
 	}
 
-	@Override
-	protected boolean isUnuseDialogOpened() {
-		return false;
-	}
-
-  public void testImportWizard() throws Throwable {
-    /*
-     * Open wizard page
-     */
-    bot.menu("File").menu("Import...").click(); //$NON-NLS-1$ //$NON-NLS-2$
-    bot.shell("Import").activate(); //$NON-NLS-1$
-    SWTBotTree importTree = bot.tree();
-    importTree.expandNode("Other").select("User specified tag templates"); //$NON-NLS-1$ //$NON-NLS-2$
-    bot.button(WidgetVariables.NEXT_BUTTON).click();
-    /*
-     * Load stored tags
-     */
-    File file = new File(getPathToResources(STORED_TAGS_PATH));
-    assertTrue(
-        "File '" + file.getAbsolutePath() + "' does not exist.", file.exists()); //$NON-NLS-1$ //$NON-NLS-2$
-    bot.text().setText(file.getAbsolutePath());
-    /*
-     * Check table values
-     */
-    String libTagline = bot.table().cell(bot.table().indexOf("lib:tag"), 0);
-    String tagLibNameLine = bot.table().cell(bot.table().indexOf("taglibName:tagName"), 0);
-
-    assertEquals("Wrong table value.", "lib:tag", libTagline); //$NON-NLS-1$ //$NON-NLS-2$
-
-    assertEquals("Wrong table value.", "taglibName:tagName", tagLibNameLine); //$NON-NLS-1$  //$NON-NLS-2$
-    /*
-     * Check that finish button is enabled and press it.
-     */
-    assertTrue("Finish button should be enabled.", //$NON-NLS-1$
-        bot.button(WidgetVariables.FINISH_BUTTON).isEnabled());
-    bot.button(WidgetVariables.FINISH_BUTTON).click();
-    /*
-     * Check that templates have been added to the preference page
-     */
-    open.preferenceOpen(ActionItem.Preference.JBossTools.LABEL);
-    importTree = bot.tree();
-    importTree.expandNode(IDELabel.PreferencesDialog.JBOSS_TOOLS)
-        .expandNode(IDELabel.PreferencesDialog.JBOSS_TOOLS_WEB)
-        .expandNode(IDELabel.PreferencesDialog.JBOSS_TOOLS_WEB_EDITORS)
-        .select(IDELabel.PreferencesDialog.JBOSS_TOOLS_WEB_EDITORS_VPE);
-    bot.tabItem(
-        IDELabel.PreferencesDialog.JBOSS_TOOLS_WEB_EDITORS_VPE_VISUAL_TEMPLATES)
-        .activate();
-    /*
-     * Check table values on the preferences page
-     */
-    libTagline = bot.table().cell(bot.table().indexOf("lib:tag"), 0);
-    tagLibNameLine = bot.table().cell(
-        bot.table().indexOf("taglibName:tagName"), 0);
-
-    bot.button(WidgetVariables.OK_BUTTON).click();
-    assertEquals("Wrong table value.", "taglibName:tagName", tagLibNameLine); //$NON-NLS-1$  //$NON-NLS-2$
-    assertEquals("Wrong table value.", "lib:tag", libTagline); //$NON-NLS-1$ //$NON-NLS-2$
-
-  }
-	
 }
