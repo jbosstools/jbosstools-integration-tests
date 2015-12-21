@@ -11,7 +11,6 @@ import org.jboss.tools.cdi.reddeer.common.model.ui.editor.EditorPartWrapper;
 import org.jboss.tools.cdi.reddeer.validators.BeanValidationProviderCDI11;
 import org.junit.Before;
 
-@CleanWorkspace
 @OpenPerspective(JavaEEPerspective.class)
 @JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY8x)
 public class ExcludeBeanTestCDI11 extends ExcludeBeanTemplate{

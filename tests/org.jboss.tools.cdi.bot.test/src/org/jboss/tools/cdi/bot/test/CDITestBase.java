@@ -27,10 +27,12 @@ import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.core.lookup.ShellLookup;
 import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.workbench.handler.EditorHandler;
 import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.eclipse.jst.servlet.ui.WebProjectFirstPage;
 import org.jboss.reddeer.eclipse.utils.DeleteUtils;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
+import org.jboss.reddeer.requirements.autobuilding.AutoBuildingRequirement.AutoBuilding;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.tools.cdi.reddeer.cdi.ui.CDIProjectWizard;
@@ -42,8 +44,10 @@ import org.jboss.tools.cdi.reddeer.uiutils.ProjectHelper;
 import org.jboss.tools.cdi.reddeer.uiutils.ValidationHelper;
 import org.jboss.tools.common.reddeer.preferences.SourceLookupPreferencePage;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
 
+//@AutoBuilding(value = false)
 public class CDITestBase{
 	
 	protected static String PROJECT_NAME = "CDIProject";
@@ -74,15 +78,22 @@ public class CDITestBase{
 		}
 	}
 	
-	protected void deleteAllProjects(){
+	@AfterClass
+	public static void cleanUp(){
+		EditorHandler.getInstance().closeAll(false);
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
-		try{
-			pe.deleteAllProjects(true);
-		} catch (SWTLayerException ex){
-			for (Project project : pe.getProjects()){
-				DeleteUtils.forceProjectDeletion(project, true);
-			}
+		for(Project p: pe.getProjects()){
+			org.jboss.reddeer.direct.project.Project.delete(p.getName(), true, true);
+		}
+	}
+	
+	protected void deleteAllProjects(){
+		EditorHandler.getInstance().closeAll(false);
+		ProjectExplorer pe = new ProjectExplorer();
+		pe.open();
+		for(Project p: pe.getProjects()){
+			org.jboss.reddeer.direct.project.Project.delete(p.getName(), true, true);
 		}
 	}
 	
