@@ -1,5 +1,6 @@
 package org.jboss.tools.runtime.as.ui.bot.test;
 
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.seam.seam22.CheckSeam22;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.seam.seam22.DetectSeam22;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.seam.seam23.CheckSeam23;
@@ -22,7 +23,7 @@ import org.junit.runners.Suite.SuiteClasses;
  * @author Petr Suchy
  * @author Radoslav Rabara
  */
-@RunWith(JBTSuite.class)
+@RunWith(RedDeerSuite.class)
 @SuiteClasses({
 		ProjectRuntimeDownload.class,
 		
