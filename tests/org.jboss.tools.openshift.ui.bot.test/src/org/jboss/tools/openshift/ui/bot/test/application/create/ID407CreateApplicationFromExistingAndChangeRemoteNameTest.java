@@ -158,7 +158,7 @@ public class ID407CreateApplicationFromExistingAndChangeRemoteNameTest {
 		servers.open();
 
 		TreeViewerHandler.getInstance().getTreeItem(new DefaultTree(),
-				applicationName + " at OpenShift").select();
+				applicationName + " at OpenShift 2").select();
 		new ContextMenu("Publish").select();
 		
 		new DefaultShell("Publish Changes");

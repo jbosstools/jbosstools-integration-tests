@@ -3,13 +3,15 @@ package org.jboss.tools.openshift.ui.bot.test.application.adapter;
 import static org.junit.Assert.fail;
 
 import org.jboss.reddeer.common.exception.RedDeerException;
+import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
+import org.jboss.reddeer.eclipse.wst.server.ui.wizard.NewServerWizardDialog;
+import org.jboss.reddeer.eclipse.wst.server.ui.wizard.NewServerWizardPage;
 import org.jboss.reddeer.jface.viewer.handler.TreeViewerHandler;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
@@ -17,11 +19,9 @@ import org.jboss.reddeer.swt.impl.button.FinishButton;
 import org.jboss.reddeer.swt.impl.button.NextButton;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
-import org.jboss.reddeer.swt.impl.link.DefaultLink;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.tools.openshift.reddeer.utils.DatastoreOS2;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.utils.v2.DeleteUtils;
@@ -55,21 +55,15 @@ public class ID804CreateServerAdapterTest {
 		ServersView servers = new ServersView();
 		servers.open();
 		
-		try {
-			new DefaultTree();
-			new ContextMenu("New", "Server").select();
-		} catch (CoreLayerException ex) {
-			// There is no server, so create server via link
-			new DefaultLink("No servers are available. Click this link to create a new server...").click();
-		}
+		NewServerWizardDialog dialog = new NewServerWizardDialog();
+		NewServerWizardPage page = new NewServerWizardPage();
 		
-		new DefaultShell("New Server");
+		dialog.open();
+		// Wait till tree is generated
+		AbstractWait.sleep(TimePeriod.getCustom(5));
+		page.selectType("OpenShift", "OpenShift 2 Server Adapter");
+		dialog.next();
 		
-		new DefaultTreeItem("OpenShift", "OpenShift Server Adapter").select();
-		
-		new WaitUntil(new WidgetIsEnabled(new NextButton()), TimePeriod.LONG);
-		
-		new NextButton().click();
 		
 		for (String connection: new LabeledCombo("Connection:").getItems()) {
 			if (connection.contains(DatastoreOS2.USERNAME)) {
@@ -88,7 +82,8 @@ public class ID804CreateServerAdapterTest {
 		
 		TreeItem adapter = null;
 		try {
-			adapter = treeViewerHandler.getTreeItem(new DefaultTree(), applicationName + " at OpenShift");
+			adapter = treeViewerHandler.getTreeItem(new DefaultTree(), applicationName +
+					OpenShiftLabel.Others.getOS2ServerAdapterAppendix());
 		} catch (RedDeerException ex) {
 			fail("Server adapter has not been created.");
 		}
@@ -123,7 +118,7 @@ public class ID804CreateServerAdapterTest {
 		TreeItem adapter = null;
 		try {
 			adapter = treeViewerHandler.getTreeItem(new DefaultTree(), 
-					applicationName + " at OpenShift");
+					applicationName + OpenShiftLabel.Others.getOS2ServerAdapterAppendix());
 		} catch (RedDeerException ex) {
 			fail("Server adapter has not been created successfully.");
 		}

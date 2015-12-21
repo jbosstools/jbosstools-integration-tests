@@ -17,7 +17,6 @@ import org.jboss.reddeer.swt.impl.button.YesButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
-import org.jboss.tools.openshift.reddeer.condition.BrowserContainsText;
 import org.jboss.tools.openshift.reddeer.condition.v2.ApplicationIsDeployedSuccessfully;
 import org.jboss.tools.openshift.reddeer.condition.v2.OpenShiftApplicationExists;
 import org.jboss.tools.openshift.reddeer.utils.DatastoreOS2;
@@ -60,7 +59,8 @@ public class ID803ServerAdapterHandlingTest {
 		ServersView serversView = new ServersView();
 		serversView.open();
 		
-		return treeViewerHandler.getTreeItem(new DefaultTree(), applicationName + " at OpenShift");
+		return treeViewerHandler.getTreeItem(new DefaultTree(), applicationName +
+				OpenShiftLabel.Others.getOS2ServerAdapterAppendix());
 	}
 	
 	@Test
@@ -70,7 +70,8 @@ public class ID803ServerAdapterHandlingTest {
 		new ContextMenu(OpenShiftLabel.ContextMenu.SHOW_IN_BROWSER).select();
 		
 		try {
-			new WaitUntil(new BrowserContainsText("OpenShift"), TimePeriod.LONG);
+			new WaitUntil(new ApplicationIsDeployedSuccessfully(DatastoreOS2.USERNAME, 
+					DatastoreOS2.SERVER, DatastoreOS2.DOMAIN, applicationName, "OpenShift"), TimePeriod.LONG);
 		} catch (WaitTimeoutExpiredException ex) {
 			fail("Application has not been shown successfully in browser.");
 		}

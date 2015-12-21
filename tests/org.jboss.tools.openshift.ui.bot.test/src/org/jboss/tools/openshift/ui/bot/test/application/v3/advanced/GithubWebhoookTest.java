@@ -98,7 +98,7 @@ public class GithubWebhoookTest {
 	private void setWebPageContent() {
 		new WaitUntil(new EditorWithTitleIsAvailable("index.xhtml"));
 		new MultiPageEditor("index.xhtml").selectPage("Source");
-		TextEditor editor = new TextEditor("index.xhtml");
+		TextEditor editor = new TextEditor();
 		editor.setText(webPageContent);
 		editor.save();
 		editor.close();

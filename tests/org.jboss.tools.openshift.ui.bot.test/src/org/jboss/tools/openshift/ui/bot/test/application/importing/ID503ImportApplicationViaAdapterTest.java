@@ -2,6 +2,7 @@ package org.jboss.tools.openshift.ui.bot.test.application.importing;
 
 import static org.junit.Assert.assertTrue;
 
+import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
@@ -56,7 +57,8 @@ public class ID503ImportApplicationViaAdapterTest {
 		
 		new DefaultShell("New Server");
 		
-		new DefaultTreeItem("OpenShift", "OpenShift Server Adapter").select();
+		AbstractWait.sleep(TimePeriod.getCustom(5));
+		new DefaultTreeItem("OpenShift", "OpenShift 2 Server Adapter").select();
 		
 		new WaitUntil(new WidgetIsEnabled(new NextButton()), TimePeriod.LONG);
 		

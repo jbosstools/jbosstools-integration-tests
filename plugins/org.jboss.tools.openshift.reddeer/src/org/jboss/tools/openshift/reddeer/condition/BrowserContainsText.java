@@ -25,7 +25,7 @@ public class BrowserContainsText extends AbstractWaitCondition {
 			browser.setURL(url);
 			browser.forward();
 		} else {
-			browser.refresh();
+			browser.forward();
 		}
 		return browser.getText().contains(text);
 	}
