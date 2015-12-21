@@ -10,7 +10,6 @@ import org.jboss.tools.cdi.bot.test.beans.openon.template.BeanInjectOpenOnTempla
 
 @JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.AS7_1)
 @OpenPerspective(JavaEEPerspective.class)
-@CleanWorkspace
 public class BeanInjectOpenOnTestCDI10 extends BeanInjectOpenOnTemplate{
 
 }

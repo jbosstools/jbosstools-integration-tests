@@ -10,7 +10,6 @@ import org.jboss.tools.cdi.bot.test.beansxml.validation.template.BeansXMLAsYouTy
 
 @JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.AS7_1)
 @OpenPerspective(JavaEEPerspective.class)
-@CleanWorkspace
 public class BeansXMLAsYouTypeValidationTestCDI10 extends BeansXMLAsYouTypeValidationTemplate{
 
 }

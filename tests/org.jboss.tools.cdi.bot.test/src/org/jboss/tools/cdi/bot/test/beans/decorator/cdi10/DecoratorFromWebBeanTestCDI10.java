@@ -10,7 +10,6 @@ import org.jboss.tools.cdi.bot.test.beans.decorator.template.DecoratorFromWebBea
 
 @JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.AS7_1)
 @OpenPerspective(JavaEEPerspective.class)
-@CleanWorkspace
 public class DecoratorFromWebBeanTestCDI10 extends DecoratorFromWebBeanTemplate{
 
 }

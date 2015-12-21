@@ -10,7 +10,6 @@ import org.jboss.tools.cdi.bot.test.validation.template.CDIValidatorTemplate;
 
 @JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.AS7_1)
 @OpenPerspective(JavaEEPerspective.class)
-@CleanWorkspace
 public class CDIValidatorTestCDI10 extends CDIValidatorTemplate{
 
 }
