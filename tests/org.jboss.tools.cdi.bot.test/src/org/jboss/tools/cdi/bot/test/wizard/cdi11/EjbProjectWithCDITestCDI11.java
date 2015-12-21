@@ -11,7 +11,6 @@ import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.tools.cdi.bot.test.wizard.template.ProjectWithCDITemplate;
 import org.junit.Before;
 
-@CleanWorkspace
 @OpenPerspective(JavaEEPerspective.class)
 @JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY8x)
 public class EjbProjectWithCDITestCDI11 extends ProjectWithCDITemplate{

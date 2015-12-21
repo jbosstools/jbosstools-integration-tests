@@ -9,7 +9,7 @@ import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.tools.cdi.bot.test.beansxml.template.BeansXMLUITemplate;
 import org.junit.Before;
 
-@CleanWorkspace
+
 @OpenPerspective(JavaEEPerspective.class)
 @JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY8x)
 public class BeansXMLUITestCDI11 extends BeansXMLUITemplate{

@@ -10,7 +10,6 @@ import org.jboss.tools.cdi.bot.test.weld.template.WeldParametersAnnotationTempla
 
 @JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.AS7_1)
 @OpenPerspective(JavaEEPerspective.class)
-@CleanWorkspace
 public class WeldParametersAnnotationTestCDI10 extends WeldParametersAnnotationTemplate {
 
 }

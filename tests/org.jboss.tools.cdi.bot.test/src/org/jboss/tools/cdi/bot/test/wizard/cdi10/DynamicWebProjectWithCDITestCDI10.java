@@ -15,7 +15,6 @@ import org.junit.Before;
 
 @JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.AS7_1)
 @OpenPerspective(JavaEEPerspective.class)
-@CleanWorkspace
 public class DynamicWebProjectWithCDITestCDI10 extends ProjectWithCDITemplate{
 	
 	public DynamicWebProjectWithCDITestCDI10(){
