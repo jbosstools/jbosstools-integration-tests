@@ -52,7 +52,7 @@ public class CleanUpOS2 {
 		}
 		
 		if (connection != null) {
-			connection.select();
+			connection.refresh();
 			connection.expand();
 			
 			new WaitWhile(new JobIsRunning(), TimePeriod.LONG);

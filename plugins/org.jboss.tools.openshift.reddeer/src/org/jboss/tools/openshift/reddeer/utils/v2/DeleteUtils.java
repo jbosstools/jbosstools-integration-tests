@@ -68,7 +68,9 @@ public class DeleteUtils {
 		ServersView serversView = new ServersView();
 		serversView.open();
 		
-		TreeItem server = treeViewerHandler.getTreeItem(new DefaultTree(), appName + " at OpenShift");
+		// WORKAROUND
+		TreeItem server = treeViewerHandler.getTreeItem(new DefaultTree(), appName + 
+				OpenShiftLabel.Others.getOS2ServerAdapterAppendix());
 		server.select();
 		
 		new ContextMenu("Delete").select();	

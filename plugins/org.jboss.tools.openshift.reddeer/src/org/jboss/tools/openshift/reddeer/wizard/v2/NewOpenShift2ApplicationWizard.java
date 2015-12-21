@@ -10,11 +10,6 @@ import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.jface.exception.JFaceLayerException;
-import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
-import org.jboss.reddeer.swt.impl.button.BackButton;
-import org.jboss.reddeer.swt.impl.button.CancelButton;
-import org.jboss.reddeer.swt.impl.button.FinishButton;
-import org.jboss.reddeer.swt.impl.button.NextButton;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.YesButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
@@ -199,7 +194,8 @@ public class NewOpenShift2ApplicationWizard extends NewOpenShiftApplicationWizar
 		ServersView serversView = new ServersView();
 		serversView.open();
 		try {
-			treeViewerHandler.getTreeItem(new DefaultTree(), appName + " at OpenShift");
+			// WORKAROUND - REMOVE ONCE FIXED
+			treeViewerHandler.getTreeItem(new DefaultTree(), appName + OpenShiftLabel.Others.getOS2ServerAdapterAppendix());
 			// pass
 		} catch (JFaceLayerException ex) {
 			fail("There is no server adapter for application " + appName + " and project " + project);

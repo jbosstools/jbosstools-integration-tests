@@ -90,7 +90,7 @@ public class ID302OpenNewApplicationWizardWithoutConnectionTest {
 		if (!explorer.connectionExists(DatastoreOS2.USERNAME)) {
 			explorer.openConnectionShell();
 			explorer.connectToOpenShift2(DatastoreOS2.SERVER, DatastoreOS2.USERNAME,
-					System.getProperty("user.pwd"), false, false, certificateShown);
+					System.getProperty("openshift.password"), false, false, certificateShown);
 		}
 	}
 }
