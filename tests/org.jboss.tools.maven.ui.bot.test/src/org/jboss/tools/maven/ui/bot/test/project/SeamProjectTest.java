@@ -41,7 +41,6 @@ import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
  * @author Rastislav Wagner
  * 
  */
-@CleanWorkspace
 @OpenPerspective(SeamPerspective.class)
 @JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY8x)
 public class SeamProjectTest extends AbstractMavenSWTBotTest {

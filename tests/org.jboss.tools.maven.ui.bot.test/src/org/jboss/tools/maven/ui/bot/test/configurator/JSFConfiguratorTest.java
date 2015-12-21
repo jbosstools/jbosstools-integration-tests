@@ -30,7 +30,6 @@ import org.junit.Test;
  * @author Rastislav Wagner
  * 
  */
-@CleanWorkspace
 @OpenPerspective(JavaEEPerspective.class)
 @JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY8x)
 @DefineMavenRepository(newRepositories = {@MavenRepository(url="http://maven.acm-sl.org/artifactory/libs-releases/",ID="acm",snapshots=true)}, 

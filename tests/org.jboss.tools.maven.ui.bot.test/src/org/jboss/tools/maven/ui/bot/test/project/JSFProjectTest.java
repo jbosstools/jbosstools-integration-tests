@@ -25,7 +25,6 @@ import org.jboss.tools.jsf.reddeer.ui.JSFNewProjectWizard;
 import org.jboss.tools.maven.ui.bot.test.AbstractMavenSWTBotTest;
 import org.junit.Test;
 
-@CleanWorkspace
 @OpenPerspective(JavaEEPerspective.class)
 @JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY8x)
 public class JSFProjectTest extends AbstractMavenSWTBotTest{

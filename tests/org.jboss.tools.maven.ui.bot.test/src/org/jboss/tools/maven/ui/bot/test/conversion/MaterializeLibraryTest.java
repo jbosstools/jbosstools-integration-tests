@@ -42,7 +42,6 @@ import org.junit.Test;
  * @author Rastislav Wagner
  * 
  */
-@CleanWorkspace
 @OpenPerspective(JavaPerspective.class)
 @JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY8x)
 public class MaterializeLibraryTest extends AbstractMavenSWTBotTest{

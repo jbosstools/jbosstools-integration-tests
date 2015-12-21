@@ -64,15 +64,7 @@ public abstract class AbstractConfiguratorsTest extends AbstractMavenSWTBotTest{
 	
 	@After
 	public void deleteProjects(){
-		ProjectExplorer pe = new ProjectExplorer();
-        pe.open();
-        try{
-        	pe.deleteAllProjects();
-        } catch (SWTLayerException ex){
-        	for(Project p: pe.getProjects()){
-        		DeleteUtils.forceProjectDeletion(p, true);
-        	}
-        }
+		deleteProjects(true);
 	}
 	
 	public void addPersistence(String projectName) throws FileNotFoundException{
