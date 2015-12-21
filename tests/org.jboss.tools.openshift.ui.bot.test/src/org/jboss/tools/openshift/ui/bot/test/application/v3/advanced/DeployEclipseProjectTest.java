@@ -3,6 +3,7 @@ package org.jboss.tools.openshift.ui.bot.test.application.v3.advanced;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import org.jboss.reddeer.common.exception.RedDeerException;
 import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
@@ -22,6 +23,7 @@ import org.jboss.reddeer.swt.impl.button.FinishButton;
 import org.jboss.reddeer.swt.impl.button.NextButton;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.button.YesButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
@@ -112,6 +114,13 @@ public class DeployEclipseProjectTest {
 		project.refresh();
 		project.select();
 		new ContextMenu(OpenShiftLabel.ContextMenu.GIT_COMMIT).select();
+		
+		try {
+			new DefaultShell("No files to commit");
+			new YesButton().click();
+		} catch (RedDeerException ex) {
+			// do nothing
+		}
 		
 		new DefaultShell(OpenShiftLabel.Shell.COMMIT);
 		new DefaultStyledText().setText("Commit from IDE");

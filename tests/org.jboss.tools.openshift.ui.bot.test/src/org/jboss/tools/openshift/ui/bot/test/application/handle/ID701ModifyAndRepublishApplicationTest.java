@@ -51,7 +51,8 @@ public class ID701ModifyAndRepublishApplicationTest extends IDXXXCreateTestingAp
 		
 		ServersView servers = new ServersView();
 		servers.open();
-		treeViewerHandler.getTreeItem(new DefaultTree(), applicationName + " at OpenShift").select();
+		treeViewerHandler.getTreeItem(new DefaultTree(), applicationName
+				+ OpenShiftLabel.Others.getOS2ServerAdapterAppendix()).select();
 		
 		new ContextMenu(OpenShiftLabel.ContextMenu.PUBLISH).select();
 		

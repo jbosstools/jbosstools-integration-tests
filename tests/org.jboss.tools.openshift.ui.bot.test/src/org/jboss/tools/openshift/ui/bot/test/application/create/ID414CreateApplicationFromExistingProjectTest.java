@@ -159,7 +159,7 @@ public class ID414CreateApplicationFromExistingProjectTest {
 		servers.open();
 
 		treeViewerHandler.getTreeItem(new DefaultTree(),
-				applicationName + " at OpenShift").select();
+				applicationName + OpenShiftLabel.Others.getOS2ServerAdapterAppendix()).select();
 		new ContextMenu("Publish").select();
 
 		new DefaultShell("Publish " + applicationName + "?");

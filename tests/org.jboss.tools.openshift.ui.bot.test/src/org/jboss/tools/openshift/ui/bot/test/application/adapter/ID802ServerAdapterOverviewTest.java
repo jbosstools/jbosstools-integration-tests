@@ -14,6 +14,7 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.tools.openshift.reddeer.utils.DatastoreOS2;
+import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.ui.bot.test.application.create.IDXXXCreateTestingApplication;
 import org.junit.Test;
 
@@ -32,11 +33,11 @@ public class ID802ServerAdapterOverviewTest extends IDXXXCreateTestingApplicatio
 		servers.open();
 		
 		TreeItem serverAdapter = treeViewerHandler.getTreeItem(new DefaultTree(), 
-				applicationName + " at OpenShift");
+				applicationName + OpenShiftLabel.Others.getOS2ServerAdapterAppendix());
 		serverAdapter.select();
 		serverAdapter.doubleClick();
 		
-		new ServerEditor(applicationName + " at OpenShift").activate();
+		new ServerEditor(applicationName + OpenShiftLabel.Others.getOS2ServerAdapterAppendix()).activate();
 		
 		assertTrue("Deployed project name is not same as in project explorer.",
 				new LabeledCombo("Deploy Project: ").getSelection().equals(applicationName));
@@ -58,7 +59,7 @@ public class ID802ServerAdapterOverviewTest extends IDXXXCreateTestingApplicatio
 		assertTrue("Remote should be enabled after allowing overriding project settings.", 
 				new LabeledText("Remote: ").isEnabled());
 		
-		new ServerEditor(applicationName + " at OpenShift").close();
+		new ServerEditor(applicationName + OpenShiftLabel.Others.getOS2ServerAdapterAppendix()).close();
 		
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}

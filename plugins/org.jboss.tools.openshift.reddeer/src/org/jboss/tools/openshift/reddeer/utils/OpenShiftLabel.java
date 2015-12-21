@@ -20,7 +20,7 @@ public class OpenShiftLabel {
 		public static final String JBOSS_EWS = "Tomcat 7 (JBoss EWS 2.0)";
 		public static final String PERL = "Perl 5.10";
 		public static final String PHP = "PHP 5.3";
-		public static final String PYTHON = "Python 2.6";
+		public static final String PYTHON = "Python 2.7";
 		public static final String RUBY_1_9 = "Ruby 1.9";
 		
 		// Quickstarts
@@ -95,7 +95,7 @@ public class OpenShiftLabel {
 		public static final String SHOW_ENV_VARS = "List All Environment Variables";
 		public static final String[] SHOW_IN_BROWSER = {"Show In", "Web Browser"};
 		public static final String TAIL_FILES = "Tail Files...";
-		public static final String[] DEPLOY_PROJECT = {"Configure", "New/Import OpenShift Application"};
+		public static final String[] DEPLOY_PROJECT = {"Configure", "Deploy to OpenShift"};
 		
 		// Server adapter related
 		public static final String PUBLISH = "Publish";
@@ -280,5 +280,12 @@ public class OpenShiftLabel {
 		public static final String OPENSHIFT_CENTRAL_SCRIPT = "$(\"#wizards\" ).find('a').filter(\""
 				+ ":contains('OpenShift Application')\").click()";
 		
+		public static String getOS2ServerAdapterAppendix() {
+			return " at OpenShift 2";
+		}
+		
+		public static String getOS3ServerAdapterAppendix() {
+			return "OpenShift 3 " + DatastoreOS3.SERVER.substring(8);
+		}
 	}
 }

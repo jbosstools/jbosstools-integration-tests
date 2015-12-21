@@ -183,7 +183,7 @@ import org.junit.runners.Suite.SuiteClasses;
 		ID802ServerAdapterOverviewTest.class,
 		ID803ServerAdapterHandlingTest.class,
 		ID804CreateServerAdapterTest.class,
-				
+			
 		// Application - advanced 
 		ID901DeleteMoreApplicationsTest.class,
 		ID902DeployGitProjectTest.class,		
