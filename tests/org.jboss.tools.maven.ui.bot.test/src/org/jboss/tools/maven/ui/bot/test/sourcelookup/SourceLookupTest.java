@@ -11,6 +11,8 @@ import java.io.IOException;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
+import org.jboss.reddeer.eclipse.core.resources.Project;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
@@ -21,6 +23,7 @@ import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.workbench.handler.EditorHandler;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.maven.reddeer.maven.sourcelookup.ui.preferences.SourceLookupPreferencePage;
 import org.jboss.tools.maven.reddeer.maven.sourcelookup.ui.preferences.SourceLookupPreferencePage.SourceAttachment;
@@ -30,7 +33,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-@CleanWorkspace
 @JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY8x)
 public class SourceLookupTest extends AbstractMavenSWTBotTest{
 	
@@ -40,9 +42,10 @@ public class SourceLookupTest extends AbstractMavenSWTBotTest{
 	
 	@After
 	public void delete(){
-		PackageExplorer pe = new PackageExplorer();
+		EditorHandler.getInstance().closeAll(false);
+		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
-		pe.getProject("test13848").delete(true);
+		org.jboss.reddeer.direct.project.Project.delete("test13848", true, true);
 	}
 	
 	//use new settings.xml because of already downloaded source jar
