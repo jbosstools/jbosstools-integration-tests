@@ -1,5 +1,6 @@
 package org.jboss.tools.runtime.as.ui.bot.test;
 
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.RuntimeDuplications;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.ServerWithSeam;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.seam.seam22.CheckSeam22;
@@ -65,7 +66,7 @@ import org.junit.runners.Suite;
  * @author Petr Suchy
  * @author Radoslav Rabara
  */
-@RunWith(JBTSuite.class)
+@RunWith(RedDeerSuite.class)
 @Suite.SuiteClasses({
 
 		RuntimeDuplications.class,
