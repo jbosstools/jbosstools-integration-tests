@@ -10,7 +10,6 @@ import org.jboss.tools.cdi.bot.test.beans.bean.template.VetoedAnnotationTemplate
 
 @JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY8x)
 @OpenPerspective(JavaEEPerspective.class)
-@CleanWorkspace
 public class VetoedAnnotationTestCDI11 extends VetoedAnnotationTemplate{
 	
 

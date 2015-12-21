@@ -103,6 +103,7 @@
 				<configuration>
 					<testSuite>org.jboss.tools.cdi.bot.test</testSuite>
 					<testClass>${suiteClass}</testClass>
+					<appArgLine>-pluginCustomization ${basedir}/pluginCustomization.ini</appArgLine>
 					<!-- Kill swt bot test take more than 3 hours minutes (10800 seconds) 
 						to finish -->
 					<dependencies combine.children="append">

@@ -10,7 +10,6 @@ import org.jboss.tools.cdi.bot.test.wizard.template.CDIWebProjectWizardTemplate;
 
 @JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.AS7_1)
 @OpenPerspective(JavaEEPerspective.class)
-@CleanWorkspace
 public class CDIWebProjectWizardTestCDI10 extends CDIWebProjectWizardTemplate{
 	
 	public CDIWebProjectWizardTestCDI10(){

@@ -27,7 +27,6 @@ import org.jboss.tools.cdi.bot.test.beans.named.teplate.NamedRefactoringTemplate
  */
 @JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.AS7_1)
 @OpenPerspective(JavaEEPerspective.class)
-@CleanWorkspace
 public class NamedRefactoringTestCDI10 extends NamedRefactoringTemplate{
 	
 
