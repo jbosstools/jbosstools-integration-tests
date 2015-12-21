@@ -52,6 +52,7 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.workbench.api.Editor;
+import org.jboss.reddeer.workbench.handler.EditorHandler;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
@@ -62,6 +63,7 @@ import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.tools.maven.ui.bot.test.utils.ProjectIsBuilt;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.jboss.tools.maven.reddeer.preferences.MavenPreferencePage;
 
@@ -79,6 +81,16 @@ public abstract class AbstractMavenSWTBotTest{
 		preferenceDialog.ok();
 		
 		setGit();
+	}
+	
+	@AfterClass
+	public static void cleanUp(){
+		EditorHandler.getInstance().closeAll(false);
+		ProjectExplorer pe = new ProjectExplorer();
+		pe.open();
+		for(Project p: pe.getProjects()){
+			org.jboss.reddeer.direct.project.Project.delete(p.getName(), true, true);
+		}
 	}
 	
 	public boolean hasNature(String projectName, String version, String... natureID){
@@ -161,15 +173,11 @@ public abstract class AbstractMavenSWTBotTest{
 	}
 	
 	public static void deleteProjects(boolean fromSystem){
-		PackageExplorer pexplorer = new PackageExplorer();
-		pexplorer.open();
-		pexplorer.deleteAllProjects(fromSystem);
-		List<Project> projects = pexplorer.getProjects();
-		if(projects.size()!=0){
-			log.warn("Not all projects have been deleted");
-			for(Project p: projects){
-				org.jboss.reddeer.direct.project.Project.delete(p.getName(), true, true);
-			}
+		EditorHandler.getInstance().closeAll(false);
+		ProjectExplorer pe = new ProjectExplorer();
+		pe.open();
+		for(Project p: pe.getProjects()){
+			org.jboss.reddeer.direct.project.Project.delete(p.getName(), true, true);
 		}
 	}
 	

@@ -52,7 +52,6 @@ import org.junit.Test;
  * @author Rastislav Wagner
  * 
  */
-@CleanWorkspace
 @OpenPerspective(JavaPerspective.class)
 @JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY8x)
 public class MavenProfilesTest extends AbstractMavenSWTBotTest {
@@ -87,11 +86,6 @@ public class MavenProfilesTest extends AbstractMavenSWTBotTest {
 		importMavenProject("resources/projects/simple-jar/pom.xml");
 		importMavenProject("resources/projects/simple-jar1/pom.xml");
 		importMavenProject("resources/projects/simple-jar2/pom.xml");
-	}
-	
-	@AfterClass
-	public static void clean(){
-		deleteProjects(false);
 	}
 	
 	@After

@@ -25,7 +25,6 @@ import org.jboss.tools.maven.ui.bot.test.AbstractMavenSWTBotTest;
 import org.junit.Before;
 import org.junit.Test;
 
-@CleanWorkspace
 @OpenPerspective(JavaEEPerspective.class)
 public class SCMCheckoutProject extends AbstractMavenSWTBotTest {
 	

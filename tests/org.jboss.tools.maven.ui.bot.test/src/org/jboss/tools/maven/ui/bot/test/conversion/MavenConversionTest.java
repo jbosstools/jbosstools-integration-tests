@@ -51,7 +51,6 @@ import org.jboss.tools.maven.ui.bot.test.AbstractMavenSWTBotTest;
 import org.junit.After;
 import org.junit.Test;
 
-@CleanWorkspace
 @OpenPerspective(JavaEEPerspective.class)
 @JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY8x)
 @DefineMavenRepository(predefinedRepositories = { @PredefinedMavenRepository(ID="jboss-public-repository",snapshots=true) })
