@@ -86,6 +86,7 @@ public class ID706PortForwardingTest {
 		
 		new PushButton(OpenShiftLabel.Button.START_ALL).click();
 		
+		new DefaultShell(OpenShiftLabel.Shell.PORTS_FORWARDING);
 		new WaitUntil(new WidgetIsEnabled(new OkButton()), TimePeriod.LONG);
 		
 		new OkButton().click();
@@ -109,6 +110,7 @@ public class ID706PortForwardingTest {
 		new DefaultShell(OpenShiftLabel.Shell.PORTS_FORWARDING);
 		new PushButton(OpenShiftLabel.Button.STOP_ALL).click();
 		
+		new DefaultShell(OpenShiftLabel.Shell.PORTS_FORWARDING);
 		new WaitUntil(new WidgetIsEnabled(new OkButton()), TimePeriod.LONG);
 		
 		new OkButton().click();

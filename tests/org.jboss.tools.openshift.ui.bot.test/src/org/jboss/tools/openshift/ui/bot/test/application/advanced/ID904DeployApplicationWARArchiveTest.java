@@ -125,7 +125,7 @@ public class ID904DeployApplicationWARArchiveTest {
 		servers.open();
 
 		TreeViewerHandler.getInstance().getTreeItem(new DefaultTree(),
-				applicationName + " at OpenShift").select();
+				applicationName + OpenShiftLabel.Others.getOS2ServerAdapterAppendix()).select();
 		new ContextMenu("Publish").select();
 		
 		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.PUBLISH_CHANGES), 
@@ -214,7 +214,7 @@ public class ID904DeployApplicationWARArchiveTest {
 		servers.open();
 
 		TreeViewerHandler.getInstance().getTreeItem(new DefaultTree(),
-				applicationName + " at OpenShift").select();
+				applicationName + OpenShiftLabel.Others.getOS2ServerAdapterAppendix()).select();
 		new ContextMenu("Publish").select();
 		
 		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.PUBLISH_CHANGES), 
