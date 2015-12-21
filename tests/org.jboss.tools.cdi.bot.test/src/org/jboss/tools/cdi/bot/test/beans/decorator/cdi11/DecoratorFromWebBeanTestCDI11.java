@@ -13,7 +13,6 @@ import org.junit.Before;
 
 @JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY8x)
 @OpenPerspective(JavaEEPerspective.class)
-@CleanWorkspace
 public class DecoratorFromWebBeanTestCDI11 extends DecoratorFromWebBeanTemplate{
 	
 	@Before

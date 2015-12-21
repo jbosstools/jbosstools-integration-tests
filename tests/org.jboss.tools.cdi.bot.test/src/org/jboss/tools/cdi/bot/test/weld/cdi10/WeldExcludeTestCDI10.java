@@ -12,7 +12,6 @@ import org.junit.Before;
 
 @JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.AS7_1)
 @OpenPerspective(JavaEEPerspective.class)
-@CleanWorkspace
 public class WeldExcludeTestCDI10 extends WeldExcludeTemplate{
 	
 	@Before

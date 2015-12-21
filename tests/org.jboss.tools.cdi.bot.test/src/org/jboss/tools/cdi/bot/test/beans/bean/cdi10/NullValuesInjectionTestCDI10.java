@@ -10,7 +10,6 @@ import org.jboss.tools.cdi.bot.test.beans.bean.template.NullValuesInjectionTempl
 
 @JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.AS7_1)
 @OpenPerspective(JavaEEPerspective.class)
-@CleanWorkspace
 public class NullValuesInjectionTestCDI10 extends NullValuesInjectionTemplate{
 	
 	public NullValuesInjectionTestCDI10(){

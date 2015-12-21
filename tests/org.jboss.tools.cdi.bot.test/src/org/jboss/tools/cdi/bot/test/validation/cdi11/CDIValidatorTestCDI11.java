@@ -12,7 +12,6 @@ import org.junit.Before;
 
 @JBossServer(state = ServerReqState.PRESENT, type = ServerReqType.WILDFLY8x)
 @OpenPerspective(JavaEEPerspective.class)
-@CleanWorkspace
 public class CDIValidatorTestCDI11 extends CDIValidatorTemplate{
 	
 	@Before

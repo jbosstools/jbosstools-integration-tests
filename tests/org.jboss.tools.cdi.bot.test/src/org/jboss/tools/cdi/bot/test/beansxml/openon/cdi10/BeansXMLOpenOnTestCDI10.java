@@ -10,7 +10,6 @@ import org.jboss.tools.cdi.bot.test.beansxml.openon.template.BeansXMLOpenOnTempl
 
 @JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.AS7_1)
 @OpenPerspective(JavaEEPerspective.class)
-@CleanWorkspace
 public class BeansXMLOpenOnTestCDI10 extends BeansXMLOpenOnTemplate{
 
 }

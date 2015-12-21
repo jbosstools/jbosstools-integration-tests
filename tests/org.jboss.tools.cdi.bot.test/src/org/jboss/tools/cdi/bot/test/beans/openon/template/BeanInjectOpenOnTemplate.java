@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.swt.SWT;
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.swt.api.Shell;
 import org.jboss.reddeer.swt.api.Table;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
@@ -59,6 +61,7 @@ public class BeanInjectOpenOnTemplate extends CDITestBase{
 
 		prepareInjectedPointsComponents();
 		
+		new WaitWhile(new JobIsRunning());
 		for(String injectionPoint: beanInjections.keySet()){
 			checkInjectedPoint(injectionPoint);
 			openInjectionPoint(injectionPoint);
@@ -88,6 +91,7 @@ public class BeanInjectOpenOnTemplate extends CDITestBase{
 		e.selectText(injectionPoint);
 		List<String> beans =  beanInjections.get(injectionPoint);
 		if(beans.size() == 1){
+			
 			openOnHelper.selectProposal("MainBean", injectionPoint, "Open @Inject Bean "+beans.get(0));
 			TextEditor te = new TextEditor();
 			assertEquals(beans.get(0)+".java",te.getTitle());

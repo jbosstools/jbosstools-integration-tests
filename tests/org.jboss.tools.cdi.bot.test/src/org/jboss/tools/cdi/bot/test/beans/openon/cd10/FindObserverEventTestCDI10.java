@@ -10,7 +10,6 @@ import org.jboss.tools.cdi.bot.test.beans.openon.template.FindObserverEventTempl
 
 @JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.AS7_1)
 @OpenPerspective(JavaEEPerspective.class)
-@CleanWorkspace
 public class FindObserverEventTestCDI10 extends FindObserverEventTemplate{
 
 }
