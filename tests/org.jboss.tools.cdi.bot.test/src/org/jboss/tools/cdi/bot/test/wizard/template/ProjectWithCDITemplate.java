@@ -15,17 +15,20 @@ import static org.junit.Assert.*;
 
 import java.util.List;
 
+import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.eclipse.condition.ProblemExists;
+import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.swt.impl.button.LabeledCheckBox;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.workbench.handler.EditorHandler;
 import org.junit.After;
 import org.junit.Test;
 import org.jboss.reddeer.eclipse.ui.problems.Problem;
@@ -43,9 +46,19 @@ public class ProjectWithCDITemplate{
 
 	@After
 	public void cleanUp() {
+		EditorHandler.getInstance().closeAll(false);
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
-		pe.deleteAllProjects();
+		for(Project p: pe.getProjects()){
+			try{
+				org.jboss.reddeer.direct.project.Project.delete(p.getName(), true, true);
+			} catch (Exception ex) {
+				AbstractWait.sleep(TimePeriod.NORMAL);
+				if(!p.getTreeItem().isDisposed()){
+					org.jboss.reddeer.direct.project.Project.delete(p.getName(), true, true);
+				}
+			}
+		}
 	}
 	
 	@Test

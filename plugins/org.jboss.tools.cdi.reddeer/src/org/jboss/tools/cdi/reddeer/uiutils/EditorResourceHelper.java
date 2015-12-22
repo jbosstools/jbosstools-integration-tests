@@ -51,6 +51,7 @@ public class EditorResourceHelper {
 	
 	public void replaceClassContentByResource(String editorName, String code, boolean closeEdit) {
 		replaceClassContentByResource(editorName, code, true, closeEdit);
+		new WaitWhile(new JobIsRunning());
 	}
 	
 	/**

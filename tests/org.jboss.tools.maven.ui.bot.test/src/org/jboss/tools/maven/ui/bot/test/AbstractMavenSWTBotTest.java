@@ -32,9 +32,11 @@ import org.jboss.reddeer.eclipse.jst.servlet.ui.WebProjectWizard;
 import org.jboss.reddeer.eclipse.m2e.core.ui.wizard.MavenProjectWizard;
 import org.jboss.reddeer.eclipse.m2e.core.ui.wizard.MavenProjectWizardArtifactPage;
 import org.jboss.reddeer.eclipse.m2e.core.ui.wizard.MavenProjectWizardPage;
+import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.swt.api.StyledText;
 import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
@@ -54,11 +56,13 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.workbench.api.Editor;
 import org.jboss.reddeer.workbench.handler.EditorHandler;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
+import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.common.matcher.RegexMatcher;
 import org.jboss.reddeer.core.matcher.WithTextMatchers;
+import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
@@ -73,6 +77,7 @@ public abstract class AbstractMavenSWTBotTest{
 	
 	@BeforeClass 
 	public static void beforeClass(){
+		new WorkbenchShell().maximize();
 		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
 		preferenceDialog.open();
 		MavenPreferencePage mpreferencesp = new MavenPreferencePage();
@@ -89,7 +94,14 @@ public abstract class AbstractMavenSWTBotTest{
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		for(Project p: pe.getProjects()){
-			org.jboss.reddeer.direct.project.Project.delete(p.getName(), true, true);
+			try{
+				org.jboss.reddeer.direct.project.Project.delete(p.getName(), true, true);
+			} catch (Exception ex) {
+				AbstractWait.sleep(TimePeriod.NORMAL);
+				if(!p.getTreeItem().isDisposed()){
+					org.jboss.reddeer.direct.project.Project.delete(p.getName(), true, true);
+				}
+			}
 		}
 	}
 	
@@ -153,6 +165,13 @@ public abstract class AbstractMavenSWTBotTest{
 	}
 	
 	public void buildProject(String projectName, String mavenBuild, String goals, boolean shouldBuild){
+		ConsoleView cview = new ConsoleView();
+		cview.open();
+		try{
+			cview.clearConsole();
+		} catch (CoreLayerException ex){
+			//there's not clear console button, since nothing run before
+		}
 		PackageExplorer pexplorer = new PackageExplorer();
 		pexplorer.open();
 		pexplorer.getProject(projectName).select();
@@ -177,7 +196,14 @@ public abstract class AbstractMavenSWTBotTest{
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		for(Project p: pe.getProjects()){
-			org.jboss.reddeer.direct.project.Project.delete(p.getName(), true, true);
+			try{
+				org.jboss.reddeer.direct.project.Project.delete(p.getName(), true, true);
+			} catch (Exception ex) {
+				AbstractWait.sleep(TimePeriod.NORMAL);
+				if(!p.getTreeItem().isDisposed()){
+					org.jboss.reddeer.direct.project.Project.delete(p.getName(), true, true);
+				}
+			}
 		}
 	}
 	

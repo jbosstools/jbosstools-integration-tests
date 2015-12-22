@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.jface.text.contentassist.ContentAssistant;
 import org.jboss.reddeer.workbench.condition.EditorHasValidationMarkers;
@@ -45,12 +46,14 @@ public class NullValuesInjectionTemplate extends CDITestBase{
 			new WaitUntil(new EditorHasValidationMarkers(te),TimePeriod.NORMAL,false);
 			assertTrue(new EditorHasValidationMarkers(te).test());
 			te.save();
+			new WaitWhile(new JobIsRunning());
 			new WaitUntil(new EditorHasValidationMarkers(te),TimePeriod.NORMAL,false);
 			assertTrue(new EditorHasValidationMarkers(te).test());
 		} else {
 			new WaitUntil(new EditorHasValidationMarkers(te),TimePeriod.NORMAL,false);
 			new WaitWhile(new EditorHasValidationMarkers(te));
 			te.save();
+			new WaitWhile(new JobIsRunning());
 			new WaitUntil(new EditorHasValidationMarkers(te),TimePeriod.NORMAL,false);
 			new WaitWhile(new EditorHasValidationMarkers(te));
 			checkOpenOn("Bean2.java","primitiveB","Open @Inject Bean Bean1.getB()", "Bean1.java");
