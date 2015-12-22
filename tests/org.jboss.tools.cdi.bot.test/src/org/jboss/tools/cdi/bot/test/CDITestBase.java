@@ -19,6 +19,7 @@ import java.util.Scanner;
 import java.util.logging.Logger;
 
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
+import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
@@ -28,6 +29,7 @@ import org.jboss.reddeer.core.lookup.ShellLookup;
 import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.workbench.handler.EditorHandler;
+import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.eclipse.jst.servlet.ui.WebProjectFirstPage;
 import org.jboss.reddeer.eclipse.utils.DeleteUtils;
@@ -46,8 +48,8 @@ import org.jboss.tools.common.reddeer.preferences.SourceLookupPreferencePage;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 
-//@AutoBuilding(value = false)
 public class CDITestBase{
 	
 	protected static String PROJECT_NAME = "CDIProject";
@@ -63,6 +65,11 @@ public class CDITestBase{
 	
 	@InjectRequirement
     private ServerRequirement sr;
+	
+	@BeforeClass
+	public static void maximizeWorkbench(){
+		new WorkbenchShell().maximize();
+	}
 
 	@Before
 	public void prepareWorkspace() {
@@ -80,20 +87,34 @@ public class CDITestBase{
 	
 	@AfterClass
 	public static void cleanUp(){
+		new WaitWhile(new JobIsRunning());
 		EditorHandler.getInstance().closeAll(false);
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		for(Project p: pe.getProjects()){
-			org.jboss.reddeer.direct.project.Project.delete(p.getName(), true, true);
+			try{
+				org.jboss.reddeer.direct.project.Project.delete(p.getName(), true, true);
+			} catch (RuntimeException ex) {
+				AbstractWait.sleep(TimePeriod.NORMAL);
+				org.jboss.reddeer.direct.project.Project.delete(p.getName(), true, true);
+			}
 		}
 	}
 	
 	protected void deleteAllProjects(){
+		new WaitWhile(new JobIsRunning());
 		EditorHandler.getInstance().closeAll(false);
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		for(Project p: pe.getProjects()){
-			org.jboss.reddeer.direct.project.Project.delete(p.getName(), true, true);
+			try{
+				org.jboss.reddeer.direct.project.Project.delete(p.getName(), true, true);
+			} catch (Exception ex) {
+				AbstractWait.sleep(TimePeriod.NORMAL);
+				if(!p.getTreeItem().isDisposed()){
+					org.jboss.reddeer.direct.project.Project.delete(p.getName(), true, true);
+				}
+			}
 		}
 	}
 	

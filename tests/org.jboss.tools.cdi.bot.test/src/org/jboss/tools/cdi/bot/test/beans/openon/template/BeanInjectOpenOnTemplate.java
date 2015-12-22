@@ -11,6 +11,7 @@ import java.util.Map;
 import org.eclipse.swt.SWT;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.jboss.reddeer.core.handler.TableHandler;
 import org.jboss.reddeer.swt.api.Shell;
 import org.jboss.reddeer.swt.api.Table;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
@@ -122,9 +123,9 @@ public class BeanInjectOpenOnTemplate extends CDITestBase{
 				openOnHelper.selectProposal("MainBean", injectionPoint, 
 						"Show All Assignable Beans...");
 				Table observerTable = new DefaultTable();
-				observerTable.getItem(proposal).select();
+				//observerTable.getItem(proposal).select();
 			
-				KeyboardFactory.getKeyboard().invokeKeyCombination(SWT.CR);
+				TableHandler.getInstance().setDefaultSelection(observerTable.getItem(proposal).getSWTWidget());
 			
 				if(proposal.contains("@")){
 					String[] splitted = proposal.split(" ");

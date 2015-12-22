@@ -42,7 +42,6 @@ import org.junit.Test;
  * @author jjankovi
  * 
  */
-@CleanWorkspace
 @OpenPerspective(JavaEEPerspective.class)
 @JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.AS7_1)
 public class ExceptionHandlerAnnotationTest extends DeltaspikeTestBase {
@@ -55,11 +54,7 @@ public class ExceptionHandlerAnnotationTest extends DeltaspikeTestBase {
 
 	@After
 	public void closeAllEditors() {
-		ProjectExplorer pe = new ProjectExplorer();
-		pe.open();
-		for(Project p: pe.getProjects()){
-			p.delete(true);
-		}
+		deleteAllProjects();
 	}
 
 	@Test
