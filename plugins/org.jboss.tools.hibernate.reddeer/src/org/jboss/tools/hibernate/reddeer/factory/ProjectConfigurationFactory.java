@@ -85,6 +85,10 @@ public class ProjectConfigurationFactory {
 		prjDlg.setFocus();
 				
 		prjDlg.ok();
+
+		// workaround for lost focus
+		pe.open();
+		pe.selectProjects(prj);
 		
 		prjDlg.open();		
 		prjDlg.select("JPA");
