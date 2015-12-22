@@ -9,8 +9,12 @@ import java.util.Map;
 
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.swt.condition.TableHasRows;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
@@ -217,9 +221,10 @@ public abstract class NamedComponentsSearchingTemplate extends CDITestBase{
 		
 		namedDialog = openSearchNamedDialog();
 		namedDialog.setNamedPrefix(beanName);
-		assertTrue(namedDialog.matchingItems().size() == 0);
+		new WaitWhile(new TableHasRows(new DefaultTable()), TimePeriod.NORMAL, false);
+		assertEquals(0,namedDialog.matchingItems().size());
 		namedDialog.setNamedPrefix(namedParam);
-		assertTrue(namedDialog.matchingItems().size() == 1);
+		assertEquals(1,namedDialog.matchingItems().size());
 		namedDialog.ok();
 		assertTrue(new DefaultEditor().getTitle().equals(beanName + ".java"));
 		assertTrue(new TextEditor().getSelectedText().equals(beanName));
@@ -228,6 +233,7 @@ public abstract class NamedComponentsSearchingTemplate extends CDITestBase{
 		
 		namedDialog = openSearchNamedDialog();
 		namedDialog.setNamedPrefix(namedParam);
+		new WaitWhile(new TableHasRows(new DefaultTable()), TimePeriod.NORMAL, false);
 		assertEquals(0, namedDialog.matchingItems().size());
 		namedDialog.setNamedPrefix(changedNamedParam);
 		assertEquals(1, namedDialog.matchingItems().size());

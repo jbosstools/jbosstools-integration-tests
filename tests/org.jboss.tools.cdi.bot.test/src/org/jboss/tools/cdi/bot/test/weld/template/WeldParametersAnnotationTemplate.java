@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardDialog;
@@ -53,6 +54,7 @@ public class WeldParametersAnnotationTemplate extends CDITestBase{
 		new WaitWhile(new EditorHasValidationMarkers(te),TimePeriod.NORMAL, false);
 		assertEquals(0,te.getMarkers().size());
 		te.save();
+		new WaitUntil(new JobIsRunning(),TimePeriod.SHORT,false);
 		new WaitWhile(new JobIsRunning());
 		assertEquals(0,te.getMarkers().size());
 		

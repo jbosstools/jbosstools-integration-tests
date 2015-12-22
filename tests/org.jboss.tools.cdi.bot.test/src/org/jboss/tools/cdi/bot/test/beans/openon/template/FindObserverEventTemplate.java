@@ -20,8 +20,11 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.swt.SWT;
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.handler.TableHandler;
 import org.jboss.reddeer.swt.api.Shell;
 import org.jboss.reddeer.swt.api.Table;
+import org.jboss.reddeer.swt.condition.ShellIsActive;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
@@ -126,11 +129,12 @@ public abstract class FindObserverEventTemplate extends CDITestBase {
 		List<String> proposals = openOnHelper.getProposals(className, eventName, "Show CDI Observer Methods...");
 		for(String proposal: proposals){
 			openOnHelper.selectProposal(className, eventName, "Show CDI Observer Methods...");
+			Shell observerMethods = new DefaultShell(); 
 			Table observerTable = new DefaultTable();
-			observerTable.getItem(proposal).select();
+			//observerTable.getItem(proposal).select();
 			
-			KeyboardFactory.getKeyboard().invokeKeyCombination(SWT.CR);
-			
+			TableHandler.getInstance().setDefaultSelection(observerTable.getItem(proposal).getSWTWidget());
+			new WaitWhile(new ShellIsActive(observerMethods));
 			String[] splitted = proposal.split("\\.");
 			TextEditor te = new TextEditor();
 			assertEquals(splitted[0]+".java",te.getTitle());
@@ -146,11 +150,12 @@ public abstract class FindObserverEventTemplate extends CDITestBase {
 			List<String> proposals = openOnHelper.getProposals(className, observer, "Show CDI Events...");
 			for(String proposal: proposals){
 				openOnHelper.selectProposal(className, observer, "Show CDI Events...");
+				Shell cdiEvents = new DefaultShell(); 
 				Table observerTable = new DefaultTable();
-				observerTable.getItem(proposal).select();
+				//observerTable.getItem(proposal).select();
 			
-				KeyboardFactory.getKeyboard().invokeKeyCombination(SWT.CR);
-			
+				TableHandler.getInstance().setDefaultSelection(observerTable.getItem(proposal).getSWTWidget());
+				new WaitWhile(new ShellIsActive(cdiEvents));
 				String[] splitted = proposal.split("\\.");
 				TextEditor te = new TextEditor();
 				assertEquals(splitted[0]+".java",te.getTitle());
