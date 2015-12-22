@@ -30,9 +30,7 @@ public class SCMCheckoutProject extends AbstractMavenSWTBotTest {
 	
 	@Before
 	public void deleteProjects(){
-		ProjectExplorer pe = new ProjectExplorer();
-		pe.open();
-		pe.deleteAllProjects();
+		deleteProjects(true);
 	}
 
 	@Test

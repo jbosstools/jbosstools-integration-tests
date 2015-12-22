@@ -43,9 +43,11 @@ import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.common.matcher.RegexMatcher;
 import org.jboss.reddeer.core.matcher.WithTextMatcher;
+import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.workbench.handler.EditorHandler;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.common.reddeer.preferences.SourceLookupPreferencePage;
 import org.jboss.tools.common.reddeer.preferences.SourceLookupPreferencePage.SourceAttachmentEnum;
@@ -62,7 +64,19 @@ public class DeltaspikeTestBase {
 
 	@AfterClass
 	public static void cleanUp() {
-		deleteAllProjects();
+		EditorHandler.getInstance().closeAll(false);
+		ProjectExplorer pe = new ProjectExplorer();
+		pe.open();
+		for(Project p: pe.getProjects()){
+			try{
+				org.jboss.reddeer.direct.project.Project.delete(p.getName(), true, true);
+			} catch (Exception ex) {
+				AbstractWait.sleep(TimePeriod.NORMAL);
+				if(!p.getTreeItem().isDisposed()){
+					org.jboss.reddeer.direct.project.Project.delete(p.getName(), true, true);
+				}
+			}
+		}
 	}
 	
 	@BeforeClass
@@ -169,11 +183,19 @@ public class DeltaspikeTestBase {
 		
 	}
 
-	private static void deleteAllProjects() {
+	protected void deleteAllProjects() {
+		EditorHandler.getInstance().closeAll(false);
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
-		for (Project project : pe.getProjects()) {
-			project.delete(true);
+		for(Project p: pe.getProjects()){
+			try{
+				org.jboss.reddeer.direct.project.Project.delete(p.getName(), true, true);
+			} catch (Exception ex) {
+				AbstractWait.sleep(TimePeriod.NORMAL);
+				if(!p.getTreeItem().isDisposed()){
+					org.jboss.reddeer.direct.project.Project.delete(p.getName(), true, true);
+				}
+			}
 		}
 	}
 

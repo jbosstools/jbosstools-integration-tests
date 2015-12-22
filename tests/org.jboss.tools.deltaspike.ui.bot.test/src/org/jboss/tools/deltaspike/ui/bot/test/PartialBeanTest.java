@@ -5,6 +5,7 @@ import static org.junit.Assert.fail;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.List;
 import java.util.Scanner;
 
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
@@ -21,6 +22,8 @@ import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.workbench.condition.EditorHasValidationMarkers;
 import org.jboss.reddeer.workbench.impl.editor.Marker;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
@@ -29,7 +32,6 @@ import org.junit.Test;
 
 
 //based on JBIDE-13419
-@CleanWorkspace
 @OpenPerspective(JavaEEPerspective.class)
 @JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY8x)
 public class PartialBeanTest extends NewDeltaspikeTestBase{
@@ -139,8 +141,9 @@ public class PartialBeanTest extends NewDeltaspikeTestBase{
 	
 	private void assertNoErrors(String className){
 		TextEditor ed = new TextEditor(className+".java");
-		new WaitUntil(new EditorHasValidationMarkers(ed),TimePeriod.NORMAL,false);
-		assertEquals(0,ed.getMarkers().size());
+		new WaitWhile(new JobIsRunning());
+		List<Marker> markers = ed.getMarkers();
+		assertEquals(markers.toString(),0,ed.getMarkers().size());
 	}
 	
 	protected static String readFile(String path) {
