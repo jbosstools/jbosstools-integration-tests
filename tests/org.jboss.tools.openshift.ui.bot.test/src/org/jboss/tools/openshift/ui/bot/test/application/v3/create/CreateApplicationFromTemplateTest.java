@@ -3,14 +3,18 @@ package org.jboss.tools.openshift.ui.bot.test.application.v3.create;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
 import java.util.List;
 
 import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.eclipse.condition.ProjectExists;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
 import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.swt.impl.button.BackButton;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
@@ -18,10 +22,14 @@ import org.jboss.reddeer.swt.impl.button.FinishButton;
 import org.jboss.reddeer.swt.impl.button.NextButton;
 import org.jboss.reddeer.swt.impl.button.NoButton;
 import org.jboss.reddeer.swt.impl.button.OkButton;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.link.DefaultLink;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
+import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.tools.openshift.reddeer.enums.Resource;
@@ -34,7 +42,9 @@ import org.jboss.tools.openshift.reddeer.view.OpenShiftResource;
 import org.jboss.tools.openshift.reddeer.wizard.v3.NewOpenShift3ApplicationWizard;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.basic.TemplateParametersTest;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class CreateApplicationFromTemplateTest {
@@ -42,19 +52,92 @@ public class CreateApplicationFromTemplateTest {
 	private String gitFolder = "jboss-eap-quickstarts";
 	private String projectName = "jboss-kitchensink";
 	
+	private static final String TESTS_PROJECT = "org.jboss.tools.openshift.ui.bot.test";
+	private static final String TESTS_PROJECT_LOCATION = System.getProperty("user.dir");
+	
+	private String genericWebhookURL;
+	private String githubWebhookURL;
+	
+	private String srcRepoURI;
+	private String applicationName;
+	
+	@BeforeClass
+	public static void importTestsProject()  {		
+		new ExternalProjectImportWizardDialog().open();
+		new DefaultCombo().setText(TESTS_PROJECT_LOCATION);
+		new PushButton("Refresh").click();
+		
+		new WaitUntil(new WidgetIsEnabled(new FinishButton()));
+		
+		new FinishButton().click();
+		
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		new WaitUntil(new ProjectExists(TESTS_PROJECT), TimePeriod.LONG);
+	}
+	
 	@Before
 	public void setUp() {
 		TestUtils.cleanupGitFolder(gitFolder);
+		if (new ProjectExists(projectName).test()) {
+			new ProjectExplorer().getProject(projectName).delete(true);
+		}
+		genericWebhookURL = null;
+		githubWebhookURL = null;
+		srcRepoURI = null;
+		applicationName = null;
 	}
 	
 	@Test
-	public void testCreateApplicationFromTemplate() {
-		String genericWebhookURL;
-		String githubWebhookURL;
+	public void createApplicationFromLocalWorkspaceTemplate() {
+		new NewOpenShift3ApplicationWizard().openWizardFromExplorer();
+		new DefaultTabItem(OpenShiftLabel.TextLabels.LOCAL_TEMPLATE).activate();
+		new PushButton(OpenShiftLabel.Button.WORKSPACE).click();
 		
+		new DefaultShell(OpenShiftLabel.Shell.SELECT_OPENSHIFT_TEMPLATE);
+		new DefaultTreeItem("org.jboss.tools.openshift.ui.bot.test", "resources", 
+				"eap64-basic-s2i.json").select();
+		new OkButton().click();
+		
+		assertTrue("Template from workspace is not correctly shown in text field containing its path",
+				new LabeledText(OpenShiftLabel.TextLabels.SELECT_LOCAL_TEMPLATE).getText().
+					equals("${workspace_loc:" + File.separator + "org.jboss.tools.openshift.ui.bot.test"
+							+ File.separator + "resources" + File.separator + "eap64-basic-s2i.json}"));
+
+		assertTrue("Defined resource button should be enabled", 
+				new PushButton(OpenShiftLabel.Button.DEFINED_RESOURCES).isEnabled());
+		
+		completeApplicationCreationAndVerify();
+	}
+	
+	@Test
+	public void createApplicationFromLocalFileSystemTemplate() {
+		new NewOpenShift3ApplicationWizard().openWizardFromExplorer();
+		new DefaultTabItem(OpenShiftLabel.TextLabels.LOCAL_TEMPLATE).activate();
+		new LabeledText(OpenShiftLabel.TextLabels.SELECT_LOCAL_TEMPLATE).setText(
+				TESTS_PROJECT_LOCATION + File.separator + "resources"
+				+ File.separator + "eap64-basic-s2i.json");
+		
+		assertTrue("Defined resource button should be enabled", 
+				new PushButton(OpenShiftLabel.Button.DEFINED_RESOURCES).isEnabled());
+		
+		completeApplicationCreationAndVerify();
+	}
+	
+	@Test
+	public void testCreateApplicationFromServerTemplate() {
 		new NewOpenShift3ApplicationWizard().openWizardFromExplorer();
 		new DefaultTree().selectItems(new DefaultTreeItem(OpenShiftLabel.Others.EAP_TEMPLATE));
 		
+		completeApplicationCreationAndVerify();
+	}
+	
+	private void completeApplicationCreationAndVerify() {
+		completeWizardAndVerify();
+		importApplicationAndVerify();
+		verifyCreatedApplication();
+	}
+	
+	private void completeWizardAndVerify() {
 		new WaitUntil(new WidgetIsEnabled(new NextButton()), TimePeriod.NORMAL);
 		
 		new NextButton().click();
@@ -62,9 +145,9 @@ public class CreateApplicationFromTemplateTest {
 		new WaitUntil(new WidgetIsEnabled(new BackButton()), TimePeriod.LONG);
 		
 		String srcRepoRef = new DefaultTable().getItem(TemplateParametersTest.SOURCE_REPOSITORY_REF).getText(1);
-		String srcRepoURI = new DefaultTable().getItem(TemplateParametersTest.SOURCE_REPOSITORY_URL).getText(1);
+		srcRepoURI = new DefaultTable().getItem(TemplateParametersTest.SOURCE_REPOSITORY_URL).getText(1);
 		String contextDir = new DefaultTable().getItem(TemplateParametersTest.CONTEXT_DIR).getText(1);
-		String applicationName = new DefaultTable().getItem(TemplateParametersTest.APPLICATION_NAME).getText(1);
+		applicationName = new DefaultTable().getItem(TemplateParametersTest.APPLICATION_NAME).getText(1);
 		new NextButton().click();
 		
 		new WaitWhile(new WidgetIsEnabled(new NextButton()), TimePeriod.LONG);
@@ -107,7 +190,9 @@ public class CreateApplicationFromTemplateTest {
 		
 		new DefaultShell(OpenShiftLabel.Shell.APPLICATION_SUMMARY);
 		new OkButton().click();
-		
+	}
+	
+	private void importApplicationAndVerify() {
 		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.IMPORT_APPLICATION));
 		
 		new DefaultShell(OpenShiftLabel.Shell.IMPORT_APPLICATION);
@@ -130,7 +215,9 @@ public class CreateApplicationFromTemplateTest {
 		
 		assertTrue("Project Explorer should contain imported project kitchensink",
 				projectExplorer.containsProject(projectName));
-		
+	}
+	
+	private void verifyCreatedApplication() {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 		explorer.open();
 		OpenShiftProject project = explorer.getOpenShift3Connection().
@@ -173,5 +260,10 @@ public class CreateApplicationFromTemplateTest {
 		if (projectExplorer.containsProject(projectName)) {
 			projectExplorer.getProject(projectName).delete(true);
 		}
+	}
+	
+	@AfterClass
+	public static void deleteTestsProjectFromWorkspace() {
+		new ProjectExplorer().getProject(TESTS_PROJECT).delete(false);
 	}
 }

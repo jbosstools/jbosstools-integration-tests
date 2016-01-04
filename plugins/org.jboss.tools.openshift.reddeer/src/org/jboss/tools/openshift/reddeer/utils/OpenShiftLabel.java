@@ -134,6 +134,7 @@ public class OpenShiftLabel {
 		public static final String SAVE_SNAPSHOT = "Save Snapshot";
 		public static final String SELECT_EXISTING_APPLICATION = "Select Existing Application";
 		public static final String SELECT_EXISTING_PROJECT = "Select Existing Project";
+		public static final String SELECT_OPENSHIFT_TEMPLATE = "Select an OpenShift template";
 		public static final String PREFERENCES = "Preferences";
 		public static final String REMOVE_CONNECTION = "Remove connection";
 		public static final String REMOVE_ENV_VAR = "Remove Environment Variable";
@@ -218,6 +219,7 @@ public class OpenShiftLabel {
 		public static final String PASSWORD = "Password:";
 		public static final String SERVER = "Server:";
 		public static final String USERNAME = "Username:";
+		public static final String SELECT_LOCAL_TEMPLATE = "Select a local template:";
 		public static final String SERVER_TYPE = "Server type:";
 		public static final String STORE_PASSWORD = "Save password (could trigger secure storage login)";
 		public static final String STORE_TOKEN= "Save token (could trigger secure storage login)";
