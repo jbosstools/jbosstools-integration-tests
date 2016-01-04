@@ -29,5 +29,5 @@ public class DatastoreOS3 {
 	public static AuthenticationMethod AUTH_METHOD;
 	
 	public static String TEMPLATE_PATH = new File("").getAbsolutePath() + File.separator + 
-			"resources" + File.separator + "eap6-basic-s2i.json";
+			"resources" + File.separator + "eap64-basic-s2i.json";
 }
