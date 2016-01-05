@@ -50,6 +50,7 @@ public class OpenShiftLabel {
 	 */
 	public static class ContextMenu {
 		// General
+		public static final String EDIT = "Edit...";
 		public static final String PROPERTIES = "Properties";
 		public static final String REFRESH = "Refresh";
 		public static final String[] SHOW_IN_WEB_CONSOLE = {"Show In", "Web Console"};
