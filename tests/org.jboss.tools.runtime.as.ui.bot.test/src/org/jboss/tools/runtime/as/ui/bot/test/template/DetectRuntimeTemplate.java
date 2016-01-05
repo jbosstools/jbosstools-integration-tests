@@ -12,9 +12,10 @@ import java.util.List;
 
 import org.hamcrest.core.Is;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
+import org.jboss.reddeer.eclipse.wst.server.ui.RuntimePreferencePage;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.runtime.as.ui.bot.test.RuntimeProperties;
 import org.jboss.tools.runtime.as.ui.bot.test.dialog.preferences.SearchingForRuntimesDialog;
 import org.jboss.tools.runtime.as.ui.bot.test.entity.Runtime;
@@ -23,6 +24,7 @@ import org.jboss.tools.runtime.core.model.RuntimePath;
 import org.jboss.tools.runtime.ui.RuntimeUIActivator;
 import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
@@ -48,6 +50,16 @@ public abstract class DetectRuntimeTemplate extends RuntimeDetectionTestCase {
 	protected abstract String getPathID();
 
 	protected abstract List<Runtime> getExpectedRuntimes();
+	
+	@BeforeClass
+	public static void setupClass(){
+		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
+		preferenceDialog.open();
+		RuntimePreferencePage runtimePage = new RuntimePreferencePage();
+		preferenceDialog.select(runtimePage);
+		runtimePage.removeAllRuntimes();
+		preferenceDialog.ok();
+	}
 
 	@Test
 	public void detectRuntime(){
