@@ -16,7 +16,7 @@
 		<reddeer.config>${project.build.directory}/../resources/generated_resources</reddeer.config>
 
 		<surefire.timeout>7200</surefire.timeout>
-		<systemProperties>${integrationTestsSystemProperties} -Dreddeer.config=${reddeer.config}</systemProperties>
+		<systemProperties>${integrationTestsSystemProperties} -Drd.config=${reddeer.config}</systemProperties>
 	</properties>
 
 	<profiles>
@@ -27,12 +27,14 @@
 				<activeByDefault>true</activeByDefault>
 			</activation>
 			<properties>
+				<wildfly-9.0>${requirementsDirectory}/wildfly-9.0.0.Final/</wildfly-9.0>
+				<wildfly-web-9.0>${requirementsDirectory}/wildfly-servlet-9.0.0.Final/</wildfly-web-9.0>
 				<wildfly-8.1>${requirementsDirectory}/wildfly-8.1.0.Final/</wildfly-8.1>
 				<wildfly-8.0>${requirementsDirectory}/wildfly-8.0.0.Final/</wildfly-8.0>
 
 				<jboss-as-7>${requirementsDirectory}/jboss-as-7.1.1.Final/</jboss-as-7>
 
-				<jboss-seam-2.3>${requirementsDirectory}/jboss-seam-2.3.0.Final/</jboss-seam-2.3>
+				<jboss-seam-2.3.0.Final>${requirementsDirectory}/jboss-seam-2.3.0.Final/</jboss-seam-2.3.0.Final>
 				<jboss-seam-2.2.2>${requirementsDirectory}/jboss-seam-2.2.2.Final/</jboss-seam-2.2.2>
 
 				<test.class>org.jboss.tools.runtime.as.ui.bot.test.ProjectTestsSuite</test.class>
@@ -75,6 +77,44 @@
 											<groupId>org.wildfly</groupId>
 											<artifactId>wildfly-dist</artifactId>
 											<version>8.0.0.Final</version>
+											<type>zip</type>
+										</artifactItem>
+									</artifactItems>
+									<outputDirectory>${requirementsDirectory}</outputDirectory>
+								</configuration>
+							</execution>
+							<execution>
+								<id>install-widlfly-9.0.0</id>
+								<phase>pre-integration-test</phase>
+								<goals>
+									<goal>unpack</goal>
+								</goals>
+								<configuration>
+									<skip>${skipTests}</skip>
+									<artifactItems>
+										<artifactItem>
+											<groupId>org.wildfly</groupId>
+											<artifactId>wildfly-dist</artifactId>
+											<version>9.0.0.Final</version>
+											<type>zip</type>
+										</artifactItem>
+									</artifactItems>
+									<outputDirectory>${requirementsDirectory}</outputDirectory>
+								</configuration>
+							</execution>
+							<execution>
+								<id>install-widlfly-web-9.0.0</id>
+								<phase>pre-integration-test</phase>
+								<goals>
+									<goal>unpack</goal>
+								</goals>
+								<configuration>
+									<skip>${skipTests}</skip>
+									<artifactItems>
+										<artifactItem>
+											<groupId>org.wildfly</groupId>
+											<artifactId>wildfly-servlet-dist</artifactId>
+											<version>9.0.0.Final</version>
 											<type>zip</type>
 										</artifactItem>
 									</artifactItems>

@@ -22,11 +22,13 @@ import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.eclipse.condition.ConsoleHasNoChange;
 import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
+import org.jboss.reddeer.eclipse.wst.server.ui.RuntimePreferencePage;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.Server;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.jface.wizard.WizardDialog;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.requirements.jre.JRERequirement;
+import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -106,6 +108,8 @@ public abstract class OperateServerTemplate {
 		}
 		consoleView.open();
 		consoleView.clearConsole();
+		
+		removeAllRuntimes();
 	}
 
 	public void startServer() {
@@ -142,6 +146,15 @@ public abstract class OperateServerTemplate {
 
 	public void deleteServer() {
 		serversView.getServer(getServerName()).delete();
+	}
+
+	private void removeAllRuntimes() {
+		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
+		preferenceDialog.open();
+		RuntimePreferencePage runtimePage = new RuntimePreferencePage();
+		preferenceDialog.select(runtimePage);
+		runtimePage.removeAllRuntimes();
+		preferenceDialog.ok();
 	}
 
 	protected void assertNoException(String message) {
