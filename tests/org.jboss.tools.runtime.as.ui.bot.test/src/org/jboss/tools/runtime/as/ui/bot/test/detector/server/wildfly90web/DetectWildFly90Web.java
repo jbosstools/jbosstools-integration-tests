@@ -3,6 +3,7 @@ package org.jboss.tools.runtime.as.ui.bot.test.detector.server.wildfly90web;
 import java.util.Arrays;
 import java.util.List;
 
+import org.jboss.reddeer.requirements.jre.JRERequirement.JRE;
 import org.jboss.tools.runtime.as.ui.bot.test.RuntimeProperties;
 import org.jboss.tools.runtime.as.ui.bot.test.entity.Runtime;
 import org.jboss.tools.runtime.as.ui.bot.test.template.DetectRuntimeTemplate;
