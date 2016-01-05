@@ -24,6 +24,9 @@ import org.jboss.tools.runtime.as.ui.bot.test.detector.server.wildfly8.DetectWil
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.wildfly8.OperateWildFly8;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.wildfly81.DetectWildFly81;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.wildfly81.OperateWildFly81;
+import org.jboss.tools.runtime.as.ui.bot.test.detector.server.wildfly90.DetectWildFly90;
+import org.jboss.tools.runtime.as.ui.bot.test.detector.server.wildfly90.OperateWildFly90;
+import org.jboss.tools.runtime.as.ui.bot.test.detector.server.wildfly90web.DetectWildFly90Web;
 import org.jboss.tools.runtime.as.ui.bot.test.download.ProductRuntimeDownload;
 import org.jboss.tools.runtime.as.ui.bot.test.download.ProjectRuntimeDownload;
 import org.junit.runner.RunWith;
@@ -43,6 +46,11 @@ import org.junit.runners.Suite.SuiteClasses;
 		
 		DetectCDK2fromGit.class,
 	
+		DetectWildFly90.class,
+		OperateWildFly90.class,
+
+		DetectWildFly90Web.class,
+		
 		DetectWildFly81.class,
 		OperateWildFly81.class,
 		
