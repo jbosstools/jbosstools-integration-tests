@@ -4,6 +4,7 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.openshift.reddeer.utils.CleanUpOS3;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.advanced.DeleteResourceTest;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.advanced.DeployEclipseProjectTest;
+import org.jboss.tools.openshift.ui.bot.test.application.v3.advanced.EditResourcesTest;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.advanced.GithubWebhoookTest;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.advanced.ImportApplicationTest;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.advanced.LogsTest;
@@ -71,7 +72,8 @@ import org.junit.runners.Suite.SuiteClasses;
   	GithubWebhoookTest.class,
 	PortForwardingTest.class,
 	LogsTest.class,
-	
+	EditResourcesTest.class,
+
 	// Advanced application testing
 	DeployEclipseProjectTest.class,
 	
