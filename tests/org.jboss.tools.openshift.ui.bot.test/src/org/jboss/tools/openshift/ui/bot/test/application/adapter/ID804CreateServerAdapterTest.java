@@ -61,7 +61,7 @@ public class ID804CreateServerAdapterTest {
 		dialog.open();
 		// Wait till tree is generated
 		AbstractWait.sleep(TimePeriod.getCustom(5));
-		page.selectType("OpenShift", "OpenShift 2 Server Adapter");
+		page.selectType(OpenShiftLabel.Others.OS2_SERVER_ADAPTER);
 		dialog.next();
 		
 		
