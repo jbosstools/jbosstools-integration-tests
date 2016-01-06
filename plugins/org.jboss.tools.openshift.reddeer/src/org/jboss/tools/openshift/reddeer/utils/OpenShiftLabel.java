@@ -283,6 +283,12 @@ public class OpenShiftLabel {
 		public static final String OPENSHIFT_CENTRAL_SCRIPT = "$(\"#wizards\" ).find('a').filter(\""
 				+ ":contains('OpenShift Application')\").click()";
 		
+		// Server adapter
+		public static final String[] OS2_SERVER_ADAPTER = new String[] {"OpenShift", 
+				"OpenShift 2 Server Adapter"};
+		public static final String[] OS3_SERVER_ADAPTER = new String[] {"OpenShift", 
+				"OpenShift 3 Server Adapter"};
+		
 		public static String getOS2ServerAdapterAppendix() {
 			return " at OpenShift 2";
 		}

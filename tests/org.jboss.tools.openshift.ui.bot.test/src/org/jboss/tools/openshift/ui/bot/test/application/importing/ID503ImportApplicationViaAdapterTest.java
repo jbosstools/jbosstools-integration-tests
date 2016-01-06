@@ -58,7 +58,7 @@ public class ID503ImportApplicationViaAdapterTest {
 		new DefaultShell("New Server");
 		
 		AbstractWait.sleep(TimePeriod.getCustom(5));
-		new DefaultTreeItem("OpenShift", "OpenShift 2 Server Adapter").select();
+		new DefaultTreeItem(OpenShiftLabel.Others.OS2_SERVER_ADAPTER).select();
 		
 		new WaitUntil(new WidgetIsEnabled(new NextButton()), TimePeriod.LONG);
 		
