@@ -22,20 +22,18 @@ import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.eclipse.wst.server.ui.wizard.NewServerWizardDialog;
 import org.jboss.reddeer.eclipse.wst.server.ui.wizard.NewServerWizardPage;
-import org.jboss.reddeer.jface.viewer.handler.TreeViewerHandler;
-import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.swt.impl.button.FinishButton;
 import org.jboss.reddeer.swt.impl.button.NextButton;
-import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.tools.openshift.reddeer.utils.DatastoreOS2;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.utils.v2.DeleteUtils;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
+import org.jboss.tools.openshift.reddeer.view.ServerAdapter;
+import org.jboss.tools.openshift.reddeer.view.ServerAdapter.Version;
 import org.jboss.tools.openshift.reddeer.wizard.v2.ApplicationCreator;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -50,8 +48,6 @@ import org.junit.Test;
 public class ID804CreateServerAdapterTest {
 
 	private static String applicationName = "diy" + System.currentTimeMillis();
-	
-	private TreeViewerHandler treeViewerHandler = TreeViewerHandler.getInstance();
 	
 	@BeforeClass
 	public static void createApplication() {
@@ -89,21 +85,17 @@ public class ID804CreateServerAdapterTest {
 		
 		new WaitWhile(new ShellWithTextIsAvailable("New Server"), TimePeriod.NORMAL);
 		new WaitWhile(new JobIsRunning(), TimePeriod.NORMAL);
-		
-		TreeItem adapter = null;
+	
 		try {
-			adapter = treeViewerHandler.getTreeItem(new DefaultTree(), applicationName +
-					OpenShiftLabel.Others.getOS2ServerAdapterAppendix());
+			ServerAdapter serverAdapter = new ServerAdapter(Version.OPENSHIFT2, applicationName);
+			serverAdapter.delete();
 		} catch (RedDeerException ex) {
 			fail("Server adapter has not been created.");
 		}
-		
-		deleteAdapter(adapter);
 	}
 	
 	@Test
 	public void createAdapterViaExplorer() {
-		TreeViewerHandler treeViewerHandler = TreeViewerHandler.getInstance();
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 		explorer.getOpenShift2Connection(DatastoreOS2.USERNAME, DatastoreOS2.SERVER).getDomain(DatastoreOS2.DOMAIN).
 			getApplication(applicationName).select();
@@ -125,28 +117,12 @@ public class ID804CreateServerAdapterTest {
 		ServersView servers = new ServersView();
 		servers.open();
 		
-		TreeItem adapter = null;
 		try {
-			adapter = treeViewerHandler.getTreeItem(new DefaultTree(), 
-					applicationName + OpenShiftLabel.Others.getOS2ServerAdapterAppendix());
+			ServerAdapter serverAdapter = new ServerAdapter(Version.OPENSHIFT2, applicationName);
+			serverAdapter.delete();
 		} catch (RedDeerException ex) {
 			fail("Server adapter has not been created successfully.");
 		}
-		
-		deleteAdapter(adapter);
-	}
-	
-	private void deleteAdapter(TreeItem adapter) {
-		adapter.select();
-		
-		new ContextMenu("Delete").select();
-		
-		new WaitUntil(new ShellWithTextIsAvailable("Delete Server"), TimePeriod.NORMAL);
-		
-		new DefaultShell("Delete Server");
-		new OkButton().click();
-		
-		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
 	
 	@AfterClass

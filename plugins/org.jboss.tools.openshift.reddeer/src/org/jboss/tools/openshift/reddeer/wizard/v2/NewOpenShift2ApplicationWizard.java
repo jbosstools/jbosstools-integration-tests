@@ -10,6 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.openshift.reddeer.wizard.v2;
 
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
@@ -18,16 +19,15 @@ import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
-import org.jboss.reddeer.jface.exception.JFaceLayerException;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.YesButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.tree.DefaultTree;
+import org.jboss.tools.openshift.reddeer.condition.ServerAdapterExists;
 import org.jboss.tools.openshift.reddeer.condition.v2.OpenShiftApplicationExists;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
+import org.jboss.tools.openshift.reddeer.view.ServerAdapter.Version;
 import org.jboss.tools.openshift.reddeer.wizard.NewOpenShiftApplicationWizard;
 import org.jboss.tools.openshift.reddeer.wizard.page.v2.FirstWizardPage;
 import org.jboss.tools.openshift.reddeer.wizard.page.v2.FourthWizardPage;
@@ -201,14 +201,7 @@ public class NewOpenShift2ApplicationWizard extends NewOpenShiftApplicationWizar
 	}	
 	
 	public void verifyServerAdapter(String appName, String project) {
-		ServersView serversView = new ServersView();
-		serversView.open();
-		try {
-			// WORKAROUND - REMOVE ONCE FIXED
-			treeViewerHandler.getTreeItem(new DefaultTree(), appName + OpenShiftLabel.Others.getOS2ServerAdapterAppendix());
-			// pass
-		} catch (JFaceLayerException ex) {
-			fail("There is no server adapter for application " + appName + " and project " + project);
-		}
+		assertTrue("There is no server adapter for application " + appName + " and project " + project,
+				new ServerAdapterExists(Version.OPENSHIFT2, appName).test());
 	}
 }

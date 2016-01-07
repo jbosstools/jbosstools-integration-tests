@@ -25,8 +25,6 @@ import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
 import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
-import org.jboss.reddeer.jface.viewer.handler.TreeViewerHandler;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
@@ -44,6 +42,8 @@ import org.jboss.tools.openshift.reddeer.condition.v2.ApplicationIsDeployedSucce
 import org.jboss.tools.openshift.reddeer.utils.DatastoreOS2;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.utils.v2.DeleteUtils;
+import org.jboss.tools.openshift.reddeer.view.ServerAdapter;
+import org.jboss.tools.openshift.reddeer.view.ServerAdapter.Version;
 import org.jboss.tools.openshift.reddeer.wizard.v2.NewOpenShift2ApplicationWizard;
 import org.jboss.tools.openshift.ui.bot.test.application.create.ID414CreateApplicationFromExistingProjectTest;
 import org.junit.After;
@@ -131,11 +131,7 @@ public class ID904DeployApplicationWARArchiveTest {
 				TimePeriod.LONG);
 		
 		// Publish
-		ServersView servers = new ServersView();
-		servers.open();
-
-		TreeViewerHandler.getInstance().getTreeItem(new DefaultTree(),
-				applicationName + OpenShiftLabel.Others.getOS2ServerAdapterAppendix()).select();
+		new ServerAdapter(Version.OPENSHIFT2, applicationName).select();
 		new ContextMenu("Publish").select();
 		
 		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.PUBLISH_CHANGES), 
@@ -220,11 +216,7 @@ public class ID904DeployApplicationWARArchiveTest {
 		
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		
-		ServersView servers = new ServersView();
-		servers.open();
-
-		TreeViewerHandler.getInstance().getTreeItem(new DefaultTree(),
-				applicationName + OpenShiftLabel.Others.getOS2ServerAdapterAppendix()).select();
+		new ServerAdapter(Version.OPENSHIFT2, applicationName).select();
 		new ContextMenu("Publish").select();
 		
 		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.PUBLISH_CHANGES), 

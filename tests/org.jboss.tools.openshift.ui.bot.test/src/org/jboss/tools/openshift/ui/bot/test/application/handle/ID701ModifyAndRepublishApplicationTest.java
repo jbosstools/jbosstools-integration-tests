@@ -20,18 +20,17 @@ import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
-import org.jboss.reddeer.jface.viewer.handler.TreeViewerHandler;
 import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
-import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.openshift.reddeer.condition.v2.ApplicationIsDeployedSuccessfully;
 import org.jboss.tools.openshift.reddeer.utils.DatastoreOS2;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
+import org.jboss.tools.openshift.reddeer.view.ServerAdapter;
+import org.jboss.tools.openshift.reddeer.view.ServerAdapter.Version;
 import org.jboss.tools.openshift.ui.bot.test.application.create.ID407CreateApplicationFromExistingAndChangeRemoteNameTest;
 import org.jboss.tools.openshift.ui.bot.test.application.create.IDXXXCreateTestingApplication;
 import org.junit.Test;
@@ -50,7 +49,6 @@ public class ID701ModifyAndRepublishApplicationTest extends IDXXXCreateTestingAp
 	}
 	
 	public static void modifyAndRepublishApplication(String applicationName) {
-		TreeViewerHandler treeViewerHandler = TreeViewerHandler.getInstance();
 		ProjectExplorer explorer = new ProjectExplorer();
 		explorer.getProject(applicationName).getProjectItem("diy", "index.html").open();
 		
@@ -59,11 +57,7 @@ public class ID701ModifyAndRepublishApplicationTest extends IDXXXCreateTestingAp
 		editor.save();
 		editor.close();
 		
-		ServersView servers = new ServersView();
-		servers.open();
-		treeViewerHandler.getTreeItem(new DefaultTree(), applicationName
-				+ OpenShiftLabel.Others.getOS2ServerAdapterAppendix()).select();
-		
+		new ServerAdapter(Version.OPENSHIFT2, applicationName).select();
 		new ContextMenu(OpenShiftLabel.ContextMenu.PUBLISH).select();
 		
 		try {

@@ -17,18 +17,15 @@ import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
-import org.jboss.reddeer.jface.viewer.handler.TreeViewerHandler;
-import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.button.OkButton;
-import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.tools.openshift.reddeer.condition.v2.OpenShiftApplicationExists;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.view.OpenShift2Application;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
+import org.jboss.tools.openshift.reddeer.view.ServerAdapter;
+import org.jboss.tools.openshift.reddeer.view.ServerAdapter.Version;
 
 /**
  * Delete an OpenShift 2 application, server adapter and/or project. 
@@ -38,8 +35,6 @@ import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 public class DeleteUtils {
 
 	private Logger logger = new Logger(DeleteUtils.class);
-	
-	private TreeViewerHandler treeViewerHandler = TreeViewerHandler.getInstance();
 	
 	private String username;
 	private String server;
@@ -75,19 +70,7 @@ public class DeleteUtils {
 	}
 
 	public void deleteServerAdapter() {
-		ServersView serversView = new ServersView();
-		serversView.open();
-		
-		// WORKAROUND
-		TreeItem server = treeViewerHandler.getTreeItem(new DefaultTree(), appName + 
-				OpenShiftLabel.Others.getOS2ServerAdapterAppendix());
-		server.select();
-		
-		new ContextMenu("Delete").select();	
-		new DefaultShell("Delete Server").setFocus();
-		new PushButton("OK").click();
-		
-		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
+		new ServerAdapter(Version.OPENSHIFT2, appName).delete();
 		logger.info("OpenShift Server Adapter for application " + appName + " has been removed.");
 	}
 	

@@ -60,6 +60,7 @@ public class OpenShiftLabel {
 	 */
 	public static class ContextMenu {
 		// General
+		public static final String DELETE = "Delete";
 		public static final String EDIT = "Edit...";
 		public static final String PROPERTIES = "Properties";
 		public static final String REFRESH = "Refresh";
@@ -98,6 +99,7 @@ public class OpenShiftLabel {
 		public static final String IMPORT_APPLICATION = "Import Application...";
 		public static final String[] NEW_OS2_APPLICATION = {"New", "Application..."};
 		public static final String[] NEW_OS3_APPLICATION = {"New", "Application"};
+		public static final String[] NEW_SERVER = {"New", "Server"};	
 		public static final String[] NEW_SERVER_ADAPTER = {"New", "Server Adapter..."};		
 		public static final String PORT_FORWARD = "Port Forwarding...";		
 		public static final String RESTART_APPLICATION = "Restart Application";	
@@ -131,6 +133,7 @@ public class OpenShiftLabel {
 		public static final String COMMIT = "Commit Changes";
 		public static final String DELETE_APP = "Application removal";
 		public static final String DELETE_OS_PROJECT = "OpenShift project deletion";
+		public static final String DELETE_ADAPTER = "Delete Server";
 		public static final String EDIT_CARTRIDGES = "Edit Embedded Cartridges";
 		public static final String EDIT_ENV_VAR = "Edit Environment variable";
 		public static final String EMBEDDED_CARTRIDGE = "Embedded Cartridges";
@@ -298,13 +301,5 @@ public class OpenShiftLabel {
 				"OpenShift 2 Server Adapter"};
 		public static final String[] OS3_SERVER_ADAPTER = new String[] {"OpenShift", 
 				"OpenShift 3 Server Adapter"};
-		
-		public static String getOS2ServerAdapterAppendix() {
-			return " at OpenShift 2";
-		}
-		
-		public static String getOS3ServerAdapterAppendix() {
-			return "OpenShift 3 " + DatastoreOS3.SERVER.substring(8);
-		}
 	}
 }

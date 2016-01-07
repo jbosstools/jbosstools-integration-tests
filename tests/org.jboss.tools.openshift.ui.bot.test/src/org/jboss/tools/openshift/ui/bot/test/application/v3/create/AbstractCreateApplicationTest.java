@@ -28,6 +28,7 @@ public class AbstractCreateApplicationTest {
 
 	public static String gitFolder = "jboss-eap-quickstarts";
 	public static String projectName = "jboss-kitchensink";
+	public static String buildConfigName = "eap-app";
 	
 	protected static TreeViewerHandler treeViewerHandler = TreeViewerHandler.getInstance();
 	
