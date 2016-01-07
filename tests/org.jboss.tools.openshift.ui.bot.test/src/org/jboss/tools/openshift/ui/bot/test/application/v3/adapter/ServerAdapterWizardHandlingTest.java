@@ -23,9 +23,11 @@ import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.wst.server.ui.wizard.NewServerWizardDialog;
 import org.jboss.reddeer.eclipse.wst.server.ui.wizard.NewServerWizardPage;
+import org.jboss.reddeer.swt.api.Button;
 import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.swt.impl.button.BackButton;
 import org.jboss.reddeer.swt.impl.button.CancelButton;
+import org.jboss.reddeer.swt.impl.button.FinishButton;
 import org.jboss.reddeer.swt.impl.button.NextButton;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
@@ -93,6 +95,16 @@ public class ServerAdapterWizardHandlingTest extends AbstractCreateApplicationTe
 	}
 	
 	@Test
+	public void testFinishButtonAccessibility() {
+		openNewServerAdapterWizard();
+		
+		assertFalse("Finish button should be disabled on new server "
+				+ "adapter wizard page where selection of a connection is done, "
+				+ "because there are still missing details to successfully create a new"
+				+ "OpenShift 3 server adapter.", buttonIsEnabled(new FinishButton()));
+	}
+	
+	@Test
 	public void testSourcePathWidgetAccessibility() {
 		openNewServerAdapterWizard();
 		next();
@@ -121,8 +133,12 @@ public class ServerAdapterWizardHandlingTest extends AbstractCreateApplicationTe
 	}
 	
 	private boolean nextButtonIsEnabled() {
+		return buttonIsEnabled(new NextButton());
+	}
+	
+	private boolean buttonIsEnabled(Button button) {
 		try {
-			new WaitUntil(new WidgetIsEnabled(new NextButton()), TimePeriod.getCustom(5));
+			new WaitUntil(new WidgetIsEnabled(button), TimePeriod.getCustom(5));
 			return true;
 		} catch (WaitTimeoutExpiredException ex) {
 			return false;

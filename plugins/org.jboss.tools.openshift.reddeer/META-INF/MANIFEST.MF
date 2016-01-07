@@ -23,6 +23,7 @@ Bundle-Vendor: JBoss by Red Hat
 Export-Package: org.jboss.tools.openshift.reddeer.condition,
  org.jboss.tools.openshift.reddeer.condition.v2,
  org.jboss.tools.openshift.reddeer.enums,
+ org.jboss.tools.openshift.reddeer.exception,
  org.jboss.tools.openshift.reddeer.perspective,
  org.jboss.tools.openshift.reddeer.preference.page,
  org.jboss.tools.openshift.reddeer.requirement,

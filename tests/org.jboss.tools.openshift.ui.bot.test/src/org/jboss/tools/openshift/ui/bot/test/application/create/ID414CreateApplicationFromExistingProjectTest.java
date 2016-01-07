@@ -20,8 +20,6 @@ import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
-import org.jboss.reddeer.jface.viewer.handler.TreeViewerHandler;
 import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.swt.impl.button.BackButton;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
@@ -35,13 +33,14 @@ import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.openshift.reddeer.condition.v2.ApplicationIsDeployedSuccessfully;
 import org.jboss.tools.openshift.reddeer.utils.DatastoreOS2;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.utils.v2.DeleteUtils;
+import org.jboss.tools.openshift.reddeer.view.ServerAdapter;
+import org.jboss.tools.openshift.reddeer.view.ServerAdapter.Version;
 import org.jboss.tools.openshift.reddeer.wizard.page.v2.FirstWizardPage;
 import org.jboss.tools.openshift.reddeer.wizard.page.v2.SecondWizardPage;
 import org.jboss.tools.openshift.reddeer.wizard.v2.NewOpenShift2ApplicationWizard;
@@ -100,7 +99,6 @@ public class ID414CreateApplicationFromExistingProjectTest {
 
 	@Test
 	public void testDeployExistingProjectViaConfigureMenu() {
-		TreeViewerHandler treeViewerHandler = TreeViewerHandler.getInstance();
 		ProjectExplorer projectExplorer = new ProjectExplorer();
 		projectExplorer.getProject(applicationName).select();
 
@@ -165,11 +163,7 @@ public class ID414CreateApplicationFromExistingProjectTest {
 				OpenShiftLabel.Shell.NEW_APP_WIZARD), TimePeriod.VERY_LONG);
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 
-		ServersView servers = new ServersView();
-		servers.open();
-
-		treeViewerHandler.getTreeItem(new DefaultTree(),
-				applicationName + OpenShiftLabel.Others.getOS2ServerAdapterAppendix()).select();
+		new ServerAdapter(Version.OPENSHIFT2, applicationName).select();
 		new ContextMenu("Publish").select();
 
 		new DefaultShell("Publish " + applicationName + "?");
