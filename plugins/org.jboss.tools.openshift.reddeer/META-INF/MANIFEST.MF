@@ -8,13 +8,13 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.junit;bundle-version="4.8.2",
  org.apache.commons.compress,
- org.jboss.reddeer.jface,
- org.jboss.reddeer.swt,
- org.jboss.reddeer.eclipse,
- org.jboss.reddeer.workbench,
- org.jboss.reddeer.uiforms;bundle-version="0.8.0",
- org.jboss.reddeer.common;bundle-version="0.8.0",
- org.jboss.reddeer.core;bundle-version="0.8.0"
+ org.jboss.reddeer.jface;bundle-version="[1.0.0,2.0.0)",
+ org.jboss.reddeer.swt;bundle-version="[1.0.0,2.0.0)",
+ org.jboss.reddeer.eclipse;bundle-version="[1.0.0,2.0.0)",
+ org.jboss.reddeer.workbench;bundle-version="[1.0.0,2.0.0)",
+ org.jboss.reddeer.uiforms;bundle-version="[1.0.0,2.0.0)",
+ org.jboss.reddeer.common;bundle-version="[1.0.0,2.0.0)",
+ org.jboss.reddeer.core;bundle-version="[1.0.0,2.0.0)"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Eclipse-BundleShape: jar
