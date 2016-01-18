@@ -27,6 +27,7 @@ import org.jboss.tools.runtime.as.ui.bot.test.detector.server.wildfly81.OperateW
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.wildfly90.DetectWildFly90;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.wildfly90.OperateWildFly90;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.wildfly90web.DetectWildFly90Web;
+import org.jboss.tools.runtime.as.ui.bot.test.detector.server.wildfly90web.OperateWildFly90Web;
 import org.jboss.tools.runtime.as.ui.bot.test.download.ProductRuntimeDownload;
 import org.jboss.tools.runtime.as.ui.bot.test.download.ProjectRuntimeDownload;
 import org.junit.runner.RunWith;
@@ -50,6 +51,7 @@ import org.junit.runners.Suite.SuiteClasses;
 		OperateWildFly90.class,
 
 		DetectWildFly90Web.class,
+		OperateWildFly90Web.class,
 		
 		DetectWildFly81.class,
 		OperateWildFly81.class,

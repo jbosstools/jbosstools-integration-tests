@@ -6,13 +6,18 @@ import static org.junit.Assert.fail;
 import java.io.File;
 import java.io.IOException;
 
+import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
+import org.jboss.reddeer.common.condition.WaitCondition;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.jface.wizard.WizardDialog;
 import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.progressbar.DefaultProgressBar;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.common.reddeer.utils.FileUtils;
 import org.jboss.tools.runtime.as.ui.bot.test.template.RuntimeDetectionTestCase;
@@ -79,7 +84,9 @@ public class RuntimeDownloadTestBase extends RuntimeDetectionTestCase {
 		if (!credentialsPage.containsUsername(username)){
 			credentialsPage.addCredentials(username, password);
 		}
+		new DefaultShell("Download Runtimes").setFocus();
 		credentialsPage.setUsername(username);
+		new WaitWhile(new JobIsRunning());
 		runtimeDownloadWizard.next();
 		new WaitWhile(new JobIsRunning());
 	}

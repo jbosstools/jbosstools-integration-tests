@@ -1,11 +1,12 @@
 package org.jboss.tools.runtime.as.ui.bot.test.download;
 
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
-import org.hamcrest.core.StringContains;
-import org.jboss.reddeer.swt.api.Text;
-import org.jboss.reddeer.swt.exception.SWTLayerException;
+import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.exception.CoreLayerException;
+import org.jboss.reddeer.swt.impl.progressbar.DefaultProgressBar;
+import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.junit.Test;
 
 /**
@@ -23,16 +24,16 @@ public class ProductRuntimeDownload extends ProductRuntimeDownloadTestBase {
 	 * credentials
 	 */
 	@Test
-	public void useInvalidCredentials() { 
+	public void useInvalidCredentials() {
 		invokeDownloadRuntimesWizard();
-		
+
 		processSelectingRuntime("JBoss EAP 6.2.0");
 		processInsertingCredentials("Invalid username", "Invalid password");
-		
+
 		try {
-			Text errorText = new org.jboss.reddeer.swt.impl.text.DefaultText(0);
-			assertThat(errorText.getText(), StringContains.containsString("Please use your jboss.org single sign-on credentials to begin your download."));
-		} catch(SWTLayerException e) {
+			new WaitWhile(new ValidatingCredentialsProgressBarIsRunning());
+			new DefaultText(" Your credentials are incorrect. Please review the values and try again.");
+		} catch (CoreLayerException e) {
 			fail("Error text not found\n" + e.getMessage());
 		}
 	}
@@ -53,5 +54,29 @@ public class ProductRuntimeDownload extends ProductRuntimeDownloadTestBase {
 	@Test
 	public void downloadJPP610() {
 		downloadRuntime("JBoss Portal Platform 6.1.0");
+	}
+	
+	private class ValidatingCredentialsProgressBarIsRunning implements WaitCondition{
+
+		@Override
+		public boolean test() {
+			try{
+				new DefaultProgressBar("Validating Credentials");
+				return true;
+			}catch(CoreLayerException e){
+				return false;
+			}
+		}
+
+		@Override
+		public String description() {
+			return "Validating Credentials progress bar is running";
+		}
+
+		@Override
+		public String errorMessage() {
+			return "Validating Credentials progress bar is not running";
+		}
+		
 	}
 }

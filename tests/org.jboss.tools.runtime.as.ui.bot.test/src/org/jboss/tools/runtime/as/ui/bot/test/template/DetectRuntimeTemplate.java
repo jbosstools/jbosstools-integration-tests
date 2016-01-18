@@ -13,6 +13,8 @@ import java.util.List;
 import org.hamcrest.core.Is;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.eclipse.wst.server.ui.RuntimePreferencePage;
+import org.jboss.reddeer.eclipse.wst.server.ui.view.Server;
+import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
@@ -59,6 +61,14 @@ public abstract class DetectRuntimeTemplate extends RuntimeDetectionTestCase {
 		preferenceDialog.select(runtimePage);
 		runtimePage.removeAllRuntimes();
 		preferenceDialog.ok();
+		
+		//delete all servers (because of CDK server)
+		ServersView serversView = new ServersView();
+		serversView.open();
+		List<Server> servers = serversView.getServers();
+		for (Server server : servers) {
+			server.delete();
+		}
 	}
 
 	@Test
@@ -83,7 +93,7 @@ public abstract class DetectRuntimeTemplate extends RuntimeDetectionTestCase {
 		preferenceDialog.select(runtimeDetectionPage);
 						
 		List<String> allPaths = runtimeDetectionPage.getAllPaths();
-		String requiredPath = RuntimeProperties.getInstance().getRuntimePath(getPathID());
+		String requiredPath = new File(RuntimeProperties.getInstance().getRuntimePath(getPathID())).getAbsolutePath();
 		assertTrue("Expected is presence of path " + requiredPath + " but there are:\n"
 				+ Arrays.toString(allPaths.toArray()), allPaths.contains(requiredPath));
 		

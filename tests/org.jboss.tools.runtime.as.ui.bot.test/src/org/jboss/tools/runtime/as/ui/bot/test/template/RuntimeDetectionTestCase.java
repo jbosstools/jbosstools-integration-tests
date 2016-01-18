@@ -5,6 +5,7 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.fail;
 
 import java.awt.image.CropImageFilter;
+import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
@@ -34,7 +35,7 @@ public abstract class RuntimeDetectionTestCase {
 	protected WorkbenchPreferenceDialog preferences = new WorkbenchPreferenceDialog();
 
 	protected SearchingForRuntimesDialog addPath(String path){
-		RuntimeUIActivator.getDefault().getModel().addRuntimePath(new RuntimePath(path));
+		RuntimeUIActivator.getDefault().getModel().addRuntimePath(new RuntimePath(new File(path).getAbsolutePath()));
 		runtimeDetectionPage = new RuntimeDetectionPreferencePage();
 		preferences.open();
 		preferences.select(runtimeDetectionPage);
